@@ -8,8 +8,8 @@
 	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
-	idle_power_usage = 5
-	active_power_usage = 100
+	idle_power_usage = 5 WATTS
+	active_power_usage = 100 WATTS
 	atom_flags = ATOM_FLAG_NO_REACT
 	var/global/max_n_of_items = 999 // Sorry but the BYOND infinite loop detector doesn't look things over 1000.
 	var/icon_on = "smartfridge"
@@ -219,7 +219,7 @@
 		return
 
 	if(accept_check(O))
-		if(!user.remove_from_mob(O))
+		if(!user.drop(O))
 			return
 		stock_item(O)
 		user.visible_message("<span class='notice'>\The [user] has added \the [O] to \the [src].</span>", "<span class='notice'>You add \the [O] to \the [src].</span>")

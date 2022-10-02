@@ -10,7 +10,7 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "mixer0"
 	layer = BELOW_OBJ_LAYER
-	idle_power_usage = 20
+	idle_power_usage = 20 WATTS
 	clicksound = SFX_USE_BUTTON
 	clickvol = 20
 	var/obj/item/reagent_containers/vessel/beaker
@@ -74,9 +74,9 @@
 		if(beaker)
 			to_chat(user, "A beaker is already loaded into the machine.")
 			return
+		if(!user.drop(W, src))
+			return
 		beaker = W
-		user.drop_item()
-		W.forceMove(src)
 		to_chat(user, "You add \the [W] to the machine!")
 		updateUsrDialog()
 		icon_state = "mixer1"
@@ -85,9 +85,9 @@
 		if(loaded_pill_bottle)
 			to_chat(user, "A pill bottle is already loaded into the machine.")
 			return
+		if(!user.drop(W, src))
+			return
 		loaded_pill_bottle = W
-		user.drop_item()
-		W.forceMove(src)
 		to_chat(user, "You add \the [W] into the dispenser slot!")
 		updateUsrDialog()
 
@@ -374,9 +374,9 @@
 	layer = BELOW_OBJ_LAYER
 	density = 0
 	anchored = 0
-	idle_power_usage = 5
-	active_power_usage = 100
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+	idle_power_usage = 5 WATTS
+	active_power_usage = 100 WATTS
+
 	component_types = list(
 		/obj/item/circuitboard/grinder,
 		/obj/item/stock_parts/scanning_module,
@@ -415,12 +415,10 @@
 	if(istype(O, /obj/item/reagent_containers/vessel/beaker))
 		if(beaker)
 			return TRUE
-		else
-			src.beaker =  O
-			user.drop_item()
-			O.loc = src
+		else if(user.drop(O, src))
+			beaker =  O
 			update_icon()
-			src.updateUsrDialog()
+			updateUsrDialog()
 			return FALSE
 
 	if(holdingitems && holdingitems.len >= limit)
@@ -467,10 +465,10 @@
 		to_chat(user, "\The [O] is not suitable for blending.")
 		return 1
 
-	user.remove_from_mob(O)
-	O.loc = src
+	if(!user.drop(O, src))
+		return
 	holdingitems += O
-	src.updateUsrDialog()
+	updateUsrDialog()
 	return 0
 
 /obj/machinery/reagentgrinder/attack_ai(mob/user as mob)

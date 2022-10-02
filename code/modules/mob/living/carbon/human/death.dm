@@ -19,7 +19,7 @@
 	sleep(1)
 
 	for(var/obj/item/I in src)
-		drop_from_inventory(I)
+		drop(I, force = TRUE)
 		I.throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), 1)
 
 	..(species.gibbed_anim)

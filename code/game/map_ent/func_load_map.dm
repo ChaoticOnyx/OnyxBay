@@ -7,7 +7,7 @@
 
 /obj/map_ent/func_load_map/activate()
 	if(!ev_map_path)
-		crash_with("func_load_map has invalid ev_map_path: `[ev_map_path]`")
+		util_crash_with("func_load_map has invalid ev_map_path: `[ev_map_path]`")
 		return
 
 	var/map_file

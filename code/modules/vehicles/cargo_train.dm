@@ -12,7 +12,7 @@
 	buckle_pixel_shift = "x=0;y=7"
 
 	var/car_limit = 3		//how many cars an engine can pull before performance degrades
-	charge_use = 1 KILOWATTS
+	charge_use = 1 KILO WATTS
 	active_engines = 1
 	var/obj/item/key/cargo_train/key
 
@@ -90,9 +90,7 @@
 
 /obj/vehicle/train/cargo/engine/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/key/cargo_train))
-		if(!key)
-			user.drop_item()
-			W.forceMove(src)
+		if(!key && user.drop(W, src))
 			key = W
 			verbs += /obj/vehicle/train/cargo/engine/verb/remove_key
 		return

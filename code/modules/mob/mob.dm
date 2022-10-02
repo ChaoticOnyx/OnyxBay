@@ -727,9 +727,9 @@
 	if(lying)
 		set_density(0)
 		if(l_hand)
-			unEquip(l_hand)
+			drop_l_hand()
 		if(r_hand)
-			unEquip(r_hand)
+			drop_r_hand()
 	else
 		set_density(initial(density))
 	reset_layer()

@@ -34,6 +34,8 @@
 	var/mob/observer/ghost/the_chosen = null
 	var/mob/observer/ghost/prev_ghost = null
 
+	var/datum/radiation_source/pulse_source
+
 /obj/singularity/New(loc, starting_energy = 50, temp = 0)
 	//CARN: admin-alert for chuckle-fuckery.
 	admin_investigate_setup()
@@ -54,6 +56,9 @@
 		create_childs()
 
 /obj/singularity/Destroy()
+	if(!QDELETED(pulse_source))
+		qdel(pulse_source)
+
 	for(var/obj/singularity/child/SC in childs)
 		childs -= SC
 		if(!QDELETED(SC))
@@ -111,10 +116,17 @@
 
 	if(current_size >= STAGE_TWO)
 		move()
-		pulse()
+
+		if(QDELETED(pulse_source))
+			pulse_source = SSradiation.radiate(src, new /datum/radiation/preset/hawking)
+		
+		pulse_source.update_energy((energy / 50) * HAWKING_RAY_ENERGY)
 
 		if(prob(event_chance)) //Chance for it to run a special event TODO: Come up with one or two more that fit.
 			event()
+	else
+		if(!QDELETED(pulse_source))
+			qdel(pulse_source)
 
 	if(follows_ghosts && picking_coldown <= world.time)
 		if(the_chosen)
@@ -493,11 +505,9 @@
 /obj/singularity/proc/toxmob()
 	var/toxrange = 10
 	var/toxdamage = 4
-	var/radiation = 15
 	if(energy > 200)
 		toxdamage = round(((energy - 150) / 50) * 4, 1)
-		radiation = round(((energy - 150) / 50) * 5, 1)
-	SSradiation.radiate(src, radiation) //Always radiate at max, so a decent dose of radiation is applied
+
 	for(var/mob/living/M in view(toxrange, loc))
 		if(M.status_flags & GODMODE)
 			continue
@@ -546,15 +556,12 @@
 			to_chat(M, SPAN("danger", "You hear an uneartly ringing, then what sounds like a shrilling kettle as you are washed with a wave of heat."))
 			to_chat(M, SPAN("danger", "You don't even have a moment to react as you are reduced to ashes by the intense radiation."))
 			M.dust()
-	SSradiation.radiate(src, rand(energy))
+	
+	var/datum/radiation_source/temp_source = SSradiation.radiate(src, new /datum/radiation/preset/singularity_beta)
+	temp_source.schedule_decay(10 SECONDS)
 
 	for(var/obj/singularity/child/SC in childs)
 		SC.smwave()
-
-/obj/singularity/proc/pulse()
-	for(var/obj/machinery/power/rad_collector/R in rad_collectors)
-		if(get_dist(R, src) <= 15) //Better than using orange() every process.
-			R.receive_pulse(energy)
 
 /obj/singularity/proc/on_capture()
 	chained = 1

@@ -5,7 +5,7 @@
 	icon_state = "borgcharger0"
 	density = 1
 	anchored = 1
-	idle_power_usage = 50
+	idle_power_usage = 50 WATTS
 	var/mob/living/occupant = null
 	var/obj/item/cell/cell = null
 	var/icon_update_tick = 0	// Used to rebuild the overlay only once every 10 ticks
@@ -92,7 +92,7 @@
 		var/list/damaged = R.get_damaged_components(1,1,1)
 		if(damaged.len && wire_rate && weld_rate)
 			for(var/datum/robot_component/C in damaged)
-				if((C.installed == -1) && cell.checked_use(100 KILOWATTS * CELLRATE))
+				if((C.installed == -1) && cell.checked_use(100 KILO WATTS * CELLRATE))
 					C.repair()
 
 	if(ishuman(occupant))

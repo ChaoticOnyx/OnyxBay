@@ -67,7 +67,7 @@
 	if(on && cell && cell.charge)
 		var/datum/gas_mixture/environment
 		if(holding)
-			environment = holding.air_contents
+			environment = holding.return_air()
 		else
 			environment = loc.return_air()
 
@@ -158,8 +158,8 @@
 	volume_rate = 5000
 
 	use_power = POWER_USE_IDLE
-	idle_power_usage = 500		//internal circuitry, friction losses and stuff
-	active_power_usage = 100000	//100 kW ~ 135 HP
+	idle_power_usage = 500 WATTS		//internal circuitry, friction losses and stuff
+	active_power_usage = 100 KILO WATTS	//100 kW ~ 135 HP
 
 	var/global/gid = 1
 	var/id = 0

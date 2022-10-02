@@ -2,7 +2,7 @@
 /obj/machinery/vending/games
 	name = "Good Clean Fun"
 	desc = "Vends things that the CO and SEA are probably not going to appreciate you fiddling with instead of your job..."
-	vend_delay = 15 SECONDS
+	vend_delay = 15
 	product_slogans = "Escape to a fantasy world!;Fuel your gambling addiction!;Ruin your friendships!"
 	product_ads = "Elves and dwarves!;Totally not satanic!;Fun times forever!"
 	icon_state = "games"

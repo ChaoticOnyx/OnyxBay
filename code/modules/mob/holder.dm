@@ -43,9 +43,6 @@ var/list/holder_mob_icon_cache = list()
 			held_mob.forceMove(get_turf(src))
 		held_mob = null
 	last_holder = null
-	if(ismob(loc))
-		var/mob/M = loc
-		M.drop_from_inventory(src, get_turf(M))
 	return ..()
 
 /obj/item/holder/think()

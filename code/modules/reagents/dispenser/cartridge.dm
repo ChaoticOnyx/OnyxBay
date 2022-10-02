@@ -10,8 +10,7 @@
 	// Large, but inaccurate. Use a chem dispenser or beaker for accuracy.
 	possible_transfer_amounts = "50;100"
 	unacidable = 1
-	// Save the chemists from being bald.
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+	atom_flags = ATOM_FLAG_IGNORE_RADIATION
 
 	var/spawn_reagent = null
 	var/label = ""

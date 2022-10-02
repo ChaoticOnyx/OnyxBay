@@ -5,8 +5,8 @@
 	icon_state = "borgcharger0(old)"
 	density = 1
 
-	idle_power_usage = 100
-	active_power_usage = 1000
+	idle_power_usage = 100 WATTS
+	active_power_usage = 1 KILO WATT
 
 	var/spawn_progress_time = 0
 	var/max_spawn_time = 50
@@ -122,11 +122,11 @@
 
 	show_browser(user, dat, "window=alien_replicator")
 
-/obj/machinery/replicator/attackby(obj/item/W as obj, mob/living/user as mob)
-	user.drop_item()
-	W.forceMove(src)
+/obj/machinery/replicator/attackby(obj/item/W, mob/living/user)
+	if(!user.drop(W, src))
+		return
 	stored_materials.Add(W)
-	src.visible_message("<span class='notice'>\The [user] inserts \the [W] into \the [src].</span>")
+	visible_message("<span class='notice'>\The [user] inserts \the [W] into \the [src].</span>")
 
 /obj/machinery/replicator/OnTopic(user, href_list)
 	if(href_list["activate"])

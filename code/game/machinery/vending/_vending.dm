@@ -24,8 +24,8 @@
 	var/alt_icons = list()
 
 	// Power
-	idle_power_usage = 10
-	var/vend_power_usage = 150 //actuators and stuff
+	idle_power_usage = 10 WATTS
+	var/vend_power_usage = 150 WATTS //actuators and stuff
 
 	// Vending-related
 	var/vend_ready = TRUE // Are we ready to vend?? Is it time??
@@ -69,7 +69,7 @@
 	var/list/illegal = list()
 	var/list/premium = list()
 	var/list/prices = list()
-	var/gen_rand_amount = TRUE // If we want to generate random amount of items in our cartridge.
+	var/gen_rand_amount = FALSE // If we want to generate random amount of items in our cartridge.
 
 /obj/machinery/vending/update_icon()
 	overlays.Cut()
@@ -214,8 +214,8 @@
 			power_change()
 		return
 	else if(istype(W, /obj/item/material/coin) && !coin && cartridge.premium.len > 0)
-		user.drop_item()
-		W.forceMove(src)
+		if(!user.drop(W, src))
+			return
 		coin = W
 		categories |= CAT_COIN
 		to_chat(user, SPAN("notice", "You insert \the [W] into \the [src]."))
@@ -252,6 +252,7 @@
 	V.state = 3
 	for(var/obj/I in component_parts)
 		I.forceMove(V)
+	cartridge = null
 	V.refresh_cartridge()
 	V.update_icon()
 	V.update_desc()
@@ -301,7 +302,6 @@
 	cashmoney.worth -= currently_vending.price
 
 	if(cashmoney.worth <= 0)
-		usr.drop_from_inventory(cashmoney)
 		qdel(cashmoney)
 	else
 		cashmoney.update_icon()
@@ -399,6 +399,11 @@
 	if(stat & (BROKEN | NOPOWER))
 		return
 
+	wires.Interact(user)
+
+	if(stat & POWEROFF)
+		return
+
 	if(seconds_electrified != 0)
 		if(shock(user, 100))
 			return
@@ -418,7 +423,6 @@
 
 		return
 
-	wires.Interact(user)
 	tgui_interact(user)
 
 /obj/machinery/vending/tgui_interact(mob/user, datum/tgui/ui)
@@ -481,6 +485,9 @@
 	. = ..()
 
 	if(.)
+		return
+
+	if(stat & POWEROFF)
 		return
 
 	switch(action)
@@ -639,7 +646,7 @@
  * calling. W is the item being inserted, R is the associated vending_product entry.
  */
 /obj/machinery/vending/proc/stock(obj/item/W, datum/stored_items/vending_products/R, mob/user)
-	if(!user.unEquip(W))
+	if(!user.drop(W))
 		return
 
 	if(R.add_product(W))

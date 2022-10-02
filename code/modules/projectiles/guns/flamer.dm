@@ -102,7 +102,7 @@
 		if(fuel_tank)
 			to_chat(user, "Remove the current fuel tank first.")
 			return
-		user.drop_from_inventory(W, src)
+		user.drop(W, src)
 		fuel_tank = W
 		playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
 		user.visible_message("[user] slot \a [W] into \the [src].", "You slot \a [W] into \the [src].")
@@ -125,7 +125,7 @@
 		if(igniter)
 			to_chat(user, "Remove the current igniter first.")
 			return
-		user.drop_from_inventory(W, src)
+		user.drop(W, src)
 		igniter = W
 		playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
 		attached_electronics += new /obj/item/device/assembly/igniter
@@ -137,7 +137,8 @@
 		if(gauge)
 			to_chat(user, "Remove the current analyzer first.")
 			return
-		user.drop_from_inventory(W, src)
+		if(!user.drop(W, src))
+			return
 		gauge = W
 		playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
 		attached_electronics += new /obj/item/device/analyzer
@@ -149,7 +150,8 @@
 		if(pressure_tank)
 			to_chat(user, "Remove the current pressure tank first.")
 			return
-		user.drop_from_inventory(W, src)
+		if(!user.drop(W, src))
+			return
 		pressure_tank = W
 		playsound(loc, 'sound/effects/refill.ogg', 25, 1, 3)
 		user.visible_message("[user] wrench \a [W] into \the [src].", "You wrench \a [W] into \the [src].")
@@ -238,8 +240,9 @@
 		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 
-	if(pressure_tank.air_contents.return_pressure() > 200)
-		pressure_tank.air_contents.remove_ratio(0.02*(pressure_for_shot/100))
+	var/datum/gas_mixture/M = pressure_tank.return_air()
+	if(M.return_pressure() > 200)
+		M.remove_ratio(0.02*(pressure_for_shot/100))
 	else
 		to_chat(user, SPAN_WARNING("Not enough pressure!"))
 		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)

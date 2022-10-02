@@ -23,7 +23,7 @@
 	SHOULD_CALL_PARENT(FALSE)
 
 	if(atom_flags & ATOM_FLAG_INITIALIZED)
-		crash_with("Warning: [src]([type]) initialized multiple times!")
+		util_crash_with("Warning: [src]([type]) initialized multiple times!")
 	atom_flags |= ATOM_FLAG_INITIALIZED
 
 	verbs += /mob/proc/toggle_antag_pool
@@ -152,14 +152,13 @@
 				to_chat(src, "<span class='danger'>Could not locate an observer spawn point. Use the Teleport verb to jump to the map.</span>")
 			observer.timeofdeath = world.time // Set the time of death so that the respawn timer works correctly.
 
-			if(isnull(client.holder))
+			if(QDELETED(client.holder))
 				announce_ghost_joinleave(src)
 
 			var/mob/living/carbon/human/dummy/mannequin = get_mannequin(client.ckey)
 			if(mannequin)
 				client.prefs.dress_preview_mob(mannequin)
 				observer.set_appearance(mannequin)
-				qdel(mannequin)
 
 			if(client.prefs.be_random_name)
 				client.prefs.real_name = random_name(client.prefs.gender)
@@ -367,12 +366,13 @@
 	if(job.latejoin_at_spawnpoints)
 		var/obj/S = job_master.get_roundstart_spawnpoint(job.title)
 		spawn_turf = get_turf(S)
-	var/radlevel = SSradiation.get_rads_at_turf(spawn_turf)
+
+	var/dose = SSradiation.get_total_absorbed_dose_at_turf(spawn_turf, AVERAGE_HUMAN_WEIGHT)
 	var/airstatus = IsTurfAtmosUnsafe(spawn_turf)
-	if(airstatus || radlevel > 0 )
+	if(airstatus || dose > SAFE_RADIATION_DOSE )
 		var/reply = alert(usr, "Warning. Your selected spawn location seems to have unfavorable conditions. \
 		You may die shortly after spawning. \
-		Spawn anyway? More information: [airstatus] Radiation: [radlevel] Bq", "Atmosphere warning", "Abort", "Spawn anyway")
+		Spawn anyway? More information: [airstatus] Radiation: [fmt_siunit(dose, "Gy/s", 3)]", "Atmosphere warning", "Abort", "Spawn anyway")
 		if(reply == "Abort")
 			return 0
 		else

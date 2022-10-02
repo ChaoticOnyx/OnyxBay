@@ -22,6 +22,7 @@ var/list/global/tank_gauge_cache = list()
 	mod_reach = 0.75
 	mod_handy = 0.5
 
+	/// DO NOT CHANGE IT DIRECTLY. USE `return_air()`!!!
 	var/datum/gas_mixture/air_contents = null
 	var/distribute_pressure = ONE_ATMOSPHERE
 	var/integrity = 20
@@ -58,9 +59,9 @@ var/list/global/tank_gauge_cache = list()
 	proxyassembly = new /obj/item/device/tankassemblyproxy(src)
 	proxyassembly.tank = src
 
-	air_contents = new /datum/gas_mixture(volume, T20C)
+	air_contents = new /datum/gas_mixture(volume, 20 CELSIUS)
 	for(var/gas in starting_pressure)
-		air_contents.adjust_gas(gas, starting_pressure[gas]*volume/(R_IDEAL_GAS_EQUATION*T20C), 0)
+		air_contents.adjust_gas(gas, starting_pressure[gas]*volume/(R_IDEAL_GAS_EQUATION*(20 CELSIUS)), 0)
 	air_contents.update_values()
 
 	set_next_think(world.time)
@@ -84,7 +85,7 @@ var/list/global/tank_gauge_cache = list()
 		if(air_contents.total_moles == 0)
 			descriptive = "empty"
 		else
-			var/celsius_temperature = air_contents.temperature - T0C
+			var/celsius_temperature = CONV_KELVIN_CELSIUS(air_contents.temperature)
 			switch(celsius_temperature)
 				if(300 to INFINITY)
 					descriptive = "furiously hot"
@@ -169,8 +170,8 @@ var/list/global/tank_gauge_cache = list()
 			to_chat(user, "<span class='notice'>You begin attaching the assembly to \the [src].</span>")
 			if(do_after(user, 50, src))
 				to_chat(user, "<span class='notice'>You finish attaching the assembly to \the [src].</span>")
-				GLOB.bombers += "[key_name(user)] attached an assembly to a wired [src]. Temp: [air_contents.temperature-T0C]"
-				message_admins("[key_name_admin(user)] attached an assembly to a wired [src]. Temp: [air_contents.temperature-T0C]")
+				GLOB.bombers += "[key_name(user)] attached an assembly to a wired [src]. Temp: [CONV_KELVIN_CELSIUS(air_contents.temperature)]"
+				message_admins("[key_name_admin(user)] attached an assembly to a wired [src]. Temp: [CONV_KELVIN_CELSIUS(air_contents.temperature)]")
 				assemble_bomb(W,user)
 			else
 				to_chat(user, "<span class='notice'>You stop attaching the assembly.</span>")
@@ -187,8 +188,8 @@ var/list/global/tank_gauge_cache = list()
 					valve_welded = 1
 					leaking = 0
 				else
-					GLOB.bombers += "[key_name(user)] attempted to weld a [src]. [air_contents.temperature-T0C]"
-					message_admins("[key_name_admin(user)] attempted to weld a [src]. [air_contents.temperature-T0C]")
+					GLOB.bombers += "[key_name(user)] attempted to weld a [src]. [CONV_KELVIN_CELSIUS(air_contents.temperature)]"
+					message_admins("[key_name_admin(user)] attempted to weld a [src]. [CONV_KELVIN_CELSIUS(air_contents.temperature)]")
 					if(WT.welding)
 						to_chat(user, "<span class='danger'>You accidentally rake \the [W] across \the [src]!</span>")
 						maxintegrity -= rand(2,6)
@@ -336,6 +337,8 @@ var/list/global/tank_gauge_cache = list()
 	return air_contents.remove(amount)
 
 /obj/item/tank/return_air()
+	set_next_think(world.time)
+
 	return air_contents
 
 /obj/item/tank/assume_air(datum/gas_mixture/giver)
@@ -355,15 +358,18 @@ var/list/global/tank_gauge_cache = list()
 	var/datum/gas_mixture/removed = remove_air(distribute_pressure*volume_to_return/(R_IDEAL_GAS_EQUATION*air_contents.temperature))
 	if(removed)
 		removed.volume = volume_to_return
-	
+
 	set_next_think(world.time)
 
 	return removed
 
 /obj/item/tank/think()
 	//Allow for reactions
+	if(!air_contents) // Perhaps, we're already on our way out of existence right now. Or, maybe, truly hollow we are?
+		return
+
 	var/react_ret = air_contents.react() //cooking up air tanks - add plasma and oxygen, then heat above PLASMA_MINIMUM_BURN_TEMPERATURE
-	update_icon()
+	update_icon(TRUE)
 	var/status_ret = check_status()
 
 	if(!react_ret && !status_ret)
@@ -412,7 +418,7 @@ var/list/global/tank_gauge_cache = list()
 	overlays += tank_gauge_cache[indicator]
 
 /// Handle exploding, leaking, and rupturing of the tank.
-/// Returns `TRUE` if it should to continue thinking.
+/// Returns `TRUE` if it should continue thinking.
 /obj/item/tank/proc/check_status()
 	var/pressure = air_contents.return_pressure()
 
@@ -436,8 +442,7 @@ var/list/global/tank_gauge_cache = list()
 			var/turf/simulated/T = get_turf(src)
 			if(!T)
 				return FALSE
-			if(!T.hotspot_expose(air_contents.temperature, 70, 1))
-				return FALSE
+			T.hotspot_expose(air_contents.temperature, 70, 1)
 
 			T.assume_air(air_contents)
 			explosion(
@@ -492,7 +497,7 @@ var/list/global/tank_gauge_cache = list()
 			return FALSE
 		else
 			integrity-= 5
-	else if((pressure > TANK_LEAK_PRESSURE) || air_contents.temperature - T0C > failure_temp)
+	else if((pressure > TANK_LEAK_PRESSURE) || CONV_KELVIN_CELSIUS(air_contents.temperature) > failure_temp)
 		if((integrity <= 19 || leaking) && !valve_welded)
 			var/turf/simulated/T = get_turf(src)
 			if(!T)
@@ -587,9 +592,9 @@ var/list/global/tank_gauge_cache = list()
 	if(isigniter(S.a_left) == isigniter(S.a_right))		//Check if either part of the assembly has an igniter, but if both parts are igniters, then fuck it
 		return
 
-	M.drop_item()			//Remove the assembly from your hands
-	M.remove_from_mob(src)	//Remove the tank from your character,in case you were holding it
-	M.put_in_hands(src)		//Equips the bomb if possible, or puts it on the floor.
+	M.drop_active_hand() // Remove the assembly from your hands
+	M.drop(src)          // Remove the tank from your character,in case you were holding it
+	M.put_in_hands(src)  // Equips the bomb if possible, or puts it on the floor.
 
 	proxyassembly.assembly = S	//Tell the bomb about its assembly part
 	S.master = proxyassembly	//Tell the assembly about its new owner

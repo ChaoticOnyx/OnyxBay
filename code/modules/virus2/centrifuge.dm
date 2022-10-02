@@ -3,7 +3,7 @@
 	desc = "Used to separate things with different weights. Spin 'em round, round, right round."
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "centrifuge"
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+
 	component_types = list(
 		/obj/item/stock_parts/manipulator = 3,
 		/obj/item/circuitboard/centrifuge
@@ -39,11 +39,9 @@
 		if(sample)
 			to_chat(user, "\The [src] is already loaded.")
 			return
-
+		if(!user.drop(O, src))
+			return
 		sample = O
-		user.drop_item()
-		O.loc = src
-
 		user.visible_message("[user] adds \a [O] to \the [src]!", "You add \a [O] to \the [src]!")
 		SSnano.update_uis(src)
 

@@ -4,7 +4,7 @@
  */
 
 #define SANITIZE(variable)\
-if(isnum(variable)) { crash_with("Number in to_chat: [variable]"); variable = num2text(variable) }\
+if(isnum(variable)) { util_crash_with("Number in to_chat: [variable]"); variable = num2text(variable) }\
 else if(!istext(variable)) { CRASH("Trying to send non-text content") }
 
 /**

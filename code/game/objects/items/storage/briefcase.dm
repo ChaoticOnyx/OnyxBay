@@ -99,8 +99,6 @@
 		contents = list()
 		if(del_on_send)
 			if(ishuman(loc))
-				var/mob/living/carbon/human/H = loc
-				H.drop_from_inventory(src, get_turf(src))
 				to_chat(loc, SPAN("notice", "\The [src] fades away in a brief flash of light."))
 			qdel(src)
 

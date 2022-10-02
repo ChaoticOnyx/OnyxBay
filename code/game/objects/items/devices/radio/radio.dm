@@ -629,9 +629,7 @@
 			to_chat(user, "The radio can't hold another key!")
 			return
 
-		if(!keyslot)
-			user.drop_item()
-			W.loc = src
+		if(!keyslot && user.drop(W, src))
 			keyslot = W
 
 		recalculateChannels()
@@ -754,7 +752,7 @@
 	channels=list("Engineering" = 1, "Security" = 1, "Medical" = 1, "Command" = 1, "Common" = 1, "Science" = 1, "Supply" = 1, "Service" = 1, "Exploration" = 1)
 
 /obj/item/device/radio/announcer/Destroy()
-	crash_with("attempt to delete a [src.type] detected, and prevented.")
+	util_crash_with("attempt to delete a [src.type] detected, and prevented.")
 	..()
 	return QDEL_HINT_LETMELIVE
 

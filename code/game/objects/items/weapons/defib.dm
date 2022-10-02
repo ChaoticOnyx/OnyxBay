@@ -74,9 +74,9 @@
 		if(!CanMouseDrop(src))
 			return
 		var/mob/M = src.loc
-		if(!M.unEquip(src))
+		if(!M.drop(src))
 			return
-		src.add_fingerprint(usr)
+		add_fingerprint(usr)
 		M.put_in_hands(src)
 
 
@@ -87,9 +87,8 @@
 		if(bcell)
 			to_chat(user, "<span class='notice'>\the [src] already has a cell.</span>")
 		else
-			if(!user.unEquip(W))
+			if(!user.drop(W, src))
 				return
-			W.forceMove(src)
 			bcell = W
 			to_chat(user, "<span class='notice'>You install a cell in \the [src].</span>")
 			update_icon()
@@ -149,11 +148,12 @@
 	reattach_paddles(user) //paddles attached to a base unit should never exist outside of their base unit or the mob equipping the base unit
 
 /obj/item/defibrillator/proc/reattach_paddles(mob/user)
-	if(!paddles) return
+	if(!paddles)
+		return
 
 	if(ismob(paddles.loc))
 		var/mob/M = paddles.loc
-		if(M.drop_from_inventory(paddles, src))
+		if(M.drop(paddles, src))
 			to_chat(user, "<span class='notice'>\The [paddles] snap back into the main unit.</span>")
 	else
 		paddles.forceMove(src)
@@ -551,15 +551,18 @@
 	return 1
 
 /obj/item/shockpaddles/standalone/checked_use(charge_amt)
-	SSradiation.radiate(src, charge_amt/12) //just a little bit of radiation. It's the price you pay for being powered by magic I guess
+	var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation/preset/uranium_238(50)) //just a little bit of radiation. It's the price you pay for being powered by magic I guess
+	rad_source.schedule_decay(5 SECONDS)
+
 	return 1
 
 /obj/item/shockpaddles/standalone/think()
 	if(fail_counter > 0)
-		SSradiation.radiate(src, fail_counter--)
+		var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation/preset/uranium_238(20))
+		rad_source.schedule_decay(5 SECONDS)
 	else
 		return
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/shockpaddles/standalone/emp_act(severity)

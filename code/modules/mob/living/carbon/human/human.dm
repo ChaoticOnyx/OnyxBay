@@ -240,7 +240,7 @@
 			return TRUE
 
 /mob/living/carbon/human/var/co2overloadtime = null
-/mob/living/carbon/human/var/temperature_resistance = T0C+75
+/mob/living/carbon/human/var/temperature_resistance = 75 CELSIUS
 
 /mob/living/carbon/human/show_inv(mob/user)
 	if(user.incapacitated())
@@ -899,7 +899,7 @@
 	for(var/mob/living/carbon/h in world)
 		creatures += h
 	var/mob/target = input("Who do you want to project your mind to ?") as null|anything in creatures
-	if (isnull(target))
+	if (QDELETED(target))
 		return
 
 	var/say = sanitize(input("What do you wish to say"))
@@ -1215,7 +1215,7 @@
 	for(var/slot in slot_first to slot_last)
 		var/obj/item/C = get_equipped_item(slot)
 		if(istype(C) && !C.mob_can_equip(src, slot, 1))
-			unEquip(C)
+			drop(C, force = TRUE)
 
 	return 1
 
@@ -1431,7 +1431,7 @@
 		to_chat(S, "<span class='danger'>[U] pops your [current_limb.joint] back in!</span>")
 	current_limb.undislocate()
 
-/mob/living/carbon/human/drop_from_inventory(obj/item/W, atom/Target = null, force = null)
+/mob/living/carbon/human/drop(obj/item/W, atom/Target = null, force = null)
 	if(W in organs)
 		return
 	. = ..()
@@ -1677,16 +1677,24 @@
 		heart.handle_pulse()
 
 /mob/living/carbon/human/proc/make_adrenaline(amount)
-	if(stat == CONSCIOUS)
+	if(stat == CONSCIOUS && !isundead(src))
 		var/limit = max(0, reagents.get_overdose(/datum/reagent/adrenaline) - reagents.get_reagent_amount(/datum/reagent/adrenaline))
 		reagents.add_reagent(/datum/reagent/adrenaline, min(amount, limit))
 
 //Get fluffy numbers
 /mob/living/carbon/human/proc/get_blood_pressure()
+	if(isfakeliving(src))
+		return "[Floor(120+rand(-5,5))]/[Floor(80+rand(-5,5))]"
 	if(status_flags & FAKEDEATH)
 		return "[Floor(120+rand(-5,5))*0.25]/[Floor(80+rand(-5,5)*0.25)]"
 	var/blood_result = get_blood_circulation()
 	return "[Floor((120+rand(-5,5))*(blood_result/100))]/[Floor((80+rand(-5,5))*(blood_result/100))]"
+
+//Determine body temperature
+/mob/living/carbon/human/proc/get_body_temperature()
+	if ((isfakeliving(src)) && species.body_temperature != null)
+		return species.body_temperature + (species.passive_temp_gain * 3)
+	return bodytemperature
 
 //Point at which you dun breathe no more. Separate from asystole crit, which is heart-related.
 /mob/living/carbon/human/nervous_system_failure()

@@ -93,13 +93,13 @@ PROCESSING_SUBSYSTEM_DEF(nano)
   *
   * @return int The number of uis updated
   */
-/datum/controller/subsystem/processing/nano/proc/update_user_uis(mob/user, src_object, ui_key)
+/datum/controller/subsystem/processing/nano/proc/update_user_uis(mob/user, atom/src_object, ui_key)
 	. = 0
 	if (!length(user.open_uis))
 		return // has no open uis
 
 	for (var/datum/nanoui/ui in user.open_uis)
-		if ((isnull(src_object) || ui.src_object == src_object) && (isnull(ui_key) || ui.ui_key == ui_key))
+		if ((QDELETED(src_object) || ui.src_object == src_object) && (isnull(ui_key) || ui.ui_key == ui_key))
 			ui.try_update(1)
 			.++
 
@@ -112,13 +112,13 @@ PROCESSING_SUBSYSTEM_DEF(nano)
   *
   * @return int The number of uis closed
   */
-/datum/controller/subsystem/processing/nano/proc/close_user_uis(mob/user, src_object, ui_key)
+/datum/controller/subsystem/processing/nano/proc/close_user_uis(mob/user, atom/src_object, ui_key)
 	. = 0
 	if (!length(user.open_uis))
 		return // has no open uis
 
 	for (var/datum/nanoui/ui in user.open_uis)
-		if ((isnull(src_object) || ui.src_object == src_object) && (isnull(ui_key) || ui.ui_key == ui_key))
+		if ((QDELETED(src_object) || ui.src_object == src_object) && (isnull(ui_key) || ui.ui_key == ui_key))
 			ui.close()
 			.++
 

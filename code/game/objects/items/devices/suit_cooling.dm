@@ -27,8 +27,8 @@
 	var/cover_open = 0						//is the cover open?
 	var/obj/item/cell/cell
 	var/max_cooling = 12					// in degrees per second - probably don't need to mess with heat capacity here
-	var/charge_consumption = 2 KILOWATTS	// energy usage at full power
-	var/thermostat = T20C
+	var/charge_consumption = 2 KILO WATTS	// energy usage at full power
+	var/thermostat = 20 CELSIUS
 
 /obj/item/device/suit_cooling_unit/ui_action_click()
 	toggle(usr)
@@ -66,7 +66,7 @@
 	if(cell.charge <= 0)
 		turn_off(1)
 		return
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 // Checks whether the cooling unit is being worn on the back/suit slot.
@@ -133,9 +133,7 @@
 		if(cover_open)
 			if(cell)
 				to_chat(user, "There is a [cell] already installed here.")
-			else
-				user.drop_item()
-				W.forceMove(src)
+			else if(user.drop(W, src))
 				cell = W
 				to_chat(user, "You insert the [cell].")
 		update_icon()

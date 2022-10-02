@@ -37,8 +37,7 @@
 	var/list/hair_styles
 	var/list/facial_hair_styles
 
-	var/eye_icon = "eyes_s"
-	var/eye_icon_location = 'icons/mob/human_face.dmi'
+	var/has_eyes_icon = TRUE
 
 	var/organs_icon		//species specific internal organs icons
 
@@ -656,7 +655,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 		//Actually disarm them
 		for(var/obj/item/I in holding)
-			if(target.unEquip(I))
+			if(target.drop(I))
 				target.visible_message("<span class='danger'>[attacker] has disarmed [target]!</span>")
 				playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 				return

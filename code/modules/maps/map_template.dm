@@ -12,7 +12,7 @@
 
 /datum/map_template/New(list/paths = null, rename = null)
 	if(paths && !islist(paths))
-		crash_with("Non-list paths passed into map template constructor.")
+		util_crash_with("Non-list paths passed into map template constructor.")
 	if(paths)
 		mappaths = paths
 	if(mappaths)
@@ -68,8 +68,6 @@
 		T.post_change()
 		if(template_flags & TEMPLATE_FLAG_NO_RUINS)
 			T.turf_flags |= TURF_FLAG_NORUINS
-		if(template_flags & TEMPLATE_FLAG_NO_RADS)
-			qdel(SSradiation.sources_assoc[i])
 
 /datum/map_template/proc/init_shuttles()
 	for (var/shuttle_type in shuttles_to_initialise)

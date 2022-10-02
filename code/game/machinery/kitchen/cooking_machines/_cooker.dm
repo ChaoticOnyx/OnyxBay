@@ -16,7 +16,7 @@
 	icon = 'icons/obj/cooking_machines.dmi'
 	density = 1
 	anchored = 1
-	idle_power_usage = 5
+	idle_power_usage = 5 WATTS
 
 	var/on_icon						// Icon state used when cooking.
 	var/off_icon					// Icon state used when not cooking.
@@ -115,7 +115,7 @@
 		return 0
 
 	// Not sure why a food item that passed the previous checks would fail to drop, but safety first.
-	if(!istype(I, /obj/item/grab) && !user.drop_from_inventory(I))
+	if(!istype(I, /obj/item/grab) && !user.drop(I))
 		return
 
 	if(inserted_mob)

@@ -39,12 +39,14 @@
 	if(D.secured || D2.secured)
 		return FALSE
 	if(user)
-		user.remove_from_mob(D)
-		user.remove_from_mob(D2)
+		if(D.loc == user)
+			user.drop(D)
+		if(D2.loc == user)
+			user.drop(D2)
+	D.forceMove(src)
+	D2.forceMove(src)
 	D.holder = src
 	D2.holder = src
-	D.loc = src
-	D2.loc = src
 	if(D.proximity_monitor)
 		D.proximity_monitor.SetHost(src, D)
 	if(D2.proximity_monitor)

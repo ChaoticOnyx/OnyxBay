@@ -20,13 +20,13 @@ GLOBAL_LIST_EMPTY(psychoscope_hud_users)  // List of all entities using a psycho
 */
 /datum/neuromods/proc/ToList(neuromod_path)
 	if (!neuromod_path)
-		crash_with("neuromod_path is null")
+		util_crash_with("neuromod_path is null")
 		return null
 
 	var/datum/neuromod/N = Get(neuromod_path)
 
 	if (!N)
-		crash_with("trying to get [neuromod_path] but it is not exists")
+		util_crash_with("trying to get [neuromod_path] but it is not exists")
 		return null
 
 	return (N.ToList())
@@ -44,7 +44,7 @@ GLOBAL_LIST_EMPTY(psychoscope_hud_users)  // List of all entities using a psycho
 */
 /datum/neuromods/proc/Get(neuromod_path)
 	if (!neuromod_path)
-		crash_with("neuromod_path is null")
+		util_crash_with("neuromod_path is null")
 		return null
 
 	if (!ispath(neuromod_path))
@@ -81,13 +81,13 @@ GLOBAL_LIST_EMPTY(psychoscope_hud_users)  // List of all entities using a psycho
 */
 /datum/lifeforms/proc/ToList(lifeform_path)
 	if (!lifeform_path)
-		crash_with("lifeform_path is null")
+		util_crash_with("lifeform_path is null")
 		return null
 
 	var/datum/lifeform/lifeform = Get(lifeform_path)
 
 	if (!lifeform)
-		crash_with("trying to get [lifeform_path] but it is not exists")
+		util_crash_with("trying to get [lifeform_path] but it is not exists")
 		return null
 
 	return (lifeform.ToList())
@@ -105,7 +105,7 @@ GLOBAL_LIST_EMPTY(psychoscope_hud_users)  // List of all entities using a psycho
 */
 /datum/lifeforms/proc/Get(lifeform_path)
 	if (!lifeform_path)
-		crash_with("lifeform_path is null")
+		util_crash_with("lifeform_path is null")
 
 	if (istext(lifeform_path))
 		lifeform_path = text2path(lifeform_path)
@@ -147,7 +147,7 @@ GLOBAL_LIST_EMPTY(psychoscope_hud_users)  // List of all entities using a psycho
 */
 /datum/lifeforms/proc/GetByMobType(mob_type)
 	if (!mob_type)
-		crash_with("mob_type is null")
+		util_crash_with("mob_type is null")
 
 	if (istext(mob_type))
 		mob_type = text2path(mob_type)

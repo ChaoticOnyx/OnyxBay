@@ -47,7 +47,7 @@
 			continue
 		if(O.CanPass(src, S) && S.CanPass(src, O))
 			new /obj/effect/decal/cleanable/liquid_fuel/flamethrower_fuel(O, amount * 0.25, d)
-			O.hotspot_expose((T20C * 2) + 380, 500) //Light flamethrower fuel on fire immediately.
+			O.hotspot_expose((40 CELSIUS) + 380, 500) //Light flamethrower fuel on fire immediately.
 
 	amount *= 0.25
 

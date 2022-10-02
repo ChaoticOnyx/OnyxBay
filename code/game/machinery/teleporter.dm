@@ -63,7 +63,6 @@
 		if(istype(L, /obj/effect/landmark/) && istype(L.loc, /turf))
 			to_chat(usr, "You insert the coordinates into the machine.")
 			to_chat(usr, "A message flashes across the screen reminding the traveller that the nuclear authentication disk is to remain on the [station_name()] at all times.")
-			user.drop_item()
 			qdel(I)
 
 			if(C.data == "Clown Land")
@@ -180,8 +179,8 @@
 	density = FALSE
 	icon_state = "tele0"
 	dir = 4
-	idle_power_usage = 10
-	active_power_usage = 2000
+	idle_power_usage = 10 WATTS
+	active_power_usage = 2 KILO WATTS
 	var/obj/machinery/computer/teleporter/com
 
 
@@ -216,8 +215,8 @@
 	dir = 4
 	var/active = 0
 	var/engaged = 0
-	idle_power_usage = 10
-	active_power_usage = 2000
+	idle_power_usage = 10 WATTS
+	active_power_usage = 2 KILO WATTS
 	var/obj/machinery/teleport/hub/com
 
 /obj/machinery/teleport/station/New()

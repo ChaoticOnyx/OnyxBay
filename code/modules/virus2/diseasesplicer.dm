@@ -43,10 +43,9 @@
 		if (dish)
 			to_chat(user, SPAN("notice", "\The [src] is already loaded."))
 			return
-
+		if(!c.drop(O, src))
+			return
 		dish = O
-		c.drop_item()
-		O.loc = src
 
 	if(istype(O,/obj/item/diseasedisk))
 		to_chat(user, "You upload the contents of the disk onto the buffer.")

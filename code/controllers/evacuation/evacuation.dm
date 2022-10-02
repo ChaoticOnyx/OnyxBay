@@ -174,7 +174,7 @@ var/datum/evacuation_controller/evacuation_controller
 
 /datum/evacuation_controller/proc/handle_evac_option(option_target, mob/user)
 	var/datum/evacuation_option/selected = evacuation_options[option_target]
-	if (!isnull(selected) && istype(selected))
+	if (!QDELETED(selected) && istype(selected))
 		selected.execute(user)
 
 /datum/evacuation_controller/proc/get_evac_option(option_target)

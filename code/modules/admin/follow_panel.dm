@@ -62,4 +62,4 @@
 			return TRUE
 
 /datum/follow_panel/tgui_state(mob/user)
-	return GLOB.tgui_always_state
+	return GLOB.tgui_admin_state

@@ -10,14 +10,13 @@
 	desc = "A heavy box used for storing ore."
 	density = 1
 	pull_slowdown = PULL_SLOWDOWN_HEAVY
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+
 	var/last_update = 0
 	var/list/stored_ore = list()
 
 /obj/structure/ore_box/attackby(obj/item/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/ore))
-		user.remove_from_mob(W)
-		src.contents += W
+	if(istype(W, /obj/item/ore))
+		user.drop(W, src)
 	if (istype(W, /obj/item/storage))
 		var/obj/item/storage/S = W
 		S.hide_from(usr)

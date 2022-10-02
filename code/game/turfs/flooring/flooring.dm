@@ -38,6 +38,7 @@ var/list/flooring_types
 	var/descriptor = "tiles"
 	var/flags
 	var/can_paint
+	var/footstep_sound = SFX_FOOTSTEP_PLATING
 
 /decl/flooring/proc/on_remove()
 	return
@@ -48,7 +49,7 @@ var/list/flooring_types
 	icon = 'icons/turf/flooring/grass.dmi'
 	icon_base = "grass"
 	has_base_range = 3
-	damage_temperature = T0C+80
+	damage_temperature = 80 CELSIUS
 	flags = TURF_HAS_EDGES | TURF_REMOVE_SHOVEL
 	build_type = /obj/item/stack/tile/grass
 
@@ -66,8 +67,9 @@ var/list/flooring_types
 	icon = 'icons/turf/flooring/carpet.dmi'
 	icon_base = "brown"
 	build_type = /obj/item/stack/tile/carpet
-	damage_temperature = T0C+200
+	damage_temperature = 200 CELSIUS
 	flags = TURF_HAS_EDGES | TURF_HAS_CORNERS | TURF_REMOVE_CROWBAR | TURF_CAN_BURN
+	footstep_sound = SFX_FOOTSTEP_CARPET
 
 /decl/flooring/carpet/blue
 	name = "blue carpet"
@@ -127,6 +129,7 @@ var/list/flooring_types
 	can_paint = TRUE
 	build_type = /obj/item/stack/tile/linoleum
 	flags = TURF_REMOVE_SCREWDRIVER
+	footstep_sound = SFX_FOOTSTEP_TILES
 
 /decl/flooring/tiling
 	name = "floor"
@@ -134,10 +137,11 @@ var/list/flooring_types
 	icon = 'icons/turf/flooring/tiles.dmi'
 	icon_base = "steel"
 	has_damage_range = 4
-	damage_temperature = T0C+1400
+	damage_temperature = 1400 CELSIUS
 	flags = TURF_REMOVE_CROWBAR | TURF_CAN_BREAK | TURF_CAN_BURN
 	build_type = /obj/item/stack/tile/floor
 	can_paint = TRUE
+	footstep_sound = SFX_FOOTSTEP_TILES
 
 /decl/flooring/tiling/rough
 	icon_base = "steel_rough"
@@ -151,6 +155,7 @@ var/list/flooring_types
 
 /decl/flooring/tiling/mono
 	icon_base = "steel_mono"
+	build_type = /obj/item/stack/tile/floor_mono
 
 /decl/flooring/tiling/white
 	desc = "How sterile."
@@ -159,6 +164,7 @@ var/list/flooring_types
 
 /decl/flooring/tiling/white/mono
 	icon_base = "white_mono"
+	build_type = /obj/item/stack/tile/floor_mono_white
 
 /decl/flooring/tiling/white/rough
 	icon_base = "white_rough"
@@ -171,6 +177,7 @@ var/list/flooring_types
 
 /decl/flooring/tiling/dark/mono
 	icon_base = "dark_mono"
+	build_type = /obj/item/stack/tile/floor_mono_dark
 
 /decl/flooring/tiling/dark/rough
 	icon_base = "dark_rough"
@@ -211,11 +218,12 @@ var/list/flooring_types
 	desc = "Polished darwood planks."
 	icon = 'icons/turf/flooring/wood.dmi'
 	icon_base = "darkwood"
-	damage_temperature = T0C+200
+	damage_temperature = 200 CELSIUS
 	descriptor = "dark planks"
 	build_type = /obj/item/stack/tile/darkwood
 	flags = TURF_CAN_BREAK | TURF_IS_FRAGILE | TURF_REMOVE_SCREWDRIVER
 	can_paint = TRUE
+	footstep_sound = SFX_FOOTSTEP_WOOD
 
 /decl/flooring/wood
 	name = "wooden floor"
@@ -223,7 +231,7 @@ var/list/flooring_types
 	icon = 'icons/turf/flooring/wood.dmi'
 	icon_base = "wood"
 	has_damage_range = 6
-	damage_temperature = T0C+200
+	damage_temperature = 200 CELSIUS
 	descriptor = "planks"
 	build_type = /obj/item/stack/tile/wood
 	flags = TURF_CAN_BREAK | TURF_IS_FRAGILE | TURF_REMOVE_SCREWDRIVER
@@ -269,6 +277,7 @@ var/list/flooring_types
 	apply_thermal_conductivity = 0.025
 	apply_heat_capacity = 325000
 	can_paint = TRUE
+	footstep_sound = SFX_FOOTSTEP_PLATING
 
 /decl/flooring/reinforced/circuit
 	name = "processing strata"

@@ -116,12 +116,12 @@ var/global/datum/controller/occupations/job_master
 		return TRUE
 
 	proc/CheckUnsafeSpawn(mob/living/spawner, turf/spawn_turf)
-		var/radlevel = SSradiation.get_rads_at_turf(spawn_turf)
+		var/rad_dose = SSradiation.get_total_absorbed_dose_at_turf(spawn_turf, AVERAGE_HUMAN_WEIGHT)
 		var/airstatus = IsTurfAtmosUnsafe(spawn_turf)
-		if(airstatus || radlevel > 0)
+		if(airstatus || rad_dose > SAFE_RADIATION_DOSE)
 			var/reply = alert(spawner, "Warning. Your selected spawn location seems to have unfavorable conditions. \
 			You may die shortly after spawning. \
-			Spawn anyway? More information: [airstatus] Radiation: [radlevel] Bq", "Atmosphere warning", "Abort", "Spawn anyway")
+			Spawn anyway? More information: [airstatus] Radiation: [fmt_siunit(rad_dose, "Gy/s", 3)]", "Atmosphere warning", "Abort", "Spawn anyway")
 			if(reply == "Abort")
 				return FALSE
 			else
@@ -272,7 +272,7 @@ var/global/datum/controller/occupations/job_master
 							if(candidates.len == 1) weightedCandidates[V] = 1
 
 
-				var/mob/new_player/candidate = pickweight(weightedCandidates)
+				var/mob/new_player/candidate = util_pick_weight(weightedCandidates)
 				if(AssignRole(candidate, command_position))
 					return 1
 		return 0
@@ -708,7 +708,7 @@ var/global/datum/controller/occupations/job_master
 	if(J.no_latejoin)
 		return FALSE
 
-	var/datum/storyteller_character/ST = SSstoryteller.get_character()
+	var/datum/storyteller_character/ST = SSstoryteller.character
 	var/available_vacancies = ST ? ST.get_available_vacancies() : job_master.get_available_vacancies()
 	if(length(GLOB.vacancies) >= available_vacancies)
 		return FALSE

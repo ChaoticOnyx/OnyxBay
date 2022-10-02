@@ -116,9 +116,18 @@ var/list/organ_cache = list()
 
 	//Process infections
 	if(BP_IS_ROBOTIC(src) || (owner?.species?.species_flags & SPECIES_FLAG_IS_PLANT))
-		germ_level = 0
-		set_next_think(world.time + 1 SECOND)
+		germ_level = 0		
+		// If `think()` is called not by the owner in `handle_organs()` but on his own.
+		if(NEXT_THINK)
+			set_next_think(world.time + 1 SECOND)
 		return
+
+	if(owner)
+		if(isundead(owner))
+			germ_level = 0
+			if(NEXT_THINK)
+				set_next_think(world.time + 1 SECOND)
+			return
 
 	if(!owner)
 		if(reagents && !is_preserved())
@@ -147,7 +156,9 @@ var/list/organ_cache = list()
 	if(food_organ)
 		update_food_from_organ()
 	
-	set_next_think(world.time + 1 SECOND)
+	// If `think()` is called not by the owner in `handle_organs()` but on his own.
+	if(NEXT_THINK)
+		set_next_think(world.time + 1 SECOND)
 
 /obj/item/organ/proc/cook_organ()
 	die()
@@ -190,7 +201,7 @@ var/list/organ_cache = list()
 
 	if(germ_level >= INFECTION_LEVEL_ONE)
 		var/fever_temperature = (owner.species.heat_level_1 - owner.species.body_temperature - 5)* min(germ_level/INFECTION_LEVEL_TWO, 1) + owner.species.body_temperature
-		owner.bodytemperature += between(0, (fever_temperature - T20C)/BODYTEMP_COLD_DIVISOR + 1, fever_temperature - owner.bodytemperature)
+		owner.bodytemperature += between(0, (fever_temperature - (20 CELSIUS))/BODYTEMP_COLD_DIVISOR + 1, fever_temperature - owner.bodytemperature)
 
 	if (germ_level >= INFECTION_LEVEL_TWO)
 		var/obj/item/organ/external/parent = owner.get_organ(parent_organ)

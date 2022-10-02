@@ -20,7 +20,7 @@
 		signed = TRUE
 		signed_ckey = user?.client?.ckey
 		if (isnull(signed_ckey))
-			crash_with("THIS IS NOT AN ERROR. obj/item/paper/complaint_form got signed by mob/user with no client/ckey, if it is intended remove that `crash_with`")
+			util_crash_with("THIS IS NOT AN ERROR. obj/item/paper/complaint_form got signed by mob/user with no client/ckey, if it is intended remove that `crash_with`")
 		signed_name = strip_html_properly(.)
 		name += ", signed by [signed_name]"
 		make_readonly() //nanomachines, son
@@ -147,10 +147,9 @@
 		if (!check_signed())
 			to_chat(user, SPAN_WARNING("Sign [src] first!"))
 			return
-		if (id == CF.id)
-			to_chat(user, SPAN_NOTICE("You add \the [CF] to \the [src]."))
-			user.drop_item()
-			CF.forceMove(src)
+		if(id == CF.id)
+			if(user.drop(CF, src))
+				to_chat(user, SPAN_NOTICE("You add \the [CF] to \the [src]."))
 			return
 		to_chat(user, SPAN_WARNING("IDs don't match!"))
 		return

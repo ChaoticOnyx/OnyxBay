@@ -11,7 +11,7 @@
 	icon = 'icons/obj/terminals.dmi'
 	icon_state = "atm"
 	anchored = TRUE
-	idle_power_usage = 10
+	idle_power_usage = 10 WATTS
 	layer = ABOVE_WINDOW_LAYER
 	var/datum/money_account/authenticated_account
 	var/number_incorrect_tries = 0
@@ -77,9 +77,7 @@
 			return
 
 		var/obj/item/card/id/idcard = I
-		if(!held_card)
-			usr.drop_item()
-			idcard.loc = src
+		if(!held_card && usr.drop(idcard, src))
 			held_card = idcard
 			if(authenticated_account && held_card.associated_account_number != authenticated_account.account_number)
 				authenticated_account = null
@@ -423,9 +421,7 @@
 						to_chat(usr, "\icon[src] <span class='warning'>The ATM card reader rejected your ID because this machine has been sabotaged!</span>")
 					else
 						var/obj/item/I = usr.get_active_hand()
-						if (istype(I, /obj/item/card/id))
-							usr.drop_item()
-							I.loc = src
+						if(istype(I, /obj/item/card/id) && usr.drop(I, src))
 							held_card = I
 				else
 					release_held_id(usr)

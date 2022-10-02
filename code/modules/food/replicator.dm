@@ -5,7 +5,7 @@
 	icon_state = "soda"
 	density = 1
 	anchored = 1
-	idle_power_usage = 40
+	idle_power_usage = 40 WATTS
 	obj_flags = OBJ_FLAG_ANCHORABLE
 	var/biomass = 100
 	var/biomass_max = 100
@@ -34,7 +34,8 @@
 /obj/machinery/food_replicator/attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/reagent_containers/food))
 		var/obj/item/reagent_containers/food/S = O
-		user.drop_item(O)
+		if(!user.drop(O))
+			return
 		for(var/datum/reagent/nutriment/N in S.reagents.reagent_list)
 			biomass = Clamp(biomass + round(N.volume*deconstruct_eff),1,biomass_max)
 		qdel(O)

@@ -13,6 +13,7 @@
 	var/initial_reagent_types  // A list of reagents and their ratio relative the initial capacity. list(/datum/reagent/water = 0.5) would fill the dispenser halfway to capacity.
 	var/amount_per_transfer_from_this = 10
 	var/possible_transfer_amounts = "10;25;50;100;500"
+	var/filling_overlay_levels = 0
 
 /obj/structure/reagent_dispensers/attackby(obj/item/W, mob/user)
 	return
@@ -73,6 +74,20 @@
 	else
 		return ..()
 
+/obj/structure/reagent_dispensers/on_reagent_change()
+	..()
+	update_icon()
+
+/obj/structure/reagent_dispensers/update_icon()
+	overlays.Cut()
+	if(filling_overlay_levels)
+		if(reagents?.reagent_list?.len)
+			var/reagents_amt = 0
+			for(var/datum/reagent/R in reagents.reagent_list)
+				reagents_amt += R.volume
+			overlays += image(icon, src, "[icon_state]-[ceil(reagents_amt / (initial_capacity / filling_overlay_levels))]")
+		else
+			overlays += image(icon, src, "[icon_state]-0")
 
 //Dispensers
 /obj/structure/reagent_dispensers/watertank
@@ -81,9 +96,10 @@
 	icon_state = "watertank"
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = "10;25;50;100"
-	initial_capacity = 50000
+	initial_capacity = 5000
 	initial_reagent_types = list(/datum/reagent/water = 1)
 	atom_flags = ATOM_FLAG_CLIMBABLE
+	filling_overlay_levels = 7
 
 /obj/structure/reagent_dispensers/fueltank
 	name = "fueltank"
@@ -94,6 +110,7 @@
 	var/obj/item/device/assembly_holder/rig = null
 	initial_reagent_types = list(/datum/reagent/fuel = 1)
 	atom_flags = ATOM_FLAG_CLIMBABLE
+	filling_overlay_levels = 6
 
 /obj/structure/reagent_dispensers/fueltank/_examine_text(mob/user)
 	. = ..()
@@ -129,6 +146,8 @@
 			return ..()
 		user.visible_message("\The [user] begins rigging [W] to \the [src].", "You begin rigging [W] to \the [src]")
 		if(do_after(user, 20, src))
+			if(!user.drop(W, src))
+				return
 			user.visible_message("<span class='notice'>The [user] rigs [W] to \the [src].</span>", "<span class='notice'>You rig [W] to \the [src].</span>")
 
 			var/obj/item/device/assembly_holder/H = W
@@ -137,13 +156,7 @@
 				log_game("[key_name(user)] rigged fueltank at [loc.loc.name] ([loc.x],[loc.y],[loc.z]) for explosion.")
 
 			rig = W
-			user.drop_item()
-			W.loc = src
-
-			var/icon/test = getFlatIcon(W)
-			test.Shift(NORTH,1)
-			test.Shift(EAST,6)
-			overlays += test
+			update_icon()
 
 	else if(W.get_temperature_as_from_ignitor())
 		log_and_message_admins("triggered a fueltank explosion with [W].")
@@ -154,6 +167,13 @@
 
 	return ..()
 
+/obj/structure/reagent_dispensers/fueltank/update_icon()
+	..()
+	if(rig)
+		var/icon/rig_icon = getFlatIcon(rig)
+		rig_icon.Shift(NORTH,1)
+		rig_icon.Shift(EAST,6)
+		overlays += rig_icon
 
 /obj/structure/reagent_dispensers/fueltank/bullet_act(obj/item/projectile/Proj)
 	if(Proj.get_structure_damage())
@@ -186,7 +206,7 @@
 /obj/structure/reagent_dispensers/fueltank/fire_act(datum/gas_mixture/air, temperature, volume)
 	if (modded)
 		explode()
-	else if (temperature > T0C+500)
+	else if (temperature > (500 CELSIUS))
 		explode()
 	return ..()
 

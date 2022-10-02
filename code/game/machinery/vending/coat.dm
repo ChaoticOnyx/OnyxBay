@@ -2,7 +2,7 @@
 	name = "Coat Dispenser"
 	desc = "Classy vending machine designed to contribute to your comfort with warm."
 	gen_rand_amount = FALSE
-	vend_delay = 21 SECONDS
+	vend_delay = 21
 	icon_state = "Theater"
 	use_vend_state = TRUE
 	component_types = list(/obj/item/vending_cartridge/coat_dispenser)

@@ -13,7 +13,7 @@
 	level = 1		// underfloor
 	layer = ABOVE_WIRE_LAYER
 	anchored = 1
-	idle_power_usage = 50
+	idle_power_usage = 50 WATTS
 
 	var/freq = 1449		// radio frequency
 	var/electricity_level = 1 // intensity of the magnetic pull
@@ -199,7 +199,7 @@
 	icon_state = "airlock_control_standby"
 	density = 1
 	anchored = 1.0
-	idle_power_usage = 45
+	idle_power_usage = 45 WATTS
 	var/frequency = 1449
 	var/code = 0
 	var/list/magnets = list()

@@ -140,7 +140,7 @@
 /obj/item/organ/internal/brain/proc/past_damage_threshold(threshold)
 	return (get_current_damage_threshold() > threshold)
 
-/obj/item/organ/internal/brain/Process()
+/obj/item/organ/internal/brain/think()
 	if(owner)
 		if(damage > max_damage / 2 && healed_threshold)
 			spawn()
@@ -154,7 +154,7 @@
 		handle_damage_effects()
 
 		// Brain damage from low oxygenation or lack of blood.
-		if(owner.should_have_organ(BP_HEART))
+		if(owner.should_have_organ(BP_HEART) && !(isundead(owner)))
 
 			// No heart? You are going to have a very bad time. Not 100% lethal because heart transplants should be a thing.
 			var/blood_volume = owner.get_blood_oxygenation()
@@ -228,7 +228,10 @@
 		owner.eye_blurry = 10
 	if(damage >= 0.5*max_damage && prob(1) && owner.get_active_hand())
 		to_chat(owner, "<span class='danger'>Your hand won't respond properly, and you drop what you are holding!</span>")
-		owner.drop_item()
+		if(prob(50))
+			owner.drop_active_hand()
+		else
+			owner.drop_inactive_hand()
 	if(damage >= 0.6*max_damage)
 		owner.slurring = max(owner.slurring, 2)
 	if(is_broken())

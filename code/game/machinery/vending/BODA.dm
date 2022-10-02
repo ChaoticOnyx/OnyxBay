@@ -5,7 +5,7 @@
 	icon_state = "sovietsoda"
 	use_vend_state = TRUE
 	product_ads = "For Tsar and Country.;Have you fulfilled your nutrition quota today?;Very nice!;We are simple people, for this is all we eat.;If there is a person, there is a problem. If there is no person, then there is no problem."
-	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
+	idle_power_usage = 211 WATTS //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 	component_types = list(/obj/item/vending_cartridge/sovietsoda)
 	legal = list(/obj/item/reagent_containers/vessel/bottle/space_up = 30) // TO-DO: Russian cola can
 	illegal = list(/obj/item/reagent_containers/vessel/bottle/cola = 20) // TO-DO: Russian cola can

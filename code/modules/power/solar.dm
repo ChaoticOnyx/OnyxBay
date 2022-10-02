@@ -10,8 +10,8 @@ var/list/solars_list = list()
 	icon_state = "sp_base"
 	anchored = 1
 	density = 1
-	idle_power_usage = 0
-	active_power_usage = 0
+	idle_power_usage = 0 WATTS
+	active_power_usage = 0 WATTS
 	var/id = 0
 	var/health = 10
 	var/obscured = 0
@@ -225,10 +225,8 @@ var/list/solars_list = list()
 
 /obj/item/solar_assembly/attackby(obj/item/W, mob/user)
 	if(!tracker)
-		if(istype(W, /obj/item/tracker_electronics))
+		if(istype(W, /obj/item/tracker_electronics) && user.drop(W))
 			tracker = 1
-			user.drop_item()
-			qdel(W)
 			user.visible_message("<span class='notice'>[user] inserts the electronics into the solar assembly.</span>")
 			return 1
 	else
@@ -284,7 +282,7 @@ var/list/solars_list = list()
 	anchored = 1
 	density = 1
 	use_power = POWER_USE_IDLE
-	idle_power_usage = 250
+	idle_power_usage = 250 WATTS
 	var/id = 0
 	var/cdir = 0
 	var/targetdir = 0		// target angle in manual tracking (since it updates every game minute)

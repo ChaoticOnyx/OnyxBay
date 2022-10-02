@@ -37,6 +37,8 @@
 /obj/machinery/vending_frame/attackby(obj/item/O, mob/user)
 	switch(state)
 		if(STAGE_CABLE)
+			if(anchored && istype(O, /obj/item/weldingtool))
+				deconstruct_frame(O, user)
 			if(isWrench(O))
 				wrench_frame(user)
 			if(isCoil(O))
@@ -61,6 +63,17 @@
 				remove_glass(user)
 			if(isScrewdriver(O))
 				create_vendomat()
+
+/obj/machinery/vending_frame/proc/deconstruct_frame(obj/item/weldingtool/WT, mob/user)
+	if(!WT.remove_fuel(0, user))
+		to_chat(user, "The welding tool must be on to complete this task.")
+		return
+	playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
+	if(do_after(user, 20, src))
+		if(!src || !WT.isOn()) return
+		to_chat(user, "<span class='notice'>You deconstruct the frame.</span>")
+		new /obj/item/stack/material/steel(src.loc, 5)
+		qdel(src)
 
 /obj/machinery/vending_frame/proc/wrench_frame(mob/user)
 	playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
@@ -89,9 +102,9 @@
 	update_icon()
 
 /obj/machinery/vending_frame/proc/add_cartridge(obj/item/vending_cartridge/C, mob/user)
+	if(!user.drop(C, src))
+		return
 	cartridge = C
-	user.drop_item()
-	C.forceMove(src)
 	playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
 	to_chat(user, SPAN_NOTICE("You add the [C.name] to the frame."))
 	state = STAGE_GLASS

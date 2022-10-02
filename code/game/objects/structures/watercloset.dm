@@ -59,8 +59,8 @@
 		if(w_items + I.w_class > 5)
 			to_chat(user, "<span class='notice'>The cistern is full.</span>")
 			return
-		user.drop_item()
-		I.loc = src
+		if(!user.drop(I, src))
+			return
 		w_items += I.w_class
 		to_chat(user, "You carefully place \the [I] into the cistern.")
 		return
@@ -89,7 +89,7 @@
 	var/ismist = 0				//needs a var so we can make it linger~
 	var/watertemp = "normal"	//freezing, normal, or boiling
 	var/is_washing = 0
-	var/list/temperature_settings = list("normal" = 310, "boiling" = T0C+100, "freezing" = T0C)
+	var/list/temperature_settings = list("normal" = 310, "boiling" = 100 CELSIUS, "freezing" = 0 CELSIUS)
 
 /obj/machinery/shower/New()
 	..()
@@ -136,7 +136,7 @@
 
 	if(on)
 		overlays += image('icons/obj/watercloset.dmi', src, "water", MOB_LAYER + 1, dir)
-		if(temperature_settings[watertemp] < T20C)
+		if(temperature_settings[watertemp] < (20 CELSIUS))
 			return //no mist for cold water
 		if(!ismist)
 			spawn(50)
