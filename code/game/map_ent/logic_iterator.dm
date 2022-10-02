@@ -7,7 +7,7 @@
 	var/ev_tag
 	var/ev_check_type
 
-/obj/map_ent/logic_iterator
+/obj/map_ent/logic_iterator/activate()
 	var/obj/map_ent/E = locate(ev_tag)
 
 	if(!istype(E))
