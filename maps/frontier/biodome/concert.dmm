@@ -20,7 +20,7 @@
 "pg" = (/obj/structure/flora/ausbushes/fullgrass,/obj/machinery/light{dir = 4; icon_state = "tube1"},/turf/simulated/floor/natural/jungle/dirt,/area/hydroponics/biodome)
 "ph" = (/turf/simulated/floor/natural/jungle/dirt,/area/hydroponics/biodome)
 "px" = (/obj/machinery/light{dir = 4; icon_state = "tube1"},/turf/simulated/floor/tiled/mono,/area/hydroponics/biodome)
-"qu" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass{name = "Central Biodome"; req_access = list()},/obj/effect/floor_decal/corner/blue/full,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
+"qu" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass{name = "Central Biodome"; req_access = list()},/obj/effect/floor_decal/sandfloordec,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "qw" = (/obj/structure/barrel,/turf/simulated/floor/natural/jungle/dirt,/area/hydroponics/biodome)
 "rq" = (/obj/effect/floor_decal/corner/green{dir = 5},/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/obj/structure/cable/yellow{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "rx" = (/obj/effect/firefly,/turf/simulated/floor/natural/jungle/dirt,/area/hydroponics/biodome)

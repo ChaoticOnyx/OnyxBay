@@ -27,7 +27,7 @@
 "pg" = (/obj/effect/overlay/palmtree_r,/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
 "ph" = (/obj/effect/overlay/palmtree_r,/obj/effect/overlay/coconut,/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
 "px" = (/obj/machinery/light{dir = 4},/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
-"qu" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass{name = "Central Biodome"; req_access = list()},/obj/effect/floor_decal/corner/blue/full,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
+"qu" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass{name = "Central Biodome"; req_access = list()},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "rq" = (/obj/effect/floor_decal/corner/green{dir = 5},/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/obj/structure/cable/yellow{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "rx" = (/obj/item/clothing/under/swimsuit/blue,/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
 "rY" = (/turf/simulated/floor/natural/jungle/water/edge{dir = 5},/area/hydroponics/biodome)

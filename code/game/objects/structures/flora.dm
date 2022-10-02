@@ -1047,7 +1047,7 @@
 	desc = "A small, bioluminescent insect."
 	icon = 'icons/obj/flora/misc.dmi'
 	icon_state = "firefly"
-	layer = BELOW_DOOR_LAYER
+	layer = ABOVE_HUMAN_LAYER
 
 /obj/effect/firefly/Initialize()
 	. = ..()
