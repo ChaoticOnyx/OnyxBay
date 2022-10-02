@@ -9,8 +9,8 @@
 	valid_accessory_slots = list(ACCESSORY_SLOT_HELM_C)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_HELM_C)
 	item_flags = ITEM_FLAG_THICKMATERIAL
-	body_parts_covered = HEAD
-	armor = list(melee = 50, bullet = 50, laser = 50, energy = 25, bomb = 35, bio = 0, rad = 0)
+	body_parts_default_covered = HEAD|EYES
+	armor = list(melee = 50, bullet = 50, laser = 50, energy = 25, bomb = 35, bio = 0)
 	flags_inv = HIDEEARS|BLOCKHEADHAIR
 	cold_protection = HEAD
 	min_cold_protection_temperature = HELMET_MIN_COLD_PROTECTION_TEMPERATURE
@@ -21,9 +21,15 @@
 	var/has_visor = 1
 	ear_protection = 1
 
+	var/icon/H = new('icons/obj/clothing/hats.dmi')
+	var/visor_presence = FALSE
+
 /obj/item/clothing/head/helmet/New()
 	. = ..()
 	body_parts_covered = body_parts_default_covered
+	if("[initial(icon_state)]_up" in H.IconStates())
+		visor_presence = TRUE
+		action_button_name = "Toggle Visor"
 
 /obj/item/clothing/head/helmet/attack_self(mob/user)
 	if(has_visor)
@@ -32,22 +38,26 @@
 		..()
 
 /obj/item/clothing/head/helmet/proc/togglevisor(mob/user)
-	if(body_parts_covered == body_parts_default_covered)
-		body_parts_covered &= ~FACE
-		body_parts_covered &= ~EYES
-		if(body_parts_covered != body_parts_default_covered)
+	if(visor_presence)
+		if(body_parts_covered == body_parts_default_covered)
+			body_parts_covered &= ~FACE
+			body_parts_covered &= ~EYES
+
 			src.icon_state = "[initial(icon_state)]_up"
 			to_chat(user, "You raise the visor on \the [src].")
-	else
-		if(body_parts_default_covered & FACE)
-			body_parts_covered |= FACE
-		if(body_parts_default_covered & EYES)
-			body_parts_covered |= EYES
-		if(body_parts_covered == body_parts_default_covered)
+		else
+			if(body_parts_default_covered & FACE)
+				body_parts_covered |= FACE
+			if(body_parts_default_covered & EYES)
+				body_parts_covered |= EYES
+
 			src.icon_state = initial(icon_state)
 			to_chat(user, "You lower the visor on \the [src].")
+		update_clothing_icon()
+		user.update_action_buttons()
+	else
+		to_chat(user, "\The [src] has no visor.")
 	add_fingerprint(user)
-	update_clothing_icon()
 
 /obj/item/clothing/head/helmet/nt
 	starting_accessories = list(/obj/item/clothing/accessory/armor/helmcover/nt)
@@ -57,10 +67,9 @@
 	desc = "It's a helmet specifically designed to protect against close range attacks."
 	icon_state = "helmet_riot"
 	valid_accessory_slots = null
-	body_parts_covered = HEAD|FACE|EYES //face shield
-	armor = list(melee = 85, bullet = 50, laser = 50, energy = 25, bomb = 35, bio = 5, rad = 0)
+	body_parts_default_covered = HEAD|FACE|EYES //face shield
+	armor = list(melee = 85, bullet = 50, laser = 50, energy = 25, bomb = 35, bio = 5)
 	siemens_coefficient = 0.5
-	action_button_name = "Toggle Visor"
 
 /obj/item/clothing/head/helmet/ablative
 	name = "ablative helmet"
