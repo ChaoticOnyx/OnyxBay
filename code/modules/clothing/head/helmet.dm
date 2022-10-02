@@ -46,11 +46,7 @@
 			src.icon_state = "[initial(icon_state)]_up"
 			to_chat(user, "You raise the visor on \the [src].")
 		else
-			if(body_parts_default_covered & FACE)
-				body_parts_covered |= FACE
-			if(body_parts_default_covered & EYES)
-				body_parts_covered |= EYES
-
+			body_parts_covered = body_parts_default_covered
 			src.icon_state = initial(icon_state)
 			to_chat(user, "You lower the visor on \the [src].")
 		update_clothing_icon()
