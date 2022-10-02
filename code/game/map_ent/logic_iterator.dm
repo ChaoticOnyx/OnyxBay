@@ -11,15 +11,15 @@
 	var/obj/map_ent/E = locate(ev_tag)
 
 	if(!istype(E))
-		crash_with("Can't locate object with tag - [ev_tag]")
+		util_crash_with("Can't locate object with tag - [ev_tag]")
 		return
 
 	if(!islist(ev_list))
-		crash_with("Can't iterate through ev_list.")
+		util_crash_with("Can't iterate through ev_list.")
 		return
 
 	if(ev_check_type && !istext(ev_check_type) || !text2path(ev_check_type))
-		crash_with("Invalid ev_check_type.")
+		util_crash_with("Invalid ev_check_type.")
 		return
 
 	for(var/object in ev_list)
