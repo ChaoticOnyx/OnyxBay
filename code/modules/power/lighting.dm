@@ -140,8 +140,8 @@
 
 	layer = ABOVE_HUMAN_LAYER // They were appearing under mobs which is a little weird - Ostaf
 	use_power = POWER_USE_OFF // It resets during initialization anyway, but using other options may cause some initially-unpowered areas to act silly.
-	idle_power_usage = 2
-	active_power_usage = 20
+	idle_power_usage = 2 WATTS
+	active_power_usage = 20 WATTS
 	power_channel = STATIC_LIGHT //Lights are calc'd via area so they dont need to be in the machine list
 
 	var/on = 0					// 1 if on, 0 if off
@@ -401,11 +401,12 @@
 		if(!istype(W, light_type))
 			to_chat(user, "This type of light requires a [get_fitting_name()].")
 			return
+		if(!user.drop(W))
+			return
 
 		to_chat(user, "You insert [W].")
-		user.drop_item()
 		insert_bulb(W)
-		src.add_fingerprint(user)
+		add_fingerprint(user)
 
 		// attempt to break the light
 		//If xenos decide they want to smash a light bulb with a toolbox, who am I to stop them? /N
@@ -442,7 +443,7 @@
 						wrong_choice = FALSE
 				if(wrong_choice)
 					user.visible_message(SPAN("warning", "[user] tries to pry [lightbulb] out of [src] with [W], only to get shocked."))
-					user.drop_item()
+					user.drop_active_hand()
 					electrocute_mob(user, get_area(src), src, rand(0.7, 1.0))
 					return
 		user.visible_message(SPAN("notice", "[user] pries [lightbulb] out of [src] with [W]."))

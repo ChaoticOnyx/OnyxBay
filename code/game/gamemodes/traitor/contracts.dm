@@ -323,9 +323,9 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			return
 		for(var/datum/antag_contract/item/steal_ai/s_AI in GLOB.all_contracts)
 			valid_AIs.Remove(s_AI.AI)
-		if(!length(valid_AIs))
-			return
-		AI = pick(valid_AIs)
+		AI = safepick(valid_AIs)
+	if(!AI)
+		return
 	target_desc = "[target_desc] [AI.name]"
 	create_explain_text("steal <b>[target_desc]<b> and send it via STD (found in <b>Devices and Tools</b>).")
 
@@ -334,7 +334,9 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/steal_ai/check_contents(list/contents)
 	var/obj/item/aicard/card = locate() in contents
-	return card?.carded_ai == AI
+	if(!card || !AI)
+		return FALSE
+	return card.carded_ai == AI
 
 /datum/antag_contract/item/blood
 	name = "Steal blood samples"

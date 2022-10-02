@@ -7,8 +7,8 @@
 	icon = 'icons/obj/modular_laptop.dmi'
 	icon_state = "laptop-open"
 	icon_state_screensaver = "standby"
-	base_idle_power_usage = 25
-	base_active_power_usage = 200
+	base_idle_power_usage = 25 WATTS
+	base_active_power_usage = 200 WATTS
 	max_hardware_size = 2
 	light_strength = 3
 	max_damage = 200

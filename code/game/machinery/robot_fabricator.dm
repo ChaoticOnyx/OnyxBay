@@ -8,8 +8,8 @@
 	var/metal_amount = 0
 	var/operating = 0
 	var/obj/item/robot_parts/being_built = null
-	idle_power_usage = 40
-	active_power_usage = 10000
+	idle_power_usage = 40 WATTS
+	active_power_usage = 10 KILO WATTS
 
 /obj/machinery/robotic_fabricator/attackby(obj/item/O as obj, mob/user as mob)
 	if (istype(O, /obj/item/stack/material) && O.get_material_name() == MATERIAL_STEEL)

@@ -82,6 +82,41 @@
 	build_path = /obj/item/circuitboard/chemical_dispenser
 	sort_string = "FAGAP"
 
+/datum/design/circuit/centrifuge
+	name = "isolation centrifuge"
+	id = "isolation_centrifuge"
+	req_tech = list(TECH_ENGINEERING = 2, TECH_BIO = 2)
+	build_path = /obj/item/circuitboard/centrifuge
+	sort_string = "FAGAQ"
+
+/datum/design/circuit/dishincubator
+	name = "pathogenic incubator"
+	id = "pathogenic_incubator"
+	req_tech = list(TECH_ENGINEERING = 2, TECH_BIO = 4, TECH_MAGNET = 2)
+	build_path = /obj/item/circuitboard/dishincubator
+	sort_string = "FAGAR"
+
+/datum/design/circuit/isolator
+	name = "pathogenic isolator"
+	id = "pathogenic_isolator"
+	req_tech = list(TECH_ENGINEERING = 2, TECH_BIO = 2)
+	build_path = /obj/item/circuitboard/isolator
+	sort_string = "FAGAS"
+
+/datum/design/circuit/diseasesplicer
+	name = "disease splicer"
+	id = "disease_splicer"
+	req_tech = list(TECH_ENGINEERING = 2, TECH_BIO = 5, TECH_DATA = 3, TECH_MAGNET = 4)
+	build_path = /obj/item/circuitboard/diseasesplicer
+	sort_string = "FAGAT"
+
+/datum/design/circuit/analyser
+	name = "disease analyser"
+	id = "disease_analyser"
+	req_tech = list(TECH_ENGINEERING = 2, TECH_BIO = 2)
+	build_path = /obj/item/circuitboard/analyser
+	sort_string = "FAGAU"
+
 /datum/design/circuit/destructive_analyzer
 	name = "destructive analyzer"
 	id = "destructive_analyzer"

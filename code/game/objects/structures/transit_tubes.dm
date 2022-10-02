@@ -81,7 +81,7 @@
 	..(loc)
 
 	air_contents.adjust_multi("oxygen", MOLES_O2STANDARD * 2, "nitrogen", MOLES_N2STANDARD)
-	air_contents.temperature = T20C
+	air_contents.temperature = 20 CELSIUS
 
 	// Give auto tubes time to align before trying to start moving
 	spawn(5)

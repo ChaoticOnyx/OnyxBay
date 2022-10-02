@@ -1,8 +1,5 @@
 var/global/datum/controller/occupations/job_master
 
-#define GET_RANDOM_JOB 0
-#define BE_ASSISTANT 1
-#define RETURN_TO_LOBBY 2
 #define NEW_PLAYER_WAYFINDING_TRACKER 21 // 3 weeks
 
 /datum/controller/occupations
@@ -119,12 +116,12 @@ var/global/datum/controller/occupations/job_master
 		return TRUE
 
 	proc/CheckUnsafeSpawn(mob/living/spawner, turf/spawn_turf)
-		var/radlevel = SSradiation.get_rads_at_turf(spawn_turf)
+		var/rad_dose = SSradiation.get_total_absorbed_dose_at_turf(spawn_turf, AVERAGE_HUMAN_WEIGHT)
 		var/airstatus = IsTurfAtmosUnsafe(spawn_turf)
-		if(airstatus || radlevel > 0)
+		if(airstatus || rad_dose > SAFE_RADIATION_DOSE)
 			var/reply = alert(spawner, "Warning. Your selected spawn location seems to have unfavorable conditions. \
 			You may die shortly after spawning. \
-			Spawn anyway? More information: [airstatus] Radiation: [radlevel] Bq", "Atmosphere warning", "Abort", "Spawn anyway")
+			Spawn anyway? More information: [airstatus] Radiation: [fmt_siunit(rad_dose, "Gy/s", 3)]", "Atmosphere warning", "Abort", "Spawn anyway")
 			if(reply == "Abort")
 				return FALSE
 			else
@@ -190,7 +187,7 @@ var/global/datum/controller/occupations/job_master
 			if(flag && !(flag in player.client.prefs.be_special_role))
 				Debug("FOC flag failed, Player: [player], Flag: [flag], ")
 				continue
-			if(player.client.prefs.CorrectLevel(job,level))
+			if(player.client.prefs.IsJobPriority(job,level))
 				Debug("FOC pass, Player: [player], Level:[level]")
 				candidates += player
 		return candidates
@@ -275,7 +272,7 @@ var/global/datum/controller/occupations/job_master
 							if(candidates.len == 1) weightedCandidates[V] = 1
 
 
-				var/mob/new_player/candidate = pickweight(weightedCandidates)
+				var/mob/new_player/candidate = util_pick_weight(weightedCandidates)
 				if(AssignRole(candidate, command_position))
 					return 1
 		return 0
@@ -368,7 +365,7 @@ var/global/datum/controller/occupations/job_master
 						continue
 
 					// If the player wants that job on this level, then try give it to him.
-					if(player.client.prefs.CorrectLevel(job,level))
+					if(player.client.prefs.IsJobPriority(job,level))
 
 						// If the job isn't filled
 						if((job.current_positions < job.spawn_positions) || job.spawn_positions == -1)
@@ -391,11 +388,7 @@ var/global/datum/controller/occupations/job_master
 		for(var/mob/new_player/player in unassigned)
 			if(player.client.prefs.alternate_option == BE_ASSISTANT)
 				Debug("AC2 Assistant located, Player: [player]")
-				if(GLOB.using_map.flags & MAP_HAS_BRANCH)
-					var/datum/mil_branch/branch = mil_branches.get_branch(player.get_branch_pref())
-					AssignRole(player, branch.assistant_job)
-				else
-					AssignRole(player, "Assistant")
+				AssignRole(player, "Assistant")
 
 		//For ones returning to lobby
 		for(var/mob/new_player/player in unassigned)
@@ -420,7 +413,7 @@ var/global/datum/controller/occupations/job_master
 				QDEL_LIST(H.worn_underwear)
 			// Equip job items.
 			job.setup_account(H)
-			job.equip(H, H.mind ? H.mind.role_alt_title : "", H.char_branch, H.char_rank)
+			job.equip(H, H.mind ? H.mind.role_alt_title : "")
 			job.apply_fingerprints(H)
 
 			// Equip custom gear loadout, replacing any job items
@@ -451,21 +444,6 @@ var/global/datum/controller/occupations/job_master
 							spawn_in_storage.Add(G)
 						else
 							loadout_taken_slots.Add(G.slot)
-
-			// do accessories last so they don't attach to a suit that will be replaced
-			if(H.char_rank && H.char_rank.accessory)
-				for(var/accessory_path in H.char_rank.accessory)
-					var/list/accessory_data = H.char_rank.accessory[accessory_path]
-					if(islist(accessory_data))
-						var/amt = accessory_data[1]
-						var/list/accessory_args = accessory_data.Copy()
-						accessory_args[1] = src
-						for(var/i in 1 to amt)
-							H.equip_to_slot_or_del(new accessory_path(arglist(accessory_args)), slot_tie)
-					else
-						for(var/i in 1 to (isnull(accessory_data)? 1 : accessory_data))
-							H.equip_to_slot_or_del(new accessory_path(src), slot_tie)
-
 		else
 			to_chat(H, "Your job is [rank] and the game just can't handle it! Please report this bug to an administrator.")
 
@@ -543,15 +521,11 @@ var/global/datum/controller/occupations/job_master
 			to_chat(H, "<b>You are playing a job that is important for Game Progression. If you have to disconnect, please notify the admins via adminhelp.</b>")
 
 		// EMAIL GENERATION
-		var/domain
-		if(H.char_branch && H.char_branch.email_domain)
-			domain = H.char_branch.email_domain
-		else
-			domain = "freemail.nt"
+		var/domain = "freemail.nt"
 		var/sanitized_name = sanitize(replacetext(replacetext(lowertext(H.real_name), " ", "."), "'", ""))
 		var/complete_login = "[sanitized_name]@[domain]"
 
-		// It is VERY unlikely that we'll have two players, in the same round, with the same name and branch, but still, this is here.
+		// It is VERY unlikely that we'll have two players in the same round with the same name, but still, this is here.
 		// If such conflict is encountered, a random number will be appended to the email address. If this fails too, no email account will be created.
 		if(ntnet_global.does_email_exist(complete_login))
 			complete_login = "[sanitized_name][random_id(/datum/computer_file/data/email_account/, 100, 999)]@[domain]"
@@ -645,11 +619,11 @@ var/global/datum/controller/occupations/job_master
 				if(!job.player_old_enough(player.client))
 					level6++
 					continue
-				if(player.client.prefs.CorrectLevel(job, 1))
+				if(player.client.prefs.IsJobPriority(job, JOB_PRIORITY_HIGH))
 					level1++
-				else if(player.client.prefs.CorrectLevel(job, 2))
+				else if(player.client.prefs.IsJobPriority(job, JOB_PRIORITY_MIDDLE))
 					level2++
-				else if(player.client.prefs.CorrectLevel(job, 3))
+				else if(player.client.prefs.IsJobPriority(job, JOB_PRIORITY_LOW))
 					level3++
 				else level4++ //not selected
 
@@ -734,7 +708,7 @@ var/global/datum/controller/occupations/job_master
 	if(J.no_latejoin)
 		return FALSE
 
-	var/datum/storyteller_character/ST = SSstoryteller.get_character()
+	var/datum/storyteller_character/ST = SSstoryteller.character
 	var/available_vacancies = ST ? ST.get_available_vacancies() : job_master.get_available_vacancies()
 	if(length(GLOB.vacancies) >= available_vacancies)
 		return FALSE

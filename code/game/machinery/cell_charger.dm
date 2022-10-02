@@ -4,8 +4,8 @@
 	icon = 'icons/obj/power.dmi'
 	icon_state = "ccharger0"
 	anchored = 1
-	idle_power_usage = 5
-	active_power_usage = 60 KILOWATTS	//This is the power drawn when charging
+	idle_power_usage = 5 WATTS
+	active_power_usage = 60 KILO WATTS	// This is the power drawn when charging
 	power_channel = STATIC_EQUIP
 	var/obj/item/cell/charging = null
 	var/chargelevel = -1
@@ -52,8 +52,8 @@
 			if(a.power_equip == 0) // There's no APC in this area, don't try to cheat power!
 				to_chat(user, "<span class='warning'>The [name] blinks red as you try to insert the cell!</span>")
 				return
-			user.drop_item()
-			W.forceMove(src)
+			if(!user.drop(W, src))
+				return
 			charging = W
 			set_power()
 			START_PROCESSING(SSmachines, src)

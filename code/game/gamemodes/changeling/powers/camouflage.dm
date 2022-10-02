@@ -44,7 +44,7 @@
 	H.set_m_intent(M_RUN)
 	animate(H, alpha = 10, alpha = 255, time = 10)
 
-/datum/changeling_power/toggled/visible_camouflage/Process()
+/datum/changeling_power/toggled/visible_camouflage/think()
 	if(!..())
 		return
 	if(my_mob.m_intent != M_WALK && must_walk) // Moving too fast uncloaks you.

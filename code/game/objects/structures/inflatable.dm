@@ -64,15 +64,16 @@
 
 /obj/structure/inflatable/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 /obj/structure/inflatable/Destroy()
 	update_nearby_tiles()
-	STOP_PROCESSING(SSobj, src)
 	return ..()
 
-/obj/structure/inflatable/Process()
+/obj/structure/inflatable/think()
 	check_environment()
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/structure/inflatable/proc/check_environment()
 	var/min_pressure = INFINITY

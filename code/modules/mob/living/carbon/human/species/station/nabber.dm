@@ -34,9 +34,6 @@
 	icobase = 'icons/mob/human_races/r_nabber.dmi'
 	deform = 'icons/mob/human_races/r_nabber.dmi'
 
-	eye_icon = "eyes_nabber"
-	eye_icon_location = 'icons/mob/nabber_face.dmi'
-
 	limb_blend = ICON_MULTIPLY
 
 	has_floating_eyes = 1
@@ -231,7 +228,7 @@
 
 			for(var/organ_tag in H.species.has_limbs)
 				var/obj/item/organ/external/part = H.organs_by_name[organ_tag]
-				if(isnull(part) || part.is_stump())
+				if(QDELETED(part) || part.is_stump())
 					image_key += "0"
 					continue
 				if(part)
@@ -284,4 +281,3 @@
 	..()
 	H.pulling_punches = TRUE
 	H.nabbing = FALSE
-

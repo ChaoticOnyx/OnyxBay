@@ -45,7 +45,7 @@
 	if(is_open_container())
 		atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
 
-	var/list/picked_reagents = pickweight(random_reagent_list)
+	var/list/picked_reagents = util_pick_weight(random_reagent_list)
 	for(var/reagent in picked_reagents)
 		reagents.add_reagent(reagent, picked_reagents[reagent])
 
@@ -102,7 +102,7 @@
 			"a high-ranking NT employee stealing money from a charitable foundation",
 			"NT using [pick("troops without insignia", "mercenaries")] to take over a [pick("neutral", "ally", "peaceful")] [pick("planet", "company", "system")]" = 2
 		)
-		to_chat(user, "You read about [pickweight(subjects)] [pick("in", "in the year")] [rand(2125, 2564)].")
+		to_chat(user, "You read about [util_pick_weight(subjects)] [pick("in", "in the year")] [rand(2125, 2564)].")
 
 	if((user.real_name in readers) || player_is_antag(user.mind))
 		to_chat(user, SPAN("notice", "You didn't learn anything new after the reading."))

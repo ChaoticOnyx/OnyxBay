@@ -6,12 +6,12 @@
 	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
-	idle_power_usage = 20
-	active_power_usage = 5000
+	idle_power_usage = 20 WATTS
+	active_power_usage = 5 KILO WATTS
 	req_access = list(access_robotics)
 	clicksound = 'sound/effects/using/console/press2.ogg'
 	clickvol = 30
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+
 
 	var/speed = 1
 	var/mat_efficiency = 1

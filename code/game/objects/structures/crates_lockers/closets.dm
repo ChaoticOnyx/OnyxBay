@@ -9,6 +9,12 @@
 	w_class = ITEM_SIZE_NO_CONTAINER
 	layer = STRUCTURE_LAYER
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 41 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 3.4 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
 	var/icon_closed = "closed"
 	var/icon_opened = "open"
 
@@ -399,12 +405,29 @@
 				return FALSE
 			if(cdoor)
 				return FALSE
+			if(istype(C.loc, /obj/item/gripper)) // Snowflaaaaakeeeeey
+				var/obj/item/gripper/G = C.loc
+				G.wrapped.forceMove(get_turf(src))
+				G.wrapped = null
+			else if(!user.drop(C))
+				return
 			user.visible_message(SPAN_NOTICE("[user] connected [C] to [src]."))
-			user.drop_item()
 			attach_door(C)
 			return
 
-		if(usr.unEquip(W, target = loc))
+		if(istype(W.loc, /obj/item/gripper)) // It's kinda tricky, see drone_items.dm L#313 for grippers' resolve_attackby().
+			var/obj/item/gripper/G = W.loc
+			if(!G.wrapped)
+				return
+			G.wrapped.forceMove(loc)
+			G.wrapped.pixel_x = 0
+			G.wrapped.pixel_y = 0
+			G.wrapped.pixel_z = 0
+			G.wrapped.pixel_w = 0
+			G.wrapped = null
+			return
+
+		if(usr.drop(W, loc))
 			W.pixel_x = 0
 			W.pixel_y = 0
 			W.pixel_z = 0

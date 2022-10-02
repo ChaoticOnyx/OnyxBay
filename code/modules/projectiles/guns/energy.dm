@@ -43,31 +43,31 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 	else
 		power_supply = new /obj/item/cell/device/variable(src, max_shots*charge_cost)
 	if(self_recharge)
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 	update_icon()
 
-/obj/item/gun/energy/Destroy()
-	if(self_recharge)
-		STOP_PROCESSING(SSobj, src)
-	return ..()
-
-/obj/item/gun/energy/Process()
+/obj/item/gun/energy/think()
 	if(self_recharge) //Every [recharge_time] ticks, recharge a shot for the cyborg
 		charge_tick++
-		if(charge_tick < recharge_time) return 0
+		if(charge_tick < recharge_time)
+			set_next_think(world.time + 1 SECOND)
+			return
 		charge_tick = 0
 
 		if(!power_supply || power_supply.charge >= power_supply.maxcharge)
-			return 0 // check if we actually need to recharge
+			set_next_think(world.time + 1 SECOND)
+			return // check if we actually need to recharge
 
 		if(use_external_power)
 			var/obj/item/cell/external = get_external_power_supply()
 			if(!external || !external.use(charge_cost)) //Take power from the borg...
-				return 0
+				set_next_think(world.time + 1 SECOND)
+				return
 
 		power_supply.give(charge_cost) //... to recharge the shot
 		update_icon()
-	return 1
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/gun/energy/consume_next_projectile()
 	if(!power_supply)

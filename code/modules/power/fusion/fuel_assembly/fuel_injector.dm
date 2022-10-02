@@ -7,8 +7,8 @@ var/list/fuel_injectors = list()
 	density = 1
 	anchored = 0
 	req_access = list(access_engine)
-	idle_power_usage = 10
-	active_power_usage = 500
+	idle_power_usage = 10 WATTS
+	active_power_usage = 500 WATTS
 
 	var/fuel_usage = 0.0001
 	var/id_tag
@@ -57,8 +57,7 @@ var/list/fuel_injectors = list()
 		else
 			visible_message("<span class='notice'>\The [user] inserts \a [W] into \the [src].</span>")
 
-		user.drop_from_inventory(W)
-		W.forceMove(src)
+		user.drop(W, src)
 		if(cur_assembly)
 			cur_assembly.forceMove(get_turf(src))
 			user.put_in_hands(cur_assembly)

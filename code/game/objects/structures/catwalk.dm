@@ -11,7 +11,7 @@
 	. = ..()
 	for(var/obj/structure/catwalk/C in get_turf(src))
 		if(C != src)
-			crash_with("Multiple catwalks on one turf! ([loc.x], [loc.y], [loc.z])")
+			util_crash_with("Multiple catwalks on one turf! ([loc.x], [loc.y], [loc.z])")
 			qdel(C)
 	update_icon()
 	redraw_nearby_catwalks()

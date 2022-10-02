@@ -48,3 +48,10 @@
 	display_name = "HUD prescription lenses"
 	path = /obj/item/device/hudlenses/prescription
 	cost = 1
+
+/datum/gear/eyes/psychoscope
+	display_name = "psychoscope"
+	path = /obj/item/clothing/glasses/hud/psychoscope
+	cost = 3
+	price = 50
+	allowed_roles = list(/datum/job/rd)

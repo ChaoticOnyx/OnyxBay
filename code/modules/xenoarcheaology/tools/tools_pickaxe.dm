@@ -1,91 +1,65 @@
-/obj/item/pickaxe/brush
+/obj/item/pickaxe/archaeologist
 	name = "brush"
 	icon = 'icons/obj/xenoarchaeology.dmi'
-	icon_state = "pick_brush"
+	icon_state = "pick_hand"
 	item_state = "syringe_0"
-	slot_flags = SLOT_EARS
+	force = 5
+	throwforce = 5
+	mod_weight = 0.9
+	mod_reach = 1
+	mod_handy = 1.2
 	digspeed = 20
+	w_class = ITEM_SIZE_SMALL
+	drill_sound = 'sound/items/Screwdriver.ogg'
+	drill_verb = "delicately picking"
+
+/obj/item/pickaxe/archaeologist/brush
+	name = "brush"
+	icon_state = "pick_brush"
+	slot_flags = SLOT_EARS
 	desc = "Thick metallic wires for clearing away dust and loose scree (1 centimetre excavation depth)."
 	excavation_amount = 1
 	drill_sound = 'sound/weapons/thudswoosh.ogg'
 	drill_verb = "brushing"
-	w_class = ITEM_SIZE_SMALL
 
-/obj/item/pickaxe/one_pick
+/obj/item/pickaxe/archaeologist/one_pick
 	name = "2cm pick"
-	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "pick1"
-	item_state = "syringe_0"
-	digspeed = 20
 	desc = "A miniature excavation tool for precise digging (2 centimetre excavation depth)."
 	excavation_amount = 2
-	drill_sound = 'sound/items/Screwdriver.ogg'
-	drill_verb = "delicately picking"
-	w_class = ITEM_SIZE_SMALL
 
-/obj/item/pickaxe/two_pick
+/obj/item/pickaxe/archaeologist/two_pick
 	name = "4cm pick"
-	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "pick2"
-	item_state = "syringe_0"
-	digspeed = 20
 	desc = "A miniature excavation tool for precise digging (4 centimetre excavation depth)."
 	excavation_amount = 4
-	drill_sound = 'sound/items/Screwdriver.ogg'
-	drill_verb = "delicately picking"
-	w_class = ITEM_SIZE_SMALL
 
-/obj/item/pickaxe/three_pick
+/obj/item/pickaxe/archaeologist/three_pick
 	name = "6cm pick"
-	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "pick3"
-	item_state = "syringe_0"
-	digspeed = 20
 	desc = "A miniature excavation tool for precise digging (6 centimetre excavation depth)."
 	excavation_amount = 6
-	drill_sound = 'sound/items/Screwdriver.ogg'
-	drill_verb = "delicately picking"
-	w_class = ITEM_SIZE_SMALL
 
-/obj/item/pickaxe/four_pick
+/obj/item/pickaxe/archaeologist/four_pick
 	name = "8cm pick"
-	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "pick4"
-	item_state = "syringe_0"
-	digspeed = 20
 	desc = "A miniature excavation tool for precise digging (8 centimetre excavation depth)."
 	excavation_amount = 8
-	drill_sound = 'sound/items/Screwdriver.ogg'
-	drill_verb = "delicately picking"
-	w_class = ITEM_SIZE_SMALL
 
-/obj/item/pickaxe/five_pick
+/obj/item/pickaxe/archaeologist/five_pick
 	name = "10cm pick"
-	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "pick5"
-	item_state = "syringe_0"
-	digspeed = 20
 	desc = "A miniature excavation tool for precise digging (10 centimetre excavation depth)."
 	excavation_amount = 10
-	drill_sound = 'sound/items/Screwdriver.ogg'
-	drill_verb = "delicately picking"
-	w_class = ITEM_SIZE_SMALL
 
-/obj/item/pickaxe/six_pick
+/obj/item/pickaxe/archaeologist/six_pick
 	name = "12cm pick"
-	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "pick6"
-	item_state = "syringe_0"
-	digspeed = 20
 	desc = "A miniature excavation tool for precise digging (12 centimetre excavation depth)."
 	excavation_amount = 12
-	drill_sound = 'sound/items/Screwdriver.ogg'
-	drill_verb = "delicately picking"
-	w_class = ITEM_SIZE_SMALL
 
-/obj/item/pickaxe/hand
+/obj/item/pickaxe/archaeologist/hand
 	name = "hand pickaxe"
-	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "pick_hand"
 	item_state = "syringe_0"
 	digspeed = 30
@@ -93,7 +67,6 @@
 	excavation_amount = 30
 	drill_sound = 'sound/items/Crowbar.ogg'
 	drill_verb = "clearing"
-	w_class = ITEM_SIZE_SMALL
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Pack for holding pickaxes
@@ -106,27 +79,27 @@
 	item_state = "syringe_kit"
 	storage_slots = 7
 	w_class = ITEM_SIZE_SMALL
-	can_hold = list(/obj/item/pickaxe/brush,
-	/obj/item/pickaxe/one_pick,
-	/obj/item/pickaxe/two_pick,
-	/obj/item/pickaxe/three_pick,
-	/obj/item/pickaxe/four_pick,
-	/obj/item/pickaxe/five_pick,
-	/obj/item/pickaxe/six_pick,
-	/obj/item/pickaxe/hand)
+	can_hold = list(/obj/item/pickaxe/archaeologist/brush,
+	/obj/item/pickaxe/archaeologist/one_pick,
+	/obj/item/pickaxe/archaeologist/two_pick,
+	/obj/item/pickaxe/archaeologist/three_pick,
+	/obj/item/pickaxe/archaeologist/four_pick,
+	/obj/item/pickaxe/archaeologist/five_pick,
+	/obj/item/pickaxe/archaeologist/six_pick,
+	/obj/item/pickaxe/archaeologist/hand)
 	max_storage_space = 18
 	max_w_class = ITEM_SIZE_SMALL
 	use_to_pickup = 1
 
 /obj/item/storage/excavation/New()
 	..()
-	new /obj/item/pickaxe/brush(src)
-	new /obj/item/pickaxe/one_pick(src)
-	new /obj/item/pickaxe/two_pick(src)
-	new /obj/item/pickaxe/three_pick(src)
-	new /obj/item/pickaxe/four_pick(src)
-	new /obj/item/pickaxe/five_pick(src)
-	new /obj/item/pickaxe/six_pick(src)
+	new /obj/item/pickaxe/archaeologist/brush(src)
+	new /obj/item/pickaxe/archaeologist/one_pick(src)
+	new /obj/item/pickaxe/archaeologist/two_pick(src)
+	new /obj/item/pickaxe/archaeologist/three_pick(src)
+	new /obj/item/pickaxe/archaeologist/four_pick(src)
+	new /obj/item/pickaxe/archaeologist/five_pick(src)
+	new /obj/item/pickaxe/archaeologist/six_pick(src)
 
 /obj/item/storage/excavation/handle_item_insertion()
 	..()

@@ -7,7 +7,7 @@
 	category_text = "Reagent"
 	unacidable = 1
 	cooldown_per_use = 10
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+
 	var/volume = 0
 
 /obj/item/integrated_circuit/reagent/Initialize()
@@ -648,9 +648,9 @@
 		return
 
 	//The current beaker is the one we just attached, its location is inside the circuit
+	if(!user.drop(I, src))
+		return
 	current_beaker = I
-	user.drop_item(I)
-	I.forceMove(src)
 
 	to_chat(user, SPAN("warning", "You put the [I] inside the beaker connector."))
 

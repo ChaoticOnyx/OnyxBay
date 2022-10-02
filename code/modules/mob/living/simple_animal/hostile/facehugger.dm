@@ -58,7 +58,7 @@
 			var/obj/item/mask = H.get_equipped_item(slot_wear_mask)
 			if(istype(mask, /obj/item/holder/facehugger)) // No need to interrupt our allies
 				var/obj/item/holder/facehugger/F = mask
-				if(!F.wasted) // ...unless they are dead
+				if(F.held_mob.stat) // ...unless they are dead
 					continue
 			L += a
 	return L
@@ -79,48 +79,57 @@
 /mob/living/simple_animal/hostile/facehugger/proc/facefuck(mob/living/carbon/human/H, silent = FALSE, forced = FALSE) // Returns FALSE if the facehugger can't latch on one's face, TRUE if it latches
 	if(stat)
 		return
-	var/obj/item/organ/external/chest/VC = H.organs_by_name["chest"]
-	var/obj/item/organ/external/head/VH = H.organs_by_name["head"]
-	if(!VC || !VH)
+
+	if(!is_mob_suitable_to_facefuck(H))
 		return FALSE
 
+	if(!try_to_strip_down_human_head(H, forced))
+		return FALSE
+
+	var/obj/item/holder/facehugger/holder = new(get_turf(src), src)
+	forceMove(holder)
+	holder.sync(src)
+	holder.forced_equip = forced
+
+	if(H.equip_to_slot_if_possible(holder, slot_wear_mask, FALSE, TRUE)) // So we won't simply get deleted upon trying to latch at a mob w/ no mask slot (i.e. diona)
+		if(!silent)
+			H.visible_message(SPAN("warning", "\The [src] latches itself onto [H]'s face!"))
+	else
+		holder.forceMove(H.loc)
+
+	return TRUE
+
+
+/mob/living/simple_animal/hostile/facehugger/proc/is_mob_suitable_to_facefuck(mob/living/carbon/human/H)
+	return istype(H) && H.organs_by_name["chest"] && H.organs_by_name["head"]
+
+
+/mob/living/simple_animal/hostile/facehugger/proc/try_to_strip_down_human_head(mob/living/carbon/human/H, forced = FALSE)
 	var/obj/item/helmet = H.get_equipped_item(slot_head)
 	if(helmet && (((helmet.item_flags & ITEM_FLAG_AIRTIGHT) && !forced) || !helmet.knocked_out(H, dist = 0)))
 		H.visible_message(SPAN("notice", "\The [src] [pick("smacks", "smashes", "blops", "bonks")] against [H]'s [helmet] harmlessly!"))
 		return FALSE
+
 	var/obj/item/mask = H.get_equipped_item(slot_wear_mask)
 	if(mask && !mask.knocked_out(H, dist = 0))
 		H.visible_message(SPAN("warning", "\The [src] tries to rip [H]'s [mask] off, but fails."))
 		return FALSE
+
 	var/obj/item/l_ear = H.get_equipped_item(slot_l_ear)
 	l_ear?.knocked_out(H, dist = 0)
 	var/obj/item/r_ear = H.get_equipped_item(slot_r_ear)
 	r_ear?.knocked_out(H, dist = 0)
 
-	var/obj/item/holder/facehugger/holder = new()
-	forceMove(holder)
-	if(!silent)
-		H.visible_message(SPAN("warning", "\The [src] latches itself onto [H]'s face!"))
-	holder.sync(src)
-	if(!H.equip_to_slot_if_possible(holder, slot_wear_mask, FALSE, TRUE)) // So we won't simply get deleted upon trying to latch at a mob w/ no mask slot (i.e. diona)
-		holder.forceMove(H.loc)
-
-	if(BP_IS_ROBOTIC(VC))
-		return TRUE
-
-	if(!forced && H.internal_organs_by_name[BP_HIVE])
-		return TRUE // Don't infect xenohumans in case of friendly fire, still allows manual infection
-
-	if(impregnate(H))
-		holder.kill_holder()
 	return TRUE
 
 /mob/living/simple_animal/hostile/facehugger/proc/impregnate(mob/living/carbon/human/H)
-	if(!H)
-		return FALSE
-	if(!H.species?.xenomorph_type)
-		return FALSE // Oh no, they can not become a host
-	if(is_sterile)
+	var/obj/item/holder/facehugger/holder = loc
+	if(!istype(holder))
+		CRASH("Facehugger try impregnate outside its holder")
+
+	var/forced = isnull(holder.forced_equip) ? TRUE : holder.forced_equip
+	holder.forced_equip = null
+	if(!is_mob_suitable_to_impregnate(H, forced))
 		return FALSE
 
 	var/continue_impregnation = FALSE
@@ -137,8 +146,20 @@
 		is_sterile = TRUE
 		H.Paralyse(20)
 		return TRUE
+
 	to_chat(H, "You feel something going down your throat and rapidly ejecting a few moments later.")
 	return FALSE
+
+
+/mob/living/simple_animal/hostile/facehugger/proc/is_mob_suitable_to_impregnate(mob/living/carbon/human/H, forced = FALSE)
+	if(!istype(H))
+		return FALSE
+
+	if(H.isSynthetic())
+		return FALSE
+
+	return H.species?.xenomorph_type && !is_sterile && (forced || !H.internal_organs_by_name[BP_HIVE])
+
 
 /mob/living/simple_animal/hostile/facehugger/AttackingTarget()
 	. = ..()
@@ -167,34 +188,32 @@
 	slot_flags = SLOT_MASK | SLOT_HOLSTER
 	icon_state = "facehugger"
 	item_state = "facehugger"
-	var/wasted = FALSE
+	var/forced_equip = FALSE
 
 /obj/item/holder/facehugger/proc/kill_holder()
-	var/mob/living/simple_animal/hostile/facehugger/F = contents[1]
-	if(F)
-		F.death()
-		sync(F)
-		wasted = TRUE
-
-/obj/item/holder/facehugger/sync(mob/living/M)
-	..()
-	if(!istype(M, /mob/living/simple_animal/hostile/facehugger))
-		return
-	var/mob/living/simple_animal/hostile/facehugger/F = M
-	if(F.stat)
-		wasted = TRUE
+	var/mob/living/simple_animal/hostile/facehugger/F = held_mob
+	F.death()
+	sync()
 
 /obj/item/holder/facehugger/attack(mob/target, mob/user)
-	var/mob/living/simple_animal/hostile/facehugger/F = contents[1]
+	var/mob/living/simple_animal/hostile/facehugger/F = held_mob
 	if(user && !F.stat && istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = target
 		if(!do_mob(user, H, 20))
 			return
-		user.drop_from_inventory(src)
+		user.drop(src)
 		if(F.facefuck(H, TRUE, TRUE))
 			H.visible_message(SPAN("warning", "[user] latches \the [F] onto [H]'s face!"))
 		return
 	..()
+
+/obj/item/holder/facehugger/equipped(mob/user, slot)
+	if(slot == slot_wear_mask)
+		var/mob/living/simple_animal/hostile/facehugger/F = held_mob
+		if(F.impregnate(user))
+			kill_holder()
+
+	return ..()
 
 
 /mob/living/simple_animal/hostile/facehugger/lamarr

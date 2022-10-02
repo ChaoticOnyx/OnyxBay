@@ -51,7 +51,7 @@
 
 
 // Biostructure processing
-/obj/item/organ/internal/biostructure/Process()
+/obj/item/organ/internal/biostructure/think()
 	. = ..()
 	if((damage > (max_damage / 2)) && healing_threshold)
 		if(owner)
@@ -155,7 +155,7 @@
 				affected.internal_organs.Remove(src)
 				status |= ORGAN_CUT_AWAY
 		else
-			H.drop_from_inventory(src)
+			H.drop(src, force = TRUE)
 
 	else if(istype(source, /obj/item/organ/external))
 		var/obj/item/organ/external/E = source

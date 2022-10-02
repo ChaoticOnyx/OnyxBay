@@ -24,8 +24,8 @@
 	response_harm   = "stamps on"
 	density = 0
 	var/body_color //brown, gray and white, leave blank for random
-	minbodytemp = 223		//Below -50 Degrees Celcius
-	maxbodytemp = 323	//Above 50 Degrees Celcius
+	minbodytemp = -50 CELSIUS
+	maxbodytemp = 50 CELSIUS
 	universal_speak = 0
 	universal_understand = 1
 	holder_type = /obj/item/holder/mouse
@@ -185,9 +185,9 @@
 		if(do_after(user, 3 SECONDS, src))
 			if(holding_item)
 				return
+			if(!user.drop(O, src))
+				return
 			holding_item = O
-			user.drop_item()
-			O.loc = src
 			user.visible_message(SPAN_NOTICE("[user] attaches \the [O] with duct tape to \the [name]."),
 								SPAN_NOTICE("You attach \the [O] with duct tape to \the [name]."))
 			playsound(loc, 'sound/effects/duct_tape.ogg', 50, 1)

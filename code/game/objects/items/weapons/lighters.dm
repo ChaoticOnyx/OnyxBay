@@ -29,7 +29,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	slot_flags = SLOT_EARS
 	attack_verb = list("burnt", "singed")
 
-/obj/item/flame/match/Process()
+/obj/item/flame/match/think()
 	if(isliving(loc))
 		var/mob/living/M = loc
 		M.IgniteMob()
@@ -40,7 +40,8 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 		return
 	if(location)
 		location.hotspot_expose(700, 5)
-		return
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/flame/match/dropped(mob/user as mob)
 	//If dropped, put ourselves out
@@ -62,7 +63,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	name = "burnt match"
 	desc = "A match. This one has seen better days."
 	set_light(0)
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 
 /////////
 //ZIPPO//
@@ -82,6 +83,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	var/flame_overlay = "cheapoverlay"
 	var/spam_flag = 0
 	var/requires_hold = TRUE
+	var/base_icon
 
 /obj/item/flame/lighter/Initialize()
 	. = ..()
@@ -94,7 +96,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	update_icon()
 	light_effects(user)
 	set_light(0.2, 0.5, 2, 3.5, "#e38f46")
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 /obj/item/flame/lighter/proc/light_effects(mob/living/carbon/user)
 	if(prob(95))
@@ -117,7 +119,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 		else
 			visible_message(SPAN("notice", "[src] goes out."))
 	set_light(0)
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 
 /obj/item/flame/lighter/proc/shutoff_effects(mob/user)
 	user.visible_message(SPAN("notice", "[user] quietly shuts off the [src]."))
@@ -145,11 +147,11 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 /obj/item/flame/lighter/update_icon()
 	overlays.Cut()
 	if(lit)
-		icon_state = "[initial(icon_state)]on"
+		icon_state = "[base_icon ? base_icon : initial(icon_state)]on"
 		item_state = "[initial(item_state)]on"
 		overlays += image(icon, src, flame_overlay)
 	else
-		icon_state = "[initial(icon_state)]"
+		icon_state = "[base_icon ? base_icon : initial(icon_state)]"
 		item_state = initial(item_state)
 
 /obj/item/flame/attack(mob/living/carbon/M, mob/living/carbon/user)
@@ -173,7 +175,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 
 	..()
 
-/obj/item/flame/lighter/Process()
+/obj/item/flame/lighter/think()
 	if(reagents.has_reagent(/datum/reagent/fuel))
 		if(ismob(loc) && prob(10) && reagents.get_reagent_amount(/datum/reagent/fuel) < 1)
 			to_chat(loc, SPAN("warning", "[src]'s flame flickers."))
@@ -189,6 +191,8 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	if(location)
 		location.hotspot_expose(700, 5)
 
+	set_next_think(world.time + 1 SECOND)
+
 /obj/item/flame/lighter/dropped()
 	if(requires_hold)
 		shutoff(silent = TRUE)
@@ -196,12 +200,13 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 
 /obj/item/flame/lighter/random/Initialize()
 	if(prob(99.5))
-		icon_state = "lighter-[pick("red", "orange", "yellow", "green", "cyan", "blue", "purple", "white", "black")]"
+		base_icon = "lighter-[pick("red", "orange", "yellow", "green", "cyan", "blue", "purple", "white", "black")]"
 	else
-		icon_state = "lighter-gold"
+		base_icon = "lighter-gold"
 		name = "expensive lighter"
 		desc = "It may be made of gold, but it doesn't make it any less crappy."
 		matter = list(MATERIAL_GOLD = 250)
+	update_icon()
 	//item_state = icon_state // TODO: Draw item states for all the above, huh
 	. = ..()
 

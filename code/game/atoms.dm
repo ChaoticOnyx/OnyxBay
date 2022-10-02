@@ -73,7 +73,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(atom_flags & ATOM_FLAG_INITIALIZED)
-		crash_with("Warning: [src]([type]) initialized multiple times!")
+		util_crash_with("Warning: [src]([type]) initialized multiple times!")
 	atom_flags |= ATOM_FLAG_INITIALIZED
 
 	if(loc)
@@ -104,7 +104,6 @@
 	..()
 
 	SEND_SIGNAL(src, SIGNAL_ENTERED, src, enterer, old_loc)
-	SEND_SIGNAL(src, SIGNAL_MOVED, enterer, old_loc, enterer.loc)
 
 /atom/Exited(atom/movable/exitee, atom/new_loc)
 	. = ..()
@@ -665,7 +664,13 @@ its easier to just keep the beam vertical.
 		return FALSE
 
 	var/list/valid_turfs = list()
-	for(var/dir_to_test in GLOB.cardinal)
+	var/list/valid_dirs = GLOB.cardinal.Copy()
+
+	for(var/obj/machinery/door/window/slim_door in T.contents)
+		if(slim_door.density)
+			valid_dirs -= slim_door.dir
+
+	for(var/dir_to_test in valid_dirs)
 		var/turf/new_turf = get_step(T, dir_to_test)
 		if(!new_turf.contains_dense_objects(FALSE))
 			valid_turfs.Add("[dir_to_test]")

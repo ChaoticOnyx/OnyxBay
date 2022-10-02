@@ -311,7 +311,7 @@
 
 	if(rogue_entries.len) // These entries did not cleanup after themselves before being destroyed
 		var/rogue_entries_as_string = jointext(map(rogue_entries, /proc/log_info_line), ", ")
-		crash_with("[log_info_line(src)] - Following cloaking entries were removed during cleanup: [rogue_entries_as_string]")
+		util_crash_with("[log_info_line(src)] - Following cloaking entries were removed during cleanup: [rogue_entries_as_string]")
 
 	UNSETEMPTY(cloaking_sources)
 	return !cloaking_sources // If cloaking_sources wasn't initially null but is now, we've uncloaked

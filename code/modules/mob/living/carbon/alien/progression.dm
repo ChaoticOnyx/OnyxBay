@@ -48,7 +48,7 @@
 		adult.key = src.key
 
 	for(var/obj/item/I in contents)
-		drop_from_inventory(I)
+		drop(I)
 
 	for(var/datum/language/L in languages)
 		adult.add_language(L.name)

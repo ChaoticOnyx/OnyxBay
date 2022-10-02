@@ -8,6 +8,7 @@
 // SS_TICKER
 #define SS_PRIORITY_ICON_UPDATE    20 // Queued icon updates. Mostly used by APCs and tables.
 #define SS_PRIORITY_CHAT           100
+#define SS_PRIORITY_THINK          90    // Datums thinking.
 
 // Normal
 #define SS_PRIORITY_TICKER         100   // Gameticker.
@@ -23,7 +24,6 @@
 #define SS_PRIORITY_EXPLOSION      666   // Processing explosion stuff, abnormal number for abnormal stuff
 #define SS_PRIORITY_VIRUSES        20    // Processing viruses life.
 #define SS_PRIORITY_OPEN_SPACE     20    // Open turf updates.
-#define SS_PRIORITY_RUNECHAT       20    // Runechat processing. Shame it's so high in priority, but what can we do.
 #define SS_PRIORITY_AIRFLOW        15    // Object movement from ZAS airflow.
 #define SS_PRIORITY_VOTE           10    // Vote management.
 #define SS_PRIORITY_INACTIVITY     10    // Idle kicking.

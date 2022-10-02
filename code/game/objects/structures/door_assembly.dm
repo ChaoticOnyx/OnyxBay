@@ -201,7 +201,8 @@
 				src.state = 1
 				to_chat(user, "<span class='notice'>You wire the airlock.</span>")
 
-	else if(isWirecutter(W) && state == 1 )
+	else if(isWirecutter(W) && state == 1 && !in_use)
+		in_use = TRUE
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 		user.visible_message("[user] cuts the wires from the airlock assembly.", "You start to cut the wires from airlock assembly.")
 
@@ -210,27 +211,30 @@
 			to_chat(user, "<span class='notice'>You cut the airlock wires.!</span>")
 			new /obj/item/stack/cable_coil(src.loc, 1)
 			src.state = 0
+		in_use = FALSE
 
 	else if(istype(W, /obj/item/airlock_electronics) && state == 1)
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 		user.visible_message("[user] installs the electronics into the airlock assembly.", "You start to install electronics into the airlock assembly.")
 
-		if(do_after(user, 40,src))
-			if(!src) return
-			user.drop_item()
-			W.loc = src
+		if(do_after(user, 40, src))
+			if(!src)
+				return
+			if(!user.drop(W, src))
+				return
 			to_chat(user, "<span class='notice'>You installed the airlock electronics!</span>")
 			src.state = 2
 			src.SetName("Near finished Airlock Assembly")
 			src.electronics = W
 
-	else if(isCrowbar(W) && state == 2 )
+	else if(isCrowbar(W) && state == 2 && !in_use)
 		//This should never happen, but just in case I guess
 		if (!electronics)
 			to_chat(user, "<span class='notice'>There was nothing to remove.</span>")
 			src.state = 1
 			return
 
+		in_use = TRUE
 		playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 		user.visible_message("\The [user] starts removing the electronics from the airlock assembly.", "You start removing the electronics from the airlock assembly.")
 
@@ -241,6 +245,7 @@
 			src.SetName("Wired Airlock Assembly")
 			electronics.loc = src.loc
 			electronics = null
+		in_use = FALSE
 
 	else if(istype(W, /obj/item/stack/material) && !glass)
 		var/obj/item/stack/S = W

@@ -36,8 +36,8 @@
 			return FALSE
 		else if(L.breath_fail_ratio > 0.7)
 			return whisper_say(length(message) > 5 ? stars(message) : message, language, alt_name)
-		else if(L.breath_fail_ratio > 0.4 && length(message) > 10)
-			return whisper_say(message, language, alt_name)
+		else if(L.breath_fail_ratio > 0.4)
+			return whisper_say(length(message) > 10 ? stars(message) : message, language, alt_name)
 	else
 		return ..(message, alt_name = alt_name, language = language, whispering = whispering)
 
@@ -96,13 +96,14 @@
 		var/obj/item/rig/rig = back
 		if(rig.speech?.voice_holder?.active && rig.speech.voice_holder.voice)
 			voice_sub = rig.speech.voice_holder.voice
-	else
+	if(!voice_sub)
 		for(var/obj/item/gear in list(wear_mask,wear_suit,head))
 			if(!gear)
 				continue
 			var/obj/item/voice_changer/changer = locate() in gear
-			if(changer && changer.active && changer.voice)
+			if(changer?.active)
 				voice_sub = changer.voice
+				break
 	if(voice_sub)
 		return voice_sub
 	if(mind?.changeling?.mimicing)

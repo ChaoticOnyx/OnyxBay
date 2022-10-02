@@ -25,7 +25,7 @@
 		var/turf/T = get_turf(src)
 		T.visible_message(generate_lighting_message(used_tool, holder))
 		smokeamount = reagents.total_volume / smoketime
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 		if(ismob(loc))
 			var/mob/living/M = loc
 			M.update_inv_wear_mask(0)
@@ -73,7 +73,7 @@
 		user.visible_message("<span class='notice'>[user] puts out [src].</span>", "<span class='notice'>You put out [src].</span>")
 		lit = 0
 		update_icon()
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 	else if(smoketime)
 		var/turf/location = get_turf(user)
 		user.visible_message("<span class='notice'>[user] empties out [src].</span>", "<span class='notice'>You empty out [src].</span>")

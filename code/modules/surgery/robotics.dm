@@ -465,8 +465,7 @@
 	var/obj/item/device/mmi/M = tool
 	var/obj/item/organ/internal/mmi_holder/holder = new(target, 1)
 	target.internal_organs_by_name[BP_BRAIN] = holder
-	user.drop_from_inventory(tool)
-	tool.forceMove(holder)
+	user.drop(tool, holder)
 	holder.stored_mmi = tool
 	holder.update_from_mmi()
 

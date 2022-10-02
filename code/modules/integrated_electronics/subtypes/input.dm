@@ -1011,10 +1011,10 @@
 	if(!check_then_do_work())
 		return FALSE
 	var/pu = get_pin_data(IC_INPUT, 1)
-	if(pu && !user.unEquip(A,get_turf(src)))
+	if(pu && !user.drop(A, get_turf(src)))
 		return FALSE
 	if(pu)
-		user.drop_item(A)
+		user.drop(A)
 	set_pin_data(IC_OUTPUT, 1, weakref(A))
 	push_data()
 	to_chat(user, SPAN("notice", "You let [assembly] scan [A]."))

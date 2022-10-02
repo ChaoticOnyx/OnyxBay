@@ -29,6 +29,7 @@
 	var/fun_hydroponics = 1
 	var/forbid_singulo_following = FALSE
 
+
 /datum/configuration_section/misc/load_data(list/data)
 	CONFIG_LOAD_BOOL(ooc_allowed, data["ooc_allowed"])
 	CONFIG_LOAD_BOOL(looc_allowed, data["looc_allowed"])

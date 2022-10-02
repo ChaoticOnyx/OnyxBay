@@ -97,11 +97,13 @@ GLOBAL_LIST_EMPTY(music_players)
 		if(cell)
 			overlays += image(icon, "[icon_state]_panel-cell")
 
-/obj/item/music_player/Process()
+/obj/item/music_player/think()
 	if(!get_cell() || !cell.checked_use(power_usage * CELLRATE))
 		StopPlaying()
 		visible_message(SPAN_WARNING("\The [src]'s power meter flashes a battery warning and refuses to operate."))
-		return PROCESS_KILL
+		return
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/music_player/proc/set_mode(value)
 	if(value == mode)
@@ -141,10 +143,8 @@ GLOBAL_LIST_EMPTY(music_players)
 			to_chat(user, SPAN_WARNING("\The [C] is ruined, you can't use it."))
 			return
 
-		if(!user.unEquip(C))
+		if(!user.drop(C, src))
 			return
-
-		I.forceMove(src)
 		tape = C
 		user.visible_message(
 			SPAN_NOTICE("[user] insert \a [tape] into \the [src]."),
@@ -160,10 +160,8 @@ GLOBAL_LIST_EMPTY(music_players)
 				to_chat(user, SPAN_NOTICE("[src] already has \a [cell] installed."))
 				return
 
-			if(!user.unEquip(C))
+			if(!user.drop(C, src))
 				return
-
-			I.forceMove(src)
 			cell = C
 			to_chat(user, SPAN_NOTICE("You insert \a [cell] into \the [src]."))
 			update_icon()
@@ -399,7 +397,7 @@ GLOBAL_LIST_EMPTY(music_players)
 	if(broken)
 		return
 
-	if(isnull(tape))
+	if(QDELETED(tape))
 		return
 
 	if(!tape.CanPlay())
@@ -412,7 +410,7 @@ GLOBAL_LIST_EMPTY(music_players)
 		sound_token = GLOB.sound_player.PlayLoopingSound(src, sound_id, tape.track.GetTrack(), volume = volume, frequency = frequency, range = 7, falloff = 4, prefer_mute = TRUE, preference = src.preference, streaming = TRUE)
 
 	mode = PLAYER_STATE_PLAY
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	log_and_message_admins("launched <a href='?_src_=holder;adminplayerobservefollow=\ref[src]'>[src]</a> with the song \"[tape.track.title]\".")
 
 	if(prob(break_chance))
@@ -428,7 +426,7 @@ GLOBAL_LIST_EMPTY(music_players)
 		mode = PLAYER_STATE_OFF
 		QDEL_NULL(sound_token)
 
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 	update_icon()
 
 //Alternative way to activate it, but instead stop, we will pause it.

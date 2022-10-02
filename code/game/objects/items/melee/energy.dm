@@ -235,8 +235,6 @@
 	if(istype(sword, /obj/item/melee/energy/sword/one_hand))
 		to_chat(user, SPAN("notice", "You attach the ends of the two energy swords, making a single double-bladed weapon!"))
 		var/obj/item/melee/energy/sword/dualsaber/D = new /obj/item/melee/energy/sword/dualsaber(user.loc)
-		user.drop_from_inventory(src)
-		user.drop_from_inventory(sword)
 		qdel(src)
 		qdel(sword)
 		user.put_in_hands(D)
@@ -324,6 +322,7 @@
 	mod_reach = 1.5
 	mod_handy = 1.75
 	mod_shield = 2.5
+	block_tier = BLOCK_TIER_ADVANCED
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	canremove = FALSE
 	force_drop = TRUE
@@ -340,10 +339,9 @@
 
 /obj/item/melee/energy/blade/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 /obj/item/melee/energy/blade/Destroy()
-	STOP_PROCESSING(SSobj, src)
 	QDEL_NULL(spark_system)
 	. = ..()
 
@@ -351,13 +349,13 @@
 	return ITEM_SIZE_NO_CONTAINER
 
 /obj/item/melee/energy/blade/attack_self(mob/user as mob)
-	user.drop_from_inventory(src)
+	user.drop(src, force = TRUE)
 	QDEL_IN(src, 0)
 
 /obj/item/melee/energy/blade/dropped()
 	QDEL_IN(src, 0)
 
-/obj/item/melee/energy/blade/Process()
+/obj/item/melee/energy/blade/think()
 	var/mob/living/_creator = creator.resolve()
 	if(!_creator || loc != _creator || (_creator.l_hand != src && _creator.r_hand != src))
 		// Tidy up a bit.
@@ -370,8 +368,11 @@
 							organ.implants -= src
 			host.pinned -= src
 			host.embedded -= src
-			host.drop_from_inventory(src)
+			host.drop(src, force = TRUE)
 		QDEL_IN(src, 0)
+		return
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/melee/energy/sword/robot
 	icon_state = "sword0"

@@ -34,7 +34,7 @@
 		var/obj/effect/spider/spiderling/S = A
 		user.visible_message("<span class='notice'>[user] scoops [S] into \the [src].</span>", "<span class='notice'>You scoop [S] into \the [src].</span>")
 		S.forceMove(src)
-		STOP_PROCESSING(SSobj, S) // No growing inside jars
+		S.set_next_think(0) // No growing inside jars
 		contains = 3
 		update_icon()
 		return
@@ -59,7 +59,7 @@
 			for(var/obj/effect/spider/spiderling/S in src)
 				S.dropInto(user.loc)
 				user.visible_message("<span class='notice'>[user] releases [S] from \the [src].</span>", "<span class='notice'>You release [S] from \the [src].</span>")
-				START_PROCESSING(SSobj, S) // They can grow after being let out though
+				S.set_next_think(world.time) // They can grow after being let out though
 			contains = 0
 			update_icon()
 			return
@@ -70,10 +70,10 @@
 			contains = 1
 		if(contains != 1)
 			return
+		if(!user.drop(W, src))
+			return
 		var/obj/item/spacecash/S = W
 		user.visible_message("<span class='notice'>[user] puts [S.worth] [S.worth > 1 ? "credits" : "credit"] into \the [src].</span>")
-		user.drop_from_inventory(S)
-		S.forceMove(src)
 		update_icon()
 
 /obj/item/glass_jar/update_icon() // Also updates name and desc

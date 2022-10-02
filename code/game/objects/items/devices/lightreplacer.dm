@@ -106,7 +106,6 @@
 			if(uses < max_uses)
 				AddUses(1)
 				to_chat(user, "You insert \the [L.name] into \the [src.name]. You have [uses] light\s remaining.")
-				user.drop_item()
 				qdel(L)
 				return
 		else

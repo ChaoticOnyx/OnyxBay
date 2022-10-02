@@ -514,7 +514,7 @@ var/list/ai_verbs_default = list(
 		var/personnel_list[] = list()
 
 		for(var/datum/computer_file/crew_record/t in GLOB.all_crew_records)//Look in data core locked.
-			personnel_list["[t.get_name()]: [t.get_rank()]"] = t.photo_front//Pull names, rank, and image.
+			personnel_list["[t.get_name()]"] = t.photo_front//Pull names and image.
 
 		if(personnel_list.len)
 			input = input("Select a crew member:") as null|anything in personnel_list
@@ -569,14 +569,14 @@ var/list/ai_verbs_default = list(
 	if(camera_light_on && camera_light_on < world.timeofday)
 		if(src.camera)
 			var/obj/machinery/camera/camera = near_range_camera(src.eyeobj)
-			if(camera && src.camera != camera)
+			if(!QDELETED(camera) && src.camera != camera)
 				src.camera.set_light(0)
 				if(!camera.light_disabled)
 					src.camera = camera
 					src.camera.set_light(0.5, 0.1, AI_CAMERA_LUMINOSITY)
 				else
 					src.camera = null
-			else if(isnull(camera))
+			else if(QDELETED(camera))
 				src.camera.set_light(0)
 				src.camera = null
 		else

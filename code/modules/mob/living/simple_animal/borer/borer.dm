@@ -95,7 +95,7 @@
 					host.adjustBrainLoss(0.1)
 
 				if(prob(host.getBrainLoss()/20))
-					host.say("*[pick(list("blink","blink_r","choke","aflap","drool","twitch","twitch_v","gasp"))]")
+					host.emote("[pick(list("blink","blink_r","choke","aflap","drool","twitch","twitch_v","gasp"))]")
 		else if((stat == DEAD || host.stat == DEAD) && controlling)
 			detatch()
 

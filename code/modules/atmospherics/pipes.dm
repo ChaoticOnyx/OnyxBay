@@ -1177,7 +1177,7 @@
 /obj/machinery/atmospherics/pipe/tank/air/New()
 	air_temporary = new
 	air_temporary.volume = volume
-	air_temporary.temperature = T20C
+	air_temporary.temperature = 20 CELSIUS
 
 	air_temporary.adjust_multi("oxygen",  (start_pressure*O2STANDARD)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature), \
 	                           "nitrogen",(start_pressure*N2STANDARD)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
@@ -1193,7 +1193,7 @@
 /obj/machinery/atmospherics/pipe/tank/oxygen/New()
 	air_temporary = new
 	air_temporary.volume = volume
-	air_temporary.temperature = T20C
+	air_temporary.temperature = 20 CELSIUS
 
 	air_temporary.adjust_gas("oxygen", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
 
@@ -1207,7 +1207,7 @@
 /obj/machinery/atmospherics/pipe/tank/nitrogen/New()
 	air_temporary = new
 	air_temporary.volume = volume
-	air_temporary.temperature = T20C
+	air_temporary.temperature = 20 CELSIUS
 
 	air_temporary.adjust_gas("nitrogen", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
 
@@ -1221,7 +1221,7 @@
 /obj/machinery/atmospherics/pipe/tank/carbon_dioxide/New()
 	air_temporary = new
 	air_temporary.volume = volume
-	air_temporary.temperature = T20C
+	air_temporary.temperature = 20 CELSIUS
 
 	air_temporary.adjust_gas("carbon_dioxide", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
 
@@ -1235,7 +1235,7 @@
 /obj/machinery/atmospherics/pipe/tank/plasma/New()
 	air_temporary = new
 	air_temporary.volume = volume
-	air_temporary.temperature = T20C
+	air_temporary.temperature = 20 CELSIUS
 
 	air_temporary.adjust_gas("plasma", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
 
@@ -1249,7 +1249,7 @@
 /obj/machinery/atmospherics/pipe/tank/nitrous_oxide/New()
 	air_temporary = new
 	air_temporary.volume = volume
-	air_temporary.temperature = T0C
+	air_temporary.temperature = 0 CELSIUS
 
 	air_temporary.adjust_gas("sleeping_agent", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
 
@@ -1263,7 +1263,7 @@
 /obj/machinery/atmospherics/pipe/tank/hydrogen/New()
 	air_temporary = new
 	air_temporary.volume = volume
-	air_temporary.temperature = T20C
+	air_temporary.temperature = 20 CELSIUS
 
 	air_temporary.adjust_gas("hydrogen", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
 
