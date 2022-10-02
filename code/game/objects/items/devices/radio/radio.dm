@@ -59,7 +59,7 @@
 			radio_controller.remove_object(src, radiochannels[ch_name])
 	return ..()
 
-/obj/item/device/radio/attack_self(mob/user as mob)
+/obj/item/device/radio/attack_self(mob/user)
 	user.set_machine(src)
 	interact(user)
 
