@@ -29,7 +29,7 @@
 
 /obj/item/melee/changeling/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/melee/changeling/dropped(mob/user)
 	user.visible_message(SPAN("danger", "With a sickening crunch, [creator] reforms their arm!"), \
@@ -39,11 +39,7 @@
 	spawn(1)
 		qdel(src)
 
-/obj/item/melee/changeling/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	. = ..()
-
-/obj/item/melee/changeling/Process()  //Stolen from ninja swords.
+/obj/item/melee/changeling/think()  //Stolen from ninja swords.
 	if(!creator || loc != creator ||(creator.l_hand != src && creator.r_hand != src))
 		// Tidy up a bit.
 		if(istype(loc, /mob/living))
@@ -55,9 +51,11 @@
 							organ.implants -= src
 			host.pinned -= src
 			host.embedded -= src
-			host.drop_from_inventory(src)
+			host.drop(src, force = TRUE)
 		spawn(1)
 			qdel(src)
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/melee/changeling/arm_blade
 	name = "arm blade"

@@ -139,51 +139,11 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		"Atheism"
 		)
 
-	var/list/available_events = list(
-		/datum/event/nothing,
-		/datum/event/apc_damage,
-		/datum/event/brand_intelligence,
-		/datum/event/camera_damage,
-		/datum/event/economic_event,
-		/datum/event/carp_migration,
-		/datum/event/money_hacker,
-		/datum/event/money_lotto,
-		/datum/event/mundane_news,
-		/datum/event/shipping_error,
-		/datum/event/dust,
-		/datum/event/sensor_suit_jamming,
-		/datum/event/trivial_news,
-		/datum/event/infestation,
-		/datum/event/wallrot,
-		/datum/event/electrical_storm,
-		/datum/event/space_cold,
-		/datum/event/spontaneous_appendicitis,
-		/datum/event/communications_blackout,
-		/datum/event/grid_check,
-		/datum/event/ionstorm,
-		/datum/event/meteor_wave,
-		/datum/event/prison_break,
-		/datum/event/radiation_storm,
-		/datum/event/random_antag,
-		/datum/event/rogue_drone,
-		/datum/event/solar_storm,
-		/datum/event/prison_break/virology,
-		/datum/event/prison_break/xenobiology,
-		/datum/event/virus_minor,
-		/datum/event/stray_facehugger,
-		/datum/event/wormholes,
-		/datum/event/prison_break/station,
-		/datum/event/spacevine,
-		/datum/event/virus_major,
-		/datum/event/xenomorph_infestation,
-		/datum/event/biohazard_outbreak
-	)
-
 /datum/map/New()
 	if(!allowed_jobs)
 		allowed_jobs = subtypesof(/datum/job)
 	if(!shuttle_types)
-		crash_with("[src] has no shuttle_types!")
+		util_crash_with("[src] has no shuttle_types!")
 
 /datum/map/proc/level_has_trait(z, trait)
 	return map_levels[z].has_trait(trait)
@@ -201,15 +161,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	for(var/id in antags)
 		var/datum/antagonist/A = antags[id]
 		A.get_starting_locations()
-
-	if(!length(post_round_safe_areas))
-		post_round_safe_areas = list()
-
-		for(var/level = 1; level <= length(map_levels); level++)
-			var/datum/space_level/L = map_levels[level]
-
-			if(L.has_trait(ZTRAIT_CENTCOM))
-				post_round_safe_areas += level
 
 /datum/map/proc/send_welcome()
 	return
@@ -262,7 +213,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	if(!length(candidates))
 		return current_z_level
 
-	return text2num(pickweight(candidates))
+	return text2num(util_pick_weight(candidates))
 
 /datum/map/proc/get_empty_zlevel()
 	var/empty_levels = list()
@@ -349,7 +300,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 		for(var/T in args)
 			if(L.has_trait(T))
-				result += L
+				result += level
 				break
 	
 	return result
@@ -367,6 +318,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 				break
 		
 		if(ok)
-			result += L
+			result += level
 	
 	return result

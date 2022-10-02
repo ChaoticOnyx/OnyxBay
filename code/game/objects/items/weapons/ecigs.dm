@@ -83,12 +83,11 @@
 		. += "\n<span class='notice'>There is no cartridge connected.</span>"
 	. += "\n<span class='notice'>Gauge shows [round(cigcell.percent(), 1)]% energy remaining</span>"
 
-/obj/item/clothing/mask/smokable/ecig/Process()
+/obj/item/clothing/mask/smokable/ecig/think()
 	if(idle >= idle_treshold) //idle too long -> automatic shut down
 		idle = 0
 		src.visible_message("<span class='notice'>\The [src] powered down automatically.</span>", null, 2)
 		active=0//autodisable the cigarette
-		STOP_PROCESSING(SSobj, src)
 		update_icon()
 		return
 
@@ -101,7 +100,6 @@
 			if(!ec_cartridge.reagents.total_volume)
 				to_chat(C, "<span class='notice'>There is no liquid left in \the [src], so you shut it down.</span>")
 			active=0//autodisable the cigarette
-			STOP_PROCESSING(SSobj, src)
 			update_icon()
 			return
 
@@ -110,11 +108,12 @@
 			//here we'll reduce battery by usage, and check powerlevel - you only use batery while smoking
 			if(!cigcell.checked_use(power_usage * CELLRATE)) //if this passes, there's not enough power in the battery
 				active = 0
-				STOP_PROCESSING(SSobj, src)
 				update_icon()
 				to_chat(C,"<span class='notice'>Battery in \the [src] ran out and it powered down.</span>")
 				return
 			ec_cartridge.reagents.trans_to_mob(C, REM, CHEM_INGEST, 0.4) // Most of it is not inhaled... balance reasons.
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/clothing/mask/smokable/ecig/update_icon()
 	if (active)
@@ -140,9 +139,7 @@
 	if(istype(I, /obj/item/reagent_containers/ecig_cartridge))
 		if (ec_cartridge)//can't add second one
 			to_chat(user, "<span class='notice'>A cartridge has already been installed.</span> ")
-		else//fits in new one
-			user.remove_from_mob(I)
-			I.forceMove(src)//I.loc=src
+		else if(user.drop(I, src)) // fits in new one
 			ec_cartridge = I
 			update_icon()
 			to_chat(user, "<span class='notice'>You insert [I] into [src].</span> ")
@@ -157,8 +154,7 @@
 			to_chat(user, "<span class='notice'>There is no powercell in \the [src].</span>")
 
 	if(istype(I, /obj/item/cell/device))
-		if(!cigcell && user.unEquip(I))
-			I.forceMove(src)
+		if(!cigcell && user.drop(I, src))
 			cigcell = I
 			to_chat(user, "<span class='notice'>You install a powercell into the [src].</span>")
 			update_icon()
@@ -169,7 +165,7 @@
 /obj/item/clothing/mask/smokable/ecig/attack_self(mob/user as mob)
 	if (active)
 		active=0
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 		to_chat(user, "<span class='notice'>You turn off \the [src]. </span> ")
 		update_icon()
 	else
@@ -184,7 +180,7 @@
 				to_chat(user, "<span class='notice'>Battery of \the [src] is too depleted to use.</span> ")
 				return
 			active=1
-			START_PROCESSING(SSobj, src)
+			set_next_think(world.time)
 			to_chat(user, "<span class='notice'>You turn on \the [src]. </span> ")
 			update_icon()
 

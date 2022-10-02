@@ -132,7 +132,7 @@ var/global/datum/matchmaker/matchmaker = new()
 		for(var/i=1 to 5)
 			if(!candidates.len)
 				break
-			var/mob/M = pickweight(candidates)
+			var/mob/M = util_pick_weight(candidates)
 			candidates -= M
 			if(!M.mind.known_connections)
 				M.mind.known_connections = list()

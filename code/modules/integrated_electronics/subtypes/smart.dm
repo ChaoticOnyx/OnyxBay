@@ -155,8 +155,8 @@
 	if(installed_brain)
 		to_chat(user,SPAN("warning", "There's already a brain inside."))
 		return
-	user.drop_item(O)
-	O.forceMove(src)
+	if(!user.drop(O, src))
+		return
 	installed_brain = O
 	to_chat(user, SPAN("notice", "You gently place \the man-machine interface inside the tank."))
 	to_chat(O, SPAN("notice", "You are slowly being placed inside the man-machine-interface tank."))
@@ -276,8 +276,8 @@
 	if(installed_pai)
 		to_chat(user,SPAN("warning", "There's already a pAI connected to this."))
 		return
-	user.drop_item(O)
-	O.forceMove(src)
+	if(!user.drop(O, src))
+		return
 	installed_pai = O
 	to_chat(user, SPAN("notice", "You slowly connect the circuit's pins to the [installed_pai]."))
 	to_chat(O, SPAN("notice", "You are slowly being connected to the pAI connector."))

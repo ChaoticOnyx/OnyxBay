@@ -30,11 +30,7 @@
 			if(C.IgniteMob())
 				C.visible_message(SPAN_DANGER("[C] bursts into flames!"))
 
-	START_PROCESSING(SSobj, src)
-
-/obj/flamer_fire/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	return ..()
+	set_next_think(world.time)
 
 /obj/flamer_fire/Crossed(mob/living/M) //Only way to get it to reliable do it when you walk into it.
 	if(istype(M))
@@ -59,7 +55,7 @@
 			light_intensity = 6
 	set_light(0.7, 0.1, light_intensity, 2, light_color)
 
-/obj/flamer_fire/Process()
+/obj/flamer_fire/think()
 	var/turf/T = loc
 	firelevel = max(0, firelevel)
 	if(!istype(T) || istype(T, /turf/space)) //Is it a valid turf?
@@ -84,7 +80,7 @@
 		A.flamer_fire_act(burnlevel, firelevel, T)
 
 	firelevel -= 2 //reduce the intensity by 2 per tick
-	return
+	set_next_think(world.time + 1 SECOND)
 
 /mob/living/simple_animal/flamer_fire_crossed(burnlevel)
 	var/burn_damage = burnlevel*2.7 //kil dam spiders!!!!!!!!

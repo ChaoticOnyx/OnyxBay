@@ -18,8 +18,8 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 
 	var/list/item_type = list("Machine Boards", "Console Boards", "Mecha Boards", "Module Boards", "Engineering Boards", "Device")
 
-	idle_power_usage = 30
-	active_power_usage = 2500
+	idle_power_usage = 30 WATTS
+	active_power_usage = 2.500 KILO WATTS
 
 /obj/machinery/r_n_d/circuit_imprinter/Initialize()
 	materials = default_material_composition.Copy()

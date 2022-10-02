@@ -42,7 +42,6 @@
 		to_chat(user, "You add [D] to [src].")
 		qdel(D)
 		user.put_in_hands(new /obj/item/bucket_sensor)
-		user.drop_from_inventory(src)
 		qdel(src)
 		return
 	else if(istype(D, /obj/item/mop) || (atom_flags & ATOM_FLAG_OPEN_CONTAINER))

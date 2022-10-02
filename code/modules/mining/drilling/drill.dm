@@ -13,8 +13,8 @@
 	var/braces_needed = 2
 	var/list/supports = list()
 	var/supported = 0
-	var/base_power_usage = 10 KILOWATTS // Base power usage when the drill is running.
-	var/actual_power_usage = 10 KILOWATTS // Actual power usage, with upgrades in mind.
+	var/base_power_usage = 10 KILO WATTS // Base power usage when the drill is running.
+	var/actual_power_usage = 10 KILO WATTS // Actual power usage, with upgrades in mind.
 	var/active = 0
 	var/list/resource_field = list()
 
@@ -156,9 +156,7 @@
 	if(istype(O, /obj/item/cell))
 		if(cell)
 			to_chat(user, "The drill already has a cell installed.")
-		else
-			user.drop_item()
-			O.loc = src
+		else if(user.drop(O, src))
 			cell = O
 			component_parts += O
 			to_chat(user, "You install \the [O].")

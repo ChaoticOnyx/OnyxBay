@@ -328,6 +328,9 @@
 
 	msg += applying_pressure
 
+	if (isundead(src) && !isfakeliving(src))
+		msg += SPAN("warning", "[T.He] looks unhealthy pale.\n")
+
 	if (pose)
 		if( findtext(pose,".",length(pose)) == 0 && findtext(pose,"!",length(pose)) == 0 && findtext(pose,"?",length(pose)) == 0 )
 			pose = addtext(pose,".") //Makes sure all emotes end with a period.

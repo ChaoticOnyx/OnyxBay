@@ -105,7 +105,7 @@
 	if(_monitor)
 		monitor = _monitor
 	else
-		crash_with("proximity_checker created without host")
+		util_crash_with("proximity_checker created without host")
 		return INITIALIZE_HINT_QDEL
 
 /obj/effect/abstract/proximity_checker/Destroy()

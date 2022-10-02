@@ -132,7 +132,7 @@
 
 	flesh_color = "#663300"
 	base_color = "#333333"
-	blood_color = "#862a51"
+	blood_color = COLOR_BLOOD_TAJARAN
 	organs_icon = 'icons/mob/human_races/organs/tajaran.dmi'
 	reagent_tag = IS_TAJARA
 
@@ -159,7 +159,6 @@
 	name_plural = SPECIES_SKRELL
 	icobase = 'icons/mob/human_races/r_skrell.dmi'
 	deform = 'icons/mob/human_races/r_def_skrell.dmi'
-	eye_icon = "skrell_eyes_s"
 	primitive_form = "Neaera"
 	unarmed_types = list(/datum/unarmed_attack/punch)
 	blurb = "An amphibious species, Skrell come from the star system known as Qerr'Vallis, which translates to 'Star of \
@@ -200,7 +199,7 @@
 	appearance_flags = HAS_HAIR_COLOR | HAS_LIPS | HAS_UNDERWEAR | HAS_SKIN_COLOR
 
 	flesh_color = "#339966"
-	blood_color = "#1d2cbf"
+	blood_color = COLOR_BLOOD_SKRELL
 	base_color = "#006666"
 	organs_icon = 'icons/mob/human_races/organs/skrell.dmi'
 
@@ -238,6 +237,9 @@
 	name_plural = "Dionaea"
 	icobase = 'icons/mob/human_races/r_diona.dmi'
 	deform = 'icons/mob/human_races/r_def_plant.dmi'
+
+	has_eyes_icon = FALSE
+
 	language = LANGUAGE_ROOTLOCAL
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/diona)
 	//primitive_form = "Nymph"
@@ -253,7 +255,6 @@
 	spawns_with_stack = 0
 	health_hud_intensity = 2
 	hunger_factor = 3
-	eye_icon = "blank_eyes"
 
 	min_age = 1
 	max_age = 300
@@ -282,7 +283,7 @@
 	has_limbs = list(
 		BP_CHEST =  list("path" = /obj/item/organ/external/diona/chest),
 		BP_GROIN =  list("path" = /obj/item/organ/external/diona/groin),
-		BP_HEAD =   list("path" = /obj/item/organ/external/head/no_eyes/diona),
+		BP_HEAD =   list("path" = /obj/item/organ/external/head/diona),
 		BP_L_ARM =  list("path" = /obj/item/organ/external/diona/arm),
 		BP_R_ARM =  list("path" = /obj/item/organ/external/diona/arm/right),
 		BP_L_LEG =  list("path" = /obj/item/organ/external/diona/leg),
@@ -309,7 +310,7 @@
 	heat_level_2 = 3000
 	heat_level_3 = 4000
 
-	body_temperature = T0C + 15		//make the plant people have a bit lower body temperature, why not
+	body_temperature = 15 CELSIUS		//make the plant people have a bit lower body temperature, why not
 
 	species_flags = SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_IS_PLANT | SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET
 	appearance_flags = 0

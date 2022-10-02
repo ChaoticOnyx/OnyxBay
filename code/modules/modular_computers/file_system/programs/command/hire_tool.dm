@@ -23,7 +23,7 @@
 
 	data["hiring_menu"] = hiring_menu
 	if(hiring_menu)
-		var/datum/storyteller_character/ST = SSstoryteller.get_character()
+		var/datum/storyteller_character/ST = SSstoryteller.character
 		data["limit"] = "\[limit - [length(GLOB.vacancies)]/[ST ? ST.get_available_vacancies() : job_master.get_available_vacancies()]\]"
 
 		if(hiring_job)
@@ -94,7 +94,7 @@
 		return 1
 
 	else if(href_list["vacancy_confirmation"])
-		var/datum/storyteller_character/ST = SSstoryteller.get_character()
+		var/datum/storyteller_character/ST = SSstoryteller.character
 		var/available_vacancies = ST ? ST.get_available_vacancies() : job_master.get_available_vacancies()
 		if(length(GLOB.vacancies) >= available_vacancies)
 			message = "You can't open new vacancies because you have reached the limit."

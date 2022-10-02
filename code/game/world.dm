@@ -373,23 +373,24 @@ var/world_topic_spam_protect_time = world.timeofday
 				return "Bad Key (Throttled)"
 			world_topic_spam_protect_time = world.time
 			return "Bad Key"
-		var/ckey = input["ckey"]
+		var/client_key = input["ckey"]
+		var/client_ckey = ckey(client_key)
 		var/message
 		if(!input["isadmin"])  // le costil, remove when discord-bot will be fixed ~HonkyDonky
 			message = html_encode(input["ooc"])
 		else
 			message = "<font color='#39034f'>" + strip_html_properly(input["ooc"]) + "</font>"
-		if(!ckey||!message)
+		if(!client_ckey||!message)
 			return
 		if(!config.misc.ooc_allowed && !input["isadmin"])
 			return "globally muted"
-		if(jobban_keylist.Find("[ckey] - OOC"))
+		if(jobban_keylist.Find("[client_ckey] - OOC"))
 			return "banned from ooc"
-		var/sent_message = "[create_text_tag("dooc", "Discord")] <EM>[ckey]:</EM> <span class='message linkify'>[message]</span>"
+		var/sent_message = "[create_text_tag("dooc", "Discord")] <EM>[client_key]:</EM> <span class='message linkify'>[message]</span>"
 		for(var/client/target in GLOB.clients)
 			if(!target)
 				continue //sanity
-			if(target.is_key_ignored(ckey) && !input["isadmin"]) // If we're ignored by this person, then do nothing.
+			if(target.is_key_ignored(client_ckey) && !input["isadmin"]) // If we're ignored by this person, then do nothing.
 				continue //if it shouldn't see then it doesn't
 			to_chat(target, "<span class='ooc dooc'><span class='everyone'>[sent_message]</span></span>", type = MESSAGE_TYPE_DOOC)
 
@@ -660,7 +661,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 /world/proc/SetupLogs()
 	if (!game_id)
-		crash_with("Unknown game_id!")
+		util_crash_with("Unknown game_id!")
 
 	var/log_directory = "data/logs/[time2text(world.realtime, "YYYY/MM-Month")]"
 	var/log_prefix = "[time2text(world.realtime, "DD.MM.YY")]_"

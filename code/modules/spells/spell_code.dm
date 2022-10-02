@@ -256,6 +256,10 @@
 		if(!user.wearing_wiz_garb())
 			return FALSE
 
+	if(istype(user.loc, /obj/effect/dummy/spell_jaunt))
+		to_chat(user, SPAN_WARNING("You cannot cast spells in this form"))
+		return FALSE
+
 	return TRUE
 
 /datum/spell/proc/check_charge(skipcharge, mob/user)
@@ -378,7 +382,7 @@
 	return temp
 
 /datum/spell/proc/spell_do_after(mob/user as mob, delay as num, numticks = 5)
-	if(!user || isnull(user))
+	if(QDELETED(user))
 		return FALSE
 
 	var/incap_flags = INCAPACITATION_STUNNED

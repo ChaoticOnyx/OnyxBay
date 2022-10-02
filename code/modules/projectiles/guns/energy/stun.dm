@@ -268,7 +268,7 @@
 	icon_state = "taser_smg"
 	wielded_item_state = FALSE
 	projectile_type = /obj/item/projectile/energy/electrode/small
-	max_shots = 15
+	max_shots = 12
 	accuracy = 0
 	one_hand_penalty = 1
 	fire_delay = 3

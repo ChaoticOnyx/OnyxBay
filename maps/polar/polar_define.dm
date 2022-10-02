@@ -93,33 +93,16 @@
 		NETWORK_APPARAT_VORON
 	)
 
-	available_events = list(
-		/datum/event/nothing,
-		/datum/event/apc_damage,
-		/datum/event/brand_intelligence/polar,
-		/datum/event/camera_damage,
-		/datum/event/economic_event,
-		/datum/event/money_hacker/polar,
-		/datum/event/money_lotto,
-		/datum/event/mundane_news,
-		/datum/event/shipping_error,
-		/datum/event/sensor_suit_jamming,
-		/datum/event/trivial_news,
-		/datum/event/infestation/polar,
-		/datum/event/wallrot/polar,
-		/datum/event/space_cold,
-		/datum/event/spontaneous_appendicitis,
-		/datum/event/communications_blackout/polar,
-		/datum/event/grid_check,
-		/datum/event/prison_break/polar,
-		/datum/event/random_antag,
-		/datum/event/virus_minor,
-		/datum/event/stray_facehugger,
-		/datum/event/wormholes,
-		/datum/event/spacevine,
-		/datum/event/virus_major,
-		/datum/event/xenomorph_infestation,
-		/datum/event/biohazard_outbreak,
+/datum/map/polar
+	post_round_safe_areas = list (
+		/area/polarplanet/centcom,
+		/area/polarplanet/shuttle/escape/centcom,
+		/area/polarplanet/shuttle/escape_pod1,
+		/area/polarplanet/shuttle/escape_pod2,
+		/area/polarplanet/shuttle/escape_pod3,
+		/area/polarplanet/shuttle/escape_pod5,
+		/area/polarplanet/shuttle/administration,
+		/area/polarplanet/shuttle/specops/centcom,
 	)
 
 /datum/map/polar/setup_map()

@@ -18,7 +18,7 @@
 	center_of_mass = null
 
 	// These values are passed on to all component pieces.
-	armor = list(melee = 40, bullet = 5, laser = 20,energy = 5, bomb = 35, bio = 100, rad = 20)
+	armor = list(melee = 40, bullet = 5, laser = 20,energy = 5, bomb = 35, bio = 100)
 	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.2
@@ -115,7 +115,7 @@
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
 
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 	if(initial_modules && initial_modules.len)
 		for(var/path in initial_modules)
@@ -165,7 +165,7 @@
 	for(var/obj/item/piece in list(gloves, boots, helmet, chest))
 		var/mob/living/M = piece.loc
 		if(istype(M))
-			M.drop_from_inventory(piece)
+			M.drop(piece, force = TRUE)
 
 
 	QDEL_NULL(wires)
@@ -390,16 +390,17 @@
 			helmet.flags_inv |= HIDEMASK
 	update_icon(1)
 
-/obj/item/rig/Process()
+/obj/item/rig/think()
 
 	// If we've lost any parts, grab them back.
 	var/mob/living/M
 	for(var/obj/item/piece in list(gloves,boots,helmet,chest))
 		if(piece.loc != src && !(wearer && piece.loc == wearer))
-			if(istype(piece.loc, /mob/living))
-				M = piece.loc
-				M.drop_from_inventory(piece)
-			piece.forceMove(src)
+			M = piece.loc
+			if(istype(M))
+				M.drop(piece, src, TRUE)
+			else
+				piece.forceMove(src)
 
 	var/changed = update_offline()
 	if(changed)
@@ -439,6 +440,8 @@
 
 		for(var/obj/item/rig_module/module in installed_modules)
 			cell.use(module.Process() * CELLRATE)
+
+	set_next_think(world.time + 1 SECOND)
 
 //offline should not change outside this proc
 /obj/item/rig/proc/update_offline()
@@ -663,9 +666,9 @@
 		M.visible_message("<span class='info'>[M] starts putting on \the [src]...</span>", "<span class='info'>You start putting on \the [src]...</span>")
 		if(!do_after(M,seal_delay,src))
 			if(M && M.back == src)
-				if(!M.unEquip(src))
+				if(!M.drop(src))
 					return
-			src.forceMove(get_turf(src))
+			forceMove(get_turf(src))
 			return
 
 	if(istype(M) && M.back == src)
@@ -720,9 +723,7 @@
 				if(istype(holder))
 					if(use_obj && check_slot == use_obj)
 						to_chat(wearer, "<span class='info'><b>Your [use_obj.name] [use_obj.gender == PLURAL ? "retract" : "retracts"] swiftly.</b></span>")
-						use_obj.canremove = 1
-						holder.drop_from_inventory(use_obj, src)
-						use_obj.canremove = 0
+						holder.drop(use_obj, src, TRUE)
 
 		else if (deploy_mode != ONLY_RETRACT)
 			if(check_slot && check_slot == use_obj)
@@ -753,25 +754,21 @@
 	if(sealed)
 		if(H.head)
 			var/obj/item/garbage = H.head
-			H.drop_from_inventory(garbage)
 			H.head = null
 			qdel(garbage)
 
 		if(H.gloves)
 			var/obj/item/garbage = H.gloves
-			H.drop_from_inventory(garbage)
 			H.gloves = null
 			qdel(garbage)
 
 		if(H.shoes)
 			var/obj/item/garbage = H.shoes
-			H.drop_from_inventory(garbage)
 			H.shoes = null
 			qdel(garbage)
 
 		if(H.wear_suit)
 			var/obj/item/garbage = H.wear_suit
-			H.drop_from_inventory(garbage)
 			H.wear_suit = null
 			qdel(garbage)
 

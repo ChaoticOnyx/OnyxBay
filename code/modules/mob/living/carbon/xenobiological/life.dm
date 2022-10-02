@@ -19,7 +19,7 @@
 		return
 
 	//var/environment_heat_capacity = environment.heat_capacity()
-	var/loc_temp = T0C
+	var/loc_temp = 0 CELSIUS
 	if(istype(get_turf(src), /turf/space))
 		//environment_heat_capacity = loc:heat_capacity
 		var/turf/heat_turf = get_turf(src)
@@ -31,7 +31,7 @@
 
 	bodytemperature += adjust_body_temperature(bodytemperature, loc_temp, 1)
 
-	if(bodytemperature < (T0C + 5)) // start calculating temperature damage etc
+	if(bodytemperature < (5 CELSIUS)) // start calculating temperature damage etc
 		if(bodytemperature <= hurt_temperature)
 			if(bodytemperature <= die_temperature)
 				adjustToxLoss(200)

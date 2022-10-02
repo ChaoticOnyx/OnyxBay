@@ -70,11 +70,11 @@
 		if("dispence plasma")
 			dispence_plasma(user)
 
-/obj/structure/dispenser/attackby(obj/item/I as obj, mob/user as mob)
+/obj/structure/dispenser/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/tank/oxygen) || istype(I, /obj/item/tank/air) || istype(I, /obj/item/tank/anesthetic))
 		if(oxygentanks < 10)
-			user.drop_item()
-			I.loc = src
+			if(!user.drop(I, src))
+				return
 			oxytanks.Add(I)
 			oxygentanks++
 			to_chat(user, "<span class='notice'>You put [I] in [src].</span>")
@@ -85,8 +85,8 @@
 		return
 	if(istype(I, /obj/item/tank/plasma))
 		if(plasmatanks < 10)
-			user.drop_item()
-			I.loc = src
+			if(!user.drop(I, src))
+				return
 			platanks.Add(I)
 			plasmatanks++
 			to_chat(user, "<span class='notice'>You put [I] in [src].</span>")

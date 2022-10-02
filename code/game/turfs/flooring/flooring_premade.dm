@@ -3,7 +3,15 @@
 	name = "plating"
 	icon = 'icons/turf/flooring/plating.dmi'
 	icon_state = "plating"
+	base_icon_state = "plating"
 	layer = PLATING_LAYER
+	var/tile_type = /obj/item/stack/tile/floor
+
+/turf/simulated/floor/plating/rough
+	name = "plating"
+	icon_state = "rough_plating"
+	base_icon_state = "rough_plating"
+	tile_type = /obj/item/stack/tile/floor_rough
 
 
 //GRID FLOORING
@@ -96,6 +104,12 @@
 	icon_state = "steel"
 	initial_flooring = /decl/flooring/tiling
 
+/turf/simulated/floor/tiled/rough
+	name = "steel rough floor"
+	icon = 'icons/turf/flooring/tiles.dmi'
+	icon_state = "steel_rough"
+	initial_flooring = /decl/flooring/tiling/rough
+
 /turf/simulated/floor/tiled/mono
 	name = "steel mono floor"
 	icon_state = "steel_mono"
@@ -105,6 +119,11 @@
 	name = "dark floor"
 	icon_state = "dark"
 	initial_flooring = /decl/flooring/tiling/dark
+
+/turf/simulated/floor/tiled/dark/rough
+	name = "dark rough floor"
+	icon_state = "dark_rough"
+	initial_flooring = /decl/flooring/tiling/dark/rough
 
 /turf/simulated/floor/tiled/dark/mono
 	name = "dark mono floor"
@@ -118,6 +137,11 @@
 	name = "white floor"
 	icon_state = "white"
 	initial_flooring = /decl/flooring/tiling/white
+
+/turf/simulated/floor/tiled/white/rough
+	name = "white rough floor"
+	icon_state = "white_rough"
+	initial_flooring = /decl/flooring/tiling/white/rough
 
 /turf/simulated/floor/tiled/white/mono
 	name = "white mono floor"
@@ -163,6 +187,11 @@
 	temperature = TCMB
 
 /turf/simulated/floor/plating/airless
+	name = "airless plating"
+	initial_gas = null
+	temperature = TCMB
+
+/turf/simulated/floor/plating/rough/airless
 	name = "airless plating"
 	initial_gas = null
 	temperature = TCMB
@@ -217,6 +246,7 @@
 	icon_state = "darkwood"
 	icon = 'icons/turf/flooring/wood.dmi'
 	initial_flooring = /decl/flooring/darkwood
+	footstep_sound = SFX_FOOTSTEP_WOOD
 
 /turf/simulated/floor/trim/wood/broken0
 	name = "wooden floor"
@@ -319,38 +349,32 @@
 	icon = 'icons/turf/flooring/grass.dmi'
 	icon_state = "grass0"
 	initial_flooring = null
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
 
 /turf/simulated/floor/natural/grass
 	name = "grass patch"
 	icon = 'icons/turf/flooring/grass.dmi'
 	icon_state = "grass0"
 	initial_flooring = /decl/flooring/grass
+	footstep_sound = SFX_FOOTSTEP_GRASS
 
 /turf/simulated/floor/natural/ice
 	name = "ice"
 	icon = 'icons/turf/snow.dmi'
 	icon_state = "ice"
+	footstep_sound = SFX_FOOTSTEP_SNOW
 
 /turf/simulated/floor/natural/snow
 	name = "snow"
 	icon = 'icons/turf/snow.dmi'
 	icon_state = "snow"
-
-/turf/simulated/floor/natural/frozenground
-	name = "frozen ground"
-	icon = 'icons/turf/flooring/frozenground.dmi'
-	icon_state = "frozen_ground"
-	temperature = 193.15
+	footstep_sound = SFX_FOOTSTEP_SNOW
 
 /turf/simulated/floor/natural/frozenground/cave
 	name = "frozen ground"
 	icon = 'icons/turf/flooring/frozenground.dmi'
 	icon_state = "wground1"
-	temperature = 243.15
-
-/turf/simulated/floor/natural/frozenground/ice/shallow
-	icon = 'icons/turf/ice.dmi'
-	icon_state = "ice1"
+	temperature = 20 CELSIUS
 
 /turf/simulated/floor/natural/lava
 	name = "lava"
@@ -402,6 +426,7 @@
 	name = "grass"
 	icon = 'icons/turf/jungle_turfs.dmi'
 	icon_state = "grass1"
+	footstep_sound = SFX_FOOTSTEP_GRASS
 
 /turf/simulated/floor/natural/jungle/grasscorner1
 	name = "grass"
@@ -426,6 +451,7 @@
 /turf/simulated/floor/natural/jungle/sandgrasscorner2
 	name = "grass"
 	icon_state = "grasssand_corner2"
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
 
 /turf/simulated/floor/natural/jungle/dirt
 	name = "dirt"
@@ -437,6 +463,7 @@
 	desc = "Looks wet."
 	icon = 'icons/misc/beach.dmi'
 	icon_state = "seashallow"
+	footstep_sound = SFX_FOOTSTEP_WATER
 	var/overlay = TRUE
 
 /turf/simulated/floor/natural/jungle/water/New()
@@ -450,6 +477,7 @@
 /turf/simulated/floor/natural/jungle/water/corner
 	icon_state = "beachcorner"
 	overlay = FALSE
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
 
 /turf/simulated/floor/natural/jungle/sand
 	name = "sand"
@@ -460,6 +488,7 @@
 	base_desc = "Looks sandy."
 	base_icon = 'icons/misc/beach.dmi'
 	base_icon_state = "desert0"
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
 	var/rand_state = TRUE
 
 /turf/simulated/floor/natural/jungle/sand/New()

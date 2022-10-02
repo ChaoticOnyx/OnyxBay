@@ -5,7 +5,6 @@
 	var/auto_map_switching = FALSE
 	var/auto_map_vote = FALSE
 	var/assistant_maint = FALSE
-	var/storyteller = FALSE
 	var/continuous_rounds = FALSE
 	var/enter_allowed = TRUE
 	var/jobs_have_minimal_access = TRUE
@@ -56,7 +55,6 @@
 	CONFIG_LOAD_BOOL(auto_map_switching, data["auto_map_switching"])
 	CONFIG_LOAD_BOOL(auto_map_vote, data["auto_map_vote"])
 	CONFIG_LOAD_BOOL(assistant_maint, data["assistant_maint"])
-	CONFIG_LOAD_BOOL(storyteller, data["storyteller"])
 	CONFIG_LOAD_BOOL(continuous_rounds, data["continuous_rounds"])
 	CONFIG_LOAD_BOOL(enter_allowed, data["enter_allowed"])
 	CONFIG_LOAD_BOOL(jobs_have_minimal_access, data["jobs_have_minimal_access"])

@@ -18,8 +18,8 @@
 	//1 = select event
 	//2 = authenticate
 	anchored = 1.0
-	idle_power_usage = 2
-	active_power_usage = 6
+	idle_power_usage = 2 WATTS
+	active_power_usage = 6 WATTS
 	power_channel = STATIC_ENVIRON
 
 /obj/machinery/keycard_auth/attack_ai(mob/user)

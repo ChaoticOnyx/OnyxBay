@@ -76,7 +76,6 @@
 
 		stored_matter += cartridge.remaining
 
-		user.drop_from_inventory(W)
 		qdel(W)
 
 		update_icon()

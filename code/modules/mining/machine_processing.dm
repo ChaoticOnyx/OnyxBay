@@ -7,8 +7,8 @@
 	density = 1
 	anchored = 1
 	use_power = 1
-	idle_power_usage = 15
-	active_power_usage = 50
+	idle_power_usage = 15 WATTS
+	active_power_usage = 50 WATTS
 
 	var/obj/machinery/mineral/processing_unit/machine = null
 	var/machinedir = NORTHEAST
@@ -105,10 +105,10 @@
 		else if(href_list["choice"] == "insert")
 			var/obj/item/card/id/I = usr.get_active_hand()
 			if(istype(I))
-				usr.drop_item()
-				I.loc = src
-				inserted_id = I
-			else to_chat(usr, "<span class='warning'>No valid ID.</span>")
+				if(usr.drop(I, src))
+					inserted_id = I
+			else
+				to_chat(usr, "<span class='warning'>No valid ID.</span>")
 
 	if(href_list["toggle_smelting"])
 
@@ -157,8 +157,8 @@
 	var/static/list/alloy_data
 	var/active = 0
 	use_power = 1
-	idle_power_usage = 15
-	active_power_usage = 50
+	idle_power_usage = 15 WATTS
+	active_power_usage = 50 WATTS
 
 	component_types = list(
 			/obj/item/circuitboard/refiner,

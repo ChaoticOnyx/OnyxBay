@@ -113,10 +113,8 @@
 					return
 				if(ammo_magazine)
 					to_chat(user, "<span class='warning'>[src] already has a magazine loaded.</span>")//already a magazine here
-
 					return
-				user.remove_from_mob(AM)
-				AM.loc = src
+				user.drop(AM, src)
 				ammo_magazine = AM
 				user.visible_message("[user] inserts [AM] into [src].", "<span class='notice'>You insert [AM] into [src].</span>")
 				playsound(src.loc, mag_insert_sound, rand(45, 60), FALSE)
@@ -145,8 +143,7 @@
 			to_chat(user, "<span class='warning'>[src] is full.</span>")
 			return
 
-		user.remove_from_mob(C)
-		C.loc = src
+		user.drop(C, src)
 		loaded.Insert(1, C) //add to the head of the list
 		user.visible_message("[user] inserts \a [C] into [src].", "<span class='notice'>You insert \a [C] into [src].</span>")
 
@@ -166,7 +163,7 @@
 		playsound(src.loc, 'sound/weapons/flipblade.ogg', rand(50, 75), FALSE)
 	if(ammo_magazine)
 		if(allow_dump)
-			user.drop_from_inventory(ammo_magazine)
+			user.drop(ammo_magazine)
 			user.visible_message("[user] ejects [ammo_magazine] from [src].",
 			SPAN_NOTICE("You eject [ammo_magazine] from [src]."))
 		else

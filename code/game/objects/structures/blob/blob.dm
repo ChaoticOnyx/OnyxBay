@@ -35,7 +35,11 @@
 /obj/structure/blob/Initialize()
 	. = ..()
 
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
+	add_think_ctx("heal", CALLBACK(src, .proc/heal_think), world.time)
+	add_think_ctx("attack", CALLBACK(src, .proc/attack_think), world.time)
+	add_think_ctx("expand", CALLBACK(src, .proc/expand_think), world.time)
+	add_think_ctx("upgrade", CALLBACK(src, .proc/upgrade_think), world.time)
 
 /obj/structure/blob/proc/can_expand()
 	if(QDELETED(core))
@@ -99,7 +103,7 @@
 		var/obj/structure/blob/upgraded = new next_type(loc)
 		upgraded.health = health
 		qdel(src)
-		return
+		return TRUE
 
 /obj/structure/blob/proc/expand()
 	if(!can_expand())
@@ -131,30 +135,29 @@
 	var/obj/structure/blob/new_blob = new /obj/structure/blob(target_loc, core)
 	new_blob.health = new_blob.max_health / 2
 
-/obj/structure/blob/Process()
-	. = ..()
+/obj/structure/blob/think()
+	if(life())
+		set_next_think(world.time + 1 SECOND)
 
-	if(!life())
-		return TRUE
+/obj/structure/blob/proc/heal_think()
+	heal()
+	set_next_think_ctx("heal", world.time + BLOB_HEAL_COOLDOWN)
 
-	THROTTLE_SHARED(attack_cooldown, BLOB_ATTACK_COOLDOWN, _attack_cooldown)
-	THROTTLE_SHARED(expand_cooldown, BLOB_EXPAND_COOLODNW, _expand_cooldown)
-	THROTTLE_SHARED(upgrade_cooldown, BLOB_UPGRADE_COOLDOWN, _upgrade_cooldown)
-	THROTTLE_SHARED(health_cooldown, BLOB_HEAL_COOLDOWN, _health_cooldown)
+/obj/structure/blob/proc/attack_think()
+	attack()
+	set_next_think_ctx("attack", world.time + BLOB_ATTACK_COOLDOWN)
 
-	if(health_cooldown)
-		heal()
-
-	if(attack_cooldown)
-		attack()
-
-	if(expand_cooldown && prob(BLOB_EXPAND_CHANCE))
+/obj/structure/blob/proc/expand_think()
+	if(prob(BLOB_EXPAND_CHANCE))
 		expand()
+	
+	set_next_think_ctx("expand", world.time + BLOB_EXPAND_COOLODNW)
 
-	if(upgrade_cooldown && prob(BLOB_UPGRADE_CHANCE))
-		upgrade()
-
-	return TRUE
+/obj/structure/blob/proc/upgrade_think()
+	if(prob(BLOB_UPGRADE_CHANCE) && upgrade())
+		return 
+	
+	set_next_think_ctx("upgrade", world.time + BLOB_UPGRADE_COOLDOWN)
 
 /obj/structure/blob/update_icon()
 	var/hurt_percentage = round(health / max_health * 100)

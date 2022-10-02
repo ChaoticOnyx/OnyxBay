@@ -3,7 +3,7 @@
 	icon = 'icons/obj/device.dmi'
 	icon_state = "motion0"
 	anchored = 1.0
-	idle_power_usage = 10
+	idle_power_usage = 10 WATTS
 	var/uses = 20
 	var/disabled = 1
 	var/lethal = 0

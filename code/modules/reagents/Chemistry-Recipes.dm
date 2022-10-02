@@ -567,7 +567,7 @@
 /datum/chemical_reaction/napalm/on_reaction(datum/reagents/holder, created_volume)
 	var/turf/location = get_turf(holder.my_atom.loc)
 	for(var/turf/simulated/floor/target_tile in range(0,location))
-		target_tile.assume_gas("plasma", created_volume, 400+T0C)
+		target_tile.assume_gas("plasma", created_volume, 400 CELSIUS)
 		spawn (0) target_tile.hotspot_expose(700, 400)
 	holder.del_reagent("napalm")
 
@@ -1663,7 +1663,7 @@
 /datum/chemical_reaction/magellan
 	name = "Magellan"
 	result = /datum/reagent/ethanol/magellan
-	required_reagents = list(/datum/reagent/ethanol/wine = 1, /datum/reagent/ethanol/specialwhiskey = 1)
+	required_reagents = list(/datum/reagent/ethanol/wine = 1,  /datum/reagent/ethanol/whiskey/specialwhiskey = 1)
 	catalysts = list(/datum/reagent/sugar)
 	result_amount = 2
 

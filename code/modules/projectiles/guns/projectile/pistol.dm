@@ -239,11 +239,11 @@
 		if(user.l_hand != src && user.r_hand != src)	//if we're not in his hands
 			to_chat(user, "<span class='notice'>You'll need [src] in your hands to do that.</span>")
 			return
-		user.drop_item()
+		if(!user.drop(I, src))
+			return
 		to_chat(user, "<span class='notice'>You screw [I] onto [src].</span>")
 		silenced = I	//dodgy?
 		w_class = ITEM_SIZE_NORMAL
-		I.forceMove(src)		//put the silencer into the gun
 		update_icon()
 		fire_sound = SFX_SILENT_FIRE
 		return
@@ -317,12 +317,11 @@
 
 /obj/item/zipgunframe/attackby(obj/item/thing, mob/user)
 	if(istype(thing,/obj/item/pipe) && buildstate == 0)
-		user.drop_from_inventory(thing)
-		qdel(thing)
 		user.visible_message("<span class='notice'>\The [user] fits \the [thing] to \the [src] as a crude barrel.</span>")
 		add_fingerprint(user)
 		buildstate++
 		update_icon()
+		qdel(thing)
 		return
 	else if(istype(thing,/obj/item/tape_roll) && buildstate == 1)
 		user.visible_message("<span class='notice'>\The [user] secures the assembly with \the [thing].</span>")
@@ -331,24 +330,23 @@
 		update_icon()
 		return
 	else if(istype(thing,/obj/item/device/assembly/mousetrap) && buildstate == 2)
-		user.drop_from_inventory(thing)
-		qdel(thing)
 		user.visible_message("<span class='notice'>\The [user] takes apart \the [thing] and uses the parts to construct a crude trigger and firing mechanism inside the assembly.</span>")
 		add_fingerprint(user)
 		buildstate++
 		update_icon()
+		qdel(thing)
 		return
 	else if(isScrewdriver(thing) && buildstate == 3)
 		user.visible_message("<span class='notice'>\The [user] secures the trigger assembly with \the [thing].</span>")
 		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		var/obj/item/gun/projectile/pirate/zipgun
 		zipgun = new /obj/item/gun/projectile/pirate { starts_loaded = 0 } (loc)
+		transfer_fingerprints_to(zipgun)
 		if(ismob(loc))
 			var/mob/M = loc
-			M.drop_from_inventory(src)
-			M.put_in_hands(zipgun)
-		transfer_fingerprints_to(zipgun)
-		qdel(src)
+			M.replace_item(src, zipgun, TRUE)
+		else
+			qdel(src)
 		return
 	else
 		..()

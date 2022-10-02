@@ -133,7 +133,6 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 			else if(G.reagents.has_reagent(/datum/reagent/space_drugs))
 				new_species = CHICKEN_RAINBOW
 			change_species(new_species)
-		user.drop_item()
 		qdel(G)
 		eggsleft = min((eggsleft + rand(1, 3)), MAX_EGGS_PER_CHICKEN)
 
@@ -147,12 +146,12 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 			visible_message("<b>[name]</b> [pick("lays an egg", "squats down and croons", "begins making a huge racket", "begins clucking raucously")].")
 			eggsleft--
 			egg_chance = 0
-			var/egg_type = pickweight(species.egg_type)
+			var/egg_type = util_pick_weight(species.egg_type)
 			var/obj/egg = new egg_type(get_turf(src))
 			egg.pixel_x = rand(-6, 6)
 			egg.pixel_y = rand(-6, 6)
 			if(species.fertile && istype(egg, /obj/item/reagent_containers/food/egg) && GLOB.chicken_count < MAX_CHICKENS)
-				START_PROCESSING(SSobj, egg)
+				egg.set_next_think(world.time)
 	else
 		egg_chance = 0
 
@@ -349,21 +348,18 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 /obj/item/reagent_containers/food/egg
 	var/amount_grown = 0
 
-/obj/item/reagent_containers/food/egg/Destroy()
-	if(amount_grown)
-		STOP_PROCESSING(SSobj, src)
-	. = ..()
-
-/obj/item/reagent_containers/food/egg/Process()
+/obj/item/reagent_containers/food/egg/think()
 	if(isturf(loc) || ismob(loc))
 		amount_grown++
 		if(amount_grown >= 300)
 			visible_message("[src] hatches with a quiet cracking sound.")
 			new /mob/living/simple_animal/chick(get_turf(src))
-			STOP_PROCESSING(SSobj, src)
 			qdel(src)
+			return
 	else
-		return PROCESS_KILL
+		return
+
+	set_next_think(world.time + 1 SECOND)
 
 #undef CHICKEN_WHITE
 #undef CHICKEN_BROWN

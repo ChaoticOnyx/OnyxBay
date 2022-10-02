@@ -108,8 +108,8 @@
 		else
 			to_chat(user, SPAN("notice", "Machine cannot accept disks in that format."))
 			return
-		user.drop_item()
-		D.loc = src
+		if(!user.drop(D, src))
+			return
 		to_chat(user, SPAN("notice", "You add \the [D] to the machine."))
 		tgui_update()
 	else
@@ -239,7 +239,7 @@
 			deconstruct(usr)
 			. = TRUE
 		if("sync")
-			do_sync()
+			do_sync(usr)
 			. = TRUE
 		if("toggle_sync")
 			sync = !sync
@@ -567,6 +567,12 @@
 /obj/machinery/computer/rdconsole/proc/do_sync(mob/user)
 	if(!sync)
 		to_chat(user, SPAN("notice", "You must connect to the network first."))
+		return
+
+	THROTTLE(sync_cd, 5 SECONDS)
+
+	if(!sync_cd)
+		to_chat(user, SPAN("warning", "The server returned an error: too many requests."))
 		return
 
 	playsound(loc, 'sound/signals/processing13.ogg', 50)

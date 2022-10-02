@@ -28,7 +28,7 @@
 /obj/item/clothing/mask/smokable/Destroy()
 	. = ..()
 	if(lit)
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 
 /obj/item/clothing/mask/smokable/proc/smoke(amount, manual = FALSE)
 	smoketime -= amount
@@ -51,7 +51,7 @@
 
 #define MIN_OXIDIZER_PRESSURE_TO_SMOKE 8
 
-/obj/item/clothing/mask/smokable/Process()
+/obj/item/clothing/mask/smokable/think()
 	var/turf/location = get_turf(src)
 	smoke(1)
 	if(smoketime < 1)
@@ -61,8 +61,10 @@
 	var/datum/gas_mixture/air = location.return_air()
 	if(!air)
 		die(nomessage = TRUE, nodestroy = TRUE)
+		return
 	else if(air.gas["oxygen"] < MIN_OXIDIZER_PRESSURE_TO_SMOKE)
 		die(nomessage = TRUE, nodestroy = TRUE)
+		return
 
 	if(location)
 		location.hotspot_expose(700, 5)
@@ -74,6 +76,8 @@
 							  SPAN("danger", "[src] ignites \the [H.head] on your head. You are on fire!"))
 			H.adjust_fire_stacks(1)
 			H.IgniteMob()
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/clothing/mask/smokable/update_icon()
 	if(lit && icon_on)
@@ -121,12 +125,12 @@
 	T.visible_message(generate_lighting_message(used_tool, holder))
 	set_light(0.3, 0.2, 1, 1, "#e38f46")
 	smokeamount = reagents.total_volume / smoketime
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 /obj/item/clothing/mask/smokable/proc/die(nomessage = FALSE, nodestroy = FALSE)
 	set_light(0)
 	lit = 0
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 	update_icon()
 	damtype = initial(damtype)
 	force = initial(force)

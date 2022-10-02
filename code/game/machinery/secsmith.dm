@@ -7,8 +7,8 @@
 	layer = BELOW_OBJ_LAYER
 	anchored = TRUE
 	density = TRUE
-	idle_power_usage = 25
-	active_power_usage = 200
+	idle_power_usage = 25 WATTS
+	active_power_usage = 200 WATTS
 	interact_offline = 1
 	req_access = list(access_security)
 
@@ -30,9 +30,9 @@
 		if(taser)
 			to_chat(user, "[src] already contains a taser!")
 			return
+		if(!user.drop(I, src))
+			return
 		to_chat(user, "You insert \the [I] into [src].")
-		user.drop_item()
-		I.forceMove(src)
 		taser = I
 		update_icon()
 		updateUsrDialog()

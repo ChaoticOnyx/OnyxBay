@@ -5,8 +5,8 @@
 	var/insert_anim = "bigscanner1"
 	anchored = 1
 	density = 1
-	idle_power_usage = 30
-	active_power_usage = 200
+	idle_power_usage = 30 WATTS
+	active_power_usage = 200 WATTS
 	power_channel = STATIC_EQUIP
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	obj_flags = OBJ_FLAG_ANCHORABLE
@@ -131,9 +131,9 @@
 /obj/machinery/photocopier/attackby(obj/item/O as obj, mob/user as mob)
 	if(istype(O, /obj/item/paper) || istype(O, /obj/item/photo) || istype(O, /obj/item/paper_bundle) || istype(O, /obj/item/complaint_folder) || istype(O, /obj/item/canvas))
 		if(!copyitem)
-			user.drop_item()
+			if(!user.drop(O, src))
+				return
 			copyitem = O
-			O.loc = src
 			to_chat(user, SPAN("notice", "You insert \the [O] into \the [src]."))
 			flick(insert_anim, src)
 			updateUsrDialog()
@@ -141,7 +141,8 @@
 			to_chat(user, SPAN("notice", "There is already something in \the [src]."))
 	else if(istype(O, /obj/item/device/toner))
 		if(toner <= 10) //allow replacing when low toner is affecting the print darkness
-			user.drop_item()
+			if(!user.drop(O))
+				return
 			to_chat(user, SPAN("notice", "You insert the toner cartridge into \the [src]."))
 			var/obj/item/device/toner/T = O
 			toner += T.toner_amount

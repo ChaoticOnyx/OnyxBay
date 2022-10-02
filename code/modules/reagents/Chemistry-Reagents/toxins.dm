@@ -92,7 +92,7 @@
 /datum/reagent/toxin/plasma/touch_turf(turf/simulated/T)
 	if(!istype(T))
 		return
-	T.assume_gas("plasma", volume, T20C)
+	T.assume_gas("plasma", volume, 20 CELSIUS)
 	remove_self(volume)
 
 // Produced during deuterium synthesis. Super poisonous, SUPER flammable (doesn't need oxygen to burn).
@@ -105,8 +105,8 @@
 /datum/reagent/toxin/plasma/oxygen/touch_turf(turf/simulated/T)
 	if(!istype(T))
 		return
-	T.assume_gas("oxygen", ceil(volume/2), T20C)
-	T.assume_gas("plasma", ceil(volume/2), T20C)
+	T.assume_gas("oxygen", ceil(volume/2), 20 CELSIUS)
+	T.assume_gas("plasma", ceil(volume/2), 20 CELSIUS)
 	remove_self(volume)
 
 /datum/reagent/toxin/cyanide //Fast and Lethal
@@ -327,7 +327,7 @@
 				randmutg(M)
 			domutcheck(M, null)
 			M.UpdateAppearance()
-	M.apply_effect(10 * removed, IRRADIATE, blocked = 0)
+	M.radiation += (0.05 SIEVERT) * removed
 
 /datum/reagent/mutagen/industrial
 	name = "Industrial mutagen"
@@ -637,7 +637,7 @@
 		if(istype(I, /obj/item/implant)) //TODO: Carn. give implants a dropped() or something
 			qdel(I)
 			continue
-		M.drop_from_inventory(I)
+		M.drop(I, force = TRUE)
 	var/mob/living/carbon/metroid/new_mob = new /mob/living/carbon/metroid(M.loc)
 	new_mob.a_intent = "hurt"
 	new_mob.universal_speak = 1

@@ -130,7 +130,7 @@
 	while(total_weight < target_weight)
 		var/selectobj = rand(1,100)	//Randomly determine the type of objective to be given.
 		if(!length(killobjectives) || !length(protectobjectives)|| !length(frameobjectives))	//If any of these lists are empty, just give them theft objectives.
-			var/datum/objective/objective = pickweight(theftobjectives)
+			var/datum/objective/objective = util_pick_weight(theftobjectives)
 			chosenobjectives += objective
 			total_weight += objective.points
 			theftobjectives -= objective
@@ -138,12 +138,12 @@
 			if(1 to steal_range)
 				if(!theftobjectives.len)
 					continue
-				var/datum/objective/objective = pickweight(theftobjectives)
+				var/datum/objective/objective = util_pick_weight(theftobjectives)
 				for(1 to 10)
 					if(objective.points + total_weight <= 100 || !theftobjectives.len)
 						break
 					theftobjectives -= objective
-					objective = pickweight(theftobjectives)
+					objective = util_pick_weight(theftobjectives)
 				if(!objective && !theftobjectives.len)
 					continue
 				chosenobjectives += objective
@@ -152,12 +152,12 @@
 			if(steal_range + 1 to frame_range)	//Framing Objectives (3% chance)
 				if(!frameobjectives.len)
 					continue
-				var/datum/objective/objective = pickweight(frameobjectives)
+				var/datum/objective/objective = util_pick_weight(frameobjectives)
 				for(1 to 10)
 					if(objective.points + total_weight <= 100 || !frameobjectives.len)
 						break
 					frameobjectives -= objective
-					objective = pickweight(frameobjectives)
+					objective = util_pick_weight(frameobjectives)
 				if(!objective && !frameobjectives.len)
 					continue
 				for(var/datum/objective/protection/conflicttest in chosenobjectives)	//Check to make sure we aren't telling them to Assassinate somebody they need to Protect.
@@ -176,13 +176,13 @@
 			if(frame_range + 1 to kill_range)
 				if(!killobjectives.len)
 					continue
-				var/datum/objective/assassinate/objective = pickweight(killobjectives)
+				var/datum/objective/assassinate/objective = util_pick_weight(killobjectives)
 				to_world(objective)
 				for(1 to 10)
 					if(objective.points + total_weight <= 100 || !killobjectives.len)
 						break
 					killobjectives -= objective
-					objective = pickweight(killobjectives)
+					objective = util_pick_weight(killobjectives)
 				if(!objective && !killobjectives.len)
 					continue
 				for(var/datum/objective/protection/conflicttest in chosenobjectives)	//Check to make sure we aren't telling them to Assassinate somebody they need to Protect.
@@ -201,12 +201,12 @@
 			if(kill_range + 1 to 100)	//Protection Objectives (5% chance)
 				if(!protectobjectives.len)
 					continue
-				var/datum/objective/protection/objective = pickweight(protectobjectives)
+				var/datum/objective/protection/objective = util_pick_weight(protectobjectives)
 				for(1 to 10)
 					if(objective.points + total_weight <= 100 || !protectobjectives.len)
 						break
 					protectobjectives -= objective
-					objective = pickweight(protectobjectives)
+					objective = util_pick_weight(protectobjectives)
 				if(!objective || !protectobjectives.len)
 					continue
 				for(var/datum/objective/assassinate/conflicttest in chosenobjectives)	//Check to make sure we aren't telling them to Protect somebody they need to Assassinate.

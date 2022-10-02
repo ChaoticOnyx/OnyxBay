@@ -257,8 +257,8 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	anchored = 0
 	density = 1
 	use_power = POWER_USE_OFF
-	idle_power_usage = 0
-	active_power_usage = 0
+	idle_power_usage = 0 WATTS
+	active_power_usage = 0 WATTS
 	var/construction_state = 0
 	var/active = 0
 	var/reference = null

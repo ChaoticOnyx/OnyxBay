@@ -4,6 +4,12 @@
 	w_class = ITEM_SIZE_NORMAL
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 35 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 6 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
 	var/image/blood_overlay = null //this saves our blood splatter overlay, which will be processed not to go over the edges of the sprite
 	var/randpixel = 6
 	var/r_speed = 1.0
@@ -58,7 +64,7 @@
 	var/slowdown_accessory // How much an accessory will slow you down when attached to a worn article of clothing.
 	var/canremove = 1 //Mostly for Ninja code at this point but basically will not allow the item to be removed if set to 0. /N
 	var/force_drop = FALSE // Allows the item to be manually dropped by the wielder even if canremove is set to FALSE.
-	var/list/armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	var/list/armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
 	var/list/allowed = null //suit storage stuff.
 	var/obj/item/device/uplink/hidden_uplink = null // All items can have an uplink hidden inside, just remember to add the triggers.
 	var/zoomdevicename = null //name used for message when binoculars/scope is used
@@ -98,7 +104,7 @@
 	QDEL_NULL(hidden_uplink)
 	if(ismob(loc))
 		var/mob/m = loc
-		m.drop_from_inventory(src)
+		m.drop(src, force = TRUE)
 	if(maptext)
 		maptext = ""
 
@@ -264,7 +270,7 @@
 		var/obj/item/storage/S = loc
 		S.remove_from_storage(src)
 	// Unequipping from self
-	else if(loc == user && !user.unEquip(src))
+	else if(loc == user && !user.drop(src))
 		return
 	// Doing some unintended shit that may cause catastrophical events, aborting
 	// If you'll ever want to implement something that intentionally allows direct clicking on an item while it's inside
@@ -491,18 +497,20 @@ var/list/global/slot_flags_enumeration = list(
 /obj/item/proc/return_item()
 	return src
 
-/obj/item/proc/mob_can_unequip(mob/M, slot, disable_warning = 0)
-	if(!slot) return 0
-	if(!M) return 0
+/obj/item/proc/can_be_unequipped_by(mob/M, slot, disable_warning = 0)
+	if(!slot)
+		return FALSE
+	if(!M)
+		return FALSE
 
 	if(!canremove)
-		return 0
+		return FALSE
 	if(!M.slot_is_accessible(slot, src, disable_warning? null : M))
-		return 0
-	return 1
+		return FALSE
+	return TRUE
 
 /obj/item/proc/can_be_dropped_by_client(mob/M)
-	return M.canUnEquip(src)
+	return M.can_unequip(src)
 
 /obj/item/verb/verb_pickup()
 	set src in oview(1)
@@ -594,15 +602,13 @@ var/list/global/slot_flags_enumeration = list(
 		visible_message(SPAN("warning", "[H] blocks [P] with \the [src]!"))
 		return
 	visible_message(SPAN("danger", "\The [src] gets [msg] out of [H]'s hands by \a [P]!"))
-	H.drop_from_inventory(src)
-	if(src && isturf(loc))
+	if(H.drop(src))
 		throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, dist), 1)
 
 /obj/item/proc/knocked_out(mob/living/carbon/human/H, strong_knock = FALSE, dist = 2) // item gets knocked out of one's hands
 	H.useblock_off()
 	if(canremove)
-		H.drop_from_inventory(src)
-		if(src && istype(loc,/turf))
+		if(H.drop(src))
 			throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)), rand(1, dist), 1)
 		if(!strong_knock)
 			H.visible_message(SPAN("warning", "[H]'s [src] flies off!"))
@@ -669,7 +675,7 @@ var/list/global/slot_flags_enumeration = list(
 			if(prob(50))
 				if(M.stat != 2)
 					to_chat(M, SPAN("warning", "You drop what you're holding and clutch at your eyes!"))
-					M.drop_item()
+					M.drop_active_hand()
 				M.eye_blurry += 10
 				M.Paralyse(1)
 				M.Weaken(4)
@@ -820,7 +826,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 	user = user == src ? loc : (user || loc)
 	if(!istype(user))
-		crash_with("[log_info_line(src)]: Zoom user lost]")
+		util_crash_with("[log_info_line(src)]: Zoom user lost]")
 		return
 
 	unregister_signal(user, SIGNAL_STAT_SET)

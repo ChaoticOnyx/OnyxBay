@@ -76,7 +76,6 @@
 		icon_state = icon_state_closed
 	else
 		icon_state = icon_state_open
-	SSradiation.resistance_cache.Remove(get_turf(src))
 	return
 
 // Proc: force_open()

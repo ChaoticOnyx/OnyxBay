@@ -89,9 +89,7 @@
 /obj/item/storage/bag/plasticbag/attack_self(mob/user)
 	quick_empty()
 	to_chat(user, "You turned everything out of [src]!")
-	user.drop_from_inventory(src)
-	user.put_in_any_hand_if_possible(new /obj/item/clothing/mask/plasticbag)
-	qdel(src)
+	user.replace_item(src, new /obj/item/clothing/mask/plasticbag, TRUE, TRUE)
 
 // -----------------------------
 //           Cash Bag

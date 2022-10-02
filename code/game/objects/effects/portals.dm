@@ -3,7 +3,7 @@
 	desc = "Looks unstable. Best to test it with the clown."
 	icon = 'icons/obj/portals.dmi'
 	icon_state = "portal"
-	density = TRUE
+	density = FALSE
 	unacidable = TRUE // Can't destroy energy portals.
 	var/atom/target = null
 	var/creator = null
@@ -11,9 +11,6 @@
 	var/dangerous = 0
 	var/failchance = 0
 	var/teleport_type = /decl/teleport/sparks
-
-/obj/effect/portal/Bumped(mob/M)
-	teleport(M)
 
 /obj/effect/portal/Crossed(AM)
 	teleport(AM)
@@ -64,6 +61,9 @@
 	QDEL_IN(src, delete_after)
 
 /obj/effect/portal/proc/teleport(atom/movable/M, ignore_checks = FALSE)
+	if(istype(M, /obj/item/projectile))
+		ignore_checks = TRUE
+
 	if(iseffect(M) && !ignore_checks)
 		return
 	if(M.anchored && !ismech(M) && !ignore_checks)
@@ -114,6 +114,7 @@
 			portal_creator.red_portal = null
 			portal_creator.sync_portals()
 	target = null
+	log_debug("Portal created by [owner] was deleted, portal ref - \ref[src]")
 	return ..()
 
 /obj/effect/portal/linked/proc/connect_atmospheres()
@@ -153,7 +154,7 @@
 // In layman's terms, speedy thing goes in, speedy thing comes out.
 // projectile redirect is not cool, I made my own cool method!
 /obj/effect/portal/linked/on_projectile_impact(obj/item/projectile/P, use_impact = TRUE)
-	if(P.kill_count < 1 || !P.dir || !target)
+	if(QDELETED(P) || P.kill_count < 1 || !P.dir || !target || P.original == src || P.original == get_turf(src) || P.original == target || (!P.x && !P.y && !P.z))
 		return FALSE
 	// save vars from something
 	var/turf/loc_turf = get_turf(src)
@@ -163,7 +164,8 @@
 	// Sometimes a projectile during the "momentum saving"
 	// does not meet any object for impact and hits the portals over and over again,
 	// which causes the wildest lags, this should fix this bug
-	stoplag()
+	if(!P.hitscan)
+		stoplag(1)
 	// move projectile to linked portal
 	var/previous_dir = P.dir
 	P.dir = projectile_dir
@@ -174,15 +176,15 @@
 	var/turf/linked_turf = get_turf(target)
 	// get new target turf
 	target_turf = linked_turf
-	while(TRUE)
+	while(!QDELING(src))
 		target_dist -= 1
 		target_turf = get_step(target_turf, projectile_dir)
-		if(!target_dist)
+		if(target_dist <= 0)
 			break
 	// set new target turf as projectile target
 	P.original = target_turf
 	// rebuild trajectory by calling P.setup_projectory and our work there is done
-	P.setup_trajectory(linked_turf, target_turf)
+	P.redirect(P.original.x, P.original.y, linked_turf, target)
 	return TRUE
 
 /obj/effect/portal/linked/proc/on_throw_impact(atom/movable/hit_atom)
@@ -198,7 +200,7 @@
 	// sometimes the thrown object during the "momentum saving"
 	// does not meet any object to hit and falls into the portals over and over again,
 	// which causes the wildest lags, this should fix this bug
-	stoplag()
+	stoplag(1)
 	if(hit_atom.thrown_to == loc_turf || !target_turf || !loc_turf)
 		teleport(hit_atom, TRUE)
 		return
@@ -210,10 +212,10 @@
 		return
 	throw_dir = reverse_direction(throw_dir)
 	target_turf = get_turf(target)
-	while(TRUE)
+	while(!QDELING(src))
 		target_dist -= 1
 		target_turf = get_step(target_turf, thrown_dir)
-		if(!target_dist)
+		if(target_dist <= 0)
 			break
 	INVOKE_ASYNC(hit_atom, /atom/movable/proc/throw_at, target_turf, throw_range-dist_travelled, speed, thrower)
 

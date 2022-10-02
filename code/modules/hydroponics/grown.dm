@@ -242,7 +242,6 @@
 		if(prob(35))
 			if(user)
 				to_chat(user, "<span class='danger'>\The [src] has fallen to bits.</span>")
-				user.drop_from_inventory(src)
 			qdel(src)
 
 /obj/item/reagent_containers/food/grown/attack_self(mob/user as mob)

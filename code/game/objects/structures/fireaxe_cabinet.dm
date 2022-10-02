@@ -85,8 +85,7 @@
 		if(open)
 			if(fireaxe)
 				to_chat(user, "<span class='warning'>There is already \a [fireaxe] inside \the [src].</span>")
-			else if(user.unEquip(O))
-				O.forceMove(src)
+			else if(user.drop(O, src))
 				fireaxe = O
 				to_chat(user, "<span class='notice'>You place \the [fireaxe] into \the [src].</span>")
 				update_icon()

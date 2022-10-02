@@ -200,7 +200,8 @@ var/list/mob_hat_cache = list()
 		if(hat)
 			to_chat(user, "<span class='warning'>\The [src] is already wearing \the [hat].</span>")
 			return
-		user.unEquip(W)
+		if(!user.drop(W))
+			return
 		wear_hat(W)
 		user.visible_message("<span class='notice'>\The [user] puts \the [W] on \the [src].</span>")
 		return
@@ -267,6 +268,7 @@ var/list/mob_hat_cache = list()
 	emagged = 1
 	lawupdate = 0
 	connected_ai = null
+	release_ai_control("<b>WARNING: remote system failure. Connection rejected.</b>")
 	clear_supplied_laws()
 	clear_inherent_laws()
 	QDEL_NULL(laws)

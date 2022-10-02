@@ -16,7 +16,7 @@
 	icon_state = "wiz_jaunt"
 
 /datum/spell/targeted/ethereal_jaunt/cast(list/targets, mob/user) //magnets, so mostly hardcoded
-	for(var/mob/living/target in targets)
+	for(var/mob/living/carbon/target in targets)
 		if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(target))
 			continue
 		if(target.buckled)
@@ -39,6 +39,7 @@
 				target.buckled.unbuckle_mob()
 			jaunt_disappear(animation, target)
 			target.forceMove(holder)
+			target.can_use_hands = FALSE
 			jaunt_steam(mobloc)
 			sleep(duration)
 			mobloc = holder.last_valid_turf
@@ -48,6 +49,7 @@
 			sleep(20)
 			jaunt_reappear(animation, target)
 			sleep(5)
+			target.can_use_hands = TRUE
 			if(!target.forceMove(mobloc))
 				for(var/direction in list(1,2,4,8,5,6,9,10))
 					var/turf/T = get_step(mobloc, direction)

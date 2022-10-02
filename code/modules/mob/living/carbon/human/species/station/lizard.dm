@@ -50,7 +50,7 @@
 
 	reagent_tag = IS_UNATHI
 	base_color = "#066000"
-	blood_color = "#f24b2e"
+	blood_color = COLOR_BLOOD_UNATHI
 	organs_icon = 'icons/mob/human_races/organs/unathi.dmi'
 
 	move_trail = /obj/effect/decal/cleanable/blood/tracks/claw
@@ -79,7 +79,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sandal(H),slot_shoes)
 
 /datum/species/unathi/handle_environment_special(mob/living/carbon/human/H)
-	if(H.InStasis() || H.stat == DEAD)
+	if(H.InStasis() || H.stat == DEAD || isundead(H))
 		return
 	if(H.nutrition < 50)
 		H.adjustToxLoss(2,0)

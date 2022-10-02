@@ -97,6 +97,7 @@ SUBSYSTEM_DEF(ticker)
 	SSstoryteller.setup()
 
 	callHook("roundstart")
+	SEND_GLOBAL_SIGNAL(SIGNAL_ROUNDSTART)
 
 	spawn(0)//Forking here so we dont have to wait for this to finish
 		mode.post_setup()
@@ -267,7 +268,7 @@ Helpers
 			bad_modes += mode_to_try
 			return
 		else
-			mode_datum = pick_mode(pickweight(runnable_modes))
+			mode_datum = pick_mode(util_pick_weight(runnable_modes))
 			if(length(runnable_modes) > 1) // More to pick if we fail; we won't tell anyone we failed unless we fail all possibilities, though.
 				. = CHOOSE_GAMEMODE_SILENT_REDO
 	else

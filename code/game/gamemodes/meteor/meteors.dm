@@ -78,7 +78,7 @@
 	var/turf/pickedstart = spaceDebrisStartLoc(startSide, zlevel)
 	var/turf/pickedgoal = spaceDebrisFinishLoc(startSide, zlevel)
 
-	var/Me = pickweight(meteortypes)
+	var/Me = util_pick_weight(meteortypes)
 	var/obj/effect/meteor/M = new Me(pickedstart)
 	M.dest = pickedgoal
 	spawn(0)
@@ -279,8 +279,9 @@
 /obj/effect/meteor/irradiated/meteor_effect()
 	..()
 	explosion(src.loc, 0, 0, 4, 3, 0)
-	new /obj/effect/decal/cleanable/greenglow(get_turf(src))
-	SSradiation.radiate(src, 50)
+	var/obj/effect/decal/cleanable/greenglow/glow = new(get_turf(src))
+	glow.create_reagents(30)
+	glow.reagents.add_reagent(/datum/reagent/uranium, 30)
 
 /obj/effect/meteor/golden
 	name = "golden meteor"

@@ -31,6 +31,12 @@
 	var/list/avaliable_huds
 	var/active_hud
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 41.7 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 23.9 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
 /mob/living/silicon/New()
 	if(playable_mob)
 		GLOB.silicon_mob_list += src
@@ -71,7 +77,10 @@
 /mob/living/silicon/proc/show_laws()
 	return
 
-/mob/living/silicon/drop_item(user)
+/mob/living/silicon/can_unequip(obj/item/I)
+	return FALSE // Let's just not
+
+/mob/living/silicon/drop_active_hand(user)
 	if(isrobot(user))
 		var/mob/living/silicon/robot/R = user
 		R.hud_used.update_robot_modules_display()

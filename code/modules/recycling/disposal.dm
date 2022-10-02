@@ -24,8 +24,8 @@
 	var/flush_every_ticks = 30 //Every 30 ticks it will look whether it is ready to flush
 	var/flush_count = 0 //this var adds 1 once per tick. When it reaches flush_every_ticks it resets and tries to flush.
 	var/list/allowed_objects = list(/obj/structure/closet, /obj/structure/bigDelivery)
-	active_power_usage = 2200	//the pneumatic pump power. 3 HP ~ 2200W
-	idle_power_usage = 100
+	active_power_usage = 2.200 KILO WATTS	//the pneumatic pump power. 3 HP ~ 2200W
+	idle_power_usage = 100 WATTS
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	hitby_loudness_multiplier = 0.5
 	var/datum/browser/disposal_menu
@@ -137,13 +137,10 @@
 				admin_attack_log(usr, GM, "Placed the victim into \the [src].", "Was placed into \the [src] by the attacker.", "stuffed \the [src] with")
 		return
 
-	if(isrobot(user))
-		return
-	if(!user.canUnEquip(I))
-		to_chat(user, "You can't place that item inside \the [src].")
+	if(!user.drop(I, src))
+		to_chat(user, "You can't place that into \the [src].")
 		return
 
-	user.drop_from_inventory(I, src)
 	if(I.loc != src)
 		return
 
@@ -793,8 +790,7 @@
 
 		if(!T.is_plating() && istype(T,/turf/simulated/floor)) //intact floor, pop the tile
 			var/turf/simulated/floor/F = T
-			F.break_tile()
-			new /obj/item/stack/tile(H)	// add to holder so it will be thrown with other stuff
+			F.make_plating(1)
 
 		var/turf/target
 		if(direction)		// direction is specified

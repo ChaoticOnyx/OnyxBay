@@ -42,7 +42,7 @@
 	desc = "A gun that discharges high amounts of controlled radiation to slowly break a target into component elements."
 	icon_state = "decloner"
 	item_state = "decloner"
-	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 4, TECH_POWER = 3)
+	origin_tech = list(TECH_COMBAT = 6, TECH_MATERIAL = 6, TECH_BIO = 4, TECH_POWER = 5)
 	max_shots = 10
 	projectile_type = /obj/item/projectile/energy/declone
 	combustion = 0
@@ -241,6 +241,12 @@
 		to_chat(user, SPAN_NOTICE("You insert \the [W.material.use_name] [W.material.sheet_singular_name] into \the [src]."))
 	else
 		to_chat(user, SPAN_WARNING("You can't insert \the [W.material.use_name] [W.material.sheet_singular_name] into \the [src], it's full."))
+
+/obj/item/gun/energy/plasmacutter/afterattack(obj/target, mob/user, adjacent_flag)
+	if(adjacent_flag && istype(target, /obj/item/stack/material/plasma))
+		attackby(target, user)
+		return
+	..()
 
 /obj/item/gun/energy/plasmacutter/get_temperature_as_from_ignitor()
 	return 3800

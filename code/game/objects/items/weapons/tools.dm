@@ -276,9 +276,6 @@
 	. = ..()
 
 /obj/item/weldingtool/Destroy()
-	if(welding)
-		STOP_PROCESSING(SSobj, src)
-
 	QDEL_NULL(tank)
 
 	return ..()
@@ -324,7 +321,6 @@
 		if(tank)
 			to_chat(user, "<span class='notice'>You should detach \the [tank] first.</span>")
 			return
-		user.drop_from_inventory(W)
 		qdel(W)
 
 		if(istype(src.loc,/turf))
@@ -345,7 +341,8 @@
 			to_chat(user, "\The [W] is too large to fit in \the [src].")
 			return
 
-		user.drop_from_inventory(W, src)
+		if(!user.drop(W, src))
+			return
 		tank = W
 		user.visible_message("[user] slots \a [W] into \the [src].", "You slot \a [W] into \the [src].")
 		update_icon()
@@ -369,10 +366,12 @@
 	else
 		..()
 
-/obj/item/weldingtool/Process()
+/obj/item/weldingtool/think()
 	if(welding)
 		if(!remove_fuel(0.05))
 			setWelding(0)
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/weldingtool/afterattack(obj/O, mob/user, proximity)
 	if(!proximity)
@@ -501,14 +500,14 @@
 			welding = 1
 			set_light(0.3, 0.5, 2, 2, "#e38f46")
 			update_icon()
-			START_PROCESSING(SSobj, src)
+			set_next_think(world.time)
 		else
 			if(M)
 				to_chat(M, "<span class='notice'>You need more welding fuel to complete this task.</span>")
 			return
 	//Otherwise
 	else if(!set_welding && welding)
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 		if(M)
 			to_chat(M, "<span class='notice'>You switch \the [src] off.</span>")
 		else if(T)
@@ -668,18 +667,16 @@
 
 /obj/item/welder_tank/experimental/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
-/obj/item/welder_tank/experimental/Destroy()
-	. = ..()
-	STOP_PROCESSING(SSobj, src)
-
-/obj/item/welder_tank/experimental/Process()
+/obj/item/welder_tank/experimental/think()
 	var/cur_fuel = reagents.get_reagent_amount(/datum/reagent/fuel)
 	if(cur_fuel < max_fuel)
 		var/gen_amount = ((world.time-last_gen)/25)
 		reagents.add_reagent(/datum/reagent/fuel, gen_amount)
 		last_gen = world.time
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/weldingtool/old
 	name = "old welding tool"

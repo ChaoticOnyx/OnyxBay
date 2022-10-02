@@ -13,7 +13,7 @@
 	req_access = list(access_engine_equip)
 	var/id = null
 
-	active_power_usage = 100 KILOWATTS
+	active_power_usage = 100 KILO WATTS
 
 	var/efficiency = 0.6	// Energy efficiency. 60% at this time, so 50kW+1 load means 30kW+0,6 laser pulses.
 	var/active = 0

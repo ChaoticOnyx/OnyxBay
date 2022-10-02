@@ -7,14 +7,14 @@
 	density = 1
 	anchored = 1
 	use_power = POWER_USE_ACTIVE
-	idle_power_usage = 10
-	active_power_usage = 2000
+	idle_power_usage = 10 WATTS
+	active_power_usage = 2 KILO WATTS
 
 /obj/machinery/seed_extractor/attackby(obj/item/O, mob/user)
 	// Fruits and vegetables.
 	if(istype(O, /obj/item/reagent_containers/food/grown) || istype(O, /obj/item/grown))
-
-		user.remove_from_mob(O)
+		if(!user.drop(O))
+			return
 
 		var/datum/seed/new_seed_type
 		if(istype(O, /obj/item/grown))

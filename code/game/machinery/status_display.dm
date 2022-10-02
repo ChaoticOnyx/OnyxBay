@@ -16,7 +16,7 @@
 	layer = ABOVE_WINDOW_LAYER
 	anchored = 1
 	density = 0
-	idle_power_usage = 10
+	idle_power_usage = 10 WATTS
 	var/mode = 1	// 0 = Blank
 					// 1 = Shuttle timer
 					// 2 = Arbitrary message(s)

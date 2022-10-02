@@ -117,7 +117,6 @@
 	return TRUE
 
 /obj/item/organ/external/head/xeno
-	eye_icon = "blank_eyes"
 	dislocated = -1
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_HEALS_OVERKILL
@@ -211,7 +210,7 @@
 	var/growth = 0
 	var/growth_max = 240
 
-/obj/item/organ/internal/alien_embryo/Process()
+/obj/item/organ/internal/alien_embryo/think()
 	if(owner && !(status & ORGAN_DEAD))
 		growth++
 		BITSET(owner.hud_updateflag, XENO_HUD)

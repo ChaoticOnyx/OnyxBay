@@ -70,12 +70,8 @@
 	#define DEBRIS_LAYER 1
 	#define DUST_LAYER 2
 
-// Reserve planes for openspace
-#define OPENSPACE_PLANE_START -462
-#define OPENSPACE_PLANE_END -22
-#define OPENSPACE_PLANE -463
-#define OVER_OPENSPACE_PLANE -22
-
+#define OPENSPACE_PLANE					-4
+#define OVER_OPENSPACE_PLANE			-3
 #define FLOOR_PLANE						-2
 #define DEFAULT_PLANE                   -1
 #define BLACKNESS_PLANE 0
@@ -248,6 +244,22 @@
 
 	if (istype(mymob) && mymob.client && mymob.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_YES)
 		filters += filter(type = "drop_shadow", x = 0, y = -2, size = 4, color = "#04080FAA")
+
+/obj/screen/plane_master/openspace_blur
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	blend_mode = BLEND_OVERLAY
+	plane = OPENSPACE_PLANE
+
+/obj/screen/plane_master/openspace_blur/backdrop(mob/mymob)
+	filters = list()
+
+	if (istype(mymob) && mymob.client)
+		filters += filter(type = "blur", size = 0.67)
+
+/obj/screen/plane_master/over_openspace_darkness
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	plane = OVER_OPENSPACE_PLANE
+	mouse_opacity = 0
 
 /obj/screen/plane_master/mouse_invisible
 	appearance_flags = PLANE_MASTER

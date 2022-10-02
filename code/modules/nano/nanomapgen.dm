@@ -20,6 +20,10 @@
 	set name = "Generate NanoUI Map"
 	set category = "Server"
 
+	if(!check_rights(R_ADMIN|R_DEBUG|R_SERVER))
+		to_chat(usr, "You are not allowed to use this command")
+		return
+
 	if(holder)
 		nanomapgen_DumpTile(1, 1, text2num(input(usr,"Enter the Z level to generate")))
 

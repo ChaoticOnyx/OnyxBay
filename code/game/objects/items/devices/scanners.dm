@@ -100,7 +100,7 @@ REAGENT SCANNER
 	if(H.should_have_organ(BP_BRAIN))
 		if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/posibrain))
 			brain_result = SPAN("danger", "ERROR - No organic tissue found")
-		else if(!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
+		else if(!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH) || (isundead(H) && !isfakeliving(H)))
 			brain_result = SPAN("danger", "none, patient is braindead")
 		else if(H.stat != DEAD)
 			switch(brain.get_current_damage_threshold())
@@ -148,24 +148,10 @@ REAGENT SCANNER
 
 	var/status_data = list()
 	// Body temperature.
-	status_data += "<span class='notice'>Body temperature: <b>[H.bodytemperature-T0C]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)</b></span>"
+	status_data += "<span class='notice'>Body temperature: <b>[CONV_KELVIN_CELSIUS(H.bodytemperature)]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)</b></span>"
 
 	// Radiation.
-	switch(H.radiation)
-		if(-INFINITY to 0)
-			status_data += "<span class='notice'>No radiation detected.</span>"
-		if(1 to 30)
-			status_data += "<span class='notice'>Patient shows minor traces of radiation exposure.</span>"
-		if(31 to 60)
-			status_data += "<span class='notice'>Patient is suffering from mild radiation poisoning.</span>"
-		if(61 to 90)
-			status_data += "<span class='warning'>Patient is suffering from advanced radiation poisoning.</span>"
-		if(91 to 120)
-			status_data += "<span class='warning'>Patient is suffering from severe radiation poisoning.</span>"
-		if(121 to 240)
-			status_data += "<span class='danger'>Patient is suffering from extreme radiation poisoning. Immediate treatment recommended.</span>"
-		if(241 to INFINITY)
-			status_data += "<span class='danger'>Patient is suffering from acute radiation poisoning. Immediate treatment recommended.</span>"
+	status_data += SPAN("notice", "Radiation dose: [fmt_siunit(H.radiation, "Sv", 3)]")
 
 	// Other general warnings.
 	if(H.getOxyLoss() > 50)

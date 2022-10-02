@@ -3,26 +3,45 @@
 	desc = "Used to separate things with different weights. Spin 'em round, round, right round."
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "centrifuge"
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+
+	component_types = list(
+		/obj/item/stock_parts/manipulator = 3,
+		/obj/item/circuitboard/centrifuge
+	)
+
 	var/curing
 	var/isolating
+
+	var/speed = 1
 
 	var/obj/item/reagent_containers/vessel/beaker/vial/sample = null
 	var/datum/disease2/disease/virus2 = null
 
+/obj/machinery/computer/centrifuge/Initialize()
+	. = ..()
+	RefreshParts()
+
 /obj/machinery/computer/centrifuge/attackby(obj/O, mob/user)
-	if(isScrewdriver(O))
-		return ..(O,user)
+	if(curing || isolating)
+		to_chat(user, SPAN("notice", "\The [src] is busy. Please wait for completion of previous operation."))
+		return 1
+	if(sample)
+		to_chat(user, SPAN("notice", "\The [src] is full. Please remove external items."))
+		return 1
+	if(default_deconstruction_screwdriver(user, O))
+		return
+	if(default_deconstruction_crowbar(user, O))
+		return
+	if(default_part_replacement(user, O))
+		return
 
 	if(istype(O,/obj/item/reagent_containers/vessel/beaker/vial))
 		if(sample)
 			to_chat(user, "\The [src] is already loaded.")
 			return
-
+		if(!user.drop(O, src))
+			return
 		sample = O
-		user.drop_item()
-		O.loc = src
-
 		user.visible_message("[user] adds \a [O] to \the [src]!", "You add \a [O] to \the [src]!")
 		SSnano.update_uis(src)
 
@@ -83,14 +102,20 @@
 	if (stat & (NOPOWER|BROKEN)) return
 
 	if (curing)
-		curing -= 1
-		if (curing == 0)
+		curing -= speed
+		if (curing <= 0)
 			cure()
 
 	if (isolating)
-		isolating -= 1
-		if(isolating == 0)
+		isolating -= speed
+		if(isolating <= 0)
 			isolate()
+
+/obj/machinery/computer/centrifuge/RefreshParts()
+	var/T = 0
+	for(var/obj/item/stock_parts/manipulator/M in component_parts)
+		T += M.rating
+	speed = T/3
 
 /obj/machinery/computer/centrifuge/OnTopic(user, href_list)
 	if (href_list["close"])

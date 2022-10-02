@@ -44,7 +44,7 @@
 	var/obj/item/O = get_targeted_organ()
 	. += "\nA grab on \the [affecting]'s [O.name]."
 
-/obj/item/grab/Process()
+/obj/item/grab/think()
 	current_grab.process(src)
 
 /obj/item/grab/attack_self(mob/user)
@@ -69,7 +69,7 @@
 	if(!QDELING(src))
 		qdel(src)
 
-/obj/item/grab/can_be_dropped_by_client(mob/M)
+/obj/item/grab/can_be_unequipped_by(mob/M)
 	return M == assailant
 
 /obj/item/grab/Destroy()
@@ -79,7 +79,7 @@
 		affecting.reset_plane_and_layer()
 		affecting = null
 	if(assailant)
-		assailant.u_equip(src)
+		assailant.__unequip(src)
 		assailant.client?.screen -= src
 		assailant = null
 		loc = null

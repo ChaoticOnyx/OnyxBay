@@ -6,12 +6,12 @@
 	density = 0
 	layer = ABOVE_TILE_LAYER
 	anchored = 1
-	idle_power_usage = 200	// Some electronics, passive drain.
-	active_power_usage = 60 KILOWATTS // When charging
+	idle_power_usage = 200 WATTS	// Some electronics, passive drain.
+	active_power_usage = 60 KILO WATTS // When charging
 
 	var/obj/mecha/charging = null
-	var/base_charge_rate = 60 KILOWATTS
-	var/repair_power_usage = 10 KILOWATTS		// Per 1 HP of health.
+	var/base_charge_rate = 60 KILO WATTS
+	var/repair_power_usage = 10 KILO WATTS		// Per 1 HP of health.
 	var/repair = 0
 
 /obj/machinery/mech_recharger/Initialize()

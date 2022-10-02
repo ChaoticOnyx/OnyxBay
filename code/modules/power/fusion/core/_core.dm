@@ -16,8 +16,8 @@ var/list/fusion_cores = list()
 	layer = ABOVE_HUMAN_LAYER
 	density = 1
 	use_power = POWER_USE_IDLE
-	idle_power_usage = 50
-	active_power_usage = 500 //multiplied by field strength
+	idle_power_usage = 50 WATTS
+	active_power_usage = 500 WATTS //multiplied by field strength
 	anchored = 0
 
 	var/obj/effect/fusion_em_field/owned_field

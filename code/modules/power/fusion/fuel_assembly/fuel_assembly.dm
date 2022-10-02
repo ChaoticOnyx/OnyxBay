@@ -10,7 +10,6 @@
 	var/list/rod_quantities = list()
 	var/fuel_type = "composite"
 	var/fuel_colour
-	var/radioactivity = 0
 	var/const/initial_amount = 300
 
 /obj/item/fuel_assembly/New(newloc, _material, _colour)
@@ -38,16 +37,7 @@
 	overlays += list(I, image(icon, "fuel_assembly_bracket"))
 	rod_quantities[fuel_type] = initial_amount
 
-/obj/item/fuel_assembly/Process()
-	if(!radioactivity)
-		return PROCESS_KILL
-
-	if(istype(loc, /turf))
-		SSradiation.radiate(src, max(1,ceil(radioactivity/30)))
-
-/obj/item/fuel_assembly/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	return ..()
+	set_next_think(world.time)
 
 // Mapper shorthand.
 /obj/item/fuel_assembly/deuterium/New(newloc)

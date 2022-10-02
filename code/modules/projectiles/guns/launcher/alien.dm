@@ -8,18 +8,16 @@
 
 /obj/item/gun/launcher/alien/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	last_regen = world.time
 
-/obj/item/gun/launcher/alien/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	return ..()
-
-/obj/item/gun/launcher/alien/Process()
+/obj/item/gun/launcher/alien/think()
 	if((ammo < max_ammo) && (world.time > (last_regen + ammo_gen_time)))
 		ammo++
 		last_regen = world.time
 		update_icon()
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/gun/launcher/alien/_examine_text(mob/user)
 	. = ..()
