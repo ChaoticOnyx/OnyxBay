@@ -21,6 +21,10 @@
 	var/has_visor = 1
 	ear_protection = 1
 
+/obj/item/clothing/head/helmet/New()
+	. = ..()
+	body_parts_covered = body_parts_default_covered
+
 /obj/item/clothing/head/helmet/attack_self(mob/user)
 	if(has_visor)
 		togglevisor(user)
@@ -28,14 +32,20 @@
 		..()
 
 /obj/item/clothing/head/helmet/proc/togglevisor(mob/user)
-	if(!(body_parts_covered & FACE))
-		icon_state = "[initial(icon_state)]_up"
+	if(body_parts_covered == body_parts_default_covered)
 		body_parts_covered &= ~FACE
-		to_chat(user, "You raise the visor on \the [src].")
+		body_parts_covered &= ~EYES
+		if(body_parts_covered != body_parts_default_covered)
+			src.icon_state = "[initial(icon_state)]_up"
+			to_chat(user, "You raise the visor on \the [src].")
 	else
-		icon_state = initial(icon_state)
-		body_parts_covered |= FACE
-		to_chat(user, "You lower the visor on \the [src].")
+		if(body_parts_default_covered & FACE)
+			body_parts_covered |= FACE
+		if(body_parts_default_covered & EYES)
+			body_parts_covered |= EYES
+		if(body_parts_covered == body_parts_default_covered)
+			src.icon_state = initial(icon_state)
+			to_chat(user, "You lower the visor on \the [src].")
 	add_fingerprint(user)
 	update_clothing_icon()
 
@@ -74,7 +84,7 @@
 	icon_state = "gladiator"
 	valid_accessory_slots = null
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|BLOCKHAIR
-	body_parts_covered = HEAD|FACE
+	body_parts_default_covered = HEAD|FACE
 	siemens_coefficient = 1
 	has_visor = 0
 
@@ -139,7 +149,7 @@
 	valid_accessory_slots = null
 	armor = list(melee = 70, bullet = 60, laser = 50,energy = 25, bomb = 50, bio = 10, rad = 0)
 	flags_inv = HIDEEARS|HIDEEYES
-	body_parts_covered = HEAD|EYES|BLOCKHEADHAIR
+	body_parts_default_covered = HEAD|EYES|BLOCKHEADHAIR
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.4

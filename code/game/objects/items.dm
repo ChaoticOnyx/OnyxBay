@@ -45,6 +45,7 @@
 	//It should be used purely for appearance. For gameplay effects caused by items covering body parts, use body_parts_covered.
 	var/flags_inv = 0
 	var/body_parts_covered = 0 //see code/__defines/items_clothing.dm for appropriate bit flags
+	var/body_parts_default_covered = 0
 
 	var/item_flags = 0 //Miscellaneous flags pertaining to equippable objects.
 
