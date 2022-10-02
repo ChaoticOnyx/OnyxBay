@@ -19,14 +19,14 @@
 	var/obj/map_ent/E = locate(ev_tag)
 
 	if(!istype(E))
-		crash_with("Can't locate triggerable map_ent, ev_tag isn't correct.")
+		util_crash_with("Can't locate triggerable map_ent, ev_tag isn't correct.")
 		return
 
 	if(!istype(ev_range_center, /atom))
 		var/try_tag = ev_range_center
 		ev_range_center = locate(try_tag)
 		if(!istype(ev_range_center, /atom))
-			crash_with("Can't locate object with given ev_range_center.")
+			util_crash_with("Can't locate object with given ev_range_center.")
 			return
 
 	if(exclude_center)
@@ -50,14 +50,14 @@
 			if(ispath(path))
 				ev_sort += path
 			else if(ev_verbose)
-				crash_with("Can't find path ([path]) to find in.")
+				util_crash_with("Can't find path ([path]) to find in.")
 				return
 	else
 		if(istext(ev_sort))
 			ev_sort = text2path(ev_sort)
 
 		if(!ispath(ev_sort))
-			crash_with("Can't find path to find in.")
+			util_crash_with("Can't find path to find in.")
 			return
 
 	for(var/object in ev_out)

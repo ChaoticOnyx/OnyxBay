@@ -27,7 +27,7 @@
 	// If there's no name for VM OR there's no verb for them (if it AI, it's fine)
 	// OR there's no channel OR there's no message to say, THEN abort
 	if(!ev_name || !(ev_verb || ev_is_ai) || !ev_channel)
-		crash_with("Vital information for [name] is missing. Important paramateres (see in code order): [english_list(ev_message, ev_name, ev_verb, ev_channel, ev_is_ai)]")
+		util_crash_with("Vital information for [name] is missing. Important paramateres (see in code order): [english_list(ev_message, ev_name, ev_verb, ev_channel, ev_is_ai)]")
 
 	if(!ev_is_ai)
 		// set up VM

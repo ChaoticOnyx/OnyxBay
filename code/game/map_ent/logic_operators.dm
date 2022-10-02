@@ -11,7 +11,7 @@
 	var/obj/map_ent/E = locate(ev_tag)
 
 	if(!istype(E))
-		crash_with("ev_tag is invalid")
+		util_crash_with("ev_tag is invalid")
 		return
 
 	return E
