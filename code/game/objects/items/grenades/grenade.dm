@@ -38,7 +38,7 @@
 			. += "\nThe safety pin is in place."
 		else
 			. += "\nThere is no safety pin in place."
-		if(!detonator)
+		if(QDELETED(detonator))
 			. += "\nThere is no detonator in place."
 			return
 		if(det_time > 1)
@@ -172,7 +172,7 @@
 
 // Changing time to sec*10
 /obj/item/grenade/proc/new_timing(new_timing)
-	if(!detonator)
+	if(QDELETED(detonator))
 		return
 	if(istimer(detonator.a_left))
 		var/obj/item/device/assembly/timer/T = detonator.a_left
