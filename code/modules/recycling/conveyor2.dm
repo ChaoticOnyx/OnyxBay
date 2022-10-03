@@ -157,22 +157,26 @@
 
 	var/id = "" 				// must match conveyor IDs to control them
 
-	var/list/conveyors		// the list of converyors that are controlled by this switch
+	var/list/conveyors = list() // the list of converyors that are controlled by this switch
 	anchored = 1
 
+/obj/machinery/conveyor_switch/Initialize(loc, newid)
+	. = ..(loc)
 
-
-/obj/machinery/conveyor_switch/New(loc, newid)
-	..(loc)
 	if(!id)
 		id = newid
 	update_icon()
 
-	spawn(5)		// allow map load
-		conveyors = list()
-		for(var/obj/machinery/conveyor/C in world)
-			if(C.id == id)
-				conveyors += C
+	// Allow map load.
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/machinery/conveyor_switch/LateInitialize()
+	. = ..()
+
+	conveyors = list()
+	for(var/obj/machinery/conveyor/C in world)
+		if(C.id == id)
+			conveyors += C
 
 // update the icon depending on the position
 
