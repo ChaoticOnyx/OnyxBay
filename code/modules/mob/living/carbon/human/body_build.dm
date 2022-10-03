@@ -177,7 +177,7 @@ var/global/datum/body_build/default_body_build = new
 
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_slimalt.dmi',
-		"slot_suit"      = 'icons/inv_slots/suits/mob_tajaran.dmi',
+		"slot_suit"      = 'icons/inv_slots/suits/mob_slimalt_tajaran.dmi',
 		"slot_gloves"    = 'icons/inv_slots/gloves/mob_slim.dmi',
 		"slot_glasses"   = 'icons/inv_slots/glasses/mob_slim.dmi',
 		"slot_l_ear"     = 'icons/inv_slots/ears/mob_slim.dmi',
