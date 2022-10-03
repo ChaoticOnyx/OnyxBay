@@ -4,7 +4,6 @@
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "exwelder"
 	item_state = "exwelder"
-	item_flags = ITEM_FLAG_IS_BELT
 	tank = null
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
 	origin_tech = list(TECH_ENGINEERING = 4, TECH_POWER = 3)
