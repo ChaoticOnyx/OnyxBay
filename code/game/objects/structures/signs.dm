@@ -450,46 +450,57 @@
 	name = "direction sign"
 	desc = "A direction sign, claiming to know the way."
 	icon_state = "direction"
+	var/sign_color = "#ffffff"
 
 /obj/structure/sign/directions/New()
 	..()
 	desc = "A direction sign, pointing out which way \the [src] is."
+	set_light(0.8, 0.5, 2.0, 10.0, sign_color)
 
 /obj/structure/sign/directions/science
 	name = "\improper Research Division"
 	icon_state = "direction_sci"
+	sign_color = "#7D59AE"
 
 /obj/structure/sign/directions/engineering
 	name = "\improper Engineering Bay"
 	icon_state = "direction_eng"
+	sign_color = "#D6A001"
 
 /obj/structure/sign/directions/security
 	name = "\improper Security Wing"
 	icon_state = "direction_sec"
+	sign_color = "#C40000"
 
 /obj/structure/sign/directions/medical
 	name = "\improper Medical Bay"
 	icon_state = "direction_med"
+	sign_color = "#ffffff"
 
 /obj/structure/sign/directions/evac
 	name = "\improper Evacuation Wing"
 	icon_state = "direction_evac"
+	sign_color = "#2E8B8B"
 
 /obj/structure/sign/directions/bridge
 	name = "\improper Bridge"
 	icon_state = "direction_bridge"
+	sign_color = "#466AE6"
 
 /obj/structure/sign/directions/supply
 	name = "\improper Supply Office"
 	icon_state = "direction_supply"
+	sign_color = "#B36824"
 
 /obj/structure/sign/directions/infirmary
 	name = "\improper Infirmary"
 	icon_state = "direction_infirm"
+	sign_color = "#6DA0BE"
 
 /obj/structure/sign/directions/examroom
 	name = "\improper Exam Room"
 	icon_state = "examroom"
+	sign_color = "#ffffff"
 
 /obj/structure/sign/deck/bridge
 	name = "\improper Bridge Deck"
