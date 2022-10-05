@@ -30,15 +30,6 @@
 	pref.exploit_record = R.read("exploit_record")
 	pref.memory = R.read("memory")
 
-	// delete factions from old saves
-	var/factionExist = FALSE
-	for (var/faction in GLOB.using_map.faction_choices)
-		if (cmptext(pref.faction, faction))
-			factionExist = TRUE
-			break
-	if (!factionExist)
-		pref.faction = "NanoTrasen"
-
 /datum/category_item/player_setup_item/general/background/save_character(datum/pref_record_writer/W)
 	W.write("nanotrasen_relation", pref.nanotrasen_relation)
 	W.write("home_system", pref.home_system)
@@ -68,7 +59,7 @@
 	. += "<b>Background Information</b><br>"
 	. += "[GLOB.using_map.company_name] Relation: <a href='?src=\ref[src];nt_relation=1'>[pref.nanotrasen_relation]</a><br/>"
 	. += "Home System: <a href='?src=\ref[src];home_system=1'>[pref.home_system]</a><br/>"
-	. += "Faction: <a href='?src=\ref[src];faction=1'>[pref.faction]</a><br/>"
+	. += "Background: <a href='?src=\ref[src];faction=1'>[pref.faction]</a><br/>"
 	. += "Religion: <a href='?src=\ref[src];religion=1'>[pref.religion]</a><br/>"
 
 	. += "<br/><b>Bank Account</b>:<br/>"
@@ -111,10 +102,15 @@
 
 
 	else if(href_list["faction"])
-		var/choice = input(user, "Please choose a faction to work for.", CHARACTER_PREFERENCE_INPUT_TITLE, pref.faction) as null|anything in GLOB.using_map.faction_choices
+		var/choice = input(user, "Please choose a background to work for.", CHARACTER_PREFERENCE_INPUT_TITLE, pref.faction) as null|anything in GLOB.using_map.faction_choices + list("Unset","Other")
 		if(!choice || !CanUseTopic(user))
 			return TOPIC_NOACTION
-		pref.faction = choice
+		if(choice == "Other")
+			var/raw_choice = sanitize(input(user, "Please enter a background.", CHARACTER_PREFERENCE_INPUT_TITLE)  as text|null, MAX_NAME_LEN)
+			if(raw_choice && CanUseTopic(user))
+				pref.faction = raw_choice
+		else
+			pref.faction = choice
 		return TOPIC_REFRESH
 
 	else if(href_list["religion"])

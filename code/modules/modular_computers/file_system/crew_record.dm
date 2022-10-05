@@ -420,7 +420,7 @@ FIELD_SHORT_SECURE("Home System", homeSystem, FALSE, access_heads);
 FIELD_CONTEXT_BOTH(homeSystem, CONTEXT(crew))
 
 
-FIELD_SHORT_SECURE("Faction", faction, FALSE, access_heads);
+FIELD_SHORT_SECURE("Background", faction, FALSE, access_heads);
 FIELD_CONTEXT_BOTH(faction, CONTEXT(crew))
 
 FIELD_SHORT_SECURE("Religion", religion, FALSE, access_heads);
