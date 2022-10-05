@@ -42,7 +42,6 @@
 									/datum/job/merchant
 									),
 		/datum/species/skrell = list(/datum/job/assistant,
-								/datum/job/assistant,
 								/datum/job/bartender,
 								/datum/job/chef,
 								/datum/job/hydro,
