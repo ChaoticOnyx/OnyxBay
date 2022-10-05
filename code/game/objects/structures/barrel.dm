@@ -6,6 +6,6 @@
     icon = 'icons/obj/objects.dmi'
     icon_state = "barrel"
 
-/obj/structure/barell/Initialize()
+/obj/structure/barrel/Initialize()
     . = ..()
     set_light(1, 0.1, 3, 2, "#da6a02")
