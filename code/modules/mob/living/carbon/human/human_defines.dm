@@ -44,7 +44,6 @@
 
 	// General information
 	var/home_system = ""
-	var/citizenship = ""
 	var/personal_faction = ""
 	var/religion = ""
 

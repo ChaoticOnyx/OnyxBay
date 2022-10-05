@@ -370,7 +370,6 @@
 	character.exploit_record = exploit_record
 
 	character.home_system = home_system
-	character.citizenship = citizenship
 	character.personal_faction = faction
 	character.religion = religion
 

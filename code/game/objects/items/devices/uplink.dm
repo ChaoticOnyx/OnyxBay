@@ -207,7 +207,6 @@
 					REC_FIELD(age),
 					REC_FIELD(species),
 					REC_FIELD(homeSystem),
-					REC_FIELD(citizenship),
 					REC_FIELD(faction),
 					REC_FIELD(religion),
 					REC_FIELD(fingerprint),

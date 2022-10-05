@@ -105,16 +105,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		"Indigo Special Research Collaboration"
 		)
 
-	var/list/citizenship_choices = list(
-		"NanoTrasen",
-		"Nova Magnitka Government",
-		"Gaia Magna",
-		"Moghes",
-		"Ahdomai",
-		"Qerrbalak",
-		"Parish of the Parthenonnus Ark"
-		)
-
 	var/list/home_system_choices = list(
 		"Gilgamesh",
 		"Tau Ceti",
@@ -283,7 +273,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 		if(!L.has_trait(trait))
 			result += level
-	
+
 	return result
 
 /datum/map/proc/get_levels_with_trait(trait)
@@ -307,7 +297,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 			if(L.has_trait(T))
 				result += level
 				break
-	
+
 	return result
 
 /datum/map/proc/get_levels_with_all_traits(...)
@@ -321,8 +311,8 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 			if(!L.has_trait(T))
 				ok = FALSE
 				break
-		
+
 		if(ok)
 			result += level
-	
+
 	return result
