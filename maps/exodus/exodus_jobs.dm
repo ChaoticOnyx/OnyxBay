@@ -19,7 +19,7 @@
 									/datum/job/atmos,
 									/datum/job/ai,
 									/datum/job/cyborg,
-									/datum/job/merchant,
+									/datum/job/merchant
 									),
 		/datum/species/unathi = list(
 									/datum/job/assistant,
