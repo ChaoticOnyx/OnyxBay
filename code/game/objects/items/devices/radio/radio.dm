@@ -59,7 +59,7 @@
 			radio_controller.remove_object(src, radiochannels[ch_name])
 	return ..()
 
-/obj/item/device/radio/attack_self(mob/user as mob)
+/obj/item/device/radio/attack_self(mob/user)
 	user.set_machine(src)
 	interact(user)
 
@@ -204,15 +204,16 @@
 	if(.)
 		SSnano.update_uis(src)
 
-/obj/item/device/radio/proc/autosay(message, from, channel) //BS12 EDIT
+/obj/item/device/radio/proc/autosay(message, from, channel, say_verb="states", datum/language/speaking) //BS12 EDIT
 	var/datum/radio_frequency/connection = null
 	if(channel && channels && channels.len > 0)
 		if (channel == "department")
 			channel = channels[1]
 		connection = secure_radio_connections[channel]
 	else
-		connection = radio_connection
 		channel = null
+	if(!connection)
+		connection = radio_connection
 	if (!istype(connection))
 		return
 	var/mob/living/silicon/ai/A
@@ -221,7 +222,7 @@
 		A.fully_replace_character_name(from)
 	else
 		A = from
-	talk_into(A, message, channel, "states")
+	talk_into(A, message, channel, say_verb, speaking)
 	if(istext(from))
 		qdel(A)
 

@@ -1,5 +1,7 @@
+"aa" = (/obj/map_ent/func_say_in_radio{ev_is_ai = 1; ev_message = "Hello World!"; ev_name = "Epicus"; tag = "ent_say_in_radio"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "ag" = (/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "bE" = (/obj/map_ent/func_explosion{ev_heavy_impact_range = 0; ev_devastation_range = 0; tag = "ent_explosion"; ev_flash_range = 1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"cB" = (/obj/machinery/button{_wifi_id = -1; pixel_x = -30},/obj/map_ent/trigger_button{ev_tag = "ent_user_die_wr"; tag = "ent_user_die_rd"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "cJ" = (/obj/map_ent/func_smoke{tag = "ent_rel_smoke"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "dE" = (/obj/map_ent/info_maptext{ev_text = "logic_timer"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "ef" = (/obj/machinery/light,/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
@@ -14,6 +16,7 @@
 "iH" = (/obj/map_ent/info_maptext{ev_text = "func_explosion"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "iS" = (/obj/map_ent/trigger_button{ev_tag = "ent_concat_relay"},/obj/machinery/button{pixel_y = -32; _wifi_id = -1; dir = 1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "kK" = (/obj/machinery/button{pixel_y = 32; _wifi_id = -1},/obj/map_ent/trigger_button{ev_tag = "ent_gib_relay"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"lo" = (/obj/map_ent/info_maptext{ev_text = "press to die (func_proc_call)"},/obj/map_ent/func_write_var{ev_read_tag = "ent_user_die_rd"; tag = "ent_user_die_wr"; ev_write_tag = "env_die_user"; ev_table = list("ev_object_ref"="ev_triggered"); ev_activate_writer = 1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "lC" = (/obj/map_ent/info_maptext{ev_text = "func_load_map"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "lN" = (/obj/map_ent/func_write_var{tag = "ent_bool_wv"; ev_read_tag = "ent_bool_reg"; ev_write_tag = "ent_bool_text"; ev_table = list("ev_text"="ev_value"); ev_activate_writer = 1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "lS" = (/obj/map_ent/func_write_var{tag = "ent_string_concat_wv"; ev_read_tag = "ent_string"; ev_write_tag = "ent_concat"; ev_table = list("ev_lvalue"="ev_value")},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
@@ -34,12 +37,13 @@
 "wI" = (/obj/map_ent/func_sfx{ev_sound = 'sound/effects/phasein.ogg'; ev_volume = 60; tag = "ent_sfx"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "xS" = (/obj/map_ent/logic_relay{ev_tags = list("ent_rel_sparks","ent_rel_smoke","ent_rel_light"); tag = "ent_relay"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "xU" = (/obj/machinery/light{dir = 4},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
-"yw" = (/obj/map_ent/func_write_var{tag = "ent_counter_reset_vw"; ev_write_tag = "ent_counter"; ev_table = list("ev_value"= 0)},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"yw" = (/obj/map_ent/func_write_var{tag = "ent_counter_reset_vw"; ev_write_tag = "ent_counter"; ev_table = list("ev_value"=0)},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "zb" = (/obj/map_ent/trigger_button{ev_tag = "ent_counter_reset_relay"},/obj/machinery/button{pixel_y = -32; _wifi_id = -1; dir = 1},/obj/map_ent/info_maptext{ev_text = "reset"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "zI" = (/obj/map_ent/logic_timer{ev_tag = "ent_light_timer"; ev_wait = 20; tag = "ent_timer"; ev_activate_at_startup = 0},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "zU" = (/obj/map_ent/logic_relay{tag = "ent_counter_reset_relay"; ev_tags = list("ent_counter_reset_vw","ent_counter_wv")},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "zV" = (/obj/map_ent/info_maptext{ev_text = "func_light"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "BM" = (/obj/machinery/button{pixel_y = 32; _wifi_id = -1},/obj/map_ent/trigger_button{ev_tag = "ent_light"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Cs" = (/obj/machinery/button{pixel_y = -32; _wifi_id = -1},/obj/map_ent/trigger_button{ev_tag = "ent_say_in_radio"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "CC" = (/turf/space,/area/engineering/sublevel_access)
 "Dm" = (/obj/map_ent/logic_relay{tag = "ent_bool_relay"; ev_tags = list("ent_bool_reg","ent_bool_wv")},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "EG" = (/obj/map_ent/info_counter{tag = "ent_counter"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
@@ -48,6 +52,7 @@
 "Gu" = (/obj/map_ent/info_maptext{ev_text = "logic_relay"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "GM" = (/obj/machinery/power/debug_items/infinite_generator,/obj/structure/cable,/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "GX" = (/obj/map_ent/func_smoke{tag = "ent_smoke"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"HI" = (/obj/map_ent/info_maptext{ev_text = "func_say_in_radio"},/obj/machinery/light,/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "Is" = (/obj/map_ent/info_maptext{ev_text = "func_spawn"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "Iv" = (/obj/map_ent/func_rand_spawn{ev_paths = list(/obj/effect/decal/cleanable/blood/gibs,/obj/item/remains/human); tag = "ent_rand_spawn"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "Ke" = (/obj/map_ent/trigger_button{ev_tag = "ent_spawn_u"},/obj/machinery/button{pixel_y = -32; _wifi_id = -1; dir = 1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
@@ -56,6 +61,7 @@
 "Lm" = (/turf/simulated/wall/r_wall,/area/engineering/sublevel_access)
 "LM" = (/obj/map_ent/info_maptext{ev_text = "info_counter"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "Ml" = (/obj/structure/window_frame/reinforced/hull,/turf/simulated/floor/plating,/area/engineering/sublevel_access)
+"MP" = (/obj/map_ent/func_proc_call{tag = "env_die_user"; ev_proc_name = "death"; ev_args = list(show_dead_message="You didn't think fast chucklenut")},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "MX" = (/obj/map_ent/logic_relay{tag = "ent_gib_relay"; ev_tags = list("ent_gibber_wv","ent_cow_gibber","ent_cow_timer")},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "Nw" = (/obj/map_ent/func_strcat{tag = "ent_concat"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "NE" = (/obj/map_ent/func_load_map{ev_map_path = 'maps/example/clown_shuttle.dmm'; tag = "ent_load_map"},/turf/space,/area/engineering/sublevel_access)
@@ -104,10 +110,10 @@ fCfCfCfCfCfCfCLmLmMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlagLm
 fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCMlwaWAMXMlagLmfCfCfCfCfCfCfCfC
 fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCMlUjmfagMlagLmfCfCfCfCfCfCfCfC
 fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCMlagagagMlagLmfCfCfCfCfCfCfCfC
-fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCMlMlMlMlMlagLmfCfCfCfCfCfCfCfC
-fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCLmagrikKagagLmfCfCfCfCfCfCfCfC
-fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCLmagagagagagLmfCfCfCfCfCfCfCfC
-fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCLmLmLmLmLmLmLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCLmLmLmLmLmMlMlMlMlMlagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCLmcBloMPagagagrikKagagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCLmHICsaaagagagagagagagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCLmLmLmLmLmLmLmLmLmLmLmLmfCfCfCfCfCfCfCfC
 fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfC
 fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfC
 fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfC
