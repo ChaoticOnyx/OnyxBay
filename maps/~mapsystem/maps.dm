@@ -96,13 +96,17 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 	//Factions prefs stuff
 	var/list/faction_choices = list(
-		"NanoTrasen", // NanoTrasen must be first, else Company Provocation event will break
-		"Liu-Je Green Terraforming Industries",
-		"Charcoal TestLabs Ltd.",
-		"Blue Oceanic Explorers",
-		"Milky Way Trade Union",
-		"Redknight & Company Dominance Tech",
-		"Indigo Special Research Collaboration"
+		"Nanotrasen",
+		"Nova Magnitka",
+		"Gaia Magna",
+		"Zeng-Hu Clique",
+		"Zermig VIII",
+		"Independent Arcturia",
+		"Parthenonnus Ark Space Vessel",
+		"Moghes",
+		"Skrell Empire",
+		"Adhomai",
+		"Corporate Sector"
 		)
 
 	var/list/home_system_choices = list(
