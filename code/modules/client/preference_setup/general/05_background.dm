@@ -7,7 +7,7 @@
 
 	//Some faction information.
 	var/home_system = "Unset"           //System of birth.
-	var/faction = "NanoTrasen"          //General associated faction.
+	var/faction = "Nanotrasen"          //General associated faction.
 	var/religion = "None"               //Religious association.
 
 	var/bank_security = BANK_SECURITY_MODERATE // bank account security level
@@ -47,7 +47,7 @@
 	if(!pref.home_system)
 		pref.home_system = "Unset"
 	if(!pref.faction)
-		pref.faction =     "NanoTrasen"
+		pref.faction = "Nanotrasen"
 	if(!pref.religion)
 		pref.religion =    "None"
 
