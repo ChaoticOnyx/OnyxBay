@@ -119,7 +119,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		"Gilgamesh",
 		"Tau Ceti",
 		"Epsilon Ursae Minoris",
-		"Zermig VIII",
+		"Zermig",
 		"Arcturus",
 		"Vega",
 		"Renenet",
