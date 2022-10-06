@@ -105,10 +105,9 @@
 			bottom_turf.plane = src.plane
 			bottom_turf.color = below.color
 			underlays += bottom_turf
-			for(var/image/I in below.overlays)
-				var/image/temp = I
+			for(var/i in 1 to length(below.overlays))
+				var/image/temp = image(below.overlays[i]) //byond moment
 				temp.plane = src.plane
-				temp.color = I.color
 				overlays += temp
 
 
