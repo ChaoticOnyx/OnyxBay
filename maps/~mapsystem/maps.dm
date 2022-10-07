@@ -116,13 +116,18 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		)
 
 	var/list/home_system_choices = list(
-		"Nova Magnitka",
+		"Gilgamesh",
 		"Tau Ceti",
 		"Epsilon Ursae Minoris",
-		"Zermig VIII",
-		"Arcturia",
-		"Gaia Magna",
-		"Parthenonnus Ark Space Vessel"
+		"Zermig",
+		"Arcturus",
+		"Vega",
+		"Renenet",
+		"Alpha Centauri",
+		"Sirius",
+		"Qerrbalak",
+		"S`randarr",
+		"Uioa-Esa"
 		)
 
 	var/list/religion_choices = list(
