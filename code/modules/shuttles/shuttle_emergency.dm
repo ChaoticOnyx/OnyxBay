@@ -128,7 +128,7 @@
 	var/auth_name
 	var/dna_hash
 
-	var/obj/item/card/id/ID = ident.GetIdCard()
+	var/obj/item/card/id/ID = ident.get_id_card()
 
 	if(!ID)
 		return

@@ -77,11 +77,11 @@
 		tiny_image.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 		overlays += tiny_image
 
-/obj/item/storage/wallet/GetIdCard()
+/obj/item/storage/wallet/get_id_card()
 	return front_id
 
 /obj/item/storage/wallet/GetAccess()
-	var/obj/item/I = GetIdCard()
+	var/obj/item/I = get_id_card()
 	if(I)
 		return I.GetAccess()
 	else
