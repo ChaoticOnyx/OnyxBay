@@ -81,7 +81,7 @@
 			P.SetName("nuclear bomb code")
 			if(leader && leader.current)
 				if(get_turf(P) == get_turf(leader.current) && !(leader.current.l_hand && leader.current.r_hand))
-					leader.current.put_in_hands(P)
+					leader.current.pick_or_drop(P)
 
 		if(!code_owner && leader)
 			code_owner = leader

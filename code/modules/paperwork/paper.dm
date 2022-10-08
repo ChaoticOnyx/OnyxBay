@@ -470,7 +470,7 @@
 		qdel(src)
 		qdel(G)
 		if(roll_in_hands)
-			user.put_in_hands(R)
+			user.pick_or_drop(R)
 		return
 
 	add_fingerprint(user)

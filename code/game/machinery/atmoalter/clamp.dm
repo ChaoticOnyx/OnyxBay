@@ -125,7 +125,7 @@
 			var/obj/item/clamp/C = new /obj/item/clamp(src.loc)
 			C.forceMove(usr.loc)
 			if(ishuman(usr))
-				usr.put_in_hands(C)
+				usr.pick_or_drop(C)
 			qdel(src)
 			return
 	else

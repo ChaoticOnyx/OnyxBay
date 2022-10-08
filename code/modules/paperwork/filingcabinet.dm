@@ -105,7 +105,7 @@
 		//var/retrieveindex = text2num(href_list["retrieve"])
 		var/obj/item/P = locate(href_list["retrieve"])//contents[retrieveindex]
 		if(istype(P) && (P.loc == src) && src.Adjacent(usr))
-			usr.put_in_hands(P)
+			usr.pick_or_drop(P)
 			updateUsrDialog()
 			icon_state = "[initial(icon_state)]-open"
 			spawn(0)

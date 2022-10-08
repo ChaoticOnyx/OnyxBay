@@ -29,8 +29,8 @@
 
 /obj/item/implant/compressed/activate()
 	var/turf/T = get_turf(src)
-	if (imp_in)
-		imp_in.put_in_hands(scanned)
+	if(imp_in)
+		imp_in.pick_or_drop(scanned)
 	else
 		scanned.forceMove(T)
 	qdel(src)

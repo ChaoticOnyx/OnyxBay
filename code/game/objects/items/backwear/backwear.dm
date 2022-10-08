@@ -124,7 +124,7 @@
 		if(!M.drop(src))
 			return
 		add_fingerprint(usr)
-		M.put_in_hands(src)
+		M.pick_or_drop(src)
 
 
 ///// These use power cells to function

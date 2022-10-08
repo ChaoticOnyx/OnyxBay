@@ -77,7 +77,7 @@
 		if(!M.drop(src))
 			return
 		add_fingerprint(usr)
-		M.put_in_hands(src)
+		M.pick_or_drop(src)
 
 
 /obj/item/defibrillator/attackby(obj/item/W, mob/user, params)

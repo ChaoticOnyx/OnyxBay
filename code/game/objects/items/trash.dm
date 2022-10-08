@@ -232,6 +232,6 @@
 	var/obj/item/trash/dish/dish = stack[length(stack)]
 	stack -= dish
 
-	user.put_in_hands(dish)
+	user.pick_or_drop(dish)
 
 	update_icon()

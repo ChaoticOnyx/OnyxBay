@@ -286,7 +286,7 @@
 			return
 
 		var/obj/item/built = new build_type(drop_location())
-		usr.put_in_hands(built)
+		usr.pick_or_drop(built)
 
 		if(istype(built, /obj/item/device/electronic_assembly))
 			var/obj/item/device/electronic_assembly/E = built

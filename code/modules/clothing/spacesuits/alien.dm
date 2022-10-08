@@ -101,7 +101,7 @@
 		return
 
 	var/obj/item/I = new /obj/item/vox_rcd(H)
-	H.put_in_hands(I)
+	H.pick_or_drop(I)
 ////////////RCD
 
 
@@ -220,7 +220,7 @@
 	if((ammo < max_ammo) && (world.time > (last_regen + recharge_time)))
 		ammo++
 		last_regen = world.time
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/clothing/head/helmet/space/vox/carapace

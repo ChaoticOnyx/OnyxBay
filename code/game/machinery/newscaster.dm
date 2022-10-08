@@ -761,7 +761,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 		if(!photo_data.is_synth)
 			photo_data.photo.forceMove(get_turf(src))
 			if(!issilicon(user))
-				user.put_in_hands(photo_data.photo)
+				user.pick_or_drop(photo_data.photo)
 		qdel(photo_data)
 		photo_data = null
 		return

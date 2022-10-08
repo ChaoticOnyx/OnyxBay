@@ -111,32 +111,28 @@
 		switch(href_list["take"])
 			if("garbage")
 				if(mybag)
-					mybag.forceMove(loc)
-					if(user.put_in_hands(mybag))
+					if(user.pick_or_drop(mybag))
 						to_chat(user, SPAN("notice", "You take [mybag] from [src]."))
 					else
 						to_chat(user, SPAN("notice", "You drop [mybag] from [src]."))
 					mybag = null
 			if("mop")
 				if(mymop)
-					mymop.forceMove(loc)
-					if(user.put_in_hands(mymop))
+					if(user.pick_or_drop(mymop))
 						to_chat(user, SPAN("notice", "You take [mymop] from [src]."))
 					else
 						to_chat(user, SPAN("notice", "You drop [mymop] from [src]."))
 					mymop = null
 			if("spray")
 				if(myspray)
-					myspray.forceMove(loc)
-					if(user.put_in_hands(myspray))
+					if(user.pick_or_drop(myspray))
 						to_chat(user, SPAN("notice", "You take [myspray] from [src]."))
 					else
 						to_chat(user, SPAN("notice", "You drop [myspray] from [src]."))
 					myspray = null
 			if("replacer")
 				if(myreplacer)
-					myreplacer.forceMove(loc)
-					if(user.put_in_hands(myreplacer))
+					if(user.pick_or_drop(myreplacer))
 						to_chat(user, SPAN("notice", "You take [myreplacer] from [src]."))
 					else
 						to_chat(user, SPAN("notice", "You drop [myreplacer] from [src]."))
@@ -145,8 +141,7 @@
 				if(signs)
 					var/obj/item/caution/Sign = locate() in src
 					if(Sign)
-						Sign.forceMove(loc)
-						if(user.put_in_hands(Sign))
+						if(user.pick_or_drop(Sign))
 							to_chat(user, SPAN("notice", "You take \a [Sign] from [src]."))
 						else
 							to_chat(user, SPAN("notice", "You drop \a [Sign] from [src]."))
@@ -219,8 +214,7 @@
 
 /obj/structure/bed/chair/janicart/attack_hand(mob/user)
 	if(mybag)
-		mybag.forceMove(get_turf(user))
-		user.put_in_hands(mybag)
+		user.pick_or_drop(mybag, loc)
 		mybag = null
 	else
 		..()

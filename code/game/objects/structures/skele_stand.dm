@@ -26,7 +26,7 @@
 		var/obj/item/clothing/C = input("What piece of clothing do you want to remove?", "Skeleton undressing") as null|anything in list_values(swag)
 		if(C)
 			swag -= get_key_by_value(swag, C)
-			user.put_in_hands(C)
+			user.pick_or_drop(C)
 			to_chat(user,"<span class='notice'>You take \the [C] off \the [src]</span>")
 			update_icon()
 	else

@@ -92,9 +92,10 @@
 		busy = FALSE
 	else if(href_list["remove"])
 		if(copyitem)
-			copyitem.loc = usr.loc
-			usr.put_in_hands(copyitem)
-			to_chat(usr, SPAN("notice", "You take \the [copyitem] out of \the [src]."))
+			if(usr.pick_or_drop(copyitem, loc))
+				to_chat(usr, SPAN("notice", "You take \the [copyitem] out of \the [src]."))
+			else
+				to_chat(usr, SPAN("notice", "You remove \the [copyitem] from \the [src]."))
 			copyitem = null
 			updateUsrDialog()
 	else if(href_list["min"])

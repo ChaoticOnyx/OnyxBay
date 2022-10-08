@@ -191,7 +191,7 @@
 	if(user.get_inactive_hand() == src)//if being hold
 		if (ec_cartridge)
 			active=0
-			user.put_in_hands(ec_cartridge)
+			user.pick_or_drop(ec_cartridge)
 			to_chat(user, "<span class='notice'>You eject \the [ec_cartridge] from \the [src].</span> ")
 			ec_cartridge = null
 			update_icon()

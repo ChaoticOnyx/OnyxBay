@@ -120,7 +120,7 @@
 		to_chat(user, "<span class=warning>You cannot remove the multitool itself.</span>")
 		return
 
-	if(user.put_in_active_hand(choice))
+	if(user.pick_or_drop(choice))
 		to_chat(user, "<span class=notice>You remove \the [choice] from \the [src].</span>")
 		src.contents -= choice
 		if(choice == wirecutters)

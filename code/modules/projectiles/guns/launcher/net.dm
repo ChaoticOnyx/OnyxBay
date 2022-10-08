@@ -31,7 +31,7 @@
 /obj/item/gun/launcher/net/proc/unload(mob/user)
 	if(chambered)
 		user.visible_message("\The [user] removes \the [chambered] from \the [src].", "<span class='notice'>You remove \the [chambered] from \the [src].</span>")
-		user.put_in_hands(chambered)
+		user.pick_or_drop(chambered, loc)
 		chambered = null
 	else
 		to_chat(user, "<span class='warning'>\The [src] is empty.</span>")

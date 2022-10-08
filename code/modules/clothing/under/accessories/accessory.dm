@@ -72,7 +72,7 @@
 	has_suit.overlays -= get_inv_overlay()
 	has_suit = null
 	if(user)
-		usr.put_in_hands(src)
+		usr.pick_or_drop(src)
 		add_fingerprint(user)
 	else
 		forceMove(get_turf(src))

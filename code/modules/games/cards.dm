@@ -87,7 +87,7 @@
 		H = user.r_hand
 	else
 		H = new(get_turf(src))
-		user.put_in_hands(H)
+		user.pick_or_drop(H)
 
 	if(!H || !user) return
 
