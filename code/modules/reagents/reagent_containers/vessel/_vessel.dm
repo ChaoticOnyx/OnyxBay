@@ -322,7 +322,7 @@
 
 	//Finally, smash the bottle. This kills (qdel) the vessel.
 	var/obj/item/broken_bottle/B = smash(target.loc, target)
-	user.put_in_active_hand(B)
+	user.pick_or_drop(B, target.loc)
 
 	return blocked
 
