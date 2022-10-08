@@ -81,7 +81,7 @@
 /obj/structure/gas_stand/attack_hand(mob/user as mob)
 	if (tank && is_loosen)
 		user.visible_message("<span class='notice'>\The [user] removes \the [tank] from \the [src].</span>", "<span class='notice'>You remove \the [tank] from \the [src].</span>")
-		user.put_in_hands(tank)
+		user.pick_or_drop(tank)
 		src.add_fingerprint(user)
 		tank.add_fingerprint(user)
 		tank = null

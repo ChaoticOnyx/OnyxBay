@@ -137,7 +137,7 @@
 			if(panel_open && cell && !usr.get_active_hand())
 				usr.visible_message("<span class='notice'>\The usr] removes \the [cell] from \the [src].</span>", "<span class='notice'>You remove \the [cell] from \the [src].</span>")
 				cell.update_icon()
-				usr.put_in_hands(cell)
+				usr.pick_or_drop(cell)
 				cell.add_fingerprint(usr)
 				cell = null
 				power_change()

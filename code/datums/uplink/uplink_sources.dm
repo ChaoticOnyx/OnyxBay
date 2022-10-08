@@ -103,10 +103,9 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 	var/obj/O = M.equip_to_storage(AM)
 	if(O)
 		to_chat(M, "<span class='notice'>[text] can be found in your [O.name].</span>")
-	else if(M.put_in_hands(AM))
+	else if(M.pick_or_drop(AM))
 		to_chat(M, "<span class='notice'>[text] appear in your hands.</span>")
 	else
-		AM.dropInto(M.loc)
 		to_chat(M, "<span class='notice'>[text] appear at your location.</span>")
 
 /proc/setup_uplink_source(mob/M, amount = DEFAULT_TELECRYSTAL_AMOUNT)

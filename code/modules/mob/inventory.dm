@@ -145,24 +145,26 @@ var/list/slot_equipment_priority = list( \
 	return 0 // As above.
 
 //Puts the item our active hand if possible. Failing that it tries our inactive hand. Returns 1 on success.
-//If both fail it drops it on the floor and returns 0.
+//If both fail it drops it on the floor (but only if located in src) and returns 0.
 //This is probably the main one you need to know :)
 /mob/proc/put_in_hands(obj/item/W)
 	if(!W)
 		return 0
 	if(W.loc == src)
 		drop(W)
-	else
-		W.dropInto(loc)
 	return 0
 
-//
-/mob/proc/put_in_hands_or_drop(obj/item/W, atom/A = null)
+// Tries to put the item into src's hands (starting w/ the active one).
+// Drops into src's (or A if provided) location on fail.
+// Please ONLY use it on "external" items, *with their loc != src*, or our ballsack will instantly fall off. You've been warned.
+// Otherwise it's pretty much safe and preferable over calling put_in_hands and whatever movement separately.
+/mob/proc/pick_or_drop(obj/item/W, atom/A = null)
 	if(!W)
 		return FALSE
-	if(!put_in_hands(W))
-		W.dropInto(A? ? A.loc : loc)
-	return TRUE
+	if(put_in_hands(W))
+		return TRUE
+	W.dropInto(A ? A : loc)
+	return FALSE
 
 // Replaces 'old_item' w/ 'new_item', putting it in the same slot.
 // May optionally qdel 'old_item'.

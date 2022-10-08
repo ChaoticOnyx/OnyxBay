@@ -314,7 +314,7 @@
 		if(!stored_item)
 			to_chat(user, SPAN("notice", "There is nothing hidden in \the [src]."))
 		else
-			user.put_in_hands(stored_item)
+			user.pick_or_drop(stored_item, loc)
 			to_chat(user, SPAN("notice", "You take \the [stored_item] from \the [src]."))
 			stored_item = null
 		src.add_fingerprint(usr)

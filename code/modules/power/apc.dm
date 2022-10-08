@@ -734,7 +734,7 @@
 
 	if(usr == user && opened && (!issilicon(user)))
 		if(cell)
-			user.put_in_hands(cell)
+			user.pick_or_drop(cell)
 			cell.add_fingerprint(user)
 			cell.update_icon()
 

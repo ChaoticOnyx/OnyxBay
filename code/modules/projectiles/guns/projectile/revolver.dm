@@ -259,9 +259,10 @@
 	set desc = "Remove the powercell from your gun."
 	set category = "Object"
 
-	if(!bcell) return
+	if(!bcell)
+		return
 	to_chat(usr, "<span class='notice'>You remove the [bcell.name] from your [src].</span>")
-	usr.put_in_hands(bcell)
+	usr.pick_or_drop(bcell, loc)
 	bcell = null
 	chargemode = 0
 	update_icon()

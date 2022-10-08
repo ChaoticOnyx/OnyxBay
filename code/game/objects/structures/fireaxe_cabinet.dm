@@ -62,8 +62,7 @@
 			to_chat(usr, "<span class='warning'>\The [src] is empty.</span>")
 			return
 
-		fireaxe.forceMove(get_turf(usr))
-		usr.put_in_hands(fireaxe)
+		usr.pick_or_drop(fireaxe)
 		fireaxe = null
 		update_icon()
 

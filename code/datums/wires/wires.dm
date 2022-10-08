@@ -136,7 +136,7 @@ var/list/wireColours = list("red", "blue", "green", "darkred", "orange", "brown"
 				if(IsAttached(colour))
 					var/obj/item/O = Detach(colour)
 					if(O)
-						L.put_in_hands(O)
+						L.pick_or_drop(O)
 
 				// Attach
 				else

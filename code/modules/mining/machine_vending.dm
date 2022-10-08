@@ -136,9 +136,7 @@ var/global/list/minevendor_list = list( //keep in order of price
 				if(!Adjacent(usr))
 					to_chat(usr, SPAN("warning","You can't reach it."))
 					return
-				inserted_id.loc = loc
-				if(!usr.get_active_hand())
-					usr.put_in_hands(inserted_id)
+				usr.pick_or_drop(inserted_id, loc)
 				inserted_id = null
 		else if(href_list["choice"] == "insert")
 			var/obj/item/card/id/I = usr.get_active_hand()

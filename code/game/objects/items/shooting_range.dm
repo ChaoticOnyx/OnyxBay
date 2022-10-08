@@ -58,7 +58,7 @@
 				forceMove(user.loc)
 				if(ishuman(user))
 					if(!user.get_active_hand())
-						user.put_in_hands(src)
+						user.pick_or_drop(src)
 						to_chat(user, "You take the target out of the stake.")
 				else
 					src.loc = get_turf(user)

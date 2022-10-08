@@ -127,7 +127,7 @@
 	if(!airlock)
 		return
 	if(user)
-		user.put_in_hands(src)
+		user.pick_or_drop(src)
 		airlock.visible_message("\The [user] removes \the [src] from \the [airlock]!")
 	else
 		forceMove(get_turf(src))

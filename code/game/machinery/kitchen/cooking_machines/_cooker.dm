@@ -233,7 +233,7 @@
 			L.get_scooped(receiver, self_grab = FALSE)
 		else
 			to_chat(receiver, SPAN_NOTICE("You grab \the [thing_inside] from \the [src]."))
-			receiver.put_in_hands(thing_inside)
+			receiver.pick_or_drop(thing_inside)
 	else
 		thing_inside.forceMove(get_turf(src))
 

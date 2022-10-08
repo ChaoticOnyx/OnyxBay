@@ -85,7 +85,7 @@
 /obj/item/reagent_containers/vessel/bottle/proc/remove_rag(mob/user)
 	if(!rag)
 		return
-	user.put_in_hands(rag)
+	user.pick_or_drop(rag)
 	rag = null
 	atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 	update_icon()
@@ -105,7 +105,7 @@
 /obj/item/reagent_containers/vessel/bottle/proc/remove_pourer(mob/user)
 	if(!pourer)
 		return
-	user.put_in_hands(pourer)
+	user.pick_or_drop(pourer)
 	pourer = null
 	possible_transfer_amounts = initial(possible_transfer_amounts)
 	amount_per_transfer_from_this = 5

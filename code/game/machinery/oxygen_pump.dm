@@ -60,7 +60,7 @@
 /obj/machinery/oxygen_pump/attack_hand(mob/user as mob)
 	if((stat & MAINT) && tank)
 		user.visible_message("<span class='notice'>\The [user] removes \the [tank] from \the [src].</span>", "<span class='notice'>You remove \the [tank] from \the [src].</span>")
-		user.put_in_hands(tank)
+		user.pick_or_drop(tank, loc)
 		src.add_fingerprint(user)
 		tank.add_fingerprint(user)
 		tank = null

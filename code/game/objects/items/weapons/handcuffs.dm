@@ -169,7 +169,7 @@ var/last_chew = 0
 		var/obj/item/stack/rods/R = I
 		if (R.use(1))
 			var/obj/item/material/wirerod/W = new(get_turf(user))
-			user.put_in_hands(W)
+			user.pick_or_drop(W)
 			to_chat(user, "<span class='notice'>You wrap the cable restraint around the top of the rod.</span>")
 			qdel(src)
 			update_icon(user)

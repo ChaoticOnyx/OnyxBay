@@ -167,7 +167,7 @@
 			user.visible_message("<b>[user]</b> ejects [ammo_magazine] from [src].",
 			SPAN("notice", "You eject [ammo_magazine] from [src]."))
 		else
-			user.put_in_hands(ammo_magazine)
+			user.pick_or_drop(ammo_magazine)
 			user.visible_message("<b>[user]</b> removes [ammo_magazine] from [src].",
 			SPAN("notice", "You remove [ammo_magazine] from [src]."))
 		playsound(loc, mag_eject_sound, 75)
@@ -193,7 +193,7 @@
 		else if(load_method & SINGLE_CASING)
 			var/obj/item/ammo_casing/C = loaded[loaded.len]
 			loaded.len--
-			user.put_in_hands(C)
+			user.pick_or_drop(C)
 			user.visible_message("<b>[user]</b> removes \a [C] from [src].", SPAN("notice", "You remove \a [C] from [src]."))
 			playsound(src.loc, "bullet_insert", 50, 1)
 	else

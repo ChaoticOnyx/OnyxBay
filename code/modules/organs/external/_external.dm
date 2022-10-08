@@ -212,7 +212,7 @@
 		I.loc = get_turf(user) //just in case something was embedded that is not an item
 		if(istype(I))
 			if(!(user.l_hand && user.r_hand))
-				user.put_in_hands(I)
+				user.pick_or_drop(I)
 		user.visible_message("<span class='danger'>\The [user] rips \the [I] out of \the [src]!</span>")
 		return //no eating the limb until everything's been removed
 	return ..()

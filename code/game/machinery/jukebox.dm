@@ -285,8 +285,7 @@
 		current_track = null
 		tracks = list()
 
-		if(!usr.put_in_hands(tape))
-			tape.dropInto(loc)
+		usr.pick_or_drop(tape, loc)
 
 		tape = null
 		visible_message(SPAN_NOTICE("[usr] eject \a [tape] from \the [src]."))

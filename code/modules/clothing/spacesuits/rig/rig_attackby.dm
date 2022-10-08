@@ -106,8 +106,10 @@
 				to_chat(user, "There is not tank to remove.")
 				return
 
-			if(!user.put_in_hands(air_supply))
+			if(loc != user)
 				air_supply.dropInto(loc)
+			else
+				user.pick_or_drop(air_supply)
 
 			to_chat(user, "You detach and remove \the [air_supply].")
 			air_supply = null
@@ -137,8 +139,10 @@
 						to_chat(user, "You detach \the [cell] from \the [src]'s battery mount.")
 						for(var/obj/item/rig_module/module in installed_modules)
 							module.deactivate()
-						if(!user.put_in_hands(cell))
+						if(loc != user)
 							cell.dropInto(loc)
+						else
+							user.pick_or_drop(cell)
 						cell = null
 					else
 						to_chat(user, "There is nothing loaded in that mount.")
@@ -161,7 +165,12 @@
 
 					var/obj/item/rig_module/removed = possible_removals[removal_choice]
 					to_chat(user, "You detach \the [removed] from \the [src].")
-					removed.forceMove(get_turf(src))
+
+					if(loc != user)
+						removed.dropInto(loc)
+					else
+						user.pick_or_drop(removed)
+
 					removed.removed()
 					installed_modules -= removed
 					update_icon()

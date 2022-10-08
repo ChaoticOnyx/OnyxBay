@@ -48,8 +48,8 @@
 			var/replace = (user.get_inactive_hand()==G)
 			V.use(1)
 			G.use(1)
-			if (!G && replace)
-				user.put_in_hands(RG)
+			if(!G && replace)
+				user.pick_or_drop(RG)
 
 /obj/item/stack/material/glass/proc/construct_window(mob/user as mob)
 	if(!user || !src)	return 0
@@ -156,8 +156,8 @@
 		src = null
 		var/replace = (user.get_inactive_hand()==G)
 		G.use(1)
-		if (!G && !RG && replace)
-			user.put_in_hands(RG)
+		if(!G && !RG && replace)
+			user.pick_or_drop(RG)
 	else
 		return ..()
 

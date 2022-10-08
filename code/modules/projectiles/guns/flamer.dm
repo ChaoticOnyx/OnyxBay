@@ -79,7 +79,7 @@
 	lit = 0
 	to_chat(user, "You twist the valve and pop the fuel tank out of [src].")
 	playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
-	user.put_in_hands(fuel_tank)
+	user.pick_or_drop(fuel_tank, loc)
 	fuel_tank = null
 	update_icon()
 	return

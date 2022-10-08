@@ -87,9 +87,7 @@
 	if(href_list["choice"])
 		if(istype(inserted_id))
 			if(href_list["choice"] == "eject")
-				inserted_id.loc = loc
-				if(!usr.get_active_hand())
-					usr.put_in_hands(inserted_id)
+				usr.pick_or_drop(inserted_id, loc)
 				inserted_id = null
 			if(href_list["choice"] == "claim")
 				if(access_mining_station in inserted_id.access)

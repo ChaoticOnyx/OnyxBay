@@ -499,11 +499,7 @@
 				to_chat(usr, "There is no coin in this machine.")
 				return TRUE
 
-			coin.forceMove(loc)
-
-			if(!usr.get_active_hand())
-				usr.put_in_hands(coin)
-
+			usr.pick_or_drop(coin, loc)
 			to_chat(usr, SPAN("notice", "You remove \the [coin] from \the [src]"))
 			coin = null
 			categories &= ~CAT_COIN

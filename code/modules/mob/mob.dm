@@ -955,7 +955,7 @@
 
 	selection.forceMove(get_turf(src))
 	if(!(U.l_hand && U.r_hand))
-		U.put_in_hands(selection)
+		U.pick_or_drop(selection)
 
 	for(var/obj/item/O in pinned)
 		if(O == selection)

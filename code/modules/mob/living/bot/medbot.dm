@@ -304,7 +304,7 @@
 		A.skin = "bezerk"
 
 	qdel(S)
-	user.put_in_hands(A)
+	user.pick_or_drop(A)
 	to_chat(user, "<span class='notice'>You add the robot arm to the first aid kit.</span>")
 	user.drop(src)
 	qdel(src)
