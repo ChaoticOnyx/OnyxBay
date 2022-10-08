@@ -152,7 +152,17 @@ var/list/slot_equipment_priority = list( \
 		return 0
 	if(W.loc == src)
 		drop(W)
+	else
+		W.dropInto(loc)
 	return 0
+
+//
+/mob/proc/put_in_hands_or_drop(obj/item/W, atom/A = null)
+	if(!W)
+		return FALSE
+	if(!put_in_hands(W))
+		W.dropInto(A? ? A.loc : loc)
+	return TRUE
 
 // Replaces 'old_item' w/ 'new_item', putting it in the same slot.
 // May optionally qdel 'old_item'.

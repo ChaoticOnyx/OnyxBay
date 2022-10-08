@@ -106,7 +106,9 @@
 				to_chat(user, "There is not tank to remove.")
 				return
 
-			user.put_in_hands(air_supply)
+			if(!user.put_in_hands(air_supply))
+				air_supply.dropInto(loc)
+
 			to_chat(user, "You detach and remove \the [air_supply].")
 			air_supply = null
 			return
@@ -135,7 +137,8 @@
 						to_chat(user, "You detach \the [cell] from \the [src]'s battery mount.")
 						for(var/obj/item/rig_module/module in installed_modules)
 							module.deactivate()
-						user.put_in_hands(cell)
+						if(!user.put_in_hands(cell))
+							cell.dropInto(loc)
 						cell = null
 					else
 						to_chat(user, "There is nothing loaded in that mount.")
