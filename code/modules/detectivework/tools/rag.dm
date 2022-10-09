@@ -25,6 +25,7 @@
 	item_flags = ITEM_FLAG_NO_BLUDGEON
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	unacidable = FALSE
+	var/obj/item/stack/medical/bruise_pack/BP
 
 	var/on_fire = 0
 	var/burn_time = 20 //if the rag burns for too long it turns to ashes
@@ -32,6 +33,11 @@
 /obj/item/reagent_containers/rag/Initialize()
 	. = ..()
 	update_name()
+	BP = new()
+
+/obj/item/reagent_containers/rag/Destroy()
+	. = ..()
+	QDEL_NULL(BP)
 
 /obj/item/reagent_containers/rag/attack_self(mob/user as mob)
 	if(on_fire)
@@ -97,25 +103,36 @@
 			user.visible_message("\The [user] finishes wiping off the [A]!")
 			A.clean_blood()
 
-/obj/item/reagent_containers/rag/attack(atom/target as obj|turf|area, mob/user as mob , flag)
+/obj/item/reagent_containers/rag/proc/default_attack(atom/target, mob/user)
+	if(!on_fire && reagents.total_volume)
+		if(user.zone_sel.selecting == BP_MOUTH)
+			if (standard_feed_mob(user, target))
+				user.do_attack_animation(src)
+				user.visible_message(
+					SPAN("danger", "\The [user] smothers [target] with [src]!"),
+					SPAN("warning", "You smother [target] with [src]!"),
+					"You hear some struggling and muffled cries of surprise"
+					)
+				update_name()
+		else
+			wipe_down(target, user)
+
+/obj/item/reagent_containers/rag/attack(atom/target, mob/user)
 	if(isliving(target))
 		var/mob/living/M = target
 		if(on_fire)
 			user.visible_message("<span class='danger'>\The [user] hits [target] with [src]!</span>",)
 			user.do_attack_animation(src)
 			M.IgniteMob()
-		else if(reagents.total_volume)
-			if(user.zone_sel.selecting == BP_MOUTH)
-				if (standard_feed_mob(user, target))
-					user.do_attack_animation(src)
-					user.visible_message(
-						"<span class='danger'>\The [user] smothers [target] with [src]!</span>",
-						"<span class='warning'>You smother [target] with [src]!</span>",
-						"You hear some struggling and muffled cries of surprise"
-						)
-					update_name()
-			else
-				wipe_down(target, user)
+		else if(ishuman(target) && istype(user))
+			BP.attack(target, user)
+			reagents.trans_to(target, min(reagents.total_volume, amount_per_transfer_from_this))
+			if(!BP.amount)
+				qdel(src)
+			return
+
+		default_attack(target, user)
+
 		return
 
 	return ..()
