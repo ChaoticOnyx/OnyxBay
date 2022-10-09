@@ -158,7 +158,7 @@ var/list/name_to_material
 	to_chat(user, "<span class='notice'>You attach wire to the [name].</span>")
 	var/obj/item/product = new wire_product(get_turf(user))
 	if(!(user.l_hand && user.r_hand))
-		user.put_in_hands(product)
+		user.pick_or_drop(product)
 
 // Make sure we have a display name and shard icon even if they aren't explicitly set.
 /material/New()

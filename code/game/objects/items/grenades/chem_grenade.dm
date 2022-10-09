@@ -24,8 +24,7 @@
 	if(stage != STAGE_READY)
 		if(detonator)
 			detonator.detached()
-			if(!user.put_in_hands(detonator))
-				detonator.forceMove(user.loc)
+			user.pick_or_drop(detonator)
 			detonator = null
 			det_time = null
 			stage = STAGE_BASIC
@@ -34,13 +33,11 @@
 			for(var/obj/B in beakers)
 				if(istype(B))
 					beakers -= B
-					if(!user.put_in_hands(B))
-						B.forceMove(user.loc)
+					user.pick_or_drop(B)
 		SetName("unsecured grenade with [beakers.len] containers[detonator?" and detonator":""]")
 	if(stage == STAGE_READY && !active && clown_check(user))
 		if(safety_pin)
-			if(!user.put_in_hands(safety_pin))
-				safety_pin.forceMove(user.loc)
+			user.pick_or_drop(safety_pin)
 			safety_pin = null
 			playsound(loc, 'sound/weapons/pin_pull.ogg', 40, 1)
 			to_chat(user, SPAN("warning", "You remove the safety pin!"))

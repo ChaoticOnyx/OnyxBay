@@ -54,7 +54,7 @@
 	qdel(src)
 	qdel(W)
 	if(roll_in_hands)
-		user.put_in_hands(R)
+		user.pick_or_drop(R)
 
 /obj/item/rollingpaper/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/reagent_containers/food/grown))

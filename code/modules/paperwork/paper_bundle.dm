@@ -168,7 +168,7 @@
 				playsound(src.loc, SFX_USE_PAGE, 50, 1)
 		if(href_list["remove"])
 			var/obj/item/I = pages[page]
-			usr.put_in_hands(I)
+			usr.pick_or_drop(I)
 			pages.Remove(pages[page])
 
 			to_chat(usr, SPAN_NOTICE("You remove the [I.name] from the bundle."))

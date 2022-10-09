@@ -517,7 +517,7 @@
 	if (!disk) return
 
 	contents -= disk
-	usr.put_in_hands(disk)
+	usr.pick_or_drop(disk, loc)
 
 /*
 	Insert a disk which is in user's hands
@@ -604,7 +604,7 @@
 
 	if (neuromod_shell)
 		contents -= neuromod_shell
-		usr.put_in_hands(neuromod_shell)
+		usr.pick_or_drop(neuromod_shell, loc)
 
 /*
 	Insert a neuromod which is in user's hands
@@ -737,7 +737,7 @@
 
 	if (beaker)
 		contents -= beaker
-		usr.put_in_hands(beaker)
+		usr.pick_or_drop(beaker, loc)
 
 /*
 	Insert a beaker which is in user's hands

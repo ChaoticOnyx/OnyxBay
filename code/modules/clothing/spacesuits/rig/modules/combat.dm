@@ -246,7 +246,7 @@
 
 	var/obj/item/melee/energy/blade/blade = new(M)
 	blade.creator = weakref(M)
-	M.put_in_hands(blade)
+	M.pick_or_drop(blade)
 
 /obj/item/rig_module/mounted/energy_blade/deactivate()
 
@@ -297,7 +297,7 @@
 			var/obj/item/new_weapon = new fabrication_type()
 			new_weapon.forceMove(H)
 			to_chat(H, "<span class='info'><b>You quickly fabricate \a [new_weapon].</b></span>")
-			H.put_in_hands(new_weapon)
+			H.pick_or_drop(new_weapon)
 
 	return 1
 

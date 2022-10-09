@@ -201,7 +201,7 @@
 		..()
 	else
 		if(music_tape)
-			user.put_in_hands(music_tape)
+			user.pick_or_drop(music_tape)
 			music_tape.add_fingerprint(user)
 			music_tape = null
 

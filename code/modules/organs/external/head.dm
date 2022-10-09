@@ -39,7 +39,8 @@
 /obj/item/organ/external/head/organ_eaten(mob/user)
 	. = ..()
 	var/obj/item/skull/SK = new /obj/item/skull(get_turf(src))
-	user.put_in_active_hand(SK)
+	if(!isturf(loc))
+		user.put_in_active_hand(SK)
 
 /obj/item/organ/external/head/_examine_text(mob/user)
 	. = ..()

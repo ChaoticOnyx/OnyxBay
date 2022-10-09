@@ -316,12 +316,12 @@
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.l_store == src && !H.get_active_hand())	//Prevents opening if it's in a pocket.
-			H.put_in_hands(src)
-			H.l_store = null
+			if(H.put_in_hands(src))
+				H.l_store = null
 			return
 		if(H.r_store == src && !H.get_active_hand())
-			H.put_in_hands(src)
-			H.r_store = null
+			if(H.put_in_hands(src))
+				H.r_store = null
 			return
 
 	if(loc == user)

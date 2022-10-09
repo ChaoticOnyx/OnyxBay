@@ -125,21 +125,18 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 
 	else if(href_list["remove"])
 		if(copyitem)
-			copyitem.loc = usr.loc
-			usr.put_in_hands(copyitem)
+			usr.pick_or_drop(copyitem, loc)
 			to_chat(usr, "<span class='notice'>You take \the [copyitem] out of \the [src].</span>")
 			copyitem = null
 			updateUsrDialog()
 
 	if(href_list["scan"])
-		if (scan)
+		if(scan)
 			if(ishuman(usr))
-				scan.loc = usr.loc
-				if(!usr.get_active_hand())
-					usr.put_in_hands(scan)
+				usr.pick_or_drop(scan, loc)
 				scan = null
 			else
-				scan.loc = src.loc
+				scan.forceMove(loc)
 				scan = null
 		else
 			var/obj/item/I = usr.get_active_hand()

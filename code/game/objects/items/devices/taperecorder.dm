@@ -82,7 +82,7 @@
 	if(playing || recording)
 		stop()
 	to_chat(usr, "<span class='notice'>You remove [mytape] from [src].</span>")
-	usr.put_in_hands(mytape)
+	usr.pick_or_drop(mytape)
 	mytape = null
 	update_icon()
 

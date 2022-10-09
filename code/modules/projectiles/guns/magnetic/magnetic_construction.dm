@@ -74,7 +74,7 @@
 			put_in_hands = M == user
 			M.drop(src)
 		if(put_in_hands)
-			user.put_in_hands(coilgun)
+			user.pick_or_drop(coilgun)
 		qdel(src)
 		return
 

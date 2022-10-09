@@ -773,7 +773,7 @@
 				to_chat(user, "You were unable to attach [W] to [src]")
 		return
 
-	var/obj/item/card/id/id_card = W.GetIdCard()
+	var/obj/item/card/id/id_card = W.get_id_card()
 	if(id_card)
 		if(add_req_access || maint_access)
 			if(internals_access_allowed(usr))
@@ -1320,7 +1320,7 @@
 		return 1
 	if(!access_list.len) //no requirements
 		return 1
-	I = I.GetIdCard()
+	I = I.get_id_card()
 	if(!istype(I) || !I.access) //not ID or no access
 		return 0
 	if(access_list==src.operation_req_access)

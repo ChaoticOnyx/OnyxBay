@@ -80,7 +80,8 @@
 		else
 			usr.visible_message("[usr] beings to carefully pick up [cylinder].", "You begin to carefully pick up [cylinder].")
 			if(do_after(usr, 70, src))
-				usr.put_in_hands(cylinder)
+				if(!usr.put_in_hands(cylinder))
+					return
 				usr.visible_message("[usr] picks up [cylinder].", "You pick up [cylinder].")
 				density = 0
 				cylinder = null

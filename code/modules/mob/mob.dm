@@ -61,6 +61,8 @@
 
 /mob/Initialize(mapload)
 	. = ..()
+	if(species_language)
+		add_language(species_language)
 	START_PROCESSING(SSmobs, src)
 
 /mob/proc/show_message(msg, type, alt, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
@@ -955,7 +957,7 @@
 
 	selection.forceMove(get_turf(src))
 	if(!(U.l_hand && U.r_hand))
-		U.put_in_hands(selection)
+		U.pick_or_drop(selection)
 
 	for(var/obj/item/O in pinned)
 		if(O == selection)

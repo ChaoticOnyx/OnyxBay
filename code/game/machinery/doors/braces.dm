@@ -74,12 +74,12 @@
 
 /obj/item/airlock_brace/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if (istype(W.GetIdCard(), /obj/item/card/id))
+	if (istype(W.get_id_card(), /obj/item/card/id))
 		if(!airlock)
 			attack_self(user)
 			return
 		else
-			var/obj/item/card/id/C = W.GetIdCard()
+			var/obj/item/card/id/C = W.get_id_card()
 			update_access()
 			if(check_access(C))
 				to_chat(user, "You swipe \the [C] through \the [src].")
@@ -127,7 +127,7 @@
 	if(!airlock)
 		return
 	if(user)
-		user.put_in_hands(src)
+		user.pick_or_drop(src)
 		airlock.visible_message("\The [user] removes \the [src] from \the [airlock]!")
 	else
 		forceMove(get_turf(src))

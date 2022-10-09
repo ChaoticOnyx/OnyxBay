@@ -355,7 +355,7 @@
 		if(!welding)
 			if(tank.can_remove)
 				user.visible_message("[user] removes \the [tank] from \the [src].", "You remove \the [tank] from \the [src].")
-				user.put_in_hands(tank)
+				user.pick_or_drop(tank)
 				tank = null
 				update_icon()
 			else

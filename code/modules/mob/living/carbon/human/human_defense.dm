@@ -777,12 +777,10 @@ meteor_act
 	if(isobj(AM))
 		var/obj/O = AM
 		if(in_throw_mode && !get_active_hand() && speed >= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
-			if(!incapacitated())
-				if(isturf(O.loc))
-					put_in_active_hand(O)
-					visible_message(SPAN("warning", "[src] catches [O]!"))
-					throw_mode_off()
-					return
+			if(!incapacitated() && isturf(O.loc) && put_in_active_hand(O))
+				visible_message(SPAN("warning", "[src] catches [O]!"))
+				throw_mode_off()
+				return
 
 		var/dtype = O.damtype
 		var/throw_damage = O.throwforce / (speed * THROWFORCE_SPEED_DIVISOR)

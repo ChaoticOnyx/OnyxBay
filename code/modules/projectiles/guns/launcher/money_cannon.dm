@@ -70,7 +70,7 @@
 	var/obj/item/spacecash/bling = new /obj/item/spacecash/bundle()
 	bling.worth = receptacle_value
 	bling.update_icon()
-	user.put_in_hands(bling)
+	user.pick_or_drop(bling, loc)
 	to_chat(user, SPAN("notice", "You eject [receptacle_value] credits from [src]'s receptacle."))
 	receptacle_value = 0
 

@@ -32,8 +32,7 @@
 		if(!imp)
 			to_chat(usr, "<span class='notice'>There is no implant to remove.</span>")
 			return
-		imp.forceMove(get_turf(src))
-		usr.put_in_hands(imp)
+		usr.pick_or_drop(imp, loc)
 		to_chat(usr, "<span class='notice'>You remove \the [imp] from \the [src].</span>")
 		name = "implanter"
 		imp = null

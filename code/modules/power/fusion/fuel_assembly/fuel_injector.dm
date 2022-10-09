@@ -59,8 +59,7 @@ var/list/fuel_injectors = list()
 
 		user.drop(W, src)
 		if(cur_assembly)
-			cur_assembly.forceMove(get_turf(src))
-			user.put_in_hands(cur_assembly)
+			user.pick_or_drop(cur_assembly, loc)
 		cur_assembly = W
 		return
 
@@ -88,7 +87,7 @@ var/list/fuel_injectors = list()
 
 	if(cur_assembly)
 		cur_assembly.forceMove(get_turf(src))
-		user.put_in_hands(cur_assembly)
+		user.pick_or_drop(cur_assembly, loc)
 		visible_message("<span class='notice'>\The [user] removes \the [cur_assembly] from \the [src].</span>")
 		cur_assembly = null
 		return

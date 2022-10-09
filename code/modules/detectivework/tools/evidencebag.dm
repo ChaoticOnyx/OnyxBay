@@ -89,7 +89,7 @@
 		"You hear someone rustle around in a plastic bag, and remove something.")
 		overlays.Cut()	//remove the overlays
 
-		user.put_in_hands(I)
+		user.pick_or_drop(I)
 		stored_item = null
 
 		w_class = initial(w_class)

@@ -42,7 +42,7 @@
 			var/replace = (user.get_inactive_hand()==R)
 			R.use(1)
 			if (!R && replace)
-				user.put_in_hands(new_item)
+				user.pick_or_drop(new_item)
 		return
 
 	if(isWrench(W) && !in_use)

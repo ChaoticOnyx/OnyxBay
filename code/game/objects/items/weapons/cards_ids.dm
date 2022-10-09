@@ -227,7 +227,7 @@ var/const/NO_EMAG_ACT = -50
 /obj/item/card/id/GetAccess()
 	return access
 
-/obj/item/card/id/GetIdCard()
+/obj/item/card/id/get_id_card()
 	return src
 
 /obj/item/card/id/verb/read()

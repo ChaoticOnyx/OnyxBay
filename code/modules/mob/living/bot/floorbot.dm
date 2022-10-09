@@ -228,7 +228,7 @@
 		user.s_active.close(user)
 	if(T.use(10))
 		var/obj/item/toolbox_tiles/B = new /obj/item/toolbox_tiles
-		user.put_in_hands(B)
+		user.pick_or_drop(B)
 		to_chat(user, "<span class='notice'>You add the tiles into the empty toolbox. They protrude from the top.</span>")
 		qdel(src)
 	else
@@ -254,7 +254,7 @@
 		qdel(W)
 		var/obj/item/toolbox_tiles_sensor/B = new /obj/item/toolbox_tiles_sensor()
 		B.created_name = created_name
-		user.put_in_hands(B)
+		user.pick_or_drop(B)
 		to_chat(user, "<span class='notice'>You add the sensor to the toolbox and tiles!</span>")
 		qdel(src)
 	else if (istype(W, /obj/item/pen))

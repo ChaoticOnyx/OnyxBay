@@ -763,7 +763,7 @@
 		if(cell)
 			cell.update_icon()
 			cell.add_fingerprint(user)
-			user.put_in_active_hand(cell)
+			user.pick_or_drop(cell, loc)
 			to_chat(user, "You remove \the [cell].")
 			cell = null
 			cell_component.wrapped = null
@@ -773,7 +773,7 @@
 			cell_component.installed = 0
 			var/obj/item/broken_device = cell_component.wrapped
 			to_chat(user, "You remove \the [broken_device].")
-			user.put_in_active_hand(broken_device)
+			user.pick_or_drop(broken_device, loc)
 
 //Robots take half damage from basic attacks.
 /mob/living/silicon/robot/attack_generic(mob/user, damage, attack_message)

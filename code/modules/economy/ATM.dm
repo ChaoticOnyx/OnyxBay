@@ -452,14 +452,14 @@
 	authenticated_account = null
 	account_security_level = 0
 
-	if(ishuman(human_user) && !human_user.get_active_hand())
-		human_user.put_in_hands(held_card)
+	if(ishuman(human_user))
+		human_user.pick_or_drop(held_card)
 	held_card = null
 
 
-/obj/machinery/atm/proc/spawn_ewallet(sum, loc, mob/living/carbon/human/human_user as mob)
+/obj/machinery/atm/proc/spawn_ewallet(sum, loc, mob/living/carbon/human/human_user)
 	var/obj/item/spacecash/ewallet/E = new /obj/item/spacecash/ewallet(loc)
-	if(ishuman(human_user) && !human_user.get_active_hand())
-		human_user.put_in_hands(E)
+	if(ishuman(human_user))
+		human_user.pick_or_drop(E, loc)
 	E.worth = sum
 	E.owner_name = authenticated_account.owner_name

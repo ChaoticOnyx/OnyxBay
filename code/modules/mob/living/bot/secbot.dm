@@ -352,7 +352,7 @@
 			return
 		qdel(S)
 		var/obj/item/secbot_assembly/A = new /obj/item/secbot_assembly
-		user.put_in_hands(A)
+		user.pick_or_drop(A)
 		to_chat(user, "You add the signaler to the helmet.")
 		qdel(src)
 	else

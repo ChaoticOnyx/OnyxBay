@@ -157,10 +157,10 @@
 				creating_new_account = 0
 			if("insert_card")
 				if(held_card)
-					held_card.loc = src.loc
+					held_card.forceMove(loc)
 
-					if(ishuman(usr) && !usr.get_active_hand())
-						usr.put_in_hands(held_card)
+					if(ishuman(usr))
+						usr.pick_or_drop(held_card, loc)
 					held_card = null
 
 				else

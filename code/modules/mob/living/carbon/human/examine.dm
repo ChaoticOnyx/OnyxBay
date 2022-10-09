@@ -284,7 +284,7 @@
 		var/criminal = "None"
 
 		if(wear_id)
-			var/obj/item/card/id/I = wear_id.GetIdCard()
+			var/obj/item/card/id/I = wear_id.get_id_card()
 			if(I)
 				perpname = I.registered_name
 			else

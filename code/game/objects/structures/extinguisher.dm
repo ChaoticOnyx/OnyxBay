@@ -42,7 +42,7 @@
 		if(!user.IsAdvancedToolUser(1))
 			to_chat(user, FEEDBACK_YOU_LACK_DEXTERITY)
 			return
-		user.put_in_hands(has_extinguisher)
+		user.pick_or_drop(has_extinguisher)
 		to_chat(user, "<span class='notice'>You take [has_extinguisher] from [src].</span>")
 		playsound(src.loc, 'sound/effects/extout.ogg', 50, 0)
 		has_extinguisher = null

@@ -93,7 +93,7 @@
 		return
 	var/obj/item/TVAssembly/A = new(user)
 	qdel(S)
-	user.put_in_hands(A)
+	user.pick_or_drop(A)
 	to_chat(user, "<span class='notice'>You add the infrared sensor to the robot head.</span>")
 	qdel(src)
 

@@ -19,7 +19,7 @@
 			continue
 		H.Paralyse(5)
 		if(H.wear_id)
-			var/obj/item/card/id/id = H.get_idcard()
+			var/obj/item/card/id/id = H.get_id_card()
 			for(var/A in id.access)
 				if(A == access_security)
 					security++

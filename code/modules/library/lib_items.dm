@@ -66,10 +66,9 @@
 			var/obj/choice = titles[title]
 			ASSERT(choice)
 			if(ishuman(user))
-				if(!user.get_active_hand())
-					user.put_in_hands(choice)
+				user.pick_or_drop(choice)
 			else
-				choice.loc = get_turf(src)
+				choice.forceMove(loc)
 			update_icon()
 
 /obj/structure/bookcase/ex_act(severity)

@@ -80,7 +80,7 @@
 	if(isCrowbar(W))
 		if(open)
 			if(cell)
-				user.put_in_hands(cell)
+				user.pick_or_drop(cell)
 				to_chat(user, "<span class='notice'>You remove \the [cell] from \the [src].</span>")
 				cell = null
 

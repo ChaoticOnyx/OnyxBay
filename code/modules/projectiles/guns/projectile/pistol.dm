@@ -226,7 +226,7 @@
 				..()
 				return
 			to_chat(user, "<span class='notice'>You unscrew [silenced] from [src].</span>")
-			user.put_in_hands(silenced)
+			user.pick_or_drop(silenced, loc)
 			silenced = initial(silenced)
 			w_class = initial(w_class)
 			fire_sound = 'sound/effects/weapons/gun/fire_9mm2.ogg'

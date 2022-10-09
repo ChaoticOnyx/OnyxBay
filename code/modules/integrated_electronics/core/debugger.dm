@@ -78,7 +78,7 @@
 
 		else if(isrobot(user) && target == user)
 			var/mob/living/silicon/robot/robot = target
-			var/obj/item/card/id/card = robot.GetIdCard()
+			var/obj/item/card/id/card = robot.get_id_card()
 			if(card)
 				src.idlock = weakref(card)
 				to_chat(user, SPAN_NOTICE("You set \the [src]'s card memory to [card?.name].  The id card scanner is \
