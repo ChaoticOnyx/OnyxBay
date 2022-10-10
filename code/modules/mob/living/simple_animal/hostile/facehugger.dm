@@ -68,6 +68,7 @@
 	if(.)
 		if(is_sterile)
 			icon_state = "facehugger_impregnated"
+		is_sterile = TRUE
 
 /mob/living/simple_animal/hostile/facehugger/get_scooped(mob/living/carbon/grabber, self_grab)
 	if(grabber.faction != "xenomorph" && !is_sterile && !stat)
