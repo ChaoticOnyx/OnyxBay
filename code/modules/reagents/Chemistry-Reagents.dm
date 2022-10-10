@@ -51,6 +51,10 @@
 		return
 	if(!(flags & AFFECTS_DEAD) && M.stat == DEAD && (world.time - M.timeofdeath > 150))
 		return
+	if(overdose && (location != CHEM_TOUCH))
+		var/overdose_threshold = overdose * (flags & IGNORE_MOB_SIZE? 1 : MOB_MEDIUM/M.mob_size)
+		if(volume > overdose_threshold)
+			overdose(M, alien)
 
 	//determine the metabolism rate
 	var/removed = metabolism
@@ -63,10 +67,6 @@
 			removed *= mod.metabolism_percent
 	removed = M.get_adjusted_metabolism(removed)
 
-	if(overdose && (location != CHEM_TOUCH))
-		var/overdose_threshold = overdose * (flags & IGNORE_MOB_SIZE? 1 : MOB_MEDIUM/M.mob_size)
-		if(volume > overdose_threshold)
-			overdose(M, alien, removed)
 
 	//adjust effective amounts - removed, dose, and max_dose - for mob size
 	var/effective = removed
