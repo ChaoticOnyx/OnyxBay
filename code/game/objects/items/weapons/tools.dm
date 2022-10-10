@@ -124,7 +124,7 @@
 	. = ..()
 	update_icon()
 
-/obj/item/screwdriver/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/screwdriver/attack(mob/living/carbon/M, mob/living/carbon/user)
 	if(!istype(M) || user.a_intent == "help")
 		return ..()
 	if(user.zone_sel.selecting != BP_EYES)
@@ -203,7 +203,7 @@
 		item_state = "cutters_yellow"
 	. = ..()
 
-/obj/item/wirecutters/attack(mob/living/carbon/C as mob, mob/user as mob)
+/obj/item/wirecutters/attack(mob/living/carbon/C, mob/user)
 	if(user.a_intent == I_HELP && (C.handcuffed) && (istype(C.handcuffed, /obj/item/handcuffs/cable)))
 		usr.visible_message("\The [usr] cuts \the [C]'s restraints with \the [src]!",\
 		"You cut \the [C]'s restraints with \the [src]!",\
@@ -308,7 +308,7 @@
 	else
 		return ..()
 
-/obj/item/weldingtool/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/weldingtool/attackby(obj/item/W, mob/user)
 	if(welding)
 		to_chat(user, "<span class='danger'>Stop welding first!</span>")
 		return
@@ -355,7 +355,7 @@
 
 	..()
 
-/obj/item/weldingtool/attack_hand(mob/user as mob)
+/obj/item/weldingtool/attack_hand(mob/user)
 	if(tank && user.get_inactive_hand() == src)
 		if(!welding)
 			if(tank.can_remove)
@@ -395,7 +395,7 @@
 	return
 
 
-/obj/item/weldingtool/attack_self(mob/user as mob)
+/obj/item/weldingtool/attack_self(mob/user)
 	setWelding(!welding, usr)
 	return
 
@@ -529,7 +529,7 @@
 
 //Decides whether or not to damage a player's eyes based on what they're wearing as protection
 //Note: This should probably be moved to mob
-/obj/item/weldingtool/proc/eyecheck(mob/user as mob)
+/obj/item/weldingtool/proc/eyecheck(mob/user)
 	if(!iscarbon(user) || (user.status_flags & GODMODE))
 		return 1
 	if(istype(user, /mob/living/carbon/human))
@@ -588,7 +588,7 @@
 	reagents.add_reagent(/datum/reagent/fuel, max_fuel)
 	. = ..()
 
-/obj/item/welder_tank/afterattack(obj/O as obj, mob/user as mob, proximity)
+/obj/item/welder_tank/afterattack(obj/O, mob/user, proximity)
 	if(!proximity) return
 	if((istype(O, /obj/structure/reagent_dispensers/fueltank) || istype(O, /obj/item/backwear/reagent/welding)) && get_dist(src,O) <= 1)
 		O.reagents.trans_to_obj(src, max_fuel)
@@ -804,7 +804,7 @@
 	for(var/type in spawn_tools)
 		tools |= new type(src)
 
-/obj/item/combitool/attack_self(mob/user as mob)
+/obj/item/combitool/attack_self(mob/user)
 	if(++current_tool > tools.len) current_tool = 1
 	var/obj/item/tool = tools[current_tool]
 	if(!tool)
@@ -813,7 +813,7 @@
 		to_chat(user, "You switch \the [src] to the [tool.name] fitting.")
 	return 1
 
-/obj/item/combitool/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/combitool/attack(mob/living/carbon/M, mob/living/carbon/user)
 	if(!M.Adjacent(user))
 		return 0
 	var/obj/item/tool = tools[current_tool]
