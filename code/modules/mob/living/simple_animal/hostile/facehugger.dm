@@ -68,7 +68,6 @@
 	if(.)
 		if(is_sterile)
 			icon_state = "facehugger_impregnated"
-		is_sterile = TRUE
 
 /mob/living/simple_animal/hostile/facehugger/get_scooped(mob/living/carbon/grabber, self_grab)
 	if(grabber.faction != "xenomorph" && !is_sterile && !stat)
@@ -159,7 +158,7 @@
 	if(H.isSynthetic())
 		return FALSE
 
-	return H.species?.xenomorph_type && !is_sterile && (forced || !H.internal_organs_by_name[BP_HIVE])
+	return H.species?.xenomorph_type && !stat && !is_sterile && (forced || !H.internal_organs_by_name[BP_HIVE])
 
 
 /mob/living/simple_animal/hostile/facehugger/AttackingTarget()
