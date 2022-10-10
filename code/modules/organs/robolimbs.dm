@@ -20,8 +20,8 @@ var/datum/robolimb/basic_robolimb
 	var/has_eyes_icon = TRUE                                                         // If set, will draw eyes overlay.
 	var/can_feel_pain = FALSE
 	var/skintone
-	var/list/species_cannot_use = list(SPECIES_SKRELL)
-	var/list/restricted_to = list(SPECIES_HUMAN)
+	var/list/species_cannot_use = list()
+	var/list/restricted_to = list()
 	var/list/applies_to_part = list()
 
 /datum/robolimb/nanotrasen
