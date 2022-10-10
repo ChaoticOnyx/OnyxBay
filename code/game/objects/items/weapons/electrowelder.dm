@@ -10,8 +10,8 @@
 	var/obj/item/cell/cell = null
 
 /obj/item/weldingtool/electrowelder/Initialize()
-	cell = new(src)
 	. = ..()
+	cell = new(src)
 
 /obj/item/weldingtool/electrowelder/Destroy()
 	QDEL_NULL(cell)
