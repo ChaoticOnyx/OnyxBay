@@ -21,7 +21,7 @@
 	if(cell)
 		to_chat(user, SPAN("warning", "\The [cell] is already attached to [src]!"))
 		return
-	user.remove_from_mob(C)
+	user.drop(C)
 	cell = C
 	C.forceMove(src)
 	to_chat(user, SPAN("notice", "You attach \the [cell] to \the [src]."))
