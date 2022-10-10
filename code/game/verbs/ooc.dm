@@ -49,3 +49,10 @@
 		winset(src, null, "reset=true")
 		update_chat_position()
 		nuke_chat()
+
+/client/verb/info_storyteller()
+	set name = "Storyteller info"
+	set category = "OOC"
+
+	to_chat(src, "<b>Current Storyteller:</b> [SSstoryteller.character.name] - [SSstoryteller.character.desc]")
+
