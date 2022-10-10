@@ -88,7 +88,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	new_damage = clamp(new_damage, 0, 200)
 
 	if(new_damage == 0 && genome_damage > 0 && my_mob) // hide the biostructure if no gendamage
-		to_chat(my_mob, SPAN("changeling", "You feel your genomes have assembled. Your special biostructure cannot be easily seen now."))
+		to_chat(my_mob, SPAN("changeling", "We feel our genomes have assembled. Our biostructure cannot be easily seen now."))
 		var/obj/item/organ/internal/biostructure/BIO = locate() in my_mob.contents
 		if(BIO)
 			BIO.hidden = TRUE

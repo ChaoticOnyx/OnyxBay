@@ -367,7 +367,7 @@
 			if(CP.type == /datum/changeling_power/transform) // assume they must have a transform power
 				var/datum/changeling_power/transform/TR = CP
 
-				to_chat(M, SPAN_DANGER("You feel your genome is going bananas!"))
+				to_chat(M, SPAN_DANGER("We feel our genome is going bananas!"))
 				M.visible_message(SPAN("warning", "[M]'s body begins to twist, changing rapidly!"))
 
 				M.mind.changeling.apply_genome_damage(20)

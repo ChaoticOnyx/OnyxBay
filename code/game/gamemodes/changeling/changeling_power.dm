@@ -13,7 +13,7 @@
 
 	var/required_chems = 0 // Chemicals required to use the ability
 	var/required_dna = 0   // DNA required to use the ability
-	var/max_genome_damage = 100 // Can't use the ability if genetic damage is higher than this
+	var/max_genome_damage = 100 // Can't use the ability if genome damage is higher than this
 	var/max_stat = CONSCIOUS // In what state we can use the ability
 	var/allow_stasis = FALSE // Whether we can use the ability while in stasis
 	var/allow_lesser = FALSE // Can we use this ability while not in a human form?
