@@ -5984,7 +5984,7 @@
 "cld" = (/obj/effect/floor_decal/corner/pink{dir = 4},/obj/effect/floor_decal/spline/plain/grey{dir = 8},/obj/item/device/radio/intercom{pixel_y = 22},/obj/machinery/atmospherics/unary/vent_pump/on,/turf/simulated/floor/tiled/white/rough,/area/medical/medbay4)
 "cle" = (/obj/effect/floor_decal/corner/pink{dir = 4},/obj/structure/extinguisher_cabinet{pixel_y = 30},/turf/simulated/floor/tiled/white/rough,/area/medical/medbay4)
 "clf" = (/obj/effect/floor_decal/corner/pink{dir = 4},/turf/simulated/floor/tiled/white/rough,/area/medical/medbay2)
-"clg" = (/obj/effect/floor_decal/corner/pink{dir = 4},/obj/machinery/door/firedoor,/obj/machinery/camera/network/medbay{c_tag = "Medbay Starboard 1"},/turf/simulated/floor/tiled/white/rough,/area/medical/medbay2)
+"clg" = (/obj/effect/floor_decal/corner/pink{dir = 4},/obj/machinery/camera/network/medbay{c_tag = "Medbay Starboard 1"},/turf/simulated/floor/tiled/white/rough,/area/medical/medbay2)
 "clh" = (/obj/effect/floor_decal/corner/pink{dir = 4},/obj/structure/sign/eyetest{pixel_x = 32},/turf/simulated/floor/tiled/white/rough,/area/medical/medbay2)
 "cli" = (/obj/machinery/light,/obj/effect/floor_decal/corner/purple/diagonal{dir = 4},/obj/machinery/vending/coffee,/obj/machinery/ai_status_display{pixel_y = -32},/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 1},/turf/simulated/floor/tiled/white/rough,/area/rnd/restroom)
 "clj" = (/obj/effect/floor_decal/corner/purple/diagonal{dir = 4},/obj/structure/sign/warning/smoking{pixel_y = -32},/obj/machinery/vending/cigarette,/turf/simulated/floor/tiled/white/rough,/area/rnd/restroom)
