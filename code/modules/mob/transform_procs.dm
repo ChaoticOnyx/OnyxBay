@@ -319,6 +319,7 @@
 		ChangeToHusk()
 	src.mind.special_role = "Zombie"
 	update_body(TRUE)
+	update_eyes()
 	log_admin("[key_name(src)] has transformed into a zombie!")
 	Weaken(5)
 	if (should_have_organ(BP_HEART))
