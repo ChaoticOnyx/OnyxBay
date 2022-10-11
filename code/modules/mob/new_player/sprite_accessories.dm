@@ -58,8 +58,8 @@
 	flags = VERY_SHORT
 
 /datum/sprite_accessory/hair/short
-	name = "Short Hair"	  // try to capatilize the names please~
-	icon_state = "hair_a" // you do not need to define _s or _l sub-states, game automatically does this for you
+	name = "Short Hair"   // try to capatilize the names please~
+	icon_state = "short"  // you do not need to define _s or _l sub-states, game automatically does this for you
 	flags = VERY_SHORT
 
 /datum/sprite_accessory/hair/twintail
@@ -72,7 +72,7 @@
 
 /datum/sprite_accessory/hair/cut
 	name = "Cut Hair"
-	icon_state = "hair_c"
+	icon_state = "cut"
 	flags = VERY_SHORT
 
 /datum/sprite_accessory/hair/flair
@@ -81,7 +81,7 @@
 
 /datum/sprite_accessory/hair/long
 	name = "Shoulder-length Hair"
-	icon_state = "hair_b"
+	icon_state = "shoulder_length"
 
 /datum/sprite_accessory/hair/longer
 	name = "Long Hair"
@@ -161,15 +161,15 @@
 
 /datum/sprite_accessory/hair/bedhead
 	name = "Bedhead"
-	icon_state = "hair_bedhead"
+	icon_state = "bedhead"
 
 /datum/sprite_accessory/hair/bedhead2
 	name = "Bedhead 2"
-	icon_state = "hair_bedheadv2"
+	icon_state = "bedhead2"
 
 /datum/sprite_accessory/hair/bedhead3
 	name = "Bedhead 3"
-	icon_state = "hair_bedheadv3"
+	icon_state = "bedhead3"
 
 /datum/sprite_accessory/hair/Birdtail
 	name = "Bird Tail"
@@ -177,43 +177,54 @@
 
 /datum/sprite_accessory/hair/beehive
 	name = "Beehive"
-	icon_state = "hair_beehive"
+	icon_state = "beehive"
 	gender = FEMALE
 
 /datum/sprite_accessory/hair/beehive2
-	name = "Beehive 2"
-	icon_state = "hair_beehive2"
+	name = "Beehive II"
+	icon_state = "beehive2"
 	gender = FEMALE
-
-/datum/sprite_accessory/hair/bobcurl
-	name = "Bobcurl"
-	icon_state = "hair_bobcurl"
-	gender = FEMALE
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
 
 /datum/sprite_accessory/hair/bob
 	name = "Bob"
-	icon_state = "hair_bobcut"
+	icon_state = "bobcut"
 	gender = FEMALE
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
+
+/datum/sprite_accessory/hair/bobcurl
+	name = "Bob Curly"
+	icon_state = "bobcurl"
+	gender = FEMALE
 
 /datum/sprite_accessory/hair/bobcutalt
-	name = "Chin Length Bob"
-	icon_state = "hair_bobcutalt"
+	name = "Bob II"
+	icon_state = "bobcutalt"
 	gender = FEMALE
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
+
+/datum/sprite_accessory/hair/bobasymm
+	name = "Bob Asymmetrical"
+	icon_state = "bob_asymm"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/bobasymm2
+	name = "Bob Asymmetrical II"
+	icon_state = "bob_asymm2"
+	gender = FEMALE
 
 /datum/sprite_accessory/hair/bowl
 	name = "Bowl"
-	icon_state = "hair_bowlcut"
+	icon_state = "bowlcut"
 	gender = MALE
 
 /datum/sprite_accessory/hair/buzz
 	name = "Buzzcut"
-	icon_state = "hair_buzzcut"
+	icon_state = "buzzcut"
 	gender = MALE
 	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
 	flags = VERY_SHORT
+
+/datum/sprite_accessory/hair/buzzcut2
+	name = "Buzzcut II"
+	icon_state = "buzzcut2"
 
 /datum/sprite_accessory/hair/crew
 	name = "Crewcut"
@@ -250,15 +261,15 @@
 
 /datum/sprite_accessory/hair/afro
 	name = "Afro"
-	icon_state = "hair_afro"
+	icon_state = "afro"
 
 /datum/sprite_accessory/hair/afro2
-	name = "Afro 2"
-	icon_state = "hair_afro2"
+	name = "Afro II"
+	icon_state = "afro2"
 
 /datum/sprite_accessory/hair/afro_large
-	name = "Big Afro"
-	icon_state = "hair_bigafro"
+	name = "Afro III"
+	icon_state = "afro_big"
 	gender = MALE
 
 /datum/sprite_accessory/hair/rows
@@ -300,7 +311,7 @@
 
 /datum/sprite_accessory/hair/flow
 	name = "Flow Hair"
-	icon_state = "hair_f"
+	icon_state = "flow"
 
 /datum/sprite_accessory/hair/feather
 	name = "Feather"
@@ -313,7 +324,7 @@
 
 /datum/sprite_accessory/hair/mohawk
 	name = "Mohawk"
-	icon_state = "hair_d"
+	icon_state = "mohawk"
 	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
 
 /datum/sprite_accessory/hair/jensen
@@ -387,7 +398,7 @@
 
 /datum/sprite_accessory/hair/braid
 	name = "Floorlength Braid"
-	icon_state = "hair_braid"
+	icon_state = "braid"
 	gender = FEMALE
 
 /datum/sprite_accessory/hair/odango
@@ -412,7 +423,7 @@
 
 /datum/sprite_accessory/hair/balding
 	name = "Balding Hair"
-	icon_state = "hair_e"
+	icon_state = "balding
 	gender = MALE // turnoff!
 	flags = VERY_SHORT
 
@@ -510,7 +521,7 @@
 
 /datum/sprite_accessory/hair/bun2
 	name = "High Bun"
-	icon_state = "hair_bun2"
+	icon_state = "bun2"
 
 /datum/sprite_accessory/hair/doublebun
 	name = "Double-Bun"
@@ -669,7 +680,7 @@
 
 /datum/sprite_accessory/hair/averagejoe
 	name = "Average Joe"
-	icon_state = "hair_averagejoe"
+	icon_state = "averagejoe"
 
 /datum/sprite_accessory/hair/sideswept
 	name = "Sideswept Hair"
@@ -689,7 +700,7 @@
 
 /datum/sprite_accessory/hair/amazon
 	name = "Amazon"
-	icon_state = "hair_amazon"
+	icon_state = "amazon"
 
 /datum/sprite_accessory/hair/straightlong
 	name = "Straight Long"
@@ -697,7 +708,7 @@
 
 /datum/sprite_accessory/hair/antenna
 	name = "Antenna Hair"
-	icon_state = "hair_antenna"
+	icon_state = "antenna"
 	gender = FEMALE
 
 /datum/sprite_accessory/hair/balding
@@ -735,7 +746,7 @@
 
 /datum/sprite_accessory/hair/bun
 	name = "Bun"
-	icon_state = "hair_bun"
+	icon_state = "bun"
 
 /datum/sprite_accessory/hair/bun3
 	name = "Bun 3"
@@ -852,6 +863,16 @@
 /datum/sprite_accessory/hair/bluntbangs
 	name = "Blunt Bangs"
 	icon_state = "hair_bluntbangs"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/blunt_bangs_alt2
+	name = "Blunt Bangs II"
+	icon_state = "blunt_bangs_alt2"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/blunt_bangs_curls
+	name = "Blunt Bangs Curls"
+	icon_state = "blunt_bangs_curls"
 	gender = FEMALE
 
 /datum/sprite_accessory/hair/oxton
@@ -1015,32 +1036,22 @@
 
 /datum/sprite_accessory/hair/braided_hair
 	name = "Braided Hair"
-	icon_state = "hair_braided_hair"
-	gender = FEMALE
-
-/datum/sprite_accessory/hair/blunt_bangs_curls
-	name = "Blunt Bangs Curls"
-	icon_state = "hair_blunt_bangs_curls"
-	gender = FEMALE
-
-/datum/sprite_accessory/hair/blunt_bangs_alt2
-	name = "Blunt Bangs Alt"
-	icon_state = "hair_blunt_bangs_alt2"
+	icon_state = "braided"
 	gender = FEMALE
 
 /datum/sprite_accessory/hair/blades_hair
 	name = "Blades Hair"
-	icon_state = "hair_blades"
+	icon_state = "blades"
 	gender = FEMALE
 
 /datum/sprite_accessory/hair/alien_h
 	name = "Alien"
-	icon_state = "hair_alien_h"
+	icon_state = "alien"
 	gender = FEMALE
 
 /datum/sprite_accessory/hair/african_pigtails
 	name = "African Pigtails"
-	icon_state = "hair_african_pigtails"
+	icon_state = "african_pigtails"
 	gender = FEMALE
 
 /*I'm sorry I made this hairstyle,
@@ -1054,10 +1065,6 @@ May God have mercy.
 /datum/sprite_accessory/hair/messyhair2
 	name = "Messy Hair 2"
 	icon_state = "hair_messyhair2"
-
-/datum/sprite_accessory/hair/buzzcut2
-	name = "Buzzcut 2"
-	icon_state = "hair_buzzcut2"
 
 /datum/sprite_accessory/hair/leon
 	name = "Leon"
