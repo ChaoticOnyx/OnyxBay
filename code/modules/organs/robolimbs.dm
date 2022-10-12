@@ -20,8 +20,8 @@ var/datum/robolimb/basic_robolimb
 	var/has_eyes_icon = TRUE                                                         // If set, will draw eyes overlay.
 	var/can_feel_pain = FALSE
 	var/skintone
-	var/list/species_cannot_use = list(SPECIES_SKRELL)
-	var/list/restricted_to = list(SPECIES_HUMAN)
+	var/list/species_cannot_use = list()
+	var/list/restricted_to = list()
 	var/list/applies_to_part = list()
 
 /datum/robolimb/nanotrasen
@@ -34,7 +34,7 @@ var/datum/robolimb/basic_robolimb
 	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_taj.dmi'
 	restricted_to = list(SPECIES_TAJARA)
 
-/datum/robolimb/nanotrasen/tajaran
+/datum/robolimb/nanotrasen/unathi
 	company = "NanoTrasen - Unathi"
 	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_unathi.dmi'
 	restricted_to = list(SPECIES_UNATHI)
@@ -81,7 +81,6 @@ var/datum/robolimb/basic_robolimb
 	company = "Morpheus"
 	desc = "This limb is simple and functional; no effort has been made to make it look human."
 	icon = 'icons/mob/human_races/cyberlimbs/morpheus/morpheus_main.dmi'
-	has_eyes_icon = FALSE
 
 /datum/robolimb/veymed
 	company = "Vey-Med"
