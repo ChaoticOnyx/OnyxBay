@@ -177,7 +177,6 @@
 /obj/machinery/organ_printer/robot/print_organ(choice)
 	var/obj/item/organ/O = ..()
 	var/obj/item/organ/external/externalOrgan = O
-	O.species = new /datum/species/human // Uh... We should probably find a better way to robotize organs in future. - Max
 	if(istype(externalOrgan))
 		externalOrgan.robotize("NanoTrasen", just_printed = TRUE)
 		// TODO [V] Add other companies and ability to choose from input
