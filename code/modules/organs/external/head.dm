@@ -149,9 +149,9 @@
 		if(FH?.species_allowed && species.facial_hair_key && (species.name in FH.species_allowed))
 			var/icon/FHI
 			if(istype(owner.body_build,/datum/body_build/slim))
-				FHI = icon(GLOB.facial_hair_icons[species.hair_key]["slim"], FH.icon_state)
+				FHI = icon(GLOB.facial_hair_icons["slim"][species.hair_key], FH.icon_state)
 			else
-				FHI = icon(GLOB.facial_hair_icons[species.hair_key]["default"], FH.icon_state)
+				FHI = icon(GLOB.facial_hair_icons["default"][species.hair_key], FH.icon_state)
 			if(FH.do_coloration)
 				FHI.Blend(rgb(owner.r_facial, owner.g_facial, owner.b_facial), FH.blend)
 			res.overlays |= FHI
@@ -164,9 +164,9 @@
 		if(H)
 			if((!length(H.species_allowed) || (species.name in H.species_allowed)) && species.hair_key)
 				if(istype(owner.body_build,/datum/body_build/slim))
-					HI = icon(GLOB.hair_icons[species.hair_key]["slim"], H.icon_state)
+					HI = icon(GLOB.hair_icons["slim"][species.hair_key], H.icon_state)
 				else
-					HI = icon(GLOB.hair_icons[species.hair_key]["default"], H.icon_state)
+					HI = icon(GLOB.hair_icons["default"][species.hair_key], H.icon_state)
 
 				if(H.do_coloration && length(h_col) >= 3)
 					HI.Blend(rgb(h_col[1], h_col[2], h_col[3]), H.blend)
