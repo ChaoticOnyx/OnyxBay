@@ -6,7 +6,7 @@ var/global/datum/body_build/default_body_build = new
 
 	var/genders      = list(MALE, FEMALE)
 	var/index        = ""
-	var/roboindex    = ""										// for slim and slim_alt BBs prothesis
+	var/roboindex    = ""  // for slim and slim_alt BBs prothesis
 	var/misk_icon    = 'icons/mob/mob.dmi'
 	var/list/clothing_icons = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob.dmi',

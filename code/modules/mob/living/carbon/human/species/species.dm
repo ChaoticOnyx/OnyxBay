@@ -21,6 +21,8 @@
 	var/damage_overlays = 'icons/mob/human_races/masks/dam_human.dmi'
 	var/damage_mask = 'icons/mob/human_races/masks/dam_mask_human.dmi'
 
+	var/icon/organs_icon // species specific internal organs icons
+
 	var/prone_icon                            // If set, draws this from icobase when mob is prone.
 	var/has_floating_eyes                     // Eyes will overlay over darkness (glow)
 
@@ -39,10 +41,10 @@
 
 	var/has_eyes_icon = TRUE
 
-	var/organs_icon		//species specific internal organs icons
-
 	var/default_h_style = "Bald"
 	var/default_f_style = "Shaved"
+	var/hair_key = ""
+	var/facial_hair_key = ""
 
 	var/race_key = 0                          // Used for mob icon cache string.
 	var/icon/icon_template = 'icons/mob/human_races/r_template.dmi' // Used for mob icon generation for non-32x32 species.

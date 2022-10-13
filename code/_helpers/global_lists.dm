@@ -46,8 +46,9 @@ var/list/obj/item/device/uplink/world_uplinks = list()
 //Preferences stuff
 //Hairstyles
 GLOBAL_LIST_EMPTY(hair_styles_list)        //stores /datum/sprite_accessory/hair indexed by name
-GLOBAL_LIST_EMPTY(hair_styles_icons)   // Stores all icon states from icons/mob/human_face.dmi
 GLOBAL_LIST_EMPTY(facial_hair_styles_list) //stores /datum/sprite_accessory/facial_hair indexed by name
+GLOBAL_LIST_EMPTY(hair_icons)
+GLOBAL_LIST_EMPTY(facial_hair_icons)
 
 var/global/list/skin_styles_female_list = list()		//unused
 GLOBAL_LIST_EMPTY(body_marking_styles_list)		//stores /datum/sprite_accessory/marking indexed by name
@@ -128,6 +129,25 @@ var/global/list/string_slot_flags = list(
 		"Red" = COLOR_RED,
 		"White" = COLOR_WHITE
 	))
+	GLOB.hair_icons = list(
+		"default" = list(
+			SPECIES_HUMAN = 'icons/mob/human_races/face/hair.dmi',
+			SPECIES_TAJARA = 'icons/mob/human_races/face/hair_tajaran.dmi',
+			SPECIES_UNATHI = 'icons/mob/human_races/face/hair_unathi.dmi',
+			SPECIES_SKRELL = 'icons/mob/human_races/face/hair_skrell.dmi',
+			SPECIES_VOX = 'icons/mob/human_races/face/hair_vox.dmi'),
+		"slim" = list(
+			SPECIES_HUMAN = 'icons/mob/human_races/face/hair_slim.dmi',
+			SPECIES_TAJARA = 'icons/mob/human_races/face/hair_tajaran_slim.dmi')
+	)
+	GLOB.facial_hair_icons = list(
+		"default" = list(
+			SPECIES_HUMAN = 'icons/mob/human_races/face/facial.dmi',
+			SPECIES_TAJARA = 'icons/mob/human_races/face/facial_tajaran.dmi'),
+		"slim" = list(
+			SPECIES_HUMAN = 'icons/mob/human_races/face/facial_slim.dmi',
+			SPECIES_TAJARA = 'icons/mob/human_races/face/facial_tajaran_slim.dmi')
+	)
 	return 1
 
 /proc/get_mannequin(ckey)
@@ -148,7 +168,7 @@ var/global/list/string_slot_flags = list(
 	for(var/path in paths)
 		var/datum/sprite_accessory/hair/H = new path()
 		GLOB.hair_styles_list[H.name] = H
-	GLOB.hair_styles_icons = icon_states('icons/mob/human_face.dmi')
+
 	//Facial Hair - Initialise all /datum/sprite_accessory/facial_hair into an list indexed by facialhair-style name
 	paths = typesof(/datum/sprite_accessory/facial_hair) - /datum/sprite_accessory/facial_hair
 	for(var/path in paths)
