@@ -1228,7 +1228,7 @@ May God have mercy.
 
 /datum/sprite_accessory/hair/una
 	name = "Great Horns"
-	icon_state = "demon_horn"
+	icon_state = "great"
 	blend = ICON_MULTIPLY
 	species_allowed = list(SPECIES_UNATHI)
 
