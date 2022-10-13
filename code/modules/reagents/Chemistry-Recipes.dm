@@ -513,7 +513,7 @@
 	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/potassium = 1)
 
 /datum/chemical_reaction/explosion/hair_solution
-	required_reagents = list(/datum/reagent/hair_grower = 1, /datum/reagent/hair_remover = 1)
+	required_reagents = list(/datum/reagent/toxin/hair_grower = 1, /datum/reagent/toxin/hair_remover = 1)
 	result_amount = 1
 
 /datum/chemical_reaction/explosion/nitroglycerin
