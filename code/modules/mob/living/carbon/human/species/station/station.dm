@@ -1,6 +1,8 @@
 /datum/species/human
 	name = SPECIES_HUMAN
 	name_plural = "Humans"
+	hair_key = SPECIES_HUMAN
+	facial_hair_key = SPECIES_HUMAN
 	primitive_form = "Monkey"
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/punch, /datum/unarmed_attack/bite)
 	blurb = "Humanity originated in the Sol system, and over the last five centuries has spread \
@@ -84,7 +86,9 @@
 	deform = 'icons/mob/human_races/r_def_tajaran.dmi'
 	tail = "tajtail"
 	tail_animation = 'icons/mob/species/tajaran/tail.dmi'
-	default_h_style = "Tajaran Ears"
+	default_h_style = "Ears"
+	hair_key = SPECIES_TAJARA
+	facial_hair_key = SPECIES_TAJARA
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp)
 	generic_attack_mod = 2.0
 	darksight_range = 8
@@ -160,6 +164,7 @@
 	icobase = 'icons/mob/human_races/r_skrell.dmi'
 	deform = 'icons/mob/human_races/r_def_skrell.dmi'
 	primitive_form = "Neaera"
+	hair_key = SPECIES_SKRELL
 	unarmed_types = list(/datum/unarmed_attack/punch)
 	blurb = "An amphibious species, Skrell come from the star system known as Qerr'Vallis, which translates to 'Star of \
 	the royals' or 'Light of the Crown'.<br/><br/>Skrell are a highly advanced and logical race who live under the rule \
