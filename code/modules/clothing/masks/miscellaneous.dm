@@ -152,6 +152,150 @@
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
+/obj/item/clothing/mask/rat
+	name = "rat mask"
+	desc = "A rubber rat mask."
+	icon_state = "rat"
+	item_state = "rat"
+	flags_inv = HIDEFACE|BLOCKHAIR
+	w_class = ITEM_SIZE_SMALL
+	siemens_coefficient = 0.7
+	body_parts_covered = HEAD|FACE|EYES
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 14.6 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.1 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
+/obj/item/clothing/mask/fox
+	name = "fox mask"
+	desc = "The fox is hunting."
+	icon_state = "fox"
+	item_state = "fox"
+	flags_inv = HIDEFACE|BLOCKHAIR
+	w_class = ITEM_SIZE_SMALL
+	siemens_coefficient = 0.7
+	body_parts_covered = HEAD|FACE|EYES
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 14.6 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.1 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
+/obj/item/clothing/mask/bear
+	name = "fox mask"
+	desc = "A rubber bear mask."
+	icon_state = "bear"
+	item_state = "bear"
+	flags_inv = HIDEFACE|BLOCKHAIR
+	w_class = ITEM_SIZE_SMALL
+	siemens_coefficient = 0.7
+	body_parts_covered = HEAD|FACE|EYES
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 14.6 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.1 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
+/obj/item/clothing/mask/bat
+	name = "bat mask"
+	desc = "This is not baseball bat."
+	icon_state = "bat"
+	item_state = "bat"
+	flags_inv = HIDEFACE|BLOCKHAIR
+	w_class = ITEM_SIZE_SMALL
+	siemens_coefficient = 0.7
+	body_parts_covered = HEAD|FACE|EYES
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 14.6 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.1 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
+/obj/item/clothing/mask/raven
+	name = "raven mask"
+	desc = "A rubber raven mask."
+	icon_state = "raven"
+	item_state = "raven"
+	flags_inv = HIDEFACE|BLOCKHAIR
+	w_class = ITEM_SIZE_SMALL
+	siemens_coefficient = 0.7
+	body_parts_covered = HEAD|FACE|EYES
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 14.6 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.1 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
+/obj/item/clothing/mask/jackal
+	name = "jackal mask"
+	desc = "A rubber jackal mask."
+	icon_state = "jackal"
+	item_state = "jackal"
+	flags_inv = HIDEFACE|BLOCKHAIR
+	w_class = ITEM_SIZE_SMALL
+	siemens_coefficient = 0.7
+	body_parts_covered = HEAD|FACE|EYES
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 14.6 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.1 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
+/obj/item/clothing/mask/bumba
+	name = "bumba mask"
+	desc = "Something from ancient times."
+	icon_state = "bumba"
+	item_state = "bumba"
+	flags_inv = HIDEFACE|BLOCKHAIR
+	w_class = ITEM_SIZE_SMALL
+	siemens_coefficient = 0.7
+	body_parts_covered = HEAD|FACE|EYES
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 14.6 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.1 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
+/obj/item/clothing/mask/cow
+	name = "cow mask"
+	desc = "A rubber moooo mask."
+	icon_state = "cow"
+	item_state = "cow"
+	flags_inv = HIDEFACE|BLOCKHAIR
+	w_class = ITEM_SIZE_SMALL
+	siemens_coefficient = 0.7
+	body_parts_covered = HEAD|FACE|EYES
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 14.6 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.1 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
+/obj/item/clothing/mask/frog
+	name = "frog mask"
+	desc = "A rubber frog mask."
+	icon_state = "frog"
+	item_state = "frog"
+	flags_inv = HIDEFACE|BLOCKHAIR
+	w_class = ITEM_SIZE_SMALL
+	siemens_coefficient = 0.7
+	body_parts_covered = HEAD|FACE|EYES
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 14.6 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.1 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
 /obj/item/clothing/mask/horsehead
 	name = "horse head mask"
 	desc = "A mask made of soft vinyl and latex, representing the head of a horse."
