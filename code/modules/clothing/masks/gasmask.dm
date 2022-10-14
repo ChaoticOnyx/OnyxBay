@@ -181,6 +181,15 @@
 	istinted = 0
 	siemens_coefficient = 1.0
 
+/obj/item/clothing/mask/gas/bee_mask
+	name = "bee mask"
+	desc = "Buzzzz!"
+	icon_state = "bee"
+	item_state = "bee"
+	body_parts_covered = HEAD|FACE|EYES
+	istinted = 0
+	siemens_coefficient = 1.0
+
 /obj/item/clothing/mask/gas/vox
 	name = "vox breathing mask"
 	desc = "A small oxygen filter for use by Vox"
