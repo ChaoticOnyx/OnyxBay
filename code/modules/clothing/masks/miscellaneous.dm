@@ -154,7 +154,7 @@
 
 /obj/item/clothing/mask/rat
 	name = "rat mask"
-	desc = "A rat mask."
+	desc = "Sniffer is sniffing."
 	icon_state = "rat"
 	item_state = "rat"
 	flags_inv = HIDEFACE
