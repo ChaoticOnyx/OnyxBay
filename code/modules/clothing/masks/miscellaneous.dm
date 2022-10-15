@@ -296,6 +296,22 @@
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
+/obj/item/clothing/mask/bee
+	name = "bee mask"
+	desc = "Buzzzz."
+	icon_state = "bee"
+	item_state = "bee"
+	flags_inv = HIDEFACE
+	w_class = ITEM_SIZE_SMALL
+	siemens_coefficient = 0.7
+	body_parts_covered = FACE|EYES
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 14.6 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.1 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
 /obj/item/clothing/mask/horsehead
 	name = "horse head mask"
 	desc = "A mask made of soft vinyl and latex, representing the head of a horse."
