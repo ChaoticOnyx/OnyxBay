@@ -185,7 +185,7 @@
 	)
 
 /obj/item/clothing/mask/bear
-	name = "fox mask"
+	name = "bear mask"
 	desc = "A rubber bear mask."
 	icon_state = "bear"
 	item_state = "bear"
