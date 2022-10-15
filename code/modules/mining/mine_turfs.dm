@@ -22,6 +22,7 @@ var/list/mining_floors = list()
 	var/mined_turf = /turf/simulated/floor/asteroid
 	var/ore/mineral
 	var/last_act = 0
+	var/rock_type = ""
 	var/durability = 100  //How many hits can our rock take
 
 	var/datum/geosample/geologic_data
@@ -34,6 +35,16 @@ var/list/mining_floors = list()
 	var/datum/artifact_find/artifact_find
 	var/image/ore_overlay
 	has_resources = 1
+
+/turf/simulated/mineral/medium
+	icon_state = "rock-medium"
+	rock_type = "-medium"
+	durability = 200
+
+/turf/simulated/mineral/hard
+	icon_state = "rock-hard"
+	rock_type = "-hard"
+	durability = 300
 
 /turf/simulated/mineral/Initialize()
 	. = ..()
@@ -68,7 +79,7 @@ var/list/mining_floors = list()
 			var/turf/simulated/floor/asteroid/T = turf_to_check
 			T.updateMineralOverlays()
 		else if(istype(turf_to_check, /turf/space) || istype(turf_to_check, /turf/simulated/floor) || istype(turf_to_check, /turf/simulated/open))
-			var/image/rock_side = image('icons/turf/walls.dmi', "rock_side", dir = turn(direction, 180))
+			var/image/rock_side = image('icons/turf/walls.dmi', "rock_side[rock_type]", dir = turn(direction, 180))
 			rock_side.turf_decal_layerise()
 			switch(direction)
 				if(NORTH)
