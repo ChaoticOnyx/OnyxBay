@@ -45,12 +45,12 @@
 /obj/machinery/constructable_frame/machine_frame/proc/update_desc()
 	desc = initial(desc)
 	if(!isnull(req_components) && req_components.len)
-		var/list/comp_list
+		var/list/comp_list = list()
 		for(var/component in req_components)
 			var/amount = req_components[component]
 			if(amount > 0) // We don't want to display something like: "0 micro-manipulator". - Max
 				LAZYADD(comp_list, "[num2text(amount)] [initial(component["name"])]")
-		var/new_desc = comp_list.len ? "Requires [english_list(comp_list)]." : "Requires nothing."
+		var/new_desc = length(comp_list) ? "Requires [english_list(comp_list)]." : "Requires nothing."
 		desc += SPAN("notice", new_desc)
 
 /obj/machinery/constructable_frame/machine_frame/attackby(obj/item/I, mob/user)
