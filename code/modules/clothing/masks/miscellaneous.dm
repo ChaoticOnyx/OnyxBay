@@ -170,7 +170,7 @@
 
 /obj/item/clothing/mask/fox
 	name = "fox mask"
-	desc = "The fox is hunting."
+	desc = "A fox is hunting."
 	icon_state = "fox"
 	item_state = "fox"
 	flags_inv = HIDEFACE
