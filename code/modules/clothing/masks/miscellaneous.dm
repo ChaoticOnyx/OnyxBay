@@ -154,7 +154,7 @@
 
 /obj/item/clothing/mask/rat
 	name = "rat mask"
-	desc = "A rubber rat mask."
+	desc = "A rat mask."
 	icon_state = "rat"
 	item_state = "rat"
 	flags_inv = HIDEFACE
@@ -186,7 +186,7 @@
 
 /obj/item/clothing/mask/bear
 	name = "bear mask"
-	desc = "A rubber bear mask."
+	desc = "A bear mask."
 	icon_state = "bear"
 	item_state = "bear"
 	flags_inv = HIDEFACE
@@ -218,7 +218,7 @@
 
 /obj/item/clothing/mask/raven
 	name = "raven mask"
-	desc = "A rubber raven mask."
+	desc = "A raven mask."
 	icon_state = "raven"
 	item_state = "raven"
 	flags_inv = HIDEFACE
@@ -234,7 +234,7 @@
 
 /obj/item/clothing/mask/jackal
 	name = "jackal mask"
-	desc = "A rubber jackal mask."
+	desc = "A jackal mask."
 	icon_state = "jackal"
 	item_state = "jackal"
 	flags_inv = HIDEFACE
@@ -266,7 +266,7 @@
 
 /obj/item/clothing/mask/cow
 	name = "cow mask"
-	desc = "A rubber moooo mask."
+	desc = "A moooo mask."
 	icon_state = "cow"
 	item_state = "cow"
 	flags_inv = HIDEFACE
@@ -282,7 +282,7 @@
 
 /obj/item/clothing/mask/frog
 	name = "frog mask"
-	desc = "A rubber frog mask."
+	desc = "A frog mask."
 	icon_state = "frog"
 	item_state = "frog"
 	flags_inv = HIDEFACE
