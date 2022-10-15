@@ -1247,13 +1247,13 @@ May God have mercy.
 // Skrell Hairstyles
 /datum/sprite_accessory/hair/skr_tentacle_m
 	name = "Skrell Male Tentacles"
-	icon_state = "skrell_hair_m"
+	icon_state = "male"
 	species_allowed = list(SPECIES_SKRELL)
 	gender = MALE
 
 /datum/sprite_accessory/hair/skr_tentacle_f
 	name = "Skrell Female Tentacles"
-	icon_state = "skrell_hair_f"
+	icon_state = "female"
 	species_allowed = list(SPECIES_SKRELL)
 	gender = FEMALE
 
