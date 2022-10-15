@@ -47,7 +47,7 @@
 		pick_turfs -= weakref(enter)
 		pick_turfs -= weakref(exit)
 
-		wormholes += create_wormhole(enter, exit)
+		wormholes.Add(create_wormhole(enter, exit))
 
 	set_next_think_ctx("announce", world.time + (rand(0, 5) SECONDS))
 	set_next_think_ctx("end", world.time + (rand(1, 3) MINUTES))

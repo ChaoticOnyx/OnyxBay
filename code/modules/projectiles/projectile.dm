@@ -377,7 +377,7 @@
 /obj/item/projectile/think()
 	var/first_step = 1
 	var/i = 0
-	spawn while(src && src.loc)
+	spawn while(!QDELETED(src))
 		if (++i > 512)
 			var/turf/T = src.loc
 			qdel(src)
