@@ -157,7 +157,7 @@
 	desc = "A rubber rat mask."
 	icon_state = "rat"
 	item_state = "rat"
-	flags_inv = HIDEFACE|BLOCKHAIR
+	flags_inv = HIDEFACE
 	w_class = ITEM_SIZE_SMALL
 	siemens_coefficient = 0.7
 	body_parts_covered = HEAD|FACE|EYES
@@ -173,7 +173,7 @@
 	desc = "The fox is hunting."
 	icon_state = "fox"
 	item_state = "fox"
-	flags_inv = HIDEFACE|BLOCKHAIR
+	flags_inv = HIDEFACE
 	w_class = ITEM_SIZE_SMALL
 	siemens_coefficient = 0.7
 	body_parts_covered = HEAD|FACE|EYES
@@ -189,7 +189,7 @@
 	desc = "A rubber bear mask."
 	icon_state = "bear"
 	item_state = "bear"
-	flags_inv = HIDEFACE|BLOCKHAIR
+	flags_inv = HIDEFACE
 	w_class = ITEM_SIZE_SMALL
 	siemens_coefficient = 0.7
 	body_parts_covered = HEAD|FACE|EYES
@@ -205,7 +205,7 @@
 	desc = "This is not baseball bat."
 	icon_state = "bat"
 	item_state = "bat"
-	flags_inv = HIDEFACE|BLOCKHAIR
+	flags_inv = HIDEFACE
 	w_class = ITEM_SIZE_SMALL
 	siemens_coefficient = 0.7
 	body_parts_covered = HEAD|FACE|EYES
@@ -221,7 +221,7 @@
 	desc = "A rubber raven mask."
 	icon_state = "raven"
 	item_state = "raven"
-	flags_inv = HIDEFACE|BLOCKHAIR
+	flags_inv = HIDEFACE
 	w_class = ITEM_SIZE_SMALL
 	siemens_coefficient = 0.7
 	body_parts_covered = HEAD|FACE|EYES
@@ -237,7 +237,7 @@
 	desc = "A rubber jackal mask."
 	icon_state = "jackal"
 	item_state = "jackal"
-	flags_inv = HIDEFACE|BLOCKHAIR
+	flags_inv = HIDEFACE
 	w_class = ITEM_SIZE_SMALL
 	siemens_coefficient = 0.7
 	body_parts_covered = HEAD|FACE|EYES
@@ -253,7 +253,7 @@
 	desc = "Something from ancient times."
 	icon_state = "bumba"
 	item_state = "bumba"
-	flags_inv = HIDEFACE|BLOCKHAIR
+	flags_inv = HIDEFACE
 	w_class = ITEM_SIZE_SMALL
 	siemens_coefficient = 0.7
 	body_parts_covered = HEAD|FACE|EYES
@@ -269,7 +269,7 @@
 	desc = "A rubber moooo mask."
 	icon_state = "cow"
 	item_state = "cow"
-	flags_inv = HIDEFACE|BLOCKHAIR
+	flags_inv = HIDEFACE
 	w_class = ITEM_SIZE_SMALL
 	siemens_coefficient = 0.7
 	body_parts_covered = HEAD|FACE|EYES
@@ -285,7 +285,7 @@
 	desc = "A rubber frog mask."
 	icon_state = "frog"
 	item_state = "frog"
-	flags_inv = HIDEFACE|BLOCKHAIR
+	flags_inv = HIDEFACE
 	w_class = ITEM_SIZE_SMALL
 	siemens_coefficient = 0.7
 	body_parts_covered = HEAD|FACE|EYES
