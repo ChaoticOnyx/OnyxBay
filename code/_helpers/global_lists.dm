@@ -138,7 +138,8 @@ var/global/list/string_slot_flags = list(
 			SPECIES_VOX = 'icons/mob/human_races/face/hair_vox.dmi'),
 		"slim" = list(
 			SPECIES_HUMAN = 'icons/mob/human_races/face/hair_slim.dmi',
-			SPECIES_TAJARA = 'icons/mob/human_races/face/hair_tajaran_slim.dmi')
+			SPECIES_TAJARA = 'icons/mob/human_races/face/hair_tajaran_slim.dmi',
+			SPECIES_SKRELL = 'icons/mob/human_races/face/hair_skrell_slim.dmi')
 	)
 	GLOB.facial_hair_icons = list(
 		"default" = list(
