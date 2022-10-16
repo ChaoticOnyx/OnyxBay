@@ -218,7 +218,7 @@
 
 /obj/item/clothing/mask/raven
 	name = "raven mask"
-	desc = "A raven mask."
+	desc = "CAAAAW!."
 	icon_state = "raven"
 	item_state = "raven"
 	flags_inv = HIDEFACE
@@ -234,7 +234,7 @@
 
 /obj/item/clothing/mask/jackal
 	name = "jackal mask"
-	desc = "A jackal mask."
+	desc = "A simple jackal mask."
 	icon_state = "jackal"
 	item_state = "jackal"
 	flags_inv = HIDEFACE
@@ -282,7 +282,7 @@
 
 /obj/item/clothing/mask/frog
 	name = "frog mask"
-	desc = "A frog mask."
+	desc = "Ribbit,ribbit,ribbit."
 	icon_state = "frog"
 	item_state = "frog"
 	flags_inv = HIDEFACE
