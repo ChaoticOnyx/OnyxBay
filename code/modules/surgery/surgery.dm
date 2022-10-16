@@ -138,7 +138,7 @@
 
 	var/germ_level = user.germ_level
 	var/obj/item/clothing/gloves/G = user.gloves
-	if(G && !(G.clipped && prob(75)))
+	if(istype(G) && !(G.clipped && prob(75)))
 		germ_level = G.germ_level
 
 	E.germ_level = max(germ_level,E.germ_level) //as funny as scrubbing microbes out with clean gloves is - no.
