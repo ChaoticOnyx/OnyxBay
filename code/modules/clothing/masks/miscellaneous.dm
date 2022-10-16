@@ -154,7 +154,7 @@
 
 /obj/item/clothing/mask/rat
 	name = "rat mask"
-	desc = "Sniffer is sniffing."
+	desc = "Look at my face. We've met before..."
 	icon_state = "rat"
 	item_state = "rat"
 	flags_inv = HIDEFACE
@@ -186,7 +186,7 @@
 
 /obj/item/clothing/mask/bear
 	name = "bear mask"
-	desc = "A bear mask."
+	desc = "Question number one: Do you like hurting other people?"
 	icon_state = "bear"
 	item_state = "bear"
 	flags_inv = HIDEFACE
