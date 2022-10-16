@@ -124,6 +124,14 @@
 			to_chat(user, SPAN("notice", "\The [H]'s pupils react slower than normally."))
 		if(H.getBrainLoss() > 15)
 			to_chat(user, SPAN("notice", "There's visible lag between left and right pupils' reactions."))
+		if(H.get_blood_volume() <= 60)
+			to_chat(user, SPAN("notice", "\The [H]'s eyelids looks pale."))
+		if(should_have_organ(BP_LIVER))
+			var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_LIVER]
+			if(istype(L) && L.is_bruised())
+				to_chat(user, SPAN("notice", "\The [H]'s eyes look yellowish."))
+		else if(length(H.virus2)) // Yea we probably do not want yellow and red eyes at the same time.
+			to_chat(user, SPAN("notice", "\The [H]'s eyes look red."))
 
 		var/list/pinpoint = list(/datum/reagent/painkiller/tramadol/oxycodone = 1, /datum/reagent/painkiller/tramadol = 5, /datum/reagent/painkiller = 2, /datum/reagent/painkiller/opium = 3, /datum/reagent/painkiller/opium/tarine = 1)
 		var/list/dilating = list(/datum/reagent/space_drugs = 5, /datum/reagent/mindbreaker = 1, /datum/reagent/adrenaline = 1)
