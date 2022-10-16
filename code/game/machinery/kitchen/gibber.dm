@@ -178,7 +178,7 @@
 	if(istype(src.occupant, /mob/living/simple_animal/hostile/faithless))
 		slab_type = /obj/item/ectoplasm
 	else if(istype(src.occupant, /mob/living/carbon/metroid || /mob/living/simple_animal/metroid))
-        slab_type = /obj/item/reagent_containers/food/meat/xeno
+        slab_type = /obj/item/reagent_containers/food/meat/xeno 
 	else if(istype(src.occupant,/mob/living/simple_animal))
 		var/mob/living/simple_animal/critter = src.occupant
 		if(critter.meat_amount)
