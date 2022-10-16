@@ -126,8 +126,8 @@
 			to_chat(user, SPAN("notice", "There's visible lag between left and right pupils' reactions."))
 		if(H.get_blood_volume() <= 60)
 			to_chat(user, SPAN("notice", "\The [H]'s eyelids looks pale."))
-		if(should_have_organ(BP_LIVER))
-			var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_LIVER]
+		if(H.should_have_organ(BP_LIVER))
+			var/obj/item/organ/internal/liver/L = H.internal_organs_by_name[BP_LIVER]
 			if(istype(L) && L.is_bruised())
 				to_chat(user, SPAN("notice", "\The [H]'s eyes look yellowish."))
 		else if(length(H.virus2)) // Yea we probably do not want yellow and red eyes at the same time.
@@ -314,7 +314,7 @@
 	if(!fuel || !on)
 		turn_off()
 		return
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/flashlight/flare/proc/turn_off()
@@ -368,7 +368,7 @@
 		turn_off()
 		update_icon()
 		return
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/flashlight/glowstick/proc/turn_off()
