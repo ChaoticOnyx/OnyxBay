@@ -105,7 +105,7 @@
 	// Prune restricted status. Broke it up for readability.
 	// Note that this is done before jobs are handed out.
 	for(var/datum/mind/player in mode.get_players_for_role(id))
-		if (!player.current.client)
+		if(!player.current?.client)
 			continue
 		if(ghosts_only && !(isghostmind(player) || isnewplayer(player.current)))
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Only ghosts may join as this role!")
