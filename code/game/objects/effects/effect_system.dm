@@ -28,10 +28,14 @@ would spawn and follow the beaker, even if it is carried or thrown.
 
 /datum/effect/effect/system/proc/attach(atom/atom)
 	holder = atom
+	register_signal(holder, SIGNAL_QDELETING, /datum/effect/effect/system/proc/onHolderDeleted)
 
 /datum/effect/effect/system/proc/start()
 
 /datum/effect/effect/system/proc/spread()
+
+/datum/effect/effect/system/proc/onHolderDeleted()
+	holder = null
 
 /datum/effect/effect/system/Destroy()
 	holder = null
@@ -372,6 +376,11 @@ steam.start() -- spawns the effect
 	var/list/specific_turfs = list()
 	var/trail_type
 	var/duration_of_effect = 10
+
+/datum/effect/effect/system/trail/Destroy()
+	oldposition = null
+	specific_turfs.Cut()
+	return ..()
 
 /datum/effect/effect/system/trail/set_up(atom/atom)
 	attach(atom)
