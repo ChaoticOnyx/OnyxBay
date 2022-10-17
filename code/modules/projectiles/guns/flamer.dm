@@ -33,6 +33,14 @@
 	. = ..()
 	set_next_think(world.time)
 
+/obj/item/gun/flamer/Destroy()
+	QDEL_NULL(fuel_tank)
+	QDEL_NULL(pressure_tank)
+	igniter = null
+	gauge = null
+	QDEL_NULL_LIST(attached_electronics)
+	. = ..()
+
 /obj/item/gun/flamer/_examine_text(mob/user)
 	. = ..()
 
@@ -128,7 +136,7 @@
 		user.drop(W, src)
 		igniter = W
 		playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
-		attached_electronics += new /obj/item/device/assembly/igniter
+		attached_electronics += W
 		user.visible_message("[user] slots \a [W] into \the [src].", "You slot \a [W] into \the [src].")
 		update_icon()
 		return
@@ -141,7 +149,7 @@
 			return
 		gauge = W
 		playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
-		attached_electronics += new /obj/item/device/analyzer
+		attached_electronics += W
 		user.visible_message("[user] slots \a [W] into \the [src].", "You slot \a [W] into \the [src].")
 		update_icon()
 		return
@@ -164,13 +172,13 @@
 			return
 
 		if(istype(electonics_to_remove, /obj/item/device/assembly/igniter))
-			igniter.loc = user.loc
+			igniter.forceMove(user.loc)
 			igniter = null
 			playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
 			attached_electronics -= electonics_to_remove
 
 		if(istype(electonics_to_remove, /obj/item/device/analyzer))
-			gauge.loc = user.loc
+			gauge.forceMove(user.loc)
 			gauge = null
 			playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
 			attached_electronics -= electonics_to_remove
@@ -257,13 +265,6 @@
 /obj/item/gun/flamer/handle_war_crime(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	if(!is_flamer_can_fire(user))
 		return
-	. = ..()
-
-/obj/item/gun/flamer/Destroy()
-	QDEL_NULL(fuel_tank)
-	QDEL_NULL(pressure_tank)
-	QDEL_NULL(igniter)
-	QDEL_NULL(gauge)
 	. = ..()
 
 /obj/item/gun/flamer/think()
