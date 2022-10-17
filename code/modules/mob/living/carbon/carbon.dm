@@ -14,6 +14,7 @@
 /mob/living/carbon/Destroy()
 	QDEL_NULL(touching)
 	QDEL_NULL(bloodstr)
+	QDEL_NULL(op_stage)
 
 	reagents = null //We assume reagents is a reference to bloodstr here
 

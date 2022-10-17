@@ -183,3 +183,7 @@
 	var/head_reattach = 0
 	var/current_organ = "organ"
 	var/list/in_progress = list()
+
+/datum/surgery_status/Destroy()
+	in_progress.Cut()
+	return ..()

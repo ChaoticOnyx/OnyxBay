@@ -168,5 +168,6 @@
 /// Removes self from `SSthink`, deletes all thinking contexts.
 /// Mainly used in `/proc/Destroy`.
 /datum/proc/clear_think()
+	set_next_think(0)
 	QDEL_LIST_ASSOC_VAL(_think_ctxs)
 	qdel(_main_think_ctx)

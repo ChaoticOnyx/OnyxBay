@@ -68,6 +68,8 @@ var/list/global/tank_gauge_cache = list()
 	update_icon(TRUE)
 
 /obj/item/tank/Destroy()
+	manipulated_by = null
+
 	QDEL_NULL(air_contents)
 	QDEL_NULL(proxyassembly)
 
@@ -580,6 +582,11 @@ var/list/global/tank_gauge_cache = list()
 	desc = "Used as a stand in to trigger single tank assemblies... but you shouldn't see this."
 	var/obj/item/tank/tank = null
 	var/obj/item/device/assembly_holder/assembly = null
+
+/obj/item/device/tankassemblyproxy/Destroy()
+	tank = null
+	assembly = null
+	return ..()
 
 /obj/item/device/tankassemblyproxy/receive_signal()	//This is mainly called by the sensor through sense() to the holder, and from the holder to here.
 	tank.ignite()	//boom (or not boom if you made shijwtty mix)
