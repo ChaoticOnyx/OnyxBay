@@ -68,7 +68,7 @@
 
 /obj/item/clothing/mask/animal_mask/frog
 	name = "frog mask"
-	desc = "Ribbit,ribbit,ribbit."
+	desc = "Ribbit, ribbit, ribbit."
 	icon_state = "frog"
 	item_state = "frog"
 
