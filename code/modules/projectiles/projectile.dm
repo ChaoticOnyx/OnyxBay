@@ -347,7 +347,7 @@
 	//the bullet passes through a dense object!
 	if(passthrough)
 		//move ourselves onto A so we can continue on our way.
-		if(A)
+		if(A && !QDELETED(src))
 			if(istype(A, /turf))
 				loc = A
 			else

@@ -366,8 +366,10 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/current_samples = 0
 	for(var/obj/item/reagent_containers/C in contents)
 		var/list/data = C.reagents?.get_data(/datum/reagent/blood)
+		if(!length(data))
+			continue
 		var/datum/species/spec = all_species[data["species"]]
-		if(!data || (data["blood_DNA"] in samples) || (spec?.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
+		if((data["blood_DNA"] in samples) || (spec?.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
 			continue
 		if(add_checked)
 			samples += data["blood_DNA"]
