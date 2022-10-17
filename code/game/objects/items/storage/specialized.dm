@@ -251,3 +251,8 @@
 	name = "Cyber Bar tape box"
 	icon_closed = "box_cyber"
 	music_tape = /obj/item/music_tape/random/valhalla
+
+/obj/item/music_tape_box/halloween
+	name = "Spooky tape box"
+	icon_closed = "box_pumpkin"
+	music_tape = /obj/item/music_tape/random/halloween

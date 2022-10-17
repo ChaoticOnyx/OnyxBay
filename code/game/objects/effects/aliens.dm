@@ -41,6 +41,9 @@
 	var/done_melt = target.acid_melt()
 
 	if(done_melt)
+		if(istype(target, /turf/simulated/wall))
+			var/turf/simulated/wall/W = target
+			W.dismantle_wall(null,null,1)
 		qdel(src)
 		return
 
