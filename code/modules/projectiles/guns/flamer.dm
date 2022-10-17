@@ -29,10 +29,6 @@
 	var/last_fired = 0
 	fire_delay = 35
 
-/obj/item/gun/flamer/Initialize()
-	. = ..()
-	set_next_think(world.time)
-
 /obj/item/gun/flamer/Destroy()
 	QDEL_NULL(fuel_tank)
 	QDEL_NULL(pressure_tank)
@@ -200,10 +196,11 @@
 		to_chat(user, SPAN_WARNING("Install fuel tank first!"))
 		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
-	if(!lit)
-		playsound(user, pick(ignite_sound), 100,1)
 	lit = !lit
 	update_icon()
+	if(lit)
+		playsound(user, pick(ignite_sound), 100, 1)
+		set_next_think(world.time)
 	return TRUE
 
 /obj/item/gun/flamer/Fire(atom/target, mob/living/user, params, pointblank=0, reflex=0)
@@ -268,10 +265,11 @@
 	. = ..()
 
 /obj/item/gun/flamer/think()
-	if(lit)
-		if(!lited(0.05))
-			lit = FALSE
-
+	if(!lit)
+		return
+	if(!lited(0.05))
+		lit = FALSE
+		return
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/gun/flamer/proc/lited(amount) //remove fuel from fuel_tank
