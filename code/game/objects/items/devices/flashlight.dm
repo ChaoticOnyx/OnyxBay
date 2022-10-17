@@ -27,6 +27,11 @@
 	if(on)
 		switch_light(TRUE)
 
+/obj/item/device/flashlight/Destroy()
+	activation_sound = null
+	switch_light(FALSE)
+	return ..()
+
 /obj/item/device/flashlight/update_icon()
 	overlays.Cut()
 	if(on)
@@ -306,7 +311,7 @@
 	if(!fuel || !on)
 		turn_off()
 		return
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/flashlight/flare/proc/turn_off()
@@ -360,7 +365,7 @@
 		turn_off()
 		update_icon()
 		return
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/flashlight/glowstick/proc/turn_off()
