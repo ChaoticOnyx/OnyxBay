@@ -37,8 +37,8 @@
 		bundle.update_icon()
 		if(ishuman(user))
 			var/mob/living/carbon/human/h_user = user
-			h_user.drop(src)
-			h_user.drop(bundle)
+			if(buldle.loc == h_user)
+				h_user.drop(bundle)
 			h_user.pick_or_drop(bundle)
 		to_chat(user, "<span class='notice'>You add [src.worth] credits worth of money to the bundles.<br>It holds [bundle.worth] credits now.</span>")
 		qdel(src)
