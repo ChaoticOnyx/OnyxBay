@@ -156,7 +156,7 @@ else if(##equipment_var) {\
 	if(tank)
 		tank.canremove = 1
 		if(istype(H))
-			H.drop(boots, src, TRUE)
+			H.drop(tank, src, TRUE)
 		tank.forceMove(src)
 
 /obj/item/clothing/suit/space/void/verb/toggle_helmet()
