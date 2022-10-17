@@ -27,6 +27,8 @@ would spawn and follow the beaker, even if it is carried or thrown.
 	setup = 1
 
 /datum/effect/effect/system/proc/attach(atom/atom)
+	if(holder)
+		unregister_signal(holder, SIGNAL_QDELETING)
 	holder = atom
 	register_signal(holder, SIGNAL_QDELETING, /datum/effect/effect/system/proc/onHolderDeleted)
 
