@@ -16,6 +16,10 @@
 	name =  "[initial(build_path["name"])] cartridge"
 	build_inventory()
 
+/obj/item/vending_cartridge/Destroy()
+	QDEL_NULL_LIST(product_records)
+	return ..()
+
 /obj/item/vending_cartridge/proc/build_inventory(gen_rand_amount)
 	if(extra.len)
 		legal |= extra
