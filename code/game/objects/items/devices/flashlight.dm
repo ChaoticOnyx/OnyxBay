@@ -125,7 +125,7 @@
 		if(H.getBrainLoss() > 15)
 			to_chat(user, SPAN("notice", "There's visible lag between left and right pupils' reactions."))
 		if(H.get_blood_volume() <= 60)
-			to_chat(user, SPAN("notice", "\The [H]'s eyelids looks pale."))
+			to_chat(user, SPAN("notice", "\The [H]'s eyelids look pale."))
 		if(H.should_have_organ(BP_LIVER))
 			var/obj/item/organ/internal/liver/L = H.internal_organs_by_name[BP_LIVER]
 			if(istype(L) && L.is_bruised())
