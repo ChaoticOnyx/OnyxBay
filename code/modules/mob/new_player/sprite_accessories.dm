@@ -197,17 +197,18 @@
 
 /datum/sprite_accessory/hair/bob
 	name = "Bob"
-	icon_state = "bobcut"
+	icon_state = "bob"
+	gender = FEMALE
+	species_allowed = list(SPECIES_HUMAN, SPECIES_TAJARA)
+
+/datum/sprite_accessory/hair/bob2
+	name = "Bob 2"
+	icon_state = "bob2"
 	gender = FEMALE
 
 /datum/sprite_accessory/hair/bobcurl
 	name = "Bob Curly"
 	icon_state = "bobcurl"
-	gender = FEMALE
-
-/datum/sprite_accessory/hair/bobcutalt
-	name = "Bob 2"
-	icon_state = "bobcutalt"
 	gender = FEMALE
 
 /datum/sprite_accessory/hair/bobasymm
@@ -216,7 +217,7 @@
 	gender = FEMALE
 
 /datum/sprite_accessory/hair/bobasymm2
-	name = "Bob Asymmetrical II"
+	name = "Bob Asymmetrical 2"
 	icon_state = "bob_asymm2"
 	gender = FEMALE
 
@@ -330,7 +331,7 @@
 /datum/sprite_accessory/hair/mohawk
 	name = "Mohawk"
 	icon_state = "mohawk"
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_TAJARA)
 
 /datum/sprite_accessory/hair/jensen
 	name = "Adam Jensen Hair"
@@ -365,7 +366,8 @@
 
 /datum/sprite_accessory/hair/spiky
 	name = "Spiky"
-	icon_state = "spikey"
+	icon_state = "spiky"
+	species_allowed = list(SPECIES_HUMAN, SPECIES_TAJARA)
 
 /datum/sprite_accessory/hair/kagami
 	name = "Pigtails"
@@ -664,11 +666,12 @@
 
 /datum/sprite_accessory/hair/messyhair
 	name = "Messy"
-	icon_state = "messyhair"
+	icon_state = "messy"
+	species_allowed = list(SPECIES_HUMAN, SPECIES_TAJARA)
 
 /datum/sprite_accessory/hair/messyhair2
 	name = "Messy 2"
-	icon_state = "messyhair2"
+	icon_state = "messy2"
 
 /datum/sprite_accessory/hair/messy_bun
 	name = "Messy Bun"
@@ -1288,11 +1291,6 @@ May God have mercy.
 	icon_state = "shaggy"
 	species_allowed = list(SPECIES_TAJARA)
 
-/datum/sprite_accessory/hair/taj_ears_mohawk
-	name = "Mohawk"
-	icon_state = "mohawk"
-	species_allowed = list(SPECIES_TAJARA)
-
 /datum/sprite_accessory/hair/taj_ears_plait
 	name = "Plait"
 	icon_state = "plait"
@@ -1311,21 +1309,6 @@ May God have mercy.
 /datum/sprite_accessory/hair/taj_ears_rattail
 	name = "Rat Tail"
 	icon_state = "rattail"
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/hair/taj_ears_spiky
-	name = "Spiky"
-	icon_state = "spiky"
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/hair/taj_ears_messy
-	name = "Messy"
-	icon_state = "messy"
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/hair/taj_ears_bob
-	name = "Bob"
-	icon_state = "bob"
 	species_allowed = list(SPECIES_TAJARA)
 
 /datum/sprite_accessory/hair/taj_fingerwave
