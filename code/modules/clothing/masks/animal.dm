@@ -91,7 +91,7 @@
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
-/obj/item/clothing/mask/horsehead/New()
+/obj/item/clothing/mask/animal_mask/horsehead/New()
 	..()
 	// The horse mask doesn't cause voice changes by default, the wizard spell changes the flag as necessary
 	say_messages = list("NEEIIGGGHHHH!", "NEEEIIIIGHH!", "NEIIIGGHH!", "HAAWWWWW!", "HAAAWWW!")
