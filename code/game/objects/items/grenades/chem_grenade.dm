@@ -186,14 +186,14 @@
 	if(active)
 		icon_state = initial(icon_state) + "_active"
 		return
-	if(QDELETED(safety_pin))
-		icon_state = initial(icon_state) + "_primed"
-		return
 	if(stage == STAGE_DETONATOR)
 		icon_state = initial(icon_state) + "_ass"
 		return
 	if(stage == STAGE_BASIC)
 		icon_state = initial(icon_state)
+		return
+	if(QDELETED(safety_pin))
+		icon_state = initial(icon_state) + "_primed"
 		return
 	icon_state = initial(icon_state) + "_locked"
 
