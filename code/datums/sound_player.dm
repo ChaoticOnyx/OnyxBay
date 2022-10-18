@@ -205,8 +205,8 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 
 	listeners += listener
 
-	register_signal(listener, SIGNAL_MOVED, /datum/sound_token/proc/PrivUpdateListenerLoc)
-	register_signal(listener, SIGNAL_QDELETING, /datum/sound_token/proc/PrivRemoveListener)
+	register_signal(listener, SIGNAL_MOVED, /datum/sound_token/proc/PrivUpdateListenerLoc, override = TRUE)
+	register_signal(listener, SIGNAL_QDELETING, /datum/sound_token/proc/PrivRemoveListener, override = TRUE)
 
 	PrivUpdateListenerLoc(listener, FALSE)
 
