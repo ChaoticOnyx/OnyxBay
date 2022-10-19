@@ -24,7 +24,7 @@ GLOBAL_LIST_INIT(contracts_steal_items, list(
 	"the captain's pinpointer" =                        list(CONTRACT_STEAL_OPERATION, /obj/item/pinpointer),
 	"an ion pistol" =                                   list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/ionrifle/small),
 	"an energy gun" =                                   list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/egun),
-	"a laser rifle" =                                   list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/laser),
+	"a laser rifle" =                                   list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/laser/pistol),
 	"a shotgun" =                                       list(CONTRACT_STEAL_MILITARY, /obj/item/gun/projectile/shotgun/pump),
 	"an riot helmet" =                                  list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/head/helmet/riot),
 	"an riot armor vest" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/suit/armor/riot),
