@@ -128,7 +128,7 @@
 		return TRUE // So we neither regenerate nor gain plasma once dead
 	var/heal_rate = weeds_heal_rate
 	var/mend_prob = 10
-	if(!H.resting)
+	if(!(H.resting || H.lying))
 		heal_rate = weeds_heal_rate / 3
 		mend_prob = 1
 
