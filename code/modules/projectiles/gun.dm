@@ -422,7 +422,7 @@
 		else
 			to_chat(user, "<span class = 'notice'>Ow...</span>")
 			user.apply_effect(110,PAIN,0)
-		qdel(in_chamber)
+		QDEL_NULL(in_chamber)
 		mouthshoot = 0
 		return
 	else
@@ -485,7 +485,7 @@
 			else
 				to_chat(user, SPAN_NOTICE("Ow..."))
 				target.apply_effect(110, PAIN, 0)
-			qdel(in_chamber)
+			QDEL_NULL(in_chamber)
 			weapon_in_mouth = FALSE
 			return
 		else

@@ -587,7 +587,7 @@
 
 		if (TICK_CHECK)
 			break
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/oremagnet/proc/toggle_on(mob/user)
@@ -627,8 +627,8 @@
 /******************************Sculpting*******************************/
 /obj/item/autochisel
 	name = "auto-chisel"
-	icon = 'icons/obj/tools.dmi'
-	icon_state = "jackhammer"
+	icon = 'icons/obj/mining.dmi'
+	icon_state = "auto-chisel"
 	item_state = "jackhammer"
 	origin_tech = list(TECH_MATERIAL = 3, TECH_POWER = 2, TECH_ENGINEERING = 2)
 	desc = "With an integrated AI chip and hair-trigger precision, this baby makes sculpting almost automatic!"

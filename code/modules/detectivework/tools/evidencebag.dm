@@ -7,6 +7,7 @@
 	icon_state = "evidenceobj"
 	item_state = ""
 	w_class = ITEM_SIZE_SMALL
+	var/base_icon_state = "evidence"
 	var/obj/item/stored_item = null
 
 /obj/item/evidencebag/attackby(obj/item/I, mob/user)
@@ -44,11 +45,10 @@
 
 	put_item(I, user)
 
-
 /obj/item/evidencebag/proc/put_item(obj/item/I, mob/user)
 	if(istype(I, /obj/item/evidencebag))
 		to_chat(user, SPAN_NOTICE("You find putting an evidence bag in another evidence bag to be slightly absurd."))
-		return
+		return FALSE
 
 	if(I.w_class > ITEM_SIZE_NORMAL)
 		to_chat(user, SPAN_NOTICE("[I] won't fit in [src]."))
@@ -59,12 +59,17 @@
 		return FALSE
 
 	if(!user.drop(I, src))
-		return
+		return FALSE
 
 	user.visible_message("[user] puts [I] into [src]", "You put [I] inside [src].",\
 	"You hear a rustle as someone puts something into a plastic bag.")
+	store_item(I)
+	return TRUE
 
-	icon_state = "evidence"
+/obj/item/evidencebag/proc/store_item(obj/item/I)
+	I.forceMove(src)
+
+	icon_state = base_icon_state
 
 	var/item_x = I.pixel_x	//save the offset of the item
 	var/item_y = I.pixel_y
@@ -74,9 +79,9 @@
 	img.SetTransform(scale = 0.7)
 	I.pixel_x = item_x		//and then return it
 	I.pixel_y = item_y
-	overlays.Add(img, "evidence")	//should look nicer for transparent stuff. not really that important, but hey.
+	overlays.Add(img, base_icon_state)	//should look nicer for transparent stuff. not really that important, but hey.
 
-	desc = "An evidence bag containing [I]."
+	desc = "\A [initial(name)] containing [I]."
 	stored_item = I
 	w_class = I.w_class
 
@@ -93,11 +98,11 @@
 		stored_item = null
 
 		w_class = initial(w_class)
-		icon_state = "evidenceobj"
-		desc = "An empty evidence bag."
+		icon_state = "[base_icon_state]obj"
+		desc = initial(desc)
 	else
 		to_chat(user, "[src] is empty.")
-		icon_state = "evidenceobj"
+		icon_state = "[base_icon_state]obj"
 	return
 
 /obj/item/evidencebag/_examine_text(mob/user)
@@ -137,3 +142,8 @@
 
 /obj/item/evidencebag/cyborg/MouseDrop_T(obj/item/I as obj)
 	return
+
+/obj/item/evidencebag/research
+	name = "sample bag"
+	desc = "A bag for holding research samples."
+	base_icon_state = "samplebag"

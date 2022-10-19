@@ -14,6 +14,7 @@
 /mob/living/carbon/Destroy()
 	QDEL_NULL(touching)
 	QDEL_NULL(bloodstr)
+	QDEL_NULL(op_stage)
 
 	reagents = null //We assume reagents is a reference to bloodstr here
 
@@ -336,8 +337,8 @@
 				admin_attack_log(usr, M, "Threw the victim from [start_T_descriptor] to [end_T_descriptor].", "Was from [start_T_descriptor] to [end_T_descriptor].", "threw, from [start_T_descriptor] to [end_T_descriptor], ")
 	else
 		itemsize = I.w_class
+		drop(item)
 
-	drop(item)
 	if(!item || !isturf(item.loc))
 		return
 

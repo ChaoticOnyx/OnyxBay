@@ -45,16 +45,19 @@
 			return ..()
 
 		//makes sure that the storage is equipped, so that we can't drag it into our hand from miles away.
-		if(!usr.contains(src))
+		if(loc != usr)
 			return
 
 		add_fingerprint(usr)
-		if(usr.drop(src))
-			switch(over_object.name)
-				if(BP_R_HAND)
+		switch(over_object.name)
+			if(BP_R_HAND)
+				if(usr.drop(src))
 					usr.put_in_r_hand(src)
-				if(BP_L_HAND)
+			if(BP_L_HAND)
+				if(usr.drop(src))
 					usr.put_in_l_hand(src)
+			if("back")
+				usr.drop(src)
 
 /obj/item/storage/AltClick(mob/usr)
 	if(!canremove)
