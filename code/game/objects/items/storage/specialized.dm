@@ -103,7 +103,7 @@
 			inserted = 1
 			break
 
-	if((!inserted || !S.amount) && usr.drop(S, src))
+	if(!inserted || !S.amount)
 		if(!S.amount)
 			qdel(S)
 		else if(S.loc == usr)
