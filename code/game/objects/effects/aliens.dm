@@ -39,8 +39,7 @@
 		qdel(src)
 		return
 
-	if(!target.acid_melt())
-		set_next_think(world.time + melt_time)
+	var/done_melt = target.acid_melt()
 
 	if(done_melt)
 		if(istype(target, /turf/simulated/wall))
