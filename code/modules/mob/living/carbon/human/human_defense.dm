@@ -47,7 +47,7 @@ meteor_act
 	if(organ.damage > organ.max_damage) // Overkill stuff; if our bodypart is a pile of shredded meat then it doesn't protect organs well
 		overkill_value *= organ.damage / organ.max_damage * 2
 
-	if(organ.internal_organs.len && prob(internal_damage_prob * overkill_value))
+	if(length(organ.internal_organs) && prob(internal_damage_prob * overkill_value))
 		var/damage_amt = (P.damage * P.penetration_modifier) * blocked_mult(blocked / 1.5) //So we don't factor in armor_penetration as additional damage
 		if(blocked >= P.damage) // Armor has absorbed the penetrational power
 			damage_amt = sqrt(damage_amt)

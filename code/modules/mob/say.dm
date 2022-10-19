@@ -126,7 +126,7 @@
 	if(length_char(message) >= 2 && is_language_prefix(prefix))
 		var/language_prefix = sanitize_cyrillic_char(copytext_char(message, 2 ,3))
 		var/datum/language/L = language_keys[language_prefix]
-		if(can_speak(L))
+		if(L && can_speak(L))
 			return L
 
 	return null

@@ -35,9 +35,13 @@
 
 /obj/item/device/suit_cooling_unit/Initialize()
 	. = ..()
-	set_next_think(world.time)
-	cell = new /obj/item/cell/high()		// 10K rated cell.
-	cell.forceMove(src)
+	cell = new /obj/item/cell/high(src)
+	if(on)
+		set_next_think(world.time)
+
+/obj/item/device/suit_cooling_unit/Destroy()
+	QDEL_NULL(cell)
+	return ..()
 
 /obj/item/device/suit_cooling_unit/think()
 	if (!on || !cell)

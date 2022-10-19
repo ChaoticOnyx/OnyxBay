@@ -17,6 +17,10 @@
 	var/grayscale = TRUE //if FALSE it'll preserve colors at least on paper
 	var/busy = FALSE
 
+/obj/machinery/photocopier/Destroy()
+	QDEL_NULL(copyitem)
+	return ..()
+
 /obj/machinery/photocopier/attack_ai(mob/user)
 	return attack_hand(user)
 

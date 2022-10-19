@@ -58,9 +58,11 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	if(stat & NOPOWER)
 		if(icon_state != "req_comp_off")
 			icon_state = "req_comp_off"
+		set_light(0)
 	else
 		if(icon_state == "req_comp_off")
 			icon_state = "req_comp[newmessagepriority]"
+		set_light(0.35, 0.1, 1, 2, COLOR_LIME)
 
 /obj/machinery/requests_console/New()
 	..()
@@ -76,8 +78,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 		req_console_supplies |= department
 	if (departmentType & RC_INFO)
 		req_console_information |= department
-
-	set_light(1)
+	update_icon()
 
 /obj/machinery/requests_console/Destroy()
 	allConsoles -= src
