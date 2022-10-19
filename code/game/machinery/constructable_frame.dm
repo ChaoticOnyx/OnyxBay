@@ -138,15 +138,17 @@
 	for(var/component in req_components)
 		if(istype(I, component) && req_components[component] > 0)
 			playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
-			if(istype(I, /obj/item/stack)) // Let's make this piece of code a bit more universal. What if i want to add uranium there?! - Max
-				var/obj/item/stack/PS = I // PS AKA parent stack. - Max
-				if(PS.get_amount() > 1)
-					var/samt = min(PS.amount, req_components[component]) // Amount of "stack" to take, idealy amount required, but limited by amount provided. - Max
-					var/obj/item/stack/CS = new PS(src, samt) // CS AKA child stack. - Max
-					CS.update_icon()
-					PS.use(samt)
-					LAZYADD(components, CS)
-					req_components[component] -= samt
+			if(istype(I, /obj/item/stack))
+				var/obj/item/stack/S = I
+				if(S.get_amount() > 1)
+					var/amount = min(S.amount, req_components[component]) // Tries to take as much as it needs.
+					S = S.split(amount, TRUE)
+					if(!istype(S)) // Stacks that use charge may have a hard time splitting on some occasions; covering that just to be sure.
+						to_chat(user, SPAN("warning", "Insufficient amount."))
+						return
+					S.forceMove(src)
+					LAZYADD(components, S)
+					req_components[component] -= amount
 					update_desc()
 					break
 			if(user.drop(I, src))

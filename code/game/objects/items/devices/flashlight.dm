@@ -232,6 +232,8 @@
 	item_state = "lamp"
 	w_class = ITEM_SIZE_LARGE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	force = 5.0
+	attack_verb = list ("smacked", "bashed", "enlightened")
 
 	flashlight_max_bright = 0.3
 	flashlight_inner_range = 2
