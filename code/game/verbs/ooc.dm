@@ -54,8 +54,5 @@
 	set name = "Storyteller info"
 	set category = "OOC"
 
-	if(!SSstoryteller.character)
-		to_chat(src, "<b>Current Storyteller:</b> N/A")
-	else
-		to_chat(src, "<b>Current Storyteller:</b> [SSstoryteller.character.name] - [SSstoryteller.character.desc]")
+	to_chat(src, "<b>Current Storyteller:</b> [SSstoryteller.character.name] - [SSstoryteller.character.desc]")
 

@@ -29,15 +29,9 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	if(!admin_departments)
 		admin_departments = list("[GLOB.using_map.boss_name]", "Colonial Marshal Service", "[GLOB.using_map.boss_short] Supply") + GLOB.using_map.map_admin_faxes
 	GLOB.allfaxes += src
-	if(!destination)
-		destination = "[GLOB.using_map.boss_name]"
-	if(!(("[department]" in GLOB.alldepartments) || ("[department]" in admin_departments)))
+	if(!destination) destination = "[GLOB.using_map.boss_name]"
+	if( !(("[department]" in GLOB.alldepartments) || ("[department]" in admin_departments)))
 		GLOB.alldepartments |= department
-
-/obj/machinery/photocopier/faxmachine/Destroy()
-	QDEL_NULL(scan)
-	GLOB.allfaxes -= src
-	return ..()
 
 /obj/machinery/photocopier/faxmachine/attack_hand(mob/user as mob)
 	user.set_machine(src)

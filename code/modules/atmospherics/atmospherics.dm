@@ -42,13 +42,11 @@ Pipelines + Other Objects -> Pipe network
 
 	if(!pipe_color_check(pipe_color))
 		pipe_color = null
-	GLOB.atmos_machinery |= src
+	GLOB.atmos_machinery += src
 	..()
 
 /obj/machinery/atmospherics/Destroy()
 	GLOB.atmos_machinery -= src
-	node1 = null
-	node2 = null
 	return ..()
 
 /obj/machinery/atmospherics/proc/atmos_init()

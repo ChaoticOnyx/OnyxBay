@@ -138,7 +138,7 @@
 
 	var/germ_level = user.germ_level
 	var/obj/item/clothing/gloves/G = user.gloves
-	if(istype(G) && !(G.clipped && prob(75)))
+	if(G && !(G.clipped && prob(75)))
 		germ_level = G.germ_level
 
 	E.germ_level = max(germ_level,E.germ_level) //as funny as scrubbing microbes out with clean gloves is - no.
@@ -183,7 +183,3 @@
 	var/head_reattach = 0
 	var/current_organ = "organ"
 	var/list/in_progress = list()
-
-/datum/surgery_status/Destroy()
-	in_progress.Cut()
-	return ..()

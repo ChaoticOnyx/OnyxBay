@@ -137,10 +137,9 @@
 				admin_attack_log(usr, GM, "Placed the victim into \the [src].", "Was placed into \the [src] by the attacker.", "stuffed \the [src] with")
 		return
 
-	if(I.loc == user && !user.drop(I))
+	if(!user.drop(I, src))
 		to_chat(user, "You can't place that into \the [src].")
 		return
-	I.forceMove(src)
 
 	if(I.loc != src)
 		return

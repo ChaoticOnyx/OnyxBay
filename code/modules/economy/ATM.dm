@@ -33,12 +33,6 @@
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
 
-/obj/machinery/atm/Destroy()
-	authenticated_account = null
-	QDEL_NULL(spark_system)
-	QDEL_NULL(held_card)
-	return ..()
-
 /obj/machinery/atm/Process()
 	if(stat & NOPOWER)
 		return

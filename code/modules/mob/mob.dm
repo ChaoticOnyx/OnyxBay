@@ -54,7 +54,6 @@
 	pain = null
 	item_use_icon = null
 	gun_move_icon = null
-	radio_use_icon = null
 	gun_setting_icon = null
 	ability_master = null
 	zone_sel = null

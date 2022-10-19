@@ -56,7 +56,7 @@
 
 /datum/event/space_dust/New()
 	. = ..()
-
+	
 	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
 
 /datum/event/space_dust/on_fire()
@@ -74,7 +74,7 @@
 	SSevents.evars["space_dust_running"] = FALSE
 	command_announcement.Announce("The [station_name()] has now passed through the belt of space dust.", "[station_name()] Sensor Array", zlevels = affecting_z)
 
-/datum/event/space_dust/think()
+/datum/event/space_dust/think()	
 	if(!prob(10))
 		set_next_think(world.time + (2 SECONDS))
 		return

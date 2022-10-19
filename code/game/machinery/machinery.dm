@@ -135,7 +135,7 @@ Class Procs:
 	if(d)
 		set_dir(d)
 
-	GLOB.machines |= src
+	GLOB.machines += src
 
 	if (populate_components && component_types)
 		component_parts = list()
@@ -171,7 +171,6 @@ Class Procs:
 				qdel(A)
 			else // Otherwise we assume they were dropped to the ground during deconstruction, and were not removed from the component_parts list by deconstruction code.
 				component_parts -= A
-	current_power_area = null
 	return ..()
 
 /obj/machinery/Process()

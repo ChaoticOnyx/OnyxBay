@@ -28,7 +28,7 @@
 		H.pick_or_drop(hat, loc)
 		H.visible_message("<span class='danger'>\The [H] removes \the [src]'s [hat].</span>")
 		hat = null
-		update_icon()
+		update_icons()
 		return
 
 	return ..()

@@ -159,8 +159,7 @@ var/list/slot_equipment_priority = list( \
 // Please ONLY use it on "external" items, *with their loc != src*, or our ballsack will instantly fall off. You've been warned.
 // Otherwise it's pretty much safe and preferable over calling put_in_hands and whatever movement separately.
 /mob/proc/pick_or_drop(obj/item/W, atom/A = null)
-	if(QDELETED(W))
-		util_crash_with("Called [src]'s ([type]) proc/pick_or_drop(W = [W], A = [A]), passing qdeleted W as an argment, what the fuck.")
+	if(!W)
 		return FALSE
 	if(put_in_hands(W))
 		return TRUE
@@ -191,7 +190,7 @@ var/list/slot_equipment_priority = list( \
 
 	if(I.loc != src)
 		util_crash_with("Called [src]'s ([type]) proc/drop(I = [I], target = [target], force = [force]) while the item isn't located inside the mob.") // This may save us someday.
-		// return FALSE // Gonna uncomment this after resolving some weird bugs. Multiple runtime errors wreck stack tracing and do more harm than good. ~Toby
+		return FALSE
 
 	if(!(force || can_unequip(I)))
 		return FALSE

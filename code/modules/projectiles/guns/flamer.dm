@@ -29,13 +29,9 @@
 	var/last_fired = 0
 	fire_delay = 35
 
-/obj/item/gun/flamer/Destroy()
-	QDEL_NULL(fuel_tank)
-	QDEL_NULL(pressure_tank)
-	igniter = null
-	gauge = null
-	QDEL_NULL_LIST(attached_electronics)
+/obj/item/gun/flamer/Initialize()
 	. = ..()
+	set_next_think(world.time)
 
 /obj/item/gun/flamer/_examine_text(mob/user)
 	. = ..()
@@ -132,7 +128,7 @@
 		user.drop(W, src)
 		igniter = W
 		playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
-		attached_electronics += W
+		attached_electronics += new /obj/item/device/assembly/igniter
 		user.visible_message("[user] slots \a [W] into \the [src].", "You slot \a [W] into \the [src].")
 		update_icon()
 		return
@@ -145,7 +141,7 @@
 			return
 		gauge = W
 		playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
-		attached_electronics += W
+		attached_electronics += new /obj/item/device/analyzer
 		user.visible_message("[user] slots \a [W] into \the [src].", "You slot \a [W] into \the [src].")
 		update_icon()
 		return
@@ -168,13 +164,13 @@
 			return
 
 		if(istype(electonics_to_remove, /obj/item/device/assembly/igniter))
-			igniter.forceMove(user.loc)
+			igniter.loc = user.loc
 			igniter = null
 			playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
 			attached_electronics -= electonics_to_remove
 
 		if(istype(electonics_to_remove, /obj/item/device/analyzer))
-			gauge.forceMove(user.loc)
+			gauge.loc = user.loc
 			gauge = null
 			playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
 			attached_electronics -= electonics_to_remove
@@ -196,11 +192,10 @@
 		to_chat(user, SPAN_WARNING("Install fuel tank first!"))
 		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
+	if(!lit)
+		playsound(user, pick(ignite_sound), 100,1)
 	lit = !lit
 	update_icon()
-	if(lit)
-		playsound(user, pick(ignite_sound), 100, 1)
-		set_next_think(world.time)
 	return TRUE
 
 /obj/item/gun/flamer/Fire(atom/target, mob/living/user, params, pointblank=0, reflex=0)
@@ -264,12 +259,18 @@
 		return
 	. = ..()
 
+/obj/item/gun/flamer/Destroy()
+	QDEL_NULL(fuel_tank)
+	QDEL_NULL(pressure_tank)
+	QDEL_NULL(igniter)
+	QDEL_NULL(gauge)
+	. = ..()
+
 /obj/item/gun/flamer/think()
-	if(!lit)
-		return
-	if(!lited(0.05))
-		lit = FALSE
-		return
+	if(lit)
+		if(!lited(0.05))
+			lit = FALSE
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/gun/flamer/proc/lited(amount) //remove fuel from fuel_tank

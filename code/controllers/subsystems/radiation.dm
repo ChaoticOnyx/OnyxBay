@@ -73,13 +73,9 @@ SUBSYSTEM_DEF(radiation)
 /datum/controller/subsystem/radiation/proc/get_sources_in_range(atom/target)
 	var/list/result = list()
 	var/turf/target_turf = get_turf(target)
-
+	
 	for(var/datum/radiation_source/source in sources)
 		var/turf/source_turf = get_turf(source.holder)
-
-		if(QDELETED(source.holder) || !source_turf) // Duct taping this since getting >1k runtimes per min is painful
-			return // TODO: Find out why the fuck it ever goes "Runtime in radiation.dm, line 79 (83 now): Cannot read null.z"
-
 		if(source_turf.z != target_turf.z)
 			continue // Radiation is not multi-z
 
@@ -112,7 +108,7 @@ SUBSYSTEM_DEF(radiation)
 /datum/controller/subsystem/radiation/proc/radiate(atom/source, datum/radiation/rad_info) // Sends out a radiation pulse, taking walls into account
 	if(!(source && rad_info)) //Sanity checking
 		return
-
+	
 	if(source.atom_flags & ATOM_FLAG_IGNORE_RADIATION)
 		return
 

@@ -7,9 +7,10 @@
 	layer = ABOVE_HUMAN_LAYER
 	density = 0
 
-/obj/effect/shield_impact/Initialize()
-	. = ..()
-	QDEL_IN(src, 2 SECONDS)
+
+/obj/effect/shield_impact/New()
+	spawn(2 SECONDS)
+		qdel(src)
 
 
 /obj/effect/shield
@@ -48,12 +49,13 @@
 	return 0
 
 
-/obj/effect/shield/Initialize()
-	. = ..()
+/obj/effect/shield/New()
+	..()
 	update_nearby_tiles()
 
 
 /obj/effect/shield/Destroy()
+	. = ..()
 	if(gen)
 		if(src in gen.field_segments)
 			gen.field_segments -= src
@@ -62,7 +64,6 @@
 		gen = null
 	update_nearby_tiles()
 	forceMove(null, 1)
-	return ..()
 
 
 // Temporarily collapses this shield segment.

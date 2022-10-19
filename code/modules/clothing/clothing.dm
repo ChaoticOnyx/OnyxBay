@@ -56,7 +56,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 				GLOB.clothing_blood_icons[cache_index] = bloodover
 			ret.overlays |= GLOB.clothing_blood_icons[cache_index]
 
-	if(length(accessories))
+	if(accessories.len)
 		for(var/obj/item/clothing/accessory/A in accessories)
 			ret.overlays |= A.get_mob_overlay(user_mob, slot_tie_str)
 	return ret

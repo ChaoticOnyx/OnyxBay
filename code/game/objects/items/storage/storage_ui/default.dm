@@ -107,8 +107,6 @@
 				return
 	if(user.s_active)
 		user.s_active.hide_from(user)
-	if(!user.client)
-		return
 	user.client.screen -= boxes
 	user.client.screen -= storage_start
 	user.client.screen -= storage_continue

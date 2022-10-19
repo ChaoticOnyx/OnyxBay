@@ -450,8 +450,7 @@ var/list/admin_verbs_mentor = list(
 		//ghostize
 		var/mob/body = mob
 		var/mob/observer/ghost/ghost = body.ghostize(1)
-		if(istype(ghost))
-			ghost.admin_ghosted = 1
+		ghost.admin_ghosted = 1
 		if(body)
 			body.teleop = ghost
 			if(!body.key)

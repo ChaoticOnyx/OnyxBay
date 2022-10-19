@@ -1201,8 +1201,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		if (istype(I, /obj/item/card/id) && I:registered_name && user.drop(I, src))
 			var/obj/old_id = id
 			id = I
-			if(old_id)
-				user.pick_or_drop(old_id)
+			user.pick_or_drop(old_id)
 			return 1
 	return 0
 

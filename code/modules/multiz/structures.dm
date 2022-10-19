@@ -189,10 +189,6 @@
 			above.ChangeTurf(/turf/simulated/open)
 	. = ..()
 
-/obj/structure/stairs/Destroy()
-	loc = null // Since it's easier than allowing it to get forceMoved and facing even more trouble
-	return ..()
-
 /obj/structure/stairs/CheckExit(atom/movable/mover as mob|obj, turf/target as turf)
 	if(get_dir(loc, target) == dir && upperStep(mover.loc))
 		return FALSE

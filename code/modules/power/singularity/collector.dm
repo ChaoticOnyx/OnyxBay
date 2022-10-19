@@ -134,10 +134,7 @@ var/global/list/rad_collectors = list()
 	if (distance <= 3 && !(stat & BROKEN))
 		. += "\nSensor readings:"
 		. += "\nPower rate: [fmt_siunit(last_power, "W/s", 3)]"
-		if(P?.air_contents)
-			. += "\nTank temperature: [P.air_contents.temperature]K"
-		else
-			. += "\nTank temperature: N/A"
+		. += "\nTank temperature: [P.air_contents.temperature]K"
 		. += "\nEntropy drift: [last_temp_dif] K/s"
 
 /obj/machinery/power/rad_collector/ex_act(severity)

@@ -46,10 +46,6 @@
 
 /turf/simulated/open/proc/update()
 	plane = OPENSPACE_PLANE
-	if(below)
-		unregister_signal(below, SIGNAL_TURF_CHANGED)
-		unregister_signal(below, SIGNAL_EXITED)
-		unregister_signal(below, SIGNAL_ENTERED)
 	below = GetBelow(src)
 	register_signal(below, SIGNAL_TURF_CHANGED, /turf/simulated/open/proc/turf_change)
 	register_signal(below, SIGNAL_EXITED, /turf/simulated/open/proc/handle_move)

@@ -1548,7 +1548,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	return sounds
 
 /obj/item/organ/external/proc/jointlock(mob/attacker)
-	if(!can_feel_pain())
+	if(!can_feel_pain() || !owner)
 		return
 
 	var/armor = owner.run_armor_check(owner, "melee")

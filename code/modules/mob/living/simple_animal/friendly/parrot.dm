@@ -267,10 +267,10 @@
 					held_item = item_to_add
 					to_chat(usr, "<span class='notice'>You put the item into claws.</span>")
 					if(istype(src, /mob/living/simple_animal/parrot/Poly))
-						if(prob(90))
+						if(prob(50))
 							say("Поли нравится!")
 						else
-							say("Поли хочет ЕЩЁ!")
+							say("Поли недоволен!")
 		else
 			..()
 

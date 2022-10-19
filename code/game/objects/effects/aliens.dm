@@ -28,7 +28,6 @@
 	pixel_x = target.pixel_x
 	pixel_y = target.pixel_y
 	set_next_think(world.time)
-	register_signal(target, SIGNAL_QDELETING, /obj/effect/acid/proc/onTargetDeleted)
 
 /obj/effect/acid/Destroy()
 	target = null
@@ -39,8 +38,7 @@
 		qdel(src)
 		return
 
-	if(!target.acid_melt())
-		set_next_think(world.time + melt_time)
+	var/done_melt = target.acid_melt()
 
 	if(done_melt)
 		if(istype(target, /turf/simulated/wall))
@@ -57,11 +55,11 @@
 	. = FALSE
 	switch(acid_melted)
 		if(0)
-			visible_message(SPAN("alium", "Acid hits \the [src] with a sizzle!"))
+			visible_message("<span class='alium'>Acid hits \the [src] with a sizzle!</span>")
 		if(1 to 3)
-			visible_message(SPAN("alium", "The acid melts \the [src]!"))
+			visible_message("<span class='alium'>The acid melts \the [src]!</span>")
 		if(4)
-			visible_message(SPAN("alium", "The acid melts \the [src] away into nothing!"))
+			visible_message("<span class='alium'>The acid melts \the [src] away into nothing!</span>")
 			. = TRUE
 			qdel(src)
 	acid_melted++
@@ -89,7 +87,7 @@
 	if(progress >= progress_max*2)
 		hatch()
 		return
-
+	
 	set_next_think(world.time + 1 SECOND)
 
 /obj/structure/alien/egg/attack_hand(mob/user)

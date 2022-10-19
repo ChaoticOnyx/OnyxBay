@@ -158,7 +158,7 @@
 	if(H.isSynthetic())
 		return FALSE
 
-	return H.species?.xenomorph_type && !stat && !is_sterile && (forced || !H.internal_organs_by_name[BP_HIVE])
+	return H.species?.xenomorph_type && !is_sterile && (forced || !H.internal_organs_by_name[BP_HIVE])
 
 
 /mob/living/simple_animal/hostile/facehugger/AttackingTarget()

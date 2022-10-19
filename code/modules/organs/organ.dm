@@ -116,7 +116,7 @@ var/list/organ_cache = list()
 
 	//Process infections
 	if(BP_IS_ROBOTIC(src) || (owner?.species?.species_flags & SPECIES_FLAG_IS_PLANT))
-		germ_level = 0
+		germ_level = 0		
 		// If `think()` is called not by the owner in `handle_organs()` but on his own.
 		if(NEXT_THINK)
 			set_next_think(world.time + 1 SECOND)
@@ -155,7 +155,7 @@ var/list/organ_cache = list()
 
 	if(food_organ)
 		update_food_from_organ()
-
+	
 	// If `think()` is called not by the owner in `handle_organs()` but on his own.
 	if(NEXT_THINK)
 		set_next_think(world.time + 1 SECOND)
@@ -334,7 +334,7 @@ var/list/organ_cache = list()
 	target.attackby(return_item(), user)
 
 /obj/item/organ/proc/can_feel_pain()
-	return (!BP_IS_ROBOTIC(src) && owner && (!owner.no_pain || !species || !(species.species_flags & SPECIES_FLAG_NO_PAIN)))
+	return (!BP_IS_ROBOTIC(src) && (!owner.no_pain || !species || !(species.species_flags & SPECIES_FLAG_NO_PAIN)))
 
 /obj/item/organ/proc/is_usable()
 	return !(status & (ORGAN_CUT_AWAY|ORGAN_MUTATED|ORGAN_DEAD))
