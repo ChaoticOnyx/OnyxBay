@@ -22,7 +22,7 @@
 	matter = list(MATERIAL_STEEL = 3000, MATERIAL_GLASS = 1000)
 	var/up = 0
 	armor = list(melee = 45, bullet = 45, laser = 55, energy = 20, bomb = 20, bio = 0)
-	flags_inv = (HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
+	flags_inv = (HIDEEARS|HIDEEYES|HIDEFACE)
 	body_parts_covered = HEAD|FACE|EYES
 	action_button_name = "Flip Welding Mask"
 	siemens_coefficient = 0.9
@@ -73,7 +73,7 @@
 		if(src.up)
 			src.up = !src.up
 			body_parts_covered |= (EYES|FACE)
-			flags_inv |= (HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
+			flags_inv |= (HIDEEARS|HIDEEYES|HIDEFACE)
 			flash_protection = initial(flash_protection)
 			tint = initial(tint)
 			icon_state = "[cover ? "[cover.icon_state]welding" : base_state]"
@@ -85,7 +85,7 @@
 			body_parts_covered &= ~(EYES|FACE)
 			flash_protection = FLASH_PROTECTION_NONE
 			tint = TINT_NONE
-			flags_inv &= ~(HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
+			flags_inv &= ~(HIDEEARS|HIDEEYES|HIDEFACE)
 			icon_state = "[cover ? "[cover.icon_state]welding" : base_state]up"
 			item_state = "[cover ? "[cover.icon_state]welding" : base_state]up"
 			to_chat(usr, "You push the [src] up out of your face.")
