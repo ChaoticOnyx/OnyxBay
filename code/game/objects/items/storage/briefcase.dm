@@ -24,10 +24,9 @@
 /obj/item/storage/briefcase/std
 	desc = "It's an old-looking briefcase with some high-tech markings. It has a label on it, which reads: \"ONLY WORKS NEAR SPACE\"."
 	origin_tech = list(TECH_BLUESPACE = 3, TECH_ILLEGAL = 3)
-	slot_flags = SLOT_BELT
-	storage_slots = 6
-	max_w_class = ITEM_SIZE_GARGANTUAN
+	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = 56
+	override_w_class = list(/obj/item/gun/energy/laser)
 	var/obj/item/device/uplink/uplink
 	var/authentication_complete = FALSE
 	var/del_on_send = TRUE
