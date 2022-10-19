@@ -81,7 +81,7 @@ var/global/list/protected_objects = list(
 
 	if(_in_trap_mode)
 		_deactivate_trap()
-	
+
 	// Hack, `/obj/structure/bed` types have custom logic based on
 	// their self direction and that can significantly change appearance.
 	if(istype(copy_of, /obj/structure/bed))
@@ -112,7 +112,7 @@ var/global/list/protected_objects = list(
 
 /mob/living/simple_animal/hostile/mimic/attack_hand(mob/user)
 	. = ..()
-	
+
 	if(user.a_intent != I_HURT)
 		if(_in_trap_mode)
 			_activate_trap(user)
@@ -127,7 +127,7 @@ var/global/list/protected_objects = list(
 
 /mob/living/simple_animal/hostile/mimic/Life()
 	. = ..()
-	
+
 	if(client)
 		update_action_buttons()
 
@@ -293,11 +293,14 @@ var/global/list/protected_objects = list(
 
 	if(O.anchored)
 		return FALSE
-	
+
 	if(is_type_in_list(O, protected_objects))
 		return FALSE
-	
+
 	if(get_dist(src, O) > 1)
+		return FALSE
+
+	if(!isturf(loc) || !isturf(O.loc))
 		return FALSE
 
 	return TRUE
@@ -307,7 +310,7 @@ var/global/list/protected_objects = list(
 
 	if(QDELETED(C))
 		return FALSE
-	
+
 	if(!istype(C))
 		return FALSE
 
@@ -322,12 +325,12 @@ var/global/list/protected_objects = list(
 
 	if(!length(targets))
 		return
-	
+
 	var/obj/T = input(usr, "Choose target for mimicry", "Mimicry") as null | anything in targets
 
 	if(!is_target_valid_for_mimicry(T))
 		return
-	
+
 	return T
 
 /mob/living/simple_animal/hostile/mimic/proc/_update_actions()
@@ -460,9 +463,12 @@ var/global/list/protected_objects = list(
 		to_chat(src, SPAN("warning", "Enter the ambush mode first"))
 		return
 
+	if(!isturf(loc))
+		return
+
 	var/selected = input(usr, "Choose an appearance for the trap", "Trap") as null | anything in trap_targets
 
-	if(!selected)
+	if(!selected || !isturf(loc))
 		return
 
 	_set_closet_opened_state(TRUE)
@@ -481,7 +487,7 @@ var/global/list/protected_objects = list(
 
 /mob/living/simple_animal/hostile/mimic/proc/_activate_trap(mob/victim)
 	victim.forceMove(src)
-	
+
 	to_chat(victim, SPAN("danger", "\The [src] has stuffed you into itself and is starts tearing you apart!"))
 	to_chat(src, SPAN("notice", "You caught [victim]!"))
 
