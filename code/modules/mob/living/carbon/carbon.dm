@@ -337,8 +337,8 @@
 				admin_attack_log(usr, M, "Threw the victim from [start_T_descriptor] to [end_T_descriptor].", "Was from [start_T_descriptor] to [end_T_descriptor].", "threw, from [start_T_descriptor] to [end_T_descriptor], ")
 	else
 		itemsize = I.w_class
+		drop(item)
 
-	drop(item)
 	if(!item || !isturf(item.loc))
 		return
 
