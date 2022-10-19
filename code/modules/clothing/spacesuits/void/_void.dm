@@ -155,7 +155,7 @@ else if(##equipment_var) {\
 
 	if(tank)
 		tank.canremove = 1
-		if(istype(H))
+		if(istype(H) && tank.loc == H)
 			H.drop(tank, src, TRUE)
 		tank.forceMove(src)
 
