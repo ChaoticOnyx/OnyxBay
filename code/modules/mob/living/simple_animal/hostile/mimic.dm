@@ -300,7 +300,7 @@ var/global/list/protected_objects = list(
 	if(get_dist(src, O) > 1)
 		return FALSE
 
-	if(!isturf(loc) || !isturf(O.loc))
+	if(!isturf(loc) || !(O.loc == src || isturf(O.loc)))
 		return FALSE
 
 	return TRUE
