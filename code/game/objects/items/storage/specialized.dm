@@ -106,6 +106,10 @@
 	if((!inserted || !S.amount) && usr.drop(S, src))
 		if(!S.amount)
 			qdel(S)
+		else if(S.loc == usr)
+			usr.drop(S, src)
+		else
+			S.forceMove(src)
 		usr.update_icons()	//update our overlays
 
 	prepare_ui(usr)
