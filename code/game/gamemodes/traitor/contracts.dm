@@ -490,7 +490,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/datum/mind/M = close_uplink.uplink_owner
 	var/obj/item/organ/internal/brain/_brain = brain?.resolve()
 	var/mob/living/carbon/human/_H = H?.resolve()
-	if((istype(_H) && _H.stat != DEAD) || (istype(_brain?.loc, /obj/item/device/mmi) && !target_detected_in_STD))
+	if((istype(_H) && !_H.stat && _H.mind) || (istype(_brain?.loc, /obj/item/device/mmi) && !target_detected_in_STD))
 		if(M)
 			to_chat(M, SPAN("danger", "According to our information, the target ([target_real_name]) specified in the contract is still alive, don't try to deceive us or the consequences will be... Inevitable."))
 		return
