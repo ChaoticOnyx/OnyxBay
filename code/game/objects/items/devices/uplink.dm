@@ -14,23 +14,24 @@
 	name = "hidden uplink"
 	desc = "There is something wrong if you're examining this."
 	var/active = 0
-	var/datum/uplink_category/category 	= 0		// The current category we are in
-	var/exploit_id								// Id of the current exploit record we are viewing
+	var/datum/uplink_category/category 	= 0  // The current category we are in
+	var/exploit_id                           // Id of the current exploit record we are viewing
 
-	var/welcome = "Welcome, Operative"	// Welcoming menu message
-	var/uses 							// Numbers of crystals
-	var/list/ItemsCategory				// List of categories with lists of items
-	var/list/ItemsReference				// List of references with an associated item
-	var/list/nanoui_items				// List of items for NanoUI use
-	var/nanoui_menu = 0					// The current menu we are in
-	var/list/nanoui_data = new 			// Additional data for NanoUI use
+	var/welcome = "Welcome, Operative"  // Welcoming menu message
+	var/uses                            // Numbers of crystals
+	var/list/ItemsCategory              // List of categories with lists of items
+	var/list/ItemsReference             // List of references with an associated item
+	var/list/nanoui_items               // List of items for NanoUI use
+	var/nanoui_menu = 0                 // The current menu we are in
+	var/list/nanoui_data = new          // Additional data for NanoUI use
 
 	var/datum/mind/uplink_owner = null
 	var/used_TC = 0
-	var/offer_time = 15 MINUTES			//The time increment per discount offered
-	var/next_offer_time					//The time a discount will next be offered
-	var/datum/uplink_item/discount_item	//The item to be discounted
-	var/discount_amount					//The amount as a percent the item will be discounted by
+	var/offer_time = 15 MINUTES         // The time increment per discount offered
+	var/next_offer_time                 // The time a discount will next be offered
+	var/datum/uplink_item/discount_item // The item to be discounted
+	var/discount_amount                 // The amount as a percent the item will be discounted by
+	var/complimentary_std = TRUE        // Can STD be purchased for free
 
 /obj/item/device/uplink/nano_host()
 	return loc
@@ -180,8 +181,7 @@
 		for(var/datum/uplink_item/item in category.items)
 			if(item.can_view(src))
 				var/cost = item.cost(uses, src)
-				if(!cost) cost = "???"
-				items[++items.len] = list("name" = item.name(), "description" = replacetext(item.description(), "\n", "<br>"), "can_buy" = item.can_buy(src), "cost" = cost, "ref" = "\ref[item]")
+				items[++items.len] = list("name" = item.name(), "description" = replacetext(item.description(), "\n", "<br>"), "can_buy" = item.can_buy(src), "cost" = (cost ? cost : "Free"), "ref" = "\ref[item]")
 		nanoui_data["items"] = items
 	else if(nanoui_menu == 2)
 		var/permanentData[0]
