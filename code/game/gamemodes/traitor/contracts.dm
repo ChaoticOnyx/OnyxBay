@@ -286,7 +286,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		target_desc = I.name
 		qdel(I)
 	name += " [target_desc]"
-	create_explain_text("steal <b>[target_desc]</b> and send it via STD (found in <b>Devices and Tools</b>).")
+	create_explain_text("steal <b>[target_desc]</b> and send it via STD (found in <b>Contracts Equipment</b>).")
 
 /datum/antag_contract/item/steal/can_place()
 	return ..() && target_type
@@ -327,7 +327,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	if(!AI)
 		return
 	target_desc = "[target_desc] [AI.name]"
-	create_explain_text("steal <b>[target_desc]<b> and send it via STD (found in <b>Devices and Tools</b>).")
+	create_explain_text("steal <b>[target_desc]<b> and send it via STD (found in <b>Contracts Equipment</b>).")
 
 /datum/antag_contract/item/steal_ai/can_place()
 	return ..() && !QDELETED(AI)
@@ -360,7 +360,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		count = rand(3, 6)
 	else
 		count = target
-	create_explain_text("send blood samples of <b>[count]</b> different people in separate containers via STD (found in <b>Devices and Tools</b>).")
+	create_explain_text("send blood samples of <b>[count]</b> different people in separate containers via STD (found in <b>Contracts Equipment</b>).")
 
 /datum/antag_contract/item/blood/check_contents(list/contents, add_checked = FALSE)
 	var/current_samples = 0
@@ -465,7 +465,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	target = weakref(_target)
 
 	var/datum/gender/T = gender_datums[_H.get_gender()]
-	create_explain_text("assassinate <b>[target_real_name]</b> and send[alternative_message] or <b>[T.his] [_target.name]</b> for double pay via STD (found in <b>Devices and Tools</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
+	create_explain_text("assassinate <b>[target_real_name]</b> and send[alternative_message] or <b>[T.his] [_target.name]</b> for double pay via STD (found in <b>Contracts Equipment</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
 
 /datum/antag_contract/item/assassinate/can_place()
 	return ..() && target && !QDELETED(target_mind) && !QDELETED(target_mind.current)
@@ -524,7 +524,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	else
 		sum = target
 	name += " [sum] cash"
-	create_explain_text("extract a sum of <b>[sum] credits</b> from [GLOB.using_map.company_name] economics and send it via STD (found in <b>Devices and Tools</b>).")
+	create_explain_text("extract a sum of <b>[sum] credits</b> from [GLOB.using_map.company_name] economics and send it via STD (found in <b>Contracts Equipment</b>).")
 
 /datum/antag_contract/item/dump/check_contents(list/contents)
 	var/received = 0
@@ -575,7 +575,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			if(R?.build_path)
 				targets.Add(R)
 				targets_name.Add(R.name)
-	create_explain_text("send a <b>component design disk</b> with one of the following designs via STD (found in <b>Devices and Tools</b>):<br><i>[english_list(targets_name, and_text = " or ")]</i>.")
+	create_explain_text("send a <b>component design disk</b> with one of the following designs via STD (found in <b>Contracts Equipment</b>):<br><i>[english_list(targets_name, and_text = " or ")]</i>.")
 
 /datum/antag_contract/item/research/can_place()
 	return ..() && targets.len && counter < 3
@@ -622,7 +622,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			var/area/area_target = pick(candidates)
 			targets += area_target
 			candidates -= area_target
-	create_explain_text("activate <b>3 spy bugs</b> with a <b>Bug kit</b> and ensure they work without interruption for 10 minutes in one of the following locations:<br><i>[english_list(targets, and_text = " or ")]</i>.")
+	create_explain_text("activate <b>3 spy bugs</b> with a <b>Bug Kit</b> (found in <b>Contracts Equipment</b>) and ensure they work without interruption for 10 minutes in one of the following locations:<br><i>[english_list(targets, and_text = " or ")]</i>.")
 
 /datum/antag_contract/recon/can_place()
 	return ..() && targets.len

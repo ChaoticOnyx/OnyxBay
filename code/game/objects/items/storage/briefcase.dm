@@ -100,6 +100,7 @@
 		if(del_on_send)
 			if(ishuman(loc))
 				to_chat(loc, SPAN("notice", "\The [src] fades away in a brief flash of light."))
+			uplink.complimentary_std = TRUE // We can get a new one for free once again
 			qdel(src)
 
 	if(.)

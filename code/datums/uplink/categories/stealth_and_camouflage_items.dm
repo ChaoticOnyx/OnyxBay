@@ -16,20 +16,6 @@
 	item_cost = 2
 	path = /obj/item/clothing/shoes/syndigaloshes
 
-/datum/uplink_item/item/stealth_items/spy
-	name = "Bug Kit"
-	desc = "Six small cameras and a totaly-not-suspicious PDA. This kit is required to complete the recon-type contracts."
-	item_cost = 2
-	path = /obj/item/storage/box/syndie_kit/spy
-
-/datum/uplink_item/item/stealth_items/spy/buy(obj/item/device/uplink/U)
-	. = ..()
-	if(.)
-		var/obj/item/storage/box/syndie_kit/spy/B = .
-		var/obj/item/device/spy_monitor/SM = locate() in B
-		if(SM)
-			SM.uplink = U
-
 /datum/uplink_item/item/stealth_items/id
 	name = "Agent ID card"
 	desc = "Feel free to write up any job and name you like."
