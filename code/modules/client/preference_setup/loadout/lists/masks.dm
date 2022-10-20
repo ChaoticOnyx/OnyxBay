@@ -36,12 +36,12 @@
 
 /datum/gear/mask/horsehead
 	display_name = "horse head"
-	path = /obj/item/clothing/mask/horsehead
+	path = /obj/item/clothing/mask/animal_mask/horsehead
 	price = 12
 
 /datum/gear/mask/pig
 	display_name = "pig head"
-	path = /obj/item/clothing/mask/pig
+	path = /obj/item/clothing/mask/animal_mask/pig
 	price = 12
 
 /datum/gear/mask/skullmask
