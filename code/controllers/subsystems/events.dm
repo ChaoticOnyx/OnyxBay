@@ -16,8 +16,6 @@ SUBSYSTEM_DEF(events)
 
 	var/list/processing_events = list()
 
-	var/event_fired = FALSE
-
 /datum/controller/subsystem/events/Initialize(start_timeofday)
 	. = ..()
 
@@ -41,7 +39,6 @@ SUBSYSTEM_DEF(events)
 	if(!resumed)
 		update_triggers()
 		processing_events = scheduled_events.Copy()
-		event_fired = FALSE
 
 	while(processing_events.len)
 		var/datum/event/E = processing_events[processing_events.len]
@@ -59,17 +56,16 @@ SUBSYSTEM_DEF(events)
 			else
 				E.ai_choose()
 
-		if(event_fired)
-			E._mtth_passed -= (E._mtth_passed * abs(SSstoryteller.character.quantity_ratio - 1))
-			E._mtth_passed = max(0, E._mtth_passed)
-
 		if(!E.check_conditions())
 			E._mtth_passed = 0
 			continue
 
 		if(prob(E.calc_chance() * SSstoryteller.character.event_chance_multiplier))
-			event_fired = TRUE
 			E.fire()
+
+			for(var/datum/event/E2 in scheduled_events)
+				E2._mtth_passed -= (E2._mtth_passed * abs(SSstoryteller.character.quantity_ratio - 1))
+				E2._mtth_passed = max(0, E2._mtth_passed)
 		else
 			E._mtth_passed += wait
 
@@ -94,7 +90,7 @@ SUBSYSTEM_DEF(events)
 /datum/controller/subsystem/events/proc/fire_event_with_type(ty)
 	for(var/event_id in total_events)
 		var/datum/event/E = total_events[event_id]
-		
+
 		if(E.type == ty)
 			E.fire()
 			return
