@@ -3,6 +3,7 @@
 	name = "Electrical Storm Incoming"
 
 	mtth = 1 HOURS
+	difficulty = 35
 
 	options = newlist(
 		/datum/event_option/electrical_storm_option {

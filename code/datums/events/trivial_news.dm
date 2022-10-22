@@ -4,6 +4,7 @@
 	description = "Random news about something everyday"
 
 	mtth = 30 MINUTES
+	difficulty = 0
 
 /datum/event/trivial_news/on_fire()
 	var/author = "Editor Mike Hammers"

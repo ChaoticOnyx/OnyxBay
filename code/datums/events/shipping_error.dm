@@ -4,6 +4,7 @@
 	description = "A random parcel will appear in the cargo department"
 
 	mtth = 1 HOURS
+	difficulty = 10
 
 /datum/event/shipping_error/get_mtth()
 	. = ..()

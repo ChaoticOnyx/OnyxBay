@@ -5,6 +5,9 @@
 	rarity_ratio = 1.0
 	quantity_ratio = 0.50
 	event_chance_multiplier = 5
+	simultaneous_event_fire = TRUE
+	difficulty_soft_cap = 0
+	difficulty_hard_cap = 0
 
 /datum/storyteller_character/chaotic/New()
 	..()
@@ -27,6 +30,9 @@
 		rarity_ratio -= rand()
 	else
 		rarity_ratio += rand()
+
+	if(prob(50))
+		simultaneous_event_fire = !simultaneous_event_fire
 
 	event_chance_multiplier = rand(5, 15)
 

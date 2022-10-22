@@ -5,10 +5,11 @@
 
 	mtth = 3 HOURS
 	fire_only_once = TRUE
+	difficulty = 90
 
 /datum/event/biohazard_outbreak/New()
 	. = ..()
-	
+
 	add_think_ctx("announce", CALLBACK(null, /proc/level_seven_announcement), 0)
 
 /datum/event/biohazard_outbreak/get_mtth()

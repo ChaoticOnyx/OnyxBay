@@ -4,6 +4,7 @@
 	description = "For a while telecommunications will be overloaded and not available"
 
 	mtth = 2 HOURS
+	difficulty = 50
 
 	var/list/affecting_z = list()
 

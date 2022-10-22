@@ -4,6 +4,7 @@
 	description = "Womrholes will appear throughout the station"
 
 	mtth = 4 HOURS
+	difficulty = 60
 
 	var/list/pick_turfs = list()
 	var/shift_frequency = 5 SECONDS // How often wormhole batches should spawn

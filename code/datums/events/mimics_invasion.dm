@@ -7,12 +7,13 @@
 	name = "Mimics invasion"
 	description = "Some things at the station come to life and become mimics."
 
+	mtth = 5 HOURS
+	difficulty = 75
 	fire_only_once = TRUE
-	mtth = 4 HOURS
 
 /datum/event/mimics_invasion/New()
 	. = ..()
-	
+
 	add_think_ctx("announce", CALLBACK(null, /proc/level_seven_announcement), 0)
 
 /datum/event/mimics_invasion/get_mtth()
@@ -47,7 +48,7 @@
 			M.controllable = FALSE
 
 		spawned += 1
-	
+
 	set_next_think_ctx("announce", world.time + (30 SECONDS))
 
 #undef MAX_MIMICS
