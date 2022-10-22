@@ -5,3 +5,6 @@
 	rarity_ratio = 0.20
 	quantity_ratio = 0.80
 	event_chance_multiplier = 10
+	simultaneous_event_fire = TRUE
+	difficulty_soft_cap = 0
+	difficulty_hard_cap = 0

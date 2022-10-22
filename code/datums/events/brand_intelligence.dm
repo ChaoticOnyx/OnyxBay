@@ -5,6 +5,7 @@
 
 	mtth = 2 HOURS
 	fire_only_once = TRUE
+	difficulty = 15
 
 	var/list/obj/machinery/vending/vendingMachines = list()
 	var/list/obj/machinery/vending/infectedVendingMachines = list()
@@ -13,7 +14,7 @@
 
 /datum/event/brand_intelligence/New()
 	. = ..()
-	
+
 	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
 
 /datum/event/brand_intelligence/get_mtth()
@@ -86,7 +87,7 @@
 			continue
 		infectedMachine.shut_up = 1
 		infectedMachine.shoot_inventory = 0
-	
+
 	if(GLOB.using_map.type == /datum/map/polar)
 		command_announcement.Announce(
 			"All traces of the rampant brand intelligence have disappeared from the systems.",

@@ -4,6 +4,7 @@
 	description = "A group of meteorites is approaching the station"
 
 	mtth = 2 HOURS
+	difficulty = 80
 
 	blacklisted_maps = list(/datum/map/polar)
 
@@ -65,7 +66,7 @@
 
 /datum/event/meteor_wave/New()
 	. = ..()
-	
+
 	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
 
 /datum/event/meteor_wave/on_fire()

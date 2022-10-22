@@ -67,7 +67,7 @@ SUBSYSTEM_DEF(events)
 			E._mtth_passed = 0
 			continue
 
-		if(prob(E.calc_chance() * SSstoryteller.character.event_chance_multiplier))
+		if((!event_fired || SSstoryteller.character.simultaneous_event_fire) && prob(SSstoryteller.character.calc_event_chance(E)))
 			event_fired = TRUE
 			E.fire()
 		else
@@ -94,7 +94,7 @@ SUBSYSTEM_DEF(events)
 /datum/controller/subsystem/events/proc/fire_event_with_type(ty)
 	for(var/event_id in total_events)
 		var/datum/event/E = total_events[event_id]
-		
+
 		if(E.type == ty)
 			E.fire()
 			return

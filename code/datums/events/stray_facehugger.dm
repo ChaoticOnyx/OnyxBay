@@ -4,6 +4,7 @@
 	description = "Facehugger will appear somewhere in the technical rooms"
 
 	mtth = 3 HOURS
+	difficulty = 60
 	fire_only_once = TRUE
 
 /datum/event/stray_facehugger/get_mtth()

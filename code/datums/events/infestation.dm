@@ -19,7 +19,8 @@
 	name = "Infestation"
 	description = "A large number of vermin will appear at the station"
 
-	mtth = 3 HOURS
+	mtth = 2.5 HOURS
+	difficulty = 15
 
 	var/area/location
 	var/vermin
@@ -28,7 +29,7 @@
 
 /datum/event/infestation/New()
 	. = ..()
-	
+
 	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
 
 /datum/event/infestation/get_mtth()

@@ -3,8 +3,9 @@
 	name = "Sensor Suit Jamming"
 	description = "For a while, people's sensors will be jammed"
 
-	fire_only_once = TRUE
 	mtth = 1 HOURS
+	difficulty = 35
+	fire_only_once = TRUE
 
 	options = newlist(
 		/datum/event_option/sensor_suit_jamming_option {

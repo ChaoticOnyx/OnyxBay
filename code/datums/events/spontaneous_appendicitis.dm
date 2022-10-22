@@ -3,7 +3,8 @@
 	name = "Spontaneous Appendicitis"
 	description = "A random person will suddenly get appendicitis"
 
-	mtth = 2 HOURS
+	mtth = 2.5 HOURS
+	difficulty = 20
 
 /datum/event/spontaneous_appendicitis/get_mtth()
 	. = ..()

@@ -4,6 +4,7 @@
 	description = "Random camera will get damaged"
 
 	mtth = 1 HOURS
+	difficulty = 15
 
 /datum/event/camera_damage/get_mtth()
 	. = ..()
