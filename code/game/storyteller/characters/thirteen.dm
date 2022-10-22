@@ -3,7 +3,7 @@
 	desc = "She'll give you plenty of time to get prepared but will also grow vicious and unfair as time goes on."
 	aggression_ratio = 0.50
 	rarity_ratio = 0.20
-	quantity_ratio = 0.10
+	quantity_ratio = 0.45
 	event_chance_multiplier = 10
 	difficulty_soft_cap = 0
 	difficulty_hard_cap = 7.5
