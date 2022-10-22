@@ -16,6 +16,8 @@ SUBSYSTEM_DEF(events)
 
 	var/list/processing_events = list()
 
+	var/event_fired = FALSE
+
 /datum/controller/subsystem/events/Initialize(start_timeofday)
 	. = ..()
 
@@ -39,6 +41,7 @@ SUBSYSTEM_DEF(events)
 	if(!resumed)
 		update_triggers()
 		processing_events = scheduled_events.Copy()
+		event_fired = FALSE
 
 	while(processing_events.len)
 		var/datum/event/E = processing_events[processing_events.len]
