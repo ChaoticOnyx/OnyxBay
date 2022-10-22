@@ -10,7 +10,7 @@
 /datum/event/xenomorph_infestation/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.living_players_count * (3 MINUTES))
-	. -= (SSevents.triggers.roles_count["Security"] * (6 MINUTES))
+	. -= (SSevents.triggers.roles_count["Security"] * (9 MINUTES))
 	. = max(1 HOUR, .)
 
 /datum/event/xenomorph_infestation/on_fire()
