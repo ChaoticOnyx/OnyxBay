@@ -284,7 +284,6 @@
 	matter = null
 
 /obj/item/cell/metroid/proc/selfcharge_think()
-	. = ..()
 	add_charge(1)
 	set_next_think_ctx("selfcharge", world.time + 3 SECONDS)
 
