@@ -283,6 +283,17 @@
 	maxcharge = 200
 	matter = null
 
+/obj/item/cell/metroid/proc/selfcharge_think()
+	. = ..()
+	add_charge(1)
+	set_next_think_ctx("selfcharge", world.time + 3 SECONDS)
+
+/obj/item/cell/metroid/Initialize()
+	. = ..()
+	
+	set_next_think(world.time)
+	add_think_ctx("selfcharge", CALLBACK(src, .proc/selfcharge_think), world.time)
+
 
 /obj/item/cell/quantum
 	name = "bluespace cell"
