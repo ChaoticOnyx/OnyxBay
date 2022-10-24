@@ -6,12 +6,12 @@
 	quantity_ratio = 0.35
 	event_chance_multiplier = 10
 	difficulty_soft_cap = 0
-	difficulty_hard_cap = 7.5
-	var/difficulty_increment = 7.5 // Difficulty hard cap rises by this value every 3 minutes.
+	difficulty_hard_cap = 6.0
+	var/difficulty_increment = 6.0 // Difficulty hard cap rises by this value every 3 minutes.
 
 /datum/storyteller_character/thirteen/New()
 	..()
-	addtimer(CALLBACK(src, .proc/letthefunbegin), 3 MINUTES)
+	addtimer(CALLBACK(src, .proc/letthefunbegin), 10 MINUTES)
 
 /datum/storyteller_character/thirteen/proc/letthefunbegin()
 	difficulty_hard_cap += difficulty_increment
