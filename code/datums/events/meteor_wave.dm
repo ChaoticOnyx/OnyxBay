@@ -3,7 +3,7 @@
 	name = "Meteor Wave Incoming"
 	description = "A group of meteorites is approaching the station"
 
-	mtth = 2 HOURS
+	mtth = 2.5 HOURS
 	difficulty = 80
 
 	blacklisted_maps = list(/datum/map/polar)

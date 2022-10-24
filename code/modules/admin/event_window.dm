@@ -44,7 +44,7 @@
 			"name" = event.name,
 			"description" = event.get_description(),
 			"mtth" = event.get_mtth(),
-			"chance" = event.calc_chance(),
+			"chance" = (SSstoryteller.character ? SSstoryteller.character.calc_event_chance(event) : event.calc_chance()),
 			"waiting_option" = event._waiting_option,
 			"fire_conditions" = event.check_conditions(),
 			"conditions_description" = event.get_conditions_description(),
@@ -60,7 +60,7 @@
 			"event_id" = O.event_id,
 			"weight" = O.get_weight()
 		))
-	
+
 	return data
 
 /datum/event_window/tgui_act(action, params)
@@ -76,7 +76,7 @@
 		if("choose")
 			ASSERT(params["option_id"])
 			ASSERT(params["event_id"])
-			
+
 			var/option_id = params["option_id"]
 			var/event_id = params["event_id"]
 
@@ -99,7 +99,7 @@
 
 /datum/event_window/ui_close(mob/user)
 	if(!QDELETED(src))
-		qdel(src)	
+		qdel(src)
 
 /datum/event_window/tgui_state(mob/user)
 	return GLOB.tgui_admin_state
