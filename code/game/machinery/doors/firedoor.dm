@@ -148,10 +148,6 @@
 		if(A.fire || A.air_doors_activated)
 			alarmed = 1
 
-	var/answer = alert(user, "Would you like to [density ? "open" : "close"] this [src.name]?[ alarmed && density ? "\nNote that by doing so, you acknowledge any damages from opening this\n[src.name] as being your own fault, and you will be held accountable under the law." : ""]",\
-	"\The [src]", "Yes, [density ? "open" : "close"]", "No")
-	if(answer == "No")
-		return
 	if(user.incapacitated() || (get_dist(src, user) > 1  && !issilicon(user)))
 		to_chat(user, "Sorry, you must remain able bodied and close to \the [src] in order to use it.")
 		return
@@ -180,24 +176,18 @@
 			close()
 
 	if(needs_to_close)
-		spawn(50)
-			alarmed = 0
-			for(var/area/A in areas_added)		//Just in case a fire alarm is turned off while the firedoor is going through an autoclose cycle
-				if(A.fire || A.air_doors_activated)
-					alarmed = 1
-			if(alarmed)
-				nextstate = FIREDOOR_CLOSED
-				close()
+		nextstate = FIREDOOR_CLOSED
+		addtimer(CALLBACK(src, .proc/latetoggle), 50, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 /obj/machinery/door/firedoor/attack_generic(mob/user, damage)
 	if(stat & (BROKEN|NOPOWER))
 		if(damage >= 10)
 			if(src.density)
 				visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
-				open(1)
+				open(TRUE)
 			else
 				visible_message(SPAN("danger","\The [user] forces \the [src] closed!"))
-				close(1)
+				close(TRUE)
 		else
 			visible_message(SPAN("notice","\The [user] strains fruitlessly to force \the [src] [density ? "open" : "closed"]."))
 		return
@@ -216,6 +206,8 @@
 			"You hear something being welded.")
 			playsound(src, 'sound/items/Welder.ogg', 100, 1)
 			update_icon()
+			if(!blocked)
+				addtimer(CALLBACK(src, .proc/latetoggle), 50, TIMER_UNIQUE|TIMER_OVERRIDE)
 			return
 
 	if(density && isScrewdriver(C))
@@ -276,6 +268,8 @@
 		if(density)
 			spawn()
 				open(TRUE)
+				nextstate = FIREDOOR_CLOSED
+				addtimer(CALLBACK(src, .proc/latetoggle), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
 		else
 			spawn()
 				close()
@@ -299,25 +293,38 @@
 	return FA
 
 /obj/machinery/door/firedoor/proc/latetoggle()
-	if(operating || !nextstate)
+	if(!nextstate || (stat & (BROKEN|NOPOWER)))
 		return
 	switch(nextstate)
 		if(FIREDOOR_OPEN)
-			nextstate = null
-
 			open()
-		if(FIREDOOR_CLOSED)
 			nextstate = null
-			close()
-
+		if(FIREDOOR_CLOSED)
+			var/alarmed = 0
+			for(var/area/A in areas_added)	//Just in case a fire alarm is turned off while the firedoor is going through an autoclose cycle
+				if(A.fire || A.air_doors_activated)
+					alarmed = 1
+			if(!alarmed)
+				nextstate = null
+				return
+			if(close())
+				nextstate = null
 	return
 
 /obj/machinery/door/firedoor/close()
 	if (!is_processing)
 		START_PROCESSING(SSmachines, src)
-
-	latetoggle()
 	return ..()
+
+/obj/machinery/door/firedoor/can_open()
+	. = ..()
+	if(blocked)
+		return FALSE
+
+/obj/machinery/door/firedoor/can_close()
+	. = ..()
+	if(blocked)
+		return FALSE
 
 /obj/machinery/door/firedoor/open(forced = 0)
 	lockdown = 0
@@ -335,7 +342,6 @@
 	else
 		var/area/A = get_area(src)
 		log_admin("[usr]([usr.ckey]) has forced open an emergency shutter at X:[x], Y:[y], Z:[z] Area: [A.name].")
-	latetoggle()
 	return ..()
 
 // Only opens when all areas connecting with our turf have an air alarm and are cleared
@@ -398,7 +404,7 @@
 
 // CHECK PRESSURE
 /obj/machinery/door/firedoor/Process()
-	if (!density)
+	if (!density || (stat & (BROKEN|NOPOWER)))
 		return PROCESS_KILL
 
 	if(next_process_time > world.time)
