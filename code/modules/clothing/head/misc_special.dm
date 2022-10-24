@@ -239,6 +239,7 @@
 	body_parts_covered = 0
 	siemens_coefficient = 1.5
 	item_icons = list()
+	var/faster = "kitty1"
 
 /obj/item/clothing/head/kitty/equipped(mob/living/carbon/human/user, slot)
 	. = ..()
@@ -250,6 +251,17 @@
 		icon_override = ears
 	else if(icon_override)
 		icon_override = null
+
+/obj/item/clothing/head/kitty/verb/toggle_tail()
+	set name = "Toggle Tail"
+	set category = "Object"
+	if(item_state == initial(item_state))
+		item_state = faster
+	else
+		item_state = initial(item_state)
+	
+	if(loc == usr)
+		update_clothing_icon()
 
 /obj/item/clothing/head/richard
 	name = "chicken mask"
