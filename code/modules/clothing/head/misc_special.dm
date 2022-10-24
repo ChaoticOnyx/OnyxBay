@@ -239,13 +239,18 @@
 	body_parts_covered = 0
 	siemens_coefficient = 1.5
 	item_icons = list()
-	var/faster = "kitty1"
+	var/animation_state = "kitty"
+	var/earmode = 0
 
 /obj/item/clothing/head/kitty/equipped(mob/living/carbon/human/user, slot)
 	. = ..()
 	if((slot == slot_head || slot == slot_l_ear || slot == slot_r_ear) && istype(user))
 		var/hairgb = rgb(user.r_hair, user.g_hair, user.b_hair)
-		var/icon/ears = icon('icons/inv_slots/hats/mob.dmi', "kitty")
+		if(earmode)
+			animation_state = "kitty1"
+		else
+			animation_state = "kitty"			
+		var/icon/ears = icon('icons/inv_slots/hats/mob.dmi', animation_state)
 		ears.Blend(hairgb, ICON_ADD)
 		ears.Blend(icon('icons/inv_slots/hats/mob.dmi', "kittyinner"), ICON_OVERLAY)
 		icon_override = ears
@@ -255,13 +260,11 @@
 /obj/item/clothing/head/kitty/verb/toggle_tail()
 	set name = "Toggle Tail"
 	set category = "Object"
-	if(item_state == initial(item_state))
-		item_state = faster
+	if(earmode)
+		earmode = 0
 	else
-		item_state = initial(item_state)
-	
-	if(loc == usr)
-		update_clothing_icon()
+		earmode = 1
+	update_clothing_icon()
 
 /obj/item/clothing/head/richard
 	name = "chicken mask"
