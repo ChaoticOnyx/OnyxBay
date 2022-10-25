@@ -4,10 +4,11 @@
 	description = "The station begins to overgrow with some space vines"
 
 	mtth = 2 HOURS
+	difficulty = 55
 
 /datum/event/space_vine/New()
 	. = ..()
-	
+
 	add_think_ctx("announce", CALLBACK(null, /proc/level_seven_announcement), 0)
 
 /datum/event/space_vine/get_mtth()

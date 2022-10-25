@@ -4,6 +4,7 @@
 	description = "Space carp will appear near the station"
 
 	mtth = 1 HOURS
+	difficulty = 55
 	blacklisted_maps = list(/datum/map/polar)
 
 	options = newlist(
@@ -65,7 +66,7 @@
 
 /datum/event/carp_migration/New()
 	. = ..()
-	
+
 	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
 	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
 

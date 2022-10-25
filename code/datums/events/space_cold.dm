@@ -4,6 +4,7 @@
 	description = "An epidemic of the space cold"
 
 	mtth = 1 HOURS
+	difficulty = 30
 
 /datum/event/space_cold/get_mtth()
 	. = ..()

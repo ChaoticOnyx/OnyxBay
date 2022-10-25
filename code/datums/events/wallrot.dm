@@ -4,10 +4,11 @@
 	description = "Dangerous fungi will appear on some walls destroying the walls"
 
 	mtth = 2 HOURS
+	difficulty = 25
 
 /datum/event/wallrot/New()
 	. = ..()
-	
+
 	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
 
 /datum/event/wallrot/get_mtth()

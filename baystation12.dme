@@ -1320,6 +1320,7 @@
 #include "code\game\storyteller\characters\december.dm"
 #include "code\game\storyteller\characters\eos.dm"
 #include "code\game\storyteller\characters\tartarus.dm"
+#include "code\game\storyteller\characters\thirteen.dm"
 #include "code\game\storyteller\metrics\common_metrics.dm"
 #include "code\game\storyteller\metrics\wounds_metrics.dm"
 #include "code\game\storyteller\triggers\spawn_antagonists_triggers.dm"

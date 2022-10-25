@@ -4,6 +4,7 @@
 	description = "Commonish random event that causes small clumps of \"space dust\" to hit the station at high speeds. The \"dust\" will damage the hull of the station causin minor hull breaches."
 
 	mtth = 1 HOURS
+	difficulty = 35
 
 	options = newlist(
 		/datum/event_option/space_dust_option {

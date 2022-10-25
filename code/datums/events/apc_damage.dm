@@ -4,6 +4,7 @@
 	description = "Random APC will get damaged"
 
 	mtth = 1 HOURS
+	difficulty = 20
 
 	var/apcSelectionRange	= 25
 

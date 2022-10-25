@@ -21,7 +21,7 @@
 			"name" = E.name,
 			"description" = E.get_description(),
 			"mtth" = E.get_mtth(),
-			"chance" = E.calc_chance(),
+			"chance" = (SSstoryteller.character ? SSstoryteller.character.calc_event_chance(E) : E.calc_chance()),
 			"waiting_option" = E._waiting_option,
 			"fire_conditions" = E.check_conditions(),
 			"conditions_description" = E.get_conditions_description(),
@@ -37,7 +37,7 @@
 				"event_id" = O.event_id,
 				"weight" = O.get_weight()
 			))
-		
+
 		data["events"] += list(event_data)
 
 	return data

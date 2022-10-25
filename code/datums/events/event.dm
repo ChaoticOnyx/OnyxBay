@@ -13,13 +13,15 @@
 	var/fire_only_once = FALSE
 	var/list/options = list()
 	var/hide = FALSE
+	/// Some storytellers have difficulty caps, which use this value.
+	var/difficulty = 10
 
 	var/list/blacklisted_maps = list()
 
 /datum/event/New()
 	ASSERT(id != null)
 	ASSERT(mtth >= 0)
-	
+
 	if(!triggered_only && mtth == 0)
 		CRASH("event '[name]' has invalid mtth: [mtth]")
 
@@ -79,7 +81,7 @@
 /datum/event/proc/fire()
 	if(_mtth_passed)
 		_mtth_passed = 0
-	
+
 	if(fire_only_once)
 		if(fired)
 			CRASH("Event '[name]' ([id]) fired twice")

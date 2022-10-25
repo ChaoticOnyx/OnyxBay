@@ -20,7 +20,7 @@
 	if(T.density)
 		return
 	// Quick and dirty check to avoid placing things inside windows
-	if(locate(/obj/structure/grille, T))
+	if(locate(/obj/structure/window_frame, T) || locate(/obj/structure/grille, T))
 		return
 
 	var/cardinal_turfs = T.CardinalTurfs()

@@ -20,7 +20,7 @@ SUBSYSTEM_DEF(storyteller)
 
 /datum/controller/subsystem/storyteller/Initialize(start_timeofday)
 	. = ..()
-	
+
 	__create_all_characters()
 	__create_all_metrics()
 	__create_all_triggers()

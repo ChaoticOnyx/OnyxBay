@@ -59,17 +59,17 @@ SUBSYSTEM_DEF(events)
 			else
 				E.ai_choose()
 
-		if(event_fired)
-			E._mtth_passed -= (E._mtth_passed * abs(SSstoryteller.character.quantity_ratio - 1))
-			E._mtth_passed = max(0, E._mtth_passed)
-
 		if(!E.check_conditions())
 			E._mtth_passed = 0
 			continue
 
-		if(prob(E.calc_chance() * SSstoryteller.character.event_chance_multiplier))
+		if((!event_fired || SSstoryteller.character.simultaneous_event_fire) && prob(SSstoryteller.character.calc_event_chance(E)))
 			event_fired = TRUE
 			E.fire()
+
+			for(var/datum/event/E2 in scheduled_events)
+				E2._mtth_passed -= (E2._mtth_passed * abs(SSstoryteller.character.quantity_ratio - 1))
+				E2._mtth_passed = max(0, E2._mtth_passed)
 		else
 			E._mtth_passed += wait
 
@@ -94,7 +94,7 @@ SUBSYSTEM_DEF(events)
 /datum/controller/subsystem/events/proc/fire_event_with_type(ty)
 	for(var/event_id in total_events)
 		var/datum/event/E = total_events[event_id]
-		
+
 		if(E.type == ty)
 			E.fire()
 			return

@@ -4,6 +4,7 @@
 	description = ""
 
 	mtth = 2 HOURS
+	difficulty = 55
 	fire_only_once = TRUE
 
 /datum/event/money_hacker/get_mtth()
