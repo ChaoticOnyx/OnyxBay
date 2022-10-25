@@ -260,14 +260,15 @@
 /obj/item/clothing/head/kitty/verb/toggle_tail()
 	set name = "Toggle Tail"
 	set category = "Object"
-	icon_override = null
-	if(animation_state == "kitty")
-		animation_state = "kitty1"
-	else
-		animation_state = "kitty"
-	update_state()
-	to_chat(usr, "You switched tail mode.")
-	update_clothing_icon()
+	if(CanPhysicallyInteract(usr))
+		icon_override = null
+		if(animation_state == "kitty")
+			animation_state = "kitty1"
+		else
+			animation_state = "kitty"
+		update_state()
+		to_chat(usr, "You switched tail mode.")
+		update_clothing_icon()
 
 /obj/item/clothing/head/richard
 	name = "chicken mask"
