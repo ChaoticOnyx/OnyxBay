@@ -267,6 +267,7 @@
 		animation_state = "kitty"
 	update_state()
 	to_chat(usr, "You switched tail mode.")
+	update_clothing_icon()
 
 /obj/item/clothing/head/richard
 	name = "chicken mask"
