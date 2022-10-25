@@ -240,31 +240,33 @@
 	siemens_coefficient = 1.5
 	item_icons = list()
 	var/animation_state = "kitty"
-	var/earmode = 0
+	var/hairgb
+	var/icon/ears
+
+/obj/item/clothing/head/kitty/verb/update_state()
+	ears = icon('icons/inv_slots/hats/mob.dmi', animation_state)
+	ears.Blend(hairgb, ICON_ADD)
+	ears.Blend(icon('icons/inv_slots/hats/mob.dmi', "kittyinner"), ICON_OVERLAY)
+	icon_override = ears
 
 /obj/item/clothing/head/kitty/equipped(mob/living/carbon/human/user, slot)
 	. = ..()
 	if((slot == slot_head || slot == slot_l_ear || slot == slot_r_ear) && istype(user))
-		var/hairgb = rgb(user.r_hair, user.g_hair, user.b_hair)
-		if(earmode)
-			animation_state = "kitty1"
-		else
-			animation_state = "kitty"			
-		var/icon/ears = icon('icons/inv_slots/hats/mob.dmi', animation_state)
-		ears.Blend(hairgb, ICON_ADD)
-		ears.Blend(icon('icons/inv_slots/hats/mob.dmi', "kittyinner"), ICON_OVERLAY)
-		icon_override = ears
+		hairgb = rgb(user.r_hair, user.g_hair, user.b_hair)	
+		update_state()
 	else if(icon_override)
 		icon_override = null
 
 /obj/item/clothing/head/kitty/verb/toggle_tail()
 	set name = "Toggle Tail"
 	set category = "Object"
-	if(earmode)
-		earmode = 0
+	icon_override = null
+	if(animation_state == "kitty")
+		animation_state = "kitty1"
 	else
-		earmode = 1
-	update_clothing_icon()
+		animation_state = "kitty"
+	update_state()
+	to_chat(usr, "You switched tail mode.")
 
 /obj/item/clothing/head/richard
 	name = "chicken mask"
