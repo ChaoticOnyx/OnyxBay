@@ -536,7 +536,7 @@ be able to influence the host through various commands.
 
 		var/mob/dummy = new()
 		dummy.loc = 0
-		dummy.sight = BLIND
+		dummy.sight = BLIND|SEE_BLACKNESS
 
 		var/datum/mind/host_mind = host.mind
 		var/datum/mind/meme_mind = src.mind
