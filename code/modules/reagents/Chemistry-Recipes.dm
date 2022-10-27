@@ -1229,10 +1229,9 @@
 	result_amount = 1
 	required = /obj/item/metroid_extract/pink
 
-/datum/chemical_reaction/metroid/ppotion/on_reaction(datum/reagents/holder)
+/datum/chemical_reaction/metroid/docility/on_reaction(datum/reagents/holder)
 	..()
-	var/obj/item/metroidpotion/P = new /obj/item/metroidpotion
-	P.loc = get_turf(holder.my_atom)
+	new /obj/item/metroidpotion(get_turf(holder.my_atom))
 
 //Black
 /datum/chemical_reaction/metroid/mutate2
