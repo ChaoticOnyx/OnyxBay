@@ -25,17 +25,16 @@
 	//Generally if a firedoor is at a place where there should be a zone boundery then there will be a regular door underneath it.
 	block_air_zones = 0
 
-	var/blocked = 0
-	var/lockdown = 0 // When the door has detected a problem, it locks.
-	var/pdiff_alert = 0
+	var/blocked = FALSE
+	var/lockdown = FALSE // When the door has detected a problem, it locks.
+	var/pdiff_alert = FALSE
 	var/pdiff = 0
-	var/nextstate = null
 	var/net_id
 	var/list/areas_added
 	var/list/users_to_open = new
 	var/next_process_time = 0
 
-	var/hatch_open = 0
+	var/hatch_open = FALSE
 
 	power_channel = STATIC_ENVIRON
 	idle_power_usage = 5
@@ -176,8 +175,7 @@
 			close()
 
 	if(needs_to_close)
-		nextstate = FIREDOOR_CLOSED
-		addtimer(CALLBACK(src, .proc/latetoggle), 50, TIMER_UNIQUE|TIMER_OVERRIDE)
+		addtimer(CALLBACK(src, .proc/close), 50, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 /obj/machinery/door/firedoor/attack_generic(mob/user, damage)
 	if(stat & (BROKEN|NOPOWER))
@@ -206,8 +204,6 @@
 			"You hear something being welded.")
 			playsound(src, 'sound/items/Welder.ogg', 100, 1)
 			update_icon()
-			if(!blocked)
-				addtimer(CALLBACK(src, .proc/latetoggle), 50, TIMER_UNIQUE|TIMER_OVERRIDE)
 			return
 
 	if(density && isScrewdriver(C))
@@ -268,8 +264,7 @@
 		if(density)
 			spawn()
 				open(TRUE)
-				nextstate = FIREDOOR_CLOSED
-				addtimer(CALLBACK(src, .proc/latetoggle), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
+				addtimer(CALLBACK(src, .proc/close), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
 		else
 			spawn()
 				close()
@@ -292,25 +287,6 @@
 
 	return FA
 
-/obj/machinery/door/firedoor/proc/latetoggle()
-	if(!nextstate || (stat & (BROKEN|NOPOWER)))
-		return
-	switch(nextstate)
-		if(FIREDOOR_OPEN)
-			open()
-			nextstate = null
-		if(FIREDOOR_CLOSED)
-			var/alarmed = 0
-			for(var/area/A in areas_added)	//Just in case a fire alarm is turned off while the firedoor is going through an autoclose cycle
-				if(A.fire || A.air_doors_activated)
-					alarmed = 1
-			if(!alarmed)
-				nextstate = null
-				return
-			if(close())
-				nextstate = null
-	return
-
 /obj/machinery/door/firedoor/close()
 	if (!is_processing)
 		START_PROCESSING(SSmachines, src)
@@ -318,27 +294,24 @@
 
 /obj/machinery/door/firedoor/can_open()
 	. = ..()
-	if(blocked)
+	if(blocked || (stat & (NOPOWER|BROKEN)))
 		return FALSE
 
 /obj/machinery/door/firedoor/can_close()
 	. = ..()
-	if(blocked)
+	if(blocked || (stat & (NOPOWER|BROKEN)))
 		return FALSE
 
 /obj/machinery/door/firedoor/open(forced = 0)
-	lockdown = 0
+	lockdown = FALSE
 
 	if(hatch_open)
-		hatch_open = 0
+		hatch_open = FALSE
 		visible_message("The maintenance hatch of \the [src] closes.")
 		update_icon()
 
 	if(!forced)
-		if(stat & (BROKEN|NOPOWER))
-			return //needs power to open unless it was forced
-		else
-			use_power_oneoff(360)
+		use_power_oneoff(360)
 	else
 		var/area/A = get_area(src)
 		log_admin("[usr]([usr.ckey]) has forced open an emergency shutter at X:[x], Y:[y], Z:[z] Area: [A.name].")
@@ -411,19 +384,21 @@
 		return
 
 	next_process_time = world.time + 100		// 10 second delays between process updates
-	var/changed = 0
-	lockdown=0
+
+	var/changed = FALSE
+	lockdown = FALSE
+
 	// Pressure alerts
 	pdiff = getOPressureDifferential(src.loc)
 	if(pdiff >= FIREDOOR_MAX_PRESSURE_DIFF)
-		lockdown = 1
+		lockdown = TRUE
 		if(!pdiff_alert)
-			pdiff_alert = 1
-			changed = 1 // update_icon()
+			pdiff_alert = TRUE
+			changed = FALSE // update_icon()
 	else
 		if(pdiff_alert)
-			pdiff_alert = 0
-			changed = 1 // update_icon()
+			pdiff_alert = FALSE
+			changed = TRUE // update_icon()
 
 	tile_info = getCardinalAirInfo(src.loc,list("temperature","pressure"))
 	var/old_alerts = dir_alerts
@@ -438,15 +413,15 @@
 		// Temperatures
 		if(celsius >= FIREDOOR_MAX_TEMP)
 			alerts |= FIREDOOR_ALERT_HOT
-			lockdown = 1
+			lockdown = TRUE
 		else if(celsius <= FIREDOOR_MIN_TEMP)
 			alerts |= FIREDOOR_ALERT_COLD
-			lockdown = 1
+			lockdown = TRUE
 
 		dir_alerts[index]=alerts
 
 	if(dir_alerts != old_alerts)
-		changed = 1
+		changed = TRUE
 	if(changed)
 		update_icon()
 

@@ -86,15 +86,15 @@
 	update_nearby_tiles()
 	. = ..()
 
-/obj/machinery/door/proc/can_open()
+/obj/machinery/door/proc/can_open(forced = 0)
 	if(!density || operating)
-		return 0
-	return 1
+		return FALSE
+	return TRUE
 
-/obj/machinery/door/proc/can_close()
+/obj/machinery/door/proc/can_close(forced = 0)
 	if(density || operating)
-		return 0
-	return 1
+		return FALSE
+	return TRUE
 
 /obj/machinery/door/Bumped(atom/AM)
 	if(p_open || operating) return
@@ -381,7 +381,7 @@
 /obj/machinery/door/proc/open(forced = FALSE)
 	var/wait = normalspeed ? 150 : 5
 	if(!can_open(forced))
-		return
+		return FALSE
 	operating = TRUE
 
 	do_animate("opening")
@@ -413,7 +413,7 @@
 		if(autoclose)
 			tryingToLock = TRUE
 			addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
-		return
+		return FALSE
 	operating = TRUE
 
 	do_animate("closing")
@@ -437,7 +437,7 @@
 	var/obj/fire/fire = locate() in loc
 	if(fire)
 		qdel(fire)
-	return
+	return TRUE
 
 /obj/machinery/door/proc/requiresID()
 	return 1

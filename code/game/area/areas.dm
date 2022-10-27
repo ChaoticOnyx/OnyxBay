@@ -115,9 +115,9 @@
 	if(!all_doors)
 		return
 	for(var/obj/machinery/door/firedoor/E in all_doors)
-		if(!E.density || (E.stat & (BROKEN|NOPOWER)))
-			continue
 		spawn(0)
+			if(!E.density || (E.stat & (BROKEN|NOPOWER)))
+				continue
 			if(E.can_safely_open())
 				E.open()
 
@@ -132,7 +132,7 @@
 	if(!all_doors)
 		return
 	for(var/obj/machinery/door/firedoor/D in all_doors)
-		spawn()
+		spawn(0)
 			D.close()
 
 /area/proc/fire_reset()
