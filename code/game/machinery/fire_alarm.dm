@@ -1,21 +1,19 @@
 /obj/machinery/firealarm
 	name = "fire alarm"
-	desc = "<i>\"Pull this in case of emergency\"</i>. Thus, keep pulling it forever."
+	desc = "<i>\"In case of emergency press HERE\"</i>. Or shoot."
 	icon = 'icons/obj/monitors.dmi'
-	icon_state = "fire0"
+	icon_state = "fire"
 	var/activated = 0
 	var/detecting = 1
-	var/working = 1
-	var/time = 10
-	var/timing = 0
 	anchored = 1
 	idle_power_usage = 2 WATTS
 	active_power_usage = 6 WATTS
 	power_channel = STATIC_ENVIRON
 	layer = ABOVE_WINDOW_LAYER
-	var/last_process = 0
 	var/wiresexposed = 0
 	var/buildstage = 2 // 2 = complete, 1 = no wires,  0 = circuit gone
+	var/image/alarm_overlay
+	var/image/seclevel_overlay
 
 /obj/machinery/firealarm/_examine_text(mob/user)
 	. = ..()
@@ -23,6 +21,16 @@
 	. += "\nThe current alert level is [security_state.current_security_level.name]."
 
 /obj/machinery/firealarm/update_icon()
+	if(!alarm_overlay)
+		alarm_overlay = image(icon, "fire[activated]")
+		alarm_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		alarm_overlay.layer = ABOVE_LIGHTING_LAYER
+
+	if(!seclevel_overlay)
+		seclevel_overlay = image(icon, "seclevel-null")
+		seclevel_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		seclevel_overlay.layer = ABOVE_LIGHTING_LAYER
+
 	overlays.Cut()
 
 	if(wiresexposed)
@@ -39,29 +47,40 @@
 	if(stat & BROKEN)
 		icon_state = "firex"
 		set_light(0)
-	else if(stat & NOPOWER)
-		icon_state = "firep"
-		set_light(0)
-	else
-		if(!src.detecting)
-			icon_state = "fire1"
-			set_light(0.25, 0.5, 1.25, 2, COLOR_RED)
-		else if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT))
-			icon_state = "fire0"
-			var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
-			var/decl/security_level/sl = security_state.current_security_level
+		return
 
-			set_light(sl.light_max_bright, sl.light_inner_range, sl.light_outer_range, 2, sl.light_color_alarm)
-			src.overlays += image(sl.icon, sl.overlay_alarm)
+	if(stat & NOPOWER)
+		set_light(0)
+		return
+
+	icon_state = "fire"
+
+	alarm_overlay.icon_state = "fire[activated]"
+	overlays += alarm_overlay
+
+	if(!detecting)
+		return
+
+	if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT))
+		var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
+		var/decl/security_level/sl = security_state.current_security_level
+
+		set_light(sl.light_max_bright, sl.light_inner_range, sl.light_outer_range, 2, sl.light_color_alarm)
+		seclevel_overlay.icon = sl.icon
+		seclevel_overlay.icon_state = sl.overlay_alarm
+		overlays += seclevel_overlay
 
 /obj/machinery/firealarm/fire_act(datum/gas_mixture/air, temperature, volume)
-	if(src.detecting)
-		if(temperature > (200 CELSIUS))
-			src.alarm()			// added check of detector status here
+	if(!detecting)
+		return
+
+	if(temperature > (200 CELSIUS))
+		alarm()	// added check of detector status here
 	return
 
 /obj/machinery/firealarm/bullet_act()
-	return src.alarm()
+	if(!wiresexposed)
+		return alarm()
 
 /obj/machinery/firealarm/emp_act(severity)
 	if(prob(50/severity))
@@ -95,14 +114,12 @@
 					if (C.use(5))
 						to_chat(user, "<span class='notice'>You wire \the [src].</span>")
 						buildstage = 2
-						return
 					else
 						to_chat(user, "<span class='warning'>You need 5 pieces of cable to wire \the [src].</span>")
-						return
 				else if(isCrowbar(W))
 					to_chat(user, "You pry out the circuit!")
 					playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
-					spawn(20)
+					if(do_after(user, 20, src))
 						var/obj/item/firealarm_electronics/circuit = new /obj/item/firealarm_electronics()
 						circuit.dropInto(user.loc)
 						buildstage = 0
@@ -121,73 +138,47 @@
 					qdel(src)
 		return
 
+	..()
+	alarm()
+
+	return
+
 /obj/machinery/firealarm/Process()//Note: this processing was mostly phased out due to other code, and only runs when needed
 	if(stat & (NOPOWER|BROKEN))
 		return
 
-	if(src.timing)
-		if(src.time > 0)
-			src.time = src.time - ((world.timeofday - last_process)/10)
-		else
-			src.alarm()
-			src.timing = 0
-			src.time = 0
-		src.updateDialog()
-	last_process = world.timeofday
+	if(!detecting)
+		return
 
 	if(locate(/obj/fire) in loc)
 		alarm()
 
 /obj/machinery/firealarm/attack_ai(mob/user)
-	ui_interact(user)
+	if(!activated)
+		alarm()
+	else
+		reset()
 
 /obj/machinery/firealarm/attack_hand(mob/user)
 	. = ..()
 	if (.)
-		return
-	return ui_interact(user)
+		return .
 
-/obj/machinery/firealarm/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.outside_state)
-	var/data[0]
-	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
-
-	data["seclevel"] = security_state.current_security_level.name
-	data["time"] = round(src.time)
-	data["timing"] = timing
-	var/area/A = get_area(src)
-	data["active"] = A.fire
-
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if(!ui)
-		ui = new(user, src, ui_key, "fire_alarm.tmpl", "Fire Alarm", 240, 330, state = state)
-		ui.set_initial_data(data)
-		ui.open()
-		ui.set_auto_update(1)
-
-/obj/machinery/firealarm/OnTopic(user, href_list)
-	if (href_list["status"] == "reset")
-		src.reset()
-		return TOPIC_REFRESH
-	else if (href_list["status"] == "alarm")
-		src.alarm()
-		return TOPIC_REFRESH
-	if (href_list["timer"] == "set")
-		time = max(0, input(user, "Enter time delay", "Fire Alarm Timer", time) as num)
-	else if (href_list["timer"] == "start")
-		src.timing = 1
-		return TOPIC_REFRESH
-	else if (href_list["timer"] == "stop")
-		src.timing = 0
-		return TOPIC_REFRESH
-
-/obj/machinery/firealarm/CanUseTopic(user)
 	if(wiresexposed)
-		return STATUS_CLOSE
-	return ..()
+		return .
+
+	playsound(src.loc, SFX_USE_BUTTON, 50, 1)
+
+	if(!activated)
+		alarm()
+	else
+		to_chat(user, "You push \the [src]...")
+		if(do_after(user, 50, src))
+			reset()
+
+	return .
 
 /obj/machinery/firealarm/proc/reset()
-	if(!src.working)
-		return
 	activated = 0
 	var/area/area = get_area(src)
 	for(var/obj/machinery/firealarm/FA in area)
@@ -196,8 +187,6 @@
 	return
 
 /obj/machinery/firealarm/proc/alarm(duration = 0)
-	if(!src.working)
-		return
 	if(activated)
 		return
 	activated = 1
