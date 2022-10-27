@@ -210,6 +210,8 @@
 
 #define SPAN_DEADSAY(X)  SPAN("deadsay", X)
 
+#define SPAN_SPIDER(X)   SPAN("spider", X)
+
 #define FONT_SMALL(X)    SPAN("small", X)
 
 #define FONT_NORMAL(X)   SPAN("normal", X)

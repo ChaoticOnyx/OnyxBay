@@ -85,6 +85,9 @@
 /datum/action/proc/Activate()
 	return
 
+/datum/action/proc/ActivateOnClick()
+	return
+
 /datum/action/proc/Deactivate()
 	return
 
@@ -257,28 +260,10 @@
 	// Shares cooldowns with other cooldown abilities of the same value, not active if FALSE
 	var/shared_cooldown = FALSE
 
-/datum/action/cooldown/Grant(mob/living/T)
-	..()
-	button.maptext = ""
-	button.maptext_x = 8
-	button.maptext_y = 0
-	button.maptext_width = 24
-	button.maptext_height = 12
-	owner.update_action_buttons()
-	return
-
 /datum/action/cooldown/IsAvailable()
 
 	if(..() && (next_use_time <= world.time))
 		. = TRUE
-
-	if(click_to_activate)
-
-		if(!click_handler)
-			. = FALSE
-
-		if(istype(click_handler, owner.GetClickHandler()))
-			. = TRUE
 
 	return .
 
@@ -303,19 +288,19 @@
 	START_PROCESSING(SSfastprocess, src)
 
 /datum/action/cooldown/Trigger(trigger_flags, atom/target)
-	. = ..()
-	if(!.)
-		return
 	if(!owner)
 		return FALSE
+	if(!Checks())
+		return FALSE
+	if(!IsAvailable())
+		return FALSE
+
 	if(click_to_activate)
 
 		if(!click_handler)
 			return FALSE
 
-		if(click_handler in owner.click_handlers)
-			owner.RemoveClickHandler(click_handler)
-		else
+		if(!(click_handler in owner.click_handlers))
 			owner.PushClickHandler(click_handler)
 
 		for(var/datum/action/cooldown/ability in owner.actions)

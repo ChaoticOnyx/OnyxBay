@@ -27,6 +27,9 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	speed = 3
 	controllable = TRUE
 	bodyparts = /decl/simple_animal_bodyparts/spider
+	mob_bump_flag = ALLMOBS
+	mob_swap_flags = ALLMOBS
+	mob_push_flags = ALLMOBS
 	///How much of a reagent the mob injects on attack
 	var/poison_per_bite = 0
 	///What reagent the mob injects targets with
@@ -52,6 +55,11 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 		to_chat(src, SPAN("spider", "Your mother left you a directive! Follow it at all costs."))
 		to_chat(src, SPAN("spider", "<b>[directive]</b>"))
 	GLOB.spidermobs[src] = TRUE
+	update_action_buttons()
+
+/mob/living/simple_animal/hostile/giant_spider/do_possession()
+	update_action_buttons()
+	..()
 
 /mob/living/simple_animal/hostile/giant_spider/Destroy()
 	GLOB.spidermobs -= src
@@ -59,6 +67,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 
 /mob/living/simple_animal/hostile/giant_spider/New(location, atom/parent)
 	get_light_and_color(parent)
+	InitializeHud()
 	..()
 
 /mob/living/simple_animal/hostile/giant_spider/AttackingTarget()
@@ -178,21 +187,25 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	/// Whether or not the tarantula is currently walking on webbing.
 	var/silk_walking = TRUE
 	/// Charging ability
-	var/datum/action/cooldown/mob_cooldown/charge/basic_charge/charge
+	var/datum/action/cooldown/charge/basic_charge/charge
 
 /mob/living/simple_animal/hostile/giant_spider/tarantula/Initialize(mapload)
 	. = ..()
-	charge = new /datum/action/cooldown/mob_cooldown/charge/basic_charge()
+	charge = new /datum/action/cooldown/charge/basic_charge/spider()
 	charge.Grant(src)
 
 /mob/living/simple_animal/hostile/giant_spider/tarantula/Destroy()
 	QDEL_NULL(charge)
 	return ..()
 
-/mob/living/simple_animal/hostile/giant_spider/tarantula/OpenFire()
+/mob/living/simple_animal/hostile/giant_spider/tarantula/MoveToTarget()
 	if(client)
 		return
-	charge.Trigger(target = target)
+	if(charge.IsAvailable())
+		charge.ActivateOnClick(target_mob)
+		return
+	..()
+
 
 /**
  * # Spider Viper
@@ -214,7 +227,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	melee_damage_upper = 5
 	poison_per_bite = 5
 	move_to_delay = 4
-	poison_type = /datum/reagent/toxin/venom
+	poison_type = /datum/reagent/toxin/cyanide
 	speed = -0.7
 	menu_description = "Assassin spider variant with an unmatched speed and very deadly poison, but has very low amount of health and damage."
 
@@ -330,7 +343,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	name = "giant ice spider"
 	minbodytemp = 0
 	maxbodytemp = 1500
-	poison_type = /datum/reagent/consumable/frostoil
+	poison_type = /datum/reagent/frostoil
 	color = rgb(114,228,250)
 	menu_description = "Versatile ice spider variant for frontline combat with high health and damage. Immune to temperature damage."
 
@@ -345,7 +358,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	name = "giant ice spider"
 	minbodytemp = 0
 	maxbodytemp = 1500
-	poison_type = /datum/reagent/consumable/frostoil
+	poison_type = /datum/reagent/frostoil
 	color = rgb(114,228,250)
 	menu_description = "Support ice spider variant specializing in healing their brethren and placing webbings very swiftly, but has very low amount of health and deals low damage. Immune to temperature damage."
 
@@ -360,7 +373,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	name = "giant ice spider"
 	minbodytemp = 0
 	maxbodytemp = 1500
-	poison_type = /datum/reagent/consumable/frostoil
+	poison_type = /datum/reagent/frostoil
 	color = rgb(114,228,250)
 	menu_description = "Fast ice spider variant specializing in catching running prey and frost oil injection, but has less health and damage. Immune to temperature damage."
 
@@ -431,7 +444,8 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 
 /mob/living/simple_animal/hostile/giant_spider/hunter/flesh/Initialize(mapload)
 	. = ..()
-	AddElement(/datum/element/blood_walk, /obj/effect/decal/cleanable/blood/bubblegum, blood_spawn_chance = 5)
+	var/obj/effect/decal/cleanable/blood/gibs/gibs
+	gibs.streak(GLOB.alldirs)
 
 /mob/living/simple_animal/hostile/giant_spider/hunter/flesh/AttackingTarget()
 	if(is_busy)
@@ -444,7 +458,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 		is_busy = TRUE
 		if(do_after(src, 20))
 			heal_overall_damage(50, 50)
-			new /obj/effect/temp_visual/heal(get_turf(src), "#80F5FF")
+			new /obj/effect/heal(get_turf(src), "#80F5FF")
 			visible_message(SPAN_NOTICE("[src]'s wounds mend together."),SPAN_NOTICE("You mend your wounds together."))
 		is_busy = FALSE
 		return

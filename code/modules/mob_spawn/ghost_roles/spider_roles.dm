@@ -43,7 +43,6 @@
 	flavour_text = "For the hive! Choose a spider and fulfill your role to take over the station... if that is within your directives, of course."
 	important_text = "Follow your directives at all costs."
 	faction = list("spiders")
-	spawner_job_path = /datum/job/spider
 	role_ban = MODE_SPIDER
 	prompt_ghost = FALSE
 	/// Prevents spawning from this mob_spawn until TRUE, set by the egg growing
@@ -66,7 +65,7 @@
 /obj/effect/mob_spawn/ghost_role/spider/Initialize(mapload)
 	. = ..()
 	START_PROCESSING(SSobj, src)
-	potentialspawns = string_list(potentialspawns)
+	//potentialspawns = potentialspawns
 	egg = new cluster_type(get_turf(loc))
 	egg.spawner = src
 	forceMove(egg)
@@ -75,8 +74,8 @@
 	egg = null
 	return ..()
 
-/obj/effect/mob_spawn/ghost_role/spider/process(delta_time)
-	amount_grown += rand(0, 1) * delta_time
+/obj/effect/mob_spawn/ghost_role/spider/Process()
+	amount_grown += rand(0, 3)
 	if(amount_grown >= 100 && !ready)
 		ready = TRUE
 		notify_ghosts("[src] is ready to hatch!", null, source = src, action = NOTIFY_FOLLOW)
@@ -158,7 +157,8 @@
 		var/mob/living/simple_animal/hostile/giant_spider/spider = choice
 		spider_list[initial(spider.name)] = choice
 
-		var/option = image(icon = initial(spider.icon), icon_state = initial(spider.icon_state))
+		//TODO upgrade radial menu to show descriptions
+		/*var/option = image(icon = initial(spider.icon), icon_state = initial(spider.icon_state))
 
 		var/datum/reagent/spider_poison = initial(spider.poison_type)
 		var/spider_description = initial(spider.menu_description)
@@ -166,7 +166,8 @@
 			spider_description += " [initial(spider_poison.name)] injection of [initial(spider.poison_per_bite)]u per bite."
 		else
 			spider_description += " Does not inject [initial(spider_poison.name)]."
-		//option.info = SPAN_NOTICE("<b>[spider_description]</b>")
+
+		option.info = SPAN_NOTICE("<b>[spider_description]</b>")*/
 
 		display_spiders[spider] = spider.icon
 	sort_list(display_spiders)
