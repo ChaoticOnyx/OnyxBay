@@ -143,7 +143,7 @@
 	return !density
 
 
-/obj/machinery/door/proc/bumpopen(mob/user as mob)
+/obj/machinery/door/proc/bumpopen(mob/user)
 	if(operating)	return
 	if(user.last_airflow > world.time - vsc.airflow_delay) //Fakkit
 		return
@@ -186,18 +186,18 @@
 	take_damage(tforce)
 	return
 
-/obj/machinery/door/attack_ai(mob/user as mob)
+/obj/machinery/door/attack_ai(mob/user)
 	return src.attack_hand(user)
 
-/obj/machinery/door/attack_hand(mob/user as mob)
+/obj/machinery/door/attack_hand(mob/user)
 	return src.attackby(user, user)
 
-/obj/machinery/door/attack_tk(mob/user as mob)
+/obj/machinery/door/attack_tk(mob/user)
 	if(requiresID() && !allowed(null))
 		return
 	..()
 
-/obj/machinery/door/attackby(obj/item/I as obj, mob/user as mob)
+/obj/machinery/door/attackby(obj/item/I, mob/user)
 	src.add_fingerprint(user, 0, I)
 
 	if(istype(I, /obj/item/stack/material) && I.get_material_name() == src.get_material_name())
