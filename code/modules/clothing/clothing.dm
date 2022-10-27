@@ -89,7 +89,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 	return ..()
 
 //BS12: Species-restricted clothing check.
-/obj/item/clothing/mob_can_equip(M as mob, slot, disable_warning = 0)
+/obj/item/clothing/mob_can_equip(mob/M, slot, disable_warning = 0)
 
 	//if we can't equip the item anyway, don't bother with species_restricted (cuts down on spam)
 	if (!..())
