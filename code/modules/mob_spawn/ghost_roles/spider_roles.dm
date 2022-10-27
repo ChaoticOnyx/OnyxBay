@@ -42,7 +42,7 @@
 	you_are_text = "You are a spider."
 	flavour_text = "For the hive! Choose a spider and fulfill your role to take over the station... if that is within your directives, of course."
 	important_text = "Follow your directives at all costs."
-	faction = list("spiders")
+	faction = "spiders"
 	role_ban = MODE_SPIDER
 	prompt_ghost = FALSE
 	/// Prevents spawning from this mob_spawn until TRUE, set by the egg growing
@@ -64,7 +64,7 @@
 
 /obj/effect/mob_spawn/ghost_role/spider/Initialize(mapload)
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time + 1 SECONDS)
 	//potentialspawns = potentialspawns
 	egg = new cluster_type(get_turf(loc))
 	egg.spawner = src
@@ -74,12 +74,12 @@
 	egg = null
 	return ..()
 
-/obj/effect/mob_spawn/ghost_role/spider/Process()
+/obj/effect/mob_spawn/ghost_role/spider/think()
 	amount_grown += rand(0, 3)
 	if(amount_grown >= 100 && !ready)
 		ready = TRUE
 		notify_ghosts("[src] is ready to hatch!", null, source = src, action = NOTIFY_FOLLOW)
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 
 /obj/effect/mob_spawn/ghost_role/spider/Topic(href, href_list)
 	. = ..()

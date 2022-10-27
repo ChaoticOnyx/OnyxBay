@@ -10,7 +10,7 @@
 	name = "Charge"
 	action_type = AB_INNATE
 	button_icon = 'icons/mob/actions.dmi'
-	button_icon_state = "sniper_zoom"
+	button_icon_state = "charge"
 	//desc = "Allows you to charge at a chosen position."
 	cooldown_time = 1.5 SECONDS
 	/// Delay before the charge actually occurs

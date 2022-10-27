@@ -58,8 +58,9 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	update_action_buttons()
 
 /mob/living/simple_animal/hostile/giant_spider/do_possession()
-	update_action_buttons()
 	..()
+	update_action_buttons()
+
 
 /mob/living/simple_animal/hostile/giant_spider/Destroy()
 	GLOB.spidermobs -= src
@@ -68,6 +69,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 /mob/living/simple_animal/hostile/giant_spider/New(location, atom/parent)
 	get_light_and_color(parent)
 	InitializeHud()
+	GLOB.spidermobs.Add(src)
 	..()
 
 /mob/living/simple_animal/hostile/giant_spider/AttackingTarget()

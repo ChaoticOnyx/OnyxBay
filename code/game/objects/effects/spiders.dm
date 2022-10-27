@@ -88,45 +88,6 @@
 	else if(istype(mover, /obj/item/projectile))
 		return prob(30)
 
-/obj/structure/spider/eggcluster
-	name = "egg cluster"
-	desc = "They seem to pulse slightly with an inner life."
-	icon_state = "eggs"
-	var/amount_grown = 0
-
-/obj/structure/spider/eggcluster/Initialize()
-		. = ..()
-		pixel_x = rand(3,-3)
-		pixel_y = rand(3,-3)
-		set_next_think(world.time)
-
-/obj/structure/spider/eggcluster/New(location, atom/parent)
-	get_light_and_color(parent)
-	..()
-
-/obj/structure/spider/eggcluster/Destroy()
-	if(istype(loc, /obj/item/organ/external))
-		var/obj/item/organ/external/O = loc
-		O.implants -= src
-	. = ..()
-
-/obj/effect/spider/eggcluster/think()
-	amount_grown += rand(0,2)
-	if(amount_grown >= 100)
-		var/num = rand(6,24)
-		var/obj/item/organ/external/O = null
-		if(istype(loc, /obj/item/organ/external))
-			O = loc
-
-		for(var/i=0, i<num, i++)
-			var/spiderling = new /obj/structure/spider/spiderling(loc, src)
-			if(O)
-				O.implants += spiderling
-		qdel(src)
-		return
-
-	set_next_think(world.time + 1 SECOND)
-
 /obj/structure/spider/spiderling
 	name = "spiderling"
 	desc = "It never stays still for long."
@@ -143,7 +104,7 @@
 	var/growth_chance = 50 // % chance of beginning growth, and eventually become a beautiful death machine
 
 	var/directive = "" //Message from the mother
-	var/list/faction = list("spiders")
+	var/faction = "spiders"
 
 	var/shift_range = 6
 
@@ -223,7 +184,7 @@
 	if(health <= 0)
 		die()
 
-/obj/effect/spider/spiderling/think()
+/obj/structure/spider/spiderling/think()
 	if(travelling_in_vent)
 		if(istype(src.loc, /turf))
 			travelling_in_vent = 0
@@ -299,7 +260,7 @@
 					greater_form = pick(/mob/living/simple_animal/hostile/giant_spider, /mob/living/simple_animal/hostile/giant_spider/hunter, /mob/living/simple_animal/hostile/giant_spider/nurse)
 			var/mob/living/simple_animal/hostile/giant_spider/S = new greater_form(src.loc)
 
-			S.faction = faction.Copy()
+			S.faction = faction
 			S.directive = directive
 
 			qdel(src)

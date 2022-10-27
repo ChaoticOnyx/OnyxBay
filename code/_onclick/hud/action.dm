@@ -285,7 +285,7 @@
 	else
 		next_use_time = world.time + cooldown_time
 	owner.update_action_buttons()
-	START_PROCESSING(SSfastprocess, src)
+	set_next_think(world.time + 1 SECONDS)
 
 /datum/action/cooldown/Trigger(trigger_flags, atom/target)
 	if(!owner)
@@ -330,10 +330,10 @@
 
 	button.UpdateIcon()
 
-/datum/action/cooldown/Process()
+/datum/action/cooldown/think()
 	var/time_left = max(next_use_time - world.time, 0)
 	if(!owner || time_left == 0)
-		STOP_PROCESSING(SSfastprocess, src)
+		set_next_think(0)
 	UpdateButton(src.button)
 
 /datum/action/cooldown/Grant(mob/M)
@@ -342,7 +342,7 @@
 		return
 	owner.update_action_buttons()
 	if(next_use_time > world.time)
-		START_PROCESSING(SSfastprocess, src)
+		set_next_think(world.time + 1 SECONDS)
 
 // Mobs cooldown action
 /datum/action/cooldown/mob_cooldown

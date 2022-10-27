@@ -44,6 +44,7 @@
 
 /datum/action/innate/spider/wrap
 	name = "Wrap"
+	button_icon_state = "wrap"
 	var/click_handler = /datum/click_handler/spiders/wrap
 
 /datum/action/innate/spider/wrap/Trigger()
@@ -96,6 +97,10 @@
 	if(!.)
 		return
 	if(!istype(owner, /mob/living/simple_animal/hostile/giant_spider/midwife))
+		return FALSE
+	var/obj/structure/spider/eggcluster/eggs = locate() in get_turf(owner)
+	if(eggs)
+		to_chat(owner, SPAN_WARNING("There is already a cluster of eggs here!"))
 		return FALSE
 	var/mob/living/simple_animal/hostile/giant_spider/midwife/S = owner
 	if(enriched && !S.fed)
