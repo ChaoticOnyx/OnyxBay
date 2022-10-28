@@ -70,6 +70,12 @@
 	icon_state = "sealedweb"
 	sealed = TRUE
 	can_atmos_pass = ATMOS_PASS_NO
+	density = TRUE
+	opacity = TRUE
+
+/obj/structure/spider/stickyweb/sealed/Initialize()
+	..()
+	icon_state = "sealedweb"
 
 /obj/structure/spider/stickyweb/CanPass(atom/movable/mover, turf/target)
 	if(sealed)
@@ -81,9 +87,10 @@
 	else if(istype(mover, /mob/living))
 		if(istype(mover.pulledby, /mob/living/simple_animal/hostile/giant_spider))
 			return TRUE
-		if(prob(50))
+		if(prob(70))
 			to_chat(mover, "<span class='warning'>You get stuck in \the [src] for a moment.</span>")
 			return FALSE
+		return TRUE
 
 	else if(istype(mover, /obj/item/projectile))
 		return prob(30)
@@ -109,7 +116,6 @@
 	var/shift_range = 6
 
 /obj/structure/spider/spiderling/Initialize(mapload, atom/parent)
-	greater_form = /mob/living/simple_animal/hostile/giant_spider
 	icon_state = initial(greater_form.icon_state)
 	pixel_x = rand(-shift_range, shift_range)
 	pixel_y = rand(-shift_range, shift_range)
@@ -143,6 +149,7 @@
 
 /obj/structure/spider/spiderling/mundane
 	growth_chance = 0 // Just a simple, non-mutant spider
+	greater_form = /mob/living/simple_animal/hostile/giant_spider
 
 /obj/structure/spider/spiderling/mundane/dormant
 	dormant = TRUE    // It lies in wait, hoping you will walk face first into its web
@@ -259,6 +266,7 @@
 				else
 					greater_form = pick(/mob/living/simple_animal/hostile/giant_spider, /mob/living/simple_animal/hostile/giant_spider/hunter, /mob/living/simple_animal/hostile/giant_spider/nurse)
 			var/mob/living/simple_animal/hostile/giant_spider/S = new greater_form(src.loc)
+			notify_ghosts("[capitalize(S.name)] is now available to possess!", source = S, action = NOTIFY_FOLLOW, posses_mob = TRUE)
 
 			S.faction = faction
 			S.directive = directive

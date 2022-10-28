@@ -1,4 +1,14 @@
 GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
+
+/datum/language/spider
+	name = LANGUAGE_SPIDER
+	desc = "A strange language that can be understood both by the sounds made and by the movement needed to create those sounds."
+	signlang_verb = list("chitters", "grinds its mouthparts", "chitters and grinds its mouthparts")
+	key = "p"
+	flags = RESTRICTED | SIGNLANG | NO_STUTTER | NONVERBAL
+	colour = ".spider"
+	shorthand = "SR"
+
 //basic spider mob, these generally guard nests
 /mob/living/simple_animal/hostile/giant_spider
 	name = "giant spider"
@@ -64,7 +74,14 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 /mob/living/simple_animal/hostile/giant_spider/New(location, atom/parent)
 	get_light_and_color(parent)
 	InitializeHud()
+
 	GLOB.spidermobs.Add(src)
+
+	lay_web = new
+	lay_web.Grant(src)
+	var/language = new /datum/language/spider
+	languages.Add(language)
+	default_language = language
 	..()
 
 /mob/living/simple_animal/hostile/giant_spider/UnarmedAttack(atom/target)
@@ -116,6 +133,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	gender = FEMALE
 	maxHealth = 60
 	health = 60
+	speed = 0.75
 	melee_damage_lower = 5
 	melee_damage_upper = 10
 	poison_per_bite = 3
@@ -180,7 +198,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	melee_damage_upper = 40
 	poison_per_bite = 0
 	move_to_delay = 8
-	speed = 2
+	speed = 3
 	menu_description = "Tank spider variant with an enormous amount of health and damage, but is very slow when not on webbing. It also has a charge ability to close distance with a target after a small windup."
 	/// Whether or not the tarantula is currently walking on webbing.
 	var/silk_walking = TRUE

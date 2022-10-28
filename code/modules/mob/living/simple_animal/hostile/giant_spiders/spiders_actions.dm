@@ -2,11 +2,11 @@
 /datum/action/innate/spider
 	button_icon = 'icons/mob/actions.dmi'
 	background_icon_state = "bg_alien"
+	check_flags = AB_CHECK_CONSCIOUS|AB_CHECK_ALIVE
 
 /datum/action/innate/spider/lay_web
 	name = "Spin Web"
 	//desc = "Spin a web to slow down potential prey."
-	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "lay_web"
 
 /datum/action/innate/spider/lay_web/Activate()
@@ -91,7 +91,6 @@
 /datum/action/innate/spider/lay_eggs
 	name = "Lay Eggs"
 	//desc = "Lay a cluster of eggs, which will soon grow into a normal spider."
-	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "lay_eggs"
 	var/enriched = FALSE
 
@@ -148,7 +147,6 @@
 /datum/action/innate/spider/set_directive
 	name = "Set Directive"
 	//desc = "Set a directive for your children to follow."
-	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "directive"
 
 /datum/action/innate/spider/set_directive/IsAvailable()
@@ -170,7 +168,6 @@
 /datum/action/innate/spider/comm
 	name = "Command"
 	//desc = "Send a command to all living spiders."
-	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "command"
 
 /datum/action/innate/spider/comm/IsAvailable()
@@ -207,4 +204,5 @@
 	user.log_message(message)
 
 /datum/action/cooldown/charge/basic_charge/spider
+	check_flags = AB_CHECK_CONSCIOUS|AB_CHECK_ALIVE
 	click_handler = /datum/click_handler/spiders/charge
