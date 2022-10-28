@@ -280,7 +280,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	Choices should be a list where list keys are movables or text used for element names and return value
 	and list values are movables/icons/images used for element icons
 */
-/proc/show_radial_menu(mob/user, atom/anchor, list/choices, uniqueid, radius, datum/callback/custom_check, require_near = FALSE, in_screen = FALSE, use_hudfix_method = TRUE, list/info)
+/proc/show_radial_menu(mob/user, atom/anchor, list/choices, uniqueid, radius, datum/callback/custom_check, require_near = FALSE, in_screen = FALSE, use_hudfix_method = TRUE)
 	if(!user || !anchor || !length(choices))
 		return
 	if(!uniqueid)
