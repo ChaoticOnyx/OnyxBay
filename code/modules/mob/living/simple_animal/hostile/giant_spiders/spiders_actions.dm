@@ -205,4 +205,5 @@
 
 /datum/action/cooldown/charge/basic_charge/spider
 	check_flags = AB_CHECK_CONSCIOUS|AB_CHECK_ALIVE
+	cooldown_time = 30 SECONDS
 	click_handler = /datum/click_handler/spiders/charge
