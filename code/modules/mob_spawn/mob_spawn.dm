@@ -185,7 +185,7 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 		to_chat(spawned_mob, output_message)
 	var/datum/mind/spawned_mind = spawned_mob.mind
 	if(spawned_mind)
-		spawned_mob.mind.assigned_role = spawner_job_path?initial(spawner_job_path["title"]):""
+		spawned_mob.mind.assigned_role = spawner_job_path ? initial(spawner_job_path["title"]) : ""
 		spawned_mind.name = spawned_mob.real_name
 
 //multiple use mob spawner functionality here- doesn't make sense on corpses
