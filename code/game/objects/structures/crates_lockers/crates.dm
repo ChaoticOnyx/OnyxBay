@@ -343,6 +343,12 @@
 	icon_closed = "plasma_crate_large"
 	req_access = list(access_mailsorting, access_medical, access_research, access_engine)
 
+/obj/structure/closet/crate/secure/large/plasma/supermatter
+	name = "supermatter crate"
+	req_access = list(access_engine)
+
+/obj/structure/closet/crate/secure/large/plasma/supermatter/prespawned/WillContain()
+	return list(/obj/machinery/power/supermatter)
 //fluff variant
 /obj/structure/closet/crate/secure/large/reinforced
 	desc = "A hefty, reinforced metal crate with an electronic locking system."
