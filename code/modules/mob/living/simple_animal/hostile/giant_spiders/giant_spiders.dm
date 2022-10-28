@@ -91,7 +91,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	if(isliving(target))
 		var/mob/living/L = .
 		if(L.reagents)
-			to_chat(L, "<span class='warning'>You feel a tiny prick.</span>")
+			to_chat(L, SPAN_WARNING("You feel a tiny prick."))
 			L.reagents.add_reagent(poison_type, 5)
 
 /**

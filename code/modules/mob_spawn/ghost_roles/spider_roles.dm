@@ -65,7 +65,6 @@
 /obj/effect/mob_spawn/ghost_role/spider/Initialize(mapload)
 	. = ..()
 	set_next_think(world.time + 1 SECONDS)
-	//potentialspawns = potentialspawns
 	egg = new cluster_type(get_turf(loc))
 	egg.spawner = src
 	forceMove(egg)
