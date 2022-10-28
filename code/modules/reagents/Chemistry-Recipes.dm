@@ -993,11 +993,11 @@
 							)
 
 /datum/chemical_reaction/metroid/n_crit/on_reaction(datum/reagents/holder)
+	..()
 	for(var/i = 1, i <= 3, i++)
 		var/mob/living/simple_animal/hostile/asteroid/type = pick(possible_mobs)
 		new type(get_turf(holder.my_atom))
 		type.faction = "neutral"
-	..()
 
 /datum/chemical_reaction/metroid/d_crit
 	name = "Metroid Dangerous Crit"
