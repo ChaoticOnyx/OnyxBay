@@ -515,3 +515,10 @@ steam.start() -- spawns the effect
 /obj/effect/effect/hitmarker/Initialize()
 	. = ..()
 	QDEL_IN(src, 0.1 SECONDS)
+
+//healing
+/obj/effect/heal
+	name = "heal"
+	icon_state = "heal"
+	anchored = TRUE
+	mouse_opacity = FALSE

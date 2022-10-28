@@ -668,14 +668,20 @@
 
 	//Breaking out of a locker?
 	if(src.loc && (istype(src.loc, /obj/structure/closet)) )
-		var/obj/structure/closet/C = loc
-		spawn() C.mob_breakout(src)
+		var/obj/structure/closet/closet = loc
+		spawn() closet.mob_breakout(src)
 		return TRUE
 
 	//Trying to escape from abductors?
 	if(src.loc && (istype(src.loc, /obj/machinery/abductor/experiment)))
-		var/obj/machinery/abductor/experiment/E = loc
-		spawn() E.mob_breakout(src)
+		var/obj/machinery/abductor/experiment/experiment = loc
+		spawn() experiment.mob_breakout(src)
+		return TRUE
+
+	//Trying to escape from Spider?
+	if(src.loc && (istype(src.loc, /obj/structure/spider/cocoon)))
+		var/obj/structure/spider/cocoon/cocoon = loc
+		spawn() cocoon.mob_breakout(src)
 		return TRUE
 
 /mob/living/proc/escape_inventory(obj/item/holder/H)

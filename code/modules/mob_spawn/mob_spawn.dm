@@ -128,7 +128,7 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 	///which role to check for a job ban
 	var/role_ban = null
 	/// Typepath indicating the kind of job datum this ghost role will have. PLEASE inherit this with a new job datum, it's not hard. jobs come with policy configs.
-	var/spawner_job_path = /datum/job/ghost_role
+	var/spawner_job_path
 
 /obj/effect/mob_spawn/ghost_role/Initialize(mapload)
 	. = ..()
@@ -185,7 +185,7 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 		to_chat(spawned_mob, output_message)
 	var/datum/mind/spawned_mind = spawned_mob.mind
 	if(spawned_mind)
-		spawned_mob.mind.assigned_role = initial(spawner_job_path["title"])
+		spawned_mob.mind.assigned_role = spawner_job_path ? initial(spawner_job_path["title"]) : ""
 		spawned_mind.name = spawned_mob.real_name
 
 //multiple use mob spawner functionality here- doesn't make sense on corpses
