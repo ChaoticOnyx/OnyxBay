@@ -9,6 +9,7 @@
 		var/datum/action/cooldown/charge/action = locate() in spider.actions
 		spider.PopClickHandler()
 		action.ActivateOnClick(target)
+		action.active = FALSE
 
 /datum/click_handler/spiders/wrap/OnClick(atom/target)
 	if(mob_check(user))

@@ -302,6 +302,8 @@
 
 		if(!(click_handler in owner.click_handlers))
 			owner.PushClickHandler(click_handler)
+		else
+			owner.PopClickHandler()
 
 		for(var/datum/action/cooldown/ability in owner.actions)
 			ability.owner.update_action_buttons()
@@ -333,8 +335,11 @@
 /datum/action/cooldown/think()
 	var/time_left = max(next_use_time - world.time, 0)
 	if(!owner || time_left == 0)
+		UpdateButton(src.button)
 		set_next_think(0)
+		return
 	UpdateButton(src.button)
+	set_next_think(world.time + 1 SECONDS)
 
 /datum/action/cooldown/Grant(mob/M)
 	..()

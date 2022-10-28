@@ -44,22 +44,24 @@
 	if(!isnull(destroy))
 		destroy_objects = destroy
 
-/datum/action/cooldown/charge/Activate(atom/target_atom)
+/datum/action/cooldown/charge/Trigger(trigger_flags, atom/target)
+	. = ..()
+	if(!IsAvailable())
+		return FALSE
+
 	if(active)
 		to_chat(usr, SPAN_NOTICE("You no longer prepare to charge."))
-		usr.PopClickHandler()
 		button.UpdateIcon()
 		active = FALSE
+		return FALSE
 	else
 		to_chat(usr, SPAN_NOTICE("You prepare to charge. <B>Left-click your target to charge!</B>"))
-		usr.PushClickHandler(click_handler)
 		var/image/img = image(button_icon,button,"bg_active")
 		img.pixel_x = 0
 		img.pixel_y = 0
 		button.overlays+=img
 		active = TRUE
 		return TRUE
-	return TRUE
 
 /datum/action/cooldown/charge/ActivateOnClick(atom/target_atom)
 	// start pre-cooldown so that the ability can't come up while the charge is happening

@@ -24,7 +24,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	cold_damage_per_tick = 20
 	faction = "spiders"
 	move_to_delay = 6
-	speed = 3
+	speed = 1
 	controllable = TRUE
 	bodyparts = /decl/simple_animal_bodyparts/spider
 	mob_bump_flag = ALLMOBS
@@ -49,18 +49,13 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 
 /mob/living/simple_animal/hostile/giant_spider/Login()
 	. = ..()
-	if(!. || !client)
+	if(!client)
 		return FALSE
 	if(directive)
 		to_chat(src, SPAN("spider", "Your mother left you a directive! Follow it at all costs."))
 		to_chat(src, SPAN("spider", "<b>[directive]</b>"))
 	GLOB.spidermobs[src] = TRUE
 	update_action_buttons()
-
-/mob/living/simple_animal/hostile/giant_spider/do_possession()
-	..()
-	update_action_buttons()
-
 
 /mob/living/simple_animal/hostile/giant_spider/Destroy()
 	GLOB.spidermobs -= src
@@ -72,9 +67,11 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	GLOB.spidermobs.Add(src)
 	..()
 
-/mob/living/simple_animal/hostile/giant_spider/AttackingTarget()
+/mob/living/simple_animal/hostile/giant_spider/UnarmedAttack(atom/target)
 	. = ..()
-	if(isliving(.))
+	if(!.)
+		return
+	if(isliving(target))
 		var/mob/living/L = .
 		if(L.reagents)
 			to_chat(L, "<span class='warning'>You feel a tiny prick.</span>")
@@ -93,8 +90,8 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	icon_state = "hunter"
 	icon_living = "hunter"
 	icon_dead = "hunter_dead"
-	maxHealth = 50
-	health = 50
+	maxHealth = 100
+	health = 100
 	melee_damage_lower = 15
 	melee_damage_upper = 20
 	poison_per_bite = 5
@@ -117,8 +114,8 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	icon_living = "nurse"
 	icon_dead = "nurse_dead"
 	gender = FEMALE
-	maxHealth = 40
-	health = 40
+	maxHealth = 60
+	health = 60
 	melee_damage_lower = 5
 	melee_damage_upper = 10
 	poison_per_bite = 3
@@ -132,9 +129,8 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 
 
 
-/mob/living/simple_animal/hostile/giant_spider/nurse/AttackingTarget()
-	. = ..()
-	var/target = .
+/mob/living/simple_animal/hostile/giant_spider/nurse/UnarmedAttack(atom/target)
+	. = target
 	if(is_busy)
 		return
 	if(!istype(target, /mob/living/simple_animal/hostile/giant_spider))
@@ -178,13 +174,13 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	icon_state = "tarantula"
 	icon_living = "tarantula"
 	icon_dead = "tarantula_dead"
-	maxHealth = 300 // woah nelly
-	health = 300
+	maxHealth = 400 // woah nelly
+	health = 400
 	melee_damage_lower = 35
 	melee_damage_upper = 40
 	poison_per_bite = 0
 	move_to_delay = 8
-	speed = 1
+	speed = 2
 	menu_description = "Tank spider variant with an enormous amount of health and damage, but is very slow when not on webbing. It also has a charge ability to close distance with a target after a small windup."
 	/// Whether or not the tarantula is currently walking on webbing.
 	var/silk_walking = TRUE
@@ -223,8 +219,8 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	icon_state = "viper"
 	icon_living = "viper"
 	icon_dead = "viper_dead"
-	maxHealth = 40
-	health = 40
+	maxHealth = 60
+	health = 60
 	melee_damage_lower = 5
 	melee_damage_upper = 5
 	poison_per_bite = 5
@@ -250,8 +246,8 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	icon_state = "midwife"
 	icon_living = "midwife"
 	icon_dead = "midwife_dead"
-	maxHealth = 40
-	health = 40
+	maxHealth = 300
+	health = 300
 	melee_damage_lower = 5
 	melee_damage_upper = 10
 	poison_per_bite = 3

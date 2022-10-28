@@ -55,11 +55,14 @@
 	return TRUE
 
 /datum/action/innate/spider/wrap/proc/activate(mob/living/user)
+	if(!IsAvailable())
+		return FALSE
 	if(active)
 		to_chat(user, SPAN_NOTICE("You no longer prepare to wrap something in a cocoon."))
 		user.PopClickHandler()
 		button.UpdateIcon()
 		active = FALSE
+		return FALSE
 	else
 		to_chat(user, SPAN_NOTICE("You prepare to wrap something in a cocoon. <B>Left-click your target to start wrapping!</B>"))
 		user.PushClickHandler(/datum/click_handler/spiders/wrap)

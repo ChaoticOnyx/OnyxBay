@@ -80,6 +80,8 @@
 		ready = TRUE
 		notify_ghosts("[src] is ready to hatch!", null, source = src, action = NOTIFY_FOLLOW)
 		set_next_think(0)
+		return
+	set_next_think(world.time + 1 SECONDS)
 
 /obj/effect/mob_spawn/ghost_role/spider/Topic(href, href_list)
 	. = ..()
@@ -157,10 +159,10 @@
 		var/mob/living/simple_animal/hostile/giant_spider/spider = choice
 		spider_list[initial(spider.name)] = choice
 
-		//TODO upgrade radial menu to show descriptions
-		/*var/option = image(icon = initial(spider.icon), icon_state = initial(spider.icon_state))
 
-		var/datum/reagent/spider_poison = initial(spider.poison_type)
+		var/option = image(icon = initial(spider.icon), icon_state = initial(spider.icon_state))
+		//TODO upgrade radial menu to show descriptions
+		/*var/datum/reagent/spider_poison = initial(spider.poison_type)
 		var/spider_description = initial(spider.menu_description)
 		if(initial(spider.poison_per_bite))
 			spider_description += " [initial(spider_poison.name)] injection of [initial(spider.poison_per_bite)]u per bite."
@@ -169,7 +171,7 @@
 
 		option.info = SPAN_NOTICE("<b>[spider_description]</b>")*/
 
-		display_spiders[spider] = spider.icon
+		display_spiders[initial(spider.name)] = option
 	sort_list(display_spiders)
 	var/chosen_spider = show_radial_menu(user, egg, display_spiders, radius = 38)
 	chosen_spider = spider_list[chosen_spider]
