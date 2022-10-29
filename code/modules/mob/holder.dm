@@ -164,6 +164,13 @@ var/list/holder_mob_icon_cache = list()
 
 	var/obj/item/holder/H = new holder_type(get_turf(src), src)
 
+	if(isMonkey(src))
+		var/turf/T = get_turf(src)
+		var/list/on_monkey = view(1, T)
+		for(var/mob/living/carbon/metroid/M in on_monkey)
+			if(M.Victim == src)
+				to_chat(grabber, SPAN("warning", "You can't scoop up \the [src] because of the [M]"))
+
 	if(self_grab)
 		if(!grabber.equip_to_slot_if_possible(H, slot_back, del_on_fail = FALSE, disable_warning = TRUE))
 			to_chat(src, SPAN("warning", "You can't climb onto [grabber]!"))
