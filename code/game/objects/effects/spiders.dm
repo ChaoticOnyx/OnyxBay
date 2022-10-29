@@ -116,7 +116,6 @@
 	var/shift_range = 6
 
 /obj/structure/spider/spiderling/Initialize(mapload, atom/parent)
-	icon_state = initial(greater_form.icon_state)
 	pixel_x = rand(-shift_range, shift_range)
 	pixel_y = rand(-shift_range, shift_range)
 
@@ -134,15 +133,19 @@
 
 /obj/structure/spider/spiderling/hunter
 	greater_form = /mob/living/simple_animal/hostile/giant_spider/hunter
+	icon_state = "hunter"
 
 /obj/structure/spider/spiderling/nurse
 	greater_form = /mob/living/simple_animal/hostile/giant_spider/nurse
+	icon_state = "nurse"
 
 /obj/structure/spider/spiderling/midwife
 	greater_form = /mob/living/simple_animal/hostile/giant_spider/midwife
+	icon_state = "hunter"
 
 /obj/structure/spider/spiderling/viper
 	greater_form = /mob/living/simple_animal/hostile/giant_spider/viper
+	icon_state = "hunter"
 
 /obj/structure/spider/spiderling/tarantula
 	greater_form = /mob/living/simple_animal/hostile/giant_spider/tarantula
