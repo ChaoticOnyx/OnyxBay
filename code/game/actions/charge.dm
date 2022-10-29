@@ -129,7 +129,6 @@
 
 /datum/action/cooldown/charge/proc/on_moved(atom/source)
 	playsound(source, 'sound/effects/meteorimpact.ogg', 200, TRUE, 2, TRUE)
-	var/turf/floor = get_turf(get_step(source, source.dir))
 	INVOKE_ASYNC(src, .proc/DestroySurroundings, source)
 
 /datum/action/cooldown/charge/proc/DestroySurroundings(atom/movable/charger)
