@@ -63,7 +63,7 @@
 	..()
 	if (!(MUTATION_XRAY in user.mutations))
 		user.mutations.Add(MUTATION_XRAY)
-		user.set_sight(user.sight | SEE_MOBS | SEE_OBJS | SEE_TURFS)
+		user.set_sight(user.sight | SEE_MOBS | SEE_OBJS | SEE_TURFS | SEE_BLACKNESS)
 		user.set_see_in_dark(8)
 		user.set_see_invisible(SEE_INVISIBLE_LEVEL_TWO)
 		to_chat(user, SPAN_NOTICE("The walls suddenly disappear."))

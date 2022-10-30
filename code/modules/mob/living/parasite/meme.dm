@@ -373,7 +373,7 @@ be able to influence the host through various commands.
 	to_chat(usr, "<b>You make [target] hallucinate.</b>")
 
 // Jump to a closeby target through a whisper
-/mob/living/parasite/meme/verb/SubtleJump(mob/living/carbon/human/target as mob in view(1,host) - usr - usr:host)
+/mob/living/parasite/meme/verb/SubtleJump(mob/living/carbon/human/target in view(1,host) - usr - usr:host)
 	set category = "Meme"
 	set name	 = "Subtle Jump(350)"
 	set desc     = "Move to a closeby human through a whisper."
@@ -410,7 +410,7 @@ be able to influence the host through various commands.
 	log_and_message_admins("[src.key] has jumped (meme) to [target]", target)
 
 // Jump to a distant target through a shout
-/mob/living/parasite/meme/verb/ObviousJump(mob/living/carbon/human/target as mob in view(host) - usr - usr:host)
+/mob/living/parasite/meme/verb/ObviousJump(mob/living/carbon/human/target in view(host) - usr - usr:host)
 	set category = "Meme"
 	set name	 = "Obvious Jump(750)"
 	set desc     = "Move to any mob in view through a shout."
@@ -447,7 +447,7 @@ be able to influence the host through various commands.
 	log_and_message_admins("[src.key] has jumped (meme) to [target]", target)
 
 // Jump to an attuned mob for free
-/mob/living/parasite/meme/verb/AttunedJump(mob/living/carbon/human/target as mob in view(host)&indoctrinated)
+/mob/living/parasite/meme/verb/AttunedJump(mob/living/carbon/human/target in view(host)&indoctrinated)
 	set category = "Meme"
 	set name	 = "Attuned Jump(0)"
 	set desc     = "Move to a mob in sight that you have already attuned."
@@ -536,7 +536,7 @@ be able to influence the host through various commands.
 
 		var/mob/dummy = new()
 		dummy.loc = 0
-		dummy.sight = BLIND
+		dummy.sight = BLIND|SEE_BLACKNESS
 
 		var/datum/mind/host_mind = host.mind
 		var/datum/mind/meme_mind = src.mind

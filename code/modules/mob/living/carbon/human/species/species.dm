@@ -89,7 +89,7 @@
 	var/radiation_mod =  1                    // Radiation modifier
 	var/flash_mod =      1                    // Stun from blindness modifier.
 	var/metabolism_mod = 1                    // Reagent metabolism modifier
-	var/vision_flags = SEE_SELF               // Same flags as glasses.
+	var/vision_flags = SEE_SELF|SEE_BLACKNESS // Same flags as glasses.
 	var/generic_attack_mod = 1.0              // Damage dealt to simple animals with unarmed attacks multiplier.
 
 	// Death vars.
