@@ -122,9 +122,13 @@
 /datum/event/carp_migration/proc/announce()
 	var/list/affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 	var/announcement = ""
+	var/snd
 
 	if(severity == EVENT_LEVEL_MAJOR)
+		snd = 'sound/AI/carpmigrationmajor.ogg'
 		announcement = "Massive migration of unknown biological entities has been detected near the [station_name()], please stand-by."
 	else
+		snd = 'sound/AI/carpmigration.ogg'
 		announcement = "Unknown biological [spawned_carp.len == 1 ? "entity has" : "entities have"] been detected near the [station_name()], please stand-by."
-	command_announcement.Announce(announcement, "[station_name()] Sensor Array", zlevels = affecting_z)
+	
+	command_announcement.Announce(announcement, "[station_name()] Sensor Array", zlevels = affecting_z, new_sound = snd)
