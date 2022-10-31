@@ -535,6 +535,10 @@ forbid_singulo_following = true
 ## Pick one from: "random", "singularity", "supermatter"
 preferable_engine = "singularity"
 
+## Which bar should be on map (not all the maps support this).
+## Pick one from: "random", "classic", "modern"
+preferable_bar = "classic"
+
 ## Which biodome should be spawned on NSS Frontier
 ## Pick one from: "random", "forest", "winter", "beach", "concert"
 preferable_biodome = "forest"
