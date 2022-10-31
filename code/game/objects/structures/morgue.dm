@@ -354,9 +354,9 @@
 							playsound(src, 'sound/effects/clang.ogg', 45, 1)
 							shake_animation(5)
 						if(5)
-							playsound(src, 'sound/effects/fighting/smash.ogg', 50, 1)
+							playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, FALSE)
 							if(prob(50))
-								playsound(src, 'sound/effects/fighting/smash.ogg', 50, 1)
+								playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, FALSE)
 								shake_animation(9)
 							else
 								shake_animation()

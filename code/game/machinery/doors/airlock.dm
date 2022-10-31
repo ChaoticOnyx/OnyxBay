@@ -559,7 +559,7 @@ About the new airlock wires panel:
 			"<span class='danger'>\The [user] smashes the bolt cover open!</span>",
 			"<span class='warning'>You smash the bolt cover open!</span>"
 			)
-		playsound(src, 'sound/effects/fighting/smash.ogg', 100, 1)
+		playsound(src, 'sound/effects/fighting/Genhit.ogg', 100, FALSE)
 		lock_cut_state = BOLTS_EXPOSED
 		return 0
 
@@ -693,7 +693,7 @@ About the new airlock wires panel:
 	else if (istype(C, /obj/item/material/twohanded/fireaxe) && !(stat & BROKEN) && (src.health <= src.maxhealth / 2) && user.a_intent == I_HURT)
 		var/obj/item/material/twohanded/fireaxe/F = C
 		if(F.wielded)
-			playsound(src, 'sound/effects/fighting/smash.ogg', 100, 1)
+			playsound(src, 'sound/effects/fighting/Genhit.ogg', 100, FALSE)
 			user.visible_message("<span class='danger'>[user] smashes \the [C] into the airlock's control panel! It explodes in a shower of sparks!</span>", "<span class='danger'>You smash \the [C] into the airlock's control panel! It explodes in a shower of sparks!</span>")
 			health = 0
 			set_broken(TRUE)

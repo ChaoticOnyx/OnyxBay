@@ -22,7 +22,7 @@
 		RADIATION_BETA_PARTICLE = 0,
 		RADIATION_HAWKING = 0
 	)
-	hitby_sound = 'sound/effects/metalhit2.ogg'
+	hitby_sound = 'sound/effects/fighting/Genhit.ogg'
 
 /obj/Destroy()
 	CAN_BE_REDEFINED(TRUE)
@@ -164,13 +164,13 @@
 
 /obj/_examine_text(mob/user, infix, suffix)
 	. = ..()
-	
+
 	if(hasHUD(user, HUD_SCIENCE))
 		. += "\nStopping Power:"
 
 		. += "\nα-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_ALPHA_PARTICLE]), "eV", 3)]"
 		. += "\nβ-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_BETA_PARTICLE]), "eV", 3)]"
-	
+
 	return .
 
 /obj/proc/wrench_floor_bolts(mob/user, delay=20)

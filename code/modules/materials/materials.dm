@@ -751,7 +751,7 @@ var/list/name_to_material
 	reflectance = 10
 	sheet_singular_name = "ingot"
 	sheet_plural_name = "ingots"
-	hitsound = 'sound/effects/fighting/smash.ogg'
+	hitsound = 'sound/effects/fighting/Genhit.ogg'
 	shard_type = SHARD_SCRAP
 	reagent_path = /datum/reagent/iron
 
@@ -913,7 +913,7 @@ var/list/name_to_material
 	icon_base = "jaggy"
 	door_icon_base = "metal"
 	icon_reinf = "reinf_metal"
-	hitsound = 'sound/effects/fighting/smash.ogg'
+	hitsound = 'sound/effects/fighting/Genhit.ogg'
 	sheet_singular_name = "chunk"
 	sheet_plural_name = "chunks"
 

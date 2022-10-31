@@ -5,7 +5,7 @@
 	icon_state = "pipe1"
 	base_icon = "pipe"
 	item_state = "backwear_rpd"
-	hitsound = 'sound/effects/fighting/smash.ogg'
+	hitsound = 'sound/effects/fighting/Genhit.ogg'
 	gear_detachable = FALSE
 	gear = /obj/item/rpd
 	bcell = null

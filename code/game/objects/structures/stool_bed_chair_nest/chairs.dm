@@ -180,7 +180,7 @@
 		occupant.apply_effect(4, STUN, blocked)
 		occupant.apply_effect(4, WEAKEN, blocked)
 		occupant.apply_damage(rand(5,10), BRUTE, BP_GROIN, blocked)
-		playsound(src, 'sound/effects/fighting/punch1.ogg', 50, 1, -1)
+		playsound(src, 'sound/effects/fighting/genhit1.ogg', 50, FALSE, -1)
 	else if(user)
 		collapse_message = list("[user] collapses \the [src.name].", "You collapse \the [src.name].")
 

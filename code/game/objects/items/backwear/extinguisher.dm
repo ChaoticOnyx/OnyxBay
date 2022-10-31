@@ -5,7 +5,7 @@
 	icon_state = "foam0"
 	base_icon = "foam"
 	item_state = "backwear_extinguisher"
-	hitsound = 'sound/effects/fighting/smash.ogg'
+	hitsound = 'sound/effects/fighting/Genhit.ogg'
 	gear_detachable = FALSE
 	gear = /obj/item/extinguisher/linked
 	atom_flags = null

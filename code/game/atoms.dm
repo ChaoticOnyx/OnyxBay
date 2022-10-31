@@ -378,7 +378,7 @@ its easier to just keep the beam vertical.
 		var/obj/O = AM
 		sound_loudness = min(100, O.w_class * (O.throwforce ? 10 : 5) * hitby_loudness_multiplier)
 
-	playsound(src, hitby_sound, sound_loudness, 1)
+	playsound(src, hitby_sound, sound_loudness, FALSE)
 
 
 //returns 1 if made bloody, returns 0 otherwise

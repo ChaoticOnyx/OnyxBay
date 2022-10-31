@@ -355,9 +355,9 @@
 		var/dam_prob = min(100, material.hardness*1.5)
 		if(dam_prob < 100 && W.force > (dam_threshhold/10))
 			visible_message(SPAN("danger","\The [user] attacks \the [src] with \the [W]!"))
-			playsound(src, 'sound/effects/metalhit2.ogg', rand(50,75), 1, -1)
+			playsound(src, 'sound/effects/fighting/Genhit.ogg', rand(50,75), FALSE, -1)
 			take_damage(W.force)
 		else
 			visible_message(SPAN("danger","\The [user] attacks \the [src] with \the [W], but it bounces off!"))
-			playsound(src, 'sound/effects/metalhit2.ogg', 20, 1, -1)
+			playsound(src, 'sound/effects/fighting/Genhit.ogg', 20, 1, -1)
 		return

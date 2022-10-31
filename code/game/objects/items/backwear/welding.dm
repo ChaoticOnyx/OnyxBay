@@ -8,7 +8,7 @@
 	icon_state = "fuel0"
 	base_icon = "fuel"
 	item_state = "backwear_welding"
-	hitsound = 'sound/effects/fighting/smash.ogg'
+	hitsound = 'sound/effects/fighting/Genhit.ogg'
 	gear_detachable = FALSE
 	gear = /obj/item/weldingtool/linked
 	atom_flags = null

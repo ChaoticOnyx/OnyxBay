@@ -5,7 +5,7 @@ var/list/global/tank_gauge_cache = list()
 /obj/item/tank
 	name = "tank"
 	icon = 'icons/obj/tank.dmi'
-	hitsound = 'sound/effects/fighting/smash.ogg'
+	hitsound = 'sound/effects/fighting/Genhit.ogg'
 
 	var/gauge_icon = "indicator_tank"
 	var/gauge_cap = 6

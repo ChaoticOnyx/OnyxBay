@@ -10,7 +10,7 @@
 	icon_dead = "Goliath_dead"
 	icon_gib = "syndicate_gib"
 	var/icon_preattack = "Goliath_preattack"
-	attack_sound = 'sound/effects/fighting/punch4.ogg'
+	attack_sound = 'sound/effects/fighting/genhit2.ogg'
 	mouse_opacity = 2
 	move_to_delay = 40
 	ranged = 1

@@ -111,7 +111,7 @@
 /datum/hallucination/sound/danger
 	min_power = 20
 	max_power = 50
-	sounds = list('sound/effects/glass_step.ogg', 'sound/effects/hit_on_shattered_glass.ogg', 'sound/effects/fighting/smash.ogg')
+	sounds = list('sound/effects/glass_step.ogg', 'sound/effects/hit_on_shattered_glass.ogg', 'sound/effects/fighting/Genhit.ogg')
 
 /datum/hallucination/sound/danger/start()
 	sounds.Add(GET_SFX(SFX_EXPLOSION))

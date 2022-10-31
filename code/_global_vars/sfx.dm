@@ -1160,24 +1160,12 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	),
 	// FIGHTING
 	SFX_FIGHTING_CRUNCH = list(
-		'sound/effects/fighting/crunch1.ogg',
-		'sound/effects/fighting/crunch2.ogg',
-		'sound/effects/fighting/crunch3.ogg',
-		'sound/effects/fighting/crunch4.ogg',
-		'sound/effects/fighting/crunch5.ogg',
-		'sound/effects/fighting/crunch6.ogg',
-		'sound/effects/fighting/crunch7.ogg',
-		'sound/effects/fighting/crunch8.ogg',
-		'sound/effects/fighting/crunch9.ogg',
-		'sound/effects/fighting/crunch10.ogg',
-		'sound/effects/fighting/crunch11.ogg',
-		'sound/effects/fighting/crunch12.ogg'
+		'sound/effects/fighting/gib.ogg'
 	),
 	SFX_FIGHTING_PUNCH = list(
-		'sound/effects/fighting/punch1.ogg',
-		'sound/effects/fighting/punch2.ogg',
-		'sound/effects/fighting/punch3.ogg',
-		'sound/effects/fighting/punch4.ogg'
+		'sound/effects/fighting/genhit1.ogg',
+		'sound/effects/fighting/genhit2.ogg',
+		'sound/effects/fighting/genhit3.ogg'
 	),
 	SFX_FIGHTING_SWING = list(
 		'sound/effects/fighting/genhit1.ogg',
@@ -1218,16 +1206,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/materials/glass/glassknock.ogg'
 	),
 	SFX_GIB_SOUND = list(
-		'sound/effects/fighting/gib1.ogg',
-		'sound/effects/fighting/gib2.ogg',
-		'sound/effects/fighting/gib3.ogg',
-		'sound/effects/fighting/gib4.ogg',
-		'sound/effects/fighting/gib5.ogg',
-		'sound/effects/fighting/gib6.ogg',
-		'sound/effects/fighting/gib7.ogg',
-		'sound/effects/fighting/gib8.ogg',
-		'sound/effects/fighting/gib9.ogg',
-		'sound/effects/fighting/gib10.ogg'
+		'sound/effects/fighting/gib.ogg'
 	),
 	SFX_CLOWN = list(
 		'sound/effects/clownstep1.ogg',

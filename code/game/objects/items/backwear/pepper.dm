@@ -5,7 +5,7 @@
 	icon_state = "pepper1"
 	base_icon = "pepper"
 	item_state = "backwear_pepper"
-	hitsound = 'sound/effects/fighting/smash.ogg'
+	hitsound = 'sound/effects/fighting/Genhit.ogg'
 	gear_detachable = FALSE
 	gear = /obj/item/reagent_containers/spray/chemsprayer/crowdbuster
 	atom_flags = null

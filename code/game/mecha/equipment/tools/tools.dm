@@ -65,7 +65,7 @@
 			M.updatehealth()
 			occupant_message(SPAN("warning", "You squeeze [target] with [src.name]. Something cracks."))
 			chassis.visible_message(SPAN("warning", "[chassis] squeezes [target]."))
-			playsound(chassis, 'sound/effects/fighting/crunch5.ogg', 100, 1)
+			playsound(chassis, 'sound/effects/fighting/gib.ogg', 100, FALSE)
 		else
 			step_away(M, chassis)
 			occupant_message("You push [target] out of the way.")

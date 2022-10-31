@@ -257,7 +257,7 @@ update_flag
 		healthcheck()
 		user.setClickCooldown(W.update_attack_cooldown())
 		user.do_attack_animation(src)
-		playsound(src.loc, 'sound/effects/fighting/smash.ogg', 50, 1)
+		playsound(src.loc, 'sound/effects/fighting/Genhit.ogg', 50, FALSE)
 		shake_animation(stime = 4)
 
 	if(istype(user, /mob/living/silicon/robot) && istype(W, /obj/item/tank/jetpack))
