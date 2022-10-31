@@ -12,8 +12,7 @@
 /datum/storyteller_character/chaotic/New()
 	..()
 
-	roll_ratio()
-	addtimer(CALLBACK(src, .proc/roll_ratio), rand(1, 5) MINUTES, TIMER_LOOP)
+	add_think_ctx("roll_ratio", CALLBACK(src, .proc/roll_ratio), world.time + rand(1, 5) MINUTES)
 
 /datum/storyteller_character/chaotic/proc/roll_ratio()
 	if(prob(50))
@@ -39,3 +38,5 @@
 	aggression_ratio = Clamp(aggression_ratio, 0.0, 3.0)
 	quantity_ratio = Clamp(quantity_ratio, 0.0, 3.0)
 	rarity_ratio = Clamp(rarity_ratio, 0.0, 3.0)
+
+	set_next_think_ctx("roll_ratio", world.time + rand(1, 5) MINUTES)
