@@ -29,8 +29,7 @@
 	if(has_pin)
 		safety_pin = new /obj/item/safety_pin
 	detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
-	var/obj/item/device/assembly/timer/T = detonator.a_left
-	det_time = 10*T.time
+	new_timing(30)
 
 /obj/item/grenade/_examine_text(mob/user)
 	. = ..()
@@ -39,6 +38,9 @@
 			. += "\nThe safety pin is in place."
 		else
 			. += "\nThere is no safety pin in place."
+		if(QDELETED(detonator))
+			. += "\nThere is no detonator in place."
+			return
 		if(det_time > 1)
 			. += "\nThe timer is set to [det_time/10] seconds."
 			return
@@ -70,13 +72,13 @@
 		to_chat(user, SPAN("warning", "You remove the safety pin!"))
 		update_icon()
 		return
-	if(detonator)
-		if(!isigniter(detonator.a_left))
-			detonator.a_left.activate()
-			active = TRUE
-		if(!isigniter(detonator.a_right))
-			detonator.a_right.activate()
-			active = TRUE
+
+	if(!isigniter(detonator.a_left))
+		detonator.a_left.activate()
+		active = TRUE
+	if(!isigniter(detonator.a_right))
+		detonator.a_right.activate()
+		active = TRUE
 
 	broken = TRUE
 	if(user)
@@ -165,6 +167,21 @@
 	..()
 	if(QDELETED(safety_pin) && has_pin)
 		activate()
+
+// Changing time to sec*10
+/obj/item/grenade/proc/new_timing(new_timing)
+	if(QDELETED(detonator))
+		return
+	if(istimer(detonator.a_left))
+		var/obj/item/device/assembly/timer/T = detonator.a_left
+		T.time = new_timing/10
+		det_time = new_timing
+	else if(istimer(detonator.a_right))
+		var/obj/item/device/assembly/timer/T = detonator.a_right
+		T.time = new_timing/10
+		det_time = new_timing
+	else
+		det_time = null
 
 /obj/item/safety_pin
 	name = "safety pin"
