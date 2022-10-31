@@ -20,15 +20,12 @@
 /datum/event/wallrot/proc/announce()
 	var/list/affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 
-	if(GLOB.using_map.type == /datum/map/polar)
-		command_announcement.Announce(
-			"Harmful fungi detected on [station_name()]. Structures may be contaminated.",
-			"Biohazard Alert",
-			zlevels = affecting_z,
-			new_sound = 'sound/AI/polar/wallrot_announce.ogg'
-		)
-	else
-		command_announcement.Announce("Harmful fungi detected on [station_name()]. Structures may be contaminated.", "Biohazard Alert", zlevels = affecting_z)
+	command_announcement.Announce(
+		"Harmful fungi detected on [station_name()]. Structures may be contaminated.",
+		"Biohazard Alert",
+		zlevels = affecting_z,
+		new_sound = 'sound/AI/wallrotstart.ogg'
+	)
 
 /datum/event/wallrot/on_fire()
 	set_next_think_ctx("announce", world.time + (rand(2, 5) MINUTES))

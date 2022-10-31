@@ -88,15 +88,7 @@
 		infectedMachine.shut_up = 1
 		infectedMachine.shoot_inventory = 0
 
-	if(GLOB.using_map.type == /datum/map/polar)
-		command_announcement.Announce(
-			"All traces of the rampant brand intelligence have disappeared from the systems.",
-			"[station_name()] Firewall Subroutines",
-			new_sound = 'sound/AI/polar/rampant_end.ogg'
-		)
-	else
-		command_announcement.Announce("All traces of the rampant brand intelligence have disappeared from the systems.", "[station_name()] Firewall Subroutines")
-
+	command_announcement.Announce("All traces of the rampant brand intelligence have disappeared from the systems.", "[station_name()] Firewall Subroutines")
 	originMachine = null
 	infectedVendingMachines.Cut()
 	vendingMachines.Cut()
@@ -104,15 +96,9 @@
 /datum/event/brand_intelligence/proc/announce()
 	var/list/affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 
-	if(GLOB.using_map.type == /datum/map/polar)
-		command_announcement.Announce(
-			"Rampant brand intelligence has been detected aboard the Pathos-I. The origin is believed to be \a \"[initial(originMachine.name)]\" type. Fix it, before it spreads to other vending machines.",
-			"Machine Learning Alert",
-			new_sound = 'sound/AI/polar/rampant_announce.ogg'
-		)
-	else
-		command_announcement.Announce(
-			"Rampant brand intelligence has been detected aboard the [station_name()]. The origin is believed to be \a \"[initial(originMachine.name)]\" type. Fix it, before it spreads to other vending machines.",
-			"Machine Learning Alert",
-			zlevels = affecting_z
-		)
+	command_announcement.Announce(
+		"Rampant brand intelligence has been detected aboard the [station_name()]. The origin is believed to be \a \"[initial(originMachine.name)]\" type. Fix it, before it spreads to other vending machines.",
+		"Machine Learning Alert",
+		zlevels = affecting_z,
+		new_sound = 'sound/AI/rampantstart.ogg'
+	)

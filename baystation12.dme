@@ -917,6 +917,7 @@
 #include "code\game\map_ent\logic_operators.dm"
 #include "code\game\map_ent\logic_relay.dm"
 #include "code\game\map_ent\logic_timer.dm"
+#include "code\game\map_ent\map_bar.dm"
 #include "code\game\map_ent\map_engine.dm"
 #include "code\game\map_ent\map_ent.dm"
 #include "code\game\map_ent\trigger_button.dm"
