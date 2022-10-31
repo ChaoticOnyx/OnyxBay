@@ -1329,15 +1329,13 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/footstep/floor1.ogg',
 		'sound/effects/footstep/floor2.ogg',
 		'sound/effects/footstep/floor3.ogg',
-		'sound/effects/footstep/floor4.ogg',
-		'sound/effects/footstep/floor5.ogg'
+		'sound/effects/footstep/floor4.ogg'
 	),
 	SFX_FOOTSTEP_PLATING = list(
-		'sound/effects/footstep/plating1.ogg',
-		'sound/effects/footstep/plating2.ogg',
-		'sound/effects/footstep/plating3.ogg',
-		'sound/effects/footstep/plating4.ogg',
-		'sound/effects/footstep/plating5.ogg'
+		'sound/effects/footstep/catwalk1.ogg',
+		'sound/effects/footstep/catwalk2.ogg',
+		'sound/effects/footstep/catwalk3.ogg',
+		'sound/effects/footstep/catwalk4.ogg'
 	),
 	SFX_FOOTSTEP_CARPET = list(
 		'sound/effects/footstep/carpet1.ogg',
@@ -1350,8 +1348,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/footstep/asteroid1.ogg',
 		'sound/effects/footstep/asteroid2.ogg',
 		'sound/effects/footstep/asteroid3.ogg',
-		'sound/effects/footstep/asteroid4.ogg',
-		'sound/effects/footstep/asteroid5.ogg'
+		'sound/effects/footstep/asteroid4.ogg'
 	),
 	SFX_FOOTSTEP_SNOW = list(
 		'sound/effects/footstep/snow1.ogg',
