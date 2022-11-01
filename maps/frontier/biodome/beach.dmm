@@ -5,9 +5,7 @@
 "by" = (/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
 "bX" = (/obj/item/clothing/under/swimsuit/purple,/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
 "cL" = (/obj/item/beach_ball,/turf/simulated/floor/natural/jungle/water,/area/hydroponics/biodome)
-"dO" = (/obj/effect/floor_decal/corner/green/three_quarters{dir = 1},/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "eJ" = (/turf/simulated/floor/natural/jungle/water/edge{dir = 4},/area/hydroponics/biodome)
-"fv" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "bridge_window"; name = "Bridge Window Shutters"; opacity = 0},/obj/structure/cable/green{d2 = 8; icon_state = "0-8"},/obj/structure/cable/green,/obj/structure/window_frame/relectric/rglass,/turf/simulated/floor/tiled/dark/rough,/area/bridge)
 "fM" = (/obj/structure/railing/steel,/obj/structure/railing/steel{dir = 1},/turf/simulated/floor/holofloor/beach/water,/area/hydroponics/biodome)
 "fY" = (/obj/item/clothing/under/swimsuit/blue,/turf/simulated/floor/natural/jungle/water/corner{dir = 8},/area/hydroponics/biodome)
 "gi" = (/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/effect/floor_decal/spline/plain/yellow{dir = 8},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
@@ -15,30 +13,21 @@
 "hH" = (/obj/structure/flora/goonbushes/palm,/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
 "io" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass{name = "Central Biodome"; req_access = list()},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/disposalpipe/segment{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "iV" = (/obj/structure/disposalpipe/segment{dir = 8},/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{dir = 1},/obj/effect/floor_decal/spline/plain/yellow{dir = 1},/obj/machinery/navbeacon/frontier/DOME_NW,/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
-"jQ" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 6},/obj/machinery/navbeacon/frontier/DOME_SE,/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "kU" = (/obj/structure/disposalpipe/segment{dir = 2; icon_state = "conpipe-c"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 10},/obj/effect/floor_decal/spline/plain/corner/yellow{dir = 8},/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
-"lC" = (/obj/effect/floor_decal/corner/green,/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
 "lH" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/disposalpipe/segment{dir = 8},/obj/effect/floor_decal/spline/plain/corner/yellow{dir = 8},/obj/effect/floor_decal/spline/plain/corner/yellow,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "md" = (/turf/simulated/floor/natural/jungle/water/corner{dir = 8},/area/hydroponics/biodome)
-"mT" = (/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/obj/machinery/navbeacon/frontier/DOME_SW,/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "oq" = (/obj/machinery/light{dir = 4},/obj/structure/flora/goonbushes/palm,/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
-"pb" = (/obj/effect/floor_decal/corner/green{dir = 1},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "pg" = (/obj/effect/overlay/palmtree_r,/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
 "ph" = (/obj/effect/overlay/palmtree_r,/obj/effect/overlay/coconut,/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
 "px" = (/obj/machinery/light{dir = 4},/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
 "qu" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass{name = "Central Biodome"; req_access = list()},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
-"rq" = (/obj/effect/floor_decal/corner/green{dir = 5},/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/obj/structure/cable/yellow{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "rx" = (/obj/item/clothing/under/swimsuit/blue,/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
 "rY" = (/turf/simulated/floor/natural/jungle/water/edge{dir = 5},/area/hydroponics/biodome)
 "sb" = (/obj/structure/disposalpipe/segment{dir = 4; icon_state = "pipe-c"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 6},/obj/effect/floor_decal/spline/plain/corner/yellow,/obj/structure/cable{d1 = 2; d2 = 4; icon_state = "2-4"},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "sd" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/disposalpipe/segment{dir = 8},/obj/effect/floor_decal/plaque,/obj/effect/floor_decal/spline/plain/yellow{dir = 1},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
-"sk" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "bridge_window"; name = "Bridge Window Shutters"; opacity = 0},/obj/structure/cable/green{d2 = 8; icon_state = "0-8"},/obj/structure/cable/green{d2 = 4; icon_state = "0-4"},/obj/structure/window_frame/relectric/rglass,/turf/simulated/floor/tiled/dark/rough,/area/bridge)
-"sp" = (/obj/effect/floor_decal/corner/green{dir = 1},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "sX" = (/obj/machinery/light,/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
-"tC" = (/obj/effect/floor_decal/corner/green/three_quarters{dir = 8},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "uR" = (/obj/structure/railing/steel,/obj/structure/railing/steel{dir = 1},/obj/structure/railing/steel{dir = 8; icon_state = "newrailing0"},/turf/simulated/floor/holofloor/beach/water,/area/hydroponics/biodome)
 "uX" = (/turf/simulated/floor/natural/jungle/water/edge,/area/hydroponics/biodome)
-"vo" = (/obj/effect/floor_decal/corner/green{dir = 6},/obj/machinery/atmospherics/unary/vent_pump/on{dir = 8},/obj/structure/disposalpipe/segment,/obj/structure/cable/yellow{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "vC" = (/obj/machinery/light,/obj/machinery/camera/network/civilian_east{c_tag = "Central Garden - North"; dir = 1},/turf/simulated/floor/natural/jungle/water,/area/hydroponics/biodome)
 "vP" = (/obj/item/inflatable_duck,/turf/simulated/floor/natural/jungle/water/edge{dir = 1},/area/hydroponics/biodome)
 "vR" = (/obj/effect/overlay/palmtree_l,/obj/effect/overlay/coconut,/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
@@ -47,19 +36,13 @@
 "xq" = (/turf/simulated/floor/natural/jungle/water,/area/hydroponics/biodome)
 "xA" = (/obj/structure/disposalpipe/trunk{dir = 1},/obj/machinery/disposal,/obj/effect/floor_decal/spline/plain/yellow{dir = 6},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "xW" = (/obj/structure/disposalpipe/segment{dir = 4; icon_state = "pipe-c"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 6},/obj/effect/floor_decal/spline/plain/yellow{dir = 9},/obj/machinery/hologram/holopad,/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
-"yf" = (/obj/effect/floor_decal/corner/green/three_quarters{dir = 1},/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/obj/structure/cable/yellow{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "yz" = (/obj/machinery/alarm{dir = 8; pixel_x = 24},/obj/structure/disposalpipe/trunk{dir = 1},/obj/machinery/disposal,/obj/effect/floor_decal/spline/plain/yellow{dir = 10},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
-"zw" = (/obj/effect/floor_decal/corner/green{dir = 5},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
-"zF" = (/obj/effect/floor_decal/corner/green/three_quarters,/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
 "Ai" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass{name = "Central Biodome"; req_access = list()},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/disposalpipe/segment{dir = 8},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "BG" = (/obj/machinery/light{dir = 8},/obj/effect/overlay/palmtree_l,/obj/effect/overlay/coconut,/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
-"Cx" = (/obj/effect/floor_decal/corner/green{dir = 6},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
-"Db" = (/obj/effect/floor_decal/corner/green{dir = 4},/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/obj/structure/cable/yellow{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "DJ" = (/obj/item/clothing/shoes/swimmingfins,/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
 "Em" = (/turf/simulated/floor/natural/jungle/water/edge{dir = 9},/area/hydroponics/biodome)
 "EY" = (/obj/machinery/power/apc{dir = 4; name = "east bump"; pixel_x = 24},/obj/structure/cable/white{icon_state = "0-2"},/obj/effect/floor_decal/spline/plain/yellow{dir = 9},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "Fb" = (/turf/simulated/wall/sandstone,/area/hydroponics/biodome)
-"IX" = (/obj/effect/floor_decal/corner/green/three_quarters{dir = 4},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
 "Jo" = (/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 5},/obj/effect/floor_decal/spline/plain/yellow{dir = 10},/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "JJ" = (/obj/effect/floor_decal/spline/plain/yellow{dir = 4},/obj/effect/floor_decal/spline/plain/yellow{dir = 8},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "KI" = (/obj/structure/window_frame/rglass,/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plating,/area/hydroponics/biodome)
@@ -68,13 +51,10 @@
 "Lq" = (/obj/machinery/light{dir = 1; icon_state = "tube1"},/obj/machinery/camera/network/civilian_east{c_tag = "Central Garden - South"},/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
 "Mo" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass{name = "Central Biodome"; req_access = list()},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/cable/white{icon_state = "4-8"},/obj/structure/disposalpipe/segment{dir = 8},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "MA" = (/obj/structure/disposalpipe/segment{dir = 8; icon_state = "pipe-c"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 9; pixel_y = 0},/obj/effect/floor_decal/spline/plain/yellow{dir = 6},/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
-"MI" = (/obj/effect/floor_decal/corner/green/three_quarters,/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
 "MY" = (/obj/machinery/light{dir = 8; icon_state = "tube1"},/turf/simulated/floor/natural/jungle/water/edge{dir = 5},/area/hydroponics/biodome)
 "Nh" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/disposalpipe/segment{dir = 8},/obj/effect/floor_decal/spline/plain/yellow,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
-"Oa" = (/obj/effect/floor_decal/corner/green/three_quarters{dir = 1},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "Oo" = (/turf/simulated/floor/natural/jungle/water/edge{dir = 1},/area/hydroponics/biodome)
 "Pn" = (/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 1},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
-"PG" = (/obj/effect/floor_decal/corner/green{dir = 8},/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
 "PY" = (/obj/item/clothing/under/swimsuit/green,/turf/simulated/floor/natural/jungle/water/edge{dir = 4},/area/hydroponics/biodome)
 "Qo" = (/obj/effect/overlay/coconut,/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
 "QE" = (/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/effect/floor_decal/spline/plain/yellow{dir = 4},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
@@ -82,29 +62,26 @@
 "RB" = (/obj/effect/overlay/coconut,/obj/item/clothing/under/swimsuit/black,/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
 "SK" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/disposalpipe/segment{dir = 8},/obj/effect/floor_decal/spline/plain/yellow{dir = 1},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "SN" = (/obj/item/clothing/under/swimsuit/green,/turf/simulated/floor/natural/jungle/sand,/area/hydroponics/biodome)
-"SR" = (/obj/effect/floor_decal/corner/green/three_quarters{dir = 8},/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 4},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "TD" = (/obj/item/clothing/mask/snorkel,/obj/item/clothing/shoes/swimmingfins,/turf/simulated/floor/natural/jungle/water,/area/hydroponics/biodome)
 "TN" = (/obj/machinery/light{dir = 4; icon_state = "tube1"},/turf/simulated/floor/natural/jungle/water/edge{dir = 9},/area/hydroponics/biodome)
 "Ud" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/disposalpipe/junction{dir = 8; icon_state = "pipe-j2"},/obj/effect/floor_decal/spline/plain/corner/yellow,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "Ut" = (/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/effect/floor_decal/spline/plain/yellow{dir = 8},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "UD" = (/obj/structure/disposalpipe/segment{dir = 2; icon_state = "conpipe-c"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 10},/obj/effect/floor_decal/spline/plain/yellow{dir = 5},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
-"UO" = (/obj/effect/floor_decal/corner/green{dir = 9},/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
-"UX" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "bridge_window"; name = "Bridge Window Shutters"; opacity = 0},/obj/structure/cable/green{d2 = 4; icon_state = "0-4"},/obj/structure/cable/green,/obj/structure/window_frame/relectric/rglass,/turf/simulated/floor/tiled/dark/rough,/area/bridge)
+"UO" = (/turf/space,/area/space)
 "VT" = (/turf/simulated/floor/natural/jungle/water/edge{dir = 8},/area/hydroponics/biodome)
 "Ws" = (/obj/machinery/atmospherics/unary/vent_pump/on{layer = 2.4; level = 2},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "WJ" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/disposalpipe/junction{dir = 8; icon_state = "pipe-j2"},/obj/effect/floor_decal/spline/plain/corner/yellow{dir = 8},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "WS" = (/obj/structure/railing/steel,/obj/structure/railing/steel{dir = 1},/obj/structure/railing/steel{dir = 4},/turf/simulated/floor/holofloor/beach/water,/area/hydroponics/biodome)
 "Xg" = (/obj/structure/disposalpipe/segment{dir = 2; icon_state = "conpipe-c"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 10},/obj/effect/floor_decal/spline/plain/yellow{dir = 5},/obj/machinery/hologram/holopad,/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
-"Xy" = (/obj/effect/floor_decal/corner/green{dir = 9},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "XH" = (/obj/structure/disposalpipe/segment{dir = 8},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/effect/floor_decal/spline/plain/yellow,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "XJ" = (/turf/simulated/wall,/area/hydroponics/biodome)
 "XM" = (/turf/simulated/floor/natural/jungle/water/corner{dir = 4},/area/hydroponics/biodome)
 "Zo" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/disposalpipe/segment{dir = 8},/obj/effect/floor_decal/spline/plain/corner/yellow{dir = 4},/obj/structure/cable/white{icon_state = "1-4"},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 
 (1,1,1) = {"
-lCIXKIKIKIblUXskskskfvoqKIKIKIzFPG
-CxKIKIQQuXuXuXuXuXuXuXuXuXajKIKIUO
-IXKIbyeJxqxqxqxqxqxqxqcLxqVTRBKIMI
+UOUOKIKIKIblUOUOUOUOUOoqKIKIKIUOUO
+UOKIKIQQuXuXuXuXuXuXuXuXuXajKIKIUO
+UOKIbyeJxqxqxqxqxqxqxqcLxqVTRBKIUO
 KIKIBGPYxqxqxqxqxqxqxqxqaJVTpxKIKI
 KIbybymdOorYxqxqxqxqxqEmOoXMpghHKI
 XJhHbyphDJeJxqxqxqxqxqVTpgQoSNEYXJ
@@ -114,8 +91,8 @@ ioUdNhkUQEfYvPXMLqmdOoXMUtwpXHWJio
 XJxAbXgiQEbybybybybyQopgUthkbyyzXJ
 KIbyQogiwlXgvRbybybybyxWKJhkbyQoKI
 KIKIbyJokUwlSKSKsdSKSKKJsbMAbyKIKI
-dOKIbybyJoNhNhNhlHNhNhNhMAbybyKItC
-voKIKIbysXbybyhHJJbybyrxsXhHKIKIXy
-DbyfKIKIKIbybybyJJbybyQoKIKIKISRsp
-mTDbrqOaKIKIKIKIquKIKIKIKItCzwpbjQ
+UOKIbybyJoNhNhNhlHNhNhNhMAbybyKIUO
+UOKIKIbysXbybyhHJJbybyrxsXhHKIKIUO
+UOUOKIKIKIbybybyJJbybyQoKIKIKIUOUO
+UOUOUOUOKIKIKIKIquKIKIKIKIUOUOUOUO
 "}

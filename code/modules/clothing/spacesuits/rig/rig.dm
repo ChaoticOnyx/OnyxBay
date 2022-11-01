@@ -644,6 +644,8 @@
 					selected_module = module
 				if("select_charge_type")
 					module.charge_selected = href_list["charge_type"]
+				if("select_timing")
+					module.timing_selected = href_list["timing"]
 		return 1
 	if(href_list["toggle_ai_control"])
 		ai_override_enabled = !ai_override_enabled
