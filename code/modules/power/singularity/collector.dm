@@ -2,7 +2,7 @@ var/global/list/rad_collectors = list()
 
 /obj/machinery/power/rad_collector
 	name = "Hawking Collector Array"
-	desc = "A device which uses Hawking radiation and plasma to produce power. WARNING: Working with temperature 400C and higher can broke the device"
+	desc = "A device which uses Hawking radiation and plasma to produce power. WARNING: Working with temperature 400C and higher can break the device"
 	icon = 'icons/obj/singularity.dmi'
 	icon_state = "ca"
 	anchored = 0
