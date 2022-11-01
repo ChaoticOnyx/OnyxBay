@@ -523,7 +523,7 @@
 								"You hear a knocking sound.")
 		return
 
-	playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
+	playsound(loc, 'sound/effects/grillehit.ogg', 80, FALSE)
 	user.do_attack_animation(src)
 
 	var/damage_dealt = 1
@@ -583,7 +583,7 @@
 			if((W.obj_flags & OBJ_FLAG_CONDUCTIBLE) && shock(user, 70))
 				to_chat(user, SPAN("danger", "You try to hit \the [src], but get electrocuted!"))
 				return
-			playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
+			playsound(loc, 'sound/effects/grillehit.ogg', 80, FALSE)
 			visible_message(SPAN("danger", "[src] has been hit by [user] with [W]."))
 			switch(W.damtype)
 				if("fire")
@@ -654,7 +654,7 @@
 				return
 			affected.state = 3 - affected.state
 			update_nearby_icons()
-			playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
+			playsound(loc, 'sound/items/Screwdriver.ogg', 75, FALSE)
 			to_chat(user, (affected.state == 2 ? SPAN("notice", "You have fastened \the [affected.name] to the frame.") : SPAN("notice", "You have unfastened \the [affected.name] from the frame.")))
 			return
 
@@ -666,7 +666,7 @@
 				return
 			affected.state = 1 - affected.state
 			update_nearby_icons()
-			playsound(loc, 'sound/items/Crowbar.ogg', 75, 1)
+			playsound(loc, 'sound/items/Crowbar.ogg', 75, FALSE)
 			to_chat(user, (affected.state == 1 ? SPAN("notice", "You have pried \the [affected.name] into the frame.") : SPAN("notice", "You have pried \the [affected.name] out of the frame.")))
 			return
 
@@ -676,7 +676,7 @@
 				return
 			if(QDELETED(affected) || affected.state != old_state)
 				return
-			playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
+			playsound(loc, 'sound/items/Ratchet.ogg', 75, FALSE)
 			visible_message(SPAN("notice", "[user] dismantles \the [affected.name] from \the [src].")) // Showing the message before dismantle() so it's "...from the window" and not "...from the window frame".
 			affected.dismantle()
 			return
@@ -713,7 +713,7 @@
 				new /obj/item/stack/cable_coil(get_turf(src), 1, cable_color)
 				outer_pane?.set_tint(FALSE)
 		update_nearby_icons()
-		playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
+		playsound(loc, 'sound/items/Wirecutter.ogg', 100, FALSE)
 		return
 
 	if(istype(W, /obj/item/stack/rods))
@@ -791,7 +791,7 @@
 				to_chat(user, SPAN("warning", "There are too many frames in this location."))
 				return
 
-		playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
+		playsound(loc, 'sound/items/Screwdriver.ogg', 100, FALSE)
 		anchored = !anchored
 		update_nearby_icons()
 		user.visible_message(SPAN("notice", "[user] [anchored ? "fastens" : "unfastens"] \the [src]."), \

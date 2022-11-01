@@ -1195,15 +1195,10 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/vent/vent19.ogg'
 	),
 	SFX_GLASS_HIT = list(
-		'sound/effects/materials/glass/knock1.ogg',
-		'sound/effects/materials/glass/knock2.ogg',
-		'sound/effects/materials/glass/knock3.ogg',
-		'sound/effects/materials/glass/knock4.ogg',
-		'sound/effects/materials/glass/knock5.ogg',
-		'sound/effects/materials/glass/knock6.ogg'
+		'sound/effects/fighting/Genhit.ogg'
 	),
 	SFX_GLASS_KNOCK = list(
-		'sound/effects/materials/glass/glassknock.ogg'
+		'sound/effects/fighting/Genhit.ogg'
 	),
 	SFX_GIB_SOUND = list(
 		'sound/effects/fighting/gib.ogg'
