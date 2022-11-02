@@ -1235,6 +1235,11 @@ May God have mercy.
 	blend = ICON_MULTIPLY
 	species_allowed = list(SPECIES_UNATHI)
 
+/datum/sprite_accessory/hair/bobcut
+	name = "Alternative Bobcut"
+	icon_state = "bobcut"
+	species_allowed = list(SPECIES_UNATHI)
+
 /datum/sprite_accessory/hair/una/swept_horn
 	name = "Swept Horns"
 	icon_state = "swept"
