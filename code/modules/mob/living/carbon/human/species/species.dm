@@ -89,7 +89,7 @@
 	var/radiation_mod =  1                    // Radiation modifier
 	var/flash_mod =      1                    // Stun from blindness modifier.
 	var/metabolism_mod = 1                    // Reagent metabolism modifier
-	var/vision_flags = SEE_SELF               // Same flags as glasses.
+	var/vision_flags = SEE_SELF|SEE_BLACKNESS // Same flags as glasses.
 	var/generic_attack_mod = 1.0              // Damage dealt to simple animals with unarmed attacks multiplier.
 
 	// Death vars.
@@ -523,7 +523,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	if(!H.druggy)
 		H.set_see_in_dark(max(
 			H.see_in_dark,
-			H.sight == (SEE_TURFS|SEE_MOBS|SEE_OBJS) ? 8 : H.see_in_dark,
+			H.sight & (SEE_TURFS|SEE_MOBS|SEE_OBJS) ? 8 : H.see_in_dark,
 			darksight_range + H.equipment_darkness_modifier
 		))
 		if(H.equipment_see_invis)
