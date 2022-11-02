@@ -54,7 +54,7 @@
 		if(2) . += "\nIt's wired."
 		if(3) . += "\nThe casing is closed."
 
-/obj/machinery/light_construct/attackby(obj/item/W as obj, mob/user as mob)
+/obj/machinery/light_construct/attackby(obj/item/W, mob/user)
 	src.add_fingerprint(user)
 	if(isWrench(W))
 		if (src.stage == 1)
@@ -319,12 +319,22 @@
 	if(status == LIGHT_EMPTY || status == LIGHT_BROKEN)
 		to_chat(user, "That object is useless to you.")
 		return
-	if(!(status == LIGHT_OK||status == LIGHT_BURNED))
+	if(!(status == LIGHT_OK || status == LIGHT_BURNED))
 		return
 	visible_message("<span class='danger'>[user] smashes the light!</span>")
 	attack_animation(user)
 	broken()
 	return 1
+
+/obj/machinery/light/bullet_act(obj/item/projectile/P)
+	var/status = get_status()
+	if(!(status == LIGHT_OK || status == LIGHT_BURNED))
+		return
+	if(P.nodamage || (P.damage_type != BRUTE))
+		return
+	visible_message("<span class='danger'>[P] hits \the [src]!</span>")
+	broken()
+	..()
 
 /obj/machinery/light/proc/set_mode(new_mode)
 	if(current_mode == new_mode || !lightbulb)
