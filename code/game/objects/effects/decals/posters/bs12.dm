@@ -307,7 +307,7 @@
 /datum/poster/bay_62
 	icon_state="bsposter62"
 	name = "yarida dragon"
-	desc = "The poster depicts a dragon in the center of space. On the side you see the word ""Yarida"" - you have no idea what it means, but a slight sadness grips you as you look at it."
+	desc = "The poster depicts a dragon in the center of space. On the side you see the word Yarida - you have no idea what it means, but a slight sadness grips you as you look at it."
 
 /datum/poster/bay_63
 	icon_state="bsposter63"
@@ -317,7 +317,7 @@
 /datum/poster/bay_64
 	icon_state="bsposter64"
 	name = "Rob Boss is Watching You!"
-	desc = "You see the famous artist Rob Boss. His shows about drawing still lifes, various creatures and phenomena are actively promoted by NanoTrasen. At the top of the poster you can see the inscription - ""Rob Boss is Watching You.""
+	desc = "You see the famous artist Rob Boss. His shows about drawing still lifes, various creatures and phenomena are actively promoted by NanoTrasen. At the top of the poster you can see the inscription - Rob Boss is Watching You."
 
 /datum/poster/bay_65
 	icon_state="bsposter65"
@@ -327,17 +327,17 @@
 /datum/poster/bay_66
 	icon_state="bsposter66"
 	name = "the call of Zen"
-	desc = "It is a poster of the ""Yin-Yang"" symbol, often associated with the now unpopular religion of Taoism.It's a very calming image."
+	desc = "It is a poster of the Yin-Yang symbol, often associated with the now unpopular religion of Taoism.It's a very calming image."
 
 /datum/poster/bay_67
 	icon_state="bsposter67"
 	name = "bioshocked"
-	desc = "This poster depicts a huge, strange steel spacesuit; perhaps it's needed to find some gel-type race in space.At the top you can see ""Bioshocked,"" which must have hit that gelatinous race pretty hard."
+	desc = "This poster depicts a huge, strange steel spacesuit; perhaps it's needed to find some gel-type race in space.At the top you can see Bioshocked, which must have hit that gelatinous race pretty hard."
 
 /datum/poster/bay_68
 	icon_state="bsposter68"
 	name = "crazy Dude"
-	desc = "The poster depicts a red-haired man wearing glasses. He has a crazy grin on his face.We can only hope that the blood on the poster is not real.It's not real, is it?"
+	desc = "The poster depicts a red-haired man wearing glasses. He has a crazy grin on his face. We can only hope that the blood on the poster is not real.It's not real, is it?"
 
 /datum/poster/bay_69
 	icon_state="bsposter69"
@@ -347,27 +347,27 @@
 /datum/poster/bay_70
 	icon_state="bsposter70"
 	name = "pipe of love!"
-	desc = "The poster depicts the ""health pipe,"" an old, long-forbidden and long-forgotten drug that is instantly addictive and makes you feel perfectly healthy."
+	desc = "The poster depicts the health pipe, an old, long-forbidden and long-forgotten drug that is instantly addictive and makes you feel perfectly healthy."
 
 /datum/poster/bay_71
 	icon_state="bsposter71"
 	name = "cheers everyone!"
-	desc = "This poster greets you with a scruffy-looking young man wearing some kind of ""space is cool!"" t-shirt. He's holding a glass full of white liquid, and he looks like he wants to celebrate something-just as long as there's a reason."
+	desc = "This poster greets you with a scruffy-looking young man wearing some kind of space is cool! t-shirt. He's holding a glass full of white liquid, and he looks like he wants to celebrate something-just as long as there's a reason."
 
 /datum/poster/bay_72
 	icon_state="bsposter72"
 	name = "metroidvania"
-	desc = "The poster has a picture of a metroid on it. At the bottom, in small print, you can read. This poster is designed and implemented by the Universal Metroid Support Association. Metroid to the masses! Say ""No!"" to the genocide of Jell-O Friends!"
+	desc = "The poster has a picture of a metroid on it. At the bottom, in small print, you can read. This poster is designed and implemented by the Universal Metroid Support Association. Metroid to the masses! Say No! to the genocide of Jell-O Friends!"
 
 /datum/poster/bay_73
 	icon_state="bsposter73"
 	name = "just drive"
-	desc = "This poster shows an unsightly jacket from the distant past. The same jackets worn by those who like to rummage through old clothes from centuries ago. The overall style of the poster tries to show its old-fashionedness with all its appearance. What the written inscription ""Drive"" calls for is unclear."
+	desc = "This poster shows an unsightly jacket from the distant past. The same jackets worn by those who like to rummage through old clothes from centuries ago. The overall style of the poster tries to show its old-fashionedness with all its appearance. What the written inscription Drive calls for is unclear."
 
 /datum/poster/bay_74
 	icon_state="bsposter74"
 	name = "make coffee, not sabotage!"
-	desc = "Another NanoTrasen propaganda aimed at employees who are not the most loyal.The call to ""drink coffee instead of sabotage"" should have worked well, they thought. Judge yourself."
+	desc = "Another NanoTrasen propaganda aimed at employees who are not the most loyal.The call to drink coffee instead of sabotage should have worked well, they thought. Judge yourself."
 
 /datum/poster/bay_75
 	icon_state="bsposter75"
