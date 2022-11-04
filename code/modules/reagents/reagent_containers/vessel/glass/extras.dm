@@ -59,7 +59,7 @@
 	desc = "This goes in a glass."
 	glass_addition = "stick"
 	glass_desc = "There is a stick in the glass."
-	icon_state = "stick"
+	icon_state = "stick1"
 
 /obj/item/glass_extra/straw
 	name = "straw"
