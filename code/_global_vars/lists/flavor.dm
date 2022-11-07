@@ -11,7 +11,7 @@ GLOBAL_LIST_INIT(robot_module_types, list(
 )) // This shouldn't be a static list. Am I the only one who cares about extendability around here?
 
 // Noises made when hit while typing.
-GLOBAL_LIST_INIT(hit_appends, list("-OOF", "-ACK", "-UGH", "-HRNK", "-HURGH", "-GLORF"))
+GLOBAL_LIST_INIT(hit_appends, list("-УФФ", "-АКХ", "-УГХХ", "-ХЫНН", "-АРГХ", "-ЫК"))
 
 // Some scary sounds.
 GLOBAL_LIST_INIT(scarySounds, list(
