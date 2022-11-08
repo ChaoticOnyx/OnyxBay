@@ -332,7 +332,7 @@
 /datum/poster/bay_67
 	icon_state="bsposter67"
 	name = "bioshocked"
-	desc = "This poster depicts a huge, strange steel spacesuit; perhaps it's needed to find some gel-type race in space.At the top you can see Bioshocked, which must have hit that gelatinous race pretty hard."
+	desc = "This poster depicts a huge, strange steel spacesuit; perhaps it's needed to find some gel-type race in space. At the top you can see Bioshocked, which must have hit that gelatinous race pretty hard."
 
 /datum/poster/bay_68
 	icon_state="bsposter68"
