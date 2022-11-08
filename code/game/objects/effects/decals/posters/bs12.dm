@@ -327,7 +327,7 @@
 /datum/poster/bay_66
 	icon_state="bsposter66"
 	name = "the call of Zen"
-	desc = "It is a poster of the Yin-Yang symbol, often associated with the now unpopular religion of Taoism.It's a very calming image."
+	desc = "It is a poster of the Yin-Yang symbol, often associated with the now unpopular religion of Taoism. It's a very calming image."
 
 /datum/poster/bay_67
 	icon_state="bsposter67"
