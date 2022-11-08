@@ -352,7 +352,7 @@
 /datum/poster/bay_71
 	icon_state="bsposter71"
 	name = "cheers everyone!"
-	desc = "This poster greets you with a scruffy-looking young man wearing some kind of space is cool! t-shirt. He's holding a glass full of white liquid, and he looks like he wants to celebrate something-just as long as there's a reason."
+	desc = "This poster greets you with a scruffy-looking young man wearing some kind of space is cool! T-shirt. He's holding a glass full of white liquid, and he looks like he wants to celebrate something-just as long as there's a reason."
 
 /datum/poster/bay_72
 	icon_state="bsposter72"
