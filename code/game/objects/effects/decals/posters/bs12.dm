@@ -337,7 +337,7 @@
 /datum/poster/bay_68
 	icon_state="bsposter68"
 	name = "crazy Dude"
-	desc = "The poster depicts a red-haired man wearing glasses. He has a crazy grin on his face. We can only hope that the blood on the poster is not real.It's not real, is it?"
+	desc = "The poster depicts a red-haired man wearing glasses. He has a crazy grin on his face. We can only hope that the blood on the poster is not real. It's not real, is it?"
 
 /datum/poster/bay_69
 	icon_state="bsposter69"
