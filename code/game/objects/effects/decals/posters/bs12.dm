@@ -367,7 +367,7 @@
 /datum/poster/bay_74
 	icon_state="bsposter74"
 	name = "make coffee, not sabotage!"
-	desc = "Another NanoTrasen propaganda aimed at employees who are not the most loyal.The call to drink coffee instead of sabotage should have worked well, they thought. Judge yourself."
+	desc = "Another NanoTrasen propaganda aimed at employees who are not the most loyal. The call to drink coffee instead of sabotage should have worked well, they thought. Judge yourself."
 
 /datum/poster/bay_75
 	icon_state="bsposter75"
