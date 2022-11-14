@@ -25,6 +25,7 @@ GLOBAL_REAL(config, /datum/server_configuration) = new
 	var/datum/configuration_section/external/external = new
 	var/datum/configuration_section/error/error = new
 	var/datum/configuration_section/donations/donations = new
+	var/datum/configuration_section/storyteller_antags/storyteller_antags = new
 
 	/// Raw data. Stored here to avoid passing data between procs constantly
 	var/list/raw_data = list()

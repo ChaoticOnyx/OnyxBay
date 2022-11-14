@@ -170,7 +170,9 @@ SUBSYSTEM_DEF(storyteller)
 /datum/controller/subsystem/storyteller/proc/run_trigger(type)
 	ASSERT(type in __triggers)
 	var/storyteller_trigger/trigger = __triggers[type]
-	return trigger.invoke()
+	if(trigger.can_be_invoked())
+		return trigger.invoke()
+	return FALSE
 
 /datum/controller/subsystem/storyteller/proc/get_tick()
 	return __storyteller_tick

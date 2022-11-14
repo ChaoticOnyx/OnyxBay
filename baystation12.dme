@@ -312,6 +312,7 @@
 #include "code\datums\configuration\multiaccount_section.dm"
 #include "code\datums\configuration\revival_section.dm"
 #include "code\datums\configuration\server_configuration.dm"
+#include "code\datums\configuration\storyteller_antags_section.dm"
 #include "code\datums\configuration\vote_section.dm"
 #include "code\datums\elements\_element.dm"
 #include "code\datums\elements\connect_loc.dm"

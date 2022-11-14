@@ -650,3 +650,6 @@ silence_time = 6000
 
 ## How long to wait between messaging admins about occurrences of a unique error.
 msg_delay = 50
+
+[storyteller_antags]
+enable_abductors = true
