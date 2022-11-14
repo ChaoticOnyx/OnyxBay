@@ -11,7 +11,7 @@
 	var/title_image
 	var/head_elements
 	var/body_elements
-	var/head_content = ""  #еболик
+	var/head_content = ""  #ebun
 	var/content = ""
 	var/title_buttons = ""
 
