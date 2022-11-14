@@ -652,4 +652,10 @@ silence_time = 6000
 msg_delay = 50
 
 [storyteller_antags]
-enable_abductors = true
+spawn_abductors = true
+spawn_vampire = true
+spawn_traitor = true
+spawn_borer = true
+spawn_changeling = true
+spawn_ninja = true
+spawn_wizard = true
