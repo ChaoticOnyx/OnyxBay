@@ -375,7 +375,7 @@
 
 				to_chat(usr, "<span class='warning'>You have disassembled the SMES cell!</span>")
 				var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(src.loc)
-				M.state = 2
+				M.state = 1
 				M.icon_state = "box_1"
 				for(var/obj/I in component_parts)
 					I.forceMove(src.loc)
