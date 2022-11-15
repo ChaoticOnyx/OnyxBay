@@ -188,7 +188,3 @@
 		LAZYADD(new_machine.component_parts, circuit)
 		new_machine.RefreshParts()
 		qdel(src)
-
-#undef STAGE_CABLE
-#undef STAGE_CIRCUIT
-#undef STAGE_COMPONENTS
