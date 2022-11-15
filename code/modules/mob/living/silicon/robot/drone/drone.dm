@@ -245,7 +245,7 @@ var/list/mob_hat_cache = list()
 	..()
 
 /mob/living/silicon/robot/drone/emag_act(remaining_charges, mob/user)
-	if(stat == 2)
+	if(!client || stat == 2)
 		to_chat(user, "<span class='danger'>There's not much point subverting this heap of junk.</span>")
 		return
 
