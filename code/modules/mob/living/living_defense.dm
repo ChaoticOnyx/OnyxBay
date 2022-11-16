@@ -225,9 +225,9 @@
 
 			if(buckled)
 				return
-			else
-				visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
-				throw_at(get_edge_target_turf(src, dir), 1, (1 / momentum))
+
+			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
+			throw_at(get_edge_target_turf(src, dir), 1, (1 / momentum))
 
 			if(!O || !src)
 				return
