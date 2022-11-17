@@ -66,11 +66,16 @@
 	if(!istype(O, /obj/item))
 		return ..()
 	var/turf/T = get_turf(O)
+	var/table_found = FALSE
+	for(var/obj/item in T.contents)
+		if(istype(item, type))
+			table_found = TRUE
+			break
 	if(O.loc == loc)
 		auto_align(O, params)
 		O.forceMove(loc)
 		return
-	else if(user.get_active_hand() != O && !T.Adjacent(src, user))
+	else if(user.get_active_hand() != O && !(T.Adjacent(src, user) && table_found))
 		return ..()
 	if(isrobot(user))
 		return
