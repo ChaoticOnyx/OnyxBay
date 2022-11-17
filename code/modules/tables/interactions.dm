@@ -68,7 +68,7 @@
 	var/turf/T = get_turf(O)
 	var/table_found = FALSE
 	for(var/obj/item in T.contents)
-		if(istype(item, type))
+		if(istype(item, /obj/structure/table))
 			table_found = TRUE
 			break
 	if(O.loc == loc)
