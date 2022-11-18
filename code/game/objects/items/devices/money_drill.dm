@@ -9,6 +9,7 @@
 	desc = "A rather fragile structure made of a drill connected by wires."
 
 	icon_state = "money_drill"
+	item_state = "money_drill"
 	w_class = ITEM_SIZE_NORMAL
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	throwforce = 5
@@ -146,7 +147,7 @@
 	if(!istype(A))
 		return ..()
 
-	// 2 - Check if the ATM and the dirll it is not broken.
+	// 2 - Check if the ATM and the drill it is not broken.
 	if(broken)
 		to_chat(user, SPAN("warning", "\The [src] is broken!"))
 		return
