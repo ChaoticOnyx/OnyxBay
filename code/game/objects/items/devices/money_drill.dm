@@ -169,6 +169,7 @@
 		return FALSE
 
 	user.visible_message("[user] have installed \the [src]", "You have installed \the [src]")
+	icon_state = "Drill_On_Atm"
 
 	// Setup some variables.
 	hack_progress = 0
@@ -229,6 +230,7 @@
 		visible_message(beep_msg, beep_msg)
 		playsound(src, 'sound/signals/warning7.ogg', 40, FALSE)
 		_finish_hack()
+		icon_state ="money_drill"
 		return PROCESS_KILL
 
 	if(hack_interrupted)
