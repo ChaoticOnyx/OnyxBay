@@ -46,3 +46,4 @@
 #define MAP_BAR_RANDOM  "random"
 #define MAP_BAR_CLASSIC "classic"
 #define MAP_BAR_MODERN  "modern"
+#define MAP_BAR_SALOON  "saloon"

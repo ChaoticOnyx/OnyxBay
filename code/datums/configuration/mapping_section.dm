@@ -14,5 +14,5 @@
 		preferable_engine = MAP_ENG_SINGULARITY
 	if(!(preferable_biodome in list(MAP_BIO_RANDOM, MAP_BIO_FOREST, MAP_BIO_WINTER, MAP_BIO_BEACH, MAP_BIO_CONCERT)))
 		preferable_biodome = MAP_BIO_FOREST
-	if(!(preferable_bar in list(MAP_BAR_RANDOM, MAP_BAR_CLASSIC, MAP_BAR_MODERN)))
+	if(!(preferable_bar in list(MAP_BAR_RANDOM, MAP_BAR_CLASSIC, MAP_BAR_MODERN, MAP_BAR_SALOON)))
 		preferable_bar = MAP_BAR_CLASSIC
