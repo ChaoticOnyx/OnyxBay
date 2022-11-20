@@ -1,9 +1,9 @@
-"aJ" = (/obj/structure/flora/tree/green/small/tree5,/obj/structure/flora/ausbushes/sparsegrass,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
+"aJ" = (/obj/structure/flora/tree/green/small/tree5,/obj/structure/flora/ausbushes/sparsegrass,/obj/effect/floor_decal/spline/fancy/wood/corner{dir = 8},/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "bh" = (/obj/structure/flora/tree/green/small/tree3,/obj/structure/flora/ausbushes/fullgrass,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
-"bl" = (/obj/structure/flora/ausbushes/fullgrass,/obj/structure/flora/tree/green/small/tree5,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
+"bl" = (/obj/structure/flora/ausbushes/fullgrass,/obj/structure/flora/tree/green/small/tree5,/obj/effect/floor_decal/spline/fancy/wood/corner{dir = 8},/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "by" = (/obj/structure/bed/pew/pewchapel/right{dir = 1; icon_state = "chair_pewchapel_right_over"; name = "bench"},/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "bX" = (/obj/effect/floor_decal/corner/green{dir = 6},/obj/effect/floor_decal/corner/green{dir = 9},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/disposalpipe/segment{dir = 8},/obj/structure/railing/steel,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
-"bY" = (/obj/structure/flora/ausbushes/fullgrass,/obj/structure/flora/ausbushes/jungleflora/busha,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
+"bY" = (/obj/effect/floor_decal/spline/fancy/wood/corner,/obj/structure/flora/ausbushes/fullgrass,/obj/structure/flora/ausbushes/jungleflora/busha,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "ch" = (/obj/structure/flora/ausbushes/fernybush,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "cv" = (/obj/structure/flora/tree/green/small/tree6,/obj/structure/flora/ausbushes/fullgrass,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "cL" = (/obj/effect/floor_decal/corner/green{dir = 6},/obj/effect/floor_decal/corner/green{dir = 9},/obj/machinery/atmospherics/unary/vent_pump/on{layer = 2.4; level = 2},/obj/structure/railing/steel{dir = 4},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
@@ -20,6 +20,7 @@
 "io" = (/obj/machinery/door/firedoor/border_only,/obj/effect/floor_decal/corner/green{dir = 9},/obj/effect/floor_decal/corner/green{dir = 6},/obj/machinery/door/airlock/glass{name = "Central Biodome"; req_access = list()},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/disposalpipe/segment{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "it" = (/obj/structure/flora/ausbushes/genericbush,/obj/structure/flora/ausbushes/lavendergrass,/obj/structure/flora/ausbushes/jungleflora/bushb,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "iV" = (/obj/structure/flora/ausbushes/fullgrass,/obj/machinery/light,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
+"iY" = (/obj/structure/flora/ausbushes/fullgrass,/obj/effect/floor_decal/spline/fancy/wood/corner{dir = 4},/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "jP" = (/obj/structure/flora/ausbushes/lavendergrass,/obj/structure/flora/tree/green/tree8,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "kU" = (/obj/effect/floor_decal/corner/green{dir = 6},/obj/effect/floor_decal/corner/green{dir = 9},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/disposalpipe/segment{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "lA" = (/obj/structure/flora/ausbushes/lavendergrass,/obj/structure/flora/ausbushes/fernybush,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
@@ -43,9 +44,10 @@
 "sX" = (/obj/structure/flora/ausbushes/sparsegrass,/obj/machinery/light,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "tn" = (/obj/structure/flora/ausbushes/sparsegrass,/obj/structure/flora/tree/green/tree7,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "tC" = (/turf/space,/area/space)
-"tT" = (/obj/structure/flora/tree/green/small/tree1,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
+"tT" = (/obj/structure/flora/tree/green/small/tree1,/obj/effect/floor_decal/spline/fancy/wood/corner,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
+"ua" = (/obj/structure/flora/ausbushes/fullgrass,/obj/effect/floor_decal/spline/fancy/wood/corner,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "uQ" = (/obj/structure/flora/ausbushes/sparsegrass,/obj/structure/flora/ausbushes/leafybush,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
-"uR" = (/obj/structure/flora/ausbushes/lavendergrass,/obj/structure/flora/jungleplants/junglebushlarge/bush4,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
+"uR" = (/obj/structure/flora/ausbushes/lavendergrass,/obj/structure/flora/jungleplants/junglebushlarge/bush4,/obj/effect/floor_decal/spline/fancy/wood/corner{dir = 1},/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "uU" = (/obj/structure/flora/ausbushes/lavendergrass,/obj/structure/flora/ausbushes/jungleflora/bushc,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "uX" = (/obj/effect/floor_decal/corner/green{dir = 5},/obj/effect/floor_decal/corner/green{dir = 10},/obj/machinery/navbeacon/frontier/DOME_N,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "vC" = (/obj/effect/floor_decal/spline/fancy{dir = 1},/obj/machinery/light,/obj/machinery/camera/network/civilian_east{c_tag = "Central Garden - North"; dir = 1},/turf/simulated/floor/water/fountain,/area/hydroponics/biodome)
@@ -66,11 +68,14 @@
 "Cb" = (/obj/structure/flora/tree/green/tree8,/obj/structure/flora/ausbushes/fullgrass,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "CQ" = (/obj/structure/flora/ausbushes/sparsegrass,/obj/structure/flora/ausbushes/jungleplants,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "DJ" = (/obj/effect/floor_decal/corner/green{dir = 6},/obj/effect/floor_decal/corner/green{dir = 9},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 6},/obj/structure/disposalpipe/segment{dir = 4; icon_state = "pipe-c"},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
+"DL" = (/obj/effect/floor_decal/spline/fancy/wood/corner{dir = 1},/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "Em" = (/obj/structure/bed/pew/pewchapel/left{dir = 8; name = "bench"},/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "EY" = (/obj/effect/floor_decal/corner/green{dir = 9},/obj/effect/floor_decal/corner/green{dir = 6},/obj/machinery/power/apc{dir = 4; name = "east bump"; pixel_x = 24},/obj/structure/cable/white{icon_state = "0-2"},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "Fb" = (/obj/effect/landmark/event/rift/spawn_point,/turf/simulated/wall/gold,/area/hydroponics/biodome)
+"Fw" = (/obj/structure/flora/ausbushes/pointybush,/obj/effect/floor_decal/spline/fancy/wood/corner{dir = 8},/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "FS" = (/obj/structure/flora/ausbushes/lavendergrass,/obj/structure/flora/jungleplants/junglebushlarge/bush1,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "II" = (/obj/structure/flora/ausbushes/reedbush,/obj/structure/flora/ausbushes/fullgrass,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
+"Jl" = (/obj/effect/floor_decal/spline/fancy/wood/corner{dir = 4},/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "JJ" = (/obj/effect/floor_decal/corner/green{dir = 6},/obj/effect/floor_decal/corner/green{dir = 9},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 10},/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "KI" = (/obj/structure/window_frame/rglass,/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plating,/area/hydroponics/biodome)
 "KJ" = (/obj/effect/floor_decal/spline/fancy{dir = 5},/turf/simulated/floor/water/fountain,/area/hydroponics/biodome)
@@ -93,6 +98,7 @@
 "Tb" = (/obj/structure/flora/ausbushes/stalkybush,/obj/structure/flora/ausbushes/fullgrass,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "TD" = (/obj/effect/floor_decal/corner/green{dir = 6},/obj/effect/floor_decal/corner/green{dir = 9},/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 1},/obj/structure/railing/steel{dir = 8},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "TN" = (/obj/effect/floor_decal/spline/fancy{dir = 8},/obj/machinery/light{dir = 4},/turf/simulated/floor/water/fountain,/area/hydroponics/biodome)
+"Ua" = (/obj/structure/flora/ausbushes/lavendergrass,/obj/effect/floor_decal/spline/fancy/wood/corner{dir = 4},/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
 "Ud" = (/obj/effect/floor_decal/spline/fancy{dir = 9},/turf/simulated/floor/water/fountain,/area/hydroponics/biodome)
 "UD" = (/obj/effect/floor_decal/corner/green{dir = 6},/obj/effect/floor_decal/corner/green{dir = 9},/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{dir = 8},/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/obj/structure/railing/steel{dir = 8},/obj/machinery/navbeacon/frontier/DOME_NE,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "VT" = (/obj/structure/flora/ausbushes/ppflowers,/obj/machinery/hologram/holopad,/turf/simulated/floor/natural/grass,/area/hydroponics/biodome)
@@ -110,10 +116,10 @@
 
 (1,1,1) = {"
 tCtCKIKIKIXNtCtCtCtCtCoqKIKIKItCtC
-tCKIKIWSWSWSgiTbrxIImVuRXgXgKIKItC
-tCKICQQEXgoXedWSxnitXgQEQEXgRBKItC
+tCKIKIWSWSiYgiTbrxIImVuRXgXgKIKItC
+tCKICQUaXgoXedWSxnitXgQEQEDLRBKItC
 KIKIBGlHRnYtuQQEQEmfbhsbmXtnpxKIKI
-KIzlXguUOoBIuXxqfYxqxqEmQEchXgxLKI
+KIzlJluUOoBIuXxqfYxqxqEmQEchDLxLKI
 XJoLsPWSsBPhDJbXbXbXJJwljPQEoXEYXJ
 AiSKSKSKSKSKvRUdvCKJUDdjdjdjdjZoMo
 KIfMZSfMZSVTcLTNFbMYTDVTZSfMZSfMKI
@@ -121,8 +127,8 @@ iokUkUkUkUkUvPXMLqmdhkwpwpwpwpWJio
 XJxAXgeOQEQEPYphphphQoXgNhlAXgyzXJ
 KIzlaJedQEQEYrZZsdeJbyQEQEQEtTyJKI
 KIKIXNWSFSWSWSXgsdOoQEeOOMQEpgKIKI
-tCKIWSblxLSGWSXgsdMrXgMXQEWSQEKItC
-tCKIKIgWsXRnQEeOsdNhcvbYiVSGKIKItC
+tCKIWSblxLSGWSXgsdMrXgMXQEuaQEKItC
+tCKIKIgWsXFwQEeOsdNhcvbYiVSGKIKItC
 tCtCKIKIKIzlhHCbsdWSWSrxKIKIKItCtC
 tCtCtCtCKIKIKIKIquKIKIKIKItCtCtCtC
 "}
