@@ -33,7 +33,7 @@
 			if(!P.blood_cost)
 				mind.vampire.add_power(mind, P, 0)
 		else if(P.is_active && P.verbpath)
-			verbs += P.verbpath	
+			verbs += P.verbpath
 	return TRUE
 
 /mob/living/carbon/human/proc/replace_vampiric_organs()
@@ -261,9 +261,18 @@
 /mob/living/carbon/human/proc/handle_vampire()
 	// Apply frenzy while in the holy location.
 	if (get_area(loc)?.holy)
-		mind.vampire.frenzy += 3		
+		mind.vampire.frenzy += 3
 		if(prob(20))
 			to_chat(src, "You feel like you`re burning!")
+
+	if(src.get_ingested_reagents().has_reagent(/datum/reagent/water/holywater/))
+		src.adjust_fire_stacks(0.2)
+		src.IgniteMob()
+		src.vomit()
+		if(prob(20))
+			for (var/mob/V in viewers(src))
+				V.show_message(SPAN_WARNING("[src]'s skin sizzles and burns."), 1)
+		src.get_ingested_reagents().remove_reagent(/datum/reagent/water/holywater/, 5)
 
 	if (mind.vampire.blood_usable < 10)
 		mind.vampire.frenzy += 2
