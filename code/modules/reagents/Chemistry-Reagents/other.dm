@@ -196,7 +196,7 @@
 	if(istype(L))
 		if(ishuman(L))
 			if(L.mind && L.mind.vampire)
-				L.adjust_fire_stacks(amount / 30)
+				L.adjust_fire_stacks(amount / 15)
 				L.IgniteMob()
 				if(prob(20))
 					for (var/mob/V in viewers(L))
