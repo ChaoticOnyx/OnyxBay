@@ -15,7 +15,6 @@
 			/datum/job/paramedic,
 			/datum/job/roboticist,
 			/datum/job/engineer,
-			/datum/job/atmos,
 			/datum/job/ai,
 			/datum/job/cyborg,
 			/datum/job/merchant
@@ -34,7 +33,6 @@
 			/datum/job/paramedic,
 			/datum/job/chemist,
 			/datum/job/engineer,
-			/datum/job/atmos,
 			/datum/job/ai,
 			/datum/job/cyborg,
 			/datum/job/merchant
@@ -58,7 +56,6 @@
 			/datum/job/xenobiologist,
 			/datum/job/roboticist,
 			/datum/job/engineer,
-			/datum/job/atmos,
 			/datum/job/ai,
 			/datum/job/cyborg,
 			/datum/job/merchant
