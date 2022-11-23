@@ -183,7 +183,6 @@
 "GS" = (/obj/structure/table/woodentable,/obj/machinery/recharger,/obj/item/device/paicard,/obj/item/clothing/glasses/threedglasses,/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 4},/turf/simulated/floor/trim/carpet/oldred,/area/crew_quarters/sleep/lobby)
 "Hd" = (/obj/structure/cable/white{icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/structure/disposalpipe/segment,/obj/machinery/newscaster{dir = 4; pixel_x = -32},/turf/simulated/floor/tiled/rough,/area/crew_quarters/sleep)
 "Hg" = (/obj/structure/urinal{pixel_y = 32},/obj/machinery/atmospherics/unary/vent_scrubber/on,/turf/simulated/floor/tiled/freezer,/area/crew_quarters/toilet/bar)
-"Hp" = (/obj/machinery/newscaster{layer = 3.3; pixel_y = -27},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/trim/carpet/oldred,/area/crew_quarters/bar)
 "Hx" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/disposalpipe/segment{dir = 4; icon_state = "pipe-c"},/turf/simulated/floor/tiled/rough,/area/crew_quarters/sleep/lobby)
 "HC" = (/obj/structure/cable/white{icon_state = "4-8"},/obj/structure/disposalpipe/segment{dir = 4},/obj/effect/floor_decal/spline/fancy/wood{dir = 1},/turf/simulated/floor/tiled/rough,/area/crew_quarters/sleep/lobby)
 "HD" = (/obj/machinery/gibber,/obj/machinery/light/small{dir = 4},/turf/simulated/floor/tiled/freezer,/area/crew_quarters/kitchen)
@@ -289,7 +288,7 @@ fPrtDHtBNuowwpUttBAYQnzuhbvsfCrxyUCmCnrxPJPJ
 PJCPxotBIaPCPCSDtBvyLERnXQckLEXiggpVtwrxPJPJ
 PJwzuVfzTrkOkOexWcyxLEbqIQhOLEXJkOfyZqrxPJPJ
 PJjQBRRGdqdqdqdqRGaRAILELELEAIXJYwczkLrxPJPJ
-PJBNRwdvLnrvrvHpdvfEoLbUbUbUbUHEkOCmCnrxPJPJ
+PJBNRwdvLnrvrvrvdvfEoLbUbUbUbUHEkOCmCnrxPJPJ
 PJtZfPrxrxVySErxrxeOABlXhxyuoAyMaVNmwhrxPJPJ
 PJPJPJPJrxUVmOwfVyxyABlXrdyuoAFEPXfyZqrxPJPJ
 PJPJPJPJrxLRLSZGVwMCCzRsOIbULpIurxrxrxrxPJPJ
