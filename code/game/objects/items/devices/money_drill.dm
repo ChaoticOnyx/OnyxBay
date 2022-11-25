@@ -21,6 +21,7 @@
 	var/obj/machinery/atm/hack_target = null
 	var/hack_stage = HACK_STAGE_PRE
 	var/broken = FALSE
+	var/obj/machinery/atm/do_not_read
 
 /obj/item/device/money_drill/_examine_text(mob/user)
 	var/msg = ..() + "<br>"
@@ -146,7 +147,8 @@
 	var/obj/machinery/atm/A = target
 	if(!istype(A))
 		return ..()
-
+		
+	do_not_read = A
 	// 2 - Check if the ATM and the drill it is not broken.
 	if(broken)
 		to_chat(user, SPAN("warning", "\The [src] is broken!"))
@@ -231,6 +233,7 @@
 		playsound(src, 'sound/signals/warning7.ogg', 40, FALSE)
 		_finish_hack()
 		icon_state ="money_drill"
+		do_not_read.emagged = 1
 		return PROCESS_KILL
 
 	if(hack_interrupted)
