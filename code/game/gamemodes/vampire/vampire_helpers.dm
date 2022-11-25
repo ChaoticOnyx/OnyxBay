@@ -265,14 +265,15 @@
 		if(prob(20))
 			to_chat(src, "You feel like you`re burning!")
 
-	if(src.get_ingested_reagents().has_reagent(/datum/reagent/water/holywater/))
-		src.adjust_fire_stacks(0.2)
-		src.IgniteMob()
-		src.vomit()
-		if(prob(20))
-			for (var/mob/V in viewers(src))
-				V.show_message(SPAN_WARNING("[src]'s skin sizzles and burns."), 1)
-		src.get_ingested_reagents().remove_reagent(/datum/reagent/water/holywater/, 5)
+	if (!(mind.vampire.status & VAMP_ISTHRALL))
+		if(src.reagents.has_reagent(/datum/reagent/water/holywater/) || src.get_ingested_reagents().has_reagent(/datum/reagent/water/holywater/))
+			src.adjust_fire_stacks(0.2)
+			src.IgniteMob()
+			if(prob(20))
+				for (var/mob/V in viewers(src))
+					V.show_message(SPAN_WARNING("[src]'s skin sizzles and burns."), 1)
+			src.reagents.remove_reagent(/datum/reagent/water/holywater/, 3)
+			src.get_ingested_reagents().remove_reagent(/datum/reagent/water/holywater/, 3)
 
 	if (mind.vampire.blood_usable < 10)
 		mind.vampire.frenzy += 2

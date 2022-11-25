@@ -193,14 +193,13 @@
 				M.visible_message(SPAN_WARNING("\The [M] coughs up \the [S]!</span>"))
 
 /datum/reagent/water/holywater/touch_mob(mob/living/L, amount)
-	if(istype(L))
-		if(ishuman(L))
-			if(L.mind && L.mind.vampire)
-				L.adjust_fire_stacks(amount / 15)
-				L.IgniteMob()
-				if(prob(20))
-					for (var/mob/V in viewers(L))
-						V.show_message(SPAN_WARNING("[L]'s skin sizzles and burns."), 1)
+	if(!ishuman(L))
+		return
+	if(!L.mind)
+		return
+	if(L.mind.vampire && !(L.mind.vampire.status & VAMP_ISTHRALL))
+		L.adjust_fire_stacks(amount / 15)
+		L.IgniteMob()
 
 /datum/reagent/water/holywater/touch_turf(turf/T)
 	if(volume >= 5)
