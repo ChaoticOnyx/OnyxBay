@@ -48,6 +48,8 @@
 		new /datum/stack_recipe("purple comfy chair", /obj/structure/bed/chair/comfy/purp, 5, time = 40, one_per_turf = 1, on_floor = 1), \
 		new /datum/stack_recipe("green comfy chair", /obj/structure/bed/chair/comfy/green, 5, time = 40, one_per_turf = 1, on_floor = 1), \
 		))
+	recipes += new /datum/stack_recipe("steel butterfly blade", /obj/item/material/butterflyblade, 3, time = 30, one_per_turf = 0, on_floor = 1)
+	recipes += new /datum/stack_recipe("steel concealed knife grip", /obj/item/material/butterflyhandle, 5, time = 30, one_per_turf = 0, on_floor = 1)
 	recipes += new /datum/stack_recipe("crowbar", /obj/item/crowbar, 2, time = 20, one_per_turf = 0, on_floor = 1)
 	recipes += new /datum/stack_recipe("key", /obj/item/key, 1, time = 10, one_per_turf = 0, on_floor = 1)
 	recipes += new /datum/stack_recipe("table frame", /obj/structure/table, 2, time = 10, one_per_turf = 1, on_floor = 1)
