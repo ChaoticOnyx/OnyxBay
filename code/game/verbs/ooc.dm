@@ -12,7 +12,7 @@
 
 /client/verb/looc(message as text)
 	set name = "LOOC"
-	set desc = "Local OOC, Local OOC, seen only by selected target and ghosts in view. Remember: This command is for emergencies, not for comments or chatting."
+	set desc = "Local OOC, seen only by selected target and ghosts in view. Remember: This command is for emergencies, not for comments or chatting."
 	set category = "OOC"
 
 	if(jobban_isbanned(src.mob, "LOOC"))
