@@ -24,9 +24,19 @@
 	message = emoji_parse(C, message)
 
 	for(var/listener in listening_hosts)
+		var/list/listening_mobs = list()
+		var/mob/listening_mob = listener
+		if(!listening_mob.get_client() || isghost(listening_mob))
+			continue
+		listening_mobs |= listening_mob
+		listening_mob = input(M, "To which mob you want to send a message?") as null|anything in listening_mobs
+		var/received_message = listening_mob.get_client().receive_looc(C, key, message, listening_mob.looc_prefix())
+		receive_communication(C, listening_mob.get_client(), received_message)
+
+	for(var/listener in listening_hosts)
 		var/mob/listening_mob = listener
 		var/client/t = listening_mob.get_client()
-		if(!t)
+		if(!t || !isghost(listening_mob))
 			continue
 		listening_clients |= t
 		var/received_message = t.receive_looc(C, key, message, listening_mob.looc_prefix())
@@ -61,4 +71,3 @@
 	if(!eyeobj)
 		return src
 	return eyeobj
-
