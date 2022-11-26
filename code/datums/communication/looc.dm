@@ -33,7 +33,7 @@
 	main_target = input(M, "To which mob you want to send a message?") as null|anything in listening_mobs
 	if(!main_target || !main_target.client)
 		return
-	var/received_message = main_target.client.receive_looc(C, key, message, listening_mob.looc_prefix())
+	var/received_message = main_target.client.receive_looc(C, key, message, main_target.looc_prefix())
 	receive_communication(C, main_target.client, received_message)
 
 	for(var/listener in listening_hosts)
@@ -42,12 +42,12 @@
 		if(!t || !isghost(listening_mob))
 			continue
 		listening_clients |= t
-		var/received_message = t.receive_looc(C, key, message, listening_mob.looc_prefix())
+		received_message = t.receive_looc(C, key, message, listening_mob.looc_prefix())
 		receive_communication(C, t, received_message)
 
 	for(var/client/adm in GLOB.admins)	//Now send to all admins that weren't in range.
 		if(!(adm in listening_clients) && adm.get_preference_value(/datum/client_preference/staff/show_rlooc) == GLOB.PREF_SHOW)
-			var/received_message = adm.receive_looc(C, key, message, "R")
+			received_message = adm.receive_looc(C, key, message, "R")
 			receive_communication(C, adm, received_message)
 
 /decl/communication_channel/ooc/looc/get_message_type()
