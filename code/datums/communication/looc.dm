@@ -20,6 +20,7 @@
 	var/list/listening_hosts = hosts_in_view_range(M)
 	var/list/listening_clients = list()
 	var/list/listening_mobs = list()
+	var/mob/main_target = null
 
 	var/key = C.key
 	message = emoji_parse(C, message)
@@ -29,9 +30,11 @@
 		if(!listening_mob.get_client() || isghost(listening_mob))
 			continue
 		listening_mobs |= listening_mob
-		listening_mob = input(M, "To which mob you want to send a message?") as null|anything in listening_mobs
-		var/received_message = listening_mob.get_client().receive_looc(C, key, message, listening_mob.looc_prefix())
-		receive_communication(C, listening_mob.get_client(), received_message)
+	main_target = input(M, "To which mob you want to send a message?") as null|anything in listening_mobs
+	if(!main_target)
+		return
+	var/received_message = main_target.get_client().receive_looc(C, key, message, listening_mob.looc_prefix())
+	receive_communication(C, main_target.get_client(), received_message)
 
 	for(var/listener in listening_hosts)
 		var/mob/listening_mob = listener
