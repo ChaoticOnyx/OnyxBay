@@ -1314,13 +1314,9 @@
 	reaction_sound = 'sound/effects/teleport.ogg'
 
 /datum/chemical_reaction/metroid/teleport/on_reaction(datum/reagents/holder)
-	var/list/turfs = list()
-	for(var/turf/T in orange(holder.my_atom,6))
-		turfs += T
-	for(var/atom/movable/a in viewers(holder.my_atom,2))
-		if(!a.simulated)
-			continue
-		a.forceMove(pick(turfs))
+	if(do_after(usr, 10, target = usr))
+		to_chat(usr, "<span class='warning'>You teleport!</span>")
+		do_teleport(usr, get_turf(usr), 6)
 	..()
 
 //pyrite
