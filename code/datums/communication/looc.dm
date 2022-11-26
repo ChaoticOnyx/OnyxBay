@@ -19,12 +19,12 @@
 	var/mob/M = C.mob ? C.mob.get_looc_mob() : null
 	var/list/listening_hosts = hosts_in_view_range(M)
 	var/list/listening_clients = list()
+	var/list/listening_mobs = list()
 
 	var/key = C.key
 	message = emoji_parse(C, message)
 
 	for(var/listener in listening_hosts)
-		var/list/listening_mobs = list()
 		var/mob/listening_mob = listener
 		if(!listening_mob.get_client() || isghost(listening_mob))
 			continue
