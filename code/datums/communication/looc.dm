@@ -33,8 +33,8 @@
 	main_target = input(M, "To which mob you want to send a message?") as null|anything in listening_mobs
 	if(!main_target || !main_target.get_client())
 		return
-	var/received_message = main_target.client.receive_looc(C, key, message, main_target.looc_prefix())
-	receive_communication(C, main_target.client, received_message)
+	var/received_message = main_target.get_client().receive_looc(C, key, message, main_target.looc_prefix())
+	receive_communication(C, main_target.get_client(), received_message)
 
 	for(var/listener in listening_hosts)
 		var/mob/listening_mob = listener
