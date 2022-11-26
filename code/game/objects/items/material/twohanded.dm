@@ -149,6 +149,17 @@
 		new /obj/item/material/wirerod(get_turf(src)) //give back the wired rod
 	..()
 
+/obj/item/material/twohanded/spear/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+	if(!istype(M) || user.a_intent == "help")
+		return ..()
+	if(user.zone_sel.selecting != BP_EYES)
+		return ..()
+	if(istype(user.l_hand,/obj/item/grab) || istype(user.r_hand,/obj/item/grab))
+		return ..()
+	if((MUTATION_CLUMSY in user.mutations) && prob(50))
+		M = user
+	return eyestab(M,user)
+
 /obj/item/material/twohanded/baseballbat
 	name = "bat"
 	desc = "HOME RUN!"
