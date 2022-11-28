@@ -390,6 +390,10 @@
 				break
 		return
 
+	// not a changeling. anti meta them to death
+	for(var/obj/item/organ/internal/I in M.internal_organs)
+		I.take_internal_damage(10, silent=TRUE)
+
 /datum/reagent/hyperzine
 	name = "Hyperzine"
 	description = "Hyperzine is a highly effective, long lasting, muscle stimulant."
