@@ -7,7 +7,7 @@
 
 	//Some faction information.
 	var/home_system = "Unset"           //System of birth.
-	var/faction = "Nanotrasen"          //General associated faction.
+	var/background = "Nanotrasen"          //General associated faction.
 	var/religion = "None"               //Religious association.
 
 	var/bank_security = BANK_SECURITY_MODERATE // bank account security level
@@ -20,7 +20,7 @@
 /datum/category_item/player_setup_item/general/background/load_character(datum/pref_record_reader/R)
 	pref.nanotrasen_relation = R.read("nanotrasen_relation")
 	pref.home_system = R.read("home_system")
-	pref.faction = R.read("faction")
+	pref.background = R.read("background")
 	pref.religion = R.read("religion")
 	pref.bank_security = R.read("bank_security")
 	pref.bank_pin = R.read("bank_pin")
@@ -33,7 +33,7 @@
 /datum/category_item/player_setup_item/general/background/save_character(datum/pref_record_writer/W)
 	W.write("nanotrasen_relation", pref.nanotrasen_relation)
 	W.write("home_system", pref.home_system)
-	W.write("faction", pref.faction)
+	W.write("background", pref.background)
 	W.write("religion", pref.religion)
 	W.write("bank_security", pref.bank_security)
 	W.write("bank_pin", pref.bank_pin)
@@ -46,8 +46,8 @@
 /datum/category_item/player_setup_item/general/background/sanitize_character()
 	if(!pref.home_system)
 		pref.home_system = "Unset"
-	if(!pref.faction)
-		pref.faction = "Nanotrasen"
+	if(!pref.background)
+		pref.background = "Nanotrasen"
 	if(!pref.religion)
 		pref.religion =    "None"
 
@@ -59,7 +59,7 @@
 	. += "<b>Background Information</b><br>"
 	. += "[GLOB.using_map.company_name] Relation: <a href='?src=\ref[src];nt_relation=1'>[pref.nanotrasen_relation]</a><br/>"
 	. += "Home System: <a href='?src=\ref[src];home_system=1'>[pref.home_system]</a><br/>"
-	. += "Background: <a href='?src=\ref[src];faction=1'>[pref.faction]</a><br/>"
+	. += "Background: <a href='?src=\ref[src];background=1'>[pref.background]</a><br/>"
 	. += "Religion: <a href='?src=\ref[src];religion=1'>[pref.religion]</a><br/>"
 
 	. += "<br/><b>Bank Account</b>:<br/>"
@@ -101,16 +101,16 @@
 		return TOPIC_REFRESH
 
 
-	else if(href_list["faction"])
-		var/choice = input(user, "Please choose a background to work for.", CHARACTER_PREFERENCE_INPUT_TITLE, pref.faction) as null|anything in GLOB.using_map.faction_choices + list("Unset","Other")
+	else if(href_list["background"])
+		var/choice = input(user, "Please choose a background to work for.", CHARACTER_PREFERENCE_INPUT_TITLE, pref.background) as null|anything in GLOB.using_map.background_choices + list("Unset","Other")
 		if(!choice || !CanUseTopic(user))
 			return TOPIC_NOACTION
 		if(choice == "Other")
 			var/raw_choice = sanitize(input(user, "Please enter a background.", CHARACTER_PREFERENCE_INPUT_TITLE)  as text|null, MAX_NAME_LEN)
 			if(raw_choice && CanUseTopic(user))
-				pref.faction = raw_choice
+				pref.background = raw_choice
 		else
-			pref.faction = choice
+			pref.background = choice
 		return TOPIC_REFRESH
 
 	else if(href_list["religion"])

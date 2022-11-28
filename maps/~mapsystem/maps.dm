@@ -95,7 +95,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/station_departments = list()//Gets filled automatically depending on jobs allowed
 
 	//Factions prefs stuff
-	var/list/faction_choices = list(
+	var/list/background_choices = list(
 		"Nanotrasen",
 		"Nova Magnitka",
 		"Gaia Magna",
