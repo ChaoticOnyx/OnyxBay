@@ -93,7 +93,7 @@
 
 	var/ear_protection = 0
 
-	var/tool_behaviour = NONE
+	var/tool_behaviour = 0
 
 /obj/item/New()
 	..()
