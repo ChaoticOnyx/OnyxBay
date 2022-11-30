@@ -133,7 +133,7 @@
 			anchored = 0
 			cover = 40
 
-	else if(istype(W,/obj/item/weldingtool))
+	else if(isWelder(W))
 		var/obj/item/weldingtool/WT = W
 		if(!WT.isOn())
 			return

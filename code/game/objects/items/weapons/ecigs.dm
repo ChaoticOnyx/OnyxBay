@@ -144,7 +144,7 @@
 			update_icon()
 			to_chat(user, "<span class='notice'>You insert [I] into [src].</span> ")
 
-	if(istype(I, /obj/item/screwdriver))
+	if(isScrewdriver(I))
 		if(cigcell) //if contains powercell
 			cigcell.update_icon()
 			cigcell.dropInto(loc)

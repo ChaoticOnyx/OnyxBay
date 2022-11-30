@@ -89,7 +89,7 @@
 							for(var/i = 1, i <= C.req_components[I], i++)
 								var/obj/item/s = new I
 								s.loc = user.loc
-								if(istype(P, /obj/item/stack/cable_coil))
+								if(isCoil(P))
 									var/obj/item/stack/cable_coil/A = P
 									A.amount = 1
 
@@ -209,7 +209,7 @@
 		var/mob/living/silicon/ai/U = user
 		P = U.aiMulti
 	else if(isrobot(user) && in_range(user, src))
-		if(istype(user.get_active_hand(), /obj/item/device/multitool))
+		if(isMultitool(user.get_active_hand()))
 			P = user.get_active_hand()
 	return P
 

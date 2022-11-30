@@ -27,7 +27,7 @@
 	return
 
 /obj/machinery/cablelayer/attackby(obj/item/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/stack/cable_coil))
+	if(isCoil(O))
 
 		var/result = load_cable(O)
 		if(!result)

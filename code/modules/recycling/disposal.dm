@@ -894,7 +894,7 @@
 		if(!T.is_plating())
 			return		// prevent interaction with T-scanner revealed pipes
 		src.add_fingerprint(user, 0, I)
-		if(istype(I, /obj/item/weldingtool))
+		if(isWelder(I))
 			var/obj/item/weldingtool/W = I
 
 			if(W.remove_fuel(0,user))
@@ -1548,7 +1548,7 @@
 	if(!T.is_plating())
 		return		// prevent interaction with T-scanner revealed pipes
 	src.add_fingerprint(user, 0, I)
-	if(istype(I, /obj/item/weldingtool))
+	if(isWelder(I))
 		var/obj/item/weldingtool/W = I
 
 		if(W.remove_fuel(0,user))
@@ -1680,7 +1680,7 @@
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				to_chat(user, "You attach the screws around the power connection.")
 				return
-		else if(istype(I,/obj/item/weldingtool) && mode==1)
+		else if(isWelder(I) && mode==1)
 			var/obj/item/weldingtool/W = I
 			if(W.remove_fuel(0,user))
 				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)

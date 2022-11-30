@@ -281,7 +281,7 @@
 		update()
 		update_verbs()
 
-	else if(istype(I, /obj/item/weldingtool))
+	else if(isWelder(I))
 		if(anchored)
 			var/obj/item/weldingtool/W = I
 			if(W.remove_fuel(0,user))

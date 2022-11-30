@@ -26,7 +26,7 @@
 		to_chat(user, "<span class='notice'>You change the paint mode to [lowertext(color_selection)].</span>")
 
 /obj/item/device/cable_painter/afterattack(atom/A, mob/user, proximity)
-	if(!proximity)
+	if(!proximity || !istype(A, /obj/item))
 		return ..()
 	if(istype(A, /obj/structure/cable))
 		var/picked_color = possible_cable_coil_colours[color_selection]

@@ -35,6 +35,7 @@
 	matter = list(MATERIAL_STEEL = 150)
 	center_of_mass = "x=17;y=16"
 	attack_verb = list("bashed", "battered", "bludgeoned", "whacked")
+	tool_behaviour = TOOL_WRENCH
 	var/randicon = TRUE
 
 /obj/item/wrench/Initialize()
@@ -92,6 +93,7 @@
 	attack_verb = list("stabbed")
 	lock_picking_level = 5
 	hitsound = 'sound/weapons/bladeslice.ogg'
+	tool_behaviour = TOOL_SCREWDRIVER
 	var/randicon = TRUE
 
 /obj/item/screwdriver/Initialize()
@@ -195,6 +197,7 @@
 	sharp = 1
 	edge = 1
 	hitsound = 'sound/weapons/bladeslice.ogg'
+	tool_behaviour = TOOL_WIRECUTTER
 	var/randicon = TRUE
 
 /obj/item/wirecutters/Initialize()
@@ -245,6 +248,7 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	center_of_mass = "x=14;y=15"
+	tool_behaviour = TOOL_WELDER
 
 	//Amount of OUCH when it's thrown
 	force = 6.5
@@ -714,6 +718,7 @@
 	origin_tech = list(TECH_ENGINEERING = 1)
 	matter = list(MATERIAL_STEEL = 140)
 	attack_verb = list("attacked", "bashed", "battered", "bludgeoned", "whacked")
+	tool_behaviour = TOOL_CROWBAR
 
 /obj/item/crowbar/red
 	icon_state = "red_crowbar"

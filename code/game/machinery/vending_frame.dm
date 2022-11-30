@@ -37,7 +37,7 @@
 /obj/machinery/vending_frame/attackby(obj/item/O, mob/user)
 	switch(state)
 		if(STAGE_CABLE)
-			if(anchored && istype(O, /obj/item/weldingtool))
+			if(anchored && isWelder(O))
 				deconstruct_frame(O, user)
 			if(isWrench(O))
 				wrench_frame(user)

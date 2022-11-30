@@ -122,7 +122,7 @@
 		return SPAN("rose", "With much care, [holder] lights \his [name] with \a [tool].")
 	if(istype(tool, /obj/item/flame/candle))
 		return SPAN_NOTICE("[holder] lights \his [name] with a hot wax from \a [tool].")
-	if(istype(tool, /obj/item/weldingtool))
+	if(isWelder(tool))
 		return SPAN_NOTICE("[holder] recklessly \his [name] with \a [tool].")
 	if(istype(tool, /obj/item/reagent_containers/rag))
 		return SPAN_WARNING("[holder] puts a piece of \a [tool] into \a [name] to light it up.")

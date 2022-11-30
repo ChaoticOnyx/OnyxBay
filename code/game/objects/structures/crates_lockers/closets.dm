@@ -386,7 +386,7 @@
 								 \SPAN_NOTICE("You hear rustling of clothes."))
 			return
 
-		if(istype(W, /obj/item/screwdriver) && dremovable && cdoor)
+		if(isScrewdriver(W) && dremovable && cdoor)
 			user.visible_message(SPAN_NOTICE("[user] starts unscrewing [cdoor] from [src]."))
 			user.next_move = world.time + 10
 			if(!do_after(user, 30))
@@ -457,7 +457,7 @@
 		src.welded = !src.welded
 		src.update_icon()
 		user.visible_message(SPAN_WARNING("\The [src] has been [welded?"welded shut":"unwelded"] by \the [user]."), blind_message = "You hear welding.", range = 3)
-	else if(istype(W, /obj/item/device/multitool) && (setup & CLOSET_HAS_LOCK))
+	else if(isMultitool(W) && (setup & CLOSET_HAS_LOCK))
 		var/obj/item/device/multitool/multi = W
 		if(multi.in_use)
 			to_chat(user, SPAN("warning", "This multitool is already in use!"))

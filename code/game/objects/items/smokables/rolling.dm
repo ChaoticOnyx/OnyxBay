@@ -203,7 +203,7 @@
 	if(src.loc != holder)
 		return ..()
 
-	if(istype(tool, /obj/item/weldingtool))
+	if(isWelder(tool))
 		return SPAN("notice", "[holder] looks like a real stoner after lighting \his [name] with \a [tool].")
 	return ..()
 
@@ -284,7 +284,7 @@
 	if(src.loc != holder)
 		return ..()
 
-	if(istype(tool, /obj/item/weldingtool))
+	if(isWelder(tool))
 		return SPAN("notice", "[holder] looks like a real stoner after lighting \his [name] with \a [tool].")
 	return ..()
 
