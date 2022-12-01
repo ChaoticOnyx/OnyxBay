@@ -37,7 +37,7 @@
 			S.use(5)
 	return 1
 
-/datum/construction/reversible/mecha/custom_action(index as num, diff as num, atom/used_atom, mob/user)
+/datum/construction/reversible/mecha/custom_action(index, diff, atom/used_atom, mob/user)
 	var/obj/item/I = used_atom
 	if(!istype(I))
 		return 0
