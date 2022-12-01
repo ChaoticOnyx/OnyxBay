@@ -214,8 +214,9 @@
 
 	if(byond_version < config.general.client_min_major_version || byond_build < config.general.client_min_minor_version)
 		to_chat(src, "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is too out of date!</font><br>\
-		<font size='3'>Please update it to [config.general.client_min_major_version].[byond_build < config.general.client_min_minor_version].</font></center>")
-		qdel(src)
+		<font size='3'>Please update it to [config.general.client_min_major_version].[config.general.client_min_minor_version].</font></center>")
+		spawn(1)
+			qdel(src)
 		return
 
 	GLOB.using_map.map_info(src)
