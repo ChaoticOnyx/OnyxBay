@@ -1,3 +1,6 @@
+/area/space/bluespace
+	base_turf = /turf/bluespace
+
 /area/polarplanet
 	name = "polarplanet"
 	base_turf = /turf/unsimulated/floor/frozenground

@@ -213,6 +213,7 @@
 	return ..(N, tell_universe, TRUE)
 
 //Bluespace turfs for shuttles and possible future transit use
-/turf/space/bluespace
+/turf/bluespace
 	name = "bluespace"
+	icon = 'icons/turf/space.dmi'
 	icon_state = "bluespace"
