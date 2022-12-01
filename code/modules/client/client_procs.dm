@@ -2,7 +2,6 @@
 	//SECURITY//
 	////////////
 #define UPLOAD_LIMIT		10485760	//Restricts client uploads to the server to 10MB //Boosted this thing. What's the worst that can happen?
-#define MIN_CLIENT_VERSION	513
 
 #define LIMITER_SIZE	5
 #define CURRENT_SECOND	1
@@ -213,9 +212,9 @@
 
 	. = ..()	// calls mob.Login()
 
-	if(byond_version < MIN_CLIENT_VERSION)
+	if(byond_version < config.general.client_min_major_version || byond_build < config.general.client_min_minor_version)
 		to_chat(src, "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is too out of date!</font><br>\
-		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>")
+		<font size='3'>Please update it to [config.general.client_min_major_version].[byond_build < config.general.client_min_minor_version].</font></center>")
 		qdel(src)
 		return
 
@@ -366,7 +365,6 @@
 
 
 #undef UPLOAD_LIMIT
-#undef MIN_CLIENT_VERSION
 
 // checks if a client is afk
 // 3000 frames = 5 minutes
