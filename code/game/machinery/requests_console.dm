@@ -96,7 +96,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 			req_console_information -= department
 	. = ..()
 
-/obj/machinery/requests_console/attack_hand(user as mob)
+/obj/machinery/requests_console/attack_hand(mob/user)
 	if(..(user))
 		return
 	ui_interact(user)
@@ -195,7 +195,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	return
 
 					//err... hacking code, which has no reason for existing... but anyway... it was once supposed to unlock priority 3 messanging on that console (EXTREME priority...), but the code for that was removed.
-/obj/machinery/requests_console/attackby(obj/item/O as obj, mob/user as mob)
+/obj/machinery/requests_console/attackby(obj/item/O, mob/user)
 	/*
 	if (isCrowbar(O))
 		if(open)

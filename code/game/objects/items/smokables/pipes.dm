@@ -68,7 +68,7 @@
 	return ..()
 
 
-/obj/item/clothing/mask/smokable/pipe/attack_self(mob/user as mob)
+/obj/item/clothing/mask/smokable/pipe/attack_self(mob/user)
 	if(lit == 1)
 		user.visible_message("<span class='notice'>[user] puts out [src].</span>", "<span class='notice'>You put out [src].</span>")
 		lit = 0
@@ -82,7 +82,7 @@
 		reagents.clear_reagents()
 		SetName("empty [initial(name)]")
 
-/obj/item/clothing/mask/smokable/pipe/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/clothing/mask/smokable/pipe/attackby(obj/item/W, mob/user)
 	..()
 
 	if(istype(W, /obj/item/reagent_containers/food))

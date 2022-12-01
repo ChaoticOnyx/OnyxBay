@@ -93,7 +93,7 @@
 		return
 	..()
 
-/obj/item/combotool/advtool/attack_hand(mob/user as mob)
+/obj/item/combotool/advtool/attack_hand(mob/user)
 	if(src != user.get_inactive_hand())
 		return ..()
 
@@ -124,7 +124,7 @@
 	update_icon()
 	return
 
-/obj/item/combotool/advtool/attackby(obj/item/I as obj, mob/user as mob)
+/obj/item/combotool/advtool/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/screwdriver/advpart))
 		var/obj/item/screwdriver/advpart/SD = I
 		if(!screwdriver)

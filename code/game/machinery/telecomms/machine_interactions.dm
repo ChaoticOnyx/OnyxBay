@@ -15,7 +15,7 @@
 	var/construct_op = 0
 
 
-/obj/machinery/telecomms/attackby(obj/item/P as obj, mob/user as mob)
+/obj/machinery/telecomms/attackby(obj/item/P, mob/user)
 
 	// Using a multitool lets you access the receiver's interface
 	if(isMultitool(P))
@@ -102,10 +102,10 @@
 					qdel(src)
 
 
-/obj/machinery/telecomms/attack_ai(mob/user as mob)
+/obj/machinery/telecomms/attack_ai(mob/user)
 	attack_hand(user)
 
-/obj/machinery/telecomms/attack_hand(mob/user as mob)
+/obj/machinery/telecomms/attack_hand(mob/user)
 
 	if(stat & (BROKEN|NOPOWER))
 		return
@@ -193,7 +193,7 @@
 
 // Returns a multitool from a user depending on their mobtype.
 
-/obj/machinery/telecomms/proc/get_multitool(mob/user as mob)
+/obj/machinery/telecomms/proc/get_multitool(mob/user)
 
 	var/obj/item/device/multitool/P = null
 	// Let's double check
