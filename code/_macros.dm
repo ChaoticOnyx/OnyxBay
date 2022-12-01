@@ -84,19 +84,19 @@
 
 #define isopenspace(A) istype(A, /turf/simulated/open)
 
-#define isWrench(A) ((istype(A, /obj/item) && A:tool_behaviour == TOOL_WRENCH) || (istype(A, /obj/item/rpd) && A:interaction_mode == "wrench"))
+#define isWrench(A) ((istype(A, /obj/item) && A.tool_behaviour == TOOL_WRENCH) || (istype(A, /obj/item/rpd) && A:interaction_mode == "wrench"))
 
-#define isWelder(A) (istype(A, /obj/item) && A:tool_behaviour == TOOL_WELDER)
+#define isWelder(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_WELDER)
 
-#define isCoil(A) (istype(A, /obj/item) && A:tool_behaviour == TOOL_COIL)
+#define isCoil(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_COIL)
 
-#define isWirecutter(A) (istype(A, /obj/item) && A:tool_behaviour == TOOL_WIRECUTTER)
+#define isWirecutter(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_WIRECUTTER)
 
-#define isScrewdriver(A) (istype(A, /obj/item) && A:tool_behaviour == TOOL_SCREWDRIVER)
+#define isScrewdriver(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_SCREWDRIVER)
 
-#define isMultitool(A) (istype(A, /obj/item) && A:tool_behaviour == TOOL_MULTITOOL)
+#define isMultitool(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_MULTITOOL)
 
-#define isCrowbar(A) (istype(A, /obj/item) && A:tool_behaviour == TOOL_CROWBAR)
+#define isCrowbar(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_CROWBAR)
 
 #define iscapacitor(A) istype(A, /obj/item/stock_parts/capacitor)
 

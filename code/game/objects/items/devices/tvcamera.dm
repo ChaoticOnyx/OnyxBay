@@ -108,7 +108,7 @@ Using robohead because of restricting to roboticist */
 	var/buildstep = 0
 	w_class = ITEM_SIZE_LARGE
 
-/obj/item/TVAssembly/attackby(W, mob/user)
+/obj/item/TVAssembly/attackby(obj/item/W, mob/user)
 	switch(buildstep)
 		if(0)
 			if(istype(W, /obj/item/robot_parts/robot_component/camera) && user.drop(W))
