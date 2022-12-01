@@ -38,7 +38,7 @@
 	if(ticklag)
 		fps = 10 / ticklag
 
-	CONFIG_LOAD_NUM(client_fps, data["clien_tfps"])
+	CONFIG_LOAD_NUM(client_fps, data["client_fps"])
 
 	if(fps <= 0)
 		fps = initial(fps)
