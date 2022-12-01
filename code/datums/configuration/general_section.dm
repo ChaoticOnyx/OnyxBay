@@ -32,8 +32,8 @@
 	CONFIG_LOAD_NUM(hard_player_limit, data["hard_player_limit"])
 	CONFIG_LOAD_NUM(ticklag, data["ticklag"])
 
-	CONFIG_LOAD_NUM(server_port, data["client_min_major_version"])
-	CONFIG_LOAD_NUM(server_port, data["client_min_minor_version"])
+	CONFIG_LOAD_NUM(client_min_major_version, data["client_min_major_version"])
+	CONFIG_LOAD_NUM(client_min_minor_version, data["client_min_minor_version"])
 
 	if(ticklag)
 		fps = 10 / ticklag
