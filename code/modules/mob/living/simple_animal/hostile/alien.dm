@@ -74,7 +74,7 @@
 
 /mob/living/simple_animal/hostile/alien/queen/large
 	name = "alien empress"
-	desc = "The perfect organism."
+	desc = "Her Majesty."
 	icon = 'icons/mob/alienqueen.dmi'
 	icon_state = "queen_s"
 	icon_living = "queen_s"
