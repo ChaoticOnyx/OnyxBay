@@ -131,6 +131,17 @@
 	set_dir(turn(dir, -90))
 	update()
 
+/obj/structure/disposalconstruct/AltClick(mob/user)
+	if(usr.incapacitated())
+		return
+
+	if(anchored)
+		to_chat(usr, "You must unfasten the pipe before rotating it.")
+		return
+
+	set_dir(turn(dir, -90))
+	update()
+
 /obj/structure/disposalconstruct/proc/flip()
 	set category = "Object"
 	set name = "Flip Pipe"

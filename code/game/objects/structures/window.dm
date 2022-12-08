@@ -331,6 +331,24 @@
 	return
 
 
+/obj/structure/window/AltClick(mob/user)
+	if(usr.incapacitated())
+		return 0
+
+	if(is_full_window()) // No point in rotating a window if it is full
+		return 0
+
+	if(anchored)
+		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
+		return 0
+
+	update_nearby_tiles(need_rebuild=1) //Compel updates before
+	set_dir(turn(dir, 90))
+	updateSilicate()
+	update_nearby_tiles(need_rebuild=1)
+	return
+
+
 /obj/structure/window/proc/revrotate()
 	set name = "Rotate Window Clockwise"
 	set category = "Object"

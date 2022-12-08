@@ -48,6 +48,16 @@
 	set_dir(turn(dir, 90))
 	return 1
 
+/obj/machinery/power/emitter/AltClick(mob/user)
+	if(usr.incapacitated())
+		return
+
+	if(anchored)
+		to_chat(usr, "It is fastened to the floor!")
+		return 0
+	set_dir(turn(dir, 90))
+	return 1
+
 /obj/machinery/power/emitter/Initialize()
 	. = ..()
 	if(state == 2 && anchored)

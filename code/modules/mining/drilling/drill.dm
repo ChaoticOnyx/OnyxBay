@@ -361,3 +361,13 @@
 
 	src.set_dir(turn(src.dir, 90))
 	return 1
+
+/obj/machinery/mining/brace/AltClick(mob/user)
+	if(usr.stat) return
+
+	if (src.anchored)
+		to_chat(usr, "It is anchored in place!")
+		return 0
+
+	src.set_dir(turn(src.dir, 90))
+	return 1

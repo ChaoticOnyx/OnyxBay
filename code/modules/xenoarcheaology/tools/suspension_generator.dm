@@ -256,6 +256,12 @@
 	else
 		set_dir(turn(dir, -90))
 
+/obj/machinery/suspension_gen/AltClick(mob/user)
+	if(anchored)
+		to_chat(usr, SPAN("warning", "You cannot rotate [src], it has been firmly fixed to the floor."))
+	else
+		set_dir(turn(dir, -90))
+
 /obj/effect/suspension_field
 	name = "energy field"
 	icon = 'icons/effects/effects.dmi'
