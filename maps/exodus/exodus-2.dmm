@@ -7963,7 +7963,7 @@
 "eod" = (/obj/structure/shuttle/engine/propulsion/burst{dir = 4},/turf/simulated/shuttle/wall{dir = 8; icon_state = "swall_c"},/area/shuttle/escape_pod5/station)
 "eBH" = (/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/machinery/navbeacon/wayfinding/court,/turf/simulated/floor/trim/wood,/area/security/meeting)
 "fJK" = (/obj/structure/table/woodentable,/obj/random/music_tape,/turf/simulated/floor/trim/wood,/area/library)
-"iBQ" = (/obj/machinery/door/blast/shutters/open{dir = 4; id = "barshut1"},/obj/structure/table/darkwood_reinforced,/obj/item/music_tape_box/halloween,/turf/simulated/floor/trim/darkwood,/area/crew_quarters/bar)
+"iBQ" = (/obj/machinery/door/blast/shutters/open{dir = 4; id = "barshut1"},/obj/structure/table/darkwood_reinforced,/obj/random/music_tape/holiday,/turf/simulated/floor/trim/darkwood,/area/crew_quarters/bar)
 "ndL" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 9},/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers,/obj/machinery/light,/obj/machinery/navbeacon/wayfinding/chapel,/turf/simulated/floor/trim/carpet/gpurple,/area/chapel/main)
 "pGn" = (/obj/structure/sign/warning/out_of_service,/turf/simulated/wall,/area/maintenance/evahallway)
 "sIU" = (/obj/machinery/door/airlock/glass{name = "Kitchen"; req_access = list(28)},/obj/machinery/door/firedoor/border_only,/obj/effect/floor_decal/corner/grey/diagonal{dir = 4},/obj/machinery/navbeacon/wayfinding/kitchen,/turf/simulated/floor/tiled/white,/area/crew_quarters/kitchen)

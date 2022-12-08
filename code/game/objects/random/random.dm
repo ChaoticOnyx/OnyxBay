@@ -1174,6 +1174,30 @@ something, make sure it's not in one of the other lists.
 				/obj/item/music_tape_box/exodus = 5,
 				/obj/item/music_tape_box/valhalla = 3)
 
+// Special "Holidays" tape
+/obj/random/music_tape/holiday
+	name = "random holiday music tape"
+	desc = "This is a random holiday music tape."
+	icon_state = "landmark_tape"
+
+/obj/random/music_tape/holiday/spawn_item()
+	if(QDELETED(loc))
+		return
+
+	var/obj/item/music_tape_box/box
+
+	var/MM = text2num(time2text(world.timeofday, "MM")) // Get the current month
+
+	switch(MM)
+		if(10, 11) // Halloween
+			box = new /obj/item/music_tape_box/halloween(src.loc)
+		if(12, 1) // Christmas
+			box = new /obj/item/music_tape_box/newyear(src.loc)
+
+	if(pixel_x || pixel_y)
+		box.pixel_x = pixel_x
+		box.pixel_y = pixel_y
+
 // Selects one spawn point out of a group of points with the same ID and asks it to generate its items
 var/list/multi_point_spawns
 
