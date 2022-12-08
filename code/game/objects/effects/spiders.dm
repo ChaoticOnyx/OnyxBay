@@ -75,7 +75,7 @@
 
 /obj/structure/spider/stickyweb/sealed/attack_generic(mob/user, damage, attack_verb, wallbreaker)
     if(istype (user, /mob/living/simple_animal/hostile/giant_spider))
-        user.visible_message("<span class=`warning`>[user] begins to claw through the [src]!</span>", "You begin to claw through the [src].")
+        user.visible_message(SPAN_WARNING("[user] begins to claw through the [src]!"), "You begin to claw through the [src].")
         if(do_after(user, 50, target = src))
             user.visible_message("<span class='warning'>[user] ruptures [src] open!</span>", "You succesfully claw through the [src].")
             health = 0
