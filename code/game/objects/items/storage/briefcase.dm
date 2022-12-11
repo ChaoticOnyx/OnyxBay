@@ -11,9 +11,7 @@
 	mod_reach = 0.75
 	mod_handy = 1.0
 	max_w_class = ITEM_SIZE_NORMAL
-	max_storage_space = DEFAULT_BACKPACK_STORAGE + 27
-	override_w_class = list(/obj/item/gun/energy/laser,
-		/obj/item/gun/projectile/shotgun/pump)
+	max_storage_space = DEFAULT_BACKPACK_STORAGE
 
 /obj/item/storage/briefcase/iaa
 	startswith = list(/obj/item/paper/trade_lic/trade_guide,\
@@ -26,6 +24,8 @@
 /obj/item/storage/briefcase/std
 	desc = "It's an old-looking briefcase with some high-tech markings. It has a label on it, which reads: \"ONLY WORKS NEAR SPACE\"."
 	origin_tech = list(TECH_BLUESPACE = 3, TECH_ILLEGAL = 3)
+	override_w_class = list(/obj/item/gun/energy/laser,
+		/obj/item/gun/projectile/shotgun/pump)
 	var/obj/item/device/uplink/uplink
 	var/authentication_complete = FALSE
 	var/del_on_send = TRUE
