@@ -225,7 +225,7 @@ else if(##equipment_var) {\
 		to_chat(user, "<span class='warning'>You cannot modify \the [src] while it is being worn.</span>")
 		return
 
-	if(istype(W,/obj/item/screwdriver))
+	if(isScrewdriver(W))
 		if(helmet || boots || tank)
 			var/choice = input("What component would you like to remove?") as null|anything in list(helmet,boots,tank)
 			if(!choice) return

@@ -14,7 +14,6 @@
 	mod_handy = 0.5
 
 	var/tool_c = null
-	var/tool_u = null
 
 /obj/item/combotool/proc/switchtools()
 	return
@@ -23,19 +22,6 @@
 	switchtools()
 	to_chat(user, "<span class='notice'>[src] mode: [tool_c].</span>")
 	update_icon()
-	return
-
-/obj/item/combotool/resolve_attackby(atom/a, mob/user, click_params)
-	if(istype(a, /obj/item/storage) && user.a_intent != I_DISARM)
-		a.attackby(src, user)
-		return
-	if(istype(a, /obj/structure/table) && user.a_intent == I_DISARM)
-		a.attackby(src, user)
-		return
-	if(istype(a, /obj/structure/closet) && user.a_intent != I_DISARM)
-		a.attackby(src, user)
-		return
-	a.attackby(tool_u, user)
 	return
 
 /obj/item/combotool/update_icon()
@@ -73,30 +59,30 @@
 	screwdriver = new /obj/item/screwdriver/advpart(src)
 	wirecutters = new /obj/item/wirecutters/advpart(src)
 	tool_c = "multitool"
-	tool_u = multitool
+	tool_behaviour = TOOL_MULTITOOL
 
 /obj/item/combotool/advtool/switchtools()
 	if(tool_c == "multitool")
 		if(screwdriver)
 			tool_c = "screwdriver"
-			tool_u = screwdriver
+			tool_behaviour = TOOL_SCREWDRIVER
 			sharp = 1
 		else
 			tool_c = "wirecutters"
-			tool_u = wirecutters
+			tool_behaviour = TOOL_WIRECUTTER
 			sharp = 0
 	else if(tool_c == "screwdriver")
 		if(wirecutters)
 			tool_c = "wirecutters"
-			tool_u = wirecutters
+			tool_behaviour = TOOL_WIRECUTTER
 			sharp = 0
 		else
 			tool_c = "multitool"
-			tool_u = multitool
+			tool_behaviour = TOOL_MULTITOOL
 			sharp = 0
 	else if(tool_c == "wirecutters")
 		tool_c = "multitool"
-		tool_u = multitool
+		tool_behaviour = TOOL_MULTITOOL
 		sharp = 0
 	update_icon()
 	return
@@ -107,7 +93,7 @@
 		return
 	..()
 
-/obj/item/combotool/advtool/attack_hand(mob/user as mob)
+/obj/item/combotool/advtool/attack_hand(mob/user)
 	if(src != user.get_inactive_hand())
 		return ..()
 
@@ -134,11 +120,11 @@
 		to_chat(user, "<span class=warning>Something went wrong, please try again.</span>")
 
 	tool_c = "multitool"
-	tool_u = multitool
+	tool_behaviour = TOOL_MULTITOOL
 	update_icon()
 	return
 
-/obj/item/combotool/advtool/attackby(obj/item/I as obj, mob/user as mob)
+/obj/item/combotool/advtool/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/screwdriver/advpart))
 		var/obj/item/screwdriver/advpart/SD = I
 		if(!screwdriver)

@@ -45,7 +45,7 @@
 		return ..()
 	else if(istype(W, /obj/item/packageWrap))
 		return
-	else if(istype(W, /obj/item/stack/cable_coil))
+	else if(isCoil(W))
 		var/obj/item/stack/cable_coil/C = W
 		if(rigged)
 			to_chat(user, SPAN_NOTICE("[src] is already rigged!"))

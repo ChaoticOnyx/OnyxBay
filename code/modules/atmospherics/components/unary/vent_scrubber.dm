@@ -297,7 +297,7 @@
 			qdel(src)
 		return 1
 
-	if(istype(W, /obj/item/weldingtool))
+	if(isWelder(W))
 
 		var/obj/item/weldingtool/WT = W
 
