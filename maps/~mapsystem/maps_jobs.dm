@@ -5,10 +5,19 @@
 			/datum/job/bartender,
 			/datum/job/chef,
 			/datum/job/hydro,
-			/datum/job/cargo_tech,
-			/datum/job/mining,
+			/datum/job/lawyer,
 			/datum/job/janitor,
 			/datum/job/librarian,
+			/datum/job/clown,
+			/datum/job/mime,
+			/datum/job/cargo_tech,
+			/datum/job/mining,
+			/datum/job/paramedic,
+			/datum/job/roboticist,
+			/datum/job/engineer,
+			/datum/job/atmos,
+			/datum/job/ai,
+			/datum/job/cyborg,
 			/datum/job/merchant
 		),
 		/datum/species/unathi = list(
@@ -21,6 +30,13 @@
 			/datum/job/janitor,
 			/datum/job/librarian,
 			/datum/job/officer,
+			/datum/job/roboticist,
+			/datum/job/paramedic,
+			/datum/job/chemist,
+			/datum/job/engineer,
+			/datum/job/atmos,
+			/datum/job/ai,
+			/datum/job/cyborg,
 			/datum/job/merchant
 		),
 		/datum/species/skrell = list(
@@ -30,6 +46,10 @@
 			/datum/job/hydro,
 			/datum/job/janitor,
 			/datum/job/librarian,
+			/datum/job/clown,
+			/datum/job/mime,
+			/datum/job/lawyer,
+			/datum/job/detective,
 			/datum/job/doctor,
 			/datum/job/virologist,
 			/datum/job/chemist,
@@ -37,6 +57,8 @@
 			/datum/job/scientist,
 			/datum/job/xenobiologist,
 			/datum/job/roboticist,
+			/datum/job/ai,
+			/datum/job/cyborg,
 			/datum/job/merchant
 		)
 	)

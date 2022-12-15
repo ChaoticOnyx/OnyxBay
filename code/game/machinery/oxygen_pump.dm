@@ -33,13 +33,11 @@
 		breather.internal = null
 		if(breather.internals)
 			breather.internals.icon_state = "internal0"
-	if(tank)
-		qdel(tank)
+	QDEL_NULL(tank)
 	if(breather)
 		breather.drop(contained, force = TRUE)
 		visible_message("<span class='notice'>The mask rapidly retracts just before \the [src] is destroyed!</span>")
-	qdel(contained)
-	contained = null
+	QDEL_NULL(contained)
 	breather = null
 	return ..()
 
@@ -60,7 +58,7 @@
 /obj/machinery/oxygen_pump/attack_hand(mob/user as mob)
 	if((stat & MAINT) && tank)
 		user.visible_message("<span class='notice'>\The [user] removes \the [tank] from \the [src].</span>", "<span class='notice'>You remove \the [tank] from \the [src].</span>")
-		user.put_in_hands(tank)
+		user.pick_or_drop(tank, loc)
 		src.add_fingerprint(user)
 		tank.add_fingerprint(user)
 		tank = null

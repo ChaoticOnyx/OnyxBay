@@ -200,7 +200,7 @@ GLOBAL_LIST_EMPTY(music_players)
 								return FALSE
 							playsound(src, 'sound/items/Screwdriver.ogg', 45, 1)
 							to_chat(user, SPAN_NOTICE("You pulled out [cell] out of [src] with [I]."))
-							user.put_in_hands(cell)
+							user.pick_or_drop(cell)
 							cell = null
 							update_icon()
 						else
@@ -319,7 +319,7 @@ GLOBAL_LIST_EMPTY(music_players)
 		visible_message(
 			SPAN_NOTICE("[user] eject \a [tape] from \the [src]."),
 			SPAN_NOTICE("You eject \a [tape] from \the [src]."))
-		user.put_in_hands(tape)
+		user.pick_or_drop(tape)
 	else
 		tape.dropInto(loc)
 	tape = null

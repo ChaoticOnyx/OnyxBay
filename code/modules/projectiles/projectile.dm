@@ -97,11 +97,6 @@
 		QDEL_NULL(trajectory)
 	return ..()
 
-/obj/item/projectile/forceMove()
-	..()
-	if(istype(loc, /turf/space/) && istype(loc.loc, /area/space))
-		qdel(src)
-
 //TODO: make it so this is called more reliably, instead of sometimes by bullet_act() and sometimes not
 /obj/item/projectile/proc/on_hit(atom/target, blocked = 0, def_zone = null)
 	if(blocked >= 100)
@@ -347,7 +342,7 @@
 	//the bullet passes through a dense object!
 	if(passthrough)
 		//move ourselves onto A so we can continue on our way.
-		if(A)
+		if(A && !QDELETED(src))
 			if(istype(A, /turf))
 				loc = A
 			else
@@ -377,7 +372,7 @@
 /obj/item/projectile/think()
 	var/first_step = 1
 	var/i = 0
-	spawn while(src && src.loc)
+	spawn while(!QDELETED(src))
 		if (++i > 512)
 			var/turf/T = src.loc
 			qdel(src)
@@ -486,9 +481,9 @@
 
 /obj/item/projectile/proc/impact_effect()
 	if(ispath(impact_type))
-		var/obj/effect/projectile/P = new impact_type(location.loc)
+		var/obj/effect/projectile/P = new impact_type(location ? location.loc : get_turf(src))
 
-		if(istype(P))
+		if(istype(P) && location)
 			P.SetTransform(others = effect_transform)
 			P.pixel_x = round(location.pixel_x, 1)
 			P.pixel_y = round(location.pixel_y, 1)
@@ -540,6 +535,9 @@
 
 		trajectory.increment()	// increment the current location
 		location = trajectory.return_location(location)		// update the locally stored location data
+
+		if(!location)
+			return FALSE
 
 		Move(location.return_turf())
 

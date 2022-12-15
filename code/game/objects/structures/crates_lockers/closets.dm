@@ -386,7 +386,7 @@
 								 \SPAN_NOTICE("You hear rustling of clothes."))
 			return
 
-		if(istype(W, /obj/item/screwdriver) && dremovable && cdoor)
+		if(isScrewdriver(W) && dremovable && cdoor)
 			user.visible_message(SPAN_NOTICE("[user] starts unscrewing [cdoor] from [src]."))
 			user.next_move = world.time + 10
 			if(!do_after(user, 30))
@@ -405,10 +405,26 @@
 				return FALSE
 			if(cdoor)
 				return FALSE
-			if(!user.drop(C))
+			if(istype(C.loc, /obj/item/gripper)) // Snowflaaaaakeeeeey
+				var/obj/item/gripper/G = C.loc
+				G.wrapped.forceMove(get_turf(src))
+				G.wrapped = null
+			else if(!user.drop(C))
 				return
 			user.visible_message(SPAN_NOTICE("[user] connected [C] to [src]."))
 			attach_door(C)
+			return
+
+		if(istype(W.loc, /obj/item/gripper)) // It's kinda tricky, see drone_items.dm L#313 for grippers' resolve_attackby().
+			var/obj/item/gripper/G = W.loc
+			if(!G.wrapped)
+				return
+			G.wrapped.forceMove(loc)
+			G.wrapped.pixel_x = 0
+			G.wrapped.pixel_y = 0
+			G.wrapped.pixel_z = 0
+			G.wrapped.pixel_w = 0
+			G.wrapped = null
 			return
 
 		if(usr.drop(W, loc))
@@ -441,7 +457,7 @@
 		src.welded = !src.welded
 		src.update_icon()
 		user.visible_message(SPAN_WARNING("\The [src] has been [welded?"welded shut":"unwelded"] by \the [user]."), blind_message = "You hear welding.", range = 3)
-	else if(istype(W, /obj/item/device/multitool) && (setup & CLOSET_HAS_LOCK))
+	else if(isMultitool(W) && (setup & CLOSET_HAS_LOCK))
 		var/obj/item/device/multitool/multi = W
 		if(multi.in_use)
 			to_chat(user, SPAN("warning", "This multitool is already in use!"))

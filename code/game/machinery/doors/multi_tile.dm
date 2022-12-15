@@ -29,3 +29,6 @@
 	assembly_type = /obj/structure/door_assembly/multi_tile
 	open_sound_powered = 'sound/machines/airlock/glass_open1.ogg'
 	close_sound_powered = 'sound/machines/airlock/glass_close1.ogg'
+
+/obj/machinery/door/airlock/multi_tile/glass/medbay
+	icon = 'icons/obj/doors/door2x1medglass.dmi'

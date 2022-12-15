@@ -212,7 +212,7 @@
 		I.loc = get_turf(user) //just in case something was embedded that is not an item
 		if(istype(I))
 			if(!(user.l_hand && user.r_hand))
-				user.put_in_hands(I)
+				user.pick_or_drop(I)
 		user.visible_message("<span class='danger'>\The [user] rips \the [I] out of \the [src]!</span>")
 		return //no eating the limb until everything's been removed
 	return ..()
@@ -1548,7 +1548,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	return sounds
 
 /obj/item/organ/external/proc/jointlock(mob/attacker)
-	if(!can_feel_pain() || !owner)
+	if(!can_feel_pain())
 		return
 
 	var/armor = owner.run_armor_check(owner, "melee")

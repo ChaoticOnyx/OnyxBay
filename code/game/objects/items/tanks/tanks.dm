@@ -68,6 +68,8 @@ var/list/global/tank_gauge_cache = list()
 	update_icon(TRUE)
 
 /obj/item/tank/Destroy()
+	manipulated_by = null
+
 	QDEL_NULL(air_contents)
 	QDEL_NULL(proxyassembly)
 
@@ -581,6 +583,11 @@ var/list/global/tank_gauge_cache = list()
 	var/obj/item/tank/tank = null
 	var/obj/item/device/assembly_holder/assembly = null
 
+/obj/item/device/tankassemblyproxy/Destroy()
+	tank = null
+	assembly = null
+	return ..()
+
 /obj/item/device/tankassemblyproxy/receive_signal()	//This is mainly called by the sensor through sense() to the holder, and from the holder to here.
 	tank.ignite()	//boom (or not boom if you made shijwtty mix)
 
@@ -594,7 +601,7 @@ var/list/global/tank_gauge_cache = list()
 
 	M.drop_active_hand() // Remove the assembly from your hands
 	M.drop(src)          // Remove the tank from your character,in case you were holding it
-	M.put_in_hands(src)  // Equips the bomb if possible, or puts it on the floor.
+	M.pick_or_drop(src)  // Equips the bomb if possible, or puts it on the floor.
 
 	proxyassembly.assembly = S	//Tell the bomb about its assembly part
 	S.master = proxyassembly	//Tell the assembly about its new owner

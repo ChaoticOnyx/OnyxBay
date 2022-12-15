@@ -10,7 +10,7 @@
 	force = 2.0
 	det_time = null
 	unacidable = 1
-	var/stage = 0
+	var/stage = STAGE_BASIC
 	var/state = 0
 	var/list/beakers = new /list()
 	var/list/allowed_containers = list(/obj/item/reagent_containers/vessel/beaker, /obj/item/reagent_containers/vessel/bottle/chemical)
@@ -18,14 +18,16 @@
 
 /obj/item/grenade/chem_grenade/Initialize()
 	. = ..()
+	if(stage == STAGE_BASIC)
+		QDEL_NULL(detonator) // Yea, we surely don't need it, if chemnade is not ready.
 	create_reagents(1000)
 
 /obj/item/grenade/chem_grenade/attack_self(mob/user)
 	if(stage != STAGE_READY)
 		if(detonator)
 			detonator.detached()
-			user.put_in_hands(detonator)
-			detonator=null
+			user.pick_or_drop(detonator)
+			detonator = null
 			det_time = null
 			stage = STAGE_BASIC
 			update_icon()
@@ -33,11 +35,11 @@
 			for(var/obj/B in beakers)
 				if(istype(B))
 					beakers -= B
-					user.put_in_hands(B)
+					user.pick_or_drop(B)
 		SetName("unsecured grenade with [beakers.len] containers[detonator?" and detonator":""]")
 	if(stage == STAGE_READY && !active && clown_check(user))
 		if(safety_pin)
-			user.put_in_hands(safety_pin)
+			user.pick_or_drop(safety_pin)
 			safety_pin = null
 			playsound(loc, 'sound/weapons/pin_pull.ogg', 40, 1)
 			to_chat(user, SPAN("warning", "You remove the safety pin!"))
@@ -181,14 +183,14 @@
 	if(active)
 		icon_state = initial(icon_state) + "_active"
 		return
-	if(QDELETED(safety_pin))
-		icon_state = initial(icon_state) + "_primed"
-		return
 	if(stage == STAGE_DETONATOR)
 		icon_state = initial(icon_state) + "_ass"
 		return
 	if(stage == STAGE_BASIC)
 		icon_state = initial(icon_state)
+		return
+	if(QDELETED(safety_pin))
+		icon_state = initial(icon_state) + "_primed"
 		return
 	icon_state = initial(icon_state) + "_locked"
 

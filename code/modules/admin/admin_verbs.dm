@@ -450,7 +450,8 @@ var/list/admin_verbs_mentor = list(
 		//ghostize
 		var/mob/body = mob
 		var/mob/observer/ghost/ghost = body.ghostize(1)
-		ghost.admin_ghosted = 1
+		if(istype(ghost))
+			ghost.admin_ghosted = 1
 		if(body)
 			body.teleop = ghost
 			if(!body.key)
@@ -464,7 +465,10 @@ var/list/admin_verbs_mentor = list(
 	set desc = "Toggles ghost-like invisibility (Don't abuse this)"
 	if(holder && mob)
 		if(mob.invisibility == INVISIBILITY_OBSERVER)
-			mob.set_invisibility(initial(mob.invisibility))
+			if(isghost(mob))
+				mob.set_invisibility(0)
+			else
+				mob.set_invisibility(initial(mob.invisibility))
 			to_chat(mob, SPAN_DANGER("Invisimin off. Invisibility reset."))
 			mob.alpha = max(mob.alpha + 100, 255)
 		else

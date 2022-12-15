@@ -24,7 +24,7 @@
 
 /atom/movable/Destroy()
 	if(!(atom_flags & ATOM_FLAG_INITIALIZED))
-		util_crash_with("Was deleted before initalization")
+		util_crash_with("GC: -- [name] | [type] was deleted before initalization --")
 
 	walk(src, 0) // Because we might have called walk_to, we must stop the walk loop or BYOND keeps an internal reference to us forever.
 
@@ -76,7 +76,8 @@
 
 /atom/movable/proc/forceMove(atom/destination)
 	if((gc_destroyed && gc_destroyed != GC_CURRENTLY_BEING_QDELETED) && !isnull(destination))
-		CRASH("Attempted to forceMove a QDELETED [src] out of nullspace!")
+		util_crash_with("Attempted to forceMove a QDELETED [src] out of nullspace! Destination: [destination].")
+		return 0
 	if(loc == destination)
 		return 0
 	var/is_origin_turf = isturf(loc)

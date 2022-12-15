@@ -29,9 +29,9 @@
 		else
 			var/obj/item/I = pick(contents)
 			if(ishuman(user))
-				user.put_in_hands(I)
+				user.pick_or_drop(I)
 			else
-				I.loc = get_turf(src)
+				I.dropInto(loc)
 			to_chat(user, "<span class='notice'>You find \an [I] in the cistern.</span>")
 			w_items -= I.w_class
 			return

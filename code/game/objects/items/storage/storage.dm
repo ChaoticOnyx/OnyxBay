@@ -45,16 +45,19 @@
 			return ..()
 
 		//makes sure that the storage is equipped, so that we can't drag it into our hand from miles away.
-		if(!usr.contains(src))
+		if(loc != usr)
 			return
 
 		add_fingerprint(usr)
-		if(usr.drop(src))
-			switch(over_object.name)
-				if(BP_R_HAND)
+		switch(over_object.name)
+			if(BP_R_HAND)
+				if(usr.drop(src))
 					usr.put_in_r_hand(src)
-				if(BP_L_HAND)
+			if(BP_L_HAND)
+				if(usr.drop(src))
 					usr.put_in_l_hand(src)
+			if("back")
+				usr.drop(src)
 
 /obj/item/storage/AltClick(mob/usr)
 	if(!canremove)
@@ -190,16 +193,16 @@
 //The stop_warning parameter will stop the insertion message from being displayed. It is intended for cases where you are inserting multiple items at once,
 //such as when picking up all the items on a tile with one click.
 /obj/item/storage/proc/handle_item_insertion(obj/item/W, prevent_warning = 0, NoUpdate = 0)
-	if(!istype(W))
-		return 0
+	if(QDELETED(W))
+		return FALSE
 	if(ismob(W.loc))
 		var/mob/M = W.loc
-		if(!M.drop(W, src))
-			return
+		if(!M.drop(W))
+			return FALSE
+	W.forceMove(src)
 	W.on_enter_storage(src)
 	if(usr)
 		add_fingerprint(usr)
-
 		if(!prevent_warning)
 			for(var/mob/M in viewers(usr, null))
 				if (M == usr)
@@ -212,11 +215,11 @@
 		if(!NoUpdate)
 			update_ui_after_item_insertion()
 
-	if(src.use_sound)
-		playsound(src.loc, src.use_sound, 50, 1, -5)
+	if(use_sound)
+		playsound(loc, use_sound, 50, 1, -5)
 
 	update_icon()
-	return 1
+	return TRUE
 
 /obj/item/storage/proc/update_ui_after_item_insertion()
 	prepare_ui()
@@ -316,12 +319,12 @@
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.l_store == src && !H.get_active_hand())	//Prevents opening if it's in a pocket.
-			H.put_in_hands(src)
-			H.l_store = null
+			if(H.put_in_hands(src))
+				H.l_store = null
 			return
 		if(H.r_store == src && !H.get_active_hand())
-			H.put_in_hands(src)
-			H.r_store = null
+			if(H.put_in_hands(src))
+				H.r_store = null
 			return
 
 	if(loc == user)

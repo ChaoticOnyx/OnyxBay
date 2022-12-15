@@ -431,7 +431,7 @@
 	storage_slots = 7
 
 /obj/item/storage/secure/guncase/security/attackby(obj/item/W, mob/user)
-	var/obj/item/card/id/I = W.GetIdCard()
+	var/obj/item/card/id/I = W.get_id_card()
 	if(I) // For IDs and PDAs and wallets with IDs
 		if(!(access_security in I.GetAccess()))
 			to_chat(user, SPAN("warning", "Access denied!"))

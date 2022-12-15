@@ -8,8 +8,7 @@
 
 /obj/structure/christmas/snowman/attack_hand(mob/user as mob)
 	user.visible_message("[user] takes [my_hat] off \the [src].", "You take [my_hat] off \the [src]")
-	if(!user.put_in_active_hand(my_hat))
-		my_hat.loc = get_turf(user)
+	user.pick_or_drop(my_hat, loc)
 	my_hat = null
 	update_icon()
 

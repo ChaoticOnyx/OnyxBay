@@ -82,8 +82,10 @@
 		return SPAN("notice", "[holder] manages to light \his [name] with \a [tool].")
 	if(istype(tool, /obj/item/flame/candle))
 		return SPAN("notice", "[holder] carefully lights \his [name] with \a [tool].")
-	if(istype(tool, /obj/item/weldingtool))
-		return SPAN("notice", "[holder] casually lights \his [name] with \a [tool].")
+	if(isitem(tool))
+		var/obj/item/I = tool
+		if(isWelder(I))
+			return SPAN("notice", "[holder] casually lights \his [name] with \a [tool].")
 	if(istype(tool, /obj/item/device/assembly/igniter))
 		return SPAN("notice", "[holder] fiddles with \his [tool.name], and manages to light \a [name].")
 	if(istype(tool, /obj/item/reagent_containers/rag))
@@ -109,7 +111,7 @@
 	return ..()
 
 /obj/item/clothing/mask/smokable/cigarette/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/wirecutters))
+	if(isWirecutter(W))
 		user.visible_message(SPAN("notice", "[user] cut the tip of \his [name] with [W]."), "You cut the tip of your [name]")
 		smoketime -= 10
 		if(smoketime <= 0)
@@ -400,8 +402,10 @@
 		return SPAN("notice", "[holder] manages to offend \his [name] by lighting it with \a [tool].")
 	if(istype(tool, /obj/item/flame/candle))
 		return SPAN("notice", "[holder] carefully lights \his [name] with \a classic [tool].")
-	if(istype(tool, /obj/item/weldingtool))
-		return SPAN("notice", "[holder] insults \his [name] by lighting it with \a [tool].")
+	if(isitem(tool))
+		var/obj/item/I = tool
+		if(isWelder(I))
+			return SPAN("notice", "[holder] insults \his [name] by lighting it with \a [tool].")
 	if(istype(tool, /obj/item/device/assembly/igniter))
 		return SPAN("notice", "[holder] fiddles with \his [tool.name], and manages to light \a [name] with the power of science.")
 	if(istype(tool, /obj/item/reagent_containers/rag))

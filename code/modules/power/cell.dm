@@ -66,7 +66,14 @@
 // use power from a cell, returns the amount actually used
 /obj/item/cell/proc/use(amount)
 	if(amount < 0) // I can not trust these fuckers to do this properly and actually check what they pass.
-		util_crash_with("Cell ([src], [c_uid]) called use() with negative amount ([amount]).")
+		if(istype(loc, /obj/machinery/power/apc))
+			// Spent 5 hours trying to track down what causes random areas' power usage to go below zero.
+			// TODO: Either track it down and fix it or increase the hours counter above after ultimately failing to do so.
+			var/obj/machinery/power/apc/A = loc
+			A.area.retally_power()
+			util_crash_with("Cell ([src], [c_uid]) called use() with negative amount ([amount]) in area \"[A.area]\". Attempting autofix.")
+		else
+			util_crash_with("Cell ([src], [c_uid]) called use() with negative amount ([amount]).")
 		return 0
 	var/used = min(charge, amount)
 	charge -= used
@@ -275,6 +282,16 @@
 	icon_state = "yellow metroid extract" //"potato_battery"
 	maxcharge = 200
 	matter = null
+
+/obj/item/cell/metroid/proc/selfcharge_think()
+	add_charge(1)
+	set_next_think_ctx("selfcharge", world.time + 3 SECONDS)
+
+/obj/item/cell/metroid/Initialize()
+	. = ..()
+	
+	set_next_think(world.time)
+	add_think_ctx("selfcharge", CALLBACK(src, .proc/selfcharge_think), world.time)
 
 
 /obj/item/cell/quantum

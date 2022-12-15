@@ -4,6 +4,7 @@
 	description = ""
 
 	mtth = 2 HOURS
+	difficulty = 55
 	fire_only_once = TRUE
 
 /datum/event/money_hacker/get_mtth()
@@ -23,24 +24,21 @@
 
 	SSevents.evars["money_hacker_running"] = TRUE
 
-	if(GLOB.using_map.type == /datum/map/polar)
-		command_announcement.Announce(
-			"A brute force hack has been detected (in progress since [stationtime2text()]). The target of the attack is: Financial accounts, \
-			without intervention this attack will succeed in approximately 10 minutes. Possible solutions: suspension of accounts, disabling NTnet server, \
-			increase account security level. Notifications will be sent as updates occur.",
-			"[station_name()] Firewall Subroutines",
-			new_sound = 'sound/AI/polar/money_hack_announce.ogg'
-		)
-	else
-		command_announcement.Announce("A brute force hack has been detected (in progress since [stationtime2text()]). The target of the attack is: Financial accounts, \
+	command_announcement.Announce(
+		"A brute force hack has been detected (in progress since [stationtime2text()]). The target of the attack is: Financial accounts, \
 		without intervention this attack will succeed in approximately 10 minutes. Possible solutions: suspension of accounts, disabling NTnet server, \
-		increase account security level. Notifications will be sent as updates occur.", "[station_name()] Firewall Subroutines")
+		increase account security level. Notifications will be sent as updates occur.",
+		"[station_name()] Firewall Subroutines",
+		new_sound = 'sound/AI/moneyhackstart.ogg'
+	)
 
 	addtimer(CALLBACK(src, .proc/end), 10 MINUTES)
 
 /datum/event/money_hacker/proc/end()
 	SSevents.evars["money_hacker_running"] = FALSE
 
+	var/message
+	var/snd
 	var/list/datum/money_account/affected_accounts = list()
 
 	for(var/datum/money_account/M in all_money_accounts)
@@ -56,6 +54,8 @@
 
 	if(ntnet_global?.check_function() && length(affected_accounts))
 		//hacker wins
+		message = "The hack attempt has succeeded."
+		snd = 'sound/AI/moneyhackwin.ogg'
 		var/target_name = pick("","yo brotha from anotha motha","el Presidente","chieF smackDowN")
 		var/purpose = pick("Ne$ ---ount fu%ds init*&lisat@*n","PAY BACK YOUR MUM","Funds withdrawal","pWnAgE","l33t hax","liberationez")
 		var/d1 = "31 December, 1999"
@@ -82,14 +82,6 @@
 
 	else
 		//crew wins
-		if(GLOB.using_map.type == /datum/map/polar)
-			command_announcement.Announce(
-				"The attack has ceased, the affected accounts can now be brought online.",
-				"[station_name()] Firewall Subroutines",
-				new_sound = 'sound/AI/polar/money_hack_win_end.ogg'
-			)
-		else
-			command_announcement.Announce(
-				"The attack has ceased, the affected accounts can now be brought online.",
-				"[station_name()] Firewall Subroutines"
-			)
+		snd = 'sound/AI/moneyhackloose.ogg'
+
+	command_announcement.Announce(message, "[station_name()] Firewall Subroutines", new_sound = snd)

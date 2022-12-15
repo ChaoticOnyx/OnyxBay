@@ -155,6 +155,10 @@
 		var/combined_height = approx_lines
 		for(var/msg in owned_by.seen_messages[message_loc])
 			var/datum/chatmessage/m = msg
+
+			if(QDELETED(m))
+				continue
+
 			animate(m.message, pixel_y = m.message.pixel_y + mheight, time = CHAT_MESSAGE_SPAWN_TIME)
 			combined_height += m.approx_lines
 			var/sched_remaining = m.scheduled_destruction - world.time

@@ -58,6 +58,7 @@
 /datum/gear/suit/varsity/New()
 	..()
 	var/varsity = list()
+	varsity += /obj/item/clothing/suit/storage/toggle/varsity
 	varsity += /obj/item/clothing/suit/storage/toggle/varsity/blue
 	varsity += /obj/item/clothing/suit/storage/toggle/varsity/red
 	varsity += /obj/item/clothing/suit/storage/toggle/varsity/brown

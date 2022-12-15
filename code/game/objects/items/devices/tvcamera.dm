@@ -85,7 +85,7 @@
 		H.update_inv_l_hand()
 
 /* Assembly by a roboticist */
-/obj/item/robot_parts/head/attackby(obj/item/device/assembly/S, mob/user as mob)
+/obj/item/robot_parts/head/attackby(obj/item/device/assembly/S, mob/user)
 	if ((!istype(S, /obj/item/device/assembly/infra)))
 		..()
 		return
@@ -93,7 +93,7 @@
 		return
 	var/obj/item/TVAssembly/A = new(user)
 	qdel(S)
-	user.put_in_hands(A)
+	user.pick_or_drop(A)
 	to_chat(user, "<span class='notice'>You add the infrared sensor to the robot head.</span>")
 	qdel(src)
 
@@ -108,7 +108,7 @@ Using robohead because of restricting to roboticist */
 	var/buildstep = 0
 	w_class = ITEM_SIZE_LARGE
 
-/obj/item/TVAssembly/attackby(W, mob/user)
+/obj/item/TVAssembly/attackby(obj/item/W, mob/user)
 	switch(buildstep)
 		if(0)
 			if(istype(W, /obj/item/robot_parts/robot_component/camera) && user.drop(W))

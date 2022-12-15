@@ -26,7 +26,7 @@
 	update_icon()
 	. = ..()
 
-/obj/structure/bookcase/attackby(obj/O as obj, mob/user as mob)
+/obj/structure/bookcase/attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/book))
 		if(user.drop(O, src))
 			update_icon()
@@ -66,10 +66,9 @@
 			var/obj/choice = titles[title]
 			ASSERT(choice)
 			if(ishuman(user))
-				if(!user.get_active_hand())
-					user.put_in_hands(choice)
+				user.pick_or_drop(choice)
 			else
-				choice.loc = get_turf(src)
+				choice.forceMove(loc)
 			update_icon()
 
 /obj/structure/bookcase/ex_act(severity)

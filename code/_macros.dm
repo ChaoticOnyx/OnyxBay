@@ -84,19 +84,19 @@
 
 #define isopenspace(A) istype(A, /turf/simulated/open)
 
-#define isWrench(A) (istype(A, /obj/item/wrench) || (istype(A, /obj/item/rpd) && A:interaction_mode == "wrench"))
+#define isWrench(A) ((istype(A, /obj/item) && A.tool_behaviour == TOOL_WRENCH) || (istype(A, /obj/item/rpd) && A:interaction_mode == "wrench"))
 
-#define isWelder(A) istype(A, /obj/item/weldingtool)
+#define isWelder(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_WELDER)
 
-#define isCoil(A) istype(A, /obj/item/stack/cable_coil)
+#define isCoil(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_COIL)
 
-#define isWirecutter(A) istype(A, /obj/item/wirecutters)
+#define isWirecutter(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_WIRECUTTER)
 
-#define isScrewdriver(A) istype(A, /obj/item/screwdriver)
+#define isScrewdriver(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_SCREWDRIVER)
 
-#define isMultitool(A) istype(A, /obj/item/device/multitool)
+#define isMultitool(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_MULTITOOL)
 
-#define isCrowbar(A) istype(A, /obj/item/crowbar)
+#define isCrowbar(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_CROWBAR)
 
 #define iscapacitor(A) istype(A, /obj/item/stock_parts/capacitor)
 
@@ -209,6 +209,8 @@
 #define SPAN_OCCULT(X)   SPAN("cult", X)
 
 #define SPAN_DEADSAY(X)  SPAN("deadsay", X)
+
+#define SPAN_SPIDER(X)   SPAN("spider", X)
 
 #define FONT_SMALL(X)    SPAN("small", X)
 

@@ -117,8 +117,7 @@ GLOBAL_LIST_INIT(department_flags_to_text, list(
 	// Employment record
 	set_emplRecord((H && H.gen_record && !jobban_isbanned(H, "Records") ? H.gen_record : "No record supplied"))
 	set_homeSystem(H ? H.home_system : "Unset")
-	set_citizenship(H ? H.citizenship : "Unset")
-	set_faction(H ? H.personal_faction : "Unset")
+	set_background(H ? H.personal_background : "Unset")
 	set_religion(H ? H.religion : "Unset")
 
 	// Antag record
@@ -420,11 +419,9 @@ FIELD_CONTEXT_BOTH(emplRecord, CONTEXT(crew))
 FIELD_SHORT_SECURE("Home System", homeSystem, FALSE, access_heads);
 FIELD_CONTEXT_BOTH(homeSystem, CONTEXT(crew))
 
-FIELD_SHORT_SECURE("Citizenship", citizenship, FALSE, access_heads);
-FIELD_CONTEXT_BOTH(citizenship, CONTEXT(crew))
 
-FIELD_SHORT_SECURE("Faction", faction, FALSE, access_heads);
-FIELD_CONTEXT_BOTH(faction, CONTEXT(crew))
+FIELD_SHORT_SECURE("Background", background, FALSE, access_heads);
+FIELD_CONTEXT_BOTH(background, CONTEXT(crew))
 
 FIELD_SHORT_SECURE("Religion", religion, FALSE, access_heads);
 FIELD_CONTEXT_BOTH(religion, CONTEXT(crew))

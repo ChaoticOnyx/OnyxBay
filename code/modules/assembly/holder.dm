@@ -34,8 +34,12 @@
 	if(D.secured || D2.secured)
 		return FALSE
 	if(user)
-		user.drop(D, src)
-		user.drop(D2, src)
+		if(D.loc == user)
+			user.drop(D)
+		if(D2.loc == user)
+			user.drop(D2)
+	D.forceMove(src)
+	D2.forceMove(src)
 	D.holder = src
 	D2.holder = src
 	D.forceMove(src)
@@ -48,7 +52,7 @@
 	a_right = D2
 	SetName("[D.name]-[D2.name] assembly")
 	update_icon()
-	user.put_in_hands(src)
+	user.pick_or_drop(src)
 	return 1
 
 /obj/item/device/assembly_holder/proc/attach_special(obj/O, mob/user)

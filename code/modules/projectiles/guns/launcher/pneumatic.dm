@@ -45,7 +45,7 @@
 		return
 
 	to_chat(user, "You twist the valve and pop the tank out of [src].")
-	user.put_in_hands(tank)
+	user.pick_or_drop(tank, loc)
 	tank = null
 	update_icon()
 
@@ -53,7 +53,7 @@
 	if(item_storage.contents.len > 0)
 		var/obj/item/removing = item_storage.contents[item_storage.contents.len]
 		item_storage.remove_from_storage(removing, src.loc)
-		user.put_in_hands(removing)
+		user.pick_or_drop(removing, loc)
 		to_chat(user, "You remove [removing] from the hopper.")
 	else
 		to_chat(user, "There is nothing to remove in \the [src].")

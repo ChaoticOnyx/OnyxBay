@@ -86,6 +86,11 @@
 	path = /obj/item/clothing/under/casual_pants
 	flags = GEAR_HAS_TYPE_SELECTION
 
+/datum/gear/uniform/track_pants
+	display_name = "track pants selection"
+	path = /obj/item/clothing/under/track_pants
+	flags = GEAR_HAS_TYPE_SELECTION
+
 /datum/gear/uniform/formal_pants
 	display_name = "formal pants selection"
 	path = /obj/item/clothing/under/formal_pants

@@ -39,7 +39,8 @@
 /obj/item/organ/external/head/organ_eaten(mob/user)
 	. = ..()
 	var/obj/item/skull/SK = new /obj/item/skull(get_turf(src))
-	user.put_in_active_hand(SK)
+	if(!isturf(loc))
+		user.put_in_active_hand(SK)
 
 /obj/item/organ/external/head/_examine_text(mob/user)
 	. = ..()
@@ -144,12 +145,16 @@
 /obj/item/organ/external/head/proc/get_hair_icon()
 	var/image/res = image(species.icon_template,"")
 	if(owner.f_style)
-		var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[owner.f_style]
-		if(facial_hair_style && facial_hair_style.species_allowed && (species.name in facial_hair_style.species_allowed))
-			var/icon/facial_s = new /icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
-			if(facial_hair_style.do_coloration)
-				facial_s.Blend(rgb(owner.r_facial, owner.g_facial, owner.b_facial), facial_hair_style.blend)
-			res.overlays |= facial_s
+		var/datum/sprite_accessory/FH = GLOB.facial_hair_styles_list[owner.f_style]
+		if(FH?.species_allowed && species.facial_hair_key && (species.name in FH.species_allowed))
+			var/icon/FHI
+			if(istype(owner.body_build,/datum/body_build/slim))
+				FHI = icon(GLOB.facial_hair_icons["slim"][species.hair_key], FH.icon_state)
+			else
+				FHI = icon(GLOB.facial_hair_icons["default"][species.hair_key], FH.icon_state)
+			if(FH.do_coloration)
+				FHI.Blend(rgb(owner.r_facial, owner.g_facial, owner.b_facial), FH.blend)
+			res.overlays |= FHI
 
 	if(owner.h_style)
 		var/icon/HI
@@ -157,9 +162,12 @@
 		if((owner.head?.flags_inv & BLOCKHEADHAIR) && !(H.flags & VERY_SHORT))
 			H = GLOB.hair_styles_list["Short Hair"]
 		if(H)
-			if(!length(H.species_allowed) || (species.name in H.species_allowed))
-				var/slim_icon = ("[H.icon_state]_slim" in GLOB.hair_styles_icons)?"[H.icon_state]_slim":"[H.icon_state]_s"
-				HI = icon(H.icon, istype(owner.body_build,/datum/body_build/slim)?"[slim_icon]":"[H.icon_state]_s")
+			if((!length(H.species_allowed) || (species.name in H.species_allowed)) && species.hair_key)
+				if(istype(owner.body_build,/datum/body_build/slim))
+					HI = icon(GLOB.hair_icons["slim"][species.hair_key], H.icon_state)
+				else
+					HI = icon(GLOB.hair_icons["default"][species.hair_key], H.icon_state)
+
 				if(H.do_coloration && length(h_col) >= 3)
 					HI.Blend(rgb(h_col[1], h_col[2], h_col[3]), H.blend)
 		if(HI)

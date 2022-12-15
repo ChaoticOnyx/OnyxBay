@@ -255,7 +255,7 @@
 	add_fingerprint(user, 0, I)
 	if(user.a_intent == I_HURT)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		if(I.damtype == BRUTE || I.damtype == BURN)
+		if(istype(I) && (I.damtype == BRUTE || I.damtype == BURN))
 			user.do_attack_animation(src)
 			if(I.force < min_force)
 				user.visible_message(SPAN("danger", "\The [user] hits \the [src] with \the [I] with no visible effect."))

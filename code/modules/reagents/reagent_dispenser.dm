@@ -138,7 +138,7 @@
 
 /obj/structure/reagent_dispensers/fueltank/attackby(obj/item/W, mob/user)
 	add_fingerprint(user)
-	if(istype(W,/obj/item/wrench))
+	if(isWrench(W))
 		user.visible_message(
 		  "[user] wrenches [src]'s faucet [modded ? "closed" : "open"].",
 		  "You wrench [src]'s faucet [modded ? "closed" : "open"]"
@@ -277,9 +277,10 @@
 	initial_capacity = 500
 	initial_reagent_types = list(/datum/reagent/water = 1)
 
+
 /obj/structure/reagent_dispensers/water_cooler/attackby(obj/item/W, mob/user)
-	if (istype(W,/obj/item/wrench))
-		src.add_fingerprint(user)
+	if(isWrench(W))
+		add_fingerprint(user)
 		if(anchored)
 			user.visible_message("\The [user] begins unsecuring \the [src] from the floor.", "You start unsecuring \the [src] from the floor.")
 		else

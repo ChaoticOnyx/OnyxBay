@@ -46,7 +46,7 @@
 /obj/item/syringe_cartridge/attack_self(mob/user)
 	if(syringe)
 		to_chat(user, "<span class='notice'>You remove [syringe] from [src].</span>")
-		user.put_in_hands(syringe)
+		user.pick_or_drop(syringe)
 		syringe = null
 		sharp = initial(sharp)
 		SetName(initial(name))
@@ -130,7 +130,7 @@
 			return
 		var/obj/item/syringe_cartridge/C = darts[1]
 		darts -= C
-		user.put_in_hands(C)
+		user.pick_or_drop(C)
 		user.visible_message("[user] removes \a [C] from [src].", "<span class='notice'>You remove \a [C] from [src].</span>")
 	else
 		..()

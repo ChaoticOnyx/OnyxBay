@@ -64,7 +64,7 @@
 		I = new src.foldable(get_turf(src))
 		to_chat(user, SPAN("notice", "You fold [src] into \a [I]."))
 	qdel(src)
-	user.put_in_hands(I)
+	user.pick_or_drop(I)
 
 /obj/item/storage/box/make_exact_fit()
 	..()
@@ -530,7 +530,7 @@
 	desc = "This nifty shock-resistant device will keep your 'groceries' nice and non-spoiled."
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "portafreezer"
-	item_state = "medicalpack"
+	item_state = "portafreezer"
 	foldable = null
 	max_w_class = ITEM_SIZE_NORMAL
 	w_class = ITEM_SIZE_HUGE

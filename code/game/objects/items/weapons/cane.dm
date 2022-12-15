@@ -29,7 +29,7 @@
 		// Calling drop/put in hands to properly call item drop/pickup procs
 		playsound(user.loc, 'sound/weapons/flipblade.ogg', 50, 1)
 		user.replace_item(src, concealed_blade, force = TRUE)
-		user.put_in_hands(src)
+		user.pick_or_drop(src)
 		concealed_blade = null
 		update_icon()
 		user.update_inv_l_hand()

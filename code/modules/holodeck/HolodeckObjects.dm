@@ -129,11 +129,11 @@
 
 	if(!istype(W) || W.item_flags & ITEM_FLAG_NO_BLUDGEON) return
 
-	if(istype(W, /obj/item/screwdriver))
+	if(isScrewdriver(W))
 		to_chat(user, ("<span class='notice'>It's a holowindow, you can't unfasten it!</span>"))
-	else if(istype(W, /obj/item/crowbar) && reinf && state <= 1)
+	else if(isCrowbar(W) && reinf && state <= 1)
 		to_chat(user, ("<span class='notice'>It's a holowindow, you can't pry it!</span>"))
-	else if(istype(W, /obj/item/wrench) && !anchored && (!state || !reinf))
+	else if(isWrench(W) && !anchored && (!state || !reinf))
 		to_chat(user, ("<span class='notice'>It's a holowindow, you can't dismantle it!</span>"))
 	else
 		if(W.damtype == BRUTE || W.damtype == BURN)

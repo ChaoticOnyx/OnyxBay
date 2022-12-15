@@ -92,6 +92,7 @@
 	visible_message(SPAN("notice", "[usr] flips \the [src], spilling its contents!"))
 	for(var/obj/O in contents)
 		O.dropInto(loc)
+	update_icon()
 
 /obj/item/material/ashtray/plastic/New(newloc)
 	..(newloc, MATERIAL_PLASTIC)

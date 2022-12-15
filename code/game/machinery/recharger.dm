@@ -86,7 +86,7 @@
 
 	if(charging)
 		charging.update_icon()
-		user.put_in_hands(charging)
+		user.pick_or_drop(charging, loc)
 		charging = null
 		update_icon()
 

@@ -136,7 +136,7 @@
 /obj/item/organ/external/groin/xeno
 	dislocated = -1
 	arterial_bleed_severity = 0
-	limb_flags = ORGAN_FLAG_CAN_AMPUTATE
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_HEALS_OVERKILL
 	max_damage = 125
 
 /obj/item/organ/external/arm/xeno

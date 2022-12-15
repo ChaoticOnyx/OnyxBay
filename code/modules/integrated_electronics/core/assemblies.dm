@@ -608,7 +608,7 @@
 	if(!silent)
 		to_chat(user, SPAN_NOTICE("You pop \the [IC] out of the case, and slide it out."))
 		playsound(src, 'sound/items/crowbar.ogg', 50, 1)
-		user.put_in_hands(IC)
+		user.pick_or_drop(IC)
 	add_allowed_scanner(user.ckey)
 	investigate_log("had [IC]([IC.type]) removed by [key_name(user)].", INVESTIGATE_CIRCUIT)
 

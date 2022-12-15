@@ -26,7 +26,7 @@
 					return
 
 				to_chat(user, SPAN("notice", "You pick up the [src]."))
-				user.put_in_hands(src)
+				user.pick_or_drop(src)
 
 	return
 
@@ -65,8 +65,7 @@
 			else if (response == "Carbon-Copy")
 				P = new /obj/item/paper/carbon
 
-		P.loc = user.loc
-		user.put_in_hands(P)
+		user.pick_or_drop(P, loc)
 		to_chat(user, SPAN("notice", "You take [P] out of the [src]."))
 	else
 		to_chat(user, SPAN("notice", "[src] is empty!"))

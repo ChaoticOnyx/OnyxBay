@@ -170,8 +170,8 @@
 			to_chat(user, "<span class='notice'>[src] is already empty!</span>")
 		else
 			var/obj/item/ammo_casing/C = stored_ammo[stored_ammo.len]
-			stored_ammo-=C
-			user.put_in_hands(C)
+			stored_ammo -= C
+			user.pick_or_drop(C, loc)
 			user.visible_message("\The [user] removes \a [C] from [src].", "<span class='notice'>You remove \a [C] from [src].</span>")
 			playsound(user, "bullet_insert", rand(45, 60), FALSE)
 			update_icon()

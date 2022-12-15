@@ -242,6 +242,17 @@
 	W.forceMove(get_turf(src))
 	return 1
 
+// Only drop items if they're held by grippers. Fuck grippers btw.
+/mob/living/silicon/robot/can_unequip(obj/item/I)
+	if(!I)
+		return TRUE
+	var/obj/item/gripper/G = module_active
+	if(!istype(G))
+		return FALSE
+	if(G.wrapped == I)
+		return TRUE
+	return FALSE
+
 /mob/living/silicon/robot/proc/examine_module(slot)
 	var/list/index_module = list(module_state_1,module_state_2,module_state_3)
 	var/result = "	Module [slot] is "

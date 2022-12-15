@@ -193,9 +193,10 @@
 
 										for(var/obj/item/organ/internal/heart/I in internal_organs)
 											if(I && istype(I))
+												if(!H.put_in_active_hand(I))
+													return 0
 												I.cut_away(src)
 												O.implants -= I
-												H.put_in_active_hand(I)
 												H.visible_message(SPAN("danger", "[H] rips [src]'s [I.name] out!"))
 												playsound(src.loc, 'sound/effects/squelch1.ogg', 50, 1)
 												admin_attack_log(H, src, "Ripped their victim's heart out", "Got their heart ripped out", "ripped out")

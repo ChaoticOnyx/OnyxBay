@@ -9,6 +9,7 @@ GLOBAL_LIST_EMPTY(all_wormholes)
 /obj/effect/portal/wormhole/Initialize()
 	. = ..()
 	GLOB.all_wormholes += src
+	QDEL_IN(src, rand(10 SECONDS, 180 SECONDS))
 
 /obj/effect/portal/wormhole/Destroy()
 	GLOB.all_wormholes -= src

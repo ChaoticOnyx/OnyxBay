@@ -32,7 +32,8 @@
 		/obj/item/stack/tile,
 		/obj/item/clamp,
 		/obj/item/frame,
-		/obj/item/device/assembly
+		/obj/item/device/assembly,
+		/obj/item/shield/closet
 		)
 
 	var/list/cant_hold = list(
@@ -311,12 +312,15 @@
 			AS.try_add_component(wrapped, user, AS)
 			wrapped = null
 			return
-		if(istype(target,/obj/structure/table)) //Putting item on the table if any
+		if(istype(target, /obj/structure/table)) //Putting item on the table if any
 			var/obj/structure/table/T = target
 			to_chat(src.loc, SPAN("notice", "You place \the [wrapped] on \the [target]."))
 			wrapped.forceMove(get_turf(target))
 			T.auto_align(wrapped, params)
 			wrapped = null
+			return
+		if(istype(target, /obj/structure/closet))
+			target.attackby(wrapped, loc)
 			return
 		//Already have an item.
 		//Temporary put wrapped into user so target's attackby() checks pass.
@@ -548,7 +552,7 @@
 		if(istype(W,/obj/item/cigbutt))
 			if(plastic)
 				plastic.add_charge(250)
-		else if(istype(W,/obj/effect/spider/spiderling))
+		else if(istype(W,/obj/structure/spider/spiderling))
 			if(wood)
 				wood.add_charge(2000)
 			if(plastic)
@@ -646,7 +650,8 @@
 		else
 			module_string += text("[O]: <A HREF=?src=\ref[src];act=\ref[O]>Activate</A><BR>")
 
-		if((istype(O,/obj/item) || istype(O,/obj/item/device)) && !(istype(O,/obj/item/stack/cable_coil)))
+		var/obj/item/I = O
+		if(istype(I) && !isCoil(I))
 			tools += module_string
 		else
 			resources += module_string

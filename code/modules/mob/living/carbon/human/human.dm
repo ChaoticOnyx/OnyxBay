@@ -359,7 +359,7 @@
 		else
 			return pda.ownrank
 	else
-		var/obj/item/card/id/id = get_idcard()
+		var/obj/item/card/id/id = get_id_card()
 		if(id)
 			return id.rank ? id.rank : if_no_job
 		else
@@ -375,7 +375,7 @@
 		else
 			return pda.ownjob
 	else
-		var/obj/item/card/id/id = get_idcard()
+		var/obj/item/card/id/id = get_id_card()
 		if(id)
 			return id.assignment ? id.assignment : if_no_job
 		else
@@ -391,7 +391,7 @@
 		else
 			return pda.owner
 	else
-		var/obj/item/card/id/id = get_idcard()
+		var/obj/item/card/id/id = get_id_card()
 		if(id)
 			return id.registered_name
 		else
@@ -424,15 +424,10 @@
 		var/obj/item/device/pda/P = wear_id
 		return P.owner
 	if(wear_id)
-		var/obj/item/card/id/I = wear_id.GetIdCard()
+		var/obj/item/card/id/I = wear_id.get_id_card()
 		if(I)
 			return I.registered_name
 	return
-
-//gets ID card object from special clothes slot or null.
-/mob/living/carbon/human/proc/get_idcard()
-	if(wear_id)
-		return wear_id.GetIdCard()
 
 //Removed the horrible safety parameter. It was only being used by ninja code anyways.
 //Now checks siemens_coefficient of the affected area by default
@@ -527,7 +522,7 @@
 			var/modified = 0
 			var/perpname = "wot"
 			if(wear_id)
-				var/obj/item/card/id/I = wear_id.GetIdCard()
+				var/obj/item/card/id/I = wear_id.get_id_card()
 				if(I)
 					perpname = I.registered_name
 				else

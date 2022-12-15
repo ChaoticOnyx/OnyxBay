@@ -110,7 +110,7 @@
 			continue
 
 		if(job.faction_restricted)
-			if(user.client?.prefs.faction != GLOB.using_map.company_name)
+			if(user.client?.prefs.background != GLOB.using_map.company_name)
 				. += "<del>[rank]</del></td><td><b> \[FOR [uppertext(GLOB.using_map.company_name)] EMPLOYESS ONLY]</b></td></tr>"
 				continue
 			if(user.client?.prefs.nanotrasen_relation in COMPANY_OPPOSING)

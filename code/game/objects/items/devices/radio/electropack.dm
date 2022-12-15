@@ -46,7 +46,7 @@
 		master = A
 		A.part2 = src
 
-		user.put_in_hands(A)
+		user.pick_or_drop(A)
 
 /obj/item/device/radio/electropack/Topic(href, href_list)
 

@@ -3,8 +3,9 @@
 	name = "Solar Storm"
 	description = "The solar storm will burn everyone out of a station."
 
-	fire_only_once = TRUE
 	mtth = 3 HOURS
+	difficulty = 30
+	fire_only_once = TRUE
 	blacklisted_maps = list(/datum/map/polar)
 
 	var/const/temp_incr     = 100

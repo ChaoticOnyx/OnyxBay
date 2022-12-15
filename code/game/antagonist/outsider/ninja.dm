@@ -111,7 +111,7 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 
 	var/obj/item/rig/light/ninja/ninjasuit = new(get_turf(player))
 	ninjasuit.seal_delay = 0
-	player.put_in_hands(ninjasuit)
+	player.pick_or_drop(ninjasuit)
 	player.equip_to_slot_or_del(ninjasuit,slot_back)
 	if(ninjasuit)
 		ninjasuit.toggle_seals(src,1)
@@ -130,7 +130,7 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 	to_chat(player, "A portable information relay has been installed in your [U]. Simply enter the code \"[pda_pass]\" into the ringtone select to unlock its hidden features.")
 	player.mind.store_memory("<B>Uplink Passcode:</B> [pda_pass].")
 	U.hidden_uplink.uses = 0
-	player.put_in_hands(U)
+	player.pick_or_drop(U)
 
 	spawn(10)
 		if(player.internal)

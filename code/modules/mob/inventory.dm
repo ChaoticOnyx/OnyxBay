@@ -145,13 +145,27 @@ var/list/slot_equipment_priority = list( \
 	return 0 // As above.
 
 //Puts the item our active hand if possible. Failing that it tries our inactive hand. Returns 1 on success.
-//If both fail it drops it on the floor and returns 0.
+//If both fail it drops it on the floor (but only if located in src) and returns 0.
 //This is probably the main one you need to know :)
 /mob/proc/put_in_hands(obj/item/W)
 	if(!W)
 		return 0
-	drop(W)
+	if(W.loc == src)
+		drop(W)
 	return 0
+
+// Tries to put the item into src's hands (starting w/ the active one).
+// Drops into src's (or A if provided) location on fail.
+// Please ONLY use it on "external" items, *with their loc != src*, or our ballsack will instantly fall off. You've been warned.
+// Otherwise it's pretty much safe and preferable over calling put_in_hands and whatever movement separately.
+/mob/proc/pick_or_drop(obj/item/W, atom/A = null)
+	if(QDELETED(W))
+		util_crash_with("Called [src]'s ([type]) proc/pick_or_drop(W = [W], A = [A]), passing qdeleted W as an argment, what the fuck.")
+		return FALSE
+	if(put_in_hands(W))
+		return TRUE
+	W.dropInto(A ? A : loc)
+	return FALSE
 
 // Replaces 'old_item' w/ 'new_item', putting it in the same slot.
 // May optionally qdel 'old_item'.
@@ -177,7 +191,7 @@ var/list/slot_equipment_priority = list( \
 
 	if(I.loc != src)
 		util_crash_with("Called [src]'s ([type]) proc/drop(I = [I], target = [target], force = [force]) while the item isn't located inside the mob.") // This may save us someday.
-		return FALSE
+		// return FALSE // Gonna uncomment this after resolving some weird bugs. Multiple runtime errors wreck stack tracing and do more harm than good. ~Toby
 
 	if(!(force || can_unequip(I)))
 		return FALSE

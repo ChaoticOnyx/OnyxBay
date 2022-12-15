@@ -12,7 +12,7 @@
 
 /client/verb/looc(message as text)
 	set name = "LOOC"
-	set desc = "Local OOC, seen only by those in view. Remember: Just because you see someone that doesn't mean they see you."
+	set desc = "Local OOC, seen only by selected target and ghosts in view. Remember: This command is for emergencies, not for comments or chatting."
 	set category = "OOC"
 
 	if(jobban_isbanned(src.mob, "LOOC"))
@@ -49,3 +49,12 @@
 		winset(src, null, "reset=true")
 		update_chat_position()
 		nuke_chat()
+
+/client/verb/info_storyteller()
+	set name = "Storyteller info"
+	set category = "OOC"
+
+	if(!SSstoryteller.character)
+		to_chat(src, "<b>Current Storyteller:</b> N/A")
+	else
+		to_chat(src, "<b>Current Storyteller:</b> [SSstoryteller.character.name] - [SSstoryteller.character.desc]")

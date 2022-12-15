@@ -29,8 +29,9 @@
 	if(istype(user))
 		user.stop_aiming(no_message=1)
 
-	if(!user.drop(holstered, src))
+	if(!user.drop(I, src))
 		return
+
 	holstered = I
 	holstered.add_fingerprint(user)
 	w_class = max(w_class, holstered.w_class)
@@ -58,7 +59,7 @@
 				SPAN("notice", "[user] draws \the [holstered], pointing it at the ground."),
 				SPAN("notice", "You draw \the [holstered], pointing it at the ground.")
 				)
-		user.put_in_hands(holstered)
+		user.pick_or_drop(holstered)
 		holstered.add_fingerprint(user)
 		w_class = initial(w_class)
 		clear_holster()

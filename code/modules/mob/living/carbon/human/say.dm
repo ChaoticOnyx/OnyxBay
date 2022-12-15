@@ -141,14 +141,14 @@
 
 /mob/living/carbon/human/handle_speech_problems(list/message_data)
 	if(silent || (sdisabilities & MUTE))
-		message_data[1] = ""
+		message_data["message"] = ""
 		. = TRUE
 
 	else if(istype(wear_mask, /obj/item/clothing/mask))
 		var/obj/item/clothing/mask/M = wear_mask
 		if(M.voicechange)
-			message_data[1] = pick(M.say_messages)
-			message_data[2] = pick(M.say_verbs)
+			message_data["message"] = pick(M.say_messages)
+			message_data["verb"] = pick(M.say_verbs)
 			. = TRUE
 		else
 			. = ..(message_data)
