@@ -136,6 +136,7 @@ var/list/channel_to_radio_key = new
 		to_chat(src, SPAN("warning", "You cannot speak in IC (Muted)."))
 		return FALSE
 
+	message = html_decode(message)
 	message = sanitize(message)
 
 	var/list/message_data = list(
