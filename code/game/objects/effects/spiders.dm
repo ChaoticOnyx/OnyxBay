@@ -80,7 +80,8 @@
             user.visible_message(SPAN_WARNING("[user] ruptures [src] open!"), "You succesfully claw through the [src].")
             health = 0
             healthcheck ()
-    return
+            return
+    return ..()
 
 /obj/structure/spider/stickyweb/sealed/Initialize()
 	..()
