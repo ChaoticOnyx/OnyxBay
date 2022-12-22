@@ -23,7 +23,7 @@
 	hack_state = null
 	return ..()
 
-/obj/item/device/multitool/hacktool/attackby(obj/W, mob/user)
+/obj/item/device/multitool/hacktool/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
 		in_hack_mode = !in_hack_mode
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)

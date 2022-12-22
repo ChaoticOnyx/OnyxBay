@@ -746,7 +746,7 @@
 					shove_everything(shove_items = FALSE)
 				return
 
-	if(istype(W, /obj/item/stack/cable_coil))
+	if(isCoil(W))
 		var/obj/item/stack/cable_coil/CC = W
 		if(frame_state == FRAME_NORMAL || frame_state == FRAME_REINFORCED)
 			var/old_state = frame_state
@@ -765,7 +765,7 @@
 				update_nearby_icons()
 			return
 
-	if(istype(W, /obj/item/device/multitool))
+	if(isMultitool(W))
 		if(frame_state == FRAME_ELECTRIC || frame_state == FRAME_RELECTRIC)
 			electrochromic = !electrochromic
 			to_chat(user, SPAN("notice", "\The [src] will[electrochromic ? " " : " no longer "]toggle its tint when signalled now."))

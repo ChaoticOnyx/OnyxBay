@@ -32,7 +32,7 @@
 	dock_name     = "Pathos-I - Landing Zone"
 	boss_name     = "Central Command"
 	boss_short    = "Centcomm"
-	company_name  = "NanoTrasen"
+	company_name  = "Nanotrasen"
 	company_short = "NT"
 	system_name   = "Nyx"
 
