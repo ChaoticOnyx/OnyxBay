@@ -14,7 +14,6 @@
 	var/datum/sound_token/sound_token
 	var/sound_id
 	var/volume = 20
-	var/datum/modifier/trait/headphones_volume/headphones_volume
 
 /obj/item/clothing/ears/headphones/Initialize()
 	. = ..()
