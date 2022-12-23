@@ -491,6 +491,18 @@
 	name = "\improper Exam Room"
 	icon_state = "examroom"
 
+/obj/structure/sign/directions/alpha
+	name = "\improper Station Alpha"
+	icon_state = "direction_alpha"
+
+/obj/structure/sign/directions/bravo
+	name = "\improper Station Bravo"
+	icon_state = "direction_bravo"
+
+/obj/structure/sign/directions/charlie
+	name = "\improper Station Charlie"
+	icon_state = "direction_charlie"
+
 /obj/structure/sign/deck/bridge
 	name = "\improper Bridge Deck"
 	icon_state = "deck-b"
