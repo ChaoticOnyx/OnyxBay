@@ -64236,7 +64236,7 @@
 /obj/machinery/access_button/airlock_interior{
 	dir = 4;
 	frequency = 1380;
-	master_tag = first-interior;
+	master_tag = "first-interior";
 	pixel_x = -29;
 	req_access = list(47,10,1)
 	},

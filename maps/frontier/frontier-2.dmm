@@ -23109,6 +23109,7 @@
 	dir = 4;
 	icon_state = "tube1"
 	},
+/obj/structure/curtain/black,
 /turf/simulated/floor/tiled/mono,
 /area/polarplanet/hallway/primary/frontier/central_mideast)
 "fQF" = (
@@ -23687,6 +23688,7 @@
 /obj/machinery/light{
 	dir = 8
 	},
+/obj/structure/curtain/black,
 /turf/simulated/floor/tiled/mono,
 /area/polarplanet/hallway/primary/frontier/central_mideast)
 "iWq" = (
@@ -24376,6 +24378,13 @@
 	icon_state = "asteroid"
 	},
 /area/thunderfield)
+"mxS" = (
+/obj/effect/floor_decal/stairs{
+	dir = 8
+	},
+/obj/structure/curtain/black,
+/turf/simulated/floor/natural/jungle/dirt,
+/area/polarplanet/hallway/primary/frontier/central_mideast)
 "mAU" = (
 /obj/structure/flora/tree/dead/deadtree_4,
 /turf/unsimulated/floor{
@@ -24958,6 +24967,10 @@
 /obj/item/reagent_containers/food/amanitajelly,
 /turf/simulated/floor/trim/wood,
 /area/thunderfield)
+"pgs" = (
+/obj/structure/curtain/black,
+/turf/simulated/floor/tiled/white/mono,
+/area/polarplanet/hallway/primary/frontier/central_mideast)
 "pgx" = (
 /turf/simulated/wall/silver,
 /area/polarplanet/hallway/primary/frontier/central_mideast)
@@ -25077,6 +25090,13 @@
 	icon_state = "newrailing0"
 	},
 /turf/simulated/floor/tiled/dark/rough,
+/area/polarplanet/hallway/primary/frontier/central_mideast)
+"pUE" = (
+/obj/effect/floor_decal/stairs{
+	dir = 4
+	},
+/obj/structure/curtain/black,
+/turf/simulated/floor/natural/jungle/dirt,
 /area/polarplanet/hallway/primary/frontier/central_mideast)
 "pUJ" = (
 /turf/simulated/shuttle/wall/syndi{
@@ -26463,6 +26483,10 @@
 	},
 /obj/effect/landmark/start/crew/miner,
 /turf/simulated/floor/tiled/dark/mono,
+/area/polarplanet/hallway/primary/frontier/central_mideast)
+"xLi" = (
+/obj/structure/curtain/black,
+/turf/simulated/floor/tiled/mono,
 /area/polarplanet/hallway/primary/frontier/central_mideast)
 "xLz" = (
 /obj/effect/floor_decal/spline/fancy/wood{
@@ -29888,7 +29912,7 @@ aKu
 eht
 bhI
 bhI
-bhI
+xLi
 rKF
 bpL
 bpL
@@ -30145,7 +30169,7 @@ oqH
 pgx
 oPW
 oPW
-oPW
+mxS
 pgx
 doS
 vuw
@@ -30402,7 +30426,7 @@ oqH
 jyR
 bFa
 bFa
-bFa
+pgs
 yfo
 xBr
 veC
@@ -30659,7 +30683,7 @@ oqH
 oqH
 bFa
 bFa
-bFa
+pgs
 hCP
 oKJ
 kix
@@ -30916,7 +30940,7 @@ kcC
 oqH
 bFa
 bFa
-bFa
+pgs
 hCP
 dsf
 dsf
@@ -31173,7 +31197,7 @@ kcC
 oqH
 bFa
 tmD
-bFa
+pgs
 hCP
 lgX
 wai
@@ -31430,7 +31454,7 @@ kcC
 oqH
 bFa
 iRo
-bFa
+pgs
 hCP
 xKI
 diL
@@ -31687,7 +31711,7 @@ oqH
 oqH
 bFa
 bFa
-bFa
+pgs
 hCP
 sQE
 sQE
@@ -31944,7 +31968,7 @@ oqH
 mQZ
 bFa
 bFa
-bFa
+pgs
 wcU
 whh
 ccb
@@ -32201,7 +32225,7 @@ oqH
 pgx
 qnR
 qnR
-qnR
+pUE
 pgx
 fdG
 lcR
@@ -32458,7 +32482,7 @@ aKu
 eht
 bhI
 bhI
-bhI
+xLi
 rKF
 bpL
 bpL
