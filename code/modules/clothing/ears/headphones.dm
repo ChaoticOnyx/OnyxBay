@@ -94,8 +94,10 @@
 
 	if(volume < 55)
 		headphones_volume?.volume_status = LOW_VOLUME //We all hear
+		ear_protecion = 0.0
 	if(volume >= 55 && volume < 80)
 		headphones_volume?.volume_status = MID_VOLUME //Sometimes we don't hear something
+		ear_protection = 0.0
 	else if(volume >= 80)
 		headphones_volume?.volume_status = HIGH_VOLUME //We only hear music
 		ear_protection = 0.5

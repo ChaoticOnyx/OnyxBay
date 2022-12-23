@@ -80,7 +80,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 			var/mob/living/carbon/M = src
 			var/datum/modifier/trait/headphones_volume/headphones_volume = locate(/datum/modifier/trait/headphones_volume) in M.modifiers
 			if(headphones_volume?.volume_status == MID_VOLUME)
-				if(!prob(65))
+				if(prob(35))
 					return
 			else if(headphones_volume?.volume_status == HIGH_VOLUME)
 				return
