@@ -4080,7 +4080,6 @@
 /area/security/warden)
 "ahr" = (
 /obj/structure/bed/chair/office/dark,
-/obj/effect/landmark/start/crew/warden,
 /obj/structure/cable{
 	d1 = 4;
 	d2 = 8;
@@ -19300,7 +19299,6 @@
 	d2 = 2;
 	icon_state = "1-2"
 	},
-/obj/effect/landmark/start/crew/scientist,
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/tiled/dark/rough,
 /area/outpost/research/isolation_monitoring)
@@ -20920,7 +20918,6 @@
 /obj/structure/bed/chair/office/dark{
 	dir = 4
 	},
-/obj/effect/landmark/start/crew/cargotech,
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/tiled/rough,
 /area/quartermaster/office)
@@ -22460,7 +22457,6 @@
 /obj/structure/bed/chair/office/dark{
 	dir = 1
 	},
-/obj/effect/landmark/start/crew/qm,
 /obj/machinery/button/window_frame_tint{
 	pixel_x = -14;
 	pixel_y = 26
@@ -73165,6 +73161,11 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/simulated/floor/tiled/white,
 /area/polarplanet/outpost/research)
+"uZY" = (
+/obj/structure/pit,
+/obj/item/scrying,
+/turf/simulated/floor/asteroid,
+/area/mine/explored)
 "vag" = (
 /obj/structure/cable{
 	d1 = 1;
@@ -104247,7 +104248,7 @@ bjZ
 bjZ
 kld
 bjZ
-rFU
+uZY
 bjZ
 aaI
 aaI
