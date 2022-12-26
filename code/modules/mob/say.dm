@@ -38,7 +38,7 @@
 	client?.spellcheck(message)
 
 	var/ckeyname = "[usr.ckey]/[usr.name]"
-	webhook_send_me(ckeyname, message)
+	GLOB.indigo_bot.chat_webhook(config.indigo_bot.emote_webhook, "**[ckeyname]:** [message]")
 
 /mob/proc/say_dead(message)
 	communicate(/decl/communication_channel/dsay, client, message)
