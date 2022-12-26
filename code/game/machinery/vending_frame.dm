@@ -1,4 +1,3 @@
-#define STAGE_CABLE 0
 #define STAGE_CARTRIDGE 1
 #define STAGE_GLASS 2
 #define STAGE_FINISHING 3
@@ -37,7 +36,7 @@
 /obj/machinery/vending_frame/attackby(obj/item/O, mob/user)
 	switch(state)
 		if(STAGE_CABLE)
-			if(anchored && istype(O, /obj/item/weldingtool))
+			if(anchored && isWelder(O))
 				deconstruct_frame(O, user)
 			if(isWrench(O))
 				wrench_frame(user)
@@ -153,7 +152,6 @@
 /obj/machinery/vending_frame/proc/refresh_cartridge()
 	cartridge = locate() in contents
 
-#undef STAGE_CABLE
 #undef STAGE_CARTRIDGE
 #undef STAGE_GLASS
 #undef STAGE_FINISHING

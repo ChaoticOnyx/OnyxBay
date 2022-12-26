@@ -69,7 +69,7 @@
 	if(!QDELING(src))
 		qdel(src)
 
-/obj/item/grab/can_be_unequipped_by(mob/M)
+/obj/item/grab/can_be_unequipped_by(mob/M, disable_warning = 0)
 	return M == assailant
 
 /obj/item/grab/Destroy()

@@ -529,7 +529,7 @@
 			else
 				playsound(src.loc, 'sound/signals/error7.ogg', 25)
 				to_chat(user, "<span class='warning'>Access denied.</span>")
-	else if (istype(W, /obj/item/stack/cable_coil) && !terminal && opened && has_electronics!=2)
+	else if (isCoil(W) && !terminal && opened && has_electronics!=2)
 		var/turf/T = loc
 		if(istype(T) && !T.is_plating())
 			to_chat(user, "<span class='warning'>You must remove the floor plating in front of the APC first.</span>")

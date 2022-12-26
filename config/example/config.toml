@@ -30,6 +30,11 @@ player_limit = 0
 ## Write 0 to toggle limit off. Must be more than PLAYER_LIMIT in order to work correctly.
 hard_player_limit = 0
 
+## Kick players that have major or minor BYOND build below this numbers.
+## Write numbers of major and minor BYOND build. Writing numbers above existing BYOND builds will result in impossibility to join server.
+client_min_major_version = 514
+client_min_minor_version = 1589
+
 ## Defines the ticklag for the world. Ticklag is the amount of time between game ticks (aka byond ticks) (in 1/10ths of a second).
 ## This also controls the client network update rate, as well as the default client fps (10 / TICKLAG). 0.9 is the normal one, 0.5 is smoother.
 ticklag = 0.625
@@ -613,10 +618,6 @@ sql_enabled = false
 ## Password used for authorizing external tools that can apply bans
 # ban_comms_password = "word"
 
-## Webhook usage
-# webhook_address = "address"
-# webhook_key = "key"
-
 ## Set a server location for world reboot. Don't include the byond://, just give the address and port.
 # server = "server.net:port"
 
@@ -654,3 +655,13 @@ silence_time = 6000
 
 ## How long to wait between messaging admins about occurrences of a unique error.
 msg_delay = 50
+
+## Wtf is it real???
+## https://github.com/ChaoticOnyx/indigo-bot
+[indigo_bot]
+#secret = "secret"
+address = "http://127.0.0.1:4774"
+#ooc_webhook = "secret"
+#emote_webhook = "secret"
+#ahelp_webhook = "secret"
+#round_end_webhook = "secret"

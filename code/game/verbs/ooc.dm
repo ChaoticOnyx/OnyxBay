@@ -12,7 +12,7 @@
 
 /client/verb/looc(message as text)
 	set name = "LOOC"
-	set desc = "Local OOC, seen only by those in view. Remember: Just because you see someone that doesn't mean they see you."
+	set desc = "Local OOC, seen only by selected target and ghosts in view. Remember: This command is for emergencies, not for comments or chatting."
 	set category = "OOC"
 
 	if(jobban_isbanned(src.mob, "LOOC"))
@@ -20,13 +20,6 @@
 		return
 
 	sanitize_and_communicate(/decl/communication_channel/ooc/looc, src, message)
-
-/client/verb/bot_token(token as text)
-	set name = "Bot token"
-	set category = "OOC"
-	set desc = "Sends specific token to bot through webhook"
-
-	webhook_send_token(key, token)
 
 /client/verb/stop_all_sounds()
 	set name = "Stop all sounds"
@@ -58,4 +51,3 @@
 		to_chat(src, "<b>Current Storyteller:</b> N/A")
 	else
 		to_chat(src, "<b>Current Storyteller:</b> [SSstoryteller.character.name] - [SSstoryteller.character.desc]")
-

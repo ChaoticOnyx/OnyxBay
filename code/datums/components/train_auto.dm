@@ -21,7 +21,7 @@
 		qdel(src)
 		return
 
-	if(T.process_state == IDLE_STATE)
+	if(T.process_state == IDLE_STATE || T.process_state == WAIT_LAUNCH)
 		T.launch()
 	
 	set_next_think(world.time + 30 SECONDS)
