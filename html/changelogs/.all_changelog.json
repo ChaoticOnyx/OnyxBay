@@ -1,5 +1,102 @@
 [
   {
+    "author": "igorsaux",
+    "date": "2022-12-26T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "MapTweak",
+        "message": "На Патосе добавлены мониторы с информацией о том когда прилетит поезд",
+        "pr": 9558
+      },
+      {
+        "prefix": "BugFix",
+        "message": "Исправлена невозможность вставить батарейку в коилган.",
+        "pr": 9824
+      }
+    ]
+  },
+  {
+    "author": "Tsurupeta",
+    "date": "2022-12-26T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "RscDel",
+        "message": "Удалена вкладка \"citizenship\".",
+        "pr": 9610
+      },
+      {
+        "prefix": "Tweak",
+        "message": "Вкладка \"Faction\" переименована в \"Background\".",
+        "pr": 9610
+      }
+    ]
+  },
+  {
+    "author": "BaraBara",
+    "date": "2022-12-26T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Tweak",
+        "message": "Теперь батареи из метроидов заряжаются сами",
+        "pr": 9757
+      },
+      {
+        "prefix": "BugFix",
+        "message": "Напиток \"Магеллан\" снова имеет своё название.",
+        "pr": 9827
+      }
+    ]
+  },
+  {
+    "author": "OldFager",
+    "date": "2022-12-26T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "СМЕС теперь можно разобрать.",
+        "pr": 9848
+      }
+    ]
+  },
+  {
+    "author": "BaraBarax",
+    "date": "2022-12-26T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Дрон больше не умирает при емаге",
+        "pr": 9849
+      }
+    ]
+  },
+  {
+    "author": "O0oMaximo0O",
+    "date": "2022-12-26T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Позитронному мозгу добавлен язык Robot Talk.",
+        "pr": 9858
+      },
+      {
+        "prefix": "BugFix",
+        "message": "Кавычки вернулись в say.",
+        "pr": 9915
+      }
+    ]
+  },
+  {
+    "author": "KreeperHLC",
+    "date": "2022-12-26T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Tweak",
+        "message": "LOOC теперь отправляет сообщение только указанному мобу и гостам.",
+        "pr": 9881
+      }
+    ]
+  },
+  {
     "author": "Medjic",
     "date": "2022-11-02T00:00:00+03:00",
     "changes": [
