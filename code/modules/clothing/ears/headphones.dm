@@ -94,7 +94,7 @@
 
 	if(volume < 55)
 		headphones_volume?.volume_status = LOW_VOLUME //We all hear
-		ear_protecion = 0.0
+		ear_protection = 0.0
 	if(volume >= 55 && volume < 80)
 		headphones_volume?.volume_status = MID_VOLUME //Sometimes we don't hear something
 		ear_protection = 0.0
@@ -124,8 +124,8 @@
 	StopPlaying()
 	StartPlaying()
 
-/obj/item/clothing/ears/headphones/verb/last()
-	set name = "HP LAST"
+/obj/item/clothing/ears/headphones/verb/previous()
+	set name = "HP PREVIOUS"
 	set category = "Object"
 
 	if(index <= 1)
