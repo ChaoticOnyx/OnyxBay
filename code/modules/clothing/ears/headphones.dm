@@ -29,14 +29,13 @@
 
 		if(!user.drop(D, src))
 			return
-		to_chat(SPAN_NOTICE("You inserts \a [D] into \the [src]."))
 		tape = D
+		to_chat(user, SPAN_NOTICE("You inserts \a [D] into \the [src]."))
 		update_icon()
 		if(istype(tape, /obj/item/music_tape/random))
 			tracks += tape.tracks
 		else
 			tracks += tape.track
-		verbs += /obj/item/clothing/ears/headphones/verb/eject
 		return
 
 	return ..()
@@ -77,7 +76,7 @@
 		update_icon()
 
 /obj/item/clothing/ears/headphones/verb/on_off()
-	set name = "HP ON/OFF"
+	set name = "ON/OFF"
 	set category = "Object"
 
 	if(playing)
@@ -103,7 +102,7 @@
 		ear_protection = 0.5
 
 /obj/item/clothing/ears/headphones/verb/set_volume()
-	set name = "HP Set Volume"
+	set name = "Set Volume"
 	set category = "Object"
 
 	volume = input("Select the volume") as null|num
@@ -113,7 +112,7 @@
 		DeafFromMusic()
 
 /obj/item/clothing/ears/headphones/verb/next()
-	set name = "HP NEXT"
+	set name = "NEXT"
 	set category = "Object"
 
 	if(index == length(tracks))
@@ -125,7 +124,7 @@
 	StartPlaying()
 
 /obj/item/clothing/ears/headphones/verb/previous()
-	set name = "HP PREVIOUS"
+	set name = "PREVIOUS"
 	set category = "Object"
 
 	if(index <= 1)
@@ -137,17 +136,18 @@
 	StartPlaying()
 
 /obj/item/clothing/ears/headphones/verb/eject()
-	set name = "HP Eject Tape"
+	set name = "Eject Tape"
 	set category = "Object"
 
-	if(tape)
+	if(!tape)
+		to_chat(usr, SPAN_NOTICE("There is no tape in \the [src]!"))
+	else
 		StopPlaying()
 		current_track = null
 		tracks = list()
 
 		usr.pick_or_drop(tape, loc)
 
+		to_chat(usr, SPAN_NOTICE("You eject \a [tape] from \the [src]."))
 		tape = null
 		update_icon()
-		to_chat(SPAN_NOTICE("You eject \a [tape] from \the [src]."))
-		verbs -= /obj/item/clothing/ears/headphones/verb/eject
