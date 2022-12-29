@@ -76,7 +76,7 @@
 		update_icon()
 
 /obj/item/clothing/ears/headphones/verb/on_off()
-	set name = "ON/OFF"
+	set name = "Start/Stop"
 	set category = "Object"
 
 	if(playing)
@@ -112,7 +112,7 @@
 		DeafFromMusic()
 
 /obj/item/clothing/ears/headphones/verb/next()
-	set name = "NEXT"
+	set name = "Next track"
 	set category = "Object"
 
 	if(index == length(tracks))
@@ -124,7 +124,7 @@
 	StartPlaying()
 
 /obj/item/clothing/ears/headphones/verb/previous()
-	set name = "PREVIOUS"
+	set name = "Previous track"
 	set category = "Object"
 
 	if(index <= 1)
