@@ -12,6 +12,6 @@
 		target_bar = config.mapping.preferable_bar
 
 	if(target_bar == MAP_BAR_RANDOM)
-		target_bar = pick(MAP_BAR_CLASSIC, MAP_BAR_MODERN)
+		target_bar = pick(MAP_BAR_CLASSIC, MAP_BAR_MODERN, MAP_BAR_SALOON)
 
 	ev_result = "maps/[GLOB.using_map.path]/bar/[target_bar].dmm"
