@@ -234,6 +234,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 			pixel_x = initial(pixel_x)
 			buckled_mob.pixel_x = initial(buckled_mob.pixel_x)
 			manual_triggered = FALSE
+		set_next_think(world.time + 1 SECOND)
 		return
 
 	if(!manual_triggered && buckled_mob.resting)
