@@ -629,11 +629,12 @@
 	else
 		to_chat(escapee, SPAN_WARNING("You lean on the back of \the [src] and start pushing the door open. (this will take about [breakout_time] minutes)"))
 
-	visible_message(SPAN_DANGER("\The [src] begins to shake violently!"))
+	if(isturf(loc))
+		visible_message(SPAN_DANGER("\The [src] begins to shake violently!"))
 
 	breakout = 1 //can't think of a better way to do this right now.
 	for(var/i in 1 to (6*breakout_time * 2)) //minutes * 6 * 5seconds * 2
-		if(!do_after(escapee, 50, incapacitation_flags = INCAPACITATION_DEFAULT & ~INCAPACITATION_RESTRAINED)) //5 seconds
+		if(!do_after(escapee, 50, incapacitation_flags = INCAPACITATION_DEFAULT & ~(INCAPACITATION_RESTRAINED | INCAPACITATION_FORCELYING))) //5 seconds
 			breakout = 0
 			return
 		//Perform the same set of checks as above for weld and lock status to determine if there is even still a point in 'resisting'...
