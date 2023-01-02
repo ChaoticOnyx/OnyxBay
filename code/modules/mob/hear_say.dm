@@ -92,7 +92,7 @@
 		var/datum/modifier/trait/headphones_volume/headphones_volume = locate(/datum/modifier/trait/headphones_volume) in M.modifiers
 		if(headphones_volume?.volume_status == MID_VOLUME)
 			if(dist_speech > 4)
-				to_chat(src, SPAN("", "<span class='name'>[speaker_name]</span>[alt_name] talks but music is too loud."))
+				to_chat(src, SPAN("", "<span class='name'>[speaker_name]</span>[alt_name] talks but the music is too loud."))
 				return
 		else if(headphones_volume?.volume_status == HIGH_VOLUME)
 			italics = TRUE
