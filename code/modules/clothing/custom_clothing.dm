@@ -191,3 +191,10 @@
 	parts[2] =	1
 	original[2] = /obj/item/clothing/suit/fire/firefighter
 	finished[2] = /obj/item/clothing/suit/fire/firefighter/atmos
+
+// Sekonda
+/obj/item/clothing/suit/armor/hos/jensen/sekonda
+	name = "armored cape"
+	desc = "A trenchcoat augmented with a special alloy for some protection and style. Has a golden badge, that reads \"I AM THE LAW\""
+	icon_state = "hostrench_sekonda"
+	item_state = "hostrench_sekonda"
