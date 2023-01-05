@@ -1,0 +1,297 @@
+"ae" = (/obj/machinery/atmospherics/unary/vent_pump/on{dir = 4; external_pressure_bound = 140; pressure_checks = 0},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"aH" = (/obj/structure/table/darkwood_reinforced,/obj/random/drinkbottle,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"bg" = (/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"bo" = (/obj/structure/flora/grass/brown,/obj/structure/flora/grass/green,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"bv" = (/obj/machinery/door/unpowered/simple/wood,/obj/effect/floor_decal/spline/fancy/wood{dir = 4},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"bw" = (/obj/machinery/door/unpowered/simple/wood,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"cE" = (/obj/effect/floor_decal/corner/white/diagonal,/obj/structure/cable{d1 = 2; d2 = 4; icon_state = "2-4"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 6},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 6},/turf/simulated/floor/tiled/rough,/area/polarplanet/street)
+"dd" = (/obj/structure/bed/chair/wood{dir = 4; icon_state = "wooden_chair"; tag = "icon-wooden_chair (EAST)"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 1},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"dv" = (/obj/item/reagent_containers/rag,/obj/structure/table/darkwood_reinforced,/obj/item/reagent_containers/vessel/glass/dshot,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"dx" = (/obj/effect/decal/cleanable/blood,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"dL" = (/obj/structure/table/darkwood_reinforced,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"eF" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/atmospherics/pipe/manifold/hidden/supply{dir = 1},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"fg" = (/obj/structure/snow,/obj/structure/flora/grass/brown,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"fl" = (/obj/structure/window_frame/reinforced/hull,/obj/machinery/door/blast/regular/open{id = "DormPolarDer2Shutters"; name = "Window Shutters"},/turf/simulated/floor/plating,/area/polarplanet/street)
+"fH" = (/obj/structure/window_frame/reinforced/hull,/obj/machinery/door/blast/regular/open{id = "DormPolarDer3Shutters"; name = "Window Shutters"},/turf/simulated/floor/plating,/area/polarplanet/street)
+"fS" = (/obj/structure/table/woodentable,/obj/machinery/atmospherics/unary/vent_pump/on{external_pressure_bound = 140; pressure_checks = 0},/obj/random/drinkbottle,/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"gb" = (/obj/structure/table/standard,/obj/machinery/microwave{pixel_x = -3; pixel_y = 6},/obj/effect/floor_decal/corner/white/diagonal,/turf/simulated/floor/tiled/rough,/area/polarplanet/street)
+"gi" = (/obj/structure/table/darkwood_reinforced,/obj/item/material/ashtray,/obj/item/reagent_containers/vessel/glass/dshot,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"gS" = (/obj/item/storage/box/donkpockets{pixel_x = 3; pixel_y = 3},/obj/item/reagent_containers/food/donkpocket,/obj/item/reagent_containers/food/donkpocket,/obj/item/reagent_containers/food/donkpocket,/obj/structure/closet/crate/freezer,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"hk" = (/obj/structure/flora/grass/green,/obj/structure/flora/grass/green,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"hq" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 10},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"hw" = (/obj/effect/floor_decal/spline/fancy/wood{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"hW" = (/obj/structure/table/darkwood_reinforced,/obj/item/material/ashtray,/obj/random/smokes,/obj/item/flame/lighter,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"ia" = (/obj/structure/flora/grass/green,/obj/structure/flora/grass/green,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"ie" = (/obj/item/storage/box/glasses/square,/obj/structure/table/darkwood_reinforced,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"ii" = (/obj/structure/flora/grass/brown,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"im" = (/obj/machinery/light/small/hl{dir = 8},/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"iU" = (/obj/structure/sign/double/barsign,/turf/simulated/wall/wood,/area/polarplanet/street)
+"jc" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"jF" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{dir = 8},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"jW" = (/obj/effect/floor_decal/spline/fancy{dir = 8},/obj/item/stool/bar/padded,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"kk" = (/obj/structure/table/woodentable,/obj/effect/decal/cleanable/dirt,/obj/machinery/atmospherics/unary/vent_pump/on{external_pressure_bound = 140; pressure_checks = 0},/obj/item/reagent_containers/vessel/pitcher,/obj/item/reagent_containers/vessel/glass/bigmug,/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"kx" = (/obj/structure/closet/cabinet,/obj/item/clothing/shoes/cheapboots/work,/obj/item/clothing/shoes/cheapboots/work,/obj/item/shovel,/obj/item/shovel,/obj/item/clothing/suit/storage/hooded/wintercoat,/obj/item/clothing/suit/storage/hooded/wintercoat,/obj/item/device/radio,/obj/item/device/radio,/obj/item/storage/box/lights/bulbs/old,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"kU" = (/obj/machinery/light{dir = 1},/obj/effect/floor_decal/spline/fancy/wood{dir = 1},/turf/unsimulated/floor{icon_state = "wood"},/area/polarplanet/street)
+"kZ" = (/obj/structure/flora/grass/brown,/obj/structure/flora/grass/brown,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"lf" = (/obj/effect/floor_decal/corner/white/diagonal,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{dir = 8},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/turf/simulated/floor/tiled/rough,/area/polarplanet/street)
+"lC" = (/obj/structure/grille,/obj/structure/cable{d2 = 4; icon_state = "0-4"},/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/structure/sign/warning/high_voltage,/turf/simulated/floor/plating,/area/polarplanet/street)
+"lP" = (/obj/machinery/door/unpowered/simple/wood,/obj/effect/decal/cleanable/dirt,/turf/unsimulated/floor{icon_state = "wood"},/area/polarplanet/street)
+"mm" = (/obj/machinery/door/unpowered/simple/wood,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"nd" = (/obj/structure/flora/grass/green,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"oD" = (/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"oJ" = (/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"pc" = (/obj/effect/decal/cleanable/dirt,/turf/unsimulated/floor{icon_state = "wood"},/area/polarplanet/street)
+"pk" = (/obj/structure/table/woodentable,/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 1},/obj/random/trash,/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"pn" = (/obj/structure/bed/chair/comfy/black{dir = 8},/turf/simulated/floor/trim/carpet,/area/polarplanet/street)
+"pv" = (/obj/structure/flora/grass/green,/obj/structure/flora/grass/green,/obj/structure/flora/grass/green,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"py" = (/obj/machinery/door/unpowered/simple/wood,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"pR" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"qp" = (/turf/simulated/wall/wood,/area/polarplanet/street)
+"qT" = (/obj/structure/bed/chair/wood{dir = 4},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"qV" = (/obj/structure/flora/grass/brown,/obj/structure/flora/grass/green,/obj/structure/flora/grass/green,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"qX" = (/obj/effect/decal/cleanable/dirt,/obj/structure/bed,/obj/item/toy/plushie/spider,/obj/machinery/light/small/hl,/turf/simulated/floor/trim/carpet/gblue,/area/polarplanet/street)
+"rd" = (/obj/structure/closet/crate/freezer,/obj/item/reagent_containers/food/bearmeat,/obj/item/reagent_containers/food/bearmeat,/obj/item/reagent_containers/food/bearmeat,/obj/item/reagent_containers/food/bearmeat,/obj/item/reagent_containers/food/bearmeat,/obj/item/reagent_containers/food/bearmeat,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"rg" = (/obj/structure/table/standard,/obj/effect/floor_decal/corner/white/diagonal,/obj/item/material/knife/kitchen,/obj/random/trash,/turf/simulated/floor/tiled/rough,/area/polarplanet/street)
+"rl" = (/obj/effect/floor_decal/spline/fancy/wood{dir = 9},/turf/unsimulated/floor{icon_state = "wood"},/area/polarplanet/street)
+"ru" = (/obj/machinery/door/unpowered/simple/wood,/obj/effect/floor_decal/spline/fancy/wood{dir = 4},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"rH" = (/obj/machinery/light/small/hl{dir = 1},/turf/unsimulated/floor{icon_state = "wood"},/area/polarplanet/street)
+"rQ" = (/obj/structure/flora/grass/green,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"rZ" = (/obj/structure/snow,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"sa" = (/obj/effect/floor_decal/spline/fancy/wood{dir = 4},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"sd" = (/obj/structure/window_frame/reinforced/hull,/obj/machinery/door/blast/regular/open{id = "DormPolarDer1Shutters"; name = "Window Shutters"},/turf/simulated/floor/plating,/area/polarplanet/street)
+"se" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"sg" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"sm" = (/obj/effect/floor_decal/spline/fancy/wood{dir = 8},/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"sG" = (/obj/structure/snow,/obj/machinery/light/small/hl,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"sM" = (/obj/machinery/button/remote/blast_door{id = "DormPolarDer2Shutters"; name = "Window Shutters"; pixel_y = 26},/obj/effect/decal/cleanable/cobweb2{icon_state = "cobweb1"},/obj/structure/bed,/obj/item/bedsheet/yellow,/turf/simulated/floor/trim/carpet/green,/area/polarplanet/street)
+"sN" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"ts" = (/obj/structure/bed,/obj/item/bedsheet/yellow,/turf/simulated/floor/trim/carpet/gblue,/area/polarplanet/street)
+"tz" = (/obj/structure/window_frame/rglass,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/polarplanet/street)
+"tI" = (/obj/structure/railing{dir = 8; color = "#8c6428"},/obj/machinery/space_heater,/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"ur" = (/obj/machinery/light/small/hl,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"uu" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 10},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"uP" = (/obj/structure/bed/chair/wood{dir = 8},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"vJ" = (/obj/structure/bed/chair/wood{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"vZ" = (/obj/machinery/door/unpowered/simple/wood,/obj/effect/floor_decal/spline/fancy/wood{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"wo" = (/obj/structure/grille,/obj/structure/cable{d2 = 2; icon_state = "0-2"},/turf/simulated/floor/plating,/area/polarplanet/street)
+"wO" = (/obj/machinery/atmospherics/unary/vent_pump/on{dir = 8; external_pressure_bound = 140; pressure_checks = 0},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"wQ" = (/obj/structure/cable,/obj/structure/cable{d2 = 2; icon_state = "0-2"},/obj/structure/grille/broken,/turf/simulated/floor/plating,/area/polarplanet/street)
+"xA" = (/obj/effect/floor_decal/spline/fancy/wood{dir = 1},/obj/machinery/media/jukebox,/turf/unsimulated/floor{icon_state = "wood"},/area/polarplanet/street)
+"xG" = (/obj/structure/grille,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/structure/cable{d2 = 4; icon_state = "0-4"},/turf/simulated/floor/plating,/area/polarplanet/street)
+"xS" = (/obj/item/reagent_containers/vessel/condiment/small/saltshaker,/obj/item/reagent_containers/vessel/condiment/small/saltshaker,/obj/item/reagent_containers/vessel/condiment/small/saltshaker,/obj/item/reagent_containers/vessel/condiment/small/saltshaker,/obj/item/reagent_containers/vessel/condiment/small/saltshaker,/obj/item/reagent_containers/vessel/condiment/small/saltshaker,/obj/item/reagent_containers/vessel/condiment/small/saltshaker,/obj/item/reagent_containers/vessel/condiment/small/saltshaker,/obj/item/reagent_containers/vessel/condiment/small/saltshaker,/obj/item/reagent_containers/vessel/condiment/small/saltshaker,/obj/item/reagent_containers/vessel/condiment/small/peppermill,/obj/item/reagent_containers/vessel/condiment/small/peppermill,/obj/item/reagent_containers/vessel/condiment/small/peppermill,/obj/item/reagent_containers/vessel/condiment/small/peppermill,/obj/item/reagent_containers/vessel/condiment/small/peppermill,/obj/item/reagent_containers/vessel/condiment/small/peppermill,/obj/item/reagent_containers/vessel/condiment/small/peppermill,/obj/item/reagent_containers/vessel/condiment/small/peppermill,/obj/item/reagent_containers/vessel/condiment/small/peppermill,/obj/item/reagent_containers/vessel/condiment/small/peppermill,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/light/small/hl{dir = 8},/obj/structure/closet/crate/freezer,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"yh" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"yq" = (/obj/effect/decal/cleanable/cobweb{dir = 8},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 10},/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/plating,/area/polarplanet/street)
+"yz" = (/obj/structure/flora/tree/pine,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"yJ" = (/obj/structure/flora/grass/brown,/obj/structure/flora/grass/brown,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"yO" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"zc" = (/obj/effect/floor_decal/spline/fancy/wood{dir = 4},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"zd" = (/turf/simulated/floor/trim/carpet/gblue,/area/polarplanet/street)
+"zt" = (/obj/effect/floor_decal/spline/fancy,/obj/structure/table/darkwood_reinforced,/obj/machinery/light,/obj/random/drinkbottle,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"zv" = (/obj/structure/flora/grass/brown,/obj/structure/flora/grass/green,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"zN" = (/obj/structure/table/woodentable,/obj/item/book/wiki/barman_recipes,/obj/machinery/light/small/hl,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Ah" = (/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/structure/cable{d2 = 4; icon_state = "0-4"},/obj/machinery/door/unpowered/simple/iron,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"An" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 1},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Ax" = (/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"AL" = (/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"AQ" = (/obj/machinery/light,/turf/simulated/floor/trim/carpet,/area/polarplanet/street)
+"AX" = (/obj/structure/snow,/obj/structure/flora/grass/green,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"BA" = (/obj/structure/cable{d1 = 2; d2 = 4; icon_state = "2-4"},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 1},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"BS" = (/obj/item/storage/box/donkpockets{pixel_x = 3; pixel_y = 3},/obj/item/storage/box/donkpockets{pixel_x = 3; pixel_y = 3},/obj/item/storage/box/donkpockets{pixel_x = 3; pixel_y = 3},/obj/structure/closet/crate/freezer,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"Cd" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/polarplanet/street)
+"Ct" = (/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 8},/obj/machinery/power/apc/high{dir = 4; name = "east bump"; pixel_x = 24},/obj/machinery/light/small/hl,/obj/machinery/alarm{dir = 1; pixel_y = -22},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"CU" = (/obj/structure/table/standard,/obj/machinery/microwave{pixel_x = -3; pixel_y = 6},/obj/effect/floor_decal/corner/white/diagonal,/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/tiled/rough,/area/polarplanet/street)
+"Dv" = (/obj/machinery/door/unpowered/simple/wood,/turf/unsimulated/floor{icon_state = "wood"},/area/polarplanet/street)
+"DB" = (/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/machinery/power/apc/high{dir = 4; name = "east bump"; pixel_x = 24},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"DF" = (/obj/structure/coatrack,/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"DU" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/cable{d1 = 2; d2 = 4; icon_state = "2-4"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"DV" = (/obj/structure/table/woodentable,/obj/item/device/flashlight/lantern/active,/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"DY" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Eq" = (/obj/structure/snow,/obj/item/device/flashlight/lantern/active,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"EI" = (/obj/effect/floor_decal/spline/fancy/wood{dir = 5},/turf/unsimulated/floor{icon_state = "wood"},/area/polarplanet/street)
+"EM" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/atmospherics/pipe/manifold/hidden/supply,/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Fg" = (/obj/structure/flora/tree/pine,/obj/structure/flora/grass/brown,/obj/structure/flora/grass/green,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"Fr" = (/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 9; tag = "icon-intact-scrubbers (NORTHWEST)"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 9; tag = "icon-intact-supply (NORTHWEST)"},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Ft" = (/obj/structure/flora/grass/brown,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"FB" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 6},/obj/machinery/alarm{dir = 4; pixel_x = -23},/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"FJ" = (/turf/unsimulated/floor{icon_state = "wood"},/area/polarplanet/street)
+"FT" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{dir = 1},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"FU" = (/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 4},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"FZ" = (/obj/structure/flora/tree/pine,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"Gz" = (/obj/structure/flora/pottedplant/pink,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"GI" = (/obj/structure/snow,/obj/structure/flora/tree/pine,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"GJ" = (/obj/machinery/door/unpowered/simple/wood{name = "Outhouse"},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"GQ" = (/obj/structure/toilet{dir = 4},/obj/effect/decal/cleanable/cobweb,/obj/effect/decal/cleanable/vomit,/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"GU" = (/obj/structure/bed/chair/wood/wings,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Hw" = (/obj/effect/floor_decal/spline/fancy{dir = 10},/obj/item/stool/bar/padded,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"HF" = (/obj/structure/flora/grass/brown,/obj/structure/flora/grass/brown,/obj/structure/flora/grass/green,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"HJ" = (/obj/effect/floor_decal/corner/white/diagonal,/obj/effect/decal/cleanable/dirt,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/manifold/hidden/supply{dir = 8},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/tiled/rough,/area/polarplanet/street)
+"Id" = (/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 8},/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Ih" = (/obj/structure/closet/crate/freezer,/obj/item/reagent_containers/food/bearmeat,/obj/item/reagent_containers/food/meat,/obj/item/reagent_containers/food/meat,/obj/item/reagent_containers/food/meat,/obj/item/reagent_containers/food/meat,/obj/item/reagent_containers/food/meat/human,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"Ij" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 1},/obj/machinery/power/apc/high{dir = 8; name = "west bump"; pixel_x = -24},/obj/structure/cable{d2 = 2; icon_state = "0-2"},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"Ix" = (/obj/structure/table/woodentable,/obj/item/paper_bin{pixel_x = -3; pixel_y = 7},/obj/random/smokes,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"ID" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 9; tag = "icon-intact-supply (NORTHWEST)"},/obj/structure/closet/crate/secure/plasma{req_access = list()},/obj/item/screwdriver/old,/obj/item/wrench/red,/turf/simulated/floor/plating,/area/polarplanet/street)
+"IU" = (/obj/structure/closet/cabinet,/obj/machinery/light/small/hl,/obj/item/clothing/suit/storage/civ_trench/grey,/obj/item/reagent_containers/pill/noexcutite,/turf/unsimulated/floor{icon_state = "wood"},/area/polarplanet/street)
+"Jf" = (/obj/structure/grille,/obj/structure/cable{d2 = 4; icon_state = "0-4"},/obj/structure/cable,/turf/simulated/floor/plating,/area/polarplanet/street)
+"Jv" = (/obj/structure/flora/tree/pine,/obj/structure/flora/grass/green,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"JR" = (/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 5},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 5},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Kg" = (/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"Kv" = (/obj/machinery/atmospherics/unary/vent_pump/on{dir = 1; external_pressure_bound = 140; pressure_checks = 0},/obj/machinery/alarm{dir = 1; pixel_y = -22},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"KE" = (/obj/machinery/door/unpowered/simple/wood,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"KM" = (/obj/machinery/door/unpowered/simple/wood,/obj/effect/floor_decal/spline/fancy/wood{dir = 8},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"Lp" = (/obj/structure/flora/tree/pine,/obj/structure/flora/grass/brown,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"LE" = (/obj/item/music_tape_box/classic,/obj/item/music_tape_box/exodus,/obj/item/music_tape_box/frontier,/obj/item/music_tape_box/jazz,/obj/item/music_tape_box/newyear,/obj/item/music_tape_box/valhalla,/obj/structure/table/woodentable,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"LP" = (/obj/structure/gravemarker/cross,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"LQ" = (/obj/structure/curtain/open/bed,/turf/unsimulated/floor{icon_state = "wood"},/area/polarplanet/street)
+"Ma" = (/obj/structure/table/rack,/obj/item/device/synthesized_instrument/trumpet,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Mc" = (/obj/structure/railing{color = "#8c6428"},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"Mx" = (/obj/structure/table/darkwood_reinforced,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"ME" = (/obj/machinery/power/port_gen/pacman{anchored = 1},/obj/structure/cable,/obj/effect/decal/cleanable/dirt,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 5},/turf/simulated/floor/plating,/area/polarplanet/street)
+"MJ" = (/obj/structure/snow,/obj/structure/snow,/obj/structure/flora/grass/brown,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"MK" = (/obj/effect/floor_decal/spline/fancy,/obj/machinery/light/small/hl,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"ML" = (/obj/structure/grille,/obj/structure/cable,/obj/structure/cable{d2 = 2; icon_state = "0-2"},/obj/structure/sign/warning/high_voltage,/turf/simulated/floor/plating,/area/polarplanet/street)
+"MW" = (/obj/machinery/light/small/hl{dir = 4},/turf/unsimulated/floor{icon_state = "wood"},/area/polarplanet/street)
+"Nk" = (/obj/structure/snow,/obj/structure/flora/grass/brown,/obj/structure/flora/grass/green,/obj/structure/closet/crate/secure/plasma{req_access = list()},/obj/item/stack/material/plasma/fifty,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"Nl" = (/obj/random/trash,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Nt" = (/obj/structure/grille,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/structure/cable,/turf/simulated/floor/plating,/area/polarplanet/street)
+"NS" = (/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 10},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/turf/simulated/floor/plating,/area/polarplanet/street)
+"Ob" = (/obj/effect/floor_decal/corner/white/diagonal,/turf/simulated/floor/tiled/rough,/area/polarplanet/street)
+"Ok" = (/obj/structure/table/woodentable,/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 1},/obj/random/trash,/obj/item/reagent_containers/vessel/glass/bigmug,/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"OH" = (/turf/simulated/floor/trim/carpet,/area/polarplanet/street)
+"Pv" = (/obj/random/trash,/obj/machinery/light/small/hl,/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"PK" = (/obj/structure/table/rack,/obj/item/device/synthesized_instrument/synthesizer,/obj/machinery/light/small/hl,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"PU" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 1},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"Qk" = (/obj/structure/closet/cabinet,/obj/item/gun/projectile/pistol/vp78/wood,/obj/item/ammo_magazine/c45m,/obj/item/clothing/suit/storage/hooded/wintercoat,/obj/item/material/hatchet/tacknife,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Qm" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/atmospherics/pipe/manifold/hidden/supply{dir = 5},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"Qy" = (/obj/machinery/vending/boozeomat{req_access = list()},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"QF" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 10},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"QH" = (/obj/item/reagent_containers/vessel/shaker,/obj/structure/table/darkwood_reinforced,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"QT" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/atmospherics/pipe/simple/hidden/universal{dir = 4},/obj/machinery/atmospherics/unary/heater{dir = 1; icon_state = "heater"},/turf/simulated/floor/plating,/area/polarplanet/street)
+"QW" = (/obj/effect/floor_decal/stairs,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Rm" = (/obj/machinery/button/remote/blast_door{id = "DormPolarDer3Shutters"; name = "Window Shutters"; pixel_y = -2; pixel_x = -28},/obj/structure/table/woodentable,/obj/item/reagent_containers/pill/zoom,/obj/item/reagent_containers/pill/zoom,/turf/unsimulated/floor{icon_state = "wood"},/area/polarplanet/street)
+"RI" = (/obj/structure/table/woodentable,/obj/item/clothing/under/dress/bar_f,/obj/item/clothing/under/rank/bartender,/obj/effect/decal/cleanable/cobweb2{dir = 8},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"SV" = (/obj/machinery/chemical_dispenser/bar_coffee/full,/obj/structure/table/darkwood_reinforced,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Th" = (/obj/structure/railing{color = "#8c6428"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"Tq" = (/obj/item/clothing/suit/storage/hooded/wintercoat,/obj/item/clothing/suit/storage/hooded/wintercoat,/obj/structure/table/woodentable,/obj/machinery/recharger{pixel_y = 4},/obj/item/device/radio,/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"Uc" = (/obj/effect/floor_decal/stairs{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Uq" = (/obj/structure/snow,/obj/machinery/light/small/hl{dir = 8},/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"Us" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 6},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 1},/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"UE" = (/obj/machinery/chemical_dispenser/bar_soft/full,/obj/structure/table/darkwood_reinforced,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"UN" = (/turf/simulated/floor/trim/carpet/green,/area/polarplanet/street)
+"Vx" = (/obj/structure/flora/tree/pine,/obj/structure/flora/grass/brown,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"Wj" = (/obj/machinery/light/small/hl,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"Xh" = (/obj/structure/filingcabinet/chestdrawer,/obj/structure/table/woodentable,/obj/machinery/light{icon_state = "tube1"; dir = 1},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Xy" = (/obj/structure/flora/tree/pine,/obj/structure/flora/grass/green,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"XN" = (/obj/structure/table/darkwood_reinforced,/obj/random/drinkbottle,/obj/random/drinkbottle,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"XZ" = (/obj/effect/floor_decal/stairs{dir = 4},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Yc" = (/obj/machinery/chemical_dispenser/bar_alc/full{pixel_y = 2},/obj/structure/table/darkwood_reinforced,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Ye" = (/obj/structure/table/rack,/obj/item/device/synthesized_instrument/guitar/multi,/obj/item/device/synthesized_instrument/guitar{pixel_y = 1; pixel_x = 6},/obj/item/device/synthesized_instrument/violin,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Yk" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/atmospherics/pipe/manifold/hidden/supply{dir = 1},/obj/random/trash,/turf/simulated/floor/plating,/area/polarplanet/street)
+"YU" = (/obj/structure/railing{dir = 4; color = "#8c6428"},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"Zd" = (/obj/machinery/door/unpowered/simple/wood,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
+"Zh" = (/obj/structure/railing{color = "#8c6428"},/obj/effect/decal/cleanable/dirt,/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 9; tag = "icon-intact-supply (NORTHWEST)"},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"Zx" = (/obj/effect/floor_decal/stairs{dir = 1},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 1},/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+"ZK" = (/obj/machinery/button/remote/blast_door{id = "DormPolarDer1Shutters"; name = "Window Shutters"; pixel_y = 26},/obj/random/trash,/obj/structure/closet/cabinet,/obj/random/trash,/turf/unsimulated/floor{icon_state = "wood"},/area/polarplanet/street)
+"ZP" = (/obj/structure/bed/chair/wood{dir = 4; icon_state = "wooden_chair"; tag = "icon-wooden_chair (EAST)"},/obj/effect/decal/cleanable/cobweb,/turf/simulated/floor/trim/wood,/area/polarplanet/street)
+
+(1,1,1) = {"
+AxAxAxAxrQKgKgKgKgAxAxAxyzAxAxAxAxAxAxAxAxAxAxAxrQAxAxAxAxAxFtAxKgAxrQFtAxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgii
+KgAxAxAxAxKgKgKgKgKgKgKgAxAxAxAxAxAxAxAxKgAxAxAxAxAxAxAxAxVxAxAxAxFtAxAxrQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgAxKgKgyzAxrQKgAxFZAxAxAxAxFtVxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgii
+KgKgAxyzAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxKgKgAxyzAxAxAxAxAxAxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgAxAxAxFtVxAxAxAxFZKgAxrQAxKgKgndFtAxFtAxAxAxAxAxKgKgAxAxKgKgyzAxrQKgAxFZAxAxAxAxFtVxAx
+KgKgAxAxAxAxAxAxAxAxAxAxAxyzAxAxAxAxAxAxKgKgAxAxAxAxAxAxAxrQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgAxFtAxAxAxAxAxKgiiKgFtiiFtKgzvKgAxrQAxAxAxAxAxAxKgKgAxAxFZKgAxrQAxKgKgndFtAxFtAxAxAxAx
+KgKgKgKgAxAxAxyzAxAxAxAxAxAxAxAxAxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgKgFtAxkZFtKgiiKgAxFtVxAxAxrQAxAxAxAxAxAxiiAxAxAxKgiiLpndKgrQAxAxFtAxAxAxAxKgFZKgKgiiKgFtiiFtKgzvKgAxrQAxAxAxAxAx
+KgKgKgKgKgKgKgAxAxAxAxAxAxAxAxAxrQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgAxAxAxrQAxKgiiKgAxAxAxAxAxAxAxFtAxAxAxAxKgKgAxAxKgKgKgiiiindKgAxAxAxAxAxAxKgKgndiiAxAxAxKgiiLpndKgrQAxAxFtAxAxAx
+KgKgKgKgKgKgKgKgAxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgKgAxAxAxFtVxAxAxAxAxAxAxFtVxAxAxAxAxAxAxAxKgAxAxAxAxAxAxKgAxAxKgKgKgKgndKgiiiiKgKgAxAxAxAxKgKgKgKgKgAxAxKgKgKgiiiindKgAxAxAxAxAx
+KgKgKgKgAxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgAxKgiiKgKgAxFtAxAxAxAxAxFtAxFtAxAxAxAxAxFtAxAxAxAxiiKgKgAxAxAxAxKgAxAxndFZKgndKgiaKgFZiiKgAxAxyzAxiindFZKgAxAxKgKgKgKgndKgiiiiKgKgAxAxAx
+KgKgKgKgrQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgFtVxAxAxAxrQAxAxAxAxAxAxAxrQAxAxAxAxAxAxAxAxAxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgKgzvKgAxAxndFZKgndKgiaKgFZiiKgAxAxyz
+KgKgKgKgAxrQFtiiAxboAxAxKgKgAxAxKgKgyzAxrQKgAxFZAxAxAxAxFtVxAxAxAxAxAxAxAxAxAxFtAxAxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgKgKgiiKgKgAxAxAxrQAxKgiiKgiiKgHFzviiiiKgzvyJFZKgKgKgKgKgiiAxAx
+AxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgAxAxAxAxAxAxAxAxAxKgAxAxAxrQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgKgKgiiKgFZAxAxAxAxFtVxAxAxzviiFZiindzviiKgndiizvzvKgKgKgKgAxAx
+AxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgAxAxAxAxAxAxAxAxAxiiKgKgAxAxrQFtiiAxboAxAxKgKgAxAxKgKgyzAxrQKgAxFZAxAxAxAxFtVxAxAxAxKgiiKgndFtAxFtAxAxAxAxAxKgzvFZKgFZKgndKgndKgKgFZiiKgLpKgAxAx
+rQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgAxAxAxAxAxAxAxAxAxFZiiKgAxFtAxAxAxAxAxiiKgKgKgAxAxFZKgAxrQAxKgKgndFtAxFtAxAxAxAxAxAxAxiiKgKgKgKgKgFtAxkZFtKgiiKgFtKgKgKgKgndKgAxKgndKgndKgKgFtAx
+AxrQFtiiAxboAxAxKgKgAxAxKgKgyzAxrQKgAxFZAxAxAxAxFtVxAxAxAxAxAxAxAxAxAxAxAxKgKgKgiiAxyzrQAxAxKgiiKgKgFZKgKgiiKgFtiiFtKgzvKgAxrQAxAxAxAxAxAxAxAxiiKgKgiiKgiiKgKgiiKgKgiiKgAxiiXyndFZndKgAxrQKgKgndndKgKgii
+FtAxAxAxAxAxiiKgKgKgAxAxFZKgAxrQAxKgKgndFtAxFtAxAxAxAxAxAxAxAxAxAxAxyzAxAxKgKgKgKgAxAxAxFtAxAxKgzvKgKgndiiAxAxAxKgiiLpndKgrQAxAxFtAxAxAxAxAxAxiiKgKgiiKgiiKgKgiiKgVxAxAxAxKgKgiiKgKgKgKgAxKgKgKgrQiaAxnd
+AxyzrQAxAxKgiiKgKgFZKgKgiiKgFtiiFtKgzvKgAxrQAxAxAxAxAxAxAxAxyzAxiiAxAxAxAxiiKgLpKgAxAxAxAxzvKgKgFZKgKgKgKgKgAxAxKgKgKgiiiindKgAxAxAxAxAxAxAxAxAxAxkZFtKgiiKgVxAxAxAxAxAxpvrQrQKgKgFZiiKgiiboyzAxAxiiiiKg
+AxAxAxFtAxAxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgAxAxAxAxKgndKgKgAxFtAxKgKgiiKgKgiindFZKgAxAxKgKgKgKgndKgiiiiKgKgAxAxAxAxAxAxAxAxrQAxKgiiKgAxAxAxAxAxAxKgrQAxiindKgndKgAxFtAxAxAxrQKgLP
+AxAxAxAxzvrQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgAxAxboboKgndndKgrQAxAxKgKgKgLpKgKgKgzvKgAxAxndFZKgndKgiaKgFZiiKgAxAxyzAxAxAxAxAxAxFtVxAxAxAxAxAxAxAxAxiaAxAxAxKgKgKgLpKgrQboAxkZiiiiii
+AxFtAxKgKgAxrQFtiiAxboAxAxKgKgAxAxKgKgyzAxrQKgAxFZAxAxAxAxFtVxAxAxFtAxAxAxKgKgrQiaAxndKgFZKgKgndFtAxiiKgHFzviiiiKgzvyJFZKgKgKgKgKgiiAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxndqVKgKgndyzndKgrQAxrQAxrQKgKgAx
+rQAxAxKgKgFtAxAxAxAxAxiiKgKgKgAxAxFZKgAxrQAxKgKgndFtAxFtAxAxAxAxAxKgiiKgKgyzAxAxiiAxKgzvKgKgKgAxAxAxzviiFZiindzviiKgndiizvzvKgKgKgKgAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxboAxndKghkAxAxKgndKgKgKgKgFZKgKg
+AxndKgFZKgAxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgAxndiaiaAxAxAxrQAxKgAxndKgKgKgKgKgKgzvFZKgFZKgndKgndKgKgFZiiKgLpKgAxAxboboAxAxAxFtAxAxAxAxAxAxAxAxyzAxAxAxFgKgAxAxAxiiiiFZAxKgKgAxKgKg
+AxKgzvKgKgrQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgiiKgKgKgboAxkZiiyzAxAxiiLpKgndKgKgndrQFtKgKgKgKgndKgAxKgndKgndKgKgFtAxAxAxboyzAxAxAxAxAxAxAxyzAxAxAxAxAxAxndndndrQKgFZKgiiiiKgKgKgKgKg
+AxKgAxndKgAxrQFtiiAxboAxAxKgKgAxAxKgKgyzAxrQKgAxFZAxAxAxAxFtVxAxAxKgLPiiiirQAxrQKgAxAxAxKgKgiiFZndFZKgrQAxiiXyndFZndKgAxrQKgKgndndKgKgiiKgKgAxAxAxKgAxAxAxAxAxAxAxAxAxAxAxzvndKgiizvKgKgiiiindKgKgKgFZKg
+yzAxAxiiLpFtAxAxAxAxAxiiKgKgKgAxAxFZKgAxrQAxKgKgndFtAxFtAxAxAxAxAxiiiindndKgKgKgFZAxKgKgKgLpKgAxiindKgiaAxKgKgiiKgKgKgKgAxKgKgKgrQiaAxndiaiaKgAxAxKgAxAxyzAxAxAxAxAxAxbondKgiizvKgKgiiiindKgKgKgFZKgAxAx
+AxAxAxKgKgAxyzrQAxAxKgiiKgKgFZKgKgiiKgFtiiFtKgzvKgAxrQAxAxAxAxAxAxKgAxKgKgAxKgKgAxAxKgKgKgiiKgAxKgKgKgiipvrQrQKgKgFZiiKgiiboyzAxAxiiiiKgKgKgiaAxboKgiiAxAxAxAxAxboFtAxAxKgKgndKgAxKgndKgndKgKgFtAxAxFtAx
+AxKgKgKgLpAxAxAxFtAxAxKgzvKgKgndiiAxAxAxKgiiLpndKgrQAxAxFtAxAxAxAxKgKgKgKgiiKgKgKgAxFZKgKgKgFZKgKgFZKgiiKgrQAxiindKgndKgAxFtAxAxAxrQKgLPiiiiKgAxAxKgKgAxAxAxFtAxAxKgiiKgKgFZndKgAxrQKgKgndndKgKgiiKgAxAx
+AxKgKgKgiiAxAxAxAxzvKgKgFZKgKgKgKgKgAxAxKgKgKgiiiindKgAxAxAxAxAxAxKgKgKgKgndKgKgKgAxAxAxAxAxFtAxAxAxAxLpiaAxAxAxKgKgKgLpKgrQboAxkZiiiiiindndiiiiKgLpKgAxAxboKgiiKgAxndiaAxKgKgKgKgAxKgKgKgrQiaAxndiaAxFt
+AxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgKgAxAxAxAxKgKgAxAxKgKgKgKgAxAxAxAxAxFtAxAxAxAxiindqVKgKgndyzndKgrQAxrQAxrQKgKgAxKgKgndndiaKgKgFtAxAxAxndiaiiKgKgAxKgFZiiKgiiboyzAxAxiiiiKgKgAxAx
+AxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgKgAxAxyzAxFZKgAxAxKgKgKgKgAxAxAxAxAxAxFtFtAxAxyzboAxndKghkAxAxKgndKgKgKgKgFZKgKgKgKgKgKgKgndKgKgiiKgiiKgKgKgLPiiiindKgndKgAxFtAxAxAxrQKgLPiiKgKg
+rQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgKgiiAxAxAxKgKgKgKgKgKgKgKgAxAxAxAxAxAxyzAxFtAxAxAxAxFgKgAxAxAxiiiiFZAxKgKgAxKgKgKgKgKgLPiirQiaAxndiaKgLPiiiiiindAxKgKgKgLpKgrQboAxkZiiiiiindiiKg
+AxrQFtiiAxboAxAxKgKgAxAxKgKgyzAxrQKgAxFZAxAxAxAxFtVxAxAxKgKgAxAxAxKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxAxFtFtAxAxAxndndndrQKgFZKgiiiiKgKgKgKgKgAxAxKgiindAxiiiiKgKgiiiindKgAxKgKgndyzndKgrQAxrQAxrQKgKgAxKgKgKg
+FtAxAxAxAxAxiiKgKgKgAxAxFZKgAxrQAxKgKgndFtAxFtAxAxAxAxAxLpKgAxAxboKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxAxAxboAxAxzvndKgiizvKgKgiiiindKgKgKgFZKgAxAxAxAxKgAxrQKgLPiiKgAxKgKgKgKgKghkAxAxKgndKgKgKgKgFZKgKgKgKgKg
+AxyzrQAxAxKgiiKgKgFZKgKgiiKgFtiiFtKgzvKgAxrQAxAxAxAxAxAxKgKgFtAxAxKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxAxAxboAxAxzvndKgiizvKgKgiiiindKgKgKgFZKgAxKgKgkZiiiiiindKgKgKgKgKgKgrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKg
+AxAxAxFtAxAxKgzvKgKgndiiAxAxAxKgiiLpndKgrQAxAxFtAxAxAxAxndKgKgiiKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxAxyzAxFtAxAxAxAxFgKgAxAxAxiiiiFZAxKgKgAxKgKgKgrQKgKgAxKgKgKgKgKgKgAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKg
+AxAxAxAxzvKgKgFZKgKgKgKgKgAxAxKgKgKgiiiindKgAxAxAxAxAxAxrQiaAxndiaKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxAxFtFtAxAxAxndndndrQKgFZKgiiiiKgKgKgKgKgAxKgFZKgKgKgKgKgAxFZKgAxKgKgyzAxrQKgAxFZAxAxAxAxFtVxAxAx
+AxFtAxKgKgiiKgKgiindFZKgAxAxKgKgKgKgndKgiiiiKgKgAxAxAxAxAxiiiiKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxAxAxboAxAxzvndKgiizvKgKgiiiindKgKgKgFZKgAxKgAxKgKgKgFZKgAxKgAxAxFZKgAxrQAxKgKgndFtAxFtAxAxAxAxAx
+AxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgAxrQKgLPiiKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxAxFtFtAxAxAxndndndrQKgFZKgiiiiKgKgKgKgKgAxiiKgKgFZKgKgiiKgFtiiFtKgzvKgAxrQAxAxAxAxAxAx
+rQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgkZiiiiiindKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxAxAxboAxAxzvndKgiizvKgKgiiiindKgKgKgFZKgAxKgzvKgKgndiiAxAxAxKgiiLpndKgrQAxAxFtAxAxAxAx
+AxrQFtiiAxboAxAxKgKgAxAxKgKgyzAxrQKgAxFZAxAxAxAxFtVxAxAxrQKgKgAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxfgAxAxAxAxAxAXAxAxAxAxKgKgKgAxAxAxAxzvKgKgFZKgKgKgKgKgAxAxKgKgKgiiiindKgAxAxAxAxAxAx
+FtAxAxAxAxAxiiKgKgKgAxAxFZKgAxrQAxKgKgndFtAxFtAxAxAxAxAxKgFZKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxfgAxAxGIAxAxAxAxKgKgKgAxFtAxKgKgiiKgKgiindFZKgAxAxKgKgKgKgndKgiiiiKgKgAxAxAxAx
+AxyzrQAxAxKgiiKgKgFZKgKgiiKgFtiiFtKgzvKgAxrQAxAxAxAxAxAxKgAxKgKgKgKgAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAXAxAxAxAxAxKgAxAxKgKgKgrQAxAxKgKgKgLpKgKgKgzvKgAxAxndFZKgndKgiaKgFZiiKgAxAxyzAx
+AxAxAxFtAxAxKgzvKgKgndiiAxAxAxKgiiLpndKgrQAxAxFtAxAxAxAxKgKgKgKgAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxKgKgKgKgAxKgKgKgAxndKgFZKgKgndFtAxiiKgHFzviiiiKgzvyJFZKgKgKgKgKgiiAxAxAx
+AxAxAxAxzvKgKgFZKgKgKgKgKgAxAxKgKgKgiiiindKgAxAxAxAxAxAxKgKgFZKgAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAXAXAxAxAxAxKgKgKgKgKgKgKgKgKgAxKgzvKgKgKgAxAxAxzviiFZiindzviiKgndiizvzvKgKgKgKgAxAxAx
+AxFtAxKgKgiiKgKgiindFZKgAxAxKgKgKgKgndKgiiiiKgKgAxAxAxAxKgAxAxAxAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgAxKgAxndKgKgKgKgKgKgzvFZKgFZKgndKgndKgKgFZiiKgLpKgAxAxbo
+rQAxAxKgKgKgLpKgKgKgzvKgAxAxndFZKgndKgiaKgFZiiKgAxAxyzAxKgqpqpqpAxAxAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxKgKgKgKgKgKgKgKgKgKgKgyzAxAxiiLpKgndKgKgndrQFtKgKgKgKgndKgAxKgndKgndKgKgFtAxAx
+AxndKgFZKgKgndFtAxiiKgHFzviiiiKgzvyJFZKgKgKgKgKgiiAxAxAxdxqpGQGJKgKgAxAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxKgKgKgKgKgKgKgKgKgKgKgAxAxAxKgKgiiFZndFZKgrQAxiiXyndFZndKgAxrQKgKgndndKgKgiiKg
+AxKgzvKgKgKgAxAxAxzviiFZiindzviiKgndiizvzvKgKgKgKgAxAxAxKgqpqpqpimKgAxAxAxAXAxAxfgAxAxAxAxAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxKgKgKgLpKgAxiindKgiaAxKgKgiiKgKgKgKgAxKgKgKgrQiaAxndia
+AxKgAxndKgKgKgKgKgKgzvFZKgFZKgndKgndKgKgFZiiKgLpKgAxAxboKgKgKgKgKgKgKgAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxKgKgKgiiKgAxKgKgKgiipvrQrQKgKgFZiiKgiiboyzAxAxiiiiKgKg
+yzAxAxiiLpKgndKgKgndrQFtKgKgKgKgndKgAxKgndKgndKgKgFtAxAxKgKgKgKgKgKgKgKgAxAxAxAXAxAxAXAxAxfgAxAxfgAxfgfgAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgiiAxFZKgKgKgFZKgKgFZKgiiKgrQAxiindKgndKgAxFtAxAxAxrQKgLPii
+AxAxAxKgKgiiFZndFZKgrQAxiiXyndFZndKgAxrQKgKgndndKgKgiiKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxFtAxAxAxAxLpiaAxAxAxKgKgKgLpKgrQboAxkZiiiiiind
+AxKgKgKgLpKgAxiindKgiaAxKgKgiiKgKgKgKgAxKgKgKgrQiaAxndiaKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxEqiUqpUqAxAxAxAxAxAxAxAXAxAxAxKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxFtAxAxAxAxiindqVKgKgndyzndKgrQAxrQAxrQKgKgAxKg
+AxKgKgKgiiKgAxKgKgKgiipvrQrQKgKgFZiiKgiiboyzAxAxiiiiKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxKgKgKgKgKgAxAxAxfgAxAxAxAxAxAxAxAxAxKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxAxAxFtFtAxAxyzboAxndKghkAxAxKgndKgKgKgKgFZKgKgKg
+AxFZKgKgKgFZKgKgFZKgiiKgrQAxiindKgndKgAxFtAxAxAxrQKgLPiiKgKgKgKgKgKgKgKgKgKgKgKgAxAxKgKgKgKgKgAxAxAxAxAxAxAxGIAxAXAxAxfgAxAxAxAxKgKgKgKgKgAxAxAxAxAxAxAxAxAxyzAxFtAxAxAxAxFgKgAxAxAxiiiiFZAxKgKgAxKgKgKg
+AxAxAxAxAxFtAxAxAxAxLpiaAxAxAxKgKgKgLpKgrQboAxkZiiiiiindKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxrZrZMJrZrZrZrZrZrZrZMJrZrZrZrZAxAxKgKgKgAxAxAxAxAxAxAxAxAxAxAxFtFtAxAxAxndndndrQKgFZKgiiiiKgKgKgKgKgAx
+AxAxAxAxAxFtAxAxAxAxiindqVKgKgndyzndKgrQAxrQAxrQKgKgAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxAxAxAXAxAxAxAxAxAxAxAxAxAxAxAxAxAxKgAxAxAxAxAxAxAxAxAxAxAxAxboAxAxzvndKgiizvKgKgiiiindKgKgKgFZKgAx
+AxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgKgKgKgKgKgKgKgKgKgKgKgWjKgKgAxAxAxfgfgAxAxAxAxAxfgAxAxAxAXAxfgAxAxAxAxAxAxAxAxAxKgKgAxAxKgKgAxAxAxyzKgKgKgKgKgAxAxAxAxAxAxAxAxAxrQAxAxFtAxFtAxAx
+AxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgKgKgKgKgKgKgKgAxqpvZbvqpAxAxAxAxAxAxAxAxfgAxAXAxAxAxAxAxAXAxAxAxAxAxAxAxKgKgKgKgKgKgKgAxKgKgKgAxAxAxKgKgKgKgAxFtrQFtAxFtyzFtAxFtFtAxAxrQAxAxAxyz
+rQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgKgKgKgKgKgKgAxAxCdhwsaCdAxAxAXAxAXAxAxAxAxfgAxAxAxAxAxAxAxAxAxAxAxAxKgKgKgKgKgKgKgKgKgAxKgKgKgKgAxAxKgKgKgKgAxAxAxrQAxAxAxrQAxAxyzAxAxAxAxAxrQAx
+AxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgKgKgKgAxsGAxAxAxCdsmzcCdAxAxAxAxAxAxAxAxAxAxAxAxAxfgAxAXAxfgAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxKgKgKgKgAxAxAxFtrQAxAxAxAxAxAxAxiiAxAxAxKgii
+rQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgKgKgKgKgqpqpCdqpqpKMruqpqpqpqpqpqpqpqpUqAxAxAxAxAxAxAxAxAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxKgKgKgyzAxAxAxAxAxrQFtiiAxboAxAxKgKgAxAxKgKg
+AxrQFtiiAxboAxAxKgKgAxAxKgKgyzAxrQKgAxFZAxAxAxAxFtVxAxAxKgKgKgKgqpZPDVvJbgbgbgDFTqjWdLGzNlQyqpAxAxAxAxAxAxAxAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxrQAxyzFtAxAxAxAxAxiiKgKgKgAxAxFZKg
+FtAxAxAxAxAxiiKgKgKgAxAxFZKgAxrQAxKgKgndFtAxFtAxAxAxAxAxKgKgKgKgqpFBFTsNsNsNhqbgbgjWgiFUQFYcqpAxAxAxAXAxAxAxNkfgAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxyzrQAxAxKgiiKgKgFZKgKgiiKg
+AxyzrQAxAxKgiiKgKgFZKgKgiiKgFtiiFtKgzvKgAxrQAxAxAxAxAxAxKgKgKgKgCdddpkuPbgqTOkuPbgjWdvoJMxXNqpAxAxAxAxAxAxAxAxAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxrQAxAxAxAxFtAxAxKgzvKgKgndiiAxAx
+AxAxAxFtAxAxKgzvKgKgndiiAxAxAxKgiiLpndKgrQAxAxFtAxAxAxAxKgKgKgKgCdddfSuPbgqTkkvJbgjWaHoJQHieqpAxAxAxAxGIAxAXAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxAxAxAxAxzvKgKgFZKgKgKgKgKgAx
+AxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgKgKgKgKgqpUsQmThThThZhMcbgjWhWaeuuUEqpAxAxAxAxAxAxAxAxfgAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxJvAxAxFtAxKgKgiiKgKgiindFZKgAxAx
+rQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgKgKgKgKgqpIjYUrlkUxAkUEItIHwztMKseSVqpAxAxAxAxAxAxAxAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxrQrQAxAxKgKgKgLpKgKgKgzvKgAxAx
+AxrQFtiiAxboAxAxKgKgAxAxKgKgyzAxrQKgAxFZAxAxAxAxFtVxAxAxKgKgKgKgqpZxqpPvFJFJFJMWqpqpqpqpmmqpqpqpqpqpUqAxAXfgAxAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxyzAxAxAxndKgFZKgKgndFtAxiiKgHFzvii
+FtAxAxAxAxAxiiKgKgKgAxAxFZKgAxrQAxKgKgndFtAxFtAxAxAxAxAxKgWjKgKgqpPUqpqpLQLQLQqpqpgbcEjcEMbwNSYkyqqpAxAxAxAxAxfgAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxKgzvKgKgKgAxAxAxzviiFZiind
+AxyzrQAxAxKgiiKgKgFZKgKgiiKgFtiiFtKgzvKgAxrQAxAxAxAxAxAxKgqpqpqpqpAnGUqpoJoJoJoJqpCUHJwOLEqpMEQTIDqpAxAxAxAxAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxKgKgKgKgAxAxAxAxAxKgAxndKgKgKgKgKgKgzvFZKgFZ
+AxAxAxFtAxAxKgzvKgKgndiiAxAxAxKgiiLpndKgrQAxAxFtAxAxAxAxKgqpZKFJDvjFIdqpPKYeMaDYqprglfCtqpqpqpqpqpqpAxAXAxfgAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxKgKgKgKgKgAxAxAxyzAxAxiiLpKgndKgKgndrQFtKgKg
+AxAxAxAxzvKgKgFZKgKgKgKgKgAxAxKgKgKgiiiindKgAxAxAxAxAxAxKgsdFJFJqpBADBqpqpqpqpQWqpObpRqpqpXhQkqpAxAxAXAxAxAxAxAxfgAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxKgKgiiFZndFZKgrQAxiiXy
+AxFtAxKgKgiiKgKgiindFZKgAxAxKgKgKgKgndKgiiiiKgKgAxAxAxAxKgsdzdqXqpJRyOyOeFyOUcDUyOyOFrKEOHIxpnCdAxAxAxAxfgAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxKgKgKgLpKgAxiindKgiaAxKgKg
+rQAxAxKgKgKgLpKgKgKgzvKgAxAxndFZKgndKgiaKgFZiiKgAxAxyzAxKgqpqpqpqpDvqpDYKvurXZyhkxzNRIqpOHAQOHqpAxAxAxfgAxAxAxAxfgAxAxKgKgKgKgKgKgKgKgAxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgKgiipvrQrQ
+AxndKgFZKgKgndFtAxiiKgHFzviiiiKgzvyJFZKgKgKgKgKgiiAxAxAxKgKgflsMFJFJqplPqpqpqppyqpqpqpqpqpqpqpqpUqAxAxAxAxAxAxAxfgAxAxKgKgKgKgKgKgKgKgrQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgKgiiKgrQAx
+AxAxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgKgflUNFJIUqppcrHtsqpsgCdBSBSgSrdIhwoAxAxAxfgAxAxAxAxAxAxAxAxAxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgAxAxAxAxFtVxAxAxAxLpiaAxAx
+AxrQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgKgqpflflqpqpRmFJtsqpoDtzALKgKgKgKgMLAxAxAxAxAxAxAxAxAxAxAxAxrQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgFtAxFtAxAxAxAxAxAxiindqVKg
+yzAxrQFtiiAxboAxAxKgKgAxAxKgKgyzAxrQKgAxFZAxAxAxAxFtVxAxAxKgKgKgKgKgqpfHfHfHqpZdqpxSKgKgKgKgwQAxAxAxAxAxAxAxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgAxAxFtVxAxAxAxrQAxAxAxAxAxAxAxyzboAxnd
+AxFtAxAxAxAxAxAxrQAxAxyzAxAxAxAxAxrQAxAxAxKgKgKgKgKgFtAxkZFtKgiiKgKgKgKgKgKgKgKgqpJfAhlCxGxGNtAxAxAxAxAxAxrQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgFtAxAxAxAxAxrQAxAxFtAxAxAxAxAxAxAxAxFg
+AxAxyzrQAxrQAxAxAxAxAxAxAxiiAxAxAxKgiiKgiandiiKgKgAxAxAxrQAxKgiiKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxKgAxrQFtiiAxboAxAxKgKgAxAxKgKgyzAxrQKgAxFZAxAxAxAxFtVxAxAxAxAxAxAxAxAxndKgAxAxAxAxAxAxFtAxAxAxnd
+AxAxAxAxFtAxrQFtiiAxboAxAxKgKgAxAxKgKgyzAxrQKgAxFZAxAxAxAxFtVxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgFtAxAxAxAxAxiiKgKgKgAxAxFZKgAxrQAxKgKgndFtAxFtAxAxAxAxAxAxFtAxAxAxAxiiiiKgKgAxAxAxAxboAxAxzvnd
+AxAxAxAxAxFtAxAxAxAxAxiiKgKgKgAxAxFZKgAxrQAxKgKgndFtAxFtAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxyzrQAxAxKgiiKgKgFZKgKgiiKgFtiiFtKgzvKgAxrQAxAxAxAxAxAxAxAxAxAxAxAxKgFZiiKgAxAxyzAxAxFZKgKgKg
+AxAxFtAxKgAxyzrQAxAxKgiiKgKgFZKgKgiiKgFtiiFtKgzvKgAxrQAxAxAxAxAxAxKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxFtAxAxKgzvKgKgndiiAxAxAxKgiiLpndKgrQAxAxFtAxAxAxAxKgKgAxAxAxAxKgKgKgKgiiAxAxAxAxndiiiiAx
+AxrQAxAxKgAxAxAxFtAxAxKgzvKgKgndiiAxAxAxKgiiLpndKgrQAxAxFtAxAxAxAxFtAxAxKgzvKgKgndiiAxAxAxKgiiLpndKgrQAxKgAxAxAxAxzvKgKgFZKgKgKgKgKgAxAxKgKgKgiiiindKgAxAxAxAxAxAxiiKgAxAxyzAxzvKgKgKgKgAxAxAxAxKgKgiiKg
+AxAxndKgFZAxAxAxAxzvKgKgFZKgKgKgKgKgAxAxKgKgKgiiiindKgAxAxAxAxAxAxAxzvKgKgFZKgKgKgKgKgAxAxKgKgKgiiiindKgKgAxFtAxKgKgiiKgKgiindFZKgAxAxKgKgKgKgndKgiiiiKgKgAxAxAxAxKgKgiiAxAxAxFZiiKgLpKgAxAxboKgAxKgKgKg
+AxAxKgzvKgAxFtAxKgKgiiKgKgiindFZKgAxAxKgKgKgKgndKgiiiiKgKgAxAxFtAxAxKgzvKgKgndiiAxAxAxKgiiLpndKgrQAxiiiiKgrQAxAxKgKgKgLpKgKgKgzvKgAxAxndFZKgndKgiaKgFZiiKgAxAxyzAxKgKgKgAxAxAxndKgndKgKgFtAxAxKgKgKgAxii
+AxAxKgAxndrQAxAxKgKgKgLpKgKgKgzvKgAxAxndFZKgndKgiaKgFZiiKgAxAxAxzvAxFtAxAxKgzvKgKgndiiAxAxAxKgiiLpndKgrQAxAxKgiiLpndKgrQAxAxiiKgHFzviiiiKgzvyJFZKgKgKgKgKgiiAxAxAxKgLpKgAxAxboKgKgndndKgKgiiKgFZAxKgKgFg
+AxyzAxAxiiAxndKgFZKgKgndFtAxiiKgHFzviiiiKgzvyJFZKgKgKgKgKgiiAxKgKgAxAxzvKgKgFZKgKgKgKgKgAxAxKgKgKgiiiindKgAxKgKgKgiiiindKgAxzviiFZiindzviiKgndiizvzvKgKgKgKgAxAxAxndKgKgFtAxAxKgKgKgrQiaAxndiaKgKgAxndKg
+KgAxAxAxKgAxKgzvKgKgKgAxAxAxzviiFZiindzviiKgndiizvzvKgKgKgKgAxKgKgAxKgKgiiKgKgiindFZKgAxAxKgKgKgKgndKgiiiiKgKgKgKgndKgiiiiKgKgzvFZKgFZKgndKgndKgKgFZiiKgLpKgAxAxbondndKgKgiiKgboyzAxAxiiiiKgKgKgKgiiKgKg
+KgAxKgKgKgAxKgAxndKgKgKgKgKgKgzvFZKgFZKgndKgndKgKgFZiiKgLpKgKgFZKgAxKgKgKgLpKgKgKgzvKgAxAxndFZKgndKgiaKgFZndFZKgndKgiaKgFZKgndrQFtKgKgKgKgndKgAxKgndKgndKgKgFtAxAxKgrQiaAxndiaFtAxAxAxrQKgLPiiKgiiKgXyKg
+KgAxKgKgKgyzAxAxiiLpKgndKgKgndrQFtKgKgKgKgndKgAxKgndKgndKgKgzvKgKgKgFZKgKgndFtAxiiKgHFzviiiiKgzvyJFZKgKgKgiiKgzvyJFZKgKgKgFZKgrQAxiiXyndFZndKgAxrQKgKgndndKgKgiiKgAxAxiiiiKgKgrQboAxkZiiiiiindLpiindKgKg
+KgAxFZKgKgAxAxAxKgKgiiFZndFZKgrQAxiiXyndFZndKgAxrQKgKgndndKgAxndKgzvKgKgKgAxAxAxzviiFZiindzviiKgndiizvzvKgzviiKgndiizvzvKgndKgiaAxKgKgiiKgKgKgKgAxKgKgKgrQiaAxndiaAxAxrQKgLPiiAxrQAxrQKgKgAxKgKgndAxAxKg
+KgAxAxAxAxAxKgKgKgLpKgAxiindKgiaAxKgKgiiKgKgKgKgAxKgKgKgrQiaAxiiLpAxndKgKgKgKgKgKgzvFZKgFZKgndKgndKgKgFZiiKgndKgndKgKgFZiiKgKgiipvrQrQKgKgFZiiKgiiboyzAxAxiiiiKgKgAxkZiiiiiindKgKgKgKgFZKgKgKgXyAxKgKgKg
+KgAxAxAxAxAxKgKgKgiiKgAxKgKgKgiipvrQrQKgKgFZiiKgiiboyzAxAxiiAxKgKgAxiiLpKgndKgKgndrQFtKgKgKgKgndKgAxKgndKgKgKgndKgAxKgndKgFZKgiiKgrQAxiindKgndKgAxFtAxAxAxrQKgLPiiAxrQKgKgAxKgFZAxKgKgAxKgKgKgKgKgAxAxKg
+KgAxAxAxAxAxFZKgKgKgFZKgKgFZKgiiKgrQAxiindKgndKgAxFtAxAxAxrQKgKgLpAxKgKgiiFZndFZKgrQAxiiXyndFZndKgAxrQKgKgndFZndKgAxrQKgKgAxAxLpiaAxAxAxKgKgKgLpKgrQboAxkZiiiiiindKgKgFZKgKgKgiiiiKgKgKgKgKgAxKgKgKgKgKg
+KgAxAxAxAxAxAxAxAxAxFtAxAxAxAxLpiaAxAxAxKgKgKgLpKgrQboAxkZiiKgKgiiKgKgLpKgAxiindKgiaAxKgKgiiKgKgKgKgAxKgKgiiKgKgKgKgAxKgKgAxAxiindqVKgKgndyzndKgrQAxrQAxrQKgKgAxKgKgKgAxKgKgKgiindKgKgKgFZKgAxFtAxAxyzKg
+KgAxAxAxAxAxAxAxAxAxFtAxAxAxAxiindqVKgKgndyzndKgrQAxrQAxrQKgKgKgKgKgKgiiKgAxKgKgKgiipvrQrQKgKgFZiiKgiiboyzKgKgFZiiKgiiboyzAxAxyzboAxndKghkAxAxKgndKgKgKgKgFZKgKgKgKgKgKgKgKgAxVxAxAxAxAxAxAxyzAxAxyzFtKg
+KgAxAxAxAxAxAxAxAxAxAxFtFtAxAxyzboAxndKghkAxAxKgndKgKgKgKgFZAxAxAxKgKgKgFZKgKgFZKgiiKgrQAxiindKgndKgAxFtAxiindKgndKgAxFtAxFtAxAxAxAxFgKgAxAxAxiiiiFZAxKgKgAxKgKgKgKgKgKgFZKgAxAxAxAxAxAxAxAxAxAxAxAxAxAx
+KgKgKgKgKgAxAxAxAxAxAxyzAxFtAxAxAxAxFgKgAxAxAxiiiiFZAxKgKgAxAxAxAxAxAxAxFtAxAxAxAxLpiaAxAxAxKgKgKgLpKgrQboAxKgKgKgLpKgrQboFtFtAxAxAxndndndrQKgFZKgiiiiKgKgKgKgKgAxAxAxAxAxAxAxAxAxAxAxyzAxAxAxAxAxAxAxAx
+KgKgKgKgKgAxAxAxAxAxAxAxAxFtFtAxAxAxndndndrQKgFZKgiiiiKgKgKgAxAxAxAxAxAxFtAxAxAxAxiindqVKgKgndyzndKgrQAxrQKgndyzndKgrQAxrQAxboAxAxzvndKgiizvKgKgiiiindKgKgKgFZKgAxKgAxAxAxyzAxAxAxAxAxAxAxAxAxAxAxAxKgKg
+KgKgKgKgKgAxAxAxAxAxAxAxAxAxboAxAxzvndKgiizvKgKgiiiindKgKgKgFZKgAxAxAxAxAxFtFtAxAxyzboAxndKghkAxAxKgndKgKgKghkAxAxKgndKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgKgAxAxAxAxAxAxAxAxAxKgKgFZKgKgKg
+"}
