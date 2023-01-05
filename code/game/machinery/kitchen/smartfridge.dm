@@ -230,7 +230,7 @@
 		return
 
 	if(stat & NOPOWER)
-		to_chat(user, "<span class='notice'>\The [src] is unpowered and useless.</span>")
+		to_chat(user, SPAN_NOTICE("\The [src] is unpowered and useless."))
 		return
 
 	if(accept_check(O))
@@ -238,7 +238,7 @@
 			return
 		stock_item(O)
 		update_icon()
-		user.visible_message("<span class='notice'>\The [user] has added \the [O] to \the [src].</span>", "<span class='notice'>You add \the [O] to \the [src].</span>")
+		user.visible_message(SPAN_NOTICE("\The [user] has added \the [O] to \the [src]."), SPAN_NOTICE("You add \the [O] to \the [src]."))
 
 	else if(istype(O, /obj/item/storage))
 		var/obj/item/storage/bag/P = O
@@ -250,12 +250,12 @@
 				update_icon()
 
 		if(plants_loaded)
-			user.visible_message("<span class='notice'>\The [user] loads \the [src] with the contents of \the [P].</span>", "<span class='notice'>You load \the [src] with the contents of \the [P].</span>")
+			user.visible_message(SPAN_NOTICE("\The [user] loads \the [src] with the contents of \the [P]."), SPAN_NOTICE("You load \the [src] with the contents of \the [P]."))
 			if(P.contents.len > 0)
-				to_chat(user, "<span class='notice'>Some items were refused.</span>")
+				to_chat(user, SPAN_NOTICE("Some items were refused."))
 
 	else
-		to_chat(user, "<span class='notice'>\The [src] smartly refuses [O].</span>")
+		to_chat(user, SPAN_NOTICE("\The [src] smartly refuses [O]."))
 	return 1
 
 /obj/machinery/smartfridge/secure/emag_act(remaining_charges, mob/user)
@@ -363,7 +363,7 @@
 		return 0
 	throw_item.throw_at(target, 16, null, src)
 	update_icon()
-	visible_message(SPAN("warning", "[src] launches [throw_item.name] at [target.name]!"))
+	visible_message(SPAN_WARNING("[src] launches [throw_item.name] at [target.name]!"))
 	return 1
 
 /************************
@@ -374,6 +374,6 @@
 	if(stat & (NOPOWER|BROKEN)) return 0
 	if(usr.contents.Find(src) || (in_range(src, usr) && istype(loc, /turf)))
 		if(!allowed(usr) && !emagged && scan_id && href_list["vend"])
-			to_chat(usr, "<span class='warning'>Access denied.</span>")
+			to_chat(usr, SPAN_WARNING("Access denied."))
 			return 0
 	return ..()
