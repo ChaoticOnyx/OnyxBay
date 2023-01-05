@@ -100,7 +100,7 @@
 
 /datum/component/polar_weather/proc/_update_state()
 	QDEL_LIST(things_list)
-
+	var/boss_spawned = FALSE
 	var/list/station_levels = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 	for(var/level in station_levels)
 		var/datum/space_level/L = GLOB.using_map.map_levels[level]
@@ -156,9 +156,16 @@
 				M.add_thermal_energy(thermal_energy)
 
 				// Spawn things
-				if(current_state == WEATHER_BLUESPACE_EXIT && prob(5))
-					var/mob/living/simple_animal/hostile/bluespace_thing/BT = new(T)
-					things_list += BT
+				if(current_state == WEATHER_BLUESPACE_EXIT && prob(1))
+					if(current_state == WEATHER_BLUESPACE_EXIT && prob(1) && !boss_spawned)
+						var/mob/living/simple_animal/hostile/bluespace_thing/boss/BT = new(T)
+						boss_spawned = TRUE
+						things_list += BT
+						AMS.Announce("A large density of the bluespace energy was observed. Beware.", "Autonomous Meteorological Station", do_newscast = TRUE)
+					else
+						var/mob/living/simple_animal/hostile/bluespace_thing/BT = new(T)
+						things_list += BT
+
 			else if(A.environment_type == ENVIRONMENT_ROOM && istype(T, /turf/unsimulated/floor/frozenground))
 				T.set_light(0.95, 1, 1.25, l_color = light_color)
 
