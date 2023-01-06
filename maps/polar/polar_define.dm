@@ -24,7 +24,21 @@
 		new /datum/space_level/polarplanet/polar_4,
 		new /datum/space_level/polarplanet/polar_5,
 		new /datum/space_level/null_frozen,
-		new /datum/space_level/jungle_level
+		new /datum/space_level/jungle_level,
+		new /datum/space_level/polarplanet/meadow,
+		new /datum/space_level/polarplanet/ice_lake,
+		new /datum/space_level/polarplanet/forest_3,
+		new /datum/space_level/polarplanet/forest_2,
+		new /datum/space_level/polarplanet/forest_1,
+		new /datum/space_level/polarplanet/cultist_meadow,
+		new /datum/space_level/polarplanet/construction_site,
+		new /datum/space_level/polarplanet/church,
+		new /datum/space_level/polarplanet/cave_2,
+		new /datum/space_level/polarplanet/cave_1,
+		new /datum/space_level/polarplanet/bar,
+		new /datum/space_level/polarplanet/archeological_center,
+		new /datum/space_level/polarplanet/alien_ship,
+		new /datum/space_level/polarplanet/abandoned_village
 	)
 
 	station_name  = "Pathos-I"
