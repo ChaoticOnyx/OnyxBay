@@ -157,7 +157,7 @@
 
 				// Spawn things
 				if(current_state == WEATHER_BLUESPACE_EXIT && prob(1))
-					if(current_state == WEATHER_BLUESPACE_EXIT && prob(1) && !boss_spawned)
+					if(prob(1) && !boss_spawned)
 						var/mob/living/simple_animal/hostile/bluespace_thing/boss/BT = new(T)
 						boss_spawned = TRUE
 						things_list += BT

@@ -28,7 +28,7 @@
 	vision_range = 2
 	aggro_vision_range = 2
 	idle_vision_range = 2
-	wander = FALSE
+	wander = TRUE
 
 /mob/living/simple_animal/hostile/bluespace_thing/boss
 	name = "Bluespace Thing"
@@ -38,7 +38,6 @@
 	health = 450
 	melee_damage_lower = 30
 	melee_damage_upper = 40
-	wander = TRUE
 
 /mob/living/simple_animal/hostile/bluespace_thing/Initialize()
 	. = ..()

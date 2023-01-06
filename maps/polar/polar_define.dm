@@ -18,27 +18,13 @@
 	)
 
 	map_levels = list(
-		new /datum/space_level/polarplanet/polar_1,
-		new /datum/space_level/polarplanet/polar_2,
-		new /datum/space_level/polarplanet/polar_3,
-		new /datum/space_level/polarplanet/polar_4,
-		new /datum/space_level/polarplanet/polar_5,
+		new /datum/space_level/polar_1,
+		new /datum/space_level/polar_2,
+		new /datum/space_level/polar_3,
+		new /datum/space_level/polar_4,
+		new /datum/space_level/polar_5,
 		new /datum/space_level/null_frozen,
-		new /datum/space_level/jungle_level,
-		new /datum/space_level/polarplanet/meadow,
-		new /datum/space_level/polarplanet/ice_lake,
-		new /datum/space_level/polarplanet/forest_3,
-		new /datum/space_level/polarplanet/forest_2,
-		new /datum/space_level/polarplanet/forest_1,
-		new /datum/space_level/polarplanet/cultist_meadow,
-		new /datum/space_level/polarplanet/construction_site,
-		new /datum/space_level/polarplanet/church,
-		new /datum/space_level/polarplanet/cave_2,
-		new /datum/space_level/polarplanet/cave_1,
-		new /datum/space_level/polarplanet/bar,
-		new /datum/space_level/polarplanet/archeological_center,
-		new /datum/space_level/polarplanet/alien_ship,
-		new /datum/space_level/polarplanet/abandoned_village
+		new /datum/space_level/jungle_level
 	)
 
 	station_name  = "Pathos-I"
@@ -101,6 +87,24 @@
 	)
 
 /datum/map/polar/setup_map()
+	var/list/derelicts = list(,
+		new /datum/space_level/polarplanet/meadow,
+		new /datum/space_level/polarplanet/ice_lake,
+		new /datum/space_level/polarplanet/forest_3,
+		new /datum/space_level/polarplanet/forest_2,
+		new /datum/space_level/polarplanet/forest_1,
+		new /datum/space_level/polarplanet/cultist_meadow,
+		new /datum/space_level/polarplanet/construction_site,
+		new /datum/space_level/polarplanet/church,
+		new /datum/space_level/polarplanet/cave_2,
+		new /datum/space_level/polarplanet/cave_1,
+		new /datum/space_level/polarplanet/bar,
+		new /datum/space_level/polarplanet/archeological_center,
+		new /datum/space_level/polarplanet/alien_ship,
+		new /datum/space_level/polarplanet/abandoned_village)
+
+	for(var/i=0,i<6,i++)
+		map_levels += pick_n_take(derelicts)
 	. = ..()
 
 	AddComponent(/datum/component/polar_weather)
