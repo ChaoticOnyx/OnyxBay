@@ -18,11 +18,11 @@
 	)
 
 	map_levels = list(
-		new /datum/space_level/polar_1,
-		new /datum/space_level/polar_2,
-		new /datum/space_level/polar_3,
-		new /datum/space_level/polar_4,
-		new /datum/space_level/polar_5,
+		new /datum/space_level/polarplanet/polar_1,
+		new /datum/space_level/polarplanet/polar_2,
+		new /datum/space_level/polarplanet/polar_3,
+		new /datum/space_level/polarplanet/polar_4,
+		new /datum/space_level/polarplanet/polar_5,
 		new /datum/space_level/null_frozen,
 		new /datum/space_level/jungle_level
 	)

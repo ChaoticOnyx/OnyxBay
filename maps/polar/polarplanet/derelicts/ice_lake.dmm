@@ -11,7 +11,7 @@
 "m" = (/turf/unsimulated/floor/frozenground/ice/shallow{icon_state = "shore"},/area/polarplanet/street)
 "n" = (/turf/simulated/floor/trim/wood{icon_state = "wood_broken4"},/area/polarplanet/street)
 "o" = (/turf/unsimulated/floor/frozenground/ice,/area/polarplanet/street)
-"p" = (/obj/structure/snow,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"p" = (/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
 "q" = (/obj/machinery/power/smes/batteryrack,/obj/item/cell/crap/empty,/obj/item/screwdriver/old,/turf/simulated/floor/trim/darkwood,/area/polarplanet/street)
 "r" = (/turf/unsimulated/floor/frozenground/ice/shallow{icon_state = "ice7"},/area/polarplanet/street)
 "s" = (/turf/unsimulated/floor/frozenground/ice/shallow,/area/polarplanet/street)

@@ -9,7 +9,7 @@
 "w" = (/obj/item/asteroid/beholder_eye,/turf/simulated/floor/natural/frozenground/cave,/area/polarplanet/street)
 "B" = (/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
 "E" = (/obj/structure/flora/jungleplants/glowshroom,/turf/simulated/floor/natural/frozenground/cave,/area/polarplanet/street)
-"I" = (/obj/structure/snow,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"I" = (/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
 "M" = (/turf/simulated/mineral,/area/polarplanet/street)
 "Q" = (/obj/structure/snow,/turf/simulated/floor/natural/frozenground/cave,/area/polarplanet/street)
 

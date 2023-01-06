@@ -13,9 +13,9 @@
 "r" = (/obj/structure/snow,/obj/structure/flora/grass/green,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
 "s" = (/obj/structure/flora/grass/brown,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
 "v" = (/obj/structure/flora/tree/pine,/obj/structure/flora/grass/green,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
-"w" = (/obj/structure/snow,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"w" = (/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
 "x" = (/obj/structure/flora/grass/green,/obj/structure/flora/grass/green,/obj/structure/flora/grass/green,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
-"y" = (/obj/structure/flora/tree/pine,/obj/structure/snow,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"y" = (/obj/structure/flora/tree/pine,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
 "A" = (/mob/living/simple_animal/hostile/tree,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
 "B" = (/turf/unsimulated/floor/frozenground,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
 "D" = (/obj/structure/flora/tree/pine,/obj/structure/flora/grass/brown,/obj/structure/flora/grass/green,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
@@ -33,7 +33,7 @@
 "T" = (/obj/structure/flora/grass/brown,/obj/structure/flora/grass/brown,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
 "U" = (/obj/structure/flora/grass/brown,/obj/structure/flora/grass/green,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
 "X" = (/obj/structure/flora/grass/brown,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
-"Y" = (/obj/structure/flora/grass/green,/obj/structure/snow,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
+"Y" = (/obj/structure/flora/grass/green,/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
 "Z" = (/obj/structure/flora/tree/pine,/obj/structure/flora/grass/brown,/obj/structure/flora/grass/green,/turf/unsimulated/floor/frozenground,/area/polarplanet/street)
 
 (1,1,1) = {"

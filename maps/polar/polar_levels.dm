@@ -1,4 +1,7 @@
-/datum/space_level/polar_1
+/datum/space_level/polarplanet
+	base_turf = /turf/unsimulated/floor/frozenground
+
+/datum/space_level/polarplanet/polar_1
 	path = 'polar-1.dmm'
 	travel_chance = 5
 	traits = list(
@@ -6,13 +9,13 @@
 		ZTRAIT_CONTACT
 	)
 
-/datum/space_level/polar_1/generate(z)
+/datum/space_level/polarplanet/polar_1/generate(z)
 	// Create the mining Z-level.
 	new /datum/random_map/automata/cave_system(null, 1, 1, z, 300, 300)
 	// Create the mining ore distribution map.
 	new /datum/random_map/noise/ore(null, 1, 1, z, 300, 300)
 
-/datum/space_level/polar_2
+/datum/space_level/polarplanet/polar_2
 	path = 'polar-2.dmm'
 	travel_chance = 5
 	traits = list(
@@ -20,11 +23,11 @@
 		ZTRAIT_CONTACT
 	)
 
-/datum/space_level/polar_2/generate(z)
+/datum/space_level/polarplanet/polar_2/generate(z)
 	// Create the mining ore distribution map.
 	new /datum/random_map/noise/ore(null, 1, 1, z, 300, 300)
 
-/datum/space_level/polar_3
+/datum/space_level/polarplanet/polar_3
 	path = 'polar-3.dmm'
 	travel_chance = 10
 	traits = list(
@@ -33,7 +36,7 @@
 		ZTRAIT_POLAR_WEATHER
 	)
 
-/datum/space_level/polar_4
+/datum/space_level/polarplanet/polar_4
 	path = 'polar-4.dmm'
 	travel_chance = 15
 	traits = list(
@@ -41,7 +44,7 @@
 		ZTRAIT_POLAR_WEATHER
 	)
 
-/datum/space_level/polar_5
+/datum/space_level/polarplanet/polar_5
 	path = 'polar-5.dmm'
 	traits = list(
 		ZTRAIT_CENTCOM,
