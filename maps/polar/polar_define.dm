@@ -87,23 +87,24 @@
 	)
 
 /datum/map/polar/setup_map()
-	var/list/derelicts = list(,
-		new /datum/space_level/polarplanet/meadow,
-		new /datum/space_level/polarplanet/ice_lake,
-		new /datum/space_level/polarplanet/forest_3,
-		new /datum/space_level/polarplanet/forest_2,
-		new /datum/space_level/polarplanet/forest_1,
-		new /datum/space_level/polarplanet/cultist_meadow,
-		new /datum/space_level/polarplanet/construction_site,
-		new /datum/space_level/polarplanet/church,
-		new /datum/space_level/polarplanet/cave_2,
-		new /datum/space_level/polarplanet/cave_1,
-		new /datum/space_level/polarplanet/bar,
-		new /datum/space_level/polarplanet/archeological_center,
-		new /datum/space_level/polarplanet/abandoned_village)
+	var/list/derelicts = list(
+		/datum/space_level/polarplanet/meadow,
+		/datum/space_level/polarplanet/ice_lake,
+		/datum/space_level/polarplanet/forest_3,
+		/datum/space_level/polarplanet/forest_2,
+		/datum/space_level/polarplanet/forest_1,
+		/datum/space_level/polarplanet/cultist_meadow,
+		/datum/space_level/polarplanet/construction_site,
+		/datum/space_level/polarplanet/church,
+		/datum/space_level/polarplanet/cave_2,
+		/datum/space_level/polarplanet/cave_1,
+		/datum/space_level/polarplanet/bar,
+		/datum/space_level/polarplanet/archeological_center,
+		/datum/space_level/polarplanet/abandoned_village)
 
 	for(var/i=0,i<5,i++)
-		map_levels += pick_n_take(derelicts)
+		var/derelict = pick_n_take(derelicts)
+		map_levels += new derelict
 	. = ..()
 
 	AddComponent(/datum/component/polar_weather)
