@@ -23,7 +23,7 @@ GLOBAL_DATUM_INIT(indigo_bot, /datum/indigo_bot, new)
 	if(!secret)
 		return
 
-	var/response = B.connect_byond(html_encode(secret), ckey)
+	var/response = B.connect_byond(url_encode(secret), ckey)
 
 	if(response == "ok")
 		to_chat(usr, SPAN_NOTICE("Your account is now connected!"))
@@ -54,12 +54,12 @@ GLOBAL_DATUM_INIT(indigo_bot, /datum/indigo_bot, new)
 	if(secret == null)
 		return
 
-	message = html_encode(message)
+	message = url_encode(message)
 	__send("/api/byond/webhook/[secret]?message=[message]")
 
 /datum/indigo_bot/proc/round_end_webhook(secret, round_id, game_mode, players_count, round_duration)
-	round_id = html_encode(round_id)
-	game_mode = html_encode(game_mode)
-	players_count = html_encode(players_count)
-	round_duration = html_encode(round_duration)
+	round_id = url_encode(round_id)
+	game_mode = url_encode(game_mode)
+	players_count = url_encode(players_count)
+	round_duration = url_encode(round_duration)
 	__send("/api/byond/webhook/[secret]?round_id=[round_id]&game_mode=[game_mode]&players=[players_count]&round_duration=[round_duration]")
