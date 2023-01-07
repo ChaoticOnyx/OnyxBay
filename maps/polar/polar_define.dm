@@ -102,7 +102,7 @@
 		new /datum/space_level/polarplanet/archeological_center,
 		new /datum/space_level/polarplanet/abandoned_village)
 
-	for(var/i=0,i<2,i++)
+	for(var/i=0,i<5,i++)
 		map_levels += pick_n_take(derelicts)
 	. = ..()
 
