@@ -23,7 +23,7 @@
 		new /datum/space_level/polar_3,
 		new /datum/space_level/polar_4,
 		new /datum/space_level/polar_5,
-		new /datum/space_level/null_frozen,
+		new /datum/space_level/polarplanet/null_frozen,
 		new /datum/space_level/jungle_level
 	)
 
@@ -100,10 +100,9 @@
 		new /datum/space_level/polarplanet/cave_1,
 		new /datum/space_level/polarplanet/bar,
 		new /datum/space_level/polarplanet/archeological_center,
-		new /datum/space_level/polarplanet/alien_ship,
 		new /datum/space_level/polarplanet/abandoned_village)
 
-	for(var/i=0,i<6,i++)
+	for(var/i=0,i<2,i++)
 		map_levels += pick_n_take(derelicts)
 	. = ..()
 

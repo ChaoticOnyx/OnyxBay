@@ -1,3 +1,6 @@
+/datum/space_level/polarplanet
+	base_turf = /turf/unsimulated/floor/frozenground
+
 /datum/space_level/polarplanet/meadow
 	path='derelicts/meadow.dmm'
 	travel_chance = 5
@@ -76,12 +79,6 @@
 	travel_chance = 5
 	traits = list(
 		ZTRAIT_CONTACT,
-		ZTRAIT_POLAR_WEATHER
-	)
-/datum/space_level/polarplanet/alien_ship
-	path='derelicts/alien_ship.dmm'
-	travel_chance = 5
-	traits = list(
 		ZTRAIT_POLAR_WEATHER
 	)
 /datum/space_level/polarplanet/abandoned_village

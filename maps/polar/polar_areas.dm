@@ -4,7 +4,7 @@
 /area/space/bluespace/Initialize()
 	..()
 	for(var/turf/T in src)
-		T.filters += filter(type = "motion_blur", x=10)
+		T.filters += filter(type = "motion_blur", x=5)
 
 /area/polarplanet
 	name = "polarplanet"
