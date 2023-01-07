@@ -5765,7 +5765,7 @@
 "khc" = (/obj/structure/closet/crate/freezer,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/techfloor,/area/polarplanet/voron/cargo_warehouse)
 "kkg" = (/obj/machinery/atmospherics/portables_connector{dir = 8},/obj/effect/floor_decal/rust,/turf/simulated/floor/plating,/area/polarplanet/voron/maintenance)
 "knS" = (/obj/effect/floor_decal/spline/fancy/wood{dir = 8},/turf/simulated/floor/trim/wood,/area/polarplanet/crew_quarters/bar)
-"kpq" = (/obj/effect/shuttle_landmark/merchant/shop{name = "Planet Landing Site"},/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/shuttle/merchant/dock)
+"kpq" = (/obj/effect/shuttle_landmark/merchant/shop{name = "Planet Landing Site"; docking_controller = null},/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/shuttle/merchant/dock)
 "ksV" = (/obj/structure/table/woodentable,/turf/simulated/floor/natural/sand/gray,/area/polarplanet/crew_quarters/sleep)
 "kuQ" = (/obj/machinery/power/port_gen/pacman{anchored = 1},/obj/structure/cable,/obj/machinery/camera/network/engineering{dir = 1},/turf/simulated/floor/plating,/area/polarplanet/engineering/power)
 "kwx" = (/obj/machinery/door/airlock/external{frequency = 12001; id_tag = "voron_west_inner"; name = "Voron - Supply Airlock"; req_access = list(50)},/obj/machinery/door/firedoor,/turf/simulated/floor/tiled/techfloor/grid,/area/polarplanet/voron/supply_entrance)

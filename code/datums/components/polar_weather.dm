@@ -184,7 +184,7 @@
 		return
 
 	if(next_state_change == null)
-		next_state_change = world.time + rand(10 MINUTES, 14 MINUTES)
+		next_state_change = world.time + rand(14 MINUTES, 20 MINUTES)
 		was_weather_message = FALSE
 
 		if(current_state == WEATHER_NORMAL)

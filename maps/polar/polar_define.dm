@@ -23,7 +23,8 @@
 		new /datum/space_level/polar_3,
 		new /datum/space_level/polar_4,
 		new /datum/space_level/polar_5,
-		new /datum/space_level/polarplanet/null_frozen
+		new /datum/space_level/polarplanet/null_frozen,
+		new /datum/space_level/polarplanet/derelict_spawn_template_1
 	)
 
 	station_name  = "Pathos-I"
@@ -86,24 +87,6 @@
 	)
 
 /datum/map/polar/setup_map()
-	var/list/derelicts = list(
-		/datum/space_level/polarplanet/meadow,
-		/datum/space_level/polarplanet/ice_lake,
-		/datum/space_level/polarplanet/forest_3,
-		/datum/space_level/polarplanet/forest_2,
-		/datum/space_level/polarplanet/forest_1,
-		/datum/space_level/polarplanet/cultist_meadow,
-		/datum/space_level/polarplanet/construction_site,
-		/datum/space_level/polarplanet/church,
-		/datum/space_level/polarplanet/cave_2,
-		/datum/space_level/polarplanet/cave_1,
-		/datum/space_level/polarplanet/bar,
-		/datum/space_level/polarplanet/archeological_center,
-		/datum/space_level/polarplanet/abandoned_village)
-
-	for(var/i=0,i<5,i++)
-		var/derelict = pick_n_take(derelicts)
-		map_levels += new derelict
 	. = ..()
 
 	AddComponent(/datum/component/polar_weather)
