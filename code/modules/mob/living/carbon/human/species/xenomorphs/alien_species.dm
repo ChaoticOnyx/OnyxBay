@@ -102,6 +102,7 @@
 	alien_number++ //Keep track of how many aliens we've had so far.
 	H.real_name = get_random_name()
 	H.SetName(H.real_name)
+	H.add_modifier(/datum/modifier/trait/vent_breaker)
 	..()
 	if(H.mind && !GLOB.xenomorphs.is_antagonist(H.mind))
 		GLOB.xenomorphs.add_antagonist(H.mind, 1)
@@ -127,10 +128,10 @@
 	if(H.stat == DEAD)
 		return TRUE // So we neither regenerate nor gain plasma once dead
 	var/heal_rate = weeds_heal_rate
-	var/mend_prob = 10
-	if(!H.resting)
+	var/mend_prob = 20
+	if(!(H.resting || H.lying))
 		heal_rate = weeds_heal_rate / 3
-		mend_prob = 1
+		mend_prob = 2
 
 	//first heal damages
 	if(H.getBruteLoss() || H.getFireLoss() || H.getOxyLoss() || H.getToxLoss())
@@ -147,14 +148,14 @@
 	for(var/obj/item/organ/I in H.internal_organs)
 		if(I.damage > 0)
 			I.damage = max(I.damage - heal_rate, 0)
-			if(mend_prob)
+			if(mend_prob / 2)
 				to_chat(H, "<span class='alium'>I feel a soothing sensation within my [I.parent_organ]...</span>")
 			if(!I.damage && (I.status & ORGAN_DEAD))
 				to_chat(H, "<span class='alium'>I feel invigorated as my [I] appears to be functioning again!</span>")
 				I.status &= ~ORGAN_DEAD
 			return TRUE
 
-	//next regrow lost limbs, approx 10 ticks each
+	//next regrow lost limbs, approx 5 ticks each
 	if(prob(mend_prob))
 		for(var/limb_type in has_limbs)
 			var/obj/item/organ/external/E = H.organs_by_name[limb_type]

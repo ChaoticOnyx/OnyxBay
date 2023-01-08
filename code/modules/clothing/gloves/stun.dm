@@ -49,7 +49,7 @@
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 		if(bcell)
 			to_chat(user, SPAN("notice", "You carefully disconnect \the [bcell] from the wires on \the [src]."))
-			user.put_in_hands(bcell)
+			user.pick_or_drop(bcell)
 			bcell = null
 			update_icon(TRUE)
 			return

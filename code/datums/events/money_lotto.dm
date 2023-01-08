@@ -4,6 +4,7 @@
 	description = "With some chance, one of the crew members will be able to win the lottery"
 
 	mtth = 2 HOURS
+	difficulty = 0
 	fire_only_once = TRUE
 
 /datum/event/money_lotto/get_mtth()

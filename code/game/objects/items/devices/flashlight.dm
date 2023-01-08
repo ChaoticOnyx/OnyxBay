@@ -27,6 +27,11 @@
 	if(on)
 		switch_light(TRUE)
 
+/obj/item/device/flashlight/Destroy()
+	activation_sound = null
+	switch_light(FALSE)
+	return ..()
+
 /obj/item/device/flashlight/update_icon()
 	overlays.Cut()
 	if(on)
@@ -124,6 +129,14 @@
 			to_chat(user, SPAN("notice", "\The [H]'s pupils react slower than normally."))
 		if(H.getBrainLoss() > 15)
 			to_chat(user, SPAN("notice", "There's visible lag between left and right pupils' reactions."))
+		if(H.get_blood_volume() <= 60)
+			to_chat(user, SPAN("notice", "\The [H]'s eyelids look pale."))
+		if(length(H.virus2)) 
+			to_chat(user, SPAN("notice", "\The [H]'s eyes look red."))
+		else if(H.should_have_organ(BP_LIVER)) // Yea we probably do not want yellow and red eyes at the same time.
+			var/obj/item/organ/internal/liver/L = H.internal_organs_by_name[BP_LIVER]
+			if(istype(L) && L.is_bruised())
+				to_chat(user, SPAN("notice", "\The [H]'s eyes look yellowish."))
 
 		var/list/pinpoint = list(/datum/reagent/painkiller/tramadol/oxycodone = 1, /datum/reagent/painkiller/tramadol = 5, /datum/reagent/painkiller = 2, /datum/reagent/painkiller/opium = 3, /datum/reagent/painkiller/opium/tarine = 1)
 		var/list/dilating = list(/datum/reagent/space_drugs = 5, /datum/reagent/mindbreaker = 1, /datum/reagent/adrenaline = 1)
@@ -227,6 +240,8 @@
 	item_state = "lamp"
 	w_class = ITEM_SIZE_LARGE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	force = 5.0
+	attack_verb = list ("smacked", "bashed", "enlightened")
 
 	flashlight_max_bright = 0.3
 	flashlight_inner_range = 2
@@ -306,7 +321,7 @@
 	if(!fuel || !on)
 		turn_off()
 		return
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/flashlight/flare/proc/turn_off()
@@ -360,7 +375,7 @@
 		turn_off()
 		update_icon()
 		return
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/flashlight/glowstick/proc/turn_off()

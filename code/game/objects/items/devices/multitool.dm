@@ -18,6 +18,7 @@
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 5.0
 	throw_range = 15
+	tool_behaviour = TOOL_MULTITOOL
 
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 20)
 

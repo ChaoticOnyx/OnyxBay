@@ -108,7 +108,7 @@
 
 /obj/structure/table/attackby(obj/item/W, mob/user)
 
-	if(reinforced && istype(W, /obj/item/screwdriver))
+	if(reinforced && isScrewdriver(W))
 		remove_reinforced(W, user)
 		if(!reinforced)
 			update_desc()
@@ -134,7 +134,7 @@
 			return 1
 		else
 			to_chat(user, "<span class='warning'>You don't have enough carpet!</span>")
-	if(!reinforced && !carpeted && material && istype(W, /obj/item/wrench))
+	if(!reinforced && !carpeted && material && isWrench(W))
 		remove_material(W, user)
 		if(!material)
 			update_connections(1)
@@ -145,7 +145,7 @@
 			update_material()
 		return 1
 
-	if(!carpeted && !reinforced && !material && istype(W, /obj/item/wrench))
+	if(!carpeted && !reinforced && !material && isWrench(W))
 		dismantle(W, user)
 		return 1
 

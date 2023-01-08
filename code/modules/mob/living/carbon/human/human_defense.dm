@@ -47,7 +47,7 @@ meteor_act
 	if(organ.damage > organ.max_damage) // Overkill stuff; if our bodypart is a pile of shredded meat then it doesn't protect organs well
 		overkill_value *= organ.damage / organ.max_damage * 2
 
-	if(organ.internal_organs.len && prob(internal_damage_prob * overkill_value))
+	if(length(organ.internal_organs) && prob(internal_damage_prob * overkill_value))
 		var/damage_amt = (P.damage * P.penetration_modifier) * blocked_mult(blocked / 1.5) //So we don't factor in armor_penetration as additional damage
 		if(blocked >= P.damage) // Armor has absorbed the penetrational power
 			damage_amt = sqrt(damage_amt)
@@ -777,12 +777,10 @@ meteor_act
 	if(isobj(AM))
 		var/obj/O = AM
 		if(in_throw_mode && !get_active_hand() && speed >= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
-			if(!incapacitated())
-				if(isturf(O.loc))
-					put_in_active_hand(O)
-					visible_message(SPAN("warning", "[src] catches [O]!"))
-					throw_mode_off()
-					return
+			if(!incapacitated() && isturf(O.loc) && put_in_active_hand(O))
+				visible_message(SPAN("warning", "[src] catches [O]!"))
+				throw_mode_off()
+				return
 
 		var/dtype = O.damtype
 		var/throw_damage = O.throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
@@ -895,6 +893,9 @@ meteor_act
 
 		if(O.throw_source && momentum >= THROWNOBJ_KNOCKBACK_SPEED)
 			var/dir = get_dir(O.throw_source, src)
+
+			if(buckled)
+				return
 
 			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
 			throw_at(get_edge_target_turf(src, dir), 1, (1 / momentum))

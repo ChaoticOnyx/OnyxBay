@@ -64,11 +64,11 @@ var/list/holder_mob_icon_cache = list()
 		return loc.loc
 	return ..()
 
-/obj/item/holder/GetIdCard()
-	return held_mob.GetIdCard()
+/obj/item/holder/get_id_card()
+	return held_mob.get_id_card()
 
 /obj/item/holder/GetAccess()
-	var/obj/item/I = GetIdCard()
+	var/obj/item/I = get_id_card()
 	return I ? I.GetAccess() : ..()
 
 /obj/item/holder/attack_self()

@@ -182,7 +182,7 @@
 				qdel(ai_card)
 				ai_card = null
 		else if(user)
-			user.put_in_hands(ai_card)
+			user.pick_or_drop(ai_card)
 		else if(loc) // No trying to get_turf out of nullspace plz
 			ai_card.forceMove(get_turf(src))
 		else

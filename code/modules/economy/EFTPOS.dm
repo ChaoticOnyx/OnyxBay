@@ -112,7 +112,7 @@
 
 /obj/item/device/eftpos/attackby(obj/item/O as obj, user as mob)
 
-	var/obj/item/card/id/I = O.GetIdCard()
+	var/obj/item/card/id/I = O.get_id_card()
 
 	if(I)
 		if(linked_account)

@@ -51,7 +51,7 @@
 		var/obj/item/toy/xmas_cracker/other_half = new /obj/item/toy/xmas_cracker(target)
 		other_half.cracked = 1
 		other_half.icon_state = "cracker2"
-		target.put_in_active_hand(other_half)
+		target.pick_or_drop(other_half)
 		playsound(user, 'sound/effects/snap.ogg', 50, 1)
 		return 1
 	return ..()

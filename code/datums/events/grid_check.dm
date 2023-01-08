@@ -4,11 +4,12 @@
 	description = "The station will be de-energized for a while"
 
 	mtth = 3 HOURS
+	difficulty = 55
 
 /datum/event/grid_check/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)	
+	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
 
 /datum/event/grid_check/get_mtth()
 	. = ..()

@@ -95,34 +95,33 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/station_departments = list()//Gets filled automatically depending on jobs allowed
 
 	//Factions prefs stuff
-	var/list/faction_choices = list(
-		"NanoTrasen", // NanoTrasen must be first, else Company Provocation event will break
-		"Liu-Je Green Terraforming Industries",
-		"Charcoal TestLabs Ltd.",
-		"Blue Oceanic Explorers",
-		"Milky Way Trade Union",
-		"Redknight & Company Dominance Tech",
-		"Indigo Special Research Collaboration"
-		)
-
-	var/list/citizenship_choices = list(
-		"NanoTrasen",
-		"Nova Magnitka Government",
+	var/list/background_choices = list(
+		"Nanotrasen",
+		"Nova Magnitka",
 		"Gaia Magna",
+		"Zeng-Hu Clique",
+		"Zermig VIII",
+		"Independent Arcturia",
+		"Parthenonnus Ark Space Vessel",
 		"Moghes",
-		"Ahdomai",
-		"Qerrbalak",
-		"Parish of the Parthenonnus Ark"
+		"Skrell Empire",
+		"Adhomai",
+		"Corporate Sector"
 		)
 
 	var/list/home_system_choices = list(
-		"Nova Magnitka",
+		"Gilgamesh",
 		"Tau Ceti",
 		"Epsilon Ursae Minoris",
-		"Zermig VIII",
-		"Arcturia",
-		"Gaia Magna",
-		"Parthenonnus Ark Space Vessel"
+		"Zermig",
+		"Arcturus",
+		"Vega",
+		"Renenet",
+		"Alpha Centauri",
+		"Sirius",
+		"Qerrbalak",
+		"S`randarr",
+		"Uioa-Esa"
 		)
 
 	var/list/religion_choices = list(
@@ -278,7 +277,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 		if(!L.has_trait(trait))
 			result += level
-	
+
 	return result
 
 /datum/map/proc/get_levels_with_trait(trait)
@@ -302,7 +301,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 			if(L.has_trait(T))
 				result += level
 				break
-	
+
 	return result
 
 /datum/map/proc/get_levels_with_all_traits(...)
@@ -316,8 +315,8 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 			if(!L.has_trait(T))
 				ok = FALSE
 				break
-		
+
 		if(ok)
 			result += level
-	
+
 	return result

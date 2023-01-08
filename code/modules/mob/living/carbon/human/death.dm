@@ -61,7 +61,7 @@
 	if(wearing_rig)
 		wearing_rig.notify_ai("<span class='danger'>Warning: user death event. Mobility control passed to integrated intelligence system.</span>")
 
-	. = ..(gibbed, "no message")
+	. = ..(gibbed, "no message", show_dead_message) // I don't know why second argument exists, it's not me.
 	if(!gibbed)
 		handle_organs()
 		if(species.death_sound)
@@ -72,11 +72,7 @@
 	if(MUTATION_HUSK in mutations)
 		return
 
-	if(f_style)
-		f_style = "Shaved"		//we only change the icon_state of the hair datum, so it doesn't mess up their UI/UE
-	if(h_style)
-		h_style = "Bald"
-	update_hair(0)
+	RemoveHairAndFacials()
 
 	mutations.Add(MUTATION_HUSK)
 	for(var/obj/item/organ/external/head/h in organs)
@@ -93,14 +89,17 @@
 	if(MUTATION_SKELETON in src.mutations)
 		return
 
-	if(f_style)
-		f_style = "Shaved"
-	if(h_style)
-		h_style = "Bald"
-	update_hair(0)
+	RemoveHairAndFacials()
 
 	mutations.Add(MUTATION_SKELETON)
 	for(var/obj/item/organ/external/head/h in organs)
 		h.status |= ORGAN_DISFIGURED
 	update_body(1)
 	return
+
+/mob/living/carbon/human/proc/RemoveHairAndFacials()
+	if(f_style)
+		f_style = "Shaved"
+	if(h_style)
+		h_style = "Bald"
+	update_hair(FALSE)

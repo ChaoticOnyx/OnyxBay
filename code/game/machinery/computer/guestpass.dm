@@ -141,7 +141,7 @@
 				if (giver)
 					giver.dropInto(user.loc)
 					if(ishuman(user))
-						user.put_in_hands(giver)
+						user.pick_or_drop(giver)
 					giver = null
 					accesses.Cut()
 				else

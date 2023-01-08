@@ -173,7 +173,7 @@
 		w_class = ITEM_SIZE_LARGE
 		improved = 1
 		surgery_speed = 1.2 // Well, it's bigger and heavier now
-	if(istype(W,/obj/item/wirecutters) && improved == 1)
+	if(isWirecutter(W) && improved == 1)
 		new /obj/item/material/wirerod(get_turf(src)) //give back the wired rod
 		name = "circular saw"
 		desc = "For heavy duty cutting. It remembers its past glory..."
@@ -209,7 +209,7 @@
 		w_class = ITEM_SIZE_LARGE
 		improved = 1
 		surgery_speed = 1.2 // Well, it's bigger and heavier now
-	if(istype(W,/obj/item/wirecutters) && improved == 1)
+	if(isWirecutter(W) && improved == 1)
 		new /obj/item/material/wirerod(get_turf(src)) //give back the wired rod
 		name = "circular saw"
 		desc = "Perfect for cutting through ice. And bodies."

@@ -27,11 +27,17 @@ would spawn and follow the beaker, even if it is carried or thrown.
 	setup = 1
 
 /datum/effect/effect/system/proc/attach(atom/atom)
+	if(holder)
+		unregister_signal(holder, SIGNAL_QDELETING)
 	holder = atom
+	register_signal(holder, SIGNAL_QDELETING, /datum/effect/effect/system/proc/onHolderDeleted)
 
 /datum/effect/effect/system/proc/start()
 
 /datum/effect/effect/system/proc/spread()
+
+/datum/effect/effect/system/proc/onHolderDeleted()
+	holder = null
 
 /datum/effect/effect/system/Destroy()
 	holder = null
@@ -373,6 +379,11 @@ steam.start() -- spawns the effect
 	var/trail_type
 	var/duration_of_effect = 10
 
+/datum/effect/effect/system/trail/Destroy()
+	oldposition = null
+	specific_turfs.Cut()
+	return ..()
+
 /datum/effect/effect/system/trail/set_up(atom/atom)
 	attach(atom)
 	oldposition = get_turf(atom)
@@ -504,3 +515,10 @@ steam.start() -- spawns the effect
 /obj/effect/effect/hitmarker/Initialize()
 	. = ..()
 	QDEL_IN(src, 0.1 SECONDS)
+
+//healing
+/obj/effect/heal
+	name = "heal"
+	icon_state = "heal"
+	anchored = TRUE
+	mouse_opacity = FALSE

@@ -1,5 +1,10 @@
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
 	STOP_PROCESSING(SSmobs, src)
+
+	unregister_signal(src, SIGNAL_SEE_IN_DARK_SET)
+	unregister_signal(src, SIGNAL_SEE_INVISIBLE_SET)
+	unregister_signal(src, SIGNAL_SIGHT_SET)
+
 	remove_from_dead_mob_list()
 	remove_from_living_mob_list()
 	GLOB.player_list.Remove(src)
@@ -54,6 +59,7 @@
 	pain = null
 	item_use_icon = null
 	gun_move_icon = null
+	radio_use_icon = null
 	gun_setting_icon = null
 	ability_master = null
 	zone_sel = null
@@ -61,6 +67,11 @@
 
 /mob/Initialize(mapload)
 	. = ..()
+	if(species_language)
+		add_language(species_language)
+	register_signal(src, SIGNAL_SEE_IN_DARK_SET,	/mob/proc/set_blackness)
+	register_signal(src, SIGNAL_SEE_INVISIBLE_SET,	/mob/proc/set_blackness)
+	register_signal(src, SIGNAL_SIGHT_SET,			/mob/proc/set_blackness)
 	START_PROCESSING(SSmobs, src)
 
 /mob/proc/show_message(msg, type, alt, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
@@ -955,7 +966,7 @@
 
 	selection.forceMove(get_turf(src))
 	if(!(U.l_hand && U.r_hand))
-		U.put_in_hands(selection)
+		U.pick_or_drop(selection)
 
 	for(var/obj/item/O in pinned)
 		if(O == selection)
@@ -1152,3 +1163,9 @@
 	if(old_sight != new_sight)
 		sight = new_sight
 		SEND_SIGNAL(src, SIGNAL_SIGHT_SET, src, old_sight, new_sight)
+
+/mob/proc/set_blackness()			//Applies SEE_BLACKNESS if necessary and turns it off when you don't need it. Should be called if see_in_dark, see_invisible or sight has changed
+	if((see_invisible <= SEE_INVISIBLE_NOLIGHTING) || (see_in_dark >= 8) || (sight&(SEE_TURFS|SEE_MOBS|SEE_OBJS)))
+		set_sight(sight&(~SEE_BLACKNESS))
+	else
+		set_sight(sight|SEE_BLACKNESS)

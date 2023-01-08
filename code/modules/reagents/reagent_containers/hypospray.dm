@@ -72,7 +72,7 @@
 			reagents.trans_to_holder(loaded_vial.reagents,volume)
 			reagents.maximum_volume = 0
 			loaded_vial.update_icon()
-			user.put_in_hands(loaded_vial)
+			user.pick_or_drop(loaded_vial)
 			loaded_vial = null
 			to_chat(user, "You remove the vial from the [src].")
 			update_icon()

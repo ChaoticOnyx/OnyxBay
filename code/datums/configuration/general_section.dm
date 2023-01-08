@@ -18,6 +18,9 @@
 	var/second_topic_limit = null
 	var/wait_for_sigusr1 = FALSE
 
+	var/client_min_major_version = 514
+	var/client_min_minor_version = 1572
+
 /datum/configuration_section/general/load_data(list/data)
 	CONFIG_LOAD_STR(server_name, data["server_name"])
 	CONFIG_LOAD_STR(subserver_name, data["subserver_name"])
@@ -29,10 +32,13 @@
 	CONFIG_LOAD_NUM(hard_player_limit, data["hard_player_limit"])
 	CONFIG_LOAD_NUM(ticklag, data["ticklag"])
 
+	CONFIG_LOAD_NUM(client_min_major_version, data["client_min_major_version"])
+	CONFIG_LOAD_NUM(client_min_minor_version, data["client_min_minor_version"])
+
 	if(ticklag)
 		fps = 10 / ticklag
 
-	CONFIG_LOAD_NUM(client_fps, data["clien_tfps"])
+	CONFIG_LOAD_NUM(client_fps, data["client_fps"])
 
 	if(fps <= 0)
 		fps = initial(fps)

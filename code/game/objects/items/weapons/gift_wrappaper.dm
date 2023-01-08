@@ -132,9 +132,9 @@
 			if(5) icon_state = "gift3"
 
 /obj/item/gift/attack_self(mob/user)
-	user.drop(src)
+	user.drop(src, force = TRUE)
 	if(gift)
-		user.put_in_active_hand(gift)
+		user.pick_or_drop(gift)
 		gift.add_fingerprint(user)
 	else
 		to_chat(user, "<span class='warning'>The gift was empty!</span>")

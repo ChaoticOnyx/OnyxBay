@@ -19,7 +19,8 @@
 	name = "Infestation"
 	description = "A large number of vermin will appear at the station"
 
-	mtth = 3 HOURS
+	mtth = 2.5 HOURS
+	difficulty = 15
 
 	var/area/location
 	var/vermin
@@ -28,7 +29,7 @@
 
 /datum/event/infestation/New()
 	. = ..()
-	
+
 	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
 
 /datum/event/infestation/get_mtth()
@@ -63,7 +64,7 @@
 			max_number = 6
 			vermstring = "lizards"
 		if(VERM_SPIDERS)
-			spawn_types = list(/obj/effect/spider/spiderling)
+			spawn_types = list(/obj/structure/spider/spiderling)
 			max_number = 3
 			vermstring = "spiders"
 		if(VERM_CRABS)
@@ -80,26 +81,19 @@
 			num--
 
 			var/spawn_type = pick(spawn_types)
-			var/obj/effect/spider/spiderling/S = new spawn_type(T)
+			var/obj/structure/spider/spiderling/S = new spawn_type(T)
 			if(istype(S))
 				S.amount_grown = -1
 
 	set_next_think_ctx("announce", world.time + (30 SECONDS))
 
 /datum/event/infestation/proc/announce()
-	if(GLOB.using_map.type == /datum/map/polar)
-		command_announcement.Announce(
-			"Bioscans indicate that [vermstring] have been breeding in \the [location]. Clear them out, before this starts to affect productivity.",
-			"Major Bill's Shipping Critter Sensor",
-			zlevels = affecting_z,
-			new_sound = 'sound/AI/polar/infestation_announce.ogg'
-		)
-	else
-		command_announcement.Announce(
-			"Bioscans indicate that [vermstring] have been breeding in \the [location]. Clear them out, before this starts to affect productivity.",
-			"Major Bill's Shipping Critter Sensor",
-			zlevels = affecting_z
-		)
+	command_announcement.Announce(
+		"Bioscans indicate that [vermstring] have been breeding in \the [location]. Clear them out, before this starts to affect productivity.",
+		"Major Bill's Shipping Critter Sensor",
+		zlevels = affecting_z,
+		new_sound = 'sound/AI/infestationstart.ogg'
+	)
 
 /datum/event/infestation/proc/set_location_get_infestation_turfs()
 	location = pick_area(list(/proc/is_not_space_area, /proc/is_station_area))

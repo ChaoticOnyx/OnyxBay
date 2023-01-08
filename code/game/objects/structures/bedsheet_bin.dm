@@ -157,8 +157,7 @@ LINEN BINS
 		else
 			B = new /obj/item/bedsheet(loc)
 
-		B.loc = user.loc
-		user.put_in_hands(B)
+		user.pick_or_drop(B, loc)
 		to_chat(user, "<span class='notice'>You take [B] out of [src].</span>")
 
 		if(hidden)

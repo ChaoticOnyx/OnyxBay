@@ -45,16 +45,19 @@
 			return ..()
 
 		//makes sure that the storage is equipped, so that we can't drag it into our hand from miles away.
-		if(!usr.contains(src))
+		if(loc != usr)
 			return
 
 		add_fingerprint(usr)
-		if(usr.drop(src))
-			switch(over_object.name)
-				if(BP_R_HAND)
+		switch(over_object.name)
+			if(BP_R_HAND)
+				if(usr.drop(src))
 					usr.put_in_r_hand(src)
-				if(BP_L_HAND)
+			if(BP_L_HAND)
+				if(usr.drop(src))
 					usr.put_in_l_hand(src)
+			if("back")
+				usr.drop(src)
 
 /obj/item/storage/AltClick(mob/usr)
 	if(!canremove)
@@ -179,7 +182,7 @@
 		return 0
 
 	total_storage_space += storage_space_used() //Adds up the combined w_classes which will be in the storage item if the item is added to it.
-	if(total_storage_space > max_storage_space)
+	if(total_storage_space > max_storage_space && !(length(override_w_class) && is_type_in_list(W, override_w_class)))
 		if(!stop_messages)
 			to_chat(user, "<span class='notice'>\The [src] is too full, make some space.</span>")
 		return 0
@@ -316,12 +319,12 @@
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.l_store == src && !H.get_active_hand())	//Prevents opening if it's in a pocket.
-			H.put_in_hands(src)
-			H.l_store = null
+			if(H.put_in_hands(src))
+				H.l_store = null
 			return
 		if(H.r_store == src && !H.get_active_hand())
-			H.put_in_hands(src)
-			H.r_store = null
+			if(H.put_in_hands(src))
+				H.r_store = null
 			return
 
 	if(loc == user)

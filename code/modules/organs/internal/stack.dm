@@ -53,9 +53,11 @@
 
 	if(owner && !backup_inviable())
 		var/current_owner = owner
-		var/response = input(find_dead_player(ownerckey, 1), "Your neural backup has been placed into a new body. Do you wish to return to life?", "Resleeving") as anything in list("Yes", "No")
-		if(src && response == "Yes" && owner == current_owner)
-			overwrite()
+		var/mob/dead_owner = find_dead_player(ownerckey, 1)
+		if(istype(dead_owner))
+			var/response = input(dead_owner, "Your neural backup has been placed into a new body. Do you wish to return to life?", "Resleeving") as anything in list("Yes", "No")
+			if(src && response == "Yes" && owner == current_owner)
+				overwrite()
 	sleep(-1)
 	do_backup()
 

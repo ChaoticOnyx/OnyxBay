@@ -4,6 +4,7 @@
 	description = "There will be random news that will affect the prices of some goods"
 
 	mtth = 1 HOURS
+	difficulty = 0
 
 	var/event_type = 0
 	var/list/cheaper_goods = list()
@@ -12,7 +13,7 @@
 
 /datum/event/economic_event/New()
 	. = ..()
-	
+
 	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
 	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
 

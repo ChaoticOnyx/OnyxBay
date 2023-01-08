@@ -82,7 +82,7 @@
 /obj/item/integrated_circuit/manipulation/grenade/attack_self(mob/user)
 	if(attached_grenade && !grenade_activated)
 		user.visible_message(SPAN("warning", "\The [user] removes \an [attached_grenade] from \the [src]!"), SPAN("notice", "You remove \the [attached_grenade] from \the [src]."))
-		user.put_in_hands(attached_grenade)
+		user.pick_or_drop(attached_grenade)
 		detach_grenade()
 	else
 		return ..()

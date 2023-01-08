@@ -169,7 +169,7 @@
 
 /mob/living/simple_animal/mouse/attack_hand(mob/living/carbon/human/user)
 	if(holding_item && user.a_intent == I_HELP)
-		user.put_in_hands(holding_item)
+		user.pick_or_drop(holding_item, loc)
 		user.visible_message(SPAN_NOTICE("[user] removes \the [holding_item] from \the [name]."),
 							SPAN_NOTICE("You remove \the [holding_item] from \the [name]."))
 		holding_item = null

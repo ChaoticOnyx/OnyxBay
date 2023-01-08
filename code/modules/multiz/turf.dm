@@ -46,6 +46,10 @@
 
 /turf/simulated/open/proc/update()
 	plane = OPENSPACE_PLANE
+	if(below)
+		unregister_signal(below, SIGNAL_TURF_CHANGED)
+		unregister_signal(below, SIGNAL_EXITED)
+		unregister_signal(below, SIGNAL_ENTERED)
 	below = GetBelow(src)
 	register_signal(below, SIGNAL_TURF_CHANGED, /turf/simulated/open/proc/turf_change)
 	register_signal(below, SIGNAL_EXITED, /turf/simulated/open/proc/handle_move)
@@ -105,10 +109,9 @@
 			bottom_turf.plane = src.plane
 			bottom_turf.color = below.color
 			underlays += bottom_turf
-			for(var/image/I in below.overlays)
-				var/image/temp = I
+			for(var/i in 1 to length(below.overlays))
+				var/image/temp = image(below.overlays[i]) //byond moment
 				temp.plane = src.plane
-				temp.color = I.color
 				overlays += temp
 
 

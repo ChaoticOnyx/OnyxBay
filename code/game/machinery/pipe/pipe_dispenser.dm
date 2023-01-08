@@ -71,7 +71,10 @@
 <A href='?src=\ref[src];make=3;dir=5'>Bent Pipe</A><BR>
 <A href='?src=\ref[src];make=6;dir=1'>Junction</A><BR>
 <A href='?src=\ref[src];make=17;dir=1'>Heat Exchanger</A><BR>
-
+<b>Wall radiator:</b><BR>
+<A href='?src=\ref[src];make=54;dir=1'>Wall Radiator</A><BR>
+<A href='?src=\ref[src];make=52;dir=1'>Junction Left</A><BR>
+<A href='?src=\ref[src];make=53;dir=1'>Junction Right</A><BR>
 "}
 ///// Z-Level stuff
 //What number the make points to is in the define # at the top of construction.dm in same folder

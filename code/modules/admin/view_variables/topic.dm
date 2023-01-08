@@ -464,6 +464,47 @@
 		rem_organ.removed()
 		qdel(rem_organ)
 
+	else if(href_list["addmodifier"])
+		if(!check_rights(R_SPAWN))	return
+
+		var/mob/living/M = locate(href_list["addmodifier"])
+		if(!istype(M))
+			to_chat(usr, "This can only be done to instances of type /mob/living")
+			return
+
+		var/datum/modifier/new_modifier = input("Please choose an modifier to add.","Modifier",null) as null|anything in typesof(/datum/modifier)-/datum/modifier
+		if(!new_modifier) return
+
+		var/expire_at = input("Please enter expire time(in deciseconds) cancel to make it unexpiring.","Expire at",null) as num|null
+
+		if(!M)
+			to_chat(usr, "Mob doesn't exist anymore")
+			return
+
+		M.add_modifier(new_modifier, expire_at)
+
+
+	else if(href_list["remmodifier"])
+		if(!check_rights(R_SPAWN))	return
+
+		var/mob/living/M = locate(href_list["remmodifier"])
+		if(!istype(M))
+			to_chat(usr, "This can only be done to instances of type /mob/living")
+			return
+
+		var/datum/modifier/rem_modifier = input("Please choose an modifier to remove.","Modifier",null) as null|anything in M.modifiers
+
+		if(!M)
+			to_chat(usr, "Mob doesn't exist anymore")
+			return
+
+		if(!(locate(rem_modifier) in M.modifiers))
+			to_chat(usr, "Mob does not have that modifier.")
+			return
+
+		to_chat(usr, "Removed [rem_modifier] from [M].")
+		M.remove_specific_modifier(rem_modifier)
+
 	else if(href_list["fix_nano"])
 		if(!check_rights(R_DEBUG)) return
 

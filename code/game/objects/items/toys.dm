@@ -1038,6 +1038,6 @@
 			if(temp && !temp.is_usable())
 				to_chat(user, SPAN("warning", "You try to pick up \the [src] with your [temp.name], but cannot!"))
 				return
-			to_chat(user, SPAN("notice", "You pick up \the [src]."))
-			user.put_in_hands(src)
+			if(user.pick_or_drop(src, loc))
+				to_chat(user, SPAN("notice", "You pick up \the [src]."))
 	return

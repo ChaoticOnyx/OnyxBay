@@ -103,9 +103,13 @@
 			inserted = 1
 			break
 
-	if((!inserted || !S.amount) && usr.drop(S, src))
+	if(!inserted || !S.amount)
 		if(!S.amount)
 			qdel(S)
+		else if(S.loc == usr)
+			usr.drop(S, src)
+		else
+			S.forceMove(src)
 		usr.update_icons()	//update our overlays
 
 	prepare_ui(usr)
@@ -201,7 +205,7 @@
 		..()
 	else
 		if(music_tape)
-			user.put_in_hands(music_tape)
+			user.pick_or_drop(music_tape)
 			music_tape.add_fingerprint(user)
 			music_tape = null
 
@@ -251,3 +255,8 @@
 	name = "Cyber Bar tape box"
 	icon_closed = "box_cyber"
 	music_tape = /obj/item/music_tape/random/valhalla
+
+/obj/item/music_tape_box/halloween
+	name = "Spooky tape box"
+	icon_closed = "box_pumpkin"
+	music_tape = /obj/item/music_tape/random/halloween

@@ -267,8 +267,7 @@
 		return
 
 	to_chat(usr, "<span class='notice'>You remove [cell] from [src].</span>")
-	cell.forceMove(get_turf(H))
-	H.put_in_hands(cell)
+	usr.pick_or_drop(cell, loc)
 	cell = null
 	powercheck()
 
@@ -345,6 +344,8 @@
 		return 0
 
 	load.forceMove(dest)
+	if(!load) // Strange stuff's happened before.
+		return 0
 	load.set_dir(get_dir(loc, dest))
 	load.anchored = 0		//we can only load non-anchored items, so it makes sense to set this to false
 	if(ismob(load)) //atoms should probably have their own procs to define how their pixel shifts and layer can be manipulated, someday

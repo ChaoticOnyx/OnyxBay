@@ -135,7 +135,7 @@ Class Procs:
 	if(d)
 		set_dir(d)
 
-	GLOB.machines += src
+	GLOB.machines |= src
 
 	if (populate_components && component_types)
 		component_parts = list()
@@ -171,6 +171,7 @@ Class Procs:
 				qdel(A)
 			else // Otherwise we assume they were dropped to the ground during deconstruction, and were not removed from the component_parts list by deconstruction code.
 				component_parts -= A
+	current_power_area = null
 	return ..()
 
 /obj/machinery/Process()
@@ -384,12 +385,11 @@ Class Procs:
 /obj/machinery/proc/dismantle()
 	playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
 	var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(get_turf(src))
-	M.set_dir(src.dir)
-	M.state = 2
-	M.icon_state = "box_1"
+	M.set_dir(dir)
+	M.state = 1
+	M.update_icon()
 	for(var/obj/I in component_parts)
 		I.forceMove(get_turf(src))
-
 	qdel(src)
 	return 1
 

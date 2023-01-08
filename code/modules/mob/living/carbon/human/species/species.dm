@@ -21,6 +21,8 @@
 	var/damage_overlays = 'icons/mob/human_races/masks/dam_human.dmi'
 	var/damage_mask = 'icons/mob/human_races/masks/dam_mask_human.dmi'
 
+	var/icon/organs_icon // species specific internal organs icons
+
 	var/prone_icon                            // If set, draws this from icobase when mob is prone.
 	var/has_floating_eyes                     // Eyes will overlay over darkness (glow)
 
@@ -39,10 +41,10 @@
 
 	var/has_eyes_icon = TRUE
 
-	var/organs_icon		//species specific internal organs icons
-
 	var/default_h_style = "Bald"
 	var/default_f_style = "Shaved"
+	var/hair_key = ""
+	var/facial_hair_key = ""
 
 	var/race_key = 0                          // Used for mob icon cache string.
 	var/icon/icon_template = 'icons/mob/human_races/r_template.dmi' // Used for mob icon generation for non-32x32 species.
@@ -87,7 +89,7 @@
 	var/radiation_mod =  1                    // Radiation modifier
 	var/flash_mod =      1                    // Stun from blindness modifier.
 	var/metabolism_mod = 1                    // Reagent metabolism modifier
-	var/vision_flags = SEE_SELF               // Same flags as glasses.
+	var/vision_flags = SEE_SELF|SEE_BLACKNESS // Same flags as glasses.
 	var/generic_attack_mod = 1.0              // Damage dealt to simple animals with unarmed attacks multiplier.
 
 	// Death vars.
@@ -521,7 +523,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	if(!H.druggy)
 		H.set_see_in_dark(max(
 			H.see_in_dark,
-			H.sight == (SEE_TURFS|SEE_MOBS|SEE_OBJS) ? 8 : H.see_in_dark,
+			H.sight & (SEE_TURFS|SEE_MOBS|SEE_OBJS) ? 8 : H.see_in_dark,
 			darksight_range + H.equipment_darkness_modifier
 		))
 		if(H.equipment_see_invis)

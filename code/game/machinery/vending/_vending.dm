@@ -173,7 +173,7 @@
 	if(!W)
 		return FALSE
 
-	var/obj/item/card/id/I = W.GetIdCard()
+	var/obj/item/card/id/I = W.get_id_card()
 
 	if(currently_vending && vendor_account && !vendor_account.suspended)
 		var/paid = 0
@@ -499,11 +499,7 @@
 				to_chat(usr, "There is no coin in this machine.")
 				return TRUE
 
-			coin.forceMove(loc)
-
-			if(!usr.get_active_hand())
-				usr.put_in_hands(coin)
-
+			usr.pick_or_drop(coin, loc)
 			to_chat(usr, SPAN("notice", "You remove \the [coin] from \the [src]"))
 			coin = null
 			categories &= ~CAT_COIN

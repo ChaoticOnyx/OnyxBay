@@ -237,7 +237,7 @@
 		var/obj/item/melee/energy/sword/dualsaber/D = new /obj/item/melee/energy/sword/dualsaber(user.loc)
 		qdel(src)
 		qdel(sword)
-		user.put_in_hands(D)
+		user.pick_or_drop(D)
 
 /obj/item/melee/energy/sword/pirate
 	name = "energy cutlass"

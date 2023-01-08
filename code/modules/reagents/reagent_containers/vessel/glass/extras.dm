@@ -36,12 +36,12 @@
 	if(!choice || !(choice in extras))
 		return
 
-	if(user.put_in_active_hand(choice))
-		to_chat(user, "<span class=notice>You remove \the [choice] from \the [src].</span>")
-		extras -= choice
+	if(user.pick_or_drop(choice, loc))
+		to_chat(user, SPAN("notice", "You take \the [choice] from \the [src]."))
 	else
-		to_chat(user, "<span class=warning>Something went wrong, please try again.</span>")
+		to_chat(user, SPAN("notice", "You remove \the [choice] from \the [src]."))
 
+	extras -= choice
 	update_icon()
 
 /obj/item/glass_extra

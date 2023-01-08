@@ -361,7 +361,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	else
 		return ..()
 
-/obj/item/device/pda/GetIdCard()
+/obj/item/device/pda/get_id_card()
 	return id
 
 /obj/item/device/pda/MouseDrop(obj/over_object as obj, src_location, over_location)
@@ -962,7 +962,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	id.forceMove(get_turf(src))
 	if(ismob(loc))
 		var/mob/M = loc
-		M.put_in_hands(id)
+		M.pick_or_drop(id)
 	to_chat(usr, SPAN("notice", "You remove the ID from the [name]."))
 	id = null
 
@@ -1156,7 +1156,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	O.forceMove(get_turf(src))
 	if(ismob(loc))
 		var/mob/M = loc
-		M.put_in_hands(O)
+		M.pick_or_drop(O)
 	to_chat(usr, SPAN("notice", "You remove \the [O] from \the [src]."))
 
 /obj/item/device/pda/verb/verb_remove_cartridge()
@@ -1178,7 +1178,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	cartridge.forceMove(get_turf(src))
 	if(ismob(loc))
 		var/mob/M = loc
-		M.put_in_hands(cartridge)
+		M.pick_or_drop(cartridge)
 	mode = 0
 	scanmode = 0
 	if(cartridge.radio)
@@ -1201,7 +1201,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		if (istype(I, /obj/item/card/id) && I:registered_name && user.drop(I, src))
 			var/obj/old_id = id
 			id = I
-			user.put_in_hands(old_id)
+			if(old_id)
+				user.pick_or_drop(old_id)
 			return 1
 	return 0
 

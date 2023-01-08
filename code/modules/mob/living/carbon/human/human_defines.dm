@@ -44,8 +44,7 @@
 
 	// General information
 	var/home_system = ""
-	var/citizenship = ""
-	var/personal_faction = ""
+	var/personal_background = ""
 	var/religion = ""
 
 	//Equipment slots

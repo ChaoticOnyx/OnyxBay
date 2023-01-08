@@ -24,7 +24,7 @@ GLOBAL_LIST_INIT(contracts_steal_items, list(
 	"the captain's pinpointer" =                        list(CONTRACT_STEAL_OPERATION, /obj/item/pinpointer),
 	"an ion pistol" =                                   list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/ionrifle/small),
 	"an energy gun" =                                   list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/egun),
-	"a laser rifle" =                                   list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/laser),
+	"a laser pistol" =                                  list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/laser/pistol),
 	"a shotgun" =                                       list(CONTRACT_STEAL_MILITARY, /obj/item/gun/projectile/shotgun/pump),
 	"an riot helmet" =                                  list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/head/helmet/riot),
 	"an riot armor vest" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/suit/armor/riot),
@@ -286,7 +286,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		target_desc = I.name
 		qdel(I)
 	name += " [target_desc]"
-	create_explain_text("steal <b>[target_desc]</b> and send it via STD (found in <b>Devices and Tools</b>).")
+	create_explain_text("steal <b>[target_desc]</b> and send it via STD (found in <b>Contracts Equipment</b>).")
 
 /datum/antag_contract/item/steal/can_place()
 	return ..() && target_type
@@ -327,7 +327,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	if(!AI)
 		return
 	target_desc = "[target_desc] [AI.name]"
-	create_explain_text("steal <b>[target_desc]<b> and send it via STD (found in <b>Devices and Tools</b>).")
+	create_explain_text("steal <b>[target_desc]<b> and send it via STD (found in <b>Contracts Equipment</b>).")
 
 /datum/antag_contract/item/steal_ai/can_place()
 	return ..() && !QDELETED(AI)
@@ -360,14 +360,16 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		count = rand(3, 6)
 	else
 		count = target
-	create_explain_text("send blood samples of <b>[count]</b> different people in separate containers via STD (found in <b>Devices and Tools</b>).")
+	create_explain_text("send blood samples of <b>[count]</b> different people in separate containers via STD (found in <b>Contracts Equipment</b>).")
 
 /datum/antag_contract/item/blood/check_contents(list/contents, add_checked = FALSE)
 	var/current_samples = 0
 	for(var/obj/item/reagent_containers/C in contents)
 		var/list/data = C.reagents?.get_data(/datum/reagent/blood)
+		if(!length(data))
+			continue
 		var/datum/species/spec = all_species[data["species"]]
-		if(!data || (data["blood_DNA"] in samples) || (spec?.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
+		if((data["blood_DNA"] in samples) || (spec?.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
 			continue
 		if(add_checked)
 			samples += data["blood_DNA"]
@@ -449,7 +451,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	if(!istype(H) || !istype(_H) || !target_mind)
 		return
 	var/alternative_message = ""
-	var/obj/item/idcard = _H.get_idcard()
+	var/obj/item/idcard = _H.get_id_card()
 	if(istype(idcard))
 		alternative_target = weakref(idcard)
 		alternative_message = " <b>[idcard], [target_real_name]'s brain in MMI, [target_real_name]'s brain</b>"
@@ -463,7 +465,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	target = weakref(_target)
 
 	var/datum/gender/T = gender_datums[_H.get_gender()]
-	create_explain_text("assassinate <b>[target_real_name]</b> and send[alternative_message] or <b>[T.his] [_target.name]</b> for double pay via STD (found in <b>Devices and Tools</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
+	create_explain_text("assassinate <b>[target_real_name]</b> and send[alternative_message] or <b>[T.his] [_target.name]</b> for double pay via STD (found in <b>Contracts Equipment</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
 
 /datum/antag_contract/item/assassinate/can_place()
 	return ..() && target && !QDELETED(target_mind) && !QDELETED(target_mind.current)
@@ -488,7 +490,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/datum/mind/M = close_uplink.uplink_owner
 	var/obj/item/organ/internal/brain/_brain = brain?.resolve()
 	var/mob/living/carbon/human/_H = H?.resolve()
-	if(istype(_H) && _H.stat != DEAD || ((istype(_brain?.loc, /obj/item/device/mmi)) && !target_detected_in_STD))
+	if((istype(_H) && !_H.stat && _H.mind) || (istype(_brain?.loc, /obj/item/device/mmi) && !target_detected_in_STD))
 		if(M)
 			to_chat(M, SPAN("danger", "According to our information, the target ([target_real_name]) specified in the contract is still alive, don't try to deceive us or the consequences will be... Inevitable."))
 		return
@@ -522,7 +524,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	else
 		sum = target
 	name += " [sum] cash"
-	create_explain_text("extract a sum of <b>[sum] credits</b> from [GLOB.using_map.company_name] economics and send it via STD (found in <b>Devices and Tools</b>).")
+	create_explain_text("extract a sum of <b>[sum] credits</b> from [GLOB.using_map.company_name] economics and send it via STD (found in <b>Contracts Equipment</b>).")
 
 /datum/antag_contract/item/dump/check_contents(list/contents)
 	var/received = 0
@@ -573,7 +575,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			if(R?.build_path)
 				targets.Add(R)
 				targets_name.Add(R.name)
-	create_explain_text("send a <b>component design disk</b> with one of the following designs via STD (found in <b>Devices and Tools</b>):<br><i>[english_list(targets_name, and_text = " or ")]</i>.")
+	create_explain_text("send a <b>component design disk</b> with one of the following designs via STD (found in <b>Contracts Equipment</b>):<br><i>[english_list(targets_name, and_text = " or ")]</i>.")
 
 /datum/antag_contract/item/research/can_place()
 	return ..() && targets.len && counter < 3
@@ -620,7 +622,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			var/area/area_target = pick(candidates)
 			targets += area_target
 			candidates -= area_target
-	create_explain_text("activate <b>3 spy bugs</b> with a <b>Bug kit</b> and ensure they work without interruption for 10 minutes in one of the following locations:<br><i>[english_list(targets, and_text = " or ")]</i>.")
+	create_explain_text("activate <b>3 spy bugs</b> with a <b>Bug Kit</b> (found in <b>Contracts Equipment</b>) and ensure they work without interruption for 10 minutes in one of the following locations:<br><i>[english_list(targets, and_text = " or ")]</i>.")
 
 /datum/antag_contract/recon/can_place()
 	return ..() && targets.len

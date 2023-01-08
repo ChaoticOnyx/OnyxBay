@@ -15,10 +15,10 @@
 	return check_access_list(M.GetAccess())
 
 /atom/movable/proc/GetAccess()
-	var/obj/item/card/id/id = GetIdCard()
+	var/obj/item/card/id/id = get_id_card()
 	return id ? id.GetAccess() : list()
 
-/atom/movable/proc/GetIdCard()
+/atom/movable/proc/get_id_card()
 	return null
 
 /obj/proc/check_access(obj/item/I)
@@ -198,7 +198,7 @@
 /mob/observer/ghost
 	var/static/obj/item/card/id/all_access/ghost_all_access
 
-/mob/observer/ghost/GetIdCard()
+/mob/observer/ghost/get_id_card()
 	if(!is_admin(src))
 		return
 
@@ -206,14 +206,14 @@
 		ghost_all_access = new()
 	return ghost_all_access
 
-/mob/living/bot/GetIdCard()
+/mob/living/bot/get_id_card()
 	return botcard
 
 #define HUMAN_ID_CARDS list(get_active_hand(), wear_id, get_inactive_hand(), internal_organs_by_name[BP_HEART])
-/mob/living/carbon/human/GetIdCard()
+/mob/living/carbon/human/get_id_card()
 	for(var/item_slot in HUMAN_ID_CARDS)
 		var/obj/item/I = item_slot
-		var/obj/item/card/id = I ? I.GetIdCard() : null
+		var/obj/item/card/id = I ? I.get_id_card() : null
 		if(id)
 			return id
 
@@ -225,13 +225,13 @@
 			. |= I.GetAccess()
 #undef HUMAN_ID_CARDS
 
-/mob/living/silicon/GetIdCard()
+/mob/living/silicon/get_id_card()
 	if(stat || (ckey && !client))
 		return // Unconscious, dead or once possessed but now client-less silicons are not considered to have id access.
 	return idcard
 
 /proc/FindNameFromID(mob/M, missing_id_name = "Unknown")
-	var/obj/item/card/id/C = M.GetIdCard()
+	var/obj/item/card/id/C = M.get_id_card()
 	if(C)
 		return C.registered_name
 	return missing_id_name
@@ -240,7 +240,7 @@
 	return joblist + list("Prisoner")
 
 /obj/proc/GetJobName() //Used in secHUD icon generation
-	var/obj/item/card/id/I = GetIdCard()
+	var/obj/item/card/id/I = get_id_card()
 
 	if(I)
 		var/job_icons = get_all_job_icons()

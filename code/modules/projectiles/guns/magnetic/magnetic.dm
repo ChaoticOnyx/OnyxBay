@@ -110,7 +110,7 @@
 			if(cell)
 				to_chat(user, "<span class='warning'>\The [src] already has \a [cell] installed.</span>")
 				return
-			if(!user.drop(cell, src))
+			if(!user.drop(thing, src))
 				return
 			cell = thing
 			playsound(loc, 'sound/machines/click.ogg', 10, 1)
@@ -122,8 +122,7 @@
 			if(!capacitor)
 				to_chat(user, "<span class='warning'>\The [src] has no capacitor installed.</span>")
 				return
-			capacitor.forceMove(get_turf(src))
-			user.put_in_hands(capacitor)
+			user.pick_or_drop(capacitor, loc)
 			user.visible_message("<span class='notice'>\The [user] unscrews \the [capacitor] from \the [src].</span>")
 			playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 			capacitor = null
@@ -176,8 +175,7 @@
 			cell = null
 
 		if(removing)
-			removing.forceMove(get_turf(src))
-			user.put_in_hands(removing)
+			user.pick_or_drop(removing)
 			user.visible_message("<span class='notice'>\The [user] removes \the [removing] from \the [src].</span>")
 			playsound(loc, 'sound/machines/click.ogg', 10, 1)
 			update_icon()

@@ -315,7 +315,7 @@
 	foldable = FALSE
 
 /obj/structure/bed/chair/wood/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/stack) || istype(W, /obj/item/wirecutters))
+	if(istype(W,/obj/item/stack) || isWirecutter(W))
 		return
 	..()
 
@@ -336,7 +336,7 @@
 	anchored = TRUE
 
 /obj/structure/bed/chair/shuttle/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/stack) || istype(W, /obj/item/wirecutters))
+	if(istype(W,/obj/item/stack) || isWirecutter(W))
 		return
 	..()
 

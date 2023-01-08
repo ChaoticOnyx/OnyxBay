@@ -64,7 +64,7 @@
 		I = new src.foldable(get_turf(src))
 		to_chat(user, SPAN("notice", "You fold [src] into \a [I]."))
 	qdel(src)
-	user.put_in_hands(I)
+	user.pick_or_drop(I)
 
 /obj/item/storage/box/make_exact_fit()
 	..()

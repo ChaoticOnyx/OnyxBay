@@ -70,7 +70,7 @@
 	if(grenades.len)
 		var/obj/item/grenade/G = grenades[grenades.len]
 		grenades.len--
-		user.put_in_hands(G)
+		user.pick_or_drop(G, loc)
 		user.visible_message("\The [user] removes \a [G] from [src].", "<span class='notice'>You remove \a [G] from \the [src].</span>")
 	else
 		to_chat(user, "<span class='warning'>\The [src] is empty.</span>")
@@ -92,7 +92,7 @@
 
 /obj/item/gun/launcher/grenade/consume_next_projectile()
 	if(chambered)
-		chambered.safety_pin = null
+		QDEL_NULL(chambered.safety_pin)
 		chambered.activate(null)
 	return chambered
 
@@ -152,7 +152,7 @@
 
 /obj/item/gun/launcher/grenade/underslung/unload(mob/user)
 	if(chambered)
-		user.put_in_hands(chambered)
+		user.pick_or_drop(chambered, loc)
 		user.visible_message("\The [user] removes \a [chambered] from \the[src].", "<span class='notice'>You remove \a [chambered] from \the [src].</span>")
 		chambered = null
 	else

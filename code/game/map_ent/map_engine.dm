@@ -7,10 +7,10 @@
 
 /obj/map_ent/util_engine/activate()
 	var/target_engine = ev_engine
-	
+
 	if(!target_engine)
 		target_engine = config.mapping.preferable_engine
-	
+
 	if(target_engine == MAP_ENG_RANDOM)
 		target_engine = pick(MAP_ENG_SINGULARITY, MAP_ENG_MATTER)
 

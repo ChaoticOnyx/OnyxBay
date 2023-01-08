@@ -6,9 +6,14 @@
 	var/aggression_ratio = 0.50
 	/// The higher the value - the more MTTH of events.
 	var/rarity_ratio = 0.30
-	/// The higher the value, the more time between events.
+	/// The higher the value, the lower time between events.
 	var/quantity_ratio = 0.50
 	var/event_chance_multiplier = 10
+	/// If set to TRUE, multiple events *may* fire at the same time.
+	var/simultaneous_event_fire = FALSE
+	/// Events' chances to fire decrease after reaching soft cap and become 0 after reaching hard cap. TODO: Make it dynamic?
+	var/difficulty_soft_cap = 50
+	var/difficulty_hard_cap = 100
 
 	var/__metrics
 	var/__debug = TRUE                // print debug logs
@@ -109,3 +114,9 @@
 
 /datum/storyteller_character/proc/get_available_vacancies()
 	return round(round_duration_in_ticks/JOB_VACANCIES_SLOT_PER_TIME) + JOB_VACANCIES_SLOTS_AVAILABLE_AT_ROUNDSTART
+
+/datum/storyteller_character/proc/calc_event_chance(datum/event/E)
+	ASSERT(E)
+	. = E.calc_chance() * event_chance_multiplier
+	if((E.difficulty > difficulty_soft_cap) && difficulty_hard_cap)
+		. *= 1 - min(1, E.difficulty / (difficulty_hard_cap - difficulty_soft_cap))

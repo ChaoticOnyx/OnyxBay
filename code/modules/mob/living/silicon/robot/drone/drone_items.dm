@@ -547,7 +547,7 @@
 		if(istype(W,/obj/item/cigbutt))
 			if(plastic)
 				plastic.add_charge(250)
-		else if(istype(W,/obj/effect/spider/spiderling))
+		else if(istype(W,/obj/structure/spider/spiderling))
 			if(wood)
 				wood.add_charge(2000)
 			if(plastic)
@@ -645,7 +645,8 @@
 		else
 			module_string += text("[O]: <A HREF=?src=\ref[src];act=\ref[O]>Activate</A><BR>")
 
-		if((istype(O,/obj/item) || istype(O,/obj/item/device)) && !(istype(O,/obj/item/stack/cable_coil)))
+		var/obj/item/I = O
+		if(istype(I) && !isCoil(I))
 			tools += module_string
 		else
 			resources += module_string

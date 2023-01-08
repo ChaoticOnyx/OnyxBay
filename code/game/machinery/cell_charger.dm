@@ -79,7 +79,7 @@
 
 /obj/machinery/cell_charger/attack_hand(mob/user)
 	if(charging)
-		user.put_in_hands(charging)
+		user.pick_or_drop(charging, loc)
 		charging.add_fingerprint(user)
 		charging.update_icon()
 

@@ -575,7 +575,7 @@
 			to_chat(user, "Need more welding fuel!")
 			return
 
-	else if(istype(W, /obj/item/stack/cable_coil) && (wiresexposed || istype(src,/mob/living/silicon/robot/drone)))
+	else if(isCoil(W) && (wiresexposed || istype(src,/mob/living/silicon/robot/drone)))
 		if (!getFireLoss())
 			to_chat(user, "Nothing to fix here!")
 			return
@@ -692,7 +692,7 @@
 		to_chat(user, "The wires have been [wiresexposed ? "exposed" : "unexposed"].")
 		update_icon()
 
-	else if(istype(W, /obj/item/screwdriver) && opened && cell)	// radio
+	else if(isScrewdriver(W) && opened && cell)	// radio
 		if(silicon_radio)
 			silicon_radio.attackby(W,user)//Push it to the radio to let it handle everything
 		else
@@ -763,7 +763,7 @@
 		if(cell)
 			cell.update_icon()
 			cell.add_fingerprint(user)
-			user.put_in_active_hand(cell)
+			user.pick_or_drop(cell, loc)
 			to_chat(user, "You remove \the [cell].")
 			cell = null
 			cell_component.wrapped = null
@@ -773,7 +773,7 @@
 			cell_component.installed = 0
 			var/obj/item/broken_device = cell_component.wrapped
 			to_chat(user, "You remove \the [broken_device].")
-			user.put_in_active_hand(broken_device)
+			user.pick_or_drop(broken_device, loc)
 
 //Robots take half damage from basic attacks.
 /mob/living/silicon/robot/attack_generic(mob/user, damage, attack_message)

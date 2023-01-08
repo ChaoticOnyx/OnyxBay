@@ -14,23 +14,24 @@
 	name = "hidden uplink"
 	desc = "There is something wrong if you're examining this."
 	var/active = 0
-	var/datum/uplink_category/category 	= 0		// The current category we are in
-	var/exploit_id								// Id of the current exploit record we are viewing
+	var/datum/uplink_category/category 	= 0  // The current category we are in
+	var/exploit_id                           // Id of the current exploit record we are viewing
 
-	var/welcome = "Welcome, Operative"	// Welcoming menu message
-	var/uses 							// Numbers of crystals
-	var/list/ItemsCategory				// List of categories with lists of items
-	var/list/ItemsReference				// List of references with an associated item
-	var/list/nanoui_items				// List of items for NanoUI use
-	var/nanoui_menu = 0					// The current menu we are in
-	var/list/nanoui_data = new 			// Additional data for NanoUI use
+	var/welcome = "Welcome, Operative"  // Welcoming menu message
+	var/uses                            // Numbers of crystals
+	var/list/ItemsCategory              // List of categories with lists of items
+	var/list/ItemsReference             // List of references with an associated item
+	var/list/nanoui_items               // List of items for NanoUI use
+	var/nanoui_menu = 0                 // The current menu we are in
+	var/list/nanoui_data = new          // Additional data for NanoUI use
 
 	var/datum/mind/uplink_owner = null
 	var/used_TC = 0
-	var/offer_time = 15 MINUTES			//The time increment per discount offered
-	var/next_offer_time					//The time a discount will next be offered
-	var/datum/uplink_item/discount_item	//The item to be discounted
-	var/discount_amount					//The amount as a percent the item will be discounted by
+	var/offer_time = 15 MINUTES         // The time increment per discount offered
+	var/next_offer_time                 // The time a discount will next be offered
+	var/datum/uplink_item/discount_item // The item to be discounted
+	var/discount_amount                 // The amount as a percent the item will be discounted by
+	var/complimentary_std = TRUE        // Can STD be purchased for free
 
 /obj/item/device/uplink/nano_host()
 	return loc
@@ -96,7 +97,7 @@
 	active = !active
 
 // Directly trigger the uplink. Turn on if it isn't already.
-/obj/item/device/uplink/proc/trigger(mob/user as mob)
+/obj/item/device/uplink/proc/trigger(mob/user)
 	if(!active)
 		toggle()
 	interact(user)
@@ -104,7 +105,7 @@
 // Checks to see if the value meets the target. Like a frequency being a traitor_frequency, in order to unlock a headset.
 // If true, it accesses trigger() and returns 1. If it fails, it returns false. Use this to see if you need to close the
 // current item's menu.
-/obj/item/device/uplink/proc/check_trigger(mob/user as mob, value, target)
+/obj/item/device/uplink/proc/check_trigger(mob/user, value, target)
 	if(value == target)
 		trigger(user)
 		return 1
@@ -180,8 +181,7 @@
 		for(var/datum/uplink_item/item in category.items)
 			if(item.can_view(src))
 				var/cost = item.cost(uses, src)
-				if(!cost) cost = "???"
-				items[++items.len] = list("name" = item.name(), "description" = replacetext(item.description(), "\n", "<br>"), "can_buy" = item.can_buy(src), "cost" = cost, "ref" = "\ref[item]")
+				items[++items.len] = list("name" = item.name(), "description" = replacetext(item.description(), "\n", "<br>"), "can_buy" = item.can_buy(src), "cost" = (cost ? cost : "Free"), "ref" = "\ref[item]")
 		nanoui_data["items"] = items
 	else if(nanoui_menu == 2)
 		var/permanentData[0]
@@ -207,8 +207,7 @@
 					REC_FIELD(age),
 					REC_FIELD(species),
 					REC_FIELD(homeSystem),
-					REC_FIELD(citizenship),
-					REC_FIELD(faction),
+					REC_FIELD(background),
 					REC_FIELD(religion),
 					REC_FIELD(fingerprint),
 					REC_FIELD(antagRecord))
@@ -230,7 +229,7 @@
 // You place this in your uplinkable item to check if an uplink is active or not.
 // If it is, it will display the uplink menu and return 1, else it'll return false.
 // If it returns true, I recommend closing the item's normal menu with "close_browser(user, "window=name")"
-/obj/item/proc/active_uplink_check(mob/user as mob)
+/obj/item/proc/active_uplink_check(mob/user)
 	// Activates the uplink if it's active
 	if(src.hidden_uplink)
 		if(src.hidden_uplink.active)
@@ -249,7 +248,7 @@
 	hidden_uplink = new(src, owner, amount)
 	icon_state = "radio"
 
-/obj/item/device/radio/uplink/attack_self(mob/user as mob)
+/obj/item/device/radio/uplink/attack_self(mob/user)
 	if(hidden_uplink)
 		hidden_uplink.trigger(user)
 
@@ -257,7 +256,7 @@
 	..()
 	hidden_uplink = new(src, owner)
 
-/obj/item/device/multitool/uplink/attack_self(mob/user as mob)
+/obj/item/device/multitool/uplink/attack_self(mob/user)
 	if(hidden_uplink)
 		hidden_uplink.trigger(user)
 

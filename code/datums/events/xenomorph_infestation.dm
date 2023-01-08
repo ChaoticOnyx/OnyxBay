@@ -3,13 +3,14 @@
 	name = "Xenomorph Infestation"
 	description = "Xenomorphs someway appears on the station."
 
+	mtth = 6 HOURS
+	difficulty = 90
 	fire_only_once = TRUE
-	mtth = 5 HOURS
 
 /datum/event/xenomorph_infestation/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.living_players_count * (3 MINUTES))
-	. -= (SSevents.triggers.roles_count["Security"] * (6 MINUTES))
+	. -= (SSevents.triggers.roles_count["Security"] * (9 MINUTES))
 	. = max(1 HOUR, .)
 
 /datum/event/xenomorph_infestation/on_fire()

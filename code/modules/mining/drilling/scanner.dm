@@ -91,7 +91,7 @@
 	var/obj/item/disk/survey/D = new(get_turf(src))
 	D.data = survey_data
 	survey_data = 0
-	M.put_in_hands(D)
+	M.pick_or_drop(D)
 
 /obj/item/disk/survey
 	name = "survey data disk"
