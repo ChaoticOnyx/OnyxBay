@@ -486,12 +486,12 @@
 	if (incapacitated(INCAPACITATION_DISABLED))
 		to_chat(src, SPAN("warning", "You can't do that while you're incapacitated!"))
 		return
-	if (src.nutrition < 150)
-		to_chat(src, SPAN_WARNING("You are too hungry to spread toxins!"))
+	if (nutrition < 150)
+		to_chat(src, SPAN("warning", "You are too hungry to spread toxins!"))
 		return
 
 	last_special = world.time + 10 SECONDS
-	src.nutrition -= 50
+	nutrition -= 50
 
 	var/turf/T = get_turf(src)
 	var/obj/effect/effect/water/chempuff/chem = new(T)
@@ -506,11 +506,11 @@
 	set category = "Abilities"
 
 	if (last_special > world.time)
-		to_chat(src, SPAN_WARNING("You aren't ready to do that! Wait [round(last_special - world.time) / 10] seconds."))
+		to_chat(src, SPAN("warning", "You aren't ready to do that! Wait [round(last_special - world.time) / 10] seconds."))
 		return
 
 	if (incapacitated())
-		to_chat(src, SPAN_WARNING("You can't do that while you're incapacitated!"))
+		to_chat(src, SPAN("warning", "You can't do that while you're incapacitated!"))
 		return
 
 	var/mob/living/target
@@ -519,21 +519,21 @@
 			target = L
 			break
 	if (!target)
-		to_chat(src, SPAN_WARNING("You aren't on top of a victim!"))
+		to_chat(src, SPAN("warning", "You aren't on top of a victim!"))
 		return
 
 	last_special = world.time + 5 SECONDS
 
-	src.visible_message(SPAN_DANGER("\The [src] hunkers down over \the [target], tearing into their flesh."))
+	visible_message(SPAN("danger", "\The [src] hunkers down over \the [target], tearing into their flesh."))
 	if(do_mob(src, target, 5 SECONDS))
-		to_chat(target, SPAN_DANGER("\The [src] scrapes your flesh from your bones!"))
-		to_chat(src, SPAN_DANGER("You feed hungrily off \the [target]'s flesh."))
+		to_chat(target, SPAN("danger", "\The [src] scrapes your flesh from your bones!"))
+		to_chat(src, SPAN("danger", "You feed hungrily off \the [target]'s flesh."))
 		target.adjustBruteLoss(25)
 		if(ishuman(target))
 			for(var/ID in src.virus2)
 				var/datum/disease2/disease/D = src.virus2[ID]
 				infect_virus2(target, D)
-		if(target.getBruteLoss() < -target.maxHealth)
+		if(target.getBruteLoss() > target.maxHealth)
 			target.gib()
-		src.adjustBruteLoss(-25)
-		src.nutrition += 20
+		adjustBruteLoss(-25)
+		nutrition += 20
