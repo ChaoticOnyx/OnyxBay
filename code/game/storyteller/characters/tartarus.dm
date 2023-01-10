@@ -8,3 +8,4 @@
 	simultaneous_event_fire = TRUE
 	difficulty_soft_cap = 0
 	difficulty_hard_cap = 0
+	can_be_voted_for = FALSE
