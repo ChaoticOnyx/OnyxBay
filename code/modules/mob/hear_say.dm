@@ -97,7 +97,7 @@
 		else if(headphones_volume?.volume_status == HIGH_VOLUME)
 			italics = TRUE
 			if(!is_blind() && speaker != src && dist_speech > 1)
-				to_chat(src, SPAN("", "<span class='name'>[speaker_name]</span>[alt_name] talks but the music is too loud!"))
+				to_chat(src, {"[SPAN("name", speaker_name)][alt_name] talks but the music is too loud!"})
 				return
 
 		if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SYNDICATE_SUSPICIOUSLY_AWARE)
