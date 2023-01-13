@@ -30,7 +30,7 @@
 		if(!user.drop(D, src))
 			return
 		tape = D
-		to_chat(user, SPAN_NOTICE("You inserts \a [D] into \the [src]."))
+		to_chat(user, SPAN_NOTICE("You insert \a [D] into \the [src]."))
 		update_icon()
 		if(istype(tape, /obj/item/music_tape/random))
 			tracks += tape.tracks
