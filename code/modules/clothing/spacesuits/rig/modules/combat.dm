@@ -101,8 +101,9 @@
 		return 0
 
 	charge.charges--
-	var/obj/item/grenade/new_grenade = new charge.product_type(get_turf(H), need_pin = FALSE)
+	var/obj/item/grenade/new_grenade = new charge.product_type(get_turf(H))
 	
+	QDEL_NULL(new_grenade.safety_pin)
 	new_grenade.new_timing(timings[timing_selected].timing)
 	new_grenade.activate(H)
 	new_grenade.throw_at(target, fire_distance, fire_force)
