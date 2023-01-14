@@ -128,9 +128,9 @@ var/list/mining_floors = list()
 	. = ..()
 	if(istype(AM,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = AM
-		if((istype(H.l_hand, /obj/item/pickaxe)) && (!H.hand))
+		if((istype(H.l_hand, /obj/item/pickaxe/drill)) && (!H.hand))
 			attackby(H.l_hand, H)
-		else if((istype(H.r_hand, /obj/item/pickaxe)) && H.hand)
+		else if((istype(H.r_hand, /obj/item/pickaxe/drill)) && H.hand)
 			attackby(H.r_hand, H)
 
 	else if(istype(AM,/mob/living/silicon/robot))
@@ -211,7 +211,7 @@ var/list/mining_floors = list()
 			if(newDepth > F.excavation_required) // Digging too deep can break the item. At least you won't summon a Balrog (probably)
 				fail_message = ". <b>[pick("There is a crunching noise", "[W] collides with some different rock", "Part of the rock face crumbles away", "Something breaks under [W]")]</b>"
 
-		to_chat(user, "<span class='notice'>You start [P.drill_verb][fail_message].</span>")
+		to_chat(user, "<span class='notice'>You are digging \the [src][fail_message].</span>")
 
 		if(fail_message && prob(90))
 			if(prob(25))
@@ -233,7 +233,8 @@ var/list/mining_floors = list()
 			else if(newDepth > F.excavation_required - F.clearance_range) // Not quite right but you still extract your find, the closer to the bottom the better, but not above 80%
 				excavate_find(prob(80 * (F.excavation_required - newDepth) / F.clearance_range), F)
 
-		to_chat(user, "<span class='notice'>You finish [P.drill_verb] \the [src].</span>")
+		if(istype(P, /obj/item/pickaxe/drill))
+			to_chat(user, "<span class='notice'>You finish [P.drill_verb] \the [src].</span>")
 
 		if(newDepth >= 200)
 			excavation_level = 200
@@ -257,8 +258,8 @@ var/list/mining_floors = list()
 			else
 				GetDrilled(1)
 			return
-		else if(mineral && durability < initial(durability) / max(mineral.result_amount, 1))
-			DropMineral()
+		else if(mineral && durability < initial(durability) - initial(durability) / max(mineral.result_amount, 1))
+			DropMineral(user.dir)
 
 		excavation_level += P.excavation_amount
 		var/updateIcon = 0
@@ -326,22 +327,32 @@ var/list/mining_floors = list()
 	overlays -= ore_overlay
 	ore_overlay = null
 
-/turf/simulated/mineral/proc/DropMineral()
+/turf/simulated/mineral/proc/DropMineral(direction = null)
 	if(!mineral)
 		return
 
-	clear_ore_effects()
-	var/obj/item/ore/O = new mineral.ore(src)
-	if(geologic_data && istype(O))
+	var/obj/item/ore/O = null
+
+	if(direction)
+		O = new mineral.ore(get_step(src, turn(direction, 180)))
+	else
+		O = new mineral.ore(src)
+
+	mineral.result_amount -= 1
+
+	if(!mineral.result_amount)
+		clear_ore_effects()
+
+	if(O && geologic_data && istype(O))
 		geologic_data.UpdateNearbyArtifactInfo(src)
 		O.geologic_data = geologic_data
 	return O
 
 /turf/simulated/mineral/proc/GetDrilled(artifact_fail = 0)
 	//var/destroyed = 0 //used for breaking strange rocks
-	if(mineral && mineral.result_amount)
+	if(mineral && mineral.result_amount > 0)
 
-		for(var/i = 1 to mineral.result_amount)
+		while(mineral.result_amount > 0)
 			DropMineral()
 
 	if(artifact_find && artifact_fail)

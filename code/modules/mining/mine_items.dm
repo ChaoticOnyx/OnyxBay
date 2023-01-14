@@ -31,8 +31,8 @@
 /*****************************Pickaxe********************************/
 
 /obj/item/pickaxe
-	name = "mining drill"
-	desc = "The most basic of mining drills, for short excavations and small mineral extractions."
+	name = "pickaxe"
+	desc = "Pure classics."
 	icon = 'icons/obj/tools.dmi'
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
