@@ -28,21 +28,21 @@
 	if (isMonkey(user))
 		to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return
-	if (istype(I, /obj/item/pickaxe))
+	if (istype(I, /obj/item/pickaxe/drill))
 		if(!istype(user.loc, /turf))
 			return
 
-		var/obj/item/pickaxe/P = I
-		if(last_act + P.digspeed > world.time)//prevents message spam
+		var/obj/item/pickaxe/drill/D = I
+		if(last_act + D.digspeed > world.time)//prevents message spam
 			return
 		last_act = world.time
 
-		playsound(user, P.drill_sound, 20, 1)
+		playsound(user, D.drill_sound, 20, 1)
 
-		to_chat(user, "<span class='notice'>You start [P.drill_verb].</span>")
+		to_chat(user, "<span class='notice'>You start [D.drill_verb].</span>")
 
-		if(do_after(user,P.digspeed - P.digspeed/4, src))
-			to_chat(user, "<span class='notice'>You finish [P.drill_verb] \the [src].</span>")
+		if(do_after(user,D.digspeed - D.digspeed / 4, src))
+			to_chat(user, "<span class='notice'>You finish [D.drill_verb] \the [src].</span>")
 			qdel(src)
 	return ..()
 

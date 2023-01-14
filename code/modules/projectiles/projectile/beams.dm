@@ -247,7 +247,7 @@
 			M.GetDrilled(1)
 			return
 		else
-			M.emitter_blasts_taken += 2
+			M.durability -= 60
 	. = ..()
 
 /obj/item/projectile/beam/plasmacutter/danger

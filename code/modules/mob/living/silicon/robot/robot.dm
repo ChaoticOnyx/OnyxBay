@@ -1050,11 +1050,11 @@
 	to_chat(R, "Buffers flushed and reset. Camera system shutdown. Hardware restrictions have been overridden. All systems operational.")
 	if(R.module)
 		var/rebuild = 0
-		for(var/obj/item/pickaxe/borgdrill/D in R.module.modules)
+		for(var/obj/item/pickaxe/drill/borgdrill/D in R.module.modules)
 			qdel(D)
 			rebuild = 1
 		if(rebuild)
-			R.module.modules += new /obj/item/pickaxe/diamonddrill(R.module)
+			R.module.modules += new /obj/item/pickaxe/drill/diamonddrill(R.module)
 			R.module.rebuild()
 	update_icon()
 
@@ -1254,11 +1254,11 @@
 						to_chat(src, "<span class='danger'>ALERT: [user.real_name] is an operative. Obey your new laws and their commands.</span>")
 					if(src.module)
 						var/rebuild = 0
-						for(var/obj/item/pickaxe/borgdrill/D in src.module.modules)
+						for(var/obj/item/pickaxe/drill/borgdrill/D in src.module.modules)
 							qdel(D)
 							rebuild = 1
 						if(rebuild)
-							src.module.modules += new /obj/item/pickaxe/diamonddrill(src.module)
+							src.module.modules += new /obj/item/pickaxe/drill/diamonddrill(src.module)
 							src.module.rebuild()
 					update_icon()
 			else
