@@ -127,7 +127,7 @@
 	set name = "Previous track"
 	set category = "Object"
 
-	if(index <= 1)
+	if(index < 1)
 		index = length(tracks)
 	else
 		index -= 1
