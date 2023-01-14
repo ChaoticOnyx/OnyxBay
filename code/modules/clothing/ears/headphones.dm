@@ -57,6 +57,11 @@
 	update_icon()
 	return ..()
 
+/obj/item/clothing/ears/headphones/dropped()
+	StopPlaying()
+	update_icon()
+	return ..()
+
 /obj/item/clothing/ears/headphones/proc/StopPlaying()
 	playing = 0
 	QDEL_NULL(sound_token)
@@ -127,7 +132,7 @@
 	set name = "Previous track"
 	set category = "Object"
 
-	if(index < 1)
+	if(index <= 1)
 		index = length(tracks)
 	else
 		index -= 1
