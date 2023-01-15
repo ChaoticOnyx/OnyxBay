@@ -88,6 +88,18 @@
 			else if(!is_blind())
 				to_chat(src, "<span class='name'>[speaker_name]</span>[alt_name] talks but you cannot hear \him.")
 	else
+		var/mob/living/carbon/human/M = src
+		var/datum/modifier/trait/headphones_volume/headphones_volume = locate(/datum/modifier/trait/headphones_volume) in M.modifiers
+		if(headphones_volume?.volume_status == MID_VOLUME)
+			if(dist_speech > 4)
+				to_chat(src, {"[SPAN("name", speaker_name)][alt_name] talks but the music is too loud."})
+				return
+		else if(headphones_volume?.volume_status == HIGH_VOLUME)
+			italics = TRUE
+			if(!is_blind() && speaker != src && dist_speech > 1)
+				to_chat(src, {"[SPAN("name", speaker_name)][alt_name] talks but the music is too loud!"})
+				return
+
 		if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SYNDICATE_SUSPICIOUSLY_AWARE)
 			message = highlight_codewords(message, GLOB.code_phrase_highlight_rule)  //  Same can be done with code_response or any other list of words, using regex created by generate_code_regex(). You can also add the name of CSS class as argument to change highlight style.
 		if(language)
