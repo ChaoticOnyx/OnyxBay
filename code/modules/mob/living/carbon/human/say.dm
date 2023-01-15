@@ -49,7 +49,7 @@
 	var/temp = client.close_saywindow(return_content = TRUE)
 
 	if(!temp)
-		temp = winget(client, "input", "text")
+		temp = winget(client, ":input", "text")
 		if(length(temp) > 4 && findtextEx(temp, "Say ", 1, 5))
 			temp = copytext(temp, 5)
 			if (text2ascii(temp, 1) == text2ascii("\""))
@@ -59,7 +59,7 @@
 				return
 		else
 			return
-		winset(client, "input", "text=\"Say \\\"\"")
+		winset(client, ":input", "text=\"Say \\\"\"")
 	temp = trim_left(temp)
 
 	if(length(temp))
