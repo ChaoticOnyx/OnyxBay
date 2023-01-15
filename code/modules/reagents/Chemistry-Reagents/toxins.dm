@@ -708,9 +708,6 @@
 				to_chat(M, SPAN_DANGER("You can feel something moving inside your chest!"))
 
 		if(35 to INFINITY)
-			if(data["impregnated"])
-				return
-
 			if(prob(5))
 				var/continue_impregnation = FALSE
 				var/obj/item/organ/internal/alien_embryo/AE = M.internal_organs_by_name[BP_EMBRYO]
@@ -720,7 +717,6 @@
 					qdel(AE)
 					continue_impregnation = TRUE
 
-				data["impregnated"] = TRUE
 				if(continue_impregnation)
 					to_chat(M, SPAN_DANGER("You start to feel dull pain inside your chest."))
 					M.internal_organs_by_name[BP_EMBRYO] = new /obj/item/organ/internal/alien_embryo(M)
