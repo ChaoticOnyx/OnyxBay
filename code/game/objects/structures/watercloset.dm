@@ -93,16 +93,16 @@
 
 /obj/machinery/shower/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if(EXPLODE_DEVASTATE)
 			qdel(src)
 			return
-		if(2.0)
+		if(EXPLODE_HEAVY)
 			if(prob(50))
 				if(prob(50))
 					new /obj/item/shower_parts(get_turf(src))
 				qdel(src)
 				return
-		if(3.0)
+		if(EXPLODE_LIGHT)
 			if(prob(25))
 				new /obj/item/shower_parts(get_turf(src))
 				qdel(src)
