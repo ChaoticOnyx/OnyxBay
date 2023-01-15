@@ -81,8 +81,8 @@
 	name = "second hand"
 	use_to_pickup = 0
 
-/obj/item/storage/laundry_basket/offhand/dropped(mob/user as mob)
+/obj/item/storage/laundry_basket/offhand/dropped(mob/user)
 	..()
-	user.drop_from_inventory(linked)
+	user.drop(linked, force = TRUE)
 	return
 

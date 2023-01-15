@@ -223,6 +223,9 @@
 		if(O.throw_source && momentum >= THROWNOBJ_KNOCKBACK_SPEED)
 			var/dir = get_dir(O.throw_source, src)
 
+			if(buckled)
+				return
+
 			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
 			throw_at(get_edge_target_turf(src, dir), 1, (1 / momentum))
 

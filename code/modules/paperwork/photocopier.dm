@@ -17,6 +17,10 @@
 	var/grayscale = TRUE //if FALSE it'll preserve colors at least on paper
 	var/busy = FALSE
 
+/obj/machinery/photocopier/Destroy()
+	QDEL_NULL(copyitem)
+	return ..()
+
 /obj/machinery/photocopier/attack_ai(mob/user)
 	return attack_hand(user)
 
@@ -92,9 +96,10 @@
 		busy = FALSE
 	else if(href_list["remove"])
 		if(copyitem)
-			copyitem.loc = usr.loc
-			usr.put_in_hands(copyitem)
-			to_chat(usr, SPAN("notice", "You take \the [copyitem] out of \the [src]."))
+			if(usr.pick_or_drop(copyitem, loc))
+				to_chat(usr, SPAN("notice", "You take \the [copyitem] out of \the [src]."))
+			else
+				to_chat(usr, SPAN("notice", "You remove \the [copyitem] from \the [src]."))
 			copyitem = null
 			updateUsrDialog()
 	else if(href_list["min"])
@@ -131,9 +136,9 @@
 /obj/machinery/photocopier/attackby(obj/item/O as obj, mob/user as mob)
 	if(istype(O, /obj/item/paper) || istype(O, /obj/item/photo) || istype(O, /obj/item/paper_bundle) || istype(O, /obj/item/complaint_folder) || istype(O, /obj/item/canvas))
 		if(!copyitem)
-			user.drop_item()
+			if(!user.drop(O, src))
+				return
 			copyitem = O
-			O.loc = src
 			to_chat(user, SPAN("notice", "You insert \the [O] into \the [src]."))
 			flick(insert_anim, src)
 			updateUsrDialog()
@@ -141,7 +146,8 @@
 			to_chat(user, SPAN("notice", "There is already something in \the [src]."))
 	else if(istype(O, /obj/item/device/toner))
 		if(toner <= 10) //allow replacing when low toner is affecting the print darkness
-			user.drop_item()
+			if(!user.drop(O))
+				return
 			to_chat(user, SPAN("notice", "You insert the toner cartridge into \the [src]."))
 			var/obj/item/device/toner/T = O
 			toner += T.toner_amount

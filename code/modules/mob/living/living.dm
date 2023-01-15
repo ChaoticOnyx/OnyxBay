@@ -441,8 +441,8 @@
 	if(iscarbon(src))
 		var/mob/living/carbon/C = src
 
-		if (C.handcuffed && !initial(C.handcuffed))
-			C.drop_from_inventory(C.handcuffed)
+		if(C.handcuffed && !initial(C.handcuffed))
+			C.drop(C.handcuffed, force = TRUE)
 		C.handcuffed = initial(C.handcuffed)
 	BITSET(hud_updateflag, HEALTH_HUD)
 	BITSET(hud_updateflag, STATUS_HUD)
@@ -668,14 +668,20 @@
 
 	//Breaking out of a locker?
 	if(src.loc && (istype(src.loc, /obj/structure/closet)) )
-		var/obj/structure/closet/C = loc
-		spawn() C.mob_breakout(src)
+		var/obj/structure/closet/closet = loc
+		spawn() closet.mob_breakout(src)
 		return TRUE
 
 	//Trying to escape from abductors?
 	if(src.loc && (istype(src.loc, /obj/machinery/abductor/experiment)))
-		var/obj/machinery/abductor/experiment/E = loc
-		spawn() E.mob_breakout(src)
+		var/obj/machinery/abductor/experiment/experiment = loc
+		spawn() experiment.mob_breakout(src)
+		return TRUE
+
+	//Trying to escape from Spider?
+	if(src.loc && (istype(src.loc, /obj/structure/spider/cocoon)))
+		var/obj/structure/spider/cocoon/cocoon = loc
+		spawn() cocoon.mob_breakout(src)
 		return TRUE
 
 /mob/living/proc/escape_inventory(obj/item/holder/H)
@@ -684,7 +690,7 @@
 	var/mob/M = H.loc //Get our mob holder (if any).
 
 	if(istype(M))
-		M.drop_from_inventory(H)
+		M.drop(H)
 		to_chat(M, "<span class='warning'>\The [H] wriggles out of your grip!</span>")
 		to_chat(src, "<span class='warning'>You wriggle out of \the [M]'s grip!</span>")
 
@@ -758,7 +764,7 @@
 /mob/living/proc/slip_on_obj(/obj/slipped_on, stun_duration = 8, slip_dist = 0)
 	return 0
 
-/mob/living/carbon/drop_from_inventory(obj/item/W, atom/Target = null, force = null)
+/mob/living/carbon/drop(obj/item/W, atom/Target = null, force = null)
 	if(W in internal_organs)
 		return
 	. = ..()

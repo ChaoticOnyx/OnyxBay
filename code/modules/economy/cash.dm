@@ -26,7 +26,7 @@
 		var/obj/item/spacecash/bundle/bundle
 		if(!istype(W, /obj/item/spacecash/bundle))
 			var/obj/item/spacecash/cash = W
-			user.drop_from_inventory(cash)
+			user.drop(cash)
 			bundle = new (src.loc)
 			bundle.worth += cash.worth
 			cash.worth = 0
@@ -35,11 +35,11 @@
 			bundle = W
 		bundle.worth += src.worth
 		bundle.update_icon()
-		if(istype(user, /mob/living/carbon/human))
+		if(ishuman(user))
 			var/mob/living/carbon/human/h_user = user
-			h_user.drop_from_inventory(src)
-			h_user.drop_from_inventory(bundle)
-			h_user.put_in_hands(bundle)
+			if(bundle.loc == h_user)
+				h_user.drop(bundle)
+			h_user.pick_or_drop(bundle)
 		to_chat(user, "<span class='notice'>You add [src.worth] credits worth of money to the bundles.<br>It holds [bundle.worth] credits now.</span>")
 		qdel(src)
 
@@ -104,16 +104,16 @@
 	src.worth -= amount
 	src.update_icon()
 	if(!worth)
-		usr.drop_from_inventory(src)
+		usr.drop(src)
 	if(amount in list(1000, 500, 200, 100, 50, 20, 1))
 		var/cashtype = text2path("/obj/item/spacecash/bundle/c[amount]")
-		var/obj/cash = new cashtype (usr.loc)
-		usr.put_in_hands(cash)
+		var/obj/cash = new cashtype(usr.loc)
+		usr.pick_or_drop(cash)
 	else
-		var/obj/item/spacecash/bundle/bundle = new (usr.loc)
+		var/obj/item/spacecash/bundle/bundle = new(usr.loc)
 		bundle.worth = amount
 		bundle.update_icon()
-		usr.put_in_hands(bundle)
+		usr.pick_or_drop(bundle)
 	if(!worth)
 		qdel(src)
 
@@ -168,15 +168,15 @@
 /proc/spawn_money(sum, spawnloc, mob/living/carbon/human/human_user)
 	if(sum in list(1000, 500, 200, 100, 50, 20, 10, 1))
 		var/cash_type = text2path("/obj/item/spacecash/bundle/c[sum]")
-		var/obj/cash = new cash_type (usr.loc)
-		if(ishuman(human_user) && !human_user.get_active_hand())
-			human_user.put_in_hands(cash)
+		var/obj/cash = new cash_type(usr.loc)
+		if(ishuman(human_user))
+			human_user.pick_or_drop(cash)
 	else
-		var/obj/item/spacecash/bundle/bundle = new (spawnloc)
+		var/obj/item/spacecash/bundle/bundle = new(spawnloc)
 		bundle.worth = sum
 		bundle.update_icon()
-		if (ishuman(human_user) && !human_user.get_active_hand())
-			human_user.put_in_hands(bundle)
+		if(ishuman(human_user))
+			human_user.pick_or_drop(bundle, spawnloc)
 	return
 
 /obj/item/spacecash/ewallet

@@ -23,7 +23,7 @@
 /obj/structure/closet/emcloset/New()
 	..()
 
-	switch (pickweight(list("small" = 40, "aid" = 25, "tank" = 15, "large" = 10, "both" = 10)))
+	switch (util_pick_weight(list("small" = 40, "aid" = 25, "tank" = 15, "large" = 10, "both" = 10)))
 		if ("small")
 			new /obj/item/tank/emergency/oxygen(src)
 			new /obj/item/tank/emergency/oxygen(src)

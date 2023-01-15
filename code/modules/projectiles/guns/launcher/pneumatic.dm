@@ -45,7 +45,7 @@
 		return
 
 	to_chat(user, "You twist the valve and pop the tank out of [src].")
-	user.put_in_hands(tank)
+	user.pick_or_drop(tank, loc)
 	tank = null
 	update_icon()
 
@@ -53,7 +53,7 @@
 	if(item_storage.contents.len > 0)
 		var/obj/item/removing = item_storage.contents[item_storage.contents.len]
 		item_storage.remove_from_storage(removing, src.loc)
-		user.put_in_hands(removing)
+		user.pick_or_drop(removing, loc)
 		to_chat(user, "You remove [removing] from the hopper.")
 	else
 		to_chat(user, "There is nothing to remove in \the [src].")
@@ -66,7 +66,8 @@
 
 /obj/item/gun/launcher/pneumatic/attackby(obj/item/W as obj, mob/user as mob)
 	if(!tank && istype(W,/obj/item/tank))
-		user.drop_from_inventory(W, src)
+		if(!user.drop(W, src))
+			return
 		tank = W
 		user.visible_message("[user] jams [W] into [src]'s valve and twists it closed.","You jam [W] into [src]'s valve and twist it closed.")
 		update_icon()
@@ -163,7 +164,6 @@
 /obj/item/cannonframe/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/pipe))
 		if(buildstate == 0)
-			user.drop_from_inventory(W)
 			qdel(W)
 			to_chat(user, "<span class='notice'>You secure the piping inside the frame.</span>")
 			buildstate++
@@ -181,7 +181,6 @@
 			return
 	else if(istype(W,/obj/item/device/transfer_valve))
 		if(buildstate == 4)
-			user.drop_from_inventory(W)
 			qdel(W)
 			to_chat(user, "<span class='notice'>You install the transfer valve and connect it to the piping.</span>")
 			buildstate++

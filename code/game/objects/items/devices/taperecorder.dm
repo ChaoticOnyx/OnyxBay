@@ -43,9 +43,8 @@
 		if(mytape)
 			to_chat(user, "<span class='notice'>There's already a tape inside.</span>")
 			return
-		if(!user.unEquip(I))
+		if(!user.drop(I, src))
 			return
-		I.forceMove(src)
 		mytape = I
 		to_chat(user, "<span class='notice'>You insert [I] into [src].</span>")
 		update_icon()
@@ -83,7 +82,7 @@
 	if(playing || recording)
 		stop()
 	to_chat(usr, "<span class='notice'>You remove [mytape] from [src].</span>")
-	usr.put_in_hands(mytape)
+	usr.pick_or_drop(mytape)
 	mytape = null
 	update_icon()
 

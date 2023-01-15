@@ -474,9 +474,8 @@
 		if(W.w_class != ITEM_SIZE_NORMAL)
 			to_chat(user, "\The [W] is too [W.w_class < ITEM_SIZE_NORMAL? "small" : "large"] to fit here.")
 			return
-
-		user.drop_item()
-		W.forceMove(src)
+		if(!user.drop(W, src))
+			return
 		cell = W
 		user.visible_message(\
 			"<span class='warning'>[user.name] has inserted the power cell to [src.name]!</span>",\
@@ -530,7 +529,7 @@
 			else
 				playsound(src.loc, 'sound/signals/error7.ogg', 25)
 				to_chat(user, "<span class='warning'>Access denied.</span>")
-	else if (istype(W, /obj/item/stack/cable_coil) && !terminal && opened && has_electronics!=2)
+	else if (isCoil(W) && !terminal && opened && has_electronics!=2)
 		var/turf/T = loc
 		if(istype(T) && !T.is_plating())
 			to_chat(user, "<span class='warning'>You must remove the floor plating in front of the APC first.</span>")
@@ -735,7 +734,7 @@
 
 	if(usr == user && opened && (!issilicon(user)))
 		if(cell)
-			user.put_in_hands(cell)
+			user.pick_or_drop(cell)
 			cell.add_fingerprint(user)
 			cell.update_icon()
 

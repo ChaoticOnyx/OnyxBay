@@ -47,11 +47,8 @@
 	if(!istype(O, /obj/item/card/id))
 		return ..()
 
-	if(!held_card)
-		user.drop_item()
-		O.loc = src
+	if(!held_card && user.drop(O, src))
 		held_card = O
-
 		SSnano.update_uis(src)
 
 	attack_hand(user)
@@ -160,18 +157,16 @@
 				creating_new_account = 0
 			if("insert_card")
 				if(held_card)
-					held_card.loc = src.loc
+					held_card.forceMove(loc)
 
-					if(ishuman(usr) && !usr.get_active_hand())
-						usr.put_in_hands(held_card)
+					if(ishuman(usr))
+						usr.pick_or_drop(held_card, loc)
 					held_card = null
 
 				else
 					var/obj/item/I = usr.get_active_hand()
-					if (istype(I, /obj/item/card/id))
+					if(istype(I, /obj/item/card/id) && usr.drop(I, src))
 						var/obj/item/card/id/C = I
-						usr.drop_item()
-						C.loc = src
 						held_card = C
 
 			if("view_account_detail")

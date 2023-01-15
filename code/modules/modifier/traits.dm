@@ -129,3 +129,9 @@
 	desc = "A lisp is a speech impediment in which a person misarticulates sibilants."
 
 	lisping = TRUE
+
+/datum/modifier/trait/vent_breaker
+	name = "Vent Breaker"
+	desc = "Allows to break welded vents."
+	var/ignore_size_restrictions = FALSE
+	hidden = TRUE

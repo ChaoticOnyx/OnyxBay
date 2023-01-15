@@ -49,11 +49,11 @@
 
 /obj/structure/filingcabinet/attackby(obj/item/P as obj, mob/user as mob)
 	if(is_type_in_list(P, can_hold))
+		if(!user.drop(P, src))
+			return
 		playsound(loc, SFX_SEARCH_CABINET, 75, 1)
 		add_fingerprint(user)
 		to_chat(user, "<span class='notice'>You put [P] in [src].</span>")
-		user.drop_item()
-		P.loc = src
 		icon_state = "[initial(icon_state)]-open"
 		sleep(5)
 		icon_state = initial(icon_state)
@@ -105,7 +105,7 @@
 		//var/retrieveindex = text2num(href_list["retrieve"])
 		var/obj/item/P = locate(href_list["retrieve"])//contents[retrieveindex]
 		if(istype(P) && (P.loc == src) && src.Adjacent(usr))
-			usr.put_in_hands(P)
+			usr.pick_or_drop(P)
 			updateUsrDialog()
 			icon_state = "[initial(icon_state)]-open"
 			spawn(0)

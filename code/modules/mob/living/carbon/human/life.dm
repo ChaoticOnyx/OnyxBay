@@ -195,7 +195,10 @@
 	..()
 	if(stat != DEAD)
 		if((disabilities & COUGHING) && prob(5) && paralysis <= 1)
-			drop_item()
+			if(prob(50))
+				drop_active_hand()
+			else
+				drop_inactive_hand()
 			spawn(0)
 				emote("cough")
 
@@ -253,10 +256,10 @@
 					if(!lying)
 						emote("collapse")
 				if(prob(5) && species.name == SPECIES_HUMAN) // Apes go bald
-					if((h_style != "Bald" || f_style != "Shaved" ))
+					if((h_style != species.default_h_style || f_style != species.default_f_style))
 						to_chat(src, SPAN("warning", "Your hair falls out."))
-						h_style = "Bald"
-						f_style = "Shaved"
+						h_style = species.default_h_style
+						f_style = species.default_f_style
 						update_hair()
 
 		if(radiation > (2 SIEVERT))
@@ -1098,7 +1101,7 @@
 		var/image/holder = hud_list[ID_HUD]
 		holder.icon_state = "hudunknown"
 		if(wear_id)
-			var/obj/item/card/id/I = wear_id.GetIdCard()
+			var/obj/item/card/id/I = wear_id.get_id_card()
 			if(I)
 				var/datum/job/J = job_master.GetJob(I.GetJobName())
 				if(J)
@@ -1111,7 +1114,7 @@
 		holder.icon_state = "hudblank"
 		var/perpname = name
 		if(wear_id)
-			var/obj/item/card/id/I = wear_id.GetIdCard()
+			var/obj/item/card/id/I = wear_id.get_id_card()
 			if(I)
 				perpname = I.registered_name
 

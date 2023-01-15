@@ -72,7 +72,7 @@
 		investigate_log("has become a singularity. Caused by [user.key]", "singulo")
 		to_chat(usr, "\red The Bluespace interfaces of the two devices catastrophically malfunction!")
 		qdel(W)
-		new /obj/singularity(src.loc, 300)
+		new /obj/singularity(get_turf(src), 300)
 		log_and_message_admins("detonated a bag of holding", user, src.loc)
 		qdel(src)
 		return

@@ -33,6 +33,8 @@
 		new /datum/space_level/exodus_2,
 		new /datum/space_level/exodus_3,
 		new /datum/space_level/exodus_4,
+		new /datum/space_level/exodus_5,
+		new /datum/space_level/exodus_6,
 		new /datum/space_level/null_space,
 		new /datum/space_level/telecomms,
 		new /datum/space_level/construction_site,
@@ -52,7 +54,7 @@
 	dock_name     = "NAS Crescent"
 	boss_name     = "Central Command"
 	boss_short    = "Centcomm"
-	company_name  = "NanoTrasen"
+	company_name  = "Nanotrasen"
 	company_short = "NT"
 	system_name   = "Nyx"
 

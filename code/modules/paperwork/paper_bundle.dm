@@ -34,7 +34,7 @@
 
 	// merging bundles
 	else if(istype(W, /obj/item/paper_bundle))
-		user.drop_from_inventory(W)
+		user.drop(W)
 		for(var/obj/O in W)
 			O.loc = src
 			O.add_fingerprint(usr)
@@ -61,8 +61,7 @@
 	else if(istype(sheet, /obj/item/photo))
 		to_chat(user, SPAN_NOTICE("You add [(sheet.name == "photo") ? "the photo" : sheet.name] to [(src.name == "paper bundle") ? "the paper bundle" : src.name]."))
 
-	user.drop_from_inventory(sheet)
-	sheet.loc = src
+	user.drop(sheet, src)
 
 	pages.Insert(index, sheet)
 
@@ -85,7 +84,7 @@
 				"<span class='[class]'>You burn right through \the [src], turning it to ash. It flutters through the air before settling on the floor in a heap.</span>")
 
 				if(user.get_inactive_hand() == src)
-					user.drop_from_inventory(src)
+					user.drop(src)
 
 				new /obj/effect/decal/cleanable/ash(src.loc)
 				qdel(src)
@@ -169,18 +168,15 @@
 				playsound(src.loc, SFX_USE_PAGE, 50, 1)
 		if(href_list["remove"])
 			var/obj/item/I = pages[page]
-			usr.put_in_hands(I)
+			usr.pick_or_drop(I)
 			pages.Remove(pages[page])
 
 			to_chat(usr, SPAN_NOTICE("You remove the [I.name] from the bundle."))
 
 			if(pages.len <= 1)
 				var/obj/item/paper/P = src[1]
-				usr.drop_from_inventory(src)
-				usr.put_in_hands(P)
+				usr.replace_item(src, P, TRUE)
 				usr.unset_machine() // Ensure the bundle GCs
-				qdel(src)
-
 				return
 
 			if(page > pages.len)
@@ -215,7 +211,6 @@
 		O.dropInto(usr.loc)
 		O.reset_plane_and_layer()
 		O.add_fingerprint(usr)
-	usr.drop_from_inventory(src)
 	qdel(src)
 	return
 

@@ -5,6 +5,7 @@
 	deform = 'icons/mob/human_races/r_def_lizard.dmi'
 	tail = "sogtail"
 	tail_animation = 'icons/mob/species/unathi/tail.dmi'
+	hair_key = SPECIES_UNATHI
 
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/tail, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp)
 	generic_attack_mod = 2.0
@@ -50,7 +51,7 @@
 
 	reagent_tag = IS_UNATHI
 	base_color = "#066000"
-	blood_color = "#f24b2e"
+	blood_color = COLOR_BLOOD_UNATHI
 	organs_icon = 'icons/mob/human_races/organs/unathi.dmi'
 
 	move_trail = /obj/effect/decal/cleanable/blood/tracks/claw

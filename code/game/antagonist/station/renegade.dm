@@ -76,7 +76,7 @@ GLOBAL_DATUM_INIT(renegades, /datum/antagonist/renegade, new)
 		return
 
 	// If that failed, then finally attempt to at least let the player carry the weapon
-	player.put_in_hands(gun)
+	player.pick_or_drop(gun)
 
 
 /proc/rightandwrong()

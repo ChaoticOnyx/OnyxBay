@@ -110,9 +110,9 @@
 			if(cell)
 				to_chat(user, "<span class='warning'>\The [src] already has \a [cell] installed.</span>")
 				return
+			if(!user.drop(thing, src))
+				return
 			cell = thing
-			user.drop_from_inventory(cell)
-			cell.forceMove(src)
 			playsound(loc, 'sound/machines/click.ogg', 10, 1)
 			user.visible_message("<span class='notice'>\The [user] slots \the [cell] into \the [src].</span>")
 			update_icon()
@@ -122,8 +122,7 @@
 			if(!capacitor)
 				to_chat(user, "<span class='warning'>\The [src] has no capacitor installed.</span>")
 				return
-			capacitor.forceMove(get_turf(src))
-			user.put_in_hands(capacitor)
+			user.pick_or_drop(capacitor, loc)
 			user.visible_message("<span class='notice'>\The [user] unscrews \the [capacitor] from \the [src].</span>")
 			playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 			capacitor = null
@@ -135,8 +134,7 @@
 				to_chat(user, "<span class='warning'>\The [src] already has \a [capacitor] installed.</span>")
 				return
 			capacitor = thing
-			user.drop_from_inventory(capacitor)
-			capacitor.forceMove(src)
+			user.drop(capacitor, src)
 			playsound(loc, 'sound/machines/click.ogg', 10, 1)
 			power_per_tick = (power_cost*0.15) * capacitor.rating
 			user.visible_message("<span class='notice'>\The [user] slots \the [capacitor] into \the [src].</span>")
@@ -154,8 +152,7 @@
 		var/obj/item/stack/ammo = thing
 		if(!istype(ammo))
 			loaded = thing
-			user.drop_from_inventory(thing)
-			thing.forceMove(src)
+			user.drop(thing, src)
 		else
 			loaded = new load_type(src, 1)
 			ammo.use(1)
@@ -178,8 +175,7 @@
 			cell = null
 
 		if(removing)
-			removing.forceMove(get_turf(src))
-			user.put_in_hands(removing)
+			user.pick_or_drop(removing)
 			user.visible_message("<span class='notice'>\The [user] removes \the [removing] from \the [src].</span>")
 			playsound(loc, 'sound/machines/click.ogg', 10, 1)
 			update_icon()

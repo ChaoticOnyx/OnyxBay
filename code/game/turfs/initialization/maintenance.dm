@@ -20,7 +20,7 @@
 	if(T.density)
 		return
 	// Quick and dirty check to avoid placing things inside windows
-	if(locate(/obj/structure/grille, T))
+	if(locate(/obj/structure/window_frame, T) || locate(/obj/structure/grille, T))
 		return
 
 	var/cardinal_turfs = T.CardinalTurfs()
@@ -69,7 +69,7 @@
 			if(dir == EAST)
 				new /obj/effect/decal/cleanable/cobweb2(T)
 			if(prob(web_probability))
-				var/obj/effect/spider/spiderling/spiderling = new /obj/effect/spider/spiderling/mundane/dormant(T)
+				var/obj/structure/spider/spiderling/spiderling = new /obj/structure/spider/spiderling/mundane/dormant(T)
 				spiderling.pixel_y = spiderling.shift_range
 				spiderling.pixel_x = dir == WEST ? -spiderling.shift_range : spiderling.shift_range
 

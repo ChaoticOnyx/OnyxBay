@@ -100,6 +100,21 @@
 		"Who Was I"                               = 'sound/music/valhalla/who_was_i.ogg',
 		"You`ve Got Me"                           = 'sound/music/valhalla/youve_got_me.ogg',
 	)
+
+/obj/item/music_tape/random/halloween
+	name = "Halloween Tape"
+	// This literally suggested githubCopilot, so let that be
+	tracklist = list(
+		"Ghostbusters"                          = 'sound/music/halloween/ghostbusters.ogg',
+		"Monster Mash"                          = 'sound/music/halloween/monster_mash.ogg',
+		"Thriller"                              = 'sound/music/halloween/thriller.ogg',
+		"Spooky Scary Skeletons"                = 'sound/music/halloween/spooky_scary_skeletons.ogg',
+		"Zombie"                                = 'sound/music/halloween/zombie.ogg',
+		"This Is Halloween"                     = 'sound/music/halloween/this_is_halloween.ogg',
+		"Somebody`s Watching Me"                = 'sound/music/halloween/somebodys_watching_me.ogg',
+		"Ghost Fight"                           = 'sound/music/halloween/ghost_fight.ogg'
+	)
+
 /obj/item/music_tape/custom
 	name = "dusty tape"
 	desc = "A dusty tape, which can hold anything. Only what you need is blow the dust away and you will be able to play it again."

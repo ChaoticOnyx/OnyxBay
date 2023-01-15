@@ -80,7 +80,7 @@
 	if(isCrowbar(W))
 		if(open)
 			if(cell)
-				user.put_in_hands(cell)
+				user.pick_or_drop(cell)
 				to_chat(user, "<span class='notice'>You remove \the [cell] from \the [src].</span>")
 				cell = null
 
@@ -88,8 +88,7 @@
 		if(open)
 			if(cell)
 				to_chat(user, "<span class ='warning'>There is a power cell already installed.</span>")
-			else
-				user.drop_from_inventory(W,src)
+			else if(user.drop(W, src))
 				cell = W
 				to_chat(user, "<span class = 'notice'>You insert \the [cell].</span>")
 

@@ -3,30 +3,33 @@
 ////////////////////////////////
 
 /datum/construction/mecha/custom_action(step, atom/used_atom, mob/user)
-	if(isWelder(used_atom))
-		var/obj/item/weldingtool/W = used_atom
+	var/obj/item/I = used_atom
+	if(!istype(I))
+		return 0
+	if(isWelder(I))
+		var/obj/item/weldingtool/W = I
 		if (W.remove_fuel(0, user))
 			playsound(holder, 'sound/items/Welder2.ogg', 50, 1)
 		else
 			return 0
-	else if(isWrench(used_atom))
+	else if(isWrench(I))
 		playsound(holder, 'sound/items/Ratchet.ogg', 50, 1)
 
-	else if(isScrewdriver(used_atom))
+	else if(isScrewdriver(I))
 		playsound(holder, 'sound/items/Screwdriver.ogg', 50, 1)
 
-	else if(isWirecutter(used_atom))
+	else if(isWirecutter(I))
 		playsound(holder, 'sound/items/Wirecutter.ogg', 50, 1)
 
-	else if(isCoil(used_atom))
-		var/obj/item/stack/cable_coil/C = used_atom
+	else if(isCoil(I))
+		var/obj/item/stack/cable_coil/C = I
 		if(C.use(4))
 			playsound(holder, 'sound/items/Deconstruct.ogg', 50, 1)
 		else
 			to_chat(user, ("There's not enough cable to finish the task."))
 			return 0
-	else if(istype(used_atom, /obj/item/stack))
-		var/obj/item/stack/S = used_atom
+	else if(istype(I, /obj/item/stack))
+		var/obj/item/stack/S = I
 		if(S.get_amount() < 5)
 			to_chat(user, ("There's not enough material in this stack."))
 			return 0
@@ -34,31 +37,34 @@
 			S.use(5)
 	return 1
 
-/datum/construction/reversible/mecha/custom_action(index as num, diff as num, atom/used_atom, mob/user as mob)
-	if(isWelder(used_atom))
-		var/obj/item/weldingtool/W = used_atom
+/datum/construction/reversible/mecha/custom_action(index, diff, atom/used_atom, mob/user)
+	var/obj/item/I = used_atom
+	if(!istype(I))
+		return 0
+	if(isWelder(I))
+		var/obj/item/weldingtool/W = I
 		if (W.remove_fuel(0, user))
 			playsound(holder, 'sound/items/Welder2.ogg', 50, 1)
 		else
 			return 0
-	else if(isWrench(used_atom))
+	else if(isWrench(I))
 		playsound(holder, 'sound/items/Ratchet.ogg', 50, 1)
 
-	else if(isScrewdriver(used_atom))
+	else if(isScrewdriver(I))
 		playsound(holder, 'sound/items/Screwdriver.ogg', 50, 1)
 
-	else if(isWirecutter(used_atom))
+	else if(isWirecutter(I))
 		playsound(holder, 'sound/items/Wirecutter.ogg', 50, 1)
 
-	else if(istype(used_atom, /obj/item/stack/cable_coil))
-		var/obj/item/stack/cable_coil/C = used_atom
+	else if(isCoil(I))
+		var/obj/item/stack/cable_coil/C = I
 		if(C.use(4))
 			playsound(holder, 'sound/items/Deconstruct.ogg', 50, 1)
 		else
 			to_chat(user, ("There's not enough cable to finish the task."))
 			return 0
-	else if(istype(used_atom, /obj/item/stack))
-		var/obj/item/stack/S = used_atom
+	else if(istype(I, /obj/item/stack))
+		var/obj/item/stack/S = I
 		if(S.get_amount() < 5)
 			to_chat(user, ("There's not enough material in this stack."))
 			return 0
@@ -81,7 +87,7 @@
 		qdel(used_atom)
 		return 1
 
-	action(atom/used_atom,mob/user as mob)
+	action(atom/used_atom,mob/user)
 		return check_all_steps(used_atom,user)
 
 	spawn_result()
@@ -156,7 +162,7 @@
 					 		"desc"="The hydraulic systems are disconnected.")
 					)
 
-	action(atom/used_atom,mob/user as mob)
+	action(atom/used_atom,mob/user)
 		return check_step(used_atom,user)
 
 	custom_action(index, diff, atom/used_atom, mob/user)
@@ -292,7 +298,7 @@
 		qdel(used_atom)
 		return 1
 
-	action(atom/used_atom,mob/user as mob)
+	action(atom/used_atom,mob/user)
 		return check_all_steps(used_atom,user)
 
 	spawn_result()
@@ -390,7 +396,7 @@
 					 		"desc"="The hydraulic systems are disconnected.")
 					)
 
-	action(atom/used_atom,mob/user as mob)
+	action(atom/used_atom,mob/user)
 		return check_step(used_atom,user)
 
 	custom_action(index, diff, atom/used_atom, mob/user)
@@ -569,11 +575,11 @@
 	custom_action(step, atom/used_atom, mob/user)
 		user.visible_message("[user] has connected [used_atom] to [holder].", "You connect [used_atom] to [holder]")
 		holder.overlays += used_atom.icon_state+"+o"
-		user.drop_item()
+		user.drop_active_hand()
 		qdel(used_atom)
 		return 1
 
-	action(atom/used_atom,mob/user as mob)
+	action(atom/used_atom,mob/user)
 		return check_all_steps(used_atom,user)
 
 	spawn_result()
@@ -652,7 +658,7 @@
 					 		"desc"="The hydraulic systems are disconnected.")
 					)
 
-	action(atom/used_atom,mob/user as mob)
+	action(atom/used_atom,mob/user)
 		return check_step(used_atom,user)
 
 	custom_action(index, diff, atom/used_atom, mob/user)
@@ -796,7 +802,7 @@
 		qdel(used_atom)
 		return 1
 
-	action(atom/used_atom,mob/user as mob)
+	action(atom/used_atom,mob/user)
 		return check_all_steps(used_atom,user)
 
 	spawn_result()
@@ -894,7 +900,7 @@
 					)
 
 
-	action(atom/used_atom,mob/user as mob)
+	action(atom/used_atom,mob/user)
 		return check_step(used_atom,user)
 
 	custom_action(index, diff, atom/used_atom, mob/user)
@@ -1078,7 +1084,7 @@
 		qdel(used_atom)
 		return 1
 
-	action(atom/used_atom,mob/user as mob)
+	action(atom/used_atom,mob/user)
 		return check_all_steps(used_atom,user)
 
 
@@ -1099,7 +1105,7 @@
 		qdel(used_atom)
 		return 1
 
-	action(atom/used_atom,mob/user as mob)
+	action(atom/used_atom,mob/user)
 		return check_all_steps(used_atom,user)
 
 	spawn_result()
@@ -1173,7 +1179,7 @@
 					 		"desc"="The hydraulic systems are disconnected.")
 					)
 
-	action(atom/used_atom,mob/user as mob)
+	action(atom/used_atom,mob/user)
 		return check_step(used_atom,user)
 
 	custom_action(index, diff, atom/used_atom, mob/user)
@@ -1310,7 +1316,7 @@
 		qdel(used_atom)
 		return 1
 
-	action(atom/used_atom,mob/user as mob)
+	action(atom/used_atom,mob/user)
 		return check_all_steps(used_atom,user)
 
 	spawn_result()
@@ -1404,7 +1410,7 @@
 					 		"desc"="The hydraulic systems are disconnected.")
 					)
 
-	action(atom/used_atom,mob/user as mob)
+	action(atom/used_atom,mob/user)
 		return check_step(used_atom,user)
 
 	custom_action(index, diff, atom/used_atom, mob/user)

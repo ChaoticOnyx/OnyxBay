@@ -16,3 +16,5 @@
 
 /// A wrapper for _load_component that allows us to pretend we're using normal named arguments.
 #define LoadComponent(arguments...) _load_component(list(##arguments))
+
+#define SIGNAL_HANDLER SHOULD_NOT_SLEEP(TRUE)

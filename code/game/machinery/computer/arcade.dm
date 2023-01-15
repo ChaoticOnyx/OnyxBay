@@ -42,7 +42,7 @@
 
 /obj/machinery/computer/arcade/proc/prizevend()
 	if(!contents.len)
-		var/prizeselect = pickweight(prizes)
+		var/prizeselect = util_pick_weight(prizes)
 		new prizeselect(src.loc)
 
 		if(istype(prizeselect, /obj/item/clothing/suit/syndicatefake)) //Helmet is part of the suit
@@ -68,7 +68,7 @@
 		if(2)
 			num_of_prizes = rand(0,2)
 	for(num_of_prizes; num_of_prizes > 0; num_of_prizes--)
-		empprize = pickweight(prizes)
+		empprize = util_pick_weight(prizes)
 		new empprize(src.loc)
 
 	..(severity)

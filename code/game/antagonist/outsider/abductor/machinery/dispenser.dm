@@ -60,7 +60,7 @@
 
 /obj/machinery/abductor/gland_dispenser/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/organ/internal/heart/gland))
-		if(!user.unEquip(W))
+		if(!user.drop(W))
 			return
 		for(var/i in 1 to gland_colors.len)
 			if(gland_types[i] == W.type)

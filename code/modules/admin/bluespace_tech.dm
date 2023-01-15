@@ -105,7 +105,7 @@
 
 /mob/living/carbon/human/bluespace_tech/can_inject(mob/user, target_zone)
 	to_chat(user, SPAN_DANGER("The [src] disarms you before you can inject them."))
-	user.drop_item()
+	user.drop_active_hand()
 	return 0
 
 /mob/living/carbon/human/bluespace_tech/binarycheck()

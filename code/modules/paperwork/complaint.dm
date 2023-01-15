@@ -147,10 +147,9 @@
 		if (!check_signed())
 			to_chat(user, SPAN_WARNING("Sign [src] first!"))
 			return
-		if (id == CF.id)
-			to_chat(user, SPAN_NOTICE("You add \the [CF] to \the [src]."))
-			user.drop_item()
-			CF.forceMove(src)
+		if(id == CF.id)
+			if(user.drop(CF, src))
+				to_chat(user, SPAN_NOTICE("You add \the [CF] to \the [src]."))
 			return
 		to_chat(user, SPAN_WARNING("IDs don't match!"))
 		return
@@ -181,12 +180,12 @@
 	if (!action)
 		return
 	if (istype(action,/obj/item/paper/complaint_form))
-		user.put_in_hands(action)
+		user.pick_or_drop(action)
 		to_chat(user, SPAN_NOTICE("You take [action] out of [src]."))
 		return
 	if (action == new_form_choice)
 		var/new_form = new /obj/item/paper/complaint_form(src.loc, id, target_name, target_occupation)
-		user.put_in_hands(new_form)
+		user.pick_or_drop(new_form)
 		to_chat(user, SPAN_NOTICE("You take [new_form] out of [src]."))
 		return
 

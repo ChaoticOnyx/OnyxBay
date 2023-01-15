@@ -31,12 +31,11 @@
 		overlays += "folder_paper"
 	return
 
-/obj/item/folder/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/folder/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/paper) || istype(W, /obj/item/photo) || istype(W, /obj/item/paper_bundle))
-		user.drop_item()
-		W.loc = src
-		to_chat(user, "<span class='notice'>You put the [W] into \the [src].</span>")
-		update_icon()
+		if(user.drop(W, src))
+			to_chat(user, "<span class='notice'>You put the [W] into \the [src].</span>")
+			update_icon()
 	else if(istype(W, /obj/item/pen))
 		var/n_name = sanitizeSafe(input(usr, "What would you like to label the folder?", "Folder Labelling", null)  as text, MAX_NAME_LEN)
 		if((loc == usr && usr.stat == 0))
@@ -67,8 +66,7 @@
 		if(href_list["remove"])
 			var/obj/item/P = locate(href_list["remove"])
 			if(P && (P.loc == src) && istype(P))
-				P.loc = usr.loc
-				usr.put_in_hands(P)
+				usr.pick_or_drop(P, loc)
 
 		else if(href_list["read"])
 			var/obj/item/paper/P = locate(href_list["read"])

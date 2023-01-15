@@ -27,8 +27,7 @@
 		if(istype(W, /obj/item/target))
 			set_density(0)
 			W.set_density(1)
-			user.remove_from_mob(W)
-			W.forceMove(loc)
+			user.drop(W, loc)
 			W.layer = ABOVE_OBJ_LAYER
 			pinned_target = W
 			to_chat(user, "You slide the target into the stake.")

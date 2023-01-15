@@ -62,7 +62,7 @@
 	if(grenades.len >= max_grenades)
 		to_chat(user, "<span class='warning'>\The [src] is full.</span>")
 		return
-	user.drop_from_inventory(G, src)
+	user.drop(G, src)
 	grenades.Insert(1, G) //add to the head of the list, so that it is loaded on the next pump
 	user.visible_message("\The [user] inserts \a [G] into \the [src].", "<span class='notice'>You insert \a [G] into \the [src].</span>")
 
@@ -70,7 +70,7 @@
 	if(grenades.len)
 		var/obj/item/grenade/G = grenades[grenades.len]
 		grenades.len--
-		user.put_in_hands(G)
+		user.pick_or_drop(G, loc)
 		user.visible_message("\The [user] removes \a [G] from [src].", "<span class='notice'>You remove \a [G] from \the [src].</span>")
 	else
 		to_chat(user, "<span class='warning'>\The [src] is empty.</span>")
@@ -92,7 +92,7 @@
 
 /obj/item/gun/launcher/grenade/consume_next_projectile()
 	if(chambered)
-		chambered.safety_pin = null
+		QDEL_NULL(chambered.safety_pin)
 		chambered.activate(null)
 	return chambered
 
@@ -121,10 +121,10 @@
 		/obj/item/grenade/frag/shell = 1,
 		)
 
-	var/grenade_type = pickweight(grenade_types)
+	var/grenade_type = util_pick_weight(grenade_types)
 	chambered = new grenade_type(src)
 	for(var/i in 1 to max_grenades)
-		grenade_type = pickweight(grenade_types)
+		grenade_type = util_pick_weight(grenade_types)
 		grenades += new grenade_type(src)
 
 //Underslung grenade launcher to be used with the Z8
@@ -146,13 +146,13 @@
 	if(chambered)
 		to_chat(user, "<span class='warning'>\The [src] is already loaded.</span>")
 		return
-	user.drop_from_inventory(G, src)
+	user.drop(G, src)
 	chambered = G
 	user.visible_message("\The [user] load \a [G] into \the [src].", "<span class='notice'>You load \a [G] into \the [src].</span>")
 
 /obj/item/gun/launcher/grenade/underslung/unload(mob/user)
 	if(chambered)
-		user.put_in_hands(chambered)
+		user.pick_or_drop(chambered, loc)
 		user.visible_message("\The [user] removes \a [chambered] from \the[src].", "<span class='notice'>You remove \a [chambered] from \the [src].</span>")
 		chambered = null
 	else

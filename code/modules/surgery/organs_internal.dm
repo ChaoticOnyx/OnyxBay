@@ -601,8 +601,7 @@
 	SPAN("notice", "You have transplanted \the [tool] into [target]'s [affected.name]."))
 	var/obj/item/organ/O = tool
 	if(istype(O))
-		user.remove_from_mob(O)
-		O.forceMove(target)
+		user.drop(O, target)
 		target.update_deformities()
 		affected.implants |= O //move the organ into the patient. The organ is properly reattached in the next step
 		if(!(O.status & ORGAN_CUT_AWAY))

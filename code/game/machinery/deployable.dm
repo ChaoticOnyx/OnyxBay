@@ -80,6 +80,10 @@ for reference:
 	maxhealth = material.integrity
 	health = maxhealth
 
+/obj/structure/barricade/Destroy()
+	material = null
+	return ..()
+
 /obj/structure/barricade/get_material()
 	return material
 
@@ -131,7 +135,6 @@ for reference:
 	if(health <= 0)
 		visible_message(SPAN("danger", "\The [src] is smashed apart!"))
 		dismantle()
-		qdel(src)
 
 /obj/structure/barricade/proc/dismantle()
 	material.place_dismantled_product(get_turf(src))

@@ -11,7 +11,7 @@
 /obj/item/material/butterflyconstruction/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
 		to_chat(user, "You finish the concealed blade weapon.")
-		user.put_in_hands(new /obj/item/material/butterfly(user.loc, material.name))
+		user.pick_or_drop(new /obj/item/material/butterfly(user.loc, material.name))
 		qdel(src)
 		return
 
@@ -41,7 +41,7 @@
 		var/finished = new /obj/item/material/butterflyconstruction(user.loc, B.material.name)
 		qdel(W)
 		qdel(src)
-		user.put_in_hands(finished)
+		user.pick_or_drop(finished)
 		return
 
 /obj/item/material/wirerod
@@ -76,10 +76,8 @@
 		finished = new /obj/item/melee/baton/cattleprod(get_turf(user))
 		to_chat(user, "<span class='notice'>You fasten the wirecutters to the top of the rod with the cable, prongs outward.</span>")
 	if(finished)
-		user.drop_from_inventory(src)
-		user.drop_from_inventory(I)
 		qdel(I)
 		qdel(src)
-		user.put_in_hands(finished)
+		user.pick_or_drop(finished)
 		return
 	update_icon(user)

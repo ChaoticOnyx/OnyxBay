@@ -95,12 +95,9 @@
 	var/overlay_state = "box-donut1"
 	center_of_mass = "x=13;y=16"
 	nutriment_desc = list("sweetness", "donut")
+	nutriment_amt = 3
 
 /obj/item/reagent_containers/food/donut/normal
-	name = "donut"
-	desc = "Goes great with Robust Coffee."
-	icon_state = "donut1"
-	nutriment_amt = 3
 	startswith = list(/datum/reagent/nutriment/sprinkles = 1)
 	bitesize = 3
 
@@ -159,7 +156,6 @@
 	icon_state = "jdonut1"
 	filling_color = "#ed1169"
 	center_of_mass = "x=16;y=11"
-	nutriment_amt = 3
 	startswith = list(
 		/datum/reagent/nutriment/sprinkles = 1,
 		/datum/reagent/drink/juice/berry = 5)
@@ -180,7 +176,6 @@
 	icon_state = "jdonut1"
 	filling_color = "#ed1169"
 	center_of_mass = "x=16;y=11"
-	nutriment_amt = 3
 	startswith = list(
 		/datum/reagent/nutriment/sprinkles = 1,
 		/datum/reagent/metroidjelly = 5)
@@ -200,7 +195,6 @@
 	icon_state = "jdonut1"
 	filling_color = "#ed1169"
 	center_of_mass = "x=16;y=11"
-	nutriment_amt = 3
 	startswith = list(
 		/datum/reagent/nutriment/sprinkles = 1,
 		/datum/reagent/nutriment/cherryjelly = 5)
@@ -239,7 +233,6 @@
 		return
 	to_chat(user, "You crack \the [src] into \the [O].")
 	reagents.trans_to(O, reagents.total_volume)
-	user.drop_from_inventory(src)
 	qdel(src)
 
 /obj/item/reagent_containers/food/egg/throw_impact(atom/hit_atom)

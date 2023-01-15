@@ -698,6 +698,8 @@
 	color = "#104038" // rgb: 16, 64, 56
 	adj_temp = -5
 
+	glass_required = "square"
+	glass_icon_state = "icedtea"
 	glass_name = "iced tea"
 	glass_desc = "No relation to a certain rap artist/ actor."
 	glass_special = list(DRINK_ICE)

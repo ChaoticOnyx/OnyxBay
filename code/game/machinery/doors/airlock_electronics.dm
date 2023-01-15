@@ -86,7 +86,7 @@
 				return TRUE
 			else
 				var/obj/item/card/id/I = usr.get_active_hand()
-				I = I ? I.GetIdCard() : null
+				I = I ? I.get_id_card() : null
 				if(!istype(I, /obj/item/card/id))
 					to_chat(usr, SPAN("warning", "[\src] flashes a yellow LED near the ID scanner. Did you remember to scan your ID or PDA?"))
 					return TRUE

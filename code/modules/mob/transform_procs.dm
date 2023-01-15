@@ -4,7 +4,7 @@
 	for(var/obj/item/I in src)
 		if(I == w_uniform) // will be torn
 			continue
-		drop_from_inventory(I)
+		drop(I)
 	regenerate_icons()
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	stunned = 1
@@ -30,7 +30,7 @@
 		return
 
 	for(var/obj/item/I in src)
-		drop_from_inventory(I)
+		drop(I)
 	set_species(species.primitive_form)
 	dna.SetSEState(GLOB.MONKEYBLOCK,1)
 	dna.SetSEValueRange(GLOB.MONKEYBLOCK,0xDAC, 0xFFF)
@@ -56,7 +56,7 @@
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
 	for(var/obj/item/I in src)
-		drop_from_inventory(I)
+		drop(I)
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
 	set_invisibility(101)
@@ -110,7 +110,7 @@
 		return
 	QDEL_NULL_LIST(worn_underwear)
 	for(var/obj/item/I in src)
-		drop_from_inventory(I)
+		drop(I)
 	regenerate_icons()
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
@@ -155,7 +155,7 @@
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
 	for(var/obj/item/I in src)
-		drop_from_inventory(I)
+		drop(I)
 	regenerate_icons()
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
@@ -188,7 +188,7 @@
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
 	for(var/obj/item/I in src)
-		drop_from_inventory(I)
+		drop(I)
 	regenerate_icons()
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
@@ -216,7 +216,7 @@
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
 	for(var/obj/item/I in src)
-		drop_from_inventory(I)
+		drop(I)
 
 	regenerate_icons()
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
@@ -308,12 +308,18 @@
 
 //This is barely a transformation but probably best file for it.
 /mob/living/carbon/human/proc/zombify()
-	ChangeToHusk()
+	RemoveHairAndFacials()
+	for(var/obj/item/organ/external/head/h in organs)
+		h.status |= ORGAN_DISFIGURED
 	mutations |= MUTATION_CLUMSY
 	src.visible_message("<span class='danger'>\The [src]'s skin decays before your very eyes!</span>", "<span class='danger'>Your entire body is ripe with pain as it is consumed down to flesh and bones. You ... hunger. Not only for flesh, but to spread this gift.</span>")
 	if (!src.mind || (src.mind && src.mind.special_role == "Zombie"))
 		return
+	if(species != all_species[SPECIES_HUMAN])
+		ChangeToHusk()
 	src.mind.special_role = "Zombie"
+	update_body(TRUE)
+	update_eyes()
 	log_admin("[key_name(src)] has transformed into a zombie!")
 	Weaken(5)
 	if (should_have_organ(BP_HEART))

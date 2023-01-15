@@ -489,6 +489,7 @@ var/list/possible_cable_coil_colours
 	item_state = "coil"
 	attack_verb = list("whipped", "lashed", "disciplined", "flogged")
 	stacktype = /obj/item/stack/cable_coil
+	tool_behaviour = TOOL_COIL
 
 /obj/item/stack/cable_coil/single
 	amount = 1

@@ -24,6 +24,8 @@
 /obj/item/storage/briefcase/std
 	desc = "It's an old-looking briefcase with some high-tech markings. It has a label on it, which reads: \"ONLY WORKS NEAR SPACE\"."
 	origin_tech = list(TECH_BLUESPACE = 3, TECH_ILLEGAL = 3)
+	storage_slots = 10
+	override_w_class = list(/obj/item/gun/projectile/shotgun/pump)
 	var/obj/item/device/uplink/uplink
 	var/authentication_complete = FALSE
 	var/del_on_send = TRUE
@@ -99,9 +101,8 @@
 		contents = list()
 		if(del_on_send)
 			if(ishuman(loc))
-				var/mob/living/carbon/human/H = loc
-				H.drop_from_inventory(src, get_turf(src))
 				to_chat(loc, SPAN("notice", "\The [src] fades away in a brief flash of light."))
+			uplink.complimentary_std = TRUE // We can get a new one for free once again
 			qdel(src)
 
 	if(.)

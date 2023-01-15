@@ -637,7 +637,7 @@
 		if(istype(I, /obj/item/implant)) //TODO: Carn. give implants a dropped() or something
 			qdel(I)
 			continue
-		M.drop_from_inventory(I)
+		M.drop(I, force = TRUE)
 	var/mob/living/carbon/metroid/new_mob = new /mob/living/carbon/metroid(M.loc)
 	new_mob.a_intent = "hurt"
 	new_mob.universal_speak = 1
@@ -671,6 +671,12 @@
 	else
 		if(istype(M, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = M
+			if(job_master)
+				var/datum/job/cyborg/cj = job_master.occupations_by_type[/datum/job/cyborg]
+				if(jobban_isbanned(H, cj.title))
+					to_chat(H, SPAN_WARNING("You feel that something is broken inside."))
+					H.gib()
+					return
 			H.Robotize()
 
 /datum/reagent/xenomicrobes

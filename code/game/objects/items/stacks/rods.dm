@@ -54,7 +54,7 @@
 			var/replace = (user.get_inactive_hand()==R)
 			R.use(2)
 			if (!R && replace)
-				user.put_in_hands(new_item)
+				user.pick_or_drop(new_item)
 		return
 
 	if (istype(W, /obj/item/tape_roll))

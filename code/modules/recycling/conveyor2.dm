@@ -88,10 +88,14 @@
 		to_chat(user, "<span class='notice'>You remove the conveyor belt.</span>")
 		qdel(src)
 		return
-	if(isrobot(user))	return //Carn: fix for borgs dropping their modules on conveyor belts
-	if(I.loc != user)	return // This should stop mounted modules ending up outside the module.
-
-	user.drop_item(get_turf(src))
+	if(istype(I, /obj/item/gripper))
+		var/obj/item/gripper/G = I
+		var/obj/item/wrapped = G.wrapped
+		if(wrapped)
+			G.drop_item()
+			wrapped.forceMove(get_turf(src))
+		return
+	user.drop(I, get_turf(src))
 	return
 
 // attack with hand, move pulled object onto conveyor
@@ -153,22 +157,26 @@
 
 	var/id = "" 				// must match conveyor IDs to control them
 
-	var/list/conveyors		// the list of converyors that are controlled by this switch
+	var/list/conveyors = list() // the list of converyors that are controlled by this switch
 	anchored = 1
 
+/obj/machinery/conveyor_switch/Initialize(loc, newid)
+	. = ..(loc)
 
-
-/obj/machinery/conveyor_switch/New(loc, newid)
-	..(loc)
 	if(!id)
 		id = newid
 	update_icon()
 
-	spawn(5)		// allow map load
-		conveyors = list()
-		for(var/obj/machinery/conveyor/C in world)
-			if(C.id == id)
-				conveyors += C
+	// Allow map load.
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/machinery/conveyor_switch/LateInitialize()
+	. = ..()
+
+	conveyors = list()
+	for(var/obj/machinery/conveyor/C in world)
+		if(C.id == id)
+			conveyors += C
 
 // update the icon depending on the position
 

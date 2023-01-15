@@ -138,16 +138,16 @@ FLOOR SAFES
 		var/obj/item/P = locate(href_list["retrieve"]) in src
 		if(open)
 			if(P && in_range(src, user))
-				user.put_in_hands(P)
+				user.pick_or_drop(P)
 				updateUsrDialog()
 
 
-/obj/structure/safe/attackby(obj/item/I as obj, mob/user as mob)
+/obj/structure/safe/attackby(obj/item/I, mob/user)
 	if(open)
 		if(I.w_class + space <= maxspace)
+			if(!user.drop(I, src))
+				return
 			space += I.w_class
-			user.drop_item()
-			I.loc = src
 			to_chat(user, "<span class='notice'>You put [I] in [src].</span>")
 			updateUsrDialog()
 			return

@@ -93,6 +93,8 @@
 
 	var/ear_protection = 0
 
+	var/tool_behaviour = 0
+
 /obj/item/New()
 	..()
 	if(randpixel && (!pixel_x && !pixel_y) && isturf(loc)) //hopefully this will prevent us from messing with mapper-set pixel_x/y
@@ -103,7 +105,7 @@
 	QDEL_NULL(hidden_uplink)
 	if(ismob(loc))
 		var/mob/m = loc
-		m.drop_from_inventory(src)
+		m.drop(src, force = TRUE)
 	if(maptext)
 		maptext = ""
 
@@ -269,7 +271,7 @@
 		var/obj/item/storage/S = loc
 		S.remove_from_storage(src)
 	// Unequipping from self
-	else if(loc == user && !user.unEquip(src))
+	else if(loc == user && !user.drop(src))
 		return
 	// Doing some unintended shit that may cause catastrophical events, aborting
 	// If you'll ever want to implement something that intentionally allows direct clicking on an item while it's inside
@@ -496,18 +498,20 @@ var/list/global/slot_flags_enumeration = list(
 /obj/item/proc/return_item()
 	return src
 
-/obj/item/proc/mob_can_unequip(mob/M, slot, disable_warning = 0)
-	if(!slot) return 0
-	if(!M) return 0
+/obj/item/proc/can_be_unequipped_by(mob/M, slot, disable_warning = 0)
+	if(!slot)
+		return FALSE
+	if(!M)
+		return FALSE
 
 	if(!canremove)
-		return 0
+		return FALSE
 	if(!M.slot_is_accessible(slot, src, disable_warning? null : M))
-		return 0
-	return 1
+		return FALSE
+	return TRUE
 
 /obj/item/proc/can_be_dropped_by_client(mob/M)
-	return M.canUnEquip(src)
+	return M.can_unequip(src)
 
 /obj/item/verb/verb_pickup()
 	set src in oview(1)
@@ -599,15 +603,13 @@ var/list/global/slot_flags_enumeration = list(
 		visible_message(SPAN("warning", "[H] blocks [P] with \the [src]!"))
 		return
 	visible_message(SPAN("danger", "\The [src] gets [msg] out of [H]'s hands by \a [P]!"))
-	H.drop_from_inventory(src)
-	if(src && isturf(loc))
+	if(H.drop(src))
 		throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, dist), 1)
 
 /obj/item/proc/knocked_out(mob/living/carbon/human/H, strong_knock = FALSE, dist = 2) // item gets knocked out of one's hands
 	H.useblock_off()
 	if(canremove)
-		H.drop_from_inventory(src)
-		if(src && istype(loc,/turf))
+		if(H.drop(src))
 			throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)), rand(1, dist), 1)
 		if(!strong_knock)
 			H.visible_message(SPAN("warning", "[H]'s [src] flies off!"))
@@ -674,7 +676,7 @@ var/list/global/slot_flags_enumeration = list(
 			if(prob(50))
 				if(M.stat != 2)
 					to_chat(M, SPAN("warning", "You drop what you're holding and clutch at your eyes!"))
-					M.drop_item()
+					M.drop_active_hand()
 				M.eye_blurry += 10
 				M.Paralyse(1)
 				M.Weaken(4)

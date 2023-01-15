@@ -72,7 +72,7 @@
 			reagents.trans_to_holder(loaded_vial.reagents,volume)
 			reagents.maximum_volume = 0
 			loaded_vial.update_icon()
-			user.put_in_hands(loaded_vial)
+			user.pick_or_drop(loaded_vial)
 			loaded_vial = null
 			to_chat(user, "You remove the vial from the [src].")
 			update_icon()
@@ -82,16 +82,16 @@
 	else
 		return ..()
 
-/obj/item/reagent_containers/hypospray/vial/attackby(obj/item/W, mob/user as mob)
+/obj/item/reagent_containers/hypospray/vial/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/reagent_containers/vessel/beaker/vial))
 		if(!loaded_vial)
-			if(!do_after(user,10) || loaded_vial || !(W in user))
-				return 0
+			if(!do_after(user, 10) || loaded_vial || !(W in user))
+				return FALSE
+			if(!user.drop(W, src))
+				return
 			if(W.is_open_container())
 				W.atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
 				W.update_icon()
-			user.drop_item()
-			W.forceMove(src)
 			loaded_vial = W
 			reagents.maximum_volume = loaded_vial.reagents.maximum_volume
 			loaded_vial.reagents.trans_to_holder(reagents,volume)

@@ -75,7 +75,7 @@
 		return 1
 
 	// High security - can only be operated when the user has an ID with access on them.
-	var/obj/item/card/id/I = user.GetIdCard()
+	var/obj/item/card/id/I = user.get_id_card()
 	if(!istype(I) || !(access_network in I.access))
 		return 1
 

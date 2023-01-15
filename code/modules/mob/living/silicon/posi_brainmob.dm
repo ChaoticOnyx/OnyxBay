@@ -16,6 +16,8 @@
 	reagents = new /datum/reagents(1000, src)
 	if(istype(loc, /obj/item/organ/internal/posibrain))
 		container = loc
+	add_language("Robot Talk", 1)
+
 	..()
 
 /mob/living/silicon/sil_brainmob/Destroy()

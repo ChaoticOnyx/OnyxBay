@@ -73,7 +73,7 @@
 "bu" = (/turf/space,/turf/simulated/shuttle/wall/corner/smoothwhite/nolight/se,/area/space)
 "bv" = (/obj/machinery/door/window/southleft,/turf/simulated/floor/shuttle/white,/area/derelict/ship)
 "bw" = (/obj/machinery/door/window/northright,/obj/effect/decal/remains,/turf/simulated/floor/shuttle/white,/area/derelict/ship)
-"bx" = (/obj/structure/table/rack,/obj/item/tank/emergency/oxygen,/obj/item/tank/emergency/oxygen,/obj/item/tank/emergency/oxygen,/obj/item/tank/emergency/oxygen,/obj/item/clothing/suit/ianshirt,/obj/item/clothing/mask/horsehead,/obj/random_multi/single_item/bookrev,/turf/simulated/floor/shuttle/white,/area/derelict/ship)
+"bx" = (/obj/structure/table/rack,/obj/item/tank/emergency/oxygen,/obj/item/tank/emergency/oxygen,/obj/item/tank/emergency/oxygen,/obj/item/tank/emergency/oxygen,/obj/item/clothing/suit/ianshirt,/obj/item/clothing/mask/animal_mask/horsehead,/obj/random_multi/single_item/bookrev,/turf/simulated/floor/shuttle/white,/area/derelict/ship)
 "by" = (/obj/machinery/computer/pod{id = "oldship_gun"; name = "Pod Launch Control"},/turf/simulated/floor/shuttle/white,/area/derelict/ship)
 "bz" = (/obj/structure/lattice,/obj/structure/window_frame/grille,/turf/space,/area/space)
 "bA" = (/obj/structure/lattice,/turf/space,/area/space)

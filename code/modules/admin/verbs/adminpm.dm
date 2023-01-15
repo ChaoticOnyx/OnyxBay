@@ -146,7 +146,7 @@
 		sound_to(C, sound('sound/effects/adminhelp.ogg'))
 
 	log_admin("PM: [key_name(src)]->[key_name(C)]: [msg]")
-	webhook_send_ahelp("[src.key] -> [C.key]", msg)
+	GLOB.indigo_bot.chat_webhook(config.indigo_bot.ahelp_webhook, "**[src.key]** -> **[C.key]:** [msg]")
 	adminmsg2adminirc(src, C, html_decode(msg))
 
 	ticket.msgs += new /datum/ticket_msg(src.ckey, C.ckey, msg)

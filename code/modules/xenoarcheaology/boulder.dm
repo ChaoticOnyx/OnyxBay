@@ -43,20 +43,20 @@
 			to_chat(user, "<span class='notice'>\The [src] has been excavated to a depth of [src.excavation_level]cm.</span>")
 		return
 
-	if(istype(I, /obj/item/pickaxe))
-		var/obj/item/pickaxe/P = I
+	if(istype(I, /obj/item/pickaxe/drill))
+		var/obj/item/pickaxe/drill/D = I
 
-		if(last_act + P.digspeed > world.time)//prevents message spam
+		if(last_act + D.digspeed > world.time)//prevents message spam
 			return
 		last_act = world.time
 
-		to_chat(user, "<span class='warning'>You start [P.drill_verb] [src].</span>")
+		to_chat(user, "<span class='warning'>You start [D.drill_verb] [src].</span>")
 
-		if(!do_after(user, P.digspeed))
+		if(!do_after(user, D.digspeed))
 			return
 
-		to_chat(user, "<span class='notice'>You finish [P.drill_verb] [src].</span>")
-		excavation_level += P.excavation_amount
+		to_chat(user, "<span class='notice'>You finish [D.drill_verb] [src].</span>")
+		excavation_level += D.excavation_amount
 
 		if(excavation_level > 200)
 			//failure

@@ -99,7 +99,7 @@
 
 	card_slot.stored_card.forceMove(get_turf(src))
 	if(!issilicon(user))
-		user.put_in_hands(card_slot.stored_card)
+		user.pick_or_drop(card_slot.stored_card)
 	card_slot.stored_card = null
 	update_uis()
 	to_chat(user, "You remove the card from \the [src]")
@@ -166,9 +166,8 @@
 		if(card_slot.stored_card)
 			to_chat(user, "You try to insert \the [I] into \the [src], but it's ID card slot is occupied.")
 			return
-		user.drop_from_inventory(I)
+		user.drop(I, src)
 		card_slot.stored_card = I
-		I.forceMove(src)
 		update_uis()
 		to_chat(user, "You insert \the [I] into \the [src].")
 		return

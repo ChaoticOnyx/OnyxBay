@@ -30,8 +30,8 @@
 		contains = 2
 		update_icon()
 		return
-	else if(istype(A, /obj/effect/spider/spiderling))
-		var/obj/effect/spider/spiderling/S = A
+	else if(istype(A, /obj/structure/spider/spiderling))
+		var/obj/structure/spider/spiderling/S = A
 		user.visible_message("<span class='notice'>[user] scoops [S] into \the [src].</span>", "<span class='notice'>You scoop [S] into \the [src].</span>")
 		S.forceMove(src)
 		S.set_next_think(0) // No growing inside jars
@@ -56,7 +56,7 @@
 			update_icon()
 			return
 		if(3)
-			for(var/obj/effect/spider/spiderling/S in src)
+			for(var/obj/structure/spider/spiderling/S in src)
 				S.dropInto(user.loc)
 				user.visible_message("<span class='notice'>[user] releases [S] from \the [src].</span>", "<span class='notice'>You release [S] from \the [src].</span>")
 				S.set_next_think(world.time) // They can grow after being let out though
@@ -70,10 +70,10 @@
 			contains = 1
 		if(contains != 1)
 			return
+		if(!user.drop(W, src))
+			return
 		var/obj/item/spacecash/S = W
 		user.visible_message("<span class='notice'>[user] puts [S.worth] [S.worth > 1 ? "credits" : "credit"] into \the [src].</span>")
-		user.drop_from_inventory(S)
-		S.forceMove(src)
 		update_icon()
 
 /obj/item/glass_jar/update_icon() // Also updates name and desc
@@ -102,7 +102,7 @@
 				SetName("glass jar with [M]")
 				desc = "A small jar with [M] inside."
 		if(3)
-			for(var/obj/effect/spider/spiderling/S in src)
+			for(var/obj/structure/spider/spiderling/S in src)
 				var/image/victim = image(S.icon, S.icon_state)
 				underlays += victim
 				SetName("glass jar with [S]")

@@ -359,7 +359,7 @@
 		else
 			return pda.ownrank
 	else
-		var/obj/item/card/id/id = get_idcard()
+		var/obj/item/card/id/id = get_id_card()
 		if(id)
 			return id.rank ? id.rank : if_no_job
 		else
@@ -375,7 +375,7 @@
 		else
 			return pda.ownjob
 	else
-		var/obj/item/card/id/id = get_idcard()
+		var/obj/item/card/id/id = get_id_card()
 		if(id)
 			return id.assignment ? id.assignment : if_no_job
 		else
@@ -391,7 +391,7 @@
 		else
 			return pda.owner
 	else
-		var/obj/item/card/id/id = get_idcard()
+		var/obj/item/card/id/id = get_id_card()
 		if(id)
 			return id.registered_name
 		else
@@ -424,15 +424,10 @@
 		var/obj/item/device/pda/P = wear_id
 		return P.owner
 	if(wear_id)
-		var/obj/item/card/id/I = wear_id.GetIdCard()
+		var/obj/item/card/id/I = wear_id.get_id_card()
 		if(I)
 			return I.registered_name
 	return
-
-//gets ID card object from special clothes slot or null.
-/mob/living/carbon/human/proc/get_idcard()
-	if(wear_id)
-		return wear_id.GetIdCard()
 
 //Removed the horrible safety parameter. It was only being used by ninja code anyways.
 //Now checks siemens_coefficient of the affected area by default
@@ -527,7 +522,7 @@
 			var/modified = 0
 			var/perpname = "wot"
 			if(wear_id)
-				var/obj/item/card/id/I = wear_id.GetIdCard()
+				var/obj/item/card/id/I = wear_id.get_id_card()
 				if(I)
 					perpname = I.registered_name
 				else
@@ -899,7 +894,7 @@
 	for(var/mob/living/carbon/h in world)
 		creatures += h
 	var/mob/target = input("Who do you want to project your mind to ?") as null|anything in creatures
-	if (isnull(target))
+	if (QDELETED(target))
 		return
 
 	var/say = sanitize(input("What do you wish to say"))
@@ -1215,7 +1210,7 @@
 	for(var/slot in slot_first to slot_last)
 		var/obj/item/C = get_equipped_item(slot)
 		if(istype(C) && !C.mob_can_equip(src, slot, 1))
-			unEquip(C)
+			drop(C, force = TRUE)
 
 	return 1
 
@@ -1431,7 +1426,7 @@
 		to_chat(S, "<span class='danger'>[U] pops your [current_limb.joint] back in!</span>")
 	current_limb.undislocate()
 
-/mob/living/carbon/human/drop_from_inventory(obj/item/W, atom/Target = null, force = null)
+/mob/living/carbon/human/drop(obj/item/W, atom/Target = null, force = null)
 	if(W in organs)
 		return
 	. = ..()

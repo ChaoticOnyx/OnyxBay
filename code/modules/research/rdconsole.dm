@@ -108,8 +108,8 @@
 		else
 			to_chat(user, SPAN("notice", "Machine cannot accept disks in that format."))
 			return
-		user.drop_item()
-		D.loc = src
+		if(!user.drop(D, src))
+			return
 		to_chat(user, SPAN("notice", "You add \the [D] to the machine."))
 		tgui_update()
 	else

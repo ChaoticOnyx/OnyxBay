@@ -52,8 +52,8 @@
 			if(a.power_equip == 0) // There's no APC in this area, don't try to cheat power!
 				to_chat(user, "<span class='warning'>The [name] blinks red as you try to insert the cell!</span>")
 				return
-			user.drop_item()
-			W.forceMove(src)
+			if(!user.drop(W, src))
+				return
 			charging = W
 			set_power()
 			START_PROCESSING(SSmachines, src)
@@ -79,7 +79,7 @@
 
 /obj/machinery/cell_charger/attack_hand(mob/user)
 	if(charging)
-		user.put_in_hands(charging)
+		user.pick_or_drop(charging, loc)
 		charging.add_fingerprint(user)
 		charging.update_icon()
 

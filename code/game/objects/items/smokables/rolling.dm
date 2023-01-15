@@ -54,7 +54,7 @@
 	qdel(src)
 	qdel(W)
 	if(roll_in_hands)
-		user.put_in_hands(R)
+		user.pick_or_drop(R)
 
 /obj/item/rollingpaper/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/reagent_containers/food/grown))
@@ -197,13 +197,13 @@
 	filter_trans = 0.75
 	filling = list()
 
-/obj/item/clothing/mask/smokable/cigarette/roll/generate_lighting_message(obj/tool, mob/holder)
+/obj/item/clothing/mask/smokable/cigarette/roll/generate_lighting_message(obj/item/tool, mob/holder)
 	if(!holder || !tool)
 		return ..()
 	if(src.loc != holder)
 		return ..()
 
-	if(istype(tool, /obj/item/weldingtool))
+	if(isWelder(tool))
 		return SPAN("notice", "[holder] looks like a real stoner after lighting \his [name] with \a [tool].")
 	return ..()
 
@@ -284,8 +284,10 @@
 	if(src.loc != holder)
 		return ..()
 
-	if(istype(tool, /obj/item/weldingtool))
-		return SPAN("notice", "[holder] looks like a real stoner after lighting \his [name] with \a [tool].")
+	if(isitem(tool))
+		var/obj/item/I = tool
+		if(isWelder(I))
+			return SPAN("notice", "[holder] looks like a real stoner after lighting \his [name] with \a [tool].")
 	return ..()
 
 /obj/item/cigbutt/spliffbutt

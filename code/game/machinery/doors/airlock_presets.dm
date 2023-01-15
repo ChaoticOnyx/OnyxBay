@@ -33,6 +33,12 @@
 	assembly_type = /obj/structure/door_assembly/door_assembly_viro
 
 //////////////////////////////////////////
+/obj/machinery/door/airlock/medblack
+	name = "Airlock"
+	icon = 'icons/obj/doors/doormedblack.dmi'
+	assembly_type = /obj/structure/door_assembly/door_assembly_med
+
+//////////////////////////////////////////
 /obj/machinery/door/airlock/maintenance
 	name = "Maintenance Access"
 	icon = 'icons/obj/doors/doormaint.dmi'

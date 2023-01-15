@@ -38,17 +38,15 @@
 		var/obj/item/assembly/shock_kit/A = new /obj/item/assembly/shock_kit( user )
 		A.icon = 'icons/obj/assemblies.dmi'
 
-		user.drop_from_inventory(W)
-		W.loc = A
+		user.drop(W, A)
 		W.master = A
 		A.part1 = W
 
-		user.drop_from_inventory(src)
-		loc = A
+		user.drop(src, A)
 		master = A
 		A.part2 = src
 
-		user.put_in_hands(A)
+		user.pick_or_drop(A)
 
 /obj/item/device/radio/electropack/Topic(href, href_list)
 

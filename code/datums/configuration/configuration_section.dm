@@ -12,7 +12,7 @@
 /datum/configuration_section/VV_static()
 	if(protection_state == PROTECTION_READONLY)
 		return vars
-	
+
 	return ..()
 
 /datum/configuration_section/VV_hidden()

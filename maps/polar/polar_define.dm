@@ -23,8 +23,8 @@
 		new /datum/space_level/polar_3,
 		new /datum/space_level/polar_4,
 		new /datum/space_level/polar_5,
-		new /datum/space_level/null_frozen,
-		new /datum/space_level/jungle_level
+		new /datum/space_level/polarplanet/null_frozen,
+		new /datum/space_level/polarplanet/derelict_spawn_template_1
 	)
 
 	station_name  = "Pathos-I"
@@ -32,7 +32,7 @@
 	dock_name     = "Pathos-I - Landing Zone"
 	boss_name     = "Central Command"
 	boss_short    = "Centcomm"
-	company_name  = "NanoTrasen"
+	company_name  = "Nanotrasen"
 	company_short = "NT"
 	system_name   = "Nyx"
 
@@ -42,25 +42,6 @@
 	shuttle_recall_message = "The scheduled crew transfer has been cancelled."
 
 	emergency_shuttle_called_message = "The emergency shuttle begins preparations for departure to Pathos-I. Prepare valuable property, wounded and arrested people for evacuation. Estimate %ETA% until the shuttle docks at %dock_name%."
-	emergency_shuttle_called_sound = 'sound/AI/polar/emergency_shuttle_called.ogg'
-	command_report_sound = 'sound/AI/polar/command_report_created.ogg'
-	grid_check_message = "Abnormal activity detected in the Pathos-I's power system. As a precaution, the Pathos-I's power must be shut down for an indefinite duration."
-	grid_check_sound = 'sound/AI/polar/grid_check_announce.ogg'
-	grid_restored_message = "Station power to the Pathos-I's will be restored at this time. We apologize for the inconvenience."
-	grid_restored_sound = 'sound/AI/polar/grid_check_end.ogg'
-	unidentified_lifesigns_message = "Unidentified lifesigns detected coming aboard the Pathos-I. Please lockdown all exterior access points, including ducting and ventilation."
-	unidentified_lifesigns_sound = 'sound/AI/polar/unidentified_lifesigns.ogg'
-	unknown_biological_entities_message = "Unknown biological entities have been detected near the Pathos-I, please stand-by."
-	space_time_anomaly_message = "Space-time anomalies detected on the station. There is no additional data."
-	space_time_anomaly_sound = 'sound/AI/polar/space_time_anomaly_announce.ogg'
-
-	// NOT IN USE
-	electrical_storm_moderate_sound = null
-	electrical_storm_major_sound = null
-	meteor_detected_message = null
-	meteor_detected_sound = null
-	radiation_detected_message = null
-	radiation_detected_sound = null
 
 	evac_controller_type = /datum/evacuation_controller/shuttle
 
@@ -93,36 +74,6 @@
 		NETWORK_APPARAT_VORON
 	)
 
-	available_events = list(
-		/datum/event/nothing,
-		/datum/event/apc_damage,
-		/datum/event/brand_intelligence/polar,
-		/datum/event/camera_damage,
-		/datum/event/economic_event,
-		/datum/event/money_hacker/polar,
-		/datum/event/money_lotto,
-		/datum/event/mundane_news,
-		/datum/event/shipping_error,
-		/datum/event/sensor_suit_jamming,
-		/datum/event/trivial_news,
-		/datum/event/infestation/polar,
-		/datum/event/wallrot/polar,
-		/datum/event/space_cold,
-		/datum/event/spontaneous_appendicitis,
-		/datum/event/communications_blackout/polar,
-		/datum/event/grid_check,
-		/datum/event/prison_break/polar,
-		/datum/event/random_antag,
-		/datum/event/virus_minor,
-		/datum/event/stray_facehugger,
-		/datum/event/wormholes,
-		/datum/event/spacevine,
-		/datum/event/virus_major,
-		/datum/event/xenomorph_infestation,
-		/datum/event/biohazard_outbreak,
-		/datum/event/mimic_invasion
-	)
-
 /datum/map/polar
 	post_round_safe_areas = list (
 		/area/polarplanet/centcom,
@@ -139,12 +90,3 @@
 	. = ..()
 
 	AddComponent(/datum/component/polar_weather)
-
-/datum/map/polar/unknown_biological_entities_announcement()
-	command_announcement.Announce(
-		unknown_biological_entities_message,
-		"Lifesign Alert",
-		new_sound = 'sound/AI/polar/unknown_biological_entities.ogg')
-
-/datum/map/polar/level_x_biohazard_sound()
-	return 'sound/AI/polar/biohazard_outbreak_announce.ogg'

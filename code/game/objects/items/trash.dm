@@ -215,8 +215,8 @@
 			dishestoadd += i
 
 		if((length(stack) + length(dishestoadd)) < max_stack)
-			user.drop_item()
-			dish.forceMove(src)
+			if(!user.drop(dish, src))
+				return
 			dish.stack.Cut()
 			dish.update_icon()
 			stack += dishestoadd
@@ -232,6 +232,6 @@
 	var/obj/item/trash/dish/dish = stack[length(stack)]
 	stack -= dish
 
-	user.put_in_hands(dish)
+	user.pick_or_drop(dish)
 
 	update_icon()

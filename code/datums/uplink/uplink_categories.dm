@@ -50,3 +50,6 @@
 
 /datum/uplink_category/telecrystals
 	name = "Telecrystals"
+
+/datum/uplink_category/contracts_equipment
+	name = "Contracts Equipment"

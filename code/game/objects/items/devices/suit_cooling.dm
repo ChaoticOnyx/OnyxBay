@@ -35,9 +35,13 @@
 
 /obj/item/device/suit_cooling_unit/Initialize()
 	. = ..()
-	set_next_think(world.time)
-	cell = new /obj/item/cell/high()		// 10K rated cell.
-	cell.forceMove(src)
+	cell = new /obj/item/cell/high(src)
+	if(on)
+		set_next_think(world.time)
+
+/obj/item/device/suit_cooling_unit/Destroy()
+	QDEL_NULL(cell)
+	return ..()
 
 /obj/item/device/suit_cooling_unit/think()
 	if (!on || !cell)
@@ -66,7 +70,7 @@
 	if(cell.charge <= 0)
 		turn_off(1)
 		return
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 // Checks whether the cooling unit is being worn on the back/suit slot.
@@ -97,7 +101,7 @@
 /obj/item/device/suit_cooling_unit/attack_self(mob/user)
 	if(cover_open && cell)
 		if(ishuman(user))
-			user.put_in_hands(cell)
+			user.pick_or_drop(cell)
 		else
 			cell.forceMove(get_turf(src))
 
@@ -133,9 +137,7 @@
 		if(cover_open)
 			if(cell)
 				to_chat(user, "There is a [cell] already installed here.")
-			else
-				user.drop_item()
-				W.forceMove(src)
+			else if(user.drop(W, src))
 				cell = W
 				to_chat(user, "You insert the [cell].")
 		update_icon()

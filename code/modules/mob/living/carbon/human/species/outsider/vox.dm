@@ -3,6 +3,7 @@
 	name_plural = SPECIES_VOX
 	icobase = 'icons/mob/human_races/r_vox.dmi'
 	deform = 'icons/mob/human_races/r_def_vox.dmi'
+	hair_key = SPECIES_VOX
 	default_language = "Vox-pidgin"
 	language = LANGUAGE_GALCOM
 	num_alternate_languages = 1
@@ -56,7 +57,7 @@
 	has_limbs = list(
 		BP_CHEST =  list("path" = /obj/item/organ/external/chest),
 		BP_GROIN =  list("path" = /obj/item/organ/external/groin/vox),
-		BP_HEAD =   list("path" = /obj/item/organ/external/head/vox),
+		BP_HEAD =   list("path" = /obj/item/organ/external/head),
 		BP_L_ARM =  list("path" = /obj/item/organ/external/arm),
 		BP_R_ARM =  list("path" = /obj/item/organ/external/arm/right),
 		BP_L_LEG =  list("path" = /obj/item/organ/external/leg),

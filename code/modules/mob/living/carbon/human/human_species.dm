@@ -35,11 +35,11 @@
 	..(new_loc, SPECIES_SKRELL)
 
 /mob/living/carbon/human/tajaran/New(new_loc)
-	h_style = "Tajaran Ears"
+	h_style = "Ears"
 	..(new_loc, SPECIES_TAJARA)
 
 /mob/living/carbon/human/unathi/New(new_loc)
-	h_style = "Unathi Horns"
+	h_style = "Horns"
 	..(new_loc, SPECIES_UNATHI)
 
 /mob/living/carbon/human/vox/New(new_loc)

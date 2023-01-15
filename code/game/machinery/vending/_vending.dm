@@ -173,7 +173,7 @@
 	if(!W)
 		return FALSE
 
-	var/obj/item/card/id/I = W.GetIdCard()
+	var/obj/item/card/id/I = W.get_id_card()
 
 	if(currently_vending && vendor_account && !vendor_account.suspended)
 		var/paid = 0
@@ -214,8 +214,8 @@
 			power_change()
 		return
 	else if(istype(W, /obj/item/material/coin) && !coin && cartridge.premium.len > 0)
-		user.drop_item()
-		W.forceMove(src)
+		if(!user.drop(W, src))
+			return
 		coin = W
 		categories |= CAT_COIN
 		to_chat(user, SPAN("notice", "You insert \the [W] into \the [src]."))
@@ -302,7 +302,6 @@
 	cashmoney.worth -= currently_vending.price
 
 	if(cashmoney.worth <= 0)
-		usr.drop_from_inventory(cashmoney)
 		qdel(cashmoney)
 	else
 		cashmoney.update_icon()
@@ -401,7 +400,7 @@
 		return
 
 	wires.Interact(user)
-	
+
 	if(stat & POWEROFF)
 		return
 
@@ -487,7 +486,7 @@
 
 	if(.)
 		return
-	
+
 	if(stat & POWEROFF)
 		return
 
@@ -500,11 +499,7 @@
 				to_chat(usr, "There is no coin in this machine.")
 				return TRUE
 
-			coin.forceMove(loc)
-
-			if(!usr.get_active_hand())
-				usr.put_in_hands(coin)
-
+			usr.pick_or_drop(coin, loc)
 			to_chat(usr, SPAN("notice", "You remove \the [coin] from \the [src]"))
 			coin = null
 			categories &= ~CAT_COIN
@@ -647,7 +642,7 @@
  * calling. W is the item being inserted, R is the associated vending_product entry.
  */
 /obj/machinery/vending/proc/stock(obj/item/W, datum/stored_items/vending_products/R, mob/user)
-	if(!user.unEquip(W))
+	if(!user.drop(W))
 		return
 
 	if(R.add_product(W))

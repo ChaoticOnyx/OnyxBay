@@ -73,8 +73,7 @@
 	if(istype(G))
 		if(attached_grenade)
 			to_chat(user, SPAN("warning", "There is already a grenade attached!"))
-		else if(user.canUnEquip(G))
-			user.drop_item(G)
+		else if(user.drop(G))
 			user.visible_message(SPAN("warning", "\The [user] attaches \a [G] to \the [src]!"), SPAN("notice", "You attach \the [G] to \the [src]."))
 			attach_grenade(G)
 	else
@@ -83,7 +82,7 @@
 /obj/item/integrated_circuit/manipulation/grenade/attack_self(mob/user)
 	if(attached_grenade && !grenade_activated)
 		user.visible_message(SPAN("warning", "\The [user] removes \an [attached_grenade] from \the [src]!"), SPAN("notice", "You remove \the [attached_grenade] from \the [src]."))
-		user.put_in_hands(attached_grenade)
+		user.pick_or_drop(attached_grenade)
 		detach_grenade()
 	else
 		return ..()
@@ -111,8 +110,7 @@
 // These procs do not relocate the grenade, that's the callers responsibility
 /obj/item/integrated_circuit/manipulation/grenade/proc/attach_grenade(obj/item/grenade/G, mob/user)
 	if(istype(G) && !grenade_activated)
-		if(user)
-			user.drop_item(G)
+		if(user?.drop(G))
 			user.visible_message(SPAN("warning", "\The [user] attaches \a [G] to \the [src]!"), SPAN("notice", "You attach \the [G] to \the [src]."))
 		attached_grenade = G
 		G.forceMove(src)
@@ -467,7 +465,7 @@
 	// If the item is in mob's inventory, try to remove it from there.
 	if(ismob(A.loc))
 		var/mob/living/M = A.loc
-		if(!M.unEquip(A))
+		if(!M.drop(A))
 			return
 
 	// If the item is in a grabber circuit we'll update the grabber's outputs after we've thrown it.

@@ -54,7 +54,7 @@
 		if(2) . += "\nIt's wired."
 		if(3) . += "\nThe casing is closed."
 
-/obj/machinery/light_construct/attackby(obj/item/W as obj, mob/user as mob)
+/obj/machinery/light_construct/attackby(obj/item/W, mob/user)
 	src.add_fingerprint(user)
 	if(isWrench(W))
 		if (src.stage == 1)
@@ -85,7 +85,7 @@
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 		return
 
-	if(istype(W, /obj/item/stack/cable_coil))
+	if(isCoil(W))
 		if (src.stage != 1) return
 		var/obj/item/stack/cable_coil/coil = W
 		if (coil.use(1))
@@ -319,12 +319,22 @@
 	if(status == LIGHT_EMPTY || status == LIGHT_BROKEN)
 		to_chat(user, "That object is useless to you.")
 		return
-	if(!(status == LIGHT_OK||status == LIGHT_BURNED))
+	if(!(status == LIGHT_OK || status == LIGHT_BURNED))
 		return
 	visible_message("<span class='danger'>[user] smashes the light!</span>")
 	attack_animation(user)
 	broken()
 	return 1
+
+/obj/machinery/light/bullet_act(obj/item/projectile/P)
+	var/status = get_status()
+	if(!(status == LIGHT_OK || status == LIGHT_BURNED))
+		return
+	if(P.nodamage || (P.damage_type != BRUTE))
+		return
+	visible_message("<span class='danger'>[P] hits \the [src]!</span>")
+	broken()
+	..()
 
 /obj/machinery/light/proc/set_mode(new_mode)
 	if(current_mode == new_mode || !lightbulb)
@@ -401,11 +411,12 @@
 		if(!istype(W, light_type))
 			to_chat(user, "This type of light requires a [get_fitting_name()].")
 			return
+		if(!user.drop(W))
+			return
 
 		to_chat(user, "You insert [W].")
-		user.drop_item()
 		insert_bulb(W)
-		src.add_fingerprint(user)
+		add_fingerprint(user)
 
 		// attempt to break the light
 		//If xenos decide they want to smash a light bulb with a toolbox, who am I to stop them? /N
@@ -442,7 +453,7 @@
 						wrong_choice = FALSE
 				if(wrong_choice)
 					user.visible_message(SPAN("warning", "[user] tries to pry [lightbulb] out of [src] with [W], only to get shocked."))
-					user.drop_item()
+					user.drop_active_hand()
 					electrocute_mob(user, get_area(src), src, rand(0.7, 1.0))
 					return
 		user.visible_message(SPAN("notice", "[user] pries [lightbulb] out of [src] with [W]."))

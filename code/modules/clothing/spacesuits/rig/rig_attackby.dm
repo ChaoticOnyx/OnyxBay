@@ -11,7 +11,7 @@
 		return chest.attackby(W,user)
 
 	// Lock or unlock the access panel.
-	if(W.GetIdCard())
+	if(W.get_id_card())
 		if(subverted)
 			locked = 0
 			to_chat(user, "<span class='danger'>It looks like the locking system has been shorted out.</span>")
@@ -56,9 +56,9 @@
 				to_chat(user, "\The [src] already has a tank installed.")
 				return
 
-			if(!user.unEquip(W)) return
+			if(!user.drop(W, src))
+				return
 			air_supply = W
-			W.forceMove(src)
 			to_chat(user, "You slot [W] into [src] and tighten the connecting valve.")
 			return
 
@@ -84,20 +84,20 @@
 				return
 			if(!user || !W)
 				return
-			if(!user.unEquip(mod)) return
+			if(!user.drop(mod, src))
+				return
 			to_chat(user, "You install \the [mod] into \the [src].")
 			installed_modules |= mod
-			mod.forceMove(src)
 			mod.installed(src)
 			update_icon()
 			return 1
 
 		else if(!cell && istype(W,/obj/item/cell))
 
-			if(!user.unEquip(W)) return
+			if(!user.drop(W, src))
+				return
 			to_chat(user, "You jack \the [W] into \the [src]'s battery mount.")
-			W.forceMove(src)
-			src.cell = W
+			cell = W
 			return
 
 		else if(isWrench(W))
@@ -106,7 +106,11 @@
 				to_chat(user, "There is not tank to remove.")
 				return
 
-			user.put_in_hands(air_supply)
+			if(loc != user)
+				air_supply.dropInto(loc)
+			else
+				user.pick_or_drop(air_supply)
+
 			to_chat(user, "You detach and remove \the [air_supply].")
 			air_supply = null
 			return
@@ -135,7 +139,10 @@
 						to_chat(user, "You detach \the [cell] from \the [src]'s battery mount.")
 						for(var/obj/item/rig_module/module in installed_modules)
 							module.deactivate()
-						user.put_in_hands(cell)
+						if(loc != user)
+							cell.dropInto(loc)
+						else
+							user.pick_or_drop(cell)
 						cell = null
 					else
 						to_chat(user, "There is nothing loaded in that mount.")
@@ -158,7 +165,12 @@
 
 					var/obj/item/rig_module/removed = possible_removals[removal_choice]
 					to_chat(user, "You detach \the [removed] from \the [src].")
-					removed.forceMove(get_turf(src))
+
+					if(loc != user)
+						removed.dropInto(loc)
+					else
+						user.pick_or_drop(removed)
+
 					removed.removed()
 					installed_modules -= removed
 					update_icon()

@@ -26,13 +26,13 @@
 		visible_message("<span class='notice'>\The [src] compresses the contents of \the [thing] into a new fuel assembly.</span>")
 		var/obj/item/fuel_assembly/F = new(get_turf(src), R.type, R.color)
 		thing.reagents.remove_reagent(R.type, R.volume)
-		user.put_in_hands(F)
+		user.pick_or_drop(F)
 		return 1
 	else if(istype(thing, /obj/machinery/power/supermatter/shard))
 		var/obj/item/fuel_assembly/F = new(get_turf(src), MATERIAL_SUPERMATTER)
 		visible_message("<span class='notice'>\The [src] compresses the \[thing] into a new fuel assembly.</span>")
 		qdel(thing)
-		user.put_in_hands(F)
+		user.pick_or_drop(F)
 		return 1
 	else if(istype(thing, /obj/item/stack/material))
 		var/obj/item/stack/material/M = thing
@@ -46,6 +46,6 @@
 		var/obj/item/fuel_assembly/F = new(get_turf(src), mat.name)
 		visible_message("<span class='notice'>\The [src] compresses the [mat.use_name] into a new fuel assembly.</span>")
 		M.use(25)
-		user.put_in_hands(F)
+		user.pick_or_drop(F)
 		return 1
 	return 0

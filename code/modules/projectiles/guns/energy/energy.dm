@@ -125,8 +125,7 @@
 		if(prob(50))
 			visible_message("\The [src]'s reactor heats up uncontrollably!")
 			explosion(src.loc, -1, 1, 2)
-			if(src)
-				user.drop_from_inventory(src)
+			if(!QDELETED(src))
 				qdel(src)
 			return
 		else

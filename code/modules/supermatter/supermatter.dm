@@ -308,7 +308,7 @@
 
 	var/turf/L = loc
 
-	if(isnull(L))		// We have a null turf...something is wrong, stop processing this entity.
+	if(QDELETED(L))		// We have a null turf...something is wrong, stop processing this entity.
 		return PROCESS_KILL
 
 	if(!istype(L)) 	//We are in a crate or somewhere that isn't turf, if we return to turf resume processing but for now.
@@ -405,7 +405,7 @@
 		if(rad_source == null)
 			rad_source = SSradiation.radiate(src, new /datum/radiation/preset/supermatter)
 
-		rad_source.info.energy = (power / 100) * (1.2 MEGA ELECTRONVOLT)
+		rad_source.info.energy = power * (100 KILO ELECTRONVOLT)
 	else
 		qdel(rad_source)
 
@@ -416,7 +416,7 @@
 
 /obj/machinery/power/supermatter/Destroy()
 	qdel(rad_source)
-	
+
 	. = ..()
 
 /obj/machinery/power/supermatter/bullet_act(obj/item/projectile/Proj)
@@ -487,7 +487,7 @@
 		"<span class=\"danger\">You touch \the [W] to \the [src] when everything suddenly goes silent.\"</span>\n<span class=\"notice\">\The [W] flashes into dust as you flinch away from \the [src].</span>",\
 		"<span class=\"warning\">Everything suddenly goes silent.</span>")
 
-	user.drop_from_inventory(W)
+	user.drop(W, force = TRUE)
 	Consume(W)
 
 	user.rad_act(new /datum/radiation_source(new /datum/radiation/preset/supermatter(4), src))

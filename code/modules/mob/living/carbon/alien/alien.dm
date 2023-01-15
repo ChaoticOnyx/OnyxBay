@@ -40,7 +40,7 @@
 
 	..()
 
-/mob/living/carbon/alien/u_equip(obj/item/W as obj)
+/mob/living/carbon/alien/__unequip(obj/W)
 	return
 
 /mob/living/carbon/alien/Stat()

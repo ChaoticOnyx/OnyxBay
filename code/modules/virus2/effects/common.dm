@@ -70,10 +70,10 @@
 /datum/disease2/effect/hair/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	if(mob.species.name == SPECIES_HUMAN && !(mob.h_style == "Bald") && !(mob.h_style == "Balding Hair"))
+	if(mob.species.name == SPECIES_HUMAN && mob.h_style != mob.species.default_h_style && mob.h_style != "Balding Hair")
 		to_chat(mob, HAIR_EFFECT_WARNING)
 		spawn(50)
-			mob.h_style = "Balding Hair"
+			mob.h_style = mob.species.default_h_style
 			mob.update_hair()
 
 
@@ -204,7 +204,7 @@
 		SPAN_DANGER("\The [mob] manages to remove \the [mob.handcuffed]!"),
 		SPAN_WARNING("[mob.handcuffed] suddenly fall off you.")
 		)
-	mob.drop_from_inventory(mob.handcuffed)
+	mob.drop(mob.handcuffed, force = TRUE)
 
 
 ////////////////////////STAGE 4/////////////////////////////////

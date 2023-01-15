@@ -112,7 +112,7 @@
 				to_chat(C,"<span class='notice'>Battery in \the [src] ran out and it powered down.</span>")
 				return
 			ec_cartridge.reagents.trans_to_mob(C, REM, CHEM_INGEST, 0.4) // Most of it is not inhaled... balance reasons.
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/clothing/mask/smokable/ecig/update_icon()
@@ -135,18 +135,16 @@
 		M.update_inv_r_hand(1)
 
 
-/obj/item/clothing/mask/smokable/ecig/attackby(obj/item/I, mob/user as mob)
+/obj/item/clothing/mask/smokable/ecig/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/reagent_containers/ecig_cartridge))
 		if (ec_cartridge)//can't add second one
 			to_chat(user, "<span class='notice'>A cartridge has already been installed.</span> ")
-		else//fits in new one
-			user.remove_from_mob(I)
-			I.forceMove(src)//I.loc=src
+		else if(user.drop(I, src)) // fits in new one
 			ec_cartridge = I
 			update_icon()
 			to_chat(user, "<span class='notice'>You insert [I] into [src].</span> ")
 
-	if(istype(I, /obj/item/screwdriver))
+	if(isScrewdriver(I))
 		if(cigcell) //if contains powercell
 			cigcell.update_icon()
 			cigcell.dropInto(loc)
@@ -156,8 +154,7 @@
 			to_chat(user, "<span class='notice'>There is no powercell in \the [src].</span>")
 
 	if(istype(I, /obj/item/cell/device))
-		if(!cigcell && user.unEquip(I))
-			I.forceMove(src)
+		if(!cigcell && user.drop(I, src))
 			cigcell = I
 			to_chat(user, "<span class='notice'>You install a powercell into the [src].</span>")
 			update_icon()
@@ -165,7 +162,7 @@
 			to_chat(user, "<span class='notice'>[src] already has a powercell.</span>")
 
 
-/obj/item/clothing/mask/smokable/ecig/attack_self(mob/user as mob)
+/obj/item/clothing/mask/smokable/ecig/attack_self(mob/user)
 	if (active)
 		active=0
 		set_next_think(0)
@@ -190,11 +187,11 @@
 		else
 			to_chat(user, "<span class='warning'>\The [src] does not have a powercell installed.</span>")
 
-/obj/item/clothing/mask/smokable/ecig/attack_hand(mob/user as mob)//eject cartridge
+/obj/item/clothing/mask/smokable/ecig/attack_hand(mob/user)//eject cartridge
 	if(user.get_inactive_hand() == src)//if being hold
 		if (ec_cartridge)
 			active=0
-			user.put_in_hands(ec_cartridge)
+			user.pick_or_drop(ec_cartridge)
 			to_chat(user, "<span class='notice'>You eject \the [ec_cartridge] from \the [src].</span> ")
 			ec_cartridge = null
 			update_icon()
@@ -211,7 +208,7 @@
 	volume = 20
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 
-/obj/item/reagent_containers/ecig_cartridge/_examine_text(mob/user as mob)//to see how much left
+/obj/item/reagent_containers/ecig_cartridge/_examine_text(mob/user)//to see how much left
 	. = ..()
 	. += "\nThe cartridge has [reagents.total_volume] units of liquid remaining."
 

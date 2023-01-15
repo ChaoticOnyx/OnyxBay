@@ -40,7 +40,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 		return
 	if(location)
 		location.hotspot_expose(700, 5)
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/flame/match/dropped(mob/user as mob)
@@ -83,6 +83,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	var/flame_overlay = "cheapoverlay"
 	var/spam_flag = 0
 	var/requires_hold = TRUE
+	var/base_icon
 
 /obj/item/flame/lighter/Initialize()
 	. = ..()
@@ -146,11 +147,11 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 /obj/item/flame/lighter/update_icon()
 	overlays.Cut()
 	if(lit)
-		icon_state = "[initial(icon_state)]on"
+		icon_state = "[base_icon ? base_icon : initial(icon_state)]on"
 		item_state = "[initial(item_state)]on"
 		overlays += image(icon, src, flame_overlay)
 	else
-		icon_state = "[initial(icon_state)]"
+		icon_state = "[base_icon ? base_icon : initial(icon_state)]"
 		item_state = initial(item_state)
 
 /obj/item/flame/attack(mob/living/carbon/M, mob/living/carbon/user)
@@ -199,12 +200,13 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 
 /obj/item/flame/lighter/random/Initialize()
 	if(prob(99.5))
-		icon_state = "lighter-[pick("red", "orange", "yellow", "green", "cyan", "blue", "purple", "white", "black")]"
+		base_icon = "lighter-[pick("red", "orange", "yellow", "green", "cyan", "blue", "purple", "white", "black")]"
 	else
-		icon_state = "lighter-gold"
+		base_icon = "lighter-gold"
 		name = "expensive lighter"
 		desc = "It may be made of gold, but it doesn't make it any less crappy."
 		matter = list(MATERIAL_GOLD = 250)
+	update_icon()
 	//item_state = icon_state // TODO: Draw item states for all the above, huh
 	. = ..()
 

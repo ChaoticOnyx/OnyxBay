@@ -27,11 +27,6 @@
 	desc = "For those tired of boring old jeans. Relive the passion of your youth!"
 	icon_state = "jeansyoungfolks"
 
-/obj/item/clothing/under/casual_pants/track
-	name = "track pants"
-	desc = "A pair of track pants, for the athletic."
-	icon_state = "trackpants"
-
 /obj/item/clothing/under/casual_pants/camo
 	name = "camo pants"
 	desc = "A pair of woodland camouflage pants. Probably not the best choice for space."

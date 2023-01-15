@@ -186,7 +186,7 @@
 			O.add_fingerprint(user)
 
 			if (recipe.goes_in_hands && !recipe.on_floor)
-				user.put_in_hands(O)
+				user.pick_or_drop(O)
 
 			if (istype(O, /obj/item/stack))
 				var/obj/item/stack/S = O
@@ -370,7 +370,7 @@
 		if(N)
 			var/obj/item/stack/F = src.split(N)
 			if (F)
-				user.put_in_hands(F)
+				user.pick_or_drop(F)
 				src.add_fingerprint(user)
 				F.add_fingerprint(user)
 				spawn(0)

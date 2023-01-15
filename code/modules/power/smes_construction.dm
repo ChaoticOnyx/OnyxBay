@@ -375,7 +375,7 @@
 
 				to_chat(usr, "<span class='warning'>You have disassembled the SMES cell!</span>")
 				var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(src.loc)
-				M.state = 2
+				M.state = STAGE_CIRCUIT
 				M.icon_state = "box_1"
 				for(var/obj/I in component_parts)
 					I.forceMove(src.loc)
@@ -385,16 +385,14 @@
 
 		// Superconducting Magnetic Coil - Upgrade the SMES
 		else if(istype(W, /obj/item/smes_coil))
-			if (cur_coils < max_coils)
-
-				if (failure_probability && prob(failure_probability))
+			if(cur_coils < max_coils)
+				if(failure_probability && prob(failure_probability))
 					total_system_failure(failure_probability, user)
 					return
-
+				if(!user.drop(W, src))
+					return
 				to_chat(usr, "You install the coil into the SMES unit!")
-				user.drop_item()
 				component_parts += W
-				W.forceMove(src)
 				recalc_coils()
 			else
 				to_chat(usr, "<span class='warning'>You can't insert more coils to this SMES unit!</span>")

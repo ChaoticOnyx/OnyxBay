@@ -203,7 +203,7 @@
 		return FALSE
 
 	var/obj/item/I = new item_type(H)
-	H.put_in_hands(I)
+	H.pick_or_drop(I)
 
 	use_chems(required_chems)
 	if(loud)

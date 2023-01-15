@@ -72,10 +72,9 @@
 
 
 /obj/machinery/optable/MouseDrop_T(obj/O, mob/user)
-	if((!istype(O, /obj/item) || user.get_active_hand() != O))
+	if((!istype(O, /obj/item) || user.get_active_hand() != O) || !user.drop(O))
 		return
-	user.drop_item()
-	if (O.loc != src.loc)
+	if(O.loc != loc)
 		step(O, get_dir(O, src))
 	return
 
@@ -94,7 +93,7 @@
 	if(!ishuman(victim))
 		to_chat(usr, SPAN_DANGER("[victim] can't be undressed for some biological reasons."))
 		return
-	if(istype(victim.back, /obj/item/rig) && !victim.back.mob_can_unequip(victim, slot_back, TRUE))
+	if(istype(victim.back, /obj/item/rig) && !victim.back.can_be_unequipped_by(victim, slot_back, TRUE))
 		to_chat(usr, SPAN_DANGER("\The [victim.back] must be removed."))
 		return
 	if(!locate(/obj/item/clothing) in victim.contents)
@@ -117,7 +116,7 @@
 		for(var/obj/item/clothing/C in victim.contents)
 			if(istype(C, /obj/item/clothing/mask/breath/anesthetic))
 				continue
-			victim.unEquip(C)
+			victim.drop(C)
 			use_power_oneoff(100)
 		usr.visible_message(SPAN_DANGER("[usr] successfully removes all clothing from [victim]."),
 							SPAN_NOTICE("You successfully remove all clothing from [victim]."))

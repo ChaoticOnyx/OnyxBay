@@ -182,7 +182,7 @@
 				qdel(ai_card)
 				ai_card = null
 		else if(user)
-			user.put_in_hands(ai_card)
+			user.pick_or_drop(ai_card)
 		else if(loc) // No trying to get_turf out of nullspace plz
 			ai_card.forceMove(get_turf(src))
 		else
@@ -214,9 +214,7 @@
 						return 0
 				else
 					return 0
-			else
-				user.drop_from_inventory(ai)
-				ai.forceMove(src)
+			else if(user.drop(ai, src))
 				ai_card = ai
 				to_chat(ai_mob, "<span class='notice'>You have been transferred to \the [holder]'s [src.name].</span>")
 				to_chat(user, "<span class='notice'>You load \the [ai_mob] into \the [holder]'s [src.name].</span>")

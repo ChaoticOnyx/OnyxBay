@@ -21,13 +21,11 @@
 			return ..()
 		to_chat(user, SPAN("notice", "You crush \the [src]."))
 		playsound(user.loc, pick('sound/items/cancrush1.ogg', 'sound/items/cancrush2.ogg'), 50, 1)
-		user.drop_item()
 		var/obj/item/trash/cans/TrashItem = new trash(get_turf(user))
 		if(user.a_intent == I_HURT)
 			TrashItem.icon_state = "[TrashItem.base_state]2" // Yeah it's ugly but I dont care; I don't wanna make separate types for v-crushed and h-crushed cans nor write an extra proc
 		else
 			TrashItem.icon_state = TrashItem.base_state
-		user.put_in_hands(TrashItem)
-		qdel(src)
+		user.replace_item(src, TrashItem, TRUE, TRUE)
 	else
 		return ..()

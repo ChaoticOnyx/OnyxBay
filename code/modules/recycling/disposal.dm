@@ -137,13 +137,11 @@
 				admin_attack_log(usr, GM, "Placed the victim into \the [src].", "Was placed into \the [src] by the attacker.", "stuffed \the [src] with")
 		return
 
-	if(isrobot(user))
+	if(I.loc == user && !user.drop(I))
+		to_chat(user, "You can't place that into \the [src].")
 		return
-	if(!user.canUnEquip(I))
-		to_chat(user, "You can't place that item inside \the [src].")
-		return
+	I.forceMove(src)
 
-	user.drop_from_inventory(I, src)
 	if(I.loc != src)
 		return
 
@@ -896,7 +894,7 @@
 		if(!T.is_plating())
 			return		// prevent interaction with T-scanner revealed pipes
 		src.add_fingerprint(user, 0, I)
-		if(istype(I, /obj/item/weldingtool))
+		if(isWelder(I))
 			var/obj/item/weldingtool/W = I
 
 			if(W.remove_fuel(0,user))
@@ -1550,7 +1548,7 @@
 	if(!T.is_plating())
 		return		// prevent interaction with T-scanner revealed pipes
 	src.add_fingerprint(user, 0, I)
-	if(istype(I, /obj/item/weldingtool))
+	if(isWelder(I))
 		var/obj/item/weldingtool/W = I
 
 		if(W.remove_fuel(0,user))
@@ -1682,7 +1680,7 @@
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				to_chat(user, "You attach the screws around the power connection.")
 				return
-		else if(istype(I,/obj/item/weldingtool) && mode==1)
+		else if(isWelder(I) && mode==1)
 			var/obj/item/weldingtool/W = I
 			if(W.remove_fuel(0,user))
 				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)

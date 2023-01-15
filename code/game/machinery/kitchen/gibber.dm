@@ -88,9 +88,9 @@
 		move_into_gibber(user, G.affecting)
 		G.delete_self()
 	else if(istype(W, /obj/item/organ))
-		user.drop_from_inventory(W)
-		qdel(W)
-		user.visible_message(SPAN("danger","\The [user] feeds \the [W] into \the [src], obliterating it."))
+		if(user.drop(W))
+			qdel(W)
+			user.visible_message(SPAN("danger","\The [user] feeds \the [W] into \the [src], obliterating it."))
 	else
 		return ..()
 
@@ -177,6 +177,8 @@
 	// Some mobs have specific meat item types.
 	if(istype(src.occupant, /mob/living/simple_animal/hostile/faithless))
 		slab_type = /obj/item/ectoplasm
+	else if(istype(src.occupant, /mob/living/carbon/metroid) || istype(src.occupant, /mob/living/simple_animal/metroid))
+		slab_type = /obj/item/reagent_containers/food/meat/xeno 
 	else if(istype(src.occupant,/mob/living/simple_animal))
 		var/mob/living/simple_animal/critter = src.occupant
 		if(critter.meat_amount)
