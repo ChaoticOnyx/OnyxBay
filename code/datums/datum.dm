@@ -128,17 +128,15 @@
 /// * `clbk` - a proc which should be called.
 /// * `time` - when to call the context.
 /datum/proc/add_think_ctx(name, datum/callback/clbk, time)
-	if(!time)
-		CRASH("Invalid time")
-
 	if(!QDELETED(_think_ctxs[name]))
 		CRASH("Thinking context [name] is exists")
 
 	_think_ctxs[name] = new /datum/think_context(time, clbk)
 	var/datum/think_context/ctx = _think_ctxs[name]
 
-	SSthink.contexts_groups[ctx.group] += ctx
-	CALC_NEXT_GROUP_RUN(ctx)
+	if(time > 0)
+		SSthink.contexts_groups[ctx.group] += ctx
+		CALC_NEXT_GROUP_RUN(ctx)
 
 /// Sets the next time for thinking in a context.
 ///
@@ -170,5 +168,6 @@
 /// Removes self from `SSthink`, deletes all thinking contexts.
 /// Mainly used in `/proc/Destroy`.
 /datum/proc/clear_think()
+	set_next_think(0)
 	QDEL_LIST_ASSOC_VAL(_think_ctxs)
 	qdel(_main_think_ctx)

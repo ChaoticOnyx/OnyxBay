@@ -17,7 +17,7 @@
 
 /obj/item/implantpad/attack_hand(mob/user)
 	if ((imp && (user.l_hand == src || user.r_hand == src)))
-		user.put_in_active_hand(imp)
+		user.pick_or_drop(imp)
 		imp.add_fingerprint(user)
 		add_fingerprint(user)
 
@@ -50,9 +50,8 @@
 			C.imp = imp
 			imp = null
 		C.update_icon()
-	else if(istype(I, /obj/item/implant))
+	else if(istype(I, /obj/item/implant) && user.drop(I, src))
 		imp = I
-		user.drop_from_inventory(I,src)
 	update_icon()
 
 /obj/item/implantpad/attack_self(mob/user)

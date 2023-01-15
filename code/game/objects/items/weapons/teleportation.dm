@@ -201,7 +201,8 @@ Frequency:
 	if(cover_open)
 		if(istype(W, /obj/item/cell))
 			if(!vcell)
-				user.drop_from_inventory(W, src)
+				if(!user.drop(W, src))
+					return
 				vcell = W
 				to_chat(user, SPAN_NOTICE("You install a cell in [src]."))
 				icon_state = "vm_open"
@@ -209,7 +210,7 @@ Frequency:
 			else
 				to_chat(user, SPAN_NOTICE("[src] already has a cell."))
 
-		else if(istype(W, /obj/item/screwdriver))
+		else if(isScrewdriver(W))
 			if(vcell)
 				vcell.update_icon()
 				vcell.forceMove(get_turf(src.loc))

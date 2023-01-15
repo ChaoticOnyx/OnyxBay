@@ -33,7 +33,7 @@
 	update_icon()
 	if(ishuman(hood.loc))
 		var/mob/living/carbon/H = hood.loc
-		H.unEquip(hood, 1)
+		H.drop(hood, force = TRUE)
 		H.update_inv_wear_suit()
 	hood.forceMove(src)
 
@@ -128,6 +128,55 @@
 	name = "mining winter coat"
 	icon_state = "coatminer"
 	armor = list(melee = 10, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
+
+/obj/item/clothing/suit/storage/hooded/wintercoat/centcom
+	name = "centcom winter coat"
+	icon_state = "coatcentcom"
+	armor = list(melee = 20, bullet = 15, laser = 20, energy = 10, bomb = 15, bio = 0)
+
+/obj/item/clothing/suit/storage/hooded/wintercoat/hop
+	name = "hop winter coat"
+	icon_state = "coathop"
+
+/obj/item/clothing/suit/storage/hooded/wintercoat/qm
+	name = "qm winter coat"
+	icon_state = "coatqm"
+
+/obj/item/clothing/suit/storage/hooded/wintercoat/janitor
+	name = "janitor winter coat"
+	icon_state = "coatjanitor"
+
+/obj/item/clothing/suit/storage/hooded/wintercoat/ce
+	name = "ce winter coat"
+	icon_state = "coatce"
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 10, bomb = 0, bio = 0)
+
+/obj/item/clothing/suit/storage/hooded/wintercoat/cmo
+	name = "cmo winter coat"
+	icon_state = "coatcmo"
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 10)
+
+/obj/item/clothing/suit/storage/hooded/wintercoat/chemistry
+	name = "chemistry winter coat"
+	icon_state = "coatchemistry"
+
+/obj/item/clothing/suit/storage/hooded/wintercoat/viro
+	name = "viro winter coat"
+	icon_state = "coatviro"
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 10)
+
+/obj/item/clothing/suit/storage/hooded/wintercoat/paramed
+	name = "paramed winter coat"
+	icon_state = "coatparamed"
+
+/obj/item/clothing/suit/storage/hooded/wintercoat/rd
+	name = "rd winter coat"
+	icon_state = "coatrd"
+	armor = list(melee = 0, bullet = 0, laser = 10, energy = 0, bomb = 10, bio = 0)
+
+/obj/item/clothing/suit/storage/hooded/wintercoat/robotics
+	name = "robotics winter coat"
+	icon_state = "coatrobotics"
 
 /obj/item/clothing/suit/storage/hooded/hoodie
 	name = "hoodie"

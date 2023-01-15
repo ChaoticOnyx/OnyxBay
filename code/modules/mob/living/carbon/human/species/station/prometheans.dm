@@ -10,6 +10,8 @@ var/datum/species/shapeshifter/promethean/prometheans
 	death_message =    "rapidly loses cohesion, splattering across the ground..."
 	knockout_message = "collapses inwards, forming a disordered puddle of goo."
 	remains_type = /obj/effect/decal/cleanable/ash
+	hair_key = SPECIES_HUMAN
+	facial_hair_key = SPECIES_HUMAN
 
 	blood_color = "#05ff9b"
 	flesh_color = "#05fffb"

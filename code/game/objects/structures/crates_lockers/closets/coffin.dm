@@ -19,7 +19,7 @@
 /obj/structure/closet/coffin/attackby(obj/item/W, mob/user)
 	if(opened && !isWelder(W))
 		..()
-	else if(istype(W, /obj/item/screwdriver))
+	else if(isScrewdriver(W))
 		if(welded)
 			user.visible_message(SPAN("notice", "[user] unscrewed bolts from [src]."))
 			welded = !welded

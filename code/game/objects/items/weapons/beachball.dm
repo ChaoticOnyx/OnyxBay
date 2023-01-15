@@ -16,5 +16,5 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 
 /obj/item/beach_ball/afterattack(atom/target, mob/user)
-	user.drop_item()
+	user.drop_active_hand()
 	throw_at(target, throw_range, throw_speed, user)

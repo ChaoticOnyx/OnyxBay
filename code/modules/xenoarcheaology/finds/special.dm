@@ -95,7 +95,7 @@
 	//use up stored charges
 	if(charges >= 10)
 		charges -= 10
-		new /obj/effect/spider/eggcluster(pick(view(1,src)))
+		new /obj/structure/spider/eggcluster(pick(view(1,src)))
 
 	if(charges >= 3)
 		if(prob(5))
@@ -122,9 +122,9 @@
 			wight_check_index = 1
 
 		var/obj/effect/shadow_wight/W = shadow_wights[wight_check_index]
-		if(isnull(W))
+		if(QDELETED(W))
 			shadow_wights.Remove(wight_check_index)
-		else if(isnull(W.loc))
+		else if(QDELETED(W.loc))
 			shadow_wights.Remove(wight_check_index)
 		else if(get_dist(W, src) > 10)
 			shadow_wights.Remove(wight_check_index)

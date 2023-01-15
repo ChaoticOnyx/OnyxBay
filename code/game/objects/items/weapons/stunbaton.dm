@@ -76,8 +76,7 @@
 
 /obj/item/melee/baton/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/cell/device))
-		if(!bcell && user.unEquip(W))
-			W.forceMove(src)
+		if(!bcell && user.drop(W, src))
 			bcell = W
 			to_chat(user, "<span class='notice'>You install a cell into the [src].</span>")
 			update_icon()

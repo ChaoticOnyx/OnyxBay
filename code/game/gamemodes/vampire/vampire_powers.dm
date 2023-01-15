@@ -105,7 +105,7 @@
 		if (T.check_drain_target_state(T))
 			blood = min(15, T.vessel.get_reagent_amount(/datum/reagent/blood))
 			vampire.blood_total += blood
-			vampire.gain_blood(blood) 
+			vampire.gain_blood(blood)
 			blood_drained += blood
 
 			frenzy_lower_chance = 40
@@ -640,12 +640,12 @@
 		for(var/ID in user.virus2)
 			var/datum/disease2/disease/V = user.virus2[ID]
 			V.cure(user)
-		
+
 		var/mob/living/carbon/human/H = user
-		for(var/limb_type in H.species.has_limbs)	
+		for(var/limb_type in H.species.has_limbs)
 			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
 			if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
-				E.removed()			//...because no one wants their head to explode to make way for a new one.				
+				E.removed()			//...because no one wants their head to explode to make way for a new one.
 				qdel(E)
 				E = null
 			if(!E)
@@ -653,7 +653,7 @@
 				var/limb_path = organ_data["path"]
 				var/obj/item/organ/external/O = new limb_path(H)
 				organ_data["descriptor"] = O.name
-				to_chat(H, SPAN_DANGER("With a shower of dark blood, a new [O.name] forms."))				
+				to_chat(H, SPAN_DANGER("With a shower of dark blood, a new [O.name] forms."))
 				H.visible_message(SPAN_DANGER("With a shower of dark blood, a length of biomass shoots from [H]'s [O.amputation_point], forming a new [O.name]!"))
 				blood_used += 12
 				var/datum/reagent/blood/B = new /datum/reagent/blood
@@ -695,17 +695,39 @@
 
 	return
 
-// Dominate a victim, imbed a thought into their mind.
-/datum/vampire/proc/vampire_dominate()
+// Dominate a victim, using single word.
+/datum/vampire/proc/vampire_order()
 	set category = "Vampire"
-	set name = "Dominate (50)"
+	set name = "Order (20)"
+	set desc = "Order the mind of a victim, make them obey your will."
+	var/power_use_cost = 20
+	var/mob/living/carbon/human/user = usr
+	var/datum/vampire/vampire = user.vampire_power(power_use_cost, 0)
+	if (!vampire)
+		return
+	vampire.vampire_dominate_handler(user, ability = "order")
+	vampire.use_blood(power_use_cost)
+	user.verbs -= /datum/vampire/proc/vampire_order
+	ADD_VERB_IN_IF(user, 900, /datum/vampire/proc/vampire_order, CALLBACK(user, /mob/living/carbon/human/proc/finish_vamp_timeout))
+
+// Dominate a victim, imbed a thought into their mind.
+/datum/vampire/proc/vampire_suggestion()
+	set category = "Vampire"
+	set name = "Suggestion (50)"
 	set desc = "Dominate the mind of a victim, make them obey your will."
 	var/power_use_cost = 50
 	var/mob/living/carbon/human/user = usr
 	var/datum/vampire/vampire = user.vampire_power(power_use_cost, 0)
 	if (!vampire)
 		return
+	vampire.vampire_dominate_handler(user, ability = "suggestion")
+	vampire.use_blood(power_use_cost)
+	user.verbs -= /datum/vampire/proc/vampire_suggestion
+	ADD_VERB_IN_IF(user, 1800, /datum/vampire/proc/vampire_suggestion, CALLBACK(user, /mob/living/carbon/human/proc/finish_vamp_timeout))
 
+/datum/vampire/proc/vampire_dominate_handler(caster, ability = "suggestion")
+	var/datum/vampire/vampire = src
+	var/mob/living/carbon/human/user = caster
 	var/list/victims = list()
 	for (var/mob/living/carbon/human/H in view(7))
 		if (H == user)
@@ -732,13 +754,29 @@
 	else
 		to_chat(user, SPAN_NOTICE("You instantly dominate [T]'s mind, forcing them to obey your command."))
 
-	var/command = input(user, "Command your victim.", "Your command.") as text|null
+	var/command
+	if(ability == "suggestion")
+		command = input(user, "Command your victim.", "Your command.") as text|null
+	else if(ability == "order")
+		command = input(user, "Command your victim with single word.", "Your command.") as text|null
 
 	if (!command)
 		to_chat(user, "<span class='alert'>Cancelled.</span>")
 		return
 
-	command = sanitizeSafe(command, extra = 0)
+	if(ability == "suggestion")
+		command = sanitizeSafe(command, extra = 0)
+	else if(ability == "order")
+		command = sanitizeSafe(command)
+		var/spaceposition = findtext_char(command, " ")
+		if(spaceposition)
+			command = copytext_char(command, 1, spaceposition+1)
+
+	user.say(command)
+
+	if (T.is_deaf() || !T.say_understands(user,user.get_default_language()))
+		to_chat(user, SPAN("warning", "Target does not understand you!"))
+		return
 
 	admin_attack_log(user, T, "used dominate on [key_name(T)]", "was dominated by [key_name(user)]", "used dominate and issued the command of '[command]' to")
 
@@ -746,11 +784,8 @@
 	to_chat(T, SPAN_NOTICE("You feel a strong presence enter your mind. For a moment, you hear nothing but what it says, and are compelled to follow its direction without question or hesitation:"))
 	to_chat(T, "<span style='color: green;'><i><em>[command]</em></i></span>")
 	to_chat(user, SPAN_NOTICE("You command [T], and they will obey."))
-	user.emote("me", 1, "whispers.")
 
-	vampire.use_blood(power_use_cost)
-	user.verbs -= /datum/vampire/proc/vampire_dominate
-	ADD_VERB_IN_IF(user, 1800, /datum/vampire/proc/vampire_dominate, CALLBACK(user, /mob/living/carbon/human/proc/finish_vamp_timeout))
+	return
 
 // Enthralls a person, giving the vampire a mortal slave.
 /datum/vampire/proc/vampire_enthrall()
@@ -886,7 +921,7 @@
 	else if (vampire.blood_usable < 2)
 		to_chat(user, SPAN_WARNING("You do not have enough usable blood. 2 needed."))
 		return
-	
+
 	to_chat(user, SPAN_NOTICE("You begin hiding your true self."))
 	user.status_flags |= FAKELIVING
 	vampire.use_blood(power_use_cost)
@@ -900,7 +935,7 @@
 	var/datum/vampire/vampire = user.vampire_power(power_use_cost, 0)
 	if (!vampire)
 		return
-	
+
 	if (isfakeliving(user))
 		if (user.stat == DEAD)
 			to_chat(user, SPAN_WARNING("You cannot appear alive while dead"))
@@ -1030,7 +1065,7 @@
 	T.Weaken(15)
 	T.Stun(15)
 	var/datum/antagonist/vampire/VAMP = GLOB.all_antag_types_[MODE_VAMPIRE]
-	VAMP.add_antagonist(T.mind, 1, 1, 0, 0, 1)	
+	VAMP.add_antagonist(T.mind, 1, 1, 0, 0, 1)
 
 	admin_attack_log(user, T, "successfully embraced [key_name(T)]", "was successfully embraced by [key_name(user)]", "successfully embraced and turned into a vampire")
 
@@ -1068,7 +1103,7 @@
 	var/mob/living/carbon/human/T = pick(targets)
 
 	user.visible_message(SPAN_DANGER("[user] leaps at [T]!"))
-	user.drop_item()
+	user.drop_active_hand()
 	user.throw_at(get_step(get_turf(T), get_turf(user)), 4, 1, user)
 	user.status_flags |= LEAPING
 

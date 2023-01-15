@@ -1,6 +1,8 @@
 /datum/species/human
 	name = SPECIES_HUMAN
 	name_plural = "Humans"
+	hair_key = SPECIES_HUMAN
+	facial_hair_key = SPECIES_HUMAN
 	primitive_form = "Monkey"
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/punch, /datum/unarmed_attack/bite)
 	blurb = "Humanity originated in the Sol system, and over the last five centuries has spread \
@@ -84,7 +86,9 @@
 	deform = 'icons/mob/human_races/r_def_tajaran.dmi'
 	tail = "tajtail"
 	tail_animation = 'icons/mob/species/tajaran/tail.dmi'
-	default_h_style = "Tajaran Ears"
+	default_h_style = "Ears"
+	hair_key = SPECIES_TAJARA
+	facial_hair_key = SPECIES_TAJARA
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp)
 	generic_attack_mod = 2.0
 	darksight_range = 8
@@ -132,7 +136,7 @@
 
 	flesh_color = "#663300"
 	base_color = "#333333"
-	blood_color = "#862a51"
+	blood_color = COLOR_BLOOD_TAJARAN
 	organs_icon = 'icons/mob/human_races/organs/tajaran.dmi'
 	reagent_tag = IS_TAJARA
 
@@ -159,8 +163,8 @@
 	name_plural = SPECIES_SKRELL
 	icobase = 'icons/mob/human_races/r_skrell.dmi'
 	deform = 'icons/mob/human_races/r_def_skrell.dmi'
-	eye_icon = "skrell_eyes_s"
 	primitive_form = "Neaera"
+	hair_key = SPECIES_SKRELL
 	unarmed_types = list(/datum/unarmed_attack/punch)
 	blurb = "An amphibious species, Skrell come from the star system known as Qerr'Vallis, which translates to 'Star of \
 	the royals' or 'Light of the Crown'.<br/><br/>Skrell are a highly advanced and logical race who live under the rule \
@@ -200,7 +204,7 @@
 	appearance_flags = HAS_HAIR_COLOR | HAS_LIPS | HAS_UNDERWEAR | HAS_SKIN_COLOR
 
 	flesh_color = "#339966"
-	blood_color = "#1d2cbf"
+	blood_color = COLOR_BLOOD_SKRELL
 	base_color = "#006666"
 	organs_icon = 'icons/mob/human_races/organs/skrell.dmi'
 
@@ -238,6 +242,9 @@
 	name_plural = "Dionaea"
 	icobase = 'icons/mob/human_races/r_diona.dmi'
 	deform = 'icons/mob/human_races/r_def_plant.dmi'
+
+	has_eyes_icon = FALSE
+
 	language = LANGUAGE_ROOTLOCAL
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/diona)
 	//primitive_form = "Nymph"
@@ -253,7 +260,6 @@
 	spawns_with_stack = 0
 	health_hud_intensity = 2
 	hunger_factor = 3
-	eye_icon = "blank_eyes"
 
 	min_age = 1
 	max_age = 300
@@ -282,7 +288,7 @@
 	has_limbs = list(
 		BP_CHEST =  list("path" = /obj/item/organ/external/diona/chest),
 		BP_GROIN =  list("path" = /obj/item/organ/external/diona/groin),
-		BP_HEAD =   list("path" = /obj/item/organ/external/head/no_eyes/diona),
+		BP_HEAD =   list("path" = /obj/item/organ/external/head/diona),
 		BP_L_ARM =  list("path" = /obj/item/organ/external/diona/arm),
 		BP_R_ARM =  list("path" = /obj/item/organ/external/diona/arm/right),
 		BP_L_LEG =  list("path" = /obj/item/organ/external/diona/leg),

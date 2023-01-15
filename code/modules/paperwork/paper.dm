@@ -324,8 +324,7 @@
 			to_chat(user, SPAN_NOTICE("You cannot reach that from here.")) // Can only place stuck papers in cardinal directions, to
 			return                                                         // Reduce papers around corners issue.
 
-	user.drop_from_inventory(src)
-	forceMove(source_turf)
+	user.drop(src, source_turf)
 	anchored = TRUE
 
 	if(!params)
@@ -369,11 +368,9 @@
 		else if (P.name != "paper" && P.name != "photo")
 			B.SetName(P.name)
 
-		user.drop_from_inventory(P)
-		user.drop_from_inventory(src)
-		user.put_in_hands(B)
+		user.replace_item(src, B)
+		user.drop(P, B)
 		forceMove(B)
-		P.forceMove(B)
 
 		to_chat(user, SPAN_NOTICE("You clip the [P.name] to \the [src.name]."))
 
@@ -473,7 +470,7 @@
 		qdel(src)
 		qdel(G)
 		if(roll_in_hands)
-			user.put_in_hands(R)
+			user.pick_or_drop(R)
 		return
 
 	add_fingerprint(user)
@@ -602,7 +599,7 @@
 				"<span class='[class]'>You burn right through \the [src], turning it to ash. It flutters through the air before settling on the floor in a heap.</span>")
 
 				if(user.get_inactive_hand() == src)
-					user.drop_from_inventory(src)
+					user.drop(src)
 
 				new /obj/effect/decal/cleanable/ash(src.loc)
 				qdel(src)

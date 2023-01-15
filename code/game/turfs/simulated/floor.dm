@@ -28,7 +28,7 @@
 	ChangeTurf(get_base_turf_by_area(src))
 
 /turf/simulated/floor/is_plating()
-	return !flooring
+	return flooring == null
 
 /turf/simulated/floor/protects_atom(atom/A)
 	return (A.level <= 1 && !is_plating()) || ..()

@@ -5,13 +5,13 @@
 /datum/robot_hull/custom
 	var/icon
 
-/datum/robot_hull/custom/New(state = "robot", footstep = FOOTSTEP_ROBOT_SPIDER, cstm_icon = CUSTOM_ITEM_ROBOTS)
+/datum/robot_hull/custom/New(state = "robot", footstep = SFX_FOOTSTEP_ROBOT_SPIDER, cstm_icon = CUSTOM_ITEM_ROBOTS)
 	icon_state = state
 	footstep_sound = footstep
 	icon = cstm_icon
 
 /datum/robot_hull/spider
-	footstep_sound = FOOTSTEP_ROBOT_SPIDER
+	footstep_sound = SFX_FOOTSTEP_ROBOT_SPIDER
 
 /datum/robot_hull/spider/robot
 	icon_state = "robot"
@@ -50,7 +50,7 @@
 	icon_state = "landmate"
 
 /datum/robot_hull/legs
-	footstep_sound = FOOTSTEP_ROBOT_LEGS
+	footstep_sound = SFX_FOOTSTEP_ROBOT_LEGS
 
 
 /datum/robot_hull/legs/robot_old

@@ -189,7 +189,7 @@
 			if(prob(10))
 				GLOB.cult.remove_antagonist(usr.mind, 1)
 			if(prob(2))
-				var/obj/effect/spider/spiderling/S = new /obj/effect/spider/spiderling(M.loc)
+				var/obj/structure/spider/spiderling/S = new /obj/structure/spider/spiderling(M.loc)
 				M.visible_message(SPAN_WARNING("\The [M] coughs up \the [S]!</span>"))
 
 		if(M.mind && M.mind.vampire)
@@ -328,6 +328,17 @@
 		var/obj/structure/window/W = O
 		W.apply_silicate(volume)
 		remove_self(volume)
+	if(istype(O, /obj/structure/window_frame))
+		var/obj/structure/window_frame/WF = O
+		var/datum/windowpane/affected = null
+		if(WF.outer_pane)
+			affected = WF.outer_pane
+		else if(WF.inner_pane)
+			affected = WF.inner_pane
+		if(affected)
+			affected.apply_silicate(volume)
+		remove_self(volume)
+		WF.update_icon()
 	return
 
 /datum/reagent/glycerol

@@ -60,8 +60,7 @@
 				to_chat(user, "This device does not have a battery installed.")
 				return
 
-		if(user.unEquip(G))
-			G.forceMove(src)
+		if(user.drop(G, src))
 			charging = G
 			update_icon()
 	else if((isScrewdriver(G) || isCrowbar(G) || isWrench(G)) && portable)
@@ -87,7 +86,7 @@
 
 	if(charging)
 		charging.update_icon()
-		user.put_in_hands(charging)
+		user.pick_or_drop(charging, loc)
 		charging = null
 		update_icon()
 

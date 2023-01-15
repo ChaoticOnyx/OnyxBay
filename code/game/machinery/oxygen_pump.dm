@@ -33,13 +33,11 @@
 		breather.internal = null
 		if(breather.internals)
 			breather.internals.icon_state = "internal0"
-	if(tank)
-		qdel(tank)
+	QDEL_NULL(tank)
 	if(breather)
-		breather.remove_from_mob(contained)
-		src.visible_message("<span class='notice'>The mask rapidly retracts just before \the [src] is destroyed!</span>")
-	qdel(contained)
-	contained = null
+		breather.drop(contained, force = TRUE)
+		visible_message("<span class='notice'>The mask rapidly retracts just before \the [src] is destroyed!</span>")
+	QDEL_NULL(contained)
 	breather = null
 	return ..()
 
@@ -60,7 +58,7 @@
 /obj/machinery/oxygen_pump/attack_hand(mob/user as mob)
 	if((stat & MAINT) && tank)
 		user.visible_message("<span class='notice'>\The [user] removes \the [tank] from \the [src].</span>", "<span class='notice'>You remove \the [tank] from \the [src].</span>")
-		user.put_in_hands(tank)
+		user.pick_or_drop(tank, loc)
 		src.add_fingerprint(user)
 		tank.add_fingerprint(user)
 		tank = null
@@ -71,9 +69,8 @@
 	if(breather)
 		if(tank)
 			tank.forceMove(src)
-		breather.remove_from_mob(contained)
-		contained.forceMove(src)
-		src.visible_message("<span class='notice'>\The [user] makes \The [contained] rapidly retracts back into \the [src]!</span>")
+		breather.drop(contained, src, force = TRUE)
+		visible_message("<span class='notice'>\The [user] makes \The [contained] rapidly retracts back into \the [src]!</span>")
 		if(breather.internals)
 			breather.internals.icon_state = "internal0"
 		breather = null
@@ -144,8 +141,8 @@
 		if(tank)
 			to_chat(user, "<span class='warning'>\The [src] already has a tank installed!</span>")
 		else
-			user.drop_item()
-			W.forceMove(src)
+			if(!user.drop(W, src))
+				return
 			tank = W
 			user.visible_message("<span class='notice'>\The [user] installs \the [tank] into \the [src].</span>", "<span class='notice'>You install \the [tank] into \the [src].</span>")
 			src.add_fingerprint(user)
@@ -164,12 +161,11 @@
 		if(!can_apply_to_target(breather))
 			if(tank)
 				tank.forceMove(src)
-			if (breather.wear_mask==contained)
-				breather.remove_from_mob(contained)
-				contained.forceMove(src)
+			if(breather.wear_mask == contained)
+				breather.drop(contained, src, TRUE)
 			else
 				qdel(contained)
-				contained=new mask_type (src)
+				contained = new mask_type(src)
 			src.visible_message("<span class='notice'>\The [contained] rapidly retracts back into \the [src]!</span>")
 			breather = null
 			use_power = 1

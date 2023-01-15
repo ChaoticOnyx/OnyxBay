@@ -161,8 +161,7 @@
 	service_label = "Radiation Storm Announcement"
 
 /obj/item/device/uplink_service/fake_rad_storm/enable(mob/user = usr)
-	var/datum/event_meta/EM = new(EVENT_LEVEL_MUNDANE, "Fake Radiation Storm", add_to_queue = 0)
-	new /datum/event/radiation_storm/syndicate(EM)
+	SSevents.fire_event_with_type(/datum/event/radiation_storm/syndicate)
 	. = ..()
 
 /***************************
@@ -221,7 +220,7 @@
 	var/obj/item/card/id/id_card = null
 
 /obj/item/device/uplink_service/fake_crew_announcement/attackby(obj/item/I, mob/user = usr)
-	id_card = I.GetIdCard()
+	id_card = I.get_id_card()
 	if(istype(id_card))
 		to_chat(user, SPAN("notice", "Card saved!"))
 

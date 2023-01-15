@@ -648,9 +648,9 @@
 		return
 
 	//The current beaker is the one we just attached, its location is inside the circuit
+	if(!user.drop(I, src))
+		return
 	current_beaker = I
-	user.drop_item(I)
-	I.forceMove(src)
 
 	to_chat(user, SPAN("warning", "You put the [I] inside the beaker connector."))
 
@@ -674,7 +674,7 @@
 
 	//Remove beaker and put in user's hands/location
 	to_chat(user, SPAN("notice", "You take [current_beaker] out of the beaker connector."))
-	user.put_in_hands(current_beaker)
+	user.pick_or_drop(current_beaker)
 	current_beaker = null
 	//Remove beaker reference
 	push_vol()

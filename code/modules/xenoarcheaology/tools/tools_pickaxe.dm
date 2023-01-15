@@ -8,10 +8,10 @@
 	mod_weight = 0.9
 	mod_reach = 1
 	mod_handy = 1.2
-	digspeed = 20
 	w_class = ITEM_SIZE_SMALL
 	drill_sound = 'sound/items/Screwdriver.ogg'
 	drill_verb = "delicately picking"
+	power = 0
 
 /obj/item/pickaxe/archaeologist/brush
 	name = "brush"
@@ -62,7 +62,6 @@
 	name = "hand pickaxe"
 	icon_state = "pick_hand"
 	item_state = "syringe_0"
-	digspeed = 30
 	desc = "A smaller, more precise version of the pickaxe (30 centimetre excavation depth)."
 	excavation_amount = 30
 	drill_sound = 'sound/items/Crowbar.ogg'

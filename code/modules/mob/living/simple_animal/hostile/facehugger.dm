@@ -158,7 +158,7 @@
 	if(H.isSynthetic())
 		return FALSE
 
-	return H.species?.xenomorph_type && !is_sterile && (forced || !H.internal_organs_by_name[BP_HIVE])
+	return H.species?.xenomorph_type && !stat && !is_sterile && (forced || !H.internal_organs_by_name[BP_HIVE])
 
 
 /mob/living/simple_animal/hostile/facehugger/AttackingTarget()
@@ -201,7 +201,7 @@
 		var/mob/living/carbon/human/H = target
 		if(!do_mob(user, H, 20))
 			return
-		user.drop_from_inventory(src)
+		user.drop(src)
 		if(F.facefuck(H, TRUE, TRUE))
 			H.visible_message(SPAN("warning", "[user] latches \the [F] onto [H]'s face!"))
 		return

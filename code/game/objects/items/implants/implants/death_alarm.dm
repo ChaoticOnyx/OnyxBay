@@ -24,7 +24,7 @@
 	if (!implanted) return
 	var/mob/M = imp_in
 
-	if(isnull(M)) // If the mob got gibbed
+	if(QDELETED(M)) // If the mob got gibbed
 		activate()
 		return
 	else if(M.stat == DEAD)
@@ -45,7 +45,12 @@
 	if(!cause || !location)
 		death_message = "A message from [name] has been received. [mobname] has died-zzzzt in-in-in..."
 	else
-		death_message = "A message from [name] has been received. [mobname] has died in [location]!"
+		var/additional_info = " The neural lace signature not found in the body."
+		var/mob/living/carbon/human/H = imp_in
+		var/obj/item/organ/internal/stack/S = H?.internal_organs_by_name[BP_STACK]
+		if(istype(S))
+			additional_info = " The neural lace signature found in the body."
+		death_message = "A message from [name] has been received. [mobname] has died in [location]![additional_info]"
 	set_next_think(0)
 
 	for(var/channel in list("Security", "Medical", "Command"))

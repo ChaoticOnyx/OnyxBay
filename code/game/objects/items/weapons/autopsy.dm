@@ -161,7 +161,7 @@
 
 	if(istype(usr,/mob/living/carbon))
 		// place the item in the usr's hand if possible
-		usr.put_in_hands(P)
+		usr.pick_or_drop(P)
 
 /obj/item/autopsy_scanner/do_surgery(mob/living/carbon/human/M, mob/living/user)
 	if(!istype(M))

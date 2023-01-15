@@ -136,7 +136,6 @@ var/list/debug_verbs = list (
 		,/datum/admins/proc/show_traitor_panel
 		,/client/proc/print_jobban_old
 		,/client/proc/print_jobban_old_filter
-		,/client/proc/forceEvent
 		,/client/proc/Zone_Info
 		,/client/proc/Test_ZAS_Connection
 		,/client/proc/rebootAirMaster

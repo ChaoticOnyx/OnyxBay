@@ -297,9 +297,9 @@
 	if(do_after(user, 20, src))
 		if(!stored_item)
 			if(W.w_class <= ITEM_SIZE_NORMAL)
-				user.drop_from_inventory(W, src)
-				stored_item = W
-				to_chat(user, SPAN("notice", "You hide \the [W] in \the [src]."))
+				if(user.drop(W, src))
+					stored_item = W
+					to_chat(user, SPAN("notice", "You hide \the [W] in \the [src]."))
 			else
 				to_chat(user, SPAN("notice", "\The [W] can't be hidden in \the [src], it's too big."))
 		else
@@ -314,7 +314,7 @@
 		if(!stored_item)
 			to_chat(user, SPAN("notice", "There is nothing hidden in \the [src]."))
 		else
-			user.put_in_hands(stored_item)
+			user.pick_or_drop(stored_item, loc)
 			to_chat(user, SPAN("notice", "You take \the [stored_item] from \the [src]."))
 			stored_item = null
 		src.add_fingerprint(usr)
@@ -349,6 +349,16 @@
 /obj/structure/flora/ausbushes/New()
 	..()
 	icon_state = "firstbush_[rand(1, 4)]"
+
+/obj/structure/flora/ausbushes/glowshroom
+	name = "glowshroom"
+	icon = 'icons/obj/flora/misc.dmi'
+	icon_state = "glowshroom_1"
+
+/obj/structure/flora/ausbushes/glowshroom/New()
+	..()
+	icon_state = "glowshroom_[rand(1, 4)]"
+	set_light(1, 0.6, 1, "#99FF66")
 
 /obj/structure/flora/ausbushes/reedbush
 	icon_state = "reedbush_1"
@@ -1022,3 +1032,23 @@
 	name = "potted monkey plant"
 	desc = "Perhaps, this is why we no longer have a genetics lab?"
 	icon_state = "monkeyplant"
+
+// Misc Stuff
+/obj/structure/flora/log
+	name = "log"
+	desc = "It's a log. It's not very interesting."
+	icon = 'icons/obj/flora/misc.dmi'
+	icon_state = "log"
+	layer = BELOW_DOOR_LAYER
+	anchored = 1
+
+/obj/effect/firefly
+	name = "firefly"
+	desc = "A small, bioluminescent insect."
+	icon = 'icons/obj/flora/misc.dmi'
+	icon_state = "firefly"
+	layer = ABOVE_HUMAN_LAYER
+
+/obj/effect/firefly/Initialize()
+	. = ..()
+	set_light(0.4, 0.1, 2, 2, "#ffc233")

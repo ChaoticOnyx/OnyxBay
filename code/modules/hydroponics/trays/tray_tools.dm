@@ -39,7 +39,7 @@
 		return
 	var/obj/item/paper/P = new /obj/item/paper(get_turf(src), "[last_data]", "paper - [form_title]")
 	if(istype(user,/mob/living/carbon/human) && !(user.l_hand && user.r_hand))
-		user.put_in_hands(P)
+		user.pick_or_drop(P, P.loc)
 	user.visible_message("\The [src] spits out a piece of paper.")
 	return
 

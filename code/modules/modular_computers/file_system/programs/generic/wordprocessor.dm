@@ -26,7 +26,7 @@
 	var/datum/computer_file/data/F = get_file(filename)
 	if(!F) //try to make one if it doesn't exist
 		F = create_file(filename, loaded_data)
-		return !isnull(F)
+		return !QDELETED(F)
 	var/datum/computer_file/data/backup = F.clone()
 	var/obj/item/computer_hardware/hard_drive/HDD = computer.hard_drive
 	if(!HDD)

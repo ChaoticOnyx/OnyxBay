@@ -130,7 +130,7 @@
 							src.SetName("Secure Windoor Assembly")
 
 			//Adding cable to the assembly. Step 5 complete.
-			else if(istype(W, /obj/item/stack/cable_coil) && anchored)
+			else if(isCoil(W) && anchored)
 				user.visible_message("[user] wires the windoor assembly.", "You start to wire the windoor assembly.")
 
 				var/obj/item/stack/cable_coil/CC = W
@@ -169,10 +169,10 @@
 				user.visible_message("[user] installs the electronics into the airlock assembly.", "You start to install electronics into the airlock assembly.")
 
 				if(do_after(user, 40,src))
-					if(!src) return
-
-					user.drop_item()
-					W.loc = src
+					if(!src)
+						return
+					if(!user.drop(W, src))
+						return
 					to_chat(user, "<span class='notice'>You've installed the airlock electronics!</span>")
 					src.SetName("Near finished Windoor Assembly")
 					src.electronics = W

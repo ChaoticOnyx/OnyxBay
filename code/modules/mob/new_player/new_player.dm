@@ -152,7 +152,7 @@
 				to_chat(src, "<span class='danger'>Could not locate an observer spawn point. Use the Teleport verb to jump to the map.</span>")
 			observer.timeofdeath = world.time // Set the time of death so that the respawn timer works correctly.
 
-			if(isnull(client.holder))
+			if(QDELETED(client.holder))
 				announce_ghost_joinleave(src)
 
 			var/mob/living/carbon/human/dummy/mannequin = get_mannequin(client.ckey)
@@ -456,7 +456,7 @@
 		if(job && IsJobAvailable(job))
 			if(job.minimum_character_age && (client.prefs.age < job.minimum_character_age))
 				continue
-			if(job.faction_restricted && (client.prefs.faction != GLOB.using_map.company_name || (client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
+			if(job.faction_restricted && (client.prefs.background != GLOB.using_map.company_name || (client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 				continue
 			if(job.no_latejoin)
 				continue

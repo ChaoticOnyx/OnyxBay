@@ -37,15 +37,13 @@
 			"You hear the slow creaking of a spring."
 			)
 
-		if (do_after(user, 60, src))
+		if(do_after(user, 60, src) && user.drop(src))
 			user.visible_message(
 				"<span class='danger'>\The [user] has deployed \the [src].</span>",
 				"<span class='danger'>You have deployed \the [src]!</span>",
 				"You hear a latch click loudly."
 				)
-
 			deployed = 1
-			user.drop_from_inventory(src)
 			update_icon()
 			anchored = 1
 

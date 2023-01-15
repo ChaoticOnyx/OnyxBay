@@ -281,33 +281,34 @@
 			set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
 			set_see_in_dark(8)
 			set_see_invisible(SEE_INVISIBLE_LEVEL_TWO)
-		else if(sensor_mode == THERMAL_VISION)
-			set_sight(sight|SEE_MOBS)
-			set_see_in_dark(8)
-			set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
-			src.client.screen |= GLOB.global_hud.thermal
-		else if(sensor_mode == MESON_VISION)
-			set_sight(sight|SEE_TURFS)
-			set_see_in_dark(8)
-			set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
-			src.client.screen |= GLOB.global_hud.meson
-		else if(sensor_mode == SCIENCE_VISION)
-			src.client.screen |= GLOB.global_hud.science
-		else if(sensor_mode == MATERIAL_VISION)
-			set_sight(sight|SEE_OBJS)
-			set_see_in_dark(8)
-			src.client.screen |= GLOB.global_hud.material
-		else if(sensor_mode == NVG_VISION)
-			set_see_in_dark(7)
-			set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
-			src.client.screen |= GLOB.global_hud.nvg
-		else if(sensor_mode == FLASH_PROTECTION_VISION)
-			src.set_fullscreen(1, "flash_protection", /obj/screen/fullscreen/impaired, TINT_MODERATE)
-		else if(stat != DEAD)
-			set_sight(sight&(~SEE_TURFS)&(~SEE_MOBS)&(~SEE_OBJS))
-			set_see_in_dark(8)                      // see_in_dark means you can FAINTLY see in the dark, humans have a range of 3 or so, tajaran have it at 8
-			set_see_invisible(SEE_INVISIBLE_LIVING) // This is normal vision (25), setting it lower for normal vision means you don't "see" things like darkness since darkness
-                                                    // has a "invisible" value of 15
+		else switch(sensor_mode)
+			if(THERMAL_VISION)
+				set_sight(sight|SEE_MOBS)
+				set_see_in_dark(8)
+				set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
+				src.client.screen |= GLOB.global_hud.thermal
+			if(MESON_VISION)
+				set_sight(sight|SEE_TURFS)
+				set_see_in_dark(8)
+				set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
+				src.client.screen |= GLOB.global_hud.meson
+			if(SCIENCE_VISION)
+				src.client.screen |= GLOB.global_hud.science
+			if(MATERIAL_VISION)
+				set_sight(sight|SEE_OBJS)
+				set_see_in_dark(8)
+				src.client.screen |= GLOB.global_hud.material
+			if(NVG_VISION)
+				set_see_in_dark(7)
+				set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
+				src.client.screen |= GLOB.global_hud.nvg
+			if(FLASH_PROTECTION_VISION)
+				src.set_fullscreen(1, "flash_protection", /obj/screen/fullscreen/impaired, TINT_MODERATE)
+			else if(stat != DEAD)
+				set_sight(sight&(~SEE_TURFS)&(~SEE_MOBS)&(~SEE_OBJS))
+				set_see_in_dark(8)                      // see_in_dark means you can FAINTLY see in the dark, humans have a range of 3 or so, tajaran have it at 8
+				set_see_invisible(SEE_INVISIBLE_LIVING) // This is normal vision (25), setting it lower for normal vision means you don't "see" things like darkness since darkness
+								                        // has a "invisible" value of 15
 
 /mob/living/silicon/robot/proc/update_items()
 	if(client)

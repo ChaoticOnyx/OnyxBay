@@ -51,7 +51,7 @@
 							organ.implants -= src
 			host.pinned -= src
 			host.embedded -= src
-			host.drop_from_inventory(src)
+			host.drop(src, force = TRUE)
 		spawn(1)
 			qdel(src)
 

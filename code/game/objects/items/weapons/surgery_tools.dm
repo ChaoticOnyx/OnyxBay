@@ -161,7 +161,8 @@
 
 /obj/item/circular_saw/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/material/wirerod) && improved == 0)
-		user.drop_from_inventory(W)
+		if(!user.drop(W))
+			return
 		qdel(W)
 		name = "circular spear"
 		desc = "For heavy duty cutting in glory of The Emperor and The Imperium."
@@ -172,7 +173,7 @@
 		w_class = ITEM_SIZE_LARGE
 		improved = 1
 		surgery_speed = 1.2 // Well, it's bigger and heavier now
-	if(istype(W,/obj/item/wirecutters) && improved == 1)
+	if(isWirecutter(W) && improved == 1)
 		new /obj/item/material/wirerod(get_turf(src)) //give back the wired rod
 		name = "circular saw"
 		desc = "For heavy duty cutting. It remembers its past glory..."
@@ -196,7 +197,8 @@
 
 /obj/item/circular_saw/plasmasaw/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/material/wirerod) && improved == 0)
-		user.drop_from_inventory(W)
+		if(!user.drop(W))
+			return
 		qdel(W)
 		name = "plasma spear"
 		desc = "For The Heaviest-Dutiest cutting in glory of The Emperor and The Imperium."
@@ -207,7 +209,7 @@
 		w_class = ITEM_SIZE_LARGE
 		improved = 1
 		surgery_speed = 1.2 // Well, it's bigger and heavier now
-	if(istype(W,/obj/item/wirecutters) && improved == 1)
+	if(isWirecutter(W) && improved == 1)
 		new /obj/item/material/wirerod(get_turf(src)) //give back the wired rod
 		name = "circular saw"
 		desc = "Perfect for cutting through ice. And bodies."

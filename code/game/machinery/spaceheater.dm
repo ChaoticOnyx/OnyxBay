@@ -62,11 +62,9 @@
 			else
 				// insert cell
 				var/obj/item/cell/C = usr.get_active_hand()
-				if(istype(C))
-					user.drop_item()
+				if(user.drop(C, src))
 					cell = C
-					C.forceMove(src)
-					C.add_fingerprint(usr)
+					C.add_fingerprint(user)
 
 					user.visible_message("<span class='notice'>[user] inserts a power cell into [src].</span>", "<span class='notice'>You insert the power cell into [src].</span>")
 					power_change()
@@ -139,7 +137,7 @@
 			if(panel_open && cell && !usr.get_active_hand())
 				usr.visible_message("<span class='notice'>\The usr] removes \the [cell] from \the [src].</span>", "<span class='notice'>You remove \the [cell] from \the [src].</span>")
 				cell.update_icon()
-				usr.put_in_hands(cell)
+				usr.pick_or_drop(cell)
 				cell.add_fingerprint(usr)
 				cell = null
 				power_change()
@@ -147,10 +145,8 @@
 		if("cellinstall")
 			if(panel_open && !cell)
 				var/obj/item/cell/C = usr.get_active_hand()
-				if(istype(C))
-					usr.drop_item()
+				if(usr.drop(C, src))
 					cell = C
-					C.forceMove(src)
 					C.add_fingerprint(usr)
 					power_change()
 					usr.visible_message("<span class='notice'>[usr] inserts \the [C] into \the [src].</span>", "<span class='notice'>You insert \the [C] into \the [src].</span>")

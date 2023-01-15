@@ -14,6 +14,7 @@
 /mob/living/carbon/Destroy()
 	QDEL_NULL(touching)
 	QDEL_NULL(bloodstr)
+	QDEL_NULL(op_stage)
 
 	reagents = null //We assume reagents is a reference to bloodstr here
 
@@ -336,8 +337,8 @@
 				admin_attack_log(usr, M, "Threw the victim from [start_T_descriptor] to [end_T_descriptor].", "Was from [start_T_descriptor] to [end_T_descriptor].", "threw, from [start_T_descriptor] to [end_T_descriptor], ")
 	else
 		itemsize = I.w_class
+		drop(item)
 
-	drop_from_inventory(item)
 	if(!item || !isturf(item.loc))
 		return
 
@@ -371,17 +372,17 @@
 		return 1
 	return
 
-/mob/living/carbon/u_equip(obj/item/W as obj)
-	if(!W)	return 0
+/mob/living/carbon/__unequip(obj/W)
+	if(!W)
+		return
 
-	else if (W == handcuffed)
+	if(W == handcuffed)
 		handcuffed = null
 		update_inv_handcuffed()
-		if(buckled && buckled.buckle_require_restraints)
+		if(buckled?.buckle_require_restraints)
 			buckled.unbuckle_mob()
 	else
-	 ..()
-
+		..()
 	return
 
 /mob/living/carbon/verb/mob_sleep()
@@ -493,7 +494,7 @@
 		set_see_in_dark(8)
 		set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
 		if(species)
-			sight = species.get_vision_flags(src)
+			set_sight(species.get_vision_flags(src))
 
 /mob/living/carbon/proc/should_have_organ(organ_check)
 	return 0

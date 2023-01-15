@@ -25,11 +25,10 @@
 	var/mob/living/carbon/H = over_object
 
 	if(istype(H) && Adjacent(H) && (usr == H) && (H.a_intent == "grab") && hat && !(H.l_hand && H.r_hand))
-		hat.forceMove(get_turf(src))
-		H.put_in_hands(hat)
+		H.pick_or_drop(hat, loc)
 		H.visible_message("<span class='danger'>\The [H] removes \the [src]'s [hat].</span>")
 		hat = null
-		update_icons()
+		update_icon()
 		return
 
 	return ..()

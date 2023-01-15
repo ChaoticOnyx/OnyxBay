@@ -116,10 +116,10 @@ var/global/photo_count = 0
 		if((!M.restrained() && !M.stat && M.back == src))
 			switch(over_object.name)
 				if("r_hand")
-					if(M.unEquip(src))
+					if(M.drop(src))
 						M.put_in_r_hand(src)
 				if("l_hand")
-					if(M.unEquip(src))
+					if(M.drop(src))
 						M.put_in_l_hand(src)
 			add_fingerprint(usr)
 			return
@@ -184,9 +184,9 @@ var/global/photo_count = 0
 		if(pictures_left)
 			to_chat(user, "<span class='notice'>[src] still has some film in it!</span>")
 			return
+		if(!user.drop(I, src))
+			return
 		to_chat(user, "<span class='notice'>You insert [I] into [src].</span>")
-		user.drop_item()
-		qdel(I)
 		// TODO [V] That's kinda strange: pictures_left should be stored in film rather than in camera
 		pictures_left = pictures_max
 		return
@@ -268,9 +268,7 @@ var/global/photo_count = 0
 	return p
 
 /obj/item/device/camera/proc/printpicture(mob/user, obj/item/photo/p)
-	p.loc = user.loc
-	if(!user.get_inactive_hand())
-		user.put_in_inactive_hand(p)
+	user.pick_or_drop(p)
 
 /obj/item/photo/proc/copy(copy_id = 0)
 	var/obj/item/photo/p = new /obj/item/photo()

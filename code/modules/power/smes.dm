@@ -72,7 +72,7 @@
 
 /obj/machinery/power/smes/New()
 	..()
-	GLOB.smes_list += src
+	GLOB.smes_list |= src
 	if(!should_be_mapped)
 		warning("Non-buildable or Non-magical SMES at [src.x]X [src.y]Y [src.z]Z")
 
@@ -92,7 +92,7 @@
 
 /obj/machinery/power/smes/Destroy()
 	GLOB.smes_list -= src
-	..()
+	return ..()
 
 /obj/machinery/power/smes/add_avail(amount)
 	if(..(amount))

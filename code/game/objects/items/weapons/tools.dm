@@ -35,6 +35,7 @@
 	matter = list(MATERIAL_STEEL = 150)
 	center_of_mass = "x=17;y=16"
 	attack_verb = list("bashed", "battered", "bludgeoned", "whacked")
+	tool_behaviour = TOOL_WRENCH
 	var/randicon = TRUE
 
 /obj/item/wrench/Initialize()
@@ -92,6 +93,7 @@
 	attack_verb = list("stabbed")
 	lock_picking_level = 5
 	hitsound = 'sound/weapons/bladeslice.ogg'
+	tool_behaviour = TOOL_SCREWDRIVER
 	var/randicon = TRUE
 
 /obj/item/screwdriver/Initialize()
@@ -195,6 +197,7 @@
 	sharp = 1
 	edge = 1
 	hitsound = 'sound/weapons/bladeslice.ogg'
+	tool_behaviour = TOOL_WIRECUTTER
 	var/randicon = TRUE
 
 /obj/item/wirecutters/Initialize()
@@ -245,6 +248,7 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	center_of_mass = "x=14;y=15"
+	tool_behaviour = TOOL_WELDER
 
 	//Amount of OUCH when it's thrown
 	force = 6.5
@@ -321,7 +325,6 @@
 		if(tank)
 			to_chat(user, "<span class='notice'>You should detach \the [tank] first.</span>")
 			return
-		user.drop_from_inventory(W)
 		qdel(W)
 
 		if(istype(src.loc,/turf))
@@ -342,7 +345,8 @@
 			to_chat(user, "\The [W] is too large to fit in \the [src].")
 			return
 
-		user.drop_from_inventory(W, src)
+		if(!user.drop(W, src))
+			return
 		tank = W
 		user.visible_message("[user] slots \a [W] into \the [src].", "You slot \a [W] into \the [src].")
 		update_icon()
@@ -355,7 +359,7 @@
 		if(!welding)
 			if(tank.can_remove)
 				user.visible_message("[user] removes \the [tank] from \the [src].", "You remove \the [tank] from \the [src].")
-				user.put_in_hands(tank)
+				user.pick_or_drop(tank)
 				tank = null
 				update_icon()
 			else
@@ -370,7 +374,7 @@
 	if(welding)
 		if(!remove_fuel(0.05))
 			setWelding(0)
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/weldingtool/afterattack(obj/O, mob/user, proximity)
@@ -675,7 +679,7 @@
 		var/gen_amount = ((world.time-last_gen)/25)
 		reagents.add_reagent(/datum/reagent/fuel, gen_amount)
 		last_gen = world.time
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/weldingtool/old
@@ -714,6 +718,7 @@
 	origin_tech = list(TECH_ENGINEERING = 1)
 	matter = list(MATERIAL_STEEL = 140)
 	attack_verb = list("attacked", "bashed", "battered", "bludgeoned", "whacked")
+	tool_behaviour = TOOL_CROWBAR
 
 /obj/item/crowbar/red
 	icon_state = "red_crowbar"

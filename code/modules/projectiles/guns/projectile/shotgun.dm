@@ -123,7 +123,6 @@
 		update_icon()
 		return
 	else if(istype(W,/obj/item/device/assembly/mousetrap) && buildstate == 2)
-		user.drop_from_inventory(W)
 		qdel(W)
 		user.visible_message("<span class='notice'>\The [user] takes apart \the [W] and uses the parts to construct a crude chamber loader inside \the [src].</span>")
 		add_fingerprint(user)
@@ -141,12 +140,12 @@
 		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		var/obj/item/gun/projectile/shotgun/pump/boomstick/herewego
 		herewego = new /obj/item/gun/projectile/shotgun/pump/boomstick { starts_loaded = 0 } (loc)
+		transfer_fingerprints_to(herewego)
 		if(ismob(loc))
 			var/mob/M = loc
-			M.drop_from_inventory(src)
-			M.put_in_hands(herewego)
-		transfer_fingerprints_to(herewego)
-		qdel(src)
+			M.replace_item(src, herewego, TRUE)
+		else
+			qdel(src)
 		return
 	else
 		..()

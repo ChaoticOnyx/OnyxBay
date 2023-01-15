@@ -309,6 +309,7 @@
 		new /obj/item/robot_parts/l_arm(Tsec)
 	if(with_nade)
 		var/obj/item/grenade/frag/new_nade = new /obj/item/grenade/frag(Tsec)
+		QDEL_NULL(new_nade.safety_pin)
 		new_nade.activate()
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
@@ -348,11 +349,12 @@
 		return
 
 	if(S.secured)
+		if(!user.drop(S))
+			return
 		qdel(S)
 		var/obj/item/secbot_assembly/A = new /obj/item/secbot_assembly
-		user.put_in_hands(A)
+		user.pick_or_drop(A)
 		to_chat(user, "You add the signaler to the helmet.")
-		user.drop_from_inventory(src)
 		qdel(src)
 	else
 		return
@@ -376,7 +378,8 @@
 			to_chat(user, "You weld a hole in \the [src].")
 
 	else if(isprox(O) && (build_step == 1))
-		user.drop_item()
+		if(!user.drop(O))
+			return
 		build_step = 2
 		to_chat(user, "You add \the [O] to [src].")
 		overlays += image('icons/obj/aibots.dmi', "hs_eye")
@@ -384,7 +387,8 @@
 		qdel(O)
 
 	else if((istype(O, /obj/item/robot_parts/l_arm) || istype(O, /obj/item/robot_parts/r_arm)) && build_step == 2)
-		user.drop_item()
+		if(!user.drop(O))
+			return
 		build_step = 3
 		to_chat(user, "You add \the [O] to [src].")
 		SetName("helmet/signaler/prox sensor/robot arm assembly")
@@ -392,7 +396,8 @@
 		qdel(O)
 
 	else if(istype(O, /obj/item/melee/baton) && build_step == 3)
-		user.drop_item()
+		if(!user.drop(O))
+			return
 		to_chat(user, "You complete the Securitron! Beep boop.")
 		var/mob/living/bot/secbot/S = new /mob/living/bot/secbot(get_turf(src))
 		S.SetName(created_name)

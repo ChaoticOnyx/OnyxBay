@@ -114,9 +114,6 @@ var/list/wireColours = list("red", "blue", "green", "darkred", "orange", "brown"
 		var/mob/living/L = usr
 		if(CanUse(L) && href_list["action"])
 			var/obj/item/I = L.get_active_hand()
-			if(istype(I,/obj/item/combotool))
-				var/obj/item/combotool/CT = L.get_active_hand()
-				I = CT.tool_u
 			holder.add_hiddenprint(L)
 			if(href_list["cut"]) // Toggles the cut/mend status
 				if(isWirecutter(I))
@@ -136,12 +133,11 @@ var/list/wireColours = list("red", "blue", "green", "darkred", "orange", "brown"
 				if(IsAttached(colour))
 					var/obj/item/O = Detach(colour)
 					if(O)
-						L.put_in_hands(O)
+						L.pick_or_drop(O)
 
 				// Attach
 				else
-					if(istype(I, /obj/item/device/assembly/signaler))
-						L.drop_item()
+					if(istype(I, /obj/item/device/assembly/signaler) && L.drop(I))
 						Attach(colour, I)
 					else
 						to_chat(L, "<span class='error'>You need a remote signaller!</span>")

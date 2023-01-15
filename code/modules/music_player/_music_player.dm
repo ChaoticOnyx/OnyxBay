@@ -102,7 +102,7 @@ GLOBAL_LIST_EMPTY(music_players)
 		StopPlaying()
 		visible_message(SPAN_WARNING("\The [src]'s power meter flashes a battery warning and refuses to operate."))
 		return
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/music_player/proc/set_mode(value)
@@ -143,10 +143,8 @@ GLOBAL_LIST_EMPTY(music_players)
 			to_chat(user, SPAN_WARNING("\The [C] is ruined, you can't use it."))
 			return
 
-		if(!user.unEquip(C))
+		if(!user.drop(C, src))
 			return
-
-		I.forceMove(src)
 		tape = C
 		user.visible_message(
 			SPAN_NOTICE("[user] insert \a [tape] into \the [src]."),
@@ -162,10 +160,8 @@ GLOBAL_LIST_EMPTY(music_players)
 				to_chat(user, SPAN_NOTICE("[src] already has \a [cell] installed."))
 				return
 
-			if(!user.unEquip(C))
+			if(!user.drop(C, src))
 				return
-
-			I.forceMove(src)
 			cell = C
 			to_chat(user, SPAN_NOTICE("You insert \a [cell] into \the [src]."))
 			update_icon()
@@ -204,7 +200,7 @@ GLOBAL_LIST_EMPTY(music_players)
 								return FALSE
 							playsound(src, 'sound/items/Screwdriver.ogg', 45, 1)
 							to_chat(user, SPAN_NOTICE("You pulled out [cell] out of [src] with [I]."))
-							user.put_in_hands(cell)
+							user.pick_or_drop(cell)
 							cell = null
 							update_icon()
 						else
@@ -323,7 +319,7 @@ GLOBAL_LIST_EMPTY(music_players)
 		visible_message(
 			SPAN_NOTICE("[user] eject \a [tape] from \the [src]."),
 			SPAN_NOTICE("You eject \a [tape] from \the [src]."))
-		user.put_in_hands(tape)
+		user.pick_or_drop(tape)
 	else
 		tape.dropInto(loc)
 	tape = null
@@ -401,7 +397,7 @@ GLOBAL_LIST_EMPTY(music_players)
 	if(broken)
 		return
 
-	if(isnull(tape))
+	if(QDELETED(tape))
 		return
 
 	if(!tape.CanPlay())

@@ -29,8 +29,8 @@
 
 /obj/item/implant/compressed/activate()
 	var/turf/T = get_turf(src)
-	if (imp_in)
-		imp_in.put_in_hands(scanned)
+	if(imp_in)
+		imp_in.pick_or_drop(scanned)
 	else
 		scanned.forceMove(T)
 	qdel(src)
@@ -82,9 +82,10 @@
 				to_chat(user, "<span class='warning'>The matter compressor safeties prevent you from doing that.</span>")
 			return
 		c.scanned = A
-		if(istype(A.loc,/mob/living/carbon/human))
+		if(istype(A.loc, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = A.loc
-			H.remove_from_mob(A)
+			if(!H.drop(A))
+				return
 		else if(istype(A.loc,/obj/item/storage))
 			var/obj/item/storage/S = A.loc
 			S.remove_from_storage(A)

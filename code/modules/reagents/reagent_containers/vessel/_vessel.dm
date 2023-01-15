@@ -267,7 +267,7 @@
 /obj/item/reagent_containers/vessel/proc/smash(newloc, atom/against = null)
 	if(ismob(loc))
 		var/mob/M = loc
-		M.drop_from_inventory(src)
+		M.drop(src, force = TRUE)
 
 	//Creates a shattering noise and replaces the vessel with a broken_bottle
 	var/obj/item/broken_bottle/B = new /obj/item/broken_bottle(newloc)
@@ -322,7 +322,7 @@
 
 	//Finally, smash the bottle. This kills (qdel) the vessel.
 	var/obj/item/broken_bottle/B = smash(target.loc, target)
-	user.put_in_active_hand(B)
+	user.pick_or_drop(B, target.loc)
 
 	return blocked
 

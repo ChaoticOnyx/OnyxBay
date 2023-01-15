@@ -32,8 +32,7 @@
 		if(!imp)
 			to_chat(usr, "<span class='notice'>There is no implant to remove.</span>")
 			return
-		imp.forceMove(get_turf(src))
-		usr.put_in_hands(imp)
+		usr.pick_or_drop(imp, loc)
 		to_chat(usr, "<span class='notice'>You remove \the [imp] from \the [src].</span>")
 		name = "implanter"
 		imp = null
@@ -57,8 +56,9 @@
 
 /obj/item/implanter/attackby(obj/item/I, mob/user)
 	if(!imp && istype(I, /obj/item/implant))
+		if(!user.drop(I, src))
+			return
 		to_chat(usr, "<span class='notice'>You slide \the [I] into \the [src].</span>")
-		user.drop_from_inventory(I,src)
 		imp = I
 		update_icon()
 	else

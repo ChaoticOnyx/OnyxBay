@@ -13,12 +13,10 @@
 	has_extinguisher = new /obj/item/extinguisher(src)
 
 /obj/structure/extinguisher_cabinet/attackby(obj/item/O, mob/user)
-	if(isrobot(user))
-		return
 	if(istype(O, /obj/item/extinguisher))
 		if(!has_extinguisher && opened)
-			user.remove_from_mob(O)
-			contents += O
+			if(!user.drop(O, src))
+				return
 			has_extinguisher = O
 			to_chat(user, "<span class='notice'>You place [O] in [src].</span>")
 			playsound(src.loc, 'sound/effects/extin.ogg', 50, 0)
@@ -44,7 +42,7 @@
 		if(!user.IsAdvancedToolUser(1))
 			to_chat(user, FEEDBACK_YOU_LACK_DEXTERITY)
 			return
-		user.put_in_hands(has_extinguisher)
+		user.pick_or_drop(has_extinguisher)
 		to_chat(user, "<span class='notice'>You take [has_extinguisher] from [src].</span>")
 		playsound(src.loc, 'sound/effects/extout.ogg', 50, 0)
 		has_extinguisher = null

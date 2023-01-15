@@ -1,4 +1,3 @@
-#define STAGE_CABLE 0
 #define STAGE_CARTRIDGE 1
 #define STAGE_GLASS 2
 #define STAGE_FINISHING 3
@@ -37,7 +36,7 @@
 /obj/machinery/vending_frame/attackby(obj/item/O, mob/user)
 	switch(state)
 		if(STAGE_CABLE)
-			if(anchored && istype(O, /obj/item/weldingtool))
+			if(anchored && isWelder(O))
 				deconstruct_frame(O, user)
 			if(isWrench(O))
 				wrench_frame(user)
@@ -102,9 +101,9 @@
 	update_icon()
 
 /obj/machinery/vending_frame/proc/add_cartridge(obj/item/vending_cartridge/C, mob/user)
+	if(!user.drop(C, src))
+		return
 	cartridge = C
-	user.drop_item()
-	C.forceMove(src)
 	playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
 	to_chat(user, SPAN_NOTICE("You add the [C.name] to the frame."))
 	state = STAGE_GLASS
@@ -153,7 +152,6 @@
 /obj/machinery/vending_frame/proc/refresh_cartridge()
 	cartridge = locate() in contents
 
-#undef STAGE_CABLE
 #undef STAGE_CARTRIDGE
 #undef STAGE_GLASS
 #undef STAGE_FINISHING

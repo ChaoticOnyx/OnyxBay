@@ -529,7 +529,11 @@
 			if("Gn6") soundfile = 'sound/recorder/Gn6.mid'
 	else	return
 
-	sound_to(hearers(15, get_turf(src)), sound(soundfile))
+	for(var/mob/M in hearers(15, get_turf(src)))
+		if(M.get_preference_value(/datum/client_preference/play_instruments) != GLOB.PREF_YES)
+			continue
+		
+		sound_to(M, sound(soundfile))
 
 /obj/item/instrument/proc/playsong()
 	do
@@ -787,4 +791,3 @@
 	force = 3
 	InstrumentId  = "violin"
 	attack_verb = list("played hard", "bowed", "played")
-

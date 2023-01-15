@@ -2,7 +2,7 @@
 	name = "small rock"
 	icon = 'icons/obj/mining.dmi'
 	icon_state = "ore2"
-	randpixel = 8
+	randpixel = 10
 	w_class = ITEM_SIZE_SMALL
 	var/datum/geosample/geologic_data
 	var/ore/ore = null // set to a type to find the right instance on init
@@ -44,7 +44,7 @@
 
 /obj/item/ore/uranium/Initialize()
 	. = ..()
-	
+
 	create_reagents()
 	reagents.add_reagent(/datum/reagent/uranium, ore.result_amount, null, FALSE)
 

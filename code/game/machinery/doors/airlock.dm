@@ -147,13 +147,13 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/proc/loseMainPower()
 	main_power_lost_until = mainPowerCablesCut() ? -1 : SecondsToTicks(60)
 	if(main_power_lost_until > 0)
-		addtimer(CALLBACK(src, .proc/regainMainPower), main_power_lost_until)
+		set_next_think_ctx("regain_main_power", world.time + main_power_lost_until)
 
 
 	// If backup power is permanently disabled then activate in 10 seconds if possible, otherwise it's already enabled or a timer is already running
 	if(backup_power_lost_until == -1 && !backupPowerCablesCut())
 		backup_power_lost_until = SecondsToTicks(10)
-		addtimer(CALLBACK(src, .proc/regainBackupPower), backup_power_lost_until)
+		set_next_think_ctx("regain_backup_power", world.time + backup_power_lost_until)
 	// Disable electricity if required
 	if(electrified_until && isAllPowerLoss())
 		electrify(0)
@@ -163,7 +163,7 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/proc/loseBackupPower()
 	backup_power_lost_until = backupPowerCablesCut() ? -1 : SecondsToTicks(60)
 	if(backup_power_lost_until > 0)
-		addtimer(CALLBACK(src, .proc/regainBackupPower), backup_power_lost_until)
+		set_next_think_ctx("regain_backup_power", world.time + backup_power_lost_until)
 	// Disable electricity if required
 	if(electrified_until && isAllPowerLoss())
 		electrify(0)
@@ -207,7 +207,7 @@ About the new airlock wires panel:
 		message = "The door is now electrified [duration == -1 ? "permanently" : "for [duration] second\s"]."
 		electrified_until = duration == -1 ? -1 : SecondsToTicks(duration)
 		if(electrified_until > 0)
-			addtimer(CALLBACK(src, .proc/electrify), electrified_until)
+			set_next_think_ctx("electrify", world.time + electrified_until)
 		. = 1
 
 	if(feedback && message)
@@ -518,7 +518,7 @@ About the new airlock wires panel:
 	return 1
 
 //returns 1 on success, 0 on failure
-/obj/machinery/door/airlock/proc/cut_bolts(item, mob/user)
+/obj/machinery/door/airlock/proc/cut_bolts(obj/item/item, mob/user)
 	var/cut_delay = (15 SECONDS)
 	var/cut_verb
 	var/cut_sound
@@ -602,7 +602,7 @@ About the new airlock wires panel:
 		return ..()
 
 	// Brace is considered installed on the airlock, so interacting with it is protected from electrification.
-	if(brace && (istype(C.GetIdCard(), /obj/item/card/id/) || istype(C, /obj/item/crowbar/brace_jack)))
+	if(brace && (istype(C.get_id_card(), /obj/item/card/id/) || istype(C, /obj/item/crowbar/brace_jack)))
 		return brace.attackby(C, user)
 
 	if(!brace && istype(C, /obj/item/airlock_brace))
@@ -614,12 +614,10 @@ About the new airlock wires panel:
 		if((!A.req_access.len && !A.req_one_access) && (alert("\the [A]'s 'Access Not Set' light is flashing. Install it anyway?", "Access not set", "Yes", "No") == "No"))
 			return
 
-		if(do_after(user, 50, src) && density)
+		if(do_after(user, 50, src) && density && user.drop(brace, src))
 			to_chat(user, "You successfully install \the [A]. \The [src] has been locked.")
 			brace = A
 			brace.airlock = src
-			user.drop_from_inventory(brace)
-			brace.forceMove(src)
 			update_icon()
 		return
 
@@ -801,7 +799,7 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/close(forced = 0)
 	var/wait = normalspeed ? 150 : 5
 	if(!can_close(forced))
-		addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
+		set_next_think_ctx("close", world.time + wait)
 		return 0
 
 	if(safe)
@@ -809,11 +807,11 @@ About the new airlock wires panel:
 			for(var/atom/movable/AM in T)
 				if(AM.blocks_airlock())
 					if(autoclose && tryingToLock)
-						addtimer(CALLBACK(src, .proc/close), 30 SECONDS)
+						set_next_think_ctx("close", world.time + (30 SECONDS))
 					if(world.time > next_beep_at)
 						playsound(src.loc, close_failure_blocked, 30, 0, -3)
 						next_beep_at = world.time + SecondsToTicks(10)
-					addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
+					set_next_think_ctx("close", world.time + wait)
 					return
 
 	for(var/turf/T in locs)
@@ -867,6 +865,11 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/New(newloc, obj/structure/door_assembly/assembly = null)
 	..()
+
+	add_think_ctx("regain_main_power", CALLBACK(src, .proc/regainMainPower), 0)
+	add_think_ctx("regain_backup_power", CALLBACK(src, .proc/regainBackupPower), 0)
+	add_think_ctx("electrify", CALLBACK(src, .proc/electrify), 0)
+	add_think_ctx("close", CALLBACK(src, .proc/close), 0)
 
 	//if assembly is given, create the new door from the assembly
 	if (assembly && istype(assembly))

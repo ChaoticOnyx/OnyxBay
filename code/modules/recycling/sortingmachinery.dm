@@ -145,25 +145,24 @@
 	var/tag_x
 
 /obj/item/smallDelivery/proc/unwrap(mob/user)
-	if (!wrapped)
-		qdel(src)
-
-	if (!Adjacent(user))
+	if(!Adjacent(user))
 		return
-	wrapped.forceMove(user.loc)
-	user.drop_item()
+
+	if(!wrapped)
+		qdel(src)
+		return
+
+	playsound(user, 'sound/effects/using/wrapper/unwrap1.ogg', rand(50, 75), TRUE)
 	if(ishuman(user))
-		user.put_in_hands(wrapped)
+		user.replace_item(src, wrapped, TRUE, TRUE)
 	else
 		wrapped.forceMove(get_turf(src))
+		qdel(src)
 
-	playsound(src, 'sound/effects/using/wrapper/unwrap1.ogg', rand(50, 75), TRUE)
-	qdel(src)
-
-/obj/item/smallDelivery/attack_robot(mob/user as mob)
+/obj/item/smallDelivery/attack_robot(mob/user)
 	unwrap(user)
 
-/obj/item/smallDelivery/attack_self(mob/user as mob)
+/obj/item/smallDelivery/attack_self(mob/user)
 	unwrap(user)
 
 /obj/item/smallDelivery/attackby(obj/item/W as obj, mob/user as mob)

@@ -62,8 +62,7 @@
 			to_chat(usr, "<span class='warning'>\The [src] is empty.</span>")
 			return
 
-		fireaxe.forceMove(get_turf(usr))
-		usr.put_in_hands(fireaxe)
+		usr.pick_or_drop(fireaxe)
 		fireaxe = null
 		update_icon()
 
@@ -85,8 +84,7 @@
 		if(open)
 			if(fireaxe)
 				to_chat(user, "<span class='warning'>There is already \a [fireaxe] inside \the [src].</span>")
-			else if(user.unEquip(O))
-				O.forceMove(src)
+			else if(user.drop(O, src))
 				fireaxe = O
 				to_chat(user, "<span class='notice'>You place \the [fireaxe] into \the [src].</span>")
 				update_icon()

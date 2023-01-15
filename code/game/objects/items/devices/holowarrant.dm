@@ -39,7 +39,7 @@
 
 /obj/item/device/holowarrant/attackby(obj/item/W, mob/user)
 	if(active)
-		var/obj/item/card/id/I = W.GetIdCard()
+		var/obj/item/card/id/I = W.get_id_card()
 		if(I && (access_security in I.access))
 			var/choice = alert(user, "Would you like to authorize this warrant?","Warrant authorization","Yes","No")
 			if(choice == "Yes")

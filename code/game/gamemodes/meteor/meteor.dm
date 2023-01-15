@@ -25,9 +25,6 @@
 	var/maximal_severity = 80
 	var/send_admin_broadcasts = FALSE	// Enables debugging/information mode, sending admin messages when waves occur and when severity escalates.
 
-	event_delay_mod_moderate = 0.5		// As a bonus, more frequent events.
-	event_delay_mod_major = 0.3
-
 /datum/game_mode/meteor/post_setup()
 	..()
 	alert_title = "Automated Beacon AB-[rand(10, 99)]"

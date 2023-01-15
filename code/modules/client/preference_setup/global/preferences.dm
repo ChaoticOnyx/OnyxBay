@@ -301,10 +301,10 @@ var/global/list/_client_preferences_by_type
 	category = PREF_CATEGORY_CHAT
 
 /datum/client_preference/ooc_name_color/may_set(client/given_client)
-	return TRUE
+	return given_client.donator_info.patron_type != PATREON_NONE
 
 /datum/client_preference/ooc_name_color/get_options(client/given_client)
-	return PATREON_ALL_TIERS
+	return given_client.donator_info.get_available_ooc_patreon_tiers()
 
 /datum/client_preference/ooc_name_color/get_default_value(client/given_client)
 	ASSERT(given_client)
@@ -351,6 +351,13 @@ var/global/list/_client_preferences_by_type
 	description ="Remote LOOC chat"
 	key = "CHAT_RLOOC"
 	category = PREF_CATEGORY_STAFF
+	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
+
+/datum/client_preference/staff/show_events
+	description ="Show Events"
+	key = "SHOW_EVENTS"
+	category = PREF_CATEGORY_STAFF
+	default_value = GLOB.PREF_HIDE
 	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
 /********************

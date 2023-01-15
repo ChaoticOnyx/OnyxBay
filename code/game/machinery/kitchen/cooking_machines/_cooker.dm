@@ -115,7 +115,7 @@
 		return 0
 
 	// Not sure why a food item that passed the previous checks would fail to drop, but safety first.
-	if(!istype(I, /obj/item/grab) && !user.drop_from_inventory(I))
+	if(!istype(I, /obj/item/grab) && !user.drop(I))
 		return
 
 	if(inserted_mob)
@@ -233,7 +233,7 @@
 			L.get_scooped(receiver, self_grab = FALSE)
 		else
 			to_chat(receiver, SPAN_NOTICE("You grab \the [thing_inside] from \the [src]."))
-			receiver.put_in_hands(thing_inside)
+			receiver.pick_or_drop(thing_inside)
 	else
 		thing_inside.forceMove(get_turf(src))
 

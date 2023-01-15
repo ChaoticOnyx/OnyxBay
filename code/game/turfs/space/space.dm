@@ -52,7 +52,7 @@
 	if(!config.misc.starlight)
 		return
 	if(locate(/turf/simulated) in orange(src,1))
-		set_light(min(0.1*config.misc.starlight, 1), 1, 2.5)
+		set_light(min(0.1*config.misc.starlight, 1), 1, 2.5, 1.5, "#74dcff")
 	else
 		set_light(0)
 
@@ -213,6 +213,7 @@
 	return ..(N, tell_universe, TRUE)
 
 //Bluespace turfs for shuttles and possible future transit use
-/turf/space/bluespace
+/turf/bluespace
 	name = "bluespace"
+	icon = 'icons/turf/space.dmi'
 	icon_state = "bluespace"

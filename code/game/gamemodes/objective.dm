@@ -335,7 +335,7 @@ var/global/list/all_objectives = list()
 	if(!target)
 		return TRUE
 
-	var/obj/item/card/id/id_card = owner.current.GetIdCard()
+	var/obj/item/card/id/id_card = owner.current.get_id_card()
 	if(id_card?.registered_name == target && owner.current.real_name == target && owner.changeling?.last_transformation_at + 3 MINUTES <= world.time)
 		return TRUE
 	return FALSE
@@ -545,7 +545,7 @@ var/global/list/all_objectives = list()
 	var/global/possible_items_special[] = list(
 		/*"nuclear authentication disk" = /obj/item/disk/nuclear,*///Broken with the change to nuke disk making it respawn on z level change.
 		"nuclear gun" = /obj/item/gun/energy/gun/nuclear,
-		"diamond drill" = /obj/item/pickaxe/diamonddrill,
+		"diamond drill" = /obj/item/pickaxe/drill/diamonddrill,
 		"bag of holding" = /obj/item/storage/backpack/holding,
 		"hyper-capacity cell" = /obj/item/cell/hyper,
 		"10 diamonds" = /obj/item/stack/material/diamond,

@@ -993,11 +993,11 @@
 							)
 
 /datum/chemical_reaction/metroid/n_crit/on_reaction(datum/reagents/holder)
+	..()
 	for(var/i = 1, i <= 3, i++)
 		var/mob/living/simple_animal/hostile/asteroid/type = pick(possible_mobs)
 		new type(get_turf(holder.my_atom))
 		type.faction = "neutral"
-	..()
 
 /datum/chemical_reaction/metroid/d_crit
 	name = "Metroid Dangerous Crit"
@@ -1229,10 +1229,9 @@
 	result_amount = 1
 	required = /obj/item/metroid_extract/pink
 
-/datum/chemical_reaction/metroid/ppotion/on_reaction(datum/reagents/holder)
+/datum/chemical_reaction/metroid/docility/on_reaction(datum/reagents/holder)
 	..()
-	var/obj/item/metroidpotion/P = new /obj/item/metroidpotion
-	P.loc = get_turf(holder.my_atom)
+	new /obj/item/metroidpotion(get_turf(holder.my_atom))
 
 //Black
 /datum/chemical_reaction/metroid/mutate2
@@ -1663,7 +1662,7 @@
 /datum/chemical_reaction/magellan
 	name = "Magellan"
 	result = /datum/reagent/ethanol/magellan
-	required_reagents = list(/datum/reagent/ethanol/wine = 1, /datum/reagent/ethanol/specialwhiskey = 1)
+	required_reagents = list(/datum/reagent/ethanol/wine = 1,  /datum/reagent/ethanol/whiskey/specialwhiskey = 1)
 	catalysts = list(/datum/reagent/sugar)
 	result_amount = 2
 

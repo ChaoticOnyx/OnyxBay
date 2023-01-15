@@ -276,7 +276,7 @@ var/global/list/damage_icon_parts = list()
 
 	for(var/organ_tag in species.has_limbs)
 		var/obj/item/organ/external/part = organs_by_name[organ_tag]
-		if(isnull(part))
+		if(QDELETED(part))
 			icon_key += "0"
 			continue
 		if(part.is_stump())
@@ -310,7 +310,7 @@ var/global/list/damage_icon_parts = list()
 		else
 			icon_key += "1"
 
-	icon_key = "[icon_key][husk ? 1 : 0][fat ? 1 : 0][hulk ? 1 : 0][skeleton ? 1 : 0]"
+	icon_key = "[icon_key][husk ? 1 : 0][fat ? 1 : 0][hulk ? 1 : 0][skeleton ? 1 : 0][mind?.special_role == "Zombie" ? 1 : 0]"
 
 	var/icon/base_icon
 	if(human_icon_cache[icon_key])

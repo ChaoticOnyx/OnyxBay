@@ -26,11 +26,10 @@
 	update_icon()
 	. = ..()
 
-/obj/structure/bookcase/attackby(obj/O as obj, mob/user as mob)
+/obj/structure/bookcase/attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/book))
-		user.drop_item()
-		O.loc = src
-		update_icon()
+		if(user.drop(O, src))
+			update_icon()
 	else if(istype(O, /obj/item/pen))
 		var/newname = sanitizeSafe(input("What would you like to title this bookshelf?"), MAX_NAME_LEN)
 		if(!newname)
@@ -67,10 +66,9 @@
 			var/obj/choice = titles[title]
 			ASSERT(choice)
 			if(ishuman(user))
-				if(!user.get_active_hand())
-					user.put_in_hands(choice)
+				user.pick_or_drop(choice)
 			else
-				choice.loc = get_turf(src)
+				choice.forceMove(loc)
 			update_icon()
 
 /obj/structure/bookcase/ex_act(severity)
@@ -228,9 +226,7 @@
 /obj/item/book/attackby(obj/item/W as obj, mob/user as mob)
 	if(carved == 1)
 		if(!store)
-			if(W.w_class < ITEM_SIZE_NORMAL)
-				user.drop_item()
-				W.loc = src
+			if(W.w_class < ITEM_SIZE_NORMAL && user.drop(W, src))
 				store = W
 				to_chat(user, SPAN("notice", "You put [W] in [title]."))
 				return

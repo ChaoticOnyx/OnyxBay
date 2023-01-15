@@ -95,34 +95,33 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/station_departments = list()//Gets filled automatically depending on jobs allowed
 
 	//Factions prefs stuff
-	var/list/faction_choices = list(
-		"NanoTrasen", // NanoTrasen must be first, else Company Provocation event will break
-		"Liu-Je Green Terraforming Industries",
-		"Charcoal TestLabs Ltd.",
-		"Blue Oceanic Explorers",
-		"Milky Way Trade Union",
-		"Redknight & Company Dominance Tech",
-		"Indigo Special Research Collaboration"
-		)
-
-	var/list/citizenship_choices = list(
-		"NanoTrasen",
-		"Nova Magnitka Government",
+	var/list/background_choices = list(
+		"Nanotrasen",
+		"Nova Magnitka",
 		"Gaia Magna",
+		"Zeng-Hu Clique",
+		"Zermig VIII",
+		"Independent Arcturia",
+		"Parthenonnus Ark Space Vessel",
 		"Moghes",
-		"Ahdomai",
-		"Qerrbalak",
-		"Parish of the Parthenonnus Ark"
+		"Skrell Empire",
+		"Adhomai",
+		"Corporate Sector"
 		)
 
 	var/list/home_system_choices = list(
-		"Nova Magnitka",
+		"Gilgamesh",
 		"Tau Ceti",
 		"Epsilon Ursae Minoris",
-		"Zermig VIII",
-		"Arcturia",
-		"Gaia Magna",
-		"Parthenonnus Ark Space Vessel"
+		"Zermig",
+		"Arcturus",
+		"Vega",
+		"Renenet",
+		"Alpha Centauri",
+		"Sirius",
+		"Qerrbalak",
+		"S`randarr",
+		"Uioa-Esa"
 		)
 
 	var/list/religion_choices = list(
@@ -138,47 +137,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		"Agnosticism",
 		"Atheism"
 		)
-
-	var/list/available_events = list(
-		/datum/event/nothing,
-		/datum/event/apc_damage,
-		/datum/event/brand_intelligence,
-		/datum/event/camera_damage,
-		/datum/event/economic_event,
-		/datum/event/carp_migration,
-		/datum/event/money_hacker,
-		/datum/event/money_lotto,
-		/datum/event/mundane_news,
-		/datum/event/shipping_error,
-		/datum/event/dust,
-		/datum/event/sensor_suit_jamming,
-		/datum/event/trivial_news,
-		/datum/event/infestation,
-		/datum/event/wallrot,
-		/datum/event/electrical_storm,
-		/datum/event/space_cold,
-		/datum/event/spontaneous_appendicitis,
-		/datum/event/communications_blackout,
-		/datum/event/grid_check,
-		/datum/event/ionstorm,
-		/datum/event/meteor_wave,
-		/datum/event/prison_break,
-		/datum/event/radiation_storm,
-		/datum/event/random_antag,
-		/datum/event/rogue_drone,
-		/datum/event/solar_storm,
-		/datum/event/prison_break/virology,
-		/datum/event/prison_break/xenobiology,
-		/datum/event/virus_minor,
-		/datum/event/stray_facehugger,
-		/datum/event/wormholes,
-		/datum/event/prison_break/station,
-		/datum/event/spacevine,
-		/datum/event/virus_major,
-		/datum/event/xenomorph_infestation,
-		/datum/event/biohazard_outbreak,
-		/datum/event/mimic_invasion
-	)
 
 /datum/map/New()
 	if(!allowed_jobs)
@@ -254,7 +212,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	if(!length(candidates))
 		return current_z_level
 
-	return text2num(pickweight(candidates))
+	return text2num(util_pick_weight(candidates))
 
 /datum/map/proc/get_empty_zlevel()
 	var/empty_levels = list()
@@ -319,7 +277,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 		if(!L.has_trait(trait))
 			result += level
-	
+
 	return result
 
 /datum/map/proc/get_levels_with_trait(trait)
@@ -343,7 +301,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 			if(L.has_trait(T))
 				result += level
 				break
-	
+
 	return result
 
 /datum/map/proc/get_levels_with_all_traits(...)
@@ -357,8 +315,8 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 			if(!L.has_trait(T))
 				ok = FALSE
 				break
-		
+
 		if(ok)
 			result += level
-	
+
 	return result

@@ -261,7 +261,7 @@
 
 
 /obj/machinery/lapvend/attackby(obj/item/W, mob/user)
-	var/obj/item/card/id/I = W.GetIdCard()
+	var/obj/item/card/id/I = W.get_id_card()
 	// Awaiting payment state
 	if(state == 2)
 		if(process_payment(I,W))

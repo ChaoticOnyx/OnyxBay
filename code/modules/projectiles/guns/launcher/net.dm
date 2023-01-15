@@ -24,14 +24,14 @@
 		to_chat(user, "<span class='warning'>\The [src] already has a shell loaded.</span>")
 		return
 
-	user.drop_from_inventory(S, src)
+	user.drop(S, src)
 	chambered = S
 	user.visible_message("\The [user] inserts \a [S] into \the [src].", "<span class='notice'>You insert \a [S] into \the [src].</span>")
 
 /obj/item/gun/launcher/net/proc/unload(mob/user)
 	if(chambered)
 		user.visible_message("\The [user] removes \the [chambered] from \the [src].", "<span class='notice'>You remove \the [chambered] from \the [src].</span>")
-		user.put_in_hands(chambered)
+		user.pick_or_drop(chambered, loc)
 		chambered = null
 	else
 		to_chat(user, "<span class='warning'>\The [src] is empty.</span>")

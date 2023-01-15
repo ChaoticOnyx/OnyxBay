@@ -18,8 +18,7 @@
 
 	if(istype(W, /obj/item/forensics/swab)|| istype(W, /obj/item/sample/fibers) || istype(W, /obj/item/sample/print))
 		to_chat(user, "<span class='notice'>You insert \the [W] into the microscope.</span>")
-		user.unEquip(W)
-		W.forceMove(src)
+		user.drop(W, src)
 		sample = W
 		update_icon()
 		return
@@ -92,8 +91,7 @@
 		to_chat(remover, "<span class='warning'>\The [src] does not have a sample in it.</span>")
 		return
 	to_chat(remover, "<span class='notice'>You remove \the [sample] from \the [src].</span>")
-	sample.forceMove(get_turf(src))
-	remover.put_in_hands(sample)
+	remover.pick_or_drop(sample, loc)
 	sample = null
 	update_icon()
 

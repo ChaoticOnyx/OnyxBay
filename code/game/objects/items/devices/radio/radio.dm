@@ -59,7 +59,7 @@
 			radio_controller.remove_object(src, radiochannels[ch_name])
 	return ..()
 
-/obj/item/device/radio/attack_self(mob/user as mob)
+/obj/item/device/radio/attack_self(mob/user)
 	user.set_machine(src)
 	interact(user)
 
@@ -129,7 +129,7 @@
 	return user.has_internal_radio_channel_access(internal_channels[freq])
 
 /mob/proc/has_internal_radio_channel_access(list/req_one_accesses)
-	var/obj/item/card/id/I = GetIdCard()
+	var/obj/item/card/id/I = get_id_card()
 	return has_access(list(), req_one_accesses, I ? I.GetAccess() : list())
 
 /mob/observer/ghost/has_internal_radio_channel_access(list/req_one_accesses)
@@ -204,15 +204,16 @@
 	if(.)
 		SSnano.update_uis(src)
 
-/obj/item/device/radio/proc/autosay(message, from, channel) //BS12 EDIT
+/obj/item/device/radio/proc/autosay(message, from, channel, say_verb="states", datum/language/speaking) //BS12 EDIT
 	var/datum/radio_frequency/connection = null
 	if(channel && channels && channels.len > 0)
 		if (channel == "department")
 			channel = channels[1]
 		connection = secure_radio_connections[channel]
 	else
-		connection = radio_connection
 		channel = null
+	if(!connection)
+		connection = radio_connection
 	if (!istype(connection))
 		return
 	var/mob/living/silicon/ai/A
@@ -221,7 +222,7 @@
 		A.fully_replace_character_name(from)
 	else
 		A = from
-	talk_into(A, message, channel, "states")
+	talk_into(A, message, channel, say_verb, speaking)
 	if(istext(from))
 		qdel(A)
 
@@ -334,10 +335,10 @@
   /* ###### Radio headsets can only broadcast through subspace ###### */
 	if(subspace_transmission)
 		// No one can hear our screams in an area with the unstable bluespace.
-		if(GLOB.using_map.level_has_trait(loc.z, ZTRAIT_BLUESPACE_EXIT))
+		if(GLOB.using_map.level_has_trait(position.z, ZTRAIT_BLUESPACE_EXIT))
 			return
 		// The bluespace is less unstable so we can transmit something.
-		else if(GLOB.using_map.level_has_trait(loc.z, ZTRAIT_BLUESPACE_CONVERGENCE))
+		else if(GLOB.using_map.level_has_trait(position.z, ZTRAIT_BLUESPACE_CONVERGENCE))
 			message = stars(message)
 
 		// First, we want to generate a new radio signal
@@ -628,9 +629,7 @@
 			to_chat(user, "The radio can't hold another key!")
 			return
 
-		if(!keyslot)
-			user.drop_item()
-			W.loc = src
+		if(!keyslot && user.drop(W, src))
 			keyslot = W
 
 		recalculateChannels()

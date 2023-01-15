@@ -13,7 +13,7 @@
 	overlay = 1
 	overlay_icon = 'icons/effects/effects.dmi'
 	overlay_icon_state = "rune_teleport"
-	overlay_lifespan = 0
+	overlay_lifespan = 4 SECONDS
 
 	icon_state = "const_harvest"
 
@@ -34,4 +34,3 @@
 		to_chat(user, "<span class='sinister'>You warp back to Nar-Sie[prey ? " along with your prey":""].</span>")
 	else
 		to_chat(user, "<span class='danger'>...something's wrong!</span>")//There shouldn't be an instance of Harvesters when Nar-Sie isn't in the world.
-

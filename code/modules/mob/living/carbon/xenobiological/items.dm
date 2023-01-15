@@ -274,7 +274,7 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potred"
 
-/obj/item/metroid_stabilizer/attack(mob/living/carbon/metroid/M as mob, mob/user as mob)
+/obj/item/metroid_mutation/attack(mob/living/carbon/metroid/M, mob/user)
 	if(!istype(M, /mob/living/carbon/metroid))//If target is not a metroid.
 		to_chat(user, "<span class='warning'> The mutation potion only works on metroids!</span>")
 		return ..()

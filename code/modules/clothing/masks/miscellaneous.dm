@@ -29,7 +29,7 @@
 	say_verbs = list("mumbles", "says")
 
 // Clumsy folks can't take the mask off themselves.
-/obj/item/clothing/mask/muzzle/attack_hand(mob/user as mob)
+/obj/item/clothing/mask/muzzle/attack_hand(mob/user)
 	if(user.wear_mask == src && !user.IsAdvancedToolUser())
 		return 0
 	..()
@@ -135,45 +135,6 @@
 	item_state = "red_scarf"
 	body_parts_covered = 0
 	w_class = ITEM_SIZE_SMALL
-
-/obj/item/clothing/mask/pig
-	name = "pig mask"
-	desc = "A rubber pig mask."
-	icon_state = "pig"
-	item_state = "pig"
-	flags_inv = HIDEFACE|BLOCKHAIR
-	w_class = ITEM_SIZE_SMALL
-	siemens_coefficient = 0.7
-	body_parts_covered = HEAD|FACE|EYES
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 14.6 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 2.1 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
-
-/obj/item/clothing/mask/horsehead
-	name = "horse head mask"
-	desc = "A mask made of soft vinyl and latex, representing the head of a horse."
-	icon_state = "horsehead"
-	item_state = "horsehead"
-	flags_inv = HIDEFACE|BLOCKHAIR
-	body_parts_covered = HEAD|FACE|EYES
-	w_class = ITEM_SIZE_SMALL
-	siemens_coefficient = 0.7
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 15 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 2.14 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
-
-/obj/item/clothing/mask/horsehead/New()
-	..()
-	// The horse mask doesn't cause voice changes by default, the wizard spell changes the flag as necessary
-	say_messages = list("NEEIIGGGHHHH!", "NEEEIIIIGHH!", "NEIIIGGHH!", "HAAWWWWW!", "HAAAWWW!")
-	say_verbs = list("whinnies", "neighs", "says")
-
 
 /obj/item/clothing/mask/ai
 	name = "camera MIU"

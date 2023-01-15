@@ -2,7 +2,7 @@ var/global/list/rad_collectors = list()
 
 /obj/machinery/power/rad_collector
 	name = "Hawking Collector Array"
-	desc = "A device which uses Hawking radiation and plasma to produce power. WARNING: Working with temperature 400C and higher can broke the device"
+	desc = "A device which uses Hawking radiation and plasma to produce power. WARNING: Working with temperature 400C and higher can break the device"
 	icon = 'icons/obj/singularity.dmi'
 	icon_state = "ca"
 	anchored = 0
@@ -89,9 +89,9 @@ var/global/list/rad_collectors = list()
 		if(P)
 			to_chat(user, "<span class='warning'>There's already a plasma tank loaded.</span>")
 			return 1
-		user.drop_item()
+		if(!user.drop(W, src))
+			return 1
 		P = W
-		W.loc = src
 		update_icon()
 		return 1
 	else if(isCrowbar(W))
@@ -134,7 +134,10 @@ var/global/list/rad_collectors = list()
 	if (distance <= 3 && !(stat & BROKEN))
 		. += "\nSensor readings:"
 		. += "\nPower rate: [fmt_siunit(last_power, "W/s", 3)]"
-		. += "\nTank temperature: [P.air_contents.temperature]K"
+		if(P?.air_contents)
+			. += "\nTank temperature: [P.air_contents.temperature]K"
+		else
+			. += "\nTank temperature: N/A"
 		. += "\nEntropy drift: [last_temp_dif] K/s"
 
 /obj/machinery/power/rad_collector/ex_act(severity)

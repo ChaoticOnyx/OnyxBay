@@ -17,6 +17,7 @@
 
 	var/max_health = 20 // 40% of the material's integrity
 	var/health = 20
+	var/stored_silicate = 0 // Leftover silicate absorbs a bit of damage done to a windowpane.
 	var/is_inner = FALSE
 	var/state = 2
 	var/tinted = FALSE // Electrochromic tint, not to be confused with the "opacity" variable
@@ -79,8 +80,20 @@
 	if(max_heat >= (2000 CELSIUS))
 		explosion_block += 1
 
+/datum/windowpane/proc/apply_silicate(volume)
+	if(health < max_health)
+		health = min(health + volume * 3, max_health)
+		my_frame.visible_message(health == max_health ? "Silicate mended some cracks on \the [my_frame]'s [name]." :
+														"\The [my_frame]'s [name] looks fully repaired.")
+	else
+		stored_silicate = min(stored_silicate + volume, 100)
+
 /datum/windowpane/proc/take_damage(damage = 0, sound_effect = TRUE)
 	var/initialhealth = health
+
+	if(stored_silicate)
+		damage *= (1 - stored_silicate / 200)
+
 	health = max(0, health - damage)
 
 	if(health <= 0)
@@ -733,7 +746,7 @@
 					shove_everything(shove_items = FALSE)
 				return
 
-	if(istype(W, /obj/item/stack/cable_coil))
+	if(isCoil(W))
 		var/obj/item/stack/cable_coil/CC = W
 		if(frame_state == FRAME_NORMAL || frame_state == FRAME_REINFORCED)
 			var/old_state = frame_state
@@ -752,7 +765,7 @@
 				update_nearby_icons()
 			return
 
-	if(istype(W, /obj/item/device/multitool))
+	if(isMultitool(W))
 		if(frame_state == FRAME_ELECTRIC || frame_state == FRAME_RELECTRIC)
 			electrochromic = !electrochromic
 			to_chat(user, SPAN("notice", "\The [src] will[electrochromic ? " " : " no longer "]toggle its tint when signalled now."))
@@ -763,7 +776,7 @@
 			to_chat(user, SPAN("notice", "\The [src] already has another [signaler] attached."))
 			return
 		to_chat(user, SPAN("notice", "You've attached \the [W] to \the [src]."))
-		user.unEquip(W, target = src)
+		user.drop(W, src)
 		signaler = W
 		update_icon()
 		return
