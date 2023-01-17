@@ -309,61 +309,48 @@
 	return
 
 
-/obj/structure/window/proc/rotate()
+/obj/structure/window/proc/rotate(mob/user)
 	set name = "Rotate Window Counter-Clockwise"
 	set category = "Object"
 	set src in oview(1)
-
-	if(usr.incapacitated())
+	if(user.incapacitated())
 		return 0
-
 	if(is_full_window()) // No point in rotating a window if it is full
 		return 0
-
 	if(anchored)
-		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
+		to_chat(user, "It is fastened to the floor therefore you can't rotate it!")
 		return 0
-
 	update_nearby_tiles(need_rebuild=1) //Compel updates before
 	set_dir(turn(dir, 90))
 	updateSilicate()
 	update_nearby_tiles(need_rebuild=1)
 	return
-
 
 /obj/structure/window/AltClick(mob/user)
-	if(usr.incapacitated())
+	if(user.incapacitated())
 		return 0
-
 	if(is_full_window()) // No point in rotating a window if it is full
 		return 0
-
 	if(anchored)
-		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
+		to_chat(user, "It is fastened to the floor therefore you can't rotate it!")
 		return 0
-
 	update_nearby_tiles(need_rebuild=1) //Compel updates before
 	set_dir(turn(dir, 90))
 	updateSilicate()
 	update_nearby_tiles(need_rebuild=1)
 	return
 
-
-/obj/structure/window/proc/revrotate()
+/obj/structure/window/proc/revrotate(mob/user)
 	set name = "Rotate Window Clockwise"
 	set category = "Object"
 	set src in oview(1)
-
-	if(usr.incapacitated())
+	if(user.incapacitated())
 		return 0
-
 	if(is_full_window()) // No point in rotating a window if it is full
 		return 0
-
 	if(anchored)
-		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
+		to_chat(user, "It is fastened to the floor therefore you can't rotate it!")
 		return 0
-
 	update_nearby_tiles(need_rebuild=1) //Compel updates before
 	set_dir(turn(dir, 270))
 	updateSilicate()

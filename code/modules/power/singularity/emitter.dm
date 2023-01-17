@@ -34,29 +34,26 @@
 	anchored = 1
 	state = 2
 
-/obj/machinery/power/emitter/verb/rotate()
+/obj/machinery/power/emitter/verb/rotate(mob/user)
 	set name = "Rotate"
 	set category = "Object"
 	set src in oview(1)
-
-	if(usr.incapacitated())
+	if(user.incapacitated())
 		return
-
 	if(anchored)
-		to_chat(usr, "It is fastened to the floor!")
+		to_chat(user, "It is fastened to the floor!")
 		return 0
 	set_dir(turn(dir, 90))
-	return 1
+	return
 
 /obj/machinery/power/emitter/AltClick(mob/user)
-	if(usr.incapacitated())
+	if(user.incapacitated())
 		return
-
 	if(anchored)
-		to_chat(usr, "It is fastened to the floor!")
+		to_chat(user, "It is fastened to the floor!")
 		return 0
 	set_dir(turn(dir, 90))
-	return 1
+	return
 
 /obj/machinery/power/emitter/Initialize()
 	. = ..()

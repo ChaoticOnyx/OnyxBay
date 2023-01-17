@@ -236,31 +236,32 @@
 	deactivate()
 	return ..()
 
-/obj/machinery/suspension_gen/verb/rotate_ccw()
+/obj/machinery/suspension_gen/verb/rotate_ccw(mob/user)
 	set src in view(1)
 	set name = "Rotate suspension gen (counter-clockwise)"
 	set category = "Object"
-
 	if(anchored)
-		to_chat(usr, SPAN("warning", "You cannot rotate [src], it has been firmly fixed to the floor."))
+		to_chat(user, SPAN("warning", "You cannot rotate [src], it has been firmly fixed to the floor."))
 	else
 		set_dir(turn(dir, 90))
+	return
 
-/obj/machinery/suspension_gen/verb/rotate_cw()
+/obj/machinery/suspension_gen/verb/rotate_cw(mob/user)
 	set src in view(1)
 	set name = "Rotate suspension gen (clockwise)"
 	set category = "Object"
-
 	if(anchored)
-		to_chat(usr, SPAN("warning", "You cannot rotate [src], it has been firmly fixed to the floor."))
+		to_chat(user, SPAN("warning", "You cannot rotate [src], it has been firmly fixed to the floor."))
 	else
 		set_dir(turn(dir, -90))
+	return
 
 /obj/machinery/suspension_gen/AltClick(mob/user)
 	if(anchored)
-		to_chat(usr, SPAN("warning", "You cannot rotate [src], it has been firmly fixed to the floor."))
+		to_chat(user, SPAN("warning", "You cannot rotate [src], it has been firmly fixed to the floor."))
 	else
 		set_dir(turn(dir, -90))
+	return
 
 /obj/effect/suspension_field
 	name = "energy field"

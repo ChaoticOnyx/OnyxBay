@@ -116,31 +116,28 @@
 
 
 // flip and rotate verbs
-/obj/structure/disposalconstruct/proc/rotate()
+/obj/structure/disposalconstruct/proc/rotate(mob/user)
 	set category = "Object"
 	set name = "Rotate Pipe"
 	set src in view(1)
-
-	if(usr.incapacitated())
+	if(user.incapacitated())
 		return
-
 	if(anchored)
-		to_chat(usr, "You must unfasten the pipe before rotating it.")
+		to_chat(user, "You must unfasten the pipe before rotating it.")
 		return
-
 	set_dir(turn(dir, -90))
 	update()
+	return
 
 /obj/structure/disposalconstruct/AltClick(mob/user)
-	if(usr.incapacitated())
+	if(user.incapacitated())
 		return
-
 	if(anchored)
-		to_chat(usr, "You must unfasten the pipe before rotating it.")
+		to_chat(user, "You must unfasten the pipe before rotating it.")
 		return
-
 	set_dir(turn(dir, -90))
 	update()
+	return
 
 /obj/structure/disposalconstruct/proc/flip()
 	set category = "Object"
