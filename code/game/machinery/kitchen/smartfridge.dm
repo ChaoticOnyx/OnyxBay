@@ -191,11 +191,14 @@
 		src.throw_item()
 
 /obj/machinery/smartfridge/update_icon()
+	if(stat & (BROKEN|NOPOWER))
+		icon_state = icon_off // Some of them don't have any display cases thus not requiring an overlay
+	else
+		icon_state = icon_on
 	if(shows_number_of_items)
 		overlays.Cut()
 		if(stat & (BROKEN|NOPOWER))
 			overlays += icon_off // The use of overlays allows us to see how much is stored inside, even if the machine happens to be unpowered
-			return
 		switch(contents.len)
 			if(0)
 				icon_state = icon_on
@@ -206,10 +209,6 @@
 			if(76 to INFINITY)
 				icon_state = "[icon_on]3" // "full"
 	else
-		if((stat & (BROKEN|NOPOWER)))
-			icon_state = icon_off // Some of them don't have any display cases thus not requiring an overlay
-		else
-			icon_state = icon_on
 /*******************
 *   Item Adding
 ********************/
