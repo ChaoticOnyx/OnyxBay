@@ -347,9 +347,9 @@ Buildable meters
 		return
 	src.set_dir(turn(src.dir, -90))
 	if(pipe_type in list (PIPE_SIMPLE_STRAIGHT, PIPE_SUPPLY_STRAIGHT, PIPE_SCRUBBERS_STRAIGHT, PIPE_UNIVERSAL, PIPE_HE_STRAIGHT, PIPE_MVALVE, PIPE_DVALVE, PIPE_SVALVE, PIPE_FUEL_STRAIGHT))
-		if(dir==2)
+		if(dir == 2)
 			set_dir(1)
-		else if(dir==8)
+		else if(dir == 8)
 			set_dir(4)
 	else if(pipe_type in list (PIPE_MANIFOLD4W, PIPE_SUPPLY_MANIFOLD4W, PIPE_SCRUBBERS_MANIFOLD4W, PIPE_FUEL_MANIFOLD4W))
 		set_dir(2)
