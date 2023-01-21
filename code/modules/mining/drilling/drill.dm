@@ -361,7 +361,7 @@
 	return
 
 /obj/machinery/mining/brace/AltClick(mob/user)
-	if(usr.stat)
+	if(user.stat)
 		return
 	if(src.anchored)
 		to_chat(usr, "It is anchored in place!")
