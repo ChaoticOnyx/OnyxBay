@@ -343,7 +343,7 @@ Buildable meters
 	return
 
 /obj/item/pipe/AltClick(mob/user)
-	if(user.stat | user.restrained())
+	if(user.stat || user.restrained())
 		return
 	src.set_dir(turn(src.dir, -90))
 	if(pipe_type in list (PIPE_SIMPLE_STRAIGHT, PIPE_SUPPLY_STRAIGHT, PIPE_SCRUBBERS_STRAIGHT, PIPE_UNIVERSAL, PIPE_HE_STRAIGHT, PIPE_MVALVE, PIPE_DVALVE, PIPE_SVALVE, PIPE_FUEL_STRAIGHT))
