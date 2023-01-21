@@ -10,7 +10,7 @@
 	origin_tech = list(TECH_BIO = 4)
 	var/Uses = 1 // uses before it goes inert
 	var/enhanced = 0 //has it been enhanced before?
-	var/effectmod
+	var/effectmod = ""
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 
 	attackby(obj/item/O as obj, mob/user as mob)
@@ -34,92 +34,114 @@
 /obj/item/metroid_extract/grey
 	name = "grey metroid extract"
 	icon_state = "grey metroid extract"
+	effectmod = "reproductive"
 
 /obj/item/metroid_extract/gold
 	name = "gold metroid extract"
 	icon_state = "gold metroid extract"
+	effectmod = "symbiont"
 
 /obj/item/metroid_extract/silver
 	name = "silver metroid extract"
 	icon_state = "silver metroid extract"
+	effectmod = "consuming"
 
 /obj/item/metroid_extract/metal
 	name = "metal metroid extract"
 	icon_state = "metal metroid extract"
+	effectmod = "industrial"
 
 /obj/item/metroid_extract/purple
 	name = "purple metroid extract"
 	icon_state = "purple metroid extract"
+	effectmod = "regenerative"
 
 /obj/item/metroid_extract/darkpurple
 	name = "dark purple metroid extract"
 	icon_state = "dark purple metroid extract"
+	effectmod = "self-sustaining"
 
 /obj/item/metroid_extract/orange
 	name = "orange metroid extract"
 	icon_state = "orange metroid extract"
+	effectmod = "burning"
 
 /obj/item/metroid_extract/yellow
 	name = "yellow metroid extract"
 	icon_state = "yellow metroid extract"
+	effectmod = "charged"
 
 /obj/item/metroid_extract/red
 	name = "red metroid extract"
 	icon_state = "red metroid extract"
+	effectmod = "sanguine"
 
 /obj/item/metroid_extract/blue
 	name = "blue metroid extract"
 	icon_state = "blue metroid extract"
+	effectmod = "stabilized"
 
 /obj/item/metroid_extract/darkblue
 	name = "dark blue metroid extract"
 	icon_state = "dark blue metroid extract"
+	effectmod = "chilling"
 
 /obj/item/metroid_extract/pink
 	name = "pink metroid extract"
 	icon_state = "pink metroid extract"
+	effectmod = "gentle"
 
 /obj/item/metroid_extract/green
 	name = "green metroid extract"
 	icon_state = "green metroid extract"
+	effectmod = "mutative"
 
 /obj/item/metroid_extract/lightpink
 	name = "light pink metroid extract"
 	icon_state = "light pink metroid extract"
+	effectmod = "loyal"
 
 /obj/item/metroid_extract/black
 	name = "black metroid extract"
 	icon_state = "black metroid extract"
+	effectmod = "transformative"
 
 /obj/item/metroid_extract/oil
 	name = "oil metroid extract"
 	icon_state = "oil metroid extract"
+	effectmod = "detonating"
 
 /obj/item/metroid_extract/adamantine
 	name = "adamantine metroid extract"
 	icon_state = "adamantine metroid extract"
+	effectmod = "crystalline"
 
 /obj/item/metroid_extract/bluespace
 	name = "bluespace metroid extract"
 	icon_state = "bluespace metroid extract"
+	effectmod = "warping"
 
 /obj/item/metroid_extract/pyrite
 	name = "pyrite metroid extract"
 	icon_state = "pyrite metroid extract"
+	effectmod = "prismatic"
 
 /obj/item/metroid_extract/cerulean
 	name = "cerulean metroid extract"
 	icon_state = "cerulean metroid extract"
+	effectmod = "recurring"
 
 /obj/item/metroid_extract/sepia
 	name = "sepia metroid extract"
 	icon_state = "sepia metroid extract"
+	effectmod = "lengthened"
 
 /obj/item/metroid_extract/rainbow
 	name = "rainbow metroid extract"
 	icon_state = "rainbow metroid extract"
+	effectmod = "hyperchromatic"
 
-////Pet metroid Creation///
+///Pet metroid Creation///
 
 /obj/item/metroidpotion
 	name = "docility potion"
