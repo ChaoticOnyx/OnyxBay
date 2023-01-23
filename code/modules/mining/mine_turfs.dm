@@ -277,13 +277,10 @@ var/list/mining_floors = list()
 
 		//There's got to be a better way to do this
 		var/update_excav_overlay = FALSE
-		switch(excavation_level)
-			if(150 to INFINITY && excavation_level - P.excavation_amount < 150)
-				update_excav_overlay = TRUE
-			if(100 to 149 && excavation_level - P.excavation_amount < 100)
-				update_excav_overlay = TRUE
-			if(50 to 99 && excavation_level - P.excavation_amount < 50)
-				update_excav_overlay = TRUE
+		if (excavation_level >= 150 && (excavation_level - P.excavation_amount < 150) || \
+			excavation_level >= 100 && (excavation_level - P.excavation_amount < 100) || \
+			excavation_level >= 50  && (excavation_level - P.excavation_amount < 50))
+			update_excav_overlay = TRUE
 
 		//update overlays displaying excavation level
 		if( !(excav_overlay && excavation_level > 0) || update_excav_overlay )
