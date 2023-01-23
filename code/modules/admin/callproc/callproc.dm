@@ -31,7 +31,7 @@
 		if("Cancel")
 			return
 		if("No")
-			; // do nothing
+			pass()
 
 	callproc_targetpicked(targetselected, target)
 
@@ -173,7 +173,7 @@
 				if(!current)
 					switch(alert("\The [M] appears to not have an area; do you want to pass null instead?",, "Yes", "Cancel"))
 						if("Yes")
-							; // do nothing
+							pass()
 						if("Cancel")
 							return CANCEL
 
@@ -182,7 +182,7 @@
 				if(!current)
 					switch(alert("You do not currently have a marked datum; do you want to pass null instead?",, "Yes", "Cancel"))
 						if("Yes")
-							; // do nothing
+							pass()
 						if("Cancel")
 							return CANCEL
 

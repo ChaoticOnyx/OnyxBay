@@ -250,7 +250,6 @@
 		if(3.0)
 			qdel(src)
 			return
-		else
 	return
 /obj/structure/railing/proc/check_tile(mob/living/user, turf/T)
 	if(T.density == 1)

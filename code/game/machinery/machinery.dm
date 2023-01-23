@@ -205,8 +205,6 @@ Class Procs:
 			if (prob(25))
 				qdel(src)
 				return
-		else
-	return
 
 /obj/machinery/blob_act()
 	if(stat & BROKEN)

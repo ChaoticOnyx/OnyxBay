@@ -1,17 +1,15 @@
 //Brain slug proc for voluntary removal of control.
 /mob/living/carbon/proc/release_control()
-
 	set category = "Abilities"
 	set name = "Release Control"
 	set desc = "Release control of your host's body."
 
 	var/mob/living/simple_animal/borer/B = has_brain_worms()
 
-	if(B && B.host_brain && B.can_use_abilities("controlling"))
-		to_chat(src, SPAN("danger", "You withdraw your probosci, releasing control of [B.host_brain]"))
-		B.detatch()
-	else
-		to_chat(src, SPAN("danger" ,"ERROR NO BORER OR BRAINMOB DETECTED IN THIS MOB, THIS IS A BUG!"))
+	ASSERT(B && B.host_brain && B.can_use_abilities("controlling"))
+
+	to_chat(src, SPAN("danger", "You withdraw your probosci, releasing control of [B.host_brain]"))
+	B.detatch()
 
 //Brain slug proc for tormenting the host.
 /mob/living/carbon/proc/punish_host()
