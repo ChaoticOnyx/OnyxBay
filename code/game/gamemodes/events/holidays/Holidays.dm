@@ -70,7 +70,7 @@ var/global/Holiday = null
 				if(12)							Holiday = "Owl and Pussycat Day"	//what a dumb day of observence...but we -do- have costumes already :3
 
 		if(6)	//Jun
-
+			pass()
 		if(7)	//Jul
 			switch(DD)
 				if(1)							Holiday = "Doctor's Day"
@@ -145,8 +145,6 @@ var/global/Holiday = null
 		else
 			to_world("<h4>Happy [Holiday] Everybody!</h4>")
 		switch(Holiday)			//special holidays
-			if("Easter")
-				//do easter stuff
 			if("Christmas Eve","Christmas")
 				Christmas_Game_Start()
 

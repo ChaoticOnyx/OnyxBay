@@ -64,7 +64,6 @@
 				new /obj/effect/effect/water(src.loc)
 				qdel(src)
 				return
-		else
 	return
 
 /obj/structure/reagent_dispensers/AltClick(mob/user)

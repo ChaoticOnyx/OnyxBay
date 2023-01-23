@@ -150,7 +150,6 @@
 					malfunction()
 					return
 				return
-		else
 	return
 
 /obj/machinery/vending/emag_act(remaining_charges, mob/user)

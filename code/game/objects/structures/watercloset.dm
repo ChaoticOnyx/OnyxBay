@@ -107,7 +107,6 @@
 				new /obj/item/shower_parts(get_turf(src))
 				qdel(src)
 				return
-		else
 	return
 
 /obj/machinery/shower/New()

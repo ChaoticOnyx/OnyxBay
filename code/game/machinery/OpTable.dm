@@ -55,7 +55,6 @@
 		if(3.0)
 			if (prob(25))
 				src.set_density(0)
-		else
 	return
 
 /obj/machinery/optable/attack_hand(mob/user as mob)

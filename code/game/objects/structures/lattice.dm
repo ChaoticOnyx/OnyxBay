@@ -46,7 +46,6 @@
 			return
 		if(3.0)
 			return
-		else
 	return
 
 /obj/structure/lattice/attackby(obj/item/C as obj, mob/user as mob)

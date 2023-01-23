@@ -19,7 +19,6 @@
 		for(var/obj/machinery/mass_driver/M in GLOB.machines)
 			if(M.id == id)
 				connected = M
-			else
 		return
 	return
 

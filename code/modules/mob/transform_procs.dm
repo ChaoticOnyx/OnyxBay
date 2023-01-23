@@ -177,7 +177,6 @@
 		new_metroid = new /mob/living/carbon/metroid(loc)
 		if(adult)
 			new_metroid.is_adult = 1
-		else
 	new_metroid.key = key
 
 	to_chat(new_metroid, "<B>You are now a metroid. Skreee!</B>")
