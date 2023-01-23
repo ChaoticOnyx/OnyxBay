@@ -138,7 +138,7 @@
 		to_chat(user, "<span class='warning'>There is no tank in \the [src].</span>")
 		return
 	if(is_loosen)
-		to_chat(user, "<span class='warning'>Tighten \the nut with a wrench first.</span>")
+		to_chat(user, "<span class='warning'>Tighten the nut with a wrench first.</span>")
 		return
 	if(!Adjacent(target))
 		return

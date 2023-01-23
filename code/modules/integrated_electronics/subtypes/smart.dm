@@ -158,7 +158,7 @@
 	if(!user.drop(O, src))
 		return
 	installed_brain = O
-	to_chat(user, SPAN("notice", "You gently place \the man-machine interface inside the tank."))
+	to_chat(user, SPAN("notice", "You gently place the man-machine interface inside the tank."))
 	to_chat(O, SPAN("notice", "You are slowly being placed inside the man-machine-interface tank."))
 	set_pin_data(IC_OUTPUT, 1, O)
 

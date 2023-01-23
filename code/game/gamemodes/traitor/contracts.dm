@@ -34,13 +34,13 @@ GLOBAL_LIST_INIT(contracts_steal_items, list(
 	"an ablative armor vest" =                          list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/suit/armor/laserproof)
 ))
 GLOBAL_LIST_INIT(syndicate_factions, list(
-	"\The Trauma Team Interspace",
-	"\The MiliSpace",
-	"\The Biospacenica",
-	"\The Kang Too",
-	"\The NovaPlasma",
-	"\The Dynamoon Technologies",
-	"\The NanoSaka"
+	"The Trauma Team Interspace",
+	"The MiliSpace",
+	"The Biospacenica",
+	"The Kang Too",
+	"The NovaPlasma",
+	"The Dynamoon Technologies",
+	"The NanoSaka"
 ))
 
 /datum/antag_contract
