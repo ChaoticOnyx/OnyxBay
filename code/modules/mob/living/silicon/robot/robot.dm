@@ -1092,7 +1092,7 @@
 		if(!(icontype in module_hulls))
 			icontype = module_hulls[1]
 	else
-		icontype = input(src,"Select an icon! [triesleft ? "You have [triesleft] more chance\s." : "This is your last try."]", "Robot Icon", icontype, null) in module_hulls
+		icontype = input(src,"Select an icon! [triesleft ? "You have [triesleft] more chance\s." : "This is your last try."]", "Robot Icon", icontype) in module_hulls
 	footstep_sound = module_hulls[icontype].footstep_sound
 	icon_state = module_hulls[icontype].icon_state
 	if(istype(module_hulls[icontype], /datum/robot_hull/custom))

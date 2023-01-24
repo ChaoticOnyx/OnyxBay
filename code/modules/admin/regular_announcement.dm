@@ -12,7 +12,7 @@ var/join_regular_announcement = null
 	set hidden = TRUE
 	if (!check_rights(0))
 		return
-	join_regular_announcement = input(src, "Change Regular Announcement:", "Change Regular Announcement", join_regular_announcement, "message", TRUE)
+	join_regular_announcement = input(src, "Change Regular Announcement:", "Change Regular Announcement", join_regular_announcement) as message
 
 	var/savefile/F = new(REGULAR_ANNOUNCEMENT_SAFEFILE)
 	if(F)
@@ -24,4 +24,3 @@ var/join_regular_announcement = null
 
 	if(join_regular_announcement)
 		to_chat(src, "[join_regular_announcement]")
-
