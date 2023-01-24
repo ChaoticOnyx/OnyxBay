@@ -246,27 +246,16 @@ var/global/datum/controller/occupations/job_master
 				var/list/candidates = FindOccupationCandidates(job, level)
 				if(!candidates.len)	continue
 
-				// Build a weighted list, weight by age.
-				var/list/weightedCandidates = list()
 				for(var/mob/V in candidates)
 					// Log-out during round-start? What a bad boy, no head position for you!
-					if(!V.client) continue
+					if(!V.client)
+						continue
 					var/age = V.client.prefs.age
 
 					if(age < job.minimum_character_age) // Nope.
 						continue
-					else if(age < job.minimum_character_age + 10)
-						weightedCandidates[V] = 3 // Still a bit young.
-					else if (age < job.ideal_character_age - 10)
-						weightedCandidates[V] = 6 // Better.
-					else if (age < job.ideal_character_age + 10)
-						weightedCandidates[V] = 10 // Great.
-					else if (age < job.ideal_character_age + 20)
-						weightedCandidates[V] = 6 // Still good.
-					else
-						weightedCandidates[V] = 3 // Geezer.
 
-				var/mob/new_player/candidate = util_pick_weight(weightedCandidates)
+				var/mob/new_player/candidate = pick(candidates)
 				if(AssignRole(candidate, command_position))
 					return 1
 		return 0
