@@ -5,10 +5,10 @@
 	volume = CARTRIDGE_VOLUME_MEDIUM
 
 	// Multiple
-	/obj/item/reagent_containers/chem_disp_cartridge/water
-		spawn_reagent = /datum/reagent/water
-	/obj/item/reagent_containers/chem_disp_cartridge/sugar
-		spawn_reagent = /datum/reagent/sugar
+/obj/item/reagent_containers/chem_disp_cartridge/water
+	spawn_reagent = /datum/reagent/water
+/obj/item/reagent_containers/chem_disp_cartridge/sugar
+	spawn_reagent = /datum/reagent/sugar
 
 	// Chemistry
 /obj/item/reagent_containers/chem_disp_cartridge/hydrazine
