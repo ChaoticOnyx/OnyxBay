@@ -321,6 +321,7 @@ var/list/mining_floors = list()
 		return ..()
 
 /turf/simulated/mineral/proc/clear_ore_effects()
+	mineral = null
 	overlays -= ore_overlay
 	ore_overlay = null
 
@@ -337,7 +338,7 @@ var/list/mining_floors = list()
 
 	mineral.result_amount -= 1
 
-	if(!mineral.result_amount)
+	if(mineral.result_amount <= 0)
 		clear_ore_effects()
 
 	if(O && geologic_data && istype(O))
@@ -347,8 +348,7 @@ var/list/mining_floors = list()
 
 /turf/simulated/mineral/proc/GetDrilled(artifact_fail = 0)
 	//var/destroyed = 0 //used for breaking strange rocks
-	if(mineral && mineral.result_amount > 0)
-
+	if(mineral)
 		while(mineral.result_amount > 0)
 			DropMineral()
 
