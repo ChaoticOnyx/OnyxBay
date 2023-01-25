@@ -904,7 +904,7 @@ meteor_act
 				return
 
 			if(O.loc == src && O.sharp) //Projectile is embedded and suitable for pinning.
-				embed(O)
+				embed(O, zone)
 				var/turf/T = near_wall(dir, 2)
 
 				if(T)
