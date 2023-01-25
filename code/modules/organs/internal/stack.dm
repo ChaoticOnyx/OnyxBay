@@ -51,7 +51,7 @@
 /obj/item/organ/internal/stack/replaced()
 	if(!..()) return 0
 
-	if(owner && !backup_inviable())
+	if(owner && !backup_inviable() && owner.has_brain())
 		var/current_owner = owner
 		var/mob/dead_owner = find_dead_player(ownerckey, 1)
 		if(istype(dead_owner))
