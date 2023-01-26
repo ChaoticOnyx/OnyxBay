@@ -6,15 +6,13 @@
 	return module_active
 
 /mob/living/silicon/robot/drop(obj/item/I, atom/target = null, force = FALSE)
-	if(istype(module_active, /obj/item/gripper))
-		var/obj/item/gripper/G = module_active
-		if(G.wrapped == I)
-			var/result = G.drop_item()
-			if(result && target)
-				I.forceMove(target)
-			return result
-	return ..()
-
+	if(!can_unequip(I))
+		return FALSE
+	var/obj/item/gripper/G = module_active
+	G.drop_item()
+	if(target)
+		I.forceMove(target)
+	return TRUE
 /*-------TODOOOOOOOOOO--------*/
 
 //Verbs used by hotkeys.
