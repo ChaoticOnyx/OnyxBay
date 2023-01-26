@@ -25,6 +25,7 @@
 	if(!..())
 		return FALSE
 	timing = !timing
+	set_next_think(world.time + 1 SECOND)
 	update_icon()
 	return TRUE
 
@@ -44,12 +45,11 @@
 		return
 	if(time > 0)
 		time--
+		set_next_think(world.time + 1 SECOND)
 	else
 		timing = FALSE
 		timer_end()
 		time = 10
-
-	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/assembly/timer/update_icon()
 	overlays.Cut()
@@ -70,7 +70,7 @@
 	var/minute = (time - second) / 60
 	var/dat = "<meta charset=\"utf-8\"><TT>"
 	dat += "<B>Timing Unit</B><br>"
-	dat += "<A href='?src=\ref[src];time=[timing ? "0'>Timing" : "1'>Not timing"]</A><br>"
+	dat += "<A href='?src=\ref[src];time=1'>[timing ? "Timing" : "Not timing"]</A><br>"
 	dat += "<A href='?src=\ref[src];tp=-30'>-</A> <A href='?src=\ref[src];tp=-1'>-</A>"
 	dat += " [minute]:[second] "
 	dat += "<A href='?src=\ref[src];tp=1'>+</A> <A href='?src=\ref[src];tp=30'>+</A><br></TT>"
@@ -91,8 +91,7 @@
 		return
 
 	if(href_list["time"])
-		timing = text2num(href_list["time"])
-		update_icon()
+		activate()
 
 	if(href_list["tp"])
 		var/tp = text2num(href_list["tp"])
