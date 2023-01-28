@@ -35,6 +35,7 @@ var/list/mining_floors = list()
 	var/datum/artifact_find/artifact_find
 	var/image/ore_overlay
 	has_resources = 1
+	var/ore_left = 0
 
 /turf/simulated/mineral/medium
 	icon_state = "rock-medium"
@@ -106,11 +107,11 @@ var/list/mining_floors = list()
 		if(2.0)
 			if(prob(70))
 				if(mineral)
-					mineral.result_amount -= 1 //Some of the stuff gets blown up
+					ore_left -= 1 //Some of the stuff gets blown up
 				GetDrilled()
 		if(1.0)
 			if(mineral)
-				mineral.result_amount -= 2 //Some of the stuff gets blown up
+				ore_left -= 2 //Some of the stuff gets blown up
 			GetDrilled()
 
 /turf/simulated/mineral/bullet_act(obj/item/projectile/Proj)
@@ -121,7 +122,7 @@ var/list/mining_floors = list()
 
 		if(durability <= 0) // 3 blasts per basic tile
 			if(mineral)
-				mineral.result_amount -= 1
+				ore_left -= 1
 			GetDrilled()
 
 /turf/simulated/mineral/Bumped(AM)
@@ -258,7 +259,7 @@ var/list/mining_floors = list()
 			else
 				GetDrilled(1)
 			return
-		else if(mineral && durability < initial(durability) - initial(durability) / max(mineral.result_amount, 1))
+		else if(mineral && durability < initial(durability) - initial(durability) / max(ore_left, 1))
 			DropMineral(user.dir)
 
 		excavation_level += P.excavation_amount
@@ -326,7 +327,7 @@ var/list/mining_floors = list()
 	ore_overlay = null
 
 /turf/simulated/mineral/proc/DropMineral(direction = null)
-	if(!mineral)
+	if(!mineral || ore_left <= 0)
 		return
 
 	var/obj/item/ore/O = null
@@ -336,9 +337,9 @@ var/list/mining_floors = list()
 	else
 		O = new mineral.ore(src)
 
-	mineral.result_amount -= 1
+	ore_left -= 1
 
-	if(mineral.result_amount <= 0)
+	if(!ore_left)
 		clear_ore_effects()
 
 	if(O && geologic_data && istype(O))
@@ -348,8 +349,9 @@ var/list/mining_floors = list()
 
 /turf/simulated/mineral/proc/GetDrilled(artifact_fail = 0)
 	//var/destroyed = 0 //used for breaking strange rocks
-	if(mineral)
-		while(mineral.result_amount > 0)
+	if(mineral && ore_left)
+
+		while(ore_left > 0)
 			DropMineral()
 
 	if(artifact_find && artifact_fail)
@@ -450,6 +452,7 @@ var/list/mining_floors = list()
 		mineral_name = lowertext(mineral_name)
 		if(mineral_name && (mineral_name in ore_data))
 			mineral = ore_data[mineral_name]
+			ore_left = mineral.result_amount
 			UpdateMineral()
 	MineralSpread()
 
