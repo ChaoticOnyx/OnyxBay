@@ -172,6 +172,7 @@
 		/obj/item/computer_hardware,
 		/obj/item/device/transfer_valve,
 		/obj/item/device/assembly,
+		/obj/item/device/assembly_holder,
 		/obj/item/device/healthanalyzer,
 		/obj/item/device/analyzer/plant_analyzer,
 		/obj/item/material/minihoe,
@@ -233,7 +234,7 @@
 
 /obj/item/gripper/no_use //Used when you want to hold and put items in other things, but not able to 'use' the item
 
-/obj/item/gripper/no_use/attack_self(mob/user as mob)
+/obj/item/gripper/no_use/attack_self(mob/user)
 	return
 
 /obj/item/gripper/no_use/loader //This is used to disallow building with metal.
@@ -252,7 +253,7 @@
 	else if (length(storage_type))
 		. += "\n[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers."
 
-/obj/item/gripper/attack_self(mob/user as mob)
+/obj/item/gripper/attack_self(mob/user)
 	if(wrapped)
 		return wrapped.attack_self(user)
 	else
@@ -275,31 +276,31 @@
 	if(!wrapped)
 		//There's some weirdness with items being lost inside the arm. Trying to fix all cases. ~Z
 		for(var/obj/item/thing in src.contents)
-			thing.loc = get_turf(src)
-		return
+			thing.forceMove(get_turf(src))
+		return FALSE
 
-	if(wrapped.loc != src)
+	if(wrapped.loc != src && wrapped.loc != src.loc)
 		wrapped = null
-		return
+		return FALSE
 
-	to_chat(src.loc, "<span class='warning'>You drop \the [wrapped].</span>")
-	wrapped.loc = get_turf(src)
+	to_chat(src.loc, SPAN("warning", "You drop \the [wrapped]."))
+	wrapped.forceMove(get_turf(src))
 	wrapped = null
-	//update_icon()
 
-/obj/item/gripper/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+	return TRUE
+
+/obj/item/gripper/attack(mob/living/carbon/M, mob/living/carbon/user)
 	// Don't fall through and smack people with gripper, instead just no-op
 	return 0
 
 /obj/item/gripper/resolve_attackby(atom/target, mob/living/user, params)
-
 	//There's some weirdness with items being lost inside the arm. Trying to fix all cases. ~Z
 	if(!wrapped)
 		for(var/obj/item/thing in src.contents)
 			wrapped = thing
 			break
 
-	if (inuse)
+	if(inuse)
 		return
 
 	user.do_attack_animation(src)
@@ -313,9 +314,9 @@
 			return
 		if(istype(target, /obj/structure/table)) //Putting item on the table if any
 			var/obj/structure/table/T = target
-			to_chat(src.loc, "<span class='notice'>You place \the [wrapped] on \the [target].</span>")
-			wrapped.loc = get_turf(target)
-			T.auto_align(wrapped,params)
+			to_chat(src.loc, SPAN("notice", "You place \the [wrapped] on \the [target]."))
+			wrapped.forceMove(get_turf(target))
+			T.auto_align(wrapped, params)
 			wrapped = null
 			return
 		if(istype(target, /obj/structure/closet))
@@ -323,14 +324,14 @@
 			return
 		//Already have an item.
 		//Temporary put wrapped into user so target's attackby() checks pass.
-		wrapped.forceMove(user,params)
+		wrapped.forceMove(user, params)
 
 		//The force of the wrapped obj gets set to zero during the attack() and afterattack().
 		var/force_holder = wrapped.force
 		wrapped.force = 0.0
 
 		//Pass the attack on to the target. This might delete/relocate wrapped.
-		var/resolved = wrapped.resolve_attackby(target,user,params)
+		var/resolved = wrapped.resolve_attackby(target, user, params)
 
 
 		//If resolve_attackby forces waiting before taking wrapped, we need to let it finish before doing the rest.
@@ -339,40 +340,39 @@
 	for(var/type in storage_type)//Check that we're pocketing a certain container.
 		if(istype(target,type))
 			var/obj/item/storage/S = target
-			switch (mode)
-				if (MODE_OPEN)
-					if (isrobot(user))
+			switch(mode)
+				if(MODE_OPEN)
+					if(isrobot(user))
 						var/mob/living/silicon/robot/R = user
-						if (R.shown_robot_modules)
+						if(R.shown_robot_modules)
 							R.shown_robot_modules = !R.shown_robot_modules
 							R.hud_used.update_robot_modules_display()
 					S.open(user)
-				if (MODE_EMPTY)
-					inuse = 1
-					visible_message("<span class='notice'>\The [user] starts removing item from \the [S].</span>")
-					if (do_after(user,30))
-						inuse = 0
-						if (length(S.contents))
+				if(MODE_EMPTY)
+					inuse = TRUE
+					visible_message(SPAN("notice", "\The [user] starts removing item from \the [S]."))
+					if(do_after(user,30))
+						inuse = FALSE
+						if(length(S.contents))
 							var/obj/item/I = S.contents[length(S.contents)]
-							if (!I)
+							if(!I)
 								return
 							var/turf/T = get_turf(src)
 							S.remove_from_storage(I,T)
-							visible_message("<span class='notice'>\The [I] drops on \the [T].</span>")
+							visible_message(SPAN("notice", "\The [I] drops on \the [T]."))
 						else
-							inuse = 0
-							to_chat(user, "<span class='notice'>\The [target] is empty.</span>")
+							to_chat(user, SPAN("notice", "\The [target] is empty."))
 					else
-						inuse = 0
-						to_chat(user, "<span class='danger'>The process was interrupted!</span>")
+						inuse = FALSE
+						to_chat(user, SPAN("danger", "The process was interrupted!"))
 			return
 
 	for(var/atypepath in cant_hold)
-		if(istype(target,atypepath))
-			to_chat(user, "<span class='danger'>Your gripper cannot hold \the [target].</span>")
+		if(istype(target, atypepath))
+			to_chat(user, SPAN("danger", "Your gripper cannot hold \the [target]."))
 			return
 
-	if(istype(target,/obj/item)) //Check that we're not pocketing a mob.
+	if(istype(target, /obj/item)) //Check that we're not pocketing a mob.
 
 		//...and that the item is not in a container.
 		if(!isturf(target.loc))
@@ -383,61 +383,64 @@
 		//Check if the item is blacklisted.
 		var/grab = 0
 		for(var/typepath in can_hold)
-			if(istype(I,typepath) && !I.anchored)
+			if(istype(I, typepath) && !I.anchored)
 				grab = 1
 				break
 
 		//We can grab the item, finally.
 		if(grab)
-			to_chat(user, "<span class='notice'>You collect \the [I].</span>")
-			I.loc = src
+			to_chat(user, SPAN("notice", "You collect \the [I]."))
+			I.forceMove(src)
 			wrapped = I
 			return
 		else
-			to_chat(user, "<span class='danger'>Your gripper cannot hold \the [target].</span>")
+			to_chat(user, SPAN("danger", "Your gripper cannot hold \the [target]."))
 	else if(istype(target,/obj/machinery/power/apc))
 		var/obj/machinery/power/apc/A = target
-		if(A.opened)
-			if(A.cell)
+		if(A.opened && A.cell)
+			wrapped = A.cell
 
-				wrapped = A.cell
+			A.cell.add_fingerprint(user)
+			A.cell.update_icon()
+			A.cell.forceMove(src)
+			A.cell = null
 
-				A.cell.add_fingerprint(user)
-				A.cell.update_icon()
-				A.cell.loc = src
-				A.cell = null
+			A.charging = FALSE
+			A.update_icon()
 
-				A.charging = 0
-				A.update_icon()
-
-				user.visible_message("<span class='danger'>[user] removes the power cell from [A]!</span>", "You remove the power cell.")
-
+			user.visible_message(
+			  SPAN("danger", "[user] removes the power cell from [A]!"),
+			  SPAN("notice", "You remove the power cell.")
+			)
 	else if(istype(target,/mob/living/silicon/robot))
 		var/mob/living/silicon/robot/A = target
-		if(A.opened)
-			if(A.cell)
+		if(A.opened && A.cell)
+			wrapped = A.cell
 
-				wrapped = A.cell
+			A.cell.add_fingerprint(user)
+			A.cell.update_icon()
+			A.update_icon()
+			A.cell.forceMove(src)
+			A.cell = null
 
-				A.cell.add_fingerprint(user)
-				A.cell.update_icon()
-				A.update_icon()
-				A.cell.loc = src
-				A.cell = null
-
-				user.visible_message("<span class='danger'>[user] removes the power cell from [A]!</span>", "You remove the power cell.")
-
+			user.visible_message(
+			  SPAN("danger", "[user] removes the power cell from [A]!"),
+			  SPAN("notice", "You remove the power cell.")
+			)
 	else if(istype(target, /obj/machinery/mining/drill))
 		var/obj/machinery/mining/drill/hdrill = target
 		if(hdrill.panel_open && hdrill.cell && user.Adjacent(hdrill))
 			wrapped = hdrill.cell
+
 			hdrill.cell.add_fingerprint(user)
 			hdrill.cell.update_icon()
-			hdrill.cell.loc = src
+			hdrill.cell.forceMove(src)
 			hdrill.cell = null
 
-			user.visible_message(SPAN_DANGER("[user] removes the power cell from [hdrill]!"), "You remove the power cell.")
-
+			user.visible_message(
+			  SPAN("danger", "[user] removes the power cell from [hdrill]!"),
+			  SPAN("notice", "You remove the power cell.")
+			)
 	else if(istype(target, /obj/machinery/cell_charger))
 		var/obj/machinery/cell_charger/charger = target
 		if(charger.charging)
@@ -446,14 +449,16 @@
 
 			charger.charging.add_fingerprint(user)
 			charger.charging.update_icon()
-			charger.charging.loc = src
+			charger.charging.forceMove(src)
 			charger.charging = null
 			charger.update_icon()
 
-			user.visible_message(SPAN_DANGER("[user] removes the power cell from [charger]!"), "You remove the power cell.")
-
+			user.visible_message(
+			  SPAN("danger", "[user] removes the power cell from [charger]!"),
+			  SPAN("notice", "You remove the power cell.")
+			)
 	else
-		to_chat(user, "<span class='notice'>[src] can't interact with \the [target].</span>")
+		to_chat(user, SPAN("notice", "[src] can't interact with \the [target]."))
 
 /obj/item/gripper/proc/finish_using(atom/target, mob/living/user, params, force_holder, resolved)
 	if(!resolved && wrapped && target)

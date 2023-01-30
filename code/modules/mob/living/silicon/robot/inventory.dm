@@ -5,6 +5,14 @@
 /mob/living/silicon/robot/get_active_hand()
 	return module_active
 
+/mob/living/silicon/robot/drop(obj/item/I, atom/target = null, force = FALSE)
+	if(!can_unequip(I))
+		return FALSE
+	var/obj/item/gripper/G = module_active
+	G.drop_item()
+	if(target)
+		I.forceMove(target)
+	return TRUE
 /*-------TODOOOOOOOOOO--------*/
 
 //Verbs used by hotkeys.
