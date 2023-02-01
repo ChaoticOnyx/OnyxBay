@@ -2,25 +2,25 @@
 Self-sustaining extracts:
 	Produces 4 extracts that do not need reagents.
 */
-/obj/item/slimecross/selfsustaining
+/obj/item/metroidcross/selfsustaining
 	name = "self-sustaining extract"
 	effect = "self-sustaining"
 	icon_state = "selfsustaining"
-	var/extract_type = /obj/item/slime_extract
+	var/extract_type = /obj/item/metroid_extract
 
 /obj/item/autoslime
 	name = "autoslime"
 	desc = "It resembles a normal slime extract, but seems filled with a strange, multi-colored fluid."
-	var/obj/item/slime_extract/extract
+	var/obj/item/metroid_extract/extract
 	var/effect_desc = "A self-sustaining slime extract. When used, lets you choose which reaction you want."
 
 //Just divides into the actual item.
-/obj/item/slimecross/selfsustaining/Initialize(mapload)
+/obj/item/metroidcross/selfsustaining/Initialize(mapload)
 	..()
 	visible_message(SPAN_WARNING("The [src] shudders, and splits into four smaller extracts."))
 	for(var/i in 1 to 4)
 		var/obj/item/autoslime/A = new /obj/item/autoslime(src.loc)
-		var/obj/item/slime_extract/X = new extract_type(A)
+		var/obj/item/metroid_extract/X = new extract_type(A)
 		A.extract = X
 		A.icon = icon
 		A.icon_state = icon_state
@@ -32,13 +32,13 @@ Self-sustaining extracts:
 	return ..()
 
 /obj/item/autoslime/attack_self(mob/user)
-	var/reagentselect = tgui_input_list(user, "Reagent the extract will produce.", "Self-sustaining Reaction", sort_list(extract.activate_reagents, /proc/cmp_typepaths_asc))
+	var/reagentselect //FIXME = tgui_input_list(user, "Reagent the extract will produce.", "Self-sustaining Reaction", sort_list(extract.activate_reagents, /proc/cmp_typepaths_asc))
 	if(isnull(reagentselect))
 		return
 	var/amount = 5
 	var/secondary
 
-	if (user.get_active_held_item() != src || user.stat != CONSCIOUS || HAS_TRAIT(user, TRAIT_HANDS_BLOCKED))
+	if (user.get_active_item() != src || user.stat != CONSCIOUS || user.restrained())
 		return
 	if(!reagentselect)
 		return
@@ -55,97 +55,97 @@ Self-sustaining extracts:
 	if(secondary)
 		extract.reagents.add_reagent(secondary,amount)
 
-/obj/item/autoslime/examine(mob/user)
+/obj/item/autoslime/_examine_text(mob/user)
 	. = ..()
 	if(effect_desc)
 		. += SPAN_NOTICE("[effect_desc]")
 
 //Different types.
 
-/obj/item/slimecross/selfsustaining/grey
-	extract_type = /obj/item/slime_extract/grey
+/obj/item/metroidcross/selfsustaining/grey
+	extract_type = /obj/item/metroid_extract/grey
 	colour = "grey"
 
-/obj/item/slimecross/selfsustaining/orange
-	extract_type = /obj/item/slime_extract/orange
+/obj/item/metroidcross/selfsustaining/orange
+	extract_type = /obj/item/metroid_extract/orange
 	colour = "orange"
 
-/obj/item/slimecross/selfsustaining/purple
-	extract_type = /obj/item/slime_extract/purple
+/obj/item/metroidcross/selfsustaining/purple
+	extract_type = /obj/item/metroid_extract/purple
 	colour = "purple"
 
-/obj/item/slimecross/selfsustaining/blue
-	extract_type = /obj/item/slime_extract/blue
+/obj/item/metroidcross/selfsustaining/blue
+	extract_type = /obj/item/metroid_extract/blue
 	colour = "blue"
 
-/obj/item/slimecross/selfsustaining/metal
-	extract_type = /obj/item/slime_extract/metal
+/obj/item/metroidcross/selfsustaining/metal
+	extract_type = /obj/item/metroid_extract/metal
 	colour = "metal"
 
-/obj/item/slimecross/selfsustaining/yellow
-	extract_type = /obj/item/slime_extract/yellow
+/obj/item/metroidcross/selfsustaining/yellow
+	extract_type = /obj/item/metroid_extract/yellow
 	colour = "yellow"
 
-/obj/item/slimecross/selfsustaining/darkpurple
-	extract_type = /obj/item/slime_extract/darkpurple
+/obj/item/metroidcross/selfsustaining/darkpurple
+	extract_type = /obj/item/metroid_extract/darkpurple
 	colour = "dark purple"
 
-/obj/item/slimecross/selfsustaining/darkblue
-	extract_type = /obj/item/slime_extract/darkblue
+/obj/item/metroidcross/selfsustaining/darkblue
+	extract_type = /obj/item/metroid_extract/darkblue
 	colour = "dark blue"
 
-/obj/item/slimecross/selfsustaining/silver
-	extract_type = /obj/item/slime_extract/silver
+/obj/item/metroidcross/selfsustaining/silver
+	extract_type = /obj/item/metroid_extract/silver
 	colour = "silver"
 
-/obj/item/slimecross/selfsustaining/bluespace
-	extract_type = /obj/item/slime_extract/bluespace
+/obj/item/metroidcross/selfsustaining/bluespace
+	extract_type = /obj/item/metroid_extract/bluespace
 	colour = "bluespace"
 
-/obj/item/slimecross/selfsustaining/sepia
-	extract_type = /obj/item/slime_extract/sepia
+/obj/item/metroidcross/selfsustaining/sepia
+	extract_type = /obj/item/metroid_extract/sepia
 	colour = "sepia"
 
-/obj/item/slimecross/selfsustaining/cerulean
-	extract_type = /obj/item/slime_extract/cerulean
+/obj/item/metroidcross/selfsustaining/cerulean
+	extract_type = /obj/item/metroid_extract/cerulean
 	colour = "cerulean"
 
-/obj/item/slimecross/selfsustaining/pyrite
-	extract_type = /obj/item/slime_extract/pyrite
+/obj/item/metroidcross/selfsustaining/pyrite
+	extract_type = /obj/item/metroid_extract/pyrite
 	colour = "pyrite"
 
-/obj/item/slimecross/selfsustaining/red
-	extract_type = /obj/item/slime_extract/red
+/obj/item/metroidcross/selfsustaining/red
+	extract_type = /obj/item/metroid_extract/red
 	colour = "red"
 
-/obj/item/slimecross/selfsustaining/green
-	extract_type = /obj/item/slime_extract/green
+/obj/item/metroidcross/selfsustaining/green
+	extract_type = /obj/item/metroid_extract/green
 	colour = "green"
 
-/obj/item/slimecross/selfsustaining/pink
-	extract_type = /obj/item/slime_extract/pink
+/obj/item/metroidcross/selfsustaining/pink
+	extract_type = /obj/item/metroid_extract/pink
 	colour = "pink"
 
-/obj/item/slimecross/selfsustaining/gold
-	extract_type = /obj/item/slime_extract/gold
+/obj/item/metroidcross/selfsustaining/gold
+	extract_type = /obj/item/metroid_extract/gold
 	colour = "gold"
 
-/obj/item/slimecross/selfsustaining/oil
-	extract_type = /obj/item/slime_extract/oil
+/obj/item/metroidcross/selfsustaining/oil
+	extract_type = /obj/item/metroid_extract/oil
 	colour = "oil"
 
-/obj/item/slimecross/selfsustaining/black
-	extract_type = /obj/item/slime_extract/black
+/obj/item/metroidcross/selfsustaining/black
+	extract_type = /obj/item/metroid_extract/black
 	colour = "black"
 
-/obj/item/slimecross/selfsustaining/lightpink
-	extract_type = /obj/item/slime_extract/lightpink
+/obj/item/metroidcross/selfsustaining/lightpink
+	extract_type = /obj/item/metroid_extract/lightpink
 	colour = "light pink"
 
-/obj/item/slimecross/selfsustaining/adamantine
-	extract_type = /obj/item/slime_extract/adamantine
+/obj/item/metroidcross/selfsustaining/adamantine
+	extract_type = /obj/item/metroid_extract/adamantine
 	colour = "adamantine"
 
-/obj/item/slimecross/selfsustaining/rainbow
-	extract_type = /obj/item/slime_extract/rainbow
+/obj/item/metroidcross/selfsustaining/rainbow
+	extract_type = /obj/item/metroid_extract/rainbow
 	colour = "rainbow"

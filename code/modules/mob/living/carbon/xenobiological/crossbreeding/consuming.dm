@@ -3,9 +3,9 @@ Consuming extracts:
 	Can eat food items.
 	After consuming enough, produces special cookies.
 */
-/obj/item/slimecross/consuming
+/obj/item/metroidcross/consuming
 	name = "consuming extract"
-	desc = "It hungers... for <i>more</i>." //My slimecross has finally decided to eat... my buffet!
+	desc = "It hungers... for <i>more</i>." //My metroidcross has finally decided to eat... my buffet!
 	icon_state = "consuming"
 	effect = "consuming"
 	var/nutriment_eaten = 0
@@ -15,8 +15,8 @@ Consuming extracts:
 	var/cookies = 5 //Number of cookies to spawn
 	var/cookietype = /obj/item/slime_cookie
 
-/obj/item/slimecross/consuming/attackby(obj/item/O, mob/user)
-	if(IS_EDIBLE(O))
+/obj/item/metroidcross/consuming/attackby(obj/item/O, mob/user)
+	if(istype(O, /obj/item/reagent_containers/food))
 		if(last_produced + cooldown > world.time)
 			to_chat(user, SPAN_WARNING("[src] is still digesting after its last meal!"))
 			return
@@ -35,23 +35,23 @@ Consuming extracts:
 			last_produced = world.time
 			for(var/i in 1 to cookies)
 				var/obj/item/S = spawncookie()
-				S.pixel_x = base_pixel_x + rand(-5, 5)
-				S.pixel_y = base_pixel_y + rand(-5, 5)
+				S.pixel_x += rand(-5, 5)
+				S.pixel_y += rand(-5, 5)
 		return
 	..()
 
-/obj/item/slimecross/consuming/proc/spawncookie()
+/obj/item/metroidcross/consuming/proc/spawncookie()
 	return new cookietype(get_turf(src))
 
 /obj/item/slime_cookie //While this technically acts like food, it's so removed from it that I made it its' own type.
 	name = "error cookie"
 	desc = "A weird slime cookie. You shouldn't see this."
-	icon = 'icons/obj/food/slimecookies.dmi'
+	icon = 'icons/obj/xenobiology/metroidcookies.dmi'
 	var/taste = "error"
 	var/nutrition = 5
 	icon_state = "base"
 	force = 0
-	w_class = WEIGHT_CLASS_TINY
+	w_class = ITEM_SIZE_TINY
 	throwforce = 0
 	throw_speed = 3
 	throw_range = 6
@@ -65,13 +65,13 @@ Consuming extracts:
 		M.visible_message(SPAN_NOTICE("[user] eats [src]!"), SPAN_NOTICE("You eat [src]."))
 		fed = TRUE
 	else
-		M.visible_message(SPAN_DANGER("[user] tries to force [M] to eat [src]!"), span_userdanger("[user] tries to force you to eat [src]!"))
+		M.visible_message(SPAN_DANGER("[user] tries to force [M] to eat [src]!"), SPAN_DANGER("[user] tries to force you to eat [src]!"))
 		if(do_after(user, 20, target = M))
 			fed = TRUE
 			M.visible_message(SPAN_DANGER("[user] forces [M] to eat [src]!"), SPAN_WARNING("[user] forces you to eat [src]."))
 	if(fed)
 		var/mob/living/carbon/human/H = M
-
+	/*FIXME
 		if(!istype(H) || !HAS_TRAIT(H, TRAIT_AGEUSIA))
 			to_chat(M, SPAN_NOTICE("Tastes like [taste]."))
 		playsound(get_turf(M), 'sound/items/eatfood.ogg', 20, TRUE)
@@ -79,10 +79,10 @@ Consuming extracts:
 			M.reagents.add_reagent(/datum/reagent/nutriment,nutrition)
 		do_effect(M, user)
 		qdel(src)
-		return
+		return*/
 	..()
 
-/obj/item/slimecross/consuming/grey
+/obj/item/metroidcross/consuming/grey
 	colour = "grey"
 	effect_desc = "Creates a slime cookie."
 	cookietype = /obj/item/slime_cookie/grey
@@ -94,7 +94,7 @@ Consuming extracts:
 	taste = "goo"
 	nutrition = 15
 
-/obj/item/slimecross/consuming/orange
+/obj/item/metroidcross/consuming/orange
 	colour = "orange"
 	effect_desc = "Creates a slime cookie that heats the target up and grants cold immunity for a short time."
 	cookietype = /obj/item/slime_cookie/orange
@@ -106,9 +106,9 @@ Consuming extracts:
 	taste = "cinnamon and burning"
 
 /obj/item/slime_cookie/orange/do_effect(mob/living/M, mob/user)
-	M.apply_status_effect(/datum/status_effect/firecookie)
+	//FIXME M.apply_status_effect(/datum/status_effect/firecookie)
 
-/obj/item/slimecross/consuming/purple
+/obj/item/metroidcross/consuming/purple
 	colour = "purple"
 	effect_desc = "Creates a slime cookie that heals the target from every type of damage."
 	cookietype = /obj/item/slime_cookie/purple
@@ -122,12 +122,12 @@ Consuming extracts:
 /obj/item/slime_cookie/purple/do_effect(mob/living/M, mob/user)
 	M.adjustBruteLoss(-5)
 	M.adjustFireLoss(-5)
-	M.adjustToxLoss(-5, forced=1) //To heal slimepeople.
+	M.adjustToxLoss(-5) //To heal slimepeople.
 	M.adjustOxyLoss(-5)
 	M.adjustCloneLoss(-5)
-	M.adjustOrganLoss(ORGAN_SLOT_BRAIN, -5)
+	M.heal_organ_damage(5,5)
 
-/obj/item/slimecross/consuming/blue
+/obj/item/metroidcross/consuming/blue
 	colour = "blue"
 	effect_desc = "Creates a slime cookie that wets the floor around you and makes you immune to water based slipping for a short time."
 	cookietype = /obj/item/slime_cookie/blue
@@ -139,9 +139,9 @@ Consuming extracts:
 	taste = "water"
 
 /obj/item/slime_cookie/blue/do_effect(mob/living/M, mob/user)
-	M.apply_status_effect(/datum/status_effect/watercookie)
+	//FIXME M.apply_status_effect(/datum/status_effect/watercookie)
 
-/obj/item/slimecross/consuming/metal
+/obj/item/metroidcross/consuming/metal
 	colour = "metal"
 	effect_desc = "Creates a slime cookie that increases the target's resistance to brute damage."
 	cookietype = /obj/item/slime_cookie/metal
@@ -153,9 +153,9 @@ Consuming extracts:
 	taste = /datum/reagent/copper
 
 /obj/item/slime_cookie/metal/do_effect(mob/living/M, mob/user)
-	M.apply_status_effect(/datum/status_effect/metalcookie)
+	//FIXME M.apply_status_effect(/datum/status_effect/metalcookie)
 
-/obj/item/slimecross/consuming/yellow
+/obj/item/metroidcross/consuming/yellow
 	colour = "yellow"
 	effect_desc = "Creates a slime cookie that makes the target immune to electricity for a short time."
 	cookietype = /obj/item/slime_cookie/yellow
@@ -167,9 +167,9 @@ Consuming extracts:
 	taste = "lemon cake and rubber gloves"
 
 /obj/item/slime_cookie/yellow/do_effect(mob/living/M, mob/user)
-	M.apply_status_effect(/datum/status_effect/sparkcookie)
+	//FIXME M.apply_status_effect(/datum/status_effect/sparkcookie)
 
-/obj/item/slimecross/consuming/darkpurple
+/obj/item/metroidcross/consuming/darkpurple
 	colour = "dark purple"
 	effect_desc = "Creates a slime cookie that reverses how the target's body treats toxins."
 	cookietype = /obj/item/slime_cookie/darkpurple
@@ -181,9 +181,9 @@ Consuming extracts:
 	taste = "slime jelly and toxins"
 
 /obj/item/slime_cookie/darkpurple/do_effect(mob/living/M, mob/user)
-	M.apply_status_effect(/datum/status_effect/toxincookie)
+	//FIXME M.apply_status_effect(/datum/status_effect/toxincookie)
 
-/obj/item/slimecross/consuming/darkblue
+/obj/item/metroidcross/consuming/darkblue
 	colour = "dark blue"
 	effect_desc = "Creates a slime cookie that chills the target and extinguishes them."
 	cookietype = /obj/item/slime_cookie/darkblue
@@ -195,12 +195,12 @@ Consuming extracts:
 	taste = "mint and bitter cold"
 
 /obj/item/slime_cookie/darkblue/do_effect(mob/living/M, mob/user)
-	M.adjust_bodytemperature(-110)
-	M.extinguish_mob()
+	//FIXME M.adjust_bodytemperature(-110)
+	//FIXME M.extinguish_mob()
 
-/obj/item/slimecross/consuming/silver
+/obj/item/metroidcross/consuming/silver
 	colour = "silver"
-	effect_desc = "Creates a slime cookie that never gets the target fat."
+	effect_desc = "Creates a slime cookie that help you to grow up a muscles."
 	cookietype = /obj/item/slime_cookie/silver
 
 /obj/item/slime_cookie/silver
@@ -211,9 +211,9 @@ Consuming extracts:
 	nutrition = 0 //We don't want normal nutriment
 
 /obj/item/slime_cookie/silver/do_effect(mob/living/M, mob/user)
-	M.reagents.add_reagent(/datum/reagent/nutriment/stabilized,10)
+	M.reagents.add_reagent(/datum/reagent/nutriment/protein,10)
 
-/obj/item/slimecross/consuming/bluespace
+/obj/item/metroidcross/consuming/bluespace
 	colour = "bluespace"
 	effect_desc = "Creates a slime cookie that teleports the target to a random place in the area."
 	cookietype = /obj/item/slime_cookie/bluespace
@@ -227,6 +227,7 @@ Consuming extracts:
 /obj/item/slime_cookie/bluespace/do_effect(mob/living/M, mob/user)
 	var/list/L = get_area_turfs(get_area(get_turf(M)))
 	var/turf/target
+	/*FIXME -
 	while (L.len && !target)
 		var/I = rand(1, L.len)
 		var/turf/T = L[I]
@@ -247,9 +248,9 @@ Consuming extracts:
 	if(target)
 		do_teleport(M, target, 0, asoundin = 'sound/effects/phasein.ogg', channel = TELEPORT_CHANNEL_BLUESPACE)
 		new /obj/effect/particle_effect/sparks(get_turf(M))
-		playsound(get_turf(M), SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+		playsound(get_turf(M), SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)*/
 
-/obj/item/slimecross/consuming/sepia
+/obj/item/metroidcross/consuming/sepia
 	colour = "sepia"
 	effect_desc = "Creates a slime cookie that makes the target do things slightly faster."
 	cookietype = /obj/item/slime_cookie/sepia
@@ -261,9 +262,9 @@ Consuming extracts:
 	taste = "brown sugar and a metronome"
 
 /obj/item/slime_cookie/sepia/do_effect(mob/living/M, mob/user)
-	M.apply_status_effect(/datum/status_effect/timecookie)
+	//FIXME M.apply_status_effect(/datum/status_effect/timecookie)
 
-/obj/item/slimecross/consuming/cerulean
+/obj/item/metroidcross/consuming/cerulean
 	colour = "cerulean"
 	effect_desc = "Creates a slime cookie that has a chance to make another once you eat it."
 	cookietype = /obj/item/slime_cookie/cerulean
@@ -281,7 +282,7 @@ Consuming extracts:
 		var/obj/item/slime_cookie/cerulean/C = new(get_turf(M))
 		C.taste = taste + " and a sugar cookie"
 
-/obj/item/slimecross/consuming/pyrite
+/obj/item/metroidcross/consuming/pyrite
 	colour = "pyrite"
 	effect_desc = "Creates a slime cookie that randomly colors the target."
 	cookietype = /obj/item/slime_cookie/pyrite
@@ -321,9 +322,9 @@ Consuming extracts:
 	taste += tastemessage
 
 /obj/item/slime_cookie/pyrite/do_effect(mob/living/M, mob/user)
-	M.add_atom_colour(colour,WASHABLE_COLOUR_PRIORITY)
+	//FIXME M.add_atom_colour(colour,WASHABLE_COLOUR_PRIORITY)
 
-/obj/item/slimecross/consuming/red
+/obj/item/metroidcross/consuming/red
 	colour = "red"
 	effect_desc = "Creates a slime cookie that creates a spatter of blood on the floor, while also restoring some of the target's blood."
 	cookietype = /obj/item/slime_cookie/red
@@ -337,11 +338,11 @@ Consuming extracts:
 /obj/item/slime_cookie/red/do_effect(mob/living/M, mob/user)
 	new /obj/effect/decal/cleanable/blood(get_turf(M))
 	playsound(get_turf(M), 'sound/effects/splat.ogg', 10, TRUE)
-	if(iscarbon(M))
-		var/mob/living/carbon/C = M
-		C.blood_volume += 25 //Half a vampire drain.
+	if(ishuman(M))
+		var/mob/living/carbon/human/C = M
+		C.regenerate_blood(25)
 
-/obj/item/slimecross/consuming/green
+/obj/item/metroidcross/consuming/green
 	colour = "green"
 	effect_desc = "Creates a slime cookie that is absolutely disgusting, makes the target vomit, however all reagent in their body are also removed."
 	cookietype = /obj/item/slime_cookie/green
@@ -356,9 +357,9 @@ Consuming extracts:
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		H.vomit(25)
-	M.reagents.remove_all()
+	M.reagents.clear_reagents()
 
-/obj/item/slimecross/consuming/pink
+/obj/item/metroidcross/consuming/pink
 	colour = "pink"
 	effect_desc = "Creates a slime cookie that makes the target want to spread the love."
 	cookietype = /obj/item/slime_cookie/pink
@@ -370,9 +371,9 @@ Consuming extracts:
 	taste = "love and hugs"
 
 /obj/item/slime_cookie/pink/do_effect(mob/living/M, mob/user)
-	M.apply_status_effect(/datum/status_effect/lovecookie)
+	//FIXME M.apply_status_effect(/datum/status_effect/lovecookie)
 
-/obj/item/slimecross/consuming/gold
+/obj/item/metroidcross/consuming/gold
 	colour = "gold"
 	effect_desc = "Creates a slime cookie that has a gold coin inside."
 	cookietype = /obj/item/slime_cookie/gold
@@ -383,15 +384,16 @@ Consuming extracts:
 	icon_state = "gold"
 	taste = "sweet cornbread and wealth"
 
-/obj/item/slime_cookie/gold/do_effect(mob/living/M, mob/user)
-	var/obj/item/held = M.get_active_held_item() //This should be itself, but just in case...
-	M.dropItemToGround(held)
-	var/newcoin = /obj/item/coin/gold
-	var/obj/item/coin/C = new newcoin(get_turf(M))
-	playsound(get_turf(C), 'sound/items/coinflip.ogg', 50, TRUE)
-	M.put_in_hand(C)
+/obj/item/slime_cookie/gold/do_effect(mob/living/L, mob/user)
+	var/mob/living/carbon/human/M = L
+	var/obj/item/held = M.get_active_item() //This should be itself, but just in case...
+	M.drop_active_hand()
+	var/newcoin = /obj/item/material/coin/gold
+	var/obj/item/material/coin/C = new newcoin(get_turf(M))
+	//FIXME playsound(get_turf(C), 'sound/items/coinflip.ogg', 50, TRUE)
+	M.put_in_any_hand_if_possible(C)
 
-/obj/item/slimecross/consuming/oil
+/obj/item/metroidcross/consuming/oil
 	colour = "oil"
 	effect_desc = "Creates a slime cookie that slows anyone next to the user."
 	cookietype = /obj/item/slime_cookie/oil
@@ -403,9 +405,9 @@ Consuming extracts:
 	taste = "rich molten chocolate and tar"
 
 /obj/item/slime_cookie/oil/do_effect(mob/living/M, mob/user)
-	M.apply_status_effect(/datum/status_effect/tarcookie)
+	//FIXME M.apply_status_effect(/datum/status_effect/tarcookie)
 
-/obj/item/slimecross/consuming/black
+/obj/item/metroidcross/consuming/black
 	colour = "black"
 	effect_desc = "Creates a slime cookie that makes the target look like a spooky skeleton for a little bit."
 	cookietype = /obj/item/slime_cookie/black
@@ -417,9 +419,9 @@ Consuming extracts:
 	taste = "ghosts and stuff"
 
 /obj/item/slime_cookie/black/do_effect(mob/living/M, mob/user)
-	M.apply_status_effect(/datum/status_effect/spookcookie)
+	//FIXME M.apply_status_effect(/datum/status_effect/spookcookie)
 
-/obj/item/slimecross/consuming/lightpink
+/obj/item/metroidcross/consuming/lightpink
 	colour = "light pink"
 	effect_desc = "Creates a slime cookie that makes the target, and anyone next to the target, pacifistic for a small amount of time."
 	cookietype = /obj/item/slime_cookie/lightpink
@@ -431,9 +433,9 @@ Consuming extracts:
 	taste = "strawberry icing and P.L.U.R" //Literal candy raver.
 
 /obj/item/slime_cookie/lightpink/do_effect(mob/living/M, mob/user)
-	M.apply_status_effect(/datum/status_effect/peacecookie)
+	//FIXME M.apply_status_effect(/datum/status_effect/peacecookie)
 
-/obj/item/slimecross/consuming/adamantine
+/obj/item/metroidcross/consuming/adamantine
 	colour = "adamantine"
 	effect_desc = "Creates a slime cookie that increases the target's resistance to burn damage."
 	cookietype = /obj/item/slime_cookie/adamantine
@@ -445,13 +447,13 @@ Consuming extracts:
 	taste = "crystalline sugar and metal"
 
 /obj/item/slime_cookie/adamantine/do_effect(mob/living/M, mob/user)
-	M.apply_status_effect(/datum/status_effect/adamantinecookie)
+	//FIXME M.apply_status_effect(/datum/status_effect/adamantinecookie)
 
-/obj/item/slimecross/consuming/rainbow
+/obj/item/metroidcross/consuming/rainbow
 	colour = "rainbow"
 	effect_desc = "Creates a slime cookie that has the effect of a random cookie."
 
-/obj/item/slimecross/consuming/rainbow/spawncookie()
+/obj/item/metroidcross/consuming/rainbow/spawncookie()
 	var/cookie_type = pick(subtypesof(/obj/item/slime_cookie))
 	var/obj/item/slime_cookie/S = new cookie_type(get_turf(src))
 	S.name = "rainbow cookie"

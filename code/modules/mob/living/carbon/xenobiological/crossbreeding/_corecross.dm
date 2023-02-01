@@ -9,7 +9,7 @@
 To add a crossbreed:
 	The file name is automatically selected
 	by the crossbreeding effect, which uses
-	the format slimecross/[modifier]/[color].
+	the format metroidcross/[modifier]/[color].
 
 	If a crossbreed doesn't exist, don't
 	worry. If no file is found at that
@@ -48,12 +48,12 @@ To add a crossbreed:
 	return
 
 /mob/living/carbon/metroid/proc/spawn_corecross()
-	var/static/list/crossbreeds = subtypesof(/obj/item/slimecross)
+	var/static/list/crossbreeds = subtypesof(/obj/item/metroidcross)
 	visible_message(SPAN_DANGER("[src] shudders, its mutated core consuming the rest of its body!"))
 	//FIXME playsound(src, 'sound/magic/smoke.ogg', 50, TRUE)
 	var/crosspath
 	for(var/X in crossbreeds)
-		var/obj/item/slimecross/S = X
+		var/obj/item/metroidcross/S = X
 		if(initial(S.colour) == colour && initial(S.effect) == effectmod)
 			crosspath = S
 			break
@@ -63,10 +63,10 @@ To add a crossbreed:
 		visible_message(SPAN_WARNING("The mutated core shudders, and collapses into a puddle, unable to maintain its form."))
 	qdel(src)
 
-/obj/item/slimecross //The base type for crossbred extracts. Mostly here for posterity, and to set base case things.
+/obj/item/metroidcross //The base type for crossbred extracts. Mostly here for posterity, and to set base case things.
 	name = "crossbred slime extract"
 	desc = "An extremely potent slime extract, formed through crossbreeding."
-	icon = 'icons/obj/slimecrossing.dmi'
+	icon = 'icons/obj/xenobiology/metroidcrossing.dmi'
 	icon_state = "base"
 	var/colour = "null"
 	var/effect = "null"
@@ -77,12 +77,12 @@ To add a crossbreed:
 	throw_speed = 3
 	throw_range = 6
 
-/obj/item/slimecross/examine(mob/user)
+/obj/item/metroidcross/_examine_text(mob/user)
 	. = ..()
 	if(effect_desc)
 		. += SPAN_NOTICE("[effect_desc]")
 
-/obj/item/slimecross/Initialize(mapload)
+/obj/item/metroidcross/Initialize(mapload)
 	. = ..()
 	name = effect + " " + colour + " extract"
 	color = "#FFFFFF"

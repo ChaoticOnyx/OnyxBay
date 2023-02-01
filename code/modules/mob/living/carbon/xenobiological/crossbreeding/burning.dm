@@ -3,17 +3,17 @@ Burning extracts:
 	Have a unique, primarily offensive effect when
 	filled with 10u plasma and activated in-hand.
 */
-/obj/item/slimecross/burning
+/obj/item/metroidcross/burning
 	name = "burning extract"
 	desc = "It's boiling over with barely-contained energy."
 	effect = "burning"
 	icon_state = "burning"
 
-/obj/item/slimecross/burning/Initialize(mapload)
+/obj/item/metroidcross/burning/Initialize(mapload)
 	. = ..()
 	create_reagents(10)
 
-/obj/item/slimecross/burning/attack_self(mob/user)
+/obj/item/metroidcross/burning/attack_self(mob/user)
 	if(!reagents.has_reagent(/datum/reagent/toxin/plasma,10))
 		to_chat(user, SPAN_WARNING("This extract needs to be full of plasma to activate!"))
 		return
@@ -23,27 +23,27 @@ Burning extracts:
 	playsound(src, 'sound/effects/explosions/fuel_explosion1.ogg', 50, TRUE)
 	do_effect(user)
 
-/obj/item/slimecross/burning/proc/do_effect(mob/user) //If, for whatever reason, you don't want to delete the extract, don't do ..()
+/obj/item/metroidcross/burning/proc/do_effect(mob/user) //If, for whatever reason, you don't want to delete the extract, don't do ..()
 	qdel(src)
 	return
 
-/obj/item/slimecross/burning/grey
+/obj/item/metroidcross/burning/grey
 	colour = "grey"
 	effect_desc = "Creates a hungry and speedy slime that will love you forever."
 
-/obj/item/slimecross/burning/grey/do_effect(mob/user)
+/obj/item/metroidcross/burning/grey/do_effect(mob/user)
 	var/mob/living/carbon/metroid/S = new(get_turf(user),"grey")
 	S.visible_message(SPAN_DANGER("A baby slime emerges from [src], and it nuzzles [user] before burbling hungrily!"))
 	S.Friends += user
-	//FIXME S.bodytemperature = T0C + 400 //We gonna step on the gas.
+	S.bodytemperature = 400 + 0 CELSIUS //We gonna step on the gas.
 	S.nutrition=S.get_hunger_nutrition() //Tonight, we fight!
 	..()
 
-/obj/item/slimecross/burning/orange
+/obj/item/metroidcross/burning/orange
 	colour = "orange"
 	effect_desc = "Expels pepperspray in a radius when activated."
 
-/obj/item/slimecross/burning/orange/do_effect(mob/user)
+/obj/item/metroidcross/burning/orange/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] boils over with a caustic gas!"))
 	var/datum/reagents/tmp_holder = new/datum/reagents(100)
 	tmp_holder.add_reagent(/datum/reagent/capsaicin/condensed, 100)
@@ -55,47 +55,47 @@ Burning extracts:
 		tmp_holder.touch(A)
 	..()
 
-/obj/item/slimecross/burning/purple
+/obj/item/metroidcross/burning/purple
 	colour = "purple"
 	effect_desc = "Creates a clump of invigorating gel, it has healing properties and makes you feel good."
 
-/obj/item/slimecross/burning/purple/do_effect(mob/user)
+/obj/item/metroidcross/burning/purple/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] fills with a bubbling liquid!"))
-	//FIXME new /obj/item/slimecrossbeaker/autoinjector/slimestimulant(get_turf(user))
+	//FIXME new /obj/item/metroidcrossbeaker/autoinjector/slimestimulant(get_turf(user))
 	..()
 
-/obj/item/slimecross/burning/blue
+/obj/item/metroidcross/burning/blue
 	colour = "blue"
 	effect_desc = "Freezes the floor around you and chills nearby people."
 
-/obj/item/slimecross/burning/blue/do_effect(mob/user)
+/obj/item/metroidcross/burning/blue/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] flash-freezes the area!"))
-	/*FIXME for(var/turf/open/T in range(3, get_turf(user)))
-		T.MakeSlippery(TURF_WET_PERMAFROST, min_wet_time = 10, wet_time_to_add = 5)
+	for(var/turf/simulated/open/T in range(3, get_turf(user)))
+		T.wet_floor(50)
 	for(var/mob/living/carbon/M in range(5, get_turf(user)))
 		if(M != user)
 			M.bodytemperature = BODYTEMP_COLD_DAMAGE_LIMIT + 10 //Not quite cold enough to hurt.
-			to_chat(M, SPAN_DANGER("You feel a chill run down your spine, and the floor feels a bit slippery with frost..."))*/
+			to_chat(M, SPAN_DANGER("You feel a chill run down your spine, and the floor feels a bit slippery with frost..."))
 	..()
 
-/obj/item/slimecross/burning/metal
+/obj/item/metroidcross/burning/metal
 	colour = "metal"
 	effect_desc = "Instantly destroys walls around you."
 
-/obj/item/slimecross/burning/metal/do_effect(mob/user)
+/obj/item/metroidcross/burning/metal/do_effect(mob/user)
 	for(var/turf/simulated/wall/W in range(1,get_turf(user)))
 		W.dismantle_wall(1)
-		//FIXME playsound(W, 'sound/effects/break_stone.ogg', 50, TRUE)
+		playsound(W, 'sound/effects/break_stone.ogg', 50, TRUE)
 	user.visible_message(SPAN_DANGER("[src] pulses violently, and shatters the walls around it!"))
 	..()
 
-/obj/item/slimecross/burning/yellow
+/obj/item/metroidcross/burning/yellow
 	colour = "yellow"
 	effect_desc = "Electrocutes people near you."
 
-/obj/item/slimecross/burning/yellow/do_effect(mob/user)
+/obj/item/metroidcross/burning/yellow/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] explodes into an electrical field!"))
-	//FIXME playsound(get_turf(src), 'sound/weapons/zapbang.ogg', 50, TRUE)
+	playsound(get_turf(src), 'sound/weapons/resonator_blast.ogg', 50, TRUE)
 	for(var/mob/living/M in range(4,get_turf(user)))
 		if(M != user)
 			var/mob/living/carbon/C = M
@@ -106,217 +106,247 @@ Burning extracts:
 			to_chat(M, SPAN_DANGER("You feel a sharp electrical pulse!"))
 	..()
 
-/obj/item/slimecross/burning/darkpurple
+/obj/item/metroidcross/burning/darkpurple
 	colour = "dark purple"
 	effect_desc = "Creates a cloud of plasma."
 
-/obj/item/slimecross/burning/darkpurple/do_effect(mob/user)
+/obj/item/metroidcross/burning/darkpurple/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] sublimates into a cloud of plasma!"))
 	var/turf/T = get_turf(user)
 	T.assume_gas("plasma", 60, 20 CELSIUS)
 	..()
 
-/obj/item/slimecross/burning/darkblue
+/obj/item/metroidcross/burning/darkblue
 	colour = "dark blue"
 	effect_desc = "Expels a burst of chilling smoke while also filling you with regenerative jelly."
 
-/obj/item/slimecross/burning/darkblue/do_effect(mob/user)
+/obj/item/metroidcross/burning/darkblue/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] releases a burst of chilling smoke!"))
 	var/datum/reagents/tmp_holder = new/datum/reagents(100)
 	tmp_holder.add_reagent(/datum/reagent/frostoil, 40)
-	/*FIXME user.reagents.add_reagent(/datum/reagent/medicine/regen_jelly, 10)
-	var/datum/effect_system/fluid_spread/smoke/chem/smoke = new
-	smoke.set_up(7, holder = src, location = get_turf(user), carry = tmp_holder)
-	smoke.start(log = TRUE) */
+	// FIXME user.reagents.add_reagent(/datum/reagent/medicine/regen_jelly, 10)
+
+	var/datum/effect/effect/system/smoke_spread/smoke = new
+	smoke.set_up(10, 0, get_turf(user))
+	smoke.start()
+
+	for(var/atom/A in view(3, loc))
+		tmp_holder.touch(A)
 	..()
 
-/obj/item/slimecross/burning/silver
+/obj/item/metroidcross/burning/silver
 	colour = "silver"
 	effect_desc = "Creates a few pieces of slime jelly laced food."
 
-/obj/item/slimecross/burning/silver/do_effect(mob/user)
+/obj/item/metroidcross/burning/silver/do_effect(mob/user)
 	var/amount = rand(3,6)
 	var/list/turfs = list()
-	/*FIXME
-	for(var/turf/open/T in range(1,get_turf(user)))
+	for(var/turf/simulated/open/T in range(1,get_turf(user)))
 		turfs += T
 	for(var/i in 1 to amount)
-		var/path = get_random_food()
-		var/obj/item/food/food = new path(pick(turfs))
-		food.reagents.add_reagent(/datum/reagent/toxin/slimejelly,5) //Oh god it burns
-		food.mark_silver_slime_reaction()
+		var/path = pick(typesof(/obj/item/reagent_containers/food) - /obj/item/reagent_containers/food)
+		var/obj/item/reagent_containers/food/food = new path(pick(turfs))
+		food.reagents.add_reagent(/datum/reagent/metroidjelly,5) //Oh god it burns
 		if(prob(50))
 			food.desc += " It smells strange..."
-	user.visible_message(SPAN_DANGER("[src] produces a few pieces of food!"))*/
+	user.visible_message(SPAN_DANGER("[src] produces a few pieces of food!"))
 	..()
 
-/obj/item/slimecross/burning/bluespace
+/obj/item/metroidcross/burning/bluespace
 	colour = "bluespace"
 	effect_desc = "Teleports anyone directly next to you."
 
-/obj/item/slimecross/burning/bluespace/do_effect(mob/user)
+/obj/item/metroidcross/burning/bluespace/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] sparks, and lets off a shockwave of bluespace energy!"))
-	/*FIXME
 	for(var/mob/living/L in range(1, get_turf(user)))
 		if(L != user)
-			do_teleport(L, get_turf(L), 6, asoundin = 'sound/effects/phasein.ogg', channel = TELEPORT_CHANNEL_BLUESPACE) //Somewhere between the effectiveness of fake and real BS crystal
-			new /obj/effect/particle_effect/sparks(get_turf(L))
-			playsound(get_turf(L), SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)*/
+			do_teleport(L, get_turf(user))
+			playsound(get_turf(user), GET_SFX(SFX_SPARK_MEDIUM), 100, TRUE)
+			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread()
+			s.set_up(5, 1, user)
+			s.start()
 	..()
 
-/obj/item/slimecross/burning/sepia
+/obj/item/metroidcross/burning/sepia
 	colour = "sepia"
 	effect_desc = "Turns into a special camera that rewinds time when used."
 
-/obj/item/slimecross/burning/sepia/do_effect(mob/user)
+/obj/item/metroidcross/burning/sepia/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] shapes itself into a camera!"))
 	//FIXME new /obj/item/camera/rewind(get_turf(user))
 	..()
 
-/obj/item/slimecross/burning/cerulean
+/obj/item/metroidcross/burning/cerulean
 	colour = "cerulean"
 	effect_desc = "Produces an extract cloning potion, which copies an extract, as well as its extra uses."
 
-/obj/item/slimecross/burning/cerulean/do_effect(mob/user)
+/obj/item/metroidcross/burning/cerulean/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] produces a potion!"))
-	//FIXME new /obj/item/slimepotion/extract_cloner(get_turf(user))
+	new /obj/item/metroidpotion/extract_cloner(get_turf(user))
 	..()
 
-/obj/item/slimecross/burning/pyrite
+/obj/item/metroidcross/burning/pyrite
 	colour = "pyrite"
 	effect_desc = "Shatters all lights in the current room."
 
-/obj/item/slimecross/burning/pyrite/do_effect(mob/user)
+/obj/item/metroidcross/burning/pyrite/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] releases a colorful wave of energy, which shatters the lights!"))
 	var/area/A = get_area(user.loc)
-	/*FIXME
 	for(var/obj/machinery/light/L in A) //Shamelessly copied from the APC effect.
 		L.on = TRUE
-		L.break_light_tube()
-		stoplag()*/
+		L.broken()
+		stoplag()
 	..()
 
-/obj/item/slimecross/burning/red
+/obj/item/metroidcross/burning/red
 	colour = "red"
 	effect_desc = "Makes nearby slimes rabid, and they'll also attack their friends."
 
-/obj/item/slimecross/burning/red/do_effect(mob/user)
+/obj/item/metroidcross/burning/red/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] pulses a hazy red aura for a moment, which wraps around [user]!"))
-	/*FIXME
 	for(var/mob/living/carbon/metroid/S in view(7, get_turf(user)))
 		if(user in S.Friends)
-			var/friendliness = S.Friends[user]
-			S.clear_friends()
-			S.set_friendship(user, friendliness)
+			S.Friends.Cut()
+			S.Friends += user
 		else
-			S.clear_friends()
+			S.Friends.Cut()
 		S.rabid = 1
-		S.visible_message(SPAN_DANGER("The [S] is driven into a dangerous frenzy!"))*/
+		S.visible_message(SPAN_DANGER("The [S] is driven into a dangerous frenzy!"))
 	..()
 
-/obj/item/slimecross/burning/green
+/obj/item/metroidcross/burning/green
 	colour = "green"
 	effect_desc = "The user gets a dull arm blade in the hand it is used in."
 
-/obj/item/slimecross/burning/green/do_effect(mob/user)
-	/*FIXME
-	var/which_hand = "l_hand"
-	if(!(user.active_hand_index % 2))
-		which_hand = "r_hand"
-	var/mob/living/L = user
-	if(!istype(user))
-		return
-	var/obj/item/held = L.get_active_held_item() //This should be itself, but just in case...
-	L.dropItemToGround(held)
-	var/obj/item/melee/arm_blade/slime/blade = new(user)
-	if(!L.put_in_hands(blade))
-		qdel(blade)
-		user.visible_message(SPAN_WARNING("[src] melts onto [user]'s arm, boiling the flesh horribly!"))
+/obj/item/metroidcross/burning/green/do_effect(mob/user)
+	var/mob/living/carbon/human/target
+	if(ishuman(user))
+		target = user
 	else
-		user.visible_message(SPAN_DANGER("[src] sublimates the flesh around [user]'s arm, transforming the bone into a gruesome blade!"))
-	user.emote("scream")
-	L.apply_damage(30,BURN,which_hand)*/
+		return
+
+	spawn(10 SECONDS)
+		to_chat(user, SPAN("danger", "You feel strange spasms in your hand."))
+		target.visible_message("<b>[target]</b>'s arm twitches.")
+
+	spawn(15 SECONDS)
+		playsound(target.loc, 'sound/effects/blob/blobattack.ogg', 30, 1)
+
+		var/hand = pick(list(BP_R_HAND, BP_L_HAND))
+		var/failed = FALSE
+		switch(hand)
+			if(BP_R_HAND)
+				if(!isProsthetic(target.r_hand))
+					target.drop_r_hand()
+				else if(!isProsthetic(target.l_hand))
+					target.drop_l_hand()
+					hand = BP_L_HAND
+				else
+					failed = TRUE
+
+			if(BP_L_HAND)
+				if(!isProsthetic(target.l_hand))
+					target.drop_l_hand()
+				else if(!isProsthetic(target.r_hand))
+					target.drop_r_hand()
+					hand = BP_R_HAND
+				else
+					failed = TRUE
+
+		if(!failed)
+			user.visible_message(SPAN_DANGER("[src] sublimates the flesh around [user]'s arm, transforming the bone into a gruesome blade!"))
+			user.emote("scream")
+			new /obj/item/melee/prosthetic/bio/fake_arm_blade(target, target.organs_by_name[hand])
 	..()
 
-/obj/item/slimecross/burning/pink
+/obj/item/metroidcross/burning/pink
 	colour = "pink"
 	effect_desc = "Creates a beaker of synthpax."
 
-/obj/item/slimecross/burning/pink/do_effect(mob/user)
+/obj/item/metroidcross/burning/pink/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] shrinks into a small, gel-filled pellet!"))
-	//FIXME new /obj/item/slimecrossbeaker/pax(get_turf(user))
+	new /obj/item/metroidcrossbeaker/pax(get_turf(user))
 	..()
 
-/obj/item/slimecross/burning/gold
+/obj/item/metroidcross/burning/gold
 	colour = "gold"
 	effect_desc = "Creates a gank squad of monsters that are friendly to the user."
 
-/obj/item/slimecross/burning/gold/do_effect(mob/user)
+/obj/item/metroidcross/burning/gold/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] shudders violently, and summons an army for [user]!"))
-	/* FIXME
+	var/list/possible_mobs = list(
+							/mob/living/simple_animal/hostile/faithless,
+							/mob/living/simple_animal/hostile/creature,
+							/mob/living/simple_animal/hostile/bear,
+							/mob/living/simple_animal/hostile/maneater,
+							/mob/living/simple_animal/hostile/mimic,
+							/mob/living/simple_animal/hostile/carp/pike,
+							/mob/living/simple_animal/hostile/tree,
+							/mob/living/simple_animal/hostile/vagrant,
+							/mob/living/simple_animal/hostile/voxslug
+							)
 	for(var/i in 1 to 3) //Less than gold normally does, since it's safer and faster.
-		var/mob/living/spawned_mob = create_random_mob(get_turf(user), HOSTILE_SPAWN)
-		spawned_mob.faction |= "[REF(user)]"
+		var/mob/living/spawned_mob = pick(possible_mobs)
+		spawned_mob.faction |= "\ref[user.name]"
+		user.faction |= "\ref[user.name]"
 		if(prob(50))
 			for(var/j in 1 to rand(1, 3))
-				step(spawned_mob, pick(NORTH,SOUTH,EAST,WEST))*/
+				step(spawned_mob, pick(NORTH,SOUTH,EAST,WEST))
 	..()
 
-/obj/item/slimecross/burning/oil
+/obj/item/metroidcross/burning/oil
 	colour = "oil"
 	effect_desc = "Creates an explosion after a few seconds."
 
-/obj/item/slimecross/burning/oil/do_effect(mob/user)
+/obj/item/metroidcross/burning/oil/do_effect(mob/user)
 	user.visible_message(SPAN_WARNING("[user] activates [src]. It's going to explode!"), SPAN_DANGER("You activate [src]. It crackles in anticipation"))
 	addtimer(CALLBACK(src, .proc/boom), 50)
 
 /// Inflicts a blastwave upon every mob within a small radius.
-/obj/item/slimecross/burning/oil/proc/boom()
+/obj/item/metroidcross/burning/oil/proc/boom()
 	var/turf/T = get_turf(src)
-	//FIXME playsound(T, 'sound/effects/explosion2.ogg', 200, TRUE)
+	playsound(T, 'sound/effects/explosion2.ogg', 200, TRUE)
 	for(var/mob/living/target in range(2, T))
-		//FIXME new /obj/effect/temp_visual/explosion(get_turf(target))
+		new /obj/effect/explosion(get_turf(target))
 		SSexplosions.med_mov_atom += target
 	qdel(src)
 
-/obj/item/slimecross/burning/black
+/obj/item/metroidcross/burning/black
 	colour = "black"
 	effect_desc = "Transforms the user into a slime. They can transform back at will and do not lose any items."
 
-/obj/item/slimecross/burning/black/do_effect(mob/user)
+/obj/item/metroidcross/burning/black/do_effect(mob/user)
 	if(!isliving(user))
 		return
 	user.visible_message(SPAN_DANGER("[src] absorbs [user], transforming [user] into a slime!"))
-	//FIXME var/datum/action/cooldown/spell/shapeshift/slime_form/transform = new(user.mind || user)
-	//FIXME transform.remove_on_restore = TRUE
-	//FIXME transform.Grant(user)
-	//FIXME transform.cast(user)
+	var/datum/spell/targeted/shapeshift/metroid_form/transform = new()
+	transform.cast(user)
 	return ..()
 
-/obj/item/slimecross/burning/lightpink
+/obj/item/metroidcross/burning/lightpink
 	colour = "light pink"
 	effect_desc = "Paxes everyone in sight."
 
-/obj/item/slimecross/burning/lightpink/do_effect(mob/user)
+/obj/item/metroidcross/burning/lightpink/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] lets off a hypnotizing pink glow!"))
-	/*FIXME for(var/mob/living/carbon/C in view(7, get_turf(user)))
-		C.reagents.add_reagent(/datum/reagent/pax,5)*/
+	for(var/mob/living/carbon/C in view(7, get_turf(user)))
+		C.reagents.add_reagent(/datum/reagent/paroxetine,5)
 	..()
 
-/obj/item/slimecross/burning/adamantine
+/obj/item/metroidcross/burning/adamantine
 	colour = "adamantine"
 	effect_desc = "Creates a mighty adamantine shield."
 
-/obj/item/slimecross/burning/adamantine/do_effect(mob/user)
+/obj/item/metroidcross/burning/adamantine/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] crystallizes into a large shield!"))
-	//FIXME new /obj/item/shield/adamantineshield(get_turf(user))
+	new /obj/item/shield/adamantineshield(get_turf(user))
 	..()
 
-/obj/item/slimecross/burning/rainbow
+/obj/item/metroidcross/burning/rainbow
 	colour = "rainbow"
 	effect_desc = "Creates the Rainbow Knife, a kitchen knife that deals random types of damage."
 
-/obj/item/slimecross/burning/rainbow/do_effect(mob/user)
+/obj/item/metroidcross/burning/rainbow/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] flattens into a glowing rainbow blade."))
-	//FIXME new /obj/item/knife/rainbowknife(get_turf(user))
+	new /obj/item/knife/rainbowknife(get_turf(user))
 	..()

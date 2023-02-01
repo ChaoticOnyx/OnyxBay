@@ -392,6 +392,11 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 			else
 				hud_used.action_intent.icon_state = I_HELP
 
+	if(is_pacifist(src))
+		a_intent = I_HELP
+		if(hud_used && hud_used.action_intent)
+			hud_used.action_intent.icon_state = I_HELP
+
 /proc/is_blind(A)
 	if(istype(A, /mob/living/carbon))
 		var/mob/living/carbon/C = A
@@ -399,6 +404,11 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 			return 1
 	return 0
 
+/proc/is_pacifist(A)
+	if(istype(A, /mob/living/carbon))
+		var/mob/living/carbon/C = A
+		return C.has_modifier_of_type(TRAIT_PACIFISM)
+	return 0
 /proc/broadcast_security_hud_message(message, broadcast_source)
 	broadcast_hud_message(message, broadcast_source, GLOB.sec_hud_users, /obj/item/clothing/glasses/hud)
 

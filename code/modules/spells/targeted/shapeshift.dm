@@ -199,3 +199,6 @@
 						"maxHealth" = 200)
 			duration = 0
 			return "You revel in the corruption. There is no turning back."
+
+/datum/spell/targeted/shapeshift/metroid_form
+	possible_transformations = list(/mob/living/carbon/metroid)

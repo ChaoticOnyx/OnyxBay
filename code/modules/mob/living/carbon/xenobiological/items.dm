@@ -11,25 +11,31 @@
 	var/Uses = 1 // uses before it goes inert
 	var/enhanced = 0 //has it been enhanced before?
 	var/effectmod = ""
+	var/recurring = FALSE
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 
-	attackby(obj/item/O as obj, mob/user as mob)
-		if(istype(O, /obj/item/metroidsteroid2))
-			if(enhanced == 1)
-				to_chat(user, "<span class='warning'> This extract has already been enhanced!</span>")
-				return ..()
-			if(Uses == 0)
-				to_chat(user, "<span class='warning'> You can't enhance a used extract!</span>")
-				return ..()
-			to_chat(user, "You apply the enhancer. It now has triple the amount of uses.")
-			Uses = 3
-			enhanced = 1
-			qdel(O)
+/obj/item/metroid_extract/attackby(obj/item/O as obj, mob/user as mob)
+	if(istype(O, /obj/item/metroidsteroid2))
+		if(enhanced == 1)
+			to_chat(user, "<span class='warning'> This extract has already been enhanced!</span>")
+			return ..()
+		if(Uses == 0)
+			to_chat(user, "<span class='warning'> You can't enhance a used extract!</span>")
+			return ..()
+		to_chat(user, "You apply the enhancer. It now has triple the amount of uses.")
+		Uses = 3
+		enhanced = 1
+		qdel(O)
+
+	if(O.type == /obj/item/metroidpotion/enhancer/max)
+		to_chat(user, SPAN_NOTICE("You dump the maximizer on the slime extract. It can now be used a total of 5 times!"))
+		Uses = 5
+		enhanced = 1
+		qdel(O)
 
 /obj/item/metroid_extract/New()
 	..()
 	create_reagents(100)
-	reagents.add_reagent(/datum/reagent/metroidjelly, 30)
 
 /obj/item/metroid_extract/grey
 	name = "grey metroid extract"

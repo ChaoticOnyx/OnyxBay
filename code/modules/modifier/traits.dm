@@ -129,3 +129,11 @@
 	desc = "A lisp is a speech impediment in which a person misarticulates sibilants."
 
 	lisping = TRUE
+
+
+/datum/modifier/trait/pacifism
+	name = "Pacifism"
+	desc = "You can't attack!"
+
+/datum/modifier/trait/pacifism/on_applied()
+	holder.a_intent_change(I_HELP)

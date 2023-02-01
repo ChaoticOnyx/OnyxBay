@@ -3,18 +3,18 @@ Regenerative extracts:
 	Work like a legion regenerative core.
 	Has a unique additional effect.
 */
-/obj/item/slimecross/regenerative
+/obj/item/metroidcross/regenerative
 	name = "regenerative extract"
 	desc = "It's filled with a milky substance, and pulses like a heartbeat."
 	effect = "regenerative"
 	icon_state = "regenerative"
 
-/obj/item/slimecross/regenerative/proc/core_effect(mob/living/carbon/human/target, mob/user)
+/obj/item/metroidcross/regenerative/proc/core_effect(mob/living/carbon/human/target, mob/user)
 	return
-/obj/item/slimecross/regenerative/proc/core_effect_before(mob/living/carbon/human/target, mob/user)
+/obj/item/metroidcross/regenerative/proc/core_effect_before(mob/living/carbon/human/target, mob/user)
 	return
 
-/obj/item/slimecross/regenerative/afterattack(atom/target,mob/user,prox)
+/obj/item/metroidcross/regenerative/afterattack(atom/target,mob/user,prox)
 	. = ..()
 	if(!prox || !isliving(target))
 		return
@@ -23,258 +23,281 @@ Regenerative extracts:
 		to_chat(user, SPAN_WARNING("[src] will not work on the dead!"))
 		return
 	if(H != user)
-		user.visible_message(SPAN_NOTICE("[user] crushes [src] over [H], the milky goo quickly regenerating all of [H.p_their()] injuries!"),
-			SPAN_NOTICE("You squeeze [src], and it bursts over [H], the milky goo regenerating [H.p_their()] injuries."))
+		user.visible_message(SPAN_NOTICE("[user] crushes [src] over [H], the milky goo quickly regenerating all of [H] injuries!"),
+			SPAN_NOTICE("You squeeze [src], and it bursts over [H], the milky goo regenerating [H] injuries."))
 	else
-		user.visible_message(SPAN_NOTICE("[user] crushes [src] over [user.p_them()]self, the milky goo quickly regenerating all of [user.p_their()] injuries!"),
+		user.visible_message(SPAN_NOTICE("[user] crushes [src] over [user]self, the milky goo quickly regenerating all of [user] injuries!"),
 			SPAN_NOTICE("You squeeze [src], and it bursts in your hand, splashing you with milky goo which quickly regenerates your injuries!"))
 	core_effect_before(H, user)
-	H.revive(full_heal = TRUE, admin_revive = FALSE)
+	H.setToxLoss(0)
+	H.setOxyLoss(0)
+	H.setCloneLoss(0)
+	H.setBrainLoss(0)
+	H.SetParalysis(0)
+	H.SetStunned(0)
+	H.SetWeakened(0)
 	core_effect(H, user)
 	playsound(target, 'sound/effects/splat.ogg', 40, TRUE)
 	qdel(src)
 
-/obj/item/slimecross/regenerative/grey
+/obj/item/metroidcross/regenerative/grey
 	colour = "grey" //Has no bonus effect.
 	effect_desc = "Fully heals the target and does nothing else."
 
-/obj/item/slimecross/regenerative/orange
+/obj/item/metroidcross/regenerative/orange
 	colour = "orange"
 
-/obj/item/slimecross/regenerative/orange/core_effect_before(mob/living/target, mob/user)
+/obj/item/metroidcross/regenerative/orange/core_effect_before(mob/living/target, mob/user)
 	target.visible_message(SPAN_WARNING("The [src] boils over!"))
-	for(var/turf/targetturf in RANGE_TURFS(1,target))
-		if(!locate(/obj/effect/hotspot) in targetturf)
-			new /obj/effect/hotspot(targetturf)
+	/*FIXMEfor(var/turf/targetturf in RANGE_TURFS(1,target))
+		 if(!locate(/obj/effect/hotspot) in targetturf)
+			new /obj/effect/hotspot(targetturf)*/
 
-/obj/item/slimecross/regenerative/purple
+/obj/item/metroidcross/regenerative/purple
 	colour = "purple"
 	effect_desc = "Fully heals the target and injects them with some regen jelly."
 
-/obj/item/slimecross/regenerative/purple/core_effect(mob/living/target, mob/user)
-	target.reagents.add_reagent(/datum/reagent/medicine/regen_jelly,10)
+/obj/item/metroidcross/regenerative/purple/core_effect(mob/living/target, mob/user)
+	//FIXME target.reagents.add_reagent(/datum/reagent/medicine/regen_jelly,10)
 
-/obj/item/slimecross/regenerative/blue
+/obj/item/metroidcross/regenerative/blue
 	colour = "blue"
 	effect_desc = "Fully heals the target and makes the floor wet."
 
-/obj/item/slimecross/regenerative/blue/core_effect(mob/living/target, mob/user)
-	if(isturf(target.loc))
-		var/turf/open/T = get_turf(target)
+/obj/item/metroidcross/regenerative/blue/core_effect(mob/living/target, mob/user)
+	/*FIXMEif(isturf(target.loc))
+		var/turf/simulated/open/T = get_turf(target)
 		T.MakeSlippery(TURF_WET_WATER, min_wet_time = 10, wet_time_to_add = 5)
-		target.visible_message(SPAN_WARNING("The milky goo in the extract gets all over the floor!"))
+		target.visible_message(SPAN_WARNING("The milky goo in the extract gets all over the floor!"))*/
 
-/obj/item/slimecross/regenerative/metal
+/obj/item/metroidcross/regenerative/metal
 	colour = "metal"
 	effect_desc = "Fully heals the target and encases the target in a locker."
 
-/obj/item/slimecross/regenerative/metal/core_effect(mob/living/target, mob/user)
+/obj/item/metroidcross/regenerative/metal/core_effect(mob/living/target, mob/user)
 	target.visible_message(SPAN_WARNING("The milky goo hardens and reshapes itself, encasing [target]!"))
 	var/obj/structure/closet/C = new /obj/structure/closet(target.loc)
 	C.name = "slimy closet"
 	C.desc = "Looking closer, it seems to be made of a sort of solid, opaque, metal-like goo."
 	target.forceMove(C)
 
-/obj/item/slimecross/regenerative/yellow
+/obj/item/metroidcross/regenerative/yellow
 	colour = "yellow"
 	effect_desc = "Fully heals the target and fully recharges a single item on the target."
 
-/obj/item/slimecross/regenerative/yellow/core_effect(mob/living/target, mob/user)
+/obj/item/metroidcross/regenerative/yellow/core_effect(mob/living/target, mob/user)
 	var/list/batteries = list()
-	for(var/obj/item/stock_parts/cell/C in target.get_all_contents())
+	for(var/obj/item/cell/C in target.get_contents())
 		if(C.charge < C.maxcharge)
 			batteries += C
 	if(batteries.len)
-		var/obj/item/stock_parts/cell/ToCharge = pick(batteries)
+		var/obj/item/cell/ToCharge = pick(batteries)
 		ToCharge.charge = ToCharge.maxcharge
 		to_chat(target, SPAN_NOTICE("You feel a strange electrical pulse, and one of your electrical items was recharged."))
 
-/obj/item/slimecross/regenerative/darkpurple
+/obj/item/metroidcross/regenerative/darkpurple
 	colour = "dark purple"
 	effect_desc = "Fully heals the target and gives them purple clothing if they are naked."
 
-/obj/item/slimecross/regenerative/darkpurple/core_effect(mob/living/target, mob/user)
+/obj/item/metroidcross/regenerative/darkpurple/core_effect(mob/living/target, mob/user)
 	var/equipped = 0
-	equipped += target.equip_to_slot_or_del(new /obj/item/clothing/shoes/sneakers/purple(null), ITEM_SLOT_FEET)
-	equipped += target.equip_to_slot_or_del(new /obj/item/clothing/under/color/lightpurple(null), ITEM_SLOT_ICLOTHING)
-	equipped += target.equip_to_slot_or_del(new /obj/item/clothing/gloves/color/purple(null), ITEM_SLOT_GLOVES)
-	equipped += target.equip_to_slot_or_del(new /obj/item/clothing/head/soft/purple(null), ITEM_SLOT_HEAD)
+	equipped += target.equip_to_slot_or_del(new /obj/item/clothing/shoes/purple(null), SLOT_FEET)
+	equipped += target.equip_to_slot_or_del(new /obj/item/clothing/under/color/lightpurple(null), SLOT_ICLOTHING)
+	equipped += target.equip_to_slot_or_del(new /obj/item/clothing/gloves/color/purple(null), SLOT_GLOVES)
+	equipped += target.equip_to_slot_or_del(new /obj/item/clothing/head/soft/purple(null), SLOT_HEAD)
 	if(equipped > 0)
 		target.visible_message(SPAN_NOTICE("The milky goo congeals into clothing!"))
 
-/obj/item/slimecross/regenerative/darkblue
+/obj/item/metroidcross/regenerative/darkblue
 	colour = "dark blue"
 	effect_desc = "Fully heals the target and fireproofs their clothes."
 
-/obj/item/slimecross/regenerative/darkblue/core_effect(mob/living/target, mob/user)
+/obj/item/metroidcross/regenerative/darkblue/core_effect(mob/living/target, mob/user)
 	if(!ishuman(target))
 		return
 	var/mob/living/carbon/human/H = target
 	var/fireproofed = FALSE
-	if(H.get_item_by_slot(ITEM_SLOT_OCLOTHING))
+	/*FIXME
+	if(H.get_item_by_slot(SLOT_OCLOTHING))
 		fireproofed = TRUE
-		var/obj/item/clothing/C = H.get_item_by_slot(ITEM_SLOT_OCLOTHING)
+		var/obj/item/clothing/C = H.get_(SLOT_OCLOTHING)
 		fireproof(C)
-	if(H.get_item_by_slot(ITEM_SLOT_HEAD))
+	if(H.get_item_by_slot(SLOT_HEAD))
 		fireproofed = TRUE
-		var/obj/item/clothing/C = H.get_item_by_slot(ITEM_SLOT_HEAD)
-		fireproof(C)
+		var/obj/item/clothing/C = H.get_item_by_slot(SLOT_HEAD)
+		fireproof(C)*/
 	if(fireproofed)
 		target.visible_message(SPAN_NOTICE("Some of [target]'s clothing gets coated in the goo, and turns blue!"))
 
-/obj/item/slimecross/regenerative/darkblue/proc/fireproof(obj/item/clothing/C)
+/obj/item/metroidcross/regenerative/darkblue/proc/fireproof(obj/item/clothing/C)
 	C.name = "fireproofed [C.name]"
-	C.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
+	/*FIXME C.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
 	C.add_atom_colour("#000080", FIXED_COLOUR_PRIORITY)
 	C.max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	C.heat_protection = C.body_parts_covered
-	C.resistance_flags |= FIRE_PROOF
+	C.resistance_flags |= FIRE_PROOF*/
 
-/obj/item/slimecross/regenerative/silver
+/obj/item/metroidcross/regenerative/silver
 	colour = "silver"
 	effect_desc = "Fully heals the target and makes their belly feel round and full."
 
-/obj/item/slimecross/regenerative/silver/core_effect(mob/living/target, mob/user)
-	target.set_nutrition(NUTRITION_LEVEL_FULL - 1)
+/obj/item/metroidcross/regenerative/silver/core_effect(mob/living/target, mob/user)
+	//FIXME target.set_nutrition(NUTRITION_LEVEL_FULL - 1)
 	to_chat(target, SPAN_NOTICE("You feel satiated."))
 
-/obj/item/slimecross/regenerative/bluespace
+/obj/item/metroidcross/regenerative/bluespace
 	colour = "bluespace"
 	effect_desc = "Fully heals the target and teleports them to where this core was created."
-	var/turf/open/T
+	var/turf/simulated/open/T
 
-/obj/item/slimecross/regenerative/bluespace/core_effect(mob/living/target, mob/user)
+/obj/item/metroidcross/regenerative/bluespace/core_effect(mob/living/target, mob/user)
 	var/turf/old_location = get_turf(target)
-	if(do_teleport(target, T, channel = TELEPORT_CHANNEL_QUANTUM)) //despite being named a bluespace teleportation method the quantum channel is used to preserve precision teleporting with a bag of holding
+	/*FIXME if(do_teleport(target, T, channel = TELEPORT_CHANNEL_QUANTUM)) //despite being named a bluespace teleportation method the quantum channel is used to preserve precision teleporting with a bag of holding
 		old_location.visible_message(SPAN_WARNING("[target] disappears in a shower of sparks!"))
-		to_chat(target, SPAN_DANGER("The milky goo teleports you somewhere it remembers!"))
+		to_chat(target, SPAN_DANGER("The milky goo teleports you somewhere it remembers!"))*/
 
 
-/obj/item/slimecross/regenerative/bluespace/Initialize(mapload)
+/obj/item/metroidcross/regenerative/bluespace/Initialize(mapload)
 	. = ..()
 	T = get_turf(src)
 
-/obj/item/slimecross/regenerative/sepia
+/obj/item/metroidcross/regenerative/sepia
 	colour = "sepia"
 	effect_desc = "Fully heals the target and stops time."
 
-/obj/item/slimecross/regenerative/sepia/core_effect_before(mob/living/target, mob/user)
+/obj/item/metroidcross/regenerative/sepia/core_effect_before(mob/living/target, mob/user)
 	to_chat(target, SPAN_NOTICE("You try to forget how you feel."))
-	target.AddComponent(/datum/component/dejavu)
+	//FIXME target.AddComponent(/datum/component/dejavu)
 
-/obj/item/slimecross/regenerative/cerulean
+/obj/item/metroidcross/regenerative/cerulean
 	colour = "cerulean"
 	effect_desc = "Fully heals the target and makes a second regenerative core with no special effects."
 
-/obj/item/slimecross/regenerative/cerulean/core_effect(mob/living/target, mob/user)
+/obj/item/metroidcross/regenerative/cerulean/core_effect(mob/living/target, mob/user)
 	src.forceMove(user.loc)
-	var/obj/item/slimecross/X = new /obj/item/slimecross/regenerative(user.loc)
+	var/obj/item/metroidcross/X = new /obj/item/metroidcross/regenerative(user.loc)
 	X.name = name
 	X.desc = desc
 	user.put_in_active_hand(X)
 	to_chat(user, SPAN_NOTICE("Some of the milky goo congeals in your hand!"))
 
-/obj/item/slimecross/regenerative/pyrite
+/obj/item/metroidcross/regenerative/pyrite
 	colour = "pyrite"
 	effect_desc = "Fully heals and randomly colors the target."
 
-/obj/item/slimecross/regenerative/pyrite/core_effect(mob/living/target, mob/user)
-	target.visible_message(SPAN_WARNING("The milky goo coating [target] leaves [target.p_them()] a different color!"))
-	target.add_atom_colour(rgb(rand(0,255),rand(0,255),rand(0,255)),WASHABLE_COLOUR_PRIORITY)
+/obj/item/metroidcross/regenerative/pyrite/core_effect(mob/living/target, mob/user)
+	target.visible_message(SPAN_WARNING("The milky goo coating [target] leaves [target] a different color!"))
+	//FIXME target.add_atom_colour(rgb(rand(0,255),rand(0,255),rand(0,255)),WASHABLE_COLOUR_PRIORITY)
 
-/obj/item/slimecross/regenerative/red
+/obj/item/metroidcross/regenerative/red
 	colour = "red"
 	effect_desc = "Fully heals the target and injects them with some ephedrine."
 
-/obj/item/slimecross/regenerative/red/core_effect(mob/living/target, mob/user)
+/obj/item/metroidcross/regenerative/red/core_effect(mob/living/target, mob/user)
 	to_chat(target, SPAN_NOTICE("You feel... <i>faster.</i>"))
-	target.reagents.add_reagent(/datum/reagent/medicine/ephedrine,3)
+	//FIXME target.reagents.add_reagent(/datum/reagent/medicine/ephedrine,3)
 
-/obj/item/slimecross/regenerative/green
+/obj/item/metroidcross/regenerative/green
 	colour = "green"
 	effect_desc = "Fully heals the target and changes the spieces or color of a slime or jellyperson."
 
-/obj/item/slimecross/regenerative/green/core_effect(mob/living/target, mob/user)
+/obj/item/metroidcross/regenerative/green/core_effect(mob/living/target, mob/user)
+	/*FIXME
 	if(isslime(target))
 		target.visible_message(SPAN_WARNING("The [target] suddenly changes color!"))
 		var/mob/living/carbon/metroid/S = target
 		S.random_colour()
 	if(isjellyperson(target))
-		target.reagents.add_reagent(/datum/reagent/mutationtoxin/jelly,5)
+		target.reagents.add_reagent(/datum/reagent/mutationtoxin/jelly,5)*/
 
 
-/obj/item/slimecross/regenerative/pink
+/obj/item/metroidcross/regenerative/pink
 	colour = "pink"
 	effect_desc = "Fully heals the target and injects them with some krokodil."
 
-/obj/item/slimecross/regenerative/pink/core_effect(mob/living/target, mob/user)
+/obj/item/metroidcross/regenerative/pink/core_effect(mob/living/target, mob/user)
 	to_chat(target, SPAN_NOTICE("You feel more calm."))
-	target.reagents.add_reagent(/datum/reagent/drug/krokodil,4)
+	//FIXME target.reagents.add_reagent(/datum/reagent/drug/krokodil,4)
 
-/obj/item/slimecross/regenerative/gold
+/obj/item/metroidcross/regenerative/gold
 	colour = "gold"
 	effect_desc = "Fully heals the target and produces a random coin."
 
-/obj/item/slimecross/regenerative/gold/core_effect(mob/living/target, mob/user)
-	var/newcoin = pick(/obj/item/coin/silver, /obj/item/coin/iron, /obj/item/coin/gold, /obj/item/coin/diamond, /obj/item/coin/plasma, /obj/item/coin/uranium)
-	var/obj/item/coin/C = new newcoin(target.loc)
-	playsound(C, 'sound/items/coinflip.ogg', 50, TRUE)
-	target.put_in_hand(C)
+/obj/item/metroidcross/regenerative/gold/core_effect(mob/living/target, mob/user)
+	var/newcoin = pick(/obj/item/material/coin/silver, /obj/item/material/coin/iron, /obj/item/material/coin/gold, /obj/item/material/coin/diamond, /obj/item/material/coin/plasma, /obj/item/material/coin/uranium)
+	var/obj/item/material/coin/C = new newcoin(target.loc)
+	//FIXME playsound(C, 'sound/items/coinflip.ogg', 50, TRUE)
+	target.put_in_any_hand_if_possible(C)
 
-/obj/item/slimecross/regenerative/oil
+/obj/item/metroidcross/regenerative/oil
 	colour = "oil"
 	effect_desc = "Fully heals the target and flashes everyone in sight."
 
-/obj/item/slimecross/regenerative/oil/core_effect(mob/living/target, mob/user)
+/obj/item/metroidcross/regenerative/oil/core_effect(mob/living/target, mob/user)
 	playsound(src, 'sound/weapons/flash.ogg', 100, TRUE)
-	for(var/mob/living/L in view(user,7))
-		L.flash_act()
+	for(var/mob/living/M in view(user,7))
+		if(iscarbon(M))
+			if(M.stat!=DEAD)
+				var/mob/living/carbon/C = M
+				var/safety = C.eyecheck()
+				if(safety < FLASH_PROTECTION_MODERATE)
+					var/flash_strength = (rand(3,7))
+					if(ishuman(M))
+						var/mob/living/carbon/human/H = M
+						flash_strength = round(H.species.flash_mod * flash_strength)
+					if(flash_strength > 0)
+						M.flash_eyes(FLASH_PROTECTION_MODERATE - safety)
+						M.Stun(flash_strength / 2)
+						M.eye_blurry += flash_strength
+						M.confused += (flash_strength + 2)
+						if(flash_strength > 3)
+							M.drop_l_hand()
+							M.drop_r_hand()
+						if(flash_strength > 5)
+							M.Weaken(2)
 
-/obj/item/slimecross/regenerative/black
+/obj/item/metroidcross/regenerative/black
 	colour = "black"
 	effect_desc = "Fully heals the target and creates an imperfect duplicate of them made of slime, that fakes their death."
 
-/obj/item/slimecross/regenerative/black/core_effect_before(mob/living/target, mob/user)
+/obj/item/metroidcross/regenerative/black/core_effect_before(mob/living/target, mob/user)
 	var/dummytype = target.type
-	if(ismegafauna(target)) //Prevents megafauna duping in a lame way
-		dummytype = /mob/living/carbon/metroid
-		to_chat(user, SPAN_WARNING("The milky goo flows over [target], falling into a weak puddle."))
 	var/mob/living/dummy = new dummytype(target.loc)
 	to_chat(target, SPAN_NOTICE("The milky goo flows from your skin, forming an imperfect copy of you."))
 	if(iscarbon(target))
 		var/mob/living/carbon/T = target
 		var/mob/living/carbon/D = dummy
-		T.dna.transfer_identity(D)
-		D.updateappearance(mutcolor_update=1)
+		//FIXME T.dna.transfer_identity(D)
+		//FIXME D.updateappearance(mutcolor_update=1)
 		D.real_name = T.real_name
 	dummy.adjustBruteLoss(target.getBruteLoss())
 	dummy.adjustFireLoss(target.getFireLoss())
 	dummy.adjustToxLoss(target.getToxLoss())
 	dummy.death()
 
-/obj/item/slimecross/regenerative/lightpink
+/obj/item/metroidcross/regenerative/lightpink
 	colour = "light pink"
 	effect_desc = "Fully heals the target and also heals the user."
 
-/obj/item/slimecross/regenerative/lightpink/core_effect(mob/living/target, mob/user)
+/obj/item/metroidcross/regenerative/lightpink/core_effect(mob/living/target, mob/user)
 	if(!isliving(user))
 		return
 	if(target == user)
 		return
 	var/mob/living/U = user
-	U.revive(full_heal = TRUE, admin_revive = FALSE)
+	//FIXME U.revive(full_heal = TRUE, admin_revive = FALSE)
 	to_chat(U, SPAN_NOTICE("Some of the milky goo sprays onto you, as well!"))
 
-/obj/item/slimecross/regenerative/adamantine
+/obj/item/metroidcross/regenerative/adamantine
 	colour = "adamantine"
 	effect_desc = "Fully heals the target and boosts their armor."
 
-/obj/item/slimecross/regenerative/adamantine/core_effect(mob/living/target, mob/user) //WIP - Find out why this doesn't work.
-	target.apply_status_effect(/datum/status_effect/slimeskin)
+/obj/item/metroidcross/regenerative/adamantine/core_effect(mob/living/target, mob/user) //WIP - Find out why this doesn't work.
+	//FIXME target.apply_status_effect(/datum/status_effect/slimeskin)
 
-/obj/item/slimecross/regenerative/rainbow
+/obj/item/metroidcross/regenerative/rainbow
 	colour = "rainbow"
 	effect_desc = "Fully heals the target and temporarily makes them immortal, but pacifistic."
 
-/obj/item/slimecross/regenerative/rainbow/core_effect(mob/living/target, mob/user)
-	target.apply_status_effect(/datum/status_effect/rainbow_protection)
+/obj/item/metroidcross/regenerative/rainbow/core_effect(mob/living/target, mob/user)
+	//FIXME target.apply_status_effect(/datum/status_effect/rainbow_protection)

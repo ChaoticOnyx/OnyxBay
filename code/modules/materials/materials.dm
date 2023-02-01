@@ -1058,3 +1058,10 @@ var/list/name_to_material
 	melting_point = 300 CELSIUS
 	conductive = 0
 	craft_tool = 1
+
+/material/bluespace
+	name = "bluespace crystal"
+	use_name = "bluespace crystal"
+	icon_colour = "#4e7dffC8"
+	flags = MATERIAL_UNMELTABLE
+	stack_type = /obj/item/stack/material/bluespace_crystal

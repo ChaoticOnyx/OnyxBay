@@ -182,6 +182,9 @@
 	update_icon()
 	usr.a_intent = intent
 
+	if(is_pacifist(src))
+		usr.a_intent = I_HELP
+
 /obj/screen/intent/update_icon()
 	icon_state = "intent_[intent]"
 

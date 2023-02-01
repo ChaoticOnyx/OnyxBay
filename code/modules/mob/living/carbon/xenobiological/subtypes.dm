@@ -82,3 +82,27 @@
 		if("black")
 			return /obj/item/metroid_extract/black
 	return /obj/item/metroid_extract/green
+
+/mob/living/carbon/metroid/proc/random_colour()
+	return pick(list(
+		"green",
+		"purple",
+		"metal",
+		"orange",
+		"blue",
+		"dark blue",
+		"dark purple",
+		"yellow",
+		"silver",
+		"pink",
+		"red",
+		"gold",
+		"grey",
+		"sepia",
+		"bluespace",
+		"cerulean",
+		"pyrite",
+		"light pink",
+		"oil",
+		"adamantine",
+		"black"))
