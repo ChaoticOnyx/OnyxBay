@@ -322,7 +322,6 @@ var/list/mining_floors = list()
 		return ..()
 
 /turf/simulated/mineral/proc/clear_ore_effects()
-	mineral = null
 	overlays -= ore_overlay
 	ore_overlay = null
 
