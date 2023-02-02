@@ -77,9 +77,9 @@ Chilling extracts:
 
 /obj/item/metroidcross/chilling/metal/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] melts like quicksilver, and surrounds [user] in a wall!"))
-	/*FIXME for(var/turf/T in orange(get_turf(user),1))
+	for(var/turf/T in orange(get_turf(user),1))
 		if(get_dist(get_turf(user), T) > 0)
-			new /obj/effect/forcefield/slimewall(T)*/
+			new /obj/effect/forcefield/slimewall(T)
 	..()
 
 /obj/item/metroidcross/chilling/yellow
@@ -100,7 +100,7 @@ Chilling extracts:
 
 /obj/item/metroidcross/chilling/darkpurple/do_effect(mob/user)
 	var/area/A = get_area(get_turf(user))
-	/*FIXME if(A.outdoors)
+	if(A.environment_type == ENVIRONMENT_OUTSIDE)
 		to_chat(user, SPAN_WARNING("[src] can't affect such a large area."))
 		return
 	var/filtered = FALSE
@@ -113,7 +113,7 @@ Chilling extracts:
 	if(filtered)
 		user.visible_message(SPAN_NOTICE("Cracks spread throughout [src], and some air is sucked in!"))
 	else
-		user.visible_message(SPAN_NOTICE("[src] cracks, but nothing happens."))*/
+		user.visible_message(SPAN_NOTICE("[src] cracks, but nothing happens."))
 	..()
 
 /obj/item/metroidcross/chilling/darkblue
@@ -124,7 +124,7 @@ Chilling extracts:
 	if(isliving(user))
 		user.visible_message(SPAN_NOTICE("[src] freezes over [user]'s entire body!"))
 		var/mob/living/M = user
-		//FIXME M.apply_status_effect(/datum/status_effect/frozenstasis)
+		M.add_modifier(/datum/modifier/frozenstasis)
 	..()
 
 /obj/item/metroidcross/chilling/silver
@@ -154,29 +154,31 @@ Chilling extracts:
 		allies |= target
 		to_chat(user, SPAN_NOTICE("You link [src] with [target]."))
 	return
-//FIXME
-/*/obj/item/metroidcross/chilling/bluespace/do_effect(mob/user)
+
+/obj/item/metroidcross/chilling/bluespace/do_effect(mob/user)
 	if(allies.len <= 0)
 		to_chat(user, SPAN_WARNING("[src] is not linked to anyone!"))
 		return
 	to_chat(user, SPAN_NOTICE("You feel [src] pulse as it begins charging bluespace energies..."))
 	active = TRUE
 	for(var/mob/living/M in allies)
-		var/datum/status_effect/slimerecall/S = M.apply_status_effect(/datum/status_effect/slimerecall)
-		S.target = user
+		to_chat(M, SPAN_DANGER("You feel a sudden tug from an unknown force, and feel a pull to bluespace!"))
+		to_chat(M, SPAN_NOTICE("Wear some protection if you wish avoid the force!"))
+		M.overlays += icon('icons/effects/effects.dmi',"chronofield")
+
 	if(do_after(user, 100, target=src))
 		to_chat(user, SPAN_NOTICE("[src] shatters as it tears a hole in reality, snatching the linked individuals from the void!"))
 		for(var/mob/living/M in allies)
-			var/datum/status_effect/slimerecall/S = M.has_status_effect(/datum/status_effect/slimerecall)
-			M.remove_status_effect(S)
+			if(ishuman(M))
+				var/mob/living/carbon/human/H = M
+				if(istype(H.head, /obj/item/clothing/head/tinfoil))
+					continue
+
+			do_teleport(M, src, 3)
 	else
 		to_chat(user, SPAN_WARNING("[src] falls dark, dissolving into nothing as the energies fade away."))
-		for(var/mob/living/M in allies)
-			var/datum/status_effect/slimerecall/S = M.has_status_effect(/datum/status_effect/slimerecall)
-			if(istype(S))
-				S.interrupted = TRUE
-				M.remove_status_effect(S)
-	..()*/
+		allies.Cut()
+	..()
 
 /obj/item/metroidcross/chilling/sepia
 	colour = "sepia"
@@ -208,7 +210,7 @@ Chilling extracts:
 	if(isliving(user))
 		user.visible_message(SPAN_WARNING("[src] creaks and shifts into a clone of [user]!"))
 		var/mob/living/M = user
-		//FIXME M.apply_status_effect(/datum/status_effect/slime_clone)
+		M.add_modifier(/datum/modifier/metroid_clone)
 	..()
 
 /obj/item/metroidcross/chilling/pyrite
@@ -217,7 +219,7 @@ Chilling extracts:
 
 /obj/item/metroidcross/chilling/pyrite/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] crystallizes into a pair of spectacles!"))
-	//FIXME new /obj/item/clothing/glasses/prism_glasses(get_turf(user))
+	new /obj/item/clothing/glasses/prism_glasses(get_turf(user))
 	..()
 
 /obj/item/metroidcross/chilling/red
