@@ -235,14 +235,14 @@
 
 /obj/structure/window_frame/ex_act(severity)
 	switch(severity)
-		if(1)
+		if(EXPLODE_DEVASTATE)
 			// 25% chance for each pane to drop shards, 75% to just evaporate.
 			if(outer_pane && prob(25))
 				outer_pane.shatter(FALSE)
 			if(inner_pane && prob(25))
 				inner_pane.shatter(FALSE)
 			qdel(src)
-		if(2)
+		if(EXPLODE_HEAVY)
 			if(outer_pane)
 				if(inner_pane && prob(90 - (20 * outer_pane.explosion_block)))
 					inner_pane.shatter(FALSE) // Outer pane can protect the inner one, depending on its explosion resistance.
@@ -252,7 +252,7 @@
 			else
 				signaler?.forceMove(get_turf(src))
 				qdel(src) // Poor frame gets murdered here if not protected by windowpanes.
-		if(1)
+		if(EXPLODE_LIGHT)
 			if(prob(50))
 				if(outer_pane)
 					outer_pane.shatter(FALSE)
