@@ -24,25 +24,24 @@ Recurring extracts:
 	extract.color = color
 	extract.recurring = TRUE
 	src.forceMove(extract)
-	//FIXME START_PROCESSING(SSobj,src)
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/metroidcross/recurring/think()
-	/*FIXME
 	if(cooldown > 0)
-		cooldown -= delta_time
+		cooldown -= world.time
 	else if(extract.Uses < 10 && extract.Uses > 0)
 		extract.Uses++
-		cooldown = max_cooldown
+		cooldown = world.time+max_cooldown
 	else if(extract.Uses <= 0)
 		extract.visible_message(SPAN_WARNING("The light inside [extract] flickers and dies out."))
 		extract.desc = "A tiny, inert core, bleeding dark, cerulean-colored goo."
 		extract.icon_state = "prismatic"
 		qdel(src)
-	*/
+
 
 /obj/item/metroidcross/recurring/Destroy()
 	. = ..()
-	//FIXME STOP_PROCESSING(SSobj,src)
+	set_next_think(0)
 
 /obj/item/metroidcross/recurring/grey
 	extract_type = /obj/item/metroid_extract/grey

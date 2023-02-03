@@ -147,3 +147,10 @@
 	holder.status_flags &= ~GODMODE
 
 	unregister_signal(holder, SIGNAL_MOB_RESIST)
+
+/obj/item/flame/lighter/zippo/slime
+	name = "slime zippo"
+	desc = "A specialty zippo made from slimes and industry. Has a much hotter flame than normal."
+	icon_state = "slighter"
+	light_color = COLOR_LIGHT_CYAN
+	flame_overlay = "slime"

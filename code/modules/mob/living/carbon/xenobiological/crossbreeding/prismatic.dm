@@ -15,7 +15,7 @@ Prismatic extracts:
 		return
 	if(!istype(target) || isspaceturf(target))
 		return
-	//FIXME target.add_atom_colour(paintcolor, WASHABLE_COLOUR_PRIORITY)
+	target.color = paintcolor
 	playsound(target, 'sound/effects/slosh.ogg', 20, TRUE)
 
 /obj/item/metroidcross/prismatic/grey/
@@ -27,7 +27,7 @@ Prismatic extracts:
 	if(!proximity)
 		return
 	if(istype(target) && target.color != initial(target.color))
-		//FIXME target.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
+		target.color = initial(target.color)
 		playsound(target, 'sound/effects/slosh.ogg', 20, TRUE)
 
 /obj/item/metroidcross/prismatic/orange
@@ -116,8 +116,8 @@ Prismatic extracts:
 
 /obj/item/metroidcross/prismatic/rainbow/attack_self(mob/user)
 	var/newcolor = input(user, "Choose the slime color:", "Color change",paintcolor) as color|null
-	/*FIXME if(user.get_active_held_item() != src || user.stat != CONSCIOUS || HAS_TRAIT(user, TRAIT_HANDS_BLOCKED))
-		return*/
+	if(user.incapacitated())
+		return
 	if(!newcolor)
 		return
 	paintcolor = newcolor

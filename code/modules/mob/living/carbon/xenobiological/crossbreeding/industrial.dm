@@ -9,7 +9,7 @@ Industrial extracts:
 	icon_state = "industrial_still"
 	var/plasmarequired = 2 //Units of plasma required to be consumed to produce item.
 	var/itempath = /obj/item //The item produced by the extract.
-	var/plasmaabsorbed = 0 //Units of plasma aborbed by the extract already. Absorbs at a rate of 2u/obj tick.
+	var/plasmaabsorbed = 0 //Units of plasma aborbed by the extract already. Absorbs at a rate of 2u/obj per every 3 seconds.
 	var/itemamount = 1 //How many items to spawn
 
 /obj/item/metroidcross/industrial/_examine_text(mob/user)
@@ -22,22 +22,25 @@ Industrial extracts:
 /obj/item/metroidcross/industrial/Initialize(mapload)
 	. = ..()
 	create_reagents(100)
-	//FIXME START_PROCESSING(SSobj,src)
+	set_next_think(world.time + 1 SECOND)
+
 
 /obj/item/metroidcross/industrial/Destroy()
-	//FIXME STOP_PROCESSING(SSobj,src)
+	set_next_think(0)
 	return ..()
 
 /obj/item/metroidcross/industrial/think()
 	var/IsWorking = FALSE
-	if(reagents.has_reagent(/datum/reagent/toxin/plasma,amount = 2) && plasmarequired > 1) //Can absorb as much as 2
+	if(reagents.has_reagent(/datum/reagent/toxin/plasma, 2) && plasmarequired > 1) //Can absorb as much as 2
 		IsWorking = TRUE
 		reagents.remove_reagent(/datum/reagent/toxin/plasma,2)
 		plasmaabsorbed += 2
-	else if(reagents.has_reagent(/datum/reagent/toxin/plasma,amount = 1)) //Can absorb as little as 1
+	else if(reagents.has_reagent(/datum/reagent/toxin/plasma, 1)) //Can absorb as little as 1
 		IsWorking = TRUE
 		reagents.remove_reagent(/datum/reagent/toxin/plasma,1)
 		plasmaabsorbed += 1
+
+
 
 	if(plasmaabsorbed >= plasmarequired)
 		playsound(src, 'sound/effects/attackblob.ogg', 50, TRUE)
@@ -46,10 +49,13 @@ Industrial extracts:
 			do_after_spawn(new itempath(get_turf(src)))
 	else if(IsWorking)
 		playsound(src, 'sound/effects/bubbles.ogg', 5, TRUE)
+
 	if(IsWorking)
 		icon_state = "industrial"
 	else
 		icon_state = "industrial_still"
+
+	set_next_think(world.time + 3 SECOND)
 
 /obj/item/metroidcross/industrial/grey
 	colour = "grey"
@@ -61,7 +67,7 @@ Industrial extracts:
 	colour = "orange"
 	effect_desc = "Produces slime zippo lighters."
 	plasmarequired = 6
-	//FIXME itempath = /obj/item/lighter/slime
+	itempath = /obj/item/flame/lighter/zippo/slime
 
 /obj/item/metroidcross/industrial/purple
 	colour = "purple"
@@ -79,13 +85,13 @@ Industrial extracts:
 	colour = "metal"
 	effect_desc = "Produces iron sheets."
 	plasmarequired = 3
-	//FIXME itempath = /obj/item/stack/sheet/iron/ten
+	itempath = /obj/item/stack/material/iron/ten
 
 /obj/item/metroidcross/industrial/yellow
 	colour = "yellow"
 	effect_desc = "Produces high capacity power cells, which are not fully charged on creation."
 	plasmarequired = 5
-	//FIXME itempath = /obj/item/stock_parts/cell/high
+	itempath = /obj/item/cell/high
 
 /obj/item/metroidcross/industrial/yellow/do_after_spawn(obj/item/spawned)
 	var/obj/item/cell/high/C = spawned
@@ -96,18 +102,18 @@ Industrial extracts:
 	colour = "dark purple"
 	effect_desc = "Produces plasma... for plasma."
 	plasmarequired = 10
-	//FIXME itempath = /obj/item/stack/sheet/mineral/plasma
+	itempath = /obj/item/stack/material/plasma
 
 /obj/item/metroidcross/industrial/darkblue
 	colour = "dark blue"
 	effect_desc = "Produces one-use fireproofing potions."
 	plasmarequired = 6
-	//FIXME itempath = /obj/item/metroidpotion/fireproof
+	itempath = /obj/item/chill_potion
 
 /obj/item/metroidcross/industrial/darkblue/do_after_spawn(obj/item/spawned)
-	/*FIXME var/obj/item/metroidpotion/fireproof/potion = spawned
+	var/obj/item/chill_potion/potion = spawned
 	if(istype(potion))
-		potion.uses = 1*/
+		potion.uses = 1
 
 /obj/item/metroidcross/industrial/silver
 	colour = "silver"
@@ -125,27 +131,27 @@ Industrial extracts:
 
 /obj/item/metroidcross/industrial/bluespace
 	colour = "bluespace"
-	effect_desc = "Produces synthetic bluespace crystals."
+	effect_desc = "Produces bluespace crystals."
 	plasmarequired = 7
-	//FIXME itempath = /obj/item/stack/ore/bluespace_crystal/artificial
+	itempath = /obj/item/stack/material/bluespace_crystal
 
 /obj/item/metroidcross/industrial/sepia
 	colour = "sepia"
 	effect_desc = "Produces cameras."
 	plasmarequired = 2
-	//FIXME itempath = /obj/item/camera
+	itempath = /obj/item/device/camera
 
 /obj/item/metroidcross/industrial/cerulean
 	colour = "cerulean"
 	effect_desc = "Produces normal slime extract enhancers."
 	plasmarequired = 5
-	//FIXME itempath = /obj/item/metroidpotion/enhancer
+	itempath = /obj/item/metroidsteroid2
 
 /obj/item/metroidcross/industrial/pyrite
 	colour = "pyrite"
 	effect_desc = "Produces cans of spraypaint."
 	plasmarequired = 2
-	//FIXME itempath = /obj/item/toy/crayon/spraycan
+	itempath = /obj/item/storage/fancy/crayons
 
 /obj/item/metroidcross/industrial/red
 	colour = "red"
@@ -157,7 +163,7 @@ Industrial extracts:
 	colour = "green"
 	effect_desc = "Produces self-use-only slime jelly autoinjectors."
 	plasmarequired = 7
-	//FIXME itempath = /obj/item/metroidcrossbeaker/autoinjector/slimejelly
+	itempath = /obj/item/metroidcrossbeaker/autoinjector/metroidjelly
 
 /obj/item/metroidcross/industrial/pink
 	colour = "pink"
@@ -171,31 +177,34 @@ Industrial extracts:
 	plasmarequired = 10
 
 /obj/item/metroidcross/industrial/gold/think()
-	//FIXME itempath = pick(/obj/item/material/coin/silver, /obj/item/material/coin/iron, /obj/item/material/coin/gold, /obj/item/material/coin/diamond, /obj/item/material/coin/plasma, /obj/item/material/coin/uranium)
+	itempath = pick(/obj/item/material/coin/silver, /obj/item/material/coin/iron, /obj/item/material/coin/gold, /obj/item/material/coin/diamond, /obj/item/material/coin/plasma, /obj/item/material/coin/uranium)
 
 /obj/item/metroidcross/industrial/oil
 	colour = "oil"
-	effect_desc = "Produces IEDs."
+	effect_desc = "Produces grenade casings."
 	plasmarequired = 4
-	//FIXME itempath = /obj/item/grenade/iedcasing/spawned
+	itempath = /obj/item/grenade/chem_grenade
 
 /obj/item/metroidcross/industrial/black //What does this have to do with black slimes? No clue! Fun, though
 	colour = "black"
-	effect_desc = "Produces slime brand regenerative cigarettes."
+	effect_desc = "Produces cigarettes."
 	plasmarequired = 6
-	//FIXME itempath = /obj/item/storage/fancy/cigarettes/cigpack_xeno
+
+/obj/item/metroidcross/industrial/black/Initialize()
+	itempath = pick(subtypesof(/obj/item/storage/fancy/cigarettes))
+	..()
 
 /obj/item/metroidcross/industrial/lightpink
 	colour = "light pink"
 	effect_desc = "Produces heart shaped boxes that have candies in them."
 	plasmarequired = 3
-	//FIXME itempath = /obj/item/storage/fancy/heart_box
+	itempath = /obj/item/storage/lunchbox/heart
 
 /obj/item/metroidcross/industrial/adamantine
 	colour = "adamantine"
-	effect_desc = "Produces sheets of adamantine."
+	effect_desc = "Produces sheets of platinum!."
 	plasmarequired = 10
-	//FIXME itempath = /obj/item/stack/sheet/mineral/adamantine
+	itempath = /obj/item/stack/sheet/mineral/platinum
 
 /obj/item/metroidcross/industrial/rainbow
 	colour = "rainbow"
@@ -203,5 +212,6 @@ Industrial extracts:
 	plasmarequired = 5
 	//Item picked below.
 
-/obj/item/metroidcross/industrial/rainbow/think()
+/obj/item/metroidcross/industrial/rainbow/Initialize()
 	itempath = pick(subtypesof(/obj/item/metroid_extract))
+	..()

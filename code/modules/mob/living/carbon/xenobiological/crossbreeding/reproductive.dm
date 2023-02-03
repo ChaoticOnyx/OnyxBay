@@ -11,8 +11,8 @@ Reproductive extracts:
 	icon_state = "reproductive"
 	effect = "reproductive"
 	effect_desc = "When fed monkey cubes it produces more extracts. Bio bag compatible as well."
-	var/extract_type = /obj/item/metroid_extract/
-	var/cooldown = 3 SECONDS
+	var/extract_type = /obj/item/metroid_extract
+	var/cooldown = 30 SECONDS
 	var/feedAmount = 3
 	var/last_produce = 0
 
@@ -22,43 +22,27 @@ Reproductive extracts:
 
 /obj/item/metroidcross/reproductive/Initialize(mapload)
 	. = ..()
-	//FIXME create_storage(type = /datum/storage/extract_inventory)
 
 /obj/item/metroidcross/reproductive/attackby(obj/item/O, mob/user)
-	/* FIXME
-	var/datum/storage/extract_inventory/slime_storage = atom_storage
-	if(!istype(slime_storage))
-		return
-
 	if((last_produce + cooldown) > world.time)
 		to_chat(user, SPAN_WARNING("[src] is still digesting!"))
 		return
 
-	if(length(contents) >= feedAmount) //if for some reason the contents are full, but it didnt digest, attempt to digest again
-		to_chat(user, SPAN_WARNING("[src] appears to be full but is not digesting! Maybe poking it stimulated it to digest."))
-		slime_storage?.processCubes(user)
-		return
-
-	if(istype(O, /obj/item/storage/bag/xenobiology))
-		var/list/inserted = list()
-		O.atom_storage.remove_type(/obj/item/reagent_containers/food/monkeycube, src, feedAmount - length(contents), TRUE, FALSE, user, inserted)
-		if(inserted.len)
-			to_chat(user, SPAN_NOTICE("You feed [length(inserted)] Monkey Cube[p_s()] to [src], and it pulses gently."))
-			playsound(src, 'sound/items/eatfood.ogg', 20, TRUE)
-			slime_storage?.processCubes(user)
-		else
-			to_chat(user, SPAN_WARNING("There are no monkey cubes in the bio bag!"))
-		return
-
-	elseif(istype(O, /obj/item/reagent_containers/food/monkeycube))
-		if(atom_storage?.attempt_insert(O, user, override = TRUE, force = TRUE))
+	if(istype(O, /obj/item/reagent_containers/food/monkeycube))
+		if(feedAmount>0)
 			to_chat(user, SPAN_NOTICE("You feed 1 Monkey Cube to [src], and it pulses gently."))
-			slime_storage?.processCubes(user)
+			feedAmount-=1
 			playsound(src, 'sound/items/eatfood.ogg', 20, TRUE)
-			return
 		else
 			to_chat(user, SPAN_NOTICE("The [src] rejects the Monkey Cube!")) //in case it fails to insert for whatever reason you get feedback
-	*/
+	else
+		to_chat(user, SPAN_NOTICE("The [src] rejects the [O]!"))
+
+	if(feedAmount<=0)
+		to_chat(user, SPAN_NOTICE("The [src] starts to fizzle!"))
+		spawn(10 SECONDS)
+			new extract_type(get_turf(src))
+
 
 /obj/item/metroidcross/reproductive/grey
 	extract_type = /obj/item/metroid_extract/grey

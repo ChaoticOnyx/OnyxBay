@@ -3,7 +3,7 @@ Stabilized extracts:
 	Provides a passive buff to the holder.
 */
 
-//To add: Create an effect in crossbreeding/_status_effects.dm with the name "/datum/status_effect/stabilized/[color]"
+//To add: Create an effect in crossbreeding/_modifiers.dm with the name "/datum/modifier/stabilized/[color]"
 //Status effect will automatically be applied while held, and lost on drop.
 
 /obj/item/metroidcross/stabilized
@@ -11,16 +11,16 @@ Stabilized extracts:
 	desc = "It seems inert, but anything it touches glows softly..."
 	effect = "stabilized"
 	icon_state = "stabilized"
-	var/datum/status_effect/linked_effect
+	var/datum/modifier/linked_effect
 	var/mob/living/owner
 
 /obj/item/metroidcross/stabilized/Initialize(mapload)
-	 . = ..()
-	//FIXME START_PROCESSING(SSobj,src)
+	. = ..()
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/metroidcross/stabilized/Destroy()
-	//FIXME STOP_PROCESSING(SSobj,src)
-	//FIXME qdel(linked_effect)
+	set_next_think(0)
+	qdel(linked_effect)
 	return ..()
 
 /obj/item/metroidcross/stabilized/think()
@@ -29,39 +29,23 @@ Stabilized extracts:
 		humanfound = loc
 	if(ishuman(loc.loc)) //Check if in backpack.
 		humanfound = (loc.loc)
-	/*FIXME
-	for(var/atom/storage_loc as anything in get_storage_locs(src))
-		if(ishuman(storage_loc))
-			humanfound = storage_loc
-			break
-		if(ishuman(storage_loc.loc))
-			humanfound = storage_loc.loc
-			break
-		for(var/atom/storage_loc_storage_loc as anything in get_storage_locs(storage_loc))
-			if(ishuman(storage_loc_storage_loc))
-				humanfound = storage_loc_storage_loc
-				break
-	for(var/atom/loc_storage_loc as anything in get_storage_locs(loc))
-		if(ishuman(loc_storage_loc))
-			humanfound = loc_storage_loc
-			break
 
 	if(!humanfound)
 		return
+
 	var/mob/living/carbon/human/H = humanfound
-	var/effectpath = /datum/status_effect/stabilized
-	var/static/list/effects = subtypesof(/datum/status_effect/stabilized)
+	var/effectpath = /datum/modifier/stabilized
+	var/static/list/effects = subtypesof(/datum/modifier/stabilized)
 	for(var/X in effects)
-		var/datum/status_effect/stabilized/S = X
+		var/datum/modifier/stabilized/S = X
 		if(initial(S.colour) == colour)
 			effectpath = S
 			break
-	if(!H.has_status_effect(effectpath))
-		var/datum/status_effect/stabilized/S = H.apply_status_effect(effectpath)
+	if(!H.has_modifier_of_type(effectpath))
+		var/datum/modifier/stabilized/S = H.add_modifier(effectpath)
 		owner = H
 		S.linked_extract = src
-		STOP_PROCESSING(SSobj,src)
-	*/
+		set_next_think(0)
 
 
 //Colors and subtypes:
@@ -139,11 +123,7 @@ Stabilized extracts:
 /obj/item/metroidcross/stabilized/gold/proc/generate_mobtype()
 	var/static/list/mob_spawn_pets = list()
 	if(!length(mob_spawn_pets))
-		for(var/T in typesof(/mob/living/simple_animal))
-			var/mob/living/simple_animal/SA = T
-			/*FIXME switch(initial(SA.gold_core_spawnable))
-				if(FRIENDLY_SPAWN)
-					mob_spawn_pets += T*/
+		mob_spawn_pets = subtypesof(/mob/living/simple_animal)-subtypesof(/mob/living/simple_animal/hostile)
 	mob_type = pick(mob_spawn_pets)
 
 /obj/item/metroidcross/stabilized/gold/Initialize(mapload)
@@ -156,29 +136,27 @@ Stabilized extracts:
 		return
 	if(!CanUseTopic(user))
 		return
-	/*FIXME
 	if(isliving(user))
 		var/mob/living/L = user
-		if(L.has_status_effect(/datum/status_effect/stabilized/gold))
-			L.remove_status_effect(/datum/status_effect/stabilized/gold)
+		if(L.has_modifier_of_type(/datum/modifier/stabilized/gold))
+			L.remove_a_modifier_of_type(/datum/modifier/stabilized/gold)
 	if(choice == "Familiar Location")
 		to_chat(user, SPAN_NOTICE("You prod [src], and it shudders slightly."))
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time + 1 SECOND)
 	if(choice == "Familiar Species")
 		to_chat(user, SPAN_NOTICE("You squeeze [src], and a shape seems to shift around inside."))
 		generate_mobtype()
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time + 1 SECOND)
 	if(choice == "Familiar Sentience")
 		to_chat(user, SPAN_NOTICE("You poke [src], and it lets out a glowing pulse."))
 		saved_mind = null
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time + 1 SECOND)
 	if(choice == "Familiar Name")
-		var/newname = sanitize_name(tgui_input_text(user, "Would you like to change the name of [mob_name]", "Name change", mob_name, MAX_NAME_LEN))
+		var/newname = sanitize_name(input(user, "Would you like to change the name of [mob_name]", "Name change", mob_name) as text)
 		if(newname)
 			mob_name = newname
 		to_chat(user, SPAN_NOTICE("You speak softly into [src], and it shakes slightly in response."))
-		START_PROCESSING(SSobj, src)
-	*/
+		set_next_think(world.time + 1 SECOND)
 
 /obj/item/metroidcross/stabilized/oil
 	colour = "oil"
