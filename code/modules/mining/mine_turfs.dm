@@ -160,6 +160,7 @@ var/list/mining_floors = list()
 	ore_overlay = image('icons/obj/mining.dmi', "rock_[mineral.icon_tag]")
 	ore_overlay.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 	ore_overlay.turf_decal_layerise()
+	ore_left = mineral.result_amount
 	update_icon()
 	if(mineral.icon_tag == "diamond")
 		explosion_block = 3
@@ -451,7 +452,6 @@ var/list/mining_floors = list()
 		mineral_name = lowertext(mineral_name)
 		if(mineral_name && (mineral_name in ore_data))
 			mineral = ore_data[mineral_name]
-			ore_left = mineral.result_amount
 			UpdateMineral()
 	MineralSpread()
 
