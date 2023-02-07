@@ -67,5 +67,37 @@
 
 	CRASH("This code should not be accessible")
 
+/datum/donator_info/proc/patron_type_tier_discount_applied(price)
+	// no price = applied
+	if(isnull(price))
+		return TRUE
+
+	ASSERT(isnum(price))
+
+	if(!(patron_type in PATREON_ALL_TIERS))
+		return FALSE
+
+	switch(patron_type)
+		if(PATREON_SCIENTIST)
+			if(price <= PATREON_SCIENTIST_DISCOUNT)
+				return TRUE
+		if(PATREON_HOS)
+			if(price <= PATREON_HOS_DISCOUNT)
+				return TRUE
+		if(PATREON_CAPTAIN)
+			if(price <= PATREON_CAPTAIN_DISCOUNT)
+				return TRUE
+		if(PATREON_WIZARD)
+			if(price <= PATREON_WIZARD_DISCOUNT)
+				return TRUE
+		if(PATREON_CULTIST)
+			if(price <= PATREON_CULTIST_DISCOUNT)
+				return TRUE
+		if(PATREON_ASSISTANT)
+			if(price <= PATREON_ASSISTANT_DISCOUNT)
+				return TRUE
+
+	return FALSE
+
 /datum/donator_info/proc/has_item(type)
 	return "[type]" in items
