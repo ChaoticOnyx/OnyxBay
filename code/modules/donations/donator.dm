@@ -26,6 +26,15 @@
 	var/donator = FALSE
 	var/patron_type = PATREON_NONE
 	var/opyxes
+	var/static/list/patrons_subscription = list(
+		PATREON_NONE = 0,
+		PATREON_SCIENTIST = 5,
+		PATREON_HOS = 9,
+		PATREON_CAPTAIN = 10,
+		PATREON_WIZARD = 15,
+		PATREON_CULTIST = 20,
+		PATREON_ASSISTANT = 100,
+	)
 	var/list/items = new
 
 /datum/donator_info/proc/on_patreon_tier_loaded(client/C)
@@ -67,7 +76,7 @@
 
 	CRASH("This code should not be accessible")
 
-/datum/donator_info/proc/patron_type_tier_discount_applied(price)
+/datum/donator_info/proc/is_item_available_as_for_patron(price)
 	// no price = applied
 	if(isnull(price))
 		return TRUE
@@ -77,27 +86,7 @@
 	if(!(patron_type in PATREON_ALL_TIERS))
 		return FALSE
 
-	switch(patron_type)
-		if(PATREON_SCIENTIST)
-			if(price <= PATREON_SCIENTIST_DISCOUNT)
-				return TRUE
-		if(PATREON_HOS)
-			if(price <= PATREON_HOS_DISCOUNT)
-				return TRUE
-		if(PATREON_CAPTAIN)
-			if(price <= PATREON_CAPTAIN_DISCOUNT)
-				return TRUE
-		if(PATREON_WIZARD)
-			if(price <= PATREON_WIZARD_DISCOUNT)
-				return TRUE
-		if(PATREON_CULTIST)
-			if(price <= PATREON_CULTIST_DISCOUNT)
-				return TRUE
-		if(PATREON_ASSISTANT)
-			if(price <= PATREON_ASSISTANT_DISCOUNT)
-				return TRUE
-
-	return FALSE
+	return price <= patrons_subscription[patron_type]
 
 /datum/donator_info/proc/has_item(type)
 	return "[type]" in items
