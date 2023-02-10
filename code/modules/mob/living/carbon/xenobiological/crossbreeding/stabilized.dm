@@ -3,7 +3,7 @@ Stabilized extracts:
 	Provides a passive buff to the holder.
 */
 
-//To add: Create an effect in crossbreeding/_modifiers.dm with the name "/datum/modifier/stabilized/[color]"
+//To add: Create an effect in crossbreeding/_modifiers.dm with the name "/datum/modifier/status_effect/stabilized/[color]"
 //Status effect will automatically be applied while held, and lost on drop.
 
 /obj/item/metroidcross/stabilized
@@ -11,7 +11,7 @@ Stabilized extracts:
 	desc = "It seems inert, but anything it touches glows softly..."
 	effect = "stabilized"
 	icon_state = "stabilized"
-	var/datum/modifier/linked_effect
+	var/datum/modifier/status_effect/linked_effect
 	var/mob/living/owner
 
 /obj/item/metroidcross/stabilized/Initialize(mapload)
@@ -34,15 +34,15 @@ Stabilized extracts:
 		return
 
 	var/mob/living/carbon/human/H = humanfound
-	var/effectpath = /datum/modifier/stabilized
-	var/static/list/effects = subtypesof(/datum/modifier/stabilized)
+	var/effectpath = /datum/modifier/status_effect/stabilized
+	var/static/list/effects = subtypesof(/datum/modifier/status_effect/stabilized)
 	for(var/X in effects)
-		var/datum/modifier/stabilized/S = X
+		var/datum/modifier/status_effect/stabilized/S = X
 		if(initial(S.colour) == colour)
 			effectpath = S
 			break
 	if(!H.has_modifier_of_type(effectpath))
-		var/datum/modifier/stabilized/S = H.add_modifier(effectpath)
+		var/datum/modifier/status_effect/stabilized/S = H.add_modifier(effectpath)
 		owner = H
 		S.linked_extract = src
 		set_next_think(0)
@@ -51,7 +51,7 @@ Stabilized extracts:
 //Colors and subtypes:
 /obj/item/metroidcross/stabilized/grey
 	colour = "grey"
-	effect_desc = "Makes slimes friendly to the owner"
+	effect_desc = "Makes metroids friendly to the owner"
 
 /obj/item/metroidcross/stabilized/orange
 	colour = "orange"
@@ -138,8 +138,8 @@ Stabilized extracts:
 		return
 	if(isliving(user))
 		var/mob/living/L = user
-		if(L.has_modifier_of_type(/datum/modifier/stabilized/gold))
-			L.remove_a_modifier_of_type(/datum/modifier/stabilized/gold)
+		if(L.has_modifier_of_type(/datum/modifier/status_effect/stabilized/gold))
+			L.remove_a_modifier_of_type(/datum/modifier/status_effect/stabilized/gold)
 	if(choice == "Familiar Location")
 		to_chat(user, SPAN_NOTICE("You prod [src], and it shudders slightly."))
 		set_next_think(world.time + 1 SECOND)

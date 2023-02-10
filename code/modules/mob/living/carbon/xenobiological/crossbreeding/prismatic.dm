@@ -115,7 +115,7 @@ Prismatic extracts:
 	colour = "rainbow"
 
 /obj/item/metroidcross/prismatic/rainbow/attack_self(mob/user)
-	var/newcolor = input(user, "Choose the slime color:", "Color change",paintcolor) as color|null
+	var/newcolor = input(user, "Choose the metroid color:", "Color change",paintcolor) as color|null
 	if(user.incapacitated())
 		return
 	if(!newcolor)

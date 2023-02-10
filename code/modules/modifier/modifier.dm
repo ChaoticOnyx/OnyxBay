@@ -247,4 +247,3 @@
 	if(abs)
 		return "[abs( ((multi - 1) * 100) )]%"
 	return "[((multi - 1) * 100)]%"
-

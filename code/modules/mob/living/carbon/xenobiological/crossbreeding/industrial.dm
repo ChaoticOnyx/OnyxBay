@@ -65,9 +65,9 @@ Industrial extracts:
 
 /obj/item/metroidcross/industrial/orange
 	colour = "orange"
-	effect_desc = "Produces slime zippo lighters."
+	effect_desc = "Produces metroid zippo lighters."
 	plasmarequired = 6
-	itempath = /obj/item/flame/lighter/zippo/slime
+	itempath = /obj/item/flame/lighter/zippo/metroid
 
 /obj/item/metroidcross/industrial/purple
 	colour = "purple"
@@ -127,7 +127,7 @@ Industrial extracts:
 /obj/item/metroidcross/industrial/silver/do_after_spawn(obj/item/spawned)
 	if(istype(spawned, /obj/item/reagent_containers/food))
 		var/obj/item/reagent_containers/food/food_object = spawned
-		//FIXME food_object.mark_silver_slime_reaction()
+		//FIXME food_object.mark_silver_metroid_reaction()
 
 /obj/item/metroidcross/industrial/bluespace
 	colour = "bluespace"
@@ -143,7 +143,7 @@ Industrial extracts:
 
 /obj/item/metroidcross/industrial/cerulean
 	colour = "cerulean"
-	effect_desc = "Produces normal slime extract enhancers."
+	effect_desc = "Produces normal metroid extract enhancers."
 	plasmarequired = 5
 	itempath = /obj/item/metroidsteroid2
 
@@ -161,7 +161,7 @@ Industrial extracts:
 
 /obj/item/metroidcross/industrial/green
 	colour = "green"
-	effect_desc = "Produces self-use-only slime jelly autoinjectors."
+	effect_desc = "Produces self-use-only metroid jelly autoinjectors."
 	plasmarequired = 7
 	itempath = /obj/item/metroidcrossbeaker/autoinjector/metroidjelly
 
@@ -185,7 +185,7 @@ Industrial extracts:
 	plasmarequired = 4
 	itempath = /obj/item/grenade/chem_grenade
 
-/obj/item/metroidcross/industrial/black //What does this have to do with black slimes? No clue! Fun, though
+/obj/item/metroidcross/industrial/black //What does this have to do with black metroids? No clue! Fun, though
 	colour = "black"
 	effect_desc = "Produces cigarettes."
 	plasmarequired = 6
@@ -208,7 +208,7 @@ Industrial extracts:
 
 /obj/item/metroidcross/industrial/rainbow
 	colour = "rainbow"
-	effect_desc = "Produces random slime extracts."
+	effect_desc = "Produces random metroid extracts."
 	plasmarequired = 5
 	//Item picked below.
 

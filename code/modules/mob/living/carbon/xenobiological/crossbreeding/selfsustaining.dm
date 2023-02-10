@@ -8,18 +8,18 @@ Self-sustaining extracts:
 	icon_state = "selfsustaining"
 	var/extract_type = /obj/item/metroid_extract
 
-/obj/item/autoslime
-	name = "autoslime"
-	desc = "It resembles a normal slime extract, but seems filled with a strange, multi-colored fluid."
+/obj/item/autometroid
+	name = "autometroid"
+	desc = "It resembles a normal metroid extract, but seems filled with a strange, multi-colored fluid."
 	var/obj/item/metroid_extract/extract
-	var/effect_desc = "A self-sustaining slime extract. When used, lets you choose which reaction you want."
+	var/effect_desc = "A self-sustaining metroid extract. When used, lets you choose which reaction you want."
 
 //Just divides into the actual item.
 /obj/item/metroidcross/selfsustaining/Initialize(mapload)
 	..()
 	visible_message(SPAN_WARNING("The [src] shudders, and splits into four smaller extracts."))
 	for(var/i in 1 to 4)
-		var/obj/item/autoslime/A = new /obj/item/autoslime(src.loc)
+		var/obj/item/autometroid/A = new /obj/item/autometroid(src.loc)
 		var/obj/item/metroid_extract/X = new extract_type(A)
 		A.extract = X
 		A.icon = icon
@@ -28,10 +28,10 @@ Self-sustaining extracts:
 		A.name = "self-sustaining " + colour + " extract"
 	return INITIALIZE_HINT_QDEL
 
-/obj/item/autoslime/Initialize(mapload)
+/obj/item/autometroid/Initialize(mapload)
 	return ..()
 
-/obj/item/autoslime/attack_self(mob/user)
+/obj/item/autometroid/attack_self(mob/user)
 	var/reagentselect //FIXME = tgui_input_list(user, "Reagent the extract will produce.", "Self-sustaining Reaction", sort_list(extract.activate_reagents, /proc/cmp_typepaths_asc))
 	if(isnull(reagentselect))
 		return
@@ -55,7 +55,7 @@ Self-sustaining extracts:
 	if(secondary)
 		extract.reagents.add_reagent(secondary,amount)
 
-/obj/item/autoslime/_examine_text(mob/user)
+/obj/item/autometroid/_examine_text(mob/user)
 	. = ..()
 	if(effect_desc)
 		. += SPAN_NOTICE("[effect_desc]")

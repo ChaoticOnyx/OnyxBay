@@ -29,7 +29,7 @@ Chilling extracts:
 
 /obj/item/metroidcross/chilling/grey
 	colour = "grey"
-	effect_desc = "Creates some slime barrier cubes. When used they create slimy barricades."
+	effect_desc = "Creates some metroid barrier cubes. When used they create slimy barricades."
 
 /obj/item/metroidcross/chilling/grey/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] produces a few small, grey cubes"))
@@ -79,7 +79,7 @@ Chilling extracts:
 	user.visible_message(SPAN_DANGER("[src] melts like quicksilver, and surrounds [user] in a wall!"))
 	for(var/turf/T in orange(get_turf(user),1))
 		if(get_dist(get_turf(user), T) > 0)
-			new /obj/effect/forcefield/slimewall(T)
+			new /obj/effect/forcefield/metroidwall(T)
 	..()
 
 /obj/item/metroidcross/chilling/yellow
@@ -124,7 +124,7 @@ Chilling extracts:
 	if(isliving(user))
 		user.visible_message(SPAN_NOTICE("[src] freezes over [user]'s entire body!"))
 		var/mob/living/M = user
-		M.add_modifier(/datum/modifier/frozenstasis)
+		M.add_modifier(/datum/modifier/status_effect/frozenstasis)
 	..()
 
 /obj/item/metroidcross/chilling/silver
@@ -210,7 +210,7 @@ Chilling extracts:
 	if(isliving(user))
 		user.visible_message(SPAN_WARNING("[src] creaks and shifts into a clone of [user]!"))
 		var/mob/living/M = user
-		M.add_modifier(/datum/modifier/metroid_clone)
+		M.add_modifier(/datum/modifier/status_effect/metroid_clone)
 	..()
 
 /obj/item/metroidcross/chilling/pyrite
@@ -224,15 +224,15 @@ Chilling extracts:
 
 /obj/item/metroidcross/chilling/red
 	colour = "red"
-	effect_desc = "Confuses every slime in your vacinity."
+	effect_desc = "Confuses every metroid in your vacinity."
 
 /obj/item/metroidcross/chilling/red/do_effect(mob/user)
-	var/slimesfound = FALSE
+	var/metroidsfound = FALSE
 	for(var/mob/living/carbon/metroid/S in view(get_turf(user), 7))
-		slimesfound = TRUE
+		metroidsfound = TRUE
 		S.confused = 30
-	if(slimesfound)
-		user.visible_message(SPAN_NOTICE("[src] lets out a peaceful ring as it shatters, and nearby slimes seem confused."))
+	if(metroidsfound)
+		user.visible_message(SPAN_NOTICE("[src] lets out a peaceful ring as it shatters, and nearby metroids seem confused."))
 	else
 		user.visible_message(SPAN_NOTICE("[src] lets out a peaceful ring as it shatters, but nothing happens..."))
 	return ..()
@@ -258,11 +258,11 @@ Chilling extracts:
 
 /obj/item/metroidcross/chilling/pink
 	colour = "pink"
-	effect_desc = "Creates a slime corgi puppy."
+	effect_desc = "Creates a metroid corgi puppy."
 
 /obj/item/metroidcross/chilling/pink/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] cracks like an egg, and an adorable puppy comes tumbling out!"))
-	//FIXME new /mob/living/simple_animal/pet/dog/corgi/puppy/slime(get_turf(user))
+	//FIXME new /mob/living/simple_animal/pet/dog/corgi/puppy/metroid(get_turf(user))
 	..()
 
 /obj/item/metroidcross/chilling/gold
@@ -326,5 +326,5 @@ Chilling extracts:
 		return*/
 	user.visible_message(SPAN_WARNING("[src] reflects an array of dazzling colors and light, energy rushing to nearby doors!"))
 	for(var/obj/machinery/door/airlock/door in area)
-		//FIXME new /obj/effect/forcefield/slimewall/rainbow(door.loc)
+		//FIXME new /obj/effect/forcefield/metroidwall/rainbow(door.loc)
 	return ..()

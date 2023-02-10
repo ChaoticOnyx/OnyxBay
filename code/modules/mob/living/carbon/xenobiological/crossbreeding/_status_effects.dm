@@ -1,434 +1,429 @@
 /atom/movable/screen/alert/status_effect/rainbow_protection
 	name = "Rainbow Protection"
 	desc = "You are defended from harm, but so are those you might seek to injure!"
-	icon_state = "slime_rainbowshield"
+	icon_state = "metroid_rainbowshield"
 
-/datum/status_effect/rainbow_protection
-	id = "rainbow_protection"
+/datum/modifier/status_effect
+	var/duration = 0
+	var/alert_type = null
+
+/datum/modifier/status_effect/New(new_holder, new_origin)
+	if(duration)
+		expire_at = world.time + duration
+	holder.throw_alert("\ref[src]",alert_type)
+
+/datum/modifier/status_effect/rainbow_protection
+	name = "rainbow_protection"
 	duration = 100
 	alert_type = /atom/movable/screen/alert/status_effect/rainbow_protection
 	var/originalcolor
 
-/datum/status_effect/rainbow_protection/on_apply()
-	owner.status_flags |= GODMODE
-	ADD_TRAIT(owner, TRAIT_PACIFISM, /datum/status_effect/rainbow_protection)
-	owner.visible_message(span_warning("[owner] shines with a brilliant rainbow light."),
-		span_notice("You feel protected by an unknown force!"))
-	originalcolor = owner.color
+/datum/modifier/status_effect/rainbow_protection/on_applied()
+	holder.status_flags |= GODMODE
+	ADD_TRAIT(holder, TRAIT_PACIFISM)
+	holder.visible_message(SPAN_WARNING("[holder] shines with a brilliant rainbow light."),
+		SPAN_NOTICE("You feel protected by an unknown force!"))
+	originalcolor = holder.color
 	return ..()
 
-/datum/status_effect/rainbow_protection/tick()
-	owner.color = rgb(rand(0,255),rand(0,255),rand(0,255))
+/datum/modifier/status_effect/rainbow_protection/tick()
+	holder.color = rgb(rand(0,255),rand(0,255),rand(0,255))
 	return ..()
 
-/datum/status_effect/rainbow_protection/on_remove()
-	owner.status_flags &= ~GODMODE
-	owner.color = originalcolor
-	REMOVE_TRAIT(owner, TRAIT_PACIFISM, /datum/status_effect/rainbow_protection)
-	owner.visible_message(span_notice("[owner] stops glowing, the rainbow light fading away."),
-		span_warning("You no longer feel protected..."))
+/datum/modifier/status_effect/rainbow_protection/on_expire()
+	holder.status_flags &= ~GODMODE
+	holder.color = originalcolor
+	REMOVE_TRAIT(holder, TRAIT_PACIFISM)
+	holder.visible_message(SPAN_NOTICE("[holder] stops glowing, the rainbow light fading away."),
+		SPAN_WARNING("You no longer feel protected..."))
 
-/atom/movable/screen/alert/status_effect/slimeskin
-	name = "Adamantine Slimeskin"
+/atom/movable/screen/alert/status_effect/metroidskin
+	name = "Adamantine metroidskin"
 	desc = "You are covered in a thick, non-neutonian gel."
-	icon_state = "slime_stoneskin"
+	icon_state = "metroid_stoneskin"
 
-/datum/status_effect/slimeskin
-	id = "slimeskin"
+/datum/modifier/status_effect/metroidskin
+	name = "metroidskin"
 	duration = 300
-	alert_type = /atom/movable/screen/alert/status_effect/slimeskin
+	alert_type = /atom/movable/screen/alert/status_effect/metroidskin
 	var/originalcolor
 
-/datum/status_effect/slimeskin/on_apply()
-	originalcolor = owner.color
-	owner.color = "#3070CC"
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
-		H.physiology.damage_resistance += 10
-	owner.visible_message(span_warning("[owner] is suddenly covered in a strange, blue-ish gel!"),
-		span_notice("You are covered in a thick, rubbery gel."))
+/datum/modifier/status_effect/metroidskin/on_applied()
+	originalcolor = holder.color
+	holder.color = "#3070CC"
+	if(ishuman(holder))
+		var/mob/living/carbon/human/H = holder
+	holder.visible_message(SPAN_WARNING("[holder] is suddenly covered in a strange, blue-ish gel!"),
+		SPAN_NOTICE("You are covered in a thick, rubbery gel."))
 	return ..()
 
-/datum/status_effect/slimeskin/on_remove()
-	owner.color = originalcolor
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
-		H.physiology.damage_resistance -= 10
-	owner.visible_message(span_warning("[owner]'s gel coating liquefies and dissolves away."),
-		span_notice("Your gel second-skin dissolves!"))
+/datum/modifier/status_effect/metroidskin/on_expire()
+	holder.color = originalcolor
+	if(ishuman(holder))
+		var/mob/living/carbon/human/H = holder
+	holder.visible_message(SPAN_WARNING("[holder]'s gel coating liquefies and dissolves away."),
+		SPAN_NOTICE("Your gel second-skin dissolves!"))
 
-/datum/status_effect/slimerecall
-	id = "slime_recall"
-	duration = -1 //Will be removed by the extract.
-	tick_interval = -1
-	alert_type = null
+/datum/modifier/status_effect/metroidrecall
+	name = "metroid_recall"
+	duration = 0 //Will be removed by the extract.
+
 	var/interrupted = FALSE
 	var/mob/target
 	var/icon/bluespace
 
-/datum/status_effect/slimerecall/on_apply()
-	RegisterSignal(owner, COMSIG_LIVING_RESIST, .proc/resistField)
-	to_chat(owner, span_danger("You feel a sudden tug from an unknown force, and feel a pull to bluespace!"))
-	to_chat(owner, span_notice("Resist if you wish avoid the force!"))
+/datum/modifier/status_effect/metroidrecall/on_applied()
+	register_signal(holder, SIGNAL_MOB_RESIST, .proc/resistField)
+	to_chat(holder, SPAN_DANGER("You feel a sudden tug from an unknown force, and feel a pull to bluespace!"))
+	to_chat(holder, SPAN_NOTICE("Resist if you wish avoid the force!"))
 	bluespace = icon('icons/effects/effects.dmi',"chronofield")
-	owner.add_overlay(bluespace)
+	holder.overlays += bluespace
 	return ..()
 
-/datum/status_effect/slimerecall/proc/resistField()
-	SIGNAL_HANDLER
+/datum/modifier/status_effect/metroidrecall/proc/resistField()
 	interrupted = TRUE
-	owner.remove_status_effect(src)
+	holder.remove_specific_modifier(src)
 
-/datum/status_effect/slimerecall/on_remove()
-	UnregisterSignal(owner, COMSIG_LIVING_RESIST)
-	owner.cut_overlay(bluespace)
+/datum/modifier/status_effect/metroidrecall/on_expire()
+	unregister_signal(holder, SIGNAL_MOB_RESIST)
+	holder.cut_overlay(bluespace)
 	if(interrupted || !ismob(target))
-		to_chat(owner, span_warning("The bluespace tug fades away, and you feel that the force has passed you by."))
+		to_chat(holder, SPAN_WARNING("The bluespace tug fades away, and you feel that the force has passed you by."))
 		return
-	var/turf/old_location = get_turf(owner)
-	if(do_teleport(owner, target.loc, channel = TELEPORT_CHANNEL_QUANTUM)) //despite being named a bluespace teleportation method the quantum channel is used to preserve precision teleporting with a bag of holding
-		old_location.visible_message(span_warning("[owner] disappears in a flurry of sparks!"))
-		to_chat(owner, span_warning("The unknown force snatches briefly you from reality, and deposits you next to [target]!"))
+	var/turf/old_location = get_turf(holder)
+	if(do_teleport(holder, target.loc))
+		old_location.visible_message(SPAN_WARNING("[holder] disappears in a flurry of sparks!"))
+		to_chat(holder, SPAN_WARNING("The unknown force snatches briefly you from reality, and deposits you next to [target]!"))
 
 /atom/movable/screen/alert/status_effect/freon/stasis
 	desc = "You're frozen inside of a protective ice cube! While inside, you can't do anything, but are immune to harm! Resist to get out."
 
-/datum/status_effect/frozenstasis
-	id = "slime_frozen"
-	status_type = STATUS_EFFECT_UNIQUE
-	duration = -1 //Will remove self when block breaks.
-	alert_type = /atom/movable/screen/alert/status_effect/freon/stasis
+/datum/modifier/status_effect/frozenstasis
+	name = "metroid_frozen"
 	var/obj/structure/ice_stasis/cube
+	alert_type = /atom/movable/screen/alert/status_effect/freon/stasis
 
-/datum/status_effect/frozenstasis/on_apply()
-	RegisterSignal(owner, COMSIG_LIVING_RESIST, .proc/breakCube)
-	cube = new /obj/structure/ice_stasis(get_turf(owner))
-	owner.forceMove(cube)
-	owner.status_flags |= GODMODE
-	return ..()
+/datum/modifier/status_effect/frozenstasis/on_applied()
+	holder.throw_alert("\ref[holder]_frozenstasis", /obj/screen/movable/alert/clone_decay)
+	register_signal(holder, SIGNAL_MOB_RESIST, .proc/breakCube)
+	cube = new /obj/structure/ice_stasis(get_turf(holder))
+	holder.forceMove(cube)
+	holder.status_flags |= GODMODE
 
-/datum/status_effect/frozenstasis/tick()
-	if(!cube || owner.loc != cube)
-		owner.remove_status_effect(src)
+/datum/modifier/status_effect/frozenstasis/tick()
+	if(!cube || holder.loc != cube)
+		holder.remove_specific_modifier(src)
 
-/datum/status_effect/frozenstasis/proc/breakCube()
-	SIGNAL_HANDLER
+/datum/modifier/status_effect/frozenstasis/proc/breakCube()
+	holder.remove_specific_modifier(src)
 
-	owner.remove_status_effect(src)
-
-/datum/status_effect/frozenstasis/on_remove()
+/datum/modifier/status_effect/frozenstasis/on_expire()
 	if(cube)
 		qdel(cube)
-	owner.status_flags &= ~GODMODE
-	UnregisterSignal(owner, COMSIG_LIVING_RESIST)
+	holder.status_flags &= ~GODMODE
 
-/datum/status_effect/slime_clone
-	id = "slime_cloned"
-	status_type = STATUS_EFFECT_UNIQUE
-	duration = -1
-	alert_type = null
-	var/mob/living/clone
-	var/datum/mind/originalmind //For when the clone gibs.
+	unregister_signal(holder, SIGNAL_MOB_RESIST)
 
-/datum/status_effect/slime_clone/on_apply()
-	var/typepath = owner.type
-	clone = new typepath(owner.loc)
-	var/mob/living/carbon/O = owner
+/datum/modifier/status_effect/metroid_clone/on_applied()
+	var/typepath = holder.type
+	clone = new typepath(holder.loc)
+	var/mob/living/carbon/O = holder
 	var/mob/living/carbon/C = clone
 	if(istype(C) && istype(O))
 		C.real_name = O.real_name
-		O.dna.transfer_identity(C)
-		C.updateappearance(mutcolor_update=1)
-	if(owner.mind)
-		originalmind = owner.mind
-		owner.mind.transfer_to(clone)
-	clone.apply_status_effect(/datum/status_effect/slime_clone_decay)
+		C.setDNA(O.getDNA())
+
+	if(holder.mind)
+		originalmind = holder.mind
+		holder.mind.transfer_to(clone)
+	clone.add_modifier(/datum/modifier/status_effect/metroid_clone_decay)
 	return ..()
 
-/datum/status_effect/slime_clone/tick()
+/datum/modifier/status_effect/metroid_clone/tick()
 	if(!istype(clone) || clone.stat != CONSCIOUS)
-		owner.remove_status_effect(src)
+		holder.remove_specific_modifier(src)
 
-/datum/status_effect/slime_clone/on_remove()
-	if(clone?.mind && owner)
-		clone.mind.transfer_to(owner)
+/datum/modifier/status_effect/metroid_clone/on_expire()
+	if(clone?.mind && holder)
+		clone.mind.transfer_to(holder)
 	else
-		if(owner && originalmind)
-			originalmind.transfer_to(owner)
+		if(holder && originalmind)
+			originalmind.transfer_to(holder)
 			if(originalmind.key)
-				owner.ckey = originalmind.key
+				holder.ckey = originalmind.key
 	if(clone)
-		clone.unequip_everything()
+		for(var/obj/item/I in clone.get_equipped_items())
+			clone.drop(I, force = TRUE)
 		qdel(clone)
 
-/atom/movable/screen/alert/status_effect/clone_decay
+/datum/modifier/status_effect/metroid_clone_decay
+	name = "metroid_clonedecay"
+
+/datum/modifier/status_effect/metroid_clone_decay/on_applied()
+	holder.throw_alert("\ref[holder]_clone_decay", /obj/screen/movable/alert/clone_decay)
+
+/datum/modifier/status_effect/metroid_clone_decay/tick()
+	holder.adjustToxLoss(1)
+	holder.adjustOxyLoss(1)
+	holder.adjustBruteLoss(1)
+	holder.adjustFireLoss(1)
+	holder.color = "#007BA7"
+
+/obj/screen/movable/alert/clone_decay
 	name = "Clone Decay"
 	desc = "You are simply a construct, and cannot maintain this form forever. You will be returned to your original body if you should fall."
-	icon_state = "slime_clonedecay"
-
-/datum/status_effect/slime_clone_decay
-	id = "slime_clonedecay"
-	status_type = STATUS_EFFECT_UNIQUE
-	duration = -1
-	alert_type = /atom/movable/screen/alert/status_effect/clone_decay
-
-/datum/status_effect/slime_clone_decay/tick()
-	owner.adjustToxLoss(1, 0)
-	owner.adjustOxyLoss(1, 0)
-	owner.adjustBruteLoss(1, 0)
-	owner.adjustFireLoss(1, 0)
-	owner.color = "#007BA7"
+	icon_state = "metroid_clonedecay"
 
 /atom/movable/screen/alert/status_effect/bloodchill
 	name = "Bloodchilled"
 	desc = "You feel a shiver down your spine after getting hit with a glob of cold blood. You'll move slower and get frostbite for a while!"
 	icon_state = "bloodchill"
 
-/datum/status_effect/bloodchill
-	id = "bloodchill"
+/datum/modifier/status_effect/bloodchill
+	name = "bloodchill"
 	duration = 100
 	alert_type = /atom/movable/screen/alert/status_effect/bloodchill
 
-/datum/status_effect/bloodchill/on_apply()
-	owner.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/bloodchill)
+/datum/modifier/status_effect/bloodchill/on_applied()
+	holder.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/bloodchill)
 	return ..()
 
-/datum/status_effect/bloodchill/tick()
+/datum/modifier/status_effect/bloodchill/tick()
 	if(prob(50))
-		owner.adjustFireLoss(2)
+		holder.adjustFireLoss(2)
 
-/datum/status_effect/bloodchill/on_remove()
-	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/bloodchill)
+/datum/modifier/status_effect/bloodchill/on_expire()
+	holder.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/bloodchill)
 
-/datum/status_effect/bonechill
-	id = "bonechill"
+/datum/modifier/status_effect/bonechill
+	name = "bonechill"
 	duration = 80
 	alert_type = /atom/movable/screen/alert/status_effect/bonechill
 
-/datum/status_effect/bonechill/on_apply()
-	owner.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/bonechill)
+/datum/modifier/status_effect/bonechill/on_applied()
+	holder.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/bonechill)
 	return ..()
 
-/datum/status_effect/bonechill/tick()
+/datum/modifier/status_effect/bonechill/tick()
 	if(prob(50))
-		owner.adjustFireLoss(1)
-		owner.set_jitter_if_lower(6 SECONDS)
-		owner.adjust_bodytemperature(-10)
-		if(ishuman(owner))
-			var/mob/living/carbon/human/humi = owner
+		holder.adjustFireLoss(1)
+		holder.set_jitter_if_lower(6 SECONDS)
+		holder.adjust_bodytemperature(-10)
+		if(ishuman(holder))
+			var/mob/living/carbon/human/humi = holder
 			humi.adjust_coretemperature(-10)
 
-/datum/status_effect/bonechill/on_remove()
-	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/bonechill)
+/datum/modifier/status_effect/bonechill/on_expire()
+	holder.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/bonechill)
 /atom/movable/screen/alert/status_effect/bonechill
 	name = "Bonechilled"
 	desc = "You feel a shiver down your spine after hearing the haunting noise of bone rattling. You'll move slower and get frostbite for a while!"
 	icon_state = "bloodchill"
 
-/datum/status_effect/rebreathing
-	id = "rebreathing"
-	duration = -1
-	alert_type = null
+/datum/modifier/status_effect/rebreathing
+	name = "rebreathing"
+	duration = 0
 
-/datum/status_effect/rebreathing/tick()
-	owner.adjustOxyLoss(-6, 0) //Just a bit more than normal breathing.
+
+/datum/modifier/status_effect/rebreathing/tick()
+	holder.adjustOxyLoss(-6, 0) //Just a bit more than normal breathing.
 
 ///////////////////////////////////////////////////////
 //////////////////CONSUMING EXTRACTS///////////////////
 ///////////////////////////////////////////////////////
 
-/datum/status_effect/firecookie
-	id = "firecookie"
-	status_type = STATUS_EFFECT_REPLACE
-	alert_type = null
+/datum/modifier/status_effect/firecookie
+	name = "firecookie"
+	status_type = MODIFIER_STACK_EXTEND
+
 	duration = 100
 
-/datum/status_effect/firecookie/on_apply()
-	ADD_TRAIT(owner, TRAIT_RESISTCOLD,"firecookie")
-	owner.adjust_bodytemperature(110)
+/datum/modifier/status_effect/firecookie/on_applied()
+	ADD_TRAIT(holder, TRAIT_RESISTCOLD)
+	holder.adjust_bodytemperature(110)
 	return ..()
 
-/datum/status_effect/firecookie/on_remove()
-	REMOVE_TRAIT(owner, TRAIT_RESISTCOLD,"firecookie")
+/datum/modifier/status_effect/firecookie/on_expire()
+	REMOVE_TRAIT(holder, TRAIT_RESISTCOLD)
 
-/datum/status_effect/watercookie
-	id = "watercookie"
-	status_type = STATUS_EFFECT_REPLACE
-	alert_type = null
+/datum/modifier/status_effect/watercookie
+	name = "watercookie"
+	status_type = MODIFIER_STACK_EXTEND
+
 	duration = 100
 
-/datum/status_effect/watercookie/on_apply()
-	ADD_TRAIT(owner, TRAIT_NOSLIPWATER,"watercookie")
+/datum/modifier/status_effect/watercookie/on_applied()
+	ADD_TRAIT(holder, TRAIT_NOSLIPWATER)
 	return ..()
 
-/datum/status_effect/watercookie/tick()
-	for(var/turf/open/T in range(get_turf(owner),1))
+/datum/modifier/status_effect/watercookie/tick()
+	for(var/turf/open/T in range(get_turf(holder),1))
 		T.MakeSlippery(TURF_WET_WATER, min_wet_time = 10, wet_time_to_add = 5)
 
-/datum/status_effect/watercookie/on_remove()
-	REMOVE_TRAIT(owner, TRAIT_NOSLIPWATER,"watercookie")
+/datum/modifier/status_effect/watercookie/on_expire()
+	REMOVE_TRAIT(holder, TRAIT_NOSLIPWATER)
 
-/datum/status_effect/metalcookie
-	id = "metalcookie"
-	status_type = STATUS_EFFECT_REFRESH
-	alert_type = null
+/datum/modifier/status_effect/metalcookie
+	name = "metalcookie"
+	status_type = MODIFIER_STACK_EXTEND
+
 	duration = 100
 
-/datum/status_effect/metalcookie/on_apply()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
+/datum/modifier/status_effect/metalcookie/on_applied()
+	if(ishuman(holder))
+		var/mob/living/carbon/human/H = holder
 		H.physiology.brute_mod *= 0.9
 	return ..()
 
-/datum/status_effect/metalcookie/on_remove()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
+/datum/modifier/status_effect/metalcookie/on_expire()
+	if(ishuman(holder))
+		var/mob/living/carbon/human/H = holder
 		H.physiology.brute_mod /= 0.9
 
-/datum/status_effect/sparkcookie
-	id = "sparkcookie"
-	status_type = STATUS_EFFECT_REFRESH
-	alert_type = null
+/datum/modifier/status_effect/sparkcookie
+	name = "sparkcookie"
+	status_type = MODIFIER_STACK_EXTEND
+
 	duration = 300
 	var/original_coeff
 
-/datum/status_effect/sparkcookie/on_apply()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
+/datum/modifier/status_effect/sparkcookie/on_applied()
+	if(ishuman(holder))
+		var/mob/living/carbon/human/H = holder
 		original_coeff = H.physiology.siemens_coeff
 		H.physiology.siemens_coeff = 0
 	return ..()
 
-/datum/status_effect/sparkcookie/on_remove()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
+/datum/modifier/status_effect/sparkcookie/on_expire()
+	if(ishuman(holder))
+		var/mob/living/carbon/human/H = holder
 		H.physiology.siemens_coeff = original_coeff
 
-/datum/status_effect/toxincookie
-	id = "toxincookie"
-	status_type = STATUS_EFFECT_REPLACE
-	alert_type = null
+/datum/modifier/status_effect/toxincookie
+	name = "toxincookie"
+	status_type = MODIFIER_STACK_EXTEND
+
 	duration = 600
 
-/datum/status_effect/toxincookie/on_apply()
-	ADD_TRAIT(owner, TRAIT_TOXINLOVER,"toxincookie")
+/datum/modifier/status_effect/toxincookie/on_applied()
+	ADD_TRAIT(holder, TRAIT_TOXINLOVER)
 	return ..()
 
-/datum/status_effect/toxincookie/on_remove()
-	REMOVE_TRAIT(owner, TRAIT_TOXINLOVER,"toxincookie")
+/datum/modifier/status_effect/toxincookie/on_expire()
+	REMOVE_TRAIT(holder, TRAIT_TOXINLOVER)
 
-/datum/status_effect/timecookie
-	id = "timecookie"
-	status_type = STATUS_EFFECT_REPLACE
-	alert_type = null
+/datum/modifier/status_effect/timecookie
+	name = "timecookie"
+	status_type = MODIFIER_STACK_EXTEND
+
 	duration = 600
 
-/datum/status_effect/timecookie/on_apply()
-	owner.add_actionspeed_modifier(/datum/actionspeed_modifier/timecookie)
+/datum/modifier/status_effect/timecookie/on_applied()
+	holder.add_actionspeed_modifier(/datum/actionspeed_modifier/timecookie)
 	return ..()
 
-/datum/status_effect/timecookie/on_remove()
-	owner.remove_actionspeed_modifier(/datum/actionspeed_modifier/timecookie)
+/datum/modifier/status_effect/timecookie/on_expire()
+	holder.remove_actionspeed_modifier(/datum/actionspeed_modifier/timecookie)
 	return ..()
 
-/datum/status_effect/lovecookie
-	id = "lovecookie"
-	status_type = STATUS_EFFECT_REPLACE
-	alert_type = null
+/datum/modifier/status_effect/lovecookie
+	name = "lovecookie"
+	status_type = MODIFIER_STACK_EXTEND
+
 	duration = 300
 
-/datum/status_effect/lovecookie/tick()
-	if(owner.stat != CONSCIOUS)
+/datum/modifier/status_effect/lovecookie/tick()
+	if(holder.stat != CONSCIOUS)
 		return
-	if(iscarbon(owner))
-		var/mob/living/carbon/C = owner
+	if(iscarbon(holder))
+		var/mob/living/carbon/C = holder
 		if(C.handcuffed)
 			return
 	var/list/huggables = list()
-	for(var/mob/living/carbon/L in range(get_turf(owner),1))
-		if(L != owner)
+	for(var/mob/living/carbon/L in range(get_turf(holder),1))
+		if(L != holder)
 			huggables += L
 	if(length(huggables))
 		var/mob/living/carbon/hugged = pick(huggables)
-		owner.visible_message(span_notice("[owner] hugs [hugged]!"), span_notice("You hug [hugged]!"))
+		holder.visible_message(SPAN_NOTICE("[holder] hugs [hugged]!"), SPAN_NOTICE("You hug [hugged]!"))
 
-/datum/status_effect/tarcookie
-	id = "tarcookie"
-	status_type = STATUS_EFFECT_REPLACE
-	alert_type = null
+/datum/modifier/status_effect/tarcookie
+	name = "tarcookie"
+	status_type = MODIFIER_STACK_EXTEND
+
 	duration = 100
 
-/datum/status_effect/tarcookie/tick()
-	for(var/mob/living/carbon/human/L in range(get_turf(owner),1))
-		if(L != owner)
-			L.apply_status_effect(/datum/status_effect/tarfoot)
+/datum/modifier/status_effect/tarcookie/tick()
+	for(var/mob/living/carbon/human/L in range(get_turf(holder),1))
+		if(L != holder)
+			L.apply_status_effect(/datum/modifier/status_effect/tarfoot)
 
-/datum/status_effect/tarfoot
-	id = "tarfoot"
-	status_type = STATUS_EFFECT_REPLACE
-	alert_type = null
+/datum/modifier/status_effect/tarfoot
+	name = "tarfoot"
+	status_type = MODIFIER_STACK_EXTEND
+
 	duration = 30
 
-/datum/status_effect/tarfoot/on_apply()
-	owner.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/tarfoot)
+/datum/modifier/status_effect/tarfoot/on_applied()
+	holder.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/tarfoot)
 	return ..()
 
-/datum/status_effect/tarfoot/on_remove()
-	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/tarfoot)
+/datum/modifier/status_effect/tarfoot/on_expire()
+	holder.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/tarfoot)
 
-/datum/status_effect/spookcookie
-	id = "spookcookie"
-	status_type = STATUS_EFFECT_REPLACE
-	alert_type = null
+/datum/modifier/status_effect/spookcookie
+	name = "spookcookie"
+	status_type = MODIFIER_STACK_EXTEND
+
 	duration = 300
 
-/datum/status_effect/spookcookie/on_apply()
-	var/image/I = image(icon = 'icons/mob/simple/simple_human.dmi', icon_state = "skeleton", layer = ABOVE_MOB_LAYER, loc = owner)
+/datum/modifier/status_effect/spookcookie/on_applied()
+	var/image/I = image(icon = 'icons/mob/simple/simple_human.dmi', icon_state = "skeleton", layer = ABOVE_MOB_LAYER, loc = holder)
 	I.override = 1
-	owner.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/everyone, "spookyscary", I)
+	holder.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/everyone, "spookyscary", I)
 	return ..()
 
-/datum/status_effect/spookcookie/on_remove()
-	owner.remove_alt_appearance("spookyscary")
+/datum/modifier/status_effect/spookcookie/on_expire()
+	holder.remove_alt_appearance("spookyscary")
 
-/datum/status_effect/peacecookie
-	id = "peacecookie"
-	status_type = STATUS_EFFECT_REPLACE
-	alert_type = null
+/datum/modifier/status_effect/peacecookie
+	name = "peacecookie"
+	status_type = MODIFIER_STACK_EXTEND
+
 	duration = 100
 
-/datum/status_effect/peacecookie/tick()
-	for(var/mob/living/L in range(get_turf(owner),1))
-		L.apply_status_effect(/datum/status_effect/plur)
+/datum/modifier/status_effect/peacecookie/tick()
+	for(var/mob/living/L in range(get_turf(holder),1))
+		L.apply_status_effect(/datum/modifier/status_effect/plur)
 
-/datum/status_effect/plur
-	id = "plur"
-	status_type = STATUS_EFFECT_REPLACE
-	alert_type = null
+/datum/modifier/status_effect/plur
+	name = "plur"
+	status_type = MODIFIER_STACK_EXTEND
+
 	duration = 30
 
-/datum/status_effect/plur/on_apply()
-	ADD_TRAIT(owner, TRAIT_PACIFISM, "peacecookie")
+/datum/modifier/status_effect/plur/on_applied()
+	ADD_TRAIT(holder, TRAIT_PACIFISM)
 	return ..()
 
-/datum/status_effect/plur/on_remove()
-	REMOVE_TRAIT(owner, TRAIT_PACIFISM, "peacecookie")
+/datum/modifier/status_effect/plur/on_expire()
+	REMOVE_TRAIT(holder, TRAIT_PACIFISM)
 
-/datum/status_effect/adamantinecookie
-	id = "adamantinecookie"
-	status_type = STATUS_EFFECT_REFRESH
-	alert_type = null
+/datum/modifier/status_effect/adamantinecookie
+	name = "adamantinecookie"
+	status_type = MODIFIER_STACK_EXTEND
+
 	duration = 100
 
-/datum/status_effect/adamantinecookie/on_apply()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
+/datum/modifier/status_effect/adamantinecookie/on_applied()
+	if(ishuman(holder))
+		var/mob/living/carbon/human/H = holder
 		H.physiology.burn_mod *= 0.9
 	return ..()
 
-/datum/status_effect/adamantinecookie/on_remove()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/H = owner
+/datum/modifier/status_effect/adamantinecookie/on_expire()
+	if(ishuman(holder))
+		var/mob/living/carbon/human/H = holder
 		H.physiology.burn_mod /= 0.9
 
 
@@ -436,13 +431,13 @@
 //////////////////STABILIZED EXTRACTS//////////////////
 ///////////////////////////////////////////////////////
 
-/datum/modifier/stabilized //The base stabilized extract effect, has no effect of its' own.
+/datum/modifier/status_effect/stabilized //The base stabilized extract effect, has no effect of its' own.
 	name = "stabilizedbase"
-	var/alert_type = null
+	var/
 	var/obj/item/metroidcross/stabilized/linked_extract
 	var/colour = "null"
 
-/datum/modifier/stabilized/proc/location_check()
+/datum/modifier/status_effect/stabilized/proc/location_check()
 	if(linked_extract.loc == holder)
 		return TRUE
 	if(linked_extract.loc.loc == holder)
@@ -450,50 +445,50 @@
 
 	return FALSE
 
-/datum/modifier/stabilized/think()
+/datum/modifier/status_effect/stabilized/think()
 	if(!linked_extract || !linked_extract.loc) //Sanity checking
-		qdel(src)
+		holder.remove_specific_modifier(src)
 		return
 	if(linked_extract && !location_check())
 		linked_extract.linked_effect = null
 		if(!QDELETED(linked_extract))
-			linked_extract.owner = null
+			linked_extract.holder = null
 			linked_extract.set_next_think(world.time + 1 SECOND)
-		qdel(src)
+		holder.remove_specific_modifier(src)
 	return ..()
 
-/datum/modifier/stabilized/null //This shouldn't ever happen, but just in case.
+/datum/modifier/status_effect/stabilized/null //This shouldn't ever happen, but just in case.
 	name = "stabilizednull"
 
 
 //Stabilized effects start below.
-/datum/modifier/stabilized/grey
+/datum/modifier/status_effect/stabilized/grey
 	name = "stabilizedgrey"
 	colour = "grey"
 
-/datum/modifier/stabilized/grey/think()
+/datum/modifier/status_effect/stabilized/grey/think()
 	for(var/mob/living/carbon/metroid/S in range(1, get_turf(holder)))
 		if(!(holder in S.Friends))
 			to_chat(holder, SPAN_NOTICE("[linked_extract] pulses gently as it communicates with [S]."))
 			S.Friends += holder
 	return ..()
 
-/datum/modifier/stabilized/orange
+/datum/modifier/status_effect/stabilized/orange
 	name = "stabilizedorange"
 	colour = "orange"
 
-/datum/modifier/stabilized/orange/think()
+/datum/modifier/status_effect/stabilized/orange/think()
 	var/body_temperature_difference = holder.get_species().body_temperature - holder.bodytemperature
 	holder.bodytemperature += body_temperature_difference<0?(max(-5, body_temperature_difference)):(min(5, body_temperature_difference))
 	return ..()
 
-/datum/modifier/stabilized/purple
+/datum/modifier/status_effect/stabilized/purple
 	name = "stabilizedpurple"
 	colour = "purple"
 	/// Whether we healed from our last tick
 	var/healed_last_tick = FALSE
 
-/datum/modifier/stabilized/purple/think()
+/datum/modifier/status_effect/stabilized/purple/think()
 	healed_last_tick = FALSE
 
 	if(holder.getBruteLoss() > 0)
@@ -515,30 +510,30 @@
 
 	return ..()
 
-/datum/modifier/stabilized/purple/get_examine_text()
+/datum/modifier/status_effect/stabilized/purple/get_examine_text()
 	if(healed_last_tick)
 		return SPAN_WARNING("[holder] [holder.p_are()] regenerating slowly, purplish goo filling in small injuries!")
 
 	return null
 
-/datum/modifier/stabilized/blue
+/datum/modifier/status_effect/stabilized/blue
 	name = "stabilizedblue"
 	colour = "blue"
 
-/datum/modifier/stabilized/blue/on_apply()
-	ADD_TRAIT(holder, TRAIT_NOSLIPWATER, "metroidstatus")
+/datum/modifier/status_effect/stabilized/blue/on_applied()
+	ADD_TRAIT(holder, TRAIT_NOSLIPWATER)
 	return ..()
 
-/datum/modifier/stabilized/blue/on_remove()
-	REMOVE_TRAIT(holder, TRAIT_NOSLIPWATER, "metroidstatus")
+/datum/modifier/status_effect/stabilized/blue/on_expire()
+	REMOVE_TRAIT(holder, TRAIT_NOSLIPWATER)
 
-/datum/modifier/stabilized/metal
+/datum/modifier/status_effect/stabilized/metal
 	name = "stabilizedmetal"
 	colour = "metal"
 	var/cooldown = 30
 	var/max_cooldown = 30
 
-/datum/modifier/stabilized/metal/think()
+/datum/modifier/status_effect/stabilized/metal/think()
 	if(cooldown > 0)
 		cooldown--
 	else
@@ -556,16 +551,16 @@
 	return ..()
 
 
-/datum/modifier/stabilized/yellow
+/datum/modifier/status_effect/stabilized/yellow
 	name = "stabilizedyellow"
 	colour = "yellow"
 	var/cooldown = 10
 	var/max_cooldown = 10
 
-/datum/modifier/stabilized/yellow/get_examine_text()
+/datum/modifier/status_effect/stabilized/yellow/get_examine_text()
 	return SPAN_WARNING("Nearby electronics seem just a little more charged wherever [holder] go[holder].")
 
-/datum/modifier/stabilized/yellow/think()
+/datum/modifier/status_effect/stabilized/yellow/think()
 	if(cooldown > 0)
 		cooldown--
 		return ..()
@@ -587,17 +582,17 @@
 /obj/item/hothands/get_temperature()
 	return 290 //Below what's required to ignite plasma.
 
-/datum/modifier/stabilized/darkpurple
+/datum/modifier/status_effect/stabilized/darkpurple
 	name = "stabilizeddarkpurple"
 	colour = "dark purple"
 	var/obj/item/hothands/fire
 
-/datum/modifier/stabilized/darkpurple/on_apply()
-	ADD_TRAIT(holder, TRAIT_RESISTHEATHANDS, "metroidstatus")
+/datum/modifier/status_effect/stabilized/darkpurple/on_applied()
+	ADD_TRAIT(holder, TRAIT_RESISTHEATHANDS)
 	fire = new(holder)
 	return ..()
 
-/datum/modifier/stabilized/darkpurple/think()
+/datum/modifier/status_effect/stabilized/darkpurple/think()
 	var/obj/item/item = holder.get_active_held_item()
 	if(item)
 		if(IS_EDIBLE(item) && item.microwave_act())
@@ -606,18 +601,18 @@
 			item.attackby(fire, holder)
 	return ..()
 
-/datum/modifier/stabilized/darkpurple/on_remove()
-	REMOVE_TRAIT(holder, TRAIT_RESISTHEATHANDS, "metroidstatus")
+/datum/modifier/status_effect/stabilized/darkpurple/on_expire()
+	REMOVE_TRAIT(holder, TRAIT_RESISTHEATHANDS)
 	qdel(fire)
 
-/datum/modifier/stabilized/darkpurple/get_examine_text()
-	return SPAN_NOTICE("[holder.p_their(TRUE)] fingertips burn brightly!")
+/datum/modifier/status_effect/stabilized/darkpurple/get_examine_text()
+	return SPAN_NOTICE("[holder] fingertips burn brightly!")
 
-/datum/modifier/stabilized/darkblue
+/datum/modifier/status_effect/stabilized/darkblue
 	name = "stabilizeddarkblue"
 	colour = "dark blue"
 
-/datum/modifier/stabilized/darkblue/think()
+/datum/modifier/status_effect/stabilized/darkblue/think()
 	if(holder.fire_stacks > 0 && prob(80))
 		holder.adjust_wet_stacks(1)
 		if(holder.fire_stacks <= 0)
@@ -645,17 +640,17 @@
 		qdel(HH)
 	..()
 
-/datum/modifier/stabilized/silver
+/datum/modifier/status_effect/stabilized/silver
 	name = "stabilizedsilver"
 	colour = "silver"
 
-/datum/modifier/stabilized/silver/on_apply()
+/datum/modifier/status_effect/stabilized/silver/on_applied()
 	if(ishuman(holder))
 		var/mob/living/carbon/human/H = holder
 		H.physiology.hunger_mod *= 0.8 //20% buff
 	return ..()
 
-/datum/modifier/stabilized/silver/on_remove()
+/datum/modifier/status_effect/stabilized/silver/on_expire()
 	if(ishuman(holder))
 		var/mob/living/carbon/human/H = holder
 		H.physiology.hunger_mod /= 0.8
@@ -666,19 +661,19 @@
 	desc = "You shouldn't see this, since we set it to change automatically!"
 	icon_state = "metroid_bluespace_on"
 
-/datum/modifier/bluespacestabilization
+/datum/modifier/status_effect/bluespacestabilization
 	name = "stabilizedbluespacecooldown"
 	duration = 1200
-	alert_type = null
 
-/datum/modifier/stabilized/bluespace
+
+/datum/modifier/status_effect/stabilized/bluespace
 	name = "stabilizedbluespace"
 	colour = "bluespace"
 	alert_type = /atom/movable/screen/alert/modifier/bluespacemetroid
 	var/healthcheck
 
-/datum/modifier/stabilized/bluespace/think()
-	if(holder.has_modifier_of_type(/datum/modifier/bluespacestabilization))
+/datum/modifier/status_effect/stabilized/bluespace/think()
+	if(holder.has_modifier_of_type(/datum/modifier/status_effect/bluespacestabilization))
 		linked_alert.desc = "The stabilized bluespace extract is still aligning you with the bluespace axis."
 		linked_alert.icon_state = "metroid_bluespace_off"
 		return ..()
@@ -694,19 +689,19 @@
 		if(!F)
 			F = get_turf(holder)
 			range = 50
-		if(do_teleport(holder, F, range, channel = TELEPORT_CHANNEL_BLUESPACE))
+		if(do_teleport(holder, F, range))
 			to_chat(holder, SPAN_NOTICE("[linked_extract] will take some time to re-align you on the bluespace axis."))
 			do_sparks(5,FALSE,holder)
-			holder.apply_modifier(/datum/modifier/bluespacestabilization)
+			holder.add_modifier(/datum/modifier/status_effect/bluespacestabilization)
 	healthcheck = holder.health
 	return ..()
 
-/datum/modifier/stabilized/sepia
+/datum/modifier/status_effect/stabilized/sepia
 	name = "stabilizedsepia"
 	colour = "sepia"
 	var/mod = 0
 
-/datum/modifier/stabilized/sepia/think()
+/datum/modifier/status_effect/stabilized/sepia/think()
 	if(prob(50) && mod > -1)
 		mod--
 		holder.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/modifier/sepia, multiplicative_slowdown = -0.5)
@@ -716,15 +711,15 @@
 		holder.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/modifier/sepia, multiplicative_slowdown = 0)
 	return ..()
 
-/datum/modifier/stabilized/sepia/on_remove()
+/datum/modifier/status_effect/stabilized/sepia/on_expire()
 	holder.remove_movespeed_modifier(/datum/movespeed_modifier/modifier/sepia)
 
-/datum/modifier/stabilized/cerulean
+/datum/modifier/status_effect/stabilized/cerulean
 	name = "stabilizedcerulean"
 	colour = "cerulean"
 	var/mob/living/clone
 
-/datum/modifier/stabilized/cerulean/on_apply()
+/datum/modifier/status_effect/stabilized/cerulean/on_applied()
 	var/typepath = holder.type
 	clone = new typepath(holder.loc)
 	var/mob/living/carbon/O = holder
@@ -735,7 +730,7 @@
 		C.updateappearance(mutcolor_update=1)
 	return ..()
 
-/datum/modifier/stabilized/cerulean/think()
+/datum/modifier/status_effect/stabilized/cerulean/think()
 	if(holder.stat == DEAD)
 		if(clone && clone.stat != DEAD)
 			holder.visible_message(SPAN_WARNING("[holder] blazes with brilliant light, [linked_extract] whisking [holder] soul away."),
@@ -749,47 +744,47 @@
 			qdel(linked_extract)
 	..()
 
-/datum/modifier/stabilized/cerulean/on_remove()
+/datum/modifier/status_effect/stabilized/cerulean/on_expire()
 	if(clone)
 		clone.visible_message(SPAN_WARNING("[clone] dissolves into a puddle of goo!"))
 		clone.unequip_everything()
 		qdel(clone)
 
-/datum/modifier/stabilized/pyrite
+/datum/modifier/status_effect/stabilized/pyrite
 	name = "stabilizedpyrite"
 	colour = "pyrite"
 	var/originalcolor
 
-/datum/modifier/stabilized/pyrite/on_apply()
+/datum/modifier/status_effect/stabilized/pyrite/on_applied()
 	originalcolor = holder.color
 	return ..()
 
-/datum/modifier/stabilized/pyrite/think()
+/datum/modifier/status_effect/stabilized/pyrite/think()
 	holder.color = rgb(rand(0,255),rand(0,255),rand(0,255))
 	return ..()
 
-/datum/modifier/stabilized/pyrite/on_remove()
+/datum/modifier/status_effect/stabilized/pyrite/on_expire()
 	holder.color = originalcolor
 
-/datum/modifier/stabilized/red
+/datum/modifier/status_effect/stabilized/red
 	name = "stabilizedred"
 	colour = "red"
 
-/datum/modifier/stabilized/red/on_apply()
+/datum/modifier/status_effect/stabilized/red/on_applied()
 	. = ..()
 	holder.add_movespeed_mod_immunities(type, /datum/movespeed_modifier/equipment_speedmod)
 
-/datum/modifier/stabilized/red/on_remove()
+/datum/modifier/status_effect/stabilized/red/on_expire()
 	holder.remove_movespeed_mod_immunities(type, /datum/movespeed_modifier/equipment_speedmod)
 	return ..()
 
-/datum/modifier/stabilized/green
+/datum/modifier/status_effect/stabilized/green
 	name = "stabilizedgreen"
 	colour = "green"
 	var/datum/dna/originalDNA
 	var/originalname
 
-/datum/modifier/stabilized/green/on_apply()
+/datum/modifier/status_effect/stabilized/green/on_applied()
 	to_chat(holder, SPAN_WARNING("You feel different..."))
 	if(ishuman(holder))
 		var/mob/living/carbon/human/H = holder
@@ -800,13 +795,13 @@
 	return ..()
 
 // Only occasionally give examiners a warning.
-/datum/modifier/stabilized/green/get_examine_text()
+/datum/modifier/status_effect/stabilized/green/get_examine_text()
 	if(prob(50))
 		return SPAN_WARNING("[holder] look[holder.p_s()] a bit green and gooey...")
 
 	return null
 
-/datum/modifier/stabilized/green/on_remove()
+/datum/modifier/status_effect/stabilized/green/on_expire()
 	to_chat(holder, SPAN_NOTICE("You feel more like yourself."))
 	if(ishuman(holder))
 		var/mob/living/carbon/human/H = holder
@@ -814,86 +809,86 @@
 		H.real_name = originalname
 		H.updateappearance(mutcolor_update=1)
 
-/datum/modifier/brokenpeace
+/datum/modifier/status_effect/brokenpeace
 	name = "brokenpeace"
 	duration = 1200
-	alert_type = null
 
-/datum/modifier/pinkdamagetracker
+
+/datum/modifier/status_effect/pinkdamagetracker
 	name = "pinkdamagetracker"
-	duration = -1
-	alert_type = null
+	duration = 0
+
 	var/damage = 0
 	var/lasthealth
 
-/datum/modifier/pinkdamagetracker/think()
+/datum/modifier/status_effect/pinkdamagetracker/think()
 	if((lasthealth - holder.health) > 0)
 		damage += (lasthealth - holder.health)
 	lasthealth = holder.health
 
-/datum/modifier/stabilized/pink
+/datum/modifier/status_effect/stabilized/pink
 	name = "stabilizedpink"
 	colour = "pink"
 	var/list/mobs = list()
 	var/faction_name
 
-/datum/modifier/stabilized/pink/on_apply()
+/datum/modifier/status_effect/stabilized/pink/on_applied()
 	faction_name = REF(holder)
 	return ..()
 
-/datum/modifier/stabilized/pink/think()
+/datum/modifier/status_effect/stabilized/pink/think()
 	for(var/mob/living/simple_animal/M in view(7,get_turf(holder)))
 		if(!(M in mobs))
 			mobs += M
-			M.apply_modifier(/datum/modifier/pinkdamagetracker)
+			M.add_modifier(/datum/modifier/status_effect/pinkdamagetracker)
 			M.faction |= faction_name
 	for(var/mob/living/simple_animal/M in mobs)
 		if(!(M in view(7,get_turf(holder))))
 			M.faction -= faction_name
-			M.remove_modifier(/datum/modifier/pinkdamagetracker)
+			M.remove_a_modifier_of_type(/datum/modifier/status_effect/pinkdamagetracker)
 			mobs -= M
-		var/datum/modifier/pinkdamagetracker/C = M.has_modifier_of_type(/datum/modifier/pinkdamagetracker)
+		var/datum/modifier/status_effect/pinkdamagetracker/C = M.has_modifier_of_type(/datum/modifier/status_effect/pinkdamagetracker)
 		if(istype(C) && C.damage > 0)
 			C.damage = 0
-			holder.apply_modifier(/datum/modifier/brokenpeace)
+			holder.add_modifier(/datum/modifier/status_effect/brokenpeace)
 	var/HasFaction = FALSE
 	for(var/i in holder.faction)
 		if(i == faction_name)
 			HasFaction = TRUE
 
-	if(HasFaction && holder.has_modifier_of_type_of_type(/datum/modifier/brokenpeace))
+	if(HasFaction && holder.has_modifier_of_type(/datum/modifier/status_effect/brokenpeace))
 		holder.faction -= faction_name
 		to_chat(holder, SPAN_DANGER("The peace has been broken! Hostile creatures will now react to you!"))
-	if(!HasFaction && !holder.has_modifier_of_type(/datum/modifier/brokenpeace))
+	if(!HasFaction && !holder.has_modifier_of_type(/datum/modifier/status_effect/brokenpeace))
 		to_chat(holder, SPAN_NOTICE("[linked_extract] pulses, generating a fragile aura of peace."))
 		holder.faction |= faction_name
 	return ..()
 
-/datum/modifier/stabilized/pink/on_remove()
+/datum/modifier/status_effect/stabilized/pink/on_expire()
 	for(var/mob/living/simple_animal/M in mobs)
 		M.faction -= faction_name
-		M.remove_modifier(/datum/modifier/pinkdamagetracker)
+		M.remove_a_modifier_of_type(/datum/modifier/status_effect/pinkdamagetracker)
 	for(var/i in holder.faction)
 		if(i == faction_name)
 			holder.faction -= faction_name
 
-/datum/modifier/stabilized/oil
+/datum/modifier/status_effect/stabilized/oil
 	name = "stabilizedoil"
 	colour = "oil"
 
-/datum/modifier/stabilized/oil/think()
+/datum/modifier/status_effect/stabilized/oil/think()
 	if(holder.stat == DEAD)
 		explosion(holder, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 4, flame_range = 5, explosion_cause = src)
 	return ..()
 
-/datum/modifier/stabilized/oil/get_examine_text()
+/datum/modifier/status_effect/stabilized/oil/get_examine_text()
 	return SPAN_WARNING("[holder] smell[holder.p_s()] of sulfer and oil!")
 
 /// How much damage is dealt per healing done for the stabilized back.
 /// This multiplier is applied to prevent two people from converting each other's damage away.
 #define DRAIN_DAMAGE_MULTIPLIER 1.2
 
-/datum/modifier/stabilized/black
+/datum/modifier/status_effect/stabilized/black
 	name = "stabilizedblack"
 	colour = "black"
 	/// How much we heal per tick (also how much we damage per tick times DRAIN_DAMAGE_MULTIPLIER).
@@ -901,17 +896,16 @@
 	/// Weakref to the mob we're currently draining every tick.
 	var/datum/weakref/draining_ref
 
-/datum/modifier/stabilized/black/on_apply()
-	RegisterSignal(holder, COMSIG_MOVABLE_SET_GRAB_STATE, .proc/on_grab)
+/datum/modifier/status_effect/stabilized/black/on_applied()
+	register_signal(holder, COMSIG_MOVABLE_SET_GRAB_STATE, .proc/on_grab)
 	return ..()
 
-/datum/modifier/stabilized/black/on_remove()
-	UnregisterSignal(holder, COMSIG_MOVABLE_SET_GRAB_STATE)
+/datum/modifier/status_effect/stabilized/black/on_expire()
+	unregister_signal(holder, COMSIG_MOVABLE_SET_GRAB_STATE)
 	return ..()
 
 /// Whenever we grab someone by the neck, set "draining" to a weakref of them.
-/datum/modifier/stabilized/black/proc/on_grab(mob/living/source, new_state)
-	SIGNAL_HANDLER
+/datum/modifier/status_effect/stabilized/black/proc/on_grab(mob/living/source, new_state)
 
 	if(new_state < GRAB_KILL || !isliving(source.pulling))
 		draining_ref = null
@@ -921,18 +915,18 @@
 	if(draining.stat == DEAD)
 		return
 
-	draining_ref = WEAKREF(draining)
-	to_chat(holder, span_boldnotice("You feel your hands melt around [draining]'s neck as you start to drain [draining.p_them()] of [draining] life!"))
-	to_chat(draining, SPAN_DANGER("[holder]'s hands melt around your neck as you can feel your life starting to drain away!"))
+	draining_ref = weakref(draining)
+	to_chat(holder, SPAN_NOTICE(FONT_LARGE("You feel your hands melt around [draining]'s neck as you start to drain [draining] of [draining] life!")))
+	to_chat(draining, SPAN_DANGER(FONT_LARGE("[holder]'s hands melt around your neck as you can feel your life starting to drain away!")))
 
-/datum/modifier/stabilized/black/get_examine_text()
+/datum/modifier/status_effect/stabilized/black/get_examine_text()
 	var/mob/living/draining = draining_ref?.resolve()
 	if(!draining)
 		return null
 
 	return SPAN_WARNING("[holder] [holder.p_are()] draining health from [draining]!")
 
-/datum/modifier/stabilized/black/think()
+/datum/modifier/status_effect/stabilized/black/think()
 	if(holder.grab_state < GRAB_KILL || !IS_WEAKREF_OF(holder.pulling, draining_ref))
 		return
 
@@ -961,39 +955,39 @@
 
 #undef DRAIN_DAMAGE_MULTIPLIER
 
-/datum/modifier/stabilized/lightpink
+/datum/modifier/status_effect/stabilized/lightpink
 	name = "stabilizedlightpink"
 	colour = "light pink"
 
-/datum/modifier/stabilized/lightpink/on_apply()
+/datum/modifier/status_effect/stabilized/lightpink/on_applied()
 	holder.add_movespeed_modifier(/datum/movespeed_modifier/modifier/lightpink)
-	ADD_TRAIT(holder, TRAIT_PACIFISM, STABILIZED_LIGHT_PINK_TRAIT)
+	ADD_TRAIT(holder, TRAIT_PACIFISM)
 	return ..()
 
-/datum/modifier/stabilized/lightpink/think()
+/datum/modifier/status_effect/stabilized/lightpink/think()
 	for(var/mob/living/carbon/human/H in range(1, get_turf(holder)))
 		if(H != holder && H.stat != DEAD && H.health <= 0 && !H.reagents.has_reagent(/datum/reagent/medicine/epinephrine))
-			to_chat(holder, "[linked_extract] pulses in sync with [H]'s heartbeat, trying to keep [H.p_them()] alive.")
+			to_chat(holder, "[linked_extract] pulses in sync with [H]'s heartbeat, trying to keep [H] alive.")
 			H.reagents.add_reagent(/datum/reagent/medicine/epinephrine,5)
 	return ..()
 
-/datum/modifier/stabilized/lightpink/on_remove()
+/datum/modifier/status_effect/stabilized/lightpink/on_expire()
 	holder.remove_movespeed_modifier(/datum/movespeed_modifier/modifier/lightpink)
-	REMOVE_TRAIT(holder, TRAIT_PACIFISM, STABILIZED_LIGHT_PINK_TRAIT)
+	REMOVE_TRAIT(holder, TRAIT_PACIFISM)
 
-/datum/modifier/stabilized/adamantine
+/datum/modifier/status_effect/stabilized/adamantine
 	name = "stabilizedadamantine"
 	colour = "adamantine"
 
-/datum/modifier/stabilized/adamantine/get_examine_text()
+/datum/modifier/status_effect/stabilized/adamantine/get_examine_text()
 	return SPAN_WARNING("[holder] [holder.p_have()] strange metallic coating on [holder] skin.")
 
-/datum/modifier/stabilized/gold
+/datum/modifier/status_effect/stabilized/gold
 	name = "stabilizedgold"
 	colour = "gold"
 	var/mob/living/simple_animal/familiar
 
-/datum/modifier/stabilized/gold/think()
+/datum/modifier/status_effect/stabilized/gold/think()
 	var/obj/item/metroidcross/stabilized/gold/linked = linked_extract
 	if(QDELETED(familiar))
 		familiar = new linked.mob_type(get_turf(holder.loc))
@@ -1009,26 +1003,26 @@
 			linked.saved_mind = familiar.mind
 	return ..()
 
-/datum/modifier/stabilized/gold/on_remove()
+/datum/modifier/status_effect/stabilized/gold/on_expire()
 	if(familiar)
 		qdel(familiar)
 
-/datum/modifier/stabilized/adamantine/on_apply()
+/datum/modifier/status_effect/stabilized/adamantine/on_applied()
 	if(ishuman(holder))
 		var/mob/living/carbon/human/H = holder
 		H.physiology.damage_resistance += 5
 	return ..()
 
-/datum/modifier/stabilized/adamantine/on_remove()
+/datum/modifier/status_effect/stabilized/adamantine/on_expire()
 	if(ishuman(holder))
 		var/mob/living/carbon/human/H = holder
 		H.physiology.damage_resistance -= 5
 
-/datum/modifier/stabilized/rainbow
+/datum/modifier/status_effect/stabilized/rainbow
 	name = "stabilizedrainbow"
 	colour = "rainbow"
 
-/datum/modifier/stabilized/rainbow/think()
+/datum/modifier/status_effect/stabilized/rainbow/think()
 	if(holder.health <= 0)
 		var/obj/item/metroidcross/stabilized/rainbow/X = linked_extract
 		if(istype(X))
@@ -1036,6 +1030,6 @@
 				X.regencore.afterattack(holder,holder,TRUE)
 				X.regencore = null
 				holder.visible_message(SPAN_WARNING("[holder] flashes a rainbow of colors, and [holder] skin is coated in a milky regenerative goo!"))
-				qdel(src)
+				holder.remove_specific_modifier(src)
 				qdel(linked_extract)
 	return ..()

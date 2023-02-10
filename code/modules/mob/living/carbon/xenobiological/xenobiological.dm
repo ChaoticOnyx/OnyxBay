@@ -1,4 +1,4 @@
-#define SLIME_EXTRACT_CROSSING_REQUIRED 10
+#define METROID_EXTRACT_CROSSING_REQUIRED 10
 
 /mob/living/carbon/metroid
 	name = "baby metroid"

@@ -28,7 +28,7 @@
 		qdel(O)
 
 	if(O.type == /obj/item/metroidpotion/enhancer/max)
-		to_chat(user, SPAN_NOTICE("You dump the maximizer on the slime extract. It can now be used a total of 5 times!"))
+		to_chat(user, SPAN_NOTICE("You dump the maximizer on the metroid extract. It can now be used a total of 5 times!"))
 		Uses = 5
 		enhanced = 1
 		qdel(O)

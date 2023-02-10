@@ -30,10 +30,10 @@ Charged extracts:
 
 /obj/item/metroidcross/charged/grey
 	colour = "grey"
-	effect_desc = "Produces a slime reviver potion, which revives dead slimes."
+	effect_desc = "Produces a metroid reviver potion, which revives dead metroids."
 
 /obj/item/metroidcross/charged/grey/do_effect(mob/user)
-	new /obj/item/metroidpotion/slime_reviver(get_turf(user))
+	new /obj/item/metroidpotion/metroid_reviver(get_turf(user))
 	user.visible_message(SPAN_NOTICE("[src] distills into a potion!"))
 	..()
 
@@ -58,10 +58,10 @@ Charged extracts:
 
 /obj/item/metroidcross/charged/blue
 	colour = "blue"
-	effect_desc = "Creates a potion that neuters the mutation chance of a slime, which passes on to new generations."
+	effect_desc = "Creates a potion that neuters the mutation chance of a metroid, which passes on to new generations."
 
 /obj/item/metroidcross/charged/blue/do_effect(mob/user)
-	new /obj/item/metroidpotion/slime/chargedstabilizer(get_turf(user))
+	new /obj/item/metroidpotion/metroid/chargedstabilizer(get_turf(user))
 	user.visible_message(SPAN_NOTICE("[src] distills into a potion!"))
 	..()
 
@@ -78,10 +78,10 @@ Charged extracts:
 
 /obj/item/metroidcross/charged/yellow
 	colour = "yellow"
-	effect_desc = "Creates a hypercharged slime cell battery, which has high capacity but takes longer to recharge."
+	effect_desc = "Creates a hypercharged metroid cell battery, which has high capacity but takes longer to recharge."
 
 /obj/item/metroidcross/charged/yellow/do_effect(mob/user)
-	new /obj/item/cell/high/slime_hypercharged(get_turf(user))
+	new /obj/item/cell/high/metroid_hypercharged(get_turf(user))
 	user.visible_message(SPAN_NOTICE("[src] sparks violently, and swells with electric power!"))
 	..()
 
@@ -105,7 +105,7 @@ Charged extracts:
 
 /obj/item/metroidcross/charged/silver
 	colour = "silver"
-	effect_desc = "Creates a slime cake and some drinks."
+	effect_desc = "Creates a metroid cake and some drinks."
 
 /obj/item/metroidcross/charged/silver/do_effect(mob/user)
 	new /obj/item/reagent_containers/food/sliceable/metroidcake(get_turf(user))
@@ -172,7 +172,7 @@ Charged extracts:
 
 /obj/item/metroidcross/charged/green
 	colour = "green"
-	effect_desc = "Lets you choose what slime species you want to be."
+	effect_desc = "Lets you choose what metroid species you want to be."
 
 /obj/item/metroidcross/charged/green/do_effect(mob/user)
 	var/mob/living/carbon/human/human_user = user
@@ -182,9 +182,9 @@ Charged extracts:
 	var/list/choice_list = list()
 	for(var/datum/species/species_type as anything in subtypesof(/datum/species/shapeshifter/promethean))
 		choice_list[initial(species_type.name)] = species_type
-	var/racechoice = tgui_input_list(human_user, "Choose your slime subspecies", "Slime Selection", sort_list(choice_list))
+	var/racechoice = tgui_input_list(human_user, "Choose your metroid subspecies", "metroid Selection", sort_list(choice_list))
 	if(isnull(racechoice))
-		to_chat(user, SPAN_NOTICE("You decide not to become a slime for now."))
+		to_chat(user, SPAN_NOTICE("You decide not to become a metroid for now."))
 		return
 	if(!CanUseTopic(user))
 		return
@@ -299,10 +299,10 @@ Charged extracts:
 
 /obj/item/metroidcross/charged/rainbow
 	colour = "rainbow"
-	effect_desc = "Produces three living slimes of random colors."
+	effect_desc = "Produces three living metroids of random colors."
 
 /obj/item/metroidcross/charged/rainbow/do_effect(mob/user)
-	user.visible_message(SPAN_WARNING("[src] swells and splits into three new slimes!"))
+	user.visible_message(SPAN_WARNING("[src] swells and splits into three new metroids!"))
 	for(var/i in 1 to 3)
 		var/mob/living/carbon/metroid/S = new(get_turf(user))
 		S.colour = S.random_colour()

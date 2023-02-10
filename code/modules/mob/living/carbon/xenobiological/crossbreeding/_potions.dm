@@ -1,7 +1,7 @@
 
 /obj/item/metroidpotion/enhancer/max
 	name = "extract maximizer"
-	desc = "An extremely potent chemical mix that will maximize a slime extract's uses."
+	desc = "An extremely potent chemical mix that will maximize a metroid extract's uses."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potpurple"
 
@@ -17,21 +17,21 @@
 		new target(get_turf(src))
 
 //Revival potion - Charged Green
-/obj/item/metroidpotion/slime_reviver
-	name = "slime revival potion"
-	desc = "Infused with plasma and compressed gel, this brings dead slimes back to life."
+/obj/item/metroidpotion/metroid_reviver
+	name = "metroid revival potion"
+	desc = "Infused with plasma and compressed gel, this brings dead metroids back to life."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potsilver"
 
-/obj/item/metroidpotion/slime_reviver/attack(mob/living/carbon/metroid/revive_target, mob/user)
+/obj/item/metroidpotion/metroid_reviver/attack(mob/living/carbon/metroid/revive_target, mob/user)
 	if(!ismetroid(revive_target))
-		to_chat(user, SPAN_WARNING("The potion only works on slimes!"))
+		to_chat(user, SPAN_WARNING("The potion only works on metroids!"))
 		return ..()
 	if(revive_target.stat != DEAD)
-		to_chat(user, SPAN_WARNING("The slime is still alive!"))
+		to_chat(user, SPAN_WARNING("The metroid is still alive!"))
 		return
 	if(revive_target.maxHealth <= 0)
-		to_chat(user, SPAN_WARNING("The slime is too unstable to return!"))
+		to_chat(user, SPAN_WARNING("The metroid is too unstable to return!"))
 	revive_target.revive()
 	revive_target.set_stat(CONSCIOUS)
 	revive_target.visible_message(SPAN_NOTICE("[revive_target] is filled with renewed vigor and blinks awake!"))
@@ -41,30 +41,30 @@
 	qdel(src)
 
 //Stabilizer potion - Charged Blue
-/obj/item/metroidpotion/slime/chargedstabilizer
-	name = "slime omnistabilizer"
-	desc = "An extremely potent chemical mix that will stop a slime from mutating completely."
+/obj/item/metroidpotion/metroid/chargedstabilizer
+	name = "metroid omnistabilizer"
+	desc = "An extremely potent chemical mix that will stop a metroid from mutating completely."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potcyan"
 
-/obj/item/metroidpotion/slime/chargedstabilizer/attack(mob/living/carbon/metroid/stabilize_target, mob/user)
+/obj/item/metroidpotion/metroid/chargedstabilizer/attack(mob/living/carbon/metroid/stabilize_target, mob/user)
 	if(!ismetroid(stabilize_target))
-		to_chat(user, SPAN_WARNING("The stabilizer only works on slimes!"))
+		to_chat(user, SPAN_WARNING("The stabilizer only works on metroids!"))
 		return ..()
 	if(stabilize_target.stat != DEAD)
-		to_chat(user, SPAN_WARNING("The slime is dead!"))
+		to_chat(user, SPAN_WARNING("The metroid is dead!"))
 		return
 	if(stabilize_target.mutation_chance == 0)
-		to_chat(user, SPAN_WARNING("The slime already has no chance of mutating!"))
+		to_chat(user, SPAN_WARNING("The metroid already has no chance of mutating!"))
 		return
 
-	to_chat(user, SPAN_NOTICE("You feed the slime the omnistabilizer. It will not mutate this cycle!"))
+	to_chat(user, SPAN_NOTICE("You feed the metroid the omnistabilizer. It will not mutate this cycle!"))
 	stabilize_target.mutation_chance = 0
 	qdel(src)
 
 //Pressure potion - Charged Dark Blue
 /obj/item/metroidpotion/spaceproof
-	name = "slime pressurization potion"
+	name = "metroid pressurization potion"
 	desc = "A potent chemical sealant that will render any article of clothing airtight. Has two uses."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potblue"

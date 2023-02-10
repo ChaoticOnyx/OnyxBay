@@ -1,7 +1,7 @@
 /*
 Reproductive extracts:
 	When fed three monkey cubes, produces between
-	1 and 4 normal slime extracts of the same colour.
+	1 and 4 normal metroid extracts of the same colour.
 */
 
 

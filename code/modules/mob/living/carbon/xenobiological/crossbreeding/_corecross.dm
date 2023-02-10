@@ -1,8 +1,8 @@
 //////////////////////////////////////////////
-//////////     SLIME CROSSBREEDS    //////////
+//////////     metroid CROSSBREEDS    //////////
 //////////////////////////////////////////////
 // A system of combining two extract types. //
-// Performed by feeding a slime 10 of an    //
+// Performed by feeding a metroid 10 of an    //
 // extract color.                           //
 //////////////////////////////////////////////
 /*==========================================*\
@@ -19,8 +19,8 @@ To add a crossbreed:
 	As a result, do not feel the need to
 	try to add all of the crossbred
 	effects at once, if you're here and
-	trying to make a new slime type. Just
-	get your slimetype in the codebase and
+	trying to make a new metroid type. Just
+	get your metroidtype in the codebase and
 	get around to the crossbreeds eventually!
 \*==========================================*/
 
@@ -43,7 +43,7 @@ To add a crossbreed:
 
 	applied_cores++
 
-	if(applied_cores>=SLIME_EXTRACT_CROSSING_REQUIRED)
+	if(applied_cores>=METROID_EXTRACT_CROSSING_REQUIRED)
 		spawn_corecross()
 	return
 
@@ -64,8 +64,8 @@ To add a crossbreed:
 	qdel(src)
 
 /obj/item/metroidcross //The base type for crossbred extracts. Mostly here for posterity, and to set base case things.
-	name = "crossbred slime extract"
-	desc = "An extremely potent slime extract, formed through crossbreeding."
+	name = "crossbred metroid extract"
+	desc = "An extremely potent metroid extract, formed through crossbreeding."
 	icon = 'icons/obj/xenobiology/metroidcrossing.dmi'
 	icon_state = "base"
 	var/colour = "null"

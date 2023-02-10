@@ -29,11 +29,11 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/grey
 	colour = "grey"
-	effect_desc = "Creates a hungry and speedy slime that will love you forever."
+	effect_desc = "Creates a hungry and speedy metroid that will love you forever."
 
 /obj/item/metroidcross/burning/grey/do_effect(mob/user)
 	var/mob/living/carbon/metroid/S = new(get_turf(user),"grey")
-	S.visible_message(SPAN_DANGER("A baby slime emerges from [src], and it nuzzles [user] before burbling hungrily!"))
+	S.visible_message(SPAN_DANGER("A baby metroid emerges from [src], and it nuzzles [user] before burbling hungrily!"))
 	S.Friends += user
 	S.bodytemperature = 400 + 0 CELSIUS //We gonna step on the gas.
 	S.nutrition=S.get_hunger_nutrition() //Tonight, we fight!
@@ -61,7 +61,7 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/purple/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] fills with a bubbling liquid!"))
-	//FIXME new /obj/item/metroidcrossbeaker/autoinjector/slimestimulant(get_turf(user))
+	//FIXME new /obj/item/metroidcrossbeaker/autoinjector/metroidstimulant(get_turf(user))
 	..()
 
 /obj/item/metroidcross/burning/blue
@@ -136,7 +136,7 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/silver
 	colour = "silver"
-	effect_desc = "Creates a few pieces of slime jelly laced food."
+	effect_desc = "Creates a few pieces of metroid jelly laced food."
 
 /obj/item/metroidcross/burning/silver/do_effect(mob/user)
 	var/amount = rand(3,6)
@@ -200,7 +200,7 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/red
 	colour = "red"
-	effect_desc = "Makes nearby slimes rabid, and they'll also attack their friends."
+	effect_desc = "Makes nearby metroids rabid, and they'll also attack their friends."
 
 /obj/item/metroidcross/burning/red/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] pulses a hazy red aura for a moment, which wraps around [user]!"))
@@ -313,12 +313,12 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/black
 	colour = "black"
-	effect_desc = "Transforms the user into a slime. They can transform back at will and do not lose any items."
+	effect_desc = "Transforms the user into a metroid. They can transform back at will and do not lose any items."
 
 /obj/item/metroidcross/burning/black/do_effect(mob/user)
 	if(!isliving(user))
 		return
-	user.visible_message(SPAN_DANGER("[src] absorbs [user], transforming [user] into a slime!"))
+	user.visible_message(SPAN_DANGER("[src] absorbs [user], transforming [user] into a metroid!"))
 	var/datum/spell/targeted/shapeshift/metroid_form/transform = new()
 	transform.cast(user)
 	return ..()

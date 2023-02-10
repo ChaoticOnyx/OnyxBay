@@ -199,11 +199,11 @@ Regenerative extracts:
 
 /obj/item/metroidcross/regenerative/green
 	colour = "green"
-	effect_desc = "Fully heals the target and changes the spieces or color of a slime or jellyperson."
+	effect_desc = "Fully heals the target and changes the spieces or color of a metroid or jellyperson."
 
 /obj/item/metroidcross/regenerative/green/core_effect(mob/living/target, mob/user)
 	/*FIXME
-	if(isslime(target))
+	if(ismetroid(target))
 		target.visible_message(SPAN_WARNING("The [target] suddenly changes color!"))
 		var/mob/living/carbon/metroid/S = target
 		S.random_colour()
@@ -258,7 +258,7 @@ Regenerative extracts:
 
 /obj/item/metroidcross/regenerative/black
 	colour = "black"
-	effect_desc = "Fully heals the target and creates an imperfect duplicate of them made of slime, that fakes their death."
+	effect_desc = "Fully heals the target and creates an imperfect duplicate of them made of metroid, that fakes their death."
 
 /obj/item/metroidcross/regenerative/black/core_effect_before(mob/living/target, mob/user)
 	var/dummytype = target.type
@@ -293,11 +293,11 @@ Regenerative extracts:
 	effect_desc = "Fully heals the target and boosts their armor."
 
 /obj/item/metroidcross/regenerative/adamantine/core_effect(mob/living/target, mob/user) //WIP - Find out why this doesn't work.
-	//FIXME target.apply_status_effect(/datum/status_effect/slimeskin)
+	//FIXME target.apply_status_effect(/datum/modifier/status_effect/metroidskin)
 
 /obj/item/metroidcross/regenerative/rainbow
 	colour = "rainbow"
 	effect_desc = "Fully heals the target and temporarily makes them immortal, but pacifistic."
 
 /obj/item/metroidcross/regenerative/rainbow/core_effect(mob/living/target, mob/user)
-	//FIXME target.apply_status_effect(/datum/status_effect/rainbow_protection)
+	//FIXME target.apply_status_effect(/datum/modifier/status_effect/rainbow_protection)

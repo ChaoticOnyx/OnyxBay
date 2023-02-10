@@ -99,7 +99,7 @@
 		user.heal_overall_damage(min(30, user.getBruteLoss()), min(30, user.getFireLoss()))
 
 
-/obj/item/metroidcrossbeaker/autoinjector/metroidjelly //Primarily for slimepeople, but you do you.
+/obj/item/metroidcrossbeaker/autoinjector/metroidjelly //Primarily for metroidpeople, but you do you.
 	self_use_only = TRUE
 	ignore_flags = TRUE
 	name = "metroid jelly bubble"
