@@ -140,7 +140,7 @@
 	desc = "Changes the audibility depending on the volume of the music"
 
 	var/volume_status = LOW_VOLUME
-  
+
  /datum/modifier/trait/pacifism
 	name = "Pacifism"
 	desc = "You can't attack!"
@@ -148,6 +148,7 @@
 /datum/modifier/trait/pacifism/on_applied()
 	holder.a_intent_change(I_HELP)
 
+//FIXME
 /datum/modifier/trait/cold_resist
 
 /datum/modifier/trait/noslip
