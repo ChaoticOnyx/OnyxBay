@@ -63,7 +63,10 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 	var/T = 0
 	for(var/obj/item/reagent_containers/vessel/G in component_parts)
 		T += G.reagents.maximum_volume
-	create_reagents(T)
+	if(reagents)
+		reagents.maximum_volume = T
+	else
+		create_reagents(T)
 	max_material_storage = 0
 	for(var/obj/item/stock_parts/matter_bin/M in component_parts)
 		max_material_storage += M.rating * 75000
