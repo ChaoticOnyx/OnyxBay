@@ -262,7 +262,7 @@ Chilling extracts:
 
 /obj/item/metroidcross/chilling/pink/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] cracks like an egg, and an adorable puppy comes tumbling out!"))
-	//FIXME new /mob/living/simple_animal/pet/dog/corgi/puppy/metroid(get_turf(user))
+	new /mob/living/simple_animal/corgi/puppy/metroid(get_turf(user))
 	..()
 
 /obj/item/metroidcross/chilling/gold
@@ -321,9 +321,9 @@ Chilling extracts:
 
 /obj/item/metroidcross/chilling/rainbow/do_effect(mob/user)
 	var/area/area = get_area(user)
-	/* FIXME if(area.outdoors)
+	if(area.environment_type==ENVIRONMENT_OUTSIDE)
 		to_chat(user, SPAN_WARNING("[src] can't affect such a large area."))
-		return*/
+		return
 	user.visible_message(SPAN_WARNING("[src] reflects an array of dazzling colors and light, energy rushing to nearby doors!"))
 	for(var/obj/machinery/door/airlock/door in area)
 		//FIXME new /obj/effect/forcefield/metroidwall/rainbow(door.loc)

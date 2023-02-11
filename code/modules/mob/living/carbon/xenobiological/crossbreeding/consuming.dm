@@ -71,15 +71,12 @@ Consuming extracts:
 			M.visible_message(SPAN_DANGER("[user] forces [M] to eat [src]!"), SPAN_WARNING("[user] forces you to eat [src]."))
 	if(fed)
 		var/mob/living/carbon/human/H = M
-	/*FIXME
-		if(!istype(H) || !HAS_TRAIT(H, TRAIT_AGEUSIA))
-			to_chat(M, SPAN_NOTICE("Tastes like [taste]."))
 		playsound(get_turf(M), 'sound/items/eatfood.ogg', 20, TRUE)
 		if(nutrition)
 			M.reagents.add_reagent(/datum/reagent/nutriment,nutrition)
 		do_effect(M, user)
 		qdel(src)
-		return*/
+		return
 	..()
 
 /obj/item/metroidcross/consuming/grey
@@ -195,8 +192,8 @@ Consuming extracts:
 	taste = "mint and bitter cold"
 
 /obj/item/metroid_cookie/darkblue/do_effect(mob/living/M, mob/user)
-	//FIXME M.adjust_bodytemperature(-110)
-	//FIXME M.extinguish_mob()
+	M.bodytemperature-=110
+	M.ExtinguishMob()
 
 /obj/item/metroidcross/consuming/silver
 	colour = "silver"
@@ -225,30 +222,15 @@ Consuming extracts:
 	taste = "sugar and starlight"
 
 /obj/item/metroid_cookie/bluespace/do_effect(mob/living/M, mob/user)
-	var/list/L = get_area_turfs(get_area(get_turf(M)))
-	var/turf/target
-	/*FIXME -
-	while (L.len && !target)
-		var/I = rand(1, L.len)
-		var/turf/T = L[I]
-		if (is_centcom_level(T.z))
-			L.Cut(I,I+1)
-			continue
-		if(!T.density)
-			var/clear = TRUE
-			for(var/obj/O in T)
-				if(O.density)
-					clear = FALSE
-					break
-			if(clear)
-				target = T
-		if (!target)
-			L.Cut(I,I+1)
+	var/turf/target = pick(get_area_turfs(get_area(get_turf(M)),list(/proc/not_turf_contains_dense_objects)))
 
 	if(target)
-		do_teleport(M, target, 0, asoundin = 'sound/effects/phasein.ogg', channel = TELEPORT_CHANNEL_BLUESPACE)
-		new /obj/effect/particle_effect/sparks(get_turf(M))
-		playsound(get_turf(M), SFX_SPARKS, 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)*/
+		var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
+		sparks.set_up(5, 0, loc)
+		sparks.start()
+		playsound(src,'sound/effects/phasein.ogg', 50, TRUE)
+		do_teleport(M, target, 0)
+		playsound(get_turf(M), GET_SFX(SFX_SPARK_MEDIUM), 50, TRUE)
 
 /obj/item/metroidcross/consuming/sepia
 	colour = "sepia"
@@ -322,7 +304,7 @@ Consuming extracts:
 	taste += tastemessage
 
 /obj/item/metroid_cookie/pyrite/do_effect(mob/living/M, mob/user)
-	//FIXME M.add_atom_colour(colour,WASHABLE_COLOUR_PRIORITY)
+	M.color = colour
 
 /obj/item/metroidcross/consuming/red
 	colour = "red"
@@ -390,7 +372,7 @@ Consuming extracts:
 	M.drop_active_hand()
 	var/newcoin = /obj/item/material/coin/gold
 	var/obj/item/material/coin/C = new newcoin(get_turf(M))
-	//FIXME playsound(get_turf(C), 'sound/items/coinflip.ogg', 50, TRUE)
+	playsound(get_turf(C), 'sound/items/coinflip.ogg', 50, TRUE)
 	M.put_in_any_hand_if_possible(C)
 
 /obj/item/metroidcross/consuming/oil

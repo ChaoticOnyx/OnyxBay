@@ -137,3 +137,11 @@
 
 /datum/modifier/trait/pacifism/on_applied()
 	holder.a_intent_change(I_HELP)
+
+/datum/modifier/trait/cold_resist
+
+/datum/modifier/trait/noslip
+
+/datum/modifier/trait/toxinlover
+
+/datum/modifier/trait/resist_heat_hands

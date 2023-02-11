@@ -85,7 +85,7 @@ Industrial extracts:
 	colour = "metal"
 	effect_desc = "Produces iron sheets."
 	plasmarequired = 3
-	itempath = /obj/item/stack/material/iron/ten
+	itempath = /obj/item/stack/material/steel/ten
 
 /obj/item/metroidcross/industrial/yellow
 	colour = "yellow"
@@ -202,9 +202,9 @@ Industrial extracts:
 
 /obj/item/metroidcross/industrial/adamantine
 	colour = "adamantine"
-	effect_desc = "Produces sheets of platinum!."
+	effect_desc = "Produces sheet of platinum!."
 	plasmarequired = 10
-	itempath = /obj/item/stack/sheet/mineral/platinum
+	itempath = /obj/item/stack/material/platinum
 
 /obj/item/metroidcross/industrial/rainbow
 	colour = "rainbow"

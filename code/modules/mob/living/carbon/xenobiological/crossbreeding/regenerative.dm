@@ -226,7 +226,7 @@ Regenerative extracts:
 /obj/item/metroidcross/regenerative/gold/core_effect(mob/living/target, mob/user)
 	var/newcoin = pick(/obj/item/material/coin/silver, /obj/item/material/coin/iron, /obj/item/material/coin/gold, /obj/item/material/coin/diamond, /obj/item/material/coin/plasma, /obj/item/material/coin/uranium)
 	var/obj/item/material/coin/C = new newcoin(target.loc)
-	//FIXME playsound(C, 'sound/items/coinflip.ogg', 50, TRUE)
+	playsound(C, 'sound/items/coinflip.ogg', 50, TRUE)
 	target.put_in_any_hand_if_possible(C)
 
 /obj/item/metroidcross/regenerative/oil

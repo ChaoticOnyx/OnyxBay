@@ -17,3 +17,4 @@
 #define SIGNAL_ROUNDSTART "!roundstart"
 
 #define SIGNAL_MOB_RESIST "!mob_resist"
+#define SIGNAL_MOB_GRAB_SET_STATE "!mob_grab_set_state"

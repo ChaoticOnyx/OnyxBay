@@ -2,7 +2,7 @@
 /obj/item/cell/high/metroid_hypercharged
 	name = "hypercharged metroid core"
 	desc = "A charged yellow metroid extract, infused with plasma. It almost hurts to touch."
-	icon = 'icons/mob/simple/metroids.dmi'
+	icon = 'icons/mob/metroids.dmi'
 	icon_state = "yellow metroid extract"
 	maxcharge = 3000
 
@@ -54,12 +54,12 @@
 
 /obj/structure/ice_stasis/Initialize(mapload)
 	. = ..()
-	playsound(src, 'sound/magic/ethereal_exit.ogg', 50, TRUE)
+	playsound(src, 'sound/effects/ethereal_exit.ogg', 50, TRUE)
 
 /obj/structure/ice_stasis/Destroy()
 	for(var/atom/movable/M in contents)
 		M.forceMove(loc)
-	playsound(src, 'sound/effects/glassbr3.ogg', 50, TRUE)
+	playsound(src, 'sound/effects/materials/glass/glassbr.ogg', 50, TRUE)
 	return ..()
 
 /obj/screen/movable/alert/status_effect/freon/stasis

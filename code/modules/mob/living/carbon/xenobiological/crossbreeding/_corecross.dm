@@ -50,7 +50,7 @@ To add a crossbreed:
 /mob/living/carbon/metroid/proc/spawn_corecross()
 	var/static/list/crossbreeds = subtypesof(/obj/item/metroidcross)
 	visible_message(SPAN_DANGER("[src] shudders, its mutated core consuming the rest of its body!"))
-	//FIXME playsound(src, 'sound/magic/smoke.ogg', 50, TRUE)
+	playsound(src, 'sound/effects/smoke.ogg', 50, TRUE)
 	var/crosspath
 	for(var/X in crossbreeds)
 		var/obj/item/metroidcross/S = X

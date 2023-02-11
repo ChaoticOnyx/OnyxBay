@@ -407,8 +407,9 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 /proc/is_pacifist(A)
 	if(istype(A, /mob/living/carbon))
 		var/mob/living/carbon/C = A
-		return C.has_modifier_of_type(TRAIT_PACIFISM)
+		return HAS_TRAIT(C, TRAIT_PACIFISM)
 	return 0
+
 /proc/broadcast_security_hud_message(message, broadcast_source)
 	broadcast_hud_message(message, broadcast_source, GLOB.sec_hud_users, /obj/item/clothing/glasses/hud)
 

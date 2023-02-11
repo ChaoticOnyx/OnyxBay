@@ -100,7 +100,7 @@
 /obj/item/metroidpotion/lovepotion
 	name = "love potion"
 	desc = "A pink chemical mix thought to inspire feelings of love."
-	icon = 'icons/obj/medical/chemical.dmi'
+	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potpink"
 
 /obj/item/metroidpotion/lovepotion/attack(mob/living/love_target, mob/user)

@@ -197,6 +197,9 @@
 	if(on_fire)
 		msg += SPAN("warning", "[T.He] [T.is] on fire!.\n")
 
+	for(var/datum/modifier/M in modifiers)
+		msg += "[M._examine_text()]\n"
+
 	var/ssd_msg = species.get_ssd(src)
 	if(ssd_msg && (!should_have_organ(BP_BRAIN) || has_brain()) && stat != DEAD)
 		if(!key)
