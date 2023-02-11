@@ -25,6 +25,7 @@
 	pass_flags = PASS_FLAG_TABLE
 	melee_damage_lower = 2.5
 	melee_damage_upper = 5
+	meat_type = /obj/item/reagent_containers/food/meat/xeno
 
 	min_gas = null
 	max_gas = null
