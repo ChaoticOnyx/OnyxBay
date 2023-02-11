@@ -1,3 +1,19 @@
+//// PROCS
+
+/proc/proc_call_select_target()
+	var/target = null
+	switch(input("Proc owned by...", "Owner", null) as null|anything in list("Obj", "Mob", "Area or Turf", "Client"))
+		if("Obj")
+			target = input("Select target:", "Target") as null|obj in world
+		if("Mob")
+			target = input("Select target:", "Target", usr) as null|mob in world
+		if("Area or Turf")
+			target = input("Select target:", "Target", get_turf(usr)) as null|area|turf in world
+		if("Client")
+			target = input("Select target:", "Target", usr.client) as null|anything in GLOB.clients
+		else
+			return
+	return target
 //// VERBS
 
 // standard callproc, select target
@@ -14,24 +30,14 @@
 	switch(alert("Proc owned by something?",, "Yes", "No", "Cancel"))
 		if("Yes")
 			targetselected=1
-			switch(input("Proc owned by...", "Owner", null) as null|anything in list("Obj", "Mob", "Area or Turf", "Client"))
-				if("Obj")
-					target = input("Select target:", "Target") as null|obj in world
-				if("Mob")
-					target = input("Select target:", "Target", usr) as null|mob in world
-				if("Area or Turf")
-					target = input("Select target:", "Target", get_turf(usr)) as null|area|turf in world
-				if("Client")
-					target = input("Select target:", "Target", usr.client) as null|anything in GLOB.clients
-				else
-					return
+			target = proc_call_select_target()
 			if(!target)
 				to_chat(usr, "Proc call cancelled.")
 				return
 		if("Cancel")
 			return
 		if("No")
-			; // do nothing
+			pass()
 
 	callproc_targetpicked(targetselected, target)
 
@@ -98,16 +104,21 @@
 			to_chat(usr, "\The [target] has no call [procname]()")
 			clear()
 			return
+	else
+		if(!text2path(procname))
+			to_chat(usr, "The proc called [procname] doesn't appears to exist")
+			clear()
+			return
 
 	arguments = list()
-	do_args()
+	return do_args()
 
 /datum/callproc/proc/do_args()
 	switch(get_args())
 		if(WAITING)
 			return
 		if(DONE)
-			finalise()
+			. = finalise()
 	clear()
 
 /datum/callproc/proc/get_args()
@@ -118,9 +129,9 @@
 		if(hastarget && !target)
 			to_chat(usr, "Your callproc target no longer exists.")
 			return CANCEL
-		switch(input("Type of [arguments.len+1]\th variable", "argument [arguments.len+1]") as null|anything in list(
+		switch(input("Type of [length(arguments)+1]\th variable", "argument [length(arguments)+1]") as null|anything in list(
 				"finished", "null", "text", "num", "type", "obj reference", "mob reference",
-				"area/turf reference", "icon", "file", "client", "mob's area", "marked datum", "click on atom"))
+				"area/turf reference", "icon", "file", "client", "mob's area", "marked datum", "click on atom", "function result"))
 			if(null)
 				return CANCEL
 
@@ -130,16 +141,34 @@
 			if("null")
 				current = null
 
+			if("function result")
+				var/target = null
+				var/targetselected = FALSE
+				switch(alert("Proc owned by something?",, "Yes", "No", "Cancel"))
+					if("Yes")
+						targetselected = TRUE
+						target = proc_call_select_target()
+						if(!target)
+							to_chat(usr, "Proc call cancelled.")
+							return CANCEL
+					if("Cancel")
+						return CANCEL
+					if("No")
+						pass()
+				var/datum/callproc/CP = new(C)
+				current = CP.callproc(targetselected, target)
+				if(isnull(current)) return CANCEL
+
 			if("text")
-				current = input("Enter text for [arguments.len+1]\th argument") as null|text
+				current = input("Enter text for [length(arguments)+1]\th argument") as null|text
 				if(isnull(current)) return CANCEL
 
 			if("num")
-				current = input("Enter number for [arguments.len+1]\th argument") as null|num
+				current = input("Enter number for [length(arguments)+1]\th argument") as null|num
 				if(isnull(current)) return CANCEL
 
 			if("type")
-				var/incurrent = input("Input type for [arguments.len+1]\th argument") as text
+				var/incurrent = input("Input type for [length(arguments)+1]\th argument") as text
 				current = text2path(incurrent)
 				if(!ispath(current))
 					to_chat(usr, "Your type doesn't exist - [incurrent]")
@@ -147,33 +176,33 @@
 				if(isnull(current)) return CANCEL
 
 			if("obj reference")
-				current = input("Select object for [arguments.len+1]\th argument") as null|obj in world
+				current = input("Select object for [length(arguments)+1]\th argument") as null|obj in world
 				if(isnull(current)) return CANCEL
 
 			if("mob reference")
-				current = input("Select mob for [arguments.len+1]\th argument") as null|mob in world
+				current = input("Select mob for [length(arguments)+1]\th argument") as null|mob in world
 				if(isnull(current)) return CANCEL
 
 			if("area/turf reference")
-				current = input("Select area/turf for [arguments.len+1]\th argument") as null|area|turf in world
+				current = input("Select area/turf for [length(arguments)+1]\th argument") as null|area|turf in world
 				if(isnull(current)) return CANCEL
 
 			if("icon")
-				current = input("Provide icon for [arguments.len+1]\th argument") as null|icon
+				current = input("Provide icon for [length(arguments)+1]\th argument") as null|icon
 				if(isnull(current)) return CANCEL
 
 			if("client")
-				current = input("Select client for [arguments.len+1]\th argument") as null|anything in GLOB.clients
+				current = input("Select client for [length(arguments)+1]\th argument") as null|anything in GLOB.clients
 				if(isnull(current)) return CANCEL
 
 			if("mob's area")
-				var/mob/M = input("Select mob to take area for [arguments.len+1]\th argument") as null|mob in world
+				var/mob/M = input("Select mob to take area for [length(arguments)+1]\th argument") as null|mob in world
 				if(!M) return
 				current = get_area(M)
 				if(!current)
 					switch(alert("\The [M] appears to not have an area; do you want to pass null instead?",, "Yes", "Cancel"))
 						if("Yes")
-							; // do nothing
+							pass()
 						if("Cancel")
 							return CANCEL
 
@@ -182,7 +211,7 @@
 				if(!current)
 					switch(alert("You do not currently have a marked datum; do you want to pass null instead?",, "Yes", "Cancel"))
 						if("Yes")
-							; // do nothing
+							pass()
 						if("Cancel")
 							return CANCEL
 
@@ -208,7 +237,7 @@
 
 /client/Click(atom/A)
 	if(holder && holder.callproc && holder.callproc.waiting_for_click)
-		if(alert("Do you want to select \the [A] as the [holder.callproc.arguments.len+1]\th argument?",, "Yes", "No") == "Yes")
+		if(alert("Do you want to select \the [A] as the [length(holder.callproc.arguments)+1]\th argument?",, "Yes", "No") == "Yes")
 			holder.callproc.arguments += A
 
 		holder.callproc.waiting_for_click = 0
@@ -221,7 +250,7 @@
 	var/returnval
 
 	if(is_proc_protected(procname))
-		log_admin("[key_name(usr)] failed to call forbidden [procname]() with [arguments.len ? "the arguments [json_encode(arguments)]" : "no arguments"].")
+		log_admin("[key_name(usr)] failed to call forbidden [procname]() with [length(arguments) ? "the arguments [json_encode(arguments)]" : "no arguments"].")
 		to_chat(usr, SPAN_WARNING("Failed to call forbidden proc!"))
 		return
 
@@ -229,17 +258,18 @@
 		if(!target)
 			to_chat(usr, "Your callproc target no longer exists.")
 			return
-		log_admin("[key_name(usr)] called [target]'s [procname]() with [arguments.len ? "the arguments [json_encode(arguments)]" : "no arguments"].")
-		if(arguments.len)
+		log_admin("[key_name(usr)] called [target]'s [procname]() with [length(arguments) ? "the arguments [json_encode(arguments)]" : "no arguments"].")
+		if(length(arguments))
 			returnval = call(target, procname)(arglist(arguments))
 		else
 			returnval = call(target, procname)()
 	else
-		log_admin("[key_name(usr)] called [procname]() with [arguments.len ? "the arguments [json_encode(arguments)]" : "no arguments"].")
+		log_admin("[key_name(usr)] called [procname]() with [length(arguments) ? "the arguments [json_encode(arguments)]" : "no arguments"].")
 		returnval = call(procname)(arglist(arguments))
 
 	to_chat(usr, SPAN_NOTICE("[procname]() returned: [json_encode(returnval)]"))
 	feedback_add_details("admin_verb","APC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	return returnval
 
 #undef CANCEL
 #undef WAITING

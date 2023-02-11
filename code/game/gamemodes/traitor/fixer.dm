@@ -3,7 +3,7 @@
 	return TRUE
 
 /datum/contract_fixer
-	var/name = "\The Syndicate Operations System"
+	var/name = "The Syndicate Operations System"
 	var/list/datum/contract_organization/organizations = list()
 	var/list/organizations_by_name = list()
 	var/enable_roundstart_proc = TRUE // set FALSE when roundstart proc replaced with storyteller

@@ -126,6 +126,8 @@
 		src.connected = null
 	return
 
+/obj/structure/morgue/allow_drop()
+	return TRUE
 
 /*
  * Morgue tray

@@ -102,6 +102,7 @@
 	alien_number++ //Keep track of how many aliens we've had so far.
 	H.real_name = get_random_name()
 	H.SetName(H.real_name)
+	H.add_modifier(/datum/modifier/trait/vent_breaker)
 	..()
 	if(H.mind && !GLOB.xenomorphs.is_antagonist(H.mind))
 		GLOB.xenomorphs.add_antagonist(H.mind, 1)

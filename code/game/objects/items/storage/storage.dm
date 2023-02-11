@@ -182,7 +182,7 @@
 		return 0
 
 	total_storage_space += storage_space_used() //Adds up the combined w_classes which will be in the storage item if the item is added to it.
-	if(total_storage_space > max_storage_space)
+	if(total_storage_space > max_storage_space && !(length(override_w_class) && is_type_in_list(W, override_w_class)))
 		if(!stop_messages)
 			to_chat(user, "<span class='notice'>\The [src] is too full, make some space.</span>")
 		return 0

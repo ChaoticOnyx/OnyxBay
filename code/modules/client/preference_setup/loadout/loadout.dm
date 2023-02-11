@@ -239,7 +239,7 @@ var/list/hash_to_gear = list()
 		var/display_class
 		var/discountText
 		if(ticked && !gear_allowed_to_equip(G, user))
-			toggle_gear(G)
+			pref.gear_list[pref.gear_slot] -= G.display_name
 			ticked = FALSE
 		if(G != selected_gear)
 			if(ticked)
@@ -292,6 +292,8 @@ var/list/hash_to_gear = list()
 				I.Blend(gear_virtual_item.color, ICON_MULTIPLY)
 
 		I.Scale(I.Width() * 2, I.Height() * 2)
+
+		QDEL_NULL(gear_virtual_item)
 
 		. += "<td style='width: 80%;' class='block'>"
 

@@ -8,6 +8,11 @@
 	var/product_type = "undefined"
 	var/charges = 0
 
+/datum/rig_timing
+	var/full_name = "undefined"
+	var/short_name = "undef"
+	var/timing = 0
+
 /obj/item/rig_module
 	name = "powersuit upgrade"
 	desc = "It looks pretty sciency."
@@ -40,6 +45,9 @@
 	var/list/charges                    // Associative list of charge types and remaining numbers.
 	var/charge_selected                 // Currently selected option used for charge dispensing.
 
+	var/list/timings 					// Associative list of timings.
+	var/timing_selected					// Timing options for grenade launchers (in seconds).
+
 	// Icons.
 	var/suit_overlay
 	var/suit_overlay_active             // If set, drawn over icon and mob when effect is active.
@@ -65,7 +73,7 @@
 		if(2)
 			. += "\nIt is almost completely destroyed."
 
-/obj/item/rig_module/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/rig_module/attackby(obj/item/W, mob/user)
 
 	if(istype(W,/obj/item/stack/nanopaste))
 
@@ -129,11 +137,26 @@
 
 		charges = processed_charges
 
+	if(length(timings))
+		var/list/processed_timings = list()
+		for(var/list/timing in timings)
+			var/datum/rig_timing/timing_dat = new
+
+			timing_dat.full_name 	= timing[1]
+			timing_dat.short_name	= timing[2]
+			timing_dat.timing 		= timing[3]
+
+			if(!timing_selected) timing_selected = timing_dat.short_name
+			processed_timings[timing_dat.short_name] = timing_dat
+
+		timings = processed_timings
+
 	stat_modules += new /stat_rig_module/activate(src)
 	stat_modules += new /stat_rig_module/deactivate(src)
 	stat_modules += new /stat_rig_module/engage(src)
 	stat_modules += new /stat_rig_module/select(src)
 	stat_modules += new /stat_rig_module/charge(src)
+	stat_modules += new /stat_rig_module/timing(src)
 
 /obj/item/rig_module/Destroy()
 	deactivate()
@@ -342,3 +365,24 @@
 		name = "[charge.display_name] ([charge.charges]C) - Change"
 		return 1
 	return 0
+
+/stat_rig_module/timing/New()
+	..()
+	name = "Change Timing"
+	module_mode = "select_timing"
+
+/stat_rig_module/timing/AddHref(list/href_list)
+	var/timing_index = module.timings.Find(module.timing_selected)
+	if(!timing_index)
+		timing_index = 0
+	else
+		timing_index = (timing_index == module.timings.len) ? 1 : (timing_index + 1)
+
+	href_list["timing"] = module.timings[timing_index]
+
+/stat_rig_module/timing/CanUse()
+	if(length(module.timings))
+		var/datum/rig_timing/timing = module.timings[module.timing_selected]
+		name = "Current grenade timing is: [timing.full_name] - Change"
+		return TRUE
+	return FALSE

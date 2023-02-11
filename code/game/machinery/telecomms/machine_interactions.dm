@@ -15,7 +15,7 @@
 	var/construct_op = 0
 
 
-/obj/machinery/telecomms/attackby(obj/item/P as obj, mob/user as mob)
+/obj/machinery/telecomms/attackby(obj/item/P, mob/user)
 
 	// Using a multitool lets you access the receiver's interface
 	if(isMultitool(P))
@@ -89,7 +89,7 @@
 							for(var/i = 1, i <= C.req_components[I], i++)
 								var/obj/item/s = new I
 								s.loc = user.loc
-								if(istype(P, /obj/item/stack/cable_coil))
+								if(isCoil(P))
 									var/obj/item/stack/cable_coil/A = P
 									A.amount = 1
 
@@ -102,10 +102,10 @@
 					qdel(src)
 
 
-/obj/machinery/telecomms/attack_ai(mob/user as mob)
+/obj/machinery/telecomms/attack_ai(mob/user)
 	attack_hand(user)
 
-/obj/machinery/telecomms/attack_hand(mob/user as mob)
+/obj/machinery/telecomms/attack_hand(mob/user)
 
 	if(stat & (BROKEN|NOPOWER))
 		return
@@ -193,23 +193,18 @@
 
 // Returns a multitool from a user depending on their mobtype.
 
-/obj/machinery/telecomms/proc/get_multitool(mob/user as mob)
+/obj/machinery/telecomms/proc/get_multitool(mob/user)
 
 	var/obj/item/device/multitool/P = null
 	// Let's double check
 	if(!issilicon(user))
 		if(isMultitool(user.get_active_hand()))
 			P = user.get_active_hand()
-		else if(istype(user.get_active_hand(), /obj/item/combotool))
-			var/obj/item/combotool/tool = user.get_active_hand()
-			P = tool.tool_u
-			if(!isMultitool(P))
-				P = null
 	else if(isAI(user))
 		var/mob/living/silicon/ai/U = user
 		P = U.aiMulti
 	else if(isrobot(user) && in_range(user, src))
-		if(istype(user.get_active_hand(), /obj/item/device/multitool))
+		if(isMultitool(user.get_active_hand()))
 			P = user.get_active_hand()
 	return P
 

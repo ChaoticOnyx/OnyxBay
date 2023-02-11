@@ -12,8 +12,6 @@
 #define MATRIX_Taj_Colorblind   list(0.40,	0.20,	0.40,	0.40,	0.60,	0,		0.20,	0.20,	0.60)
 
 
-
-
 /datum/modifier/trait
 	flags = MODIFIER_GENETIC	// We want traits to persist if the person gets cloned.
 
@@ -130,8 +128,20 @@
 
 	lisping = TRUE
 
+/datum/modifier/trait/vent_breaker
+	name = "Vent Breaker"
+	desc = "Allows to break welded vents."
+	var/ignore_size_restrictions = FALSE
+	hidden = TRUE
 
-/datum/modifier/trait/pacifism
+//Responsible for processing the audibility of sounds depending on the volume of the headphones
+/datum/modifier/trait/headphones_volume
+	name = "Headphones Volume"
+	desc = "Changes the audibility depending on the volume of the music"
+
+	var/volume_status = LOW_VOLUME
+  
+ /datum/modifier/trait/pacifism
 	name = "Pacifism"
 	desc = "You can't attack!"
 

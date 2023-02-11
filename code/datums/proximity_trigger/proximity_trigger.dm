@@ -35,6 +35,9 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 /datum/proximity_trigger/line
 	turf_selection = /decl/turf_selection/line
 
+/datum/proximity_trigger/line/transparent
+	turf_selection = /decl/turf_selection/line/transparent
+
 /datum/proximity_trigger/square
 	turf_selection = /decl/turf_selection/square
 
@@ -63,7 +66,7 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 /datum/proximity_trigger/Destroy()
 	if(ismovable(holder))
 		unregister_signal(holder, SIGNAL_MOVED)
-	
+
 	unregister_signal(holder, SIGNAL_DIR_SET, /datum/proximity_trigger/proc/register_turfs)
 
 	unregister_turfs()
@@ -117,7 +120,7 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 	for(var/t in (seen_turfs_ - new_seen_turfs_))
 		unregister_signal(t, SIGNAL_ENTERED)
 	for(var/t in (new_seen_turfs_ - seen_turfs_))
-		unregister_signal(t, SIGNAL_ENTERED)
+		register_signal(t, SIGNAL_ENTERED, /datum/proximity_trigger/proc/on_turf_entered)
 
 	seen_turfs_ = new_seen_turfs_
 

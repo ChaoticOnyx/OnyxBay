@@ -91,7 +91,7 @@
 				             	 SPAN("notice", "You slice apart \the [src]!"))
 			dismantle()
 
-	else if(istype(W, /obj/item/pickaxe/diamonddrill))
+	else if(istype(W, /obj/item/pickaxe/drill/diamonddrill))
 		user.visible_message(SPAN("notice", "[user] drills through \the [src]!"), \
 				             SPAN("notice", "You drill through \the [src]!"))
 		dismantle()
@@ -133,7 +133,7 @@
 			anchored = 0
 			cover = 40
 
-	else if(istype(W,/obj/item/weldingtool))
+	else if(isWelder(W))
 		var/obj/item/weldingtool/WT = W
 		if(!WT.isOn())
 			return
@@ -274,7 +274,6 @@
 			if (prob(5))
 				dismantle()
 			return
-		else
 	return
 
 /obj/structure/girder/cult
@@ -309,7 +308,7 @@
 				             	 SPAN("notice", "You slice apart \the [src]!"))
 		dismantle()
 
-	else if(istype(W, /obj/item/pickaxe/diamonddrill))
+	else if(istype(W, /obj/item/pickaxe/drill/diamonddrill))
 		user.visible_message(SPAN("notice", "[user] drills through \the [src]!"), \
 				             SPAN("notice", "You drill through \the [src]!"))
 		new /obj/item/remains/human(get_turf(src))

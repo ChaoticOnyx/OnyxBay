@@ -33,7 +33,7 @@
 	id = "drill_diamond"
 	req_tech = list(TECH_MATERIAL = 6, TECH_POWER = 4, TECH_ENGINEERING = 4)
 	materials = list(MATERIAL_STEEL = 3000, MATERIAL_GLASS = 1000, MATERIAL_DIAMOND = 2000)
-	build_path = /obj/item/pickaxe/diamonddrill
+	build_path = /obj/item/pickaxe/drill/diamonddrill
 	sort_string = "KAAAE"
 
 /datum/design/item/mining/depth_scanner

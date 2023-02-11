@@ -15,37 +15,21 @@
 	. = max(1 HOUR, .)
 
 /datum/event/communications_blackout/proc/announce()
-	if(GLOB.using_map.type == /datum/map/polar)
-		var/alert = "Ionospheric anomalies detected. Temporary telecommunication failure imminent. Please contact you*%fj00)`5vc-BZZT"
+	var/alert = pick("Ionospheric anomalies detected. Temporary telecommunication failure imminent. Please contact you*%fj00)`5vc-BZZT",
+					"Ionospheric anomalies detected. Temporary telecommunication failu*3mga;b4;'1v¬-BZZZT",
+					"Ionospheric anomalies detected. Temporary telec#MCi46:5.;@63-BZZZZT",
+					"Ionospheric anomalies dete'fZ\\kg5_0-BZZZZZT",
+					"Ionospheri:%£ MCayj^j<.3-BZZZZZZT",
+					"#4nd%;f4y6,>£%-BZZZZZZZT")
 
-		for(var/mob/living/silicon/ai/A in GLOB.player_list)	//AIs are always aware of communication blackouts.
-			if(A.z in affecting_z)
-				to_chat(A, "<br>")
-				to_chat(A, "<span class='warning'><b>[alert]</b></span>")
-				to_chat(A, "<br>")
+	for(var/mob/living/silicon/ai/A in GLOB.player_list)	//AIs are always aware of communication blackouts.
+		if(A.z in affecting_z)
+			to_chat(A, "<br>")
+			to_chat(A, "<span class='warning'><b>[alert]</b></span>")
+			to_chat(A, "<br>")
 
-		if(prob(80))	//Announce most of the time, just not always to give some wiggle room for possible sabotages.
-			command_announcement.Announce(
-				alert,
-				zlevels = affecting_z,
-				new_sound = 'sound/AI/polar/communications_blackout_announce.ogg',
-			)
-	else
-		var/alert = pick("Ionospheric anomalies detected. Temporary telecommunication failure imminent. Please contact you*%fj00)`5vc-BZZT",
-						"Ionospheric anomalies detected. Temporary telecommunication failu*3mga;b4;'1v�-BZZZT",
-						"Ionospheric anomalies detected. Temporary telec#MCi46:5.;@63-BZZZZT",
-						"Ionospheric anomalies dete'fZ\\kg5_0-BZZZZZT",
-						"Ionospheri:%� MCayj^j<.3-BZZZZZZT",
-						"#4nd%;f4y6,>�%-BZZZZZZZT")
-
-		for(var/mob/living/silicon/ai/A in GLOB.player_list)	//AIs are always aware of communication blackouts.
-			if(A.z in affecting_z)
-				to_chat(A, "<br>")
-				to_chat(A, "<span class='warning'><b>[alert]</b></span>")
-				to_chat(A, "<br>")
-
-		if(prob(80))	//Announce most of the time, just not always to give some wiggle room for possible sabotages.
-			command_announcement.Announce(alert, new_sound = sound('sound/misc/interference.ogg', volume=25), zlevels = affecting_z)
+	if(prob(80))	//Announce most of the time, just not always to give some wiggle room for possible sabotages.
+		command_announcement.Announce(alert, new_sound = sound('sound/AI/blackoutstart.ogg'), zlevels = affecting_z)
 
 /datum/event/communications_blackout/on_fire()
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)

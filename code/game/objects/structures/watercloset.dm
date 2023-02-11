@@ -91,11 +91,57 @@
 	var/is_washing = 0
 	var/list/temperature_settings = list("normal" = 310, "boiling" = 100 CELSIUS, "freezing" = 0 CELSIUS)
 
+/obj/machinery/shower/ex_act(severity)
+	switch(severity)
+		if(EXPLODE_DEVASTATE)
+			qdel(src)
+			return
+		if(EXPLODE_HEAVY)
+			if(prob(50))
+				if(prob(50))
+					new /obj/item/shower_parts(get_turf(src))
+				qdel(src)
+				return
+		if(EXPLODE_LIGHT)
+			if(prob(25))
+				new /obj/item/shower_parts(get_turf(src))
+				qdel(src)
+				return
+	return
+
 /obj/machinery/shower/New()
 	..()
 	create_reagents(50)
 
 //add heat controls? when emagged, you can freeze to death in it?
+
+/obj/item/shower_parts
+	name = "shower parts"
+	desc = "It has everything you need to assemble your own shower. Isn't it beautiful?"
+	icon = 'icons/obj/watercloset.dmi'
+	icon_state = "shower_parts"
+
+/obj/item/shower_parts/attack_self(mob/user)
+	add_fingerprint(user)
+
+	if(!isturf(user.loc))
+		return
+
+	place_shower(user)
+
+/obj/item/shower_parts/proc/place_shower(mob/user)
+	if(!in_use)
+		to_chat(user, SPAN("notice", "Assembling shower..."))
+		in_use = TRUE
+		if(!do_after(user, 1 SECOND))
+			in_use = FALSE
+			return
+		var/obj/machinery/shower/S = new /obj/machinery/shower(user.loc)
+		to_chat(user, SPAN("notice", "You assemble a shower"))
+		in_use = FALSE
+		S.add_fingerprint(user)
+		qdel_self()
+	return
 
 /obj/effect/mist
 	name = "mist"
@@ -117,8 +163,18 @@
 			G.clean_blood()
 
 /obj/machinery/shower/attackby(obj/item/I as obj, mob/user as mob)
+	if(isScrewdriver(I))
+		if(on)
+			to_chat(user, SPAN("warning", "The first thing to do is to turn off the water."))
+			return
+		playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
+		new /obj/item/shower_parts(get_turf(src))
+		qdel(src)
+
 	if(I.type == /obj/item/device/analyzer)
 		to_chat(user, "<span class='notice'>The water temperature seems to be [watertemp].</span>")
+		return
+
 	if(isWrench(I))
 		var/newtemp = input(user, "What setting would you like to set the temperature valve to?", "Water Temperature Valve") in temperature_settings
 		to_chat(user, "<span class='notice'>You begin to adjust the temperature valve with \the [I].</span>")
@@ -127,6 +183,9 @@
 			watertemp = newtemp
 			user.visible_message("<span class='notice'>\The [user] adjusts \the [src] with \the [I].</span>", "<span class='notice'>You adjust the shower with \the [I].</span>")
 			add_fingerprint(user)
+		return
+
+	return ..()
 
 /obj/machinery/shower/update_icon()	//this is terribly unreadable, but basically it makes the shower mist up
 	overlays.Cut()					//once it's been on for a while, in addition to handling the water overlay.

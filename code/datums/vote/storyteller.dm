@@ -11,6 +11,8 @@
 	initiator = (!automatic && istype(creator)) ? creator.ckey : "the server"
 
 	for(var/datum/storyteller_character/C in GLOB.all_storytellers)
+		if(!C.can_be_voted_for)
+			continue
 		choices += C
 		display_choices[C] = "[C.name] - [C.desc]"
 

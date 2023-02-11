@@ -235,14 +235,14 @@
 
 /obj/structure/window_frame/ex_act(severity)
 	switch(severity)
-		if(1)
+		if(EXPLODE_DEVASTATE)
 			// 25% chance for each pane to drop shards, 75% to just evaporate.
 			if(outer_pane && prob(25))
 				outer_pane.shatter(FALSE)
 			if(inner_pane && prob(25))
 				inner_pane.shatter(FALSE)
 			qdel(src)
-		if(2)
+		if(EXPLODE_HEAVY)
 			if(outer_pane)
 				if(inner_pane && prob(90 - (20 * outer_pane.explosion_block)))
 					inner_pane.shatter(FALSE) // Outer pane can protect the inner one, depending on its explosion resistance.
@@ -252,7 +252,7 @@
 			else
 				signaler?.forceMove(get_turf(src))
 				qdel(src) // Poor frame gets murdered here if not protected by windowpanes.
-		if(1)
+		if(EXPLODE_LIGHT)
 			if(prob(50))
 				if(outer_pane)
 					outer_pane.shatter(FALSE)
@@ -746,7 +746,7 @@
 					shove_everything(shove_items = FALSE)
 				return
 
-	if(istype(W, /obj/item/stack/cable_coil))
+	if(isCoil(W))
 		var/obj/item/stack/cable_coil/CC = W
 		if(frame_state == FRAME_NORMAL || frame_state == FRAME_REINFORCED)
 			var/old_state = frame_state
@@ -765,7 +765,7 @@
 				update_nearby_icons()
 			return
 
-	if(istype(W, /obj/item/device/multitool))
+	if(isMultitool(W))
 		if(frame_state == FRAME_ELECTRIC || frame_state == FRAME_RELECTRIC)
 			electrochromic = !electrochromic
 			to_chat(user, SPAN("notice", "\The [src] will[electrochromic ? " " : " no longer "]toggle its tint when signalled now."))

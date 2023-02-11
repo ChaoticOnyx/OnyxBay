@@ -257,6 +257,8 @@ var/list/mob_hat_cache = list()
 	to_chat(user, "<span class='danger'>You swipe the sequencer across [src]'s interface and watch its eyes flicker.</span>")
 	if(controlling_ai)
 		to_chat(src, "<span class='danger'>\The [user] loads some kind of subversive software into the remote drone, corrupting its lawset but luckily sparing yours.</span>")
+		release_ai_control("<b>WARNING: remote system failure. Connection rejected.</b>")
+		connected_ai = null
 	else
 		to_chat(src, "<span class='danger'>You feel a sudden burst of malware loaded into your execute-as-root buffer. Your tiny brain methodically parses, loads and executes the script.</span>")
 
@@ -267,8 +269,6 @@ var/list/mob_hat_cache = list()
 
 	emagged = 1
 	lawupdate = 0
-	connected_ai = null
-	release_ai_control("<b>WARNING: remote system failure. Connection rejected.</b>")
 	clear_supplied_laws()
 	clear_inherent_laws()
 	QDEL_NULL(laws)

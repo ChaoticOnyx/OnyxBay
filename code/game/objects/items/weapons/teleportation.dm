@@ -210,7 +210,7 @@ Frequency:
 			else
 				to_chat(user, SPAN_NOTICE("[src] already has a cell."))
 
-		else if(istype(W, /obj/item/screwdriver))
+		else if(isScrewdriver(W))
 			if(vcell)
 				vcell.update_icon()
 				vcell.forceMove(get_turf(src.loc))

@@ -21,13 +21,6 @@
 
 	sanitize_and_communicate(/decl/communication_channel/ooc/looc, src, message)
 
-/client/verb/bot_token(token as text)
-	set name = "Bot token"
-	set category = "OOC"
-	set desc = "Sends specific token to bot through webhook"
-
-	webhook_send_token(key, token)
-
 /client/verb/stop_all_sounds()
 	set name = "Stop all sounds"
 	set desc = "Stop all sounds that are currently playing."

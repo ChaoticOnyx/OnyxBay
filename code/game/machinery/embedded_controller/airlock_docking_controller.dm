@@ -15,7 +15,7 @@
 		docking_program.display_name = display_name
 
 /obj/machinery/embedded_controller/radio/airlock/docking_port/attackby(obj/item/W, mob/user)
-	if(istype(W,/obj/item/device/multitool)) //give them part of code, would take few tries to get full
+	if(isMultitool(W)) //give them part of code, would take few tries to get full
 		var/code = docking_program.docking_codes
 		if(!code)
 			code = "N/A"

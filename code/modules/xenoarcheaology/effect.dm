@@ -56,10 +56,8 @@
 				display_msg = pick("momentarily glows brightly!","distorts slightly for a moment!","flickers slightly!","vibrates!","shimmers slightly for a moment!")
 			else
 				display_msg = pick("grows dull!","fades in intensity!","suddenly becomes very still!","suddenly becomes very quiet!")
-			var/atom/toplevelholder = holder
-			while(!istype(toplevelholder.loc, /turf) && !istype(toplevelholder.loc, /mob))
-				toplevelholder = toplevelholder.loc
-			toplevelholder.visible_message("<span class='warning'>\icon[toplevelholder] [toplevelholder] [display_msg]</span>")
+			var/atom/toplevelholder = get_top_holder_obj(holder)
+			toplevelholder.visible_message(SPAN("warning", "\icon[toplevelholder] [toplevelholder] [display_msg]"))
 
 /datum/artifact_effect/proc/DoEffectTouch(mob/user)
 /datum/artifact_effect/proc/DoEffectAura(atom/holder)

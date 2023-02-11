@@ -147,7 +147,6 @@ var/server_name = "OnyxBay"
 	. = ..()
 
 	Master.Initialize(10, FALSE)
-	webhook_send_roundstatus("lobby", "[config.general.server_id]")
 
 #undef RECOMMENDED_VERSION
 
@@ -421,7 +420,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 		var/message = "<font color='red'>[rank] PM from <b>[input["admin"]]</b>: [response]</font>"
 		var/amessage =  "<span class='info'>[rank] PM from [input["admin"]] to <b>[key_name(C)]</b> : [response])]</span>"
-		webhook_send_ahelp("[input["admin"]] -> [req_ckey]", response)
+		// webhook_send_ahelp("[input["admin"]] -> [req_ckey]", response)
 
 		sound_to(C, sound('sound/effects/adminhelp.ogg'))
 		to_chat(C, message)

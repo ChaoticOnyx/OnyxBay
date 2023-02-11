@@ -29,4 +29,9 @@
 
 /datum/event/gravity/proc/announce()
 	var/list/affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
-	command_announcement.Announce("Feedback surge detected in mass-distributions systems. Engineers are strongly advised to deal with the problem.", "Gravity Failure", zlevels = affecting_z)
+	command_announcement.Announce(
+		"Feedback surge detected in mass-distributions systems. Engineers are strongly advised to deal with the problem.",
+		"Gravity Failure",
+		new_sound = 'sound/AI/gravitystart.ogg',
+		zlevels = affecting_z
+	)

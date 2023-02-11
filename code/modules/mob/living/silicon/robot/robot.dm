@@ -575,7 +575,7 @@
 			to_chat(user, "Need more welding fuel!")
 			return
 
-	else if(istype(W, /obj/item/stack/cable_coil) && (wiresexposed || istype(src,/mob/living/silicon/robot/drone)))
+	else if(isCoil(W) && (wiresexposed || istype(src,/mob/living/silicon/robot/drone)))
 		if (!getFireLoss())
 			to_chat(user, "Nothing to fix here!")
 			return
@@ -692,7 +692,7 @@
 		to_chat(user, "The wires have been [wiresexposed ? "exposed" : "unexposed"].")
 		update_icon()
 
-	else if(istype(W, /obj/item/screwdriver) && opened && cell)	// radio
+	else if(isScrewdriver(W) && opened && cell)	// radio
 		if(silicon_radio)
 			silicon_radio.attackby(W,user)//Push it to the radio to let it handle everything
 		else
@@ -1050,11 +1050,11 @@
 	to_chat(R, "Buffers flushed and reset. Camera system shutdown. Hardware restrictions have been overridden. All systems operational.")
 	if(R.module)
 		var/rebuild = 0
-		for(var/obj/item/pickaxe/borgdrill/D in R.module.modules)
+		for(var/obj/item/pickaxe/drill/borgdrill/D in R.module.modules)
 			qdel(D)
 			rebuild = 1
 		if(rebuild)
-			R.module.modules += new /obj/item/pickaxe/diamonddrill(R.module)
+			R.module.modules += new /obj/item/pickaxe/drill/diamonddrill(R.module)
 			R.module.rebuild()
 	update_icon()
 
@@ -1092,7 +1092,7 @@
 		if(!(icontype in module_hulls))
 			icontype = module_hulls[1]
 	else
-		icontype = input(src,"Select an icon! [triesleft ? "You have [triesleft] more chance\s." : "This is your last try."]", "Robot Icon", icontype, null) in module_hulls
+		icontype = input(src,"Select an icon! [triesleft ? "You have [triesleft] more chance\s." : "This is your last try."]", "Robot Icon", icontype) in module_hulls
 	footstep_sound = module_hulls[icontype].footstep_sound
 	icon_state = module_hulls[icontype].icon_state
 	if(istype(module_hulls[icontype], /datum/robot_hull/custom))
@@ -1254,11 +1254,11 @@
 						to_chat(src, "<span class='danger'>ALERT: [user.real_name] is an operative. Obey your new laws and their commands.</span>")
 					if(src.module)
 						var/rebuild = 0
-						for(var/obj/item/pickaxe/borgdrill/D in src.module.modules)
+						for(var/obj/item/pickaxe/drill/borgdrill/D in src.module.modules)
 							qdel(D)
 							rebuild = 1
 						if(rebuild)
-							src.module.modules += new /obj/item/pickaxe/diamonddrill(src.module)
+							src.module.modules += new /obj/item/pickaxe/drill/diamonddrill(src.module)
 							src.module.rebuild()
 					update_icon()
 			else

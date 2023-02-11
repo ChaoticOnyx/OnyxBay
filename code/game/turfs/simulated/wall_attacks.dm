@@ -175,7 +175,7 @@
 
 	var/turf/T = user.loc	//get user's location for delay checks
 
-	if(damage && istype(W, /obj/item/weldingtool))
+	if(damage && isWelder(W))
 
 		var/obj/item/weldingtool/WT = W
 
@@ -200,7 +200,7 @@
 		var/dismantle_verb
 		var/dismantle_sound
 
-		if(istype(W,/obj/item/weldingtool))
+		if(isWelder(W))
 			var/obj/item/weldingtool/WT = W
 			if(!WT.isOn())
 				return
@@ -214,11 +214,11 @@
 			dismantle_sound = "spark"
 			dismantle_verb = "slicing"
 			cut_delay *= 0.5
-		else if(istype(W, /obj/item/pickaxe) && !istype(W, /obj/item/pickaxe/archaeologist))
-			var/obj/item/pickaxe/P = W
-			dismantle_verb = P.drill_verb
-			dismantle_sound = P.drill_sound
-			cut_delay -= P.digspeed
+		else if(istype(W, /obj/item/pickaxe/drill))
+			var/obj/item/pickaxe/drill/D = W
+			dismantle_verb = D.drill_verb
+			dismantle_sound = D.drill_sound
+			cut_delay -= D.digspeed
 
 		if(dismantle_verb)
 
@@ -268,7 +268,7 @@
 						return
 			if(4)
 				var/cut_cover
-				if(istype(W,/obj/item/weldingtool))
+				if(isWelder(W))
 					var/obj/item/weldingtool/WT = W
 					if(!WT.isOn())
 						return
@@ -310,7 +310,7 @@
 					return
 			if(1)
 				var/cut_cover
-				if(istype(W, /obj/item/weldingtool))
+				if(isWelder(W))
 					var/obj/item/weldingtool/WT = W
 					if( WT.remove_fuel(0,user) )
 						cut_cover=1

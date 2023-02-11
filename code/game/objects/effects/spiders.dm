@@ -73,6 +73,16 @@
 	density = TRUE
 	opacity = TRUE
 
+/obj/structure/spider/stickyweb/sealed/attack_generic(mob/user, damage, attack_verb, wallbreaker)
+    if(istype (user, /mob/living/simple_animal/hostile/giant_spider))
+        user.visible_message(SPAN_WARNING("[user] begins to claw through the [src]!"), "You begin to claw through the [src].")
+        if(do_after(user, 50, target = src))
+            user.visible_message(SPAN_WARNING("[user] ruptures [src] open!"), "You succesfully claw through the [src].")
+            health = 0
+            healthcheck ()
+            return
+    return ..()
+
 /obj/structure/spider/stickyweb/sealed/Initialize()
 	..()
 	icon_state = "sealedweb"
@@ -116,7 +126,6 @@
 	var/shift_range = 6
 
 /obj/structure/spider/spiderling/Initialize(mapload, atom/parent)
-	icon_state = initial(greater_form.icon_state)
 	pixel_x = rand(-shift_range, shift_range)
 	pixel_y = rand(-shift_range, shift_range)
 
@@ -134,15 +143,19 @@
 
 /obj/structure/spider/spiderling/hunter
 	greater_form = /mob/living/simple_animal/hostile/giant_spider/hunter
+	icon_state = "hunter"
 
 /obj/structure/spider/spiderling/nurse
 	greater_form = /mob/living/simple_animal/hostile/giant_spider/nurse
+	icon_state = "nurse"
 
 /obj/structure/spider/spiderling/midwife
 	greater_form = /mob/living/simple_animal/hostile/giant_spider/midwife
+	icon_state = "hunter"
 
 /obj/structure/spider/spiderling/viper
 	greater_form = /mob/living/simple_animal/hostile/giant_spider/viper
+	icon_state = "hunter"
 
 /obj/structure/spider/spiderling/tarantula
 	greater_form = /mob/living/simple_animal/hostile/giant_spider/tarantula

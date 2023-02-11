@@ -896,6 +896,9 @@ meteor_act
 		if(O.throw_source && momentum >= THROWNOBJ_KNOCKBACK_SPEED)
 			var/dir = get_dir(O.throw_source, src)
 
+			if(buckled)
+				return
+
 			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
 			throw_at(get_edge_target_turf(src, dir), 1, (1 / momentum))
 
@@ -903,7 +906,7 @@ meteor_act
 				return
 
 			if(O.loc == src && O.sharp) //Projectile is embedded and suitable for pinning.
-				embed(O)
+				embed(O, zone)
 				var/turf/T = near_wall(dir, 2)
 
 				if(T)

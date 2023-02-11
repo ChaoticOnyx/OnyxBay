@@ -90,6 +90,7 @@
 		bodyparts = decls_repository.get_decl(bodyparts)
 
 /mob/living/simple_animal/Destroy()
+	mob_ai.holder = null
 	QDEL_NULL(mob_ai)
 	panic_target = null
 	. = ..()

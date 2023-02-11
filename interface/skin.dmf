@@ -1174,6 +1174,8 @@ window "outputwindow"
 		is-disabled = true
 		border = sunken
 		saved-params = "command"
+		on-focus = ".add_typing_indicator"
+		on-blur = ".remove_typing_indicator"
 	elem "hotkey_toggle_alt"
 		type = BUTTON
 		pos = 560,460

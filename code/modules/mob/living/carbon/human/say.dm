@@ -49,7 +49,7 @@
 	var/temp = client.close_saywindow(return_content = TRUE)
 
 	if(!temp)
-		temp = winget(client, "input", "text")
+		temp = winget(client, ":input", "text")
 		if(length(temp) > 4 && findtextEx(temp, "Say ", 1, 5))
 			temp = copytext(temp, 5)
 			if (text2ascii(temp, 1) == text2ascii("\""))
@@ -59,7 +59,7 @@
 				return
 		else
 			return
-		winset(client, "input", "text=\"Say \\\"\"")
+		winset(client, ":input", "text=\"Say \\\"\"")
 	temp = trim_left(temp)
 
 	if(length(temp))
@@ -141,14 +141,14 @@
 
 /mob/living/carbon/human/handle_speech_problems(list/message_data)
 	if(silent || (sdisabilities & MUTE))
-		message_data[1] = ""
+		message_data["message"] = ""
 		. = TRUE
 
 	else if(istype(wear_mask, /obj/item/clothing/mask))
 		var/obj/item/clothing/mask/M = wear_mask
 		if(M.voicechange)
-			message_data[1] = pick(M.say_messages)
-			message_data[2] = pick(M.say_verbs)
+			message_data["message"] = pick(M.say_messages)
+			message_data["verb"] = pick(M.say_verbs)
 			. = TRUE
 		else
 			. = ..(message_data)

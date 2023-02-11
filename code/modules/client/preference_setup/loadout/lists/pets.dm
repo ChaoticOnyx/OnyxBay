@@ -2,6 +2,7 @@
 	sort_category = "Pets"
 	path = /mob/living/simple_animal/corgi/pet
 	var/list/paths
+	var/static/list/pets_name = list()
 
 /datum/gear/pet/New()
 	..()
@@ -12,11 +13,12 @@
 	. = ..()
 	if(.)
 		var/list/gears = user.client.prefs.gear_list[user.client.prefs.gear_slot]
-		var/list/pets = list()
-		for(var/pet_type in subtypesof(/datum/gear/pet))
-			var/datum/gear/pet/pet = new pet_type()
-			pets.Add(pet.display_name)
-			qdel(pet)
+		if(!length(pets_name))
+			for(var/pet_type in subtypesof(/datum/gear/pet))
+				var/datum/gear/pet/pet = new pet_type()
+				pets_name.Add(pet.display_name)
+				qdel(pet)
+		var/list/pets = pets_name.Copy()
 		pets.Remove(display_name)
 		for(var/gear in gears)
 			if(gear in pets)

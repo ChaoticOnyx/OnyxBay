@@ -40,7 +40,7 @@
 	RefreshParts()
 	update_icon()
 
-/obj/machinery/bodyscanner/relaymove(mob/user as mob)
+/obj/machinery/bodyscanner/relaymove(mob/user)
 	if (user.stat)
 		return
 	src.go_out()
@@ -214,7 +214,6 @@
 				// SN src = null
 				qdel(src)
 				return
-		else
 	return
 
 /obj/machinery/body_scanconsole/ex_act(severity)
@@ -229,7 +228,6 @@
 				// SN src = null
 				qdel(src)
 				return
-		else
 	return
 
 /obj/machinery/body_scanconsole/update_icon()

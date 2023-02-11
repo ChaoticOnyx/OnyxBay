@@ -614,6 +614,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			ui.close()
 			return 0
 		if("Refresh")//Refresh, goes to the end of the proc.
+			pass()
 		if("Return")//Return
 			if(mode<=9)
 				mode = 0
