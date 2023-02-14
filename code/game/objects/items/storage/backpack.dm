@@ -447,3 +447,12 @@
 		slot_l_hand_str = "satchel",
 		slot_r_hand_str = "satchel",
 		)
+
+/obj/item/storage/backpack/shipack
+	name = "Space ship backpack"
+	desc = "It's a backpack visual as cpacecraft."
+	icon_state = "shipack"
+	item_state_slots = list(
+		slot_l_hand_str = "shipack",
+		slot_r_hand_str = "shipack",
+		)

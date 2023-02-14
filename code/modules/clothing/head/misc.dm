@@ -375,3 +375,45 @@
 	item_state = "sombrero"
 	desc = "You can practically taste the fiesta."
 	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 30, bio = 0)
+
+/obj/item/clothing/head/samura_hat
+	name = "samurai hat"
+	icon_state = "samura_hat"
+	item_state = "samura_hat"
+	desc = "Edgy asia hat."
+	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
+
+/obj/item/clothing/head/agua_helmet
+	name = "agua helmet"
+	icon_state = "agua_helmet"
+	item_state = "agua_helmet"
+	desc = "Water."
+	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
+
+/obj/item/clothing/head/crown
+	name = "crown"
+	icon_state = "crown"
+	item_state = "crown"
+	desc = "Royal gold."
+	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
+
+/obj/item/clothing/head/antenna
+	name = "antenna"
+	icon_state = "antenna"
+	item_state = "antenna"
+	desc = "Alien accesuar fron WetSkrell."
+	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
+
+/obj/item/clothing/head/tiara
+	name = "tiara"
+	icon_state = "tiara"
+	item_state = "tiara"
+	desc = "Royal Silver."
+	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
+
+/obj/item/clothing/head/vpp_cap
+	name = "vpp cap"
+	icon_state = "vpp_cap"
+	item_state = "vpp_cap"
+	desc = "Green Cap."
+	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)

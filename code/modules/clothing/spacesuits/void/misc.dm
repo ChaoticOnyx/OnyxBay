@@ -214,3 +214,70 @@
 	cloak = FALSE
 
 	animate(H,alpha = 85, alpha = 255, time = 10)
+
+// Rmc(Only)
+/obj/item/clothing/head/helmet/space/void/rmc_red
+	name = "rmc red helmet"
+	desc = "An atmos resistant helmet for space and planet exploration."
+	icon_state = "rig0_rmc_red"
+	item_state = "rmc_red_helm"
+	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
+	light_overlay = "helmet_light_dual"
+
+/obj/item/clothing/suit/space/void/rmc_red
+	name = "rmc red voidsuit"
+	desc = "An atmos resistant voidsuit for space and planet exploration."
+	icon_state = "rmc_red"
+	item_state = "rmc_red"
+	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
+
+/obj/item/clothing/suit/space/void/pilot/prepared
+	helmet = /obj/item/clothing/head/helmet/space/void/pilot
+	boots = /obj/item/clothing/shoes/magboots
+
+/obj/item/clothing/head/helmet/space/void/rmc_green
+	name = "rmc red helmet"
+	desc = "An atmos resistant helmet for space and planet exploration."
+	icon_state = "rig0_rmc_green"
+	item_state = "rmc_green_helm"
+	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
+	light_overlay = "helmet_light_dual"
+
+/obj/item/clothing/suit/space/void/rmc_green
+	name = "rmc green voidsuit"
+	desc = "An atmos resistant voidsuit for space and planet exploration."
+	icon_state = "rmc_green"
+	item_state = "rmc_green"
+	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
+
+/obj/item/clothing/suit/space/void/pilot/prepared
+	helmet = /obj/item/clothing/head/helmet/space/void/pilot
+	boots = /obj/item/clothing/shoes/magboots
+
+/obj/item/clothing/head/helmet/space/void/rmc_royal
+	name = "rmc royal helmet"
+	desc = "An atmos resistant helmet for space and planet exploration."
+	icon_state = "rig0_rmc_royal"
+	item_state = "rmc_royal_helm"
+	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
+	light_overlay = "helmet_light_dual"
+
+/obj/item/clothing/suit/space/void/rmc_royal
+	name = "rmc royal voidsuit"
+	desc = "An atmos resistant voidsuit for space and planet exploration."
+	icon_state = "rmc_royal"
+	item_state = "rmc_royal"
+	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
+
+/obj/item/clothing/suit/space/void/pilot/prepared
+	helmet = /obj/item/clothing/head/helmet/space/void/pilot
+	boots = /obj/item/clothing/shoes/magboots
