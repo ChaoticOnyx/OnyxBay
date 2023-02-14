@@ -341,7 +341,10 @@
 		if("drop")
 			if(isliving(usr))
 				var/mob/living/L = usr
-				L.hotkey_drop()
+				if(L.is_ventcrawling)
+					to_chat(L, "<span class='notice'>You can't drop items in the vent.</span>")
+				else
+					L.hotkey_drop()
 
 		if("block")
 			if(istype(usr,/mob/living/carbon/human))
