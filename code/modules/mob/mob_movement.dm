@@ -63,6 +63,9 @@
 /mob/living/carbon/hotkey_drop()
 	if(!can_use_hands)
 		return
+	if(is_ventcrawling)
+		to_chat(usr, "<span class='notice'>You can't drop items in the vent.</span>")
+		return
 	var/obj/item/I = get_active_hand()
 	if(!I)
 		to_chat(usr, SPAN("warning", "You have nothing to drop in your hand."))
