@@ -253,16 +253,16 @@
 	electric = TRUE
 
 /obj/item/clothing/glasses/magma_dark_glasses
-	name = "dark angled glasses"
-	desc = "Welding goggles made from more expensive materials, strangely smells like potatoes."
+	name = "dark gar glasses"
+	desc = "Stylish pair of dark-colored glasses made from expensive materials."
 	icon_state = "magma_dark_glasses"
 
 /obj/item/clothing/glasses/magma_red_glasses
-	name = "red angled glasses"
-	desc = "Welding goggles made from more expensive materials, strangely smells like potatoes."
+	name = "red gar glasses"
+	desc = "Stylish pair of red-colored glasses made from expensive materials."
 	icon_state = "magma_red_glasses"
 
 /obj/item/clothing/glasses/magma_dual_glasses
-	name = "dual angled glasses"
-	desc = "Welding goggles made from more expensive materials, strangely smells like potatoes."
+	name = "dual gar glasses"
+	desc = "Stylish pair of dual-colored glasses made from expensive materials."
 	icon_state = "magma_dual_glasses"
