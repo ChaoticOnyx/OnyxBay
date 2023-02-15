@@ -332,7 +332,7 @@
 			organ.min_broken_damage = Floor(organ.max_damage * 0.75)
 	src.no_pain = TRUE
 	src.does_not_breathe = TRUE
-	verbs += /mob/living/proc/breath_death
-	verbs += /mob/living/proc/consume
+	verbs += /mob/living/carbon/human/proc/breath_death
+	verbs += /mob/living/carbon/human/proc/consume
 	remove_language(LANGUAGE_GALCOM)
 	playsound(src, 'sound/hallucinations/wail.ogg', 20, 1)
