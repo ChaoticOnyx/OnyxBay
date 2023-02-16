@@ -450,7 +450,7 @@
 
 /obj/item/storage/backpack/shipack
 	name = "Space ship backpack"
-	desc = "It's a backpack visual as cpacecraft."
+	desc = "It's a backpack visual as spacecraft."
 	icon_state = "shipack"
 	item_state_slots = list(
 		slot_l_hand_str = "shipack",
