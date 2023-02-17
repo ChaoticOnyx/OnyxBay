@@ -148,7 +148,7 @@
 	queue.Cut(index, index + 1)
 	return
 
-/obj/machinery/r_n_d/protolathe/proc/canBuild(datum/design/D, amount_build)
+/obj/machinery/r_n_d/protolathe/proc/canBuild(datum/design/D, amount_build = 1)
 	for(var/M in D.materials)
 		if(materials[M] < D.materials[M] * mat_efficiency * amount_build)
 			return 0
