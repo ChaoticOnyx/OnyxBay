@@ -229,7 +229,7 @@ macro "borghotkeymode"
 		command = ".winset :map.right-click=true"
 	elem
 		name = "SHIFT+UP"
-		command = ".winset :map.right-click=false \n .release_shift"
+		command = ".winset :map.right-click=false\n.release_shift"
 	elem
 		name = "ALT"
 		command = ".winset :map.right-click=true"
@@ -417,7 +417,7 @@ macro "macro"
 		command = ".winset :map.right-click=true"
 	elem
 		name = "SHIFT+UP"
-		command = ".winset :map.right-click=false \n .release_shift"
+		command = ".winset :map.right-click=false\n.release_shift"
 	elem
 		name = "ALT"
 		command = ".winset :map.right-click=true"
@@ -677,7 +677,7 @@ macro "hotkeymode"
 		command = ".winset :map.right-click=true"
 	elem
 		name = "SHIFT+UP"
-		command = ".winset :map.right-click=false \n .release_shift"
+		command = ".winset :map.right-click=false\n.release_shift"
 	elem
 		name = "ALT"
 		command = ".winset :map.right-click=true"
@@ -859,7 +859,7 @@ macro "borgmacro"
 		command = ".winset :map.right-click=true"
 	elem
 		name = "SHIFT+UP"
-		command = ".winset :map.right-click=false \n .release_shift"
+		command = ".winset :map.right-click=false\n.release_shift"
 	elem
 		name = "ALT"
 		command = ".winset :map.right-click=true"
