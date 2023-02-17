@@ -38,3 +38,4 @@
 
 /mob/living/proc/reset_farlook()
 	shift_view(0, 0, TRUE)
+	unregister_signal(src, SIGNAL_MOVED, /mob/living/proc/reset_farlook)

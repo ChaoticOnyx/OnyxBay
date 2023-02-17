@@ -823,6 +823,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	unregister_signal(src, SIGNAL_MOVED, /obj/item/proc/zoom_move)
 	unregister_signal(src, SIGNAL_DIR_SET)
 	unregister_signal(src, SIGNAL_ITEM_UNEQUIPPED)
+	unregister_signal(user, SIGNAL_VIEW_SHIFTED_SET, /obj/item/proc/unzoom)
 
 	user = user == src ? loc : (user || loc)
 	if(!istype(user))
