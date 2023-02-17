@@ -1,8 +1,9 @@
 /atom/CtrlRightClick(mob/living/user)
 	if(!istype(user))
-		return
+		return ..()
 
 	user.do_farlook(get_turf(src))
+	return ..()
 
 // Shifts client's view to selected turf. Max distance 7 tiles.
 /mob/living/proc/do_farlook(turf/T)
