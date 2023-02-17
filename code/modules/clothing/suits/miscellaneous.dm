@@ -464,7 +464,7 @@
 
 /obj/item/clothing/suit/storage/toggle/bd_jacket
 	name = "Blue Jacket."
-	desc = "Nice jacket."
+	desc = "The blue jacket of some corporation, you can't recognize it."
 	icon_state = "bd_jacket"
 	item_state = "bd_jacket"
 	icon_open = "bd_jacket_open"
@@ -473,7 +473,7 @@
 
 /obj/item/clothing/suit/storage/toggle/polizei
 	name = "polizei Jacket."
-	desc = "Nice jacket."
+	desc = "Cool leather jacket with police green stripes."
 	icon_state = "polizei"
 	item_state = "polizei"
 	icon_open = "polizei_open"
