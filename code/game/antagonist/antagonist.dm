@@ -130,9 +130,8 @@
 				log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not an allowed type of mob!")
 		else
 			log_debug_verbose("[key_name(player)] is eligible to become a [role_text]")
-			var/weight = get_candidate_weight(player)
 			candidates |= player
-			candidates[player] = weight
+			candidates[player] = get_candidate_weight(player)
 
 	return candidates
 
@@ -159,9 +158,8 @@
 		else if(!is_mob_type_allowed(player))
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not allowed type of mob!")
 		else
-			var/weight = get_candidate_weight(player)
 			potential_candidates |= player
-			potential_candidates[player] = weight
+			potential_candidates[player] = get_candidate_weight(player)
 
 	return potential_candidates
 
