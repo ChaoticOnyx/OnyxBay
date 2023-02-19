@@ -130,8 +130,11 @@
 				log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not an allowed type of mob!")
 		else
 			log_debug_verbose("[key_name(player)] is eligible to become a [role_text]")
-			candidates |= player
-			candidates[player] = get_candidate_weight(player)
+			var/candidate_weight = get_candidate_weight(player)
+			if(candidate_weight == 0)
+				log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Bad location z-level!")
+				continue
+			candidates[player] = candidate_weight
 
 	return candidates
 
@@ -158,8 +161,11 @@
 		else if(!is_mob_type_allowed(player))
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not allowed type of mob!")
 		else
-			potential_candidates |= player
-			potential_candidates[player] = get_candidate_weight(player)
+			var/candidate_weight = get_candidate_weight(player)
+			if(candidate_weight == 0)
+				log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Bad location z-level!")
+				continue
+			potential_candidates[player] = candidate_weight
 
 	return potential_candidates
 
