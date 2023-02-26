@@ -129,8 +129,12 @@
 			else
 				log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not an allowed type of mob!")
 		else
+			var/candidate_weight = get_candidate_weight(player)
+			if(candidate_weight == 0)
+				log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Bad location z-level!")
+				continue
 			log_debug_verbose("[key_name(player)] is eligible to become a [role_text]")
-			candidates |= player
+			candidates[player] = candidate_weight
 
 	return candidates
 
@@ -157,9 +161,26 @@
 		else if(!is_mob_type_allowed(player))
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not allowed type of mob!")
 		else
-			potential_candidates |= player
+			var/candidate_weight = get_candidate_weight(player)
+			if(candidate_weight == 0)
+				log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Bad location z-level!")
+				continue
+			potential_candidates[player] = candidate_weight
 
 	return potential_candidates
+
+/datum/antagonist/proc/get_candidate_weight(datum/mind/player)
+	ASSERT(istype(player))
+	if(isghostmind(player) || isnewplayer(player.current))
+		return 100
+
+	var/player_zlevel = get_z(player.current)
+
+	if(!isPlayerLevel(player_zlevel))
+		return 0
+	if(!isStationLevel(player_zlevel))
+		return 50
+	return 100
 
 /datum/antagonist/proc/attempt_random_spawn()
 	update_current_antag_max(SSticker.mode)
@@ -219,7 +240,7 @@
 
 	//Grab candidates randomly until we have enough.
 	while(candidates.len && pending_antagonists.len < spawn_target)
-		var/datum/mind/player = pick(candidates)
+		var/datum/mind/player = util_pick_weight(candidates)
 		candidates -= player
 		draft_antagonist(player)
 
