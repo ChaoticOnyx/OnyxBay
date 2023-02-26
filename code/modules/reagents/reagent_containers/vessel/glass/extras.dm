@@ -54,12 +54,12 @@
 	w_class = ITEM_SIZE_TINY
 	icon = DRINK_ICON_FILE
 
-/obj/item/glass_extra/stick
+/obj/item/glass_extra/cocktail_stick
 	name = "stick"
 	desc = "This goes in a glass."
-	glass_addition = "stick"
+	glass_addition = "cocktail_stick"
 	glass_desc = "There is a stick in the glass."
-	icon_state = "stick"
+	icon_state = "cocktail_stick"
 
 /obj/item/glass_extra/straw
 	name = "straw"
