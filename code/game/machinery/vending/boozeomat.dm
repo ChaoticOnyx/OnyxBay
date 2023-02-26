@@ -29,7 +29,7 @@
 					/obj/item/reagent_containers/vessel/flask/barflask = 5,
 					/obj/item/reagent_containers/vessel/flask/vacuumflask = 5,
 					/obj/item/bottle_extra/pourer = 15,
-					/obj/item/glass_extra/stick = 25,
+					/obj/item/glass_extra/cocktail_stick = 25,
 					/obj/item/glass_extra/straw = 25,
 					/obj/item/glass_extra/orange_slice = 25,
 					/obj/item/glass_extra/lime_slice = 25,

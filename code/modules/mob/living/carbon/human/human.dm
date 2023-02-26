@@ -1753,3 +1753,13 @@
 
 /mob/living/carbon/human/get_runechat_color()
 	return species.get_species_runechat_color(src)
+
+/mob/living/carbon/human/get_scooped(mob/living/carbon/human/grabber, self_grab)
+	if(isMonkey(src))
+		var/turf/T = get_turf(src)
+		var/list/on_monkey = view(1, T)
+		for(var/mob/living/carbon/metroid/M in on_monkey)
+			if(M.Victim == src)
+				to_chat(grabber, SPAN("warning", "You can't scoop up \the [src] because of the [M]"))
+				return
+	. = ..()
