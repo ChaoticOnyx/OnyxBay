@@ -606,7 +606,7 @@ var/list/hash_to_gear = list()
 
 /datum/category_item/player_setup_item/loadout/proc/toggle_gear(datum/gear/TG, mob/user)
 	// check if someone trying to tricking us. However, it's may be just a bug
-	ASSERT(!TG.price || user.client.donator_info.has_item(TG.type))
+	ASSERT(user.client.donator_info.is_item_available_as_for_patron(TG.price) || (!TG.price || user.client.donator_info.has_item(TG.type)))
 	ASSERT(!TG.patron_tier || user.client.donator_info.patreon_tier_available(TG.patron_tier))
 
 	if(TG.display_name in pref.gear_list[pref.gear_slot])
@@ -653,7 +653,7 @@ var/list/hash_to_gear = list()
 /datum/gear/proc/is_allowed_to_equip(mob/user)
 	ASSERT(user && user.client)
 	ASSERT(user.client.donator_info)
-	if(price && !user.client.donator_info.has_item(type))
+	if(price && (!user.client.donator_info.is_item_available_as_for_patron(price) && !user.client.donator_info.has_item(type)))
 		return FALSE
 	if(patron_tier && !user.client.donator_info.patreon_tier_available(patron_tier))
 		return FALSE
