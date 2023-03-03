@@ -1,4 +1,4 @@
-#define STANDART_SYRINGE_MAX_VOLUME 15
+#define STANDARD_SYRINGE_MAX_VOLUME 15
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Syringes
@@ -119,7 +119,7 @@
 		icon_state = "broken"
 		return
 
-	var/rounded_vol = clamp(0, round((reagents.total_volume / reagents.maximum_volume) * STANDART_SYRINGE_MAX_VOLUME, STANDART_SYRINGE_MAX_VOLUME/ 3 ), STANDART_SYRINGE_MAX_VOLUME)
+	var/rounded_vol = clamp(0, round((reagents.total_volume / reagents.maximum_volume) * STANDARD_SYRINGE_MAX_VOLUME, STANDARD_SYRINGE_MAX_VOLUME/ 3 ), STANDARD_SYRINGE_MAX_VOLUME)
 
 	icon_state = "[rounded_vol]"
 	item_state = "syringe_[rounded_vol]"
@@ -502,4 +502,4 @@
 /obj/item/reagent_containers/syringe/borg
 	stabby = FALSE
 
-#undef STANDART_SYRINGE_MAX_VOLUME
+#undef STANDARD_SYRINGE_MAX_VOLUME
