@@ -384,33 +384,33 @@
 	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/agua_helmet
-	name = "agua helmet"
+	name = "head-worn aquarium"
 	icon_state = "agua_helmet"
 	item_state = "agua_helmet"
-	desc = "Water."
+	desc = "Water with some fishes in the glass aquarium."
 	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/crown
 	name = "crown"
 	icon_state = "crown"
 	item_state = "crown"
-	desc = "Royal gold."
+	desc = "Royal gold worthy of a true ruler of the world."
 	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/antenna
 	name = "antenna"
 	icon_state = "antenna"
 	item_state = "antenna"
-	desc = "Alien antennas made of plastic and reminiscent of almost forgotten science fiction."
+	desc = "People of the past thought that alien species walked around with such antennas. It turned out that it was."
 
 /obj/item/clothing/head/tiara
 	name = "tiara"
 	icon_state = "tiara"
 	item_state = "tiara"
-	desc = "Headdress made of silver interspersed with precious stones."
+	desc = "Silver crown adorned with jewelry stones."
 
 /obj/item/clothing/head/vpp_cap
 	name = "vpp cap"
 	icon_state = "vpp_cap"
 	item_state = "vpp_cap"
-	desc = "Green Cap."
+	desc = "Green cap of unknown design. The emblem proudly bears the abbreviation V.P.P."

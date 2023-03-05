@@ -440,7 +440,7 @@
 
 /obj/item/clothing/suit/storage/toggle/vpp_jacket
 	name = "vpp jacket"
-	desc = "A green jacket."
+	desc = "Green uniform of unknown design. The emblem proudly bears the abbreviation V.P.P."
 	icon_state = "vpp_jacket"
 	item_state = "vpp_jacket"
 	icon_open = "vpp_jacket_open"
@@ -464,7 +464,7 @@
 
 /obj/item/clothing/suit/storage/toggle/bd_jacket
 	name = "Blue Jacket."
-	desc = "The blue jacket of some corporation, you can't recognize it."
+	desc = "A blue jacket that must have been designed for completely heartless owners."
 	icon_state = "bd_jacket"
 	item_state = "bd_jacket"
 	icon_open = "bd_jacket_open"

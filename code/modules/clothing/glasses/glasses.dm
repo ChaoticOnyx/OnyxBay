@@ -254,15 +254,15 @@
 
 /obj/item/clothing/glasses/magma_dark_glasses
 	name = "dark gar glasses"
-	desc = "Stylish pair of dark-colored glasses made from expensive materials."
+	desc = "The coolest dark-colored glasses in the universe! At least according to ads."
 	icon_state = "magma_dark_glasses"
 
 /obj/item/clothing/glasses/magma_red_glasses
 	name = "red gar glasses"
-	desc = "Stylish pair of red-colored glasses made from expensive materials."
+	desc = "The coolest red-colored glasses in the universe! At least according to ads."
 	icon_state = "magma_red_glasses"
 
 /obj/item/clothing/glasses/magma_dual_glasses
 	name = "dual gar glasses"
-	desc = "Stylish pair of dual-colored glasses made from expensive materials."
+	desc = "The coolest dual-colored glasses in the universe! At least according to ads."
 	icon_state = "magma_dual_glasses"

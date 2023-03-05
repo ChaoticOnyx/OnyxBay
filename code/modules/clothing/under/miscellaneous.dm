@@ -665,7 +665,7 @@
 
 /obj/item/clothing/under/plugwhite
 	name = "White Plug jumpsuit"
-	desc = "Good Lookin"
+	desc = "White latex jumpsuit looking like an old-movie superhero suit. Very sexy though"
 	icon_state = "plug_white"
 	w_class = ITEM_SIZE_HUGE//bulky item
 	gas_transfer_coefficient = 0.01
@@ -676,7 +676,7 @@
 
 /obj/item/clothing/under/plugred
 	name = "Red Plug jumpsuit"
-	desc = "Good Lookin"
+	desc = "Red latex jumpsuit looking like an old-movie superhero suit. Very sexy though"
 	icon_state = "plug_red"
 	w_class = ITEM_SIZE_HUGE//bulky item
 	gas_transfer_coefficient = 0.01
@@ -687,7 +687,7 @@
 
 /obj/item/clothing/under/plugblack
 	name = "Black Plug jumpsuit"
-	desc = "Good Lookin"
+	desc = "Black latex jumpsuit looking like an old-movie superhero suit. Very sexy though"
 	icon_state = "plug_black"
 	w_class = ITEM_SIZE_HUGE//bulky item
 	gas_transfer_coefficient = 0.01
@@ -698,7 +698,7 @@
 
 /obj/item/clothing/under/plugblue
 	name = "Blue Plug jumpsuit"
-	desc = "Good Lookin"
+	desc = "Blue latex jumpsuit looking like an old-movie superhero suit. Very sexy though"
 	icon_state = "plug_blue"
 	w_class = ITEM_SIZE_HUGE//bulky item
 	gas_transfer_coefficient = 0.01
