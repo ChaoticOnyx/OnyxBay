@@ -401,7 +401,7 @@
 	name = "antenna"
 	icon_state = "antenna"
 	item_state = "antenna"
-	desc = "People of the past thought that alien species walked around with such antennas. It turned out that it was."
+	desc = "People of the past thought that alien species walked around with such antennas. It turned out that they really did."
 
 /obj/item/clothing/head/tiara
 	name = "tiara"
