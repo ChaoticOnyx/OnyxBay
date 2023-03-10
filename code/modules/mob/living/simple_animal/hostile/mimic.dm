@@ -145,13 +145,13 @@ var/global/list/protected_objects = list(
 		verbs |= /mob/living/proc/ventcrawl
 		verbs |= /mob/living/proc/hide
 	else
-		verbs ^= /mob/living/proc/ventcrawl
-		verbs ^= /mob/living/proc/hide
+		verbs -= /mob/living/proc/ventcrawl
+		verbs -= /mob/living/proc/hide
 
 	if(can_setup_trap())
 		verbs |= /mob/living/simple_animal/hostile/mimic/verb/Trap
 	else
-		verbs ^= /mob/living/simple_animal/hostile/mimic/verb/Trap
+		verbs -= /mob/living/simple_animal/hostile/mimic/verb/Trap
 
 /mob/living/simple_animal/hostile/mimic/proc/_handle_healing()
 	var/healing_check = world.time > inactive_time + WAIT_TO_HEAL
