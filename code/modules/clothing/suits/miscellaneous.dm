@@ -438,10 +438,46 @@
 	siemens_coefficient = 0.7
 	initial_closed = TRUE
 
+/obj/item/clothing/suit/storage/toggle/vpp_jacket
+	name = "vpp jacket"
+	desc = "Green uniform of unknown design. The emblem proudly bears the abbreviation V.P.P."
+	icon_state = "vpp_jacket"
+	item_state = "vpp_jacket"
+	icon_open = "vpp_jacket_open"
+	icon_closed = "vpp_jacket"
+	body_parts_covered = UPPER_TORSO|ARMS
+	siemens_coefficient = 0.7
+	initial_closed = TRUE
+
 /obj/item/clothing/suit/storage/fashionable_coat
 	name = "fashionable coat"
 	desc = "An expensive coat with a huge lapel."
 	icon_state = "fashionable_coat"
+	body_parts_covered = UPPER_TORSO|ARMS|LEGS
+	cold_protection = UPPER_TORSO|LOWER_TORSO
+
+/obj/item/clothing/suit/storage/warm_coat
+	name = "down coat"
+	desc = "Warm coat for low temperature."
+	icon_state = "warm_coat"
+	body_parts_covered = UPPER_TORSO|ARMS|LEGS
+
+/obj/item/clothing/suit/storage/toggle/bd_jacket
+	name = "Blue Jacket."
+	desc = "A blue jacket that must have been designed for completely heartless owners."
+	icon_state = "bd_jacket"
+	item_state = "bd_jacket"
+	icon_open = "bd_jacket_open"
+	icon_closed = "bd_jacket"
+	body_parts_covered = UPPER_TORSO|ARMS|LEGS
+
+/obj/item/clothing/suit/storage/toggle/polizei
+	name = "polizei Jacket."
+	desc = "Cool leather jacket with police green stripes."
+	icon_state = "polizei"
+	item_state = "polizei"
+	icon_open = "polizei_open"
+	icon_closed = "polizei"
 	body_parts_covered = UPPER_TORSO|ARMS|LEGS
 
 //This one has buttons for some reason
