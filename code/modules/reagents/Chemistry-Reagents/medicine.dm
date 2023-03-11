@@ -396,8 +396,8 @@
 		return
 
 	// not a changeling. anti meta them to death
-	for(var/obj/item/organ/internal/I in M.internal_organs)
-		I.take_internal_damage(10, silent=TRUE)
+	var/obj/item/organ/internal/I = pick(M.internal_organs)
+	I.take_internal_damage(3, silent=TRUE)
 
 /datum/reagent/hyperzine
 	name = "Hyperzine"
