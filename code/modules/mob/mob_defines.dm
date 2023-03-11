@@ -204,3 +204,5 @@
 	///
 	/// On [/mob] so clientless mobs will throw alerts properly.
 	var/list/alerts = list()
+
+	var/is_view_shifted = FALSE
