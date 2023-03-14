@@ -82,6 +82,7 @@
 	var/viewalerts = 0
 	var/modtype = "Default"
 	var/selected_module
+	var/restore_modtype_in_global_pull = FALSE
 	var/lower_mod = 0
 	var/jetpack = 0
 	var/datum/effect/effect/system/trail/ion/ion_trail = null
@@ -237,9 +238,14 @@
 			mmi = null
 		else
 			QDEL_NULL(mmi)
+
 	if(connected_ai)
 		connected_ai.connected_robots -= src
 	connected_ai = null
+
+	if(restore_modtype_in_global_pull)
+		GLOB.robot_module_types |= modtype
+
 	QDEL_NULL(wires)
 	QDEL_NULL(module)
 	QDEL_NULL(inv1)
@@ -304,6 +310,7 @@
 		to_chat(usr, SPAN("notice", "You have already selected a module."))
 		return
 	modtype = selected_module
+	restore_modtype_in_global_pull = TRUE
 	sensor_mode = 0
 	active_hud = null
 
