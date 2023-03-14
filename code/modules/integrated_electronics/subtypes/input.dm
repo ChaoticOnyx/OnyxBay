@@ -1144,8 +1144,8 @@
 /obj/item/integrated_circuit/input/data_card_reader
 	name = "data card reader"
 	desc = "A circuit that can read from and write to data cards."
-	extended_desc = "Setting the \"write mode\" boolean to true will cause any data cards that are used on the assembly to replace\
- their existing function and data strings with the given strings, if it is set to false then using a data card on the assembly will cause\
+	extended_desc = "Setting the \"write mode\" boolean to true will cause any data cards that are used on the assembly to replace \
+ their existing function and data strings with the given strings, if it is set to false then using a data card on the assembly will cause \
  the function and data strings stored on the card to be written to the output pins."
 	icon_state = "card_reader"
 	complexity = 4
