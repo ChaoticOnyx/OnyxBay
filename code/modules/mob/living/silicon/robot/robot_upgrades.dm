@@ -39,6 +39,9 @@
 /obj/item/borg/upgrade/reset/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 	R.uneq_all()
+	if(R.restore_modtype_in_global_pull)
+		GLOB.robot_module_types |= R.modtype
+		R.restore_modtype_in_global_pull = FALSE
 	R.modtype = initial(R.modtype)
 	R.hands.icon_state = initial(R.hands.icon_state)
 
@@ -72,6 +75,9 @@
 			if (R.shown_robot_modules)
 				R.shown_robot_modules = !R.shown_robot_modules
 				R.hud_used.update_robot_modules_display()
+			if(R.restore_modtype_in_global_pull)
+				GLOB.robot_module_types |= R.modtype
+				R.restore_modtype_in_global_pull = FALSE
 			R.module.Reset(R)
 			qdel(R.module)
 			R.module = null
