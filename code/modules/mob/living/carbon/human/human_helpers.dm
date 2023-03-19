@@ -68,8 +68,7 @@
 			client.view = world.view
 
 		if (client.pixel_x != 0 || client.pixel_y != 0)
-			client.pixel_y = 0
-			client.pixel_x = 0
+			shift_view(0, 0)
 
 /mob/living/carbon/human/proc/process_glasses(obj/item/clothing/glasses/G)
 	if(machine_visual && !istype(G, /obj/item/clothing/glasses/regular)) //Doesn't allow the use of night vision devices and other funny devices except glasses for vision correction

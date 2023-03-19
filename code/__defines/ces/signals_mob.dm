@@ -9,3 +9,6 @@
 
 /// Called on `/mob/living/set_stat` (/mob/living, old_stat, new_stat)
 #define SIGNAL_STAT_SET "set_stat"
+
+/// Called on `/mob/proc/shift_view` (/mob, old_stat, new_stat)
+#define SIGNAL_VIEW_SHIFTED_SET "view_shift_set"

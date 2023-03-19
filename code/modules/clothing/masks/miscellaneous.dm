@@ -79,6 +79,15 @@
 	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
 
+/obj/item/clothing/mask/uwu
+	name = "UwU mask"
+	desc = "Weaboo mask."
+	icon_state = "uwu"
+	item_state = "uwu"
+	body_parts_covered = 0
+	item_flags = 0
+	w_class = ITEM_SIZE_SMALL
+
 /obj/item/clothing/mask/redwscarf
 	name = "red white scarf"
 	desc = "A red and white checkered neck scarf."

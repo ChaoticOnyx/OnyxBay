@@ -12,6 +12,11 @@
 	display_name = "gloves, rainbow"
 	path = /obj/item/clothing/gloves/rainbow
 
+/datum/gear/gloves/fingerless_gloves
+	display_name = "fingerless gloves, colored"
+	path = /obj/item/clothing/gloves/color/fingerless_gloves
+	flags = GEAR_HAS_COLOR_SELECTION
+
 /datum/gear/ring
 	display_name = "ring"
 	path = /obj/item/clothing/ring
@@ -45,4 +50,4 @@
 	path = /obj/item/clothing/gloves/color/long_evening_gloves
 	price = 8
 	flags = GEAR_HAS_COLOR_SELECTION
-	
+

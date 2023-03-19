@@ -251,3 +251,18 @@
 	armor = list(melee = 20, bullet = 20, laser = 20, energy = 15, bomb = 20, bio = 0)
 	siemens_coefficient = 0.6
 	electric = TRUE
+
+/obj/item/clothing/glasses/magma_dark_glasses
+	name = "dark gar glasses"
+	desc = "The coolest dark-colored glasses in the universe! At least according to ads."
+	icon_state = "magma_dark_glasses"
+
+/obj/item/clothing/glasses/magma_red_glasses
+	name = "red gar glasses"
+	desc = "The coolest red-colored glasses in the universe! At least according to ads."
+	icon_state = "magma_red_glasses"
+
+/obj/item/clothing/glasses/magma_dual_glasses
+	name = "dual gar glasses"
+	desc = "The coolest dual-colored glasses in the universe! At least according to ads."
+	icon_state = "magma_dual_glasses"

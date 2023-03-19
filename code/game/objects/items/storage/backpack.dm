@@ -447,3 +447,12 @@
 		slot_l_hand_str = "satchel",
 		slot_r_hand_str = "satchel",
 		)
+
+/obj/item/storage/backpack/shipack
+	name = "Spaceship backpack"
+	desc = "Some say that humanity conquered space inside such things. Today it has obviously broken but looks neat, and you can store your stuff inside."
+	icon_state = "shipack"
+	item_state_slots = list(
+		slot_l_hand_str = "shipack",
+		slot_r_hand_str = "shipack",
+		)
