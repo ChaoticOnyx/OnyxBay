@@ -218,9 +218,24 @@ macro "borghotkeymode"
 	elem 
 		name = "F12"
 		command = "F12"
-	elem 
-		name = "SHIFT+Up"
-		command = ".release_shift"
+	elem
+		name = "CTRL"
+		command = ".winset :map.right-click=true"
+	elem
+		name = "CTRL+UP"
+		command = ".winset :map.right-click=false"
+	elem
+		name = "SHIFT"
+		command = ".winset :map.right-click=true"
+	elem
+		name = "SHIFT+UP"
+		command = ".winset :map.right-click=false\n.release_shift"
+	elem
+		name = "ALT"
+		command = ".winset :map.right-click=true"
+	elem
+		name = "ALT+UP"
+		command = ".winset :map.right-click=false"
 
 macro "macro"
 	elem 
@@ -391,9 +406,24 @@ macro "macro"
 	elem 
 		name = "F12"
 		command = "F12"
-	elem 
-		name = "SHIFT+Up"
-		command = ".release_shift"
+	elem
+		name = "CTRL"
+		command = ".winset :map.right-click=true"
+	elem
+		name = "CTRL+UP"
+		command = ".winset :map.right-click=false"
+	elem
+		name = "SHIFT"
+		command = ".winset :map.right-click=true"
+	elem
+		name = "SHIFT+UP"
+		command = ".winset :map.right-click=false\n.release_shift"
+	elem
+		name = "ALT"
+		command = ".winset :map.right-click=true"
+	elem
+		name = "ALT+UP"
+		command = ".winset :map.right-click=false"
 
 macro "hotkeymode"
 	elem 
@@ -636,9 +666,24 @@ macro "hotkeymode"
 	elem 
 		name = "."
 		command = "move-down"
-	elem 
-		name = "SHIFT+Up"
-		command = ".release_shift"
+	elem
+		name = "CTRL"
+		command = ".winset :map.right-click=true"
+	elem
+		name = "CTRL+UP"
+		command = ".winset :map.right-click=false"
+	elem
+		name = "SHIFT"
+		command = ".winset :map.right-click=true"
+	elem
+		name = "SHIFT+UP"
+		command = ".winset :map.right-click=false\n.release_shift"
+	elem
+		name = "ALT"
+		command = ".winset :map.right-click=true"
+	elem
+		name = "ALT+UP"
+		command = ".winset :map.right-click=false"
 
 macro "borgmacro"
 	elem 
@@ -803,9 +848,24 @@ macro "borgmacro"
 	elem 
 		name = "F12"
 		command = "F12"
-	elem 
-		name = "SHIFT+Up"
-		command = ".release_shift"
+	elem
+		name = "CTRL"
+		command = ".winset :map.right-click=true"
+	elem
+		name = "CTRL+UP"
+		command = ".winset :map.right-click=false"
+	elem
+		name = "SHIFT"
+		command = ".winset :map.right-click=true"
+	elem
+		name = "SHIFT+UP"
+		command = ".winset :map.right-click=false\n.release_shift"
+	elem
+		name = "ALT"
+		command = ".winset :map.right-click=true"
+	elem
+		name = "ALT+UP"
+		command = ".winset :map.right-click=false"
 
 
 menu "menu"

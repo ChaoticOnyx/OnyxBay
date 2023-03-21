@@ -48,6 +48,25 @@
 	var/dragged = modifiers["drag"]
 	if(dragged && !modifiers[dragged])
 		return
+	if(modifiers["right"])
+		if(modifiers["shift"] && modifiers["ctrl"])
+			CtrlShiftRightClickOn(A)
+			return 1
+		if(modifiers["alt"] && modifiers["ctrl"])
+			CtrlAltRightClickOn(A)
+			return 1
+		if(modifiers["shift"] && modifiers["alt"])
+			ShiftAltRightClickOn(A)
+			return 1
+		if(modifiers["alt"])
+			AltRightClickOn(A)
+			return 1
+		if(modifiers["shift"])
+			ShiftRightClickOn(A)
+			return 1
+		if(modifiers["ctrl"])
+			CtrlRightClickOn(A)
+			return 1
 	if(modifiers["shift"] && modifiers["ctrl"])
 		CtrlShiftClickOn(A)
 		return 1
@@ -312,6 +331,72 @@
 	return
 
 /atom/proc/CtrlAltClick(mob/user)
+	return
+
+
+
+/*
+	Rclick.
+*/
+
+/*
+	Control+Rclick
+*/
+
+/mob/proc/CtrlRightClickOn(atom/A)
+	A.CtrlRightClick(src)
+
+/atom/proc/CtrlRightClick(mob/user)
+	return
+
+/*
+	Alt+Rclick
+*/
+
+/mob/proc/AltRightClickOn(atom/A)
+	A.AltRightClick(src)
+
+/atom/proc/AltRightClick(mob/user)
+	return
+
+/*
+	Shift+Rclick
+*/
+
+/mob/proc/ShiftRightClickOn(atom/A)
+	A.ShiftRightClick(src)
+
+/atom/proc/ShiftRightClick(mob/user)
+	return
+
+/*
+	Control+Alt+Rclick
+*/
+
+/mob/proc/CtrlAltRightClickOn(atom/A)
+	A.CtrlAltRightClick(src)
+
+/atom/proc/CtrlAltRightClick(mob/user)
+	return
+
+/*
+	Control+Shift+Rclick
+*/
+
+/mob/proc/CtrlShiftRightClickOn(atom/A)
+	A.CtrlShiftRightClick(src)
+
+/atom/proc/CtrlShiftRightClick(mob/user)
+	return
+
+/*
+	Shift+Alt+Rclick
+*/
+
+/mob/proc/ShiftAltRightClickOn(atom/A)
+	A.ShiftAltRightClick(src)
+
+/atom/proc/ShiftAltRightClick(mob/user)
 	return
 
 /*

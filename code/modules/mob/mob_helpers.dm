@@ -712,3 +712,22 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 				alert_overlay.layer = FLOAT_LAYER
 				alert_overlay.plane = FLOAT_PLANE
 				A.overlays += alert_overlay
+
+/mob/proc/shift_view(new_pixel_x = 0, new_pixel_y = 0, animate = 0)
+	if(!client)
+		is_view_shifted = FALSE
+		return
+
+	var/old_shifted = is_view_shifted
+	if(animate)
+		animate(client, pixel_x = new_pixel_x, pixel_y = new_pixel_y, time = 2, easing = SINE_EASING)
+	else
+		client.pixel_x = new_pixel_x
+		client.pixel_y = new_pixel_y
+
+	if(new_pixel_x == 0 && new_pixel_y == 0)
+		is_view_shifted = FALSE
+	else
+		is_view_shifted = TRUE
+
+	SEND_SIGNAL(src, SIGNAL_VIEW_SHIFTED_SET, src, old_shifted, is_view_shifted)
