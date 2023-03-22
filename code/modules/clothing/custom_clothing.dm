@@ -232,6 +232,7 @@
 	if(!new_color || new_color == color || usr.incapacitated())
 		return
 	color = new_color
+
 	var/mob/living/carbon/human/H = usr
 	ASSERT(istype(H))
 	H.update_underwear()
