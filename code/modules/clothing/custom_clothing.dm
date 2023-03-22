@@ -209,15 +209,7 @@
 	desc = "200% Organic, 100% Real Woman, and Only 50% Straight."
 	icon = 'icons/inv_slots/hidden/mob.dmi'
 	icon_state = "siliconetop"
-
-/obj/item/underwear/top/silicone_top/Initialize()
-	. = ..()
-
-	icon = 'icons/inv_slots/hidden/mob.dmi'
-	icon_state = "siliconetop"
 	color = "#ffffff"
-
-	update_icon()
 
 /obj/item/underwear/top/silicone_top/verb/change_color()
 	set name = "Change Color"
@@ -234,5 +226,4 @@
 	color = new_color
 
 	var/mob/living/carbon/human/H = usr
-	ASSERT(istype(H))
 	H.update_underwear()
