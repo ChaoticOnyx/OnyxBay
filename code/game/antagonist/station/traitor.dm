@@ -126,3 +126,11 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 	to_chat(killer, "<b>Your laws have been changed!</b>")
 	killer.set_zeroth_law(law, law_borg)
 	to_chat(killer, "New law: 0. [law]")
+
+/datum/antagonist/traitor/special_eligibility_check(datum/mind/player, override)
+	//check for ability to place uplink, to prevent naked guys from becoming traitors
+	if(override)
+		return TRUE
+	var/mob/living/carbon/human/H = player.current()
+	if(!istype(H))
+		return TRUE

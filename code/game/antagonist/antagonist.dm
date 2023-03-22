@@ -128,6 +128,12 @@
 				log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Either '[H.type]' is not an allowed type of mob or '[H.species]' is not an allowed species!")
 			else
 				log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not an allowed type of mob!")
+		else if(player.is_brigged())
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are brigged!")
+		else if(player.current.handcuffed)
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are handcuffed!")
+		else if(!special_eligibility_check())
+			log_debug_verbose("BCL: [key_name(player)] is not eligible to become a [role_text]: They have failed to pass special antag-type check! Look up previous log for more info.")
 		else
 			var/candidate_weight = get_candidate_weight(player)
 			if(candidate_weight == 0)
@@ -160,6 +166,12 @@
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are unconscious!")
 		else if(!is_mob_type_allowed(player))
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not allowed type of mob!")
+		else if(player.is_brigged())
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are brigged!")
+		else if(player.current.handcuffed)
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are handcuffed!")
+		else if(player.current.handcuffed)
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are handcuffed!")
 		else
 			var/candidate_weight = get_candidate_weight(player)
 			if(candidate_weight == 0)
@@ -181,6 +193,9 @@
 	if(!isStationLevel(player_zlevel))
 		return 50
 	return 100
+
+/datum/antagonist/proc/special_eligibility_check(datum/mind/player, override = FALSE)
+	return TRUE
 
 /datum/antagonist/proc/attempt_random_spawn()
 	update_current_antag_max(SSticker.mode)
