@@ -131,6 +131,9 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 	//check for ability to place uplink, to prevent naked guys from becoming traitors
 	if(override)
 		return TRUE
-	var/mob/living/carbon/human/H = player.current()
+	var/mob/living/carbon/human/H = player.current
 	if(!istype(H))
 		return TRUE
+
+	if(H.l_hand && H.r_hand)
+		return

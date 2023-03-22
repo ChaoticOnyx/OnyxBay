@@ -14,12 +14,21 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 /decl/uplink_source/proc/setup_uplink_source(mob/M, amount)
 	return SETUP_FAILED
 
+/decl/uplink_source/proc/check_source_setup(mob/M)
+	return FALSE
+
 /decl/uplink_source/pda
 	name = "PDA"
 	desc = NO_GUARANTEE_NO_EXTRA_COST_DESC("a PDA")
 
-/decl/uplink_source/pda/setup_uplink_source(mob/M, amount)
+/decl/uplink_source/pda/check_source_setup(mob/M)
 	var/obj/item/device/pda/P = find_in_mob(M, /obj/item/device/pda)
+	if(!P)
+		return FALSE
+	else return P
+
+/decl/uplink_source/pda/setup_uplink_source(mob/M, amount)
+	var/obj/item/device/pda/P = check_source_setup(M)
 	if(!P)
 		return SETUP_FAILED
 
@@ -34,8 +43,14 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 	name = "Radio"
 	desc = NO_GUARANTEE_NO_EXTRA_COST_DESC("a radio")
 
-/decl/uplink_source/radio/setup_uplink_source(mob/M, amount)
+/decl/uplink_source/radio/check_source_setup(mob/M)
 	var/obj/item/device/radio/R = find_in_mob(M, /obj/item/device/radio)
+	if(!R)
+		return FALSE
+	else return R
+
+/decl/uplink_source/radio/setup_uplink_source(mob/M, amount)
+	var/obj/item/device/radio/R = check_source_setup(M)
 	if(!R)
 		return SETUP_FAILED
 
@@ -59,11 +74,18 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 	name = "Implant"
 	desc = "Teleports an uplink implant into your head. Costs at least half the initial TC amount."
 
-/decl/uplink_source/implant/setup_uplink_source(mob/living/carbon/human/H, amount)
+/decl/uplink_source/implant/check_source_setup(mob/living/carbon/human/H)
 	if(!istype(H))
-		return SETUP_FAILED
+		return FALSE
 
 	var/obj/item/organ/external/head = H.organs_by_name[BP_HEAD]
+	if(!head)
+		return FALSE
+
+	return head
+
+/decl/uplink_source/implant/setup_uplink_source(mob/living/carbon/human/H, amount)
+	var/obj/item/organ/external/head = check_source_setup(H)
 	if(!head)
 		return SETUP_FAILED
 
@@ -78,6 +100,11 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 /decl/uplink_source/unit
 	name = "Uplink Unit"
 	desc = "Teleports an uplink unit to your location. Grants you three extra TCs."
+
+/decl/uplink_source/unit/check_source_setup(mob/M)
+
+	return TRUE
+
 
 /decl/uplink_source/unit/setup_uplink_source(mob/M, amount)
 	var/obj/item/device/radio/uplink/U = new(M, M.mind, round(amount * 1.25))
