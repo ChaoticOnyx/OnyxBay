@@ -77,10 +77,10 @@
 		else
 			obj_flags &= (~OBJ_FLAG_CONDUCTIBLE)
 		if(material.reagent_path)
-			clear_reagents()
 			if(!reagents)
 				create_reagents(material_amount * REAGENTS_PER_MATERIAL_SHEET)
 			else
+				clear_reagents()
 				reagents.maximum_volume = material_amount * REAGENTS_PER_MATERIAL_SHEET
 			reagents.add_reagent(material.reagent_path, material_amount * REAGENTS_PER_MATERIAL_SHEET)
 		update_force()
