@@ -50,8 +50,7 @@
 	if(..())
 		return
 	if(!anchored)
-		to_chat(usr, "<span class='warning'>The generator needs to be secured first.</span>")
-		to_chat(user, SPAN_WARNING(The generator needs to be secured first.))
+		to_chat(user, SPAN_WARNING("The generator needs to be secured first."))
 		return
 
 /obj/machinery/power/port_gen/_examine_text(mob/user)
