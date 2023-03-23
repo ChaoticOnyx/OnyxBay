@@ -23,9 +23,7 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 
 /decl/uplink_source/pda/check_source_setup(mob/M)
 	var/obj/item/device/pda/P = find_in_mob(M, /obj/item/device/pda)
-	if(!P)
-		return FALSE
-	else return P
+	return (P ? P : FALSE)
 
 /decl/uplink_source/pda/setup_uplink_source(mob/M, amount)
 	var/obj/item/device/pda/P = check_source_setup(M)
@@ -45,9 +43,7 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 
 /decl/uplink_source/radio/check_source_setup(mob/M)
 	var/obj/item/device/radio/R = find_in_mob(M, /obj/item/device/radio)
-	if(!R)
-		return FALSE
-	else return R
+	return (R ? R : FALSE)
 
 /decl/uplink_source/radio/setup_uplink_source(mob/M, amount)
 	var/obj/item/device/radio/R = check_source_setup(M)
@@ -79,10 +75,8 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 		return FALSE
 
 	var/obj/item/organ/external/head = H.organs_by_name[BP_HEAD]
-	if(!head)
-		return FALSE
 
-	return head
+	return (head ? head : FALSE)
 
 /decl/uplink_source/implant/setup_uplink_source(mob/living/carbon/human/H, amount)
 	var/obj/item/organ/external/head = check_source_setup(H)
@@ -102,10 +96,7 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 	desc = "Teleports an uplink unit to your location. Grants you three extra TCs."
 
 /decl/uplink_source/unit/check_source_setup(mob/M)
-	if(!M.back)
-		return FALSE
-	return TRUE
-
+	return (M.back ? TRUE : FALSE)
 
 /decl/uplink_source/unit/setup_uplink_source(mob/M, amount)
 	var/obj/item/device/radio/uplink/U = new(M, M.mind, round(amount * 1.25))
