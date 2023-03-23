@@ -25,6 +25,7 @@
 	..()
 	initialize_directions_he = initialize_directions	// The auto-detection from /pipe is good enough for a simple HE pipe
 	color = "#404040" //we don't make use of the fancy overlay system for colours, use this to set the default.
+	START_PROCESSING(SSmachines, src)
 
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging/atmos_init()
 	..()
