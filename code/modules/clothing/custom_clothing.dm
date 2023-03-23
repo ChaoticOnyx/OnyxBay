@@ -224,7 +224,7 @@
 		H.gender = FEMALE
 
 	var/datum/body_build/BB
-	var/datum/species/S = = all_species[H.get_species()]
+	var/datum/species/S = all_species[H.get_species()]
 	if(!istype(S))
 		return ..()
 	switch(H.get_species())
