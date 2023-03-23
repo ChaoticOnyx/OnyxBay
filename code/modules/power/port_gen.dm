@@ -46,11 +46,12 @@
 	else
 		icon_state = "[initial(icon_state)]on"
 
-/obj/machinery/power/port_gen/attack_hand(mob/user as mob)
+/obj/machinery/power/port_gen/attack_hand(mob/user)
 	if(..())
 		return
 	if(!anchored)
 		to_chat(usr, "<span class='warning'>The generator needs to be secured first.</span>")
+		to_chat(user, SPAN_WARNING(The generator needs to be secured first.))
 		return
 
 /obj/machinery/power/port_gen/_examine_text(mob/user)
@@ -58,9 +59,9 @@
 	if(get_dist(src, user) > 1)
 		return
 	if(active)
-		. += "\n<span class='notice'>The generator is on.</span>"
+		. += "\n[SPAN_NOTICE("\The [src] is on.")]"
 	else
-		. += "\n<span class='notice'>The generator is off.</span>"
+		. += "\n[SPAN_NOTICE("\The [src] is off.")]"
 
 /obj/machinery/power/port_gen/emp_act(severity)
 	if(!active)
@@ -153,9 +154,9 @@
 	. += "\n\The [src] appears to be producing [power_gen*power_output] W."
 	. += "\nThere [sheets == 1 ? "is" : "are"] [sheets] sheet\s left in the hopper."
 	if(IsBroken())
-		. += "\n<span class='warning'>\The [src] seems to have broken down.</span>"
+		. += "\n[SPAN_WARNING("\The [src] seems to have broken down.")]"
 	if(overheating)
-		. += "\n<span class='danger'>\The [src] is overheating!</span>"
+		. += "\n[SPAN_DANGER("\The [src] is overheating!")]"
 
 /obj/machinery/power/port_gen/pacman/HasFuel()
 	var/needed_sheets = power_output / time_per_sheet
@@ -307,13 +308,13 @@
 			new_frame.icon_state = "box_1"
 			qdel(src)
 
-/obj/machinery/power/port_gen/pacman/attack_hand(mob/user as mob)
+/obj/machinery/power/port_gen/pacman/attack_hand(mob/user)
 	..()
 	if (!anchored)
 		return
 	ui_interact(user)
 
-/obj/machinery/power/port_gen/pacman/attack_ai(mob/user as mob)
+/obj/machinery/power/port_gen/pacman/attack_ai(mob/user)
 	ui_interact(user)
 
 /obj/machinery/power/port_gen/pacman/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
