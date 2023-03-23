@@ -127,13 +127,16 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 	killer.set_zeroth_law(law, law_borg)
 	to_chat(killer, "New law: 0. [law]")
 
-/datum/antagonist/traitor/special_eligibility_check(datum/mind/player, override)
-	//check for ability to place uplink, to prevent naked guys from becoming traitors
-	if(override)
-		return TRUE
+
+/datum/antagonist/traitor/check_candidate(datum/mind/player)
+	if(!..())
+		return FALSE
 	var/mob/living/carbon/human/H = player.current
 	if(!istype(H))
 		return TRUE
 
-	if(H.l_hand && H.r_hand)
-		return
+	if(!check_uplink_source(H))
+		log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Can't set up uplink source!")
+		return FALSE
+
+	return TRUE

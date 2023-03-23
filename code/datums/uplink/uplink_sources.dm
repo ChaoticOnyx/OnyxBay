@@ -102,7 +102,8 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 	desc = "Teleports an uplink unit to your location. Grants you three extra TCs."
 
 /decl/uplink_source/unit/check_source_setup(mob/M)
-
+	if(!M.back)
+		return FALSE
 	return TRUE
 
 
@@ -154,6 +155,20 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 			return TRUE
 
 	to_chat(M, "<span class='warning'>Either by choice or circumstance you will be without an uplink.</span>")
+	return FALSE
+
+/proc/check_uplink_source(mob/M)
+	if(!istype(M) || !M.mind)
+		return FALSE
+
+	var/list/sources_list = list()
+	for(var/entry in GLOB.default_uplink_source_priority)
+		sources_list += decls_repository.get_decl(entry)
+
+	for(var/entry in sources_list)
+		var/decl/uplink_source/source = entry
+		if(source.check_source_setup(M))
+			return TRUE
 	return FALSE
 
 #undef NO_GUARANTEE_NO_EXTRA_COST_DESC
