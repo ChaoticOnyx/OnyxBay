@@ -210,6 +210,46 @@
 	icon = 'icons/inv_slots/hidden/mob.dmi'
 	icon_state = "siliconetop"
 	color = "#ffffff"
+	var/buffered_gender
+	var/datum/body_build/buffered_build
+
+/obj/item/underwear/top/silicone_top/ForceEquipUnderwear(mob/user)
+	var/mob/living/carbon/human/H = usr
+
+	buffered_gender = H.gender
+	buffered_build = H.body_build
+
+	if(H.gender != FEMALE)
+		buffered_gender = H.gender
+		H.gender = FEMALE
+
+	var/datum/body_build/BB
+	switch(H.get_species())
+		if(SPECIES_TAJARA)
+			BB = new /datum/body_build/slim/alt/tajaran
+		if(SPECIES_UNATHI)
+			BB = new /datum/body_build/unathi
+		else
+			BB = new /datum/body_build/slim
+
+	H.change_body_build(BB)
+
+	return ..()
+
+/obj/item/underwear/top/silicone_top/RemoveUnderwear(mob/user)
+	.=..()
+	if(!.)
+		return FALSE
+
+	var/mob/living/carbon/human/H = usr
+
+	H.gender = buffered_gender
+	H.change_body_build(buffered_build)
+
+	buffered_build = null
+	buffered_gender = null
+
+	return TRUE
 
 /obj/item/underwear/top/silicone_top/verb/change_color()
 	set name = "Change Color"
@@ -224,6 +264,5 @@
 	if(!new_color || new_color == color || usr.incapacitated())
 		return
 	color = new_color
-
 	var/mob/living/carbon/human/H = usr
 	H.update_underwear()
