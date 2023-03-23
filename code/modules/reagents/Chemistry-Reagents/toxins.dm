@@ -295,7 +295,7 @@
 /datum/reagent/mutagen
 	name = "Unstable mutagen"
 	description = "Might cause unpredictable mutations. Keep away from children."
-	taste_description = "metroid"
+	taste_description = "slime"
 	taste_mult = 0.9
 	reagent_state = LIQUID
 	color = "#13bc5e"

@@ -306,7 +306,7 @@
 /datum/reagent/lube // TODO: spraying on borgs speeds them up
 	name = "Space Lube"
 	description = "Lubricant is a substance introduced between two moving surfaces to reduce the friction and wear between them. giggity."
-	taste_description = "metroid"
+	taste_description = "slime"
 	reagent_state = LIQUID
 	color = "#009ca8"
 

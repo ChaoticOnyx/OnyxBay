@@ -187,7 +187,7 @@
 /datum/reagent/nutriment/cornoil
 	name = "Corn Oil"
 	description = "An oil derived from various types of corn."
-	taste_description = "metroid"
+	taste_description = "slime"
 	taste_mult = 0.1
 	reagent_state = LIQUID
 	nutriment_factor = 20
