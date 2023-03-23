@@ -93,7 +93,7 @@
 		adjustCloneLoss(-1)
 		adjustBruteLoss(-1)
 
-	if (src.stat == DEAD)
+	if (src.is_ic_dead())
 		src.lying = 1
 		src.blinded = 1
 	else

@@ -175,13 +175,13 @@
 		msg += "[T.He] [T.is] small halfling!\n"
 
 	var/distance = 0
-	if(isghost(user) || user?.stat == DEAD) // ghosts can see anything
+	if(isghost(user) || user?.is_ooc_dead()) // ghosts can see anything
 		distance = 1
 	else
 		distance = get_dist(user,src)
 	if(src.stat)
 		msg += SPAN("warning", "[T.He] [T.is]n't responding to anything around [T.him] and seems to be unconscious.\n")
-		if((stat == DEAD || is_asystole() || src.losebreath) && distance <= 3)
+		if((is_ic_dead() || is_asystole() || src.losebreath) && distance <= 3)
 			msg += SPAN("warning", "[T.He] [T.does] not appear to be breathing.\n")
 		if(user && ishuman(user) && !user.incapacitated() && Adjacent(user))
 			spawn(0)

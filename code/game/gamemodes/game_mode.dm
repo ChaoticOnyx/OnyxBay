@@ -411,7 +411,7 @@ var/global/list/additional_antag_types = list()
 				if(L.stat == UNCONSCIOUS)
 					msg += "<b>[L.name]</b> ([L.ckey]), the [L.job] (Dying)\n"
 					continue //Unconscious
-				if(L.stat == DEAD)
+				if(L.is_ooc_dead())
 					msg += "<b>[L.name]</b> ([L.ckey]), the [L.job] (Dead)\n"
 					continue //Dead
 
@@ -419,7 +419,7 @@ var/global/list/additional_antag_types = list()
 		for(var/mob/observer/ghost/D in SSmobs.mob_list)
 			var/mob/living/original_mob = D.mind?.original_mob?.resolve()
 			if(D.mind && ((istype(original_mob) && original_mob == L) || D.mind.current == L))
-				if(L.stat == DEAD)
+				if(L.is_ooc_dead())
 					msg += "<b>[L.name]</b> ([ckey(D.mind.key)]), the [L.job] (Dead)\n"
 					continue //Dead mob, ghost abandoned
 				else

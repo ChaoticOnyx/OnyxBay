@@ -266,7 +266,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 						SPAN_WARNING("[buckled_mob]'s hands are desperately clutching the noose."),\
 						SPAN_WARNING("[buckled_mob]'s limbs sway back and forth with diminishing strength."))
 
-					if(buckled_mob.stat == DEAD)
+					if(buckled_mob.is_ic_dead())
 						flavor_text = list(\
 							SPAN_WARNING("[buckled_mob]'s limbs lifelessly sway back and forth."),\
 							SPAN_WARNING("[buckled_mob]'s eyes stare straight ahead."))
@@ -283,7 +283,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 
 		buckled_mob.adjustOxyLoss(3)
 		buckled_mob.silent = max(buckled_mob.silent, 10)
-		if(!(H.silent && H.stat) && prob(10))
+		if(!(H.silent && !H.is_ic_dead()) && prob(10))
 			buckled_mob.emote("gasp")
 
 	set_next_think(world.time + 1 SECOND)

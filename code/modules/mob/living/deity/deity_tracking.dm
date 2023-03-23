@@ -18,7 +18,7 @@
 		follow_follower(choice)
 
 /mob/living/deity/proc/follow_follower(mob/living/L)
-	if(!L || L.stat == DEAD || !is_follower(L, silent=1))
+	if(!L || L.is_ic_dead() || !is_follower(L, silent=1))
 		return
 	if(following)
 		stop_follow()

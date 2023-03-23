@@ -56,7 +56,7 @@
 	var/role = ply.assigned_role ? "[ply.assigned_role]" : (ply.special_role ? "[ply.special_role]" : "unknown role")
 	var/text = "<br><b>[ply.name]</b> (<b>[ply.key]</b>) as \a <b>[role]</b> ("
 	if(ply.current)
-		if(ply.current.stat == DEAD)
+		if(ply.current.is_ooc_dead())
 			text += "died"
 		else if(!isStationLevel(ply.current.z))
 			text += "fled"

@@ -351,7 +351,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 /proc/active_ais()
 	. = list()
 	for(var/mob/living/silicon/ai/A in GLOB.living_mob_list_)
-		if(A.stat == DEAD)
+		if(A.is_ooc_dead())
 			continue
 		if(A.control_disabled == 1)
 			continue
@@ -386,7 +386,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 		var/mob/M = old_list[named]
 		if(issilicon(M))
 			AI_list |= M
-		else if(isghost(M) || M.stat == DEAD)
+		else if(isghost(M) || M.is_ooc_dead())
 			Dead_list |= M
 		else if(M.key && M.client)
 			keyclient_list |= M
@@ -420,7 +420,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 			namecounts[name] = 1
 		if (M.real_name && M.real_name != M.name)
 			name += " \[[M.real_name]\]"
-		if (M.stat == DEAD)
+		if (M.is_ooc_dead())
 			if(isobserver(M))
 				name += " \[observer\]"
 			else

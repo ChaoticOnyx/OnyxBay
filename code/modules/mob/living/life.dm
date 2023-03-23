@@ -188,7 +188,7 @@
 /mob/living/proc/handle_vision()
 	update_sight()
 
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return
 
 	if(eye_blind)
@@ -214,7 +214,7 @@
 		reset_view(null)
 
 /mob/living/proc/update_sight()
-	if(stat == DEAD || eyeobj)
+	if(is_ooc_dead() || eyeobj)
 		update_dead_sight()
 	else
 		update_living_sight()

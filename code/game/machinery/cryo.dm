@@ -295,7 +295,7 @@
 	if(air_contents.total_moles < 10)
 		return
 	if(occupant)
-		if(occupant.stat == DEAD)
+		if(occupant.is_ic_dead())
 			return
 
 		// Just empty a cryo if occupant isn't here

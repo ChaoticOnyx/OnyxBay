@@ -122,7 +122,7 @@
 
 // Checks if the mob is participating in the round sufficiently to vote, as per config settings.
 /datum/vote/proc/mob_not_participating(mob/voter)
-	if(config.vote.no_dead_vote && voter.stat == DEAD && !voter.client.holder)
+	if(config.vote.no_dead_vote && voter.is_ooc_dead() && !voter.client.holder)
 		return 1
 
 //null = no toggle set. This is for UI purposes; a text return will give a link (toggle; currently "return") in the vote panel.

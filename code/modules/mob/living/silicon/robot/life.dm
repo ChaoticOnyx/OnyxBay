@@ -69,7 +69,7 @@
 /mob/living/silicon/robot/handle_regular_status_updates()
 
 	if(camera && !scrambledcodes)
-		if(stat == DEAD || wires.IsIndexCut(BORG_WIRE_CAMERA))
+		if(is_ic_dead() || wires.IsIndexCut(BORG_WIRE_CAMERA))
 			camera.set_status(0)
 		else
 			camera.set_status(1)
@@ -275,7 +275,7 @@
 	if(client)
 		clear_fullscreen("flash_protection")
 		client.screen.Remove(GLOB.global_hud.nvg, GLOB.global_hud.thermal, GLOB.global_hud.meson, GLOB.global_hud.science, GLOB.global_hud.material)
-		if(stat == DEAD || (MUTATION_XRAY in mutations) || (sensor_mode == XRAY_VISION))
+		if(is_ooc_dead() || (MUTATION_XRAY in mutations) || (sensor_mode == XRAY_VISION))
 			set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
 			set_see_in_dark(8)
 			set_see_invisible(SEE_INVISIBLE_LEVEL_TWO)

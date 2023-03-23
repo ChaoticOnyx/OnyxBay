@@ -593,7 +593,7 @@
 	//SSD check, if a logged player is awake put them back to sleep!
 	if(ssd_check() && species.get_ssd(src))
 		Sleeping(2)
-	if(stat == DEAD)	//DEAD. BROWN BREAD. SWIMMING WITH THE SPESS CARP
+	if(is_ic_dead())	//DEAD. BROWN BREAD. SWIMMING WITH THE SPESS CARP
 		blinded = 1
 		silent = 0
 	else				//ALIVE. LIGHTS ARE ON
@@ -942,7 +942,7 @@
 				continue
 			if(iscarbon(a)|| isanimal(a))
 				var/mob/living/M = a
-				if(M.stat == DEAD)
+				if(M.is_ic_dead())
 					M.death(1)
 					stomach_contents.Remove(M)
 					qdel(M)
@@ -1043,7 +1043,7 @@
 /mob/living/carbon/human/proc/handle_hud_list()
 	if(BITTEST(hud_updateflag, HEALTH_HUD) && hud_list[HEALTH_HUD])
 		var/image/holder = hud_list[HEALTH_HUD]
-		if(stat == DEAD || status_flags & FAKEDEATH || (isundead(src) && !isfakeliving(src)))
+		if(is_ic_dead() || status_flags & FAKEDEATH || (isundead(src) && !isfakeliving(src)))
 			holder.icon_state = "0" 	// X_X
 		else if(is_asystole())
 			holder.icon_state = "flatline"
@@ -1053,7 +1053,7 @@
 
 	if(BITTEST(hud_updateflag, LIFE_HUD) && hud_list[LIFE_HUD])
 		var/image/holder = hud_list[LIFE_HUD]
-		if(stat == DEAD || status_flags & FAKEDEATH || (isundead(src) && !isfakeliving(src)))
+		if(is_ic_dead() || status_flags & FAKEDEATH || (isundead(src) && !isfakeliving(src)))
 			holder.icon_state = "huddead"
 		else
 			holder.icon_state = "hudhealthy"
@@ -1067,7 +1067,7 @@
 				break
 
 		var/image/holder = hud_list[STATUS_HUD]
-		if(stat == DEAD || (isundead(src) && !isfakeliving(src)))
+		if(is_ic_dead() || (isundead(src) && !isfakeliving(src)))
 			holder.icon_state = "huddead"
 		else if(status_flags & XENO_HOST)
 			holder.icon_state = "hudxeno"
@@ -1083,7 +1083,7 @@
 			holder.icon_state = "hudhealthy"
 
 		var/image/holder2 = hud_list[STATUS_HUD_OOC]
-		if(stat == DEAD || (isundead(src) && !isfakeliving(src)))
+		if(is_ic_dead() || (isundead(src) && !isfakeliving(src)))
 			holder2.icon_state = "huddead"
 		else if(status_flags & XENO_HOST)
 			holder2.icon_state = "hudxeno"

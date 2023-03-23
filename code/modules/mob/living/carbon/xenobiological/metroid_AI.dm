@@ -110,7 +110,7 @@
 	return 0
 
 /mob/living/carbon/metroid/proc/handle_AI()  // the master AI process
-	if(stat == DEAD || client || Victim)
+	if(is_ic_dead() || client || Victim)
 		AIproc = 0
 		return // If we're dead or have a client, we don't need AI, if we're feeding, we continue feeding
 
@@ -293,7 +293,7 @@
 		for (var/mob/living/carbon/M in view(7,src))
 			if (ismetroid(M))
 				++metroids_near
-				if (M.stat == DEAD)
+				if (M.is_ic_dead())
 					++dead_metroids
 			if (M in Friends)
 				t += 20

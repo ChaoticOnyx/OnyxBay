@@ -473,7 +473,7 @@
 			soul = O
 			break
 	while(user)
-		if(user.stat == DEAD)
+		if(user.is_ooc_dead())
 			return
 		if(user.key)
 			return
@@ -583,7 +583,7 @@
 			if(H.is_asystole())
 				H.adjustBrainLoss(2 + casters.len)
 		sleep(40)
-	if(victim && victim.loc == T && victim.stat == DEAD)
+	if(victim && victim.loc == T && victim.is_ic_dead())
 		GLOB.cult.add_cultiness(CULTINESS_PER_SACRIFICE)
 		var/obj/item/device/soulstone/full/F = new(get_turf(src))
 		for(var/mob/M in cultists | get_cultists())
@@ -852,7 +852,7 @@
 	var/mob/living/carbon/human/target
 	var/obj/item/device/soulstone/source
 	for(var/mob/living/carbon/human/M in get_turf(src))
-		if(M.stat == DEAD)
+		if(M.is_ic_dead())
 			if(iscultist(M))
 				if(M.key)
 					target = M

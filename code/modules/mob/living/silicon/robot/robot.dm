@@ -423,7 +423,7 @@
 	set category = "Silicon Commands"
 	set name = "Toggle Lights"
 
-	if(stat == DEAD)
+	if(is_ic_dead())
 		return
 
 	lights_on = !lights_on
@@ -1274,7 +1274,7 @@
 			return 1
 
 /mob/living/silicon/robot/blob_act(damage)
-	if(is_dead())
+	if(is_ic_dead())
 		gib()
 		return
 

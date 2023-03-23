@@ -84,7 +84,7 @@
 /mob/living/carbon/brain/handle_regular_status_updates()	//TODO: comment out the unused bits >_>
 	updatehealth()
 
-	if(stat == DEAD)	//DEAD. BROWN BREAD. SWIMMING WITH THE SPESS CARP
+	if(is_ooc_dead())	//DEAD. BROWN BREAD. SWIMMING WITH THE SPESS CARP
 		blinded = 1
 		silent = 0
 	else				//ALIVE. LIGHTS ARE ON

@@ -937,7 +937,7 @@
 		return
 
 	if (isfakeliving(user))
-		if (user.stat == DEAD)
+		if (user.is_ooc_dead())
 			to_chat(user, SPAN_WARNING("You cannot appear alive while dead"))
 			user.status_flags &= ~FAKELIVING
 

@@ -20,7 +20,7 @@
 			var/mob/living/carbon/human/H = L
 			if(H.should_have_organ(BP_HEART))
 				multiplier++
-		if(L.stat == DEAD)
+		if(L.is_ic_dead())
 			to_chat(user, "<span class='warning'>\The [a] is already dead! There is nothing to take!</span>")
 			return
 

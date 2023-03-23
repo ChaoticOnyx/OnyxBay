@@ -128,7 +128,7 @@
 	return
 
 /mob/living/follow_suffix()
-	return stat == DEAD ? "\[DEAD\]" : ..()
+	return is_ooc_dead() ? "\[DEAD\]" : ..()
 
 // If you wish for objects to have coordinates you can simply uncomment the lines below
 //  , just keep in mind that tracking is based on name which makes following something that moves often a bit of a pain (even with the 3 second cache).

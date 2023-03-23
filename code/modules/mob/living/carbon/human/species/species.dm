@@ -517,7 +517,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	H.set_sight(H.sight|get_vision_flags(H)|H.equipment_vision_flags)
 	H.change_light_color(darksight_tint)
 
-	if(H.stat == DEAD)
+	if(H.is_ooc_dead())
 		return 1
 
 	if(!H.druggy)

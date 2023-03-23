@@ -100,7 +100,7 @@ REAGENT SCANNER
 	if(H.should_have_organ(BP_BRAIN))
 		if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/posibrain))
 			brain_result = SPAN("danger", "ERROR - No organic tissue found")
-		else if(!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH) || (isundead(H) && !isfakeliving(H)))
+		else if(!brain || H.is_ic_dead() || (H.status_flags & FAKEDEATH) || (isundead(H) && !isfakeliving(H)))
 			brain_result = SPAN("danger", "none, patient is braindead")
 		else if(H.stat != DEAD)
 			switch(brain.get_current_damage_threshold())
@@ -120,7 +120,7 @@ REAGENT SCANNER
 		brain_result = SPAN("danger", "ERROR - Nonstandard biology")
 	brain_data += "<span class='notice'>Brain activity:</span> [brain_result]."
 
-	if(brain && (H.stat == DEAD || (H.status_flags & FAKEDEATH)))
+	if(brain && (H.is_ic_dead() || (H.status_flags & FAKEDEATH)))
 		brain_data += SPAN("notice", "<b>Time of Death:</b> [worldtime2stationtime(H.timeofdeath)]")
 
 	if(H.internal_organs_by_name[BP_STACK])

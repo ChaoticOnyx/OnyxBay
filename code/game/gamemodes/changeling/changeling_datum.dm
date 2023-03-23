@@ -55,7 +55,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		set_next_think(world.time + 1 SECOND)
 		reset_my_mob(null)
 		return
-	if(!my_mob || my_mob.stat == DEAD || my_mob.InStasis())
+	if(!my_mob || my_mob.is_ooc_dead() || my_mob.InStasis())
 		set_next_think(world.time + 1 SECOND)
 		return
 
@@ -104,7 +104,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
-		if(H.stat == DEAD) // Resurrects dead bodies, yet doesn't heal damage
+		if(H.is_ooc_dead()) // Resurrects dead bodies, yet doesn't heal damage
 			H.setBrainLoss(0)
 			H.SetParalysis(0)
 			H.SetStunned(0)
