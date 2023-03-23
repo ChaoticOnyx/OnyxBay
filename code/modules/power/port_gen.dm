@@ -133,6 +133,10 @@
 	component_parts += new /obj/item/stock_parts/capacitor(src)
 	component_parts += new board_path(src)
 	RefreshParts()
+/obj/machinery/power/port_gen/pacman/dismantle()
+	while(sheets > 0)
+		DropFuel()
+	return ..()
 
 /obj/machinery/power/port_gen/pacman/Destroy()
 	DropFuel()
@@ -264,48 +268,30 @@
 		emagged = 1
 		return 1
 
-/obj/machinery/power/port_gen/pacman/attackby(obj/item/O as obj, mob/user as mob)
-	if(istype(O, sheet_path))
-		var/obj/item/stack/addstack = O
+/obj/machinery/power/port_gen/pacman/attackby(obj/item/W, mob/user)
+	if(istype(W, sheet_path))
+		var/obj/item/stack/addstack = W
 		var/amount = min((max_sheets - sheets), addstack.amount)
 		if(amount < 1)
-			to_chat(user, "<span class='notice'>The [src.name] is full!</span>")
+			to_chat(user, SPAN_NOTICE("The [src.name] is full!"))
 			return
-		to_chat(user, "<span class='notice'>You add [amount] sheet\s to the [src.name].</span>")
+		to_chat(user, SPAN_NOTICE("You add [amount] sheet\s to the [src.name]."))
 		sheets += amount
 		addstack.use(amount)
 		updateUsrDialog()
 		return
-	else if(!active)
-		if(isWrench(O))
 
-			if(!anchored)
-				connect_to_network()
-				to_chat(user, "<span class='notice'>You secure the generator to the floor.</span>")
-			else
-				disconnect_from_network()
-				to_chat(user, "<span class='notice'>You unsecure the generator from the floor.</span>")
+	if(active)
+		return
 
-			playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
-			anchored = !anchored
-
-		else if(isScrewdriver(O))
-			open = !open
-			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-			if(open)
-				to_chat(user, "<span class='notice'>You open the access panel.</span>")
-			else
-				to_chat(user, "<span class='notice'>You close the access panel.</span>")
-		else if(isCrowbar(O) && open)
-			var/obj/machinery/constructable_frame/machine_frame/new_frame = new /obj/machinery/constructable_frame/machine_frame(src.loc)
-			for(var/obj/item/I in component_parts)
-				I.loc = src.loc
-			while ( sheets > 0 )
-				DropFuel()
-
-			new_frame.state = 2
-			new_frame.icon_state = "box_1"
-			qdel(src)
+	if(isWrench(W))
+		playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
+		to_chat(user, SPAN_NOTICE("You [anchored ? "unwrench" : "wrench"] \the [src] [anchored ? "from" : "into"] place."))
+		anchored = !anchored
+	if(default_deconstruction_screwdriver(user, W))
+		return
+	if(default_deconstruction_crowbar(user, W))
+		return
 
 /obj/machinery/power/port_gen/pacman/attack_hand(mob/user)
 	..()
