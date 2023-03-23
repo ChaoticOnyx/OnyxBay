@@ -135,7 +135,7 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 	if(!istype(H))
 		return TRUE
 
-	if(!check_uplink_source(H))
+	if(!check_uplink_sources(H))
 		log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Can't set up uplink source!")
 		return FALSE
 

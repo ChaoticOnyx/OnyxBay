@@ -148,7 +148,7 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 	to_chat(M, "<span class='warning'>Either by choice or circumstance you will be without an uplink.</span>")
 	return FALSE
 
-/proc/check_uplink_source(mob/M)
+/proc/check_uplink_sources(mob/M)
 	if(!istype(M) || !M.mind)
 		return FALSE
 
