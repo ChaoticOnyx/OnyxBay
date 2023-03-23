@@ -213,9 +213,7 @@
 	var/buffered_gender
 	var/datum/body_build/buffered_build
 
-/obj/item/underwear/top/silicone_top/ForceEquipUnderwear(mob/user)
-	var/mob/living/carbon/human/H = usr
-
+/obj/item/underwear/top/silicone_top/ForceEquipUnderwear(mob/living/carbon/human/H, update_icons = TRUE)
 	buffered_gender = H.gender
 	buffered_build = H.body_build
 
@@ -243,8 +241,6 @@
 	.=..()
 	if(!.)
 		return FALSE
-
-	var/mob/living/carbon/human/H = usr
 
 	H.gender = buffered_gender
 	H.change_body_build(buffered_build)
