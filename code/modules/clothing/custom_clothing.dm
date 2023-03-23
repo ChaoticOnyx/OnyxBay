@@ -239,7 +239,7 @@
 
 	return ..()
 
-/obj/item/underwear/top/silicone_top/RemoveUnderwear(mob/user)
+/obj/item/underwear/top/silicone_top/RemoveUnderwear(mob/user, mob/living/carbon/human/H)
 	.=..()
 	if(!.)
 		return FALSE
