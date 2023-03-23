@@ -224,13 +224,16 @@
 		H.gender = FEMALE
 
 	var/datum/body_build/BB
+	var/datum/species/S = = all_species[H.get_species()]
+	if(!istype(S))
+		return ..()
 	switch(H.get_species())
 		if(SPECIES_TAJARA)
-			BB = new /datum/body_build/slim/alt/tajaran
+			BB = S.body_builds[2] // slim alt tajaran
 		if(SPECIES_UNATHI)
-			BB = new /datum/body_build/unathi
+			BB = S.body_builds[1] // unathi
 		else
-			BB = new /datum/body_build/slim
+			BB = S.body_builds[2] // slim for human and skrell
 
 	H.change_body_build(BB)
 
