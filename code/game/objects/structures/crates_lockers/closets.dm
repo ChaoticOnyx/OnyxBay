@@ -467,7 +467,7 @@
 		for(var/i in 1 to rand(4, 8))
 			user.visible_message(SPAN("warning", "[user] picks in wires of \the [name] with a multitool."),
 								 SPAN("warning", "I am trying to reset circuitry lock module ([i])..."))
-			if(!do_after(user, 200) || locked != prev_locked || opened || (!istype(src, /obj/structure/closet/crate) && dremovable && !cdoor))
+			if(!do_after(user, 200, src) || locked != prev_locked || opened || (!istype(src, /obj/structure/closet/crate) && dremovable && !cdoor))
 				multi.in_use = 0
 				return
 		locked = !locked
