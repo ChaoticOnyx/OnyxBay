@@ -72,7 +72,4 @@
 	return
 
 /obj/structure/librarycart/update_icon()
-	if(contents.len < 4)
-		icon_state = "library_cart-[contents.len]"
-	else
-		icon_state = "library_cart-4"
+	icon_state = "library_cart-[clamp(contents.len, 0, 4)]"
