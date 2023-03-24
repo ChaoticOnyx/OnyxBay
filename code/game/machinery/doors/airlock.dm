@@ -606,17 +606,17 @@ About the new airlock wires panel:
 		return brace.attackby(C, user)
 
 	if(!brace && istype(C, /obj/item/airlock_brace))
-		var/obj/item/airlock_brace/A = C
+		var/obj/item/airlock_brace/B = C
 		if(!density)
-			to_chat(user, "You must close \the [src] before installing \the [A]!")
+			to_chat(user, "You must close \the [src] before installing \the [B]!")
 			return
 
-		if((!A.req_access.len && !A.req_one_access) && (alert("\the [A]'s 'Access Not Set' light is flashing. Install it anyway?", "Access not set", "Yes", "No") == "No"))
+		if((!B.req_access.len && !B.req_one_access) && (alert("\the [B]'s 'Access Not Set' light is flashing. Install it anyway?", "Access not set", "Yes", "No") == "No"))
 			return
 
-		if(do_after(user, 50, src) && density && user.drop(brace, src))
-			to_chat(user, "You successfully install \the [A]. \The [src] has been locked.")
-			brace = A
+		if(do_after(user, 50, src) && density && user.drop(B, src))
+			to_chat(user, "You successfully install \the [B]. \The [src] has been locked.")
+			brace = B
 			brace.airlock = src
 			update_icon()
 		return
