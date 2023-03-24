@@ -96,7 +96,7 @@
 	if(M in Friends) // Ignore friends
 		return 0
 
-	if(M.stat != DEAD) // Checks for those we just want to attack
+	if(!M.is_ic_dead()) // Checks for those we just want to attack
 		if(rabid || attacked) // Will attack everything that isn't dead
 			return 1
 

@@ -237,7 +237,7 @@
 		to_chat(src, SPAN("changeling", "We are already infesting!"))
 		return
 
-	if(target.stat != DEAD && !target.is_asystole() && !target.incapacitated(INCAPACITATION_ALL))
+	if(!target.is_ic_dead() && !target.is_asystole() && !target.incapacitated(INCAPACITATION_ALL))
 		to_chat(src, SPAN("changeling", "We need our victim to be paralysed, dead or somehow else incapable of defending themself for us to latch on!"))
 		return
 

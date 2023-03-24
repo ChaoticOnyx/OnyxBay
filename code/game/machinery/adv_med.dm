@@ -373,7 +373,7 @@
 		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
 		if (!brain || H.is_ic_dead() || (H.status_flags & FAKEDEATH) || (isundead(H) && !isfakeliving(H)))
 			data["brain_activity"] = 0
-		else if (H.stat != DEAD)
+		else if (!H.is_ic_dead())
 			if (!brain.damage)
 				data["brain_activity"] = 1
 			else
@@ -526,7 +526,7 @@
 		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
 		if(!brain || H.is_ic_dead() || (H.status_flags & FAKEDEATH) || (isundead(H) && !isfakeliving(H)))
 			brain_result = SPAN("danger", "none, patient is braindead")
-		else if(H.stat != DEAD)
+		else if(!H.is_ic_dead())
 			brain_result = "[round(max(0, (1 - brain.damage/brain.max_damage) * 100))]%"
 	else
 		brain_result = SPAN("danger", "ERROR - Nonstandard biology")

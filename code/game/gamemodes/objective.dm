@@ -128,7 +128,7 @@ var/global/list/all_objectives = list()
 	return already_completed
 
 /datum/objective/anti_revolution/brig/update()
-	if(!already_completed && target && target.current && target.current.stat != DEAD)
+	if(!already_completed && target && target.current && !target.current.is_ic_dead())
 		if(target.is_brigged(10 MINUTES))
 			already_completed = 1
 
@@ -285,7 +285,7 @@ var/global/list/all_objectives = list()
 		if(player == owner.current)
 			continue
 		if(player.mind)
-			if(player.stat != DEAD)
+			if(!player.is_ooc_dead())
 				var/turf/T = get_turf(player)
 				if(T && is_type_in_list(T.loc, GLOB.using_map.post_round_safe_areas))
 					return 0
@@ -384,7 +384,7 @@ var/global/list/all_objectives = list()
 	return already_completed
 
 /datum/objective/brig/update()
-	if(!already_completed && target && target.current && target.current.stat != DEAD)
+	if(!already_completed && target && target.current && !target.current.is_ic_dead())
 		if(target.is_brigged(10 MINUTES))
 			already_completed = 1
 
@@ -908,7 +908,7 @@ var/global/list/all_objectives = list()
 /datum/objective/borer_survive/check_completion()
 	if(owner)
 		var/mob/living/simple_animal/borer/B = owner.current
-		if(istype(B) && B.stat != DEAD && B.host && B.host.stat != DEAD)
+		if(istype(B) && !B.is_ooc_dead() && B.host && !B.host.is_ooc_dead())
 			return 1
 	return 0
 

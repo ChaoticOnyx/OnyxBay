@@ -190,7 +190,7 @@ Works together with spawning an observer, noted above.
 		hide_fullscreens()
 		var/mob/observer/ghost/ghost = new(src)	//Transfer safety to observer spawning proc.
 		ghost.can_reenter_corpse = can_reenter_corpse
-		ghost.timeofdeath = src.stat == DEAD ? src.timeofdeath : world.time
+		ghost.timeofdeath = src.is_ooc_dead() ? src.timeofdeath : world.time
 		ghost.key = key
 		if(ghost.client && !ghost.client.holder && !config.ghost.allow_antag_hud)		// For new ghosts we remove the verb from even showing up if it's not allowed.
 			ghost.verbs -= /mob/observer/ghost/verb/toggle_antagHUD	// Poor guys, don't know what they are missing!
@@ -204,7 +204,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Ghost"
 	set desc = "Leave your body and enter the land of the dead."
 
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		announce_ghost_joinleave(ghostize(can_reenter_corpse = TRUE))
 		return
 
@@ -558,7 +558,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	return TRUE
 
 /proc/isghostmind(datum/mind/player)
-	return player && !isnewplayer(player.current) && (!player.current || isghost(player.current) || (isliving(player.current) && player.current.stat == DEAD) || !player.current.client)
+	return player && !isnewplayer(player.current) && (!player.current || isghost(player.current) || (isliving(player.current) && player.current.is_ooc_dead()) || !player.current.client)
 
 /mob/proc/check_is_holy_turf(turf/T)
 	return 0

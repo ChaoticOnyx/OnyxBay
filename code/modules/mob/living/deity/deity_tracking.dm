@@ -7,7 +7,7 @@
 	var/list/could_follow = list()
 	for(var/m in minions)
 		var/datum/mind/M = m
-		if(M.current && M.current.stat != DEAD)
+		if(M.current && !M.current.is_ic_dead())
 			could_follow += M.current
 
 	if(!could_follow.len)

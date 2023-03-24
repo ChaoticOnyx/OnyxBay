@@ -710,7 +710,7 @@
 		activate("death")
 	else if (broken)
 		qdel(src)
-	else if(host.stat != DEAD)
+	else if(!host.is_ooc_dead())
 		active = 1
 
 	set_next_think(world.time + 1 SECOND)

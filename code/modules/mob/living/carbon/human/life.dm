@@ -76,7 +76,7 @@
 	voice = GetVoice()
 
 	//No need to update all of these procs if the guy is dead.
-	if(stat != DEAD && !InStasis())
+	if(!is_ooc_dead() && !InStasis())
 		//Organs and blood
 		handle_organs()
 		handle_organs_pain()
@@ -193,7 +193,7 @@
 
 /mob/living/carbon/human/handle_disabilities()
 	..()
-	if(stat != DEAD)
+	if(!is_ic_dead())
 		if((disabilities & COUGHING) && prob(5) && paralysis <= 1)
 			if(prob(50))
 				drop_active_hand()
@@ -713,7 +713,7 @@
 	if(!..())
 		return
 
-	if(stat != DEAD)
+	if(!is_ic_dead())
 		if(stat == UNCONSCIOUS && health < maxHealth * 0.25)
 			//Critical damage passage overlay
 			var/severity = 0
@@ -919,7 +919,7 @@
 		vomit_score += 10 * chem_effects[CE_ALCOHOL_TOXIC]
 	if(chem_effects[CE_ALCOHOL])
 		vomit_score += 10
-	if(stat != DEAD && !isundead(src) && vomit_score > 25 && prob(10))
+	if(!is_ic_dead() && !isundead(src) && vomit_score > 25 && prob(10))
 		spawn vomit(1, vomit_score, vomit_score/25)
 
 	//0.1% chance of playing a scary sound to someone who's in complete darkness

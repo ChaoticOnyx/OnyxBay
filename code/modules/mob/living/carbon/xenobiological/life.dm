@@ -7,7 +7,7 @@
 
 	..()
 
-	if(stat != DEAD)
+	if(!is_ic_dead())
 		handle_nutrition()
 
 		if(!client)
@@ -79,7 +79,7 @@
 
 	health = maxHealth - (getOxyLoss() + getToxLoss() + getFireLoss() + getBruteLoss() + getCloneLoss())
 
-	if(health <= 0 && stat != DEAD)
+	if(health <= 0 && !is_ic_dead())
 		death()
 		return
 

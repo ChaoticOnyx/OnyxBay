@@ -214,7 +214,7 @@
 
 	var/mob/living/carbon/target = null
 	for(var/mob/living/carbon/M in get_turf(src))
-		if(!iscultist(M) && M.stat != DEAD)
+		if(!iscultist(M) && !M.is_ic_dead())
 			target = M
 			break
 
@@ -561,7 +561,7 @@
 		return fizzle(user)
 	var/turf/T = get_turf(src)
 	for(var/mob/living/M in T)
-		if(M.stat != DEAD && !iscultist(M))
+		if(!M.is_ic_dead() && !iscultist(M))
 			victim = M
 			break
 	if(!victim)
@@ -570,7 +570,7 @@
 	for(var/mob/living/M in cultists)
 		M.say("Barhah hra zar[pick("'","`")]garis!")
 
-	while(victim && victim.loc == T && victim.stat != DEAD)
+	while(victim && victim.loc == T && !victim.is_ic_dead())
 		var/list/mob/living/casters = get_cultists()
 		if(casters.len < 3)
 			break

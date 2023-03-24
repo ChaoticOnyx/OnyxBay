@@ -198,7 +198,7 @@
 		msg += SPAN("warning", "[T.He] [T.is] on fire!.\n")
 
 	var/ssd_msg = species.get_ssd(src)
-	if(ssd_msg && (!should_have_organ(BP_BRAIN) || has_brain()) && stat != DEAD)
+	if(ssd_msg && (!should_have_organ(BP_BRAIN) || has_brain()) && !is_ic_dead())
 		if(!key)
 			msg += SPAN("deadsay", "[T.He] [T.is] [ssd_msg]. It doesn't look like [T.he] [T.is] waking up anytime soon.\n")
 		else if(!client)

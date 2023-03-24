@@ -102,7 +102,7 @@ REAGENT SCANNER
 			brain_result = SPAN("danger", "ERROR - No organic tissue found")
 		else if(!brain || H.is_ic_dead() || (H.status_flags & FAKEDEATH) || (isundead(H) && !isfakeliving(H)))
 			brain_result = SPAN("danger", "none, patient is braindead")
-		else if(H.stat != DEAD)
+		else if(!H.is_ic_dead())
 			switch(brain.get_current_damage_threshold())
 				if(0)
 					brain_result = SPAN("notice", "normal")
@@ -163,7 +163,7 @@ REAGENT SCANNER
 	if(H.getBruteLoss() > 50)
 		status_data += "<font color='red'><b>Severe anatomical damage detected.</b></font>"
 
-	if(H.stat != DEAD)
+	if(!H.is_ic_dead())
 		// Traumatic shock.
 		if(H.is_asystole())
 			status_data += "<span class='danger'>Patient is suffering from cardiovascular shock. Administer CPR immediately.</span>"

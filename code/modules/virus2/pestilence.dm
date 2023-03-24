@@ -47,7 +47,7 @@
 /datum/ictus/space_migraine/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
-		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))
+		if(G.client && !G.is_ooc_dead() && !G.species.get_virus_immune(G))
 			candidates += G
 
 	if(!candidates.len)
@@ -89,7 +89,7 @@
 /datum/ictus/retrovirus/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
-		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))
+		if(G.client && !G.is_ooc_dead() && !G.species.get_virus_immune(G))
 			candidates += G
 
 	if(!candidates.len)
@@ -142,7 +142,7 @@
 /datum/ictus/gbs/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
-		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))
+		if(G.client && !G.is_ooc_dead() && !G.species.get_virus_immune(G))
 			candidates += G
 
 	if(!candidates.len)
@@ -189,7 +189,7 @@
 /datum/ictus/fake_gbs/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
-		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))
+		if(G.client && !G.is_ooc_dead() && !G.species.get_virus_immune(G))
 			candidates += G
 
 	if(!candidates.len)
@@ -231,7 +231,7 @@
 /datum/ictus/cold9/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
-		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))
+		if(G.client && !G.is_ooc_dead() && !G.species.get_virus_immune(G))
 			candidates += G
 
 	if(!candidates.len)
@@ -273,7 +273,7 @@
 /datum/ictus/nuclear/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
-		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))
+		if(G.client && !G.is_ooc_dead() && !G.species.get_virus_immune(G))
 			candidates += G
 
 	if(!candidates.len)
@@ -319,7 +319,7 @@
 /datum/ictus/flu/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
-		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))
+		if(G.client && !G.is_ooc_dead() && !G.species.get_virus_immune(G))
 			candidates += G
 
 	if(!candidates.len)
@@ -366,7 +366,7 @@
 /datum/ictus/fluspanish/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
-		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))
+		if(G.client && !G.is_ooc_dead() && !G.species.get_virus_immune(G))
 			candidates += G
 
 	if(!candidates.len)
@@ -408,7 +408,7 @@
 /datum/ictus/vulnerability/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
-		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))
+		if(G.client && !G.is_ooc_dead() && !G.species.get_virus_immune(G))
 			candidates += G
 
 	if(!candidates.len)
@@ -454,7 +454,7 @@
 /datum/ictus/emp/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
-		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))
+		if(G.client && !G.is_ooc_dead() && !G.species.get_virus_immune(G))
 			candidates += G
 
 	if(!candidates.len)
@@ -500,7 +500,7 @@
 /datum/ictus/xeno/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
-		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))
+		if(G.client && !G.is_ooc_dead() && !G.species.get_virus_immune(G))
 			candidates += G
 
 	if(!candidates.len)
@@ -542,7 +542,7 @@
 /datum/ictus/hisstarvation/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
-		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))
+		if(G.client && !G.is_ooc_dead() && !G.species.get_virus_immune(G))
 			candidates += G
 
 	if(!candidates.len)
@@ -584,7 +584,7 @@
 /datum/ictus/musclerace/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
-		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))
+		if(G.client && !G.is_ooc_dead() && !G.species.get_virus_immune(G))
 			candidates += G
 
 	if(!candidates.len)

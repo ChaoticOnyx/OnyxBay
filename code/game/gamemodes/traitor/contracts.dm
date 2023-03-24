@@ -317,7 +317,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		var/list/mob/living/silicon/ai/valid_AIs = list()
 		if(length(ai_list))
 			for(var/mob/living/silicon/ai/AI in ai_list)
-				if(AI.stat != DEAD)
+				if(!AI.is_ooc_dead())
 					valid_AIs.Add(AI)
 		if(!length(valid_AIs))
 			return

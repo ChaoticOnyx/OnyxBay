@@ -267,7 +267,7 @@
 /mob/living/simple_animal/corgi/proc/update_hat()
 	if(!hat)
 		return
-	if(stat == DEAD)
+	if(is_ic_dead())
 		overlays.Cut()
 		hat.dropInto(loc)
 		hat = null

@@ -23,7 +23,7 @@
 	// human/handle_regular_status_updates() needs a cleanup, as blindness should be handled in handle_disabilities()
 	handle_regular_status_updates() // Status & health update, are we dead or alive etc.
 
-	if(stat != DEAD)
+	if(!is_ic_dead())
 		aura_check(AURA_TYPE_LIFE)
 
 	//Check if we're on fire
@@ -76,7 +76,7 @@
 //This updates the health and status of the mob (conscious, unconscious, dead)
 /mob/living/proc/handle_regular_status_updates()
 	updatehealth()
-	if(stat != DEAD)
+	if(!is_ic_dead())
 		if(paralysis)
 			set_stat(UNCONSCIOUS)
 		else if (status_flags & FAKEDEATH)

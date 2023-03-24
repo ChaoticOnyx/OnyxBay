@@ -171,7 +171,7 @@
 		else
 			healths.icon_state = "health7"
 
-	if(stat != DEAD)
+	if(!is_ooc_dead())
 		if(blinded)
 			overlay_fullscreen("blind", /obj/screen/fullscreen/blind)
 		else
