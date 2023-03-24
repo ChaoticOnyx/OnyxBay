@@ -133,6 +133,7 @@
 	component_parts += new /obj/item/stock_parts/capacitor(src)
 	component_parts += new board_path(src)
 	RefreshParts()
+
 /obj/machinery/power/port_gen/pacman/dismantle()
 	while(sheets > 0)
 		DropFuel()
