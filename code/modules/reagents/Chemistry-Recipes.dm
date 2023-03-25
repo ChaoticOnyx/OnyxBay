@@ -455,7 +455,7 @@
 	result_amount = 3
 
 /datum/chemical_reaction/hair_grower
-	name = "Hair Remover"
+	name = "Hair Grower"
 	result = /datum/reagent/toxin/hair_grower
 	required_reagents = list(/datum/reagent/arithrazine = 1, /datum/reagent/potassium = 1, /datum/reagent/acid/polyacid = 1)
 	result_amount = 1

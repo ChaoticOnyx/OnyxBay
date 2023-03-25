@@ -750,11 +750,11 @@
 	if(alien)
 		remove_self(volume)
 		return
+	remove_self(volume)
 	M.h_style = "Sick"
 	M.f_style = "Great Beard"
 	M.update_hair()
 	to_chat(M, SPAN_WARNING("Your feel a chill, your skin feels heavier..."))
-	remove_self(volume)
 
 /datum/reagent/toxin/zombie
 	name = "Liquid Corruption"
