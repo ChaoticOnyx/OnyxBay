@@ -914,6 +914,7 @@
 			to_chat(src, "You have nothing stuck in your body that is large enough to remove.")
 		else
 			to_chat(U, "[src] has nothing stuck in their wounds that is large enough to remove.")
+		src.verbs -= /mob/proc/yank_out_object
 		return
 
 	var/obj/item/selection = input("What do you want to yank out?", "Embedded objects") in valid_objects
@@ -931,9 +932,6 @@
 		visible_message("<span class='warning'><b>[src] rips [selection] out of their body.</b></span>","<span class='warning'><b>You rip [selection] out of your body.</b></span>")
 	else
 		visible_message("<span class='warning'><b>[usr] rips [selection] out of [src]'s body.</b></span>","<span class='warning'><b>[usr] rips [selection] out of your body.</b></span>")
-	valid_objects = get_visible_implants(0)
-	if(valid_objects.len == 1) //Yanking out last object - removing verb.
-		src.verbs -= /mob/proc/yank_out_object
 
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
@@ -973,6 +971,11 @@
 			pinned -= O
 		if(!pinned.len)
 			anchored = 0
+
+	valid_objects = get_visible_implants(0)
+	if(!valid_objects.len)
+		src.verbs -= /mob/proc/yank_out_object
+
 	return 1
 
 //Check for brain worms in head.

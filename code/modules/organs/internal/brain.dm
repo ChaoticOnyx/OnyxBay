@@ -168,7 +168,7 @@
 
 				if(BLOOD_VOLUME_SAFE to INFINITY)
 					if(can_heal)
-						damage--
+						heal_damage(1)
 				if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
 					if(prob(1))
 						to_chat(owner, SPAN("warning", "You feel a bit [pick("dizzy","woozy","faint")]..."))

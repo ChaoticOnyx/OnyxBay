@@ -57,6 +57,7 @@
 
 /mob/living/simple_animal/hostile/alien/queen
 	name = "alien queen"
+	desc = "Her Majesty."
 	icon_state = "alienq_running"
 	icon_living = "alienq_running"
 	icon_dead = "alienq_dead"

@@ -458,7 +458,7 @@ REAGENT SCANNER
 	if (last_target && dat)
 		var/obj/item/paper/P = new /obj/item/paper/(get_turf(src))
 		P.set_content("<tt>[dat]</tt>", "Body scan report - [last_target]", TRUE)
-		src.visible_message("<span class='notice'>[src] prints out \the scan result.</span>")
+		src.visible_message("<span class='notice'>[src] prints out the scan result.</span>")
 
 
 /obj/item/device/analyzer

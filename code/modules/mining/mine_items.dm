@@ -58,9 +58,11 @@
 /obj/item/pickaxe/drill
 	name = "mining drill" //Can dig sand as well!
 	icon_state = "handdrill"
+	item_state = "jackhammer"
 	desc = "The most basic of mining drills, for short excavations and small mineral extractions."
 	power = 100 //It will remove the rock in one go, but SLOWLY
 	drill_verb = "drilling"
+	power = 100
 	var/digspeed = 40 //Delay to an item var so R&D can make improved drills
 
 /obj/item/pickaxe/silver

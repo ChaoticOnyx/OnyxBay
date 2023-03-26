@@ -2,7 +2,7 @@
 // the slot_r_ear or slot_l_ear as the slot, or else players will spawn with no headset.
 /datum/gear/headphones
 	display_name = "headphones"
-	path = /obj/item/clothing/ears/earmuffs/headphones
+	path = /obj/item/clothing/ears/headphones
 	sort_category = "Earwear"
 
 /datum/gear/earrings

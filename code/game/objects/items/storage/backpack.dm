@@ -150,6 +150,11 @@
 	name = "chemistry backpack"
 	desc = "It's an orange backpack which was designed to hold beakers, pill bottles and bottles."
 	icon_state = "chempack"
+	
+/obj/item/storage/backpack/emt
+	name = "emt backpack"
+	desc = "It's a blue backpack with white cross on it which was designed for initial medical emergency works."
+	icon_state = "emtpack"	
 
 /*
  * Duffle Types
@@ -187,6 +192,11 @@
 	name = "medical dufflebag"
 	desc = "A large dufflebag for holding extra medical supplies."
 	icon_state = "duffle_med"
+	
+/obj/item/storage/backpack/dufflebag/emt
+	name = "emt dufflebag"
+	desc = "A large dufflebag for holding extra medical emergency supplies."
+	icon_state = "duffle_emt"
 
 /obj/item/storage/backpack/dufflebag/sec
 	name = "security dufflebag"
@@ -287,6 +297,11 @@
 	name = "geneticist satchel"
 	desc = "A sterile satchel with geneticist colours."
 	icon_state = "satchel-gen"
+	
+/obj/item/storage/backpack/satchel/emt
+	name = "emt satchel"
+	desc = "A sterile satchel with EMT colours."
+	icon_state = "satchel-emt"
 
 /obj/item/storage/backpack/satchel/tox
 	name = "scientist satchel"
@@ -361,7 +376,7 @@
 
 /obj/item/storage/backpack/messenger/chem
 	name = "chemistry messenger bag"
-	desc = "A serile backpack worn over one shoulder. This one is in Chemsitry colors."
+	desc = "A sterile backpack worn over one shoulder. This one is in Chemsitry colors."
 	icon_state = "courierbagchem"
 
 /obj/item/storage/backpack/messenger/med
@@ -373,6 +388,11 @@
 	name = "virology messenger bag"
 	desc = "A sterile backpack worn over one shoulder. This one is in Virology colors."
 	icon_state = "courierbagviro"
+	
+/obj/item/storage/backpack/messenger/emt
+	name = "emt messenger bag"
+	desc = "A blue backpack with white cross on it worn over one shoulder. This one is in EMT colors."
+	icon_state = "courierbagemt"
 
 /obj/item/storage/backpack/messenger/tox
 	name = "research messenger bag"
@@ -446,4 +466,13 @@
 	item_state_slots = list(
 		slot_l_hand_str = "satchel",
 		slot_r_hand_str = "satchel",
+		)
+
+/obj/item/storage/backpack/shipack
+	name = "Spaceship backpack"
+	desc = "Some say that humanity conquered space inside such things. Today it has obviously broken but looks neat, and you can store your stuff inside."
+	icon_state = "shipack"
+	item_state_slots = list(
+		slot_l_hand_str = "shipack",
+		slot_r_hand_str = "shipack",
 		)

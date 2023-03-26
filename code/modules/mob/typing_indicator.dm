@@ -62,12 +62,12 @@ I AM TYPING!'
 
 	ASSERT(client && src == usr)
 
-	if (is_sayinput)
+	if(is_sayinput)
 		create_typing_indicator()
 		return
 
-	var/text = winget(usr, "input", "text")
-	if(findtextEx(text, "Say ", 1, 5))
+	var/text = winget(usr, ":input", "text")
+	if(findtext(text, "Say ", 1, 5))
 		create_typing_indicator()
 
 /mob/verb/remove_typing_indicator_verb()

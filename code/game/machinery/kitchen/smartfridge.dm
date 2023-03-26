@@ -22,6 +22,7 @@
 	var/locked = 0
 	var/scan_id = 1
 	var/is_secure = 0
+	var/shows_number_of_items = TRUE // Most machines of this type may show an approximate number of items in their storage
 	var/datum/wires/smartfridge/wires = null
 
 /obj/machinery/smartfridge/secure
@@ -54,6 +55,7 @@
 	icon_state = "seeds"
 	icon_on = "seeds"
 	icon_off = "seeds-off"
+	shows_number_of_items = FALSE
 
 /obj/machinery/smartfridge/seeds/accept_check(obj/item/O as obj)
 	if(istype(O,/obj/item/seeds/))
@@ -92,7 +94,6 @@
 	req_access = list(access_virology)
 	icon_state = "smartfridge_virology"
 	icon_on = "smartfridge_virology"
-	icon_off = "smartfridge_virology-off"
 
 /obj/machinery/smartfridge/secure/virology/accept_check(obj/item/O as obj)
 	if(istype(O,/obj/item/reagent_containers/vessel/beaker/vial/))
@@ -191,10 +192,23 @@
 
 /obj/machinery/smartfridge/update_icon()
 	if(stat & (BROKEN|NOPOWER))
-		icon_state = icon_off
+		icon_state = icon_off // Some of them don't have any display cases thus not requiring an overlay
 	else
 		icon_state = icon_on
-
+	if(shows_number_of_items)
+		overlays.Cut()
+		if(stat & (BROKEN|NOPOWER))
+			overlays += icon_off // The use of overlays allows us to see how much is stored inside, even if the machine happens to be unpowered
+		switch(contents.len)
+			if(0)
+				icon_state = icon_on
+			if(1 to 25)
+				icon_state = "[icon_on]1" // 1/4 loaded
+			if(26 to 75)
+				icon_state = "[icon_on]2" // half-loaded
+			if(76 to INFINITY)
+				icon_state = "[icon_on]3" // "full"
+	else
 /*******************
 *   Item Adding
 ********************/
@@ -215,14 +229,15 @@
 		return
 
 	if(stat & NOPOWER)
-		to_chat(user, "<span class='notice'>\The [src] is unpowered and useless.</span>")
+		to_chat(user, SPAN_NOTICE("\The [src] is unpowered and useless."))
 		return
 
 	if(accept_check(O))
 		if(!user.drop(O))
 			return
 		stock_item(O)
-		user.visible_message("<span class='notice'>\The [user] has added \the [O] to \the [src].</span>", "<span class='notice'>You add \the [O] to \the [src].</span>")
+		update_icon()
+		user.visible_message(SPAN_NOTICE("\The [user] has added \the [O] to \the [src]."), SPAN_NOTICE("You add \the [O] to \the [src]."))
 
 	else if(istype(O, /obj/item/storage))
 		var/obj/item/storage/bag/P = O
@@ -231,14 +246,15 @@
 			if(accept_check(G) && P.remove_from_storage(G, src))
 				plants_loaded++
 				stock_item(G)
+				update_icon()
 
 		if(plants_loaded)
-			user.visible_message("<span class='notice'>\The [user] loads \the [src] with the contents of \the [P].</span>", "<span class='notice'>You load \the [src] with the contents of \the [P].</span>")
+			user.visible_message(SPAN_NOTICE("\The [user] loads \the [src] with the contents of \the [P]."), SPAN_NOTICE("You load \the [src] with the contents of \the [P]."))
 			if(P.contents.len > 0)
-				to_chat(user, "<span class='notice'>Some items were refused.</span>")
+				to_chat(user, SPAN_NOTICE("Some items were refused."))
 
 	else
-		to_chat(user, "<span class='notice'>\The [src] smartly refuses [O].</span>")
+		to_chat(user, SPAN_NOTICE("\The [src] smartly refuses [O]."))
 	return 1
 
 /obj/machinery/smartfridge/secure/emag_act(remaining_charges, mob/user)
@@ -325,6 +341,7 @@
 				amount = count
 			for(var/i = 1 to amount)
 				I.get_product(get_turf(src))
+			update_icon()
 
 		return 1
 	return 0
@@ -344,7 +361,8 @@
 	if(!throw_item)
 		return 0
 	throw_item.throw_at(target, 16, null, src)
-	visible_message(SPAN("warning", "[src] launches [throw_item.name] at [target.name]!"))
+	update_icon()
+	visible_message(SPAN_WARNING("[src] launches [throw_item.name] at [target.name]!"))
 	return 1
 
 /************************
@@ -355,6 +373,6 @@
 	if(stat & (NOPOWER|BROKEN)) return 0
 	if(usr.contents.Find(src) || (in_range(src, usr) && istype(loc, /turf)))
 		if(!allowed(usr) && !emagged && scan_id && href_list["vend"])
-			to_chat(usr, "<span class='warning'>Access denied.</span>")
+			to_chat(usr, SPAN_WARNING("Access denied."))
 			return 0
 	return ..()

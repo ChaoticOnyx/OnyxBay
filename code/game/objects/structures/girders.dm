@@ -274,7 +274,6 @@
 			if (prob(5))
 				dismantle()
 			return
-		else
 	return
 
 /obj/structure/girder/cult

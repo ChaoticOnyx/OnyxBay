@@ -79,4 +79,4 @@
 
 /obj/item/storage/box/glass_extras/sticks
 	name = "box of drink sticks"
-	extra_type = /obj/item/glass_extra/stick
+	extra_type = /obj/item/glass_extra/cocktail_stick

@@ -250,11 +250,10 @@
 		if(3.0)
 			qdel(src)
 			return
-		else
 	return
 /obj/structure/railing/proc/check_tile(mob/living/user, turf/T)
 	if(T.density == 1)
-		to_chat(user, SPAN_DANGER("There is [T] \a in the way."))
+		to_chat(user, SPAN_DANGER("There is \a [T] in the way."))
 		return 0
 	else
 		for(var/obj/O in T.contents)
@@ -271,7 +270,7 @@
 			if(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & src.dir))//checks if next item is directed
 				//allows if not directed towards climber
 				continue
-			to_chat(user, SPAN_DANGER("There is  [O] \a in the way."))
+			to_chat(user, SPAN_DANGER("There is \a [O] in the way."))
 			return 0
 	return 1
 /obj/structure/railing/can_climb(mob/living/user, post_climb_check = 0)

@@ -35,6 +35,7 @@ var/list/mining_floors = list()
 	var/datum/artifact_find/artifact_find
 	var/image/ore_overlay
 	has_resources = 1
+	var/ore_left = 0
 
 /turf/simulated/mineral/medium
 	icon_state = "rock-medium"
@@ -106,11 +107,11 @@ var/list/mining_floors = list()
 		if(2.0)
 			if(prob(70))
 				if(mineral)
-					mineral.result_amount -= 1 //Some of the stuff gets blown up
+					ore_left -= 1 //Some of the stuff gets blown up
 				GetDrilled()
 		if(1.0)
 			if(mineral)
-				mineral.result_amount -= 2 //Some of the stuff gets blown up
+				ore_left -= 2 //Some of the stuff gets blown up
 			GetDrilled()
 
 /turf/simulated/mineral/bullet_act(obj/item/projectile/Proj)
@@ -121,7 +122,7 @@ var/list/mining_floors = list()
 
 		if(durability <= 0) // 3 blasts per basic tile
 			if(mineral)
-				mineral.result_amount -= 1
+				ore_left -= 1
 			GetDrilled()
 
 /turf/simulated/mineral/Bumped(AM)
@@ -159,6 +160,7 @@ var/list/mining_floors = list()
 	ore_overlay = image('icons/obj/mining.dmi', "rock_[mineral.icon_tag]")
 	ore_overlay.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 	ore_overlay.turf_decal_layerise()
+	ore_left = mineral.result_amount
 	update_icon()
 	if(mineral.icon_tag == "diamond")
 		explosion_block = 3
@@ -258,7 +260,7 @@ var/list/mining_floors = list()
 			else
 				GetDrilled(1)
 			return
-		else if(mineral && durability < initial(durability) - initial(durability) / max(mineral.result_amount, 1))
+		else if(mineral && durability < initial(durability) - initial(durability) / max(ore_left, 1))
 			DropMineral(user.dir)
 
 		excavation_level += P.excavation_amount
@@ -277,13 +279,10 @@ var/list/mining_floors = list()
 
 		//There's got to be a better way to do this
 		var/update_excav_overlay = FALSE
-		switch(excavation_level)
-			if(150 to INFINITY && excavation_level - P.excavation_amount < 150)
-				update_excav_overlay = TRUE
-			if(100 to 149 && excavation_level - P.excavation_amount < 100)
-				update_excav_overlay = TRUE
-			if(50 to 99 && excavation_level - P.excavation_amount < 50)
-				update_excav_overlay = TRUE
+		if (excavation_level >= 150 && (excavation_level - P.excavation_amount < 150) || \
+			excavation_level >= 100 && (excavation_level - P.excavation_amount < 100) || \
+			excavation_level >= 50  && (excavation_level - P.excavation_amount < 50))
+			update_excav_overlay = TRUE
 
 		//update overlays displaying excavation level
 		if( !(excav_overlay && excavation_level > 0) || update_excav_overlay )
@@ -328,7 +327,7 @@ var/list/mining_floors = list()
 	ore_overlay = null
 
 /turf/simulated/mineral/proc/DropMineral(direction = null)
-	if(!mineral)
+	if(!mineral || ore_left <= 0)
 		return
 
 	var/obj/item/ore/O = null
@@ -338,9 +337,9 @@ var/list/mining_floors = list()
 	else
 		O = new mineral.ore(src)
 
-	mineral.result_amount -= 1
+	ore_left -= 1
 
-	if(!mineral.result_amount)
+	if(!ore_left)
 		clear_ore_effects()
 
 	if(O && geologic_data && istype(O))
@@ -350,9 +349,9 @@ var/list/mining_floors = list()
 
 /turf/simulated/mineral/proc/GetDrilled(artifact_fail = 0)
 	//var/destroyed = 0 //used for breaking strange rocks
-	if(mineral && mineral.result_amount > 0)
+	if(mineral && ore_left)
 
-		while(mineral.result_amount > 0)
+		while(ore_left > 0)
 			DropMineral()
 
 	if(artifact_find && artifact_fail)

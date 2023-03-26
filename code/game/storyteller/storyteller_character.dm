@@ -15,6 +15,8 @@
 	var/difficulty_soft_cap = 50
 	var/difficulty_hard_cap = 100
 
+	var/can_be_voted_for = TRUE       // Whether this character can be picked via public vote before roundstart.
+
 	var/__metrics
 	var/__debug = TRUE                // print debug logs
 

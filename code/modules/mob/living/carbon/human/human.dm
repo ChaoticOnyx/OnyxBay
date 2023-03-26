@@ -352,50 +352,29 @@
 
 // Get rank from ID, ID inside PDA, PDA, ID in wallet, etc.
 /mob/living/carbon/human/proc/get_authentification_rank(if_no_id = "No id", if_no_job = "No job")
-	var/obj/item/device/pda/pda = wear_id
-	if (istype(pda))
-		if (pda.id)
-			return pda.id.rank
-		else
-			return pda.ownrank
+	var/obj/item/card/id/id = get_id_card()
+	if(id)
+		return id.rank ? id.rank : if_no_job
 	else
-		var/obj/item/card/id/id = get_id_card()
-		if(id)
-			return id.rank ? id.rank : if_no_job
-		else
-			return if_no_id
+		return if_no_id
 
 //gets assignment from ID or ID inside PDA or PDA itself
 //Useful when player do something with computers
 /mob/living/carbon/human/proc/get_assignment(if_no_id = "No id", if_no_job = "No job")
-	var/obj/item/device/pda/pda = wear_id
-	if (istype(pda))
-		if (pda.id)
-			return pda.id.assignment
-		else
-			return pda.ownjob
+	var/obj/item/card/id/id = get_id_card()
+	if(id)
+		return id.assignment ? id.assignment : if_no_job
 	else
-		var/obj/item/card/id/id = get_id_card()
-		if(id)
-			return id.assignment ? id.assignment : if_no_job
-		else
-			return if_no_id
+		return if_no_id
 
 //gets name from ID or ID inside PDA or PDA itself
 //Useful when player do something with computers
 /mob/living/carbon/human/proc/get_authentification_name(if_no_id = "Unknown")
-	var/obj/item/device/pda/pda = wear_id
-	if (istype(pda))
-		if (pda.id)
-			return pda.id.registered_name
-		else
-			return pda.owner
+	var/obj/item/card/id/id = get_id_card()
+	if(id)
+		return id.registered_name ? id.registered_name : if_no_id
 	else
-		var/obj/item/card/id/id = get_id_card()
-		if(id)
-			return id.registered_name
-		else
-			return if_no_id
+		return if_no_id
 
 //repurposed proc. Now it combines get_id_name() and get_face_name() to determine a mob's name variable. Made into a seperate proc as it'll be useful elsewhere
 /mob/living/carbon/human/proc/get_visible_name()
@@ -1753,3 +1732,13 @@
 
 /mob/living/carbon/human/get_runechat_color()
 	return species.get_species_runechat_color(src)
+
+/mob/living/carbon/human/get_scooped(mob/living/carbon/human/grabber, self_grab)
+	if(isMonkey(src))
+		var/turf/T = get_turf(src)
+		var/list/on_monkey = view(1, T)
+		for(var/mob/living/carbon/metroid/M in on_monkey)
+			if(M.Victim == src)
+				to_chat(grabber, SPAN("warning", "You can't scoop up \the [src] because of the [M]"))
+				return
+	. = ..()
