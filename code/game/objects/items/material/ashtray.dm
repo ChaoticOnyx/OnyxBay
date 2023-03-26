@@ -38,7 +38,7 @@
 /obj/item/material/ashtray/proc/store(obj/item/W, mob/user)
 	if(!(istype(W, /obj/item/cigbutt) || istype(W, /obj/item/clothing/mask/smokable/cigarette) || istype(W, /obj/item/flame/match)))
 		return FALSE
-	if(contents.len >= max_butts)
+	if(length(contents) >= max_butts)
 		to_chat(user, "\The [src] is full.")
 		return FALSE
 	if(istype(W, /obj/item/clothing/mask/smokable/cigarette))
