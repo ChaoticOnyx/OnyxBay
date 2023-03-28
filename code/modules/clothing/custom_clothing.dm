@@ -211,42 +211,26 @@
 	icon_state = "siliconetop"
 	color = "#ffffff"
 	var/buffered_gender
-	var/datum/body_build/buffered_build
 
 /obj/item/underwear/top/silicone_top/ForceEquipUnderwear(mob/living/carbon/human/H, update_icons = TRUE)
+
 	buffered_gender = H.gender
-	buffered_build = H.body_build
-
-	if(H.gender != FEMALE)
-		buffered_gender = H.gender
-		H.gender = FEMALE
-
-	var/datum/body_build/BB
-	var/datum/species/S = all_species[H.get_species()]
-	if(!istype(S))
+	if(H.gender == FEMALE)
 		return ..()
-	switch(H.get_species())
-		if(SPECIES_TAJARA)
-			BB = S.body_builds[2] // slim alt tajaran
-		if(SPECIES_UNATHI)
-			BB = S.body_builds[1] // unathi
-		else
-			BB = S.body_builds[2] // slim for human and skrell
-
-	H.change_body_build(BB)
+	else
+		H.gender = FEMALE
+	H.regenerate_icons()
 
 	return ..()
 
 /obj/item/underwear/top/silicone_top/RemoveUnderwear(mob/user, mob/living/carbon/human/H)
-	.=..()
-	if(!.)
+	if(!..())
 		return FALSE
+	if(buffered_gender == FEMALE)
+		return TRUE
 
 	H.gender = buffered_gender
-	H.change_body_build(buffered_build)
-
-	buffered_build = null
-	buffered_gender = null
+	H.regenerate_icons()
 
 	return TRUE
 
