@@ -5,7 +5,6 @@ name: Create Changelog
 
 jobs:
   Main:
-    if: github.repository == 'ChaoticOnyx/OnyxBay' && github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,7 +15,7 @@ jobs:
       - name: .NET SDK setup
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 7.0.x
       - name: Install depends
         run: dotnet tool install -g dotnet-script
       - name: Fetch, compile and commit changelogs
