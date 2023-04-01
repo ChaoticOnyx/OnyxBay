@@ -41,7 +41,7 @@ var newLastClosedPrDate = lastClosedPrDate;
 while (true)
 {
     page++;
-    var response = await client.GetAsync($"https://api.github.com/search/issues?q=repo:{githubRepository} is:pr is:merged merged:>={lastClosedPrDate.AddDays(-1).ToString("yyyy-MM-dd")} label:\"{Uri.EscapeUriString(Settings.ChangelogCheckedLabel)}\"&order=desc&per_page=100&sort=created&page={page}");
+    var response = await client.GetAsync($"https://api.github.com/search/issues?q=repo:{githubRepository} is:pr is:merged merged:>={lastClosedPrDate.AddDays(-1).ToString("yyyy-MM-dd")} label:\"{Uri.EscapeDataString(Settings.ChangelogCheckedLabel)}\"&order=desc&per_page=100&sort=created&page={page}");
     var searchResponse = await response.Content.ReadFromJsonAsync<Github.Search<Github.PullRequest>>(Settings.JsonOptions)
                          ?? throw new InvalidOperationException("[2]🚫Невозможно распарсить ответ от Github.");
 
