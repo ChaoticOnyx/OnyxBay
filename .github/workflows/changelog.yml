@@ -5,6 +5,7 @@ name: Create Changelog
 
 jobs:
   Main:
+    if: github.repository == 'ChaoticOnyx/OnyxBay' && github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
