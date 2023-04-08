@@ -7,7 +7,7 @@
 	difficulty = 25
 
 /datum/event/spontaneous_appendicitis/check_conditions()
-	. = SSevents.triggers.living_players_count >= 5 && SSevents.triggers.roles_count["Medical"]
+	. = SSevents.triggers.living_players_count >= 5 && SSevents.triggers.roles_count["Medical"] >= 2
 
 /datum/event/spontaneous_appendicitis/get_mtth()
 	. = ..()
