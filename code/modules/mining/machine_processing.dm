@@ -90,16 +90,13 @@
 				usr.pick_or_drop(inserted_id, loc)
 				inserted_id = null
 			if(href_list["choice"] == "claim")
-				if(access_mining_station in inserted_id.access)
-					if(points >= 0)
-						inserted_id.mining_points += points
-						if(points != 0)
-							ping( "\The [src] pings, \"Point transfer complete! Transaction total: [points] points!\"" )
-						points = 0
-					else
-						to_chat(usr, "<span class='warning'>[station_name()]'s mining division is currently indebted to NanoTrasen. Transaction incomplete until debt is cleared.</span>")
+				if(points >= 0)
+					inserted_id.mining_points += points
+					if(points != 0)
+						ping( "\The [src] pings, \"Point transfer complete! Transaction total: [points] points!\"" )
+					points = 0
 				else
-					to_chat(usr, "<span class='warning'>Required access not found.</span>")
+					to_chat(usr, "<span class='warning'>[station_name()]'s mining division is currently indebted to NanoTrasen. Transaction incomplete until debt is cleared.</span>")
 		else if(href_list["choice"] == "insert")
 			var/obj/item/card/id/I = usr.get_active_hand()
 			if(istype(I))
@@ -135,6 +132,9 @@
 
 	src.updateUsrDialog()
 	return
+
+/obj/machinery/mineral/processing_unit_console/north
+	machinedir = NORTH
 
 /**********************Mineral processing unit**************************/
 

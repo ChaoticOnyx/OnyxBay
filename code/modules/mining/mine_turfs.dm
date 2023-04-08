@@ -637,3 +637,7 @@ var/list/mining_floors = list()
 						var/obj/structure/ore_box/OB = locate(/obj/structure/ore_box) in C
 						for(var/obj/item/ore/ore in R.loc)
 							ore.Move(OB)
+
+/turf/simulated/floor/asteroid/air
+	initial_gas = list("oxygen" = 1.05 * MOLES_O2STANDARD, "nitrogen" = 1.05 * MOLES_N2STANDARD, "carbon_dioxide" = MOLES_CELLSTANDARD * 0.1)
+	temperature = 30 CELSIUS

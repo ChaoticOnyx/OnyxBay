@@ -16,6 +16,12 @@
 	//req_access = list(access_research)
 	circuit = /obj/item/circuitboard/research_shuttle
 
+/obj/machinery/computer/shuttle_control/security
+	name = "security shuttle control console"
+	shuttle_tag = "Security"
+	//req_one_access = list(access_security)
+	circuit = /obj/item/circuitboard/security_shuttle
+
 /obj/machinery/computer/shuttle_control/merchant
 	name = "merchant shuttle control console"
 	icon_keyboard = "power_key"
