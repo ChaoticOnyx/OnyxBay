@@ -6,6 +6,9 @@
 	mtth = 3 HOURS
 	difficulty = 25
 
+/datum/event/spontaneous_appendicitis/check_conditions()
+	. = SSevents.triggers.living_players_count >= 5 && SSevents.triggers.roles_count["Medical"]
+
 /datum/event/spontaneous_appendicitis/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Medical"] * (18 MINUTES))
