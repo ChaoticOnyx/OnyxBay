@@ -55,7 +55,6 @@ var/global/list/minevendor_prison_list = list(
 	desc = "An equipment vendor for prisoner, points collected at an ore redemption machine can be spent here."
 	icon_state = "mining-prison"
 
-
 /obj/machinery/mineral/equipment_vendor/prison/Initialize()
 	. = ..()
 	equipment_list = minevendor_prison_list
