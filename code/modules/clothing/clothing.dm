@@ -628,7 +628,7 @@ BLIND     // can't see anything
 			M.set_light(0.2, 0.5, 2, 3.5, "#e38f46")
 			set_next_think(world.time)
 			playsound(src.loc, 'sound/items/match.ogg', 60, 1, -4)
-			user.visible_message("<span class='notice'>[user] strikes the match on a shoe.</span>")
+			user.visible_message(SPAN_NOTICE("[user] strikes the match on a shoe."))
 			M.update_icon()
 	if(can_hold_knife && is_type_in_list(I, list(/obj/item/material/shard, /obj/item/material/butterfly, /obj/item/material/kitchen/utensil, /obj/item/material/hatchet/tacknife, /obj/item/material/knife/shiv)))
 		if(holding)
