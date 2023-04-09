@@ -1,12 +1,12 @@
-import { toFixed } from "../../common/math";
+import { clamp, toFixed } from "../../common/math";
 import { useBackend } from "../backend";
-import { Button, Stack, Section, NumberInput } from "../components";
+import { Button, Stack, Section, NumberInput, Flex } from "../components";
 import { Window } from "../layouts";
 
 export const Signaler = (props, context) => {
   const { act, data } = useBackend(context)
   return (
-    <Window width={280} height={132}>
+    <Window width={340} height={142}>
       <Window.Content>
         <SignalerContent />
       </Window.Content>
@@ -18,42 +18,66 @@ export const SignalerContent = (props, context) => {
   const { act, data } = useBackend(context)
   const { code, frequency, maxFrequency, minFrequency } = data;
   return (
-    <Section>
-      <Stack vertical fill>
-        <Stack.Item>
-          <Stack>
-            <Stack.Item color="label" width="50%">
+    <Section fill>
+      <Flex height="100%" direction="column" justify="space-around">
+        <Flex.Item>
+          <Flex direction="row" justify="space-between">
+            <Flex.Item color="label" width="19%" align="left">
               Frequency:
-            </Stack.Item>
-            <Stack.Item grow>
+            </Flex.Item>
+            <Flex.Item>
+              <Button
+                icon="fast-backward"
+                onClick={() => act('adjust', { freq: clamp(frequency - 10, minFrequency, maxFrequency) })}
+              />
+              <Button
+                icon="backward"
+                onClick={() => act('adjust', { freq: clamp(frequency - 2, minFrequency, maxFrequency) })}
+              />
               <NumberInput
                 animate
                 width="80px"
                 unit="kHz"
-                step={0.2}
+                step={3}
                 stepPixelSize={6}
-                minValue={minFrequency / 10}
-                maxValue={maxFrequency / 10}
-                value={frequency / 10}
-                format={(value) => toFixed(value, 1)}
-                onChange={(e, value) => act('adjust', {freq: value * 10})}
+                minValue={minFrequency}
+                maxValue={maxFrequency}
+                value={frequency}
+                format={(value) => toFixed(value / 10, 1)}
+                onChange={(e, value) => act('adjust', {freq: value})}
               />
-            </Stack.Item>
-            <Stack.Item allign="right">
+              <Button
+                icon="forward"
+                onClick={() => act('adjust', { freq: clamp(frequency + 2, minFrequency, maxFrequency) })}
+              />
+              <Button
+                icon="fast-forward"
+                onClick={() => act('adjust', { freq: clamp(frequency + 10, minFrequency, maxFrequency) })}
+              />
+            </Flex.Item>
+            <Flex.Item align="rigth">
               <Button
                 icon="sync"
                 content="Reset"
                 onClick={() => act('reset', {reset: 'freq'})}
               />
-            </Stack.Item>
-          </Stack>
-        </Stack.Item>
-        <Stack.Item>
-          <Stack>
-            <Stack.Item color="label" width="50%">
+            </Flex.Item>
+          </Flex>
+        </Flex.Item>
+        <Flex.Item>
+          <Flex direction="row" justify="space-between">
+            <Flex.Item color="label" width="19%" align="left">
               Code:
-            </Stack.Item>
-            <Stack.Item grow>
+            </Flex.Item>
+            <Flex.Item>
+              <Button
+                icon="fast-backward"
+                onClick={() => act('adjust', { code: clamp(code - 10, 1, 100) })}
+              />
+              <Button
+                icon="backward"
+                onClick={() => act('adjust', { code: clamp(code - 1, 1, 100) })}
+              />
               <NumberInput
                 animate
                 step={1}
@@ -64,30 +88,34 @@ export const SignalerContent = (props, context) => {
                 width="80px"
                 onDrag={(e, value) => act('adjust', {code: value})}
               />
-            </Stack.Item>
-            <Stack.Item allign="right">
+              <Button
+                icon="forward"
+                onClick={() => act('adjust', { code: clamp(code + 1, 1, 100) })}
+              />
+              <Button
+                icon="fast-forward"
+                onClick={() => act('adjust', { code: clamp(code + 10, 1, 100) })}
+              />
+            </Flex.Item>
+            <Flex.Item align="right">
               <Button
                 icon="sync"
                 content="Reset"
                 onClick={() => act('reset', {reset: 'code'})}
               />
-            </Stack.Item>
-          </Stack>
-        </Stack.Item>
-        <Stack.Item>
-          <Stack>
-            <Stack.Item width="100%">
-              <Button
-                fluid
-                icon="arrow-up"
-                content="Send Signal"
-                textAlign="center"
-                onClick={() => act('signal')}
-              />
-            </Stack.Item>
-          </Stack>
-        </Stack.Item>
-      </Stack>
+            </Flex.Item>
+          </Flex>
+        </Flex.Item>
+        <Flex.Item>
+          <Button
+            fluid
+            icon="arrow-up"
+            content="Send Signal"
+            textAlign="center"
+            onClick={() => act('signal')}
+          />
+        </Flex.Item>
+      </Flex>
     </Section>
   )
 }
