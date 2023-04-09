@@ -39,8 +39,25 @@ Thus, the two variables affect pump operation are set in New():
 	air1.volume = ATMOS_DEFAULT_VOLUME_PUMP
 	air2.volume = ATMOS_DEFAULT_VOLUME_PUMP
 
-/obj/machinery/atmospherics/binary/pump/AltClick()
-	Topic(src, list("power" = "1"))
+/obj/machinery/atmospherics/binary/pump/Initialize()
+	. = ..()
+	if(frequency)
+		set_frequency(frequency)
+
+/obj/machinery/atmospherics/binary/pump/CtrlClick(mob/user)
+	if(user.stat || user.restrained())
+		return
+	if(!src.allowed(user))
+		return
+	update_use_power(!use_power)
+	update_icon()
+
+/obj/machinery/atmospherics/binary/pump/AltClick(mob/user)
+	if(user.stat || user.restrained())
+		return
+	if(!src.allowed(user))
+		return
+	target_pressure = max_pressure_setting
 
 /obj/machinery/atmospherics/binary/pump/on
 	icon_state = "map_on"
@@ -145,11 +162,6 @@ Thus, the two variables affect pump operation are set in New():
 		ui.set_initial_data(data)	// when the ui is first opened this is the data it will use
 		ui.open()					// open the new ui window
 		ui.set_auto_update(1)		// auto update every Master Controller tick
-
-/obj/machinery/atmospherics/binary/pump/Initialize()
-	. = ..()
-	if(frequency)
-		set_frequency(frequency)
 
 /obj/machinery/atmospherics/binary/pump/receive_signal(datum/signal/signal)
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
