@@ -171,10 +171,9 @@
 			to_chat(holder,"<B>[talker.name]</B> points at [holder.name]")
 			to_chat(holder,"<span class='game say'><span class='name'>[talker.name]</span> says something softly.</span>")
 
-		var/image/speech_bubble = image('icons/mob/talk.dmi',talker,"h[holder.say_test(message)]")
-		speech_bubble.alpha = 0
+		var/image/speech_bubble = image('icons/mob/effects/talk.dmi', talker, "[holder.bubble_icon][holder.say_test(message)]")
 		speech_bubble.plane = MOUSE_INVISIBLE_PLANE
-		speech_bubble.layer = FLOAT_LAYER
+		speech_bubble.appearance_flags |= APPEARANCE_UI_IGNORE_ALPHA
 		INVOKE_ASYNC(GLOBAL_PROC, /.proc/animate_speech_bubble, speech_bubble, list(holder.client), 3 SECONDS)
 
 		sanity-- //don't spam them in very populated rooms.

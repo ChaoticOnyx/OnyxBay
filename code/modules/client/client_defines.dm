@@ -70,3 +70,6 @@
 
 	/// Messages currently seen by this client
 	var/list/seen_messages
+
+	/// Whether typing indicators are enabled
+	var/typing_indicators
