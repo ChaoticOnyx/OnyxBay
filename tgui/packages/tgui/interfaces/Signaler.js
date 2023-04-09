@@ -1,6 +1,6 @@
 import { clamp, toFixed } from "../../common/math";
 import { useBackend } from "../backend";
-import { Button, Stack, Section, NumberInput, Flex } from "../components";
+import { Button, Section, NumberInput, Flex } from "../components";
 import { Window } from "../layouts";
 
 export const Signaler = (props, context) => {
