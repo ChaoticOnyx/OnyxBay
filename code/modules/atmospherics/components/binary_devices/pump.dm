@@ -40,22 +40,26 @@ Thus, the two variables affect pump operation are set in New():
 	air2.volume = ATMOS_DEFAULT_VOLUME_PUMP
 
 /obj/machinery/atmospherics/binary/pump/Initialize()
-	. = ..()
 	if(frequency)
 		set_frequency(frequency)
-
-/obj/machinery/atmospherics/binary/pump/CtrlClick(mob/user)
-	if(user.stat || user.restrained())
-		return
-	if(!src.allowed(user))
-		return
-	update_use_power(!use_power)
-	update_icon()
+	return ..()
 
 /obj/machinery/atmospherics/binary/pump/AltClick(mob/user)
 	if(user.stat || user.restrained())
 		return
-	if(!src.allowed(user))
+	if(!Adjacent(user, src) && !issilicon(user))
+		return
+	if(!allowed(user))
+		return
+	update_use_power(!use_power)
+	update_icon()
+
+/obj/machinery/atmospherics/binary/pump/AltRightClick(mob/user)
+	if(user.stat || user.restrained())
+		return
+	if(!Adjacent(user, src) && !issilicon(user))
+		return
+	if(!allowed(user))
 		return
 	target_pressure = max_pressure_setting
 
