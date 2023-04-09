@@ -62,8 +62,7 @@
 			if(params["freq"])
 				set_frequency(sanitize_frequency(text2num(params["freq"]), RADIO_LOW_FREQ, RADIO_HIGH_FREQ))
 			else if(params["code"])
-				code = text2num(params["code"])
-			. = TRUE
+				code = clamp(text2num(params["code"]), 1, 100)
 		if("reset")
 			if(params["reset"])
 				switch(params["reset"])
@@ -71,10 +70,9 @@
 						set_frequency(RADIO_LOW_FREQ)
 					if("code")
 						code = 1
-				. = TRUE
 		if("signal")
 			activate()
-			. = TRUE
+	. = TRUE
 
 	return
 
