@@ -9,6 +9,7 @@
 	response_help = "pokes"
 	response_disarm = "shoves"
 	response_harm = "hits"
+	bubble_icon = "alien"
 	speed = -1
 	meat_type = /obj/item/reagent_containers/food/meat/xeno
 	maxHealth = 100
@@ -78,6 +79,7 @@
 	icon_state = "queen_s"
 	icon_living = "queen_s"
 	icon_dead = "queen_dead"
+	bubble_icon = "alienroyal"
 	move_to_delay = 4
 	maxHealth = 400
 	health = 400
