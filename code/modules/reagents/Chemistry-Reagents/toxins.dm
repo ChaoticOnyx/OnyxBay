@@ -747,10 +747,9 @@
 	overdose = REAGENTS_OVERDOSE
 
 /datum/reagent/toxin/hair_grower/affect_touch(mob/living/carbon/human/M, alien, removed)
-	if(alien)
-		remove_self(volume)
-		return
 	remove_self(volume)
+	if(alien)
+		return
 	M.h_style = "Sick"
 	M.f_style = "Great Beard"
 	M.update_hair()
