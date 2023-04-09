@@ -76,7 +76,7 @@
 	if (health > 0)
 		health = max(0,health - 3)
 		if (contents.len)
-			visible_message("<span class='danger'>\The [src] slams into [hit_atom], spilling its contents!</span>")
+			visible_message(SPAN_DANGER("\The [src] slams into [hit_atom], spilling its contents!"))
 			for (var/obj/O in contents)
 				O.dropInto(loc)
 		if (health < 1)
@@ -93,10 +93,10 @@
 		return
 
 	if(!contents.len)
-		to_chat(usr, SPAN("notice", "\The [src] is empty!"))
+		to_chat(usr, SPAN_NOTICE("\The [src] is empty!"))
 		return
 
-	visible_message(SPAN("notice", "[usr] flips \the [src], spilling its contents!"))
+	visible_message(SPAN_NOTICE("[usr] flips \the [src], spilling its contents!"))
 	for(var/obj/O in contents)
 		O.dropInto(loc)
 	update_icon()
