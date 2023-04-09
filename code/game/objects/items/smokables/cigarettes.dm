@@ -51,7 +51,7 @@
 					break
 			C.drop(src)
 		qdel(src)
-		return butt
+		. = butt
 
 /obj/item/clothing/mask/smokable/cigarette/get_temperature_as_from_ignitor()
 	if(lit)
