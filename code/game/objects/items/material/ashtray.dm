@@ -46,7 +46,6 @@
 		if(C.lit)
 			visible_message("[user] crushes [C] in [src], putting it out.")
 			W = C.die(nomessage = TRUE, nodestroy = TRUE)
-			return TRUE
 		else
 			to_chat(user, SPAN_NOTICE("You place [C] in [src] without even smoking it. Why would you do that?"))
 
