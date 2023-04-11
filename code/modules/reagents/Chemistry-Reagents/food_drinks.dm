@@ -365,28 +365,21 @@
 				mouth_covered = 1
 				face_protection = I.name
 
-	var/message = null
 	if(eyes_covered)
-		if(!mouth_covered)
-			message = "<span class='warning'>Your [eye_protection] protects your eyes from the pepperspray!</span>"
+		to_chat(M, "<span class='warning'>Your [eye_protection] protects your eyes from the pepperspray!</span>")
 	else
-		message = "<span class='warning'>The pepperspray gets in your eyes!</span>"
-		if(mouth_covered)
-			M.eye_blurry = max(M.eye_blurry, effective_strength * 3)
-			M.eye_blind = max(M.eye_blind, effective_strength)
-		else
-			M.eye_blurry = max(M.eye_blurry, effective_strength * 5)
-			M.eye_blind = max(M.eye_blind, effective_strength * 2)
+		to_chat(M, "<span class='warning'>The pepperspray gets in your eyes!</span>")
+		M.eye_blurry = max(M.eye_blurry, effective_strength * 5)
+		M.eye_blind = max(M.eye_blind, effective_strength * 2)
+		M.apply_effect(10, PAIN, 0)
 
 	if(mouth_covered)
-		if(!message)
-			message = "<span class='warning'>Your [face_protection] protects you from the pepperspray!</span>"
+		to_chat(M, "<span class='warning'>Your [face_protection] protects you from the pepperspray!</span>")
 	else if(!no_pain)
-		message = "<span class='danger'>Your face and throat burn!</span>"
+		to_chat(M, "<span class='danger'>Your face and throat burn!</span>")
 		if(prob(25))
 			M.custom_emote(2, "[pick("coughs!","coughs hysterically!","splutters!")]")
-		M.Weaken(5)
-		M.Stun(6)
+		M.apply_effect(10, PAIN, 0)
 
 /datum/reagent/capsaicin/condensed/affect_ingest(mob/living/carbon/M, alien, removed)
 	if(ishuman(M))
