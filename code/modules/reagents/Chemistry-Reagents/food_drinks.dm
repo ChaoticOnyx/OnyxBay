@@ -366,17 +366,17 @@
 				face_protection = I.name
 
 	if(eyes_covered)
-		to_chat(M, "<span class='warning'>Your [eye_protection] protects your eyes from the pepperspray!</span>")
+		to_chat(M, SPAN_WARNING("Your [eye_protection] protects your eyes from the pepperspray!"))
 	else
-		to_chat(M, "<span class='warning'>The pepperspray gets in your eyes!</span>")
+		to_chat(M, SPAN_WARNING("The pepperspray gets in your eyes!"))
 		M.eye_blurry = max(M.eye_blurry, effective_strength * 5)
 		M.eye_blind = max(M.eye_blind, effective_strength * 2)
 		M.apply_effect(10, PAIN, 0)
 
 	if(mouth_covered)
-		to_chat(M, "<span class='warning'>Your [face_protection] protects you from the pepperspray!</span>")
+		to_chat(M, SPAN_WARNING("Your [face_protection] protects you from the pepperspray!"))
 	else if(!no_pain)
-		to_chat(M, "<span class='danger'>Your face and throat burn!</span>")
+		to_chat(M, SPAN_DANGER("Your face and throat burn!"))
 		if(prob(25))
 			M.custom_emote(2, "[pick("coughs!","coughs hysterically!","splutters!")]")
 		M.apply_effect(10, PAIN, 0)
