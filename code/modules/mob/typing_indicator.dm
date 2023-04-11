@@ -54,13 +54,11 @@
 
 	ASSERT(client && src == usr)
 
-	// Say via input box
 	if(is_sayinput)
 		thinking_IC = TRUE
 		start_typing()
 		return
 
-	// Say via bottom panel
 	var/text = winget(usr, ":input", "text")
 	if(findtext(text, "Say ", 1, 5))
 		thinking_IC = TRUE

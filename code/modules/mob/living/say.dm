@@ -386,8 +386,6 @@ var/list/channel_to_radio_key = new
 				if(O) // It's possible that it could be deleted in the meantime.
 					O.hear_talk(src, stars(message_data["message"]), message_data["verb"], message_data["language"])
 
-	//INVOKE_ASYNC(GLOBAL_PROC, /.proc/animate_speech_bubble, speech_bubble, speech_bubble_recipients, 3 SECONDS)
-
 	// Showing speech bubble is a logical end of this function. - N
 	var/list/speech_bubble_recipients
 	for(var/mob/M in message_data["listening"])
