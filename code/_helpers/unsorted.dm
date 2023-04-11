@@ -1091,20 +1091,3 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 
 /proc/pass()
 	return
-
-/proc/animate_speech_bubble(image/I, list/show_to, duration)
-	I.SetTransform(scale = 0)
-	I.alpha = 0
-	add_image_to_clients(I, show_to)
-	animate(
-		I,
-		transform = matrix(),
-		alpha = 255,
-		time = 0.5 SECONDS,
-		easing = ELASTIC_EASING
-	)
-	addtimer(CALLBACK(GLOBAL_PROC, /.proc/fade_out, I), duration - 0.5 SECONDS)
-
-/proc/fade_out(image/I, list/show_to)
-	animate(I, alpha = 0, time = 0.5 SECONDS, easing = EASE_IN)
-	addtimer(CALLBACK(GLOBAL_PROC, /.proc/remove_image_from_clients, I, show_to), 0.5 SECONDS)

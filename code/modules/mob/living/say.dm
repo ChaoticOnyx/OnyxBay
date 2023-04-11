@@ -393,12 +393,7 @@ var/list/channel_to_radio_key = new
 	for(var/mob/M in message_data["listening"])
 		if(M.client)
 			LAZYADD(speech_bubble_recipients, M.client)
-
-	var/talk_icon_state = say_test(message_data["message"])
-	var/image/speech_bubble = image('icons/mob/effects/talk.dmi', src, "[bubble_icon][talk_icon_state]", FLOAT_LAYER)
-	speech_bubble.plane = MOUSE_INVISIBLE_PLANE
-	speech_bubble.appearance_flags |= APPEARANCE_UI_IGNORE_ALPHA
-	INVOKE_ASYNC(GLOBAL_PROC, /.proc/animate_speech_bubble, speech_bubble, speech_bubble_recipients, 3 SECONDS)
+	show_bubble_to_clients(bubble_icon, say_test(message_data["message"]), src, speech_bubble_recipients)
 
 /mob/living/proc/say_log_message(list/message_data)
 	if(message_data["whispering"])
