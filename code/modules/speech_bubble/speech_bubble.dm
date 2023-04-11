@@ -22,7 +22,7 @@
 	return speech_bubble
 
 /proc/show_bubble_to_clients(bubble_icon, bubble_icon_state, atom/source, list/show_to)
-	var/image/speech_bubble = create_speech_bubble_image(bubble_icon, bubble_icon_state)
+	var/image/speech_bubble = create_speech_bubble_image(bubble_icon, bubble_icon_state, source)
 	INVOKE_ASYNC(GLOBAL_PROC, /.proc/animate_speech_bubble, speech_bubble, show_to, 3 SECONDS)
 
 /proc/show_bubble_to_client(bubble_icon, bubble_icon_state, atom/source, client/show_to)
