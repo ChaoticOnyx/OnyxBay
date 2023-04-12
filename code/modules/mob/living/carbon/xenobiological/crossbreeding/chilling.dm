@@ -159,24 +159,31 @@ Chilling extracts:
 	if(allies.len <= 0)
 		to_chat(user, SPAN_WARNING("[src] is not linked to anyone!"))
 		return
+
 	to_chat(user, SPAN_NOTICE("You feel [src] pulse as it begins charging bluespace energies..."))
 	active = TRUE
+
 	for(var/mob/living/M in allies)
-		to_chat(M, SPAN_DANGER("You feel a sudden tug from an unknown force, and feel a pull to bluespace!"))
-		to_chat(M, SPAN_NOTICE("Wear some protection if you wish avoid the force!"))
-		M.overlays += icon('icons/effects/effects.dmi',"chronofield")
+		ADD_TRAIT(M, TRAIT_METROIDRECALL)
 
 	if(do_after(user, 100, target=src))
 		to_chat(user, SPAN_NOTICE("[src] shatters as it tears a hole in reality, snatching the linked individuals from the void!"))
 		for(var/mob/living/M in allies)
-			if(ishuman(M))
-				var/mob/living/carbon/human/H = M
-				if(istype(H.head, /obj/item/clothing/head/tinfoil))
-					continue
 
+			if(!HAS_TRAIT(M, TRAIT_METROIDRECALL))
+				continue
+
+			REMOVE_TRAIT(M, TRAIT_METROIDRECALL)
 			do_teleport(M, src, 3)
 	else
 		to_chat(user, SPAN_WARNING("[src] falls dark, dissolving into nothing as the energies fade away."))
+
+		for(var/mob/living/M in allies)
+			if(!HAS_TRAIT(M, TRAIT_METROIDRECALL))
+				continue
+
+			REMOVE_TRAIT(M, TRAIT_METROIDRECALL)
+
 		allies.Cut()
 	..()
 

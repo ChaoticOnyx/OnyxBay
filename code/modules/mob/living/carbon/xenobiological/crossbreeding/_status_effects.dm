@@ -9,9 +9,11 @@
 	var/obj/screen/movable/alert/linked_alert = null
 
 /datum/modifier/status_effect/New(new_holder, new_origin)
+	..()
 	if(duration)
 		expire_at = world.time + duration
 	linked_alert = holder.throw_alert("\ref[src]",alert_type)
+
 
 /datum/modifier/status_effect/rainbow_protection
 	name = "rainbow_protection"
@@ -240,12 +242,12 @@
 	duration = 100
 
 /datum/modifier/status_effect/firecookie/on_applied()
-	ADD_TRAIT(holder, TRAIT_RESISTCOLD)
+	ADD_TRAIT(holder, TRAIT_COLDRESIST)
 	holder.bodytemperature+=110
 	return ..()
 
 /datum/modifier/status_effect/firecookie/on_expire()
-	REMOVE_TRAIT(holder, TRAIT_RESISTCOLD)
+	REMOVE_TRAIT(holder, TRAIT_COLDRESIST)
 
 /datum/modifier/status_effect/watercookie
 	name = "watercookie"
@@ -254,15 +256,15 @@
 	duration = 100
 
 /datum/modifier/status_effect/watercookie/on_applied()
-	ADD_TRAIT(holder, TRAIT_NOSLIPWATER)
+	ADD_TRAIT(holder, TRAIT_NOSLIP)
 	return ..()
 
 /datum/modifier/status_effect/watercookie/tick()
 	for(var/turf/simulated/T in range(get_turf(holder),1))
-		T.wet_floor(50)
+		T.wet_floor(1)
 
 /datum/modifier/status_effect/watercookie/on_expire()
-	REMOVE_TRAIT(holder, TRAIT_NOSLIPWATER)
+	REMOVE_TRAIT(holder, TRAIT_NOSLIP)
 
 /datum/modifier/status_effect/metalcookie
 	name = "metalcookie"
@@ -420,7 +422,7 @@
 		linked_extract.linked_effect = null
 		if(!QDELETED(linked_extract))
 			linked_extract.owner = null
-			linked_extract.set_next_think(world.time + 1 SECOND)
+			linked_extract.set_next_think(0)
 		holder.remove_specific_modifier(src)
 	set_next_think(world.time + think_delay)
 	return ..()
@@ -434,6 +436,12 @@
 	name = "stabilizedgrey"
 	colour = "grey"
 
+/datum/modifier/status_effect/stabilized/grey/on_applied()
+	set_next_think(world.time)
+
+/datum/modifier/status_effect/stabilized/grey/on_expire()
+	set_next_think(0)
+
 /datum/modifier/status_effect/stabilized/grey/think()
 	for(var/mob/living/carbon/metroid/S in range(1, get_turf(holder)))
 		if(!(holder in S.Friends))
@@ -445,6 +453,12 @@
 	name = "stabilizedorange"
 	colour = "orange"
 
+/datum/modifier/status_effect/stabilized/orange/on_applied()
+	set_next_think(world.time)
+
+/datum/modifier/status_effect/stabilized/orange/on_expire()
+	set_next_think(0)
+
 /datum/modifier/status_effect/stabilized/orange/think()
 	var/body_temperature_difference = holder.get_species().body_temperature - holder.bodytemperature
 	holder.bodytemperature += body_temperature_difference<0?(max(-5, body_temperature_difference)):(min(5, body_temperature_difference))
@@ -455,6 +469,12 @@
 	colour = "purple"
 	/// Whether we healed from our last tick
 	var/healed_last_tick = FALSE
+
+/datum/modifier/status_effect/stabilized/purple/on_applied()
+	set_next_think(world.time)
+
+/datum/modifier/status_effect/stabilized/purple/on_expire()
+	set_next_think(0)
 
 /datum/modifier/status_effect/stabilized/purple/think()
 	healed_last_tick = FALSE
@@ -474,7 +494,7 @@
 
 	// Technically, "healed this tick" by now.
 	if(healed_last_tick)
-		//FIXME new /obj/effect/temp_visual/heal(get_turf(holder), "#FF0000")
+		new /obj/effect/heal(get_turf(holder), "#FF0000")
 
 	return ..()
 
@@ -489,17 +509,23 @@
 	colour = "blue"
 
 /datum/modifier/status_effect/stabilized/blue/on_applied()
-	ADD_TRAIT(holder, TRAIT_NOSLIPWATER)
+	ADD_TRAIT(holder, TRAIT_NOSLIP)
 	return ..()
 
 /datum/modifier/status_effect/stabilized/blue/on_expire()
-	REMOVE_TRAIT(holder, TRAIT_NOSLIPWATER)
+	REMOVE_TRAIT(holder, TRAIT_NOSLIP)
 
 /datum/modifier/status_effect/stabilized/metal
 	name = "stabilizedmetal"
 	colour = "metal"
 	var/cooldown = 30
 	var/max_cooldown = 30
+
+/datum/modifier/status_effect/stabilized/metal/on_applied()
+	set_next_think(world.time)
+
+/datum/modifier/status_effect/stabilized/metal/on_expire()
+	set_next_think(0)
 
 /datum/modifier/status_effect/stabilized/metal/think()
 	if(cooldown > 0)
@@ -526,6 +552,12 @@
 
 /datum/modifier/status_effect/stabilized/yellow/_examine_text()
 	return SPAN_WARNING("Nearby electronics seem just a little more charged wherever [holder] go[holder].")
+
+/datum/modifier/status_effect/stabilized/yellow/on_applied()
+	set_next_think(world.time)
+
+/datum/modifier/status_effect/stabilized/yellow/on_expire()
+	set_next_think(0)
 
 /datum/modifier/status_effect/stabilized/yellow/think()
 	if(cooldown > 0)
@@ -557,7 +589,13 @@
 /datum/modifier/status_effect/stabilized/darkpurple/on_applied()
 	ADD_TRAIT(holder, TRAIT_RESISTHEATHANDS)
 	fire = new(holder)
+	set_next_think(world.time)
 	return ..()
+
+/datum/modifier/status_effect/stabilized/darkpurple/on_expire()
+	REMOVE_TRAIT(holder, TRAIT_RESISTHEATHANDS)
+	qdel(fire)
+	set_next_think(0)
 
 /datum/modifier/status_effect/stabilized/darkpurple/think()
 	var/obj/item/item = holder.get_active_item()
@@ -565,16 +603,18 @@
 		item.attackby(fire, holder)
 	return ..()
 
-/datum/modifier/status_effect/stabilized/darkpurple/on_expire()
-	REMOVE_TRAIT(holder, TRAIT_RESISTHEATHANDS)
-	qdel(fire)
-
 /datum/modifier/status_effect/stabilized/darkpurple/_examine_text()
 	return SPAN_NOTICE("[holder] fingertips burn brightly!")
 
 /datum/modifier/status_effect/stabilized/darkblue
 	name = "stabilizeddarkblue"
 	colour = "dark blue"
+
+/datum/modifier/status_effect/stabilized/darkblue/on_applied()
+	set_next_think(world.time)
+
+/datum/modifier/status_effect/stabilized/darkblue/on_expire()
+	set_next_think(0)
 
 /datum/modifier/status_effect/stabilized/darkblue/think()
 	if(holder.fire_stacks > 0 && prob(80))
@@ -614,6 +654,13 @@
 	alert_type = /obj/screen/movable/alert/modifier/bluespacemetroid
 	var/healthcheck
 
+/datum/modifier/status_effect/stabilized/bluespace/on_applied()
+	set_next_think(world.time)
+
+/datum/modifier/status_effect/stabilized/bluespace/on_expire()
+	set_next_think(0)
+
+
 /datum/modifier/status_effect/stabilized/bluespace/think()
 	if(holder.has_modifier_of_type(/datum/modifier/status_effect/bluespacestabilization))
 		linked_alert.desc = "The stabilized bluespace extract is still aligning you with the bluespace axis."
@@ -647,6 +694,13 @@
 	colour = "sepia"
 	var/mod = 0
 
+/datum/modifier/status_effect/stabilized/sepia/on_applied()
+	set_next_think(world.time)
+
+/datum/modifier/status_effect/stabilized/sepia/on_expire()
+	//FIXME holder.remove_movespeed_modifier(/datum/movespeed_modifier/modifier/sepia)
+	set_next_think(0)
+
 /datum/modifier/status_effect/stabilized/sepia/think()
 	if(prob(50) && mod > -1)
 		mod--
@@ -656,9 +710,6 @@
 		// yeah a value of 0 does nothing but replacing the trait in place is cheaper than removing and adding repeatedly
 		//FIXME holder.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/modifier/sepia, multiplicative_slowdown = 0)
 	return ..()
-
-/datum/modifier/status_effect/stabilized/sepia/on_expire()
-	//FIXME holder.remove_movespeed_modifier(/datum/movespeed_modifier/modifier/sepia)
 
 /datum/modifier/status_effect/stabilized/cerulean
 	name = "stabilizedcerulean"
@@ -674,6 +725,7 @@
 		C.real_name = O.real_name
 		C.setDNA(O.getDNA())
 		C.set_species(O.get_species())
+	set_next_think(world.time)
 	return ..()
 
 /datum/modifier/status_effect/stabilized/cerulean/think()
@@ -696,6 +748,7 @@
 		for(var/obj/item/I in clone.get_equipped_items())
 			clone.drop(I, force = TRUE)
 		qdel(clone)
+	set_next_think(0)
 
 /datum/modifier/status_effect/stabilized/pyrite
 	name = "stabilizedpyrite"
@@ -704,6 +757,7 @@
 
 /datum/modifier/status_effect/stabilized/pyrite/on_applied()
 	originalcolor = holder.color
+	set_next_think(world.time)
 	return ..()
 
 /datum/modifier/status_effect/stabilized/pyrite/think()
@@ -712,6 +766,7 @@
 
 /datum/modifier/status_effect/stabilized/pyrite/on_expire()
 	holder.color = originalcolor
+	set_next_think(0)
 
 /datum/modifier/status_effect/stabilized/red
 	name = "stabilizedred"
@@ -720,9 +775,11 @@
 /datum/modifier/status_effect/stabilized/red/on_applied()
 	. = ..()
 	//FIXME holder.add_movespeed_mod_immunities(type, /datum/movespeed_modifier/equipment_speedmod)
+	set_next_think(world.time)
 
 /datum/modifier/status_effect/stabilized/red/on_expire()
 	//FIXME holder.remove_movespeed_mod_immunities(type, /datum/movespeed_modifier/equipment_speedmod)
+	set_next_think(0)
 	return ..()
 
 /datum/modifier/status_effect/stabilized/green
@@ -739,6 +796,7 @@
 		originalDNA = H.dna.Clone()
 		originalname = H.real_name
 		originalspecies = H.get_species()
+	set_next_think(world.time)
 	return ..()
 
 // Only occasionally give examiners a warning.
@@ -754,6 +812,7 @@
 		H.real_name = originalname
 		H.setDNA(originalDNA)
 		H.set_species(originalspecies)
+	set_next_think(0)
 
 /datum/modifier/status_effect/brokenpeace
 	name = "brokenpeace"
@@ -771,6 +830,7 @@
 	if((lasthealth - holder.health) > 0)
 		damage += (lasthealth - holder.health)
 	lasthealth = holder.health
+	..()
 
 /datum/modifier/status_effect/stabilized/pink
 	name = "stabilizedpink"
@@ -780,6 +840,7 @@
 
 /datum/modifier/status_effect/stabilized/pink/on_applied()
 	faction_name = "\ref[holder]"
+	set_next_think(world.time)
 	return ..()
 
 /datum/modifier/status_effect/stabilized/pink/think()
@@ -817,10 +878,17 @@
 	for(var/i in holder.faction)
 		if(i == faction_name)
 			holder.faction -= faction_name
+	set_next_think(0)
 
 /datum/modifier/status_effect/stabilized/oil
 	name = "stabilizedoil"
 	colour = "oil"
+
+/datum/modifier/status_effect/stabilized/oil/on_applied()
+	set_next_think(world.time)
+
+/datum/modifier/status_effect/stabilized/oil/on_expire()
+	set_next_think(0)
 
 /datum/modifier/status_effect/stabilized/oil/think()
 	if(holder.stat == DEAD)
@@ -832,32 +900,33 @@
 
 /// How much damage is dealt per healing done for the stabilized back.
 /// This multiplier is applied to prevent two people from converting each other's damage away.
-#define DRAIN_DAMAGE_MULTIPLIER 1.2
+#define DRAIN_DAMAGE_MULTIPLIER 0.75
 
 /datum/modifier/status_effect/stabilized/black
 	name = "stabilizedblack"
 	colour = "black"
 	/// How much we heal per tick (also how much we damage per tick times DRAIN_DAMAGE_MULTIPLIER).
-	var/heal_amount = 1
+	var/heal_amount = 3
 	/// Weakref to the mob we're currently draining every tick.
 	var/weakref/draining_ref
 
 /datum/modifier/status_effect/stabilized/black/on_applied()
 	register_signal(holder, SIGNAL_MOB_GRAB_SET_STATE, .proc/on_grab)
+	set_next_think(world.time)
 	return ..()
 
 /datum/modifier/status_effect/stabilized/black/on_expire()
 	unregister_signal(holder, SIGNAL_MOB_GRAB_SET_STATE)
+	set_next_think(0)
 	return ..()
 
 /// Whenever we grab someone by the neck, set "draining" to a weakref of them.
-/datum/modifier/status_effect/stabilized/black/proc/on_grab(mob/living/source, new_state)
-
-	if(new_state < NORM_KILL || !isliving(source.pulling))
+/datum/modifier/status_effect/stabilized/black/proc/on_grab(mob/living/source, new_state, target)
+	if(new_state != NORM_KILL || !isliving(target))
 		draining_ref = null
 		return
 
-	var/mob/living/draining = source.pulling
+	var/mob/living/draining = target
 	if(draining.stat == DEAD)
 		return
 
@@ -873,7 +942,7 @@
 	return SPAN_WARNING("[holder] are draining health from [draining]!")
 
 /datum/modifier/status_effect/stabilized/black/think()
-
+	..()
 	if(!iscarbon(holder))
 		return
 	var/mob/living/carbon/C = holder
@@ -887,7 +956,7 @@
 	if(!istype(G))
 		return
 
-	if(G.current_grab < NORM_KILL || !IS_WEAKREF_OF(C.pulling, draining_ref))
+	if(G.current_grab.state_name != NORM_KILL || !IS_WEAKREF_OF(G.affecting, draining_ref))
 		return
 
 	var/mob/living/drained = draining_ref.resolve()
@@ -897,21 +966,21 @@
 		return
 
 	var/list/healing_types = list()
-	if(C.getBruteLoss() > 0)
-		healing_types += BRUTE
-	if(C.getFireLoss() > 0)
-		healing_types += BURN
-	if(C.getToxLoss() > 0)
-		healing_types += TOX
-	if(C.getCloneLoss() > 0)
-		healing_types += CLONE
 
-	if(length(healing_types))
-		C.apply_damage(-heal_amount, damagetype = pick(healing_types))
+	if(C.getBruteLoss() > 0)
+		drained.adjustBruteLoss(heal_amount * DRAIN_DAMAGE_MULTIPLIER)
+		C.adjustBruteLoss(-heal_amount)
+	if(C.getFireLoss() > 0)
+		drained.adjustFireLoss(heal_amount * DRAIN_DAMAGE_MULTIPLIER)
+		C.adjustFireLoss(-heal_amount)
+	if(C.getToxLoss() > 0)
+		drained.adjustToxLoss(heal_amount * DRAIN_DAMAGE_MULTIPLIER)
+		C.adjustToxLoss(-heal_amount)
+	if(C.getCloneLoss() > 0)
+		drained.adjustCloneLoss(heal_amount * DRAIN_DAMAGE_MULTIPLIER)
+		C.adjustCloneLoss(-heal_amount)
 
 	C.nutrition += 3
-	drained.adjustCloneLoss(heal_amount * DRAIN_DAMAGE_MULTIPLIER)
-	return ..()
 
 #undef DRAIN_DAMAGE_MULTIPLIER
 
@@ -922,6 +991,7 @@
 /datum/modifier/status_effect/stabilized/lightpink/on_applied()
 	//FIXME holder.add_movespeed_modifier(/datum/movespeed_modifier/modifier/lightpink)
 	ADD_TRAIT(holder, TRAIT_PACIFISM)
+	set_next_think(world.time)
 	return ..()
 
 /datum/modifier/status_effect/stabilized/lightpink/think()
@@ -934,13 +1004,16 @@
 /datum/modifier/status_effect/stabilized/lightpink/on_expire()
 	//FIXME holder.remove_movespeed_modifier(/datum/movespeed_modifier/modifier/lightpink)
 	REMOVE_TRAIT(holder, TRAIT_PACIFISM)
-
+	set_next_think(0)
 
 
 /datum/modifier/status_effect/stabilized/gold
 	name = "stabilizedgold"
 	colour = "gold"
 	var/mob/living/simple_animal/familiar
+
+/datum/modifier/status_effect/stabilized/gold/on_applied()
+	set_next_think(world.time)
 
 /datum/modifier/status_effect/stabilized/gold/think()
 	var/obj/item/metroidcross/stabilized/gold/linked = linked_extract
@@ -959,17 +1032,25 @@
 /datum/modifier/status_effect/stabilized/gold/on_expire()
 	if(familiar)
 		qdel(familiar)
+	set_next_think(0)
 
 /datum/modifier/status_effect/stabilized/adamantine
 	name = "stabilizedadamantine"
 	colour = "adamantine"
-	incoming_brute_damage_percent = 0.85
+	incoming_brute_damage_percent = 0.75
+
 /datum/modifier/status_effect/stabilized/adamantine/_examine_text()
 	return SPAN_WARNING("[holder] have strange metallic coating on [holder] skin.")
 
 /datum/modifier/status_effect/stabilized/rainbow
 	name = "stabilizedrainbow"
 	colour = "rainbow"
+
+/datum/modifier/status_effect/stabilized/rainbow/on_applied()
+	set_next_think(world.time)
+
+/datum/modifier/status_effect/stabilized/rainbow/on_expire()
+	set_next_think(0)
 
 /datum/modifier/status_effect/stabilized/rainbow/think()
 	if(holder.health <= 0)

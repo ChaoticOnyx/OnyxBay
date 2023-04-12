@@ -210,6 +210,8 @@
 				amount *= M.incoming_damage_percent
 			if(!isnull(M.incoming_tox_damage_percent))
 				amount *= M.incoming_tox_damage_percent
+				heal = istype(M, TRAIT_TOXINLOVER)
+
 	else if(amount < 0)
 		for(var/datum/modifier/M in modifiers)
 			if(!isnull(M.incoming_healing_percent))
@@ -240,7 +242,7 @@
 	if((species.species_flags & SPECIES_FLAG_NO_POISON) || isSynthetic() || isundead(src))
 		return
 
-	var/heal = amount < 0
+	var/heal = amount < 0 || HAS_TRAIT(src, TRAIT_TOXINLOVER)
 	amount = abs(amount)
 
 	if(!heal && (CE_ANTITOX in chem_effects))
@@ -281,6 +283,7 @@
 				amount *= M.incoming_damage_percent
 			if(!isnull(M.incoming_tox_damage_percent))
 				amount *= M.incoming_tox_damage_percent
+
 		if(heal)
 			if(I.damage < amount)
 				amount -= I.damage

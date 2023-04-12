@@ -29,12 +29,14 @@ To add a crossbreed:
 		effectmod = core.effectmod
 		applied_cores = 0
 		to_chat(user, SPAN_NOTICE("\The [core] dissolves inside \the [src], something seems different!"))
+		qdel(core)
 		return
 
 	if(core.effectmod != effectmod && applied_cores<3)
 		effectmod = core.effectmod
 		applied_cores = 0
 		to_chat(user, SPAN_NOTICE("\The [core] dissolves any other extracts inside \the [src]!"))
+		qdel(core)
 		return
 
 	if(core.effectmod != effectmod)
@@ -50,6 +52,9 @@ To add a crossbreed:
 /mob/living/carbon/metroid/proc/spawn_corecross()
 	var/static/list/crossbreeds = subtypesof(/obj/item/metroidcross)
 	visible_message(SPAN_DANGER("[src] shudders, its mutated core consuming the rest of its body!"))
+	var/datum/effect/effect/system/smoke_spread/smoke = new /datum/effect/effect/system/smoke_spread
+	smoke.attach(src.loc)
+	smoke.set_up(10, 0, src.loc)
 	playsound(src, 'sound/effects/smoke.ogg', 50, TRUE)
 	var/crosspath
 	for(var/X in crossbreeds)
@@ -76,6 +81,7 @@ To add a crossbreed:
 	throwforce = 0
 	throw_speed = 3
 	throw_range = 6
+	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 
 /obj/item/metroidcross/_examine_text(mob/user)
 	. = ..()
@@ -104,7 +110,7 @@ To add a crossbreed:
 		if("silver")
 			color = "#D3D3D3"
 		if("bluespace")
-			color = "#32CD32"
+			color = "#0fdee6"
 		if("sepia")
 			color = "#704214"
 		if("cerulean")

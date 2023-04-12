@@ -23,8 +23,13 @@
 	desc = "The lenses seem to glow slightly, and reflect light into dazzling colors."
 	icon = 'icons/obj/xenobiology/metroidcrossing.dmi'
 	icon_state = "prismglasses"
-	var/actions = list(/datum/action/item_action/prism_glasses/change_prism_colour, /datum/action/item_action/prism_glasses/place_light_prism)
+	var/actions = list()
 	var/glasses_color = "#FFFFFF"
+
+/obj/item/clothing/glasses/prism_glasses/Initialize()
+	. = ..()
+	actions += new /datum/action/item_action/prism_glasses/change_prism_colour(src)
+	actions += new /datum/action/item_action/prism_glasses/place_light_prism(src)
 
 /obj/item/clothing/glasses/prism_glasses/equipped(mob/user)
 	if(ishuman(user))
@@ -34,6 +39,8 @@
 				action.Grant(H)
 
 /obj/item/clothing/glasses/prism_glasses/dropped()
+	for(var/datum/action/action in actions)
+		action.Remove(action.owner)
 
 /obj/structure/light_prism
 	name = "light prism"
@@ -48,7 +55,7 @@
 	. = ..()
 	color = newcolor
 	light_color = newcolor
-	set_light(5)
+	set_light(0.95, 2, 4, l_color = light_color)
 
 /obj/structure/light_prism/attack_hand(mob/user, list/modifiers)
 	to_chat(user, SPAN_NOTICE("You dispel [src]."))
@@ -70,7 +77,7 @@
 	name = "Adjust Prismatic Lens"
 	button_icon = 'icons/obj/xenobiology/metroidcrossing.dmi'
 	button_icon_state = "prismcolor"
-
+	action_type = AB_INNATE
 
 /datum/action/item_action/prism_glasses/change_prism_colour/Trigger(trigger_flags)
 	if(!IsAvailable())
@@ -80,6 +87,7 @@
 	if(!new_color)
 		return
 	glasses.glasses_color = new_color
+	action_type = AB_INNATE
 
 /datum/action/item_action/prism_glasses/place_light_prism
 	name = "Fabricate Light Prism"

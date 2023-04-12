@@ -406,6 +406,8 @@
 	var/area/A = get_area(src)
 	if(!A.has_gravity())
 		return 0
+	if(HAS_TRAIT(src, TRAIT_NOSLIP))
+		return 0
 	if(buckled)
 		return 0
 	if(weakened)

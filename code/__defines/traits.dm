@@ -1,8 +1,9 @@
 #define TRAIT_PACIFISM /datum/modifier/trait/pacifism
-#define TRAIT_RESISTCOLD /datum/modifier/trait/cold_resist
-#define TRAIT_NOSLIPWATER /datum/modifier/trait/noslip
+#define TRAIT_COLDRESIST /datum/modifier/trait/cold_resist
+#define TRAIT_NOSLIP /datum/modifier/trait/noslip
 #define TRAIT_TOXINLOVER /datum/modifier/trait/toxinlover
 #define TRAIT_RESISTHEATHANDS /datum/modifier/trait/resist_heat_hands
+#define TRAIT_METROIDRECALL /datum/modifier/status_effect/metroidrecall
 
 #define ADD_TRAIT(holder,trait_type) holder.add_modifier(trait_type)
 #define REMOVE_TRAIT(holder,trait_type) holder.remove_modifiers_of_type(trait_type)

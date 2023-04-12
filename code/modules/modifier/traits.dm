@@ -150,9 +150,21 @@
 
 //FIXME
 /datum/modifier/trait/cold_resist
+	name = "Cold Resistance"
+	desc = "You don't feel cold!"
+
+/datum/modifier/trait/cold_resist/on_applied()
+	holder.mutations.Add(MUTATION_COLD_RESISTANCE)
+
+/datum/modifier/trait/cold_resist/on_expire()
+	holder.mutations.Remove(MUTATION_COLD_RESISTANCE)
 
 /datum/modifier/trait/noslip
+	name = "No Slip"
+	desc = "You can't slip!"
 
 /datum/modifier/trait/toxinlover
+	incoming_tox_damage_percent = -0.2
 
 /datum/modifier/trait/resist_heat_hands
+	incoming_fire_damage_percent = 0.2

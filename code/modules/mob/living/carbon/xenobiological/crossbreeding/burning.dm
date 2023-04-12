@@ -42,18 +42,20 @@ Burning extracts:
 /obj/item/metroidcross/burning/orange
 	colour = "orange"
 	effect_desc = "Expels pepperspray in a radius when activated."
-
+//FIXME
 /obj/item/metroidcross/burning/orange/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] boils over with a caustic gas!"))
-	var/datum/reagents/tmp_holder = new/datum/reagents(100)
-	tmp_holder.add_reagent(/datum/reagent/capsaicin/condensed, 100)
-	var/datum/effect/effect/system/steam_spread/steam = new /datum/effect/effect/system/steam_spread()
+	src.reagents.add_reagent(/datum/reagent/capsaicin/condensed, 100)
+	var/datum/effect/effect/system/smoke_spread/steam = new /datum/effect/effect/system/smoke_spread()
 	steam.set_up(7, 0, get_turf(src))
 	steam.start()
-	for(var/atom/A in view(7, src))
+	for(var/atom/A in view(7, loc))
 		if( A == src ) continue
-		tmp_holder.touch(A)
-	..()
+		src.reagents.touch(A)
+
+	set_invisibility(INVISIBILITY_MAXIMUM)
+	spawn(50)
+		qdel(src)
 
 /obj/item/metroidcross/burning/purple
 	colour = "purple"
@@ -71,7 +73,7 @@ Burning extracts:
 /obj/item/metroidcross/burning/blue/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] flash-freezes the area!"))
 	for(var/turf/simulated/open/T in range(3, get_turf(user)))
-		T.wet_floor(50)
+		//FIXME T.wet_floor(4)
 	for(var/mob/living/carbon/M in range(5, get_turf(user)))
 		if(M != user)
 			M.bodytemperature = BODYTEMP_COLD_DAMAGE_LIMIT + 10 //Not quite cold enough to hurt.
@@ -81,10 +83,10 @@ Burning extracts:
 /obj/item/metroidcross/burning/metal
 	colour = "metal"
 	effect_desc = "Instantly destroys walls around you."
-
+//FIXME
 /obj/item/metroidcross/burning/metal/do_effect(mob/user)
 	for(var/turf/simulated/wall/W in range(1,get_turf(user)))
-		W.dismantle_wall(1)
+		qdel(W)
 		playsound(W, 'sound/effects/break_stone.ogg', 50, TRUE)
 	user.visible_message(SPAN_DANGER("[src] pulses violently, and shatters the walls around it!"))
 	..()
@@ -113,7 +115,7 @@ Burning extracts:
 /obj/item/metroidcross/burning/darkpurple/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] sublimates into a cloud of plasma!"))
 	var/turf/T = get_turf(user)
-	T.assume_gas("plasma", 60, 20 CELSIUS)
+	T.assume_gas("plasma", 100, 20 CELSIUS)
 	..()
 
 /obj/item/metroidcross/burning/darkblue
@@ -141,7 +143,7 @@ Burning extracts:
 /obj/item/metroidcross/burning/silver/do_effect(mob/user)
 	var/amount = rand(3,6)
 	var/list/turfs = list()
-	for(var/turf/simulated/open/T in range(1,get_turf(user)))
+	for(var/turf/simulated/T in range(1,get_turf(user)))
 		turfs += T
 	for(var/i in 1 to amount)
 		var/path = pick(typesof(/obj/item/reagent_containers/food) - /obj/item/reagent_containers/food)
@@ -158,7 +160,7 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/bluespace/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] sparks, and lets off a shockwave of bluespace energy!"))
-	for(var/mob/living/L in range(1, get_turf(user)))
+	for(var/mob/living/L in range(5, get_turf(user)))
 		if(L != user)
 			do_teleport(L, get_turf(user))
 			playsound(get_turf(user), GET_SFX(SFX_SPARK_MEDIUM), 100, TRUE)
@@ -182,6 +184,7 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/cerulean/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] produces a potion!"))
+	//FIXME
 	new /obj/item/metroidpotion/extract_cloner(get_turf(user))
 	..()
 
@@ -265,6 +268,7 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/pink/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] shrinks into a small, gel-filled pellet!"))
+	//FIXME
 	new /obj/item/metroidcrossbeaker/pax(get_turf(user))
 	..()
 
@@ -306,8 +310,8 @@ Burning extracts:
 /obj/item/metroidcross/burning/oil/proc/boom()
 	var/turf/T = get_turf(src)
 	playsound(T, 'sound/effects/explosions/explosion2.ogg', 200, TRUE)
-	for(var/mob/living/target in range(2, T))
-		new /obj/effect/explosion(get_turf(target))
+	for(var/turf/simulated/target in range(2, T))
+		new /obj/effect/explosion(target)
 		SSexplosions.med_mov_atom += target
 	qdel(src)
 

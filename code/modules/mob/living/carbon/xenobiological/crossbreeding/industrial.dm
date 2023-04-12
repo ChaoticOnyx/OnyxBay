@@ -8,7 +8,7 @@ Industrial extracts:
 	effect = "industrial"
 	icon_state = "industrial_still"
 	var/plasmarequired = 2 //Units of plasma required to be consumed to produce item.
-	var/itempath = /obj/item //The item produced by the extract.
+	var/itempath = null //The item produced by the extract.
 	var/plasmaabsorbed = 0 //Units of plasma aborbed by the extract already. Absorbs at a rate of 2u/obj per every 3 seconds.
 	var/itemamount = 1 //How many items to spawn
 
@@ -22,7 +22,7 @@ Industrial extracts:
 /obj/item/metroidcross/industrial/Initialize(mapload)
 	. = ..()
 	create_reagents(100)
-	set_next_think(world.time + 1 SECOND)
+	set_next_think(world.time + 5 SECOND)
 
 
 /obj/item/metroidcross/industrial/Destroy()
@@ -55,42 +55,43 @@ Industrial extracts:
 	else
 		icon_state = "industrial_still"
 
-	set_next_think(world.time + 3 SECOND)
+	set_next_think(world.time + 5 SECOND)
 
 /obj/item/metroidcross/industrial/grey
 	colour = "grey"
 	effect_desc = "Produces monkey cubes."
 	itempath = /obj/item/reagent_containers/food/monkeycube
-	itemamount = 5
+	itemamount = 1
+	plasmarequired = 20
 
 /obj/item/metroidcross/industrial/orange
 	colour = "orange"
 	effect_desc = "Produces metroid zippo lighters."
-	plasmarequired = 6
+	plasmarequired = 50
 	itempath = /obj/item/flame/lighter/zippo/metroid
 
 /obj/item/metroidcross/industrial/purple
 	colour = "purple"
 	effect_desc = "Produces autoinjectors with regen jelly inside."
-	plasmarequired = 5
+	plasmarequired = 50
 	itempath = /obj/item/metroidcrossbeaker/autoinjector/regenpack
 
 /obj/item/metroidcross/industrial/blue
 	colour = "blue"
 	effect_desc = "Produces full fire extinguishers."
-	plasmarequired = 10
+	plasmarequired = 60
 	itempath = /obj/item/extinguisher
 
 /obj/item/metroidcross/industrial/metal
 	colour = "metal"
 	effect_desc = "Produces iron sheets."
-	plasmarequired = 3
+	plasmarequired = 30
 	itempath = /obj/item/stack/material/steel/ten
 
 /obj/item/metroidcross/industrial/yellow
 	colour = "yellow"
 	effect_desc = "Produces high capacity power cells, which are not fully charged on creation."
-	plasmarequired = 5
+	plasmarequired = 50
 	itempath = /obj/item/cell/high
 
 /obj/item/metroidcross/industrial/yellow/do_after_spawn(obj/item/spawned)
@@ -101,13 +102,13 @@ Industrial extracts:
 /obj/item/metroidcross/industrial/darkpurple
 	colour = "dark purple"
 	effect_desc = "Produces plasma... for plasma."
-	plasmarequired = 10
+	plasmarequired = 20
 	itempath = /obj/item/stack/material/plasma
 
 /obj/item/metroidcross/industrial/darkblue
 	colour = "dark blue"
 	effect_desc = "Produces one-use fireproofing potions."
-	plasmarequired = 6
+	plasmarequired = 30
 	itempath = /obj/item/chill_potion
 
 /obj/item/metroidcross/industrial/darkblue/do_after_spawn(obj/item/spawned)
@@ -118,77 +119,74 @@ Industrial extracts:
 /obj/item/metroidcross/industrial/silver
 	colour = "silver"
 	effect_desc = "Produces random food and drink items."
-	plasmarequired = 1
+	plasmarequired = 50
 	//Item picked below.
 
-/obj/item/metroidcross/industrial/silver/think()
-	//FIXME itempath = pick(list(get_random_food(), get_random_drink()))
-
 /obj/item/metroidcross/industrial/silver/do_after_spawn(obj/item/spawned)
-	if(istype(spawned, /obj/item/reagent_containers/food))
-		var/obj/item/reagent_containers/food/food_object = spawned
-		//FIXME food_object.mark_silver_metroid_reaction()
+	var/path = pick(typesof(/obj/item/reagent_containers/food) - /obj/item/reagent_containers/food)
+	var/obj/item/reagent_containers/food/food = new path(get_turf(src.loc))
 
 /obj/item/metroidcross/industrial/bluespace
 	colour = "bluespace"
 	effect_desc = "Produces bluespace crystals."
-	plasmarequired = 7
+	plasmarequired = 10
 	itempath = /obj/item/stack/material/bluespace_crystal
 
 /obj/item/metroidcross/industrial/sepia
 	colour = "sepia"
 	effect_desc = "Produces cameras."
-	plasmarequired = 2
+	plasmarequired = 30
 	itempath = /obj/item/device/camera
 
 /obj/item/metroidcross/industrial/cerulean
 	colour = "cerulean"
 	effect_desc = "Produces normal metroid extract enhancers."
-	plasmarequired = 5
+	plasmarequired = 50
 	itempath = /obj/item/metroidsteroid2
 
 /obj/item/metroidcross/industrial/pyrite
 	colour = "pyrite"
 	effect_desc = "Produces cans of spraypaint."
-	plasmarequired = 2
+	plasmarequired = 20
 	itempath = /obj/item/storage/fancy/crayons
 
 /obj/item/metroidcross/industrial/red
 	colour = "red"
 	effect_desc = "Produces blood orbs."
-	plasmarequired = 5
+	plasmarequired = 50
 	itempath = /obj/item/metroidcrossbeaker/bloodpack
 
 /obj/item/metroidcross/industrial/green
 	colour = "green"
 	effect_desc = "Produces self-use-only metroid jelly autoinjectors."
-	plasmarequired = 7
+	plasmarequired = 60
 	itempath = /obj/item/metroidcrossbeaker/autoinjector/metroidjelly
 
 /obj/item/metroidcross/industrial/pink
 	colour = "pink"
 	effect_desc = "Produces synthpax and space drug autoinjectors."
-	plasmarequired = 6
+	plasmarequired = 60
 	itempath = /obj/item/metroidcrossbeaker/autoinjector/peaceandlove
 
 /obj/item/metroidcross/industrial/gold
 	colour = "gold"
 	effect_desc = "Produces random coins."
-	plasmarequired = 10
+	plasmarequired = 20
 
 /obj/item/metroidcross/industrial/gold/think()
 	itempath = pick(/obj/item/material/coin/silver, /obj/item/material/coin/iron, /obj/item/material/coin/gold, /obj/item/material/coin/diamond, /obj/item/material/coin/plasma, /obj/item/material/coin/uranium)
+	set_next_think(world.time + 1 MINUTE)
 
 /obj/item/metroidcross/industrial/oil
 	colour = "oil"
 	effect_desc = "Produces grenade casings."
-	plasmarequired = 4
-	itempath = /obj/item/grenade/chem_grenade
+	plasmarequired = 60
+	itempath = /obj/item/grenade/chem_grenade/metalfoam
 
 /obj/item/metroidcross/industrial/black //What does this have to do with black metroids? No clue! Fun, though
 	colour = "black"
 	effect_desc = "Produces cigarettes."
-	plasmarequired = 6
+	plasmarequired = 30
 
 /obj/item/metroidcross/industrial/black/Initialize()
 	itempath = pick(subtypesof(/obj/item/storage/fancy/cigarettes))
@@ -196,20 +194,20 @@ Industrial extracts:
 
 /obj/item/metroidcross/industrial/lightpink
 	colour = "light pink"
-	effect_desc = "Produces heart shaped boxes that have candies in them."
-	plasmarequired = 3
-	itempath = /obj/item/storage/lunchbox/heart
+	effect_desc = "Produces heart shaped boxes that have food in them."
+	plasmarequired = 60
+	itempath = /obj/item/storage/lunchbox/heart/filled
 
 /obj/item/metroidcross/industrial/adamantine
 	colour = "adamantine"
 	effect_desc = "Produces sheet of platinum!."
-	plasmarequired = 10
+	plasmarequired = 60
 	itempath = /obj/item/stack/material/platinum
 
 /obj/item/metroidcross/industrial/rainbow
 	colour = "rainbow"
 	effect_desc = "Produces random metroid extracts."
-	plasmarequired = 5
+	plasmarequired = 50
 	//Item picked below.
 
 /obj/item/metroidcross/industrial/rainbow/Initialize()

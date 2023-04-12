@@ -13,6 +13,7 @@ Stabilized extracts:
 	icon_state = "stabilized"
 	var/datum/modifier/status_effect/linked_effect
 	var/mob/living/owner
+	var/datum/modifier/effectpath
 
 /obj/item/metroidcross/stabilized/Initialize(mapload)
 	. = ..()
@@ -31,21 +32,26 @@ Stabilized extracts:
 		humanfound = (loc.loc)
 
 	if(!humanfound)
+		set_next_think(world.time + 1 SECOND)
 		return
 
 	var/mob/living/carbon/human/H = humanfound
-	var/effectpath = /datum/modifier/status_effect/stabilized
+	effectpath = /datum/modifier/status_effect/stabilized
 	var/static/list/effects = subtypesof(/datum/modifier/status_effect/stabilized)
+
 	for(var/X in effects)
 		var/datum/modifier/status_effect/stabilized/S = X
 		if(initial(S.colour) == colour)
 			effectpath = S
 			break
+
 	if(!H.has_modifier_of_type(effectpath))
 		var/datum/modifier/status_effect/stabilized/S = H.add_modifier(effectpath)
 		owner = H
 		S.linked_extract = src
-		set_next_think(0)
+		S.set_next_think(world.time + 1 SECOND)
+
+	set_next_think(world.time + 1 SECOND)
 
 
 //Colors and subtypes:
@@ -143,14 +149,17 @@ Stabilized extracts:
 	if(choice == "Familiar Location")
 		to_chat(user, SPAN_NOTICE("You prod [src], and it shudders slightly."))
 		set_next_think(world.time + 1 SECOND)
+
 	if(choice == "Familiar Species")
 		to_chat(user, SPAN_NOTICE("You squeeze [src], and a shape seems to shift around inside."))
 		generate_mobtype()
 		set_next_think(world.time + 1 SECOND)
+
 	if(choice == "Familiar Sentience")
 		to_chat(user, SPAN_NOTICE("You poke [src], and it lets out a glowing pulse."))
 		saved_mind = null
 		set_next_think(world.time + 1 SECOND)
+
 	if(choice == "Familiar Name")
 		var/newname = sanitize_name(input(user, "Would you like to change the name of [mob_name]", "Name change", mob_name) as text)
 		if(newname)
