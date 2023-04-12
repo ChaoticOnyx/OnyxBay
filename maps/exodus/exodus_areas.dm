@@ -408,6 +408,62 @@
 	icon_state = "shuttle"
 	base_turf = /turf/space/transit/north
 
+//event
+
+/area/dropship
+	name = "\improper Dropship"
+	icon_state = "yellow"
+	requires_power = 0
+	ambient_music_tags = list(MUSIC_TAG_MYSTIC, MUSIC_TAG_SPACE)
+
+/area/dropship/station
+	name = "\improper Dropship"
+	icon_state = "shuttlered"
+	base_turf = /turf/simulated/floor/plating/rough
+
+/area/dropship/landed
+	name = "cave vulkan"
+	icon_state = "yellow"
+	base_turf = /turf/simulated/floor/natural/sand/darksand
+
+/area/dropship/transit
+	name = "Dropship Transit"
+	icon_state = "shuttle"
+	base_turf = /turf/space/transit/north
+
+/area/train
+	name = "\improper Civilian Train"
+	icon_state = "yellow"
+	requires_power = 0
+	ambient_music_tags = list()
+	base_turf = /turf/simulated/floor/plating
+
+/area/train/station
+	name = "\improper Cilivian Train: Sector B"
+	icon_state = "shuttlered"
+
+/area/train/landed
+	name = "\improper Civilian Train: Sector C"
+	icon_state = "yellow"
+
+/area/train/transit
+	name = "Train Transit"
+	icon_state = "shuttle"
+	base_turf = /turf/unsimulated/train/dust
+
+/area/pickup
+	name = "SyndiePod"
+	icon_state = "red"
+	requires_power = 0
+	ambient_music_tags = list()
+	base_turf = /turf/simulated/floor/plating
+
+/area/pickup/remote
+	base_turf = /turf/space
+
+/area/pickup/jungle
+	base_turf = /turf/simulated/floor/natural/jungle
+
 // SUBSTATIONS (Subtype of maint, that should let them serve as shielded area during radstorm)
 
 /area/maintenance/substation
