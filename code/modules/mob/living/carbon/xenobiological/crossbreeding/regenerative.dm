@@ -49,9 +49,8 @@ Regenerative extracts:
 
 /obj/item/metroidcross/regenerative/orange/core_effect_before(mob/living/target, mob/user)
 	target.visible_message(SPAN_WARNING("The [src] boils over!"))
-	/*FIXMEfor(var/turf/targetturf in RANGE_TURFS(1,target))
-		 if(!locate(/obj/effect/hotspot) in targetturf)
-			new /obj/effect/hotspot(targetturf)*/
+	for(var/turf/targetturf in RANGE_TURFS(1,target))
+		targetturf.hotspot_expose(700, 125)
 
 /obj/item/metroidcross/regenerative/purple
 	colour = "purple"
@@ -65,7 +64,7 @@ Regenerative extracts:
 	effect_desc = "Fully heals the target and makes the floor wet."
 
 /obj/item/metroidcross/regenerative/blue/core_effect(mob/living/target, mob/user)
-	/*FIXMEif(isturf(target.loc))
+	/*FIXME if(isturf(target.loc))
 		var/turf/simulated/open/T = get_turf(target)
 		T.MakeSlippery(TURF_WET_WATER, min_wet_time = 10, wet_time_to_add = 5)
 		target.visible_message(SPAN_WARNING("The milky goo in the extract gets all over the floor!"))*/

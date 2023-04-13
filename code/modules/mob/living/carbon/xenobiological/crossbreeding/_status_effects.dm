@@ -298,11 +298,11 @@
 	duration = 600
 
 /datum/modifier/status_effect/timecookie/on_applied()
-	//FIXME holder.add_actionspeed_modifier(/datum/actionspeed_modifier/timecookie)
+	holder.add_modifier(/datum/modifier/actionspeed/timecookie)
 	return ..()
 
 /datum/modifier/status_effect/timecookie/on_expire()
-	//FIXME holder.remove_actionspeed_modifier(/datum/actionspeed_modifier/timecookie)
+	holder.remove_a_modifier_of_type(/datum/modifier/actionspeed/timecookie)
 	return ..()
 
 /datum/modifier/status_effect/lovecookie

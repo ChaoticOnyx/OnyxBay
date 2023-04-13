@@ -14,7 +14,8 @@
 /obj/item/metroidpotion/extract_cloner/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
 	. = ..()
 	if(istype(target, /obj/item/metroid_extract))
-		new target(get_turf(src))
+		new target.type(target.loc)
+		qdel(src)
 
 //Revival potion - Charged Green
 /obj/item/metroidpotion/metroid_reviver

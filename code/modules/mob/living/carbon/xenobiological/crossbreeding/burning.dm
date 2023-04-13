@@ -8,16 +8,18 @@ Burning extracts:
 	desc = "It's boiling over with barely-contained energy."
 	effect = "burning"
 	icon_state = "burning"
+	var/plasma_value = 10
 
 /obj/item/metroidcross/burning/Initialize(mapload)
 	. = ..()
-	create_reagents(10)
+	create_reagents(400)
+	plasma_value = rand(10,20)
 
 /obj/item/metroidcross/burning/attack_self(mob/user)
-	if(!reagents.has_reagent(/datum/reagent/toxin/plasma,10))
-		to_chat(user, SPAN_WARNING("This extract needs to be full of plasma to activate!"))
+	if(!reagents.has_reagent(/datum/reagent/toxin/plasma, plasma_value))
+		to_chat(user, SPAN_WARNING("This extract needs to be some amount of plasma to activate!"))
 		return
-	reagents.remove_reagent(/datum/reagent/toxin/plasma,10)
+	reagents.remove_reagent(/datum/reagent/toxin/plasma, plasma_value)
 	to_chat(user, SPAN_NOTICE("You squeeze the extract, and it absorbs the plasma!"))
 	playsound(src, 'sound/effects/bubbles.ogg', 50, TRUE)
 	playsound(src, 'sound/effects/explosions/fuel_explosion1.ogg', 50, TRUE)
@@ -42,19 +44,38 @@ Burning extracts:
 /obj/item/metroidcross/burning/orange
 	colour = "orange"
 	effect_desc = "Expels pepperspray in a radius when activated."
-//FIXME
+
 /obj/item/metroidcross/burning/orange/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] boils over with a caustic gas!"))
-	src.reagents.add_reagent(/datum/reagent/capsaicin/condensed, 100)
-	var/datum/effect/effect/system/smoke_spread/steam = new /datum/effect/effect/system/smoke_spread()
-	steam.set_up(7, 0, get_turf(src))
-	steam.start()
-	for(var/atom/A in view(7, loc))
-		if( A == src ) continue
-		src.reagents.touch(A)
+	var/obj/item/reagent_containers/vessel/beaker/large/B1 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/large/B2 = new(src)
 
-	set_invisibility(INVISIBILITY_MAXIMUM)
-	spawn(50)
+	B1.reagents.add_reagent(/datum/reagent/phosphorus, 40)
+	B1.reagents.add_reagent(/datum/reagent/potassium, 40)
+	B1.reagents.add_reagent(/datum/reagent/capsaicin/condensed, 40)
+	B2.reagents.add_reagent(/datum/reagent/sugar, 40)
+	B2.reagents.add_reagent(/datum/reagent/capsaicin/condensed, 80)
+
+	for(var/obj/item/reagent_containers/vessel/G in list(B1,B2))
+		G.reagents.trans_to_obj(src, G.reagents.total_volume)
+
+	if(src.reagents.total_volume) //The possible reactions didnt use up all reagents.
+		var/datum/effect/effect/system/steam_spread/steam = new /datum/effect/effect/system/steam_spread()
+		steam.set_up(10, 0, get_turf(src))
+		steam.attach(src)
+		steam.start()
+
+		for(var/atom/A in view(3, loc))
+			if( A == src ) continue
+			src.reagents.touch(A)
+
+	if(istype(loc, /mob/living/carbon)) // drop dat if it goes off in your hand
+		var/mob/living/carbon/C = loc
+		C.drop(src)
+		C.throw_mode_off()
+
+	set_invisibility(INVISIBILITY_MAXIMUM) //Why am i doing this?
+	spawn(50)		   //To make sure all reagents can work
 		qdel(src)
 
 /obj/item/metroidcross/burning/purple
@@ -73,7 +94,7 @@ Burning extracts:
 /obj/item/metroidcross/burning/blue/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] flash-freezes the area!"))
 	for(var/turf/simulated/open/T in range(3, get_turf(user)))
-		//FIXME T.wet_floor(4)
+		T.wet_floor(4)
 	for(var/mob/living/carbon/M in range(5, get_turf(user)))
 		if(M != user)
 			M.bodytemperature = BODYTEMP_COLD_DAMAGE_LIMIT + 10 //Not quite cold enough to hurt.
@@ -83,10 +104,11 @@ Burning extracts:
 /obj/item/metroidcross/burning/metal
 	colour = "metal"
 	effect_desc = "Instantly destroys walls around you."
-//FIXME
+
 /obj/item/metroidcross/burning/metal/do_effect(mob/user)
 	for(var/turf/simulated/wall/W in range(1,get_turf(user)))
-		qdel(W)
+		W.dismantle_wall(no_product=TRUE)
+		W.material.place_dismantled_product(W, TRUE)
 		playsound(W, 'sound/effects/break_stone.ogg', 50, TRUE)
 	user.visible_message(SPAN_DANGER("[src] pulses violently, and shatters the walls around it!"))
 	..()
@@ -184,7 +206,6 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/cerulean/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] produces a potion!"))
-	//FIXME
 	new /obj/item/metroidpotion/extract_cloner(get_turf(user))
 	..()
 
@@ -268,7 +289,6 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/pink/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] shrinks into a small, gel-filled pellet!"))
-	//FIXME
 	new /obj/item/metroidcrossbeaker/pax(get_turf(user))
 	..()
 

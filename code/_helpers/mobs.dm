@@ -137,6 +137,12 @@
 	var/target_loc = target.loc
 
 	var/holding = affecter.get_active_item()
+
+	if(istype(user,/mob/living))
+		var/mob/living/L = user
+		for(var/datum/modifier/actionspeed/ASM in L.modifiers)
+			time = time * ASM.actionspeed_coefficient
+
 	var/datum/progressbar/progbar
 	if(is_mob_type && progress)
 		progbar = new(user, time, target)
@@ -192,6 +198,11 @@
 	var/atom/original_loc = user.loc
 
 	var/holding = user.get_active_hand()
+
+	if(istype(user,/mob/living))
+		var/mob/living/L = user
+		for(var/datum/modifier/actionspeed/ASM in L.modifiers)
+			delay = delay * ASM.actionspeed_coefficient
 
 	var/datum/progressbar/progbar
 	if (progress)
@@ -270,7 +281,7 @@
 /mob/living/add_to_dead_mob_list()
 	if((src in GLOB.living_mob_list_) || (src in GLOB.dead_mob_list_))
 		return FALSE
-	
+
 	..()
 	GLOB.dead_mob_list_ += src
 

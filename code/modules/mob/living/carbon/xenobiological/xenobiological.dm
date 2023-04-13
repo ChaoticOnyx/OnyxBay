@@ -281,8 +281,10 @@
 	return
 
 /mob/living/carbon/metroid/attackby(obj/item/W, mob/user)
+
 	if(istype(W,/obj/item/metroid_extract))
 		handle_crossbreeding(W,user)
+
 	if(W.force > 0)
 		attacked += 10
 		if(!(stat) && prob(25)) //Only run this check if we're alive or otherwise motile, otherwise surgery will be agonizing for xenobiologists.

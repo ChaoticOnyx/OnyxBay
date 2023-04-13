@@ -2266,6 +2266,7 @@
 #include "code\modules\mob\observer\virtual\mob.dm"
 #include "code\modules\mob_spawn\mob_spawn.dm"
 #include "code\modules\mob_spawn\ghost_roles\spider_roles.dm"
+#include "code\modules\modifier\actionspeed.dm"
 #include "code\modules\modifier\aura.dm"
 #include "code\modules\modifier\helpers.dm"
 #include "code\modules\modifier\modifier.dm"

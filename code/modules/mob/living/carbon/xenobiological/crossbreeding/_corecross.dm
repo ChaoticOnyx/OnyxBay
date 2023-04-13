@@ -44,6 +44,7 @@ To add a crossbreed:
 		return
 
 	applied_cores++
+	qdel(core)
 
 	if(applied_cores>=METROID_EXTRACT_CROSSING_REQUIRED)
 		spawn_corecross()
@@ -52,9 +53,9 @@ To add a crossbreed:
 /mob/living/carbon/metroid/proc/spawn_corecross()
 	var/static/list/crossbreeds = subtypesof(/obj/item/metroidcross)
 	visible_message(SPAN_DANGER("[src] shudders, its mutated core consuming the rest of its body!"))
-	var/datum/effect/effect/system/smoke_spread/smoke = new /datum/effect/effect/system/smoke_spread
-	smoke.attach(src.loc)
-	smoke.set_up(10, 0, src.loc)
+	var/datum/effect/effect/system/smoke_spread/s = new /datum/effect/effect/system/smoke_spread
+	s.set_up(4, 1, src, 0)
+	s.start()
 	playsound(src, 'sound/effects/smoke.ogg', 50, TRUE)
 	var/crosspath
 	for(var/X in crossbreeds)

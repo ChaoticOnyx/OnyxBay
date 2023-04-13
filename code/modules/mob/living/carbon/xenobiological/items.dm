@@ -155,33 +155,33 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potpink"
 
-	attack(mob/living/carbon/metroid/M as mob, mob/user as mob)
-		if(!istype(M, /mob/living/carbon/metroid))//If target is not a metroid.
-			to_chat(user, "<span class='warning'> The potion only works on baby metroids!</span>")
-			return ..()
-		if(M.is_adult) //Can't tame adults
-			to_chat(user, "<span class='warning'> Only baby metroids can be tamed!</span>")
-			return..()
-		if(M.stat)
-			to_chat(user, "<span class='warning'> The metroid is dead!</span>")
-			return..()
-		if(M.mind)
-			to_chat(user, "<span class='warning'> The metroid resists!</span>")
-			return ..()
-		var/mob/living/simple_animal/metroid/pet = new /mob/living/simple_animal/metroid(M.loc)
-		pet.icon_state = "[M.colour] baby metroid"
-		pet.icon_living = "[M.colour] baby metroid"
-		pet.icon_dead = "[M.colour] baby metroid dead"
-		pet.colour = "[M.colour]"
-		to_chat(user, "You feed the metroid the potion, removing it's powers and calming it.")
-		qdel(M)
-		var/newname = sanitize(input(user, "Would you like to give the metroid a name?", "Name your new pet", "pet metroid") as null|text, MAX_NAME_LEN)
+/obj/item/metroidpotion/attack(mob/living/carbon/metroid/M as mob, mob/user as mob)
+	if(!istype(M, /mob/living/carbon/metroid))//If target is not a metroid.
+		to_chat(user, "<span class='warning'> The potion only works on baby metroids!</span>")
+		return ..()
+	if(M.is_adult) //Can't tame adults
+		to_chat(user, "<span class='warning'> Only baby metroids can be tamed!</span>")
+		return..()
+	if(M.stat)
+		to_chat(user, "<span class='warning'> The metroid is dead!</span>")
+		return..()
+	if(M.mind)
+		to_chat(user, "<span class='warning'> The metroid resists!</span>")
+		return ..()
+	var/mob/living/simple_animal/metroid/pet = new /mob/living/simple_animal/metroid(M.loc)
+	pet.icon_state = "[M.colour] baby metroid"
+	pet.icon_living = "[M.colour] baby metroid"
+	pet.icon_dead = "[M.colour] baby metroid dead"
+	pet.colour = "[M.colour]"
+	to_chat(user, "You feed the metroid the potion, removing it's powers and calming it.")
+	qdel(M)
+	var/newname = sanitize(input(user, "Would you like to give the metroid a name?", "Name your new pet", "pet metroid") as null|text, MAX_NAME_LEN)
 
-		if (!newname)
-			newname = "pet metroid"
-		pet.SetName(newname)
-		pet.real_name = newname
-		qdel(src)
+	if (!newname)
+		newname = "pet metroid"
+	pet.SetName(newname)
+	pet.real_name = newname
+	qdel(src)
 
 /obj/item/metroidpotion2
 	name = "advanced docility potion"
