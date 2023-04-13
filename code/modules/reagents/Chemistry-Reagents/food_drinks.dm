@@ -371,15 +371,14 @@
 		to_chat(M, SPAN_WARNING("The pepperspray gets in your eyes!"))
 		M.eye_blurry = max(M.eye_blurry, effective_strength * 5)
 		M.eye_blind = max(M.eye_blind, effective_strength * 2)
-		M.apply_effect(10, PAIN, 0)
-
+		M.apply_damage(damage = 20, damagetype = PAIN, def_zone = BP_HEAD)
 	if(mouth_covered)
-		to_chat(M, SPAN_WARNING("Your [face_protection] protects you from the pepperspray!"))
+		to_chat(M, SPAN_WARNING("Your [face_protection] protects your face from the pepperspray!"))
 	else if(!no_pain)
 		to_chat(M, SPAN_DANGER("Your face and throat burn!"))
 		if(prob(25))
 			M.custom_emote(2, "[pick("coughs!","coughs hysterically!","splutters!")]")
-		M.apply_effect(10, PAIN, 0)
+		M.apply_damage(damage = 10, damagetype = PAIN, def_zone = BP_HEAD)
 
 /datum/reagent/capsaicin/condensed/affect_ingest(mob/living/carbon/M, alien, removed)
 	if(ishuman(M))
