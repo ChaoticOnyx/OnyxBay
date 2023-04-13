@@ -191,7 +191,7 @@
 	alert_type = /obj/screen/movable/alert/status_effect/bloodchill
 
 /datum/modifier/status_effect/bloodchill/on_applied()
-	//FIXME holder.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/bloodchill)
+	holder.add_modifier(/datum/modifier/movespeed/bloodchill)
 	return ..()
 
 /datum/modifier/status_effect/bloodchill/tick()
@@ -199,15 +199,15 @@
 		holder.adjustFireLoss(2)
 
 /datum/modifier/status_effect/bloodchill/on_expire()
-	//FIXME holder.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/bloodchill)
+	holder.remove_a_modifier_of_type(/datum/modifier/movespeed/bloodchill)
 
 /datum/modifier/status_effect/bonechill
 	name = "bonechill"
 	duration = 80
-	alert_type = /obj/screen/movable/alert/status_effect/bonechill
+//	alert_type = /obj/screen/movable/alert/bonechill
 
 /datum/modifier/status_effect/bonechill/on_applied()
-	//FIXME holder.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/bonechill)
+	holder.add_modifier(/datum/modifier/movespeed/bonechill)
 	return ..()
 
 /datum/modifier/status_effect/bonechill/tick()
@@ -216,7 +216,7 @@
 		holder.bodytemperature -= 10
 
 /datum/modifier/status_effect/bonechill/on_expire()
-	//FIXME holder.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/bonechill)
+	holder.remove_a_modifier_of_type(/datum/modifier/movespeed/bonechill)
 
 /obj/screen/movable/alert/status_effect/bonechill
 	name = "Bonechilled"
@@ -344,11 +344,11 @@
 	duration = 30
 
 /datum/modifier/status_effect/tarfoot/on_applied()
-	//FIXME holder.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/tarfoot)
+	holder.add_modifier(/datum/modifier/movespeed/tarfoot)
 	return ..()
 
 /datum/modifier/status_effect/tarfoot/on_expire()
-	//FIXME holder.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/tarfoot)
+	holder.remove_a_modifier_of_type(/datum/modifier/movespeed/tarfoot)
 
 /datum/modifier/status_effect/spookcookie
 	name = "spookcookie"
@@ -693,22 +693,23 @@
 	name = "stabilizedsepia"
 	colour = "sepia"
 	var/mod = 0
+	var/datum/modifier/movespeed/speed_mod
 
 /datum/modifier/status_effect/stabilized/sepia/on_applied()
+	speed_mod = holder.add_modifier(/datum/modifier/movespeed/sepia)
 	set_next_think(world.time)
 
 /datum/modifier/status_effect/stabilized/sepia/on_expire()
-	//FIXME holder.remove_movespeed_modifier(/datum/movespeed_modifier/modifier/sepia)
+	holder.remove_a_modifier_of_type(/datum/modifier/movespeed/sepia)
 	set_next_think(0)
 
 /datum/modifier/status_effect/stabilized/sepia/think()
 	if(prob(50) && mod > -1)
 		mod--
-		//FIXME holder.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/modifier/sepia, multiplicative_slowdown = -0.5)
+		speed_mod.movespeed_modifier = -0.5
 	else if(mod < 1)
 		mod++
-		// yeah a value of 0 does nothing but replacing the trait in place is cheaper than removing and adding repeatedly
-		//FIXME holder.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/modifier/sepia, multiplicative_slowdown = 0)
+		speed_mod.movespeed_modifier = 0
 	return ..()
 
 /datum/modifier/status_effect/stabilized/cerulean
@@ -774,11 +775,11 @@
 
 /datum/modifier/status_effect/stabilized/red/on_applied()
 	. = ..()
-	//FIXME holder.add_movespeed_mod_immunities(type, /datum/movespeed_modifier/equipment_speedmod)
+	holder.add_modifier(/datum/modifier/movespeed/equipment_immunity_speedmod)
 	set_next_think(world.time)
 
 /datum/modifier/status_effect/stabilized/red/on_expire()
-	//FIXME holder.remove_movespeed_mod_immunities(type, /datum/movespeed_modifier/equipment_speedmod)
+	holder.remove_modifiers_of_type(/datum/modifier/movespeed/equipment_immunity_speedmod)
 	set_next_think(0)
 	return ..()
 
@@ -989,7 +990,7 @@
 	colour = "light pink"
 
 /datum/modifier/status_effect/stabilized/lightpink/on_applied()
-	//FIXME holder.add_movespeed_modifier(/datum/movespeed_modifier/modifier/lightpink)
+	holder.add_modifier(/datum/modifier/movespeed/lightpink)
 	ADD_TRAIT(holder, TRAIT_PACIFISM)
 	set_next_think(world.time)
 	return ..()
@@ -1002,7 +1003,7 @@
 	return ..()
 
 /datum/modifier/status_effect/stabilized/lightpink/on_expire()
-	//FIXME holder.remove_movespeed_modifier(/datum/movespeed_modifier/modifier/lightpink)
+	holder.remove_a_modifier_of_type(/datum/modifier/movespeed/lightpink)
 	REMOVE_TRAIT(holder, TRAIT_PACIFISM)
 	set_next_think(0)
 

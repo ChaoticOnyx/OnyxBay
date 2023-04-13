@@ -2270,6 +2270,7 @@
 #include "code\modules\modifier\aura.dm"
 #include "code\modules\modifier\helpers.dm"
 #include "code\modules\modifier\modifier.dm"
+#include "code\modules\modifier\movespeed.dm"
 #include "code\modules\modifier\phobia.dm"
 #include "code\modules\modifier\traits.dm"
 #include "code\modules\modular_computers\laptop_vendor.dm"
