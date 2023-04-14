@@ -303,3 +303,8 @@ obj/structure/portrait
 obj/structure/portrait/budget
 	desc = "Nanotrasen's CEO."
 	icon_state = "small"
+
+obj/structure/portrait/kate
+	name = "Employee of the month"
+	desc = "This is the employee of the month. A person that gave their all to this project and made it possible. A lonely tear errupts from one of your eyes, as you look on this portrait and prevents you from reading the name of whoever this is"
+	icon_state = "month"
