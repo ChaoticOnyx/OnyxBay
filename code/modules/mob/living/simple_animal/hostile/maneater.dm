@@ -57,7 +57,7 @@
 	. = ..()
 	if(.)
 		playsound(src, 'sound/voice/MEraaargh.ogg', 70, 1)
-		custom_emote(1, "roars at [.]")
+		custom_emote(VISIBLE_MESSAGE, "roars at [.]", "AUTO_EMOTE")
 
 /mob/living/simple_animal/hostile/maneater/AttackingTarget()
 	. =..()

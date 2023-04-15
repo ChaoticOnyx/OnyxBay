@@ -44,7 +44,7 @@
 		H.emote("scream")
 
 	if(!H.restrained() && H.lying && H.shock_stage >= 60 && prob(3))
-		H.custom_emote("thrashes in agony")
+		H.custom_emote(VISIBLE_MESSAGE, "thrashes in agony", "AUTO_EMOTE")
 
 	if(!H.restrained() && H.shock_stage < 40 && prob(3))
 		var/maxdam = 0
@@ -60,19 +60,19 @@
 		var/datum/gender/T = gender_datums[H.get_gender()]
 		if(damaged_organ)
 			if(damaged_organ.status & ORGAN_BLEEDING)
-				H.custom_emote("clutches [T.his] [damaged_organ.name], trying to stop the blood.")
+				H.custom_emote(VISIBLE_MESSAGE, "clutches [T.his] [damaged_organ.name], trying to stop the blood.", "AUTO_EMOTE")
 			else if(damaged_organ.status & ORGAN_BROKEN)
-				H.custom_emote("holds [T.his] [damaged_organ.name] carefully.")
+				H.custom_emote(VISIBLE_MESSAGE, "holds [T.his] [damaged_organ.name] carefully.", "AUTO_EMOTE")
 			else if(damaged_organ.burn_dam > damaged_organ.brute_dam && damaged_organ.organ_tag != BP_HEAD)
-				H.custom_emote("blows on [T.his] [damaged_organ.name] carefully.")
+				H.custom_emote(VISIBLE_MESSAGE, "blows on [T.his] [damaged_organ.name] carefully.", "AUTO_EMOTE")
 			else
-				H.custom_emote("rubs [T.his] [damaged_organ.name] carefully.")
+				H.custom_emote(VISIBLE_MESSAGE, "rubs [T.his] [damaged_organ.name] carefully.", "AUTO_EMOTE")
 
 		for(var/obj/item/organ/I in H.internal_organs)
 			if((I.status & ORGAN_DEAD) || BP_IS_ROBOTIC(I)) continue
 			if(I.damage > 2) if(prob(2))
 				var/obj/item/organ/external/parent = H.get_organ(I.parent_organ)
-				H.custom_emote("clutches [T.his] [parent.name]!")
+				H.custom_emote(VISIBLE_MESSAGE, "clutches [T.his] [parent.name]!", "AUTO_EMOTE")
 
 /datum/species/human/get_ssd(mob/living/carbon/human/H)
 	if(H.stat == CONSCIOUS)

@@ -160,7 +160,7 @@
 		return
 	if(istype(A,/mob/living))
 		if(melee_damage_upper == 0)
-			custom_emote(1,"[friendly] [A]!")
+			custom_emote(VISIBLE_MESSAGE,"[friendly] [A]!", "AUTO_EMOTE")
 			return
 		if(ckey)
 			admin_attack_log(src, A, "Has [attacktext] its victim.", "Has been [attacktext] by its attacker.", attacktext)

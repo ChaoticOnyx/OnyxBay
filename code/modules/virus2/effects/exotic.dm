@@ -50,7 +50,7 @@
 	mob.nutrition = max(0, mob.nutrition - 25)
 	mob.add_modifier(/datum/modifier/musclerace)
 	if(prob(25))
-		mob.custom_emote(pick("growls", "roars", "snarls", "squeals", "yelps", "barks", "screeches"))
+		mob.custom_emote(AUDIBLE_MESSAGE, pick("growls", "roars", "snarls", "squeals", "yelps", "barks", "screeches"), "AUTO_EMOTE")
 		mob.jitteriness += 10
 	if(prob(45) && mob.reagents.get_reagent_amount(/datum/reagent/mutagen) < 5)
 		mob.custom_pain(pick("Your muscle tissue hurts unbearably!", "Your muscle tissue is burning!", "Your muscle tissue is torn!", "Your muscles are torn!", "Your muscles hurt unbearably!", "Your muscles are burning!", "Your muscles are shrinking!"), 45)
@@ -165,7 +165,7 @@
 	if(..())
 		return
 	mob.nutrition = max(0, mob.nutrition - 1000)
-	mob.custom_emote(message = "hisses")
+	mob.custom_emote(AUDIBLE_MESSAGE, "hisses", "AUTO_EMOTE")
 	if(prob(25))
 		to_chat(mob, SPAN_DANGER("[pick("You want to eat more than anything in this life!", "You feel your stomach begin to devour itself!", "You are ready to kill for food!", "You urgently need to find food!")]"))
 

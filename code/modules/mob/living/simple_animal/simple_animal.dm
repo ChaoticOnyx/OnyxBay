@@ -184,10 +184,10 @@
 	..(icon_gib,1)
 
 /mob/living/simple_animal/proc/visible_emote(act_desc)
-	custom_emote(1, act_desc)
+	custom_emote(VISIBLE_MESSAGE, act_desc, "AUTO_EMOTE")
 
 /mob/living/simple_animal/proc/audible_emote(act_desc)
-	custom_emote(2, act_desc)
+	custom_emote(AUDIBLE_MESSAGE, act_desc, "AUTO_EMOTE")
 
 /mob/living/simple_animal/bullet_act(obj/item/projectile/Proj)
 	if(!Proj || Proj.nodamage)
