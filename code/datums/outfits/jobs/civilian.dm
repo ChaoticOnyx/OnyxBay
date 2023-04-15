@@ -1,11 +1,5 @@
 /decl/hierarchy/outfit/job/assistant
-	name = OUTFIT_JOB_NAME("Syndicate Operative")
-	uniform = /obj/item/clothing/under/syndicate/tacticool
-	suit = /obj/item/clothing/suit/armor/vest
-	id_type = /obj/item/card/id/syndicate
-	pda_type = /obj/item/device/pda/syndicate
-	l_ear = /obj/item/device/radio/headset/syndicate
-	r_pocket = /obj/item/material/hatchet/tacknife
+	name = OUTFIT_JOB_NAME("Assistant")
 
 /decl/hierarchy/outfit/job/service
 	l_ear = /obj/item/device/radio/headset/headset_service
