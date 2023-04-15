@@ -31,7 +31,9 @@ GLOBAL_LIST_EMPTY(last_words)
 
 	for(last; last > 0; last--)
 		var/entry = L.logging[INDIVIDUAL_SAY_LOG][last]
-		if(L.logging[INDIVIDUAL_SAY_LOG][entry]["tag"] == "AUTO_EMOTE")
+		var/tag = L.logging[INDIVIDUAL_SAY_LOG][entry]["tag"]
+		
+		if(tag == "\[AUTO_EMOTE\]")
 			continue
 
 		var/datum/last_words_data/data = new()
