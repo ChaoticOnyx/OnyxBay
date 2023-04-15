@@ -19,7 +19,7 @@ var/global/datum/controller/occupations/job_master
 		occupations = list()
 		occupations_by_type = list()
 		occupations_by_title = list()
-		var/list/all_jobs = list(/datum/job/assistant)
+		var/list/all_jobs = list(/datum/job/assistant) | GLOB.using_map.allowed_jobs
 		if(!all_jobs.len)
 			log_error("<span class='warning'>Error setting up jobs, no job datums found!</span>")
 			return 0
@@ -104,7 +104,7 @@ var/global/datum/controller/occupations/job_master
 		if(job.minimum_character_age && (joining.client.prefs.age < job.minimum_character_age))
 			to_chat(joining, SPAN_WARNING("Your character's in-game age is too low for this job."))
 			return FALSE
-		if(job.faction_restricted && (joining.client.prefs.faction != GLOB.using_map.company_name || (joining.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
+		if(job.faction_restricted && (joining.client.prefs.background != GLOB.using_map.company_name || (joining.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 			to_chat(joining, SPAN_WARNING("Your characte must be loyal to [GLOB.using_map.company_name]."))
 			return FALSE
 		if(!job.player_old_enough(joining.client))
@@ -137,7 +137,7 @@ var/global/datum/controller/occupations/job_master
 				return FALSE
 			if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
 				return FALSE
-			if(job.faction_restricted && (player.client.prefs.faction != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
+			if(job.faction_restricted && (player.client.prefs.background != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 				return FALSE
 			if(jobban_isbanned(player, rank))
 				return FALSE
@@ -181,7 +181,7 @@ var/global/datum/controller/occupations/job_master
 			if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
 				Debug("FOC character not old enough, Player: [player]")
 				continue
-			if(job.faction_restricted && (player.client.prefs.faction != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
+			if(job.faction_restricted && (player.client.prefs.background != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 				Debug("FOC character is not loyal to [GLOB.using_map.company_name]")
 				continue
 			if(flag && !(flag in player.client.prefs.be_special_role))
@@ -201,7 +201,7 @@ var/global/datum/controller/occupations/job_master
 			if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
 				continue
 
-			if(job.faction_restricted && (player.client.prefs.faction != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
+			if(job.faction_restricted && (player.client.prefs.background != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 				continue
 
 			if(istype(job, GetJob("Assistant"))) // We don't want to give him assistant, that's boring!
@@ -246,33 +246,16 @@ var/global/datum/controller/occupations/job_master
 				var/list/candidates = FindOccupationCandidates(job, level)
 				if(!candidates.len)	continue
 
-				// Build a weighted list, weight by age.
-				var/list/weightedCandidates = list()
 				for(var/mob/V in candidates)
 					// Log-out during round-start? What a bad boy, no head position for you!
-					if(!V.client) continue
+					if(!V.client)
+						continue
 					var/age = V.client.prefs.age
 
 					if(age < job.minimum_character_age) // Nope.
 						continue
 
-					switch(age)
-						if(job.minimum_character_age to (job.minimum_character_age+10))
-							weightedCandidates[V] = 3 // Still a bit young.
-						if((job.minimum_character_age+10) to (job.ideal_character_age-10))
-							weightedCandidates[V] = 6 // Better.
-						if((job.ideal_character_age-10) to (job.ideal_character_age+10))
-							weightedCandidates[V] = 10 // Great.
-						if((job.ideal_character_age+10) to (job.ideal_character_age+20))
-							weightedCandidates[V] = 6 // Still good.
-						if((job.ideal_character_age+20) to INFINITY)
-							weightedCandidates[V] = 3 // Geezer.
-						else
-							// If there's ABSOLUTELY NOBODY ELSE
-							if(candidates.len == 1) weightedCandidates[V] = 1
-
-
-				var/mob/new_player/candidate = util_pick_weight(weightedCandidates)
+				var/mob/new_player/candidate = pick(candidates)
 				if(AssignRole(candidate, command_position))
 					return 1
 		return 0
