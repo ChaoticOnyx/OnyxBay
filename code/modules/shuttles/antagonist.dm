@@ -32,18 +32,3 @@
 	name = "Creaker control console"
 	req_access = list(access_mining)
 	shuttle_tag = "Creaker"
-
-/obj/machinery/computer/shuttle_control/multi/dropship
-	name = "Dropship control console"
-	req_access = list(access_syndicate)
-	shuttle_tag = "Dropship"
-
-/obj/machinery/computer/shuttle_control/multi/train
-	name = "Train Operations Console"
-	req_access = list()
-	shuttle_tag = "Civilian Train"
-
-/obj/machinery/computer/shuttle_control/multi/pickup
-	name = "SyndiePod™ Control Console"
-	req_access = list()
-	shuttle_tag = "The Pick up"
