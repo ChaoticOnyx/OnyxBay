@@ -43,7 +43,7 @@
 	base_turf = /turf/simulated/floor/natural/jungle/dirt
 
 /area/event/exterior/lake
-	name = "\improper Azure lake"
+	name = "\improper \Azure lake"
 	icon_state = "bluenew"
 	base_turf = /turf/simulated/floor/natural/jungle/water
 
