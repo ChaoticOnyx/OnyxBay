@@ -84,7 +84,7 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/purple/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] fills with a bubbling liquid!"))
-	//FIXME new /obj/item/metroidcrossbeaker/autoinjector/metroidstimulant(get_turf(user))
+	new /obj/item/metroidcrossbeaker/autoinjector/metroidstimulant(get_turf(user))
 	..()
 
 /obj/item/metroidcross/burning/blue
@@ -93,7 +93,7 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/blue/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] flash-freezes the area!"))
-	for(var/turf/simulated/open/T in range(3, get_turf(user)))
+	for(var/turf/simulated/T in range(3, get_turf(user)))
 		T.wet_floor(4)
 	for(var/mob/living/carbon/M in range(5, get_turf(user)))
 		if(M != user)
@@ -146,17 +146,37 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/darkblue/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] releases a burst of chilling smoke!"))
-	var/datum/reagents/tmp_holder = new/datum/reagents(100)
-	tmp_holder.add_reagent(/datum/reagent/frostoil, 40)
-	// FIXME user.reagents.add_reagent(/datum/reagent/medicine/regen_jelly, 10)
+	var/obj/item/reagent_containers/vessel/beaker/large/B1 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/large/B2 = new(src)
 
-	var/datum/effect/effect/system/smoke_spread/smoke = new
-	smoke.set_up(10, 0, get_turf(user))
-	smoke.start()
+	B1.reagents.add_reagent(/datum/reagent/phosphorus, 40)
+	B1.reagents.add_reagent(/datum/reagent/potassium, 40)
+	B1.reagents.add_reagent(/datum/reagent/frostoil, 40)
+	B2.reagents.add_reagent(/datum/reagent/sugar, 40)
+	B2.reagents.add_reagent(/datum/reagent/regen_jelly, 20)
+	B2.reagents.add_reagent(/datum/reagent/frostoil, 60)
 
-	for(var/atom/A in view(3, loc))
-		tmp_holder.touch(A)
-	..()
+	for(var/obj/item/reagent_containers/vessel/G in list(B1,B2))
+		G.reagents.trans_to_obj(src, G.reagents.total_volume)
+
+	if(src.reagents.total_volume) //The possible reactions didnt use up all reagents.
+		var/datum/effect/effect/system/steam_spread/steam = new /datum/effect/effect/system/steam_spread()
+		steam.set_up(10, 0, get_turf(src))
+		steam.attach(src)
+		steam.start()
+
+		for(var/atom/A in view(3, loc))
+			if( A == src ) continue
+			src.reagents.touch(A)
+
+	if(istype(loc, /mob/living/carbon)) // drop dat if it goes off in your hand
+		var/mob/living/carbon/C = loc
+		C.drop(src)
+		C.throw_mode_off()
+
+	set_invisibility(INVISIBILITY_MAXIMUM) //Why am i doing this?
+	spawn(50)		   //To make sure all reagents can work
+		qdel(src)
 
 /obj/item/metroidcross/burning/silver
 	colour = "silver"
@@ -193,11 +213,11 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/sepia
 	colour = "sepia"
-	effect_desc = "Turns into a special camera that rewinds time when used."
+	effect_desc = "Turns into a special camera that seems to be kinda hot."
 
 /obj/item/metroidcross/burning/sepia/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] shapes itself into a camera!"))
-	//FIXME new /obj/item/camera/rewind(get_turf(user))
+	new /obj/item/device/camera/fiery(get_turf(user))
 	..()
 
 /obj/item/metroidcross/burning/cerulean
@@ -342,6 +362,7 @@ Burning extracts:
 /obj/item/metroidcross/burning/black/do_effect(mob/user)
 	if(!isliving(user))
 		return
+
 	user.visible_message(SPAN_DANGER("[src] absorbs [user], transforming [user] into a metroid!"))
 	var/datum/spell/targeted/shapeshift/metroid_form/transform = new()
 	transform.cast(user)

@@ -70,7 +70,6 @@ Consuming extracts:
 			fed = TRUE
 			M.visible_message(SPAN_DANGER("[user] forces [M] to eat [src]!"), SPAN_WARNING("[user] forces you to eat [src]."))
 	if(fed)
-		var/mob/living/carbon/human/H = M
 		playsound(get_turf(M), 'sound/items/eatfood.ogg', 20, TRUE)
 		if(nutrition)
 			M.reagents.add_reagent(/datum/reagent/nutriment,nutrition)
@@ -368,7 +367,6 @@ Consuming extracts:
 
 /obj/item/metroid_cookie/gold/do_effect(mob/living/L, mob/user)
 	var/mob/living/carbon/human/M = L
-	var/obj/item/held = M.get_active_item() //This should be itself, but just in case...
 	M.drop_active_hand()
 	var/newcoin = /obj/item/material/coin/gold
 	var/obj/item/material/coin/C = new newcoin(get_turf(M))

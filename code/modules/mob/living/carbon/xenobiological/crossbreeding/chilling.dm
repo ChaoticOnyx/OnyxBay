@@ -45,7 +45,10 @@ Chilling extracts:
 	user.visible_message(SPAN_DANGER("[src] shatters, and lets out a jet of heat!"))
 	for(var/turf/T in orange(get_turf(user),2))
 		if(get_dist(get_turf(user), T) > 1)
-			T.hotspot_expose(1000)
+			if(!iswall(T))
+				new /obj/effect/decal/cleanable/liquid_fuel(T)
+				T.hotspot_expose((40 CELSIUS) + 380, 500)
+
 	..()
 
 /obj/item/metroidcross/chilling/purple
@@ -59,7 +62,7 @@ Chilling extracts:
 		return
 	user.visible_message(SPAN_NOTICE("[src] shatters, and a healing aura fills the room briefly."))
 	for(var/mob/living/carbon/C in A)
-		C.reagents.add_reagent(/datum/reagent/tricordrazine, 20)
+		C.reagents.add_reagent(/datum/reagent/regen_jelly, 20)
 	..()
 
 /obj/item/metroidcross/chilling/blue
@@ -104,7 +107,7 @@ Chilling extracts:
 		to_chat(user, SPAN_WARNING("[src] can't affect such a large area."))
 		return
 	var/filtered = FALSE
-	for(var/turf/simulated/open/T in A)
+	for(var/turf/simulated/T in A)
 		var/datum/gas_mixture/G = T.return_air()
 		if(istype(G))
 			G.gas["plasma"] = 0
@@ -189,24 +192,11 @@ Chilling extracts:
 
 /obj/item/metroidcross/chilling/sepia
 	colour = "sepia"
-	effect_desc = "Touching someone with it adds/removes them from a list. Activating the extract stops time for 30 seconds, and everyone on the list is immune, except the user."
-	var/list/allies = list()
-
-/obj/item/metroidcross/chilling/sepia/afterattack(atom/target, mob/user, proximity)
-	if(!proximity || !isliving(target))
-		return
-	if(target in allies)
-		allies -= target
-		to_chat(user, SPAN_NOTICE("You unlink [src] with [target]."))
-	else
-		allies |= target
-		to_chat(user, SPAN_NOTICE("You link [src] with [target]."))
-	return
+	effect_desc = "Creates a camera with a magnifier."
 
 /obj/item/metroidcross/chilling/sepia/do_effect(mob/user)
-	user.visible_message(SPAN_WARNING("[src] shatters, freezing time itself!"))
-	allies -= user //support class
-	//FIXME new /obj/effect/timestop(get_turf(user), 2, 300, allies)
+	user.visible_message(SPAN_NOTICE("[src] shapes itself into a camera!"))
+	new /obj/item/device/camera/random(get_turf(loc))
 	..()
 
 /obj/item/metroidcross/chilling/cerulean
@@ -278,7 +268,7 @@ Chilling extracts:
 
 /obj/item/metroidcross/chilling/gold/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] lets off golden light as it melts and reforms into an egg-like device!"))
-	//FIXME new /obj/item/capturedevice(get_turf(user))
+	new /obj/item/capturedevice(get_turf(user))
 	..()
 
 /obj/item/metroidcross/chilling/oil
@@ -310,7 +300,7 @@ Chilling extracts:
 
 /obj/item/metroidcross/chilling/lightpink/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] blooms into a beautiful flower!"))
-	//FIXME new /obj/item/clothing/head/peaceflower(get_turf(user))
+	new /obj/item/clothing/head/hairflower/peaceflower(get_turf(user))
 	..()
 
 /obj/item/metroidcross/chilling/adamantine
@@ -319,7 +309,7 @@ Chilling extracts:
 
 /obj/item/metroidcross/chilling/adamantine/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] creaks and breaks as it shifts into a heavy set of armor!"))
-	//FIXME new /obj/item/clothing/suit/armor/heavy/adamantine(get_turf(user))
+	new /obj/item/clothing/suit/armor/heavy/adamantine(get_turf(user))
 	..()
 
 /obj/item/metroidcross/chilling/rainbow
@@ -333,5 +323,5 @@ Chilling extracts:
 		return
 	user.visible_message(SPAN_WARNING("[src] reflects an array of dazzling colors and light, energy rushing to nearby doors!"))
 	for(var/obj/machinery/door/airlock/door in area)
-		//FIXME new /obj/effect/forcefield/metroidwall/rainbow(door.loc)
+		new /obj/effect/forcefield/metroidwall/rainbow(door.loc)
 	return ..()

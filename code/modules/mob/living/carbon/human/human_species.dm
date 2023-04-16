@@ -73,16 +73,16 @@
 	..(new_loc, "VR human")
 
 /mob/living/carbon/human/gravworlder/New(new_loc)
-	..(new_loc, "Grav-Adapted Human")
+	..(new_loc, SPECIES_GRAVWORLDER)
 
 /mob/living/carbon/human/spacer/New(new_loc)
-	..(new_loc, "Space-Adapted Human")
+	..(new_loc, SPECIES_SPACER)
 
 /mob/living/carbon/human/vatgrown/New(new_loc)
-	..(new_loc, "Vat-Grown Human")
+	..(new_loc, SPECIES_VATGROWN)
 
 /mob/living/carbon/human/vatgrown/female/New(new_loc)
-	..(new_loc, "Vat-Grown Human")
+	..(new_loc, SPECIES_VATGROWN)
 	gender = "female"
 	regenerate_icons()
 

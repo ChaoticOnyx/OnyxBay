@@ -43,8 +43,10 @@ Charged extracts:
 
 /obj/item/metroidcross/charged/orange/do_effect(mob/user)
 	var/turf/targetturf = get_turf(user)
-	var/turf/T = pick(RANGE_TURFS(5,targetturf))
-	T.hotspot_expose(1000,100)
+	for(var/turf/T in range(pick(RANGE_TURFS(5,targetturf)),1))
+		if(!iswall(T))
+			new /obj/effect/decal/cleanable/liquid_fuel(T)
+			T.hotspot_expose((40 CELSIUS) + 380, 500)
 	..()
 
 /obj/item/metroidcross/charged/purple
@@ -129,7 +131,7 @@ Charged extracts:
 	effect_desc = "Makes a bluespace polycrystal."
 
 /obj/item/metroidcross/charged/bluespace/do_effect(mob/user)
-	new /obj/item/stack/material/bluespace_crystal(get_turf(user))
+	new /obj/item/stack/telecrystal/bluespace_crystal(get_turf(user))
 	user.visible_message(SPAN_NOTICE("[src] produces a polycrystal!"))
 	..()
 
@@ -180,7 +182,7 @@ Charged extracts:
 		to_chat(user, SPAN_WARNING("You must be a humanoid to use this!"))
 		return
 	var/list/choice_list = list()
-	for(var/datum/species/species_type as anything in subtypesof(/datum/species/shapeshifter/promethean))
+	for(var/datum/species/species_type as anything in subtypesof(/datum/species/promethean))
 		choice_list[initial(species_type.name)] = species_type
 	var/racechoice = tgui_input_list(human_user, "Choose your metroid subspecies", "metroid Selection", sort_list(choice_list))
 	if(isnull(racechoice))
@@ -263,15 +265,16 @@ Charged extracts:
 		to_chat(user, SPAN_WARNING("You have to be able to have a species to get your species changed."))
 		return
 	var/list/allowed_species = list(
-		/datum/species/human,
-		/datum/species/human/gravworlder,
-		/datum/species/human/spacer,
-		/datum/species/human/vatgrown,
-		/datum/species/skrell,
-		/datum/species/tajaran,
-		/datum/species/unathi,
-		/datum/species/machine,
-		/datum/species/diona)
+		SPECIES_HUMAN,
+		SPECIES_TAJARA,
+		SPECIES_DIONA,
+		SPECIES_UNATHI,
+		SPECIES_SKRELL,
+		SPECIES_PROMETHEAN,
+		SPECIES_GRAVWORLDER,
+		SPECIES_VATGROWN,
+		SPECIES_SPACER
+		)
 
 	var/datum/species/changed = pick(allowed_species)
 	if(changed)

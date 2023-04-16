@@ -925,3 +925,25 @@
 	..()
 	M.add_chemical_effect(CE_TOXIN, 1)
 	M.immunity -= 0.5 //inverse effects when abused
+
+/datum/reagent/regen_jelly
+	name = "Regen Jelly"
+	description = "Strange light pink gooye blob."
+	taste_description = "bitterness"
+	taste_mult = 0.4
+	reagent_state = LIQUID
+	color = "#db7aa7"
+	metabolism = REM * 0.5
+	overdose = REAGENTS_OVERDOSE
+
+/datum/reagent/regen_jelly/affect_blood(mob/living/carbon/M, alien, removed)
+
+	if(prob(7))
+		M.emote(pick("twitch", "drool", "moan", "giggle"))
+	M.heal_overall_damage(min(8, M.getBruteLoss()), min(7, M.getFireLoss()))
+	M.add_chemical_effect(CE_PULSE, -1)
+
+/datum/reagent/regen_jelly/overdose(mob/living/carbon/M, alien)
+	. = ..()
+	M.reagents.add_reagent(/datum/reagent/metroidtoxin, max(0, volume-REAGENTS_OVERDOSE))
+	volume = volume - REAGENTS_OVERDOSE

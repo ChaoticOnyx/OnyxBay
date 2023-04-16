@@ -75,7 +75,6 @@
 
 /datum/action/item_action/prism_glasses/change_prism_colour
 	name = "Adjust Prismatic Lens"
-	button_icon = 'icons/obj/xenobiology/metroidcrossing.dmi'
 	button_icon_state = "prismcolor"
 	action_type = AB_INNATE
 
@@ -91,7 +90,6 @@
 
 /datum/action/item_action/prism_glasses/place_light_prism
 	name = "Fabricate Light Prism"
-	button_icon = 'icons/obj/xenobiology/metroidcrossing.dmi'
 	button_icon_state = "lightprism"
 
 /datum/action/item_action/prism_glasses/place_light_prism/Trigger(trigger_flags)
@@ -107,3 +105,51 @@
 			return
 		to_chat(owner, SPAN_NOTICE("You channel nearby light into a glowing, ethereal prism."))
 		new /obj/structure/light_prism(get_turf(owner), glasses.glasses_color)
+
+/obj/item/clothing/head/hairflower/peaceflower
+	name = "heroine bud"
+	desc = "An extremely addictive flower, full of peace magic."
+	icon = 'icons/obj/xenobiology/metroidcrossing.dmi'
+	icon_state = "peaceflower"
+	body_parts_covered = 0
+
+
+/obj/item/clothing/head/hairflower/peaceflower/equipped(mob/user)
+	. = ..()
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(istype(H.head, src.type))
+			ADD_TRAIT(H, TRAIT_PACIFISM)
+			set_next_think(world.time+10 SECOND)
+
+/obj/item/clothing/head/hairflower/peaceflower/can_be_unequipped_by(mob/M, slot, disable_warning)
+	if(M==loc)
+		to_chat(M, SPAN_WARNING("You feel at peace. <b style='color:pink'>Why would you want anything else?</b>"))
+		return FALSE
+	..()
+
+/obj/item/clothing/head/hairflower/peaceflower/dropped()
+	if(ishuman(loc))
+		var/mob/living/carbon/human/H = loc
+		if(!istype(H.head, src.type))
+			REMOVE_TRAIT(H, TRAIT_PACIFISM)
+			set_next_think(0)
+
+/obj/item/clothing/head/hairflower/peaceflower/think()
+	if(ishuman(loc))
+		var/mob/living/carbon/human/H = loc
+		H.reagents.add_reagent(/datum/reagent/space_drugs, 2)
+
+	set_next_think(world.time+10 SECOND)
+
+/obj/item/clothing/suit/armor/heavy/adamantine
+	name = "adamantine armor"
+	desc = "A full suit of adamantine plate armor. Impressively resistant to damage, but weighs about as much as you do."
+	icon_state = "adamsuit"
+	icon = 'icons/obj/clothing/suits.dmi'
+	block_tier = BLOCK_TIER_ADVANCED
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+
+/obj/item/clothing/suit/armor/heavy/New()
+	..()
+	slowdown_per_slot[slot_wear_suit] = 4

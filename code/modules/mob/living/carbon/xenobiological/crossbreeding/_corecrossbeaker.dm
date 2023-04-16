@@ -85,19 +85,7 @@
 	name = "mending solution"
 	desc = "A strange glob of sweet-smelling semifluid, which seems to stick to skin rather easily."
 	color = "#FF00FF"
-	list_reagents = list()//fuck baymed
-
-/obj/item/metroidcrossbeaker/autoinjector/regenpack/attack(mob/living/M, mob/living/user, target_zone)
-	if(!iscarbon(M))
-		return
-	if(user != M)
-		to_chat(M, SPAN_WARNING("[user] presses [src] against you!"))
-		to_chat(user, SPAN_NOTICE("You press [src] against [M], injecting."))
-		M.heal_overall_damage(min(30, user.getBruteLoss()), min(30, user.getFireLoss()))
-	else
-		to_chat(user, SPAN_NOTICE("You press [src] against yourself, and it flattens against you!"))
-		user.heal_overall_damage(min(30, user.getBruteLoss()), min(30, user.getFireLoss()))
-
+	list_reagents = list(/datum/reagent/regen_jelly = 20)
 
 /obj/item/metroidcrossbeaker/autoinjector/metroidjelly //Primarily for metroidpeople, but you do you.
 	self_use_only = TRUE
@@ -112,3 +100,9 @@
 	desc = "A light pink gooey sphere. Simply touching it makes you a little dizzy."
 	color = "#DDAAAA"
 	list_reagents = list(/datum/reagent/paroxetine = 10, /datum/reagent/space_drugs = 15) //Peace, dudes
+
+/obj/item/metroidcrossbeaker/autoinjector/metroidstimulant
+	name = "invigorating gel"
+	desc = "A bubbling purple mixture, designed to heal and boost movement."
+	color = "#FF00FF"
+	list_reagents = list(/datum/reagent/regen_jelly = 30, /datum/reagent/space_drugs = 9)

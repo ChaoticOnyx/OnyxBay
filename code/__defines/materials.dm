@@ -43,7 +43,6 @@
 #define MATERIAL_CARDBOARD               "cardboard"
 #define MATERIAL_CLOTH                   "cloth"
 #define MATERIAL_CARPET                  "carpet"
-#define MATERIAL_BLUE_SPACE_CRYTAL  "bscrystal"
 
 #define DEFAULT_TABLE_MATERIAL MATERIAL_PLASTIC
 #define DEFAULT_WALL_MATERIAL  MATERIAL_STEEL

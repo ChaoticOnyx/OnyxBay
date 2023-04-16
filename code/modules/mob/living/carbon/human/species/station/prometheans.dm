@@ -1,7 +1,7 @@
-var/datum/species/shapeshifter/promethean/prometheans
+var/datum/species/promethean/prometheans
 
 // Species definition follows.
-/datum/species/shapeshifter/promethean
+/datum/species/promethean
 
 	name =             SPECIES_PROMETHEAN
 	name_plural =      "Prometheans"
@@ -67,27 +67,24 @@ var/datum/species/shapeshifter/promethean/prometheans
 		/mob/living/carbon/human/proc/shapeshifter_select_body_build
 		)
 
-	valid_transform_species = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL) // SPECIES_DIONA, "Monkey" <-- maybe after some decades you would fix them
-	monochromatic = 1
-
 	var/heal_rate = 5 // Temp. Regen per tick.
 
-/datum/species/shapeshifter/promethean/New()
+/datum/species/promethean/New()
 	..()
 	prometheans = src
 
-/datum/species/shapeshifter/promethean/hug(mob/living/carbon/human/H,mob/living/target)
+/datum/species/promethean/hug(mob/living/carbon/human/H,mob/living/target)
 	var/datum/gender/G = gender_datums[target.gender]
 	H.visible_message("<span class='notice'>\The [H] glomps [target] to make [G.him] feel better!</span>", \
 					"<span class='notice'>You glomps [target] to make [G.him] feel better!</span>")
 	H.apply_stored_shock_to(target)
 
-/datum/species/shapeshifter/promethean/handle_death(mob/living/carbon/human/H)
+/datum/species/promethean/handle_death(mob/living/carbon/human/H)
 	spawn(1)
 		if(H)
 			H.gib()
 
-/datum/species/shapeshifter/promethean/handle_environment_special(mob/living/carbon/human/H)
+/datum/species/promethean/handle_environment_special(mob/living/carbon/human/H)
 
 	var/turf/T = H.loc
 	if(istype(T))
@@ -133,13 +130,13 @@ var/datum/species/shapeshifter/promethean/prometheans
 		H.adjustToxLoss(-heal_rate)
 		return 1
 
-/datum/species/shapeshifter/promethean/get_blood_colour(mob/living/carbon/human/H)
+/datum/species/promethean/get_blood_colour(mob/living/carbon/human/H)
 	return (H ? rgb(H.r_skin, H.g_skin, H.b_skin) : ..())
 
-/datum/species/shapeshifter/promethean/get_flesh_colour(mob/living/carbon/human/H)
+/datum/species/promethean/get_flesh_colour(mob/living/carbon/human/H)
 	return (H ? rgb(H.r_skin, H.g_skin, H.b_skin) : ..())
 
-/datum/species/shapeshifter/promethean/get_additional_examine_text(mob/living/carbon/human/H)
+/datum/species/promethean/get_additional_examine_text(mob/living/carbon/human/H)
 
 	if(!stored_shock_by_ref["\ref[H]"])
 		return
@@ -155,7 +152,7 @@ var/datum/species/shapeshifter/promethean/prometheans
 		if(35 to INFINITY)
 			return "<span class='danger'>[G.He] [G.is] radiating massive levels of electrical activity!</span>"
 
-/datum/species/shapeshifter/promethean/is_eligible_for_antag_spawn(antag_id)
+/datum/species/promethean/is_eligible_for_antag_spawn(antag_id)
 	if(antag_id == MODE_TRAITOR) // The only role that looks somewhat suitable
 		return TRUE
 	return FALSE

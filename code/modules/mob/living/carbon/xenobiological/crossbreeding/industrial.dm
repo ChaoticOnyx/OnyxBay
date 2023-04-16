@@ -123,14 +123,14 @@ Industrial extracts:
 	//Item picked below.
 
 /obj/item/metroidcross/industrial/silver/do_after_spawn(obj/item/spawned)
-	var/path = pick(typesof(/obj/item/reagent_containers/food) - /obj/item/reagent_containers/food)
-	var/obj/item/reagent_containers/food/food = new path(get_turf(src.loc))
+	itempath = pick(typesof(/obj/item/reagent_containers/food) - /obj/item/reagent_containers/food)
+	new itempath(get_turf(src.loc))
 
 /obj/item/metroidcross/industrial/bluespace
 	colour = "bluespace"
 	effect_desc = "Produces bluespace crystals."
 	plasmarequired = 10
-	itempath = /obj/item/stack/material/bluespace_crystal
+	itempath = /obj/item/stack/telecrystal/bluespace_crystal
 
 /obj/item/metroidcross/industrial/sepia
 	colour = "sepia"

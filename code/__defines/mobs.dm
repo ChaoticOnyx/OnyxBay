@@ -305,6 +305,9 @@
 #define SPECIES_MONKEY      "Monkey"
 #define SPECIES_GOLEM       "Golem"
 #define SPECIES_ABDUCTOR    "Abductor"
+#define SPECIES_GRAVWORLDER	"Grav-Adapted Human"
+#define SPECIES_SPACER	"Space-Adapted Human"
+#define SPECIES_VATGROWN "Vat-Grown Human"
 
 // Ayyy IDs.
 #define SPECIES_XENO                 "Xenomorph"

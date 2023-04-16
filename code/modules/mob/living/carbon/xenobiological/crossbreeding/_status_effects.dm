@@ -14,6 +14,9 @@
 		expire_at = world.time + duration
 	linked_alert = holder.throw_alert("\ref[src]",alert_type)
 
+/datum/modifier/status_effect/on_expire()
+	. = ..()
+	holder.clear_alert("\ref[src]")
 
 /datum/modifier/status_effect/rainbow_protection
 	name = "rainbow_protection"
@@ -178,7 +181,7 @@
 /obj/screen/movable/alert/clone_decay
 	name = "Clone Decay"
 	desc = "You are simply a construct, and cannot maintain this form forever. You will be returned to your original body if you should fall."
-	icon_state = "metroid_clonedecay"
+	icon_state = "metroid_clone"
 
 /obj/screen/movable/alert/status_effect/bloodchill
 	name = "Bloodchilled"
@@ -204,7 +207,7 @@
 /datum/modifier/status_effect/bonechill
 	name = "bonechill"
 	duration = 80
-//	alert_type = /obj/screen/movable/alert/bonechill
+	alert_type = /obj/screen/movable/alert/status_effect/bloodchill
 
 /datum/modifier/status_effect/bonechill/on_applied()
 	holder.add_modifier(/datum/modifier/movespeed/bonechill)
@@ -357,14 +360,13 @@
 	duration = 300
 
 /datum/modifier/status_effect/spookcookie/on_applied()
-	/*FIXME
-	var/image/I = image(icon = 'icons/mob/simple/simple_human.dmi', icon_state = "skeleton", layer = ABOVE_MOB_LAYER, loc = holder)
-	I.override = 1
-	holder.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic/everyone, "spookyscary", I)*/
+	holder.mutations.Add(MUTATION_SKELETON)
+	holder.regenerate_icons()
 	return ..()
 
 /datum/modifier/status_effect/spookcookie/on_expire()
-	//FIXME holder.remove_alt_appearance("spookyscary")
+	holder.mutations.Remove(MUTATION_SKELETON)
+	holder.regenerate_icons()
 
 /datum/modifier/status_effect/peacecookie
 	name = "peacecookie"
@@ -965,9 +967,6 @@
 		to_chat(C, SPAN_WARNING("[drained] is dead, you cannot drain anymore life from them!"))
 		draining_ref = null
 		return
-
-	var/list/healing_types = list()
-
 	if(C.getBruteLoss() > 0)
 		drained.adjustBruteLoss(heal_amount * DRAIN_DAMAGE_MULTIPLIER)
 		C.adjustBruteLoss(-heal_amount)
