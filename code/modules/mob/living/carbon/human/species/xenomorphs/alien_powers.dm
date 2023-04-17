@@ -109,7 +109,7 @@
 	set category = "Abilities"
 
 	if(!config.misc.alien_eggs_allowed)
-		to_chat(src, SPAN_WARNING("Laying eggs is prohibited by server."))
+		to_chat(src, SPAN_WARNING("Laying eggs is prohibited by the server."))
 		return
 
 	if(locate(/obj/structure/alien/egg) in get_turf(src))
