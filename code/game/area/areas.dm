@@ -105,8 +105,7 @@
 	if(!all_doors)
 		return
 	for(var/obj/machinery/door/firedoor/E in all_doors)
-		spawn(0)
-			E.close()
+		addtimer(CALLBACK(E,/obj/machinery/door/proc/close), 0)
 
 /area/proc/air_doors_open()
 	if(!air_doors_activated)
@@ -132,8 +131,7 @@
 	if(!all_doors)
 		return
 	for(var/obj/machinery/door/firedoor/D in all_doors)
-		spawn(0)
-			D.close()
+		addtimer(CALLBACK(D,/obj/machinery/door/proc/close), 0)
 
 /area/proc/fire_reset()
 	if (!fire)
@@ -145,8 +143,7 @@
 	if(!all_doors)
 		return
 	for(var/obj/machinery/door/firedoor/D in all_doors)
-		spawn(0)
-			D.open()
+		addtimer(CALLBACK(D,/obj/machinery/door/proc/close), 0)
 
 /area/proc/readyalert()
 	if(!eject)
@@ -174,8 +171,7 @@
 	mouse_opacity = 0
 	update_icon()
 	for(var/obj/machinery/door/firedoor/D in src)
-		spawn(0)
-			D.open()
+		addtimer(CALLBACK(D,/obj/machinery/door/proc/close), 0)
 
 /area/update_icon()
 	if ((eject || party) && (!requires_power||power_environ))//If it doesn't require power, can still activate this proc.
