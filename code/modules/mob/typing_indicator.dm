@@ -97,6 +97,7 @@
 	set name = ".Me"
 	set hidden = TRUE
 
+	thinking_IC = TRUE
 	start_typing()
 	var/message = input("","me (text)") as text
 	remove_all_indicators()
@@ -118,7 +119,7 @@
 /mob/living/create_typing_indicator()
 	if(active_typing_indicator || active_thinking_indicator || !thinking_IC || stat != CONSCIOUS)
 		return FALSE
-	active_typing_indicator = image('icons/mob/effects/talk.dmi', "[bubble_icon]0", TYPING_LAYER)
+	active_typing_indicator = image('icons/mob/effects/talk.dmi', "[bubble_icon]3", TYPING_LAYER)
 	LAZYADD(overlays, active_typing_indicator)
 
 /mob/living/remove_typing_indicator()
