@@ -110,7 +110,6 @@
 
 	if(!config.misc.alien_eggs_allowed)
 		to_chat(src, SPAN_WARNING("Laying eggs is prohibited by server."))
-		log_debug("\The [src] attempted to lay an alien egg, but was interrupted by server configuration.")
 		return
 
 	if(locate(/obj/structure/alien/egg) in get_turf(src))
