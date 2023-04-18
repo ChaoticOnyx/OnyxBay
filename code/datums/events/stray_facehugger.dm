@@ -7,6 +7,9 @@
 	difficulty = 60
 	fire_only_once = TRUE
 
+/datum/event/stray_facehugger/check_conditions()
+	. = config.misc.aliens_allowed
+
 /datum/event/stray_facehugger/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Security"] * (20 MINUTES))
