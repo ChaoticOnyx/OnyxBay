@@ -868,7 +868,8 @@ I said no!
 	fruit = list("pumpkin" = 1)
 	reagents = list(
 	/datum/reagent/drink/milk = 5,
-	/datum/reagent/sugar = 5, /datum/reagent/nutriment/protein/egg = 3,
+	/datum/reagent/sugar = 5,
+	/datum/reagent/nutriment/protein/egg = 3,
 	/datum/reagent/nutriment/flour = 10
 	)
 	result = /obj/item/reagent_containers/food/sliceable/pumpkinpie
