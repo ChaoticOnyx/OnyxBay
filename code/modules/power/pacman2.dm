@@ -66,7 +66,7 @@
 		overheat()
 			explosion(get_turf(src), 2, 5, 2, -1)
 
-	attackby(var/obj/item/O, var/mob/user)
+	attackby(obj/item/O, mob/user)
 		if(istype(O, /obj/item/tank/plasma))
 			if(P)
 				to_chat(user, SPAN_WARNING("\The [src] already has a plasma tank loaded!"))
