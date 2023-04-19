@@ -320,7 +320,7 @@
 /mob/living/simple_animal/hostile/little_changeling/find_target()
 	. = ..()
 	if(.)
-		custom_emote(VISIBLE_MESSAGE, "nashes at [.]", "AUTO_EMOTE")
+		visible_emote("nashes at [.].")
 
 
 /mob/living/simple_animal/hostile/little_changeling/AttackingTarget()

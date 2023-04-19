@@ -204,7 +204,7 @@
 	// standing is poor
 	if(!(lying || resting))
 		if(((stance_d_l >= 5) && (stance_d_r >= 5))) // Both legs are missing, but hey at least there's nothing to ache
-			custom_emote(VISIBLE_MESSAGE, "can't stand without legs!", "AUTO_EMOTE", "AUTO_EMOTE")
+			custom_emote(VISIBLE_MESSAGE, "can't stand without legs!", "AUTO_EMOTE")
 			Weaken(10)
 		else if(((stance_d_l >= 5) && (stance_d_r > 2)) || ((stance_d_l > 2) && (stance_d_r >= 5))) // One leg is missing and the other one is at least broken
 			if(limb_pain)

@@ -47,7 +47,7 @@
 				var/message = pick(messagevoice)
 				say(message)
 				playsound(src, messagevoice[message], 75, FALSE)
-				custom_emote(VISIBLE_MESSAGE, "points at [H.name].", "AUTO_EMOTE")
+				visible_message("<B>[src]</B> points at [H.name].")
 			break
 
 /mob/living/bot/medbot/UnarmedAttack(mob/living/carbon/human/H, proximity)

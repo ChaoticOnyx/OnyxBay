@@ -81,7 +81,7 @@
 		addTiles(1)
 
 	if(prob(1))
-		custom_emote(AUDIBLE_MESSAGE, "makes an excited booping beeping sound!", "AUTO_EMOTE")
+		audible_message("<B>[src]</B> makes an excited booping beeping sound!")
 
 /mob/living/bot/floorbot/handleAdjacentTarget()
 	if(get_turf(target) == src.loc)
