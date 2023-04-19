@@ -170,7 +170,7 @@
 	mouse_opacity = 0
 	update_icon()
 	for(var/obj/machinery/door/firedoor/D in src)
-		INVOKE_ASYNC(D, /obj/machinery/door/proc/close)
+		INVOKE_ASYNC(D, /obj/machinery/door/proc/open)
 
 /area/update_icon()
 	if ((eject || party) && (!requires_power||power_environ))//If it doesn't require power, can still activate this proc.
