@@ -168,14 +168,12 @@
 			// Accountability!
 			users_to_open |= user.name
 			needs_to_close = !issilicon(user)
-		spawn()
-			open()
+		INVOKE_ASYNC(src, /obj/machinery/door/proc/open)
 	else
-		spawn()
-			close()
+		INVOKE_ASYNC(src, /obj/machinery/door/proc/close)
 
 	if(needs_to_close)
-		addtimer(CALLBACK(src, .proc/close), 50, TIMER_UNIQUE|TIMER_OVERRIDE)
+		addtimer(CALLBACK(src, /obj/machinery/door/proc/close), 50, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 /obj/machinery/door/firedoor/attack_generic(mob/user, damage)
 	if(stat & (BROKEN|NOPOWER))
@@ -262,12 +260,10 @@
 								 "You force \the [ blocked ? "welded" : "" ] [src] [density ? "open" : "closed"] with \the [C]!",\
 								 "You hear metal strain and groan, and a door [density ? "opening" : "closing"].")
 		if(density)
-			spawn()
-				open(TRUE)
-				addtimer(CALLBACK(src, .proc/close), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
+			INVOKE_ASYNC(src, /obj/machinery/door/proc/open, TRUE)
+			addtimer(CALLBACK(src, /obj/machinery/door/proc/close), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
 		else
-			spawn()
-				close()
+			INVOKE_ASYNC(src, /obj/machinery/door/proc/close)
 		return
 
 	return ..()

@@ -105,7 +105,7 @@
 	if(!all_doors)
 		return
 	for(var/obj/machinery/door/firedoor/E in all_doors)
-		addtimer(CALLBACK(E,/obj/machinery/door/proc/close), 0)
+		INVOKE_ASYNC(E, /obj/machinery/door/proc/close)
 
 /area/proc/air_doors_open()
 	if(!air_doors_activated)
@@ -114,11 +114,10 @@
 	if(!all_doors)
 		return
 	for(var/obj/machinery/door/firedoor/E in all_doors)
-		spawn(0)
-			if(!E.density || (E.stat & (BROKEN|NOPOWER)))
-				continue
-			if(E.can_safely_open())
-				E.open()
+		if(!E.density || (E.stat & (BROKEN|NOPOWER)))
+			continue
+		if(E.can_safely_open())
+			INVOKE_ASYNC(E, /obj/machinery/door/proc/open)
 
 
 /area/proc/fire_alert()
@@ -131,7 +130,7 @@
 	if(!all_doors)
 		return
 	for(var/obj/machinery/door/firedoor/D in all_doors)
-		addtimer(CALLBACK(D,/obj/machinery/door/proc/close), 0)
+		INVOKE_ASYNC(D, /obj/machinery/door/proc/close)
 
 /area/proc/fire_reset()
 	if (!fire)
@@ -143,7 +142,7 @@
 	if(!all_doors)
 		return
 	for(var/obj/machinery/door/firedoor/D in all_doors)
-		addtimer(CALLBACK(D,/obj/machinery/door/proc/close), 0)
+		INVOKE_ASYNC(D, /obj/machinery/door/proc/open)
 
 /area/proc/readyalert()
 	if(!eject)
@@ -171,7 +170,7 @@
 	mouse_opacity = 0
 	update_icon()
 	for(var/obj/machinery/door/firedoor/D in src)
-		addtimer(CALLBACK(D,/obj/machinery/door/proc/close), 0)
+		INVOKE_ASYNC(D, /obj/machinery/door/proc/close)
 
 /area/update_icon()
 	if ((eject || party) && (!requires_power||power_environ))//If it doesn't require power, can still activate this proc.
