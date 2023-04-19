@@ -9,5 +9,5 @@
 /obj/item/projectile/animate/Bump(atom/change, forced = FALSE)
 	if((istype(change, /obj/item) || istype(change, /obj/structure)) && !is_type_in_list(change, protected_objects))
 		var/obj/O = change
-		new /mob/living/simple_animal/hostile/mimic/(O.loc, O, firer)
+		new /mob/living/simple_animal/hostile/mimic/(O.loc, O, firer, TRUE)
 	..()

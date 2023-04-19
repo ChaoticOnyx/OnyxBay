@@ -103,3 +103,7 @@
 /decl/hierarchy/outfit/job/medical/paramedic/emt
 	name = OUTFIT_JOB_NAME("Emergency medical technician")
 	uniform = /obj/item/clothing/under/rank/medical/paramedic
+
+/decl/hierarchy/outfit/job/medical/paramedic/emt/New()
+	..()
+	BACKPACK_OVERRIDE_EMT

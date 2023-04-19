@@ -1,6 +1,7 @@
 var/obj/screen/robot_inventory
 
 /mob/living/silicon/robot
+	bubble_icon = "robot"
 	hud_type = /datum/hud/robot
 
 /datum/hud/robot/FinalizeInstantiation()

@@ -52,7 +52,7 @@
 
 	_examine_text(mob/user)
 		. = ..(user)
-		to_chat(user, "<span class='notice'>The generator has [P.air_contents.plasma] units of fuel left, producing [power_gen] per cycle.</span>")
+		to_chat(user, SPAN_NOTICE("\The [src] has [P.air_contents.plasma] units of fuel left, producing [power_gen] per cycle."))
 	handleInactive()
 		heat -= 2
 		if (heat < 0)
@@ -66,38 +66,28 @@
 		overheat()
 			explosion(get_turf(src), 2, 5, 2, -1)
 
-	attackby(var/obj/item/O as obj, var/mob/user as mob)
+	attackby(obj/item/O, mob/user)
 		if(istype(O, /obj/item/tank/plasma))
 			if(P)
-				to_chat(user, "<span class='warning'>The generator already has a plasma tank loaded!</span>")
+				to_chat(user, SPAN_WARNING("\The [src] already has a plasma tank loaded!"))
 				return
 			if(!user.drop(P, src))
 				return
 			P = O
-			to_chat(user, "<span class='notice'>You add the plasma tank to the generator.</span>")
+			to_chat(user, SPAN_NOTICE("You add \the [O] to \the [src]."))
 		else if(!active)
 			if(isWrench(O))
 				anchored = !anchored
 				playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 				if(anchored)
-					to_chat(user, "<span class='notice'>You secure the generator to the floor.</span>")
+					to_chat(user, SPAN_NOTICE("You secure \the [src] to the floor."))
 				else
-					to_chat(user, "<span class='notice'>You unsecure the generator from the floor.</span>")
+					to_chat(user, SPAN_NOTICE("You unsecure \the [src] from the floor."))
 				SSmachines.makepowernets()
-			else if(isScrewdriver(O))
-				open = !open
-				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-				if(open)
-					to_chat(user, "<span class='notice'>You open the access panel.</span>")
-				else
-					to_chat(user, "<span class='notice'>You close the access panel.</span>")
-			else if(isCrowbar(O) && !open)
-				var/obj/machinery/constructable_frame/machine_frame/new_frame = new /obj/machinery/constructable_frame/machine_frame(src.loc)
-				for(var/obj/item/I in component_parts)
-					I.loc = src.loc
-				new_frame.state = 2
-				new_frame.icon_state = "box_1"
-				qdel(src)
+			if(default_deconstruction_screwdriver(user, O))
+				return
+			if(default_deconstruction_crowbar(user, O))
+				return
 
 	attack_hand(mob/user as mob)
 		..()

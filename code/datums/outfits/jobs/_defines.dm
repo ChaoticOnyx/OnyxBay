@@ -15,6 +15,11 @@ backpack_overrides[/decl/backpack_outfit/backpack]      = /obj/item/storage/back
 backpack_overrides[/decl/backpack_outfit/satchel]       = /obj/item/storage/backpack/satchel/med; \
 backpack_overrides[/decl/backpack_outfit/messenger_bag] = /obj/item/storage/backpack/messenger/med;
 
+#define BACKPACK_OVERRIDE_EMT \
+backpack_overrides[/decl/backpack_outfit/backpack]      = /obj/item/storage/backpack/emt; \
+backpack_overrides[/decl/backpack_outfit/satchel]       = /obj/item/storage/backpack/satchel/emt; \
+backpack_overrides[/decl/backpack_outfit/messenger_bag] = /obj/item/storage/backpack/messenger/emt;
+
 #define BACKPACK_OVERRIDE_RESEARCH \
 backpack_overrides[/decl/backpack_outfit/backpack]      = /obj/item/storage/backpack/toxins; \
 backpack_overrides[/decl/backpack_outfit/satchel]       = /obj/item/storage/backpack/satchel/tox; \

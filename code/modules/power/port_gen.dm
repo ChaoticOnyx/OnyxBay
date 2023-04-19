@@ -46,11 +46,11 @@
 	else
 		icon_state = "[initial(icon_state)]on"
 
-/obj/machinery/power/port_gen/attack_hand(mob/user as mob)
+/obj/machinery/power/port_gen/attack_hand(mob/user)
 	if(..())
 		return
 	if(!anchored)
-		to_chat(usr, "<span class='warning'>The generator needs to be secured first.</span>")
+		to_chat(user, SPAN_WARNING("The generator needs to be secured first."))
 		return
 
 /obj/machinery/power/port_gen/_examine_text(mob/user)
@@ -58,9 +58,9 @@
 	if(get_dist(src, user) > 1)
 		return
 	if(active)
-		. += "\n<span class='notice'>The generator is on.</span>"
+		. += "\n[SPAN_NOTICE("\The [src] is on.")]"
 	else
-		. += "\n<span class='notice'>The generator is off.</span>"
+		. += "\n[SPAN_NOTICE("\The [src] is off.")]"
 
 /obj/machinery/power/port_gen/emp_act(severity)
 	if(!active)
@@ -134,6 +134,11 @@
 	component_parts += new board_path(src)
 	RefreshParts()
 
+/obj/machinery/power/port_gen/pacman/dismantle()
+	while(sheets > 0)
+		DropFuel()
+	return ..()
+
 /obj/machinery/power/port_gen/pacman/Destroy()
 	DropFuel()
 	return ..()
@@ -153,9 +158,9 @@
 	. += "\n\The [src] appears to be producing [power_gen*power_output] W."
 	. += "\nThere [sheets == 1 ? "is" : "are"] [sheets] sheet\s left in the hopper."
 	if(IsBroken())
-		. += "\n<span class='warning'>\The [src] seems to have broken down.</span>"
+		. += "\n[SPAN_WARNING("\The [src] seems to have broken down.")]"
 	if(overheating)
-		. += "\n<span class='danger'>\The [src] is overheating!</span>"
+		. += "\n[SPAN_DANGER("\The [src] is overheating!")]"
 
 /obj/machinery/power/port_gen/pacman/HasFuel()
 	var/needed_sheets = power_output / time_per_sheet
@@ -264,56 +269,38 @@
 		emagged = 1
 		return 1
 
-/obj/machinery/power/port_gen/pacman/attackby(obj/item/O as obj, mob/user as mob)
-	if(istype(O, sheet_path))
-		var/obj/item/stack/addstack = O
+/obj/machinery/power/port_gen/pacman/attackby(obj/item/W, mob/user)
+	if(istype(W, sheet_path))
+		var/obj/item/stack/addstack = W
 		var/amount = min((max_sheets - sheets), addstack.amount)
 		if(amount < 1)
-			to_chat(user, "<span class='notice'>The [src.name] is full!</span>")
+			to_chat(user, SPAN_NOTICE("The [src.name] is full!"))
 			return
-		to_chat(user, "<span class='notice'>You add [amount] sheet\s to the [src.name].</span>")
+		to_chat(user, SPAN_NOTICE("You add [amount] sheet\s to the [src.name]."))
 		sheets += amount
 		addstack.use(amount)
 		updateUsrDialog()
 		return
-	else if(!active)
-		if(isWrench(O))
 
-			if(!anchored)
-				connect_to_network()
-				to_chat(user, "<span class='notice'>You secure the generator to the floor.</span>")
-			else
-				disconnect_from_network()
-				to_chat(user, "<span class='notice'>You unsecure the generator from the floor.</span>")
+	if(active)
+		return
 
-			playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
-			anchored = !anchored
+	if(isWrench(W))
+		playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
+		to_chat(user, SPAN_NOTICE("You [anchored ? "unwrench" : "wrench"] \the [src] [anchored ? "from" : "into"] place."))
+		anchored = !anchored
+	if(default_deconstruction_screwdriver(user, W))
+		return
+	if(default_deconstruction_crowbar(user, W))
+		return
 
-		else if(isScrewdriver(O))
-			open = !open
-			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-			if(open)
-				to_chat(user, "<span class='notice'>You open the access panel.</span>")
-			else
-				to_chat(user, "<span class='notice'>You close the access panel.</span>")
-		else if(isCrowbar(O) && open)
-			var/obj/machinery/constructable_frame/machine_frame/new_frame = new /obj/machinery/constructable_frame/machine_frame(src.loc)
-			for(var/obj/item/I in component_parts)
-				I.loc = src.loc
-			while ( sheets > 0 )
-				DropFuel()
-
-			new_frame.state = 2
-			new_frame.icon_state = "box_1"
-			qdel(src)
-
-/obj/machinery/power/port_gen/pacman/attack_hand(mob/user as mob)
+/obj/machinery/power/port_gen/pacman/attack_hand(mob/user)
 	..()
 	if (!anchored)
 		return
 	ui_interact(user)
 
-/obj/machinery/power/port_gen/pacman/attack_ai(mob/user as mob)
+/obj/machinery/power/port_gen/pacman/attack_ai(mob/user)
 	ui_interact(user)
 
 /obj/machinery/power/port_gen/pacman/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
