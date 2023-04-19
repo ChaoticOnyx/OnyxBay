@@ -183,12 +183,6 @@
 /mob/living/simple_animal/gib()
 	..(icon_gib,1)
 
-/mob/living/simple_animal/proc/visible_emote(act_desc)
-	visible_message("<B>[src]</B> [act_desc]")
-
-/mob/living/simple_animal/proc/audible_emote(act_desc)
-	audible_message("<B>[src]</B> [act_desc]")
-
 /mob/living/simple_animal/bullet_act(obj/item/projectile/Proj)
 	if(!Proj || Proj.nodamage)
 		return

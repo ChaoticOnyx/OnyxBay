@@ -354,7 +354,7 @@
 
 
 		if(prob(1))
-			visible_emote(pick("dances around","chases her tail"))
+			visible_emote(pick("dances around.","chases her tail."))
 			spawn(0)
 				for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2,1,2,4,8,4,2))
 					set_dir(i)

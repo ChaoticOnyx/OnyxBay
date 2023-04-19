@@ -409,7 +409,7 @@
 			//Search for item to steal
 			set_interest(search_for_item())
 			if(parrot_interest)
-				visible_emote("looks in [parrot_interest]'s direction and takes flight")
+				visible_emote("looks in [parrot_interest]'s direction and takes flight.")
 				parrot_state = PARROT_SWOOP | PARROT_STEAL
 				icon_state = "parrot_fly"
 			return
@@ -431,7 +431,7 @@
 			if(AM)
 				if(istype(AM, /obj/item) || isliving(AM))	//If stealable item
 					set_interest(AM)
-					visible_emote("turns and flies towards [parrot_interest]")
+					visible_emote("turns and flies towards [parrot_interest].")
 					parrot_state = PARROT_SWOOP | PARROT_STEAL
 					return
 				else	//Else it's a perch

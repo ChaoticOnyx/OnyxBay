@@ -81,7 +81,7 @@
 		addTiles(1)
 
 	if(prob(1))
-		audible_message("<B>[src]</B> makes an excited booping beeping sound!")
+		audible_emote("makes an excited booping beeping sound!")
 
 /mob/living/bot/floorbot/handleAdjacentTarget()
 	if(get_turf(target) == src.loc)
