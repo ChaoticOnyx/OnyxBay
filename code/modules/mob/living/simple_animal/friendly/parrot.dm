@@ -300,7 +300,7 @@
 	return
 
 //Mobs with objects
-/mob/living/simple_animal/parrot/attackby(obj/item/O as obj, mob/user as mob)
+/mob/living/simple_animal/parrot/attackby(obj/item/O as obj, mob/user)
 	..()
 	if(!stat && !client && !istype(O, /obj/item/stack/medical))
 		if(O.force)
