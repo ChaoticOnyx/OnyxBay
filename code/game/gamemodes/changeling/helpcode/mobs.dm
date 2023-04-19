@@ -204,7 +204,7 @@
 	change_ctate(/datum/click_handler/changeling/infest)
 
 
-/mob/living/simple_animal/hostile/little_changeling/proc/infest(mob/living/carbon/human/target as mob in oview(1))
+/mob/living/simple_animal/hostile/little_changeling/proc/infest(mob/living/carbon/human/target in oview(1))
 	var/datum/changeling/changeling = src.mind.changeling
 	if(!changeling)
 		return

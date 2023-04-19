@@ -217,7 +217,7 @@
 
 /* Assembly */
 
-/obj/item/storage/toolbox/mechanical/attackby(obj/item/stack/tile/floor/T, mob/user as mob)
+/obj/item/storage/toolbox/mechanical/attackby(obj/item/stack/tile/floor/T, mob/user)
 	if(!istype(T, /obj/item/stack/tile/floor))
 		..()
 		return
