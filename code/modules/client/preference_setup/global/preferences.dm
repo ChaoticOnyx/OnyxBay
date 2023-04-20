@@ -235,6 +235,24 @@ var/global/list/_client_preferences_by_type
 	category = PREF_CATEGORY_TGUI
 	options = list(GLOB.PREF_WHITE, GLOB.PREF_DARK)
 
+/datum/client_preference/tgui_input
+	description = "TGUI Input"
+	key = "TGUI_INPUT"
+	category = PREF_CATEGORY_TGUI
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
+/datum/client_preference/tgui_input_large
+	description = "TGUI Input Large Buttons"
+	key = "TGUI_INPUT_BUTTONS"
+	category = PREF_CATEGORY_TGUI
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
+/datum/client_preference/tgui_input_swapped
+	description = "TGUI Input Swapped Buttons"
+	key = "TGUI_INPUT_SWAPPED"
+	category = PREF_CATEGORY_TGUI
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
 /datum/client_preference/tgui_chat
 	description = "TGUI Chat"
 	key = "TGUI_CHAT"
