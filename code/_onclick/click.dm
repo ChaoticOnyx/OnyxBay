@@ -67,6 +67,7 @@
 		if(modifiers["ctrl"])
 			CtrlRightClickOn(A)
 			return 1
+		return
 	if(modifiers["shift"] && modifiers["ctrl"])
 		CtrlShiftClickOn(A)
 		return 1
