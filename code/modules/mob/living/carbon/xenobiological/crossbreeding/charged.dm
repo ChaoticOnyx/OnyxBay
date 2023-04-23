@@ -159,7 +159,7 @@ Charged extracts:
 
 /obj/item/metroidcross/charged/pyrite/do_effect(mob/user)
 	to_chat(user, SPAN_DANGER(FONT_LARGE("The higher beings don't like your actions, so they change the course of events")))
-	new /obj/item/bananapeel(get_turf(user))
+	new /obj/item/bananapeel(get_turf(user), 3)
 	user.visible_message(SPAN_WARNING("[src] solidifies with a horrifying banana stench!"))
 	..()
 
@@ -304,6 +304,7 @@ Charged extracts:
 	colour = "rainbow"
 	effect_desc = "Produces three living metroids of random colors."
 
+//FIXME subtypes
 /obj/item/metroidcross/charged/rainbow/do_effect(mob/user)
 	user.visible_message(SPAN_WARNING("[src] swells and splits into three new metroids!"))
 	for(var/i in 1 to 3)

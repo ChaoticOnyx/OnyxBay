@@ -12,7 +12,9 @@
 	..()
 	if(duration)
 		expire_at = world.time + duration
-	linked_alert = holder.throw_alert("\ref[src]",alert_type)
+
+	if(alert_type)
+		linked_alert = holder.throw_alert("\ref[src]",alert_type)
 
 /datum/modifier/status_effect/on_expire()
 	. = ..()
@@ -20,7 +22,7 @@
 
 /datum/modifier/status_effect/rainbow_protection
 	name = "rainbow_protection"
-	duration = 100
+	duration = 200
 	alert_type = /obj/screen/movable/alert/status_effect/rainbow_protection
 	var/originalcolor
 
@@ -42,6 +44,7 @@
 	REMOVE_TRAIT(holder, TRAIT_PACIFISM)
 	holder.visible_message(SPAN_NOTICE("[holder] stops glowing, the rainbow light fading away."),
 		SPAN_WARNING("You no longer feel protected..."))
+	..()
 
 /obj/screen/movable/alert/status_effect/metroidskin
 	name = "Adamantine metroidskin"
@@ -66,6 +69,7 @@
 	holder.color = originalcolor
 	holder.visible_message(SPAN_WARNING("[holder]'s gel coating liquefies and dissolves away."),
 		SPAN_NOTICE("Your gel second-skin dissolves!"))
+	..()
 
 /datum/modifier/status_effect/metroidrecall
 	name = "metroid_recall"
@@ -84,8 +88,9 @@
 	return ..()
 
 /datum/modifier/status_effect/metroidrecall/proc/resistField()
-	interrupted = TRUE
-	holder.remove_specific_modifier(src)
+	if(do_after(holder, 30))
+		interrupted = TRUE
+		holder.remove_specific_modifier(src)
 
 /datum/modifier/status_effect/metroidrecall/on_expire()
 	unregister_signal(holder, SIGNAL_MOB_RESIST)
@@ -107,7 +112,6 @@
 	alert_type = /obj/screen/movable/alert/status_effect/freon/stasis
 
 /datum/modifier/status_effect/frozenstasis/on_applied()
-	holder.throw_alert("\ref[holder]_frozenstasis", /obj/screen/movable/alert/status_effect/freon/stasis)
 	register_signal(holder, SIGNAL_MOB_RESIST, .proc/breakCube)
 	cube = new /obj/structure/ice_stasis(get_turf(holder))
 	holder.forceMove(cube)
@@ -124,6 +128,7 @@
 	if(cube)
 		qdel(cube)
 	holder.status_flags &= ~GODMODE
+	..()
 
 	unregister_signal(holder, SIGNAL_MOB_RESIST)
 
@@ -169,7 +174,6 @@
 	name = "metroid_clonedecay"
 
 /datum/modifier/status_effect/metroid_clone_decay/on_applied()
-	holder.throw_alert("\ref[holder]_clone_decay", /obj/screen/movable/alert/clone_decay)
 
 /datum/modifier/status_effect/metroid_clone_decay/tick()
 	holder.adjustToxLoss(1)
@@ -203,6 +207,7 @@
 
 /datum/modifier/status_effect/bloodchill/on_expire()
 	holder.remove_a_modifier_of_type(/datum/modifier/movespeed/bloodchill)
+	..()
 
 /datum/modifier/status_effect/bonechill
 	name = "bonechill"
@@ -220,6 +225,7 @@
 
 /datum/modifier/status_effect/bonechill/on_expire()
 	holder.remove_a_modifier_of_type(/datum/modifier/movespeed/bonechill)
+	..()
 
 /obj/screen/movable/alert/status_effect/bonechill
 	name = "Bonechilled"
@@ -424,7 +430,6 @@
 		linked_extract.linked_effect = null
 		if(!QDELETED(linked_extract))
 			linked_extract.owner = null
-			linked_extract.set_next_think(0)
 		holder.remove_specific_modifier(src)
 	set_next_think(world.time + think_delay)
 	return ..()
@@ -640,7 +645,7 @@
 	metabolism_percent = 0.8
 
 //Bluespace has an icon because it's kinda active.
-/obj/screen/movable/alert/modifier/bluespacemetroid
+/obj/screen/movable/alert/status_effect/bluespacemetroid
 	name = "Stabilized Bluespace Extract"
 	desc = "You shouldn't see this, since we set it to change automatically!"
 	icon_state = "metroid_bluespace_on"
@@ -653,16 +658,17 @@
 /datum/modifier/status_effect/stabilized/bluespace
 	name = "stabilizedbluespace"
 	colour = "bluespace"
-	alert_type = /obj/screen/movable/alert/modifier/bluespacemetroid
-	var/healthcheck
+	alert_type = /obj/screen/movable/alert/status_effect/bluespacemetroid
+	var/list/healthcheck = list(BRUTE = 0, BURN = 0, OXY = 0)
 
 /datum/modifier/status_effect/stabilized/bluespace/on_applied()
 	set_next_think(world.time)
 
 /datum/modifier/status_effect/stabilized/bluespace/on_expire()
+	..()
 	set_next_think(0)
 
-
+//FIXME
 /datum/modifier/status_effect/stabilized/bluespace/think()
 	if(holder.has_modifier_of_type(/datum/modifier/status_effect/bluespacestabilization))
 		linked_alert.desc = "The stabilized bluespace extract is still aligning you with the bluespace axis."
@@ -672,7 +678,7 @@
 		linked_alert.desc = "The stabilized bluespace extract will try to redirect you from harm!"
 		linked_alert.icon_state = "metroid_bluespace_on"
 
-	if(healthcheck && (healthcheck - holder.health) > 5)
+	if(((holder.getBruteLoss() - healthcheck[BRUTE]) > 20) || ((holder.getFireLoss() - healthcheck[BURN]) > 20) || ((holder.getOxyLoss() - healthcheck[OXY]) > 20))
 		holder.visible_message(SPAN_WARNING("[linked_extract] notices the sudden change in [holder]'s physical health, and activates!"))
 		var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
 		sparks.set_up(5, 0, holder.loc)
@@ -688,7 +694,7 @@
 			sparks.set_up(5, 0, holder.loc)
 			sparks.start()
 			holder.add_modifier(/datum/modifier/status_effect/bluespacestabilization)
-	healthcheck = holder.health
+	healthcheck = list(BRUTE = holder.getBruteLoss(), BURN = holder.getFireLoss(), OXY = holder.getOxyLoss())
 	return ..()
 
 /datum/modifier/status_effect/stabilized/sepia
@@ -828,7 +834,7 @@
 
 	var/damage = 0
 	var/lasthealth
-
+//FIXME
 /datum/modifier/status_effect/pinkdamagetracker/think()
 	if((lasthealth - holder.health) > 0)
 		damage += (lasthealth - holder.health)
@@ -993,10 +999,10 @@
 	ADD_TRAIT(holder, TRAIT_PACIFISM)
 	set_next_think(world.time)
 	return ..()
-
+//FIXME
 /datum/modifier/status_effect/stabilized/lightpink/think()
 	for(var/mob/living/carbon/human/H in range(1, get_turf(holder)))
-		if(H != holder && H.stat != DEAD && H.health <= 20 && !H.reagents.has_reagent(/datum/reagent/inaprovaline))
+		if(H != holder && H.stat != DEAD && (H.getBruteLoss() >= 80 || H.getFireLoss() >= 80 || H.getOxyLoss() >= 30)  && !H.reagents.has_reagent(/datum/reagent/inaprovaline))
 			to_chat(holder, "[linked_extract] pulses in sync with [H]'s heartbeat, trying to keep [H] alive.")
 			H.reagents.add_reagent(/datum/reagent/inaprovaline,5)
 	return ..()
@@ -1053,7 +1059,7 @@
 	set_next_think(0)
 
 /datum/modifier/status_effect/stabilized/rainbow/think()
-	if(holder.health <= 0)
+	if(holder.stat == UNCONSCIOUS)
 		var/obj/item/metroidcross/stabilized/rainbow/X = linked_extract
 		if(istype(X))
 			if(X.regencore)

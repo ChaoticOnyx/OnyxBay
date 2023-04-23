@@ -147,9 +147,8 @@
 	desc = "A full suit of adamantine plate armor. Impressively resistant to damage, but weighs about as much as you do."
 	icon_state = "adamsuit"
 	icon = 'icons/obj/clothing/suits.dmi'
-	block_tier = BLOCK_TIER_ADVANCED
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+	flags_inv = HIDEJUMPSUIT
 
 /obj/item/clothing/suit/armor/heavy/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 4
+	slowdown_per_slot[slot_wear_suit] = 6

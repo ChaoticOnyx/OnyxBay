@@ -147,6 +147,7 @@
 
 	// Body/form vars.
 	var/list/inherent_verbs 	       // Species-specific verbs.
+	var/list/inherent_traits		   // Species-specific traits.
 	var/has_fine_manipulation = 1      // Can use small items.
 	var/siemens_coefficient = 1        // The lower, the thicker the skin and better the insulation.
 	var/darksight_range = 2            // Native darksight distance.
@@ -444,8 +445,21 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			H.verbs |= verb_path
 	return
 
+/datum/species/proc/remove_inherent_traits(mob/living/carbon/human/H)
+	if(inherent_traits)
+		for(var/trait in inherent_traits)
+			REMOVE_TRAIT(H, trait)
+	return
+
+/datum/species/proc/add_inherent_traits(mob/living/carbon/human/H)
+	if(inherent_traits)
+		for(var/trait in inherent_traits)
+			ADD_TRAIT(H, trait)
+	return
+
 /datum/species/proc/handle_post_spawn(mob/living/carbon/human/H) //Handles anything not already covered by basic species assignment.
 	add_inherent_verbs(H)
+	add_inherent_traits(H)
 	H.mob_bump_flag = bump_flag
 	H.mob_swap_flags = swap_flags
 	H.mob_push_flags = push_flags

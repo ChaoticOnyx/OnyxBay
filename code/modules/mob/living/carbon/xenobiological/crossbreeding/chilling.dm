@@ -169,7 +169,7 @@ Chilling extracts:
 	for(var/mob/living/M in allies)
 		ADD_TRAIT(M, TRAIT_METROIDRECALL)
 
-	if(do_after(user, 100, target=src))
+	if(do_after(user, 80, target=src))
 		to_chat(user, SPAN_NOTICE("[src] shatters as it tears a hole in reality, snatching the linked individuals from the void!"))
 		for(var/mob/living/M in allies)
 

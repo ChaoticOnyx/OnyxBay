@@ -8,7 +8,7 @@
 	force = 15
 	throwforce = 15
 	damtype = BRUTE
-
+//FIXME
 /obj/item/knife/rainbowknife/afterattack(atom/O, mob/user, proximity)
 	if(proximity && isliving(O))
 		damtype = pick(BRUTE, BURN, TOX, OXY, CLONE)
@@ -36,7 +36,6 @@
 	desc = "A gigantic shield made of solid adamantium."
 	icon = 'icons/obj/xenobiology/metroidcrossing.dmi'
 	icon_state = "adamshield"
-	item_state = "adamshield"
 	w_class = ITEM_SIZE_HUGE
 	armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 80, ACID = 70)
 	slot_flags = SLOT_BACK

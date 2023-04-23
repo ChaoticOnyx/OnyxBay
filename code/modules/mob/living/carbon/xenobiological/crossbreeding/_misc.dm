@@ -56,6 +56,7 @@
 	density = TRUE
 	var/health = 40
 
+//FIXME
 /obj/structure/ice_stasis/attack_generic(mob/user, damage, attack_verb, wallbreaker)
 	health -= damage
 	if(health<=0)
@@ -127,7 +128,7 @@
 
 		else
 
-			if(user.incapacitated(INCAPACITATION_DEFAULT) && do_after(user, 300, pokemon))
+			if(!user.incapacitated(INCAPACITATION_DEFAULT) && do_after(user, 300, pokemon))
 				to_chat(user, SPAN_NOTICE("You store [pokemon] in the capture device."))
 				to_chat(pokemon, SPAN_NOTICE("The world warps around you, and you're suddenly in an endless void, with a window to the outside floating in front of you."))
 				store(pokemon, user)

@@ -168,3 +168,39 @@
 
 /datum/modifier/trait/resist_heat_hands
 	incoming_fire_damage_percent = 0.2
+
+/datum/modifier/trait/blooddeficiency
+	name = "Blood Deficiency"
+	desc = "Your body can't produce enough blood to sustain itself."
+	var/min_blood = BLOOD_VOLUME_BAD // just barely survivable without treatment
+
+
+/datum/modifier/trait/blooddeficiency/on_applied()
+	if(!ishuman(holder))
+		return
+
+	// for making sure the roundstart species has the right blood pack sent to them
+	var/mob/living/carbon/human/carbon_target = holder
+	carbon_target.dna.b_type = "O-"
+
+/datum/modifier/trait/blooddeficiency/proc/lose_blood()
+	if(holder.stat == DEAD)
+		return
+
+	if(!ishuman(holder))
+		return
+
+	var/mob/living/carbon/human/carbon_target = holder
+	if(HAS_TRAIT(carbon_target, TRAIT_NOBLOOD)) //can't lose blood if your species doesn't have any
+		return
+
+	if (carbon_target.get_blood_volume() == min_blood)
+		return
+
+	if (carbon_target.get_blood_volume() < min_blood)
+		carbon_target.regenerate_blood(carbon_target.species.blood_volume*min_blood - carbon_target.get_blood_volume())
+		return
+	// Ensures that we don't reduce total blood volume below min_blood.
+	carbon_target.remove_blood(1.525 * 0.1)
+
+/datum/modifier/trait/noblood

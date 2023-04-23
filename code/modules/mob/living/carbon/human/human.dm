@@ -1138,6 +1138,7 @@
 			remove_language(L)
 		// Clear out their species abilities.
 		species.remove_inherent_verbs(src)
+		species.remove_inherent_traits(src)
 		holder_type = null
 
 	species = all_species[new_species]

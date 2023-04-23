@@ -108,7 +108,6 @@ Burning extracts:
 /obj/item/metroidcross/burning/metal/do_effect(mob/user)
 	for(var/turf/simulated/wall/W in range(1,get_turf(user)))
 		W.dismantle_wall(no_product=TRUE)
-		W.material.place_dismantled_product(W, TRUE)
 		playsound(W, 'sound/effects/break_stone.ogg', 50, TRUE)
 	user.visible_message(SPAN_DANGER("[src] pulses violently, and shatters the walls around it!"))
 	..()
