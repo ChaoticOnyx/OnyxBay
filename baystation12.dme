@@ -1551,6 +1551,7 @@
 #include "code\modules\awaymissions\pamphlet.dm"
 #include "code\modules\awaymissions\trigger.dm"
 #include "code\modules\awaymissions\zlevel.dm"
+#include "code\modules\splash_text\splash_text.dm"
 #include "code\modules\client\asset_cache.dm"
 #include "code\modules\client\client_defines.dm"
 #include "code\modules\client\client_helpers.dm"
