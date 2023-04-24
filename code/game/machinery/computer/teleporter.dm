@@ -6,7 +6,7 @@
 	name = "Teleporter Control Console"
 	desc = "Used to control a linked teleportation hub and station."
 	icon = 'icons/obj/machines/teleporter.dmi'
-	icon_state = "tele_console_off"
+	icon_state = "tele_console"
 	icon_keyboard = null
 	icon_screen = null
 	circuit = /obj/item/circuitboard/teleporter
@@ -25,7 +25,7 @@
 	if(gate && (get_dir(gate, src) == WEST))
 		LAZYADD(overlays, image(icon, src, "tele_console_wiring"))
 
-	icon_state = "tele_console"
+	icon_state = initial(icon_state)
 	if(stat & (BROKEN | NOPOWER))
 		set_light(0)
 		return
