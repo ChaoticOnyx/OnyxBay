@@ -526,8 +526,10 @@
 	if(isnum_safe(step_dir) && (!step_dir || (step_dir in GLOB.cardinal)))
 		rift_location = get_step(rift_location, step_dir) || rift_location
 
-	if(tporter && tporter.locked && !tporter.one_time_use && tporter.operable())
-		new /obj/effect/portal(rift_location, get_turf(tporter.locked))
+	if(tporter && tporter?.gate?.is_ready())
+		if(!tporter.target_ref)
+			return
+		new /obj/effect/portal(rift_location, get_turf(tporter.target_ref.resolve()))
 	else
 		var/turf/destination = get_random_turf_in_range(src, 10)
 		if(destination)
