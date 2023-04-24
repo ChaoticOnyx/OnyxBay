@@ -25,7 +25,7 @@
 	sort_string = "FAGAI"
 
 /datum/design/circuit/teleconsole
-	name = "teleporter control console"
+	name = "Teleporter Control Console"
 	id = "teleconsole"
 	req_tech = list(TECH_DATA = 3, TECH_BLUESPACE = 2)
 	build_path = /obj/item/circuitboard/teleporter
