@@ -33,7 +33,7 @@
 	var/special = null
 	item_state = "card-id"
 
-/obj/item/card/data/verb/label(t)
+/obj/item/card/data/verb/label(t as text)
 	set name = "Label Disk"
 	set category = "Object"
 	set src in usr
