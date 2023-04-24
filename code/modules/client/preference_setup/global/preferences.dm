@@ -96,6 +96,12 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 	default_value = GLOB.PREF_YES
 
+/datum/client_preference/splashes
+	description = "Show Splashes (Runechat-Like-Popups)"
+	key = "CHAT_SPLASHES"
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+	default_value = GLOB.PREF_YES
+
 /datum/client_preference/play_admin_midis
 	description ="Play admin midis"
 	key = "SOUND_MIDI"

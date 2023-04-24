@@ -29,6 +29,9 @@
 	if(!viewer_client)
 		return
 
+	if(client.get_preference_value(/datum/client_preference/splashes) != GLOB.PREF_YES)
+		return
+
 	var/bounds_width = world.icon_size
 	if(ismovable(src))
 		var/atom/movable/M = src
