@@ -35,7 +35,16 @@
 	else
 		flick(image(icon, "tele_gate_boot"), src)
 		icon_state = "tele_gate_on"
-		LAZYADD(overlays, image(icon, "tele_gate_galaxy"))
+
+		var/image/screen_overlay = image(icon, src, "tele_gate_over", EYE_GLOW_LAYER)
+		screen_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		screen_overlay.alpha = 150
+		LAZYADD(overlays, screen_overlay)
+
+		var/image/galaxy_overlay = image(icon, src, "tele_gate_galaxy", EYE_GLOW_LAYER + 1)
+		galaxy_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		LAZYADD(overlays, galaxy_overlay)
+
 		set_light(0.25, 0.1, 2, 3.5, light_color)
 
 	return

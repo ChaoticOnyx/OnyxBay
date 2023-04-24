@@ -25,17 +25,21 @@
 	if(gate && (get_dir(gate, src) == WEST))
 		LAZYADD(overlays, image(icon, src, "tele_console_wiring"))
 
+	icon_state = "tele_console"
 	if(stat & (BROKEN | NOPOWER))
-		icon_state = "tele_console_off"
 		set_light(0)
+		return
+
+	if(target_ref)
+		flick(image(icon, "tele_console_boot"), src)
+		set_light(0.25, 0.1, 2, 3.5, light_color)
 	else
-		if(target_ref)
-			flick(image(icon, "tele_console_boot"), src)
-			icon_state = "tele_console_on"
-			set_light(0.25, 0.1, 2, 3.5, light_color)
-		else
-			icon_state = "tele_console_idle"
-			set_light(0.1, 0.1, 2, 3.5, light_color)
+		set_light(0.1, 0.1, 2, 3.5, light_color)
+
+	var/image/screen_overlay = image(icon, src, "tele_console_over-[target_ref ? 1 : 0]", EYE_GLOW_LAYER)
+	screen_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	screen_overlay.alpha = 150
+	LAZYADD(overlays, screen_overlay)
 
 	return
 
