@@ -145,7 +145,7 @@
 		return
 	audible_message("Calibration complete.")
 	gate.calibrated = TRUE
-	gate.update_icon()
+	gate.set_state(TRUE)
 	update_icon()
 
 /obj/machinery/computer/teleporter/tgui_act(action, params)
@@ -158,20 +158,17 @@
 		if("toggle")
 			if(!target_ref)
 				return
-			gate.engaged = !gate.engaged
-			gate.update_icon()
+			gate.set_state(!gate.engaged)
 		if("togglemaint")
 			panel_open = !panel_open
 			to_chat(usr, "\The [src]'s maintanence panel is now [panel_open ? "opened" : "closed"].")
 		if("modeset")
-			gate.engaged = FALSE
+			gate.set_state(FALSE)
 			gate.calibrated = FALSE
-			gate.update_icon()
 			change_mode()
 		if("targetset")
-			gate.engaged = FALSE
+			gate.set_state(FALSE)
 			gate.calibrated = FALSE
-			gate.update_icon()
 			set_target(usr)
 		if("calibrate")
 			if(!target_ref)

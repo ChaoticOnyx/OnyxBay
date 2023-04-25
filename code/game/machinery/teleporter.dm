@@ -6,7 +6,7 @@
 	desc = "It's the hub of a teleporting machine."
 	icon_state = "tele_gate_off"
 	icon = 'icons/obj/machines/teleporter.dmi'
-	density = TRUE
+	density = FALSE
 	anchored = TRUE
 	idle_power_usage = 10 WATTS
 	active_power_usage = 2 KILO WATTS
@@ -101,7 +101,7 @@
 /obj/machinery/teleporter_gate/proc/is_ready()
 	return !panel_open && engaged && !(stat & (BROKEN | NOPOWER)) && console && !(console.stat & (BROKEN | NOPOWER))
 
-/obj/machinery/teleporter_gate/proc/teleport(atom/movable/AM)
+/obj/machinery/teleporter_gate/proc/teleport(atom/A)
 	if(QDELETED(console))
 		return
 
@@ -111,14 +111,25 @@
 	if(!target)
 		visible_message(SPAN_WARNING("Failure: Cannot authenticate locked on coordinates. Please reinstate coordinate matrix."))
 
-	if(istype(AM))
+	if(istype(A))
 		use_power_oneoff(5 KILO WATTS)
-		do_teleport(AM, target, calibrated ? 0 : clamp(DESTINATION_SPREAD_MIN, 10 - accuracy, DESTINATION_SPREAD_MAX))
+		do_teleport(A, target, calibrated ? 0 : clamp(DESTINATION_SPREAD_MIN, 10 - accuracy, DESTINATION_SPREAD_MAX))
 		calibrated = FALSE
-		console?.update_icon()
 
 	return
 
-/obj/machinery/teleporter_gate/Bumped(AM)
+/obj/machinery/teleporter_gate/Crossed(A)
 	if(is_ready())
-		teleport(AM)
+		teleport(A)
+
+/obj/machinery/teleporter_gate/power_change()
+	. = ..()
+	update_power()
+
+/obj/machinery/teleporter_gate/proc/set_state(new_state)
+	engaged = new_state
+	update_power()
+	update_icon()
+
+/obj/machinery/teleporter_gate/proc/update_power()
+	update_use_power(is_ready() ? POWER_USE_ACTIVE : POWER_USE_IDLE)
