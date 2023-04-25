@@ -198,7 +198,6 @@
 					I.Blend(rgb(200 + s_tone, 150 + s_tone, 123 + s_tone), ICON_ADD)
 			else
 				I.Blend(color, ICON_ADD)
-			icon_cache_key += "[M.name][color]"
 			ADD_SORTED(sorted_head_markings, list(list(M.draw_order, I)), /proc/cmp_marking_order)
 	for(var/entry in sorted_head_markings)
 		res.overlays |= entry[2]
