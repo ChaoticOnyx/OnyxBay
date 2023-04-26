@@ -1,4 +1,5 @@
 /mob/living/carbon/alien/diona
+	bubble_icon = "default"
 	hud_type = /datum/hud/diona
 
 /datum/hud/diona/FinalizeInstantiation()

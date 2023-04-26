@@ -375,3 +375,42 @@
 	item_state = "sombrero"
 	desc = "You can practically taste the fiesta."
 	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 30, bio = 0)
+
+/obj/item/clothing/head/samura_hat
+	name = "samurai hat"
+	icon_state = "samura_hat"
+	item_state = "samura_hat"
+	desc = "Asian straw hat with cool stripes of fabric throughout the brim."
+	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
+
+/obj/item/clothing/head/agua_helmet
+	name = "head-worn aquarium"
+	icon_state = "agua_helmet"
+	item_state = "agua_helmet"
+	desc = "Water with some fishes in the glass aquarium."
+	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
+
+/obj/item/clothing/head/crown
+	name = "crown"
+	icon_state = "crown"
+	item_state = "crown"
+	desc = "Royal gold worthy of a true ruler of the world."
+	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 0, bio = 0)
+
+/obj/item/clothing/head/antenna
+	name = "antenna"
+	icon_state = "antenna"
+	item_state = "antenna"
+	desc = "People of the past thought that alien species walked around with such antennas. It turned out that they really did."
+
+/obj/item/clothing/head/tiara
+	name = "tiara"
+	icon_state = "tiara"
+	item_state = "tiara"
+	desc = "Silver crown adorned with jewelry stones."
+
+/obj/item/clothing/head/vpp_cap
+	name = "vpp cap"
+	icon_state = "vpp_cap"
+	item_state = "vpp_cap"
+	desc = "Green cap of unknown design. The emblem proudly bears the abbreviation V.P.P."

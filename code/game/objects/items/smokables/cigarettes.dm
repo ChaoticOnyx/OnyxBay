@@ -35,22 +35,23 @@
 
 /obj/item/clothing/mask/smokable/cigarette/die(nomessage = FALSE, nodestroy = FALSE)
 	..()
-	if (type_butt && !nodestroy)
+	if(type_butt && !nodestroy)
 		var/obj/item/butt = new type_butt(get_turf(src))
 		transfer_fingerprints_to(butt)
 		butt.color = color
 		if(brand)
 			butt.desc += " This one is \a [brand]."
 		if(iscarbon(loc))
-			var/mob/living/carbon/M = loc
-			if (!nomessage)
-				to_chat(M, SPAN("notice", "Your [name] goes out."))
-			if(!M.stat && (src == M.wear_mask || M.is_item_in_hands(src)) && !M.handcuffed && isturf(M.loc))
-				for(var/obj/item/material/ashtray/A in view(1, M))
-					if(length(A.contents) < A.max_butts)
-						A.attackby(butt, M)
-						break
+			var/mob/living/carbon/C = loc
+			if(!nomessage)
+				to_chat(C, SPAN_NOTICE("Your [name] goes out."))
+			if(!C.stat && (src == C.wear_mask || C.is_item_in_hands(src)) && !C.handcuffed && isturf(C.loc))
+				for(var/obj/item/material/ashtray/A in view(1, C))
+					A.store(butt, C)
+					break
+			C.drop(src)
 		qdel(src)
+		. = butt
 
 /obj/item/clothing/mask/smokable/cigarette/get_temperature_as_from_ignitor()
 	if(lit)

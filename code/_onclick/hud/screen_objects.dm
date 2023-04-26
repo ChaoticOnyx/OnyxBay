@@ -82,6 +82,12 @@
 			usr.ClickOn(master)
 	return 1
 
+/obj/screen/stored
+	name = "stored"
+
+/obj/screen/stored/Click()
+	return 1
+
 /obj/screen/zone_sel
 	name = "damage zone"
 	icon_state = "zone_sel"

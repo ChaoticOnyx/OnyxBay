@@ -105,8 +105,10 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	pref.r_skin			= sanitize_integer(pref.r_skin, 0, 255, initial(pref.r_skin))
 	pref.g_skin			= sanitize_integer(pref.g_skin, 0, 255, initial(pref.g_skin))
 	pref.b_skin			= sanitize_integer(pref.b_skin, 0, 255, initial(pref.b_skin))
-	pref.h_style		= sanitize_inlist(pref.h_style, GLOB.hair_styles_list, all_species[pref.species].default_h_style)
-	pref.f_style		= sanitize_inlist(pref.f_style, GLOB.facial_hair_styles_list, all_species[pref.species].default_f_style)
+	var/datum/species/S = all_species[pref.species]
+	if(istype(S))
+		pref.h_style	= sanitize_inlist(pref.h_style, GLOB.hair_styles_list, S.default_h_style)
+		pref.f_style	= sanitize_inlist(pref.f_style, GLOB.facial_hair_styles_list, S.default_f_style)
 	pref.r_eyes			= sanitize_integer(pref.r_eyes, 0, 255, initial(pref.r_eyes))
 	pref.g_eyes			= sanitize_integer(pref.g_eyes, 0, 255, initial(pref.g_eyes))
 	pref.b_eyes			= sanitize_integer(pref.b_eyes, 0, 255, initial(pref.b_eyes))

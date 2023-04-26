@@ -126,7 +126,6 @@
 	if(display_message)
 		my_frame.visible_message("[my_frame][is_inner ? "\'s inner windowpane" : ""] shatters!")
 
-	var/obj/item/material/shard/S = window_material.place_shard(get_turf(my_frame))
 	var/shard_material = window_material.name
 	switch(window_material.name)
 		if(MATERIAL_REINFORCED_GLASS)
@@ -135,7 +134,7 @@
 			shard_material = MATERIAL_PLASS
 		if(MATERIAL_REINFORCED_BLACK_GLASS)
 			shard_material = MATERIAL_BLACK_GLASS
-	S.set_material(shard_material)
+	new /obj/item/material/shard(get_turf(my_frame), shard_material)
 
 	if(reinforced)
 		new /obj/item/stack/rods(get_turf(my_frame))

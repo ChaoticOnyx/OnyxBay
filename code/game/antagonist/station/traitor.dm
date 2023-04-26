@@ -126,3 +126,17 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 	to_chat(killer, "<b>Your laws have been changed!</b>")
 	killer.set_zeroth_law(law, law_borg)
 	to_chat(killer, "New law: 0. [law]")
+
+
+/datum/antagonist/traitor/check_candidate(datum/mind/player)
+	if(!..())
+		return FALSE
+	var/mob/living/carbon/human/H = player.current
+	if(!istype(H))
+		return TRUE
+
+	if(!check_uplink_sources(H))
+		log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Can't set up uplink source!")
+		return FALSE
+
+	return TRUE

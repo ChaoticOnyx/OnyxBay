@@ -2,6 +2,7 @@
 	lawupdate = 0
 	scrambledcodes = 1
 	icon_state = "securityrobot"
+	bubble_icon = "syndibot"
 	modtype = "Security"
 	lawchannel = "State"
 	laws = /datum/ai_laws/syndicate_override

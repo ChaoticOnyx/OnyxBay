@@ -588,7 +588,7 @@
 	icon_state = "xburger"
 	filling_color = "#43de18"
 	center_of_mass = "x=16;y=11"
-	startswith = list(/datum/reagent/nutriment/protein = 8)
+	startswith = list(/datum/reagent/nutriment/protein = 8, /datum/reagent/xenomicrobes = 5)
 	bitesize = 2
 
 /obj/item/reagent_containers/food/clownburger

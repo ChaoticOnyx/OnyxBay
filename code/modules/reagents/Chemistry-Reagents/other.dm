@@ -192,13 +192,15 @@
 				var/obj/structure/spider/spiderling/S = new /obj/structure/spider/spiderling(M.loc)
 				M.visible_message(SPAN_WARNING("\The [M] coughs up \the [S]!</span>"))
 
-		if(M.mind && M.mind.vampire)
-			M.adjustFireLoss(6)
-			M.adjust_fire_stacks(1)
-			M.IgniteMob()
-			if(prob(20))
-				for (var/mob/V in viewers(src))
-					V.show_message(SPAN_WARNING("[M]'s skin sizzles and burns."), 1)
+/datum/reagent/water/holywater/touch_mob(mob/living/L, amount)
+	if(!ishuman(L))
+		return
+	if(!L.mind)
+		return
+	if(L.mind.vampire && !(L.mind.vampire.status & VAMP_ISTHRALL))
+		L.adjust_fire_stacks(amount / 15)
+		L.IgniteMob()
+
 /datum/reagent/water/holywater/touch_turf(turf/T)
 	if(volume >= 5)
 		T.holy = TRUE
@@ -306,7 +308,7 @@
 /datum/reagent/lube // TODO: spraying on borgs speeds them up
 	name = "Space Lube"
 	description = "Lubricant is a substance introduced between two moving surfaces to reduce the friction and wear between them. giggity."
-	taste_description = "metroid"
+	taste_description = "slime"
 	reagent_state = LIQUID
 	color = "#009ca8"
 

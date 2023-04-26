@@ -128,7 +128,7 @@
 /datum/reagent/antibodies
 	data = list("antibodies"=list())
 	name = "Antibodies"
-	taste_description = "metroid"
+	taste_description = "slime"
 	reagent_state = LIQUID
 	color = "#0050f0"
 

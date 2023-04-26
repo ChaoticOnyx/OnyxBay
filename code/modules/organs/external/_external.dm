@@ -929,7 +929,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 					throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), rand(1, 2))
 				dir = 2
 		if(DROPLIMB_BURN)
-			new /obj/effect/decal/cleanable/ash(loc)
+			new /obj/effect/decal/cleanable/ash(victim.loc)
 			for(var/obj/item/I in src)
 				if(I.w_class > ITEM_SIZE_SMALL && !istype(I, /obj/item/organ))
 					I.forceMove(victim.loc)

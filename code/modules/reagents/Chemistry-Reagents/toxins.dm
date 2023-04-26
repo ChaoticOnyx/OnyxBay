@@ -295,7 +295,7 @@
 /datum/reagent/mutagen
 	name = "Unstable mutagen"
 	description = "Might cause unpredictable mutations. Keep away from children."
-	taste_description = "metroid"
+	taste_description = "slime"
 	taste_mult = 0.9
 	reagent_state = LIQUID
 	color = "#13bc5e"
@@ -686,6 +686,41 @@
 	reagent_state = LIQUID
 	color = "#535e66"
 
+	metabolism = REM * 4 // This would be 0.8 normally
+
+	data = list()
+
+/datum/reagent/xenomicrobes/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
+	..()
+	if(!ishuman(M))
+		return
+
+	if(!data["ticks"])
+		data["ticks"] = 0
+	data["ticks"]++
+	switch(data["ticks"])
+		if(1 to 15)
+			if(prob(10))
+				to_chat(M, SPAN_NOTICE("Something is itching inside your chest!"))
+
+		if(15 to 35)
+			if(prob(5))
+				to_chat(M, SPAN_DANGER("You can feel something moving inside your chest!"))
+
+		if(35 to INFINITY)
+			if(prob(5))
+				var/continue_impregnation = FALSE
+				var/obj/item/organ/internal/alien_embryo/AE = M.internal_organs_by_name[BP_EMBRYO]
+				if(!AE)
+					continue_impregnation = TRUE
+				else if(AE.status & ORGAN_DEAD)
+					qdel(AE)
+					continue_impregnation = TRUE
+
+				if(continue_impregnation)
+					to_chat(M, SPAN_DANGER("You start to feel dull pain inside your chest."))
+					M.internal_organs_by_name[BP_EMBRYO] = new /obj/item/organ/internal/alien_embryo(M)
+
 /datum/reagent/toxin/hair_remover
 	name = "Hair Remover"
 	description = "An extremely effective chemical depilator. Do not ingest."
@@ -701,6 +736,24 @@
 	M.species.set_default_hair(M)
 	to_chat(M, "<span class='warning'>Your feel a chill, your skin feels lighter..</span>")
 	remove_self(volume)
+
+/datum/reagent/toxin/hair_grower
+	name = "Hair Grower"
+	description = "An extremely effective chemical hair growth stimulator. Do not ingest."
+	taste_description = "acid"
+	reagent_state = LIQUID
+	color = "#e9d5a0"
+	strength = 1
+	overdose = REAGENTS_OVERDOSE
+
+/datum/reagent/toxin/hair_grower/affect_touch(mob/living/carbon/human/M, alien, removed)
+	remove_self(volume)
+	if(alien)
+		return
+	M.h_style = "Sick"
+	M.f_style = "Great Beard"
+	M.update_hair()
+	to_chat(M, SPAN_WARNING("You feel a chill, your skin feels heavier..."))
 
 /datum/reagent/toxin/zombie
 	name = "Liquid Corruption"

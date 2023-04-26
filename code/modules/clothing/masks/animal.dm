@@ -72,6 +72,12 @@
 	icon_state = "frog"
 	item_state = "frog"
 
+/obj/item/clothing/mask/animal_mask/ian
+	name = "Corgi mask"
+	desc = "Yap, Yap, Awwoo."
+	icon_state = "ian"
+	item_state = "ian"
+
 /obj/item/clothing/mask/animal_mask/bee
 	name = "bee mask"
 	desc = "Buzzzz."
