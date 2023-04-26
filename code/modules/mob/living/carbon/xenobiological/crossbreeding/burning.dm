@@ -329,7 +329,7 @@ Burning extracts:
 							/mob/living/simple_animal/hostile/voxslug
 							)
 	for(var/i in 1 to 3) //Less than gold normally does, since it's safer and faster.
-		var/mob/living/spawned_mob = pick(possible_mobs)
+		var/mob/living/spawned_mob = new pick(possible_mobs)
 		spawned_mob.faction |= "\ref[user.name]"
 		user.faction |= "\ref[user.name]"
 		if(prob(50))

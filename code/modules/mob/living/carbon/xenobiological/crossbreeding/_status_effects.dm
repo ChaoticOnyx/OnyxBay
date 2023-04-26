@@ -434,10 +434,6 @@
 	set_next_think(world.time + think_delay)
 	return ..()
 
-/datum/modifier/status_effect/stabilized/null //This shouldn't ever happen, but just in case.
-	name = "stabilizednull"
-
-
 //Stabilized effects start below.
 /datum/modifier/status_effect/stabilized/grey
 	name = "stabilizedgrey"
@@ -1069,3 +1065,8 @@
 				holder.remove_specific_modifier(src)
 				qdel(linked_extract)
 	return ..()
+
+/datum/modifier/status_effect/adamantine
+	name = "adamantine"
+	incoming_brute_damage_percent = 0.75
+	duration = 1200

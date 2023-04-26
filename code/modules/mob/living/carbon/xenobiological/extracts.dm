@@ -69,14 +69,22 @@
 	name = "gold metroid extract"
 	icon_state = "gold metroid extract"
 	effectmod = "symbiont"
-/*FIXME
+
 /obj/item/metroid_extract/gold/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			user.visible_message(SPAN_WARNING("[user] starts shaking!"),SPAN_NOTICE("Your [name] starts pulsing gently..."))
 			if(do_after(user, 40, target = user))
-				var/mob/living/spawned_mob = create_random_mob(user.drop_location(), FRIENDLY_SPAWN)
-				spawned_mob.faction |= FACTION_NEUTRAL
+				var/list/possible_mobs = list(
+					/mob/living/simple_animal/cat,
+					/mob/living/simple_animal/cat/kitten,
+					/mob/living/simple_animal/corgi,
+					/mob/living/simple_animal/corgi/puppy,
+					/mob/living/simple_animal/cow,
+					/mob/living/simple_animal/chick,
+					/mob/living/simple_animal/chicken
+					)
+				var/mob/living/spawned_mob = new pick(possible_mobs)
 				playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
 				user.visible_message(SPAN_WARNING("[user] spits out [spawned_mob]!"), SPAN_NOTICE("You spit out [spawned_mob]!"))
 				return 300
@@ -84,40 +92,55 @@
 		if(METROID_ACTIVATE_MAJOR)
 			user.visible_message(SPAN_WARNING("[user] starts shaking violently!"),SPAN_WARNING("Your [name] starts pulsing violently..."))
 			if(do_after(user, 50, target = user))
-				var/mob/living/spawned_mob = create_random_mob(user.drop_location(), HOSTILE_SPAWN)
-				if(!user.combat_mode)
-					spawned_mob.faction |= FACTION_NEUTRAL
-				else
-					spawned_mob.faction |= FACTION_METROID
+				var/list/possible_mobs = list(
+							/mob/living/simple_animal/hostile/faithless,
+							/mob/living/simple_animal/hostile/creature,
+							/mob/living/simple_animal/hostile/bear,
+							/mob/living/simple_animal/hostile/maneater,
+							/mob/living/simple_animal/hostile/mimic,
+							/mob/living/simple_animal/hostile/carp/pike,
+							/mob/living/simple_animal/hostile/tree,
+							/mob/living/simple_animal/hostile/vagrant,
+							/mob/living/simple_animal/hostile/voxslug
+							)
+				var/mob/living/spawned_mob = new pick(possible_mobs)
 				playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
 				user.visible_message(SPAN_WARNING("[user] spits out [spawned_mob]!"), SPAN_WARNING("You spit out [spawned_mob]!"))
 				return 600
-*/
+
 /obj/item/metroid_extract/silver
 	name = "silver metroid extract"
 	icon_state = "silver metroid extract"
 	effectmod = "consuming"
-/*FIXME
+
 /obj/item/metroid_extract/silver/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			var/food_type = get_random_food()
-			var/obj/item/food/food_item = new food_type
-			ADD_TRAIT(food_item, TRAIT_FOOD_SILVER, INNATE_TRAIT)
+			var/path = pick(typesof(/obj/item/reagent_containers/food) - /obj/item/reagent_containers/food)
+			var/obj/item/reagent_containers/food/food_item = new path(pick(turfs))
 			if(!user.put_in_active_hand(food_item))
 				food_item.forceMove(user.drop_location())
 			playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
 			user.visible_message(SPAN_WARNING("[user] spits out [food_item]!"), SPAN_NOTICE("You spit out [food_item]!"))
 			return 200
 		if(METROID_ACTIVATE_MAJOR)
-			var/drink_type = get_random_drink()
+			var/drink_type = pick(list(
+				/obj/item/reagent_containers/vessel/bottle/patron,
+				/obj/item/reagent_containers/vessel/bottle/goldschlager,
+				/obj/item/reagent_containers/vessel/bottle/specialwhiskey,
+				/obj/item/reagent_containers/vessel/bottle/small/ale,
+				/obj/item/reagent_containers/vessel/bottle/small/beer,
+				/obj/item/reagent_containers/vessel/coffee,
+				/obj/item/reagent_containers/vessel/tea,
+				/obj/item/reagent_containers/vessel/h_chocolate
+			))
 			var/obj/O = new drink_type
 			if(!user.put_in_active_hand(O))
 				O.forceMove(user.drop_location())
 			playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
 			user.visible_message(SPAN_WARNING("[user] spits out [O]!"), SPAN_NOTICE("You spit out [O]!"))
 			return 200
-*/
+
 /obj/item/metroid_extract/metal
 	name = "metal metroid extract"
 	icon_state = "metal metroid extract"
@@ -352,11 +375,11 @@
 			return 150
 
 		if(METROID_ACTIVATE_MAJOR)
-			//FIXME var/obj/item/metroidpotion/metroid/sentience/O = new(null, 1)
+			/*FIXME var/obj/item/metroidpotion/metroid/sentience/O = new(null, 1)
 			if(!user.put_in_active_hand(O))
 				O.forceMove(user.drop_location())
 			playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
-			user.visible_message(SPAN_WARNING("[user] spits out [O]!"), SPAN_NOTICE("You spit out [O]!"))
+			user.visible_message(SPAN_WARNING("[user] spits out [O]!"), SPAN_NOTICE("You spit out [O]!"))*/
 			return 450
 
 /obj/item/metroid_extract/black
@@ -368,15 +391,18 @@
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			to_chat(user, SPAN_DANGER("You feel something <i>wrong</i> inside you..."))
-			user.ForceContractDisease(new /datum/disease/transformation/metroid(), FALSE, TRUE)
+			var/datum/spell/targeted/shapeshift/metroid_form/transform = new()
+			transform.cast(user)
 			return 100
 
 		if(METROID_ACTIVATE_MAJOR)
+			/*TODO - SHADOWLING
+			//FIXME
 			to_chat(user, SPAN_WARNING("You feel your own light turning dark..."))
 			if(do_after(user, 120, target = user))
 				to_chat(user, SPAN_WARNING("You feel a longing for darkness."))
 				user.set_species(pick(/datum/species/shadow))
-				return
+				return*/
 			to_chat(user, SPAN_NOTICE("You stop feeding [src]."))
 
 /obj/item/metroid_extract/oil
@@ -389,15 +415,16 @@
 		if(METROID_ACTIVATE_MINOR)
 			to_chat(user, SPAN_WARNING("You vomit slippery oil."))
 			playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
-			new /obj/effect/decal/cleanable/oil/slippery(get_turf(user))
+			var/turf/simulated/T = get_turf(user)
+			new /obj/effect/decal/cleanable/blood/oil(T)
+			T.wet_floor(2)
 			return 450
 
 		if(METROID_ACTIVATE_MAJOR)
 			user.visible_message(SPAN_WARNING("[user]'s skin starts pulsing and glowing ominously..."), SPAN_DANGER("You feel unstable..."))
 			if(do_after(user, 60, target = user))
 				to_chat(user, SPAN_DANGER("You explode!"))
-				explosion(user, devastation_range = 1, heavy_impact_range = 3, light_impact_range = 6, explosion_cause = src)
-				user.investigate_log("has been gibbed by an oil metroid extract explosion.", INVESTIGATE_DEATHS)
+				explosion(user, devastation_range = 1, heavy_impact_range = 3, light_impact_range = 6)
 				user.gib()
 				return
 			to_chat(user, SPAN_NOTICE("You stop feeding [src], and the feeling passes."))
@@ -411,30 +438,29 @@
 /obj/item/metroid_extract/adamantine/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			if(species.armor > 0)
+			if(species.brute_mod < 1)
 				to_chat(user, SPAN_WARNING("Your skin is already hardened!"))
 				return
 			to_chat(user, SPAN_NOTICE("You feel your skin harden and become more resistant."))
-			species.armor += 25
-			addtimer(CALLBACK(src, PROC_REF(reset_armor), species), 1200)
+			ADD_TRAIT(user, /datum/modifier/status_effect/adamantine)
 			return 450
 
 		if(METROID_ACTIVATE_MAJOR)
 			to_chat(user, SPAN_WARNING("You feel your body rapidly crystallizing..."))
 			if(do_after(user, 120, target = user))
 				to_chat(user, SPAN_WARNING("You feel solid."))
-				user.set_species(pick(/datum/species/golem/adamantine))
+				//FIXME user.set_species(pick(/datum/species/golem/adamantine))
 				return
 			to_chat(user, SPAN_NOTICE("You stop feeding [src], and your body returns to its metroidlike state."))
-
-/obj/item/metroid_extract/adamantine/proc/reset_armor(datum/species/promethean/luminescent/species)
-	if(istype(species))
-		species.armor -= 25
 
 /obj/item/metroid_extract/bluespace
 	name = "bluespace metroid extract"
 	icon_state = "bluespace metroid extract"
 	effectmod = "warping"
+	var/teleport_ready = FALSE
+	var/teleport_x = 0
+	var/teleport_y = 0
+	var/teleport_z = 0
 
 /obj/item/metroid_extract/bluespace/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
 	switch(activation_type)
@@ -442,7 +468,10 @@
 			to_chat(user, SPAN_WARNING("You feel your body vibrating..."))
 			if(do_after(user, 25, target = user))
 				to_chat(user, SPAN_WARNING("You teleport!"))
-				do_teleport(user, get_turf(user), 6, asoundin = 'sound/weapons/emitter2.ogg', channel = TELEPORT_CHANNEL_BLUESPACE)
+				var/turf/T = get_turf(user)
+				playsound(T,'sound/effects/weapons/energy/emitter.ogg')
+				do_teleport(user, T, 8)
+				playsound(get_turf(user),'sound/effects/weapons/energy/emitter.ogg')
 				return 300
 
 		if(METROID_ACTIVATE_MAJOR)
@@ -458,7 +487,9 @@
 				if(teleport_x && teleport_y && teleport_z)
 					var/turf/T = locate(teleport_x, teleport_y, teleport_z)
 					to_chat(user, SPAN_NOTICE("You snap back to your anchor point!"))
-					do_teleport(user, T,  asoundin = 'sound/weapons/emitter2.ogg', channel = TELEPORT_CHANNEL_BLUESPACE)
+					playsound(get_turf(user),'sound/effects/weapons/energy/emitter.ogg')
+					do_teleport(user, T)
+					playsound(T,'sound/effects/weapons/energy/emitter.ogg')
 					return 450
 
 /obj/item/metroid_extract/pyrite
@@ -469,7 +500,7 @@
 /obj/item/metroid_extract/pyrite/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			var/chosen = pick(difflist(subtypesof(/obj/item/toy/crayon),typesof(/obj/item/toy/crayon/spraycan)))
+			var/chosen = pick(difflist(subtypesof(/obj/item/pen/crayon)))
 			var/obj/item/O = new chosen(null)
 			if(!user.put_in_active_hand(O))
 				O.forceMove(user.drop_location())
@@ -478,8 +509,7 @@
 			return 150
 
 		if(METROID_ACTIVATE_MAJOR)
-			var/blacklisted_cans = list(/obj/item/toy/crayon/spraycan/borg, /obj/item/toy/crayon/spraycan/infinite)
-			var/chosen = pick(subtypesof(/obj/item/toy/crayon/spraycan) - blacklisted_cans)
+			var/chosen = pick(subtypesof(/obj/item/reagent_containers/vessel/paint))
 			var/obj/item/O = new chosen(null)
 			if(!user.put_in_active_hand(O))
 				O.forceMove(user.drop_location())
@@ -495,14 +525,15 @@
 /obj/item/metroid_extract/cerulean/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			user.reagents.add_reagent(/datum/reagent/medicine/salbutamol,15)
+			user.reagents.add_reagent(/datum/reagent/inaprovaline,15)
 			to_chat(user, SPAN_NOTICE("You feel like you don't need to breathe!"))
 			return 150
 
 		if(METROID_ACTIVATE_MAJOR)
 			var/turf/T = get_turf(user)
 			if(istype(T))
-				T.atmos_spawn_air("o2=11;n2=41;TEMP=293.15")
+				T.assume_gas("oxygen", 11, 293.15)
+				T.assume_gas("nitrogen", 41, 293.15)
 				to_chat(user, SPAN_WARNING("You activate [src], and fresh air bursts out of your skin!"))
 				return 600
 
@@ -514,7 +545,7 @@
 /obj/item/metroid_extract/sepia/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			var/obj/item/camera/O = new(null, 1)
+			var/obj/item/device/camera/O = new(null, 1)
 			if(!user.put_in_active_hand(O))
 				O.forceMove(user.drop_location())
 			playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
@@ -522,10 +553,12 @@
 			return 150
 
 		if(METROID_ACTIVATE_MAJOR)
-			to_chat(user, SPAN_WARNING("You feel time slow down..."))
-			if(do_after(user, 30, target = user))
-				new /obj/effect/timestop(get_turf(user), 2, 50, list(user))
-				return 900
+			var/obj/item/device/camera/spooky/O = new(null, 1)
+			if(!user.put_in_active_hand(O))
+				O.forceMove(user.drop_location())
+			playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
+			user.visible_message(SPAN_WARNING("[user] spits out [O]!"), SPAN_NOTICE("You spit out [O]!"))
+			return 150
 
 /obj/item/metroid_extract/rainbow
 	name = "rainbow metroid extract"
@@ -535,9 +568,8 @@
 /obj/item/metroid_extract/rainbow/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			user.dna.features["mcolor"] = "#[pick("7F", "FF")][pick("7F", "FF")][pick("7F", "FF")]"
-			user.dna.update_uf_block(DNA_MUTANT_COLOR_BLOCK)
-			user.updateappearance(mutcolor_update=1)
+			user.dna.mcolor = "#[pick("7F", "FF")][pick("7F", "FF")][pick("7F", "FF")]"
+			user.UpdateAppearance(mutcolor_update=1)
 			species.update_glow(user)
 			to_chat(user, SPAN_NOTICE("You feel different..."))
 			return 100
