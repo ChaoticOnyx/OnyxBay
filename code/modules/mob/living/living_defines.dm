@@ -41,11 +41,12 @@
 	var/failed_last_breath = 0 //This is used to determine if the mob failed a breath. If they did fail a brath, they will attempt to breathe each tick, otherwise just once per 4 ticks.
 	var/possession_candidate // Can be possessed by ghosts if unplayed.
 
-	var/eye_blind = null	//Carbon
-	var/eye_blurry = null	//Carbon
-	var/ear_damage = null	//Carbon
-	var/stuttering = null	//Carbon
-	var/slurring = null		//Carbon
+	var/can_use_hands = FALSE	//Carbon. living don't have hands
+	var/eye_blind = null		//Carbon
+	var/eye_blurry = null		//Carbon
+	var/ear_damage = null		//Carbon
+	var/stuttering = null		//Carbon
+	var/slurring = null			//Carbon
 	var/stammering = null
 	var/burrieng = null
 	var/lisping = null
