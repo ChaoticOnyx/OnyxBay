@@ -1,8 +1,8 @@
-///The rate at which slimes regenerate their promethean normally
+///The rate at which metroids regenerate their promethean normally
 #define PROMETHEAN_REGEN_RATE 1.5
-///The rate at which slimes regenerate their promethean when they completely run out of it and start taking damage, usually after having cannibalized all their limbs already
+///The rate at which metroids regenerate their promethean when they completely run out of it and start taking damage, usually after having cannibalized all their limbs already
 #define PROMETHEAN_REGEN_RATE_EMPTY 2.5
-///The blood volume at which slimes begin to start losing nutrition -- so that IV drips can work for blood deficient slimes
+///The blood volume at which metroids begin to start losing nutrition -- so that IV drips can work for blood deficient metroids
 #define BLOOD_VOLUME_LOSE_NUTRITION 550
 #define BLOOD_LOSE_PER_LIMB 0.05 //we'll lose 5% per limb
 /datum/species/promethean
@@ -96,7 +96,7 @@
 	return TRUE
 
 /datum/species/promethean/handle_environment_special(mob/living/carbon/human/H)
-	if(H.stat == DEAD) //can't farm slime prometheany from a dead slime/prometheany person indefinitely
+	if(H.stat == DEAD) //can't farm metroid prometheany from a dead metroid/prometheany person indefinitely
 		return
 
 	if(!H.get_blood_volume())
@@ -107,7 +107,7 @@
 	if(H.get_blood_volume() < BLOOD_VOLUME_SAFE)
 		if(H.nutrition >= STOMACH_FULLNESS_LOW)
 			H.regenerate_blood(PROMETHEAN_REGEN_RATE * 0.1)
-			if(H.get_blood_volume() <= BLOOD_VOLUME_LOSE_NUTRITION) // don't lose nutrition if we are above a certain threshold, otherwise slimes on IV drips will still lose nutrition
+			if(H.get_blood_volume() <= BLOOD_VOLUME_LOSE_NUTRITION) // don't lose nutrition if we are above a certain threshold, otherwise metroids on IV drips will still lose nutrition
 				H.nutrition += -1.25 * 0.1
 
 	// we call lose_blood() here rather than quirk/process() to make sure that the blood loss happens in sync with life()
@@ -188,8 +188,6 @@
 		to_chat(H, SPAN_WARNING("...but there is not enough of you to fix everything! You must attain more mass to heal completely!"))
 		return
 	to_chat(H, SPAN_WARNING("...but there is not enough of you to go around! You must attain more mass to heal!"))
-
-////////////////////////////////////////////////////////SLIMEPEOPLE///////////////////////////////////////////////////////////////////
 
 
 /datum/species/promethean/is_eligible_for_antag_spawn(antag_id)

@@ -6,6 +6,7 @@
 #define TRAIT_METROIDRECALL /datum/modifier/status_effect/metroidrecall
 #define TRAIT_NOBLOOD /datum/modifier/trait/noblood
 #define TRAIT_BLOOD_DEFICIENCY /datum/modifier/trait/blooddeficiency
+
 #define ADD_TRAIT(holder,trait_type) holder.add_modifier(trait_type)
 #define REMOVE_TRAIT(holder,trait_type) holder.remove_modifiers_of_type(trait_type)
 #define HAS_TRAIT(holder,trait_type) holder.has_modifier_of_type(trait_type)

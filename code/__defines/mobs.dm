@@ -301,13 +301,16 @@
 #define SPECIES_SKRELL      "Skrell"
 #define SPECIES_NABBER      "Giant Armoured Serpentid"
 #define SPECIES_PROMETHEAN  "Promethean"
+#define SPECIES_STARGAZER  	"Stargazer"
+#define SPECIES_SLIMEPERSON "Slimeperson"
+#define SPECIES_LUMINESCENT "Luminescent"
 #define SPECIES_EGYNO       "Egyno"
 #define SPECIES_MONKEY      "Monkey"
 #define SPECIES_GOLEM       "Golem"
 #define SPECIES_ABDUCTOR    "Abductor"
 #define SPECIES_GRAVWORLDER	"Grav-Adapted Human"
-#define SPECIES_SPACER	"Space-Adapted Human"
-#define SPECIES_VATGROWN "Vat-Grown Human"
+#define SPECIES_SPACER		"Space-Adapted Human"
+#define SPECIES_VATGROWN 	"Vat-Grown Human"
 
 // Ayyy IDs.
 #define SPECIES_XENO                 "Xenomorph"

@@ -35,7 +35,7 @@
 
 /datum/species/golem/is_eligible_for_antag_spawn(antag_id)
 	return FALSE
-
+/*
 /datum/species/golem/adamantine
 	name = "Adamantine Golem"
 	id = SPECIES_GOLEM_ADAMANTINE
@@ -1331,3 +1331,4 @@
 /datum/species/golem/mhydrogen/on_species_loss(mob/living/carbon/C)
 	REMOVE_TRAIT(C, TRAIT_ANTIMAGIC)
 	return ..()
+*/
