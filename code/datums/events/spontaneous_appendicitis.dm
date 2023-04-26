@@ -17,7 +17,7 @@
 /datum/event/spontaneous_appendicitis/on_fire()
 	var/list/candidates
 	for(var/mob/living/carbon/human/C in GLOB.player_list)
-		if(C.client && !С.is_ic_dead())
+		if(C.client && !C.is_ic_dead())
 			LAZYADD(candidates, C)
 
 	if(!length(candidates))
