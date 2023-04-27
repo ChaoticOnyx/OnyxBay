@@ -57,97 +57,23 @@
 /turf/simulated/wall/proc/get_material()
 	return material
 
-// Extracts angle's tan if ischance = 1.
-// In other case it just makes bullets and lazorz go where they're supposed to.
+/turf/simulated/wall/proc/projectile_reflection(obj/item/projectile/proj, calculate = FALSE)
+	var/turf/proj_turf = get_turf(proj)
+	var/face_direction = get_dir(src, proj_turf)
+	var/face_angle = dir2angle(face_direction)
+	var/proj_angle = (face_angle - (Get_Angle(src, proj.starting).angle + 180)) - (round(face_angle - (Get_Angle(src, proj.starting) + 180) / (360)) * (360))
 
-/turf/simulated/wall/proc/projectile_reflection(obj/item/projectile/Proj, ischance = 0)
-	if(Proj.starting)
-		var/ricochet_temp_id = rand(1,1000)
-		if(!ischance) Proj.ricochet_id = ricochet_temp_id
-		var/turf/curloc = get_turf(src)
-		if(!ischance && ((curloc.x == Proj.starting.x) || (curloc.y == Proj.starting.y)))
-			visible_message("\red <B>\The [Proj] critically misses!</B>")
-			var/critical_x = Proj.starting.x
-			var/critical_y = Proj.starting.y
-			if(istype(Proj,/obj/item/projectile/bullet))
-				critical_x = critical_x + pick(-1, 0, 0, 1)
-				critical_y = critical_y + pick(-1, 0, 0, 1)
-			Proj.redirect(critical_x, critical_y, curloc, src)
-			return
-		var/check_x0 = 32 * curloc.x
-		var/check_y0 = 32 * curloc.y
-		var/check_x1 = 32 * Proj.starting.x
-		var/check_y1 = 32 * Proj.starting.y
-		var/check_x2 = 32 * Proj.original.x
-		var/check_y2 = 32 * Proj.original.y
-		var/corner_x0 = check_x0
-		var/corner_y0 = check_y0
-		if(check_y0 - check_y1 > 0)
-			corner_y0 = corner_y0 - 16
-		else
-			corner_y0 = corner_y0 + 16
-		if(check_x0 - check_x1 > 0)
-			corner_x0 = corner_x0 - 16
-		else
-			corner_x0 = corner_x0 + 16
+	var/real_angle = abs(proj_angle)
+	if(real_angle > 90 && real_angle < 270)
+		return 0
 
-		// Checks if original is lower or upper than line connecting proj's starting and wall
-		// In specific coordinate system that has wall as (0,0) and 'starting' as (r, 0), where r > 0.
-		// So, this checks whether 'original's' y-coordinate is positive or negative in new c.s.
-		// In order to understand, in which direction bullet will ricochet.
-		// Actually new_y isn't y-coordinate, but it has the same sign.
-		var/new_y = (check_y2 - corner_y0) * (check_x1 - corner_x0) - (check_x2 - corner_x0) * (check_y1 - corner_y0)
-		// Here comes the thing which differs two situations:
-		// First - bullet comes from north-west or south-east, with negative func value. Second - NE or SW.
-		var/new_func = (corner_x0 - check_x1) * (corner_y0 - check_y1)
+	if(calculate)
+		return real_angle
 
-		// Added these wall things because my original code works well with one-tiled walls, but ignores adjacent turfs which in my current opinion was pretty wrong.
-		var/wallnorth = 0
-		var/wallsouth = 0
-		var/walleast = 0
-		var/wallwest = 0
-		for (var/turf/simulated/wall/W in range(2, curloc))
-			var/turf/tempwall = get_turf(W)
-			if (tempwall.x == curloc.x)
-				if (tempwall.y == (curloc.y - 1))
-					wallnorth = 1
-					if (!ischance) W.ricochet_id = ricochet_temp_id
-				else if (tempwall.y == (curloc.y + 1))
-					wallsouth = 1
-					if (!ischance) W.ricochet_id = ricochet_temp_id
-			if (tempwall.y == curloc.y)
-				if (tempwall.x == (curloc.x + 1))
-					walleast = 1
-					if (!ischance) W.ricochet_id = ricochet_temp_id
-				else if (tempwall.x == (curloc.x - 1))
-					wallwest = 1
-					if (!ischance) W.ricochet_id = ricochet_temp_id
-
-		if((wallnorth || wallsouth) && ((Proj.starting.y - curloc.y)*(wallsouth - wallnorth) >= 0))
-			if(!ischance)
-				Proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), curloc, src)
-				return
-			else
-				return abs((check_y0 - check_y1) / (check_x0 - check_x1))
-
-		if((walleast || wallwest) && ((Proj.starting.x - curloc.x)*(walleast-wallwest) >= 0))
-			if(!ischance)
-				Proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), curloc, src)
-				return
-			else
-				return abs((check_x0 - check_x1) / (check_y0 - check_y1))
-
-		if((new_y * new_func) > 0)
-			if(!ischance)
-				Proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), curloc, src)
-			else
-				return abs((check_x0 - check_x1) / (check_y0 - check_y1))
-		else
-			if(!ischance)
-				Proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), curloc, src)
-			else
-				return abs((check_y0 - check_y1) / (check_x0 - check_x1))
-		return
+	var/radian = real_angle * 3.14 / 180
+	var/new_x = 128 * cos(radian)
+	var/new_y = 128 * sin(radian)
+	proj.redirect(new_x, new_y, src)
 
 /turf/simulated/wall/blob_act(damage)
 	take_damage(damage)
@@ -160,7 +86,7 @@
 			return PROJECTILE_CONTINUE
 		ricochet_id = 0
 	// Walls made from reflective-able materials reflect beam-type projectiles depending on their reflectance value.
-	if(istype(Proj,/obj/item/projectile/beam))
+	if(istype(Proj, /obj/item/projectile/beam))
 		if(reinf_material)
 			if(material.opacity * reinf_material.opacity < 0.16) return PROJECTILE_CONTINUE
 

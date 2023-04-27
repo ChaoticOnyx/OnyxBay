@@ -201,14 +201,14 @@
 	return launch(target, target_zone, x_offset, y_offset)
 
 //Used to change the direction of the projectile in flight.
-/obj/item/projectile/proc/redirect(new_x, new_y, atom/starting_loc, mob/new_firer=null)
+/obj/item/projectile/proc/redirect(new_x, new_y, atom/starting_loc, mob/new_firer = null)
 	var/turf/new_target = locate(new_x, new_y, src.z)
 
 	original = new_target
 	if(new_firer)
 		firer = new_firer
 
-	shot_from = "[firer.name] (projectile redirection, weapon - [shot_from])"
+	shot_from = "[firer.name] (projectile redirection by [starting_loc], weapon - [shot_from])"
 
 	setup_trajectory(starting_loc, new_target)
 
