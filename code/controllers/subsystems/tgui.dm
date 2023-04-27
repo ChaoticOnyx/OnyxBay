@@ -144,7 +144,7 @@ SUBSYSTEM_DEF(tgui)
 	// Couldn't find a UI.
 	if(QDELETED(ui))
 		return null
-	ui._process_status()
+	ui.process_status()
 	// UI ended up with the closed status
 	// or is actively trying to close itself.
 	// FIXME: Doesn't actually fix the paper bug.

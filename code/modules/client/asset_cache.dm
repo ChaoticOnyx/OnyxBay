@@ -141,6 +141,8 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	// All assets, "filename = file"
 	var/list/assets = list()
 
+	var/cached_serialized_url_mappings
+
 	// If asset is trivial it's download will be transfered to end of queue
 	var/isTrivial = TRUE
 	var/registred = FALSE
@@ -176,6 +178,13 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	if(length(assets & C.cache) == length(assets))
 		return TRUE
 	return FALSE
+
+/// Returns a cached tgui message of URL mappings
+/datum/asset/proc/get_serialized_url_mappings()
+	if(isnull(cached_serialized_url_mappings))
+		cached_serialized_url_mappings = TGUI_CREATE_MESSAGE("asset/mappings", get_url_mappings())
+
+	return cached_serialized_url_mappings
 
 /datum/asset/proc/get_url_mappings()
 	return list()
@@ -297,6 +306,15 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"tgui-common.bundle.js" = 'tgui/public/tgui-common.bundle.js',
 	)
 
+/datum/asset/simple/tgfont
+	isTrivial = TRUE
+	verify = FALSE
+	assets = list(
+		"tgfont.eot" = file("tgui/packages/tgfont/static/tgfont.eot"),
+		"tgfont.woff2" = file("tgui/packages/tgfont/static/tgfont.woff2"),
+		"tgfont.css" = file("tgui/packages/tgfont/static/tgfont.css"),
+	)
+
 /datum/asset/simple/tgui
 	isTrivial = TRUE
 	verify = FALSE
@@ -341,3 +359,18 @@ var/decl/asset_cache/asset_cache = new()
 /decl/asset_cache/New()
 	..()
 	cache = new
+
+/// Blocks until all currently sending browse and browse_rsc assets have been sent.
+/// Due to byond limitations, this proc will sleep for 1 client round trip even if the client has no pending asset sends.
+/// This proc will return an untrue value if it had to return before confirming the send, such as timeout or the client going away.
+/client/proc/browse_queue_flush(timeout = 50)
+	var/job = ++last_asset_job
+	var/t = 0
+	var/timeout_time = timeout
+	src << browse({"<script>window.location.href="?asset_cache_confirm_arrival=[job]"</script>"}, "window=asset_cache_browser&file=asset_cache_send_verify.htm")
+
+	while(!completed_asset_jobs["[job]"] && t < timeout_time) // Reception is handled in Topic()
+		stoplag(1) // Lock up the caller until this is received.
+		t++
+	if (t < timeout_time)
+		return TRUE

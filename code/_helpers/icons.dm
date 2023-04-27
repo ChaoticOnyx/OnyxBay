@@ -776,7 +776,7 @@
 
 	return cap
 
-/proc/icon2html(atom/thing, client/target, icon_state, dir = SOUTH, frame = 1, moving = FALSE, realsize = FALSE, class = null, sourceonly = FALSE)
+/proc/icon2html(atom/thing, client/target, icon_state, dir = SOUTH, frame = 1, moving = FALSE, realsize = FALSE, class = null)
 	if(!thing)
 		return
 
@@ -798,8 +798,6 @@
 		if(isfile(thing)) // special snowflake
 			var/name = "[generate_asset_name(thing)].png"
 			register_asset(name, thing)
-			if(sourceonly)
-				return name
 			for(var/thing2 in targets)
 				ASSERT(isclient(thing2) || ismob(thing2))
 				if(ismob(thing2))
