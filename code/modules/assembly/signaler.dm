@@ -35,6 +35,12 @@
 /obj/item/device/assembly/signaler/attack_self(mob/user)
 	tgui_interact(user)
 
+/obj/item/device/assembly/signaler/tgui_host(mob/user)
+	if(holder)
+		return holder
+	else
+		return ..()
+
 /obj/item/device/assembly/signaler/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
