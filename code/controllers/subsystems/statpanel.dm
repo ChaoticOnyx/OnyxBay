@@ -49,7 +49,7 @@ SUBSYSTEM_DEF(statpanels)
 			if(!("MC" in target.panel_tabs) && target.holder.rights & R_DEBUG)
 				target.stat_panel.send_message("add_debug_tabs", target.holder)
 
-			if(target.stat_tab == "MC" && ((num_fires % mc_wait == 0))) // || target?.prefs.read_preference(/datum/preference/toggle/fast_mc_refresh)))
+			if(target.stat_tab == "MC" && ((num_fires % mc_wait == 0)))
 				set_MC_tab(target)
 
 		if(MC_TICK_CHECK)
@@ -61,6 +61,7 @@ SUBSYSTEM_DEF(statpanels)
 
 	target.stat_panel.send_message("update_stat", list(
 		"global_data" = global_data,
+		"ping_str" = "",
 		"other_str" = target.mob?.get_status_tab_items(),
 	))
 
@@ -71,7 +72,7 @@ SUBSYSTEM_DEF(statpanels)
 	var/coord_entry = COORD(eye_turf)
 	if(!mc_data)
 		generate_mc_data()
-	target.stat_panel.send_message("update_mc", list(mc_data = mc_data, coord_entry = coord_entry))
+	target.stat_panel.send_message("update_mc", list("mc_data" = mc_data, "coord_entry" = coord_entry))
 
 /datum/controller/subsystem/statpanels/proc/generate_mc_data()
 	mc_data = list(

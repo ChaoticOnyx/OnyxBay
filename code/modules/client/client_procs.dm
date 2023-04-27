@@ -76,15 +76,15 @@
 
 
 	var/stl = config.general.second_topic_limit
-	if (!holder && stl && href_list["window_id"] != "statbrowser")
+	if(!holder && stl && href_list["window_id"] != "statbrowser")
 		var/second = round(world.time, 10)
-		if (!topiclimiter)
+		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
-		if (second != topiclimiter[CURRENT_SECOND])
+		if(second != topiclimiter[CURRENT_SECOND])
 			topiclimiter[CURRENT_SECOND] = second
 			topiclimiter[SECOND_COUNT] = 0
 		topiclimiter[SECOND_COUNT] += 1
-		if (topiclimiter[SECOND_COUNT] > stl)
+		if(topiclimiter[SECOND_COUNT] > stl)
 			to_chat(src, SPAN("danger", "Your previous action was ignored because you've done too many in a second."))
 			return
 
@@ -190,7 +190,7 @@
 	stat_panel.subscribe(src, .proc/on_stat_panel_message)
 
 	// Instantiate tgui panel
-	tgui_panel = new(src)
+	tgui_panel = new(src, "browseroutput")
 
 	// Admin Authorisation
 	var/datum/admins/admin_datum = admin_datums[ckey]
@@ -517,15 +517,22 @@
 
 /client/proc/toggle_fullscreen(new_value)
 	if((new_value == GLOB.PREF_BASIC) || (new_value == GLOB.PREF_FULL))
-		winset(src, "mainwindow", "is-maximized=false;can-resize=false;titlebar=false")
+		winset(usr, "mainwindow", "on-size=")
+		winset(usr, "mainwindow", "titlebar=false")
+		winset(usr, "mainwindow", "can-resize=false")
 		if(new_value == GLOB.PREF_FULL)
-			winset(src, "mainwindow", "menu=null;statusbar=false")
+			winset(usr, "mainwindow", "menu=")
+		winset(usr, "mainwindow", "is-maximized=false")
 		winset(src, "mainwindow.mainvsplit", "pos=0x0")
 	else
-		winset(src, "mainwindow", "is-maximized=false;can-resize=true;titlebar=true")
-		winset(src, "mainwindow", "menu=menu;statusbar=true")
+		winset(usr, "mainwindow", "menu=menu")
+		winset(usr, "mainwindow", "titlebar=true")
+		winset(usr, "mainwindow", "can-resize=true")
 		winset(src, "mainwindow.mainvsplit", "pos=3x0")
-	winset(src, "mainwindow", "is-maximized=true")
+		winset(usr, "mainwindow", "is-maximized=false")
+	winset(usr, "mainwindow", "is-maximized=true")
+
+
 
 /client/verb/fit_viewport()
 	set name = "Fit Viewport"

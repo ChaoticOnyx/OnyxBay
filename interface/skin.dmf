@@ -1458,6 +1458,12 @@ window "statwindow"
 		anchor1 = none
 		anchor2 = none
 		saved-params = "pos;size;is-minimized;is-maximized"
+		title = "Info"
+		titlebar = false
+		statusbar = false
+		can-close = false
+		can-minimize = false
+		can-resize = false 
 		is-pane = true
 	elem "statbrowser"
 		type = BROWSER
