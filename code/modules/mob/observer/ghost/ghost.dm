@@ -192,6 +192,7 @@ Works together with spawning an observer, noted above.
 		ghost.can_reenter_corpse = can_reenter_corpse
 		ghost.timeofdeath = src.stat == DEAD ? src.timeofdeath : world.time
 		ghost.key = key
+		ghost.client.init_verbs()
 		if(ghost.client && !ghost.client.holder && !config.ghost.allow_antag_hud)		// For new ghosts we remove the verb from even showing up if it's not allowed.
 			ghost.verbs -= /mob/observer/ghost/verb/toggle_antagHUD	// Poor guys, don't know what they are missing!
 		return ghost
@@ -254,13 +255,17 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/is_active()
 	return 0
 
-/mob/observer/ghost/Stat()
+/mob/observer/ghost/get_status_tab_items()
 	. = ..()
-	if(statpanel("Status"))
-		if(evacuation_controller)
-			var/eta_status = evacuation_controller.get_status_panel_eta()
-			if(eta_status)
-				stat(null, eta_status)
+
+	. += ""
+
+	. += "Location: ([x], [y], [z]) [loc]"
+
+	if(evacuation_controller)
+		var/eta_status = evacuation_controller.get_status_panel_eta()
+		if(eta_status)
+			. += eta_status
 
 /mob/observer/ghost/verb/reenter_corpse()
 	set category = "Ghost"
@@ -276,6 +281,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 	stop_following()
 	mind.current.key = key
+	mind.current.client.init_verbs()
 	mind.current.teleop = null
 	mind.current.reload_fullscreen()
 	if(isliving(mind.current))

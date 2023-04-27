@@ -257,23 +257,26 @@
 /obj/item/rig_module/proc/accepts_item(obj/item/input_device)
 	return 0
 
-/mob/living/carbon/human/Stat()
+/mob/living/carbon/human/get_status_tab_items()
 	. = ..()
 
-	if(. && istype(back,/obj/item/rig))
-		var/obj/item/rig/R = back
-		SetupStat(R)
+	. += ""
+
+	if(istype(back, /obj/item/rig))
+		var/obj/item/rig/rig = back
+		. += SetupStat(rig)
 
 /mob/proc/SetupStat(obj/item/rig/R)
+	. = list()
 	if(R && !R.canremove && R.installed_modules.len && statpanel("Powersuit Modules"))
-		var/cell_status = R.cell ? "[R.cell.charge]/[R.cell.maxcharge]" : "ERROR"
-		stat("Suit charge", cell_status)
+		. += "Suit charge: [R.cell ? "[R.cell.charge]/[R.cell.maxcharge]" : "ERROR"]"
 		for(var/obj/item/rig_module/module in R.installed_modules)
 		{
 			for(var/stat_rig_module/SRM in module.stat_modules)
 				if(SRM.CanUse())
-					stat(SRM.module.interface_name,SRM)
+					. += "[SRM.module.interface_name]: [SRM]"
 		}
+	return .
 
 /stat_rig_module
 	parent_type = /atom/movable

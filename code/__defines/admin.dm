@@ -46,3 +46,26 @@
 #define TICKET_CLOSED 0   // Ticket has been resolved or declined
 #define TICKET_OPEN     1 // Ticket has been created, but not responded to
 #define TICKET_ASSIGNED 2 // An admin has assigned themself to the ticket and will respond
+
+
+//TG admins things, making life easier
+#define ADMIN_JMP(src) "(<a href='?_src_=holder;adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>JMP</a>)"
+#define COORD(src) "[src ? src.Admin_Coordinates_Readable() : "nonexistent location"]"
+
+/atom/proc/Admin_Coordinates_Readable(area_name, admin_jump_ref)
+	var/turf/T = Safe_COORD_Location()
+	return T ? "[area_name ? "[get_area_name(T, TRUE)] " : " "]([T.x],[T.y],[T.z])[admin_jump_ref ? " [ADMIN_JMP(T)]" : ""]" : "nonexistent location"
+
+/atom/proc/Safe_COORD_Location()
+	var/atom/A = drop_location()
+	if(!A)
+		return //not a valid atom.
+	var/turf/T = get_step(A, 0) //resolve where the thing is.
+	if(!T) //incase it's inside a valid drop container, inside another container. ie if a mech picked up a closet and has it inside it's internal storage.
+		var/atom/last_try = A.loc?.drop_location() //one last try, otherwise fuck it.
+		if(last_try)
+			T = get_step(last_try, 0)
+	return T
+
+/turf/Safe_COORD_Location()
+	return src

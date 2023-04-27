@@ -457,7 +457,7 @@ var/list/admin_verbs_mentor = list(
 			if(!body.key)
 				body.key = "@[key]"	//Haaaaaaaack. But the people have spoken. If it breaks; blame adminbus
 		feedback_add_details("admin_verb","O") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
+	init_verbs()
 
 /client/proc/invisimin()
 	set name = "Invisimin"

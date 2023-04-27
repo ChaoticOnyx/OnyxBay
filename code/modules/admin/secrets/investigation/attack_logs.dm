@@ -40,7 +40,7 @@
 		dat += "</tr>"
 		dat += "<tr><td colspan=4>[al.message]"
 		if(al.location)
-			dat += " <a HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[al.location.x];Y=[al.location.y];Z=[al.location.z]'>JMP</a>"
+			dat += " [ADMIN_JMP(al.location)]"
 		dat += "</td></tr>"
 	dat += "</table>"
 

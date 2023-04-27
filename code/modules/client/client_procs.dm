@@ -54,7 +54,9 @@
 			completed_asset_jobs += asset_cache_job
 			return
 
-	if(config.general.minute_topic_limit)
+	// Rate limiting
+	var/mtl = config.general.minute_topic_limit
+	if(!holder && mtl)
 		var/minute = round(world.time, 600)
 		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -62,25 +64,27 @@
 			topiclimiter[CURRENT_MINUTE] = minute
 			topiclimiter[MINUTE_COUNT] = 0
 		topiclimiter[MINUTE_COUNT] += 1
-		if(topiclimiter[MINUTE_COUNT] > config.general.minute_topic_limit)
+		if(topiclimiter[MINUTE_COUNT] > mtl)
 			var/msg = "Your previous action was ignored because you've done too many in a minute."
 			if(minute != topiclimiter[ADMINSWARNED_AT]) // only one admin message per-minute. (if they spam the admins can just boot/ban them)
 				topiclimiter[ADMINSWARNED_AT] = minute
 				msg += " Administrators have been informed."
-				log_game("[key_name(src)] Has hit the per-minute topic limit of [config.general.minute_topic_limit] topic calls in a given game minute")
-				message_admins("[key_name_admin(src)] Has hit the per-minute topic limit of [config.general.minute_topic_limit] topic calls in a given game minute")
+				log_game("[key_name(src)] Has hit the per-minute topic limit of [mtl] topic calls in a given game minute")
+				message_admins("[key_name_admin(src)] Has hit the per-minute topic limit of [mtl] topic calls in a given game minute")
 			to_chat(src, SPAN("danger", "[msg]"))
 			return
 
-	if(config.general.second_topic_limit)
+
+	var/stl = config.general.second_topic_limit
+	if (!holder && stl && href_list["window_id"] != "statbrowser")
 		var/second = round(world.time, 10)
-		if(!topiclimiter)
+		if (!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
-		if(second != topiclimiter[CURRENT_SECOND])
+		if (second != topiclimiter[CURRENT_SECOND])
 			topiclimiter[CURRENT_SECOND] = second
 			topiclimiter[SECOND_COUNT] = 0
 		topiclimiter[SECOND_COUNT] += 1
-		if(topiclimiter[SECOND_COUNT] > config.general.second_topic_limit)
+		if (topiclimiter[SECOND_COUNT] > stl)
 			to_chat(src, SPAN("danger", "Your previous action was ignored because you've done too many in a second."))
 			return
 
@@ -177,6 +181,10 @@
 	GLOB.clients += src
 	GLOB.ckey_directory[ckey] = src
 
+	// Instantiate stat panel
+	stat_panel = new(src, "statbrowser")
+	stat_panel.subscribe(src, .proc/on_stat_panel_message)
+
 	// Instantiate tgui panel
 	tgui_panel = new(src)
 
@@ -204,6 +212,13 @@
 			message_admins("<span class='adminnotice'>Panic Bunker: ([key] | age [player_age]) - Redirecting is not configured.</span>")
 		qdel(src)
 		return
+
+	// Initialize stat panel
+	stat_panel.initialize(
+		inline_html = file("html/statbrowser.html"),
+		inline_js = file("html/statbrowser.js"),
+		inline_css = file("html/statbrowser.css"),
+	)
 
 	// Load EAMS data
 	SSeams.CollectDataForClient(src)
@@ -594,3 +609,40 @@
 			return TRUE
 
 	return FALSE
+
+/// compiles a full list of verbs and sends it to the browser
+/client/proc/init_verbs()
+	var/list/verblist = list()
+	var/list/verbstoprocess = verbs.Copy()
+	if(mob)
+		verbstoprocess += mob.verbs
+		for(var/atom/movable/thing as anything in mob.contents)
+			verbstoprocess += thing.verbs
+	panel_tabs.Cut() // panel_tabs get reset in init_verbs on JS side anyway
+	for(var/procpath/verb_to_init as anything in verbstoprocess)
+		if(!verb_to_init)
+			continue
+		if(verb_to_init.hidden)
+			continue
+		if(!istext(verb_to_init.category))
+			continue
+		panel_tabs |= verb_to_init.category
+		verblist[++verblist.len] = list(verb_to_init.category, verb_to_init.name)
+	src.stat_panel.send_message("init_verbs", list(panel_tabs = panel_tabs, verblist = verblist))
+
+/**
+ * Handles incoming messages from the stat-panel TGUI.
+ */
+/client/proc/on_stat_panel_message(type, payload)
+	switch(type)
+		if("Update-Verbs")
+			init_verbs()
+		if("Remove-Tabs")
+			panel_tabs -= payload["tab"]
+		if("Send-Tabs")
+			panel_tabs |= payload["tab"]
+		if("Reset-Tabs")
+			panel_tabs = list()
+		if("Set-Tab")
+			stat_tab = payload["tab"]
+			SSstatpanels.immediate_send_stat_data(src)

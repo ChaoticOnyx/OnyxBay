@@ -98,8 +98,8 @@
 /obj/structure/table/proc/unflip()
 	if(!do_after(usr, 1 SECOND, src))
 		return FALSE
-	verbs -=/obj/structure/table/proc/do_put
-	verbs +=/obj/structure/table/verb/do_flip
+	verbs -= /obj/structure/table/proc/do_put
+	verbs += /obj/structure/table/verb/do_flip
 
 	reset_plane_and_layer()
 	atom_flags |= ATOM_FLAG_CLIMBABLE

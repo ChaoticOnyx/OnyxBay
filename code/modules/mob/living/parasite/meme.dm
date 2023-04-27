@@ -564,39 +564,38 @@ be able to influence the host through various commands.
 	set name	 = "Dormant(100)"
 	set desc     = "Speed up point recharging, will force you to cease all actions until all points are recharged."
 
-	if(!host) return
-	if(!use_points(100)) return
+	if(!host)
+		return
+
+	if(!use_points(100))
+		return
 
 	to_chat(usr, "<b>You enter dormant mode.. You won't be able to take action until all your points have recharged.</b>")
-
 	dormant = 1
 
 	while(meme_points < maximum_points)
 		sleep(10)
 
 	dormant = 0
-
 	to_chat(usr, "\red You have regained all points and exited dormant mode!")
 
 /mob/living/parasite/meme/verb/Show_Points()
 	set category = "Meme"
 
-	to_chat(usr, "<b>Meme Points: [src.meme_points]/[maximum_points]</b>")
+	to_chat(usr, "<b>Meme Points: [meme_points]/[maximum_points]</b>")
 
-// Stat panel to show meme points, copypasted from alien
-/mob/living/parasite/meme/Stat()
-	..()
+/mob/living/parasite/meme/get_status_tab_items()
+	. = list()
 
-	statpanel("Status")
-	if (client && client.holder)
-		stat(null, "([x], [y], [z])")
+	if(client)
+		if(client.holder)
+			. = "([x], [y], [z])"
 
-	if (client && client.statpanel == "Status")
-		stat(null, "Meme Points: [src.meme_points]")
+		. = "Meme Points: [meme_points]"
 
 // Game mode helpers, used for theft objectives
 // --------------------------------------------
 /mob/living/parasite/check_contents_for(t)
-	if(!host) return 0
-
+	if(!host)
+		return FALSE
 	return host.check_contents_for(t)

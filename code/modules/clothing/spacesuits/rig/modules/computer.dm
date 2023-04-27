@@ -50,12 +50,15 @@
 /mob
 	var/get_rig_stats = 0
 
-/mob/living/Stat()
+/mob/living/get_status_tab_items()
 	. = ..()
-	if(. && get_rig_stats)
+
+	. += ""
+
+	if(get_rig_stats)
 		var/obj/item/rig/rig = get_rig()
 		if(rig)
-			SetupStat(rig)
+			. += SetupStat(rig)
 
 /obj/item/rig_module/ai_container/Process()
 	if(integrated_ai)

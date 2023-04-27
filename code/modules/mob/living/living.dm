@@ -810,6 +810,7 @@
 	log_admin("[key_name(possessor)] took control of \the [src].")
 	src.ckey = possessor.ckey
 	qdel(possessor)
+	client?.init_verbs()
 
 	if(round_is_spooky(6)) // Six or more active cultists.
 		to_chat(src, "<span class='notice'>You reach out with tendrils of ectoplasm and invade the mind of \the [src]...</span>")

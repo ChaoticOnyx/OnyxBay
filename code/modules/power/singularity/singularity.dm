@@ -119,7 +119,7 @@
 
 		if(QDELETED(pulse_source))
 			pulse_source = SSradiation.radiate(src, new /datum/radiation/preset/hawking)
-		
+
 		pulse_source.update_energy((energy / 50) * HAWKING_RAY_ENERGY)
 
 		if(prob(event_chance)) //Chance for it to run a special event TODO: Come up with one or two more that fit.
@@ -134,7 +134,7 @@
 
 		else if(!target)
 			pick_ghost()
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/singularity/proc/pick_ghost()
@@ -164,7 +164,7 @@
 	var/count = locate(/obj/machinery/containment_field) in orange(30, src)
 
 	if(!count)
-		message_admins("A singulo has been created without containment fields active ([x], [y], [z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>).")
+		message_admins("A singulo has been created without containment fields active ([x], [y], [z] - [ADMIN_JMP(src)]).")
 
 	investigate_log("was created. [count ? "" : "<font color='red'>No containment fields were active.</font>"]", I_SINGULO)
 
@@ -556,7 +556,7 @@
 			to_chat(M, SPAN("danger", "You hear an uneartly ringing, then what sounds like a shrilling kettle as you are washed with a wave of heat."))
 			to_chat(M, SPAN("danger", "You don't even have a moment to react as you are reduced to ashes by the intense radiation."))
 			M.dust()
-	
+
 	var/datum/radiation_source/temp_source = SSradiation.radiate(src, new /datum/radiation/preset/singularity_beta)
 	temp_source.schedule_decay(10 SECONDS)
 

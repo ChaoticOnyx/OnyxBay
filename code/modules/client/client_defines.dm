@@ -73,3 +73,8 @@
 
 	/// Whether typing indicators are enabled
 	var/typing_indicators
+
+	/// our current tab
+	var/stat_tab
+	/// list of all tabs
+	var/list/panel_tabs = list()

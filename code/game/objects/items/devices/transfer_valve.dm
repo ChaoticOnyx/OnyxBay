@@ -42,7 +42,7 @@
 			tank_one = item
 		else
 			tank_two = item
-			message_admins("[key_name_admin(user)] attached both tanks to a transfer valve. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[location.x];Y=[location.y];Z=[location.z]'>JMP</a>)")
+			message_admins("[key_name_admin(user)] attached both tanks to a transfer valve. ([ADMIN_JMP(location)])")
 			log_game("[key_name_admin(user)] attached both tanks to a transfer valve.")
 		to_chat(user, "<span class='notice'>You attach the tank to the transfer valve.</span>")
 
@@ -73,7 +73,7 @@
 		A.toggle_secure()	//this calls update_icon(), which calls update_icon() on the holder (i.e. the bomb).
 
 		GLOB.bombers += "[key_name(user)] attached a [item] to a transfer valve."
-		message_admins("[key_name_admin(user)] attached a [item] to a transfer valve. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[location.x];Y=[location.y];Z=[location.z]'>JMP</a>)")
+		message_admins("[key_name_admin(user)] attached a [item] to a transfer valve. ([ADMIN_JMP(location)])")
 		log_game("[key_name_admin(user)] attached a [item] to a transfer valve.")
 		attacher = user
 		SSnano.update_uis(src) // update all UIs attached to src
@@ -205,7 +205,6 @@
 /obj/item/device/transfer_valve/proc/toggle_valve()
 	if(!valve_open && (tank_one && tank_two))
 		var/turf/bombturf = get_turf(src)
-		var/area/A = get_area(bombturf)
 
 		var/attacher_name = ""
 		if(!attacher)
@@ -213,7 +212,7 @@
 		else
 			attacher_name = "[attacher.name]([attacher.ckey])"
 
-		var/log_str = "Bomb valve opened in <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[bombturf.x];Y=[bombturf.y];Z=[bombturf.z]'>[A.name]</a> "
+		var/log_str = "Bomb valve opened in [COORD(bombturf)]</a> "
 		log_str += "with [attached_device ? attached_device : "no device"] attacher: [attacher_name]"
 
 		if(attacher)

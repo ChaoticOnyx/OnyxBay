@@ -468,43 +468,46 @@
 	if(!client && prob(10))
 		to_chat(src, SPAN_NOTICE("...[pick(secbot_dreams)]..."))
 
-/mob/living/bot/secbot/Stat()
-	..()
-	if(statpanel("Status"))
-		stat(null,"-------------")
-		switch(emagged)
-			if(0)
-				stat(null,"Threat identifier status: Normal")
-			if(1)
-				stat(null,"Threat identifier status: Scrambled (DANGER)")
-			if(2)
-				stat(null,"Threat identifier status: ERROROROROROR-----")
-		if(idcheck)
-			stat(null,"Check for weapon authorization: Yes")
-		else
-			stat(null,"Check for weapon authorization: No")
+/mob/living/bot/secbot/get_status_tab_items()
+	. = ..()
 
-		if(check_records)
-			stat(null,"Check security records:: Yes")
-		else
-			stat(null,"Check security records:: No")
+	. += ""
 
-		if(check_arrest)
-			stat(null,"Check arrest status: Yes")
-		else
-			stat(null,"Check arrest status: No")
+	. += "-------------"
 
-		if(declare_arrests)
-			stat(null,"Report arrests: Yes")
-		else
-			stat(null,"Report arrests: No")
+	switch(emagged)
+		if(0)
+			. += "Threat identifier status: Normal"
+		if(1)
+			. += "Threat identifier status: Scrambled (DANGER)"
+		if(2)
+			. += "Threat identifier status: ERROROROROROR-----"
+	if(idcheck)
+		. += "Check for weapon authorization: Yes"
+	else
+		. += "Check for weapon authorization: No"
 
-		if(will_patrol)
-			stat(null,"Auto patrol: On")
-		else
-			stat(null,"Auto patrol: Off")
+	if(check_records)
+		. += "Check security records:: Yes"
+	else
+		. += "Check security records:: No"
 
-		stat(null,"-------------")
+	if(check_arrest)
+		. += "Check arrest status: Yes"
+	else
+		. += "Check arrest status: No"
+
+	if(declare_arrests)
+		. += "Report arrests: Yes"
+	else
+		. += "Report arrests: No"
+
+	if(will_patrol)
+		. += "Auto patrol: On"
+	else
+		. += "Auto patrol: Off"
+
+	. += "-------------"
 
 //**///////////////////////////////////////////////////////////**//
 //**///////////////////////////BOOPSKY/////////////////////////**//

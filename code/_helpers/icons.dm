@@ -776,29 +776,31 @@
 
 	return cap
 
-/proc/icon2html(thing, target, icon_state, dir, frame = 1, moving = FALSE, realsize = FALSE, class = null)
-	if (!thing)
+/proc/icon2html(atom/thing, client/target, icon_state, dir = SOUTH, frame = 1, moving = FALSE, realsize = FALSE, class = null, sourceonly = FALSE)
+	if(!thing)
 		return
 
 	var/key
 	var/icon/I = thing
-	if (!target)
+	if(!target)
 		return
-	if (target == world)
+	if(target == world)
 		target = GLOB.clients
 
 	var/list/targets
-	if (!islist(target))
+	if(!islist(target))
 		targets = list(target)
 	else
 		targets = target
-		if (!targets.len)
+		if(!targets.len)
 			return
-	if (!isicon(I))
-		if (isfile(thing)) // special snowflake
+	if(!isicon(I))
+		if(isfile(thing)) // special snowflake
 			var/name = "[generate_asset_name(thing)].png"
 			register_asset(name, thing)
-			for (var/thing2 in targets)
+			if(sourceonly)
+				return name
+			for(var/thing2 in targets)
 				ASSERT(isclient(thing2) || ismob(thing2))
 				if(ismob(thing2))
 					var/mob/M = thing2
@@ -808,27 +810,27 @@
 				send_asset(thing2, key, FALSE)
 			return "<img class='icon icon-misc [class]' src=\"[url_encode(name)]\">"
 		var/atom/A = thing
-		if (isnull(dir))
+		if(isnull(dir))
 			dir = A.dir
-		if (isnull(icon_state))
+		if(isnull(icon_state))
 			icon_state = A.icon_state
 		I = A.icon
-		if (ishuman(thing)) // Shitty workaround for a BYOND issue.
+		if(ishuman(thing)) // Shitty workaround for a BYOND issue.
 			var/icon/temp = I
 			I = icon()
 			I.Insert(temp, dir = SOUTH)
 			dir = SOUTH
 	else
-		if (isnull(dir))
+		if(isnull(dir))
 			dir = SOUTH
-		if (isnull(icon_state))
+		if(isnull(icon_state))
 			icon_state = ""
 
 	I = icon(I, icon_state, dir, frame, moving)
 
 	key = "[generate_asset_name(I)].png"
 	register_asset(key, I)
-	for (var/thing2 in targets)
+	for(var/thing2 in targets)
 		ASSERT(isclient(thing2) || ismob(thing2))
 		if(ismob(thing2))
 			var/mob/M = thing2

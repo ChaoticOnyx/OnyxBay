@@ -61,29 +61,33 @@
 	panel.open()
 	return
 
-/mob/new_player/Stat()
+/mob/new_player/get_status_tab_items()
 	. = ..()
 
-	if(statpanel("Lobby"))
-		if(check_rights(R_INVESTIGATE, 0, src))
-			stat("Game Mode:", "[SSticker.mode ? SSticker.mode.name : SSticker.master_mode] ([SSticker.master_mode])")
-		else
-			stat("Game Mode:", PUBLIC_GAME_MODE)
-		var/extra_antags = list2params(additional_antag_types)
-		stat("Added Antagonists:", extra_antags ? extra_antags : "None")
+	. += ""
 
-		if(GAME_STATE <= RUNLEVEL_LOBBY)
-			stat("Time To Start:", "[round(SSticker.pregame_timeleft/10)][SSticker.round_progressing ? "" : " (DELAYED)"]")
-			stat("Players: [totalPlayers]", "Players Ready: [totalPlayersReady]")
-			totalPlayers = 0
-			totalPlayersReady = 0
-			for(var/mob/new_player/player in GLOB.player_list)
-				var/highjob
-				if(player.client?.prefs?.job_high)
-					highjob = " as [player.client.prefs.job_high]"
-				stat("[player.key]", (player.ready)?("(Playing[highjob])"):(null))
-				totalPlayers++
-				if(player.ready)totalPlayersReady++
+	if(check_rights(R_INVESTIGATE, 0, src))
+		. += "Game Mode: [SSticker.mode ? SSticker.mode.name : SSticker.master_mode] ([SSticker.master_mode])"
+	else
+		. += "Game Mode: [PUBLIC_GAME_MODE]"
+	var/extra_antags = list2params(additional_antag_types)
+	. += "Added Antagonists: [extra_antags ? extra_antags : "None"]"
+
+	if(GAME_STATE <= RUNLEVEL_LOBBY)
+		. += "Time To Start: [round(SSticker.pregame_timeleft/10)][SSticker.round_progressing ? "" : " (DELAYED)"]"
+		totalPlayers = 0
+		totalPlayersReady = 0
+		for(var/mob/new_player/player in GLOB.player_list)
+			var/highjob
+			if(player.client?.prefs?.job_high)
+				highjob = " as [player.client.prefs.job_high]"
+			. += "[player.key] [(player.ready)?("(Playing[highjob])"):(null)]"
+			totalPlayers++
+			if(player.ready)
+				totalPlayersReady++
+
+		. += "Players: [totalPlayers]"
+		. += "Players Ready: [totalPlayersReady]"
 
 /mob/new_player/Topic(href, href_list[])
 	if(!client)	return 0
@@ -167,6 +171,7 @@
 			if(!client.holder && !config.ghost.allow_antag_hud)           // For new ghosts we remove the verb from even showing up if it's not allowed.
 				observer.verbs -= /mob/observer/ghost/verb/toggle_antagHUD        // Poor guys, don't know what they are missing!
 			observer.key = key
+			observer.client.init_verbs()
 			var/obj/screen/splash/S = new(observer.client, TRUE)
 			S.Fade(TRUE, TRUE)
 			QDEL_NULL(mind)
@@ -393,6 +398,7 @@
 	character = job_master.EquipRank(character, job.title, 1)					//equips the human
 	equip_custom_items(character)
 	character.apply_traits()
+	character.client.init_verbs()
 	// AIs don't need a spawnpoint, they must spawn at an empty core
 	if(character.mind.assigned_role == "AI")
 
@@ -562,6 +568,7 @@
 	new_character.update_eyes()
 	new_character.regenerate_icons()
 
+	new_character.client.init_verbs()
 	new_character.key = key		//Manually transfer the key to log them in
 	var/obj/screen/splash/S = new(new_character.client, TRUE)
 	S.Fade(TRUE, TRUE)

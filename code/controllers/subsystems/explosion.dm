@@ -125,7 +125,7 @@ SUBSYSTEM_DEF(explosions)
 	var/max_range = max(devastation_range, heavy_impact_range, light_impact_range)
 	var/started_at = REALTIMEOFDAY
 	if(adminlog)
-		message_admins("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range]) in <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[epicenter.x];Y=[epicenter.y];Z=[epicenter.z]'>(x:[epicenter.x], y:[epicenter.y], z:[epicenter.z])</a>")
+		message_admins("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range]) in [COORD(epicenter)])</a>")
 		log_game("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range]) in (x:[epicenter.x], y:[epicenter.y], z:[epicenter.z])")
 
 	var/x0 = epicenter.x

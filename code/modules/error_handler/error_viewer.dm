@@ -205,7 +205,7 @@ GLOBAL_DATUM(error_cache, /datum/error_viewer/error_cache)
 		html += " <a href='?_src_=holder;adminplayerobservefollow=[usr_ref]'>Follow</a>"
 		if (istype(usr_loc))
 			html += "<br><b>usr.loc</b>: <a href='?_src_=vars;Vars=\ref[usr_loc]'>VV</a>"
-			html += " <a href='?_src_=holder;adminplayerobservecoodjump=1;X=[usr_loc.x];Y=[usr_loc.y];Z=[usr_loc.z]'>JMP</a>"
+			html += " [ADMIN_JMP(usr_loc)]"
 
 	browse_to(user, html)
 

@@ -144,7 +144,7 @@
 		)
 		modded = !modded
 		if(modded)
-			message_admins("[key_name_admin(user)] opened fueltank at [loc.loc.name] ([loc.x],[loc.y],[loc.z]), leaking fuel. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[loc.x];Y=[loc.y];Z=[loc.z]'>JMP</a>)")
+			message_admins("[key_name_admin(user)] opened fueltank at [loc.loc.name] ([loc.x],[loc.y],[loc.z]), leaking fuel. ([ADMIN_JMP(loc)])")
 			log_game("[key_name(user)] opened fueltank at [loc.loc.name] ([loc.x],[loc.y],[loc.z]), leaking fuel.")
 			leak_fuel(amount_per_transfer_from_this)
 	else if(istype(W, /obj/item/device/assembly_holder))
@@ -161,7 +161,7 @@
 
 			var/obj/item/device/assembly_holder/H = W
 			if(istype(H.a_left, /obj/item/device/assembly/igniter) || istype(H.a_right, /obj/item/device/assembly/igniter))
-				message_admins("[key_name_admin(user)] rigged fueltank at [loc.loc.name] ([loc.x],[loc.y],[loc.z]) for explosion. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[loc.x];Y=[loc.y];Z=[loc.z]'>JMP</a>)")
+				message_admins("[key_name_admin(user)] rigged fueltank at [loc.loc.name] ([loc.x],[loc.y],[loc.z]) for explosion. ([ADMIN_JMP(loc)])")
 				log_game("[key_name(user)] rigged fueltank at [loc.loc.name] ([loc.x],[loc.y],[loc.z]) for explosion.")
 
 			rig = W
@@ -196,7 +196,7 @@
 			var/turf/turf = get_turf(src)
 			if(turf)
 				var/area/area = turf.loc || "*unknown area*"
-				message_admins("[key_name_admin(Proj.firer)] shot a fueltank in \the [area] ([turf.x],[turf.y],[turf.z]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[turf.x];Y=[turf.y];Z=[turf.z]'>JMP</a>).")
+				message_admins("[key_name_admin(Proj.firer)] shot a fueltank in \the [area] ([turf.x],[turf.y],[turf.z]) ([ADMIN_JMP(turf)]).")
 				log_game("[key_name(Proj.firer)] shot a fueltank in \the [area] ([turf.x],[turf.y],[turf.z]).")
 			else
 				message_admins("[key_name_admin(Proj.firer)] shot a fueltank outside the world.")

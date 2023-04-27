@@ -82,7 +82,7 @@
 
 	broken = TRUE
 	if(user)
-		msg_admin_attack("[user.name] ([user.ckey]) primed \a [src] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
+		msg_admin_attack("[user.name] ([user.ckey]) primed \a [src] ([ADMIN_JMP(user)])")
 
 	update_icon()
 	playsound(loc, arm_sound, 75, 0, -3)

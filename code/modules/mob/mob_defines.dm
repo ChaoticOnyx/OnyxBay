@@ -114,6 +114,8 @@
 	var/default_pixel_x = 0
 	var/default_pixel_y = 0
 
+	var/list/datum/action/actions = list()
+
 	var/shakecamera = 0
 	var/a_intent = I_HELP//Living
 	var/m_intent = M_RUN//Living

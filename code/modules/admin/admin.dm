@@ -1354,6 +1354,7 @@ var/global/floorIsLava = 0
 	log_admin("[key_name(usr)] stuffed [frommob.ckey] into [tomob.name].")
 	feedback_add_details("admin_verb","CGD")
 	tomob.ckey = frommob.ckey
+	tomob.client?.init_verbs()
 	qdel(frommob)
 	return 1
 

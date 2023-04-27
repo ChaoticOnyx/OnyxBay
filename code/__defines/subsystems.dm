@@ -55,6 +55,7 @@
 #define SS_INIT_STORYTELLER     -15
 #define SS_INIT_TICKER          -20
 #define SS_INIT_EXPLOSIONS      -69
+#define SS_INIT_STATPANELS		-70
 #define SS_INIT_ORDER_CHAT 		-100 // Should be last to ensure chat remains smooth during init.
 
 // SS runlevels

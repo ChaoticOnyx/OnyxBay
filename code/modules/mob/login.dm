@@ -89,5 +89,7 @@
 	else
 		winset(src, null, "mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true")
 
+	client.init_verbs()
+
 	SEND_GLOBAL_SIGNAL(SIGNAL_LOGGED_IN, src)
 	SEND_SIGNAL(src, SIGNAL_LOGGED_IN, src)
