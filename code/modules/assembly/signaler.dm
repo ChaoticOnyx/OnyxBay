@@ -134,7 +134,7 @@
 	radio_connection = radio_controller.add_object(src, frequency, RADIO_CHAT)
 	return
 
-/obj/item/device/assembly/signaler/Process()
+/obj/item/device/assembly/signaler/think()
 	if(!deadman)
 		return
 	var/mob/M = src.loc
