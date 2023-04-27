@@ -9,7 +9,7 @@
  * tgui panel / chat troubleshooting verb
  */
 /client/verb/fix_tgui_panel()
-	set name = "Fix Chat"
+	set name = "Fix chat"
 	set category = "OOC"
 
 	if(!tgui_panel.initialized_at)
@@ -28,9 +28,7 @@
 		winset(src, "browseroutput", "is-disabled=1;is-visible=0")
 		log_tgui(src, "Failed to fix.", context = "verb/fix_tgui_panel")
 
-/client/verb/nuke_chat()
-	set name = "Nuke Chat"
-	set hidden = TRUE
+/client/proc/nuke_chat()
 	// Catch all solution (kick the whole thing in the pants)
 	winset(src, "output", "on-show=&is-disabled=0&is-visible=1")
 	winset(src, "browseroutput", "is-disabled=1;is-visible=0")
@@ -42,3 +40,11 @@
 	// Force show the panel to see if there are any errors
 	winset(src, "output", "is-disabled=1&is-visible=0")
 	winset(src, "browseroutput", "is-disabled=0;is-visible=1")
+
+/client/verb/refresh_tgui()
+	set name = "Refresh TGUI"
+	set category = "OOC"
+
+	for(var/window_id in tgui_windows)
+		var/datum/tgui_window/window = tgui_windows[window_id]
+		window.reinitialize()

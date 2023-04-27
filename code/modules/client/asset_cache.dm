@@ -177,6 +177,8 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		return TRUE
 	return FALSE
 
+/datum/asset/proc/get_url_mappings()
+	return list()
 
 //For sending entire directories of assets
 /datum/asset/directories
@@ -206,6 +208,11 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	ASSERT(client)
 	ASSERT(istype(client))
 	send_asset_list(client,assets,verify)
+/* I SAID NO!
+/datum/asset/simple/get_url_mappings()
+	. = list()
+	for(var/asset_name in assets)
+		.[asset_name] = get_asset_url(asset_name, assets[asset_name])*/
 
 // For registering or sending multiple others at once
 /datum/asset/group
@@ -219,6 +226,12 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	for(var/type in children)
 		var/datum/asset/A = get_asset_datum(type)
 		A.send(C)
+
+/datum/asset/group/get_url_mappings()
+	. = list()
+	for(var/type in children)
+		var/datum/asset/A = get_asset_datum(type)
+		. += A.get_url_mappings()
 
 //DEFINITIONS FOR ASSET DATUMS START HERE.
 /datum/asset/directories/pda
