@@ -1,70 +1,59 @@
 //Luminescents are able to consume and use metroid extracts, without them decaying.
+/datum/component/extract_eater
+	/// The metroid extract we currently have integrated
+	var/obj/item/metroid_extract/current_extract
+	/// The cooldown of us using exteracts
+	var/extract_cooldown = 0
+	/// How strong is our glow
+	var/glow_intensity = LUMINESCENT_DEFAULT_GLOW
+	/// A list of all luminescent related actions we have
+	var/list/luminescent_actions
+
+/datum/component/extract_eater/Destroy(force, silent)
+	. = ..()
+	for(var/datum/action/A in luminescent_actions)
+		A.Remove(parent)
 
 /datum/species/promethean/luminescent
 	name = SPECIES_LUMINESCENT
-	/// How strong is our glow
-	var/glow_intensity = LUMINESCENT_DEFAULT_GLOW
-	/// Internal dummy used to glow (very cool)
-	var/obj/effect/dummy/luminescent_glow/glow
-	/// The metroid extract we currently have integrated
-	var/obj/item/metroid_extract/current_extract
-	/// A list of all luminescent related actions we have
-	var/list/luminescent_actions
-	/// The cooldown of us using exteracts
-	var/extract_cooldown = 0
-
-//Species datums don't normally implement destroy, but JELLIES SUCK ASS OUT OF A STEEL STRAW
-/datum/species/promethean/luminescent/Destroy(force, ...)
-	current_extract = null
-	QDEL_NULL(glow)
-	QDEL_LIST(luminescent_actions)
-	return ..()
+	icobase = 'icons/mob/human_races/prometheans/r_luminescent.dmi'
 
 /datum/species/promethean/luminescent/handle_post_spawn(mob/living/carbon/human/new_jellyperson)
 	. = ..()
-	glow = new(new_jellyperson)
-	update_glow(new_jellyperson)
 
-	luminescent_actions = list()
+	var/datum/component/extract_eater/extract_eater_comp = new_jellyperson.AddComponent(/datum/component/extract_eater)
+	new_jellyperson.set_light(1, 0.5, extract_eater_comp.glow_intensity, 2, new_jellyperson.dna.mcolor)
+	extract_eater_comp.luminescent_actions = list()
 
 	var/datum/action/innate/integrate_extract/integrate_extract = new(src)
 	integrate_extract.Grant(new_jellyperson)
-	luminescent_actions += integrate_extract
+	extract_eater_comp.luminescent_actions += integrate_extract
 
 	var/datum/action/innate/use_extract/extract_minor = new(src)
 	extract_minor.Grant(new_jellyperson)
-	luminescent_actions += extract_minor
+	extract_eater_comp.luminescent_actions += extract_minor
 
 	var/datum/action/innate/use_extract/major/extract_major = new(src)
 	extract_major.Grant(new_jellyperson)
-	luminescent_actions += integrate_extract
+	extract_eater_comp.luminescent_actions += integrate_extract
 
 /// Updates the glow of our internal glow thing.
 /datum/species/promethean/luminescent/proc/update_glow(mob/living/carbon/C, intensity)
+	var/datum/component/extract_eater/extract_eater_comp = C.get_component(/datum/component/extract_eater)
+	if(!extract_eater_comp)
+		return
 	if(intensity)
-		glow_intensity = intensity
-	glow.set_light(glow_intensity, glow_intensity, l_color = C.dna.mcolor)
-
-/obj/effect/dummy/luminescent_glow
-	name = "luminescent glow"
-	desc = "Tell a coder if you're seeing this."
-	var/light_range = LUMINESCENT_DEFAULT_GLOW
-	var/light_power = 2.5
-	light_color = COLOR_WHITE
-
-/obj/effect/dummy/luminescent_glow/Initialize(mapload)
-	. = ..()
-	if(!isliving(loc))
-		return INITIALIZE_HINT_QDEL
-	set_light(light_power, LUMINESCENT_DEFAULT_GLOW, l_color = light_color)
-
+		extract_eater_comp.glow_intensity = intensity
+	else
+		extract_eater_comp.glow_intensity = LUMINESCENT_DEFAULT_GLOW
+	C.set_light(1, 0.5, extract_eater_comp.glow_intensity, 2, C.dna.mcolor)
 
 /datum/action/innate/integrate_extract
 	name = "Integrate Extract"
 	//desc = "Eat a metroid extract to use its properties."
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "metroidconsume"
-	button_icon = 'icons/mob/actions/actions_metroid.dmi'
+	button_icon = 'icons/mob/actions.dmi'
 	background_icon_state = "bg_alien"
 
 /datum/action/innate/integrate_extract/New(Target)
@@ -72,15 +61,15 @@
 
 /// Callback for /datum/component/action_item_overlay to find the metroid extract from within the species
 /datum/action/innate/integrate_extract/proc/locate_extract()
-	var/datum/species/promethean/luminescent/species = target
-	if(!istype(species))
+	var/datum/component/extract_eater/extract_eater_comp = owner.get_component(/datum/component/extract_eater)
+	if(!istype(extract_eater_comp))
 		return null
 
-	return species.current_extract
+	return extract_eater_comp.current_extract
 
 /datum/action/innate/integrate_extract/proc/update_button()
-	var/datum/species/promethean/luminescent/species = target
-	if(!istype(species) || !species.current_extract)
+	var/datum/component/extract_eater/extract_eater_comp = owner.get_component(/datum/component/extract_eater)
+	if(!istype(extract_eater_comp) || !extract_eater_comp.current_extract)
 		name = "Integrate Extract"
 		button_icon_state = "metroidconsume"
 		button.UpdateIcon()
@@ -88,22 +77,22 @@
 	else
 		name = "Eject Extract"
 		button_icon_state = "metroideject"
-		button.overlays += image(species.current_extract.icon, icon_state = species.current_extract.icon_state)
+		button.overlays += image(extract_eater_comp.current_extract.icon, icon_state = extract_eater_comp.current_extract.icon_state)
 		//desc = "Eject your current metroid extract."
 
 
 /datum/action/innate/integrate_extract/Activate()
 	var/mob/living/carbon/human/human_owner = owner
-	var/datum/species/promethean/luminescent/species = target
-	if(!istype(species))
+	var/datum/component/extract_eater/extract_eater_comp = owner.get_component(/datum/component/extract_eater)
+	if(!istype(extract_eater_comp))
 		return
 
-	if(species.current_extract)
-		var/obj/item/metroid_extract/to_remove = species.current_extract
+	if(extract_eater_comp.current_extract)
+		var/obj/item/metroid_extract/to_remove = extract_eater_comp.current_extract
 		if(!human_owner.put_in_active_hand(to_remove))
 			to_remove.forceMove(human_owner.drop_location())
 
-		species.current_extract = null
+		extract_eater_comp.current_extract = null
 		to_chat(human_owner, SPAN_NOTICE("[to_remove.name] ejected"))
 
 	else
@@ -114,10 +103,10 @@
 		if(!human_owner.can_unequip(to_integrate))
 			return
 		to_integrate.forceMove(human_owner)
-		species.current_extract = to_integrate
+		extract_eater_comp.current_extract = to_integrate
 		to_chat(human_owner, SPAN_NOTICE("[to_integrate.name] consumed"))
 
-	for(var/datum/action/to_update as anything in species.luminescent_actions)
+	for(var/datum/action/to_update as anything in extract_eater_comp.luminescent_actions)
 		to_update.button.UpdateIcon()
 
 /datum/action/innate/use_extract
@@ -125,7 +114,7 @@
 	//desc = "Pulse the metroid extract with energized jelly to activate it."
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "metroiduse1"
-	button_icon = 'icons/mob/actions/actions_metroid.dmi'
+	button_icon = 'icons/mob/actions.dmi'
 	background_icon_state = "bg_alien"
 	var/activation_type = METROID_ACTIVATE_MINOR
 
@@ -135,20 +124,19 @@
 
 /// Callback for /datum/component/action_item_overlay to find the metroid extract from within the species
 /datum/action/innate/use_extract/proc/locate_extract()
-	var/datum/species/promethean/luminescent/species = target
-	if(!istype(species))
+	var/datum/component/extract_eater/extract_eater_comp = owner.get_component(/datum/component/extract_eater)
+	if(!istype(extract_eater_comp))
 		return null
 
-	return species.current_extract
+	return extract_eater_comp.current_extract
 
 /datum/action/innate/use_extract/IsAvailable(feedback = FALSE)
 	. = ..()
 	if(!.)
 		return
 
-	var/datum/species/promethean/luminescent/species = target
-	species.extract_cooldown < world.time
-	if(istype(species) && species.current_extract && (species.extract_cooldown < world.time))
+	var/datum/component/extract_eater/extract_eater_comp = owner.get_component(/datum/component/extract_eater)
+	if(istype(extract_eater_comp) && extract_eater_comp.current_extract && (extract_eater_comp.extract_cooldown < world.time))
 		return TRUE
 	return FALSE
 
@@ -157,13 +145,15 @@
 		return FALSE
 
 	var/mob/living/carbon/human/human_owner = owner
-	var/datum/species/promethean/luminescent/species = human_owner.dna?.species
-	if(!istype(species) || !species.current_extract)
+	var/datum/component/extract_eater/extract_eater_comp = owner.get_component(/datum/component/extract_eater)
+	if(!istype(extract_eater_comp) || !extract_eater_comp.current_extract)
 		return
 
-	species.extract_cooldown = world.time + 10 SECONDS
-	var/after_use_cooldown = species.current_extract.activate(human_owner, species, activation_type)
-	species.extract_cooldown = world.time + after_use_cooldown
+	extract_eater_comp.extract_cooldown = world.time + 10 SECONDS
+	var/after_use_cooldown = extract_eater_comp.current_extract.activate(human_owner, extract_eater_comp, activation_type)
+	extract_eater_comp.extract_cooldown = world.time + after_use_cooldown
+	owner.update_action_buttons()
+	addtimer(CALLBACK(owner, /mob/proc/update_action_buttons), after_use_cooldown)
 
 /datum/action/innate/use_extract/major
 	name = "Extract Major Activation"

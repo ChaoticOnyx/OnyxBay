@@ -88,3 +88,15 @@
 
 /mob/living/carbon/human/abductor/New(new_loc)
 	..(new_loc, SPECIES_ABDUCTOR)
+
+/mob/living/carbon/human/promethean/New(new_loc)
+	..(new_loc, SPECIES_PROMETHEAN)
+
+/mob/living/carbon/human/slimeperson/New(new_loc)
+	..(new_loc, SPECIES_SLIMEPERSON)
+
+/mob/living/carbon/human/stargazer/New(new_loc)
+	..(new_loc, SPECIES_STARGAZER)
+
+/mob/living/carbon/human/luminescent/New(new_loc)
+	..(new_loc, SPECIES_LUMINESCENT)

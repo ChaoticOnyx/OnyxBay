@@ -147,9 +147,10 @@
 		H.g_facial = dna.GetUIValueRange(DNA_UI_BEARD_G,   255)
 		H.b_facial = dna.GetUIValueRange(DNA_UI_BEARD_B,   255)
 		if(mutcolor_update)
-			H.r_skin   = hex2rgb_r(dna.mcolor)
-			H.g_skin   = hex2rgb_g(dna.mcolor)
-			H.b_skin   = hex2rgb_b(dna.mcolor)
+			var/RGB = hex2rgb(dna.mcolor)
+			H.r_skin   = RGB[1]
+			H.g_skin   = RGB[2]
+			H.b_skin   = RGB[3]
 		else
 			H.r_skin   = dna.GetUIValueRange(DNA_UI_SKIN_R,    255)
 			H.g_skin   = dna.GetUIValueRange(DNA_UI_SKIN_G,    255)

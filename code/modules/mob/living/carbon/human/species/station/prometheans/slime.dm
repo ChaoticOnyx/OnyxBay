@@ -1,11 +1,14 @@
 #define BLOOD_VOLUME_SLIME_SPLIT 45
 //Slime people are able to split like slimes, retaining a single mind that can swap between bodies at will, even after death.
 
+/datum/component/body_swapper
+	var/list/mob/living/carbon/bodies
+
 /datum/species/promethean/slime
 	name = SPECIES_SLIMEPERSON
 	name_plural = "Slimepeople"
+	icobase = 'icons/mob/human_races/prometheans/r_slime.dmi'
 	var/datum/action/innate/split_body/slime_split
-	var/list/mob/living/carbon/bodies
 	var/datum/action/innate/swap_body/swap_body
 
 /datum/species/promethean/slime/handle_post_spawn(mob/living/carbon/human/H)
@@ -15,18 +18,19 @@
 		slime_split.Grant(H)
 		swap_body = new
 		swap_body.Grant(H)
-
-		if(!bodies || !length(bodies))
-			bodies = list(H)
+		H.update_action_buttons()
+		var/datum/component/body_swapper/BS = H.AddComponent(/datum/component/body_swapper)
+		if(!BS.bodies || !length(BS.bodies))
+			BS.bodies = list(H)
 		else
-			bodies |= H
+			BS.bodies |= H
 
-/datum/species/promethean/slime/spec_death(gibbed, mob/living/carbon/human/H)
+/datum/species/promethean/slime/handle_death(mob/living/carbon/human/H)
 	if(slime_split)
 		if(!H.mind || !H.mind.active)
 			return
-
-		var/list/available_bodies = (bodies - H)
+		var/datum/component/body_swapper/BS = H.get_component(/datum/component/body_swapper)
+		var/list/available_bodies = (BS.bodies - H)
 		for(var/mob/living/L in available_bodies)
 			if(!swap_body.can_swap(L))
 				available_bodies -= L
@@ -53,7 +57,7 @@
 	name = "Split Body"
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "slimesplit"
-	button_icon = 'icons/mob/actions/actions_slime.dmi'
+	button_icon = 'icons/mob/actions.dmi'
 	background_icon_state = "bg_alien"
 
 /datum/action/innate/split_body/IsAvailable(feedback = FALSE)
@@ -61,9 +65,9 @@
 	if(!.)
 		return
 	var/mob/living/carbon/human/H = owner
-	if(H.get_blood_volume() >= BLOOD_VOLUME_SLIME_SPLIT)
-		return TRUE
-	return FALSE
+	//FIXME if(H.get_blood_volume() >= BLOOD_VOLUME_SLIME_SPLIT)
+	return TRUE
+	//return FALSE
 
 /datum/action/innate/split_body/Activate()
 	var/mob/living/carbon/human/H = owner
@@ -92,36 +96,39 @@
 	if(!(H.dna?.species))
 		return
 
-	var/mob/living/carbon/human/spare = new /mob/living/carbon/human(H.loc)
+	var/mob/living/carbon/human/spare = new /mob/living/carbon/human/slimeperson(H.loc)
 
 	spare.dna = H.dna.Clone()
 	spare.dna.mcolor = "#[pick("7F", "FF")][pick("7F", "FF")][pick("7F", "FF")]"
 	spare.real_name = spare.dna.real_name
 	spare.name = spare.dna.real_name
 	spare.UpdateAppearance(mutcolor_update=1)
-	spare.domutcheck()
+	domutcheck(spare, null)
 	spare.Move(get_step(H.loc, pick(NORTH,SOUTH,EAST,WEST)))
+	spare.AddComponent(/datum/component/body_swapper)
 
 	//H.blood_volume *= 0.45 //FIXME CHANGE TO BRAIN
 
-	var/datum/species/promethean/slime/origin_datum = H.dna.species
-	origin_datum.bodies |= spare
+	var/datum/component/body_swapper/BS_original = H.get_component(/datum/component/body_swapper)
+	BS_original.bodies |= spare
 
-	var/datum/species/promethean/slime/spare_datum = spare.dna.species
-	spare_datum.bodies = origin_datum.bodies
+	var/datum/component/body_swapper/BS_spare = spare.get_component(/datum/component/body_swapper)
+	BS_spare.bodies = BS_original.bodies
 
 	spare.modifiers = H.modifiers.Copy()
-	H.mind.transfer_to(spare)
-	spare.visible_message("<span class='warning'>[H] distorts as a new body \
-		\"steps out\" of [H].</span>",
-		"<span class='notice'>...and after a moment of disorentation, \
-		you're besides yourself!</span>")
+
+	if(H.mind.transfer_to(spare))
+		spare.visible_message("<span class='warning'>[H] distorts as a new body \
+			\"steps out\" of [H].</span>",
+			"<span class='notice'>...and after a moment of disorentation, \
+			you're besides yourself!</span>")
+		spare.update_action_buttons()
 
 
 /datum/action/innate/swap_body
 	name = "Swap Body"
 	button_icon_state = "slimeswap"
-	button_icon = 'icons/mob/actions/actions_slime.dmi'
+	button_icon = 'icons/mob/actions.dmi'
 	background_icon_state = "bg_alien"
 
 /datum/action/innate/swap_body/Activate()
@@ -129,7 +136,7 @@
 		to_chat(owner, SPAN_WARNING("You are not a slimeperson."))
 		Remove(owner)
 	else
-		ui_interact(owner)
+		tgui_interact(owner)
 
 /datum/action/innate/swap_body/tgui_host(mob/user)
 	return owner
@@ -148,14 +155,14 @@
 	if(!ispromethean(H))
 		return
 
-	var/datum/species/promethean/slime/SS = H.dna.species
+	var/datum/component/body_swapper/BS = H.get_component(/datum/component/body_swapper)
 
 	var/list/data = list()
 	data["bodies"] = list()
-	for(var/b in SS.bodies)
+	for(var/b in BS.bodies)
 		var/mob/living/carbon/human/body = b
 		if(!body || QDELETED(body) || !ispromethean(body))
-			SS.bodies -= b
+			BS.bodies -= b
 			continue
 
 		var/list/L = list()
@@ -209,8 +216,9 @@
 	if(!H.mind || !H.mind.active)
 		return
 
-	var/datum/species/promethean/slime/SS = H.dna.species
-	var/mob/living/carbon/human/selected = locate(params["ref"]) in SS.bodies
+	var/datum/component/body_swapper/BS = H.get_component(/datum/component/body_swapper)
+
+	var/mob/living/carbon/human/selected = locate(params["ref"]) in BS.bodies
 	if(!can_swap(selected))
 		return
 	SStgui.close_uis(src)
@@ -220,26 +228,26 @@
 	var/mob/living/carbon/human/H = owner
 	if(!ispromethean(H))
 		return FALSE
-	var/datum/species/promethean/slime/SS = H.dna.species
+	var/datum/component/body_swapper/BS = H.get_component(/datum/component/body_swapper)
 
 	if(QDELETED(dupe)) //Is there a body?
-		SS.bodies -= dupe
+		BS.bodies -= dupe
 		return FALSE
 
 	if(!ispromethean(dupe)) //Is it a slimeperson?
-		SS.bodies -= dupe
+		BS.bodies -= dupe
 		return FALSE
 
 	if(dupe.stat == DEAD) //Is it alive?
 		return FALSE
 
-	if(dupe.stat != CONSCIOUS) //Is it awake?
+	if(dupe.stat == CONSCIOUS) //Is it awake?
 		return FALSE
 
 	if(dupe.mind && dupe.mind.active) //Is it unoccupied?
 		return FALSE
 
-	if(!(dupe in SS.bodies)) //Do we actually own it?
+	if(!(dupe in BS.bodies)) //Do we actually own it?
 		return FALSE
 
 	return TRUE
@@ -258,3 +266,4 @@
 	dupe.visible_message("<span class='notice'>[dupe] blinks and looks \
 		around.</span>",
 		SPAN_NOTICE("...and move this one instead."))
+	dupe.update_action_buttons()

@@ -37,7 +37,7 @@
 	..()
 	create_reagents(100)
 
-/obj/item/metroid_extract/proc/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/proc/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	to_chat(user, SPAN_WARNING("Nothing happened... This metroid extract cannot be activated this way."))
 	return FALSE
 
@@ -46,7 +46,7 @@
 	icon_state = "grey metroid extract"
 	effectmod = "reproductive"
 
-/obj/item/metroid_extract/grey/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/grey/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			var/obj/item/reagent_containers/food/monkeycube/M = new
@@ -70,7 +70,7 @@
 	icon_state = "gold metroid extract"
 	effectmod = "symbiont"
 
-/obj/item/metroid_extract/gold/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/gold/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			user.visible_message(SPAN_WARNING("[user] starts shaking!"),SPAN_NOTICE("Your [name] starts pulsing gently..."))
@@ -84,7 +84,8 @@
 					/mob/living/simple_animal/chick,
 					/mob/living/simple_animal/chicken
 					)
-				var/mob/living/spawned_mob = new pick(possible_mobs)
+				var/mob/living/path = pick(possible_mobs)
+				var/mob/living/spawned_mob = new path(get_turf(user))
 				playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
 				user.visible_message(SPAN_WARNING("[user] spits out [spawned_mob]!"), SPAN_NOTICE("You spit out [spawned_mob]!"))
 				return 300
@@ -103,7 +104,8 @@
 							/mob/living/simple_animal/hostile/vagrant,
 							/mob/living/simple_animal/hostile/voxslug
 							)
-				var/mob/living/spawned_mob = new pick(possible_mobs)
+				var/mob/living/path = pick(possible_mobs)
+				var/mob/living/spawned_mob = new path(get_turf(user))
 				playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
 				user.visible_message(SPAN_WARNING("[user] spits out [spawned_mob]!"), SPAN_WARNING("You spit out [spawned_mob]!"))
 				return 600
@@ -113,11 +115,11 @@
 	icon_state = "silver metroid extract"
 	effectmod = "consuming"
 
-/obj/item/metroid_extract/silver/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/silver/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			var/path = pick(typesof(/obj/item/reagent_containers/food) - /obj/item/reagent_containers/food)
-			var/obj/item/reagent_containers/food/food_item = new path(pick(turfs))
+			var/obj/item/reagent_containers/food/food_item = new path(get_turf(user))
 			if(!user.put_in_active_hand(food_item))
 				food_item.forceMove(user.drop_location())
 			playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
@@ -146,7 +148,7 @@
 	icon_state = "metal metroid extract"
 	effectmod = "industrial"
 
-/obj/item/metroid_extract/metal/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/metal/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			var/obj/item/stack/material/glass/O = new(null, 5)
@@ -169,7 +171,7 @@
 	icon_state = "purple metroid extract"
 	effectmod = "regenerative"
 
-/obj/item/metroid_extract/purple/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/purple/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			user.nutrition+=50
@@ -187,7 +189,7 @@
 	icon_state = "dark purple metroid extract"
 	effectmod = "self-sustaining"
 
-/obj/item/metroid_extract/darkpurple/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/darkpurple/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			var/obj/item/stack/material/plasma/O = new(null, 1)
@@ -209,7 +211,7 @@
 	icon_state = "orange metroid extract"
 	effectmod = "burning"
 
-/obj/item/metroid_extract/orange/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/orange/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			to_chat(user, SPAN_NOTICE("You activate [src]. You start feeling hot!"))
@@ -228,12 +230,13 @@
 	icon_state = "yellow metroid extract"
 	effectmod = "charged"
 
-/obj/item/metroid_extract/yellow/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/yellow/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			if(species.glow_intensity != LUMINESCENT_DEFAULT_GLOW)
+			if(extract_eater_comp.glow_intensity != LUMINESCENT_DEFAULT_GLOW)
 				to_chat(user, SPAN_WARNING("Your glow is already enhanced!"))
 				return
+			var/datum/species/promethean/luminescent/species = user.species
 			species.update_glow(user, 5)
 			addtimer(CALLBACK(species, /datum/species/promethean/luminescent/proc/update_glow, user, LUMINESCENT_DEFAULT_GLOW), 600)
 			to_chat(user, SPAN_NOTICE("You start glowing brighter."))
@@ -250,7 +253,7 @@
 	icon_state = "red metroid extract"
 	effectmod = "sanguine"
 
-/obj/item/metroid_extract/red/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/red/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			to_chat(user, SPAN_NOTICE("You activate [src]. You start feeling fast!"))
@@ -269,7 +272,7 @@
 	icon_state = "blue metroid extract"
 	effectmod = "stabilized"
 
-/obj/item/metroid_extract/blue/obj/item/metroid_extract/blue/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/blue/obj/item/metroid_extract/blue/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			to_chat(user, SPAN_NOTICE("You activate [src]. Your genome feels more stable!"))
@@ -292,7 +295,7 @@
 	icon_state = "dark blue metroid extract"
 	effectmod = "chilling"
 
-/obj/item/metroid_extract/darkblue/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/darkblue/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			to_chat(user, SPAN_NOTICE("You activate [src]. You start feeling colder!"))
@@ -314,7 +317,7 @@
 	icon_state = "pink metroid extract"
 	effectmod = "gentle"
 
-/obj/item/metroid_extract/pink/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/pink/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			if(user.gender != MALE && user.gender != FEMALE)
@@ -341,7 +344,7 @@
 	icon_state = "green metroid extract"
 	effectmod = "mutative"
 
-/obj/item/metroid_extract/green/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/green/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			to_chat(user, SPAN_WARNING("You feel yourself reverting to human form..."))
@@ -364,7 +367,7 @@
 	icon_state = "light pink metroid extract"
 	effectmod = "loyal"
 
-/obj/item/metroid_extract/lightpink/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/lightpink/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			var/obj/item/metroidpotion/renaming/O = new(null, 1)
@@ -387,7 +390,7 @@
 	icon_state = "black metroid extract"
 	effectmod = "transformative"
 
-/obj/item/metroid_extract/black/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/black/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			to_chat(user, SPAN_DANGER("You feel something <i>wrong</i> inside you..."))
@@ -410,7 +413,7 @@
 	icon_state = "oil metroid extract"
 	effectmod = "detonating"
 
-/obj/item/metroid_extract/oil/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/oil/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			to_chat(user, SPAN_WARNING("You vomit slippery oil."))
@@ -435,10 +438,10 @@
 	icon_state = "adamantine metroid extract"
 	effectmod = "crystalline"
 
-/obj/item/metroid_extract/adamantine/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/adamantine/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			if(species.brute_mod < 1)
+			if(HAS_TRAIT(user, /datum/modifier/status_effect/adamantine))
 				to_chat(user, SPAN_WARNING("Your skin is already hardened!"))
 				return
 			to_chat(user, SPAN_NOTICE("You feel your skin harden and become more resistant."))
@@ -462,7 +465,7 @@
 	var/teleport_y = 0
 	var/teleport_z = 0
 
-/obj/item/metroid_extract/bluespace/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/bluespace/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			to_chat(user, SPAN_WARNING("You feel your body vibrating..."))
@@ -497,7 +500,7 @@
 	icon_state = "pyrite metroid extract"
 	effectmod = "prismatic"
 
-/obj/item/metroid_extract/pyrite/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/pyrite/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			var/chosen = pick(difflist(subtypesof(/obj/item/pen/crayon)))
@@ -522,7 +525,7 @@
 	icon_state = "cerulean metroid extract"
 	effectmod = "recurring"
 
-/obj/item/metroid_extract/cerulean/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/cerulean/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			user.reagents.add_reagent(/datum/reagent/inaprovaline,15)
@@ -542,7 +545,7 @@
 	icon_state = "sepia metroid extract"
 	effectmod = "lengthened"
 
-/obj/item/metroid_extract/sepia/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/sepia/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			var/obj/item/device/camera/O = new(null, 1)
@@ -565,11 +568,12 @@
 	icon_state = "rainbow metroid extract"
 	effectmod = "hyperchromatic"
 
-/obj/item/metroid_extract/rainbow/activate(mob/living/carbon/human/user, datum/species/promethean/luminescent/species, activation_type)
+/obj/item/metroid_extract/rainbow/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
 			user.dna.mcolor = "#[pick("7F", "FF")][pick("7F", "FF")][pick("7F", "FF")]"
 			user.UpdateAppearance(mutcolor_update=1)
+			var/datum/species/promethean/luminescent/species = user.species
 			species.update_glow(user)
 			to_chat(user, SPAN_NOTICE("You feel different..."))
 			return 100

@@ -6,6 +6,7 @@
 	name_plural = "Stargazers"
 	icobase = 'icons/mob/human_races/prometheans/r_stargazer.dmi'
 	/// Special "project thought" telepathy action for stargazers.
+	appearance_flags = HAS_SKIN_COLOR | HAS_EYE_COLOR | HAS_HAIR_COLOR | RADIATION_GLOWS
 	var/datum/action/innate/project_thought/project_action
 
 /datum/species/promethean/stargazer/handle_post_spawn(mob/living/carbon/H)
@@ -52,7 +53,7 @@
 	if(isnull(recipient))
 		return
 
-	var/msg = input(telepath, title = "Telepathy") as text|null
+	var/msg = input(telepath,"Telepathy") as text|null
 	if(isnull(msg))
 		return
 
@@ -109,7 +110,7 @@
 	else
 		if(istype(owner.r_hand, /obj/item/grab))
 			G = owner.r_hand
-	if(!isliving(G.affecting) || G.current_grab.state_name != NORM_AGGRESSIVE || G.current_grab.state_name != NORM_NECK || G.current_grab.state_name != NORM_KILL)
+	if(G.current_grab.state_name != NORM_AGGRESSIVE)
 		to_chat(owner, SPAN_WARNING("You need to aggressively grab someone to link minds!"))
 		return
 
