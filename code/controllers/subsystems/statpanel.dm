@@ -23,9 +23,9 @@ SUBSYSTEM_DEF(statpanels)
 		num_fires++
 		global_data = list(
 			"Game ID: <b>[game_id]</b>",
-			"Local Time", stationtime2text(),
-			"Local Date", stationdate2text(),
-			"Round Duration", roundduration2text(),
+			"Local Time: [stationtime2text()]",
+			"Local Date: [stationdate2text()]",
+			"Round Duration: [roundduration2text()]",
 		)
 
 		src.currentrun = GLOB.clients.Copy()

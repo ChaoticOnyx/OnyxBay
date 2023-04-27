@@ -1277,17 +1277,11 @@ window "infowindow"
 		anchor1 = none
 		anchor2 = none
 		saved-params = "pos;size;is-minimized;is-maximized"
-		title = "Info"
-		titlebar = false
-		statusbar = false
-		can-close = false
-		can-minimize = false
-		can-resize = false
 		is-pane = true
 	elem "info"
 		type = CHILD
-		pos = 0,24
-		size = 640x456
+		pos = 0,30
+		size = 640x445
 		anchor1 = 0,0
 		anchor2 = 100,100
 		saved-params = "splitter"
