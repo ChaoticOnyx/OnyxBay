@@ -107,7 +107,7 @@
 /mob/living/create_thinking_indicator()
 	if(active_thinking_indicator || active_typing_indicator || !thinking_IC || stat != CONSCIOUS)
 		return FALSE
-	active_thinking_indicator = create_speech_bubble_image('icons/mob/effects/talk.dmi', 3, src)
+	active_thinking_indicator = create_speech_bubble_image(bubble_icon, 3, src)
 	LAZYADD(overlays, active_thinking_indicator)
 
 /mob/living/remove_thinking_indicator()
@@ -119,7 +119,7 @@
 /mob/living/create_typing_indicator()
 	if(active_typing_indicator || active_thinking_indicator || !thinking_IC || stat != CONSCIOUS)
 		return FALSE
-	active_typing_indicator = create_speech_bubble_image('icons/mob/effects/talk.dmi', 3, src)
+	active_typing_indicator = create_speech_bubble_image(bubble_icon, 3, src)
 	LAZYADD(overlays, active_typing_indicator)
 
 /mob/living/remove_typing_indicator()
