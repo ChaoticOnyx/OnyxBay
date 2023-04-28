@@ -92,38 +92,40 @@
 	var/new_y = (check_y2 - corner_y0) * (check_x1 - corner_x0) - (check_x2 - corner_x0) * (check_y1 - corner_y0)
 	var/new_func = (corner_x0 - check_x1) * (corner_y0 - check_y1)
 
-	var/wallnorth = 0
-	var/wallsouth = 0
-	var/walleast = 0
-	var/wallwest = 0
-	var/list/wall_by_dirs = list(NORTH = FALSE, SOUTH = FALSE, EAST = FALSE, WEST = FALSE)
-	for(var/turf/simulated/wall/wall in range(2, src))
-		var/turf/tempwall = get_turf(wall)
-		if(tempwall.x == x)
-			if(tempwall.y == (y - 1))
-				wall_by_dirs[NORTH] = TRUE
-				wall.ricochet_id = ricochet_temp_id
-			else if (tempwall.y == (y + 1))
-				wall_by_dirs[SOUTH] = TRUE
-				wall.ricochet_id = ricochet_temp_id
-		if(tempwall.y == y)
-			if(tempwall.x == (x + 1))
-				wall_by_dirs[EAST] = TRUE
-				wall.ricochet_id = ricochet_temp_id
-			else if(tempwall.x == (x - 1))
-				wall_by_dirs[WEST] = TRUE
-				wall.ricochet_id = ricochet_temp_id
+	var/list/wall_by_dirs = list()
+	for(var/direction in GLOB.cardinal)
+		var/turf/simulated/wall/wall = get_step(src, direction)
+		if(istype(wall))
+			var/turf/tempwall = get_turf(wall)
+			if(tempwall.x == x)
+				if(tempwall.y == (y - 1))
+					wall_by_dirs["[direction]"] = TRUE
+					wall.ricochet_id = ricochet_temp_id
+				else if (tempwall.y == (y + 1))
+					wall_by_dirs["[direction]"] = TRUE
+					wall.ricochet_id = ricochet_temp_id
+			else if(tempwall.y == y)
+				if(tempwall.x == (x + 1))
+					wall_by_dirs["[direction]"] = TRUE
+					wall.ricochet_id = ricochet_temp_id
+				else if(tempwall.x == (x - 1))
+					wall_by_dirs["[direction]"] = TRUE
+					wall.ricochet_id = ricochet_temp_id
+			else
+				wall_by_dirs["[direction]"] = FALSE
+		else
+			wall_by_dirs["[direction]"] = FALSE
 
-	if((wall_by_dirs[NORTH] && check_y1 > check_y0) || (wall_by_dirs[SOUTH] && check_y1 < check_y0))
+	if((wall_by_dirs["[NORTH]"] && check_y1 > check_y0) || (wall_by_dirs["[SOUTH]"] && check_y1 < check_y0))
 		proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), src)
 
-	if((wall_by_dirs[EAST] && check_x1 > check_x0) || (wall_by_dirs[WEST] && check_x1 < check_x0))
+	if((wall_by_dirs["[EAST]"] && check_x1 > check_x0) || (wall_by_dirs["[WEST]"] && check_x1 < check_x0))
 		proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), src)
 
-	if((wall_by_dirs[NORTH] || wall_by_dirs[SOUTH]) && ((proj.starting.y - y) * (wall_by_dirs[SOUTH] - wall_by_dirs[NORTH]) >= 0))
+	if((wall_by_dirs["[NORTH]"] || wall_by_dirs["[SOUTH]"]) && ((proj.starting.y - y) * (wall_by_dirs["[SOUTH]"] - wall_by_dirs["[NORTH]"]) >= 0))
 		proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), src)
 
-	if((wall_by_dirs[EAST] || wall_by_dirs[WEST]) && ((proj.starting.x - x) * (wall_by_dirs[EAST] - wall_by_dirs[WEST]) >= 0))
+	if((wall_by_dirs["[EAST]"] || wall_by_dirs["[WEST]"]) && ((proj.starting.x - x) * (wall_by_dirs["[EAST]"] - wall_by_dirs["[WEST]"]) >= 0))
 		proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), src)
 
 	if((new_y * new_func) > 0)
