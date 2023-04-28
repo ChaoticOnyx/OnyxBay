@@ -132,7 +132,6 @@
 	else
 		proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), src)
 		return TRUE
-	return FALSE
 
 /turf/simulated/wall/blob_act(damage)
 	take_damage(damage)
