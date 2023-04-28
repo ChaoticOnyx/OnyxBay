@@ -118,15 +118,11 @@
 
 	if((wall_by_dirs["[NORTH]"] && check_y1 > check_y0) || (wall_by_dirs["[SOUTH]"] && check_y1 < check_y0))
 		proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), src)
+		return
 
 	if((wall_by_dirs["[EAST]"] && check_x1 > check_x0) || (wall_by_dirs["[WEST]"] && check_x1 < check_x0))
 		proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), src)
-
-	if((wall_by_dirs["[NORTH]"] || wall_by_dirs["[SOUTH]"]) && ((proj.starting.y - y) * (wall_by_dirs["[SOUTH]"] - wall_by_dirs["[NORTH]"]) >= 0))
-		proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), src)
-
-	if((wall_by_dirs["[EAST]"] || wall_by_dirs["[WEST]"]) && ((proj.starting.x - x) * (wall_by_dirs["[EAST]"] - wall_by_dirs["[WEST]"]) >= 0))
-		proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), src)
+		return
 
 	if((new_y * new_func) > 0)
 		proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), src)
