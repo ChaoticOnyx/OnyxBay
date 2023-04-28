@@ -96,39 +96,43 @@
 	for(var/direction in GLOB.cardinal)
 		var/turf/simulated/wall/wall = get_step(src, direction)
 		if(istype(wall))
-			var/turf/tempwall = get_turf(wall)
-			if(tempwall.x == x)
-				if(tempwall.y == (y - 1))
-					wall_by_dirs["[direction]"] = TRUE
-					wall.ricochet_id = ricochet_temp_id
-				else if (tempwall.y == (y + 1))
-					wall_by_dirs["[direction]"] = TRUE
-					wall.ricochet_id = ricochet_temp_id
-			else if(tempwall.y == y)
-				if(tempwall.x == (x + 1))
-					wall_by_dirs["[direction]"] = TRUE
-					wall.ricochet_id = ricochet_temp_id
-				else if(tempwall.x == (x - 1))
-					wall_by_dirs["[direction]"] = TRUE
-					wall.ricochet_id = ricochet_temp_id
-			else
-				wall_by_dirs["[direction]"] = FALSE
+			wall_by_dirs["[direction]"] = TRUE
+			wall.ricochet_id = ricochet_temp_id
 		else
 			wall_by_dirs["[direction]"] = FALSE
+			for(var/obj/machinery/door/door in wall.contents)
+				if(door.density)
+					wall_by_dirs["[direction]"] = TRUE
+					break
 
+	//Ack shit that, alot of NATIVE checks, don't wanna rewrite projectiles fly system...
 	if((wall_by_dirs["[NORTH]"] && check_y1 > check_y0) || (wall_by_dirs["[SOUTH]"] && check_y1 < check_y0))
 		proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), src)
-		return
+		return TRUE
 
 	if((wall_by_dirs["[EAST]"] && check_x1 > check_x0) || (wall_by_dirs["[WEST]"] && check_x1 < check_x0))
 		proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), src)
-		return
+		return TRUE
+
+	if(wall_by_dirs["[NORTH]"] && check_y0 < check_y1)
+		if(wall_by_dirs["[EAST]"] && check_x0 < check_x1)
+			return FALSE
+		else if(wall_by_dirs["[WEST]"] && check_x0 > check_x1)
+			return FALSE
+
+	if(wall_by_dirs["[SOUTH]"] && check_y0 > check_y1)
+		if(wall_by_dirs["[EAST]"] && check_x0 < check_x1)
+			return FALSE
+		else if(wall_by_dirs["[WEST]"] && check_x0 > check_x1)
+			return FALSE
 
 	if((new_y * new_func) > 0)
 		proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), src)
+		return TRUE
 	else
 		proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), src)
-	return
+		return TRUE
+	return FALSE
 
 /turf/simulated/wall/blob_act(damage)
 	take_damage(damage)
@@ -139,11 +143,13 @@
 		if(ricochet_id == proj.ricochet_id)
 			ricochet_id = 0
 			return PROJECTILE_CONTINUE
+
 		ricochet_id = 0
 	// Walls made from reflective-able materials reflect beam-type projectiles depending on their reflectance value.
 	if(istype(proj, /obj/item/projectile/beam))
 		if(reinf_material)
-			if(material.opacity * reinf_material.opacity < 0.16) return PROJECTILE_CONTINUE
+			if(material.opacity * reinf_material.opacity < 0.16)
+				return PROJECTILE_CONTINUE
 
 			if(material.reflectance + reinf_material.reflectance > 0)
 				// Reflection chance depends on materials' var 'reflectance'.
@@ -156,9 +162,8 @@
 				reflectchance = min(max(reflectchance, 0), 100)
 				var/damagediff = round(proj_damage * reflectchance / 100)
 				proj_damage /= reinf_material.burn_armor
-				if(reflectchance > 0)
+				if(reflectchance > 0 && projectile_reflection(proj))
 					visible_message("\red <B>\The [proj] gets reflected by shiny surface of reinforced wall!</B>")
-					projectile_reflection(proj)
 					proj.damage = damagediff
 					take_damage(min(proj_damage - damagediff, 100))
 					return PROJECTILE_CONTINUE // complete projectile permutation
@@ -167,7 +172,8 @@
 			else
 				burn(2000)
 		else
-			if(material.opacity < 0.4) return PROJECTILE_CONTINUE
+			if(material.opacity < 0.4)
+				return PROJECTILE_CONTINUE
 
 			if(material.reflectance > 0)
 				// Reflection chance depends on materials' var 'reflectance'.
@@ -179,9 +185,8 @@
 					reflectchance = round(projectile_reflection(proj, 1) * reflectchance)
 				reflectchance = min(max(reflectchance, 0), 100)
 				var/damagediff = round(proj_damage * reflectchance / 100)
-				if(reflectchance > 0)
+				if(reflectchance > 0 && projectile_reflection(proj))
 					visible_message("\red <B>\The [proj] gets reflected by shiny surface of wall!</B>")
-					projectile_reflection(proj)
 					proj.damage = damagediff
 					take_damage(min(proj_damage - damagediff, 100))
 					return PROJECTILE_CONTINUE // complete projectile permutation
@@ -205,9 +210,8 @@
 					ricochetchance = round(projectile_reflection(proj, 1) * ricochetchance)
 				ricochetchance = min(max(ricochetchance, 0), 100)
 				var/damagediff = round(proj_damage * ricochetchance / 100)
-				if(prob(ricochetchance))
+				if(prob(ricochetchance) && projectile_reflection(proj))
 					visible_message("\red <B>\The [proj] ricochets from the surface of reinforced wall!</B>")
-					projectile_reflection(proj)
 					proj_damage /= reinf_material.brute_armor
 					proj.damage = damagediff
 					take_damage(min(proj_damage - damagediff, 100))
@@ -222,9 +226,8 @@
 					ricochetchance = round(projectile_reflection(proj, 1) * ricochetchance)
 				ricochetchance = min(max(ricochetchance, 0), 100)
 				var/damagediff = round(proj_damage * ricochetchance / 100)
-				if(prob(ricochetchance))
+				if(prob(ricochetchance) && projectile_reflection(proj))
 					visible_message("\red <B>\The [proj] ricochets from the surface of wall!</B>")
-					projectile_reflection(proj)
 					proj.damage = damagediff
 					take_damage(min(proj_damage - damagediff, 100))
 					return PROJECTILE_CONTINUE // complete projectile permutation
