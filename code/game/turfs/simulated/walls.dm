@@ -106,14 +106,6 @@
 					break
 
 	//Ack shit that, alot of NATIVE checks, don't wanna rewrite projectiles fly system...
-	if((wall_by_dirs["[NORTH]"] && check_y1 > check_y0) || (wall_by_dirs["[SOUTH]"] && check_y1 < check_y0))
-		proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), src)
-		return TRUE
-
-	if((wall_by_dirs["[EAST]"] && check_x1 > check_x0) || (wall_by_dirs["[WEST]"] && check_x1 < check_x0))
-		proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), src)
-		return TRUE
-
 	if(wall_by_dirs["[NORTH]"] && check_y0 < check_y1)
 		if(wall_by_dirs["[EAST]"] && check_x0 < check_x1)
 			return FALSE
@@ -125,6 +117,14 @@
 			return FALSE
 		else if(wall_by_dirs["[WEST]"] && check_x0 > check_x1)
 			return FALSE
+
+	if((wall_by_dirs["[NORTH]"] && check_y1 > check_y0) || (wall_by_dirs["[SOUTH]"] && check_y1 < check_y0))
+		proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), src)
+		return TRUE
+
+	if((wall_by_dirs["[EAST]"] && check_x1 > check_x0) || (wall_by_dirs["[WEST]"] && check_x1 < check_x0))
+		proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), src)
+		return TRUE
 
 	if((new_y * new_func) > 0)
 		proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), src)
