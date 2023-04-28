@@ -57,23 +57,21 @@
 /turf/simulated/wall/proc/get_material()
 	return material
 
+// Not friend with mathematic, but more likely that varint, than other
 /turf/simulated/wall/proc/projectile_reflection(obj/item/projectile/proj, calculate = FALSE)
 	var/turf/proj_turf = get_turf(proj)
 	var/face_direction = get_dir(src, proj_turf)
 	var/face_angle = dir2angle(face_direction)
-	var/proj_angle = (face_angle - (Get_Angle(src, proj.starting).angle + 180)) - (round(face_angle - (Get_Angle(src, proj.starting) + 180) / (360)) * (360))
+	var/proj_angle =  MODULUS(face_angle - (Get_Angle(proj_turf, proj.starting) + 180), 360)
 
-	var/real_angle = abs(proj_angle)
-	if(real_angle > 90 && real_angle < 270)
-		return 0
-
+	var/real_angle = SIMPLIFY_DEGREES(abs(proj_angle))
 	if(calculate)
-		return real_angle
+		return real_angle / 3.6
 
 	var/radian = real_angle * 3.14 / 180
-	var/new_x = 128 * cos(radian)
-	var/new_y = 128 * sin(radian)
-	proj.redirect(new_x, new_y, src)
+	var/dx = proj.x + (real_angle < 180 ? -8 * cos(radian) : 8 * cos(radian))// raw, but working!
+	var/dy = proj.y + (real_angle < 270 && real_angle > 90 ? -8 * sin(radian) : 8 * sin(radian))// raw, but working!
+	proj.redirect(dx, dy, src)
 
 /turf/simulated/wall/blob_act(damage)
 	take_damage(damage)

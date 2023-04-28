@@ -2,6 +2,17 @@
 #define RAND_F(LOW, HIGH) (rand()*(HIGH-LOW) + LOW)
 #define ceil(x) (-round(-(x)))
 #define CEILING(x, y) ( -round(-(x) / (y)) * (y) )
+
+// round() acts like floor(x, 1) by default but can't handle other values
+#define FLOOR(x, y) (round((x) / (y)) * (y))
+
+// Real modulus that handles decimals
+#define MODULUS(x, y) ((x) - FLOOR(x, y))
+
+// Will filter out extra rotations and negative rotations
+// E.g: 540 becomes 180. -180 becomes 180.
+#define SIMPLIFY_DEGREES(degrees) (MODULUS((degrees), 360))
+
 /// isnum() returns TRUE for NaN. Also, NaN != NaN. Checkmate, BYOND.
 #define isnan(x) ( (x) != (x) )
 
