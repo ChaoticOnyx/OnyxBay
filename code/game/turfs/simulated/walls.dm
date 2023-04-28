@@ -57,52 +57,111 @@
 /turf/simulated/wall/proc/get_material()
 	return material
 
-// Not friend with mathematic, but more likely that varint, than other
 /turf/simulated/wall/proc/projectile_reflection(obj/item/projectile/proj, calculate = FALSE)
-	var/turf/proj_turf = get_turf(proj)
-	var/face_direction = get_dir(src, proj_turf)
-	var/face_angle = dir2angle(face_direction)
-	var/proj_angle =  MODULUS(face_angle - (Get_Angle(proj_turf, proj.starting) + 180), 360)
+	var/incoming_dir_angle = dir2angle(get_dir(src, get_turf(proj)))
+	var/incoming_angle = Get_Angle(src, proj.starting)
+	if((incoming_dir_angle + 30 < incoming_angle && incoming_dir_angle - 30 > incoming_angle) || (incoming_dir_angle + 70 < incoming_angle && incoming_dir_angle - 70 > incoming_angle)) //Reflection back in wall disabled, and shot back, no matter wall reflection
+		return 0
 
-	var/real_angle = SIMPLIFY_DEGREES(abs(proj_angle))
+	var/real_incoming_angle = incoming_angle - incoming_dir_angle + 90 //Make sure we have angle in range 0 . . . 180
+	var/reflect_angle  = 180 - real_incoming_angle
 	if(calculate)
-		return real_angle / 3.6
+		return reflect_angle
 
-	var/radian = real_angle * 3.14 / 180
-	var/dx = proj.x + (real_angle < 180 ? -8 * cos(radian) : 8 * cos(radian))// raw, but working!
-	var/dy = proj.y + (real_angle < 270 && real_angle > 90 ? -8 * sin(radian) : 8 * sin(radian))// raw, but working!
-	proj.redirect(dx, dy, src)
+	var/ricochet_temp_id = rand(1, 1000)
+	proj.ricochet_id = ricochet_temp_id
+
+	// don't have any ideas how to improve it. without angles projectiles, if somebody do it by angles you can easy remove that code
+	var/check_x0 = 32 * x
+	var/check_y0 = 32 * y
+	var/check_x1 = 32 * proj.starting.x
+	var/check_y1 = 32 * proj.starting.y
+	var/check_x2 = 32 * proj.original.x
+	var/check_y2 = 32 * proj.original.y
+	var/corner_x0 = check_x0
+	var/corner_y0 = check_y0
+	if(check_y0 - check_y1 > 0)
+		corner_y0 = corner_y0 - 16
+	else
+		corner_y0 = corner_y0 + 16
+	if(check_x0 - check_x1 > 0)
+		corner_x0 = corner_x0 - 16
+	else
+		corner_x0 = corner_x0 + 16
+
+	var/new_y = (check_y2 - corner_y0) * (check_x1 - corner_x0) - (check_x2 - corner_x0) * (check_y1 - corner_y0)
+	var/new_func = (corner_x0 - check_x1) * (corner_y0 - check_y1)
+
+	var/wallnorth = 0
+	var/wallsouth = 0
+	var/walleast = 0
+	var/wallwest = 0
+	var/list/wall_by_dirs = list(NORTH = FALSE, SOUTH = FALSE, EAST = FALSE, WEST = FALSE)
+	for(var/turf/simulated/wall/wall in range(2, src))
+		var/turf/tempwall = get_turf(wall)
+		if(tempwall.x == x)
+			if(tempwall.y == (y - 1))
+				wall_by_dirs[NORTH] = TRUE
+				wall.ricochet_id = ricochet_temp_id
+			else if (tempwall.y == (y + 1))
+				wall_by_dirs[SOUTH] = TRUE
+				wall.ricochet_id = ricochet_temp_id
+		if(tempwall.y == y)
+			if(tempwall.x == (x + 1))
+				wall_by_dirs[EAST] = TRUE
+				wall.ricochet_id = ricochet_temp_id
+			else if(tempwall.x == (x - 1))
+				wall_by_dirs[WEST] = TRUE
+				wall.ricochet_id = ricochet_temp_id
+
+	if((wall_by_dirs[NORTH] && check_y1 > check_y0) || (wall_by_dirs[SOUTH] && check_y1 < check_y0))
+		proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), src)
+
+	if((wall_by_dirs[EAST] && check_x1 > check_x0) || (wall_by_dirs[WEST] && check_x1 < check_x0))
+		proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), src)
+
+	if((wall_by_dirs[NORTH] || wall_by_dirs[SOUTH]) && ((proj.starting.y - y) * (wall_by_dirs[SOUTH] - wall_by_dirs[NORTH]) >= 0))
+		proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), src)
+
+	if((wall_by_dirs[EAST] || wall_by_dirs[WEST]) && ((proj.starting.x - x) * (wall_by_dirs[EAST] - wall_by_dirs[WEST]) >= 0))
+		proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), src)
+
+	if((new_y * new_func) > 0)
+		proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), src)
+	else
+		proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), src)
+	return
 
 /turf/simulated/wall/blob_act(damage)
 	take_damage(damage)
 
-/turf/simulated/wall/bullet_act(obj/item/projectile/Proj)
-	var/proj_damage = Proj.get_structure_damage()
+/turf/simulated/wall/bullet_act(obj/item/projectile/proj)
+	var/proj_damage = proj.get_structure_damage()
 	if(ricochet_id != 0)
-		if(ricochet_id == Proj.ricochet_id)
+		if(ricochet_id == proj.ricochet_id)
 			ricochet_id = 0
 			return PROJECTILE_CONTINUE
 		ricochet_id = 0
 	// Walls made from reflective-able materials reflect beam-type projectiles depending on their reflectance value.
-	if(istype(Proj, /obj/item/projectile/beam))
+	if(istype(proj, /obj/item/projectile/beam))
 		if(reinf_material)
 			if(material.opacity * reinf_material.opacity < 0.16) return PROJECTILE_CONTINUE
 
 			if(material.reflectance + reinf_material.reflectance > 0)
 				// Reflection chance depends on materials' var 'reflectance'.
-				var/reflectchance = material.reflectance + reinf_material.reflectance - min(round(Proj.damage/3), 50)
+				var/reflectchance = material.reflectance + reinf_material.reflectance - min(round(proj.damage/3), 50)
 				var/turf/curloc = get_turf(src)
-				if((curloc.x == Proj.starting.x) || (curloc.y == Proj.starting.y))
+				if((curloc.x == proj.starting.x) || (curloc.y == proj.starting.y))
 					reflectchance = 0
 				else
-					reflectchance = round(projectile_reflection(Proj, 1) * reflectchance)
+					reflectchance = round(projectile_reflection(proj, 1) * reflectchance)
 				reflectchance = min(max(reflectchance, 0), 100)
 				var/damagediff = round(proj_damage * reflectchance / 100)
 				proj_damage /= reinf_material.burn_armor
 				if(reflectchance > 0)
-					visible_message("\red <B>\The [Proj] gets reflected by shiny surface of reinforced wall!</B>")
-					projectile_reflection(Proj)
-					Proj.damage = damagediff
+					visible_message("\red <B>\The [proj] gets reflected by shiny surface of reinforced wall!</B>")
+					projectile_reflection(proj)
+					proj.damage = damagediff
 					take_damage(min(proj_damage - damagediff, 100))
 					return PROJECTILE_CONTINUE // complete projectile permutation
 				// Walls with positive reflection values deal with laser better than walls with negative.
@@ -114,18 +173,18 @@
 
 			if(material.reflectance > 0)
 				// Reflection chance depends on materials' var 'reflectance'.
-				var/reflectchance = material.reflectance - min(round(Proj.damage/3), 50)
+				var/reflectchance = material.reflectance - min(round(proj.damage/3), 50)
 				var/turf/curloc = get_turf(src)
-				if((curloc.x == Proj.starting.x) || (curloc.y == Proj.starting.y))
+				if((curloc.x == proj.starting.x) || (curloc.y == proj.starting.y))
 					reflectchance = 0
 				else
-					reflectchance = round(projectile_reflection(Proj, 1) * reflectchance)
+					reflectchance = round(projectile_reflection(proj, 1) * reflectchance)
 				reflectchance = min(max(reflectchance, 0), 100)
 				var/damagediff = round(proj_damage * reflectchance / 100)
 				if(reflectchance > 0)
-					visible_message("\red <B>\The [Proj] gets reflected by shiny surface of wall!</B>")
-					projectile_reflection(Proj)
-					Proj.damage = damagediff
+					visible_message("\red <B>\The [proj] gets reflected by shiny surface of wall!</B>")
+					projectile_reflection(proj)
+					proj.damage = damagediff
 					take_damage(min(proj_damage - damagediff, 100))
 					return PROJECTILE_CONTINUE // complete projectile permutation
 				// Walls with positive reflection values deal with laser better than walls with negative.
@@ -133,49 +192,49 @@
 			else
 				burn(2500)
 
-	//else if(istype(Proj,/obj/item/projectile/ion))
+	//else if(istype(proj,/obj/item/projectile/ion))
 	//	burn(500)
 
 	// Bullets ricochet from walls made of specific materials with some little chance.
-	if(istype(Proj, /obj/item/projectile/bullet) && Proj.can_ricochet)
+	if(istype(proj, /obj/item/projectile/bullet) && proj.can_ricochet)
 		if(reinf_material)
 			if(material.resilience * reinf_material.resilience > 0)
 				var/ricochetchance = round(sqrt(material.resilience * reinf_material.resilience))
 				var/turf/curloc = get_turf(src)
-				if((curloc.x == Proj.starting.x) || (curloc.y == Proj.starting.y))
+				if((curloc.x == proj.starting.x) || (curloc.y == proj.starting.y))
 					ricochetchance = 0
 				else
-					ricochetchance = round(projectile_reflection(Proj, 1) * ricochetchance)
+					ricochetchance = round(projectile_reflection(proj, 1) * ricochetchance)
 				ricochetchance = min(max(ricochetchance, 0), 100)
 				var/damagediff = round(proj_damage * ricochetchance / 100)
 				if(prob(ricochetchance))
-					visible_message("\red <B>\The [Proj] ricochets from the surface of reinforced wall!</B>")
-					projectile_reflection(Proj)
+					visible_message("\red <B>\The [proj] ricochets from the surface of reinforced wall!</B>")
+					projectile_reflection(proj)
 					proj_damage /= reinf_material.brute_armor
-					Proj.damage = damagediff
+					proj.damage = damagediff
 					take_damage(min(proj_damage - damagediff, 100))
 					return PROJECTILE_CONTINUE // complete projectile permutation
 		else
 			if(material.resilience > 0)
 				var/ricochetchance = round(material.resilience)
 				var/turf/curloc = get_turf(src)
-				if((curloc.x == Proj.starting.x) || (curloc.y == Proj.starting.y))
+				if((curloc.x == proj.starting.x) || (curloc.y == proj.starting.y))
 					ricochetchance = 0
 				else
-					ricochetchance = round(projectile_reflection(Proj, 1) * ricochetchance)
+					ricochetchance = round(projectile_reflection(proj, 1) * ricochetchance)
 				ricochetchance = min(max(ricochetchance, 0), 100)
 				var/damagediff = round(proj_damage * ricochetchance / 100)
 				if(prob(ricochetchance))
-					visible_message("\red <B>\The [Proj] ricochets from the surface of wall!</B>")
-					projectile_reflection(Proj)
-					Proj.damage = damagediff
+					visible_message("\red <B>\The [proj] ricochets from the surface of wall!</B>")
+					projectile_reflection(proj)
+					proj.damage = damagediff
 					take_damage(min(proj_damage - damagediff, 100))
 					return PROJECTILE_CONTINUE // complete projectile permutation
 
 	if(reinf_material)
-		if(Proj.damage_type == BURN)
+		if(proj.damage_type == BURN)
 			proj_damage /= reinf_material.burn_armor
-		else if(Proj.damage_type == BRUTE)
+		else if(proj.damage_type == BRUTE)
 			proj_damage /= reinf_material.brute_armor
 
 	//cap the amount of damage, so that things like emitters can't destroy walls in one hit.
