@@ -202,4 +202,3 @@
 	icon_closed = "heart_jacket"
 	body_parts_covered = UPPER_TORSO|ARMS
 	initial_closed = TRUE
-
