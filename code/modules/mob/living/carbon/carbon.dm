@@ -562,3 +562,22 @@
 
 /mob/living/carbon/proc/set_species()
 	return FALSE
+
+/mob/living/carbon/IgniteMob()
+	if(species.species_flags & SPECIES_FLAG_NO_FIRE)
+		return
+	..()
+
+/mob/living/carbon/can_block_magic(casted_magic_flags)
+	if(casted_magic_flags == null) // magic with the null flag is immune to blocking
+		return FALSE
+
+	var/is_magic_blocked = FALSE
+
+	if(HAS_TRAIT(src, TRAIT_ANTIMAGIC))
+		return TRUE
+
+	if((casted_magic_flags & MAGIC_RESISTANCE_HOLY) && HAS_TRAIT(src, TRAIT_HOLY))
+		is_magic_blocked = TRUE
+
+	return is_magic_blocked

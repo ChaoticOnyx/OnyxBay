@@ -7,7 +7,8 @@
 #define TRAIT_NOBLOOD /datum/modifier/trait/noblood
 #define TRAIT_BLOOD_DEFICIENCY /datum/modifier/trait/blooddeficiency
 #define TRAIT_RADIMMUNE /datum/modifier/trait/radimmune
-
+#define TRAIT_HOLY /datum/modifier/trait/holy
+#define TRAIT_ANTIMAGIC /datum/modifier/trait/magicimmune
 #define ADD_TRAIT(holder,trait_type) holder.add_modifier(trait_type)
 #define REMOVE_TRAIT(holder,trait_type) holder.remove_modifiers_of_type(trait_type)
 #define HAS_TRAIT(holder,trait_type) holder.has_modifier_of_type(trait_type)

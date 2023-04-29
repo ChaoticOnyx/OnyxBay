@@ -3,42 +3,49 @@
 
 /datum/component/body_swapper
 	var/list/mob/living/carbon/bodies
+	var/datum/action/innate/split_body/slime_split
+	var/datum/action/innate/swap_body/swap_body
 
 /datum/species/promethean/slime
 	name = SPECIES_SLIMEPERSON
 	name_plural = "Slimepeople"
 	icobase = 'icons/mob/human_races/prometheans/r_slime.dmi'
-	var/datum/action/innate/split_body/slime_split
-	var/datum/action/innate/swap_body/swap_body
+
 
 /datum/species/promethean/slime/handle_post_spawn(mob/living/carbon/human/H)
 	. = ..()
 	if(ishuman(H))
-		slime_split = new
-		slime_split.Grant(H)
-		swap_body = new
-		swap_body.Grant(H)
-		H.update_action_buttons()
 		var/datum/component/body_swapper/BS = H.AddComponent(/datum/component/body_swapper)
+		BS.slime_split = new
+		BS.slime_split.Grant(H)
+		BS.swap_body = new
+		BS.swap_body.Grant(H)
+		H.update_action_buttons()
 		if(!BS.bodies || !length(BS.bodies))
 			BS.bodies = list(H)
 		else
 			BS.bodies |= H
 
+/datum/species/promethean/luminescent/on_species_loss(mob/living/carbon/human/H)
+	. = ..()
+	var/datum/component/body_swapper/BS = H.get_component(/datum/component/body_swapper)
+	qdel(BS)
+
 /datum/species/promethean/slime/handle_death(mob/living/carbon/human/H)
-	if(slime_split)
+	var/datum/component/body_swapper/BS = H.get_component(/datum/component/body_swapper)
+	if(BS.slime_split)
 		if(!H.mind || !H.mind.active)
 			return
-		var/datum/component/body_swapper/BS = H.get_component(/datum/component/body_swapper)
+
 		var/list/available_bodies = (BS.bodies - H)
 		for(var/mob/living/L in available_bodies)
-			if(!swap_body.can_swap(L))
+			if(!BS.swap_body.can_swap(L))
 				available_bodies -= L
 
 		if(!LAZYLEN(available_bodies))
 			return
 
-		swap_body.swap_to_dupe(H.mind, pick(available_bodies))
+		BS.swap_body.swap_to_dupe(H.mind, pick(available_bodies))
 
 /datum/species/promethean/slime/handle_environment_special(mob/living/carbon/human/H)
 	. = ..()

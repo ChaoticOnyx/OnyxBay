@@ -134,7 +134,11 @@ var/global/list/datum/dna/gene/dna_genes[0]
 	var/beard	= GLOB.facial_hair_styles_list.Find(character.f_style)
 
 	body_build = character.body_build.name
-	mcolor = "#[rand_hex_color()]"
+	if(character.species.fixed_mut_color)
+		mcolor = character.species.fixed_mut_color
+	else
+		mcolor = "#[rand_hex_color()]"
+
 	SetUIValueRange(DNA_UI_HAIR_R,    character.r_hair,    255,    1)
 	SetUIValueRange(DNA_UI_HAIR_G,    character.g_hair,    255,    1)
 	SetUIValueRange(DNA_UI_HAIR_B,    character.b_hair,    255,    1)

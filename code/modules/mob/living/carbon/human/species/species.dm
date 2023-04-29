@@ -28,6 +28,7 @@
 
 	var/blood_color = COLOR_BLOOD_HUMAN               // Red.
 	var/flesh_color = "#ffc896"               // Pink.
+	var/fixed_mut_color
 	var/blood_oxy = 1
 	var/base_color                            // Used by changelings. Should also be used for icon previes..
 	var/limb_blend = ICON_ADD
@@ -457,6 +458,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			ADD_TRAIT(H, trait)
 	return
 
+/datum/species/proc/on_species_loss(mob/living/carbon/human/H)
+	remove_inherent_verbs(H)
+	remove_inherent_traits(H)
+
 /datum/species/proc/handle_post_spawn(mob/living/carbon/human/H) //Handles anything not already covered by basic species assignment.
 	add_inherent_verbs(H)
 	add_inherent_traits(H)
@@ -473,6 +478,9 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 /datum/species/proc/handle_new_grab(mob/living/carbon/human/H, obj/item/grab/G)
 	return
+
+/datum/species/proc/negates_gravity()
+	return FALSE
 
 // Only used for alien plasma weeds atm, but could be used for Dionaea later.
 /datum/species/proc/handle_environment_special(mob/living/carbon/human/H)
@@ -507,6 +515,14 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 // Used to override normal fall behaviour. Use only when the species does fall down a level.
 /datum/species/proc/handle_fall_special(mob/living/carbon/human/H, turf/landing)
 	return FALSE
+
+// Used to handle some special damage behaviour.
+/datum/species/proc/handle_damage(mob/living/carbon/human/H)
+	return
+
+// Used to override normal bullet_act. Return TRUE if you want to continue normal one after this
+/datum/species/proc/bullet_act(obj/item/projectile/P, mob/living/carbon/human/H)
+	return TRUE
 
 // Called when using the shredding behavior.
 /datum/species/proc/can_shred(mob/living/carbon/human/H, ignore_intent)

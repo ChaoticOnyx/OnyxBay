@@ -1116,8 +1116,7 @@
 		for(var/datum/language/L in species.assisted_langs)
 			remove_language(L)
 		// Clear out their species abilities.
-		species.remove_inherent_verbs(src)
-		species.remove_inherent_traits(src)
+		species.on_species_loss(src)
 		holder_type = null
 
 	species = all_species[new_species]

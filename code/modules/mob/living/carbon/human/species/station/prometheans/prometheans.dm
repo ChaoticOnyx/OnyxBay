@@ -49,17 +49,17 @@
 	unarmed_types = list(/datum/unarmed_attack/metroid_glomp)
 	has_organ =     list(BP_BRAIN = /obj/item/organ/internal/brain/metroid) // Metroid core.
 	has_limbs = list(
-		BP_CHEST =  list("path" = /obj/item/organ/external/chest/unbreakable/metroid),
-		BP_GROIN =  list("path" = /obj/item/organ/external/groin/unbreakable/metroid),
-		BP_HEAD =   list("path" = /obj/item/organ/external/head/unbreakable/metroid),
-		BP_L_ARM =  list("path" = /obj/item/organ/external/arm/unbreakable/metroid),
-		BP_R_ARM =  list("path" = /obj/item/organ/external/arm/right/unbreakable/metroid),
-		BP_L_LEG =  list("path" = /obj/item/organ/external/leg/unbreakable/metroid),
-		BP_R_LEG =  list("path" = /obj/item/organ/external/leg/right/unbreakable/metroid),
-		BP_L_HAND = list("path" = /obj/item/organ/external/hand/unbreakable/metroid),
-		BP_R_HAND = list("path" = /obj/item/organ/external/hand/right/unbreakable/metroid),
-		BP_L_FOOT = list("path" = /obj/item/organ/external/foot/unbreakable/metroid),
-		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right/unbreakable/metroid)
+		BP_CHEST =  list("path" = /obj/item/organ/external/chest/unbreakable),
+		BP_GROIN =  list("path" = /obj/item/organ/external/groin/unbreakable),
+		BP_HEAD =   list("path" = /obj/item/organ/external/head/unbreakable),
+		BP_L_ARM =  list("path" = /obj/item/organ/external/arm/unbreakable),
+		BP_R_ARM =  list("path" = /obj/item/organ/external/arm/right/unbreakable),
+		BP_L_LEG =  list("path" = /obj/item/organ/external/leg/unbreakable),
+		BP_R_LEG =  list("path" = /obj/item/organ/external/leg/right/unbreakable),
+		BP_L_HAND = list("path" = /obj/item/organ/external/hand/unbreakable),
+		BP_R_HAND = list("path" = /obj/item/organ/external/hand/right/unbreakable),
+		BP_L_FOOT = list("path" = /obj/item/organ/external/foot/unbreakable),
+		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right/unbreakable)
 		)
 	heat_discomfort_strings = list("You feel too warm.")
 	cold_discomfort_strings = list("You feel too cool.")
@@ -79,6 +79,11 @@
 	regenerate_limbs = new
 	regenerate_limbs.Grant(H)
 	regenerate_limbs.button.update_icon()
+
+/datum/species/promethean/luminescent/on_species_loss(mob/living/carbon/human/H)
+	regenerate_limbs.Remove(H)
+	..()
+
 
 /datum/species/promethean/hug(mob/living/carbon/human/H,mob/living/target)
 	var/datum/gender/G = gender_datums[target.gender]

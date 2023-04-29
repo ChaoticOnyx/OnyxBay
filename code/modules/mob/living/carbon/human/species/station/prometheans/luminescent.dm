@@ -37,6 +37,11 @@
 	extract_major.Grant(new_jellyperson)
 	extract_eater_comp.luminescent_actions += integrate_extract
 
+/datum/species/promethean/luminescent/on_species_loss(mob/living/carbon/human/H)
+	. = ..()
+	var/datum/component/extract_eater/extract_eater_comp = H.get_component(/datum/component/extract_eater)
+	qdel(extract_eater_comp)
+
 /// Updates the glow of our internal glow thing.
 /datum/species/promethean/luminescent/proc/update_glow(mob/living/carbon/C, intensity)
 	var/datum/component/extract_eater/extract_eater_comp = C.get_component(/datum/component/extract_eater)

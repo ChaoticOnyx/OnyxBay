@@ -148,7 +148,6 @@
 /datum/modifier/trait/pacifism/on_applied()
 	holder.a_intent_change(I_HELP)
 
-//FIXME
 /datum/modifier/trait/cold_resist
 	name = "Cold Resistance"
 	desc = "You don't feel cold!"
@@ -191,7 +190,7 @@
 		return
 
 	var/mob/living/carbon/human/carbon_target = holder
-	if(HAS_TRAIT(carbon_target, TRAIT_NOBLOOD)) //can't lose blood if your species doesn't have any
+	if(carbon_target.species.species_flags & SPECIES_FLAG_NO_BLOOD) //can't lose blood if your species doesn't have any
 		return
 
 	if (carbon_target.get_blood_volume() == min_blood)
@@ -203,7 +202,14 @@
 	// Ensures that we don't reduce total blood volume below min_blood.
 	carbon_target.remove_blood(1.525 * 0.1)
 
-/datum/modifier/trait/noblood
 /datum/modifier/trait/radimmune
 	name = "Radiation Immunity"
 	desc = "You're immune to radiation"
+
+/datum/modifier/trait/holy
+	name = "Holy"
+	desc = "You're immune to cult magic and evil spirits"
+
+/datum/modifier/trait/magicimmune
+	name = "Magic Immunity"
+	desc = "You're immune to magic"

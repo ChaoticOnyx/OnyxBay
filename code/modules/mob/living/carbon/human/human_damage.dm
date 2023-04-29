@@ -508,6 +508,7 @@ This function restores all organs.
 
 	// Will set our damageoverlay icon to the next level, which will then be set back to the normal level the next mob.Life().
 	updatehealth()
+	species.handle_damage(src)
 	BITSET(hud_updateflag, HEALTH_HUD)
 	return created_wound
 

@@ -79,6 +79,11 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 /mob/proc/update_floating()
 
+	if(iscarbon(src))
+		var/mob/living/carbon/C = src
+		if(C.species.negates_gravity())
+			make_floating(0)
+			return
 	if(anchored || buckled || check_solid_ground())
 		make_floating(0)
 		return
