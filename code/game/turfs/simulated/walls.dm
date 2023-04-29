@@ -72,6 +72,7 @@
 	proj.ricochet_id = ricochet_temp_id
 
 	// don't have any ideas how to improve it. without angles projectiles, if somebody do it by angles you can easy remove that code
+	// Setting projectile and our coordinats in pixels (why in pixels? idk)
 	var/check_x0 = 32 * x
 	var/check_y0 = 32 * y
 	var/check_x1 = 32 * proj.starting.x
@@ -92,6 +93,7 @@
 	var/new_y = (check_y2 - corner_y0) * (check_x1 - corner_x0) - (check_x2 - corner_x0) * (check_y1 - corner_y0)
 	var/new_func = (corner_x0 - check_x1) * (corner_y0 - check_y1)
 
+	//setting up all blocked directions, where object that gonna stop us from shooting through
 	var/list/wall_by_dirs = list()
 	for(var/direction in GLOB.cardinal)
 		var/turf/simulated/wall/wall = get_step(src, direction)
@@ -105,7 +107,7 @@
 					wall_by_dirs["[direction]"] = TRUE
 					break
 
-	//Ack shit that, alot of NATIVE checks, don't wanna rewrite projectiles fly system...
+	//make sure, that not a fucking corner wall, and we shooting at it, if returned FALSE, projectitle don't reflect
 	if(wall_by_dirs["[NORTH]"] && check_y0 < check_y1)
 		if(wall_by_dirs["[EAST]"] && check_x0 < check_x1)
 			return FALSE
@@ -118,6 +120,7 @@
 		else if(wall_by_dirs["[WEST]"] && check_x0 > check_x1)
 			return FALSE
 
+	//checker for walls, trying to redirect only if we meet conditions of redirecting and don't make projectile fly through wall
 	if((wall_by_dirs["[NORTH]"] && check_y1 > check_y0) || (wall_by_dirs["[SOUTH]"] && check_y1 < check_y0))
 		proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), src)
 		return TRUE
