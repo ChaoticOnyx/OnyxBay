@@ -120,15 +120,16 @@
 		else if(wall_by_dirs["[WEST]"] && check_x0 > check_x1)
 			return FALSE
 
-	//checker for walls, trying to redirect only if we meet conditions of redirecting and don't make projectile fly through wall
-	if((wall_by_dirs["[NORTH]"] && check_y1 > check_y0) || (wall_by_dirs["[SOUTH]"] && check_y1 < check_y0))
+	//checker for walls, redirection direction searching
+	if((wall_by_dirs["[NORTH]"] && check_y1 > check_y0) || (wall_by_dirs["[SOUTH]"] && check_y1 < check_y0)) //wall is vertical and shooter shooting at right place
 		proj.redirect(round(check_x1 / 32), round((2 * check_y0 - check_y1)/32), src)
 		return TRUE
 
-	if((wall_by_dirs["[EAST]"] && check_x1 > check_x0) || (wall_by_dirs["[WEST]"] && check_x1 < check_x0))
+	if((wall_by_dirs["[EAST]"] && check_x1 > check_x0) || (wall_by_dirs["[WEST]"] && check_x1 < check_x0)) //wall is horizontal and shooter shooting at right place
 		proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), src)
 		return TRUE
 
+	//if wall don't meet conditions of vertical/horizontal and shooter don't meet wall special reflect conditions, simulating single wall reflect
 	if((new_y * new_func) > 0)
 		proj.redirect(round((2 * check_x0 - check_x1) / 32), round(check_y1 / 32), src)
 		return TRUE
