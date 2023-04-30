@@ -41,7 +41,7 @@
 	response_harm   = "kicks"
 
 /mob/living/simple_animal/corgi/Move(a, b, flag)
-	..()
+	. = ..()
 	update_hat()
 
 /mob/living/simple_animal/corgi/Life()

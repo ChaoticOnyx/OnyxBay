@@ -127,7 +127,7 @@ steam.start() -- spawns the effect
 	return ..()
 
 /obj/effect/sparks/Move()
-	..()
+	. = ..()
 	var/turf/T = src.loc
 	if (istype(T, /turf))
 		T.hotspot_expose(1000,100)
@@ -227,7 +227,7 @@ steam.start() -- spawns the effect
 	time_to_live = 200
 
 /obj/effect/effect/smoke/bad/Move()
-	..()
+	. = ..()
 	for(var/mob/living/carbon/M in get_turf(src))
 		affect(M)
 
@@ -258,7 +258,7 @@ steam.start() -- spawns the effect
 /obj/effect/effect/smoke/sleepy
 
 /obj/effect/effect/smoke/sleepy/Move()
-	..()
+	. = ..()
 	for(var/mob/living/carbon/M in get_turf(src))
 		affect(M)
 
@@ -286,7 +286,7 @@ steam.start() -- spawns the effect
 	icon_state = "mustard"
 
 /obj/effect/effect/smoke/mustard/Move()
-	..()
+	. = ..()
 	for(var/mob/living/carbon/human/R in get_turf(src))
 		affect(R)
 
