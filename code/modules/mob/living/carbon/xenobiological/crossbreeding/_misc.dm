@@ -57,10 +57,27 @@
 	var/health = 40
 
 //FIXME
-/obj/structure/ice_stasis/attack_generic(mob/user, damage, attack_verb, wallbreaker)
+/obj/structure/ice_stasis/attackby(obj/item/W, mob/user)
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+
+	if(W.attack_verb.len)
+		visible_message("<span class='warning'>\The [src] have been [pick(W.attack_verb)] with \the [W][(user ? " by [user]." : ".")]</span>")
+	else
+		visible_message("<span class='warning'>\The [src] have been attacked with \the [W][(user ? " by [user]." : ".")]</span>")
+
+	var/damage = W.force / 4.0
+
+	if(isWelder(W))
+		var/obj/item/weldingtool/WT = W
+
+		if(WT.remove_fuel(0, user))
+			damage = 15
+			playsound(loc, 'sound/items/Welder.ogg', 100, 1)
+
 	health -= damage
-	if(health<=0)
-		Destroy()
+	if(health <= 0)
+		qdel(src)
+
 
 /obj/structure/ice_stasis/Initialize(mapload)
 	. = ..()

@@ -1288,8 +1288,7 @@
 
 /datum/chemical_reaction/metroid/golem/on_reaction(datum/reagents/holder)
 	..()
-	var/obj/effect/golemrune/Z = new /obj/effect/golemrune(get_turf(holder.my_atom))
-	Z.announce_to_ghosts()
+	new /obj/item/golem_shell(get_turf(holder.my_atom))
 
 //Sepia
 /datum/chemical_reaction/metroid/film

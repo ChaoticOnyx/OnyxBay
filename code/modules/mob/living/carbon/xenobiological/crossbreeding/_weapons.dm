@@ -8,7 +8,7 @@
 	force = 15
 	throwforce = 15
 	damtype = BRUTE
-//FIXME
+
 /obj/item/knife/rainbowknife/afterattack(atom/O, mob/user, proximity)
 	if(proximity && isliving(O))
 		damtype = pick(BRUTE, BURN, TOX, OXY, CLONE)

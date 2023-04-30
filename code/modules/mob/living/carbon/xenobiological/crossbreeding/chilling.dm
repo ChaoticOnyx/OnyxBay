@@ -243,12 +243,13 @@ Chilling extracts:
 	if(!istype(user))
 		return
 	L.drop_active_hand()
-	/*FIXME var/obj/item/gun/magic/bloodchill/gun = new(user)
+	var/obj/item/gun/projectile/magic/bloodchill/gun = new(user)
 	if(!L.put_in_hands(gun))
 		qdel(gun)
 		user.visible_message(SPAN_WARNING("[src] flash-freezes [user]'s arm, cracking the flesh horribly!"))
 	else
-		user.visible_message(SPAN_DANGER("[src] chills and snaps off the front of the bone on [user]'s arm, leaving behind a strange, gun-like structure!"))*/
+		user.visible_message(SPAN_DANGER("[src] chills and snaps off the front of the bone on [user]'s arm, leaving behind a strange, gun-like structure!"))
+		gun.think()
 	user.emote("scream")
 	L.apply_damage(30,BURN, L.hand ? BP_L_HAND : BP_R_HAND)
 	..()
@@ -285,13 +286,16 @@ Chilling extracts:
 
 /obj/item/metroidcross/chilling/black
 	colour = "black"
-	effect_desc = "Transforms the user into a  golem."
+	effect_desc = "Transforms the user into a golem."
 
 /obj/item/metroidcross/chilling/black/do_effect(mob/user)
 	if(ishuman(user))
 		user.visible_message(SPAN_NOTICE("[src] crystallizes along [user]'s skin, turning into metallic scales!"))
 		var/mob/living/carbon/human/H = user
-		H.set_species(SPECIES_GOLEM)
+
+		var/static/list/random_golem_types
+		random_golem_types = subtypesof(/datum/species/golem) - H.species.type
+		H.set_species(random_golem_types)
 	..()
 
 /obj/item/metroidcross/chilling/lightpink

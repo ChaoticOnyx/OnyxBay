@@ -277,10 +277,6 @@
 		if(METROID_ACTIVATE_MINOR)
 			to_chat(user, SPAN_NOTICE("You activate [src]. Your genome feels more stable!"))
 			user.adjustCloneLoss(-15)
-			/*FIXME
-			user.reagents.add_reagent(/datum/reagent/mutadone, 10)
-			user.reagents.add_reagent(/datum/reagent/potass_iodide, 10)
-			*/
 			return 250
 
 		if(METROID_ACTIVATE_MAJOR)
@@ -378,11 +374,8 @@
 			return 150
 
 		if(METROID_ACTIVATE_MAJOR)
-			/*FIXME var/obj/item/metroidpotion/metroid/sentience/O = new(null, 1)
-			if(!user.put_in_active_hand(O))
-				O.forceMove(user.drop_location())
-			playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
-			user.visible_message(SPAN_WARNING("[user] spits out [O]!"), SPAN_NOTICE("You spit out [O]!"))*/
+			for(var/mob/living/carbon/C in viewers(user, null))
+				C.add_modifier(/datum/modifier/trait/pacifism, 450)
 			return 450
 
 /obj/item/metroid_extract/black
@@ -400,13 +393,12 @@
 
 		if(METROID_ACTIVATE_MAJOR)
 			/*TODO - SHADOWLING
-			//FIXME
 			to_chat(user, SPAN_WARNING("You feel your own light turning dark..."))
 			if(do_after(user, 120, target = user))
 				to_chat(user, SPAN_WARNING("You feel a longing for darkness."))
 				user.set_species(pick(/datum/species/shadow))
 				return*/
-			to_chat(user, SPAN_NOTICE("You stop feeding [src]."))
+			to_chat(user, SPAN_NOTICE("You don't fell linkage with darkness"))
 
 /obj/item/metroid_extract/oil
 	name = "oil metroid extract"
@@ -452,7 +444,7 @@
 			to_chat(user, SPAN_WARNING("You feel your body rapidly crystallizing..."))
 			if(do_after(user, 120, target = user))
 				to_chat(user, SPAN_WARNING("You feel solid."))
-				//FIXME user.set_species(pick(/datum/species/golem/adamantine))
+				user.set_species(/datum/species/golem/adamantine)
 				return
 			to_chat(user, SPAN_NOTICE("You stop feeding [src], and your body returns to its metroidlike state."))
 

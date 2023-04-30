@@ -37,7 +37,7 @@
 #define isabductor(A) (is_species(A, /datum/species/abductor))
 
 #define ispromethean(A) (is_species(A, /datum/species/promethean))
-
+#define isgolem(A) (is_species(A, /datum/species/golem))
 #define isitem(A) istype(A, /obj/item)
 
 #define islist(A) istype(A, /list)

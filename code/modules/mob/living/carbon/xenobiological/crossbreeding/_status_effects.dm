@@ -656,6 +656,7 @@
 	colour = "bluespace"
 	alert_type = /obj/screen/movable/alert/status_effect/bluespacemetroid
 	var/list/healthcheck = list(BRUTE = 0, BURN = 0, OXY = 0)
+	think_delay = 5 SECONDS
 
 /datum/modifier/status_effect/stabilized/bluespace/on_applied()
 	set_next_think(world.time)
@@ -664,7 +665,6 @@
 	..()
 	set_next_think(0)
 
-//FIXME
 /datum/modifier/status_effect/stabilized/bluespace/think()
 	if(holder.has_modifier_of_type(/datum/modifier/status_effect/bluespacestabilization))
 		linked_alert.desc = "The stabilized bluespace extract is still aligning you with the bluespace axis."
@@ -680,9 +680,9 @@
 		sparks.set_up(5, 0, holder.loc)
 		sparks.start()
 
-		var/F = get_area_turfs(pick(playerlocs), list(/proc/not_turf_contains_dense_objects, /proc/IsTurfAtmosSafe))
+		var/list/F = get_area_turfs(pick(playerlocs), list(/proc/not_turf_contains_dense_objects, /proc/IsTurfAtmosSafe))
 		var/range = 0
-		if(!F)
+		if(!length(F))
 			F = get_turf(holder)
 			range = 50
 		if(do_teleport(holder, F, range))
@@ -830,11 +830,13 @@
 
 	var/damage = 0
 	var/lasthealth
+	var/think_delay = 5 SECONDS
 //FIXME
 /datum/modifier/status_effect/pinkdamagetracker/think()
 	if((lasthealth - holder.health) > 0)
 		damage += (lasthealth - holder.health)
 	lasthealth = holder.health
+	set_next_think(world.time+think_delay)
 	..()
 
 /datum/modifier/status_effect/stabilized/pink
@@ -989,6 +991,7 @@
 /datum/modifier/status_effect/stabilized/lightpink
 	name = "stabilizedlightpink"
 	colour = "light pink"
+	think_delay = 5 SECONDS
 
 /datum/modifier/status_effect/stabilized/lightpink/on_applied()
 	holder.add_modifier(/datum/modifier/movespeed/lightpink)

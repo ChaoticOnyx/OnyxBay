@@ -167,61 +167,6 @@
 		M.mutation_chance = 100
 	qdel(src)
 
-/obj/effect/golemrune
-	anchored = 1
-	desc = "A strange rune used to create golems. It glows when spirits are nearby."
-	name = "rune"
-	icon = 'icons/obj/rune.dmi'
-	icon_state = "golem"
-	unacidable = 1
-	layer = RUNE_LAYER
-
-/obj/effect/golemrune/Initialize()
-	. = ..()
-	set_next_think(world.time + 1 SECOND)
-
-/obj/effect/golemrune/think()
-	var/mob/observer/ghost/ghost
-	for(var/mob/observer/ghost/O in src.loc)
-		if(!O.client)
-			continue
-		if(O.mind && O.mind.current && O.mind.current.stat != DEAD)
-			continue
-		ghost = O
-		break
-	if(ghost)
-		icon_state = "golem2"
-	else
-		icon_state = "golem"
-
-	set_next_think(world.time + 1 SECOND)
-
-/obj/effect/golemrune/attack_hand(mob/living/user as mob)
-	var/mob/observer/ghost/ghost
-	for(var/mob/observer/ghost/O in src.loc)
-		if(!O.client)
-			continue
-		if(O.mind && O.mind.current && O.mind.current.stat != DEAD)
-			continue
-		ghost = O
-		break
-	if(!ghost)
-		to_chat(user, "The rune fizzles uselessly. There is no spirit nearby.")
-		return
-	var/mob/living/carbon/human/G = new(src.loc)
-	G.set_species("Golem")
-	G.key = ghost.key
-	to_chat(G, "You are an adamantine golem. You move slowly, but are highly resistant to heat and cold as well as blunt trauma. Serve [user], and assist them in completing their goals at any cost.")
-	qdel(src)
-
-
-/obj/effect/golemrune/proc/announce_to_ghosts()
-	for(var/mob/observer/ghost/G in GLOB.player_list)
-		if(G.client)
-			var/area/A = get_area(src)
-			if(A)
-				to_chat(G, "Golem rune created in [A.name].")
-
 /obj/item/metroidpotion/renaming
 	name = "renaming potion"
 	desc = "A potion that allows a self-aware being to change what name it subconciously presents to the world."
@@ -248,3 +193,69 @@
 	M.SetName(newname)
 	M.real_name = newname
 	qdel(src)
+
+
+//GOLEM SHELLS
+
+/obj/item/golem_shell
+	name = "incomplete free golem shell"
+	icon = 'icons/obj/wizard.dmi'
+	icon_state = "construct"
+	desc = "The incomplete body of a golem. Add ten sheets of any mineral to finish."
+	w_class = ITEM_SIZE_HUGE
+
+	var/shell_type = /obj/effect/mob_spawn/ghost_role/human/golem
+
+/obj/item/golem_shell/attackby(obj/item/I, mob/user, params)
+	. = ..()
+	var/static/list/golem_shell_species_types = list(
+		/obj/item/stack/material/iron = /datum/species/golem,
+		/obj/item/stack/material/steel = /datum/species/golem,
+		/obj/item/stack/material/glass = /datum/species/golem/glass,
+		/obj/item/stack/material/plasteel = /datum/species/golem/plasteel,
+		/obj/item/stack/material/sandstone = /datum/species/golem/sand,
+		/obj/item/stack/material/plasma = /datum/species/golem/plasma,
+		/obj/item/stack/material/diamond = /datum/species/golem/diamond,
+		/obj/item/stack/material/gold = /datum/species/golem/gold,
+		/obj/item/stack/material/silver = /datum/species/golem/silver,
+		/obj/item/stack/material/uranium = /datum/species/golem/uranium,
+		/obj/item/stack/material/plasteel/titanium = /datum/species/golem/titanium,
+		/obj/item/stack/material/ocp = /datum/species/golem/plastitanium,
+		/obj/item/stack/material/wood = /datum/species/golem/wood,
+		/obj/item/stack/telecrystal/bluespace_crystal = /datum/species/golem/bluespace,
+		/obj/item/device/soulstone = /datum/species/golem/runic,
+		/obj/item/stack/medical/bruise_pack = /datum/species/golem/cloth,
+		/obj/item/stack/material/cloth = /datum/species/golem/cloth,
+		/obj/item/stack/material/plastic = /datum/species/golem/plastic,
+		/obj/item/stack/material/cardboard = /datum/species/golem/cardboard,
+		/obj/item/stack/material/leather = /datum/species/golem/leather,
+		/obj/item/stack/material/mhydrogen = /datum/species/golem/mhydrogen,
+	)
+
+	if(istype(I,/obj/item/device/soulstone))
+		qdel(I)
+		to_chat(user, SPAN_NOTICE("You finish up the golem shell with [I]."))
+		new shell_type(get_turf(src), golem_shell_species_types[I.type], user)
+		qdel(src)
+		return
+
+	if(!isstack(I))
+		return
+
+	var/obj/item/stack/stuff_stack = I
+	var/species = golem_shell_species_types[I.type]
+
+	if(!species)
+		to_chat(user, SPAN_WARNING("You can't build a golem out of this kind of material!"))
+		return
+	if(!stuff_stack.use(10))
+		to_chat(user, SPAN_WARNING("You need at least ten sheets to finish a golem!"))
+		return
+	to_chat(user, SPAN_NOTICE("You finish up the golem shell with ten sheets of [stuff_stack]."))
+	new shell_type(get_turf(src), species, user)
+	qdel(src)
+
+///made with xenobiology, the golem obeys its creator
+/obj/item/golem_shell/servant
+	name = "incomplete servant golem shell"
+	shell_type = /obj/effect/mob_spawn/ghost_role/human/golem/servant

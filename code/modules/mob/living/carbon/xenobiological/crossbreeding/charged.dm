@@ -297,17 +297,37 @@ Charged extracts:
 
 /obj/item/metroidcross/charged/adamantine/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] produces a fully formed golem shell!"))
-	//FIXME new /obj/effect/mob_spawn/ghost_role/human/golem/servant(get_turf(src), /datum/species/golem/adamantine, user)
+	new /obj/effect/mob_spawn/ghost_role/human/golem/servant(get_turf(src), /datum/species/golem/adamantine, user)
 	..()
 
 /obj/item/metroidcross/charged/rainbow
 	colour = "rainbow"
 	effect_desc = "Produces three living metroids of random colors."
 
-//FIXME subtypes
 /obj/item/metroidcross/charged/rainbow/do_effect(mob/user)
 	user.visible_message(SPAN_WARNING("[src] swells and splits into three new metroids!"))
 	for(var/i in 1 to 3)
-		var/mob/living/carbon/metroid/S = new(get_turf(user))
-		S.colour = S.random_colour()
+		var/color = pick(list(
+		"green",
+		"purple",
+		"metal",
+		"orange",
+		"blue",
+		"dark blue",
+		"dark purple",
+		"yellow",
+		"silver",
+		"pink",
+		"red",
+		"gold",
+		"grey",
+		"sepia",
+		"bluespace",
+		"cerulean",
+		"pyrite",
+		"light pink",
+		"oil",
+		"adamantine",
+		"black"))
+		new /mob/living/carbon/metroid(get_turf(user), color)
 	return ..()

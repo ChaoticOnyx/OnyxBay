@@ -784,14 +784,17 @@
 		return FALSE
 
 	to_chat(owner, SPAN_NOTICE("You attempt to create a new cardboard brother."))
-
+	var/mob/living/master = owner.mind.enslaved_to?.resolve()
 	if(do_after(owner, 30, target = owner))
 		if(!C.use(10))
 			to_chat(owner, SPAN_WARNING("You do not have enough cardboard!"))
 			return FALSE
 		to_chat(owner, SPAN_NOTICE("You create a new cardboard golem shell."))
 		StartCooldown()
-		//new /obj/effect/mob_spawn/ghost_role/human/golem(location, /datum/species/golem/cardboard)
+		if(master)
+			new /obj/effect/mob_spawn/ghost_role/human/golem/servant(get_turf(owner), /datum/species/golem/cardboard, master)
+		else
+			new /obj/effect/mob_spawn/ghost_role/human/golem(get_turf(owner), /datum/species/golem/cardboard)
 
 /datum/species/golem/leather
 	name = "Leather Golem"
