@@ -18,6 +18,8 @@
 		network_name = "Slime Link", \
 		linker_action_path = /datum/action/innate/link_minds\
 	)
+	spawn(5)
+		H.update_action_buttons()
 
 //Species datums don't normally implement destroy, but JELLIES SUCK ASS OUT OF A STEEL STRAW
 /datum/species/promethean/stargazer/Destroy()

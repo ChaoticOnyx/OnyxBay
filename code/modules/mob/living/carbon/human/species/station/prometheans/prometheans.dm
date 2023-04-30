@@ -25,7 +25,7 @@
 	bump_flag =        METROID
 	swap_flags =       MONKEY|METROID|SIMPLE_ANIMAL
 	push_flags =       MONKEY|METROID|SIMPLE_ANIMAL
-	species_flags =    SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_BLOOD
+	species_flags =    SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_BLOOD | SPECIES_NO_LACE
 	appearance_flags = HAS_SKIN_COLOR | HAS_EYE_COLOR | HAS_HAIR_COLOR
 	spawn_flags =      SPECIES_IS_RESTRICTED
 
@@ -78,7 +78,9 @@
 			blooddeficiency = modifier
 	regenerate_limbs = new
 	regenerate_limbs.Grant(H)
-	regenerate_limbs.button.update_icon()
+	spawn(5)
+		H.update_action_buttons()
+	H.UpdateAppearance(mutcolor_update=TRUE)
 
 /datum/species/promethean/luminescent/on_species_loss(mob/living/carbon/human/H)
 	regenerate_limbs.Remove(H)

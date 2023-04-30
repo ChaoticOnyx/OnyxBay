@@ -35,11 +35,21 @@
 	if(istype(owner))
 		organ_action = new /datum/action/innate/adamantine_vocal_cords
 		organ_action.Grant(owner)
+		spawn(5)
+			owner.update_action_buttons()
 
 /obj/item/organ/internal/vocal_cords/adamantine/replaced(mob/living/carbon/human/target, obj/item/organ/external/affected)
 	..()
 	if(istype(owner))
 		organ_action.Grant(owner)
+		spawn(5)
+			owner.update_action_buttons()
+
+/obj/item/organ/internal/vocal_cords/adamantine/removed(mob/living/user, drop_organ, detach)
+	organ_action.Remove(owner)
+	spawn(5)
+		owner.update_action_buttons()
+	..()
 
 /datum/action/innate/adamantine_vocal_cords
 	check_flags = AB_CHECK_ALIVE|AB_CHECK_INSIDE

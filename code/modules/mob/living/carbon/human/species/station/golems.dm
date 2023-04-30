@@ -8,7 +8,9 @@
 	additional_langs = LANGUAGE_SOL_COMMON
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/punch)
 	generic_attack_mod = 1.5
-	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED | SPECIES_FLAG_NO_FIRE
+	appearance_flags = HAS_SKIN_COLOR | HAS_SKIN_TONE_NORMAL
+
+	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED | SPECIES_NO_LACE | SPECIES_FLAG_NO_FIRE
 	spawn_flags = SPECIES_IS_RESTRICTED
 
 	siemens_coefficient = 0
@@ -16,10 +18,10 @@
 	poison_type = null
 
 	blood_color = "#515573"
-	fixed_mut_color = "#aaaaaa"
+	fixed_mut_color = "#080808"
+	flesh_color = "#080808"
 
 	var/info_text = "As an <span class='danger'>Iron Golem</span>, you don't have any special traits."
-	var/random_eligible = TRUE //If false, the golem subtype can't be made through golem mutation toxin
 	var/prefix = "Iron"
 
 	var/list/special_names = list("Tarkus")
@@ -71,10 +73,12 @@
 	return golem_name
 
 /datum/species/golem/handle_post_spawn(mob/living/carbon/human/H)
+	SHOULD_CALL_PARENT(TRUE)
 	if(H.mind)
 		H.mind.assigned_role = "Golem"
 		H.mind.special_role = "Golem"
 		H.dna.mcolor = fixed_mut_color
+		H.UpdateAppearance(mutcolor_update=TRUE)
 	..()
 
 /datum/species/golem/is_eligible_for_antag_spawn(antag_id)
@@ -82,7 +86,7 @@
 
 /datum/species/golem/adamantine
 	name = SPECIES_GOLEM_ADAMANTINE
-	fixed_mut_color = "#44eedd"
+	fixed_mut_color = "#002B2D"
 	info_text = "As an <span class='danger'>Adamantine Golem</span>, you possess special vocal cords allowing you to \"resonate\" messages to all golems. Your unique mineral makeup makes you immune to most types of magic."
 	prefix = "Adamantine"
 	special_names = null
@@ -99,9 +103,9 @@
 //The suicide bombers of golemkind
 /datum/species/golem/plasma
 	name = SPECIES_GOLEM_PLASMA
-	fixed_mut_color = "#aa33dd"
+	fixed_mut_color = "#4C1564"
 	meat_type = /obj/item/stack/material/plasma
-	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED
+	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED | SPECIES_NO_LACE
 	heat_level_1 = 400
 	heat_level_2 = 500
 	heat_level_3 = 1000
@@ -137,13 +141,15 @@
 	if(ishuman(H))
 		var/datum/action/innate/ignite/ignite = new
 		ignite.Grant(H)
-		H.update_action_buttons()
+		spawn(5)
+			H.update_action_buttons()
 
 /datum/species/golem/plasma/on_species_loss(mob/living/carbon/human/H)
 	var/datum/action/innate/ignite/ignite = H.actions.Find(/datum/action/innate/ignite)
 	if(ignite)
 		ignite.Remove(H)
-		H.update_action_buttons()
+		spawn(5)
+			H.update_action_buttons()
 	..()
 
 /datum/action/innate/ignite
@@ -163,9 +169,8 @@
 
 //Harder to hurt
 /datum/species/golem/diamond
-	name = "Diamond Golem"
 	name = SPECIES_GOLEM_DIAMOND
-	fixed_mut_color = "#00ffff"
+	fixed_mut_color = "#2C797A"
 	brute_mod = 0.45
 	meat_type = /obj/item/stack/material/diamond
 	info_text = "As a <span class='danger'>Diamond Golem</span>, you are more resistant than the average golem."
@@ -175,9 +180,8 @@
 
 //Faster but softer and less armoured
 /datum/species/golem/gold
-	name = "Gold Golem"
 	name = SPECIES_GOLEM_GOLD
-	fixed_mut_color = "#cccc00"
+	fixed_mut_color = "#484800"
 	slowdown = -0.5
 	brute_mod = 0.90 //down from 55
 	meat_type = /obj/item/stack/material/gold
@@ -188,9 +192,8 @@
 
 //Heavier, thus higher chance of stunning when punching
 /datum/species/golem/silver
-	name = "Silver Golem"
 	name = SPECIES_GOLEM_SILVER
-	fixed_mut_color = "#dddddd"
+	fixed_mut_color = "#5F5F5F"
 	meat_type = /obj/item/stack/material/silver
 	info_text = "As a <span class='danger'>Silver Golem</span>, your attacks have a higher chance of stunning. Being made of silver, your body is immune to spirits of the damned and runic golems."
 	prefix = "Silver"
@@ -208,9 +211,8 @@
 
 //Harder to stun, deals more damage, massively slowpokes, but gravproof and obstructive. Basically, The Wall.
 /datum/species/golem/plasteel
-	name = "Plasteel Golem"
 	name = SPECIES_GOLEM_PLASTEEL
-	fixed_mut_color = "#bbbbbb"
+	fixed_mut_color = "#000000"
 	bump_flag = HEAVY
 	push_flags = ALLMOBS
 	swap_flags = ALLMOBS
@@ -228,17 +230,15 @@
 
 /datum/species/golem/plasteel/negates_gravity(mob/living/carbon/human/H)
 	return TRUE
-
 //Immune to ash storms
 /datum/species/golem/titanium
 	name = SPECIES_GOLEM_TITANIUM
-	fixed_mut_color = "#ffffff"
+	fixed_mut_color = "#5F5F5F"
 	meat_type = /obj/item/stack/material/plasteel/titanium
 	info_text = "As a <span class='danger'>Titanium Golem</span>, you are immune to ash storms, and slightly more resistant to burn damage."
 	burn_mod = 0.9
 	prefix = "Titanium"
 	special_names = list("Dioxide")
-
 //No ashshtorms
 /datum/species/golem/titanium/handle_post_spawn(mob/living/carbon/human/H)
 	..()
@@ -251,7 +251,7 @@
 //Immune to ash storms and lava
 /datum/species/golem/plastitanium
 	name = SPECIES_GOLEM_PLASTITANIUM
-	fixed_mut_color = "#888888"
+	fixed_mut_color = "#262737"
 	meat_type = /obj/item/stack/material/ocp
 	info_text = "As a <span class='danger'>Plastitanium Golem</span>, you are immune to both ash storms and lava, and slightly more resistant to burn damage."
 	burn_mod = 0.8
@@ -273,7 +273,7 @@
 /datum/species/golem/alloy
 	name = "Alien Alloy Golem"
 	name = SPECIES_GOLEM_ALIEN
-	fixed_mut_color = "#333333"
+	fixed_mut_color = "#402835"
 	additional_langs = list(LANGUAGE_ABDUCTOR)
 	meat_type = /obj/item/stack/material/platinum
 	slowdown = -1 //faster
@@ -293,14 +293,14 @@
 //Since this will usually be created from a collaboration between podpeople and free golems, wood golems are a mix between the two races
 /datum/species/golem/wood
 	name = SPECIES_GOLEM_WOOD
-	fixed_mut_color = "#9E704B"
+	fixed_mut_color = "#512704"
 	meat_type = /obj/item/stack/material/wood
 	//Can burn and take damage from heat
 	brute_mod = 0.8
 	burn_mod = 1.55
 	info_text = "As a <span class='danger'>Wooden Golem</span>, you have plant-like traits: you take damage from extreme temperatures, can be set on fire, and have lower armor than a normal golem. You regenerate when in the light and wither in the darkness."
 	prefix = "Wooden"
-	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED
+	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED | SPECIES_NO_LACE
 	heat_level_1 = 400
 	heat_level_2 = 500
 	heat_level_3 = 1000
@@ -321,11 +321,13 @@
 			H.nutrition = STOMACH_FULLNESS_HIGH
 		if(light_amount > 0.2) //if there's enough light, heal
 			H.heal_overall_damage(brute = 0.5*0.1, burn = 0.5*0.1)
-			H.adjustToxLoss(-0.5*0.1)
-			H.adjustOxyLoss(-0.5*0.1)
+			H.adjustToxLoss(-0.5)
+			H.adjustOxyLoss(-0.5)
 
 	if(H.nutrition < STOMACH_FULLNESS_LOW + 50)
 		H.take_overall_damage(brute = 2)
+	if(H.fire_stacks < 2) //flammable
+		H.adjust_fire_stacks(0.5)
 
 //Radioactive puncher, hits for burn but only as hard as human, slightly more durable against brute but less against everything else
 /datum/component/golem/uranium
@@ -341,17 +343,16 @@
 
 /datum/species/golem/uranium
 	name = SPECIES_GOLEM_URANIUM
-	fixed_mut_color = "#77ff00"
+	fixed_mut_color = "#295800"
 	meat_type = /obj/item/stack/material/uranium
 	info_text = "As an <span class='danger'>Uranium Golem</span>, your very touch burns and irradiates organic lifeforms. You don't hit as hard as most golems, but you are far more durable against blunt force trauma."
 	brute_mod = 0.5
 	prefix = "Uranium"
 	special_names = list("Oxide", "Rod", "Meltdown", "235")
+
 /datum/species/golem/uranium/handle_post_spawn(mob/living/carbon/human/H)
 	. = ..()
 	H.AddComponent(/datum/component/golem/uranium)
-
-
 
 /datum/species/golem/uranium/handle_damage(mob/living/carbon/human/H)
 	var/datum/component/golem/uranium/golem_comp = H.get_component(/datum/component/golem/uranium)
@@ -362,7 +363,7 @@
 //Immune to physical bullets and resistant to brute, but very vulnerable to burn damage. Dusts on death.
 /datum/species/golem/sand
 	name = SPECIES_GOLEM_SAND
-	fixed_mut_color = "#ffdc8f"
+	fixed_mut_color = "#88703b"
 	meat_type = /obj/item/ore/glass //this is sand
 	burn_mod = 3 //melts easily
 	brute_mod = 0.15
@@ -370,6 +371,8 @@
 	prefix = "Sand"
 	special_names = list("Castle", "Bag", "Dune", "Worm", "Storm")
 
+/datum/species/golem/sand/get_random_skin_tone()
+	return -55
 
 /datum/species/golem/sand/handle_death(mob/living/carbon/human/H)
 	H.visible_message(SPAN_DANGER("[H] turns into a pile of sand!"))
@@ -383,7 +386,7 @@
 //Reflects lasers and resistant to burn damage, but very vulnerable to brute damage. Shatters on death.
 /datum/species/golem/glass
 	name = SPECIES_GOLEM_GLASS
-	fixed_mut_color = "#5a96b4aa" //transparent body
+	fixed_mut_color = "#367B9C" //transparent body
 	meat_type = /obj/item/material/shard
 	brute_mod = 3 //very fragile
 	burn_mod = 0.25
@@ -391,7 +394,13 @@
 	prefix = "Glass"
 	special_names = list("Lens", "Prism", "Fiber", "Bead")
 
+/datum/species/golem/glass/handle_post_spawn(mob/living/carbon/human/H)
+	. = ..()
+	H.alpha = 150
 
+/datum/species/golem/glass/on_species_loss(mob/living/carbon/human/H)
+	. = ..()
+	H.alpha = 255
 /datum/species/golem/glass/handle_death(mob/living/carbon/human/H)
 	playsound(H, 'sound/effects/materials/glass/glassbr.ogg', 70, TRUE)
 	H.visible_message(SPAN_DANGER("[H] shatters!"))
@@ -431,7 +440,7 @@
 
 /datum/species/golem/bluespace
 	name = SPECIES_GOLEM_BLUESPACE
-	fixed_mut_color = "#3333ff"
+	fixed_mut_color = "#020284"
 	meat_type = /obj/item/stack/telecrystal/bluespace_crystal
 	info_text = "As a <span class='danger'>Bluespace Golem</span>, you are spatially unstable: You will teleport when hit, and you can teleport manually at a long distance."
 	prefix = "Bluespace"
@@ -444,10 +453,14 @@
 		golem_comp.unstable_teleport = new
 		golem_comp.unstable_teleport.Grant(H)
 		golem_comp.last_teleport = world.time
+		spawn(5)
+			H.update_action_buttons()
 
 /datum/species/golem/bluespace/on_species_loss(mob/living/carbon/human/H)
 	var/datum/component/golem/bluespace/golem_comp = H.get_component(/datum/component/golem/bluespace)
 	golem_comp.unstable_teleport.Remove(H)
+	spawn(5)
+		H.update_action_buttons()
 	qdel(golem_comp)
 	..()
 
@@ -489,7 +502,6 @@
 
 /datum/species/golem/runic
 	name = SPECIES_GOLEM_CULT
-	genders = list("neuter")
 	info_text = "As a <span class='danger'>Runic Golem</span>, you possess eldritch powers granted by the Elder Goddess Nar'Sie."
 	prefix = "Runic"
 	special_names = null
@@ -507,10 +519,10 @@
 	. = ..()
 	var/datum/component/golem/runic/golem_comp = H.AddComponent(/datum/component/golem/runic)
 	golem_comp.jaunt = new
-	H.add_spell(golem_comp.abyssal_gaze)
+	H.add_spell(golem_comp.jaunt, "const")
 
-	golem_comp.jaunt = new
-	H.add_spell(golem_comp.abyssal_gaze)
+	golem_comp.abyssal_gaze = new
+	H.add_spell(golem_comp.abyssal_gaze, "const")
 
 /datum/species/golem/runic/on_species_loss(mob/living/carbon/human/H)
 	var/datum/component/golem/runic/golem_comp = H.get_component(/datum/component/golem/runic)
@@ -521,11 +533,10 @@
 
 /datum/species/golem/cloth
 	name = SPECIES_GOLEM_CLOTH
-	genders = list("neuter")
 	icobase = 'icons/mob/human_races/golems/r_cloth.dmi'
 	info_text = "As a <span class='danger'>Cloth Golem</span>, you are able to reform yourself after death, provided your remains aren't burned or destroyed. You are, of course, very flammable. \
 	Being made of cloth, your body is immune to spirits of the damned and runic golems. You are faster than that of other golems, but weaker and less resilient."
-	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED
+	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED | SPECIES_NO_LACE
 	heat_level_1 = 400
 	heat_level_2 = 500
 	heat_level_3 = 1000
@@ -555,7 +566,7 @@
 	return golem_name
 
 /datum/species/golem/cloth/handle_environment_special(mob/living/carbon/human/H)
-	if(H.fire_stacks < 1)
+	if(H.fire_stacks < 2)
 		H.adjust_fire_stacks(1) //always prone to burning
 	..()
 
@@ -660,7 +671,7 @@
 	name = SPECIES_GOLEM_PLASTIC
 	prefix = "Plastic"
 	special_names = list("Sheet", "Bag", "Bottle")
-	fixed_mut_color = "fffa"
+	fixed_mut_color = "#0a0a0a"
 	info_text = "As a <span class='danger'>Plastic Golem</span>, you are capable of ventcrawling and passing through plastic flaps as long as you are naked."
 	inherent_verbs = list(
 		/mob/living/proc/ventcrawl
@@ -674,7 +685,6 @@
 	name = SPECIES_GOLEM_BRONZE
 	prefix = "Bronze"
 	special_names = list("Bell")
-	fixed_mut_color = "#cd7f32"
 	info_text = "As a <span class='danger'>Bronze Golem</span>, you are very resistant to loud noises, and make loud noises if something hard hits you, however this ability does hurt your hearing."
 	icobase = 'icons/mob/human_races/golems/r_clock.dmi'
 
@@ -736,7 +746,7 @@
 	brute_mod = 0.85
 	burn_mod = 1.25
 	slowdown = -1.5
-	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED
+	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED | SPECIES_NO_LACE
 	heat_level_1 = 400
 	heat_level_2 = 500
 	heat_level_3 = 1000
@@ -767,168 +777,17 @@
 	name = "Leather Golem"
 	name = SPECIES_GOLEM_LEATHER
 	special_names = list("Face", "Man", "Belt") //Ah dude 4 strength 4 stam leather belt AHHH
-	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED
+	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED | SPECIES_NO_LACE
 	heat_level_1 = 400
 	heat_level_2 = 500
 	heat_level_3 = 1000
 	prefix = "Leather"
-	fixed_mut_color = "#624a2e"
+	fixed_mut_color = "#2E1600"
 	info_text = "As a <span class='danger'>Leather Golem</span>, you are flammable, but you can grab things with incredible ease, allowing all your grabs to start at a strong level."
-/*
-/datum/species/golem/bone
-	name = SPECIES_GOLEM_BONE
-	prefix = "Bone"
-	special_names = list("Head", "Broth", "Fracture", "Rattler", "Appetit")
-	genders = list("neuter")
-	fixed_mut_color = null
-	icobase = 'icons/mob/human_races/golems/r_bone.dmi'
-	species_language_holder = /datum/language_holder/golem/bone
-	info_text = "As a <span class='danger'>Bone Golem</span>, You have a powerful spell that lets you chill your enemies with fear, and milk heals you! Just make sure to watch our for bone-hurting juice."
-	var/datum/action/innate/bonechill/bonechill
 
-/datum/species/golem/bone/handle_post_spawn(mob/living/carbon/human/H)
-	..()
-	if(ishuman(H))
-		bonechill = new
-		bonechill.Grant(C)
-
-/datum/species/golem/bone/on_species_loss(mob/living/carbon/human/H)
-	if(bonechill)
-		bonechill.Remove(H)
-	..()
-
-/datum/species/golem/bone/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H, seconds_per_tick, times_fired)
-	. = ..()
-	if(chem.type == /datum/reagent/toxin/bonehurtingjuice)
-		H.adjustStaminaLoss(7.5 * REM * seconds_per_tick, 0)
-		H.adjustBruteLoss(0.5 * REM * seconds_per_tick, 0)
-		if(SPT_PROB(10, seconds_per_tick))
-			switch(rand(1, 3))
-				if(1)
-					H.say(pick("oof.", "ouch.", "my bones.", "oof ouch.", "oof ouch my bones."), forced = /datum/reagent/toxin/bonehurtingjuice)
-				if(2)
-					H.manual_emote(pick("oofs silently.", "looks like [H] bones hurt.", "grimaces, as though [H] bones hurt."))
-				if(3)
-					to_chat(H, SPAN_WARNING("Your bones hurt!"))
-		if(chem.overdosed)
-			if(SPT_PROB(2, seconds_per_tick) && iscarbon(H)) //big oof
-				var/selected_part = pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG) //God help you if the same limb gets picked twice quickly.
-				var/obj/item/bodypart/bp = H.get_bodypart(selected_part) //We're so sorry skeletons, you're so misunderstood
-				if(bp)
-					playsound(H, get_sfx(SFX_DESECRATION), 50, TRUE, -1) //You just want to socialize
-					H.visible_message(SPAN_WARNING("[H] rattles loudly and flails around!!"), SPAN_DANGER("Your bones hurt so much that your missing muscles spasm!!"))
-					H.say("OOF!!", forced=/datum/reagent/toxin/bonehurtingjuice)
-					bp.receive_damage(200, 0, 0) //But I don't think we should
-				else
-					to_chat(H, SPAN_WARNING("Your missing arm aches from wherever you left it."))
-					H.emote("sigh")
-		H.reagents.remove_reagent(chem.type, chem.metabolization_rate * seconds_per_tick)
-		return TRUE
-
-/datum/action/innate/bonechill
-	name = "Bone Chill"
-	desc = "Rattle your bones and strike fear into your enemies!"
-	check_flags = AB_CHECK_CONSCIOUS
-	button_icon = 'icons/mob/actions/actions_spells.dmi'
-	button_icon_state = "bonechill"
-	var/cooldown = 600
-	var/last_use
-	var/snas_chance = 3
-
-/datum/action/innate/bonechill/Activate()
-	if(world.time < last_use + cooldown)
-		to_chat(owner, SPAN_WARNING("You aren't ready yet to rattle your bones again!"))
-		return
-	owner.visible_message(SPAN_WARNING("[owner] rattles [owner] bones harrowingly."), SPAN_NOTICE("You rattle your bones"))
-	last_use = world.time
-	if(prob(snas_chance))
-		playsound(get_turf(owner),'sound/magic/RATTLEMEBONES2.ogg', 100)
-		if(ishuman(owner))
-			var/mob/living/carbon/human/H = owner
-			var/mutable_appearance/badtime = mutable_appearance('icons/mob/species/human/bodyparts.dmi', "b_golem_eyes", -FIRE_LAYER-0.5)
-			badtime.appearance_flags = RESET_COLOR
-			H.overlays_standing[FIRE_LAYER+0.5] = badtime
-			H.apply_overlay(FIRE_LAYER+0.5)
-			addtimer(CALLBACK(H, TYPE_PROC_REF(/mob/living/carbon/, remove_overlay), FIRE_LAYER+0.5), 25)
-	else
-		playsound(get_turf(owner),'sound/magic/RATTLEMEBONES.ogg', 100)
-	for(var/mob/living/L in orange(7, get_turf(owner)))
-		if((L.mob_biotypes & MOB_UNDEAD) || isgolem(L) || HAS_TRAIT(L, TRAIT_RESISTCOLD))
-			continue //Do not affect our brothers
-
-		to_chat(L, span_cultlarge("A spine-chilling sound chills you to the bone!"))
-		L.apply_status_effect(/datum/status_effect/bonechill)
-		L.add_mood_event("spooked", /datum/mood_event/spooked)
-
-/datum/species/golem/snow
-	name = "Snow Golem"
-	name = SPECIES_GOLEM_SNOW
-	fixed_mut_color = null //custom sprites
-	icobase = 'icons/mob/human_races/golems/r_snow.dmi'
-	armor = 45 //down from 55
-	burn_mod = 3 //melts easily
-	info_text = "As a <span class='danger'>Snow Golem</span>, you are extremely vulnerable to burn damage, but you can generate snowballs and shoot cryokinetic beams. You will also turn to snow when dying, preventing any form of recovery."
-	prefix = "Snow"
-	special_names = list("Flake", "Blizzard", "Storm")
-	species_traits = list(NO_UNDERWEAR,NOEYESPRITES) //no mutcolors, no eye sprites
-	inherent_traits = list(
-		TRAIT_ADVANCEDTOOLUSER,
-		TRAIT_CAN_STRIP,
-		TRAIT_GENELESS,
-		TRAIT_LITERATE,
-		TRAIT_NOBREATH,
-		TRAIT_NODISMEMBER,
-		TRAIT_PIERCEIMMUNE,
-		TRAIT_RADIMMUNE,
-		TRAIT_RESISTCOLD,
-		TRAIT_RESISTHIGHPRESSURE,
-		TRAIT_RESISTLOWPRESSURE,
-
-	)
-	bodypart_overrides = list(
-		BODY_ZONE_L_ARM = /obj/item/bodypart/arm/left/golem/snow,
-		BODY_ZONE_R_ARM = /obj/item/bodypart/arm/right/golem/snow,
-		BODY_ZONE_HEAD = /obj/item/bodypart/head/golem/snow,
-		BODY_ZONE_L_LEG = /obj/item/bodypart/leg/left/golem/snow,
-		BODY_ZONE_R_LEG = /obj/item/bodypart/leg/right/golem/snow,
-		BODY_ZONE_CHEST = /obj/item/bodypart/chest/golem/snow,
-	)
-
-	/// A ref to our "throw snowball" spell we get on species gain.
-	var/datum/action/cooldown/spell/conjure_item/snowball/snowball
-	/// A ref to our cryobeam spell we get on species gain.
-	var/datum/action/cooldown/spell/pointed/projectile/cryo/cryo
-
-/datum/species/golem/snow/handle_death(mob/living/carbon/human/H)
-	H.visible_message(SPAN_DANGER("[H] turns into a pile of snow!"))
-	for(var/obj/item/W in H)
-		H.dropItemToGround(W)
-	for(var/i in 1 to rand(3,5))
-		new /obj/item/stack/sheet/mineral/snow(get_turf(H))
-	new /obj/item/food/grown/carrot(get_turf(H))
-	qdel(H)
-
-/datum/species/golem/snow/handle_post_spawn(mob/living/carbon/human/H)
-	. = ..()
-	ADD_TRAIT(grant_to, TRAIT_SNOWSTORM_IMMUNE)
-
-	snowball = new(grant_to)
-	snowball.StartCooldown()
-	snowball.Grant(grant_to)
-
-	cryo = new(grant_to)
-	cryo.StartCooldown()
-	cryo.Grant(grant_to)
-
-/datum/species/golem/snow/on_species_loss(mob/living/carbon/remove_from)
-	REMOVE_TRAIT(remove_from, TRAIT_SNOWSTORM_IMMUNE)
-	QDEL_NULL(snowball)
-	QDEL_NULL(cryo)
-	return ..()
-*/
 /datum/species/golem/mhydrogen //Effectively most other metal-based golem types rolled into one - immune to all weather, lava, flashes, and magic, while being just as hardened as diamond golems.
 	name = SPECIES_GOLEM_HYDROGEN
-	fixed_mut_color = "#535469"
+	fixed_mut_color = "#3A3A55"
 	brute_mod = 0.5
 	info_text = "As a <span class='danger'>Metallic Hydrogen Golem</span>, you were forged in the highest pressures and the highest heats. Your unique material makeup makes you immune to magic and most environmental damage, while helping you resist most other attacks."
 	prefix = "Metallic Hydrogen"

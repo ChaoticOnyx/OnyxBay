@@ -36,6 +36,8 @@
 	var/datum/action/innate/use_extract/major/extract_major = new(src)
 	extract_major.Grant(new_jellyperson)
 	extract_eater_comp.luminescent_actions += integrate_extract
+	spawn(5)
+		new_jellyperson.update_action_buttons()
 
 /datum/species/promethean/luminescent/on_species_loss(mob/living/carbon/human/H)
 	. = ..()
