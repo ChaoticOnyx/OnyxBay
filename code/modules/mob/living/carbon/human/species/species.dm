@@ -29,6 +29,7 @@
 	var/blood_color = COLOR_BLOOD_HUMAN               // Red.
 	var/flesh_color = "#ffc896"               // Pink.
 	var/fixed_mut_color
+	var/fixed_skin_tone
 	var/blood_oxy = 1
 	var/base_color                            // Used by changelings. Should also be used for icon previes..
 	var/limb_blend = ICON_ADD

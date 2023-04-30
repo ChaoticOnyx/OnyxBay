@@ -25,16 +25,17 @@
 	/// The icon background for the speech action handed out.
 	var/speech_action_background_icon_state = "bg_alien"
 	/// The master's linking action, which allows them to link people to the network.
-	var/datum/action/linker_action
+	var/datum/action/innate/link_minds/linker_action
 	/// The master's speech action. The owner of the link shouldn't lose this as long as the link remains.
 	var/datum/action/innate/linked_speech/master_speech
+	/// The master's speech action. The owner of the link shouldn't lose this as long as the link remains.
+	var/datum/action/innate/project_thought/project_action
 	/// An assoc list of [mob/living]s to [datum/action/innate/linked_speech]s. All the mobs that are linked to our network.
 	var/list/mob/living/linked_mobs = list()
 
 /datum/component/mind_linker/Initialize(
 	network_name = "Mind Link",
 	chat_color = "#008CA2",
-	linker_action_path,
 	link_message,
 	unlink_message,
 	signals_which_destroy_us,
@@ -63,14 +64,14 @@
 	src.speech_action_icon_state = speech_action_icon_state
 	src.speech_action_background_icon_state = speech_action_background_icon_state
 
-	if(ispath(linker_action_path))
-		linker_action = new linker_action_path(src)
-		linker_action.Grant(owner)
-	else
-		error("[type] was created without a valid linker_action_path. No one will be able to link to it.")
+	linker_action = new(src)
+	linker_action.Grant(owner)
 
 	master_speech = new(src)
 	master_speech.Grant(owner)
+
+	project_action = new(src)
+	project_action.Grant(owner)
 
 	to_chat(owner, SPAN("bold",SPAN_NOTICE("You establish a [network_name], allowing you to link minds to communicate telepathically.")))
 
@@ -78,9 +79,6 @@
 	for(var/mob/living/remaining_mob as anything in linked_mobs)
 		unlink_mob(remaining_mob)
 	linked_mobs.Cut()
-	QDEL_NULL(linker_action)
-	QDEL_NULL(master_speech)
-	QDEL_NULL(post_unlink_callback)
 	return ..()
 
 /datum/component/mind_linker/register_with_parent()
@@ -207,3 +205,141 @@
 
 	for(var/mob/recipient as anything in GLOB.dead_mob_list_)
 		to_chat(recipient, "[ ghost_follow_link(owner, recipient)] [formatted_message]")
+
+/datum/action/innate/project_thought
+	name = "Send Thought"
+	//desc = "Send a private psychic message to someone you can see."
+	button_icon_state = "send_mind"
+	button_icon = 'icons/mob/actions.dmi'
+	background_icon_state = "bg_alien"
+
+
+/datum/action/innate/project_thought/Activate()
+	var/mob/living/carbon/human/telepath = owner
+
+	if(telepath.stat == DEAD)
+		return
+	if(!is_species(telepath, /datum/species/promethean/stargazer))
+		return
+
+	var/list/recipient_options = list()
+	for(var/mob/living/recipient in oview(telepath))
+		recipient_options.Add(recipient)
+
+	if(!length(recipient_options))
+		to_chat(telepath, SPAN_WARNING("You don't see anyone to send your thought to."))
+		return
+
+	var/mob/living/recipient = tgui_input_list(telepath, "Choose a telepathic message recipient", "Telepathy", sort_list(recipient_options))
+
+	if(isnull(recipient))
+		return
+
+	var/msg = input(telepath,"Telepathy") as text|null
+	if(isnull(msg))
+		return
+
+	if(ishuman(recipient))
+		var/mob/living/carbon/human/H = recipient
+		if(istype(H.head, /obj/item/clothing/head/tinfoil))
+			to_chat(telepath, SPAN_WARNING("As you reach into [H]'s mind, you are stopped by a mental blockage. It seems you've been foiled."))
+			return
+
+	log_say("(metroid telepathy): [telepath] send \"[msg]\"to [recipient]")
+	to_chat(recipient, "[SPAN_NOTICE("You hear an alien voice in your head... ")]<font color=#008CA2>[msg]</font>")
+	to_chat(telepath, SPAN_NOTICE("You telepathically said: \"[msg]\" to [recipient]"))
+
+	for(var/dead in GLOB.dead_mob_list_)
+		if(!isobserver(dead))
+			continue
+		var/follow_link_user = ghost_follow_link(telepath, dead)
+		var/follow_link_target = ghost_follow_link(dead, recipient, dead)
+		to_chat(dead, "[follow_link_user] [SPAN("name","[telepath]")][SPAN_NOTICE("Slime Telepathy --> ")] [follow_link_target] [SPAN("name","[recipient]")] [SPAN_NOTICE("[msg]")]")
+
+/datum/action/innate/link_minds
+	name = "Link Minds"
+	//desc = "Link someone's mind to your Slime Link, allowing them to communicate telepathically with other linked minds."
+	button_icon_state = "mindlink"
+	button_icon = 'icons/mob/actions.dmi'
+	background_icon_state = "bg_alien"
+	/// The species required to use this ability. Typepath.
+	var/req_species = /datum/species/promethean/stargazer
+	/// Whether we're currently linking to someone.
+	var/currently_linking = FALSE
+
+/datum/action/innate/link_minds/New(Target)
+	. = ..()
+	if(!istype(Target, /datum/component/mind_linker))
+		qdel(src)
+		error("[name] ([type]) was instantiated on a non-mind_linker target, this doesn't work.")
+
+/datum/action/innate/link_minds/IsAvailable(feedback = FALSE)
+	. = ..()
+	if(!.)
+		return
+	if(!ishuman(owner) || !is_species(owner, req_species))
+		return FALSE
+	if(currently_linking)
+		return FALSE
+
+	return TRUE
+
+/datum/action/innate/link_minds/Activate()
+
+	var/obj/item/grab/G
+	if(istype(owner.l_hand, /obj/item/grab))
+		G = owner.l_hand
+	else
+		if(istype(owner.r_hand, /obj/item/grab))
+			G = owner.r_hand
+	if(G.current_grab.state_name != NORM_AGGRESSIVE)
+		to_chat(owner, SPAN_WARNING("You need to aggressively grab someone to link minds!"))
+		return
+
+	var/mob/living/living_target = G.affecting
+	if(living_target.stat == DEAD)
+		to_chat(owner, SPAN_WARNING("They're dead!"))
+		return
+
+	to_chat(owner, SPAN_NOTICE("You begin linking [living_target]'s mind to yours..."))
+	to_chat(living_target, SPAN_WARNING("You feel a foreign presence within your mind..."))
+	currently_linking = TRUE
+
+
+	if(!do_after(owner, 6 SECONDS, living_target) && link_check(living_target))
+		to_chat(owner, SPAN_WARNING("You can't seem to link [living_target]'s mind."))
+		to_chat(living_target, SPAN_WARNING("The foreign presence leaves your mind."))
+		currently_linking = FALSE
+		return
+
+	currently_linking = FALSE
+	if(QDELETED(src) || QDELETED(owner) || QDELETED(living_target))
+		return
+
+	var/datum/component/mind_linker/linker = target
+	if(!linker.link_mob(living_target))
+		to_chat(owner, SPAN_WARNING("You can't seem to link [living_target]'s mind."))
+		to_chat(living_target, SPAN_WARNING("The foreign presence leaves your mind."))
+
+/datum/action/innate/link_minds/proc/link_check(mob/living/linkee)
+	if(!is_species(owner, req_species))
+		return FALSE
+
+	var/obj/item/grab/G
+	if(istype(owner.l_hand, /obj/item/grab))
+		G = owner.l_hand
+	else
+		if(istype(owner.r_hand, /obj/item/grab))
+			G = owner.r_hand
+	if(G.current_grab.state_name != NORM_AGGRESSIVE || G.current_grab.state_name != NORM_NECK || G.current_grab.state_name != NORM_KILL)
+		return FALSE
+
+	if(!G.affecting)
+		return FALSE
+	if(G.affecting != linkee)
+		return FALSE
+
+	if(linkee.stat == DEAD)
+		return FALSE
+
+	return TRUE

@@ -229,6 +229,7 @@
 #define BP_GANGLION "spinal ganglion"
 #define BP_ADAMANTINE_RESONATOR "adamantine resonator"
 #define BP_ADAMANTINE_VOCAL_CORDS "adamantine vocal cords"
+#define BP_METROID 	"metroid jelly vessel"
 
 // Robo Organs.
 #define BP_POSIBRAIN	"posibrain"

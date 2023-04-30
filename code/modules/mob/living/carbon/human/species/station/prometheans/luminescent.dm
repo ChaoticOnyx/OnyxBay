@@ -29,19 +29,26 @@
 	integrate_extract.Grant(new_jellyperson)
 	extract_eater_comp.luminescent_actions += integrate_extract
 
-	var/datum/action/innate/use_extract/extract_minor = new(src)
+	var/datum/action/cooldown/use_extract/extract_minor = new(src)
 	extract_minor.Grant(new_jellyperson)
 	extract_eater_comp.luminescent_actions += extract_minor
 
-	var/datum/action/innate/use_extract/major/extract_major = new(src)
+	var/datum/action/cooldown/use_extract/major/extract_major = new(src)
 	extract_major.Grant(new_jellyperson)
-	extract_eater_comp.luminescent_actions += integrate_extract
+	extract_eater_comp.luminescent_actions += extract_major
 	spawn(5)
 		new_jellyperson.update_action_buttons()
 
 /datum/species/promethean/luminescent/on_species_loss(mob/living/carbon/human/H)
 	. = ..()
 	var/datum/component/extract_eater/extract_eater_comp = H.get_component(/datum/component/extract_eater)
+
+	for(var/datum/action/A in extract_eater_comp.luminescent_actions)
+		A.Remove(H)
+
+	spawn(1)
+		H.update_action_buttons()
+	H.light.destroy()
 	qdel(extract_eater_comp)
 
 /// Updates the glow of our internal glow thing.
@@ -109,6 +116,7 @@
 			return
 		if(!human_owner.can_unequip(to_integrate))
 			return
+		human_owner.drop(to_integrate)
 		to_integrate.forceMove(human_owner)
 		extract_eater_comp.current_extract = to_integrate
 		to_chat(human_owner, SPAN_NOTICE("[to_integrate.name] consumed"))
@@ -116,38 +124,37 @@
 	for(var/datum/action/to_update as anything in extract_eater_comp.luminescent_actions)
 		to_update.button.UpdateIcon()
 
-/datum/action/innate/use_extract
+/datum/action/cooldown/use_extract
 	name = "Extract Minor Activation"
 	//desc = "Pulse the metroid extract with energized jelly to activate it."
+	action_type = AB_INNATE
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "metroiduse1"
 	button_icon = 'icons/mob/actions.dmi'
 	background_icon_state = "bg_alien"
 	var/activation_type = METROID_ACTIVATE_MINOR
+	shared_cooldown = TRUE
 
-/datum/action/innate/use_extract/New(Target)
+/datum/action/cooldown/use_extract/New(Target)
 	. = ..()
 
 
 /// Callback for /datum/component/action_item_overlay to find the metroid extract from within the species
-/datum/action/innate/use_extract/proc/locate_extract()
+/datum/action/cooldown/use_extract/proc/locate_extract()
 	var/datum/component/extract_eater/extract_eater_comp = owner.get_component(/datum/component/extract_eater)
 	if(!istype(extract_eater_comp))
 		return null
 
 	return extract_eater_comp.current_extract
 
-/datum/action/innate/use_extract/IsAvailable(feedback = FALSE)
+/datum/action/cooldown/use_extract/IsAvailable(feedback = FALSE)
 	. = ..()
-	if(!.)
-		return
-
 	var/datum/component/extract_eater/extract_eater_comp = owner.get_component(/datum/component/extract_eater)
-	if(istype(extract_eater_comp) && extract_eater_comp.current_extract && (extract_eater_comp.extract_cooldown < world.time))
+	if(istype(extract_eater_comp) && extract_eater_comp.current_extract && .)
 		return TRUE
 	return FALSE
 
-/datum/action/innate/use_extract/Activate()
+/datum/action/cooldown/use_extract/Activate()
 	if(!IsAvailable())
 		return FALSE
 
@@ -158,12 +165,12 @@
 
 	extract_eater_comp.extract_cooldown = world.time + 10 SECONDS
 	var/after_use_cooldown = extract_eater_comp.current_extract.activate(human_owner, extract_eater_comp, activation_type)
-	extract_eater_comp.extract_cooldown = world.time + after_use_cooldown
-	owner.update_action_buttons()
-	addtimer(CALLBACK(owner, /mob/proc/update_action_buttons), after_use_cooldown)
+	cooldown_time = after_use_cooldown
+	StartCooldown()
 
-/datum/action/innate/use_extract/major
+/datum/action/cooldown/use_extract/major
 	name = "Extract Major Activation"
 	//desc = "Pulse the metroid extract with plasma jelly to activate it."
 	button_icon_state = "metroiduse2"
 	activation_type = METROID_ACTIVATE_MAJOR
+	shared_cooldown = TRUE

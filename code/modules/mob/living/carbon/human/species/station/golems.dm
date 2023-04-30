@@ -9,9 +9,8 @@
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/punch)
 	generic_attack_mod = 1.5
 	appearance_flags = HAS_SKIN_COLOR | HAS_SKIN_TONE_NORMAL
-
+	has_eyes_icon = FALSE
 	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED | SPECIES_NO_LACE | SPECIES_FLAG_NO_FIRE
-	spawn_flags = SPECIES_IS_RESTRICTED
 
 	siemens_coefficient = 0
 	breath_type = null
@@ -127,7 +126,7 @@
 			to_chat(H, SPAN_NOTICE("You feel more stable."))
 			boom_warning = FALSE
 
-	if(H.bodytemperature > 440 && H.on_fire && prob(25))
+	if(H.bodytemperature > 420 && H.on_fire && prob(25))
 		explosion(H, devastation_range = 1, heavy_impact_range = 2, light_impact_range = 4)
 		if(H)
 			H.investigate_log("has been gibbed as [H] body explodes.")
@@ -141,14 +140,14 @@
 	if(ishuman(H))
 		var/datum/action/innate/ignite/ignite = new
 		ignite.Grant(H)
-		spawn(5)
+		spawn(1)
 			H.update_action_buttons()
 
 /datum/species/golem/plasma/on_species_loss(mob/living/carbon/human/H)
 	var/datum/action/innate/ignite/ignite = H.actions.Find(/datum/action/innate/ignite)
 	if(ignite)
 		ignite.Remove(H)
-		spawn(5)
+		spawn(1)
 			H.update_action_buttons()
 	..()
 
@@ -227,9 +226,10 @@
 		/datum/unarmed_attack/kick/strong/golem/plasteel,
 		/datum/unarmed_attack/stomp/strong/golem/plasteel
 	)
+/datum/species/golem/plasteel/handle_post_spawn(mob/living/carbon/human/H)
+	..()
+	species_flags |= SPECIES_FLAG_NO_SLIP
 
-/datum/species/golem/plasteel/negates_gravity(mob/living/carbon/human/H)
-	return TRUE
 //Immune to ash storms
 /datum/species/golem/titanium
 	name = SPECIES_GOLEM_TITANIUM
@@ -337,9 +337,10 @@
 	if(!COOLDOWN_FINISHED(src, radiation_emission_cooldown))
 		return
 	else
-		var/datum/radiation_source/rad_source = SSradiation.radiate(H, new /datum/radiation/preset/uranium_238)
-		rad_source.schedule_decay(2 SECONDS)
-		COOLDOWN_START(src, radiation_emission_cooldown, 30 SECONDS)
+		var/datum/radiation_source/rad_source = SSradiation.radiate(H, new /datum/radiation/preset/artifact)
+		rad_source.info.energy = (100 MEGA ELECTRONVOLT)
+		rad_source.schedule_decay(5 SECONDS)
+		COOLDOWN_START(src, radiation_emission_cooldown, 60 SECONDS)
 
 /datum/species/golem/uranium
 	name = SPECIES_GOLEM_URANIUM
@@ -420,7 +421,7 @@
 				var/new_y = P.starting.y + pick(0, 0, 0, 0, 0, -1, 1, -2, 2)
 				// redirect the projectile
 				P.firer = H
-				P.redirect(locate(clamp(new_x, 1, world.maxx), clamp(new_y, 1, world.maxy), H.z), H)
+				P.redirect(clamp(new_x, 1, world.maxx), clamp(new_y, 1, world.maxy), locate(clamp(new_x, 1, world.maxx), clamp(new_y, 1, world.maxy), H.z), H)
 			return FALSE
 	return ..()
 
@@ -453,13 +454,13 @@
 		golem_comp.unstable_teleport = new
 		golem_comp.unstable_teleport.Grant(H)
 		golem_comp.last_teleport = world.time
-		spawn(5)
+		spawn(1)
 			H.update_action_buttons()
 
 /datum/species/golem/bluespace/on_species_loss(mob/living/carbon/human/H)
 	var/datum/component/golem/bluespace/golem_comp = H.get_component(/datum/component/golem/bluespace)
 	golem_comp.unstable_teleport.Remove(H)
-	spawn(5)
+	spawn(1)
 		H.update_action_buttons()
 	qdel(golem_comp)
 	..()
@@ -663,7 +664,7 @@
 	update_name()
 	burn_time--
 
-	set_next_think(world.time + 1 SECOND)
+	set_next_think(world.time)
 
 
 
@@ -713,7 +714,7 @@
 /datum/species/golem/bronze/proc/gong(mob/living/carbon/human/H)
 	var/datum/component/golem/bronze/golem_comp = H.get_component(/datum/component/golem/bronze)
 	golem_comp.last_gong_time = world.time
-	for(var/mob/living/carbon/human/M in ohearers(7, H.loc))
+	for(var/mob/living/carbon/human/M in hearers(7, H.loc))
 		if(M.stat == DEAD) //F
 			continue
 		if(M == H)
@@ -735,6 +736,8 @@
 				M.show_message(SPAN_WARNING("GONG!"), AUDIBLE_MESSAGE)
 				M.playsound_local(H, 'sound/effects/gong.ogg', 50, TRUE)
 
+/datum/component/golem/cardboard
+	var/datum/action/cooldown/golem/create_brother/create_action
 
 /datum/species/golem/cardboard //Faster but weaker, can also make new shells on its own
 	name = SPECIES_GOLEM_CARDBOARD
@@ -750,6 +753,22 @@
 	heat_level_1 = 400
 	heat_level_2 = 500
 	heat_level_3 = 1000
+
+/datum/species/golem/cardboard/handle_post_spawn(mob/living/carbon/human/H)
+	. = ..()
+	var/datum/component/golem/cardboard/golem_comp = H.AddComponent(/datum/component/golem/cardboard)
+	golem_comp.create_action = new
+	golem_comp.create_action.Grant(H)
+	spawn(1)
+		H.update_action_buttons()
+
+/datum/species/golem/cardboard/on_species_loss(mob/living/carbon/human/H)
+	. = ..()
+	var/datum/component/golem/cardboard/golem_comp = H.get_component(/datum/component/golem/cardboard)
+	golem_comp.create_action.Remove(H)
+	spawn(1)
+		H.update_action_buttons()
+	qdel(golem_comp)
 
 /datum/action/cooldown/golem/create_brother
 
@@ -772,6 +791,7 @@
 			return FALSE
 		to_chat(owner, SPAN_NOTICE("You create a new cardboard golem shell."))
 		StartCooldown()
+		//new /obj/effect/mob_spawn/ghost_role/human/golem(location, /datum/species/golem/cardboard)
 
 /datum/species/golem/leather
 	name = "Leather Golem"

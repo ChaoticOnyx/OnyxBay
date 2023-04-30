@@ -33,21 +33,21 @@
 /obj/item/organ/internal/vocal_cords/adamantine/New()
 	..()
 	if(istype(owner))
-		organ_action = new /datum/action/innate/adamantine_vocal_cords
+		organ_action = new /datum/action/innate/adamantine_vocal_cords(src)
 		organ_action.Grant(owner)
-		spawn(5)
+		spawn(1)
 			owner.update_action_buttons()
 
 /obj/item/organ/internal/vocal_cords/adamantine/replaced(mob/living/carbon/human/target, obj/item/organ/external/affected)
 	..()
 	if(istype(owner))
 		organ_action.Grant(owner)
-		spawn(5)
+		spawn(1)
 			owner.update_action_buttons()
 
 /obj/item/organ/internal/vocal_cords/adamantine/removed(mob/living/user, drop_organ, detach)
 	organ_action.Remove(owner)
-	spawn(5)
+	spawn(1)
 		owner.update_action_buttons()
 	..()
 
@@ -66,4 +66,4 @@
 
 	owner.say(message)
 	for (var/obj/item/organ/internal/adamantine_resonator in GLOB.golems_resonator)
-		to_chat(adamantine_resonator.owner,SPAN("resonate",SPAN("name","[owner.real_name]</span> <span class='message'>resonates, \"[message]\"")))
+		to_chat(adamantine_resonator.owner,FONT_LARGE(SPAN("resonate",SPAN("name","[owner.real_name]</span> <span class='message'>resonates, \"[message]\""))))
