@@ -209,27 +209,27 @@
 /obj/item/golem_shell/attackby(obj/item/I, mob/user, params)
 	. = ..()
 	var/static/list/golem_shell_species_types = list(
-		/obj/item/stack/material/iron = /datum/species/golem,
-		/obj/item/stack/material/steel = /datum/species/golem,
-		/obj/item/stack/material/glass = /datum/species/golem/glass,
-		/obj/item/stack/material/plasteel = /datum/species/golem/plasteel,
-		/obj/item/stack/material/sandstone = /datum/species/golem/sand,
-		/obj/item/stack/material/plasma = /datum/species/golem/plasma,
-		/obj/item/stack/material/diamond = /datum/species/golem/diamond,
-		/obj/item/stack/material/gold = /datum/species/golem/gold,
-		/obj/item/stack/material/silver = /datum/species/golem/silver,
-		/obj/item/stack/material/uranium = /datum/species/golem/uranium,
-		/obj/item/stack/material/plasteel/titanium = /datum/species/golem/titanium,
-		/obj/item/stack/material/ocp = /datum/species/golem/plastitanium,
-		/obj/item/stack/material/wood = /datum/species/golem/wood,
-		/obj/item/stack/telecrystal/bluespace_crystal = /datum/species/golem/bluespace,
-		/obj/item/device/soulstone = /datum/species/golem/runic,
-		/obj/item/stack/medical/bruise_pack = /datum/species/golem/cloth,
-		/obj/item/stack/material/cloth = /datum/species/golem/cloth,
-		/obj/item/stack/material/plastic = /datum/species/golem/plastic,
-		/obj/item/stack/material/cardboard = /datum/species/golem/cardboard,
-		/obj/item/stack/material/leather = /datum/species/golem/leather,
-		/obj/item/stack/material/mhydrogen = /datum/species/golem/mhydrogen,
+		/obj/item/stack/material/iron = SPECIES_GOLEM,
+		/obj/item/stack/material/steel = SPECIES_GOLEM,
+		/obj/item/stack/material/glass = SPECIES_GOLEM_GLASS,
+		/obj/item/stack/material/plasteel = SPECIES_GOLEM_PLASTEEL,
+		/obj/item/stack/material/sandstone = SPECIES_GOLEM_SAND,
+		/obj/item/stack/material/plasma = SPECIES_GOLEM_PLASMA,
+		/obj/item/stack/material/diamond = SPECIES_GOLEM_DIAMOND,
+		/obj/item/stack/material/gold = SPECIES_GOLEM_GOLD,
+		/obj/item/stack/material/silver = SPECIES_GOLEM_SILVER,
+		/obj/item/stack/material/uranium = SPECIES_GOLEM_URANIUM,
+		/obj/item/stack/material/plasteel/titanium = SPECIES_GOLEM_TITANIUM,
+		/obj/item/stack/material/ocp = SPECIES_GOLEM_PLASTITANIUM,
+		/obj/item/stack/material/wood = SPECIES_GOLEM_WOOD,
+		/obj/item/stack/telecrystal/bluespace_crystal = SPECIES_GOLEM_BLUESPACE,
+		/obj/item/device/soulstone = SPECIES_GOLEM_CULT,
+		/obj/item/stack/medical/bruise_pack = SPECIES_GOLEM_CLOTH,
+		/obj/item/stack/material/cloth = SPECIES_GOLEM_CLOTH,
+		/obj/item/stack/material/plastic = SPECIES_GOLEM_PLASTIC,
+		/obj/item/stack/material/cardboard = SPECIES_GOLEM_CARDBOARD,
+		/obj/item/stack/material/leather = SPECIES_GOLEM_LEATHER,
+		/obj/item/stack/material/mhydrogen = SPECIES_GOLEM_HYDROGEN,
 	)
 
 	if(istype(I,/obj/item/device/soulstone))
@@ -243,7 +243,7 @@
 		return
 
 	var/obj/item/stack/stuff_stack = I
-	var/species = golem_shell_species_types[I.type]
+	var/species = golem_shell_species_types[stuff_stack.stacktype]
 
 	if(!species)
 		to_chat(user, SPAN_WARNING("You can't build a golem out of this kind of material!"))

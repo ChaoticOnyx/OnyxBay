@@ -2069,6 +2069,7 @@
 #include "code\modules\mob\living\carbon\xenobiological\death.dm"
 #include "code\modules\mob\living\carbon\xenobiological\examine.dm"
 #include "code\modules\mob\living\carbon\xenobiological\extracts.dm"
+#include "code\modules\mob\living\carbon\xenobiological\extracts_activation_reagents.dm"
 #include "code\modules\mob\living\carbon\xenobiological\hud.dm"
 #include "code\modules\mob\living\carbon\xenobiological\items.dm"
 #include "code\modules\mob\living\carbon\xenobiological\life.dm"

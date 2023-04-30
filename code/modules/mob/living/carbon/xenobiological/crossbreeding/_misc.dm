@@ -56,7 +56,6 @@
 	density = TRUE
 	var/health = 40
 
-//FIXME
 /obj/structure/ice_stasis/attackby(obj/item/W, mob/user)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 

@@ -7,7 +7,7 @@
 	desc = "A humanoid shape, empty, lifeless, and full of potential."
 	icon = 'icons/obj/wizard.dmi'
 	icon_state = "construct"
-	mob_species = /datum/species/golem
+	mob_species =  SPECIES_GOLEM
 	anchored = FALSE
 	density = FALSE
 	prompt_name = "a free golem"
@@ -18,6 +18,7 @@
 	var/can_transfer = TRUE
 	/// Weakref to the creator of this golem shell.
 	var/weakref/owner_ref
+	outfit = null
 
 /obj/effect/mob_spawn/ghost_role/human/golem/Initialize(mapload, datum/species/golem/species, mob/creator)
 	if(creator)
@@ -40,33 +41,34 @@
 
 /obj/effect/mob_spawn/ghost_role/human/golem/name_mob(mob/living/spawned_mob, forced_name)
 	if(!forced_name)
-		var/datum/species/golem/golem_species = mob_species
+		var/datum/species/golem/golem_species = all_species[mob_species]
 		if(owner_ref?.resolve())
 			forced_name =  "[initial(golem_species.prefix)] Golem ([rand(1,999)])"
 		else
-			golem_species = new mob_species
 			forced_name =  golem_species.get_random_name()
 	return ..()
 
 /obj/effect/mob_spawn/ghost_role/human/golem/special(mob/living/new_spawn, mob/mob_possessor)
 	. = ..()
 	var/mob/living/real_owner = owner_ref?.resolve()
-	var/datum/species/golem/golem_species = mob_species
-	to_chat(new_spawn, "[initial(golem_species.info_text)]")
+	var/mob/living/carbon/human/H = new_spawn
+	var/datum/species/golem/golem_species = all_species[mob_species]
+	to_chat(H, "[initial(golem_species.info_text)]")
 	if(isnull(real_owner))
-		if(!is_station_turf(get_turf(new_spawn)))
-			to_chat(new_spawn, "Build golem shells in the autolathe, and feed refined mineral sheets to the shells to bring them to life! \
+		if(!is_station_turf(get_turf(H)))
+			to_chat(H, "Build golem shells in the autolathe, and feed refined mineral sheets to the shells to bring them to life! \
 				You are generally a peaceful group unless provoked.")
 
-	else if(new_spawn.mind)
-		new_spawn.mind.store_memory(FONT_LARGE(SPAN_WARNING("YOU'RE SLAVE OF [real_owner]")))
-		to_chat(new_spawn, FONT_LARGE(SPAN_WARNING("YOU'RE SLAVE OF [real_owner]")))
+	else if(H.mind)
+		H.mind.store_memory(FONT_LARGE(SPAN_WARNING("YOU'RE SLAVE OF [real_owner]")))
+		to_chat(H, FONT_LARGE(SPAN_WARNING("YOU'RE SLAVE OF [real_owner]")))
 
 	else
 		error("[type] created a golem without a mind.")
 
-	log_game(" [new_spawn] possessed a golem shell[real_owner ? " enslaved to [key_name(real_owner)]" : ""].")
-	log_admin("[key_name(new_spawn)] possessed a golem shell[real_owner ? " enslaved to [key_name(real_owner)]" : ""].")
+	H.set_species(mob_species)
+	log_game(" [H] possessed a golem shell[real_owner ? " enslaved to [key_name(real_owner)]" : ""].")
+	log_admin("[key_name(H)] possessed a golem shell[real_owner ? " enslaved to [key_name(real_owner)]" : ""].")
 
 /obj/effect/mob_spawn/ghost_role/human/golem/attack_hand(mob/user, list/modifiers)
 	. = ..()
@@ -104,4 +106,4 @@
 	desc = "A humanoid shape, empty, lifeless, and full of potential."
 	prompt_name = "free golem"
 	can_transfer = FALSE
-	mob_species = /datum/species/golem/adamantine
+	mob_species = SPECIES_GOLEM_ADAMANTINE

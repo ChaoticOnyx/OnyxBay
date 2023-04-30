@@ -13,6 +13,7 @@
 	var/effectmod = ""
 	var/recurring = FALSE
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	var/list/activate_reagents = list()
 
 /obj/item/metroid_extract/attackby(obj/item/O as obj, mob/user as mob)
 	if(istype(O, /obj/item/metroidsteroid2))

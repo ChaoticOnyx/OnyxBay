@@ -76,8 +76,8 @@
 	if(H.mind)
 		H.mind.assigned_role = "Golem"
 		H.mind.special_role = "Golem"
-		H.dna.mcolor = fixed_mut_color
-		H.UpdateAppearance(mutcolor_update=TRUE)
+	H.dna.mcolor = fixed_mut_color
+	H.UpdateAppearance(mutcolor_update=TRUE)
 	..()
 
 /datum/species/golem/is_eligible_for_antag_spawn(antag_id)
@@ -331,7 +331,7 @@
 
 //Radioactive puncher, hits for burn but only as hard as human, slightly more durable against brute but less against everything else
 /datum/component/golem/uranium
-	COOLDOWN_DECLARE(radiation_emission_cooldown)
+	var/radiation_emission_cooldown = 0
 
 /datum/component/golem/uranium/proc/radiation_emission(mob/living/carbon/human/H)
 	if(!COOLDOWN_FINISHED(src, radiation_emission_cooldown))

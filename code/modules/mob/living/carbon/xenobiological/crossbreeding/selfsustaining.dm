@@ -18,7 +18,8 @@ Self-sustaining extracts:
 /obj/item/metroidcross/selfsustaining/Initialize(mapload)
 	..()
 	visible_message(SPAN_WARNING("The [src] shudders, and splits into four smaller extracts."))
-	for(var/i in 1 to 4)
+	var/amount = rand(1,4)
+	for(var/i in amount)
 		var/obj/item/autometroid/A = new /obj/item/autometroid(src.loc)
 		var/obj/item/metroid_extract/X = new extract_type(A)
 		A.extract = X
@@ -32,7 +33,7 @@ Self-sustaining extracts:
 	return ..()
 
 /obj/item/autometroid/attack_self(mob/user)
-	var/reagentselect //FIXME = tgui_input_list(user, "Reagent the extract will produce.", "Self-sustaining Reaction", sort_list(extract.activate_reagents, /proc/cmp_typepaths_asc))
+	var/reagentselect = tgui_input_list(user, "Reagent the extract will produce.", "Self-sustaining Reaction", sort_list(extract.activate_reagents, /proc/cmp_name_or_type_asc))
 	if(isnull(reagentselect))
 		return
 	var/amount = 5
@@ -42,12 +43,12 @@ Self-sustaining extracts:
 		return
 	if(!reagentselect)
 		return
-	if(reagentselect == "lesser plasma")
-		amount = 4
+	if(reagentselect == "Plasma")
 		reagentselect = /datum/reagent/toxin/plasma
-	if(reagentselect == "holy water and uranium")
-		reagentselect = /datum/reagent/water/holywater
-		secondary = /datum/reagent/uranium
+	if(reagentselect == "Water")
+		reagentselect = /datum/reagent/water
+	if(reagentselect == "Blood")
+		reagentselect = /datum/reagent/blood
 	extract.forceMove(user.drop_location())
 	qdel(src)
 	user.put_in_active_hand(extract)

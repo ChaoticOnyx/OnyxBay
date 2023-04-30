@@ -831,7 +831,7 @@
 	var/damage = 0
 	var/lasthealth
 	var/think_delay = 5 SECONDS
-//FIXME
+
 /datum/modifier/status_effect/pinkdamagetracker/think()
 	if((lasthealth - holder.health) > 0)
 		damage += (lasthealth - holder.health)
@@ -998,7 +998,7 @@
 	ADD_TRAIT(holder, TRAIT_PACIFISM)
 	set_next_think(world.time)
 	return ..()
-//FIXME
+
 /datum/modifier/status_effect/stabilized/lightpink/think()
 	for(var/mob/living/carbon/human/H in range(1, get_turf(holder)))
 		if(H != holder && H.stat != DEAD && (H.getBruteLoss() >= 80 || H.getFireLoss() >= 80 || H.getOxyLoss() >= 30)  && !H.reagents.has_reagent(/datum/reagent/inaprovaline))

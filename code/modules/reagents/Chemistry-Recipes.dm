@@ -1323,13 +1323,7 @@
 	reaction_sound = 'sound/effects/teleport.ogg'
 
 /datum/chemical_reaction/metroid/teleport/on_reaction(datum/reagents/holder)
-	var/list/turfs = list()
-	for(var/turf/T in orange(holder.my_atom,6))
-		turfs += T
-	for(var/atom/movable/a in viewers(holder.my_atom,2))
-		if(!a.simulated)
-			continue
-		a.forceMove(pick(turfs))
+	new /obj/item/stack/telecrystal/bluespace_crystal(get_turf(holder.my_atom))
 	..()
 
 //pyrite
