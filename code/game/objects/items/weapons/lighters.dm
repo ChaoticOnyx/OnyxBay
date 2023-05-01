@@ -43,7 +43,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/flame/match/dropped(mob/user as mob)
+/obj/item/flame/match/dropped(mob/user)
 	//If dropped, put ourselves out
 	//not before lighting up the turf we land on, though.
 	if(lit)
