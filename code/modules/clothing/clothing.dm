@@ -619,17 +619,6 @@ BLIND     // can't see anything
 	..()
 
 /obj/item/clothing/shoes/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/flame/match))
-		var/obj/item/flame/match/M = I
-		if (!M.lit && !M.burnt)
-			M.lit = 1
-			M.damtype = "burn"
-			M.icon_state = "match_lit"
-			M.set_light(0.2, 0.5, 2, 3.5, "#e38f46")
-			set_next_think(world.time)
-			playsound(src.loc, 'sound/items/match.ogg', 60, 1, -4)
-			user.visible_message(SPAN_NOTICE("[user] strikes the match on a shoe."))
-			M.update_icon()
 	if(can_hold_knife && is_type_in_list(I, list(/obj/item/material/shard, /obj/item/material/butterfly, /obj/item/material/kitchen/utensil, /obj/item/material/hatchet/tacknife, /obj/item/material/knife/shiv)))
 		if(holding)
 			to_chat(user, "<span class='warning'>\The [src] is already holding \a [holding].</span>")
@@ -640,6 +629,9 @@ BLIND     // can't see anything
 		user.visible_message("<span class='notice'>\The [user] shoves \the [I] into \the [src].</span>", range = 1)
 		verbs |= /obj/item/clothing/shoes/proc/draw_knife
 		update_icon()
+	else if(istype(I, /obj/item/flame/match))
+		var/obj/item/flame/match/M = I
+		M.light_by_shoes(user)
 	else
 		return ..()
 

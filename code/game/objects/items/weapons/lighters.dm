@@ -65,6 +65,17 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	set_light(0)
 	set_next_think(0)
 
+/obj/item/flame/match/proc/light_by_shoes(mob/living/user)
+	if (!src.lit && !src.burnt)
+		src.lit = 1
+		src.damtype = "burn"
+		src.icon_state = "match_lit"
+		src.set_light(0.2, 0.5, 2, 3.5, "#e38f46")
+		set_next_think(world.time)
+		playsound(src.loc, 'sound/items/match.ogg', 60, 1, -4)
+		user.visible_message(SPAN_NOTICE("[user] strikes the match on a shoe."))
+		src.update_icon()
+
 /////////
 //ZIPPO//
 /////////

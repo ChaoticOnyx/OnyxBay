@@ -166,7 +166,7 @@ var/list/mining_floors = list()
 		explosion_block = 3
 
 //Not even going to touch this pile of spaghetti
-/turf/simulated/mineral/attackby(obj/item/W as obj, mob/user as mob)
+/turf/simulated/mineral/attackby(obj/item/W, mob/user)
 	if(!user.IsAdvancedToolUser())
 		to_chat(usr, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return

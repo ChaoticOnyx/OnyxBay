@@ -1,4 +1,4 @@
-var/global/list/minevendor_prison_list = list(
+GLOBAL_LIST_INIT(minevendor_prison_list, list(
 	new /datum/data/mining_equipment("Soy Dope",                  	 /obj/item/reagent_containers/food/soydope,		              	   20,     5),
 	new /datum/data/mining_equipment("Match", 						 /obj/item/flame/match ,                 						   -1,    10),
 	new /datum/data/mining_equipment("Cigarette Trans-Stellar Duty-frees", /obj/item/clothing/mask/smokable/cigarette,                 30,    15),
@@ -48,7 +48,7 @@ var/global/list/minevendor_prison_list = list(
 	new /datum/data/mining_equipment("Lazarus Injector",             /obj/item/lazarus_injector,                                       25,  1000),
 	new /datum/data/mining_equipment("Industrial Drill Head",        /obj/machinery/mining/drill,                                      -1,  1000,  1),
 	new /datum/data/mining_equipment("Diamond Pickaxe",              /obj/item/pickaxe/diamond,                                        10,  1500)
-	)
+))
 
 /obj/machinery/mineral/equipment_vendor/prison
 	name = "mining prison equipment vendor"
@@ -57,7 +57,7 @@ var/global/list/minevendor_prison_list = list(
 
 /obj/machinery/mineral/equipment_vendor/prison/Initialize()
 	. = ..()
-	equipment_list = minevendor_prison_list
+	equipment_list = GLOB.minevendor_prison_list
 
 /obj/item/circuitboard/machine/mining_equipment_vendor/prison
 	name = "circuit board (Mining Prison Equipment Vendor)"

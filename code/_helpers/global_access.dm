@@ -539,8 +539,6 @@
 			return global.meteors_threatening;
 		if("minevendor_list")
 			return global.minevendor_list;
-		if("minevendor_prison_list")
-			return global.minevendor_prison_list;
 		if("mining_floors")
 			return global.mining_floors;
 		if("mining_walls")
@@ -1418,8 +1416,6 @@
 			global.meteors_threatening=newval;
 		if("minevendor_list")
 			global.minevendor_list=newval;
-		if("minevendor_prison_list")
-			global.minevendor_prison_list=newval;
 		if("mining_floors")
 			global.mining_floors=newval;
 		if("mining_walls")
