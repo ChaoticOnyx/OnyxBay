@@ -817,6 +817,7 @@
 		H.real_name = originalname
 		H.setDNA(originalDNA)
 		H.set_species(originalspecies)
+		qdel(src)
 	set_next_think(0)
 
 /datum/modifier/status_effect/brokenpeace
