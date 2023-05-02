@@ -1,5 +1,6 @@
 /datum/space_level/polar_1
 	path = 'polar-1.dmm'
+	travel_chance = 5
 	traits = list(
 		ZTRAIT_STATION,
 		ZTRAIT_CONTACT
@@ -13,6 +14,7 @@
 
 /datum/space_level/polar_2
 	path = 'polar-2.dmm'
+	travel_chance = 5
 	traits = list(
 		ZTRAIT_STATION,
 		ZTRAIT_CONTACT
@@ -24,6 +26,7 @@
 
 /datum/space_level/polar_3
 	path = 'polar-3.dmm'
+	travel_chance = 10
 	traits = list(
 		ZTRAIT_STATION,
 		ZTRAIT_CONTACT,
@@ -32,7 +35,7 @@
 
 /datum/space_level/polar_4
 	path = 'polar-4.dmm'
-	travel_chance = 0
+	travel_chance = 15
 	traits = list(
 		ZTRAIT_CONTACT,
 		ZTRAIT_POLAR_WEATHER

@@ -47,20 +47,3 @@
 #define MAP_BAR_CLASSIC "classic"
 #define MAP_BAR_MODERN  "modern"
 #define MAP_BAR_SALOON  "saloon"
-
-// Polarplanet
-
-#define MAP_POLAR_DERELICT_MEADOW               "meadow"
-#define MAP_POLAR_DERELICT_ICE_LAKE             "ice_lake"
-#define MAP_POLAR_DERELICT_FOREST_3             "forest_3"
-#define MAP_POLAR_DERELICT_FOREST_2             "forest_2"
-#define MAP_POLAR_DERELICT_FOREST_1             "forest_1"
-#define MAP_POLAR_DERELICT_CULTIST_MEADOW       "cultist_meadow"
-#define MAP_POLAR_DERELICT_CONSTRUCTION_SITE    "construction_site"
-#define MAP_POLAR_DERELICT_CHURCH               "church"
-#define MAP_POLAR_DERELICT_CAVE_2               "cave_2"
-#define MAP_POLAR_DERELICT_CAVE_1               "cave_1"
-#define MAP_POLAR_DERELICT_BAR                  "bar"
-#define MAP_POLAR_DERELICT_ARCHEOLOGICAL_CENTER "archeological_center"
-#define MAP_POLAR_DERELICT_ABANDONED_VILLAGE    "abandoned_village"
-#define MAP_POLAR_DERELICT_NULL                 "null"

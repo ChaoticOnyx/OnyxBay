@@ -23,8 +23,8 @@
 		new /datum/space_level/polar_3,
 		new /datum/space_level/polar_4,
 		new /datum/space_level/polar_5,
-		new /datum/space_level/polarplanet/null_frozen,
-		new /datum/space_level/polarplanet/derelict_spawn_template_1
+		new /datum/space_level/null_frozen,
+		new /datum/space_level/jungle_level
 	)
 
 	station_name  = "Pathos-I"
