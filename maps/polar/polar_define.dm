@@ -22,9 +22,7 @@
 		new /datum/space_level/polar_2,
 		new /datum/space_level/polar_3,
 		new /datum/space_level/polar_4,
-		new /datum/space_level/polar_5,
-		new /datum/space_level/null_frozen,
-		new /datum/space_level/jungle_level
+		new /datum/space_level/polar_5
 	)
 
 	station_name  = "Pathos-I"
