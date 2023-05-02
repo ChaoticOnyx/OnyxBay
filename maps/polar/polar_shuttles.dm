@@ -73,11 +73,6 @@
 	warmup_time = 5
 	move_time = 5 SECONDS
 
-/datum/shuttle/autodock/ferry/train/New()
-	..()
-
-	AddComponent(/datum/component/train_auto)
-
 /obj/effect/shuttle_landmark/train/station
 	name = "Pathos-I"
 	landmark_tag = "nav_train_station"
@@ -94,3 +89,11 @@
 	landmark_tag = "nav_train_dock"
 	docking_controller = "train_dock_dock"
 	autoset = 1
+
+/obj/machinery/computer/shuttle_control/train
+	name = "train control"
+	shuttle_tag = "Train"
+	icon_state = "tiny"
+	icon_keyboard = "tiny_keyboard"
+	icon_screen = "lift"
+	density = 0

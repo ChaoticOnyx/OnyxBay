@@ -17,7 +17,6 @@
 	var/next_state_change = null
 	var/was_weather_message = FALSE
 	var/datum/announcement/priority/ams/AMS = new
-	var/list/things_list = list()
 
 /datum/component/polar_weather/Initialize()
 	. = ..()
@@ -99,39 +98,49 @@
 		C.mob.playsound_local(get_turf(M), S, 20, FALSE)
 
 /datum/component/polar_weather/proc/_update_state()
-	QDEL_LIST(things_list)
 	var/list/station_levels = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 	for(var/level in station_levels)
 		var/datum/space_level/L = GLOB.using_map.map_levels[level]
 
 		if(current_state == WEATHER_SNOWSTORM)
-			L.add_trait(ZTRAIT_BLUESPACE_EXIT)
-			L.remove_trait(ZTRAIT_BLUESPACE_CONVERGENCE)
+			L.add_trait(ZTRAIT_SNOWSTORM)
+			L.remove_trait(ZTRAIT_SNOWFALL)
 		else if(current_state == WEATHER_SNOWFALL)
-			L.add_trait(ZTRAIT_BLUESPACE_CONVERGENCE)
-			L.remove_trait(ZTRAIT_BLUESPACE_EXIT)
+			L.add_trait(ZTRAIT_SNOWFALL)
+			L.remove_trait(ZTRAIT_SNOWSTORM)
 		else
-			L.remove_trait(ZTRAIT_BLUESPACE_EXIT)
-			L.remove_trait(ZTRAIT_BLUESPACE_CONVERGENCE)
+			L.remove_trait(ZTRAIT_SNOWSTORM)
+			L.remove_trait(ZTRAIT_SNOWFALL)
 
 	var/light_color
+	var/weather_overlay
+	var/update_light = TRUE
 	switch(current_state)
 		if(WEATHER_NORMAL)
+			update_light = TRUE
 			light_color = "#ffffff"
+			weather_overlay = "nothing"
 		if(WEATHER_SNOWFALL)
-			light_color = "#091035"
+			update_light = FALSE
+			weather_overlay = "light_snow"
 		if(WEATHER_SNOWSTORM)
-			light_color = "#0508c4"
+			update_light = TRUE
+			light_color = "#2e2e2e"
+			weather_overlay = "snow_storm"
 
 	// var/list/weather_levels = GLOB.using_map.get_levels_with_trait(ZTRAIT_POLAR_WEATHER)
 	// for(var/level in weather_levels)
-	var/list/areas = area_repository.get_areas_by_z_level(list(/proc/is_outside_area))
-	for(var/A in areas)
-		var/list/turfs_to_process = get_area_turfs(areas[A])
+	var/list/impacted_areas = area_repository.get_areas_by_z_level(list(/proc/is_outside_area))
+	for(var/A in impacted_areas)
+		var/area/impacted_area = impacted_areas[A]
+		impacted_area.icon = 'icons/effects/effects.dmi'
+		impacted_area.icon_state = weather_overlay
+		var/list/turfs_to_process = get_area_turfs(impacted_area)
 		for(var/turf/T in turfs_to_process)
 
 			// Set lighting
-			T.set_light(0.95, 1, 1.25, l_color = light_color)
+			if(update_light)
+				T.set_light(0.95, 1, 1.25, l_color = light_color)
 
 			// Update temperature
 			var/datum/gas_mixture/M = T.return_air()
@@ -151,14 +160,15 @@
 			thermal_energy = M.get_thermal_energy_change(new_temperature)
 			M.add_thermal_energy(thermal_energy)
 
+
 /datum/component/polar_weather/proc/_weather_announce()
 	switch(next_state)
 		if(WEATHER_NORMAL)
 			AMS.Announce("Weather forecast: cloudless weather is expected in 2 minutes, the temperature is -30 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE)
 		if(WEATHER_SNOWFALL)
-			AMS.Announce("Weather forecast: Bluespace Convergence is expected in 2 minutes, the temperature will drop to -70 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE)
+			AMS.Announce("Weather forecast: snowfall is expected in 2 minutes, the temperature will drop to -70 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE)
 		if(WEATHER_SNOWSTORM)
-			AMS.Announce("Weather forecast: Bluespace Exit is expected in 2 minutes, the temperature will drop to -120 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE, new_sound = sound('sound/effects/siren.ogg'))
+			AMS.Announce("Weather forecast: blizzard is expected in 2 minutes, the temperature will drop to -120 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE, new_sound = sound('sound/effects/siren.ogg'))
 
 /datum/component/polar_weather/think()
 	if(GAME_STATE < RUNLEVEL_GAME)

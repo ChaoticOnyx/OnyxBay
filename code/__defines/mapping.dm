@@ -23,9 +23,9 @@
 /// Used for `/datum/component/polar_weather`.
 #define ZTRAIT_POLAR_WEATHER "Weather"
 /// Some bluespace equipment works unstable, radio has noise.
-#define ZTRAIT_BLUESPACE_CONVERGENCE "bs_convergence"
+#define ZTRAIT_SNOWFALL "snowfall"
 /// All the bluespace equipment can't work at all.
-#define ZTRAIT_BLUESPACE_EXIT "bs_exit"
+#define ZTRAIT_SNOWSTORM "snowstorm"
 
 // Engines
 #define MAP_ENG_RANDOM      "random"
