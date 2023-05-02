@@ -503,37 +503,37 @@ var/const/EXTRA_COST_FACTOR = 1.25
 
 /datum/autolathe/recipe/magazine_revolver_1
 	name = "ammunition (.357)"
-	path = /obj/item/ammo_magazine/a357
+	path = /obj/item/ammo_magazine/a357/nt
 	hidden = 1
 	category = "Arms and Ammunition"
 
 /datum/autolathe/recipe/magazine_revolver_2
 	name = "ammunition (.45)"
-	path = /obj/item/ammo_magazine/c45m
+	path = /obj/item/ammo_magazine/c45m/nt
 	hidden = 1
 	category = "Arms and Ammunition"
 
 /datum/autolathe/recipe/speedloader_44
 	name = "speed loader (.44 magnum)"
-	path = /obj/item/ammo_magazine/c44
+	path = /obj/item/ammo_magazine/c44/nt
 	hidden = 1
 	category = "Arms and Ammunition"
 
 /datum/autolathe/recipe/magazine_revolver_3
 	name = "ammunition (.38)"
-	path = /obj/item/ammo_magazine/c38
+	path = /obj/item/ammo_magazine/c38/nt
 	hidden = 1
 	category = "Arms and Ammunition"
 
 /datum/autolathe/recipe/magazine_revolver_4
 	name = "ammunition (.50AE)"
-	path = /obj/item/ammo_magazine/c50
+	path = /obj/item/ammo_magazine/c50/nt
 	hidden = 1
 	category = "Arms and Ammunition"
 
 /datum/autolathe/recipe/magazine_stetchkin
 	name = "ammunition (9mm)"
-	path = /obj/item/ammo_magazine/mc9mm
+	path = /obj/item/ammo_magazine/mc9mm/nt
 	hidden = 1
 	category = "Arms and Ammunition"
 
@@ -545,25 +545,25 @@ var/const/EXTRA_COST_FACTOR = 1.25
 
 /datum/autolathe/recipe/magazine_c20r
 	name = "ammunition (10mm)"
-	path = /obj/item/ammo_magazine/a10mm
+	path = /obj/item/ammo_magazine/a10mm/nt
 	hidden = 1
 	category = "Arms and Ammunition"
 
 /datum/autolathe/recipe/magazine_arifle
 	name = "ammunition (5.56mm)"
-	path = /obj/item/ammo_magazine/c556
+	path = /obj/item/ammo_magazine/c556/nt
 	hidden = 1
 	category = "Arms and Ammunition"
 
 /datum/autolathe/recipe/magazine_smg
 	name = "ammunition (9mm top mounted)"
-	path = /obj/item/ammo_magazine/mc9mmt
+	path = /obj/item/ammo_magazine/mc9mmt/nt
 	hidden = 1
 	category = "Arms and Ammunition"
 
 /datum/autolathe/recipe/magazine_carbine
 	name = "ammunition (7.62mm)"
-	path = /obj/item/ammo_magazine/a762
+	path = /obj/item/ammo_magazine/a762/nt
 	hidden = 1
 	category = "Arms and Ammunition"
 
@@ -593,13 +593,13 @@ var/const/EXTRA_COST_FACTOR = 1.25
 
 /datum/autolathe/recipe/magazine_uzi
 	name = "ammunition (machine.45)"
-	path = /obj/item/ammo_magazine/c45uzi
+	path = /obj/item/ammo_magazine/c45uzi/nt
 	hidden = 1
 	category = "Arms and Ammunition"
 
 /datum/autolathe/recipe/magazine_deagle
 	name = "ammunition (.50 AE)"
-	path = /obj/item/ammo_magazine/a50
+	path = /obj/item/ammo_magazine/a50/nt
 	hidden = 1
 	category = "Arms and Ammunition"
 

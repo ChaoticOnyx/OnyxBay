@@ -208,7 +208,7 @@
 
 /decl/hierarchy/supply_pack/security/rifle
 	name = "Weapons - Ballistic rifles"
-	contains = list(/obj/item/gun/projectile/automatic/z8 = 2)
+	contains = list(/obj/item/gun/projectile/automatic/z8/nt = 2)
 	cost = 80
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Ballistic rifles crate"
@@ -242,7 +242,7 @@
 
 /decl/hierarchy/supply_pack/security/pistolammo
 	name = "Ammunition - .45 magazines"
-	contains = list(/obj/item/ammo_magazine/c45m = 4)
+	contains = list(/obj/item/ammo_magazine/c45m/nt = 4)
 	cost = 20
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper .45 ammunition crate"
@@ -293,7 +293,7 @@
 
 /decl/hierarchy/supply_pack/security/pdwammo
 	name = "Ammunition - 9mm top mounted"
-	contains = list(/obj/item/ammo_magazine/mc9mmt = 4)
+	contains = list(/obj/item/ammo_magazine/mc9mmt/nt = 4)
 	cost = 40
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper 9mm ammunition crate"
@@ -318,7 +318,7 @@
 
 /decl/hierarchy/supply_pack/security/bullpupammo
 	name = "Ammunition - 7.62"
-	contains = list(/obj/item/ammo_magazine/a762 = 4)
+	contains = list(/obj/item/ammo_magazine/a762/nt = 4)
 	cost = 60
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper 7.62 ammunition crate"

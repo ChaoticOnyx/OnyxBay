@@ -14,6 +14,7 @@
 	var/projectile_type					//The bullet type to create when New() is called
 	var/obj/item/projectile/BB = null	//The loaded bullet - make it so that the projectiles are created only when needed?
 	var/spent_icon = "s-casing-spent"
+	var/humane = FALSE					// Humane ammunition prevents shrapnel embedding
 
 /obj/item/ammo_casing/Initialize()
 	. = ..()

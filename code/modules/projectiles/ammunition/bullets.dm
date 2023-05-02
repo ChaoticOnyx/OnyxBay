@@ -3,20 +3,36 @@
 	caliber = "357"
 	projectile_type = /obj/item/projectile/bullet/pistol/strong/revolver
 
+/obj/item/ammo_casing/a357/nt
+	desc = "A NT-manufactured .357 bullet casing."
+	humane = TRUE
+
+
 /obj/item/ammo_casing/a50
 	desc = "A .50AE bullet casing."
 	caliber = ".50"
 	projectile_type = /obj/item/projectile/bullet/pistol/strong
+
+
+/obj/item/ammo_casing/a50/nt
+	desc = "A NT-manufactured .50AE bullet casing."
+	humane = TRUE
+
 
 /obj/item/ammo_casing/a75
 	desc = "A 20mm bullet casing."
 	caliber = "75"
 	projectile_type = /obj/item/projectile/bullet/gyro
 
+
 /obj/item/ammo_casing/c38
 	desc = "A .38 bullet casing."
 	caliber = ".38"
 	projectile_type = /obj/item/projectile/bullet/pistol
+
+/obj/item/ammo_casing/c38/nt
+	desc = "A NT-manufactured .38 bullet casing."
+	humane = TRUE
 
 /obj/item/ammo_casing/c38/rubber
 	desc = "A .38 rubber bullet casing."
@@ -29,6 +45,7 @@
 	projectile_type = /obj/item/projectile/bullet/pistol/rubber
 	icon_state = "s-casing"
 	spent_icon = "s-casing-spent"
+	humane = TRUE
 
 /obj/item/ammo_casing/c38/spec/nonlethal
 	projectile_type = /obj/item/projectile/energy/electrode/c38
@@ -48,6 +65,7 @@
 /obj/item/ammo_casing/c38/chem/lethal
 	projectile_type = /obj/item/projectile/energy/c38
 
+
 /obj/item/ammo_casing/c9mm
 	desc = "A 9mm bullet casing."
 	caliber = "9mm"
@@ -63,14 +81,23 @@
 	icon_state = "r-casing"
 	spent_icon = "r-casing-spent"
 
+/obj/item/ammo_casing/c9mm/nt
+	desc = "A NT-manufactured 9mm bullet casing."
+	humane = TRUE
+
 /obj/item/ammo_casing/c9mm/practice
 	desc = "A 9mm practice bullet casing."
 	projectile_type = /obj/item/projectile/bullet/pistol/practice
+
 
 /obj/item/ammo_casing/c44
 	desc = "A .44 magnum bullet casing."
 	caliber = ".44"
 	projectile_type = /obj/item/projectile/bullet/pistol/medium/revolver
+
+/obj/item/ammo_casing/c44/nt
+	desc = "A NT-manufactured .44 magnum bullet casing."
+	humane = TRUE
 
 /obj/item/ammo_casing/c44/rubber
 	desc = "A .44 magnum rubber bullet casing."
@@ -83,6 +110,10 @@
 	desc = "A .45 bullet casing."
 	caliber = ".45"
 	projectile_type = /obj/item/projectile/bullet/pistol/medium
+
+/obj/item/ammo_casing/c45/nt
+	desc = "A NT-manufactured .45 bullet casing."
+	humane = TRUE
 
 /obj/item/ammo_casing/c45/practice
 	desc = "A .45 practice bullet casing."
@@ -102,10 +133,16 @@
 	desc = "A .45 stun cartridge casing."
 	projectile_type = /obj/item/projectile/energy/electrode/c45
 
+
 /obj/item/ammo_casing/a10mm
 	desc = "A 10mm bullet casing."
 	caliber = "10mm"
 	projectile_type = /obj/item/projectile/bullet/pistol/medium/smg
+
+/obj/item/ammo_casing/a10mm/nt
+	desc = "A NT-manufactured 10mm bullet casing."
+	humane = TRUE
+
 
 /obj/item/ammo_casing/shotgun
 	name = "shotgun slug"
@@ -172,12 +209,18 @@
 	projectile_type = /obj/item/projectile/energy/flash/flare
 	matter = list(MATERIAL_STEEL = 90, MATERIAL_GLASS = 90)
 
+
 /obj/item/ammo_casing/a556
 	desc = "A 5.56mm bullet casing."
 	caliber = "a556"
 	projectile_type = /obj/item/projectile/bullet/rifle/a556
 	icon_state = "rifle-casing"
 	spent_icon = "rifle-casing-spent"
+
+/obj/item/ammo_casing/a556/nt
+	desc = "A NT-manufactured 5.56mm bullet casing."
+	humane = TRUE
+
 
 /obj/item/ammo_casing/a145
 	name = "shell casing"
@@ -199,6 +242,10 @@
 	projectile_type = /obj/item/projectile/bullet/rifle/a762
 	icon_state = "rifle-casing"
 	spent_icon = "rifle-casing-spent"
+
+/obj/item/ammo_casing/a762/nt
+	desc = "A NT-manufactured 7.62mm bullet casing."
+	humane = TRUE
 
 /obj/item/ammo_casing/a762/practice
 	desc = "A 7.62mm practice bullet casing."

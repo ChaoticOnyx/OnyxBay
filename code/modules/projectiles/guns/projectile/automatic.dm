@@ -202,6 +202,9 @@
 	var/use_launcher = 0
 	var/obj/item/gun/launcher/grenade/underslung/launcher
 
+/obj/item/gun/projectile/automatic/z8/nt
+	magazine_type = /obj/item/ammo_magazine/a762/nt
+
 /obj/item/gun/projectile/automatic/z8/Initialize()
 	. = ..()
 	launcher = new(src)

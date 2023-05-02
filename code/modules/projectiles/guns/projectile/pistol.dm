@@ -72,10 +72,10 @@
 	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. Uses .45 rounds."
 	icon_state = "VP78"
 	item_state = "vp78"
-	magazine_type = /obj/item/ammo_magazine/c45m/stun
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	caliber = ".45"
 	accuracy = -0.35
+	starts_loaded = FALSE
 
 /obj/item/gun/projectile/pistol/vp78/update_icon()
 	..()
@@ -90,6 +90,8 @@
 	icon_state = "VP78wood"
 	accuracy = 0.35
 	fire_delay = 4.5
+	magazine_type = /obj/item/ammo_magazine/c45m/stun
+	starts_loaded = TRUE
 
 /obj/item/gun/projectile/pistol/vp78/wood/update_icon()
 	..()
@@ -102,10 +104,11 @@
 	name = "VP78 Tactical"
 	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one is heavily modified and painted in green camo. Uses .45 rounds."
 	icon_state = "VP78tactic"
-	magazine_type = /obj/item/ammo_magazine/c45m
+	magazine_type = /obj/item/ammo_magazine/c45m/nt
 	auto_eject = 1
 	auto_eject_sound = 'sound/effects/weapons/misc/smg_empty_alarm.ogg'
 	fire_delay = 6.5
+	starts_loaded = TRUE
 
 /obj/item/gun/projectile/pistol/vp78/tactical/update_icon()
 	..()
@@ -187,7 +190,7 @@
 	mod_reach = 0.5
 	mod_handy = 1.0
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2,)
-	magazine_type = /obj/item/ammo_magazine/mc9mm
+	magazine_type = /obj/item/ammo_magazine/mc9mm/nt
 	allowed_magazines = /obj/item/ammo_magazine/mc9mm
 	fire_sound = 'sound/effects/weapons/gun/fire_9mm.ogg'
 

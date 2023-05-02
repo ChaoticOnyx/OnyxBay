@@ -68,7 +68,9 @@
 		if(handle_casings != HOLD_CASINGS)
 			ammo_magazine.stored_ammo -= chambered
 
-	if (chambered)
+	if(chambered)
+		if(chambered.humane)
+			chambered.BB.embed = FALSE
 		return chambered.BB
 	return null
 
