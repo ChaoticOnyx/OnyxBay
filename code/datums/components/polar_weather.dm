@@ -17,6 +17,7 @@
 	var/next_state_change = null
 	var/was_weather_message = FALSE
 	var/datum/announcement/priority/ams/AMS = new
+	var/light_initialized = FALSE
 
 /datum/component/polar_weather/Initialize()
 	. = ..()
@@ -114,18 +115,12 @@
 
 	var/light_color
 	var/weather_overlay
-	var/update_light = TRUE
 	switch(current_state)
 		if(WEATHER_NORMAL)
-			update_light = TRUE
-			light_color = "#ffffff"
 			weather_overlay = "nothing"
 		if(WEATHER_SNOWFALL)
-			update_light = FALSE
 			weather_overlay = "light_snow"
 		if(WEATHER_SNOWSTORM)
-			update_light = TRUE
-			light_color = "#2e2e2e"
 			weather_overlay = "snow_storm"
 
 	// var/list/weather_levels = GLOB.using_map.get_levels_with_trait(ZTRAIT_POLAR_WEATHER)
@@ -139,7 +134,7 @@
 		for(var/turf/T in turfs_to_process)
 
 			// Set lighting
-			if(update_light)
+			if(!light_initialized)
 				T.set_light(0.95, 1, 1.25, l_color = light_color)
 
 			// Update temperature
@@ -159,7 +154,7 @@
 
 			thermal_energy = M.get_thermal_energy_change(new_temperature)
 			M.add_thermal_energy(thermal_energy)
-
+	light_initialized = TRUE
 
 /datum/component/polar_weather/proc/_weather_announce()
 	switch(next_state)
