@@ -182,6 +182,7 @@
 	body_builds = list(
 		new /datum/body_build,
 		new /datum/body_build/slim,
+		new /datum/body_build/slim/male,
 		new /datum/body_build/slim/alt
 	)
 
