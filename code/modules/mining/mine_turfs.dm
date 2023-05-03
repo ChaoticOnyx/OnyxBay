@@ -166,7 +166,7 @@ var/list/mining_floors = list()
 		explosion_block = 3
 
 //Not even going to touch this pile of spaghetti
-/turf/simulated/mineral/attackby(obj/item/W as obj, mob/user as mob)
+/turf/simulated/mineral/attackby(obj/item/W, mob/user)
 	if(!user.IsAdvancedToolUser())
 		to_chat(usr, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return
@@ -695,3 +695,7 @@ var/list/mining_floors = list()
 						var/obj/structure/ore_box/OB = locate(/obj/structure/ore_box) in C
 						for(var/obj/item/ore/ore in R.loc)
 							ore.Move(OB)
+
+/turf/simulated/floor/asteroid/air
+	initial_gas = list("oxygen" = 1.05 * MOLES_O2STANDARD, "nitrogen" = 1.05 * MOLES_N2STANDARD, "carbon_dioxide" = MOLES_CELLSTANDARD * 0.1)
+	temperature = 30 CELSIUS
