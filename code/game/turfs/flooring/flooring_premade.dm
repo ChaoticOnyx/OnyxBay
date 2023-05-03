@@ -179,6 +179,13 @@
 /turf/simulated/floor/tiled/techfloor/ridge
 	icon_state = "techridge"
 	initial_flooring = /decl/flooring/tiling/techfloor/ridge
+
+//Elevator shaft
+/turf/simulated/floor/elevatorshaft
+	icon = 'icons/turf/floors.dmi'
+	icon_state = "elevatorshaft"
+
+
 //ATMOS PREMADES
 
 /turf/simulated/floor/reinforced/airless
@@ -380,6 +387,12 @@
 	name = "lava"
 	icon = 'icons/turf/flooring/lava.dmi'
 	icon_state = "lava"
+
+/turf/simulated/floor/natural/lava/Crossed(O)
+	. = ..()
+	if(isliving(O))
+		var/mob/living/M = O
+		M.IgniteMob()
 
 /turf/simulated/floor/natural/snow/New()
 	icon_state = pick("snow[rand(1,12)]","snow0")
