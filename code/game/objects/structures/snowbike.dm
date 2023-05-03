@@ -4,7 +4,7 @@
 	icon_state = "snowbike_1_on"
 	bike_icon = "snowbike"
 	prefilled = 1
-	land_speed = 1
+	land_speed = 2
 	space_speed = 0
 
 /obj/vehicle/bike/thermal/snowbike/New()

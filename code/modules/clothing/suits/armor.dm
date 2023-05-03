@@ -318,16 +318,3 @@
 	icon_state = "tdgreen"
 	item_state = "tdgreen"
 	siemens_coefficient = 1
-
-/obj/item/clothing/suit/armor/pioneer
-	name = "pioneer's armor"
-	desc = "A heavily armored suit that protects against moderate damage."
-	icon_state = "pioneer_vest"
-	item_state = "swat_suit"
-	w_class = ITEM_SIZE_HUGE
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO
-	cold_protection = UPPER_TORSO|LOWER_TORSO
-	siemens_coefficient = 0.3
-	min_cold_protection_temperature = 140
-	armor = list(melee = 50, bullet = 50, laser = 50, energy = 40, bomb = 40, bio = 20)
-	valid_accessory_slots = list(ACCESSORY_SLOT_ARMOR_M, ACCESSORY_SLOT_ARMOR_L)
