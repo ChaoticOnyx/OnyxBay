@@ -39,6 +39,7 @@
 	speed = -1                    //Spiderbots gotta go fast.
 	pass_flags = PASS_FLAG_TABLE
 	speak_emote = list("beeps","clicks","chirps")
+	bubble_icon = "robot"
 
 /mob/living/simple_animal/spiderbot/New()
 	..()

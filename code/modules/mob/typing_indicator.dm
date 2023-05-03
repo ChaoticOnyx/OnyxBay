@@ -1,100 +1,134 @@
-/*Typing indicators, when a mob uses the F3/F4 keys to bring the say/emote input boxes up this little buddy is
-made and follows them around until they are done (or something bad happens), helps tell nearby people that 'hey!
-I AM TYPING!'
-*/
-
+// TO-DO: move all mob variables to one file 'cause it's cringe. - N
 /mob
-	var/atom/movable/overlay/typing_indicator/typing_indicator = null
+	// Icon state name for speech bubble.
+	var/bubble_icon = "default"
 
-/atom/movable/overlay/typing_indicator
-	icon = 'icons/mob/talk.dmi'
-	icon_state = "typing"
-	plane = MOUSE_INVISIBLE_PLANE
-	layer = FLOAT_LAYER
-	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
+	// Icon used for the typing indicator's bubble.
+	var/active_typing_indicator
+	// Icon used for the thinking inicator's bubble.
+	var/active_thinking_indicator
 
-/atom/movable/overlay/typing_indicator/New(newloc, mob/master)
-	..(newloc)
-	if(master.typing_indicator)
-		qdel(master.typing_indicator)
+	// Is user typing in character.
+	var/thinking_IC = FALSE
 
-	master.typing_indicator = src
-	src.master = master
-	name = master.name
-	glide_size = master.glide_size
-
-	register_signal(master, SIGNAL_MOVED, /atom/movable/proc/move_to_turf_or_null)
-	register_signal(master, SIGNAL_STAT_SET, /datum/proc/qdel_self) // Making the assumption master is conscious at creation.
-	register_signal(master, SIGNAL_LOGGED_OUT, /datum/proc/qdel_self)
-	register_signal(master, SIGNAL_QDELETING, /datum/proc/qdel_self)
-
-/atom/movable/overlay/typing_indicator/Destroy()
-	var/mob/M = master
-
-	unregister_signal(master, SIGNAL_MOVED)
-	unregister_signal(master, SIGNAL_STAT_SET)
-	unregister_signal(master, SIGNAL_LOGGED_OUT)
-	unregister_signal(master, SIGNAL_QDELETING)
-
-	M.typing_indicator = null
-	master = null
-
-	. = ..()
-
+// Adds a typing indicator over the mob.
 /mob/proc/create_typing_indicator()
-	if(!client || stat)
-		return
-	if((get_preference_value(/datum/client_preference/show_typing_indicator) == GLOB.PREF_SHOW) == (client.shift_released_at <= world.time - 2))
-		new /atom/movable/overlay/typing_indicator(get_turf(src), src)
+	return
 
-/mob/proc/remove_typing_indicator() // A bit excessive, but goes with the creation of the indicator I suppose
-	QDEL_NULL(typing_indicator)
+// Removes the typing indicator over the mob.
+/mob/proc/remove_typing_indicator()
+	return
 
+// Adds a thinking indicator over the mob.
+/mob/proc/create_thinking_indicator()
+	return
+
+// Removes the thinking indicator over the mob.
+/mob/proc/remove_thinking_indicator()
+	return
+
+// Removes all indicators and marks mob as not speaking IC.
+/mob/proc/remove_all_indicators()
+	return
+
+/mob/set_stat(new_stat)
+	. = ..()
+	if(.)
+		remove_all_indicators()
+
+/mob/Logout()
+	remove_all_indicators()
+	..()
+
+// TO-DO: move on to TGUI say, it's just better. - N
 /client/proc/close_saywindow(return_content = FALSE)
 	winset(src, null, "saywindow.is-visible=false;mapwindow.map.focus=true")
 	if (return_content)
 		. = winget(src, "saywindow.saywindow-input", "text")
 	winset(src, "saywindow.saywindow-input", "text=\"\"")
+	mob.remove_all_indicators()
 
-/mob/verb/add_typing_indicator(is_sayinput as num|null)
-	set name = ".add_typing_indicator"
+/mob/verb/add_speech_bubble(is_sayinput as num|null)
+	set name = ".add_speech_bubble"
 	set hidden = TRUE
 
 	ASSERT(client && src == usr)
 
 	if(is_sayinput)
-		create_typing_indicator()
+		thinking_IC = TRUE
+		start_typing()
 		return
 
 	var/text = winget(usr, ":input", "text")
 	if(findtext(text, "Say ", 1, 5))
-		create_typing_indicator()
+		thinking_IC = TRUE
+		start_typing()
+	else
+		remove_all_indicators()
 
-/mob/verb/remove_typing_indicator_verb()
-	set name = ".remove_typing_indicator"
+/mob/verb/remove_speech_bubble()
+	set name = ".remove_speech_bubble"
 	set hidden = TRUE
 
 	ASSERT(client && src == usr)
 
-	remove_typing_indicator()
+	stop_typing()
 
 /mob/verb/me_wrapper()
 	set name = ".Me"
 	set hidden = TRUE
 
-	create_typing_indicator()
+	thinking_IC = TRUE
+	start_typing()
 	var/message = input("","me (text)") as text
-	remove_typing_indicator()
+	remove_all_indicators()
 	if(message)
 		me_verb(message)
 
-/*
-/mob/Topic(href, href_list)
-	if(href_list["choice"])
-		switch(href_list["choice"])
-			if("Say")
-				var/msg = href_list["mobsay"]
-				say_verb(msg)
-	else
-		return ..()
-*/
+/mob/proc/should_show_indicator()
+	if(!client)
+		return FALSE
+	return (get_preference_value(/datum/client_preference/show_typing_indicator) == GLOB.PREF_SHOW) == (client.shift_released_at <= world.time - 2)
+
+/mob/proc/start_typing()
+	remove_thinking_indicator()
+	if(!thinking_IC || !should_show_indicator())
+		return FALSE
+	create_typing_indicator()
+
+/mob/proc/stop_typing()
+	if(!src)
+		return FALSE
+	remove_typing_indicator()
+	if(!thinking_IC || !should_show_indicator())
+		return FALSE
+	create_thinking_indicator()
+
+/mob/living/create_thinking_indicator()
+	if(active_thinking_indicator || active_typing_indicator || !thinking_IC || stat != CONSCIOUS)
+		return FALSE
+	active_thinking_indicator = create_speech_bubble_image(bubble_icon, 3, src)
+	LAZYADD(overlays, active_thinking_indicator)
+
+/mob/living/remove_thinking_indicator()
+	if(!active_thinking_indicator)
+		return FALSE
+	LAZYREMOVE(overlays, active_thinking_indicator)
+	active_thinking_indicator = null
+
+/mob/living/create_typing_indicator()
+	if(active_typing_indicator || active_thinking_indicator || !thinking_IC || stat != CONSCIOUS)
+		return FALSE
+	active_typing_indicator = create_speech_bubble_image(bubble_icon, 3, src)
+	LAZYADD(overlays, active_typing_indicator)
+
+/mob/living/remove_typing_indicator()
+	if(!active_typing_indicator)
+		return FALSE
+	LAZYREMOVE(overlays, active_typing_indicator)
+	active_typing_indicator = null
+
+/mob/living/remove_all_indicators()
+	thinking_IC = FALSE
+	remove_thinking_indicator()
+	remove_typing_indicator()

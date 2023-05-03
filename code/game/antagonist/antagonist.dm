@@ -190,9 +190,6 @@
 		return 50
 	return 100
 
-/datum/antagonist/proc/special_eligibility_check(datum/mind/player, override = FALSE)
-	return TRUE
-
 /datum/antagonist/proc/attempt_random_spawn()
 	update_current_antag_max(SSticker.mode)
 	build_candidate_list(SSticker.mode, flags & (ANTAG_OVERRIDE_MOB|ANTAG_OVERRIDE_JOB))

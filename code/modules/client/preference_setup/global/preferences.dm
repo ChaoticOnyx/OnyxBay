@@ -190,8 +190,7 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
 /datum/client_preference/show_typing_indicator/changed(mob/preference_mob, new_value)
-	if(new_value == GLOB.PREF_HIDE)
-		QDEL_NULL(preference_mob.typing_indicator)
+	preference_mob?.client.typing_indicators = new_value
 
 /datum/client_preference/show_progress_bar
 	description ="Progress Bar"
@@ -235,6 +234,24 @@ var/global/list/_client_preferences_by_type
 	key = "TGUI_THEME"
 	category = PREF_CATEGORY_TGUI
 	options = list(GLOB.PREF_WHITE, GLOB.PREF_DARK)
+
+/datum/client_preference/tgui_input
+	description = "TGUI Input"
+	key = "TGUI_INPUT"
+	category = PREF_CATEGORY_TGUI
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
+/datum/client_preference/tgui_input_large
+	description = "TGUI Input Large Buttons"
+	key = "TGUI_INPUT_BUTTONS"
+	category = PREF_CATEGORY_TGUI
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
+/datum/client_preference/tgui_input_swapped
+	description = "TGUI Input Swapped Buttons"
+	key = "TGUI_INPUT_SWAPPED"
+	category = PREF_CATEGORY_TGUI
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 
 /datum/client_preference/tgui_chat
 	description = "TGUI Chat"

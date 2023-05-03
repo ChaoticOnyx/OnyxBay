@@ -10,7 +10,7 @@
 	desc = "Looks like infinity."
 
 /turf/unsimulated/mask
-	name = "mask"
+	name = "mask - space caves"
 	icon = 'icons/turf/walls.dmi'
 	icon_state = "rockvault"
 
@@ -18,6 +18,10 @@
 	name = "mask"
 	icon = 'icons/turf/walls.dmi'
 	icon_state = "rockairvault"
+
+/turf/unsimulated/mask/frozen
+	name = "mask - frozen caves"
+
 
 /turf/unsimulated/floor/rescue_base
 	icon_state = "asteroidfloor"

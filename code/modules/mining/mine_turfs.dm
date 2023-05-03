@@ -468,6 +468,64 @@ var/list/mining_floors = list()
 		MATERIAL_PLASMA = 20
 		)
 
+/turf/simulated/mineral/frozen //Rock piece
+	name = "rock"
+	icon = 'icons/turf/walls.dmi'
+	icon_state = "rock"
+	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+	opacity = 1
+	density = 1
+	blocks_air = 1
+	temperature = 0 CELSIUS
+	mined_turf = /turf/simulated/floor/natural/frozenground/cave
+
+/turf/simulated/mineral/frozen/medium
+	icon_state = "rock-medium"
+	rock_type = "-medium"
+	durability = 200
+
+/turf/simulated/mineral/frozen/hard
+	icon_state = "rock-hard"
+	rock_type = "-hard"
+	durability = 300
+
+/turf/simulated/mineral/frozen/random
+	name = "Mineral deposit"
+	var/mineralChance = 100 //10 //means 10% chance of this plot changing to a mineral deposit
+	var/mineralSpawnChanceList = list(
+		MATERIAL_URANIUM = 5,
+		MATERIAL_PLATINUM = 5,
+		MATERIAL_IRON = 35,
+		MATERIAL_CARBON = 35,
+		MATERIAL_DIAMOND = 1,
+		MATERIAL_GOLD = 5,
+		MATERIAL_SILVER = 5,
+		MATERIAL_PLASMA = 10
+		)
+
+/turf/simulated/mineral/frozen/random/Initialize()
+	. = ..()
+	if(prob(mineralChance) && !mineral)
+		var/mineral_name = util_pick_weight(mineralSpawnChanceList) //temp mineral name
+		mineral_name = lowertext(mineral_name)
+		if(mineral_name && (mineral_name in ore_data))
+			mineral = ore_data[mineral_name]
+			UpdateMineral()
+	MineralSpread()
+
+/turf/simulated/mineral/frozen/random/high_chance
+	mineralChance = 100 //25
+	mineralSpawnChanceList = list(
+		MATERIAL_URANIUM = 10,
+		MATERIAL_PLATINUM = 10,
+		MATERIAL_IRON = 20,
+		MATERIAL_CARBON = 20,
+		MATERIAL_DIAMOND = 2,
+		MATERIAL_GOLD = 10,
+		MATERIAL_SILVER = 10,
+		MATERIAL_PLASMA = 20
+		)
+
 /**********************Asteroid**************************/
 
 // Setting icon/icon_state initially will use these values when the turf is built on/replaced.

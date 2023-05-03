@@ -7,6 +7,9 @@
 	difficulty = 90
 	fire_only_once = TRUE
 
+/datum/event/xenomorph_infestation/check_conditions()
+	. = config.misc.aliens_allowed
+
 /datum/event/xenomorph_infestation/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.living_players_count * (3 MINUTES))

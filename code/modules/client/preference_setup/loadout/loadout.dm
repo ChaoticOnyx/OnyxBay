@@ -227,7 +227,7 @@ var/list/hash_to_gear = list()
 		if(!(gear_name in valid_gear_choices()))
 			continue
 		var/datum/gear/G = LC.gear[gear_name]
-		if(!G.path)
+		if(!G.path && !length(G.gear_tweaks))
 			continue
 		if(hide_donate_gear && (G.price || G.patron_tier))
 			continue

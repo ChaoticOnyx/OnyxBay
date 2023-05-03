@@ -1,4 +1,5 @@
 /mob/living/carbon/alien
+	bubble_icon = "alien"
 	hud_type = /datum/hud/larva
 
 /datum/hud/larva/FinalizeInstantiation()
