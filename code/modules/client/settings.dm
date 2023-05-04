@@ -59,6 +59,7 @@
 
 			if(key && value)
 				owner.set_preference(key, value)
+				SScharacter_setup.queue_preferences_save(owner.prefs)
 				tgui_update()
 
 			return TRUE
