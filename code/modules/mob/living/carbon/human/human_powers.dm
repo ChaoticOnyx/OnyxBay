@@ -16,6 +16,9 @@
 		if(HUMAN_POWER_TACKLE)
 			var/mob/living/M = A
 			process_tackle(M)
+		if(HUMAN_POWER_WHIP)
+			var/mob/living/M = A
+			process_whip(M)
 	return TRUE
 
 /mob/living/carbon/human/MiddleClickOn(atom/A)
