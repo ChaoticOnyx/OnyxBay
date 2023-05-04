@@ -315,6 +315,7 @@
 #define SPECIES_XENO_DRONE_VILE      "Xenomorph Vile Drone"
 #define SPECIES_XENO_HUNTER_FERAL    "Xenomorph Feral Hunter"
 #define SPECIES_XENO_SENTINEL_PRIMAL "Xenomorph Primal Sentinel"
+#define SPECIES_XENO_HUNTER_DEGRADED "Xenomorph Degraded Hunter"
 
 #define SURGERY_CLOSED 0
 #define SURGERY_OPEN 1
@@ -358,6 +359,7 @@
 #define HUMAN_POWER_SPIT    "Spit"
 #define HUMAN_POWER_LEAP    "Leap"
 #define HUMAN_POWER_TACKLE  "Tackle"
+#define HUMAN_POWER_WHIP "Whip"
 
 #define HUMAN_MAX_POISE     75 // 100% healthy, non-druged human being with magboots and heavy armor.
 #define HUMAN_HIGH_POISE    60
