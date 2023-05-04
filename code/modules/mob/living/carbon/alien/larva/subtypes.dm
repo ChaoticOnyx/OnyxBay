@@ -24,6 +24,15 @@
 	to_chat(src, DESC_EVOLVE + DESC_HUNTER + DESC_SENTINEL + DESC_DRONE_VILE)
 	var/alien_caste = alert(src, "Please choose which alien caste you shall belong to.",,"Hunter","Sentinel","Vile Drone")
 	return alien_caste ? "Xenomorph [alien_caste]" : null
+	
+/mob/living/carbon/alien/larva/degraded
+	name = "alien degraded larva"
+	real_name = "alien degraded larva"
+	
+/mob/living/carbon/alien/larva/degraded/confirm_evolution()
+	to_chat(src, DESC_EVOLVE + DESC_HUNTER_DEGRADED + DESC_DRONE)
+	var/alien_caste = alert(src, "Please choose which alien caste you shall belong to.",,"Degraded Hunter","Drone")
+	return alien_caste ? "Xenomorph [alien_caste]" : null
 
 #undef DESC_EVOLVE
 #undef DESC_HUNTER
@@ -32,3 +41,4 @@
 #undef DESC_HUNTER_FERAL
 #undef DESC_SENTINEL_PRIMAL
 #undef DESC_DRONE_VILE
+#undef DESC_HUNTER_DEGRADE
