@@ -343,3 +343,68 @@
 	else
 		to_chat(C, SPAN("notice", "Now I see what the victim sees."))
 	return TRUE
+
+//agile powers
+
+/mob/living/carbon/human/proc/toggle_whip()
+	set category = "Abilities"
+	set name = "Set Whip"
+	set desc = "Whip someone with your tail (Mouse Wheel)."
+
+	if(!src || src.stat)
+		return
+	active_ability = HUMAN_POWER_WHIP
+	to_chat(src, SPAN("notice", "<i>Selected special ability: <b>[active_ability]</b>.</i>"))
+
+/mob/living/carbon/human/proc/whip()
+	set category = "Abilities"
+	set name = "Whip"
+	set desc = "Whip someone with your tail"
+
+	var/mob/living/carbon/human/target
+	var/list/mob/living/carbon/human/targets = list()
+	for(var/mob/living/carbon/human/M in oview(1, src))
+		if(!istype(M, /mob/living/silicon) && Adjacent(M))
+			targets += M
+	targets -= src
+	target = input(src, "Who do you wish to whip?") as null|anything in targets
+
+	process_whip(target)
+
+/mob/living/carbon/human/proc/process_whip(mob/living/carbon/human/T)
+	if(!T || !src || src.stat)
+		return
+
+	if(last_special > world.time)
+		to_chat(src, SPAN("warning", "You cannot whip so soon!"))
+		return
+
+	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
+		to_chat(src, SPAN("warning", "You cannot whip anyone in your current state."))
+		return
+
+	if(!isturf(loc))
+		to_chat(src, SPAN("danger", "You cannot whip anyone from here!"))
+		return
+
+	if(T == src)
+		to_chat(src, SPAN("warning", "You cannot whip yourself!"))
+		if(prob(1))
+			to_chat(src, SPAN("warning", "Sadly..."))
+		return
+
+	if(!Adjacent(T))
+		return
+
+	if(istype(T, /mob/living/silicon))
+		to_chat(src, SPAN("warning", "[T] is too massive to be whipped!"))
+		return
+
+	last_special = world.time + (5 SECONDS)
+
+
+	visible_message(SPAN("danger", "<b>\The [src]</b> whipped <b>[T.name]</b> with its tail!"))
+	T.poise -=(rand(15, 40))
+	if(T.poise <= 10)
+		T.Weaken(rand(2, 4))
+		visible_message(SPAN("danger", "<b>[T.name]</b> losses balance!"))
