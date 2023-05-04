@@ -292,9 +292,7 @@
 		/mob/living/carbon/human/proc/leap,
 		/mob/living/carbon/human/proc/gut,
 		/mob/living/carbon/human/proc/psychic_whisper,
-		/mob/living/carbon/human/proc/regurgitate,
-		/mob/living/carbon/human/proc/whip,
-		/mob/living/carbon/human/proc/toggle_whip
+		/mob/living/carbon/human/proc/regurgitate
 		)
 
 /datum/species/xenos/hunter/feral
