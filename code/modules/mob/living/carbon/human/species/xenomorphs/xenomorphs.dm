@@ -35,6 +35,9 @@
 /mob/living/carbon/human/xenos/feral_hunter/New(new_loc)
 	..(new_loc, SPECIES_XENO_HUNTER_FERAL)
 
+/mob/living/carbon/human/xenos/degraded_hunter/New(new_loc)
+	..(new_loc, SPECIES_XENO_HUNTER_DEGRADED)
+
 /mob/living/carbon/human/xenos/queen/New(new_loc)
 	..(new_loc, SPECIES_XENO_QUEEN)
 
