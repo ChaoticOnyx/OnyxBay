@@ -148,7 +148,11 @@
 		else
 			. += "\nIt is full."
 
-	if(isghost(user) && user.client?.inquisitive_ghost)
+	if(isghost(user))
+		var/mob/observer/ghost/G = user
+		if(!G.inquisitiveness)
+			return
+
 		if(src.opened)
 			return
 
