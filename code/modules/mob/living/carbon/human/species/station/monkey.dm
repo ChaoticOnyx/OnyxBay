@@ -68,6 +68,8 @@
 		/obj/item/storage/secure/safe,
 		/obj/item/stool,
 	)
+	
+	xenomorph_type = /mob/living/carbon/alien/larva/degraded
 
 /datum/species/monkey/handle_npc(mob/living/carbon/human/H)
 	if(H.stat != CONSCIOUS)
