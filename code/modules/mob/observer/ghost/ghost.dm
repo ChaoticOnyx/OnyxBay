@@ -30,6 +30,14 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 	var/anonsay = 0
 	var/ghostvision = 1 //is the ghost able to see things humans can't?
 	var/seedarkness = 1
+	/// Wheather ghost's message will contain owner's ckey.
+	var/anonsay = FALSE
+	/// Wheather the ghost can see other ghosts.
+	var/ghostvision = TRUE
+	/// Wheather the ghost has night vision enabled.
+	var/seeindarkness = TRUE
+	/// Wheather the ghost will examine everything it clicks on.
+	var/inquisitiveness = TRUE
 
 	var/obj/item/device/multitool/ghost_multitool
 
@@ -517,23 +525,29 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	seedarkness = !(seedarkness)
 	updateghostsight()
 
+/mob/observer/ghost/proc/updateghostprefs()
+	anonsay = cmptext(get_preference_value("CHAT_GHOSTANONSAY"), GLOB.PREF_YES)
+	ghostvision = cmptext(get_preference_value("GHOST_SEEGHOSTS"), GLOB.PREF_YES)
+	seeindarkness = cmptext(get_preference_value("GHOST_DARKVISION"), GLOB.PREF_YES)
+	inquisitiveness = cmptext(get_preference_value("GHOST_INQUISITIVENESS"), GLOB.PREF_YES)
+
 /mob/observer/ghost/proc/updateghostsight()
-	if (!seedarkness)
+	if(seeindarkness)
 		set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
 	else
 		set_see_invisible(ghostvision ? SEE_INVISIBLE_OBSERVER : SEE_INVISIBLE_LIVING)
 	updateghostimages()
 
 /mob/observer/ghost/proc/updateghostimages()
-	if (!client)
+	if(!client)
 		return
 	client.images -= ghost_sightless_images
 	client.images -= ghost_darkness_images
-	if(!seedarkness)
+	if(!seeindarkness)
 		client.images |= ghost_sightless_images
 		if(ghostvision)
 			client.images |= ghost_darkness_images
-	else if(seedarkness && !ghostvision)
+	else if(seeindarkness && !ghostvision)
 		client.images |= ghost_sightless_images
 	client.images -= ghost_image //remove ourself
 
