@@ -292,7 +292,9 @@
 		/mob/living/carbon/human/proc/leap,
 		/mob/living/carbon/human/proc/gut,
 		/mob/living/carbon/human/proc/psychic_whisper,
-		/mob/living/carbon/human/proc/regurgitate
+		/mob/living/carbon/human/proc/regurgitate,
+		/mob/living/carbon/human/proc/whip,
+		/mob/living/carbon/human/proc/toggle_whip
 		)
 
 /datum/species/xenos/hunter/feral
@@ -402,6 +404,43 @@
 		/mob/living/carbon/human/proc/resin
 		)
 
+/datum/species/xenos/hunter/degraded
+	name = SPECIES_XENO_HUNTER_DEGRADED
+	weeds_plasma_rate = 5
+	caste_name = "degraded hunter"
+	slowdown = -0.5
+	total_health = 100
+	tail = "xenos_hunter_tail"
+	strength = STR_MEDIUM
+	brute_mod = 0.85
+	burn_mod  = 2.0
+	generic_attack_mod = 4.5
+
+	icobase = 'icons/mob/human_races/xenos/r_xenos_hunter.dmi'
+	deform =  'icons/mob/human_races/xenos/r_xenos_hunter.dmi'
+
+	has_organ = list(
+		BP_BRAIN =    /obj/item/organ/internal/brain/xeno,
+		BP_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel/hunter,
+		BP_HIVE =     /obj/item/organ/internal/xenos/hivenode,
+		BP_NUTRIENT = /obj/item/organ/internal/diona/nutrients,
+		BP_GANGLION =  /obj/item/organ/internal/xenos/ganglion
+		)
+
+	inherent_verbs = list(
+		/mob/living/proc/ventcrawl,
+		/mob/living/carbon/proc/toggle_darksight,
+		/mob/living/carbon/human/proc/toggle_powers,
+		/mob/living/carbon/human/proc/toggle_whip,
+		/mob/living/carbon/human/proc/toggle_leap,
+		/mob/living/carbon/human/proc/whip,
+		/mob/living/carbon/human/proc/leap,
+		/mob/living/carbon/human/proc/gut,
+		/mob/living/carbon/human/proc/psychic_whisper,
+		/mob/living/carbon/human/proc/regurgitate
+,
+		)
+
 /datum/species/xenos/queen/handle_login_special(mob/living/carbon/human/H)
 	..()
 	// Make sure only one official queen exists at any point.
@@ -411,6 +450,7 @@
 	else
 		H.real_name = "alien princess ([alien_number])"
 		H.name = H.real_name
+		
 
 /datum/hud_data/alien
 
