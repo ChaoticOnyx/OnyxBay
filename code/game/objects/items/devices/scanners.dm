@@ -591,7 +591,7 @@ REAGENT SCANNER
 	var/details = 0
 	var/recent_fail = 0
 
-/obj/item/device/reagent_scanner/afterattack(obj/O, mob/user as mob, proximity)
+/obj/item/device/reagent_scanner/afterattack(obj/O, mob/user, proximity)
 	if(!proximity)
 		return
 	if (user.incapacitated())
@@ -601,20 +601,30 @@ REAGENT SCANNER
 	if(!istype(O))
 		return
 
-	if(!isnull(O.reagents))
-		var/dat = ""
-		if(O.reagents.reagent_list.len > 0)
-			var/one_percent = O.reagents.total_volume / 100
-			for (var/datum/reagent/R in O.reagents.reagent_list)
-				dat += "\n \t <span class='notice'>[R][details ? ": [R.volume / one_percent]%" : ""]</span>"
-		if(dat)
-			to_chat(user, "<span class='notice'>Chemicals found: [dat]</span>")
-		else
-			to_chat(user, "<span class='notice'>No active chemical agents found in [O].</span>")
-	else
-		to_chat(user, "<span class='notice'>No significant chemical agents found in [O].</span>")
+	reagent_scanner_scan(user, O)
 
 	return
+
+/proc/reagent_scanner_scan(mob/user, atom/target)
+	if(!istype(target))
+		return
+	if(!isnull(target.reagents))
+		var/list/reagents_out
+		var/list/reagents_block
+
+		for(var/datum/reagent/reagent in target.reagents.reagent_list)
+			LAZYADD(reagents_block, SPAN_NOTICE("[round(reagent.volume, 0.001)] units of [reagent.name]\n"))
+
+		if(!length(reagents_block))
+			LAZYADD(reagents_out, SPAN_NOTICE("No active chemical agents found in \the [target]."))
+		else
+			LAZYADD(reagents_out, SPAN_NOTICE("\The [target] contains the following reagents:\n"))
+			LAZYADD(reagents_out, reagents_block)
+			reagents_block.Cut()
+
+		var/message = EXAMINE_BLOCK(jointext(reagents_out, ""))
+
+		to_chat(user, message)
 
 /obj/item/device/reagent_scanner/adv
 	name = "advanced reagent scanner"
