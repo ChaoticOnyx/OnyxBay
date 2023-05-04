@@ -2,6 +2,10 @@
 #define MODE_GATEWAY  1
 #define MODE_TARGET   2
 
+#define LINKED_GATES_MAX 3
+
+#define MIN_MAX_GATE_LEVEL 8
+
 /obj/machinery/computer/teleporter
 	name = "Teleporter Control Console"
 	desc = "Used to control a linked teleportation hub and station."
@@ -72,6 +76,13 @@
 		gate = null
 	return ..()
 
+/obj/machinery/computer/teleporter/proc/can_link_gate()
+	if(length(linked_consoles) >= LINKED_GATES_MAX)
+		return FALSE
+	if(gate?.accuracy + gate?.calc_acceleration < MIN_MAX_GATE_LEVEL)
+		return FALSE
+	return TRUE
+
 /obj/machinery/computer/teleporter/attackby(obj/item/I, mob/living/user)
 	if(isMultitool(I))
 		var/obj/item/device/multitool/MT = get_multitool(user)
@@ -79,6 +90,9 @@
 			MT.set_buffer(src)
 			to_chat(user, SPAN_NOTICE("You upload \the [src] data to \the [I.name]'s buffer."))
 		else
+			if(!can_link_gate())
+				to_chat(user, SPAN_WARNING("You can't upload the data to \the [src]: max gate threshold was reached."))
+				return
 			var/atom/buffered_object = MT.get_buffer()
 			if(buffered_object && istype(buffered_object, /obj/machinery/computer/teleporter) && src != buffered_object)
 				LAZYADD(linked_consoles, buffered_object)
@@ -148,6 +162,13 @@
 	gate.set_state(TRUE)
 	update_icon()
 
+/obj/machinery/computer/teleporter/proc/start_calibrating(auto = FALSE)
+	if(auto && gate?.accuracy + gate?.calc_acceleration < MIN_MAX_GATE_LEVEL)
+		return
+	calibrating = TRUE
+	audible_message("Processing hub calibration to target...")
+	addtimer(CALLBACK(src, .proc/finish_calibrating), 2 SECONDS * (4 - gate.calc_acceleration))
+
 /obj/machinery/computer/teleporter/tgui_act(action, params)
 	. = ..()
 
@@ -176,9 +197,7 @@
 				return
 			if(gate.calibrated)
 				audible_message("Error: Hub is already calibrated!")
-			calibrating = TRUE
-			audible_message("Processing hub calibration to target...")
-			addtimer(CALLBACK(src, .proc/finish_calibrating), 2 SECONDS * (4 - gate.calc_acceleration))
+			start_calibrating()
 
 	return TRUE
 
@@ -253,6 +272,10 @@
 	set_teleport_target(target)
 	log_game("[user] set \the [src] target to \the [targets[desc]].")
 
-#undef MODE_TELEPORT
-#undef MODE_GATEWAY
+#undef MIN_MAX_GATE_LEVEL
+
+#undef LINKED_GATES_MAX
+
 #undef MODE_TARGET
+#undef MODE_GATEWAY
+#undef MODE_TELEPORT

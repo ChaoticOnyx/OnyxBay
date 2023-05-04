@@ -116,6 +116,8 @@
 		do_teleport(A, target, calibrated ? 0 : clamp(DESTINATION_SPREAD_MIN, 10 - accuracy, DESTINATION_SPREAD_MAX))
 		calibrated = FALSE
 
+		console.start_calibrating(TRUE)
+
 	return
 
 /obj/machinery/teleporter_gate/Crossed(A)
@@ -133,3 +135,6 @@
 
 /obj/machinery/teleporter_gate/proc/update_power()
 	update_use_power(is_ready() ? POWER_USE_ACTIVE : POWER_USE_IDLE)
+
+#undef DESTINATION_SPREAD_MIN
+#undef DESTINATION_SPREAD_MAX
