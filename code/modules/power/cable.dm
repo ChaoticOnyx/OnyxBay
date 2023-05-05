@@ -99,15 +99,13 @@ var/list/possible_cable_coil_colours
 	. = ..()                       // then go ahead and delete the cable
 
 
-// Ghost examining the cable -> tells him the power
-/obj/structure/cable/attack_ghost(mob/user)
-	if(user.client && user.client.inquisitive_ghost)
+/obj/structure/cable/attack_ghost(mob/observer/ghost/user)
+	if(user.inquisitiveness)
 		user.examinate(src)
-		// following code taken from attackby (multitool)
 		if(powernet && (powernet.avail > 0))
-			to_chat(user, "<span class='warning'>[get_wattage()] in power network.</span>")
+			to_chat(user, SPAN_WARNING("[get_wattage()] in power network."))
 		else
-			to_chat(user, "<span class='warning'>The cable is not powered.</span>")
+			to_chat(user, SPAN_WARNING("The cable is not powered."))
 	return
 
 ///////////////////////////////////

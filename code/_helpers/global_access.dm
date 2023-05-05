@@ -2039,6 +2039,7 @@
 	"meteors_threatening",
 	"mil_branches",
 	"minevendor_list",
+	"minevendor_prison_list",
 	"mining_floors",
 	"mining_walls",
 	"minor_air_alarms",

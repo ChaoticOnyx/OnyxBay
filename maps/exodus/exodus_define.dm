@@ -17,6 +17,7 @@
 		/datum/shuttle/autodock/ferry/research,
 		/datum/shuttle/autodock/ferry/engie,
 		/datum/shuttle/autodock/ferry/mining,
+		/datum/shuttle/autodock/ferry/security,
 		/datum/shuttle/autodock/multi/antag/rescue,
 		/datum/shuttle/autodock/ferry/emergency/centcom,
 		/datum/shuttle/autodock/ferry/administration,

@@ -98,6 +98,20 @@
 	name = "Mining Shuttle Transit"
 	icon_state = "shuttle"
 
+/area/shuttle/security
+	name = "\improper Security Shuttle"
+
+/area/shuttle/security/outpost
+	icon_state = "shuttle"
+	base_turf = /turf/simulated/floor/asteroid
+
+/area/shuttle/security/station
+	icon_state = "shuttle2"
+
+/area/shuttle/security/transit
+	name = "Mining Security Transit"
+	icon_state = "shuttle"
+
 /area/shuttle/deathsquad/centcom
 	name = "Deathsquad Shuttle"
 	area_flags = AREA_FLAG_RAD_SHIELDED
@@ -2019,6 +2033,38 @@
 /area/outpost/main_outpost/dock
 	name = "Outpost Dock"
 	icon_state = "bluenew"
+
+/area/outpost/main_outpost/dock/security
+	name = "Outpost Security Dock"
+	icon_state = "bluenew"
+
+/area/outpost/security/shallway
+	name = "Outpost Security Hallway"
+	icon_state = "green"
+
+/area/outpost/security/mining_main
+	name = "Mining Outpost Prisoner Refinery"
+	icon_state = "outpost_mine_main"
+
+/area/outpost/security/dorms
+	name = "Outpost Prison Dorm"
+	icon_state = "blue2"
+
+/area/outpost/security/prison
+	name = "Outpost Prison"
+	icon_state = "sec_prison"
+
+/area/outpost/security/post
+	name = "Outpost Security Post"
+	icon_state = "brig"
+
+/area/outpost/security/eva
+	name = "Outpost Security EVA"
+	icon_state = "brig"
+
+/area/mine/explored/prison
+	name = "Mine Prison"
+	icon_state = "explored"
 
 /area/outpost/main_outpost/infirmary
 	name = "Outpost Infirmary"
