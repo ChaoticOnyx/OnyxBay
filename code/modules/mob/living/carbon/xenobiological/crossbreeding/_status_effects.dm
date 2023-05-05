@@ -140,13 +140,15 @@
 /datum/modifier/status_effect/metroid_clone/on_applied()
 	var/typepath = holder.type
 	clone = new typepath(holder.loc)
-	var/mob/living/carbon/O = holder
-	var/mob/living/carbon/C = clone
+	var/mob/living/carbon/human/O = holder
+	var/mob/living/carbon/human/C = clone
 	if(istype(C) && istype(O))
 		C.real_name = O.real_name
-		C.setDNA(O.getDNA())
 		C.set_species(O.get_species())
-
+		C.setDNA(O.getDNA())
+		C.h_style = O.h_style
+		C.f_style = O.f_style
+		C.UpdateAppearance()
 	if(holder.mind)
 		originalmind = holder.mind
 		holder.mind.transfer_to(clone)
@@ -724,12 +726,15 @@
 /datum/modifier/status_effect/stabilized/cerulean/on_applied()
 	var/typepath = holder.type
 	clone = new typepath(holder.loc)
-	var/mob/living/carbon/O = holder
-	var/mob/living/carbon/C = clone
+	var/mob/living/carbon/human/O = holder
+	var/mob/living/carbon/human/C = clone
 	if(istype(C) && istype(O))
 		C.real_name = O.real_name
-		C.setDNA(O.getDNA())
 		C.set_species(O.get_species())
+		C.setDNA(O.getDNA())
+		C.h_style = O.h_style
+		C.f_style = O.f_style
+		C.UpdateAppearance()
 	set_next_think(world.time)
 	return ..()
 
@@ -792,7 +797,6 @@
 	colour = "green"
 	var/datum/dna/originalDNA
 	var/originalname
-	var/datum/species/originalspecies
 
 /datum/modifier/status_effect/stabilized/green/on_applied()
 	to_chat(holder, SPAN_WARNING("You feel different..."))
@@ -800,7 +804,9 @@
 		var/mob/living/carbon/human/H = holder
 		originalDNA = H.dna.Clone()
 		originalname = H.real_name
-		originalspecies = H.get_species()
+		for(var/i=1 to H.dna.UI.len)
+			H.dna.SetUIValue(i,rand(1,4095))
+		H.real_name = H.species.get_random_name(H.gender)
 	set_next_think(world.time)
 	return ..()
 
@@ -816,9 +822,8 @@
 		var/mob/living/carbon/human/H = holder
 		H.real_name = originalname
 		H.setDNA(originalDNA)
-		H.set_species(originalspecies)
-		qdel(src)
 	set_next_think(0)
+	return ..()
 
 /datum/modifier/status_effect/brokenpeace
 	name = "brokenpeace"

@@ -18,7 +18,7 @@ Reproductive extracts:
 
 /obj/item/metroidcross/reproductive/_examine_text(mob/user)
 	. = ..()
-	. += SPAN_DANGER("It appears to have eaten [length(contents)] Monkey Cube")
+	. += SPAN_DANGER("It appears to need eat [feedAmount] monkey cubes more")
 
 /obj/item/metroidcross/reproductive/Initialize(mapload)
 	. = ..()
@@ -33,14 +33,18 @@ Reproductive extracts:
 			to_chat(user, SPAN_NOTICE("You feed 1 Monkey Cube to [src], and it pulses gently."))
 			feedAmount-=1
 			playsound(src, 'sound/items/eatfood.ogg', 20, TRUE)
+			qdel(O)
+			last_produce = world.time + cooldown
 		else
 			to_chat(user, SPAN_NOTICE("The [src] rejects the Monkey Cube!")) //in case it fails to insert for whatever reason you get feedback
 	else
 		to_chat(user, SPAN_NOTICE("The [src] rejects the [O]!"))
 
 	if(feedAmount<=0)
+		feedAmount=3
 		to_chat(user, SPAN_NOTICE("The [src] starts to fizzle!"))
 		spawn(10 SECONDS)
+		for(var/i in 1 to rand(1,4))
 			new extract_type(get_turf(src))
 
 

@@ -19,7 +19,7 @@ Self-sustaining extracts:
 	..()
 	visible_message(SPAN_WARNING("The [src] shudders, and splits into four smaller extracts."))
 	var/amount = rand(1,4)
-	for(var/i in amount)
+	for(var/i in 1 to amount)
 		var/obj/item/autometroid/A = new /obj/item/autometroid(src.loc)
 		var/obj/item/metroid_extract/X = new extract_type(A)
 		A.extract = X

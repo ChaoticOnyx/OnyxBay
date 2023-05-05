@@ -793,9 +793,9 @@
 		to_chat(owner, SPAN_NOTICE("You create a new cardboard golem shell."))
 		StartCooldown()
 		if(master)
-			new /obj/effect/mob_spawn/ghost_role/human/golem/servant(get_turf(owner), /datum/species/golem/cardboard, master)
+			new /obj/effect/mob_spawn/ghost_role/human/golem/servant(get_turf(owner), SPECIES_GOLEM_CARDBOARD, master)
 		else
-			new /obj/effect/mob_spawn/ghost_role/human/golem(get_turf(owner), /datum/species/golem/cardboard)
+			new /obj/effect/mob_spawn/ghost_role/human/golem(get_turf(owner), SPECIES_GOLEM_CARDBOARD)
 
 /datum/species/golem/leather
 	name = "Leather Golem"

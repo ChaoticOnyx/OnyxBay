@@ -28,15 +28,19 @@
 	vision = null
 	. = ..()
 
+/obj/machinery/computer/camera_advanced/attack_ghost(mob/ghost)
+	return
+
 /obj/machinery/computer/camera_advanced/attack_hand(obj/item/I, user)
 	..()
-	if(!isghost(user))
-		if(!vision.owner)
-			var/mob/living/L = I
-			GrantActions(L)
-			vision.possess(L)
-			register_signal(L, SIGNAL_QDELETING, /obj/machinery/computer/camera_advanced/proc/release)
-			register_signal(L, SIGNAL_LOGGED_OUT, /obj/machinery/computer/camera_advanced/proc/release)
+	if(!vision.owner)
+		var/mob/living/L = I
+		GrantActions(L)
+		vision.possess(L)
+		register_signal(L, SIGNAL_QDELETING, /obj/machinery/computer/camera_advanced/proc/release)
+		register_signal(L, SIGNAL_LOGGED_OUT, /obj/machinery/computer/camera_advanced/proc/release)
+		register_signal(L, SIGNAL_MOB_DEATH, /obj/machinery/computer/camera_advanced/proc/release)
+		register_signal(L, SIGNAL_MOVED, /obj/machinery/computer/camera_advanced/proc/release)
 
 /obj/machinery/computer/camera_advanced/proc/release(mob/living/L)
 	vision.release(L)
@@ -45,6 +49,8 @@
 
 	unregister_signal(L, SIGNAL_QDELETING)
 	unregister_signal(L, SIGNAL_LOGGED_OUT)
+	unregister_signal(L, SIGNAL_MOB_DEATH)
+	unregister_signal(L, SIGNAL_MOVED)
 
 
 /obj/machinery/computer/camera_advanced/proc/GrantActions(mob/living/L)
