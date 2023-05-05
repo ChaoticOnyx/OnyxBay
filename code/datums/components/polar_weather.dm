@@ -1,9 +1,9 @@
 #define WEATHER_NORMAL 0
-#define WEATHER_BLUESPACE_CONVERGENCE 1
-#define WEATHER_BLUESPACE_EXIT 2
+#define WEATHER_SNOWFALL 1
+#define WEATHER_SNOWSTORM 2
 
-#define CONVERGENCE_TEMP 203.15 // -70C
-#define EXIT_TEMP 153.15 // -120C
+#define SNOWFALL_TEMP 203.15 // -70C
+#define SNOWSTORM_TEMP 153.15 // -120C
 
 /datum/announcement/priority/ams
 	title = "Autonomous Meteorological Station"
@@ -17,7 +17,7 @@
 	var/next_state_change = null
 	var/was_weather_message = FALSE
 	var/datum/announcement/priority/ams/AMS = new
-	var/list/things_list = list()
+	var/light_initialized = FALSE
 
 /datum/component/polar_weather/Initialize()
 	. = ..()
@@ -64,12 +64,12 @@
 							return
 
 						sfx_to_play = SFX_WEATHER_OUT_NORMAL
-					if(WEATHER_BLUESPACE_CONVERGENCE)
+					if(WEATHER_SNOWFALL)
 						if(!prob(40))
 							return
 
 						sfx_to_play = SFX_WEATHER_OUT_STORM_INCOMING
-					if(WEATHER_BLUESPACE_EXIT)
+					if(WEATHER_SNOWSTORM)
 						if(!prob(70))
 							return
 
@@ -81,12 +81,12 @@
 							return
 
 						sfx_to_play = SFX_WEATHER_IN_NORMAL
-					if(WEATHER_BLUESPACE_CONVERGENCE)
+					if(WEATHER_SNOWFALL)
 						if(!prob(30))
 							return
 
 						sfx_to_play = SFX_WEATHER_IN_STORM_INCOMING
-					if(WEATHER_BLUESPACE_EXIT)
+					if(WEATHER_SNOWSTORM)
 						if(!prob(45))
 							return
 
@@ -99,84 +99,71 @@
 		C.mob.playsound_local(get_turf(M), S, 20, FALSE)
 
 /datum/component/polar_weather/proc/_update_state()
-	QDEL_LIST(things_list)
-	var/boss_spawned = FALSE
 	var/list/station_levels = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 	for(var/level in station_levels)
 		var/datum/space_level/L = GLOB.using_map.map_levels[level]
 
-		if(current_state == WEATHER_BLUESPACE_EXIT)
-			L.add_trait(ZTRAIT_BLUESPACE_EXIT)
-			L.remove_trait(ZTRAIT_BLUESPACE_CONVERGENCE)
-		else if(current_state == WEATHER_BLUESPACE_CONVERGENCE)
-			L.add_trait(ZTRAIT_BLUESPACE_CONVERGENCE)
-			L.remove_trait(ZTRAIT_BLUESPACE_EXIT)
+		if(current_state == WEATHER_SNOWSTORM)
+			L.add_trait(ZTRAIT_SNOWSTORM)
+			L.remove_trait(ZTRAIT_SNOWFALL)
+		else if(current_state == WEATHER_SNOWFALL)
+			L.add_trait(ZTRAIT_SNOWFALL)
+			L.remove_trait(ZTRAIT_SNOWSTORM)
 		else
-			L.remove_trait(ZTRAIT_BLUESPACE_EXIT)
-			L.remove_trait(ZTRAIT_BLUESPACE_CONVERGENCE)
+			L.remove_trait(ZTRAIT_SNOWSTORM)
+			L.remove_trait(ZTRAIT_SNOWFALL)
 
 	var/light_color
+	var/weather_overlay
 	switch(current_state)
 		if(WEATHER_NORMAL)
-			light_color = "#ffffff"
-		if(WEATHER_BLUESPACE_CONVERGENCE)
-			light_color = "#091035"
-		if(WEATHER_BLUESPACE_EXIT)
-			light_color = "#0508c4"
+			weather_overlay = "nothing"
+		if(WEATHER_SNOWFALL)
+			weather_overlay = "light_snow"
+		if(WEATHER_SNOWSTORM)
+			weather_overlay = "snow_storm"
 
-	var/list/lighting_levels = GLOB.using_map.get_levels_with_trait(ZTRAIT_POLAR_WEATHER)
-	for(var/level in lighting_levels)
-		log_debug("Updating lighting on level [level] to color [light_color]")
-		for(var/turf/T in block(locate(1, 1, level), locate(world.maxx, world.maxy, level)))
+	// var/list/weather_levels = GLOB.using_map.get_levels_with_trait(ZTRAIT_POLAR_WEATHER)
+	// for(var/level in weather_levels)
+	var/list/impacted_areas = area_repository.get_areas_by_z_level(list(/proc/is_outside_area))
+	for(var/A in impacted_areas)
+		var/area/impacted_area = impacted_areas[A]
+		impacted_area.icon = 'icons/effects/effects.dmi'
+		impacted_area.icon_state = weather_overlay
+		var/list/turfs_to_process = get_area_turfs(impacted_area)
+		for(var/turf/T in turfs_to_process)
 
-			if(!istype(T, /turf/simulated) && !istype(T, /turf/unsimulated/floor/frozenground))
+			// Set lighting
+			if(!light_initialized)
+				T.set_light(0.95, 1, 1.25, l_color = light_color)
+
+			// Update temperature
+			var/datum/gas_mixture/M = T.return_air()
+			var/thermal_energy = 0
+			var/new_temperature = 243.15
+			if(current_state == WEATHER_NORMAL)
+				new_temperature = initial(T.temperature)
+			else if(current_state == WEATHER_SNOWFALL)
+				new_temperature = SNOWFALL_TEMP
+			else
+				new_temperature = SNOWSTORM_TEMP
+
+			if(istype(T, /turf/unsimulated))
+				T.temperature = new_temperature
 				continue
 
-			var/area/A = get_area(T)
-
-			if(A.environment_type == ENVIRONMENT_OUTSIDE)
-				// Set lighting
-				T.set_light(0.95, 1, 1.25, l_color = light_color)
-
-				// Update temperature
-				var/datum/gas_mixture/M = T.return_air()
-				var/thermal_energy = 0
-				var/new_temperature = 243.15
-				if(current_state == WEATHER_NORMAL)
-					new_temperature = initial(T.temperature)
-				else if(current_state == WEATHER_BLUESPACE_CONVERGENCE)
-					new_temperature = CONVERGENCE_TEMP
-				else
-					new_temperature = EXIT_TEMP
-
-				if(istype(T, /turf/unsimulated))
-					T.temperature = new_temperature
-
-				thermal_energy = M.get_thermal_energy_change(new_temperature)
-				M.add_thermal_energy(thermal_energy)
-
-				// Spawn things
-				if(current_state == WEATHER_BLUESPACE_EXIT && prob(1))
-					if(prob(1) && !boss_spawned)
-						var/mob/living/simple_animal/hostile/bluespace_thing/boss/BT = new(T)
-						boss_spawned = TRUE
-						things_list += BT
-						AMS.Announce("A large density of the bluespace energy was observed. Beware.", "Autonomous Meteorological Station", do_newscast = TRUE)
-					else
-						var/mob/living/simple_animal/hostile/bluespace_thing/BT = new(T)
-						things_list += BT
-
-			else if(A.environment_type == ENVIRONMENT_ROOM && istype(T, /turf/unsimulated/floor/frozenground))
-				T.set_light(0.95, 1, 1.25, l_color = light_color)
+			thermal_energy = M.get_thermal_energy_change(new_temperature)
+			M.add_thermal_energy(thermal_energy)
+	light_initialized = TRUE
 
 /datum/component/polar_weather/proc/_weather_announce()
 	switch(next_state)
 		if(WEATHER_NORMAL)
 			AMS.Announce("Weather forecast: cloudless weather is expected in 2 minutes, the temperature is -30 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE)
-		if(WEATHER_BLUESPACE_CONVERGENCE)
-			AMS.Announce("Weather forecast: Bluespace Convergence is expected in 2 minutes, the temperature will drop to -70 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE)
-		if(WEATHER_BLUESPACE_EXIT)
-			AMS.Announce("Weather forecast: Bluespace Exit is expected in 2 minutes, the temperature will drop to -120 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE, new_sound = sound('sound/effects/siren.ogg'))
+		if(WEATHER_SNOWFALL)
+			AMS.Announce("Weather forecast: snowfall is expected in 2 minutes, the temperature will drop to -70 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE)
+		if(WEATHER_SNOWSTORM)
+			AMS.Announce("Weather forecast: blizzard is expected in 2 minutes, the temperature will drop to -120 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE, new_sound = sound('sound/effects/siren.ogg'))
 
 /datum/component/polar_weather/think()
 	if(GAME_STATE < RUNLEVEL_GAME)
@@ -184,16 +171,16 @@
 		return
 
 	if(next_state_change == null)
-		next_state_change = world.time + rand(14 MINUTES, 20 MINUTES)
+		next_state_change = world.time + rand(10 MINUTES, 14 MINUTES)
 		was_weather_message = FALSE
 
 		if(current_state == WEATHER_NORMAL)
 			if(prob(30))
 				next_state = WEATHER_NORMAL
 			else
-				next_state = prob(90) ? WEATHER_BLUESPACE_CONVERGENCE : WEATHER_BLUESPACE_EXIT
-		else if(current_state == WEATHER_BLUESPACE_CONVERGENCE)
-			next_state = prob(5) ? WEATHER_BLUESPACE_EXIT : WEATHER_NORMAL
+				next_state = prob(90) ? WEATHER_SNOWFALL : WEATHER_SNOWSTORM
+		else if(current_state == WEATHER_SNOWFALL)
+			next_state = prob(5) ? WEATHER_SNOWSTORM : WEATHER_NORMAL
 		else
 			next_state = WEATHER_NORMAL
 
@@ -213,7 +200,7 @@
 	set_next_think_ctx("sound", world.time + 10 SECONDS)
 
 #undef WEATHER_NORMAL
-#undef WEATHER_BLUESPACE_CONVERGENCE
-#undef WEATHER_BLUESPACE_EXIT
-#undef CONVERGENCE_TEMP
-#undef EXIT_TEMP
+#undef WEATHER_SNOWFALL
+#undef WEATHER_SNOWSTORM
+#undef SNOWFALL_TEMP
+#undef SNOWSTORM_TEMP
