@@ -36,6 +36,7 @@ Recurring extracts:
 		extract.visible_message(SPAN_WARNING("The light inside [extract] flickers and dies out."))
 		extract.desc = "A tiny, inert core, bleeding dark, cerulean-colored goo."
 		extract.icon_state = "prismatic"
+		set_next_think(0)
 		qdel(src)
 
 
