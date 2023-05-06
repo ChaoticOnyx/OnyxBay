@@ -38,6 +38,7 @@ Recurring extracts:
 		extract.icon_state = "prismatic"
 		set_next_think(0)
 		qdel(src)
+	set_next_think(world.time + 1 SECOND)
 
 
 /obj/item/metroidcross/recurring/Destroy()
