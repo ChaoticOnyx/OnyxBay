@@ -1086,7 +1086,7 @@
 "uT" = (/obj/structure/sign/directions/science{dir = 4; pixel_y = -12},/obj/structure/sign/directions/engineering{dir = 1; pixel_y = 12},/obj/structure/sign/directions/infirmary{dir = 1; pixel_y = 4},/obj/structure/sign/directions/supply{dir = 1; pixel_y = -4},/turf/simulated/wall,/area/outpost/main_outpost/shallway)
 "uU" = (/obj/machinery/vending/cigarette,/obj/effect/floor_decal/corner/lime/three_quarters{dir = 8},/turf/simulated/floor/tiled,/area/outpost/main_outpost/shallway)
 "uV" = (/obj/effect/decal/cleanable/blood,/obj/effect/decal/remains,/obj/random/clothing/hat,/turf/simulated/floor/tiled/dark,/area/maintenance/ghetto_syndie)
-"uW" = (/obj/effect/floor_decal/corner/brown/diagonal{dir = 4},/obj/structure/table/steel,/obj/item/pickaxe,/obj/item/pickaxe,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/dirty,/area/outpost/mining_main/refinery)
+"uW" = (/obj/effect/floor_decal/corner/brown/diagonal{dir = 4},/obj/structure/table/steel,/obj/item/pickaxe,/obj/item/pickaxe,/obj/effect/floor_decal/oldflood,/obj/item/pickaxe/drill,/obj/item/pickaxe/drill,/turf/simulated/floor/tiled/dirty,/area/outpost/mining_main/refinery)
 "uX" = (/obj/effect/floor_decal/industrial/warning/dust{dir = 5},/obj/machinery/conveyor_switch/oneway{id = "mining_west"},/turf/simulated/floor/plating/airless{icon_state = "asteroidplating"},/area/mine/explored)
 "uY" = (/obj/machinery/conveyor{backwards = 2; dir = 1; forwards = 1; id = "mining_west"},/turf/simulated/floor/plating/airless{icon_state = "asteroidplating"},/area/mine/explored)
 "uZ" = (/obj/machinery/light/small/red{dir = 1},/turf/simulated/floor/plating/airless{icon_state = "asteroidplating"},/area/mine/explored)

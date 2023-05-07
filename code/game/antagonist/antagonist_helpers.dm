@@ -38,7 +38,7 @@
 	var/active_antags = 0
 	for(var/datum/mind/player in current_antagonists)
 		var/mob/living/L = player.current
-		if(!L || L.stat == DEAD)
+		if(!L || L.is_ooc_dead())
 			continue //no mob or dead
 		if(!L.client && !L.teleop)
 			continue //SSD

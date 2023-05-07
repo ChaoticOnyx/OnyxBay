@@ -22,7 +22,7 @@
 	screen.severity = severity
 
 	screens[category] = screen
-	if(client && (stat != DEAD || screen.allstate))
+	if(client && (!is_ooc_dead() || screen.allstate))
 		client.screen += screen
 	return screen
 

@@ -487,7 +487,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 
 #define SAFE_PERP -50
 /mob/living/proc/assess_perp(obj/access_obj, check_access, auth_weapons, check_records, check_arrest)
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return SAFE_PERP
 
 	return 0

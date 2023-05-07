@@ -320,7 +320,7 @@
 		return
 	if(H.Adjacent(get_turf(src))) // Like normal analysers, it can't be used at range.
 		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
-		set_pin_data(IC_OUTPUT, 1, (brain && H.stat != DEAD))
+		set_pin_data(IC_OUTPUT, 1, (brain && !H.is_ic_dead()))
 		set_pin_data(IC_OUTPUT, 2, H.get_pulse_as_number())
 		set_pin_data(IC_OUTPUT, 3, (H.stat == 0))
 
@@ -371,7 +371,7 @@
 		return
 	if(H in view(get_turf(src))) // Like medbot's analyzer it can be used in range..
 		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
-		set_pin_data(IC_OUTPUT, 1, (brain && H.stat != DEAD))
+		set_pin_data(IC_OUTPUT, 1, (brain && !H.is_ic_dead()))
 		set_pin_data(IC_OUTPUT, 2, (H.stat == 0))
 		set_pin_data(IC_OUTPUT, 3, damage_to_severity(100 * H.getBruteLoss() / H.maxHealth))
 		set_pin_data(IC_OUTPUT, 4, damage_to_severity(100 * H.getFireLoss() / H.maxHealth))

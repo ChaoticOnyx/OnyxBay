@@ -83,7 +83,7 @@ SUBSYSTEM_DEF(events)
 	triggers.roles_count = list()
 
 	for(var/mob/M in GLOB.player_list)
-		if(M.is_dead())
+		if(M.is_ooc_dead())
 			triggers.death_players_count += 1
 		else
 			triggers.living_players_count += 1

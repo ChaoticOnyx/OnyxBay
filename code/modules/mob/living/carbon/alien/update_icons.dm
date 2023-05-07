@@ -10,7 +10,7 @@
 	else if(amount_grown > max_grown*0.25)
 		state = 1
 
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		icon_state = "[initial(icon_state)][state]_dead"
 	else if (stunned)
 		icon_state = "[initial(icon_state)][state]_stun"

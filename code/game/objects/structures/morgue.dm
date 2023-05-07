@@ -326,7 +326,7 @@
 		for(var/mob/living/M in contents)
 			admin_attack_log(M, A, "Began cremating their victim.", "Has begun being cremated.", "began cremating")
 			for(var/I, I < 60, I++)
-				if(M.stat == DEAD || !(M in contents)) //In case we die or are removed at any point.
+				if(M.is_ooc_dead() || !(M in contents)) //In case we die or are removed at any point.
 					cremating = 0
 					update()
 					break

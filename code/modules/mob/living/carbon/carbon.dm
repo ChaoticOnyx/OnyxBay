@@ -248,7 +248,7 @@
 				if(M.on_fire)
 					src.IgniteMob()
 
-			if(stat != DEAD)
+			if(!is_ic_dead())
 				AdjustParalysis(-3)
 				AdjustStunned(-3)
 				AdjustWeakened(-3)

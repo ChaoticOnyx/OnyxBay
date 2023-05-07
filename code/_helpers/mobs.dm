@@ -302,7 +302,7 @@
 
 	if(include_observers)
 		for(var/mob/M in GLOB.player_list)
-			if((M.stat != DEAD) || (!M.client))
+			if((!M.is_ooc_dead()) || (!M.client))
 				continue
 			if(M.ckey == find_key)
 				selected = M
@@ -310,7 +310,7 @@
 	else
 		for(var/mob/living/M in GLOB.player_list)
 			//Dead people only thanks!
-			if((M.stat != DEAD) || (!M.client))
+			if((!M.is_ooc_dead()) || (!M.client))
 				continue
 			//They need a brain!
 			if(istype(M, /mob/living/carbon/human))

@@ -401,7 +401,7 @@
 	if(isliving(target) && proximity_flag)
 		if(isanimal(target))
 			var/mob/living/simple_animal/M = target
-			if(M.stat == DEAD)
+			if(M.is_ooc_dead())
 				M.faction = "neutral"
 				if(emagged)	//if emagged, will set anything revived to the syndicate. Convert station pets to the traitor side!
 					M.faction = "syndicate"

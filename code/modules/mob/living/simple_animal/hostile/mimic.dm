@@ -101,7 +101,7 @@ var/global/list/protected_objects = list(
 		if(ismob(A))
 			var/mob/M = A
 
-			if(M.is_dead())
+			if(M.is_ic_dead())
 				M.forceMove(get_turf(src))
 				M.gib()
 			else

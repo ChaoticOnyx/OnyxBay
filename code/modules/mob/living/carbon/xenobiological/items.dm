@@ -174,6 +174,7 @@
 	icon_state = "potgreen"
 	var/being_used = FALSE
 
+
 /obj/item/metroidpotion/renaming/attack(mob/living/M as mob, mob/user as mob)
 	if(being_used || !ismob(M))
 		return

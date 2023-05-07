@@ -84,7 +84,7 @@
 	if(next && !(next in view(src, 1)))
 		Detach()
 
-	if(stat == DEAD) // Dead chunks fall off and die immediately
+	if(is_ooc_dead()) // Dead chunks fall off and die immediately
 		if(previous)
 			previous.Detach()
 		if(next)
@@ -104,7 +104,8 @@
 
 /mob/living/simple_animal/space_worm/Move()
 	var/attachementNextPosition = loc
-	if(..())
+	. = ..()
+	if(.)
 		if(previous)
 			previous.Move(attachementNextPosition)
 		update_icon()

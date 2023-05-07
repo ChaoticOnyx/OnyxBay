@@ -223,7 +223,7 @@
 	armor_penetration = 15
 
 /obj/item/material/knife/butch/kitchen/syndie/apply_hit_effect(mob/living/target, mob/living/user, hit_zone)
-	if(ishuman(target) && target.stat == DEAD)
+	if(ishuman(target) && target.is_ic_dead())
 		chopchop(user, target)
 		return 0
 	return ..()

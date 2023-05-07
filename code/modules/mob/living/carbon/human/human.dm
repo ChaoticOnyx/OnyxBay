@@ -198,7 +198,7 @@
 		temp.take_external_damage(b_loss * loss_val, f_loss * loss_val, used_weapon = weapon_message)
 
 /mob/living/carbon/human/blob_act(damage)
-	if(is_dead())
+	if(is_ic_dead())
 		return
 
 	var/blocked = run_armor_check(BP_CHEST, "melee")
@@ -743,7 +743,7 @@
 		return
 	level = Clamp(level, 1, 3)
 	timevomit = Clamp(timevomit, 1, 10)
-	if(stat == DEAD)
+	if(is_ic_dead())
 		return
 	if(!lastpuke)
 		lastpuke = 1

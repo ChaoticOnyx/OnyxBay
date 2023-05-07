@@ -111,7 +111,7 @@
 			to_chat(user, "<span class='notice'>[src] has become inert, its healing properties are no more.</span>")
 			return
 		else
-			if(H.stat == DEAD)
+			if(H.is_ic_dead())
 				to_chat(user, "<span class='notice'>[src] are useless on the dead.</span>")
 				return
 			if(H != user)

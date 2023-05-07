@@ -100,9 +100,8 @@
 
 
 /obj/item/device/assembly/prox_sensor/Move()
-	..()
+	. = ..()
 	sense()
-	return
 
 
 /obj/item/device/assembly/prox_sensor/interact(mob/user)//TODO: Change this to the wires thingy

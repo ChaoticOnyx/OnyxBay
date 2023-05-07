@@ -202,7 +202,7 @@
 			toggle_lock()
 			return TOPIC_REFRESH
 	if(href_list["chemical"] && href_list["amount"])
-		if(occupant && occupant.stat != DEAD)
+		if(occupant && !occupant.is_ic_dead())
 			if(href_list["chemical"] in available_chemicals) // Your hacks are bad and you should feel bad
 				inject_chemical(user, href_list["chemical"], text2num(href_list["amount"]))
 				return TOPIC_REFRESH
