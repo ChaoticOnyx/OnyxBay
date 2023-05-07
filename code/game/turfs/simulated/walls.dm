@@ -64,8 +64,7 @@
 	return 180 - real_incoming_angle
 
 /turf/simulated/wall/proc/projectile_reflection(obj/item/projectile/proj)
-	var/ricochet_temp_id = rand(1, 1000)
-	proj.ricochet_id = ricochet_temp_id
+	ricochet_id = rand(1, 1000)
 
 	// don't have any ideas how to improve it. without angles projectiles, if somebody do it by angles you can easy remove that code
 	// Setting projectile and our coordinats in pixels (why in pixels? idk)
@@ -99,7 +98,7 @@
 		else
 			wall_by_dirs["[direction]"] = FALSE
 			for(var/obj/machinery/door/door in wall.contents)
-				if(door.density)
+				if(door.density && !(!door.opacity && istype(proj, /obj/item/projectile/beam)))
 					wall_by_dirs["[direction]"] = TRUE
 					break
 
@@ -159,6 +158,7 @@
 					proj_damage /= reinf_material.burn_armor
 					if(reflectchance > 0 && projectile_reflection(proj))
 						visible_message("\red <B>\The [proj] gets reflected by shiny surface of reinforced wall!</B>")
+						proj.ricochet_id = ricochet_id
 						proj.damage = damagediff
 						take_damage(min(proj_damage - damagediff, 100))
 						return PROJECTILE_CONTINUE // complete projectile permutation
@@ -182,6 +182,7 @@
 					var/damagediff = round(proj_damage * reflectchance / 100)
 					if(reflectchance > 0 && projectile_reflection(proj))
 						visible_message("\red <B>\The [proj] gets reflected by shiny surface of wall!</B>")
+						proj.ricochet_id = ricochet_id
 						proj.damage = damagediff
 						take_damage(min(proj_damage - damagediff, 100))
 						return PROJECTILE_CONTINUE // complete projectile permutation
@@ -207,6 +208,7 @@
 					var/damagediff = round(proj_damage * ricochetchance / 100)
 					if(prob(ricochetchance) && projectile_reflection(proj))
 						visible_message("\red <B>\The [proj] ricochets from the surface of reinforced wall!</B>")
+						proj.ricochet_id = ricochet_id
 						proj_damage /= reinf_material.brute_armor
 						proj.damage = damagediff
 						take_damage(min(proj_damage - damagediff, 100))
@@ -223,6 +225,7 @@
 					var/damagediff = round(proj_damage * ricochetchance / 100)
 					if(prob(ricochetchance) && projectile_reflection(proj))
 						visible_message("\red <B>\The [proj] ricochets from the surface of wall!</B>")
+						proj.ricochet_id = ricochet_id
 						proj.damage = damagediff
 						take_damage(min(proj_damage - damagediff, 100))
 						return PROJECTILE_CONTINUE // complete projectile permutation
