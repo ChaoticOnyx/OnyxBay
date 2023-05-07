@@ -52,14 +52,3 @@
 	icon_state = "workbootstoeless"
 	siemens_coefficient = 0.6
 	species_restricted = null
-
-/obj/item/clothing/shoes/pioneer
-	desc = "A pair of fur shoes. These ones seem to be reinforced with some sort of plating."
-	name = "pioneer's shoes"
-	icon_state = "pioneer_boots"
-	siemens_coefficient = 0.7
-	force = 3
-	can_hold_knife = 1
-	cold_protection = FEET
-	min_cold_protection_temperature = SHOE_MIN_COLD_PROTECTION_TEMPERATURE
-	armor = list(melee = 50, bullet = 50, laser = 40, energy = 10, bomb = 20, bio = 0)

@@ -274,11 +274,3 @@
 	name = "\improper NanoTrasen helmet cover"
 	desc = "A fabric cover for armored helmets. This one has NanoTrasen's colors."
 	icon_state = "helmcover_nt"
-
-/obj/item/clothing/accessory/armor/coat/pioneer
-	name = "\improper pioneer's winter coat"
-	desc = "A fur coat for pioneer's armor chestplate."
-	icon_state = "pioneer_coat"
-	slot = ACCESSORY_SLOT_ARMOR_M
-	cold_protection = FULL_BODY
-	min_cold_protection_temperature = 140

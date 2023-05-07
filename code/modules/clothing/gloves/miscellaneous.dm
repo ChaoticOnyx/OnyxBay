@@ -133,15 +133,3 @@
 	siemens_coefficient = 0.7
 	permeability_coefficient = 0.03
 	armor = list(melee = 40, bullet = 40, laser = 40, energy = 25, bomb = 30, bio = 0)
-
-/obj/item/clothing/gloves/pioneer
-	desc = "A pair of fur gloves with armor plating."
-	name = "pioneer's gloves"
-	icon_state = "pioneer_gloves"
-	body_parts_covered = HANDS
-	w_class = ITEM_SIZE_NORMAL
-	siemens_coefficient = 0.4
-	permeability_coefficient = 0.05
-	cold_protection = HANDS
-	min_cold_protection_temperature = GLOVES_MIN_COLD_PROTECTION_TEMPERATURE
-	armor = list(melee = 10, bullet = 10, laser = 0, energy = 20, bomb = 0, bio = 0)

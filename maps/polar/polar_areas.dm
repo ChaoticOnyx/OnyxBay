@@ -5,6 +5,7 @@
 	..()
 	for(var/turf/T in src)
 		T.filters += filter(type = "motion_blur", x=5)
+		animate(T.filters[filters.len], x = 5, time = 10)
 
 /area/polarplanet
 	name = "polarplanet"
@@ -2805,39 +2806,3 @@
 /area/polarplanet/voron/hallway1
 	name = "\improper Apparat Voron - Hallway Deck 1"
 	icon_state = "voron_hallway1"
-
-/area/polarplanet/pioneer/chapel
-	name = "\improper Pioneer Base - Chapel"
-	icon_state = "pioneer_chapel1"
-
-/area/polarplanet/pioneer/dormitory
-	name = "\improper Pioneer Base - Dormitory"
-	icon_state = "pioneer_dormitory"
-
-/area/polarplanet/pioneer/canteen
-	name = "\improper Pioneer Base - Canteen"
-	icon_state = "pioneer_canteen"
-
-/area/polarplanet/pioneer/fintess_court
-	name = "\improper Pioneer Base - Fintess Court"
-	icon_state = "pioneer_fintess_court"
-
-/area/polarplanet/pioneer/mech_bay
-	name = "\improper Pioneer Base - Mech Bay"
-	icon_state = "pioneer_mech_bay"
-
-/area/polarplanet/pioneer/freezer
-	name = "\improper Pioneer Base - Freezer"
-	icon_state = "pioneer_freezer"
-
-/area/polarplanet/pioneer/atmos
-	name = "\improper Pioneer Base - Atmospheric"
-	icon_state = "pioneer_atmos"
-
-/area/polarplanet/pioneer/entrance
-	name = "\improper Pioneer Base - Entrance"
-	icon_state = "pioneer_entrance"
-
-/area/polarplanet/pioneer/street
-	name = "\improper Pioneer Base - Street"
-	icon_state = "pioneer_street"
