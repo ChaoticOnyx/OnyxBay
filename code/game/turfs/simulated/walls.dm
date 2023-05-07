@@ -60,9 +60,6 @@
 /turf/simulated/wall/proc/projectile_reflection(obj/item/projectile/proj, calculate = FALSE)
 	var/incoming_dir_angle = dir2angle(get_dir(src, get_turf(proj)))
 	var/incoming_angle = Get_Angle(src, proj.starting)
-	if((incoming_dir_angle + 30 < incoming_angle && incoming_dir_angle - 30 > incoming_angle) || (incoming_dir_angle + 70 < incoming_angle && incoming_dir_angle - 70 > incoming_angle)) //Reflection back in wall disabled, and shot back, no matter wall reflection
-		return FALSE
-
 	var/real_incoming_angle = incoming_angle - incoming_dir_angle + 90 //Make sure we have angle in range 0 . . . 180
 	var/reflect_angle  = 180 - real_incoming_angle
 	if(calculate)
