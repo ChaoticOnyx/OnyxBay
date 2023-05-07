@@ -57,14 +57,13 @@
 /turf/simulated/wall/proc/get_material()
 	return material
 
-/turf/simulated/wall/proc/projectile_reflection(obj/item/projectile/proj, calculate = FALSE)
+/turf/simulated/wall/proc/projectile_reflection_chance(obj/item/projectile/proj)
 	var/incoming_dir_angle = dir2angle(get_dir(src, get_turf(proj)))
 	var/incoming_angle = Get_Angle(src, proj.starting)
 	var/real_incoming_angle = incoming_angle - incoming_dir_angle + 90 //Make sure we have angle in range 0 . . . 180
-	var/reflect_angle  = 180 - real_incoming_angle
-	if(calculate)
-		return reflect_angle
+	return 180 - real_incoming_angle
 
+/turf/simulated/wall/proc/projectile_reflection(obj/item/projectile/proj)
 	var/ricochet_temp_id = rand(1, 1000)
 	proj.ricochet_id = ricochet_temp_id
 
@@ -139,98 +138,96 @@
 
 /turf/simulated/wall/bullet_act(obj/item/projectile/proj)
 	var/proj_damage = proj.get_structure_damage()
-	if(ricochet_id != 0)
-		if(ricochet_id == proj.ricochet_id)
-			ricochet_id = 0
-			return PROJECTILE_CONTINUE
-
+	if(ricochet_id != proj.ricochet_id)
 		ricochet_id = 0
-	// Walls made from reflective-able materials reflect beam-type projectiles depending on their reflectance value.
-	if(istype(proj, /obj/item/projectile/beam))
-		if(reinf_material)
-			if(material.opacity * reinf_material.opacity < 0.16)
-				return PROJECTILE_CONTINUE
+		// Walls made from reflective-able materials reflect beam-type projectiles depending on their reflectance value.
+		if(istype(proj, /obj/item/projectile/beam))
+			if(reinf_material)
+				if(material.opacity * reinf_material.opacity < 0.16)
+					return PROJECTILE_CONTINUE
 
-			if(material.reflectance + reinf_material.reflectance > 0)
-				// Reflection chance depends on materials' var 'reflectance'.
-				var/reflectchance = material.reflectance + reinf_material.reflectance - min(round(proj.damage/3), 50)
-				var/turf/curloc = get_turf(src)
-				if((curloc.x == proj.starting.x) || (curloc.y == proj.starting.y))
-					reflectchance = 0
+				if(material.reflectance + reinf_material.reflectance > 0)
+					// Reflection chance depends on materials' var 'reflectance'.
+					var/reflectchance = material.reflectance + reinf_material.reflectance - min(round(proj.damage/3), 50)
+					var/turf/curloc = get_turf(src)
+					if((curloc.x == proj.starting.x) || (curloc.y == proj.starting.y))
+						reflectchance = 0
+					else
+						reflectchance = round(projectile_reflection_chance(proj) * reflectchance)
+					reflectchance = min(max(reflectchance, 0), 100)
+					var/damagediff = round(proj_damage * reflectchance / 100)
+					proj_damage /= reinf_material.burn_armor
+					if(reflectchance > 0 && projectile_reflection(proj))
+						visible_message("\red <B>\The [proj] gets reflected by shiny surface of reinforced wall!</B>")
+						proj.damage = damagediff
+						take_damage(min(proj_damage - damagediff, 100))
+						return PROJECTILE_CONTINUE // complete projectile permutation
+					// Walls with positive reflection values deal with laser better than walls with negative.
+					burn(1500)
 				else
-					reflectchance = round(projectile_reflection(proj, 1) * reflectchance)
-				reflectchance = min(max(reflectchance, 0), 100)
-				var/damagediff = round(proj_damage * reflectchance / 100)
-				proj_damage /= reinf_material.burn_armor
-				if(reflectchance > 0 && projectile_reflection(proj))
-					visible_message("\red <B>\The [proj] gets reflected by shiny surface of reinforced wall!</B>")
-					proj.damage = damagediff
-					take_damage(min(proj_damage - damagediff, 100))
-					return PROJECTILE_CONTINUE // complete projectile permutation
-				// Walls with positive reflection values deal with laser better than walls with negative.
-				burn(1500)
+					burn(2000)
 			else
-				burn(2000)
-		else
-			if(material.opacity < 0.4)
-				return PROJECTILE_CONTINUE
+				if(material.opacity < 0.4)
+					return PROJECTILE_CONTINUE
 
-			if(material.reflectance > 0)
-				// Reflection chance depends on materials' var 'reflectance'.
-				var/reflectchance = material.reflectance - min(round(proj.damage/3), 50)
-				var/turf/curloc = get_turf(src)
-				if((curloc.x == proj.starting.x) || (curloc.y == proj.starting.y))
-					reflectchance = 0
+				if(material.reflectance > 0)
+					// Reflection chance depends on materials' var 'reflectance'.
+					var/reflectchance = material.reflectance - min(round(proj.damage/3), 50)
+					var/turf/curloc = get_turf(src)
+					if((curloc.x == proj.starting.x) || (curloc.y == proj.starting.y))
+						reflectchance = 0
+					else
+						reflectchance = round(projectile_reflection_chance(proj) * reflectchance)
+					reflectchance = min(max(reflectchance, 0), 100)
+					var/damagediff = round(proj_damage * reflectchance / 100)
+					if(reflectchance > 0 && projectile_reflection(proj))
+						visible_message("\red <B>\The [proj] gets reflected by shiny surface of wall!</B>")
+						proj.damage = damagediff
+						take_damage(min(proj_damage - damagediff, 100))
+						return PROJECTILE_CONTINUE // complete projectile permutation
+					// Walls with positive reflection values deal with laser better than walls with negative.
+					burn(2000)
 				else
-					reflectchance = round(projectile_reflection(proj, 1) * reflectchance)
-				reflectchance = min(max(reflectchance, 0), 100)
-				var/damagediff = round(proj_damage * reflectchance / 100)
-				if(reflectchance > 0 && projectile_reflection(proj))
-					visible_message("\red <B>\The [proj] gets reflected by shiny surface of wall!</B>")
-					proj.damage = damagediff
-					take_damage(min(proj_damage - damagediff, 100))
-					return PROJECTILE_CONTINUE // complete projectile permutation
-				// Walls with positive reflection values deal with laser better than walls with negative.
-				burn(2000)
+					burn(2500)
+
+		//else if(istype(proj,/obj/item/projectile/ion))
+		//	burn(500)
+
+		// Bullets ricochet from walls made of specific materials with some little chance.
+		if(istype(proj, /obj/item/projectile/bullet) && proj.can_ricochet)
+			if(reinf_material)
+				if(material.resilience * reinf_material.resilience > 0)
+					var/ricochetchance = round(sqrt(material.resilience * reinf_material.resilience))
+					var/turf/curloc = get_turf(src)
+					if((curloc.x == proj.starting.x) || (curloc.y == proj.starting.y))
+						ricochetchance = 0
+					else
+						ricochetchance = round(projectile_reflection_chance(proj) * ricochetchance)
+					ricochetchance = min(max(ricochetchance, 0), 100)
+					var/damagediff = round(proj_damage * ricochetchance / 100)
+					if(prob(ricochetchance) && projectile_reflection(proj))
+						visible_message("\red <B>\The [proj] ricochets from the surface of reinforced wall!</B>")
+						proj_damage /= reinf_material.brute_armor
+						proj.damage = damagediff
+						take_damage(min(proj_damage - damagediff, 100))
+						return PROJECTILE_CONTINUE // complete projectile permutation
 			else
-				burn(2500)
+				if(material.resilience > 0)
+					var/ricochetchance = round(material.resilience)
+					var/turf/curloc = get_turf(src)
+					if((curloc.x == proj.starting.x) || (curloc.y == proj.starting.y))
+						ricochetchance = 0
+					else
+						ricochetchance = round(projectile_reflection_chance(proj) * ricochetchance)
+					ricochetchance = min(max(ricochetchance, 0), 100)
+					var/damagediff = round(proj_damage * ricochetchance / 100)
+					if(prob(ricochetchance) && projectile_reflection(proj))
+						visible_message("\red <B>\The [proj] ricochets from the surface of wall!</B>")
+						proj.damage = damagediff
+						take_damage(min(proj_damage - damagediff, 100))
+						return PROJECTILE_CONTINUE // complete projectile permutation
 
-	//else if(istype(proj,/obj/item/projectile/ion))
-	//	burn(500)
-
-	// Bullets ricochet from walls made of specific materials with some little chance.
-	if(istype(proj, /obj/item/projectile/bullet) && proj.can_ricochet)
-		if(reinf_material)
-			if(material.resilience * reinf_material.resilience > 0)
-				var/ricochetchance = round(sqrt(material.resilience * reinf_material.resilience))
-				var/turf/curloc = get_turf(src)
-				if((curloc.x == proj.starting.x) || (curloc.y == proj.starting.y))
-					ricochetchance = 0
-				else
-					ricochetchance = round(projectile_reflection(proj, 1) * ricochetchance)
-				ricochetchance = min(max(ricochetchance, 0), 100)
-				var/damagediff = round(proj_damage * ricochetchance / 100)
-				if(prob(ricochetchance) && projectile_reflection(proj))
-					visible_message("\red <B>\The [proj] ricochets from the surface of reinforced wall!</B>")
-					proj_damage /= reinf_material.brute_armor
-					proj.damage = damagediff
-					take_damage(min(proj_damage - damagediff, 100))
-					return PROJECTILE_CONTINUE // complete projectile permutation
-		else
-			if(material.resilience > 0)
-				var/ricochetchance = round(material.resilience)
-				var/turf/curloc = get_turf(src)
-				if((curloc.x == proj.starting.x) || (curloc.y == proj.starting.y))
-					ricochetchance = 0
-				else
-					ricochetchance = round(projectile_reflection(proj, 1) * ricochetchance)
-				ricochetchance = min(max(ricochetchance, 0), 100)
-				var/damagediff = round(proj_damage * ricochetchance / 100)
-				if(prob(ricochetchance) && projectile_reflection(proj))
-					visible_message("\red <B>\The [proj] ricochets from the surface of wall!</B>")
-					proj.damage = damagediff
-					take_damage(min(proj_damage - damagediff, 100))
-					return PROJECTILE_CONTINUE // complete projectile permutation
+	ricochet_id = 0
 
 	if(reinf_material)
 		if(proj.damage_type == BURN)
