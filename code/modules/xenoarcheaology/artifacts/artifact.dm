@@ -232,7 +232,7 @@
 	return
 
 /obj/machinery/artifact/Move()
-	..()
+	. = ..()
 	if(main_effect)
 		main_effect.UpdateMove()
 	if(secondary_effect)

@@ -1007,7 +1007,6 @@
 						var/datum/matter_synth/glass.add_charge(1000)
 						spawn(0) //give the stacks a chance to delete themselves if necessary
 */
-		return
 
 /mob/living/silicon/robot/proc/self_destruct()
 	gib()

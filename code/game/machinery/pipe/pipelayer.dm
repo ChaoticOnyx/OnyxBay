@@ -20,7 +20,7 @@
 	..()
 
 /obj/machinery/pipelayer/Move(new_turf,M_Dir)
-	..()
+	. = ..()
 
 	if(on && a_dis)
 		dismantleFloor(old_turf)
