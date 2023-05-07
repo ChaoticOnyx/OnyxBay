@@ -165,13 +165,13 @@
 		return M
 
 /mob/living/simple_animal/hostile/proc/Aggro()
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return 0
 	vision_range = aggro_vision_range
 	return 1
 
 /mob/living/simple_animal/hostile/proc/LoseAggro()
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return 0
 	stop_automated_movement = 0
 	vision_range = idle_vision_range

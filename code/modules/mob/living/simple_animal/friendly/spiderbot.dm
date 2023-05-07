@@ -75,7 +75,7 @@
 				to_chat(user, "<span class='notice'>[O] is completely unresponsive; there's no point.</span>")
 				return
 
-		if(B.stat == DEAD)
+		if(B.is_ooc_dead())
 			to_chat(user, "<span class='warning'>[O] is dead. Sticking it into the frame would sort of defeat the purpose.</span>")
 			return
 

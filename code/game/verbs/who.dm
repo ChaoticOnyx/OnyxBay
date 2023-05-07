@@ -68,7 +68,7 @@
 
 			if(C.mob.mind?.special_role)
 				entry += " - <b><font color='red'>[C.mob.mind.special_role]</font></b>"
-				if(!C.mob.mind.current || C.mob.mind.current?.stat == DEAD)
+				if(!C.mob.mind.current || C.mob.mind.current?.is_ooc_dead())
 					dead_antags++
 				else
 					living_antags++

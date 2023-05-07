@@ -71,7 +71,7 @@ var/global/list/all_objectives = list()
 
 /datum/objective/assassinate/check_completion()
 	if(target && target.current)
-		if(target.current.stat == DEAD || issilicon(target.current) || isbrain(target.current) || target.current.z > 6 || !target.current.ckey) //Borgs/brains/AIs count as dead for traitor objectives. --NeoFite
+		if(target.current.is_ooc_dead() || issilicon(target.current) || isbrain(target.current) || target.current.z > 6 || !target.current.ckey) //Borgs/brains/AIs count as dead for traitor objectives. --NeoFite
 			return 1
 		return 0
 	return 1
@@ -99,7 +99,7 @@ var/global/list/all_objectives = list()
 
 /datum/objective/anti_revolution/execute/check_completion()
 	if(target && target.current)
-		if(target.current.stat == DEAD || !ishuman(target.current))
+		if(target.current.is_ooc_dead() || !ishuman(target.current))
 			return 1
 		return 0
 	return 1
@@ -128,7 +128,7 @@ var/global/list/all_objectives = list()
 	return already_completed
 
 /datum/objective/anti_revolution/brig/update()
-	if(!already_completed && target && target.current && target.current.stat != DEAD)
+	if(!already_completed && target && target.current && !target.current.is_ic_dead())
 		if(target.is_brigged(10 MINUTES))
 			already_completed = 1
 
@@ -222,7 +222,7 @@ var/global/list/all_objectives = list()
 	if(!target)			//If it's a free objective.
 		return 1
 	if(target.current)
-		if(target.current.stat == DEAD || issilicon(target.current) || isbrain(target.current))
+		if(target.current.is_ooc_dead() || issilicon(target.current) || isbrain(target.current))
 			return 0
 		return 1
 	return 0
@@ -285,7 +285,7 @@ var/global/list/all_objectives = list()
 		if(player == owner.current)
 			continue
 		if(player.mind)
-			if(player.stat != DEAD)
+			if(!player.is_ooc_dead())
 				var/turf/T = get_turf(player)
 				if(T && is_type_in_list(T.loc, GLOB.using_map.post_round_safe_areas))
 					return 0
@@ -345,7 +345,7 @@ var/global/list/all_objectives = list()
 	explanation_text = "Stay alive until the end."
 
 /datum/objective/survive/check_completion()
-	if(!owner.current || owner.current.stat == DEAD || isbrain(owner.current))
+	if(!owner.current || owner.current.is_ooc_dead() || isbrain(owner.current))
 		return FALSE //Brains no longer win survive objectives. --NEO
 	var/mob/living/original_mob = owner.original_mob?.resolve()
 	if(issilicon(owner.current) && (istype(original_mob) && owner.current != original_mob))
@@ -384,7 +384,7 @@ var/global/list/all_objectives = list()
 	return already_completed
 
 /datum/objective/brig/update()
-	if(!already_completed && target && target.current && target.current.stat != DEAD)
+	if(!already_completed && target && target.current && !target.current.is_ic_dead())
 		if(target.is_brigged(10 MINUTES))
 			already_completed = 1
 
@@ -414,7 +414,7 @@ var/global/list/all_objectives = list()
 		return 1
 
 	if(target && target.current && istype(target.current, /mob/living/carbon/human))
-		if(target.current.stat == DEAD)
+		if(target.current.is_ooc_dead())
 			return 0
 
 		var/mob/living/carbon/human/H = target.current
@@ -462,7 +462,7 @@ var/global/list/all_objectives = list()
 	for(var/weakref/ref in extract_heads)
 		var/mob/living/carbon/human/head = ref.resolve()
 		var/turf/T = get_turf(head)
-		if(!head || head.stat == DEAD || !istype(T?.loc, save_area_type))
+		if(!head || head.is_ooc_dead() || !istype(T?.loc, save_area_type))
 			return FALSE
 	for(var/weakref/ref in extract_heads_bodies)
 		var/mob/living/carbon/human/head = ref.resolve()
@@ -479,7 +479,7 @@ var/global/list/all_objectives = list()
 		if(possible_target.species.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET)
 			continue
 		if((possible_target.job in GLOB.commandjobs) && !(possible_target.loc?.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
-			if(possible_target.stat == DEAD)
+			if(possible_target.is_ooc_dead())
 				extract_heads_bodies.Add(weakref(possible_target))
 				dead_heads.Add("[possible_target.real_name] ([possible_target.job])")
 			else
@@ -606,7 +606,7 @@ var/global/list/all_objectives = list()
 
 		if("a functional AI")
 			for(var/mob/living/silicon/ai/ai in SSmobs.mob_list)
-				if(ai.stat == DEAD)
+				if(ai.is_ooc_dead())
 					continue
 				var/turf/T = get_turf(ai)
 				if(owner.current.contains(ai) || (T && is_type_in_list(T.loc, GLOB.using_map.post_round_safe_areas)))
@@ -908,7 +908,7 @@ var/global/list/all_objectives = list()
 /datum/objective/borer_survive/check_completion()
 	if(owner)
 		var/mob/living/simple_animal/borer/B = owner.current
-		if(istype(B) && B.stat != DEAD && B.host && B.host.stat != DEAD)
+		if(istype(B) && !B.is_ooc_dead() && B.host && !B.host.is_ooc_dead())
 			return 1
 	return 0
 
@@ -1001,7 +1001,7 @@ var/global/list/all_objectives = list()
 		var/mob/living/carbon/human/H = target.current
 		if(!istype(H))
 			return 1
-		if(H.stat == DEAD || H.restrained())
+		if(H.is_ooc_dead() || H.restrained())
 			return 1
 		// Check if they're converted
 		if(target in GLOB.revs.current_antagonists)

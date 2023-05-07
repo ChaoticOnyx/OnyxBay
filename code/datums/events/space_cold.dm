@@ -15,7 +15,7 @@
 	var/list/candidates = list()
 
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
-		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))
+		if(G.client && !G.is_ic_dead() && !G.species.get_virus_immune(G))
 			candidates += G
 
 	if(!candidates.len)

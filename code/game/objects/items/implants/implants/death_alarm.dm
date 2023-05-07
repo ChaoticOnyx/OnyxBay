@@ -27,7 +27,7 @@
 	if(QDELETED(M)) // If the mob got gibbed
 		activate()
 		return
-	else if(M.stat == DEAD)
+	else if(M.is_ic_dead())
 		activate("death")
 		return
 
