@@ -180,14 +180,11 @@ var/list/global/organ_rel_size = list(
 	return zone
 
 
-/proc/stars(message, not_changing_char_chance)
-	if (not_changing_char_chance == null)
-		not_changing_char_chance = 25
-	else if (not_changing_char_chance < 0)
+/proc/stars(message, not_changing_char_chance = 25)
+	if (not_changing_char_chance < 0)
 		return null
-	else
-		if (not_changing_char_chance >= 100)
-			return message
+	if (not_changing_char_chance >= 100)
+		return message
 
 	var/message_length = length_char(message)
 	var/output_message = ""
