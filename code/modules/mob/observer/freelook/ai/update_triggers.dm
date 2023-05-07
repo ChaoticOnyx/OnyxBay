@@ -46,9 +46,9 @@
 	. = ..()
 
 /mob/living/silicon/ai/rejuvenate()
-	var/was_dead = stat == DEAD
+	var/was_dead = is_ooc_dead()
 	..()
-	if(was_dead && stat != DEAD)
+	if(was_dead && !is_ooc_dead())
 		// Arise!
 		cameranet.update_visibility(src, FALSE)
 

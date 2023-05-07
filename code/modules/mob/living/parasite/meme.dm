@@ -116,7 +116,7 @@ be able to influence the host through various commands.
 		src.death()
 		return
 */
-	if(host.stat == DEAD)
+	if(host.is_ooc_dead())
 		to_chat(src, "\red <b>Your host has died.. you fade away..</b>")
 		src.death()
 		return

@@ -22,7 +22,7 @@
 
 /datum/spell/targeted/shapeshift/cast(list/targets, mob/user)
 	for(var/mob/living/M in targets)
-		if(M.stat == DEAD)
+		if(M.is_ic_dead())
 			to_chat(user, "[name] can only transform living targets.")
 			continue
 		if(M.buckled)

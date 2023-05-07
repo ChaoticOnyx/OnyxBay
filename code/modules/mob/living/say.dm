@@ -230,7 +230,7 @@ var/list/channel_to_radio_key = new
 
 /mob/living/proc/say_check_stat(list/message_data)
 	if(stat)
-		if(stat == DEAD)
+		if(is_ooc_dead())
 			message_data["say_result"] = say_dead(message_data["message"])
 		message_data["say_result"] = FALSE
 		return FALSE

@@ -121,7 +121,7 @@ var/global/datum/matchmaker/matchmaker = new()
 		candidates -= holder.current
 		candidates -= other.holder.current
 		for(var/mob/living/carbon/human/M in candidates)
-			if(!M.mind || M.stat == DEAD || !valid_candidate(M.mind))
+			if(!M.mind || M.is_ooc_dead() || !valid_candidate(M.mind))
 				candidates -= M
 				continue
 			var/datum/job/coworker = job_master.GetJob(M.job)

@@ -27,7 +27,7 @@
 	H.dust()
 
 /datum/species/shadow/handle_environment_special(mob/living/carbon/human/H)
-	if(H.InStasis() || H.stat == DEAD || H.isSynthetic())
+	if(H.InStasis() || H.is_ic_dead() || H.isSynthetic())
 		return
 	var/light_amount = 0
 	if(isturf(H.loc))

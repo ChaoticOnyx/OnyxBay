@@ -11,15 +11,15 @@
 
 	for(var/mob/living/carbon/human/M in GLOB.player_list)
 		for (var/datum/computer_file/crew_record/CR in GLOB.all_crew_records)
-			if (CR.get_name() == M.real_name && !M.is_dead() && !M.ssd_check())
+			if (CR.get_name() == M.real_name && !M.is_ooc_dead() && !M.ssd_check())
 				personnel++
 
 	for (var/mob/living/silicon/ai/ai in SSmobs.mob_list)
-		if (!ai.is_dead() && !ai.ssd_check())
+		if (!ai.is_ooc_dead() && !ai.ssd_check())
 			AIs++
 
 	for (var/mob/living/silicon/robot/robot in SSmobs.mob_list)
-		if (!robot.is_dead() && !robot.ssd_check())
+		if (!robot.is_ooc_dead() && !robot.ssd_check())
 			cyborgs++
 
 	var/result = personnel + AIs + cyborgs
@@ -47,7 +47,7 @@
 
 	for(var/mob/living/carbon/human/M in GLOB.player_list)
 		for (var/datum/computer_file/crew_record/CR in GLOB.all_crew_records)
-			if (CR.get_name() == M.real_name && !M.is_dead()  && !M.ssd_check())
+			if (CR.get_name() == M.real_name && !M.is_ooc_dead()  && !M.ssd_check())
 				var/add_manpower = 0
 				switch (CR.get_job())
 					if ("Captain")          add_manpower = 7
@@ -60,7 +60,7 @@
 					_log_debug("+[add_manpower] for an [CR.get_job()]")
 
 	for (var/mob/living/silicon/robot/robot in GLOB.player_list)
-		if (!robot.is_dead() && !robot.ssd_check())
+		if (!robot.is_ooc_dead() && !robot.ssd_check())
 			if (istype(robot.module, /obj/item/robot_module/security/general) || istype(robot.module, /obj/item/robot_module/security/combat))
 				var/add_manpower = 3
 				security_manpower += add_manpower

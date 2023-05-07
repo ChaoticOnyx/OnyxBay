@@ -452,7 +452,7 @@
 	if(..())
 		return 1
 
-	if(M.stat != DEAD)
+	if(!M.is_ic_dead())
 		to_chat(user, SPAN("notice", "\The [src] quickly retracts its needles as you bring it close to [M]."))
 		return
 
@@ -460,7 +460,7 @@
 	if(!do_after(user, 100))
 		return
 
-	if(M.stat != DEAD)
+	if(!M.is_ic_dead())
 		to_chat(user, SPAN("notice", "\The [src] quickly retracts its needles as soon as you try to inject [M]!"))
 		return
 

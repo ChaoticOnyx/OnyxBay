@@ -93,7 +93,7 @@
 	play_beep()
 
 	if(occupant)
-		if(occupant.stat != DEAD)
+		if(!occupant.is_ic_dead())
 			THROTTLE(icon_update_cooldown, 3 SECONDS)
 			if(icon_update_cooldown)
 				update_icon()
@@ -102,7 +102,7 @@
 	if(air_contents)
 		temperature_archived = air_contents.temperature
 		heat_gas_contents()
-		if(occupant && iscarbon(occupant) && occupant.stat != DEAD && !occupant.is_asystole() && !occupant.losebreath)
+		if(occupant && iscarbon(occupant) && !occupant.is_ic_dead() && !occupant.is_asystole() && !occupant.losebreath)
 			expel_gas()
 
 	if(abs(temperature_archived-air_contents.temperature) > 1)
@@ -295,7 +295,7 @@
 	if(air_contents.total_moles < 10)
 		return
 	if(occupant)
-		if(occupant.stat == DEAD)
+		if(occupant.is_ic_dead())
 			return
 
 		// Just empty a cryo if occupant isn't here
@@ -385,7 +385,7 @@
 	M.stop_pulling()
 	M.forceMove(src)
 	M.ExtinguishMob()
-	if(M.stat != DEAD && air_contents.temperature <= 278)
+	if(!M.is_ic_dead() && air_contents.temperature <= 278)
 		to_chat(M, SPAN("notice", "<b>You feel a cold liquid surround you. Your skin starts to freeze up.</b>"))
 	occupant = M
 	current_heat_capacity = HEAT_CAPACITY_HUMAN

@@ -52,7 +52,7 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 
 /datum/antagonist/xenos/antags_are_dead()
 	for(var/datum/mind/antag in current_antagonists)
-		if(antag.current.stat != DEAD)
+		if(!antag.current.is_ooc_dead())
 			return FALSE
 	return TRUE
 

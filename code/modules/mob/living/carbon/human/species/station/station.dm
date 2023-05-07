@@ -391,7 +391,7 @@
 	return "sap"
 
 /datum/species/diona/handle_environment_special(mob/living/carbon/human/H)
-	if(H.InStasis() || H.stat == DEAD)
+	if(H.InStasis() || H.is_ic_dead())
 		return
 	if(H.nutrition < 10)
 		H.take_overall_damage(2,0)

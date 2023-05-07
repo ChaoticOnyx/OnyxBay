@@ -646,7 +646,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	return TRUE
 
 /proc/isghostmind(datum/mind/player)
-	return player && !isnewplayer(player.current) && (!player.current || isghost(player.current) || (isliving(player.current) && player.current.stat == DEAD) || !player.current.client)
+	return player && !isnewplayer(player.current) && (!player.current || isghost(player.current) || (isliving(player.current) && player.current.is_ooc_dead()) || !player.current.client)
 
 /mob/proc/check_is_holy_turf(turf/T)
 	return 0

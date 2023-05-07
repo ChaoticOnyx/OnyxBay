@@ -9,7 +9,7 @@
 		return
 	..()
 
-	if(stat != DEAD && can_progress())
+	if(!is_ic_dead() && can_progress())
 		update_progression()
 	blinded = null
 	//Status updates, death etc.
@@ -19,7 +19,7 @@
 	return 1
 
 /mob/living/carbon/alien/updatehealth()
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return 0
 
 	if(status_flags & GODMODE)
@@ -47,7 +47,7 @@
 	return
 
 /mob/living/carbon/alien/handle_regular_status_updates()
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		blinded = 1
 		silent = 0
 		return 1 // We are dead for good
@@ -113,7 +113,7 @@
 		else
 			healths.icon_state = "health7"
 
-	if(stat != DEAD)
+	if(!is_ooc_dead())
 		if(blinded)
 			overlay_fullscreen("blind", /obj/screen/fullscreen/blind)
 		else

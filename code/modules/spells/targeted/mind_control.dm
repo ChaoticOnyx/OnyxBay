@@ -111,7 +111,7 @@
 			implanted_in.mind.store_memory(message_ender)
 		qdel(src)
 		return
-	else if (implanted_in.stat == DEAD)
+	else if (implanted_in.is_ic_dead())
 		qdel(src)
 		return
 

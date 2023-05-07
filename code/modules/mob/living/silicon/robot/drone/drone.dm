@@ -295,10 +295,10 @@ var/list/mob_hat_cache = list()
 //Standard robots use config for crit, which is somewhat excessive for these guys.
 //Drones killed by damage will gib.
 /mob/living/silicon/robot/drone/handle_regular_status_updates()
-	if(health <= -35 && src.stat != DEAD)
+	if(health <= -35 && !is_ooc_dead())
 		self_destruct()
 		return
-	if(health <= 0 && src.stat != DEAD)
+	if(health <= 0 && !is_ooc_dead())
 		death()
 		return
 	..()

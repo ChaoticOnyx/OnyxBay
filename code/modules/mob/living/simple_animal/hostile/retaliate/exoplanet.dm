@@ -27,7 +27,7 @@
 			prey.Cut()
 		else
 			for(var/mob/living/simple_animal/S in range(src,1))
-				if(S.stat == DEAD)
+				if(S.is_ooc_dead())
 					visible_message("[src] consumes \the body of [S]!")
 					var/turf/T = get_turf(S)
 					var/obj/item/remains/xeno/X = new(T)

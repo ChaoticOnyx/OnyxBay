@@ -844,5 +844,5 @@
 		var/datum/arranged_hud_process/P = arrange_hud_process(M, 0, GLOB.med_hud_users)
 
 		for(var/mob/living/target in P.Mob.in_view(P.Turf) - M)
-			if(!target.is_dead())
+			if(!target.is_ic_dead())
 				P.Client.images += target.psychoscope_icons[PSYCHOSCOPE_ICON_DOT]

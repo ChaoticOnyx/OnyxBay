@@ -102,7 +102,7 @@
 
 	if(ismob(charger))
 		var/mob/sleep_check_death_mob = charger;
-		if(sleep_check_death_mob.stat == DEAD)
+		if(sleep_check_death_mob.is_ic_dead())
 			return;
 
 	walk(charger,dir,1,charge_speed)

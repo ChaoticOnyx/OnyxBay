@@ -120,7 +120,7 @@
 	set name = "Regurgitate"
 	set desc = "Regurgitate whatever item you hold inside."
 
-	if(stat == DEAD || paralysis || weakened || stunned || restrained())
+	if(is_ooc_dead() || paralysis || weakened || stunned || restrained())
 		return
 
 	if(holding_item)
@@ -134,7 +134,7 @@
 	set name = "Drop Hat"
 	set desc = "Drop the hat you're wearing."
 
-	if(stat == DEAD || paralysis || weakened || stunned || restrained())
+	if(is_ooc_dead() || paralysis || weakened || stunned || restrained())
 		return
 
 	if(src.hat)

@@ -23,7 +23,7 @@
 		overlays += "mmi-error"
 	else
 		overlays += "mmi-[lowertext(brainobj.species.name)]"
-	if(brainmob?.stat == DEAD)
+	if(brainmob?.is_ooc_dead())
 		overlays += "mmi-outer-dead"
 	else
 		overlays += "mmi-outer"
@@ -66,7 +66,7 @@
 /obj/item/device/mmi/proc/update_info()
 	desc = initial(desc)
 	update_icon()
-	if(brainmob?.stat == DEAD)
+	if(brainmob?.is_ooc_dead())
 		desc += SPAN_DEADSAY("\nScans indicate that [brainmob?.name] seems to be dead.")
 	else if(brainmob?.ssd_check())
 		desc += SPAN_DEADSAY("\nScans indicate that [brainmob?.name] seems to be unconscious.")
