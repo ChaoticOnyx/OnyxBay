@@ -138,7 +138,7 @@
 				var/path = has_limbs[limb_type]["path"]
 				var/regenerating_limb = text2path("[path]")
 				var/parent_organ = initial(regenerating_limb["parent_organ"])
-				if(!(H.organs_by_name & parent_organ) || H.organs_by_name[parent_organ].is_stump())
+				if(!(parent_organ in H.organs_by_name) || H.organs_by_name[parent_organ].is_stump())
 					continue
 
 				var/list/organ_data = has_limbs[limb_type]
