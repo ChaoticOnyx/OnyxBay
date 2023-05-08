@@ -1,5 +1,6 @@
 #define PLANT_NO_CUT 1
 #define PLANT_CUT 2
+#define TIME_CUT 5
 
 //trees
 /obj/structure/flora/tree
@@ -13,7 +14,7 @@
 
 /obj/structure/flora/tree/attackby(obj/item/W, mob/living/user)
 	if(istype(W, /obj/item/material/twohanded/chainsaw))
-		if(do_after(usr, 5))
+		if(do_after(usr, TIME_CUT))
 			playsound(user, 'sound/weapons/chainsaw_attack1.ogg', 25, 1)
 			to_chat(user, SPAN_WARNING("You cut down \the [src] with \the [W]."))
 			new /obj/item/stack/material/wood/ten(loc)
