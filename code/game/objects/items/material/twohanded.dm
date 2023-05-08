@@ -168,7 +168,7 @@
 			icon_state = "chainsaw_active"
 			base_icon = "chainsaw_active"
 			attack_verb = list("tears", "rips")
-			hitsound = list('sound/weapons/chainsaw_attack1.ogg', 'sound/weapons/chainsaw_attack2.ogg', 'sound/weapons/chainsaw_attack3.ogg')
+			hitsound = SFX_CHAINSAW
 			sharp = 1
 			edge = 1
 			active = TRUE
