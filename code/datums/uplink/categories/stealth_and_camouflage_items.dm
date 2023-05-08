@@ -34,6 +34,12 @@
 	item_cost = 3
 	path = /obj/item/clothing/mask/chameleon/voice
 
+/datum/uplink_item/item/stealth_items/silicone_top
+	name = "Silicone Breasts"
+	desc = "Manufacturer states: \"200% Organic, 100% Real Woman, and Only 50% Straight.\""
+	item_cost = 3
+	path = /obj/item/underwear/top/silicone_top
+
 /datum/uplink_item/item/stealth_items/smuggler_satchel
 	name = "Smuggler's Satchel"
 	desc = "An easy-concealable satchel. Might be much more useful than you expect."
