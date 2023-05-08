@@ -79,7 +79,7 @@
 */
 /obj/item/material/twohanded/chainsaw
 	name = "chainsaw"
-	desc = "The terrible enemy of all trees"
+	desc = "It`s time to reap and tear.. the trees right?"
 	icon_state = "chainsaw"
 	base_icon = "chainsaw"
 	sharp = 0 // Hard to cut with a not working chainsaw
@@ -167,7 +167,6 @@
 			visible_message(SPAN("warning", "[usr] starts the chainsaw!"))
 			icon_state = "chainsaw_active"
 			base_icon = "chainsaw_active"
-			desc = "It`s time to reap and tear.. the trees right?"
 			attack_verb = list("tears", "rips")
 			hitsound = list('sound/weapons/chainsaw_attack1.ogg', 'sound/weapons/chainsaw_attack2.ogg', 'sound/weapons/chainsaw_attack3.ogg')
 			sharp = 1
@@ -182,7 +181,6 @@
 	visible_message(SPAN("warning", "[usr] stops the chainsaw!"))
 	icon_state = "chainsaw"
 	base_icon = "chainsaw"
-	desc = "The terrible enemy of all trees"
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked")
 	hitsound = SFX_FIGHTING_SWING
 	sharp = 0
