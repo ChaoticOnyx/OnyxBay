@@ -157,8 +157,6 @@
 		turnOff()
 	else
 		turnOn()
-	update_icon()
-	update_twohanding()
 
 /obj/item/material/twohanded/chainsaw/proc/turnOn()
 	if(get_fuel() > 0)
@@ -172,6 +170,8 @@
 			sharp = 1
 			edge = 1
 			active = TRUE
+			update_icon()
+			update_twohanding()
 			think()
 	else
 		to_chat(usr, "<span class='warning'>No fuel in [src]!</span>")
@@ -186,7 +186,8 @@
 	sharp = 0
 	edge = 0
 	active = FALSE
-
+	update_icon()
+	update_twohanding()
 /*
  * Fireaxe
 */
