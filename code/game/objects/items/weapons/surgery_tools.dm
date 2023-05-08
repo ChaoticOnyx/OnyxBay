@@ -1,3 +1,8 @@
+#define CRAFT_COIL 0
+#define CRAFT_CAPACITOR 1
+#define CRAFT_PLASTEEL 2
+#define CRAFT_WELDING 3
+
 /* Surgery Tools
  * Contains:
  *		Retractor
@@ -188,27 +193,27 @@
 
 	// Making a chainsaw steps
 	if(isCoil(W)) 
-		if(craft_step == 0)
+		if(craft_step == CRAFT_COIL)
 			var/obj/item/stack/cable_coil/C = W
 			if(C.use(3))
 				playsound(user,'sound/effects/using/cuffs/cable_use1.ogg', 50, 5, 7)
 				visible_message(SPAN("notice", "[usr] added wires to [src]"))
 				craft_step++
 	if(iscapacitor(W))
-		if(craft_step == 1)
+		if(craft_step == CRAFT_CAPACITOR)
 			playsound(user,'sound/effects/using/cuffs/cable_use1.ogg', 50, 5, 7)
 			visible_message(SPAN("notice", "[usr] connected wires from [src] to [W]"))
 			qdel(W)
 			craft_step++
 	if(istype(W, /obj/item/stack/material/plasteel))
-		if(craft_step == 2)
+		if(craft_step == CRAFT_PLASTEEL)
 			var/obj/item/stack/material/plasteel/P = W
 			if(P.use(5))
 				playsound(user,'sound/effects/weightdrop.ogg', 50, 5, 7)
 				visible_message(SPAN("notice", "[usr] making a case from [W] for a [src]"))
 				craft_step++
 	if(isWelder(W))
-		if(craft_step == 3)
+		if(craft_step == CRAFT_WELDING)
 			var/obj/item/weldingtool/weldtool = W
 			if(weldtool.remove_fuel(5,user))
 				playsound(user,'sound/effects/flare.ogg', 50, 5, 7)
