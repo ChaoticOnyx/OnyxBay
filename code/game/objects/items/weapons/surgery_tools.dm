@@ -203,7 +203,7 @@
 	if(istype(W, /obj/item/stack/material/plasteel))
 		if(craft_step == 2)
 			var/obj/item/stack/material/plasteel/P = W
-			if (P.use(5))
+			if(P.use(5))
 				playsound(user,'sound/effects/weightdrop.ogg', 50, 5, 7)
 				visible_message(SPAN("notice", "[usr] making a case from [W] for a [src]"))
 				craft_step++
