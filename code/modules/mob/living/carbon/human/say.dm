@@ -20,11 +20,11 @@
 	message = sanitize(message)
 	var/obj/item/organ/internal/voicebox/vox = locate() in internal_organs
 	var/snowflake_speak = (language?.flags & (NONVERBAL|SIGNLANG)) || (vox?.is_usable() && (language in vox.assists_languages))
-	var/first_char = copytext_char(message, 1, 2)
 
 	if(!full_prosthetic && need_breathe() && failed_last_breath && !snowflake_speak)
 		var/obj/item/organ/internal/lungs/L = internal_organs_by_name[species.breathing_organ]
-
+		
+		var/first_char = copytext_char(message, 1, 2)
 		if (first_char == "*" && (QDELETED(L) || L.is_broken() || L.breath_fail_ratio > 0.4))
 			emote(copytext_char(message, 2), VISIBLE_MESSAGE)
 			return
