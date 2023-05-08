@@ -32,14 +32,14 @@
 				L.last_successful_breath = world.time - 2 MINUTES
 				return ..(message, alt_name = alt_name, language = language)
 
-			to_chat(src, "<span class='warning'>You don't have enough air in [L] to make a sound!</span>")
+			visible_message(SPAN("warning", "[src] moves his lips as if trying to say something"), SPAN("danger", "You don't have enough air in [L] to make a sound!"))
 			return FALSE
 		else if(L.breath_fail_ratio > 0.7)
-			return whisper_say(length(message) > 5 ? stars(message) : message, language, alt_name)
+			return ..(length(message) > 5 ? stars(message, 50) : message, alt_name = alt_name, language = language, whispering = whispering)
 		else if(L.breath_fail_ratio > 0.4)
-			return whisper_say(length(message) > 10 ? stars(message) : message, language, alt_name)
-	else
-		return ..(message, alt_name = alt_name, language = language, whispering = whispering)
+			return ..(length(message) > 10 ? stars(message, 50) : message, alt_name = alt_name, language = language, whispering = whispering)
+
+	return ..(message, alt_name = alt_name, language = language, whispering = whispering)
 
 
 /mob/living/carbon/human/proc/forcesay(list/append)
