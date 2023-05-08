@@ -1,3 +1,5 @@
+#define FUEL_CONSUMPTION 0.05
+
 /* Two-handed Weapons
  * Contains:
  * 		Twohanded
@@ -104,8 +106,8 @@
 
 /obj/item/material/twohanded/chainsaw/think()
 	if(active)
-		if(get_fuel() >= 0.05)
-			tank.reagents.remove_reagent(/datum/reagent/fuel, 0.05)
+		if(get_fuel() >= FUEL_CONSUMPTION)
+			tank.reagents.remove_reagent(/datum/reagent/fuel, FUEL_CONSUMPTION)
 		else
 			turnOff()
 		set_next_think(world.time + 1 SECOND)
