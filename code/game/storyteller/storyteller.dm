@@ -181,7 +181,7 @@ SUBSYSTEM_DEF(storyteller)
         var/datum/storyteller_character/C = new ty
         GLOB.all_storytellers += C
         if(C.can_be_voted_for)
-          whitelisted_ST += C
+        whitelisted_ST += C
 
     character = pick(whitelisted_ST)
 
