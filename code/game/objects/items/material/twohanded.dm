@@ -176,7 +176,7 @@
 			update_twohanding()
 			think()
 	else
-		to_chat(usr, SPAN_WARNING(No fuel in [src]!</span>"))
+		to_chat(usr, SPAN_WARNING("No fuel in [src]!"))
 
 /obj/item/material/twohanded/chainsaw/proc/turnOff()
 	playsound(loc, 'sound/weapons/chainsaw_stop.ogg', 50, 1, -1)
