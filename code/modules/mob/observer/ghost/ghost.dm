@@ -356,11 +356,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 
 	var/response = tgui_input_list(src, "Choose an area to teleport to.", "Teleport", area_repository.get_areas_by_z_level())
-	if(!response)
+	if(isnull(response))
 		return
 
-	var/area/chosen_area = response
-	if(!chosen_area)
+	var/area/chosen_area = area_repository.get_areas_by_z_level()[response]
+	if(!istype(chosen_area))
 		to_chat(src, "Chosen area is unavailable.")
 		return
 
@@ -390,7 +390,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 
 	var/turf/T = locate(turf_x, turf_y, turf_z)
-	if(T)
+	if(istype(T))
+		if(shall_check_if_holy() && is_holy_turf(T))
+			return
 		ghost_to_turf(T)
 	else
 		to_chat(src, SPAN_WARNING("Invalid coordinates."))
