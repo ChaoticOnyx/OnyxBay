@@ -190,7 +190,7 @@
 	if(isCoil(W)) 
 		if(craft_step == 0)
 			var/obj/item/stack/cable_coil/C = W
-			if (C.use(3))
+			if(C.use(3))
 				playsound(user,'sound/effects/using/cuffs/cable_use1.ogg', 50, 5, 7)
 				visible_message(SPAN("notice", "[usr] added wires to [src]"))
 				craft_step++
