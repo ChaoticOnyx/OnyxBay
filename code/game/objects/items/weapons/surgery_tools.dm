@@ -158,6 +158,7 @@
 	sharp = 1
 	edge = 1
 	var/improved = 0
+	var/craft_step = 0 // Using for creating the chainsaw
 
 /obj/item/circular_saw/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/material/wirerod) && improved == 0)
@@ -184,6 +185,44 @@
 		w_class = ITEM_SIZE_NORMAL
 		improved = 0
 		surgery_speed = 1.0
+
+	// Making a chainsaw steps
+	if(isCoil(W)) 
+		if(craft_step == 0)
+			var/obj/item/stack/cable = W
+			if (cable.amount >= 3)
+				if (cable.amount == 3)
+					qdel(W)
+				else
+					cable.amount -= 3
+			playsound(user,'sound/effects/using/cuffs/cable_use1.ogg', 50, 5, 7)
+			visible_message(SPAN("notice", "[usr] added wires to [src]"))
+			craft_step++
+	if(iscapacitor(W))
+		if(craft_step == 1)
+			playsound(user,'sound/effects/using/cuffs/cable_use1.ogg', 50, 5, 7)
+			visible_message(SPAN("notice", "[usr] connected wires from [src] to [W]"))
+			qdel(W)
+			craft_step++
+	if(istype(W, /obj/item/stack/material/plasteel))
+		if(craft_step == 2)
+			var/obj/item/stack/material/plasteel = W
+			if (plasteel.amount >= 5)
+				playsound(user,'sound/effects/weightdrop.ogg', 50, 5, 7)
+				visible_message(SPAN("notice", "[usr] making a case from [W] for a [src]"))
+				if (plasteel.amount == 5)
+					qdel(W)
+				else
+					plasteel.amount -= 5
+				craft_step++
+	if(isWelder(W))
+		if(craft_step == 3)
+			var/obj/item/weldingtool/weldtool = W
+			if(weldtool.remove_fuel(5,user))
+				playsound(user,'sound/effects/flare.ogg', 50, 5, 7)
+				visible_message(SPAN("notice", "[usr] welding a case of a [src]!"))
+				new /obj/item/material/twohanded/chainsaw(src.loc)
+				qdel(src)
 	..()
 
 

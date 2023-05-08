@@ -29,6 +29,12 @@
 	item_cost = 6
 	path = /obj/item/gun/launcher/money/hacked
 
+/datum/uplink_item/item/visible_weapons/chainsaw
+	name = "Chainsaw"
+	desc = "BRRR-BRRR-BRRR!"
+	item_cost = 5
+	path = /obj/item/storage/backpack/dufflebag/syndie_kit/chainsaw
+
 /datum/uplink_item/item/visible_weapons/ionpistol
 	name = "Ion pistol"
 	item_cost = 6

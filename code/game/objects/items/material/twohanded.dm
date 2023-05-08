@@ -75,8 +75,140 @@
 	item_state_slots[slot_r_hand_str] = new_item_state
 
 /*
+ * Chainsaw by BWJes
+*/
+/obj/item/material/twohanded/chainsaw
+	name = "chainsaw"
+	desc = "The terrible enemy of all trees"
+
+	icon_state = "chainsaw"
+	base_icon = "chainsaw"
+
+	sharp = 0 // Hard to cut with a not working chainsaw
+	edge = 0
+
+	w_class = ITEM_SIZE_LARGE
+
+	mod_handy_w = 1.6
+	mod_handy_u = 0.4
+
+	mod_weight_w = 2.4
+	mod_weight_u = 1.5
+
+	mod_reach_w = 2.0
+	mod_reach_u = 1.0
+
+	force_wielded = 30
+	force_divisor = 0.5
+	unwielded_force_divisor = 0.2
+
+	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked") // Beating with not working chainsaw
+	hitsound = SFX_FIGHTING_SWING
+	applies_material_colour = 0
+	unbreakable = 1
+
+	var/active = 0
+	var/sawing = 0
+	var/obj/item/welder_tank/tank = null // chainsaw fuel tank
+
+/obj/item/material/twohanded/chainsaw/think()
+	if(active)
+		if(get_fuel() >= 0.05)
+			tank.reagents.remove_reagent(/datum/reagent/fuel, 0.05)
+		else
+			turnOff()
+		set_next_think(world.time + 1 SECOND)
+
+/obj/item/material/twohanded/chainsaw/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/welder_tank))
+		if(tank)
+			to_chat(user, "Remove the current tank first.")
+			return
+
+		if(!user.drop(W, src))
+			return
+		tank = W
+		user.visible_message("[user] slots \a [W] into \the [src].", "You slot \a [W] into \the [src].")
+		update_icon()
+		return
+
+/obj/item/material/twohanded/chainsaw/attack_hand(mob/user as mob)
+	if(tank && user.get_inactive_hand() == src)
+		if(!sawing) // No removing tank when we saw a tree for example
+			if(tank.can_remove)
+				user.visible_message("[user] removes \the [tank] from \the [src].", "You remove \the [tank] from \the [src].")
+				user.pick_or_drop(tank)
+				tank = null
+				if(active)
+					turnOff()
+				update_icon()
+			else
+				to_chat(user, "\The [tank] can't be removed.")
+		else
+			to_chat(user, "<span class='danger'>Stop sawing first!</span>")
+
+	else
+		..()
+
+/obj/item/material/twohanded/chainsaw/proc/get_fuel()
+	return tank ? tank.reagents.get_reagent_amount(/datum/reagent/fuel) : 0
+
+/obj/item/material/twohanded/chainsaw/_examine_text(mob/user)
+	. = ..()
+	if(get_dist(src, user) <= 0)
+		if(tank)
+			. += "\n\icon[tank] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!"
+		else
+			. += "\nThere is no tank attached."
+
+/obj/item/material/twohanded/chainsaw/attack_self(mob/user as mob)
+	if(active)
+		turnOff()
+	else
+		turnOn()
+	update_icon()
+	update_twohanding()
+
+/obj/item/material/twohanded/chainsaw/proc/turnOn()
+	if(get_fuel() > 0)
+		if(do_after(usr, 5))
+			playsound(loc, 'sound/weapons/chainsaw_start.ogg', 50, 1, -1)
+			visible_message(SPAN("warning", "[usr] starts the chainsaw!"))
+
+			icon_state = "chainsaw_active"
+			base_icon = "chainsaw_active"
+
+			desc = "It`s time to reap and tear.. the trees right?"
+
+			hitsound = list('sound/weapons/chainsaw_attack1.ogg', 'sound/weapons/chainsaw_attack2.ogg', 'sound/weapons/chainsaw_attack3.ogg')
+
+			sharp = 1
+			edge = 1
+
+			active = TRUE
+			think()
+	else
+		to_chat(usr, "<span class='warning'>No fuel in [src]!</span>")
+
+/obj/item/material/twohanded/chainsaw/proc/turnOff()
+	playsound(loc, 'sound/weapons/chainsaw_stop.ogg', 50, 1, -1)
+	visible_message(SPAN("warning", "[usr] stops the chainsaw!"))
+
+	icon_state = "chainsaw"
+	base_icon = "chainsaw"
+
+	desc = "The terrible enemy of all trees"
+
+	hitsound = SFX_FIGHTING_SWING
+
+	sharp = 0
+	edge = 0
+
+	active = FALSE
+
+/*
  * Fireaxe
- */
+*/
 /obj/item/material/twohanded/fireaxe  // DEM AXES MAN, marker -Agouri
 	icon_state = "fireaxe0"
 	base_icon = "fireaxe"
