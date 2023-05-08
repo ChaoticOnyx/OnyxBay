@@ -189,15 +189,11 @@
 	// Making a chainsaw steps
 	if(isCoil(W)) 
 		if(craft_step == 0)
-			var/obj/item/stack/cable = W
-			if (cable.amount >= 3)
-				if (cable.amount == 3)
-					qdel(W)
-				else
-					cable.amount -= 3
-			playsound(user,'sound/effects/using/cuffs/cable_use1.ogg', 50, 5, 7)
-			visible_message(SPAN("notice", "[usr] added wires to [src]"))
-			craft_step++
+			var/obj/item/stack/cable_coil/C = W
+			if (C.use(3))
+				playsound(user,'sound/effects/using/cuffs/cable_use1.ogg', 50, 5, 7)
+				visible_message(SPAN("notice", "[usr] added wires to [src]"))
+				craft_step++
 	if(iscapacitor(W))
 		if(craft_step == 1)
 			playsound(user,'sound/effects/using/cuffs/cable_use1.ogg', 50, 5, 7)
@@ -206,14 +202,10 @@
 			craft_step++
 	if(istype(W, /obj/item/stack/material/plasteel))
 		if(craft_step == 2)
-			var/obj/item/stack/material/plasteel = W
-			if (plasteel.amount >= 5)
+			var/obj/item/stack/material/plasteel/P = W
+			if (P.use(5))
 				playsound(user,'sound/effects/weightdrop.ogg', 50, 5, 7)
 				visible_message(SPAN("notice", "[usr] making a case from [W] for a [src]"))
-				if (plasteel.amount == 5)
-					qdel(W)
-				else
-					plasteel.amount -= 5
 				craft_step++
 	if(isWelder(W))
 		if(craft_step == 3)
