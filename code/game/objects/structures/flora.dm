@@ -14,7 +14,7 @@
 /obj/structure/flora/tree/attackby(obj/item/W, mob/living/user)
 	if(istype(W, /obj/item/material/twohanded/chainsaw))
 		if(do_after(usr, 5))
-			playsound(user, list('sound/weapons/chainsaw_attack1.ogg'), 25, 1)
+			playsound(user, 'sound/weapons/chainsaw_attack1.ogg', 25, 1)
 			to_chat(user, SPAN_WARNING("You cut down \the [src] with \the [W]."))
 			new /obj/item/stack/material/wood/ten(loc)
 			qdel(src)
