@@ -110,7 +110,7 @@
 			turnOff()
 		set_next_think(world.time + 1 SECOND)
 
-/obj/item/material/twohanded/chainsaw/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/material/twohanded/chainsaw/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/welder_tank))
 		if(tank)
 			to_chat(user, "Remove the current tank first.")
@@ -123,7 +123,7 @@
 		update_icon()
 		return
 
-/obj/item/material/twohanded/chainsaw/attack_hand(mob/user as mob)
+/obj/item/material/twohanded/chainsaw/attack_hand(mob/user)
 	if(tank && user.get_inactive_hand() == src)
 		if(!sawing) // No removing tank when we saw a tree for example
 			if(tank.can_remove)
@@ -152,7 +152,7 @@
 		else
 			. += "\nThere is no tank attached."
 
-/obj/item/material/twohanded/chainsaw/attack_self(mob/user as mob)
+/obj/item/material/twohanded/chainsaw/attack_self(mob/user)
 	if(active)
 		turnOff()
 	else
@@ -217,7 +217,7 @@
 	unbreakable = 1 // Because why should it break at all
 	material_amount = 8
 
-/obj/item/material/twohanded/fireaxe/afterattack(atom/A as mob|obj|turf|area, mob/user as mob, proximity)
+/obj/item/material/twohanded/fireaxe/afterattack(atom/A, mob/user, proximity)
 	if(!proximity) return
 	..()
 	if(A && wielded)
