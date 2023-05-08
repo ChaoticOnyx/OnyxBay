@@ -113,7 +113,7 @@
 /obj/item/material/twohanded/chainsaw/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/welder_tank))
 		if(tank)
-			to_chat(user, "Remove the current tank first.")
+			to_chat(user, SPAN_DANGER("Remove the current tank first."))
 			return
 
 		if(!user.drop(W, src))
@@ -136,7 +136,7 @@
 			else
 				to_chat(user, "\The [tank] can't be removed.")
 		else
-			to_chat(user, "<span class='danger'>Stop sawing first!</span>")
+			to_chat(user, SPAN_DANGER("Stop sawing first!"))
 
 	else
 		..()
@@ -162,7 +162,7 @@
 	if(get_fuel() > 0)
 		if(do_after(usr, 5))
 			playsound(loc, 'sound/weapons/chainsaw_start.ogg', 50, 1, -1)
-			visible_message(SPAN("warning", "[usr] starts the chainsaw!"))
+			visible_message(SPAN_DANGER("warning", "[usr] starts the chainsaw!"))
 			icon_state = "chainsaw_active"
 			base_icon = "chainsaw_active"
 			attack_verb = list("tears", "rips")
@@ -174,11 +174,11 @@
 			update_twohanding()
 			think()
 	else
-		to_chat(usr, "<span class='warning'>No fuel in [src]!</span>")
+		to_chat(usr, SPAN_WARNING(No fuel in [src]!</span>"))
 
 /obj/item/material/twohanded/chainsaw/proc/turnOff()
 	playsound(loc, 'sound/weapons/chainsaw_stop.ogg', 50, 1, -1)
-	visible_message(SPAN("warning", "[usr] stops the chainsaw!"))
+	visible_message(SPAN_DANGER("warning", "[usr] stops the chainsaw!"))
 	icon_state = "chainsaw"
 	base_icon = "chainsaw"
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked")
