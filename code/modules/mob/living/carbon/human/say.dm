@@ -20,8 +20,15 @@
 	message = sanitize(message)
 	var/obj/item/organ/internal/voicebox/vox = locate() in internal_organs
 	var/snowflake_speak = (language?.flags & (NONVERBAL|SIGNLANG)) || (vox?.is_usable() && (language in vox.assists_languages))
+	var/first_char = copytext_char(message, 1, 2)
+
 	if(!full_prosthetic && need_breathe() && failed_last_breath && !snowflake_speak)
 		var/obj/item/organ/internal/lungs/L = internal_organs_by_name[species.breathing_organ]
+
+		if (first_char == "*" && (QDELETED(L) || L.is_broken() || L.breath_fail_ratio > 0.4))
+			emote(copytext_char(message, 2), VISIBLE_MESSAGE)
+			return
+
 		if(QDELETED(L) || L.is_broken())
 			visible_message(SPAN("warning", "[src] moves his lips as if trying to say something"), SPAN("danger", "You try to make sounds but you can't exhale."))
 			return
@@ -37,7 +44,7 @@
 		else if(L.breath_fail_ratio > 0.7)
 			return ..(length(message) > 5 ? stars(message, 50) : message, alt_name = alt_name, language = language, whispering = whispering)
 		else if(L.breath_fail_ratio > 0.4)
-			return ..(length(message) > 10 ? stars(message, 50) : message, alt_name = alt_name, language = language, whispering = whispering)
+			return ..(length(message) > 10 ? stars(message, 75) : message, alt_name = alt_name, language = language, whispering = whispering)
 
 	return ..(message, alt_name = alt_name, language = language, whispering = whispering)
 
