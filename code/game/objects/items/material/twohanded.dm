@@ -80,33 +80,24 @@
 /obj/item/material/twohanded/chainsaw
 	name = "chainsaw"
 	desc = "The terrible enemy of all trees"
-
 	icon_state = "chainsaw"
 	base_icon = "chainsaw"
-
 	sharp = 0 // Hard to cut with a not working chainsaw
 	edge = 0
-
 	w_class = ITEM_SIZE_LARGE
-
 	mod_handy_w = 1.6
 	mod_handy_u = 0.4
-
 	mod_weight_w = 2.4
 	mod_weight_u = 1.5
-
 	mod_reach_w = 2.0
 	mod_reach_u = 1.0
-
 	force_wielded = 30
 	force_divisor = 0.5
 	unwielded_force_divisor = 0.2
-
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked") // Beating with not working chainsaw
 	hitsound = SFX_FIGHTING_SWING
 	applies_material_colour = 0
 	unbreakable = 1
-
 	var/active = 0
 	var/sawing = 0
 	var/obj/item/welder_tank/tank = null // chainsaw fuel tank
@@ -174,17 +165,13 @@
 		if(do_after(usr, 5))
 			playsound(loc, 'sound/weapons/chainsaw_start.ogg', 50, 1, -1)
 			visible_message(SPAN("warning", "[usr] starts the chainsaw!"))
-
 			icon_state = "chainsaw_active"
 			base_icon = "chainsaw_active"
-
 			desc = "It`s time to reap and tear.. the trees right?"
-
+			attack_verb = list("tears", "rips")
 			hitsound = list('sound/weapons/chainsaw_attack1.ogg', 'sound/weapons/chainsaw_attack2.ogg', 'sound/weapons/chainsaw_attack3.ogg')
-
 			sharp = 1
 			edge = 1
-
 			active = TRUE
 			think()
 	else
@@ -193,17 +180,13 @@
 /obj/item/material/twohanded/chainsaw/proc/turnOff()
 	playsound(loc, 'sound/weapons/chainsaw_stop.ogg', 50, 1, -1)
 	visible_message(SPAN("warning", "[usr] stops the chainsaw!"))
-
 	icon_state = "chainsaw"
 	base_icon = "chainsaw"
-
 	desc = "The terrible enemy of all trees"
-
+	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked")
 	hitsound = SFX_FIGHTING_SWING
-
 	sharp = 0
 	edge = 0
-
 	active = FALSE
 
 /*
