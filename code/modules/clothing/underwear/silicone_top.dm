@@ -16,7 +16,8 @@
 
 	H.gender = FEMALE
 	if(istype(H.body_build, /datum/body_build/slim/male))
-		H.change_body_build(all_species[H.get_species()].body_builds[2])
+		var/datum/species/S = all_species[H.get_species()]
+		H.change_body_build(S.body_builds[2])
 
 	H.regenerate_icons()
 
