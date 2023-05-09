@@ -352,12 +352,14 @@ var/global/list/_client_preferences_by_type
 	description = "Ghost see ghosts"
 	key = "GHOST_SEEGHOSTS"
 	category = PREF_CATEGORY_GHOST
+	default_value = GLOB.PREF_YES
 	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
 
 /datum/client_preference/affects_ghost/ghost_inquisitiveness
 	description = "Ghost inquisitiveness"
 	key = "GHOST_INQUISITIVENESS"
 	category = PREF_CATEGORY_GHOST
+	default_value = GLOB.PREF_YES
 	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
 
 /datum/client_preference/affects_ghost/ghost_lighting
