@@ -1,8 +1,11 @@
 GLOBAL_LIST_INIT(all_ui_styles, list(
+	"Minimalist"   	= 'icons/hud/style/minimalist.dmi',
 	"Midnight"     	= 'icons/hud/style/midnight.dmi',
 	"Orange"       	= 'icons/hud/style/orange.dmi',
+	"White"       	= 'icons/hud/style/white.dmi',
+	"Goon"          = 'icons/hud/style/goon.dmi',
 	"Old"          	= 'icons/hud/style/old.dmi',
-	"Minimalist"   	= 'icons/hud/style/minimalist.dmi'
+	"Old-noborder"  = 'icons/hud/style/old-noborder.dmi'
 ))
 
 /proc/ui_style2icon(ui_style)
