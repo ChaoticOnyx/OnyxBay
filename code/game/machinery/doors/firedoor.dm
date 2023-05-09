@@ -288,15 +288,15 @@
 		START_PROCESSING(SSmachines, src)
 	return ..()
 
-/obj/machinery/door/firedoor/can_open()
-	. = ..()
-	if(blocked || (stat & (NOPOWER|BROKEN)))
+/obj/machinery/door/firedoor/can_open(forced = FALSE)
+	if(blocked || (!forced && (stat & (NOPOWER|BROKEN))))
 		return FALSE
+	return ..()
 
-/obj/machinery/door/firedoor/can_close()
-	. = ..()
-	if(blocked || (stat & (NOPOWER|BROKEN)))
+/obj/machinery/door/firedoor/can_close(forced = FALSE)
+	if(blocked)
 		return FALSE
+	return ..()
 
 /obj/machinery/door/firedoor/open(forced = 0)
 	lockdown = FALSE
