@@ -247,7 +247,7 @@
 
 /mob/living/bot/secbot/lookForTargets()
 	for(var/mob/living/M in view(src))
-		if(M.stat == DEAD)
+		if(M.is_ic_dead())
 			continue
 		if(confirmTarget(M))
 			var/threat = check_threat(M)
@@ -326,7 +326,7 @@
 	return "unidentified lifeform"
 
 /mob/living/bot/secbot/proc/check_threat(mob/living/M)
-	if(!M || !istype(M) || M.stat == DEAD || src == M)
+	if(!M || !istype(M) || M.is_ic_dead() || src == M)
 		return 0
 
 	if(emagged && !M.incapacitated()) //check incapacitated so emagged secbots don't keep attacking the same target forever

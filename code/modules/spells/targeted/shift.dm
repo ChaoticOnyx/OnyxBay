@@ -1,12 +1,13 @@
 /datum/spell/targeted/ethereal_jaunt/shift
 	name = "Phase Shift"
-	desc = "This spell allows you to pass through walls"
+	desc = "Ancient spell created by Nar-sie followers that allows you to pass through walls by unknown means."
 
 	charge_max = 200
 	spell_flags = Z2NOCAST | INCLUDEUSER | CONSTRUCT_CHECK
 	invocation_type = SPI_NONE
 	range = 0
-	duration = 50 //in deciseconds
+	duration = 5 SECONDS
+	reappear_duration = 12 //equal to number of animation frames
 
 	icon_state = "const_shift"
 

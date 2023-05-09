@@ -295,7 +295,7 @@
 /datum/reagent/mutagen
 	name = "Unstable mutagen"
 	description = "Might cause unpredictable mutations. Keep away from children."
-	taste_description = "metroid"
+	taste_description = "slime"
 	taste_mult = 0.9
 	reagent_state = LIQUID
 	color = "#13bc5e"
@@ -736,6 +736,24 @@
 	M.species.set_default_hair(M)
 	to_chat(M, "<span class='warning'>Your feel a chill, your skin feels lighter..</span>")
 	remove_self(volume)
+
+/datum/reagent/toxin/hair_grower
+	name = "Hair Grower"
+	description = "An extremely effective chemical hair growth stimulator. Do not ingest."
+	taste_description = "acid"
+	reagent_state = LIQUID
+	color = "#e9d5a0"
+	strength = 1
+	overdose = REAGENTS_OVERDOSE
+
+/datum/reagent/toxin/hair_grower/affect_touch(mob/living/carbon/human/M, alien, removed)
+	remove_self(volume)
+	if(alien)
+		return
+	M.h_style = "Sick"
+	M.f_style = "Great Beard"
+	M.update_hair()
+	to_chat(M, SPAN_WARNING("You feel a chill, your skin feels heavier..."))
 
 /datum/reagent/toxin/zombie
 	name = "Liquid Corruption"

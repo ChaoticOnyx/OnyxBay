@@ -58,6 +58,7 @@
 /obj/item/pickaxe/drill
 	name = "mining drill" //Can dig sand as well!
 	icon_state = "handdrill"
+	item_state = "jackhammer"
 	desc = "The most basic of mining drills, for short excavations and small mineral extractions."
 	power = 100 //It will remove the rock in one go, but SLOWLY
 	drill_verb = "drilling"
@@ -400,7 +401,7 @@
 	if(isliving(target) && proximity_flag)
 		if(isanimal(target))
 			var/mob/living/simple_animal/M = target
-			if(M.stat == DEAD)
+			if(M.is_ooc_dead())
 				M.faction = "neutral"
 				if(emagged)	//if emagged, will set anything revived to the syndicate. Convert station pets to the traitor side!
 					M.faction = "syndicate"

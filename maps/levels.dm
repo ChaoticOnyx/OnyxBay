@@ -1,4 +1,4 @@
-/datum/space_level/polarplanet/null_frozen
+/datum/space_level/null_frozen
 	path = 'null-frozen.dmm'
 	travel_chance = 30
 	traits = list(

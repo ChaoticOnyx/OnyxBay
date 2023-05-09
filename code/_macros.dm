@@ -200,6 +200,8 @@
 
 #define SPAN(class, X) "<span class='" + ##class + "'>" + ##X + "</span>"
 
+#define SPAN_INFO(X)     SPAN("info", X)
+
 #define SPAN_NOTICE(X)   SPAN("notice", X)
 
 #define SPAN_WARNING(X)  SPAN("warning", X)

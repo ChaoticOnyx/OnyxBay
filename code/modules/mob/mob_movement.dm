@@ -182,8 +182,6 @@
 
 	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, loc)
 
-	return
-
 /proc/step_glide(atom/movable/am, dir, glide_size_override)
 	am.set_glide_size(glide_size_override)
 	return step(am, dir)

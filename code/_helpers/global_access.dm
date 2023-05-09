@@ -409,10 +409,6 @@
 			return global.gear_tweak_free_color_choice_;
 		if("gender_datums")
 			return global.gender_datums;
-		if("ghost_darkness_images")
-			return global.ghost_darkness_images;
-		if("ghost_sightless_images")
-			return global.ghost_sightless_images;
 		if("ghost_traps")
 			return global.ghost_traps;
 		if("global_message_listener")
@@ -1286,10 +1282,6 @@
 			global.gear_tweak_free_color_choice_=newval;
 		if("gender_datums")
 			global.gender_datums=newval;
-		if("ghost_darkness_images")
-			global.ghost_darkness_images=newval;
-		if("ghost_sightless_images")
-			global.ghost_sightless_images=newval;
 		if("ghost_traps")
 			global.ghost_traps=newval;
 		if("global_message_listener")
@@ -1970,8 +1962,6 @@
 	"hash_to_gear",
 	"gear_tweak_free_color_choice_",
 	"gender_datums",
-	"ghost_darkness_images",
-	"ghost_sightless_images",
 	"ghost_traps",
 	"global_message_listener",
 	"global_vars_",
@@ -2039,6 +2029,7 @@
 	"meteors_threatening",
 	"mil_branches",
 	"minevendor_list",
+	"minevendor_prison_list",
 	"mining_floors",
 	"mining_walls",
 	"minor_air_alarms",

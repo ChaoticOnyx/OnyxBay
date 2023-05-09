@@ -45,7 +45,7 @@ var/global/list/sparring_attack_cache = list()
 /datum/unarmed_attack/proc/apply_effects(mob/living/carbon/human/user,mob/living/carbon/human/target,armor,attack_damage,zone,specmod = 1)
 	if(target.status_flags & GODMODE)
 		return 0
-	if(target.stat == DEAD)
+	if(target.is_ic_dead())
 		return
 
 	var/effective_armor = target.getarmor(zone, "melee")

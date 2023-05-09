@@ -105,7 +105,7 @@
 		return
 
 	//Dead, cryosleep and bloodless people do not pump the blood.
-	if(owner.InStasis() || owner.stat == DEAD || owner.bodytemperature < 170 || !owner.vessel?.total_volume)
+	if(owner.InStasis() || owner.is_ic_dead() || owner.bodytemperature < 170 || !owner.vessel?.total_volume)
 		return
 
 	if(pulse != PULSE_NONE || BP_IS_ROBOTIC(src))

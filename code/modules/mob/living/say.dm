@@ -230,7 +230,7 @@ var/list/channel_to_radio_key = new
 
 /mob/living/proc/say_check_stat(list/message_data)
 	if(stat)
-		if(stat == DEAD)
+		if(is_ooc_dead())
 			message_data["say_result"] = say_dead(message_data["message"])
 		message_data["say_result"] = FALSE
 		return FALSE
@@ -336,26 +336,13 @@ var/list/channel_to_radio_key = new
 	get_mobs_and_objs_in_view_fast(T, message_data["message_range"], message_data["listening"], message_data["listening_obj"], /datum/client_preference/ghost_ears)
 
 /mob/living/proc/say_do_say(list/message_data)
-	var/speech_bubble_test = say_test(message_data["message"])
-	var/image/speech_bubble = image('icons/mob/talk.dmi',src,"h[speech_bubble_test]")
-	speech_bubble.alpha = 0
-	speech_bubble.plane = MOUSE_INVISIBLE_PLANE
-	speech_bubble.layer = FLOAT_LAYER
-
-	// VOREStation Port - Attempt Multi-Z Talking
-	var/mob/above = src.shadow
+	var/mob/above = shadow
 	while(!QDELETED(above))
 		var/turf/ST = get_turf(above)
 		if(ST)
-
 			get_mobs_and_objs_in_view_fast(ST, world.view, message_data["listening"], message_data["listening_obj"], /datum/client_preference/ghost_ears)
-			var/image/z_speech_bubble = image('icons/mob/talk.dmi', above, "h[speech_bubble_test]")
-			spawn(30) qdel(z_speech_bubble)
 		above = above.shadow
 
-	// VOREStation Port End
-
-	var/list/speech_bubble_recipients = list()
 	for(var/mob/M in message_data["listening"])
 		if(M)
 			M.hear_say(
@@ -368,10 +355,6 @@ var/list/channel_to_radio_key = new
 			  message_data["sound"],
 			  message_data["sound_volume"]
 			)
-			if(M.client)
-				speech_bubble_recipients += M.client
-
-	INVOKE_ASYNC(GLOBAL_PROC, /.proc/animate_speech_bubble, speech_bubble, speech_bubble_recipients, 3 SECONDS)
 
 	for(var/obj/O in message_data["listening_obj"])
 		spawn(0)
@@ -387,7 +370,6 @@ var/list/channel_to_radio_key = new
 		eavesdroping_obj -= message_data["listening_obj"]
 		for(var/mob/M in eavesdroping)
 			if(M)
-				image_to(M, speech_bubble)
 				M.hear_say(
 				  stars(message_data["message"]),
 				  message_data["verb"],
@@ -404,6 +386,13 @@ var/list/channel_to_radio_key = new
 				if(O) // It's possible that it could be deleted in the meantime.
 					O.hear_talk(src, stars(message_data["message"]), message_data["verb"], message_data["language"])
 
+	// Showing speech bubble is a logical end of this function. - N
+	var/list/speech_bubble_recipients
+	for(var/mob/M in message_data["listening"])
+		if(M.client)
+			LAZYADD(speech_bubble_recipients, M.client)
+	show_bubble_to_clients(bubble_icon, say_test(message_data["message"]), src, speech_bubble_recipients)
+
 /mob/living/proc/say_log_message(list/message_data)
 	if(message_data["whispering"])
 		log_whisper("[key_name(src)]: [message_data["message"]]")
@@ -415,9 +404,6 @@ var/list/channel_to_radio_key = new
 	for (var/mob/O in viewers(src, null))
 		O.hear_signlang(message, verb, language, src)
 	return TRUE
-
-/obj/effect/speech_bubble
-	var/mob/parent
 
 /mob/living/proc/GetVoice()
 	return name

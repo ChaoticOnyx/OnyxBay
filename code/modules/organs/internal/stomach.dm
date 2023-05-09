@@ -53,7 +53,7 @@
 
 		if(functioning)
 			for(var/mob/living/M in contents)
-				if(M.stat == DEAD)
+				if(M.is_ooc_dead())
 					qdel(M)
 					continue
 

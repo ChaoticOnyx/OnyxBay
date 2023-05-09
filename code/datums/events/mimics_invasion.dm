@@ -43,7 +43,8 @@
 
 		if(spawned < PLAYABLE_MIMICS)
 			M.controllable = TRUE
-			notify_ghosts("A new mimic available", null, M, posses_mob = TRUE)
+			GLOB.available_mobs_for_possess += M
+			notify_ghosts("A new mimic available", null, M, action = NOTIFY_FOLLOW, posses_mob = TRUE)
 		else
 			M.controllable = FALSE
 

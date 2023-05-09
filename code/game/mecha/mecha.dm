@@ -376,7 +376,6 @@
 	. = ..()
 	if(.)
 		events.fireEvent("onMove",get_turf(src))
-	return
 
 /obj/mecha/relaymove(mob/user,direction)
 	if(user != src.occupant) //While not "realistic", this piece is player friendly.

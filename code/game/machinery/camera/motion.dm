@@ -22,7 +22,7 @@
 	else if (detectTime == -1)
 		for (var/weakref/targetref in motionTargets)
 			var/mob/target = targetref?.resolve()
-			if(QDELETED(target) || target.stat == DEAD || !in_range(src, target))
+			if(QDELETED(target) || target.is_ic_dead() || !in_range(src, target))
 				lostTargetRef(targetref)
 
 /obj/machinery/camera/proc/newTarget(mob/target)

@@ -4,6 +4,7 @@
 	icon_state = "green baby metroid"
 	pass_flags = PASS_FLAG_TABLE
 	speak_emote = list("chirps")
+	bubble_icon = "metroid"
 
 	maxHealth = 150
 	health = 150

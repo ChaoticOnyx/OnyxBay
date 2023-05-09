@@ -866,7 +866,12 @@ I said no!
 
 /datum/recipe/pumpkinpie
 	fruit = list("pumpkin" = 1)
-	reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/sugar = 5, /datum/reagent/nutriment/protein/egg = 3, /datum/reagent/nutriment/flour = 10)
+	reagents = list(
+	/datum/reagent/drink/milk = 5,
+	/datum/reagent/sugar = 5,
+	/datum/reagent/nutriment/protein/egg = 3,
+	/datum/reagent/nutriment/flour = 10
+	)
 	result = /obj/item/reagent_containers/food/sliceable/pumpkinpie
 
 /datum/recipe/plumphelmetbiscuit
@@ -1003,12 +1008,22 @@ I said no!
 
 // Cakes.
 /datum/recipe/cake
-	reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/nutriment/flour = 15, /datum/reagent/sugar = 15, /datum/reagent/nutriment/protein/egg = 9)
+	reagents = list(
+	/datum/reagent/drink/milk = 5,
+	/datum/reagent/nutriment/flour = 15,
+	/datum/reagent/sugar = 15,
+	/datum/reagent/nutriment/protein/egg = 9
+	)
 	result = /obj/item/reagent_containers/food/sliceable/plaincake
 
 /datum/recipe/cake/carrot
 	fruit = list("carrot" = 3)
-	reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/nutriment/flour = 15, /datum/reagent/sugar = 15, /datum/reagent/nutriment/protein/egg = 9)
+	reagents = list(
+	/datum/reagent/drink/milk = 5,
+	/datum/reagent/nutriment/flour = 15,
+	/datum/reagent/sugar = 15,
+	/datum/reagent/nutriment/protein/egg = 9
+	)
 	result = /obj/item/reagent_containers/food/sliceable/carrotcake
 
 /datum/recipe/cake/cheese
@@ -1016,42 +1031,82 @@ I said no!
 		/obj/item/reagent_containers/food/cheesewedge,
 		/obj/item/reagent_containers/food/cheesewedge
 	)
-	reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/nutriment/flour = 15, /datum/reagent/nutriment/protein/egg = 9, /datum/reagent/sugar = 15)
+	reagents = list(
+	/datum/reagent/drink/milk = 5,
+	/datum/reagent/nutriment/flour = 15,
+	/datum/reagent/nutriment/protein/egg = 9,
+	/datum/reagent/sugar = 15
+	)
 	result = /obj/item/reagent_containers/food/sliceable/cheesecake
 
 /datum/recipe/cake/orange
 	fruit = list("orange" = 1)
-	reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/nutriment/flour = 15, /datum/reagent/nutriment/protein/egg = 9, /datum/reagent/sugar = 15)
+	reagents = list(
+	/datum/reagent/drink/milk = 5,
+	/datum/reagent/nutriment/flour = 15,
+	/datum/reagent/nutriment/protein/egg = 9,
+	/datum/reagent/sugar = 15
+	)
 	result = /obj/item/reagent_containers/food/sliceable/orangecake
 
 /datum/recipe/cake/lime
 	fruit = list("lime" = 1)
-	reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/nutriment/flour = 15, /datum/reagent/nutriment/protein/egg = 9, /datum/reagent/sugar = 15)
+	reagents = list(
+	/datum/reagent/drink/milk = 5,
+	/datum/reagent/nutriment/flour = 15,
+	/datum/reagent/nutriment/protein/egg = 9,
+	/datum/reagent/sugar = 15
+	)
 	result = /obj/item/reagent_containers/food/sliceable/limecake
 
 /datum/recipe/cake/lemon
 	fruit = list("lemon" = 1)
-	reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/nutriment/flour = 15, /datum/reagent/nutriment/protein/egg = 9, /datum/reagent/sugar = 15)
+	reagents = list(
+	/datum/reagent/drink/milk = 5,
+	/datum/reagent/nutriment/flour = 15,
+	/datum/reagent/nutriment/protein/egg = 9,
+	/datum/reagent/sugar = 15
+	)
 	result = /obj/item/reagent_containers/food/sliceable/lemoncake
 
 /datum/recipe/cake/chocolate
 	items = list(/obj/item/reagent_containers/food/chocolatebar)
-	reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/nutriment/flour = 15, /datum/reagent/nutriment/protein/egg = 9, /datum/reagent/sugar = 15)
+	reagents = list(
+	/datum/reagent/drink/milk = 5,
+	/datum/reagent/nutriment/flour = 15,
+	/datum/reagent/nutriment/protein/egg = 9,
+	/datum/reagent/sugar = 15
+	)
 	result = /obj/item/reagent_containers/food/sliceable/chocolatecake
 
 /datum/recipe/cake/birthday
 	items = list(/obj/item/clothing/head/cakehat)
-	reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/nutriment/flour = 15, /datum/reagent/nutriment/protein/egg = 9, /datum/reagent/sugar = 15)
+	reagents = list(
+	/datum/reagent/drink/milk = 5,
+	/datum/reagent/nutriment/flour = 15,
+	/datum/reagent/nutriment/protein/egg = 9,
+	/datum/reagent/sugar = 15
+	)
 	result = /obj/item/reagent_containers/food/sliceable/birthdaycake
 
 /datum/recipe/cake/apple
 	fruit = list("apple" = 2)
-	reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/nutriment/flour = 15, /datum/reagent/nutriment/protein/egg = 9, /datum/reagent/sugar = 15)
+	reagents = list(
+	/datum/reagent/drink/milk = 5,
+	/datum/reagent/nutriment/flour = 15,
+	/datum/reagent/nutriment/protein/egg = 9,
+	/datum/reagent/sugar = 15
+	)
 	result = /obj/item/reagent_containers/food/sliceable/applecake
 
 /datum/recipe/cake/brain
 	items = list(/obj/item/reagent_containers/food/organ/brain)
-	reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/nutriment/flour = 15, /datum/reagent/nutriment/protein/egg = 9, /datum/reagent/sugar = 15)
+	reagents = list(
+	/datum/reagent/drink/milk = 5,
+	/datum/reagent/nutriment/flour = 15,
+	/datum/reagent/nutriment/protein/egg = 9,
+	/datum/reagent/sugar = 15
+	)
 	result = /obj/item/reagent_containers/food/sliceable/braincake
 
 /datum/recipe/smokedsausage
@@ -1200,13 +1255,12 @@ I said no!
 
 /datum/recipe/noel
 	items = list(
-	/obj/item/reagent_containers/food/egg,
-	/obj/item/reagent_containers/food/egg,
 	/obj/item/reagent_containers/food/chocolatebar,
 	/obj/item/reagent_containers/food/chocolatebar
 	)
 	fruit = list("berries" = 2)
 	reagents = list(
+	/datum/reagent/nutriment/protein/egg = 6,
 	/datum/reagent/nutriment/flour = 15,
 	/datum/reagent/drink/milk = 5,
 	/datum/reagent/drink/milk/cream = 10
@@ -1215,15 +1269,13 @@ I said no!
 
 /datum/recipe/choccherrycake
 	items = list(
-	/obj/item/reagent_containers/food/egg,
-	/obj/item/reagent_containers/food/egg,
-	/obj/item/reagent_containers/food/egg,
 	/obj/item/reagent_containers/food/chocolatebar,
 	/obj/item/reagent_containers/food/chocolatebar
 	)
 	fruit = list("cherries" = 2)
 	reagents = list(
+	/datum/reagent/nutriment/protein/egg = 9,
 	/datum/reagent/nutriment/flour = 15,
-	/datum/reagent/drink/milk = 5,
+	/datum/reagent/drink/milk = 5
 	)
 	result = /obj/item/reagent_containers/food/sliceable/choccherrycake

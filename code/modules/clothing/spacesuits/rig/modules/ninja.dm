@@ -231,7 +231,7 @@
 		return 0
 
 	//OH SHIT.
-	if(holder.wearer.stat == DEAD)
+	if(holder.wearer.is_ic_dead())
 		if(src.active)
 			engage(1)
 

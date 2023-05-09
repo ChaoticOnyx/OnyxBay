@@ -87,6 +87,8 @@
 
 /obj/structure/closet/secure_closet/paramedic/WillContain()
 	return list(
+		new /datum/atom_creator/weighted(list(/obj/item/storage/backpack/emt, /obj/item/storage/backpack/satchel/emt, /obj/item/storage/backpack/messenger/emt)),
+		new /datum/atom_creator/simple(/obj/item/storage/backpack/dufflebag/emt, 50),
 	    /obj/item/storage/box/autoinjectors,
 	    /obj/item/storage/box/syringes,
 	    /obj/item/reagent_containers/vessel/bottle/chemical/inaprovaline,

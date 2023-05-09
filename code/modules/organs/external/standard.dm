@@ -45,7 +45,6 @@
 	min_broken_damage = 40
 	w_class = ITEM_SIZE_LARGE
 	body_part = LOWER_TORSO
-	vital = 1
 	parent_organ = BP_CHEST
 	amputation_point = "lumbar"
 	joint = "hip"

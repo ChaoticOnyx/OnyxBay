@@ -211,7 +211,7 @@
 
 	var/mob/M = targets[target]
 
-	if(isghost(M) || M.stat == DEAD)
+	if(isghost(M) || M.is_ic_dead())
 		to_chat(src, "<span class='warning'>Not even a [src.species.name] can speak to the dead.</span>")
 		return
 
@@ -515,7 +515,7 @@
 
 	var/mob/living/target
 	for (var/mob/living/L in get_turf(src))
-		if (L != src && (L.lying || L.stat == DEAD))
+		if (L != src && (L.lying || L.is_ic_dead()))
 			target = L
 			break
 	if (!target)

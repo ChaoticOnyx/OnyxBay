@@ -1280,7 +1280,7 @@
 
 // Malfunction: Transfers APC under AI's control
 /obj/machinery/power/apc/proc/ai_hack(mob/living/silicon/ai/A = null)
-	if(!A || !A.hacked_apcs || hacker || aidisabled || A.stat == DEAD)
+	if(!A || !A.hacked_apcs || hacker || aidisabled || A.is_ooc_dead())
 		return 0
 	src.hacker = A
 	A.hacked_apcs += src

@@ -28,12 +28,13 @@
 		BP_LIVER   = list("Liver",      /obj/item/organ/internal/liver,      25),
 		BP_STOMACH = list("Stomach",    /obj/item/organ/internal/stomach,    25),
 		BP_L_ARM   = list("Left Arm",   /obj/item/organ/external/arm,        65),
-		BP_R_ARM   = list("Right Arm",  /obj/item/organ/external/arm/right,  65),
 		BP_L_HAND  = list("Left Hand",  /obj/item/organ/external/hand,       40),
+		BP_R_ARM   = list("Right Arm",  /obj/item/organ/external/arm/right,  65),
 		BP_R_HAND  = list("Right Hand", /obj/item/organ/external/hand/right, 40),
+		BP_GROIN   = list("Lower Body",	/obj/item/organ/external/groin,      65),
 		BP_L_LEG   = list("Left Leg",   /obj/item/organ/external/leg,        65),
-		BP_R_LEG   = list("Right Leg",  /obj/item/organ/external/leg/right,  65),
 		BP_L_FOOT  = list("Left Foot",  /obj/item/organ/external/foot,       40),
+		BP_R_LEG   = list("Right Leg",  /obj/item/organ/external/leg/right,  65),
 		BP_R_FOOT  = list("Right Foot", /obj/item/organ/external/foot/right, 40)
 		)
 
@@ -145,6 +146,9 @@
 /obj/machinery/organ_printer/proc/print_organ(choice)
 	var/new_organ = products[choice][2]
 	var/obj/item/organ/O = new new_organ(get_turf(src))
+	var/obj/item/organ/external/externalOrgan = O
+	if(istype(O, /obj/item/organ/external/groin))
+		externalOrgan.cavity_max_w_class = 1
 	O.status |= ORGAN_CUT_AWAY
 	O.dir = SOUTH // TODO: refactor external organ's /New, /update_icon and more so they'll generate proper icons upon being spawned outside a mob
 	return O

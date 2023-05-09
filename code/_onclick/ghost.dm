@@ -1,15 +1,3 @@
-/client/var/inquisitive_ghost = 1
-/mob/observer/ghost/verb/toggle_inquisition() // warning: unexpected inquisition
-	set name = "Toggle Inquisitiveness"
-	set desc = "Sets whether your ghost examines everything on click by default"
-	set category = "Ghost"
-	if(!client) return
-	client.inquisitive_ghost = !client.inquisitive_ghost
-	if(client.inquisitive_ghost)
-		to_chat(src, "<span class='notice'>You will now examine everything you click on.</span>")
-	else
-		to_chat(src, "<span class='notice'>You will no longer examine things you click on.</span>")
-
 /mob/observer/ghost/DblClickOn(atom/A, params)
 	if(can_reenter_corpse && mind && mind.current)
 		if(A == mind.current || (mind.current in A)) // double click your corpse or whatever holds it
@@ -17,15 +5,18 @@
 			return
 
 	// Things you might plausibly want to follow
-	if(istype(A,/atom/movable))
+	if(ismovable(A))
 		ManualFollow(A)
+
 	// Otherwise jump
-	else
+	else if(A.loc)
 		stop_following()
 		forceMove(get_turf(A))
 
 /mob/observer/ghost/ClickOn(atom/A, params)
-	if(!canClick()) return
+	if(!canClick())
+		return
+
 	setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 
 	// You are responsible for checking config.ghost.ghost_interaction when you override this function
@@ -35,16 +26,33 @@
 		var/target_turf = get_turf(A)
 		if(target_turf)
 			AltClickOn(target_turf)
-	else
-		A.attack_ghost(src)
+
+	if(modifiers["shift"])
+		if(!inquisitiveness)
+			examinate(A)
+
+	A.attack_ghost(src)
 
 // Oh by the way this didn't work with old click code which is why clicking shit didn't spam you
-/atom/proc/attack_ghost(mob/observer/ghost/user as mob)
+/atom/proc/attack_ghost(mob/observer/ghost/user)
 	if(!istype(user))
 		return
-	if(user.client && user.client.inquisitive_ghost)
-		user.examinate(src)
+	if(user.client)
+		if(user.gas_scan)
+			print_atmos_analysis(user, atmosanalyzer_scan(src))
+		else if(user.chem_scan)
+			reagent_scanner_scan(user, src)
+		else if(user.rads_scan)
+			var/dose = SSradiation.get_total_absorbed_dose_at_turf(get_turf(src), AVERAGE_HUMAN_WEIGHT)
+			to_chat(user, EXAMINE_BLOCK(SPAN_NOTICE("Radiation: [fmt_siunit(dose, "Gy/s", 3)].")))
+		else if(user.inquisitiveness)
+			user.examinate(src)
 	return
+
+/mob/living/attack_ghost(mob/observer/ghost/user)
+	if(user.client && user.health_scan)
+		to_chat(user, EXAMINE_BLOCK(medical_scan_results(src, 1)))
+	return ..()
 
 // ---------------------------------------
 // And here are some good things for free:

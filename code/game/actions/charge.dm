@@ -102,7 +102,7 @@
 
 	if(ismob(charger))
 		var/mob/sleep_check_death_mob = charger;
-		if(sleep_check_death_mob.stat == DEAD)
+		if(sleep_check_death_mob.is_ic_dead())
 			return;
 
 	walk(charger,dir,1,charge_speed)
@@ -144,7 +144,8 @@
 			if(!isanimal(charger))
 				SSexplosions.medturf += next_turf
 				continue
-			next_turf.attack_generic(charger, 40, wallbreaker=1)
+			var/turf/simulated/wall/W = next_turf
+			W.attack_generic(charger, 40, wallbreaker=1)
 			continue
 		for(var/obj/object in next_turf.contents)
 			if(!object.Adjacent(charger))
