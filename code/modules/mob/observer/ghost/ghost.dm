@@ -500,7 +500,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	rads_scan = !rads_scan
 
-	to_chat(src, SPAN_NOTICE("Radiation scan has been [gas_scan ? "enabled" : "disabled"]"))
+	to_chat(src, SPAN_NOTICE("Radiation scan has been [rads_scan ? "enabled" : "disabled"]"))
 
 /mob/observer/ghost/verb/view_manfiest()
 	set name = "Show Crew Manifest"
