@@ -27,6 +27,10 @@
 		if(target_turf)
 			AltClickOn(target_turf)
 
+	if(modifiers["shift"])
+		if(!inquisitiveness)
+			examinate(A)
+
 	A.attack_ghost(src)
 
 // Oh by the way this didn't work with old click code which is why clicking shit didn't spam you
