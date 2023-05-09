@@ -101,7 +101,6 @@
 	applies_material_colour = 0
 	unbreakable = 1
 	var/active = FALSE
-	var/sawing = FALSE
 	var/obj/item/welder_tank/tank = null // chainsaw fuel tank
 
 /obj/item/material/twohanded/chainsaw/think()
@@ -127,21 +126,12 @@
 
 /obj/item/material/twohanded/chainsaw/attack_hand(mob/user)
 	if(tank && user.get_inactive_hand() == src)
-		if(!sawing) // No removing tank when we saw a tree for example
-			if(tank.can_remove)
-				user.visible_message("[user] removes \the [tank] from \the [src].", "You remove \the [tank] from \the [src].")
-				user.pick_or_drop(tank)
-				tank = null
-				if(active)
-					turnOff()
-				update_icon()
-			else
-				to_chat(user, "\The [tank] can't be removed.")
-		else
-			to_chat(user, SPAN("danger", "Stop sawing first!"))
-
-	else
-		..()
+		user.visible_message("[user] removes \the [tank] from \the [src].", "You remove \the [tank] from \the [src].")
+		user.pick_or_drop(tank)
+		tank = null
+		if(active)
+			turnOff()
+		update_icon()
 
 /obj/item/material/twohanded/chainsaw/proc/get_fuel()
 	return tank ? tank.reagents.get_reagent_amount(/datum/reagent/fuel) : 0
