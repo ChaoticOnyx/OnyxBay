@@ -100,8 +100,8 @@
 	hitsound = SFX_FIGHTING_SWING
 	applies_material_colour = 0
 	unbreakable = 1
-	var/active = 0
-	var/sawing = 0
+	var/active = FALSE
+	var/sawing = FALSE
 	var/obj/item/welder_tank/tank = null // chainsaw fuel tank
 
 /obj/item/material/twohanded/chainsaw/think()
