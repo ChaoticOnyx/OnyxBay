@@ -261,7 +261,8 @@
 								 "You hear metal strain and groan, and a door [density ? "opening" : "closing"].")
 		if(density)
 			INVOKE_ASYNC(src, /obj/machinery/door/proc/open, TRUE)
-			addtimer(CALLBACK(src, /obj/machinery/door/proc/close), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
+			if(!(stat & (BROKEN|NOPOWER)))
+				addtimer(CALLBACK(src, /obj/machinery/door/proc/close), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
 		else
 			INVOKE_ASYNC(src, /obj/machinery/door/proc/close)
 		return
