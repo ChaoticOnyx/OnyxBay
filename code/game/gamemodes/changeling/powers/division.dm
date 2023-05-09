@@ -46,6 +46,9 @@
 		to_chat(my_mob, SPAN("changeling", "[T] is of our kind, we cannot transfuse another core into them."))
 		return
 
+	if(!changeling.geneticpoints)
+		to_chat(my_mob, SPAN("changeling", "We require at least <b>[required_dna]</b> samples of compatible DNA."))
+		return
 	changeling.using_proboscis = TRUE
 	for(var/stage = 1 to 3)
 		switch(stage)
