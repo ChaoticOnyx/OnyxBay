@@ -1,5 +1,8 @@
-var/global/list/image/ghost_darkness_images = list() //this is a list of images for things ghosts should still be able to see when they toggle darkness
-var/global/list/image/ghost_sightless_images = list() //this is a list of images for things ghosts should still be able to see even without ghost sight
+/// A list of images for things ghosts should still be able to see when they toggle darkness
+GLOBAL_LIST_EMPTY(ghost_darkness_images)
+
+/// A list of images for things ghosts should still be able to see even without ghost sight
+GLOBAL_LIST_EMPTY(ghost_sightless_images)
 
 /mob/observer/ghost
 	name = "ghost"
@@ -353,11 +356,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 
 	var/response = tgui_input_list(src, "Choose an area to teleport to.", "Teleport", area_repository.get_areas_by_z_level())
-	if(!response)
+	if(isnull(response))
 		return
 
-	var/area/chosen_area = response
-	if(!chosen_area)
+	var/area/chosen_area = area_repository.get_areas_by_z_level()[response]
+	if(!istype(chosen_area))
 		to_chat(src, "Chosen area is unavailable.")
 		return
 
@@ -387,7 +390,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 
 	var/turf/T = locate(turf_x, turf_y, turf_z)
-	if(T)
+	if(istype(T))
+		if(shall_check_if_holy() && is_holy_turf(T))
+			return
 		ghost_to_turf(T)
 	else
 		to_chat(src, SPAN_WARNING("Invalid coordinates."))
@@ -495,7 +500,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	rads_scan = !rads_scan
 
-	to_chat(src, SPAN_NOTICE("Radiation scan has been [gas_scan ? "enabled" : "disabled"]"))
+	to_chat(src, SPAN_NOTICE("Radiation scan has been [rads_scan ? "enabled" : "disabled"]"))
 
 /mob/observer/ghost/verb/view_manfiest()
 	set name = "Show Crew Manifest"
@@ -615,15 +620,17 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/proc/updateghostimages()
 	if(!client)
 		return
-	client.images -= ghost_sightless_images
-	client.images -= ghost_darkness_images
+
+	client.images -= GLOB.ghost_sightless_images
+	client.images -= GLOB.ghost_darkness_images
+
 	if(!seeindarkness)
-		client.images |= ghost_sightless_images
-		if(ghostvision)
-			client.images |= ghost_darkness_images
-	else if(seeindarkness && !ghostvision)
-		client.images |= ghost_sightless_images
-	client.images -= ghost_image //remove ourself
+		client.images |= GLOB.ghost_sightless_images
+
+	if(ghostvision)
+		client.images |= GLOB.ghost_darkness_images
+
+	client.images -= ghost_image
 
 /mob/observer/ghost/MayRespawn(feedback = FALSE, respawn_time = 0)
 	if(!client)
