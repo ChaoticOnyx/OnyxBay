@@ -1,6 +1,6 @@
 /obj/screen/movable/ability_master
 	name = "Abilities"
-	icon = 'icons/mob/screen_spells.dmi'
+	icon = 'icons/hud/screen_spells.dmi'
 	icon_state = "grey_spell_ready"
 	var/list/obj/screen/ability/ability_objects = list()
 	var/list/obj/screen/ability/spell_objects = list()
@@ -194,7 +194,7 @@
 //This is what you click to do things//
 ///////////////////////////////////////
 /obj/screen/ability
-	icon = 'icons/mob/screen_spells.dmi'
+	icon = 'icons/hud/screen_spells.dmi'
 	icon_state = "grey_spell_base"
 	maptext_x = 3
 	var/background_base_state = "grey"

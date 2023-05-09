@@ -11,8 +11,8 @@
 	var/list/oxytanks = list()	//sorry for the similar var names
 	var/list/platanks = list()
 
-	var/static/radial_oxygen = image(icon = 'icons/mob/radial.dmi', icon_state = "oxygen")
-	var/static/radial_plasma = image(icon = 'icons/mob/radial.dmi', icon_state = "plasma")
+	var/static/radial_oxygen = image(icon = 'icons/hud/radial.dmi', icon_state = "oxygen")
+	var/static/radial_plasma = image(icon = 'icons/hud/radial.dmi', icon_state = "plasma")
 
 	// we show the button even if the proc will not work
 	var/static/list/radial_options = list("dispence oxygen" = radial_oxygen, "dispence plasma" = radial_plasma)

@@ -444,7 +444,7 @@
 		facedir(direction)
 
 /obj/screen/click_catcher
-	icon = 'icons/mob/screen_gen.dmi'
+	icon = 'icons/hud/screen_gen.dmi'
 	icon_state = "click_catcher"
 	plane = CLICKCATCHER_PLANE
 	mouse_opacity = 2

@@ -15,6 +15,7 @@
 	boxes = new /obj/screen/storage()
 	boxes.SetName("storage")
 	boxes.master = storage
+	boxes.icon = 'icons/hud/common/screen_storage.dmi'
 	boxes.icon_state = "block"
 	boxes.screen_loc = "7,7 to 10,8"
 	boxes.layer = HUD_BASE_LAYER
@@ -22,6 +23,7 @@
 	storage_start = new /obj/screen/storage()
 	storage_start.SetName("storage")
 	storage_start.master = storage
+	storage_start.icon = 'icons/hud/common/screen_storage.dmi'
 	storage_start.icon_state = "storage_start"
 	storage_start.screen_loc = "7,7 to 10,8"
 	storage_start.layer = HUD_BASE_LAYER
@@ -29,6 +31,7 @@
 	storage_continue = new /obj/screen/storage()
 	storage_continue.SetName("storage")
 	storage_continue.master = storage
+	storage_continue.icon = 'icons/hud/common/screen_storage.dmi'
 	storage_continue.icon_state = "storage_continue"
 	storage_continue.screen_loc = "7,7 to 10,8"
 	storage_continue.layer = HUD_BASE_LAYER
@@ -36,25 +39,30 @@
 	storage_end = new /obj/screen/storage()
 	storage_end.SetName("storage")
 	storage_end.master = storage
+	storage_end.icon = 'icons/hud/common/screen_storage.dmi'
 	storage_end.icon_state = "storage_end"
 	storage_end.screen_loc = "7,7 to 10,8"
 	storage_end.layer = HUD_BASE_LAYER
 
 	stored_start = new /obj/screen/stored()
+	stored_start.icon = 'icons/hud/common/screen_storage.dmi'
 	stored_start.icon_state = "stored_start"
 	stored_start.layer = HUD_BASE_LAYER
 
 	stored_continue = new /obj/screen/stored()
+	stored_continue.icon = 'icons/hud/common/screen_storage.dmi'
 	stored_continue.icon_state = "stored_continue"
 	stored_continue.layer = HUD_BASE_LAYER
 
 	stored_end = new /obj/screen/stored()
+	stored_end.icon = 'icons/hud/common/screen_storage.dmi'
 	stored_end.icon_state = "stored_end"
 	stored_end.layer = HUD_BASE_LAYER
 
 	closer = new /obj/screen/close()
 	closer.master = storage
-	closer.icon_state = "x"
+	closer.icon = 'icons/hud/common/screen_storage.dmi'
+	closer.icon_state = "closer"
 	closer.layer = HUD_BASE_LAYER
 
 /datum/storage_ui/default/Destroy()

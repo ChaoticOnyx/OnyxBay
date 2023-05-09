@@ -1,7 +1,7 @@
 /mob/living/carbon/human
 	hud_type = /datum/hud/human
 
-/datum/hud/human/FinalizeInstantiation(ui_style='icons/mob/screen1_white.dmi', ui_color = "#ffffff", ui_alpha = 255)
+/datum/hud/human/FinalizeInstantiation(ui_style='icons/hud/style/midnight.dmi', ui_color = "#ffffff", ui_alpha = 255)
 	var/mob/living/carbon/human/target = mymob
 	var/datum/hud_data/hud_data
 	if(!istype(target))
@@ -205,7 +205,7 @@
 
 	if(hud_data.has_internals)
 		mymob.internals = new /obj/screen()
-		mymob.internals.icon = ui_style
+		mymob.internals.icon = 'icons/hud/common/screen_internal.dmi'
 		mymob.internals.icon_state = "internal0"
 		mymob.internals.SetName("internal")
 		mymob.internals.screen_loc = ui_internal
@@ -213,21 +213,21 @@
 
 	if(hud_data.has_warnings)
 		mymob.oxygen = new /obj/screen()
-		mymob.oxygen.icon = ui_style
+		mymob.oxygen.icon = 'icons/hud/common/screen_oxygen.dmi'
 		mymob.oxygen.icon_state = "oxy0"
 		mymob.oxygen.SetName("oxygen")
 		mymob.oxygen.screen_loc = ui_oxygen
 		hud_elements |= mymob.oxygen
 
 		mymob.toxin = new /obj/screen()
-		mymob.toxin.icon = ui_style
+		mymob.toxin.icon = 'icons/hud/common/screen_toxin.dmi'
 		mymob.toxin.icon_state = "tox0"
 		mymob.toxin.SetName("toxin")
 		mymob.toxin.screen_loc = ui_toxin
 		hud_elements |= mymob.toxin
 
 		mymob.fire = new /obj/screen()
-		mymob.fire.icon = ui_style
+		mymob.fire.icon = 'icons/hud/common/screen_fire.dmi'
 		mymob.fire.icon_state = "fire0"
 		mymob.fire.SetName("fire")
 		mymob.fire.screen_loc = ui_fire
@@ -235,7 +235,7 @@
 
 	if(hud_data.has_pain)
 		mymob.pains = new /obj/screen()
-		mymob.pains.icon = ui_style
+		mymob.pains.icon = 'icons/hud/common/screen_pain.dmi'
 		mymob.pains.icon_state = "pain0"
 		mymob.pains.SetName("pain")
 		mymob.pains.screen_loc = ui_health
@@ -243,7 +243,7 @@
 
 	if(hud_data.has_health)
 		mymob.healths = new /obj/screen()
-		mymob.healths.icon = ui_style
+		mymob.healths.icon = 'icons/hud/common/screen_health.dmi'
 		mymob.healths.icon_state = "health0"
 		mymob.healths.SetName("health")
 		mymob.healths.screen_loc = ui_health
@@ -251,7 +251,7 @@
 
 	if(hud_data.has_pressure)
 		mymob.pressure = new /obj/screen()
-		mymob.pressure.icon = ui_style
+		mymob.pressure.icon = 'icons/hud/common/screen_pressure.dmi'
 		mymob.pressure.icon_state = "pressure0"
 		mymob.pressure.SetName("pressure")
 		mymob.pressure.screen_loc = ui_pressure
@@ -259,7 +259,7 @@
 
 	if(hud_data.has_bodytemp)
 		mymob.bodytemp = new /obj/screen()
-		mymob.bodytemp.icon = ui_style
+		mymob.bodytemp.icon = 'icons/hud/common/screen_temp.dmi'
 		mymob.bodytemp.icon_state = "temp1"
 		mymob.bodytemp.SetName("body temperature")
 		mymob.bodytemp.screen_loc = ui_temp
@@ -267,7 +267,7 @@
 
 	if(target.isSynthetic())
 		target.cells = new /obj/screen()
-		target.cells.icon = 'icons/mob/screen1_robot.dmi'
+		target.cells.icon = 'icons/hud/mob/screen_robot.dmi'
 		target.cells.icon_state = "charge-empty"
 		target.cells.SetName("cell")
 		target.cells.screen_loc = ui_nutrition
@@ -275,7 +275,7 @@
 
 	else if(hud_data.has_nutrition)
 		mymob.nutrition_icon = new /obj/screen()
-		mymob.nutrition_icon.icon = ui_style
+		mymob.nutrition_icon.icon = 'icons/hud/common/screen_health.dmi'
 		mymob.nutrition_icon.icon_state = "nutrition0"
 		mymob.nutrition_icon.SetName("nutrition")
 		mymob.nutrition_icon.screen_loc = ui_nutrition
@@ -283,7 +283,7 @@
 
 	if(hud_data.has_poise)
 		mymob.poise_icon = new /obj/screen()
-		mymob.poise_icon.icon = 'icons/mob/screen1_poise.dmi'
+		mymob.poise_icon.icon = 'icons/hud/common/screen_poise.dmi'
 		mymob.poise_icon.icon_state = "50"
 		mymob.poise_icon.SetName("poise")
 		mymob.poise_icon.screen_loc = ui_health
@@ -298,7 +298,7 @@
 	mymob.zone_sel.color = ui_color
 	mymob.zone_sel.alpha = ui_alpha
 	mymob.zone_sel.overlays.Cut()
-	mymob.zone_sel.overlays += image('icons/mob/zone_sel.dmi', "[mymob.zone_sel.selecting]")
+	mymob.zone_sel.overlays += image('icons/hud/common/screen_zone_sel.dmi', "[mymob.zone_sel.selecting]")
 	hud_elements |= mymob.zone_sel
 
 	//Handle the gun settings buttons
