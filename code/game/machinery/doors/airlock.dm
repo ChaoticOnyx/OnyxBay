@@ -751,7 +751,7 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/set_broken(new_state)
 	. = ..()
 	if(. && new_state)
-		p_open = 1
+		p_open = TRUE
 		if (secured_wires)
 			lock()
 		visible_message("\The [src]'s control panel bursts open, sparks spewing out!")

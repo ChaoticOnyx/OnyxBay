@@ -14,8 +14,8 @@
 	icon = 'icons/obj/doors/doorhazard.dmi'
 	icon_state = "door_open"
 	req_one_access = list(access_atmospherics, access_engine_equip)
-	opacity = 0
-	density = 0
+	opacity = FALSE
+	density = FALSE
 	layer = BELOW_DOOR_LAYER
 	open_layer = BELOW_DOOR_LAYER
 	closed_layer = ABOVE_DOOR_LAYER
@@ -23,7 +23,7 @@
 
 	//These are frequenly used with windows, so make sure zones can pass.
 	//Generally if a firedoor is at a place where there should be a zone boundery then there will be a regular door underneath it.
-	block_air_zones = 0
+	block_air_zones = FALSE
 
 	var/blocked = FALSE
 	var/lockdown = FALSE // When the door has detected a problem, it locks.
@@ -109,6 +109,7 @@
 			for(var/i = 2 to users_to_open.len)
 				users_to_open_string += ", [users_to_open[i]]"
 		. += "\nThese people have opened \the [src] during an alert: [users_to_open_string]."
+
 /obj/machinery/door/firedoor/Bumped(atom/AM)
 	if(p_open || operating)
 		return
@@ -121,7 +122,7 @@
 			if(world.time - M.last_bumped <= 10) return //Can bump-open one airlock per second. This is to prevent popup message spam.
 			M.last_bumped = world.time
 			attack_hand(M)
-	return 0
+	return FALSE
 
 /obj/machinery/door/firedoor/attack_hand(mob/user)
 	add_fingerprint(user)
@@ -150,6 +151,7 @@
 	if(user.incapacitated() || (get_dist(src, user) > 1  && !issilicon(user)))
 		to_chat(user, "Sorry, you must remain able bodied and close to \the [src] in order to use it.")
 		return
+
 	if(density && (stat & (BROKEN|NOPOWER))) //can still close without power
 		to_chat(user, "\The [src] is not functioning, you'll have to force it open manually.")
 		return
@@ -162,7 +164,7 @@
 		"\The [src] [density ? "open" : "close"]s.",\
 		"You hear a beep, and a door opening.")
 
-	var/needs_to_close = 0
+	var/needs_to_close = FALSE
 	if(density)
 		if(alarmed)
 			// Accountability!

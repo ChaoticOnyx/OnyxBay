@@ -6,9 +6,9 @@
 	desc = "It opens and closes."
 	icon = 'icons/obj/doors/doorint.dmi'
 	icon_state = "door1"
-	anchored = 1
-	opacity = 1
-	density = 1
+	anchored = TRUE
+	opacity = TRUE
+	density = TRUE
 	can_atmos_pass = ATMOS_PASS_PROC
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	layer = CLOSED_DOOR_LAYER
@@ -16,21 +16,21 @@
 	var/open_layer = OPEN_DOOR_LAYER
 	var/closed_layer = CLOSED_DOOR_LAYER
 
-	var/visible = 1
-	var/p_open = 0
+	var/visible = TRUE
+	var/p_open = FALSE
 	var/operating = 0
-	var/autoclose = 0
-	var/glass = 0
-	var/normalspeed = 1
-	var/heat_proof = 0 // For glass airlocks/opacity firedoors
-	var/air_properties_vary_with_direction = 0
+	var/autoclose = FALSE
+	var/glass = FALSE
+	var/normalspeed = TRUE
+	var/heat_proof = FALSE // For glass airlocks/opacity firedoors
+	var/air_properties_vary_with_direction = FALSE
 	var/maxhealth = 300
 	var/health
 	var/destroy_hits = 10 //How many strong hits it takes to destroy the door
 	var/min_force = 10 //minimum amount of force needed to damage the door with a melee weapon
 	var/hitsound = 'sound/effects/metalhit2.ogg' //sound door makes when hit with a weapon
 	var/obj/item/stack/material/repairing
-	var/block_air_zones = 1 //If set, air zones cannot merge across the door even when it is opened.
+	var/block_air_zones = TRUE //If set, air zones cannot merge across the door even when it is opened.
 	//Multi-tile doors
 	var/width = 1
 	var/turf/filler
@@ -86,12 +86,12 @@
 	update_nearby_tiles()
 	. = ..()
 
-/obj/machinery/door/proc/can_open(forced = 0)
+/obj/machinery/door/proc/can_open(forced = FALSE)
 	if(!density || operating)
 		return FALSE
 	return TRUE
 
-/obj/machinery/door/proc/can_close(forced = 0)
+/obj/machinery/door/proc/can_close(forced = FALSE)
 	if(density || operating)
 		return FALSE
 	return TRUE
@@ -381,7 +381,7 @@
 	var/wait = normalspeed ? 150 : 5
 	if(!can_open(forced))
 		return FALSE
-	operating = TRUE
+	operating = 1
 
 	do_animate("opening")
 	icon_state = "door0"
@@ -399,7 +399,7 @@
 	set_opacity(FALSE)
 	if(filler)
 		filler.set_opacity(opacity)
-	operating = FALSE
+	operating = 0
 
 	if(autoclose)
 		addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
@@ -413,7 +413,7 @@
 			tryingToLock = TRUE
 			addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
 		return FALSE
-	operating = TRUE
+	operating = 1
 
 	do_animate("closing")
 	sleep(3)
@@ -428,7 +428,7 @@
 		set_opacity(TRUE) //caaaaarn!
 		if(filler)
 			filler.set_opacity(opacity)
-	operating = FALSE
+	operating = 0
 
 	shove_everything(shove_mobs = push_mobs, min_w_class = ITEM_SIZE_NORMAL) // Door shields cheesy meta must be gone.
 
