@@ -25,7 +25,7 @@
 	//Generally if a firedoor is at a place where there should be a zone boundery then there will be a regular door underneath it.
 	block_air_zones = FALSE
 
-	var/blocked = FALSE
+	var/blocked = FALSE // If the door is welded, it's blocked
 	var/lockdown = FALSE // When the door has detected a problem, it locks.
 	var/pdiff_alert = FALSE
 	var/pdiff = 0
@@ -146,7 +146,7 @@
 	var/alarmed = lockdown
 	for(var/area/A in areas_added)		//Checks if there are fire alarms in any areas associated with that firedoor
 		if(A.fire || A.air_doors_activated)
-			alarmed = 1
+			alarmed = TRUE
 
 	if(user.incapacitated() || (get_dist(src, user) > 1  && !issilicon(user)))
 		to_chat(user, "Sorry, you must remain able bodied and close to \the [src] in order to use it.")
@@ -301,7 +301,7 @@
 		return FALSE
 	return ..()
 
-/obj/machinery/door/firedoor/open(forced = 0)
+/obj/machinery/door/firedoor/open(forced = FALSE)
 	lockdown = FALSE
 
 	if(hatch_open)
