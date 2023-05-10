@@ -86,13 +86,13 @@
 		alarm()
 	return
 
-/obj/machinery/firealarm/bullet_act(obj/item/projectile/Proj)
+/obj/machinery/firealarm/bullet_act(obj/item/projectile/proj)
 	if(!wiresexposed)
 		. = alarm()
 		if(.)
-			visible_message(SPAN("danger", "\The [Proj] hits and activates [src]!"))
+			visible_message(SPAN("danger", "\The [proj] hits and activates [src]!"))
 		else
-			visible_message(SPAN("danger", "\The [Proj] hits [src]!"))
+			visible_message(SPAN("danger", "\The [proj] hits [src]!"))
 
 /obj/machinery/firealarm/emp_act(severity)
 	if(prob(50/severity))
