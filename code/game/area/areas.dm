@@ -101,7 +101,7 @@
 /area/proc/air_doors_close()
 	if(air_doors_activated)
 		return
-	air_doors_activated = 1
+	air_doors_activated = TRUE
 	if(!all_doors)
 		return
 	for(var/obj/machinery/door/firedoor/E in all_doors)
@@ -110,7 +110,7 @@
 /area/proc/air_doors_open()
 	if(!air_doors_activated)
 		return
-	air_doors_activated = 0
+	air_doors_activated = FALSE
 	if(!all_doors)
 		return
 	for(var/obj/machinery/door/firedoor/E in all_doors)

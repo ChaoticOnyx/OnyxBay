@@ -49,7 +49,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	var/no_air = null
 //	var/list/lights				// list of all lights on this area
 	var/list/all_doors = null		//Added by Strumpetplaya - Alarm Change - Contains a list of doors adjacent to this area
-	var/air_doors_activated = 0
+	var/air_doors_activated = FALSE
 	/// Plays when an area has power.
 	var/list/ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL)
 	/// Plays when an area has no power.
