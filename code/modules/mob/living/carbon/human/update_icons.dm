@@ -186,6 +186,12 @@ Please contact me on #coderbus IRC. ~Carn x
 	if(auras)
 		overlays_to_apply |= auras
 
+	if(active_typing_indicator)
+		overlays_to_apply |= active_typing_indicator
+
+	if(active_thinking_indicator)
+		overlays_to_apply |= active_thinking_indicator
+
 	overlays = overlays_to_apply
 
 	update_transform()
