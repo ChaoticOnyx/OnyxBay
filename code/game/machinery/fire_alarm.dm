@@ -1,3 +1,7 @@
+#define FIREALARM_NOCIRCUIT	0
+#define FIREALARM_NOWIRES	1
+#define FIREALARM_COMPLETE	2
+
 /obj/machinery/firealarm
 	name = "fire alarm"
 	desc = "<i>\"In case of emergency press HERE\"</i>. Or shoot."
@@ -14,7 +18,7 @@
 	power_channel = STATIC_ENVIRON
 	layer = ABOVE_WINDOW_LAYER
 	var/wiresexposed = FALSE
-	var/buildstage = 2 // 2 = complete, 1 = no wires,  0 = circuit gone
+	var/buildstage = FIREALARM_COMPLETE
 	var/image/alarm_overlay
 	var/image/seclevel_overlay
 
@@ -96,7 +100,7 @@
 	..()
 
 /obj/machinery/firealarm/attackby(obj/item/W, mob/user)
-	if(isScrewdriver(W) && buildstage == 2)
+	if(isScrewdriver(W) && buildstage == FIREALARM_COMPLETE)
 		wiresexposed = !wiresexposed
 		update_icon()
 		return
@@ -113,14 +117,14 @@
 										SPAN("danger", "You have cut the wires inside \the [src]."))
 					new /obj/item/stack/cable_coil(get_turf(src), 5)
 					playsound(src.loc, 'sound/items/Wirecutter.ogg', 50, 1)
-					buildstage = 1
+					buildstage = FIREALARM_NOWIRES
 					update_icon()
 			if(1)
 				if(isCoil(W))
 					var/obj/item/stack/cable_coil/C = W
 					if (C.use(5))
 						user.visible_message(SPAN("notice", "\The [user] wired \the [src].</span>"), SPAN("notice", "You wire \the [src]."))
-						buildstage = 2
+						buildstage = FIREALARM_COMPLETE
 					else
 						to_chat(user, SPAN("warning", "You need 5 pieces of cable to wire \the [src]."))
 				else if(isCrowbar(W))
@@ -129,13 +133,13 @@
 					if(do_after(user, 20, src))
 						var/obj/item/firealarm_electronics/circuit = new /obj/item/firealarm_electronics()
 						circuit.dropInto(user.loc)
-						buildstage = 0
+						buildstage = FIREALARM_NOCIRCUIT
 						update_icon()
 			if(0)
 				if(istype(W, /obj/item/firealarm_electronics))
 					user.visible_message(user, SPAN("notice", "You insert the circuit!"))
 					qdel(W)
-					buildstage = 1
+					buildstage = FIREALARM_NOWIRES
 					update_icon()
 
 				else if(isWrench(W))
@@ -270,7 +274,7 @@
 		src.set_dir(dir)
 
 	if(istype(frame))
-		buildstage = 0
+		buildstage = FIREALARM_NOCIRCUIT
 		wiresexposed = TRUE
 		icon_state = "fire_b0"
 		pixel_x = (dir & 3)? 0 : (dir == 4 ? -24 : 24)
