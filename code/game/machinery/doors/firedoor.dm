@@ -130,7 +130,7 @@
 		return//Already doing something.
 
 	if(blocked)
-		to_chat(user, "<span class='warning'>\The [src] is welded solid!</span>")
+		to_chat(user, SPAN("danger","\The [src] is welded solid!"))
 		return
 
 	if(ishuman(user))
@@ -218,22 +218,20 @@
 		update_icon()
 		return
 
-	if(blocked && isCrowbar(C) && !repairing)
-		if(!hatch_open)
-			to_chat(user, "<span class='danger'>You must open the maintenance hatch first!</span>")
-		else
-			user.visible_message("<span class='danger'>[user] is removing the electronics from \the [src].</span>",
-									"You start to remove the electronics from [src].")
-			if(do_after(user,30,src))
-				if(blocked && density && hatch_open)
-					playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
-					user.visible_message("<span class='danger'>[user] has removed the electronics from \the [src].</span>",
-										"You have removed the electronics from [src].")
-					deconstruct(user)
-		return
-
 	if(blocked)
-		to_chat(user, "<span class='danger'>\The [src] is welded shut!</span>")
+		if(isCrowbar(C) && !repairing)
+			if(!hatch_open)
+				to_chat(user, SPAN("danger", "\The [src] is welded solid!"))
+			else
+				user.visible_message(SPAN("danger", "\The [user] is removing the electronics from \the [src]."),\
+									SPAN("danger", "You start to remove the electronics from \the [src]."))
+				if(do_after(user,30,src))
+					if(blocked && density && hatch_open)
+						playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
+						user.visible_message(SPAN("danger", "\The [user] has removed the electronics from \the [src]."),\
+											SPAN("danger", "You have removed the electronics from \the [src]."),\
+											SPAN("danger", "You hear something pried out."))
+						deconstruct(user)
 		return
 
 	if(isCrowbar(C) || istype(C,/obj/item/material/twohanded/fireaxe))
@@ -258,14 +256,9 @@
 		if(!do_after(user, forcing_time, src))
 			return
 		if(isCrowbar(C))
-			if(stat & (BROKEN|NOPOWER) || !density)
-				user.visible_message(SPAN("danger", "\The [user] forces \the [src] [density ? "open" : "closed"] with \a [C]!"),\
-									 "You force \the [src] [density ? "open" : "closed"] with \the [C]!",\
-									 "You hear metal strain, and a door [density ? "open" : "close"].")
-		else
-			user.visible_message(SPAN("danger", "\The [user] forces \the [ blocked ? "welded" : "" ] [src] [density ? "open" : "closed"] with \a [C]!"),\
-								 "You force \the [ blocked ? "welded" : "" ] [src] [density ? "open" : "closed"] with \the [C]!",\
-								 "You hear metal strain and groan, and a door [density ? "opening" : "closing"].")
+			user.visible_message(SPAN("danger", "\The [user] forces \the [src] [density ? "open" : "closed"] with \a [C]!"),\
+								 SPAN("danger", "You force \the [src] [density ? "open" : "closed"] with \the [C]!"),\
+								 SPAN("notice", "You hear a door [density ? "opening" : "closing"]."))
 		if(density)
 			INVOKE_ASYNC(src, /obj/machinery/door/proc/open, TRUE)
 			if(!(stat & (BROKEN|NOPOWER)))
