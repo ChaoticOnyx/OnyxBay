@@ -393,7 +393,7 @@
 		lockdown = TRUE
 		if(!pdiff_alert)
 			pdiff_alert = TRUE
-			changed = FALSE // update_icon()
+			changed = TRUE // update_icon()
 	else
 		if(pdiff_alert)
 			pdiff_alert = FALSE
