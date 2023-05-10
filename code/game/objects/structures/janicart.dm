@@ -231,7 +231,7 @@
 
 
 /obj/structure/bed/chair/janicart/Move()
-	..()
+	. = ..()
 	if(buckled_mob)
 		if(buckled_mob.buckled == src)
 			buckled_mob.loc = loc

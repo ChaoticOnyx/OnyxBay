@@ -1,3 +1,12 @@
+/area/space/bluespace
+	base_turf = /turf/bluespace
+
+/area/space/bluespace/Initialize()
+	..()
+	for(var/turf/T in src)
+		T.filters += filter(type = "motion_blur", x=5)
+		animate(T.filters[filters.len], x = 5, time = 10)
+
 /area/polarplanet
 	name = "polarplanet"
 	base_turf = /turf/unsimulated/floor/frozenground

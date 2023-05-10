@@ -61,10 +61,10 @@
 		to_chat(user, "<span class='warning'>Someone is already rummaging here!</span>")
 
 /obj/structure/rubble/attackby(obj/item/I, mob/user)
-	if (istype(I, /obj/item/pickaxe))
-		var/obj/item/pickaxe/P = I
+	if (istype(I, /obj/item/pickaxe/drill))
+		var/obj/item/pickaxe/drill/D = I
 		visible_message("[user] starts clearing away \the [src].")
-		if(do_after(user,P.digspeed, src))
+		if(do_after(user, D.digspeed, src))
 			visible_message("[user] clears away \the [src].")
 			if(lootleft && prob(1))
 				var/obj/item/booty = pick(loot)

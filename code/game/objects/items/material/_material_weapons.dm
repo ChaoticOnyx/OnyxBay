@@ -77,7 +77,11 @@
 		else
 			obj_flags &= (~OBJ_FLAG_CONDUCTIBLE)
 		if(material.reagent_path)
-			create_reagents(material_amount * REAGENTS_PER_MATERIAL_SHEET)
+			if(!reagents)
+				create_reagents(material_amount * REAGENTS_PER_MATERIAL_SHEET)
+			else
+				reagents.clear_reagents()
+				reagents.maximum_volume = material_amount * REAGENTS_PER_MATERIAL_SHEET
 			reagents.add_reagent(material.reagent_path, material_amount * REAGENTS_PER_MATERIAL_SHEET)
 		update_force()
 
@@ -122,7 +126,7 @@ Commenting this out pending rebalancing of radiation based on small objects.
 	check_health(1)
 
 /obj/item/material/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/weldingtool))
+	if(isWelder(W))
 		var/obj/item/weldingtool/WT = W
 		if(material.ignition_point && WT.remove_fuel(0, user))
 			TemperatureAct(150)

@@ -227,7 +227,7 @@ var/list/hash_to_gear = list()
 		if(!(gear_name in valid_gear_choices()))
 			continue
 		var/datum/gear/G = LC.gear[gear_name]
-		if(!G.path)
+		if(!G.path && !length(G.gear_tweaks))
 			continue
 		if(hide_donate_gear && (G.price || G.patron_tier))
 			continue
@@ -239,7 +239,7 @@ var/list/hash_to_gear = list()
 		var/display_class
 		var/discountText
 		if(ticked && !gear_allowed_to_equip(G, user))
-			toggle_gear(G)
+			pref.gear_list[pref.gear_slot] -= G.display_name
 			ticked = FALSE
 		if(G != selected_gear)
 			if(ticked)
@@ -292,6 +292,8 @@ var/list/hash_to_gear = list()
 				I.Blend(gear_virtual_item.color, ICON_MULTIPLY)
 
 		I.Scale(I.Width() * 2, I.Height() * 2)
+
+		QDEL_NULL(gear_virtual_item)
 
 		. += "<td style='width: 80%;' class='block'>"
 
@@ -604,7 +606,7 @@ var/list/hash_to_gear = list()
 
 /datum/category_item/player_setup_item/loadout/proc/toggle_gear(datum/gear/TG, mob/user)
 	// check if someone trying to tricking us. However, it's may be just a bug
-	ASSERT(!TG.price || user.client.donator_info.has_item(TG.type))
+	ASSERT(user.client.donator_info.is_item_available_as_for_patron(TG.price) || (!TG.price || user.client.donator_info.has_item(TG.type)))
 	ASSERT(!TG.patron_tier || user.client.donator_info.patreon_tier_available(TG.patron_tier))
 
 	if(TG.display_name in pref.gear_list[pref.gear_slot])
@@ -651,7 +653,7 @@ var/list/hash_to_gear = list()
 /datum/gear/proc/is_allowed_to_equip(mob/user)
 	ASSERT(user && user.client)
 	ASSERT(user.client.donator_info)
-	if(price && !user.client.donator_info.has_item(type))
+	if(price && (!user.client.donator_info.is_item_available_as_for_patron(price) && !user.client.donator_info.has_item(type)))
 		return FALSE
 	if(patron_tier && !user.client.donator_info.patreon_tier_available(patron_tier))
 		return FALSE

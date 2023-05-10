@@ -25,3 +25,25 @@
 			return item
 
 	return null
+
+// Walks up the loc tree until it finds wrong loc or go to null
+// stop_on is list of types of loc where check also must stop
+/proc/check_locs(atom/A, list/stop_on, checking_proc)
+	var/atom/loc = A.loc
+	var/is_correct = TRUE
+
+	while(loc && is_correct)
+		for(var/type in stop_on)
+			if(istype(loc, type))
+				return TRUE
+		is_correct = call(A, checking_proc)(loc)
+		loc = loc.loc
+	return is_correct
+
+// Walks up the loc tree until loc is mob or turf.
+// Needed for check of presence of any embedded item/effect etc in hand of character.
+/proc/get_top_holder_obj(atom/A)
+	var/atom/holder = A
+	while(holder.loc && istype(holder.loc, /obj))
+		holder = holder.loc
+	return holder

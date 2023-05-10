@@ -23,19 +23,27 @@
 /// Used for `/datum/component/polar_weather`.
 #define ZTRAIT_POLAR_WEATHER "Weather"
 /// Some bluespace equipment works unstable, radio has noise.
-#define ZTRAIT_BLUESPACE_CONVERGENCE "bs_convergence"
+#define ZTRAIT_SNOWFALL "snowfall"
 /// All the bluespace equipment can't work at all.
-#define ZTRAIT_BLUESPACE_EXIT "bs_exit"
+#define ZTRAIT_SNOWSTORM "snowstorm"
 
 // Engines
-#define MAP_ENG_RANDOM "random"
+#define MAP_ENG_RANDOM      "random"
 #define MAP_ENG_SINGULARITY "singularity"
-#define MAP_ENG_MATTER "supermatter"
+#define MAP_ENG_MATTER      "supermatter"
 
 // Biodomes
 
-#define MAP_BIO_RANDOM  "random"
-#define MAP_BIO_FOREST  "forest"
-#define MAP_BIO_WINTER  "winter"
-#define MAP_BIO_BEACH   "beach"
-#define MAP_BIO_CONCERT "concert"
+#define MAP_BIO_RANDOM  	"random"
+#define MAP_BIO_FOREST  	"forest"
+#define MAP_BIO_WINTER  	"winter"
+#define MAP_BIO_BEACH   	"beach"
+#define MAP_BIO_CONCERT 	"concert"
+#define MAP_BIO_NANOTRASEN  "nanotrasen"
+
+// Bars
+
+#define MAP_BAR_RANDOM  "random"
+#define MAP_BAR_CLASSIC "classic"
+#define MAP_BAR_MODERN  "modern"
+#define MAP_BAR_SALOON  "saloon"

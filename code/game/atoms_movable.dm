@@ -339,7 +339,6 @@
 	. = ..()
 
 	am.unregister_signal(src, SIGNAL_DIR_SET)
-	am.unregister_signal(src, SIGNAL_MOVED)
 
 /atom/movable/proc/move_to_turf(atom/movable/am, old_loc, new_loc)
 	var/turf/T = get_turf(new_loc)

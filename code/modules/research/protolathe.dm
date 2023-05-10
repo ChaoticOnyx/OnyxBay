@@ -62,7 +62,10 @@
 	var/T = 0
 	for(var/obj/item/reagent_containers/vessel/G in component_parts)
 		T += G.reagents.maximum_volume
-	create_reagents(T)
+	if(reagents)
+		reagents.maximum_volume = T
+	else
+		create_reagents(T)
 	max_material_storage = 0
 	for(var/obj/item/stock_parts/matter_bin/M in component_parts)
 		max_material_storage += M.rating * 75000
@@ -145,7 +148,7 @@
 	queue.Cut(index, index + 1)
 	return
 
-/obj/machinery/r_n_d/protolathe/proc/canBuild(datum/design/D, amount_build)
+/obj/machinery/r_n_d/protolathe/proc/canBuild(datum/design/D, amount_build = 1)
 	for(var/M in D.materials)
 		if(materials[M] < D.materials[M] * mat_efficiency * amount_build)
 			return 0

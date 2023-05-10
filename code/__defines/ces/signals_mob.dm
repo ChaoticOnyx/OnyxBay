@@ -9,3 +9,9 @@
 
 /// Called on `/mob/living/set_stat` (/mob/living, old_stat, new_stat)
 #define SIGNAL_STAT_SET "set_stat"
+
+/// Called on `/mob/proc/shift_view` (/mob, old_stat, new_stat)
+#define SIGNAL_VIEW_SHIFTED_SET "view_shift_set"
+
+/// Called on `/mob/proc/ghostize` (/mob, can_reenter_corpse)
+#define SIGNAL_MOB_GHOSTIZED "mob_ghostized"

@@ -17,6 +17,7 @@
 		/datum/shuttle/autodock/ferry/research,
 		/datum/shuttle/autodock/ferry/engie,
 		/datum/shuttle/autodock/ferry/mining,
+		/datum/shuttle/autodock/ferry/security,
 		/datum/shuttle/autodock/multi/antag/rescue,
 		/datum/shuttle/autodock/ferry/emergency/centcom,
 		/datum/shuttle/autodock/ferry/administration,
@@ -54,7 +55,7 @@
 	dock_name     = "NAS Crescent"
 	boss_name     = "Central Command"
 	boss_short    = "Centcomm"
-	company_name  = "NanoTrasen"
+	company_name  = "Nanotrasen"
 	company_short = "NT"
 	system_name   = "Nyx"
 

@@ -23,7 +23,7 @@ var/global/list/minevendor_list = list( //keep in order of price
 	new /datum/data/mining_equipment("Premium Cigar",                /obj/item/clothing/mask/smokable/cigarette/cigar/havana,          30,   150),
 	new /datum/data/mining_equipment("Lottery Chip",                 /obj/item/spacecash/ewallet/lotto,                                50,   200),
 	new /datum/data/mining_equipment("Ripley Paint Kit",             /obj/item/device/kit/paint/ripley/random,                         15,   200),
-	new /datum/data/mining_equipment("Mining Drill",                 /obj/item/pickaxe,                                                10,   200),
+	new /datum/data/mining_equipment("Mining Drill",                 /obj/item/pickaxe/drill,                                          10,   200),
 	new /datum/data/mining_equipment("Deep Ore Scanner",             /obj/item/mining_scanner,                                         10,   250),
 	new /datum/data/mining_equipment("Magboots",                     /obj/item/clothing/shoes/magboots,                                10,   300),
 	new /datum/data/mining_equipment("Autochisel",                   /obj/item/autochisel,                                             10,   400),
@@ -65,6 +65,11 @@ var/global/list/minevendor_list = list( //keep in order of price
 	density = 1
 	anchored = 1
 	var/obj/item/card/id/inserted_id
+	var/list/equipment_list = list()
+
+/obj/machinery/mineral/equipment_vendor/Initialize()
+	equipment_list = minevendor_list
+	. = ..()
 
 /datum/data/mining_equipment
 	var/equipment_name = "generic"
@@ -113,7 +118,7 @@ var/global/list/minevendor_list = list( //keep in order of price
 		dat += "No ID inserted.  <A href='?src=\ref[src];choice=insert'>Insert ID.</A><br>"
 	dat += "</div>"
 	dat += "<br><b>Equipment point cost list:</b><BR><table border='0' width='300'>"
-	for(var/datum/data/mining_equipment/prize in minevendor_list)
+	for(var/datum/data/mining_equipment/prize in equipment_list)
 		if(prize.amount > 0)
 			dat += "<tr><td>[prize.equipment_name]</td><td>[prize.cost]</td><td><A href='?src=\ref[src];purchase=\ref[prize]'>Purchase</A> ([prize.amount])</td></tr>"
 		else if(prize.amount == -1)
@@ -148,7 +153,7 @@ var/global/list/minevendor_list = list( //keep in order of price
 	if(href_list["purchase"])
 		if(istype(inserted_id))
 			var/datum/data/mining_equipment/prize = locate(href_list["purchase"])
-			if (!prize || !(prize in minevendor_list))
+			if (!prize || !(prize in equipment_list))
 				return
 			if(prize.amount <= 0 && prize.amount != -1)
 				return

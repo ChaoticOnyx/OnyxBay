@@ -411,6 +411,13 @@ Helpers
 			C.RollCredits()
 
 	display_report()
+	GLOB.indigo_bot.round_end_webhook(
+		config.indigo_bot.round_end_webhook,
+		game_id,
+		"[mode.name] *([SSstoryteller.character.name])*",
+		length(GLOB.clients),
+		roundduration2text()
+	)
 
 	//Print a list of antagonists to the server log
 	var/list/total_antagonists = list()

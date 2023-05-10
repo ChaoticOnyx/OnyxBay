@@ -1,5 +1,10 @@
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
 	STOP_PROCESSING(SSmobs, src)
+
+	unregister_signal(src, SIGNAL_SEE_IN_DARK_SET)
+	unregister_signal(src, SIGNAL_SEE_INVISIBLE_SET)
+	unregister_signal(src, SIGNAL_SIGHT_SET)
+
 	remove_from_dead_mob_list()
 	remove_from_living_mob_list()
 	GLOB.player_list.Remove(src)
@@ -64,6 +69,9 @@
 	. = ..()
 	if(species_language)
 		add_language(species_language)
+	register_signal(src, SIGNAL_SEE_IN_DARK_SET,	/mob/proc/set_blackness)
+	register_signal(src, SIGNAL_SEE_INVISIBLE_SET,	/mob/proc/set_blackness)
+	register_signal(src, SIGNAL_SIGHT_SET,			/mob/proc/set_blackness)
 	START_PROCESSING(SSmobs, src)
 
 /mob/proc/show_message(msg, type, alt, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
@@ -446,7 +454,7 @@
 	if(client.holder && (client.holder.rights & R_ADMIN))
 		is_admin = 1
 
-	if(is_admin && stat == DEAD)
+	if(is_admin && is_ooc_dead())
 		is_admin = 0
 
 	var/list/names = list()
@@ -635,7 +643,11 @@
 /mob/proc/is_active()
 	return (0 >= usr.stat)
 
-/mob/proc/is_dead()
+/mob/proc/is_ooc_dead()
+	return stat == DEAD
+
+// Returns true if the mob is dead for IC objects (runes, machines, etc.)
+/mob/proc/is_ic_dead()
 	return stat == DEAD
 
 /mob/proc/is_ready()
@@ -906,6 +918,7 @@
 			to_chat(src, "You have nothing stuck in your body that is large enough to remove.")
 		else
 			to_chat(U, "[src] has nothing stuck in their wounds that is large enough to remove.")
+		src.verbs -= /mob/proc/yank_out_object
 		return
 
 	var/obj/item/selection = input("What do you want to yank out?", "Embedded objects") in valid_objects
@@ -923,9 +936,6 @@
 		visible_message("<span class='warning'><b>[src] rips [selection] out of their body.</b></span>","<span class='warning'><b>You rip [selection] out of your body.</b></span>")
 	else
 		visible_message("<span class='warning'><b>[usr] rips [selection] out of [src]'s body.</b></span>","<span class='warning'><b>[usr] rips [selection] out of your body.</b></span>")
-	valid_objects = get_visible_implants(0)
-	if(valid_objects.len == 1) //Yanking out last object - removing verb.
-		src.verbs -= /mob/proc/yank_out_object
 
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
@@ -965,6 +975,11 @@
 			pinned -= O
 		if(!pinned.len)
 			anchored = 0
+
+	valid_objects = get_visible_implants(0)
+	if(!valid_objects.len)
+		src.verbs -= /mob/proc/yank_out_object
+
 	return 1
 
 //Check for brain worms in head.
@@ -1155,3 +1170,9 @@
 	if(old_sight != new_sight)
 		sight = new_sight
 		SEND_SIGNAL(src, SIGNAL_SIGHT_SET, src, old_sight, new_sight)
+
+/mob/proc/set_blackness()			//Applies SEE_BLACKNESS if necessary and turns it off when you don't need it. Should be called if see_in_dark, see_invisible or sight has changed
+	if((see_invisible <= SEE_INVISIBLE_NOLIGHTING) || (see_in_dark >= 8) || (sight&(SEE_TURFS|SEE_MOBS|SEE_OBJS)))
+		set_sight(sight&(~SEE_BLACKNESS))
+	else
+		set_sight(sight|SEE_BLACKNESS)

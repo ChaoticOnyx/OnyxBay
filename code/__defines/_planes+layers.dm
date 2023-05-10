@@ -157,6 +157,8 @@
 	#define OBSERVER_LAYER              5.1
 	#define OBFUSCATION_LAYER           5.2
 
+	#define TYPING_LAYER                11
+
 	#define CHAT_LAYER                  12.0001
 	#define CHAT_LAYER_MAX              12.9999
 

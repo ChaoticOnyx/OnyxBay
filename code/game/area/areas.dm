@@ -99,64 +99,50 @@
 	return 0
 
 /area/proc/air_doors_close()
-	if(!air_doors_activated)
-		air_doors_activated = 1
-		if(!all_doors)
-			return
-		for(var/obj/machinery/door/firedoor/E in all_doors)
-			if(!E.blocked)
-				if(E.operating)
-					E.nextstate = FIREDOOR_CLOSED
-				else if(!E.density)
-					spawn(0)
-						E.close()
+	if(air_doors_activated)
+		return
+	air_doors_activated = 1
+	if(!all_doors)
+		return
+	for(var/obj/machinery/door/firedoor/E in all_doors)
+		INVOKE_ASYNC(E, /obj/machinery/door/proc/close)
 
 /area/proc/air_doors_open()
-	if(air_doors_activated)
-		air_doors_activated = 0
-		if(!all_doors)
-			return
-		for(var/obj/machinery/door/firedoor/E in all_doors)
-			if(!E.blocked)
-				if(E.operating)
-					E.nextstate = FIREDOOR_OPEN
-				else if(E.density)
-					spawn(0)
-						if(E.can_safely_open())
-							E.open()
+	if(!air_doors_activated)
+		return
+	air_doors_activated = 0
+	if(!all_doors)
+		return
+	for(var/obj/machinery/door/firedoor/E in all_doors)
+		if(!E.density || (E.stat & (BROKEN|NOPOWER)))
+			continue
+		if(E.can_safely_open())
+			INVOKE_ASYNC(E, /obj/machinery/door/proc/open)
 
 
 /area/proc/fire_alert()
-	if(!fire)
-		fire = TRUE	//used for firedoor checks
-		update_icon()
-		mouse_opacity = 0
-		set_lighting_mode(LIGHTMODE_ALARM, TRUE)
-		if(!all_doors)
-			return
-		for(var/obj/machinery/door/firedoor/D in all_doors)
-			if(!D.blocked)
-				if(D.operating)
-					D.nextstate = FIREDOOR_CLOSED
-				else if(!D.density)
-					spawn()
-						D.close()
+	if(fire)
+		return
+	fire = TRUE	//used for firedoor checks
+	update_icon()
+	mouse_opacity = 0
+	set_lighting_mode(LIGHTMODE_ALARM, TRUE)
+	if(!all_doors)
+		return
+	for(var/obj/machinery/door/firedoor/D in all_doors)
+		INVOKE_ASYNC(D, /obj/machinery/door/proc/close)
 
 /area/proc/fire_reset()
-	if (fire)
-		fire = FALSE	//used for firedoor checks
-		update_icon()
-		mouse_opacity = 0
-		set_lighting_mode(LIGHTMODE_ALARM, FALSE)
-		if(!all_doors)
-			return
-		for(var/obj/machinery/door/firedoor/D in all_doors)
-			if(!D.blocked)
-				if(D.operating)
-					D.nextstate = FIREDOOR_OPEN
-				else if(D.density)
-					spawn(0)
-					D.open()
+	if (!fire)
+		return
+	fire = FALSE	//used for firedoor checks
+	update_icon()
+	mouse_opacity = 0
+	set_lighting_mode(LIGHTMODE_ALARM, FALSE)
+	if(!all_doors)
+		return
+	for(var/obj/machinery/door/firedoor/D in all_doors)
+		INVOKE_ASYNC(D, /obj/machinery/door/proc/open)
 
 /area/proc/readyalert()
 	if(!eject)
@@ -171,25 +157,20 @@
 	return
 
 /area/proc/partyalert()
-	if (!( party ))
-		party = 1
-		update_icon()
-		mouse_opacity = 0
-	return
+	if (party)
+		return
+	party = 1
+	update_icon()
+	mouse_opacity = 0
 
 /area/proc/partyreset()
-	if (party)
-		party = 0
-		mouse_opacity = 0
-		update_icon()
-		for(var/obj/machinery/door/firedoor/D in src)
-			if(!D.blocked)
-				if(D.operating)
-					D.nextstate = FIREDOOR_OPEN
-				else if(D.density)
-					spawn(0)
-					D.open()
-	return
+	if (!party)
+		return
+	party = 0
+	mouse_opacity = 0
+	update_icon()
+	for(var/obj/machinery/door/firedoor/D in src)
+		INVOKE_ASYNC(D, /obj/machinery/door/proc/open)
 
 /area/update_icon()
 	if ((eject || party) && (!requires_power||power_environ))//If it doesn't require power, can still activate this proc.

@@ -15,7 +15,7 @@
 	if(client)
 		handle_regular_hud_updates()
 		update_items()
-	if(stat != DEAD) //still using power
+	if(!is_ooc_dead()) //still using power
 		use_power()
 		process_killswitch()
 		process_locks()
@@ -69,7 +69,7 @@
 /mob/living/silicon/robot/handle_regular_status_updates()
 
 	if(camera && !scrambledcodes)
-		if(stat == DEAD || wires.IsIndexCut(BORG_WIRE_CAMERA))
+		if(is_ic_dead() || wires.IsIndexCut(BORG_WIRE_CAMERA))
 			camera.set_status(0)
 		else
 			camera.set_status(1)
@@ -83,10 +83,10 @@
 	if(resting)
 		Weaken(5)
 
-	if(health < config.health.health_threshold_dead && stat != DEAD) // die only once
+	if(health < config.health.health_threshold_dead && !is_ooc_dead()) // die only once
 		death()
 
-	if(stat != DEAD) // Alive.
+	if(!is_ooc_dead()) // Alive.
 		if(paralysis || stunned || weakened || !has_power) // Stunned etc.
 			set_stat(UNCONSCIOUS)
 
@@ -159,39 +159,37 @@
 				process_med_hud(src, 1)
 
 	if(healths)
-		if(stat != DEAD)
+		if(!is_ooc_dead())
 			if(istype(src, /mob/living/silicon/robot/drone))
-				switch(health)
-					if(35 to INFINITY)
-						healths.icon_state = "health0"
-					if(25 to 34)
-						healths.icon_state = "health1"
-					if(15 to 24)
-						healths.icon_state = "health2"
-					if(5 to 14)
-						healths.icon_state = "health3"
-					if(0 to 4)
-						healths.icon_state = "health4"
-					if(-35 to 0)
-						healths.icon_state = "health5"
-					else
-						healths.icon_state = "health6"
+				if (health >= 35)
+					healths.icon_state = "health0"
+				else if (health >= 25)
+					healths.icon_state = "health1"
+				else if (health >= 15)
+					healths.icon_state = "health2"
+				else if (health >= 5)
+					healths.icon_state = "health3"
+				else if (health >= 0)
+					healths.icon_state = "health4"
+				else if (health >= -34)
+					healths.icon_state = "health5"
+				else
+					healths.icon_state = "health6"
 			else
-				switch(health)
-					if(200 to INFINITY)
-						healths.icon_state = "health0"
-					if(150 to 200)
-						healths.icon_state = "health1"
-					if(100 to 150)
-						healths.icon_state = "health2"
-					if(50 to 100)
-						healths.icon_state = "health3"
-					if(0 to 50)
-						healths.icon_state = "health4"
-					if(config.health.health_threshold_dead to 0)
-						healths.icon_state = "health5"
-					else
-						healths.icon_state = "health6"
+				if (health >= 200)
+					healths.icon_state = "health0"
+				else if (health >= 150)
+					healths.icon_state = "health1"
+				else if (health >= 100)
+					healths.icon_state = "health2"
+				else if (health >= 50)
+					healths.icon_state = "health3"
+				else if (health >= 0)
+					healths.icon_state = "health4"
+				else if (health >= config.health.health_threshold_dead)
+					healths.icon_state = "health5"
+				else
+					healths.icon_state = "health6"
 		else
 			healths.icon_state = "health7"
 
@@ -253,7 +251,7 @@
 
 		oxygen.icon_state = "oxy[oxygen_alarm]"
 
-	if(stat != DEAD)
+	if(!is_ooc_dead())
 		if(blinded)
 			overlay_fullscreen("blind", /obj/screen/fullscreen/blind)
 		else
@@ -277,37 +275,39 @@
 	if(client)
 		clear_fullscreen("flash_protection")
 		client.screen.Remove(GLOB.global_hud.nvg, GLOB.global_hud.thermal, GLOB.global_hud.meson, GLOB.global_hud.science, GLOB.global_hud.material)
-		if(stat == DEAD || (MUTATION_XRAY in mutations) || (sensor_mode == XRAY_VISION))
+		if(is_ooc_dead() || (MUTATION_XRAY in mutations) || (sensor_mode == XRAY_VISION))
 			set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
 			set_see_in_dark(8)
 			set_see_invisible(SEE_INVISIBLE_LEVEL_TWO)
-		else if(sensor_mode == THERMAL_VISION)
-			set_sight(sight|SEE_MOBS)
-			set_see_in_dark(8)
-			set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
-			src.client.screen |= GLOB.global_hud.thermal
-		else if(sensor_mode == MESON_VISION)
-			set_sight(sight|SEE_TURFS)
-			set_see_in_dark(8)
-			set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
-			src.client.screen |= GLOB.global_hud.meson
-		else if(sensor_mode == SCIENCE_VISION)
-			src.client.screen |= GLOB.global_hud.science
-		else if(sensor_mode == MATERIAL_VISION)
-			set_sight(sight|SEE_OBJS)
-			set_see_in_dark(8)
-			src.client.screen |= GLOB.global_hud.material
-		else if(sensor_mode == NVG_VISION)
-			set_see_in_dark(7)
-			set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
-			src.client.screen |= GLOB.global_hud.nvg
-		else if(sensor_mode == FLASH_PROTECTION_VISION)
-			src.set_fullscreen(1, "flash_protection", /obj/screen/fullscreen/impaired, TINT_MODERATE)
-		else if(stat != DEAD)
-			set_sight(sight&(~SEE_TURFS)&(~SEE_MOBS)&(~SEE_OBJS))
-			set_see_in_dark(8)                      // see_in_dark means you can FAINTLY see in the dark, humans have a range of 3 or so, tajaran have it at 8
-			set_see_invisible(SEE_INVISIBLE_LIVING) // This is normal vision (25), setting it lower for normal vision means you don't "see" things like darkness since darkness
-                                                    // has a "invisible" value of 15
+		else switch(sensor_mode)
+			if(THERMAL_VISION)
+				set_sight(sight|SEE_MOBS)
+				set_see_in_dark(8)
+				set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
+				src.client.screen |= GLOB.global_hud.thermal
+			if(MESON_VISION)
+				set_sight(sight|SEE_TURFS)
+				set_see_in_dark(8)
+				set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
+				src.client.screen |= GLOB.global_hud.meson
+			if(SCIENCE_VISION)
+				src.client.screen |= GLOB.global_hud.science
+			if(MATERIAL_VISION)
+				set_sight(sight|SEE_OBJS)
+				set_see_in_dark(8)
+				src.client.screen |= GLOB.global_hud.material
+			if(NVG_VISION)
+				set_see_in_dark(7)
+				set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
+				src.client.screen |= GLOB.global_hud.nvg
+			if(FLASH_PROTECTION_VISION)
+				src.set_fullscreen(1, "flash_protection", /obj/screen/fullscreen/impaired, TINT_MODERATE)
+			else
+				if(!is_ooc_dead())
+					set_sight(sight&(~SEE_TURFS)&(~SEE_MOBS)&(~SEE_OBJS))
+					set_see_in_dark(8)                      // see_in_dark means you can FAINTLY see in the dark, humans have a range of 3 or so, tajaran have it at 8
+					set_see_invisible(SEE_INVISIBLE_LIVING) // This is normal vision (25), setting it lower for normal vision means you don't "see" things like darkness since darkness
+															// has a "invisible" value of 15
 
 /mob/living/silicon/robot/proc/update_items()
 	if(client)

@@ -127,7 +127,8 @@
 			if(!isnum(a) && L[a] != null)
 				assoc = 1 //This is pretty weak test but I can't think of anything else
 				to_chat(usr, "List appears to be associative.")
-		catch {} // Builtin non-assoc lists (contents, etc.) will runtime if you try to get an assoc value of them
+		catch
+			pass() // Builtin non-assoc lists (contents, etc.) will runtime if you try to get an assoc value of them
 
 	var/list/names = null
 	if(!assoc)

@@ -91,7 +91,7 @@
 	if(!usr || !Adjacent(usr))
 		return
 
-	if(usr.stat == DEAD && config.ghost.ghost_interaction)
+	if(usr.is_ic_dead() && config.ghost.ghost_interaction)
 		var/area/A = get_area(src)
 		if(A?.holy)
 			to_chat(usr, SPAN("warning", "\The [src] is on sacred ground, you cannot turn it."))
@@ -315,7 +315,7 @@
 	foldable = FALSE
 
 /obj/structure/bed/chair/wood/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/stack) || istype(W, /obj/item/wirecutters))
+	if(istype(W,/obj/item/stack) || isWirecutter(W))
 		return
 	..()
 
@@ -336,7 +336,7 @@
 	anchored = TRUE
 
 /obj/structure/bed/chair/shuttle/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/stack) || istype(W, /obj/item/wirecutters))
+	if(istype(W,/obj/item/stack) || isWirecutter(W))
 		return
 	..()
 

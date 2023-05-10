@@ -1,4 +1,5 @@
 /mob/living/silicon
+	bubble_icon = "machine"
 	var/datum/ai_laws/laws
 	var/list/additional_law_channels = list("State" = "")
 

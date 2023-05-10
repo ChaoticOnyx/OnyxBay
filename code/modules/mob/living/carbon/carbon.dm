@@ -248,7 +248,7 @@
 				if(M.on_fire)
 					src.IgniteMob()
 
-			if(stat != DEAD)
+			if(!is_ic_dead())
 				AdjustParalysis(-3)
 				AdjustStunned(-3)
 				AdjustWeakened(-3)
@@ -494,7 +494,7 @@
 		set_see_in_dark(8)
 		set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
 		if(species)
-			sight = species.get_vision_flags(src)
+			set_sight(species.get_vision_flags(src))
 
 /mob/living/carbon/proc/should_have_organ(organ_check)
 	return 0

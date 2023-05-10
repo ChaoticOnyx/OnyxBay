@@ -148,7 +148,11 @@
 		else
 			. += "\nIt is full."
 
-	if(isghost(user) && user.client?.inquisitive_ghost)
+	if(isghost(user))
+		var/mob/observer/ghost/G = user
+		if(!G.inquisitiveness)
+			return
+
 		if(src.opened)
 			return
 
@@ -386,7 +390,7 @@
 								 \SPAN_NOTICE("You hear rustling of clothes."))
 			return
 
-		if(istype(W, /obj/item/screwdriver) && dremovable && cdoor)
+		if(isScrewdriver(W) && dremovable && cdoor)
 			user.visible_message(SPAN_NOTICE("[user] starts unscrewing [cdoor] from [src]."))
 			user.next_move = world.time + 10
 			if(!do_after(user, 30))
@@ -457,7 +461,7 @@
 		src.welded = !src.welded
 		src.update_icon()
 		user.visible_message(SPAN_WARNING("\The [src] has been [welded?"welded shut":"unwelded"] by \the [user]."), blind_message = "You hear welding.", range = 3)
-	else if(istype(W, /obj/item/device/multitool) && (setup & CLOSET_HAS_LOCK))
+	else if(isMultitool(W) && (setup & CLOSET_HAS_LOCK))
 		var/obj/item/device/multitool/multi = W
 		if(multi.in_use)
 			to_chat(user, SPAN("warning", "This multitool is already in use!"))
@@ -467,7 +471,7 @@
 		for(var/i in 1 to rand(4, 8))
 			user.visible_message(SPAN("warning", "[user] picks in wires of \the [name] with a multitool."),
 								 SPAN("warning", "I am trying to reset circuitry lock module ([i])..."))
-			if(!do_after(user, 200) || locked != prev_locked || opened || (!istype(src, /obj/structure/closet/crate) && dremovable && !cdoor))
+			if(!do_after(user, 200, src) || locked != prev_locked || opened || (!istype(src, /obj/structure/closet/crate) && dremovable && !cdoor))
 				multi.in_use = 0
 				return
 		locked = !locked
@@ -629,11 +633,12 @@
 	else
 		to_chat(escapee, SPAN_WARNING("You lean on the back of \the [src] and start pushing the door open. (this will take about [breakout_time] minutes)"))
 
-	visible_message(SPAN_DANGER("\The [src] begins to shake violently!"))
+	if(isturf(loc))
+		visible_message(SPAN_DANGER("\The [src] begins to shake violently!"))
 
 	breakout = 1 //can't think of a better way to do this right now.
 	for(var/i in 1 to (6*breakout_time * 2)) //minutes * 6 * 5seconds * 2
-		if(!do_after(escapee, 50, incapacitation_flags = INCAPACITATION_DEFAULT & ~INCAPACITATION_RESTRAINED)) //5 seconds
+		if(!do_after(escapee, 50, incapacitation_flags = INCAPACITATION_DEFAULT & ~(INCAPACITATION_RESTRAINED | INCAPACITATION_FORCELYING))) //5 seconds
 			breakout = 0
 			return
 		//Perform the same set of checks as above for weld and lock status to determine if there is even still a point in 'resisting'...

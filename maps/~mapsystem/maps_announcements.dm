@@ -1,29 +1,30 @@
 /datum/map
 	var/emergency_shuttle_called_message
-	var/emergency_shuttle_called_sound
+	var/emergency_shuttle_called_sound = 'sound/AI/shuttlecalled.ogg'
 
-	var/command_report_sound
+	var/command_report_sound = 'sound/AI/commandreport.ogg'
 
-	var/electrical_storm_moderate_sound
-	var/electrical_storm_major_sound
+	var/electrical_storm_mundane_sound = 'sound/AI/electricalstormmundane.ogg'
+	var/electrical_storm_moderate_sound = null
+	var/electrical_storm_major_sound = 'sound/AI/electricalstormmajor.ogg'
 
 	var/grid_check_message = "Abnormal activity detected in the %STATION_NAME%'s power system. As a precaution, the %STATION_NAME%'s power must be shut down for an indefinite duration."
-	var/grid_check_sound
+	var/grid_check_sound = 'sound/AI/poweroff.ogg'
 
 	var/grid_restored_message = "Station power to the %STATION_NAME% will be restored at this time. We apologize for the inconvenience."
-	var/grid_restored_sound
+	var/grid_restored_sound = 'sound/AI/poweron.ogg'
 
 	var/meteor_detected_message = "Meteors have been detected on a collision course with the %STATION_NAME%."
-	var/meteor_detected_sound
+	var/meteor_detected_sound = 'sound/AI/meteors.ogg'
 
 	var/radiation_detected_message = "High levels of radiation has been detected in proximity of the %STATION_NAME%. Please report to the medical bay if any strange symptoms occur."
-	var/radiation_detected_sound
+	var/radiation_detected_sound = 'sound/AI/radiation.ogg'
 
 	var/space_time_anomaly_message = "Space-time anomalies detected on the station. There is no additional data."
-	var/space_time_anomaly_sound
+	var/space_time_anomaly_sound = 'sound/AI/spanomalies.ogg'
 
 	var/unidentified_lifesigns_message = "Unidentified lifesigns detected coming aboard the %STATION_NAME%. Please lockdown all exterior access points, including ducting and ventilation."
-	var/unidentified_lifesigns_sound
+	var/unidentified_lifesigns_sound = 'sound/AI/aliens.ogg'
 
 	var/unknown_biological_entities_message = "Unknown biological entities have been detected near the %STATION_NAME%, please stand-by."
 

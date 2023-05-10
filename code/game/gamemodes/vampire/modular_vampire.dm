@@ -77,12 +77,19 @@ var/list/datum/power/vampire/vampirepowers = list()
 	blood_cost = 250
 	verbpath = /datum/vampire/proc/vampire_veilwalk
 
-/datum/power/vampire/dominate
-	name = "Dominate"
+/datum/power/vampire/suggestion
+	name = "Suggestion"
 	desc = "Influence those weak of mind to follow your instructions."
 	helptext = "You and your target must remain stationary for a short period of time for this to work. You can then issue a command to your victim that they must follow in the short term."
 	blood_cost = 300
-	verbpath = /datum/vampire/proc/vampire_dominate
+	verbpath = /datum/vampire/proc/vampire_suggestion
+
+/datum/power/vampire/order
+	name = "Order"
+	desc = "Influence those weak of mind to follow your order."
+	helptext = "You and your target must remain stationary for a short period of time for this to work. You can then issue a single-word command to your victim that they must follow in the short term."
+	blood_cost = 100
+	verbpath = /datum/vampire/proc/vampire_order
 
 /datum/power/vampire/enthrall
 	name = "Enthrall"

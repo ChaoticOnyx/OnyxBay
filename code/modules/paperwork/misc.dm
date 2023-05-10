@@ -91,7 +91,7 @@
 /obj/item/paper/psychoscope/Initialize()
 	. = ..()
 
-	set_content("\[center]\[logo]\[BR]\[b]\[large]NanoTrasen's Research Directorate\[/large]\[/b]\[BR]\[h2]Psychoscope\[/h2]Greetings, Research Director. We provide [station_name()] with our new prototype of \the psychoscope. Since this moment you are responsible for the prototype and you must not let lose or damage it, or you will get reproval. We will await any discorveries, if you got one - send on a transport shuttles.\[h2]Remarks\[/h2]We permit any safe experiments on crew members that will be helpful in your researchings, for any invasive experiments you should get a permit from the subject and do it under medical surveillance, otherwise it will be regarded as a contravene of job's contract.")
+	set_content("\[center]\[logo]\[BR]\[b]\[large]NanoTrasen's Research Directorate\[/large]\[/b]\[BR]\[h2]Psychoscope\[/h2]Greetings, Research Director. We provide [station_name()] with our new prototype of the psychoscope. Since this moment you are responsible for the prototype and you must not let lose or damage it, or you will get reproval. We will await any discorveries, if you got one - send on a transport shuttles.\[h2]Remarks\[/h2]We permit any safe experiments on crew members that will be helpful in your researchings, for any invasive experiments you should get a permit from the subject and do it under medical surveillance, otherwise it will be regarded as a contravene of job's contract.")
 
 /obj/item/paper/trade_lic
 	name = "Trade License"

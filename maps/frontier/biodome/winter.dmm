@@ -3,9 +3,7 @@
 "by" = (/obj/structure/bed/pew/pewchapel/right{dir = 1; icon_state = "chair_pewchapel_right_over"; name = "bench"},/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
 "bX" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/disposalpipe/segment{dir = 8},/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "cL" = (/obj/machinery/atmospherics/unary/vent_pump/on{layer = 2.4; level = 2},/obj/structure/railing/steel{dir = 4},/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge{dir = 8},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
-"dO" = (/obj/effect/floor_decal/corner/green/three_quarters{dir = 1},/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "eJ" = (/obj/structure/bed/pew/pewchapel/left{dir = 1; icon_state = "chair_pewchapel_left_over"; name = "bench"},/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
-"fv" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "bridge_window"; name = "Bridge Window Shutters"; opacity = 0},/obj/structure/cable/green{d2 = 8; icon_state = "0-8"},/obj/structure/cable/green,/obj/structure/window_frame/relectric/rglass,/turf/simulated/floor/tiled/dark/rough,/area/bridge)
 "fM" = (/obj/structure/flora/ausbushes/lavendergrass,/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
 "fY" = (/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/plaque,/obj/effect/floor_decal/snowedge{dir = 1},/obj/structure/flora/tree/pine/xmas,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "gi" = (/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge{dir = 1},/obj/item/storage/backpack/santabag,/obj/item/clothing/suit/space/santa,/obj/item/clothing/head/helmet/space/santahat,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
@@ -13,28 +11,19 @@
 "hH" = (/obj/structure/flora/grass/brown,/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
 "io" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass{name = "Central Biodome"; req_access = list()},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/disposalpipe/segment{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/corner/blue/full,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "iV" = (/obj/machinery/light,/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
-"jQ" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 6},/obj/machinery/navbeacon/frontier/DOME_SE,/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "kU" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/disposalpipe/segment{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge{dir = 1},/obj/effect/floor_decal/snowedge,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
-"lC" = (/obj/effect/floor_decal/corner/green,/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
 "lH" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/disposalpipe/segment{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "md" = (/obj/effect/floor_decal/spline/fancy{dir = 6},/turf/simulated/floor/natural/ice,/area/hydroponics/biodome)
-"mT" = (/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/obj/machinery/navbeacon/frontier/DOME_SW,/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "oq" = (/obj/machinery/light{dir = 4},/obj/structure/flora/grass/brown,/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
-"pb" = (/obj/effect/floor_decal/corner/green{dir = 1},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "pg" = (/obj/machinery/light{dir = 4},/obj/structure/flora/tree/pine,/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
 "ph" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/disposalpipe/segment{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge/corner{dir = 8},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "px" = (/obj/machinery/light{dir = 4},/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
 "qu" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass{name = "Central Biodome"; req_access = list()},/obj/effect/floor_decal/corner/blue/full,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
-"rq" = (/obj/effect/floor_decal/corner/green{dir = 5},/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/obj/structure/cable/yellow{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "rx" = (/obj/structure/flora/tree/dead/deadtree_6,/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
 "sb" = (/obj/structure/flora/grass/both,/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
 "sd" = (/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge{dir = 8},/obj/effect/floor_decal/snowedge{dir = 4},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
-"sk" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "bridge_window"; name = "Bridge Window Shutters"; opacity = 0},/obj/structure/cable/green{d2 = 8; icon_state = "0-8"},/obj/structure/cable/green{d2 = 4; icon_state = "0-4"},/obj/structure/window_frame/relectric/rglass,/turf/simulated/floor/tiled/dark/rough,/area/bridge)
-"sp" = (/obj/effect/floor_decal/corner/green{dir = 1},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "sX" = (/obj/machinery/light,/obj/structure/flora/grass/both,/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
-"tC" = (/obj/effect/floor_decal/corner/green/three_quarters{dir = 8},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "uX" = (/obj/machinery/navbeacon/frontier/DOME_N,/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge{dir = 9},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
-"vo" = (/obj/effect/floor_decal/corner/green{dir = 6},/obj/machinery/atmospherics/unary/vent_pump/on{dir = 8},/obj/structure/disposalpipe/segment,/obj/structure/cable/yellow{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "vC" = (/obj/effect/floor_decal/spline/fancy{dir = 1},/obj/machinery/light,/obj/machinery/camera/network/civilian_east{c_tag = "Central Garden - North"; dir = 1},/turf/simulated/floor/natural/ice,/area/hydroponics/biodome)
 "vP" = (/obj/machinery/atmospherics/pipe/manifold/hidden/supply{dir = 4},/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/obj/structure/railing/steel{dir = 4},/obj/structure/cable{icon_state = "2-8"},/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge/corner{dir = 8},/obj/effect/floor_decal/snowedge/corner{dir = 4},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "vR" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 9},/obj/structure/disposalpipe/segment{dir = 8; icon_state = "pipe-c"},/obj/structure/railing/steel{dir = 4},/obj/machinery/navbeacon/frontier/DOME_NW,/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge/corner{dir = 8},/obj/effect/floor_decal/snowedge/corner{dir = 4},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
@@ -42,55 +31,43 @@
 "wp" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/disposalpipe/segment{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge,/obj/effect/floor_decal/snowedge{dir = 1},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "xq" = (/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge{dir = 5},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "xA" = (/obj/machinery/firealarm{dir = 8; pixel_x = -24; pixel_y = -2},/obj/structure/flora/grass/brown,/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
-"yf" = (/obj/effect/floor_decal/corner/green/three_quarters{dir = 1},/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/obj/structure/cable/yellow{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "yz" = (/obj/machinery/alarm{dir = 8; pixel_x = 24},/obj/structure/disposalpipe/trunk{dir = 1},/obj/machinery/disposal,/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge{dir = 10},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
-"zw" = (/obj/effect/floor_decal/corner/green{dir = 5},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
-"zF" = (/obj/effect/floor_decal/corner/green/three_quarters,/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
 "Ai" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass{name = "Central Biodome"; req_access = list()},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/disposalpipe/segment{dir = 8},/obj/effect/floor_decal/corner/blue/full,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "BG" = (/obj/machinery/light{dir = 8},/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
-"Cx" = (/obj/effect/floor_decal/corner/green{dir = 6},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
-"Db" = (/obj/effect/floor_decal/corner/green{dir = 4},/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/obj/structure/cable/yellow{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "DJ" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 6},/obj/structure/disposalpipe/segment{dir = 4; icon_state = "pipe-c"},/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge{dir = 8},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "Em" = (/obj/structure/bed/pew/pewchapel/left{dir = 8; name = "bench"},/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
 "EY" = (/obj/machinery/power/apc{dir = 4; name = "east bump"; pixel_x = 24},/obj/structure/cable/white{icon_state = "0-2"},/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge{dir = 9},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "Fb" = (/obj/effect/landmark/event/rift/spawn_point,/turf/simulated/wall/gold,/area/hydroponics/biodome)
-"IX" = (/obj/effect/floor_decal/corner/green/three_quarters{dir = 4},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
 "JJ" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 10},/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge{dir = 4},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "KI" = (/obj/structure/window_frame/rglass,/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plating,/area/hydroponics/biodome)
 "KJ" = (/obj/effect/floor_decal/spline/fancy{dir = 5},/turf/simulated/floor/natural/ice,/area/hydroponics/biodome)
 "Lq" = (/obj/effect/floor_decal/spline/fancy,/obj/machinery/light{dir = 1},/obj/machinery/camera/network/civilian_east{c_tag = "Central Garden - South"},/turf/simulated/floor/natural/ice,/area/hydroponics/biodome)
 "Mo" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass{name = "Central Biodome"; req_access = list()},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/cable/white{icon_state = "4-8"},/obj/structure/disposalpipe/segment{dir = 8},/obj/effect/floor_decal/corner/blue/full,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
-"MI" = (/obj/effect/floor_decal/corner/green/three_quarters,/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
 "MY" = (/obj/effect/floor_decal/spline/fancy{dir = 4},/obj/machinery/light{dir = 8},/turf/simulated/floor/natural/ice,/area/hydroponics/biodome)
 "Nh" = (/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
-"Oa" = (/obj/effect/floor_decal/corner/green/three_quarters{dir = 1},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "Oo" = (/obj/structure/flora/tree/dead/deadtree_5,/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
-"PG" = (/obj/effect/floor_decal/corner/green{dir = 8},/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
 "PY" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 5},/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge{dir = 10},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "Qo" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 9},/obj/structure/disposalpipe/segment{dir = 8; icon_state = "pipe-c"},/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge{dir = 4},/obj/effect/floor_decal/snowedge{dir = 6},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "QE" = (/obj/structure/flora/bush,/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
 "RB" = (/obj/structure/christmas/snowman,/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
 "SK" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/disposalpipe/segment{dir = 8},/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge{dir = 1},/obj/effect/floor_decal/snowedge,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
-"SR" = (/obj/effect/floor_decal/corner/green/three_quarters{dir = 8},/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 4},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
+"SR" = (/turf/space,/area/space)
 "TD" = (/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 1},/obj/structure/railing/steel{dir = 8},/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge{dir = 4},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "TN" = (/obj/effect/floor_decal/spline/fancy{dir = 8},/obj/machinery/light{dir = 4},/turf/simulated/floor/natural/ice,/area/hydroponics/biodome)
 "Ud" = (/obj/effect/floor_decal/spline/fancy{dir = 9},/turf/simulated/floor/natural/ice,/area/hydroponics/biodome)
 "UD" = (/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{dir = 8},/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/obj/structure/railing/steel{dir = 8},/obj/machinery/navbeacon/frontier/DOME_NE,/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge/corner{dir = 1},/obj/effect/floor_decal/snowedge/corner,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
-"UO" = (/obj/effect/floor_decal/corner/green{dir = 9},/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
-"UX" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "bridge_window"; name = "Bridge Window Shutters"; opacity = 0},/obj/structure/cable/green{d2 = 4; icon_state = "0-4"},/obj/structure/cable/green,/obj/structure/window_frame/relectric/rglass,/turf/simulated/floor/tiled/dark/rough,/area/bridge)
 "VT" = (/obj/machinery/hologram/holopad,/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
 "WJ" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/disposalpipe/junction{dir = 8; icon_state = "pipe-j2"},/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge/corner{dir = 8},/obj/effect/floor_decal/snowedge{dir = 1},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "WS" = (/obj/structure/flora/tree/dead/deadtree_2,/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
 "Xg" = (/obj/structure/flora/tree/dead/deadtree_0,/turf/simulated/floor/natural/snow,/area/hydroponics/biodome)
-"Xy" = (/obj/effect/floor_decal/corner/green{dir = 9},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "XJ" = (/turf/simulated/wall,/area/hydroponics/biodome)
 "XM" = (/obj/effect/floor_decal/spline/fancy{dir = 10},/turf/simulated/floor/natural/ice,/area/hydroponics/biodome)
 "Zo" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/cable/white{icon_state = "1-4"},/obj/structure/disposalpipe/segment{dir = 8},/obj/effect/floor_decal/corner/blue/full,/obj/effect/floor_decal/snow,/obj/effect/floor_decal/snowedge/corner{dir = 4},/obj/effect/floor_decal/snowedge,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 
 (1,1,1) = {"
-lCIXKIKIKIBGUXskskskfvoqKIKIKIzFPG
-CxKIKINhNhhHNhNhhHNhNhNhNhNhKIKIUO
-IXKIRBhHaJNhNhWSNhNhhHNhNhhHRBKIMI
+SRSRKIKIKIBGSRSRSRSRSRoqKIKIKISRSR
+SRKIKINhNhhHNhNhhHNhNhNhNhNhKIKISR
+SRKIRBhHaJNhNhWSNhNhhHNhNhhHRBKISR
 KIKIBGNhNhNhhHNhhHhHNhsbaJNhpxKIKI
 KINhNhsbOoNhuXblfYgixqEmNhsbXgNhKI
 XJNhaJhHhHNhDJbXbXbXJJwlQEhHNhEYXJ
@@ -100,8 +77,8 @@ iokUkUkUkUkUvPXMLqmdhkwpwpwpwpWJio
 XJxANhNhQERBPYlHphlHQohHNhNhNhyzXJ
 KINhaJhHNhXgNhhHsdeJbyaJNhhHhHNhKI
 KIKIBGNhNhNhNhNhsdOoNhNhsbNhpgKIKI
-dOKINhhHNhNhNhsbsdsbNhNhNhRBNhKItC
-voKIKINhsXaJhHNhsdNhNhhHiVhHKIKIXy
-DbyfKIKIKINhhHNhsdsbNhrxKIKIKISRsp
-mTDbrqOaKIKIKIKIquKIKIKIKItCzwpbjQ
+SRKINhhHNhNhNhsbsdsbNhNhNhRBNhKISR
+SRKIKINhsXaJhHNhsdNhNhhHiVhHKIKISR
+SRSRKIKIKINhhHNhsdsbNhrxKIKIKISRSR
+SRSRSRSRKIKIKIKIquKIKIKIKISRSRSRSR
 "}

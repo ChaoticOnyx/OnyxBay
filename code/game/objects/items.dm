@@ -93,6 +93,8 @@
 
 	var/ear_protection = 0
 
+	var/tool_behaviour = 0
+
 /obj/item/New()
 	..()
 	if(randpixel && (!pixel_x && !pixel_y) && isturf(loc)) //hopefully this will prevent us from messing with mapper-set pixel_x/y
@@ -763,6 +765,8 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		return
 	if(zoom)
 		return
+	if(user.is_view_shifted)
+		return
 
 	var/devicename = zoomdevicename || name
 
@@ -785,17 +789,13 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	var/viewoffset = WORLD_ICON_SIZE * tileoffset
 	switch(user.dir)
 		if (NORTH)
-			user.client.pixel_x = 0
-			user.client.pixel_y = viewoffset
+			user.shift_view(0, viewoffset)
 		if (SOUTH)
-			user.client.pixel_x = 0
-			user.client.pixel_y = -viewoffset
+			user.shift_view(0, -viewoffset)
 		if (EAST)
-			user.client.pixel_x = viewoffset
-			user.client.pixel_y = 0
+			user.shift_view(viewoffset, 0)
 		if (WEST)
-			user.client.pixel_x = -viewoffset
-			user.client.pixel_y = 0
+			user.shift_view(-viewoffset, 0)
 
 	user.visible_message("\The [user] peers through [zoomdevicename ? "the [zoomdevicename] of [src]" : "[src]"].")
 
@@ -804,6 +804,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	register_signal(src, SIGNAL_DIR_SET, /obj/item/proc/unzoom)
 	register_signal(src, SIGNAL_ITEM_UNEQUIPPED, /obj/item/proc/zoom_drop)
 	register_signal(user, SIGNAL_STAT_SET, /obj/item/proc/unzoom)
+	register_signal(user, SIGNAL_VIEW_SHIFTED_SET, /obj/item/proc/unzoom)
 
 /obj/item/proc/zoom_drop(obj/item/I, mob/user)
 	unzoom(user)
@@ -822,6 +823,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	unregister_signal(src, SIGNAL_MOVED, /obj/item/proc/zoom_move)
 	unregister_signal(src, SIGNAL_DIR_SET)
 	unregister_signal(src, SIGNAL_ITEM_UNEQUIPPED)
+	unregister_signal(user, SIGNAL_VIEW_SHIFTED_SET, /obj/item/proc/unzoom)
 
 	user = user == src ? loc : (user || loc)
 	if(!istype(user))
@@ -829,6 +831,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		return
 
 	unregister_signal(user, SIGNAL_STAT_SET)
+	unregister_signal(user, SIGNAL_VIEW_SHIFTED_SET)
 
 	if(!user.client)
 		return
@@ -837,8 +840,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	if(!user.hud_used.hud_shown)
 		user.toggle_zoom_hud()
 
-	user.client.pixel_x = 0
-	user.client.pixel_y = 0
+	user.shift_view(0, 0)
 	user.visible_message("[zoomdevicename ? "\The [user] looks up from [src]" : "\The [user] lowers [src]"].")
 
 /obj/item/proc/pwr_drain()

@@ -41,7 +41,7 @@
 	response_harm   = "kicks"
 
 /mob/living/simple_animal/corgi/Move(a, b, flag)
-	..()
+	. = ..()
 	update_hat()
 
 /mob/living/simple_animal/corgi/Life()
@@ -267,7 +267,7 @@
 /mob/living/simple_animal/corgi/proc/update_hat()
 	if(!hat)
 		return
-	if(stat == DEAD)
+	if(is_ic_dead())
 		overlays.Cut()
 		hat.dropInto(loc)
 		hat = null

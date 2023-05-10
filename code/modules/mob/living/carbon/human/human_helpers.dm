@@ -68,8 +68,7 @@
 			client.view = world.view
 
 		if (client.pixel_x != 0 || client.pixel_y != 0)
-			client.pixel_y = 0
-			client.pixel_x = 0
+			shift_view(0, 0)
 
 /mob/living/carbon/human/proc/process_glasses(obj/item/clothing/glasses/G)
 	if(machine_visual && !istype(G, /obj/item/clothing/glasses/regular)) //Doesn't allow the use of night vision devices and other funny devices except glasses for vision correction
@@ -185,7 +184,7 @@
 	to_chat(src, "<span class='notice'>You take a moment to listen in to your environment...</span>")
 	for(var/mob/living/L in range(client.view, src))
 		var/turf/T = get_turf(L)
-		if(!T || L == src || L.stat == DEAD || is_below_sound_pressure(T))
+		if(!T || L == src || L.is_ic_dead() || is_below_sound_pressure(T))
 			continue
 		heard_something = TRUE
 		var/image/ping_image = image(icon = 'icons/effects/effects.dmi', icon_state = "sonar_ping", loc = src)

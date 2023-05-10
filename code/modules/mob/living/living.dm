@@ -1,6 +1,6 @@
 /mob/living/Initialize()
 	. = ..()
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		add_to_dead_mob_list()
 	else
 		add_to_living_mob_list()
@@ -481,7 +481,7 @@
 	restore_all_organs(ignore_prosthetic_prefs)
 
 	// remove the character from the list of the dead
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		switch_from_dead_to_living_mob_list()
 		timeofdeath = 0
 
@@ -668,14 +668,20 @@
 
 	//Breaking out of a locker?
 	if(src.loc && (istype(src.loc, /obj/structure/closet)) )
-		var/obj/structure/closet/C = loc
-		spawn() C.mob_breakout(src)
+		var/obj/structure/closet/closet = loc
+		spawn() closet.mob_breakout(src)
 		return TRUE
 
 	//Trying to escape from abductors?
 	if(src.loc && (istype(src.loc, /obj/machinery/abductor/experiment)))
-		var/obj/machinery/abductor/experiment/E = loc
-		spawn() E.mob_breakout(src)
+		var/obj/machinery/abductor/experiment/experiment = loc
+		spawn() experiment.mob_breakout(src)
+		return TRUE
+
+	//Trying to escape from Spider?
+	if(src.loc && (istype(src.loc, /obj/structure/spider/cocoon)))
+		var/obj/structure/spider/cocoon/cocoon = loc
+		spawn() cocoon.mob_breakout(src)
 		return TRUE
 
 /mob/living/proc/escape_inventory(obj/item/holder/H)

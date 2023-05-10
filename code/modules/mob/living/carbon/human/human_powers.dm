@@ -211,7 +211,7 @@
 
 	var/mob/M = targets[target]
 
-	if(isghost(M) || M.stat == DEAD)
+	if(isghost(M) || M.is_ic_dead())
 		to_chat(src, "<span class='warning'>Not even a [src.species.name] can speak to the dead.</span>")
 		return
 
@@ -474,3 +474,66 @@
 			skin_state = SKIN_NORMAL
 	update_skin(1)
 
+/mob/living/carbon/human/proc/breath_death()
+	set name = "Breath Death"
+	set desc = "Infect others with your very breath."
+	set category = "Abilities"
+
+	if (last_special > world.time)
+		to_chat(src, SPAN("warning", "You aren't ready to do that! Wait [round(last_special - world.time) / 10] seconds."))
+		return
+
+	if (incapacitated(INCAPACITATION_DISABLED))
+		to_chat(src, SPAN("warning", "You can't do that while you're incapacitated!"))
+		return
+	if (nutrition < 150)
+		to_chat(src, SPAN("warning", "You are too hungry to spread toxins!"))
+		return
+
+	last_special = world.time + 10 SECONDS
+	nutrition -= 50
+
+	var/turf/T = get_turf(src)
+	var/obj/effect/effect/water/chempuff/chem = new(T)
+	chem.create_reagents(10)
+	chem.reagents.add_reagent(/datum/reagent/toxin/zombie, 2)
+	chem.set_up(get_step(T, dir), 2, 10)
+	playsound(T, 'sound/hallucinations/wail.ogg', 20, 1)
+
+/mob/living/carbon/human/proc/consume()
+	set name = "Consume"
+	set desc = "Regain life by consuming it from others."
+	set category = "Abilities"
+
+	if (last_special > world.time)
+		to_chat(src, SPAN("warning", "You aren't ready to do that! Wait [round(last_special - world.time) / 10] seconds."))
+		return
+
+	if (incapacitated())
+		to_chat(src, SPAN("warning", "You can't do that while you're incapacitated!"))
+		return
+
+	var/mob/living/target
+	for (var/mob/living/L in get_turf(src))
+		if (L != src && (L.lying || L.is_ic_dead()))
+			target = L
+			break
+	if (!target)
+		to_chat(src, SPAN("warning", "You aren't on top of a victim!"))
+		return
+
+	last_special = world.time + 5 SECONDS
+
+	visible_message(SPAN("danger", "\The [src] hunkers down over \the [target], tearing into their flesh."))
+	if(do_mob(src, target, 5 SECONDS))
+		to_chat(target, SPAN("danger", "\The [src] scrapes your flesh from your bones!"))
+		to_chat(src, SPAN("danger", "You feed hungrily off \the [target]'s flesh."))
+		target.adjustBruteLoss(25)
+		if(ishuman(target))
+			for(var/ID in src.virus2)
+				var/datum/disease2/disease/D = src.virus2[ID]
+				infect_virus2(target, D)
+		if(target.getBruteLoss() > target.maxHealth)
+			target.gib()
+		adjustBruteLoss(-25)
+		nutrition += 20

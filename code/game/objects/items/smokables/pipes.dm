@@ -68,7 +68,7 @@
 	return ..()
 
 
-/obj/item/clothing/mask/smokable/pipe/attack_self(mob/user as mob)
+/obj/item/clothing/mask/smokable/pipe/attack_self(mob/user)
 	if(lit == 1)
 		user.visible_message("<span class='notice'>[user] puts out [src].</span>", "<span class='notice'>You put out [src].</span>")
 		lit = 0
@@ -82,7 +82,7 @@
 		reagents.clear_reagents()
 		SetName("empty [initial(name)]")
 
-/obj/item/clothing/mask/smokable/pipe/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/clothing/mask/smokable/pipe/attackby(obj/item/W, mob/user)
 	..()
 
 	if(istype(W, /obj/item/reagent_containers/food))
@@ -122,8 +122,10 @@
 		return SPAN("rose", "With much care, [holder] lights \his [name] with \a [tool].")
 	if(istype(tool, /obj/item/flame/candle))
 		return SPAN_NOTICE("[holder] lights \his [name] with a hot wax from \a [tool].")
-	if(istype(tool, /obj/item/weldingtool))
-		return SPAN_NOTICE("[holder] recklessly \his [name] with \a [tool].")
+	if(isitem(tool))
+		var/obj/item/I = tool
+		if(isWelder(I))
+			return SPAN_NOTICE("[holder] recklessly \his [name] with \a [tool].")
 	if(istype(tool, /obj/item/reagent_containers/rag))
 		return SPAN_WARNING("[holder] puts a piece of \a [tool] into \a [name] to light it up.")
 	if(istype(tool, /obj/item/clothing/mask/smokable/cigarette))

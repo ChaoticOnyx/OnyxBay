@@ -1116,6 +1116,7 @@
 	strength = 13
 
 	glass_required = "rocks"
+	glass_name = "Magellan"
 	glass_desc = "A tasty sweetened blend of wine and fine whiskey. Named for Ferdinand Magellan, who led the first expedition to circumnavigate Earth in the 15th century."
 	glass_special = list(DRINK_ICE)
 

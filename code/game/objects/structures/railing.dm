@@ -213,7 +213,7 @@
 			return
 
 	// Repair
-	if(health < maxhealth && istype(W, /obj/item/weldingtool))
+	if(health < maxhealth && isWelder(W))
 		var/obj/item/weldingtool/F = W
 		if(F.welding)
 			playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
@@ -223,7 +223,7 @@
 				return
 
 	// (Un)Anchor
-	if(istype(W, /obj/item/screwdriver))
+	if(isScrewdriver(W))
 		user.visible_message(anchored ? "<span class='notice'>\The [user] begins unscrewing \the [src].</span>" : "<span class='notice'>\The [user] begins fasten \the [src].</span>" )
 		playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
 		if(do_after(user, 10, src))
@@ -250,11 +250,10 @@
 		if(3.0)
 			qdel(src)
 			return
-		else
 	return
 /obj/structure/railing/proc/check_tile(mob/living/user, turf/T)
 	if(T.density == 1)
-		to_chat(user, SPAN_DANGER("There is [T] \a in the way."))
+		to_chat(user, SPAN_DANGER("There is \a [T] in the way."))
 		return 0
 	else
 		for(var/obj/O in T.contents)
@@ -271,7 +270,7 @@
 			if(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & src.dir))//checks if next item is directed
 				//allows if not directed towards climber
 				continue
-			to_chat(user, SPAN_DANGER("There is  [O] \a in the way."))
+			to_chat(user, SPAN_DANGER("There is \a [O] in the way."))
 			return 0
 	return 1
 /obj/structure/railing/can_climb(mob/living/user, post_climb_check = 0)

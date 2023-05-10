@@ -38,8 +38,6 @@ var/global/list/protected_objects = list(
 	faction = "mimic"
 	move_to_delay = 8
 
-	controllable = TRUE
-
 	var/obj/copy_of
 	var/weakref/creator // the creator
 	var/destroy_objects = FALSE
@@ -52,7 +50,7 @@ var/global/list/protected_objects = list(
 	var/_in_trap_mode = FALSE
 	var/obj/item/mimic_trap/trap
 
-/mob/living/simple_animal/hostile/mimic/New(newloc, obj/o, mob/living/creator)
+/mob/living/simple_animal/hostile/mimic/New(newloc, obj/o, mob/living/creator, make_controllable = FALSE)
 	..()
 
 	o = o || default_appearance
@@ -74,6 +72,10 @@ var/global/list/protected_objects = list(
 	mimicry(o)
 
 	health = maxHealth
+	if(make_controllable)
+		controllable = TRUE
+		GLOB.available_mobs_for_possess += src
+
 	register_signal(src, SIGNAL_MOVED, .proc/_on_moved)
 
 /mob/living/simple_animal/hostile/mimic/proc/_on_moved()
@@ -99,7 +101,7 @@ var/global/list/protected_objects = list(
 		if(ismob(A))
 			var/mob/M = A
 
-			if(M.is_dead())
+			if(M.is_ic_dead())
 				M.forceMove(get_turf(src))
 				M.gib()
 			else
@@ -145,13 +147,13 @@ var/global/list/protected_objects = list(
 		verbs |= /mob/living/proc/ventcrawl
 		verbs |= /mob/living/proc/hide
 	else
-		verbs ^= /mob/living/proc/ventcrawl
-		verbs ^= /mob/living/proc/hide
+		verbs -= /mob/living/proc/ventcrawl
+		verbs -= /mob/living/proc/hide
 
 	if(can_setup_trap())
 		verbs |= /mob/living/simple_animal/hostile/mimic/verb/Trap
 	else
-		verbs ^= /mob/living/simple_animal/hostile/mimic/verb/Trap
+		verbs -= /mob/living/simple_animal/hostile/mimic/verb/Trap
 
 /mob/living/simple_animal/hostile/mimic/proc/_handle_healing()
 	var/healing_check = world.time > inactive_time + WAIT_TO_HEAL

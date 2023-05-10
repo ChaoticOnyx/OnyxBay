@@ -289,3 +289,15 @@
 #define NOTIFY_JUMP "jump"
 #define NOTIFY_ATTACK "attack"
 #define NOTIFY_FOLLOW "follow"
+
+// Atmospherics vents
+#define VENT_UNDAMAGED 0
+#define VENT_DAMAGED_STAGE_ONE 1
+#define VENT_DAMAGED_STAGE_TWO 2
+#define VENT_DAMAGED_STAGE_THREE 3
+#define VENT_BROKEN 4
+
+// Headphones
+#define LOW_VOLUME  1
+#define MID_VOLUME  2
+#define HIGH_VOLUME 3

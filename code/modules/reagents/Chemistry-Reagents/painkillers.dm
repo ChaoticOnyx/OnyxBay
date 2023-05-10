@@ -35,7 +35,7 @@
 	if(affecting_dose < effective_dose) //some ease-in ease-out for the effect
 		effectiveness = (affecting_dose / effective_dose) * effectiveness
 	if(M.chem_traces[type] > tolerance_threshold)
-		effectiveness *= 1.0 - ((M.chem_traces[type] - tolerance_threshold) * tolerance_mult)
+		effectiveness *= clamp(1.0 - ((M.chem_traces[type] - tolerance_threshold) * tolerance_mult), 0, 1)
 	M.add_chemical_effect(CE_PAINKILLER, pain_power * effectiveness)
 
 /datum/reagent/painkiller/proc/handle_painkiller_overdose(mob/living/carbon/M, affecting_dose)

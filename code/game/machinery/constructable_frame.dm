@@ -124,12 +124,11 @@
 	else
 		to_chat(user, SPAN("notice", "You remove \the [circuit] and other components."))
 		for(var/obj/item/I in components)
-			I.forceMove(src.loc)
-	circuit.forceMove(src.loc)
+			I.forceMove(get_turf(src))
+	circuit.forceMove(get_turf(src))
 	circuit = null
-	UNSETEMPTY(req_components)
-	UNSETEMPTY(req_components)
-	UNSETEMPTY(components)
+	LAZYCLEARLIST(req_components)
+	LAZYCLEARLIST(components)
 	state = STAGE_CIRCUIT
 	update_desc()
 	update_icon()

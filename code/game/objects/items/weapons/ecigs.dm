@@ -135,7 +135,7 @@
 		M.update_inv_r_hand(1)
 
 
-/obj/item/clothing/mask/smokable/ecig/attackby(obj/item/I, mob/user as mob)
+/obj/item/clothing/mask/smokable/ecig/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/reagent_containers/ecig_cartridge))
 		if (ec_cartridge)//can't add second one
 			to_chat(user, "<span class='notice'>A cartridge has already been installed.</span> ")
@@ -144,7 +144,7 @@
 			update_icon()
 			to_chat(user, "<span class='notice'>You insert [I] into [src].</span> ")
 
-	if(istype(I, /obj/item/screwdriver))
+	if(isScrewdriver(I))
 		if(cigcell) //if contains powercell
 			cigcell.update_icon()
 			cigcell.dropInto(loc)
@@ -162,7 +162,7 @@
 			to_chat(user, "<span class='notice'>[src] already has a powercell.</span>")
 
 
-/obj/item/clothing/mask/smokable/ecig/attack_self(mob/user as mob)
+/obj/item/clothing/mask/smokable/ecig/attack_self(mob/user)
 	if (active)
 		active=0
 		set_next_think(0)
@@ -187,7 +187,7 @@
 		else
 			to_chat(user, "<span class='warning'>\The [src] does not have a powercell installed.</span>")
 
-/obj/item/clothing/mask/smokable/ecig/attack_hand(mob/user as mob)//eject cartridge
+/obj/item/clothing/mask/smokable/ecig/attack_hand(mob/user)//eject cartridge
 	if(user.get_inactive_hand() == src)//if being hold
 		if (ec_cartridge)
 			active=0
@@ -208,7 +208,7 @@
 	volume = 20
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 
-/obj/item/reagent_containers/ecig_cartridge/_examine_text(mob/user as mob)//to see how much left
+/obj/item/reagent_containers/ecig_cartridge/_examine_text(mob/user)//to see how much left
 	. = ..()
 	. += "\nThe cartridge has [reagents.total_volume] units of liquid remaining."
 

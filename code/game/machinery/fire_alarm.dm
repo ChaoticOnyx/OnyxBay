@@ -87,7 +87,7 @@
 		alarm(rand(30/severity, 60/severity))
 	..()
 
-/obj/machinery/firealarm/attackby(obj/item/W as obj, mob/user as mob)
+/obj/machinery/firealarm/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W) && buildstage == 2)
 		wiresexposed = !wiresexposed
 		update_icon()
@@ -109,7 +109,7 @@
 					buildstage = 1
 					update_icon()
 			if(1)
-				if(istype(W, /obj/item/stack/cable_coil))
+				if(isCoil(W))
 					var/obj/item/stack/cable_coil/C = W
 					if (C.use(5))
 						to_chat(user, "<span class='notice'>You wire \the [src].</span>")

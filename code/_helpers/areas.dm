@@ -91,6 +91,9 @@ GLOBAL_LIST_EMPTY(station_areas)
 /proc/is_not_space_area(area/A)
 	. = !istype(A, /area/space)
 
+/proc/is_outside_area(area/A)
+	return A.environment_type == ENVIRONMENT_OUTSIDE
+
 /proc/is_not_shuttle_area(area/A)
 	. = !istype(A, /area/shuttle)
 

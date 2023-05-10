@@ -47,6 +47,11 @@
 		list("smoke bomb",  "smoke bomb",  /obj/item/grenade/smokebomb,  3),
 		list("EMP grenade", "EMP grenade", /obj/item/grenade/empgrenade, 3),
 		)
+	timings = list(
+		list("2 seconds", "short",  20),
+		list("3 seconds", "medium", 30),
+		list("5 seconds", "long",	50),
+		)
 
 /obj/item/rig_module/grenade_launcher/accepts_item(obj/item/input_device, mob/living/user)
 
@@ -83,7 +88,7 @@
 	var/mob/living/carbon/human/H = holder.wearer
 
 	if(!charge_selected)
-		to_chat(H, "<span class='danger'>You have not selected a grenade type.</span>")
+		to_chat(H, SPAN("danger","You have not selected a grenade type."))
 		return 0
 
 	var/datum/rig_charge/charge = charges[charge_selected]
@@ -92,16 +97,17 @@
 		return 0
 
 	if(charge.charges <= 0)
-		to_chat(H, "<span class='danger'>Insufficient grenades!</span>")
+		to_chat(H, SPAN("danger","Insufficient grenades!"))
 		return 0
 
 	charge.charges--
 	var/obj/item/grenade/new_grenade = new charge.product_type(get_turf(H))
-	H.visible_message("<span class='danger'>[H] launches \a [new_grenade]!</span>")
-	new_grenade.safety_pin = null
-	new_grenade.det_time = 10
+	
+	QDEL_NULL(new_grenade.safety_pin)
+	new_grenade.new_timing(timings[timing_selected].timing)
 	new_grenade.activate(H)
 	new_grenade.throw_at(target, fire_distance, fire_force)
+	H.visible_message(SPAN("danger","[H] launches \a [new_grenade]!"))
 
 /obj/item/rig_module/grenade_launcher/cleaner
 	name = "mounted cleaning grenade launcher"

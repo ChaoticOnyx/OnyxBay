@@ -191,3 +191,14 @@
 	parts[2] =	1
 	original[2] = /obj/item/clothing/suit/fire/firefighter
 	finished[2] = /obj/item/clothing/suit/fire/firefighter/atmos
+
+// Animusin
+/obj/item/clothing/suit/storage/toggle/heart_jacket
+	name = "heart jacket"
+	desc = "A black leather jacket with heart."
+	icon_state = "heart_jacket"
+	item_state = "heart_jacket"
+	icon_open = "heart_jacket_open"
+	icon_closed = "heart_jacket"
+	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE

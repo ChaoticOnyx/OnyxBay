@@ -177,14 +177,14 @@ var/global/datum/body_build/default_body_build = new
 
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_slimalt.dmi',
-		"slot_suit"      = 'icons/inv_slots/suits/mob_tajaran.dmi',
+		"slot_suit"      = 'icons/inv_slots/suits/mob_slimalt_tajaran.dmi',
 		"slot_gloves"    = 'icons/inv_slots/gloves/mob_slim.dmi',
 		"slot_glasses"   = 'icons/inv_slots/glasses/mob_slim.dmi',
 		"slot_l_ear"     = 'icons/inv_slots/ears/mob_slim.dmi',
 		"slot_r_ear"     = 'icons/inv_slots/ears/mob_r_slim.dmi',
 		"slot_wear_mask" = 'icons/inv_slots/masks/mob_tajaran.dmi',
 		"slot_head"      = 'icons/inv_slots/hats/mob_tajaran.dmi',
-		"slot_shoes"     = 'icons/inv_slots/shoes/mob_slim.dmi',
+		"slot_shoes"     = 'icons/inv_slots/shoes/mob_slimalt.dmi',
 		"slot_belt"      = 'icons/inv_slots/belts/mob_slim.dmi',
 		"slot_s_store"   = 'icons/inv_slots/belts/mirror/mob_slim.dmi',
 		"slot_back"      = 'icons/inv_slots/back/mob_slim.dmi',

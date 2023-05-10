@@ -3,7 +3,6 @@
 /////////////////////////////////////////////
 /obj/effect/effect/smoke/chem
 	icon = 'icons/effects/chemsmoke.dmi'
-	opacity = 0
 	layer = ABOVE_PROJECTILE_LAYER
 	time_to_live = 300
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE | PASS_FLAG_GLASS //PASS_FLAG_GLASS is fine here, it's just so the visual effect can "flow" around glass
@@ -21,23 +20,11 @@
 		icon = cached_icon
 
 	set_dir(pick(GLOB.cardinal))
-	pixel_x = -32 + rand(-8, 8)
-	pixel_y = -32 + rand(-8, 8)
-
-	//switching opacity on after the smoke has spawned, and then turning it off before it is deleted results in cleaner
-	//lighting and view range updates (Is this still true with the new lighting system?)
-	set_opacity(1)
 
 	//float over to our destination, if we have one
 	destination = dest_turf
 	if(destination)
 		walk_to(src, destination)
-
-/obj/effect/effect/smoke/chem/Destroy()
-	set_opacity(0)
-	// TODO - fadeOut() sleeps.  Sleeping in /Destroy is Bad, this needs to be fixed.
-	fadeOut()
-	return ..()
 
 /obj/effect/effect/smoke/chem/Move()
 	var/list/oldlocs = view(1, src)
@@ -47,9 +34,6 @@
 			for(var/atom/movable/AM in T)
 				if(!istype(AM, /obj/effect/effect/smoke/chem))
 					reagents.splash(AM, splash_amount, copy = 1)
-		if(loc == destination)
-			bound_width = 96
-			bound_height = 96
 
 /obj/effect/effect/smoke/chem/Crossed(atom/movable/AM)
 	..()
@@ -61,16 +45,6 @@
 		for(var/atom/movable/AM in T)
 			if(!istype(AM, /obj/effect/effect/smoke/chem))
 				reagents.splash(AM, splash_amount, copy = 1)
-
-// Fades out the smoke smoothly using it's alpha variable.
-/obj/effect/effect/smoke/chem/proc/fadeOut(frames = 16)
-	if(!alpha) return //already transparent
-
-	frames = max(frames, 1) //We will just assume that by 0 frames, the coder meant "during one frame".
-	var/alpha_step = round(alpha / frames)
-	while(alpha > 0)
-		alpha = max(0, alpha - alpha_step)
-		stoplag()
 
 /////////////////////////////////////////////
 // Chem Smoke Effect System
@@ -211,7 +185,7 @@
 				continue
 			if(T in targetTurfs)
 				spawn(0)
-					spawnSmoke(T, I, range)
+					spawnSmoke(T, I, smoke_duration, range)
 
 //------------------------------------------
 // Randomizes and spawns the smoke effect.

@@ -33,7 +33,7 @@
 	invasive = 1
 
 /obj/item/organ/internal/stack/proc/do_backup()
-	if(owner && owner.stat != DEAD && !is_broken() && owner.mind)
+	if(owner && !owner.is_ooc_dead() && !is_broken() && owner.mind)
 		languages = owner.languages.Copy()
 		backup = owner.mind
 		default_language = owner.default_language
@@ -46,12 +46,12 @@
 	robotize()
 
 /obj/item/organ/internal/stack/proc/backup_inviable()
-	return 	(!istype(backup) || backup == owner.mind || (backup.current && backup.current.stat != DEAD))
+	return 	(!istype(backup) || backup == owner.mind || (backup.current && !backup.current.is_ooc_dead()))
 
 /obj/item/organ/internal/stack/replaced()
 	if(!..()) return 0
 
-	if(owner && !backup_inviable())
+	if(owner && !backup_inviable() && owner.has_brain())
 		var/current_owner = owner
 		var/mob/dead_owner = find_dead_player(ownerckey, 1)
 		if(istype(dead_owner))

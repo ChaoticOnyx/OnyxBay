@@ -127,7 +127,7 @@
 
 	var/mob/living/M = A
 
-	if(M.stat != DEAD)
+	if(!M.is_ic_dead())
 		if(M.HasMovementHandler(/datum/movement_handler/mob/transformation))
 			return
 		if(M.has_brain_worms())

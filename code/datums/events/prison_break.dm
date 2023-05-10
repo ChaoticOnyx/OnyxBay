@@ -135,12 +135,9 @@
 
 /datum/event/prison_break/proc/announce()
 	if(areas && areas.len > 0)
-		if(GLOB.using_map.type == /datum/map/polar)
-			command_announcement.Announce(
-				"[pick("Gr3y.T1d3 virus","Malignant trojan")] detected in [station_name()] [(eventDept == "Security")? "imprisonment":"containment"] subroutines. Secure any compromised areas immediately. [station_name()] AI involvement is recommended.",
-				"[eventDept] Alert",
-				zlevels = affecting_z,
-				new_sound = 'sound/AI/polar/prison_break_announce.ogg'
-			)
-		else
-			command_announcement.Announce("[pick("Gr3y.T1d3 virus","Malignant trojan")] detected in [station_name()] [(eventDept == "Security")? "imprisonment":"containment"] subroutines. Secure any compromised areas immediately. [station_name()] AI involvement is recommended.", "[eventDept] Alert", zlevels = affecting_z)
+		command_announcement.Announce(
+			"[pick("Gr3y.T1d3 virus","Malignant trojan")] detected in [station_name()] [(eventDept == "Security")? "imprisonment":"containment"] subroutines. Secure any compromised areas immediately. [station_name()] AI involvement is recommended.",
+			"[eventDept] Alert",
+			zlevels = affecting_z,
+			new_sound = 'sound/AI/prisonbreakstart.ogg'
+		)

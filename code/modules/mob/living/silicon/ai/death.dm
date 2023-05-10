@@ -1,6 +1,6 @@
 /mob/living/silicon/ai/death(gibbed, deathmessage, show_dead_message)
 
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return
 
 	if(src.eyeobj)

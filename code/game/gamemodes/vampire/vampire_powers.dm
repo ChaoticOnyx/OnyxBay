@@ -154,10 +154,10 @@
 	user.visible_message(SPAN_DANGER("[user.name] stops biting [T.name]'s neck!"), SPAN_NOTICE("[endsuckmsg]"))
 	if(target_aware)
 		T.paralysis = 0
-		if(T.stat != DEAD && vampire.stealth)
+		if(!T.is_ooc_dead() && vampire.stealth)
 			spawn()			//Spawned in the same manner the brain damage alert is, just so the proc keeps running without stops.
 				alert(T, "You remember NOTHING about the cause of your blackout. Instead, you remember having a pleasant encounter with [user.name].", "Bitten by a vampire")
-		else if(T.stat != DEAD)
+		else if(!T.is_ooc_dead())
 			spawn()
 				alert(T, "You remember everything that happened. Remember how blood was sucked from your neck. It gave you pleasure, like a pleasant dream. You feel great. How you react to [owner.name]'s actions is up to you.", "Bitten by a vampire")
 	user.verbs -= /datum/vampire/proc/vampire_drain_blood
@@ -695,17 +695,39 @@
 
 	return
 
-// Dominate a victim, imbed a thought into their mind.
-/datum/vampire/proc/vampire_dominate()
+// Dominate a victim, using single word.
+/datum/vampire/proc/vampire_order()
 	set category = "Vampire"
-	set name = "Dominate (50)"
+	set name = "Order (20)"
+	set desc = "Order the mind of a victim, make them obey your will."
+	var/power_use_cost = 20
+	var/mob/living/carbon/human/user = usr
+	var/datum/vampire/vampire = user.vampire_power(power_use_cost, 0)
+	if (!vampire)
+		return
+	vampire.vampire_dominate_handler(user, ability = "order")
+	vampire.use_blood(power_use_cost)
+	user.verbs -= /datum/vampire/proc/vampire_order
+	ADD_VERB_IN_IF(user, 900, /datum/vampire/proc/vampire_order, CALLBACK(user, /mob/living/carbon/human/proc/finish_vamp_timeout))
+
+// Dominate a victim, imbed a thought into their mind.
+/datum/vampire/proc/vampire_suggestion()
+	set category = "Vampire"
+	set name = "Suggestion (50)"
 	set desc = "Dominate the mind of a victim, make them obey your will."
 	var/power_use_cost = 50
 	var/mob/living/carbon/human/user = usr
 	var/datum/vampire/vampire = user.vampire_power(power_use_cost, 0)
 	if (!vampire)
 		return
+	vampire.vampire_dominate_handler(user, ability = "suggestion")
+	vampire.use_blood(power_use_cost)
+	user.verbs -= /datum/vampire/proc/vampire_suggestion
+	ADD_VERB_IN_IF(user, 1800, /datum/vampire/proc/vampire_suggestion, CALLBACK(user, /mob/living/carbon/human/proc/finish_vamp_timeout))
 
+/datum/vampire/proc/vampire_dominate_handler(caster, ability = "suggestion")
+	var/datum/vampire/vampire = src
+	var/mob/living/carbon/human/user = caster
 	var/list/victims = list()
 	for (var/mob/living/carbon/human/H in view(7))
 		if (H == user)
@@ -732,13 +754,29 @@
 	else
 		to_chat(user, SPAN_NOTICE("You instantly dominate [T]'s mind, forcing them to obey your command."))
 
-	var/command = input(user, "Command your victim.", "Your command.") as text|null
+	var/command
+	if(ability == "suggestion")
+		command = input(user, "Command your victim.", "Your command.") as text|null
+	else if(ability == "order")
+		command = input(user, "Command your victim with single word.", "Your command.") as text|null
 
 	if (!command)
 		to_chat(user, "<span class='alert'>Cancelled.</span>")
 		return
 
-	command = sanitizeSafe(command, extra = 0)
+	if(ability == "suggestion")
+		command = sanitizeSafe(command, extra = 0)
+	else if(ability == "order")
+		command = sanitizeSafe(command)
+		var/spaceposition = findtext_char(command, " ")
+		if(spaceposition)
+			command = copytext_char(command, 1, spaceposition+1)
+
+	user.say(command)
+
+	if (T.is_deaf() || !T.say_understands(user,user.get_default_language()))
+		to_chat(user, SPAN("warning", "Target does not understand you!"))
+		return
 
 	admin_attack_log(user, T, "used dominate on [key_name(T)]", "was dominated by [key_name(user)]", "used dominate and issued the command of '[command]' to")
 
@@ -746,11 +784,8 @@
 	to_chat(T, SPAN_NOTICE("You feel a strong presence enter your mind. For a moment, you hear nothing but what it says, and are compelled to follow its direction without question or hesitation:"))
 	to_chat(T, "<span style='color: green;'><i><em>[command]</em></i></span>")
 	to_chat(user, SPAN_NOTICE("You command [T], and they will obey."))
-	user.emote("me", 1, "whispers.")
 
-	vampire.use_blood(power_use_cost)
-	user.verbs -= /datum/vampire/proc/vampire_dominate
-	ADD_VERB_IN_IF(user, 1800, /datum/vampire/proc/vampire_dominate, CALLBACK(user, /mob/living/carbon/human/proc/finish_vamp_timeout))
+	return
 
 // Enthralls a person, giving the vampire a mortal slave.
 /datum/vampire/proc/vampire_enthrall()
@@ -902,7 +937,7 @@
 		return
 
 	if (isfakeliving(user))
-		if (user.stat == DEAD)
+		if (user.is_ooc_dead())
 			to_chat(user, SPAN_WARNING("You cannot appear alive while dead"))
 			user.status_flags &= ~FAKELIVING
 

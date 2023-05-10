@@ -128,7 +128,7 @@
 	return
 
 /mob/living/follow_suffix()
-	return stat == DEAD ? "\[DEAD\]" : ..()
+	return is_ooc_dead() ? "\[DEAD\]" : ..()
 
 // If you wish for objects to have coordinates you can simply uncomment the lines below
 //  , just keep in mind that tracking is based on name which makes following something that moves often a bit of a pain (even with the 3 second cache).
@@ -200,10 +200,10 @@
 
 /datum/follow_holder/spiderling
 	sort_order = 6
-	followed_type = /obj/effect/spider/spiderling
+	followed_type = /obj/structure/spider/spiderling
 
 /datum/follow_holder/spiderling/show_entry()
-	var/obj/effect/spider/spiderling/S = followed_instance
+	var/obj/structure/spider/spiderling/S = followed_instance
 	return ..() && S.amount_grown > 0
 
 /datum/follow_holder/bot

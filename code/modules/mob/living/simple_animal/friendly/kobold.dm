@@ -32,6 +32,6 @@
 		flick("kobold_act",src)
 
 /mob/living/simple_animal/kobold/Move(dir)
-	..()
+	. = ..()
 	if(!stat)
 		flick("kobold_walk",src)

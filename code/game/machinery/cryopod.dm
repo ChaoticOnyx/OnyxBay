@@ -360,7 +360,7 @@
 /obj/machinery/cryopod/robot/despawn_occupant()
 	var/mob/living/silicon/robot/R = occupant
 	if(!istype(R)) return ..()
-
+	
 	qdel(R.mmi)
 	for(var/obj/item/I in R.module) // the tools the borg has; metal, glass, guns etc
 		for(var/obj/item/O in I) // the things inside the tools, if anything; mainly for janiborg trash bags
@@ -543,7 +543,7 @@
 	if(occupant)
 		to_chat(user, "<span class='warning'>\The [src] is already occupied.</span>")
 		return
-	if(name == "cryogenic freezer" && M.stat == DEAD)
+	if(name == "cryogenic freezer" && M.is_ic_dead())
 		to_chat(user, "<span class='warning'>\The [src]s are not designed to store bodies. Contact the medical unit.</span>")
 		var/area/t = get_area(M)
 		var/location = t.name

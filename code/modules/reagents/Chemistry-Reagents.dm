@@ -49,7 +49,7 @@
 /datum/reagent/proc/on_mob_life(mob/living/carbon/M, alien, location) // Currently, on_mob_life is called on carbons. Any interaction with non-carbon mobs (lube) will need to be done in touch_mob.
 	if(!istype(M))
 		return
-	if(!(flags & AFFECTS_DEAD) && M.stat == DEAD && (world.time - M.timeofdeath > 150))
+	if(!(flags & AFFECTS_DEAD) && M.is_ic_dead() && (world.time - M.timeofdeath > 150))
 		return
 	if(overdose && (location != CHEM_TOUCH))
 		var/overdose_threshold = overdose * (flags & IGNORE_MOB_SIZE? 1 : MOB_MEDIUM/M.mob_size)

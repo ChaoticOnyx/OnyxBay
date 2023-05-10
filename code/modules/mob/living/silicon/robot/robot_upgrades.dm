@@ -25,7 +25,7 @@
 	return 1
 
 /obj/item/borg/upgrade/proc/action(mob/living/silicon/robot/R)
-	if(R.stat == DEAD)
+	if(R.is_ic_dead())
 		to_chat(usr, "<span class='warning'>The [src] will not function on a deceased robot.</span>")
 		return 1
 	return 0
@@ -39,6 +39,9 @@
 /obj/item/borg/upgrade/reset/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 	R.uneq_all()
+	if(R.restore_modtype_in_global_pull)
+		GLOB.robot_module_types |= R.modtype
+		R.restore_modtype_in_global_pull = FALSE
 	R.modtype = initial(R.modtype)
 	R.hands.icon_state = initial(R.hands.icon_state)
 
@@ -72,6 +75,9 @@
 			if (R.shown_robot_modules)
 				R.shown_robot_modules = !R.shown_robot_modules
 				R.hud_used.update_robot_modules_display()
+			if(R.restore_modtype_in_global_pull)
+				GLOB.robot_module_types |= R.modtype
+				R.restore_modtype_in_global_pull = FALSE
 			R.module.Reset(R)
 			qdel(R.module)
 			R.module = null
@@ -699,12 +705,12 @@
 		activate()
 		installed = 0
 		return
-	else if (!broken && active && host.stat == DEAD)
+	else if (!broken && active && host.is_ic_dead())
 		active = 0
 		activate("death")
 	else if (broken)
 		qdel(src)
-	else if(host.stat != DEAD)
+	else if(!host.is_ooc_dead())
 		active = 1
 
 	set_next_think(world.time + 1 SECOND)

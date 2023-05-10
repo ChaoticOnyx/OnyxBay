@@ -102,6 +102,7 @@
 	alien_number++ //Keep track of how many aliens we've had so far.
 	H.real_name = get_random_name()
 	H.SetName(H.real_name)
+	H.add_modifier(/datum/modifier/trait/vent_breaker)
 	..()
 	if(H.mind && !GLOB.xenomorphs.is_antagonist(H.mind))
 		GLOB.xenomorphs.add_antagonist(H.mind, 1)
@@ -124,7 +125,7 @@
 	..()
 
 /datum/species/xenos/proc/regenerate(mob/living/carbon/human/H)
-	if(H.stat == DEAD)
+	if(H.is_ooc_dead())
 		return TRUE // So we neither regenerate nor gain plasma once dead
 	var/heal_rate = weeds_heal_rate
 	var/mend_prob = 20

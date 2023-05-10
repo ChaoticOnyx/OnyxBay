@@ -12,7 +12,7 @@
 		return
 
 	if(!C.holder)
-		if(!config.misc.dead_ooc_allowed && (C.mob.stat == DEAD))
+		if(!config.misc.dead_ooc_allowed && (C.mob.is_ooc_dead()))
 			to_chat(C, "<span class='danger'>[name] for dead mobs has been turned off.</span>")
 			return FALSE
 		if(findtext(message, "byond://"))
@@ -42,7 +42,8 @@
 	var/decorated_ckey = C.donator_info.get_decorated_ooc_name(C)
 	message = emoji_parse(C, message)
 
-	webhook_send_ooc(C.key, message)
+	GLOB.indigo_bot.chat_webhook(config.indigo_bot.ooc_webhook, "**[C.ckey]:** [message]")
+
 	for(var/client/target in GLOB.clients)
 		if(target.is_key_ignored(C.key)) // If we're ignored by this person, then do nothing.
 			continue

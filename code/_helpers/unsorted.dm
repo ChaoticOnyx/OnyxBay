@@ -351,7 +351,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 /proc/active_ais()
 	. = list()
 	for(var/mob/living/silicon/ai/A in GLOB.living_mob_list_)
-		if(A.stat == DEAD)
+		if(A.is_ooc_dead())
 			continue
 		if(A.control_disabled == 1)
 			continue
@@ -386,7 +386,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 		var/mob/M = old_list[named]
 		if(issilicon(M))
 			AI_list |= M
-		else if(isghost(M) || M.stat == DEAD)
+		else if(isghost(M) || M.is_ooc_dead())
 			Dead_list |= M
 		else if(M.key && M.client)
 			keyclient_list |= M
@@ -420,7 +420,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 			namecounts[name] = 1
 		if (M.real_name && M.real_name != M.name)
 			name += " \[[M.real_name]\]"
-		if (M.stat == DEAD)
+		if (M.is_ooc_dead())
 			if(isobserver(M))
 				name += " \[observer\]"
 			else
@@ -1091,25 +1091,3 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 
 /proc/pass()
 	return
-
-/proc/animate_speech_bubble(image/I, list/show_to, duration)
-	I.SetTransform(scale = 0)
-	I.alpha = 0
-	for(var/client/C in show_to)
-		C.images += I
-	animate(
-		I,
-		transform = matrix(),
-		alpha = 255,
-		time = 0.5 SECONDS,
-		easing = ELASTIC_EASING
-	)
-	addtimer(CALLBACK(GLOBAL_PROC, /.proc/fade_out, I), duration - 0.5 SECONDS)
-
-/proc/fade_out(image/I, list/show_to)
-	animate(I, alpha = 0, time = 0.5 SECONDS, easing = EASE_IN)
-	addtimer(CALLBACK(GLOBAL_PROC, /.proc/remove_images_from_clients, I, show_to), 0.5 SECONDS)
-
-/proc/remove_images_from_clients(image/I, list/show_to)
-	for(var/client/C in show_to)
-		C.images -= I

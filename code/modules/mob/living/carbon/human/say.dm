@@ -32,14 +32,14 @@
 				L.last_successful_breath = world.time - 2 MINUTES
 				return ..(message, alt_name = alt_name, language = language)
 
-			to_chat(src, "<span class='warning'>You don't have enough air in [L] to make a sound!</span>")
+			visible_message(SPAN("warning", "[src] moves his lips as if trying to say something"), SPAN("danger", "You don't have enough air in [L] to make a sound!"))
 			return FALSE
 		else if(L.breath_fail_ratio > 0.7)
-			return whisper_say(length(message) > 5 ? stars(message) : message, language, alt_name)
+			return ..(length(message) > 5 ? stars(message, 50) : message, alt_name = alt_name, language = language, whispering = whispering)
 		else if(L.breath_fail_ratio > 0.4)
-			return whisper_say(length(message) > 10 ? stars(message) : message, language, alt_name)
-	else
-		return ..(message, alt_name = alt_name, language = language, whispering = whispering)
+			return ..(length(message) > 10 ? stars(message, 50) : message, alt_name = alt_name, language = language, whispering = whispering)
+
+	return ..(message, alt_name = alt_name, language = language, whispering = whispering)
 
 
 /mob/living/carbon/human/proc/forcesay(list/append)
@@ -49,7 +49,7 @@
 	var/temp = client.close_saywindow(return_content = TRUE)
 
 	if(!temp)
-		temp = winget(client, "input", "text")
+		temp = winget(client, ":input", "text")
 		if(length(temp) > 4 && findtextEx(temp, "Say ", 1, 5))
 			temp = copytext(temp, 5)
 			if (text2ascii(temp, 1) == text2ascii("\""))
@@ -59,7 +59,7 @@
 				return
 		else
 			return
-		winset(client, "input", "text=\"Say \\\"\"")
+		winset(client, ":input", "text=\"Say \\\"\"")
 	temp = trim_left(temp)
 
 	if(length(temp))
@@ -141,14 +141,14 @@
 
 /mob/living/carbon/human/handle_speech_problems(list/message_data)
 	if(silent || (sdisabilities & MUTE))
-		message_data[1] = ""
+		message_data["message"] = ""
 		. = TRUE
 
 	else if(istype(wear_mask, /obj/item/clothing/mask))
 		var/obj/item/clothing/mask/M = wear_mask
 		if(M.voicechange)
-			message_data[1] = pick(M.say_messages)
-			message_data[2] = pick(M.say_verbs)
+			message_data["message"] = pick(M.say_messages)
+			message_data["verb"] = pick(M.say_verbs)
 			. = TRUE
 		else
 			. = ..(message_data)

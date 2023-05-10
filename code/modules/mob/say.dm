@@ -38,14 +38,14 @@
 	client?.spellcheck(message)
 
 	var/ckeyname = "[usr.ckey]/[usr.name]"
-	webhook_send_me(ckeyname, message)
+	GLOB.indigo_bot.chat_webhook(config.indigo_bot.emote_webhook, "**[ckeyname]:** [message]")
 
 /mob/proc/say_dead(message)
 	communicate(/decl/communication_channel/dsay, client, message)
 
 /mob/proc/say_understands(mob/other,datum/language/language = null)
 
-	if(src.stat == DEAD)
+	if(src.is_ooc_dead())
 		return TRUE
 
 	// Universal speak makes everything understandable, for obvious reasons.

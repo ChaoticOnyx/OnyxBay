@@ -31,8 +31,8 @@
 /*****************************Pickaxe********************************/
 
 /obj/item/pickaxe
-	name = "mining drill"
-	desc = "The most basic of mining drills, for short excavations and small mineral extractions."
+	name = "pickaxe"
+	desc = "Pure classics."
 	icon = 'icons/obj/tools.dmi'
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
@@ -42,29 +42,40 @@
 	mod_reach = 1.25
 	mod_handy = 0.9
 	icon_state = "pickaxe"
-	item_state = "jackhammer"
+	item_state = "pickaxe"
 	w_class = ITEM_SIZE_HUGE
 	matter = list(MATERIAL_STEEL = 3750)
-	var/digspeed = 40 //moving the delay to an item var so R&D can make improved picks. --NEO
 	origin_tech = list(TECH_MATERIAL = 1, TECH_ENGINEERING = 1)
 	attack_verb = list("hit", "pierced", "sliced", "attacked")
-	var/drill_sound = 'sound/effects/fighting/Genhit.ogg'
-	var/drill_verb = "drilling"
 	sharp = 1
 
-	var/excavation_amount = 200
+	var/power = 10 //Power to an item var so R&D can make improved picks
+	var/drilling = FALSE
+	var/excavation_amount = 0
+	var/drill_sound = 'sound/effects/fighting/Genhit.ogg'
+	var/drill_verb = "picking"
+
+/obj/item/pickaxe/drill
+	name = "mining drill" //Can dig sand as well!
+	icon_state = "handdrill"
+	item_state = "jackhammer"
+	desc = "The most basic of mining drills, for short excavations and small mineral extractions."
+	power = 100 //It will remove the rock in one go, but SLOWLY
+	drill_verb = "drilling"
+	power = 100
+	var/digspeed = 40 //Delay to an item var so R&D can make improved drills
 
 /obj/item/pickaxe/silver
 	name = "silver pickaxe"
 	icon_state = "spickaxe"
 	item_state = "spickaxe"
-	digspeed = 30
+	power = 30
 	origin_tech = list(TECH_MATERIAL = 3)
 	desc = "This makes no metallurgic sense."
 
-/obj/item/pickaxe/drill
-	name = "advanced mining drill" // Can dig sand as well!
-	icon_state = "handdrill"
+/obj/item/pickaxe/drill/adv
+	name = "advanced mining drill"
+	icon_state = "advdrill"
 	item_state = "jackhammer"
 	force = 15.5
 	digspeed = 30
@@ -80,7 +91,7 @@
 	mod_weight = 1.5
 	mod_reach = 1.35
 	mod_handy = 0.9
-	digspeed = 20 //faster than drill, but cannot dig
+	power = 50 //faster than drill, but cannot dig
 	origin_tech = list(TECH_MATERIAL = 3, TECH_POWER = 2, TECH_ENGINEERING = 2)
 	desc = "Cracks rocks with sonic blasts, perfect for killing cave lizards."
 	drill_verb = "hammering"
@@ -89,22 +100,20 @@
 	name = "golden pickaxe"
 	icon_state = "gpickaxe"
 	item_state = "gpickaxe"
-	digspeed = 20
+	power = 50
 	origin_tech = list(TECH_MATERIAL = 4)
 	desc = "This makes no metallurgic sense."
-	drill_verb = "picking"
 
 /obj/item/pickaxe/diamond
 	name = "diamond pickaxe"
 	icon_state = "dpickaxe"
 	item_state = "dpickaxe"
 	force = 19.0
-	digspeed = 10
+	power = 80
 	origin_tech = list(TECH_MATERIAL = 6, TECH_ENGINEERING = 4)
 	desc = "A pickaxe with a diamond pick head."
-	drill_verb = "picking"
 
-/obj/item/pickaxe/diamonddrill //When people ask about the badass leader of the mining tools, they are talking about ME!
+/obj/item/pickaxe/drill/diamonddrill //When people ask about the badass leader of the mining tools, they are talking about ME!
 	name = "diamond mining drill"
 	icon_state = "diamonddrill"
 	item_state = "jackhammer"
@@ -114,7 +123,7 @@
 	desc = "Yours is the drill that will pierce the heavens!"
 	drill_verb = "drilling"
 
-/obj/item/pickaxe/borgdrill
+/obj/item/pickaxe/drill/borgdrill
 	name = "cyborg mining drill"
 	icon_state = "pickaxe"
 	item_state = "jackhammer"
@@ -136,7 +145,7 @@
 	mod_reach = 1.0
 	mod_handy = 0.4
 	drill_verb = "hammering"
-	digspeed = 20
+	power = 50
 	var/wielded = 0
 
 /obj/item/pickaxe/sledgehammer/update_twohanding()
@@ -392,7 +401,7 @@
 	if(isliving(target) && proximity_flag)
 		if(isanimal(target))
 			var/mob/living/simple_animal/M = target
-			if(M.stat == DEAD)
+			if(M.is_ooc_dead())
 				M.faction = "neutral"
 				if(emagged)	//if emagged, will set anything revived to the syndicate. Convert station pets to the traitor side!
 					M.faction = "syndicate"
