@@ -83,7 +83,7 @@
 		return
 
 	if(temperature > (200 CELSIUS))
-		alarm()	// added check of detector status here
+		alarm()
 	return
 
 /obj/machinery/firealarm/bullet_act(obj/item/projectile/Proj)
@@ -174,10 +174,6 @@
 
 /obj/machinery/firealarm/attack_ai(mob/user)
 	return ui_interact(user)
-	//if(!activated)
-	//	alarm()
-	//else
-	//	reset()
 
 /obj/machinery/firealarm/AltClick(mob/user)
 	return ui_interact(user)
