@@ -32,7 +32,6 @@
 	var/net_id
 	var/list/areas_added
 	var/list/users_to_open = new
-	var/next_process_time = 0
 
 	var/hatch_open = FALSE
 
@@ -76,6 +75,9 @@
 /obj/machinery/door/firedoor/_examine_text(mob/user)
 	. = ..()
 	if(!istype(usr, /mob/living/silicon) && (get_dist(src, user) > 1 || !density))
+		return
+
+	if(stat & (BROKEN|NOPOWER))
 		return
 
 	if(pdiff >= FIREDOOR_MAX_PRESSURE_DIFF)
@@ -146,9 +148,8 @@
 			return
 
 	var/alarmed = lockdown
-	for(var/area/A in areas_added)		//Checks if there are fire alarms in any areas associated with that firedoor
-		if(A.fire || A.air_doors_activated)
-			alarmed = TRUE
+	if(!alarmed)
+		alarmed = is_alarmed()
 
 	if(user.incapacitated() || (get_dist(src, user) > 1  && !issilicon(user)))
 		to_chat(user, SPAN("warning","Sorry, you must remain able bodied and close to \the [src] in order to use it."))
@@ -172,12 +173,12 @@
 			// Accountability!
 			users_to_open |= user.name
 			needs_to_close = !issilicon(user)
-		INVOKE_ASYNC(src, /obj/machinery/door/proc/open)
+		INVOKE_ASYNC(src, .proc/open)
 	else
-		INVOKE_ASYNC(src, /obj/machinery/door/proc/close)
+		INVOKE_ASYNC(src, .proc/close)
 
 	if(needs_to_close)
-		addtimer(CALLBACK(src, /obj/machinery/door/proc/close), 50, TIMER_UNIQUE|TIMER_OVERRIDE)
+		set_next_think(world.time + 5 SECOND)
 
 /obj/machinery/door/firedoor/attack_generic(mob/user, damage)
 	if(stat & (BROKEN|NOPOWER))
@@ -235,15 +236,6 @@
 		return
 
 	if(isCrowbar(C) || istype(C,/obj/item/material/twohanded/fireaxe))
-		if(operating)
-			return
-
-		if(blocked && isCrowbar(C))
-			user.visible_message("<span class='danger'>\The [user] pries at \the [src] with \a [C], but \the [src] is welded in place!</span>",\
-			"You try to pry \the [src] [density ? "open" : "closed"], but it is welded in place!",\
-			"You hear someone struggle and metal straining.")
-			return
-
 		if(istype(C,/obj/item/material/twohanded/fireaxe))
 			var/obj/item/material/twohanded/fireaxe/F = C
 			if(!F.wielded)
@@ -261,10 +253,9 @@
 								 SPAN("notice", "You hear a door [density ? "opening" : "closing"]."))
 		if(density)
 			INVOKE_ASYNC(src, /obj/machinery/door/proc/open, TRUE)
-			if(!(stat & (BROKEN|NOPOWER)))
-				addtimer(CALLBACK(src, /obj/machinery/door/proc/close), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
+			set_next_think(world.time + 15 SECOND)
 		else
-			INVOKE_ASYNC(src, /obj/machinery/door/proc/close)
+			INVOKE_ASYNC(src, /obj/machinery/door/proc/close, TRUE)
 		return
 
 	return ..()
@@ -284,23 +275,24 @@
 
 	return FA
 
-/obj/machinery/door/firedoor/close()
-	if (!is_processing)
-		START_PROCESSING(SSmachines, src)
-	return ..()
-
 /obj/machinery/door/firedoor/can_open(forced = FALSE)
-	if(blocked || (!forced && (stat & (NOPOWER|BROKEN))))
+	if(blocked)
 		return FALSE
+
+	if(!forced && (stat & (NOPOWER|BROKEN)))
+		return FALSE
+
 	return ..()
 
 /obj/machinery/door/firedoor/can_close(forced = FALSE)
 	if(blocked)
 		return FALSE
+
 	return ..()
 
 /obj/machinery/door/firedoor/open(forced = FALSE)
-	lockdown = FALSE
+	if(!forced)
+		lockdown = FALSE
 
 	if(hatch_open)
 		hatch_open = FALSE
@@ -312,6 +304,10 @@
 	else
 		var/area/A = get_area(src)
 		log_admin("[usr]([usr.ckey]) has forced open an emergency shutter at X:[x], Y:[y], Z:[z] Area: [A.name].")
+	return ..()
+
+/obj/machinery/door/firedoor/close(forced = FALSE, push_mobs = TRUE)
+	set_next_think(world.time + 1 SECOND)
 	return ..()
 
 // Only opens when all areas connecting with our turf have an air alarm and are cleared
@@ -333,6 +329,12 @@
 		if(A.atmosalm)
 			return
 	return TRUE
+
+// Checks if there are fire alarms in any areas associated with that firedoor
+/obj/machinery/door/firedoor/proc/is_alarmed()
+	for(var/area/A in areas_added)
+		if(A.fire || A.air_doors_activated)
+			return TRUE
 
 /obj/machinery/door/firedoor/do_animate(animation)
 	switch(animation)
@@ -373,14 +375,14 @@
 		set_light(0.25, 0.1, 1, 2, COLOR_SUN)
 
 // CHECK PRESSURE
-/obj/machinery/door/firedoor/Process()
-	if (!density || (stat & (BROKEN|NOPOWER)))
-		return PROCESS_KILL
-
-	if(next_process_time > world.time)
+/obj/machinery/door/firedoor/think()
+	if(stat & (BROKEN|NOPOWER))
 		return
 
-	next_process_time = world.time + 100		// 10 second delays between process updates
+	if (!density)
+		if(lockdown || is_alarmed())
+			close()
+		return
 
 	var/changed = FALSE
 	lockdown = FALSE
@@ -419,8 +421,11 @@
 
 	if(dir_alerts != old_alerts)
 		changed = TRUE
+
 	if(changed)
 		update_icon()
+
+	set_next_think(world.time + 10 SECOND)
 
 //These are playing merry hell on ZAS.  Sorry fellas :(
 
