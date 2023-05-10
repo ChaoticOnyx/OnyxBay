@@ -57,11 +57,11 @@
 		set_light(0)
 		return
 
+	icon_state = "fire"
+
 	if(stat & NOPOWER)
 		set_light(0)
 		return
-
-	icon_state = "fire"
 
 	alarm_overlay.icon_state = "fire[activated]"
 	overlays += alarm_overlay
@@ -273,6 +273,7 @@
 		buildstage = FIREALARM_NOCIRCUIT
 		wiresexposed = TRUE
 		icon_state = "fire_b0"
+		overlays.Cut()
 		pixel_x = (dir & 3)? 0 : (dir == 4 ? -24 : 24)
 		pixel_y = (dir & 3)? (dir ==1 ? -24 : 24) : 0
 		frame.transfer_fingerprints_to(src)
