@@ -79,7 +79,7 @@
 		return
 
 	if(pdiff >= FIREDOOR_MAX_PRESSURE_DIFF)
-		. += "\n<span class='warning'>WARNING: Current pressure differential is [pdiff]kPa! Opening door may result in injury!</span>"
+		. += "\n<span class='danger'>WARNING: Current pressure differential is [round(pdiff)]kPa! Opening door may result in injury!</span>"
 	. += "\n<b>Sensor readings:</b>"
 	for(var/index = 1; index <= tile_info.len; index++)
 		var/o = "&nbsp;&nbsp;"
@@ -98,10 +98,10 @@
 			continue
 		var/celsius = CONV_KELVIN_CELSIUS(tile_info[index][1])
 		var/pressure = tile_info[index][2]
-		o += "<span class='[(dir_alerts[index] & (FIREDOOR_ALERT_HOT|FIREDOOR_ALERT_COLD)) ? "warning" : "color:blue"]'>"
+		o += "<span class='[(dir_alerts[index] & (FIREDOOR_ALERT_HOT|FIREDOOR_ALERT_COLD)) ? "warning" : "color:navy"]'>"
 		o += "[celsius]&deg;C</span> "
-		o += "<span style='color:blue'>"
-		o += "[pressure]kPa</span></li>"
+		o += "<span style='color:navy'>"
+		o += "[round(pressure)]kPa</span></li>"
 		. += "\n[o]"
 	if(islist(users_to_open) && users_to_open.len)
 		var/users_to_open_string = users_to_open[1]
@@ -138,7 +138,9 @@
 		if(H.species?.can_shred(H))
 			if(do_after(user, 30, src))
 				if(density)
-					visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
+					user.visible_message(SPAN("danger", "\The [user] forces \the [src] open!"),\
+										SPAN("danger", "\The [src] forced open!"),\
+										SPAN("danger", "You hear metal strain, and a door opening!"))
 					open(TRUE)
 					shake_animation(2, 2)
 			return
@@ -149,20 +151,20 @@
 			alarmed = TRUE
 
 	if(user.incapacitated() || (get_dist(src, user) > 1  && !issilicon(user)))
-		to_chat(user, "Sorry, you must remain able bodied and close to \the [src] in order to use it.")
+		to_chat(user, SPAN("warning","Sorry, you must remain able bodied and close to \the [src] in order to use it."))
 		return
 
 	if(density && (stat & (BROKEN|NOPOWER))) //can still close without power
-		to_chat(user, "\The [src] is not functioning, you'll have to force it open manually.")
+		to_chat(user, SPAN("warning", "\The [src] is not functioning, you'll have to force it open manually."))
 		return
 
 	if(alarmed && density && lockdown && !allowed(user))
-		to_chat(user, "<span class='warning'>Access denied. Please wait for authorities to arrive, or for the alert to clear.</span>")
+		to_chat(user, SPAN("warning", "Access denied. Please wait for authorities to arrive, or for the alert to clear."))
 		return
 	else
-		user.visible_message("<span class='notice'>\The [src] [density ? "open" : "close"]s for \the [user].</span>",\
-		"\The [src] [density ? "open" : "close"]s.",\
-		"You hear a beep, and a door opening.")
+		user.visible_message(SPAN("notice", "\The [src] [density ? "open" : "close"]s for \the [user]."),\
+							SPAN("notice", "\The [src] [density ? "open" : "close"]s."),\
+							SPAN("notice", "You hear a beep, and a door [density ? "opening" : "closing"]."))
 
 	var/needs_to_close = FALSE
 	if(density)
@@ -180,14 +182,16 @@
 /obj/machinery/door/firedoor/attack_generic(mob/user, damage)
 	if(stat & (BROKEN|NOPOWER))
 		if(damage >= 10)
+			user.visible_message(SPAN("danger", "\The [user] forces \the [src] [density ? "open" : "closed"]!"),\
+								SPAN("danger", "\The [src] forced [density ? "open" : "closed"]!"),\
+								SPAN("danger", "You hear metal strain, and a door [density ? "opening" : "closing"]!"))
 			if(src.density)
-				visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
 				open(TRUE)
 			else
-				visible_message(SPAN("danger","\The [user] forces \the [src] closed!"))
 				close(TRUE)
 		else
-			visible_message(SPAN("notice","\The [user] strains fruitlessly to force \the [src] [density ? "open" : "closed"]."))
+			user.visible_message(SPAN("notice","\The [user] strains fruitlessly to force \the [src] [density ? "open" : "closed"]."),\
+								SPAN("notice","You strain fruitlessly to force \the [src] [density ? "open" : "closed"]."))
 		return
 	..()
 
@@ -195,21 +199,22 @@
 	add_fingerprint(user, 0, C)
 	if(operating)
 		return//Already doing something.
+
 	if(isWelder(C) && !repairing)
 		var/obj/item/weldingtool/W = C
 		if(W.remove_fuel(0, user))
 			blocked = !blocked
-			user.visible_message("<span class='danger'>\The [user] [blocked ? "welds" : "unwelds"] \the [src] with \a [W].</span>",\
-			"You [blocked ? "weld" : "unweld"] \the [src] with \the [W].",\
-			"You hear something being welded.")
+			user.visible_message(SPAN("danger", "\The [user] [blocked ? "welds" : "unwelds"] \the [src] with \a [W]."),\
+								SPAN("danger", "You [blocked ? "weld" : "unweld"] \the [src] with \the [W]."),\
+								SPAN("danger", "You hear something being welded."))
 			playsound(src, 'sound/items/Welder.ogg', 100, 1)
 			update_icon()
 			return
 
 	if(density && isScrewdriver(C))
 		hatch_open = !hatch_open
-		user.visible_message("<span class='danger'>[user] has [hatch_open ? "opened" : "closed"] \the [src] maintenance hatch.</span>",
-									"You have [hatch_open ? "opened" : "closed"] the [src] maintenance hatch.")
+		user.visible_message(SPAN("danger", "\The [user] has [hatch_open ? "opened" : "closed"] \the [src] maintenance hatch."),\
+							SPAN("danger", "You have [hatch_open ? "opened" : "closed"] \the [src] maintenance hatch."))
 		update_icon()
 		return
 
@@ -246,9 +251,9 @@
 			if(!F.wielded)
 				return
 
-		user.visible_message("<span class='danger'>\The [user] starts to force \the [src] [density ? "open" : "closed"] with \a [C]!</span>",\
-				"You start forcing \the [src] [density ? "open" : "closed"] with \the [C]!",\
-				"You hear metal strain.")
+		user.visible_message(SPAN("danger", "\The [user] starts to force \the [src] [density ? "open" : "closed"] with \a [C]!"),\
+							SPAN("danger", "You start forcing \the [src] [density ? "open" : "closed"] with \the [C]!"),\
+							SPAN("danger", "You hear metal strain and groan!"))
 		var/forcing_time = istype(C, /obj/item/crowbar/emergency) ? 60 : 30
 		if(!do_after(user, forcing_time, src))
 			return
@@ -306,7 +311,7 @@
 
 	if(hatch_open)
 		hatch_open = FALSE
-		visible_message("The maintenance hatch of \the [src] closes.")
+		visible_message(SPAN("notice", "The maintenance hatch of \the [src] closes."))
 		update_icon()
 
 	if(!forced)
