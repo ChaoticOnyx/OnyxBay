@@ -47,7 +47,7 @@
 		to_chat(src, "<span class='warning'>Unknown emote '[act]'. Type <b>say *help</b> for a list of usable emotes.</span>")
 		return
 
-	if(m_type && m_type != use_emote.message_type || (use_emote.conscious && stat != CONSCIOUS))
+	if((m_type && m_type != use_emote.message_type) || (use_emote.conscious && stat != CONSCIOUS))
 		to_chat(src, "<span class='warning'>You cannot currently [use_emote.message_type == AUDIBLE_MESSAGE ? "audibly" : "visually"] emote!</span>")
 		return
 

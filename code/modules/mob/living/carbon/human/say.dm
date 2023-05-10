@@ -21,7 +21,7 @@
 	var/obj/item/organ/internal/voicebox/vox = locate() in internal_organs
 	var/snowflake_speak = (language?.flags & (NONVERBAL|SIGNLANG)) || (vox?.is_usable() && (language in vox.assists_languages))
 
-	if(!full_prosthetic && need_breathe() && failed_last_breath && !snowflake_speak)
+	if(stat == CONSCIOUS && !full_prosthetic && need_breathe() && failed_last_breath && !snowflake_speak)
 		var/obj/item/organ/internal/lungs/L = internal_organs_by_name[species.breathing_organ]
 		
 		var/first_char = copytext_char(message, 1, 2)
