@@ -216,7 +216,7 @@
 "Sz" = (/obj/machinery/space_heater,/turf/simulated/floor/plating,/area/space)
 "SE" = (/obj/structure/closet/crate,/obj/random/maintenance,/turf/simulated/floor/plating,/area/space)
 "SX" = (/obj/map_ent/func_load_map/room/fivexfour,/turf/simulated/floor/plating,/area/space)
-"Td" = (/turf/unsimulated/floor/frozenground,/area/space)
+"Td" = (/turf/simulated/floor/natural/frozenground/snow,/area/space)
 "Tk" = (/obj/structure/table/woodentable,/turf/simulated/floor/tiled/dark,/area/space)
 "Ty" = (/obj/structure/table/reinforced,/obj/item/device/camera_film,/turf/simulated/floor/plating,/area/space)
 "TL" = (/obj/structure/table/woodentable,/obj/item/storage/box/donut,/turf/simulated/floor/trim/wood,/area/space)

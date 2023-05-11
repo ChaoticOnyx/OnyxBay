@@ -21,7 +21,7 @@
 "bN" = (/obj/machinery/atmospherics/pipe/simple/heat_exchanging{dir = 9},/turf/simulated/floor/natural/snow,/area/space)
 "bQ" = (/obj/machinery/atmospherics/pipe/manifold/visible{dir = 4},/obj/machinery/meter,/obj/effect/floor_decal/industrial/hatch/yellow,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "bT" = (/obj/machinery/atmospherics/portables_connector{dir = 4},/turf/simulated/floor/tiled/usedup,/area/space)
-"bV" = (/turf/unsimulated/floor/frozenground,/area/space)
+"bV" = (/turf/simulated/floor/natural/frozenground/snow,/area/space)
 "cc" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/dark/usedup,/area/space)
 "cg" = (/obj/machinery/atmospherics/pipe/simple/visible/cyan{dir = 10},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "cm" = (/obj/effect/floor_decal/corner/yellow{dir = 4},/obj/effect/floor_decal/corner/red{dir = 1},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/space)
