@@ -171,3 +171,36 @@
 	desc = "So lovely, uh."
 	icon_state = "sofa_right_preview"
 	base_icon = "sofa_right"
+
+// Original icon ported from Eris(?) and updated to work here.
+/obj/structure/bed/couch/sofa/corp
+	name = "corporate sofa"
+	desc = "Soft and cushy, yet professional."
+	icon_state = "corp_sofa_middle"
+	base_icon = "corp_sofa_middle"
+
+/obj/structure/bed/couch/sofa/corp/left
+	icon_state = "corp_sofa_end_left"
+	base_icon = "corp_sofa_end_left"
+
+/obj/structure/bed/couch/sofa/corp/right
+	icon_state = "corp_sofa_end_right"
+	base_icon = "corp_sofa_end_right"
+
+/obj/structure/bed/couch/sofa/corp/corner
+	name = "impossible corporate sofa corner"
+	desc = "This kind of sofa shouldn't even exist at all. If you see this non-euclidean specimen, contact your station's Anti-Couch Surfing Department."
+	icon_state = "corp_sofa_cursed"
+	base_icon = "corp_sofa_cursed"
+
+/obj/structure/bed/couch/sofa/corp/corner/concave
+	icon_state = "corp_sofa_corner_in"
+	base_icon = "corp_sofa_corner_in"
+	name = "corporate sofa"
+	desc = "Soft and cushy, yet professional, this one is concave."
+
+/obj/structure/bed/couch/sofa/corp/corner/convex
+	icon_state = "corp_sofa_corner_out"
+	base_icon = "corp_sofa_corner_out"
+	name = "corporate sofa"
+	desc = "Soft and cushy, yet professional, this one is convex."
