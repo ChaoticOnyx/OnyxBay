@@ -1,0 +1,12 @@
+"a" = (/turf/simulated/floor/plating/airless{icon_state = "plating_dmg3"},/area/template_noop)
+"e" = (/turf/simulated/floor/plating/airless,/area/template_noop)
+"g" = (/turf/simulated/floor/plating/airless{icon_state = "plating_dmg4"},/area/template_noop)
+"p" = (/obj/structure/lattice,/obj/item/device/floor_painter,/turf/space,/area/template_noop)
+"r" = (/obj/item/paper/crumpled/bloody,/turf/simulated/floor/plating/airless,/area/template_noop)
+"P" = (/obj/structure/lattice,/turf/space,/area/template_noop)
+
+(1,1,1) = {"
+ear
+apa
+gPe
+"}
