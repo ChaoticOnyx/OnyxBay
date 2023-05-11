@@ -767,6 +767,10 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/industrial/warning/dust/full
 	name = "hazard stripes"
 	icon_state = "warningfull_dust"
+
+/obj/effect/floor_decal/industrial/warning/dust/full/tile
+	icon_state = "warningfulltile_dust"
+
 /obj/effect/floor_decal/industrial/warning/red
 	name = "hazard stripes"
 	icon_state = "warning_red"
@@ -778,6 +782,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/industrial/warning/red/full
 	name = "hazard stripes"
 	icon_state = "warningfull_red"
+
+/obj/effect/floor_decal/industrial/warning/red/full/tile
+	icon_state = "warningfulltile_red"
 
 /obj/effect/floor_decal/industrial/warning/red/cee
 	name = "hazard stripes"
@@ -1968,3 +1975,60 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/siding/wood/end
 	icon_state = "siding_wood_end"
+
+/obj/effect/floor_decal/numbers/zero
+	icon_state = "number_0"
+
+/obj/effect/floor_decal/numbers/one
+	icon_state = "number_1"
+
+/obj/effect/floor_decal/numbers/two
+	icon_state = "number_2"
+
+/obj/effect/floor_decal/numbers/three
+	icon_state = "number_3"
+
+/obj/effect/floor_decal/numbers/four
+	icon_state = "number_4"
+
+/obj/effect/floor_decal/numbers/five
+	icon_state = "number_5"
+
+/obj/effect/floor_decal/numbers/six
+	icon_state = "number_6"
+
+/obj/effect/floor_decal/numbers/seven
+	icon_state = "number_7"
+
+/obj/effect/floor_decal/numbers/eight
+	icon_state = "number_8"
+
+/obj/effect/floor_decal/numbers/nine
+	icon_state = "number_9"
+
+/obj/effect/floor_decal/bot
+	icon_state = "bot"
+
+/obj/effect/floor_decal/bot/right
+	icon_state = "bot_right"
+
+/obj/effect/floor_decal/bot/left
+	icon_state = "bot_left"
+
+/obj/effect/floor_decal/bot_white
+	icon_state = "bot_white"
+
+/obj/effect/floor_decal/bot_white/right
+	icon_state = "bot_right_white"
+
+/obj/effect/floor_decal/bot_white/left
+	icon_state = "bot_left_white"
+
+/obj/effect/floor_decal/bot_red
+	icon_state = "bot_red"
+
+/obj/effect/floor_decal/bot_red/right
+	icon_state = "bot_right_red"
+
+/obj/effect/floor_decal/bot_red/left
+	icon_state = "bot_left_red"
