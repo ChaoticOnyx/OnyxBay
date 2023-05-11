@@ -13,6 +13,62 @@
 	base_icon_state = "rough_plating"
 	tile_type = /obj/item/stack/tile/floor_rough
 
+//SNOWED FLOORING
+
+/turf/simulated/floor/plating/snowed
+	name = "snowed-over plating"
+	desc = "A section of heated plating, helps keep the snow from stacking up too high."
+	icon = 'icons/turf/snow.dmi'
+	icon_state = "snowplating"
+	temperature = -30 CELSIUS
+	footstep_sound = SFX_FOOTSTEP_SNOW
+
+
+/turf/simulated/floor/plating/snowed/smoothed
+	icon = 'icons/turf/snow_turf.dmi'
+	icon_state = "snow_turf-0"
+
+/turf/simulated/floor/plating/snowed/smoothed/Initialize()
+	. = ..()
+	update_icon()
+	redraw_nearby_snows()
+
+
+/turf/simulated/floor/plating/snowed/smoothed/Destroy()
+	redraw_nearby_snows()
+	return ..()
+
+/turf/simulated/floor/plating/snowed/smoothed/proc/redraw_nearby_snows()
+	for(var/direction in GLOB.alldirs)
+		var/turf/simulated/floor/plating/snowed/smoothed/L = locate() in get_step(src, direction)
+		if(L)
+			L.update_icon() //so siding get updated properly
+
+
+/turf/simulated/floor/plating/snowed/smoothed/update_icon()
+	var/connectdir = 0
+	for(var/direction in GLOB.cardinal)
+		if(locate(/turf/simulated/floor/plating/snowed/smoothed, get_step(src, direction)))
+			connectdir |= direction
+
+	//Check the diagonal connections for corners, where you have, for example, connections both north and east. In this case it checks for a north-east connection to determine whether to add a corner marker or not.
+	var/diagonalconnect = 0 //1 = NE; 2 = SE; 4 = NW; 8 = SW
+	var/dirs = list(1,2,4,8)
+	var/i = 1
+	for(var/diag in list(NORTHEAST, SOUTHEAST,NORTHWEST,SOUTHWEST))
+		if((connectdir & diag) == diag)
+			if(locate(/turf/simulated/floor/plating/snowed/smoothed, get_step(src, diag)))
+				diagonalconnect |= dirs[i]
+		i += 1
+
+	icon_state = "snow_turf-[connectdir][diagonalconnect]"
+
+/turf/simulated/floor/plating/snowed/colder
+	temperature = -70 CELSIUS
+
+/turf/simulated/floor/plating/snowed/temperatre
+	temperature = 20 CELSIUS
+
 
 //GRID FLOORING
 
