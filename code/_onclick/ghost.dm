@@ -51,7 +51,7 @@
 
 /mob/living/attack_ghost(mob/observer/ghost/user)
 	if(user.client && user.health_scan)
-		to_chat(user, EXAMINE_BLOCK(medical_scan_results(src, 1)))
+		show_browser(user, medical_scan_results(src, TRUE), "window=scanconsole;size=430x350")
 	return ..()
 
 // ---------------------------------------

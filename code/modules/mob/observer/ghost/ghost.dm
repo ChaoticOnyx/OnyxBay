@@ -466,6 +466,12 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/PostIncorporealMovement()
 	stop_following()
 
+/mob/observer/ghost/verb/analyse_health(mob/living/carbon/human/H in GLOB.human_mob_list)
+	set category = null
+	set name = "Analyse Health"
+
+	show_browser(usr, medical_scan_results(H, TRUE), "window=scanconsole;size=430x350")
+
 /mob/observer/ghost/verb/toggle_health_scan()
 	set category = "Ghost"
 	set name = "Toggle Health Scan"
