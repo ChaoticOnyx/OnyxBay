@@ -7,12 +7,12 @@
 /// The amount of characters needed before this increase takes place.
 #define SPLASH_TEXT_LIFETIME_INCREASE_MIN (10)
 
-///Creates text that will float from the atom upwards to the viewer.
+/// Creates text that will float from the atom upwards to the viewer.
 /atom/proc/show_splash_text(mob/viewer, text)
 	INVOKE_ASYNC(src, .proc/animate_splash_text, viewer, text)
 
-///Creates text that will float from the atom upwards to the viewers in range.
-/atom/proc/show_splash_text_to_viewers(message, self_message, vision_distance = 7, list/ignored_mobs)
+/// Creates text that will float from the atom upwards to the viewers in range.
+/atom/proc/show_splash_text_to_viewers(message, self_message, vision_distance = 7, list/mob/ignored_mobs)
 	var/list/hearers = list()
 	var/list/garbage_obj = list() // TO-DO: add more helpers to exclude searching objects.
 	get_mobs_and_objs_in_view_fast(get_turf(src), vision_distance, hearers, garbage_obj, checkghosts = TRUE)
@@ -23,7 +23,7 @@
 			continue
 		show_splash_text(hearer, (hearer == src && self_message) || message)
 
-///Private proc, use 'show_splash_text' or 'show_splash_text_to_viewers' instead.
+/// Private proc, use 'show_splash_text' or 'show_splash_text_to_viewers' instead.
 /atom/proc/animate_splash_text(mob/viewer, text)
 	var/client/viewer_client = viewer?.client
 	if(!viewer_client)
