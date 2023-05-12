@@ -2982,6 +2982,8 @@
 #include "maps\frontier\frontier_levels.dm"
 #include "maps\genesis\genesis_define.dm"
 #include "maps\genesis\genesis_levels.dm"
+#include "maps\glowstation\glowstation_define.dm"
+#include "maps\glowstation\glowstation_levels.dm"
 #include "maps\polar\polar_areas.dm"
 #include "maps\polar\polar_define.dm"
 #include "maps\polar\polar_levels.dm"
