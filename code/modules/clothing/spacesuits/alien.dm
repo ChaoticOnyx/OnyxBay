@@ -233,8 +233,24 @@
 	icon_state = "vox-carapace"
 	desc = "An armoured, segmented carapace with glowing purple lights. It looks pretty run-down."
 	action_button_name = "Toggle Protection"
-	armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 40, bio = 100)
+	armor_type = /datum/armor/carapace_default
 	var/protection = FALSE
+
+/datum/armor/carapace_default
+	bio = 100
+	bomb = 60
+	bullet = 50
+	energy = 40
+	laser = 40
+	melee = 60
+
+/datum/armor/carapace_protrcted
+	bio = 100
+	bomb = 60
+	bullet = 80
+	energy = 80
+	laser = 80
+	melee = 80
 
 /obj/item/clothing/suit/space/vox/carapace/attack_self(mob/user)
 	var/mob/living/carbon/human/H = user
@@ -246,21 +262,21 @@
 
 /obj/item/clothing/suit/space/vox/carapace/proc/protection(mob/living/carbon/human/H)
 	if(protection)
-		to_chat(H, "<span class='notice'>You deactivate the protection mode.</span>")
-		armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 60, bio = 100)
+		to_chat(H, SPAN_NOTICE("You deactivate the protection mode."))
+		set_armor(get_armor_by_type(/datum/armor/carapace_default))
 		siemens_coefficient = 0.6
 		if(istype(H.head, /obj/item/clothing/head/helmet/space/vox/carapace))
-			H.head.armor = list(melee = 60, bullet = 50, laser = 40, energy = 40, bomb = 60, bio = 100)
+			H.head.set_armor(get_armor_by_type(/datum/armor/carapace_default))
 			H.head.siemens_coefficient = 0.6
 			H.head.item_state = "vox-carapace"
 		slowdown_per_slot[slot_wear_suit] = 3
 		item_state = "vox-carapace"
 	else
-		to_chat(H, "<span class='notice'>You activate the protection mode.</span>")
-		armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 60, bio = 100)
+		to_chat(H, SPAN_NOTICE("You activate the protection mode."))
+		set_armor(get_armor_by_type(/datum/armor/carapace_protrcted))
 		siemens_coefficient = 0.2
 		if(istype(H.head, /obj/item/clothing/head/helmet/space/vox/carapace))
-			H.head.armor = list(melee = 80, bullet = 80, laser = 80, energy = 80, bomb = 60, bio = 100)
+			H.head.set_armor(get_armor_by_type(/datum/armor/carapace_protrcted))
 			H.head.siemens_coefficient = 0.2
 			H.head.item_state = "vox-carapace-active"
 		slowdown_per_slot[slot_wear_suit] = 20

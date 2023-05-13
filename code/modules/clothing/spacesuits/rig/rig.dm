@@ -313,11 +313,10 @@
 							if(helmet)
 								helmet.update_light(wearer)
 
-					//sealed pieces become airtight, protecting against diseases
-					if (!seal_target)
-						piece.armor["bio"] = 100
+					if(!seal_target)
+						piece.set_armor_rating(BIO, 100)
 					else
-						piece.armor["bio"] = src.armor["bio"]
+						piece.set_armor_rating(BIO, get_armor_rating(BIO))
 
 				else
 					failed_to_seal = 1

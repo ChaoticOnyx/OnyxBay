@@ -277,7 +277,7 @@
 	var/obj/item/clothing/head/helmet = affecting.get_equipped_item(slot_head)
 	if(istype(helmet) && (helmet.body_parts_covered & HEAD) && (helmet.item_flags & ITEM_FLAG_STOPPRESSUREDAMAGE))
 		//we don't do an armor_check here because this is not an impact effect like a weapon swung with momentum, that either penetrates or glances off.
-		damage_mod = 1.0 - (helmet.armor["melee"]/100)
+		damage_mod = 1.0 - helmet.get_armor_rating(MELEE) / 100
 
 	var/total_damage = 0
 	var/damage_flags = W.damage_flags()

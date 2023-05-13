@@ -18,7 +18,7 @@
 			var/obj/item/I = M.wear_mask
 			//masks provide a small bonus and can replace overall bio protection
 			if(I)
-				score = max(score, round(0.06*I.armor["bio"]))
+				score = max(score, round(0.06 * I.get_armor_rating(BIO)))
 				if (istype(I, /obj/item/clothing/mask))
 					score += 1 //this should be added after
 
@@ -126,7 +126,7 @@
 /mob/living/carbon/human/proc/can_spread_disease()
 	for(var/obj/item/clothing/gear in list(head, wear_mask))
 		if(istype(gear) && (gear.body_parts_covered & FACE))
-			if(gear.armor["bio"] > 0)
+			if(gear.get_armor_rating(BIO) > 0)
 				return FALSE
 	return TRUE
 

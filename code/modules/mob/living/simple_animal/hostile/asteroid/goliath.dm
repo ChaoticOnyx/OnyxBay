@@ -139,14 +139,13 @@
 	if(proximity_flag)
 		if(istype(target, /obj/item/clothing/suit/space) || istype(target, /obj/item/clothing/head/helmet/space))
 			var/obj/item/clothing/suit/space/C = target
-			var/list/current_armor = C.armor
-			if(current_armor["melee"] < 80)
-				current_armor["melee"] = min(current_armor["melee"] + 10, 80)
+			if(C.get_armor().get_armor_rating(MELEE) < 80)
+				set_armor_rating(MELEE, min(C.get_armor().get_armor_rating(MELEE) + 10, 80))
 				C.breach_threshold = min(C.breach_threshold + 2, 24)
-				to_chat(user, "<span class='info'>You strengthen [target], improving its resistance against melee attacks.</span>")
+				to_chat(user, SPAN_INFO("You strengthen \the [target], improving its resistance against melee attacks."))
 				qdel(src)
 			else
-				to_chat(user, "<span class='warning'>You can't improve [C] any further!</span>")
+				to_chat(user, SPAN_WARNING("You can't improve \the [C] any further!"))
 				return
 		if(istype(target, /obj/mecha/working/ripley))
 			var/obj/mecha/working/ripley/D = target
