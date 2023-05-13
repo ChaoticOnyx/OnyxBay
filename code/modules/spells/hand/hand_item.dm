@@ -10,6 +10,10 @@ Basically: I can use it to target things where I click. I can then pass these ta
 	obj_flags = 0
 	simulated = 0
 	icon_state = "spell"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/onmob/items/lefthand.dmi',
+		slot_r_hand_str = 'icons/mob/onmob/items/righthand.dmi',
+		)
 	var/next_spell_time = 0
 	var/datum/spell/hand/hand_spell
 

@@ -6,7 +6,7 @@
 	invocation = "Ei'Nath!"
 	invocation_type = SPI_SHOUT
 	level_max = list(SP_TOTAL = 2, SP_SPEED = 2, SP_POWER = 0)
-	hand_state = "domination_spell"
+	hand_state = "disintegrate"
 	icon_state = "wiz_disint"
 	show_message = " puts his hand on target head, it's starting to glow brightly."
 	spell_flags = INCLUDEUSER | SELECTABLE | NEEDSCLOTHES // Yep, you can EI NATH yourself ftw
