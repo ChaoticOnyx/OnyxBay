@@ -17,17 +17,6 @@
 	compatible_targets = list(/mob/living)
 	cast_sound = 'sound/effects/squelch2.ogg'
 
-/datum/spell/hand/disintegrate/cast(list/targets, mob/user, channel)
-	for(var/mob/M in targets)
-		if(M.get_active_hand())
-			to_chat(user, SPAN_WARNING("You need an empty hand to cast this spell."))
-			return
-		var/obj/item/magic_hand/control_hand/H = new (src)
-		if(!M.put_in_active_hand(H))
-			qdel(H)
-			return
-	return 1
-
 /datum/spell/hand/disintegrate/cast_hand(atom/A, mob/user)
 	var/mob/living/target = A
 	target.gib()
