@@ -277,6 +277,8 @@
 #include "code\datums\appearances\appearance_manager.dm"
 #include "code\datums\appearances\automatic\_base.dm"
 #include "code\datums\appearances\automatic\cardborg.dm"
+#include "code\datums\armor\_armor.dm"
+#include "code\datums\armor\_atom_armor.dm"
 #include "code\datums\colors\color_generator.dm"
 #include "code\datums\communication\_defines.dm"
 #include "code\datums\communication\aooc.dm"

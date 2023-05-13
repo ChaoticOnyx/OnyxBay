@@ -22,11 +22,11 @@
 	if(changeling.recursive_enhancement == TRUE)
 		transfer_amount = 20
 
-	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
-	if(!BIO)
+	var/obj/item/organ/internal/biostructure/struct = locate() in contents
+	if(!struct)
 		return
 
-	BIO.chem_cauldron.trans_to_mob(target, transfer_amount)
+	struct.chem_cauldron.trans_to_mob(target, transfer_amount)
 
 	feedback_add_details("changeling_powers", "CS")
 
@@ -79,10 +79,10 @@
 			to_chat(src, SPAN("changeling", "Not enough chemicals."))
 			return
 
-	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
-	if(!BIO)
+	var/obj/item/organ/internal/biostructure/struct = locate() in contents
+	if(!struct)
 		return
-	BIO.chem_cauldron.add_reagent(target_chem, amount)
+	struct.chem_cauldron.add_reagent(target_chem, amount)
 
 	if(target_chem == /datum/reagent/toxin/plasma)
 		amount *= 2
@@ -106,10 +106,10 @@
 
 	var/mob/living/carbon/human/C = src
 
-	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
-	if(!BIO)
+	var/obj/item/organ/internal/biostructure/struct = locate() in contents
+	if(!struct)
 		return FALSE
-	BIO.chem_cauldron.clear_reagents()
+	struct.chem_cauldron.clear_reagents()
 
 	C.adjustToxLoss(10)
 	verbs -= /mob/proc/prepare_changeling_chemical_sting

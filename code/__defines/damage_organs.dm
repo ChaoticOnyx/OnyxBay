@@ -11,7 +11,25 @@
 #define CUT       "cut"
 #define BRUISE    "bruise"
 #define PIERCE    "pierce"
-#define LASER     "laser"
+
+/// Involved in checking whether a disease can infest or spread
+#define BIO "bio"
+/// Involves in a shockwave, usually from an explision
+#define BOMB "bomb"
+/// Involves a solid projectile
+#define BULLET "bullet"
+// Ivolves a EMP or energy-based projectile
+#define ENERGY "energy"
+/// Involves a laser
+#define LASER "laser"
+/// Involves a melee attack or thrown object
+#define MELEE "melee"
+
+/// Used to modify all of the armor values at once
+#define ARMOR_ALL "armor_all"
+
+/// Armor values that are used for the damage
+#define ARMOR_LIST_DAMAGE(...) list(BIO, BOMB, BULLET, ENERGY, LASER, MELEE)
 
 #define STUN      "stun"
 #define WEAKEN    "weaken"

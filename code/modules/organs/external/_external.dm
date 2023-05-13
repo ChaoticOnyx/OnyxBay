@@ -143,8 +143,8 @@
 
 	QDEL_NULL_LIST(children)
 
-	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
-	BIO?.change_host(get_turf(src)) // Because we don't want biostructures to get wrecked so easily
+	var/obj/item/organ/internal/biostructure/struct = locate() in contents
+	struct?.change_host(get_turf(src)) // Because we don't want biostructures to get wrecked so easily
 
 	QDEL_NULL_LIST(internal_organs)
 

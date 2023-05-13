@@ -50,7 +50,7 @@
 		playsound(H.loc, 'sound/effects/bonebreak3.ogg', 100, 1)
 	playsound(H.loc, 'sound/effects/bonebreak4.ogg', 100, 1)
 
-	var/obj/item/organ/internal/biostructure/BIO = H.internal_organs_by_name[BP_CHANG]
+	var/obj/item/organ/internal/biostructure/struct = H.internal_organs_by_name[BP_CHANG]
 	var/mob_to_receive_mind
 
 	var/mob/living/simple_animal/hostile/little_changeling/leg_chan/leg_ling
@@ -61,36 +61,36 @@
 
 	if(H.has_limb(BP_L_LEG))
 		leg_ling = new (get_turf(H))
-		if(BIO.parent_organ == BP_L_LEG)
+		if(struct.parent_organ == BP_L_LEG)
 			mob_to_receive_mind = leg_ling
 
 	if(H.has_limb(BP_R_LEG))
 		leg_ling2 = new (get_turf(H))
-		if(BIO.parent_organ == BP_R_LEG)
+		if(struct.parent_organ == BP_R_LEG)
 			mob_to_receive_mind = leg_ling2
 
 	if(H.has_limb(BP_L_ARM))
 		arm_ling = new (get_turf(H))
-		if(BIO.parent_organ == BP_L_ARM)
+		if(struct.parent_organ == BP_L_ARM)
 			mob_to_receive_mind = arm_ling
 
 	if(H.has_limb(BP_R_ARM))
 		arm_ling2 = new (get_turf(H))
-		if(BIO.parent_organ == BP_R_ARM)
+		if(struct.parent_organ == BP_R_ARM)
 			mob_to_receive_mind = arm_ling2
 
 	if(H.has_limb(BP_HEAD))
 		head_ling = new (get_turf(H))
-		if(BIO.parent_organ == BP_HEAD)
+		if(struct.parent_organ == BP_HEAD)
 			mob_to_receive_mind = head_ling
 
 	var/mob/living/simple_animal/hostile/little_changeling/chest_chan/chest_ling = new (get_turf(H))
-	if(BIO.parent_organ == BP_CHEST || BIO.parent_organ == BP_GROIN)
+	if(struct.parent_organ == BP_CHEST || struct.parent_organ == BP_GROIN)
 		mob_to_receive_mind = chest_ling
 
 	if(mob_to_receive_mind)
 		H.mind.transfer_to(mob_to_receive_mind)
-		BIO.parent_organ = BP_CHEST
+		struct.parent_organ = BP_CHEST
 
 	gibs(H.loc, H.dna)
 	for(var/obj/item/I in H.contents)

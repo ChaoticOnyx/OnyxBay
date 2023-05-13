@@ -16,7 +16,7 @@
 					slot_r_hand_str = "armor",
 				)
 	blood_overlay_type = "armor"
-	armor = list(MELEE = 15, BULLET = 15, LASER = 15, ENERGY = 25, BOMB = 15, BIO = 15)
+	armor_type = /datum/armor/abductor_stealth
 	species_restricted = list(SPECIES_ABDUCTOR)
 	allowed = list(
 		/obj/item/abductor,
@@ -32,8 +32,22 @@
 	var/cooldown = 0
 	var/datum/icon_snapshot/disguise
 	action_button_name = "Activate Vest"
-	var/stealth_armor = list(MELEE = 15, BULLET = 15, LASER = 15, ENERGY = 25, BOMB = 15, BIO = 15)
-	var/combat_armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 50, BIO = 50)
+
+/datum/armor/abductor_combat
+	melee = 50
+	bullet = 50
+	laser = 50
+	energy = 50
+	bomb = 50
+	bio = 50
+
+/datum/armor/abductor_stealth
+	melee = 15
+	bullet = 15
+	laser = 15
+	energy = 25
+	bomb = 15
+	bio = 15
 
 /obj/item/clothing/suit/armor/abductor/vest/equipped(mob/user)
 	DeactivateStealth()
@@ -49,12 +63,12 @@
 		if(VEST_STEALTH)
 			mode = VEST_COMBAT
 			DeactivateStealth()
-			armor = combat_armor
+			set_armor(/datum/armor/abductor_combat)
 			icon_state = "vest_combat"
 			body_parts_covered = UPPER_TORSO|LOWER_TORSO
 		if(VEST_COMBAT)// TO STEALTH
 			mode = VEST_STEALTH
-			armor = stealth_armor
+			set_armor(/datum/armor/abductor_stealth)
 			body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|HANDS|LEGS
 			icon_state = "vest_stealth"
 	if(ishuman(loc))

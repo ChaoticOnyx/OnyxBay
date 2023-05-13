@@ -64,11 +64,11 @@
 	else if(organ_to_remove.organ_tag == BP_HEAD)
 		L = new /mob/living/simple_animal/hostile/little_changeling/head_chan(get_turf(H))
 
-	var/obj/item/organ/internal/biostructure/BIO = H.internal_organs_by_name[BP_CHANG]
-	if(organ_to_remove.organ_tag == BIO.parent_organ)
-		organ_to_remove.internal_organs.Remove(BIO) // Preventing biostructure from going through an unnecessary removed() and risking to get bugged
+	var/obj/item/organ/internal/biostructure/struct = H.internal_organs_by_name[BP_CHANG]
+	if(organ_to_remove.organ_tag == struct.parent_organ)
+		organ_to_remove.internal_organs.Remove(struct) // Preventing biostructure from going through an unnecessary removed() and risking to get bugged
 		H.mind.transfer_to(L)
-		BIO.parent_organ = BP_CHEST
+		struct.parent_organ = BP_CHEST
 
 	organ_to_remove.droplimb(TRUE)
 	qdel(organ_to_remove)

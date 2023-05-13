@@ -42,8 +42,8 @@
 		return
 
 	var/mob/living/carbon/human/H = my_mob
-	var/obj/item/organ/internal/biostructure/BIO = H.internal_organs_by_name[BP_CHANG]
-	if(!BIO)  // Should never happen, but still.
+	var/obj/item/organ/internal/biostructure/struct = H.internal_organs_by_name[BP_CHANG]
+	if(!struct)  // Should never happen, but still.
 		log_debug("Changeling Shenanigans: [my_mob] ([my_mob.key]) had no biostructure during move_biostructure() call. Please, inform developers.")
 		return
 
@@ -77,16 +77,16 @@
 		return
 
 	var/obj/item/organ/external/BIO_parent = null
-	BIO_parent = H.get_organ(BIO.parent_organ)
+	BIO_parent = H.get_organ(struct.parent_organ)
 	if(!BIO_parent)
 		to_chat(H, SPAN("changeling", "We are missing that limb."))
 		return
 
-	BIO_parent.internal_organs.Remove(BIO)
+	BIO_parent.internal_organs.Remove(struct)
 
-	BIO.parent_organ = new_parent.organ_tag
-	BIO_parent = H.get_organ(BIO.parent_organ)
+	struct.parent_organ = new_parent.organ_tag
+	BIO_parent = H.get_organ(struct.parent_organ)
 	if(!BIO_parent)
-		CRASH("[BIO] spawned in [H] without a parent organ: [BIO.parent_organ].")
-	BIO_parent.internal_organs |= BIO
+		CRASH("[struct] spawned in [H] without a parent organ: [struct.parent_organ].")
+	BIO_parent.internal_organs |= struct
 	to_chat(H, SPAN("changeling", "Our biostructure is now in \the [new_parent]."))

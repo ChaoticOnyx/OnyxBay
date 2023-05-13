@@ -156,7 +156,6 @@
 			piece.siemens_coefficient = siemens_coefficient
 		piece.permeability_coefficient = permeability_coefficient
 		piece.unacidable = unacidable
-		if(islist(armor)) piece.armor = armor.Copy()
 
 	set_slowdown_and_vision(!offline)
 	update_icon(1)

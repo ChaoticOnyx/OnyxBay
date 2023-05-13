@@ -33,10 +33,10 @@
 
 	// Adding a biostructure if we still don't have one.
 	if(isliving(src) && !istype(src, /mob/living/carbon/brain))
-		var/obj/item/organ/internal/biostructure/BIO = locate() in contents
-		if(!BIO)
-			BIO = new /obj/item/organ/internal/biostructure(src)
-			BIO.change_host(src)
+		var/obj/item/organ/internal/biostructure/struct = locate() in contents
+		if(!struct)
+			struct = new /obj/item/organ/internal/biostructure(src)
+			struct.change_host(src)
 			log_debug("New changeling biostructure spawned in [name] / [real_name] ([key]).")
 
 	changeling.reset_my_mob(src) // Just to be sure.

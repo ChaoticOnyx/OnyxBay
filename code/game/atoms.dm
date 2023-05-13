@@ -41,6 +41,11 @@
 	var/chat_color
 	var/chat_color_darkened
 
+	/// Type path to armor datum, used on atom Initialization
+	var/datum/armor/armor_type = /datum/armor/none
+	/// Armor datum used to calculate atom's damage
+	var/datum/armor/armor
+
 /atom/New(loc, ...)
 	CAN_BE_REDEFINED(TRUE)
 	//atom creation method that preloads variables at creation

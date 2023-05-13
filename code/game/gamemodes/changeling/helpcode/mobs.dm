@@ -4,31 +4,31 @@
 	set name = "Transform into little changeling"
 	set desc = "If we find ourselves inside a severed limb we will grow little limbs and jaws."
 
-	var/obj/item/organ/internal/biostructure/BIO = loc
+	var/obj/item/organ/internal/biostructure/struct = loc
 
 	// So, all that fake limb reattachment may get bugged out in a blink of an eye. We do this for sanity's sake.
 	// It's easier to just reset the biostructure's position back to the chest than spend days debugging its random trips to anywhereland and back.
-	BIO.parent_organ = BP_CHEST
+	struct.parent_organ = BP_CHEST
 
-	var/limb_to_del = BIO.loc
+	var/limb_to_del = struct.loc
 
-	if(istype(BIO.loc, /obj/item/organ/external/leg))
-		var/mob/living/simple_animal/hostile/little_changeling/leg_chan/leg_ling = new (get_turf(BIO.loc))
+	if(istype(struct.loc, /obj/item/organ/external/leg))
+		var/mob/living/simple_animal/hostile/little_changeling/leg_chan/leg_ling = new (get_turf(struct.loc))
 		mind.transfer_to(leg_ling)
 
-	else if(istype(BIO.loc, /obj/item/organ/external/arm))
-		var/mob/living/simple_animal/hostile/little_changeling/arm_chan/arm_ling = new (get_turf(BIO.loc))
+	else if(istype(struct.loc, /obj/item/organ/external/arm))
+		var/mob/living/simple_animal/hostile/little_changeling/arm_chan/arm_ling = new (get_turf(struct.loc))
 		mind.transfer_to(arm_ling)
 
-	else if(istype(BIO.loc, /obj/item/organ/external/head))
-		var/mob/living/simple_animal/hostile/little_changeling/head_chan/head_ling = new (get_turf(BIO.loc))
+	else if(istype(struct.loc, /obj/item/organ/external/head))
+		var/mob/living/simple_animal/hostile/little_changeling/head_chan/head_ling = new (get_turf(struct.loc))
 		mind.transfer_to(head_ling)
 
 	else
 		headcrab_runaway() // Because byond doesn't want to update verbs sometimes this engine is a fucking mess
 		return
 
-	BIO.loc.visible_message(SPAN("warning", "[BIO.loc] suddenly grows little legs!"), \
+	struct.loc.visible_message(SPAN("warning", "[struct.loc] suddenly grows little legs!"), \
 							SPAN("changeling", "<font size='2'><b>We have just transformed into mobile but vulnerable form! We must find a new host quickly!</b></font>"))
 	qdel(limb_to_del)
 
@@ -40,23 +40,23 @@
 	if(mind.changeling.is_regenerating())
 		return
 
-	var/obj/item/organ/internal/biostructure/BIO = loc
+	var/obj/item/organ/internal/biostructure/struct = loc
 
 	var/mob/living/simple_animal/hostile/little_changeling/headcrab/HC = new (get_turf(src))
 
 	// Edge case handling. It's intended to be here instead of datum/changeling/transfer_to() for reasons.
 	var/obj/item/organ/external/E
-	if(ishuman(BIO.loc))
-		var/mob/living/carbon/human/H = BIO.loc
-		E = H.get_organ(BIO.parent_organ)
-	else if(istype(BIO.loc, /obj/item/organ/external))
-		E = BIO.loc
-	E?.implants -= BIO
+	if(ishuman(struct.loc))
+		var/mob/living/carbon/human/H = struct.loc
+		E = H.get_organ(struct.parent_organ)
+	else if(istype(struct.loc, /obj/item/organ/external))
+		E = struct.loc
+	E?.implants -= struct
 
-	BIO.parent_organ = BP_CHEST // So we DEFINITELY won't end up inside a prosthetic limb.
+	struct.parent_organ = BP_CHEST // So we DEFINITELY won't end up inside a prosthetic limb.
 	mind.transfer_to(HC)
 
-	HC.visible_message(SPAN("danger", "[BIO] suddenly grows tiny eyes and reforms it's appendages into legs!"), \
+	HC.visible_message(SPAN("danger", "[struct] suddenly grows tiny eyes and reforms it's appendages into legs!"), \
 					   SPAN("changeling", "<font size='2'><b>We are in our weakest form! WE MUST SURVIVE!</b></font>"))
 
 
@@ -109,17 +109,17 @@
 
 
 /mob/living/simple_animal/hostile/little_changeling/death(gibbed, deathmessage = "has been ripped open!", show_dead_message)
-	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
-	if(BIO)
-		BIO.removed()
+	var/obj/item/organ/internal/biostructure/struct = locate() in contents
+	if(struct)
+		struct.removed()
 		return
 	..()
 
 
 /mob/living/simple_animal/hostile/little_changeling/Destroy()
-	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
-	if(BIO)
-		BIO.removed()
+	var/obj/item/organ/internal/biostructure/struct = locate() in contents
+	if(struct)
+		struct.removed()
 		return
 	..()
 
@@ -400,9 +400,9 @@
 
 /mob/living/simple_animal/hostile/little_changeling/headcrab/death(gibbed, deathmessage = "went limp and collapsed!", show_dead_message)
 	cloaked = 0
-	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
-	if(BIO)
-		BIO.die()
+	var/obj/item/organ/internal/biostructure/struct = locate() in contents
+	if(struct)
+		struct.die()
 	..()
 	qdel(src) // The headcrab is supposed to be the biostructure itself (but with tiny legs), not a separate entity
 

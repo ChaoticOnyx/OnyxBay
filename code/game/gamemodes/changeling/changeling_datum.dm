@@ -91,16 +91,16 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		my_mob.verbs -= /datum/changeling/proc/EvolutionMenu
 
 		// Biostructural stuff
-		var/obj/item/organ/internal/biostructure/BIO
+		var/obj/item/organ/internal/biostructure/struct
 		if(istype(my_mob, /mob/living/carbon/brain))
-			BIO = my_mob.loc
+			struct = my_mob.loc
 		else
-			BIO = locate() in my_mob.contents
-		if(!BIO) // We lost our biostructure somewhere, everything's broken, let's just give up and fucking die.
+			struct = locate() in my_mob.contents
+		if(!struct) // We lost our biostructure somewhere, everything's broken, let's just give up and fucking die.
 			to_chat(my_mob, SPAN("changeling", "Strangely enough, we feel like dying right now. The only thing we know, it's not our fault."))
 			die()
 			return FALSE
-		BIO.change_host(L) // Biostructure object gets moved here
+		struct.change_host(L) // Biostructure object gets moved here
 
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
