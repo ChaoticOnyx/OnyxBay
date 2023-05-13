@@ -11,7 +11,7 @@
 		SPELL_DATA(/datum/spell/acid_spray,                            1),
 		SPELL_DATA(/datum/spell/hand/slippery_surface,                 1),
 		SPELL_DATA(/datum/spell/targeted/projectile/dumbfire/fireball, 1),
-		SPELL_DATA(/datum/spell/targeted/disintegrate,                 2),
+		SPELL_DATA(/datum/spell/hand/disintegrate,                 2),
 		SPELL_DATA(/datum/spell/aoe_turf/smoke,                        1),
 		SPELL_DATA(/datum/spell/area_teleport,                         1),
 		SPELL_DATA(/datum/spell/targeted/heal_target,                  1),

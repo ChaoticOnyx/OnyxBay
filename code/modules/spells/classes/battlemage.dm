@@ -10,7 +10,7 @@
 		SPELL_DATA(/datum/spell/targeted/equip_item/dyrnwyn,           1),
 		SPELL_DATA(/datum/spell/targeted/equip_item/shield,            1),
 		SPELL_DATA(/datum/spell/targeted/projectile/dumbfire/fireball, 1),
-		SPELL_DATA(/datum/spell/targeted/disintegrate,                 2),
+		SPELL_DATA(/datum/spell/hand/disintegrate,                 2),
 		SPELL_DATA(/datum/spell/targeted/torment,                      1),
 		SPELL_DATA(/datum/spell/targeted/heal_target,                  2),
 		SPELL_DATA(/datum/spell/targeted/genetic/mutate,               1),
