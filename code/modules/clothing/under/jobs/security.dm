@@ -15,8 +15,13 @@
 	item_state_slots = list(
 		slot_hand_str = "red"
 		)
-	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
+	armor_type = /datum/armor/under_warden
 	siemens_coefficient = 0.8
+
+/datum/armor/under_warden
+	bullet = 20
+	laser = 20
+	melee = 20
 
 /obj/item/clothing/under/rank/security
 	name = "security officer's jumpsuit"
@@ -25,8 +30,13 @@
 	item_state_slots = list(
 		slot_hand_str = "red"
 		)
-	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
+	armor_type = /datum/armor/under_security
 	siemens_coefficient = 0.8
+
+/datum/armor/under_security
+	bullet = 20
+	laser = 20
+	melee = 20
 
 /obj/item/clothing/under/rank/dispatch
 	name = "dispatcher's uniform"
@@ -35,9 +45,14 @@
 	item_state_slots = list(
 		slot_hand_str = "blue"
 		)
-	armor = list(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	armor_type = /datum/armor/under_dispatch
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS
 	siemens_coefficient = 0.9
+
+/datum/armor/under_dispatch
+	bullet = 5
+	laser = 5
+	melee = 10
 
 /obj/item/clothing/under/rank/security/corp
 	icon_state = "sec_corp"
@@ -66,8 +81,13 @@
 	item_state_slots = list(
 		slot_hand_str = "black"
 		)
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_type = /datum/armor/under_tactical
 	siemens_coefficient = 0.9
+
+/datum/armor/under_tactical
+	bullet = 5
+	laser = 5
+	melee = 10
 
 /*
  * Detective
@@ -76,9 +96,14 @@
 	name = "detective's suit"
 	desc = "A rumpled white dress shirt paired with well-worn grey slacks."
 	icon_state = "detective"
-	armor = list(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	armor_type = /datum/armor/under_detective
 	siemens_coefficient = 0.9
 	starting_accessories = list(/obj/item/clothing/accessory/blue_clip)
+
+/datum/armor/under_detective
+	bullet = 5
+	laser = 5
+	melee = 10
 
 /obj/item/clothing/under/det/grey
 	icon_state = "det_grey"
@@ -106,8 +131,13 @@
 	item_state_slots = list(
 		slot_hand_str = "red"
 		)
-	armor = list(melee = 20, bullet = 25, laser = 25, energy = 0, bomb = 0, bio = 0)
+	armor_type = /datum/armor/under_hos
 	siemens_coefficient = 0.7
+
+/datum/armor/under_hos
+	bullet = 25
+	laser = 25
+	melee = 20
 
 /obj/item/clothing/under/rank/head_of_security/corp
 	icon_state = "hos_corp"
@@ -134,8 +164,13 @@
 	icon_state = "secpants"
 	gender = PLURAL
 	body_parts_covered = LOWER_TORSO|LEGS
-	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
+	armor_type = /datum/armor/under_secpants
 	siemens_coefficient = 0.9
+
+/datum/armor/under_secpants
+	bullet = 20
+	laser = 20
+	melee = 20
 
 /obj/item/clothing/under/security_pants/equipped // Preequipped w/ a shirt
 	starting_accessories = list(/obj/item/clothing/accessory/security_shirt)

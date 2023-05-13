@@ -95,8 +95,13 @@
 	desc = "It's the official uniform of the janitor. It has minor protection from biohazards."
 	name = "janitor's jumpsuit"
 	icon_state = "janitor"
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 10)
+	armor_type = /datum/armor/under_janitor
 
+/datum/armor/under_janitor
+	bio = 10
+	bullet = 5
+	laser = 5
+	melee = 5
 
 /obj/item/clothing/under/lawyer
 	desc = "Slick threads."

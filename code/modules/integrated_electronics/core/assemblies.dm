@@ -38,7 +38,7 @@
 
 	var/max_integrity = 50
 	pass_flags = 0
-	armor = list("melee" = 50, "bullet" = 70, "laser" = 70, "energy" = 100, "bomb" = 10, "bio" = 100, "rad" = 100, "fire" = 0, "acid" = 0)
+	armor_type = /datum/armor/intassembly
 	anchored = FALSE
 	var/can_anchor = TRUE
 	var/detail_color = COLOR_ASSEMBLY_BLACK
@@ -60,6 +60,14 @@
 		"blue" = COLOR_ASSEMBLY_BLUE,
 		"purple" = COLOR_ASSEMBLY_PURPLE
 		)
+
+/datum/armor/intassembly
+	bio = 100
+	bomb = 10
+	bullet = 70
+	energy = 100
+	laser = 70
+	melee = 50
 
 /obj/item/device/electronic_assembly/Initialize()
 	. = ..()

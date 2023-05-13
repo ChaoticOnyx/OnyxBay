@@ -4,13 +4,21 @@
 	icon_state = "syndicate"
 	item_state = "syndicate"
 	desc = "A crimson helmet sporting clean lines and durable plating. Engineered to look menacing."
-	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 30)
+	armor_type = /datum/armor/helm_syndispace
 	siemens_coefficient = 0.3
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
 		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+
+/datum/armor/helm_syndispace
+	bio = 30
+	bomb = 30
+	bullet = 50
+	energy = 15
+	laser = 50
+	melee = 60
 
 /obj/item/clothing/suit/space/syndicate
 	name = "red space suit"
@@ -22,13 +30,21 @@
 	desc = "A crimson spacesuit sporting clean lines and durable plating. Robust, reliable, and slightly suspicious."
 	w_class = ITEM_SIZE_NORMAL
 	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/melee/energy/sword/one_hand,/obj/item/handcuffs,/obj/item/tank/emergency)
-	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 30)
+	armor_type = /datum/armor/suit_syndispace
 	siemens_coefficient = 0.3
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
 		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+
+/datum/armor/suit_syndispace
+	bio = 30
+	bomb = 30
+	bullet = 50
+	energy = 15
+	laser = 50
+	melee = 60
 
 //Green syndicate space suit
 /obj/item/clothing/head/helmet/space/syndicate/green

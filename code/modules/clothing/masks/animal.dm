@@ -3,12 +3,17 @@
     w_class = ITEM_SIZE_SMALL
     siemens_coefficient = 0.7
     body_parts_covered = FACE|EYES
-    armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+    armor_type = /datum/armor/mask_animal
     rad_resist = list(
         RADIATION_ALPHA_PARTICLE = 14.6 MEGA ELECTRONVOLT,
         RADIATION_BETA_PARTICLE = 2.1 MEGA ELECTRONVOLT,
         RADIATION_HAWKING = 1 ELECTRONVOLT
     )
+
+/datum/armor/mask_animal
+	bullet = 5
+	laser = 5
+	melee = 5
 
 /obj/item/clothing/mask/animal_mask/pig
 	name = "pig mask"
@@ -102,4 +107,3 @@
 	// The horse mask doesn't cause voice changes by default, the wizard spell changes the flag as necessary
 	say_messages = list("NEEIIGGGHHHH!", "NEEEIIIIGHH!", "NEIIIGGHH!", "HAAWWWWW!", "HAAAWWW!")
 	say_verbs = list("whinnies", "neighs", "says")
-

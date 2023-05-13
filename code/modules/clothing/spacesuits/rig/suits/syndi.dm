@@ -7,7 +7,7 @@
 	desc = "A blood-red powersuit featuring some fairly illegal technology."
 	icon_state = "merc_rig"
 	suit_type = "crimson powersuit"
-	armor = list(melee = 80, bullet = 65, laser = 65, energy = 15, bomb = 80, bio = 100)
+	armor_type = /datum/armor/rig_syndi
 	online_slowdown = 1
 	offline_slowdown = 3
 	offline_vision_restriction = TINT_HEAVY
@@ -26,6 +26,14 @@
 		/obj/item/rig_module/fabricator/energy_net
 		)
 
+/datum/armor/rig_syndi
+	bio = 100
+	bomb = 80
+	bullet = 65
+	energy = 15
+	laser = 65
+	melee = 80
+
 //Has most of the modules removed
 /obj/item/rig/syndi/empty
 	initial_modules = list(
@@ -38,9 +46,17 @@
 	desc = "A blood-red powersuit featuring some fairly illegal technology and real curves."
 	icon_state = "merc_rig_heavy"
 	suit_type = "heavy crimson powersuit"
-	armor = list(melee = 90, bullet = 80, laser = 80, energy = 25, bomb = 90, bio = 100)
+	armor_type = /datum/armor/rig_heavysyndi
 	offline_slowdown = 4
 	online_slowdown = 2
+
+/datum/armor/rig_heavysyndi
+	bio = 100
+	bomb = 90
+	bullet = 80
+	energy = 25
+	laser = 80
+	melee = 90
 
 /obj/item/rig/syndi/heavy/empty
 	initial_modules = list(

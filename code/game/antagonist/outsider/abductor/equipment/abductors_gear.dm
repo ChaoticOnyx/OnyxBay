@@ -857,7 +857,11 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	name = "alien jumpsuit"
 	icon_state = "abductor"
 	item_state = "black"
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 10)
+	armor_type = /datum/armor/under_ubductor
+
+/datum/armor/under_ubductor
+	bio = 10
+	bomb = 10
 
 //TOOL BELT
 /obj/item/storage/belt/abductor

@@ -3,7 +3,7 @@
 	desc = "A sleek and dangerous powersuit for active combat."
 	icon_state = "security_rig"
 	suit_type = "combat powersuit"
-	armor = list(melee = 80, bullet = 65, laser = 55, energy = 15, bomb = 80, bio = 100)
+	armor_type = /datum/armor/rig_combat
 	online_slowdown = 1
 	offline_slowdown = 3
 	offline_vision_restriction = TINT_HEAVY
@@ -16,6 +16,14 @@
 	helm_type = /obj/item/clothing/head/helmet/space/rig/combat
 	boot_type = /obj/item/clothing/shoes/magboots/rig/combat
 	glove_type = /obj/item/clothing/gloves/rig/combat
+
+/datum/armor/rig_combat
+	bio = 100
+	bomb = 80
+	bullet = 65
+	energy = 15
+	laser = 55
+	melee = 80
 
 /obj/item/clothing/head/helmet/space/rig/combat
 	light_overlay = "helmet_light_dual_green"
@@ -49,7 +57,7 @@
 	desc = "An austere powersuit used by paramilitary groups and real soldiers alike."
 	icon_state = "military_rig"
 	suit_type = "military powersuit"
-	armor = list(melee = 80, bullet = 75, laser = 60, energy = 15, bomb = 80, bio = 100)
+	armor_type = /datum/armor/rig_military
 	online_slowdown = 1
 	offline_slowdown = 3
 	offline_vision_restriction = TINT_HEAVY
@@ -62,6 +70,14 @@
 	helm_type = /obj/item/clothing/head/helmet/space/rig/military
 	boot_type = /obj/item/clothing/shoes/magboots/rig/military
 	glove_type = /obj/item/clothing/gloves/rig/military
+
+/datum/armor/rig_military
+	bio = 100
+	bomb = 80
+	bullet = 75
+	energy = 15
+	laser = 60
+	melee = 80
 
 /obj/item/clothing/head/helmet/space/rig/military
 	light_overlay = "helmet_light_dual_green"

@@ -108,7 +108,14 @@
 	blood_overlay_type = "coatblood"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 	allowed = list(/obj/item/tank/emergency,/obj/item/device/flashlight,/obj/item/gun/energy,/obj/item/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/storage/fancy/cigarettes,/obj/item/flame/lighter,/obj/item/device/taperecorder)
-	armor = list(melee = 35, bullet = 35, laser = 35, energy = 20, bomb = 25, bio = 0)
+	armor_type = /datum/armor/suit_dettrench
+
+/datum/armor/suit_dettrench
+	bomb = 25
+	bullet = 35
+	energy = 20
+	laser = 35
+	melee = 35
 
 /obj/item/clothing/suit/storage/toggle/det_trench/grey
 	icon_state = "detective2_open"
@@ -118,7 +125,6 @@
 
 /obj/item/clothing/suit/storage/toggle/det_trench/ft
 	desc = "A rugged canvas trenchcoat, designed and created by TX Fabrication Corp. This one wouldn't block much of anything."
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/suit/storage/civ_trench
 	name = "brown trenchcoat"
@@ -129,7 +135,12 @@
 	blood_overlay_type = "coatblood"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 	allowed = list(/obj/item/tank/emergency,/obj/item/device/flashlight,/obj/item/storage/fancy/cigarettes,/obj/item/flame/lighter,/obj/item/device/taperecorder)
-	armor = list(melee = 10, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0)
+	armor_type = /datum/armor/suit_civtrench
+
+/datum/armor/suit_civtrench
+	bullet = 10
+	laser = 10
+	melee = 10
 
 /obj/item/clothing/suit/storage/civ_trench/grey
 	name = "grey trenchcoat"
@@ -145,7 +156,13 @@
 	body_parts_covered = UPPER_TORSO|ARMS
 	blood_overlay_type = "armorblood"
 	allowed = list(/obj/item/tank/emergency,/obj/item/device/flashlight,/obj/item/gun/energy,/obj/item/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/device/taperecorder)
-	armor = list(melee = 10, bullet = 10, laser = 15, energy = 10, bomb = 0, bio = 0)
+	armor_type = /datum/armor/suit_forensics
+
+/datum/armor/suit_forensics
+	bullet = 10
+	energy = 10
+	laser = 15
+	melee = 10
 
 /obj/item/clothing/suit/storage/toggle/forensics/toggle()
 	if(!CanPhysicallyInteract(usr))

@@ -667,10 +667,16 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	cold_protection = UPPER_TORSO|LOWER_TORSO
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
-	armor = list(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10)
+	armor_type = /datum/armor/suit_goatcape
 	action_button_name = "Toggle hood"
 	hoodtype = /obj/item/clothing/head/goatcapehood
 	siemens_coefficient = 0.6
+
+/datum/armor/suit_goatcape
+	bio = 10
+	bullet = 10
+	energy = 40
+	melee = 25
 
 /obj/item/clothing/head/goatcapehood
 	name = "goat head hood"
@@ -680,4 +686,9 @@
 	cold_protection = HEAD
 	flags_inv = HIDEEARS | BLOCKHAIR
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
-	armor = list(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10)
+	armor_type = /datum/armor/head_goathood
+
+/datum/armor/head_goathood
+	bullet = 10
+	energy = 40
+	melee = 25

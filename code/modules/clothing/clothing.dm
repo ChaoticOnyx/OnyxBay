@@ -234,6 +234,7 @@ BLIND     // can't see anything
 	gender = PLURAL //Carn: for grammarically correct text-parsing
 	w_class = ITEM_SIZE_SMALL
 	icon = 'icons/obj/clothing/gloves.dmi'
+	armor_type = /datum/armor/gloves
 	siemens_coefficient = 0.75
 	var/wired = FALSE
 	var/wire_color
@@ -246,6 +247,11 @@ BLIND     // can't see anything
 	attack_verb = list("challenged")
 	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "bloodyhands"
+
+/datum/armor/gloves
+	bullet = 5
+	laser = 5
+	melee = 10
 
 /obj/item/clothing/gloves/Initialize()
 	if(item_flags & ITEM_FLAG_PREMODIFIED)
@@ -385,12 +391,27 @@ BLIND     // can't see anything
 	slot_flags = SLOT_HEAD
 	w_class = ITEM_SIZE_SMALL
 
+	armor_type = /datum/armor/head
+
 	var/light_overlay = "helmet_light"
 	var/light_applied
 	var/brightness_on
 	var/on = 0
 
 	blood_overlay_type = "helmetblood"
+
+/datum/armor/head_light
+	melee = 5
+
+/datum/armor/head
+	bullet = 5
+	laser = 5
+	melee = 5
+
+/datum/armor/head_hard
+	bullet = 10
+	laser = 5
+	melee = 10
 
 /obj/item/clothing/head/get_mob_overlay(mob/user_mob, slot)
 	var/image/ret = ..()
@@ -579,7 +600,15 @@ BLIND     // can't see anything
 	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "shoeblood"
 
-	armor = list(melee = 25, bullet = 25, laser = 25,energy = 15, bomb = 25, bio = 10)
+	armor_type = /datum/armor/shoes
+
+/datum/armor/shoes
+	bio = 10
+	bomb = 25
+	bullet = 25
+	energy = 15
+	laser = 25
+	melee = 25
 
 /obj/item/clothing/shoes/Destroy()
 	if(holding)
@@ -657,11 +686,16 @@ BLIND     // can't see anything
 	var/fire_resist = 100 CELSIUS
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 	allowed = list(/obj/item/tank/emergency)
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_type = /datum/armor/suit
 	slot_flags = SLOT_OCLOTHING
 	blood_overlay_type = "suitblood"
 	siemens_coefficient = 0.9
 	w_class = ITEM_SIZE_NORMAL
+
+/datum/armor/suit
+	bullet = 5
+	laser = 5
+	melee = 5
 
 /obj/item/clothing/suit/update_clothing_icon()
 	if (ismob(src.loc))
@@ -694,7 +728,7 @@ BLIND     // can't see anything
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	permeability_coefficient = 0.90
 	slot_flags = SLOT_ICLOTHING
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_type = /datum/armor/under
 	w_class = ITEM_SIZE_NORMAL
 	force = 0
 	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_MONKEY)
@@ -714,6 +748,11 @@ BLIND     // can't see anything
 	var/worn_state = null
 	valid_accessory_slots = list(ACCESSORY_SLOT_UTILITY,ACCESSORY_SLOT_HOLSTER,ACCESSORY_SLOT_ARMBAND,ACCESSORY_SLOT_RANK,ACCESSORY_SLOT_DEPT,ACCESSORY_SLOT_DECOR,ACCESSORY_SLOT_MEDAL,ACCESSORY_SLOT_INSIGNIA)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_UTILITY,ACCESSORY_SLOT_HOLSTER,ACCESSORY_SLOT_ARMBAND,ACCESSORY_SLOT_RANK,ACCESSORY_SLOT_DEPT)
+
+/datum/armor/under
+	bullet = 5
+	laser = 5
+	melee = 5
 
 /obj/item/clothing/under/New()
 	..()

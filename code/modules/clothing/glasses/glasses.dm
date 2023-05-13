@@ -248,9 +248,16 @@
 	action_button_name = "Toggle Goggles"
 	toggleable = TRUE
 	see_invisible = SEE_INVISIBLE_NOLIGHTING
-	armor = list(melee = 20, bullet = 20, laser = 20, energy = 15, bomb = 20, bio = 0)
+	armor_type = /datum/armor/glasses_tac
 	siemens_coefficient = 0.6
 	electric = TRUE
+
+/datum/armor/glasses_tac
+	bomb = 20
+	bullet = 20
+	energy = 15
+	laser = 20
+	melee = 20
 
 /obj/item/clothing/glasses/magma_dark_glasses
 	name = "dark gar glasses"

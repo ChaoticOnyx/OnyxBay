@@ -8,11 +8,19 @@
 		slot_r_hand_str = "wiz_helm",
 		)
 	unacidable = TRUE //No longer shall our kind be foiled by lone chemists with spray bottles!
-	armor = list(melee = 40, bullet = 30, laser = 30, energy = 30, bomb = 35, bio = 100)
+	armor_type = /datum/armor/helm_wizard
 	siemens_coefficient = 0.7
 	sprite_sheets_obj = null
 	wizard_garb = TRUE
 	species_restricted = list(SPECIES_HUMAN, SPECIES_IPC, SPECIES_UNATHI)
+
+/datum/armor/helm_wizard
+	bio = 100
+	bomb = 35
+	bullet = 03
+	energy = 30
+	laser = 30
+	melee = 40
 
 /obj/item/clothing/suit/space/void/wizard
 	icon_state = "rig-wiz"
@@ -20,7 +28,7 @@
 	desc = "A bizarre gem-encrusted suit that radiates magical energies."
 	w_class = ITEM_SIZE_LARGE //normally voidsuits are bulky but this one is magic I suppose
 	unacidable = TRUE
-	armor = list(melee = 50, bullet = 30, laser = 30,energy = 30, bomb = 35, bio = 100)
+	armor_type = /datum/armor/void_wizard
 	siemens_coefficient = 0.7
 	sprite_sheets_obj = null
 	wizard_garb = TRUE
@@ -39,6 +47,14 @@
 				/obj/item/monster_manual,
 				/obj/item/dice/d20/cursed)
 	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_IPC, SPECIES_UNATHI)
+
+/datum/armor/void_wizard
+	bio = 100
+	bomb = 35
+	bullet = 30
+	energy = 30
+	laser = 30
+	melee = 50
 
 /obj/item/clothing/suit/space/void/wizard/New()
 	..()
@@ -66,5 +82,13 @@
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.02
 	unacidable = TRUE
-	armor = list(melee = 40, bullet = 20, laser = 20,energy = 20, bomb = 35, bio = 100)
+	armor_type = /datum/armor/gloves_wizard
 	siemens_coefficient = 0.7
+
+/datum/armor/gloves_wizard
+	bio = 100
+	bomb = 35
+	bullet = 20
+	energy = 20
+	laser = 20
+	melee = 40

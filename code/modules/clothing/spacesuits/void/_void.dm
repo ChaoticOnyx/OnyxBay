@@ -5,7 +5,7 @@
 	icon_state = "void"
 
 	heat_protection = HEAD
-	armor = list(melee = 40, bullet = 5, laser = 20,energy = 5, bomb = 35, bio = 100)
+	armor_type = /datum/armor/helm_void
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.4
 
@@ -25,13 +25,20 @@
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
+/datum/armor/helm_void
+	bio = 100
+	bomb = 35
+	bullet = 5
+	energy = 5
+	laser = 20
+	melee = 40
+
 /obj/item/clothing/suit/space/void
 	name = "voidsuit"
 	icon_state = "void"
-	//item_state = "syndie_hardsuit"
-	w_class = ITEM_SIZE_HUGE//bulky item
+	w_class = ITEM_SIZE_HUGE
 	desc = "A high-tech dark red space suit. Used for AI satellite maintenance."
-	armor = list(melee = 40, bullet = 5, laser = 20,energy = 5, bomb = 35, bio = 100)
+	armor_type = /datum/armor/suit_void
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit)
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
@@ -62,6 +69,14 @@
 	var/obj/item/tank/tank = null              // Deployable tank, if any.
 
 	action_button_name = "Toggle Helmet"
+
+/datum/armor/suit_void
+	bio = 100
+	bomb = 35
+	bullet = 5
+	energy = 5
+	laser = 20
+	melee = 40
 
 #define VOIDSUIT_INIT_EQUIPMENT(equipment_var, expected_path) \
 if(ispath(##equipment_var, ##expected_path )){\

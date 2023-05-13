@@ -7,7 +7,6 @@
  */
 
 /obj/item/rig
-
 	name = "powersuit control module"
 	icon = 'icons/obj/rig_modules.dmi'
 	desc = "A back-mounted powersuit deployment and control mechanism."
@@ -18,7 +17,7 @@
 	center_of_mass = null
 
 	// These values are passed on to all component pieces.
-	armor = list(melee = 40, bullet = 5, laser = 20,energy = 5, bomb = 35, bio = 100)
+	armor_type = /datum/armor/rig
 	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.2
@@ -85,6 +84,14 @@
 	// Wiring! How exciting.
 	var/datum/wires/rig/wires
 	var/datum/effect/effect/system/spark_spread/spark_system
+
+/datum/armor/rig
+	bio = 100
+	bomb = 25
+	bullet = 5
+	energy = 5
+	laser = 20
+	melee = 40
 
 /obj/item/rig/_examine_text(mob/user)
 	. = ..()

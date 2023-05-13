@@ -5,7 +5,7 @@
 	icon_state = "ninja_rig"
 	suit_type = "light suit"
 	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/cell)
-	armor = list(melee = 50, bullet = 15, laser = 50, energy = 10, bomb = 25, bio = 0)
+	armor_type = /datum/armor/rig_light
 	siemens_coefficient = 0.4
 	emp_protection = 10
 	online_slowdown = 0
@@ -17,6 +17,13 @@
 	helm_type =  /obj/item/clothing/head/helmet/space/rig/light
 	boot_type =  /obj/item/clothing/shoes/magboots/rig/light
 	glove_type = /obj/item/clothing/gloves/rig/light
+
+/datum/armor/rig_light
+	bomb = 25
+	bullet = 15
+	energy = 10
+	laser = 50
+	melee = 50
 
 /obj/item/clothing/suit/space/rig/light
 	name = "suit"
@@ -77,7 +84,7 @@
 	desc = "A unique, vaccum-proof suit of nano-enhanced armor designed specifically for assassins."
 	suit_type = "ominous"
 	icon_state = "ninja_rig"
-	armor = list(melee = 50, bullet = 15, laser = 30, energy = 10, bomb = 25, bio = 100)
+	armor_type = /datum/armor/rig_ninja
 	siemens_coefficient = 0.2 //heavy powersuit level shock protection
 	emp_protection = 40 //change this to 30 if too high.
 	online_slowdown = 0
@@ -103,6 +110,14 @@
 		/obj/item/rig_module/self_destruct,
 		/obj/item/rig_module/cooling_unit
 		)
+
+/datum/armor/rig_ninja
+	bio = 100
+	bomb = 30
+	bullet = 15
+	energy = 10
+	laser = 25
+	melee = 50
 
 /obj/item/rig/light/ninja/verb/rename_suit()
 	set name = "Name Ninja Suit"

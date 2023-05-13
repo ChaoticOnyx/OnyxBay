@@ -4,7 +4,7 @@
 	desc = "An advanced helmet designed for work in special operations. Property of Gorlex Marauders."
 	icon_state = "rig0-syndie"
 	item_state = "syndie_helm"
-	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 35, bio = 100)
+	armor_type = /datum/armor/helm_syndi
 	siemens_coefficient = 0.3
 	species_restricted = list(SPECIES_HUMAN, SPECIES_IPC)
 	camera = /obj/machinery/camera/network/syndicate
@@ -15,6 +15,14 @@
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
+/datum/armor/helm_syndi
+	bio = 100
+	bomb = 35
+	bullet = 50
+	energy = 15
+	laser = 50
+	melee = 60
+
 /obj/item/clothing/suit/space/void/syndi
 	icon_state = "rig-syndie"
 	name = "blood-red voidsuit"
@@ -24,7 +32,7 @@
 		slot_r_hand_str = "syndie_voidsuit",
 	)
 	w_class = ITEM_SIZE_LARGE //normally voidsuits are bulky but the syndi voidsuit is 'advanced' or something
-	armor = list(melee = 60, bullet = 50, laser = 50, energy = 15, bomb = 35, bio = 100)
+	armor_type = /datum/armor/void_syndi
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/melee/energy/sword/one_hand,/obj/item/handcuffs)
 	siemens_coefficient = 0.3
 	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_IPC)
@@ -33,6 +41,14 @@
 		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+
+/datum/armor/void_syndi
+	bio = 100
+	bomb = 35
+	bullet = 50
+	energy = 15
+	laser = 50
+	melee = 60
 
 /obj/item/clothing/suit/space/void/syndi/New()
 	..()

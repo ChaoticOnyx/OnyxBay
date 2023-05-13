@@ -44,7 +44,7 @@
 	item_flags = 0
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.01
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 60)
+	armor_type = /datum/armor/mask_surgical
 	down_gas_transfer_coefficient = 1
 	down_body_parts_covered = null
 	down_icon_state = "steriledown"
@@ -54,6 +54,9 @@
 		RADIATION_BETA_PARTICLE = 2.2 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+
+/datum/armor/mask_surgical
+	bio = 60
 
 /obj/item/clothing/mask/fakemoustache
 	name = "fake moustache"
@@ -154,9 +157,15 @@
 	body_parts_covered = FACE|EYES
 	action_button_name = "Toggle MUI"
 	origin_tech = list(TECH_DATA = 5, TECH_ENGINEERING = 5)
-	armor = list(melee = 10, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0) //Well it's made of some sort of plastic.
+	armor_type = /datum/armor/mask_ai
 	var/active = FALSE
 	var/mob/observer/eye/cameranet/eye
+
+/datum/armor/mask_ai
+	bullet = 10
+	energy = 5
+	laser = 10
+	melee = 10
 
 /obj/item/clothing/mask/ai/New()
 	eye = new(src)
@@ -212,12 +221,17 @@
 	flags_inv = HIDEFACE|BLOCKHAIR
 	siemens_coefficient = 0.7
 	body_parts_covered = HEAD|FACE|EYES
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	armor_type = /datum/armor/mask_rubber
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 16 MEGA ELECTRONVOLT,
 		RADIATION_BETA_PARTICLE = 3.4 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+
+/datum/armor/mask_rubber
+	bullet = 5
+	laser = 5
+	melee = 5
 
 /obj/item/clothing/mask/rubber/trasen
 	name = "Jack Trasen mask"
@@ -293,12 +307,16 @@
 	item_state = "bandblack"
 	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
-	armor = list(melee = 5, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 15)
+	armor_type = /datum/armor/mask_bandana
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 12 MEGA ELECTRONVOLT,
 		RADIATION_BETA_PARTICLE = 2.18 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+
+/datum/armor/mask_bandana
+	bio = 15
+	melee = 5
 
 /obj/item/clothing/mask/bandana/equipped(mob/user, slot)
 	switch(slot)
@@ -379,8 +397,13 @@
 	icon_state = "skullmask"
 	item_state = "skullmask"
 	w_class = ITEM_SIZE_NORMAL
-	armor = list(melee = 15, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0)
+	armor_type = /datum/armor/mask_skull
 	siemens_coefficient = 0.8
+
+/datum/armor/mask_skull
+	bullet = 10
+	laser = 10
+	melee = 15
 
 /obj/item/clothing/mask/plasticbag
 	name = "plastic bag"

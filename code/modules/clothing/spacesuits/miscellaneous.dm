@@ -22,11 +22,19 @@
 	desc = "Yarr."
 	icon_state = "pirate"
 	item_state = "pirate"
-	armor = list(melee = 60, bullet = 50, laser = 30,energy = 15, bomb = 30, bio = 30)
+	armor_type = /datum/armor/helm_pirate
 	flags_inv = BLOCKHAIR
 	body_parts_covered = 0
 	siemens_coefficient = 0.9
 	has_visor = 0
+
+/datum/armor/helm_pirate
+	bio = 30
+	bomb = 30
+	bullet = 50
+	energy = 15
+	laser = 30
+	melee = 60
 
 /obj/item/clothing/suit/space/pirate
 	name = "pirate coat"
@@ -34,9 +42,17 @@
 	icon_state = "pirate"
 	w_class = ITEM_SIZE_NORMAL
 	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/tank/emergency)
-	armor = list(melee = 60, bullet = 50, laser = 30,energy = 15, bomb = 30, bio = 30)
+	armor_type = /datum/armor/suit_pirate
 	siemens_coefficient = 0.9
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+
+/datum/armor/suit_pirate
+	bio = 30
+	bomb = 30
+	bullet = 50
+	energy = 15
+	laser = 30
+	melee = 60
 
 /obj/item/clothing/suit/space/pirate/New()
 	..()
@@ -74,7 +90,7 @@
 	name = "goliath tailplate"
 	desc = "An old goliath's tailplate. It's exceptionally tough, yet quite soft on the inside and, surprisingly, matches a human head's size."
 	icon_state = "goliathhelm"
-	armor = list(melee = 85, bullet = 65, laser = 65, energy = 35, bomb = 65, bio = 85)
+	armor_type = /datum/armor/helm_goliath
 	siemens_coefficient = 0.5
 	flash_protection = FLASH_PROTECTION_MODERATE
 	action_button_name = null
@@ -83,6 +99,14 @@
 		RADIATION_BETA_PARTICLE = 2.8 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+
+/datum/armor/helm_goliath
+	bio = 85
+	bomb = 65
+	bullet = 65
+	energy = 35
+	laser = 65
+	melee = 85
 
 /obj/item/clothing/head/helmet/space/goliath/attack_self(mob/user)
 	return

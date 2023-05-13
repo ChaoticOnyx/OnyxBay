@@ -6,11 +6,19 @@
 	brightness_on = 4 //luminosity when on
 	light_overlay = "hardhat_light"
 	w_class = ITEM_SIZE_NORMAL
-	armor = list(melee = 45, bullet = 35, laser = 35,energy = 10, bomb = 20, bio = 10)
+	armor_type = /datum/armor/head_hardhat
 	flags_inv = 0
 	siemens_coefficient = 0.5
 	heat_protection = HEAD
 	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
+
+/datum/armor/head_hardhat
+	bio = 10
+	bomb = 20
+	bullet = 35
+	energy = 10
+	laser = 25
+	melee = 45
 
 /obj/item/clothing/head/hardhat/orange
 	icon_state = "hardhat0_orange"
