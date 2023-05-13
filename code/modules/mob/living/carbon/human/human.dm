@@ -65,6 +65,8 @@
 		sync_organ_dna()
 	make_blood()
 
+	BITSET(hud_updateflag, STATUS_HUD)
+
 /mob/living/carbon/human/Destroy()
 	GLOB.human_mob_list -= src
 	worn_underwear = null
