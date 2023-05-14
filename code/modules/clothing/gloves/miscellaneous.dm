@@ -2,8 +2,14 @@
 	desc = "Regal blue gloves, with a nice gold trim. Swanky."
 	name = "captain's gloves"
 	icon_state = "captain"
-	armor = list(melee = 20, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0)
+	armor_type = /datum/armor/gloves_captain
 	siemens_coefficient = 0 // These are ELITE
+
+/datum/armor/gloves_captain
+	bullet = 10
+	energy = 5
+	laser = 10
+	melee = 20
 
 /obj/item/clothing/gloves/insulated
 	desc = "These gloves will protect the wearer from electric shocks."
@@ -12,7 +18,14 @@
 	icon_state = "white"
 	siemens_coefficient = 0
 	permeability_coefficient = 0.05
-	armor = list(melee = 10, bullet = 5, laser = 10, energy = 10, bomb = 0, bio = 30)
+	armor_type = /datum/armor/gloves_insulated
+
+/datum/armor/gloves_insulated
+	bio = 30
+	bullet = 5
+	energy = 10
+	laser = 10
+	melee = 10
 
 /obj/item/clothing/gloves/insulated/cheap                             //Cheap Chinese Crap
 	desc = "These gloves are cheap copies of the coveted gloves, no way this can end badly."
@@ -31,12 +44,18 @@
 	item_state = "black"
 	siemens_coefficient = 0.50
 	permeability_coefficient = 0.05
-	armor = list(melee = 15, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0)
+	armor_type = /datum/armor/gloves_forensic
 
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = HANDS
 	max_heat_protection_temperature = GLOVES_MAX_HEAT_PROTECTION_TEMPERATURE
+
+/datum/armor/gloves_forensic
+	bullet = 10
+	energy = 5
+	laser = 10
+	melee = 15
 
 /obj/item/clothing/gloves/thick
 	desc = "These work gloves are thick and fire-resistant."
@@ -44,12 +63,18 @@
 	icon_state = "black"
 	siemens_coefficient = 0.5
 	permeability_coefficient = 0.05
-	armor = list(melee = 15, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0)
+	armor_type = /datum/armor/gloves_thick
 
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = HANDS
 	max_heat_protection_temperature = GLOVES_MAX_HEAT_PROTECTION_TEMPERATURE
+
+/datum/armor/gloves_thick
+	bullet = 10
+	energy = 5
+	laser = 10
+	melee = 15
 
 /obj/item/clothing/gloves/thick/modified
 	item_flags = ITEM_FLAG_PREMODIFIED
@@ -58,8 +83,16 @@
 	desc = "These tactical gloves are somewhat fire and impact-resistant."
 	name = "\improper SWAT Gloves"
 	force = 5
-	armor = list(melee = 45, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10)
+	armor_type = /datum/armor/gloves_swat
 	siemens_coefficient = 0.3
+
+/datum/armor/gloves_swat
+	bio = 10
+	bomb = 50
+	bullet = 60
+	energy = 25
+	laser = 60
+	melee = 45
 
 /obj/item/clothing/gloves/thick/security
 	name = "\improper Security Gloves"
@@ -71,11 +104,19 @@
 	siemens_coefficient = 0
 	permeability_coefficient = 0.05
 	force = 5
-	armor = list(melee = 45, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10)
+	armor_type = /datum/armor/gloves_thick_combat
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = HANDS
 	max_heat_protection_temperature = GLOVES_MAX_HEAT_PROTECTION_TEMPERATURE
+
+/datum/armor/gloves_thick_combat
+	bio = 10
+	bomb = 50
+	bullet = 60
+	energy = 25
+	laser = 60
+	melee = 45
 
 /obj/item/clothing/gloves/thick/botany
 	desc = "These leather work gloves protect against thorns, barbs, prickles, spikes and other harmful objects of floral origin."
@@ -92,7 +133,10 @@
 	siemens_coefficient = 1.1 //thin latex gloves, much more conductive than fabric gloves (basically a capacitor for AC)
 	permeability_coefficient = 0.01
 	germ_level = 0
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 70)
+	armor_type = /datum/armor/gloves_latex
+
+/datum/armor/gloves_latex
+	bio = 70
 
 /obj/item/clothing/gloves/latex/modified
 	item_flags = ITEM_FLAG_PREMODIFIED
@@ -110,7 +154,13 @@
 	name = "work gloves"
 	icon_state = "work"
 	siemens_coefficient = 0.50
-	armor = list(melee = 15, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0)
+	armor_type = /datum/armor/gloves_duty
+
+/datum/armor/gloves_duty
+	bullet = 10
+	energy = 5
+	laser = 10
+	melee = 15
 
 /obj/item/clothing/gloves/duty/modified
 	item_flags = ITEM_FLAG_PREMODIFIED
@@ -122,7 +172,14 @@
 	force = 5
 	siemens_coefficient = 0.50
 	permeability_coefficient = 0.05
-	armor = list(melee = 30, bullet = 10, laser = 10, energy = 15, bomb = 20, bio = 0)
+	armor_type = /datum/armor/gloves_tactical
+
+/datum/armor/gloves_tactical
+	bomb = 20
+	bullet = 10
+	energy = 15
+	laser = 10
+	melee = 30
 
 /obj/item/clothing/gloves/guards
 	desc = "A pair of synthetic gloves and arm pads reinforced with armor plating."
@@ -132,4 +189,11 @@
 	w_class = ITEM_SIZE_NORMAL
 	siemens_coefficient = 0.7
 	permeability_coefficient = 0.03
-	armor = list(melee = 40, bullet = 40, laser = 40, energy = 25, bomb = 30, bio = 0)
+	armor_type = /datum/armor/gloves_guards
+
+/datum/armor/gloves_guards
+	bomb = 30
+	bullet = 40
+	energy = 25
+	laser = 40
+	melee = 40

@@ -21,7 +21,11 @@
 	item_state_slots = list(
 		slot_hand_str = "black"
 		)
-	armor = list(melee = 15, bullet = 10, laser = 0, energy = 0, bomb = 0, bio = 0)
+	armor_type = /datum/armor/under_gorka
+
+/datum/armor/under_gorka
+	bullet = 10
+	melee = 15
 
 /obj/item/clothing/under/gorka/mob_can_equip(mob/user)
 	.=..()
@@ -34,8 +38,11 @@
 	name = "rosa dress"
 	icon_state = "rosa"
 	permeability_coefficient = 0.50
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 10)
+	armor_type = /datum/armor/under_rose
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+
+/datum/armor/under_rose
+	bio = 10
 
 /obj/item/clothing/under/captain_fly
 	name = "rogue's uniform"
@@ -108,8 +115,13 @@
 	item_state_slots = list(
 		slot_hand_str = "black"
 		)
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor_type = /datum/armor/under_ert
 	siemens_coefficient = 0.9
+
+/datum/armor/under_ert
+	bullet = 5
+	laser = 5
+	melee = 10
 
 /obj/item/clothing/under/space
 	name = "\improper NASA jumpsuit"
@@ -132,7 +144,7 @@
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.01
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
-	armor = list(melee = 100, bullet = 100, laser = 100,energy = 100, bomb = 100, bio = 100)
+	armor_type = /datum/armor/immune
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS | HANDS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0
@@ -552,8 +564,11 @@
 	desc = "A high visibility jumpsuit made from heat and radiation resistant materials."
 	icon_state = "engine"
 	siemens_coefficient = 0.8
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 20, bio = 0)
+	armor_type = /datum/armor/under_hazard
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
+
+/datum/armor/under_hazard
+	bomb = 20
 
 /obj/item/clothing/under/sterile
 	name = "sterile jumpsuit"
@@ -563,7 +578,10 @@
 		slot_hand_str = "white"
 		)
 	permeability_coefficient = 0.50
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 30)
+	armor_type = /datum/armor/under_sterile
+
+/datum/armor/under_sterile
+	bio = 30
 
 /obj/item/clothing/under/suit_jacket/charcoal
 	name = "charcoal suit"

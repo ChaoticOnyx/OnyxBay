@@ -6,10 +6,17 @@
 	item_flags = ITEM_FLAG_NOSLIP
 	origin_tech = list(TECH_ILLEGAL = 3)
 	var/list/clothing_choices = list()
-	siemens_coefficient = 0.5
 	species_restricted = null
+	armor_type = /datum/armor/shoes_syndigaloshes
+	siemens_coefficient = 0.5
 
-	armor = list(melee = 40, bullet = 40, laser = 40, energy = 35, bomb = 20, bio = 30)
+/datum/armor/shoes_syndigaloshes
+	bio = 30
+	bomb = 20
+	bullet = 40
+	energy = 35
+	laser = 40
+	melee = 40
 
 /obj/item/clothing/shoes/mime
 	name = "mime shoes"
@@ -20,17 +27,25 @@
 	desc = "When you want to turn up the heat."
 	icon_state = "swat"
 	force = 3
-	armor = list(melee = 80, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10)
+	armor_type = /datum/armor/shoes_swat
 	item_flags = ITEM_FLAG_NOSLIP
 	siemens_coefficient = 0.4
 	can_hold_knife = 1
+
+/datum/armor/shoes_swat
+	bio = 10
+	bomb = 50
+	bullet = 60
+	energy = 25
+	laser = 60
+	melee = 80
 
 /obj/item/clothing/shoes/combat //Basically SWAT shoes combined with galoshes.
 	name = "combat boots"
 	desc = "When you REALLY want to turn up the heat."
 	icon_state = "swat"
 	force = 5
-	armor = list(melee = 80, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10)
+	armor_type = /datum/armor/shoes_combat
 	item_flags = ITEM_FLAG_NOSLIP
 	siemens_coefficient = 0.1
 	can_hold_knife = 1
@@ -39,6 +54,14 @@
 	min_cold_protection_temperature = SHOE_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = FEET
 	max_heat_protection_temperature = SHOE_MAX_HEAT_PROTECTION_TEMPERATURE
+
+/datum/armor/shoes_combat
+	bio = 10
+	bomb = 50
+	bullet = 60
+	energy = 25
+	laser = 60
+	melee = 80
 
 /obj/item/clothing/shoes/dress
 	name = "dress shoes"
@@ -52,11 +75,17 @@
 	icon_state = "wizard"
 	species_restricted = null
 	body_parts_covered = 0
+	wizard_garb = 1
+	armor_type = /datum/armor/shoes_sandal
 	siemens_coefficient = 1.0
 
-	wizard_garb = 1
-
-	armor = list(melee = 10, bullet = 10, laser = 10, energy = 5, bomb = 10, bio = 3)
+/datum/armor/shoes_sandal
+	bio = 3
+	bomb = 10
+	bullet = 10
+	energy = 5
+	laser = 10
+	melee = 10
 
 /obj/item/clothing/shoes/sandal/marisa
 	desc = "A pair of magic, black shoes."
@@ -107,8 +136,15 @@
 	var/footstep = 1	//used for squeeks whilst walking
 	species_restricted = null
 	siemens_coefficient = 0.5 // these things are kinda rubberish, aint they?
+	armor_type = /datum/armor/shoes_clown
 
-	armor = list(melee = 35, bullet = 35, laser = 35,energy = 15, bomb = 25, bio = 15)
+/datum/armor/shoes_clown
+	bio = 15
+	bomb = 25
+	bullet = 35
+	energy = 15
+	laser = 35
+	melee = 35
 
 /obj/item/clothing/shoes/clown_shoes/New()
 	..()
@@ -131,13 +167,21 @@
 	force = 2
 	siemens_coefficient = 0.5
 
-	armor = list(melee = 40, bullet = 40, laser = 40, energy = 15, bomb = 20, bio = 10)
+	armor_type = /datum/armor/shoes_cult
 
 	cold_protection = FEET
 	min_cold_protection_temperature = SHOE_MIN_COLD_PROTECTION_TEMPERATURE
 	heat_protection = FEET
 	max_heat_protection_temperature = SHOE_MAX_HEAT_PROTECTION_TEMPERATURE
 	species_restricted = null
+
+/datum/armor/shoes_cult
+	bio = 10
+	bomb = 20
+	bullet = 40
+	energy = 15
+	laser = 40
+	melee = 40
 
 /obj/item/clothing/shoes/cyborg
 	name = "cyborg boots"

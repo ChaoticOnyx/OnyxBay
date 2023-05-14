@@ -17,8 +17,8 @@
 		slot_l_hand_str = "fire_suit",
 		slot_r_hand_str = "fire_suit",
 	)
-	w_class = ITEM_SIZE_HUGE//bulky item
-	armor = list(melee = 20, bullet = 10, laser = 15,energy = 5, bomb = 0, bio = 0)
+	w_class = ITEM_SIZE_HUGE
+	armor_type = /datum/armor/suit_fire
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.50
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
@@ -28,6 +28,12 @@
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS | HANDS
+
+/datum/armor/suit_fire
+	bullet = 10
+	energy = 5
+	laser = 15
+	melee = 20
 
 /obj/item/clothing/suit/fire/New()
 	..()
@@ -39,7 +45,6 @@
 		slot_l_hand_str = "firefighter",
 		slot_r_hand_str = "firefighter",
 	)
-
 
 /obj/item/clothing/suit/fire/heavy
 	name = "firesuit"
@@ -62,7 +67,7 @@
 	name = "bomb hood"
 	desc = "Use in case of bomb."
 	icon_state = "bombsuit"
-	armor = list(melee = 70, bullet = 15, laser = 30, energy = 50, bomb = 90, bio = 0)
+	armor_type = /datum/armor/head_bombhood
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|BLOCKHAIR
 	body_parts_covered = HEAD|FACE|EYES
 	siemens_coefficient = 0
@@ -72,6 +77,13 @@
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
+/datum/armor/head_bombhood
+	bomb = 90
+	bullet = 15
+	energy = 50
+	laser = 30
+	melee = 70
+
 /obj/item/clothing/suit/bomb_suit
 	name = "bomb suit"
 	desc = "A suit designed for safety when handling explosives."
@@ -79,11 +91,18 @@
 	w_class = ITEM_SIZE_HUGE//bulky item
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.01
-	armor = list(melee = 70, bullet = 15, laser = 30, energy = 50, bomb = 90, bio = 0)
+	armor_type = /datum/armor/suit_bombsuit
 	flags_inv = HIDEJUMPSUIT|HIDETAIL
 	heat_protection = UPPER_TORSO|LOWER_TORSO
 	max_heat_protection_temperature = ARMOR_MAX_HEAT_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0
+
+/datum/armor/suit_bombsuit
+	bomb = 90
+	bullet = 15
+	energy = 50
+	laser = 30
+	melee = 70
 
 /obj/item/clothing/suit/bomb_suit/New()
 	..()
@@ -107,12 +126,15 @@
 	desc = "A hood with radiation protective properties. Label: Made with lead, do not eat insulation."
 	flags_inv = BLOCKHAIR
 	body_parts_covered = HEAD|FACE|EYES
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 60)
+	armor_type = /datum/armor/head_radiation
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 44.6 MEGA ELECTRONVOLT,
 		RADIATION_BETA_PARTICLE = 17.6 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+
+/datum/armor/head_radiation
+	bio = 60
 
 /obj/item/clothing/suit/radiation
 	name = "Radiation suit"
@@ -127,7 +149,7 @@
 	permeability_coefficient = 0.50
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|HANDS|FEET
 	allowed = list(/obj/item/device/flashlight, /obj/item/device/geiger, /obj/item/tank/emergency,/obj/item/clothing/head/radiation,/obj/item/clothing/mask/gas)
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 60)
+	armor_type = /datum/armor/suit_radiation
 	flags_inv = HIDEJUMPSUIT|HIDETAIL|HIDEGLOVES|HIDESHOES
 
 	rad_resist = list(
@@ -135,6 +157,9 @@
 		RADIATION_BETA_PARTICLE = 17.6 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+
+/datum/armor/suit_radiation
+	bio = 60
 
 /obj/item/clothing/suit/radiation/New()
 	..()

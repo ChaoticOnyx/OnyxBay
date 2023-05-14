@@ -1,7 +1,0 @@
-/datum/armor
-	bio = 0
-	bomb = 0
-	bullet = 0
-	energy = 0
-	laser = 0
-	melee = 0

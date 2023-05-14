@@ -6,7 +6,7 @@
 	icon_state = "deathsquad"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS
 	allowed = list(/obj/item/gun, /obj/item/ammo_magazine, /obj/item/ammo_casing, /obj/item/melee/baton, /obj/item/handcuffs, /obj/item/tank)
-	armor = list(melee = 80, bullet = 70, laser = 70, energy = 45, bomb = 65, bio = 100)
+	armor_type = /datum/armor/suit_space_void_swat
 	flags_inv = HIDESHOES|HIDEJUMPSUIT
 	siemens_coefficient = 0.6
 	rad_resist = list(
@@ -14,6 +14,14 @@
 		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+
+/datum/armor/suit_space_void_swat
+	bio = 100
+	bomb = 65
+	bullet = 70
+	energy = 45
+	laser = 70
+	melee = 80
 
 /obj/item/clothing/suit/space/void/swat/New()
 	..()
@@ -27,7 +35,7 @@
 		slot_l_hand_str = "syndicate-helm-black-red",
 		slot_r_hand_str = "syndicate-helm-black-red",
 		)
-	armor = list(melee = 80, bullet = 70, laser = 70, energy = 45, bomb = 65, bio = 100)
+	armor_type = /datum/armor/head_helmet_space_deathsquad
 	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE | ITEM_FLAG_THICKMATERIAL
 	flags_inv = BLOCKHAIR
 	siemens_coefficient = 0.6
@@ -37,6 +45,13 @@
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
+/datum/armor/head_helmet_space_deathsquad
+	bio = 100
+	bomb = 65
+	bullet = 70
+	energy = 45
+	laser = 70
+	melee = 80
 
 // Captain
 /obj/item/clothing/head/helmet/space/void/captain
@@ -47,9 +62,17 @@
 		slot_l_hand_str = "caphelmet",
 		slot_r_hand_str = "caphelmet",
 	)
-	armor = list(melee = 75, bullet = 60, laser = 60, energy = 35, bomb = 55, bio = 100)
+	armor_type = /datum/armor/head_helmet_space_void_captain
 	siemens_coefficient = 0.5
 	light_overlay = "helmet_light_dual"
+
+/datum/armor/head_helmet_space_void_captain
+	bio = 100
+	bomb = 55
+	bullet = 60
+	energy = 35
+	laser = 60
+	melee = 75
 
 /obj/item/clothing/suit/space/void/captain
 	name = "captain's space armor"
@@ -59,9 +82,17 @@
 		slot_l_hand_str = "capspacesuit",
 		slot_r_hand_str = "capspacesuit",
 	)
-	armor = list(melee = 75, bullet = 60, laser = 60, energy = 35, bomb = 55, bio = 100)
+	armor_type = /datum/armor/suit_space_void_captain
 	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit, /obj/item/ammo_magazine, /obj/item/ammo_casing, /obj/item/melee/baton, /obj/item/handcuffs, /obj/item/disk/nuclear)
 	siemens_coefficient = 0.5
+
+/datum/armor/suit_space_void_captain
+	bio = `00
+	bomb = 55
+	bullet = 60
+	energy = 35
+	laser = 60
+	melee = 75
 
 /obj/item/clothing/suit/space/void/captain/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/captain
@@ -74,15 +105,31 @@
 	desc = "A radiation-resistant helmet made especially for exploring unknown planetary environments."
 	icon_state = "helm_explorer"
 	item_state = "helm_explorer"
-	armor = list(melee = 20, bullet = 10, laser = 15,energy = 45, bomb = 30, bio = 100)
+	armor_type = /datum/armor/head_helmet_space_void_exploration
 	light_overlay = "explorer_light"
+
+/datum/armor/head_helmet_space_void_exploration
+	bio = 100
+	bomb = 30
+	bullet = 10
+	energy = 45
+	laser = 15
+	melee = 20
 
 /obj/item/clothing/suit/space/void/exploration
 	name = "exploration voidsuit"
 	desc = "A lightweight, radiation-resistant voidsuit, featuring the Expeditionary Corps emblem on its chest plate. Designed for exploring unknown planetary environments."
 	icon_state = "void_explorer"
-	armor = list(melee = 20, bullet = 10, laser = 15,energy = 45, bomb = 30, bio = 100)
+	armor_type = /datum/armor/suit_space_void_exploration
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/device/healthanalyzer,/obj/item/device/gps,/obj/item/pinpointer/radio,/obj/item/device/radio/beacon,/obj/item/material/hatchet/machete,/obj/item/shovel)
+
+/datum/armor/suit_space_void_exploration
+	bio = 100
+	bomb = 30
+	bullet = 10
+	energy = 45
+	laser = 15
+	melee = 20
 
 /obj/item/clothing/suit/space/void/exploration/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/exploration
@@ -99,7 +146,15 @@
 		slot_l_hand_str = "eng_helm",
 		slot_r_hand_str = "eng_helm",
 		)
-	armor = list(melee = 50, bullet = 10, laser = 30,energy = 15, bomb = 35, bio = 100)
+	armor_type = /datum/armor/head_helmet_space_void_engineering_salvage
+
+/datum/armor/head_helmet_space_void_engineering_salvage
+	bio = 100
+	bomb = 35
+	bullet = 10
+	energy = 15
+	laser = 30
+	melee = 50
 
 /obj/item/clothing/suit/space/void/engineering/salvage
 	name = "salvage voidsuit"
@@ -109,8 +164,16 @@
 		slot_l_hand_str = "eng_voidsuit",
 		slot_r_hand_str = "eng_voidsuit",
 	)
-	armor = list(melee = 50, bullet = 10, laser = 30,energy = 15, bomb = 35, bio = 100)
+	armor_type = /datum/armor/suit_space_void_engineering_salvage
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
+
+/datum/armor/suit_space_void_engineering_salvage
+	bio = 100
+	bomb = 35
+	bullet = 10
+	energy = 15
+	laser = 30
+	melee = 50
 
 /obj/item/clothing/suit/space/void/engineering/salvage/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/engineering/salvage
@@ -123,18 +186,34 @@
 	desc = "An atmos resistant helmet for space and planet exploration."
 	icon_state = "rig0_pilot"
 	item_state = "pilot_helm"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor_type = /datum/armor/head_helmet_space_void_pilot
 	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
 	light_overlay = "helmet_light_dual"
+
+/datum/armor/head_helmet_space_void_pilot
+	bio = 100
+	bomb = 5
+	bullet = 5
+	energy = 5
+	laser = 15
+	melee = 40
 
 /obj/item/clothing/suit/space/void/pilot
 	name = "pilot voidsuit"
 	desc = "An atmos resistant voidsuit for space and planet exploration."
 	icon_state = "rig-pilot"
 	item_state = "rig-pilot"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor_type = /datum/armor/suit_space_void_pilot
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
+
+/datum/armor/suit_space_void_pilot
+	bio = 100
+	bomb = 5
+	bullet = 5
+	energy = 5
+	laser = 15
+	melee = 40
 
 /obj/item/clothing/suit/space/void/pilot/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/pilot
@@ -147,18 +226,34 @@
 	desc = "A bulky helmet with some heavy armor plating."
 	icon_state = "hardsuit-helm-knight"
 	item_state = "hardsuit-helm-knight"
-	armor = list(melee = 70, bullet = 35, laser = 35, energy = 25, bomb = 55, bio = 100)
+	armor_type = /datum/armor/head_helmet_space_void_knight
 	siemens_coefficient = 0.7
 	light_overlay = "helmet_light_dual"
+
+/datum/armor/head_helmet_space_void_knight
+	bio = 100
+	bomb = 55
+	bullet = 35
+	energy = 25
+	laser = 35
+	melee = 70
 
 /obj/item/clothing/suit/space/void/knight
 	icon_state = "hardsuit-knight"
 	item_state = "hardsuit-knight"
 	name = "strange voidsuit"
 	desc = "A bulky set of space-proof armor, that looks kinda ancient. 'Lancelot X-40' is written on the front plate."
-	armor = list(melee = 70, bullet = 35, laser = 35, energy = 25, bomb = 55, bio = 100)
+	armor_type = /datum/armor/suit_space_void_knight
 	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/melee/baton)
 	siemens_coefficient = 0.7
+
+/datum/armor/suit_space_void_knight
+	bio = 100
+	bomb = 55
+	bullet = 35
+	energy = 25
+	laser = 35
+	melee = 70
 
 
 // Optical
@@ -167,7 +262,15 @@
 	icon_state = "hardsuit-optical"
 	desc = "Strange looking, smoothly contoured helmet. It looks a bit blurry."
 	siemens_coefficient = 0
-	armor = list(melee = 35, bullet = 40, laser = 45, energy = 40, bomb = 20, bio = 100)
+	armor_type = /datum/armor/head_helmet_space_void_optical
+
+/datum/armor/head_helmet_space_void_optical
+	bio = 100
+	bomb = 20
+	bullet = 40
+	energy = 40
+	laser = 45
+	melee = 35
 
 /obj/item/clothing/suit/space/void/optical
 	name = "experimental voidsuit"
@@ -175,8 +278,16 @@
 	desc = "Strange black voidsuit, with some devices attached to it. It looks a bit blurry."
 	action_button_name = "Toggle Optical Disruptor"
 	siemens_coefficient = 0
-	armor = list(melee = 35, bullet = 40, laser = 45, energy = 40, bomb = 20, bio = 100)
+	armor_type = /datum/armor/suit_space_void_optical
 	var/cloak = FALSE
+
+/datum/armor/suit_space_void_optical
+	bio = 100
+	bomb = 20
+	bullet = 40
+	energy = 40
+	laser = 45
+	melee = 35
 
 /obj/item/clothing/suit/space/void/optical/New()
 	..()
@@ -215,24 +326,41 @@
 
 	animate(H,alpha = 85, alpha = 255, time = 10)
 
+
 // Rmc(Only)
 /obj/item/clothing/head/helmet/space/void/rmc_red
 	name = "rmc red helmet"
 	desc = "An atmos resistant helmet for space and planet exploration."
 	icon_state = "rig0_rmc_red"
 	item_state = "rmc_red_helm"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor_type = /datum/armor/head_helmet_space_void_rmc
 	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
 	light_overlay = "helmet_light_dual"
+
+/datum/armor/head_helmet_space_void_rmc
+	bio = 100
+	bomb = 5
+	bullet = 5
+	energy = 5
+	laser = 15
+	melee = 40
 
 /obj/item/clothing/suit/space/void/rmc_red
 	name = "rmc red voidsuit"
 	desc = "An atmos resistant voidsuit for space and planet exploration."
 	icon_state = "rmc_red"
 	item_state = "rmc_red"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor_type = /datum/armor/suit_space_void_rmc
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
+
+/datum/armor/suit_space_void_rmc
+	bio = 100
+	bomb = 5
+	bullet = 5
+	energy = 5
+	laser = 15
+	melee = 40
 
 /obj/item/clothing/suit/space/void/rmc_red/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/rmc_red
@@ -243,7 +371,7 @@
 	desc = "An atmos resistant helmet for space and planet exploration."
 	icon_state = "rig0_rmc_green"
 	item_state = "rmc_green_helm"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor_type = /datum/armor/head_helmet_space_void_rmc
 	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
 	light_overlay = "helmet_light_dual"
 
@@ -252,7 +380,7 @@
 	desc = "An atmos resistant voidsuit for space and planet exploration."
 	icon_state = "rmc_green"
 	item_state = "rmc_green"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor_type = /datum/armor/suit_space_void_rmc
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
 
@@ -265,7 +393,7 @@
 	desc = "An atmos resistant helmet for space and planet exploration."
 	icon_state = "rig0_rmc_royal"
 	item_state = "rmc_royal_helm"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor_type = /datum/armor/head_helmet_space_void_rmc
 	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
 	light_overlay = "helmet_light_dual"
 
@@ -274,7 +402,7 @@
 	desc = "An atmos resistant voidsuit for space and planet exploration."
 	icon_state = "rmc_royal"
 	item_state = "rmc_royal"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor_type = /datum/armor/suit_space_void_rmc
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
 
@@ -287,16 +415,24 @@
 	desc = "An atmos resistant voidsuit for space and planet exploration."
 	icon_state = "engsuit_spc"
 	item_state = "engsuit_spc"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor_type = /datum/armor/suit_space_void_spc
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
+
+/datum/armor/suit_space_void_spc
+	bio = 100
+	bomb = 5
+	bullet = 5
+	energy = 5
+	laser = 15
+	melee = 40
 
 /obj/item/clothing/suit/space/void/secsuit_spc
 	name = "security spc voidsuit"
 	desc = "An atmos resistant voidsuit for space and planet exploration."
 	icon_state = "secsuit_spc"
 	item_state = "secsuit_spc"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor_type = /datum/armor/suit_space_void_spc
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
 
@@ -305,24 +441,48 @@
 	desc = "An atmos resistant helmet for space and planet exploration."
 	icon_state = "pilot_spc"
 	item_state = "pilot_spc"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor_type = /datum/armor/head_helmet_space_void_spc
 	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
 	light_overlay = "helmet_light_dual"
+
+/datum/armor/head_helmet_space_void_spc
+	bio = 100
+	bomb = 5
+	bullet = 5
+	energy = 5
+	laser = 15
+	melee = 40
 
 /obj/item/clothing/head/helmet/space/void/templar
 	name = "templar helmet"
 	desc = "An atmos resistant helmet for space and planet exploration."
 	icon_state = "templar"
 	item_state = "templar"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor_type = /datum/armor/head_helmet_space_void_templar
 	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
 	light_overlay = "helmet_light_dual"
+
+/datum/armor/head_helmet_space_void_templar
+	bio = 100
+	bomb = 5
+	bullet = 5
+	energy = 5
+	laser = 15
+	melee = 40
 
 /obj/item/clothing/head/helmet/space/void/scuba
 	name = "scuba helmet"
 	desc = "An atmos resistant helmet for space and planet exploration."
 	icon_state = "scuba"
 	item_state = "scuba"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor_type = /datum/armor/suit_space_void_scuba
 	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
 	light_overlay = "helmet_light_dual"
+
+/datum/armor/suit_space_void_scuba
+	bio = 100
+	bomb = 5
+	bullet = 5
+	energy = 5
+	laser = 15
+	melee = 40

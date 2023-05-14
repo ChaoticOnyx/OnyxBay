@@ -11,7 +11,7 @@
 
 	req_access = list(access_cent_specops)
 
-	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 100)
+	armor_type = /datum/armor/rig_ert
 	allowed = list(/obj/item/device/flashlight, /obj/item/tank,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/handcuffs, /obj/item/device/t_scanner, /obj/item/rcd, /obj/item/crowbar, \
 	/obj/item/screwdriver, /obj/item/weldingtool, /obj/item/wirecutters, /obj/item/wrench, /obj/item/device/multitool, \
 	/obj/item/device/radio, /obj/item/device/analyzer,/obj/item/storage/briefcase/inflatable, /obj/item/melee/baton, /obj/item/gun, \
@@ -23,6 +23,14 @@
 		/obj/item/rig_module/datajack,
 		/obj/item/rig_module/cooling_unit
 		)
+
+/datum/armor/rig_ert
+	bio = 100
+	bomb = 30
+	bullet = 50
+	energy = 15
+	laser = 50
+	melee = 60
 
 /obj/item/clothing/head/helmet/space/rig/ert
 	light_overlay = "helmet_light_dual"
@@ -44,7 +52,6 @@
 	desc = "A powersuit used by NanoTrasen's elite Emergency Response Teams. Has orange highlights. Armored and space ready."
 	suit_type = "ERT engineer"
 	icon_state = "ert_engineer_rig"
-	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 100)
 
 	glove_type = /obj/item/clothing/gloves/rig/ert/engineer
 
@@ -63,7 +70,7 @@
 	desc = "A powersuit used by NanoTrasen's elite Emergency Response Teams. Has purple highlights. Armored and space ready."
 	suit_type = "ERT sanitation"
 	icon_state = "ert_janitor_rig"
-	armor = list(melee = 60, bullet = 50, laser = 50,energy = 40, bomb = 40, bio = 100)
+	armor_type = /datum/armor/rig_ertjani
 
 	initial_modules = list(
 		/obj/item/rig_module/ai_container,
@@ -73,6 +80,14 @@
 		/obj/item/rig_module/device/decompiler,
 		/obj/item/rig_module/cooling_unit
 		)
+
+/datum/armor/rig_ertjani
+	bio = 100
+	bomb = 40
+	bullet = 50
+	energy = 40
+	laser = 50
+	melee = 60
 
 /obj/item/rig/ert/medical
 	name = "ERT medical powersuit control module"
@@ -107,7 +122,7 @@
 	desc = "That's not red paint. That's real blood."
 	suit_type = "Death Squad"
 	icon_state = "asset_protection_rig"
-	armor = list(melee = 70, bullet = 55, laser = 55,energy = 40, bomb = 70, bio = 100)
+	armor_type = /datum/armor/rig_ertmed
 
 	glove_type = /obj/item/clothing/gloves/rig/ert/assetprotection
 
@@ -122,6 +137,14 @@
 		/obj/item/rig_module/datajack,
 		/obj/item/rig_module/cooling_unit
 		)
+
+/datum/armor/rig_ertmed
+	bio = 100
+	bomb = 70
+	bullet = 50
+	energy = 40
+	laser = 55
+	melee = 70
 
 /obj/item/clothing/gloves/rig/ert/assetprotection
 	siemens_coefficient = 0

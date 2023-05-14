@@ -9,8 +9,16 @@
 		slot_l_hand_str = "sec_helm",
 		slot_r_hand_str = "sec_helm",
 		)
-	armor = list(melee = 60, bullet = 40, laser = 40, energy = 5, bomb = 45, bio = 100)
+	armor_type = /datum/armor/helm_secspace
 	siemens_coefficient = 0.7
+
+/datum/armor/helm_secspace
+	bio = 100
+	bomb = 45
+	bullet = 40
+	energy = 5
+	laser = 40
+	melee = 60
 
 /obj/item/clothing/suit/space/void/security
 	icon_state = "rig-sec"
@@ -20,9 +28,17 @@
 		slot_l_hand_str = "sec_voidsuit",
 		slot_r_hand_str = "sec_voidsuit",
 	)
-	armor = list(melee = 60, bullet = 40, laser = 40, energy = 5, bomb = 45, bio = 100)
+	armor_type = /datum/armor/suit_secspace
 	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/melee/baton)
 	siemens_coefficient = 0.7
+
+/datum/armor/suit_secspace
+	bio = 100
+	bomb = 45
+	bullet = 40
+	energy = 5
+	laser = 40
+	melee = 60
 
 /obj/item/clothing/suit/space/void/security/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/security
@@ -34,14 +50,30 @@
 	desc = "A comfortable voidsuit helmet with cranial armor and eight-channel surround sound."
 	icon_state = "rig0-secalt"
 	item_state = "secalt_helm"
-	armor = list(melee = 70, bullet = 50, laser = 50, energy = 5, bomb = 35, bio = 100)
+	armor_type = /datum/armor/helm_secspacealt
+
+/datum/armor/helm_secspacealt
+	bio = 100
+	bomb = 35
+	bullet = 50
+	energy = 5
+	laser = 50
+	melee = 70
 
 /obj/item/clothing/suit/space/void/security/alt
 	icon_state = "rig-secalt"
 	name = "riot security voidsuit"
 	desc = "A somewhat clumsy voidsuit layered with impact and laser-resistant armor plating. Specially designed to dissipate minor electrical charges."
-	armor = list(melee = 70, bullet = 50, laser = 50, energy = 5, bomb = 35, bio = 100)
+	armor_type = /datum/armor/suit_secspacealt
 	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/melee/baton)
+
+/datum/armor/suit_secspacealt
+	bio = 100
+	bomb = 45
+	bullet = 40
+	energy = 5
+	laser = 40
+	melee = 60
 
 /obj/item/clothing/suit/space/void/security/alt/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/security/alt
@@ -53,15 +85,31 @@
 	desc = "A heavily armored voidsuit helmet. Gold trimming radiates its owner's eliteness."
 	icon_state = "rig0-sechos"
 	item_state = "sechos_helm"
-	armor = list(melee = 70, bullet = 55, laser = 55, energy = 25, bomb = 45, bio = 100)
+	armor_type = /datum/armor/helm_hosspace
 	light_overlay = "helmet_light_dual"
+
+/datum/armor/helm_hosspace
+	bio = 100
+	bomb = 45
+	bullet = 55
+	energy = 25
+	laser = 55
+	melee = 70
 
 /obj/item/clothing/suit/space/void/security/hos
 	icon_state = "rig-sechos"
 	name = "security commander voidsuit"
 	desc = "A heavily armored voidsuit. Gold trimming shows who's the boss here, while heavy pauldrons and kama make it extra durable."
-	armor = list(melee = 70, bullet = 55, laser = 55, energy = 25, bomb = 45, bio = 100)
+	armor_type = /datum/armor/suit_hosspace
 	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/melee/baton)
+
+/datum/armor/suit_hosspace
+	bio = 100
+	bomb = 45
+	bullet = 55
+	energy = 25
+	laser = 55
+	melee = 70
 
 /obj/item/clothing/suit/space/void/security/hos/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/security/hos

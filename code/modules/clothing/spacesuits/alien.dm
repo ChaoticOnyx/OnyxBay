@@ -2,7 +2,7 @@
 /obj/item/clothing/head/helmet/space/skrell
 	name = "Skrellian helmet"
 	desc = "Smoothly contoured and polished to a shine. Still looks like a fishbowl."
-	armor = list(melee = 20, bullet = 20, laser = 50,energy = 50, bomb = 50, bio = 100)
+	armor_type = /datum/armor/head_helmet_space_skrell
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	species_restricted = list(SPECIES_SKRELL,SPECIES_HUMAN)
 	rad_resist = list(
@@ -10,6 +10,14 @@
 		RADIATION_BETA_PARTICLE = 8.9 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+
+/datum/armor/head_helmet_space_skrell
+	bio = 100
+	bomb = 50
+	bullet = 20
+	energy = 50
+	laser = 50
+	melee = 20
 
 /obj/item/clothing/head/helmet/space/skrell/white
 	icon_state = "skrell_helmet_white"
@@ -20,7 +28,7 @@
 /obj/item/clothing/suit/space/skrell
 	name = "Skrellian voidsuit"
 	desc = "Seems like a wetsuit with reinforced plating seamlessly attached to it. Very chic."
-	armor = list(melee = 20, bullet = 20, laser = 50,energy = 50, bomb = 50, bio = 100)
+	armor_type = /datum/armor/suit_space_skrell
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/storage/ore,/obj/item/device/t_scanner,/obj/item/pickaxe, /obj/item/rcd)
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
@@ -30,6 +38,14 @@
 		RADIATION_BETA_PARTICLE = 8.9 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+
+/datum/armor/suit_space_skrell
+	bio = 100
+	bomb = 50
+	bullet = 20
+	energy = 50
+	laser = 50
+	melee = 20
 
 /obj/item/clothing/suit/space/skrell/white
 	icon_state = "skrell_suit_white"
@@ -42,7 +58,7 @@
 /obj/item/clothing/suit/space/vox
 	w_class = ITEM_SIZE_NORMAL
 	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/melee/energy/sword/pirate,/obj/item/handcuffs,/obj/item/tank)
-	armor = list(melee = 60, bullet = 50, laser = 40,energy = 15, bomb = 30, bio = 100)
+	armor_type = /datum/armor/suit_space_vox
 	siemens_coefficient = 0.6
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
@@ -53,12 +69,20 @@
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
+/datum/armor/suit_space_vox
+	bio = 100
+	bomb = 30
+	bullet = 50
+	energy = 15
+	laser = 40
+	melee = 60
+
 /obj/item/clothing/suit/space/vox/New()
 	..()
 	slowdown_per_slot[slot_wear_suit] = 2
 
 /obj/item/clothing/head/helmet/space/vox
-	armor = list(melee = 60, bullet = 50, laser = 40, energy = 15, bomb = 30, bio = 100)
+	armor_type = /datum/armor/helmet_space_vox
 	siemens_coefficient = 0.6
 	flags_inv = 0
 	species_restricted = list(SPECIES_VOX)
@@ -68,20 +92,44 @@
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
+/datum/armor/helmet_space_vox
+	bio = 100
+	bomb = 30
+	bullet = 50
+	energy = 15
+	laser = 40
+	melee = 60
+
 /obj/item/clothing/head/helmet/space/vox/pressure
 	name = "alien helmet"
 	icon_state = "vox-pressure"
 	desc = "Hey, wasn't this a prop in \'The Abyss\'?"
-	armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 90, bio = 100)
+	armor_type = /datum/armor/head_helmet_vox_pressure
+
+/datum/armor/head_helmet_vox_pressure
+	bio = 100
+	bomb = 90
+	bullet = 50
+	energy = 30
+	laser = 40
+	melee = 60
 
 /obj/item/clothing/suit/space/vox/pressure
 	name = "alien pressure suit"
 	icon_state = "vox-pressure"
 	desc = "A huge, armoured, pressurized suit, designed for distinctly nonhuman proportions."
 	action_button_name = "Toggle Bio-RCD"
-	armor = list(melee = 60, bullet = 50, laser = 40, energy = 30, bomb = 90, bio = 100)
+	armor_type = /datum/armor/suit_space_vox_pressure
 	var/tool_delay = 120 SECONDS
 	var/last_used = 0
+
+/datum/armor/suit_space_vox_pressure
+	bio = 100
+	bomb = 30
+	bullet = 50
+	energy = 40
+	laser = 40
+	melee = 60
 
 /obj/item/clothing/suit/space/vox/pressure/attack_self(mob/user)
 	var/mob/living/carbon/human/H = user
@@ -288,7 +336,15 @@
 	icon_state = "vox-stealth"
 	desc = "A smoothly contoured, matte-black alien helmet."
 	siemens_coefficient = 0
-	armor = list(melee = 25, bullet = 40, laser = 65, energy = 40, bomb = 20, bio = 100)
+	armor_type = /datum/armor/head_helmet_vox_stealth
+
+/datum/armor/head_helmet_vox_stealth
+	bio = 100
+	bomb = 20
+	bullet = 40
+	energy = 40
+	laser = 40
+	melee = 25
 
 /obj/item/clothing/suit/space/vox/stealth
 	name = "alien stealth suit"
@@ -296,8 +352,16 @@
 	desc = "A sleek black suit. It seems to have a tail, and is very light."
 	action_button_name = "Toggle Cloak"
 	siemens_coefficient = 0
-	armor = list(melee = 25, bullet = 30, laser = 65, energy = 30, bomb = 20, bio = 100)
+	armor_type = /datum/armor/suit_space_vox_stealth
 	var/cloak = FALSE
+
+/datum/armor/suit_space_vox_stealth
+	bio = 100
+	bomb = 30
+	bullet = 50
+	energy = 40
+	laser = 40
+	melee = 60
 
 /obj/item/clothing/suit/space/vox/stealth/New()
 	..()
@@ -340,18 +404,34 @@
 	name = "alien goggled helmet"
 	icon_state = "vox-medic"
 	desc = "An alien helmet with enormous goggled lenses."
-	armor = list(melee = 60, bullet = 50, laser = 40,energy = 15, bomb = 30, bio = 100)
+	armor_type = /datum/armor/head_helmet_vox_medic
 	siemens_coefficient = 0.3
+
+/datum/armor/head_helmet_vox_medic
+	bio = 100
+	bomb = 30
+	bullet = 50
+	energy = 40
+	laser = 40
+	melee = 60
 
 /obj/item/clothing/suit/space/vox/medic
 	name = "alien armour"
 	icon_state = "vox-medic"
 	desc = "An almost organic looking nonhuman pressure suit."
 	siemens_coefficient = 0.3
-	armor = list(melee = 60, bullet = 50, laser = 40,energy = 15, bomb = 30, bio = 100)
+	armor_type = /datum/armor/suit_space_vox_medic
 	action_button_name = "Toggle Nanobots"
 	var/nanobots = FALSE
 	var/mob/client //user
+
+/datum/armor/suit_space_vox_medic
+	bio = 100
+	bomb = 30
+	bullet = 50
+	energy = 15
+	laser = 40
+	melee = 60
 
 /obj/item/clothing/suit/space/vox/medic/New()
 	..()

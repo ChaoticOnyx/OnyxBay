@@ -34,8 +34,15 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	cold_protection = UPPER_TORSO|LOWER_TORSO
 	heat_protection = UPPER_TORSO|LOWER_TORSO
-	armor = list(melee = 40, bullet = 40, laser = 40, energy = 15, bomb = 25, bio = 0)
+	armor_type = /datum/armor/vest
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
+
+/datum/armor/vest
+	bomb = 25
+	bullet = 40
+	energy = 15
+	laser = 40
+	melee = 40
 
 /obj/item/clothing/suit/armor/vest/detective
 	name = "detective armor"
@@ -46,27 +53,48 @@
 	name = "warden's jacket"
 	desc = "An armoured jacket with silver rank pips and livery."
 	icon_state = "warden_jacket"
-	//item_state = "armor"
-	armor = list(melee = 50, bullet = 50, laser = 50, energy = 25, bomb = 40, bio = 10)
+	armor_type = /datum/armor/vest_warden
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
+
+/datum/armor/vest_warden
+	bio = 10
+	bomb = 40
+	bullet = 50
+	energy = 25
+	laser = 50
+	melee = 50
 
 /obj/item/clothing/suit/armor/vest/warden_heavy
 	name = "warden's armoured vest"
 	desc = "An upgraded version of a regular bulletproof vest, featuring custom shoulder pads and silver rank livery."
 	icon_state = "warden_heavy"
-	//item_state = "armor"
-	armor = list(melee = 55, bullet = 55, laser = 55, energy = 25, bomb = 40, bio = 10)
+	armor_type = vest_wardenheavy
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+
+/datum/armor/vest_wardenheavy
+	bio = 10
+	bomb = 40
+	bullet = 55
+	energy = 25
+	laser = 55
+	melee = 55
 
 /obj/item/clothing/suit/armor/vest/hos_heavy
 	name = "commander's armoured vest"
 	desc = "A custom-made, expensive bulletproof vest with golden rank livery."
 	icon_state = "hos_heavy"
-	//item_state = "armor"
-	armor = list(melee = 65, bullet = 65, laser = 65, energy = 35, bomb = 55, bio = 20)
+	armor_type = /datum/armor/vest_hosheavy
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+
+/datum/armor/vest_hosheavy
+	bio = 20
+	bomb = 55
+	bullet = 65
+	energy = 35
+	laser = 65
+	melee = 65
 
 /obj/item/clothing/suit/armor/hos
 	name = "armored coat"
@@ -74,9 +102,17 @@
 	icon_state = "hos"
 	item_state = "hos"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
-	armor = list(melee = 65, bullet = 65, laser = 65, energy = 35, bomb = 55, bio = 20)
+	armor_type = /datum/armor/armor_hos
 	flags_inv = HIDEJUMPSUIT
 	siemens_coefficient = 0.6
+
+/datum/armor/armor_hos
+	bio = 20
+	bomb = 55
+	bullet = 65
+	energy = 35
+	laser = 65
+	melee = 65
 
 /obj/item/clothing/suit/armor/hos/jensen
 	name = "armored trenchcoat"
@@ -89,8 +125,7 @@
 	name = "captain's carapace"
 	desc = "An extremely expensive piece of exclusive, hand-crafted corporate armor. YOU are in charge!"
 	icon_state = "capcarapace"
-	//item_state = "capcarapace"
-	armor = list(melee = 85, bullet = 70, laser = 70, energy = 35, bomb = 55, bio = 20)
+	armor_type = /datum/armor/vest_capcarapace
 	allowed = list(
 		/obj/item/gun,
 		/obj/item/device/flashlight,
@@ -107,6 +142,14 @@
 		)
 	siemens_coefficient = 0.5
 
+/datum/armor/vest_capcarapace
+	bio = 20
+	bomb = 55
+	bullet = 70
+	energy = 35
+	laser = 70
+	melee = 85
+
 //Non-hardsuit ERT armor.
 //Commander
 /obj/item/clothing/suit/armor/vest/ert
@@ -115,7 +158,14 @@
 	icon_state = "ertarmor_cmd"
 	item_state = "armor"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
-	armor = list(melee = 65, bullet = 65, laser = 65, energy = 40, bomb = 20, bio = 0)
+	armor_type = /datum/armor/vest_ert
+
+/datum/armor/vest_ert
+	bomb = 20
+	bullet = 65
+	energy = 40
+	laser = 65
+	melee = 65
 
 //Security
 /obj/item/clothing/suit/armor/vest/ert/security
@@ -148,9 +198,16 @@
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
-	armor = list(melee = 80, bullet = 35, laser = 35, energy = 15, bomb = 25, bio = 0)
+	armor_type = /datum/armor/armor_riot
 	siemens_coefficient = 0.5
 	starting_accessories = list(/obj/item/clothing/accessory/armguards/riot, /obj/item/clothing/accessory/legguards/riot)
+
+/datum/armor/armor_riot
+	bomb = 25
+	bullet = 25
+	energy = 15
+	laser = 35
+	melee = 80
 
 /obj/item/clothing/suit/armor/bulletproof
 	name = "ballistic vest"
@@ -160,9 +217,16 @@
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
-	armor = list(melee = 35, bullet = 85, laser = 35, energy = 15, bomb = 25, bio = 0)
+	armor_type = /datum/armor/armor_bulletproof
 	siemens_coefficient = 0.7
 	starting_accessories = list(/obj/item/clothing/accessory/armguards/ballistic, /obj/item/clothing/accessory/legguards/ballistic)
+
+/datum/armor/armor_bulletproof
+	bomb = 25
+	bullet = 85
+	energy = 15
+	laser = 35
+	melee = 85
 
 /obj/item/clothing/suit/armor/bulletproof/vest //because apparently some map uses this somewhere and I'm too lazy to go looking for and replacing it.
 	starting_accessories = null
@@ -175,9 +239,15 @@
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
-	armor = list(melee = 35, bullet = 35, laser = 85, energy = 60, bomb = 0, bio = 0)
+	armor_type = /datum/armor/armor_laserproof
 	siemens_coefficient = 0
 	starting_accessories = list(/obj/item/clothing/accessory/armguards/ablative, /obj/item/clothing/accessory/legguards/ablative)
+
+/datum/armor/armor_laserproof
+	bullet = 35
+	energy = 60
+	laser = 85
+	melee = 25
 
 /obj/item/clothing/suit/armor/laserproof/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 	if(istype(damage_source, /obj/item/projectile/energy) || istype(damage_source, /obj/item/projectile/beam))
@@ -269,7 +339,14 @@
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	siemens_coefficient = 0
-	armor = list(melee = 90, bullet = 90, laser = 90, energy = 55, bomb = 90, bio = 50)
+	armor_type = /datum/armor/armor_swat
+
+/datum/armor/armor_swat
+	bomb = 90
+	bullet = 90
+	energy = 55
+	laser = 90
+	melee = 90
 
 /obj/item/clothing/suit/armor/swat/officer
 	name = "officer jacket"
@@ -281,8 +358,15 @@
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
-	armor = list(melee = 42, bullet = 75, laser = 42, energy = 10, bomb = 25, bio = 0)
+	armor_type = /datum/armor/armor_officer
 	flags_inv = 0
+
+/datum/armor/armor_officer
+	bomb = 25
+	bullet = 75
+	energy = 10
+	laser = 42
+	melee = 42
 
 /obj/item/clothing/suit/armor/heavy // A more balanced version of SWAT armor
 	name = "heavy armor"
@@ -294,7 +378,14 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	siemens_coefficient = 0
-	armor = list(melee = 75, bullet = 75, laser = 75, energy = 50, bomb = 50, bio = 50)
+	armor_type = /datum/armor/armor_heavy
+
+/datum/armor/armor_heavy
+	bomb = 50
+	bullet = 76
+	energy = 50
+	laser = 75
+	melee = 75
 
 /obj/item/clothing/suit/armor/heavy/New()
 	..()

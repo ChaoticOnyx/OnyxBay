@@ -6,9 +6,16 @@
 	item_flags = ITEM_FLAG_NOSLIP
 	can_hold_knife = 1
 	species_restricted = null
+	armor_type = /datum/armor/shoes_galoshes
 	siemens_coefficient = 0.4
 
-	armor = list(melee = 35, bullet = 30, laser = 30,energy = 35, bomb = 25, bio = 35)
+/datum/armor/shoes_galoshes
+	bio = 35
+	bomb = 25
+	bullet = 30
+	energy = 35
+	laser = 30
+	melee = 35
 
 /obj/item/clothing/shoes/galoshes/Initialize()
 	. = ..()
@@ -19,17 +26,33 @@
 	desc = "Tall synthleather boots with an artificial shine."
 	icon_state = "jackboots"
 	force = 3
-	armor = list(melee = 40, bullet = 40, laser = 40, energy = 15, bomb = 20, bio = 10)
+	armor_type = /datum/armor/shoes_jackboots
 	siemens_coefficient = 0.5
 	can_hold_knife = 1
 	cold_protection = FEET
 	min_cold_protection_temperature = HELMET_MIN_COLD_PROTECTION_TEMPERATURE
 
+/datum/armor/shoes_jackboots
+	bio = 10
+	bomb = 20
+	bullet = 40
+	energy = 15
+	laser = 40
+	melee = 40
+
 /obj/item/clothing/shoes/jackboots/tactical
 	name = "tactical jackboots"
 	desc = "Tall synthleather boots with an artificial shine. These ones seem to be reinforced with some sort of plating."
-	armor = list(melee = 80, bullet = 60, laser = 60, energy = 25, bomb = 50, bio = 10)
+	armor_type = /datum/armor/shoes_tactical
 	siemens_coefficient = 0.4
+
+/datum/armor/shoes_tactical
+	bio = 10
+	bomb = 50
+	bullet = 60
+	energy = 25
+	laser = 60
+	melee = 80
 
 /obj/item/clothing/shoes/jackboots/unathi
 	name = "toe-less jackboots"
@@ -42,9 +65,16 @@
 	name = "workboots"
 	desc = "A pair of steel-toed work boots designed for use in industrial settings. Safety first."
 	icon_state = "workboots"
-	armor = list(melee = 45, bullet = 30, laser = 30, energy = 25, bomb = 20, bio = 0)
+	armor_type = /datum/armor/shoes_workboots
 	siemens_coefficient = 0.4
 	can_hold_knife = 1
+
+/datum/armor/shoes_workboots
+	bomb = 20
+	bullet = 30
+	energy = 25
+	laser = 30
+	melee = 45
 
 /obj/item/clothing/shoes/workboots/toeless
 	name = "toe-less workboots"
