@@ -2,7 +2,7 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 
 /proc/generate_armor_type_cache()
 	var/list/armor_cache = list()
-	for(var/datum/armor/armor_type in subtypesof(/datum/armor))
+	for(var/datum/armor/armor_type as anything in subtypesof(/datum/armor))
 		armor_type = new armor_type
 		armor_cache[armor_type.type] = armor_type
 		armor_type.GenerateTag()
