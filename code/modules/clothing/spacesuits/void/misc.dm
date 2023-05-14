@@ -87,7 +87,7 @@
 	siemens_coefficient = 0.5
 
 /datum/armor/suit_space_void_captain
-	bio = `00
+	bio = 10
 	bomb = 55
 	bullet = 60
 	energy = 35

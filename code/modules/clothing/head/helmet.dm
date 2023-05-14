@@ -215,7 +215,7 @@
 	name = "heavy helmet"
 	desc = "A heavily reinforced helmet painted with red markings. Feels like it could take a lot of punishment."
 	icon_state = "helmet_merc"
-	armor_type = /datum/head_helmet_syndi
+	armor_type = /datum/armor/head_helmet_syndi
 	siemens_coefficient = 0.4
 
 /datum/armor/head_helmet_syndi

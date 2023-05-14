@@ -70,7 +70,7 @@
 	name = "warden's armoured vest"
 	desc = "An upgraded version of a regular bulletproof vest, featuring custom shoulder pads and silver rank livery."
 	icon_state = "warden_heavy"
-	armor_type = vest_wardenheavy
+	armor_type = /datum/armor/vest_wardenheavy
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 
 /datum/armor/vest_wardenheavy
