@@ -1,3 +1,4 @@
+/// Assosciative list of type -> armor. Used to ensure we always hold a reference to default armor datums
 GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 
 /proc/generate_armor_type_cache()
@@ -8,6 +9,7 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 		armor_type.GenerateTag()
 	return armor_cache
 
+/// Gets an armor type datum using the given type by formatting it into the expected datum tag
 /proc/get_armor_by_type(armor_type)
 	var/datum/armor/armor = locate(replacetext("[armor_type]", "/", "-"))
 	if(armor)
@@ -39,6 +41,7 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 /datum/armor/proc/GenerateTag()
 	tag = replacetext("[type]", "/", "-")
 
+/// Generate a brand new armor datum with the modifiers given, if ARMOR_ALL is specified only that modifier is used
 /datum/armor/proc/generate_new_with_modifiers(list/modifiers)
 	var/datum/armor/new_armor = new
 
@@ -61,6 +64,7 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 /datum/armor/immune/generate_new_with_modifiers(list/modifiers)
 	return src
 
+/// Generate a brand new armor datum with the multiplier given, if ARMOR_ALL is specified only that modifer is used
 /datum/armor/proc/generate_new_with_multipliers(list/multipliers)
 	var/datum/armor/new_armor = new
 
@@ -83,6 +87,7 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 /datum/armor/immune/generate_new_with_multipliers(list/multiplier)
 	return src
 
+/// Generate a brand new armor datum with the values given, if a value is not present it carries over
 /datum/armor/proc/generate_new_with_specific(list/values)
 	var/datum/armor/new_armor = new
 
@@ -105,6 +110,7 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 /datum/armor/immune/generate_new_with_specific(list/values)
 	return src
 
+/// Gets the rating of armor for the specified rating
 /datum/armor/proc/get_rating(rating)
 	if(!(rating in ARMOR_LIST_DAMAGE()))
 		CRASH("Attempted to get a non-existant rating '[rating]'")
@@ -113,6 +119,7 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 /datum/armor/immune/get_rating(rating)
 	return 100
 
+/// Converts all the ratings of the armor into a list, optionally inversed
 /datum/armor/proc/get_rating_list(inverse = FALSE)
 	var/list/ratings = list()
 	for(var/rating in ARMOR_LIST_DAMAGE())
@@ -128,11 +135,13 @@ GLOBAL_LIST_INIT(armor_by_type, generate_armor_type_cache())
 		ratings[rating] = 100
 	return ratings
 
+/// Returns a new armor datum with the given armor added onto this one
 /datum/armor/proc/add_other_armor(datum/armor/other)
 	if(ispath(other))
 		other = get_armor_by_type(other)
 	return generate_new_with_modifiers(other.get_rating_list())
 
+/// Returns a new armor datum with the given armor removed from this one
 /datum/armor/proc/substract_other_armor(datum/armor/other)
 	if(ispath(other))
 		other = get_armor_by_type(other)
