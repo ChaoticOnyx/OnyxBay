@@ -336,7 +336,7 @@
 		slot_l_hand_str = "slayer",
 		slot_r_hand_str = "slayer",
 		)
-	armor = list(melee = 80, bullet = 50, laser = 50,energy = 20, bomb = 20, bio = 100)
+	armor = list(melee = 60, bullet = 40, laser = 40,energy = 5, bomb = 45, bio = 100)
 	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
 	light_overlay = "helmet_light_dual"
 
@@ -349,5 +349,5 @@
 		slot_l_hand_str = "slayer",
 		slot_r_hand_str = "slayer",
 		)
-	armor = list(melee = 80, bullet = 50, laser = 50, energy = 20, bomb = 55, bio = 100)
+	armor = list(melee = 60, bullet = 40, laser = 40, energy = 5, bomb = 45, bio = 100)
 	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/melee/baton)
