@@ -237,6 +237,12 @@
 /obj/screen/plane_master/proc/backdrop(mob/mymob)
 	CAN_BE_REDEFINED(TRUE)
 
+/obj/screen/plane_master/skybox
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	blend_mode = BLEND_MULTIPLY
+	plane = SKYBOX_PLANE
+	mouse_opacity = 0
+
 /obj/screen/plane_master/openspace_blur
 	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
 	blend_mode = BLEND_OVERLAY
