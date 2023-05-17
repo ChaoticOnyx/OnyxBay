@@ -59,6 +59,12 @@
 		for(var/category in screens)
 			client.screen |= screens[category]
 
+//this is used for changing color of lighting backdrop
+/mob/proc/set_fullscreen_color(category, new_color)
+	if(screens && screens[category])
+		var/obj/screen/fullscreen/screen = screens[category]
+		screen.color = new_color
+
 /obj/screen/fullscreen
 	icon = 'icons/mob/screen_full.dmi'
 	icon_state = "default"
@@ -165,3 +171,14 @@
 /obj/screen/fullscreen/pain
 	icon_state = "brutedamageoverlay6"
 	alpha = 0
+
+//Provides darkness to the back of the lighting plane
+/obj/screen/fullscreen/lighting_backdrop
+	icon = LIGHTING_ICON
+	icon_state = LIGHTING_ICON_STATE_DARK
+	plane = LIGHTING_PLANE
+	layer = LIGHTING_LAYER
+	transform = matrix(200, 0, 0, 0, 200, 0)
+	blend_mode = BLEND_MULTIPLY
+	color = "#ffffff" //Lighting plane colors are negative, so this is actually black.
+	allstate = TRUE

@@ -236,16 +236,6 @@
 
 /obj/screen/plane_master/proc/backdrop(mob/mymob)
 	CAN_BE_REDEFINED(TRUE)
-/obj/screen/plane_master/ambient_occlusion
-	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
-	blend_mode = BLEND_OVERLAY
-	plane = DEFAULT_PLANE
-
-/obj/screen/plane_master/ambient_occlusion/backdrop(mob/mymob)
-	filters = list()
-
-	if (istype(mymob) && mymob.client && mymob.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_YES)
-		filters += filter(type = "drop_shadow", x = 0, y = -2, size = 4, color = "#04080FAA")
 
 /obj/screen/plane_master/openspace_blur
 	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
@@ -262,6 +252,34 @@
 	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
 	plane = OVER_OPENSPACE_PLANE
 	mouse_opacity = 0
+
+/obj/screen/plane_master/ambient_occlusion
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	blend_mode = BLEND_OVERLAY
+	plane = DEFAULT_PLANE
+
+/obj/screen/plane_master/ambient_occlusion/backdrop(mob/mymob)
+	filters = list()
+
+	if (istype(mymob) && mymob.client && mymob.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_YES)
+		filters += filter(type = "drop_shadow", x = 0, y = -2, size = 4, color = "#04080FAA")
+
+/obj/screen/plane_master/lighting
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | PLANE_MASTER | NO_CLIENT_COLOR
+	blend_mode = BLEND_MULTIPLY
+	plane = LIGHTING_PLANE
+	mouse_opacity = 0
+	color = list(
+			-1, 00, 00, 00,
+			00, -1, 00, 00,
+			00, 00, -1, 00,
+			00, 00, 00, 00,
+			01, 01, 01, 01
+		)
+
+/obj/screen/plane_master/lighting/backdrop(mob/mymob)
+	. = ..()
+	mymob.overlay_fullscreen("lighting_backdrop", /obj/screen/fullscreen/lighting_backdrop)
 
 /obj/screen/plane_master/mouse_invisible
 	appearance_flags = PLANE_MASTER
