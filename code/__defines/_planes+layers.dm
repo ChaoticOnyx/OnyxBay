@@ -73,8 +73,8 @@
 #define OPENSPACE_PLANE					-4
 #define OVER_OPENSPACE_PLANE			-3
 #define FLOOR_PLANE						-2
-#define DEFAULT_PLANE                   -1
-#define BLACKNESS_PLANE 0
+#define DEFAULT_PLANE					-1
+#define BLACKNESS_PLANE					0
 
 	#define PLATING_LAYER               1
 	// ABOVE PLATING
@@ -259,6 +259,11 @@
 	plane = OVER_OPENSPACE_PLANE
 	mouse_opacity = 0
 
+/obj/screen/plane_master/floor
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	blend_mode = BLEND_OVERLAY
+	plane = FLOOR_PLANE
+
 /obj/screen/plane_master/game_world
 	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
 	blend_mode = BLEND_OVERLAY
@@ -270,22 +275,10 @@
 	if (istype(mymob) && mymob.client && mymob.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_YES)
 		filters += filter(type = "drop_shadow", x = 0, y = -2, size = 4, color = "#04080FAA")
 
-/obj/screen/plane_master/lighting
-	appearance_flags = DEFAULT_APPEARANCE_FLAGS | PLANE_MASTER | NO_CLIENT_COLOR
-	blend_mode = BLEND_MULTIPLY
-	plane = LIGHTING_PLANE
-	mouse_opacity = 0
-	color = list(
-			-1, 00, 00, 00,
-			00, -1, 00, 00,
-			00, 00, -1, 00,
-			00, 00, 00, 00,
-			01, 01, 01, 01
-		)
-
-/obj/screen/plane_master/lighting/backdrop(mob/mymob)
-	. = ..()
-	mymob.overlay_fullscreen("lighting_backdrop", /obj/screen/fullscreen/lighting_backdrop)
+/obj/screen/plane_master/blackness
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	blend_mode = BLEND_OVERLAY
+	plane = BLACKNESS_PLANE
 
 /obj/screen/plane_master/mouse_invisible
 	appearance_flags = PLANE_MASTER
@@ -306,3 +299,35 @@ GLOBAL_LIST_INIT(ghost_master, list(
 	new /obj/screen/plane_master/ghost_master(),
 	new /obj/screen/plane_master/ghost_dummy()
 ))
+
+/obj/screen/plane_master/lighting
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | PLANE_MASTER | NO_CLIENT_COLOR
+	blend_mode = BLEND_MULTIPLY
+	plane = LIGHTING_PLANE
+	mouse_opacity = 0
+	color = list(
+			-1, 00, 00, 00,
+			00, -1, 00, 00,
+			00, 00, -1, 00,
+			00, 00, 00, 00,
+			01, 01, 01, 01
+		)
+
+/obj/screen/plane_master/lighting/backdrop(mob/mymob)
+	. = ..()
+	mymob.overlay_fullscreen("lighting_backdrop", /obj/screen/fullscreen/lighting_backdrop)
+
+/obj/screen/plane_master/fullscreen
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	blend_mode = BLEND_OVERLAY
+	plane = FULLSCREEN_PLANE
+
+/obj/screen/plane_master/hud
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	blend_mode = BLEND_OVERLAY
+	plane = HUD_PLANE
+
+/obj/screen/plane_master/above_hud
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	blend_mode = BLEND_OVERLAY
+	plane = ABOVE_HUD_PLANE

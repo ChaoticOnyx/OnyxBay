@@ -61,9 +61,11 @@
 
 //this is used for changing color of lighting backdrop
 /mob/proc/set_fullscreen_color(category, new_color)
-	if(screens && screens[category])
-		var/obj/screen/fullscreen/screen = screens[category]
-		screen.color = new_color
+	var/obj/screen/fullscreen/screen = screens[category]
+	if(!screen)
+		return
+
+	screen.color = new_color
 
 /obj/screen/fullscreen
 	icon = 'icons/mob/screen_full.dmi'
