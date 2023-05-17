@@ -243,28 +243,28 @@
 	plane = SKYBOX_PLANE
 	mouse_opacity = 0
 
-/obj/screen/plane_master/openspace_blur
+/obj/screen/plane_master/openspace
 	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
 	blend_mode = BLEND_OVERLAY
 	plane = OPENSPACE_PLANE
 
-/obj/screen/plane_master/openspace_blur/backdrop(mob/mymob)
+/obj/screen/plane_master/openspace/backdrop(mob/mymob)
 	filters = list()
 
 	if (istype(mymob) && mymob.client)
 		filters += filter(type = "blur", size = 0.67)
 
-/obj/screen/plane_master/over_openspace_darkness
+/obj/screen/plane_master/over_openspace
 	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
 	plane = OVER_OPENSPACE_PLANE
 	mouse_opacity = 0
 
-/obj/screen/plane_master/ambient_occlusion
+/obj/screen/plane_master/game_world
 	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
 	blend_mode = BLEND_OVERLAY
 	plane = DEFAULT_PLANE
 
-/obj/screen/plane_master/ambient_occlusion/backdrop(mob/mymob)
+/obj/screen/plane_master/game_world/backdrop(mob/mymob)
 	filters = list()
 
 	if (istype(mymob) && mymob.client && mymob.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_YES)
