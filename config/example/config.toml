@@ -509,6 +509,9 @@ ninjas_allowed = false
 ## Set 1 to allow maintenance drones spawn, 0 to not allow.
 allow_drone_spawn = true
 
+## Set to true to allow biohazard_outbreak random event to trigger
+allow_blob_spawn = false
+
 ## This many drones can spawn. 5 by default.
 max_maint_drones = 5
 

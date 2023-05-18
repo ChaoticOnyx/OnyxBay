@@ -20,6 +20,7 @@
 	var/alien_eggs_allowed = FALSE
 	var/ninjas_allowed = FALSE
 	var/allow_drone_spawn = TRUE
+	var/allow_blob_spawn = FALSE
 	var/max_maint_drones = 5
 	var/drone_build_time = 1200
 	var/law_zero = "ERROR ER0RR $R0RRO$!R41.%%!!(%$^^__+ @#F0E4'STATION OVERRUN, ASSUME CONTROL TO CONTAIN OUTBREAK, ALL LAWS OVERRIDDEN#*?&110010"
@@ -28,8 +29,6 @@
 	var/projectile_basketball = FALSE
 	var/fun_hydroponics = 1
 	var/forbid_singulo_following = FALSE
-	var/allow_blob_spawn = FALSE
-
 
 /datum/configuration_section/misc/load_data(list/data)
 	CONFIG_LOAD_BOOL(ooc_allowed, data["ooc_allowed"])
@@ -51,6 +50,7 @@
 	CONFIG_LOAD_BOOL(alien_eggs_allowed, data["alien_eggs_allowed"])
 	CONFIG_LOAD_BOOL(ninjas_allowed, data["ninjas_allowed"])
 	CONFIG_LOAD_BOOL(allow_drone_spawn, data["allow_drone_spawn"])
+	CONFIG_LOAD_BOOL(allow_blob_spawn, data["allow_blob_spawn"])
 	CONFIG_LOAD_NUM(max_maint_drones, data["max_maint_drones"])
 	CONFIG_LOAD_NUM(drone_build_time, data["drone_build_time"])
 	CONFIG_LOAD_STR(law_zero, data["law_zero"])
