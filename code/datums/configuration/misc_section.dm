@@ -28,6 +28,7 @@
 	var/projectile_basketball = FALSE
 	var/fun_hydroponics = 1
 	var/forbid_singulo_following = FALSE
+	var/allow_blob_spawn = FALSE
 
 
 /datum/configuration_section/misc/load_data(list/data)

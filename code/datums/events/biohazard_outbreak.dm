@@ -17,6 +17,9 @@
 	. -= (SSevents.triggers.living_players_count * (5 MINUTES))
 	. = max(1 HOUR, .)
 
+/datum/event/biohazard_outbreak/check_conditions()
+    . = config.misc.allow_blob_spawn
+
 /datum/event/biohazard_outbreak/on_fire()
 	var/counts = 0
 	var/turf/T = null
