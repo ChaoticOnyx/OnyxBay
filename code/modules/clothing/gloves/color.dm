@@ -28,7 +28,8 @@
 	desc = "A pair of fingerless gloves, they look like they belong to a soul hungry for rebellion."
 	icon_state = "color_fingerless"
 	body_parts_covered = 0	//fingerless gloves don't prevent from leaving fingerprints
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	clipped = TRUE
+	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_VOX)
 
 /obj/item/clothing/gloves/rainbow/modified
 	item_flags = ITEM_FLAG_PREMODIFIED
