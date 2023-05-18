@@ -6,7 +6,7 @@ PROCESSING_SUBSYSTEM_DEF(plants)
 	init_order = SS_INIT_PLANTS
 	wait = 60
 
-	process_proc = /obj/machinery/portable_atmospherics/hydroponics/Process
+	process_proc = /obj/machinery/portable_atmospherics/hydroponics/proc/Process
 
 	var/list/product_descs = list()         // Stores generated fruit descs.
 	var/list/seeds = list()                 // All seed data stored here.

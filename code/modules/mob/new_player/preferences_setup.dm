@@ -11,7 +11,8 @@
 		for(var/datum/body_build/build in current_species.body_builds)
 			if (gender in build.genders)
 				available_body_builds += build
-		body = pick(available_body_builds).name
+		var/weakref/ref = pick(available_body_builds)
+		body = ref.resolve().name
 		body_height = pick(body_heights)
 
 		h_style = random_hair_style(gender, species)

@@ -385,9 +385,9 @@
 			var/turf/T = get_turf(src)
 			for(var/obj/item/I in LB.contents)
 				LB.remove_from_storage(I, T)
-			user.visible_message(SPAN_NOTICE("[user] empties \the [LB] into \the [src]."),
-								 \SPAN_NOTICE("You empty \the [LB] into \the [src]."),
-								 \SPAN_NOTICE("You hear rustling of clothes."))
+			user.visible_message(SPAN_NOTICE("[user] empties \the [LB] into \the [src]."), \
+								 SPAN_NOTICE("You empty \the [LB] into \the [src]."), \
+								 SPAN_NOTICE("You hear rustling of clothes."))
 			return
 
 		if(isScrewdriver(W) && dremovable && cdoor)

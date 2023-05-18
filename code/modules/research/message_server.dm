@@ -363,11 +363,11 @@ var/obj/machinery/blackbox_recorder/blackbox
 				(null,
 				Now(),
 				$round_id,
-				$var,
+				$variable,
 				$value,
 				$details)
 			"}, dbcon, list(round_id = round_id,
-				var = FV.get_variable(),
+				variable = FV.get_variable(),
 				value = FV.get_value(),
 				details = FV.get_details()
 				))

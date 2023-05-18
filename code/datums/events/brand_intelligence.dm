@@ -38,7 +38,8 @@
 	if(!length(vendingMachines))
 		return
 
-	originMachine = pick(vendingMachines).resolve()
+	var/weakref/ref = pick(vendingMachines)
+	originMachine = ref.resolve()
 	vendingMachines.Remove(originMachine)
 	originMachine.shut_up = 0
 	originMachine.shoot_inventory = 1
