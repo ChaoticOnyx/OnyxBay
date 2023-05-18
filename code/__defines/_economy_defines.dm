@@ -74,7 +74,7 @@
 //Yachts are fast civilian craft, often used for pleasure or smuggling.
 //Destroyers are medium sized vessels, often used for escorting larger ships but able to go toe-to-toe with them if need be.
 //Frigates are medium sized vessels, often used for escorting larger ships. They will rapidly find themselves outclassed if forced to face heavy warships head on.
-
+#define TECHWEB_BOUNTY 250
 var/global/datum/money_account/vendor_account
 var/global/datum/money_account/station_account
 var/global/list/datum/money_account/department_accounts = list()

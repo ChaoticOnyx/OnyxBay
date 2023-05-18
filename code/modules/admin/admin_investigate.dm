@@ -7,7 +7,7 @@
 //the data is lost when the object is deleted! This is especially annoying for things like the singulo engine!
 #define INVESTIGATE_DIR "data/investigate/"
 #define INVESTIGATE_CIRCUIT			"circuit"
-
+#define INVESTIGATE_RESEARCH "research"
 //SYSTEM
 /proc/investigate_subject2file(subject)
 	return file("[INVESTIGATE_DIR][subject].html")

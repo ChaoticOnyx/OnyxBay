@@ -157,6 +157,11 @@
 /proc/log_integrated_circuits(text)
 	WRITE_FILE(GLOB.world_integrated_circuits_log, text)
 
+/proc/log_research(text)
+	if(!text)
+		return
+	WRITE_FILE(GLOB.world_research_log, "\[[time_stamp()\]]-[text]")
+
 /* ui logging */
 
 /**
