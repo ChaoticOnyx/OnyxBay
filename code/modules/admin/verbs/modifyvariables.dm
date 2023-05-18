@@ -256,7 +256,9 @@
 			mod_list(variable, O, original_name, objectvar)
 
 		if("restore to default")
-			new_var = initial(variable)
+			// FIXME
+			// new_var = initial(variable)  // previous version, but "calling initial() on a local variable returns the current value"
+			new_var = variable
 			if(assoc)
 				L[assoc_key] = new_var
 			else

@@ -86,15 +86,21 @@
 	}
 "}
 
-	//static because these can't be const
-	var/regex/named_field_tag_regex = new/regex(@"\[field=(\w+)\]", "g")
-	var/regex/named_sign_field_tag_regex = new/regex(@"\[signfield=(\w+)\]", "g")
-	var/regex/sign_field_regex = new/regex(@"<I><span class='sign_field_(\w+)'>sign here</span></I>", "g")
-	var/regex/named_field_extraction_regex = new/regex(@#<!--paper_fieldstart_N(\w+)-->(.*?)(?:<!--paper_field_N\1-->)?<!--paper_fieldend_N\1-->#, "g")
-	var/regex/field_regex = new/regex(@#<!--paper_field_(\w+)-->#, "g")
-	var/regex/field_link_regex = new/regex("<font face=\"[deffont]\"><A href='\\?src=\[^'\]+?;write=\[^'\]+'>write</A></font>", "g")
+	var/regex/named_field_tag_regex
+	var/regex/named_sign_field_tag_regex
+	var/regex/sign_field_regex
+	var/regex/named_field_extraction_regex
+	var/regex/field_regex
+	var/regex/field_link_regex
 
 /obj/item/paper/Initialize(mapload, text, title, rawhtml = TRUE, noinit = FALSE)
+	named_field_tag_regex = new /regex(@"\[field=(\w+)\]", "g")
+	named_sign_field_tag_regex = new /regex(@"\[signfield=(\w+)\]", "g")
+	sign_field_regex = new /regex(@"<I><span class='sign_field_(\w+)'>sign here</span></I>", "g")
+	named_field_extraction_regex = new /regex(@#<!--paper_fieldstart_N(\w+)-->(.*?)(?:<!--paper_field_N\1-->)?<!--paper_fieldend_N\1-->#, "g")
+	field_regex = new /regex(@#<!--paper_field_(\w+)-->#, "g")
+	field_link_regex = new /regex("<font face=\"[deffont]\"><A href='\\?src=\[^'\]+?;write=\[^'\]+'>write</A></font>", "g")
+
 	. = ..()
 
 	if (noinit)

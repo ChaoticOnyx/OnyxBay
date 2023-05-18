@@ -5,8 +5,6 @@ PROCESSING_SUBSYSTEM_DEF(vines)
 	runlevels = RUNLEVEL_GAME|RUNLEVEL_POSTGAME
 	wait = 80
 
-	process_proc = /obj/effect/vine/proc/Process
-
 	var/list/vine_list
 
 /datum/controller/subsystem/processing/vines/PreInit()

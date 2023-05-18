@@ -21,7 +21,6 @@
 	//1 = hacked
 	var/gibs_ready = 0
 	var/obj/crayon
-	var/obj/item/reagent_containers/pill/detergent/detergent
 	obj_flags = OBJ_FLAG_ANCHORABLE
 	clicksound = SFX_USE_BUTTON
 	clickvol = 40

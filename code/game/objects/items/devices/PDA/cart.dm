@@ -25,9 +25,6 @@
 	var/charges = 0
 	var/mode = null
 	var/menu
-	var/datum/data/record/active1 = null //General
-	var/datum/data/record/active2 = null //Medical
-	var/datum/data/record/active3 = null //Security
 	var/selected_sensor = null // Power Sensor
 	var/message1	// used for status_displays
 	var/message2
