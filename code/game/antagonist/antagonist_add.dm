@@ -8,6 +8,9 @@
 		player.assigned_role = role_text
 	player.special_role = role_text
 
+	if(player.current)
+		BITSET(player.current.hud_updateflag, SPECIALROLE_HUD)
+
 	if(isghostmind(player) || isnewplayer(player.current))
 		create_default(player.current, team)
 	else
@@ -56,6 +59,8 @@
 		if(nonstandard_role_msg)
 			to_chat(player.current, SPAN("notice", "[nonstandard_role_msg]"))
 		update_icons_added(player)
+		BITSET(player.current.hud_updateflag, SPECIALROLE_HUD)
+
 	return TRUE
 
 /datum/antagonist/proc/remove_antagonist(datum/mind/player, show_message, implanted)
