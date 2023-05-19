@@ -1,6 +1,8 @@
 /obj/skybox
 	name = "skybox"
 	plane = SKYBOX_PLANE
+	mouse_opacity = 0
+	blend_mode = BLEND_MULTIPLY
 	anchored = TRUE
 	var/mob/owner
 	var/image/image
