@@ -360,3 +360,16 @@
 #define HUMAN_DEFAULT_POISE 50 // 100% healthy, non-drugged human being.
 #define HUMAN_LOW_POISE     45
 #define HUMAN_MIN_POISE     25 // Some balancing stuff here. Even drunk pirates should be able to fight.
+
+#define POSSIBLE_LIZARD_TOXINS list(/datum/reagent/toxin/plasticide ,\
+									/datum/reagent/toxin/amatoxin ,\
+									/datum/reagent/toxin/carpotoxin ,\
+									/datum/reagent/toxin/plasma ,\
+									/datum/reagent/toxin/chlorine,\
+									/datum/reagent/toxin/potassium_chloride ,\
+									/datum/reagent/toxin/potassium_chlorophoride ,\
+									/datum/reagent/toxin/fertilizer ,\
+									/datum/reagent/mutagen ,\
+									/datum/reagent/space_drugs ,\
+									/datum/reagent/mindbreaker ,\
+									/datum/reagent/psilocybin)

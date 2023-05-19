@@ -44,7 +44,7 @@
 			vermstring = "mice"
 		if(VERM_LIZARDS)
 			spawn_types = list(/mob/living/simple_animal/lizard)
-			max_number = 6
+			max_number = 4
 			vermstring = "lizards"
 		if(VERM_SPIDERS)
 			spawn_types = list(/obj/effect/spider/spiderling)
@@ -57,6 +57,7 @@
 
 	spawn(0)
 		var/num = 0
+		var/datum/reagent/lizard_poison = pick(POSSIBLE_LIZARD_TOXINS)
 		for(var/i = 1 to severity)
 			num += rand(2,max_number)
 		log_and_message_admins("Vermin infestation spawned ([vermstring] x[num]) in \the [location]", location = pick_area_turf(location))
@@ -69,6 +70,9 @@
 			var/obj/effect/spider/spiderling/S = new spawn_type(T)
 			if(istype(S))
 				S.amount_grown = -1
+			if(istype(S, /mob/living/simple_animal/lizard))
+				var/mob/living/simple_animal/lizard/L = S
+				L.poison = lizard_poison
 
 /datum/event/infestation/announce()
 	command_announcement.Announce("Bioscans indicate that [vermstring] have been breeding in \the [location]. Clear them out, before this starts to affect productivity.", "Major Bill's Shipping Critter Sensor", zlevels = affecting_z)
