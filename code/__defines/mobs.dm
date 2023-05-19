@@ -9,11 +9,13 @@
 #define CANPARALYSE 0x4
 #define CANPUSH     0x8
 #define LEAPING     0x10
-#define PASSEMOTES  0x32    // Mob has a cortical borer or holders inside of it that need to see emotes.
+#define PASSEMOTES  0x20    // Mob has a cortical borer or holders inside of it that need to see emotes.
 #define GODMODE     0x1000
 #define FAKEDEATH   0x2000  // Replaces stuff like changeling.changeling_fakedeath.
 #define NO_ANTAG    0x4000  // Players are restricted from gaining antag roles when occupying this mob
 #define XENO_HOST   0x8000  // Tracks whether we're gonna be a baby alien's mummy.
+#define FAKELIVING  0x10000 // For vampire Revitalise()
+#define UNDEAD      0x20000 // For undead creatures
 
 // Grab Types
 #define GRAB_NORMAL			"normal"
@@ -180,9 +182,9 @@
 #define FLASH_PROTECTION_MAJOR 2
 
 
-#define ANIMAL_SPAWN_DELAY  round(config.respawn_delay / 6)
-#define DRONE_SPAWN_DELAY   round(config.respawn_delay / 3)
-#define DEAD_ANIMAL_DELAY   round(config.respawn_delay / 3)
+#define ANIMAL_SPAWN_DELAY  round(config.misc.respawn_delay / 6)
+#define DRONE_SPAWN_DELAY   round(config.misc.respawn_delay / 3)
+#define DEAD_ANIMAL_DELAY   round(config.misc.respawn_delay / 3)
 
 // Incapacitation flags, used by the mob/proc/incapacitated() proc
 #define INCAPACITATION_NONE 0
@@ -301,6 +303,8 @@
 #define SPECIES_PROMETHEAN  "Promethean"
 #define SPECIES_EGYNO       "Egyno"
 #define SPECIES_MONKEY      "Monkey"
+#define SPECIES_GOLEM       "Golem"
+#define SPECIES_ABDUCTOR    "Abductor"
 
 // Ayyy IDs.
 #define SPECIES_XENO                 "Xenomorph"
@@ -360,6 +364,21 @@
 #define HUMAN_DEFAULT_POISE 50 // 100% healthy, non-drugged human being.
 #define HUMAN_LOW_POISE     45
 #define HUMAN_MIN_POISE     25 // Some balancing stuff here. Even drunk pirates should be able to fight.
+
+#define HUMAN_HEIGHT_TINY   0.93
+#define HUMAN_HEIGHT_SMALL  0.96
+#define HUMAN_HEIGHT_NORMAL 1.0
+#define HUMAN_HEIGHT_LARGE  1.04
+#define HUMAN_HEIGHT_HUGE   1.07
+
+/proc/human_height_text(x)
+	switch(x)
+		if(HUMAN_HEIGHT_TINY) return "Dwarfish"
+		if(HUMAN_HEIGHT_SMALL) return "Short"
+		if(HUMAN_HEIGHT_NORMAL) return "Average"
+		if(HUMAN_HEIGHT_LARGE) return "Tall"
+		if(HUMAN_HEIGHT_HUGE) return "Towering"
+	return "Unusual"
 
 #define POSSIBLE_LIZARD_TOXINS list(/datum/reagent/toxin/plasticide ,\
 									/datum/reagent/toxin/amatoxin ,\

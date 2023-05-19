@@ -4,15 +4,15 @@
 	icon = 'icons/obj/power.dmi'
 	icon_state = "ccharger0"
 	anchored = 1
-	idle_power_usage = 5
-	active_power_usage = 60 KILOWATTS	//This is the power drawn when charging
+	idle_power_usage = 5 WATTS
+	active_power_usage = 60 KILO WATTS	// This is the power drawn when charging
 	power_channel = STATIC_EQUIP
-	var/obj/item/weapon/cell/charging = null
+	var/obj/item/cell/charging = null
 	var/chargelevel = -1
 
 	component_types = list(
-		/obj/item/weapon/circuitboard/cell_charger,
-		/obj/item/weapon/stock_parts/capacitor
+		/obj/item/circuitboard/cell_charger,
+		/obj/item/stock_parts/capacitor
 	)
 
 /obj/machinery/cell_charger/update_icon()
@@ -30,7 +30,7 @@
 	else
 		overlays.Cut()
 
-/obj/machinery/cell_charger/examine(mob/user)
+/obj/machinery/cell_charger/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 5)
 		return
@@ -39,11 +39,11 @@
 	if(charging)
 		. += "\nCurrent charge: [charging.charge]"
 
-/obj/machinery/cell_charger/attackby(obj/item/weapon/W, mob/user)
+/obj/machinery/cell_charger/attackby(obj/item/W, mob/user)
 	if(stat & BROKEN)
 		return
 
-	if(istype(W, /obj/item/weapon/cell) && anchored)
+	if(istype(W, /obj/item/cell) && anchored)
 		if(charging)
 			to_chat(user, "<span class='warning'>There is already a cell in the charger.</span>")
 			return
@@ -52,8 +52,8 @@
 			if(a.power_equip == 0) // There's no APC in this area, don't try to cheat power!
 				to_chat(user, "<span class='warning'>The [name] blinks red as you try to insert the cell!</span>")
 				return
-			user.drop_item()
-			W.forceMove(src)
+			if(!user.drop(W, src))
+				return
 			charging = W
 			set_power()
 			START_PROCESSING(SSmachines, src)
@@ -79,7 +79,7 @@
 
 /obj/machinery/cell_charger/attack_hand(mob/user)
 	if(charging)
-		user.put_in_hands(charging)
+		user.pick_or_drop(charging, loc)
 		charging.add_fingerprint(user)
 		charging.update_icon()
 

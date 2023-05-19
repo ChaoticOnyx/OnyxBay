@@ -7,13 +7,13 @@ var/list/fuel_injectors = list()
 	density = 1
 	anchored = 0
 	req_access = list(access_engine)
-	idle_power_usage = 10
-	active_power_usage = 500
+	idle_power_usage = 10 WATTS
+	active_power_usage = 500 WATTS
 
 	var/fuel_usage = 0.0001
 	var/id_tag
 	var/injecting = 0
-	var/obj/item/weapon/fuel_assembly/cur_assembly
+	var/obj/item/fuel_assembly/cur_assembly
 
 /obj/machinery/fusion_fuel_injector/New()
 	..()
@@ -45,7 +45,7 @@ var/list/fuel_injectors = list()
 			id_tag = new_ident
 		return
 
-	if(istype(W, /obj/item/weapon/fuel_assembly))
+	if(istype(W, /obj/item/fuel_assembly))
 
 		if(injecting)
 			to_chat(user, "<span class='warning'>Shut \the [src] off before playing with the fuel rod!</span>")
@@ -57,11 +57,9 @@ var/list/fuel_injectors = list()
 		else
 			visible_message("<span class='notice'>\The [user] inserts \a [W] into \the [src].</span>")
 
-		user.drop_from_inventory(W)
-		W.forceMove(src)
+		user.drop(W, src)
 		if(cur_assembly)
-			cur_assembly.forceMove(get_turf(src))
-			user.put_in_hands(cur_assembly)
+			user.pick_or_drop(cur_assembly, loc)
 		cur_assembly = W
 		return
 
@@ -89,7 +87,7 @@ var/list/fuel_injectors = list()
 
 	if(cur_assembly)
 		cur_assembly.forceMove(get_turf(src))
-		user.put_in_hands(cur_assembly)
+		user.pick_or_drop(cur_assembly, loc)
 		visible_message("<span class='notice'>\The [user] removes \the [cur_assembly] from \the [src].</span>")
 		cur_assembly = null
 		return

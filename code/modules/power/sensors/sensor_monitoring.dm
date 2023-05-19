@@ -14,10 +14,10 @@
 	//computer stuff
 	density = 1
 	anchored = 1.0
-	circuit = /obj/item/weapon/circuitboard/powermonitor
+	circuit = /obj/item/circuitboard/powermonitor
 	var/alerting = 0
-	idle_power_usage = 300
-	active_power_usage = 300
+	idle_power_usage = 300 WATTS
+	active_power_usage = 300 WATTS
 	var/datum/nano_module/power_monitor/power_monitor
 
 // Checks the sensors for alerts. If change (alerts cleared or detected) occurs, calls for icon update.

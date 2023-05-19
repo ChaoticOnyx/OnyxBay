@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/projectile/shotgun/pump
+/obj/item/gun/projectile/shotgun/pump
 	name = "shotgun"
 	desc = "The mass-produced W-T Remmington 29x shotgun is a favourite of police and security forces on many worlds. Useful for sweeping alleys."
 	icon_state = "shotgun"
@@ -21,17 +21,17 @@
 	var/recentpump = 0 // to prevent spammage
 	fire_sound = 'sound/effects/weapons/gun/fire_shotgun2.ogg'
 
-/obj/item/weapon/gun/projectile/shotgun/pump/consume_next_projectile()
+/obj/item/gun/projectile/shotgun/pump/consume_next_projectile()
 	if(chambered)
 		return chambered.BB
 	return null
 
-/obj/item/weapon/gun/projectile/shotgun/pump/attack_self(mob/living/user as mob)
+/obj/item/gun/projectile/shotgun/pump/attack_self(mob/living/user as mob)
 	if(world.time > recentpump + 10)
 		recentpump = world.time
 		pump(user)
 
-/obj/item/weapon/gun/projectile/shotgun/pump/proc/pump(mob/M as mob)
+/obj/item/gun/projectile/shotgun/pump/proc/pump(mob/M as mob)
 	playsound(M, SFX_SHOTGUN_PUMP_IN, rand(45, 60), FALSE)
 
 	if(chambered)//We have a shell in the chamber
@@ -48,7 +48,7 @@
 
 	update_icon()
 
-/obj/item/weapon/gun/projectile/shotgun/pump/combat
+/obj/item/gun/projectile/shotgun/pump/combat
 	name = "combat shotgun"
 	desc = "Built for close quarters combat, the Hephaestus Industries KS-40 is widely regarded as a weapon of choice for repelling boarders."
 	icon_state = "cshotgun"
@@ -59,12 +59,12 @@
 	ammo_type = /obj/item/ammo_casing/shotgun
 	one_hand_penalty = 3 //a little heavier than the regular shotgun
 
-/obj/item/weapon/gun/projectile/shotgun/pump/combat/hos
+/obj/item/gun/projectile/shotgun/pump/combat/hos
 	name = "KS-40"
 	desc = "Built for close quarters combat, the Hephaestus Industries KS-40 is widely regarded as a weapon of choice for repelling boarders. This one emmits LAW."
 	ammo_type = /obj/item/ammo_casing/shotgun
 
-/obj/item/weapon/gun/projectile/shotgun/pump/boomstick
+/obj/item/gun/projectile/shotgun/pump/boomstick
 	name = "makeshift shotgun"
 	icon_state = "boomstick"
 	item_state = "boomstick"
@@ -78,7 +78,7 @@
 	mod_handy = 0.75
 
 // Zip gun construction.
-/obj/item/weapon/boomstickframe
+/obj/item/boomstickframe
 	name = "modified welding tool"
 	desc = "A half-finished... gun?"
 	icon = 'icons/obj/gun.dmi'
@@ -86,7 +86,6 @@
 	item_state = "welder"
 	force = 5.0
 	throwforce = 5.0
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_HUGE
 	mod_weight = 1.0
@@ -94,10 +93,10 @@
 	mod_handy = 0.75
 	var/buildstate = 0
 
-/obj/item/weapon/boomstickframe/update_icon()
+/obj/item/boomstickframe/update_icon()
 	icon_state = "boomstick[buildstate]"
 
-/obj/item/weapon/boomstickframe/examine(mob/user)
+/obj/item/boomstickframe/_examine_text(mob/user)
 	. = ..()
 	switch(buildstate)
 		if(0) . += "\nIt has a pipe loosely fitted to the welding tool."
@@ -106,9 +105,9 @@
 		if(3) . += "\nIt has a spring inside."
 		if(4) . += "\nIt is all covered with duct tape."
 
-/obj/item/weapon/boomstickframe/attackby(obj/item/W, mob/user)
+/obj/item/boomstickframe/attackby(obj/item/W, mob/user)
 	if(isWelder(W) && buildstate == 0)
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 		if(WT.remove_fuel(0, user))
 			user.visible_message("<span class='notice'>\The [user] secures \the [src]'s barrel.</span>")
 			add_fingerprint(user)
@@ -124,14 +123,13 @@
 		update_icon()
 		return
 	else if(istype(W,/obj/item/device/assembly/mousetrap) && buildstate == 2)
-		user.drop_from_inventory(W)
 		qdel(W)
 		user.visible_message("<span class='notice'>\The [user] takes apart \the [W] and uses the parts to construct a crude chamber loader inside \the [src].</span>")
 		add_fingerprint(user)
 		buildstate++
 		update_icon()
 		return
-	else if(istype(W,/obj/item/weapon/tape_roll) && buildstate == 3)
+	else if(istype(W,/obj/item/tape_roll) && buildstate == 3)
 		user.visible_message("<span class='notice'>\The [user] madly wraps the assembly with \the [W].</span>")
 		add_fingerprint(user)
 		buildstate++
@@ -140,20 +138,20 @@
 	else if(isScrewdriver(W) && buildstate == 4)
 		user.visible_message("<span class='notice'>\The [user] secures \the [src] with \the [W].</span>")
 		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
-		var/obj/item/weapon/gun/projectile/shotgun/pump/boomstick/herewego
-		herewego = new /obj/item/weapon/gun/projectile/shotgun/pump/boomstick { starts_loaded = 0 } (loc)
+		var/obj/item/gun/projectile/shotgun/pump/boomstick/herewego
+		herewego = new /obj/item/gun/projectile/shotgun/pump/boomstick { starts_loaded = 0 } (loc)
+		transfer_fingerprints_to(herewego)
 		if(ismob(loc))
 			var/mob/M = loc
-			M.drop_from_inventory(src)
-			M.put_in_hands(herewego)
-		transfer_fingerprints_to(herewego)
-		qdel(src)
+			M.replace_item(src, herewego, TRUE)
+		else
+			qdel(src)
 		return
 	else
 		..()
 
 // Double-barreled shotgun
-/obj/item/weapon/gun/projectile/shotgun/doublebarrel
+/obj/item/gun/projectile/shotgun/doublebarrel
 	name = "double-barreled shotgun"
 	desc = "A true classic."
 	icon_state = "dshotgun"
@@ -184,20 +182,20 @@
 
 	fire_sound = 'sound/effects/weapons/gun/fire_shotgun2.ogg'
 
-/obj/item/weapon/gun/projectile/shotgun/doublebarrel/pellet
+/obj/item/gun/projectile/shotgun/doublebarrel/pellet
 	ammo_type = /obj/item/ammo_casing/shotgun/pellet
 
-/obj/item/weapon/gun/projectile/shotgun/doublebarrel/flare
+/obj/item/gun/projectile/shotgun/doublebarrel/flare
 	name = "signal shotgun"
 	desc = "A double-barreled shotgun meant to fire signal flash shells."
 	ammo_type = /obj/item/ammo_casing/shotgun/flash
 
-/obj/item/weapon/gun/projectile/shotgun/doublebarrel/unload_ammo(user, allow_dump)
+/obj/item/gun/projectile/shotgun/doublebarrel/unload_ammo(user, allow_dump)
 	..(user, allow_dump=1)
 
 //this is largely hacky and bad :(	-Pete
-/obj/item/weapon/gun/projectile/shotgun/doublebarrel/attackby(obj/item/A as obj, mob/user as mob)
-	if(w_class > 3 && (istype(A, /obj/item/weapon/circular_saw) || istype(A, /obj/item/weapon/melee/energy) || istype(A, /obj/item/weapon/gun/energy/plasmacutter)))
+/obj/item/gun/projectile/shotgun/doublebarrel/attackby(obj/item/A as obj, mob/user as mob)
+	if(w_class > 3 && (istype(A, /obj/item/circular_saw) || istype(A, /obj/item/melee/energy) || istype(A, /obj/item/gun/energy/plasmacutter)))
 		to_chat(user, "<span class='notice'>You begin to shorten the barrel of \the [src].</span>")
 		if(loaded.len)
 			for(var/i in 1 to max_shells)
@@ -207,6 +205,7 @@
 		if(do_after(user, 30, src))	//SHIT IS STEALTHY EYYYYY
 			icon_state = "sawnshotgun"
 			item_state = "sawnshotgun"
+			wielded_item_state = null
 			w_class = ITEM_SIZE_NORMAL
 			force = 8.5
 			mod_weight = 0.7
@@ -217,11 +216,12 @@
 			slot_flags |= (SLOT_BELT|SLOT_HOLSTER) //but you can wear it on your belt (poorly concealed under a trenchcoat, ideally) - or in a holster, why not.
 			SetName("sawn-off shotgun")
 			desc = "Omar's coming!"
+			fire_sound = 'sound/effects/weapons/gun/fire_shotgun3.ogg'
 			to_chat(user, "<span class='warning'>You shorten the barrel of \the [src]!</span>")
 	else
 		..()
 
-/obj/item/weapon/gun/projectile/shotgun/doublebarrel/sawn
+/obj/item/gun/projectile/shotgun/doublebarrel/sawn
 	name = "sawn-off shotgun"
 	desc = "Omar's coming!"
 	icon_state = "sawnshotgun"

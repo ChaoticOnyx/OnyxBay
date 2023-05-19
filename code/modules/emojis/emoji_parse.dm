@@ -1,6 +1,6 @@
 /proc/emoji_parse(client/C, text) //turns :ai: into an emoji in text.
 	. = text
-	if(!config.emojis)
+	if(!config.misc.emojis_allowed)
 		return
 	if(!C)
 		return
@@ -31,4 +31,3 @@
 				parsed += copytext(text, pos, search)
 		break
 	return parsed
-

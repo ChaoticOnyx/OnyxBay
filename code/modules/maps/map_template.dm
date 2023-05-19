@@ -12,7 +12,7 @@
 
 /datum/map_template/New(list/paths = null, rename = null)
 	if(paths && !islist(paths))
-		crash_with("Non-list paths passed into map template constructor.")
+		util_crash_with("Non-list paths passed into map template constructor.")
 	if(paths)
 		mappaths = paths
 	if(mappaths)
@@ -68,8 +68,6 @@
 		T.post_change()
 		if(template_flags & TEMPLATE_FLAG_NO_RUINS)
 			T.turf_flags |= TURF_FLAG_NORUINS
-		if(template_flags & TEMPLATE_FLAG_NO_RADS)
-			qdel(SSradiation.sources_assoc[i])
 
 /datum/map_template/proc/init_shuttles()
 	for (var/shuttle_type in shuttles_to_initialise)
@@ -94,13 +92,6 @@
 		else
 			return FALSE
 
-	for (var/z_index = bounds[MAP_MINZ]; z_index <= bounds[MAP_MAXZ]; z_index++)
-		if (accessibility_weight)
-			GLOB.using_map.accessible_z_levels[num2text(z_index)] = accessibility_weight
-		if (base_turf_for_zs)
-			GLOB.using_map.base_turf_by_z[num2text(z_index)] = base_turf_for_zs
-		GLOB.using_map.player_levels |= z_index
-
 	// Initialize things that are normally initialized after map load
 	init_atoms(atoms_to_initialise)
 	init_shuttles()
@@ -122,7 +113,7 @@
 	var/list/atoms_to_initialise = list()
 
 	for (var/mappath in mappaths)
-		var/datum/map_load_metadata/M = maploader.load_map(file(mappath), T.x, T.y, T.z, cropMap=TRUE, clear_contents= template_flags & TEMPLATE_FLAG_CLEAR_CONTENTS)
+		var/datum/map_load_metadata/M = maploader.load_map(file(mappath), T.x, T.y, T.z, cropMap=TRUE, clear_contents= clear_contents)
 		if (M)
 			atoms_to_initialise += M.atoms_to_initialise
 		else

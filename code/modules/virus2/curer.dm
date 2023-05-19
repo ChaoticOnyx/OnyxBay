@@ -3,26 +3,24 @@
 	icon = 'icons/obj/computer.dmi'
 	icon_keyboard = "med_key"
 	icon_screen = "dna"
-	circuit = /obj/item/weapon/circuitboard/curefab
-	idle_power_usage = 500
+	circuit = /obj/item/circuitboard/curefab
+	idle_power_usage = 500 WATTS
 	var/curing
 	var/virusing
 
-	var/obj/item/weapon/reagent_containers/container = null
+	var/obj/item/reagent_containers/container = null
 
 /obj/machinery/computer/curer/attackby(obj/I as obj, mob/user as mob)
-	if(istype(I,/obj/item/weapon/reagent_containers))
+	if(istype(I,/obj/item/reagent_containers))
 		var/mob/living/carbon/C = user
-		if(!container)
+		if(!container && C.drop(I, src))
 			container = I
-			C.drop_item()
-			I.loc = src
 		return
-	if(istype(I,/obj/item/weapon/virusdish))
+	if(istype(I,/obj/item/virusdish))
 		if(virusing)
 			to_chat(user, "<b>The pathogen materializer is still recharging..</b>")
 			return
-		var/obj/item/weapon/reagent_containers/glass/beaker/product = new(src.loc)
+		var/obj/item/reagent_containers/vessel/beaker/product = new(src.loc)
 
 		var/list/data = list("donor" = null, "blood_DNA" = null, "blood_type" = null, "trace_chem" = null, "virus2" = list(), "antibodies" = list())
 		data["virus2"] |= I:virus2
@@ -42,7 +40,7 @@
 /obj/machinery/computer/curer/attack_hand(mob/user as mob)
 	if(..())
 		return
-	user.machine = src
+	user.set_machine(src)
 	var/dat = "<meta charset=\"utf-8\">"
 	if(curing)
 		dat += "Antibody production in progress"
@@ -91,8 +89,8 @@
 	if(. == TOPIC_REFRESH)
 		attack_hand(user)
 
-/obj/machinery/computer/curer/proc/createcure(obj/item/weapon/reagent_containers/container)
-	var/obj/item/weapon/reagent_containers/glass/beaker/product = new(src.loc)
+/obj/machinery/computer/curer/proc/createcure(obj/item/reagent_containers/container)
+	var/obj/item/reagent_containers/vessel/beaker/product = new(src.loc)
 
 	var/datum/reagent/blood/B = locate() in container.reagents.reagent_list
 

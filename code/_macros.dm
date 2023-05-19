@@ -34,6 +34,8 @@
 
 #define ishuman(A) istype(A, /mob/living/carbon/human)
 
+#define isabductor(A) (is_species(A, /datum/species/abductor))
+
 #define isitem(A) istype(A, /obj/item)
 
 #define islist(A) istype(A, /list)
@@ -82,29 +84,29 @@
 
 #define isopenspace(A) istype(A, /turf/simulated/open)
 
-#define isWrench(A) (istype(A, /obj/item/weapon/wrench) || (istype(A, /obj/item/weapon/rpd) && A:interaction_mode == "wrench"))
+#define isWrench(A) ((istype(A, /obj/item) && A.tool_behaviour == TOOL_WRENCH) || (istype(A, /obj/item/rpd) && A:interaction_mode == "wrench"))
 
-#define isWelder(A) istype(A, /obj/item/weapon/weldingtool)
+#define isWelder(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_WELDER)
 
-#define isCoil(A) istype(A, /obj/item/stack/cable_coil)
+#define isCoil(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_COIL)
 
-#define isWirecutter(A) istype(A, /obj/item/weapon/wirecutters)
+#define isWirecutter(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_WIRECUTTER)
 
-#define isScrewdriver(A) istype(A, /obj/item/weapon/screwdriver)
+#define isScrewdriver(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_SCREWDRIVER)
 
-#define isMultitool(A) istype(A, /obj/item/device/multitool)
+#define isMultitool(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_MULTITOOL)
 
-#define isCrowbar(A) istype(A, /obj/item/weapon/crowbar)
+#define isCrowbar(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_CROWBAR)
 
-#define iscapacitor(A) istype(A, /obj/item/weapon/stock_parts/capacitor)
+#define iscapacitor(A) istype(A, /obj/item/stock_parts/capacitor)
 
-#define ismicrolaser(A) istype(A, /obj/item/weapon/stock_parts/micro_laser)
+#define ismicrolaser(A) istype(A, /obj/item/stock_parts/micro_laser)
 
-#define ismatterbin(A) istype(A, /obj/item/weapon/stock_parts/matter_bin)
+#define ismatterbin(A) istype(A, /obj/item/stock_parts/matter_bin)
 
-#define isscanner(A) istype(A, /obj/item/weapon/stock_parts/scanning_module)
+#define isscanner(A) istype(A, /obj/item/stock_parts/scanning_module)
 
-#define ismanipulator(A) istype(A, /obj/item/weapon/stock_parts/manipulator)
+#define ismanipulator(A) istype(A, /obj/item/stock_parts/manipulator)
 
 #define ismech(A) istype(A, /obj/mecha)
 
@@ -145,14 +147,6 @@
 
 #define CanPhysicallyInteractWith(user, target) CanInteractWith(user, target, GLOB.physical_state)
 
-#define QDEL_NULL_LIST(x) if(x) { for(var/y in x) { qdel(y) } ; x = null }
-
-#define QDEL_LIST(L) if(L) { for(var/I in L) qdel(I); L.Cut(); }
-
-#define QDEL_NULL(x) if(x) { qdel(x) ; x = null }
-
-#define QDEL_IN(item, time) addtimer(CALLBACK(GLOBAL_PROC, .proc/qdel, item), time, TIMER_STOPPABLE)
-
 #define ARGS_DEBUG log_debug("[__FILE__] - [__LINE__]") ; for(var/arg in args) { log_debug("\t[log_info_line(arg)]") }
 
 // Helper macros to aid in optimizing lazy instantiation of lists.
@@ -185,6 +179,11 @@
 // Reads L or an empty list if L is not a list.  Note: Does NOT assign, L may be an expression.
 #define SANITIZE_LIST(L) ( islist(L) ? L : list() )
 
+// Adds value V to associati list L[K]
+#define LAZYADDASSOC(L, K, V) if(!L) { L = list(); } L[K] += list(V);
+// Removes value V and key K from associative list L
+#define LAZYREMOVEASSOC(L, K, V) if(L) { if(L[K]) { L[K] -= V; if(!length(L[K])) L -= K; } if(!length(L)) L = null; }
+
 // Insert an object A into a sorted list using cmp_proc (/code/_helpers/cmp.dm) for comparison.
 #define ADD_SORTED(list, A, cmp_proc) if(!list.len) {list.Add(A)} else {list.Insert(FindElementIndex(A, list, cmp_proc), A)}
 
@@ -201,6 +200,8 @@
 
 #define SPAN(class, X) "<span class='" + ##class + "'>" + ##X + "</span>"
 
+#define SPAN_INFO(X)     SPAN("info", X)
+
 #define SPAN_NOTICE(X)   SPAN("notice", X)
 
 #define SPAN_WARNING(X)  SPAN("warning", X)
@@ -211,6 +212,8 @@
 
 #define SPAN_DEADSAY(X)  SPAN("deadsay", X)
 
+#define SPAN_SPIDER(X)   SPAN("spider", X)
+
 #define FONT_SMALL(X)    SPAN("small", X)
 
 #define FONT_NORMAL(X)   SPAN("normal", X)
@@ -220,4 +223,3 @@
 #define FONT_HUGE(X)     SPAN("huge", X)
 
 #define FONT_GIANT(X)    SPAN("giant", X)
-

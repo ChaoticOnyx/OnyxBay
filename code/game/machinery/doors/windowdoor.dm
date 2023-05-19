@@ -14,7 +14,7 @@
 	use_power = POWER_USE_OFF
 	atom_flags = ATOM_FLAG_CHECKS_BORDER
 	opacity = 0
-	var/obj/item/weapon/airlock_electronics/electronics = null
+	var/obj/item/airlock_electronics/electronics = null
 	explosion_resistance = 5
 	can_atmos_pass = ATMOS_PASS_PROC
 	air_properties_vary_with_direction = 1
@@ -38,12 +38,12 @@
 		icon_state = "[base_state]open"
 
 /obj/machinery/door/window/proc/shatter(display_message = 1)
-	new /obj/item/weapon/material/shard(loc)
+	new /obj/item/material/shard(loc)
 	var/obj/item/stack/cable_coil/CC = new /obj/item/stack/cable_coil(loc)
 	CC.amount = 2
-	var/obj/item/weapon/airlock_electronics/ae
+	var/obj/item/airlock_electronics/ae
 	if(!electronics)
-		ae = new /obj/item/weapon/airlock_electronics( loc )
+		ae = new /obj/item/airlock_electronics( loc )
 		if(!req_access)
 			check_access()
 		if(req_access.len)
@@ -178,12 +178,12 @@
 		var/mob/living/carbon/human/H = user
 		if(H.species?.can_shred(H))
 			playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
-			visible_message("<span class='danger'>[user] smashes against the [name].</span>", 1)
+			visible_message("<span class='danger'>[user] smashes against the [name].</span>")
 			user.do_attack_animation(src)
 			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 			take_damage(25)
 			return
-	return attackby(user, user)
+	return Bumped(user)
 
 /obj/machinery/door/window/emag_act(remaining_charges, mob/user)
 	if(density && operable())
@@ -196,11 +196,11 @@
 	if(prob(60 / severity))
 		open()
 
-/obj/machinery/door/window/attackby(obj/item/weapon/I, mob/user)
+/obj/machinery/door/window/attackby(obj/item/I, mob/user)
 	if(operating)
 		return
 
-	if(istype(I, /obj/item/weapon/melee/energy/blade))
+	if(istype(I, /obj/item/melee/energy/blade))
 		if(emag_act(10, user))
 			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 			spark_system.set_up(5, 0, loc)
@@ -229,9 +229,9 @@
 			wa.state = "02"
 			wa.update_icon()
 
-			var/obj/item/weapon/airlock_electronics/ae
+			var/obj/item/airlock_electronics/ae
 			if(!electronics)
-				ae = new /obj/item/weapon/airlock_electronics( loc )
+				ae = new /obj/item/airlock_electronics( loc )
 				if(!req_access)
 					check_access()
 				if(req_access.len)
@@ -250,7 +250,7 @@
 			return
 
 	//If it's a weapon, smash windoor. Unless it's an id card, agent card, ect.. then ignore it (Cards really shouldnt damage a door anyway)
-	if(density && istype(I, /obj/item/weapon) && !istype(I, /obj/item/weapon/card))
+	if(density && user.a_intent == I_HURT && !(istype(I, /obj/item/card) || istype(I, /obj/item/device/pda)))
 		var/aforce = I.force
 		playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		visible_message("<span class='danger'>[src] was hit by [I].</span>")

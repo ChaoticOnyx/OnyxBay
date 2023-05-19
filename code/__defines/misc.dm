@@ -3,7 +3,6 @@
 #define TURF_FLAG_NOJAUNT 1 // This is used in literally one place, turf.dm, to block ethereal jaunt.
 #define TURF_FLAG_NORUINS 2
 
-#define TRANSITIONEDGE 7 // Distance from edge to move to another z-level.
 #define RUIN_MAP_EDGE_PAD 15
 
 // Invisibility constants.
@@ -45,11 +44,16 @@
 #define  STATUS_HUD_OOC 9 // STATUS_HUD without virus DB check for someone being ill.
 #define        LIFE_HUD 10 // STATUS_HUD that only reports dead or alive
 #define        XENO_HUD 11 // Alien embryo status.
+#define       GLAND_HUD 12 // Abductors data hud
 
 // Shuttle moving status.
 #define SHUTTLE_IDLE      0
 #define SHUTTLE_WARMUP    1
 #define SHUTTLE_INTRANSIT 2
+
+// Elevator moving status.
+#define ELEVATOR_IDLE      0
+#define ELEVATOR_INTRANSIT 1
 
 // Autodock shuttle processing status.
 #define IDLE_STATE   0
@@ -72,6 +76,13 @@
 #define EVENT_LEVEL_MODERATE 2
 #define EVENT_LEVEL_MAJOR    3
 
+/// Weight as is.
+#define EVENT_OPTION_NORMAL          1
+/// Higher weight by `aggression_ratio` of storyteller character.
+#define EVENT_OPTION_AI_AGGRESSION   2
+/// Reverse of `EVENT_OPTION_AI_AGGRESSION`
+#define EVENT_OPTION_AI_AGGRESSION_R 3
+
 //General-purpose life speed define for plants.
 #define HYDRO_SPEED_MULTIPLIER 1
 
@@ -80,6 +91,7 @@
 //Area flags, possibly more to come
 #define AREA_FLAG_RAD_SHIELDED 1 // shielded from radiation, clearly
 #define AREA_FLAG_EXTERNAL     2 // External as in exposed to space, not outside in a nice, green, forest
+#define AREA_FLAG_NO_STATION   3
 
 //Area gravity flags
 #define AREA_GRAVITY_NEVER  -1 // No gravity, never
@@ -91,7 +103,6 @@
 #define TEMPLATE_FLAG_SPAWN_GUARANTEED 2 // Makes it ignore away site budget and just spawn (only for away sites)
 #define TEMPLATE_FLAG_CLEAR_CONTENTS   4 // if it should destroy objects it spawns on top of
 #define TEMPLATE_FLAG_NO_RUINS         8 // if it should forbid ruins from spawning on top of it
-#define TEMPLATE_FLAG_NO_RADS          16// Removes all radiation from the template after spawning.
 
 #define CUSTOM_ITEM_OBJ 'icons/obj/custom_items_obj.dmi'
 #define CUSTOM_ITEM_MOB null
@@ -154,6 +165,12 @@
 #define PROJECTILE_FORCE_MISS	-2 //if the projectile should treat the attack as a miss (suppresses attack and admin logs) - only applies to mobs.
 #define PROJECTILE_FORCE_BLOCK	-3 //if the projectile should treat the attack as blocked (supresses attack, but not admin logs) - only applies to humans and human subtypes.
 
+// These determine how well one can block things with items
+#define BLOCK_TIER_NONE        0
+#define BLOCK_TIER_MELEE       1
+#define BLOCK_TIER_PROJECTILE  2
+#define BLOCK_TIER_ADVANCED    3
+
 //Camera capture modes
 #define CAPTURE_MODE_REGULAR 0 //Regular polaroid camera mode
 #define CAPTURE_MODE_ALL 1 //Admin camera mode
@@ -206,13 +223,6 @@
 
 //Error handler defines
 #define ERROR_USEFUL_LEN 2
-
-#define RAD_LEVEL_LOW 0.5 // Around the level at which radiation starts to become harmful
-#define RAD_LEVEL_MODERATE 5
-#define RAD_LEVEL_HIGH 25
-#define RAD_LEVEL_VERY_HIGH 75
-
-#define RADIATION_THRESHOLD_CUTOFF 0.1	// Radiation will not affect a tile when below this value.
 
 #define LEGACY_RECORD_STRUCTURE(X, Y) GLOBAL_LIST_EMPTY(##X);/datum/computer_file/data/##Y/var/list/fields[0];/datum/computer_file/data/##Y/New(){..();GLOB.##X.Add(src);}/datum/computer_file/data/##Y/Destroy(){..();GLOB.##X.Remove(src);}
 
@@ -269,3 +279,25 @@
 #define SYRINGE_INJECT "inject"
 #define SYRINGE_BROKEN "broken"
 #define SYRINGE_PACKAGED "packaged"
+
+// Bank accounts' security levels
+#define BANK_SECURITY_MINIMUM 0
+#define BANK_SECURITY_MODERATE 1
+#define BANK_SECURITY_MAXIMUM 2
+
+// Notification action types
+#define NOTIFY_JUMP "jump"
+#define NOTIFY_ATTACK "attack"
+#define NOTIFY_FOLLOW "follow"
+
+// Atmospherics vents
+#define VENT_UNDAMAGED 0
+#define VENT_DAMAGED_STAGE_ONE 1
+#define VENT_DAMAGED_STAGE_TWO 2
+#define VENT_DAMAGED_STAGE_THREE 3
+#define VENT_BROKEN 4
+
+// Headphones
+#define LOW_VOLUME  1
+#define MID_VOLUME  2
+#define HIGH_VOLUME 3

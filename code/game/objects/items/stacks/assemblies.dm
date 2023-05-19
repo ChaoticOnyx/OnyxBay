@@ -1,6 +1,7 @@
 /obj/item/stack/gassembly
 	name = "girder assemblies"
 	singular_name = "girder assembly"
+	plural_name = "assemblies"
 	desc = "A wall girder's embryo."
 	icon = 'icons/obj/structures.dmi'
 	icon_state = "gassembly"
@@ -9,7 +10,7 @@
 	w_class = ITEM_SIZE_LARGE
 	force = 8.5
 	throwforce = 10.0
-	throw_speed = 5
+	throw_speed = 2
 	throw_range = 7
 	mod_weight = 1.2
 	mod_reach = 0.85
@@ -24,7 +25,7 @@
 
 /obj/item/stack/gassembly/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWelder(W))
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 
 		if(WT.remove_fuel(0,user))
 			var/obj/item/stack/material/steel/new_item
@@ -35,18 +36,23 @@
 			new_item.add_fingerprint(user)
 			new_item.add_to_stacks(usr)
 			for (var/mob/M in viewers(src))
-				M.show_message("<span class='notice'>[src] is shaped into metal by [user.name] with the weldingtool.</span>", 3, "<span class='notice'>You hear welding.</span>", 2)
+				M.show_message(SPAN_NOTICE("[src] is shaped into metal by [user.name] with the weldingtool."), 3, SPAN_NOTICE("You hear welding."), 2)
 			var/obj/item/stack/gassembly/R = src
 			src = null
 			var/replace = (user.get_inactive_hand()==R)
 			R.use(1)
 			if (!R && replace)
-				user.put_in_hands(new_item)
+				user.pick_or_drop(new_item)
 		return
 
 	if(isWrench(W) && !in_use)
-		user.visible_message("<span class='notice'>\The [user] begins assembling \a [singular_name].</span>", \
-				"<span class='notice'>You begin assembling \the [singular_name].</span>")
+
+		if(istype(loc, /turf) && !isfloor(loc))
+			to_chat(user, SPAN_WARNING("\The [name] must be constructed on the floor!"))
+			return
+
+		user.visible_message(SPAN_NOTICE("\The [user] begins assembling \a [singular_name]."), \
+				SPAN_NOTICE("You begin assembling \the [singular_name]."))
 		in_use = 1
 
 		if (!do_after(usr, 25))
@@ -59,8 +65,8 @@
 		else
 			new_girder = new(usr.loc)
 
-		user.visible_message("<span class='notice'>\The [user] assembles \a [singular_name].</span>", \
-				"<span class='notice'>You assemble \the [singular_name].</span>")
+		user.visible_message(SPAN_NOTICE("\The [user] assembles \a [singular_name]."), \
+				SPAN_NOTICE("You assemble \the [singular_name]."))
 		in_use = 0
 		new_girder.add_fingerprint(user)
 		src.use(1)
@@ -72,11 +78,13 @@
 /obj/item/stack/gassembly/attack_self(mob/user as mob)
 	src.add_fingerprint(user)
 
-	if(!istype(user.loc,/turf)) return 0
+	if (istype(user.loc,/turf) && !isfloor(user.loc))
+		to_chat(user, SPAN_WARNING("\The [name] must be constructed on the floor!"))
+		return
 
 	if(!in_use)
-		user.visible_message("<span class='notice'>\The [user] begins assembling \a [singular_name].</span>", \
-				"<span class='notice'>You begin assembling \the [singular_name].</span>")
+		user.visible_message(SPAN_NOTICE("\The [user] begins assembling \a [singular_name]."), \
+				SPAN_NOTICE("You begin assembling \the [singular_name]."))
 		in_use = 1
 
 		if (!do_after(usr, 40))
@@ -85,8 +93,8 @@
 
 		var/obj/structure/girder/new_girder = new(usr.loc)
 
-		user.visible_message("<span class='notice'>\The [user] assembles \a [new_girder].</span>", \
-				"<span class='notice'>You assemble \a [new_girder].</span>")
+		user.visible_message(SPAN_NOTICE("\The [user] assembles \a [new_girder]."), \
+				SPAN_NOTICE("You assemble \a [new_girder]."))
 		in_use = 0
 		new_girder.add_fingerprint(user)
 		use(1)

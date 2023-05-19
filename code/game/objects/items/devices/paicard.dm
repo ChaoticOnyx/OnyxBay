@@ -13,7 +13,7 @@
 /obj/item/device/paicard/relaymove(mob/user, direction)
 	if(user.stat || user.stunned)
 		return
-	var/obj/item/weapon/rig/rig = get_rig()
+	var/obj/item/rig/rig = get_rig()
 	if(istype(rig))
 		rig.forced_move(direction, user)
 	if(istype(loc, /obj/item/integrated_circuit/input/pAI_connector))
@@ -26,7 +26,7 @@
 
 /obj/item/device/paicard/Destroy()
 	//Will stop people throwing friend pAIs into the singularity so they can respawn
-	if(!isnull(pai))
+	if(!QDELETED(pai))
 		pai.death(0)
 	QDEL_NULL(radio)
 	return ..()

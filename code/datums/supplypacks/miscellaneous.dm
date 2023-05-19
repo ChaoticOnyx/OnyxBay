@@ -3,7 +3,7 @@
 
 /decl/hierarchy/supply_pack/miscellaneous/wizard
 	name = "Wizard costume"
-	contains = list(/obj/item/weapon/staff,
+	contains = list(/obj/item/staff,
 					/obj/item/clothing/suit/wizrobe,
 					/obj/item/clothing/shoes/sandal,
 					/obj/item/clothing/head/wizard)
@@ -146,9 +146,9 @@
 
 /decl/hierarchy/supply_pack/miscellaneous/card_packs
 	num_contained = 5
-	contains = list(/obj/item/weapon/pack/cardemon,
-					/obj/item/weapon/pack/spaceball,
-					/obj/item/weapon/deck/holder)
+	contains = list(/obj/item/pack/cardemon,
+					/obj/item/pack/spaceball,
+					/obj/item/deck/holder)
 	name = "\improper Trading Card Crate"
 	cost = 20
 	containername = "\improper cards crate"
@@ -198,7 +198,7 @@
 	contains = list(/obj/item/clothing/suit/wizrobe/marisa/fake,
 					/obj/item/clothing/shoes/sandal,
 					/obj/item/clothing/head/wizard/marisa/fake,
-					/obj/item/weapon/staff/broom)
+					/obj/item/staff/broom)
 	cost = 20
 	containername = "\improper Witch costume"
 	containertype = /obj/structure/closet
@@ -305,8 +305,8 @@
 					/obj/item/clothing/head/chaplain_hood,
 					/obj/item/clothing/suit/holidaypriest,
 					/obj/item/clothing/under/wedding/bride_white,
-					/obj/item/weapon/storage/backpack/cultpack,
-					/obj/item/weapon/storage/fancy/candle_box = 3)
+					/obj/item/storage/backpack/cultpack,
+					/obj/item/storage/fancy/candle_box = 3)
 	cost = 10
 	containername = "\improper Chaplain equipment crate"
 
@@ -319,14 +319,27 @@
 
 /decl/hierarchy/supply_pack/miscellaneous/mousetrap
 	num_contained = 3
-	contains = list(/obj/item/weapon/storage/box/mousetraps)
+	contains = list(/obj/item/storage/box/mousetraps)
 	name = "\improper Pest Control Crate"
 	cost = 10
 	containername = "\improper Pest Control Crate"
 
+/decl/hierarchy/supply_pack/miscellaneous/music_tapes
+	name = "Music Tapes Party Kit"
+	contains = list(/obj/item/music_tape_box/classic,
+					/obj/item/music_tape_box/jazz,
+					/obj/item/music_tape_box/exodus,
+					/obj/item/music_tape_box/newyear,
+					/obj/item/music_tape_box/frontier,
+					/obj/item/music_tape_box/valhalla,
+					/obj/item/music_tape_box/halloween
+					)
+	cost = 40
+	containername = "\improper Music tapes crate"
+
 /decl/hierarchy/supply_pack/miscellaneous/bouquet
 	name = "Box of bouquets"
-	contains = list(/obj/item/weapon/storage/bouquet/shotgun = 3)
+	contains = list(/obj/item/storage/bouquet/shotgun = 3)
 	cost = 100
 	containername = "\improper crate"
 	hidden = 1

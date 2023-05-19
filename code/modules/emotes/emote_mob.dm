@@ -6,7 +6,7 @@
 
 /mob/proc/emote(act, m_type, message)
 	// s-s-snowflake
-	if(src.stat == DEAD && act != "deathgasp")
+	if(src.is_ic_dead() && act != "deathgasp")
 		return
 	if(usr == src) //client-called emote
 		if (client && (client.prefs.muted & MUTE_IC))
@@ -57,7 +57,7 @@
 	else
 		use_emote.do_emote(src, message)
 
-	for (var/obj/item/weapon/implant/I in src)
+	for (var/obj/item/implant/I in src)
 		if (I.implanted)
 			I.trigger(act, src)
 

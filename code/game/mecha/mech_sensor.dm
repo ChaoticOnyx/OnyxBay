@@ -1,6 +1,6 @@
 /obj/machinery/mech_sensor
 	icon = 'icons/obj/airlock_machines.dmi'
-	icon_state = "airlock_sensor_off"
+	icon_state = "mech_sensor_standby"
 	name = "mechatronic sensor"
 	desc = "Regulates mech movement."
 	anchored = 1
@@ -58,9 +58,9 @@
 
 /obj/machinery/mech_sensor/update_icon(safety = 0)
 	if (enabled())
-		icon_state = "airlock_sensor_standby"
+		icon_state = "mech_sensor_standby"
 	else
-		icon_state = "airlock_sensor_off"
+		icon_state = "mech_sensor_off"
 
 /obj/machinery/mech_sensor/Initialize()
 	. = ..()

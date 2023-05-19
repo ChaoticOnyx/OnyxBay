@@ -59,10 +59,11 @@ var/list/uplink_random_selections_
 	items += new /datum/uplink_random_item(/datum/uplink_item/item/stealthy_weapons/cigarette_kit)
 
 	items += new /datum/uplink_random_item(/datum/uplink_item/item/stealth_items/id)
-	items += new /datum/uplink_random_item(/datum/uplink_item/item/stealth_items/spy)
 	items += new /datum/uplink_random_item(/datum/uplink_item/item/stealth_items/chameleon_kit)
 	items += new /datum/uplink_random_item(/datum/uplink_item/item/stealth_items/chameleon_projector)
 	items += new /datum/uplink_random_item(/datum/uplink_item/item/stealth_items/voice)
+
+	items += new /datum/uplink_random_item(/datum/uplink_item/item/contracts_equipment/spy)
 
 	items += new /datum/uplink_random_item(/datum/uplink_item/item/tools/toolbox, reselect_propbability = 10)
 	items += new /datum/uplink_random_item(/datum/uplink_item/item/tools/plastique)
@@ -85,17 +86,17 @@ var/list/uplink_random_selections_
 	items += new /datum/uplink_random_item(/datum/uplink_item/item/medical/surgery, reselect_propbability = 10)
 	items += new /datum/uplink_random_item(/datum/uplink_item/item/medical/combat, reselect_propbability = 10)
 
-	items += new /datum/uplink_random_item(/datum/uplink_item/item/hardsuit_modules/thermal, reselect_propbability = 15)
-	items += new /datum/uplink_random_item(/datum/uplink_item/item/hardsuit_modules/energy_net, reselect_propbability = 15)
-	items += new /datum/uplink_random_item(/datum/uplink_item/item/hardsuit_modules/ewar_voice, reselect_propbability = 15)
-	items += new /datum/uplink_random_item(/datum/uplink_item/item/hardsuit_modules/maneuvering_jets, reselect_propbability = 15)
-	items += new /datum/uplink_random_item(/datum/uplink_item/item/hardsuit_modules/egun, reselect_propbability = 15)
-	items += new /datum/uplink_random_item(/datum/uplink_item/item/hardsuit_modules/power_sink, reselect_propbability = 15)
-	items += new /datum/uplink_random_item(/datum/uplink_item/item/hardsuit_modules/laser_canon, reselect_propbability = 5)
+	items += new /datum/uplink_random_item(/datum/uplink_item/item/powersuit_modules/thermal, reselect_propbability = 15)
+	items += new /datum/uplink_random_item(/datum/uplink_item/item/powersuit_modules/energy_net, reselect_propbability = 15)
+	items += new /datum/uplink_random_item(/datum/uplink_item/item/powersuit_modules/ewar_voice, reselect_propbability = 15)
+	items += new /datum/uplink_random_item(/datum/uplink_item/item/powersuit_modules/maneuvering_jets, reselect_propbability = 15)
+	items += new /datum/uplink_random_item(/datum/uplink_item/item/powersuit_modules/egun, reselect_propbability = 15)
+	items += new /datum/uplink_random_item(/datum/uplink_item/item/powersuit_modules/power_sink, reselect_propbability = 15)
+	items += new /datum/uplink_random_item(/datum/uplink_item/item/powersuit_modules/laser_canon, reselect_propbability = 5)
 
-	items += new /datum/uplink_random_item(/datum/uplink_item/item/hardsuit_modules/thermal, reselect_propbability = 15)
-	items += new /datum/uplink_random_item(/datum/uplink_item/item/hardsuit_modules/thermal, reselect_propbability = 15)
-	items += new /datum/uplink_random_item(/datum/uplink_item/item/hardsuit_modules/thermal, reselect_propbability = 15)
+	items += new /datum/uplink_random_item(/datum/uplink_item/item/powersuit_modules/thermal, reselect_propbability = 15)
+	items += new /datum/uplink_random_item(/datum/uplink_item/item/powersuit_modules/thermal, reselect_propbability = 15)
+	items += new /datum/uplink_random_item(/datum/uplink_item/item/powersuit_modules/thermal, reselect_propbability = 15)
 
 	items += new /datum/uplink_random_item(/datum/uplink_item/item/tools/suit_sensor_mobile)
 	items += new /datum/uplink_random_item(/datum/uplink_item/item/services/suit_sensor_shutdown, 75, 0)
@@ -109,6 +110,7 @@ var/list/uplink_random_selections_
 			/datum/uplink_item/item/tools/teleporter,
 			/datum/uplink_item/item/tools/supply_beacon,
 			/datum/uplink_item/item/implants/imp_uplink,
+			/datum/uplink_item/item/job,
 			/datum/uplink_item/deity
 		)
 

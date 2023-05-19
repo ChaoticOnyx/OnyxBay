@@ -126,7 +126,7 @@ var/list/tape_roll_applications = list()
 /obj/item/taperoll/update_icon()
 	overlays.Cut()
 	var/image/overlay = image(icon = src.icon)
-	overlay.appearance_flags = RESET_COLOR
+	overlay.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 	if(ismob(loc))
 		if(!start)
 			overlay.icon_state = "start"
@@ -303,7 +303,7 @@ var/list/tape_roll_applications = list()
 			crumple()
 	return ..(mover)
 
-/obj/item/tape/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/tape/attackby(obj/item/W as obj, mob/user as mob)
 	breaktape(user)
 
 /obj/item/tape/attack_hand(mob/user as mob)

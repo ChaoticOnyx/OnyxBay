@@ -4,7 +4,7 @@
 	var/datum/gas_mixture/air_contents = new
 
 	var/obj/machinery/atmospherics/portables_connector/connected_port
-	var/obj/item/weapon/tank/holding
+	var/obj/item/tank/holding
 
 	var/volume = 0
 	var/destroyed = 0
@@ -17,7 +17,7 @@
 	..()
 
 	air_contents.volume = volume
-	air_contents.temperature = T20C
+	air_contents.temperature = 20 CELSIUS
 
 	return 1
 
@@ -101,14 +101,12 @@
 	if (network)
 		network.update = 1
 
-/obj/machinery/portable_atmospherics/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if ((istype(W, /obj/item/weapon/tank) && !( src.destroyed )))
-		if (src.holding)
+/obj/machinery/portable_atmospherics/attackby(obj/item/W as obj, mob/user as mob)
+	if ((istype(W, /obj/item/tank) && !( src.destroyed )))
+		if(holding || !user.drop(W, src))
 			return
-		var/obj/item/weapon/tank/T = W
-		user.drop_item()
-		T.forceMove(src)
-		src.holding = T
+		var/obj/item/tank/T = W
+		holding = T
 		update_icon()
 		return
 
@@ -144,7 +142,7 @@
 	var/power_rating
 	var/power_losses
 	var/last_power_draw = 0
-	var/obj/item/weapon/cell/cell
+	var/obj/item/cell/cell
 
 /obj/machinery/portable_atmospherics/powered/powered()
 	if(use_power) //using area power
@@ -154,17 +152,15 @@
 	return 0
 
 /obj/machinery/portable_atmospherics/powered/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/cell))
+	if(istype(I, /obj/item/cell))
 		if(cell)
 			to_chat(user, "There is already a power cell installed.")
 			return
-
-		var/obj/item/weapon/cell/C = I
-
-		user.drop_item()
+		if(!user.drop(I, src))
+			return
+		var/obj/item/cell/C = I
 		C.add_fingerprint(user)
 		cell = C
-		C.forceMove(src)
 		user.visible_message("<span class='notice'>[user] opens the panel on [src] and inserts [C].</span>", "<span class='notice'>You open the panel on [src] and insert [C].</span>")
 		power_change()
 		return

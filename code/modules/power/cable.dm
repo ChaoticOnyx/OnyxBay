@@ -99,15 +99,13 @@ var/list/possible_cable_coil_colours
 	. = ..()                       // then go ahead and delete the cable
 
 
-// Ghost examining the cable -> tells him the power
-/obj/structure/cable/attack_ghost(mob/user)
-	if(user.client && user.client.inquisitive_ghost)
+/obj/structure/cable/attack_ghost(mob/observer/ghost/user)
+	if(user.inquisitiveness)
 		user.examinate(src)
-		// following code taken from attackby (multitool)
 		if(powernet && (powernet.avail > 0))
-			to_chat(user, "<span class='warning'>[get_wattage()] in power network.</span>")
+			to_chat(user, SPAN_WARNING("[get_wattage()] in power network."))
 		else
-			to_chat(user, "<span class='warning'>The cable is not powered.</span>")
+			to_chat(user, SPAN_WARNING("The cable is not powered."))
 	return
 
 ///////////////////////////////////
@@ -468,15 +466,19 @@ var/list/possible_cable_coil_colours
 
 /obj/item/stack/cable_coil
 	name = "multipurpose cable coil"
+	desc = "A coil of wiring, for delicate electronics use aswell as the more basic cable laying."
 	icon = 'icons/obj/power.dmi'
 	icon_state = "coil"
 	randpixel = 2
 	amount = MAXCOIL
 	max_amount = MAXCOIL
 	color = COLOR_RED
-	desc = "A coil of wiring, for delicate electronics use aswell as the more basic cable laying."
+	force = 3.5
+	mod_reach = 1.5
+	mod_handy = 0.45
+	mod_weight = 0.3
 	throwforce = 0
-	w_class = ITEM_SIZE_NORMAL
+	w_class = ITEM_SIZE_SMALL
 	throw_speed = 2
 	throw_range = 5
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 20)
@@ -485,6 +487,7 @@ var/list/possible_cable_coil_colours
 	item_state = "coil"
 	attack_verb = list("whipped", "lashed", "disciplined", "flogged")
 	stacktype = /obj/item/stack/cable_coil
+	tool_behaviour = TOOL_COIL
 
 /obj/item/stack/cable_coil/single
 	amount = 1
@@ -560,7 +563,7 @@ var/list/possible_cable_coil_colours
 	else
 		w_class = ITEM_SIZE_SMALL
 
-/obj/item/stack/cable_coil/examine(mob/user)
+/obj/item/stack/cable_coil/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return
@@ -583,7 +586,7 @@ var/list/possible_cable_coil_colours
 		if(src.amount <= 14)
 			to_chat(usr, "<span class='warning'>You need at least 15 lengths to make restraints!</span>")
 			return
-		var/obj/item/weapon/handcuffs/cable/B = new /obj/item/weapon/handcuffs/cable(usr.loc)
+		var/obj/item/handcuffs/cable/B = new /obj/item/handcuffs/cable(usr.loc)
 		B.color = color
 		to_chat(usr, "<span class='notice'>You wind some cable together to make some restraints.</span>")
 		src.use(15)

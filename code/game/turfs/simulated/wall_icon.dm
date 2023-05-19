@@ -1,5 +1,4 @@
 /turf/simulated/wall/proc/update_material()
-
 	if(!material)
 		return
 
@@ -23,10 +22,12 @@
 
 	set_opacity(material.opacity >= 0.5)
 
-	SSradiation.resistance_cache.Remove(src)
 	update_connections(1)
 	update_icon()
 
+	if(material.reagent_path)
+		create_reagents(2 * REAGENTS_PER_MATERIAL_SHEET)
+		reagents.add_reagent(material.reagent_path, 2 * REAGENTS_PER_MATERIAL_SHEET)
 
 /turf/simulated/wall/proc/set_material(material/newmaterial, material/newrmaterial)
 	material = newmaterial
@@ -44,30 +45,30 @@
 	var/image/I
 
 	if(!density)
-		I = image('icons/turf/wall_masks.dmi', "[material.icon_base]fwall_open")
+		I = image(masks_icon, "[material.icon_base]fwall_open")
 		I.color = material.icon_colour
 		overlays += I
 		return
 
 	for(var/i = 1 to 4)
-		I = image('icons/turf/wall_masks.dmi', "[material.icon_base][wall_connections[i]]", dir = 1<<(i-1))
+		I = image(masks_icon, "[material.icon_base][wall_connections[i]]", dir = 1<<(i-1))
 		I.color = material.icon_colour
 		overlays += I
 
 	if(reinf_material)
 		if(construction_stage != null && construction_stage < 6)
-			I = image('icons/turf/wall_masks.dmi', "reinf_construct-[construction_stage]")
+			I = image(masks_icon, "reinf_construct-[construction_stage]")
 			I.color = reinf_material.icon_colour
 			overlays += I
 		else
-			if("[reinf_material.icon_reinf]0" in icon_states('icons/turf/wall_masks.dmi'))
+			if("[reinf_material.icon_reinf]0" in icon_states(masks_icon))
 				// Directional icon
 				for(var/i = 1 to 4)
-					I = image('icons/turf/wall_masks.dmi', "[reinf_material.icon_reinf][wall_connections[i]]", dir = 1<<(i-1))
+					I = image(masks_icon, "[reinf_material.icon_reinf][wall_connections[i]]", dir = 1<<(i-1))
 					I.color = reinf_material.icon_colour
 					overlays += I
 			else
-				I = image('icons/turf/wall_masks.dmi', reinf_material.icon_reinf)
+				I = image(masks_icon, reinf_material.icon_reinf)
 				I.color = reinf_material.icon_colour
 				overlays += I
 

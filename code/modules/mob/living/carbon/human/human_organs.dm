@@ -10,11 +10,17 @@
 
 /mob/living/carbon/human/proc/restore_limb(limb_type, show_message = FALSE)	//only for changling for now
 	var/obj/item/organ/external/E = organs_by_name[limb_type]
-	if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
+	if(E && E.organ_tag != (BP_HEAD || BP_GROIN) && !E.vital && !E.is_usable(ignore_pain = TRUE))	//Skips heads and vital bits...
 		E.removed()//...because no one wants their head to explode to make way for a new one.
 		qdel(E)
 		E= null
 	if(!E)
+		var/path = species.has_limbs[limb_type]["path"]
+		var/regenerating_limb = text2path("[path]")
+		var/parent_organ = initial(regenerating_limb["parent_organ"])
+		if(!(parent_organ in organs_by_name) || organs_by_name[parent_organ].is_stump())
+			return 0
+
 		var/list/organ_data = species.has_limbs[limb_type]
 		var/limb_path = organ_data["path"]
 		var/obj/item/organ/external/O = new limb_path(src)
@@ -28,7 +34,7 @@
 			visible_message("<span class='danger'>With a shower of fresh blood, a length of biomass shoots from [src]'s [O.amputation_point], forming a new [O.name]!</span>")
 		return 1
 	else if (E.damage > 0 || E.status & (ORGAN_BROKEN) || E.status & (ORGAN_ARTERY_CUT))
-		E.status &= ~ORGAN_BROKEN
+		E.mend_fracture()
 		E.status &= ~ORGAN_ARTERY_CUT
 		for(var/datum/wound/W in E.wounds)
 			if(W.wound_damage() == 0 && prob(50))
@@ -40,15 +46,14 @@
 
 /mob/living/carbon/human/proc/restore_organ(organ_type)	//only for changling for now
 	var/obj/item/organ/internal/E = internal_organs_by_name[organ_type]
-	if(E && !E.vital && !E.is_usable())	//Skips heads and vital bits...
-		E.removed()//...because no one wants their head to explode to make way for a new one.
+	if(E && !E.vital && !E.is_usable() && E.organ_tag != BP_BRAIN) //Skips brains and vital bits...
+		E.removed()
 		qdel(E)
 		E = null
 	if(!E)
-		var/list/organ_data = species.has_organ[organ_type]
-		var/organ_path = organ_data["path"]
+		var/organ_path = species.has_organ[organ_type]
 		var/obj/item/organ/internal/O = new organ_path(src)
-		organ_data["descriptor"] = O.name
+		internal_organs_by_name[organ_type] = O
 		O.set_dna(dna)
 		update_body()
 		if(O.organ_tag == BP_BRAIN)
@@ -62,8 +67,10 @@
 		return FALSE
 
 /mob/living/carbon/human/proc/handle_organs_pain() // It's more efficient to process it separately from the actual organ processing
+	full_pain = 0
 	for(var/obj/item/organ/external/O in organs)
 		O.update_pain()
+		full_pain += O.full_pain
 
 /mob/living/carbon/human/proc/recheck_bad_external_organs()
 	var/damage_this_tick = getToxLoss()
@@ -86,7 +93,7 @@
 
 	//processing internal organs is pretty cheap, do that first.
 	for(var/obj/item/organ/I in internal_organs)
-		I.Process()
+		I.think()
 
 	handle_stance()
 	handle_grasp()
@@ -101,13 +108,16 @@
 			bad_external_organs -= E
 			continue
 		else
-			E.Process()
+			E.think()
 
 			if(!lying && !buckled && world.time - l_move_time < 15)
 			//Moving around with fractured ribs won't do you any good
 				if(prob(10) && !stat && can_feel_pain() && chem_effects[CE_PAINKILLER] < 50 && E.is_broken() && E.internal_organs.len)
 					custom_pain("Pain jolts through your broken [E.encased ? E.encased : E.name], staggering you!", 50, affecting = E)
-					drop_item(loc)
+					if(prob(50))
+						drop_active_hand()
+					else
+						drop_inactive_hand()
 					Stun(2)
 
 				//Moving makes open wounds get infected much faster
@@ -162,7 +172,7 @@
 		if(E)
 			limb_pain = E.can_feel_pain()
 
-		if(l_hand && istype(l_hand, /obj/item/weapon/cane))
+		if(l_hand && istype(l_hand, /obj/item/cane))
 			stance_d_l -= 1.5
 
 	for(var/limb_tag in list(BP_R_LEG, BP_R_FOOT))	// Right leg processing
@@ -191,7 +201,7 @@
 		if(E)
 			limb_pain = E.can_feel_pain()
 
-		if(r_hand && istype(r_hand, /obj/item/weapon/cane))
+		if(r_hand && istype(r_hand, /obj/item/cane))
 			stance_d_r -= 1.5
 
 	stance_damage = stance_d_r + stance_d_l
@@ -273,13 +283,13 @@
 		var/obj/item/organ/external/E = get_organ(BP_L_HAND) // We don't need to check for arms if we already have no hands
 		if(!E)
 			visible_message("<span class='danger'>Lacking a functioning left hand, \the [src] drops \the [l_hand].</span>")
-			drop_from_inventory(l_hand, force = 1)
+			drop_l_hand(force = TRUE)
 
 	if(r_hand)
 		var/obj/item/organ/external/E = get_organ(BP_R_HAND)
 		if(!E)
 			visible_message("<span class='danger'>Lacking a functioning right hand, \the [src] drops \the [r_hand].</span>")
-			drop_from_inventory(r_hand, force = 1)
+			drop_r_hand(force = TRUE)
 
 	// Check again...
 	if(!l_hand && !r_hand)
@@ -319,7 +329,8 @@
 	if(!thing)
 		return
 
-	drop_from_inventory(thing)
+	if(!drop(thing))
+		return // Failed to drop, don't spam messages.
 
 	if(BP_IS_ROBOTIC(affected))
 		visible_message("<B>\The [src]</B> drops what they were holding, \his [affected.name] malfunctioning!")
@@ -364,7 +375,7 @@
 			return TRUE
 	else if(should_have_organ(BP_HEART))
 		var/obj/item/organ/internal/heart/heart = internal_organs_by_name[BP_HEART]
-		if(!istype(heart) || !heart.is_working())
+		if(!istype(heart) || !heart.is_working() || (isundead(src) && !isfakeliving(src)))
 			return TRUE
 	return FALSE
 

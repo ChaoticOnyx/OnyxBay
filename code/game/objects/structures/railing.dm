@@ -34,7 +34,7 @@
 		return !density
 	return TRUE
 
-/obj/structure/railing/examine(mob/user)
+/obj/structure/railing/_examine_text(mob/user)
 	. = ..()
 	if(health < maxhealth)
 		switch(health / maxhealth)
@@ -213,8 +213,8 @@
 			return
 
 	// Repair
-	if(health < maxhealth && istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/F = W
+	if(health < maxhealth && isWelder(W))
+		var/obj/item/weldingtool/F = W
 		if(F.welding)
 			playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
 			if(do_after(user, 20, src))
@@ -223,7 +223,7 @@
 				return
 
 	// (Un)Anchor
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(isScrewdriver(W))
 		user.visible_message(anchored ? "<span class='notice'>\The [user] begins unscrewing \the [src].</span>" : "<span class='notice'>\The [user] begins fasten \the [src].</span>" )
 		playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
 		if(do_after(user, 10, src))
@@ -250,11 +250,10 @@
 		if(3.0)
 			qdel(src)
 			return
-		else
 	return
 /obj/structure/railing/proc/check_tile(mob/living/user, turf/T)
 	if(T.density == 1)
-		to_chat(user, SPAN_DANGER("There is [T] \a in the way."))
+		to_chat(user, SPAN_DANGER("There is \a [T] in the way."))
 		return 0
 	else
 		for(var/obj/O in T.contents)
@@ -271,7 +270,7 @@
 			if(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & src.dir))//checks if next item is directed
 				//allows if not directed towards climber
 				continue
-			to_chat(user, SPAN_DANGER("There is  [O] \a in the way."))
+			to_chat(user, SPAN_DANGER("There is \a [O] in the way."))
 			return 0
 	return 1
 /obj/structure/railing/can_climb(mob/living/user, post_climb_check = 0)
@@ -319,3 +318,30 @@
 		user.visible_message("<span class='warning'>\The [user] climbs over \the [src]!</span>")
 
 	climbers -= user
+
+/obj/structure/railing/steel
+	icon_state = "newrailing0"
+
+/obj/structure/railing/steel/update_icon(UpdateNeighgors = 1)
+	NeighborsCheck(UpdateNeighgors)
+	overlays.Cut()
+	if (!check || !anchored)
+		icon_state = "newrailing0"
+	else
+		icon_state = "newrailing1"
+		if (check & 32)
+			overlays += image ('icons/obj/railing.dmi', src, "newcorneroverlay")
+		if ((check & 16) || !(check & 32) || (check & 64))
+			overlays += image ('icons/obj/railing.dmi', src, "newfrontoverlay_l")
+		if (!(check & 2) || (check & 1) || (check & 4))
+			overlays += image ('icons/obj/railing.dmi', src, "newfrontoverlay_r")
+			if(check & 4)
+				switch (src.dir)
+					if (NORTH)
+						overlays += image ('icons/obj/railing.dmi', src, "newmcorneroverlay", pixel_x = 32)
+					if (SOUTH)
+						overlays += image ('icons/obj/railing.dmi', src, "newmcorneroverlay", pixel_x = -32)
+					if (EAST)
+						overlays += image ('icons/obj/railing.dmi', src, "newmcorneroverlay", pixel_y = -32)
+					if (WEST)
+						overlays += image ('icons/obj/railing.dmi', src, "newmcorneroverlay", pixel_y = 32)

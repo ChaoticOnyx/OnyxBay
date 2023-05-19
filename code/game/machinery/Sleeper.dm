@@ -8,12 +8,12 @@
 	clicksound = 'sound/machines/buttonbeep.ogg'
 	clickvol = 30
 	var/mob/living/carbon/human/occupant = null
-	var/list/possible_chemicals = list(list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Paracetamol" = /datum/reagent/paracetamol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin),
-										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/tramadol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin, "Kelotane" = /datum/reagent/kelotane),
-										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/tramadol, "Dylovene" = /datum/reagent/dylovene, "Hyronalin" = /datum/reagent/hyronalin, "Dexalin Plus" = /datum/reagent/dexalinp, "Kelotane" = /datum/reagent/kelotane, "Bicaridine" = /datum/reagent/bicaridine),
-										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/tramadol, "Dylovene" = /datum/reagent/dylovene, "Arithrazine" = /datum/reagent/arithrazine, "Dexalin Plus" = /datum/reagent/dexalinp, "Dermaline" = /datum/reagent/dermaline, "Bicaridine" = /datum/reagent/bicaridine, "Peridaxon" = /datum/reagent/peridaxon))
+	var/list/possible_chemicals = list(list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Paracetamol" = /datum/reagent/painkiller/paracetamol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin),
+										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/painkiller/tramadol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin, "Kelotane" = /datum/reagent/kelotane),
+										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/painkiller/tramadol, "Dylovene" = /datum/reagent/dylovene, "Hyronalin" = /datum/reagent/hyronalin, "Dexalin Plus" = /datum/reagent/dexalinp, "Kelotane" = /datum/reagent/kelotane, "Bicaridine" = /datum/reagent/bicaridine),
+										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/painkiller/tramadol, "Dylovene" = /datum/reagent/dylovene, "Arithrazine" = /datum/reagent/arithrazine, "Dexalin Plus" = /datum/reagent/dexalinp, "Dermaline" = /datum/reagent/dermaline, "Bicaridine" = /datum/reagent/bicaridine, "Peridaxon" = /datum/reagent/peridaxon))
 	var/available_chemicals = list()
-	var/obj/item/weapon/reagent_containers/glass/beaker = null
+	var/obj/item/reagent_containers/vessel/beaker = null
 	var/filtering = 0
 	var/pump
 	var/list/possible_stasis = list(list(1, 2, 5),
@@ -26,8 +26,8 @@
 
 	var/locked = 0
 
-	idle_power_usage = 15
-	active_power_usage = 200 //builtin health analyzer, dialysis machine, injectors.
+	idle_power_usage = 15 WATTS
+	active_power_usage = 200 WATTS //builtin health analyzer, dialysis machine, injectors.
 
 	beepsounds = SFX_BEEP_MEDICAL
 
@@ -45,23 +45,23 @@
 /obj/machinery/sleeper/Initialize()
 	. = ..()
 	component_parts = list(
-		new /obj/item/weapon/circuitboard/sleeper(src),
-		new /obj/item/weapon/stock_parts/manipulator(src),
-		new /obj/item/weapon/stock_parts/capacitor(src),
-		new /obj/item/weapon/stock_parts/scanning_module(src),
-		new /obj/item/weapon/stock_parts/console_screen(src),
-		new /obj/item/weapon/reagent_containers/syringe(src),
-		new /obj/item/weapon/reagent_containers/syringe(src),
-		new /obj/item/weapon/reagent_containers/glass/beaker/large(src))
+		new /obj/item/circuitboard/sleeper(src),
+		new /obj/item/stock_parts/manipulator(src),
+		new /obj/item/stock_parts/capacitor(src),
+		new /obj/item/stock_parts/scanning_module(src),
+		new /obj/item/stock_parts/console_screen(src),
+		new /obj/item/reagent_containers/syringe(src),
+		new /obj/item/reagent_containers/syringe(src),
+		new /obj/item/reagent_containers/vessel/beaker/large(src))
 	RefreshParts()
 
-/obj/machinery/sleeper/examine(mob/user)
+/obj/machinery/sleeper/_examine_text(mob/user)
 	. = ..()
 	if (user.Adjacent(src))
 		if (beaker)
 			. += "\nIt is loaded with a beaker."
 		if(occupant)
-			. += "\n[occupant.examine(user)]"
+			. += "\n[occupant._examine_text(user)]"
 
 /obj/machinery/sleeper/Process()
 	if(stat & (NOPOWER|BROKEN))
@@ -109,7 +109,7 @@
 	var/drugs = 0
 	var/scanning = 0
 
-	for(var/obj/item/weapon/stock_parts/P in component_parts)
+	for(var/obj/item/stock_parts/P in component_parts)
 		if(ismanipulator(P))
 			drugs += P.rating
 		else if(isscanner(P))
@@ -123,7 +123,7 @@
 
 	stasis_settings = possible_stasis[freeze]
 
-	beaker = locate(/obj/item/weapon/reagent_containers/glass/beaker) in component_parts
+	beaker = locate(/obj/item/reagent_containers/vessel/beaker) in component_parts
 
 /obj/machinery/sleeper/attack_hand(mob/user)
 	if(..())
@@ -202,7 +202,7 @@
 			toggle_lock()
 			return TOPIC_REFRESH
 	if(href_list["chemical"] && href_list["amount"])
-		if(occupant && occupant.stat != DEAD)
+		if(occupant && !occupant.is_ic_dead())
 			if(href_list["chemical"] in available_chemicals) // Your hacks are bad and you should feel bad
 				inject_chemical(user, href_list["chemical"], text2num(href_list["amount"]))
 				return TOPIC_REFRESH
@@ -216,18 +216,18 @@
 	return attack_hand(user)
 
 /obj/machinery/sleeper/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/reagent_containers/glass))
+	if(istype(I, /obj/item/reagent_containers/vessel))
 		add_fingerprint(user)
 		if(!beaker)
+			if(!user.drop(I, src))
+				return
 			beaker = I
-			user.drop_item()
-			I.forceMove(src)
 			component_parts += I
 			user.visible_message("<span class='notice'>\The [user] adds \a [I] to \the [src].</span>", "<span class='notice'>You add \a [I] to \the [src].</span>")
 		else
 			to_chat(user, "<span class='warning'>\The [src] has a beaker already.</span>")
 			return
-	if(occupant && panel_open && istype(I,/obj/item/weapon/crowbar))
+	if(occupant && panel_open && isCrowbar(I))
 		occupant.loc = get_turf(src)
 		occupant = null
 		update_use_power(1)
@@ -413,7 +413,7 @@
 		beaker = null
 		toggle_filter()
 		toggle_pump()
-		for(var/obj/item/weapon/reagent_containers/glass/beaker/A in component_parts)
+		for(var/obj/item/reagent_containers/vessel/beaker/A in component_parts)
 			component_parts -= A
 
 /obj/machinery/sleeper/proc/inject_chemical(mob/living/user, chemical_name, amount)

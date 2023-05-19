@@ -10,6 +10,7 @@
 	var/off_state = "degoggles"
 	var/active = FALSE
 	var/activation_sound = 'sound/items/goggles_charge.ogg'
+	var/deactivation_sound = 'sound/items/goggles_switch.ogg'
 	var/obj/screen/overlay = null
 	var/electric = FALSE //if the glasses should be disrupted by EMP
 	var/hud_type
@@ -247,6 +248,21 @@
 	action_button_name = "Toggle Goggles"
 	toggleable = TRUE
 	see_invisible = SEE_INVISIBLE_NOLIGHTING
-	armor = list(melee = 20, bullet = 20, laser = 20, energy = 15, bomb = 20, bio = 0, rad = 0)
+	armor = list(melee = 20, bullet = 20, laser = 20, energy = 15, bomb = 20, bio = 0)
 	siemens_coefficient = 0.6
 	electric = TRUE
+
+/obj/item/clothing/glasses/magma_dark_glasses
+	name = "dark gar glasses"
+	desc = "The coolest dark-colored glasses in the universe! At least according to ads."
+	icon_state = "magma_dark_glasses"
+
+/obj/item/clothing/glasses/magma_red_glasses
+	name = "red gar glasses"
+	desc = "The coolest red-colored glasses in the universe! At least according to ads."
+	icon_state = "magma_red_glasses"
+
+/obj/item/clothing/glasses/magma_dual_glasses
+	name = "dual gar glasses"
+	desc = "The coolest dual-colored glasses in the universe! At least according to ads."
+	icon_state = "magma_dual_glasses"

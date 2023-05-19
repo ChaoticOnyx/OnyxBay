@@ -11,9 +11,15 @@
 	anchored = 0
 	density = 1
 	req_access = list(access_engine_equip)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 0,
+		RADIATION_BETA_PARTICLE = 0,
+		RADIATION_HAWKING = 0
+	)
+
 	var/id = null
 
-	active_power_usage = 100 KILOWATTS
+	active_power_usage = 100 KILO WATTS
 
 	var/efficiency = 0.6	// Energy efficiency. 60% at this time, so 50kW+1 load means 30kW+0,6 laser pulses.
 	var/active = 0
@@ -70,6 +76,10 @@
 
 /obj/machinery/power/emitter/attack_hand(mob/user)
 	add_fingerprint(user)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(!H.IsAdvancedToolUser())
+			return
 	activate(user)
 
 /obj/machinery/power/emitter/proc/activate(mob/user)
@@ -173,7 +183,7 @@
 		return
 
 	if(isWelder(W))
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 		if(active)
 			to_chat(user, "Turn off [src] first.")
 			return
@@ -208,7 +218,7 @@
 					to_chat(user, "<span class='warning'>You need more welding fuel to complete this task.</span>")
 		return
 
-	if(istype(W, /obj/item/weapon/card/id) || istype(W, /obj/item/device/pda))
+	if(istype(W, /obj/item/card/id) || istype(W, /obj/item/device/pda))
 		if(emagged)
 			to_chat(user, "<span class='warning'>The lock seems to be broken.</span>")
 			return

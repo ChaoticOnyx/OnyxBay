@@ -11,34 +11,39 @@
 	icon_state = "acid"
 	icon = 'icons/mob/alien.dmi'
 
-	density = 0
-	opacity = 0
-	anchored = 1
+	density = FALSE
+	opacity = FALSE
+	anchored = TRUE
+	layer = ABOVE_WINDOW_LAYER
 
 	var/atom/target
 	var/acid_strength = ACID_WEAK
 	var/melt_time = 10 SECONDS
-	var/last_melt = 0
 
 /obj/effect/acid/New(loc, supplied_target)
 	..(loc)
 	target = supplied_target
 	melt_time = melt_time / acid_strength
-	START_PROCESSING(SSprocessing, src)
+	desc += "\n<b>It's melting \the [target]!</b>"
+	pixel_x = target.pixel_x
+	pixel_y = target.pixel_y
+	set_next_think(world.time)
+	register_signal(target, SIGNAL_QDELETING, /obj/effect/acid/proc/onTargetDeleted)
 
 /obj/effect/acid/Destroy()
-	STOP_PROCESSING(SSprocessing, src)
 	target = null
 	. = ..()
 
-/obj/effect/acid/Process()
+/obj/effect/acid/think()
 	if(QDELETED(target))
 		qdel(src)
-	else if(world.time > last_melt + melt_time)
-		var/done_melt = target.acid_melt()
-		last_melt = world.time
-		if(done_melt)
-			qdel(src)
+		return
+
+	if(!target.acid_melt())
+		set_next_think(world.time + melt_time)
+
+/obj/effect/acid/proc/onTargetDeleted()
+	qdel(src)
 
 /atom/var/acid_melted = 0
 
@@ -46,11 +51,11 @@
 	. = FALSE
 	switch(acid_melted)
 		if(0)
-			visible_message("<span class='alium'>Acid hits \the [src] with a sizzle!</span>")
+			visible_message(SPAN("alium", "Acid hits \the [src] with a sizzle!"))
 		if(1 to 3)
-			visible_message("<span class='alium'>The acid melts \the [src]!</span>")
+			visible_message(SPAN("alium", "The acid melts \the [src]!"))
 		if(4)
-			visible_message("<span class='alium'>The acid melts \the [src] away into nothing!</span>")
+			visible_message(SPAN("alium", "The acid melts \the [src] away into nothing!"))
 			. = TRUE
 			qdel(src)
 	acid_melted++
@@ -70,16 +75,16 @@
 
 /obj/structure/alien/egg/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
-/obj/structure/alien/egg/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	. = ..()
-
-/obj/structure/alien/egg/Process()
+/obj/structure/alien/egg/think()
 	progress++
+
 	if(progress >= progress_max*2)
 		hatch()
+		return
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/structure/alien/egg/attack_hand(mob/user)
 	if(progress == -1)
@@ -99,7 +104,7 @@
 		to_chat(M, "<span class='alium'>You caress \the [src] as it hatches at your command.</alium>")
 	hatch()
 
-/obj/structure/alien/egg/examine(mob/user)
+/obj/structure/alien/egg/_examine_text(mob/user)
 	. = ..()
 	if(isliving(user))
 		var/mob/living/M = user
@@ -118,8 +123,10 @@
 		icon_state = "egg"
 
 /obj/structure/alien/egg/proc/hatch()
+	set waitfor = 0
+
 	progress = -1
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 	update_icon()
 	flick("egg_opening", src)
 	sleep(5)
@@ -129,8 +136,6 @@
 /*
  * Weeds
  */
-#define NODERANGE 3
-
 /obj/effect/alien/weeds
 	name = "weeds"
 	desc = "Weird purple weeds."
@@ -148,8 +153,7 @@
 	name = "purple sac"
 	desc = "Weird purple octopus-like thing."
 	layer = ABOVE_TILE_LAYER + 0.01
-	light_outer_range = NODERANGE
-	var/node_range = NODERANGE
+	var/node_range = 3
 
 /obj/effect/alien/weeds/node/New()
 	..(src.loc, src)
@@ -211,14 +215,14 @@
 				qdel(src)
 	return
 
-/obj/effect/alien/weeds/attackby(obj/item/weapon/W, mob/user)
+/obj/effect/alien/weeds/attackby(obj/item/W, mob/user)
 	if(W.attack_verb.len)
 		visible_message("<span class='danger'>\The [src] have been [pick(W.attack_verb)] with \the [W][(user ? " by [user]." : ".")]</span>")
 	else
 		visible_message("<span class='danger'>\The [src] have been attacked with \the [W][(user ? " by [user]." : ".")]</span>")
 
-	if(istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+	if(isWelder(W))
+		var/obj/item/weldingtool/WT = W
 		if(WT.remove_fuel(0, user))
 			qdel(src)
 			playsound(loc, 'sound/items/Welder.ogg', 100, 1)
@@ -236,7 +240,5 @@
 
 
 /obj/effect/alien/weeds/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-	if(exposed_temperature > 300 + T0C && prob(80))
+	if(exposed_temperature > (300 CELSIUS) && prob(80))
 		qdel(src)
-
-#undef NODERANGE

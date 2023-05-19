@@ -42,6 +42,7 @@
 	icon = 'icons/obj/inflatable.dmi'
 	icon_state = "wall"
 	can_atmos_pass = ATMOS_PASS_DENSITY
+	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 
 	var/undeploy_path = null
 	var/health = 10
@@ -63,15 +64,16 @@
 
 /obj/structure/inflatable/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 /obj/structure/inflatable/Destroy()
 	update_nearby_tiles()
-	STOP_PROCESSING(SSobj, src)
 	return ..()
 
-/obj/structure/inflatable/Process()
+/obj/structure/inflatable/think()
 	check_environment()
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/structure/inflatable/proc/check_environment()
 	var/min_pressure = INFINITY
@@ -93,7 +95,7 @@
 		if(health == round(0.3 * initial(health)))
 			visible_message(SPAN("warning", "\The [src] is barely holding up!"))
 
-/obj/structure/inflatable/examine(mob/user)
+/obj/structure/inflatable/_examine_text(mob/user)
 	. = ..()
 	if(health >= initial(health))
 		. += "\n[SPAN_NOTICE("It's undamaged.")]"
@@ -126,10 +128,10 @@
 	add_fingerprint(user)
 	return
 
-/obj/structure/inflatable/attackby(obj/item/weapon/W, mob/user)
-	if(!istype(W) || istype(W, /obj/item/weapon/inflatable_dispenser))
+/obj/structure/inflatable/attackby(obj/item/W, mob/user)
+	if(!istype(W) || istype(W, /obj/item/inflatable_dispenser))
 		return
-	if(istype(W, /obj/item/weapon/tape_roll) && health < initial(health) - 3)
+	if(istype(W, /obj/item/tape_roll) && health < initial(health) - 3)
 		if(taped)
 			to_chat(user, SPAN("notice", "\The [src] can't be patched any more with \the [W]!"))
 			return TRUE
@@ -255,6 +257,7 @@
 	state = 1
 	update_icon()
 	isSwitchingStates = 0
+	atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 /obj/structure/inflatable/door/proc/Close()
 	isSwitchingStates = 1
@@ -265,6 +268,7 @@
 	state = 0
 	update_icon()
 	isSwitchingStates = 0
+	atom_flags |= ATOM_FLAG_FULLTILE_OBJECT
 
 /obj/structure/inflatable/door/update_icon()
 	if(state)
@@ -308,7 +312,7 @@
 	add_fingerprint(user)
 
 
-/obj/item/weapon/storage/briefcase/inflatable
+/obj/item/storage/briefcase/inflatable
 	name = "inflatable barriers kit"
 	desc = "Contains inflatable walls and doors."
 	icon_state = "inf_box"

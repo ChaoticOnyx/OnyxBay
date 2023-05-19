@@ -32,7 +32,7 @@
 
 /mob/living/simple_animal/hostile/asteroid/hoverhead/OpenFire(the_target)
 	var/mob/living/simple_animal/hostile/asteroid/p_anomaly/A = new /mob/living/simple_animal/hostile/asteroid/p_anomaly(src.loc)
-	A.GiveTarget(target_mob)
+	A.set_target_mob(target_mob)
 	A.friends = friends
 	A.faction = faction
 	return
@@ -111,7 +111,7 @@
 			to_chat(user, "<span class='notice'>[src] has become inert, its healing properties are no more.</span>")
 			return
 		else
-			if(H.stat == DEAD)
+			if(H.is_ic_dead())
 				to_chat(user, "<span class='notice'>[src] are useless on the dead.</span>")
 				return
 			if(H != user)

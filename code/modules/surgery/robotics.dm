@@ -25,9 +25,9 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/robotics/unscrew_hatch
 	allowed_tools = list(
-		/obj/item/weapon/screwdriver = 100,
-		/obj/item/weapon/coin = 50,
-		/obj/item/weapon/material/kitchen/utensil/knife = 50
+		/obj/item/screwdriver = 100,
+		/obj/item/material/coin = 50,
+		/obj/item/material/kitchen/utensil/knife = 50
 	)
 
 	duration = CUT_DURATION
@@ -59,9 +59,9 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/robotics/screw_hatch
 	allowed_tools = list(
-		/obj/item/weapon/screwdriver = 100,
-		/obj/item/weapon/coin = 50,
-		/obj/item/weapon/material/kitchen/utensil/knife = 50
+		/obj/item/screwdriver = 100,
+		/obj/item/material/coin = 50,
+		/obj/item/material/kitchen/utensil/knife = 50
 	)
 
 	duration = CUT_DURATION
@@ -93,9 +93,9 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/robotics/open_hatch
 	allowed_tools = list(
-		/obj/item/weapon/retractor = 100,
-		/obj/item/weapon/crowbar = 100,
-		/obj/item/weapon/material/kitchen/utensil = 50
+		/obj/item/retractor = 100,
+		/obj/item/crowbar = 100,
+		/obj/item/material/kitchen/utensil = 50
 	)
 
 	duration = RETRACT_DURATION
@@ -127,9 +127,9 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/robotics/close_hatch
 	allowed_tools = list(
-		/obj/item/weapon/retractor = 100,
-		/obj/item/weapon/crowbar = 100,
-		/obj/item/weapon/material/kitchen/utensil = 50
+		/obj/item/retractor = 100,
+		/obj/item/crowbar = 100,
+		/obj/item/material/kitchen/utensil = 50
 	)
 
 	duration = RETRACT_DURATION
@@ -162,8 +162,8 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/robotics/repair_brute
 	allowed_tools = list(
-		/obj/item/weapon/weldingtool = 100,
-		/obj/item/weapon/gun/energy/plasmacutter = 50
+		/obj/item/weldingtool = 100,
+		/obj/item/gun/energy/plasmacutter = 50
 	)
 
 	duration = ORGAN_FIX_DURATION
@@ -172,7 +172,7 @@
 	if(..())
 		var/obj/item/organ/external/affected = target.get_organ(target_zone)
 		if(isWelder(tool))
-			var/obj/item/weapon/weldingtool/welder = tool
+			var/obj/item/weldingtool/welder = tool
 			if(!welder.isOn() || !welder.remove_fuel(1,user))
 				return 0
 		return affected && affected.hatch_state == HATCH_OPENED && ((affected.status & ORGAN_DISFIGURED) || affected.brute_dam > 0) && target_zone != BP_MOUTH
@@ -246,8 +246,8 @@
 /datum/surgery_step/robotics/fix_organ_robotic //For artificial organs
 	allowed_tools = list(
 	/obj/item/stack/nanopaste = 100,		\
-	/obj/item/weapon/bonegel = 30, 		\
-	/obj/item/weapon/screwdriver = 70,	\
+	/obj/item/bonegel = 30, 		\
+	/obj/item/screwdriver = 70,	\
 	)
 
 	duration = ORGAN_FIX_DURATION
@@ -363,7 +363,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/robotics/attach_organ_robotic
 	allowed_tools = list(
-		/obj/item/weapon/screwdriver = 100,
+		/obj/item/screwdriver = 100,
 	)
 
 	duration = CONNECT_DURATION
@@ -465,8 +465,7 @@
 	var/obj/item/device/mmi/M = tool
 	var/obj/item/organ/internal/mmi_holder/holder = new(target, 1)
 	target.internal_organs_by_name[BP_BRAIN] = holder
-	user.drop_from_inventory(tool)
-	tool.forceMove(holder)
+	user.drop(tool, holder)
 	holder.stored_mmi = tool
 	holder.update_from_mmi()
 

@@ -5,7 +5,7 @@
 	density = 1
 	var/show_extended_information = 1	// Set to 0 to disable extra information on examining (for example, when used on admin events)
 
-/obj/machinery/power/debug_items/examine(mob/user)
+/obj/machinery/power/debug_items/_examine_text(mob/user)
 	. = ..()
 	if(!show_extended_information)
 		return
@@ -60,7 +60,7 @@
 	name = "APC Dummy Load"
 	desc = "A dummy load that connects to an APC, used for load testing purposes."
 	use_power = POWER_USE_ACTIVE
-	active_power_usage = 0
+	active_power_usage = 0 WATTS
 
 /obj/machinery/power/debug_items/infinite_apc_powersink/show_info(mob/user)
 	. = ..()

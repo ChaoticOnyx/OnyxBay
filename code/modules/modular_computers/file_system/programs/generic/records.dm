@@ -45,7 +45,6 @@
 			all_records.Add(list(list(
 				"name" = R.get_name(),
 				"rank" = R.get_job(),
-				"milrank" = R.get_rank(),
 				"id" = R.uid
 			)))
 			all_records = sortByKey(all_records,"name")
@@ -203,11 +202,11 @@
 		return 1
 
 /datum/nano_module/records/proc/get_photo(mob/user)
-	if(istype(user.get_active_hand(), /obj/item/weapon/photo))
-		var/obj/item/weapon/photo/photo = user.get_active_hand()
+	if(istype(user.get_active_hand(), /obj/item/photo))
+		var/obj/item/photo/photo = user.get_active_hand()
 		return photo.img
 	if(istype(user, /mob/living/silicon))
 		var/mob/living/silicon/tempAI = usr
-		var/obj/item/weapon/photo/selection = tempAI.GetPicture()
+		var/obj/item/photo/selection = tempAI.GetPicture()
 		if (selection)
 			return selection.img

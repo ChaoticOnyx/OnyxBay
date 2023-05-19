@@ -7,6 +7,8 @@
 #define MELEE 1
 #define RANGED 2
 
+#define HAND 1
+#define BACK 2
 
 /obj/mecha
 	name = "Mecha"
@@ -20,9 +22,17 @@
 	infra_luminosity = 15 //byond implementation is bugged.
 	anchor_fall = TRUE
 	w_class = ITEM_SIZE_NO_CONTAINER
+
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 120 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 60 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
 	var/initial_icon = null //Mech type for resetting icon. Only used for reskinning kits (see custom items)
+	var/base_color = null // Mecha padding color. Used to paint visible equipment in special color.
 	var/can_move = 1
-	var/mob/living/carbon/occupant = null
+	var/mob/living/occupant = null
 	var/list/dropped_items = list()
 	var/step_in = 10 //make a step in step_in/10 sec.
 	var/dir_in = 2//What direction will the mech face when entered/powered on? Defaults to South.
@@ -39,7 +49,7 @@
 
 	//the values in this list show how much damage will pass through, not how much will be absorbed.
 	var/list/damage_absorption = list("brute"=0.8,"fire"=1.2,"bullet"=0.9,"laser"=1,"energy"=1,"bomb"=1)
-	var/obj/item/weapon/cell/cell
+	var/obj/item/cell/cell
 	var/state = 0
 	var/list/log = new
 	var/last_message = 0
@@ -77,7 +87,7 @@
 	var/list/equipment = new
 	var/obj/item/mecha_parts/mecha_equipment/selected
 	var/max_equip = 3
-	var/datum/events/events
+	var/datum/legacy_events/events
 
 /obj/mecha/drain_power(drain_check)
 
@@ -104,7 +114,30 @@
 	removeVerb(/obj/mecha/verb/disconnect_from_port)
 	log_message("[src.name] created.")
 	mechas_list += src //global mech list
+	update_icon()
 	return
+
+/obj/mecha/update_icon()
+	overlays.Cut()
+	var/hand = 0
+	var/back = 0
+	for(var/obj/item/mecha_parts/mecha_equipment/i in equipment)
+		if(i.has_equip_overlay)
+			if(i.equip_slot == HAND && hand < 2)
+				draw_layer(i, hand)
+				hand++
+			else if(i.equip_slot == BACK && back < 2)
+				draw_layer(i, back)
+				back++
+
+/obj/mecha/proc/draw_layer(obj/item/mecha_parts/mecha_equipment/equip, entry)
+	var/icon_name = "[equip.icon_state][entry ? "_r" : "_l"]"
+	var/icon/weapon = icon("icons/mecha/mecha_overlay.dmi", icon_name)
+	overlays += weapon
+	if(equip.need_colorize)
+		var/icon/padding = icon("icons/mecha/mecha_overlay.dmi", "[icon_name]_padding")
+		padding.Blend(base_color, ICON_MULTIPLY)
+		overlays += padding
 
 /obj/mecha/Destroy()
 	src.go_out()
@@ -160,6 +193,9 @@
 ////// Helpers /////////
 ////////////////////////
 
+/obj/mecha/on_purchase()
+	operation_req_access = list() // trader disable locks on mech on their site.
+
 /obj/mecha/proc/removeVerb(verb_path)
 	verbs -= verb_path
 
@@ -171,11 +207,11 @@
 	return internal_tank
 
 /obj/mecha/proc/add_cell()
-	cell = new /obj/item/weapon/cell/mecha(src)
+	cell = new /obj/item/cell/mecha(src)
 
 /obj/mecha/proc/add_cabin()
 	cabin_air = new
-	cabin_air.temperature = T20C
+	cabin_air.temperature = 20 CELSIUS
 	cabin_air.volume = 200
 	cabin_air.adjust_multi("oxygen", O2STANDARD*cabin_air.volume/(R_IDEAL_GAS_EQUATION*cabin_air.temperature), "nitrogen", N2STANDARD*cabin_air.volume/(R_IDEAL_GAS_EQUATION*cabin_air.temperature))
 	return cabin_air
@@ -213,7 +249,7 @@
 	else
 		return 0
 
-/obj/mecha/examine(mob/user)
+/obj/mecha/_examine_text(mob/user)
 	. = ..()
 	var/integrity = health/initial(health)*100
 	switch(integrity)
@@ -340,7 +376,6 @@
 	. = ..()
 	if(.)
 		events.fireEvent("onMove",get_turf(src))
-	return
 
 /obj/mecha/relaymove(mob/user,direction)
 	if(user != src.occupant) //While not "realistic", this piece is player friendly.
@@ -703,27 +738,41 @@
 	return
 
 /obj/mecha/blob_act(damage)
-	take_damage(damage, "brute")
+	take_damage(damage * 2, "brute")
 	check_for_internal_damage(list(MECHA_INT_FIRE, MECHA_INT_TEMP_CONTROL, MECHA_INT_TANK_BREACH, MECHA_INT_CONTROL_LOST, MECHA_INT_SHORT_CIRCUIT))
 
 //////////////////////
 ////// AttackBy //////
 //////////////////////
 
-/obj/mecha/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/mecha/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/device/mmi))
+		if(move_mmi_inside(W,user))
+			to_chat(user, "[src]-MMI interface initialized successfully.")
+		else
+			to_chat(user, "[src]-MMI interface initialization failed.")
+		return
+
+	if(istype(W, /obj/item/organ/internal/posibrain))
+		if(move_posibrain_inside(W, user))
+			to_chat(user, "[src]-posibrain interface initialized successfully.")
+		else
+			to_chat(user, "[src]-posibrain interface initialization failed.")
+		return
 
 	if(istype(W, /obj/item/mecha_parts/mecha_equipment))
 		var/obj/item/mecha_parts/mecha_equipment/E = W
+
 		spawn()
-			if(E.can_attach(src))
-				user.drop_item()
+			if(E.can_attach(src) && user.drop(E))
 				E.attach(src)
 				user.visible_message("[user] attaches [W] to [src]", "You attach [W] to [src]")
+				update_icon()
 			else
 				to_chat(user, "You were unable to attach [W] to [src]")
 		return
 
-	var/obj/item/weapon/card/id/id_card = W.GetIdCard()
+	var/obj/item/card/id/id_card = W.get_id_card()
 	if(id_card)
 		if(add_req_access || maint_access)
 			if(internals_access_allowed(usr))
@@ -776,21 +825,25 @@
 	else if(isMultitool(W))
 		if(state>=3 && src.occupant)
 			to_chat(user, "You attempt to eject the pilot using the maintenance controls.")
-			if(src.occupant.stat)
-				src.go_out()
-				src.log_message("[src.occupant] was ejected using the maintenance controls.")
+			if(occupant.stat)
+				go_out()
+				log_message("[occupant] was ejected using the maintenance controls.")
+			else if(istype(occupant, /mob/living/carbon/brain) || istype(occupant, /mob/living/silicon/sil_brainmob))
+				occupant_message(SPAN("warning", "A successful attempt to eject you was made using the maintenance controls."))
+				log_message("[occupant] was ejected using the maintenance controls.")
+				go_out()
 			else
 				to_chat(user, "<span class='warning'>Your attempt is rejected.</span>")
 				src.occupant_message("<span class='warning'>An attempt to eject you was made using the maintenance controls.</span>")
 				src.log_message("Eject attempt made using maintenance controls - rejected.")
 		return
 
-	else if(istype(W, /obj/item/weapon/cell))
+	else if(istype(W, /obj/item/cell))
 		if(state==4)
 			if(!src.cell)
+				if(!user.drop(W, src))
+					return
 				to_chat(user, "You install the powercell")
-				user.drop_item()
-				W.forceMove(src)
 				src.cell = W
 				src.log_message("Powercell installed")
 			else
@@ -798,7 +851,7 @@
 		return
 
 	else if(isWelder(W) && user.a_intent != I_HURT)
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 		if (WT.remove_fuel(0,user))
 			if (hasInternalDamage(MECHA_INT_TANK_BREACH))
 				clearInternalDamage(MECHA_INT_TANK_BREACH)
@@ -815,9 +868,8 @@
 		return
 
 	else if(istype(W, /obj/item/mecha_parts/mecha_tracking))
-		user.drop_from_inventory(W)
-		W.forceMove(src)
-		user.visible_message("[user] attaches [W] to [src].", "You attach [W] to [src]")
+		if(user.drop(W, src))
+			user.visible_message("[user] attaches [W] to [src].", "You attach [W] to [src]")
 		return
 
 	else
@@ -1003,76 +1055,167 @@
 	set name = "Enter Exosuit"
 	set src in oview(1)
 
-	if (usr.stat || !ishuman(usr))
+	if(usr.stat || !ishuman(usr))
 		return
 
-	if (usr.buckled)
-		to_chat(usr, "<span class='warning'>You can't climb into the exosuit while buckled!</span>")
+	if(usr.buckled)
+		to_chat(usr, SPAN("warning", "You can't climb into the exosuit while buckled!"))
 		return
 
-	src.log_message("[usr] tries to move in.")
-	if(iscarbon(usr))
-		var/mob/living/carbon/C = usr
-		if(C.handcuffed)
-			to_chat(usr, "<span class='danger'>Kinda hard to climb in while handcuffed don't you think?</span>")
-			return
-	if (src.occupant)
-		to_chat(usr, "<span class='danger'>The [src.name] is already occupied!</span>")
+	log_message("[usr] tries to move in.")
+
+	var/mob/living/carbon/human/H = usr
+	if(H.handcuffed)
+		to_chat(usr, SPAN("danger", "Kinda hard to climb in while handcuffed don't you think?"))
+		return
+
+	if(occupant)
+		to_chat(usr, SPAN("danger", "The [src] is already occupied!"))
 		src.log_append_to_last("Permission denied.")
 		return
-/*
-	if (usr.abiotic())
-		to_chat(usr, "<span class='notice'>Subject cannot have abiotic items on.</span>")
-		return
-*/
-	var/passed
-	if(src.dna)
-		if(usr.dna.unique_enzymes==src.dna)
-			passed = 1
-	else if(src.operation_allowed(usr))
-		passed = 1
+
+	var/passed = FALSE
+	if(dna)
+		if(usr.dna.unique_enzymes == dna)
+			passed = TRUE
+	else if(operation_allowed(usr))
+		passed = TRUE
 	if(!passed)
 		to_chat(usr, "<span class='warning'>Access denied</span>")
-		src.log_append_to_last("Permission denied.")
+		log_append_to_last("Permission denied.")
 		return
-	for(var/mob/living/carbon/metroid/M in range(1,usr))
+
+	for(var/mob/living/carbon/metroid/M in range(1, usr))
 		if(M.Victim == usr)
 			to_chat(usr, "You're too busy getting your life sucked out of you.")
 			return
-//	to_chat(usr, "You start climbing into [src.name]")
 
 	visible_message("<span class='notice'>\The [usr] starts to climb into [src.name]</span>")
 
-	if(enter_after(40,usr))
-		if(!src.occupant)
+	if(enter_after(40, usr))
+		if(!occupant)
 			moved_inside(usr)
-		else if(src.occupant!=usr)
-			to_chat(usr, "[src.occupant] was faster. Try better next time, loser.")
+		else if(occupant != usr)
+			to_chat(usr, "[occupant] was faster. Try better next time, loser.")
 	else
 		to_chat(usr, "You stop entering the exosuit.")
 	return
 
-/obj/mecha/proc/moved_inside(mob/living/carbon/human/H as mob)
-	if(H && H.client && (H in range(1)))
-		H.reset_view(src)
-		/*
-		H.client.perspective = EYE_PERSPECTIVE
-		H.client.eye = src
-		*/
-		H.stop_pulling()
-		H.forceMove(src)
-		src.occupant = H
-		src.add_fingerprint(H)
-		src.forceMove(src.loc)
-		src.log_append_to_last("[H] moved in as pilot.")
-		src.icon_state = src.reset_icon()
-		set_dir(dir_in)
-		playsound(src, 'sound/machines/windowdoor.ogg', 50, 1)
-		if(!hasInternalDamage())
-			sound_to(src.occupant, sound('sound/mecha/nominal.ogg',volume=50))
-		return 1
+/obj/mecha/proc/moved_inside(mob/living/carbon/human/H)
+	. = FALSE
+	ASSERT(H.client)
+
+	H.reset_view(src)
+	H.stop_pulling()
+	H.forceMove(src)
+	occupant = H
+	add_fingerprint(H)
+	forceMove(src.loc)
+	log_append_to_last("[H] moved in as pilot.")
+	icon_state = src.reset_icon()
+	set_dir(dir_in)
+	playsound(src, 'sound/machines/windowdoor.ogg', 50, 1)
+	if(!hasInternalDamage())
+		sound_to(occupant, sound('sound/mecha/nominal.ogg', volume = 50))
+	return TRUE
+
+/obj/mecha/proc/move_mmi_inside(obj/item/device/mmi/MMI, mob/user)
+	if(!MMI?.brainmob?.client)
+		to_chat(user, "Consciousness matrix not detected.")
+		return FALSE
+
+	if(MMI.brainmob.stat)
+		to_chat(user, "Beta-rhythm below acceptable level.")
+		return FALSE
+
+	if(occupant)
+		to_chat(user, "Occupant detected.")
+		return FALSE
+
+	else if(dna && dna != MMI.brainmob.dna.unique_enzymes)
+		to_chat(user, "The DNA lock prevents \the [MMI] from being inserted!")
+		return FALSE
+
+	visible_message(SPAN("notice", "[usr] starts to insert \the [MMI] into \the [src]."))
+
+	if(enter_after(40, user))
+		if(!occupant)
+			return brain_moved_inside(MMI,user)
+		else
+			to_chat(user, "Occupant detected.")
 	else
-		return 0
+		to_chat(user, "You stop inserting \the [src].")
+	return FALSE
+
+/obj/mecha/proc/move_posibrain_inside(obj/item/organ/internal/posibrain/PB, mob/user)
+	if(!PB?.brainmob?.client)
+		to_chat(user, "Consciousness matrix not detected.")
+		return FALSE
+
+	if(PB.brainmob.stat)
+		to_chat(user, "The intelligence simulation protocols seem to be malfunctioning.")
+		return FALSE
+
+	if(occupant)
+		to_chat(user, "Occupant detected.")
+		return FALSE
+
+	visible_message(SPAN("notice", "[usr] starts to insert \the [PB] into \the [src]."))
+
+	if(enter_after(40, user))
+		if(!occupant)
+			return brain_moved_inside(PB, user)
+		else
+			to_chat(user, "Occupant detected.")
+	else
+		to_chat(user, "You stop inserting \the [src].")
+	return FALSE
+
+/obj/mecha/proc/brain_moved_inside(obj/item/I, mob/user)
+	if(!I || !user.Adjacent(src))
+		return FALSE
+	var/mob/brainmob
+	if(istype(I, /obj/item/device/mmi))
+		var/obj/item/device/mmi/MMI = I
+		if(!MMI?.brainmob?.client)
+			to_chat(user, "Consciousness matrix not detected.")
+			return FALSE
+		if(MMI.brainmob.stat)
+			to_chat(user, "Beta-rhythm below acceptable level.")
+			return FALSE
+		brainmob = MMI.brainmob
+	else if(istype(I, /obj/item/organ/internal/posibrain))
+		var/obj/item/organ/internal/posibrain/PB = I
+		if(!PB?.brainmob?.client)
+			to_chat(user, "Consciousness matrix not detected.")
+			return FALSE
+		if(PB.brainmob.stat)
+			to_chat(user, "The intelligence simulation protocols seem to be malfunctioning.")
+			return FALSE
+		brainmob = PB.brainmob
+	else
+		to_chat(user, "Whatever you tried to move inside \the [src], it's not an eligible pilot.")
+		return FALSE
+
+	if(!brainmob)
+		return FALSE
+
+	user.drop(I, src)
+	brainmob.reset_view(src)
+	occupant = brainmob
+	brainmob.loc = src // should allow relaymove
+	//brainmob.canmove = TRUE
+	//mmi_as_oc.mecha = src
+	verbs -= /obj/mecha/verb/eject
+	Entered(I)
+	forceMove(loc)
+	icon_state = reset_icon()
+	set_dir(dir_in)
+	log_message("[I] moved in as pilot.")
+	if(!hasInternalDamage())
+		sound_to(occupant, sound('sound/mecha/nominal.ogg', volume = 50))
+	return TRUE
+
 
 /obj/mecha/verb/view_stats()
 	set name = "View Stats"
@@ -1111,58 +1254,46 @@
 	var/atom/movable/mob_container
 	var/list/onmob_items //prevents duplication of objects with which the human interacted in the mech
 	if(ishuman(occupant))
-		mob_container = src.occupant
+		mob_container = occupant
 		onmob_items = occupant.get_equipped_items(TRUE)
 	else if(istype(occupant, /mob/living/carbon/brain))
 		var/mob/living/carbon/brain/brain = occupant
 		mob_container = brain.container
+	else if(istype(occupant, /mob/living/silicon/sil_brainmob))
+		var/mob/living/silicon/sil_brainmob/brain = occupant
+		mob_container = brain.container
 	else
 		return
+
 	for(var/item in dropped_items)
 		var/atom/movable/I = item
 		if(ishuman(occupant) && is_type_in_list(I, onmob_items))
 			continue
+		if(QDELETED(I)) // The pilot may use Eject before dropped_items go through QDELETED() check via onDropInto().
+			continue
 		I.forceMove(loc)
 	dropped_items.Cut()
-	if(mob_container.forceMove(src.loc))//ejecting mob container
-	/*
-		if(ishuman(occupant) && (return_pressure() > HAZARD_HIGH_PRESSURE))
-			use_internal_tank = 0
-			var/datum/gas_mixture/environment = get_turf_air()
-			if(environment)
-				var/env_pressure = environment.return_pressure()
-				var/pressure_delta = (cabin.return_pressure() - env_pressure)
-		//Can not have a pressure delta that would cause environment pressure > tank pressure
 
-				var/transfer_moles = 0
-				if(pressure_delta > 0)
-					transfer_moles = pressure_delta*environment.volume/(cabin.return_temperature() * R_IDEAL_GAS_EQUATION)
-
-			//Actually transfer the gas
-					var/datum/gas_mixture/removed = cabin.air_contents.remove(transfer_moles)
-					loc.assume_air(removed)
-
-			occupant.SetStunned(5)
-			occupant.SetWeakened(5)
-			to_chat(occupant, "You were blown out of the mech!")
-	*/
-		src.log_message("[mob_container] moved out.")
+	if(mob_container.forceMove(loc))//ejecting mob container
+		log_message("[mob_container] moved out.")
 		occupant.reset_view()
-		/*
-		if(src.occupant.client)
-			src.occupant.client.eye = src.occupant.client.mob
-			src.occupant.client.perspective = MOB_PERSPECTIVE
-		*/
-		show_browser(src.occupant, null, "window=exosuit")
+		show_browser(occupant, null, "window=exosuit")
+
 		if(istype(mob_container, /obj/item/device/mmi))
 			var/obj/item/device/mmi/mmi = mob_container
 			if(mmi.brainmob)
 				occupant.loc = mmi
 			mmi.mecha = null
-			src.verbs += /obj/mecha/verb/eject
-		src.occupant = null
-		src.icon_state = src.reset_icon()+"-open"
-		src.set_dir(dir_in)
+			verbs += /obj/mecha/verb/eject
+		if(istype(mob_container, /obj/item/organ/internal/posibrain))
+			var/obj/item/organ/internal/posibrain/pb = mob_container
+			if(pb.brainmob)
+				occupant.loc = pb
+			verbs += /obj/mecha/verb/eject
+
+		occupant = null
+		icon_state = reset_icon()+"-open"
+		set_dir(dir_in)
 	return
 
 /////////////////////////
@@ -1183,12 +1314,12 @@
 	return 0
 
 
-/obj/mecha/check_access(obj/item/weapon/card/id/I, list/access_list)
+/obj/mecha/check_access(obj/item/card/id/I, list/access_list)
 	if(!istype(access_list))
 		return 1
 	if(!access_list.len) //no requirements
 		return 1
-	I = I.GetIdCard()
+	I = I.get_id_card()
 	if(!istype(I) || !I.access) //not ID or no access
 		return 0
 	if(access_list==src.operation_req_access)
@@ -1286,7 +1417,7 @@
 						<b>Airtank pressure: </b>[tank_pressure]kPa<br>
 						<b>Airtank temperature: </b>[tank_temperature]K|[isnum(tank_temperature) ? "tank_temperature - T0C&deg;C" : ""]<br>
 						<b>Cabin pressure: </b>[cabin_pressure>WARNING_HIGH_PRESSURE ? "<font color='red'>[cabin_pressure]</font>": cabin_pressure]kPa<br>
-						<b>Cabin temperature: </b> [return_temperature()]K|[return_temperature() - T0C]&deg;C<br>
+						<b>Cabin temperature: </b> [return_temperature()]K|[CONV_KELVIN_CELSIUS(return_temperature())]&deg;C<br>
 						<b>Lights: </b>[lights?"on":"off"]<br>
 						[src.dna?"<b>DNA-locked:</b><br> <span style='font-size:10px;letter-spacing:-1px;'>[src.dna]</span> \[<a href='?src=\ref[src];reset_dna=1'>Reset</a>\]<br>":null]
 					"}
@@ -1364,7 +1495,7 @@
 	return output
 
 
-/obj/mecha/proc/output_access_dialog(obj/item/weapon/card/id/id_card, mob/user)
+/obj/mecha/proc/output_access_dialog(obj/item/card/id/id_card, mob/user)
 	if(!id_card || !user) return
 	var/output = {"<html>
 						<meta charset=\"utf-8\">
@@ -1390,7 +1521,7 @@
 	onclose(user, "exosuit_add_access")
 	return
 
-/obj/mecha/proc/output_maintenance_dialog(obj/item/weapon/card/id/id_card,mob/user)
+/obj/mecha/proc/output_maintenance_dialog(obj/item/card/id/id_card,mob/user)
 	if(!id_card || !user) return
 
 	var/maint_options = "<a href='?src=\ref[src];set_internal_tank_valve=1;user=\ref[user]'>Set Cabin Air Pressure</a>"
@@ -1420,10 +1551,9 @@
 /////// Messages and Log ///////
 ////////////////////////////////
 
-/obj/mecha/proc/occupant_message(message as text)
-	if(message)
-		if(src.occupant && src.occupant.client)
-			to_chat(src.occupant, "\icon[src] [message]")
+/obj/mecha/proc/occupant_message(message)
+	if(message && occupant?.client)
+		to_chat(occupant, "\icon[src] [message]")
 	return
 
 /obj/mecha/proc/log_message(message as text,red=null)
@@ -1460,6 +1590,7 @@
 			src.occupant_message("You switch to [equip]")
 			src.visible_message("[src] raises [equip]")
 			send_byjax(src.occupant,"exosuit.browser","eq_list",src.get_equipment_list())
+			update_icon()
 		return
 	if(href_list["eject"])
 		if(usr != src.occupant)	return
@@ -1597,6 +1728,9 @@
 		if(istype(occupant, /mob/living/carbon/brain))
 			occupant_message("You are a brain. No.")
 			return
+		if(istype(occupant, /mob/living/silicon/sil_brainmob))
+			occupant_message("You are an artificial brain. NO.")
+			return
 		if(src.occupant)
 			src.dna = src.occupant.dna.unique_enzymes
 			src.occupant_message("You feel a prick as the needle takes your DNA sample.")
@@ -1732,6 +1866,9 @@
 
 /obj/mecha/onDropInto(atom/movable/AM)
 	dropped_items |= AM
+	spawn(5) // Wait a bit as the dropped atom may be trying to get deleted.
+		if(QDELETED(AM))
+			dropped_items -= AM
 
 //////////////////////////////////////////
 ////////  Mecha global iterators  ////////
@@ -1741,16 +1878,16 @@
 /datum/global_iterator/mecha_preserve_temp  //normalizing cabin air temperature to 20 degrees celsius
 	delay = 20
 
-	process(var/obj/mecha/mecha)
+	process(obj/mecha/mecha)
 		if(mecha.cabin_air && mecha.cabin_air.volume > 0)
-			var/delta = mecha.cabin_air.temperature - T20C
+			var/delta = mecha.cabin_air.temperature - (20 CELSIUS)
 			mecha.cabin_air.temperature -= max(-10, min(10, round(delta/4,0.1)))
 		return
 
 /datum/global_iterator/mecha_tank_give_air
 	delay = 15
 
-	process(var/obj/mecha/mecha)
+	process(obj/mecha/mecha)
 		if(mecha.internal_tank)
 			var/datum/gas_mixture/tank_air = mecha.internal_tank.return_air()
 			var/datum/gas_mixture/cabin_air = mecha.cabin_air
@@ -1783,7 +1920,7 @@
 /datum/global_iterator/mecha_inertial_movement //inertial movement in space
 	delay = 7
 
-	process(var/obj/mecha/mecha as obj,direction)
+	process(obj/mecha/mecha as obj, direction)
 		if(direction)
 			if(!step(mecha, direction)||mecha.check_for_support())
 				src.stop()
@@ -1793,7 +1930,7 @@
 
 /datum/global_iterator/mecha_internal_damage // processing internal damage
 
-	process(var/obj/mecha/mecha)
+	process(obj/mecha/mecha)
 		if(!mecha.hasInternalDamage())
 			return stop()
 		if(mecha.hasInternalDamage(MECHA_INT_FIRE))
@@ -1804,9 +1941,9 @@
 					mecha.setInternalDamage(MECHA_INT_TANK_BREACH)
 				var/datum/gas_mixture/int_tank_air = mecha.internal_tank.return_air()
 				if(int_tank_air && int_tank_air.volume>0) //heat the air_contents
-					int_tank_air.temperature = min(6000+T0C, int_tank_air.temperature+rand(10,15))
+					int_tank_air.temperature = min(6000 CELSIUS, int_tank_air.temperature+rand(10,15))
 			if(mecha.cabin_air && mecha.cabin_air.volume>0)
-				mecha.cabin_air.temperature = min(6000+T0C, mecha.cabin_air.temperature+rand(10,15))
+				mecha.cabin_air.temperature = min(6000 CELSIUS, mecha.cabin_air.temperature+rand(10,15))
 				if(mecha.cabin_air.temperature>mecha.max_temperature/2)
 					mecha.take_damage(4/round(mecha.max_temperature/mecha.cabin_air.temperature,0.1),"fire")
 		if(mecha.hasInternalDamage(MECHA_INT_TEMP_CONTROL)) //stop the mecha_preserve_temp loop datum
@@ -1822,7 +1959,7 @@
 		if(mecha.hasInternalDamage(MECHA_INT_SHORT_CIRCUIT))
 			if(mecha.get_charge())
 				mecha.spark_system.start()
-				mecha.use_power(rand(1 KILOWATTS, 5 KILOWATTS))
+				mecha.use_power(rand(1 KILO WATT, 5 KILO WATTS))
 		return
 
 

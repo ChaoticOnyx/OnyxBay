@@ -70,7 +70,7 @@ var/global/Holiday = null
 				if(12)							Holiday = "Owl and Pussycat Day"	//what a dumb day of observence...but we -do- have costumes already :3
 
 		if(6)	//Jun
-
+			pass()
 		if(7)	//Jul
 			switch(DD)
 				if(1)							Holiday = "Doctor's Day"
@@ -145,40 +145,7 @@ var/global/Holiday = null
 		else
 			to_world("<h4>Happy [Holiday] Everybody!</h4>")
 		switch(Holiday)			//special holidays
-			if("Easter")
-				//do easter stuff
 			if("Christmas Eve","Christmas")
 				Christmas_Game_Start()
 
 	return
-
-//Nested in the random events loop. Will be triggered every 2 minutes
-/proc/Holiday_Random_Event()
-	switch(Holiday)			//special holidays
-
-		if("",null)			//no Holiday today! Back to work!
-			return
-
-		if("Easter")		//I'll make this into some helper procs at some point
-/*			var/list/turf/simulated/floor/Floorlist = list()
-			for(var/turf/simulated/floor/T)
-				if(T.contents)
-					Floorlist += T
-			var/turf/simulated/floor/F = Floorlist[rand(1,Floorlist.len)]
-			Floorlist = null
-			var/obj/structure/closet/C = locate(/obj/structure/closet) in F
-			var/obj/item/weapon/reagent_containers/food/snacks/chocolateegg/wrapped/Egg
-			if( C )			Egg = new(C)
-			else			Egg = new(F)
-*/
-/*			var/list/obj/containers = list()
-			for(var/obj/item/weapon/storage/S in world)
-				if(isNotStationLevel(S.z))	continue
-				containers += S
-
-			message_admins("<span class='notice'>DEBUG: Event: Egg spawned at [Egg.loc] ([Egg.x],[Egg.y],[Egg.z])</span>")*/
-		if("End of the World")
-			if(prob(eventchance))	GameOver()
-
-		if("Christmas","Christmas Eve")
-			if(prob(eventchance))	ChristmasEvent()

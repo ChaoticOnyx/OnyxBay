@@ -29,7 +29,7 @@ var/list/organ_cache = list()
 	var/death_time
 
 	var/food_organ_type				  // path of food made from organ, ex.
-	var/obj/item/weapon/reagent_containers/food/snacks/food_organ
+	var/obj/item/reagent_containers/food/food_organ
 	var/disable_food_organ = FALSE // used to override food_organ's creation and using
 
 /obj/item/organ/return_item()
@@ -44,7 +44,9 @@ var/list/organ_cache = list()
 	reagents.trans_to(food_organ, reagents.total_volume)
 
 /obj/item/organ/Destroy()
-	owner = null
+	if(owner)
+
+		owner = null
 	dna = null
 	QDEL_NULL(food_organ)
 	return ..()
@@ -85,8 +87,6 @@ var/list/organ_cache = list()
 	create_reagents(5 * (w_class-1)**2)
 	reagents.add_reagent(/datum/reagent/nutriment/protein, reagents.maximum_volume)
 
-	src.after_organ_creation()
-
 	update_icon()
 
 /obj/item/organ/proc/set_dna(datum/dna/new_dna)
@@ -101,41 +101,50 @@ var/list/organ_cache = list()
 /obj/item/organ/proc/die()
 	damage = max_damage
 	status |= ORGAN_DEAD
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 	death_time = world.time
 	if(owner && vital)
 		owner.death()
 
-/obj/item/organ/Process()
+/obj/item/organ/think()
 	if(loc != owner)
 		owner = null
 
 	//dead already, no need for more processing
 	if(status & ORGAN_DEAD)
 		return
-	// Don't process if we're in a freezer, an MMI or a stasis bag.or a freezer or something I dunno
-	if(is_preserved())
-		return
+
 	//Process infections
-	if (BP_IS_ROBOTIC(src) || (owner && owner.species && (owner.species.species_flags & SPECIES_FLAG_IS_PLANT)))
+	if(BP_IS_ROBOTIC(src) || (owner?.species?.species_flags & SPECIES_FLAG_IS_PLANT))
 		germ_level = 0
+		// If `think()` is called not by the owner in `handle_organs()` but on his own.
+		if(NEXT_THINK)
+			set_next_think(world.time + 1 SECOND)
 		return
 
-	if(!owner && reagents)
-		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in reagents.reagent_list
-		if(B && prob(40))
-			reagents.remove_reagent(/datum/reagent/blood,0.1)
-			blood_splatter(src,B,1)
-		if(config.organs_decay)
-			take_general_damage(rand(1,3))
-		germ_level += rand(2,6)
-		if(germ_level >= INFECTION_LEVEL_TWO)
-			germ_level += rand(2,6)
-		if(germ_level >= INFECTION_LEVEL_THREE)
-			die()
+	if(owner)
+		if(isundead(owner))
+			germ_level = 0
+			if(NEXT_THINK)
+				set_next_think(world.time + 1 SECOND)
+			return
 
-	else if(owner && owner.bodytemperature >= 170)	//cryo stops germs from moving and doing their bad stuffs
-		//** Handle antibiotics and curing infections
+	if(!owner)
+		if(reagents && !is_preserved())
+			var/datum/reagent/blood/B = locate(/datum/reagent/blood) in reagents.reagent_list
+			if(B && prob(40))
+				reagents.remove_reagent(/datum/reagent/blood, 0.1)
+				blood_splatter(src, B, 1)
+			if(config.health.organs_can_decay)
+				take_general_damage(rand(1, 3))
+			germ_level += rand(2, 6)
+			if(germ_level >= INFECTION_LEVEL_TWO)
+				germ_level += rand(2, 6)
+			if(germ_level >= INFECTION_LEVEL_THREE)
+				die()
+
+	else if(owner.bodytemperature >= 170) // Cryo stops germs from moving and doing their bad stuffs
+		// Handle antibiotics and curing infections
 		handle_antibiotics()
 		handle_rejection()
 		handle_germ_effects()
@@ -147,6 +156,10 @@ var/list/organ_cache = list()
 	if(food_organ)
 		update_food_from_organ()
 
+	// If `think()` is called not by the owner in `handle_organs()` but on his own.
+	if(NEXT_THINK)
+		set_next_think(world.time + 1 SECOND)
+
 /obj/item/organ/proc/cook_organ()
 	die()
 
@@ -155,9 +168,9 @@ var/list/organ_cache = list()
 		var/obj/item/organ/O = loc
 		return O.is_preserved()
 	else
-		return (istype(loc,/obj/item/device/mmi) || istype(loc,/obj/structure/closet/body_bag/cryobag) || istype(loc,/obj/structure/closet/crate/freezer) || istype(loc,/obj/item/weapon/storage/box/freezer) || istype(loc,/mob/living/simple_animal/hostile/little_changeling))
+		return (istype(loc,/obj/item/device/mmi) || istype(loc,/obj/structure/closet/body_bag/cryobag) || istype(loc,/obj/structure/closet/crate/freezer) || istype(loc,/obj/item/storage/box/freezer) || istype(loc,/mob/living/simple_animal/hostile/little_changeling))
 
-/obj/item/organ/examine(mob/user)
+/obj/item/organ/_examine_text(mob/user)
 	. = ..()
 	. += "\n[show_decay_status(user)]"
 	if(get_dist(src, user) > 1)
@@ -188,7 +201,7 @@ var/list/organ_cache = list()
 
 	if(germ_level >= INFECTION_LEVEL_ONE)
 		var/fever_temperature = (owner.species.heat_level_1 - owner.species.body_temperature - 5)* min(germ_level/INFECTION_LEVEL_TWO, 1) + owner.species.body_temperature
-		owner.bodytemperature += between(0, (fever_temperature - T20C)/BODYTEMP_COLD_DIVISOR + 1, fever_temperature - owner.bodytemperature)
+		owner.bodytemperature += between(0, (fever_temperature - (20 CELSIUS))/BODYTEMP_COLD_DIVISOR + 1, fever_temperature - owner.bodytemperature)
 
 	if (germ_level >= INFECTION_LEVEL_TWO)
 		var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
@@ -273,8 +286,7 @@ var/list/organ_cache = list()
  *
  *  drop_organ - if true, organ will be dropped at the loc of its former owner
  */
-/obj/item/organ/proc/removed(mob/living/user, drop_organ=1)
-
+/obj/item/organ/proc/removed(mob/living/user, drop_organ = TRUE)
 	if(!istype(owner))
 		return
 
@@ -284,7 +296,7 @@ var/list/organ_cache = list()
 	playsound(src, SFX_FIGHTING_CRUNCH, rand(65, 80), FALSE)
 
 	// Start processing the organ on his own
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	rejecting = null
 	if(!BP_IS_ROBOTIC(src))
 		var/datum/reagent/blood/organ_blood = locate(/datum/reagent/blood) in reagents.reagent_list //TODO fix this and all other occurences of locate(/datum/reagent/blood) horror
@@ -322,7 +334,7 @@ var/list/organ_cache = list()
 	target.attackby(return_item(), user)
 
 /obj/item/organ/proc/can_feel_pain()
-	return (!BP_IS_ROBOTIC(src) && (!species || !(species.species_flags & SPECIES_FLAG_NO_PAIN)))
+	return (!BP_IS_ROBOTIC(src) && owner && (!owner.no_pain || !species || !(species.species_flags & SPECIES_FLAG_NO_PAIN)))
 
 /obj/item/organ/proc/is_usable()
 	return !(status & (ORGAN_CUT_AWAY|ORGAN_MUTATED|ORGAN_DEAD))
@@ -363,10 +375,6 @@ var/list/organ_cache = list()
 			. +=  "Septic"
 	if(rejecting)
 		. += "Genetic Rejection"
-
-// special organ instruction for correct functional
-/obj/item/organ/proc/after_organ_creation()
-	return
 
 //used by stethoscope
 /obj/item/organ/proc/listen()

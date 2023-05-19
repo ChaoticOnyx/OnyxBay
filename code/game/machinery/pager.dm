@@ -4,7 +4,7 @@
 	icon_state = "doorbell"
 	desc = "A button used to request the presence of anyone in the department."
 	anchored = 1
-	idle_power_usage = 2
+	idle_power_usage = 2 WATTS
 	var/acknowledged = 0
 	var/last_paged
 	var/department = COM
@@ -19,7 +19,7 @@
 /obj/machinery/pager/attack_ai(mob/user as mob)
 	return attack_hand(user)
 
-/obj/machinery/pager/attackby(obj/item/weapon/W, mob/user as mob)
+/obj/machinery/pager/attackby(obj/item/W, mob/user as mob)
 	return attack_hand(user)
 
 /obj/machinery/pager/attack_hand(mob/living/user)

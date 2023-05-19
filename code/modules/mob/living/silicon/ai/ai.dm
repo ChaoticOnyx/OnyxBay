@@ -429,7 +429,7 @@ var/list/ai_verbs_default = list(
 
 
 /mob/living/silicon/ai/proc/switchCamera(obj/machinery/camera/C)
-	if (!C || stat == DEAD) //C.can_use())
+	if (!C || is_ooc_dead()) //C.can_use())
 		return 0
 
 	if(!src.eyeobj)
@@ -514,7 +514,7 @@ var/list/ai_verbs_default = list(
 		var/personnel_list[] = list()
 
 		for(var/datum/computer_file/crew_record/t in GLOB.all_crew_records)//Look in data core locked.
-			personnel_list["[t.get_name()]: [t.get_rank()]"] = t.photo_front//Pull names, rank, and image.
+			personnel_list["[t.get_name()]"] = t.photo_front//Pull names and image.
 
 		if(personnel_list.len)
 			input = input("Select a crew member:") as null|anything in personnel_list
@@ -569,14 +569,14 @@ var/list/ai_verbs_default = list(
 	if(camera_light_on && camera_light_on < world.timeofday)
 		if(src.camera)
 			var/obj/machinery/camera/camera = near_range_camera(src.eyeobj)
-			if(camera && src.camera != camera)
+			if(!QDELETED(camera) && src.camera != camera)
 				src.camera.set_light(0)
 				if(!camera.light_disabled)
 					src.camera = camera
 					src.camera.set_light(0.5, 0.1, AI_CAMERA_LUMINOSITY)
 				else
 					src.camera = null
-			else if(isnull(camera))
+			else if(QDELETED(camera))
 				src.camera.set_light(0)
 				src.camera = null
 		else
@@ -587,10 +587,10 @@ var/list/ai_verbs_default = list(
 		camera_light_on = world.timeofday + 1 * 20 // Update the light every 2 seconds.
 
 
-/mob/living/silicon/ai/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/aicard))
+/mob/living/silicon/ai/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/aicard))
 
-		var/obj/item/weapon/aicard/card = W
+		var/obj/item/aicard/card = W
 		card.grab_ai(src, user)
 
 	else if(isWrench(W))
@@ -640,7 +640,7 @@ var/list/ai_verbs_default = list(
 	to_chat(usr, "<span class='info'>Your hologram will now [hologram_follow ? "follow" : "no longer follow"] you.</span>")
 
 /mob/living/silicon/ai/proc/check_unable(flags = 0, feedback = 1)
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		if(feedback) to_chat(src, "<span class='warning'>You are dead!</span>")
 		return 1
 
@@ -675,7 +675,7 @@ var/list/ai_verbs_default = list(
 		selected_sprite = decls_repository.get_decl(default_ai_icon)
 
 	icon = selected_sprite.icon
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		icon_state = selected_sprite.dead_icon
 		set_light(0.7, 0.1, 1, 2, selected_sprite.dead_light)
 	else if(!has_power())
@@ -691,9 +691,17 @@ var/list/ai_verbs_default = list(
 	set category = "IC"
 
 	resting = 0
-	var/obj/item/weapon/rig/rig = src.get_rig()
+	var/obj/item/rig/rig = src.get_rig()
 	if(rig)
 		rig.force_rest(src)
+
+/mob/living/silicon/ai/is_eligible_for_antag_spawn(antag_id)
+	switch(antag_id)
+		if(MODE_MALFUNCTION)
+			return TRUE
+		if(MODE_TRAITOR)
+			return TRUE
+	return FALSE
 
 #undef AI_CHECK_WIRELESS
 #undef AI_CHECK_RADIO

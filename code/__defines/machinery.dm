@@ -1,9 +1,5 @@
 var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called manually after an event.
 
-#define KILOWATTS *1000
-#define MEGAWATTS *1000000
-#define GIGAWATTS *1000000000
-
 #define MACHINERY_TICKRATE 2		// Tick rate for machinery in seconds. As it affects CELLRATE calculation it is kept as define here
 
 #define CELLRATE (1 / ( 3600 / MACHINERY_TICKRATE )) // Multiplier for charge units. Converts cell charge units(watthours) to joules. Takes into consideration that our machinery ticks once per two seconds.
@@ -31,7 +27,7 @@ var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called
 // Bitflags for machine stat variable.
 #define BROKEN   0x1
 #define NOPOWER  0x2
-#define POWEROFF 0x4  // TBD.
+#define POWEROFF 0x4  // Machine is manually switched off.
 #define MAINT    0x8  // Under maintenance.
 #define EMPED    0x10 // Temporary broken by EMP pulse.
 
@@ -53,7 +49,6 @@ var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called
 #define NETWORK_ROBOTS              "Robots"
 #define NETWORK_SECURITY            "Security"
 #define NETWORK_THUNDER             "Thunderdome"
-// EXODUS networks
 #define NETWORK_CIVILIAN_EAST       "Civilian East"
 #define NETWORK_CIVILIAN_WEST       "Civilian West"
 #define NETWORK_MAINTENANCE         "Maintenance Deck"
@@ -61,6 +56,10 @@ var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called
 #define NETWORK_RESEARCH_OUTPOST    "Research Outpost"
 #define NETWORK_TELECOM             "Tcomsat"
 #define NETWORK_MASTER              "Master"
+#define NETWORK_COMMAND             "Command"
+#define NETWORK_ENGINE              "Engine"
+#define NETWORK_ENGINEERING_OUTPOST "Engineering Outpost"
+#define NETWORK_APPARAT_VORON       "Apparat Voron"
 
 #define NETWORK_ALARM_ATMOS "Atmosphere Alarms"
 #define NETWORK_ALARM_CAMERA "Camera Alarms"
@@ -104,10 +103,10 @@ var/list/restricted_camera_networks = list(NETWORK_ERT,NETWORK_SYNDICATE,"Secret
 
 // The flow rate/effectiveness of various atmos devices is limited by their internal volume,
 // so for many atmos devices these will control maximum flow rates in L/s.
-#define ATMOS_DEFAULT_VOLUME_PUMP   350 // Liters.
-#define ATMOS_DEFAULT_VOLUME_FILTER 500 // L.
-#define ATMOS_DEFAULT_VOLUME_MIXER  500 // L.
-#define ATMOS_DEFAULT_VOLUME_PIPE   70  // L.
+#define ATMOS_DEFAULT_VOLUME_PUMP   (350 LITERS)
+#define ATMOS_DEFAULT_VOLUME_FILTER (500 LITERS)
+#define ATMOS_DEFAULT_VOLUME_MIXER  (500 LITERS)
+#define ATMOS_DEFAULT_VOLUME_PIPE   (70 LITERS)
 
 #define TELECOMMS_RECEPTION_NONE 0
 #define TELECOMMS_RECEPTION_SENDER 1

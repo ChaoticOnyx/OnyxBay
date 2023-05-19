@@ -184,7 +184,7 @@
 	if(isobj(AM))
 		var/obj/O = AM
 		var/dtype = O.damtype
-		var/throw_damage = O.throwforce * (speed / THROWFORCE_SPEED_DIVISOR)
+		var/throw_damage = O.throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
 
 		var/miss_chance = 15
 		if(O.throw_source)
@@ -223,8 +223,11 @@
 		if(O.throw_source && momentum >= THROWNOBJ_KNOCKBACK_SPEED)
 			var/dir = get_dir(O.throw_source, src)
 
+			if(buckled)
+				return
+
 			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
-			throw_at(get_edge_target_turf(src,dir), 1, momentum)
+			throw_at(get_edge_target_turf(src, dir), 1, (1 / momentum))
 
 			if(!O || !src)
 				return
@@ -302,14 +305,14 @@
 /mob/living/proc/IgniteMob()
 	if(fire_stacks > 0 && !on_fire)
 		on_fire = 1
-		set_light(0.6, 0.1, light_outer_range + 3)
+		set_light(0.6, 0.1, 4, l_color = COLOR_ORANGE)
 		update_fire()
 
 /mob/living/proc/ExtinguishMob()
 	if(on_fire)
 		on_fire = 0
 		fire_stacks = 0
-		set_light(max(0, light_outer_range - 3))
+		set_light(0)
 		update_fire()
 
 /mob/living/proc/update_fire()
@@ -342,7 +345,7 @@
 	//once our fire_burn_temperature has reached the temperature of the fire that's giving fire_stacks, stop adding them.
 	//allow fire_stacks to go up to 4 for fires cooler than 700 K, since are being immersed in flame after all.
 	if(fire_stacks <= 4 || fire_burn_temperature() < temperature)
-		adjust_fire_stacks(2)
+		adjust_fire_stacks(4)
 	IgniteMob()
 
 /mob/living/proc/get_cold_protection()
@@ -439,3 +442,8 @@
 		if(!isnull(M.evasion))
 			result += M.evasion
 	return result
+
+/mob/living/proc/calc_rad_resist(radiation_type)
+	ASSERT(IS_VALID_RADIATION_TYPE(radiation_type))
+
+	// TODO: Add code

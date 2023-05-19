@@ -7,10 +7,9 @@
 	layer = ABOVE_HUMAN_LAYER
 	density = 0
 
-
-/obj/effect/shield_impact/New()
-	spawn(2 SECONDS)
-		qdel(src)
+/obj/effect/shield_impact/Initialize()
+	. = ..()
+	QDEL_IN(src, 2 SECONDS)
 
 
 /obj/effect/shield
@@ -43,19 +42,18 @@
 
 // Prevents shuttles, singularities and pretty much everything else from moving the field segments away.
 // The only thing that is allowed to move us is the Destroy() proc.
-/obj/effect/shield/forceMove(newloc, qdeled = 0)
-	if(qdeled)
+/obj/effect/shield/forceMove()
+	if(QDELING(src))
 		return ..()
 	return 0
 
 
-/obj/effect/shield/New()
-	..()
+/obj/effect/shield/Initialize()
+	. = ..()
 	update_nearby_tiles()
 
 
 /obj/effect/shield/Destroy()
-	. = ..()
 	if(gen)
 		if(src in gen.field_segments)
 			gen.field_segments -= src
@@ -64,6 +62,7 @@
 		gen = null
 	update_nearby_tiles()
 	forceMove(null, 1)
+	return ..()
 
 
 // Temporarily collapses this shield segment.
@@ -198,7 +197,7 @@
 
 
 // Attacks with hand tools. Blocked by Hyperkinetic flag.
-/obj/effect/shield/attackby(obj/item/weapon/I as obj, mob/user as mob)
+/obj/effect/shield/attackby(obj/item/I as obj, mob/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	user.do_attack_animation(src)
 

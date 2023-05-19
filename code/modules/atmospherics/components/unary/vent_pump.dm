@@ -15,7 +15,7 @@
 	name = "Air Vent"
 	desc = "Has a valve and pump attached to it."
 	use_power = POWER_USE_OFF
-	idle_power_usage = 150		//internal circuitry, friction losses and stuff
+	idle_power_usage = 150 WATTS //internal circuitry, friction losses and stuff
 	power_rating = 7500			//7500 W ~ 10 HP
 
 	connect_types = CONNECT_TYPE_REGULAR|CONNECT_TYPE_SUPPLY //connects to regular and supply pipes
@@ -42,6 +42,7 @@
 	var/pressure_checks_default = PRESSURE_CHECKS
 
 	var/welded = 0 // Added for aliens -- TLE
+	var/broken = VENT_UNDAMAGED
 
 	var/frequency = 1439
 	var/datum/radio_frequency/radio_connection
@@ -117,7 +118,18 @@
 	if(!T.is_plating() && node && node.level == 1 && istype(node, /obj/machinery/atmospherics/pipe))
 		vent_icon += "h"
 
-	if(welded)
+
+	if(broken)
+		switch(broken)
+			if(VENT_DAMAGED_STAGE_ONE)
+				vent_icon += "damaged_1"
+			if(VENT_DAMAGED_STAGE_TWO)
+				vent_icon += "damaged_2"
+			if(VENT_DAMAGED_STAGE_THREE)
+				vent_icon += "damaged_3"
+			if(VENT_BROKEN)
+				vent_icon += "broken"
+	else if(welded)
 		vent_icon += "weld"
 	else if(!powered())
 		vent_icon += "off"
@@ -150,6 +162,8 @@
 	if(!use_power)
 		return 0
 	if(welded)
+		return 0
+	if(broken)
 		return 0
 	return 1
 
@@ -335,7 +349,7 @@
 /obj/machinery/atmospherics/unary/vent_pump/attackby(obj/item/W, mob/user)
 	if(isWelder(W))
 
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 
 		if(!WT.isOn())
 			to_chat(user, "<span class='notice'>The welding tool needs to be on to start this task.</span>")
@@ -344,6 +358,33 @@
 		if(!WT.remove_fuel(0,user))
 			to_chat(user, "<span class='warning'>You need more welding fuel to complete this task.</span>")
 			return 1
+
+		if(broken)
+			playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
+			user.visible_message(SPAN_NOTICE("\The [user] repairing \the [src]."), \
+				SPAN_NOTICE("Now repairing \the [src]."), \
+				"You hear welding.")
+
+			if(!do_after(user, 10, src))
+				to_chat(user, SPAN_NOTICE("You must remain still to finish this task!"))
+				return 1
+			if(!WT.isOn())
+				to_chat(user, SPAN_NOTICE("The welding tool needs to be on to finish this task."))
+				return 1
+
+			switch(broken)
+				if(VENT_DAMAGED_STAGE_ONE)
+					broken=VENT_UNDAMAGED
+				if(VENT_DAMAGED_STAGE_TWO)
+					broken=VENT_DAMAGED_STAGE_ONE
+				if(VENT_DAMAGED_STAGE_THREE)
+					broken=VENT_DAMAGED_STAGE_TWO
+				if(VENT_BROKEN)
+					to_chat(user, SPAN_NOTICE("\The [src] is ruined! You can't repair it!"))
+					return 1
+
+			update_icon()
+			return
 
 		to_chat(user, "<span class='notice'>Now welding \the [src].</span>")
 		playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
@@ -369,7 +410,7 @@
 	else
 		..()
 
-/obj/machinery/atmospherics/unary/vent_pump/examine(mob/user)
+/obj/machinery/atmospherics/unary/vent_pump/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		. += "\nA small gauge in the corner reads [round(last_flow_rate, 0.1)] L/s; [round(last_power_draw)] W"
@@ -377,8 +418,18 @@
 		. += "\nYou are too far away to read the gauge."
 	if(welded)
 		. += "\nIt seems welded shut."
+	if(broken)
+		switch(broken)
+			if(VENT_DAMAGED_STAGE_ONE)
+				. += "\nIt seems slightly damaged."
+			if(VENT_DAMAGED_STAGE_TWO)
+				. += "\nIt seems pretty damaged."
+			if(VENT_DAMAGED_STAGE_THREE)
+				. += "\nIt seems heavily damaged."
+			if(VENT_BROKEN)
+				. += "\nIt seems absolutely destroyed."
 
-/obj/machinery/atmospherics/unary/vent_pump/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/atmospherics/unary/vent_pump/attackby(obj/item/W as obj, mob/user as mob)
 	if(!isWrench(W))
 		return ..()
 	if (!(stat & NOPOWER) && use_power)

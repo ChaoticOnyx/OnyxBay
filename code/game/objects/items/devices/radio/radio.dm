@@ -21,7 +21,6 @@
 	var/loud = FALSE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
-	throw_speed = 2
 	throw_range = 9
 	w_class = ITEM_SIZE_SMALL
 
@@ -60,7 +59,7 @@
 			radio_controller.remove_object(src, radiochannels[ch_name])
 	return ..()
 
-/obj/item/device/radio/attack_self(mob/user as mob)
+/obj/item/device/radio/attack_self(mob/user)
 	user.set_machine(src)
 	interact(user)
 
@@ -130,7 +129,7 @@
 	return user.has_internal_radio_channel_access(internal_channels[freq])
 
 /mob/proc/has_internal_radio_channel_access(list/req_one_accesses)
-	var/obj/item/weapon/card/id/I = GetIdCard()
+	var/obj/item/card/id/I = get_id_card()
 	return has_access(list(), req_one_accesses, I ? I.GetAccess() : list())
 
 /mob/observer/ghost/has_internal_radio_channel_access(list/req_one_accesses)
@@ -205,15 +204,16 @@
 	if(.)
 		SSnano.update_uis(src)
 
-/obj/item/device/radio/proc/autosay(message, from, channel) //BS12 EDIT
+/obj/item/device/radio/proc/autosay(message, from, channel, say_verb="states", datum/language/speaking) //BS12 EDIT
 	var/datum/radio_frequency/connection = null
 	if(channel && channels && channels.len > 0)
 		if (channel == "department")
 			channel = channels[1]
 		connection = secure_radio_connections[channel]
 	else
-		connection = radio_connection
 		channel = null
+	if(!connection)
+		connection = radio_connection
 	if (!istype(connection))
 		return
 	var/mob/living/silicon/ai/A
@@ -222,7 +222,7 @@
 		A.fully_replace_character_name(from)
 	else
 		A = from
-	talk_into(A, message, channel, "states")
+	talk_into(A, message, channel, say_verb, speaking)
 	if(istext(from))
 		qdel(A)
 
@@ -334,6 +334,13 @@
 
   /* ###### Radio headsets can only broadcast through subspace ###### */
 	if(subspace_transmission)
+		// No one can hear our screams in an area with the unstable bluespace.
+		if(GLOB.using_map.level_has_trait(position.z, ZTRAIT_SNOWSTORM))
+			return
+		// The bluespace is less unstable so we can transmit something.
+		else if(GLOB.using_map.level_has_trait(position.z, ZTRAIT_SNOWFALL))
+			message = stars(message)
+
 		// First, we want to generate a new radio signal
 		var/datum/signal/signal = new
 		signal.transmission_method = 2 // 2 would be a subspace transmission.
@@ -509,7 +516,7 @@
 		return get_mobs_or_objects_in_view(canhear_range, src)
 
 
-/obj/item/device/radio/examine(mob/user)
+/obj/item/device/radio/_examine_text(mob/user)
 	. = ..()
 	if ((in_range(src, user) || loc == user))
 		if (b_stat)
@@ -518,7 +525,7 @@
 			. += "\n[SPAN_NOTICE("\The [src] can not be modified or attached!</span>")]"
 	return
 
-/obj/item/device/radio/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/device/radio/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 	user.set_machine(src)
 	if (!( isScrewdriver(W) ))
@@ -540,6 +547,9 @@
 	..()
 
 /obj/item/device/radio/proc/recalculateChannels()
+	return
+
+/obj/item/device/radio/proc/receive()
 	return
 
 ///////////////////////////////
@@ -587,7 +597,7 @@
 		var/datum/robot_component/C = R.components["radio"]
 		R.cell_use_power(C.active_usage)
 
-/obj/item/device/radio/borg/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/device/radio/borg/attackby(obj/item/W as obj, mob/user as mob)
 //	..()
 	user.set_machine(src)
 	if (!( isScrewdriver(W) || (istype(W, /obj/item/device/encryptionkey/ ))))
@@ -619,9 +629,7 @@
 			to_chat(user, "The radio can't hold another key!")
 			return
 
-		if(!keyslot)
-			user.drop_item()
-			W.loc = src
+		if(!keyslot && user.drop(W, src))
 			keyslot = W
 
 		recalculateChannels()
@@ -744,12 +752,15 @@
 	channels=list("Engineering" = 1, "Security" = 1, "Medical" = 1, "Command" = 1, "Common" = 1, "Science" = 1, "Supply" = 1, "Service" = 1, "Exploration" = 1)
 
 /obj/item/device/radio/announcer/Destroy()
-	crash_with("attempt to delete a [src.type] detected, and prevented.")
+	util_crash_with("attempt to delete a [src.type] detected, and prevented.")
+	..()
 	return QDEL_HINT_LETMELIVE
 
 /obj/item/device/radio/announcer/Initialize()
 	. = ..()
-	forceMove(locate(1,1,GLOB.using_map.contact_levels.len ? GLOB.using_map.contact_levels[1] : 1))
+
+	var/list/contact = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION, ZTRAIT_CONTACT)
+	forceMove(locate(1,1, length(contact) ? contact[1] : 1))
 
 /obj/item/device/radio/announcer/subspace
 	subspace_transmission = 1

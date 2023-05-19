@@ -1,12 +1,12 @@
 GLOBAL_LIST_INIT(registered_weapons, list())
 
-/obj/item/weapon/gun/energy
+/obj/item/gun/energy
 	name = "energy gun"
 	desc = "A basic energy-based gun."
 	icon_state = "energy"
 	fire_sound_text = "laser blast"
 
-	var/obj/item/weapon/cell/power_supply //What type of power cell this uses
+	var/obj/item/cell/power_supply //What type of power cell this uses
 	var/charge_cost = 20 //How much energy is needed to fire.
 	var/max_shots = 10 //Determines the capacity of the weapon's power cell. Specifying a cell_type overrides this value.
 	var/cell_type = null
@@ -26,56 +26,64 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 	mod_reach = 0.5
 	mod_handy = 1.0
 
-/obj/item/weapon/gun/energy/switch_firemodes()
+/obj/item/gun/energy/switch_firemodes()
 	. = ..()
 	if(.)
 		update_icon()
 		playsound(src, 'sound/effects/weapons/energy/toggle_mode1.ogg', rand(50, 75), FALSE)
 
-/obj/item/weapon/gun/energy/emp_act(severity)
+/obj/item/gun/energy/emp_act(severity)
 	..()
 	update_icon()
 
-/obj/item/weapon/gun/energy/New()
-	..()
+/obj/item/gun/energy/Initialize()
+	. = ..()
 	if(cell_type)
 		power_supply = new cell_type(src)
 	else
-		power_supply = new /obj/item/weapon/cell/device/variable(src, max_shots*charge_cost)
+		power_supply = new /obj/item/cell/device/variable(src, max_shots*charge_cost)
 	if(self_recharge)
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 	update_icon()
 
-/obj/item/weapon/gun/energy/Destroy()
-	if(self_recharge)
-		STOP_PROCESSING(SSobj, src)
-	return ..()
-
-/obj/item/weapon/gun/energy/Process()
+/obj/item/gun/energy/think()
 	if(self_recharge) //Every [recharge_time] ticks, recharge a shot for the cyborg
 		charge_tick++
-		if(charge_tick < recharge_time) return 0
+		if(charge_tick < recharge_time)
+			set_next_think(world.time + 1 SECOND)
+			return
 		charge_tick = 0
 
 		if(!power_supply || power_supply.charge >= power_supply.maxcharge)
-			return 0 // check if we actually need to recharge
+			set_next_think(world.time + 1 SECOND)
+			return // check if we actually need to recharge
 
 		if(use_external_power)
-			var/obj/item/weapon/cell/external = get_external_power_supply()
+			var/obj/item/cell/external = get_external_power_supply()
 			if(!external || !external.use(charge_cost)) //Take power from the borg...
-				return 0
+				set_next_think(world.time + 1 SECOND)
+				return
 
 		power_supply.give(charge_cost) //... to recharge the shot
 		update_icon()
-	return 1
+	
+	set_next_think(world.time + 1 SECOND)
 
-/obj/item/weapon/gun/energy/consume_next_projectile()
-	if(!power_supply) return null
-	if(!ispath(projectile_type)) return null
-	if(!power_supply.checked_use(charge_cost)) return null
-	return new projectile_type(src)
+/obj/item/gun/energy/consume_next_projectile()
+	if(!power_supply)
+		return null
+	if(!ispath(projectile_type))
+		return null
+	if(!power_supply.checked_use(charge_cost))
+		return null
+	var/obj/item/projectile/BB = new projectile_type(src)
+	if(BB.projectile_light)
+		BB.layer = ABOVE_LIGHTING_LAYER
+		BB.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		BB.set_light(BB.projectile_max_bright, BB.projectile_inner_range, BB.projectile_outer_range, BB.projectile_falloff_curve, BB.projectile_brightness_color)
+	return BB
 
-/obj/item/weapon/gun/energy/proc/get_external_power_supply()
+/obj/item/gun/energy/proc/get_external_power_supply()
 	if(isrobot(src.loc))
 		var/mob/living/silicon/robot/R = src.loc
 		return R.cell
@@ -84,16 +92,16 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 		if(module.holder && module.holder.wearer)
 			var/mob/living/carbon/human/H = module.holder.wearer
 			if(istype(H) && H.back)
-				var/obj/item/weapon/rig/suit = H.back
+				var/obj/item/rig/suit = H.back
 				if(istype(suit))
 					return suit.cell
 	return null
 
-/obj/item/weapon/gun/energy/examine(mob/user)
+/obj/item/gun/energy/_examine_text(mob/user)
 	. = ..()
 	. += "\nHas [power_supply ? round(power_supply.charge / charge_cost) : "0"] shot\s remaining."
 
-/obj/item/weapon/gun/energy/update_icon()
+/obj/item/gun/energy/update_icon()
 	if(charge_meter)
 		var/ratio
 		if(power_supply)
@@ -110,14 +118,14 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 			icon_state = "[initial(icon_state)][ratio]"
 	..()
 
-/obj/item/weapon/gun/energy/secure
+/obj/item/gun/energy/secure
 	desc = "A basic energy-based gun with a secure authorization chip."
 	req_access = list(access_brig)
 	var/list/authorized_modes = list(ALWAYS_AUTHORIZED) // index of this list should line up with firemodes, unincluded firemodes at the end will default to unauthorized
 	var/registered_owner
 	var/emagged = 0
 
-/obj/item/weapon/gun/energy/secure/Initialize()
+/obj/item/gun/energy/secure/Initialize()
 	if(!authorized_modes)
 		authorized_modes = list()
 
@@ -126,12 +134,12 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 
 	. = ..()
 
-/obj/item/weapon/gun/energy/secure/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/card/id))
+/obj/item/gun/energy/secure/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/card/id))
 		if(!emagged)
 			if(!registered_owner)
 				if(allowed(user))
-					var/obj/item/weapon/card/id/id = W
+					var/obj/item/card/id/id = W
 					GLOB.registered_weapons += src
 					registered_owner = id.registered_name
 					user.visible_message("[user] swipes an ID through \the [src], registering it.", "You swipe an ID through \the [src], registering it.")
@@ -144,7 +152,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 	else
 		..()
 
-/obj/item/weapon/gun/energy/secure/verb/reset()
+/obj/item/gun/energy/secure/verb/reset()
 	set name = "Reset Registration"
 	set category = "Object"
 	set src in usr
@@ -157,12 +165,12 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 		registered_owner = null
 		GLOB.registered_weapons -= src
 
-/obj/item/weapon/gun/energy/secure/Destroy()
+/obj/item/gun/energy/secure/Destroy()
 	GLOB.registered_weapons -= src
 
 	. = ..()
 
-/obj/item/weapon/gun/energy/secure/proc/authorize(mode, authorized, by)
+/obj/item/gun/energy/secure/proc/authorize(mode, authorized, by)
 	if(emagged || mode < 1 || mode > authorized_modes.len || authorized_modes[mode] == authorized)
 		return 0
 
@@ -177,7 +185,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 
 	return 1
 
-/obj/item/weapon/gun/energy/secure/special_check()
+/obj/item/gun/energy/secure/special_check()
 	if(!emagged && (!authorized_modes[sel_mode] || !registered_owner))
 		audible_message("<span class='warning'>\The [src] buzzes, refusing to fire.</span>")
 		playsound(loc, 'sound/signals/error1.ogg', 50, 0)
@@ -185,7 +193,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 
 	. = ..()
 
-/obj/item/weapon/gun/energy/secure/switch_firemodes()
+/obj/item/gun/energy/secure/switch_firemodes()
 	var/next_mode = get_next_authorized_mode()
 	if(firemodes.len <= 1 || next_mode == null || sel_mode == next_mode)
 		return null
@@ -198,13 +206,13 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 
 	return new_mode
 
-/obj/item/weapon/gun/energy/secure/examine(mob/user)
+/obj/item/gun/energy/secure/_examine_text(mob/user)
 	. = ..()
 
 	if(registered_owner)
 		. += "\nA small screen on the side of the weapon indicates that it is registered to [registered_owner]."
 
-/obj/item/weapon/gun/energy/secure/proc/get_next_authorized_mode()
+/obj/item/gun/energy/secure/proc/get_next_authorized_mode()
 	. = sel_mode
 	do
 		.++
@@ -214,7 +222,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 			return null
 	while(!authorized_modes[.] && !emagged)
 
-/obj/item/weapon/gun/energy/secure/emag_act(charges, mob/user)
+/obj/item/gun/energy/secure/emag_act(charges, mob/user)
 	if(emagged || !charges)
 		return NO_EMAG_ACT
 	else

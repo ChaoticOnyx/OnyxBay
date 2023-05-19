@@ -1,4 +1,5 @@
 /mob/living/silicon
+	bubble_icon = "machine"
 	var/datum/ai_laws/laws
 	var/list/additional_law_channels = list("State" = "")
 
@@ -20,6 +21,7 @@
 /mob/living/silicon/proc/set_zeroth_law(law, law_borg)
 	laws_sanity_check()
 	laws.set_zeroth_law(law, law_borg)
+	sound_to(src, sound('sound/signals/ping3.ogg'))
 	log_law("has given [src] the zeroth law: '[law]'[law_borg ? " / '[law_borg]'" : ""]")
 
 /mob/living/silicon/robot/set_zeroth_law(law, law_borg)
@@ -30,38 +32,45 @@
 /mob/living/silicon/proc/add_ion_law(law)
 	laws_sanity_check()
 	laws.add_ion_law(law)
+	sound_to(src, sound('sound/signals/ping3.ogg'))
 	log_law("has given [src] the ion law: [law]")
 
 /mob/living/silicon/proc/add_inherent_law(law)
 	laws_sanity_check()
 	laws.add_inherent_law(law)
+	sound_to(src, sound('sound/signals/ping3.ogg'))
 	log_law("has given [src] the inherent law: [law]")
 
 /mob/living/silicon/proc/add_supplied_law(number, law)
 	laws_sanity_check()
 	laws.add_supplied_law(number, law)
+	sound_to(src, sound('sound/signals/ping3.ogg'))
 	log_law("has given [src] the supplied law: [law]")
 
 /mob/living/silicon/proc/delete_law(datum/ai_law/law)
 	laws_sanity_check()
 	laws.delete_law(law)
+	sound_to(src, sound('sound/signals/ping3.ogg'))
 	log_law("has deleted a law belonging to [src]: [law.law]")
 
 /mob/living/silicon/proc/clear_inherent_laws(silent = 0)
 	laws_sanity_check()
 	laws.clear_inherent_laws()
+	sound_to(src, sound('sound/signals/ping3.ogg'))
 	if(!silent)
 		log_law("cleared the inherent laws of [src]")
 
 /mob/living/silicon/proc/clear_ion_laws(silent = 0)
 	laws_sanity_check()
 	laws.clear_ion_laws()
+	sound_to(src, sound('sound/signals/ping3.ogg'))
 	if(!silent)
 		log_law("cleared the ion laws of [src]")
 
 /mob/living/silicon/proc/clear_supplied_laws(silent = 0)
 	laws_sanity_check()
 	laws.clear_supplied_laws()
+	sound_to(src, sound('sound/signals/ping3.ogg'))
 	if(!silent)
 		log_law("cleared the supplied laws of [src]")
 

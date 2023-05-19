@@ -7,7 +7,7 @@
 	icon = 'icons/obj/power.dmi'
 	icon_state = "light0"
 	anchored = 1.0
-	idle_power_usage = 20
+	idle_power_usage = 20 WATTS
 	power_channel = STATIC_LIGHT
 	var/on = 0
 	var/area/connected_area = null
@@ -43,7 +43,7 @@
 		overlays += overlay
 		set_light(0.15, 0.1, 1, 2, (on ? "#82ff4c" : "#f86060"))
 
-/obj/machinery/light_switch/examine(mob/user)
+/obj/machinery/light_switch/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		. += "\nA light switch. It is [on? "on" : "off"]."

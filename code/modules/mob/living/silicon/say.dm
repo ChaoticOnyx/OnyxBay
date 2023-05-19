@@ -1,8 +1,9 @@
-/mob/living/silicon/say(message, sanitize = 1)
-	return ..(sanitize ? sanitize(message) : message)
+/mob/living/silicon/say(message, sanitize = TRUE, log_message = TRUE)
+	return ..(sanitize ? sanitize(message) : message, log_message = log_message)
 
 /mob/living/silicon/handle_message_mode(message_mode, message, verb, speaking, used_radios, alt_name)
-	log_say("[key_name(src)]: [message]")
+	if(playable_mob) // I don't know why it's here, because living/say already does logging stuff.
+		log_say("[key_name(src)]: [message]")
 
 /mob/living/silicon/robot/handle_message_mode(message_mode, message, verb, speaking, used_radios, alt_name)
 	..()
@@ -112,7 +113,7 @@
 
 
 			for(var/mob/M in GLOB.player_list)
-				if(M.stat == DEAD && M.get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH)
+				if(M.is_ooc_dead() && M.get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH)
 					M.hear_say(message,verb,speaking,null,null, src)
 					continue
 				if(M.loc && (M.locs[1] in hearturfs))

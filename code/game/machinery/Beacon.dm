@@ -6,7 +6,7 @@
 	desc = "A device that draws power from bluespace and creates a permanent tracking beacon."
 	level = 1		// underfloor
 	anchored = 1
-	idle_power_usage = 0
+	idle_power_usage = 0 WATTS
 	var/obj/item/device/radio/beacon/Beacon
 
 	New()
@@ -23,7 +23,7 @@
 		. = ..()
 
 	// update the invisibility and icon
-	hide(var/intact)
+	hide(intact)
 		set_invisibility(intact ? 101 : 0)
 		update_icon()
 
@@ -48,5 +48,3 @@
 				Beacon.loc = loc
 
 		update_icon()
-
-

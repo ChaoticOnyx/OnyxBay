@@ -8,20 +8,18 @@
 
 /obj/structure/christmas/snowman/attack_hand(mob/user as mob)
 	user.visible_message("[user] takes [my_hat] off \the [src].", "You take [my_hat] off \the [src]")
-	if(!user.put_in_active_hand(my_hat))
-		my_hat.loc = get_turf(user)
+	user.pick_or_drop(my_hat, loc)
 	my_hat = null
 	update_icon()
 
-/obj/structure/christmas/snowman/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/christmas/snowman/attackby(obj/item/W as obj, mob/user as mob)
 	var/can_hang = 0
 	for (var/T in allowed)
 		if(istype(W,T))
 			can_hang = 1
-	if (can_hang && !my_hat)
+	if(can_hang && !my_hat && user.drop(my_hat, src))
 		user.visible_message("[user] puts [W] on \the [src].", "You put [W] on \the [src]")
 		my_hat = W
-		user.drop_from_inventory(my_hat, src)
 		update_icon()
 	else
 		to_chat(user, "<span class='notice'>You cannot put [W] on [src]</span>")

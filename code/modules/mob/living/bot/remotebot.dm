@@ -18,7 +18,7 @@
 		tally += (2 * holding.w_class)
 	return tally
 
-/mob/living/bot/remotebot/examine(mob/user)
+/mob/living/bot/remotebot/_examine_text(mob/user)
 	. = ..()
 	if(holding)
 		. += "\n<span class='notice'>It is holding \the \icon[holding] [holding].</span>"
@@ -59,7 +59,7 @@
 	return ..()
 
 /mob/living/bot/remotebot/proc/pickup(obj/item/I)
-	if(holding || get_dist(src,I) > 1)
+	if(holding || get_dist(src, I) > 1 || I.anchored)
 		return
 	src.visible_message("<b>\The [src]</b> picks up \the [I].")
 	flick("fetchbot-c", src)
@@ -69,7 +69,7 @@
 	I.forceMove(src)
 	holding = I
 
-/mob/living/bot/remotebot/proc/drop()
+/mob/living/bot/remotebot/proc/drop_holding()
 	if(working || !holding)
 		return
 	holding.forceMove(loc)
@@ -127,7 +127,7 @@
 		return
 
 	if(href_list["drop"])
-		bot.drop()
+		bot.drop_holding()
 	if(href_list["look"])
 		if(href_list["look"] == "1")
 			usr.reset_view(usr)
@@ -163,8 +163,7 @@
 
 /obj/item/device/bot_kit/attack_self(mob/living/user)
 	to_chat(user, "You quickly dismantle the box and retrieve the controller and the remote bot itself.")
-	var/turf/T = get_turf(src.loc)
+	var/turf/T = get_turf(loc)
 	new /mob/living/bot/remotebot(T)
 	new /obj/item/device/bot_controller(T)
-	user.drop_from_inventory(src)
 	qdel(src)

@@ -38,7 +38,7 @@
 a creative player the means to solve many problems.  Circuits are held inside an electronic assembly, and are wired using special tools.
 */
 
-/obj/item/integrated_circuit/examine(mob/user)
+/obj/item/integrated_circuit/_examine_text(mob/user)
 	interact(user)
 	external_examine(user)
 	. = ..()
@@ -94,9 +94,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	if(assembly)
 		return assembly.check_interactivity(user)
 	else
-		if(isrobot(user))
-			return TRUE
-		return CanUseTopic(user)
+		return CanUseTopic(user) && !user.incapacitated()
 
 /obj/item/integrated_circuit/Initialize()
 	. = ..()
@@ -109,14 +107,14 @@ a creative player the means to solve many problems.  Circuits are held inside an
 
 /obj/item/integrated_circuit/proc/get_power_cell(atom/movable/AM)
 	var/efficient = 1
-	var/obj/item/weapon/cell/cell
+	var/obj/item/cell/cell
 	// add below cell getting code from device to get correct cell
 	if(isrobot(AM))
 		var/mob/living/silicon/robot/R = AM
 		efficient = 0.9
 		cell = R.cell
 
-	else if(istype(AM, /obj/item/weapon/cell))
+	else if(istype(AM, /obj/item/cell))
 		cell = AM
 
 	else if(istype(AM, /obj/machinery/power/apc))
@@ -127,8 +125,8 @@ a creative player the means to solve many problems.  Circuits are held inside an
 		var/obj/machinery/mining/drill/hdrill = AM
 		cell = hdrill.cell
 
-	else if(istype(AM, /obj/item/weapon/gun/energy) && !istype(AM, /obj/item/weapon/gun/energy/plasmacutter))
-		var/obj/item/weapon/gun/energy/WEP = AM
+	else if(istype(AM, /obj/item/gun/energy) && !istype(AM, /obj/item/gun/energy/plasmacutter))
+		var/obj/item/gun/energy/WEP = AM
 		cell = WEP.power_supply
 		efficient = 0.6
 
@@ -144,11 +142,11 @@ a creative player the means to solve many problems.  Circuits are held inside an
 // called when we add component to assembly
 /obj/item/integrated_circuit/proc/create_moved_event()
 	if(moved_event_created) // if moved event already created, rerigester it
-		GLOB.moved_event.unregister(moved_object, src)
+		unregister_signal(moved_object, SIGNAL_MOVED)
 	if(ext_moved_triggerable)
 		moved_event_created = TRUE
 		moved_object = get_object()
-		GLOB.moved_event.register(moved_object, src, .proc/ext_moved)
+		register_signal(moved_object, SIGNAL_MOVED, .proc/ext_moved)
 
 /obj/item/integrated_circuit/proc/on_data_written() //Override this for special behaviour when new data gets pushed to the circuit.
 	return
@@ -157,7 +155,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 // created for not to use moved_event when we are not in assembly.
 /obj/item/integrated_circuit/proc/removed_from_assembly()
 	if(ext_moved_triggerable && moved_event_created)
-		GLOB.moved_event.unregister(moved_object, src)
+		unregister_signal(moved_object, SIGNAL_MOVED)
 
 /obj/item/integrated_circuit/Destroy()
 	. = ..()
@@ -166,7 +164,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	QDEL_LIST(activators)
 	SScircuit_components.dequeue_component(src)
 	if(ext_moved_triggerable && moved_event_created)
-		GLOB.moved_event.unregister(moved_object, src)
+		unregister_signal(moved_object, SIGNAL_MOVED)
 
 /obj/item/integrated_circuit/emp_act(severity)
 	for(var/k in inputs)

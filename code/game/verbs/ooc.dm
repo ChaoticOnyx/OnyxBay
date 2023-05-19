@@ -21,13 +21,6 @@
 
 	sanitize_and_communicate(/decl/communication_channel/ooc/looc, src, message)
 
-/client/verb/bot_token(token as text)
-	set name = "Bot token"
-	set category = "OOC"
-	set desc = "Sends specific token to bot through webhook"
-
-	webhook_send_token(key, token)
-
 /client/verb/stop_all_sounds()
 	set name = "Stop all sounds"
 	set desc = "Stop all sounds that are currently playing."
@@ -49,3 +42,13 @@
 		winset(src, null, "reset=true")
 		update_chat_position()
 		nuke_chat()
+
+/client/verb/info_storyteller()
+	set name = "Storyteller info"
+	set category = "OOC"
+
+	if(!SSstoryteller.character)
+		to_chat(src, "<b>Current Storyteller:</b> N/A")
+	else
+		to_chat(src, "<b>Current Storyteller:</b> [SSstoryteller.character.name] - [SSstoryteller.character.desc]")
+

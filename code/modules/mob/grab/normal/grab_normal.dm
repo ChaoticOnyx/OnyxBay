@@ -145,7 +145,7 @@
 			else
 				if(headbutt(G))
 					if(drop_headbutt)
-						let_go(G)
+						G.delete_self()
 					return 1
 		//else if(G.target_zone ==
 	return 0
@@ -376,7 +376,7 @@
 	if(user.a_intent != I_HURT)
 		return 0 // Not trying to hurt them.
 
-	if(!istype(W,/obj/item/weapon/material/kitchen/utensil/spoon))
+	if(!istype(W,/obj/item/material/kitchen/utensil/spoon))
 		if(!W.sharp || !W.force || W.damtype != BRUTE || W.w_class > ITEM_SIZE_NORMAL)
 			return 0 //unsuitable weapon
 
@@ -406,7 +406,7 @@
 		if(prob(50))
 			if(affecting.stat != 2)
 				to_chat(affecting, "<span class='warning'>You drop what you're holding and clutch at your eyes!</span>")
-				affecting.drop_item()
+				affecting.drop_active_hand()
 			affecting.eye_blurry += 10
 			affecting.Paralyse(1)
 			affecting.Weaken(4)

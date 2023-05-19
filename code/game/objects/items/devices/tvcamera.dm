@@ -29,7 +29,7 @@
 	radio.set_frequency(ENT_FREQ)
 	update_icon()
 
-/obj/item/device/tvcamera/examine(mob/user)
+/obj/item/device/tvcamera/_examine_text(mob/user)
 	. = ..()
 	. += "\nVideo feed is currently: [camera.status ? "Online" : "Offline"]"
 	. += "\nAudio feed is currently: [radio.broadcasting ? "Online" : "Offline"]"
@@ -85,20 +85,21 @@
 		H.update_inv_l_hand()
 
 /* Assembly by a roboticist */
-/obj/item/robot_parts/head/attackby(obj/item/device/assembly/S, mob/user as mob)
+/obj/item/robot_parts/head/attackby(obj/item/device/assembly/S, mob/user)
 	if ((!istype(S, /obj/item/device/assembly/infra)))
 		..()
 		return
-	var/obj/item/weapon/TVAssembly/A = new(user)
+	if(!user.drop(S))
+		return
+	var/obj/item/TVAssembly/A = new(user)
 	qdel(S)
-	user.put_in_hands(A)
+	user.pick_or_drop(A)
 	to_chat(user, "<span class='notice'>You add the infrared sensor to the robot head.</span>")
-	user.drop_from_inventory(src)
 	qdel(src)
 
 /* Using camcorder icon as I can't sprite.
 Using robohead because of restricting to roboticist */
-/obj/item/weapon/TVAssembly
+/obj/item/TVAssembly
 	name = "TV Camera assembly"
 	desc = "A robotic head with an infrared sensor inside"
 	icon = 'icons/obj/robot_parts.dmi'
@@ -107,21 +108,16 @@ Using robohead because of restricting to roboticist */
 	var/buildstep = 0
 	w_class = ITEM_SIZE_LARGE
 
-/obj/item/weapon/TVAssembly/attackby(W, mob/user)
+/obj/item/TVAssembly/attackby(obj/item/W, mob/user)
 	switch(buildstep)
 		if(0)
-			if(istype(W, /obj/item/robot_parts/robot_component/camera))
-				var/obj/item/robot_parts/robot_component/camera/CA = W
+			if(istype(W, /obj/item/robot_parts/robot_component/camera) && user.drop(W))
 				to_chat(user, "<span class='notice'>You add the camera module to [src]</span>")
-				user.drop_item()
-				qdel(CA)
 				desc = "This TV camera assembly has a camera module."
 				buildstep++
+				qdel(W)
 		if(1)
-			if(istype(W, /obj/item/device/taperecorder))
-				var/obj/item/device/taperecorder/T = W
-				user.drop_item()
-				qdel(T)
+			if(istype(W, /obj/item/device/taperecorder) && user.drop(W))
 				buildstep++
 				to_chat(user, "<span class='notice'>You add the tape recorder to [src]</span>")
 				desc = "This TV camera assembly has a camera and audio module."
@@ -151,8 +147,9 @@ Using robohead because of restricting to roboticist */
 				S.use(1)
 				to_chat(user, "<span class='notice'>You encase the assembly.</span>")
 				var/turf/T = get_turf(src)
-				new /obj/item/device/tvcamera(T)
-				user.drop_from_inventory(src)
+				var/obj/item/device/tvcamera/TVC = new /obj/item/device/tvcamera(T)
+				if(loc == user)
+					user.replace_item(W, TVC)
 				qdel(src)
 				return
 

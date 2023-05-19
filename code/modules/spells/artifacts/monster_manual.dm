@@ -1,9 +1,8 @@
-/obj/item/weapon/monster_manual
+/obj/item/monster_manual
 	name = "monster manual"
 	desc = "A book detailing various magical creatures."
 	icon = 'icons/obj/library.dmi'
 	icon_state = "bookHacking"
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL
 	var/uses = 1
@@ -25,11 +24,11 @@
 									"The old symbol of Satan. But this one almost can`t do anything special."
 									)
 
-/obj/item/weapon/monster_manual/attack_self(mob/user as mob)
+/obj/item/monster_manual/attack_self(mob/user as mob)
 	user.set_machine(src)
 	interact(user)
 
-/obj/item/weapon/monster_manual/interact(mob/user as mob)
+/obj/item/monster_manual/interact(mob/user as mob)
 	var/dat
 	if(temp)
 		dat = "<meta charset=\"utf-8\">[temp]<br><a href='byond://?src=\ref[src];temp=1'>Return</a>"
@@ -42,7 +41,7 @@
 	show_browser(user, dat, "window=monstermanual")
 	onclose(user, "monstermanual")
 
-/obj/item/weapon/monster_manual/OnTopic(user, href_list, state)
+/obj/item/monster_manual/OnTopic(user, href_list, state)
 	if(href_list["temp"])
 		temp = null
 		. = TOPIC_REFRESH
@@ -54,7 +53,7 @@
 		var/datum/ghosttrap/ghost = get_ghost_trap("wizard familiar")
 		var path = locate(href_list["path"]) in monster
 		if(!ispath(path))
-			crash_with("Invalid mob path in [src]. Contact a coder.")
+			util_crash_with("Invalid mob path in [src]. Contact a coder.")
 			return TOPIC_HANDLED
 
 		var/mob/living/simple_animal/familiar/F = new path(get_turf(src))
@@ -67,7 +66,7 @@
 					qdel(F)
 				else
 					F.faction = usr.faction
-					F.add_spell(new /datum/spell/contract/return_master(usr), "const_spell_ready")
+					usr.add_spell(new /datum/spell/contract/return_master(F), "const_spell_ready")
 					to_chat(F, "<span class='notice'>You are a familiar.</span>")
 					to_chat(F, "<b>You have been summoned by the wizard [usr] to assist in all matters magical and not.</b>")
 					to_chat(F, "<b>Do their bidding and help them with their goals.</b>")
@@ -76,4 +75,3 @@
 
 	if(. == TOPIC_REFRESH)
 		interact(user)
-

@@ -26,9 +26,9 @@
 	visible_message("<span class='warning'>[src] blows apart!</span>")
 	var/turf/Tsec = get_turf(src)
 
-	new /obj/item/weapon/secbot_assembly/ed209_assembly(Tsec)
+	new /obj/item/secbot_assembly/ed209_assembly(Tsec)
 
-	var/obj/item/weapon/gun/energy/taser/G = new /obj/item/weapon/gun/energy/taser(Tsec)
+	var/obj/item/gun/energy/taser/G = new /obj/item/gun/energy/taser(Tsec)
 	G.power_supply.charge = 0
 	if(prob(50))
 		new /obj/item/robot_parts/l_leg(Tsec)
@@ -58,7 +58,7 @@
 	last_shot = world.time
 	var/projectile = /obj/item/projectile/beam/stun
 	if(emagged)
-		projectile = /obj/item/projectile/beam
+		projectile = /obj/item/projectile/beam/laser/mid
 
 	playsound(loc, emagged ? 'sound/effects/weapons/energy/Laser.ogg' : 'sound/effects/weapons/energy/Taser.ogg', 50, 1)
 	var/obj/item/projectile/P = new projectile(loc)
@@ -66,7 +66,7 @@
 	P.launch(A, def_zone)
 // Assembly
 
-/obj/item/weapon/secbot_assembly/ed209_assembly
+/obj/item/secbot_assembly/ed209_assembly
 	name = "ED-209 assembly"
 	desc = "Some sort of bizarre assembly."
 	icon = 'icons/obj/aibots.dmi'
@@ -75,10 +75,10 @@
 	created_name = "ED-209 Security Robot"
 	var/lasercolor = ""
 
-/obj/item/weapon/secbot_assembly/ed209_assembly/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/secbot_assembly/ed209_assembly/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 
-	if(istype(W, /obj/item/weapon/pen))
+	if(istype(W, /obj/item/pen))
 		var/t = sanitizeSafe(input(user, "Enter new robot name", name, created_name), MAX_NAME_LEN)
 		if(!t)
 			return
@@ -90,7 +90,8 @@
 	switch(build_step)
 		if(0, 1)
 			if(istype(W, /obj/item/robot_parts/l_leg) || istype(W, /obj/item/robot_parts/r_leg))
-				user.drop_item()
+				if(!user.drop(W))
+					return
 				qdel(W)
 				build_step++
 				to_chat(user, "<span class='notice'>You add the robot leg to [src].</span>")
@@ -108,7 +109,8 @@
 					if(!locate(/obj/item/clothing/accessory/armorplate) in W.contents)
 						to_chat(user, "There's no armor plates on this [W].")
 						return
-				user.drop_item()
+				if(!user.drop(W))
+					return
 				qdel(W)
 				build_step++
 				to_chat(user, "<span class='notice'>You add [W] to [src].</span>")
@@ -118,14 +120,15 @@
 
 		if(3)
 			if(isWelder(W))
-				var/obj/item/weapon/weldingtool/WT = W
+				var/obj/item/weldingtool/WT = W
 				if(WT.remove_fuel(0, user))
 					build_step++
 					SetName("shielded frame assembly")
 					to_chat(user, "<span class='notice'>You welded the vest to [src].</span>")
 		if(4)
 			if(istype(W, /obj/item/clothing/head/helmet))
-				user.drop_item()
+				if(!user.drop(W))
+					return
 				qdel(W)
 				build_step++
 				to_chat(user, "<span class='notice'>You add the helmet to [src].</span>")
@@ -135,7 +138,8 @@
 
 		if(5)
 			if(isprox(W))
-				user.drop_item()
+				if(!user.drop(W))
+					return
 				qdel(W)
 				build_step++
 				to_chat(user, "<span class='notice'>You add the prox sensor to [src].</span>")
@@ -158,13 +162,14 @@
 				return
 
 		if(7)
-			if(istype(W, /obj/item/weapon/gun/energy/taser) || istype(W, /obj/item/weapon/gun/energy/classictaser))
+			if(istype(W, /obj/item/gun/energy/taser) || istype(W, /obj/item/gun/energy/classictaser))
+				if(!user.drop(W))
+					return
 				SetName("taser ED-209 assembly")
 				build_step++
 				to_chat(user, "<span class='notice'>You add [W] to [src].</span>")
 				item_state = "ed209_taser"
 				icon_state = "ed209_taser"
-				user.drop_item()
 				qdel(W)
 
 		if(8)
@@ -179,12 +184,11 @@
 					to_chat(user, "<span class='notice'>Taser gun attached.</span>")
 
 		if(9)
-			if(istype(W, /obj/item/weapon/cell))
+			if(istype(W, /obj/item/cell))
+				if(!user.drop(W))
+					return
 				build_step++
 				to_chat(user, "<span class='notice'>You complete the ED-209.</span>")
-				var/turf/T = get_turf(src)
-				new /mob/living/bot/secbot/ed209(T,created_name,lasercolor)
-				user.drop_item()
+				new /mob/living/bot/secbot/ed209(get_turf(src), created_name, lasercolor)
 				qdel(W)
-				user.drop_from_inventory(src)
 				qdel(src)

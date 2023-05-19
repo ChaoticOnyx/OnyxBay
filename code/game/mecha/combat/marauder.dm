@@ -3,6 +3,7 @@
 	name = "Marauder"
 	icon_state = "marauder"
 	initial_icon = "marauder"
+	base_color = "#7886A5"
 	step_in = 5
 	health = 500
 	deflect_chance = 25
@@ -27,6 +28,7 @@
 	name = "Seraph"
 	icon_state = "seraph"
 	initial_icon = "seraph"
+	base_color = "#878C97"
 	operation_req_access = list(access_cent_creed)
 	step_in = 3
 	health = 550
@@ -40,11 +42,11 @@
 	name = "Mauler"
 	icon_state = "mauler"
 	initial_icon = "mauler"
+	base_color = "#272727"
 	operation_req_access = list(access_syndicate)
 	wreckage = /obj/effect/decal/mecha_wreckage/mauler
 
 /obj/mecha/combat/marauder/Initialize()
-	. = ..()
 	var/obj/item/mecha_parts/mecha_equipment/ME = new /obj/item/mecha_parts/mecha_equipment/weapon/energy/pulse
 	ME.attach(src)
 	ME = new /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/explosive
@@ -55,10 +57,9 @@
 	ME.attach(src)
 	src.smoke_system.set_up(3, 0, src)
 	src.smoke_system.attach(src)
-	return
+	. = ..()
 
 /obj/mecha/combat/marauder/seraph/Initialize()
-	. = ..()//Let it equip whatever is needed.
 	var/obj/item/mecha_parts/mecha_equipment/ME
 	if(equipment.len)//Now to remove it and equip anew.
 		for(ME in equipment)
@@ -74,7 +75,7 @@
 	ME.attach(src)
 	ME = new /obj/item/mecha_parts/mecha_equipment/armor_booster/antiproj_armor_booster(src)
 	ME.attach(src)
-	return
+	. = ..()
 
 /obj/mecha/combat/marauder/Destroy()
 	qdel(smoke_system)

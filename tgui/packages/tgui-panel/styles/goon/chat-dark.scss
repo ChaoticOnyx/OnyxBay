@@ -574,6 +574,11 @@ h2.alert {
   color: #aa1c1c;
 }
 
+.spider {
+  color: #8800ff;
+  font-weight: bold;
+  font-size: 185%;
+}
 /* Languages */
 
 .alien {
@@ -727,4 +732,13 @@ h2.alert {
   .error-word {
     border-bottom: red solid 0.15rem;
   }
+}
+
+.Examine {
+  background-color: #1a1a1a;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  padding: 6px;
+  max-width: 120ch;
+  border-bottom: 1px solid #404040;
 }

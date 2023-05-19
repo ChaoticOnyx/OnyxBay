@@ -7,7 +7,7 @@
 	name = "Gas filter"
 
 	use_power = POWER_USE_IDLE
-	idle_power_usage = 150		//internal circuitry, friction losses and stuff
+	idle_power_usage = 150 WATTS //internal circuitry, friction losses and stuff
 	power_rating = 7500	//This also doubles as a measure of how powerful the filter is, in Watts. 7500 W ~ 10 HP
 
 	var/temp = null // -- TLE
@@ -125,7 +125,7 @@
 	set_frequency(frequency)
 	. = ..()
 
-/obj/machinery/atmospherics/trinary/filter/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/atmospherics/trinary/filter/attackby(obj/item/W as obj, mob/user as mob)
 	if(!isWrench(W))
 		return ..()
 	var/datum/gas_mixture/int_air = return_air()

@@ -59,6 +59,50 @@
 /proc/sanitizeSafe(input, max_length = MAX_MESSAGE_LEN, encode = 1, trim = 1, extra = 1)
 	return sanitize(replace_characters(input, list(">"=" ","<"=" ", "\""="'")), max_length, encode, trim, extra)
 
+/**
+ * Used to get a properly sanitized input. Returns null if cancel is pressed.
+ *
+ * Arguments
+ ** user - Target of the input prompt.
+ ** message - The text inside of the prompt.
+ ** title - The window title of the prompt.
+ ** max_length - If you intend to impose a length limit - default is 1024.
+ ** encode - Whether message needs to be encoded.
+ ** no_trim - Prevents the input from being trimmed if you intend to parse newlines or whitespace.
+*/
+/proc/stripped_input(mob/user, message = "", title = "", default = "", max_length = MAX_MESSAGE_LEN, encode = TRUE, no_trim=FALSE)
+	var/user_input = input(user, message, title, default) as text|null
+	if(isnull(user_input)) // User pressed cancel
+		return
+	if(encode)
+		user_input = html_encode(user_input)
+	if(no_trim)
+		return copytext(user_input, 1, max_length)
+	else
+		return trim(user_input, max_length) //trim is "outside" because html_encode can expand single symbols into multiple symbols (such as turning < into &lt;)
+
+/**
+ * Used to get a properly sanitized input in a larger box. Works very similarly to stripped_input.
+ *
+ * Arguments
+ ** user - Target of the input prompt.
+ ** message - The text inside of the prompt.
+ ** title - The window title of the prompt.
+ ** max_length - If you intend to impose a length limit - default is 1024.
+ ** encode - Whether message needs to be encoded.
+ ** no_trim - Prevents the input from being trimmed if you intend to parse newlines or whitespace.
+*/
+/proc/stripped_multiline_input(mob/user, message = "", title = "", default = "", max_length = MAX_MESSAGE_LEN, encode = TRUE, no_trim=FALSE)
+	var/user_input = input(user, message, title, default) as message|null
+	if(isnull(user_input)) // User pressed cancel
+		return
+	if(encode)
+		user_input = html_encode(user_input)
+	if(no_trim)
+		return copytext(user_input, 1, max_length)
+	else
+		return trim(user_input, max_length)
+
 #define NO_CHARS_DETECTED 0
 #define SPACES_DETECTED 1
 #define SYMBOLS_DETECTED 2
@@ -373,54 +417,59 @@
  */
 #define strip_improper(input_text) replacetext(replacetext(input_text, "\proper", ""), "\improper", "")
 
-/proc/pencode2html(t)
-	t = replacetext(t, "\n", "<BR>")
-	t = replacetext(t, "\[center\]", "<center>")
+/proc/pencode2html(t, is_handwritten = FALSE)
+	var/class = ""
+	var/image_postfix = ""
+
+	if(is_handwritten)
+		class = "class='Handwritten'"
+		image_postfix = "_hand"
+
+	t = replacetext(t, "\n", "<br [class]>")
+	t = replacetext(t, "\[center\]", "<center [class]>")
 	t = replacetext(t, "\[/center\]", "</center>")
-	t = replacetext(t, "\[right\]", "<div style=\"text-align:right\">")
+	t = replacetext(t, "\[right\]", "<div [class] style='text-align:right'>")
 	t = replacetext(t, "\[/right\]", "</div>")
-	t = replacetext(t, "\[left\]", "<div style=\"text-align:left\">")
+	t = replacetext(t, "\[left\]", "<div [class] style='text-align:left'>")
 	t = replacetext(t, "\[/left\]", "</div>")
-	t = replacetext(t, "\[br\]", "<BR>")
-	t = replacetext(t, "\[b\]", "<B>")
-	t = replacetext(t, "\[/b\]", "</B>")
-	t = replacetext(t, "\[i\]", "<I>")
-	t = replacetext(t, "\[/i\]", "</I>")
-	t = replacetext(t, "\[u\]", "<U>")
-	t = replacetext(t, "\[/u\]", "</U>")
+	t = replacetext(t, "\[br\]", "<br [class]>")
+	t = replacetext(t, "\[b\]", "<b [class]>")
+	t = replacetext(t, "\[/b\]", "</b>")
+	t = replacetext(t, "\[i\]", "<i [class]>")
+	t = replacetext(t, "\[/i\]", "</i>")
+	t = replacetext(t, "\[u\]", "<u [class]>")
+	t = replacetext(t, "\[/u\]", "</u>")
 	t = replacetext(t, "\[time\]", "[stationtime2text()]")
 	t = replacetext(t, "\[date\]", "[stationdate2text()]")
-	t = replacetext(t, "\[large\]", "<font size=\"4\">")
-	t = replacetext(t, "\[/large\]", "</font>")
+	t = replacetext(t, "\[large\]", "<span class='LargeFont' [class]>")
+	t = replacetext(t, "\[/large\]", "</span>")
 	t = replacetext(t, "\[field\]", "<!--paper_field-->")
-	t = replacetext(t, "\[h1\]", "<H1>")
-	t = replacetext(t, "\[/h1\]", "</H1>")
-	t = replacetext(t, "\[h2\]", "<H2>")
-	t = replacetext(t, "\[/h2\]", "</H2>")
-	t = replacetext(t, "\[h3\]", "<H3>")
-	t = replacetext(t, "\[/h3\]", "</H3>")
-	t = replacetext(t, "\[*\]", "<li>")
-	t = replacetext(t, "\[hr\]", "<HR>")
-	t = replacetext(t, "\[small\]", "<font size = \"1\">")
-	t = replacetext(t, "\[/small\]", "</font>")
-	t = replacetext(t, "\[medium\]", "<font size = \"2\">")
-	t = replacetext(t, "\[/medium\]", "</font>")
-	t = replacetext(t, "\[list\]", "<ul>")
+	t = replacetext(t, "\[h1\]", "<h1 [class]>")
+	t = replacetext(t, "\[/h1\]", "</h1>")
+	t = replacetext(t, "\[h2\]", "<h2 [class]>")
+	t = replacetext(t, "\[/h2\]", "</h2>")
+	t = replacetext(t, "\[h3\]", "<h3 [class]>")
+	t = replacetext(t, "\[/h3\]", "</h3>")
+	t = replacetext(t, "\[*\]", "<li [class]>")
+	t = replacetext(t, "\[hr\]", "<hr [class]>")
+	t = replacetext(t, "\[small\]", "<span class='SmallFont' [class]>")
+	t = replacetext(t, "\[/small\]", "</span>")
+	t = replacetext(t, "\[medium\]", "<span class='MediumFont' [class]>")
+	t = replacetext(t, "\[/medium\]", "</span>")
+	t = replacetext(t, "\[list\]", "<ul [class]>")
 	t = replacetext(t, "\[/list\]", "</ul>")
-	t = replacetext(t, "\[item\]", "<li>")
+	t = replacetext(t, "\[item\]", "<li [class]>")
 	t = replacetext(t, "\[/item\]", "</li>")
-	t = replacetext(t, "\[ord\]", "<ol>")
+	t = replacetext(t, "\[ord\]", "<ol [class]>")
 	t = replacetext(t, "\[/ord\]", "</ol>")
-	t = replacetext(t, "\[table\]", "<table border=1 cellspacing=0 cellpadding=3 style='border: 1px solid black;'>")
+	t = replacetext(t, "\[table\]", "<table [class] cellspacing=0 cellpadding=3>")
 	t = replacetext(t, "\[/table\]", "</td></tr></table>")
-	t = replacetext(t, "\[grid\]", "<table>")
+	t = replacetext(t, "\[grid\]", "<table [class]>")
 	t = replacetext(t, "\[/grid\]", "</td></tr></table>")
 	t = replacetext(t, "\[row\]", "</td><tr>")
-	t = replacetext(t, "\[cell\]", "<td>")
-	t = replacetext(t, "\[logo\]", "<img src = ntlogo.png>")
-	t = replacetext(t, "\[bluelogo\]", "<img src = bluentlogo.png>")
-	t = replacetext(t, "\[solcrest\]", "<img src = sollogo.png>")
-	t = replacetext(t, "\[terraseal\]", "<img src = terralogo.png>")
+	t = replacetext(t, "\[cell\]", "<td [class]>")
+	t = replacetext(t, "\[logo\]", "<img [class] src = ntlogo[image_postfix].png>")
+	t = replacetext(t, "\[bluelogo\]", "<img [class] src = bluentlogo[image_postfix].png>")
 	t = replacetext(t, "\[editorbr\]", "")
 	return t
 
@@ -501,4 +550,3 @@
 	. = 0
 	while ((start = findtext(haystack, needle, start + 1)))
 		.++
-

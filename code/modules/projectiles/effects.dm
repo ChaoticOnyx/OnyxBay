@@ -9,10 +9,6 @@
 	light_color = "#FF00DC"
 	anchored = 1 // The reason this is here is to stop the curving of emitter shots.
 
-/obj/effect/projectile/proc/set_transform(matrix/M)
-	if(istype(M))
-		transform = M
-
 //----------------------------
 // Laser beam
 //----------------------------
@@ -87,6 +83,21 @@
 
 /obj/effect/projectile/laser/heavy/impact
 	icon_state = "impact_beam_heavy"
+
+//----------------------------
+// Small laser beam
+//----------------------------
+/obj/effect/projectile/laser/small
+	light_max_bright = 0.7
+
+/obj/effect/projectile/laser/small/tracer
+	icon_state = "beam_small"
+
+/obj/effect/projectile/laser/small/muzzle
+	icon_state = "muzzle_beam_small"
+
+/obj/effect/projectile/laser/small/impact
+	icon_state = "impact_beam_small"
 
 //----------------------------
 // Pulse laser beam
@@ -167,3 +178,9 @@
 	light_outer_range = 5
 	light_max_bright = 1
 	light_color = COLOR_MUZZLE_FLASH
+
+/obj/effect/projectile/accel/muzzle
+	icon_state = "muzzle_accel"
+	light_outer_range = 5
+	light_max_bright = 1
+	light_color = COLOR_OFF_WHITE

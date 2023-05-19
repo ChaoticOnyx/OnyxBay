@@ -3,13 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-/**
- * tgui subsystem
- *
- * Contains all tgui state and subsystem code.
- *
- */
-
+/// Contains all tgui state and subsystem code.
 SUBSYSTEM_DEF(tgui)
 	name = "tgui"
 	wait = 9
@@ -28,6 +22,10 @@ SUBSYSTEM_DEF(tgui)
 
 /datum/controller/subsystem/tgui/PreInit()
 	basehtml = file2text('tgui/public/tgui.html')
+	// Inject inline polyfills
+	var/polyfill = file2text('tgui/public/tgui-polyfill.bundle.js')
+	polyfill = "<script>\n[polyfill]\n</script>"
+	basehtml = replacetextEx(basehtml, "<!-- tgui:inline-polyfill -->", polyfill)
 
 /datum/controller/subsystem/tgui/Shutdown()
 	close_all_uis()
@@ -141,12 +139,12 @@ SUBSYSTEM_DEF(tgui)
 		datum/src_object,
 		datum/tgui/ui)
 	// Look up a UI if it wasn't passed
-	if(isnull(ui))
+	if(QDELETED(ui))
 		ui = get_open_ui(user, src_object)
 	// Couldn't find a UI.
-	if(isnull(ui))
+	if(QDELETED(ui))
 		return null
-	ui.process_status()
+	ui._process_status()
 	// UI ended up with the closed status
 	// or is actively trying to close itself.
 	// FIXME: Doesn't actually fix the paper bug.
@@ -169,10 +167,10 @@ SUBSYSTEM_DEF(tgui)
 /datum/controller/subsystem/tgui/proc/get_open_ui(mob/user, datum/src_object)
 	var/key = "\ref[src_object]"
 	// No UIs opened for this src_object
-	if(isnull(open_uis_by_src[key]) || !istype(open_uis_by_src[key], /list))
+	if(QDELETED(open_uis_by_src[key]) || !istype(open_uis_by_src[key], /list))
 		return null
 	for(var/datum/tgui/ui in open_uis_by_src[key])
-		// Make sure we have the right user
+		// Make sure we have the right userc
 		if(ui.user == user)
 			return ui
 	return null
@@ -186,7 +184,7 @@ SUBSYSTEM_DEF(tgui)
 	var/key = "\ref[src_object]"
 	. = list()
 	// No UIs opened for this src_object
-	if(isnull(open_uis_by_src[key]) || !istype(open_uis_by_src[key], /list))
+	if(QDELETED(open_uis_by_src[key]) || !istype(open_uis_by_src[key], /list))
 		return
 	for(var/datum/tgui/ui in open_uis_by_src[key])
 		. += ui
@@ -204,7 +202,7 @@ SUBSYSTEM_DEF(tgui)
 	var/count = 0
 	var/key = "\ref[src_object]"
 	// No UIs opened for this src_object
-	if(isnull(open_uis_by_src[key]) || !istype(open_uis_by_src[key], /list))
+	if(QDELETED(open_uis_by_src[key]) || !istype(open_uis_by_src[key], /list))
 		return count
 	for(var/datum/tgui/ui in open_uis_by_src[key])
 		// Check if UI is valid.
@@ -226,7 +224,7 @@ SUBSYSTEM_DEF(tgui)
 	var/count = 0
 	var/key = "\ref[src_object]"
 	// No UIs opened for this src_object
-	if(isnull(open_uis_by_src[key]) || !istype(open_uis_by_src[key], /list))
+	if(QDELETED(open_uis_by_src[key]) || !istype(open_uis_by_src[key], /list))
 		return count
 	for(var/datum/tgui/ui in open_uis_by_src[key])
 		// Check if UI is valid.
@@ -267,7 +265,7 @@ SUBSYSTEM_DEF(tgui)
 	if(length(user?.tgui_open_uis) == 0)
 		return count
 	for(var/datum/tgui/ui in user.tgui_open_uis)
-		if(isnull(src_object) || ui.src_object == src_object)
+		if(QDELETED(src_object) || ui.src_object == src_object)
 			ui.Process(wait * 0.1, force = 1)
 			count++
 	return count
@@ -287,7 +285,7 @@ SUBSYSTEM_DEF(tgui)
 	if(length(user?.tgui_open_uis) == 0)
 		return count
 	for(var/datum/tgui/ui in user.tgui_open_uis)
-		if(isnull(src_object) || ui.src_object == src_object)
+		if(QDELETED(src_object) || ui.src_object == src_object)
 			ui.close()
 			count++
 	return count
@@ -301,7 +299,7 @@ SUBSYSTEM_DEF(tgui)
  */
 /datum/controller/subsystem/tgui/proc/on_open(datum/tgui/ui)
 	var/key = "\ref[ui.src_object]"
-	if(isnull(open_uis_by_src[key]) || !istype(open_uis_by_src[key], /list))
+	if(QDELETED(open_uis_by_src[key]) || !istype(open_uis_by_src[key], /list))
 		open_uis_by_src[key] = list()
 	ui.user.tgui_open_uis |= ui
 	var/list/uis = open_uis_by_src[key]
@@ -319,7 +317,7 @@ SUBSYSTEM_DEF(tgui)
  */
 /datum/controller/subsystem/tgui/proc/on_close(datum/tgui/ui)
 	var/key = "\ref[ui.src_object]"
-	if(isnull(open_uis_by_src[key]) || !istype(open_uis_by_src[key], /list))
+	if(QDELETED(open_uis_by_src[key]) || !istype(open_uis_by_src[key], /list))
 		return FALSE
 	// Remove it from the list of processing UIs.
 	open_uis.Remove(ui)

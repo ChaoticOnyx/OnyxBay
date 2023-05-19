@@ -5,7 +5,7 @@
 	name = "omni gas mixer"
 	icon_state = "map_mixer"
 
-	idle_power_usage = 150		//internal circuitry, friction losses and stuff
+	idle_power_usage = 150 WATTS //internal circuitry, friction losses and stuff
 	power_rating = 3700			//3700 W ~ 5 HP
 
 	var/list/inputs = new()
@@ -130,7 +130,11 @@
 	return 1
 
 /obj/machinery/atmospherics/omni/mixer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
-	usr.set_machine(src)
+	if(!user)
+		ui?.close()
+		return
+
+	user.set_machine(src)
 
 	var/list/data = new()
 

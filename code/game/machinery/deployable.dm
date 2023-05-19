@@ -80,6 +80,10 @@ for reference:
 	maxhealth = material.integrity
 	health = maxhealth
 
+/obj/structure/barricade/Destroy()
+	material = null
+	return ..()
+
 /obj/structure/barricade/get_material()
 	return material
 
@@ -131,7 +135,6 @@ for reference:
 	if(health <= 0)
 		visible_message(SPAN("danger", "\The [src] is smashed apart!"))
 		dismantle()
-		qdel(src)
 
 /obj/structure/barricade/proc/dismantle()
 	material.place_dismantled_product(get_turf(src))
@@ -180,8 +183,8 @@ for reference:
 
 		src.icon_state = "barrier[src.locked]"
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if (istype(W, /obj/item/weapon/card/id/) || istype(W, /obj/item/weapon/card/robot_sec/) )
+	attackby(obj/item/W as obj, mob/user as mob)
+		if (istype(W, /obj/item/card/id/) || istype(W, /obj/item/card/robot_sec/) )
 			if (src.allowed(user))
 				if	(src.emagged < 2.0)
 					src.locked = !src.locked
@@ -219,7 +222,6 @@ for reference:
 					src.health -= W.force * 0.75
 				if("brute")
 					src.health -= W.force * 0.5
-				else
 			if (src.health <= 0)
 				src.explode()
 			..()

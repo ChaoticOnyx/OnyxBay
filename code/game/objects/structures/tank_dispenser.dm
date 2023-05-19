@@ -70,11 +70,11 @@
 		if("dispence plasma")
 			dispence_plasma(user)
 
-/obj/structure/dispenser/attackby(obj/item/I as obj, mob/user as mob)
-	if(istype(I, /obj/item/weapon/tank/oxygen) || istype(I, /obj/item/weapon/tank/air) || istype(I, /obj/item/weapon/tank/anesthetic))
+/obj/structure/dispenser/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/tank/oxygen) || istype(I, /obj/item/tank/air) || istype(I, /obj/item/tank/anesthetic))
 		if(oxygentanks < 10)
-			user.drop_item()
-			I.loc = src
+			if(!user.drop(I, src))
+				return
 			oxytanks.Add(I)
 			oxygentanks++
 			to_chat(user, "<span class='notice'>You put [I] in [src].</span>")
@@ -83,10 +83,10 @@
 		else
 			to_chat(user, "<span class='notice'>[src] is full.</span>")
 		return
-	if(istype(I, /obj/item/weapon/tank/plasma))
+	if(istype(I, /obj/item/tank/plasma))
 		if(plasmatanks < 10)
-			user.drop_item()
-			I.loc = src
+			if(!user.drop(I, src))
+				return
 			platanks.Add(I)
 			plasmatanks++
 			to_chat(user, "<span class='notice'>You put [I] in [src].</span>")
@@ -106,12 +106,12 @@
 
 /obj/structure/dispenser/proc/dispence_oxygen(mob/user as mob)
 	if(oxygentanks)
-		var/obj/item/weapon/tank/oxygen/O
+		var/obj/item/tank/oxygen/O
 		if(oxytanks.len == oxygentanks)
 			O = oxytanks[1]
 			oxytanks.Remove(O)
 		else
-			O = new /obj/item/weapon/tank/oxygen(loc)
+			O = new /obj/item/tank/oxygen(loc)
 		O.loc = loc
 		to_chat(user, "<span class='notice'>You take [O] out of [src].</span>")
 		oxygentanks--
@@ -119,12 +119,12 @@
 
 /obj/structure/dispenser/proc/dispence_plasma(mob/user as mob)
 	if(plasmatanks)
-		var/obj/item/weapon/tank/plasma/P
+		var/obj/item/tank/plasma/P
 		if(platanks.len == plasmatanks)
 			P = platanks[1]
 			platanks.Remove(P)
 		else
-			P = new /obj/item/weapon/tank/plasma(loc)
+			P = new /obj/item/tank/plasma(loc)
 		P.loc = loc
 		to_chat(user, "<span class='notice'>You take [P] out of [src].</span>")
 		plasmatanks--

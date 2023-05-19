@@ -51,10 +51,11 @@
 	"You start attaching [E.name] to [target]'s [E.amputation_point].")
 
 /datum/surgery_step/limb/attach/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	if(!user.drop(tool))
+		return
 	var/obj/item/organ/external/E = tool
 	user.visible_message("<span class='notice'>[user] has attached [target]'s [E.name] to the [E.amputation_point].</span>",	\
 	"<span class='notice'>You have attached [target]'s [E.name] to the [E.amputation_point].</span>")
-	user.drop_from_inventory(E)
 	E.replaced(target)
 	target.update_body()
 	target.updatehealth()
@@ -72,7 +73,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/limb/connect
 	allowed_tools = list(
-	/obj/item/weapon/hemostat = 100,	\
+	/obj/item/hemostat = 100,	\
 	/obj/item/stack/cable_coil = 75, 	\
 	/obj/item/device/assembly/mousetrap = 20
 	)
@@ -97,6 +98,8 @@
 	if(E.children)
 		for(var/obj/item/organ/external/C in E.children)
 			C.status &= ~ORGAN_CUT_AWAY
+			C.update_tally()
+	E.update_tally()
 	target.update_body()
 	target.updatehealth()
 	target.UpdateDamageIcon()

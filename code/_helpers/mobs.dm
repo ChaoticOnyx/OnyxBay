@@ -7,6 +7,12 @@
 /obj/vehicle/train/get_mob()
 	return buckled_mob
 
+/mob/get_selected_zone()
+	return zone_sel.selecting
+
+/mob/get_active_item()
+	return get_active_hand()
+
 /mob/get_mob()
 	return src
 
@@ -122,31 +128,37 @@
 /proc/get_exposed_defense_zone(atom/movable/target)
 	return pick(BP_HEAD, BP_L_HAND, BP_R_HAND, BP_L_FOOT, BP_R_FOOT, BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG, BP_CHEST, BP_GROIN)
 
-/proc/do_mob(mob/user , mob/target, time = 30, target_zone = 0, uninterruptible = 0, progress = 1, incapacitation_flags = INCAPACITATION_DEFAULT)
-	if(!user || !target)
+/proc/do_mob(atom/movable/affecter, mob/target, time = 30, target_zone = 0, uninterruptible = 0, progress = 1, incapacitation_flags = INCAPACITATION_DEFAULT)
+	if(!affecter || !target)
 		return 0
-	var/user_loc = user.loc
+	var/mob/user = affecter
+	var/is_mob_type = istype(user)
+	var/user_loc = affecter.loc
 	var/target_loc = target.loc
 
-	var/holding = user.get_active_hand()
+	var/holding = affecter.get_active_item()
 	var/datum/progressbar/progbar
-	if (progress)
+	if(is_mob_type && progress)
 		progbar = new(user, time, target)
 
 	var/endtime = world.time+time
 	var/starttime = world.time
 	. = 1
 	while (world.time < endtime)
-		stoplag()
-		if (progress)
+
+		stoplag(1)
+
+		if(progbar)
 			progbar.update(world.time - starttime)
-		if(!user || !target)
+
+		if(!affecter || !target)
 			. = 0
 			break
+
 		if(uninterruptible)
 			continue
 
-		if(!user || user.incapacitated(incapacitation_flags) || user.loc != user_loc)
+		if(!affecter || (is_mob_type && user.incapacitated(incapacitation_flags)) || affecter.loc != user_loc)
 			. = 0
 			break
 
@@ -154,15 +166,15 @@
 			. = 0
 			break
 
-		if(user.get_active_hand() != holding)
+		if(affecter.get_active_item() != holding)
 			. = 0
 			break
 
-		if(target_zone && user.zone_sel.selecting != target_zone)
+		if(target_zone && affecter.get_selected_zone() != target_zone)
 			. = 0
 			break
 
-	if (progbar)
+	if(progbar)
 		qdel(progbar)
 
 /proc/do_after(mob/user, delay, atom/target = null, needhand = 1, progress = 1, incapacitation_flags = INCAPACITATION_DEFAULT, same_direction = 0, can_move = 0)
@@ -189,7 +201,7 @@
 	var/starttime = world.time
 	. = 1
 	while (world.time < endtime)
-		stoplag()
+		stoplag(1)
 		if (progress)
 			progbar.update(world.time - starttime)
 
@@ -208,6 +220,13 @@
 
 	if (progbar)
 		qdel(progbar)
+
+/proc/is_species(A, species_datum)
+	. = FALSE
+	if(ishuman(A))
+		var/mob/living/carbon/human/H = A
+		if(istype(H.species, species_datum))
+			. = TRUE
 
 /proc/able_mobs_in_oview(origin)
 	var/list/mobs = list()
@@ -242,11 +261,19 @@
 // Returns true if the mob was in neither the dead or living list
 /mob/proc/add_to_dead_mob_list()
 	CAN_BE_REDEFINED(TRUE)
+
+	SEND_SIGNAL(src, SIGNAL_MOB_DEATH, src)
+	SEND_GLOBAL_SIGNAL(SIGNAL_MOB_DEATH, src)
+
 	return FALSE
+
 /mob/living/add_to_dead_mob_list()
 	if((src in GLOB.living_mob_list_) || (src in GLOB.dead_mob_list_))
 		return FALSE
+	
+	..()
 	GLOB.dead_mob_list_ += src
+
 	return TRUE
 
 // Returns true if the mob was removed form the dead list
@@ -262,7 +289,7 @@
 
 	if(include_observers)
 		for(var/mob/M in GLOB.player_list)
-			if((M.stat != DEAD) || (!M.client))
+			if((!M.is_ooc_dead()) || (!M.client))
 				continue
 			if(M.ckey == find_key)
 				selected = M
@@ -270,7 +297,7 @@
 	else
 		for(var/mob/living/M in GLOB.player_list)
 			//Dead people only thanks!
-			if((M.stat != DEAD) || (!M.client))
+			if((!M.is_ooc_dead()) || (!M.client))
 				continue
 			//They need a brain!
 			if(istype(M, /mob/living/carbon/human))
@@ -318,7 +345,7 @@
 				. += target.wear_suit
 			if(target.w_uniform)
 				. += target.w_uniform
-			if(istype(target.belt, /obj/item/weapon/storage))
+			if(istype(target.belt, /obj/item/storage))
 				. += target.belt
 
 		if(BP_L_FOOT, BP_R_FOOT)

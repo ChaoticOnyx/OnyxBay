@@ -1,6 +1,6 @@
 /mob/living/silicon/ai/death(gibbed, deathmessage, show_dead_message)
 
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return
 
 	if(src.eyeobj)
@@ -13,8 +13,8 @@
 	for(var/obj/machinery/ai_status_display/O in world)
 		O.mode = 2
 
-	if (istype(loc, /obj/item/weapon/aicard))
-		var/obj/item/weapon/aicard/card = loc
+	if (istype(loc, /obj/item/aicard))
+		var/obj/item/aicard/card = loc
 		card.update_icon()
 
 	for (var/mob/living/silicon/robot/R in connected_robots)

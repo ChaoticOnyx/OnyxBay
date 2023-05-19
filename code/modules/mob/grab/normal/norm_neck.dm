@@ -6,11 +6,10 @@
 
 	drop_headbutt = 0
 
-	shift = -10
-
+	shift = 8
 
 	stop_move = 1
-	reverse_facing = 1
+	reverse_moving = TRUE
 	can_absorb = 1
 	shield_assailant = 1
 	point_blank_mult = 1
@@ -27,11 +26,13 @@
 /datum/grab/normal/neck/process_effect(obj/item/grab/G)
 	var/mob/living/carbon/human/affecting = G.affecting
 
-	affecting.drop_l_hand()
-	affecting.drop_r_hand()
+	if(affecting.can_unequip(affecting.l_hand))
+		affecting.drop_l_hand()
+	if(affecting.can_unequip(affecting.r_hand))
+		affecting.drop_r_hand()
 
 	if(affecting.lying)
-		affecting.Weaken(4)
+		affecting.Weaken(2)
 		affecting.Stun(2)
 
 	affecting.adjustOxyLoss(1)

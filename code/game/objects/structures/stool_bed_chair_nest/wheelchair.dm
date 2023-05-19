@@ -7,12 +7,12 @@
 	movement_handlers = list(
 		/datum/movement_handler/deny_stairs,
 		/datum/movement_handler/deny_multiz,
-		/datum/movement_handler/delay = list(2),
+		/datum/movement_handler/delay = list(4),
 		/datum/movement_handler/move_relay_self
 	)
 	foldable = FALSE
 	pull_slowdown = PULL_SLOWDOWN_MEDIUM
-	appearance_flags = LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 
 	var/driving = 0
 	var/mob/living/pulling = null
@@ -30,7 +30,7 @@
 	if(buckled_mob)
 		buckled_mob.set_dir(dir)
 
-/obj/structure/bed/chair/wheelchair/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/bed/chair/wheelchair/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W) || istype(W,/obj/item/stack) || isWirecutter(W))
 		return
 	..()
@@ -151,13 +151,13 @@
 		var/mob/living/occupant = unbuckle_mob()
 
 		if (pulling && (pulling.a_intent == I_HURT))
-			occupant.throw_at(A, 3, 3, pulling)
+			occupant.throw_at(A, 3, 1, pulling)
 		else if (propelled)
-			occupant.throw_at(A, 3, propelled)
+			occupant.throw_at(A, 3, 1)
 
 		var/def_zone = ran_zone()
 		var/blocked = occupant.run_armor_check(def_zone, "melee")
-		occupant.throw_at(A, 3, propelled)
+		occupant.throw_at(A, 3, 1)
 		occupant.apply_effect(6, STUN, blocked)
 		occupant.apply_effect(6, WEAKEN, blocked)
 		occupant.apply_effect(6, STUTTER, blocked)
@@ -190,6 +190,11 @@
 			newdir = 4
 		B.set_dir(newdir)
 	bloodiness--
+
+/obj/structure/bed/chair/wheelchair/bullet_act(obj/item/projectile/Proj, def_zone)
+	if(buckled_mob)
+		return buckled_mob.bullet_act(Proj, def_zone)
+	return ..()
 
 /obj/structure/bed/chair/wheelchair/buckle_mob(mob/M as mob, mob/user as mob)
 	if(M == pulling)

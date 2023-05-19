@@ -55,10 +55,6 @@
 			return global.SScircuit_components;
 		if("SSevac")
 			return global.SSevac;
-		if("SSevent")
-			return global.SSevent;
-		if("SSfastprocess")
-			return global.SSfastprocess;
 		if("SSgarbage")
 			return global.SSgarbage;
 		if("SSicon_update")
@@ -77,14 +73,10 @@
 			return global.SSmobs;
 		if("SSnano")
 			return global.SSnano;
-		if("SSobj")
-			return global.SSobj;
 		if("SSopen_space")
 			return global.SSopen_space;
 		if("SSplants")
 			return global.SSplants;
-		if("SSprocessing")
-			return global.SSprocessing;
 		if("SSradiation")
 			return global.SSradiation;
 		if("SSshuttle")
@@ -103,8 +95,6 @@
 			return global.SStimer;
 		if("SStrade")
 			return global.SStrade;
-		if("SSturf")
-			return global.SSturf;
 		if("SSvines")
 			return global.SSvines;
 		if("SSvote")
@@ -125,8 +115,6 @@
 			return global.WALLITEMS;
 		if("_all_globals")
 			return global._all_globals;
-		if("account_hack_attempted")
-			return global.account_hack_attempted;
 		if("additional_antag_types")
 			return global.additional_antag_types;
 		if("admin_datums")
@@ -235,6 +223,8 @@
 			return global.blackbox;
 		if("blocked")
 			return global.blocked;
+		if("body_heights")
+			return global.body_heights;
 		if("bomb_set")
 			return global.bomb_set;
 		if("cable_list")
@@ -355,8 +345,6 @@
 			return global.escape_pods_by_name;
 		if("evacuation_controller")
 			return global.evacuation_controller;
-		if("event_last_fired")
-			return global.event_last_fired;
 		if("eventchance")
 			return global.eventchance;
 		if("exclude_jobs")
@@ -415,14 +403,12 @@
 			return global.gas_data;
 		if("gear_datums")
 			return global.gear_datums;
+		if("hash_to_gear")
+			return global.hash_to_gear;
 		if("gear_tweak_free_color_choice_")
 			return global.gear_tweak_free_color_choice_;
 		if("gender_datums")
 			return global.gender_datums;
-		if("ghost_darkness_images")
-			return global.ghost_darkness_images;
-		if("ghost_sightless_images")
-			return global.ghost_sightless_images;
 		if("ghost_traps")
 			return global.ghost_traps;
 		if("global_message_listener")
@@ -547,8 +533,6 @@
 			return global.meteors_normal;
 		if("meteors_threatening")
 			return global.meteors_threatening;
-		if("mil_branches")
-			return global.mil_branches;
 		if("minevendor_list")
 			return global.minevendor_list;
 		if("mining_floors")
@@ -715,12 +699,8 @@
 			return global.secret_force_mode;
 		if("send_emergency_team")
 			return global.send_emergency_team;
-		if("sent_spiders_to_station")
-			return global.sent_spiders_to_station;
 		if("server_name")
 			return global.server_name;
-		if("severity_to_string")
-			return global.severity_to_string;
 		if("side_effects")
 			return global.side_effects;
 		if("skin_styles_female_list")
@@ -737,8 +717,6 @@
 			return global.sortInstance;
 		if("sounds_cache")
 			return global.sounds_cache;
-		if("spacevines_spawned")
-			return global.spacevines_spawned;
 		if("sparring_attack_cache")
 			return global.sparring_attack_cache;
 		if("splatter_cache")
@@ -747,12 +725,6 @@
 			return global.sqladdress;
 		if("sqldb")
 			return global.sqldb;
-		if("sqlfdbkdb")
-			return global.sqlfdbkdb;
-		if("sqlfdbklogin")
-			return global.sqlfdbklogin;
-		if("sqlfdbkpass")
-			return global.sqlfdbkpass;
 		if("sqllogging")
 			return global.sqllogging;
 		if("sqllogin")
@@ -952,10 +924,6 @@
 			global.SScircuit_components=newval;
 		if("SSevac")
 			global.SSevac=newval;
-		if("SSevent")
-			global.SSevent=newval;
-		if("SSfastprocess")
-			global.SSfastprocess=newval;
 		if("SSgarbage")
 			global.SSgarbage=newval;
 		if("SSicon_update")
@@ -974,14 +942,10 @@
 			global.SSmobs=newval;
 		if("SSnano")
 			global.SSnano=newval;
-		if("SSobj")
-			global.SSobj=newval;
 		if("SSopen_space")
 			global.SSopen_space=newval;
 		if("SSplants")
 			global.SSplants=newval;
-		if("SSprocessing")
-			global.SSprocessing=newval;
 		if("SSradiation")
 			global.SSradiation=newval;
 		if("SSshuttle")
@@ -1000,8 +964,6 @@
 			global.SStimer=newval;
 		if("SStrade")
 			global.SStrade=newval;
-		if("SSturf")
-			global.SSturf=newval;
 		if("SSvines")
 			global.SSvines=newval;
 		if("SSvote")
@@ -1022,8 +984,6 @@
 			global.WALLITEMS=newval;
 		if("_all_globals")
 			global._all_globals=newval;
-		if("account_hack_attempted")
-			global.account_hack_attempted=newval;
 		if("additional_antag_types")
 			global.additional_antag_types=newval;
 		if("admin_datums")
@@ -1136,6 +1096,8 @@
 			global.blackbox=newval;
 		if("blocked")
 			global.blocked=newval;
+		if("body_heights")
+			global.body_heights=newval;
 		if("bomb_set")
 			global.bomb_set=newval;
 		if("cable_list")
@@ -1256,8 +1218,6 @@
 			global.escape_pods_by_name=newval;
 		if("evacuation_controller")
 			global.evacuation_controller=newval;
-		if("event_last_fired")
-			global.event_last_fired=newval;
 		if("eventchance")
 			global.eventchance=newval;
 		if("exclude_jobs")
@@ -1316,14 +1276,12 @@
 			global.gas_data=newval;
 		if("gear_datums")
 			global.gear_datums=newval;
+		if("hash_to_gear")
+			global.hash_to_gear=newval;
 		if("gear_tweak_free_color_choice_")
 			global.gear_tweak_free_color_choice_=newval;
 		if("gender_datums")
 			global.gender_datums=newval;
-		if("ghost_darkness_images")
-			global.ghost_darkness_images=newval;
-		if("ghost_sightless_images")
-			global.ghost_sightless_images=newval;
 		if("ghost_traps")
 			global.ghost_traps=newval;
 		if("global_message_listener")
@@ -1448,8 +1406,6 @@
 			global.meteors_normal=newval;
 		if("meteors_threatening")
 			global.meteors_threatening=newval;
-		if("mil_branches")
-			global.mil_branches=newval;
 		if("minevendor_list")
 			global.minevendor_list=newval;
 		if("mining_floors")
@@ -1616,12 +1572,8 @@
 			global.secret_force_mode=newval;
 		if("send_emergency_team")
 			global.send_emergency_team=newval;
-		if("sent_spiders_to_station")
-			global.sent_spiders_to_station=newval;
 		if("server_name")
 			global.server_name=newval;
-		if("severity_to_string")
-			global.severity_to_string=newval;
 		if("side_effects")
 			global.side_effects=newval;
 		if("skin_styles_female_list")
@@ -1638,8 +1590,6 @@
 			global.sortInstance=newval;
 		if("sounds_cache")
 			global.sounds_cache=newval;
-		if("spacevines_spawned")
-			global.spacevines_spawned=newval;
 		if("sparring_attack_cache")
 			global.sparring_attack_cache=newval;
 		if("splatter_cache")
@@ -1648,12 +1598,6 @@
 			global.sqladdress=newval;
 		if("sqldb")
 			global.sqldb=newval;
-		if("sqlfdbkdb")
-			global.sqlfdbkdb=newval;
-		if("sqlfdbklogin")
-			global.sqlfdbklogin=newval;
-		if("sqlfdbkpass")
-			global.sqlfdbkpass=newval;
 		if("sqllogging")
 			global.sqllogging=newval;
 		if("sqllogin")
@@ -1825,7 +1769,6 @@
 	"SScircuit_components",
 	"SSevac",
 	"SSevent",
-	"SSfastprocess",
 	"SSgarbage",
 	"SSicon_update",
 	"SSinactivity",
@@ -1836,10 +1779,8 @@
 	"SSmisc_late",
 	"SSmobs",
 	"SSnano",
-	"SSobj",
 	"SSopen_space",
 	"SSplants",
-	"SSprocessing",
 	"SSradiation",
 	"SSshuttle",
 	"SSskybox",
@@ -1849,7 +1790,6 @@
 	"SSticker",
 	"SStimer",
 	"SStrade",
-	"SSturf",
 	"SSvines",
 	"SSvote",
 	"SSwireless",
@@ -1925,6 +1865,7 @@
 	"basic_robolimb",
 	"blackbox",
 	"blocked",
+	"body_heights",
 	"bomb_set",
 	"cable_list",
 	"cached_space",
@@ -2018,10 +1959,9 @@
 	"gamemode_cache",
 	"gas_data",
 	"gear_datums",
+	"hash_to_gear",
 	"gear_tweak_free_color_choice_",
 	"gender_datums",
-	"ghost_darkness_images",
-	"ghost_sightless_images",
 	"ghost_traps",
 	"global_message_listener",
 	"global_vars_",
@@ -2089,6 +2029,7 @@
 	"meteors_threatening",
 	"mil_branches",
 	"minevendor_list",
+	"minevendor_prison_list",
 	"mining_floors",
 	"mining_walls",
 	"minor_air_alarms",
@@ -2195,9 +2136,6 @@
 	"splatter_cache",
 	"sqladdress",
 	"sqldb",
-	"sqlfdbkdb",
-	"sqlfdbklogin",
-	"sqlfdbkpass",
 	"sqllogging",
 	"sqllogin",
 	"sqlpass",

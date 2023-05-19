@@ -16,16 +16,17 @@
 
 /obj/singularity/narsie/exit/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 /obj/singularity/narsie/exit/update_icon()
 	overlays = 0
 
-/obj/singularity/narsie/exit/Process()
+/obj/singularity/narsie/exit/think()
 	for(var/mob/M in GLOB.player_list)
 		if(M.client)
 			M.see_rift(src)
 	eat()
+	set_next_think(world.time + 1 SECOND)
 
 /obj/singularity/narsie/exit/acquire(mob/food)
 	return
@@ -39,7 +40,7 @@
 		if(L.buckled && istype(L.buckled,/obj/structure/bed/))
 			var/turf/O = L.buckled
 			do_teleport(O, pick(GLOB.endgame_safespawns))
-			L.forceMove(O.loc)
+			L.forceMove(O.loc, unbuckle_mob = FALSE)
 		else
 			do_teleport(L, pick(GLOB.endgame_safespawns)) //dead-on precision
 

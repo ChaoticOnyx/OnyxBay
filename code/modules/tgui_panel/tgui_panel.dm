@@ -42,11 +42,10 @@
 	sleep(1)
 	initialized_at = world.time
 	// Perform a clean initialization
-	window.initialize(inline_assets = list(
+	window.initialize(assets = list(
 		get_asset_datum(/datum/asset/simple/tgui_common),
 		get_asset_datum(/datum/asset/simple/tgui_panel),
 		get_asset_datum(/datum/asset/simple/fontawesome),
-		get_asset_datum(/datum/asset/simple/tgfont),
 	))
 	// Other setup
 	request_telemetry()

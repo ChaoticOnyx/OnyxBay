@@ -3,7 +3,7 @@
 // Combined tools.
 // Basically, these allow you to store various tools inside them, switch between these tools and use them directly.
 // TODO list: surgery multitool for borgs, swiss knives, detective's advanced sampler (fingerprints, fiber, replaceable swab vials), modular hypospray, modular RCP ~~Toby
-/obj/item/weapon/combotool
+/obj/item/combotool
 	name = "generic combined tool"
 	desc = "A swiss knife?"
 	icon = 'icons/obj/device.dmi'
@@ -14,34 +14,23 @@
 	mod_handy = 0.5
 
 	var/tool_c = null
-	var/tool_u = null
 
-/obj/item/weapon/combotool/proc/switchtools()
+/obj/item/combotool/proc/switchtools()
 	return
 
-/obj/item/weapon/combotool/attack_self(mob/user)
+/obj/item/combotool/attack_self(mob/user)
 	switchtools()
 	to_chat(user, "<span class='notice'>[src] mode: [tool_c].</span>")
 	update_icon()
 	return
 
-/obj/item/weapon/combotool/resolve_attackby(atom/a, mob/user, click_params)
-	if(istype(a, /obj/item/weapon/storage))
-		a.attackby(src, user)
-		return
-	if(istype(a, /obj/structure/table) && user.a_intent == I_DISARM)
-		a.attackby(src, user)
-		return
-	a.attackby(tool_u, user)
-	return
-
-/obj/item/weapon/combotool/update_icon()
+/obj/item/combotool/update_icon()
 	underlays.Cut()
 	underlays += "adv_[tool_c]"
 	..()
 
 
-/obj/item/weapon/combotool/advtool
+/obj/item/combotool/advtool
 	name = "Advanced Multitool"
 	desc = "This small, handheld device is made of durable, insulated plastic, has a rubber grip, and can be used as a multitool, screwdriver or wirecutters."
 	description_info = "Multitools are incredibly versatile and can be used on a wide variety of machines. The most common use for this is to trip a device's wires without having to cut them. Simply click on an object with exposed wiring to use it. This one can also be used as a screwdriver or wirecutters. There might be other uses, as well..."
@@ -54,58 +43,57 @@
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 5.0
 	throw_range = 15
-	throw_speed = 3
 
 	matter = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 200)
 
 	origin_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 4)
 
 	var/obj/item/device/multitool/advpart/multitool = null
-	var/obj/item/weapon/screwdriver/advpart/screwdriver = null
-	var/obj/item/weapon/wirecutters/advpart/wirecutters = null
+	var/obj/item/screwdriver/advpart/screwdriver = null
+	var/obj/item/wirecutters/advpart/wirecutters = null
 
 
-/obj/item/weapon/combotool/advtool/New()
+/obj/item/combotool/advtool/New()
 	..()
 	multitool = new /obj/item/device/multitool/advpart(src)
-	screwdriver = new /obj/item/weapon/screwdriver/advpart(src)
-	wirecutters = new /obj/item/weapon/wirecutters/advpart(src)
+	screwdriver = new /obj/item/screwdriver/advpart(src)
+	wirecutters = new /obj/item/wirecutters/advpart(src)
 	tool_c = "multitool"
-	tool_u = multitool
+	tool_behaviour = TOOL_MULTITOOL
 
-/obj/item/weapon/combotool/advtool/switchtools()
+/obj/item/combotool/advtool/switchtools()
 	if(tool_c == "multitool")
 		if(screwdriver)
 			tool_c = "screwdriver"
-			tool_u = screwdriver
+			tool_behaviour = TOOL_SCREWDRIVER
 			sharp = 1
 		else
 			tool_c = "wirecutters"
-			tool_u = wirecutters
+			tool_behaviour = TOOL_WIRECUTTER
 			sharp = 0
 	else if(tool_c == "screwdriver")
 		if(wirecutters)
 			tool_c = "wirecutters"
-			tool_u = wirecutters
+			tool_behaviour = TOOL_WIRECUTTER
 			sharp = 0
 		else
 			tool_c = "multitool"
-			tool_u = multitool
+			tool_behaviour = TOOL_MULTITOOL
 			sharp = 0
 	else if(tool_c == "wirecutters")
 		tool_c = "multitool"
-		tool_u = multitool
+		tool_behaviour = TOOL_MULTITOOL
 		sharp = 0
 	update_icon()
 	return
 
-/obj/item/weapon/combotool/advtool/attack_self(mob/user)
+/obj/item/combotool/advtool/attack_self(mob/user)
 	if(!screwdriver && !wirecutters)
 		to_chat(user, "<span class='notice'>[src] lacks tools.</span>")
 		return
 	..()
 
-/obj/item/weapon/combotool/advtool/attack_hand(mob/user as mob)
+/obj/item/combotool/advtool/attack_hand(mob/user)
 	if(src != user.get_inactive_hand())
 		return ..()
 
@@ -121,7 +109,7 @@
 		to_chat(user, "<span class=warning>You cannot remove the multitool itself.</span>")
 		return
 
-	if(user.put_in_active_hand(choice))
+	if(user.pick_or_drop(choice))
 		to_chat(user, "<span class=notice>You remove \the [choice] from \the [src].</span>")
 		src.contents -= choice
 		if(choice == wirecutters)
@@ -132,28 +120,26 @@
 		to_chat(user, "<span class=warning>Something went wrong, please try again.</span>")
 
 	tool_c = "multitool"
-	tool_u = multitool
+	tool_behaviour = TOOL_MULTITOOL
 	update_icon()
 	return
 
-/obj/item/weapon/combotool/advtool/attackby(obj/item/I as obj, mob/user as mob)
-	if(istype(I, /obj/item/weapon/screwdriver/advpart))
-		var/obj/item/weapon/screwdriver/advpart/SD = I
+/obj/item/combotool/advtool/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/screwdriver/advpart))
+		var/obj/item/screwdriver/advpart/SD = I
 		if(!screwdriver)
-			src.contents += SD
-			user.remove_from_mob(SD)
-			SD.loc = src
+			contents += SD
+			user.drop(SD, src)
 			screwdriver = SD
 			to_chat(user, "<span class=notice>You insert \the [SD] into \the [src].</span>")
 			update_icon()
 		else
 			to_chat(user, "<span class=warning>There's already \the [screwdriver] in \the [src]!</span>")
-	else if(istype(I, /obj/item/weapon/wirecutters/advpart))
-		var/obj/item/weapon/screwdriver/advpart/WC = I
+	else if(istype(I, /obj/item/wirecutters/advpart))
+		var/obj/item/screwdriver/advpart/WC = I
 		if(!wirecutters)
-			src.contents += WC
-			user.remove_from_mob(WC)
-			WC.loc = src
+			contents += WC
+			user.drop(WC, src)
 			wirecutters = WC
 			to_chat(user, "<span class=notice>You insert \the [WC] into \the [src].</span>")
 			update_icon()
@@ -175,11 +161,10 @@
 	w_class = ITEM_SIZE_TINY
 	throwforce = 3.5
 	throw_range = 15
-	throw_speed = 3
 	origin_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 4)
 	matter = list(MATERIAL_STEEL = 25, MATERIAL_GLASS = 20)
 
-/obj/item/weapon/screwdriver/advpart
+/obj/item/screwdriver/advpart
 	name = "compact screwdriver"
 	desc = "Just a regular screwdriver. However, this one is especially small."
 	description_info = "This tool is used to expose or safely hide away cabling. It can open and shut the maintenance panels on vending machines, airlocks, and much more. You can also use it, in combination with a crowbar, to install or remove windows."
@@ -194,12 +179,12 @@
 	matter = list(MATERIAL_STEEL = 45)
 	lock_picking_level = 6
 
-/obj/item/weapon/screwdriver/advpart/Initialize()
+/obj/item/screwdriver/advpart/Initialize()
 	. = ..()
 	icon_state = "adv_screwdriver"
 	item_state = "screwdriver"
 
-/obj/item/weapon/wirecutters/advpart
+/obj/item/wirecutters/advpart
 	name = "compact wirecutters"
 	desc = "A special pair of pliers with cutting edges. Various brackets and manipulators built into the handle allow it to repair severed wiring. This pair has some insulation."
 	description_info = "This tool will cut wiring anywhere you see it - make sure to wear insulated gloves! When used on more complicated machines or airlocks, it can not only cut cables, but repair them, as well."
@@ -213,7 +198,7 @@
 	origin_tech = list(TECH_ENGINEERING = 4)
 	matter = list(MATERIAL_STEEL = 80)
 
-/obj/item/weapon/wirecutters/advpart/Initialize()
+/obj/item/wirecutters/advpart/Initialize()
 	. = ..()
 	icon_state = "adv_wirecutters"
 	item_state = "cutters"

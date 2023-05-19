@@ -1,4 +1,7 @@
 
+// !!! OUTDATED !!!
+// If you are really sure about bringing it back, you'll have to rewrite it kinda from scratch.
+
 //Transform into a monkey.
 /mob/proc/changeling_lesser_form()
 	set category = "Changeling"
@@ -25,7 +28,7 @@
 	to_chat(H, "<span class='warning'>Our genes cry out!</span>")
 	H = H.monkeyize()
 	if(istype(H))
-		H.insert_biostructure()
+		H.setup_changeling_biostructure()
 	feedback_add_details("changeling_powers","LF")
 	return 1
 
@@ -56,12 +59,12 @@
 	var/mob/living/carbon/human/C = src
 
 	changeling.chem_charges--
-	C.remove_changeling_powers()
+	C.remove_all_changeling_powers()
 	C.visible_message("<span class='warning'>[C] transforms!</span>")
 	C.dna = chosen_dna.Clone()
 
 	var/list/implants = list()
-	for (var/obj/item/weapon/implant/I in C) //Still preserving implants
+	for (var/obj/item/implant/I in C) //Still preserving implants
 		implants += I
 
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(C)
@@ -76,8 +79,8 @@
 	sleep(48)
 	qdel(animation)
 
-	for(var/obj/item/W in src)
-		C.drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		C.drop_from_inventory(I)
 
 	var/mob/living/carbon/human/O = new /mob/living/carbon/human( src )
 	if (C.dna.GetUIState(DNA_UI_GENDER))
@@ -100,13 +103,13 @@
 	O.setOxyLoss(C.getOxyLoss())
 	O.adjustFireLoss(C.getFireLoss())
 	O.set_stat(C.stat)
-	for (var/obj/item/weapon/implant/I in implants)
+	for (var/obj/item/implant/I in implants)
 		I.forceMove(O)
 		I.implanted = O
 
 	C.mind.transfer_to(O)
 	O.make_changeling()
-	O.changeling_update_languages(changeling.absorbed_languages)
+	changeling.update_languages()
 
 	feedback_add_details("changeling_powers","LFT")
 	qdel(C)

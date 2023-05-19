@@ -14,7 +14,7 @@
 	..()
 
 /obj/machinery/floorlayer/Move(new_turf,M_Dir)
-	..()
+	. = ..()
 
 	if(on)
 		if(mode["dismantle"])
@@ -43,9 +43,8 @@
 		user.visible_message("<span class='notice'>[usr] has set \the [src] [m] mode [!O?"off":"on"].</span>", "<span class='notice'>You set \the [src] [m] mode [!O?"off":"on"].</span>")
 		return
 
-	if(istype(W, /obj/item/stack/tile))
+	if(istype(W, /obj/item/stack/tile) && user.drop(T))
 		to_chat(user, "<span class='notice'>\The [W] successfully loaded.</span>")
-		user.drop_item(T)
 		TakeTile(T)
 		return
 
@@ -65,7 +64,7 @@
 		return
 	..()
 
-/obj/machinery/floorlayer/examine(mob/user)
+/obj/machinery/floorlayer/_examine_text(mob/user)
 	. = ..()
 	var/dismantle = mode["dismantle"]
 	var/laying = mode["laying"]

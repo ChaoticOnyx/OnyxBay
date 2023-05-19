@@ -9,7 +9,7 @@
 	var/open
 	var/unlocked
 	var/shattered
-	var/obj/item/weapon/material/twohanded/fireaxe/fireaxe
+	var/obj/item/material/twohanded/fireaxe/fireaxe
 
 /obj/structure/fireaxecabinet/attack_generic(mob/user, damage, attack_verb, wallbreaker)
 	attack_animation(user)
@@ -62,8 +62,7 @@
 			to_chat(usr, "<span class='warning'>\The [src] is empty.</span>")
 			return
 
-		fireaxe.forceMove(get_turf(usr))
-		usr.put_in_hands(fireaxe)
+		usr.pick_or_drop(fireaxe)
 		fireaxe = null
 		update_icon()
 
@@ -81,12 +80,11 @@
 		toggle_lock(user)
 		return
 
-	if(istype(O, /obj/item/weapon/material/twohanded/fireaxe))
+	if(istype(O, /obj/item/material/twohanded/fireaxe))
 		if(open)
 			if(fireaxe)
 				to_chat(user, "<span class='warning'>There is already \a [fireaxe] inside \the [src].</span>")
-			else if(user.unEquip(O))
-				O.forceMove(src)
+			else if(user.drop(O, src))
 				fireaxe = O
 				to_chat(user, "<span class='notice'>You place \the [fireaxe] into \the [src].</span>")
 				update_icon()

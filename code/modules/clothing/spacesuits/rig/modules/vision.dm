@@ -17,6 +17,10 @@
 	if(ispath(glasses))
 		glasses = new glasses
 
+/datum/rig_vision/Destroy()
+	..()
+	QDEL_NULL(glasses)
+
 /datum/rig_vision/nvg
 	mode = "night vision"
 	glasses = /obj/item/clothing/glasses/hud/standard/night/active
@@ -39,8 +43,8 @@
 
 /obj/item/rig_module/vision
 
-	name = "hardsuit visor"
-	desc = "A layered, translucent visor system for a hardsuit."
+	name = "powersuit visor"
+	desc = "A layered, translucent visor system for a powersuit."
 	icon_state = "hud_multi"
 
 	interface_name = "optical scanners"
@@ -67,7 +71,7 @@
 
 /obj/item/rig_module/vision/multi
 
-	name = "hardsuit optical package"
+	name = "powersuit optical package"
 	desc = "A complete visor system of optical scanners and vision modes."
 	icon_state = "hud_full"
 
@@ -83,8 +87,8 @@
 
 /obj/item/rig_module/vision/meson
 
-	name = "hardsuit meson matrix"
-	desc = "A layered, translucent visor system for a hardsuit."
+	name = "powersuit meson matrix"
+	desc = "A layered, translucent visor system for a powersuit."
 	icon_state = "hud_meson"
 	origin_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 5)
 	usable = 0
@@ -96,8 +100,8 @@
 
 /obj/item/rig_module/vision/thermal
 
-	name = "hardsuit thermal matrix"
-	desc = "A layered, translucent visor system for a hardsuit."
+	name = "powersuit thermal matrix"
+	desc = "A layered, translucent visor system for a powersuit."
 	icon_state = "hud_thermal"
 
 	usable = 0
@@ -109,8 +113,8 @@
 
 /obj/item/rig_module/vision/nvg
 
-	name = "hardsuit night vision matrix"
-	desc = "A multi input night vision system for a hardsuit."
+	name = "powersuit night vision matrix"
+	desc = "A multi input night vision system for a powersuit."
 	icon_state = "hud_night"
 	origin_tech = list(TECH_MAGNET = 6, TECH_ENGINEERING = 6)
 	usable = 0
@@ -122,8 +126,8 @@
 
 /obj/item/rig_module/vision/sechud
 
-	name = "hardsuit security matrix"
-	desc = "A simple tactical information system for a hardsuit."
+	name = "powersuit security matrix"
+	desc = "A simple tactical information system for a powersuit."
 	icon_state = "hud_sec"
 	origin_tech = list(TECH_MAGNET = 3, TECH_BIO = 2, TECH_ENGINEERING = 5)
 	usable = 0
@@ -135,8 +139,8 @@
 
 /obj/item/rig_module/vision/medhud
 
-	name = "hardsuit medical matrix"
-	desc = "A simple medical status indicator for a hardsuit."
+	name = "powersuit medical matrix"
+	desc = "A simple medical status indicator for a powersuit."
 	icon_state = "hud_medical"
 	origin_tech = list(TECH_MAGNET = 3, TECH_BIO = 2, TECH_ENGINEERING = 5)
 	usable = 0
@@ -191,3 +195,7 @@
 		processed_vision += vision_datum
 
 	vision_modes = processed_vision
+
+/obj/item/rig_module/vision/Destroy()
+	QDEL_LIST(vision_modes)
+	. = ..()

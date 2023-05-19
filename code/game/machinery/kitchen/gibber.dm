@@ -9,14 +9,14 @@
 	anchored = 1
 	req_access = list(access_kitchen,access_morgue)
 
-	var/operating = 0        //Is it on?
-	var/dirty = 0            // Does it need cleaning?
+	var/operating = FALSE        // Is it on?
+	var/dirty = FALSE            // Does it need cleaning?
 	var/mob/living/occupant  // Mob who has been put inside
 	var/gib_time = 40        // Time from starting until meat appears
 	var/gib_throw_dir = WEST // Direction to spit meat and gibs in.
 
-	idle_power_usage = 2
-	active_power_usage = 500
+	idle_power_usage = 2 WATTS
+	active_power_usage = 500 WATTS
 
 //auto-gibs anything that bumps into it
 /obj/machinery/gibber/autogibber
@@ -85,12 +85,12 @@
 		if(!G.force_danger())
 			to_chat(user, SPAN("danger","You need a better grip to do that!"))
 			return
-		move_into_gibber(user,G.affecting)
-		user.drop_from_inventory(G)
+		move_into_gibber(user, G.affecting)
+		G.delete_self()
 	else if(istype(W, /obj/item/organ))
-		user.drop_from_inventory(W)
-		qdel(W)
-		user.visible_message(SPAN("danger","\The [user] feeds \the [W] into \the [src], obliterating it."))
+		if(user.drop(W))
+			qdel(W)
+			user.visible_message(SPAN("danger","\The [user] feeds \the [W] into \the [src], obliterating it."))
 	else
 		return ..()
 
@@ -167,7 +167,7 @@
 	var/slab_name = occupant.name
 	var/slab_count = 3
 	var/robotic_slab_count = 0
-	var/slab_type = /obj/item/weapon/reagent_containers/food/snacks/meat
+	var/slab_type = /obj/item/reagent_containers/food/meat
 	var/const/robotic_slab_type = /obj/item/stack/material/steel
 	var/slab_nutrition = 20
 	if(iscarbon(occupant))
@@ -175,7 +175,11 @@
 		slab_nutrition = C.nutrition / 15
 
 	// Some mobs have specific meat item types.
-	if(istype(src.occupant,/mob/living/simple_animal))
+	if(istype(src.occupant, /mob/living/simple_animal/hostile/faithless))
+		slab_type = /obj/item/ectoplasm
+	else if(istype(src.occupant, /mob/living/carbon/metroid) || istype(src.occupant, /mob/living/simple_animal/metroid))
+		slab_type = /obj/item/reagent_containers/food/meat/xeno 
+	else if(istype(src.occupant,/mob/living/simple_animal))
 		var/mob/living/simple_animal/critter = src.occupant
 		if(critter.meat_amount)
 			slab_count = critter.meat_amount
@@ -214,7 +218,7 @@
 			reagent_transfer_amt = round(occupant.reagents.total_volume / slab_count, 1)
 
 		for(var/i=1 to slab_count)
-			var/obj/item/weapon/reagent_containers/food/snacks/meat/new_meat = new slab_type(src, rand(3,8))
+			var/obj/item/reagent_containers/food/meat/new_meat = new slab_type(src, rand(3,8))
 			if(istype(new_meat))
 				new_meat.SetName("[slab_name] [new_meat.name]")
 				new_meat.reagents.add_reagent(/datum/reagent/nutriment, slab_nutrition)
@@ -241,7 +245,5 @@
 				qdel(thing)
 				continue
 			thing.dropInto(loc) // Attempts to drop it onto the turf for throwing.
-			thing.throw_at(get_edge_target_turf(src,gib_throw_dir),rand(0,3),100) // Being pelted with bits of meat and bone would hurt.
+			thing.throw_at(get_edge_target_turf(src,gib_throw_dir), rand(0, 3), 0.5) // Being pelted with bits of meat and bone would hurt.
 		update_icon()
-
-

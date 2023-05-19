@@ -5,10 +5,10 @@ GLOBAL_LIST_EMPTY(common_report)
 	var/list/parts = list()
 	var/mob/Player = C.mob
 	if(Player.mind && !isnewplayer(Player))
-		if(Player.stat != DEAD && !isbrain(Player))
+		if(!Player.is_ooc_dead() && !isbrain(Player))
 			var/turf/playerTurf = get_turf(Player)
 			if(evacuation_controller.round_over() && evacuation_controller.emergency_evacuation)
-				if(isNotAdminLevel(playerTurf.z))
+				if(!isAdminLevel(playerTurf.z))
 					parts += "<div class='panel stationborder'>"
 					parts += "<span class='marooned'>You managed to survive, but were marooned on [station_name()] as [Player.real_name]...</span>"
 				else
@@ -37,7 +37,6 @@ GLOBAL_LIST_EMPTY(common_report)
 
 	return parts.Join()
 
-
 /datum/controller/subsystem/ticker/proc/survivor_report()
 	var/clients = 0
 	var/surviving_humans = 0
@@ -51,7 +50,7 @@ GLOBAL_LIST_EMPTY(common_report)
 		if(!M.client)
 			continue
 		clients++
-		if(M.stat != DEAD)
+		if(!M.is_ooc_dead())
 			surviving_total++
 			if(ishuman(M))
 				surviving_humans++
@@ -93,7 +92,7 @@ GLOBAL_LIST_EMPTY(common_report)
 	var/borg_spacer = FALSE //inserts an extra linebreak to seperate AIs from independent borgs, and then multiple independent borgs.
 	//Silicon laws report
 	for (var/mob/living/silicon/ai/aiPlayer in SSmobs.mob_list)
-		if (aiPlayer.stat != DEAD)
+		if (!aiPlayer.is_ooc_dead())
 			parts += "<b>[aiPlayer.name] (Played by: [aiPlayer.key])'s laws at the end of the round were:</b>"
 		else
 			parts += "<b>[aiPlayer.name] (Played by: [aiPlayer.key])'s laws when it was deactivated were:</b>"
@@ -118,7 +117,7 @@ GLOBAL_LIST_EMPTY(common_report)
 			continue
 
 		if (!robo.connected_ai)
-			parts += "[borg_spacer?"<br>":""]<b>[robo.name]</b> (Played by: <b>[robo.mind.key]</b>) [(robo.stat != DEAD)? "<span class='greentext'>survived</span> as an AI-less borg!" : "was <span class='redtext'>unable to survive</span> the rigors of being a cyborg without an AI."] Its laws were:"
+			parts += "[borg_spacer?"<br>":""]<b>[robo.name]</b> (Played by: <b>[robo.mind.key]</b>) [(!robo.is_ooc_dead())? "<span class='greentext'>survived</span> as an AI-less borg!" : "was <span class='redtext'>unable to survive</span> the rigors of being a cyborg without an AI."] Its laws were:"
 
 			if(robo) //How the hell do we lose robo between here and the world messages directly above this?
 				parts += robo.laws?.print_laws()
@@ -170,6 +169,23 @@ GLOBAL_LIST_EMPTY(common_report)
 	listclearnulls(parts)
 	return parts.len ? "<div class='panel stationborder'>[parts.Join("<br>")]</div>" : null
 
+/datum/controller/subsystem/ticker/proc/_last_words_report()
+	if(!length(GLOB.last_words))
+		return
+
+	var/list/parts = list()
+
+	parts += "<div class='panel stationborder'><span class='marooned'><b>Last words of the first victims:</b></span><br>"
+
+	for(var/index = 1 to min(length(GLOB.last_words), 4))
+		var/datum/last_words_data/data = GLOB.last_words[index]
+
+		parts += "<b>[data.real_name]</b>, the <b>[data.job_title]</b>: \"[data.words]\"<br>"
+
+	parts += "</div>"
+
+	return parts
+
 //Common part of the report
 /datum/controller/subsystem/ticker/proc/build_roundend_report()
 	var/list/parts = list()
@@ -188,7 +204,7 @@ GLOBAL_LIST_EMPTY(common_report)
 	//Antagonists
 	parts += antag_report()
 
-	parts += SSevent.RoundEnd()
+	parts += _last_words_report()
 
 	listclearnulls(parts)
 

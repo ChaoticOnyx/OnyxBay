@@ -17,9 +17,9 @@ LOGIN mylogin
 PASSWORD mypassword
 
 # The following information is for feedback tracking via the blackbox server
-FEEDBACK_DATABASE test
-FEEDBACK_LOGIN mylogin
-FEEDBACK_PASSWORD mypassword
+FEEDBACK_DATABASE feedback
+FEEDBACK_LOGIN root
+FEEDBACK_PASSWORD pass
 
 # Track population and death statistics
 # Comment this out to disable
@@ -28,6 +28,6 @@ FEEDBACK_PASSWORD mypassword
 # Third database, external bots can only access it
 DONATION_ADDRESS localhost
 DONATION_PORT 3306
-DONATION_DATABASE tgstation
-DONATION_LOGIN mylogin
-DONATION_PASSWORD mypassword
+DONATION_DATABASE donations
+DONATION_LOGIN root
+DONATION_PASSWORD pass

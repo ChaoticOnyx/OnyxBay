@@ -7,20 +7,20 @@
 	glasses = /obj/item/clothing/glasses/sunglasses
 
 	id_slot = slot_wear_id
-	id_type = /obj/item/weapon/card/id/centcom/station
+	id_type = /obj/item/card/id/centcom/station
 	pda_slot = slot_r_store
 	pda_type = /obj/item/device/pda/heads
 
 /decl/hierarchy/outfit/nanotrasen/representative
 	name = "NanoTrasen Representative"
-	belt = /obj/item/weapon/clipboard
+	belt = /obj/item/clipboard
 	id_pda_assignment = "NanoTrasen Navy Representative"
 
 /decl/hierarchy/outfit/nanotrasen/officer
 	name = "NanoTrasen Officer"
 	head = /obj/item/clothing/head/beret/centcom/officer
 	l_ear = /obj/item/device/radio/headset/heads/captain
-	belt = /obj/item/weapon/gun/energy
+	belt = /obj/item/gun/energy
 	id_pda_assignment = "NanoTrasen Navy Officer"
 
 /decl/hierarchy/outfit/nanotrasen/captain
@@ -28,7 +28,7 @@
 	uniform = /obj/item/clothing/under/rank/centcom/captain
 	l_ear = /obj/item/device/radio/headset/heads/captain
 	head = /obj/item/clothing/head/beret/centcom/captain
-	belt = /obj/item/weapon/gun/energy
+	belt = /obj/item/gun/energy
 	id_pda_assignment = "NanoTrasen Navy Captain"
 
 /decl/hierarchy/outfit/nanotrasen/commander
@@ -41,5 +41,5 @@
 	gloves = /obj/item/clothing/gloves/thick/swat
 	l_ear =  /obj/item/device/radio/headset/heads/captain
 	glasses = /obj/item/clothing/glasses/eyepatch
-	l_pocket = /obj/item/weapon/flame/lighter/zippo
+	l_pocket = /obj/item/flame/lighter/zippo
 	id_pda_assignment = "NanoTrasen Commander"

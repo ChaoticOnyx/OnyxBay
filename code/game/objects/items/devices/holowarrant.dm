@@ -5,14 +5,13 @@
 	item_state = "holowarrant"
 	throwforce = 5
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 4
 	throw_range = 10
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	var/datum/computer_file/data/warrant/active
 
 //look at it
-/obj/item/device/holowarrant/examine(mob/user)
+/obj/item/device/holowarrant/_examine_text(mob/user)
 	. = ..()
 	if(active)
 		. += "\nIt's a holographic warrant for '[active.fields["namewarrant"]]'."
@@ -38,9 +37,9 @@
 			active = W
 	update_icon()
 
-/obj/item/device/holowarrant/attackby(obj/item/weapon/W, mob/user)
+/obj/item/device/holowarrant/attackby(obj/item/W, mob/user)
 	if(active)
-		var/obj/item/weapon/card/id/I = W.GetIdCard()
+		var/obj/item/card/id/I = W.get_id_card()
 		if(I && (access_security in I.access))
 			var/choice = alert(user, "Would you like to authorize this warrant?","Warrant authorization","Yes","No")
 			if(choice == "Yes")
@@ -71,7 +70,7 @@
 	if(active.fields["arrestsearch"] == "arrest")
 		var/output = {"
 		<meta charset=\"utf-8\"><HEAD><TITLE>[active.fields["namewarrant"]]</TITLE></HEAD>
-		<BODY bgcolor='#ffffff'><center><large><b>Sol Central Government Colonial Marshal Bureau</b></large></br>
+		<BODY bgcolor='#ffffff'><center><large><b>Nano Trasen Board of Directors</b></large></br>
 		in the jurisdiction of the</br>
 		[GLOB.using_map.boss_name] in [GLOB.using_map.system_name]</br>
 		</br>

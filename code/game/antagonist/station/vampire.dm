@@ -7,7 +7,7 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 	feedback_tag = "vampire_objective"
 	restricted_jobs = list(/datum/job/captain, /datum/job/hos, /datum/job/hop,
 							/datum/job/rd, /datum/job/chief_engineer, /datum/job/cmo,
-							/datum/job/merchant, /datum/job/lawyer)
+							/datum/job/merchant, /datum/job/iaa, /datum/job/barmonkey)
 	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 
 	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/chaplain)
@@ -17,8 +17,8 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 
 /datum/antagonist/vampire/Initialize()
 	. = ..()
-	if(config.vampire_min_age)
-		min_player_age = config.vampire_min_age
+	if(config.game.vampire_min_age)
+		min_player_age = config.game.vampire_min_age
 
 /datum/antagonist/vampire/create_objectives(datum/mind/player)
 	if(!..())
@@ -78,7 +78,7 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 	player.current.make_vampire()
 
 
-/datum/antagonist/vampire/can_become_antag(datum/mind/player, ignore_role)
+/datum/antagonist/vampire/can_become_antag(datum/mind/player, ignore_role, max_stat)
 	if(..())
 		if(player.current)
 			if(ishuman(player.current))
@@ -96,4 +96,4 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 					if(player.current.client.prefs.organ_data[BP_CHEST] == "cyborg") // Full synthetic.
 						return 0
 					return 1
- 	return 0
+	return 0

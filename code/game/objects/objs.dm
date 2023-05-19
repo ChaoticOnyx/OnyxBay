@@ -16,6 +16,12 @@
 	var/armor_penetration = 0
 	var/anchor_fall = FALSE
 	var/pull_slowdown = PULL_SLOWDOWN_WEIGHT // How much it slows us down while we are pulling it
+	/// Used if the obj is dense.
+	var/list/rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 0,
+		RADIATION_BETA_PARTICLE = 0,
+		RADIATION_HAWKING = 0
+	)
 	hitby_sound = 'sound/effects/metalhit2.ogg'
 
 /obj/Destroy()
@@ -25,7 +31,6 @@
 	if (istype(delivery))
 		delivery.wrapped = null
 
-	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/proc/is_used_on(obj/O, mob/user)
@@ -86,7 +91,7 @@
 		if(!ai_in_use && !is_in_use)
 			in_use = 0
 
-/obj/attack_ghost(mob/user)
+/obj/attack_ghost(mob/observer/ghost/user)
 	ui_interact(user)
 	tgui_interact(user)
 	..()
@@ -95,14 +100,18 @@
 	return
 
 /mob/proc/unset_machine()
-	src.machine = null
+	if(!machine)
+		return
+	unregister_signal(machine, SIGNAL_QDELETING)
+	machine = null
 
 /mob/proc/set_machine(obj/O)
-	if(src.machine)
+	if(machine)
 		unset_machine()
-	src.machine = O
+	machine = O
+	register_signal(O, SIGNAL_QDELETING, .proc/unset_machine)
 	if(istype(O))
-		O.in_use = 1
+		O.in_use = TRUE
 
 /obj/item/proc/updateSelfDialog()
 	var/mob/M = src.loc
@@ -152,6 +161,17 @@
 			update_icon()
 			return
 	return ..()
+
+/obj/_examine_text(mob/user, infix, suffix)
+	. = ..()
+
+	if(hasHUD(user, HUD_SCIENCE))
+		. += "\nStopping Power:"
+
+		. += "\nα-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_ALPHA_PARTICLE]), "eV", 3)]"
+		. += "\nβ-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_BETA_PARTICLE]), "eV", 3)]"
+
+	return .
 
 /obj/proc/wrench_floor_bolts(mob/user, delay=20)
 	playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)

@@ -6,7 +6,7 @@
 /mob/living/silicon/ai/var/stored_locations[0]
 
 /proc/InvalidPlayerTurf(turf/T as turf)
-	return !(T && (T.z in GLOB.using_map.player_levels))
+	return !(T && (T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
 
 /mob/living/silicon/ai/proc/get_camera_list()
 	if(src.stat == 2)
@@ -137,7 +137,7 @@
 	if(!target_name)
 		src.cameraFollow = null
 
-	var/mob/target = (isnull(track.humans[target_name]) ? track.others[target_name] : track.humans[target_name])
+	var/mob/target = (QDELETED(track.humans[target_name]) ? track.others[target_name] : track.humans[target_name])
 	src.track = null
 	ai_actual_track(target)
 
@@ -220,7 +220,7 @@
 
 /mob/living/proc/tracking_status()
 	// Easy checks first.
-	var/obj/item/weapon/card/id/id = GetIdCard()
+	var/obj/item/card/id/id = get_id_card()
 	if(id && id.prevent_tracking())
 		return TRACKING_TERMINATE
 	if(InvalidPlayerTurf(get_turf(src)))
@@ -251,7 +251,7 @@
 
 	if(. == TRACKING_NO_COVERAGE)
 		var/turf/T = get_turf(src)
-		if(T && (T.z in GLOB.using_map.station_levels) && hassensorlevel(src, SUIT_SENSOR_TRACKING))
+		if(T && (T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)) && hassensorlevel(src, SUIT_SENSOR_TRACKING))
 			return TRACKING_POSSIBLE
 
 /mob/living/proc/tracking_initiated()

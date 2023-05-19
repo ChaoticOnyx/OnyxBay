@@ -8,7 +8,7 @@
 	power_channel = STATIC_ENVIRON
 	var/frequency = 0
 	var/id
-	idle_power_usage = 15
+	idle_power_usage = 15 WATTS
 
 /obj/machinery/meter/Initialize()
 	. = ..()
@@ -18,11 +18,11 @@
 /obj/machinery/meter/proc/set_target(atom/new_target)
 	clear_target()
 	target = new_target
-	GLOB.destroyed_event.register(target, src, .proc/clear_target)
+	register_signal(target, SIGNAL_QDELETING, .proc/clear_target)
 
 /obj/machinery/meter/proc/clear_target()
 	if(target)
-		GLOB.destroyed_event.unregister(target, src)
+		unregister_signal(target, SIGNAL_QDELETING)
 		target = null
 
 /obj/machinery/meter/Destroy()
@@ -74,7 +74,7 @@
 		)
 		radio_connection.post_signal(src, signal)
 
-/obj/machinery/meter/examine(mob/user)
+/obj/machinery/meter/_examine_text(mob/user)
 	. = ..()
 
 	if(get_dist(user, src) > 3 && !(istype(user, /mob/living/silicon/ai) || isghost(user)))
@@ -86,7 +86,7 @@
 	else if(src.target)
 		var/datum/gas_mixture/environment = target.return_air()
 		if(environment)
-			. += "\nThe pressure gauge reads [round(environment.return_pressure(), 0.01)] kPa; [round(environment.temperature,0.01)]K ([round(environment.temperature-T0C,0.01)]&deg;C)"
+			. += "\nThe pressure gauge reads [round(environment.return_pressure(), 0.01)] kPa; [round(environment.temperature,0.01)]K ([round(CONV_KELVIN_CELSIUS(environment.temperature), 0.01)]&deg;C)"
 		else
 			. += "\nThe sensor error light is blinking."
 	else
@@ -101,7 +101,7 @@
 
 	return ..()
 
-/obj/machinery/meter/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/meter/attackby(obj/item/W as obj, mob/user as mob)
 	if(!isWrench(W))
 		return ..()
 	playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
@@ -121,4 +121,4 @@
 		set_target(loc)
 	. = ..()
 
-/obj/machinery/meter/turf/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/meter/turf/attackby(obj/item/W as obj, mob/user as mob)

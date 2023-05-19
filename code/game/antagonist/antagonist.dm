@@ -59,7 +59,6 @@
 	var/datum/mind/leader                   // Current leader, if any.
 	var/cur_max = 0                         // Autotraitor current effective maximum.
 	var/spawned_nuke                        // Has a bomb been spawned?
-	var/nuke_spawn_loc                      // If so, where should it be placed?
 	var/list/current_antagonists = list()   // All marked antagonists for this type.
 	var/list/pending_antagonists = list()   // Candidates that are awaiting finalized antag status.
 	var/list/starting_locations =  list()   // Spawn points.
@@ -69,7 +68,7 @@
 
 	// ID card stuff.
 	var/default_access = list()
-	var/id_type = /obj/item/weapon/card/id
+	var/id_type = /obj/item/card/id
 
 	var/antag_text = "You are an antagonist! Within the rules, \
 		try to act as an opposing force to the crew. Further RP and try to make sure \
@@ -88,7 +87,7 @@
 	cur_max = hard_cap
 	if(!role_text_plural)
 		role_text_plural = role_text
-	if(config.protect_roles_from_antagonist)
+	if(config.gamemode.protect_roles_from_antagonist)
 		restricted_jobs |= additional_restricted_jobs
 	if(antaghud_indicator)
 		if(!GLOB.hud_icon_reference)
@@ -106,28 +105,17 @@
 	// Prune restricted status. Broke it up for readability.
 	// Note that this is done before jobs are handed out.
 	for(var/datum/mind/player in mode.get_players_for_role(id))
-		if (!player.current.client)
-			continue
 		if(ghosts_only && !(isghostmind(player) || isnewplayer(player.current)))
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Only ghosts may join as this role!")
-		else if(config.use_age_restriction_for_antags && player.current.client.player_age < min_player_age)
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [min_player_age] day\s!")
-		else if(player.special_role)
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They already have a special role ([player.special_role])!")
-		else if (player in pending_antagonists)
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They have already been selected for this role!")
-		else if(!can_become_antag(player))
-			log_debug_verbose("[key_name(player)], can_become_antag returned FALSE!")
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are blacklisted for this role!")
-		else if(player_is_antag(player))
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are already an antagonist!")
-		else if(player.current.stat == UNCONSCIOUS)
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are unconscious!")
-		else if(!is_mob_type_allowed(player))
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not allowed type of mob!")
-		else
-			log_debug_verbose("[key_name(player)] is eligible to become a [role_text]")
-			candidates |= player
+			continue
+		if(!check_candidate(player))
+			continue
+		var/candidate_weight = get_candidate_weight(player)
+		if(candidate_weight == 0)
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Bad location z-level!")
+			continue
+		log_debug_verbose("[key_name(player)] is eligible to become a [role_text]")
+		candidates[player] = candidate_weight
 
 	return candidates
 
@@ -139,24 +127,68 @@
 	for(var/datum/mind/player in mode.get_players_for_role(id))
 		if(ghosts_only && !(isghostmind(player) || isnewplayer(player.current)))
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Only ghosts may join as this role!")
-		else if(config.use_age_restriction_for_antags && player.current.client.player_age < min_player_age)
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [min_player_age] day\s!")
-		else if(player.special_role)
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They already have a special role ([player.special_role])!")
-		else if (player in pending_antagonists)
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They have already been selected for this role!")
-		else if(!can_become_antag(player))
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are blacklisted for this role!")
-		else if(player_is_antag(player))
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are already an antagonist!")
-		else if(player.current.stat == UNCONSCIOUS)
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are unconscious!")
-		else if(!is_mob_type_allowed(player))
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not allowed type of mob!")
-		else
-			potential_candidates |= player
+			continue
+		if(!check_candidate(player))
+			continue
+		var/candidate_weight = get_candidate_weight(player)
+		if(candidate_weight == 0)
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Bad location z-level!")
+			continue
+		potential_candidates[player] = candidate_weight
 
 	return potential_candidates
+
+/datum/antagonist/proc/check_candidate(datum/mind/player)
+	if(!player.current?.client)
+		return FALSE
+	if(config.game.use_age_restriction_for_antags && player.current.client.player_age < min_player_age)
+		log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [min_player_age] day\s!")
+		return FALSE
+	if(player.special_role)
+		log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They already have a special role ([player.special_role])!")
+		return FALSE
+	if (player in pending_antagonists)
+		log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They have already been selected for this role!")
+		return FALSE
+	if(!can_become_antag(player))
+		log_debug_verbose("[key_name(player)], can_become_antag returned FALSE!")
+		log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are blacklisted for this role!")
+		return FALSE
+	if(player_is_antag(player))
+		log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are already an antagonist!")
+		return FALSE
+	if(player.current.stat == UNCONSCIOUS)
+		log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are unconscious!")
+		return FALSE
+	if(!is_mob_type_allowed(player))
+		if(ishuman(player.current))
+			var/mob/living/carbon/human/H = player.current
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Either '[H.type]' is not an allowed type of mob or '[H.species]' is not an allowed species!")
+		else
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not an allowed type of mob!")
+		return FALSE
+	if(player.is_brigged())
+		log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are brigged!")
+		return FALSE
+	if(iscarbon(player.current))
+		var/mob/living/carbon/C = player.current
+		if(C.handcuffed)
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are handcuffed!")
+			return FALSE
+	return TRUE
+
+/datum/antagonist/proc/get_candidate_weight(datum/mind/player)
+	ASSERT(istype(player))
+	if(isghostmind(player) || isnewplayer(player.current))
+		return 100
+
+	var/player_zlevel = get_z(player.current)
+
+	if(!isPlayerLevel(player_zlevel))
+		return 0
+	if(!isStationLevel(player_zlevel))
+		return 50
+	return 100
 
 /datum/antagonist/proc/attempt_random_spawn()
 	update_current_antag_max(SSticker.mode)
@@ -195,6 +227,7 @@
 
 	if(called_by_storyteller)
 		player.was_antag_given_by_storyteller = TRUE
+		player.antag_was_given_at = roundduration2text()
 
 	reset_antag_selection()
 
@@ -215,7 +248,7 @@
 
 	//Grab candidates randomly until we have enough.
 	while(candidates.len && pending_antagonists.len < spawn_target)
-		var/datum/mind/player = pick(candidates)
+		var/datum/mind/player = util_pick_weight(candidates)
 		candidates -= player
 		draft_antagonist(player)
 
@@ -235,7 +268,7 @@
 	if(GAME_STATE >= RUNLEVEL_GAME && (isghostmind(player) || isnewplayer(player.current)) && !(player in SSticker.antag_pool))
 		var/answer = alert_timeout(
 			recipient = player.current,
-			message = "You were selected for role [role_text] by lottery. Are you ready to play it?", 
+			message = "You were selected for role [role_text] by lottery. Are you ready to play it?",
 			title = "Do you want to play [role_text]?",
 			timeout = 100,
 			button1 = "Yes",
@@ -290,14 +323,6 @@
 /datum/antagonist/proc/is_mob_type_allowed(datum/mind/player)
 	ASSERT(player)
 	ASSERT(player.current)
-	if (istype(player.current, /mob/living/carbon/human))
+	if(isghostmind(player) && flags & (ANTAG_OVERRIDE_JOB | ANTAG_OVERRIDE_MOB))
 		return TRUE
-	if (istype(player.current, /mob/living/silicon/robot))
-		return TRUE
-	if (istype(player.current, /mob/living/silicon/ai))
-		return TRUE
-	if (isghostmind(player) && flags & (ANTAG_OVERRIDE_JOB | ANTAG_OVERRIDE_MOB))
-		return TRUE
-	if (istype(player.current, /mob/new_player))
-		return TRUE
-	return FALSE
+	return player.current.is_eligible_for_antag_spawn(id)

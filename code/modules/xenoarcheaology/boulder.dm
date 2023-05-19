@@ -43,20 +43,20 @@
 			to_chat(user, "<span class='notice'>\The [src] has been excavated to a depth of [src.excavation_level]cm.</span>")
 		return
 
-	if(istype(I, /obj/item/weapon/pickaxe))
-		var/obj/item/weapon/pickaxe/P = I
+	if(istype(I, /obj/item/pickaxe/drill))
+		var/obj/item/pickaxe/drill/D = I
 
-		if(last_act + P.digspeed > world.time)//prevents message spam
+		if(last_act + D.digspeed > world.time)//prevents message spam
 			return
 		last_act = world.time
 
-		to_chat(user, "<span class='warning'>You start [P.drill_verb] [src].</span>")
+		to_chat(user, "<span class='warning'>You start [D.drill_verb] [src].</span>")
 
-		if(!do_after(user, P.digspeed))
+		if(!do_after(user, D.digspeed))
 			return
 
-		to_chat(user, "<span class='notice'>You finish [P.drill_verb] [src].</span>")
-		excavation_level += P.excavation_amount
+		to_chat(user, "<span class='notice'>You finish [D.drill_verb] [src].</span>")
+		excavation_level += D.excavation_amount
 
 		if(excavation_level > 200)
 			//failure
@@ -71,8 +71,8 @@
 				var/obj/O = new spawn_type(get_turf(src))
 				if(istype(O, /obj/machinery/artifact))
 					var/obj/machinery/artifact/X = O
-					if(X.my_effect)
-						X.my_effect.artifact_id = artifact_find.artifact_id
+					if(X.main_effect)
+						X.main_effect.artifact_id = artifact_find.artifact_id
 				src.visible_message("<span class='warning'>\The [src] suddenly crumbles away.</span>")
 			else
 				user.visible_message("<span class='warning'>\The [src] suddenly crumbles away.</span>", "<span class='notice'>\The [src] has been whittled away under your careful excavation, but there was nothing of interest inside.</span>")
@@ -82,13 +82,13 @@
 	. = ..()
 	if(istype(AM,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = AM
-		var/obj/item/weapon/pickaxe/P = H.get_inactive_hand()
+		var/obj/item/pickaxe/P = H.get_inactive_hand()
 		if(istype(P))
 			src.attackby(P, H)
 
 	else if(istype(AM,/mob/living/silicon/robot))
 		var/mob/living/silicon/robot/R = AM
-		if(istype(R.module_active,/obj/item/weapon/pickaxe))
+		if(istype(R.module_active,/obj/item/pickaxe))
 			attackby(R.module_active,R)
 
 	else if(istype(AM,/obj/mecha))

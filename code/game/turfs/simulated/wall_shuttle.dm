@@ -11,10 +11,6 @@
 	density = 1
 	blocks_air = 1
 
-/turf/simulated/shuttle/wall/alien
-	name = "alien wall"
-	icon_state = "bog0"
-
 /turf/simulated/shuttle/wall/mining
 	name = "shuttle wall"
 	icon_state = "mwall0"
@@ -27,9 +23,18 @@
 	name = "shuttle wall"
 	icon_state = "ewall_straight"
 
+/turf/simulated/shuttle/wall/security
+	name = "shuttle wall"
+	icon_state = "secwall_straight"
+
 /turf/simulated/shuttle/wall/merchant
 	name = "shuttle wall"
 	icon_state = "merchwall0"
+
+/turf/simulated/shuttle/wall/syndi
+	name = "shuttle wall"
+	icon = 'icons/turf/shuttle_syndi.dmi'
+	icon_state = "syndiwall0"
 
 /turf/simulated/shuttle/wall/corner
 	var/corner_overlay_state = "diagonalWall"
@@ -69,7 +74,7 @@
 			tghil_si_ereth = null
 
 	icon = initial(base_type.icon)
-	icon_state = ispath(base_type, /turf/space) ? "white" : initial(base_type.icon)
+	icon_state = ispath(base_type, /turf/space) ? "white" : initial(base_type.icon_state)
 	plane = initial(base_type.plane)
 
 /turf/simulated/shuttle/wall/corner/generate_missing_corners()
@@ -81,7 +86,7 @@
 	if(corner_overlay)
 		overlays -= corner_overlay
 	else
-		corner_overlay = image(icon = 'icons/turf/shuttle.dmi', icon_state = corner_overlay_state, dir = src.dir)
+		corner_overlay = image(initial(src.icon), icon_state = corner_overlay_state, dir = src.dir)
 		corner_overlay.plane = initial(src.plane)
 		corner_overlay.layer = initial(src.layer)
 	overlays += corner_overlay
@@ -148,6 +153,18 @@
 /turf/simulated/shuttle/wall/corner/engie/sw
 	dir = SOUTH|WEST
 
+/turf/simulated/shuttle/wall/corner/security
+	icon_state = "corner_sec"
+	corner_overlay_state = "corner_sec"
+/turf/simulated/shuttle/wall/corner/security/ne
+	dir = NORTH|EAST
+/turf/simulated/shuttle/wall/corner/security/nw
+	dir = NORTH|WEST
+/turf/simulated/shuttle/wall/corner/security/se
+	dir = SOUTH|EAST
+/turf/simulated/shuttle/wall/corner/security/sw
+	dir = SOUTH|WEST
+
 /turf/simulated/shuttle/wall/corner/blockwhite
 	icon_state = "corner_white_block"
 	corner_overlay_state = "corner_white_block"
@@ -172,18 +189,6 @@
 /turf/simulated/shuttle/wall/corner/dark/sw
 	dir = SOUTH|WEST
 
-/turf/simulated/shuttle/wall/corner/alien
-	icon_state = "corner_alien"
-	corner_overlay_state = "corner_alien"
-/turf/simulated/shuttle/wall/corner/alien/ne
-	dir = NORTH|EAST
-/turf/simulated/shuttle/wall/corner/alien/nw
-	dir = NORTH|WEST
-/turf/simulated/shuttle/wall/corner/alien/se
-	dir = SOUTH|EAST
-/turf/simulated/shuttle/wall/corner/alien/sw
-	dir = SOUTH|WEST
-
 /turf/simulated/shuttle/wall/corner/merchant
 	icon_state = "corner_merchwall"
 	corner_overlay_state = "corner_merchwall"
@@ -194,6 +199,20 @@
 /turf/simulated/shuttle/wall/corner/merchant/se
 	dir = SOUTH|EAST
 /turf/simulated/shuttle/wall/corner/merchant/sw
+	dir = SOUTH|WEST
+
+/turf/simulated/shuttle/wall/corner/syndi
+	icon = 'icons/turf/shuttle_syndi.dmi'
+	icon_state = "corner_syndiwall"
+	corner_overlay_state = "corner_syndiwall"
+
+/turf/simulated/shuttle/wall/corner/syndi/ne
+	dir = NORTH|EAST
+/turf/simulated/shuttle/wall/corner/syndi/nw
+	dir = NORTH|WEST
+/turf/simulated/shuttle/wall/corner/syndi/se
+	dir = SOUTH|EAST
+/turf/simulated/shuttle/wall/corner/syndi/sw
 	dir = SOUTH|WEST
 
 //Corners for the guitar ship; might look a bit off but it's better than glowing walls;

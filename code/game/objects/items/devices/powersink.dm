@@ -8,7 +8,6 @@
 	w_class = ITEM_SIZE_LARGE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	throwforce = 5
-	throw_speed = 1
 	throw_range = 2
 
 	matter = list(MATERIAL_STEEL = 750, MATERIAL_WASTE = 750)
@@ -35,20 +34,20 @@
 		if(DISCONNECTED)
 			attached = null
 			if(mode == OPERATING)
-				STOP_PROCESSING(SSobj, src)
+				set_next_think(0)
 			anchored = FALSE
 
 		if(CLAMPED_OFF)
 			if(!attached)
 				return
 			if(mode == OPERATING)
-				STOP_PROCESSING(SSobj, src)
+				set_next_think(0)
 			anchored = TRUE
 
 		if(OPERATING)
 			if(!attached)
 				return
-			START_PROCESSING(SSobj, src)
+			set_next_think(world.time)
 			anchored = TRUE
 
 	mode = value
@@ -105,7 +104,7 @@
 				"<span class='italics'>You hear a click.</span>")
 			set_mode(CLAMPED_OFF)
 
-/obj/item/device/powersink/Process()
+/obj/item/device/powersink/think()
 	if(!attached)
 		set_mode(DISCONNECTED)
 		return
@@ -138,6 +137,8 @@
 		playsound(src, 'sound/effects/screech.ogg', 100, 1, 1)
 
 	if(power_drained >= max_power)
-		STOP_PROCESSING(SSobj, src)
 		explosion(src.loc, 4,8,16,32)
 		qdel(src)
+		return
+	
+	set_next_think(world.time + 1 SECOND)

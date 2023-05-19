@@ -67,14 +67,6 @@
 	set name = "Tackle"
 	set desc = "Tackle someone down."
 
-	if(last_special > world.time)
-		to_chat(src, SPAN("warning", "You cannot tackle so soon!"))
-		return
-
-	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
-		to_chat(src, SPAN("warning", "You cannot tackle in your current state."))
-		return
-
 	var/mob/living/target
 	var/list/mob/living/targets = list()
 	for(var/mob/living/M in oview(1, src))
@@ -90,10 +82,15 @@
 		return
 
 	if(last_special > world.time)
+		to_chat(src, SPAN("warning", "You cannot tackle so soon!"))
 		return
 
 	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
 		to_chat(src, SPAN("warning", "You cannot tackle in your current state."))
+		return
+
+	if(!isturf(loc))
+		to_chat(src, SPAN("danger", "You cannot tackle anyone from here!"))
 		return
 
 	if(T == src)
@@ -104,6 +101,7 @@
 		return
 
 	if(istype(T, /mob/living/silicon))
+		to_chat(src, SPAN("warning", "[T] is too massive to be tackled down!"))
 		return
 
 	last_special = world.time + (5 SECONDS)
@@ -129,14 +127,6 @@
 	set name = "Leap"
 	set desc = "Leap at a target and grab them aggressively."
 
-	if(last_special > world.time)
-		to_chat(src, SPAN("warning", "You cannot leap so soon!"))
-		return
-
-	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
-		to_chat(src, SPAN("warning", "You cannot leap in your current state."))
-		return
-
 	var/mob/living/target
 	var/list/mob/living/targets = list()
 	for(var/mob/living/M in oview(4, src))
@@ -151,19 +141,23 @@
 	process_leap(target)
 
 /mob/living/carbon/human/proc/process_leap(mob/living/T)
+	if(!T || !isturf(T.loc) || !src)
+		return
+
 	if(last_special > world.time)
 		to_chat(src, SPAN("warning", "You cannot leap so soon!"))
+		return FALSE
+
+	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len || stance_damage >= 4)
+		to_chat(src, SPAN("warning", "You cannot leap in your current state."))
+		return FALSE
+
+	if(!isturf(loc))
+		to_chat(src, SPAN("danger", "You cannot leap from here!"))
 		return
 
 	if(T == src)
 		to_chat(src, SPAN("warning", "You cannot leap on yourself!"))
-		return
-
-	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len || stance_damage >= 4)
-		to_chat(src, SPAN("warning", "You cannot leap in your current state."))
-		return
-
-	if(!T || !isturf(T.loc) || !src || !isturf(loc))
 		return
 
 	if(istype(T,/mob/living/silicon))
@@ -192,7 +186,7 @@
 
 	T.Weaken(3)
 
-	if(make_grab(src, T))
+	if(ishuman(T) && make_grab(src, T))
 		visible_message(SPAN("danger", "<b>\The [src]</b> seizes [T]!"))
 
 /mob/living/carbon/human/proc/commune()
@@ -217,7 +211,7 @@
 
 	var/mob/M = targets[target]
 
-	if(isghost(M) || M.stat == DEAD)
+	if(isghost(M) || M.is_ic_dead())
 		to_chat(src, "<span class='warning'>Not even a [src.species.name] can speak to the dead.</span>")
 		return
 
@@ -245,7 +239,7 @@
 		src.visible_message("<span class='danger'>[src] hurls out the contents of their stomach!</span>")
 	return
 
-/mob/living/carbon/human/proc/psychic_whisper(mob/M as mob in oview())
+/mob/living/carbon/human/proc/psychic_whisper(mob/M in oview())
 	set name = "Psychic Whisper"
 	set desc = "Whisper silently to someone over a distance."
 	set category = "Abilities"
@@ -307,8 +301,8 @@
 	L.set_next_nymph(S)
 	S.set_last_nymph(L)
 
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop(I, force = TRUE)
 
 	visible_message("<span class='warning'>\The [src] quivers slightly, then splits apart with a wet slithering noise.</span>")
 
@@ -371,8 +365,10 @@
 
 	last_special = world.time + 50
 
-	if(l_hand) unEquip(l_hand)
-	if(r_hand) unEquip(r_hand)
+	if(l_hand)
+		drop_l_hand()
+	if(r_hand)
+		drop_r_hand()
 	to_chat(src, "<span class='warning'>You drop everything as you spring out to nab someone!.</span>")
 
 	playsound(loc, 'sound/weapons/pierce.ogg', 25, 1, -1)
@@ -381,7 +377,7 @@
 	if(prob(90) && src.make_grab(src, T, GRAB_NAB_SPECIAL))
 		T.Weaken(rand(1,3))
 		visible_message("<span class='danger'>\The [src] suddenly lunges out and grabs \the [T]!</span>")
-		LAssailant = src
+		LAssailant = weakref(src)
 
 		src.do_attack_animation(T)
 		playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
@@ -413,8 +409,10 @@
 	if(!hidden)
 		visible_message("[src] shifts \his arms.")
 
-	if(l_hand) unEquip(l_hand)
-	if(r_hand) unEquip(r_hand)
+	if(l_hand)
+		drop_l_hand()
+	if(r_hand)
+		drop_r_hand()
 
 	if(do_after(src, 30))
 		hidden = is_cloaked()
@@ -476,3 +474,66 @@
 			skin_state = SKIN_NORMAL
 	update_skin(1)
 
+/mob/living/carbon/human/proc/breath_death()
+	set name = "Breath Death"
+	set desc = "Infect others with your very breath."
+	set category = "Abilities"
+
+	if (last_special > world.time)
+		to_chat(src, SPAN("warning", "You aren't ready to do that! Wait [round(last_special - world.time) / 10] seconds."))
+		return
+
+	if (incapacitated(INCAPACITATION_DISABLED))
+		to_chat(src, SPAN("warning", "You can't do that while you're incapacitated!"))
+		return
+	if (nutrition < 150)
+		to_chat(src, SPAN("warning", "You are too hungry to spread toxins!"))
+		return
+
+	last_special = world.time + 10 SECONDS
+	nutrition -= 50
+
+	var/turf/T = get_turf(src)
+	var/obj/effect/effect/water/chempuff/chem = new(T)
+	chem.create_reagents(10)
+	chem.reagents.add_reagent(/datum/reagent/toxin/zombie, 2)
+	chem.set_up(get_step(T, dir), 2, 10)
+	playsound(T, 'sound/hallucinations/wail.ogg', 20, 1)
+
+/mob/living/carbon/human/proc/consume()
+	set name = "Consume"
+	set desc = "Regain life by consuming it from others."
+	set category = "Abilities"
+
+	if (last_special > world.time)
+		to_chat(src, SPAN("warning", "You aren't ready to do that! Wait [round(last_special - world.time) / 10] seconds."))
+		return
+
+	if (incapacitated())
+		to_chat(src, SPAN("warning", "You can't do that while you're incapacitated!"))
+		return
+
+	var/mob/living/target
+	for (var/mob/living/L in get_turf(src))
+		if (L != src && (L.lying || L.is_ic_dead()))
+			target = L
+			break
+	if (!target)
+		to_chat(src, SPAN("warning", "You aren't on top of a victim!"))
+		return
+
+	last_special = world.time + 5 SECONDS
+
+	visible_message(SPAN("danger", "\The [src] hunkers down over \the [target], tearing into their flesh."))
+	if(do_mob(src, target, 5 SECONDS))
+		to_chat(target, SPAN("danger", "\The [src] scrapes your flesh from your bones!"))
+		to_chat(src, SPAN("danger", "You feed hungrily off \the [target]'s flesh."))
+		target.adjustBruteLoss(25)
+		if(ishuman(target))
+			for(var/ID in src.virus2)
+				var/datum/disease2/disease/D = src.virus2[ID]
+				infect_virus2(target, D)
+		if(target.getBruteLoss() > target.maxHealth)
+			target.gib()
+		adjustBruteLoss(-25)
+		nutrition += 20

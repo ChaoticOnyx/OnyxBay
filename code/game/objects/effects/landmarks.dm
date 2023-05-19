@@ -7,6 +7,7 @@
 	unacidable = 1
 	simulated = 0
 	invisibility = 101
+	alpha = 128
 
 	var/should_be_added = FALSE
 	var/delete_after = FALSE

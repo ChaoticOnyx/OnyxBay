@@ -18,8 +18,11 @@
 	var/message_queue
 	var/sent_assets = list()
 	// Vars passed to initialize proc (and saved for later)
-	var/inline_assets
-	var/fancy
+	var/initial_fancy
+	var/initial_assets
+	var/initial_inline_html
+	var/initial_inline_js
+	var/initial_inline_css
 
 /**
  * public
@@ -44,21 +47,26 @@
  * state. You can begin sending messages right after initializing. Messages
  * will be put into the queue until the window finishes loading.
  *
- * optional inline_assets list List of assets to inline into the html.
+ * optional assets list List of assets to inline into the html.
  * optional inline_html string Custom HTML to inject.
  * optional fancy bool If TRUE, will hide the window titlebar.
  */
 /datum/tgui_window/proc/initialize(
-		inline_assets = list(),
+		fancy = FALSE,
+		assets = list(),
 		inline_html = "",
-		fancy = FALSE)
+		inline_js = "",
+		inline_css = "")
 	log_tgui(client,
 		context = "[id]/initialize",
 		window = src)
 	if(!client)
 		return
-	src.inline_assets = inline_assets
-	src.fancy = fancy
+	src.initial_fancy = fancy
+	src.initial_assets = assets
+	src.initial_inline_html = inline_html
+	src.initial_inline_js = inline_js
+	src.initial_inline_css = inline_css
 	status = TGUI_WINDOW_LOADING
 	fatally_errored = FALSE
 	// Build window options
@@ -72,19 +80,28 @@
 	var/html = SStgui.basehtml
 	html = replacetextEx(html, "\[tgui:windowId]", id)
 	// Inject inline assets
-	var/inline_assets_str = ""
-	for(var/datum/asset/asset in inline_assets)
+	var/assets_str = ""
+	for(var/datum/asset/asset in assets)
 		for(var/path in asset.assets)
 			// Not encoding since asset strings are considered safe
 			if(copytext(path, -4) == ".css")
-				inline_assets_str += "Byond.loadCss('[path]', true);\n"
+				assets_str += "Byond.loadCss('[path]', true);\n"
 			else if(copytext(path, -3) == ".js")
-				inline_assets_str += "Byond.loadJs('[path]', true);\n"
-	if(length(inline_assets_str))
-		inline_assets_str = "<script>\n" + inline_assets_str + "</script>\n"
-	html = replacetextEx(html, "<!-- tgui:assets -->\n", inline_assets_str)
-	// Inject custom HTML
-	html = replacetextEx(html, "<!-- tgui:html -->\n", inline_html)
+				assets_str += "Byond.loadJs('[path]', true);\n"
+	if(length(assets_str))
+		assets_str = "<script>\n" + assets_str + "</script>\n"
+	html = replacetextEx(html, "<!-- tgui:assets -->\n", assets_str)
+	// Inject inline HTML
+	if (inline_html)
+		html = replacetextEx(html, "<!-- tgui:inline-html -->", inline_html)
+	// Inject inline JS
+	if (inline_js)
+		inline_js = "<script>\n[inline_js]\n</script>"
+		html = replacetextEx(html, "<!-- tgui:inline-js -->", inline_js)
+	// Inject inline CSS
+	if (inline_css)
+		inline_css = "<style>\n[inline_css]\n</style>"
+		html = replacetextEx(html, "<!-- tgui:inline-css -->", inline_css)
 	// Open the window
 	client << browse(html, "window=[id];[options]")
 	// Detect whether the control is a browser
@@ -289,7 +306,7 @@
 		flush_message_queue()
 	// Pass message to UI that requested the lock
 	if(locked && locked_by)
-		var/prevent_default = locked_by.on_message(type, payload, href_list)
+		var/prevent_default = locked_by._on_message(type, payload, href_list)
 		if(prevent_default)
 			return
 	// Pass message to the subscriber
@@ -311,7 +328,12 @@
 			client << link(href_list["url"])
 		if("cacheReloaded")
 			// Reinitialize
-			initialize(inline_assets = inline_assets, fancy = fancy)
+			initialize(
+				fancy = initial_fancy,
+				assets = initial_assets,
+				inline_html = initial_inline_html,
+				inline_js = initial_inline_js,
+				inline_css = initial_inline_css)
 			// Resend the assets
 			for(var/asset in sent_assets)
 				send_asset(asset)

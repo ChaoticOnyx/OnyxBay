@@ -50,7 +50,10 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 //	var/list/lights				// list of all lights on this area
 	var/list/all_doors = null		//Added by Strumpetplaya - Alarm Change - Contains a list of doors adjacent to this area
 	var/air_doors_activated = 0
-	var/list/ambience = list(SFX_AMBIENT_GLOBAL)
+	/// Plays when an area has power.
+	var/list/ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL)
+	/// Plays when an area has no power.
+	var/list/ambience_off = list(SFX_AMBIENT_OFF_GLOBAL)
 	var/list/forced_ambience = null
 	var/sound_env = STANDARD_STATION
 	var/turf/base_turf //The base turf type of the area, which can be used to override the z-level's base turf
@@ -73,7 +76,9 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	power_environ = 0
 	has_gravity = 0
 	area_flags = AREA_FLAG_EXTERNAL
-	ambience = list(SFX_AMBIENT_SPACE)
+	ambient_music_tags = list(MUSIC_TAG_SPACE)
+	ambience_off = list(SFX_AMBIENT_SPACE)
+	ambience_powered = list(SFX_AMBIENT_SPACE)
 
 /area/space/update_icon()
 	return
@@ -101,6 +106,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "centcom"
 	requires_power = 0
 	dynamic_lighting = 0
+	ambient_music_tags = list(MUSIC_TAG_CENTCOMM)
 
 /area/centcom/holding
 	name = "\improper Holding Facility"
@@ -121,7 +127,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	GLOB.hallway += src
 
 /area/medical
-	ambience = list(SFX_AMBIENT_GLOBAL, SFX_AMBIENT_SCIENCE)
+	ambience_powered = list(SFX_AMBIENT_SCIENCE)
 
 /area/medical/virology
 	name = "\improper Virology"
@@ -135,9 +141,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "\improper Security - Brig"
 	icon_state = "brig"
 
-
-
-
 /area/security/prison
 	name = "\improper Security - Prison Wing"
 	icon_state = "sec_prison"
@@ -146,10 +149,12 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	area_flags = AREA_FLAG_RAD_SHIELDED
 	sound_env = TUNNEL_ENCLOSED
 	turf_initializer = /decl/turf_initializer/maintenance
-	ambience = list(SFX_AMBIENT_GLOBAL, SFX_AMBIENT_MAINTENANCE)
+	ambience_off = list(SFX_AMBIENT_OFF_GLOBAL, SFX_AMBIENT_OFF_MAINTENANCE)
+	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE)
+	ambient_music_tags = list(MUSIC_TAG_MYSTIC)
 
 /area/rnd
-	ambience = list(SFX_AMBIENT_GLOBAL, SFX_AMBIENT_SPACE)
+	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_SCIENCE)
 
 /area/rnd/xenobiology
 	name = "\improper Xenobiology Lab"
@@ -192,6 +197,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/syndicate_mothership/elite_squad
 	name = "\improper Syndicate Elite Squad"
 	icon_state = "syndie-elite"
+	area_flags = AREA_FLAG_NO_STATION
 
 ////////////
 //SHUTTLES//
@@ -202,6 +208,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/shuttle
 	requires_power = 0
 	sound_env = SMALL_ENCLOSED
+	area_flags = AREA_FLAG_NO_STATION
 
 /*
 * Special Areas
@@ -211,6 +218,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "yellow"
 	requires_power = 0
 	dynamic_lighting = 0
+	area_flags = AREA_FLAG_NO_STATION
 
 /area/beach
 	name = "Keelin's private beach"
@@ -218,6 +226,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	luminosity = 1
 	dynamic_lighting = 0
 	requires_power = 0
+	area_flags = AREA_FLAG_NO_STATION
 	var/sound/mysound = null
 
 /area/beach/New()
@@ -260,7 +269,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	for(var/mob/living/carbon/human/H in src)
 		if(H.client)
 			mysound.status = SOUND_UPDATE
-			to_chat(H, mysound)
 			if(S)
 				spawn(sound_delay)
 					sound_to(H, S)
@@ -273,3 +281,14 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	luminosity = 1
 	dynamic_lighting = 0
 	requires_power = 0
+	area_flags = AREA_FLAG_NO_STATION
+
+//Abductors
+/area/abductor_ship
+	name = "Abductor Ship"
+	icon_state = "yellow"
+	requires_power = FALSE
+	requires_power = 0
+	dynamic_lighting = 0
+	luminosity = 1
+	area_flags = AREA_FLAG_NO_STATION

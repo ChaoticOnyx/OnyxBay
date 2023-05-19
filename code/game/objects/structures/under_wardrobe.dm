@@ -11,12 +11,12 @@
 
 /obj/structure/undies_wardrobe/attackby(obj/item/underwear/underwear, mob/user)
 	if(istype(underwear))
-		if(!user.unEquip(underwear))
+		if(!user.drop(underwear))
 			return
 		qdel(underwear)
 		user.visible_message("<span class='notice'>\The [user] inserts \their [underwear.name] into \the [src].</span>", "<span class='notice'>You insert your [underwear.name] into \the [src].</span>")
 
-		var/id = user.GetIdCard()
+		var/id = user.get_id_card()
 		var/message
 		if(id)
 			message = "ID card detected. Your underwear quota for this shift as been increased, if applicable."
@@ -28,7 +28,7 @@
 		var/number_of_underwear = LAZYACCESS(amount_of_underwear_by_id_card, id) - 1
 		if(number_of_underwear)
 			LAZYSET(amount_of_underwear_by_id_card, id, number_of_underwear)
-			GLOB.destroyed_event.register(id, src, /obj/structure/undies_wardrobe/proc/remove_id_card)
+			register_signal(id, SIGNAL_QDELETING, /obj/structure/undies_wardrobe/proc/remove_id_card)
 		else
 			remove_id_card(id)
 
@@ -37,7 +37,7 @@
 
 /obj/structure/undies_wardrobe/proc/remove_id_card(id_card)
 	LAZYREMOVE(amount_of_underwear_by_id_card, id_card)
-	GLOB.destroyed_event.unregister(id_card, src, /obj/structure/undies_wardrobe/proc/remove_id_card)
+	unregister_signal(id_card, SIGNAL_QDELETING)
 
 /obj/structure/undies_wardrobe/attack_hand(mob/user)
 	if(!human_who_can_use_underwear(user))
@@ -46,7 +46,7 @@
 	interact(user)
 
 /obj/structure/undies_wardrobe/interact(mob/living/carbon/human/H)
-	var/id = H.GetIdCard()
+	var/id = H.get_id_card()
 
 	var/dat = list()
 	dat += "<b>Underwear</b><br><hr>"
@@ -92,7 +92,7 @@
 		if(!CanInteract(H, state))
 			return
 
-		var/id = H.GetIdCard()
+		var/id = H.get_id_card()
 		if(!id)
 			audible_message("No ID card detected. Unable to acquire your underwear quota for this shift.", WARDROBE_BLIND_MESSAGE(H))
 			return
@@ -104,8 +104,7 @@
 		LAZYSET(amount_of_underwear_by_id_card, id, ++current_quota)
 
 		var/obj/UW = UWI.create_underwear(metadata_list)
-		UW.forceMove(loc)
-		H.put_in_hands(UW)
+		H.pick_or_drop(UW, loc)
 
 		. = TRUE
 

@@ -3,7 +3,7 @@
 /mob/living/carbon/human/proc/wizard_heal(datum/spell/targeted/heal)
 	if(!heal)
 		return
-	radiation += min(radiation, heal.amt_radiation)
+	radiation += heal.amt_radiation
 	regenerate_blood(heal.amt_blood)
 	adjustBrainLoss(heal.amt_brain)
 	for(var/A in organs)
@@ -18,7 +18,7 @@
 		if(E.status & ORGAN_TENDON_CUT && heal.heal_bones)
 			E.status &= ~ORGAN_TENDON_CUT
 		if(E.status & ORGAN_BROKEN && heal.heal_bones) // some calcium
-			E.status &= ~ORGAN_BROKEN
+			E.mend_fracture()
 			E.stage = 0
 	for(var/A in internal_organs)
 		var/obj/item/organ/internal/E = A

@@ -130,7 +130,7 @@
 			switch(chosen)
 				if(MATERIAL_IRON)
 					while(amt_iron > 0 && coinsToProduce > 0)
-						new /obj/item/weapon/coin/iron(M)
+						new /obj/item/material/coin/iron(M)
 						amt_iron -= 20
 						coinsToProduce--
 						newCoins++
@@ -138,7 +138,7 @@
 						sleep(5);
 				if(MATERIAL_GOLD)
 					while(amt_gold > 0 && coinsToProduce > 0)
-						new /obj/item/weapon/coin/gold(M)
+						new /obj/item/material/coin/gold(M)
 						amt_gold -= 20
 						coinsToProduce--
 						newCoins++
@@ -146,7 +146,7 @@
 						sleep(5);
 				if(MATERIAL_SILVER)
 					while(amt_silver > 0 && coinsToProduce > 0)
-						new /obj/item/weapon/coin/silver(M)
+						new /obj/item/material/coin/silver(M)
 						amt_silver -= 20
 						coinsToProduce--
 						newCoins++
@@ -154,7 +154,7 @@
 						sleep(5);
 				if(MATERIAL_DIAMOND)
 					while(amt_diamond > 0 && coinsToProduce > 0)
-						new /obj/item/weapon/coin/diamond(M)
+						new /obj/item/material/coin/diamond(M)
 						amt_diamond -= 20
 						coinsToProduce--
 						newCoins++
@@ -162,7 +162,7 @@
 						sleep(5);
 				if(MATERIAL_PLASMA)
 					while(amt_plasma > 0 && coinsToProduce > 0)
-						new /obj/item/weapon/coin/plasma(M)
+						new /obj/item/material/coin/plasma(M)
 						amt_plasma -= 20
 						coinsToProduce--
 						newCoins++
@@ -170,7 +170,7 @@
 						sleep(5);
 				if(MATERIAL_URANIUM)
 					while(amt_uranium > 0 && coinsToProduce > 0)
-						new /obj/item/weapon/coin/uranium(M)
+						new /obj/item/material/coin/uranium(M)
 						amt_uranium -= 20
 						coinsToProduce--
 						newCoins++

@@ -19,8 +19,13 @@
 
 	virtual_mob = null // Hear no evil, speak no evil
 
-/mob/new_player/New()
-	. = ..()
+/mob/new_player/Initialize(mapload)
+	SHOULD_CALL_PARENT(FALSE)
+
+	if(atom_flags & ATOM_FLAG_INITIALIZED)
+		util_crash_with("Warning: [src]([type]) initialized multiple times!")
+	atom_flags |= ATOM_FLAG_INITIALIZED
+
 	verbs += /mob/proc/toggle_antag_pool
 	verbs += /mob/proc/join_as_actor
 	verbs += /mob/proc/join_response_team
@@ -34,6 +39,7 @@
 	var/output = "<div align='center'>"
 	output +="<hr>"
 	output += "<p><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A></p>"
+	output += "<p><a href='byond://?src=\ref[src];show_settings=1'>Settings</a></p>"
 
 	if(GAME_STATE <= RUNLEVEL_LOBBY)
 		if(ready)
@@ -73,7 +79,7 @@
 			totalPlayersReady = 0
 			for(var/mob/new_player/player in GLOB.player_list)
 				var/highjob
-				if(player.client && player.client.prefs && player.client.prefs.job_high)
+				if(player.client?.prefs?.job_high)
 					highjob = " as [player.client.prefs.job_high]"
 				stat("[player.key]", (player.ready)?("(Playing[highjob])"):(null))
 				totalPlayers++
@@ -87,7 +93,11 @@
 		return 0
 
 	if(href_list["show_preferences"])
-		client.prefs.ShowChoices(src)
+		client.prefs.open_setup_window(src)
+		return 1
+
+	if(href_list["show_settings"])
+		client.settings.tgui_interact(src)
 		return 1
 
 	if(href_list["ready"])
@@ -124,7 +134,7 @@
 		if (!SSeams.CheckForAccess(client))
 			return
 
-		if(!config.respawn_delay || client.holder || alert(src,"Are you sure you wish to observe? You will have to wait [config.respawn_delay] minute\s before being able to respawn!","Player Setup","Yes","No") == "Yes")
+		if(!config.misc.respawn_delay || client.holder || alert(src,"Are you sure you wish to observe? You will have to wait [config.misc.respawn_delay] minute\s before being able to respawn!","Player Setup","Yes","No") == "Yes")
 			if(!client)	return 1
 			var/mob/observer/ghost/observer = new()
 
@@ -142,24 +152,24 @@
 				to_chat(src, "<span class='danger'>Could not locate an observer spawn point. Use the Teleport verb to jump to the map.</span>")
 			observer.timeofdeath = world.time // Set the time of death so that the respawn timer works correctly.
 
-			if(isnull(client.holder))
+			if(QDELETED(client.holder))
 				announce_ghost_joinleave(src)
 
 			var/mob/living/carbon/human/dummy/mannequin = get_mannequin(client.ckey)
 			if(mannequin)
 				client.prefs.dress_preview_mob(mannequin)
 				observer.set_appearance(mannequin)
-				qdel(mannequin)
 
 			if(client.prefs.be_random_name)
 				client.prefs.real_name = random_name(client.prefs.gender)
 			observer.real_name = client.prefs.real_name
 			observer.SetName(observer.real_name)
-			if(!client.holder && !config.antag_hud_allowed)           // For new ghosts we remove the verb from even showing up if it's not allowed.
+			if(!client.holder && !config.ghost.allow_antag_hud)           // For new ghosts we remove the verb from even showing up if it's not allowed.
 				observer.verbs -= /mob/observer/ghost/verb/toggle_antagHUD        // Poor guys, don't know what they are missing!
 			observer.key = key
 			var/obj/screen/splash/S = new(observer.client, TRUE)
 			S.Fade(TRUE, TRUE)
+			QDEL_NULL(mind)
 			qdel(src)
 
 			return 1
@@ -207,7 +217,7 @@
 				to_chat (usr, "<span class='danger'>There is a character that already exists with the same name: <b>[C.real_name]</b>, please join with a different one.</span>")
 				return
 
-		if(!config.enter_allowed)
+		if(!config.game.enter_allowed)
 			to_chat(usr, "<span class='notice'>There is an administrative lock on entering the game!</span>")
 			return
 		if(SSticker && SSticker.mode && SSticker.mode.explosion_in_progress)
@@ -217,8 +227,8 @@
 		var/datum/species/S = all_species[client.prefs.species]
 		if(!check_species_allowed(S))
 			return 0
-		var/role = job.title
-		if(role == "Captain" || role == "Head of Personnel" || role == "Chief Engineer" || role == "Chief Medical Officer" || role == "Research Director" || role == "Head of Security")
+
+		if(job.title in GLOB.command_positions)
 			SSwarnings.show_warning(client, WARNINGS_HEADS, "window=Warning;size=440x300;can_resize=0;can_minimize=0")
 
 		AttemptLateSpawn(job, client.prefs.spawnpoint)
@@ -331,13 +341,9 @@
 
 	return 1
 
-/mob/new_player/proc/get_branch_pref()
-	if(client)
-		return client.prefs.char_branch
-
 /mob/new_player/proc/get_rank_pref()
 	if(client)
-		return client.prefs.char_rank
+		return "None"
 
 /mob/new_player/proc/AttemptLateSpawn(datum/job/job, spawning_at)
 	if(src != usr)
@@ -345,7 +351,7 @@
 	if(GAME_STATE != RUNLEVEL_GAME)
 		to_chat(usr, "<span class='warning'>The round is either not ready, or has already finished...</span>")
 		return 0
-	if(!config.enter_allowed)
+	if(!config.game.enter_allowed)
 		to_chat(usr, "<span class='notice'>There is an administrative lock on entering the game!</span>")
 		return 0
 
@@ -360,12 +366,13 @@
 	if(job.latejoin_at_spawnpoints)
 		var/obj/S = job_master.get_roundstart_spawnpoint(job.title)
 		spawn_turf = get_turf(S)
-	var/radlevel = SSradiation.get_rads_at_turf(spawn_turf)
+
+	var/dose = SSradiation.get_total_absorbed_dose_at_turf(spawn_turf, AVERAGE_HUMAN_WEIGHT)
 	var/airstatus = IsTurfAtmosUnsafe(spawn_turf)
-	if(airstatus || radlevel > 0 )
+	if(airstatus || dose > SAFE_RADIATION_DOSE )
 		var/reply = alert(usr, "Warning. Your selected spawn location seems to have unfavorable conditions. \
 		You may die shortly after spawning. \
-		Spawn anyway? More information: [airstatus] Radiation: [radlevel] Bq", "Atmosphere warning", "Abort", "Spawn anyway")
+		Spawn anyway? More information: [airstatus] Radiation: [fmt_siunit(dose, "Gy/s", 3)]", "Atmosphere warning", "Abort", "Spawn anyway")
 		if(reply == "Abort")
 			return 0
 		else
@@ -449,7 +456,9 @@
 		if(job && IsJobAvailable(job))
 			if(job.minimum_character_age && (client.prefs.age < job.minimum_character_age))
 				continue
-			if(job.faction_restricted && (client.prefs.faction != GLOB.using_map.company_name || (client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
+			if(job.faction_restricted && (client.prefs.background != GLOB.using_map.company_name || (client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
+				continue
+			if(job.no_latejoin)
 				continue
 
 			var/active = 0
@@ -524,8 +533,8 @@
 	sound_to(src, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))// MAD JAMS cant last forever yo
 
 	if(mind)
-		mind.active = 0					//we wish to transfer the key manually
-		mind.original = new_character
+		mind.active = FALSE // we wish to transfer the key manually
+		mind.original_mob = weakref(new_character)
 		if(client.prefs.memory)
 			mind.store_memory(client.prefs.memory)
 		if(client.prefs.relations.len && mind.may_have_relations())
@@ -558,7 +567,7 @@
 	S.Fade(TRUE, TRUE)
 
 	// Give them their cortical stack if we're using them.
-	if(config && config.use_cortical_stacks && new_character.client && new_character.client.prefs.has_cortical_stack /*&& new_character.should_have_organ(BP_BRAIN)*/)
+	if(config && config.revival.use_cortical_stacks && new_character.client && new_character.client.prefs.has_cortical_stack /*&& new_character.should_have_organ(BP_BRAIN)*/)
 		new_character.create_stack()
 
 	return new_character
@@ -575,7 +584,7 @@
 	return 0
 
 /mob/new_player/proc/close_spawn_windows()
-	show_browser(src, null, "window=latechoices") //closes late choices window
+	close_browser(src, "window=latechoices") //closes late choices window
 	panel.close()
 
 /mob/new_player/has_admin_rights()
@@ -630,3 +639,6 @@
 
 /mob/new_player/say(message)
 	sanitize_and_communicate(/decl/communication_channel/ooc, client, message)
+
+/mob/new_player/is_eligible_for_antag_spawn(antag_id)
+	return TRUE

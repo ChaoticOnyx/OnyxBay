@@ -11,6 +11,9 @@
 	name = "Basic"
 	sort_order = 1
 
+/datum/category_item/player_setup_item/general/proc/has_flag(datum/species/mob_species, flag)
+	return mob_species && (mob_species.appearance_flags & flag)
+
 /datum/category_item/player_setup_item/general/basic/load_character(datum/pref_record_reader/R)
 	pref.real_name =      R.read("real_name")
 	pref.be_random_name = R.read("name_is_always_random")
@@ -59,7 +62,7 @@
 	. += "<b>Body Build:</b> <a href='?src=\ref[src];body_build=1'><b>[pref.body]</b></a><br>"
 	. += "<b>Age:</b> <a href='?src=\ref[src];age=1'>[pref.age]</a><br>"
 	. += "<b>Spawn Point</b>: <a href='?src=\ref[src];spawnpoint=1'>[pref.spawnpoint]</a><br>"
-	if(config.allow_Metadata)
+	if(config.character_setup.allow_metadata)
 		. += "<b>OOC Notes:</b> <a href='?src=\ref[src];metadata=1'> Edit </a><br>"
 	. = jointext(.,null)
 

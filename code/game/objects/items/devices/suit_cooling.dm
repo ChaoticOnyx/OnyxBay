@@ -16,8 +16,8 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 5.0
 	throwforce = 10.0
-	throw_speed = 1
 	throw_range = 4
+	throw_speed = 2
 	action_button_name = "Toggle Heatsink"
 
 	matter = list(MATERIAL_STEEL = 15000, MATERIAL_GLASS = 3500)
@@ -25,29 +25,31 @@
 
 	var/on = 0								//is it turned on?
 	var/cover_open = 0						//is the cover open?
-	var/obj/item/weapon/cell/cell
+	var/obj/item/cell/cell
 	var/max_cooling = 12					// in degrees per second - probably don't need to mess with heat capacity here
-	var/charge_consumption = 2 KILOWATTS	// energy usage at full power
-	var/thermostat = T20C
+	var/charge_consumption = 2 KILO WATTS	// energy usage at full power
+	var/thermostat = 20 CELSIUS
 
 /obj/item/device/suit_cooling_unit/ui_action_click()
 	toggle(usr)
 
 /obj/item/device/suit_cooling_unit/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
-	cell = new /obj/item/weapon/cell/high()		// 10K rated cell.
-	cell.forceMove(src)
+	cell = new /obj/item/cell/high(src)
+	if(on)
+		set_next_think(world.time)
 
 /obj/item/device/suit_cooling_unit/Destroy()
-	. = ..()
-	STOP_PROCESSING(SSobj, src)
+	QDEL_NULL(cell)
+	return ..()
 
-/obj/item/device/suit_cooling_unit/Process()
+/obj/item/device/suit_cooling_unit/think()
 	if (!on || !cell)
+		turn_off(1)
 		return
 
 	if (!is_in_slot())
+		turn_off(1)
 		return
 
 	var/mob/living/carbon/human/H = loc
@@ -55,6 +57,7 @@
 	var/temp_adj = min(H.bodytemperature - thermostat, max_cooling)
 
 	if (temp_adj < 0.5)	//only cools, doesn't heat, also we don't need extreme precision
+		set_next_think(world.time + 1 SECOND)
 		return
 
 	var/charge_usage = (temp_adj/max_cooling)*charge_consumption
@@ -66,6 +69,9 @@
 
 	if(cell.charge <= 0)
 		turn_off(1)
+		return
+
+	set_next_think(world.time + 1 SECOND)
 
 // Checks whether the cooling unit is being worn on the back/suit slot.
 // That way you can't carry it in your hands while it's running to cool yourself down.
@@ -84,16 +90,18 @@
 
 	on = 1
 	update_icon()
+	set_next_think(world.time)
 
 /obj/item/device/suit_cooling_unit/proc/turn_off(failed)
 	if(failed) visible_message("\The [src] clicks and whines as it powers down.")
 	on = 0
 	update_icon()
+	set_next_think(0)
 
 /obj/item/device/suit_cooling_unit/attack_self(mob/user)
 	if(cover_open && cell)
 		if(ishuman(user))
-			user.put_in_hands(cell)
+			user.pick_or_drop(cell)
 		else
 			cell.forceMove(get_turf(src))
 
@@ -114,7 +122,7 @@
 		turn_on()
 	to_chat(user, "<span class='notice'>You switch \the [src] [on ? "on" : "off"].</span>")
 
-/obj/item/device/suit_cooling_unit/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/device/suit_cooling_unit/attackby(obj/item/W as obj, mob/user as mob)
 	if(isScrewdriver(W))
 		if(cover_open)
 			cover_open = 0
@@ -125,13 +133,11 @@
 		update_icon()
 		return
 
-	if (istype(W, /obj/item/weapon/cell))
+	if (istype(W, /obj/item/cell))
 		if(cover_open)
 			if(cell)
 				to_chat(user, "There is a [cell] already installed here.")
-			else
-				user.drop_item()
-				W.forceMove(src)
+			else if(user.drop(W, src))
 				cell = W
 				to_chat(user, "You insert the [cell].")
 		update_icon()
@@ -168,7 +174,7 @@
 			overlays.Add("battery-5")
 
 
-/obj/item/device/suit_cooling_unit/examine(mob/user)
+/obj/item/device/suit_cooling_unit/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return

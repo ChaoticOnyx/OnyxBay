@@ -99,7 +99,7 @@
 /datum/robot_component/cell
 	name = "power cell"
 	max_damage = 50
-	var/obj/item/weapon/cell/stored_cell = null
+	var/obj/item/cell/stored_cell = null
 
 /datum/robot_component/cell/destroy()
 	..()
@@ -195,7 +195,7 @@
 	return C && C.installed == 1 && C.toggled && C.is_powered()
 
 // Returns component by it's string name
-/mob/living/silicon/robot/proc/get_component(component_name)
+/mob/living/silicon/robot/proc/get_robot_component(component_name)
 	var/datum/robot_component/C = components[component_name]
 	return C
 

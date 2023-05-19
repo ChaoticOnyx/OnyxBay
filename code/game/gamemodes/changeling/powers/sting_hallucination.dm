@@ -1,21 +1,14 @@
 
-/mob/proc/prepare_changeling_lsdsting()
-	set category = "Changeling"
-	set name = "Hallucination Sting (15)"
-	set desc = "Causes terror in the target."
+/datum/changeling_power/toggled/sting/hallucination
+	name = "Hallucination Sting"
+	desc = "Causes terror in the target."
+	icon_state = "ling_sting_hallucination"
+	required_chems = 30
 
-	if(changeling_is_incapacitated())
-		return
+/datum/changeling_power/toggled/sting/hallucination/sting_target(mob/living/carbon/human/target, loud = FALSE)
+	if(!..())
+		return FALSE
 
-	change_ctate(/datum/click_handler/changeling/changeling_lsdsting)
-
-/mob/proc/changeling_lsdsting(mob/living/carbon/human/T)
-	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/prepare_changeling_lsdsting, T, 15)
-	if(!target)
-		return
-
-	spawn(rand(300, 600))
-		if(target)
-			target.hallucination(400, 80)
+	addtimer(CALLBACK(target, /mob/living/carbon/human/proc/delayed_hallucinations), rand(30, 60) SECONDS)
 
 	feedback_add_details("changeling_powers", "HS")

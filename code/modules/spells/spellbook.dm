@@ -2,25 +2,24 @@
 // so we do this instead.
 var/list/artefact_feedback = list(
 	/obj/structure/closet/wizard/armor        = "HS",
-	/obj/item/weapon/gun/energy/staff/focus   = "MF",
-	/obj/item/weapon/monster_manual           = "MA",
-	/obj/item/weapon/magic_rock               = "RA",
-	/obj/item/weapon/contract/apprentice      = "CP",
+	/obj/item/gun/energy/staff/focus   = "MF",
+	/obj/item/monster_manual           = "MA",
+	/obj/item/magic_rock               = "RA",
+	/obj/item/contract/apprentice      = "CP",
 	/obj/structure/closet/wizard/souls        = "SS",
-	/obj/item/weapon/contract/wizard/tk       = "TK",
+	/obj/item/contract/wizard/tk       = "TK",
 	/obj/structure/closet/wizard/scrying      = "SO",
-	/obj/item/weapon/teleportation_scroll     = "TS",
-	/obj/item/weapon/gun/energy/staff         = "ST",
-	/obj/item/weapon/gun/energy/staff/animate = "SA",
-	/obj/item/weapon/dice/d20/cursed          = "DW"
+	/obj/item/teleportation_scroll     = "TS",
+	/obj/item/gun/energy/staff         = "ST",
+	/obj/item/gun/energy/staff/animate = "SA",
+	/obj/item/dice/d20/cursed          = "DW"
 )
 
-/obj/item/weapon/spellbook
+/obj/item/spellbook
 	name = "spell book"
 	desc = "The legendary book of spells of the wizard."
 	icon = 'icons/obj/library.dmi'
 	icon_state = "spellbook"
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	var/uses = 1
@@ -29,7 +28,7 @@ var/list/artefact_feedback = list(
 	/// A path of spell/artifact or whatever we inspecting in the UI.
 	var/inspecting_path = null
 
-/obj/item/weapon/spellbook/tgui_data(mob/user)
+/obj/item/spellbook/tgui_data(mob/user)
 	var/datum/wizard/W = user.mind.wizard
 
 	var/list/data = list(
@@ -66,7 +65,7 @@ var/list/artefact_feedback = list(
 
 	return data
 
-/obj/item/weapon/spellbook/tgui_static_data(mob/user)
+/obj/item/spellbook/tgui_static_data(mob/user)
 	var/list/data = list(
 		"classes" = list()
 	)
@@ -77,7 +76,7 @@ var/list/artefact_feedback = list(
 
 	return data
 
-/obj/item/weapon/spellbook/tgui_act(action, list/params)
+/obj/item/spellbook/tgui_act(action, list/params)
 	. = ..()
 	if(.)
 		return
@@ -108,7 +107,7 @@ var/list/artefact_feedback = list(
 			make_contract(usr, text2path(params["path"]))
 			return TRUE
 
-/obj/item/weapon/spellbook/proc/make_contract(mob/user, spell_path)
+/obj/item/spellbook/proc/make_contract(mob/user, spell_path)
 	var/datum/wizard/W = user.mind.wizard
 	var/spell_cost = W.class.get_spell_cost(spell_path)
 
@@ -116,13 +115,12 @@ var/list/artefact_feedback = list(
 	ASSERT(W.can_spend(spell_cost))
 
 	W.spend(spell_cost)
-	var/obj/O = new /obj/item/weapon/contract/boon(get_turf(user), spell_path)
+	var/obj/O = new /obj/item/contract/boon(get_turf(user), spell_path)
 	to_chat(user, "You have purchased \the [O].")
 
-/obj/item/weapon/spellbook/proc/upgrade_spell(mob/user, datum/spell/path, upgrade_type)
+/obj/item/spellbook/proc/upgrade_spell(mob/user, datum/spell/path, upgrade_type)
 	var/datum/wizard/W = user.mind.wizard
 	var/datum/spell/spell_to_upgrade = null
-
 
 	ASSERT(path in subtypesof(/datum/spell))
 
@@ -142,18 +140,20 @@ var/list/artefact_feedback = list(
 		to_chat(user, SPAN("warning", "You don't have enough points to upgrade the spell!"))
 		return
 
+
 	W.spend(1)
+	var/upgrade_message
 	switch(upgrade_type)
 		if(SP_POWER)
-			ASSERT(spell_to_upgrade.empower_spell())
-			to_chat(user, "You empower [spell_to_upgrade]!")
+			upgrade_message = spell_to_upgrade.empower_spell()
+			to_chat(user, (upgrade_message || "You empower [spell_to_upgrade]!"))
 		if(SP_SPEED)
-			ASSERT(spell_to_upgrade.quicken_spell())
-			to_chat(user, "You quicken [spell_to_upgrade]!")
+			upgrade_message = spell_to_upgrade.quicken_spell()
+			to_chat(user, (upgrade_message || "You quicken [spell_to_upgrade]!"))
 		else
 			CRASH("Unknown upgrade type [upgrade_type]")
 
-/obj/item/weapon/spellbook/proc/reset_class(mob/user)
+/obj/item/spellbook/proc/reset_class(mob/user)
 	var/datum/wizard/W = user.mind.wizard
 	var/area/wizard_station/A = get_area(user)
 
@@ -169,7 +169,7 @@ var/list/artefact_feedback = list(
 	to_chat(user, "All spells have been removed. You may now memorize a new set of spells.")
 	feedback_add_details("wizard_class_reset", "UM")
 
-/obj/item/weapon/spellbook/proc/buy_spell(mob/user, datum/spell/path)
+/obj/item/spellbook/proc/buy_spell(mob/user, datum/spell/path)
 	var/datum/wizard/W = user.mind.wizard
 
 	ASSERT(path in subtypesof(/datum/spell))
@@ -190,7 +190,7 @@ var/list/artefact_feedback = list(
 	user.add_spell(new_spell)
 	to_chat(user, "You learn the spell [new_spell].")
 
-/obj/item/weapon/spellbook/proc/set_wizard_class(mob/user, datum/wizard_class/path)
+/obj/item/spellbook/proc/set_wizard_class(mob/user, datum/wizard_class/path)
 	ASSERT(path in subtypesof(/datum/wizard_class))
 
 	if(user.mind.wizard.class)
@@ -201,7 +201,7 @@ var/list/artefact_feedback = list(
 	feedback_add_details("wizard_class_choose", user.mind.wizard.class.feedback_tag)
 	to_chat(user, SPAN("notice", "You are now \a [user.mind.wizard.class.name]!"))
 
-/obj/item/weapon/spellbook/proc/buy_artifact(mob/user, obj/path)
+/obj/item/spellbook/proc/buy_artifact(mob/user, obj/path)
 	var/datum/wizard/W = user.mind.wizard
 
 	ASSERT(W.class.has_artifact(path))
@@ -216,25 +216,25 @@ var/list/artefact_feedback = list(
 	var/obj/A = new path(get_turf(usr))
 	to_chat(user, "You have purchased \a [A].")
 
-/obj/item/weapon/spellbook/tgui_interact(mob/user, datum/tgui/ui)
+/obj/item/spellbook/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 
 	if(!ui)
 		ui = new(user, src, "SpellBook", name)
 		ui.open()
 
-/obj/item/weapon/spellbook/tgui_state(mob/user)
+/obj/item/spellbook/tgui_state(mob/user)
 	if(!GLOB.wizards.is_antagonist(user.mind))
 		return UI_CLOSE
 
 	return ..()
 
-/obj/item/weapon/spellbook/tgui_assets(mob/user)
+/obj/item/spellbook/tgui_assets(mob/user)
 	return list(
 		get_asset_datum(/datum/asset/simple/reaver)
 	)
 
-/obj/item/weapon/spellbook/attack_self(mob/user)
+/obj/item/spellbook/attack_self(mob/user)
 	if(!GLOB.wizards.is_antagonist(user.mind))
 		to_chat(user, "You can't make heads or tails of this book.")
 		return

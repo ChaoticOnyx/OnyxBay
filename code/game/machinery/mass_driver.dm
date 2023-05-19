@@ -7,8 +7,8 @@
 	icon_state = "mass_driver"
 	layer = BELOW_OBJ_LAYER
 	anchored = 1.0
-	idle_power_usage = 2
-	active_power_usage = 50
+	idle_power_usage = 2 WATTS
+	active_power_usage = 50 WATTS
 
 	var/power = 1.0
 	var/code = 1.0
@@ -41,8 +41,7 @@
 					to_chat(M, "<span class='notice'>The mass driver lets out a screech, it mustn't be able to handle any more items.</span>")
 				break
 			use_power_oneoff(500)
-			spawn( 0 )
-				O.throw_at(target, drive_range * power, power)
+			O.throw_at(target, drive_range * power, (1 / power))
 	flick("mass_driver1", src)
 	return
 

@@ -100,13 +100,19 @@
 	if(stripping)
 		if(!istype(target_slot))  // They aren't holding anything valid and there's nothing to remove, why are we even here?
 			return
-		if(!target_slot.mob_can_unequip(src, text2num(slot_to_strip_text), disable_warning=1))
+		if(!target_slot.can_be_unequipped_by(src, text2num(slot_to_strip_text), disable_warning=1))
 			to_chat(user, "<span class='warning'>You cannot remove \the [src]'s [target_slot.name].</span>")
 			return
 
 		visible_message("<span class='danger'>\The [user] is trying to remove \the [src]'s [target_slot.name]!</span>")
 	else
-		if(text2num(slot_to_strip_text) == slot_wear_mask && istype(held, /obj/item/weapon/grenade))
+		if(istype(held, /obj/item/holder))
+			var/obj/item/holder/IH = held
+			for(var/mob/M in IH.contents)
+				if(M == src)
+					to_chat(user, SPAN("warning", "[src] is way too physical to be fractalized like that."))
+					return
+		else if(istype(held, /obj/item/grenade) && text2num(slot_to_strip_text) == slot_wear_mask)
 			visible_message("<span class='danger'>\The [user] is trying to put \a [held] in \the [src]'s mouth!</span>")
 		else
 			visible_message("<span class='danger'>\The [user] is trying to put \a [held] on \the [src]!</span>")
@@ -115,13 +121,13 @@
 		return
 
 	if(stripping)
-		if(unEquip(target_slot))
+		if(drop(target_slot))
 			admin_attack_log(user, src, "Stripped \a [target_slot]", "Was stripped of \a [target_slot].", "stripped \a [target_slot] from")
-			if(!isAggresiveStrip(user))
+			if(!isAggresiveStrip(user) && user.IsAdvancedToolUser(TRUE))
 				user.put_in_active_hand(target_slot)
 		else
 			admin_attack_log(user, src, "Attempted to strip \a [target_slot]", "Target of a failed strip of \a [target_slot].", "attempted to strip \a [target_slot] from")
-	else if(user.unEquip(held))
+	else if(user.drop(held))
 		var/obj/item/clothing/C = get_equipped_item(text2num(slot_to_strip_text))
 		if(istype(C) && C.can_attach_accessory(held))
 			C.attach_accessory(user, held)
@@ -136,13 +142,13 @@
 		to_chat(user, "<span class='warning'>\The [src] has nothing in their pockets.</span>")
 		return
 	if(r_store)
-		unEquip(r_store)
+		drop(r_store)
 	if(l_store)
-		unEquip(l_store)
+		drop(l_store)
 	visible_message("<span class='danger'>\The [user] empties [src]'s pockets!</span>")
 
 /mob/living/carbon/human/proc/place_in_pockets(obj/item/I, mob/living/user)
-	if(!user.unEquip(I))
+	if(I.loc == user && !user.drop(I))
 		return
 	if(!r_store)
 		if(equip_to_slot_if_possible(I, slot_r_store, del_on_fail=0, disable_warning=1, redraw_mob=1))
@@ -172,7 +178,7 @@
 	for(var/obj/item/organ/external/o in organs)
 		if (o && o.splinted)
 			var/obj/item/S = o.splinted
-			if(!istype(S) || S.loc != o) //can only remove splints that are actually worn on the organ (deals with hardsuit splints)
+			if(!istype(S) || S.loc != o) //can only remove splints that are actually worn on the organ (deals with powersuit splints)
 				to_chat(user, "<span class='warning'>You cannot remove any splints on [src]'s [o.name] - [o.splinted] is supporting some of the breaks.</span>")
 			else
 				S.add_fingerprint(user)
@@ -196,11 +202,11 @@
 		if(!(istype(wear_mask, /obj/item/clothing/mask) || istype(head, /obj/item/clothing/head/helmet/space)))
 			return
 		// Find an internal source.
-		if(istype(back, /obj/item/weapon/tank))
+		if(istype(back, /obj/item/tank))
 			internal = back
-		else if(istype(s_store, /obj/item/weapon/tank))
+		else if(istype(s_store, /obj/item/tank))
 			internal = s_store
-		else if(istype(belt, /obj/item/weapon/tank))
+		else if(istype(belt, /obj/item/tank))
 			internal = belt
 
 	if(internal)

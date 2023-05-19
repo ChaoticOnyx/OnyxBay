@@ -36,14 +36,20 @@
 /datum/uplink_category/medical
 	name = "Medical"
 
-/datum/uplink_category/hardsuit_modules
-	name = "Hardsuit Modules"
+/datum/uplink_category/powersuit_modules
+	name = "Powersuit Modules"
 
 /datum/uplink_category/services
 	name = "Services"
+
+/datum/uplink_category/job
+	name = "Job Specific"
 
 /datum/uplink_category/badassery
 	name = "Badassery"
 
 /datum/uplink_category/telecrystals
 	name = "Telecrystals"
+
+/datum/uplink_category/contracts_equipment
+	name = "Contracts Equipment"

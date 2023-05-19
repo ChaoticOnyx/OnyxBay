@@ -1,7 +1,7 @@
 {
   "recommendations": [
-    "gbasood.byond-dm-language-support",
     "platymuus.dm-langclient",
-    "ms-vscode.powershell-preview"
+    "tamasfe.even-better-toml",
+    "anturk.dmi-editor"
   ]
 }

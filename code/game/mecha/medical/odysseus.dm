@@ -3,6 +3,7 @@
 	name = "Odysseus"
 	icon_state = "odysseus"
 	initial_icon = "odysseus"
+	base_color = "#FFFFFF"
 	step_in = 2
 	max_temperature = 15000
 	health = 120
@@ -12,9 +13,8 @@
 	var/obj/item/clothing/glasses/hud/health/mech/hud
 
 /obj/mecha/medical/odysseus/Initialize()
-	. = ..()
 	hud = new /obj/item/clothing/glasses/hud/health/mech(src)
-	return
+	. = ..()
 
 /obj/mecha/medical/odysseus/moved_inside(mob/living/carbon/human/H)
 	if(..())
@@ -64,7 +64,7 @@
 	name = "Integrated Medical Hud"
 
 
-	process_hud(var/mob/M)
+	process_hud(mob/M)
 /*
 		log_debug("view(M)")
 
@@ -98,7 +98,7 @@
 					break
 
 			holder = patient.hud_list[HEALTH_HUD]
-			if(patient.stat == DEAD)
+			if(patient.is_ic_dead())
 				holder.icon_state = "hudhealth-100"
 				C.images += holder
 			else
@@ -106,7 +106,7 @@
 				C.images += holder
 
 			holder = patient.hud_list[STATUS_HUD]
-			if(patient.stat == DEAD)
+			if(patient.is_ic_dead() || (isundead(patient) && !isfakeliving(patient)))
 				holder.icon_state = "huddead"
 			else if(patient.status_flags & XENO_HOST)
 				holder.icon_state = "hudxeno"

@@ -16,10 +16,10 @@
 	else
 		icon_state = icon_opened
 
-/obj/structure/closet/coffin/attackby(obj/item/weapon/W, mob/user)
+/obj/structure/closet/coffin/attackby(obj/item/W, mob/user)
 	if(opened && !isWelder(W))
 		..()
-	else if(istype(W, /obj/item/weapon/screwdriver))
+	else if(isScrewdriver(W))
 		if(welded)
 			user.visible_message(SPAN("notice", "[user] unscrewed bolts from [src]."))
 			welded = !welded

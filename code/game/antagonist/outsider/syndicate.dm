@@ -22,8 +22,8 @@ GLOBAL_DATUM_INIT(syndies, /datum/antagonist/syndicate, new)
 
 /datum/antagonist/syndicate/Initialize()
 	. = ..()
-	if(config.nuke_min_age)
-		min_player_age = config.nuke_min_age
+	if(config.game.nuke_min_age)
+		min_player_age = config.game.nuke_min_age
 
 /datum/antagonist/syndicate/create_global_objectives()
 	if(!..())
@@ -40,6 +40,6 @@ GLOBAL_DATUM_INIT(syndies, /datum/antagonist/syndicate, new)
 	syndicate.equip(player)
 
 	var/obj/item/device/radio/uplink/U = new(get_turf(player), player.mind, NUCLEAR_TELECRYSTAL_AMOUNT)
-	player.put_in_hands(U)
+	player.pick_or_drop(U)
 
 	return 1

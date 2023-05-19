@@ -13,7 +13,7 @@
 	emote_see = list("shakes its head", "shivers")
 	speak_chance = 1
 	turns_per_move = 10
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/corgi
+	meat_type = /obj/item/reagent_containers/food/meat/corgi
 	meat_amount = 3
 	response_help  = "pets"
 	response_disarm = "bops"
@@ -23,10 +23,11 @@
 	health = 30
 	maxHealth = 30
 	possession_candidate = 1
-	holder_type = /obj/item/weapon/holder/corgi
+	holder_type = /obj/item/holder/corgi
 	var/obj/item/hat
 	var/old_dir
 	var/obj/movement_target
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 //IAN! SQUEEEEEEEEE~
 /mob/living/simple_animal/corgi/Ian
@@ -40,7 +41,7 @@
 	response_harm   = "kicks"
 
 /mob/living/simple_animal/corgi/Move(a, b, flag)
-	..()
+	. = ..()
 	update_hat()
 
 /mob/living/simple_animal/corgi/Life()
@@ -59,7 +60,7 @@
 			if( !movement_target || !(movement_target.loc in oview(src, 3)) )
 				movement_target = null
 				stop_automated_movement = 0
-				for(var/obj/item/weapon/reagent_containers/food/snacks/S in oview(src,3))
+				for(var/obj/item/reagent_containers/food/S in oview(src,3))
 					if(isturf(S.loc) || ishuman(S.loc))
 						movement_target = S
 						break
@@ -141,7 +142,7 @@
 			else
 				healths.icon_state = "health7"
 
-/obj/item/weapon/reagent_containers/food/snacks/meat/corgi
+/obj/item/reagent_containers/food/meat/corgi
 	name = "Corgi meat"
 	desc = "Tastes like... well you know..."
 
@@ -200,7 +201,7 @@
 						if(istype(item_to_add, /obj/item/clothing/head/kitty)) // Tail of kitty ears in not properly aligned
 							to_chat(usr, SPAN_WARNING("[name] cannot wear \the [item_to_add]!"))
 							return
-						usr.unEquip(item_to_add)
+						usr.drop(item_to_add)
 						wear_hat(item_to_add)
 						usr.visible_message(SPAN_WARNING("[usr] puts \the [item_to_add] on [name]."))
 
@@ -218,11 +219,11 @@
 		if(hat)
 			to_chat(user, SPAN_WARNING("[name] is already wearing \the [hat]."))
 			return
-		user.unEquip(O)
+		user.drop(O)
 		wear_hat(O)
 		user.visible_message(SPAN_WARNING("[user] puts \the [O] on [name]."))
 		return
-	if(istype(O, /obj/item/weapon/newspaper))
+	if(istype(O, /obj/item/newspaper))
 		if(!stat)
 			for(var/mob/M in viewers(user, null))
 				if ((M.client && !( M.blinded )))
@@ -266,7 +267,7 @@
 /mob/living/simple_animal/corgi/proc/update_hat()
 	if(!hat)
 		return
-	if(stat == DEAD)
+	if(is_ic_dead())
 		overlays.Cut()
 		hat.dropInto(loc)
 		hat = null

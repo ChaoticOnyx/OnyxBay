@@ -10,7 +10,7 @@
 	psychoscope_dot.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 
 	var/image/psychoscope_scan = new /image('icons/mob/hud.dmi', src, "psychoscope_scan")
-	psychoscope_scan.appearance_flags = RESET_COLOR|RESET_TRANSFORM|KEEP_APART
+	psychoscope_scan.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR | RESET_TRANSFORM | KEEP_APART
 	psychoscope_scan.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 
 	psychoscope_icons[PSYCHOSCOPE_ICON_DOT] = psychoscope_dot
@@ -48,16 +48,16 @@
 	w_class = ITEM_SIZE_NORMAL
 
 	/* ENERGY MANAGEMENT */
-	var/obj/item/weapon/cell/bcell = null
+	var/obj/item/cell/bcell = null
 	var/cell_panel_opened = FALSE
 
 	/* DATA MANAGEMENT */
 	var/selected_lifeform = null			// For UI
 	var/list/scanned = list()				// List of all scanned data, every scanned mob, opened neuromods/techs and etc.
 	var/is_scanning = FALSE					// Must be TRUE while a psychoscope does scan.
-	var/list/accepts_disks = list(/obj/item/weapon/disk/tech_disk,		// Disks which can be inserted into a psychoscope.
-								  /obj/item/weapon/disk/neuromod_disk,
-								  /obj/item/weapon/disk/lifeform_disk)
+	var/list/accepts_disks = list(/obj/item/disk/tech_disk,		// Disks which can be inserted into a psychoscope.
+								  /obj/item/disk/neuromod_disk,
+								  /obj/item/disk/lifeform_disk)
 
 /* OPENING PROCS */
 
@@ -105,7 +105,7 @@
 */
 /obj/item/clothing/glasses/psychoscope/proc/ProbTechs(lifeform_type)
 	if(!lifeform_type)
-		crash_with("lifeform_type must be no null")
+		util_crash_with("lifeform_type must be no null")
 		return
 
 	if(!istext(lifeform_type))
@@ -117,7 +117,7 @@
 	var/datum/lifeform/L = GLOB.lifeforms.Get(lifeform_type)
 
 	if(!L)
-		crash_with("L must be not null")
+		util_crash_with("L must be not null")
 		return
 
 	for(var/scan = 1, scan <= scanned[lifeform_type]["scan_count"], scan++)
@@ -157,14 +157,14 @@
 */
 /obj/item/clothing/glasses/psychoscope/proc/NeuromodsToList(lifeform_type)
 	if(!lifeform_type)
-		crash_with("lifeform_type is null")
+		util_crash_with("lifeform_type is null")
 		return
 
 	if(!istext(lifeform_type))
 		lifeform_type = "[lifeform_type]"
 
 	if(!scanned[lifeform_type])
-		crash_with("trying to get [lifeform_type] but it is not exists")
+		util_crash_with("trying to get [lifeform_type] but it is not exists")
 		return
 
 	if(!scanned[lifeform_type]["opened_neuromods"].len)
@@ -269,14 +269,14 @@
 */
 /obj/item/clothing/glasses/psychoscope/proc/LifeformScanToList(lifeform_type)
 	if(!lifeform_type)
-		crash_with("lifeform_type must be not null")
+		util_crash_with("lifeform_type must be not null")
 		return
 
 	if(!istext(lifeform_type))
 		lifeform_type = "[lifeform_type]"
 
 	if(!scanned[lifeform_type])
-		crash_with("trying to get [lifeform_type] but it is not exists")
+		util_crash_with("trying to get [lifeform_type] but it is not exists")
 		return
 
 	var/datum/lifeform/L = GLOB.lifeforms.Get(lifeform_type)
@@ -305,7 +305,7 @@
 */
 /obj/item/clothing/glasses/psychoscope/proc/IsAlreadyScanned(mob/target)
 	if(!target)
-		crash_with("target must be not null")
+		util_crash_with("target must be not null")
 		return
 
 	if(!scanned || !scanned.len)
@@ -330,11 +330,11 @@
 */
 /obj/item/clothing/glasses/psychoscope/proc/AddScan(datum/lifeform/lifeform, mob/scan_object)
 	if(!lifeform)
-		crash_with("lifeform must be not null")
+		util_crash_with("lifeform must be not null")
 		return
 
 	if(!scan_object)
-		crash_with("scan_object must be not null")
+		util_crash_with("scan_object must be not null")
 		return
 
 	var/res = IsAlreadyScanned(scan_object)
@@ -389,7 +389,7 @@
 	var/image/icon_scan = target.psychoscope_icons[PSYCHOSCOPE_ICON_SCAN]
 
 	if(!icon_scan)
-		crash_with("icon_scan msut be not null")
+		util_crash_with("icon_scan msut be not null")
 		return
 
 	is_scanning = TRUE
@@ -436,7 +436,7 @@
 			to_chat(usr, "Psychoscope's disk slot is already occupied.")
 			return
 
-	var/obj/item/weapon/disk/disk = usr.get_active_hand()
+	var/obj/item/disk/disk = usr.get_active_hand()
 
 	if(!disk || !(disk.type in accepts_disks))
 		return
@@ -472,18 +472,18 @@
 */
 /obj/item/clothing/glasses/psychoscope/proc/SaveLifeformToDisk(lifeform_type)
 	if(!lifeform_type)
-		crash_with("lifeform_type is null")
+		util_crash_with("lifeform_type is null")
 		return
 
 	if(ispath(lifeform_type))
 		lifeform_type = "[lifeform_type]"
 
 	if(!scanned[lifeform_type])
-		crash_with("trying to get [lifeform_type] but it is not exists")
+		util_crash_with("trying to get [lifeform_type] but it is not exists")
 		return
 
-	var/obj/item/weapon/disk/lifeform_disk/lifeform_disk = null
-	lifeform_disk = (locate(/obj/item/weapon/disk/lifeform_disk) in contents)
+	var/obj/item/disk/lifeform_disk/lifeform_disk = null
+	lifeform_disk = (locate(/obj/item/disk/lifeform_disk) in contents)
 
 	if(!lifeform_disk)
 		return
@@ -503,14 +503,14 @@
 */
 /obj/item/clothing/glasses/psychoscope/proc/SaveNeuromodToDisk(neuromod_type)
 	if(!neuromod_type)
-		crash_with("neuromod_type is null")
+		util_crash_with("neuromod_type is null")
 		return
 
 	if(istext(neuromod_type))
 		neuromod_type = text2path(neuromod_type)
 
-	var/obj/item/weapon/disk/neuromod_disk/neuromod_disk = null
-	neuromod_disk = (locate(/obj/item/weapon/disk/neuromod_disk/) in contents)
+	var/obj/item/disk/neuromod_disk/neuromod_disk = null
+	neuromod_disk = (locate(/obj/item/disk/neuromod_disk/) in contents)
 
 	if(!neuromod_disk)
 		return
@@ -530,15 +530,15 @@
 */
 /obj/item/clothing/glasses/psychoscope/proc/SaveTechToDisk(tech_id, tech_level)
 	if(!tech_id)
-		crash_with("tech_id is null")
+		util_crash_with("tech_id is null")
 		return
 
 	if(!tech_level)
-		crash_with("tech_level is null")
+		util_crash_with("tech_level is null")
 		return
 
-	var/obj/item/weapon/disk/tech_disk/tech_disk = null
-	tech_disk = (locate(/obj/item/weapon/disk/tech_disk/) in contents)
+	var/obj/item/disk/tech_disk/tech_disk = null
+	tech_disk = (locate(/obj/item/disk/tech_disk/) in contents)
 
 	if(!tech_disk)
 		return
@@ -638,7 +638,7 @@
 
 /* OVERRIDES */
 
-/obj/item/clothing/glasses/psychoscope/examine(mob/user)
+/obj/item/clothing/glasses/psychoscope/_examine_text(mob/user)
 	. = ..()
 
 	. += "\nThe battery panel is [cell_panel_opened ? "opened" : "closed"]."
@@ -656,7 +656,7 @@
 
 	. = ..()
 
-/obj/item/clothing/glasses/psychoscope/attackby(obj/item/weapon/I, mob/user)
+/obj/item/clothing/glasses/psychoscope/attackby(obj/item/I, mob/user)
 	if(isScrewdriver(I))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 
@@ -668,14 +668,12 @@
 
 		return
 
-	if(istype(I, /obj/item/weapon/cell))
+	if(istype(I, /obj/item/cell))
 		if(cell_panel_opened && !bcell)
 			if(!do_after(user, 10, user, FALSE, TRUE, INCAPACITATION_DEFAULT, FALSE, FALSE))
 				return
-
 			visible_message("[user] inserts \the [I] in \the [src]")
-			user.unEquip(I)
-			I.forceMove(src)
+			user.drop(I, src)
 			bcell = I
 		else
 			to_chat(user, SPAN_NOTICE("Open the battery panel before."))
@@ -729,8 +727,8 @@
 /*
 	Inserting a disk.
 */
-/obj/item/clothing/glasses/psychoscope/attackby(obj/item/weapon/I, mob/user)
-	if(istype(I, /obj/item/weapon/disk))
+/obj/item/clothing/glasses/psychoscope/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/disk))
 		InsertDisk()
 		return
 
@@ -769,14 +767,14 @@
 		data["charge"] = bcell.charge
 		data["max_charge"] = bcell.maxcharge
 
-	var/obj/item/weapon/disk/inserted_disk = null
-	inserted_disk = (locate(/obj/item/weapon/disk) in contents)
+	var/obj/item/disk/inserted_disk = null
+	inserted_disk = (locate(/obj/item/disk) in contents)
 
-	if(istype(inserted_disk, /obj/item/weapon/disk/tech_disk))
+	if(istype(inserted_disk, /obj/item/disk/tech_disk))
 		data["inserted_disk"] = "tech"
-	else if(istype(inserted_disk, /obj/item/weapon/disk/neuromod_disk))
+	else if(istype(inserted_disk, /obj/item/disk/neuromod_disk))
 		data["inserted_disk"] = "neuromod"
-	else if(istype(inserted_disk, /obj/item/weapon/disk/lifeform_disk))
+	else if(istype(inserted_disk, /obj/item/disk/lifeform_disk))
 		data["inserted_disk"] = "lifeform"
 
 	if(selected_lifeform)
@@ -846,5 +844,5 @@
 		var/datum/arranged_hud_process/P = arrange_hud_process(M, 0, GLOB.med_hud_users)
 
 		for(var/mob/living/target in P.Mob.in_view(P.Turf) - M)
-			if(!target.is_dead())
+			if(!target.is_ic_dead())
 				P.Client.images += target.psychoscope_icons[PSYCHOSCOPE_ICON_DOT]

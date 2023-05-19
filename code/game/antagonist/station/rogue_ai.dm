@@ -18,13 +18,13 @@ GLOBAL_DATUM_INIT(malf, /datum/antagonist/rogue_ai, new)
 
 /datum/antagonist/rogue_ai/Initialize()
 	. = ..()
-	if(config.malf_min_age)
-		min_player_age = config.malf_min_age
+	if(config.game.malf_min_age)
+		min_player_age = config.game.malf_min_age
 
-/datum/antagonist/rogue_ai/can_become_antag(datum/mind/player, ignore_role)
-	. = ..(player, ignore_role)
+/datum/antagonist/rogue_ai/can_become_antag(datum/mind/player, ignore_role, max_stat)
+	. = ..()
 	if(jobban_isbanned(player.current, "AI"))
-		return 0
+		return FALSE
 	return .
 
 /datum/antagonist/rogue_ai/build_candidate_list()
@@ -92,7 +92,7 @@ GLOBAL_DATUM_INIT(malf, /datum/antagonist/rogue_ai, new)
 		player.current = new mob_path(get_turf(player.current), null, null, 1)
 		player.transfer_to(player.current)
 		if(holder) qdel(holder)
-	player.original = player.current
+	player.original_mob = weakref(player.current)
 	return player.current
 
 /datum/antagonist/rogue_ai/set_antag_name(mob/living/silicon/player)
@@ -104,4 +104,3 @@ GLOBAL_DATUM_INIT(malf, /datum/antagonist/rogue_ai, new)
 	if (newname)
 		player.fully_replace_character_name(newname)
 	if(player.mind) player.mind.name = player.name
-

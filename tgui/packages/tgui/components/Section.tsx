@@ -5,10 +5,10 @@
  * @license MIT
  */
 
-import { canRender, classes } from 'common/react'
-import { Component, createRef, InfernoNode, RefObject } from 'inferno'
-import { addScrollableNode, removeScrollableNode } from '../events'
-import { BoxProps, computeBoxClassName, computeBoxProps } from './Box'
+import { canRender, classes } from "common/react";
+import { Component, createRef, InfernoNode, RefObject } from "inferno";
+import { addScrollableNode, removeScrollableNode } from "../events";
+import { BoxProps, computeBoxClassName, computeBoxProps } from "./Box";
 
 interface SectionProps extends BoxProps {
   className?: string;
@@ -27,25 +27,25 @@ export class Section extends Component<SectionProps> {
   scrollableRef: RefObject<HTMLDivElement>;
   scrollable: boolean;
 
-  constructor (props) {
-    super(props)
-    this.scrollableRef = createRef()
-    this.scrollable = props.scrollable
+  constructor(props) {
+    super(props);
+    this.scrollableRef = createRef();
+    this.scrollable = props.scrollable;
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (this.scrollable) {
-      addScrollableNode(this.scrollableRef.current)
+      addScrollableNode(this.scrollableRef.current);
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     if (this.scrollable) {
-      removeScrollableNode(this.scrollableRef.current)
+      removeScrollableNode(this.scrollableRef.current);
     }
   }
 
-  render () {
+  render() {
     const {
       className,
       title,
@@ -55,32 +55,33 @@ export class Section extends Component<SectionProps> {
       scrollable,
       children,
       ...rest
-    } = this.props
-    const hasTitle = canRender(title) || canRender(buttons)
+    } = this.props;
+    const hasTitle = canRender(title) || canRender(buttons);
     return (
       <div
         className={classes([
-          'Section',
-          Byond.IS_LTE_IE8 && 'Section--iefix',
-          fill && 'Section--fill',
-          fitted && 'Section--fitted',
-          scrollable && 'Section--scrollable',
+          "Section",
+          Byond.IS_LTE_IE8 && "Section--iefix",
+          fill && "Section--fill",
+          fitted && "Section--fitted",
+          scrollable && "Section--scrollable",
           className,
-          computeBoxClassName(rest)
+          computeBoxClassName(rest),
         ])}
-        {...computeBoxProps(rest)}>
+        {...computeBoxProps(rest)}
+      >
         {hasTitle && (
-          <div className='Section__title'>
-            <span className='Section__titleText'>{title}</span>
-            <div className='Section__buttons'>{buttons}</div>
+          <div className="Section__title">
+            <span className="Section__titleText">{title}</span>
+            <div className="Section__buttons">{buttons}</div>
           </div>
         )}
-        <div className='Section__rest'>
-          <div ref={this.scrollableRef} className='Section__content'>
+        <div className="Section__rest">
+          <div ref={this.scrollableRef} className="Section__content">
             {children}
           </div>
         </div>
       </div>
-    )
+    );
   }
 }

@@ -26,11 +26,12 @@
 
 	faction = "faithless"
 	supernatural = 1
+	bodyparts = /decl/simple_animal_bodyparts/faithless
 
 /mob/living/simple_animal/hostile/faithless/Allow_Spacemove(check_drift = 0)
 	return 1
 
-/mob/living/simple_animal/hostile/faithless/FindTarget()
+/mob/living/simple_animal/hostile/faithless/find_target()
 	. = ..()
 	if(.)
 		audible_emote("wails at [.]")
@@ -48,3 +49,6 @@
 
 /mob/living/simple_animal/hostile/faithless/cult/cultify()
 	return
+
+/decl/simple_animal_bodyparts/faithless
+	hit_zones = list("body", "left appendage", "right appendage", "shadowy tendrils", "head", "right stump", "left stump", "infernal eye")

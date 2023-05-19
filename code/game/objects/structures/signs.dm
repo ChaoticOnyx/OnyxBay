@@ -17,7 +17,6 @@
 		if(3.0)
 			qdel(src)
 			return
-		else
 	return
 
 /obj/structure/sign/attackby(obj/item/W, mob/user)	//deconstruction
@@ -121,6 +120,18 @@
 /obj/structure/sign/firstaid
 	name = "\improper FIRST AID"
 	icon_state = "firstaid"
+
+/obj/structure/sign/colony
+	name = "\improper New Reno Colony sign"
+	icon = 'icons/obj/new-reno-sign.dmi'
+	icon_state = "new_reno_sign"
+	density = 1
+	layer = ABOVE_HUMAN_LAYER
+
+/obj/structure/sign/junglecamo
+	name = "camo netting"
+	icon = 'icons/turf/jungle_turfs.dmi'
+	icon_state = "camo"
 
 /obj/structure/sign/warning
 	name = "\improper WARNING"
@@ -253,6 +264,10 @@
 
 /obj/structure/sign/warning/vent_port
 	name = "\improper EJECTION/VENTING PORT"
+
+/obj/structure/sign/warning/out_of_service
+	name = "\improper OUT OF SERVICE"
+	icon_state = "out_of_service"
 
 /obj/structure/sign/redcross
 	name = "medbay"
@@ -509,7 +524,7 @@
 		claimant = user.real_name
 	..()
 
-/obj/item/sign/medipolma/examine(mob/user)
+/obj/item/sign/medipolma/_examine_text(mob/user)
 	. = ..()
 	if(claimant)
 		. += "\nThis one belongs to Dr.[claimant], MD."

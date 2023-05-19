@@ -11,7 +11,7 @@
 	var/vocal = 1
 
 	//Healing vars
-	var/obj/item/weapon/reagent_containers/glass/reagent_glass = null // Can be set to draw from this for reagents.
+	var/obj/item/reagent_containers/vessel/reagent_glass = null // Can be set to draw from this for reagents.
 	var/injection_amount = 15 // How much reagent do we inject at a time?
 	var/heal_threshold = 10 // Start healing when they have this much damage in a category
 	var/use_beaker = 0 // Use reagents in beaker instead of default treatment agents.
@@ -64,7 +64,7 @@
 		return
 
 	// TODO: Fix bot ai so this check can actually be done somewhen
-	if(H.stat == DEAD)
+	if(H.is_ic_dead())
 		var/list/death_messagevoice = list("No! NO!" = 'sound/voice/medbot/no.ogg', "Live, damnit! LIVE!" = 'sound/voice/medbot/live.ogg', "I... I've never lost a patient before. Not today, I mean." = 'sound/voice/medbot/lost.ogg')
 		var/death_message = pick(death_messagevoice)
 		say(death_message)
@@ -108,16 +108,15 @@
 		icon_state = "medibot[on]"
 
 /mob/living/bot/medbot/attackby(obj/item/O, mob/user)
-	if(istype(O, /obj/item/weapon/reagent_containers/glass))
+	if(istype(O, /obj/item/reagent_containers/vessel))
 		if(locked)
-			to_chat(user, "<span class='notice'>You cannot insert a beaker because the panel is locked.</span>")
+			to_chat(user, "<span class='notice'>You cannot insert a container because the panel is locked.</span>")
 			return
 		if(!isnull(reagent_glass))
-			to_chat(user, "<span class='notice'>There is already a beaker loaded.</span>")
+			to_chat(user, "<span class='notice'>There is already a container loaded.</span>")
 			return
-
-		user.drop_item()
-		O.loc = src
+		if(!user.drop(O, src))
+			return
 		reagent_glass = O
 		to_chat(user, "<span class='notice'>You insert [O].</span>")
 		return
@@ -236,7 +235,7 @@
 	visible_message("<span class='danger'>[src] blows apart!</span>")
 	var/turf/Tsec = get_turf(src)
 
-	new /obj/item/weapon/storage/firstaid(Tsec)
+	new /obj/item/storage/firstaid(Tsec)
 	new /obj/item/device/assembly/prox_sensor(Tsec)
 	new /obj/item/device/healthanalyzer(Tsec)
 	if (prob(50))
@@ -256,7 +255,7 @@
 	if(!..())
 		return 0
 
-	if(H.stat == DEAD) // He's dead, Jim
+	if(H.is_ic_dead()) // He's dead, Jim
 		return 0
 
 	if(emagged)
@@ -283,7 +282,7 @@
 
 /* Construction */
 
-/obj/item/weapon/storage/firstaid/attackby(obj/item/robot_parts/S, mob/user as mob)
+/obj/item/storage/firstaid/attackby(obj/item/robot_parts/S, mob/user as mob)
 	if ((!istype(S, /obj/item/robot_parts/l_arm)) && (!istype(S, /obj/item/robot_parts/r_arm)))
 		..()
 		return
@@ -292,25 +291,25 @@
 		to_chat(user, "<span class='notice'>You need to empty [src] out first.</span>")
 		return
 
-	var/obj/item/weapon/firstaid_arm_assembly/A = new /obj/item/weapon/firstaid_arm_assembly
-	if(istype(src, /obj/item/weapon/storage/firstaid/fire))
+	var/obj/item/firstaid_arm_assembly/A = new /obj/item/firstaid_arm_assembly
+	if(istype(src, /obj/item/storage/firstaid/fire))
 		A.skin = "fire"
-	else if(istype(src, /obj/item/weapon/storage/firstaid/toxin))
+	else if(istype(src, /obj/item/storage/firstaid/toxin))
 		A.skin = "tox"
-	else if(istype(src, /obj/item/weapon/storage/firstaid/o2))
+	else if(istype(src, /obj/item/storage/firstaid/o2))
 		A.skin = "o2"
-	else if(istype(src, /obj/item/weapon/storage/firstaid/adv))
+	else if(istype(src, /obj/item/storage/firstaid/adv))
 		A.skin = "adv"
-	else if(istype(src, /obj/item/weapon/storage/firstaid/combat))
+	else if(istype(src, /obj/item/storage/firstaid/combat))
 		A.skin = "bezerk"
 
 	qdel(S)
-	user.put_in_hands(A)
+	user.pick_or_drop(A)
 	to_chat(user, "<span class='notice'>You add the robot arm to the first aid kit.</span>")
-	user.drop_from_inventory(src)
+	user.drop(src)
 	qdel(src)
 
-/obj/item/weapon/firstaid_arm_assembly
+/obj/item/firstaid_arm_assembly
 	name = "first aid/robot arm assembly"
 	desc = "A first aid kit with a robot arm permanently grafted to it."
 	icon = 'icons/obj/aibots.dmi'
@@ -320,15 +319,15 @@
 	var/skin = null //Same as medbot, set to tox or ointment for the respective kits.
 	w_class = ITEM_SIZE_NORMAL
 
-/obj/item/weapon/firstaid_arm_assembly/New()
+/obj/item/firstaid_arm_assembly/New()
 	..()
 	spawn(5) // Terrible. TODO: fix
 		if(skin)
 			overlays += image('icons/obj/aibots.dmi', "kit_skin_[src.skin]")
 
-/obj/item/weapon/firstaid_arm_assembly/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/firstaid_arm_assembly/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if(istype(W, /obj/item/weapon/pen))
+	if(istype(W, /obj/item/pen))
 		var/t = sanitizeSafe(input(user, "Enter new robot name", name, created_name), MAX_NAME_LEN)
 		if(!t)
 			return
@@ -339,7 +338,8 @@
 		switch(build_step)
 			if(0)
 				if(istype(W, /obj/item/device/healthanalyzer))
-					user.drop_item()
+					if(!user.drop(W))
+						return
 					qdel(W)
 					build_step++
 					to_chat(user, "<span class='notice'>You add the health sensor to [src].</span>")
@@ -348,7 +348,8 @@
 
 			if(1)
 				if(isprox(W))
-					user.drop_item()
+					if(!user.drop(W))
+						return
 					qdel(W)
 					to_chat(user, "<span class='notice'>You complete the Medibot! Beep boop.</span>")
 					var/turf/T = get_turf(src)
@@ -356,5 +357,5 @@
 					S.skin = skin
 					S.SetName(created_name)
 					S.update_icons() // apply the skin
-					user.drop_from_inventory(src)
+					user.drop(src)
 					qdel(src)

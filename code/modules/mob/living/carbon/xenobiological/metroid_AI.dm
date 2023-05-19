@@ -96,21 +96,21 @@
 	if(M in Friends) // Ignore friends
 		return 0
 
-	if(M.stat != DEAD) // Checks for those we just want to attack
+	if(!M.is_ic_dead()) // Checks for those we just want to attack
 		if(rabid || attacked) // Will attack everything that isn't dead
 			return 1
 
 	if(!invalidFeedTarget(M)) // Checks for those we want to eat
 		if(istype(M, /mob/living/carbon/human)) // Ignore metroid(wo)men - player-controlled metroids still can attack them
 			var/mob/living/carbon/human/H = M
-			if(H.species.name == SPECIES_PROMETHEAN)
+			if(H.species.name == SPECIES_PROMETHEAN || istype(/obj/item/organ/internal/heart/gland/metroid, H.organs_by_name[BP_HEART]))
 				return 0
 		return 1
 
 	return 0
 
 /mob/living/carbon/metroid/proc/handle_AI()  // the master AI process
-	if(stat == DEAD || client || Victim)
+	if(is_ic_dead() || client || Victim)
 		AIproc = 0
 		return // If we're dead or have a client, we don't need AI, if we're feeding, we continue feeding
 
@@ -254,9 +254,11 @@
 					if (Leader == who)
 						to_say = "Yes... I'll stay..."
 						Leader = null
+						walk_to(src, 0)
 					else
 						if (Friends[who] > Friends[Leader])
 							Leader = null
+							walk_to(src, 0)
 							to_say = "Yes... I'll stop..."
 						else
 							to_say = "No... I'll keep following..."
@@ -291,7 +293,7 @@
 		for (var/mob/living/carbon/M in view(7,src))
 			if (ismetroid(M))
 				++metroids_near
-				if (M.stat == DEAD)
+				if (M.is_ic_dead())
 					++dead_metroids
 			if (M in Friends)
 				t += 20

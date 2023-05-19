@@ -60,7 +60,7 @@ GLOBAL_LIST_EMPTY(wayfindingbeacons)
 
 		update_icon()
 
-	else if(I.GetIdCard())
+	else if(I.get_id_card())
 		if(open)
 			if (src.allowed(user))
 				src.locked = !src.locked
@@ -184,7 +184,7 @@ Transponder Codes:<UL>"}
 
 // Box station patrol beacons.
 
-/obj/machinery/navbeacon/box/ROBOTICS
+/obj/machinery/navbeacon/box/robotics
 	location = "ROBOTICS"
 	codes = list("patrol" = 1, "next_patrol" = "CH_EAST2")
 

@@ -44,7 +44,7 @@
 		target_up = null
 	return ..()
 
-/obj/structure/ladder/attackby(obj/item/C as obj, mob/user as mob)
+/obj/structure/ladder/attackby(obj/item/C, mob/user)
 	climb(user)
 
 /obj/structure/ladder/attack_hand(mob/user)
@@ -173,6 +173,7 @@
 	name = "stairs"
 	desc = "Stairs leading to another deck.  Not too useful if the gravity goes out."
 	icon = 'icons/obj/stairs.dmi'
+	icon_state = "stairs"
 	density = 0
 	opacity = 0
 	anchored = 1
@@ -187,6 +188,10 @@
 		if(!istype(above))
 			above.ChangeTurf(/turf/simulated/open)
 	. = ..()
+
+/obj/structure/stairs/Destroy()
+	loc = null // Since it's easier than allowing it to get forceMoved and facing even more trouble
+	return ..()
 
 /obj/structure/stairs/CheckExit(atom/movable/mover as mob|obj, turf/target as turf)
 	if(get_dir(loc, target) == dir && upperStep(mover.loc))
@@ -240,3 +245,102 @@
 /obj/structure/stairs/west
 	dir = WEST
 	bound_width = 64
+
+/obj/structure/stairs/short
+	icon_state = "stairs_short"
+
+/obj/structure/stairs/short/north
+	dir = NORTH
+
+/obj/structure/stairs/short/south
+	dir = SOUTH
+
+/obj/structure/stairs/short/east
+	dir = EAST
+
+/obj/structure/stairs/short/west
+	dir = WEST
+
+// mining stairs
+
+/obj/structure/stairs/slope
+	name = "slope"
+	desc = "Not very comfortable, but a completely natural ladder."
+	icon_state = "slope"
+
+/obj/structure/stairs/slope/attackby(obj/item/I, mob/living/carbon/human/user)
+	var/obj/item/autochisel/A = I
+	if(istype(A))
+		user.visible_message(SPAN_NOTICE("[user] begins to carve the steps."), SPAN_NOTICE("You begin to cut out the steps."))
+		if(do_after(user,(20)))
+			switch(dir)
+				if(NORTH)
+					new /obj/structure/stairs/mining/north
+				if(SOUTH)
+					new /obj/structure/stairs/mining/south
+				if(EAST)
+					new /obj/structure/stairs/mining/east
+				if(WEST)
+					new /obj/structure/stairs/mining/west
+			qdel_self()
+	else ..()
+
+/obj/structure/stairs/slope/north
+	dir = NORTH
+	bound_height = 64
+	bound_y = -32
+	pixel_y = -32
+
+/obj/structure/stairs/slope/south
+	dir = SOUTH
+	bound_height = 64
+
+/obj/structure/stairs/slope/east
+	dir = EAST
+	bound_width = 64
+	bound_x = -32
+	pixel_x = -32
+
+/obj/structure/stairs/slope/west
+	dir = WEST
+	bound_width = 64
+
+/obj/structure/stairs/mining
+	name = "stairs"
+	desc = "Somebody went to a lot of trouble to carve these stairs."
+	icon_state = "stairs_mine"
+
+/obj/structure/stairs/mining/north
+	dir = NORTH
+	bound_height = 64
+	bound_y = -32
+	pixel_y = -32
+
+/obj/structure/stairs/mining/south
+	dir = SOUTH
+	bound_height = 64
+
+/obj/structure/stairs/mining/east
+	dir = EAST
+	bound_width = 64
+	bound_x = -32
+	pixel_x = -32
+
+/obj/structure/stairs/mining/west
+	dir = WEST
+	bound_width = 64
+
+/obj/structure/stairs/mining/short
+	icon_state = "stairs_short_mine"
+
+/obj/structure/stairs/mining/short/north
+	dir = NORTH
+
+/obj/structure/stairs/mining/short/south
+	dir = SOUTH
+
+/obj/structure/stairs/mining/short/east
+	dir = EAST
+
+/obj/structure/stairs/mining/short/west
+	dir = WEST

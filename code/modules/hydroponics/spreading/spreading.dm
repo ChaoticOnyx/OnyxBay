@@ -153,16 +153,10 @@
 		set_density(0)
 
 	if(!growth_type && !floor)
-		src.transform = null
-		var/matrix/M = matrix()
-		switch(dir)
-			if(WEST)
-				M.Turn(90)
-			if(NORTH)
-				M.Turn(180)
-			if(EAST)
-				M.Turn(270)
-		src.transform = M
+		SetTransform(
+			rotation = dir == WEST ? 90 : dir == NORTH ? 180 : dir == EAST ? 270 : 0,
+			offset_y = -rand(12, 14)
+		)
 
 	// Apply colour and light from seed datum.
 	if(seed.get_trait(TRAIT_BIOLUM))
@@ -207,7 +201,7 @@
 	floor = 1
 	return 1
 
-/obj/effect/vine/attackby(obj/item/weapon/W, mob/user)
+/obj/effect/vine/attackby(obj/item/W, mob/user)
 	START_PROCESSING(SSvines, src)
 
 	if(W.edge && W.w_class < ITEM_SIZE_NORMAL && user.a_intent != I_HURT)

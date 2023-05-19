@@ -1,33 +1,12 @@
-/obj/machinery/vending/wayfinding
-	name = "wayfinding pinpointer vending machine"
-	desc = "A machine given the thankless job of trying to give wayfinding pinpointers. They point to common locations."
-	icon_state = "cart"
-	use_vend_state = TRUE
-	vend_delay = 23
-	products = list(/obj/item/weapon/pinpointer/wayfinding = 10)
-	slogan_list = list("Find a wayfinding pinpointer? Give it to me! I'll make it worth your while. Please. Daddy needs his medicine.", //last sentence is a reference to Sealab 2021
-						"See a wayfinding pinpointer? Don't let it go to the crusher! Recycle it with me instead. I'll pay you or not.", //I see these things heading for disposals through cargo all the time
-						"Can't find the disk? Need a pinpointer? Buy a wayfinding pinpointer and find the captain's office today!",
-						"Bleeding to death? Can't read? Find your way to medbay today!", //there are signs that point to medbay but you need basic literacy to get the most out of them
-						"Voted tenth best pinpointer in the universe in 2560!", //there were no more than ten pinpointers in the game in 2020
-						"Helping assistants find the departments they tide since 2560.", //not really but it's advertising
-						"These pinpointers are flying out the airlock!", //because they're being thrown into space
-						"Grey pinpointers for the grey tide!", //I didn't pick the colour but it works
-						"Feeling lost? Find direction.",
-						"Automate your sense of direction. Buy a wayfinding pinpointer today!",
-						"Feed me a stray pinpointer.", //American Psycho reference
-						"We need a slogan!") //Liberal Crime Squad reference
-
 //Pinpointer itself
-/obj/item/weapon/pinpointer/wayfinding //Help players new to a station find their way around
+/obj/item/pinpointer/wayfinding //Help players new to a station find their way around
 	name = "wayfinding pinpointer"
 	desc = "A handheld tracking device that points to useful places."
 	icon_state = "pinpointer_way"
 	var/owner = null
-	var/obj/machinery/navbeacon/wayfinding/way_target
 	var/list/beacons = list()
 
-/obj/item/weapon/pinpointer/wayfinding/attack_self(mob/living/user)
+/obj/item/pinpointer/wayfinding/attack_self(mob/living/user)
 	if(active)
 		..()
 		return
@@ -47,24 +26,19 @@
 	if(!A || QDELETED(src) || !user || !src.Adjacent(user) || user.incapacitated())
 		return
 
-	way_target = beacons[A]
-	target = acquire_target()
+	target = acquire_target(beacons[A])
 	..()
 
-/obj/item/weapon/pinpointer/wayfinding/toggle()
-	..()
-	if(!active)
-		way_target = null
+/obj/item/pinpointer/wayfinding/acquire_target(way_target)
+	if(!way_target)
+		return
+	return weakref(way_target)
 
-/obj/item/weapon/pinpointer/wayfinding/acquire_target()
-	if(way_target)
-		return weakref(way_target)
-
-/obj/item/weapon/pinpointer/wayfinding/examine(mob/user)
+/obj/item/pinpointer/wayfinding/_examine_text(mob/user)
 	. = ..()
 	var/msg = " Its tracking indicator reads "
 	if(target)
-		var/obj/machinery/navbeacon/wayfinding/B  = target
+		var/obj/machinery/navbeacon/wayfinding/B  = target.resolve()
 		msg += "\"[B.codes["wayfinding"]]\"."
 	else
 		msg = " Its tracking indicator is blank."

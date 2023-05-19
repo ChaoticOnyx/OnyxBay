@@ -43,7 +43,7 @@ public async Task RemoveAllClLabelsExcept(string except)
     {
         if (clLabels.Contains(label.Name) && label.Name != except)
         {
-            await client.DeleteAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels/{Uri.EscapeUriString(label.Name)}");
+            await client.DeleteAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels/{Uri.EscapeDataString(label.Name)}");
         }
     }
 }

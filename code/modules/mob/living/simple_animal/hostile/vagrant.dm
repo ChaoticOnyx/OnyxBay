@@ -27,9 +27,10 @@
 	min_gas = null
 	max_gas = null
 	minbodytemp = 0
+	bodyparts = /decl/simple_animal_bodyparts/metroid // Kinda close I guess
 	var/datum/disease2/disease/carried
 	var/cloaked = 0
-	var/mob/living/carbon/human/gripping = null
+	var/weakref/gripping = null // Must be mob/living/carbon/human
 	var/blood_per_tick = 4.25
 	var/health_per_tick = 0.8
 
@@ -46,20 +47,21 @@
 	. = ..()
 	var/oldhealth = health
 	if((target_mob != Proj.firer) && health < oldhealth && !incapacitated(INCAPACITATION_KNOCKOUT) && !client) //Respond to being shot at
-		target_mob = Proj.firer
+		set_target_mob(Proj.firer)
 		turns_per_move = 2
 		MoveToTarget()
 
 /mob/living/simple_animal/hostile/vagrant/Life()
 	. = ..()
-	if(gripping)
-		if(!(get_turf(src) == get_turf(gripping)))
+	var/mob/living/carbon/human/victim = gripping?.resolve()
+	if(victim)
+		if(get_turf(src) != get_turf(victim))
 			gripping = null
 
-		else if(gripping.should_have_organ(BP_HEART))
-			var/blood_volume = round(gripping.vessel.get_reagent_amount(/datum/reagent/blood))
+		else if(victim.should_have_organ(BP_HEART))
+			var/blood_volume = round(victim.vessel.get_reagent_amount(/datum/reagent/blood))
 			if(blood_volume > 5)
-				gripping.vessel.remove_reagent(/datum/reagent/blood, blood_per_tick)
+				victim.vessel.remove_reagent(/datum/reagent/blood, blood_per_tick)
 				health = min(health + health_per_tick, maxHealth)
 				if(prob(15))
 					to_chat(gripping, "<span class='danger'>You feel your fluids being drained!</span>")
@@ -97,22 +99,22 @@
 	. = ..()
 	if(ishuman(.))
 		var/mob/living/carbon/human/H = .
-		if(gripping == H)
+		if(gripping == weakref(H))
 			H.Weaken(3)
 			H.Stun(3)
 			return
 		//This line ensures there's always a reasonable chance of grabbing, while still
 		//Factoring in health
-		if(!gripping && (cloaked || prob(health + ((maxHealth - health) * 2))))
-			gripping = H
+		if(!(gripping?.resolve()) && (cloaked || prob(health + ((maxHealth - health) * 2))))
+			gripping = weakref(H)
 			cloaked = 0
 			update_icon()
 			H.Weaken(3)
 			H.Stun(3)
 			H.visible_message("<span class='danger'>\the [src] latches onto \the [H], pulsating!</span>")
-			if(carried && length(gripping.virus2) == 0)
-				infect_virus2(gripping, carried, 1)
-			src.loc = gripping.loc
+			if(carried && length(H.virus2) == 0)
+				infect_virus2(H, carried, 1)
+			forceMove(H)
 			return
 
 /mob/living/simple_animal/hostile/vagrant/swarm/Initialize()

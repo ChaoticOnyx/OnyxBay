@@ -1,5 +1,5 @@
 /decl/teleport
-	var/static/list/teleport_blacklist = list(/obj/item/weapon/disk/nuclear, /obj/item/weapon/storage/backpack/holding, /obj/effect/sparks) //Items that cannot be teleported, or be in the contents of someone who is teleporting.
+	var/static/list/teleport_blacklist = list(/obj/item/disk/nuclear, /obj/item/storage/backpack/holding, /obj/effect/sparks) //Items that cannot be teleported, or be in the contents of someone who is teleporting.
 
 /decl/teleport/proc/teleport(atom/target, atom/destination, precision = 0)
 	if(!can_teleport(target,destination))
@@ -9,23 +9,42 @@
 	teleport_target(target, destination, precision)
 
 /decl/teleport/proc/teleport_target(atom/movable/target, atom/destination, precision)
-	var/list/possible_turfs = circlerangeturfs(destination, precision)
+	var/list/possible_turfs = get_turfs(target, destination, precision)
 	destination = safepick(possible_turfs)
+	if(!destination)
+		target.visible_message(SPAN("warning", "\The [target] bounces off the teleporter!"))
+		return
 
+	var/turf/start = get_turf(target)
 	target.forceMove(destination)
+	// For projectiles we need to rebuild trajectory
+	var/obj/item/projectile/proj = target
+	if (istype(proj))
+		var/delta_x = destination.x - start.x
+		var/delta_y = destination.y - start.y
+		var/new_x = Clamp(proj.trajectory.target.x + delta_x, 1, world.maxx)
+		var/new_y = Clamp(proj.trajectory.target.y + delta_y, 1, world.maxy)
+		proj.trajectory.loc_x += delta_x * world.icon_size
+		proj.trajectory.loc_y += delta_y * world.icon_size
+		proj.trajectory.loc_z = destination.z
+		proj.trajectory.target = locate(new_x, new_y, destination.z)
+
+
 	if(isliving(target))
 		var/mob/living/L = target
 		if(L.buckled)
 			var/atom/movable/buckled = L.buckled
 			buckled.forceMove(destination)
 
+/decl/teleport/proc/get_turfs(atom/movable/target, atom/destination, precision)
+	return circlerangeturfs(destination, precision)
 
 /decl/teleport/proc/can_teleport(atom/movable/target, atom/destination)
 	if(!destination || !target || !target.loc)
 		return 0
 
 	if(istype(target, /obj/mecha))
-		if(destination.z in GLOB.using_map.admin_levels)
+		if(destination.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM))
 			var/obj/mecha/mech = target
 			to_chat(mech.occupant, "<span class='danger'>\The [target] would not survive the jump to a location so far away!</span>")
 			return 0
@@ -45,14 +64,22 @@
 	if(!target.simulated)
 		return
 	var/turf/T = get_turf(target)
-	spark.set_up(5,1,target)
-	spark.attach(T)
-	spark.start()
+	if (!(locate(/obj/effect/sparks) in T))
+		spark.set_up(5,1,target)
+		spark.attach(T)
+		spark.start()
 
 /decl/teleport/sparks/teleport_target(atom/target, atom/destination, precision)
 	do_spark(target)
 	..()
 	do_spark(target)
+
+// circlerangeturfs is shit proc created by imbécile (by fr: idiot)
+/decl/teleport/sparks/precision/get_turfs(atom/movable/target, atom/destination, precision)
+	var/turf/T = get_step(destination, target.dir)
+	if(!T || T.density)
+		return ..()
+	return list(T)
 
 /proc/do_teleport(atom/movable/target, atom/destination, precision = 0, type = /decl/teleport/sparks)
 	var/decl/teleport/tele = decls_repository.get_decl(type)

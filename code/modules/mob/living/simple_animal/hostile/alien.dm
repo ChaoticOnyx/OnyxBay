@@ -9,8 +9,9 @@
 	response_help = "pokes"
 	response_disarm = "shoves"
 	response_harm = "hits"
+	bubble_icon = "alien"
 	speed = -1
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/xeno
+	meat_type = /obj/item/reagent_containers/food/meat/xeno
 	maxHealth = 100
 	health = 100
 	harm_intent_damage = 5
@@ -28,6 +29,7 @@
 	minbodytemp = 0
 	heat_damage_per_tick = 20
 	can_escape = 1
+	bodyparts = /decl/simple_animal_bodyparts/humanoid
 
 
 /mob/living/simple_animal/hostile/alien/drone
@@ -56,6 +58,7 @@
 
 /mob/living/simple_animal/hostile/alien/queen
 	name = "alien queen"
+	desc = "Her Majesty."
 	icon_state = "alienq_running"
 	icon_living = "alienq_running"
 	icon_dead = "alienq_dead"
@@ -76,6 +79,7 @@
 	icon_state = "queen_s"
 	icon_living = "queen_s"
 	icon_dead = "queen_dead"
+	bubble_icon = "alienroyal"
 	move_to_delay = 4
 	maxHealth = 400
 	health = 400

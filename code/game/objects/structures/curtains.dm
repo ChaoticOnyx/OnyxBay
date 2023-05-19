@@ -5,6 +5,7 @@
 	layer = BASE_ABOVE_OBJ_LAYER
 	opacity = 1
 	density = 0
+	breakable = TRUE
 
 /obj/structure/curtain/open
 	icon_state = "open"
@@ -24,6 +25,18 @@
 	toggle()
 	..()
 
+/obj/structure/curtain/attackby(obj/item/W, mob/user)
+	if(isWrench(W))
+		user.visible_message("[user] dissassembles [src].", "You start to dissassemble [src].")
+		playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
+		if(do_after(user, 40, src))
+			if(!src)
+				return
+			to_chat(user,  SPAN_NOTICE("You dissasembled [src]!"))
+			new /obj/item/stack/material/plastic(src.loc, 4)
+			qdel(src)
+	return ..()
+
 /obj/structure/curtain/proc/toggle()
 	set_opacity(!opacity)
 	if(opacity)
@@ -36,6 +49,10 @@
 /obj/structure/curtain/black
 	name = "black curtain"
 	color = "#222222"
+
+/obj/structure/curtain/green
+	name = "green curtain"
+	color = "#465735"
 
 /obj/structure/curtain/medical
 	name = "plastic curtain"

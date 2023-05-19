@@ -29,7 +29,7 @@
 		data = c_data
 	else
 		data = pick(/datum/reagent/bicaridine, /datum/reagent/kelotane, /datum/reagent/dylovene, /datum/reagent/inaprovaline, /datum/reagent/space_drugs, /datum/reagent/sugar,
-					/datum/reagent/tramadol, /datum/reagent/dexalin, /datum/reagent/cryptobiolin, /datum/reagent/impedrezene, /datum/reagent/hyperzine, /datum/reagent/ethylredoxrazine,
+					/datum/reagent/painkiller/tramadol, /datum/reagent/dexalin, /datum/reagent/cryptobiolin, /datum/reagent/impedrezene, /datum/reagent/hyperzine, /datum/reagent/ethylredoxrazine,
 					/datum/reagent/mindbreaker, /datum/reagent/nutriment/glucose)
 	var/datum/reagent/R = data
 	name = "[initial(R.name)][initial(name)]"
@@ -70,10 +70,10 @@
 /datum/disease2/effect/hair/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	if(mob.species.name == SPECIES_HUMAN && !(mob.h_style == "Bald") && !(mob.h_style == "Balding Hair"))
+	if(mob.species.name == SPECIES_HUMAN && mob.h_style != mob.species.default_h_style && mob.h_style != "Balding Hair")
 		to_chat(mob, HAIR_EFFECT_WARNING)
 		spawn(50)
-			mob.h_style = "Balding Hair"
+			mob.h_style = mob.species.default_h_style
 			mob.update_hair()
 
 
@@ -119,7 +119,7 @@
 /datum/disease2/effect/adaptation_rads/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	if(mob.radiation > 10*multiplier)
+	if(mob.radiation > (0.1 SIEVERT) * multiplier)
 		parent_disease.cure()
 ////////////////////////STAGE 3/////////////////////////////////
 
@@ -136,7 +136,7 @@
 		data = c_data
 	else
 		data = pick(/datum/reagent/bicaridine, /datum/reagent/kelotane, /datum/reagent/dylovene, /datum/reagent/inaprovaline, /datum/reagent/space_drugs, /datum/reagent/sugar,
-					/datum/reagent/tramadol, /datum/reagent/dexalin, /datum/reagent/cryptobiolin, /datum/reagent/impedrezene, /datum/reagent/hyperzine, /datum/reagent/ethylredoxrazine,
+					/datum/reagent/painkiller/tramadol, /datum/reagent/dexalin, /datum/reagent/cryptobiolin, /datum/reagent/impedrezene, /datum/reagent/hyperzine, /datum/reagent/ethylredoxrazine,
 					/datum/reagent/mindbreaker, /datum/reagent/nutriment/glucose)
 	var/datum/reagent/R = data
 	name = "[initial(name)] ([initial(R.name)])"
@@ -204,7 +204,7 @@
 		SPAN_DANGER("\The [mob] manages to remove \the [mob.handcuffed]!"),
 		SPAN_WARNING("[mob.handcuffed] suddenly fall off you.")
 		)
-	mob.drop_from_inventory(mob.handcuffed)
+	mob.drop(mob.handcuffed, force = TRUE)
 
 
 ////////////////////////STAGE 4/////////////////////////////////
@@ -245,8 +245,8 @@
 /datum/disease2/effect/radian/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	mob.apply_effect(2*multiplier, IRRADIATE, blocked = 0)
-
+	var/datum/radiation/rad_info = new (3.7 TERA BECQUEREL * multiplier, RADIATION_ALPHA_PARTICLE)
+	mob.radiation += rad_info.calc_equivalent_dose(AVERAGE_HUMAN_WEIGHT)
 
 
 /datum/disease2/effect/gas

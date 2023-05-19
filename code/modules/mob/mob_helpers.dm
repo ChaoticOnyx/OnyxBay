@@ -24,6 +24,8 @@
 	return 0
 
 /mob/living/carbon/human/isSynthetic()
+	if(istype(species, /datum/species/machine))
+		return 1
 	if(isnull(full_prosthetic))
 		robolimb_count = 0
 		for(var/obj/item/organ/external/E in organs)
@@ -178,32 +180,35 @@ var/list/global/organ_rel_size = list(
 	return zone
 
 
-/proc/stars(n, pr)
-	if (pr == null)
-		pr = 25
-	if (pr < 0)
+/proc/stars(message, not_changing_char_chance = 25)
+	if (not_changing_char_chance < 0)
 		return null
-	else
-		if (pr >= 100)
-			return n
-	var/te = n
-	var/t = ""
-	n = length_char(n)
-	var/p = null
-	p = 1
-	var/intag = 0
-	while(p <= n)
-		var/char = copytext_char(te, p, p + 1)
+	if (not_changing_char_chance >= 100)
+		return message
+
+	var/message_length = length_char(message)
+	var/output_message = ""
+	var/intag = FALSE
+
+	var/first_char = copytext_char(message, 1, 2) //for not to processing message as emote if first char would made into "*"
+	if (first_char == "<")
+		intag = TRUE
+	output_message = text("[][]", output_message, first_char)
+
+	var/pointer = 2
+
+	while(pointer <= message_length)
+		var/char = copytext_char(message, pointer, pointer + 1)
 		if (char == "<") //let's try to not break tags
-			intag = !intag
-		if (intag || char == " " || prob(pr))
-			t = text("[][]", t, char)
+			intag = TRUE
+		if (intag || char == " " || prob(not_changing_char_chance))
+			output_message = text("[][]", output_message, char)
 		else
-			t = text("[]*", t)
+			output_message = text("[]*", output_message)
 		if (char == ">")
-			intag = !intag
-		p++
-	return t
+			intag = FALSE
+		pointer++
+	return output_message
 
 // This is temporary effect, often caused by alcohol
 /proc/slur(phrase)
@@ -429,10 +434,11 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 		C = O
 	else if(istype(O, /datum/mind))
 		var/datum/mind/M = O
-		if(M.current && M.current.client)
+		var/mob/living/original_mob = M.original_mob?.resolve()
+		if(M.current?.client)
 			C = M.current.client
-		else if(M.original && M.original.client)
-			C = M.original.client
+		else if(istype(original_mob) && original_mob.client)
+			C = original_mob.client
 
 	if(C)
 		var/name = key_name(C)
@@ -470,7 +476,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 
 #define SAFE_PERP -50
 /mob/living/proc/assess_perp(obj/access_obj, check_access, auth_weapons, check_records, check_arrest)
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return SAFE_PERP
 
 	return 0
@@ -487,24 +493,24 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 		return SAFE_PERP
 
 	//Agent cards lower threatlevel.
-	var/obj/item/weapon/card/id/id = GetIdCard()
-	if(id && istype(id, /obj/item/weapon/card/id/syndicate))
+	var/obj/item/card/id/id = get_id_card()
+	if(id && istype(id, /obj/item/card/id/syndicate))
 		threatcount -= 2
 	// A proper	CentCom id is hard currency.
-	else if(id && istype(id, /obj/item/weapon/card/id/centcom))
+	else if(id && istype(id, /obj/item/card/id/centcom))
 		return SAFE_PERP
 
 	if(check_access && !access_obj.allowed(src))
 		threatcount += 4
 
 	if(auth_weapons && !access_obj.allowed(src))
-		if(istype(l_hand, /obj/item/weapon/gun) || istype(l_hand, /obj/item/weapon/melee))
+		if(istype(l_hand, /obj/item/gun) || istype(l_hand, /obj/item/melee))
 			threatcount += 4
 
-		if(istype(r_hand, /obj/item/weapon/gun) || istype(r_hand, /obj/item/weapon/melee))
+		if(istype(r_hand, /obj/item/gun) || istype(r_hand, /obj/item/melee))
 			threatcount += 4
 
-		if(istype(belt, /obj/item/weapon/gun) || istype(belt, /obj/item/weapon/melee))
+		if(istype(belt, /obj/item/gun) || istype(belt, /obj/item/melee))
 			threatcount += 2
 
 		if(species.name != SPECIES_HUMAN)
@@ -631,3 +637,100 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 	if(isnull(choice) || src.incapacitated() || (required_item && !GLOB.hands_state.can_use_topic(required_item,src)))
 		return null
 	return choice
+
+// Checks if the mob is eligible for antag automatic/storyteller spawn. Manual role assignment (i.e. runic convert or badmin magic) bypasses this.
+/mob/proc/is_eligible_for_antag_spawn(antag_id)
+	return FALSE
+
+/**
+ * Fancy notifications for ghosts
+ *
+ * The kitchen sink of notification procs
+ *
+ * Arguments:
+ * * message
+ * * ghost_sound sound to play
+ * * enter_link Href link to enter the ghost role being notified for
+ * * source The source of the notification
+ * * alert_overlay The alert overlay to show in the alert message
+ * * action What action to take upon the ghost interacting with the notification, defaults to NOTIFY_FOLLOW
+ * * flashwindow Flash the byond client window
+ * * ignore_key  Ignore keys if they're in the GLOB.poll_ignore list
+ * * header The header of the notifiaction
+ * * notify_suiciders If it should notify suiciders (who do not qualify for many ghost roles)
+ * * notify_volume How loud the sound should be to spook the user
+ */
+/proc/notify_ghosts(message, ghost_sound = null, atom/source = null, mutable_appearance/alert_overlay = null, action = NOTIFY_JUMP, posses_mob = FALSE, flashwindow = TRUE, ignore_mapload = TRUE, header = null, notify_volume = 75) //Easy notification of ghosts.
+	if(ignore_mapload && SSatoms.init_state != INITIALIZATION_INNEW_REGULAR) //don't notify for objects created during a map load
+		return
+
+	for(var/mob/observer/ghost/O in GLOB.player_list)
+
+		var/follow_link = ""
+		if (source && action == NOTIFY_FOLLOW)
+			follow_link = create_ghost_link(O, source, "(F)")
+
+		var/posses_link = posses_mob ? possess_link(O, source) : ""
+
+		to_chat(O, SPAN_NOTICE("[follow_link][message][posses_link]"))
+
+		if(ghost_sound)
+			sound_to(O, sound(ghost_sound, repeat = 0, wait = 0, volume = notify_volume, channel = 1))
+
+		if(flashwindow)
+			winset(O.client, "mainwindow", "flash=5")
+
+		if(source)
+			var/obj/screen/movable/alert/notify_action/A = O.throw_alert("\ref[source]_notify_action", /obj/screen/movable/alert/notify_action)
+			if(A)
+
+				var/ui_style = O.client?.prefs?.UI_style
+
+				if(ui_style)
+					A.icon = ui_style2icon(ui_style)
+
+				if (header)
+					A.name = header
+
+				A.desc = message
+				A.action = action
+				A.target = source
+
+				if(!alert_overlay)
+					alert_overlay = new(source)
+					var/icon/size_check = icon(source.icon, source.icon_state)
+					var/scale = 1
+					var/width = size_check.Width()
+					var/height = size_check.Height()
+
+					if(width > world.icon_size || height > world.icon_size)
+						if(width >= height)
+							scale = world.icon_size / width
+						else
+							scale = world.icon_size / height
+
+					alert_overlay.transform = alert_overlay.transform.Scale(scale)
+					alert_overlay.appearance_flags |= TILE_BOUND
+
+				alert_overlay.layer = FLOAT_LAYER
+				alert_overlay.plane = FLOAT_PLANE
+				A.overlays += alert_overlay
+
+/mob/proc/shift_view(new_pixel_x = 0, new_pixel_y = 0, animate = 0)
+	if(!client)
+		is_view_shifted = FALSE
+		return
+
+	var/old_shifted = is_view_shifted
+	if(animate)
+		animate(client, pixel_x = new_pixel_x, pixel_y = new_pixel_y, time = 2, easing = SINE_EASING)
+	else
+		client.pixel_x = new_pixel_x
+		client.pixel_y = new_pixel_y
+
+	if(new_pixel_x == 0 && new_pixel_y == 0)
+		is_view_shifted = FALSE
+	else
+		is_view_shifted = TRUE
+
+	SEND_SIGNAL(src, SIGNAL_VIEW_SHIFTED_SET, src, old_shifted, is_view_shifted)

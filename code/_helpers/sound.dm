@@ -78,6 +78,14 @@ var/const/FALLOFF_SOUNDS = 0.5
 
 		if(istype(src,/mob/living/))
 			var/mob/living/carbon/M = src
+			var/datum/modifier/trait/headphones_volume/headphones_volume = locate(/datum/modifier/trait/headphones_volume) in M.modifiers
+			switch(headphones_volume?.volume_status)
+				if(MID_VOLUME)
+					if(prob(35))
+						return
+				if(HIGH_VOLUME)
+					return
+
 			if (istype(M) && M.hallucination_power > 50 && M.chem_effects[CE_MIND] < 1)
 				S.environment = PSYCHOTIC
 			else if (M.druggy)

@@ -4,8 +4,14 @@
  * @license MIT
  */
 
-import { changeSettingsTab, loadSettings, openChatSettings, toggleSettings, updateSettings } from './actions'
-import { FONTS, REPEAT_MODE, SETTINGS_TABS, SIZE_MODE } from './constants'
+import {
+  changeSettingsTab,
+  loadSettings,
+  openChatSettings,
+  toggleSettings,
+  updateSettings,
+} from "./actions";
+import { FONTS, REPEAT_MODE, SETTINGS_TABS, SIZE_MODE } from "./constants";
 
 const initialState = {
   version: 1,
@@ -13,50 +19,51 @@ const initialState = {
   fontFamily: FONTS[0],
   lineHeight: 1.2,
   iconSize: 16,
-  theme: 'light',
+  theme: "light",
   adminMusicVolume: 0.5,
-  highlightText: '',
-  highlightColor: '#ffdd44',
+  highlightText: "",
+  highlightColor: "#ffdd44",
   view: {
     visible: false,
-    activeTab: SETTINGS_TABS[0].id
+    activeTab: SETTINGS_TABS[0].id,
   },
   background: {
     url: null,
     opaque: 0,
     repeat: REPEAT_MODE.no,
-    size: SIZE_MODE.contain
-  }
-}
+    size: SIZE_MODE.contain,
+  },
+  customCss: "",
+};
 
 export const settingsReducer = (state = initialState, action) => {
-  const { type, payload } = action
+  const { type, payload } = action;
 
   if (type === updateSettings.type) {
     return {
       ...state,
-      ...payload
-    }
+      ...payload,
+    };
   }
   if (type === loadSettings.type) {
     // Validate version and/or migrate state
     if (!payload?.version) {
-      return state
+      return state;
     }
-    delete payload.view
+    delete payload.view;
     return {
       ...state,
-      ...payload
-    }
+      ...payload,
+    };
   }
   if (type === toggleSettings.type) {
     return {
       ...state,
       view: {
         ...state.view,
-        visible: !state.view.visible
-      }
-    }
+        visible: !state.view.visible,
+      },
+    };
   }
   if (type === openChatSettings.type) {
     return {
@@ -64,19 +71,19 @@ export const settingsReducer = (state = initialState, action) => {
       view: {
         ...state.view,
         visible: true,
-        activeTab: 'chatPage'
-      }
-    }
+        activeTab: "chatPage",
+      },
+    };
   }
   if (type === changeSettingsTab.type) {
-    const { tabId } = payload
+    const { tabId } = payload;
     return {
       ...state,
       view: {
         ...state.view,
-        activeTab: tabId
-      }
-    }
+        activeTab: tabId,
+      },
+    };
   }
-  return state
-}
+  return state;
+};

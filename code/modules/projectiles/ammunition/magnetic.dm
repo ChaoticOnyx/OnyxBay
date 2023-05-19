@@ -1,4 +1,4 @@
-/obj/item/weapon/magnetic_ammo
+/obj/item/magnetic_ammo
 	name = "flechette magazine"
 	desc = "A magazine containing steel flechettes."
 	icon = 'icons/obj/ammo.dmi'
@@ -8,6 +8,6 @@
 	origin_tech = list(TECH_COMBAT = 1)
 	var/remaining = 9
 
-/obj/item/weapon/magnetic_ammo/examine(mob/user)
+/obj/item/magnetic_ammo/_examine_text(mob/user)
 	. = ..()
 	. += "\nThere [(remaining == 1)? "is" : "are"] [remaining] flechette\s left!"

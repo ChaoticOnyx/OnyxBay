@@ -1,3 +1,9 @@
+/datum/movement_handler/mob/multiz/proc/catwalk_check(turf/location)
+	var/obj/structure/catwalk/C = locate() in location
+	if(istype(C))
+		return C.name
+	return location.name
+
 /datum/movement_handler/mob/multiz/DoMove(direction, mob/mover, is_external)
 	if(!(direction & (UP|DOWN)))
 		return MOVEMENT_PROCEED
@@ -9,11 +15,13 @@
 
 	var/turf/start = get_turf(mob)
 	if(!start.CanZPass(mob, direction))
-		to_chat(mob, "<span class='warning'>\The [start] is in the way.</span>")
+		var/blocked_message = catwalk_check(start)
+		to_chat(mob, SPAN("warning", "\The [blocked_message] is in the way."))
 		return MOVEMENT_HANDLED
 
 	if(!destination.CanZPass(mob, direction))
-		to_chat(mob, "<span class='warning'>You bump against \the [destination].</span>")
+		var/blocked_message = catwalk_check(destination)
+		to_chat(mob, SPAN("warning", "You bump against \the [blocked_message]."))
 		return MOVEMENT_HANDLED
 
 	var/area/area = get_area(mob)

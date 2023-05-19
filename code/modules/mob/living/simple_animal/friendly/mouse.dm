@@ -18,22 +18,23 @@
 	see_in_dark = 6
 	maxHealth = 1
 	health = 1
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat
+	meat_type = /obj/item/reagent_containers/food/meat
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "stamps on"
 	density = 0
 	var/body_color //brown, gray and white, leave blank for random
-	minbodytemp = 223		//Below -50 Degrees Celcius
-	maxbodytemp = 323	//Above 50 Degrees Celcius
+	minbodytemp = -50 CELSIUS
+	maxbodytemp = 50 CELSIUS
 	universal_speak = 0
 	universal_understand = 1
-	holder_type = /obj/item/weapon/holder/mouse
+	holder_type = /obj/item/holder/mouse
 	mob_size = MOB_MINISCULE
 	possession_candidate = 1
 	can_escape = 1
 	shy_animal = 1
 	controllable = TRUE
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 	var/obj/item/holding_item = null
 	var/datum/disease2/disease/virus = null
 
@@ -92,10 +93,14 @@
 	icon_dead = "mouse_[body_color]_dead"
 	desc = "It's a small [body_color] rodent, often seen hiding in maintenance areas and making a nuisance of itself."
 
-/mob/living/simple_animal/mouse/Destroy()
-	if(holding_item)
+/mob/living/simple_animal/mouse/death(gibbed, deathmessage, show_dead_message)
+	. = ..(gibbed, deathmessage, show_dead_message)
+	if(. && holding_item)
 		holding_item.dropInto(src)
 		holding_item = null
+
+/mob/living/simple_animal/mouse/Destroy()
+	QDEL_NULL(holding_item)
 	virus = null
 	return ..()
 
@@ -104,7 +109,7 @@
 		QDEL_NULL(holding_item)
 	return ..()
 
-/mob/living/simple_animal/mouse/examine(mob/user)
+/mob/living/simple_animal/mouse/_examine_text(mob/user)
 	. = ..()
 	if(holding_item)
 		. += "\n[SPAN_NOTICE("You may notice that she has \a [holding_item] glued with tape.")]"
@@ -164,7 +169,7 @@
 
 /mob/living/simple_animal/mouse/attack_hand(mob/living/carbon/human/user)
 	if(holding_item && user.a_intent == I_HELP)
-		user.put_in_hands(holding_item)
+		user.pick_or_drop(holding_item, loc)
 		user.visible_message(SPAN_NOTICE("[user] removes \the [holding_item] from \the [name]."),
 							SPAN_NOTICE("You remove \the [holding_item] from \the [name]."))
 		holding_item = null
@@ -174,15 +179,15 @@
 		return ..()
 
 /mob/living/simple_animal/mouse/attackby(obj/item/O, mob/user)
-	if(!holding_item && user.a_intent == I_HELP && istype(user.get_inactive_hand(), /obj/item/weapon/tape_roll) && O.w_class == ITEM_SIZE_TINY)
+	if(!holding_item && user.a_intent == I_HELP && istype(user.get_inactive_hand(), /obj/item/tape_roll) && O.w_class == ITEM_SIZE_TINY)
 		user.visible_message(SPAN_NOTICE("[user] is trying to attach \a [O] with duct tape to \the [name]."),
 							SPAN_NOTICE("You are trying to attach \a [O] with duct tape to \the [name]."))
 		if(do_after(user, 3 SECONDS, src))
 			if(holding_item)
 				return
+			if(!user.drop(O, src))
+				return
 			holding_item = O
-			user.drop_item()
-			O.loc = src
 			user.visible_message(SPAN_NOTICE("[user] attaches \the [O] with duct tape to \the [name]."),
 								SPAN_NOTICE("You attach \the [O] with duct tape to \the [name]."))
 			playsound(loc, 'sound/effects/duct_tape.ogg', 50, 1)
@@ -193,7 +198,7 @@
 /mob/living/simple_animal/mouse/update_icon()
 	overlays.Cut()
 	if(holding_item)
-		overlays += "holding_item[stat ? stat == DEAD ? "_dead" : "_lay" : ""]"
+		overlays += "holding_item[stat ? is_ic_dead() ? "_dead" : "_lay" : ""]"
 
 /*
  * Mouse types

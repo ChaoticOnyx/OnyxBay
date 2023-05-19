@@ -7,7 +7,7 @@
 
 	..()
 
-	if(stat != DEAD)
+	if(!is_ic_dead())
 		handle_nutrition()
 
 		if(!client)
@@ -19,7 +19,7 @@
 		return
 
 	//var/environment_heat_capacity = environment.heat_capacity()
-	var/loc_temp = T0C
+	var/loc_temp = 0 CELSIUS
 	if(istype(get_turf(src), /turf/space))
 		//environment_heat_capacity = loc:heat_capacity
 		var/turf/heat_turf = get_turf(src)
@@ -31,7 +31,7 @@
 
 	bodytemperature += adjust_body_temperature(bodytemperature, loc_temp, 1)
 
-	if(bodytemperature < (T0C + 5)) // start calculating temperature damage etc
+	if(bodytemperature < (5 CELSIUS)) // start calculating temperature damage etc
 		if(bodytemperature <= hurt_temperature)
 			if(bodytemperature <= die_temperature)
 				adjustToxLoss(200)
@@ -79,7 +79,7 @@
 
 	health = maxHealth - (getOxyLoss() + getToxLoss() + getFireLoss() + getBruteLoss() + getCloneLoss())
 
-	if(health < 0 && stat != DEAD)
+	if(health <= 0 && !is_ic_dead())
 		death()
 		return
 
@@ -93,7 +93,7 @@
 		adjustCloneLoss(-1)
 		adjustBruteLoss(-1)
 
-	if (src.stat == DEAD)
+	if (src.is_ic_dead())
 		src.lying = 1
 		src.blinded = 1
 	else

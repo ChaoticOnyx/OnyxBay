@@ -5,8 +5,8 @@
 	icon_state = "borgcharger0(old)"
 	density = 1
 
-	idle_power_usage = 100
-	active_power_usage = 1000
+	idle_power_usage = 100 WATTS
+	active_power_usage = 1 KILO WATT
 
 	var/spawn_progress_time = 0
 	var/max_spawn_time = 50
@@ -37,31 +37,31 @@
 	/obj/item/device/radio,
 	/obj/item/device/radio/headset,
 	/obj/item/device/radio/beacon,
-	/obj/item/weapon/autopsy_scanner,
-	/obj/item/weapon/bikehorn,
-	/obj/item/weapon/bonesetter,
-	/obj/item/weapon/material/knife/butch,
-	/obj/item/weapon/caution,
-	/obj/item/weapon/caution/cone,
-	/obj/item/weapon/crowbar,
-	/obj/item/weapon/clipboard,
-	/obj/item/weapon/cell,
-	/obj/item/weapon/circular_saw,
-	/obj/item/weapon/material/hatchet,
-	/obj/item/weapon/handcuffs,
-	/obj/item/weapon/hemostat,
-	/obj/item/weapon/material/knife,
-	/obj/item/weapon/flame/lighter,
-	/obj/item/weapon/light/bulb,
-	/obj/item/weapon/light/tube,
-	/obj/item/weapon/pickaxe,
-	/obj/item/weapon/shovel,
-	/obj/item/weapon/weldingtool,
-	/obj/item/weapon/wirecutters,
-	/obj/item/weapon/wrench,
-	/obj/item/weapon/screwdriver,
-	/obj/item/weapon/grenade/chem_grenade/cleaner,
-	/obj/item/weapon/grenade/chem_grenade/metalfoam)
+	/obj/item/autopsy_scanner,
+	/obj/item/bikehorn,
+	/obj/item/bonesetter,
+	/obj/item/material/knife/butch,
+	/obj/item/caution,
+	/obj/item/caution/cone,
+	/obj/item/crowbar,
+	/obj/item/clipboard,
+	/obj/item/cell,
+	/obj/item/circular_saw,
+	/obj/item/material/hatchet,
+	/obj/item/handcuffs,
+	/obj/item/hemostat,
+	/obj/item/material/knife,
+	/obj/item/flame/lighter,
+	/obj/item/light/bulb,
+	/obj/item/light/tube,
+	/obj/item/pickaxe,
+	/obj/item/shovel,
+	/obj/item/weldingtool,
+	/obj/item/wirecutters,
+	/obj/item/wrench,
+	/obj/item/screwdriver,
+	/obj/item/grenade/chem_grenade/cleaner,
+	/obj/item/grenade/chem_grenade/metalfoam)
 
 	var/quantity = rand(5, 15)
 	for(var/i=0, i<quantity, i++)
@@ -122,11 +122,11 @@
 
 	show_browser(user, dat, "window=alien_replicator")
 
-/obj/machinery/replicator/attackby(obj/item/weapon/W as obj, mob/living/user as mob)
-	user.drop_item()
-	W.forceMove(src)
+/obj/machinery/replicator/attackby(obj/item/W, mob/living/user)
+	if(!user.drop(W, src))
+		return
 	stored_materials.Add(W)
-	src.visible_message("<span class='notice'>\The [user] inserts \the [W] into \the [src].</span>")
+	visible_message("<span class='notice'>\The [user] inserts \the [W] into \the [src].</span>")
 
 /obj/machinery/replicator/OnTopic(user, href_list)
 	if(href_list["activate"])

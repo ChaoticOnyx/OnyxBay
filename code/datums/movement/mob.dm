@@ -35,7 +35,7 @@
 
 // Death handling
 /datum/movement_handler/mob/death/DoMove(direction, mob/mover)
-	if(mob.stat != DEAD)
+	if(!mob.is_ooc_dead())
 		return
 	. = MOVEMENT_HANDLED
 	if(!mob.client)
@@ -280,9 +280,11 @@
 	HandleGrabs(direction, old_turf)
 
 	for(var/obj/item/grab/G in mob)
-		if(G.assailant_reverse_facing())
-			mob.set_dir(GLOB.reverse_dir[direction])
-		G.assailant_moved()
+		if(G.reverse_moving())
+			G.assailant.set_dir(GLOB.reverse_dir[direction])
+			G.affecting.set_dir(GLOB.reverse_dir[direction])
+		if(G.current_grab.downgrade_on_move)
+			G.downgrade()
 	for(var/obj/item/grab/G in mob.grabbed_by)
 		G.adjust_position()
 

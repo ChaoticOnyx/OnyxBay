@@ -9,8 +9,10 @@
 	if(affecting.w_uniform)
 		affecting.w_uniform.add_fingerprint(assailant)
 
-	if(assailant.l_hand) assailant.unEquip(assailant.l_hand)
-	if(assailant.r_hand) assailant.unEquip(assailant.r_hand)
+	if(assailant.l_hand)
+		assailant.drop_l_hand()
+	if(assailant.r_hand)
+		assailant.drop_r_hand()
 
 	assailant.put_in_active_hand(src)
 	assailant.do_attack_animation(affecting)
@@ -27,7 +29,7 @@
 
 	stop_move = 1
 	force_stand = 1
-	reverse_facing = 1
+	reverse_moving = TRUE
 	can_absorb = 1
 	shield_assailant = 1
 	point_blank_mult = 1

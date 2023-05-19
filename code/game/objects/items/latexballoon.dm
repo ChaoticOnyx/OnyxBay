@@ -11,12 +11,13 @@
 	var/state
 	var/datum/gas_mixture/air_contents = null
 
-/obj/item/latexballon/proc/blow(obj/item/weapon/tank/tank)
+/obj/item/latexballon/proc/blow(obj/item/tank/tank)
 	if (icon_state == "latexballon_bursted")
 		return
 	src.air_contents = tank.remove_air_volume(3)
 	icon_state = "latexballon_blow"
 	item_state = "latexballon"
+	throw_speed = 3
 
 /obj/item/latexballon/proc/burst()
 	if (!air_contents)
@@ -39,7 +40,7 @@
 	burst()
 
 /obj/item/latexballon/fire_act(datum/gas_mixture/air, temperature, volume)
-	if(temperature > T0C+100)
+	if(temperature > (100 CELSIUS))
 		burst()
 	return
 

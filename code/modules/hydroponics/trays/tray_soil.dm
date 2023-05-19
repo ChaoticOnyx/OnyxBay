@@ -8,7 +8,7 @@
 	layer = BELOW_DOOR_LAYER
 
 /obj/machinery/portable_atmospherics/hydroponics/soil/attackby(obj/item/O as obj, mob/user as mob)
-	if(istype(O,/obj/item/weapon/tank))
+	if(istype(O,/obj/item/tank))
 		return
 	else
 		..()
@@ -45,7 +45,7 @@
 	connected_zlevels = GetConnectedZlevels(z)
 
 /obj/machinery/portable_atmospherics/hydroponics/soil/invisible/Process()
-	if(z in GLOB.using_map.station_levels) //plants on station always tick
+	if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)) //plants on station always tick
 		return ..()
 	if(living_observers_present(connected_zlevels))
 		return ..()

@@ -1,5 +1,3 @@
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:33
-
 /obj/singularity
 	name = "gravitational singularity"
 	desc = "A gravitational singularity."
@@ -36,6 +34,8 @@
 	var/mob/observer/ghost/the_chosen = null
 	var/mob/observer/ghost/prev_ghost = null
 
+	var/datum/radiation_source/pulse_source
+
 /obj/singularity/New(loc, starting_energy = 50, temp = 0)
 	//CARN: admin-alert for chuckle-fuckery.
 	admin_investigate_setup()
@@ -46,7 +46,7 @@
 			qdel(src)
 
 	..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	for(var/obj/machinery/power/singularity_beacon/singubeacon in GLOB.machines)
 		if(singubeacon.active)
 			target = singubeacon
@@ -56,7 +56,9 @@
 		create_childs()
 
 /obj/singularity/Destroy()
-	STOP_PROCESSING(SSobj, src)
+	if(!QDELETED(pulse_source))
+		qdel(pulse_source)
+
 	for(var/obj/singularity/child/SC in childs)
 		childs -= SC
 		if(!QDELETED(SC))
@@ -107,17 +109,24 @@
 	if(old_z != z && create_childs)
 		create_childs()
 
-/obj/singularity/Process()
+/obj/singularity/think()
 	eat()
 	dissipate()
 	check_energy()
 
 	if(current_size >= STAGE_TWO)
 		move()
-		pulse()
+
+		if(QDELETED(pulse_source))
+			pulse_source = SSradiation.radiate(src, new /datum/radiation/preset/hawking)
+		
+		pulse_source.update_energy((energy / 50) * HAWKING_RAY_ENERGY)
 
 		if(prob(event_chance)) //Chance for it to run a special event TODO: Come up with one or two more that fit.
 			event()
+	else
+		if(!QDELETED(pulse_source))
+			qdel(pulse_source)
 
 	if(follows_ghosts && picking_coldown <= world.time)
 		if(the_chosen)
@@ -125,6 +134,8 @@
 
 		else if(!target)
 			pick_ghost()
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/singularity/proc/pick_ghost()
 	picking_coldown = world.time + 20 SECONDS
@@ -281,7 +292,7 @@
 			consume_range = 4
 			dissipate = 0 // It cant go smaller due to e loss.
 			overlays = 0
-			if(!config.forbid_singulo_following)
+			if(!config.misc.forbid_singulo_following)
 				follows_ghosts = TRUE
 			if(chained)
 				overlays = "chain_s9"
@@ -302,7 +313,7 @@
 			consume_range = 5
 			dissipate = 0 // It cant go smaller due to e loss
 			event_chance = 25 // Events will fire off more often.
-			if(!config.forbid_singulo_following)
+			if(!config.misc.forbid_singulo_following)
 				follows_ghosts = TRUE
 			if(chained)
 				overlays = "chain_s9"
@@ -320,16 +331,18 @@
 		return 0
 
 /obj/singularity/proc/can_expand(step_size)
-	. = TRUE
 
 	for(var/direction in GLOB.cardinal)
-		if(!check_turfs_in(direction, step_size))
+		if(!check_turfs_in(direction))
 			return FALSE
-
+	for(var/corner in GLOB.cornerdirs)
+		if(!check_turfs_in(corner))
+			return FALSE
 	for(var/obj/singularity/child/SC in childs)
 		for(var/direction in GLOB.cardinal)
 			if(!SC.check_turfs_in(direction, step_size))
 				return FALSE
+	return TRUE
 
 /obj/singularity/proc/check_energy()
 	if(energy <= 0)
@@ -406,14 +419,14 @@
 
 /obj/singularity/proc/check_turfs_in(direction = 0, step = 0)
 	if(!direction)
-		return 0
+		return FALSE
 	var/steps = 0
 	if(!step)
 		switch(current_size)
 			if(STAGE_ONE)
 				steps = 1
 			if(STAGE_TWO)
-				steps = 3// Yes this is right
+				steps = 3 // Yes this is right
 			if(STAGE_THREE)
 				steps = 3
 			if(STAGE_FOUR)
@@ -424,62 +437,54 @@
 				steps = 6
 	else
 		steps = step
-
 	var/list/turfs = list()
-	var/turf/T = loc
-	for(var/i = 1 to steps)
-		T = get_step(T, direction)
-	if(!isturf(T))
-		return 0
-	turfs.Add(T)
-
+	var/turf/considered_turf = loc
+	for(var/i in 1 to steps)
+		considered_turf = get_step(considered_turf,direction)
+	if(!isturf(considered_turf))
+		return FALSE
+	turfs.Add(considered_turf)
 	var/dir2 = 0
 	var/dir3 = 0
 	switch(direction)
-		if(NORTH||SOUTH)
+		if(NORTH, SOUTH)
 			dir2 = 4
 			dir3 = 8
-		if(EAST||WEST)
+		if(EAST, WEST)
 			dir2 = 1
 			dir3 = 2
-
-	var/turf/T2 = T
-	for(var/j = 1 to steps)
-		T2 = get_step(T2, dir2)
-		if(!isturf(T2))
-			return 0
-		turfs.Add(T2)
-
-	for(var/k = 1 to steps)
-		T = get_step(T, dir3)
-		if(!isturf(T))
-			return 0
-		turfs.Add(T)
-
-	for(var/turf/T3 in turfs)
-		if(isnull(T3))
+	var/turf/other_turf = considered_turf
+	for(var/j = 1 to steps-1)
+		other_turf = get_step(other_turf,dir2)
+		if(!isturf(other_turf))
+			return FALSE
+		turfs.Add(other_turf)
+	for(var/k = 1 to steps-1)
+		considered_turf = get_step(considered_turf,dir3)
+		if(!isturf(considered_turf))
+			return FALSE
+		turfs.Add(considered_turf)
+	for(var/turf/check_turf in turfs)
+		if(isnull(check_turf))
 			continue
-		if(!movement_blocked(T3))
-			return 0
-	return 1
+		if(!can_move(check_turf))
+			return FALSE
+	return TRUE
 
-/obj/singularity/proc/movement_blocked(const/turf/T)
-	if(!isturf(T))
-		return 0
-
-	if((locate(/obj/machinery/containment_field) in T) || (locate(/obj/machinery/shieldwall) in T))
-		return 0
-
-	else if(locate(/obj/machinery/field_generator) in T)
-		var/obj/machinery/field_generator/G = locate(/obj/machinery/field_generator) in T
+/obj/singularity/proc/can_move(turf/considered_turf)
+	if(!considered_turf)
+		return FALSE
+	if((locate(/obj/machinery/containment_field) in considered_turf)||(locate(/obj/machinery/shieldwall) in considered_turf))
+		return FALSE
+	else if(locate(/obj/machinery/field_generator) in considered_turf)
+		var/obj/machinery/field_generator/G = locate(/obj/machinery/field_generator) in considered_turf
 		if(G?.active)
-			return 0
-
-	else if(locate(/obj/machinery/shieldwallgen) in T)
-		var/obj/machinery/shieldwallgen/S = locate(/obj/machinery/shieldwallgen) in T
+			return FALSE
+	else if(locate(/obj/machinery/shieldwallgen) in considered_turf)
+		var/obj/machinery/shieldwallgen/S = locate(/obj/machinery/shieldwallgen) in considered_turf
 		if(S?.active)
-			return 0
-	return 1
+			return FALSE
+	return TRUE
 
 /obj/singularity/proc/event()
 	var/numb = pick(1, 2, 3, 4, 5, 6)
@@ -500,11 +505,9 @@
 /obj/singularity/proc/toxmob()
 	var/toxrange = 10
 	var/toxdamage = 4
-	var/radiation = 15
 	if(energy > 200)
 		toxdamage = round(((energy - 150) / 50) * 4, 1)
-		radiation = round(((energy - 150) / 50) * 5, 1)
-	SSradiation.radiate(src, radiation) //Always radiate at max, so a decent dose of radiation is applied
+
 	for(var/mob/living/M in view(toxrange, loc))
 		if(M.status_flags & GODMODE)
 			continue
@@ -553,15 +556,12 @@
 			to_chat(M, SPAN("danger", "You hear an uneartly ringing, then what sounds like a shrilling kettle as you are washed with a wave of heat."))
 			to_chat(M, SPAN("danger", "You don't even have a moment to react as you are reduced to ashes by the intense radiation."))
 			M.dust()
-	SSradiation.radiate(src, rand(energy))
+	
+	var/datum/radiation_source/temp_source = SSradiation.radiate(src, new /datum/radiation/preset/singularity_beta)
+	temp_source.schedule_decay(10 SECONDS)
 
 	for(var/obj/singularity/child/SC in childs)
 		SC.smwave()
-
-/obj/singularity/proc/pulse()
-	for(var/obj/machinery/power/rad_collector/R in rad_collectors)
-		if(get_dist(R, src) <= 15) //Better than using orange() every process.
-			R.receive_pulse(energy)
 
 /obj/singularity/proc/on_capture()
 	chained = 1

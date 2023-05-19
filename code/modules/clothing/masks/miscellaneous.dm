@@ -29,7 +29,7 @@
 	say_verbs = list("mumbles", "says")
 
 // Clumsy folks can't take the mask off themselves.
-/obj/item/clothing/mask/muzzle/attack_hand(mob/user as mob)
+/obj/item/clothing/mask/muzzle/attack_hand(mob/user)
 	if(user.wear_mask == src && !user.IsAdvancedToolUser())
 		return 0
 	..()
@@ -44,11 +44,16 @@
 	item_flags = 0
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.01
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 60, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 60)
 	down_gas_transfer_coefficient = 1
 	down_body_parts_covered = null
 	down_icon_state = "steriledown"
 	pull_mask = 1
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 13.5 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.2 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 /obj/item/clothing/mask/fakemoustache
 	name = "fake moustache"
@@ -70,6 +75,15 @@
 	desc = "A blue neck scarf."
 	icon_state = "blueneckscarf"
 	item_state = "blueneckscarf"
+	body_parts_covered = 0
+	item_flags = 0
+	w_class = ITEM_SIZE_SMALL
+
+/obj/item/clothing/mask/uwu
+	name = "UwU mask"
+	desc = "Weaboo mask."
+	icon_state = "uwu"
+	item_state = "uwu"
 	body_parts_covered = 0
 	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
@@ -131,35 +145,6 @@
 	body_parts_covered = 0
 	w_class = ITEM_SIZE_SMALL
 
-/obj/item/clothing/mask/pig
-	name = "pig mask"
-	desc = "A rubber pig mask."
-	icon_state = "pig"
-	item_state = "pig"
-	flags_inv = HIDEFACE|BLOCKHAIR
-	w_class = ITEM_SIZE_SMALL
-	siemens_coefficient = 0.7
-	body_parts_covered = HEAD|FACE|EYES
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0, rad = 0)
-
-/obj/item/clothing/mask/horsehead
-	name = "horse head mask"
-	desc = "A mask made of soft vinyl and latex, representing the head of a horse."
-	icon_state = "horsehead"
-	item_state = "horsehead"
-	flags_inv = HIDEFACE|BLOCKHAIR
-	body_parts_covered = HEAD|FACE|EYES
-	w_class = ITEM_SIZE_SMALL
-	siemens_coefficient = 0.7
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0, rad = 0)
-
-/obj/item/clothing/mask/horsehead/New()
-	..()
-	// The horse mask doesn't cause voice changes by default, the wizard spell changes the flag as necessary
-	say_messages = list("NEEIIGGGHHHH!", "NEEEIIIIGHH!", "NEIIIGGHH!", "HAAWWWWW!", "HAAAWWW!")
-	say_verbs = list("whinnies", "neighs", "says")
-
-
 /obj/item/clothing/mask/ai
 	name = "camera MIU"
 	desc = "Allows for direct mental connection to accessible camera networks."
@@ -169,7 +154,7 @@
 	body_parts_covered = FACE|EYES
 	action_button_name = "Toggle MUI"
 	origin_tech = list(TECH_DATA = 5, TECH_ENGINEERING = 5)
-	armor = list(melee = 10, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0, rad = 0) //Well it's made of some sort of plastic.
+	armor = list(melee = 10, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0) //Well it's made of some sort of plastic.
 	var/active = FALSE
 	var/mob/observer/eye/cameranet/eye
 
@@ -227,7 +212,12 @@
 	flags_inv = HIDEFACE|BLOCKHAIR
 	siemens_coefficient = 0.7
 	body_parts_covered = HEAD|FACE|EYES
-	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 16 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 3.4 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 /obj/item/clothing/mask/rubber/trasen
 	name = "Jack Trasen mask"
@@ -303,7 +293,12 @@
 	item_state = "bandblack"
 	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
-	armor = list(melee = 5, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 15, rad = 0)
+	armor = list(melee = 5, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 15)
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 12 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.18 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 /obj/item/clothing/mask/bandana/equipped(mob/user, slot)
 	switch(slot)
@@ -364,6 +359,11 @@
 	desc = "A fine black bandana with nanotech lining and a skull emblem. Can be worn on the head or face."
 	icon_state = "bandskull"
 	item_state = "bandskull"
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 12 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.18 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 /obj/item/clothing/mask/bandana/customwhite //Custom item
 	name = "white bandana"
@@ -379,7 +379,7 @@
 	icon_state = "skullmask"
 	item_state = "skullmask"
 	w_class = ITEM_SIZE_NORMAL
-	armor = list(melee = 15, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 15, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.8
 
 /obj/item/clothing/mask/plasticbag
@@ -392,7 +392,7 @@
 	tint = TINT_BLIND
 
 /obj/item/clothing/mask/plasticbag/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/weapon/tape_roll))
+	if(istype(W, /obj/item/tape_roll))
 		to_chat(user, "You attach a piece of [W] to [src]!")
 		new /obj/item/clothing/mask/gas/plasticbag(get_turf(src))
 		qdel(src)

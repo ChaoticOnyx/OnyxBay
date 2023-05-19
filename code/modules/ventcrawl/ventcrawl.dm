@@ -5,13 +5,14 @@ var/list/ventcrawl_machinery = list(
 
 // Vent crawling whitelisted items, whoo
 /mob/living/var/list/can_enter_vent_with = list(
-	/obj/item/weapon/implant,
+	/obj/item/implant,
 	/obj/item/device/radio/borg,
-	/obj/item/weapon/holder,
+	/obj/item/holder,
 	/obj/machinery/camera,
 	/mob/living/simple_animal/borer,
 	/obj/item/organ/internal/biostructure,
-	/obj/effect/abstract/proximity_checker //spiderbot staff
+	/obj/effect/abstract/proximity_checker, //spiderbot staff
+	/obj/item/organ/internal/heart/gland/ventcrawling
 	)
 
 /mob/living/var/list/icon/pipes_shown = list()
@@ -37,6 +38,12 @@ var/list/ventcrawl_machinery = list(
 		remove_ventcrawl()
 		add_ventcrawl(loc)
 
+/mob/living/simple_animal/borer/can_ventcrawl()
+	if(host)
+		to_chat(src, SPAN("warning", "You can't ventcrawl being inside a host!"))
+		return FALSE
+	return ..()
+
 /mob/living/carbon/metroid/can_ventcrawl()
 	if(Victim)
 		to_chat(src, "<span class='warning'>You cannot ventcrawl while feeding.</span>")
@@ -53,6 +60,8 @@ var/list/ventcrawl_machinery = list(
 	if(isMonkey(src))
 		return TRUE
 	if(istype(species, /datum/species/xenos))
+		return TRUE
+	if(istype(internal_organs_by_name[BP_HEART], /obj/item/organ/internal/heart/gland/ventcrawling))
 		return TRUE
 	return ventcrawl_carry()
 
@@ -121,6 +130,12 @@ var/list/ventcrawl_machinery = list(
 /mob/living/carbon/alien/ventcrawl_carry()
 	return 1
 
+/mob/living/simple_animal/borer/ventcrawl_carry()
+	return 1
+
+/mob/living/simple_animal/hostile/giant_spider/viper/wizard/ventcrawl_carry()
+	return 1
+
 /mob/living/proc/handle_ventcrawl(atom/clicked_on)
 	if(!can_ventcrawl())
 		return
@@ -151,9 +166,9 @@ var/list/ventcrawl_machinery = list(
 				switch(vent_found.air_contents.temperature)
 					if(0 to BODYTEMP_COLD_DAMAGE_LIMIT)
 						to_chat(src, "<span class='danger'>You feel a painful freeze coming from the vent!</span>")
-					if(BODYTEMP_COLD_DAMAGE_LIMIT to T0C)
+					if(BODYTEMP_COLD_DAMAGE_LIMIT to (0 CELSIUS))
 						to_chat(src, "<span class='warning'>You feel an icy chill coming from the vent.</span>")
-					if(T0C + 40 to BODYTEMP_HEAT_DAMAGE_LIMIT)
+					if((40 CELSIUS) to BODYTEMP_HEAT_DAMAGE_LIMIT)
 						to_chat(src, "<span class='warning'>You feel a hot wash coming from the vent.</span>")
 					if(BODYTEMP_HEAT_DAMAGE_LIMIT to INFINITY)
 						to_chat(src, "<span class='danger'>You feel a searing heat coming from the vent!</span>")
@@ -170,6 +185,9 @@ var/list/ventcrawl_machinery = list(
 				return
 			if(!can_ventcrawl())
 				return
+			if(!vent_found.can_crawl_through())
+				to_chat(src, "This vent is no longer accessible!")
+				return
 
 			visible_message("<B>[src] scrambles into the ventilation ducts!</B>", "You climb into the ventilation system.")
 
@@ -183,7 +201,6 @@ var/list/ventcrawl_machinery = list(
 
 /mob/living/proc/add_ventcrawl(obj/machinery/atmospherics/starting_machine)
 	is_ventcrawling = 1
-	//candrop = 0
 	var/datum/pipe_network/network = starting_machine.return_network(starting_machine)
 	if(!network)
 		return
@@ -198,7 +215,6 @@ var/list/ventcrawl_machinery = list(
 
 /mob/living/proc/remove_ventcrawl()
 	is_ventcrawling = 0
-	//candrop = 1
 	if(client)
 		for(var/image/current_image in pipes_shown)
 			client.images -= current_image

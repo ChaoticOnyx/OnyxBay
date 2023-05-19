@@ -224,7 +224,7 @@
 	if(!user_turf)
 		to_chat(user, SPAN_WARNING("You cannot cast spells in null space!"))
 
-	if((spell_flags & Z2NOCAST) && (user_turf.z in GLOB.using_map.admin_levels)) //Certain spells are not allowed on the centcomm zlevel
+	if((spell_flags & Z2NOCAST) && (user_turf.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM))) //Certain spells are not allowed on the centcomm zlevel
 		return FALSE
 
 	if(spell_flags & CONSTRUCT_CHECK)
@@ -255,6 +255,10 @@
 	if((spell_flags & NEEDSCLOTHES) && !(spell && istype(spell)) && holder == user)//clothes check
 		if(!user.wearing_wiz_garb())
 			return FALSE
+
+	if(istype(user.loc, /obj/effect/dummy/spell_jaunt))
+		to_chat(user, SPAN_WARNING("You cannot cast spells in this form"))
+		return FALSE
 
 	return TRUE
 
@@ -378,7 +382,7 @@
 	return temp
 
 /datum/spell/proc/spell_do_after(mob/user as mob, delay as num, numticks = 5)
-	if(!user || isnull(user))
+	if(QDELETED(user))
 		return FALSE
 
 	var/incap_flags = INCAPACITATION_STUNNED

@@ -8,8 +8,8 @@ var/list/floor_light_cache = list()
 	layer = ABOVE_TILE_LAYER
 	anchored = 0
 	use_power = POWER_USE_ACTIVE
-	idle_power_usage = 2
-	active_power_usage = 20
+	idle_power_usage = 2 WATTS
+	active_power_usage = 20 WATTS
 	power_channel = STATIC_LIGHT
 	matter = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
 
@@ -28,7 +28,7 @@ var/list/floor_light_cache = list()
 		anchored = !anchored
 		visible_message("<span class='notice'>\The [user] has [anchored ? "attached" : "detached"] \the [src].</span>")
 	else if(isWelder(W) && (damaged || (stat & BROKEN)))
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 		if(!WT.remove_fuel(0, user))
 			to_chat(user, "<span class='warning'>\The [src] must be on to complete this task.</span>")
 			return

@@ -7,7 +7,7 @@
 
 	spells = list(
 		SPELL_DATA(/datum/spell/targeted/projectile/magic_missile,     1),
-		SPELL_DATA(/datum/spell/hand/charges/blood_shard,              1),
+		SPELL_DATA(/datum/spell/blood_shard,                      1),
 		SPELL_DATA(/datum/spell/acid_spray,                            1),
 		SPELL_DATA(/datum/spell/hand/slippery_surface,                 1),
 		SPELL_DATA(/datum/spell/targeted/projectile/dumbfire/fireball, 1),
@@ -21,4 +21,12 @@
 		SPELL_DATA(/datum/spell/hand/burning_grip,                     1),
 		SPELL_DATA(/datum/spell/aoe_turf/drain_blood,                  1),
 		SPELL_DATA(/datum/spell/noclothes,                             3)
+	)
+
+	artifacts = list(
+		ARTIFACT_DATA(/obj/item/contract/apprentice,    1),
+		ARTIFACT_DATA(/obj/item/gun/energy/staff/focus, 1),
+		ARTIFACT_DATA(/obj/structure/closet/wizard/souls,      1),
+		ARTIFACT_DATA(/obj/structure/closet/wizard/scrying,    1),
+		ARTIFACT_DATA(/obj/item/monster_manual,         1)
 	)

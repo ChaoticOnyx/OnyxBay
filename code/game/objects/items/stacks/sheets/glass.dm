@@ -25,7 +25,7 @@
 /obj/item/stack/material/glass/attackby(obj/item/W, mob/user)
 	..()
 	if(!is_reinforced)
-		if(istype(W,/obj/item/stack/cable_coil))
+		if(isCoil(W))
 			var/obj/item/stack/cable_coil/CC = W
 			if (get_amount() < 1 || CC.get_amount() < 5)
 				to_chat(user, "<span class='warning'>You need five lengths of coil and one sheet of glass to make wired glass.</span>")
@@ -48,8 +48,8 @@
 			var/replace = (user.get_inactive_hand()==G)
 			V.use(1)
 			G.use(1)
-			if (!G && replace)
-				user.put_in_hands(RG)
+			if(!G && replace)
+				user.pick_or_drop(RG)
 
 /obj/item/stack/material/glass/proc/construct_window(mob/user as mob)
 	if(!user || !src)	return 0
@@ -156,8 +156,8 @@
 		src = null
 		var/replace = (user.get_inactive_hand()==G)
 		G.use(1)
-		if (!G && !RG && replace)
-			user.put_in_hands(RG)
+		if(!G && !RG && replace)
+			user.pick_or_drop(RG)
 	else
 		return ..()
 

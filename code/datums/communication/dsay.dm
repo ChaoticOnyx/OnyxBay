@@ -38,7 +38,7 @@
 /decl/dsay_communication/proc/can_communicate(client/communicator, message)
 	if(!istype(communicator))
 		return FALSE
-	if(communicator.mob.stat != DEAD)
+	if(!communicator.mob.is_ooc_dead())
 		to_chat(communicator, "<span class='warning'>You're not sufficiently dead to use DSAY!</span>")
 		return FALSE
 	return DSAY_ASK_BASE
@@ -50,7 +50,7 @@
 		return FALSE
 	if(M.client.holder && !is_mentor(M.client))
 		return TRUE
-	if(M.stat != DEAD)
+	if(!M.is_ooc_dead())
 		return FALSE
 	if(isnewplayer(M))
 		return FALSE
@@ -66,8 +66,9 @@
 		var/realname = C.mob.real_name
 		if(C.mob.mind)
 			mindname = C.mob.mind.name
-			if(C.mob.mind.original && C.mob.mind.original.real_name)
-				realname = C.mob.mind.original.real_name
+			var/mob/living/original_mob = C.mob.mind.original_mob?.resolve()
+			if(istype(original_mob) && original_mob.real_name)
+				realname = original_mob.real_name
 		if(mindname && mindname != realname)
 			name = "[realname] died as [mindname]"
 		else

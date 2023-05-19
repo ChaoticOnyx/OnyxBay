@@ -24,7 +24,7 @@
 if (Datum.is_processing) {\
 	if(Datum.is_processing != #Processor)\
 	{\
-		crash_with("Failed to start processing. [log_info_line(Datum)] is already being processed by [Datum.is_processing] but queue attempt occured on [#Processor]."); \
+		util_crash_with("Failed to start processing. [log_info_line(Datum)] is already being processed by [Datum.is_processing] but queue attempt occured on [#Processor]."); \
 	}\
 } else {\
 	Datum.is_processing = #Processor;\
@@ -36,7 +36,7 @@ if(Datum.is_processing) {\
 	if(Processor.processing.Remove(Datum)) {\
 		Datum.is_processing = null;\
 	} else {\
-		crash_with("Failed to stop processing. [log_info_line(Datum)] is being processed by [Datum.is_processing] but de-queue attempt occured on [#Processor]."); \
+		util_crash_with("Failed to stop processing. [log_info_line(Datum)] is being processed by [Datum.is_processing] but de-queue attempt occured on [#Processor]."); \
 	}\
 }
 
@@ -68,34 +68,59 @@ if(Datum.is_processing) {\
 //	ie: if a 20ds subsystem fires say 5 ds late due to lag or what not, its next fire would be in 15ds, not 20ds.
 #define SS_KEEP_TIMING 32
 
-//Calculate its next fire after its fired.
+// Calculate its next fire after its fired.
 //	(IE: if a 5ds wait SS takes 2ds to run, its next fire should be 5ds away, not 3ds like it normally would be)
 //	This flag overrides SS_KEEP_TIMING
 #define SS_POST_FIRE_TIMING 64
 
-// -- SStimer stuff --
-//Don't run if there is an identical unique timer active
-#define TIMER_UNIQUE		0x1
+//! ## Timing subsystem
+/**
+ * Don't run if there is an identical unique timer active
+ *
+ * if the arguments to addtimer are the same as an existing timer, it doesn't create a new timer,
+ * and returns the id of the existing timer
+ */
+#define TIMER_UNIQUE (1<<0)
 
-//For unique timers: Replace the old timer rather then not start this one
-#define TIMER_OVERRIDE		0x2
+/// For unique timers: Replace the old timer rather then not start this one
+#define TIMER_OVERRIDE (1<<1)
 
-//Timing should be based on how timing progresses on clients, not the sever.
-//	tracking this is more expensive,
-//	should only be used in conjuction with things that have to progress client side, such as animate() or sound()
-#define TIMER_CLIENT_TIME	0x4
+/**
+ * Timing should be based on how timing progresses on clients, not the server.
+ *
+ * Tracking this is more expensive,
+ * should only be used in conjuction with things that have to progress client side, such as
+ * animate() or sound()
+ */
+#define TIMER_CLIENT_TIME (1<<2)
 
-//Timer can be stopped using deltimer()
-#define TIMER_STOPPABLE		0x8
+/// Timer can be stopped using deltimer()
+#define TIMER_STOPPABLE (1<<3)
 
-//To be used with TIMER_UNIQUE
-//prevents distinguishing identical timers with the wait variable
-#define TIMER_NO_HASH_WAIT  0x10
+/// prevents distinguishing identical timers with the wait variable
+///
+/// To be used with TIMER_UNIQUE
+#define TIMER_NO_HASH_WAIT (1<<4)
 
-//number of byond ticks that are allowed to pass before the timer subsystem thinks it hung on something
-#define TIMER_NO_INVOKE_WARNING 600
+/// Loops the timer repeatedly until qdeleted
+///
+/// In most cases you want a subsystem instead, so don't use this unless you have a good reason
+#define TIMER_LOOP (1<<5)
 
+/// Delete the timer on parent datum Destroy() and when deltimer'd
+#define TIMER_DELETE_ME (1<<6)
+
+/// Empty ID define
 #define TIMER_ID_NULL -1
+
+/**
+	Create a new timer and add it to the queue.
+	* Arguments:
+	* * callback the callback to call on timer finish
+	* * wait deciseconds to run the timer for
+	* * flags flags for this timer, see: code\__DEFINES\subsystems.dm
+*/
+#define addtimer(args...) _addtimer(args, file = __FILE__, line = __LINE__)
 
 //SUBSYSTEM STATES
 #define SS_IDLE 0		//aint doing shit.

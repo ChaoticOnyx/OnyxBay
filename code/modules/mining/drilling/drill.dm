@@ -13,28 +13,28 @@
 	var/braces_needed = 2
 	var/list/supports = list()
 	var/supported = 0
-	var/base_power_usage = 10 KILOWATTS // Base power usage when the drill is running.
-	var/actual_power_usage = 10 KILOWATTS // Actual power usage, with upgrades in mind.
+	var/base_power_usage = 10 KILO WATTS // Base power usage when the drill is running.
+	var/actual_power_usage = 10 KILO WATTS // Actual power usage, with upgrades in mind.
 	var/active = 0
 	var/list/resource_field = list()
 
 	var/ore_types = list(
-		MATERIAL_IRON     = /obj/item/weapon/ore/iron,
-		MATERIAL_URANIUM =  /obj/item/weapon/ore/uranium,
-		MATERIAL_GOLD =     /obj/item/weapon/ore/gold,
-		MATERIAL_SILVER =   /obj/item/weapon/ore/silver,
-		MATERIAL_DIAMOND =  /obj/item/weapon/ore/diamond,
-		MATERIAL_PLASMA =   /obj/item/weapon/ore/plasma,
-		MATERIAL_OSMIUM =   /obj/item/weapon/ore/osmium,
-		MATERIAL_HYDROGEN = /obj/item/weapon/ore/hydrogen,
-		MATERIAL_SAND =     /obj/item/weapon/ore/glass,
-		MATERIAL_GRAPHENE = /obj/item/weapon/ore/coal
+		MATERIAL_IRON     = /obj/item/ore/iron,
+		MATERIAL_URANIUM =  /obj/item/ore/uranium,
+		MATERIAL_GOLD =     /obj/item/ore/gold,
+		MATERIAL_SILVER =   /obj/item/ore/silver,
+		MATERIAL_DIAMOND =  /obj/item/ore/diamond,
+		MATERIAL_PLASMA =   /obj/item/ore/plasma,
+		MATERIAL_OSMIUM =   /obj/item/ore/osmium,
+		MATERIAL_HYDROGEN = /obj/item/ore/hydrogen,
+		MATERIAL_SAND =     /obj/item/ore/glass,
+		MATERIAL_GRAPHENE = /obj/item/ore/coal
 		)
 
 	//Upgrades
 	var/harvest_speed
 	var/capacity
-	var/obj/item/weapon/cell/cell = null
+	var/obj/item/cell/cell = null
 
 	//Flags
 	var/need_update_field = 0
@@ -45,11 +45,11 @@
 	..()
 
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/miningdrill(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/capacitor(src)
-	component_parts += new /obj/item/weapon/stock_parts/micro_laser(src)
-	component_parts += new /obj/item/weapon/cell/high(src)
+	component_parts += new /obj/item/circuitboard/miningdrill(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/stock_parts/capacitor(src)
+	component_parts += new /obj/item/stock_parts/micro_laser(src)
+	component_parts += new /obj/item/cell/high(src)
 
 	RefreshParts()
 
@@ -153,12 +153,10 @@
 			return
 	if(!panel_open || active) return ..()
 
-	if(istype(O, /obj/item/weapon/cell))
+	if(istype(O, /obj/item/cell))
 		if(cell)
 			to_chat(user, "The drill already has a cell installed.")
-		else
-			user.drop_item()
-			O.loc = src
+		else if(user.drop(O, src))
 			cell = O
 			component_parts += O
 			to_chat(user, "You install \the [O].")
@@ -213,14 +211,14 @@
 	capacity = 0
 	var/charge_multiplier = 0
 
-	for(var/obj/item/weapon/stock_parts/P in component_parts)
-		if(istype(P, /obj/item/weapon/stock_parts/micro_laser))
+	for(var/obj/item/stock_parts/P in component_parts)
+		if(istype(P, /obj/item/stock_parts/micro_laser))
 			harvest_speed = P.rating
-		if(istype(P, /obj/item/weapon/stock_parts/matter_bin))
+		if(istype(P, /obj/item/stock_parts/matter_bin))
 			capacity = 200 * P.rating
-		if(istype(P, /obj/item/weapon/stock_parts/capacitor))
+		if(istype(P, /obj/item/stock_parts/capacitor))
 			charge_multiplier += P.rating
-	cell = locate(/obj/item/weapon/cell) in component_parts
+	cell = locate(/obj/item/cell) in component_parts
 	if(charge_multiplier)
 		actual_power_usage = base_power_usage / charge_multiplier
 	else
@@ -274,7 +272,7 @@
 
 	var/obj/structure/ore_box/B = locate() in orange(1)
 	if(B)
-		for(var/obj/item/weapon/ore/O in contents)
+		for(var/obj/item/ore/O in contents)
 			O.loc = B
 		to_chat(usr, "<span class='notice'>You unload the drill's storage cache into the ore box.</span>")
 	else
@@ -291,9 +289,9 @@
 	..()
 
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/miningdrillbrace(src)
+	component_parts += new /obj/item/circuitboard/miningdrillbrace(src)
 
-/obj/machinery/mining/brace/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/mining/brace/attackby(obj/item/W as obj, mob/user as mob)
 	if(connected && connected.active)
 		to_chat(user, "<span class='notice'>You can't work with the brace of a running drill!</span>")
 		return

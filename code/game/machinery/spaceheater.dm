@@ -6,18 +6,18 @@
 	icon_state = "sheater-off"
 	name = "space heater"
 	desc = "Made by Space Amish using traditional space techniques, this heater is guaranteed not to set anything, or anyone, on fire."
-	var/obj/item/weapon/cell/cell
+	var/obj/item/cell/cell
 	var/on = 0
-	var/set_temperature = T0C + 20	//K
+	var/set_temperature = 20 CELSIUS
 	var/active = 0
-	var/heating_power = 40 KILOWATTS
+	var/heating_power = 40 KILO WATTS
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	clicksound = SFX_USE_LARGE_SWITCH
 
 
 /obj/machinery/space_heater/New()
 	..()
-	cell = new /obj/item/weapon/cell/high(src)
+	cell = new /obj/item/cell/high(src)
 	update_icon()
 
 /obj/machinery/space_heater/update_icon(rebuild_overlay = 0)
@@ -35,7 +35,7 @@
 		if(panel_open)
 			overlays  += "sheater-open"
 
-/obj/machinery/space_heater/examine(mob/user)
+/obj/machinery/space_heater/_examine_text(mob/user)
 	. = ..()
 
 	. += "\nThe heater is [on ? "on" : "off"] and the hatch is [panel_open ? "open" : "closed"]."
@@ -54,19 +54,17 @@
 	..(severity)
 
 /obj/machinery/space_heater/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/cell))
+	if(istype(I, /obj/item/cell))
 		if(panel_open)
 			if(cell)
 				to_chat(user, "There is already a power cell inside.")
 				return
 			else
 				// insert cell
-				var/obj/item/weapon/cell/C = usr.get_active_hand()
-				if(istype(C))
-					user.drop_item()
+				var/obj/item/cell/C = usr.get_active_hand()
+				if(user.drop(C, src))
 					cell = C
-					C.forceMove(src)
-					C.add_fingerprint(usr)
+					C.add_fingerprint(user)
 
 					user.visible_message("<span class='notice'>[user] inserts a power cell into [src].</span>", "<span class='notice'>You insert the power cell into [src].</span>")
 					power_change()
@@ -107,7 +105,7 @@
 
 		dat += "<A href='?src=\ref[src];op=temp;val=-5'>-</A>"
 
-		dat += " [set_temperature]K ([set_temperature-T0C]&deg;C)"
+		dat += " [set_temperature]K ([CONV_KELVIN_CELSIUS(set_temperature)]&deg;C)"
 		dat += "<A href='?src=\ref[src];op=temp;val=5'>+</A><BR>"
 
 		var/datum/browser/popup = new(usr, "spaceheater", "Space Heater Control Panel")
@@ -133,24 +131,22 @@
 			var/value = text2num(href_list["val"])
 
 			// limit to 0-90 degC
-			set_temperature = dd_range(T0C, T0C + 90, set_temperature + value)
+			set_temperature = dd_range(0 CELSIUS, 90 CELSIUS, set_temperature + value)
 
 		if("cellremove")
 			if(panel_open && cell && !usr.get_active_hand())
 				usr.visible_message("<span class='notice'>\The usr] removes \the [cell] from \the [src].</span>", "<span class='notice'>You remove \the [cell] from \the [src].</span>")
 				cell.update_icon()
-				usr.put_in_hands(cell)
+				usr.pick_or_drop(cell)
 				cell.add_fingerprint(usr)
 				cell = null
 				power_change()
 
 		if("cellinstall")
 			if(panel_open && !cell)
-				var/obj/item/weapon/cell/C = usr.get_active_hand()
-				if(istype(C))
-					usr.drop_item()
+				var/obj/item/cell/C = usr.get_active_hand()
+				if(usr.drop(C, src))
 					cell = C
-					C.forceMove(src)
 					C.add_fingerprint(usr)
 					power_change()
 					usr.visible_message("<span class='notice'>[usr] inserts \the [C] into \the [src].</span>", "<span class='notice'>You insert \the [C] into \the [src].</span>")
@@ -180,7 +176,7 @@
 						heat_transfer = abs(heat_transfer)
 
 						//Assume the heat is being pumped into the hull which is fixed at 20 C
-						var/cop = removed.temperature/T20C	//coefficient of performance from thermodynamics -> power used = heat_transfer/cop
+						var/cop = removed.temperature/(20 CELSIUS)	//coefficient of performance from thermodynamics -> power used = heat_transfer/cop
 						heat_transfer = min(heat_transfer, cop * heating_power)	//limit heat transfer by available power
 
 						heat_transfer = removed.add_thermal_energy(-heat_transfer)	//get the actual heat transfer

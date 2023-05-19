@@ -10,8 +10,8 @@
 	density = 1
 	var/previous_power_state = 0
 
-	active_power_usage = 2000
-	idle_power_usage = 1000
+	active_power_usage = 2 KILO WATTS
+	idle_power_usage = 1 KILO WATT
 
 /obj/machinery/auto_cloner/New()
 	..()

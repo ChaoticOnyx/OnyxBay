@@ -18,13 +18,13 @@
 	if(H == host)
 		return
 	if(host)
-		GLOB.moved_event.unregister(host, src, .proc/HandleMove)
+		unregister_signal(host, SIGNAL_MOVED)
 	if(R)
 		hasprox_receiver = R
 	else if(hasprox_receiver == host) //Default case
 		hasprox_receiver = H
 	host = H
-	GLOB.moved_event.register(host, src, .proc/HandleMove)
+	register_signal(host, SIGNAL_MOVED, .proc/HandleMove)
 	last_host_loc = host.loc
 	SetRange(current_range,TRUE)
 
@@ -95,11 +95,6 @@
 	else
 		checkers_local.Cut(old_checkers_used + 1, old_checkers_len)
 
-	// for some reasons proximity_monitor removes himself from GLOB.moved_event.event_sources
-	// so we want to re-check
-	if(!(host in GLOB.moved_event.event_sources))
-		GLOB.moved_event.register(host, src, .proc/HandleMove)
-
 /obj/effect/abstract/proximity_checker
 	invisibility = INVISIBILITY_SYSTEM
 	anchored = TRUE
@@ -110,7 +105,7 @@
 	if(_monitor)
 		monitor = _monitor
 	else
-		crash_with("proximity_checker created without host")
+		util_crash_with("proximity_checker created without host")
 		return INITIALIZE_HINT_QDEL
 
 /obj/effect/abstract/proximity_checker/Destroy()

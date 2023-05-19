@@ -5,25 +5,27 @@
 	icon_state = "suspension2"
 	density = 1
 	req_access = list(access_research)
-	var/obj/item/weapon/cell/cell
-	var/obj/item/weapon/card/id/auth_card
-	var/locked = 1
-	var/power_use = 5 KILOWATTS
+	use_power = 0
+	active_power_usage = 5 KILO WATTS
+	interact_offline = TRUE
+	var/obj/item/cell/cell
+	var/obj/item/card/id/auth_card
+	var/locked = TRUE
 	var/obj/effect/suspension_field/suspension_field
 
 /obj/machinery/suspension_gen/New()
 	..()
-	src.cell = new /obj/item/weapon/cell/high(src)
+	src.cell = new /obj/item/cell/high(src)
 
 /obj/machinery/suspension_gen/Process()
 	set background = 1
 	if(suspension_field)
-		cell.use(power_use * CELLRATE)
+		cell.use(active_power_usage * CELLRATE)
 
 		var/turf/T = get_turf(suspension_field)
 		for(var/mob/living/M in T)
 			M.weakened = max(M.weakened, 3)
-			cell.use(power_use * CELLRATE)
+			cell.use(active_power_usage * CELLRATE)
 			if(prob(5))
 				to_chat(M, SPAN("warning", "[pick("You feel tingly","You feel like floating","It is hard to speak","You can barely move")]."))
 
@@ -86,13 +88,13 @@
 		. = TOPIC_REFRESH
 	else if(href_list["insertcard"])
 		var/obj/item/I = user.get_active_hand()
-		if(istype(I, /obj/item/weapon/card))
+		if(istype(I, /obj/item/card))
 			if(issilicon(user))
 				attackby(I, user)
 				interact(user)
 				return TOPIC_REFRESH
-			user.drop_item()
-			I.forceMove(src)
+			if(!user.drop(I, src))
+				return
 			auth_card = I
 			if(attempt_unlock(I, user))
 				to_chat(user, SPAN("info", "You insert [I], the console flashes \'<i>Access granted.</i>\'"))
@@ -111,11 +113,13 @@
 				auth_card = null
 		. = TOPIC_REFRESH
 	else if(href_list["lock"])
-		locked = 1
+		locked = TRUE
 		. = TOPIC_REFRESH
 	else if(href_list["close"])
 		close_browser(user, "window=suspension")
 		return TOPIC_HANDLED
+	else if(href_list["refresh"])
+		. = TOPIC_REFRESH
 
 	if(. == TOPIC_REFRESH)
 		interact(user)
@@ -132,7 +136,7 @@
 		cell = null
 		to_chat(user, SPAN("info", "You remove the power cell."))
 
-/obj/machinery/suspension_gen/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/suspension_gen/attackby(obj/item/W as obj, mob/user as mob)
 	if(!locked && !suspension_field && default_deconstruction_screwdriver(user, W))
 		return
 	else if(isWrench(W))
@@ -140,6 +144,9 @@
 			if(anchored)
 				anchored = 0
 			else
+				if(istype(loc, /turf) && !isfloor(loc))
+					to_chat(user, SPAN_WARNING("\The [name] must be constructed on the floor!"))
+					return
 				anchored = 1
 			to_chat(user, SPAN("info", "You wrench the stabilising legs [anchored ? "into place" : "up against the body"]."))
 			if(anchored)
@@ -148,38 +155,38 @@
 				desc = "It has stubby legs bolted up against it's body for stabilising."
 		else
 			to_chat(user, SPAN("warning", "You are unable to secure [src] while it is active!"))
-	else if (istype(W, /obj/item/weapon/cell))
+	else if (istype(W, /obj/item/cell))
 		if(panel_open)
 			if(cell)
 				to_chat(user, SPAN("warning", "There is a power cell already installed."))
-			else
-				user.drop_item()
-				W.forceMove(src)
+			else if(user.drop(W, src))
 				cell = W
 				to_chat(user, SPAN("info", "You insert the power cell."))
 				icon_state = "suspension1"
-	else if(istype(W, /obj/item/weapon/card))
-		var/obj/item/weapon/card/I = W
+	else if(istype(W, /obj/item/card))
+		var/obj/item/card/I = W
 		if(!auth_card)
 			if(attempt_unlock(I, user))
 				to_chat(user, SPAN("info", "You swipe [I], the console flashes \'<i>Access granted.</i>\'"))
+				interact(user)
 			else
 				to_chat(user, SPAN("warning", "You swipe [I], the console flashes \'<i>Access denied.</i>\'"))
 		else
 			to_chat(user, SPAN("warning", "Remove [auth_card] first."))
 
-/obj/machinery/suspension_gen/proc/attempt_unlock(obj/item/weapon/card/C, mob/user)
-	if(!panel_open)
-		if(istype(C, /obj/item/weapon/card/emag))
-			C.resolve_attackby(src, user)
-		else if(istype(C, /obj/item/weapon/card/id) && check_access(C) || istype(C, /obj/item/weapon/card/robot))
-			locked = 0
-		if(!locked)
-			return 1
+/obj/machinery/suspension_gen/proc/attempt_unlock(obj/item/card/C, mob/user)
+	if(panel_open)
+		return
+
+	if(istype(C, /obj/item/card/emag))
+		C.resolve_attackby(src, user)
+	else if(istype(C, /obj/item/card/id) && check_access(C) || istype(C, /obj/item/card/robot))
+		locked = FALSE
+	return !locked
 
 /obj/machinery/suspension_gen/emag_act(remaining_charges, mob/user)
 	if(cell.charge > 0 && locked)
-		locked = 0
+		locked = FALSE
 		return 1
 
 //checks for whether the machine can be activated or not should already have occurred by this point
@@ -252,7 +259,7 @@
 /obj/effect/suspension_field
 	name = "energy field"
 	icon = 'icons/effects/effects.dmi'
-	anchored = 1
+	anchored = TRUE
 	density = 1
 
 /obj/effect/suspension_field/Destroy()

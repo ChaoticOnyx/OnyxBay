@@ -1,6 +1,6 @@
 /mob/living/Initialize()
 	. = ..()
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		add_to_dead_mob_list()
 	else
 		add_to_living_mob_list()
@@ -118,18 +118,18 @@
 						to_chat(src, "<span class='danger'>You fail to push [tmob]'s fat ass out of the way.</span>")
 						now_pushing = 0
 						return
-				if(tmob.r_hand && istype(tmob.r_hand, /obj/item/weapon/shield/riot))
+				if(tmob.r_hand && istype(tmob.r_hand, /obj/item/shield/riot))
 					if(prob(99))
 						now_pushing = 0
 						return
-				if(tmob.l_hand && istype(tmob.l_hand, /obj/item/weapon/shield/riot))
+				if(tmob.l_hand && istype(tmob.l_hand, /obj/item/shield/riot))
 					if(prob(99))
 						now_pushing = 0
 						return
 			if(!(tmob.status_flags & CANPUSH))
 				now_pushing = 0
 				return
-			tmob.LAssailant = src
+			tmob.LAssailant = weakref(src)
 		if(isobj(AM) && !AM.anchored)
 			var/obj/I = AM
 			if(!can_pull_size || can_pull_size < I.w_class)
@@ -261,7 +261,7 @@
 /mob/living/proc/adjustBruteLoss(amount)
 	if(status_flags & GODMODE)
 		return 0
-	health = max(health-amount, 0)
+	health = Clamp(health-amount, 0, maxHealth)
 
 /mob/living/proc/getOxyLoss()
 	return 0
@@ -343,41 +343,41 @@
 	return
 
 //Recursive function to find everything a mob is holding.
-/mob/living/get_contents(obj/item/weapon/storage/Storage = null)
+/mob/living/get_contents(obj/item/storage/Storage = null)
 	var/list/L = list()
 
 	if(Storage) //If it called itself
 		L += Storage.return_inv()
 
 		//Leave this commented out, it will cause storage items to exponentially add duplicate to the list
-		//for(var/obj/item/weapon/storage/S in Storage.return_inv()) //Check for storage items
+		//for(var/obj/item/storage/S in Storage.return_inv()) //Check for storage items
 		//	L += get_contents(S)
 
-		for(var/obj/item/weapon/gift/G in Storage.return_inv()) //Check for gift-wrapped items
+		for(var/obj/item/gift/G in Storage.return_inv()) //Check for gift-wrapped items
 			L += G.gift
-			if(istype(G.gift, /obj/item/weapon/storage))
+			if(istype(G.gift, /obj/item/storage))
 				L += get_contents(G.gift)
 
 		for(var/obj/item/smallDelivery/D in Storage.return_inv()) //Check for package wrapped items
 			L += D.wrapped
-			if(istype(D.wrapped, /obj/item/weapon/storage)) //this should never happen
+			if(istype(D.wrapped, /obj/item/storage)) //this should never happen
 				L += get_contents(D.wrapped)
 		return L
 
 	else
 
 		L += src.contents
-		for(var/obj/item/weapon/storage/S in src.contents)	//Check for storage items
+		for(var/obj/item/storage/S in src.contents)	//Check for storage items
 			L += get_contents(S)
 
-		for(var/obj/item/weapon/gift/G in src.contents) //Check for gift-wrapped items
+		for(var/obj/item/gift/G in src.contents) //Check for gift-wrapped items
 			L += G.gift
-			if(istype(G.gift, /obj/item/weapon/storage))
+			if(istype(G.gift, /obj/item/storage))
 				L += get_contents(G.gift)
 
 		for(var/obj/item/smallDelivery/D in src.contents) //Check for package wrapped items
 			L += D.wrapped
-			if(istype(D.wrapped, /obj/item/weapon/storage)) //this should never happen
+			if(istype(D.wrapped, /obj/item/storage)) //this should never happen
 				L += get_contents(D.wrapped)
 		return L
 
@@ -441,8 +441,8 @@
 	if(iscarbon(src))
 		var/mob/living/carbon/C = src
 
-		if (C.handcuffed && !initial(C.handcuffed))
-			C.drop_from_inventory(C.handcuffed)
+		if(C.handcuffed && !initial(C.handcuffed))
+			C.drop(C.handcuffed, force = TRUE)
 		C.handcuffed = initial(C.handcuffed)
 	BITSET(hud_updateflag, HEALTH_HUD)
 	BITSET(hud_updateflag, STATUS_HUD)
@@ -464,8 +464,8 @@
 	SetWeakened(0)
 
 	// shut down ongoing problems
-	radiation = 0
-	bodytemperature = T20C
+	radiation = SPACE_RADIATION
+	bodytemperature = 20 CELSIUS
 	sdisabilities = 0
 	disabilities = 0
 
@@ -481,7 +481,7 @@
 	restore_all_organs(ignore_prosthetic_prefs)
 
 	// remove the character from the list of the dead
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		switch_from_dead_to_living_mob_list()
 		timeofdeath = 0
 
@@ -511,7 +511,7 @@
 	set category = "OOC"
 	set src in view()
 
-	if(config.allow_Metadata)
+	if(config.character_setup.allow_metadata)
 		if(client)
 			to_chat(usr, "[src]'s Metainfo:<br>[client.prefs.metadata]")
 		else
@@ -657,7 +657,7 @@
 
 /mob/living/proc/process_resist()
 	//Getting out of someone's inventory.
-	if(istype(src.loc, /obj/item/weapon/holder))
+	if(istype(src.loc, /obj/item/holder))
 		escape_inventory(src.loc)
 		return
 
@@ -667,24 +667,36 @@
 		return TRUE
 
 	//Breaking out of a locker?
-	if( src.loc && (istype(src.loc, /obj/structure/closet)) )
-		var/obj/structure/closet/C = loc
-		spawn() C.mob_breakout(src)
+	if(src.loc && (istype(src.loc, /obj/structure/closet)) )
+		var/obj/structure/closet/closet = loc
+		spawn() closet.mob_breakout(src)
 		return TRUE
 
-/mob/living/proc/escape_inventory(obj/item/weapon/holder/H)
+	//Trying to escape from abductors?
+	if(src.loc && (istype(src.loc, /obj/machinery/abductor/experiment)))
+		var/obj/machinery/abductor/experiment/experiment = loc
+		spawn() experiment.mob_breakout(src)
+		return TRUE
+
+	//Trying to escape from Spider?
+	if(src.loc && (istype(src.loc, /obj/structure/spider/cocoon)))
+		var/obj/structure/spider/cocoon/cocoon = loc
+		spawn() cocoon.mob_breakout(src)
+		return TRUE
+
+/mob/living/proc/escape_inventory(obj/item/holder/H)
 	if(H != src.loc) return
 
 	var/mob/M = H.loc //Get our mob holder (if any).
 
 	if(istype(M))
-		M.drop_from_inventory(H)
+		M.drop(H)
 		to_chat(M, "<span class='warning'>\The [H] wriggles out of your grip!</span>")
 		to_chat(src, "<span class='warning'>You wriggle out of \the [M]'s grip!</span>")
 
 		// Update whether or not this mob needs to pass emotes to contents.
 		for(var/atom/A in M.contents)
-			if(istype(A,/mob/living/simple_animal/borer) || istype(A,/obj/item/weapon/holder))
+			if(istype(A,/mob/living/simple_animal/borer) || istype(A,/obj/item/holder))
 				return
 		M.status_flags &= ~PASSEMOTES
 	else if(istype(H.loc,/obj/item/clothing/accessory/holster))
@@ -752,7 +764,7 @@
 /mob/living/proc/slip_on_obj(/obj/slipped_on, stun_duration = 8, slip_dist = 0)
 	return 0
 
-/mob/living/carbon/drop_from_inventory(obj/item/W, atom/Target = null, force = null)
+/mob/living/carbon/drop(obj/item/W, atom/Target = null, force = null)
 	if(W in internal_organs)
 		return
 	. = ..()
@@ -837,8 +849,11 @@
 		for(var/a in auras)
 			remove_aura(a)
 	if(mind)
-		mind.current = null
+		mind.set_current(null)
 	QDEL_NULL(aiming)
+	if(controllable)
+		controllable = FALSE
+		GLOB.available_mobs_for_possess -= src
 	return ..()
 
 /mob/living/proc/set_m_intent(intent)
@@ -890,3 +905,9 @@
 
 /mob/living/proc/on_ghost_possess()
 	return
+
+/mob/living/set_stat(new_stat)
+	var/old_stat = stat
+	. = ..()
+	if(stat != old_stat)
+		SEND_SIGNAL(src, SIGNAL_STAT_SET, src, old_stat, new_stat)

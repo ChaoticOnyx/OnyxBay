@@ -10,15 +10,15 @@
 	var/id_with_download_string = ""
 	var/server_id = 0
 	var/produces_heat = 1
-	idle_power_usage = 800
+	idle_power_usage = 800 WATTS
 	var/delay = 10
 	req_access = list(access_rd) //Only the R&D can change server settings.
 
 /obj/machinery/r_n_d/server/Initialize()
 	. = ..()
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/rdserver(src)
-	component_parts += new /obj/item/weapon/stock_parts/scanning_module(src)
+	component_parts += new /obj/item/circuitboard/rdserver(src)
+	component_parts += new /obj/item/stock_parts/scanning_module(src)
 	component_parts += new /obj/item/stack/cable_coil(src)
 	component_parts += new /obj/item/stack/cable_coil(src)
 	RefreshParts()
@@ -30,7 +30,7 @@
 
 /obj/machinery/r_n_d/server/RefreshParts()
 	var/tot_rating = 0
-	for(var/obj/item/weapon/stock_parts/SP in src)
+	for(var/obj/item/stock_parts/SP in src)
 		tot_rating += SP.rating
 	change_power_consumption(initial(idle_power_usage)/max(1, tot_rating), POWER_USE_IDLE)
 
@@ -53,11 +53,11 @@
 /obj/machinery/r_n_d/server/Process()
 	var/datum/gas_mixture/environment = loc.return_air()
 	switch(environment.temperature)
-		if(0 to T0C)
+		if((0 KELVIN) to (0 CELSIUS))
 			health = min(100, health + 1)
-		if(T0C to (T20C + 20))
+		if((0 CELSIUS) to (40 CELSIUS))
 			health = between(0, health, 100)
-		if((T20C + 20) to (T0C + 70))
+		if((40 CELSIUS) to (70 CELSIUS))
 			health = max(0, health - 1)
 	if(health <= 0)
 		griefProtection() //I dont like putting this in process() but it's the best I can do without re-writing a chunk of rd servers.
@@ -154,7 +154,7 @@
 	icon_keyboard = "rd_key"
 	icon_screen = "rdcomp"
 	light_color = "#a97faa"
-	circuit = /obj/item/weapon/circuitboard/rdservercontrol
+	circuit = /obj/item/circuitboard/rdservercontrol
 	var/screen = 0
 	var/obj/machinery/r_n_d/server/temp_server
 	var/list/servers = list()

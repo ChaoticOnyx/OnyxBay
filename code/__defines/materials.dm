@@ -11,6 +11,7 @@
 #define MATERIAL_COTTON                  "cotton"
 #define MATERIAL_CARBON                  "carbon"
 #define MATERIAL_WOOD                    "wood"
+#define MATERIAL_DARKWOOD                "darkwood"
 #define MATERIAL_SANDSTONE               "sandstone"
 #define MATERIAL_LEATHER                 "leather"
 #define MATERIAL_IRON                    "iron"
@@ -19,6 +20,8 @@
 #define MATERIAL_REINFORCED_GLASS        "rglass"
 #define MATERIAL_PLASS                   "plass"
 #define MATERIAL_REINFORCED_PLASS        "rplass"
+#define MATERIAL_BLACK_GLASS             "bglass"
+#define MATERIAL_REINFORCED_BLACK_GLASS  "rbglass"
 #define MATERIAL_MARBLE                  "marble"
 #define MATERIAL_RESIN                   "resin"
 #define MATERIAL_CULT                    "cult"
@@ -72,7 +75,7 @@
 		MATERIAL_GOLD                       = icon(MATERIALS_ICON, "gold"),
 		MATERIAL_SILVER                     = icon(MATERIALS_ICON, "silver"),
 		MATERIAL_DIAMOND                    = icon(MATERIALS_ICON, "diamond"),
-		MATERIAL_PLASMA                     = icon(MATERIALS_ICON, "plasma"),
+		MATERIAL_PLASMA                     = icon(MATERIALS_ICON, "solid_plasma"),
 		MATERIAL_URANIUM                    = icon(MATERIALS_ICON, "uranium"),
 		MATERIAL_COTTON                     = icon(MATERIALS_ICON, "cotton"),
 		MATERIAL_CARBON                     = icon(MATERIALS_ICON, "carbon"),

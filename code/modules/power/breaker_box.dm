@@ -32,7 +32,7 @@
 	set_state(1)
 	. = ..()
 
-/obj/machinery/power/breakerbox/examine(mob/user)
+/obj/machinery/power/breakerbox/_examine_text(mob/user)
 	. = ..()
 	. += "\nLarge machine with heavy duty switching circuits used for advanced grid control"
 	if(on)
@@ -83,7 +83,7 @@
 			update_locked = 0
 	busy = 0
 
-/obj/machinery/power/breakerbox/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/power/breakerbox/attackby(obj/item/W as obj, mob/user as mob)
 	if(isMultitool(W))
 		var/newtag = input(user, "Enter new RCON tag. Use \"NO_TAG\" to disable RCON or leave empty to cancel.", "SMES RCON system") as text
 		if(newtag)

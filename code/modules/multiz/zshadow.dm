@@ -2,7 +2,7 @@
 	var/mob/zshadow/shadow
 
 /mob/zshadow
-	plane = OVER_OPENSPACE_PLANE
+	plane = OPENSPACE_PLANE
 	name = "shadow"
 	desc = "Z-level shadow"
 	status_flags = GODMODE
@@ -16,15 +16,15 @@
 /mob/zshadow/can_fall()
 	return FALSE
 
-/mob/zshadow/New(mob/L)
+/mob/zshadow/Initialize(mapload, mob/L)
 	if(!istype(L))
-		qdel(src)
-		return
-	..() // I'm cautious about this, but its the right thing to do.
+		return INITIALIZE_HINT_QDEL
+	. = ..() // I'm cautious about this, but its the right thing to do.
 	owner = L
 	sync_icon(L)
-	GLOB.dir_set_event.register(L, src, /mob/zshadow/proc/update_dir)
-	GLOB.invisibility_set_event.register(L, src, /mob/zshadow/proc/update_invisibility)
+
+	register_signal(L, SIGNAL_DIR_SET, /mob/zshadow/proc/update_dir)
+	register_signal(L, SIGNAL_INVISIBILITY_SET, /mob/zshadow/proc/update_invisibility)
 
 
 /mob/Destroy()
@@ -34,12 +34,14 @@
 	. = ..()
 
 /mob/zshadow/Destroy()
-	GLOB.dir_set_event.unregister(owner, src, /mob/zshadow/proc/update_dir)
-	GLOB.invisibility_set_event.unregister(owner, src, /mob/zshadow/proc/update_invisibility)
+	if(owner)
+		unregister_signal(owner, SIGNAL_DIR_SET)
+		unregister_signal(owner, SIGNAL_INVISIBILITY_SET)
+	owner = null
 	. = ..()
 
-/mob/zshadow/examine(mob/user, infix, suffix)
-	return owner.examine(user, infix, suffix)
+/mob/zshadow/_examine_text(mob/user, infix, suffix)
+	return owner._examine_text(user, infix, suffix)
 
 // Relay some stuff they hear
 /mob/zshadow/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
@@ -66,16 +68,17 @@
 		for(var/turf/simulated/open/OS = GetAbove(src); OS && istype(OS); OS = GetAbove(OS))
 			//Check above
 			if(!M.shadow)
-				M.shadow = new /mob/zshadow(M)
-			M.shadow.forceMove(OS)
-			M = M.shadow
+				M.shadow = new /mob/zshadow(loc, M)
+			if(M.shadow) // zshadow may get qdeled during init if something goes very wrong
+				M.shadow.forceMove(OS)
+				M = M.shadow
 
 	// Clean up mob shadow if it has one
 	if(M.shadow)
 		qdel(M.shadow)
 		M.shadow = null
 		var/client/C = M.client
-		if(C && C.eye == shadow)
+		if(C?.eye == shadow)
 			M.reset_view(0)
 
 //

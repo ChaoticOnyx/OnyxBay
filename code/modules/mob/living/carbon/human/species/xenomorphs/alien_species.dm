@@ -2,13 +2,16 @@
 	name = SPECIES_XENO
 	name_plural = "Xenomorphs"
 
+	has_eyes_icon = FALSE
+
 	default_language = "Xenomorph"
 	language = "Hivemind"
 	genders = list(NEUTER)
 	assisted_langs = list()
 	unarmed_types = list(/datum/unarmed_attack/claws/strong/xeno, /datum/unarmed_attack/bite/strong/xeno)
+	generic_attack_mod = 4.0
 	hud_type = /datum/hud_data/alien
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/xeno
+	meat_type = /obj/item/reagent_containers/food/meat/xeno
 	rarity_value = 3
 
 	has_fine_manipulation = 0
@@ -25,7 +28,7 @@
 	cold_level_2 = -1
 	cold_level_3 = -1
 
-	species_flags =  SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED
+	species_flags =  SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED | SPECIES_FLAG_NO_ANTAG_TARGET
 	spawn_flags = SPECIES_IS_RESTRICTED | SPECIES_NO_FBP_CONSTRUCTION | SPECIES_NO_FBP_CHARGEN | SPECIES_NO_LACE
 
 	reagent_tag = IS_XENOS
@@ -46,7 +49,6 @@
 	poison_type = null
 
 	vision_flags = SEE_SELF|SEE_MOBS
-	eye_icon = "blank_eyes"
 	darksight_range = 8
 	darksight_tint = DARKTINT_GOOD
 
@@ -100,6 +102,7 @@
 	alien_number++ //Keep track of how many aliens we've had so far.
 	H.real_name = get_random_name()
 	H.SetName(H.real_name)
+	H.add_modifier(/datum/modifier/trait/vent_breaker)
 	..()
 	if(H.mind && !GLOB.xenomorphs.is_antagonist(H.mind))
 		GLOB.xenomorphs.add_antagonist(H.mind, 1)
@@ -111,11 +114,9 @@
 	var/turf/T = H.loc
 	if(!T)
 		return
-	var/datum/gas_mixture/environment = T.return_air()
-	if(!environment)
-		return
 
-	if(environment.gas["plasma"] > 0 || locate(/obj/effect/alien/weeds) in T)
+	var/datum/gas_mixture/environment = T.return_air()
+	if(environment?.gas["plasma"] > 0 || locate(/obj/effect/alien/weeds) in T)
 		if(!regenerate(H))
 			var/obj/item/organ/internal/xenos/plasmavessel/P = H.internal_organs_by_name[BP_PLASMA]
 			P.stored_plasma += weeds_plasma_rate
@@ -124,13 +125,13 @@
 	..()
 
 /datum/species/xenos/proc/regenerate(mob/living/carbon/human/H)
-	if(H.stat == DEAD)
+	if(H.is_ooc_dead())
 		return TRUE // So we neither regenerate nor gain plasma once dead
 	var/heal_rate = weeds_heal_rate
-	var/mend_prob = 10
-	if(!H.resting)
+	var/mend_prob = 20
+	if(!(H.resting || H.lying))
 		heal_rate = weeds_heal_rate / 3
-		mend_prob = 1
+		mend_prob = 2
 
 	//first heal damages
 	if(H.getBruteLoss() || H.getFireLoss() || H.getOxyLoss() || H.getToxLoss())
@@ -147,14 +148,14 @@
 	for(var/obj/item/organ/I in H.internal_organs)
 		if(I.damage > 0)
 			I.damage = max(I.damage - heal_rate, 0)
-			if(mend_prob)
+			if(mend_prob / 2)
 				to_chat(H, "<span class='alium'>I feel a soothing sensation within my [I.parent_organ]...</span>")
 			if(!I.damage && (I.status & ORGAN_DEAD))
 				to_chat(H, "<span class='alium'>I feel invigorated as my [I] appears to be functioning again!</span>")
 				I.status &= ~ORGAN_DEAD
 			return TRUE
 
-	//next regrow lost limbs, approx 10 ticks each
+	//next regrow lost limbs, approx 5 ticks each
 	if(prob(mend_prob))
 		for(var/limb_type in has_limbs)
 			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
@@ -192,19 +193,26 @@
 	process_xeno_hud(H)
 	return TRUE
 
+/datum/species/monkey/is_eligible_for_antag_spawn(antag_id)
+	return FALSE
+
+/datum/species/xenos/get_species_runechat_color(mob/living/carbon/human/H)
+	return blood_color
+
 
 // Caste species
 /datum/species/xenos/drone
 	name = SPECIES_XENO_DRONE
 	caste_name = "drone"
 	weeds_plasma_rate = 15
-	slowdown = 1
-	total_health = 150
+	slowdown = 0
+	total_health = 100
 	tail = "xenos_drone_tail"
 	rarity_value = 5
 	strength = STR_MEDIUM
 	brute_mod = 0.85
-	burn_mod  = 1.75
+	burn_mod  = 1.6
+	generic_attack_mod = 3.5
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_drone.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_drone.dmi'
@@ -255,12 +263,13 @@
 	name = SPECIES_XENO_HUNTER
 	weeds_plasma_rate = 5
 	caste_name = "hunter"
-	slowdown = -1
-	total_health = 200
+	slowdown = -0.5
+	total_health = 125
 	tail = "xenos_hunter_tail"
 	strength = STR_HIGH
 	brute_mod = 0.75
-	burn_mod  = 1.65
+	burn_mod  = 1.5
+	generic_attack_mod = 4.5
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_hunter.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_hunter.dmi'
@@ -293,18 +302,19 @@
 	icobase = 'icons/mob/human_races/xenos/r_xenos_hunter_feral.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_hunter_feral.dmi'
 	tail = "xenos_hunter_feral_tail"
+	slowdown = -1
 
 /datum/species/xenos/sentinel
 	name = SPECIES_XENO_SENTINEL
 	weeds_plasma_rate = 10
 	caste_name = "sentinel"
 	slowdown = 0
-	total_health = 200
+	total_health = 150
 	weeds_heal_rate = 15
 	tail = "xenos_sentinel_tail"
 	strength = STR_VHIGH
 	brute_mod = 0.65
-	burn_mod  = 1.55
+	burn_mod  = 1.4
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_sentinel.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_sentinel.dmi'
@@ -336,7 +346,7 @@
 	name = SPECIES_XENO_SENTINEL_PRIMAL
 	caste_name = "primal sentinel"
 	weeds_heal_rate = 20
-	burn_mod  = 1.4
+	burn_mod  = 1.3
 	icobase = 'icons/mob/human_races/xenos/r_xenos_sentinel_primal.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_sentinel_primal.dmi'
 	tail = "xenos_sentinel_primal_tail"
@@ -344,17 +354,18 @@
 /datum/species/xenos/queen
 
 	name = SPECIES_XENO_QUEEN
-	total_health = 250
+	total_health = 200
 	weeds_heal_rate = 20
 	weeds_plasma_rate = 20
 	caste_name = "queen"
-	slowdown = 4
+	slowdown = 3.5
 	tail = "xenos_queen_tail"
 	rarity_value = 10
 	strength = STR_VHIGH
 	brute_mod = 0.5
-	burn_mod  = 1.25
+	burn_mod  = 1.2
 	icon_scale = 1.3
+	generic_attack_mod = 4.5
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_queen.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_queen.dmi'

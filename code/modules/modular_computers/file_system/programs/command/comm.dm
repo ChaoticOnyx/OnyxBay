@@ -87,7 +87,7 @@
 		data["message_current"] = current_viewing_message
 
 	var/list/processed_evac_options = list()
-	if(!isnull(evacuation_controller))
+	if(!QDELETED(evacuation_controller))
 		for (var/datum/evacuation_option/EO in evacuation_controller.available_evac_options())
 			var/list/option = list()
 			option["option_text"] = EO.option_text
@@ -130,7 +130,7 @@
 			. = 1
 			if(is_autenthicated(user) && !issilicon(usr) && ntn_comm)
 				if(user)
-					var/obj/item/weapon/card/id/id_card = user.GetIdCard()
+					var/obj/item/card/id/id_card = user.get_id_card()
 					crew_announcement.announcer = GetNameAndAssignmentFromId(id_card)
 				else
 					crew_announcement.announcer = "Unknown"
@@ -186,7 +186,7 @@
 			. = 1
 			if(is_autenthicated(user))
 				var/datum/evacuation_option/selected_evac_option = evacuation_controller.evacuation_options[href_list["target"]]
-				if (isnull(selected_evac_option) || !istype(selected_evac_option))
+				if (QDELETED(selected_evac_option) || !istype(selected_evac_option))
 					return
 				if (!selected_evac_option.silicon_allowed && issilicon(user))
 					return
@@ -363,8 +363,3 @@ var/last_message_id = 0
 		return
 
 	. = evacuation_controller.call_evacuation(null, _emergency_evac = FALSE, autotransfer = TRUE)
-	if(.)
-		// delay events in case of an autotransfer
-		var/delay = evacuation_controller.evac_arrival_time - world.time + (2 MINUTES)
-		SSevent.delay_events(EVENT_LEVEL_MODERATE, delay)
-		SSevent.delay_events(EVENT_LEVEL_MAJOR, delay)

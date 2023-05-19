@@ -71,15 +71,6 @@ GLOBAL_LIST_INIT(department_flags_to_text, list(
 	GLOB.all_crew_records.Remove(src)
 
 /datum/computer_file/crew_record/proc/load_from_mob(mob/living/carbon/human/H, automatic = FALSE)
-	if(istype(H))
-		photo_front = getFlatIcon(H, SOUTH, always_use_defdir = 1)
-		photo_side = getFlatIcon(H, WEST, always_use_defdir = 1)
-	else
-		var/mob/living/carbon/human/dummy = new()
-		photo_front = getFlatIcon(dummy, SOUTH, always_use_defdir = 1)
-		photo_side = getFlatIcon(dummy, WEST, always_use_defdir = 1)
-		qdel(dummy)
-
 	// Generic record
 	set_name(H ? H.real_name : "Unset")
 	set_job(H ? GetAssignment(H) : "Unset")
@@ -99,8 +90,6 @@ GLOBAL_LIST_INIT(department_flags_to_text, list(
 	assigned_deparment_flags = job_flag
 	set_department(english_list(job_flag_name))
 	set_species(H ? H.get_species() : SPECIES_HUMAN)
-	set_branch(H ? (H.char_branch && H.char_branch.name) : "None")
-	set_rank(H ? (H.char_rank && H.char_rank.name) : "None")
 
 	// Medical record
 	set_bloodtype(H ? H.b_type : "Unset")
@@ -128,12 +117,19 @@ GLOBAL_LIST_INIT(department_flags_to_text, list(
 	// Employment record
 	set_emplRecord((H && H.gen_record && !jobban_isbanned(H, "Records") ? H.gen_record : "No record supplied"))
 	set_homeSystem(H ? H.home_system : "Unset")
-	set_citizenship(H ? H.citizenship : "Unset")
-	set_faction(H ? H.personal_faction : "Unset")
+	set_background(H ? H.personal_background : "Unset")
 	set_religion(H ? H.religion : "Unset")
 
 	// Antag record
 	set_antagRecord((H && H.exploit_record && !jobban_isbanned(H, "Records") ? H.exploit_record : ""))
+
+/datum/computer_file/crew_record/proc/take_mob_photo(mob/living/carbon/human/H)
+	if(istype(H))
+		photo_front = getFlatIcon(H, SOUTH, always_use_defdir = TRUE)
+		photo_side = getFlatIcon(H, WEST, always_use_defdir = TRUE)
+	else
+		photo_front = icon('icons/mob/human_races/r_human.dmi', "preview_m", SOUTH)
+		photo_side = icon('icons/mob/human_races/r_human.dmi', "preview_m", WEST)
 
 // Returns independent copy of this file.
 /datum/computer_file/crew_record/clone(rename = 0)
@@ -157,6 +153,8 @@ GLOBAL_LIST_INIT(department_flags_to_text, list(
 	var/datum/computer_file/crew_record/CR = new /datum/computer_file/crew_record()
 	GLOB.all_crew_records.Add(CR)
 	CR.load_from_mob(H, TRUE)
+	spawn(2 SECONDS)
+		CR.take_mob_photo(H)
 	return CR
 
 // Gets crew records filtered by set of positions
@@ -313,8 +311,6 @@ FIELD_NUM("Age", age, FALSE)
 
 FIELD_SHORT_SECURE("Department", department, FALSE, access_hop)
 FIELD_SHORT("Species",species, FALSE)
-FIELD_LIST("Branch", branch, TRUE, record_branches()) // hidden field
-FIELD_LIST("Rank", rank, TRUE, record_ranks()) // hidden field
 
 
 // MEDICAL RECORDS
@@ -423,11 +419,9 @@ FIELD_CONTEXT_BOTH(emplRecord, CONTEXT(crew))
 FIELD_SHORT_SECURE("Home System", homeSystem, FALSE, access_heads);
 FIELD_CONTEXT_BOTH(homeSystem, CONTEXT(crew))
 
-FIELD_SHORT_SECURE("Citizenship", citizenship, FALSE, access_heads);
-FIELD_CONTEXT_BOTH(citizenship, CONTEXT(crew))
 
-FIELD_SHORT_SECURE("Faction", faction, FALSE, access_heads);
-FIELD_CONTEXT_BOTH(faction, CONTEXT(crew))
+FIELD_SHORT_SECURE("Background", background, FALSE, access_heads);
+FIELD_CONTEXT_BOTH(background, CONTEXT(crew))
 
 FIELD_SHORT_SECURE("Religion", religion, FALSE, access_heads);
 FIELD_CONTEXT_BOTH(religion, CONTEXT(crew))
@@ -438,30 +432,10 @@ FIELD_LONG_SECURE("Exploitable Information", antagRecord, FALSE, access_syndicat
 FIELD_CONTEXT_BOTH(antagRecord, CONTEXT(syndicate))
 
 
-//Options builderes
-/record_field/rank/proc/record_ranks()
-	for(var/datum/computer_file/crew_record/R in GLOB.all_crew_records)
-		if(R.uid == record_id)
-			var/datum/mil_branch/branch = mil_branches.get_branch(R.get_branch())
-			if(!branch)
-				return null
-			. = list()
-			. |= "Unset"
-			for(var/rank in branch.ranks)
-				var/datum/mil_rank/RA = branch.ranks[rank]
-				. |= RA.name
-
 /record_field/sex/proc/record_genders()
 	. = list()
 	. |= "Unset"
 	for(var/G in gender_datums)
 		. |= gender2text(G)
-
-/record_field/branch/proc/record_branches()
-	. = list()
-	. |= "Unset"
-	for(var/B in mil_branches.branches)
-		var/datum/mil_branch/BR = mil_branches.branches[B]
-		. |= BR.name
 
 #undef CONTEXT

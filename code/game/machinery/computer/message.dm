@@ -6,7 +6,7 @@
 	icon_screen = "comm_logs"
 	light_color = "#00b000"
 	var/hack_icon = "error"
-	circuit = /obj/item/weapon/circuitboard/message_monitor
+	circuit = /obj/item/circuitboard/message_monitor
 	//Server linked to.
 	var/obj/machinery/message_server/linkedServer = null
 	//Sparks effect - For emag
@@ -30,7 +30,7 @@
 	var/custommessage 	= "This is a test, please ignore."
 
 
-/obj/machinery/computer/message_monitor/attackby(obj/item/weapon/O as obj, mob/living/user as mob)
+/obj/machinery/computer/message_monitor/attackby(obj/item/O as obj, mob/living/user as mob)
 	if(stat & (NOPOWER|BROKEN))
 		..()
 		return
@@ -48,13 +48,13 @@
 	// Will create sparks and print out the console's password. You will then have to wait a while for the console to be back online.
 	// It'll take more time if there's more characters in the password..
 	if(!emag && operable())
-		if(!isnull(src.linkedServer))
+		if(!QDELETED(src.linkedServer))
 			playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 			emag = 1
 			screen = 2
 			spark_system.set_up(5, 0, src)
 			src.spark_system.start()
-			var/obj/item/weapon/paper/monitorkey/MK = new /obj/item/weapon/paper/monitorkey
+			var/obj/item/paper/monitorkey/MK = new /obj/item/paper/monitorkey
 			MK.dropInto(loc)
 			// Will help make emagging the console not so easy to get away with.
 			MK.info += "<br><br><font color='red'>£%@%(*$%&(£&?*(%&£/{}</font>"
@@ -124,7 +124,8 @@
 			else
 				for(var/n = ++i; n <= optioncount; n++)
 					dat += "<dd><span class='info'>&#09;[n]. ---------------</span><br></dd>"
-			if((istype(user, /mob/living/silicon/ai) || istype(user, /mob/living/silicon/robot)) && (user.mind.special_role && user.mind.original == user))
+			var/mob/living/original_mob = user.mind?.original_mob?.resolve()
+			if((istype(user, /mob/living/silicon/ai) || istype(user, /mob/living/silicon/robot)) && (istype(original_mob) && user.mind.special_role && original_mob == user))
 				//Malf/Traitor AIs can bruteforce into the system to gain the Key.
 				dat += "<dd><A href='?src=\ref[src];hack=1'><i><font color='Red'>*&@#. Bruteforce Key</font></i></font></a><br></dd>"
 			else
@@ -263,7 +264,7 @@
 	return src.attack_hand(user)
 
 /obj/machinery/computer/message_monitor/proc/BruteForce(mob/user as mob)
-	if(isnull(linkedServer))
+	if(QDELETED(linkedServer))
 		to_chat(user, "<span class='warning'>Could not complete brute-force: Linked Server Disconnected!</span>")
 	else
 		var/currentKey = src.linkedServer.decryptkey
@@ -359,7 +360,8 @@
 
 	//Hack the Console to get the password
 	if (href_list["hack"])
-		if((istype(usr, /mob/living/silicon/ai) || istype(usr, /mob/living/silicon/robot)) && (usr.mind.special_role && usr.mind.original == usr))
+		var/mob/living/original_mob = usr.mind?.original_mob?.resolve()
+		if((istype(usr, /mob/living/silicon/ai) || istype(usr, /mob/living/silicon/robot)) && (istype(original_mob) && usr.mind.special_role && original_mob == usr))
 			src.hacking = 1
 			src.screen = 2
 			update_icon()
@@ -435,7 +437,7 @@
 					if(isnull(customsender) || customsender == "")
 						customsender = "UNKNOWN"
 
-					if(isnull(customrecepient))
+					if(QDELETED(customrecepient))
 						message = "<span class='notice'>NOTICE: No recepient selected!</span>"
 						return src.attack_hand(usr)
 
@@ -501,17 +503,17 @@
 	return src.attack_hand(usr)
 
 
-/obj/item/weapon/paper/monitorkey
+/obj/item/paper/monitorkey
 	//..()
 	name = "Monitor Decryption Key"
 	var/obj/machinery/message_server/server = null
 
-/obj/item/weapon/paper/monitorkey/New()
+/obj/item/paper/monitorkey/New()
 	..()
 	spawn(10)
 		if(message_servers)
 			for(var/obj/machinery/message_server/server in message_servers)
-				if(!isnull(server))
+				if(!QDELETED(server))
 					if(!isnull(server.decryptkey))
 						info = "<center><h2>Daily Key Reset</h2></center><br>The new message monitor key is '[server.decryptkey]'.<br>This key is only intended for personnel granted access to the messaging server. Keep it safe.<br>If necessary, change the password to a more secure one."
 						info_links = info

@@ -16,7 +16,7 @@
 	icon_state = "displaced"
 	anchored = 0
 
-/obj/structure/girder/examine(mob/user)
+/obj/structure/girder/_examine_text(mob/user)
 	. = ..()
 	if(health <= 0.4 * max_health)
 		. += "\n[SPAN("warning", "It's heavily damaged!")]"
@@ -80,8 +80,9 @@
 				user.visible_message(SPAN("notice", "[user] secured \the [src]!"), \
 					   	         	 SPAN("notice", "You secured \the [src]!"))
 				reset_girder()
+				shove_everything(shove_objects = FALSE, shove_items = FALSE)
 
-	else if((istype(W, /obj/item/weapon/gun/energy/plasmacutter) || (istype(W, /obj/item/weapon/melee/energy) && W.force > 20)) && user.a_intent == I_HELP)
+	else if((istype(W, /obj/item/gun/energy/plasmacutter) || (istype(W, /obj/item/melee/energy) && W.force > 20)) && user.a_intent == I_HELP)
 		user.visible_message(SPAN("notice", "[user] is slicing apart \the [src]..."), \
 				             SPAN("notice", "Now slicing apart \the [src]..."))
 		if(do_after(user,30,src))
@@ -90,7 +91,7 @@
 				             	 SPAN("notice", "You slice apart \the [src]!"))
 			dismantle()
 
-	else if(istype(W, /obj/item/weapon/pickaxe/diamonddrill))
+	else if(istype(W, /obj/item/pickaxe/drill/diamonddrill))
 		user.visible_message(SPAN("notice", "[user] drills through \the [src]!"), \
 				             SPAN("notice", "You drill through \the [src]!"))
 		dismantle()
@@ -132,8 +133,8 @@
 			anchored = 0
 			cover = 40
 
-	else if(istype(W,/obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+	else if(isWelder(W))
+		var/obj/item/weldingtool/WT = W
 		if(!WT.isOn())
 			return
 		if(health == max_health)
@@ -203,6 +204,7 @@
 				        	 SPAN("notice", "You create a false wall! Push on it to open or close the passage.")) // Some stealthy stuff
 		wall_fake = 1
 
+	shove_everything(shove_objects = FALSE, shove_items = FALSE) // Hiding stuff inside walls is a feature. Probably.
 	var/turf/Tsrc = get_turf(src)
 	Tsrc.ChangeTurf(/turf/simulated/wall)
 	var/turf/simulated/wall/T = get_turf(src)
@@ -272,7 +274,6 @@
 			if (prob(5))
 				dismantle()
 			return
-		else
 	return
 
 /obj/structure/girder/cult
@@ -298,7 +299,7 @@
 				        	     SPAN("notice", "You dissasembled \the [src]!"))
 			dismantle()
 
-	else if((istype(W, /obj/item/weapon/gun/energy/plasmacutter) || (istype(W, /obj/item/weapon/melee/energy) && W.force > 20)) && user.a_intent == I_HELP)
+	else if((istype(W, /obj/item/gun/energy/plasmacutter) || (istype(W, /obj/item/melee/energy) && W.force > 20)) && user.a_intent == I_HELP)
 		user.visible_message(SPAN("notice", "[user] is slicing apart \the [src]..."), \
 				             SPAN("notice", "Now slicing apart \the [src]..."))
 		if(do_after(user,30,src))
@@ -307,7 +308,7 @@
 				             	 SPAN("notice", "You slice apart \the [src]!"))
 		dismantle()
 
-	else if(istype(W, /obj/item/weapon/pickaxe/diamonddrill))
+	else if(istype(W, /obj/item/pickaxe/drill/diamonddrill))
 		user.visible_message(SPAN("notice", "[user] drills through \the [src]!"), \
 				             SPAN("notice", "You drill through \the [src]!"))
 		new /obj/item/remains/human(get_turf(src))

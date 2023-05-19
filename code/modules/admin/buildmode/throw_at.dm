@@ -22,7 +22,7 @@
 			if(!isturf(to_throw.loc))
 				to_chat(user, "<span class='warning'>\The [to_throw] is currently not on a turf and cannot be thrown.</span>")
 			else
-				to_throw.throw_at(A, 10, 1)
+				to_throw.throw_at(A, 10)
 				Log("Threw '[log_info_line(to_throw)]' at '[log_info_line(A)]'")
 		else
 			to_chat(user, "<span class='warning'>You have nothing selected to throw.</span>")
@@ -33,14 +33,14 @@
 	ClearThrowable()
 
 	to_throw = new_throwable
-	GLOB.destroyed_event.register(to_throw, src, /datum/build_mode/throw_at/proc/ClearThrowable)
+	register_signal(to_throw, SIGNAL_QDELETING, /datum/build_mode/throw_at/proc/ClearThrowable)
 	to_chat(user, "<span class='notice'>Will now be throwing \the [to_throw].</span>")
 
 /datum/build_mode/throw_at/proc/ClearThrowable(feedback)
 	if(!to_throw)
 		return
 
-	GLOB.destroyed_event.unregister(to_throw, src, /datum/build_mode/throw_at/proc/ClearThrowable)
+	unregister_signal(to_throw, SIGNAL_QDELETING, /datum/build_mode/throw_at/proc/ClearThrowable)
 	to_throw = null
 	if(feedback)
 		Warn("The selected throwing object was deleted.")

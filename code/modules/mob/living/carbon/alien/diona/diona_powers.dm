@@ -5,7 +5,7 @@
 	set name = "Merge with gestalt"
 	set desc = "Merge with another diona."
 
-	if(stat == DEAD || paralysis || weakened || stunned || restrained())
+	if(is_ooc_dead() || paralysis || weakened || stunned || restrained())
 		return
 
 	if(istype(src.loc,/mob/living/carbon))
@@ -46,7 +46,7 @@
 	set name = "Split from gestalt"
 	set desc = "Split away from your gestalt as a lone nymph."
 
-	if(stat == DEAD || paralysis || weakened || stunned || restrained())
+	if(is_ooc_dead() || paralysis || weakened || stunned || restrained())
 		return
 
 	if(!(istype(src.loc,/mob/living/carbon)))
@@ -64,6 +64,6 @@
 
 	if(istype(M))
 		for(var/atom/A in M.contents)
-			if(istype(A,/mob/living/simple_animal/borer) || istype(A,/obj/item/weapon/holder))
+			if(istype(A,/mob/living/simple_animal/borer) || istype(A,/obj/item/holder))
 				return
 	M.status_flags &= ~PASSEMOTES

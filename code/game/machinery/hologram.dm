@@ -40,7 +40,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 	layer = ABOVE_TILE_LAYER
 
 	var/power_per_hologram = 500 //per usage per hologram
-	idle_power_usage = 5
+	idle_power_usage = 5 WATTS
 
 	var/list/mob/living/silicon/ai/masters = new() //List of AIs that use the holopad
 	var/last_request = 0 //to prevent request spam. ~Carn
@@ -127,7 +127,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 
 /obj/machinery/hologram/holopad/proc/take_call(mob/living/carbon/user)
 	incoming_connection = 0
-	caller_id.machine = sourcepad
+	caller_id.set_machine(sourcepad)
 	caller_id.reset_view(src)
 	if(!masters[caller_id])//If there is no hologram, possibly make one.
 		activate_holocall(caller_id)
@@ -342,8 +342,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 
 /obj/machinery/hologram
 	anchored = 1
-	idle_power_usage = 5
-	active_power_usage = 100
+	idle_power_usage = 5 WATTS
+	active_power_usage = 100 WATTS
 
 //Destruction procs.
 /obj/machinery/hologram/ex_act(severity)

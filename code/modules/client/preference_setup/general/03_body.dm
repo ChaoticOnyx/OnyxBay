@@ -20,6 +20,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	var/b_eyes = 0						//Eye color
 	var/s_base = ""						//Base skin colour
 	var/list/body_markings = list()
+	var/body_height = HUMAN_HEIGHT_NORMAL // Character's height scale
 
 	// maps each organ to either null(intact), "cyborg" or "amputated"
 	// will probably not be able to do this for head and torso ;)
@@ -56,6 +57,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	pref.g_eyes = R.read("eyes_green")
 	pref.b_eyes = R.read("eyes_blue")
 	pref.b_type = R.read("b_type")
+	pref.body_height = R.read("body_height")
 	pref.disabilities = R.read("disabilities")
 	pref.organ_data = R.read("organ_data")
 	pref.rlimb_data = R.read("rlimb_data")
@@ -83,6 +85,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	W.write("eyes_green", pref.g_eyes)
 	W.write("eyes_blue", pref.b_eyes)
 	W.write("b_type", pref.b_type)
+	W.write("body_height", pref.body_height)
 	W.write("disabilities", pref.disabilities)
 	W.write("organ_data", pref.organ_data)
 	W.write("rlimb_data", pref.rlimb_data)
@@ -102,13 +105,18 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	pref.r_skin			= sanitize_integer(pref.r_skin, 0, 255, initial(pref.r_skin))
 	pref.g_skin			= sanitize_integer(pref.g_skin, 0, 255, initial(pref.g_skin))
 	pref.b_skin			= sanitize_integer(pref.b_skin, 0, 255, initial(pref.b_skin))
-	pref.h_style		= sanitize_inlist(pref.h_style, GLOB.hair_styles_list, initial(pref.h_style))
-	pref.f_style		= sanitize_inlist(pref.f_style, GLOB.facial_hair_styles_list, initial(pref.f_style))
+	var/datum/species/S = all_species[pref.species]
+	if(istype(S))
+		pref.h_style	= sanitize_inlist(pref.h_style, GLOB.hair_styles_list, S.default_h_style)
+		pref.f_style	= sanitize_inlist(pref.f_style, GLOB.facial_hair_styles_list, S.default_f_style)
 	pref.r_eyes			= sanitize_integer(pref.r_eyes, 0, 255, initial(pref.r_eyes))
 	pref.g_eyes			= sanitize_integer(pref.g_eyes, 0, 255, initial(pref.g_eyes))
 	pref.b_eyes			= sanitize_integer(pref.b_eyes, 0, 255, initial(pref.b_eyes))
 	pref.b_type			= sanitize_text(pref.b_type, initial(pref.b_type))
 	pref.has_cortical_stack = sanitize_bool(pref.has_cortical_stack, initial(pref.has_cortical_stack))
+
+	if(!pref.body_height || !(pref.body_height in body_heights))
+		pref.body_height = HUMAN_HEIGHT_NORMAL
 
 	var/datum/species/mob_species = all_species[pref.species]
 	if(mob_species && mob_species.spawn_flags & SPECIES_NO_LACE)
@@ -141,7 +149,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	. += "(<a href='?src=\ref[src];random=1'>&reg;</A>)"
 	. += "<br>"
 
-	if(config.use_cortical_stacks)
+	if(config.revival.use_cortical_stacks)
 		. += "Neural lace: "
 		if(mob_species.spawn_flags & SPECIES_NO_LACE)
 			. += "incompatible."
@@ -150,6 +158,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			. += " \[<a href='byond://?src=\ref[src];toggle_stack=1'>toggle</a>\]"
 		. += "<br>"
 
+	. += "Height: <a href='?src=\ref[src];body_height=1'>[human_height_text(pref.body_height)]</a><br>"
 	. += "Species: <a href='?src=\ref[src];show_species=1'>[pref.species]</a><br>"
 	. += "Blood Type: <a href='?src=\ref[src];blood_type=1'>[pref.b_type]</a><br>"
 
@@ -260,14 +269,14 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	. += "<b>Hair</b><br>"
 	if(has_flag(mob_species, HAS_HAIR_COLOR))
 		. += "Color: <font face='fixedsys' size='3' color='#[num2hex(pref.r_hair, 2)][num2hex(pref.g_hair, 2)][num2hex(pref.b_hair, 2)]'><table style='display:inline;' bgcolor='#[num2hex(pref.r_hair, 2)][num2hex(pref.g_hair, 2)][num2hex(pref.b_hair)]'><tr><td>__</td></tr></table></font> <a href='?src=\ref[src];hair_color=1'>Change Color</a>"
-	. += "<br>Style: <a href='?src=\ref[src];hair_style=1'>[pref.h_style]</a><br>"
-	. += " Cycle: <a href='?src=\ref[src];cycle_hair_style=-1'>&#8592;</a><a href='?src=\ref[src];cycle_hair_style=1'>&#8594;</a><br>"
+		. += "<br>Style: <a href='?src=\ref[src];hair_style=1'>[pref.h_style]</a><br>"
+		. += " Cycle: <a href='?src=\ref[src];cycle_hair_style=-1'>&#8592;</a><a href='?src=\ref[src];cycle_hair_style=1'>&#8594;</a><br>"
+		. += "<br><b>Facial</b><br>"
 
-	. += "<br><b>Facial</b><br>"
 	if(has_flag(mob_species, HAS_HAIR_COLOR))
 		. += "Color: <font face='fixedsys' size='3' color='#[num2hex(pref.r_facial, 2)][num2hex(pref.g_facial, 2)][num2hex(pref.b_facial, 2)]'><table  style='display:inline;' bgcolor='#[num2hex(pref.r_facial, 2)][num2hex(pref.g_facial, 2)][num2hex(pref.b_facial)]'><tr><td>__</td></tr></table></font> <a href='?src=\ref[src];facial_color=1'>Change Color</a><br>"
-	. += " Style: <a href='?src=\ref[src];facial_style=1'>[pref.f_style]</a><br>"
-	. += " Cycle: <a href='?src=\ref[src];cycle_fhair_style=-1'>&#8592;</a> <a href='?src=\ref[src];cycle_fhair_style=1'>&#8594;</a><br>"
+		. += " Style: <a href='?src=\ref[src];facial_style=1'>[pref.f_style]</a><br>"
+		. += " Cycle: <a href='?src=\ref[src];cycle_fhair_style=-1'>&#8592;</a> <a href='?src=\ref[src];cycle_fhair_style=1'>&#8594;</a><br>"
 
 	if(has_flag(mob_species, HAS_EYE_COLOR))
 		. += "<br><b>Eyes</b><br>"
@@ -284,9 +293,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		. += "<br>"
 
 	. = jointext(.,null)
-
-/datum/category_item/player_setup_item/general/body/proc/has_flag(datum/species/mob_species, flag)
-	return mob_species && (mob_species.appearance_flags & flag)
 
 /datum/category_item/player_setup_item/general/body/OnTopic(href,list/href_list, mob/user)
 	var/datum/species/mob_species = all_species[pref.species]
@@ -351,7 +357,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			reset_limbs() // Safety for species with incompatible manufacturers; easier than trying to do it case by case.
 			pref.body_markings.Cut() // Basically same as above.
 
-			prune_occupation_prefs()
+			prune_job_prefs()
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if(href_list["hair_color"])
@@ -652,6 +658,23 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		pref.bgstate = next_in_list(pref.bgstate, pref.bgstate_options)
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 
+	else if(href_list["body_height"])
+		var/new_state = input(user, "How tall do you want to be?") as null|anything in list("Dwarfish", "Short", "Average", "Tall", "Towering")
+		if(!new_state)
+			return
+		switch(new_state)
+			if("Dwarfish")
+				pref.body_height = HUMAN_HEIGHT_TINY
+			if("Short")
+				pref.body_height = HUMAN_HEIGHT_SMALL
+			if("Average")
+				pref.body_height = HUMAN_HEIGHT_NORMAL
+			if("Tall")
+				pref.body_height = HUMAN_HEIGHT_LARGE
+			if("Towering")
+				pref.body_height = HUMAN_HEIGHT_HUGE
+		return TOPIC_REFRESH_UPDATE_PREVIEW
+
 	return ..()
 
 /datum/category_item/player_setup_item/general/body/proc/reset_limbs()
@@ -675,7 +698,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	dat += "<small>"
 	if(current_species.spawn_flags & SPECIES_CAN_JOIN)
 		dat += "</br><b>Often present among humans.</b>"
-	if(current_species.spawn_flags & SPECIES_IS_WHITELISTED)
+	if(current_species.spawn_flags & SPECIES_IS_WHITELISTED & config.game.use_ingame_alien_whitelist)
 		dat += "</br><b>Whitelist restricted.</b>"
 	if(!current_species.has_organ[BP_HEART])
 		dat += "</br><b>Does not have blood.</b>"
@@ -702,7 +725,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	dat += "</table><center><hr/>"
 
 	var/restricted = 0
-	if(config.usealienwhitelist) //If we're using the whitelist, make sure to check it!
+	if(config.game.use_ingame_alien_whitelist) //If we're using the whitelist, make sure to check it!
 		if (!(current_species.spawn_flags & SPECIES_CAN_JOIN))
 			restricted = 2
 		else if ((current_species.spawn_flags & SPECIES_IS_WHITELISTED) && !is_alien_whitelisted(preference_mob(),current_species))

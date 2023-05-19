@@ -5,8 +5,8 @@
 
 	anchored = 1
 	density = 1
-	idle_power_usage = 4
-	active_power_usage = 4000 // 4 Kw. A CT scan machine uses 1-15 kW depending on the model and equipment involved.
+	idle_power_usage = 4 WATTS
+	active_power_usage = 4 KILO WATTS // A CT scan machine uses 1-15 kW depending on the model and equipment involved.
 	req_access = list(access_medical)
 
 	icon_state = "body_scanner_0"
@@ -28,11 +28,11 @@
 /obj/machinery/resleever/New()
 	..()
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/resleever(src)
+	component_parts += new /obj/item/circuitboard/resleever(src)
 	component_parts += new /obj/item/stack/cable_coil(src, 2)
-	component_parts += new /obj/item/weapon/stock_parts/scanning_module(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src, 3)
-	component_parts += new /obj/item/weapon/stock_parts/console_screen(src)
+	component_parts += new /obj/item/stock_parts/scanning_module(src)
+	component_parts += new /obj/item/stock_parts/manipulator(src, 3)
+	component_parts += new /obj/item/stock_parts/console_screen(src)
 
 	RefreshParts()
 	update_icon()
@@ -62,7 +62,7 @@
 			update_use_power(POWER_USE_IDLE)
 			eject_occupant()
 			playsound(loc, 'sound/machines/ping.ogg', 100, 1)
-			visible_message("\The [src] pings as it completes its procedure!", 3)
+			visible_message("\The [src] pings as it completes its procedure!")
 			return
 	update_use_power(POWER_USE_OFF)
 	return
@@ -157,7 +157,7 @@
 	else
 		return
 
-/obj/machinery/resleever/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/resleever/attackby(obj/item/W as obj, mob/user as mob)
 	if(default_deconstruction_screwdriver(user, W))
 		if(occupant)
 			to_chat(user, "<span class='warning'>You need to remove the occupant first!</span>")
@@ -171,18 +171,18 @@
 			to_chat(user, "<span class='warning'>You need to remove the occupant first!</span>")
 			return
 	if(istype(W, /obj/item/organ/internal/stack))
-		if(isnull(lace))
+		if(QDELETED(lace))
+			if(!user.drop(W, src))
+				return
 			to_chat(user, "<span class='notice'>You insert \the [W] into [src].</span>")
-			user.drop_from_inventory(W)
 			lace = W
-			W.forceMove(src)
 			if(lace.backup)
 				lace_name = lace.backup.name
 		else
 			to_chat(user, "<span class='warning'>\The [src] already has a neural lace inside it!</span>")
 			return
 	else if(isWrench(W))
-		if(isnull(occupant))
+		if(QDELETED(occupant))
 			if(anchored)
 				anchored = 0
 				user.visible_message("[user] unsecures [src] from the floor.", "You unsecure [src] from the floor.")
@@ -207,7 +207,7 @@
 
 		var/mob/M = grab.affecting
 
-		visible_message("[user] starts putting [grab.affecting:name] into \the [src].", 3)
+		visible_message("[user] starts putting [grab.affecting:name] into \the [src].")
 
 		if(do_after(user, 20, src))
 			if(!M || !grab || !grab.affecting) return
@@ -232,7 +232,7 @@
 	if(!check_occupant_allowed(target))
 		return
 
-	visible_message("[user] starts putting [target] into \the [src].", 3)
+	visible_message("[user] starts putting [target] into \the [src].")
 
 	if(do_after(user, 20, src))
 		if(!target || !(target in range(2, src)))
@@ -293,7 +293,6 @@
 					ex_act(severity)
 				qdel(src)
 				return
-		else
 	return
 
 /obj/machinery/resleever/update_icon()

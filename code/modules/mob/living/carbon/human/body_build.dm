@@ -6,7 +6,7 @@ var/global/datum/body_build/default_body_build = new
 
 	var/genders      = list(MALE, FEMALE)
 	var/index        = ""
-	var/roboindex    = ""										// for slim and slim_alt BBs prothesis
+	var/roboindex    = ""  // for slim and slim_alt BBs prothesis
 	var/misk_icon    = 'icons/mob/mob.dmi'
 	var/list/clothing_icons = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob.dmi',
@@ -44,7 +44,7 @@ var/global/datum/body_build/default_body_build = new
 		return I // Nonexistent slot, just give 'em an empty icon
 	for(var/datum/body_build/BB in list(src, default_body_build))
 		switch(slot)
-			if(slot_handcuffed_str || slot == slot_legcuffed_str)
+			if(slot_handcuffed_str, slot_legcuffed_str)
 				I = BB.misk_icon
 			else
 				I = BB.clothing_icons[slot]
@@ -86,8 +86,8 @@ var/global/datum/body_build/default_body_build = new
 
 /datum/body_build/slim/alt
 	name                 = "Slim Alt"
-
 	index                = "_slim_alt"
+	roboindex            = "_slim_alt"
 	genders              = list(FEMALE)
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_slimalt.dmi',
@@ -113,7 +113,6 @@ var/global/datum/body_build/default_body_build = new
 
 /datum/body_build/slim/male
 	name                 = "Slim"
-
 	index                = "_slim"
 	roboindex            = "_slim"
 	genders              = list(MALE)
@@ -141,8 +140,8 @@ var/global/datum/body_build/default_body_build = new
 
 /datum/body_build/fat
 	name                 = "Fat"
-
 	index                = "_fat"
+	roboindex            = "_fat"
 	genders              = list(MALE, FEMALE)
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_fat.dmi',
@@ -178,14 +177,14 @@ var/global/datum/body_build/default_body_build = new
 
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_slimalt.dmi',
-		"slot_suit"      = 'icons/inv_slots/suits/mob_tajaran.dmi',
+		"slot_suit"      = 'icons/inv_slots/suits/mob_slimalt_tajaran.dmi',
 		"slot_gloves"    = 'icons/inv_slots/gloves/mob_slim.dmi',
 		"slot_glasses"   = 'icons/inv_slots/glasses/mob_slim.dmi',
 		"slot_l_ear"     = 'icons/inv_slots/ears/mob_slim.dmi',
 		"slot_r_ear"     = 'icons/inv_slots/ears/mob_r_slim.dmi',
 		"slot_wear_mask" = 'icons/inv_slots/masks/mob_tajaran.dmi',
 		"slot_head"      = 'icons/inv_slots/hats/mob_tajaran.dmi',
-		"slot_shoes"     = 'icons/inv_slots/shoes/mob_slim.dmi',
+		"slot_shoes"     = 'icons/inv_slots/shoes/mob_slimalt.dmi',
 		"slot_belt"      = 'icons/inv_slots/belts/mob_slim.dmi',
 		"slot_s_store"   = 'icons/inv_slots/belts/mirror/mob_slim.dmi',
 		"slot_back"      = 'icons/inv_slots/back/mob_slim.dmi',
@@ -228,8 +227,8 @@ var/global/datum/body_build/default_body_build = new
 
 /datum/body_build/tajaran/fat
 	name                 = "Fat Tajaran"
-
 	index                = "_fat"
+	roboindex            = "_fat"
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_fat.dmi',
 		"slot_suit"      = 'icons/inv_slots/suits/mob_fat.dmi',
@@ -260,7 +259,7 @@ var/global/datum/body_build/default_body_build = new
 
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob.dmi',
-		"slot_suit"      = 'icons/inv_slots/suits/mob_unathi.dmi',
+		"slot_suit"      = 'icons/inv_slots/suits/mob.dmi', // They DO have their own assigned DMI but, well, just take a look yourself and leave it be.
 		"slot_gloves"    = 'icons/inv_slots/gloves/mob.dmi',
 		"slot_glasses"   = 'icons/inv_slots/glasses/mob.dmi',
 		"slot_l_ear"     = 'icons/inv_slots/ears/mob.dmi',

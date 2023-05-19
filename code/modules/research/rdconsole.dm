@@ -33,10 +33,10 @@
 	icon_keyboard = "rd_key"
 	icon_screen = "rdcomp"
 	light_color = "#a97faa"
-	circuit = /obj/item/weapon/circuitboard/rdconsole
+	circuit = /obj/item/circuitboard/rdconsole
 	var/datum/research/files							// Stores all the collected research data.
-	var/obj/item/weapon/disk/tech_disk/t_disk = null	// Stores the technology disk.
-	var/obj/item/weapon/disk/design_disk/d_disk = null	// Stores the design disk.
+	var/obj/item/disk/tech_disk/t_disk = null	// Stores the technology disk.
+	var/obj/item/disk/design_disk/d_disk = null	// Stores the design disk.
 
 	var/obj/machinery/r_n_d/destructive_analyzer/linked_destroy = null	// Linked Destructive Analyzer
 	var/obj/machinery/r_n_d/protolathe/linked_lathe = null				// Linked Protolathe
@@ -94,22 +94,22 @@
 	SyncRDevices()
 	. = ..()
 
-/obj/machinery/computer/rdconsole/attackby(obj/item/weapon/D, mob/user)
+/obj/machinery/computer/rdconsole/attackby(obj/item/D, mob/user)
 	// Loading a disk into it.
-	if(istype(D, /obj/item/weapon/disk))
+	if(istype(D, /obj/item/disk))
 		if(t_disk || d_disk)
 			to_chat(user, "A disk is already loaded into the machine.")
 			return
 
-		if(istype(D, /obj/item/weapon/disk/tech_disk))
+		if(istype(D, /obj/item/disk/tech_disk))
 			t_disk = D
-		else if (istype(D, /obj/item/weapon/disk/design_disk))
+		else if (istype(D, /obj/item/disk/design_disk))
 			d_disk = D
 		else
 			to_chat(user, SPAN("notice", "Machine cannot accept disks in that format."))
 			return
-		user.drop_item()
-		D.loc = src
+		if(!user.drop(D, src))
+			return
 		to_chat(user, SPAN("notice", "You add \the [D] to the machine."))
 		tgui_update()
 	else
@@ -183,11 +183,11 @@
 		)
 	)
 
-	var/obj/item/weapon/disk = t_disk || d_disk
+	var/obj/item/disk = t_disk || d_disk
 
 	if(disk)
-		var/obj/item/weapon/disk/tech_disk/tech_disk = disk
-		var/obj/item/weapon/disk/design_disk/design_disk = disk
+		var/obj/item/disk/tech_disk/tech_disk = disk
+		var/obj/item/disk/design_disk/design_disk = disk
 
 		if(istype(tech_disk))
 			var/datum/tech/T = tech_disk.stored
@@ -239,7 +239,7 @@
 			deconstruct(usr)
 			. = TRUE
 		if("sync")
-			do_sync()
+			do_sync(usr)
 			. = TRUE
 		if("toggle_sync")
 			sync = !sync
@@ -284,7 +284,7 @@
 	if(!linked_destroy)
 		return null
 
-	var/obj/item/weapon/loaded_item = linked_destroy.loaded_item
+	var/obj/item/loaded_item = linked_destroy.loaded_item
 
 	var/list/data = list(
 		"item" = null,
@@ -569,6 +569,12 @@
 		to_chat(user, SPAN("notice", "You must connect to the network first."))
 		return
 
+	THROTTLE(sync_cd, 5 SECONDS)
+
+	if(!sync_cd)
+		to_chat(user, SPAN("warning", "The server returned an error: too many requests."))
+		return
+
 	playsound(loc, 'sound/signals/processing13.ogg', 50)
 	griefProtection() // Putting this here because I dont trust the sync process
 
@@ -616,7 +622,7 @@
 		linked_destroy.icon_state = "d_analyzer"
 
 /obj/machinery/computer/rdconsole/proc/make_report(body)
-	var/obj/item/weapon/paper/PR = new /obj/item/weapon/paper
+	var/obj/item/paper/PR = new /obj/item/paper
 
 	PR.name = "fabricator report"
 	PR.info = "<center><b>[station_name()] Fabricator Laboratory</b>"

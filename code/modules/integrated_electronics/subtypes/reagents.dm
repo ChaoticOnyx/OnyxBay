@@ -7,6 +7,7 @@
 	category_text = "Reagent"
 	unacidable = 1
 	cooldown_per_use = 10
+
 	var/volume = 0
 
 /obj/item/integrated_circuit/reagent/Initialize()
@@ -509,7 +510,7 @@
 
 /obj/item/integrated_circuit/input/funnel/attackby_react(obj/item/I, mob/living/user, intent)
 	var/atom/movable/target = get_pin_data_as_type(IC_INPUT, 1, /atom/movable)
-	var/obj/item/weapon/reagent_containers/container = I
+	var/obj/item/reagent_containers/container = I
 
 	if(!check_target(target) || !istype(container))
 		return FALSE
@@ -630,13 +631,14 @@
 	can_be_asked_input = TRUE
 	demands_object_input = TRUE
 	can_input_object_when_closed = TRUE
+	radial_menu_icon = "beaker_connector"
 
-	var/obj/item/weapon/reagent_containers/glass/beaker/current_beaker
+	var/obj/item/reagent_containers/vessel/beaker/current_beaker
 
 
-/obj/item/integrated_circuit/input/beaker_connector/attackby(obj/item/weapon/reagent_containers/glass/beaker/I, mob/living/user)
+/obj/item/integrated_circuit/input/beaker_connector/attackby(obj/item/reagent_containers/vessel/beaker/I, mob/living/user)
 	//Check if it truly is a reagent container
-	if(!istype(I,/obj/item/weapon/reagent_containers/glass/beaker))
+	if(!istype(I,/obj/item/reagent_containers/vessel/beaker))
 		to_chat(user, SPAN("warning", "The [I] doesn't seem to fit in here."))
 		return
 
@@ -646,9 +648,9 @@
 		return
 
 	//The current beaker is the one we just attached, its location is inside the circuit
+	if(!user.drop(I, src))
+		return
 	current_beaker = I
-	user.drop_item(I)
-	I.forceMove(src)
 
 	to_chat(user, SPAN("warning", "You put the [I] inside the beaker connector."))
 
@@ -672,7 +674,7 @@
 
 	//Remove beaker and put in user's hands/location
 	to_chat(user, SPAN("notice", "You take [current_beaker] out of the beaker connector."))
-	user.put_in_hands(current_beaker)
+	user.pick_or_drop(current_beaker)
 	current_beaker = null
 	//Remove beaker reference
 	push_vol()
@@ -691,7 +693,7 @@
 	push_data()
 
 
-/obj/item/weapon/reagent_containers/glass/beaker/on_reagent_change()
+/obj/item/reagent_containers/vessel/beaker/on_reagent_change()
 	..()
 	if(istype(loc,/obj/item/integrated_circuit/input/beaker_connector))
 		var/obj/item/integrated_circuit/input/beaker_connector/current_circuit = loc

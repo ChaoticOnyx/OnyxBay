@@ -21,17 +21,16 @@
 
 /obj/structure/bookcase/Initialize()
 	for(var/obj/item/I in loc)
-		if(istype(I, /obj/item/weapon/book))
+		if(istype(I, /obj/item/book))
 			I.forceMove(src)
 	update_icon()
 	. = ..()
 
-/obj/structure/bookcase/attackby(obj/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/weapon/book))
-		user.drop_item()
-		O.loc = src
-		update_icon()
-	else if(istype(O, /obj/item/weapon/pen))
+/obj/structure/bookcase/attackby(obj/item/O, mob/user)
+	if(istype(O, /obj/item/book))
+		if(user.drop(O, src))
+			update_icon()
+	else if(istype(O, /obj/item/pen))
 		var/newname = sanitizeSafe(input("What would you like to title this bookshelf?"), MAX_NAME_LEN)
 		if(!newname)
 			return
@@ -43,7 +42,7 @@
 		if(do_after(user,25,src))
 			to_chat(user, SPAN("notice", "You dismantle \the [src]."))
 			new /obj/item/stack/material/wood(get_turf(src), 5)
-			for(var/obj/item/weapon/book/b in contents)
+			for(var/obj/item/book/b in contents)
 				b.loc = (get_turf(src))
 			qdel(src)
 
@@ -56,8 +55,8 @@
 		var/list/titles = list()
 		for(var/obj/item in contents)
 			var/item_name = item.name
-			if(istype(item, /obj/item/weapon/book))
-				var/obj/item/weapon/book/B = item
+			if(istype(item, /obj/item/book))
+				var/obj/item/book/B = item
 				item_name = B.title
 			titles[item_name] = item
 		var/title = input("Which book would you like to remove from the shelf?") as null|anything in titles
@@ -67,32 +66,30 @@
 			var/obj/choice = titles[title]
 			ASSERT(choice)
 			if(ishuman(user))
-				if(!user.get_active_hand())
-					user.put_in_hands(choice)
+				user.pick_or_drop(choice)
 			else
-				choice.loc = get_turf(src)
+				choice.forceMove(loc)
 			update_icon()
 
 /obj/structure/bookcase/ex_act(severity)
 	switch(severity)
 		if(1.0)
-			for(var/obj/item/weapon/book/b in contents)
+			for(var/obj/item/book/b in contents)
 				qdel(b)
 			qdel(src)
 			return
 		if(2.0)
-			for(var/obj/item/weapon/book/b in contents)
+			for(var/obj/item/book/b in contents)
 				if (prob(50)) b.loc = (get_turf(src))
 				else qdel(b)
 			qdel(src)
 			return
 		if(3.0)
 			if (prob(50))
-				for(var/obj/item/weapon/book/b in contents)
+				for(var/obj/item/book/b in contents)
 					b.loc = (get_turf(src))
 				qdel(src)
 			return
-		else
 	return
 
 /obj/structure/bookcase/update_icon()
@@ -108,10 +105,10 @@
 
 	New()
 		..()
-		new /obj/item/weapon/book/wiki/medical_chemistry(src)
-		new /obj/item/weapon/book/wiki/medical_diagnostics_manual(src)
-		new /obj/item/weapon/book/wiki/medical_diagnostics_manual(src)
-		new /obj/item/weapon/book/wiki/medical_diagnostics_manual(src)
+		new /obj/item/book/wiki/medical_chemistry(src)
+		new /obj/item/book/wiki/medical_diagnostics_manual(src)
+		new /obj/item/book/wiki/medical_diagnostics_manual(src)
+		new /obj/item/book/wiki/medical_diagnostics_manual(src)
 		update_icon()
 
 
@@ -120,12 +117,12 @@
 
 	New()
 		..()
-		new /obj/item/weapon/book/wiki/engineering_construction(src)
-		new /obj/item/weapon/book/wiki/engineering_hacking(src)
-		new /obj/item/weapon/book/wiki/engineering_guide(src)
-		new /obj/item/weapon/book/wiki/atmospipes(src)
-		new /obj/item/weapon/book/wiki/engineering_singularity_safety(src)
-		new /obj/item/weapon/book/wiki/hardsuits(src)
+		new /obj/item/book/wiki/engineering_construction(src)
+		new /obj/item/book/wiki/engineering_hacking(src)
+		new /obj/item/book/wiki/engineering_guide(src)
+		new /obj/item/book/wiki/atmospipes(src)
+		new /obj/item/book/wiki/engineering_singularity_safety(src)
+		new /obj/item/book/wiki/powersuits(src)
 		update_icon()
 
 /obj/structure/bookcase/manuals/research_and_development
@@ -133,7 +130,7 @@
 
 	New()
 		..()
-		new /obj/item/weapon/book/wiki/research_and_development(src)
+		new /obj/item/book/wiki/research_and_development(src)
 		update_icon()
 
 /obj/structure/bookcase/prefitted
@@ -162,7 +159,7 @@
 			picked_books += list(pick)
 			potential_books -= list(pick)
 	for(var/i in picked_books)
-		var/obj/item/weapon/book/book = new(src)
+		var/obj/item/book/book = new(src)
 		book.dat += "<font face=\"Verdana\"><i>Author: [i["author"]]<br>USBN: [i["id"]]</i><br><h3>[i["title"]]</h3></font><br>[i["content"]]"
 		book.title = i["title"]
 		book.author = i["author"]
@@ -179,7 +176,7 @@
 
 /obj/structure/bookcase/prefitted/religious
 	name = "bookcase (Religious)"
-	prefit_category = "Religious"
+	prefit_category = "Religion"
 
 /obj/structure/bookcase/prefitted/reference
 	name = "bookcase (Reference)"
@@ -188,13 +185,16 @@
 /*
  * Book
  */
-/obj/item/weapon/book
+/obj/item/book
 	name = "book"
 	icon = 'icons/obj/library.dmi'
 	icon_state ="book"
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL		 //upped to three because books are, y'know, pretty big. (and you could hide them inside eachother recursively forever)
+	force = 2.5
+	mod_handy = 0.4
+	mod_reach = 0.5
+	mod_weight = 0.5
 	attack_verb = list("bashed", "whacked", "educated")
 	var/dat = "<meta charset=\"utf-8\">" // Actual page content
 	var/author		       // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
@@ -205,7 +205,7 @@
 	var/window_width = 650
 	var/window_height = 650
 
-/obj/item/weapon/book/attack_self(mob/user as mob)
+/obj/item/book/attack_self(mob/user as mob)
 	if(carved)
 		if(store)
 			to_chat(user, SPAN("notice", "[store] falls out of [title]!"))
@@ -222,12 +222,10 @@
 	else
 		to_chat(user, "This book is completely blank!")
 
-/obj/item/weapon/book/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/book/attackby(obj/item/W as obj, mob/user as mob)
 	if(carved == 1)
 		if(!store)
-			if(W.w_class < ITEM_SIZE_NORMAL)
-				user.drop_item()
-				W.loc = src
+			if(W.w_class < ITEM_SIZE_NORMAL && user.drop(W, src))
 				store = W
 				to_chat(user, SPAN("notice", "You put [W] in [title]."))
 				return
@@ -237,7 +235,7 @@
 		else
 			to_chat(user, SPAN("notice", "There's already something in [title]!"))
 			return
-	if(istype(W, /obj/item/weapon/pen))
+	if(istype(W, /obj/item/pen))
 		if(unique)
 			to_chat(user, "These pages don't seem to take the ink well. Looks like you can't modify it.")
 			return
@@ -267,7 +265,7 @@
 					src.author = newauthor
 			else
 				return
-	else if(istype(W, /obj/item/weapon/material/knife) || isWirecutter(W))
+	else if(istype(W, /obj/item/material/knife) || isWirecutter(W))
 		if(carved)	return
 		to_chat(user, SPAN("notice", "You begin to carve out [title]."))
 		if(do_after(user, 30, src))
@@ -277,23 +275,25 @@
 	else
 		..()
 
-/obj/item/weapon/book/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if(user.zone_sel.selecting == BP_EYES)
+/obj/item/book/attack(mob/living/carbon/M, mob/living/carbon/user)
+	if(user.zone_sel.selecting == BP_EYES && user.a_intent == I_HELP)
 		user.visible_message(
 			SPAN("notice", "[user] opens up a book and shows it to [M]."),
 			SPAN("notice", "You open up the book and show it to [M].")
 		)
 		show_browser(M, dat, "window=book_[title];size=[window_width]x[window_height]")
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN) //to prevent spam
+	else
+		..()
 
-/obj/item/weapon/book/wiki
+/obj/item/book/wiki
 	title = ""
 	unique = 1
 	var/topic
 	var/style = WIKI_MINI
 	var/censored = 1
 
-/obj/item/weapon/book/wiki/Initialize(mapload, ntopic, ncensored, nstyle)
+/obj/item/book/wiki/Initialize(mapload, ntopic, ncensored, nstyle, temporary = FALSE)
 	if(ntopic)
 		topic = ntopic
 	if(!isnull(ncensored))
@@ -305,9 +305,12 @@
 	if(title)
 		SetName(title)
 	dat = wiki_request(topic, style, censored, src)
+	if(temporary) // I hate myself for doing this
+		atom_flags |= ATOM_FLAG_INITIALIZED
+		return INITIALIZE_HINT_QDEL
 	. = ..(mapload)
 
-/obj/item/weapon/book/wiki/Topic(href, href_list[])
+/obj/item/book/wiki/Topic(href, href_list[])
 	// No parent call here
 	if(href_list["title"] && initial(title) == "")
 		title = href_list["title"]
@@ -322,7 +325,7 @@
 	var/ref = source ? "var ref = \ref[source];" : "";
 	switch(style)
 		if(WIKI_FULL)
-			script = "window.location='[config.wikiurl]/index.php?title=[topic]&printable=yes'"
+			script = "window.location='[config.link.wiki]/index.php?title=[topic]&printable=yes'"
 		if(WIKI_MINI)
 			script = file2text('code/js/wiki_html.js')
 			add_params = "&useskin=monobook&disabletoc=true" // TODO: Whenever BYOND bug about anchor links in local files will be fixed, remove '&disabletoc=true' to allow index
@@ -346,7 +349,7 @@
 		<head><meta http-equiv=\"x-ua-compatible\" content=\"IE=edge\" charset=\"UTF-8\"></head>
 		<body>[preamble]<div id='status'>Turning on...</div></body>
 		<script>
-		var mainPage = '[config.wikiurl]';
+		var mainPage = '[config.link.wiki]';
 		var topic = '[topic][add_params]';
 		var censorship = [censorship];
 		[ref]
@@ -354,7 +357,7 @@
 		</script>
 		</html>"}
 
-/obj/item/weapon/book/wiki/template
+/obj/item/book/wiki/template
 	icon_state = "paper_stack"
 	desc = "Bunch of unbound paper pieces."
 	style = WIKI_TEXT

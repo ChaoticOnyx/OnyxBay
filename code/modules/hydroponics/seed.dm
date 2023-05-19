@@ -26,6 +26,7 @@
 	var/force_layer
 	var/customsprite = 0		   // Set to 1 if you want to use a non-paintable harvest icon.
 	var/planter_ckey			   // ckey of player that plant seed.
+	var/fun_level = 1              // Disables this mutation if it's higher than config.misc.fun_hydroponics. 0 - regular plants, 1 - joke plants, 2 - somewhat OOC-related stuff.
 
 /datum/seed/New()
 
@@ -329,8 +330,10 @@
 /datum/seed/proc/apply_special_effect(mob/living/target,obj/item/thrown)
 
 	var/impact = 1
-	do_sting(target,thrown)
-	do_thorns(target,thrown)
+
+	if(ishuman(target))
+		do_sting(target, thrown)
+		do_thorns(target, thrown)
 
 	// Bluespace tomato code copied over from grown.dm.
 	if(get_trait(TRAIT_TELEPORTING))
@@ -728,14 +731,14 @@
 			else if(has_custom_product)
 				product = new has_custom_product(get_turf(user),name)
 			else
-				product = new /obj/item/weapon/reagent_containers/food/snacks/grown(get_turf(user),name)
+				product = new /obj/item/reagent_containers/food/grown(get_turf(user),name)
 			. += product
 
 			if(get_trait(TRAIT_PRODUCT_COLOUR))
 				if(!istype(product, /mob) && !has_custom_product)
 					product.color = get_trait(TRAIT_PRODUCT_COLOUR)
-					if(istype(product,/obj/item/weapon/reagent_containers/food))
-						var/obj/item/weapon/reagent_containers/food/food = product
+					if(istype(product,/obj/item/reagent_containers/food))
+						var/obj/item/reagent_containers/food/food = product
 						food.filling_color = get_trait(TRAIT_PRODUCT_COLOUR)
 
 			if(mysterious)
@@ -827,6 +830,6 @@
 	if(leaves)
 		var/image/I = image(res.icon, "[plant_icon]-[growth_stage]-leaves")
 		I.color = leaves
-		I.appearance_flags = RESET_COLOR
+		I.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 		res.overlays += I
 	return res

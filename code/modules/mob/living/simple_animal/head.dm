@@ -11,7 +11,7 @@
 	universal_speak = 1
 	speak_chance = 1
 	turns_per_move = 5
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat
+	meat_type = /obj/item/reagent_containers/food/meat
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "punches"
@@ -35,7 +35,7 @@
 	stop_automated_movement = 1
 
 /mob/living/simple_animal/head/Life()
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		if(health > 0)
 			icon_state = icon_living
 			set_stat(CONSCIOUS)

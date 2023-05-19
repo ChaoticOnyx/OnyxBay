@@ -70,7 +70,8 @@ This is /obj/machinery level code to properly manage power usage from the area.
 // Or in Destroy at all, but especially after the ..().
 /obj/machinery/Destroy()
 	REPORT_POWER_CONSUMPTION_CHANGE(get_power_usage(), 0)
-	. = ..()
+
+	return ..()
 
 /obj/machinery/Move(NewLoc)
 	var/atom/OldLoc = loc

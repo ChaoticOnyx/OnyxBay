@@ -218,7 +218,7 @@
 	var/sec_hud = FALSE
 	var/med_hud = FALSE
 
-/obj/item/clothing/glasses/hud/examine(mob/user)
+/obj/item/clothing/glasses/hud/_examine_text(mob/user)
 	. = ..()
 	if(matrix)
 		. += "\nIt has a [matrix.matrix_type] optical matrix installed."
@@ -239,12 +239,8 @@
 		lenses.attach_lenses(src)
 
 /obj/item/clothing/glasses/hud/Destroy()
-	if(matrix)
-		qdel(matrix)
-		matrix = null
-	if(lenses)
-		qdel(lenses)
-		lenses = null
+	QDEL_NULL(matrix)
+	QDEL_NULL(lenses)
 	return ..()
 
 /obj/item/clothing/glasses/hud/process_hud(mob/M)
@@ -260,7 +256,7 @@
 	if(lenses)
 		overlays += overlay_image(icon, "[hud_icon]_[lenses.icon_state]")
 
-/obj/item/clothing/glasses/hud/attackby(obj/item/weapon/W, mob/user)
+/obj/item/clothing/glasses/hud/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
 		if(!matrix)
 			if(lenses)
@@ -285,12 +281,11 @@
 		if(matrix)
 			to_chat(user, SPAN("notice", "\The [src] already has a [matrix] installed."))
 			return
-		if(user.unEquip(W))
-			W.forceMove(src)
+		if(user.drop(W, src))
 			matrix = W
 			cumulative_flash_protection += matrix.flash_protection
 			to_chat(user, SPAN("notice", "You install \the [matrix] into \the [src]."))
-			sound_to(user, sound('sound/items/goggles_switch.ogg', volume = 50))
+			sound_to(user, sound(deactivation_sound, volume = 50))
 			update_clothing_icon()
 			user.update_action_buttons()
 
@@ -304,11 +299,11 @@
 		if(active)
 			to_chat(user, SPAN("notice", "You must deactivate the optical matrix first."))
 			return
-		if(user.unEquip(W))
+		if(user.drop(W))
 			var/obj/item/device/hudlenses/H = W
 			H.attach_lenses(src)
 			to_chat(user, SPAN("notice", "You install \the [H] into \the [src]."))
-			sound_to(user, sound('sound/items/goggles_switch.ogg', volume = 50))
+			sound_to(user, sound(deactivation_sound, volume = 50))
 			update_clothing_icon()
 			user.update_action_buttons()
 
@@ -370,7 +365,7 @@
 	else
 		deactivate_matrix()
 		to_chat(user, "You deactivate the optical matrix on \the [src].")
-		sound_to(user, sound('sound/items/goggles_switch.ogg', volume = 50))
+		sound_to(user, sound(deactivation_sound, volume = 50))
 	update_clothing_icon()
 	user.update_action_buttons()
 
@@ -496,3 +491,40 @@
 
 /obj/item/clothing/glasses/hud/plain/update_icon()
 	return
+
+/obj/item/clothing/glasses/hud/psychoscope
+	name = "psychoscope"
+	desc = "An old experimental glasses with a strange design."
+	icon_state = "psychoscope_off"
+	item_state = "psychoscope_off"
+	hud_name = "psychoscope"
+	activation_sound = 'sound/effects/psychoscope/psychoscope_on.ogg'
+	w_class = ITEM_SIZE_NORMAL
+	deactivation_sound = null
+	matrix = /obj/item/device/hudmatrix/science
+	matrix_removable = FALSE
+	use_alt_layer = TRUE
+
+/obj/item/clothing/glasses/hud/psychoscope/update_icon()
+	if(active)
+		icon_state = "psychoscope_on"
+		item_state = "psychoscope_on"
+	else
+		icon_state = "psychoscope_off"
+		item_state = "psychoscope_off"
+
+/obj/item/clothing/glasses/hud/psychoscope/Initialize()
+	. = ..()
+
+	icon_state = "psychoscope_off"
+	item_state = "psychoscope_off"
+
+/obj/item/clothing/glasses/hud/psychoscope/activate_matrix()
+	. = ..()
+
+	update_icon()
+
+/obj/item/clothing/glasses/hud/psychoscope/deactivate_matrix()
+	. = ..()
+
+	update_icon()

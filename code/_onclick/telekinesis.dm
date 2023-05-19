@@ -76,7 +76,7 @@ var/const/tk_maxrange = 15
 	layer = HUD_ITEM_LAYER
 
 /obj/item/tk_grab/dropped(mob/user as mob)
-	if(focus && user && loc != user && loc != user.loc) // drop_item() gets called when you tk-attack a table/closet with an item
+	if(focus && user && loc != user && loc != user.loc) // drop_active_hand() gets called when you tk-attack a table/closet with an item
 		if(focus.Adjacent(loc))
 			focus.loc = loc
 	loc = null
@@ -129,7 +129,7 @@ var/const/tk_maxrange = 15
 			I.afterattack(target,user,1) // for splashing with beakers
 	else
 		apply_focus_overlay()
-		focus.throw_at(target, 10, 1, user)
+		focus.throw_at(target, 10, null, user)
 		last_throw = world.time
 	return
 

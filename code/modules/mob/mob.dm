@@ -1,25 +1,38 @@
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
 	STOP_PROCESSING(SSmobs, src)
-	GLOB.dead_mob_list_ -= src
-	GLOB.living_mob_list_ -= src
-	GLOB.player_list -= src
+
+	unregister_signal(src, SIGNAL_SEE_IN_DARK_SET)
+	unregister_signal(src, SIGNAL_SEE_INVISIBLE_SET)
+	unregister_signal(src, SIGNAL_SIGHT_SET)
+
+	remove_from_dead_mob_list()
+	remove_from_living_mob_list()
+	GLOB.player_list.Remove(src)
+
 	unset_machine()
 	QDEL_NULL(hud_used)
+	QDEL_NULL(show_inventory)
+
+	LAssailant = null
 	for(var/obj/item/grab/G in grabbed_by)
 		qdel(G)
+
 	clear_fullscreen()
 	if(ability_master)
 		QDEL_NULL(ability_master)
+
+	remove_screen_obj_references()
 	if(client)
-		remove_screen_obj_references()
 		for(var/atom/movable/AM in client.screen)
 			var/obj/screen/screenobj = AM
 			if(!istype(screenobj) || !screenobj.globalscreen)
 				qdel(screenobj)
 		client.screen = list()
-	if(mind && mind.current == src)
-		spellremove(src)
+
 	ghostize()
+	if(mind?.current == src)
+		spellremove(src)
+		mind.set_current(null)
 	return ..()
 
 /mob/proc/flash_weak_pain()
@@ -46,13 +59,19 @@
 	pain = null
 	item_use_icon = null
 	gun_move_icon = null
+	radio_use_icon = null
 	gun_setting_icon = null
 	ability_master = null
 	zone_sel = null
 	poise_icon = null
 
-/mob/Initialize()
+/mob/Initialize(mapload)
 	. = ..()
+	if(species_language)
+		add_language(species_language)
+	register_signal(src, SIGNAL_SEE_IN_DARK_SET,	/mob/proc/set_blackness)
+	register_signal(src, SIGNAL_SEE_INVISIBLE_SET,	/mob/proc/set_blackness)
+	register_signal(src, SIGNAL_SIGHT_SET,			/mob/proc/set_blackness)
 	START_PROCESSING(SSmobs, src)
 
 /mob/proc/show_message(msg, type, alt, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
@@ -74,7 +93,6 @@
 				type = alt_type
 				if(((type & VISIBLE_MESSAGE) && is_blind()))
 					return
-
 	to_chat(src, msg)
 
 
@@ -97,7 +115,7 @@
 		if(self_message && M == src)
 			M.show_message(self_message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 			continue
-			
+
 		if(isghost(M))
 			M.show_message(message + " (<a href='byond://?src=\ref[M];track=\ref[src]'>F</a>)", VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 			continue
@@ -159,16 +177,16 @@
 	switch(m_intent)
 		if(M_RUN)
 			if(drowsyness > 0)
-				. += config.walk_speed
+				. += config.movement.walk_speed
 			else
-				. += config.run_speed
+				. += config.movement.run_speed
 		if(M_WALK)
-			. += config.walk_speed
+			. += config.movement.walk_speed
 
 	if(lying) //Crawling, it's slower
 		. += 10 + (weakened * 2)
 
-	if(pulling)
+	if(pulling && !ignore_pull_slowdown)
 		var/area/A = get_area(src)
 		if(A.has_gravity)
 			if(istype(pulling, /obj))
@@ -257,12 +275,12 @@
 /mob/proc/show_inv(mob/user)
 	return
 
-//mob verbs are faster than object verbs. See http://www.byond.com/forum/?post=1326139&page=2#comment8198716 for why this isn't atom/verb/examine()
+//mob verbs are faster than object verbs. See http://www.byond.com/forum/?post=1326139&page=2#comment8198716 for why this isn't atom/verb/_examine_text()
 /mob/verb/examinate(atom/A as mob|obj|turf in view(src.client.eye))
 	set name = "Examine"
 	set category = "IC"
 
-	if((is_blind(src) || usr.stat) && !isobserver(src))
+	if((is_blind(src) || usr?.stat) && !isobserver(src))
 		to_chat(src, "<span class='notice'>Something is there but you can't see it.</span>")
 		return 1
 
@@ -328,14 +346,14 @@
 	if(istype(loc,/obj/mecha)) return
 
 	if(hand)
-		var/obj/item/W = l_hand
-		if (W)
-			W.attack_self(src)
+		var/obj/item/I = l_hand
+		if(I)
+			I.attack_self(src)
 			update_inv_l_hand()
 	else
-		var/obj/item/W = r_hand
-		if (W)
-			W.attack_self(src)
+		var/obj/item/I = r_hand
+		if(I)
+			I.attack_self(src)
 			update_inv_r_hand()
 	return
 
@@ -436,7 +454,7 @@
 	if(client.holder && (client.holder.rights & R_ADMIN))
 		is_admin = 1
 
-	if(is_admin && stat == DEAD)
+	if(is_admin && is_ooc_dead())
 		is_admin = 0
 
 	var/list/names = list()
@@ -446,7 +464,7 @@
 	for(var/obj/O in world)				//EWWWWWWWWWWWWWWWWWWWWWWWW ~needs to be optimised
 		if(!O.loc)
 			continue
-		if(istype(O, /obj/item/weapon/disk/nuclear))
+		if(istype(O, /obj/item/disk/nuclear))
 			var/name = "Nuclear Disk"
 			if (names.Find(name))
 				namecounts[name]++
@@ -559,9 +577,10 @@
 			pullin.icon_state = "pull0"
 
 /mob/proc/start_pulling(atom/movable/AM)
-
 	if ( !AM || !usr || src==AM || !isturf(src.loc) )	//if there's no person pulling OR the person is pulling themself OR the object being pulled is inside something: abort!
 		return
+
+	AM.on_pulling_try(src)
 
 	if (AM.anchored)
 		to_chat(src, "<span class='warning'>It won't budge!</span>")
@@ -569,7 +588,6 @@
 
 	var/mob/M = AM
 	if(ismob(AM))
-
 		if(!can_pull_mobs || !can_pull_size)
 			to_chat(src, "<span class='warning'>It won't budge!</span>")
 			return
@@ -589,7 +607,7 @@
 		if(!iscarbon(src))
 			M.LAssailant = null
 		else
-			M.LAssailant = usr
+			M.LAssailant = weakref(usr)
 
 	else if(isobj(AM))
 		var/obj/I = AM
@@ -625,13 +643,12 @@
 /mob/proc/is_active()
 	return (0 >= usr.stat)
 
-/mob/proc/is_dead()
+/mob/proc/is_ooc_dead()
 	return stat == DEAD
 
-/mob/proc/is_mechanical()
-	if(mind && (mind.assigned_role == "Cyborg" || mind.assigned_role == "AI"))
-		return 1
-	return istype(src, /mob/living/silicon) || get_species() == SPECIES_IPC
+// Returns true if the mob is dead for IC objects (runes, machines, etc.)
+/mob/proc/is_ic_dead()
+	return stat == DEAD
 
 /mob/proc/is_ready()
 	return client && !!mind
@@ -725,9 +742,9 @@
 	if(lying)
 		set_density(0)
 		if(l_hand)
-			unEquip(l_hand)
+			drop_l_hand()
 		if(r_hand)
-			unEquip(r_hand)
+			drop_r_hand()
 	else
 		set_density(initial(density))
 	reset_layer()
@@ -901,9 +918,10 @@
 			to_chat(src, "You have nothing stuck in your body that is large enough to remove.")
 		else
 			to_chat(U, "[src] has nothing stuck in their wounds that is large enough to remove.")
+		src.verbs -= /mob/proc/yank_out_object
 		return
 
-	var/obj/item/weapon/selection = input("What do you want to yank out?", "Embedded objects") in valid_objects
+	var/obj/item/selection = input("What do you want to yank out?", "Embedded objects") in valid_objects
 
 	if(self)
 		to_chat(src, "<span class='warning'>You attempt to get a good grip on [selection] in your body.</span>")
@@ -918,9 +936,6 @@
 		visible_message("<span class='warning'><b>[src] rips [selection] out of their body.</b></span>","<span class='warning'><b>You rip [selection] out of your body.</b></span>")
 	else
 		visible_message("<span class='warning'><b>[usr] rips [selection] out of [src]'s body.</b></span>","<span class='warning'><b>[usr] rips [selection] out of your body.</b></span>")
-	valid_objects = get_visible_implants(0)
-	if(valid_objects.len == 1) //Yanking out last object - removing verb.
-		src.verbs -= /mob/proc/yank_out_object
 
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
@@ -953,13 +968,18 @@
 
 	selection.forceMove(get_turf(src))
 	if(!(U.l_hand && U.r_hand))
-		U.put_in_hands(selection)
+		U.pick_or_drop(selection)
 
-	for(var/obj/item/weapon/O in pinned)
+	for(var/obj/item/O in pinned)
 		if(O == selection)
 			pinned -= O
 		if(!pinned.len)
 			anchored = 0
+
+	valid_objects = get_visible_implants(0)
+	if(!valid_objects.len)
+		src.verbs -= /mob/proc/yank_out_object
+
 	return 1
 
 //Check for brain worms in head.
@@ -1128,3 +1148,31 @@
 
 /mob/proc/get_sex()
 	return gender
+
+/mob/proc/InStasis()
+	return FALSE
+
+/mob/proc/set_see_in_dark(new_see_in_dark)
+	var/old_see_in_dark = see_in_dark
+
+	if(old_see_in_dark != new_see_in_dark)
+		see_in_dark = new_see_in_dark
+		SEND_SIGNAL(src, SIGNAL_SEE_IN_DARK_SET, src, old_see_in_dark, new_see_in_dark)
+
+/mob/proc/set_see_invisible(new_see_invisible)
+	var/old_see_invisible = see_invisible
+	if(old_see_invisible != new_see_invisible)
+		see_invisible = new_see_invisible
+		SEND_SIGNAL(src, SIGNAL_SEE_INVISIBLE_SET, src, old_see_invisible, new_see_invisible)
+
+/mob/proc/set_sight(new_sight)
+	var/old_sight = sight
+	if(old_sight != new_sight)
+		sight = new_sight
+		SEND_SIGNAL(src, SIGNAL_SIGHT_SET, src, old_sight, new_sight)
+
+/mob/proc/set_blackness()			//Applies SEE_BLACKNESS if necessary and turns it off when you don't need it. Should be called if see_in_dark, see_invisible or sight has changed
+	if((see_invisible <= SEE_INVISIBLE_NOLIGHTING) || (see_in_dark >= 8) || (sight&(SEE_TURFS|SEE_MOBS|SEE_OBJS)))
+		set_sight(sight&(~SEE_BLACKNESS))
+	else
+		set_sight(sight|SEE_BLACKNESS)

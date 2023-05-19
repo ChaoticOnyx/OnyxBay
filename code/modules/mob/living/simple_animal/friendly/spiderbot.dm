@@ -8,7 +8,7 @@
 
 	var/obj/item/device/radio/borg/radio = null
 	var/mob/living/silicon/ai/connected_ai = null
-	var/obj/item/weapon/cell/cell = null
+	var/obj/item/cell/cell = null
 	var/obj/machinery/camera/camera = null
 	var/obj/item/device/mmi/mmi = null
 	var/list/req_access = list(access_robotics) //Access needed to pop out the brain.
@@ -39,6 +39,7 @@
 	speed = -1                    //Spiderbots gotta go fast.
 	pass_flags = PASS_FLAG_TABLE
 	speak_emote = list("beeps","clicks","chirps")
+	bubble_icon = "robot"
 
 /mob/living/simple_animal/spiderbot/New()
 	..()
@@ -74,7 +75,7 @@
 				to_chat(user, "<span class='notice'>[O] is completely unresponsive; there's no point.</span>")
 				return
 
-		if(B.stat == DEAD)
+		if(B.is_ooc_dead())
 			to_chat(user, "<span class='warning'>[O] is dead. Sticking it into the frame would sort of defeat the purpose.</span>")
 			return
 
@@ -82,21 +83,21 @@
 			to_chat(user, "<span class='warning'>\The [O] does not seem to fit.</span>")
 			return
 
+		if(!user.drop(O, src))
+			return
+
 		to_chat(user, "<span class='notice'>You install \the [O] in \the [src]!</span>")
 		if(istype(O, /obj/item/organ/internal/posibrain))
 			positronic = 1
 			add_language("Robot Talk")
 
-		user.drop_item()
-		src.mmi = O
-		src.transfer_personality(O)
-
-		O.loc = src
-		src.update_icon()
+		mmi = O
+		transfer_personality(O)
+		update_icon()
 		return 1
 
 	if(isWelder(O))
-		var/obj/item/weapon/weldingtool/WT = O
+		var/obj/item/weldingtool/WT = O
 		if (WT.remove_fuel(0))
 			if(health < maxHealth)
 				health += pick(1,1,1,2,2,3)
@@ -109,14 +110,14 @@
 		else
 			to_chat(user, "<span class='danger'>You need more welding fuel for this task!</span>")
 			return
-	else if(istype(O, /obj/item/weapon/card/id)||istype(O, /obj/item/device/pda))
+	else if(istype(O, /obj/item/card/id)||istype(O, /obj/item/device/pda))
 		if (!mmi)
 			to_chat(user, "<span class='danger'>There's no reason to swipe your ID - \the [src] has no brain to remove.</span>")
 			return 0
 
-		var/obj/item/weapon/card/id/id_card
+		var/obj/item/card/id/id_card
 
-		if(istype(O, /obj/item/weapon/card/id))
+		if(istype(O, /obj/item/card/id))
 			id_card = O
 		else
 			var/obj/item/device/pda/pda = O
@@ -225,11 +226,11 @@
 		to_chat(usr, "<span class='warning'>You have nothing to drop!</span>")
 		return 0
 
-	if(istype(held_item, /obj/item/weapon/grenade))
+	if(istype(held_item, /obj/item/grenade))
 		visible_message("<span class='danger'>\The [src] launches \the [held_item]!</span>", \
 			"<span class='danger'>You launch \the [held_item]!</span>", \
 			"You hear a skittering noise and a thump!")
-		var/obj/item/weapon/grenade/G = held_item
+		var/obj/item/grenade/G = held_item
 		G.loc = src.loc
 		G.detonate()
 		held_item = null
@@ -277,7 +278,7 @@
 	to_chat(src, "<span class='warning'>There is nothing of interest to take.</span>")
 	return 0
 
-/mob/living/simple_animal/spiderbot/examine(mob/user)
+/mob/living/simple_animal/spiderbot/_examine_text(mob/user)
 	. = ..()
 	if(src.held_item)
 		. += "\nIt is carrying \icon[src.held_item] \a [src.held_item]."

@@ -1,8 +1,11 @@
 /mob/living/carbon/New()
 	//setup reagent holders
-	bloodstr = new /datum/reagents/metabolism(120, src, CHEM_BLOOD)
-	touching = new /datum/reagents/metabolism(1000, src, CHEM_TOUCH)
-	reagents = bloodstr
+	if(!bloodstr)
+		bloodstr = new /datum/reagents/metabolism(120, src, CHEM_BLOOD)
+	if(!reagents)
+		reagents = bloodstr
+	if(!touching)
+		touching = new /datum/reagents/metabolism(1000, src, CHEM_TOUCH)
 
 	if (!default_language && species_language)
 		default_language = all_languages[species_language]
@@ -10,10 +13,21 @@
 
 /mob/living/carbon/Destroy()
 	QDEL_NULL(touching)
-	bloodstr = null // We don't qdel(bloodstr) because it's the same as qdel(reagents)
+	QDEL_NULL(bloodstr)
+	QDEL_NULL(op_stage)
+
+	reagents = null //We assume reagents is a reference to bloodstr here
+
+	// We assume that, in case of gib, organs and whatever have already done their business escaping the body,
+	// so it's safe to just clean whatever left for reasons.
 	QDEL_NULL_LIST(internal_organs)
+	QDEL_NULL_LIST(organs)
 	QDEL_NULL_LIST(stomach_contents)
 	QDEL_NULL_LIST(hallucinations)
+
+	QDEL_LIST_ASSOC(organs_by_name)
+	QDEL_LIST_ASSOC(internal_organs_by_name)
+	stasis_sources.Cut()
 	if(loc)
 		for(var/mob/M in contents)
 			M.dropInto(loc)
@@ -28,7 +42,7 @@
 	var/datum/reagents/R = get_ingested_reagents()
 	if(istype(R))
 		R.clear_reagents()
-	nutrition = 400
+	nutrition = 300
 	..()
 
 /mob/living/carbon/Move(NewLoc, direct)
@@ -175,7 +189,7 @@
 		swap_hand()
 
 /mob/living/carbon/proc/help_shake_act(mob/living/carbon/M)
-	if(!is_asystole())
+	if(!is_asystole() || isundead(src))
 		if (on_fire)
 			playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 			if (M.on_fire)
@@ -234,7 +248,7 @@
 				if(M.on_fire)
 					src.IgniteMob()
 
-			if(stat != DEAD)
+			if(!is_ic_dead())
 				AdjustParalysis(-3)
 				AdjustStunned(-3)
 				AdjustWeakened(-3)
@@ -299,12 +313,13 @@
 		return
 
 	var/obj/item/I = item
-	if(!I.candrop)
+	var/is_grab = istype(item, /obj/item/grab)
+	if(!I.canremove && !is_grab)
 		return
 
 	var/throw_range = item.throw_range
 	var/itemsize
-	if(istype(item, /obj/item/grab))
+	if(is_grab)
 		var/obj/item/grab/G = item
 		item = G.throw_held() // throw the person instead of the grab
 		if(ismob(item))
@@ -322,8 +337,8 @@
 				admin_attack_log(usr, M, "Threw the victim from [start_T_descriptor] to [end_T_descriptor].", "Was from [start_T_descriptor] to [end_T_descriptor].", "threw, from [start_T_descriptor] to [end_T_descriptor], ")
 	else
 		itemsize = I.w_class
+		drop(item)
 
-	drop_from_inventory(item)
 	if(!item || !isturf(item.loc))
 		return
 
@@ -357,17 +372,17 @@
 		return 1
 	return
 
-/mob/living/carbon/u_equip(obj/item/W as obj)
-	if(!W)	return 0
+/mob/living/carbon/__unequip(obj/W)
+	if(!W)
+		return
 
-	else if (W == handcuffed)
+	if(W == handcuffed)
 		handcuffed = null
 		update_inv_handcuffed()
-		if(buckled && buckled.buckle_require_restraints)
+		if(buckled?.buckle_require_restraints)
 			buckled.unbuckle_mob()
 	else
-	 ..()
-
+		..()
 	return
 
 /mob/living/carbon/verb/mob_sleep()
@@ -443,7 +458,7 @@
 	<BR><B>Head(Mask):</B> <A href='?src=\ref[src];item=mask'>[(wear_mask ? wear_mask : "Nothing")]</A>
 	<BR><B>Left Hand:</B> <A href='?src=\ref[src];item=l_hand'>[(l_hand ? l_hand  : "Nothing")]</A>
 	<BR><B>Right Hand:</B> <A href='?src=\ref[src];item=r_hand'>[(r_hand ? r_hand : "Nothing")]</A>
-	<BR><B>Back:</B> <A href='?src=\ref[src];item=back'>[(back ? back : "Nothing")]</A> [((istype(wear_mask, /obj/item/clothing/mask) && istype(back, /obj/item/weapon/tank) && !( internal )) ? text(" <A href='?src=\ref[];item=internal'>Set Internal</A>", src) : "")]
+	<BR><B>Back:</B> <A href='?src=\ref[src];item=back'>[(back ? back : "Nothing")]</A> [((istype(wear_mask, /obj/item/clothing/mask) && istype(back, /obj/item/tank) && !( internal )) ? text(" <A href='?src=\ref[];item=internal'>Set Internal</A>", src) : "")]
 	<BR>[(internal ? text("<A href='?src=\ref[src];item=internal'>Remove Internal</A>") : "")]
 	<BR><A href='?src=\ref[src];item=pockets'>Empty Pockets</A>
 	<BR><A href='?src=\ref[user];refresh=1'>Refresh</A>
@@ -479,7 +494,7 @@
 		set_see_in_dark(8)
 		set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
 		if(species)
-			sight = species.get_vision_flags(src)
+			set_sight(species.get_vision_flags(src))
 
 /mob/living/carbon/proc/should_have_organ(organ_check)
 	return 0
@@ -513,7 +528,7 @@
 		return
 	stasis_sources[source] = factor
 
-/mob/living/carbon/proc/InStasis()
+/mob/living/carbon/InStasis()
 	if(!stasis_value)
 		return FALSE
 	return life_tick % stasis_value

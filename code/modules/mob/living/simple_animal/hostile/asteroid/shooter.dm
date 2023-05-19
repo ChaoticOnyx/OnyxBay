@@ -26,6 +26,7 @@
 	attacktext = "bites into"
 	a_intent = "harm"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 	ranged_cooldown_cap = 4
 	aggro_vision_range = 7
 	idle_vision_range = 2
@@ -39,14 +40,6 @@
 	nodamage = 0
 	check_armour = "energy"
 	weaken=5
-
-/mob/living/simple_animal/hostile/asteroid/shooter/GiveTarget(new_target)
-	if(!client)
-		target_mob = new_target
-	if(target_mob != null)
-		Aggro()
-		stance = HOSTILE_STANCE_ATTACK
-	return
 
 /mob/living/simple_animal/hostile/asteroid/shooter/ex_act(severity, target_mob)
 	switch(severity)
@@ -62,7 +55,7 @@
 	if(.)
 		var/counter
 		for(counter = 0, counter < 2, counter++)
-			var/obj/item/weapon/ore/diamond/D = new /obj/item/weapon/ore/diamond(src.loc)
+			var/obj/item/ore/diamond/D = new /obj/item/ore/diamond(src.loc)
 			D.layer = 4.1
 
 
@@ -86,6 +79,7 @@
 	melee_damage_lower = 22
 	melee_damage_upper = 22
 	attacktext = "gnaws and mauls"
+	bodyparts = /decl/simple_animal_bodyparts/beholder
 	aggro_vision_range = 9
 	idle_vision_range = 5
 	var/list/projectiletypes = list(/obj/item/projectile/beam/mindflayer,
@@ -107,25 +101,22 @@
 	. = ..()
 	projectiletype = pick(projectiletypes)
 
-/mob/living/simple_animal/hostile/asteroid/shooter/beholder/GiveTarget(new_target)
-	if(!client)
-		target_mob = new_target
-	if(target_mob != null)
-		Aggro()
-		stance = HOSTILE_STANCE_ATTACK
-		if(isliving(target_mob))
-			var/mob/living/L = target_mob
-			visible_message("<span class='danger'>The [src.name]'s evil gaze chills [L.name] to the bone!</span>")
-	return
+/mob/living/simple_animal/hostile/asteroid/shooter/beholder/set_target_mob(new_target)
+	. = ..()
+	if(target_mob)
+		visible_message(SPAN("danger", "\The [src]'s evil gaze chills [target_mob] to the bone!"))
 
 /mob/living/simple_animal/hostile/asteroid/shooter/beholder/death(gibbed, deathmessage, show_dead_message)
 	. = ..()
 	if(.)
 		var/counter
 		for(counter = 0, counter < 2, counter++)
-			var/obj/item/weapon/ore/diamond/D = new /obj/item/weapon/ore/diamond(src.loc)
+			var/obj/item/ore/diamond/D = new /obj/item/ore/diamond(src.loc)
 			D.layer = 4.1
 		new /obj/item/asteroid/beholder_eye(src.loc)
+
+/decl/simple_animal_bodyparts/beholder
+	hit_zones = list("giant eye", "maw", "far left eyestalk", "left eyestalk", "central eyestalk", "right eyestalk", "far right eyestalk", "chin", "cheek", "forehead")
 
 
 ////////////////Item: Beholder eye////////////////
@@ -136,7 +127,6 @@
 	icon = 'icons/obj/mining.dmi'
 	icon_state = "beholder_eye"
 	item_flags = ITEM_FLAG_NO_BLUDGEON
-	throw_speed = 3
 	throw_range = 7
 	throwforce = 10
 	damtype = BURN

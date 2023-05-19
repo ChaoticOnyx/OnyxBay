@@ -261,10 +261,8 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/damage/falling/m_fall_dead11.ogg'
 	),
 	// AMBIENT
-	SFX_AMBIENT_GLOBAL = list(
-		'sound/ambient/global/amb1.ogg',
+	SFX_AMBIENT_POWERED_GLOBAL = list(
 		'sound/ambient/global/amb2.ogg',
-		'sound/ambient/global/amb3.ogg',
 		'sound/ambient/global/amb4.ogg',
 		'sound/ambient/global/amb5.ogg',
 		'sound/ambient/global/amb6.ogg',
@@ -273,8 +271,12 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/global/amb9.ogg',
 		'sound/ambient/global/amb10.ogg',
 		'sound/ambient/global/amb11.ogg',
-		'sound/ambient/global/amb12.ogg',
 		'sound/ambient/global/amb13.ogg',
+	),
+	SFX_AMBIENT_OFF_GLOBAL = list(
+		'sound/ambient/global/amb1.ogg',
+		'sound/ambient/global/amb3.ogg',
+		'sound/ambient/global/amb12.ogg',
 		'sound/ambient/global/amb14.ogg'
 	),
 	SFX_AMBIENT_SCIENCE = list(
@@ -334,7 +336,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/comms/amb17.ogg',
 		'sound/ambient/comms/amb18.ogg'
 	),
-	SFX_AMBIENT_MAINTENANCE = list(
+	SFX_AMBIENT_POWERED_MAINTENANCE = list(
 		'sound/ambient/maintenance/amb1.ogg',
 		'sound/ambient/maintenance/amb2.ogg',
 		'sound/ambient/maintenance/amb3.ogg',
@@ -342,7 +344,6 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/maintenance/amb5.ogg',
 		'sound/ambient/maintenance/amb6.ogg',
 		'sound/ambient/maintenance/amb7.ogg',
-		'sound/ambient/maintenance/amb8.ogg',
 		'sound/ambient/maintenance/amb9.ogg',
 		'sound/ambient/maintenance/amb10.ogg',
 		'sound/ambient/maintenance/amb12.ogg',
@@ -362,24 +363,29 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/maintenance/amb28.ogg',
 		'sound/ambient/maintenance/amb29.ogg',
 		'sound/ambient/maintenance/amb30.ogg',
-		'sound/ambient/maintenance/amb31.ogg',
-		'sound/ambient/maintenance/amb32.ogg',
-		'sound/ambient/maintenance/amb33.ogg',
 		'sound/ambient/maintenance/amb34.ogg',
 		'sound/ambient/maintenance/amb35.ogg',
-		'sound/ambient/maintenance/amb36.ogg',
 		'sound/ambient/maintenance/amb37.ogg',
-		'sound/ambient/maintenance/amb38.ogg',
 		'sound/ambient/maintenance/amb39.ogg',
 		'sound/ambient/maintenance/amb40.ogg',
 		'sound/ambient/maintenance/amb42.ogg',
-		'sound/ambient/maintenance/amb43.ogg',
 		'sound/ambient/maintenance/amb44.ogg',
-		'sound/ambient/maintenance/amb45.ogg',
 		'sound/ambient/maintenance/amb46.ogg',
 		'sound/ambient/maintenance/amb47.ogg',
 		'sound/ambient/maintenance/amb48.ogg',
 		'sound/ambient/maintenance/amb49.ogg',
+	),
+	SFX_AMBIENT_OFF_MAINTENANCE = list(
+		'sound/ambient/maintenance/amb8.ogg',
+		'sound/ambient/maintenance/amb11.ogg',
+		'sound/ambient/maintenance/amb31.ogg',
+		'sound/ambient/maintenance/amb32.ogg',
+		'sound/ambient/maintenance/amb33.ogg',
+		'sound/ambient/maintenance/amb36.ogg',
+		'sound/ambient/maintenance/amb38.ogg',
+		'sound/ambient/maintenance/amb41.ogg',
+		'sound/ambient/maintenance/amb43.ogg',
+		'sound/ambient/maintenance/amb45.ogg',
 		'sound/ambient/maintenance/amb50.ogg',
 		'sound/ambient/maintenance/amb51.ogg'
 	),
@@ -445,6 +451,201 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/outpost/amb1.ogg',
 		'sound/ambient/outpost/amb2.ogg',
 		'sound/ambient/outpost/amb3.ogg'
+	),
+	SFX_AMBIENT_MINE = list(
+		'sound/ambient/mine/ambimine.ogg',
+		'sound/ambient/song_game.ogg'
+	),
+	SFX_AMBIENT_CHAPEL = list(
+		'sound/ambient/chapel/ambicha1.ogg',
+		'sound/ambient/chapel/ambicha2.ogg',
+		'sound/ambient/chapel/ambicha3.ogg',
+		'sound/ambient/chapel/ambicha4.ogg'
+	),
+	SFX_AMBIENT_ATMOSPHERICS = list(
+		'sound/ambient/atmospherics/ambiatm1.ogg'
+	),
+	SFX_AMBIENT_MORGUE = list(
+		'sound/ambient/morgue/ambimo1.ogg'
+	),
+	SFX_AMBIENT_JUNGLE = list(
+		'sound/ambient/jungle/jungle ambience1.ogg',
+		'sound/ambient/jungle/jungle ambience2.ogg',
+		'sound/ambient/jungle/junglethunder2.ogg',
+		'sound/ambient/jungle/junglethunder1.ogg',
+	),
+	// AMBIENT WEATHER
+	SFX_WEATHER_OUT_NORMAL = list(
+		'sound/ambient/weather/wind_01.ogg',
+		'sound/ambient/weather/wind_02.ogg',
+		'sound/ambient/weather/wind_03.ogg',
+		'sound/ambient/weather/wind_04.ogg',
+		'sound/ambient/weather/wind_05.ogg',
+		'sound/ambient/weather/wind_06.ogg',
+		'sound/ambient/weather/wind_07.ogg',
+		'sound/ambient/weather/wind_08.ogg',
+		'sound/ambient/weather/wind_09.ogg',
+	),
+	SFX_WEATHER_IN_NORMAL = list(
+		'sound/ambient/weather/wind_gust_01.ogg',
+		'sound/ambient/weather/wind_gust_02.ogg',
+		'sound/ambient/weather/wind_gust_03.ogg',
+		'sound/ambient/weather/wind_gust_04.ogg',
+		'sound/ambient/weather/wind_gust_05.ogg',
+		'sound/ambient/weather/wind_gust_06.ogg',
+		'sound/ambient/weather/wind_gust_07.ogg',
+		'sound/ambient/weather/wind_gust_08.ogg',
+		'sound/ambient/weather/wind_gust_09.ogg',
+		'sound/ambient/weather/wind_gust_10.ogg',
+		'sound/ambient/weather/wind_gust_11.ogg',
+		'sound/ambient/weather/wind_gust_12.ogg',
+		'sound/ambient/weather/wind_gust_13.ogg',
+		'sound/ambient/weather/wind_gust_14.ogg',
+		'sound/ambient/weather/wind_gust_15.ogg',
+		'sound/ambient/weather/wind_gust_16.ogg',
+		'sound/ambient/weather/wind_gust_17.ogg',
+		'sound/ambient/weather/wind_gust_18.ogg',
+		'sound/ambient/weather/wind_gust_19.ogg',
+		'sound/ambient/weather/wind_gust_20.ogg',
+		'sound/ambient/weather/wind_gust_21.ogg',
+		'sound/ambient/weather/wind_gust_22.ogg',
+		'sound/ambient/weather/wind_gust_23.ogg',
+		'sound/ambient/weather/wind_gust_24.ogg'
+	),
+	SFX_WEATHER_OUT_STORM_INCOMING = list(
+		'sound/ambient/weather/storm_near_01.ogg',
+		'sound/ambient/weather/storm_near_02.ogg',
+		'sound/ambient/weather/storm_near_03.ogg',
+		'sound/ambient/weather/storm_near_04.ogg',
+		'sound/ambient/weather/storm_near_05.ogg',
+		'sound/ambient/weather/storm_near_06.ogg',
+		'sound/ambient/weather/storm_near_07.ogg',
+		'sound/ambient/weather/storm_near_08.ogg',
+		'sound/ambient/weather/storm_near_09.ogg',
+		'sound/ambient/weather/storm_near_10.ogg',
+	),
+	SFX_WEATHER_IN_STORM_INCOMING = list(
+		'sound/ambient/weather/storm_far_01.ogg',
+		'sound/ambient/weather/storm_far_02.ogg',
+		'sound/ambient/weather/storm_far_03.ogg',
+		'sound/ambient/weather/storm_far_04.ogg',
+		'sound/ambient/weather/storm_far_05.ogg',
+		'sound/ambient/weather/storm_far_06.ogg',
+		'sound/ambient/weather/storm_far_07.ogg',
+		'sound/ambient/weather/storm_far_08.ogg',
+		'sound/ambient/weather/storm_far_09.ogg',
+		'sound/ambient/weather/storm_far_10.ogg',
+		'sound/ambient/weather/storm_far_11.ogg',
+		'sound/ambient/weather/storm_far_12.ogg',
+		'sound/ambient/weather/storm_far_13.ogg',
+		'sound/ambient/weather/storm_far_14.ogg',
+		'sound/ambient/weather/storm_far_15.ogg',
+		'sound/ambient/weather/storm_far_16.ogg',
+		'sound/ambient/weather/storm_far_17.ogg',
+		'sound/ambient/weather/storm_far_18.ogg',
+		'sound/ambient/weather/storm_far_19.ogg',
+	),
+	SFX_WEATHER_OUT_STORM = list(
+		'sound/ambient/weather/storm_sweet_01.ogg',
+		'sound/ambient/weather/storm_sweet_02.ogg',
+		'sound/ambient/weather/storm_sweet_03.ogg'
+	),
+	SFX_WEATHER_IN_STORM = list(
+		'sound/ambient/weather/cave_wind_sweet_01.ogg',
+		'sound/ambient/weather/cave_wind_sweet_02.ogg',
+		'sound/ambient/weather/cave_wind_sweet_03.ogg',
+		'sound/ambient/weather/cave_wind_sweet_04.ogg',
+		'sound/ambient/weather/cave_wind_sweet_05.ogg',
+		'sound/ambient/weather/cave_wind_sweet_06.ogg',
+		'sound/ambient/weather/cave_wind_sweet_07.ogg',
+		'sound/ambient/weather/cave_wind_sweet_08.ogg',
+		'sound/ambient/weather/cave_wind_sweet_09.ogg'
+	),
+	// AMBIENT MUSIC
+	SFX_AMBIENT_MUSIC_NORMAL = list(
+		'sound/ambient_music/normal_1.ogg',
+		'sound/ambient_music/normal_2.ogg',
+		'sound/ambient_music/normal_3.ogg',
+		'sound/ambient_music/normal_4.ogg',
+		'sound/ambient_music/normal_5.ogg',
+		'sound/ambient_music/normal_6.ogg',
+		'sound/ambient_music/normal_7.ogg',
+		'sound/ambient_music/normal_8.ogg',
+		'sound/ambient_music/normal_9.ogg',
+		'sound/ambient_music/normal_10.ogg',
+		'sound/ambient_music/normal_11.ogg',
+		'sound/ambient_music/normal_12.ogg',
+		'sound/ambient_music/normal_13.ogg',
+		'sound/ambient_music/normal_14.ogg',
+		'sound/ambient_music/normal_15.ogg',
+		'sound/ambient_music/normal_16.ogg',
+		'sound/ambient_music/normal_17.ogg',
+		'sound/ambient_music/normal_18.ogg',
+		'sound/ambient_music/normal_19.ogg',
+		'sound/ambient_music/normal_20.ogg',
+		'sound/ambient_music/normal_21.ogg',
+		'sound/ambient_music/normal_22.ogg',
+		'sound/ambient_music/normal_23.ogg',
+		'sound/ambient_music/normal_24.ogg',
+		'sound/ambient_music/normal_25.ogg'
+	),
+	SFX_AMBIENT_MUSIC_MYSTIC = list(
+		'sound/ambient_music/mystic_1.ogg',
+		'sound/ambient_music/mystic_2.ogg',
+		'sound/ambient_music/mystic_3.ogg',
+		'sound/ambient_music/mystic_4.ogg',
+		'sound/ambient_music/mystic_5.ogg',
+		'sound/ambient_music/mystic_6.ogg',
+		'sound/ambient_music/mystic_7.ogg',
+		'sound/ambient_music/mystic_8.ogg',
+		'sound/ambient_music/mystic_9.ogg',
+		'sound/ambient_music/mystic_10.ogg',
+		'sound/ambient_music/mystic_11.ogg',
+		'sound/ambient_music/mystic_12.ogg',
+		'sound/ambient_music/mystic_13.ogg',
+		'sound/ambient_music/mystic_14.ogg',
+		'sound/ambient_music/mystic_15.ogg',
+		'sound/ambient_music/mystic_16.ogg',
+		'sound/ambient_music/mystic_17.ogg',
+		'sound/ambient_music/mystic_18.ogg',
+		'sound/ambient_music/mystic_19.ogg',
+		'sound/ambient_music/mystic_20.ogg',
+		'sound/ambient_music/mystic_21.ogg',
+		'sound/ambient_music/mystic_22.ogg',
+		'sound/ambient_music/mystic_23.ogg',
+		'sound/ambient_music/mystic_24.ogg',
+		'sound/ambient_music/mystic_25.ogg',
+		'sound/ambient_music/mystic_26.ogg',
+		'sound/ambient_music/mystic_27.ogg'
+	),
+	SFX_AMBIENT_MUSIC_SPACE = list(
+		'sound/ambient_music/space_1.ogg',
+		'sound/ambient_music/space_2.ogg',
+		'sound/ambient_music/space_3.ogg',
+		'sound/ambient_music/space_4.ogg',
+		'sound/ambient_music/space_5.ogg',
+		'sound/ambient_music/space_6.ogg',
+		'sound/ambient_music/space_7.ogg',
+		'sound/ambient_music/space_8.ogg',
+		'sound/ambient_music/space_9.ogg',
+		'sound/ambient_music/space_10.ogg',
+		'sound/ambient_music/space_11.ogg',
+		'sound/ambient_music/space_12.ogg',
+		'sound/ambient_music/space_13.ogg',
+		'sound/ambient_music/space_14.ogg',
+		'sound/ambient_music/space_15.ogg'
+	),
+	SFX_AMBIENT_MUSIC_SPACE_TRAVEL = list(
+		'sound/ambient_music/space_travel_1.ogg',
+		'sound/ambient_music/space_travel_2.ogg',
+		'sound/ambient_music/space_travel_3.ogg',
+		'sound/ambient_music/space_travel_4.ogg',
+		'sound/ambient_music/space_travel_5.ogg',
+		'sound/music/classic/space.ogg',
+		'sound/music/classic/traitor.ogg',
+	),
+	SFX_AMBIENT_MUSIC_CENTCOMM = list(
+		'sound/ambient_music/centcomm_1.ogg',
 	),
 	// ITEMS USING
 	SFX_USE_HANDCUFFS = list(
@@ -1071,6 +1272,30 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/throwing/swoosh3.ogg',
 		'sound/effects/throwing/swoosh4.ogg'
 	),
+	SFX_DISPOSAL = list(
+		'sound/effects/using/disposal/drop1.ogg',
+		'sound/effects/using/disposal/drop2.ogg',
+		'sound/effects/using/disposal/drop3.ogg',
+		'sound/effects/using/disposal/drop4.ogg'
+	),
+	// DEVICES
+	SFX_GEIGER_LOW = list(
+		'sound/effects/geiger/geiger_low_1.ogg',
+		'sound/effects/geiger/geiger_low_2.ogg'
+	),
+	SFX_GEIGER_MODERATE = list(
+		'sound/effects/geiger/geiger_moderate_1.ogg',
+		'sound/effects/geiger/geiger_moderate_2.ogg'
+	),
+	SFX_GEIGER_HIGH = list(
+		'sound/effects/geiger/geiger_high_1.ogg',
+		'sound/effects/geiger/geiger_high_2.ogg'
+	),
+	SFX_GEIGER_VERY_HIGH = list(
+		'sound/effects/geiger/geiger_very_high_1.ogg',
+		'sound/effects/geiger/geiger_very_high_2.ogg'
+	),
+	// FOOTSTEPS
 	SFX_DISTANT_MOVEMENT = list(
 		'sound/effects/footstep/distant/distant1.ogg',
 		'sound/effects/footstep/distant/distant2.ogg',
@@ -1093,10 +1318,73 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/footstep/distant/distant19.ogg',
 		'sound/effects/footstep/distant/distant20.ogg'
 	),
-	SFX_DISPOSAL = list(
-		'sound/effects/using/disposal/drop1.ogg',
-		'sound/effects/using/disposal/drop2.ogg',
-		'sound/effects/using/disposal/drop3.ogg',
-		'sound/effects/using/disposal/drop4.ogg'
+	SFX_FOOTSTEP_WOOD = list(
+		'sound/effects/footstep/wood1.ogg',
+		'sound/effects/footstep/wood2.ogg',
+		'sound/effects/footstep/wood3.ogg',
+		'sound/effects/footstep/wood4.ogg',
+		'sound/effects/footstep/wood5.ogg'
+	),
+	SFX_FOOTSTEP_TILES = list(
+		'sound/effects/footstep/floor1.ogg',
+		'sound/effects/footstep/floor2.ogg',
+		'sound/effects/footstep/floor3.ogg',
+		'sound/effects/footstep/floor4.ogg',
+		'sound/effects/footstep/floor5.ogg'
+	),
+	SFX_FOOTSTEP_PLATING = list(
+		'sound/effects/footstep/plating1.ogg',
+		'sound/effects/footstep/plating2.ogg',
+		'sound/effects/footstep/plating3.ogg',
+		'sound/effects/footstep/plating4.ogg',
+		'sound/effects/footstep/plating5.ogg'
+	),
+	SFX_FOOTSTEP_CARPET = list(
+		'sound/effects/footstep/carpet1.ogg',
+		'sound/effects/footstep/carpet2.ogg',
+		'sound/effects/footstep/carpet3.ogg',
+		'sound/effects/footstep/carpet4.ogg',
+		'sound/effects/footstep/carpet5.ogg'
+	),
+	SFX_FOOTSTEP_ASTEROID = list(
+		'sound/effects/footstep/asteroid1.ogg',
+		'sound/effects/footstep/asteroid2.ogg',
+		'sound/effects/footstep/asteroid3.ogg',
+		'sound/effects/footstep/asteroid4.ogg',
+		'sound/effects/footstep/asteroid5.ogg'
+	),
+	SFX_FOOTSTEP_SNOW = list(
+		'sound/effects/footstep/snow1.ogg',
+		'sound/effects/footstep/snow2.ogg',
+		'sound/effects/footstep/snow3.ogg',
+		'sound/effects/footstep/snow4.ogg',
+		'sound/effects/footstep/snow5.ogg',
+		'sound/effects/footstep/snow6.ogg'
+	),
+	SFX_FOOTSTEP_GRASS = list(
+		'sound/effects/footstep/grass1.ogg',
+		'sound/effects/footstep/grass2.ogg',
+		'sound/effects/footstep/grass3.ogg',
+		'sound/effects/footstep/grass4.ogg'
+	),
+	SFX_FOOTSTEP_WATER = list(
+		'sound/effects/footstep/water1.ogg',
+		'sound/effects/footstep/water2.ogg',
+		'sound/effects/footstep/water3.ogg',
+		'sound/effects/footstep/water4.ogg'
+	),
+	SFX_FOOTSTEP_BLANK = list(
+		'sound/effects/footstep/blank.ogg'
+	),
+	SFX_FOOTSTEP_ROBOT_LEGS = list(
+		'sound/effects/robot_footstep/legs01.ogg',
+		'sound/effects/robot_footstep/legs02.ogg',
+		'sound/effects/robot_footstep/legs03.ogg',
+		'sound/effects/robot_footstep/legs04.ogg'
+	),
+	SFX_FOOTSTEP_ROBOT_SPIDER = list(
+		'sound/effects/robot_footstep/spider01.ogg',
+		'sound/effects/robot_footstep/spider02.ogg',
+		'sound/effects/robot_footstep/spider03.ogg'
 	)
 ))

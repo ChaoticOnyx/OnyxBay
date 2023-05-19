@@ -4,8 +4,8 @@
   "version": "4.3.0",
   "dependencies": {
     "common": "4.3.0",
-    "dompurify": "^2.2.7",
-    "inferno": "^7.4.8",
+    "dompurify": "2.x.x",
+    "inferno": "7.x.x",
     "tgui": "4.3.0",
     "tgui-dev-server": "4.3.0",
     "tgui-polyfill": "4.3.0"

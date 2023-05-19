@@ -190,7 +190,7 @@
 		var/mob/living/silicon/pai/P = usr
 		if(!istype(P)) return
 
-		if(!isnull(P.pda))
+		if(!QDELETED(P.pda))
 			if(href_list["toggler"])
 				P.pda.toff = href_list["toggler"] != "1"
 				return 1
@@ -259,7 +259,7 @@
 		else if(href_list["cable"])
 			var/turf/T = get_turf_or_move(P.loc)
 			P.hack_aborted = 0
-			P.cable = new /obj/item/weapon/pai_cable(T)
+			P.cable = new /obj/item/pai_cable(T)
 			for(var/mob/M in viewers(T))
 				M.show_message("<span class='warning'>A port on [P] opens to reveal [P.cable], which promptly falls to the floor.</span>", 3,
 				               "<span class='warning'>You hear the soft click of something light and hard falling to the ground.</span>", 2)
@@ -316,7 +316,7 @@
 			var/pres = env.return_pressure() * 10
 			data["pressure"] = "[round(pres/10)].[pres%10]"
 			data["temperature"] = round(env.temperature)
-			data["temperatureC"] = round(env.temperature-T0C)
+			data["temperatureC"] = round(env.temperature-(0 CELSIUS))
 
 			var/t_moles = env.total_moles
 			var/gases[0]

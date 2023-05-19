@@ -1,0 +1,27 @@
+<div class="item" style="padding-top: 10px">
+	<div class="item">
+		<div class="itemLabel">
+			Lift status:
+		</div>
+		<div class="itemContent">
+			{{if data.elevator_state == "idle"}}
+				<span class="idle">IDLE</span>
+			{{else data.elevator_state == "in_transit"}}
+				<span style="font-weight: bold;color: #336699">MOVING</span>
+			{{else}}
+				<span class="bad">ERROR</span>
+			{{/if}}
+		</div>
+	</div>
+</div>
+
+<h3>Lift Controls</h3>
+<div class="item" style="padding-top: 10px">
+	<div class="item">
+		<div class="itemContent" style="padding-top: 2px; width: 100%">
+			{{:helper.link('Up', 'arrowthickstop-1-e', {'Up' : '1'}, data.can_move_up? null : 'disabled' , null)}}
+			{{:helper.link('Down', 'arrowthickstop-1-e', {'Down' : '1'}, data.can_move_down? null : 'disabled' , null)}}
+			{{:helper.link('Stop Lift', 'cancel', {'cancel' : '1'}, null, null)}}
+		</div>
+	</div>
+</div>

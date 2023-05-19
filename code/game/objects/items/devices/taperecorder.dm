@@ -1,7 +1,7 @@
 /obj/item/device/taperecorder
 	name = "universal recorder"
 	desc = "A device that can record to cassette tapes, and play them. It automatically translates the content in playback."
-	icon_state = "taperecorder_idle"
+	icon_state = "taperecorder"
 	item_state = "analyzer"
 	w_class = ITEM_SIZE_SMALL
 
@@ -16,14 +16,14 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	throwforce = 2
-	throw_speed = 4
 	throw_range = 20
 
 /obj/item/device/taperecorder/New()
 	..()
-	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, "taperecorder")
+
 	if(ispath(mytape))
 		mytape = new mytape(src)
+
 	GLOB.listening_objects += src
 	update_icon()
 
@@ -43,9 +43,8 @@
 		if(mytape)
 			to_chat(user, "<span class='notice'>There's already a tape inside.</span>")
 			return
-		if(!user.unEquip(I))
+		if(!user.drop(I, src))
 			return
-		I.forceMove(src)
 		mytape = I
 		to_chat(user, "<span class='notice'>You insert [I] into [src].</span>")
 		update_icon()
@@ -83,7 +82,7 @@
 	if(playing || recording)
 		stop()
 	to_chat(usr, "<span class='notice'>You remove [mytape] from [src].</span>")
-	usr.put_in_hands(mytape)
+	usr.pick_or_drop(mytape)
 	mytape = null
 	update_icon()
 
@@ -333,7 +332,7 @@
 		if (findtextEx(printedmessage,"*",1,2)) //replace action sounds
 			printedmessage = "\[[time2text(mytape.timestamp[i]*10,"mm:ss")]\] (Unrecognized sound)"
 		t1 += "[printedmessage]<BR>"
-	var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(get_turf(src))
+	var/obj/item/paper/P = new /obj/item/paper(get_turf(src))
 	P.set_content(t1, "Transcript", TRUE)
 	canprint = 0
 	sleep(300)
@@ -348,16 +347,14 @@
 
 
 /obj/item/device/taperecorder/update_icon()
-	var/datum/extension/base_icon_state/bis = get_extension(src, /datum/extension/base_icon_state)
-
 	if(!mytape)
-		icon_state = "[bis.base_icon_state]_empty"
+		icon_state = "[initial(icon_state)]_empty"
 	else if(recording)
-		icon_state = "[bis.base_icon_state]_recording"
+		icon_state = "[initial(icon_state)]_recording"
 	else if(playing)
-		icon_state = "[bis.base_icon_state]_playing"
+		icon_state = "[initial(icon_state)]_playing"
 	else
-		icon_state = "[bis.base_icon_state]_idle"
+		icon_state = "[initial(icon_state)]_idle"
 
 /obj/item/device/tape
 	name = "bluespace tape"
@@ -418,7 +415,7 @@
 			to_chat(user, "<span class='notice'>You wound the tape back in.</span>")
 			fix()
 		return
-	else if(istype(I, /obj/item/weapon/pen))
+	else if(istype(I, /obj/item/pen))
 		if(loc == user && !user.incapacitated())
 			var/new_name = sanitize(input(user, "What would you like to label the tape?", "Tape labeling") as null|text)
 			if(isnull(new_name)) return

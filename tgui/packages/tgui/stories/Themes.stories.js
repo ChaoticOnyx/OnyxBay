@@ -4,27 +4,28 @@
  * @license MIT
  */
 
-import { useLocalState } from '../backend'
-import { Input, LabeledList, Section } from '../components'
+import { useLocalState } from "../backend";
+import { Input, LabeledList, Section } from "../components";
 
 export const meta = {
-  title: 'Themes',
+  title: "Themes",
   // eslint-disable-next-line react/display-name
-  render: () => <Story />
-}
+  render: () => <Story />,
+};
 
 const Story = (props, context) => {
-  const [theme, setTheme] = useLocalState(context, 'kitchenSinkTheme')
+  const [theme, setTheme] = useLocalState(context, "kitchenSinkTheme");
   return (
     <Section>
       <LabeledList>
-        <LabeledList.Item label='Use theme'>
+        <LabeledList.Item label="Use theme">
           <Input
-            placeholder='theme_name'
+            placeholder="theme_name"
             value={theme}
-            onInput={(e, value) => setTheme(value)} />
+            onInput={(e, value) => setTheme(value)}
+          />
         </LabeledList.Item>
       </LabeledList>
     </Section>
-  )
-}
+  );
+};

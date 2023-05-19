@@ -17,13 +17,13 @@
 /obj/item/device/multitool/hacktool/Destroy()
 	for(var/T in known_targets)
 		var/atom/target = T
-		GLOB.destroyed_event.unregister(target, src)
+		unregister_signal(target, SIGNAL_QDELETING)
 	known_targets.Cut()
 	qdel(hack_state)
 	hack_state = null
 	return ..()
 
-/obj/item/device/multitool/hacktool/attackby(obj/W, mob/user)
+/obj/item/device/multitool/hacktool/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
 		in_hack_mode = !in_hack_mode
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
@@ -61,7 +61,7 @@
 		to_chat(user, "<span class='notice'>Your hacking attempt was succesful!</span>")
 		user.playsound_local(get_turf(src), 'sound/piano/A#6.ogg', 50)
 		known_targets.Insert(1, target)	// Insert the newly hacked target first,
-		GLOB.destroyed_event.register(target, src, /obj/item/device/multitool/hacktool/proc/on_target_destroy)
+		register_signal(target, SIGNAL_QDELETING, /obj/item/device/multitool/hacktool/proc/on_target_destroy)
 	else
 		to_chat(user, "<span class='warning'>Your hacking attempt failed!</span>")
 	return 1
@@ -72,7 +72,7 @@
 	if(known_targets.len > max_known_targets)
 		for(var/i = (max_known_targets + 1) to known_targets.len)
 			var/atom/A = known_targets[i]
-			GLOB.destroyed_event.unregister(A, src)
+			unregister_signal(A, SIGNAL_QDELETING)
 		known_targets.Cut(max_known_targets + 1)
 
 /obj/item/device/multitool/hacktool/proc/on_target_destroy(target)

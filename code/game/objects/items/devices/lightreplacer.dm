@@ -78,7 +78,7 @@
 	failmsg = "The [name]'s refill light blinks red."
 	..()
 
-/obj/item/device/lightreplacer/examine(mob/user)
+/obj/item/device/lightreplacer/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 2)
 		. += "\nIt has [uses] light\s remaining."
@@ -100,13 +100,12 @@
 		else
 			to_chat(user, "<span class='warning'>You need 5 sheets of glass to replace lights.</span>")
 
-	if(istype(W, /obj/item/weapon/light))
-		var/obj/item/weapon/light/L = W
+	if(istype(W, /obj/item/light))
+		var/obj/item/light/L = W
 		if(L.status == 0) // LIGHT OKAY
 			if(uses < max_uses)
 				AddUses(1)
 				to_chat(user, "You insert \the [L.name] into \the [src.name]. You have [uses] light\s remaining.")
-				user.drop_item()
 				qdel(L)
 				return
 		else
@@ -114,15 +113,15 @@
 			return
 
 /obj/item/device/lightreplacer/afterattack(atom/target, mob/living/user, proximity, params)
-	if(istype(target, /obj/item/weapon/storage/box))
+	if(istype(target, /obj/item/storage/box))
 		if(box_contains_lights(target))
 			load_lights_from_box(target, user)
 		else
 			to_chat(user, "This box has no bulbs in it!")
-	if(istype(target, /obj/item/weapon/light))
+	if(istype(target, /obj/item/light))
 		if(!isturf(target.loc))
 			return
-		var/obj/item/weapon/light/L = target
+		var/obj/item/light/L = target
 		if(L.status != 0)
 			return
 		if(load_queue || uses >= max_uses)
@@ -134,14 +133,14 @@
 		L.loc = null
 		qdel(L)
 
-/obj/item/device/lightreplacer/proc/box_contains_lights(obj/item/weapon/storage/box/box)
-	for(var/obj/item/weapon/light/L in box.contents)
+/obj/item/device/lightreplacer/proc/box_contains_lights(obj/item/storage/box/box)
+	for(var/obj/item/light/L in box.contents)
 		if(L.status == 0)
 			return TRUE
 	return FALSE
 
 
-/obj/item/device/lightreplacer/proc/load_lights_from_box(obj/item/weapon/storage/box/box, mob/user)
+/obj/item/device/lightreplacer/proc/load_lights_from_box(obj/item/storage/box/box, mob/user)
 	var/boxstartloc = box.loc
 	var/ourstartloc = loc
 	if(load_queue)
@@ -153,7 +152,7 @@
 	user.visible_message(SPAN("notice", "[user] starts loading lights from \the [box] into their [src]."), SPAN("notice", "You start loading lights from the [box] into the [src]."))
 	while(uses < max_uses)
 		var/bulb = null
-		for(var/obj/item/weapon/light/L in box.contents)
+		for(var/obj/item/light/L in box.contents)
 			if(L.status == 0)
 				bulb = L
 				break
@@ -179,7 +178,7 @@
 
 /obj/item/device/lightreplacer/proc/stored()
 	var/count = 0
-	for (var/obj/item/weapon/light/L in src)
+	for (var/obj/item/light/L in src)
 		count++
 
 	return count
@@ -227,7 +226,7 @@
 		if(target.lightbulb)
 			target.remove_bulb()
 
-		var/obj/item/weapon/light/L = new target.light_type()
+		var/obj/item/light/L = new target.light_type()
 		L.rigged = emagged
 		target.insert_bulb(L)
 

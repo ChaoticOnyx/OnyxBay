@@ -21,6 +21,10 @@
 	I.stored_plasma = max(0, min(I.stored_plasma, I.max_plasma))
 
 /mob/living/carbon/human/proc/check_alien_ability(cost, needs_organ = null, needs_foundation = FALSE, silent = FALSE) //Returns 1 if the ability is clear for usage.
+	if(stat)
+		if(!silent)
+			to_chat(src, SPAN("danger", "I cannot to this while incapacitated!"))
+		return
 
 	var/obj/item/organ/internal/xenos/plasmavessel/P = internal_organs_by_name[BP_PLASMA]
 	if(!istype(P))
@@ -82,11 +86,11 @@
 		return
 
 	if(!Adjacent(M))
-		to_chat(src, "<span class='alium'>I need to be closer.</span>")
+		to_chat(src, SPAN("alium", "I need to be closer."))
 		return
 
 	if(!M.check_alien_ability(0, BP_PLASMA, FALSE, TRUE))
-		to_chat(src, "<span class='alium'>They've got no functioning plasma vessel!</span>")
+		to_chat(src, SPAN("alium", "They've got no functioning plasma vessel!"))
 		return
 
 	var/amount = input("Amount:", "Transfer Plasma to [M]") as num
@@ -94,8 +98,8 @@
 		amount = abs(round(amount))
 		if(check_alien_ability(amount, BP_PLASMA))
 			M.gain_plasma(amount)
-			to_chat(M, "<span class='alium'>[src] has transfered [amount] plasma to me.</span>")
-			to_chat(src, "<span class='alium'>I have transferred [amount] plasma to [M].</span>")
+			to_chat(M, SPAN("alium", "[src] has transfered [amount] plasma to me."))
+			to_chat(src, SPAN("alium", "I have transferred [amount] plasma to [M]."))
 	return
 
 // Queen verbs.
@@ -104,12 +108,16 @@
 	set desc = "Lay an egg to produce huggers to impregnate prey with."
 	set category = "Abilities"
 
+	if(!config.misc.alien_eggs_allowed)
+		to_chat(src, SPAN_WARNING("Laying eggs is prohibited by the server."))
+		return
+
 	if(locate(/obj/structure/alien/egg) in get_turf(src))
-		to_chat(src, "<span class='alium'>There's already an egg here.</span>")
+		to_chat(src, SPAN("alium", "There's already an egg here."))
 		return
 
 	if(check_alien_ability(75, BP_EGG, TRUE))
-		visible_message("<span class='alium'><B>[src] has laid an egg!</B></span>")
+		visible_message(SPAN("alium", "<B>[src] has laid an egg!</B>"))
 		new /obj/structure/alien/egg(loc)
 
 	return
@@ -121,11 +129,14 @@
 	set category = "Abilities"
 
 	if(alien_queen_exists())
-		to_chat(src, "<span class='notice'>I already have a queen to obey!</span>")
+		to_chat(src, SPAN("notice", "I already have a queen to obey!"))
 		return
 
 	if(check_alien_ability(500))
-		visible_message("<span class='alium'><B>[src] begins to twist and contort!</B></span>", "<span class='alium'>I begin to evolve!</span>")
+		visible_message(
+		                SPAN("alium", "<B>[src] begins to twist and contort!</B>"),
+		                SPAN("alium", "I begin to evolve!")
+		               )
 		set_species(SPECIES_XENO_QUEEN)
 
 	return
@@ -136,7 +147,7 @@
 	set category = "Abilities"
 
 	if(check_alien_ability(50, BP_RESIN, TRUE))
-		visible_message("<span class='alium'><B>[src] has planted some alien weeds!</B></span>")
+		visible_message(SPAN("alium", "<B>[src] has planted some alien weeds!</B>"))
 		new /obj/effect/alien/weeds/node(loc)
 	return
 
@@ -155,18 +166,6 @@
 	set desc = "Spit of your choice to be launched at someone."
 	set category = "Abilities"
 
-	if(incapacitated(INCAPACITATION_DISABLED))
-		to_chat(src, SPAN("warning", "I cannot spit in my current state."))
-		return
-
-	if(!spitting)
-		to_chat(src, "I must choose spit type firstly.")
-		return
-
-	if((last_spit + 2 SECONDS) > world.time) //To prevent YATATATATATAT spitting.
-		to_chat(src, SPAN("warning", "I have not yet prepared my chemical glands. I must wait before spitting again."))
-		return
-
 	var/mob/living/target
 	var/list/mob/living/targets = list()
 	for(var/mob/living/L in oview(7, src))
@@ -183,13 +182,18 @@
 		to_chat(src, SPAN("warning", "I cannot spit in my current state."))
 		return
 
+	if(!spitting)
+		to_chat(src, "I must choose a spit type first.")
+		return
+
+	if(!isturf(loc))
+		to_chat(src, SPAN("danger", "I cannot spit from here!"))
+		return
+
 	if((last_spit + 2 SECONDS) > world.time) //To prevent YATATATATATAT spitting.
 		to_chat(src, SPAN("warning", "I have not yet prepared my chemical glands. I must wait before spitting again."))
 		return
 
-	if(!spitting)
-		to_chat(src, "I must choose spit type firstly.")
-		return
 	if(!check_alien_ability(25, BP_ACID, FALSE, TRUE))
 		return
 	last_spit = world.time
@@ -204,7 +208,7 @@
 	set category = "Abilities"
 
 	if(!(O in oview(1)))
-		to_chat(src, "<span class='alium'>[O] is too far away.</span>")
+		to_chat(src, SPAN("alium", "[O] is too far away."))
 		return
 
 	// OBJ CHECK
@@ -222,12 +226,12 @@
 			cannot_melt = 1
 
 	if(cannot_melt)
-		to_chat(src, "<span class='alium'>I cannot dissolve this object.</span>")
+		to_chat(src, SPAN("alium", "I cannot dissolve this object."))
 		return
 
 	if(check_alien_ability(200, BP_ACID, FALSE))
 		new /obj/effect/acid(get_turf(O), O)
-		visible_message("<span class='alium'><B>[src] vomits globs of vile stuff all over [O]. It begins to sizzle and melt under the bubbling mess of acid!</B></span>")
+		visible_message(SPAN("alium", "<B>[src] vomits globs of vile stuff all over [O]. It begins to sizzle and melt under the bubbling mess of acid!</B>"))
 
 	return
 
@@ -273,7 +277,10 @@
 	if(!check_alien_ability(75, BP_RESIN, TRUE))
 		return
 
-	visible_message(SPAN("danger", "<B>[src] vomits up a thick purple substance and begins to shape it!</B>"), "<span class='alium'>I shape a [choice].</span>")
+	visible_message(
+	                SPAN("danger", "<B>[src] vomits up a thick purple substance and begins to shape it!</B>"),
+	                SPAN("alium", "I shape a [choice].")
+	               )
 	switch(choice)
 		if("resin door")
 			new /obj/machinery/door/unpowered/simple/resin(loc)

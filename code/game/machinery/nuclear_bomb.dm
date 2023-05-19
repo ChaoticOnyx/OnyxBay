@@ -18,7 +18,7 @@ var/bomb_set
 	var/code = ""
 	var/yes_code = 0
 	var/safety = 1
-	var/obj/item/weapon/disk/nuclear/auth = null
+	var/obj/item/disk/nuclear/auth = null
 	var/removal_stage = 0 // 0 is no removal, 1 is covers removed, 2 is covers open, 3 is sealant open, 4 is unwrenched, 5 is removed from bolts.
 	var/lastentered
 	var/previous_level = ""
@@ -44,7 +44,7 @@ var/bomb_set
 			addtimer(CALLBACK(src, .proc/explode), 0)
 		SSnano.update_uis(src)
 
-/obj/machinery/nuclearbomb/attackby(obj/item/weapon/O as obj, mob/user as mob, params)
+/obj/machinery/nuclearbomb/attackby(obj/item/O as obj, mob/user as mob, params)
 	if(isScrewdriver(O))
 		add_fingerprint(user)
 		if(auth)
@@ -73,14 +73,13 @@ var/bomb_set
 		return attack_hand(user)
 
 	if(extended)
-		if(istype(O, /obj/item/weapon/disk/nuclear))
-			if(!user.unEquip(O, src))
+		if(istype(O, /obj/item/disk/nuclear))
+			if(!user.drop(O, src))
 				return
-			O.forceMove(src)
 			auth = O
 			add_fingerprint(user)
 			return attack_hand(user)
-		if(istype(O, /obj/item/weapon/flame/lighter/zippo/nuke))
+		if(istype(O, /obj/item/flame/lighter/zippo/nuke))
 			add_fingerprint(user)
 			to_chat(user, "You feel a little bit dumber now.")
 			return
@@ -89,7 +88,7 @@ var/bomb_set
 		switch(removal_stage)
 			if(0)
 				if(isWelder(O))
-					var/obj/item/weapon/weldingtool/WT = O
+					var/obj/item/weldingtool/WT = O
 					if(!WT.isOn()) return
 					if(WT.get_fuel() < 5) // uses up 5 fuel.
 						to_chat(user, "<span class='warning'>You need more fuel to complete this task.</span>")
@@ -115,7 +114,7 @@ var/bomb_set
 
 			if(2)
 				if(isWelder(O))
-					var/obj/item/weapon/weldingtool/WT = O
+					var/obj/item/weldingtool/WT = O
 					if(!WT.isOn()) return
 					if (WT.get_fuel() < 5) // uses up 5 fuel.
 						to_chat(user, "<span class='warning'>You need more fuel to complete this task.</span>")
@@ -246,9 +245,7 @@ var/bomb_set
 			auth = null
 		else
 			var/obj/item/I = usr.get_active_hand()
-			if(istype(I, /obj/item/weapon/disk/nuclear))
-				usr.drop_item()
-				I.forceMove(src)
+			if(istype(I, /obj/item/disk/nuclear) && usr.drop(I, src))
 				auth = I
 	if(is_auth(usr))
 		if(href_list["type"])
@@ -372,7 +369,7 @@ var/bomb_set
 		icon_state = "idle"
 
 //====The nuclear authentication disc====
-/obj/item/weapon/disk/nuclear
+/obj/item/disk/nuclear
 	name = "nuclear authentication disk"
 	desc = "Better keep this safe."
 	icon = 'icons/obj/items.dmi'
@@ -380,50 +377,59 @@ var/bomb_set
 	item_state = "card-id"
 	w_class = ITEM_SIZE_TINY
 
-/obj/item/weapon/disk/nuclear/Initialize()
+/obj/item/disk/nuclear/Initialize()
 	. = ..()
 	// Can never be quite sure that a game mode has been properly initiated or not at this point, so always register
 	nuke_disks += src
-	GLOB.moved_event.register(src, src, /obj/item/weapon/disk/nuclear/proc/check_z_level)
+	register_signal(src, SIGNAL_MOVED, /obj/item/disk/nuclear/proc/check_z_level)
 
-/obj/item/weapon/disk/nuclear/proc/check_z_level()
+/obj/item/disk/nuclear/proc/check_z_level()
 	var/turf/T = get_turf(src)
-	if(!T || isNotStationLevel(T.z))
+	if(!T || !isStationLevel(T.z))
 		qdel(src)
 
-/obj/item/weapon/disk/nuclear/Destroy()
-	GLOB.moved_event.unregister(src, src, /obj/item/weapon/disk/nuclear/proc/check_z_level)
+/obj/item/disk/nuclear/Destroy()
+	unregister_signal(src, SIGNAL_MOVED)
 	nuke_disks -= src
+
 	if(!nuke_disks.len)
 		var/turf/T = pick_area_turf(pick_area_by_type(/area/maintenance, list(/proc/is_station_area)), list(/proc/not_turf_contains_dense_objects))
 		if(T)
-			var/obj/D = new /obj/item/weapon/disk/nuclear(T)
+			var/obj/D = new /obj/item/disk/nuclear(T)
 			log_and_message_admins("[src], the last authentication disk, has been destroyed. Spawning [D] at ([D.x], [D.y], [D.z]).", location = T)
 		else
 			log_and_message_admins("[src], the last authentication disk, has been destroyed. Failed to respawn disc!")
 	return ..()
 
+/obj/item/disk/nuclear_fake
+	name = "nuclear authentication disk"
+	desc = "Better keep this safe."
+	icon = 'icons/obj/items.dmi'
+	icon_state = "nucleardisk"
+	item_state = "card-id"
+	w_class = ITEM_SIZE_TINY
+
 //====the nuclear football (holds the disk and instructions)====
-/obj/item/weapon/storage/secure/briefcase/nukedisk
+/obj/item/storage/secure/briefcase/nukedisk
 	desc = "A large briefcase with a digital locking system."
 	startswith = list(
-		/obj/item/weapon/disk/nuclear,
-		/obj/item/weapon/pinpointer,
-		/obj/item/weapon/folder/envelope/nuke_instructions,
+		/obj/item/disk/nuclear,
+		/obj/item/pinpointer,
+		/obj/item/folder/envelope/nuke_instructions,
 		/obj/item/modular_computer/laptop/preset/custom_loadout/cheap/
 	)
 
-/obj/item/weapon/storage/secure/briefcase/nukedisk/examine(user)
+/obj/item/storage/secure/briefcase/nukedisk/_examine_text(user)
 	. = ..()
 	. += "\nOn closer inspection, you see \a [GLOB.using_map.company_name] emblem is etched into the front of it."
 
-/obj/item/weapon/folder/envelope/nuke_instructions
+/obj/item/folder/envelope/nuke_instructions
 	name = "instructions envelope"
 	desc = "A small envelope. The label reads 'open only in event of high emergency'."
 
-/obj/item/weapon/folder/envelope/nuke_instructions/Initialize()
+/obj/item/folder/envelope/nuke_instructions/Initialize()
 	. = ..()
-	var/obj/item/weapon/paper/R = new(src)
+	var/obj/item/paper/R = new(src)
 	R.set_content("\[center\]\[br\]\[br\]\
 	\[b\]Warning: Classified\[br\][GLOB.using_map.station_name] Self-Destruct System - Instructions\[/b\]\[/center\]\[br\]\[br\]\
 	In the event of a Delta-level emergency, this document will guide you through the activation of the vessel's \
@@ -449,7 +455,7 @@ var/bomb_set
 	//stamp the paper
 	var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')
 	stampoverlay.icon_state = "paper_stamp-hos"
-	R.stamped += /obj/item/weapon/stamp
+	R.stamped += /obj/item/stamp
 	R.overlays += stampoverlay
 	R.stamps += "<HR><i>This paper has been stamped as 'Top Secret'.</i>"
 
@@ -480,17 +486,16 @@ var/bomb_set
 	for(var/obj/machinery/self_destruct/ch in get_area(src))
 		inserters += ch
 
-/obj/machinery/nuclearbomb/station/attackby(obj/item/weapon/O, mob/user)
+/obj/machinery/nuclearbomb/station/attackby(obj/item/O, mob/user)
 	if(isWrench(O))
 		return
-	if(istype(O, /obj/item/weapon/disk/nuclear))
-		if(!user.unEquip(O, src))
+	if(istype(O, /obj/item/disk/nuclear))
+		if(!user.drop(O, src))
 			return
-		O.forceMove(src)
 		auth = O
 		add_fingerprint(user)
 		return attack_hand(user)
-	if(istype(O, /obj/item/weapon/flame/lighter/zippo/nuke))
+	if(istype(O, /obj/item/flame/lighter/zippo/nuke))
 		add_fingerprint(user)
 		to_chat(user, "You feel a little bit dumber now.")
 		return

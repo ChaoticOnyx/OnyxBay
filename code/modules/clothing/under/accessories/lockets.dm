@@ -12,6 +12,10 @@
 	var/held_alt = 0
 	var/held_alt_desc = ""
 
+/obj/item/clothing/accessory/locket/Destroy()
+	QDEL_NULL(held)
+	return ..()
+
 /obj/item/clothing/accessory/locket/attack_self(mob/user as mob)
 	if(!base_icon)
 		base_icon = icon_state
@@ -36,16 +40,14 @@
 		to_chat(user, "You have to open it first.")
 		return
 
-	if(istype(O,/obj/item/weapon/paper) || istype(O, /obj/item/weapon/photo))
+	if(istype(O,/obj/item/paper) || istype(O, /obj/item/photo))
 		if(held_alt == 1)
 			to_chat(usr, "\The [src] already has something unremovable inside it.")
 			return
 		if(held)
 			to_chat(usr, "\The [src] already has something inside it.")
-		else
+		else if(user.drop(O, src))
 			to_chat(usr, "You slip [O] into [src].")
-			user.drop_item()
-			O.loc = src
 			src.held = O
 			src.held_alt = 1
 		return

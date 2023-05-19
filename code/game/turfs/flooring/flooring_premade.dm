@@ -3,7 +3,15 @@
 	name = "plating"
 	icon = 'icons/turf/flooring/plating.dmi'
 	icon_state = "plating"
+	base_icon_state = "plating"
 	layer = PLATING_LAYER
+	var/tile_type = /obj/item/stack/tile/floor
+
+/turf/simulated/floor/plating/rough
+	name = "plating"
+	icon_state = "rough_plating"
+	base_icon_state = "rough_plating"
+	tile_type = /obj/item/stack/tile/floor_rough
 
 
 //GRID FLOORING
@@ -96,10 +104,31 @@
 	icon_state = "steel"
 	initial_flooring = /decl/flooring/tiling
 
+/turf/simulated/floor/tiled/rough
+	name = "steel rough floor"
+	icon = 'icons/turf/flooring/tiles.dmi'
+	icon_state = "steel_rough"
+	initial_flooring = /decl/flooring/tiling/rough
+
+/turf/simulated/floor/tiled/mono
+	name = "steel mono floor"
+	icon_state = "steel_mono"
+	initial_flooring = /decl/flooring/tiling/mono
+
 /turf/simulated/floor/tiled/dark
 	name = "dark floor"
 	icon_state = "dark"
 	initial_flooring = /decl/flooring/tiling/dark
+
+/turf/simulated/floor/tiled/dark/rough
+	name = "dark rough floor"
+	icon_state = "dark_rough"
+	initial_flooring = /decl/flooring/tiling/dark/rough
+
+/turf/simulated/floor/tiled/dark/mono
+	name = "dark mono floor"
+	icon_state = "dark_mono"
+	initial_flooring = /decl/flooring/tiling/dark/mono
 
 /turf/simulated/floor/tiled/dark/airless
 	initial_gas = null
@@ -108,6 +137,16 @@
 	name = "white floor"
 	icon_state = "white"
 	initial_flooring = /decl/flooring/tiling/white
+
+/turf/simulated/floor/tiled/white/rough
+	name = "white rough floor"
+	icon_state = "white_rough"
+	initial_flooring = /decl/flooring/tiling/white/rough
+
+/turf/simulated/floor/tiled/white/mono
+	name = "white mono floor"
+	icon_state = "white_mono"
+	initial_flooring = /decl/flooring/tiling/white/mono
 
 /turf/simulated/floor/tiled/brown
 	name = "brown tile floor"
@@ -124,6 +163,28 @@
 	icon_state = "steel_dirty"
 	initial_flooring = /decl/flooring/tiling/dirty
 
+/turf/simulated/floor/tiled/techfloor
+	name = "floor"
+	icon_state = "techfloor"
+	initial_flooring = /decl/flooring/tiling/techfloor
+
+/turf/simulated/floor/tiled/techfloor/maint
+	icon_state = "techmaint"
+	initial_flooring = /decl/flooring/tiling/techfloor/maint
+
+/turf/simulated/floor/tiled/techfloor/grid
+	icon_state = "techgrid"
+	initial_flooring = /decl/flooring/tiling/techfloor/grid
+
+/turf/simulated/floor/tiled/techfloor/ridge
+	icon_state = "techridge"
+	initial_flooring = /decl/flooring/tiling/techfloor/ridge
+
+//Elevator shaft
+/turf/simulated/floor/elevatorshaft
+	icon = 'icons/turf/floors.dmi'
+	icon_state = "elevatorshaft"
+
 
 //ATMOS PREMADES
 
@@ -133,6 +194,11 @@
 	temperature = TCMB
 
 /turf/simulated/floor/plating/airless
+	name = "airless plating"
+	initial_gas = null
+	temperature = TCMB
+
+/turf/simulated/floor/plating/rough/airless
 	name = "airless plating"
 	initial_gas = null
 	temperature = TCMB
@@ -187,6 +253,7 @@
 	icon_state = "darkwood"
 	icon = 'icons/turf/flooring/wood.dmi'
 	initial_flooring = /decl/flooring/darkwood
+	footstep_sound = SFX_FOOTSTEP_WOOD
 
 /turf/simulated/floor/trim/wood/broken0
 	name = "wooden floor"
@@ -289,27 +356,43 @@
 	icon = 'icons/turf/flooring/grass.dmi'
 	icon_state = "grass0"
 	initial_flooring = null
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
 
 /turf/simulated/floor/natural/grass
 	name = "grass patch"
 	icon = 'icons/turf/flooring/grass.dmi'
 	icon_state = "grass0"
 	initial_flooring = /decl/flooring/grass
+	footstep_sound = SFX_FOOTSTEP_GRASS
 
 /turf/simulated/floor/natural/ice
 	name = "ice"
 	icon = 'icons/turf/snow.dmi'
 	icon_state = "ice"
+	footstep_sound = SFX_FOOTSTEP_SNOW
 
 /turf/simulated/floor/natural/snow
 	name = "snow"
 	icon = 'icons/turf/snow.dmi'
 	icon_state = "snow"
+	footstep_sound = SFX_FOOTSTEP_SNOW
+
+/turf/simulated/floor/natural/frozenground/cave
+	name = "frozen ground"
+	icon = 'icons/turf/flooring/frozenground.dmi'
+	icon_state = "wground1"
+	temperature = 20 CELSIUS
 
 /turf/simulated/floor/natural/lava
 	name = "lava"
 	icon = 'icons/turf/flooring/lava.dmi'
 	icon_state = "lava"
+
+/turf/simulated/floor/natural/lava/Crossed(O)
+	. = ..()
+	if(isliving(O))
+		var/mob/living/M = O
+		M.IgniteMob()
 
 /turf/simulated/floor/natural/snow/New()
 	icon_state = pick("snow[rand(1,12)]","snow0")
@@ -350,6 +433,82 @@
 	..()
 	overlays += image("icon"='icons/misc/beach.dmi',"icon_state"="water5","layer"=MOB_LAYER+0.1)
 
+//JUNGLE
+
+/turf/simulated/floor/natural/jungle
+	name = "grass"
+	icon = 'icons/turf/jungle_turfs.dmi'
+	icon_state = "grass1"
+	footstep_sound = SFX_FOOTSTEP_GRASS
+
+/turf/simulated/floor/natural/jungle/grasscorner1
+	name = "grass"
+	icon_state = "grassdirt_corner"
+
+/turf/simulated/floor/natural/jungle/grasscorner2
+	name = "grass"
+	icon_state = "grassdirt_corner2"
+
+/turf/simulated/floor/natural/jungle/grassedge
+	name = "grass"
+	icon_state = "grassdirt_edge"
+
+/turf/simulated/floor/natural/jungle/sandgrassedge
+	name = "grass"
+	icon_state = "grasssand_edge"
+
+/turf/simulated/floor/natural/jungle/sandgrasscorner1
+	name = "grass"
+	icon_state = "grasssand_corner"
+
+/turf/simulated/floor/natural/jungle/sandgrasscorner2
+	name = "grass"
+	icon_state = "grasssand_corner2"
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
+
+/turf/simulated/floor/natural/jungle/dirt
+	name = "dirt"
+	desc = "Looks dirty."
+	icon_state = "dirt"
+
+/turf/simulated/floor/natural/jungle/water
+	name = "water"
+	desc = "Looks wet."
+	icon = 'icons/misc/beach.dmi'
+	icon_state = "seashallow"
+	footstep_sound = SFX_FOOTSTEP_WATER
+	var/overlay = TRUE
+
+/turf/simulated/floor/natural/jungle/water/New()
+	..()
+	if(overlay)
+		overlays += image("icon"='icons/misc/beach.dmi',"icon_state"="riverwater","layer"=MOB_LAYER+1)
+
+/turf/simulated/floor/natural/jungle/water/edge
+	icon_state = "beach"
+	overlay = FALSE
+/turf/simulated/floor/natural/jungle/water/corner
+	icon_state = "beachcorner"
+	overlay = FALSE
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
+
+/turf/simulated/floor/natural/jungle/sand
+	name = "sand"
+	desc = "Looks sandy."
+	icon = 'icons/misc/beach.dmi'
+	icon_state = "desert0"
+	base_name = "sand"
+	base_desc = "Looks sandy."
+	base_icon = 'icons/misc/beach.dmi'
+	base_icon_state = "desert0"
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
+	var/rand_state = TRUE
+
+/turf/simulated/floor/natural/jungle/sand/New()
+	if(rand_state)
+		icon_state = "desert[rand(0, 5)]"
+	..()
+
 //SAND
 
 /turf/simulated/floor/natural/sand
@@ -367,6 +526,9 @@
 	if(rand_state)
 		icon_state = "sand[rand(0, 12)]"
 	..()
+
+/turf/simulated/floor/natural/sand/cave
+	name = "cave floor"
 
 /turf/simulated/floor/natural/sand/pure
 	rand_state = FALSE
@@ -395,6 +557,11 @@
 	icon_state = "plating"
 	initial_flooring = null
 
+/turf/simulated/floor/misc/concrete
+	name = "concrete"
+	icon = 'icons/turf/flooring/misc.dmi'
+	icon_state = "concrete"
+
 /turf/simulated/floor/misc/diona
 	name = "biomass"
 	icon = 'icons/turf/floors.dmi'
@@ -419,3 +586,13 @@
 	if(istype(AM, /mob/living))
 		var/mob/living/M = AM
 		M.slip(src, 4)
+
+/turf/simulated/floor/misc/abductor
+	name = "alien floor"
+	icon = 'icons/turf/flooring/abductor.dmi'
+	icon_state = "alienpod1"
+	var/previous_type = /turf/simulated/floor
+
+/turf/simulated/floor/misc/abductor/Initialize()
+	icon_state = "alienpod[rand(1,9)]"
+	..()

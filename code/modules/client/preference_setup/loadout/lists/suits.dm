@@ -58,6 +58,7 @@
 /datum/gear/suit/varsity/New()
 	..()
 	var/varsity = list()
+	varsity += /obj/item/clothing/suit/storage/toggle/varsity
 	varsity += /obj/item/clothing/suit/storage/toggle/varsity/blue
 	varsity += /obj/item/clothing/suit/storage/toggle/varsity/red
 	varsity += /obj/item/clothing/suit/storage/toggle/varsity/brown
@@ -150,6 +151,7 @@
 	trenchcoats += /obj/item/clothing/suit/storage/civ_trench
 	trenchcoats += /obj/item/clothing/suit/storage/civ_trench/grey
 	trenchcoats += /obj/item/clothing/suit/storage/toggle/leathercoat
+	trenchcoats += /obj/item/clothing/suit/storage/toggle/browncoat
 	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(trenchcoats)
 
 //
@@ -218,17 +220,17 @@
 
 /datum/gear/suit/punk_jacket_AC
 	display_name = "punk jacket black"
-	path = /obj/item/clothing/suit/storage/punk_jacket_AC
+	path = /obj/item/clothing/suit/storage/toggle/punk_jacket_AC
 	price = 20
 
 /datum/gear/suit/punk_jacket_RD
-	display_name = "punk jacket navy"
-	path = /obj/item/clothing/suit/storage/punk_jacket_RD
+	display_name = "punk jacket raven"
+	path = /obj/item/clothing/suit/storage/toggle/punk_jacket_RD
 	price = 20
 
 /datum/gear/suit/punk_jacket_TS
 	display_name = "punk jacket brown"
-	path = /obj/item/clothing/suit/storage/punk_jacket_TS
+	path = /obj/item/clothing/suit/storage/toggle/punk_jacket_TS
 	price = 20
 
 /datum/gear/suit/fashionable_coat

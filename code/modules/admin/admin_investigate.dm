@@ -29,7 +29,7 @@
 	log_integrated_circuits(log)
 
 //ADMINVERBS
-/client/proc/investigate_show( subject in list("hrefs","notes","watchlist","singulo","telesci", INVESTIGATE_CIRCUIT) )
+/client/proc/investigate_show(subject in list("hrefs","watchlist","singulo","telesci", INVESTIGATE_CIRCUIT))
 	set name = "Investigate"
 	set category = "Admin"
 	if(!holder)	return
@@ -42,7 +42,7 @@
 			show_browser(src, F,"window=investigate[subject];size=800x300")
 
 		if("hrefs")				//persistant logs and stuff
-			if(config && config.log_hrefs)
+			if(config && config.log.hrefs)
 				if(GLOB.world_hrefs_log)
 					show_browser(src, GLOB.world_hrefs_log, "window=investigate[subject];size=800x300")
 				else

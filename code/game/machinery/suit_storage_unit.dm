@@ -11,8 +11,8 @@
 	layer = BELOW_OBJ_LAYER
 	anchored = 1
 	density = 1
-	idle_power_usage = 50
-	active_power_usage = 200
+	idle_power_usage = 50 WATTS
+	active_power_usage = 200 WATTS
 	interact_offline = 1
 	req_access = list()
 
@@ -20,7 +20,7 @@
 	var/obj/item/clothing/suit/space/suit = null
 	var/obj/item/clothing/head/helmet/space/helmet = null
 	var/obj/item/clothing/shoes/magboots/boots = null
-	var/obj/item/weapon/tank/tank = null
+	var/obj/item/tank/tank = null
 	var/obj/item/clothing/mask/mask = null
 
 	var/suit_type = null
@@ -43,7 +43,7 @@
 /obj/machinery/suit_storage_unit/standard_unit
 	suit_type = /obj/item/clothing/suit/space
 	helmet_type = /obj/item/clothing/head/helmet/space
-	tank_type = /obj/item/weapon/tank/oxygen
+	tank_type = /obj/item/tank/oxygen
 	mask_type = /obj/item/clothing/mask/breath
 	req_access = list(access_eva)
 
@@ -52,7 +52,7 @@
 	suit_type = /obj/item/clothing/suit/space/void/atmos
 	helmet_type = /obj/item/clothing/head/helmet/space/void/atmos
 	boots_type = /obj/item/clothing/shoes/magboots
-	tank_type = /obj/item/weapon/tank/oxygen
+	tank_type = /obj/item/tank/oxygen
 	mask_type = /obj/item/clothing/mask/breath
 	req_access = list(access_atmospherics)
 	islocked = 1
@@ -66,7 +66,7 @@
 	suit_type = /obj/item/clothing/suit/space/void/engineering
 	helmet_type = /obj/item/clothing/head/helmet/space/void/engineering
 	boots_type = /obj/item/clothing/shoes/magboots
-	tank_type = /obj/item/weapon/tank/oxygen
+	tank_type = /obj/item/tank/oxygen
 	mask_type = /obj/item/clothing/mask/breath
 	req_access = list(access_engine)
 	islocked = 1
@@ -86,7 +86,7 @@
 	suit_type = /obj/item/clothing/suit/space/void/medical
 	helmet_type = /obj/item/clothing/head/helmet/space/void/medical
 	boots_type = /obj/item/clothing/shoes/magboots
-	tank_type = /obj/item/weapon/tank/oxygen
+	tank_type = /obj/item/tank/oxygen
 	mask_type = /obj/item/clothing/mask/breath
 	req_access = list(access_medical)
 	islocked = 1
@@ -101,7 +101,7 @@
 	suit_type = /obj/item/clothing/suit/space/void/mining
 	helmet_type = /obj/item/clothing/head/helmet/space/void/mining
 	boots_type = /obj/item/clothing/shoes/magboots
-	tank_type = /obj/item/weapon/tank/oxygen
+	tank_type = /obj/item/tank/oxygen
 	mask_type = /obj/item/clothing/mask/breath
 	req_access = list(access_mining)
 	islocked = 1
@@ -116,7 +116,7 @@
 	suit_type = /obj/item/clothing/suit/space/void/excavation
 	helmet_type = /obj/item/clothing/head/helmet/space/void/excavation
 	boots_type = /obj/item/clothing/shoes/magboots
-	tank_type = /obj/item/weapon/tank/oxygen
+	tank_type = /obj/item/tank/oxygen
 	mask_type = /obj/item/clothing/mask/breath
 	req_access = list(access_xenoarch)
 	islocked = 1
@@ -126,7 +126,7 @@
 	suit_type = /obj/item/clothing/suit/space/void/security
 	helmet_type = /obj/item/clothing/head/helmet/space/void/security
 	boots_type = /obj/item/clothing/shoes/magboots
-	tank_type = /obj/item/weapon/tank/oxygen
+	tank_type = /obj/item/tank/oxygen
 	mask_type = /obj/item/clothing/mask/breath
 	req_access = list(access_security)
 	islocked = 1
@@ -141,7 +141,7 @@
 	suit_type = /obj/item/clothing/suit/space/void/syndi
 	helmet_type = /obj/item/clothing/head/helmet/space/void/syndi
 	boots_type = /obj/item/clothing/shoes/magboots
-	tank_type = /obj/item/weapon/tank/oxygen
+	tank_type = /obj/item/tank/oxygen
 	mask_type = /obj/item/clothing/mask/breath
 	req_access = list(access_syndicate)
 	islocked = 1
@@ -418,7 +418,7 @@
 	for(i=0,i<4,i++)
 		sleep(50)
 		if(occupant)
-			occupant.apply_effect(50, IRRADIATE, blocked = occupant.getarmor(null, "rad"))
+			occupant.rad_act(new /datum/radiation_source(new /datum/radiation(4 TERA BECQUEREL, RADIATION_ALPHA_PARTICLE), src))
 			var/obj/item/organ/internal/diona/nutrients/rad_organ = locate() in occupant.internal_organs
 			if (!rad_organ)
 				if (occupant.can_feel_pain())
@@ -452,7 +452,7 @@
 					tank = null
 				if(mask)
 					mask = null
-				visible_message("<span class='warning'>With a loud whining noise, the Suit Storage Unit's door grinds open. Puffs of ashen smoke come out of its chamber.</span>", 3)
+				visible_message("<span class='warning'>With a loud whining noise, the Suit Storage Unit's door grinds open. Puffs of ashen smoke come out of its chamber.</span>")
 				isbroken = 1
 				isopen = 1
 				islocked = 0
@@ -521,7 +521,7 @@
 	if ( (occupant) || (helmet ) || (suit) )
 		to_chat(usr, "<span class='warning'>It's too cluttered inside for you to fit in!</span>")
 		return
-	visible_message("\The [usr] starts squeezing into the suit storage unit!", 3)
+	visible_message("\The [usr] starts squeezing into the suit storage unit!")
 	if(do_after(usr, 10, src))
 		usr.stop_pulling()
 		usr.client.perspective = EYE_PERSPECTIVE
@@ -569,7 +569,7 @@
 		if ( (occupant) || (helmet ) || (suit) || (boots) || (tank) || (mask)) //Unit needs to be absolutely empty
 			to_chat(user, "<span class='warning'>The unit's storage area is too cluttered.</span>")
 			return
-		visible_message("[user] starts putting [G.affecting.name] into the Suit Storage Unit.", 3)
+		visible_message("[user] starts putting [G.affecting.name] into the Suit Storage Unit.")
 		if(do_after(user, 20, src))
 			if(!G || !G.affecting) return //derpcheck
 			var/mob/M = G.affecting
@@ -592,9 +592,9 @@
 		if(suit)
 			to_chat(user, "<span class='notice'>The unit already contains a suit.</span>")
 			return
+		if(!user.drop(I, src))
+			return
 		to_chat(user, "You load the [S.name] into the storage compartment.")
-		user.drop_item()
-		S.forceMove(src)
 		suit = S
 		update_icon()
 		updateUsrDialog()
@@ -606,9 +606,9 @@
 		if(helmet )
 			to_chat(user, "<span class='notice'>The unit already contains a helmet.</span>")
 			return
+		if(!user.drop(I, src))
+			return
 		to_chat(user, "You load the [H.name] into the storage compartment.")
-		user.drop_item()
-		H.forceMove(src)
 		helmet  = H
 		update_icon()
 		updateUsrDialog()
@@ -620,23 +620,23 @@
 		if(boots)
 			to_chat(user, "<span class='notice'>The unit already contains a pair of magboots.</span>")
 			return
+		if(!user.drop(I, src))
+			return
 		to_chat(user, "You load the [B.name] into the storage compartment.")
-		user.drop_item()
-		B.forceMove(src)
 		boots = B
 		update_icon()
 		updateUsrDialog()
 		return
-	if( istype(I,/obj/item/weapon/tank) )
+	if( istype(I,/obj/item/tank) )
 		if(!isopen)
 			return
-		var/obj/item/weapon/tank/T = I
+		var/obj/item/tank/T = I
 		if(tank)
 			to_chat(user, "<span class='notice'>The unit already contains an air tank.</span>")
 			return
+		if(!user.drop(I, src))
+			return
 		to_chat(user, "You load the [T.name] into the storage compartment.")
-		user.drop_item()
-		T.forceMove(src)
 		tank = T
 		update_icon()
 		updateUsrDialog()
@@ -648,9 +648,9 @@
 		if(mask)
 			to_chat(user, "<span class='notice'>The unit already contains a mask.</span>")
 			return
+		if(!user.drop(I, src))
+			return
 		to_chat(user, "You load the [M.name] into the storage compartment.")
-		user.drop_item()
-		M.forceMove(src)
 		mask = M
 		update_icon()
 		updateUsrDialog()
@@ -796,7 +796,7 @@
 			to_chat(user, "<span class='danger'>There is no room inside the cycler for [G.affecting.name].</span>")
 			return
 
-		visible_message("<span class='notice'>[user] starts putting [G.affecting.name] into the suit cycler.</span>", 3)
+		visible_message("<span class='notice'>[user] starts putting [G.affecting.name] into the suit cycler.</span>")
 
 		if(do_after(user, 20, src))
 			if(!G || !G.affecting) return
@@ -834,9 +834,9 @@
 			to_chat(user, "You cannot refit a customised voidsuit.")
 			return
 
+		if(!user.drop(I, src))
+			return
 		to_chat(user, "You fit \the [I] into the suit cycler.")
-		user.drop_item()
-		I.loc = src
 		helmet = I
 
 		update_icon()
@@ -857,9 +857,9 @@
 			to_chat(user, "You cannot refit a customised voidsuit.")
 			return
 
+		if(!user.drop(I, src))
+			return
 		to_chat(user, "You fit \the [I] into the suit cycler.")
-		user.drop_item()
-		I.loc = src
 		suit = I
 
 		update_icon()
@@ -1033,7 +1033,8 @@
 			occupant.take_organ_damage(0,radiation_level*2 + rand(1,3))
 		if(radiation_level > 1)
 			occupant.take_organ_damage(0,radiation_level + rand(1,3))
-		occupant.apply_effect(radiation_level*10, IRRADIATE, blocked = occupant.getarmor(null, "rad"))
+
+		occupant.rad_act(new /datum/radiation_source(new /datum/radiation((1250 KILO BECQUEREL) * radiation_level, RADIATION_ALPHA_PARTICLE), src))
 
 /obj/machinery/suit_cycler/proc/finished_job()
 	var/turf/T = get_turf(src)
@@ -1175,7 +1176,7 @@
 				suit.SetName("exploration voidsuit")
 				suit.icon_state = "void_explorer"
 
-		if("^%###^%$" || "Syndicate")
+		if("^%###^%$",  "Syndicate")
 			if(helmet)
 				helmet.SetName("blood-red voidsuit helmet")
 				helmet.icon_state = "rig0-syndie"

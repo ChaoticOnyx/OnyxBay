@@ -3,7 +3,7 @@
  * also scraps of paper
  */
 
-/obj/item/weapon/paper
+/obj/item/paper
 	name = "sheet of paper"
 	gender = NEUTER
 	icon = 'icons/obj/bureaucracy.dmi'
@@ -13,7 +13,7 @@
 	throwforce = 0
 	w_class = ITEM_SIZE_TINY
 	throw_range = 1
-	throw_speed = 1
+	throw_speed = 3
 	layer = ABOVE_OBJ_LAYER
 	slot_flags = SLOT_HEAD
 	body_parts_covered = HEAD
@@ -40,8 +40,51 @@
 	var/const/deffont = "Verdana"
 	var/const/signfont = "Times New Roman"
 	var/const/crayonfont = "Comic Sans MS"
-	var/const/fancyfont = "Segoe Script"
+	var/const/handfont = "Segoe Script"
+	var/const/fancyfont = "Good Vibes Pro"
 	var/text_color = COLOR_BLACK
+
+	var/static/styles = {"
+	@font-face {
+		font-family: "Good Vibes Pro";
+		src: url("./good_vibes.woff") format("woff");
+		font-weight: 400;
+		font-style: normal;
+		font-display: swap;
+	}
+
+	table,th,td{
+		border: 1px solid black;
+	}
+
+	.SmallFont {
+		font-size: 0.7em;
+	}
+
+	.MediumFont {
+		font-size: 1.2em;
+	}
+
+	.LargeFont {
+		font-size: 1.3em;
+	}
+
+	hr.Handwritten {
+		border: none;
+		height: 5px;
+		background-image: url('line_hand.png');
+		background-repeat: repeat-x;
+		background-size: contain;
+	}
+
+	table.Handwritten,
+	th.Handwritten,
+	td.Handwritten {
+		border: 5px solid black;
+		border-image: url('borders_hand.png') 27 fill;
+		border-image-size: 10px;
+	}
+"}
 
 	//static because these can't be const
 	var/static/regex/named_field_tag_regex = regex(@"\[field=(\w+)\]", "g")
@@ -51,15 +94,15 @@
 	var/static/regex/field_regex = regex(@#<!--paper_field_(\w+)-->#, "g")
 	var/static/regex/field_link_regex = regex("<font face=\"[deffont]\"><A href='\\?src=\[^'\]+?;write=\[^'\]+'>write</A></font>", "g")
 
-/obj/item/weapon/paper/Initialize(mapload, text, title, rawhtml = TRUE, noinit = FALSE)
+/obj/item/paper/Initialize(mapload, text, title, rawhtml = TRUE, noinit = FALSE)
 	. = ..()
 
 	if (noinit)
 		return
 	set_content(text ? text : info, title, rawhtml || src.rawhtml)
 
-/obj/item/weapon/paper/proc/copy(loc = src.loc, generate_stamps = TRUE)
-	var/obj/item/weapon/paper/P = new (loc)
+/obj/item/paper/proc/copy(loc = src.loc, generate_stamps = TRUE)
+	var/obj/item/paper/P = new (loc)
 	P.name = (taped) ? copytext(name, 1, length(name)-7) : name
 	P.info = info
 	P.info_links = info_links
@@ -81,7 +124,7 @@
 		P.stamps_generated = FALSE
 	return P
 
-/obj/item/weapon/paper/proc/recolorize(saturation = 1, grayscale = FALSE)
+/obj/item/paper/proc/recolorize(saturation = 1, grayscale = FALSE)
 	var/static/regex/color_regex = regex("color=(#\[0-9a-fA-F\]+)", "g")
 	text_color = BlendRGB(color ? color : COLOR_WHITE, text_color, saturation)
 	if (grayscale)
@@ -105,7 +148,7 @@
 	if (!stamps_generated) //not sure how to remove merged stamps, so limiting it to generation (no regeneration) for now
 		generate_stamps(saturation, grayscale)
 
-/obj/item/weapon/paper/proc/generate_stamps(saturation = 1, grayscale = FALSE)
+/obj/item/paper/proc/generate_stamps(saturation = 1, grayscale = FALSE)
 	stamps_generated = TRUE
 	var/image/img
 	for (var/j = 1, j <= min(ico.len), j++) //gray overlay onto the copy
@@ -119,7 +162,7 @@
 		overlays += img
 	update_icon()
 
-/obj/item/weapon/paper/proc/set_content(text, title, rawhtml = FALSE)
+/obj/item/paper/proc/set_content(text, title, rawhtml = FALSE)
 	if(title)
 		SetName(title)
 	info = text
@@ -130,7 +173,7 @@
 	update_space()
 	update_icon()
 
-/obj/item/weapon/paper/update_icon()
+/obj/item/paper/update_icon()
 	if(dynamic_icon)
 		return
 	if(!crumpled)
@@ -142,11 +185,11 @@
 	if(taped)
 		icon_state = "[icon_state]_taped"
 
-/obj/item/weapon/paper/proc/update_space()
+/obj/item/paper/proc/update_space()
 	free_space = initial(free_space)
 	free_space -= length(strip_html_properly(info_links)) //using info_links to also count field prompts
 
-/obj/item/weapon/paper/proc/is_clean()
+/obj/item/paper/proc/is_clean()
 	var/list/visible_html_tags = list("<table","<img","<hr")
 	var/is_visible_html_tag = FALSE
 	for(var/tag in visible_html_tags)
@@ -155,7 +198,7 @@
 			break
 	return !length(strip_html_properly(info)) && !is_visible_html_tag
 
-/obj/item/weapon/paper/examine(mob/user)
+/obj/item/paper/_examine_text(mob/user)
 	. = ..()
 	if(name != "sheet of paper")
 		. += "\nIt's titled '[name]'."
@@ -164,15 +207,32 @@
 	else
 		. += "\n[SPAN_NOTICE("You have to go closer if you want to read it.")]"
 
-/obj/item/weapon/paper/proc/show_content(mob/user, forceshow)
+/obj/item/paper/proc/show_content(mob/user, forceshow)
 	var/can_read = (istype(user, /mob/living/carbon/human) || isghost(user) || istype(user, /mob/living/silicon)) || forceshow
+	if(can_read && ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(!H.IsAdvancedToolUser(TRUE))
+			can_read = FALSE
 	if(!forceshow && istype(user,/mob/living/silicon/ai))
 		var/mob/living/silicon/ai/AI = user
 		can_read = get_dist(src, AI.camera) < 2
-	show_browser(user, "<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color ? color : COLOR_WHITE]' text='[text_color]'>[can_read ? info : stars(info)][stamps]</BODY></HTML>", "window=[name]")
+	var/content = {"
+<html>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+	<head>
+		<title>[name]</title>
+		<style>[styles]</style>
+	</head>
+	<body bgcolor='[color ? color : COLOR_WHITE]' text='[text_color]'>
+		[can_read ? info : stars(info)][stamps]
+	</body>
+</html>
+"}
+	show_browser(user, content, "window=[name]")
 	onclose(user, "[name]")
 
-/obj/item/weapon/paper/verb/rename()
+/obj/item/paper/verb/rename()
 	set name = "Rename paper"
 	set category = "Object"
 	set src in usr
@@ -182,14 +242,14 @@
 		return
 	var/n_name = sanitizeSafe(input(usr, "What would you like to label the paper?", "Paper Labelling", null)  as text, MAX_NAME_LEN)
 
-	// We check loc one level up, so we can rename in clipboards and such. See also: /obj/item/weapon/photo/rename()
+	// We check loc one level up, so we can rename in clipboards and such. See also: /obj/item/photo/rename()
 	if((loc == usr || loc.loc && loc.loc == usr) && usr.stat == 0 && n_name)
 		SetName(n_name)
 		if(taped)
 			name = "[name] (taped)"
 		add_fingerprint(usr)
 
-/obj/item/weapon/paper/attack_self(mob/living/user)
+/obj/item/paper/attack_self(mob/living/user)
 	if(user.a_intent == I_HURT)
 		if(crumpled)
 			user.show_message(SPAN_NOTICE("\The [src] is already crumpled."))
@@ -200,7 +260,7 @@
 		crumpled = TRUE
 		update_icon()
 		throw_range = 7
-		throw_speed = 2
+		throw_speed = 1
 		return
 	if(taped)
 		name = copytext(name, 1, length(name)-7)
@@ -215,17 +275,17 @@
 			playsound(loc, 'sound/items/bikehorn.ogg', 50, 1)
 			spawn(20) spam_flag = FALSE
 
-/obj/item/weapon/paper/attack_hand(mob/user)
+/obj/item/paper/attack_hand(mob/user)
 	anchored = FALSE // Unattach it from whereever it's on, if anything.
 	return ..()
 
-/obj/item/weapon/paper/attack_ai(mob/living/silicon/ai/user)
+/obj/item/paper/attack_ai(mob/living/silicon/ai/user)
 	show_content(user)
 
-/obj/item/weapon/paper/attack(mob/living/carbon/M, mob/living/carbon/user)
+/obj/item/paper/attack(mob/living/carbon/M, mob/living/carbon/user)
 	if(user.zone_sel.selecting == BP_EYES)
-		user.visible_message(SPAN_NOTICE("You show the paper to [M]."), \
-		                     SPAN_NOTICE("[user] holds up a paper and shows it to [M]."))
+		user.visible_message(SPAN_NOTICE("[user] holds up a paper and shows it to [M]."), \
+		                     SPAN_NOTICE("You show the paper to [M]."))
 		M.examinate(src)
 
 	else if(user.zone_sel.selecting == BP_MOUTH) // lipstick wiping
@@ -244,7 +304,7 @@
 					H.lip_style = null
 					H.update_body()
 
-/obj/item/weapon/paper/afterattack(A, mob/user, flag, params)
+/obj/item/paper/afterattack(A, mob/user, flag, params)
 	if(!taped)
 		return
 
@@ -264,8 +324,7 @@
 			to_chat(user, SPAN_NOTICE("You cannot reach that from here.")) // Can only place stuck papers in cardinal directions, to
 			return                                                         // Reduce papers around corners issue.
 
-	user.drop_from_inventory(src)
-	forceMove(source_turf)
+	user.drop(src, source_turf)
 	anchored = TRUE
 
 	if(!params)
@@ -284,10 +343,10 @@
 		else if(dir_offset & SOUTH)
 			pixel_y -= 32
 
-/obj/item/weapon/paper/attackby(obj/item/weapon/P, mob/user)
+/obj/item/paper/attackby(obj/item/P, mob/user)
 	..()
 
-	if(istype(P, /obj/item/weapon/tape_roll))
+	if(istype(P, /obj/item/tape_roll))
 		if(taped)
 			to_chat(user, SPAN_NOTICE("It has been taped already!"))
 			return
@@ -296,24 +355,22 @@
 		update_icon()
 		return
 
-	if(istype(P, /obj/item/weapon/paper) || istype(P, /obj/item/weapon/photo))
-		if (istype(P, /obj/item/weapon/paper/carbon))
-			var/obj/item/weapon/paper/carbon/C = P
+	if(istype(P, /obj/item/paper) || istype(P, /obj/item/photo))
+		if (istype(P, /obj/item/paper/carbon))
+			var/obj/item/paper/carbon/C = P
 			if (!C.copied)
 				to_chat(user, SPAN_NOTICE("Take off the carbon copy first."))
 				add_fingerprint(user)
 				return
-		var/obj/item/weapon/paper_bundle/B = new(loc)
+		var/obj/item/paper_bundle/B = new(loc)
 		if (name != "paper")
 			B.SetName(name)
 		else if (P.name != "paper" && P.name != "photo")
 			B.SetName(P.name)
 
-		user.drop_from_inventory(P)
-		user.drop_from_inventory(src)
-		user.put_in_hands(B)
+		user.replace_item(src, B)
+		user.drop(P, B)
 		forceMove(B)
-		P.forceMove(B)
 
 		to_chat(user, SPAN_NOTICE("You clip the [P.name] to \the [src.name]."))
 
@@ -321,28 +378,41 @@
 		B.pages += P
 		B.update_icon()
 
-	else if(istype(P, /obj/item/weapon/pen))
+	else if(istype(P, /obj/item/pen))
 		if(crumpled)
 			to_chat(usr, SPAN_WARNING("\The [src] is too crumpled to write on."))
 			return
 
-		var/obj/item/weapon/pen/robopen/RP = P
+		var/obj/item/pen/robopen/RP = P
 		if (istype(RP) && RP.mode == 2)
 			RP.RenamePaper(user,src)
 		else
-			show_browser(user, "<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]")
+			var/content = {"
+<html>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+	<head>
+		<title>[name]</title>
+		<style>[styles]</style>
+	</head>
+	<body bgcolor='[color]'>
+		[info_links][stamps]
+	</body>
+</html>
+"}
+			show_browser(user, content, "window=[name]")
 		return
 
-	else if(istype(P, /obj/item/weapon/stamp) || istype(P, /obj/item/clothing/ring/seal))
-		if((!in_range(src, user) && loc != user && !( istype(loc, /obj/item/weapon/clipboard) ) && loc.loc != user && user.get_active_hand() != P))
+	else if(istype(P, /obj/item/stamp) || istype(P, /obj/item/clothing/ring/seal))
+		if((!in_range(src, user) && loc != user && !( istype(loc, /obj/item/clipboard) ) && loc.loc != user && user.get_active_hand() != P))
 			return
 
-		stamps += (stamps=="" ? "<HR>" : "<BR>") + "<i>This paper has been stamped with the [P.name].</i>"
+		stamps += (stamps=="" ? "<hr>" : "<br>") + "<i>This paper has been stamped with the [P.name].</i>"
 
 		var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')
 		var/x
 		var/y
-		if(istype(P, /obj/item/weapon/stamp/captain) || istype(P, /obj/item/weapon/stamp/centcomm))
+		if(istype(P, /obj/item/stamp/captain) || istype(P, /obj/item/stamp/centcomm))
 			x = rand(-2, 0)
 			y = rand(-1, 2)
 		else
@@ -353,7 +423,7 @@
 		stampoverlay.pixel_x = x
 		stampoverlay.pixel_y = y
 
-		if(istype(P, /obj/item/weapon/stamp/clown))
+		if(istype(P, /obj/item/stamp/clown))
 			var/clown = user.mind && (user.mind.assigned_role == "Clown")
 			if(!clown)
 				to_chat(user, SPAN_NOTICE("You are totally unable to use the stamp. HONK!"))
@@ -371,16 +441,16 @@
 
 		to_chat(user, SPAN_NOTICE("You stamp the paper with your [P.name]."))
 
-	else if(istype(P, /obj/item/weapon/flame))
+	else if(istype(P, /obj/item/flame))
 		burnpaper(P, user)
 
-	else if(istype(P, /obj/item/weapon/paper_bundle))
-		var/obj/item/weapon/paper_bundle/attacking_bundle = P
+	else if(istype(P, /obj/item/paper_bundle))
+		var/obj/item/paper_bundle/attacking_bundle = P
 		attacking_bundle.insert_sheet_at(user, (attacking_bundle.pages.len)+1, src)
 		attacking_bundle.update_icon()
 
-	else if(istype(P, /obj/item/weapon/reagent_containers/food/snacks/grown))
-		var/obj/item/weapon/reagent_containers/food/snacks/grown/G = P
+	else if(istype(P, /obj/item/reagent_containers/food/grown))
+		var/obj/item/reagent_containers/food/grown/G = P
 		if(!G.dry)
 			to_chat(user, SPAN_NOTICE("[G] must be dried before you can grind and roll it."))
 			return
@@ -400,12 +470,12 @@
 		qdel(src)
 		qdel(G)
 		if(roll_in_hands)
-			user.put_in_hands(R)
+			user.pick_or_drop(R)
 		return
 
 	add_fingerprint(user)
 
-/obj/item/weapon/paper/proc/addtofield(id, text, terminate = FALSE)
+/obj/item/paper/proc/addtofield(id, text, terminate = FALSE)
 	var/token = "<!--paper_field_[id]-->"
 	var/token_link = "<font face=\"[deffont]\"><A href='?src=\ref[src];write=[id]'>write</A></font>"
 	var/text_with_links = field_regex.Replace(text, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=$1'>write</A></font>")
@@ -414,7 +484,7 @@
 	info_links = replacetext(info_links, token_link, "[text_with_links][terminate ? "" : token_link]")
 
 
-/obj/item/weapon/paper/proc/generateinfolinks()
+/obj/item/paper/proc/generateinfolinks()
 	info_links = info
 	if (readonly)
 		return
@@ -426,16 +496,16 @@
 		info += "<!--paper_field_end-->"
 		info_links += "<font face=\"[deffont]\"><A href='?src=\ref[src];write=end'>write</A></font>"
 
-/obj/item/weapon/paper/proc/migrateinfolinks(from)
+/obj/item/paper/proc/migrateinfolinks(from)
 	info_links = replacetext(info_links, "\ref[from]", "\ref[src]")
 
-/obj/item/weapon/paper/proc/make_readonly()
+/obj/item/paper/proc/make_readonly()
 	if (readonly)
 		return
 	info_links = field_link_regex.Replace(info_links, "")
 	readonly = TRUE
 
-/obj/item/weapon/paper/proc/clearpaper()
+/obj/item/paper/proc/clearpaper()
 	info = null
 	stamps = null
 	free_space = MAX_PAPER_MESSAGE_LEN
@@ -444,8 +514,8 @@
 	generateinfolinks()
 	update_icon()
 
-/obj/item/weapon/paper/proc/get_signature(obj/item/weapon/pen/P, mob/user, signfield)
-	if(P && istype(P, /obj/item/weapon/pen))
+/obj/item/paper/proc/get_signature(obj/item/pen/P, mob/user, signfield)
+	if(P && istype(P, /obj/item/pen))
 		return P.get_signature(user)
 	return (user && user.real_name) ? user.real_name : "Anonymous"
 
@@ -461,12 +531,21 @@
 		counter = 0
 	return " <I><span class='sign_field_[counter++]'>sign here</span></I> "
 
-/obj/item/weapon/paper/proc/parsepencode(t, obj/item/weapon/pen/P, mob/user, iscrayon, isfancy, is_init = FALSE)
+/obj/item/paper/proc/parsepencode(t, obj/item/pen/P, mob/user, iscrayon, isfancy, ishandwritten, is_init = FALSE)
 	if(length(t) == 0)
 		return ""
 
+	var/using_font = deffont
+
+	if(isfancy)
+		using_font = fancyfont
+	else if(iscrayon)
+		using_font = crayonfont
+	else if(ishandwritten)
+		using_font = handfont
+
 	if(findtext(t, "\[sign\]"))
-		t = replacetext(t, "\[sign\]", "<font face=\"[signfont]\"><i>[get_signature(P, user)]</i></font>")
+		t = replacetext(t, "\[sign\]", "<font face=\"[using_font]\"><i>[get_signature(P, user)]</i></font>")
 
 	t = replacetext(t, @"[signfield]", /proc/new_sign_field)
 	t = replacetext(t, @"[field]", /proc/new_unnamed_field)
@@ -491,29 +570,24 @@
 		t = replacetext(t, "\[cell\]", "")
 		t = replacetext(t, "\[logo\]", "")
 
-	if(iscrayon)
-		t = "<font face=\"[crayonfont]\" color=[P ? P.colour : COLOR_BLACK]><b>[t]</b></font>"
-	else if(isfancy)
-		t = "<font face=\"[fancyfont]\" color=[P ? P.colour : COLOR_BLACK]><i>[t]</i></font>"
-	else
-		t = "<font face=\"[deffont]\" color=[P ? P.colour : COLOR_BLACK]>[t]</font>"
+	t = "<font face=\"[using_font]\" color=[P ? P.colour : COLOR_BLACK]>[t]</font>"
 
-	t = pencode2html(t)
+	t = pencode2html(t, isfancy || iscrayon || ishandwritten)
 
 	return t
 
-/obj/item/weapon/paper/proc/parse_named_fields()
+/obj/item/paper/proc/parse_named_fields()
 	var/list/matches = list()
 	named_field_extraction_regex.next = 1
 	while (named_field_extraction_regex.Find(info))
 		matches[named_field_extraction_regex.group[1]] = named_field_extraction_regex.group[2]
 	return matches
 
-/obj/item/weapon/paper/proc/burnpaper(obj/item/weapon/flame/P, mob/user)
+/obj/item/paper/proc/burnpaper(obj/item/flame/P, mob/user)
 	var/class = "warning"
 
 	if(P.lit && !user.restrained())
-		if(istype(P, /obj/item/weapon/flame/lighter/zippo))
+		if(istype(P, /obj/item/flame/lighter/zippo))
 			class = "rose"
 
 		user.visible_message("<span class='[class]'>[user] holds \the [P] up to \the [src], it looks like \he's trying to burn it!</span>", \
@@ -525,7 +599,7 @@
 				"<span class='[class]'>You burn right through \the [src], turning it to ash. It flutters through the air before settling on the floor in a heap.</span>")
 
 				if(user.get_inactive_hand() == src)
-					user.drop_from_inventory(src)
+					user.drop(src)
 
 				new /obj/effect/decal/cleanable/ash(src.loc)
 				qdel(src)
@@ -534,12 +608,12 @@
 				to_chat(user, SPAN_WARNING("You must hold \the [P] steady to burn \the [src]."))
 
 
-/obj/item/weapon/paper/proc/get_pen()
+/obj/item/paper/proc/get_pen()
 	var/obj/item/i = usr.get_active_hand()
-	if(istype(i, /obj/item/weapon/pen))
+	if(istype(i, /obj/item/pen))
 		return i
-	if(usr.back && istype(usr.back,/obj/item/weapon/rig))
-		var/obj/item/weapon/rig/r = usr.back
+	if(usr.back && istype(usr.back,/obj/item/rig))
+		var/obj/item/rig/r = usr.back
 		var/obj/item/rig_module/device/pen/m = locate(/obj/item/rig_module/device/pen) in r.installed_modules
 		if(!r.offline && m)
 			return m.device
@@ -548,20 +622,20 @@
 	else
 		return
 
-/obj/item/weapon/paper/proc/check_proximity()
+/obj/item/paper/proc/check_proximity()
 	// if paper is not in usr, then it must be near them, or in a clipboard or folder, which must be in or near usr
 	return !(src.loc != usr && !src.Adjacent(usr)\
-		&& !((istype(src.loc, /obj/item/weapon/clipboard) || istype(src.loc, /obj/item/weapon/folder))\
+		&& !((istype(src.loc, /obj/item/clipboard) || istype(src.loc, /obj/item/folder))\
 		&& (src.loc.loc == usr || src.loc.Adjacent(usr)) ) )
 
 
-/obj/item/weapon/paper/Topic(href, href_list)
+/obj/item/paper/Topic(href, href_list)
 	..()
 	if(!usr || (usr.stat || usr.restrained()))
 		return
 	if (href_list["signfield"])
 		var/signfield = href_list["signfield"]
-		var/obj/item/weapon/pen/P = get_pen()
+		var/obj/item/pen/P = get_pen()
 		if (!P || !check_proximity())
 			return
 		var/signfield_name
@@ -569,12 +643,25 @@
 			signfield_name = copytext(signfield, 2)
 
 		var/signature = get_signature(P, usr, signfield_name)
-		if(istype(P, /obj/item/weapon/pen/crayon))
+		if(istype(P, /obj/item/pen/crayon))
 			signature = "<b>[signature]</b>"
 		info = replacetext(info, "<I><span class='sign_field_[signfield]'>sign here</span></I>", "<font face=\"[signfont]\" color=[P.colour]><i>[signature]</i></font>")
 		info_links = replacetext(info_links, "<I><A href='?src=\ref[src];signfield=[signfield]'>sign here</A></I>", "<font face=\"[signfont]\" color=[P.colour]><i>[signature]</i></font>")
 		update_space()
-		show_browser(usr, "<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]") // Update the window
+		var/content = {"
+<html>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+	<meta charset='utf-8'>
+	<head>
+		<title>[name]</title>
+		<style>[styles]</style>
+	</head>
+	<body bgcolor='[color]'>
+		[info_links][stamps]
+	</body>
+</html>
+"}
+		show_browser(usr, content, "window=[name]") // Update the window
 		return
 	if(href_list["write"])
 		if (readonly)
@@ -595,14 +682,19 @@
 		var/obj/item/i = get_pen()
 		if (!i)
 			return
-		var/iscrayon = 0
-		var/isfancy = 0
 
-		if(istype(i, /obj/item/weapon/pen/crayon))
-			iscrayon = 1
+		var/ishandwritten = FALSE
+		var/iscrayon = FALSE
+		var/isfancy = FALSE
 
-		if(istype(i, /obj/item/weapon/pen/fancy))
-			isfancy = 1
+		if(istype(i, /obj/item/pen))
+			ishandwritten = TRUE
+
+			if(istype(i, /obj/item/pen/crayon))
+				iscrayon = TRUE
+
+			if(istype(i, /obj/item/pen/fancy))
+				isfancy = TRUE
 
 		if (!check_proximity())
 			return
@@ -611,7 +703,7 @@
 			to_chat(usr, SPAN_WARNING("Too many fields. Sorry, you can't do this."))
 			return
 
-		t = parsepencode(t, i, usr, iscrayon, isfancy) // Encode everything from pencode to html
+		t = parsepencode(t, i, usr, iscrayon, isfancy, ishandwritten) // Encode everything from pencode to html
 
 		var/terminated = FALSE
 		if (findtext(t, @"[end]"))
@@ -624,11 +716,24 @@
 
 		update_space()
 
-		show_browser(usr, "<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]") // Update the window
+		var/content = {"
+<html>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+	<meta charset='utf-8'>
+	<head>
+		<title>[name]</title>
+		<style>[styles]</style>
+	</head>
+	<body bgcolor='[color]'>
+		[info_links][stamps]
+	</body>
+</html>
+"}
+		show_browser(usr, content, "window=[name]") // Update the window
 
 		update_icon()
 
 //For supply.
-/obj/item/weapon/paper/manifest
+/obj/item/paper/manifest
 	name = "supply manifest"
 	var/is_copy = TRUE

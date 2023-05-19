@@ -10,14 +10,14 @@
 	layer = ABOVE_HUMAN_LAYER // this needs to be fairly high so it displays over most things, but it needs to be under lighting
 
 	var/on = 0
-	idle_power_usage = 20
-	active_power_usage = 200
+	idle_power_usage = 20 WATTS
+	active_power_usage = 200 WATTS
 	clicksound = 'sound/machines/buttonbeep.ogg'
 	clickvol = 30
 
 	var/temperature_archived
 	var/mob/living/carbon/human/occupant = null
-	var/obj/item/weapon/reagent_containers/glass/beaker = null
+	var/obj/item/reagent_containers/vessel/beaker = null
 
 	var/current_heat_capacity = 50
 
@@ -25,12 +25,12 @@
 	var/biochemical_stasis = 0
 
 	component_types = list(
-		/obj/item/weapon/circuitboard/cryo_cell,
+		/obj/item/circuitboard/cryo_cell,
 		/obj/item/device/healthanalyzer,
-		/obj/item/weapon/stock_parts/scanning_module,
-		/obj/item/weapon/stock_parts/matter_bin,
-		/obj/item/weapon/stock_parts/manipulator = 3,
-		/obj/item/weapon/stock_parts/console_screen
+		/obj/item/stock_parts/scanning_module,
+		/obj/item/stock_parts/matter_bin,
+		/obj/item/stock_parts/manipulator = 3,
+		/obj/item/stock_parts/console_screen
 	)
 
 	beepsounds = list(
@@ -72,7 +72,7 @@
 			node = target
 			break
 
-/obj/machinery/atmospherics/unary/cryo_cell/examine(mob/user)
+/obj/machinery/atmospherics/unary/cryo_cell/_examine_text(mob/user)
 	. = ..()
 	if(user.Adjacent(src))
 		if(beaker)
@@ -93,7 +93,7 @@
 	play_beep()
 
 	if(occupant)
-		if(occupant.stat != DEAD)
+		if(!occupant.is_ic_dead())
 			THROTTLE(icon_update_cooldown, 3 SECONDS)
 			if(icon_update_cooldown)
 				update_icon()
@@ -102,7 +102,7 @@
 	if(air_contents)
 		temperature_archived = air_contents.temperature
 		heat_gas_contents()
-		if(occupant && iscarbon(occupant) && occupant.stat != DEAD && !occupant.is_asystole() && !occupant.losebreath)
+		if(occupant && iscarbon(occupant) && !occupant.is_ic_dead() && !occupant.is_asystole() && !occupant.losebreath)
 			expel_gas()
 
 	if(abs(temperature_archived-air_contents.temperature) > 1)
@@ -163,9 +163,9 @@
 
 	data["cellTemperature"] = round(air_contents.temperature)
 	data["cellTemperatureStatus"] = "good"
-	if(air_contents.temperature > T0C) // if greater than 273.15 kelvin (0 celcius)
+	if(air_contents.temperature > (0 CELSIUS))
 		data["cellTemperatureStatus"] = "bad"
-	else if(air_contents.temperature > 170)
+	else if(air_contents.temperature > (170 KELVIN))
 		data["cellTemperatureStatus"] = "average"
 
 	data["isBeakerLoaded"] = beaker ? 1 : 0
@@ -236,14 +236,13 @@
 		return
 	if(default_part_replacement(user, G))
 		return
-	if(istype(G, /obj/item/weapon/reagent_containers/glass))
+	if(istype(G, /obj/item/reagent_containers/vessel))
 		if(beaker)
 			to_chat(user, SPAN("warning", "A beaker is already loaded into the machine."))
 			return
-
-		beaker =  G
-		user.drop_item()
-		G.forceMove(src)
+		if(!user.drop(G, src))
+			return
+		beaker = G
 		user.visible_message("[user] adds \a [G] to \the [src]!", "You add \a [G] to \the [src]!")
 	else if(istype(G, /obj/item/grab))
 		if(!ismob(G:affecting))
@@ -296,7 +295,7 @@
 	if(air_contents.total_moles < 10)
 		return
 	if(occupant)
-		if(occupant.stat == DEAD)
+		if(occupant.is_ic_dead())
 			return
 
 		// Just empty a cryo if occupant isn't here
@@ -337,7 +336,7 @@
 	var/air_heat_capacity = air_contents.heat_capacity()
 	var/combined_heat_capacity = current_heat_capacity + air_heat_capacity
 	if(combined_heat_capacity > 0)
-		var/combined_energy = T20C*current_heat_capacity + air_heat_capacity*air_contents.temperature
+		var/combined_energy = (20 CELSIUS) * current_heat_capacity + air_heat_capacity * air_contents.temperature
 		air_contents.temperature = combined_energy/combined_heat_capacity
 
 /obj/machinery/atmospherics/unary/cryo_cell/proc/expel_gas()
@@ -386,7 +385,7 @@
 	M.stop_pulling()
 	M.forceMove(src)
 	M.ExtinguishMob()
-	if(M.stat != DEAD)
+	if(!M.is_ic_dead() && air_contents.temperature <= 278)
 		to_chat(M, SPAN("notice", "<b>You feel a cold liquid surround you. Your skin starts to freeze up.</b>"))
 	occupant = M
 	current_heat_capacity = HEAT_CAPACITY_HUMAN

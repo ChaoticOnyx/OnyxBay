@@ -5,7 +5,9 @@
 /obj/item/organ/internal/stack
 	name = "neural lace"
 	parent_organ = BP_HEAD
+	icon = 'icons/mob/human_races/organs/cyber.dmi'
 	icon_state = "cortical-stack"
+	override_species_icon = TRUE
 	organ_tag = BP_STACK
 	status = ORGAN_ROBOTIC
 	vital = 1
@@ -31,7 +33,7 @@
 	invasive = 1
 
 /obj/item/organ/internal/stack/proc/do_backup()
-	if(owner && owner.stat != DEAD && !is_broken() && owner.mind)
+	if(owner && !owner.is_ooc_dead() && !is_broken() && owner.mind)
 		languages = owner.languages.Copy()
 		backup = owner.mind
 		default_language = owner.default_language
@@ -44,26 +46,28 @@
 	robotize()
 
 /obj/item/organ/internal/stack/proc/backup_inviable()
-	return 	(!istype(backup) || backup == owner.mind || (backup.current && backup.current.stat != DEAD))
+	return 	(!istype(backup) || backup == owner.mind || (backup.current && !backup.current.is_ooc_dead()))
 
 /obj/item/organ/internal/stack/replaced()
 	if(!..()) return 0
 
-	if(owner && !backup_inviable())
+	if(owner && !backup_inviable() && owner.has_brain())
 		var/current_owner = owner
-		var/response = input(find_dead_player(ownerckey, 1), "Your neural backup has been placed into a new body. Do you wish to return to life?", "Resleeving") as anything in list("Yes", "No")
-		if(src && response == "Yes" && owner == current_owner)
-			overwrite()
+		var/mob/dead_owner = find_dead_player(ownerckey, 1)
+		if(istype(dead_owner))
+			var/response = input(dead_owner, "Your neural backup has been placed into a new body. Do you wish to return to life?", "Resleeving") as anything in list("Yes", "No")
+			if(src && response == "Yes" && owner == current_owner)
+				overwrite()
 	sleep(-1)
 	do_backup()
 
 	return 1
 
-/obj/item/organ/internal/stack/removed()
+/obj/item/organ/internal/stack/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	do_backup()
 	..()
 
-/obj/item/organ/internal/stack/vox/removed()
+/obj/item/organ/internal/stack/vox/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	var/obj/item/organ/external/head = owner.get_organ(parent_organ)
 	owner.visible_message("<span class='danger'>\The [src] rips gaping holes in \the [owner]'s [head.name] as it is torn loose!</span>")
 	head.take_external_damage(rand(15,20))

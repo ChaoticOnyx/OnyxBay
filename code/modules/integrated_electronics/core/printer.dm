@@ -198,12 +198,12 @@
 
 	HTML += "Identity-lock: "
 	if(idlock)
-		var/obj/item/weapon/card/id/id = idlock.resolve()
+		var/obj/item/card/id/id = idlock.resolve()
 		HTML+= "[id.name] | <A href='?src=\ref[src];id-lock=TRUE'>Reset</a><br>"
 	else
 		HTML += "None | Reset<br>"
 
-	if(config.allow_ic_printing || debug)
+	if(!config.misc.disable_circuit_printing || debug)
 		HTML += "Assembly cloning: [can_clone ? (fast_clone ? "Instant" : "Available") : "Unavailable"].<br>"
 
 	HTML += "Circuits available: [upgraded || debug ? "Advanced":"Regular"]."
@@ -211,7 +211,7 @@
 		HTML += "<br>Crossed out circuits mean that the printer is not sufficiently upgraded to create that circuit."
 
 	HTML += "<hr>"
-	if((can_clone && config.allow_ic_printing) || debug)
+	if((can_clone && !config.misc.disable_circuit_printing) || debug)
 		HTML += "Here you can load script for your assembly.<br>"
 		if(!cloning)
 			HTML += " <A href='?src=\ref[src];print=load'>Load Program</a> "
@@ -285,8 +285,8 @@
 		if(!debug && !subtract_material_costs(cost, usr))
 			return
 
-		var/obj/item/built = new build_type(get_turf(src))
-		usr.put_in_hands(built)
+		var/obj/item/built = new build_type(drop_location())
+		usr.pick_or_drop(built)
 
 		if(istype(built, /obj/item/device/electronic_assembly))
 			var/obj/item/device/electronic_assembly/E = built
@@ -299,7 +299,7 @@
 		playsound(src, 'sound/items/jaws_pry.ogg', 50, TRUE)
 
 	if(href_list["print"])
-		if(!config.allow_ic_printing && !debug)
+		if(config.misc.disable_circuit_printing && !debug)
 			to_chat(usr, SPAN_WARNING("CentCom has disabled printing of custom circuitry due to recent allegations of copyright infringement."))
 			return
 		if(!can_clone) // Copying and printing ICs is cloning

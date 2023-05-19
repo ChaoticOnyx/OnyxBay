@@ -23,7 +23,7 @@
 
 /obj/item/organ/internal/eyes/robotize()
 	..()
-	name = "optical sensors"
+	SetName("optical sensors")
 	icon_state = "eyes-prosthetic"
 	dead_icon = "eyes-prosthetic-br"
 	update_colour()
@@ -53,6 +53,8 @@
 		owner.g_eyes ? owner.g_eyes : 0,
 		owner.b_eyes ? owner.b_eyes : 0
 		)
+	if(owner?.mind?.special_role == "Zombie")
+		eye_colour = list(220,220,220)
 
 /obj/item/organ/internal/eyes/take_internal_damage(amount, silent=0)
 	var/oldbroken = is_broken()
@@ -60,7 +62,7 @@
 	if(is_broken() && !oldbroken && owner && !owner.stat)
 		to_chat(owner, "<span class='danger'>You go blind!</span>")
 
-/obj/item/organ/internal/eyes/Process() //Eye damage replaces the old eye_stat var.
+/obj/item/organ/internal/eyes/think() //Eye damage replaces the old eye_stat var.
 	..()
 	if(!owner)
 		return

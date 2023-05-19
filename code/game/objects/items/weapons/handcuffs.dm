@@ -1,7 +1,7 @@
 #define SYNDICUFFS_ON_APPLY 0
 #define SYNDICUFFS_ON_REMOVE 1
 
-/obj/item/weapon/handcuffs
+/obj/item/handcuffs
 	name = "handcuffs"
 	desc = "Use this to keep prisoners in line."
 	gender = PLURAL
@@ -15,7 +15,6 @@
 	mod_weight = 0.5
 	mod_reach = 0.5
 	mod_handy = 0.5
-	throw_speed = 2
 	throw_range = 5
 	origin_tech = list(TECH_MATERIAL = 1)
 	matter = list(MATERIAL_STEEL = 500)
@@ -25,14 +24,14 @@
 	var/cuff_sound = "handcuffs"
 	var/cuff_type = "handcuffs"
 
-/obj/item/weapon/handcuffs/get_icon_state(slot)
+/obj/item/handcuffs/get_icon_state(slot)
 	if(slot == slot_handcuffed_str)
 		return "handcuff1"
 	if(slot == slot_legcuffed_str)
 		return "legcuff1"
 	return ..()
 
-/obj/item/weapon/handcuffs/attack(mob/living/carbon/C, mob/living/user)
+/obj/item/handcuffs/attack(mob/living/carbon/C, mob/living/user)
 
 	if(!user.IsAdvancedToolUser())
 		return
@@ -59,7 +58,7 @@
 	else
 		..()
 
-/obj/item/weapon/handcuffs/proc/can_place(mob/target, mob/user)
+/obj/item/handcuffs/proc/can_place(mob/target, mob/user)
 	if(user == target || istype(user, /mob/living/silicon/robot) || istype(user, /mob/living/bot))
 		return 1
 	else
@@ -68,7 +67,7 @@
 				return 1
 	return 0
 
-/obj/item/weapon/handcuffs/proc/place_handcuffs(mob/living/carbon/target, mob/user)
+/obj/item/handcuffs/proc/place_handcuffs(mob/living/carbon/target, mob/user)
 	playsound(src.loc, cuff_sound, 30, 1, -2)
 
 	var/mob/living/carbon/human/H = target
@@ -79,7 +78,7 @@
 		to_chat(user, "<span class='danger'>\The [H] needs at least two wrists before you can cuff them together!</span>")
 		return 0
 
-	if(istype(H.gloves,/obj/item/clothing/gloves/rig) && !elastic) // Can't cuff someone who's in a deployed hardsuit.
+	if(istype(H.gloves,/obj/item/clothing/gloves/rig) && !elastic) // Can't cuff someone who's in a deployed powersuit.
 		to_chat(user, "<span class='danger'>\The [src] won't fit around \the [H.gloves]!</span>")
 		return 0
 
@@ -100,26 +99,26 @@
 	user.visible_message("<span class='danger'>\The [user] has put [cuff_type] on \the [H]!</span>")
 
 	// Apply cuffs.
-	var/obj/item/weapon/handcuffs/cuffs = src
+	var/obj/item/handcuffs/cuffs = src
 	if(dispenser)
 		cuffs = new(get_turf(user))
 	else
-		user.drop_from_inventory(cuffs)
-	target.equip_to_slot(cuffs,slot_handcuffed)
+		user.drop(cuffs, force = TRUE)
+	target.equip_to_slot(cuffs, slot_handcuffed)
 	on_restraint_apply(src)
 	return 1
 
 var/last_chew = 0
 /mob/living/carbon/human/RestrainedClickOn(atom/A)
-	if (A != src) return ..()
-	if (last_chew + 26 > world.time) return
+	if(A != src) return ..()
+	if(last_chew + 26 > world.time) return
 
 	var/mob/living/carbon/human/H = A
-	if (!H.handcuffed) return
-	if (H.a_intent != I_HURT) return
-	if (H.zone_sel.selecting != BP_MOUTH) return
-	if (H.wear_mask) return
-	if (istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket)) return
+	if(!H.handcuffed) return
+	if(H.a_intent != I_HURT) return
+	if(H.zone_sel.selecting != BP_MOUTH) return
+	if(H.wear_mask) return
+	if(istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket)) return
 
 	var/obj/item/organ/external/O = H.organs_by_name[(H.hand ? BP_L_HAND : BP_R_HAND)]
 	if (!O) return
@@ -131,7 +130,7 @@ var/last_chew = 0
 
 	last_chew = world.time
 
-/obj/item/weapon/handcuffs/cable
+/obj/item/handcuffs/cable
 	name = "cable restraints"
 	desc = "Looks like some cables tied together. Could be used to tie something up."
 	icon_state = "cuff_white"
@@ -140,49 +139,49 @@ var/last_chew = 0
 	cuff_type = "cable restraints"
 	elastic = 1
 
-/obj/item/weapon/handcuffs/cable/red
+/obj/item/handcuffs/cable/red
 	color = "#dd0000"
 
-/obj/item/weapon/handcuffs/cable/yellow
+/obj/item/handcuffs/cable/yellow
 	color = "#dddd00"
 
-/obj/item/weapon/handcuffs/cable/blue
+/obj/item/handcuffs/cable/blue
 	color = "#0000dd"
 
-/obj/item/weapon/handcuffs/cable/green
+/obj/item/handcuffs/cable/green
 	color = "#00dd00"
 
-/obj/item/weapon/handcuffs/cable/pink
+/obj/item/handcuffs/cable/pink
 	color = "#dd00dd"
 
-/obj/item/weapon/handcuffs/cable/orange
+/obj/item/handcuffs/cable/orange
 	color = "#dd8800"
 
-/obj/item/weapon/handcuffs/cable/cyan
+/obj/item/handcuffs/cable/cyan
 	color = "#00dddd"
 
-/obj/item/weapon/handcuffs/cable/white
+/obj/item/handcuffs/cable/white
 	color = "#ffffff"
 
-/obj/item/weapon/handcuffs/cable/attackby(obj/item/I, mob/user as mob)
+/obj/item/handcuffs/cable/attackby(obj/item/I, mob/user as mob)
 	..()
 	if(istype(I, /obj/item/stack/rods))
 		var/obj/item/stack/rods/R = I
 		if (R.use(1))
-			var/obj/item/weapon/material/wirerod/W = new(get_turf(user))
-			user.put_in_hands(W)
+			var/obj/item/material/wirerod/W = new(get_turf(user))
+			user.pick_or_drop(W)
 			to_chat(user, "<span class='notice'>You wrap the cable restraint around the top of the rod.</span>")
 			qdel(src)
 			update_icon(user)
 
-/obj/item/weapon/handcuffs/cyborg
+/obj/item/handcuffs/cyborg
 	dispenser = 1
 
-/obj/item/weapon/handcuffs/cyborg/afterattack(atom/A, mob/user as mob, proximity)
-	if (istype(A,/obj/item/weapon/handcuffs))
+/obj/item/handcuffs/cyborg/afterattack(atom/A, mob/user, proximity)
+	if (istype(A,/obj/item/handcuffs))
 		qdel(A)
 
-/obj/item/weapon/handcuffs/cable/tape
+/obj/item/handcuffs/cable/tape
 	name = "tape restraints"
 	desc = "DIY!"
 	icon_state = "tape_cross"
@@ -192,12 +191,12 @@ var/last_chew = 0
 	cuff_type = "duct tape"
 
 //Syndicate Cuffs. Disguised as regular cuffs, they are pretty explosive
-/obj/item/weapon/handcuffs/syndicate
+/obj/item/handcuffs/syndicate
 	var/countdown_time   = 3 SECONDS
 	var/mode             = SYNDICUFFS_ON_APPLY //Handled at this level, Syndicate Cuffs code
 	var/charge_detonated = FALSE
 
-/obj/item/weapon/handcuffs/syndicate/attack_self(mob/user)
+/obj/item/handcuffs/syndicate/attack_self(mob/user)
 
 	mode = !mode
 
@@ -207,19 +206,19 @@ var/last_chew = 0
 		if(SYNDICUFFS_ON_REMOVE)
 			to_chat(user, "<span class='notice'>You pull the rotating arm back until you hear one click. \The [src] will detonate when removed.</span>")
 
-/obj/item/weapon/handcuffs/syndicate/on_restraint_apply(mob/user, slot)
+/obj/item/handcuffs/syndicate/on_restraint_apply(mob/user, slot)
 	if(mode == SYNDICUFFS_ON_APPLY && !charge_detonated)
 		detonate(1)
 
 	..()
 
-/obj/item/weapon/handcuffs/syndicate/on_restraint_removal(mob/living/carbon/C)
+/obj/item/handcuffs/syndicate/on_restraint_removal(mob/living/carbon/C)
 	if(mode == SYNDICUFFS_ON_REMOVE && !charge_detonated)
 		detonate(0) //This handles cleaning up the inventory already
 		return //Don't clean up twice, we don't want runtimes
 
 //C4 and EMPs don't mix, will always explode at severity 1, and likely to explode at severity 2
-/obj/item/weapon/handcuffs/syndicate/emp_act(severity)
+/obj/item/handcuffs/syndicate/emp_act(severity)
 
 	switch(severity)
 		if(1)
@@ -231,7 +230,7 @@ var/last_chew = 0
 			if(prob(50))
 				detonate(1)
 
-/obj/item/weapon/handcuffs/syndicate/ex_act(severity)
+/obj/item/handcuffs/syndicate/ex_act(severity)
 
 	switch(severity)
 		if(1)
@@ -248,7 +247,7 @@ var/last_chew = 0
 
 	qdel(src)
 
-/obj/item/weapon/handcuffs/syndicate/proc/detonate(countdown)
+/obj/item/handcuffs/syndicate/proc/detonate(countdown)
 	set waitfor = FALSE
 	if(charge_detonated)
 		return
@@ -257,5 +256,16 @@ var/last_chew = 0
 	if(countdown)
 		sleep(countdown_time)
 
-	explosion(get_turf(src), 0, 1, 3, 0)
+	if(istype(src.loc, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = src.loc
+
+		if(H.get_inventory_slot(src) == slot_handcuffed)
+			var/obj/item/organ/external/l_hand = H.get_organ(BP_L_HAND)
+			var/obj/item/organ/external/r_hand = H.get_organ(BP_R_HAND)
+			if(l_hand)
+				l_hand.droplimb(0, DROPLIMB_BLUNT)
+			if(r_hand)
+				r_hand.droplimb(0, DROPLIMB_BLUNT)
+
+	explosion(get_turf(src), -1, 1, 3, 0)
 	qdel(src)

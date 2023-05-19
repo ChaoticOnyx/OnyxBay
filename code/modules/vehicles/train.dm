@@ -8,6 +8,7 @@
 	maxhealth = 100
 	fire_dam_coeff = 0.7
 	brute_dam_coeff = 0.5
+	move_glide_size = 4
 
 	var/passenger_allowed = 1
 
@@ -86,7 +87,7 @@
 
 	if(user != load)
 		if(user in src)		//for handling players stuck in src - this shouldn't happen - but just in case it does
-			user.forceMove(T)
+			user.forceMove(T, unbuckle_mob = FALSE)
 			return 1
 		return 0
 

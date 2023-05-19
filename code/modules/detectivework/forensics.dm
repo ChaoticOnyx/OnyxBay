@@ -1,4 +1,4 @@
-/obj/item/weapon/forensics
+/obj/item/forensics
 	icon = 'icons/obj/forensics.dmi'
 	w_class = ITEM_SIZE_TINY
 
@@ -31,7 +31,7 @@ var/const/FINGERPRINT_COMPLETE = 6
 	return 1
 
 /atom/proc/add_fingerprint(mob/M, ignoregloves, obj/item/tool)
-	if(isnull(M)) return
+	if(QDELETED(M)) return
 	if(isAI(M)) return
 	if(!M || !M.key)
 		return

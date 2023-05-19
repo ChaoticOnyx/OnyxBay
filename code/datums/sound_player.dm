@@ -117,7 +117,7 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	listeners = list()
 	listener_status = list()
 
-	GLOB.destroyed_event.register(source, src, /datum/proc/qdel_self)
+	register_signal(source, SIGNAL_QDELETING, /datum/proc/qdel_self)
 
 	if(ismovable(source))
 		proxy_listener = new(source, /datum/sound_token/proc/PrivAddListener, /datum/sound_token/proc/PrivLocateListeners, range, proc_owner = src)
@@ -158,7 +158,7 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	listeners = null
 	listener_status = null
 
-	GLOB.destroyed_event.unregister(source, src, /datum/proc/qdel_self)
+	unregister_signal(source, SIGNAL_QDELETING)
 	QDEL_NULL(proxy_listener)
 	source = null
 
@@ -205,16 +205,16 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 
 	listeners += listener
 
-	GLOB.moved_event.register(listener, src, /datum/sound_token/proc/PrivUpdateListenerLoc)
-	GLOB.destroyed_event.register(listener, src, /datum/sound_token/proc/PrivRemoveListener)
+	register_signal(listener, SIGNAL_MOVED, /datum/sound_token/proc/PrivUpdateListenerLoc, override = TRUE)
+	register_signal(listener, SIGNAL_QDELETING, /datum/sound_token/proc/PrivRemoveListener, override = TRUE)
 
 	PrivUpdateListenerLoc(listener, FALSE)
 
 /datum/sound_token/proc/PrivRemoveListener(atom/listener, sound/null_sound)
 	null_sound = null_sound || new(channel = sound.channel)
 	sound_to(listener, null_sound)
-	GLOB.moved_event.unregister(listener, src, /datum/sound_token/proc/PrivUpdateListenerLoc)
-	GLOB.destroyed_event.unregister(listener, src, /datum/sound_token/proc/PrivRemoveListener)
+	unregister_signal(listener, SIGNAL_MOVED)
+	unregister_signal(listener, SIGNAL_QDELETING, /datum/sound_token/proc/PrivRemoveListener)
 	listeners -= listener
 
 /datum/sound_token/proc/PrivUpdateListenerLoc(atom/listener, update_sound = TRUE)
@@ -277,7 +277,7 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	return sound.environment
 
 /obj/sound_test
-	var/sound = 'sound/misc/TestLoop1.ogg'
+	var/sound = 'sound/music/classic/TestLoop1.ogg'
 
 /obj/sound_test/New()
 	..()

@@ -217,27 +217,27 @@ span.text-tag {
   &-ooc {
     background-color: #5353ff;
   }
-  
+
   &-mod {
     background-color: #9611D4;
   }
-  
+
   &-admin {
     background-color: #735638;
   }
-  
+
   &-aooc {
     background-color: #960018;
   }
-  
+
   &-dead {
     background-color: #c380ff;
   }
-  
+
   &-looc {
     background-color: #098080;
   }
-  
+
   &-dooc {
     background-color: #5869EA;
   }
@@ -600,6 +600,11 @@ h2.alert {
   font-style: italic;
 }
 
+.spider {
+  color: #4d004d;
+  font-weight: bold;
+  font-size: 185%;
+}
 /* Languages */
 
 .alien {
@@ -745,7 +750,7 @@ h2.alert {
 
 .spell-error {
   font-weight: bold;
-  
+
   .correct-word {
     border-bottom: green solid 0.15rem;
   }
@@ -753,4 +758,13 @@ h2.alert {
   .error-word {
     border-bottom: red solid 0.15rem;
   }
+}
+
+.Examine {
+  background-color: #e6e6e6;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  padding: 6px;
+  max-width: 120ch;
+  border-bottom: 1px solid #b3b3b3;
 }

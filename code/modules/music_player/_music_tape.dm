@@ -5,7 +5,7 @@
 	icon = 'icons/obj/device.dmi'
 	icon_state = "tape_white"
 	item_state = "analyzer"
-	w_class = ITEM_SIZE_TINY
+	w_class = ITEM_SIZE_SMALL
 	force = 1
 	throwforce = 0
 
@@ -15,6 +15,8 @@
 	var/ruined = 0
 
 	var/datum/track/track
+
+	var/list/datum/track/tracks = list()
 	var/uploader_ckey
 
 /obj/item/music_tape/Initialize()
@@ -27,7 +29,7 @@
 	if(ruined)
 		overlays += "ribbonoverlay"
 
-/obj/item/music_tape/examine(mob/user)
+/obj/item/music_tape/_examine_text(mob/user)
 	. = ..()
 	if(track?.title)
 		. += "\n[SPAN_NOTICE("It's labeled as \"[track.title]\".")]"
@@ -40,14 +42,14 @@
 		ruin()
 
 /obj/item/music_tape/attackby(obj/item/I, mob/user, params)
-	if(ruined && (isScrewdriver(I) || istype(I, /obj/item/weapon/pen)))
+	if(ruined && (isScrewdriver(I) || istype(I, /obj/item/pen)))
 		to_chat(user, SPAN_NOTICE("You start winding \the [src] back in..."))
 		if(do_after(user, 120, target = src))
 			to_chat(user, SPAN_NOTICE("You wound \the [src] back in."))
 			fix()
 		return
 
-	if(istype(I, /obj/item/weapon/pen))
+	if(istype(I, /obj/item/pen))
 		if(loc == user && !user.incapacitated())
 			var/new_name = input(user, "What would you like to label \the [src]?", "\improper [src] labeling", name) as null|text
 			if(isnull(new_name) || new_name == name) return
@@ -84,3 +86,20 @@
 /obj/item/music_tape/proc/fix()
 	ruined = FALSE
 	update_icon()
+
+// Random music tapes for jukeboxes with multiple tracks
+/obj/item/music_tape/random
+	name = "Random tape"
+	var/list/tracklist
+
+/obj/item/music_tape/random/Initialize()
+	. = ..()
+	tracks = setup_music_tracks(tracklist)
+
+/obj/item/music_tape/random/proc/setup_music_tracks(list/tracklist)
+	. = list()
+	for(var/i=1 to rand(3,6))
+		var/track_name = pick(tracklist)
+		if(track_name)
+			. += new /datum/track(track_name, tracklist[track_name])
+			tracklist -= track_name

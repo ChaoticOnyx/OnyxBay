@@ -171,11 +171,7 @@
 			to_chat(holder,"<B>[talker.name]</B> points at [holder.name]")
 			to_chat(holder,"<span class='game say'><span class='name'>[talker.name]</span> says something softly.</span>")
 
-		var/image/speech_bubble = image('icons/mob/talk.dmi',talker,"h[holder.say_test(message)]")
-		speech_bubble.alpha = 0
-		speech_bubble.plane = MOUSE_INVISIBLE_PLANE
-		speech_bubble.layer = FLOAT_LAYER
-		INVOKE_ASYNC(GLOBAL_PROC, /.proc/animate_speech_bubble, speech_bubble, list(holder.client), 3 SECONDS)
+		show_bubble_to_client(holder.bubble_icon, holder.say_test(message), talker, holder.client)
 
 		sanity-- //don't spam them in very populated rooms.
 		if(!sanity)
@@ -321,7 +317,7 @@
 		creatures += C
 	creatures -= usr
 	var/mob/target = input("Who do you want to project your mind to ?") as null|anything in creatures
-	if (isnull(target))
+	if (QDELETED(target))
 		return
 
 	var/msg = sanitize(input(usr, "What do you wish to transmit"))
@@ -432,7 +428,7 @@
 	if(isghost(fake))
 		fake_look.invisibility = 0
 	if(fake.lying)
-		fake_look.transform = turn(fake.transform, -90)
+		fake_look.SetTransform(others = fake.transform, rotation = -90)
 	holder.client.images |= fake_look
 	log_misc("[holder.name] is hallucinating that [origin.name] is the [fake.name]")
 

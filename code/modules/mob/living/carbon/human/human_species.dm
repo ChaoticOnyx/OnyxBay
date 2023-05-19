@@ -24,16 +24,22 @@
 /mob/living/carbon/human/dummy/mannequin/InitializeHud()
 	return	// Mannequins don't get HUDs
 
+/mob/living/carbon/human/dummy/mannequin/should_have_organ()
+	return FALSE // Mannequins are great no organs required
+
+/mob/living/carbon/human/dummy/mannequin/Life()
+	return // Because we never know
+
 /mob/living/carbon/human/skrell/New(new_loc)
 	h_style = "Skrell Male Tentacles"
 	..(new_loc, SPECIES_SKRELL)
 
 /mob/living/carbon/human/tajaran/New(new_loc)
-	h_style = "Tajaran Ears"
+	h_style = "Ears"
 	..(new_loc, SPECIES_TAJARA)
 
 /mob/living/carbon/human/unathi/New(new_loc)
-	h_style = "Unathi Horns"
+	h_style = "Horns"
 	..(new_loc, SPECIES_UNATHI)
 
 /mob/living/carbon/human/vox/New(new_loc)
@@ -79,3 +85,6 @@
 	..(new_loc, "Vat-Grown Human")
 	gender = "female"
 	regenerate_icons()
+
+/mob/living/carbon/human/abductor/New(new_loc)
+	..(new_loc, SPECIES_ABDUCTOR)

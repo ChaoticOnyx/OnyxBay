@@ -19,10 +19,11 @@
 
 /obj/item/organ/internal/stomach/robotize()
 	..()
-	name = "prosthetic stomach"
+	SetName("nutrient processor")
 	icon_state = "stomach-prosthetic"
+	dead_icon = "stomach-prosthetic-br"
 
-/obj/item/organ/internal/stomach/removed()
+/obj/item/organ/internal/stomach/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	. = ..()
 	ingested.my_atom = src
 	ingested.parent = null
@@ -40,17 +41,19 @@
 
 #define STOMACH_VOLUME 65
 
-/obj/item/organ/internal/stomach/Process()
+/obj/item/organ/internal/stomach/think()
 	..()
 
-	if(owner)
+	if(!owner)
+		return
+	if(!isundead(owner))
 		var/functioning = is_usable()
 		if(damage >= min_bruised_damage && prob((damage / max_damage) * 100))
 			functioning = FALSE
 
 		if(functioning)
 			for(var/mob/living/M in contents)
-				if(M.stat == DEAD)
+				if(M.is_ooc_dead())
 					qdel(M)
 					continue
 

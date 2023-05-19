@@ -66,7 +66,7 @@
 	equip_cooldown = 8
 	name = "\improper CH-PS \"Immolator\" laser"
 	icon_state = "mecha_laser"
-	energy_drain = 3 KILOWATTS
+	energy_drain = 3 KILO WATTS
 	projectile = /obj/item/projectile/energy/laser/mid
 	fire_sound = 'sound/effects/weapons/energy/Laser.ogg'
 
@@ -75,7 +75,7 @@
 	name = "jury-rigged welder-laser"
 	desc = "While not regulation, this inefficient weapon can be attached to working exo-suits in desperate, or malicious, times."
 	icon_state = "mecha_laser_rigged"
-	energy_drain = 10 KILOWATTS // Inefficient
+	energy_drain = 10 KILO WATTS // Inefficient
 	projectile = /obj/item/projectile/energy/laser/small
 	fire_sound = 'sound/effects/weapons/energy/Laser.ogg'
 	required_type = list(/obj/mecha/combat, /obj/mecha/working)
@@ -84,7 +84,7 @@
 	equip_cooldown = 15
 	name = "\improper CH-LC \"Solaris\" laser cannon"
 	icon_state = "mecha_laser_cannon"
-	energy_drain = 6 KILOWATTS
+	energy_drain = 6 KILO WATTS
 	projectile = /obj/item/projectile/energy/laser/heavy
 	fire_sound = 'sound/effects/weapons/energy/lasercannonfire.ogg'
 
@@ -92,7 +92,7 @@
 	equip_cooldown = 40
 	name = "mkIV ion heavy cannon"
 	icon_state = "mecha_ion"
-	energy_drain = 25 KILOWATTS
+	energy_drain = 25 KILO WATTS
 	projectile = /obj/item/projectile/ion
 	fire_sound = 'sound/effects/weapons/energy/Laser.ogg'
 
@@ -100,7 +100,7 @@
 	equip_cooldown = 30
 	name = "eZ-13 mk2 heavy pulse rifle"
 	icon_state = "mecha_pulse"
-	energy_drain = 15 KILOWATTS
+	energy_drain = 15 KILO WATTS
 	origin_tech = list(TECH_MATERIAL = 3, TECH_COMBAT = 6, TECH_POWER = 4)
 	projectile = /obj/item/projectile/beam/pulse/heavy
 	fire_sound = 'sound/effects/weapons/energy/marauder.ogg'
@@ -119,7 +119,7 @@
 /obj/item/mecha_parts/mecha_equipment/weapon/energy/taser
 	name = "\improper PBT \"Pacifier\" mounted taser"
 	icon_state = "mecha_taser"
-	energy_drain = 2 KILOWATTS
+	energy_drain = 2 KILO WATTS
 	equip_cooldown = 8
 	projectile = /obj/item/projectile/beam/stun/heavy
 	fire_sound = 'sound/effects/weapons/energy/Taser.ogg'
@@ -128,9 +128,11 @@
 /obj/item/mecha_parts/mecha_equipment/weapon/honker
 	name = "\improper HoNkER BlAsT 5000"
 	icon_state = "mecha_honker"
-	energy_drain = 200 KILOWATTS
+	energy_drain = 200 KILO WATTS
 	equip_cooldown = 150
 	range = MELEE|RANGED
+	equip_slot = BACK
+	need_colorize = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/honker/can_attach(obj/mecha/combat/honker/M)
 	if(!istype(M))
@@ -204,7 +206,7 @@
 	projectiles = 20
 	projectiles_per_shot = 1
 	deviation = 0.5
-	projectile_energy_cost = 50 KILOWATTS
+	projectile_energy_cost = 50 KILO WATTS
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/lmg
 	name = "\improper Ultra AC 2"
@@ -215,7 +217,7 @@
 	projectiles = 300
 	projectiles_per_shot = 3
 	deviation = 0.3
-	projectile_energy_cost = 40 KILOWATTS
+	projectile_energy_cost = 40 KILO WATTS
 	fire_cooldown = 2
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/cannon
@@ -227,11 +229,12 @@
 	projectiles = 15
 	projectiles_per_shot = 1
 	deviation = 0
-	projectile_energy_cost = 150 KILOWATTS
+	projectile_energy_cost = 150 KILO WATTS
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack
-	var/missile_speed = 2
+	var/missile_speed = 1
 	var/missile_range = 30
+	equip_slot = BACK
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/Fire(atom/movable/AM, atom/target)
 	AM.throw_at(target,missile_range, missile_speed, chassis)
@@ -244,10 +247,12 @@
 	auto_rearm = 1
 	fire_cooldown = 20
 	projectiles_per_shot = 1
-	projectile_energy_cost = 40 KILOWATTS
+	projectile_energy_cost = 40 KILO WATTS
 	missile_speed = 1
 	missile_range = 15
 	required_type = /obj/mecha  //Why restrict it to just mining or combat mechs?
+	equip_slot = HAND
+	need_colorize = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flare/Fire(atom/movable/AM, atom/target, turf/aimloc)
 	var/obj/item/device/flashlight/flare/fired = AM
@@ -260,7 +265,7 @@
 	projectile = /obj/item/missile
 	fire_sound = 'sound/effects/bang.ogg'
 	projectiles = 8
-	projectile_energy_cost = 200 KILOWATTS
+	projectile_energy_cost = 200 KILO WATTS
 	equip_cooldown = 60
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/explosive/Fire(atom/movable/AM, atom/target)
@@ -273,35 +278,37 @@
 	icon_state = "missile"
 	var/primed = null
 	throwforce = 120
+	throw_spin = FALSE
 
-	throw_impact(atom/hit_atom)
-		if(primed)
-			explosion(hit_atom, 0, 1, 4, 4)
-			qdel(src)
-		else
-			..()
-		return
+/obj/item/missile/throw_impact(atom/hit_atom)
+	if(primed)
+		explosion(hit_atom, 0, 1, 4, 4)
+		qdel(src)
+	else
+		..()
+	return
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flashbang
 	name = "\improper SGL-6 grenade launcher"
 	icon_state = "mecha_grenadelnchr"
-	projectile = /obj/item/weapon/grenade/flashbang
+	projectile = /obj/item/grenade/flashbang
 	fire_sound = 'sound/effects/bang.ogg'
 	projectiles = 6
 	missile_speed = 1.5
-	projectile_energy_cost = 200 KILOWATTS
+	projectile_energy_cost = 200 KILO WATTS
 	equip_cooldown = 60
+	equip_slot = HAND
 	var/det_time = 20
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flashbang/Fire(atom/movable/AM, atom/target)
 	..()
-	var/obj/item/weapon/grenade/flashbang/F = AM
+	var/obj/item/grenade/flashbang/F = AM
 	spawn(det_time)
 		F.detonate()
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flashbang/clusterbang//Because I am a heartless bastard -Sieve
 	name = "\improper SOP-6 grenade launcher"
-	projectile = /obj/item/weapon/grenade/flashbang/clusterbang
+	projectile = /obj/item/grenade/flashbang/clusterbang
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flashbang/clusterbang/limited/get_equip_info()//Limited version of the clusterbang launcher that can't reload
 	return "<span style=\"color:[equip_ready?"#0f0":"#f00"];\">*</span>&nbsp;[chassis.selected==src?"<b>":"<a href='?src=\ref[chassis];select_equip=\ref[src]'>"][src.name][chassis.selected==src?"</b>":"</a>"]\[[src.projectiles]\]"
@@ -312,12 +319,13 @@
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/banana_mortar
 	name = "Banana Mortar"
 	icon_state = "mecha_bananamrtr"
-	projectile = /obj/item/weapon/bananapeel
+	projectile = /obj/item/bananapeel
 	fire_sound = 'sound/items/bikehorn.ogg'
 	projectiles = 15
 	missile_speed = 1.5
-	projectile_energy_cost = 100 KILOWATTS
+	projectile_energy_cost = 100 KILO WATTS
 	equip_cooldown = 20
+	need_colorize = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/banana_mortar/can_attach(obj/mecha/combat/honker/M)
 	if(..())
@@ -329,7 +337,7 @@
 	if(!action_checks(target))
 		return
 	set_ready_state(0)
-	var/obj/item/weapon/bananapeel/B = new projectile(chassis.loc)
+	var/obj/item/bananapeel/B = new projectile(chassis.loc)
 	playsound(chassis, fire_sound, 60, 1)
 	B.throw_at(target, missile_range, missile_speed)
 	projectiles--
@@ -344,8 +352,9 @@
 	fire_sound = 'sound/items/bikehorn.ogg'
 	projectiles = 15
 	missile_speed = 1.5
-	projectile_energy_cost = 100 KILOWATTS
+	projectile_energy_cost = 100 KILO WATTS
 	equip_cooldown = 10
+	need_colorize = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/mousetrap_mortar/can_attach(obj/mecha/combat/honker/M)
 	if(..())

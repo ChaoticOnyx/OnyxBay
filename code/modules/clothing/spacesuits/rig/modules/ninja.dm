@@ -9,15 +9,15 @@
 /obj/item/rig_module/stealth_field
 
 	name = "active camouflage module"
-	desc = "A robust hardsuit-integrated stealth module."
+	desc = "A robust powersuit-integrated stealth module."
 	icon_state = "cloak"
 
 	toggleable = 1
 	disruptable = 1
 	disruptive = 0
 
-	use_power_cost = 250 KILOWATTS
-	active_power_cost = 30 KILOWATTS		// If 3 min is not enough for you, it's your personal problem~
+	use_power_cost = 250 KILO WATTS
+	active_power_cost = 30 KILO WATTS		// If 3 min is not enough for you, it's your personal problem~
 	passive_power_cost = 0
 	module_cooldown = 10 SECONDS
 	origin_tech = list(TECH_MATERIAL = 5, TECH_POWER = 6, TECH_MAGNET = 6, TECH_ILLEGAL = 6, TECH_ENGINEERING = 7)
@@ -58,9 +58,9 @@
 /obj/item/rig_module/teleporter
 
 	name = "teleportation module"
-	desc = "A complex, sleek-looking, hardsuit-integrated teleportation module."
+	desc = "A complex, sleek-looking, powersuit-integrated teleportation module."
 	icon_state = "teleporter"
-	use_power_cost = 25 KILOWATTS
+	use_power_cost = 25 KILO WATTS
 	redundant = 1
 	usable = 1
 	selectable = 1
@@ -103,7 +103,7 @@
 		to_chat(H, "<span class='warning'>You cannot teleport into solid walls.</span>")
 		return 0
 
-	if(T.z in GLOB.using_map.admin_levels)
+	if(T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_SEALED))
 		to_chat(H, "<span class='warning'>You cannot use your teleporter on this Z-level.</span>")
 		return 0
 
@@ -133,7 +133,7 @@
 /obj/item/rig_module/fabricator/energy_net
 
 	name = "net projector"
-	desc = "Some kind of complex energy projector with a hardsuit mount."
+	desc = "Some kind of complex energy projector with a powersuit mount."
 	icon_state = "enet"
 	module_cooldown = 100
 
@@ -142,8 +142,8 @@
 
 	engage_string = "Fabricate Net"
 
-	fabrication_type = /obj/item/weapon/energy_net
-	use_power_cost = 20 KILOWATTS
+	fabrication_type = /obj/item/energy_net
+	use_power_cost = 20 KILO WATTS
 	origin_tech = list(TECH_MATERIAL = 5, TECH_POWER = 6, TECH_MAGNET = 5, TECH_ILLEGAL = 4, TECH_ENGINEERING = 6)
 
 /obj/item/rig_module/fabricator/energy_net/engage(atom/target)
@@ -203,7 +203,7 @@
 			return
 
 		if(usr == holder.wearer)
-			holder.wearer.visible_message("<span class='warning'> \The [src.holder.wearer] flicks a small switch on the back of \the [src.holder].</span>",1)
+			holder.wearer.visible_message("<span class='warning'> \The [src.holder.wearer] flicks a small switch on the back of \the [src.holder].</span>")
 			sleep(blink_delay)
 
 	self_destructing = 1
@@ -221,8 +221,7 @@
 	src.holder.set_light(0, 0, 0, 2, "#000000")
 
 	explosion(get_turf(src), explosion_values[1], explosion_values[2], explosion_values[3], explosion_values[4])
-	if(holder && holder.wearer)
-		holder.wearer.drop_from_inventory(src)
+	if(holder?.wearer)
 		qdel(holder)
 	qdel(src)
 
@@ -232,7 +231,7 @@
 		return 0
 
 	//OH SHIT.
-	if(holder.wearer.stat == DEAD)
+	if(holder.wearer.is_ic_dead())
 		if(src.active)
 			engage(1)
 

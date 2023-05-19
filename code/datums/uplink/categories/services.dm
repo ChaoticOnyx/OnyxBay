@@ -62,7 +62,7 @@
 		deactivate()
 	. = ..()
 
-/obj/item/device/uplink_service/examine(user)
+/obj/item/device/uplink_service/_examine_text(user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return
@@ -151,7 +151,7 @@
 	service_label = "Ion Storm Announcement"
 
 /obj/item/device/uplink_service/fake_ion_storm/enable(mob/user = usr)
-	ion_storm_announcement()
+	GLOB.using_map.ion_storm_announcement()
 	. = ..()
 
 /*****************
@@ -161,8 +161,7 @@
 	service_label = "Radiation Storm Announcement"
 
 /obj/item/device/uplink_service/fake_rad_storm/enable(mob/user = usr)
-	var/datum/event_meta/EM = new(EVENT_LEVEL_MUNDANE, "Fake Radiation Storm", add_to_queue = 0)
-	new /datum/event/radiation_storm/syndicate(EM)
+	SSevents.fire_event_with_type(/datum/event/radiation_storm/syndicate)
 	. = ..()
 
 /***************************
@@ -185,9 +184,10 @@
 	log_and_message_admins("has activated the service '[service_label]'", user)
 	state = CURRENTLY_ACTIVE
 	var/input = sanitize(input(user, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null, extra = 0)
-	var/customname = sanitizeSafe(input(user, "Pick a title for the report.", "Title") as text|null)
 	if(!input)
+		state = AWAITING_ACTIVATION
 		return
+	var/customname = sanitizeSafe(input(user, "Pick a title for the report.", "Title") as text|null)
 	if(!customname)
 		customname = "[command_name()] Update"
 
@@ -217,10 +217,10 @@
 /obj/item/device/uplink_service/fake_crew_announcement
 	service_label = "Crew Arrival Announcement and Records"
 	var/does_announce_visit = 1
-	var/obj/item/weapon/card/id/id_card = null
+	var/obj/item/card/id/id_card = null
 
 /obj/item/device/uplink_service/fake_crew_announcement/attackby(obj/item/I, mob/user = usr)
-	id_card = I.GetIdCard()
+	id_card = I.get_id_card()
 	if(istype(id_card))
 		to_chat(user, SPAN("notice", "Card saved!"))
 

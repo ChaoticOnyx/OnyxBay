@@ -33,7 +33,7 @@
 	var/key
 	var/name				//replaces mob/var/original_name
 	var/mob/living/current
-	var/mob/living/original	//TODO: remove.not used in any meaningful way ~Carn. First I'll need to tweak the way silicon-mobs handle minds.
+	var/weakref/original_mob = null // must contain /mob/living
 	var/active = 0
 
 	var/memory
@@ -58,6 +58,7 @@
 	var/datum/changeling/changeling		// Changeling holder
 	var/datum/vampire/vampire 			// Vampire holder
 	var/datum/wizard/wizard				// Wizard holder
+	var/datum/abductor/abductor 		// Abductor holder
 	var/rev_cooldown = 0
 
 	// the world.time since the mob has been brigged, or -1 if not at all
@@ -69,6 +70,7 @@
 	//used for optional self-objectives that antagonists can give themselves, which are displayed at the end of the round.
 	var/ambitions
 	var/was_antag_given_by_storyteller = FALSE
+	var/antag_was_given_at = ""
 
 	//used to store what traits the player had picked out in their preferences before joining, in text form.
 	var/list/traits = list()
@@ -84,37 +86,52 @@
 
 /datum/mind/Destroy()
 	SSticker.minds -= src
+	set_current(null)
+	original_mob = null
 	. = ..()
+
+/datum/mind/proc/set_current(mob/new_current)
+	if(new_current && QDELETED(new_current))
+		util_crash_with("Tried to set a mind's current var to a qdeleted mob, what the fuck")
+	if(current)
+		unregister_signal(src, SIGNAL_QDELETING)
+	current = new_current
+	if(current)
+		register_signal(src, SIGNAL_QDELETING, .proc/clear_current)
+
+/datum/mind/proc/clear_current(datum/source)
+	set_current(null)
 
 /datum/mind/proc/transfer_to(mob/living/new_character)
 	if(!istype(new_character))
 		to_world_log("## DEBUG: transfer_to(): Some idiot has tried to transfer_to() a non mob/living mob. Please inform developers.")
+		return FALSE
+
 	if(current)					//remove ourself from our old body's mind variable
-		if(changeling)
-			current.remove_changeling_powers()
-			current.verbs -= /datum/changeling/proc/EvolutionMenu
 		if(vampire)
 			current.remove_vampire_powers()
 		current.mind = null
 
 		SSnano.user_transferred(current, new_character) // transfer active NanoUI instances to new user
 	if(new_character.mind)		//remove any mind currently in our new body's mind variable
-		new_character.mind.current = null
+		new_character.mind.set_current(null)
 
-	current = new_character		//link ourself to our new body
-	new_character.mind = src	//and link our new body to ourself
+	set_current(new_character) //link ourself to our new body
+	new_character.mind = src   //and link our new body to ourself
 
 	if(learned_spells && learned_spells.len)
 		restore_spells(new_character)
 
 	if(changeling)
-		new_character.make_changeling()
+		changeling.transfer_to(new_character)
 
 	if(vampire)
 		new_character.make_vampire()
 
 	if(active)
 		new_character.key = key		//now transfer the key to link the client to our new body
+
+	return TRUE
 
 /datum/mind/proc/store_memory(new_text)
 	memory += "[new_text]<BR>"
@@ -364,7 +381,7 @@
 
 		switch(href_list["implant"])
 			if("remove")
-				for(var/obj/item/weapon/implant/loyalty/I in H.contents)
+				for(var/obj/item/implant/loyalty/I in H.contents)
 					for(var/obj/item/organ/external/organs in H.organs)
 						if(I in organs.implants)
 							qdel(I)
@@ -375,7 +392,6 @@
 				to_chat(H, "<span class='danger'><font size =3>You somehow have become the recepient of a loyalty transplant, and it just activated!</font></span>")
 				H.implant_loyalty(H, override = TRUE)
 				log_admin("[key_name_admin(usr)] has loyalty implanted [current].")
-			else
 	else if (href_list["silicon"])
 		BITSET(current.hud_updateflag, SPECIALROLE_HUD)
 		switch(href_list["silicon"])
@@ -419,8 +435,8 @@
 	else if (href_list["common"])
 		switch(href_list["common"])
 			if("undress")
-				for(var/obj/item/W in current)
-					current.drop_from_inventory(W)
+				for(var/obj/item/I in current)
+					current.drop(I)
 			if("takeuplink")
 				take_uplink()
 				memory = null//Remove any memory they may have had.
@@ -468,7 +484,7 @@
 	var/is_currently_brigged = FALSE
 	if(istype(T.loc, /area/security/brig) || istype(T.loc, /area/security/prison))
 		is_currently_brigged = TRUE
-		for(var/obj/item/weapon/card/id/card in current)
+		for(var/obj/item/card/id/card in current)
 			is_currently_brigged = FALSE
 			break
 		for(var/obj/item/device/pda/P in current)
@@ -521,10 +537,10 @@
 		mind.key = key
 	else
 		mind = new /datum/mind(key)
-		mind.original = src
+		mind.original_mob = weakref(src)
 		SSticker.minds += mind
 	if(!mind.name)	mind.name = real_name
-	mind.current = src
+	mind.set_current(src)
 	if(player_is_antag(mind))
 		src.client.verbs += /client/proc/aooc
 

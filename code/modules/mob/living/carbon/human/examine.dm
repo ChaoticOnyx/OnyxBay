@@ -1,4 +1,10 @@
-/mob/living/carbon/human/examine(mob/user)
+/mob/living/carbon/human/_examine_text(mob/user)
+
+	if(istype(wear_suit, /obj/item/clothing/suit/armor/abductor/vest))
+		var/obj/item/clothing/suit/armor/abductor/vest/abd_vest = wear_suit
+		if(abd_vest.stealth_active)
+			return abd_vest.disguise.examine
+
 	var/skipgloves = 0
 	var/skipsuitstorage = 0
 	var/skipjumpsuit = 0
@@ -30,7 +36,7 @@
 	if(get_dist(user, src) > 3)
 		skipears = 1
 
-	var/list/msg = list("<span class='info'>*---------*\nThis is ")
+	var/list/msg = list("This is ")
 
 	var/datum/gender/T = gender_datums[get_gender()]
 	if(skipjumpsuit && skipface) // big suits/masks/helmets make it hard to tell their gender
@@ -43,7 +49,7 @@
 		// Just in case someone VVs the gender to something strange. It'll runtime anyway when it hits usages, better to CRASH() now with a helpful message.
 		CRASH("Gender datum was null; key was '[(skipjumpsuit && skipface) ? PLURAL : gender]'")
 
-	msg += "<EM>[src.name]</EM>"
+	msg += SPAN("info", "<em>[src.name]</em>")
 
 	var/is_synth = isSynthetic()
 	if(!(skipjumpsuit && skipface))
@@ -104,7 +110,7 @@
 	// mask
 	if(wear_mask && !skipmask)
 		var/descriptor = "on [T.his] face"
-		if(istype(wear_mask, /obj/item/weapon/grenade))
+		if(istype(wear_mask, /obj/item/grenade))
 			descriptor = "in [T.his] mouth"
 
 		if(wear_mask.blood_DNA)
@@ -130,10 +136,12 @@
 
 	// handcuffed?
 	if(handcuffed)
-		if(istype(handcuffed, /obj/item/weapon/handcuffs/cable))
-			msg += SPAN("warning", "[T.He] [T.is] \icon[handcuffed] restrained with cable!\n")
-		else
+		if(istype(handcuffed, /obj/item/handcuffs/cable))
+			msg += SPAN("warning", "[T.He] [T.is] \icon[handcuffed] restrained with [handcuffed.name]!\n")
+		else if(istype(handcuffed, /obj/item/handcuffs))
 			msg += SPAN("warning", "[T.He] [T.is] \icon[handcuffed] handcuffed!\n")
+		else if(istype(handcuffed, /obj/item/clothing/suit/straight_jacket))
+			msg += SPAN("warning", "[T.He] [T.is] \icon[handcuffed] restrained with a straight jacket!\n")
 
 	// buckled
 	if(buckled)
@@ -167,13 +175,13 @@
 		msg += "[T.He] [T.is] small halfling!\n"
 
 	var/distance = 0
-	if(isghost(user) || user?.stat == DEAD) // ghosts can see anything
+	if(isghost(user) || user?.is_ooc_dead()) // ghosts can see anything
 		distance = 1
 	else
 		distance = get_dist(user,src)
 	if(src.stat)
 		msg += SPAN("warning", "[T.He] [T.is]n't responding to anything around [T.him] and seems to be unconscious.\n")
-		if((stat == DEAD || is_asystole() || src.losebreath) && distance <= 3)
+		if((is_ic_dead() || is_asystole() || src.losebreath) && distance <= 3)
 			msg += SPAN("warning", "[T.He] [T.does] not appear to be breathing.\n")
 		if(user && ishuman(user) && !user.incapacitated() && Adjacent(user))
 			spawn(0)
@@ -190,7 +198,7 @@
 		msg += SPAN("warning", "[T.He] [T.is] on fire!.\n")
 
 	var/ssd_msg = species.get_ssd(src)
-	if(ssd_msg && (!should_have_organ(BP_BRAIN) || has_brain()) && stat != DEAD)
+	if(ssd_msg && (!should_have_organ(BP_BRAIN) || has_brain()) && !is_ic_dead())
 		if(!key)
 			msg += SPAN("deadsay", "[T.He] [T.is] [ssd_msg]. It doesn't look like [T.he] [T.is] waking up anytime soon.\n")
 		else if(!client)
@@ -257,7 +265,7 @@
 					else if(!parsedembed.Find("multiple [embedded.name]"))
 						parsedembed.Remove(embedded.name)
 						parsedembed.Add("multiple "+embedded.name)
-				wound_flavor_text["[E.name]"] += "The [wound.desc] on [T.his] [E.name] has \a [english_list(parsedembed, and_text = " and \a ", comma_text = ", \a ")] sticking out of it!<br>"
+				wound_flavor_text["[E.name]"] += "The [wound.desc] on [T.his] [E.name] has [english_list(parsedembed)] sticking out of it!<br>"
 
 	msg += "<span class='warning'>"
 	for(var/limb in wound_flavor_text)
@@ -276,7 +284,7 @@
 		var/criminal = "None"
 
 		if(wear_id)
-			var/obj/item/weapon/card/id/I = wear_id.GetIdCard()
+			var/obj/item/card/id/I = wear_id.get_id_card()
 			if(I)
 				perpname = I.registered_name
 			else
@@ -298,7 +306,7 @@
 		var/mental = "None"
 
 		if(wear_id)
-			if(istype(wear_id,/obj/item/weapon/card/id))
+			if(istype(wear_id,/obj/item/card/id))
 				perpname = wear_id:registered_name
 			else if(istype(wear_id,/obj/item/device/pda))
 				var/obj/item/device/pda/tempPda = wear_id
@@ -318,8 +326,10 @@
 
 	if(print_flavor_text()) msg += "[print_flavor_text()]\n"
 
-	msg += "*---------*</span><br>"
 	msg += applying_pressure
+
+	if (isundead(src) && !isfakeliving(src))
+		msg += SPAN("warning", "[T.He] looks unhealthy pale.\n")
 
 	if (pose)
 		if( findtext(pose,".",length(pose)) == 0 && findtext(pose,"!",length(pose)) == 0 && findtext(pose,"?",length(pose)) == 0 )
@@ -328,7 +338,7 @@
 
 	return jointext(msg, null)
 
-// Helper procedure. Called by /mob/living/carbon/human/examine() and /mob/living/carbon/human/Topic() to determine HUD access to security and medical records.
+// Helper procedure. Called by /mob/living/carbon/human/_examine_text() and /mob/living/carbon/human/Topic() to determine HUD access to security and medical records.
 /proc/hasHUD(mob/M as mob, hudtype)
 	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M

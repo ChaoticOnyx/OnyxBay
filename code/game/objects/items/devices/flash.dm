@@ -5,7 +5,6 @@
 	item_state = "flashtool"
 	throwforce = 5
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 4
 	throw_range = 10
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	origin_tech = list(TECH_MAGNET = 2, TECH_COMBAT = 1)
@@ -17,11 +16,10 @@
 	var/str_max = 7 //how powerful the effect COULD be
 
 /obj/item/device/flash/proc/clown_check(mob/user)
-	if(user && (MUTATION_CLUMSY in user.mutations) && prob(50))
-		to_chat(user, "<span class='warning'>\The [src] slips out of your hand.</span>")
-		user.drop_item()
-		return 0
-	return 1
+	if(user && (MUTATION_CLUMSY in user.mutations) && prob(50) && user.drop(src))
+		to_chat(user, SPAN("warning", "\The [src] slips out of your hand."))
+		return FALSE
+	return TRUE
 
 /obj/item/device/flash/proc/flash_recharge()
 	//capacitor recharges over time

@@ -35,6 +35,7 @@
 /datum/gear/security/kneepads
 	display_name = "kneepads"
 	path = /obj/item/clothing/accessory/kneepads
+	flags = GEAR_HAS_COLOR_SELECTION
 	allowed_roles = ARMED_ROLES
 	cost = 2
 

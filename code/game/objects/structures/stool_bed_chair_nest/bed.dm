@@ -17,7 +17,7 @@
 	buckle_dir = SOUTH
 	buckle_lying = 1
 	buckle_pixel_shift = "x=0;y=3"
-	appearance_flags = LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 	var/material/material
 	var/material/padding_material
 	var/base_icon = "bed"
@@ -104,7 +104,7 @@
 	qdel(src)
 	return
 
-/obj/structure/bed/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/bed/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		dismantle()
@@ -115,7 +115,6 @@
 			return
 		var/obj/item/stack/C = W
 		if(C.get_amount() < 1) // How??
-			user.drop_from_inventory(C)
 			qdel(C)
 			return
 		var/padding_type //This is awful but it needs to be like this until tiles are given a material var.
@@ -129,9 +128,8 @@
 			to_chat(user, "You cannot pad \the [src] with that.")
 			return
 		C.use(1)
-		if(!istype(src.loc, /turf))
-			user.drop_from_inventory(src)
-			src.loc = get_turf(src)
+		if(!isturf(loc))
+			user.drop(src, get_turf(src))
 		to_chat(user, "You add padding to \the [src].")
 		add_padding(padding_type)
 		return
@@ -162,13 +160,13 @@
 /obj/structure/bed/Move()
 	. = ..()
 	if(buckled_mob)
-		buckled_mob.forceMove(src.loc)
+		buckled_mob.forceMove(loc, unbuckle_mob = FALSE)
 
 /obj/structure/bed/forceMove()
 	. = ..()
 	if(buckled_mob)
-		if(isturf(src.loc))
-			buckled_mob.forceMove(src.loc)
+		if(isturf(loc))
+			buckled_mob.forceMove(loc, unbuckle_mob = FALSE)
 		else
 			unbuckle_mob()
 
@@ -232,7 +230,7 @@
 /obj/structure/bed/roller/update_icon()
 	return // Doesn't care about material or anything else.
 
-/obj/structure/bed/roller/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/bed/roller/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W) || istype(W, /obj/item/stack) || isWirecutter(W))
 		return
 	else if(istype(W, /obj/item/roller_holder))
@@ -273,7 +271,7 @@
 	bedtype = null
 	qdel(src)
 
-/obj/item/roller/attackby(obj/item/weapon/W, mob/user)
+/obj/item/roller/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/roller_holder))
 		var/obj/item/roller_holder/RH = W
 		if(!RH.held)

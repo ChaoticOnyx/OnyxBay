@@ -120,19 +120,19 @@
 
 /obj/machinery/door/unpowered/simple/attackby(obj/item/I as obj, mob/user as mob)
 	src.add_fingerprint(user, 0, I)
-	if(istype(I, /obj/item/weapon/key) && lock)
-		var/obj/item/weapon/key/K = I
+	if(istype(I, /obj/item/key) && lock)
+		var/obj/item/key/K = I
 		if(!lock.toggle(I))
 			to_chat(user, "<span class='warning'>\The [K] does not fit in the lock!</span>")
 		return
 	if(lock && lock.pick_lock(I,user))
 		return
 
-	if(istype(I,/obj/item/weapon/material/lock_construct))
+	if(istype(I,/obj/item/material/lock_construct))
 		if(lock)
 			to_chat(user, "<span class='warning'>\The [src] already has a lock.</span>")
 		else
-			var/obj/item/weapon/material/lock_construct/L = I
+			var/obj/item/material/lock_construct/L = I
 			lock = L.create_lock(src,user)
 		return
 
@@ -158,17 +158,20 @@
 		return
 
 	//psa to whoever coded this, there are plenty of objects that need to call attack() on doors without bludgeoning them.
-	if(src.density && istype(I, /obj/item/weapon) && user.a_intent == I_HURT && !istype(I, /obj/item/weapon/card))
-		var/obj/item/weapon/W = I
+	if(density && user.a_intent == I_HURT && !(istype(I, /obj/item/card) || istype(I, /obj/item/device/pda)))
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		if(W.damtype == BRUTE || W.damtype == BURN)
+		if(I.damtype == BRUTE || I.damtype == BURN)
 			user.do_attack_animation(src)
-			if(W.force < min_force)
-				user.visible_message("<span class='danger'>\The [user] hits \the [src] with \the [W] with no visible effect.</span>")
+			if(I.force <= 0)
+				user.visible_message(SPAN("notice", "\The [user] smacks \the [src] with \the [I] with no visible effect."))
+				playsound(loc, hitsound, 5, 1)
+			else if(I.force < min_force)
+				user.visible_message("<span class='danger'>\The [user] hits \the [src] with \the [I] with no visible effect.</span>")
+				playsound(loc, hitsound, 10, 1)
 			else
-				user.visible_message("<span class='danger'>\The [user] forcefully strikes \the [src] with \the [W]!</span>")
-				playsound(src.loc, hitsound, 100, 1)
-				take_damage(W.force)
+				user.visible_message("<span class='danger'>\The [user] forcefully strikes \the [src] with \the [I]!</span>")
+				playsound(loc, hitsound, 100, 1)
+				take_damage(I.force)
 		return
 
 	if(src.operating) return
@@ -185,7 +188,7 @@
 
 	return
 
-/obj/machinery/door/unpowered/simple/examine(mob/user)
+/obj/machinery/door/unpowered/simple/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1 && lock)
 		. += "\n<span class='notice'>It appears to have a lock.</span>"
@@ -250,17 +253,16 @@
 
 /obj/machinery/door/unpowered/simple/resin/attackby(obj/item/I, mob/user) // It's much more simple that the other doors, no lock support etc.
 	add_fingerprint(user, 0, I)
-	if(istype(I, /obj/item/weapon) && user.a_intent == I_HURT)
-		var/obj/item/weapon/W = I
+	if(user.a_intent == I_HURT)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		if(W.damtype == BRUTE || W.damtype == BURN)
+		if(istype(I) && (I.damtype == BRUTE || I.damtype == BURN))
 			user.do_attack_animation(src)
-			if(W.force < min_force)
-				user.visible_message(SPAN("danger", "\The [user] hits \the [src] with \the [W] with no visible effect."))
+			if(I.force < min_force)
+				user.visible_message(SPAN("danger", "\The [user] hits \the [src] with \the [I] with no visible effect."))
 			else
-				user.visible_message(SPAN("danger", "\The [user] forcefully strikes \the [src] with \the [W]!"))
+				user.visible_message(SPAN("danger", "\The [user] forcefully strikes \the [src] with \the [I]!"))
 				playsound(loc, hitsound, 100, 1)
-				take_damage(W.force)
+				take_damage(I.force)
 			return
 
 	if(operating)

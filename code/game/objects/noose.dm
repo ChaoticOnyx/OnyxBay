@@ -1,10 +1,14 @@
-GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/toilet, /obj/structure/table, /obj/structure/bed))
+GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, /obj/structure/table, /obj/structure/bed))
 
 /proc/is_standing_on_object(x)
 	if(!x) return FALSE
 
 	for(var/obj/O in get_turf(x))
 		if(is_type_in_list(O, GLOB.standing_objects))
+			if(istype(O, /obj/structure/table))
+				var/obj/structure/table/T = O
+				if(T.flipped)
+					return FALSE
 			return TRUE
 	return FALSE
 
@@ -41,7 +45,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 	if(!do_mob(H, current_turf, 3 SECONDS))
 		return
 
-	if(!H.unEquip(src))
+	if(!H.drop(src))
 		return
 
 	var/obj/structure/noose/N = new /obj/structure/noose(current_turf)
@@ -100,7 +104,6 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 	current_area = get_area(src)
 
 /obj/structure/noose/Destroy()
-	STOP_PROCESSING(SSprocessing, src)
 	QDEL_NULL(over)
 	QDEL_NULL(coil)
 	current_area = null
@@ -112,9 +115,9 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 		overlays.Add(over)
 		M.pixel_y = initial(M.pixel_y) + 8
 		M.dir = SOUTH
-		START_PROCESSING(SSprocessing, src)
+		set_next_think(world.time)
 	else
-		STOP_PROCESSING(SSprocessing, src)
+		set_next_think(0)
 		layer = initial(layer)
 		overlays.Cut()
 		pixel_x = initial(pixel_x)
@@ -140,8 +143,8 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 				return
 		else
 			M.visible_message(\
-				SPAN_WARNING("[M] struggles to untie the noose over their neck!"),\
-				SPAN_NOTICE("You struggle to untie the noose over your neck."))
+				SPAN_WARNING("You struggle to untie the noose over your neck!"),\
+				SPAN_NOTICE("[M] struggles to untie the noose over their neck."))
 			if(!do_after(M, 15 SECONDS))
 				if(M?.buckled)
 					to_chat(M, SPAN_WARNING("You fail to untie yourself!"))
@@ -149,8 +152,8 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 			if(!M.buckled)
 				return
 			M.visible_message(\
-				SPAN_WARNING("[M] unties the noose over their neck!"),\
-				SPAN_NOTICE("You untie the noose over your neck!"))
+				SPAN_WARNING("You untie the noose over your neck!"),\
+				SPAN_NOTICE("[M] unties the noose over their neck!"))
 			M.Weaken(3)
 			M.Stun(2)
 		unbuckle_mob()
@@ -220,17 +223,18 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 			SPAN_WARNING("You fail to tie \the [src] over [M]'s neck!"))
 		return FALSE
 
-/obj/structure/noose/Process()
+/obj/structure/noose/think()
 	if(!buckled_mob || !ishuman(buckled_mob) || !check_head(buckled_mob))
 		if(buckled_mob)
 			unbuckle_mob()
-		return PROCESS_KILL
+		return
 
 	if((is_standing_on_object(buckled_mob) && !buckled_mob.resting) || !current_area.has_gravity)
 		if(pixel_x != initial(pixel_x) || buckled_mob.pixel_x != initial(buckled_mob.pixel_x))
 			pixel_x = initial(pixel_x)
 			buckled_mob.pixel_x = initial(buckled_mob.pixel_x)
 			manual_triggered = FALSE
+		set_next_think(world.time + 1 SECOND)
 		return
 
 	if(!manual_triggered && buckled_mob.resting)
@@ -262,7 +266,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 						SPAN_WARNING("[buckled_mob]'s hands are desperately clutching the noose."),\
 						SPAN_WARNING("[buckled_mob]'s limbs sway back and forth with diminishing strength."))
 
-					if(buckled_mob.stat == DEAD)
+					if(buckled_mob.is_ic_dead())
 						flavor_text = list(\
 							SPAN_WARNING("[buckled_mob]'s limbs lifelessly sway back and forth."),\
 							SPAN_WARNING("[buckled_mob]'s eyes stare straight ahead."))
@@ -279,8 +283,10 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 
 		buckled_mob.adjustOxyLoss(3)
 		buckled_mob.silent = max(buckled_mob.silent, 10)
-		if(!(H.silent && H.stat) && prob(10))
+		if(!(H.silent && !H.is_ic_dead()) && prob(10))
 			buckled_mob.emote("gasp")
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/structure/noose/proc/noosed_effect(mob/user)
 	if(manual_triggered)

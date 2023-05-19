@@ -4,6 +4,7 @@
 	icon_state = "grey_spell_ready"
 	var/list/obj/screen/ability/ability_objects = list()
 	var/list/obj/screen/ability/spell_objects = list()
+	var/list/obj/screen/ability/changeling_power_objects = list()
 	var/showing = 0 // If we're 'open' or not.
 
 	var/open_state = "master_open"		// What the button looks like when it's 'open', showing the other buttons.
@@ -27,12 +28,20 @@
 	remove_all_abilities()
 	ability_objects.Cut()
 
+	remove_all_changeling_powers()
+	changeling_power_objects.Cut()
+
+	for(var/obj/screen/ability/spell/spell in spell_objects)
+		remove_ability(spell)
+	spell_objects.Cut()
+
 	// After that, remove ourselves from the mob seeing us, so we can qdel cleanly.
 	if(my_mob)
 		my_mob.ability_master = null
 		if(my_mob.client && my_mob.client.screen)
 			my_mob.client.screen -= src
 		my_mob = null
+
 /obj/screen/movable/ability_master/MouseDrop()
 	if(showing)
 		return
@@ -92,6 +101,8 @@
 	var/i = 1
 	for(var/obj/screen/ability/ability in ability_objects)
 		ability.update_icon(forced)
+		if(istype(ability, /obj/screen/ability/changeling_power))
+			continue // Lings' powers display chemcost and stuff.
 		ability.maptext = "[i]" // Slot number
 		i++
 
@@ -118,6 +129,8 @@
 	ability_objects.Remove(ability)
 	if(istype(ability,/obj/screen/ability/spell))
 		spell_objects.Remove(ability)
+	if(istype(ability, /obj/screen/ability/changeling_power))
+		changeling_power_objects.Remove(ability)
 	qdel(ability)
 
 
@@ -130,6 +143,10 @@
 /obj/screen/movable/ability_master/proc/remove_all_abilities()
 	for(var/obj/screen/ability/A in ability_objects)
 		remove_ability(A)
+
+/obj/screen/movable/ability_master/proc/remove_all_changeling_powers()
+	for(var/obj/screen/ability/changeling_power/CP in changeling_power_objects)
+		remove_ability(CP)
 
 /obj/screen/movable/ability_master/proc/get_ability_by_name(name_to_search)
 	for(var/obj/screen/ability/A in ability_objects)
@@ -154,6 +171,13 @@
 		var/obj/screen/ability/spell/S = screen
 		if(S.spell == s)
 			return S
+	return null
+
+/obj/screen/movable/ability_master/proc/get_ability_by_changeling_power(datum/changeling_power/cp)
+	for(var/screen in changeling_power_objects)
+		var/obj/screen/ability/changeling_power/CP = screen
+		if(CP.power == cp)
+			return CP
 	return null
 
 /mob/Login()
@@ -256,31 +280,6 @@
 	if(my_mob.client)
 		toggle_open(2) //forces the icons to refresh on screen
 
-//Changeling Abilities
-/obj/screen/ability/verb_based/changeling
-	icon_state = "ling_spell_base"
-	background_base_state = "ling"
-
-/obj/screen/movable/ability_master/proc/add_ling_ability(object_given, verb_given, name_given, ability_icon_given, arguments)
-	if(!object_given)
-		message_admins("ERROR: add_ling_ability() was not given an object in its arguments.")
-	if(!verb_given)
-		message_admins("ERROR: add_ling_ability() was not given a verb/proc in its arguments.")
-	if(get_ability_by_proc_ref(verb_given))
-		return // Duplicate
-	var/obj/screen/ability/verb_based/changeling/A = new /obj/screen/ability/verb_based/changeling()
-	A.ability_master = src
-	A.object_used = object_given
-	A.verb_to_call = verb_given
-	A.ability_icon_state = ability_icon_given
-	A.SetName(name_given)
-	if(arguments)
-		A.arguments_to_use = arguments
-	ability_objects.Add(A)
-	if(my_mob.client)
-		toggle_open(2) //forces the icons to refresh on screen
-
-
 /////////Obj Abilities////////
 //Buttons to trigger objects//
 //////////////////////////////
@@ -292,24 +291,6 @@
 	if(object)
 		object.Click()
 
-// Technomancer
-/obj/screen/ability/obj_based/technomancer
-	icon_state = "wiz_spell_base"
-	background_base_state = "wiz"
-
-/obj/screen/movable/ability_master/proc/add_technomancer_ability(obj/object_given, ability_icon_given)
-	if(!object_given)
-		message_admins("ERROR: add_technomancer_ability() was not given an object in its arguments.")
-	if(get_ability_by_instance(object_given))
-		return // Duplicate
-	var/obj/screen/ability/obj_based/technomancer/A = new /obj/screen/ability/obj_based/technomancer()
-	A.ability_master = src
-	A.object = object_given
-	A.ability_icon_state = ability_icon_given
-	A.SetName(object_given.name)
-	ability_objects.Add(A)
-	if(my_mob.client)
-		toggle_open(2) //forces the icons to refresh on screen
 
 // Wizard
 /obj/screen/ability/spell
@@ -410,3 +391,80 @@
 		spell.spell.silenced = amount
 		spell.spell.process()
 		spell.update_charge(1)
+
+
+// Changeling
+
+/obj/screen/movable/ability_master/proc/reskin_changeling()
+	icon_state = "changeling_spell_base"
+	open_state = "ling_open"
+	closed_state = "ling_closed"
+	overlays.len = 0
+	overlays.Add(open_state)
+
+/obj/screen/ability/changeling_power
+	background_base_state = "changeling"
+	var/datum/changeling_power/power
+	var/chemical_cost = 0
+	var/icon/last_charged_icon
+
+/obj/screen/ability/changeling_power/Destroy()
+	power = null
+	return ..()
+
+/obj/screen/movable/ability_master/proc/add_changeling_power(datum/changeling_power/power)
+	if(!power)
+		return
+
+	if(istype(power, /datum/changeling_power/passive))
+		return
+
+	if(get_ability_by_changeling_power(power))
+		return
+
+	var/obj/screen/ability/changeling_power/P = new()
+	P.ability_master = src
+	P.power = power
+	P.SetName("[power.name] ([power.required_chems])")
+
+	changeling_power_objects.Add(P)
+	ability_objects.Add(P)
+	if(my_mob.client)
+		toggle_open(2) //forces the icons to refresh on screen
+
+/mob/Life()
+	..()
+	if(ability_master)
+		ability_master.update_changeling_powers()
+
+/obj/screen/movable/ability_master/proc/update_changeling_powers()
+	for(var/obj/screen/ability/changeling_power/P in changeling_power_objects)
+		P.update_icon()
+
+/obj/screen/ability/changeling_power/update_icon()
+	if(!power)
+		qdel(src)
+		return
+
+	overlays.Cut()
+
+	icon_state = "[background_base_state]_spell_[power.is_usable(TRUE) ? "ready" : "base"]"
+	overlays.Add(power.icon_state)
+
+	if(istype(power, /datum/changeling_power/toggled))
+		if(power.active)
+			overlays.Add("changeling_spell_active")
+
+	var/image/T = image(icon, "blank")
+	if(!power.chems_drain)
+		if(power.required_chems)
+			T.maptext = "[power.required_chems]" // Slot number not needed, chem cost holds more importance.
+		else
+			T.maptext = ""
+	else
+		T.maptext = "[power.required_chems] ([power.chems_drain])"
+
+	overlays.Add(T)
+
+/obj/screen/ability/changeling_power/activate()
+	power.use(usr)

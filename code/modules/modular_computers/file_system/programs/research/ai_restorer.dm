@@ -68,13 +68,13 @@
 	A.adjustOxyLoss(-4)
 	A.updatehealth()
 	// If the AI is dead, revive it.
-	if (A.health >= -100 && A.stat == DEAD)
+	if (A.health >= -100 && A.is_ooc_dead())
 		A.set_stat(CONSCIOUS)
 		A.lying = 0
 		A.switch_from_dead_to_living_mob_list()
 		A.add_ai_verbs()
 		A.update_icon()
-		var/obj/item/weapon/aicard/AC = A.loc
+		var/obj/item/aicard/AC = A.loc
 		if(AC)
 			AC.update_icon()
 	// Finished restoring
@@ -99,7 +99,7 @@
 		data["ai_integrity"] = A.hardware_integrity()
 		data["ai_capacitor"] = A.backup_capacitor()
 		data["ai_isdamaged"] = (A.hardware_integrity() < 100) || (A.backup_capacitor() < 100)
-		data["ai_isdead"] = (A.stat == DEAD)
+		data["ai_isdead"] = (A.is_ooc_dead())
 
 		var/list/all_laws[0]
 		for(var/datum/ai_law/L in A.laws.all_laws())

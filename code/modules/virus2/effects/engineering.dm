@@ -32,7 +32,7 @@
 /datum/disease2/effect/click/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	var/list/target_list = istype(mob.get_active_hand(), /obj/item/weapon/gun) ? view(mob) : view(1, mob) //Dont put far objects in list unless we can shoot it
+	var/list/target_list = istype(mob.get_active_hand(), /obj/item/gun) ? view(mob) : view(1, mob) //Dont put far objects in list unless we can shoot it
 	target_list -= (mob.organs + mob.internal_organs) //exclude organs from target list
 	var/list/target_list_clear = list(/datum/disease2/effect/aggressive)
 	for(var/T in target_list)
@@ -93,8 +93,9 @@
 /datum/disease2/effect/spread_radiation/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	SSradiation.radiate(mob, 5 * multiplier)
 
+	var/datum/radiation_source/rad_source = SSradiation.radiate(mob, new /datum/radiation/preset/radium_226(400))
+	rad_source.schedule_decay(15 SECONDS)
 
 /datum/disease2/effect/loyalty
 	name = "Loyalty Syndrome"

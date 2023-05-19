@@ -30,11 +30,11 @@
 		contains = 2
 		update_icon()
 		return
-	else if(istype(A, /obj/effect/spider/spiderling))
-		var/obj/effect/spider/spiderling/S = A
+	else if(istype(A, /obj/structure/spider/spiderling))
+		var/obj/structure/spider/spiderling/S = A
 		user.visible_message("<span class='notice'>[user] scoops [S] into \the [src].</span>", "<span class='notice'>You scoop [S] into \the [src].</span>")
 		S.forceMove(src)
-		STOP_PROCESSING(SSobj, S) // No growing inside jars
+		S.set_next_think(0) // No growing inside jars
 		contains = 3
 		update_icon()
 		return
@@ -56,24 +56,24 @@
 			update_icon()
 			return
 		if(3)
-			for(var/obj/effect/spider/spiderling/S in src)
+			for(var/obj/structure/spider/spiderling/S in src)
 				S.dropInto(user.loc)
 				user.visible_message("<span class='notice'>[user] releases [S] from \the [src].</span>", "<span class='notice'>You release [S] from \the [src].</span>")
-				START_PROCESSING(SSobj, S) // They can grow after being let out though
+				S.set_next_think(world.time) // They can grow after being let out though
 			contains = 0
 			update_icon()
 			return
 
 /obj/item/glass_jar/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/weapon/spacecash))
+	if(istype(W, /obj/item/spacecash))
 		if(contains == 0)
 			contains = 1
 		if(contains != 1)
 			return
-		var/obj/item/weapon/spacecash/S = W
+		if(!user.drop(W, src))
+			return
+		var/obj/item/spacecash/S = W
 		user.visible_message("<span class='notice'>[user] puts [S.worth] [S.worth > 1 ? "credits" : "credit"] into \the [src].</span>")
-		user.drop_from_inventory(S)
-		S.forceMove(src)
 		update_icon()
 
 /obj/item/glass_jar/update_icon() // Also updates name and desc
@@ -86,13 +86,13 @@
 		if(1)
 			SetName("tip jar")
 			desc = "A small jar with money inside."
-			for(var/obj/item/weapon/spacecash/S in src)
+			for(var/obj/item/spacecash/S in src)
 				var/list/moneyImages = S.getMoneyImages()
 				for(var/A in moneyImages)
 					var/image/money = image('icons/obj/items.dmi', A)
 					money.pixel_x = rand(-2, 3)
 					money.pixel_y = rand(-6, 6)
-					money.transform *= 0.6
+					money.SetTransform(scale = 0.6)
 					underlays += money
 		if(2)
 			for(var/mob/M in src)
@@ -102,7 +102,7 @@
 				SetName("glass jar with [M]")
 				desc = "A small jar with [M] inside."
 		if(3)
-			for(var/obj/effect/spider/spiderling/S in src)
+			for(var/obj/structure/spider/spiderling/S in src)
 				var/image/victim = image(S.icon, S.icon_state)
 				underlays += victim
 				SetName("glass jar with [S]")

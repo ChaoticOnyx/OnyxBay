@@ -13,8 +13,8 @@
 	*/
 
 	anchored = 1.0
-	idle_power_usage = 2
-	active_power_usage = 4
+	idle_power_usage = 2 WATTS
+	active_power_usage = 4 WATTS
 
 /obj/machinery/button/remote/attack_ai(mob/user as mob)
 	if(wires & 2)
@@ -22,7 +22,7 @@
 	else
 		to_chat(user, "Error, no route to host.")
 
-/obj/machinery/button/remote/attackby(obj/item/weapon/W, mob/user as mob)
+/obj/machinery/button/remote/attackby(obj/item/W, mob/user as mob)
 	return src.attack_hand(user)
 
 /obj/machinery/button/remote/emag_act(remaining_charges, mob/user)

@@ -8,8 +8,8 @@
 	if(camera)
 		camera.status = 0
 	if(module)
-		var/obj/item/weapon/gripper/G = locate(/obj/item/weapon/gripper) in module
-		if(G) G.drop_item()
+		var/obj/item/gripper/G = locate(/obj/item/gripper) in module
+		G?.drop_item()
 	locked = 0
 	remove_robot_verbs()
 	sql_report_cyborg_death(src)

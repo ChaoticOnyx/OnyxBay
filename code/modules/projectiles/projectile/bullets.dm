@@ -82,18 +82,19 @@
 	return max(pellets - pellet_loss, 1)
 
 /obj/item/projectile/bullet/pellet/attack_mob(mob/living/target_mob, distance, miss_modifier)
-	if (pellets < 0) return 1
+	if(pellets < 0)
+		return TRUE
 
 	var/total_pellets = get_pellets(distance)
-	var/spread = max(base_spread - (spread_step*distance), 0)
+	var/spread = max(base_spread - (spread_step * distance), 0)
 
 	//shrapnel explosions miss prone mobs with a chance that increases with distance
 	var/prone_chance = 0
 	if(!base_spread)
-		prone_chance = max(spread_step*(distance - 2), 0)
+		prone_chance = max(spread_step * (distance - 2), 0)
 
 	var/hits = 0
-	for (var/i in 1 to total_pellets)
+	for(var/i in 1 to total_pellets)
 		if(target_mob.lying && target_mob != original && prob(prone_chance))
 			continue
 
@@ -101,13 +102,14 @@
 		//whether the pellet actually hits the def_zone or a different zone should still be determined by the parent using get_zone_with_miss_chance().
 		var/old_zone = def_zone
 		def_zone = ran_zone(def_zone, spread)
-		if (..()) hits++
+		if(..())
+			hits++
 		def_zone = old_zone //restore the original zone the projectile was aimed at
 
 	pellets -= hits //each hit reduces the number of pellets left
-	if (hits >= total_pellets || pellets <= 0)
-		return 1
-	return 0
+	if(hits >= total_pellets || pellets <= 0)
+		return TRUE
+	return FALSE
 
 /obj/item/projectile/bullet/pellet/get_structure_damage()
 	var/distance = get_dist(loc, starting)
@@ -170,11 +172,11 @@
 	sharp = 0
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
 
-/obj/item/projectile/bullet/pistol/accelerated/c44
+/obj/item/projectile/bullet/pistol/accelerated/c38
 	name = "accelerated bullet"
-	damage = 40 //.44 magnum + gauss
-	armor_penetration = 45
-	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
+	damage = 35.0 // .38 + gauss
+	armor_penetration = 35
+	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg' // Gauss .38 should sound like a badass
 
 
 /* shotgun projectiles */
@@ -192,6 +194,7 @@
 	embed = 0
 	sharp = 0
 	penetration_modifier = 0.2
+	can_ricochet = FALSE // Too soft
 
 //Should do about 80 damage at 1 tile distance (adjacent), and 50 damage at 3 tiles distance.
 //Overall less damage than slugs in exchange for more damage at very close range and more embedding
@@ -211,6 +214,22 @@
 	range_step = 2
 	spread_step = 15
 	penetration_modifier = 1.2
+
+/obj/item/projectile/bullet/pellet/accelerated
+	name = "accelerated particles"
+	icon_state = "accel"
+	embed = FALSE // Unstable particles just disappear
+	can_ricochet = FALSE // Too unstable to survive ricocheting
+	damage = 22.5
+	armor_penetration = 15
+	pellets = 5
+	range_step = 3
+	spread_step = 5
+	penetration_modifier = 1.1
+	muzzle_type = /obj/effect/projectile/accel/muzzle
+
+/obj/item/projectile/bullet/pellet/accelerated/lesser
+	damage = 20
 
 /* "Rifle" rounds */
 

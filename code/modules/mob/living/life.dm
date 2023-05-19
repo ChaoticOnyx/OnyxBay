@@ -10,7 +10,7 @@
 		return 0
 
 	if(machine && !CanMouseDrop(machine, src))
-		machine = null
+		unset_machine()
 
 	handle_modifiers() // Do this early since it might affect other things later.
 	if (do_check_environment())
@@ -23,7 +23,7 @@
 	// human/handle_regular_status_updates() needs a cleanup, as blindness should be handled in handle_disabilities()
 	handle_regular_status_updates() // Status & health update, are we dead or alive etc.
 
-	if(stat != DEAD)
+	if(!is_ic_dead())
 		aura_check(AURA_TYPE_LIFE)
 
 	//Check if we're on fire
@@ -32,7 +32,7 @@
 	update_pulling()
 
 	for(var/obj/item/grab/G in src)
-		G.Process()
+		G.think()
 
 	handle_actions()
 
@@ -76,7 +76,7 @@
 //This updates the health and status of the mob (conscious, unconscious, dead)
 /mob/living/proc/handle_regular_status_updates()
 	updatehealth()
-	if(stat != DEAD)
+	if(!is_ic_dead())
 		if(paralysis)
 			set_stat(UNCONSCIOUS)
 		else if (status_flags & FAKEDEATH)
@@ -188,7 +188,7 @@
 /mob/living/proc/handle_vision()
 	update_sight()
 
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return
 
 	if(eye_blind)
@@ -214,7 +214,7 @@
 		reset_view(null)
 
 /mob/living/proc/update_sight()
-	if(stat == DEAD || eyeobj)
+	if(is_ooc_dead() || eyeobj)
 		update_dead_sight()
 	else
 		update_living_sight()

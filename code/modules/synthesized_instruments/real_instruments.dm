@@ -195,6 +195,7 @@
 /datum/real_instrument/Destroy()
 	QDEL_NULL(player)
 	owner = null
+	return ..()
 
 /obj/structure/synthesized_instrument
 	var/datum/real_instrument/real_instrument
@@ -217,7 +218,7 @@
 
 /obj/structure/synthesized_instrument/Destroy()
 	QDEL_NULL(real_instrument)
-	QDEL_NULL_LIST(instruments)
+	QDEL_LIST_ASSOC(instruments)
 	return ..()
 
 /obj/structure/synthesized_instrument/attack_hand(mob/user)
@@ -254,6 +255,7 @@
 	var/list/datum/instrument/instruments
 	var/path = /datum/instrument
 	var/sound_player = /datum/sound_player
+	var/weakref/playing_mob = null
 
 /obj/item/device/synthesized_instrument/Initialize()
 	. = ..()
@@ -268,24 +270,31 @@
 
 /obj/item/device/synthesized_instrument/Destroy()
 	QDEL_NULL(real_instrument)
-	QDEL_NULL_LIST(instruments)
+	QDEL_LIST_ASSOC(instruments)
 	return ..()
-
 
 /obj/item/device/synthesized_instrument/attack_self(mob/user as mob)
 	src.interact(user)
+	register_signal(user, SIGNAL_MOVED, /obj/item/device/synthesized_instrument/proc/onPlayingMobMoved)
+	playing_mob = weakref(user)
 
+/obj/item/device/synthesized_instrument/proc/onPlayingMobMoved(atom/movable/am, old_loc, new_loc)
+	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, new_loc) // Hackitty hacky
 
 /obj/item/device/synthesized_instrument/interact(mob/user) // CONDITIONS ..(user) that shit in subclasses
 	src.ui_interact(user)
-
 
 /obj/item/device/synthesized_instrument/ui_interact(mob/user, ui_key = "instrument", datum/nanoui/ui = null, force_open = 0)
 	real_instrument.ui_call(user,ui_key,ui,force_open)
 
 
 /obj/item/device/synthesized_instrument/proc/shouldStopPlaying(mob/user)
-	return !(src && in_range(src, user))
+	if(!(src && in_range(src, user)))
+		var/mob/M = playing_mob?.resolve()
+		if(istype(M))
+			unregister_signal(M, SIGNAL_MOVED)
+		return TRUE
+	return FALSE
 
 /obj/item/device/synthesized_instrument/Topic(href, href_list)
 	if (..())

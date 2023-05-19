@@ -29,7 +29,7 @@
 	title = "[command_name()] Update"
 	announcement_type = "[command_name()] Update"
 
-/datum/announcement/proc/Announce(message, new_title = "", new_sound = sound, do_newscast = newscast, msg_sanitized = 0, zlevels = GLOB.using_map.contact_levels)
+/datum/announcement/proc/Announce(message, new_title = "", new_sound = sound, do_newscast = newscast, msg_sanitized = 0, zlevels = GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT))
 	if(!message)
 		return
 	var/message_title = new_title ? new_title : title
@@ -60,12 +60,12 @@
 /proc/should_recieve_announce(mob/M, list/contact_levels)
 	if (istype(M,/mob/new_player) || isdeaf(M))
 		return 0
-	if (M.z in (contact_levels | GLOB.using_map.admin_levels))
+	if (M.z in (contact_levels | GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
 		return 1
 	var/turf/loc_turf = get_turf(M.loc) // for mobs in lockers, sleepers, etc.
 	if (!loc_turf)
 		return 0
-	if (loc_turf.z in (contact_levels | GLOB.using_map.admin_levels))
+	if (loc_turf.z in (contact_levels | GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
 		return 1
 	return 0
 
@@ -109,15 +109,12 @@
 	news.can_be_redacted = 0
 	announce_newscaster_news(news)
 
-/proc/GetNameAndAssignmentFromId(obj/item/weapon/card/id/I)
+/proc/GetNameAndAssignmentFromId(obj/item/card/id/I)
 	// Format currently matches that of newscaster feeds: Registered Name (Assigned Rank)
 	return I.assignment ? "[I.registered_name] ([I.assignment])" : I.registered_name
 
 /proc/level_seven_announcement()
 	GLOB.using_map.level_x_biohazard_announcement(7)
-
-/proc/ion_storm_announcement()
-	command_announcement.Announce("It has come to our attention that the [station_name()] passed through an ion storm.  Please monitor all electronic equipment for malfunctions.", "Anomaly Alert")
 
 /proc/AnnounceArrival(name, datum/job/job, datum/spawnpoint/spawnpoint = null, arrival_sound_volume = 75, captain_sound_volume = 20)
 	if (GAME_STATE != RUNLEVEL_GAME)
@@ -149,7 +146,7 @@
 	if(length(ai_list))
 		var/list/mob/living/silicon/ai/valid_AIs = list()
 		for(var/mob/living/silicon/ai/AI in ai_list)
-			if(AI.stat != DEAD)
+			if(!AI.is_ic_dead())
 				valid_AIs.Add(AI)
 		if(length(valid_AIs))
 			announcer = pick(valid_AIs)

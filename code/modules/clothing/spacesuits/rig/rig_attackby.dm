@@ -1,4 +1,4 @@
-/obj/item/weapon/rig/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/rig/attackby(obj/item/W as obj, mob/user as mob)
 
 	if(!istype(user,/mob/living)) return 0
 
@@ -11,7 +11,7 @@
 		return chest.attackby(W,user)
 
 	// Lock or unlock the access panel.
-	if(W.GetIdCard())
+	if(W.get_id_card())
 		if(subverted)
 			locked = 0
 			to_chat(user, "<span class='danger'>It looks like the locking system has been shorted out.</span>")
@@ -50,32 +50,32 @@
 				to_chat(user, "You can't reach the wiring.")
 			return
 		// Air tank.
-		if(istype(W,/obj/item/weapon/tank)) //Todo, some kind of check for suits without integrated air supplies.
+		if(istype(W,/obj/item/tank)) //Todo, some kind of check for suits without integrated air supplies.
 
 			if(air_supply)
 				to_chat(user, "\The [src] already has a tank installed.")
 				return
 
-			if(!user.unEquip(W)) return
+			if(!user.drop(W, src))
+				return
 			air_supply = W
-			W.forceMove(src)
 			to_chat(user, "You slot [W] into [src] and tighten the connecting valve.")
 			return
 
-		// Check if this is a hardsuit upgrade or a modification.
+		// Check if this is a powersuit upgrade or a modification.
 		else if(istype(W,/obj/item/rig_module))
 
 			if(istype(src.loc,/mob/living/carbon/human))
 				var/mob/living/carbon/human/H = src.loc
 				if(H.back == src)
-					to_chat(user, "<span class='danger'>You can't install a hardsuit module while the suit is being worn.</span>")
+					to_chat(user, "<span class='danger'>You can't install a powersuit module while the suit is being worn.</span>")
 					return 1
 
 			if(!installed_modules) installed_modules = list()
 			if(installed_modules.len)
 				for(var/obj/item/rig_module/installed_mod in installed_modules)
 					if(!installed_mod.redundant && istype(installed_mod,W))
-						to_chat(user, "The hardsuit already has a module of that class installed.")
+						to_chat(user, "The powersuit already has a module of that class installed.")
 						return 1
 
 			var/obj/item/rig_module/mod = W
@@ -84,20 +84,20 @@
 				return
 			if(!user || !W)
 				return
-			if(!user.unEquip(mod)) return
+			if(!user.drop(mod, src))
+				return
 			to_chat(user, "You install \the [mod] into \the [src].")
 			installed_modules |= mod
-			mod.forceMove(src)
 			mod.installed(src)
 			update_icon()
 			return 1
 
-		else if(!cell && istype(W,/obj/item/weapon/cell))
+		else if(!cell && istype(W,/obj/item/cell))
 
-			if(!user.unEquip(W)) return
+			if(!user.drop(W, src))
+				return
 			to_chat(user, "You jack \the [W] into \the [src]'s battery mount.")
-			W.forceMove(src)
-			src.cell = W
+			cell = W
 			return
 
 		else if(isWrench(W))
@@ -106,7 +106,11 @@
 				to_chat(user, "There is not tank to remove.")
 				return
 
-			user.put_in_hands(air_supply)
+			if(loc != user)
+				air_supply.dropInto(loc)
+			else
+				user.pick_or_drop(air_supply)
+
 			to_chat(user, "You detach and remove \the [air_supply].")
 			air_supply = null
 			return
@@ -124,7 +128,7 @@
 			if(istype(src.loc,/mob/living/carbon/human) && to_remove != "cell")
 				var/mob/living/carbon/human/H = src.loc
 				if(H.back == src)
-					to_chat(user, "You can't remove an installed device while the hardsuit is being worn.")
+					to_chat(user, "You can't remove an installed device while the powersuit is being worn.")
 					return
 
 			switch(to_remove)
@@ -135,7 +139,10 @@
 						to_chat(user, "You detach \the [cell] from \the [src]'s battery mount.")
 						for(var/obj/item/rig_module/module in installed_modules)
 							module.deactivate()
-						user.put_in_hands(cell)
+						if(loc != user)
+							cell.dropInto(loc)
+						else
+							user.pick_or_drop(cell)
 						cell = null
 					else
 						to_chat(user, "There is nothing loaded in that mount.")
@@ -158,7 +165,12 @@
 
 					var/obj/item/rig_module/removed = possible_removals[removal_choice]
 					to_chat(user, "You detach \the [removed] from \the [src].")
-					removed.forceMove(get_turf(src))
+
+					if(loc != user)
+						removed.dropInto(loc)
+					else
+						user.pick_or_drop(removed)
+
 					removed.removed()
 					installed_modules -= removed
 					update_icon()
@@ -173,14 +185,14 @@
 	..()
 
 
-/obj/item/weapon/rig/attack_hand(mob/user)
+/obj/item/rig/attack_hand(mob/user)
 
 	if(electrified != 0)
 		if(shock(user)) //Handles removing charge from the cell, as well. No need to do that here.
 			return
 	..()
 
-/obj/item/weapon/rig/emag_act(remaining_charges, mob/user)
+/obj/item/rig/emag_act(remaining_charges, mob/user)
 	if(!subverted)
 		req_access.Cut()
 		req_one_access.Cut()

@@ -9,19 +9,20 @@
 	buckle_pixel_shift = "x=0;y=0"
 	anchored = FALSE
 	pull_slowdown = PULL_SLOWDOWN_EXTREME
-	appearance_flags = LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 	var/propelled = 0 // Check for fire-extinguisher-driven chairs
 	var/foldable = TRUE
 
-/obj/structure/bed/chair/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/bed/chair/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 	if(!padding_material && istype(W, /obj/item/assembly/shock_kit))
 		var/obj/item/assembly/shock_kit/SK = W
 		if(!SK.status)
 			to_chat(user, "<span class='notice'>\The [SK] is not ready to be attached!</span>")
 			return
-		user.drop_item()
-		var/obj/structure/bed/chair/e_chair/E = new (src.loc, material.name)
+		if(!user.drop(SK, loc))
+			return
+		var/obj/structure/bed/chair/e_chair/E = new (loc, material.name)
 		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 		E.set_dir(dir)
 		E.part = SK
@@ -90,7 +91,7 @@
 	if(!usr || !Adjacent(usr))
 		return
 
-	if(usr.stat == DEAD)
+	if(usr.is_ic_dead() && config.ghost.ghost_interaction)
 		var/area/A = get_area(src)
 		if(A?.holy)
 			to_chat(usr, SPAN("warning", "\The [src] is on sacred ground, you cannot turn it."))
@@ -105,7 +106,7 @@
 /* -------------------- Folded Chairs -------------------- */
 /* ======================================================= */
 
-/obj/item/weapon/foldchair
+/obj/item/foldchair
 	name = "chair"
 	desc = "A folded chair. Good for smashing noggin-shaped things."
 	icon = 'icons/obj/furniture.dmi'
@@ -114,7 +115,7 @@
 	w_class = ITEM_SIZE_GARGANTUAN // Jesus no
 	force = 12.5
 	throwforce = 10.0
-	throw_speed = 1
+	throw_speed = 2
 	throw_range = 4
 	mod_weight = 1.25
 	mod_reach = 1.15
@@ -124,12 +125,12 @@
 	var/material/padding_material
 	var/material/material
 
-/obj/item/weapon/foldchair/New()
+/obj/item/foldchair/New()
 	..()
 	if(!material)
 		material = get_material_by_name(MATERIAL_STEEL)
 
-/obj/item/weapon/foldchair/attack_self(mob/user)
+/obj/item/foldchair/attack_self(mob/user)
 	var/obj/structure/bed/chair/O = new /obj/structure/bed/chair(user.loc)
 	O.add_fingerprint(user)
 	O.dir = user.dir
@@ -139,7 +140,7 @@
 	visible_message("[user] unfolds \the [O.name].")
 	qdel(src)
 
-/obj/item/weapon/foldchair/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/foldchair/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		material.place_sheet(get_turf(src))
@@ -184,7 +185,7 @@
 		collapse_message = list("[user] collapses \the [src.name].", "You collapse \the [src.name].")
 
 	visible_message(collapse_message[1], collapse_message[2])
-	var/obj/item/weapon/foldchair/O = new /obj/item/weapon/foldchair(get_turf(src))
+	var/obj/item/foldchair/O = new /obj/item/foldchair(get_turf(src))
 	if(user)
 		O.add_fingerprint(user)
 	O.material = material
@@ -251,7 +252,7 @@
 	foldable = FALSE
 	pull_slowdown = PULL_SLOWDOWN_TINY
 
-/obj/structure/bed/chair/office/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/bed/chair/office/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/stack) || isWirecutter(W))
 		return
 	..()
@@ -278,7 +279,7 @@
 
 		var/def_zone = ran_zone()
 		var/blocked = occupant.run_armor_check(def_zone, "melee")
-		occupant.throw_at(A, 3, propelled)
+		occupant.throw_at(A, 3, 1)
 		occupant.apply_effect(6, STUN, blocked)
 		occupant.apply_effect(6, WEAKEN, blocked)
 		occupant.apply_effect(6, STUTTER, blocked)
@@ -313,8 +314,8 @@
 	material_alteration = MATERIAL_ALTERATION_NAME
 	foldable = FALSE
 
-/obj/structure/bed/chair/wood/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/stack) || istype(W, /obj/item/weapon/wirecutters))
+/obj/structure/bed/chair/wood/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W,/obj/item/stack) || isWirecutter(W))
 		return
 	..()
 
@@ -334,8 +335,8 @@
 	foldable = FALSE
 	anchored = TRUE
 
-/obj/structure/bed/chair/shuttle/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/stack) || istype(W, /obj/item/weapon/wirecutters))
+/obj/structure/bed/chair/shuttle/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W,/obj/item/stack) || isWirecutter(W))
 		return
 	..()
 

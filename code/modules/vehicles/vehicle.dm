@@ -9,7 +9,7 @@
 	icon = 'icons/obj/vehicles.dmi'
 
 	layer = ABOVE_HUMAN_LAYER
-	appearance_flags = LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 	density = 1
 	anchored = 1
 	animate_movement=1
@@ -37,8 +37,9 @@
 	var/emagged = 0
 	var/powered = 0		//set if vehicle is powered and should use fuel when moving
 	var/move_delay = 1	//set this to limit the speed of the vehicle
+	var/move_glide_size = 4 // Fine VV-wise adjustments are good.
 
-	var/obj/item/weapon/cell/cell
+	var/obj/item/cell/cell
 	var/charge_use = 200 //W
 
 	var/atom/movable/load		//all vehicles can take a load, since they should all be a least drivable
@@ -51,16 +52,14 @@
 //-------------------------------------------
 /obj/vehicle/New()
 	..()
+	if(!isnull(move_glide_size))
+		glide_size = move_glide_size
 	//spawn the cell you want in each vehicle
 
 /obj/vehicle/Move()
 	if(world.time > l_move_time + move_delay)
-		if(!on)
-			return 0
-
-		if(!cell.use(charge_use * CELLRATE))
+		if(on && powered && cell.charge < (charge_use * CELLRATE))
 			turn_off()
-			return 0
 
 		var/old_loc = get_turf(src)
 		var/init_anc = anchored
@@ -75,15 +74,21 @@
 		//Dummy loads do not have to be moved as they are just an overlay
 		//See load_object() proc in cargo_trains.dm for an example
 		if(load && !istype(load, /datum/vehicle_dummy_load))
-			load.forceMove(loc)
+			set_glide_size(move_glide_size)
+			if(ismob(load))
+				var/mob/M = load
+				M.forceMove(loc, unbuckle_mob=FALSE)
+			else
+				load.set_glide_size(move_glide_size)
+				load.forceMove(loc)
 			load.set_dir(dir)
 
 		return 1
 	else
 		return 0
 
-/obj/vehicle/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/hand_labeler))
+/obj/vehicle/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/hand_labeler))
 		return
 	if(isScrewdriver(W))
 		if(!locked)
@@ -93,10 +98,10 @@
 	else if(isCrowbar(W) && cell && open)
 		remove_cell(user)
 
-	else if(istype(W, /obj/item/weapon/cell) && !cell && open)
+	else if(istype(W, /obj/item/cell) && !cell && open)
 		insert_cell(W, user)
 	else if(isWelder(W))
-		var/obj/item/weapon/weldingtool/T = W
+		var/obj/item/weldingtool/T = W
 		if(T.welding)
 			if(health < maxhealth)
 				if(open)
@@ -246,14 +251,13 @@
 		turn_on()
 		return
 
-/obj/vehicle/proc/insert_cell(obj/item/weapon/cell/C, mob/living/carbon/human/H)
+/obj/vehicle/proc/insert_cell(obj/item/cell/C, mob/living/carbon/human/H)
 	if(cell)
 		return
 	if(!istype(C))
 		return
-
-	H.drop_from_inventory(C)
-	C.forceMove(src)
+	if(!H.drop(C, src))
+		return
 	cell = C
 	powercheck()
 	to_chat(usr, "<span class='notice'>You install [C] in [src].</span>")
@@ -263,8 +267,7 @@
 		return
 
 	to_chat(usr, "<span class='notice'>You remove [cell] from [src].</span>")
-	cell.forceMove(get_turf(H))
-	H.put_in_hands(cell)
+	usr.pick_or_drop(cell, loc)
 	cell = null
 	powercheck()
 
@@ -341,6 +344,8 @@
 		return 0
 
 	load.forceMove(dest)
+	if(!load) // Strange stuff's happened before.
+		return 0
 	load.set_dir(get_dir(loc, dest))
 	load.anchored = 0		//we can only load non-anchored items, so it makes sense to set this to false
 	if(ismob(load)) //atoms should probably have their own procs to define how their pixel shifts and layer can be manipulated, someday

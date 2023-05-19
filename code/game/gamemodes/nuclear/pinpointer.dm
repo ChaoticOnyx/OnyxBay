@@ -1,4 +1,4 @@
-/obj/item/weapon/pinpointer
+/obj/item/pinpointer
 	name = "pinpointer"
 	icon = 'icons/obj/pinpointer.dmi'
 	icon_state = "pinoff"
@@ -11,26 +11,25 @@
 	var/active = 0
 	var/beeping = 2
 
-/obj/item/weapon/pinpointer/Destroy()
-	STOP_PROCESSING(SSobj,src)
+/obj/item/pinpointer/Destroy()
 	target = null
 	. = ..()
 
-/obj/item/weapon/pinpointer/attack_self(mob/user)
+/obj/item/pinpointer/attack_self(mob/user)
 	toggle(user)
 
-/obj/item/weapon/pinpointer/proc/toggle(mob/user)
+/obj/item/pinpointer/proc/toggle(mob/user)
 	active = !active
 	to_chat(user, "You [active ? "" : "de"]activate [src].")
 	if(!active)
-		STOP_PROCESSING(SSobj,src)
+		set_next_think(0)
 	else
 		if(!target)
 			target = acquire_target()
-		START_PROCESSING(SSobj,src)
+		set_next_think(world.time)
 	update_icon()
 
-/obj/item/weapon/pinpointer/advpinpointer/verb/toggle_sound()
+/obj/item/pinpointer/advpinpointer/verb/toggle_sound()
 	set category = "Object"
 	set name = "Toggle Pinpointer Beeping"
 	set src in view(1)
@@ -42,11 +41,11 @@
 		beeping = 0
 		to_chat(usr, "You enable the sound indication on [src].")
 
-/obj/item/weapon/pinpointer/proc/acquire_target()
-	var/obj/item/weapon/disk/nuclear/the_disk = locate() in nuke_disks
+/obj/item/pinpointer/proc/acquire_target()
+	var/obj/item/disk/nuclear/the_disk = locate() in nuke_disks
 	return weakref(the_disk)
 
-/obj/item/weapon/pinpointer/Process()
+/obj/item/pinpointer/think()
 	update_icon()
 	if(!target)
 		return
@@ -55,6 +54,7 @@
 		return
 
 	if(beeping < 0)
+		set_next_think(world.time + 1 SECOND)
 		return
 	if(beeping == 0)
 		var/turf/here = get_turf(src)
@@ -73,7 +73,9 @@
 	else
 		beeping--
 
-/obj/item/weapon/pinpointer/update_icon()
+	set_next_think(world.time + 1 SECOND)
+
+/obj/item/pinpointer/update_icon()
 	overlays.Cut()
 	if(!active)
 		return
@@ -113,10 +115,10 @@
 	overlays += pointer
 
 //Nuke ops locator
-/obj/item/weapon/pinpointer/nukeop
+/obj/item/pinpointer/nukeop
 	var/locate_shuttle = 0
 
-/obj/item/weapon/pinpointer/nukeop/Process()
+/obj/item/pinpointer/nukeop/think()
 	var/new_mode
 	if(!locate_shuttle && bomb_set)
 		locate_shuttle = 1
@@ -128,9 +130,10 @@
 		playsound(loc, 'sound/signals/ping2.ogg', 50, 0)
 		visible_message("<span class='notice'>[new_mode] active.</span>")
 		target = acquire_target()
+
 	..()
 
-/obj/item/weapon/pinpointer/nukeop/acquire_target()
+/obj/item/pinpointer/nukeop/acquire_target()
 	if(locate_shuttle)
 		var/obj/machinery/computer/shuttle_control/multi/syndicate/home = locate()
 		return weakref(home)
@@ -139,7 +142,7 @@
 
 //Deathsquad locator
 
-/obj/item/weapon/pinpointer/advpinpointer/verb/toggle_mode()
+/obj/item/pinpointer/advpinpointer/verb/toggle_mode()
 	set category = "Object"
 	set name = "Toggle Pinpointer Mode"
 	set src in view(1)
@@ -147,7 +150,7 @@
 	var/selection = input(usr, "Please select the type of target to locate.", "Mode" , "") as null|anything in list("Location", "Disk Recovery", "DNA", "Other Signature")
 	switch(selection)
 		if("Disk Recovery")
-			var/obj/item/weapon/disk/nuclear/the_disk = locate()
+			var/obj/item/disk/nuclear/the_disk = locate()
 			target = weakref(the_disk)
 
 		if("Location")

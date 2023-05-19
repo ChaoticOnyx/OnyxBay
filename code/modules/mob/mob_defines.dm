@@ -1,7 +1,7 @@
 /mob
 	density = 1
 
-	appearance_flags = PIXEL_SCALE | LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 	animate_movement = 2
 
 	virtual_mob = /mob/observer/virtual/mob
@@ -72,7 +72,7 @@
 
 	var/use_me = 1 //Allows all mobs to use the me verb by default, will have to manually specify they cannot
 	var/damageoverlaytemp = 0
-	var/obj/machinery/machine = null
+	var/obj/machinery/machine = null // Old bay code TOTALLY worth refactoring. For now, set and unset it ONLY by using set_machine(obj) and unset_machine() or GC will come and strangle you in your sleep.
 	var/poll_answer = 0.0
 	var/sdisabilities = 0	//Carbon
 	var/disabilities = 0	//Carbon
@@ -94,6 +94,7 @@
 	var/lying_prev = 0
 	var/hanging = FALSE
 	var/hanging_prev = FALSE
+	var/ignore_pull_slowdown = FALSE
 
 	var/unacidable = 0
 	var/list/pinned = list()            // List of things pinning this creature to walls (see living_defense.dm)
@@ -119,8 +120,8 @@
 	var/obj/buckled = null//Living
 	var/obj/item/l_hand = null//Living
 	var/obj/item/r_hand = null//Living
-	var/obj/item/weapon/back = null//Human/Monkey
-	var/obj/item/weapon/storage/s_active = null//Carbon
+	var/obj/item/back = null//Human/Monkey
+	var/obj/item/storage/s_active = null//Carbon
 	var/obj/item/clothing/mask/wear_mask = null//Carbon
 
 	var/list/grabbed_by = list(  )
@@ -139,7 +140,13 @@
 	var/list/mutations = list() //Carbon -- Doohl
 	//see: setup.dm for list of mutations
 
-	var/radiation = 0.0//Carbon
+	/// Total radiation dose. Sv.
+	var/radiation = SPACE_RADIATION
+	var/list/rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 6 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.1 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 	var/voice_name = "unidentifiable voice"
 
@@ -151,7 +158,7 @@
 	var/parrying = 0
 
 //The last mob/living/carbon to push/drag/grab this mob (mostly used by metroids friend recognition)
-	var/mob/living/carbon/LAssailant = null
+	var/weakref/LAssailant = null // Must be mob/living/carbon
 
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 
@@ -190,5 +197,12 @@
 	var/datum/browser/show_inventory
 
 	var/nabbing = 0  // Whether a creature with a CAN_NAB tag is grabbing normally or in nab mode.
-	
+
 	var/last_time_pointed_at = 0
+
+	/// Contains [/obj/screen/movable/alert] only.
+	///
+	/// On [/mob] so clientless mobs will throw alerts properly.
+	var/list/alerts = list()
+
+	var/is_view_shifted = FALSE

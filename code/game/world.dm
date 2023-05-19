@@ -24,33 +24,33 @@ var/server_name = "OnyxBay"
 	return 1
 
 /proc/toggle_ooc()
-	config.ooc_allowed = !config.ooc_allowed
-	if(config.ooc_allowed)
+	config.misc.ooc_allowed = !config.misc.ooc_allowed
+	if(config.misc.ooc_allowed)
 		to_world("<b>The OOC channel has been globally enabled!</b>")
 	else
 		to_world("<b>The OOC channel has been globally disabled!</b>")
 
 /proc/disable_ooc()
-	if(config.ooc_allowed)
+	if(config.misc.ooc_allowed)
 		toggle_ooc()
 
 /proc/enable_ooc()
-	if(!config.ooc_allowed)
+	if(!config.misc.ooc_allowed)
 		toggle_ooc()
 
 /proc/toggle_looc()
-	config.looc_allowed = !config.looc_allowed
-	if(config.looc_allowed)
+	config.misc.looc_allowed = !config.misc.looc_allowed
+	if(config.misc.looc_allowed)
 		to_world("<b>The LOOC channel has been globally enabled!</b>")
 	else
 		to_world("<b>The LOOC channel has been globally disabled!</b>")
 
 /proc/disable_looc()
-	if(config.ooc_allowed)
+	if(config.misc.ooc_allowed)
 		toggle_ooc()
 
 /proc/enable_looc()
-	if(!config.looc_allowed)
+	if(!config.misc.looc_allowed)
 		toggle_looc()
 
 // Find mobs matching a given string
@@ -101,27 +101,35 @@ var/server_name = "OnyxBay"
 /world/New()
 	SetupLogs()
 
+	if(world.system_type == UNIX)
+		GLOB.converter_dll = "./libconverter.so"
+	else
+		GLOB.converter_dll = "converter.dll"
+
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
 
 	if(byond_version < RECOMMENDED_VERSION)
 		to_world_log("Your server's byond version does not meet the recommended requirements for this server. Please update BYOND")
 
-	load_configuration()
+	load_sql_config("config/dbconfig.txt")
 
-	if(config.server_port)
-		var/port = OpenPort(config.server_port)
+	// Load up the base config.toml
+	config.load_configuration()
+
+	if(config.general.server_port)
+		var/port = OpenPort(config.general.server_port)
 		to_world_log(port ? "Changed port to [port]" : "Failed to change port")
 
 	//set window title
-	if(config.subserver_name)
-		var/subserver_name = uppertext(copytext(config.subserver_name, 1, 2)) + copytext(config.subserver_name, 2)
+	if(config.general.subserver_name)
+		var/subserver_name = uppertext(copytext(config.general.subserver_name, 1, 2)) + copytext(config.general.subserver_name, 2)
 		name = "[server_name]: [subserver_name] - [GLOB.using_map.full_name]"
 	else
 		name = "[server_name] - [GLOB.using_map.full_name]"
 
-	if(config && config.server_name != null && config.server_suffix && world.port > 0)
+	if(config && config.game.use_age_restriction_for_jobs != null && config.general.server_suffix && world.port > 0)
 		// dumb and hardcoded but I don't care~
-		config.server_name += " #[(world.port % 1000) / 100]"
+		config.general.server_name += " #[(world.port % 1000) / 100]"
 
 	watchlist = new /datum/watchlist
 
@@ -139,7 +147,6 @@ var/server_name = "OnyxBay"
 	. = ..()
 
 	Master.Initialize(10, FALSE)
-	webhook_send_roundstatus("lobby", "[config.server_id]")
 
 #undef RECOMMENDED_VERSION
 
@@ -149,7 +156,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	log_href("\"[T]\", from:[addr], master:[master][log_end]")
 
 	var/input[] = params2list(T)
-	var/key_valid = config.comms_password && input["key"] == config.comms_password
+	var/key_valid = config.external.comms_password && input["key"] == config.external.comms_password
 
 	if (T == "ping")
 		var/x = 1
@@ -168,10 +175,10 @@ var/world_topic_spam_protect_time = world.timeofday
 		var/list/s = list()
 		s["version"] = game_version
 		s["mode"] = PUBLIC_GAME_MODE
-		s["respawn"] = config.abandon_allowed
-		s["enter"] = config.enter_allowed
-		s["vote"] = config.allow_vote_mode
-		s["ai"] = config.allow_ai
+		s["respawn"] = config.misc.abandon_allowed
+		s["enter"] = config.game.enter_allowed
+		s["vote"] = config.vote.allow_vote_mode
+		s["ai"] = config.misc.allow_ai
 		s["host"] = host ? host : null
 
 		// This is dumb, but spacestation13.com's banners break if player count isn't the 8th field of the reply, so... this has to go here.
@@ -236,7 +243,7 @@ var/world_topic_spam_protect_time = world.timeofday
 		return list2params(L)
 
 	else if(copytext(T,1,5) == "laws")
-		if(input["key"] != config.comms_password)
+		if(input["key"] != config.external.comms_password)
 			if(abs(world_topic_spam_protect_time - world.time) < 50)
 				sleep(50)
 				world_topic_spam_protect_time = world.time
@@ -283,7 +290,7 @@ var/world_topic_spam_protect_time = world.timeofday
 			return list2params(ret)
 
 	else if(copytext(T,1,5) == "info")
-		if(input["key"] != config.comms_password)
+		if(input["key"] != config.external.comms_password)
 			if(abs(world_topic_spam_protect_time - world.time) < 50)
 				sleep(50)
 				world_topic_spam_protect_time = world.time
@@ -365,23 +372,24 @@ var/world_topic_spam_protect_time = world.timeofday
 				return "Bad Key (Throttled)"
 			world_topic_spam_protect_time = world.time
 			return "Bad Key"
-		var/ckey = input["ckey"]
+		var/client_key = input["ckey"]
+		var/client_ckey = ckey(client_key)
 		var/message
 		if(!input["isadmin"])  // le costil, remove when discord-bot will be fixed ~HonkyDonky
 			message = html_encode(input["ooc"])
 		else
 			message = "<font color='#39034f'>" + strip_html_properly(input["ooc"]) + "</font>"
-		if(!ckey||!message)
+		if(!client_ckey||!message)
 			return
-		if(!config.vars["ooc_allowed"]&&!input["isadmin"])
+		if(!config.misc.ooc_allowed && !input["isadmin"])
 			return "globally muted"
-		if(jobban_keylist.Find("[ckey] - OOC"))
+		if(jobban_keylist.Find("[client_ckey] - OOC"))
 			return "banned from ooc"
-		var/sent_message = "[create_text_tag("dooc", "Discord")] <EM>[ckey]:</EM> <span class='message linkify'>[message]</span>"
+		var/sent_message = "[create_text_tag("dooc", "Discord")] <EM>[client_key]:</EM> <span class='message linkify'>[message]</span>"
 		for(var/client/target in GLOB.clients)
 			if(!target)
 				continue //sanity
-			if(target.is_key_ignored(ckey) && !input["isadmin"]) // If we're ignored by this person, then do nothing.
+			if(target.is_key_ignored(client_ckey) && !input["isadmin"]) // If we're ignored by this person, then do nothing.
 				continue //if it shouldn't see then it doesn't
 			to_chat(target, "<span class='ooc dooc'><span class='everyone'>[sent_message]</span></span>", type = MESSAGE_TYPE_DOOC)
 
@@ -412,7 +420,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 		var/message = "<font color='red'>[rank] PM from <b>[input["admin"]]</b>: [response]</font>"
 		var/amessage =  "<span class='info'>[rank] PM from [input["admin"]] to <b>[key_name(C)]</b> : [response])]</span>"
-		webhook_send_ahelp("[input["admin"]] -> [req_ckey]", response)
+		// webhook_send_ahelp("[input["admin"]] -> [req_ckey]", response)
 
 		sound_to(C, sound('sound/effects/adminhelp.ogg'))
 		to_chat(C, message)
@@ -432,7 +440,7 @@ var/world_topic_spam_protect_time = world.timeofday
 			return "Bad Key"
 		toggle_ooc()
 		log_and_message_admins("discord toggled OOC.")
-		return config.ooc_allowed ? "ON" : "OFF"
+		return config.misc.ooc_allowed ? "ON" : "OFF"
 
 	else if(copytext(T,1,6) == "notes")
 		/*
@@ -441,7 +449,7 @@ var/world_topic_spam_protect_time = world.timeofday
 				1. notes = ckey of person the notes lookup is for
 				2. validationkey = the key the bot has, it should match the gameservers commspassword in it's configuration.
 		*/
-		if(input["key"] != config.comms_password)
+		if(input["key"] != config.external.comms_password)
 			if(abs(world_topic_spam_protect_time - world.time) < 50)
 				sleep(50)
 				world_topic_spam_protect_time = world.time
@@ -453,7 +461,7 @@ var/world_topic_spam_protect_time = world.timeofday
 		return show_player_info_irc(ckey(input["notes"]))
 
 	else if(copytext(T,1,4) == "age")
-		if(input["key"] != config.comms_password)
+		if(input["key"] != config.external.comms_password)
 			if(abs(world_topic_spam_protect_time - world.time) < 50)
 				sleep(50)
 				world_topic_spam_protect_time = world.time
@@ -472,9 +480,9 @@ var/world_topic_spam_protect_time = world.timeofday
 			return "Database connection failed or not set up"
 
 	else if(copytext(T,1,14) == "placepermaban")
-		if(!config.ban_comms_password)
+		if(!config.external.ban_comms_password)
 			return "Not enabled"
-		if(input["bankey"] != config.ban_comms_password)
+		if(input["bankey"] != config.external.ban_comms_password)
 			if(abs(world_topic_spam_protect_time - world.time) < 50)
 				sleep(50)
 				world_topic_spam_protect_time = world.time
@@ -515,10 +523,10 @@ var/world_topic_spam_protect_time = world.timeofday
 	for(var/client/C in GLOB.clients)
 		C?.tgui_panel?.send_roundrestart()
 
-		if(config.server) //if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
-			send_link(C, "byond://[config.server]")
+		if(config.external.server) //if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
+			send_link(C, "byond://[config.external.server]")
 
-	if(config.wait_for_sigusr1_reboot && reason != 3)
+	if(config.general.wait_for_sigusr1 && reason != 3)
 		text2file("foo", "reboot_called")
 		to_world("<span class=danger>World reboot waiting for external scripts. Please be patient.</span>")
 		return
@@ -547,22 +555,13 @@ var/world_topic_spam_protect_time = world.timeofday
 	join_motd = file2text("config/motd.txt")
 	load_regular_announcement()
 
-
-/proc/load_configuration()
-	config = new /datum/configuration()
-	config.Initialize()
-	config.load("config/config.txt")
-	config.load("config/game_options.txt","game_options")
-	config.loadsql("config/dbconfig.txt")
-	config.load_event("config/custom_event.txt")
-
 /hook/startup/proc/loadMods()
 	world.load_mods()
 	world.load_mentors() // no need to write another hook.
 	return 1
 
 /world/proc/load_mods()
-	if(config.admin_legacy_system)
+	if(config.admin.admin_legacy_system)
 		var/text = file2text("config/moderators.txt")
 		if (!text)
 			error("Failed to load config/mods.txt")
@@ -583,7 +582,7 @@ var/world_topic_spam_protect_time = world.timeofday
 				D.associate(GLOB.ckey_directory[ckey])
 
 /world/proc/load_mentors()
-	if(config.admin_legacy_system)
+	if(config.admin.admin_legacy_system)
 		var/text = file2text("config/mentors.txt")
 		if (!text)
 			error("Failed to load config/mentors.txt")
@@ -605,8 +604,8 @@ var/world_topic_spam_protect_time = world.timeofday
 /world/proc/update_status()
 	var/s = ""
 
-	if (config && config.server_name)
-		s += "<b>[config.server_name]</b>"
+	if (config && config.general.server_name)
+		s += "<b>[config.general.server_name]</b>"
 
 //	s += "<b>[station_name()]</b>";
 //	s += " ("
@@ -623,15 +622,15 @@ var/world_topic_spam_protect_time = world.timeofday
 	else
 		features += "<b>STARTING</b>"
 
-	if (!config.enter_allowed)
+	if (!config.game.enter_allowed)
 		features += "closed"
 
-	features += config.abandon_allowed ? "respawn" : "no respawn"
+	features += config.misc.abandon_allowed ? "respawn" : "no respawn"
 
-	if (config && config.allow_vote_mode)
+	if (config && config.vote.allow_vote_mode)
 		features += "vote"
 
-	if (config && config.allow_ai)
+	if (config && config.misc.allow_ai)
 		features += "AI allowed"
 
 	var/n = 0
@@ -645,8 +644,8 @@ var/world_topic_spam_protect_time = world.timeofday
 		features += "~[n] player"
 
 
-	if (config && config.hostedby)
-		features += "hosted by <b>[config.hostedby]</b>"
+	if (config && config.general.hosted_by)
+		features += "hosted by <b>[config.general.hosted_by]</b>"
 
 	if (features)
 		s += ": [jointext(features, ", ")]"
@@ -661,7 +660,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 /world/proc/SetupLogs()
 	if (!game_id)
-		crash_with("Unknown game_id!")
+		util_crash_with("Unknown game_id!")
 
 	var/log_directory = "data/logs/[time2text(world.realtime, "YYYY/MM-Month")]"
 	var/log_prefix = "[time2text(world.realtime, "DD.MM.YY")]_"
@@ -675,7 +674,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	WORLD_SETUP_LOG_DETAILED(qdel)
 	WORLD_SETUP_LOG_DETAILED(debug)
 	WORLD_SETUP_LOG_DETAILED(hrefs)
-	WORLD_SETUP_LOG_DETAILED(story)
+	WORLD_SETUP_LOG(story)
 	WORLD_SETUP_LOG(common)
 
 #undef WORLD_SETUP_LOG_DETAILED
@@ -689,7 +688,7 @@ var/failed_don_db_connections = 0
 
 
 /hook/startup/proc/connectDB()
-	if(!config.sql_enabled)
+	if(!config.external.sql_enabled)
 		log_to_dd("SQL disabled. Your server will not use feedback database.")
 	else if(!setup_database_connection())
 		log_to_dd("Your server failed to establish a connection with the feedback database.")
@@ -705,9 +704,9 @@ var/failed_don_db_connections = 0
 	if(!dbcon)
 		dbcon = new()
 
-	var/user = sqlfdbklogin
-	var/pass = sqlfdbkpass
-	var/db = sqlfdbkdb
+	var/user = sql_feedback_login
+	var/pass = sql_feedback_pass
+	var/db = sql_feedback_db
 	var/address = sqladdress
 	var/port = sqlport
 
@@ -723,7 +722,7 @@ var/failed_don_db_connections = 0
 
 //This proc ensures that the connection to the feedback database (global variable dbcon) is established
 /proc/establish_db_connection()
-	if(!config.sql_enabled)
+	if(!config.external.sql_enabled)
 		return FALSE
 
 	if(failed_db_connections > FAILED_DB_CONNECTION_CUTOFF)
@@ -736,7 +735,7 @@ var/failed_don_db_connections = 0
 
 
 /hook/startup/proc/connectOldDB()
-	if(!config.sql_enabled)
+	if(!config.external.sql_enabled)
 		log_to_dd("SQL disabled. Your server configured to use legacy admin and ban system.")
 	else if(!setup_old_database_connection())
 		log_to_dd("Your server failed to establish a connection with the SQL database.")
@@ -771,7 +770,7 @@ var/failed_don_db_connections = 0
 	return .
 
 /proc/establish_old_db_connection()
-	if(!config.sql_enabled)
+	if(!config.external.sql_enabled)
 		return FALSE
 
 	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)
@@ -784,7 +783,7 @@ var/failed_don_db_connections = 0
 
 
 /hook/startup/proc/connectDonDB()
-	if(!config.sql_enabled)
+	if(!config.external.sql_enabled)
 		log_to_dd("SQL disabled. Your server will not use Donations database.")
 	else if(!setup_don_database_connection())
 		log_to_dd("Your server failed to establish a connection with the Donations database.")
@@ -819,7 +818,7 @@ proc/setup_don_database_connection()
 	return .
 
 /proc/establish_don_db_connection()
-	if(!config.sql_enabled)
+	if(!config.external.sql_enabled)
 		return FALSE
 
 	if(failed_don_db_connections > FAILED_DB_CONNECTION_CUTOFF)

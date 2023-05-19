@@ -4,8 +4,8 @@
 	icon = 'icons/obj/monitors.dmi'
 	icon_state = "camera"
 	use_power = POWER_USE_ACTIVE
-	idle_power_usage = 5
-	active_power_usage = 10
+	idle_power_usage = 5 WATTS
+	active_power_usage = 10 WATTS
 
 	layer = CAMERA_LAYER
 
@@ -17,7 +17,7 @@
 	anchored = 1.0
 	var/invuln = null
 	var/bugged = 0
-	var/obj/item/weapon/camera_assembly/assembly = null
+	var/weakref/assembly_ref = null
 
 	var/toughness = 5 //sorta fragile
 
@@ -37,7 +37,7 @@
 
 	var/affected_by_emp_until = 0
 
-/obj/machinery/camera/examine(mob/user)
+/obj/machinery/camera/_examine_text(mob/user)
 	. = ..()
 	if(stat & BROKEN)
 		. += "\n<span class='warning'>It is completely demolished.</span>"
@@ -99,14 +99,15 @@
 		)
 		M.machine_visual = null
 	else
-		crash_with("Not all overlays has removed!")
+		util_crash_with("Not all overlays has removed!")
 
 	return 1
 
 /obj/machinery/camera/New()
 	wires = new(src)
-	assembly = new(src)
+	var/obj/item/camera_assembly/assembly = new(src)
 	assembly.state = 4
+	assembly_ref = weakref(assembly)
 
 	/* // Use this to look for cameras that have the same c_tag.
 	for(var/obj/machinery/camera/C in cameranet.cameras)
@@ -139,11 +140,8 @@
 
 /obj/machinery/camera/Destroy()
 	deactivate(null, 0) //kick anyone viewing out
-	if(assembly)
-		qdel(assembly)
-		assembly = null
-	qdel(wires)
-	wires = null
+	QDEL_NULL(assembly_ref)
+	QDEL_NULL(wires)
 	return ..()
 
 /obj/machinery/camera/Process()
@@ -221,6 +219,7 @@
 
 	else if(isWelder(W) && (wires.CanDeconstruct() || (stat & BROKEN)))
 		if(weld(W, user))
+			var/obj/item/camera_assembly/assembly = assembly_ref?.resolve()
 			if(assembly)
 				assembly.dropInto(loc)
 				assembly.anchored = 1
@@ -236,19 +235,19 @@
 					assembly.state = 1
 					to_chat(user, "<span class='notice'>You cut \the [src] free from the wall.</span>")
 					new /obj/item/stack/cable_coil(src.loc, length=2)
-				assembly = null //so qdel doesn't eat it.
+				assembly_ref = null //so qdel doesn't eat it.
 			qdel(src)
 			return
 
 	// OTHER
-	else if (can_use() && (istype(W, /obj/item/weapon/paper) || istype(W, /obj/item/device/pda)) && isliving(user))
+	else if (can_use() && (istype(W, /obj/item/paper) || istype(W, /obj/item/device/pda)) && isliving(user))
 		var/mob/living/U = user
-		var/obj/item/weapon/paper/X = null
+		var/obj/item/paper/X = null
 		var/obj/item/device/pda/P = null
 
 		var/itemname = ""
 		var/info = ""
-		if(istype(W, /obj/item/weapon/paper))
+		if(istype(W, /obj/item/paper))
 			X = W
 			itemname = X.name
 			info = X.info
@@ -403,7 +402,7 @@
 
 	return null
 
-/obj/machinery/camera/proc/weld(obj/item/weapon/weldingtool/WT, mob/user)
+/obj/machinery/camera/proc/weld(obj/item/weldingtool/WT, mob/user)
 
 	if(busy)
 		return 0

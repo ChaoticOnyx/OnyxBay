@@ -13,6 +13,12 @@
 	var/static_equip
 	var/static_light = 0
 	var/static_environ
+	var/list/ambient_music_tags = list(MUSIC_TAG_NORMAL)
+
+	var/environment_type   = ENVIRONMENT_NONE
+	var/is_station         = FALSE
+	var/importance         = 1
+	var/loyalty            = 0
 
 /area/New()
 	icon_state = ""
@@ -22,6 +28,7 @@
 		power_light = 0
 		power_equip = 0
 		power_environ = 0
+		ambience_powered = list()
 
 	if(dynamic_lighting)
 		luminosity = 0
@@ -36,6 +43,7 @@
 		power_light = 0
 		power_equip = 0
 		power_environ = 0
+		ambience_powered = list()
 	power_change()		// all machines set to current power level, also updates lighting icon
 
 	switch(gravity_state)
@@ -43,6 +51,15 @@
 			has_gravity = 0
 		if(AREA_GRAVITY_ALWAYS)
 			has_gravity = 1
+
+	is_station = all_predicates_true(list(src), list(/proc/is_not_space_area, /proc/is_station_area))
+	if(is_station)
+		GLOB.station_areas.Add(src)
+
+/area/Destroy()
+	if(is_station)
+		GLOB.station_areas.Remove(src)
+	. = ..()
 
 /area/proc/get_contents()
 	return contents
@@ -82,64 +99,50 @@
 	return 0
 
 /area/proc/air_doors_close()
-	if(!air_doors_activated)
-		air_doors_activated = 1
-		if(!all_doors)
-			return
-		for(var/obj/machinery/door/firedoor/E in all_doors)
-			if(!E.blocked)
-				if(E.operating)
-					E.nextstate = FIREDOOR_CLOSED
-				else if(!E.density)
-					spawn(0)
-						E.close()
+	if(air_doors_activated)
+		return
+	air_doors_activated = 1
+	if(!all_doors)
+		return
+	for(var/obj/machinery/door/firedoor/E in all_doors)
+		INVOKE_ASYNC(E, /obj/machinery/door/proc/close)
 
 /area/proc/air_doors_open()
-	if(air_doors_activated)
-		air_doors_activated = 0
-		if(!all_doors)
-			return
-		for(var/obj/machinery/door/firedoor/E in all_doors)
-			if(!E.blocked)
-				if(E.operating)
-					E.nextstate = FIREDOOR_OPEN
-				else if(E.density)
-					spawn(0)
-						if(E.can_safely_open())
-							E.open()
+	if(!air_doors_activated)
+		return
+	air_doors_activated = 0
+	if(!all_doors)
+		return
+	for(var/obj/machinery/door/firedoor/E in all_doors)
+		if(!E.density || (E.stat & (BROKEN|NOPOWER)))
+			continue
+		if(E.can_safely_open())
+			INVOKE_ASYNC(E, /obj/machinery/door/proc/open)
 
 
 /area/proc/fire_alert()
-	if(!fire)
-		fire = TRUE	//used for firedoor checks
-		update_icon()
-		mouse_opacity = 0
-		set_lighting_mode(LIGHTMODE_ALARM, TRUE)
-		if(!all_doors)
-			return
-		for(var/obj/machinery/door/firedoor/D in all_doors)
-			if(!D.blocked)
-				if(D.operating)
-					D.nextstate = FIREDOOR_CLOSED
-				else if(!D.density)
-					spawn()
-						D.close()
+	if(fire)
+		return
+	fire = TRUE	//used for firedoor checks
+	update_icon()
+	mouse_opacity = 0
+	set_lighting_mode(LIGHTMODE_ALARM, TRUE)
+	if(!all_doors)
+		return
+	for(var/obj/machinery/door/firedoor/D in all_doors)
+		INVOKE_ASYNC(D, /obj/machinery/door/proc/close)
 
 /area/proc/fire_reset()
-	if (fire)
-		fire = FALSE	//used for firedoor checks
-		update_icon()
-		mouse_opacity = 0
-		set_lighting_mode(LIGHTMODE_ALARM, FALSE)
-		if(!all_doors)
-			return
-		for(var/obj/machinery/door/firedoor/D in all_doors)
-			if(!D.blocked)
-				if(D.operating)
-					D.nextstate = FIREDOOR_OPEN
-				else if(D.density)
-					spawn(0)
-					D.open()
+	if (!fire)
+		return
+	fire = FALSE	//used for firedoor checks
+	update_icon()
+	mouse_opacity = 0
+	set_lighting_mode(LIGHTMODE_ALARM, FALSE)
+	if(!all_doors)
+		return
+	for(var/obj/machinery/door/firedoor/D in all_doors)
+		INVOKE_ASYNC(D, /obj/machinery/door/proc/open)
 
 /area/proc/readyalert()
 	if(!eject)
@@ -154,25 +157,20 @@
 	return
 
 /area/proc/partyalert()
-	if (!( party ))
-		party = 1
-		update_icon()
-		mouse_opacity = 0
-	return
+	if (party)
+		return
+	party = 1
+	update_icon()
+	mouse_opacity = 0
 
 /area/proc/partyreset()
-	if (party)
-		party = 0
-		mouse_opacity = 0
-		update_icon()
-		for(var/obj/machinery/door/firedoor/D in src)
-			if(!D.blocked)
-				if(D.operating)
-					D.nextstate = FIREDOOR_OPEN
-				else if(D.density)
-					spawn(0)
-					D.open()
-	return
+	if (!party)
+		return
+	party = 0
+	mouse_opacity = 0
+	update_icon()
+	for(var/obj/machinery/door/firedoor/D in src)
+		INVOKE_ASYNC(D, /obj/machinery/door/proc/open)
 
 /area/update_icon()
 	if ((eject || party) && (!requires_power||power_environ))//If it doesn't require power, can still activate this proc.
@@ -227,6 +225,9 @@
 		L.set_mode(lighting_mode)
 		L.update_power_channel(power_channel)
 
+/area/proc/is_controlled_by_corporation()
+	return loyalty >= 0
+
 var/list/mob/living/forced_ambiance_list = new
 
 /area/Entered(A)
@@ -270,22 +271,29 @@ var/list/mob/living/forced_ambiance_list = new
 	if(hum)
 		if(L.client && !L.client.ambience_playing)
 			L.client.ambience_playing = 1
-			L.playsound_local(T,sound('sound/ambient/vents.ogg', repeat = 1, wait = 0, volume = 20, channel = 2))
+			L.playsound_local(T,sound('sound/ambient/vents.ogg', repeat = 1, wait = 0, volume = 20, channel = SOUND_CHANNEL_HUM))
 	else
 		if(L.client && L.client.ambience_playing)
 			L.client.ambience_playing = 0
-			sound_to(L, sound(null, channel = 2))
+			sound_to(L, sound(null, channel = SOUND_CHANNEL_HUM))
 
 	if(forced_ambience)
 		if(forced_ambience.len)
 			var/S = GET_SFX(pick(forced_ambience))
 			forced_ambiance_list |= L
-			L.playsound_local(T,sound(S, repeat = 1, wait = 0, volume = 30, channel = 1))
+			L.playsound_local(T,sound(S, repeat = 1, wait = 0, volume = 30, channel = SOUND_CHANNEL_AMBIENT))
 		else
 			sound_to(L, sound(null, channel = 1))
-	else if(src.ambience.len && prob(35) && (world.time >= L.client.played + custom_period))
-		var/S = GET_SFX(pick(ambience))
-		L.playsound_local(T, sound(S, repeat = 0, wait = 0, volume = 30, channel = 1))
+	else if(prob(35) && (world.time >= L.client.played + custom_period))
+		var/is_powered = (power_environ + power_equip + power_light) > 0
+		var/list/to_play = is_powered ? ambience_powered : ambience_off
+
+		if(!length(to_play))
+			return
+
+		var/S = GET_SFX(pick(to_play))
+
+		L.playsound_local(T, sound(S, repeat = 0, wait = 0, volume = 30, channel = SOUND_CHANNEL_AMBIENT))
 		L.client.played = world.time
 
 /area/proc/gravitychange(new_state = 0)
@@ -316,7 +324,7 @@ var/list/mob/living/forced_ambiance_list = new
 	var/obj/machinery/power/apc/theAPC = get_apc()
 	if(theAPC && theAPC.operating)
 		for(var/obj/machinery/power/apc/temp_apc in src)
-			temp_apc.overload_lighting(70)
+			temp_apc.overload_lighting()
 		for(var/obj/machinery/door/airlock/temp_airlock in src)
 			temp_airlock.prison_open()
 		for(var/obj/machinery/door/window/temp_windoor in src)
@@ -349,3 +357,8 @@ var/list/mob/living/forced_ambiance_list = new
 /area/proc/has_turfs()
 	return !!(locate(/turf) in src)
 
+/area/allow_drop()
+	CRASH("Bad op: area/allow_drop() called")
+
+/area/drop_location()
+	CRASH("Bad op: area/drop_location() called")

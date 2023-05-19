@@ -36,6 +36,7 @@
 #define ANTAG_RANDOM_EXCEPTED   0x800 // If a game mode randomly selects antag types, antag types with this flag should be excluded.
 
 // Mode/antag template macros.
+#define MODE_ABDUCTOR "abductor"
 #define MODE_BORER "borer"
 #define MODE_XENOMORPH "xenomorph"
 #define MODE_LOYALIST "loyalist"
@@ -59,6 +60,7 @@
 #define MODE_TRAITOR "traitor"
 #define MODE_MEME "meme"
 #define MODE_DEITY "deity"
+#define MODE_SPIDER "spider"
 #define MODE_GODCULTIST "god cultist"
 
 #define DEFAULT_TELECRYSTAL_AMOUNT 12

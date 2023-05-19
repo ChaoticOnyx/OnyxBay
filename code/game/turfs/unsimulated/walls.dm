@@ -6,6 +6,11 @@
 	density = 1
 	plane = DEFAULT_PLANE
 	explosion_block = 1
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 20.2 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 10 ELECTRONVOLT
+	)
 
 /turf/unsimulated/wall/fakeglass
 	name = "window"
@@ -14,3 +19,8 @@
 
 /turf/unsimulated/wall/other
 	icon_state = "r_wall"
+
+/turf/unsimulated/wall/abductor
+	name = "wall"
+	icon = 'icons/turf/walls.dmi'
+	icon_state = "alien1"

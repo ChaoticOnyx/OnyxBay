@@ -31,7 +31,7 @@
 	icon = 'icons/obj/computer.dmi'
 	icon_keyboard = "tech_key"
 	icon_screen = "turbinecomp"
-	circuit = /obj/item/weapon/circuitboard/turbine_control
+	circuit = /obj/item/circuitboard/turbine_control
 	anchored = 1
 	density = 1
 	can_atmos_pass = ATMOS_PASS_PROC
@@ -156,11 +156,11 @@
 /obj/machinery/power/turbine/interact(mob/user)
 
 	if ( (get_dist(src, user) > 1 ) || (stat & (NOPOWER|BROKEN)) && (!istype(user, /mob/living/silicon/ai)) )
-		user.machine = null
+		user.unset_machine()
 		close_browser(user, "window=turbine")
 		return
 
-	user.machine = src
+	user.set_machine(src)
 
 	var/t = "<meta charset=\"utf-8\"><TT><B>Gas Turbine Generator</B><HR><PRE>"
 
@@ -218,7 +218,7 @@
 	return ..()
 
 /obj/machinery/computer/turbine_computer/attack_hand(mob/user as mob)
-	user.machine = src
+	user.set_machine(src)
 	var/dat = "<meta charset=\"utf-8\">"
 	if(src.compressor)
 		dat += {"<BR><B>Gas turbine remote control system</B><HR>

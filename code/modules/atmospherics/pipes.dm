@@ -83,10 +83,10 @@
 	QDEL_NULL(parent)
 	if(air_temporary)
 		loc.assume_air(air_temporary)
+		air_temporary = null
+	return ..()
 
-	. = ..()
-
-/obj/machinery/atmospherics/pipe/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/atmospherics/pipe/attackby(obj/item/W as obj, mob/user as mob)
 	if (istype(src, /obj/machinery/atmospherics/pipe/tank))
 		return ..()
 	if (istype(src, /obj/machinery/atmospherics/pipe/vent))
@@ -189,9 +189,9 @@
 	plane = FLOOR_PLANE
 
 	switch(dir)
-		if(SOUTH || NORTH)
+		if(SOUTH, NORTH)
 			initialize_directions = SOUTH|NORTH
-		if(EAST || WEST)
+		if(EAST, WEST)
 			initialize_directions = EAST|WEST
 		if(NORTHEAST)
 			initialize_directions = NORTH|EAST
@@ -257,7 +257,8 @@
 	if(node2)
 		node2.disconnect(src)
 		node2 = null
-	. = ..()
+
+	return ..()
 
 /obj/machinery/atmospherics/pipe/simple/pipeline_expansion()
 	return list(node1, node2)
@@ -493,7 +494,7 @@
 		node3.disconnect(src)
 		node3 = null
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/manifold/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
@@ -745,7 +746,7 @@
 		node4.disconnect(src)
 		node4 = null
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/manifold4w/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
@@ -1002,7 +1003,7 @@
 	if(node)
 		node.disconnect(src)
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/cap/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node)
@@ -1124,7 +1125,7 @@
 	if(node1)
 		node1.disconnect(src)
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/tank/pipeline_expansion()
 	return list(node1)
@@ -1176,7 +1177,7 @@
 /obj/machinery/atmospherics/pipe/tank/air/New()
 	air_temporary = new
 	air_temporary.volume = volume
-	air_temporary.temperature = T20C
+	air_temporary.temperature = 20 CELSIUS
 
 	air_temporary.adjust_multi("oxygen",  (start_pressure*O2STANDARD)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature), \
 	                           "nitrogen",(start_pressure*N2STANDARD)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
@@ -1192,7 +1193,7 @@
 /obj/machinery/atmospherics/pipe/tank/oxygen/New()
 	air_temporary = new
 	air_temporary.volume = volume
-	air_temporary.temperature = T20C
+	air_temporary.temperature = 20 CELSIUS
 
 	air_temporary.adjust_gas("oxygen", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
 
@@ -1206,7 +1207,7 @@
 /obj/machinery/atmospherics/pipe/tank/nitrogen/New()
 	air_temporary = new
 	air_temporary.volume = volume
-	air_temporary.temperature = T20C
+	air_temporary.temperature = 20 CELSIUS
 
 	air_temporary.adjust_gas("nitrogen", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
 
@@ -1220,7 +1221,7 @@
 /obj/machinery/atmospherics/pipe/tank/carbon_dioxide/New()
 	air_temporary = new
 	air_temporary.volume = volume
-	air_temporary.temperature = T20C
+	air_temporary.temperature = 20 CELSIUS
 
 	air_temporary.adjust_gas("carbon_dioxide", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
 
@@ -1234,7 +1235,7 @@
 /obj/machinery/atmospherics/pipe/tank/plasma/New()
 	air_temporary = new
 	air_temporary.volume = volume
-	air_temporary.temperature = T20C
+	air_temporary.temperature = 20 CELSIUS
 
 	air_temporary.adjust_gas("plasma", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
 
@@ -1248,7 +1249,7 @@
 /obj/machinery/atmospherics/pipe/tank/nitrous_oxide/New()
 	air_temporary = new
 	air_temporary.volume = volume
-	air_temporary.temperature = T0C
+	air_temporary.temperature = 0 CELSIUS
 
 	air_temporary.adjust_gas("sleeping_agent", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
 
@@ -1262,7 +1263,7 @@
 /obj/machinery/atmospherics/pipe/tank/hydrogen/New()
 	air_temporary = new
 	air_temporary.volume = volume
-	air_temporary.temperature = T20C
+	air_temporary.temperature = 20 CELSIUS
 
 	air_temporary.adjust_gas("hydrogen", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
 
@@ -1308,7 +1309,7 @@
 	if(node1)
 		node1.disconnect(src)
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/vent/pipeline_expansion()
 	return list(node1)
@@ -1368,18 +1369,18 @@
 	overlays += icon_manager.get_atmos_icon("pipe", , pipe_color, "universal")
 	underlays.Cut()
 
-	if (node1)
+	if(node1)
 		universal_underlays(node1)
 		if(node2)
 			universal_underlays(node2)
 		else
-			var/node1_dir = get_dir(node1,src)
-			universal_underlays(,node1_dir)
-	else if (node2)
+			var/node1_dir = get_dir(node1, src)
+			universal_underlays(null, node1_dir)
+	else if(node2)
 		universal_underlays(node2)
 	else
-		universal_underlays(,dir)
-		universal_underlays(dir, -180)
+		universal_underlays(null, dir)
+		universal_underlays(null, turn(dir, 180))
 
 /obj/machinery/atmospherics/pipe/simple/visible/universal/update_underlays()
 	..()
@@ -1403,20 +1404,20 @@
 	overlays += icon_manager.get_atmos_icon("pipe", , pipe_color, "universal")
 	underlays.Cut()
 
-	if (node1)
+	if(node1)
 		universal_underlays(node1)
 		if(node2)
 			universal_underlays(node2)
 		else
-			var/node2_dir = turn(get_dir(src,node1),-180)
-			universal_underlays(,node2_dir)
-	else if (node2)
+			var/node2_dir = turn(get_dir(src, node1), -180)
+			universal_underlays(null, node2_dir)
+	else if(node2)
 		universal_underlays(node2)
-		var/node1_dir = turn(get_dir(src,node2),-180)
-		universal_underlays(,node1_dir)
+		var/node1_dir = turn(get_dir(src, node2), -180)
+		universal_underlays(null, node1_dir)
 	else
-		universal_underlays(,dir)
-		universal_underlays(,turn(dir, -180))
+		universal_underlays(null, dir)
+		universal_underlays(null, turn(dir, -180))
 
 /obj/machinery/atmospherics/pipe/simple/hidden/universal/update_underlays()
 	..()

@@ -19,9 +19,9 @@
 	var/list/data = host.initial_data()
 
 	data["guns"] = list()
-	for(var/obj/item/weapon/gun/energy/secure/G in GLOB.registered_weapons)
+	for(var/obj/item/gun/energy/secure/G in GLOB.registered_weapons)
 		var/turf/T = get_turf(G)
-		if(!T || !(T.z in GLOB.using_map.station_levels))
+		if(!T || !(T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
 			continue
 
 		var/list/modes = list()
@@ -45,7 +45,7 @@
 		return 1
 
 	if(href_list["gun"] && ("authorize" in href_list) && href_list["mode"])
-		var/obj/item/weapon/gun/energy/secure/G = locate(href_list["gun"]) in GLOB.registered_weapons
+		var/obj/item/gun/energy/secure/G = locate(href_list["gun"]) in GLOB.registered_weapons
 		var/do_authorize = text2num(href_list["authorize"])
 		var/mode = text2num(href_list["mode"])
 		return isnum(do_authorize) && isnum(mode) && G && G.authorize(mode, do_authorize, usr.name)

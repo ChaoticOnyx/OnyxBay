@@ -13,6 +13,14 @@
 	var/blood_overlay_type = "uniformblood"
 	var/visible_name = "Unknown"
 
+	/// How much of rays this clothing can save.
+	/// Value should be in range between 0 and 1.
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 17 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 3 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
 // Updates the icons of the mob wearing the clothing item, if any.
 /obj/item/clothing/proc/update_clothing_icon()
 	return
@@ -48,7 +56,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 				GLOB.clothing_blood_icons[cache_index] = bloodover
 			ret.overlays |= GLOB.clothing_blood_icons[cache_index]
 
-	if(accessories.len)
+	if(length(accessories))
 		for(var/obj/item/clothing/accessory/A in accessories)
 			ret.overlays |= A.get_mob_overlay(user_mob, slot_tie_str)
 	return ret
@@ -59,7 +67,9 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 	gunshot_residue = null
 
 /obj/item/clothing/proc/get_fibers()
-	. = "material from \a [name]"
+	var/fiber_id = copytext(md5("\ref[src] fiber"), 1, 6)
+
+	. = "material from \a [name] ([fiber_id])"
 	var/list/acc = list()
 	for(var/obj/item/clothing/accessory/A in accessories)
 		if(prob(40) && A.get_fibers())
@@ -73,6 +83,10 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 		for(var/T in starting_accessories)
 			var/obj/item/clothing/accessory/tie = new T(src)
 			src.attach_accessory(null, tie)
+
+/obj/item/clothing/Destroy()
+	QDEL_NULL_LIST(accessories)
+	return ..()
 
 //BS12: Species-restricted clothing check.
 /obj/item/clothing/mob_can_equip(M as mob, slot, disable_warning = 0)
@@ -224,9 +238,9 @@ BLIND     // can't see anything
 	var/wired = FALSE
 	var/wire_color
 	var/clipped = FALSE
-	var/obj/item/clothing/ring/ring = null    // Covered ring
-	var/mob/living/carbon/human/wearer = null // Used for covered rings when dropping
-	var/unarmed_damage_override = null        // Overrides unarmed attack damage if not null
+	var/weakref/ring = null            // Covered ring (obj/item/clothing/ring)
+	var/weakref/wearer = null          // Used for covered rings when dropping (mob/living/carbon/human)
+	var/unarmed_damage_override = null // Overrides unarmed attack damage if not null
 	body_parts_covered = HANDS
 	slot_flags = SLOT_GLOVES
 	attack_verb = list("challenged")
@@ -236,8 +250,17 @@ BLIND     // can't see anything
 /obj/item/clothing/gloves/Initialize()
 	if(item_flags & ITEM_FLAG_PREMODIFIED)
 		cut_fingertops()
-
 	. = ..()
+
+/obj/item/clothing/gloves/Destroy()
+	var/mob/living/carbon/human/H = wearer?.resolve()
+	var/obj/item/clothing/ring/R = ring?.resolve()
+	if(istype(H) && istype(R)) //Put the ring back on if the check fails.
+		H.equip_to_slot_if_possible(R, slot_gloves)
+		ring = null
+	QDEL_NULL(ring)
+	wearer = null
+	return ..()
 
 /obj/item/clothing/gloves/update_clothing_icon()
 	if(ismob(src.loc))
@@ -254,14 +277,16 @@ BLIND     // can't see anything
 		overlays += image(icon, "gloves_wire")
 
 /obj/item/clothing/gloves/get_fibers()
-	return "material from a pair of [name]."
+	var/fiber_id = copytext(md5("\ref[src] fiber"), 1, 6)
+
+	return "material from a pair of [name] ([fiber_id])"
 
 // Called just before an attack_hand(), in mob/UnarmedAttack()
 /obj/item/clothing/gloves/proc/Touch(atom/A, proximity)
 	return FALSE // return TRUE to cancel attack_hand()
 
-/obj/item/clothing/gloves/attackby(obj/item/weapon/W, mob/user)
-	if(isWirecutter(W) || istype(W, /obj/item/weapon/scalpel))
+/obj/item/clothing/gloves/attackby(obj/item/W, mob/user)
+	if(isWirecutter(W) || istype(W, /obj/item/scalpel))
 		if(wired)
 			wired = FALSE
 			update_icon(TRUE)
@@ -290,12 +315,11 @@ BLIND     // can't see anything
 			wired = TRUE
 			wire_color = C.color
 			update_icon(TRUE)
-			user.visible_message(SPAN("warning", "\The [user] attaches some wires to \the [W]."), SPAN("notice", "You attach some wires to \the [src]."))
+			user.visible_message(SPAN("warning", "\The [user] attaches some wires to \the [src]."), SPAN("notice", "You attach some wires to \the [src]."))
 			return
 
-	if(istype(W, /obj/item/weapon/tape_roll) && wired)
+	if(istype(W, /obj/item/tape_roll) && wired && user.drop(src))
 		user.visible_message(SPAN("warning", "\The [user] secures the wires on \the [src] with \the [W]."), SPAN("notice", "You secure the wires on \the [src] with \the [W]."))
-		user.drop_from_inventory(src)
 		new /obj/item/clothing/gloves/stun(loc, src)
 		return
 
@@ -317,35 +341,35 @@ BLIND     // can't see anything
 	var/mob/living/carbon/human/H = user
 
 	if(istype(H.gloves, /obj/item/clothing/ring))
-		ring = H.gloves
-		if(!ring.undergloves)
-			to_chat(user, "You are unable to wear \the [src] as \the [H.gloves] are in the way.")
+		var/obj/item/clothing/ring/R = H.gloves
+		ring = weakref(R)
+		if(!R.undergloves)
+			to_chat(user, "You are unable to wear \the [src] as \the [R] are in the way.")
 			ring = null
-			return 0
-		H.drop_from_inventory(ring)	//Remove the ring (or other under-glove item in the hand slot?) so you can put on the gloves.
-		ring.forceMove(src)
+			return FALSE
+		H.drop(R, src, TRUE) // Remove the ring (or other under-glove item in the hand slot?) so you can put on the gloves.
 
 	if(!..())
-		if(ring) //Put the ring back on if the check fails.
-			if(H.equip_to_slot_if_possible(ring, slot_gloves))
-				src.ring = null
-		return 0
+		var/obj/item/clothing/ring/R = ring?.resolve()
+		if(istype(R)) //Put the ring back on if the check fails.
+			if(H.equip_to_slot_if_possible(R, slot_gloves))
+				ring = null
+		return FALSE
 
-	if (ring)
-		to_chat(user, "You slip \the [src] on over \the [ring].")
-	wearer = H //TODO clean this when magboots are cleaned
-	return 1
+	var/obj/item/clothing/ring/R = ring?.resolve()
+	if(istype(R))
+		to_chat(user, "You slip \the [src] on over \the [R].")
+	wearer = weakref(H)
+	return TRUE
 
 /obj/item/clothing/gloves/dropped()
 	..()
-	if(!wearer)
-		return
-
-	var/mob/living/carbon/human/H = wearer
-	if(ring && istype(H))
-		if(!H.equip_to_slot_if_possible(ring, slot_gloves))
-			ring.forceMove(get_turf(src))
-		src.ring = null
+	var/mob/living/carbon/human/H = wearer?.resolve()
+	var/obj/item/clothing/ring/R = ring?.resolve()
+	if(istype(R) && istype(H))
+		if(!H.equip_to_slot_if_possible(R, slot_gloves))
+			R.forceMove(get_turf(src))
+	ring = null
 	wearer = null
 
 ///////////////////////////////////////////////////////////////////////
@@ -555,7 +579,14 @@ BLIND     // can't see anything
 	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "shoeblood"
 
-	armor = list(melee = 25, bullet = 25, laser = 25,energy = 15, bomb = 25, bio = 10, rad = 0)
+	armor = list(melee = 25, bullet = 25, laser = 25,energy = 15, bomb = 25, bio = 10)
+
+/obj/item/clothing/shoes/Destroy()
+	if(holding)
+		holding.forceMove(get_turf(src))
+		holding = null
+	QDEL_NULL(holding)
+	return ..()
 
 /obj/item/clothing/shoes/proc/draw_knife()
 	set name = "Draw Boot Knife"
@@ -588,16 +619,19 @@ BLIND     // can't see anything
 	..()
 
 /obj/item/clothing/shoes/attackby(obj/item/I, mob/user)
-	if(can_hold_knife && is_type_in_list(I, list(/obj/item/weapon/material/shard, /obj/item/weapon/material/butterfly, /obj/item/weapon/material/kitchen/utensil, /obj/item/weapon/material/hatchet/tacknife, /obj/item/weapon/material/knife/shiv)))
+	if(can_hold_knife && is_type_in_list(I, list(/obj/item/material/shard, /obj/item/material/butterfly, /obj/item/material/kitchen/utensil, /obj/item/material/hatchet/tacknife, /obj/item/material/knife/shiv)))
 		if(holding)
 			to_chat(user, "<span class='warning'>\The [src] is already holding \a [holding].</span>")
 			return
-		user.unEquip(I)
-		I.forceMove(src)
+		if(!user.drop(I, src))
+			return
 		holding = I
 		user.visible_message("<span class='notice'>\The [user] shoves \the [I] into \the [src].</span>", range = 1)
 		verbs |= /obj/item/clothing/shoes/proc/draw_knife
 		update_icon()
+	else if(istype(I, /obj/item/flame/match))
+		var/obj/item/flame/match/M = I
+		M.light_by_shoes(user)
 	else
 		return ..()
 
@@ -620,10 +654,10 @@ BLIND     // can't see anything
 /obj/item/clothing/suit
 	icon = 'icons/obj/clothing/suits.dmi'
 	name = "suit"
-	var/fire_resist = T0C+100
+	var/fire_resist = 100 CELSIUS
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
-	allowed = list(/obj/item/weapon/tank/emergency)
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	allowed = list(/obj/item/tank/emergency)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 	slot_flags = SLOT_OCLOTHING
 	blood_overlay_type = "suitblood"
 	siemens_coefficient = 0.9
@@ -660,7 +694,7 @@ BLIND     // can't see anything
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	permeability_coefficient = 0.90
 	slot_flags = SLOT_ICLOTHING
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 	w_class = ITEM_SIZE_NORMAL
 	force = 0
 	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_MONKEY)
@@ -759,7 +793,7 @@ BLIND     // can't see anything
 		M.update_inv_wear_id()
 
 
-/obj/item/clothing/under/examine(mob/user)
+/obj/item/clothing/under/_examine_text(mob/user)
 	. = ..()
 	switch(src.sensor_mode)
 		if(0)

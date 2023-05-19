@@ -45,7 +45,7 @@
 	if(!assembly && !assembly.battery)
 		return FALSE // Pointless to do everything else if there's no battery to draw from.
 	var/list/power_cell_list = get_power_cell(AM)
-	var/obj/item/weapon/cell/cell = power_cell_list[1]
+	var/obj/item/cell/cell = power_cell_list[1]
 	if(istype(cell))
 		var/transfer_amount = amount_to_move
 		var/turf/A = get_turf(src)
@@ -120,18 +120,18 @@
 
 /obj/item/integrated_circuit/power/transmitter/wire_connector/Destroy()
 	connected_cable = null
-	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/integrated_circuit/power/transmitter/wire_connector/Initialize()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	. = ..()
 
 //Does wire things
-/obj/item/integrated_circuit/power/transmitter/wire_connector/Process()
-	..()
+/obj/item/integrated_circuit/power/transmitter/wire_connector/think()
 	update_cable()
 	push_data()
+
+	set_next_think(world.time + 1 SECOND)
 
 //If the assembly containing this is moved from the tile the wire is in, the connection breaks
 /obj/item/integrated_circuit/power/transmitter/wire_connector/ext_moved()
@@ -188,7 +188,7 @@
 		return
 
 	//Second clamp: set the number between what the battery and powernet allows
-	var/obj/item/weapon/cell/battery = assembly.battery
+	var/obj/item/cell/battery = assembly.battery
 	amount_to_move = Clamp(amount_to_move, -connected_cable.powernet.avail, battery.charge)
 
 	if(amount_to_move > 0)

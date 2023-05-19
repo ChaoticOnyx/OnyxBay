@@ -1,10 +1,10 @@
 /mob/living/carbon/human/proc/monkeyize()
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
-	for(var/obj/item/W in src)
-		if (W==w_uniform) // will be torn
+	for(var/obj/item/I in src)
+		if(I == w_uniform) // will be torn
 			continue
-		drop_from_inventory(W)
+		drop(I)
 	regenerate_icons()
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	stunned = 1
@@ -29,8 +29,8 @@
 		gib()
 		return
 
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop(I)
 	set_species(species.primitive_form)
 	dna.SetSEState(GLOB.MONKEYBLOCK,1)
 	dna.SetSEValueRange(GLOB.MONKEYBLOCK,0xDAC, 0xFFF)
@@ -55,8 +55,8 @@
 /mob/living/carbon/AIize()
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop(I)
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
 	set_invisibility(101)
@@ -71,7 +71,7 @@
 	O.aiRestorePowerRoutine = 0
 	if(mind)
 		mind.transfer_to(O)
-		O.mind.original = O
+		O.mind.original_mob = weakref(O)
 	else
 		O.key = key
 
@@ -109,8 +109,8 @@
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
 	QDEL_NULL_LIST(worn_underwear)
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop(I)
 	regenerate_icons()
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
@@ -126,8 +126,8 @@
 	if(mind)		//TODO
 		mind.transfer_to(O)
 		if(O.mind.assigned_role == "Cyborg")
-			O.mind.original = O
-		else if(mind && mind.special_role)
+			O.mind.original_mob = weakref(O)
+		else if(mind?.special_role)
 			O.mind.store_memory("In case you look at this after being borged, the objectives are only here until I find a way to make them not show up for you, as I can't simply delete them without screwing up round-end reporting. --NeoFite")
 	else
 		O.key = key
@@ -154,8 +154,8 @@
 /mob/living/carbon/human/proc/metroidize(adult as num, reproduce as num)
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop(I)
 	regenerate_icons()
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
@@ -177,7 +177,6 @@
 		new_metroid = new /mob/living/carbon/metroid(loc)
 		if(adult)
 			new_metroid.is_adult = 1
-		else
 	new_metroid.key = key
 
 	to_chat(new_metroid, "<B>You are now a metroid. Skreee!</B>")
@@ -187,8 +186,8 @@
 /mob/living/carbon/human/proc/corgize()
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop(I)
 	regenerate_icons()
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
@@ -215,8 +214,8 @@
 
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop(I)
 
 	regenerate_icons()
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
@@ -308,12 +307,18 @@
 
 //This is barely a transformation but probably best file for it.
 /mob/living/carbon/human/proc/zombify()
-	ChangeToHusk()
+	RemoveHairAndFacials()
+	for(var/obj/item/organ/external/head/h in organs)
+		h.status |= ORGAN_DISFIGURED
 	mutations |= MUTATION_CLUMSY
 	src.visible_message("<span class='danger'>\The [src]'s skin decays before your very eyes!</span>", "<span class='danger'>Your entire body is ripe with pain as it is consumed down to flesh and bones. You ... hunger. Not only for flesh, but to spread this gift.</span>")
 	if (!src.mind || (src.mind && src.mind.special_role == "Zombie"))
 		return
+	if(species != all_species[SPECIES_HUMAN])
+		ChangeToHusk()
 	src.mind.special_role = "Zombie"
+	update_body(TRUE)
+	update_eyes()
 	log_admin("[key_name(src)] has transformed into a zombie!")
 	Weaken(5)
 	if (should_have_organ(BP_HEART))
@@ -327,6 +332,7 @@
 			organ.min_broken_damage = Floor(organ.max_damage * 0.75)
 	src.no_pain = TRUE
 	src.does_not_breathe = TRUE
-	verbs += /mob/living/proc/breath_death
-	verbs += /mob/living/proc/consume
+	verbs += /mob/living/carbon/human/proc/breath_death
+	verbs += /mob/living/carbon/human/proc/consume
+	remove_language(LANGUAGE_GALCOM)
 	playsound(src, 'sound/hallucinations/wail.ogg', 20, 1)

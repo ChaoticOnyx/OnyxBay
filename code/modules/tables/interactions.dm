@@ -62,15 +62,27 @@
 	return 1
 
 
-/obj/structure/table/MouseDrop_T(obj/O as obj, mob/user as mob)
-
-	if((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
+/obj/structure/table/MouseDrop_T(obj/O, mob/user, params)
+	if(!istype(O, /obj/item))
+		return ..()
+	var/turf/T = get_turf(O)
+	var/table_found = FALSE
+	for(var/obj/item in T.contents)
+		if(istype(item, /obj/structure/table))
+			table_found = TRUE
+			break
+	if(O.loc == loc)
+		auto_align(O, params)
+		O.forceMove(loc)
+		return
+	else if(user.get_active_hand() != O && !(T.Adjacent(src, user) && table_found))
 		return ..()
 	if(isrobot(user))
 		return
-	user.drop_item()
-	if(O.loc != src.loc)
-		step(O, get_dir(O, src))
+	if(!user.drop(O) && (!T && !T.Adjacent(src, user)))
+		return
+	O.forceMove(loc)
+	auto_align(O, params)
 	return
 
 /obj/structure/table/attack_hand(mob/user as mob)
@@ -131,7 +143,7 @@
 	if(W.loc != user) // This should stop mounted modules ending up outside the module.
 		return
 
-	if(istype(W, /obj/item/weapon/melee/energy) && user.a_intent == I_HURT && W.force > 20)
+	if(istype(W, /obj/item/melee/energy) && user.a_intent == I_HURT && W.force > 20)
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(5, 0, src.loc)
 		spark_system.start()
@@ -164,7 +176,7 @@
 		return
 
 	// Placing stuff on tables
-	if(user.unEquip(W, target = loc))
+	if(user.drop(W, loc))
 		auto_align(W, click_params)
 		return 1
 

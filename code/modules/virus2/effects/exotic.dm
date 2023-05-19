@@ -132,8 +132,8 @@
 		to_chat(mob, SPAN_NOTICE("... [pick(reflections)] ..."))
 		if(prob(5))
 			mob.whisper_say("[pick(reflections)]")
-	if(mob.reagents.get_reagent_amount(/datum/reagent/tramadol/oxycodone) < 10)
-		mob.reagents.add_reagent(/datum/reagent/tramadol/oxycodone, 5)
+	if(mob.reagents.get_reagent_amount(/datum/reagent/painkiller) < 5)
+		mob.reagents.add_reagent(/datum/reagent/painkiller, 2.5)
 	mob.add_modifier(/datum/modifier/nuclear)
 
 /datum/disease2/effect/nuclear/deactivate(mob/living/carbon/human/mob)
@@ -266,7 +266,9 @@
 		var/obj/item/organ/internal/brain/B = mob.internal_organs_by_name[BP_BRAIN]
 		if(B && B.damage < B.min_broken_damage)
 			B.take_internal_damage(150)
-		mob.apply_effect(30*multiplier, IRRADIATE, blocked = 0)
+
+		var/datum/radiation/rad_info = new(5 TERA BECQUEREL, RADIATION_ALPHA_PARTICLE, energy = (15 MEGA ELECTRONVOLT))
+		mob.radiation += rad_info.calc_equivalent_dose(AVERAGE_HUMAN_WEIGHT)
 
 ////////////////////////STAGE 4/////////////////////////////////
 

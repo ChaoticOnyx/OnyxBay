@@ -70,12 +70,8 @@
 	#define DEBRIS_LAYER 1
 	#define DUST_LAYER 2
 
-// Reserve planes for openspace
-#define OPENSPACE_PLANE_START -462
-#define OPENSPACE_PLANE_END -22
-#define OPENSPACE_PLANE -463
-#define OVER_OPENSPACE_PLANE -22
-
+#define OPENSPACE_PLANE					-4
+#define OVER_OPENSPACE_PLANE			-3
 #define FLOOR_PLANE						-2
 #define DEFAULT_PLANE                   -1
 #define BLACKNESS_PLANE 0
@@ -116,6 +112,10 @@
 	#define TABLE_LAYER                 2.19
 	#define BELOW_OBJ_LAYER             2.20
 	#define STRUCTURE_LAYER             2.21
+	#define WINDOW_INNER_LAYER          2.22
+	#define WINDOW_FRAME_LAYER          2.23
+	#define WINDOW_OUTER_LAYER          2.24
+	#define WINDOW_BORDER_LAYER         2.25
 	// OBJ_LAYER                        3
 	#define ABOVE_OBJ_LAYER             3.01
 	#define CLOSED_DOOR_LAYER           3.02
@@ -157,6 +157,11 @@
 	#define OBSERVER_LAYER              5.1
 	#define OBFUSCATION_LAYER           5.2
 
+	#define TYPING_LAYER                11
+
+	#define CHAT_LAYER                  12.0001
+	#define CHAT_LAYER_MAX              12.9999
+
 	#define BASE_AREA_LAYER             999
 
 #define MOUSE_INVISIBLE_PLANE			1
@@ -195,8 +200,14 @@
 // This is difference between planes used for atoms and effects
 #define PLANE_DIFFERENCE              3
 
+#define DEFAULT_APPEARANCE_FLAGS (PIXEL_SCALE)
+
 /atom
 	plane = DEFAULT_PLANE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS
+
+/image
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS
 
 /image/proc/plating_decal_layerise()
 	plane = FLOOR_PLANE
@@ -219,7 +230,7 @@
 */
 
 /obj/screen/plane_master
-	appearance_flags = PLANE_MASTER
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS |PLANE_MASTER
 	screen_loc = "CENTER,CENTER"
 	globalscreen = 1
 
@@ -236,6 +247,22 @@
 	if (istype(mymob) && mymob.client && mymob.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_YES)
 		filters += filter(type = "drop_shadow", x = 0, y = -2, size = 4, color = "#04080FAA")
 
+/obj/screen/plane_master/openspace_blur
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	blend_mode = BLEND_OVERLAY
+	plane = OPENSPACE_PLANE
+
+/obj/screen/plane_master/openspace_blur/backdrop(mob/mymob)
+	filters = list()
+
+	if (istype(mymob) && mymob.client)
+		filters += filter(type = "blur", size = 0.67)
+
+/obj/screen/plane_master/over_openspace_darkness
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	plane = OVER_OPENSPACE_PLANE
+	mouse_opacity = 0
+
 /obj/screen/plane_master/mouse_invisible
 	appearance_flags = PLANE_MASTER
 	blend_mode = BLEND_DEFAULT
@@ -248,7 +275,7 @@
 /obj/screen/plane_master/ghost_dummy
 	// this avoids a bug which means plane masters which have nothing to control get angry and mess with the other plane masters out of spite
 	alpha = 0
-	appearance_flags = 0
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS
 	plane = OBSERVER_PLANE
 
 GLOBAL_LIST_INIT(ghost_master, list(

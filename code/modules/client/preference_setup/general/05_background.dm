@@ -7,9 +7,11 @@
 
 	//Some faction information.
 	var/home_system = "Unset"           //System of birth.
-	var/citizenship = "None"            //Current home system.
-	var/faction = "NanoTrasen"          //General associated faction.
+	var/background = "Nanotrasen"          //General associated faction.
 	var/religion = "None"               //Religious association.
+
+	var/bank_security = BANK_SECURITY_MODERATE // bank account security level
+	var/bank_pin = 0 // bank account PIN, 0 gives a random PIN
 
 /datum/category_item/player_setup_item/general/background
 	name = "Background"
@@ -18,30 +20,23 @@
 /datum/category_item/player_setup_item/general/background/load_character(datum/pref_record_reader/R)
 	pref.nanotrasen_relation = R.read("nanotrasen_relation")
 	pref.home_system = R.read("home_system")
-	pref.citizenship = R.read("citizenship")
-	pref.faction = R.read("faction")
+	pref.background = R.read("background")
 	pref.religion = R.read("religion")
+	pref.bank_security = R.read("bank_security")
+	pref.bank_pin = R.read("bank_pin")
 	pref.med_record = R.read("med_record")
 	pref.gen_record = R.read("gen_record")
 	pref.sec_record = R.read("sec_record")
 	pref.exploit_record = R.read("exploit_record")
 	pref.memory = R.read("memory")
 
-	// delete factions from old saves
-	var/factionExist = FALSE
-	for (var/faction in GLOB.using_map.faction_choices)
-		if (cmptext(pref.faction, faction))
-			factionExist = TRUE
-			break
-	if (!factionExist)
-		pref.faction = "NanoTrasen"
-
 /datum/category_item/player_setup_item/general/background/save_character(datum/pref_record_writer/W)
 	W.write("nanotrasen_relation", pref.nanotrasen_relation)
 	W.write("home_system", pref.home_system)
-	W.write("citizenship", pref.citizenship)
-	W.write("faction", pref.faction)
+	W.write("background", pref.background)
 	W.write("religion", pref.religion)
+	W.write("bank_security", pref.bank_security)
+	W.write("bank_pin", pref.bank_pin)
 	W.write("med_record", pref.med_record)
 	W.write("gen_record", pref.gen_record)
 	W.write("sec_record", pref.sec_record)
@@ -51,22 +46,25 @@
 /datum/category_item/player_setup_item/general/background/sanitize_character()
 	if(!pref.home_system)
 		pref.home_system = "Unset"
-	if(!pref.citizenship)
-		pref.citizenship = "None"
-	if(!pref.faction)
-		pref.faction =     "NanoTrasen"
+	if(!pref.background)
+		pref.background = "Nanotrasen"
 	if(!pref.religion)
 		pref.religion =    "None"
 
+	pref.bank_security = sanitize_integer(pref.bank_security, BANK_SECURITY_MINIMUM, BANK_SECURITY_MAXIMUM, initial(pref.bank_security))
+	pref.bank_pin = sanitize_integer(pref.bank_pin, 1111, 9999, initial(pref.bank_pin))
 	pref.nanotrasen_relation = sanitize_inlist(pref.nanotrasen_relation, COMPANY_ALIGNMENTS, initial(pref.nanotrasen_relation))
 
 /datum/category_item/player_setup_item/general/background/content(mob/user)
 	. += "<b>Background Information</b><br>"
 	. += "[GLOB.using_map.company_name] Relation: <a href='?src=\ref[src];nt_relation=1'>[pref.nanotrasen_relation]</a><br/>"
 	. += "Home System: <a href='?src=\ref[src];home_system=1'>[pref.home_system]</a><br/>"
-	. += "Citizenship: <a href='?src=\ref[src];citizenship=1'>[pref.citizenship]</a><br/>"
-	. += "Faction: <a href='?src=\ref[src];faction=1'>[pref.faction]</a><br/>"
+	. += "Background: <a href='?src=\ref[src];background=1'>[pref.background]</a><br/>"
 	. += "Religion: <a href='?src=\ref[src];religion=1'>[pref.religion]</a><br/>"
+
+	. += "<br/><b>Bank Account</b>:<br/>"
+	. += "Security Level: <a href='?src=\ref[src];bank_security=1'>[pref.bank_security ? pref.bank_security == 2 ? "Maximum" : "Moderate" : "Minimum" ]</a><br>"
+	. += "PIN: <a href='?src=\ref[src];bank_pin=1'>[pref.bank_pin ? pref.bank_pin : "Random"]</a><br>"
 
 	. += "<br/><b>Records</b>:<br/>"
 	if(jobban_isbanned(user, "Records"))
@@ -102,23 +100,17 @@
 			pref.home_system = choice
 		return TOPIC_REFRESH
 
-	else if(href_list["citizenship"])
-		var/choice = input(user, "Please choose your current citizenship.", CHARACTER_PREFERENCE_INPUT_TITLE, pref.citizenship) as null|anything in GLOB.using_map.citizenship_choices + list("None","Other")
+
+	else if(href_list["background"])
+		var/choice = input(user, "Please choose a background to work for.", CHARACTER_PREFERENCE_INPUT_TITLE, pref.background) as null|anything in GLOB.using_map.background_choices + list("Unset","Other")
 		if(!choice || !CanUseTopic(user))
 			return TOPIC_NOACTION
 		if(choice == "Other")
-			var/raw_choice = sanitize(input(user, "Please enter your current citizenship.", CHARACTER_PREFERENCE_INPUT_TITLE) as text|null, MAX_NAME_LEN)
+			var/raw_choice = sanitize(input(user, "Please enter a background.", CHARACTER_PREFERENCE_INPUT_TITLE)  as text|null, MAX_NAME_LEN)
 			if(raw_choice && CanUseTopic(user))
-				pref.citizenship = raw_choice
+				pref.background = raw_choice
 		else
-			pref.citizenship = choice
-		return TOPIC_REFRESH
-
-	else if(href_list["faction"])
-		var/choice = input(user, "Please choose a faction to work for.", CHARACTER_PREFERENCE_INPUT_TITLE, pref.faction) as null|anything in GLOB.using_map.faction_choices
-		if(!choice || !CanUseTopic(user))
-			return TOPIC_NOACTION
-		pref.faction = choice
+			pref.background = choice
 		return TOPIC_REFRESH
 
 	else if(href_list["religion"])
@@ -131,6 +123,33 @@
 				pref.religion = sanitize(raw_choice)
 		else
 			pref.religion = choice
+		return TOPIC_REFRESH
+
+	else if(href_list["bank_security"])
+		var/list/sec_levels = list("Minimum", "Moderate", "Maximum")
+		var/choice = input(user, "Choose your bank account's security level:", CHARACTER_PREFERENCE_INPUT_TITLE, "Moderate") as null|anything in sec_levels
+		if(!choice || !CanUseTopic(user))
+			return TOPIC_NOACTION
+		switch(choice)
+			if("Minimum")
+				pref.bank_security = BANK_SECURITY_MINIMUM
+			if("Moderate")
+				pref.bank_security = BANK_SECURITY_MODERATE
+			if("Maximum")
+				pref.bank_security = BANK_SECURITY_MAXIMUM
+		return TOPIC_REFRESH
+
+	else if(href_list["bank_pin"])
+		var/choice = input(user, "Set your bank account's PIN (1111-9999):\nSet to 1 to use a random PIN for each round.\nSet to 2 to generate a random PIN.", CHARACTER_PREFERENCE_INPUT_TITLE, pref.bank_pin) as num|null
+		if(!choice || !CanUseTopic(user))
+			return TOPIC_NOACTION
+		switch(choice)
+			if(1111 to 9999)
+				pref.bank_pin = choice
+			if(1)
+				pref.bank_pin = 0
+			if(2)
+				pref.bank_pin = rand(1111, 9999)
 		return TOPIC_REFRESH
 
 	else if(href_list["set_medical_records"])

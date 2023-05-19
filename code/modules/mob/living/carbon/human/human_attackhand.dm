@@ -65,7 +65,7 @@
 
 	switch(M.a_intent)
 		if(I_HELP)
-			if(istype(H) && (is_asystole() || (status_flags & FAKEDEATH)))
+			if(istype(H) && ((is_asystole() && !isundead(src)) || (status_flags & FAKEDEATH)))
 				if (!cpr_time)
 					return 0
 
@@ -83,7 +83,7 @@
 					var/obj/item/organ/external/chest = get_organ(BP_CHEST)
 					if(chest)
 						chest.fracture()
-				if(stat != DEAD)
+				if(!is_ic_dead())
 					if(prob(15))
 						resuscitate()
 
@@ -120,8 +120,8 @@
 			return H.make_grab(H, src)
 
 		if(I_HURT)
-			if(M.zone_sel.selecting == "mouth" && wear_mask && istype(wear_mask, /obj/item/weapon/grenade))
-				var/obj/item/weapon/grenade/G = wear_mask
+			if(M.zone_sel.selecting == "mouth" && wear_mask && istype(wear_mask, /obj/item/grenade))
+				var/obj/item/grenade/G = wear_mask
 				if(!G.active)
 					visible_message(SPAN("danger", "\The [M] pulls the pin from \the [src]'s [G.name]!"))
 					G.activate(M)
@@ -193,9 +193,10 @@
 
 										for(var/obj/item/organ/internal/heart/I in internal_organs)
 											if(I && istype(I))
+												if(!H.put_in_active_hand(I))
+													return 0
 												I.cut_away(src)
 												O.implants -= I
-												H.put_in_active_hand(I)
 												H.visible_message(SPAN("danger", "[H] rips [src]'s [I.name] out!"))
 												playsound(src.loc, 'sound/effects/squelch1.ogg', 50, 1)
 												admin_attack_log(H, src, "Ripped their victim's heart out", "Got their heart ripped out", "ripped out")
@@ -313,7 +314,7 @@
 	return 1
 
 //Breaks all grips and pulls that the mob currently has.
-/mob/living/carbon/human/proc/break_all_grabs(mob/living/carbon/user,silent = 0)
+/mob/living/carbon/human/proc/break_all_grabs(mob/living/carbon/user, silent = 0)
 	var/success = 0
 	if(pulling)
 		if(!silent)
@@ -327,17 +328,16 @@
 			if(!silent)
 				visible_message("<span class='danger'>[user] has broken [src]'s grip on [lgrab.affecting]!</span>")
 			success = 1
-		spawn(1)
-			qdel(lgrab)
+		lgrab.delete_self()
 	if(istype(r_hand, /obj/item/grab))
 		var/obj/item/grab/rgrab = r_hand
 		if(rgrab.affecting)
 			if(!silent)
 				visible_message("<span class='danger'>[user] has broken [src]'s grip on [rgrab.affecting]!</span>")
 			success = 1
-		spawn(1)
-			qdel(rgrab)
+		rgrab.delete_self()
 	return success
+
 /*
 	We want to ensure that a mob may only apply pressure to one organ of one mob at any given time. Currently this is done mostly implicitly through
 	the behaviour of do_after() and the fact that applying pressure to someone else requires a grab:

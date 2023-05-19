@@ -7,9 +7,9 @@
 	var/list/transaction_log = list()
 	var/suspended = 0
 	var/off_station = FALSE
-	var/security_level = 0	//0 - auto-identify from worn ID, require only account number
-							//1 - require manual login / account number and pin
-							//2 - require card and manual login
+	var/security_level = BANK_SECURITY_MODERATE	// BANK_SECURITY_MINIMUM  - auto-identify from worn ID, require only account number
+												// BANK_SECURITY_MODERATE - require manual login / account number and pin
+												// BANK_SECURITY_MAXIMUM  - require card and manual login
 
 /datum/money_account/proc/do_transaction(datum/transaction/T)
 	money = max(0, money + T.amount)
@@ -59,7 +59,7 @@
 	//create a new account
 	var/datum/money_account/M = new()
 	M.owner_name = new_owner_name
-	M.remote_access_pin = rand(1111, 111111)
+	M.remote_access_pin = rand(1111, 9999)
 	M.money = starting_funds
 
 	//create an entry in the account transaction log for when it was created
@@ -93,7 +93,7 @@
 		t1 += "<i>Creation terminal ID:</i> [source_db.machine_id]<br>"
 		t1 += "<i>Authorised NT officer overseeing creation:</i> [source_db.held_card.registered_name]<br>"
 
-		var/obj/item/weapon/paper/R = new /obj/item/weapon/paper(P)
+		var/obj/item/paper/R = new /obj/item/paper(P)
 		R.set_content( t1, "Account information: [M.owner_name]", TRUE)
 		P.wrapped = R
 
@@ -102,7 +102,7 @@
 		stampoverlay.icon_state = "paper_stamp-cent"
 		if(!R.stamped)
 			R.stamped = new
-		R.stamped += /obj/item/weapon/stamp
+		R.stamped += /obj/item/stamp
 		R.overlays += stampoverlay
 		R.stamps += "<HR><i>This paper has been stamped by the Accounts Database.</i>"
 

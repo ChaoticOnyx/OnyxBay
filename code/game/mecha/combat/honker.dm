@@ -3,6 +3,7 @@
 	name = "H.O.N.K"
 	icon_state = "honker"
 	initial_icon = "honker"
+	base_color = "#BD0F17"
 	step_in = 2
 	health = 200
 	deflect_chance = 60
@@ -33,7 +34,7 @@
 						<b>PowerHONK charge: </b>[isnull(cell_charge)?"Someone HONKed powerHonk!!!":"[cell.percent()]%"])<br>
 						<b>Air source: </b>[use_internal_tank?"Internal AirHONK":"EnvironHONK"]<br>
 						<b>AirHONK pressure: </b>[src.return_pressure()]HoNKs<br>
-						<b>Internal HONKature: </b> [src.return_temperature()]&deg;honK|[src.return_temperature() - T0C]&deg;honCk<br>
+						<b>Internal HONKature: </b> [src.return_temperature()]&deg;honK|[CONV_KELVIN_CELSIUS(src.return_temperature())]&deg;honCk<br>
 						<b>Lights: </b>[lights?"on":"off"]<br>
 					"}
 	return output

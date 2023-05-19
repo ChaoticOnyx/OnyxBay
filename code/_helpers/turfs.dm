@@ -39,9 +39,9 @@
 		return
 	var/list/turfs = list()
 	for(var/turf/T in orange(origin, outer_range))
-		if(!(T.z in GLOB.using_map.sealed_levels)) // Picking a turf outside the map edge isn't recommended
-			if(T.x >= world.maxx-TRANSITIONEDGE || T.x <= TRANSITIONEDGE)	continue
-			if(T.y >= world.maxy-TRANSITIONEDGE || T.y <= TRANSITIONEDGE)	continue
+		if(!(T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_SEALED))) // Picking a turf outside the map edge isn't recommended
+			if(T.x >= world.maxx-TRANSITION_EDGE || T.x <= TRANSITION_EDGE)	continue
+			if(T.y >= world.maxy-TRANSITION_EDGE || T.y <= TRANSITION_EDGE)	continue
 		if(!inner_range || get_dist(origin, T) >= inner_range)
 			turfs += T
 	if(turfs.len)
@@ -153,6 +153,6 @@
 
 	for(var/mob/M in source)
 		if(isEye(M)) continue // If we need to check for more mobs, I'll add a variable
-		M.forceMove(target)
+		M.forceMove(target, unbuckle_mob = FALSE)
 
 	return target

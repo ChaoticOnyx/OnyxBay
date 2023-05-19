@@ -42,14 +42,14 @@
 		else
 			to_chat(user, SPAN("warning", "You need to set a destination first!</span>"))
 
-	else if(istype(W, /obj/item/weapon/pen) || istype(W, /obj/item/weapon/hand_labeler))
+	else if(istype(W, /obj/item/pen) || istype(W, /obj/item/hand_labeler))
 		switch(alert("What would you like to alter?",,"Title","Description", "Cancel"))
 			if("Title")
 				var/str = sanitizeSafe(input(usr,"Label text?","Set label",""), MAX_NAME_LEN)
 				if(!str || !length(str))
 					to_chat(usr, SPAN("warning", "Invalid text"))
 					return
-				if(istype(W, /obj/item/weapon/pen))
+				if(istype(W, /obj/item/pen))
 					user.visible_message("\The [user] titles \the [src] with \a [W].",\
 					SPAN("notice", "You title \the [src]: \"[str]\""),\
 					"You hear someone scribbling a note.")
@@ -74,7 +74,7 @@
 					update_icon()
 				else
 					examtext = str
-				if(istype(W, /obj/item/weapon/pen))
+				if(istype(W, /obj/item/pen))
 					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling something down.",
 					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
 					                     "You hear someone scribbling a note.")
@@ -112,7 +112,7 @@
 			I.pixel_y = -3
 		overlays += I
 
-/obj/structure/bigDelivery/examine(mob/user)
+/obj/structure/bigDelivery/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 4)
 		if(sortTag)
@@ -145,25 +145,24 @@
 	var/tag_x
 
 /obj/item/smallDelivery/proc/unwrap(mob/user)
-	if (!wrapped)
-		qdel(src)
-
-	if (!Adjacent(user))
+	if(!Adjacent(user))
 		return
-	wrapped.forceMove(user.loc)
-	user.drop_item()
+
+	if(!wrapped)
+		qdel(src)
+		return
+
+	playsound(user, 'sound/effects/using/wrapper/unwrap1.ogg', rand(50, 75), TRUE)
 	if(ishuman(user))
-		user.put_in_hands(wrapped)
+		user.replace_item(src, wrapped, TRUE, TRUE)
 	else
 		wrapped.forceMove(get_turf(src))
+		qdel(src)
 
-	playsound(src, 'sound/effects/using/wrapper/unwrap1.ogg', rand(50, 75), TRUE)
-	qdel(src)
-
-/obj/item/smallDelivery/attack_robot(mob/user as mob)
+/obj/item/smallDelivery/attack_robot(mob/user)
 	unwrap(user)
 
-/obj/item/smallDelivery/attack_self(mob/user as mob)
+/obj/item/smallDelivery/attack_self(mob/user)
 	unwrap(user)
 
 /obj/item/smallDelivery/attackby(obj/item/W as obj, mob/user as mob)
@@ -183,14 +182,14 @@
 		else
 			to_chat(user, SPAN("warning", "You need to set a destination first!</span>"))
 
-	else if(istype(W, /obj/item/weapon/pen) || istype(W, /obj/item/weapon/hand_labeler))
+	else if(istype(W, /obj/item/pen) || istype(W, /obj/item/hand_labeler))
 		switch(alert("What would you like to alter?",,"Title","Description", "Cancel"))
 			if("Title")
 				var/str = sanitizeSafe(input(usr,"Label text?","Set label",""), MAX_NAME_LEN)
 				if(!str || !length(str))
 					to_chat(usr, SPAN("warning", "Invalid text"))
 					return
-				if(istype(W, /obj/item/weapon/pen))
+				if(istype(W, /obj/item/pen))
 					user.visible_message("\The [user] titles \the [src] with \a [W].",\
 					SPAN("notice", "You title \the [src]: \"[str]\""),\
 					"You hear someone scribbling a note.")
@@ -215,7 +214,7 @@
 					update_icon()
 				else
 					examtext = str
-				if(istype(W, /obj/item/weapon/pen))
+				if(istype(W, /obj/item/pen))
 					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling something down.",
 					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
 					                     "You hear someone scribbling a note.")
@@ -248,9 +247,11 @@
 				I.pixel_y = 3
 			if("deliverycrate5")
 				I.pixel_y = -3
+			if("deliverybox")
+				I.pixel_y = 1
 		overlays += I
 
-/obj/item/smallDelivery/examine(mob/user)
+/obj/item/smallDelivery/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 4)
 		if(sortTag)
@@ -259,29 +260,28 @@
 			. += "\n<span class='notice'>It has a note attached which reads, \"[examtext]\"</span>"
 	return
 
-/obj/item/weapon/packageWrap
+/obj/item/packageWrap
 	name = "package wrapper"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "deliveryPaper"
 	w_class = ITEM_SIZE_NORMAL
 	var/amount = 25.0
 
-/obj/item/weapon/c_tube
+/obj/item/c_tube
 	name = "cardboard tube"
 	desc = "A tube... of cardboard."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "c_tube"
 	throwforce = 1
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 4
 	throw_range = 5
 
-/obj/item/weapon/packageWrap/afterattack(obj/target as obj, mob/user as mob, proximity)
+/obj/item/packageWrap/afterattack(obj/target as obj, mob/user as mob, proximity)
 	if(!proximity) return
 	if(!istype(target))	//this really shouldn't be necessary (but it is).	-Pete
 		return
 	if(istype(target, /obj/item/smallDelivery) || istype(target,/obj/structure/bigDelivery) \
-	|| istype(target, /obj/item/weapon/gift) || istype(target, /obj/item/weapon/evidencebag))
+	|| istype(target, /obj/item/gift) || istype(target, /obj/item/evidencebag))
 		return
 	if(target.anchored)
 		return
@@ -290,7 +290,7 @@
 	if(user in target) //no wrapping closets that you are inside - it's not physically possible
 		return
 
-	if (istype(target, /obj/item) && !(istype(target, /obj/item/weapon/storage) && !istype(target,/obj/item/weapon/storage/box)))
+	if (istype(target, /obj/item) && !(istype(target, /obj/item/storage) && !istype(target,/obj/item/storage/box)))
 		var/obj/item/O = target
 		if (src.amount > 1)
 			var/obj/item/smallDelivery/P = new /obj/item/smallDelivery(get_turf(O.loc))	//Aaannd wrap it up!
@@ -298,7 +298,6 @@
 				if(user.client)
 					user.client.screen -= O
 			P.wrapped = O
-			O.forceMove(P)
 			P.w_class = O.w_class
 			var/i = round(O.w_class)
 			if(i in list(1,2,3,4,5))
@@ -321,6 +320,12 @@
 			user.visible_message("\The [user] wraps \a [target] with \a [src].",\
 			SPAN("notice", "You wrap \the [target], leaving [amount] units of paper on \the [src]."),\
 			"You hear someone taping paper around a small object.")
+			if(istype(O, /obj/item/storage/box))
+				var/obj/item/storage/box/B = O
+				B.close(user)
+				P.SetName("box-shaped parcel")
+				P.icon_state = "deliverybox"
+			O.forceMove(P)
 	else if (istype(target, /obj/structure/closet/crate))
 		var/obj/structure/closet/crate/O = target
 		if (src.amount > 3 && !O.opened)
@@ -350,12 +355,12 @@
 	else
 		to_chat(user, SPAN("notice", "The object you are trying to wrap is unsuitable for the sorting machinery!"))
 	if (src.amount <= 0)
-		new /obj/item/weapon/c_tube( src.loc )
+		new /obj/item/c_tube( src.loc )
 		qdel(src)
 		return
 	return
 
-/obj/item/weapon/packageWrap/examine(mob/user)
+/obj/item/packageWrap/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
 		. += "\n<span class='notice'>There are [amount] units of package wrap left!</span>"
@@ -498,7 +503,7 @@
 			to_chat(user, "You attach the screws around the power connection.")
 			return
 	else if(isWelder(I) && c_mode==1)
-		var/obj/item/weapon/weldingtool/W = I
+		var/obj/item/weldingtool/W = I
 		if(W.remove_fuel(1,user))
 			to_chat(user, "You start slicing the floorweld off the delivery chute.")
 			if(do_after(user,20, src))

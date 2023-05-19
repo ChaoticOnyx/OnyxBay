@@ -29,10 +29,10 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 
 /datum/antagonist/xenos/Initialize()
 	spawn_announcement = replacetext(GLOB.using_map.unidentified_lifesigns_message, "%STATION_NAME%", station_name())
-	spawn_announcement_sound = GLOB.using_map.xenomorph_spawn_sound
+	spawn_announcement_sound = GLOB.using_map.unidentified_lifesigns_sound
 	. = ..()
-	if(config.xeno_min_age)
-		min_player_age = config.xeno_min_age
+	if(config.game.xeno_min_age)
+		min_player_age = config.game.xeno_min_age
 
 /datum/antagonist/xenos/greet(datum/mind/player)
 	to_chat(player.current, SPAN("danger", "<font size=3>You are a [role_text]!</font>"))
@@ -40,26 +40,26 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 		to_chat(player.current, SPAN("notice", "Hiss! You are a xenomorph! Do everything you can to make sure the hive thriving!"))
 	else
 		to_chat(player.current, SPAN("notice", "[welcome_text]"))
-	if(config.objectives_disabled == CONFIG_OBJECTIVE_NONE || !player.objectives.len)
+	if(config.gamemode.disable_objectives == CONFIG_OBJECTIVE_ALL || !player.objectives.len)
 		to_chat(player.current, SPAN("notice", "[antag_text]"))
 
 	show_objectives_at_creation(player)
 	return TRUE
 
 /datum/antagonist/xenos/attempt_random_spawn()
-	if(config.aliens_allowed)
+	if(config.misc.aliens_allowed)
 		..()
 
 /datum/antagonist/xenos/antags_are_dead()
 	for(var/datum/mind/antag in current_antagonists)
-		if(antag.current.stat != DEAD)
+		if(!antag.current.is_ooc_dead())
 			return FALSE
 	return TRUE
 
 /datum/antagonist/xenos/proc/get_vents()
 	var/list/vents = list()
 	for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in GLOB.atmos_machinery)
-		if(!temp_vent.welded && temp_vent.network && (temp_vent.loc.z in GLOB.using_map.station_levels))
+		if(!temp_vent.welded && temp_vent.network && (temp_vent.loc.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
 			if(temp_vent.network.normal_members.len > 50)
 				vents += temp_vent
 	return vents
@@ -85,5 +85,5 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 		player.transfer_to(new mob_path(get_turf(previous_mob)))
 		if(previous_mob)
 			qdel(previous_mob)
-	player.original = player.current
+	player.original_mob = weakref(player.current)
 	return player.current

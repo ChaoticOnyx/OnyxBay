@@ -21,6 +21,7 @@
 	max_gas = null
 	minbodytemp = 0
 	speed = 4
+	bodyparts = /decl/simple_animal_bodyparts/hivebot
 
 /mob/living/simple_animal/hostile/hivebot/range
 	name = "Hivebot"
@@ -80,7 +81,7 @@
 	qdel(src)
 	return
 
-/mob/living/simple_animal/hostile/hivebot/tele/FindTarget()
+/mob/living/simple_animal/hostile/hivebot/tele/find_target()
 	if(..() && !spawn_time)
 		spawn_time = world.time + spawn_delay
 		visible_message("<span class='danger'>\The [src] turns on!</span>")
@@ -100,3 +101,6 @@
 
 /mob/living/simple_animal/hostile/hivebot/tele/rapid
 	bot_type = /mob/living/simple_animal/hostile/hivebot/rapid
+
+/decl/simple_animal_bodyparts/hivebot
+	hit_zones = list("central chassis", "positioning servo", "head", "sensor suite", "manipulator arm", "shoulder weapon mount", "weapons array", "front right leg", "front left leg", "rear left leg", "rear right leg")

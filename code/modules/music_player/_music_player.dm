@@ -14,7 +14,7 @@ GLOBAL_LIST_EMPTY(music_players)
 
 /obj/item/music_player
 	name = "music player"
-	desc = "A little device which can be used to play soft tunes. If you see this you're probably should be banned for abuse. Report this situation to dev team."
+	desc = "A little device which can be used to play soft tunes. If you see this, you should probably be banned for abuse. Report this situation to the dev team."
 	icon = 'sprites/object.dmi'
 	icon_state = null
 	item_state = null
@@ -23,7 +23,6 @@ GLOBAL_LIST_EMPTY(music_players)
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 
 	throwforce = 2
-	throw_speed = 4
 	throw_range = 10
 
 	matter = list(MATERIAL_STEEL = 75, MATERIAL_GLASS = 30)
@@ -42,7 +41,7 @@ GLOBAL_LIST_EMPTY(music_players)
 	var/broken
 	var/panel = PANEL_CLOSED
 
-	var/obj/item/weapon/cell/device/cell = /obj/item/weapon/cell/device
+	var/obj/item/cell/device/cell = /obj/item/cell/device
 	var/power_usage = 250
 	var/obj/item/music_tape/tape = null
 
@@ -72,7 +71,7 @@ GLOBAL_LIST_EMPTY(music_players)
 	GLOB.music_players -= src
 	. = ..()
 
-/obj/item/music_player/examine(mob/user)
+/obj/item/music_player/_examine_text(mob/user)
 	. = ..()
 	if(tape)
 		. += "\n[SPAN_NOTICE("You can see \a [tape] inside it.")]"
@@ -98,11 +97,13 @@ GLOBAL_LIST_EMPTY(music_players)
 		if(cell)
 			overlays += image(icon, "[icon_state]_panel-cell")
 
-/obj/item/music_player/Process()
+/obj/item/music_player/think()
 	if(!get_cell() || !cell.checked_use(power_usage * CELLRATE))
 		StopPlaying()
 		visible_message(SPAN_WARNING("\The [src]'s power meter flashes a battery warning and refuses to operate."))
-		return PROCESS_KILL
+		return
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/music_player/proc/set_mode(value)
 	if(value == mode)
@@ -142,10 +143,8 @@ GLOBAL_LIST_EMPTY(music_players)
 			to_chat(user, SPAN_WARNING("\The [C] is ruined, you can't use it."))
 			return
 
-		if(!user.unEquip(C))
+		if(!user.drop(C, src))
 			return
-
-		I.forceMove(src)
 		tape = C
 		user.visible_message(
 			SPAN_NOTICE("[user] insert \a [tape] into \the [src]."),
@@ -154,17 +153,15 @@ GLOBAL_LIST_EMPTY(music_players)
 		update_icon()
 		return
 
-	if(istype(I, /obj/item/weapon/cell/device))
-		var/obj/item/weapon/cell/device/C = I
+	if(istype(I, /obj/item/cell/device))
+		var/obj/item/cell/device/C = I
 		if(panel == PANEL_OPENED)
 			if(cell)
 				to_chat(user, SPAN_NOTICE("[src] already has \a [cell] installed."))
 				return
 
-			if(!user.unEquip(C))
+			if(!user.drop(C, src))
 				return
-
-			I.forceMove(src)
 			cell = C
 			to_chat(user, SPAN_NOTICE("You insert \a [cell] into \the [src]."))
 			update_icon()
@@ -203,7 +200,7 @@ GLOBAL_LIST_EMPTY(music_players)
 								return FALSE
 							playsound(src, 'sound/items/Screwdriver.ogg', 45, 1)
 							to_chat(user, SPAN_NOTICE("You pulled out [cell] out of [src] with [I]."))
-							user.put_in_hands(cell)
+							user.pick_or_drop(cell)
 							cell = null
 							update_icon()
 						else
@@ -322,7 +319,7 @@ GLOBAL_LIST_EMPTY(music_players)
 		visible_message(
 			SPAN_NOTICE("[user] eject \a [tape] from \the [src]."),
 			SPAN_NOTICE("You eject \a [tape] from \the [src]."))
-		user.put_in_hands(tape)
+		user.pick_or_drop(tape)
 	else
 		tape.dropInto(loc)
 	tape = null
@@ -376,7 +373,7 @@ GLOBAL_LIST_EMPTY(music_players)
 
 /obj/item/music_player/proc/explode()
 	walk_to(src, 0)
-	src.visible_message(SPAN_DANGER("\The [src] blows apart!"), 1)
+	src.visible_message(SPAN_DANGER("\The [src] blows apart!"))
 
 	explosion(src.loc, 1, 1, 1, rand(3, 4), 1)
 
@@ -400,7 +397,7 @@ GLOBAL_LIST_EMPTY(music_players)
 	if(broken)
 		return
 
-	if(isnull(tape))
+	if(QDELETED(tape))
 		return
 
 	if(!tape.CanPlay())
@@ -413,7 +410,7 @@ GLOBAL_LIST_EMPTY(music_players)
 		sound_token = GLOB.sound_player.PlayLoopingSound(src, sound_id, tape.track.GetTrack(), volume = volume, frequency = frequency, range = 7, falloff = 4, prefer_mute = TRUE, preference = src.preference, streaming = TRUE)
 
 	mode = PLAYER_STATE_PLAY
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	log_and_message_admins("launched <a href='?_src_=holder;adminplayerobservefollow=\ref[src]'>[src]</a> with the song \"[tape.track.title]\".")
 
 	if(prob(break_chance))
@@ -429,7 +426,7 @@ GLOBAL_LIST_EMPTY(music_players)
 		mode = PLAYER_STATE_OFF
 		QDEL_NULL(sound_token)
 
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 	update_icon()
 
 //Alternative way to activate it, but instead stop, we will pause it.

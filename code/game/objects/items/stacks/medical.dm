@@ -5,7 +5,6 @@
 	amount = 10
 	max_amount = 10
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 4
 	throw_range = 20
 	var/heal_brute = 0
 	var/heal_burn = 0
@@ -165,6 +164,7 @@
 	gender = PLURAL
 	singular_name = "ointment dose"
 	icon_state = "salve"
+	item_state = "salve"
 	heal_burn = 7.5
 	origin_tech = list(TECH_BIO = 1)
 	animal_heal = 4
@@ -229,6 +229,7 @@
 	singular_name = "somatic gel dose"
 	desc = "A container of somatic gel, manufactured by Vey-Med. A bendable nozzle makes it easy to apply. Effectively seals up even severe wounds."
 	icon_state = "brutegel"
+	item_state = "brutegel"
 	heal_brute = 7.5
 	origin_tech = list(TECH_BIO = 2)
 	animal_heal = 12
@@ -281,6 +282,7 @@
 	singular_name = "burn gel dose"
 	desc = "A container of protein-renaturating gel, manufactured by Vey-Med. A bendable nozzle makes it easy to apply. It's said to renaturate proteins, effectively treating severe burns. Doesn't cause skin cancer. Probably."
 	icon_state = "burngel"
+	item_state = "burngel"
 	heal_burn = 15
 	origin_tech = list(TECH_BIO = 3)
 	animal_heal = 7
@@ -450,7 +452,7 @@
 	if(..())
 		return 1
 
-	if(M.stat != DEAD)
+	if(!M.is_ic_dead())
 		to_chat(user, SPAN("notice", "\The [src] quickly retracts its needles as you bring it close to [M]."))
 		return
 
@@ -458,7 +460,7 @@
 	if(!do_after(user, 100))
 		return
 
-	if(M.stat != DEAD)
+	if(!M.is_ic_dead())
 		to_chat(user, SPAN("notice", "\The [src] quickly retracts its needles as soon as you try to inject [M]!"))
 		return
 

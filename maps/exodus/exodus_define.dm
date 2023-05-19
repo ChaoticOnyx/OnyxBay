@@ -6,23 +6,56 @@
 
 	lobby_icon = 'maps/exodus/exodus_lobby.dmi'
 
+	shuttle_types = list(
+		/datum/shuttle/autodock/ferry/escape_pod/escape_pod1,
+		/datum/shuttle/autodock/ferry/escape_pod/escape_pod2,
+		/datum/shuttle/autodock/ferry/escape_pod/escape_pod3,
+		/datum/shuttle/autodock/ferry/escape_pod/escape_pod5,
+		/datum/shuttle/autodock/ferry/supply/drone,
+		/datum/shuttle/autodock/ferry/elevator,
+		/datum/shuttle/autodock/multi/antag/mining,
+		/datum/shuttle/autodock/ferry/research,
+		/datum/shuttle/autodock/ferry/engie,
+		/datum/shuttle/autodock/ferry/mining,
+		/datum/shuttle/autodock/ferry/security,
+		/datum/shuttle/autodock/multi/antag/rescue,
+		/datum/shuttle/autodock/ferry/emergency/centcom,
+		/datum/shuttle/autodock/ferry/administration,
+		/datum/shuttle/autodock/multi/antag/syndicate,
+		/datum/shuttle/autodock/multi/antag/elite_syndicate,
+		/datum/shuttle/autodock/ferry/deathsquad,
+		/datum/shuttle/autodock/multi/antag/merchant,
+		/datum/shuttle/autodock/multi/antag/skipjack,
+	)
 	load_legacy_saves = TRUE
 
-	station_levels = list(1, 2)
-	admin_levels = list(3)
-	contact_levels = list(1,2,4,6)
-	player_levels = list(1,2,4,5,6,7,8,9,10,11,12)
-	//sealed_levels = list(6)
-	empty_levels = list(6)
-	accessible_z_levels = list("1" = 5, "2" = 5, "4" = 10, "5" = 15, "6" = 15, "7" = 30, "8" = 5, "9" = 5, "10" = 5, "11" = 5, "12" = 5)
-	dynamic_z_levels = list("1" = 'exodus-1.dmm', "2" = 'exodus-2.dmm', "3" = 'exodus-3.dmm', "6" = 'exodus-6.dmm')
+	map_levels = list(
+		new /datum/space_level/exodus_1,
+		new /datum/space_level/exodus_2,
+		new /datum/space_level/exodus_3,
+		new /datum/space_level/exodus_4,
+		new /datum/space_level/exodus_5,
+		new /datum/space_level/exodus_6,
+		new /datum/space_level/null_space,
+		new /datum/space_level/telecomms,
+		new /datum/space_level/construction_site,
+		new /datum/space_level/snow_asteroid,
+		new /datum/space_level/derelict,
+		new /datum/space_level/bearcat_1,
+		new /datum/space_level/bearcat_2,
+		new /datum/space_level/jungle_level,
+		new /datum/space_level/old_restaurant,
+		new /datum/space_level/sensor_array,
+		new /datum/space_level/science_ship_1,
+		new /datum/space_level/science_ship_2
+	)
 
 	station_name  = "NSS Exodus"
 	station_short = "Exodus"
 	dock_name     = "NAS Crescent"
 	boss_name     = "Central Command"
 	boss_short    = "Centcomm"
-	company_name  = "NanoTrasen"
+	company_name  = "Nanotrasen"
 	company_short = "NT"
 	system_name   = "Nyx"
 
@@ -33,7 +66,28 @@
 
 	evac_controller_type = /datum/evacuation_controller/shuttle
 
-/datum/map/exodus/perform_map_generation()
-	new /datum/random_map/automata/cave_system(null, 1, 1, 6, 255, 255) // Create the mining Z-level.
-	new /datum/random_map/noise/ore(null, 1, 1, 6, 255, 255)         // Create the mining ore distribution map.
-	return 1
+	station_networks = list(
+		NETWORK_CIVILIAN_EAST,
+		NETWORK_CIVILIAN_WEST,
+		NETWORK_COMMAND,
+		NETWORK_ENGINE,
+		NETWORK_ENGINEERING,
+		NETWORK_ENGINEERING_OUTPOST,
+		NETWORK_EXODUS,
+		NETWORK_MAINTENANCE,
+		NETWORK_MEDICAL,
+		NETWORK_MINE,
+		NETWORK_RESEARCH,
+		NETWORK_RESEARCH_OUTPOST,
+		NETWORK_ROBOTS,
+		NETWORK_PRISON,
+		NETWORK_SECURITY,
+		NETWORK_ALARM_ATMOS,
+		NETWORK_ALARM_CAMERA,
+		NETWORK_ALARM_FIRE,
+		NETWORK_ALARM_MOTION,
+		NETWORK_ALARM_POWER,
+		NETWORK_THUNDER,
+		NETWORK_TELECOM,
+		NETWORK_MASTER
+	)

@@ -4,36 +4,35 @@
  * @license MIT
  */
 
-import { Table } from './Table'
-import { pureComponentHooks } from 'common/react'
+import { Table } from "./Table";
+import { pureComponentHooks } from "common/react";
 
 /** @deprecated */
-export const Grid = props => {
-  const { children, ...rest } = props
+export const Grid = (props) => {
+  const { children, ...rest } = props;
   return (
     <Table {...rest}>
-      <Table.Row>
-        {children}
-      </Table.Row>
+      <Table.Row>{children}</Table.Row>
     </Table>
-  )
-}
+  );
+};
 
-Grid.defaultHooks = pureComponentHooks
+Grid.defaultHooks = pureComponentHooks;
 
 /** @deprecated */
-export const GridColumn = props => {
-  const { size = 1, style, ...rest } = props
+export const GridColumn = (props) => {
+  const { size = 1, style, ...rest } = props;
   return (
     <Table.Cell
       style={{
-        width: size + '%',
-        ...style
+        width: size + "%",
+        ...style,
       }}
-      {...rest} />
-  )
-}
+      {...rest}
+    />
+  );
+};
 
-Grid.defaultHooks = pureComponentHooks
+Grid.defaultHooks = pureComponentHooks;
 
-Grid.Column = GridColumn
+Grid.Column = GridColumn;

@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/magnetic
+/obj/item/gun/magnetic
 	name = "improvised coilgun"
 	desc = "A coilgun hastily thrown together out of a basic frame and advanced power storage components. Is it safe for it to be duct-taped together like that?"
 	icon_state = "coilgun"
@@ -12,35 +12,34 @@
 	mod_reach = 0.8
 	mod_handy = 1.0
 
-	var/obj/item/weapon/cell/cell                              // Currently installed powercell.
-	var/obj/item/weapon/stock_parts/capacitor/capacitor        // Installed capacitor. Higher rating == faster charge between shots.
+	var/obj/item/cell/cell                              // Currently installed powercell.
+	var/obj/item/stock_parts/capacitor/capacitor        // Installed capacitor. Higher rating == faster charge between shots.
 	var/removable_components = TRUE                            // Whether or not the gun can be dismantled.
 
 	var/obj/item/loaded                                        // Currently loaded object, for retrieval/unloading.
 	var/load_type = /obj/item/stack/rods                       // Type of stack to load with.
 	var/projectile_type = /obj/item/projectile/bullet/magnetic // Actual fire type, since this isn't throw_at rod launcher.
-	
+
 	var/heat_level = 0										   // When a magnetic weapon has too much heat, it malfunctions.
 	var/able_to_overheat = TRUE							       // Changes whether it should or should not overheat.
-	
-	var/power_cost = 950                                       // Cost per fire, should consume almost an entire basic cell.
-	var/power_per_tick                                         // Capacitor charge per process(). Updated based on capacitor rating.
 
-/obj/item/weapon/gun/magnetic/Initialize()
-	START_PROCESSING(SSobj, src)
+	var/power_cost = 950                                       // Cost per fire, should consume almost an entire basic cell.
+	var/power_per_tick                                         // Capacitor charge per think(). Updated based on capacitor rating.
+
+/obj/item/gun/magnetic/Initialize()
+	set_next_think(world.time)
 	if(capacitor)
 		power_per_tick = (power_cost*0.15) * capacitor.rating
 	update_icon()
 	. = ..()
 
-/obj/item/weapon/gun/magnetic/Destroy()
-	STOP_PROCESSING(SSobj, src)
+/obj/item/gun/magnetic/Destroy()
 	QDEL_NULL(cell)
 	QDEL_NULL(loaded)
 	QDEL_NULL(capacitor)
 	. = ..()
 
-/obj/item/weapon/gun/magnetic/Process()
+/obj/item/gun/magnetic/think()
 	if(capacitor)
 		if(cell)
 			if(capacitor.charge < capacitor.max_charge && cell.checked_use(power_per_tick))
@@ -51,7 +50,9 @@
 	if(able_to_overheat && heat_level > 0)
 		heat_level--
 
-/obj/item/weapon/gun/magnetic/update_icon()
+	set_next_think(world.time + 1 SECOND)
+
+/obj/item/gun/magnetic/update_icon()
 	var/list/overlays_to_add = list()
 	if(removable_components)
 		if(cell)
@@ -70,11 +71,11 @@
 	overlays = overlays_to_add
 	..()
 
-/obj/item/weapon/gun/magnetic/proc/show_ammo()
+/obj/item/gun/magnetic/proc/show_ammo()
 	if(loaded)
 		return "<span class='notice'>It has \a [loaded] loaded.</span>"
 
-/obj/item/weapon/gun/magnetic/examine(mob/user)
+/obj/item/gun/magnetic/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 2)
 		var/ret = show_ammo()
@@ -102,16 +103,16 @@
 
 		return
 
-/obj/item/weapon/gun/magnetic/attackby(obj/item/thing, mob/user)
+/obj/item/gun/magnetic/attackby(obj/item/thing, mob/user)
 
 	if(removable_components)
-		if(istype(thing, /obj/item/weapon/cell))
+		if(istype(thing, /obj/item/cell))
 			if(cell)
 				to_chat(user, "<span class='warning'>\The [src] already has \a [cell] installed.</span>")
 				return
+			if(!user.drop(thing, src))
+				return
 			cell = thing
-			user.drop_from_inventory(cell)
-			cell.forceMove(src)
 			playsound(loc, 'sound/machines/click.ogg', 10, 1)
 			user.visible_message("<span class='notice'>\The [user] slots \the [cell] into \the [src].</span>")
 			update_icon()
@@ -121,21 +122,19 @@
 			if(!capacitor)
 				to_chat(user, "<span class='warning'>\The [src] has no capacitor installed.</span>")
 				return
-			capacitor.forceMove(get_turf(src))
-			user.put_in_hands(capacitor)
+			user.pick_or_drop(capacitor, loc)
 			user.visible_message("<span class='notice'>\The [user] unscrews \the [capacitor] from \the [src].</span>")
 			playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 			capacitor = null
 			update_icon()
 			return
 
-		if(istype(thing, /obj/item/weapon/stock_parts/capacitor))
+		if(istype(thing, /obj/item/stock_parts/capacitor))
 			if(capacitor)
 				to_chat(user, "<span class='warning'>\The [src] already has \a [capacitor] installed.</span>")
 				return
 			capacitor = thing
-			user.drop_from_inventory(capacitor)
-			capacitor.forceMove(src)
+			user.drop(capacitor, src)
 			playsound(loc, 'sound/machines/click.ogg', 10, 1)
 			power_per_tick = (power_cost*0.15) * capacitor.rating
 			user.visible_message("<span class='notice'>\The [user] slots \the [capacitor] into \the [src].</span>")
@@ -153,8 +152,7 @@
 		var/obj/item/stack/ammo = thing
 		if(!istype(ammo))
 			loaded = thing
-			user.drop_from_inventory(thing)
-			thing.forceMove(src)
+			user.drop(thing, src)
 		else
 			loaded = new load_type(src, 1)
 			ammo.use(1)
@@ -165,7 +163,7 @@
 		return
 	. = ..()
 
-/obj/item/weapon/gun/magnetic/attack_hand(mob/user)
+/obj/item/gun/magnetic/attack_hand(mob/user)
 	if(user.get_inactive_hand() == src)
 		var/obj/item/removing
 
@@ -177,33 +175,32 @@
 			cell = null
 
 		if(removing)
-			removing.forceMove(get_turf(src))
-			user.put_in_hands(removing)
+			user.pick_or_drop(removing)
 			user.visible_message("<span class='notice'>\The [user] removes \the [removing] from \the [src].</span>")
 			playsound(loc, 'sound/machines/click.ogg', 10, 1)
 			update_icon()
 			return
 	. = ..()
 
-/obj/item/weapon/gun/magnetic/proc/check_ammo()
+/obj/item/gun/magnetic/proc/check_ammo()
 	return loaded
 
-/obj/item/weapon/gun/magnetic/proc/use_ammo()
+/obj/item/gun/magnetic/proc/use_ammo()
 	qdel(loaded)
 	loaded = null
 
-/obj/item/weapon/gun/magnetic/proc/increase_heat_level()
+/obj/item/gun/magnetic/proc/increase_heat_level()
 	if(prob(30))
 		heat_level += rand(5, 9)
 	else
 		heat_level += rand(3, 5)
-		
-/obj/item/weapon/gun/magnetic/proc/emit_sparks()
+
+/obj/item/gun/magnetic/proc/emit_sparks()
 	var/datum/effect/effect/system/spark_spread/spark = new /datum/effect/effect/system/spark_spread()
 	spark.set_up(3, 1, src)
 	spark.start()
 
-/obj/item/weapon/gun/magnetic/consume_next_projectile(mob/user)
+/obj/item/gun/magnetic/consume_next_projectile(mob/user)
 
 	if(!check_ammo() || !capacitor || capacitor.charge < power_cost)
 		return
@@ -212,7 +209,7 @@
 		increase_heat_level()
 		if(heat_level > 10 && prob(5 + heat_level))
 			if(heat_level < 15 || prob(90 - heat_level))
-				to_chat(user, "<span class='warning'>\The [src] misfires!</span>") 
+				to_chat(user, "<span class='warning'>\The [src] misfires!</span>")
 				capacitor.use(power_cost)
 				emit_sparks()
 				update_icon()
@@ -228,7 +225,7 @@
 						visible_message("<span class='danger'>\The [src] explodes with the force of the shot!</span>")
 						explosion(get_turf(src), -1, 0, 2)
 						qdel(src)
-							
+
 		if(heat_level > 15)
 			emit_sparks()
 

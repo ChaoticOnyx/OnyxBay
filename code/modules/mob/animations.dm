@@ -32,15 +32,13 @@ note dizziness decrements automatically in the mob's Life() proc.
 	while(dizziness > 100)
 		if(client)
 			var/amplitude = dizziness*(sin(dizziness * 0.044 * world.time) + 1) / 70
-			client.pixel_x = amplitude * sin(0.008 * dizziness * world.time)
-			client.pixel_y = amplitude * cos(0.008 * dizziness * world.time)
+			shift_view(amplitude * sin(0.008 * dizziness * world.time), amplitude * cos(0.008 * dizziness * world.time))
 
 		sleep(1)
 	//endwhile - reset the pixel offsets to zero
 	is_dizzy = 0
 	if(client)
-		client.pixel_x = 0
-		client.pixel_y = 0
+		shift_view(0, 0)
 
 // jitteriness - copy+paste of dizziness
 /mob/var/is_jittery = 0
@@ -179,7 +177,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 	flick_overlay(I, viewing, 5) // 5 ticks/half a second
 
 	// Scale the icon.
-	I.transform *= 0.75
+	I.SetTransform(scale = 0.75)
 	// Set the direction of the icon animation.
 	var/direction = get_dir(src, A)
 	if(direction & NORTH)

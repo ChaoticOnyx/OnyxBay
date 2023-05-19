@@ -14,22 +14,22 @@
 	for(var/mob/living/carbon/human/H in SSmobs.mob_list)
 		var/turf/T = get_turf(H)
 		var/security = 0
-		if((T && (T in GLOB.using_map.admin_levels)) || GLOB.prisonwarped.Find(H))
+		if((T && (T in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM))) || GLOB.prisonwarped.Find(H))
 		//don't warp them if they aren't ready or are already there
 			continue
 		H.Paralyse(5)
 		if(H.wear_id)
-			var/obj/item/weapon/card/id/id = H.get_idcard()
+			var/obj/item/card/id/id = H.get_id_card()
 			for(var/A in id.access)
 				if(A == access_security)
 					security++
 		if(!security)
 			//strip their stuff before they teleport into a cell :downs:
-			for(var/obj/item/weapon/W in H)
-				if(istype(W, /obj/item/organ/external))
+			for(var/obj/item/I in H)
+				if(istype(I, /obj/item/organ/external))
 					continue
 					//don't strip organs
-				H.drop_from_inventory(W)
+				H.drop(I)
 			//teleport person to cell
 			H.forceMove(pick(GLOB.prisonwarp))
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/color/orange(H), slot_w_uniform)

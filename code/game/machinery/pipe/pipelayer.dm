@@ -12,7 +12,7 @@
 	var/P_type_t = ""
 	var/max_metal = 50
 	var/metal = 10
-	var/obj/item/weapon/wrench/W
+	var/obj/item/wrench/W
 	var/list/Pipes = list("regular pipes"=0,"scrubbers pipes"=31,"supply pipes"=29,"heat exchange pipes"=2, "fuel pipes"=45)
 
 /obj/machinery/pipelayer/New()
@@ -20,7 +20,7 @@
 	..()
 
 /obj/machinery/pipelayer/Move(new_turf,M_Dir)
-	..()
+	. = ..()
 
 	if(on && a_dis)
 		dismantleFloor(old_turf)
@@ -78,7 +78,7 @@
 		return
 	..()
 
-/obj/machinery/pipelayer/examine(mob/user)
+/obj/machinery/pipelayer/_examine_text(mob/user)
 	. = ..()
 	. += "\n\The [src] has [metal] sheet\s, is set to produce [P_type_t], and auto-dismantling is [!a_dis?"de":""]activated."
 

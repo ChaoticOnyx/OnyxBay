@@ -28,8 +28,8 @@
 	var/is_ranged = 0
 	var/awaiting_surrender = 0
 
-	var/obj/item/weapon/melee/baton/stun_baton
-	var/obj/item/weapon/handcuffs/cyborg/handcuffs
+	var/obj/item/melee/baton/stun_baton
+	var/obj/item/handcuffs/cyborg/handcuffs
 
 	var/list/threat_found_sounds = list('sound/voice/bcriminal.ogg', 'sound/voice/bjustice.ogg', 'sound/voice/bfreeze.ogg')
 	var/list/preparing_arrest_sounds = list('sound/voice/bfreeze.ogg')
@@ -66,7 +66,7 @@
 		"The weed of crime bears bitter fruit.",
 		"Just say \"No!\" to space drugs!",
 		"Violence is never the answer.",
-		"I'm not an officer, I'm a Security <em>monitor</em>.",
+		"I'm not an officer, I'm a Security monitor.",
 		"I am the law.",
 		"Solve your problems with your head.",
 		"Keep your words to yourself, thug.",
@@ -106,7 +106,7 @@
 /mob/living/bot/secbot/New()
 	..()
 	stun_baton = new(src)
-	stun_baton.bcell = new /obj/item/weapon/cell/infinite(stun_baton)
+	stun_baton.bcell = new /obj/item/cell/infinite(stun_baton)
 	stun_baton.set_status(1, null)
 
 	handcuffs = new(src)
@@ -208,12 +208,12 @@
 		broadcast_security_hud_message("[src] is arresting a level [threat] suspect <b>[suspect_name]</b> in <b>[get_area(src)]</b>.", src)
 	say("Down on the floor, [suspect_name]! You have [SECBOT_WAIT_TIME] seconds to comply.")
 	playsound(src.loc, pick(preparing_arrest_sounds), 50)
-	GLOB.moved_event.register(target, src, /mob/living/bot/secbot/proc/target_moved)
+	register_signal(target, SIGNAL_MOVED, /mob/living/bot/secbot/proc/target_moved)
 
 /mob/living/bot/secbot/proc/target_moved(atom/movable/moving_instance, atom/old_loc, atom/new_loc)
 	if(get_dist(get_turf(src), get_turf(target)) >= 1)
 		awaiting_surrender = INFINITY
-		GLOB.moved_event.unregister(moving_instance, src)
+		unregister_signal(moving_instance, SIGNAL_MOVED)
 
 /mob/living/bot/secbot/proc/react_to_attack(mob/attacker)
 	if(client)
@@ -227,7 +227,10 @@
 
 /mob/living/bot/secbot/resetTarget()
 	..()
-	GLOB.moved_event.unregister(target, src)
+
+	if(target)
+		unregister_signal(target, SIGNAL_MOVED)
+
 	awaiting_surrender = -1
 	last_attacker = null
 	walk_to(src, 0)
@@ -244,7 +247,7 @@
 
 /mob/living/bot/secbot/lookForTargets()
 	for(var/mob/living/M in view(src))
-		if(M.stat == DEAD)
+		if(M.is_ic_dead())
 			continue
 		if(confirmTarget(M))
 			var/threat = check_threat(M)
@@ -296,16 +299,17 @@
 	visible_message("<span class='warning'>[src] blows apart!</span>")
 	var/turf/Tsec = get_turf(src)
 
-	var/obj/item/weapon/secbot_assembly/Sa = new /obj/item/weapon/secbot_assembly(Tsec)
+	var/obj/item/secbot_assembly/Sa = new /obj/item/secbot_assembly(Tsec)
 	Sa.build_step = 1
 	Sa.overlays += image('icons/obj/aibots.dmi', "hs_hole")
 	Sa.created_name = name
 	new /obj/item/device/assembly/prox_sensor(Tsec)
-	new /obj/item/weapon/melee/baton(Tsec)
+	new /obj/item/melee/baton(Tsec)
 	if(prob(50))
 		new /obj/item/robot_parts/l_arm(Tsec)
 	if(with_nade)
-		var/obj/item/weapon/grenade/frag/new_nade = new /obj/item/weapon/grenade/frag(Tsec)
+		var/obj/item/grenade/frag/new_nade = new /obj/item/grenade/frag(Tsec)
+		QDEL_NULL(new_nade.safety_pin)
 		new_nade.activate()
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
@@ -322,7 +326,7 @@
 	return "unidentified lifeform"
 
 /mob/living/bot/secbot/proc/check_threat(mob/living/M)
-	if(!M || !istype(M) || M.stat == DEAD || src == M)
+	if(!M || !istype(M) || M.is_ic_dead() || src == M)
 		return 0
 
 	if(emagged && !M.incapacitated()) //check incapacitated so emagged secbots don't keep attacking the same target forever
@@ -345,16 +349,17 @@
 		return
 
 	if(S.secured)
+		if(!user.drop(S))
+			return
 		qdel(S)
-		var/obj/item/weapon/secbot_assembly/A = new /obj/item/weapon/secbot_assembly
-		user.put_in_hands(A)
+		var/obj/item/secbot_assembly/A = new /obj/item/secbot_assembly
+		user.pick_or_drop(A)
 		to_chat(user, "You add the signaler to the helmet.")
-		user.drop_from_inventory(src)
 		qdel(src)
 	else
 		return
 
-/obj/item/weapon/secbot_assembly
+/obj/item/secbot_assembly
 	name = "helmet/signaler assembly"
 	desc = "Some sort of bizarre assembly."
 	icon = 'icons/obj/aibots.dmi'
@@ -363,17 +368,18 @@
 	var/build_step = 0
 	var/created_name = "Securitron"
 
-/obj/item/weapon/secbot_assembly/attackby(obj/item/O, mob/user)
+/obj/item/secbot_assembly/attackby(obj/item/O, mob/user)
 	..()
 	if(isWelder(O) && !build_step)
-		var/obj/item/weapon/weldingtool/WT = O
+		var/obj/item/weldingtool/WT = O
 		if(WT.remove_fuel(0, user))
 			build_step = 1
 			overlays += image('icons/obj/aibots.dmi', "hs_hole")
 			to_chat(user, "You weld a hole in \the [src].")
 
 	else if(isprox(O) && (build_step == 1))
-		user.drop_item()
+		if(!user.drop(O))
+			return
 		build_step = 2
 		to_chat(user, "You add \the [O] to [src].")
 		overlays += image('icons/obj/aibots.dmi', "hs_eye")
@@ -381,22 +387,24 @@
 		qdel(O)
 
 	else if((istype(O, /obj/item/robot_parts/l_arm) || istype(O, /obj/item/robot_parts/r_arm)) && build_step == 2)
-		user.drop_item()
+		if(!user.drop(O))
+			return
 		build_step = 3
 		to_chat(user, "You add \the [O] to [src].")
 		SetName("helmet/signaler/prox sensor/robot arm assembly")
 		overlays += image('icons/obj/aibots.dmi', "hs_arm")
 		qdel(O)
 
-	else if(istype(O, /obj/item/weapon/melee/baton) && build_step == 3)
-		user.drop_item()
+	else if(istype(O, /obj/item/melee/baton) && build_step == 3)
+		if(!user.drop(O))
+			return
 		to_chat(user, "You complete the Securitron! Beep boop.")
 		var/mob/living/bot/secbot/S = new /mob/living/bot/secbot(get_turf(src))
 		S.SetName(created_name)
 		qdel(O)
 		qdel(src)
 
-	else if(istype(O, /obj/item/weapon/pen))
+	else if(istype(O, /obj/item/pen))
 		var/t = sanitizeSafe(input(user, "Enter new robot name", name, created_name), MAX_NAME_LEN)
 		if(!t)
 			return

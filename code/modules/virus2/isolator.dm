@@ -3,17 +3,29 @@
 #define LIST "list"
 #define ENTRY "entry"
 
-/obj/machinery/disease2/isolator/
+/obj/machinery/disease2/isolator
 	name = "pathogenic isolator"
 	density = 1
 	anchored = 1
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "isolator"
+	component_types = list(
+		/obj/item/stock_parts/micro_laser = 3,
+		/obj/item/circuitboard/isolator
+	)
+
 	var/isolating = 0
 	var/state = HOME
+
+	var/speed = 1
+
 	var/datum/disease2/disease/virus2 = null
 	var/datum/computer_file/data/virus_record/entry = null
-	var/obj/item/weapon/reagent_containers/syringe/sample = null
+	var/obj/item/reagent_containers/syringe/sample = null
+
+/obj/machinery/disease2/isolator/Initialize()
+	. = ..()
+	RefreshParts()
 
 /obj/machinery/disease2/isolator/update_icon()
 	if (stat & (BROKEN|NOPOWER))
@@ -27,25 +39,37 @@
 	else
 		icon_state = "isolator"
 
-/obj/machinery/disease2/isolator/attackby(obj/O as obj, mob/user)
-	if(!istype(O,/obj/item/weapon/reagent_containers/syringe)) return
-	var/obj/item/weapon/reagent_containers/syringe/S = O
+/obj/machinery/disease2/isolator/attackby(obj/O, mob/user)
+	if(isolating)
+		to_chat(user, SPAN("notice", "\The [src] is busy. Please wait for completion of previous operation."))
+		return 1
+	if(sample)
+		to_chat(user, SPAN("notice", "\The [src] is full. Please remove external items."))
+		return 1
+	if(default_deconstruction_screwdriver(user, O))
+		return
+	if(default_deconstruction_crowbar(user, O))
+		return
+	if(default_part_replacement(user, O))
+		return
+
+	if(!istype(O, /obj/item/reagent_containers/syringe))
+		return
+
+	var/obj/item/reagent_containers/syringe/S = O
 
 	if(sample)
 		to_chat(user, "\The [src] is already loaded.")
 		return
-
+	if(!user.drop(S, src))
+		return
 	sample = S
-	user.drop_item()
-	S.loc = src
-
 	user.visible_message("[user] adds \a [O] to \the [src]!", "You add \a [O] to \the [src]!")
 	SSnano.update_uis(src)
 	update_icon()
+	attack_hand(user)
 
-	src.attack_hand(user)
-
-/obj/machinery/disease2/isolator/attack_hand(mob/user as mob)
+/obj/machinery/disease2/isolator/attack_hand(mob/user)
 	if(stat & (NOPOWER|BROKEN)) return
 	ui_interact(user)
 
@@ -112,13 +136,19 @@
 		isolating -= 1
 		if (isolating == 0)
 			if (virus2)
-				var/obj/item/weapon/virusdish/d = new /obj/item/weapon/virusdish(src.loc)
+				var/obj/item/virusdish/d = new /obj/item/virusdish(src.loc)
 				d.virus2 = virus2.getcopy()
 				virus2 = null
 				ping("\The [src] pings, \"Viral strain isolated.\"")
 
 			SSnano.update_uis(src)
 			update_icon()
+
+/obj/machinery/disease2/isolator/RefreshParts()
+	var/T = 0
+	for(var/obj/item/stock_parts/manipulator/M in component_parts)
+		T += M.rating
+	speed = T/3
 
 /obj/machinery/disease2/isolator/OnTopic(user, href_list)
 	if (href_list["close"])
@@ -161,7 +191,7 @@
 		return TOPIC_REFRESH
 
 /obj/machinery/disease2/isolator/proc/print(mob/user)
-	var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(loc)
+	var/obj/item/paper/P = new /obj/item/paper(loc)
 
 	switch (state)
 		if (HOME)

@@ -78,12 +78,13 @@
 	to_chat(owner, aim_message)
 	if(aiming_at)
 		to_chat(aiming_at, "<span class='[use_span]'>You are [message].</span>")
-/obj/aiming_overlay/Process()
+/obj/aiming_overlay/think()
 	if(!owner)
 		qdel(src)
 		return
-	..()
+
 	update_aiming()
+	set_next_think(world.time + 1 SECOND)
 
 /obj/aiming_overlay/Destroy()
 	cancel_aiming(1)
@@ -165,13 +166,13 @@
 	locked = 0
 	update_icon()
 	forceMove(get_turf(target))
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 	if(do_after(owner,12,target,progress = 0))
 		to_chat(target, "<span class='danger'>You now have a gun pointed at you. No sudden moves!</span>")
 		aiming_with = thing
 		aiming_at = target
-		if(istype(aiming_with, /obj/item/weapon/gun))
+		if(istype(aiming_with, /obj/item/gun))
 			playsound(owner, 'sound/weapons/TargetOn.ogg', 50,1)
 
 		aiming_at.aimed |= src
@@ -179,12 +180,12 @@
 		toggle_active(1)
 		update_icon()
 		lock_time = world.time + 35
-		GLOB.moved_event.register(owner, src, /obj/aiming_overlay/proc/update_aiming)
-		GLOB.moved_event.register(aiming_at, src, /obj/aiming_overlay/proc/target_moved)
-		GLOB.destroyed_event.register(aiming_at, src, /obj/aiming_overlay/proc/cancel_aiming)
+		register_signal(owner, SIGNAL_MOVED, /obj/aiming_overlay/proc/update_aiming)
+		register_signal(aiming_at, SIGNAL_MOVED, /obj/aiming_overlay/proc/target_moved)
+		register_signal(aiming_at, SIGNAL_QDELETING, /obj/aiming_overlay/proc/cancel_aiming)
 	else
 		loc = null
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 		return
 
 
@@ -219,22 +220,22 @@
 /obj/aiming_overlay/proc/cancel_aiming(no_message = 0)
 	if(!aiming_with || !aiming_at)
 		return
-	if(istype(aiming_with, /obj/item/weapon/gun))
+	if(istype(aiming_with, /obj/item/gun))
 		playsound(owner, 'sound/weapons/TargetOff.ogg', 50,1)
 	if(!no_message)
 		owner.visible_message("<span class='notice'>\The [owner] lowers \the [aiming_with].</span>")
 
-	GLOB.moved_event.unregister(owner, src)
+	unregister_signal(owner, SIGNAL_MOVED)
 	if(aiming_at)
-		GLOB.moved_event.unregister(aiming_at, src)
-		GLOB.destroyed_event.unregister(aiming_at, src)
+		unregister_signal(aiming_at, SIGNAL_MOVED)
+		unregister_signal(aiming_at, SIGNAL_QDELETING)
 		aiming_at.aimed -= src
 		aiming_at = null
 		movement_tally = 0
 
 	aiming_with = null
 	loc = null
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 
 /obj/aiming_overlay/proc/target_moved()
 	update_aiming()

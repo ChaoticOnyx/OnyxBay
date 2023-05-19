@@ -16,8 +16,7 @@
 			return
 
 		var/obj/item/clothing/accessory/A = I
-		if(can_attach_accessory(A))
-			user.drop_item()
+		if(can_attach_accessory(A) && user.drop(A))
 			attach_accessory(user, A)
 			return
 		else
@@ -37,17 +36,17 @@
 	return ..()
 
 /obj/item/clothing/MouseDrop(obj/over_object)
-	if (!over_object || !(ishuman(usr) || issmall(usr)))
+	if(!over_object || !(ishuman(usr) || issmall(usr)))
 		return
 
 	//makes sure that the clothing is equipped so that we can't drag it into our hand from miles away.
-	if (!(src.loc == usr))
+	if(loc != usr)
 		return
 
-	if (usr.incapacitated())
+	if(usr.incapacitated())
 		return
 
-	if (!usr.unEquip(src))
+	if(!usr.drop(src))
 		return
 
 	switch(over_object.name)
@@ -55,9 +54,9 @@
 			usr.put_in_r_hand(src)
 		if("l_hand")
 			usr.put_in_l_hand(src)
-	src.add_fingerprint(usr)
+	add_fingerprint(usr)
 
-/obj/item/clothing/examine(mob/user)
+/obj/item/clothing/_examine_text(mob/user)
 	. = ..()
 	for(var/obj/item/clothing/accessory/A in accessories)
 		. += "\n\icon[A] \A [A] is attached to it."

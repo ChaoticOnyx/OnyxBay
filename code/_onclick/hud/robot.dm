@@ -1,6 +1,7 @@
 var/obj/screen/robot_inventory
 
 /mob/living/silicon/robot
+	bubble_icon = "robot"
 	hud_type = /datum/hud/robot
 
 /datum/hud/robot/FinalizeInstantiation()
@@ -109,22 +110,16 @@ var/obj/screen/robot_inventory
 
 //Temp
 	R.bodytemp = new /obj/screen()
+	R.bodytemp.icon = 'icons/mob/screen1_robot.dmi'
 	R.bodytemp.icon_state = "temp0"
-	R.bodytemp.SetName("body temperature")
-	R.bodytemp.screen_loc = ui_temp
-
+	R.bodytemp.SetName("temperature")
+	R.bodytemp.screen_loc = ui_fire
 
 	R.oxygen = new /obj/screen()
 	R.oxygen.icon = 'icons/mob/screen1_robot.dmi'
 	R.oxygen.icon_state = "oxy0"
 	R.oxygen.SetName("oxygen")
 	R.oxygen.screen_loc = ui_oxygen
-
-	R.fire = new /obj/screen()
-	R.fire.icon = 'icons/mob/screen1_robot.dmi'
-	R.fire.icon_state = "fire0"
-	R.fire.SetName("fire")
-	R.fire.screen_loc = ui_fire
 
 	R.pullin = new /obj/screen()
 	R.pullin.icon = 'icons/mob/screen1_robot.dmi'
@@ -144,7 +139,7 @@ var/obj/screen/robot_inventory
 	R.radio_use_icon = new /obj/screen/gun/radio(null)
 
 	R.client.screen = list()
-	R.client.screen += list(R.throw_icon, R.zone_sel, R.oxygen, R.fire, R.hands, R.healths, R.cells, R.pullin, robot_inventory, R.gun_setting_icon)
+	R.client.screen += list(R.throw_icon, R.zone_sel, R.oxygen, R.bodytemp, R.hands, R.healths, R.cells, R.pullin, robot_inventory, R.gun_setting_icon)
 	R.client.screen += src.adding + src.other
 
 /datum/hud/proc/toggle_show_robot_modules()

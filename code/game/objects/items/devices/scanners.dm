@@ -12,12 +12,11 @@ REAGENT SCANNER
 	name = "health analyzer"
 	desc = "A hand-held body scanner able to distinguish vital signs of the subject."
 	icon_state = "health"
-	item_state = "analyzer"
+	item_state = "healthanalyzer"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	throwforce = 3
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 5
 	throw_range = 10
 	matter = list(MATERIAL_STEEL = 200)
 	origin_tech = list(TECH_MAGNET = 1, TECH_BIO = 1)
@@ -33,29 +32,28 @@ REAGENT SCANNER
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	scan_mob(M, user)
 
-/obj/item/device/healthanalyzer/proc/scan_mob(mob/living/carbon/C, mob/living/user)
-
-	if (!user.IsAdvancedToolUser())
-		to_chat(user, "<span class='warning'>You are not nimble enough to use this device.</span>")
+/obj/item/device/healthanalyzer/proc/scan_mob(mob/living/carbon/human/H, mob/living/user)
+	if(!user.IsAdvancedToolUser())
+		to_chat(user, SPAN("warning", "You are not nimble enough to use this device."))
 		return
 
-	if (!istype(C) || C.isSynthetic())
-		to_chat(user, "<span class='warning'>\The [src] is designed for organic humanoid patients only.</span>")
+	if(!istype(H) || H.isSynthetic())
+		to_chat(user, SPAN("warning", "\The [src] is designed for organic humanoid patients only."))
 		return
 	//show_browser(user, medical_scan_results(H, mode), "window=scanconsole;size=550x400")
-	playsound(src.loc, 'sound/signals/processing21.ogg', 50)
-	ui_interact(user,target = C)
+	playsound(loc, 'sound/signals/processing21.ogg', 50)
+	ui_interact(user, target = H)
 
 /obj/item/device/healthanalyzer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1,mob/living/carbon/human/target, master_ui = null, datum/topic_state/state = GLOB.default_state)
 
 	var/data[0]
 
-	if ((MUTATION_CLUMSY in user.mutations) && prob(60))
-		user.visible_message("<span class='notice'>\The [user] runs \the [src] over the floor.</span>")
-		data["p_name"] = "<span class='black'><b>Scan results for the floor:</b><br></span>"
-		data["brain"] = "<span class='black'>Overall Status: Healthy</span>"
-	else
-		user.visible_message("<span class='notice'>\The [user] runs \the [src] over \the [target].</span>")
+	if((MUTATION_CLUMSY in user.mutations) && prob(60))
+		user.visible_message(SPAN("notice", "\The [user] runs \the [src] over the floor."))
+		data["p_name"] = SPAN("black", "<b>Scan results for the floor:</b><br>")
+		data["brain"] = SPAN("black", "Overall Status: Healthy")
+	else if(target)
+		user.visible_message(SPAN("notice", "\The [user] runs \the [src] over \the [target]."))
 		var/list/scan_data = medical_scan_results(target, mode, 1)
 		for(var/i = 1,i <= scan_data.len,i++)
 			scan_data[i] = replacetext(scan_data[i],"'notice'","'black'")
@@ -71,7 +69,7 @@ REAGENT SCANNER
 		data["virus"] = scan_data[8]
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, ui_key, "healthanalyzer.tmpl", " ", 640, 370, master_ui = master_ui, state = state)
 		ui.set_initial_data(data)
 		ui.set_window_options("focus=0;can_close=1;can_minimize=1;can_maximize=0;can_resize=0;titlebar=1;")
@@ -86,38 +84,47 @@ REAGENT SCANNER
 /proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 	. = list()
 	var/p_name = list()
-	p_name = "<span class='notice'><b>Scan results for \the [H]:</b></span>"
+	p_name = SPAN("notice", "<b>Scan results for \the [H]:</b>")
 
 	// Brain activity.
 	var/brain_data = list()
 	var/brain_result = "normal"
-	var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
+
+	var/obj/item/organ/internal/brain/brain
+	if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/brain))
+		brain = H.internal_organs_by_name[BP_BRAIN]
+	else if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/mmi_holder))
+		var/obj/item/organ/internal/mmi_holder/MMI = H.internal_organs_by_name[BP_BRAIN]
+		brain = MMI.stored_mmi?.brainobj
+
 	if(H.should_have_organ(BP_BRAIN))
-		if(!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
-			brain_result = "<span class='danger'>none, patient is braindead</span>"
-		else if(H.stat != DEAD)
+		if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/posibrain))
+			brain_result = SPAN("danger", "ERROR - No organic tissue found")
+		else if(!brain || H.is_ic_dead() || (H.status_flags & FAKEDEATH) || (isundead(H) && !isfakeliving(H)))
+			brain_result = SPAN("danger", "none, patient is braindead")
+		else if(!H.is_ic_dead())
 			switch(brain.get_current_damage_threshold())
 				if(0)
-					brain_result = "<span class='notice'>normal</span>"
+					brain_result = SPAN("notice", "normal")
 				if(1 to 2)
-					brain_result = "<span class='notice'>minor brain damage</span>"
+					brain_result = SPAN("notice", "minor brain damage")
 				if(3 to 5)
-					brain_result = "<span class='warning'>weak</span>"
+					brain_result = SPAN("warning", "weak")
 				if(6 to 8)
-					brain_result = "<span class='danger'>extremely weak</span>"
+					brain_result = SPAN("danger", "extremely weak")
 				if(9 to INFINITY)
-					brain_result = "<span class='danger'>fading</span>"
+					brain_result = SPAN("danger", "fading")
 				else
-					brain_result = "<span class='danger'>ERROR - Hardware fault</span>"
+					brain_result = SPAN("danger", "ERROR - Hardware fault")
 	else
-		brain_result = "<span class='danger'>ERROR - Nonstandard biology</span>"
+		brain_result = SPAN("danger", "ERROR - Nonstandard biology")
 	brain_data += "<span class='notice'>Brain activity:</span> [brain_result]."
 
-	if(brain && (H.stat == DEAD || (H.status_flags & FAKEDEATH)))
-		brain_data += "<span class='notice'><b>Time of Death:</b> [worldtime2stationtime(H.timeofdeath)]</span>"
+	if(brain && (H.is_ic_dead() || (H.status_flags & FAKEDEATH)))
+		brain_data += SPAN("notice", "<b>Time of Death:</b> [worldtime2stationtime(H.timeofdeath)]")
 
-	if (H.internal_organs_by_name[BP_STACK])
-		brain_data += "<span class='notice'>Subject has a neural lace implant.</span>"
+	if(H.internal_organs_by_name[BP_STACK])
+		brain_data += SPAN("notice", "Subject has a neural lace implant.")
 
 	// Pulse rate.
 	var/blood_data = list()
@@ -141,24 +148,10 @@ REAGENT SCANNER
 
 	var/status_data = list()
 	// Body temperature.
-	status_data += "<span class='notice'>Body temperature: <b>[H.bodytemperature-T0C]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)</b></span>"
+	status_data += "<span class='notice'>Body temperature: <b>[CONV_KELVIN_CELSIUS(H.bodytemperature)]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)</b></span>"
 
 	// Radiation.
-	switch(H.radiation)
-		if(-INFINITY to 0)
-			status_data += "<span class='notice'>No radiation detected.</span>"
-		if(1 to 30)
-			status_data += "<span class='notice'>Patient shows minor traces of radiation exposure.</span>"
-		if(31 to 60)
-			status_data += "<span class='notice'>Patient is suffering from mild radiation poisoning.</span>"
-		if(61 to 90)
-			status_data += "<span class='warning'>Patient is suffering from advanced radiation poisoning.</span>"
-		if(91 to 120)
-			status_data += "<span class='warning'>Patient is suffering from severe radiation poisoning.</span>"
-		if(121 to 240)
-			status_data += "<span class='danger'>Patient is suffering from extreme radiation poisoning. Immediate treatment recommended.</span>"
-		if(241 to INFINITY)
-			status_data += "<span class='danger'>Patient is suffering from acute radiation poisoning. Immediate treatment recommended.</span>"
+	status_data += SPAN("notice", "Radiation dose: [fmt_siunit(H.radiation, "Sv", 3)]")
 
 	// Other general warnings.
 	if(H.getOxyLoss() > 50)
@@ -170,7 +163,7 @@ REAGENT SCANNER
 	if(H.getBruteLoss() > 50)
 		status_data += "<font color='red'><b>Severe anatomical damage detected.</b></font>"
 
-	if(H.stat != DEAD)
+	if(!H.is_ic_dead())
 		// Traumatic shock.
 		if(H.is_asystole())
 			status_data += "<span class='danger'>Patient is suffering from cardiovascular shock. Administer CPR immediately.</span>"
@@ -321,12 +314,12 @@ REAGENT SCANNER
 	if (H.chem_effects[CE_ALCOHOL_TOXIC])
 		reagents_data += "<span class='danger'>Warning: Subject suffering from alcohol intoxication.</span>"
 
-	if(H.chem_doses.len)
+	if(H.chem_traces.len)
 		var/list/chemtraces = list()
-		for(var/T in H.chem_doses)
+		for(var/T in H.chem_traces)
 			var/datum/reagent/R = T
 			if(initial(R.scannable))
-				chemtraces += "[initial(R.name)] ([H.chem_doses[T]])"
+				chemtraces += "[initial(R.name)] ([H.chem_traces[T]])"
 		if(chemtraces.len)
 			reagents_data += "<span class='notice'>Metabolism products of [english_list(chemtraces)] found in subject's system.</span>"
 	var/virus_data = list()
@@ -421,7 +414,6 @@ REAGENT SCANNER
 	slot_flags = SLOT_POCKET
 	throwforce = 3
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 5
 	throw_range = 10
 	matter = list(MATERIAL_STEEL = 800)
 	origin_tech = list(TECH_MAGNET = 4, TECH_BIO = 6)
@@ -443,7 +435,7 @@ REAGENT SCANNER
 	if (last_target && dat)
 		show_browser(user, dat, "window=scanconsole;size=430x600")
 
-/obj/item/device/healthanalyzer_advanced/examine(mob/user)
+/obj/item/device/healthanalyzer_advanced/_examine_text(mob/user)
 	. = ..()
 	if (last_target)
 		. += "\nIt contains saved data for [last_target]."
@@ -464,9 +456,9 @@ REAGENT SCANNER
 	set name = "Print Data"
 	set category = "Object"
 	if (last_target && dat)
-		var/obj/item/weapon/paper/P = new /obj/item/weapon/paper/(get_turf(src))
+		var/obj/item/paper/P = new /obj/item/paper/(get_turf(src))
 		P.set_content("<tt>[dat]</tt>", "Body scan report - [last_target]", TRUE)
-		src.visible_message("<span class='notice'>[src] prints out \the scan result.</span>")
+		src.visible_message("<span class='notice'>[src] prints out the scan result.</span>")
 
 
 /obj/item/device/analyzer
@@ -478,7 +470,6 @@ REAGENT SCANNER
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	throwforce = 5
-	throw_speed = 4
 	throw_range = 20
 
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
@@ -525,7 +516,6 @@ REAGENT SCANNER
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	throwforce = 5
-	throw_speed = 4
 	throw_range = 20
 
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
@@ -594,7 +584,6 @@ REAGENT SCANNER
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	throwforce = 5
-	throw_speed = 4
 	throw_range = 20
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
 
@@ -602,7 +591,7 @@ REAGENT SCANNER
 	var/details = 0
 	var/recent_fail = 0
 
-/obj/item/device/reagent_scanner/afterattack(obj/O, mob/user as mob, proximity)
+/obj/item/device/reagent_scanner/afterattack(obj/O, mob/user, proximity)
 	if(!proximity)
 		return
 	if (user.incapacitated())
@@ -612,20 +601,30 @@ REAGENT SCANNER
 	if(!istype(O))
 		return
 
-	if(!isnull(O.reagents))
-		var/dat = ""
-		if(O.reagents.reagent_list.len > 0)
-			var/one_percent = O.reagents.total_volume / 100
-			for (var/datum/reagent/R in O.reagents.reagent_list)
-				dat += "\n \t <span class='notice'>[R][details ? ": [R.volume / one_percent]%" : ""]</span>"
-		if(dat)
-			to_chat(user, "<span class='notice'>Chemicals found: [dat]</span>")
-		else
-			to_chat(user, "<span class='notice'>No active chemical agents found in [O].</span>")
-	else
-		to_chat(user, "<span class='notice'>No significant chemical agents found in [O].</span>")
+	reagent_scanner_scan(user, O)
 
 	return
+
+/proc/reagent_scanner_scan(mob/user, atom/target)
+	if(!istype(target))
+		return
+	if(!isnull(target.reagents))
+		var/list/reagents_out
+		var/list/reagents_block
+
+		for(var/datum/reagent/reagent in target.reagents.reagent_list)
+			LAZYADD(reagents_block, SPAN_NOTICE("[round(reagent.volume, 0.001)] units of [reagent.name]\n"))
+
+		if(!length(reagents_block))
+			LAZYADD(reagents_out, SPAN_NOTICE("No active chemical agents found in \the [target]."))
+		else
+			LAZYADD(reagents_out, SPAN_NOTICE("\The [target] contains the following reagents:\n"))
+			LAZYADD(reagents_out, reagents_block)
+			reagents_block.Cut()
+
+		var/message = EXAMINE_BLOCK(jointext(reagents_out, ""))
+
+		to_chat(user, message)
 
 /obj/item/device/reagent_scanner/adv
 	name = "advanced reagent scanner"
@@ -641,7 +640,6 @@ REAGENT SCANNER
 	slot_flags = SLOT_BELT
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 3
 	matter = list(MATERIAL_STEEL = 25, MATERIAL_GLASS = 25)
 

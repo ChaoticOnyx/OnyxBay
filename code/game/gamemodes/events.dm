@@ -11,7 +11,7 @@
 					dust_swarm("weak")
 			if(!event)
 				//CARN: checks to see if random events are enabled.
-				if(config.allow_random_events)
+				if(config.random_events.enable)
 					if(prob(eventchance))
 						event()
 						hadevent = 1
@@ -27,7 +27,7 @@ var/hadevent    = 0
 
 /proc/appendicitis()
 	for(var/mob/living/carbon/human/H in shuffle(GLOB.living_mob_list_))
-		if(H.client && H.stat != DEAD)
+		if(H.client && !H.is_ooc_dead())
 			var/obj/item/organ/internal/appendix/A = H.internal_organs_by_name[BP_APPENDIX]
 			if(!istype(A) || (A && A.inflamed))
 				continue
@@ -42,7 +42,7 @@ var/hadevent    = 0
 
 	var/list/vents = list()
 	for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in GLOB.atmos_machinery)
-		if(!temp_vent.welded && temp_vent.network && (temp_vent.loc.z in GLOB.using_map.station_levels))
+		if(!temp_vent.welded && temp_vent.network && (temp_vent.loc.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
 			if(temp_vent.network.normal_members.len > 50) // Stops Aliens getting stuck in small networks. See: Security, Virology
 				vents += temp_vent
 
@@ -63,37 +63,6 @@ var/hadevent    = 0
 
 	spawn(rand(5000, 6000)) //Delayed announcements to keep the crew on their toes.
 		GLOB.using_map.unidentified_lifesigns_announcement()
-
-/proc/high_radiation_event()
-
-/* // Haha, this is way too laggy. I'll keep the prison break though.
-	for(var/obj/machinery/light/L in world)
-		if(isNotStationLevel(L.z)) continue
-		L.flicker(50)
-
-	sleep(100)
-*/
-	for(var/mob/living/carbon/human/H in GLOB.living_mob_list_)
-		var/turf/T = get_turf(H)
-		if(!T)
-			continue
-		if(isNotStationLevel(T.z))
-			continue
-		if(istype(H,/mob/living/carbon/human))
-			H.apply_effect((rand(15,75)),IRRADIATE, blocked = H.getarmor(null, "rad"))
-			if (prob(5))
-				H.apply_effect((rand(90,150)),IRRADIATE, blocked = H.getarmor(null, "rad"))
-			if (prob(25))
-				if (prob(75))
-					randmutb(H)
-					domutcheck(H,null,MUTCHK_FORCED)
-				else
-					randmutg(H)
-					domutcheck(H,null,MUTCHK_FORCED)
-	sleep(100)
-	GLOB.using_map.radiation_detected_announcement()
-
-
 
 //Changing this to affect the main station. Blame Urist. --Pete
 /proc/prison_break() // -- Callagan

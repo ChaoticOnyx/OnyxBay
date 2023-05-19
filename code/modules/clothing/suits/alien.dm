@@ -27,8 +27,9 @@
 	name = "headscarf"
 	desc = "A scarf of coarse fabric. Seems to have ear-holes."
 	icon_state = "zhan_scarf"
+	flags_inv = HIDEFACE
 	body_parts_covered = HEAD|FACE
-	
+
 /obj/item/clothing/shoes/sandal/tajaran/caligae
 	name = "caligae"
 	desc = "The standard Tajaran footwear loosly resembles the Roman Caligae. Made of leather and rubber, their unique design allows for improved traction and protection. They don't look like they would fit on anyone but a Tajara."
@@ -37,12 +38,12 @@
 	item_state = "caligae"
 	body_parts_covered = FEET|LEGS
 	species_restricted = list(SPECIES_TAJARA)
-	
+
 /obj/item/clothing/shoes/sandal/tajaran/caligae/white
 	desc = "The standard Tajaran footwear loosly resembles the Roman Caligae. Made of leather and rubber, their unique design allows for improved traction and protection. They don't look like they would fit on anyone but a Tajara. /This one has a white covering."
 	icon_state = "whitecaligae"
 	item_state = "whitecaligae"
-	
+
 /obj/item/clothing/shoes/sandal/tajaran/caligae/grey
 	desc = "The standard Tajaran footwear loosly resembles the Roman Caligae. Made of leather and rubber, their unique design allows for improved traction and protection. They don't look like they would fit on anyone but a Tajara. /This one has a grey covering."
 	icon_state = "greycaligae"
@@ -52,13 +53,13 @@
 	desc = "The standard Tajaran footwear loosly resembles the Roman Caligae. Made of leather and rubber, their unique design allows for improved traction and protection. They don't look like they would fit on anyone but a Tajara. /This one has a black covering."
 	icon_state = "blackcaligae"
 	item_state = "blackcaligae"
-	
+
 /obj/item/clothing/accessory/shouldercape
 	name = "shoulder cape"
 	desc = "A simple shoulder cape."
 	icon_state = "gruntcape"
 	slot = ACCESSORY_SLOT_INSIGNIA // Adding again in case we want to change it in the future.
-	
+
 /obj/item/clothing/accessory/shouldercape/grunt
 	name = "modir cape"
 	desc = "A simple looking cape with a couple of runes woven into the fabric."
@@ -84,8 +85,8 @@
 /obj/item/clothing/suit/armor/vox_scrap
 	name = "rusted metal armor"
 	desc = "A hodgepodge of various pieces of metal scrapped together into a rudimentary vox-shaped piece of armor."
-	allowed = list(/obj/item/weapon/gun, /obj/item/weapon/tank)
-	armor = list(melee = 70, bullet = 30, laser = 20,energy = 5, bomb = 40, bio = 0, rad = 0) //Higher melee armor versus lower everything else.
+	allowed = list(/obj/item/gun, /obj/item/tank)
+	armor = list(melee = 70, bullet = 30, laser = 20,energy = 5, bomb = 40, bio = 0) //Higher melee armor versus lower everything else.
 	icon_state = "vox-scrap"
 	icon_state = "vox-scrap"
 	body_parts_covered = UPPER_TORSO|ARMS|LOWER_TORSO|LEGS

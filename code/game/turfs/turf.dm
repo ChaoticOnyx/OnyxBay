@@ -17,8 +17,8 @@
 	var/heat_capacity = 1
 
 	//Properties for both
-	var/temperature = T20C      // Initial turf temperature.
-	var/blocks_air = 0          // Does this turf contain air/let air through?
+	var/temperature = 20 CELSIUS // Initial turf temperature.
+	var/blocks_air = 0           // Does this turf contain air/let air through?
 
 	var/list/explosion_throw_details
 
@@ -26,10 +26,19 @@
 	var/icon_old = null
 	var/pathweight = 1          // How much does it cost to pathfind over this turf?
 	var/blessed = 0             // Has the turf been blessed?
+	var/list/rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 38 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 365 KILO ELECTRONVOLT,
+		RADIATION_HAWKING = 81 MILLI ELECTRONVOLT
+	)
 
 	var/list/decals
 
 	var/movement_delay
+
+	var/changing_turf
+
+	var/footstep_sound = SFX_FOOTSTEP_PLATING
 
 /turf/Initialize(mapload, ...)
 	. = ..()
@@ -41,6 +50,10 @@
 	RecalculateOpacity()
 
 /turf/Destroy()
+	if(!changing_turf)
+		util_crash_with("Improper turf qdel. Do not qdel turfs directly.")
+
+	changing_turf = FALSE
 	remove_cleanables()
 	..()
 	return QDEL_HINT_IWILLGC
@@ -85,7 +98,7 @@
 
 	if(user.restrained())
 		return 0
-	if(isnull(user.pulling) || user.pulling.anchored || !isturf(user.pulling.loc))
+	if(QDELETED(user.pulling) || user.pulling.anchored || !isturf(user.pulling.loc))
 		return 0
 	if(user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1)
 		return 0
@@ -103,9 +116,9 @@
 			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN + O.pull_slowdown)
 	return 1
 
-/turf/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/storage))
-		var/obj/item/weapon/storage/S = W
+/turf/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/storage))
+		var/obj/item/storage/S = W
 		if(S.use_to_pickup && S.collection_mode)
 			S.gather_all(src, user)
 	return ..()
@@ -232,13 +245,15 @@ var/const/enterloopsanity = 100
 				L.Add(t)
 	return L
 
-/turf/proc/contains_dense_objects()
+/turf/proc/contains_dense_objects(check_mobs = TRUE)
 	if(density)
-		return 1
+		return TRUE
 	for(var/atom/A in src)
+		if(!check_mobs && ismob(A))
+			continue
 		if(A.density && !(A.atom_flags & ATOM_FLAG_CHECKS_BORDER))
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 //expects an atom containing the reagents used to clean the turf
 /turf/proc/clean(atom/source, mob/user = null)
@@ -270,3 +285,21 @@ var/const/enterloopsanity = 100
 		if(isliving(AM))
 			var/mob/living/M = AM
 			M.turf_collision(src, speed)
+
+/turf/allow_drop()
+	return TRUE
+
+/turf/_examine_text(mob/user, infix, suffix)
+	. = ..()
+	
+	if(hasHUD(user, HUD_SCIENCE))
+		. += "\nStopping Power:"
+
+		. += "\nα-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_ALPHA_PARTICLE]), "eV", 3)]"
+		. += "\nβ-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_BETA_PARTICLE]), "eV", 3)]"
+	
+	return .
+
+/turf/proc/get_footstep_sound()
+	if(footstep_sound)
+		return pick(GLOB.sfx_list[footstep_sound])

@@ -36,21 +36,18 @@ meteor_act
 				if(D.w_class > 2)
 					return PROJECTILE_FORCE_BLOCK // Small items don't block the projectile while getting shot out
 
-	//Tase effect
-	if(P.tasing)
-		handle_tase(P.agony * get_siemens_coefficient_organ(organ))
-
-	var/blocked = ..(P, def_zone) // Unobviously, the external damage applies here
+	// Unobviously, the external damage applies here
+	var/blocked = ..(P, def_zone) // <------------'
 
 	//Internal damage
 	var/penetrating_damage = ((P.damage + P.armor_penetration) * P.penetration_modifier) - blocked
 	var/internal_damage_prob = 70 + max(penetrating_damage, -30) // The minimal chance to deal internal damage is 40%, armor is more about blocking damage itself
 
 	var/overkill_value = 1
-	if(organ.damage >= organ.max_damage * 1.5) // Overkill stuff; if our bodypart is a pile of shredded meat then it doesn't protect organs well
-		overkill_value *= 3
+	if(organ.damage > organ.max_damage) // Overkill stuff; if our bodypart is a pile of shredded meat then it doesn't protect organs well
+		overkill_value *= organ.damage / organ.max_damage * 2
 
-	if(organ.internal_organs.len && prob(internal_damage_prob * overkill_value))
+	if(length(organ.internal_organs) && prob(internal_damage_prob * overkill_value))
 		var/damage_amt = (P.damage * P.penetration_modifier) * blocked_mult(blocked / 1.5) //So we don't factor in armor_penetration as additional damage
 		if(blocked >= P.damage) // Armor has absorbed the penetrational power
 			damage_amt = sqrt(damage_amt)
@@ -65,7 +62,7 @@ meteor_act
 					victims += I
 			if(victims.len)
 				for(var/obj/item/organ/internal/victim in victims)
-					victim.take_internal_damage(damage_amt)
+					victim.take_internal_damage(damage_amt / victims.len)
 
 	//Embed or sever artery
 	if((blocked < P.damage) && P.can_embed() && !(species.species_flags & SPECIES_FLAG_NO_EMBED))
@@ -73,7 +70,7 @@ meteor_act
 			if(prob(50))
 				organ.sever_artery()
 			else
-				var/obj/item/weapon/material/shard/shrapnel/SP = new()
+				var/obj/item/material/shard/shrapnel/SP = new()
 				SP.SetName((P.name != "shrapnel")? "[P.name] shrapnel" : "shrapnel")
 				SP.desc = "[SP.desc] It looks like it was fired from [P.shot_from]."
 				SP.loc = organ
@@ -97,6 +94,34 @@ meteor_act
 
 	..(stun_amount, agony_amount, def_zone)
 
+// Less realistic, more combat-friendly stun handling than the proc above. Used by tasers and batons.
+/mob/living/carbon/human/proc/handle_tasing(power, tasing, def_zone, used_weapon = null)
+	if(status_flags & GODMODE)
+		return 0	//godmode
+
+	var/siemens_coeff = 1.0
+	var/obj/item/organ/external/affected = get_organ(check_zone(def_zone))
+	if(affected)
+		siemens_coeff = get_siemens_coefficient_organ(affected)
+	if(siemens_coeff <= 0)
+		return
+	flash_pain()
+	forcesay(GLOB.hit_appends)
+
+	var/reduced_power = power * siemens_coeff
+	apply_damage(reduced_power, PAIN, def_zone, 0, used_weapon)
+	damage_poise(reduced_power / 5) // So metazine-filled junkies are still prone to muscular cramps
+
+	var/reduced_tasing = round(max(tasing * 0.5, tasing * siemens_coeff)) // Armor can provide up to 50% stun time reduction
+	apply_effect(STUTTER, reduced_tasing)
+	apply_effect(EYE_BLUR, reduced_tasing)
+
+	if(poise <= 0 || getHalLoss() >= species.total_health || affected?.pain > species.total_health)
+		if(prob(95)) // May gods decide your destiny
+			if(!stunned)
+				visible_message("<b>[src]</b> collapses!", SPAN("warning", "You collapse from shock!"))
+			Stun(reduced_tasing)
+			Weaken(reduced_tasing + 1) // Getting up after being tased is not instant, adding 1 tick of unstunned crawling
 
 
 //////////////////////
@@ -193,7 +218,7 @@ meteor_act
 		if(I.mod_shield > shield_mod_shield)
 			shield = I
 			shield_mod_shield = I.mod_shield
-	if(isnull(shield))
+	if(QDELETED(shield))
 		return 0
 	. = shield.handle_shield(src, damage, damage_source, attacker, def_zone, attack_text)
 	return
@@ -346,8 +371,7 @@ meteor_act
 						visible_message(SPAN("danger", "[user] disarms [src] with their [I.name]!"))
 						var/list/holding = list(src.get_active_hand() = 40, src.get_inactive_hand() = 20)
 						for(var/obj/item/D in holding)
-							if(D)
-								src.drop_from_inventory(D)
+							drop(D)
 						playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 
 		//Apply blood
@@ -433,8 +457,7 @@ meteor_act
 					visible_message(SPAN("danger", "[user] disarms [src] with their [I.name]!"))
 					var/list/holding = list(get_active_hand() = 40, get_inactive_hand() = 20)
 					for(var/obj/item/D in holding)
-						if(D)
-							drop_from_inventory(D)
+						drop(D)
 					playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 			if(BP_CHEST, BP_GROIN, BP_L_LEG, BP_R_LEG)
 				if(!stat && (poise <= effective_force/3*I.mod_weight))
@@ -476,19 +499,21 @@ meteor_act
 	if(!affecting)
 		return //should be prevented by attacked_with_item() but for sanity.
 
-	var/blocked = run_armor_check(hit_zone, "melee", I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
+	var/blocked = run_armor_check(hit_zone, I.check_armour, I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
 
-	if(istype(user,/mob/living/carbon/human))
+	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
 		if(parrying)
-			if(handle_parry(A,I))
+			if(handle_parry(A, I))
 				return
 		if(blocking)
-			if(handle_block_weapon(A,I))
+			if(handle_block_weapon(A, I))
 				return
 		if(!atype)
 			standard_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
 		else
+			// We only check disarm attacks for melee armor since they are dealt w/ blunt parts/handles/etc.
+			blocked = run_armor_check(hit_zone, "melee", I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
 			alt_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
 		return blocked
 
@@ -728,7 +753,7 @@ meteor_act
 		return 0
 
 	//want the dislocation chance to be such that the limb is expected to dislocate after dealing a fraction of the damage needed to break the limb
-	var/dislocate_chance = effective_force/(dislocate_mult * organ.min_broken_damage * config.organ_health_multiplier)*100
+	var/dislocate_chance = effective_force/(dislocate_mult * organ.min_broken_damage * config.health.organ_health_multiplier)*100
 	if(prob(dislocate_chance * blocked_mult(blocked)))
 		visible_message(SPAN("danger", "[src]'s [organ.joint] [pick("gives way","caves in","crumbles","collapses")]!"))
 		organ.dislocate(1)
@@ -751,16 +776,14 @@ meteor_act
 /mob/living/carbon/human/hitby(atom/movable/AM, speed = THROWFORCE_SPEED_DIVISOR)
 	if(isobj(AM))
 		var/obj/O = AM
-		if(in_throw_mode && !get_active_hand() && speed <= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
-			if(!incapacitated())
-				if(isturf(O.loc))
-					put_in_active_hand(O)
-					visible_message(SPAN("warning", "[src] catches [O]!"))
-					throw_mode_off()
-					return
+		if(in_throw_mode && !get_active_hand() && speed >= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
+			if(!incapacitated() && isturf(O.loc) && put_in_active_hand(O))
+				visible_message(SPAN("warning", "[src] catches [O]!"))
+				throw_mode_off()
+				return
 
 		var/dtype = O.damtype
-		var/throw_damage = O.throwforce * (speed / THROWFORCE_SPEED_DIVISOR)
+		var/throw_damage = O.throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
 
 		if(blocking)
 			var/obj/item/weapon_def
@@ -814,13 +837,23 @@ meteor_act
 		O.throwing = 0		//it hit, so stop moving
 
 		var/obj/item/organ/external/affecting = get_organ(zone)
+		if(!affecting)
+			visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
+			return
+
 		var/hit_area = affecting.name
 		var/datum/wound/created_wound
 
 		visible_message(SPAN("warning", "\The [src] has been hit in the [hit_area] by \the [O]."))
 		play_hitby_sound(AM)
 
-		var/armor = run_armor_check(affecting, "melee", O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].") //I guess "melee" is the best fit here
+		var/armor
+		if(istype(O, /obj/item))
+			var/obj/item/I = O
+			armor = run_armor_check(affecting, I.check_armour, O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].")
+		else
+			armor = run_armor_check(affecting, "melee", O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].") //I guess "melee" is the best fit here
+
 		if(armor < 100)
 			var/damage_flags = O.damage_flags()
 			if(prob(armor))
@@ -861,13 +894,17 @@ meteor_act
 		if(O.throw_source && momentum >= THROWNOBJ_KNOCKBACK_SPEED)
 			var/dir = get_dir(O.throw_source, src)
 
+			if(buckled)
+				return
+
 			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
-			throw_at(get_edge_target_turf(src, dir), 1, momentum)
+			throw_at(get_edge_target_turf(src, dir), 1, (1 / momentum))
 
 			if(!O || !src)
 				return
 
 			if(O.loc == src && O.sharp) //Projectile is embedded and suitable for pinning.
+				embed(O, zone)
 				var/turf/T = near_wall(dir, 2)
 
 				if(T)
@@ -909,8 +946,8 @@ meteor_act
 	if(damtype != BURN && damtype != BRUTE) return
 
 	// The rig might soak this hit, if we're wearing one.
-	if(back && istype(back,/obj/item/weapon/rig))
-		var/obj/item/weapon/rig/rig = back
+	if(back && istype(back,/obj/item/rig))
+		var/obj/item/rig/rig = back
 		rig.take_hit(damage)
 
 	// We may also be taking a suit breach.

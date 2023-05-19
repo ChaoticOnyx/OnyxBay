@@ -8,15 +8,20 @@
 	var/product_type = "undefined"
 	var/charges = 0
 
+/datum/rig_timing
+	var/full_name = "undefined"
+	var/short_name = "undef"
+	var/timing = 0
+
 /obj/item/rig_module
-	name = "hardsuit upgrade"
+	name = "powersuit upgrade"
 	desc = "It looks pretty sciency."
 	icon = 'icons/obj/rig_modules.dmi'
-	icon_state = "module"
+	icon_state = ""
 	matter = list(MATERIAL_STEEL = 20000, MATERIAL_PLASTIC = 30000, MATERIAL_GLASS = 5000)
 
 	var/damage = 0
-	var/obj/item/weapon/rig/holder
+	var/obj/item/rig/holder
 
 	var/module_cooldown = 10
 	var/next_use = 0
@@ -40,6 +45,9 @@
 	var/list/charges                    // Associative list of charge types and remaining numbers.
 	var/charge_selected                 // Currently selected option used for charge dispensing.
 
+	var/list/timings 					// Associative list of timings.
+	var/timing_selected					// Timing options for grenade launchers (in seconds).
+
 	// Icons.
 	var/suit_overlay
 	var/suit_overlay_active             // If set, drawn over icon and mob when effect is active.
@@ -47,15 +55,15 @@
 	var/suit_overlay_used               // As above, when engaged.
 
 	//Display fluff
-	var/interface_name = "hardsuit upgrade"
-	var/interface_desc = "A generic hardsuit upgrade."
+	var/interface_name = "powersuit upgrade"
+	var/interface_desc = "A generic powersuit upgrade."
 	var/engage_string = "Engage"
 	var/activate_string = "Activate"
 	var/deactivate_string = "Deactivate"
 
 	var/list/stat_rig_module/stat_modules = new()
 
-/obj/item/rig_module/examine(mob/user)
+/obj/item/rig_module/_examine_text(mob/user)
 	. = ..()
 	switch(damage)
 		if(0)
@@ -65,7 +73,7 @@
 		if(2)
 			. += "\nIt is almost completely destroyed."
 
-/obj/item/rig_module/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/rig_module/attackby(obj/item/W, mob/user)
 
 	if(istype(W,/obj/item/stack/nanopaste))
 
@@ -129,18 +137,36 @@
 
 		charges = processed_charges
 
+	if(length(timings))
+		var/list/processed_timings = list()
+		for(var/list/timing in timings)
+			var/datum/rig_timing/timing_dat = new
+
+			timing_dat.full_name 	= timing[1]
+			timing_dat.short_name	= timing[2]
+			timing_dat.timing 		= timing[3]
+
+			if(!timing_selected) timing_selected = timing_dat.short_name
+			processed_timings[timing_dat.short_name] = timing_dat
+
+		timings = processed_timings
+
 	stat_modules += new /stat_rig_module/activate(src)
 	stat_modules += new /stat_rig_module/deactivate(src)
 	stat_modules += new /stat_rig_module/engage(src)
 	stat_modules += new /stat_rig_module/select(src)
 	stat_modules += new /stat_rig_module/charge(src)
+	stat_modules += new /stat_rig_module/timing(src)
 
 /obj/item/rig_module/Destroy()
 	deactivate()
+	holder = null
+	QDEL_LIST(stat_modules)
+	QDEL_LIST(charges)
 	. = ..()
 
 // Called when the module is installed into a suit.
-/obj/item/rig_module/proc/installed(obj/item/weapon/rig/new_holder)
+/obj/item/rig_module/proc/installed(obj/item/rig/new_holder)
 	holder = new_holder
 	return
 
@@ -219,7 +245,7 @@
 	holder = null
 	return
 
-// Called by the hardsuit each rig process tick.
+// Called by the powersuit each rig process tick.
 /obj/item/rig_module/Process()
 	if(active)
 		return active_power_cost
@@ -234,12 +260,12 @@
 /mob/living/carbon/human/Stat()
 	. = ..()
 
-	if(. && istype(back,/obj/item/weapon/rig))
-		var/obj/item/weapon/rig/R = back
+	if(. && istype(back,/obj/item/rig))
+		var/obj/item/rig/R = back
 		SetupStat(R)
 
-/mob/proc/SetupStat(obj/item/weapon/rig/R)
-	if(R && !R.canremove && R.installed_modules.len && statpanel("Hardsuit Modules"))
+/mob/proc/SetupStat(obj/item/rig/R)
+	if(R && !R.canremove && R.installed_modules.len && statpanel("Powersuit Modules"))
 		var/cell_status = R.cell ? "[R.cell.charge]/[R.cell.maxcharge]" : "ERROR"
 		stat("Suit charge", cell_status)
 		for(var/obj/item/rig_module/module in R.installed_modules)
@@ -339,3 +365,24 @@
 		name = "[charge.display_name] ([charge.charges]C) - Change"
 		return 1
 	return 0
+
+/stat_rig_module/timing/New()
+	..()
+	name = "Change Timing"
+	module_mode = "select_timing"
+
+/stat_rig_module/timing/AddHref(list/href_list)
+	var/timing_index = module.timings.Find(module.timing_selected)
+	if(!timing_index)
+		timing_index = 0
+	else
+		timing_index = (timing_index == module.timings.len) ? 1 : (timing_index + 1)
+
+	href_list["timing"] = module.timings[timing_index]
+
+/stat_rig_module/timing/CanUse()
+	if(length(module.timings))
+		var/datum/rig_timing/timing = module.timings[module.timing_selected]
+		name = "Current grenade timing is: [timing.full_name] - Change"
+		return TRUE
+	return FALSE

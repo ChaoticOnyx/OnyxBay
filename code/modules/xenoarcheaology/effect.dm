@@ -4,17 +4,20 @@
 	var/effectrange = 4
 	var/trigger = TRIGGER_TOUCH
 	var/atom/holder
-	var/activated = 0
+	var/activated = FALSE
+	var/is_visible_toggle = TRUE
 	var/chargelevel = 0
 	var/chargelevelmax = 10
 	var/artifact_id = ""
-	var/effect_type = 0
+	var/effect_type = EFFECT_UNKNOWN
 
-/datum/artifact_effect/New(atom/location)
+/datum/artifact_effect/New(atom/location, visible_toggle = TRUE)
 	..()
 	holder = location
-	effect = rand(0, MAX_EFFECT)
-	trigger = rand(0, MAX_TRIGGER)
+	is_visible_toggle = visible_toggle
+
+	effect = pick(EFFECTS_LIST)
+	trigger = pick(TRIGGERS_LIST)
 
 	//this will be replaced by the excavation code later, but it's here just in case
 	artifact_id = "[pick("kappa","sigma","antaeres","beta","omicron","iota","epsilon","omega","gamma","delta","tau","alpha")]-[rand(100,999)]"
@@ -34,14 +37,17 @@
 			chargelevelmax = rand(20, 120)
 			effectrange = rand(20, 200)
 
-/datum/artifact_effect/proc/ToggleActivate(reveal_toggle = 1)
+/datum/artifact_effect/proc/AdjustActivate(env_triggers)
+	// Check that effect's trigger is in enviroment triggers and true. Also make value 1 or 0(TRUE or FALSE)
+    var/is_activation_trigger = (trigger & TRIGGERS_ENVIROMENT & env_triggers)/trigger
+    if(is_activation_trigger != activated)
+        ToggleActivate()
+
+/datum/artifact_effect/proc/ToggleActivate()
 	//so that other stuff happens first
 	spawn(0)
-		if(activated)
-			activated = 0
-		else
-			activated = 1
-		if(reveal_toggle && holder)
+		activated = !activated
+		if(is_visible_toggle && holder)
 			if(istype(holder, /obj/machinery/artifact))
 				var/obj/machinery/artifact/A = holder
 				A.icon_state = "ano[A.icon_num][activated]"
@@ -50,10 +56,8 @@
 				display_msg = pick("momentarily glows brightly!","distorts slightly for a moment!","flickers slightly!","vibrates!","shimmers slightly for a moment!")
 			else
 				display_msg = pick("grows dull!","fades in intensity!","suddenly becomes very still!","suddenly becomes very quiet!")
-			var/atom/toplevelholder = holder
-			while(!istype(toplevelholder.loc, /turf))
-				toplevelholder = toplevelholder.loc
-			toplevelholder.visible_message("<span class='warning'>\icon[toplevelholder] [toplevelholder] [display_msg]</span>")
+			var/atom/toplevelholder = get_top_holder_obj(holder)
+			toplevelholder.visible_message(SPAN("warning", "\icon[toplevelholder] [toplevelholder] [display_msg]"))
 
 /datum/artifact_effect/proc/DoEffectTouch(mob/user)
 /datum/artifact_effect/proc/DoEffectAura(atom/holder)
@@ -65,9 +69,9 @@
 		chargelevel++
 
 	if(activated)
-		if(effect == EFFECT_AURA)
+		if(effect & EFFECT_AURA)
 			DoEffectAura()
-		else if(effect == EFFECT_PULSE && chargelevel >= chargelevelmax)
+		else if(effect & EFFECT_PULSE && chargelevel >= chargelevelmax)
 			chargelevel = 0
 			DoEffectPulse()
 
@@ -123,8 +127,8 @@
 	var/protected = 0
 
 	//anomaly suits give best protection, but excavation suits are almost as good
-	if(istype(H.back,/obj/item/weapon/rig/hazmat) || istype(H.back, /obj/item/weapon/rig/security))
-		var/obj/item/weapon/rig/rig = H.back
+	if(istype(H.back,/obj/item/rig/hazmat) || istype(H.back, /obj/item/rig/security))
+		var/obj/item/rig/rig = H.back
 		if(rig.suit_is_deployed() && !rig.offline)
 			protected += 1
 
@@ -146,4 +150,4 @@
 	if(istype(G) && istype(G.matrix, /obj/item/device/hudmatrix/science))
 		protected += 0.1
 
-	return 1 - protected
+	return max(1 - protected, 0)

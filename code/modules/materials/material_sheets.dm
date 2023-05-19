@@ -3,7 +3,6 @@
 	force = 5.0
 	throwforce = 5
 	w_class = ITEM_SIZE_NORMAL
-	throw_speed = 3
 	throw_range = 3
 	max_amount = 50
 	center_of_mass = null
@@ -40,6 +39,10 @@
 	craft_tool = material.craft_tool
 	update_strings()
 
+	if(material.reagent_path)
+		create_reagents(get_max_amount() * REAGENTS_PER_MATERIAL_SHEET)
+		reagents.add_reagent(material.reagent_path, amount * REAGENTS_PER_MATERIAL_SHEET, null, FALSE)
+
 /obj/item/stack/material/get_material()
 	return material
 
@@ -56,9 +59,16 @@
 		desc = "A [material.sheet_singular_name] of [material.use_name]."
 		gender = NEUTER
 
+/obj/item/stack/material/add(extra)
+	. = ..(extra)
+	if(. && material.reagent_path)
+		reagents.add_reagent(material.reagent_path, (extra * REAGENTS_PER_MATERIAL_SHEET))
+
 /obj/item/stack/material/use(used)
 	. = ..()
 	update_strings()
+	if(. && material?.reagent_path)
+		reagents?.remove_reagent(material.reagent_path, (amount * REAGENTS_PER_MATERIAL_SHEET))
 	return
 
 /obj/item/stack/material/transfer_to(obj/item/stack/S, tamount=null, type_verified)
@@ -66,8 +76,10 @@
 	if(!istype(M) || material.name != M.material.name)
 		return 0
 	var/transfer = ..(S,tamount,1)
-	if(src) update_strings()
-	if(M) M.update_strings()
+	if(src)
+		update_strings()
+	if(M)
+		M.update_strings()
 	return transfer
 
 /obj/item/stack/material/attack_self(mob/user)
@@ -126,7 +138,7 @@
 
 /obj/item/stack/material/plasma
 	name = "solid plasma"
-	icon_state = "plasma"
+	icon_state = "solid_plasma"
 	default_type = MATERIAL_PLASMA
 
 /obj/item/stack/material/plasma/ten
@@ -327,4 +339,28 @@
 	amount = 10
 
 /obj/item/stack/material/glass/rplass/fifty
+	amount = 50
+
+/obj/item/stack/material/glass/black
+	name = "tinted glass"
+	singular_name = "tinted glass sheet"
+	icon_state = "bglass"
+	default_type = MATERIAL_BLACK_GLASS
+
+/obj/item/stack/material/glass/black/ten
+	amount = 10
+
+/obj/item/stack/material/glass/black/fifty
+	amount = 50
+
+/obj/item/stack/material/glass/rblack
+	name = "reinforced tinted glass"
+	singular_name = "reinforced tinted glass sheet"
+	icon_state = "rbglass"
+	default_type = MATERIAL_REINFORCED_BLACK_GLASS
+
+/obj/item/stack/material/glass/rblack/ten
+	amount = 10
+
+/obj/item/stack/material/glass/rblack/fifty
 	amount = 50

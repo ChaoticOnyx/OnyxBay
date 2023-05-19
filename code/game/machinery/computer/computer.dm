@@ -4,8 +4,8 @@
 	icon_state = "computer"
 	density = 1
 	anchored = 1.0
-	idle_power_usage = 300
-	active_power_usage = 300
+	idle_power_usage = 300 WATTS
+	active_power_usage = 300 WATTS
 	var/circuit = null //The path to the circuit board type. If circuit==null, the computer can't be disassembled.
 	var/processing = 0
 
@@ -30,7 +30,8 @@
 
 /obj/machinery/computer/Destroy()
 	GLOB.computer_list -= src
-	..()
+	
+	return ..()
 
 /obj/machinery/computer/emp_act(severity)
 	if(prob(20/severity)) set_broken(TRUE)
@@ -60,7 +61,7 @@
 /obj/machinery/computer/blob_act(damage)
 	if(stat & BROKEN)
 		return
-	
+
 	playsound(src, SFX_BREAK_CONSOLE, 75, FALSE)
 	set_broken(TRUE)
 
@@ -97,14 +98,14 @@
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20, src))
 			var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
-			var/obj/item/weapon/circuitboard/M = new circuit( A )
+			var/obj/item/circuitboard/M = new circuit( A )
 			A.circuit = M
 			A.anchored = 1
 			for (var/obj/C in src)
 				C.dropInto(loc)
 			if (src.stat & BROKEN)
 				to_chat(user, "<span class='notice'>The broken glass falls out.</span>")
-				new /obj/item/weapon/material/shard( src.loc )
+				new /obj/item/material/shard( src.loc )
 				A.state = 3
 				A.icon_state = "3"
 			else

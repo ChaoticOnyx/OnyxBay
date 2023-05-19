@@ -35,7 +35,7 @@
 	var/response_harm   = "tries to hurt"
 	var/harm_intent_damage = 3 // How much damage a human deals upon punching
 	var/can_escape = 0 // 'smart' simple animals such as human enemies, or things small, big, sharp or strong enough to power out of a net
-	var/mob/panic_target = null // shy simple animals run away from humans
+	var/weakref/panic_target = null // shy simple animals run away from humans
 	var/turns_since_scan = 0
 	var/shy_animal = 0
 
@@ -66,6 +66,7 @@
 
 	var/damtype = BRUTE
 	var/defense = "melee"
+	var/bodyparts = /decl/simple_animal_bodyparts // Fake bodyparts that can be shown when hit by projectiles.
 
 	//Null rod stuff
 	var/supernatural = 0
@@ -85,8 +86,13 @@
 		mob_ai = new()
 	mob_ai.holder = src
 
+	if(bodyparts)
+		bodyparts = decls_repository.get_decl(bodyparts)
+
 /mob/living/simple_animal/Destroy()
+	mob_ai.holder = null
 	QDEL_NULL(mob_ai)
+	panic_target = null
 	. = ..()
 
 /mob/living/simple_animal/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
@@ -98,7 +104,7 @@
 	mob_ai.listen(speaker, message)
 
 /mob/living/simple_animal/Life()
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return 0
 	. = ..()
 	if(!.)
@@ -209,7 +215,7 @@
 			//TODO: Push the mob away or something
 
 		if(I_HURT)
-			adjustBruteLoss(harm_intent_damage)
+			adjustBruteLoss(harm_intent_damage * M.species.generic_attack_mod)
 			M.visible_message("<span class='warning'>[M] [response_harm] \the [src]!</span>")
 			M.do_attack_animation(src)
 
@@ -217,7 +223,7 @@
 
 /mob/living/simple_animal/attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/stack/medical))
-		if(stat != DEAD)
+		if(!is_ooc_dead())
 			var/obj/item/stack/medical/MED = O
 			if(!MED.animal_heal)
 				to_chat(user, "<span class='notice'>That [MED] won't help \the [src] at all!</span>")
@@ -234,8 +240,8 @@
 		else
 			to_chat(user, "<span class='notice'>\The [src] is dead, medical items won't bring \him back to life.</span>")
 		return
-	if(meat_type && (stat == DEAD))	//if the animal has a meat, and if it is dead.
-		if(istype(O, /obj/item/weapon/material/knife) || istype(O, /obj/item/weapon/material/knife/butch))
+	if(meat_type && (is_ooc_dead()))	//if the animal has a meat, and if it is dead.
+		if(istype(O, /obj/item/material/knife) || istype(O, /obj/item/material/knife/butch))
 			harvest(user)
 	else
 		if(!O.force)
@@ -256,7 +262,7 @@
 		damage = 0
 	if(O.damtype == STUN)
 		damage = (O.force / 8)
-	if(supernatural && istype(O,/obj/item/weapon/nullrod))
+	if(supernatural && istype(O,/obj/item/nullrod))
 		damage *= 2
 		purge = 3
 	adjustBruteLoss(damage)
@@ -272,7 +278,7 @@
 			tally = 1
 		tally *= purge
 
-	return tally+config.animal_delay
+	return tally + config.movement.animal_delay
 
 /mob/living/simple_animal/Stat()
 	. = ..()
@@ -294,7 +300,7 @@
 	set_density(1)
 
 /mob/living/simple_animal/updatehealth()
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return
 	if(status_flags & GODMODE)
 		health = maxHealth
@@ -368,7 +374,7 @@
 // Harvest an animal's delicious byproducts
 /mob/living/simple_animal/proc/harvest(mob/user)
 	var/actual_meat_amount = max(1,(meat_amount/2))
-	if(meat_type && actual_meat_amount>0 && (stat == DEAD))
+	if(meat_type && actual_meat_amount>0 && (is_ooc_dead()))
 		for(var/i=0;i<actual_meat_amount;i++)
 			var/obj/item/meat = new meat_type(get_turf(src))
 			meat.SetName("[src.name] [meat.name]")
@@ -392,15 +398,16 @@
 
 /mob/living/simple_animal/proc/handle_panic_target()
 	//see if we should stop panicing
-	if(panic_target)
-		if (!(panic_target.loc in view(src)))
+	var/mob/M = panic_target?.resolve()
+	if(istype(M))
+		if(M.loc in view(src))
+			stop_automated_movement = 1
+			walk_away(src, M, 7, 4)
+		else
 			panic_target = null
 			stop_automated_movement = 0
-		else
-			stop_automated_movement = 1
-			walk_away(src, panic_target, 7, 4)
 
 /mob/living/simple_animal/proc/set_panic_target(mob/M)
 	if(M && !ckey)
-		panic_target = M
+		panic_target = weakref(M)
 		turns_since_scan = 5

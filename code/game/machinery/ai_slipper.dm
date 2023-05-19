@@ -3,7 +3,7 @@
 	icon = 'icons/obj/device.dmi'
 	icon_state = "motion0"
 	anchored = 1.0
-	idle_power_usage = 10
+	idle_power_usage = 10 WATTS
 	var/uses = 20
 	var/disabled = 1
 	var/lethal = 0
@@ -14,8 +14,8 @@
 	req_access = list(access_ai_upload)
 
 
-/obj/machinery/ai_slipper/New()
-	..()
+/obj/machinery/ai_slipper/Initialize()
+	. = ..()
 	update_icon()
 
 /obj/machinery/ai_slipper/update_icon()
@@ -29,7 +29,7 @@
 	src.uses = uses
 	src.power_change()
 
-/obj/machinery/ai_slipper/attackby(obj/item/weapon/W, mob/user)
+/obj/machinery/ai_slipper/attackby(obj/item/W, mob/user)
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(istype(user, /mob/living/silicon))

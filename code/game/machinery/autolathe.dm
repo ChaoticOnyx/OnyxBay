@@ -5,8 +5,8 @@
 	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
-	idle_power_usage = 10
-	active_power_usage = 2000
+	idle_power_usage = 10 WATTS
+	active_power_usage = 2 KILO WATTS
 	clicksound = 'sound/effects/using/console/press2.ogg'
 	clickvol = 30
 
@@ -26,10 +26,10 @@
 	var/datum/wires/autolathe/wires = null
 
 	component_types = list(
-		/obj/item/weapon/circuitboard/autolathe,
-		/obj/item/weapon/stock_parts/matter_bin = 3,
-		/obj/item/weapon/stock_parts/manipulator,
-		/obj/item/weapon/stock_parts/console_screen
+		/obj/item/circuitboard/autolathe,
+		/obj/item/stock_parts/matter_bin = 3,
+		/obj/item/stock_parts/manipulator,
+		/obj/item/stock_parts/console_screen
 	)
 
 /obj/machinery/autolathe/Initialize()
@@ -153,14 +153,14 @@
 
 	//Resources are being loaded.
 	var/obj/item/eating = O
-	if(!issilicon(user) && !user.canUnEquip(eating))
+	if(!issilicon(user) && !user.can_unequip(eating))
 		to_chat(user, "You can't place that item inside \the [src].")
 		return
 	if(!eating.matter)
 		to_chat(user, "\The [eating] does not contain significant amounts of useful materials and cannot be accepted.")
 		return
 	if(!istype(eating, /obj/item/stack))
-		user.unEquip(eating, target = loc)
+		user.drop(eating, loc)
 		if(eating.loc != loc)
 			return
 
@@ -306,7 +306,7 @@
 				var/obj/item/stack/S = I
 				S.amount = multiplier
 				S.update_icon()
-			
+
 			tgui_update()
 
 
@@ -318,7 +318,7 @@
 	..()
 	var/mb_rating = 0
 	var/man_rating = 0
-	for(var/obj/item/weapon/stock_parts/P in component_parts)
+	for(var/obj/item/stock_parts/P in component_parts)
 		if(ismatterbin(P))
 			mb_rating += P.rating
 		else if(ismanipulator(P))

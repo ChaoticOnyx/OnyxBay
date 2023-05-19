@@ -8,6 +8,7 @@
 // SS_TICKER
 #define SS_PRIORITY_ICON_UPDATE    20 // Queued icon updates. Mostly used by APCs and tables.
 #define SS_PRIORITY_CHAT           100
+#define SS_PRIORITY_THINK          90    // Datums thinking.
 
 // Normal
 #define SS_PRIORITY_TICKER         100   // Gameticker.
@@ -43,6 +44,7 @@
 #define SS_PRIORITY_EVAC          20    // Processes the evac controller.
 #define SS_PRIORITY_WIRELESS      10    // Wireless connection setup.
 #define SS_PRIORITY_PING          10    // Client ping.
+#define SS_PRIORITY_CONDUCTOR     05    // Conductor.
 
 
 // Subsystem fire priority, from lowest to highest priority

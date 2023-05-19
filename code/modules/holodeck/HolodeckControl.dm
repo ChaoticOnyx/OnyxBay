@@ -6,9 +6,9 @@
 	req_access = list(access_heads)
 	var/islocked = 0
 
-	active_power_usage = 8000 //8kW for the scenery + 500W per holoitem
+	active_power_usage = 8 KILO WATTS // 8kW for the scenery + 500W per holoitem
 
-	circuit = /obj/item/weapon/circuitboard/holodeckcontrol
+	circuit = /obj/item/circuitboard/holodeckcontrol
 
 	var/item_power_usage = 500
 
@@ -160,11 +160,11 @@
 /obj/machinery/computer/HolodeckControl/proc/update_projections()
 	if (safety_disabled)
 		item_power_usage = 2500
-		for(var/obj/item/weapon/holo/esword/H in linkedholodeck)
+		for(var/obj/item/holo/esword/H in linkedholodeck)
 			H.damtype = BRUTE
 	else
 		item_power_usage = initial(item_power_usage)
-		for(var/obj/item/weapon/holo/esword/H in linkedholodeck)
+		for(var/obj/item/holo/esword/H in linkedholodeck)
 			H.damtype = initial(H.damtype)
 
 	for(var/mob/living/simple_animal/hostile/carp/holodeck/C in holographic_mobs)
@@ -228,7 +228,7 @@
 	if(isobj(obj))
 		var/mob/M = obj.loc
 		if(ismob(M))
-			M.remove_from_mob(obj)
+			M.drop(obj)
 			M.update_icons()	//so their overlays update
 
 	if(!silent)
@@ -287,12 +287,12 @@
 	for(var/obj/effect/decal/cleanable/blood/B in linkedholodeck)
 		qdel(B)
 
-	holographic_objs = A.copy_contents_to(linkedholodeck , 1)
+	holographic_objs = A.copy_contents_to(linkedholodeck, TRUE, FALSE)
 	for(var/obj/holo_obj in holographic_objs)
 		holo_obj.alpha *= 0.8 //give holodeck objs a slight transparency
 
 	if(HP.ambience)
-		linkedholodeck.ambience = HP.ambience
+		linkedholodeck.ambience_powered = HP.ambience
 
 	for(var/mob/living/M in mobs_in_area(linkedholodeck))
 		if(M.mind)

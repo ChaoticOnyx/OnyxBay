@@ -28,7 +28,7 @@
 			if(assembly_w_class)
 				assembly.w_class = assembly_w_class
 			if(power_cell_type)
-				var/obj/item/weapon/cell/cell = new power_cell_type(assembly)
+				var/obj/item/cell/cell = new power_cell_type(assembly)
 				assembly.battery = cell
 
 			return assembly

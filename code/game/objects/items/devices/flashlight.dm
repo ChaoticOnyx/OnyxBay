@@ -27,6 +27,11 @@
 	if(on)
 		switch_light(TRUE)
 
+/obj/item/device/flashlight/Destroy()
+	activation_sound = null
+	switch_light(FALSE)
+	return ..()
+
 /obj/item/device/flashlight/update_icon()
 	overlays.Cut()
 	if(on)
@@ -113,7 +118,7 @@
 
 	if(!BP_IS_ROBOTIC(vision))
 
-		if(vision.owner.stat == DEAD || H.blinded)	//mob is dead or fully blind
+		if(vision.owner.is_ic_dead() || H.blinded)	//mob is dead or fully blind
 			to_chat(user, SPAN("warning", "\The [H]'s pupils do not react to the light!"))
 			return
 		if(MUTATION_XRAY in H.mutations)
@@ -124,8 +129,16 @@
 			to_chat(user, SPAN("notice", "\The [H]'s pupils react slower than normally."))
 		if(H.getBrainLoss() > 15)
 			to_chat(user, SPAN("notice", "There's visible lag between left and right pupils' reactions."))
+		if(H.get_blood_volume() <= 60)
+			to_chat(user, SPAN("notice", "\The [H]'s eyelids look pale."))
+		if(length(H.virus2)) 
+			to_chat(user, SPAN("notice", "\The [H]'s eyes look red."))
+		else if(H.should_have_organ(BP_LIVER)) // Yea we probably do not want yellow and red eyes at the same time.
+			var/obj/item/organ/internal/liver/L = H.internal_organs_by_name[BP_LIVER]
+			if(istype(L) && L.is_bruised())
+				to_chat(user, SPAN("notice", "\The [H]'s eyes look yellowish."))
 
-		var/list/pinpoint = list(/datum/reagent/tramadol/oxycodone = 1, /datum/reagent/tramadol = 5)
+		var/list/pinpoint = list(/datum/reagent/painkiller/tramadol/oxycodone = 1, /datum/reagent/painkiller/tramadol = 5, /datum/reagent/painkiller = 2, /datum/reagent/painkiller/opium = 3, /datum/reagent/painkiller/opium/tarine = 1)
 		var/list/dilating = list(/datum/reagent/space_drugs = 5, /datum/reagent/mindbreaker = 1, /datum/reagent/adrenaline = 1)
 		var/datum/reagents/ingested = H.get_ingested_reagents()
 		if(H.reagents.has_any_reagent(pinpoint) || ingested.has_any_reagent(pinpoint))
@@ -210,6 +223,15 @@
 	brightness_color = "#ffc58f"
 	light_overlay = FALSE
 
+/obj/item/device/flashlight/lantern/active
+	flashlight_outer_range = 4
+	on = TRUE
+
+/obj/item/device/flashlight/lantern/active/Initialize()
+	. = ..()
+	switch_light(TRUE)
+	update_icon()
+
 // the desk lamps are a bit special
 /obj/item/device/flashlight/lamp
 	name = "desk lamp"
@@ -218,6 +240,8 @@
 	item_state = "lamp"
 	w_class = ITEM_SIZE_LARGE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	force = 5.0
+	attack_verb = list ("smacked", "bashed", "enlightened")
 
 	flashlight_max_bright = 0.3
 	flashlight_inner_range = 2
@@ -289,14 +313,16 @@
 	else
 		icon_state = "[initial(icon_state)][fuel ? "" : "-empty"]"
 
-/obj/item/device/flashlight/flare/Process()
+/obj/item/device/flashlight/flare/think()
 	var/turf/pos = get_turf(src)
 	if(pos)
 		pos.hotspot_expose(produce_heat, 5)
 	fuel = max(fuel - 1, 0)
 	if(!fuel || !on)
 		turn_off()
-		STOP_PROCESSING(SSobj, src)
+		return
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/flashlight/flare/proc/turn_off()
 	force = initial(src.force)
@@ -316,7 +342,7 @@
 		return FALSE
 	force = on_damage
 	damtype = "fire"
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	switch_light(TRUE)
 	return 1
 
@@ -343,16 +369,14 @@
 	brightness_color = color
 	..()
 
-/obj/item/device/flashlight/glowstick/Destroy()
-	. = ..()
-	STOP_PROCESSING(SSobj, src)
-
-/obj/item/device/flashlight/glowstick/Process()
+/obj/item/device/flashlight/glowstick/think()
 	fuel = max(fuel - 1, 0)
 	if(!fuel)
 		turn_off()
-		STOP_PROCESSING(SSobj, src)
 		update_icon()
+		return
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/flashlight/glowstick/proc/turn_off()
 	on = 0
@@ -391,7 +415,7 @@
 	. = ..()
 	if(.)
 		user.visible_message("<span class='notice'>[user] cracks and shakes the glowstick.</span>", "<span class='notice'>You crack and shake the glowstick, turning it on!</span>")
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 
 /obj/item/device/flashlight/glowstick/red
 	name = "red glowstick"

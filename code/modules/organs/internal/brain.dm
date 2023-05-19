@@ -8,13 +8,12 @@
 	force = 1.0
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 1.0
-	throw_speed = 3
 	throw_range = 5
 	origin_tech = list(TECH_BIO = 3)
 	attack_verb = list("attacked", "slapped", "whacked")
 	relative_size = 60
+	food_organ_type = /obj/item/reagent_containers/food/organ/brain
 
-	var/can_use_mmi = TRUE
 	var/mob/living/carbon/brain/brainmob = null
 	var/const/damage_threshold_count = 10
 	var/damage_threshold_value
@@ -50,7 +49,7 @@
 	..()
 	max_damage = 100
 	if(species)
-		max_damage = species.total_health/2
+		max_damage = species.total_health
 	min_bruised_damage = max_damage*0.25
 	min_broken_damage = max_damage*0.75
 
@@ -71,6 +70,7 @@
 		brainmob.real_name = H.real_name
 		brainmob.dna = H.dna.Clone()
 		brainmob.timeofhostdeath = H.timeofdeath
+		brainmob.languages = H.languages
 		// Copy modifiers.
 		for(var/datum/modifier/M in H.modifiers)
 			if(M.flags & MODIFIER_GENETIC)
@@ -82,14 +82,14 @@
 	to_chat(brainmob, "<span class='notice'>You feel slightly disoriented. That's normal when you're just \a [initial(src.name)].</span>")
 	callHook("debrain", list(brainmob))
 
-/obj/item/organ/internal/brain/examine(mob/user) // -- TLE
+/obj/item/organ/internal/brain/_examine_text(mob/user) // -- TLE
 	. = ..()
 	if(brainmob && brainmob.client)//if thar be a brain inside... the brain.
 		. += "\nYou can feel the small spark of life still left in this one."
 	else
 		. += "\nThis one seems particularly lifeless. Perhaps it will regain some of its luster later.."
 
-/obj/item/organ/internal/brain/removed(mob/living/user)
+/obj/item/organ/internal/brain/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	if(!istype(owner))
 		return ..()
 
@@ -100,7 +100,7 @@
 
 	if(borer)
 		borer.detatch() //Should remove borer if the brain is removed - RR
-
+		borer.leave_host()
 	if(vital)
 		transfer_identity(owner)
 
@@ -128,10 +128,10 @@
 	icon_state = "green metroid extract"
 
 /obj/item/organ/internal/brain/golem
-	name = "chem"
-	desc = "A tightly furled roll of paper, covered with indecipherable runes."
-	icon = 'icons/obj/wizard.dmi'
-	icon_state = "scroll"
+	name = "adamantite brain"
+	desc = "What else could be inside the adamantite creature's head?"
+	icon = 'icons/obj/materials.dmi'
+	icon_state = "adamantine"
 
 
 /obj/item/organ/internal/brain/proc/get_current_damage_threshold()
@@ -140,7 +140,7 @@
 /obj/item/organ/internal/brain/proc/past_damage_threshold(threshold)
 	return (get_current_damage_threshold() > threshold)
 
-/obj/item/organ/internal/brain/Process()
+/obj/item/organ/internal/brain/think()
 	if(owner)
 		if(damage > max_damage / 2 && healed_threshold)
 			spawn()
@@ -154,7 +154,7 @@
 		handle_damage_effects()
 
 		// Brain damage from low oxygenation or lack of blood.
-		if(owner.should_have_organ(BP_HEART))
+		if(owner.should_have_organ(BP_HEART) && !(isundead(owner)))
 
 			// No heart? You are going to have a very bad time. Not 100% lethal because heart transplants should be a thing.
 			var/blood_volume = owner.get_blood_oxygenation()
@@ -168,7 +168,7 @@
 
 				if(BLOOD_VOLUME_SAFE to INFINITY)
 					if(can_heal)
-						damage--
+						heal_damage(1)
 				if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
 					if(prob(1))
 						to_chat(owner, SPAN("warning", "You feel a bit [pick("dizzy","woozy","faint")]..."))
@@ -228,7 +228,10 @@
 		owner.eye_blurry = 10
 	if(damage >= 0.5*max_damage && prob(1) && owner.get_active_hand())
 		to_chat(owner, "<span class='danger'>Your hand won't respond properly, and you drop what you are holding!</span>")
-		owner.drop_item()
+		if(prob(50))
+			owner.drop_active_hand()
+		else
+			owner.drop_inactive_hand()
 	if(damage >= 0.6*max_damage)
 		owner.slurring = max(owner.slurring, 2)
 	if(is_broken())

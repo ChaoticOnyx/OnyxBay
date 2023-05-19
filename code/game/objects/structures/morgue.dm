@@ -94,7 +94,7 @@
 	else return ..()
 
 /obj/structure/morgue/attackby(P as obj, mob/user as mob)
-	if(istype(P, /obj/item/weapon/pen))
+	if(istype(P, /obj/item/pen))
 		var/t = input(user, "What would you like the label to be?", text("[]", src.name), null)  as text
 		if(user.get_active_hand() != P)
 			return
@@ -126,6 +126,8 @@
 		src.connected = null
 	return
 
+/obj/structure/morgue/allow_drop()
+	return TRUE
 
 /*
  * Morgue tray
@@ -272,7 +274,7 @@
 	update()
 
 /obj/structure/crematorium/attackby(P as obj, mob/user as mob)
-	if(istype(P, /obj/item/weapon/pen))
+	if(istype(P, /obj/item/pen))
 		var/t = input(user, "What would you like the label to be?", text("[]", src.name), null)  as text
 		if(user.get_active_hand() != P)
 			return
@@ -312,7 +314,7 @@
 		return
 
 	else
-		if(!isemptylist(src.search_contents_for(/obj/item/weapon/disk/nuclear)))
+		if(!isemptylist(src.search_contents_for(/obj/item/disk/nuclear)))
 			to_chat(loc, "The button's status indicator flashes yellow, indicating that something important is inside the crematorium, and must be removed.")
 			return
 		src.audible_message("<span class='warning'>You hear a roar as the [src] activates.</span>", 1)
@@ -324,7 +326,7 @@
 		for(var/mob/living/M in contents)
 			admin_attack_log(M, A, "Began cremating their victim.", "Has begun being cremated.", "began cremating")
 			for(var/I, I < 60, I++)
-				if(M.stat == DEAD || !(M in contents)) //In case we die or are removed at any point.
+				if(M.is_ooc_dead() || !(M in contents)) //In case we die or are removed at any point.
 					cremating = 0
 					update()
 					break

@@ -21,7 +21,7 @@
 	item_state_slots = list(
 		slot_hand_str = "black"
 		)
-	armor = list(melee = 15, bullet = 10, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 15, bullet = 10, laser = 0, energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/under/gorka/mob_can_equip(mob/user)
 	.=..()
@@ -29,29 +29,12 @@
 		to_chat(user, "<span class='warning'> You aren't sure you'll fit in this men's cloth..</span>")
 		return 0
 
-/obj/item/clothing/under/dress/maid
-	name = "maid uniform"
-	desc = "Traditional French maid uniform."
-	icon_state = "maid"
-
-/obj/item/clothing/under/dress/gothic_d
-	name = "Gothic dress"
-	desc = "It's a gothic dress. Somehow it reminds you of Queen Victoria."
-	icon_state = "gothic_d"
-	item_state = "gothic_d"
-	worn_state = "gothic_d"
-
-/obj/item/clothing/under/dress/bar_f
-	name = "black bartender dress"
-	desc = "A black bartender dress with a white blouse."
-	icon_state = "bar_f"
-
 /obj/item/clothing/under/rank/rosa
 	desc = "A dress commonly worn by the nursing staff in the medical departament"
 	name = "rosa dress"
 	icon_state = "rosa"
 	permeability_coefficient = 0.50
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 10, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 10)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 
 /obj/item/clothing/under/captain_fly
@@ -125,7 +108,7 @@
 	item_state_slots = list(
 		slot_hand_str = "black"
 		)
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/under/space
@@ -149,7 +132,7 @@
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.01
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
-	armor = list(melee = 100, bullet = 100, laser = 100,energy = 100, bomb = 100, bio = 100, rad = 100)
+	armor = list(melee = 100, bullet = 100, laser = 100,energy = 100, bomb = 100, bio = 100)
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS | HANDS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0
@@ -427,6 +410,25 @@
 	desc = "The most fashionable prosecutor's dress."
 	icon_state = "franziska_dress"
 
+/obj/item/clothing/under/dress/maid
+	name = "maid uniform"
+	desc = "Traditional French maid uniform."
+	icon_state = "maid"
+
+/obj/item/clothing/under/dress/gothic_d
+	name = "Gothic dress"
+	desc = "It's a gothic dress. Somehow it reminds you of Queen Victoria."
+	icon_state = "gothic_d"
+	item_state = "gothic_d"
+	worn_state = "gothic_d"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+
+/obj/item/clothing/under/dress/bar_f
+	name = "black bartender dress"
+	desc = "A black bartender dress with a white blouse."
+	icon_state = "bar_f"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+
 //wedding stuff
 /obj/item/clothing/under/wedding
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS
@@ -483,6 +485,7 @@
 	item_state_slots = list(
 		slot_hand_str = "black"
 		)
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 
 /obj/item/clothing/under/shortjumpskirt
 	name = "short jumpskirt"
@@ -491,6 +494,7 @@
 	item_state_slots = list(
 		slot_hand_str = "white"
 		)
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 
 /obj/item/clothing/under/captainformal
 	name = "captain's formal uniform"
@@ -548,7 +552,7 @@
 	desc = "A high visibility jumpsuit made from heat and radiation resistant materials."
 	icon_state = "engine"
 	siemens_coefficient = 0.8
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 20, bio = 0, rad = 20)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 20, bio = 0)
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 
 /obj/item/clothing/under/sterile
@@ -559,7 +563,7 @@
 		slot_hand_str = "white"
 		)
 	permeability_coefficient = 0.50
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 30, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 30)
 
 /obj/item/clothing/under/suit_jacket/charcoal
 	name = "charcoal suit"
@@ -658,6 +662,50 @@
 	name = "\improper Hephaestus jumpsuit"
 	desc = "A jumpsuit belonging to Hephaestus Industries, a megacorp best known for its arms production."
 	icon_state = "heph"
+
+/obj/item/clothing/under/plugwhite
+	name = "White Plug jumpsuit"
+	desc = "White latex jumpsuit looking like an old-movie superhero suit. Very sexy though"
+	icon_state = "plug_white"
+	w_class = ITEM_SIZE_HUGE//bulky item
+	gas_transfer_coefficient = 0.01
+	permeability_coefficient = 0.02
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
+	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | ARMS //Needs gloves and shoes with cold protection to be fully protected.
+	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
+
+/obj/item/clothing/under/plugred
+	name = "Red Plug jumpsuit"
+	desc = "Red latex jumpsuit looking like an old-movie superhero suit. Very sexy though"
+	icon_state = "plug_red"
+	w_class = ITEM_SIZE_HUGE//bulky item
+	gas_transfer_coefficient = 0.01
+	permeability_coefficient = 0.02
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
+	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | ARMS //Needs gloves and shoes with cold protection to be fully protected.
+	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
+
+/obj/item/clothing/under/plugblack
+	name = "Black Plug jumpsuit"
+	desc = "Black latex jumpsuit looking like an old-movie superhero suit. Very sexy though"
+	icon_state = "plug_black"
+	w_class = ITEM_SIZE_HUGE//bulky item
+	gas_transfer_coefficient = 0.01
+	permeability_coefficient = 0.02
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
+	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | ARMS //Needs gloves and shoes with cold protection to be fully protected.
+	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
+
+/obj/item/clothing/under/plugblue
+	name = "Blue Plug jumpsuit"
+	desc = "Blue latex jumpsuit looking like an old-movie superhero suit. Very sexy though"
+	icon_state = "plug_blue"
+	w_class = ITEM_SIZE_HUGE//bulky item
+	gas_transfer_coefficient = 0.01
+	permeability_coefficient = 0.02
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
+	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | ARMS //Needs gloves and shoes with cold protection to be fully protected.
+	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
 
 /obj/item/clothing/under/savage_hunter
 	name = "savage hunter's hides"

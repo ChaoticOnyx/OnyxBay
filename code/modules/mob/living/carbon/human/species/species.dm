@@ -21,6 +21,8 @@
 	var/damage_overlays = 'icons/mob/human_races/masks/dam_human.dmi'
 	var/damage_mask = 'icons/mob/human_races/masks/dam_mask_human.dmi'
 
+	var/icon/organs_icon // species specific internal organs icons
+
 	var/prone_icon                            // If set, draws this from icobase when mob is prone.
 	var/has_floating_eyes                     // Eyes will overlay over darkness (glow)
 
@@ -37,13 +39,12 @@
 	var/list/hair_styles
 	var/list/facial_hair_styles
 
-	var/eye_icon = "eyes_s"
-	var/eye_icon_location = 'icons/mob/human_face.dmi'
-
-	var/organs_icon		//species specific internal organs icons
+	var/has_eyes_icon = TRUE
 
 	var/default_h_style = "Bald"
 	var/default_f_style = "Shaved"
+	var/hair_key = ""
+	var/facial_hair_key = ""
 
 	var/race_key = 0                          // Used for mob icon cache string.
 	var/icon/icon_template = 'icons/mob/human_races/r_template.dmi' // Used for mob icon generation for non-32x32 species.
@@ -75,7 +76,7 @@
 	var/additional_langs                      // Any other languages the species always gets.
 
 	// Combat vars.
-	var/total_health = 200                   // Point at which the mob will enter crit.
+	var/total_health = 100                   // Point at which the mob will enter crit.
 	var/list/unarmed_types = list(           // Possible unarmed attacks that the mob will use in combat,
 		/datum/unarmed_attack,
 		/datum/unarmed_attack/bite
@@ -88,10 +89,11 @@
 	var/radiation_mod =  1                    // Radiation modifier
 	var/flash_mod =      1                    // Stun from blindness modifier.
 	var/metabolism_mod = 1                    // Reagent metabolism modifier
-	var/vision_flags = SEE_SELF               // Same flags as glasses.
+	var/vision_flags = SEE_SELF|SEE_BLACKNESS // Same flags as glasses.
+	var/generic_attack_mod = 1.0              // Damage dealt to simple animals with unarmed attacks multiplier.
 
 	// Death vars.
-	var/meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/human
+	var/meat_type = /obj/item/reagent_containers/food/meat/human
 	var/remains_type = /obj/item/remains/xeno
 	var/gibbed_anim = "gibbed-h"
 	var/dusted_anim = "dust-h"
@@ -210,6 +212,7 @@
 
 	var/list/prone_overlay_offset = list(0, 0) // amount to shift overlays when lying
 	var/icon_scale = 1
+	var/y_shift = 0 // Vertically shifts the icon, mostly for monkeys.
 
 	var/xenomorph_type = /mob/living/carbon/alien/larva // What type of larva is spawned if infected with an alien embryo
 /*
@@ -261,22 +264,22 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	return sanitizeName(name)
 
 /datum/species/proc/equip_survival_gear(mob/living/carbon/human/H, boxtype = 0)
-	if(istype(H.get_equipped_item(slot_back), /obj/item/weapon/storage/backpack))
+	if(istype(H.get_equipped_item(slot_back), /obj/item/storage/backpack))
 		switch(boxtype)
 			if(2)
-				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/security(H.back), slot_in_backpack)
+				H.equip_to_slot_or_del(new /obj/item/storage/box/security(H.back), slot_in_backpack)
 			if(1)
-				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H.back), slot_in_backpack)
+				H.equip_to_slot_or_del(new /obj/item/storage/box/engineer(H.back), slot_in_backpack)
 			else
-				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
+				H.equip_to_slot_or_del(new /obj/item/storage/box/survival(H.back), slot_in_backpack)
 	else
 		switch(boxtype)
 			if(2)
-				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/security(H), slot_r_hand)
+				H.equip_to_slot_or_del(new /obj/item/storage/box/security(H), slot_r_hand)
 			if(1)
-				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H), slot_r_hand)
+				H.equip_to_slot_or_del(new /obj/item/storage/box/engineer(H), slot_r_hand)
 			else
-				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
+				H.equip_to_slot_or_del(new /obj/item/storage/box/survival(H), slot_r_hand)
 
 /datum/species/proc/create_organs(mob/living/carbon/human/H) //Handles creation of mob organs.
 
@@ -322,19 +325,19 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			O.organ_tag = organ_tag
 		H.internal_organs_by_name[organ_tag] = O
 
+	for(var/name in H.organs_by_name)
+		H.organs |= H.organs_by_name[name]
+
+	for(var/name in H.internal_organs_by_name)
+		H.internal_organs |= H.internal_organs_by_name[name]
+
 	for(var/obj/item/organ/internal/organ in foreign_organs)
 		organ.owner = H // Let's just make sure, it doesn't hurt
 		organ.rejuvenate()
 		var/obj/item/organ/external/E = H.get_organ(organ.parent_organ)
 		E.internal_organs |= organ
 		H.internal_organs_by_name[organ.organ_tag] = organ
-		organ.after_organ_creation()
-
-	for(var/name in H.organs_by_name)
-		H.organs |= H.organs_by_name[name]
-
-	for(var/name in H.internal_organs_by_name)
-		H.internal_organs |= H.internal_organs_by_name[name]
+		organ.handle_foreign()
 
 	for(var/obj/item/organ/O in (H.organs|H.internal_organs))
 		O.owner = H
@@ -514,11 +517,15 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	H.set_sight(H.sight|get_vision_flags(H)|H.equipment_vision_flags)
 	H.change_light_color(darksight_tint)
 
-	if(H.stat == DEAD)
+	if(H.is_ooc_dead())
 		return 1
 
 	if(!H.druggy)
-		H.set_see_in_dark((H.sight == (SEE_TURFS|SEE_MOBS|SEE_OBJS)) ? 8 : min(darksight_range + H.equipment_darkness_modifier, 8))
+		H.set_see_in_dark(max(
+			H.see_in_dark,
+			(H.sight & (SEE_TURFS|SEE_MOBS|SEE_OBJS)) == (SEE_TURFS|SEE_MOBS|SEE_OBJS) ? 8 : H.see_in_dark,
+			darksight_range + H.equipment_darkness_modifier
+		))
 		if(H.equipment_see_invis)
 			H.set_see_invisible(min(H.see_invisible, H.equipment_see_invis))
 
@@ -531,7 +538,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	H.set_fullscreen(H.eye_blind && !H.equipment_prescription, "blind", /obj/screen/fullscreen/blind)
 	H.set_fullscreen(H.stat == UNCONSCIOUS, "blackout", /obj/screen/fullscreen/blackout)
 
-	if(config.welder_vision)
+	if(config.misc.welder_vision_allowed)
 		H.set_fullscreen(H.equipment_tint_total, "welder", /obj/screen/fullscreen/impaired, H.equipment_tint_total)
 	var/how_nearsighted = get_how_nearsighted(H)
 	H.set_fullscreen(how_nearsighted, "nearsighted", /obj/screen/fullscreen/oxy, how_nearsighted)
@@ -613,7 +620,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	var/list/holding = list(target.get_active_hand() = 40, target.get_inactive_hand() = 20)
 
 	//See if they have any guns that might go off
-	for(var/obj/item/weapon/gun/W in holding)
+	for(var/obj/item/gun/W in holding)
 		if(W && prob(holding[W]))
 			var/list/turfs = list()
 			for(var/turf/T in view())
@@ -650,8 +657,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 		//Actually disarm them
 		for(var/obj/item/I in holding)
-			if(I && I.canremove)
-				target.drop_from_inventory(I)
+			if(target.drop(I))
 				target.visible_message("<span class='danger'>[attacker] has disarmed [target]!</span>")
 				playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 				return
@@ -706,3 +712,13 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			facial_hair_style_by_gender[facialhairstyle] = S
 
 	return facial_hair_style_by_gender
+
+/datum/species/proc/is_eligible_for_antag_spawn(antag_id)
+	return TRUE
+
+/datum/species/proc/get_species_runechat_color(mob/living/carbon/human/H)
+	if(appearance_flags & HAS_SKIN_COLOR)
+		return H.s_base
+	else
+		var/list/A = list(max(64, H.r_hair), max(64, H.g_hair), max(64, H.b_hair))
+		return A

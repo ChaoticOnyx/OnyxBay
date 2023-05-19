@@ -33,6 +33,12 @@
 	assembly_type = /obj/structure/door_assembly/door_assembly_viro
 
 //////////////////////////////////////////
+/obj/machinery/door/airlock/medblack
+	name = "Airlock"
+	icon = 'icons/obj/doors/doormedblack.dmi'
+	assembly_type = /obj/structure/door_assembly/door_assembly_med
+
+//////////////////////////////////////////
 /obj/machinery/door/airlock/maintenance
 	name = "Maintenance Access"
 	icon = 'icons/obj/doors/doormaint.dmi'
@@ -59,6 +65,9 @@
 	density = 0
 	locked = 1
 	opacity = 0
+
+/obj/machinery/door/airlock/external/snow
+	icon = 'icons/obj/doors/doorextsnow.dmi'
 
 //////////////////////////////////////////
 /obj/machinery/door/airlock/glass
@@ -323,15 +332,12 @@
 	desc = "And they said I was crazy."
 	icon = 'icons/obj/doors/dooruranium.dmi'
 	mineral = MATERIAL_URANIUM
-	var/last_event = 0
-	var/rad_power = 7.5
 
-/obj/machinery/door/airlock/uranium/Process()
-	if(world.time > last_event+20)
-		if(prob(50))
-			SSradiation.radiate(src, rad_power)
-		last_event = world.time
-	..()
+/obj/machinery/door/airlock/uranium/Initialize()
+	. = ..()
+
+	create_reagents()
+	reagents.add_reagent(/datum/reagent/uranium, 2 * REAGENTS_PER_MATERIAL_SHEET, null, FALSE)
 
 //////////////////////////////////////////
 /obj/machinery/door/airlock/plasma
@@ -355,7 +361,7 @@
 
 /obj/machinery/door/airlock/plasma/proc/PlasmaBurn(temperature)
 	for(var/turf/simulated/floor/target_tile in range(2,loc))
-		target_tile.assume_gas("plasma", 35, 400+T0C)
+		target_tile.assume_gas("plasma", 35, 400 CELSIUS)
 		spawn (0) target_tile.hotspot_expose(temperature, 400)
 	for(var/turf/simulated/wall/W in range(3,src))
 		W.burn((temperature/4))//Added so that you can't set off a massive chain reaction with a small flame

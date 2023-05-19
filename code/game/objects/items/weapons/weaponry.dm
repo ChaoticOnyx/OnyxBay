@@ -1,11 +1,11 @@
-/obj/item/weapon/nullrod
+/obj/item/nullrod
 	name = "null sceptre"
 	desc = "A sceptre of pure black obsidian capped at both ends with silver ferrules. Some religious groups claim it disrupts and dampens the powers of paranormal phenomenae."
+	icon = 'icons/obj/weapons.dmi'
 	icon_state = "nullrod"
 	item_state = "nullrod"
 	slot_flags = SLOT_BELT
 	force = 11.5
-	throw_speed = 1
 	throw_range = 4
 	throwforce = 10
 	w_class = ITEM_SIZE_NORMAL
@@ -13,7 +13,7 @@
 	mod_reach = 0.75
 	mod_handy = 1.0
 
-/obj/item/weapon/nullrod/attack(mob/M, mob/living/user)
+/obj/item/nullrod/attack(mob/M, mob/living/user)
 	admin_attack_log(user, M, "Attacked using \a [src]", "Was attacked with \a [src]", "used \a [src] to attack")
 
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -40,7 +40,7 @@
 
 	..()
 
-/obj/item/weapon/nullrod/afterattack(atom/A, mob/user, proximity)
+/obj/item/nullrod/afterattack(atom/A, mob/user, proximity)
 	if(!proximity)
 		return
 
@@ -58,7 +58,7 @@
 
 
 
-/obj/item/weapon/energy_net
+/obj/item/energy_net
 	name = "energy net"
 	desc = "It's a net made of green energy."
 	icon = 'icons/effects/effects.dmi'
@@ -67,17 +67,17 @@
 	force = 0
 	var/net_type = /obj/effect/energy_net
 
-/obj/item/weapon/energy_net/safari
+/obj/item/energy_net/safari
 	name = "animal net"
 	desc = "An energized net meant to subdue animals."
 	net_type = /obj/effect/energy_net/safari
 
-/obj/item/weapon/energy_net/dropped()
+/obj/item/energy_net/dropped()
 	..()
 	spawn(10)
 		if(src) qdel(src)
 
-/obj/item/weapon/energy_net/throw_impact(atom/hit_atom)
+/obj/item/energy_net/throw_impact(atom/hit_atom)
 	..()
 
 	var/mob/living/M = hit_atom
@@ -130,7 +130,7 @@
 
 /obj/effect/energy_net/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 /obj/effect/energy_net/Destroy()
 	if(istype(captured, /mob/living/carbon))
@@ -138,11 +138,10 @@
 			captured.handcuffed = null
 	if(captured)
 		unbuckle_mob()
-	STOP_PROCESSING(SSobj, src)
 	captured = null
 	return ..()
 
-/obj/effect/energy_net/Process()
+/obj/effect/energy_net/think()
 	if(temporary)
 		countdown--
 	if(captured.buckled != src)
@@ -153,11 +152,13 @@
 		health = 0
 	healthcheck()
 
+	set_next_think(world.time + 1 SECOND)
+
 /obj/effect/energy_net/Move()
-	..()
+	. = ..()
 
 	if(buckled_mob)
-		buckled_mob.forceMove(src.loc)
+		buckled_mob.forceMove(loc, unbuckle_mob = FALSE)
 	else
 		countdown = 0
 
@@ -220,7 +221,7 @@
 	healthcheck()
 	return
 
-/obj/effect/energy_net/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/effect/energy_net/attackby(obj/item/W as obj, mob/user as mob)
 	health -= W.force
 	healthcheck()
 	..()

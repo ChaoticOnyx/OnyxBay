@@ -10,17 +10,17 @@
 	var/max_paper = 10
 	var/paperamount = 0
 	var/list/shred_amounts = list(
-		/obj/item/weapon/photo = 1,
-		/obj/item/weapon/shreddedp = 1,
-		/obj/item/weapon/paper = 1,
-		/obj/item/weapon/newspaper = 3,
-		/obj/item/weapon/card/id = 3,
-		/obj/item/weapon/paper_bundle = 3,
+		/obj/item/photo = 1,
+		/obj/item/shreddedp = 1,
+		/obj/item/paper = 1,
+		/obj/item/newspaper = 3,
+		/obj/item/card/id = 3,
+		/obj/item/paper_bundle = 3,
 		)
 
 /obj/machinery/papershredder/attackby(obj/item/W, mob/user)
 
-	if(istype(W, /obj/item/weapon/storage))
+	if(istype(W, /obj/item/storage))
 		empty_bin(user, W)
 		return
 	else
@@ -33,15 +33,14 @@
 				to_chat(user, "<span class='warning'>\The [src] is full; please empty it before you continue.</span>")
 				return
 			paperamount += paper_result
-			user.drop_from_inventory(W)
 			qdel(W)
 			playsound(src.loc, 'sound/items/pshred.ogg', 75, 1)
 			if(paperamount > max_paper)
 				to_chat(user, "<span class='danger'>\The [src] was too full, and shredded paper goes everywhere!</span>")
 				for(var/i=(paperamount-max_paper);i>0;i--)
-					var/obj/item/weapon/shreddedp/SP = get_shredded_paper()
+					var/obj/item/shreddedp/SP = get_shredded_paper()
 					SP.loc = get_turf(src)
-					SP.throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),1,5)
+					SP.throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), 1, 1)
 				paperamount = max_paper
 			update_icon()
 			return
@@ -64,7 +63,7 @@
 
 	empty_bin(usr)
 
-/obj/machinery/papershredder/proc/empty_bin(mob/living/user, obj/item/weapon/storage/empty_into)
+/obj/machinery/papershredder/proc/empty_bin(mob/living/user, obj/item/storage/empty_into)
 
 	// Sanity.
 	if(empty_into && !istype(empty_into))
@@ -75,7 +74,7 @@
 		return
 
 	while(paperamount)
-		var/obj/item/weapon/shreddedp/SP = get_shredded_paper()
+		var/obj/item/shreddedp/SP = get_shredded_paper()
 		if(!SP) break
 		if(empty_into)
 			empty_into.handle_item_insertion(SP)
@@ -95,18 +94,18 @@
 	if(!paperamount)
 		return
 	paperamount--
-	return new /obj/item/weapon/shreddedp(get_turf(src))
+	return new /obj/item/shreddedp(get_turf(src))
 
 /obj/machinery/papershredder/update_icon()
 	icon_state = "papershredder[max(0,min(5,Floor(paperamount/2)))]"
 
-/obj/item/weapon/shreddedp/attackby(obj/item/W as obj, mob/user)
-	if(istype(W, /obj/item/weapon/flame/lighter))
+/obj/item/shreddedp/attackby(obj/item/W as obj, mob/user)
+	if(istype(W, /obj/item/flame/lighter))
 		burnpaper(W, user)
 	else
 		..()
 
-/obj/item/weapon/shreddedp/proc/burnpaper(obj/item/weapon/flame/lighter/P, mob/user)
+/obj/item/shreddedp/proc/burnpaper(obj/item/flame/lighter/P, mob/user)
 	if(user.restrained())
 		return
 	if(!P.lit)
@@ -121,14 +120,11 @@
 		"<span class='danger'>You burn right through \the [src], turning it to ash. It flutters through the air before settling on the floor in a heap.</span>")
 	FireBurn()
 
-/obj/item/weapon/shreddedp/proc/FireBurn()
-	var/mob/living/M = loc
-	if(istype(M))
-		M.drop_from_inventory(src)
+/obj/item/shreddedp/proc/FireBurn()
 	new /obj/effect/decal/cleanable/ash(get_turf(src))
 	qdel(src)
 
-/obj/item/weapon/shreddedp
+/obj/item/shreddedp
 	name = "shredded paper"
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "shredp"
@@ -136,8 +132,8 @@
 	throwforce = 0
 	w_class = ITEM_SIZE_TINY
 	throw_range = 3
-	throw_speed = 1
+	throw_speed = 2
 
-/obj/item/weapon/shreddedp/New()
+/obj/item/shreddedp/New()
 	..()
 	if(prob(65)) color = pick("#bababa","#7f7f7f")

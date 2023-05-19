@@ -3,6 +3,7 @@
 	name = "Gygax"
 	icon_state = "gygax"
 	initial_icon = "gygax"
+	base_color = "#ED5F3B"
 	step_in = 3
 	dir_in = 1 //Facing North.
 	health = 300
@@ -21,6 +22,7 @@
 	name = "Dark Gygax"
 	icon_state = "darkgygax"
 	initial_icon = "darkgygax"
+	base_color = "#4E4E4E"
 	health = 400
 	deflect_chance = 25
 	damage_absorption = list("brute"=0.6,"fire"=0.8,"bullet"=0.6,"laser"=0.5,"energy"=0.65,"bomb"=0.8)
@@ -31,7 +33,6 @@
 	step_energy_drain = 5
 
 /obj/mecha/combat/gygax/dark/Initialize()
-	. = .. ()
 	var/obj/item/mecha_parts/mecha_equipment/ME = new /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/scattershot
 	ME.attach(src)
 	ME = new /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flashbang/clusterbang
@@ -40,10 +41,10 @@
 	ME.attach(src)
 	ME = new /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay
 	ME.attach(src)
-	return
+	. = .. ()
 
 /obj/mecha/combat/gygax/dark/add_cell()
-	cell = new /obj/item/weapon/cell/hyper(src)
+	cell = new /obj/item/cell/hyper(src)
 
 /obj/mecha/combat/gygax/verb/overload()
 	set category = "Exosuit Interface"

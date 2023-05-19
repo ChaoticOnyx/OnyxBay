@@ -13,7 +13,7 @@
 	speak_chance = 1
 	turns_per_move = 5
 	see_in_dark = 6
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/bearmeat
+	meat_type = /obj/item/reagent_containers/food/bearmeat
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "pokes"
@@ -23,6 +23,7 @@
 	melee_damage_lower = 20
 	melee_damage_upper = 30
 	can_escape = 1
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 	//Space bears aren't affected by atmos.
 	min_gas = null
@@ -97,17 +98,17 @@
 	if(stance != HOSTILE_STANCE_ATTACK && stance != HOSTILE_STANCE_ATTACKING && !client)
 		stance = HOSTILE_STANCE_ALERT
 		stance_step = 6
-		target_mob = user
+		set_target_mob(user)
 	return ..()
 
 /mob/living/simple_animal/hostile/bear/attack_hand(mob/living/carbon/human/M)
 	if(stance != HOSTILE_STANCE_ATTACK && stance != HOSTILE_STANCE_ATTACKING && !client)
 		stance = HOSTILE_STANCE_ALERT
 		stance_step = 6
-		target_mob = M
+		set_target_mob(M)
 	return ..()
 
-/mob/living/simple_animal/hostile/bear/FindTarget()
+/mob/living/simple_animal/hostile/bear/find_target()
 	. = ..()
 	if(.)
 		custom_emote(1,"stares alertly at [.]")

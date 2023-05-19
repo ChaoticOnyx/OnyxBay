@@ -1,8 +1,5 @@
 var/global/datum/controller/occupations/job_master
 
-#define GET_RANDOM_JOB 0
-#define BE_ASSISTANT 1
-#define RETURN_TO_LOBBY 2
 #define NEW_PLAYER_WAYFINDING_TRACKER 21 // 3 weeks
 
 /datum/controller/occupations
@@ -93,7 +90,7 @@ var/global/datum/controller/occupations/job_master
 		if(!job.is_position_available())
 			to_chat(joining, "<span class='warning'>Unfortunately, that job is no longer available.</span>")
 			return FALSE
-		if(!config.enter_allowed)
+		if(!config.game.enter_allowed)
 			to_chat(joining, "<span class='warning'>There is an administrative lock on entering the game!</span>")
 			return FALSE
 		if(SSticker.mode && SSticker.mode.explosion_in_progress)
@@ -107,7 +104,7 @@ var/global/datum/controller/occupations/job_master
 		if(job.minimum_character_age && (joining.client.prefs.age < job.minimum_character_age))
 			to_chat(joining, SPAN_WARNING("Your character's in-game age is too low for this job."))
 			return FALSE
-		if(job.faction_restricted && (joining.client.prefs.faction != GLOB.using_map.company_name || (joining.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
+		if(job.faction_restricted && (joining.client.prefs.background != GLOB.using_map.company_name || (joining.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 			to_chat(joining, SPAN_WARNING("Your characte must be loyal to [GLOB.using_map.company_name]."))
 			return FALSE
 		if(!job.player_old_enough(joining.client))
@@ -119,12 +116,12 @@ var/global/datum/controller/occupations/job_master
 		return TRUE
 
 	proc/CheckUnsafeSpawn(mob/living/spawner, turf/spawn_turf)
-		var/radlevel = SSradiation.get_rads_at_turf(spawn_turf)
+		var/rad_dose = SSradiation.get_total_absorbed_dose_at_turf(spawn_turf, AVERAGE_HUMAN_WEIGHT)
 		var/airstatus = IsTurfAtmosUnsafe(spawn_turf)
-		if(airstatus || radlevel > 0)
+		if(airstatus || rad_dose > SAFE_RADIATION_DOSE)
 			var/reply = alert(spawner, "Warning. Your selected spawn location seems to have unfavorable conditions. \
 			You may die shortly after spawning. \
-			Spawn anyway? More information: [airstatus] Radiation: [radlevel] Bq", "Atmosphere warning", "Abort", "Spawn anyway")
+			Spawn anyway? More information: [airstatus] Radiation: [fmt_siunit(rad_dose, "Gy/s", 3)]", "Atmosphere warning", "Abort", "Spawn anyway")
 			if(reply == "Abort")
 				return FALSE
 			else
@@ -140,7 +137,7 @@ var/global/datum/controller/occupations/job_master
 				return FALSE
 			if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
 				return FALSE
-			if(job.faction_restricted && (player.client.prefs.faction != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
+			if(job.faction_restricted && (player.client.prefs.background != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 				return FALSE
 			if(jobban_isbanned(player, rank))
 				return FALSE
@@ -184,13 +181,13 @@ var/global/datum/controller/occupations/job_master
 			if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
 				Debug("FOC character not old enough, Player: [player]")
 				continue
-			if(job.faction_restricted && (player.client.prefs.faction != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
+			if(job.faction_restricted && (player.client.prefs.background != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 				Debug("FOC character is not loyal to [GLOB.using_map.company_name]")
 				continue
 			if(flag && !(flag in player.client.prefs.be_special_role))
 				Debug("FOC flag failed, Player: [player], Flag: [flag], ")
 				continue
-			if(player.client.prefs.CorrectLevel(job,level))
+			if(player.client.prefs.IsJobPriority(job,level))
 				Debug("FOC pass, Player: [player], Level:[level]")
 				candidates += player
 		return candidates
@@ -204,7 +201,7 @@ var/global/datum/controller/occupations/job_master
 			if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
 				continue
 
-			if(job.faction_restricted && (player.client.prefs.faction != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
+			if(job.faction_restricted && (player.client.prefs.background != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 				continue
 
 			if(istype(job, GetJob("Assistant"))) // We don't want to give him assistant, that's boring!
@@ -249,33 +246,16 @@ var/global/datum/controller/occupations/job_master
 				var/list/candidates = FindOccupationCandidates(job, level)
 				if(!candidates.len)	continue
 
-				// Build a weighted list, weight by age.
-				var/list/weightedCandidates = list()
 				for(var/mob/V in candidates)
 					// Log-out during round-start? What a bad boy, no head position for you!
-					if(!V.client) continue
+					if(!V.client)
+						continue
 					var/age = V.client.prefs.age
 
 					if(age < job.minimum_character_age) // Nope.
 						continue
 
-					switch(age)
-						if(job.minimum_character_age to (job.minimum_character_age+10))
-							weightedCandidates[V] = 3 // Still a bit young.
-						if((job.minimum_character_age+10) to (job.ideal_character_age-10))
-							weightedCandidates[V] = 6 // Better.
-						if((job.ideal_character_age-10) to (job.ideal_character_age+10))
-							weightedCandidates[V] = 10 // Great.
-						if((job.ideal_character_age+10) to (job.ideal_character_age+20))
-							weightedCandidates[V] = 6 // Still good.
-						if((job.ideal_character_age+20) to INFINITY)
-							weightedCandidates[V] = 3 // Geezer.
-						else
-							// If there's ABSOLUTELY NOBODY ELSE
-							if(candidates.len == 1) weightedCandidates[V] = 1
-
-
-				var/mob/new_player/candidate = pickweight(weightedCandidates)
+				var/mob/new_player/candidate = pick(candidates)
 				if(AssignRole(candidate, command_position))
 					return 1
 		return 0
@@ -368,7 +348,7 @@ var/global/datum/controller/occupations/job_master
 						continue
 
 					// If the player wants that job on this level, then try give it to him.
-					if(player.client.prefs.CorrectLevel(job,level))
+					if(player.client.prefs.IsJobPriority(job,level))
 
 						// If the job isn't filled
 						if((job.current_positions < job.spawn_positions) || job.spawn_positions == -1)
@@ -391,11 +371,7 @@ var/global/datum/controller/occupations/job_master
 		for(var/mob/new_player/player in unassigned)
 			if(player.client.prefs.alternate_option == BE_ASSISTANT)
 				Debug("AC2 Assistant located, Player: [player]")
-				if(GLOB.using_map.flags & MAP_HAS_BRANCH)
-					var/datum/mil_branch/branch = mil_branches.get_branch(player.get_branch_pref())
-					AssignRole(player, branch.assistant_job)
-				else
-					AssignRole(player, "Assistant")
+				AssignRole(player, "Assistant")
 
 		//For ones returning to lobby
 		for(var/mob/new_player/player in unassigned)
@@ -413,10 +389,14 @@ var/global/datum/controller/occupations/job_master
 		var/list/spawn_in_storage = list()
 
 		if(job)
-
-			//Equip job items.
+			if(rank == "Waiter")
+				H.disabilities = null
+				H.change_species("Monkey")
+				H.revive() // Disabled monkeys are bad
+				QDEL_LIST(H.worn_underwear)
+			// Equip job items.
 			job.setup_account(H)
-			job.equip(H, H.mind ? H.mind.role_alt_title : "", H.char_branch, H.char_rank)
+			job.equip(H, H.mind ? H.mind.role_alt_title : "")
 			job.apply_fingerprints(H)
 
 			// Equip custom gear loadout, replacing any job items
@@ -425,40 +405,28 @@ var/global/datum/controller/occupations/job_master
 				for(var/thing in H.client.prefs.Gear())
 					var/datum/gear/G = gear_datums[thing]
 					if(G)
-						var/permitted
-						if(G.allowed_roles)
+						var/permitted = TRUE
+						if(length(G.allowed_roles))
+							permitted = FALSE
 							for(var/job_type in G.allowed_roles)
 								if(job.type == job_type)
-									permitted = 1
-						else
-							permitted = 1
+									permitted = TRUE
+									break
 
 						if(G.whitelisted && (!(H.species.name in G.whitelisted)))
-							permitted = 0
+							permitted = FALSE
+
+						if(!G.is_allowed_to_equip(H))
+							permitted = FALSE
 
 						if(!permitted)
-							to_chat(H, "<span class='warning'>Your current species, job or whitelist status does not permit you to spawn with [thing]!</span>")
+							to_chat(H, SPAN("warning", "Your current species, job, whitelist status or loadout configuration does not permit you to spawn with [thing]!"))
 							continue
 
 						if(!G.slot || G.slot == slot_tie || G.slot == slot_belt ||(G.slot in loadout_taken_slots) || !G.spawn_on_mob(H, H.client.prefs.Gear()[G.display_name]))
 							spawn_in_storage.Add(G)
 						else
 							loadout_taken_slots.Add(G.slot)
-
-			// do accessories last so they don't attach to a suit that will be replaced
-			if(H.char_rank && H.char_rank.accessory)
-				for(var/accessory_path in H.char_rank.accessory)
-					var/list/accessory_data = H.char_rank.accessory[accessory_path]
-					if(islist(accessory_data))
-						var/amt = accessory_data[1]
-						var/list/accessory_args = accessory_data.Copy()
-						accessory_args[1] = src
-						for(var/i in 1 to amt)
-							H.equip_to_slot_or_del(new accessory_path(arglist(accessory_args)), slot_tie)
-					else
-						for(var/i in 1 to (isnull(accessory_data)? 1 : accessory_data))
-							H.equip_to_slot_or_del(new accessory_path(src), slot_tie)
-
 		else
 			to_chat(H, "Your job is [rank] and the game just can't handle it! Please report this bug to an administrator.")
 
@@ -478,15 +446,17 @@ var/global/datum/controller/occupations/job_master
 				H.buckled.forceMove(H.loc)
 				H.buckled.set_dir(H.dir)
 
-		// If they're head, give them the account info for their department
-		if(H.mind && job.head_position)
+		if(H.mind)
 			var/remembered_info = ""
 			var/datum/money_account/department_account = department_accounts[job.department]
 
 			if(department_account)
-				remembered_info += "<b>Your department's account number is:</b> #[department_account.account_number]<br>"
-				remembered_info += "<b>Your department's account pin is:</b> [department_account.remote_access_pin]<br>"
-				remembered_info += "<b>Your department's account funds are:</b> T[department_account.money]<br>"
+				remembered_info += "<b>Your [job.department] department account:</b><br>"
+				remembered_info += "<b>Number:</b> #[department_account.account_number]<br>"
+			// And if they're head, give them the pin and funds info for their department
+			if(job.head_position || job.title == "Quartermaster" || job.title ==  "Internal Affairs Agent")
+				remembered_info += "<b>Pin:</b> [department_account.remote_access_pin]<br>"
+				remembered_info += "<b>Funds:</b> [department_account.money]cr.<br>"
 
 			H.mind.store_memory(remembered_info)
 
@@ -534,15 +504,11 @@ var/global/datum/controller/occupations/job_master
 			to_chat(H, "<b>You are playing a job that is important for Game Progression. If you have to disconnect, please notify the admins via adminhelp.</b>")
 
 		// EMAIL GENERATION
-		var/domain
-		if(H.char_branch && H.char_branch.email_domain)
-			domain = H.char_branch.email_domain
-		else
-			domain = "freemail.nt"
+		var/domain = "freemail.nt"
 		var/sanitized_name = sanitize(replacetext(replacetext(lowertext(H.real_name), " ", "."), "'", ""))
 		var/complete_login = "[sanitized_name]@[domain]"
 
-		// It is VERY unlikely that we'll have two players, in the same round, with the same name and branch, but still, this is here.
+		// It is VERY unlikely that we'll have two players in the same round with the same name, but still, this is here.
 		// If such conflict is encountered, a random number will be appended to the email address. If this fails too, no email account will be created.
 		if(ntnet_global.does_email_exist(complete_login))
 			complete_login = "[sanitized_name][random_id(/datum/computer_file/data/email_account/, 100, 999)]@[domain]"
@@ -572,7 +538,7 @@ var/global/datum/controller/occupations/job_master
 		if(istext(player_age)) // database not initialized
 			player_age = 0
 		if((player_age <= NEW_PLAYER_WAYFINDING_TRACKER && wayfinding_pref == GLOB.PREF_BASIC) || wayfinding_pref == GLOB.PREF_YES)
-			var/obj/item/weapon/pinpointer/wayfinding/W = new(H)
+			var/obj/item/pinpointer/wayfinding/W = new(H)
 			var/equipped = H.equip_to_slot_or_store_or_drop(W, slot_l_store)
 			if(equipped)
 				to_chat(H, SPAN("notice", "You can use [W.name] to obtain location of most popular places."))
@@ -583,7 +549,7 @@ var/global/datum/controller/occupations/job_master
 		return H
 
 	proc/LoadJobs(jobsfile) //ran during round setup, reads info from jobs.txt -- Urist
-		if(!config.load_jobs_from_txt)
+		if(!config.misc.load_jobs_from_txt)
 			return 0
 
 		var/list/jobEntries = file2list(jobsfile)
@@ -636,11 +602,11 @@ var/global/datum/controller/occupations/job_master
 				if(!job.player_old_enough(player.client))
 					level6++
 					continue
-				if(player.client.prefs.CorrectLevel(job, 1))
+				if(player.client.prefs.IsJobPriority(job, JOB_PRIORITY_HIGH))
 					level1++
-				else if(player.client.prefs.CorrectLevel(job, 2))
+				else if(player.client.prefs.IsJobPriority(job, JOB_PRIORITY_MIDDLE))
 					level2++
-				else if(player.client.prefs.CorrectLevel(job, 3))
+				else if(player.client.prefs.IsJobPriority(job, JOB_PRIORITY_LOW))
 					level3++
 				else level4++ //not selected
 
@@ -722,8 +688,10 @@ var/global/datum/controller/occupations/job_master
 	var/datum/job/J = GetJob(title)
 	if(!J)
 		return FALSE
+	if(J.no_latejoin)
+		return FALSE
 
-	var/datum/storyteller_character/ST = SSstoryteller.get_character()
+	var/datum/storyteller_character/ST = SSstoryteller.character
 	var/available_vacancies = ST ? ST.get_available_vacancies() : job_master.get_available_vacancies()
 	if(length(GLOB.vacancies) >= available_vacancies)
 		return FALSE

@@ -5,7 +5,6 @@
 	slot_flags = SLOT_BELT
 	item_state = "electronic"
 	throwforce = 5.0
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL
 	origin_tech = list(TECH_ILLEGAL = 4, TECH_MAGNET = 4)
@@ -14,7 +13,7 @@
 	var/saved_dir
 	var/saved_density
 	var/saved_examine_result
-	var/static/list/blacklist = list(/obj/item/weapon/holder, /obj/item/grab)
+	var/static/list/blacklist = list(/obj/item/holder, /obj/item/grab)
 
 /obj/item/device/chameleonholo/dropped()
 	activate()
@@ -33,7 +32,7 @@
 		deactivate()
 		return
 
-/obj/item/device/chameleonholo/examine(mob/user)
+/obj/item/device/chameleonholo/_examine_text(mob/user)
 	if(!active)
 		return ..()
 	return saved_examine_result
@@ -65,7 +64,7 @@
 	saved_appearance = object.appearance
 	saved_dir = object.dir
 	saved_density = object.density
-	saved_examine_result = object.examine(user)
+	saved_examine_result = object._examine_text(user)
 
 /obj/item/device/chameleonholo/proc/activate(obj/saved_item)
 	if(active || !saved_appearance)
@@ -94,7 +93,6 @@
 	item_state = "electronic"
 	throwforce = 5.0
 	throw_speed = 1
-	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	origin_tech = list(TECH_ILLEGAL = 5, TECH_MAGNET = 4)
 	var/bomb_armed = FALSE

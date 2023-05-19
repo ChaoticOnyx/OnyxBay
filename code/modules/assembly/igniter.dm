@@ -11,9 +11,10 @@
 	activate()
 		if(!..())	return 0//Cooldown check
 
-		if(holder && istype(holder.loc,/obj/item/weapon/grenade/chem_grenade))
-			var/obj/item/weapon/grenade/chem_grenade/grenade = holder.loc
-			grenade.detonate()
+		if(holder && istype(holder.loc,/obj/item/grenade))
+			var/obj/item/grenade/grenade = holder.loc
+			if(grenade.active)
+				grenade.detonate()
 		else
 			var/turf/location = get_turf(loc)
 			if(location)
@@ -31,7 +32,7 @@
 		return 1
 
 
-	attack_self(mob/user as mob)
+	attack_self(mob/user)
 		activate()
 		add_fingerprint(user)
 		return

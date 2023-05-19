@@ -5,8 +5,10 @@
 	deform = 'icons/mob/human_races/r_def_lizard.dmi'
 	tail = "sogtail"
 	tail_animation = 'icons/mob/species/unathi/tail.dmi'
+	hair_key = SPECIES_UNATHI
 
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/tail, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp)
+	generic_attack_mod = 2.0
 	primitive_form = "Stok"
 	darksight_range = 3
 	darksight_tint = DARKTINT_MODERATE
@@ -49,7 +51,7 @@
 
 	reagent_tag = IS_UNATHI
 	base_color = "#066000"
-	blood_color = "#f24b2e"
+	blood_color = COLOR_BLOOD_UNATHI
 	organs_icon = 'icons/mob/human_races/organs/unathi.dmi'
 
 	move_trail = /obj/effect/decal/cleanable/blood/tracks/claw
@@ -78,7 +80,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sandal(H),slot_shoes)
 
 /datum/species/unathi/handle_environment_special(mob/living/carbon/human/H)
-	if(H.InStasis() || H.stat == DEAD)
+	if(H.InStasis() || H.is_ic_dead() || isundead(H))
 		return
 	if(H.nutrition < 50)
 		H.adjustToxLoss(2,0)
@@ -88,13 +90,13 @@
 
 	//Heals normal damage.
 	if(H.getBruteLoss())
-		H.adjustBruteLoss(-2 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
+		H.adjustBruteLoss(-2 * config.health.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
 		H.nutrition -= 1
 	if(H.getFireLoss())
-		H.adjustFireLoss(-1 * config.organ_regeneration_multiplier)
+		H.adjustFireLoss(-1 * config.health.organ_regeneration_multiplier)
 		H.nutrition -= 1
 	if(H.getToxLoss())
-		H.adjustToxLoss(-1 * config.organ_regeneration_multiplier)
+		H.adjustToxLoss(-1 * config.health.organ_regeneration_multiplier)
 		H.nutrition -= 1
 
 	if(prob(5) && H.nutrition > 150 && !H.getBruteLoss() && !H.getFireLoss())
@@ -123,7 +125,7 @@
 		for(var/limb_type in has_limbs)
 			var/list/obj/item/organ/internal/foreign_organs = list()
 			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
-			if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
+			if(E && E.organ_tag != (BP_HEAD || BP_GROIN) && !E.vital && !E.is_usable(ignore_pain = TRUE))	//Skips heads and vital bits...
 				E.removed()			//...because no one wants their head to explode to make way for a new one.
 				for(var/obj/item/organ/internal/O in E.internal_organs)
 					if(istype(O) && O.foreign)
@@ -133,6 +135,12 @@
 				qdel(E)
 				E = null
 			if(!E)
+				var/path = has_limbs[limb_type]["path"]
+				var/regenerating_limb = text2path("[path]")
+				var/parent_organ = initial(regenerating_limb["parent_organ"])
+				if(!(parent_organ in H.organs_by_name) || H.organs_by_name[parent_organ].is_stump())
+					continue
+
 				var/list/organ_data = has_limbs[limb_type]
 				var/limb_path = organ_data["path"]
 				var/obj/item/organ/external/O = new limb_path(H)
@@ -152,10 +160,9 @@
 					FE.internal_organs |= organ
 					H.internal_organs |= organ
 					H.internal_organs_by_name[organ.organ_tag] = organ
-					organ.after_organ_creation()
+					organ.handle_foreign()
 				return
 			else
 				for(var/datum/wound/W in E.wounds)
 					if(W.wound_damage() == 0 && prob(50))
 						E.wounds -= W
-

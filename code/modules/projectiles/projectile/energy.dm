@@ -4,7 +4,6 @@
 	damage = 0
 	damage_type = BURN
 	check_armour = "energy"
-	tasing = 1
 
 
 //releases a burst of light on impact or after travelling a distance
@@ -58,7 +57,7 @@
 	//residual illumination
 	new /obj/effect/effect/smoke/illumination(src.loc, rand(190,240) SECONDS, range=8, power=3, color=light_colour) //same lighting power as flare
 
-/obj/item/projectile/energy/flash/c44
+/obj/item/projectile/energy/flash/c38
 	damage_type = BURN
 	damage = 5
 	agony = 25
@@ -71,15 +70,33 @@
 
 /obj/item/projectile/energy/electrode
 	name = "electrode"
-	icon_state = "spark"
+	icon_state = "electrode"
 	fire_sound = 'sound/effects/weapons/energy/Taser.ogg'
-	nodamage = 1
-	agony = 50
+	nodamage = TRUE
+	agony = 65
+	tasing = 6
 	damage_type = PAIN
+	armor_penetration = 10
 	//Damage will be handled on the MOB side, to prevent window shattering.
+	projectile_light = TRUE
+	projectile_brightness_color = COLOR_YELLOW
+
+/obj/item/projectile/energy/electrode/small
+	icon_state = "electrode-small"
+	agony = 37.5
+
+/obj/item/projectile/energy/electrode/greater
+	agony = 85
+
+/obj/item/projectile/energy/electrode/heavy
+	icon_state = "electrode-heavy"
+	agony = 100
+	tasing = 8
+	armor_penetration = 15
+	hitscan = TRUE
 
 /obj/item/projectile/energy/electrode/stunshot
-	nodamage = 0
+	nodamage = FALSE
 	damage = 15
 	agony = 70
 	damage_type = BURN
@@ -88,6 +105,7 @@
 
 /obj/item/projectile/energy/electrode/stunsphere
 	damage_type = PAIN
+	icon_state = "spark"
 	agony = 70
 	stutter = 10
 	armor_penetration = 10
@@ -95,24 +113,26 @@
 /obj/item/projectile/energy/electrode/c45
 	name = "stun bullet"
 	icon_state = "stunbullet"
-	nodamage = 0
+	nodamage = FALSE
 	agony = 40 // Weaker than the stunsphere la'classique
 	damage_type = BURN
 	damage = 3 //A little ouchie.
 	armor_penetration = 10
 	fire_sound = 'sound/effects/weapons/gun/gunshot.ogg'
+	projectile_inner_range = 0.2
 
-/obj/item/projectile/energy/electrode/c44
+/obj/item/projectile/energy/electrode/c38
 	name = "shock bullet"
 	icon_state = "shockbullet"
-	nodamage = 0
+	nodamage = FALSE
 	agony = 60
 	damage_type = BRUTE
 	damage = 5 //It's still a bullet
 	armor_penetration = 10
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
+	projectile_inner_range = 0.2
 
-/obj/item/projectile/energy/c44
+/obj/item/projectile/energy/c38
 	name = "overheated bullet"
 	icon_state = "heatbullet"
 	damage = 40
@@ -121,6 +141,10 @@
 	damage_type = BURN
 	armor_penetration = 15
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
+	projectile_light = TRUE
+	projectile_brightness_color = "#ff8c3f"
+	projectile_inner_range = 0.2
+	projectile_outer_range = 1.25
 
 /obj/item/projectile/energy/declone
 	name = "decloner beam"
@@ -128,7 +152,8 @@
 	fire_sound = 'sound/effects/weapons/energy/pulse3.ogg'
 	damage = 30
 	damage_type = CLONE
-	irradiate = 40
+	projectile_light = TRUE
+	projectile_brightness_color = COLOR_LIME
 
 
 /obj/item/projectile/energy/dart
@@ -177,7 +202,6 @@
 	fire_sound = 'sound/effects/stealthoff.ogg'
 	damage = 20
 	damage_type = TOX
-	irradiate = 20
 
 /obj/item/projectile/energy/plasmastun
 	name = "plasma pulse"

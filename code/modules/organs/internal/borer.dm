@@ -7,8 +7,9 @@
 	desc = "A disgusting space slug."
 	parent_organ = BP_HEAD
 	vital = 1
+	override_species_icon = TRUE
 
-/obj/item/organ/internal/borer/Process()
+/obj/item/organ/internal/borer/think()
 
 	// Borer husks regenerate health, feel no pain, and are resistant to stuns and brainloss.
 	for(var/chem_name in GLOB.borer_reagent_types_by_name)

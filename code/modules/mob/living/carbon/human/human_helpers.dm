@@ -59,7 +59,7 @@
 		add_clothing_protection(wear_mask)
 		if(wear_mask.overlay)
 			equipment_overlays |= wear_mask.overlay
-	if(istype(back,/obj/item/weapon/rig))
+	if(istype(back,/obj/item/rig))
 		process_rig(back)
 
 	// Removes zoom effect
@@ -68,8 +68,7 @@
 			client.view = world.view
 
 		if (client.pixel_x != 0 || client.pixel_y != 0)
-			client.pixel_y = 0
-			client.pixel_x = 0
+			shift_view(0, 0)
 
 /mob/living/carbon/human/proc/process_glasses(obj/item/clothing/glasses/G)
 	if(machine_visual && !istype(G, /obj/item/clothing/glasses/regular)) //Doesn't allow the use of night vision devices and other funny devices except glasses for vision correction
@@ -91,7 +90,7 @@
 	add_clothing_protection(G)
 	G.process_hud(src)
 
-/mob/living/carbon/human/proc/process_rig(obj/item/weapon/rig/O)
+/mob/living/carbon/human/proc/process_rig(obj/item/rig/O)
 	if(O.visor && O.visor.active && O.visor.vision && O.visor.vision.glasses && (!O.helmet || (head && O.helmet == head)))
 		process_glasses(O.visor.vision.glasses)
 
@@ -114,8 +113,8 @@
 	var/search_pda = 1
 
 	for(var/A in searching)
-		if(search_id && istype(A,/obj/item/weapon/card/id))
-			var/obj/item/weapon/card/id/ID = A
+		if(search_id && istype(A,/obj/item/card/id))
+			var/obj/item/card/id/ID = A
 			if(ID.registered_name == old_name)
 				ID.registered_name = new_name
 				ID.update_name()
@@ -185,7 +184,7 @@
 	to_chat(src, "<span class='notice'>You take a moment to listen in to your environment...</span>")
 	for(var/mob/living/L in range(client.view, src))
 		var/turf/T = get_turf(L)
-		if(!T || L == src || L.stat == DEAD || is_below_sound_pressure(T))
+		if(!T || L == src || L.is_ic_dead() || is_below_sound_pressure(T))
 			continue
 		heard_something = TRUE
 		var/image/ping_image = image(icon = 'icons/effects/effects.dmi', icon_state = "sonar_ping", loc = src)
@@ -232,6 +231,10 @@
 /mob/living/carbon/human/proc/make_grab(mob/living/carbon/human/attacker, mob/living/carbon/human/victim, grab_tag)
 	var/obj/item/grab/G
 
+	if(!victim.get_organ(attacker.zone_sel.selecting))
+		to_chat(attacker, SPAN("warning", "[victim] is missing the body part you tried to grab!"))
+		return FALSE
+
 	if(!grab_tag)
 		G = new attacker.current_grab_type(attacker, victim)
 	else
@@ -240,17 +243,14 @@
 
 	if(!G.pre_check())
 		qdel(G)
-		return 0
+		return FALSE
 
 	if(G.can_grab())
 		G.init()
-		victim.m_intent = M_WALK
-		if(victim.hud_used)
-			victim.hud_used.move_intent.icon_state = "walking"
-		return 1
+		return TRUE
 	else
 		qdel(G)
-		return 0
+		return FALSE
 
 /mob/living/carbon/human
 	var/list/cloaking_sources
@@ -310,7 +310,7 @@
 
 	if(rogue_entries.len) // These entries did not cleanup after themselves before being destroyed
 		var/rogue_entries_as_string = jointext(map(rogue_entries, /proc/log_info_line), ", ")
-		crash_with("[log_info_line(src)] - Following cloaking entries were removed during cleanup: [rogue_entries_as_string]")
+		util_crash_with("[log_info_line(src)] - Following cloaking entries were removed during cleanup: [rogue_entries_as_string]")
 
 	UNSETEMPTY(cloaking_sources)
 	return !cloaking_sources // If cloaking_sources wasn't initially null but is now, we've uncloaked
@@ -320,3 +320,6 @@
 		if(istype(C))
 			. += C.ear_protection
 	return .
+
+/mob/living/carbon/human/is_eligible_for_antag_spawn(antag_id)
+	return species ? species.is_eligible_for_antag_spawn(antag_id) : TRUE // No species = no problems, assuming ourselves to be a baseline human being

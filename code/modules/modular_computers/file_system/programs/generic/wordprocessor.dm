@@ -26,9 +26,9 @@
 	var/datum/computer_file/data/F = get_file(filename)
 	if(!F) //try to make one if it doesn't exist
 		F = create_file(filename, loaded_data)
-		return !isnull(F)
+		return !QDELETED(F)
 	var/datum/computer_file/data/backup = F.clone()
-	var/obj/item/weapon/computer_hardware/hard_drive/HDD = computer.hard_drive
+	var/obj/item/computer_hardware/hard_drive/HDD = computer.hard_drive
 	if(!HDD)
 		return
 	HDD.remove_file(F)
@@ -180,8 +180,8 @@
 	var/datum/computer_file/program/wordprocessor/PRG
 	PRG = program
 
-	var/obj/item/weapon/computer_hardware/hard_drive/HDD
-	var/obj/item/weapon/computer_hardware/hard_drive/portable/RHDD
+	var/obj/item/computer_hardware/hard_drive/HDD
+	var/obj/item/computer_hardware/hard_drive/portable/RHDD
 	if(PRG.error)
 		data["error"] = PRG.error
 	if(PRG.browsing)
@@ -213,9 +213,11 @@
 	else if(PRG.open_file)
 		data["filedata"] = pencode2html(PRG.loaded_data)
 		data["filename"] = PRG.is_edited ? "[PRG.open_file]*" : PRG.open_file
+		data["filedata"] = replacetext(data["filedata"], "<table", "<table class='nword'")
 	else
 		data["filedata"] = pencode2html(PRG.loaded_data)
 		data["filename"] = "UNNAMED"
+		data["filedata"] = replacetext(data["filedata"], "<table", "<table class='nword'")
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)

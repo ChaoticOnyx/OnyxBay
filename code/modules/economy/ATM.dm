@@ -3,15 +3,16 @@
 #define TRANSFER_FUNDS 2
 #define VIEW_TRANSACTION_LOGS 3
 
-/obj/item/weapon/card/id/var/money = 2000
+/obj/item/card/id/var/money = 2000
 
 /obj/machinery/atm
 	name = "Automatic Teller Machine"
 	desc = "For all your monetary needs!"
 	icon = 'icons/obj/terminals.dmi'
 	icon_state = "atm"
-	anchored = 1
-	idle_power_usage = 10
+	anchored = TRUE
+	idle_power_usage = 10 WATTS
+	layer = ABOVE_WINDOW_LAYER
 	var/datum/money_account/authenticated_account
 	var/number_incorrect_tries = 0
 	var/previous_account_number = 0
@@ -19,11 +20,11 @@
 	var/ticks_left_locked_down = 0
 	var/ticks_left_timeout = 0
 	var/machine_id = ""
-	var/obj/item/weapon/card/held_card
-	var/editing_security_level = 0
+	var/obj/item/card/held_card
+	var/editing_security_level = BANK_SECURITY_MINIMUM
 	var/view_screen = NO_SCREEN
 	var/datum/effect/effect/system/spark_spread/spark_system
-	var/account_security_level = 0
+	var/account_security_level = BANK_SECURITY_MINIMUM
 
 /obj/machinery/atm/New()
 	..()
@@ -31,6 +32,12 @@
 	spark_system = new /datum/effect/effect/system/spark_spread
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
+
+/obj/machinery/atm/Destroy()
+	authenticated_account = null
+	QDEL_NULL(spark_system)
+	QDEL_NULL(held_card)
+	return ..()
 
 /obj/machinery/atm/Process()
 	if(stat & NOPOWER)
@@ -45,7 +52,7 @@
 		if(ticks_left_locked_down <= 0)
 			number_incorrect_tries = 0
 
-	for(var/obj/item/weapon/spacecash/S in src)
+	for(var/obj/item/spacecash/S in src)
 		S.loc = src.loc
 		if(prob(50))
 			playsound(loc, 'sound/items/polaroid1.ogg', 50, 1)
@@ -69,24 +76,22 @@
 		return 1
 
 /obj/machinery/atm/attackby(obj/item/I as obj, mob/user as mob)
-	if(istype(I, /obj/item/weapon/card))
+	if(istype(I, /obj/item/card))
 		if(emagged > 0)
 			//prevent inserting id into an emagged ATM
 			to_chat(user, "\icon[src] <span class='warning'>CARD READER ERROR. This system has been compromised!</span>")
 			return
 
-		var/obj/item/weapon/card/id/idcard = I
-		if(!held_card)
-			usr.drop_item()
-			idcard.loc = src
+		var/obj/item/card/id/idcard = I
+		if(!held_card && usr.drop(idcard, src))
 			held_card = idcard
 			if(authenticated_account && held_card.associated_account_number != authenticated_account.account_number)
 				authenticated_account = null
 			attack_hand(user)
 
 	else if(authenticated_account)
-		if(istype(I,/obj/item/weapon/spacecash))
-			var/obj/item/weapon/spacecash/dolla = I
+		if(istype(I,/obj/item/spacecash))
+			var/obj/item/spacecash/dolla = I
 			if(prob(50))
 				playsound(loc, 'sound/items/polaroid1.ogg', 50, 1)
 			else
@@ -137,17 +142,17 @@
 					switch(view_screen)
 						if(CHANGE_SECURITY_LEVEL)
 							t += "Select a new security level for this account:<br><hr>"
-							if(authenticated_account.security_level != 0)
+							if(authenticated_account.security_level != BANK_SECURITY_MINIMUM)
 								t += "<A href='?src=\ref[src];choice=change_security_level;new_security_level=0'>Select Minimum Security</a><BR>"
 							else
 								t += "<span class='good'><b>Minimum security set: </b></span><BR>"
 							t += "Either the account number or card is required to access this account. EFTPOS transactions will require a card and ask for a pin, but not verify the pin is correct.<hr>"
-							if(authenticated_account.security_level != 1)
+							if(authenticated_account.security_level != BANK_SECURITY_MODERATE)
 								t += "<A href='?src=\ref[src];choice=change_security_level;new_security_level=1'>Select Moderate Security</a><BR>"
 							else
 								t += "<span class='average'><b>Moderate Security set: </b></span><BR>"
 							t += "An account number and pin must be manually entered to access this account and process transactions.<hr>"
-							if(authenticated_account.security_level != 2)
+							if(authenticated_account.security_level != BANK_SECURITY_MAXIMUM)
 								t += "<A href='?src=\ref[src];choice=change_security_level;new_security_level=2'>Select Maximum Security</a><BR>"
 							else
 								t += "<span class='bad'><b>Maximum security Set: </b></span><BR>"
@@ -204,18 +209,19 @@
 
 			else
 				//change our display depending on account security levels
-				if(!account_security_level)
-					t += "To log in to your savings account, press 'submit' with ID clearly displayed. If you wish to log into another account, please enter the account number into the field below or insert a registered ID card into the slot above and then press 'submit'.<BR>"
-				else if (account_security_level == 1)
-					t += "This account requires a PIN to access. For security reasons the account # will need re-entered or ID bound to this account re-scanned."
-				else
-					t += "<span class='bad'><b>Due to the security settings on this account, all information needs to be re-entered and the ID bound to this account placed in the slot above.</b></span><BR>"
+				switch(account_security_level)
+					if(BANK_SECURITY_MINIMUM)
+						t += "To log in to your savings account, press 'submit' with ID clearly displayed. If you wish to log into another account, please enter the account number into the field below or insert a registered ID card into the slot above and then press 'submit'.<BR>"
+					if(BANK_SECURITY_MODERATE)
+						t += "This account requires a PIN to access. For security reasons the account # will need re-entered or ID bound to this account re-scanned."
+					if(BANK_SECURITY_MAXIMUM)
+						t += "<span class='bad'><b>Due to the security settings on this account, all information needs to be re-entered and the ID bound to this account placed in the slot above.</b></span><BR>"
 				t += "<form name='atm_auth' action='?src=\ref[src]' method='get'>"
 				t += "<input type='hidden' name='src' value='\ref[src]'>"
 				t += "<input type='hidden' name='choice' value='attempt_auth'>"
 				t += "<b>Account:</b> <input type='text' id='account_num' name='account_num' style='width:250px; background-color:white;'><BR><BR>"
 				//Leave the PIN field out of sight until needed
-				if(account_security_level)
+				if(account_security_level != BANK_SECURITY_MINIMUM)
 					t += "<b>PIN:</b> <input type='text' id='account_pin' name='account_pin' style='width:250px; background-color:white;'><BR><BR>"
 				t += "<input type='submit' value='Submit'><br>"
 				t += "</div></form>"
@@ -241,7 +247,7 @@
 						alert("That is not a valid amount.")
 					else if(transfer_amount <= authenticated_account.money)
 						var/target_account_number = text2num(href_list["target_acc_number"])
-						var/transfer_purpose = href_list["purpose"]
+						var/transfer_purpose = sanitizeSafe(href_list["purpose"])
 						if(charge_to_account(target_account_number, authenticated_account.owner_name, transfer_purpose, machine_id, transfer_amount))
 							to_chat(usr, "\icon[src]<span class='info'>Funds transfer successful.</span>")
 							//create an entry in the account transaction log
@@ -261,7 +267,7 @@
 			if("attempt_auth")
 
 				//Look to see if we're holding an ID, if so scan the data from that and use it, if not scan the user for the data
-				var/obj/item/weapon/card/id/login_card
+				var/obj/item/card/id/login_card
 				if(held_card)
 					login_card = held_card
 				else
@@ -270,7 +276,7 @@
 				if(!ticks_left_locked_down)
 					var/tried_account_num = text2num(href_list["account_num"])
 					//We WILL need an account number entered manually if security is high enough, do not automagic account number
-					if(!tried_account_num && login_card && (account_security_level != 2))
+					if(!tried_account_num && login_card && (account_security_level != BANK_SECURITY_MAXIMUM))
 						tried_account_num = login_card.associated_account_number
 					var/tried_pin = text2num(href_list["account_pin"])
 
@@ -349,7 +355,7 @@
 						to_chat(usr, "\icon[src]<span class='warning'>You don't have enough funds to do that!</span>")
 			if("balance_statement")
 				if(authenticated_account)
-					var/obj/item/weapon/paper/R = new(src.loc)
+					var/obj/item/paper/R = new(src.loc)
 					R.SetName("Account balance: [authenticated_account.owner_name]")
 					R.info = "<b>NT Automated Teller Account Statement</b><br><br>"
 					R.info += "<i>Account holder:</i> [authenticated_account.owner_name]<br>"
@@ -363,7 +369,7 @@
 					stampoverlay.icon_state = "paper_stamp-cent"
 					if(!R.stamped)
 						R.stamped = new
-					R.stamped += /obj/item/weapon/stamp
+					R.stamped += /obj/item/stamp
 					R.overlays += stampoverlay
 					R.stamps += "<HR><i>This paper has been stamped by the Automatic Teller Machine.</i>"
 
@@ -373,7 +379,7 @@
 					playsound(loc, 'sound/items/polaroid2.ogg', 50, 1)
 			if ("print_transaction")
 				if(authenticated_account)
-					var/obj/item/weapon/paper/R = new(src.loc)
+					var/obj/item/paper/R = new(src.loc)
 					R.SetName("Transaction logs: [authenticated_account.owner_name]")
 					R.info = "<b>Transaction logs</b><br>"
 					R.info += "<i>Account holder:</i> [authenticated_account.owner_name]<br>"
@@ -405,7 +411,7 @@
 					stampoverlay.icon_state = "paper_stamp-cent"
 					if(!R.stamped)
 						R.stamped = new
-					R.stamped += /obj/item/weapon/stamp
+					R.stamped += /obj/item/stamp
 					R.overlays += stampoverlay
 					R.stamps += "<HR><i>This paper has been stamped by the Automatic Teller Machine.</i>"
 
@@ -421,9 +427,7 @@
 						to_chat(usr, "\icon[src] <span class='warning'>The ATM card reader rejected your ID because this machine has been sabotaged!</span>")
 					else
 						var/obj/item/I = usr.get_active_hand()
-						if (istype(I, /obj/item/weapon/card/id))
-							usr.drop_item()
-							I.loc = src
+						if(istype(I, /obj/item/card/id) && usr.drop(I, src))
 							held_card = I
 				else
 					release_held_id(usr)
@@ -436,8 +440,8 @@
 /obj/machinery/atm/proc/scan_user(mob/living/carbon/human/human_user as mob)
 	if(!authenticated_account)
 		if(human_user.wear_id)
-			var/obj/item/weapon/card/id/I
-			if(istype(human_user.wear_id, /obj/item/weapon/card/id) )
+			var/obj/item/card/id/I
+			if(istype(human_user.wear_id, /obj/item/card/id) )
 				I = human_user.wear_id
 			else if(istype(human_user.wear_id, /obj/item/device/pda) )
 				var/obj/item/device/pda/P = human_user.wear_id
@@ -454,14 +458,14 @@
 	authenticated_account = null
 	account_security_level = 0
 
-	if(ishuman(human_user) && !human_user.get_active_hand())
-		human_user.put_in_hands(held_card)
+	if(ishuman(human_user))
+		human_user.pick_or_drop(held_card)
 	held_card = null
 
 
-/obj/machinery/atm/proc/spawn_ewallet(sum, loc, mob/living/carbon/human/human_user as mob)
-	var/obj/item/weapon/spacecash/ewallet/E = new /obj/item/weapon/spacecash/ewallet(loc)
-	if(ishuman(human_user) && !human_user.get_active_hand())
-		human_user.put_in_hands(E)
+/obj/machinery/atm/proc/spawn_ewallet(sum, loc, mob/living/carbon/human/human_user)
+	var/obj/item/spacecash/ewallet/E = new /obj/item/spacecash/ewallet(loc)
+	if(ishuman(human_user))
+		human_user.pick_or_drop(E, loc)
 	E.worth = sum
 	E.owner_name = authenticated_account.owner_name

@@ -32,20 +32,25 @@
 	desc = "A shoulder-mounted micro-explosive dispenser."
 	selectable = 1
 	icon_state = "grenadelauncher"
-	use_power_cost = 2 KILOWATTS	// 2kJ per shot, a mass driver that propels the grenade?
+	use_power_cost = 2 KILO WATTS	// 2kJ per shot, a mass driver that propels the grenade?
 
 	suit_overlay = "grenade"
 
 	interface_name = "integrated grenade launcher"
 	interface_desc = "Discharges loaded grenades against the wearer's location."
 
-	var/fire_force = 30
+	var/fire_force = 1
 	var/fire_distance = 10
 
 	charges = list(
-		list("flashbang",   "flashbang",   /obj/item/weapon/grenade/flashbang,  3),
-		list("smoke bomb",  "smoke bomb",  /obj/item/weapon/grenade/smokebomb,  3),
-		list("EMP grenade", "EMP grenade", /obj/item/weapon/grenade/empgrenade, 3),
+		list("flashbang",   "flashbang",   /obj/item/grenade/flashbang,  3),
+		list("smoke bomb",  "smoke bomb",  /obj/item/grenade/smokebomb,  3),
+		list("EMP grenade", "EMP grenade", /obj/item/grenade/empgrenade, 3),
+		)
+	timings = list(
+		list("2 seconds", "short",  20),
+		list("3 seconds", "medium", 30),
+		list("5 seconds", "long",	50),
 		)
 
 /obj/item/rig_module/grenade_launcher/accepts_item(obj/item/input_device, mob/living/user)
@@ -68,7 +73,6 @@
 		return 0
 
 	to_chat(user, "<span class='info'><b>You slot \the [input_device] into the suit module.</b></span>")
-	user.drop_from_inventory(input_device)
 	qdel(input_device)
 	accepted_item.charges++
 	return 1
@@ -84,7 +88,7 @@
 	var/mob/living/carbon/human/H = holder.wearer
 
 	if(!charge_selected)
-		to_chat(H, "<span class='danger'>You have not selected a grenade type.</span>")
+		to_chat(H, SPAN("danger","You have not selected a grenade type."))
 		return 0
 
 	var/datum/rig_charge/charge = charges[charge_selected]
@@ -93,22 +97,24 @@
 		return 0
 
 	if(charge.charges <= 0)
-		to_chat(H, "<span class='danger'>Insufficient grenades!</span>")
+		to_chat(H, SPAN("danger","Insufficient grenades!"))
 		return 0
 
 	charge.charges--
-	var/obj/item/weapon/grenade/new_grenade = new charge.product_type(get_turf(H))
-	H.visible_message("<span class='danger'>[H] launches \a [new_grenade]!</span>")
-	new_grenade.det_time = 10
+	var/obj/item/grenade/new_grenade = new charge.product_type(get_turf(H))
+	
+	QDEL_NULL(new_grenade.safety_pin)
+	new_grenade.new_timing(timings[timing_selected].timing)
 	new_grenade.activate(H)
-	new_grenade.throw_at(target,fire_force,fire_distance)
+	new_grenade.throw_at(target, fire_distance, fire_force)
+	H.visible_message(SPAN("danger","[H] launches \a [new_grenade]!"))
 
 /obj/item/rig_module/grenade_launcher/cleaner
 	name = "mounted cleaning grenade launcher"
 	desc = "A shoulder-mounted micro-explosive dispenser designed only to accept standard cleaning foam grenades."
 
 	charges = list(
-		list("cleaning grenade",   "cleaning grenade",   /obj/item/weapon/grenade/chem_grenade/cleaner,  9),
+		list("cleaning grenade",   "cleaning grenade",   /obj/item/grenade/chem_grenade/cleaner,  9),
 		)
 
 /obj/item/rig_module/grenade_launcher/smoke
@@ -116,7 +122,7 @@
 	desc = "A shoulder-mounted micro-explosive dispenser designed only to accept standard smoke grenades."
 
 	charges = list(
-		list("smoke bomb",   "smoke bomb",   /obj/item/weapon/grenade/smokebomb,  6),
+		list("smoke bomb",   "smoke bomb",   /obj/item/grenade/smokebomb,  6),
 		)
 
 /obj/item/rig_module/grenade_launcher/flashbang
@@ -124,7 +130,7 @@
 	desc = "A shoulder-mounted micro-explosive dispenser designed for security forces."
 
 	charges = list(
-		list("flashbang",   "flashbang",   /obj/item/weapon/grenade/flashbang,  4),
+		list("flashbang",   "flashbang",   /obj/item/grenade/flashbang,  4),
 		)
 
 /obj/item/rig_module/grenade_launcher/mfoam
@@ -132,7 +138,7 @@
 	desc = "A shoulder-mounted micro-explosive dispenser designed only to accept standard metal foam grenades."
 
 	charges = list(
-		list("metal foam grenade",   "metal foam grenade",   /obj/item/weapon/grenade/chem_grenade/metalfoam,  4),
+		list("metal foam grenade",   "metal foam grenade",   /obj/item/grenade/chem_grenade/metalfoam,  4),
 		)
 
 /obj/item/rig_module/mounted
@@ -151,12 +157,16 @@
 	interface_name = "mounted laser cannon"
 	interface_desc = "A shoulder-mounted cell-powered laser cannon."
 
-	var/obj/item/weapon/gun/gun = /obj/item/weapon/gun/energy/lasercannon/mounted
+	var/obj/item/gun/gun = /obj/item/gun/energy/lasercannon/mounted
 
 /obj/item/rig_module/mounted/Initialize()
 	. = ..()
 	if(gun)
 		gun = new gun(src)
+
+/obj/item/rig_module/mounted/Destroy()
+	QDEL_NULL(gun)
+	. = ..()
 
 /obj/item/rig_module/mounted/engage(atom/target)
 
@@ -179,7 +189,7 @@
 	interface_name = "mounted energy gun"
 	interface_desc = "A forearm-mounted suit-powered energy gun."
 	origin_tech = list(TECH_POWER = 6, TECH_COMBAT = 6, TECH_ENGINEERING = 6)
-	gun = /obj/item/weapon/gun/energy/gun/mounted
+	gun = /obj/item/gun/energy/gun/mounted
 
 /obj/item/rig_module/mounted/taser
 
@@ -195,7 +205,7 @@
 	interface_name = "mounted taser"
 	interface_desc = "A palm-mounted, cell-powered taser."
 	origin_tech = list(TECH_POWER = 5, TECH_COMBAT = 5, TECH_ENGINEERING = 6)
-	gun = /obj/item/weapon/gun/energy/taser/mounted
+	gun = /obj/item/gun/energy/taser/mounted
 
 /obj/item/rig_module/mounted/energy_blade
 
@@ -214,16 +224,16 @@
 	usable = 0
 	selectable = 1
 	toggleable = 1
-	use_power_cost = 10 KILOWATTS
+	use_power_cost = 10 KILO WATTS
 	active_power_cost = 500
 	passive_power_cost = 0
 
-	gun = /obj/item/weapon/gun/energy/crossbow/ninja
+	gun = /obj/item/gun/energy/crossbow/ninja
 
 /obj/item/rig_module/mounted/energy_blade/Process()
 
 	if(holder && holder.wearer)
-		if(!(locate(/obj/item/weapon/melee/energy/blade) in holder.wearer))
+		if(!(locate(/obj/item/melee/energy/blade) in holder.wearer))
 			deactivate()
 			return 0
 
@@ -240,9 +250,9 @@
 		deactivate()
 		return
 
-	var/obj/item/weapon/melee/energy/blade/blade = new(M)
-	blade.creator = M
-	M.put_in_hands(blade)
+	var/obj/item/melee/energy/blade/blade = new(M)
+	blade.creator = weakref(M)
+	M.pick_or_drop(blade)
 
 /obj/item/rig_module/mounted/energy_blade/deactivate()
 
@@ -253,17 +263,16 @@
 	if(!M)
 		return
 
-	for(var/obj/item/weapon/melee/energy/blade/blade in M.contents)
-		M.drop_from_inventory(blade)
+	for(var/obj/item/melee/energy/blade/blade in M.contents)
 		qdel(blade)
 
 /obj/item/rig_module/fabricator
 
 	name = "matter fabricator"
-	desc = "A self-contained microfactory system for hardsuit integration."
+	desc = "A self-contained microfactory system for powersuit integration."
 	selectable = 1
 	usable = 1
-	use_power_cost = 5 KILOWATTS
+	use_power_cost = 5 KILO WATTS
 	icon_state = "enet"
 
 	engage_string = "Fabricate Star"
@@ -271,8 +280,8 @@
 	interface_name = "death blossom launcher"
 	interface_desc = "An integrated microfactory that produces poisoned throwing stars from thin air and electricity."
 
-	var/fabrication_type = /obj/item/weapon/material/star/ninja
-	var/fire_force = 30
+	var/fabrication_type = /obj/item/material/star/ninja
+	var/fire_force = 1
 	var/fire_distance = 10
 
 /obj/item/rig_module/fabricator/engage(atom/target)
@@ -286,7 +295,7 @@
 		var/obj/item/firing = new fabrication_type()
 		firing.forceMove(get_turf(src))
 		H.visible_message("<span class='danger'>[H] launches \a [firing]!</span>")
-		firing.throw_at(target,fire_force,fire_distance)
+		firing.throw_at(target, fire_distance, fire_force)
 	else
 		if(H.l_hand && H.r_hand)
 			to_chat(H, "<span class='danger'>Your hands are full.</span>")
@@ -294,16 +303,16 @@
 			var/obj/item/new_weapon = new fabrication_type()
 			new_weapon.forceMove(H)
 			to_chat(H, "<span class='info'><b>You quickly fabricate \a [new_weapon].</b></span>")
-			H.put_in_hands(new_weapon)
+			H.pick_or_drop(new_weapon)
 
 	return 1
 
 /obj/item/rig_module/fabricator/wf_sign
 	name = "wet floor sign fabricator"
-	use_power_cost = 50 KILOWATTS
+	use_power_cost = 50 KILO WATTS
 	engage_string = "Fabricate Sign"
 
 	interface_name = "work saftey launcher"
 	interface_desc = "An integrated microfactory that produces wet floor signs from thin air and electricity."
 
-	fabrication_type = /obj/item/weapon/caution
+	fabrication_type = /obj/item/caution

@@ -14,8 +14,8 @@
 	var/max_components = IC_MAX_SIZE_BASE
 	var/max_complexity = IC_COMPLEXITY_BASE
 	var/opened = TRUE
-	var/obj/item/weapon/cell/battery // Internal cell which most circuits need to work.
-	var/cell_type = /obj/item/weapon/cell
+	var/obj/item/cell/battery // Internal cell which most circuits need to work.
+	var/cell_type = /obj/item/cell
 	var/can_charge = TRUE //Can it be charged in a recharger?
 	var/can_fire_equipped = FALSE //Can it fire/throw weapons when the assembly is being held?
 	var/charge_sections = 4
@@ -24,7 +24,7 @@
 	var/use_cyborg_cell = TRUE
 	var/ext_next_use = 0
 	var/atom/collw
-	var/obj/item/weapon/card/id/access_card
+	var/obj/item/card/id/access_card
 	var/allowed_circuit_action_flags = IC_ACTION_COMBAT | IC_ACTION_LONG_RANGE //which circuit flags are allowed
 	var/combat_circuits = 0 //number of combat cicuits in the assembly, used for diagnostic hud
 	var/long_range_circuits = 0 //number of long range cicuits in the assembly, used for diagnostic hud
@@ -74,7 +74,7 @@
 /obj/item/device/electronic_assembly/GetAccess()
 	return access_card ? access_card.GetAccess() : list()
 
-/obj/item/device/electronic_assembly/examine(mob/user)
+/obj/item/device/electronic_assembly/_examine_text(mob/user)
 	. = ..()
 	if(can_anchor)
 		to_chat(user, SPAN_NOTICE("The anchoring bolts [anchored ? "are" : "can be"] <b>wrenched</b> in place and the maintenance panel [opened ? "can be" : "is"] <b>screwed</b> in place."))
@@ -89,8 +89,6 @@
 	interact(user)
 
 /obj/item/device/electronic_assembly/proc/check_interactivity(mob/user, datum/topic = GLOB.physical_state)
-	if(isrobot(user))
-		return TRUE
 	if(!istype(user))
 		return
 	if(istype(user, /mob/living/silicon/pai))
@@ -99,12 +97,12 @@
 	else if(istype(user, /mob/living/carbon/brain))
 		var/mob/living/carbon/brain/brain_holder = user
 		return brain_holder.check_bot_self
-	return (Adjacent(user) && CanUseTopic(user, topic) && !isobserver(user))
+	return (!user.incapacitated() && Adjacent(user) && CanUseTopic(user, topic))
 
 /obj/item/device/electronic_assembly/Bump(atom/AM)
 	collw = AM
 	.=..()
-	if((istype(collw, /obj/machinery/door/airlock) ||  istype(collw, /obj/machinery/door/window)) && (!isnull(access_card)))
+	if((istype(collw, /obj/machinery/door/airlock) ||  istype(collw, /obj/machinery/door/window)) && (!QDELETED(access_card)))
 		var/obj/machinery/door/D = collw
 		if(D.check_access(access_card))
 			D.open()
@@ -583,7 +581,7 @@
 	playsound(src, 'sound/items/Deconstruct.ogg', 50, 1)
 	add_allowed_scanner(user.ckey)
 	investigate_log("had [IC]([IC.type]) inserted by [key_name(user)].", INVESTIGATE_CIRCUIT)
-	user.drop_item(IC)
+	user.drop(IC)
 	add_component(IC)
 	IC.create_moved_event()
 	return TRUE
@@ -610,7 +608,7 @@
 	if(!silent)
 		to_chat(user, SPAN_NOTICE("You pop \the [IC] out of the case, and slide it out."))
 		playsound(src, 'sound/items/crowbar.ogg', 50, 1)
-		user.put_in_hands(IC)
+		user.pick_or_drop(IC)
 	add_allowed_scanner(user.ckey)
 	investigate_log("had [IC]([IC.type]) removed by [key_name(user)].", INVESTIGATE_CIRCUIT)
 
@@ -646,7 +644,7 @@
 	update_icon()
 	return TRUE
 
-/obj/item/device/electronic_assembly/proc/welder_act(mob/living/user, obj/item/weapon/weldingtool/I)
+/obj/item/device/electronic_assembly/proc/welder_act(mob/living/user, obj/item/weldingtool/I)
 	var/type_to_use
 
 	if(!I.isOn())
@@ -722,7 +720,7 @@
 			return
 
 	if(istype(I, /obj/item/integrated_circuit))
-		if(!user.canUnEquip(I))
+		if(!user.can_unequip(I))
 			return FALSE
 		if(try_add_component(I, user))
 			return TRUE
@@ -747,7 +745,7 @@
 				S.attackby_react(I,user,user.a_intent)
 			return ..()
 
-	else if(istype(I, /obj/item/weapon/cell))
+	else if(istype(I, /obj/item/cell))
 		if(!opened)
 			to_chat(user, SPAN_WARNING("[src]'s hatch is closed, so you can't access \the [src]'s power supplier."))
 			for(var/obj/item/integrated_circuit/input/S in assembly_components)
@@ -758,8 +756,7 @@
 			for(var/obj/item/integrated_circuit/input/S in assembly_components)
 				S.attackby_react(I,user,user.a_intent)
 			return ..()
-		user.drop_item(I)
-		I.forceMove(src)
+		user.drop(I, src)
 		battery = I
 		playsound(src, 'sound/items/Deconstruct.ogg', 50, 1)
 		to_chat(user, SPAN_NOTICE("You slot the [I] inside \the [src]'s power supplier."))
@@ -843,6 +840,9 @@
 
 		if(choice)
 			choice.ask_for_input(user)
+
+/obj/item/device/electronic_assembly/proc/return_power()
+	return battery ? battery.charge * CELLRATE : 0
 
 /obj/item/device/electronic_assembly/emp_act(severity)
 	. = ..()
@@ -1102,7 +1102,7 @@
 		mount_assembly(T,user)
 
 /obj/item/device/electronic_assembly/pickup()
-	transform = matrix() //Reset the matrix.
+	ClearTransform()
 	..()
 
 /obj/item/device/electronic_assembly/wallmount/proc/mount_assembly(turf/on_wall, mob/user) //Yeah, this is admittedly just an abridged and kitbashed version of the wallframe attach procs.
@@ -1118,26 +1118,26 @@
 	if(gotwallitem(T, ndir))
 		to_chat(user, SPAN_WARNING("There's already an item on this wall!"))
 		return
-	playsound(src.loc, 'sound/machines/click.ogg', 75, 1)
+	playsound(loc, 'sound/machines/click.ogg', 75, 1)
 	user.visible_message("[user.name] attaches [src] to the wall.",
 		SPAN_NOTICE("You attach [src] to the wall."),
 		SPAN_NOTICE("You hear clicking."))
-	if(user.unEquip(src,T))
-		var/matrix/M = matrix()
+	if(user.drop(src, T))
+		var/rotation = 0
 		switch(ndir)
 			if(NORTH)
+				rotation = 180
 				pixel_y = -32
 				pixel_x = 0
-				M.Turn(180)
 			if(SOUTH)
 				pixel_y = 21
 				pixel_x = 0
 			if(EAST)
+				rotation = 90
 				pixel_x = -27
 				pixel_y = 0
-				M.Turn(270)
 			if(WEST)
+				rotation = 270
 				pixel_x = 27
 				pixel_y = 0
-				M.Turn(90)
-		transform = M
+		SetTransform(rotation = rotation)

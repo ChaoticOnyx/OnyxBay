@@ -5,6 +5,7 @@
 	a hostile enviroment."
 	icon = 'icons/obj/cryobag.dmi'
 	icon_state = "bodybag_folded"
+	item_state = "bodybag_folded"
 	origin_tech = list(TECH_BIO = 4)
 	var/stasis_power
 	var/bag_structure = /obj/structure/closet/body_bag/cryobag
@@ -36,33 +37,32 @@
 	. = ..()
 	airtank = new()
 	if(syndi)
-		airtank.temperature = T0C - 25
+		airtank.temperature = -25 CELSIUS
 	else
-		airtank.temperature = T0C
+		airtank.temperature = 0 CELSIUS
 	airtank.adjust_gas("oxygen", MOLES_O2STANDARD, 0)
 	airtank.adjust_gas("nitrogen", MOLES_N2STANDARD)
 	update_icon()
 
 /obj/structure/closet/body_bag/cryobag/Destroy()
-	STOP_PROCESSING(SSobj, src)
 	QDEL_NULL(airtank)
 	return ..()
 
 /obj/structure/closet/body_bag/cryobag/Entered(atom/movable/AM)
 	if(ishuman(AM))
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 	..()
 
 /obj/structure/closet/body_bag/cryobag/Exited(atom/movable/AM)
 	if(ishuman(AM))
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 	. = ..()
 
 /obj/structure/closet/body_bag/cryobag/update_icon()
 	..()
 	overlays.Cut()
 	var/image/I = image(icon, "indicator[opened]")
-	I.appearance_flags = RESET_COLOR
+	I.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 	var/maxstasis = initial(stasis_power)
 	if(stasis_power > 0.5 * maxstasis)
 		I.color = COLOR_LIME
@@ -81,12 +81,12 @@
 		folded.stasis_power = stasis_power
 		folded.color = color_saturation(get_saturation())
 
-/obj/structure/closet/body_bag/cryobag/Process()
+/obj/structure/closet/body_bag/cryobag/think()
 	if(stasis_power < 2)
-		return PROCESS_KILL
+		return
 	var/mob/living/carbon/human/H = locate() in src
 	if(!H)
-		return PROCESS_KILL
+		return
 	degradation_time--
 	if(degradation_time < 0)
 		degradation_time = initial(degradation_time)
@@ -97,18 +97,20 @@
 	if(H.stasis_sources[STASIS_CRYOBAG] != stasis_power)
 		H.SetStasis(stasis_power, STASIS_CRYOBAG)
 
+	set_next_think(world.time + 1 SECOND)
+
 /obj/structure/closet/body_bag/cryobag/return_air() //Used to make stasis bags protect from vacuum.
 	if(airtank)
 		return airtank
 	..()
 
-/obj/structure/closet/body_bag/cryobag/examine(mob/user)
+/obj/structure/closet/body_bag/cryobag/_examine_text(mob/user)
 	. = ..()
 	. += "\nThe stasis meter shows '[stasis_power]x'."
 	if(Adjacent(user)) //The bag's rather thick and opaque from a distance.
 		. += "\n<span class='info'>You peer into \the [src].</span>"
 		for(var/mob/living/L in contents)
-			L.examine(user)
+			L._examine_text(user)
 
 /obj/item/usedcryobag
 	name = "used stasis bag"

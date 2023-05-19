@@ -103,29 +103,36 @@
 	required_reagents = list(/datum/reagent/silicon = 1, /datum/reagent/potassium = 1, /datum/reagent/ammonia = 1)
 	result_amount = 3
 
+/datum/chemical_reaction/painkiller
+	name = "Metazine"
+	result = /datum/reagent/painkiller
+	required_reagents = list(/datum/reagent/painkiller/tramadol = 1, /datum/reagent/ammonia = 1, /datum/reagent/phosphorus = 1)
+	catalysts = list(/datum/reagent/toxin/plasma = 5)
+	result_amount = 1
+
 /datum/chemical_reaction/tramadol
 	name = "Tramadol"
-	result = /datum/reagent/tramadol
+	result = /datum/reagent/painkiller/tramadol
 	required_reagents = list(/datum/reagent/inaprovaline = 1, /datum/reagent/ethanol = 1, /datum/reagent/acetone = 1)
 	result_amount = 1
 
 /datum/chemical_reaction/paracetamol
 	name = "Paracetamol"
-	result = /datum/reagent/paracetamol
-	required_reagents = list(/datum/reagent/tramadol = 1, /datum/reagent/sugar = 1, /datum/reagent/water = 1)
+	result = /datum/reagent/painkiller/paracetamol
+	required_reagents = list(/datum/reagent/painkiller/tramadol = 1, /datum/reagent/sugar = 1, /datum/reagent/water = 1)
 	result_amount = 3
 
 /datum/chemical_reaction/oxycodone
 	name = "Oxycodone"
-	result = /datum/reagent/tramadol/oxycodone
-	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/tramadol = 1)
+	result = /datum/reagent/painkiller/tramadol/oxycodone
+	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/painkiller/tramadol = 1)
 	catalysts = list(/datum/reagent/toxin/plasma = 5)
 	result_amount = 1
 
 /datum/chemical_reaction/tarine
 	name = "Tarine"
-	result = /datum/reagent/tramadol/opium/tarine
-	required_reagents = list(/datum/reagent/tramadol/opium = 3, /datum/reagent/acetone = 1, /datum/reagent/acid/hydrochloric = 1)
+	result = /datum/reagent/painkiller/opium/tarine
+	required_reagents = list(/datum/reagent/painkiller/opium = 3, /datum/reagent/acetone = 1, /datum/reagent/acid/hydrochloric = 1)
 	result_amount = 3
 
 /datum/chemical_reaction/sterilizine
@@ -447,10 +454,16 @@
 	required_reagents = list(/datum/reagent/radium = 1, /datum/reagent/potassium = 1, /datum/reagent/acid/hydrochloric = 1)
 	result_amount = 3
 
+/datum/chemical_reaction/hair_grower
+	name = "Hair Grower"
+	result = /datum/reagent/toxin/hair_grower
+	required_reagents = list(/datum/reagent/arithrazine = 1, /datum/reagent/potassium = 1, /datum/reagent/acid/polyacid = 1)
+	result_amount = 1
+
 /datum/chemical_reaction/noexcutite
 	name = "Noexcutite"
 	result = /datum/reagent/noexcutite
-	required_reagents = list(/datum/reagent/tramadol/oxycodone = 1, /datum/reagent/dylovene = 1)
+	required_reagents = list(/datum/reagent/painkiller/tramadol/oxycodone = 1, /datum/reagent/dylovene = 1)
 	result_amount = 2
 
 /* Solidification */
@@ -458,7 +471,7 @@
 /datum/chemical_reaction/plasmasolidification
 	name = "Solid Plasma"
 	result = null
-	required_reagents = list(/datum/reagent/iron = 5, /datum/reagent/frostoil = 5, /datum/reagent/toxin/plasma = 20)
+	required_reagents = list(/datum/reagent/iron = 5, /datum/reagent/frostoil = 5, /datum/reagent/toxin/plasma = REAGENTS_PER_MATERIAL_SHEET)
 	result_amount = 1
 
 /datum/chemical_reaction/plasmasolidification/on_reaction(datum/reagents/holder, created_volume)
@@ -467,11 +480,20 @@
 /datum/chemical_reaction/plastication
 	name = "Plastic"
 	result = null
-	required_reagents = list(/datum/reagent/acid/polyacid = 1, /datum/reagent/toxin/plasticide = 2)
+	required_reagents = list(/datum/reagent/acid/polyacid = 1, /datum/reagent/toxin/plasticide = REAGENTS_PER_MATERIAL_SHEET)
 	result_amount = 1
 
 /datum/chemical_reaction/plastication/on_reaction(datum/reagents/holder, created_volume)
 	new /obj/item/stack/material/plastic(get_turf(holder.my_atom), created_volume)
+
+/datum/chemical_reaction/solidification_glass
+	name = "Glass"
+	result = null
+	required_reagents = list(/datum/reagent/silicate = 1, /datum/reagent/toxin/plasticide = REAGENTS_PER_MATERIAL_SHEET)
+	result_amount = 1
+
+/datum/chemical_reaction/solidification_glass/on_reaction(datum/reagents/holder, created_volume)
+	new /obj/item/stack/material/glass(get_turf(holder.my_atom), created_volume)
 
 /* Explosion reactions */
 
@@ -489,6 +511,10 @@
 
 /datum/chemical_reaction/explosion/potassium
 	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/potassium = 1)
+
+/datum/chemical_reaction/explosion/hair_solution
+	required_reagents = list(/datum/reagent/toxin/hair_grower = 1, /datum/reagent/toxin/hair_remover = 1)
+	result_amount = 1
 
 /datum/chemical_reaction/explosion/nitroglycerin
 	name = "Nitroglycerin"
@@ -551,7 +577,7 @@
 /datum/chemical_reaction/napalm/on_reaction(datum/reagents/holder, created_volume)
 	var/turf/location = get_turf(holder.my_atom.loc)
 	for(var/turf/simulated/floor/target_tile in range(0,location))
-		target_tile.assume_gas(/datum/reagent/toxin/plasma, created_volume, 400+T0C)
+		target_tile.assume_gas("plasma", created_volume, 400 CELSIUS)
 		spawn (0) target_tile.hotspot_expose(700, 400)
 	holder.del_reagent("napalm")
 
@@ -876,7 +902,7 @@
 
 /datum/chemical_reaction/metroid/monkey/on_reaction(datum/reagents/holder)
 	for(var/i = 1, i <= 3, i++)
-		var /obj/item/weapon/reagent_containers/food/snacks/monkeycube/M = new /obj/item/weapon/reagent_containers/food/snacks/monkeycube
+		var /obj/item/reagent_containers/food/monkeycube/M = new /obj/item/reagent_containers/food/monkeycube
 		M.loc = get_turf(holder.my_atom)
 	..()
 
@@ -977,11 +1003,11 @@
 							)
 
 /datum/chemical_reaction/metroid/n_crit/on_reaction(datum/reagents/holder)
+	..()
 	for(var/i = 1, i <= 3, i++)
 		var/mob/living/simple_animal/hostile/asteroid/type = pick(possible_mobs)
 		new type(get_turf(holder.my_atom))
 		type.faction = "neutral"
-	..()
 
 /datum/chemical_reaction/metroid/d_crit
 	name = "Metroid Dangerous Crit"
@@ -1016,7 +1042,7 @@
 	required = /obj/item/metroid_extract/silver
 
 /datum/chemical_reaction/metroid/bork/on_reaction(datum/reagents/holder)
-	var/list/borks = typesof(/obj/item/weapon/reagent_containers/food/snacks) - /obj/item/weapon/reagent_containers/food/snacks
+	var/list/borks = typesof(/obj/item/reagent_containers/food) - /obj/item/reagent_containers/food
 	playsound(holder.my_atom, 'sound/effects/phasein.ogg', 100, 1)
 	for(var/mob/living/carbon/human/M in viewers(get_turf(holder.my_atom), null))
 		if(M.eyecheck() < FLASH_PROTECTION_MODERATE)
@@ -1054,7 +1080,7 @@
 	required = /obj/item/metroid_extract/blue
 
 /datum/chemical_reaction/metroid/stabilizer/on_reaction(datum/reagents/holder)
-	new /obj/item/weapon/metroid_stabilizer(get_turf(holder.my_atom))
+	new /obj/item/metroid_stabilizer(get_turf(holder.my_atom))
 	..()
 
 //Dark Blue
@@ -1082,7 +1108,7 @@
 	required = /obj/item/metroid_extract/darkblue
 
 /datum/chemical_reaction/metroid/chill_potion/on_reaction(datum/reagents/holder)
-	new /obj/item/weapon/chill_potion(get_turf(holder.my_atom))
+	new /obj/item/chill_potion(get_turf(holder.my_atom))
 	..()
 
 //Orange
@@ -1133,7 +1159,7 @@
 
 /datum/chemical_reaction/metroid/cell/on_reaction(datum/reagents/holder, created_volume)
 	..()
-	new /obj/item/weapon/cell/metroid(get_turf(holder.my_atom))
+	new /obj/item/cell/metroid(get_turf(holder.my_atom))
 
 /datum/chemical_reaction/metroid/glow
 	name = "Metroid Glow"
@@ -1157,7 +1183,7 @@
 
 /datum/chemical_reaction/metroid/psteroid/on_reaction(datum/reagents/holder, created_volume)
 	..()
-	var/obj/item/weapon/metroidsteroid/P = new /obj/item/weapon/metroidsteroid
+	var/obj/item/metroidsteroid/P = new /obj/item/metroidsteroid
 	P.loc = get_turf(holder.my_atom)
 
 /datum/chemical_reaction/metroid/jam
@@ -1189,7 +1215,7 @@
 	required = /obj/item/metroid_extract/red
 
 /datum/chemical_reaction/metroid/mutation/on_reaction(datum/reagents/holder)
-	new /obj/item/weapon/metroid_mutation(get_turf(holder.my_atom))
+	new /obj/item/metroid_mutation(get_turf(holder.my_atom))
 	..()
 
 /datum/chemical_reaction/metroid/bloodlust
@@ -1213,10 +1239,9 @@
 	result_amount = 1
 	required = /obj/item/metroid_extract/pink
 
-/datum/chemical_reaction/metroid/ppotion/on_reaction(datum/reagents/holder)
+/datum/chemical_reaction/metroid/docility/on_reaction(datum/reagents/holder)
 	..()
-	var/obj/item/weapon/metroidpotion/P = new /obj/item/weapon/metroidpotion
-	P.loc = get_turf(holder.my_atom)
+	new /obj/item/metroidpotion(get_turf(holder.my_atom))
 
 //Black
 /datum/chemical_reaction/metroid/mutate2
@@ -1251,7 +1276,7 @@
 
 /datum/chemical_reaction/metroid/potion2/on_reaction(datum/reagents/holder)
 	..()
-	new /obj/item/weapon/metroidpotion2(get_turf(holder.my_atom))
+	new /obj/item/metroidpotion2(get_turf(holder.my_atom))
 
 //Adamantine
 /datum/chemical_reaction/metroid/golem
@@ -1316,7 +1341,7 @@
 	required = /obj/item/metroid_extract/pyrite
 
 /datum/chemical_reaction/metroid/paint/on_reaction(datum/reagents/holder)
-	new /obj/item/weapon/reagent_containers/glass/paint/random(get_turf(holder.my_atom))
+	new /obj/item/reagent_containers/vessel/paint/random(get_turf(holder.my_atom))
 	..()
 
 /datum/chemical_reaction/metroid/crayon
@@ -1326,7 +1351,7 @@
 	required = /obj/item/metroid_extract/pyrite
 
 /datum/chemical_reaction/metroid/crayon/on_reaction(datum/reagents/holder)
-	new /obj/item/weapon/pen/crayon/random(get_turf(holder.my_atom))
+	new /obj/item/pen/crayon/random(get_turf(holder.my_atom))
 	..()
 
 //cerulean
@@ -1337,7 +1362,7 @@
 	required = /obj/item/metroid_extract/cerulean
 
 /datum/chemical_reaction/metroid/extract_enhance/on_reaction(datum/reagents/holder)
-	new /obj/item/weapon/metroidsteroid2(get_turf(holder.my_atom))
+	new /obj/item/metroidsteroid2(get_turf(holder.my_atom))
 	..()
 
 /datum/chemical_reaction/soap_key
@@ -1347,14 +1372,14 @@
 	var/strength = 3
 
 /datum/chemical_reaction/soap_key/can_happen(datum/reagents/holder)
-	if(holder.my_atom && istype(holder.my_atom, /obj/item/weapon/soap))
+	if(holder.my_atom && istype(holder.my_atom, /obj/item/soap))
 		return ..()
 	return 0
 
 /datum/chemical_reaction/soap_key/on_reaction(datum/reagents/holder)
-	var/obj/item/weapon/soap/S = holder.my_atom
+	var/obj/item/soap/S = holder.my_atom
 	if(S.key_data)
-		var/obj/item/weapon/key/soap/key = new(get_turf(holder.my_atom), S.key_data)
+		var/obj/item/key/soap/key = new(get_turf(holder.my_atom), S.key_data)
 		key.uses = strength
 	..()
 
@@ -1370,7 +1395,7 @@
 /datum/chemical_reaction/tofu/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/weapon/reagent_containers/food/snacks/tofu(location)
+		new /obj/item/reagent_containers/food/tofu(location)
 
 /datum/chemical_reaction/chocolate_bar
 	name = "Chocolate Bar"
@@ -1381,7 +1406,7 @@
 /datum/chemical_reaction/chocolate_bar/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/weapon/reagent_containers/food/snacks/chocolatebar(location)
+		new /obj/item/reagent_containers/food/chocolatebar(location)
 
 /datum/chemical_reaction/chocolate_bar2
 	name = "Chocolate Bar"
@@ -1392,7 +1417,7 @@
 /datum/chemical_reaction/chocolate_bar2/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/weapon/reagent_containers/food/snacks/chocolatebar(location)
+		new /obj/item/reagent_containers/food/chocolatebar(location)
 
 /datum/chemical_reaction/hot_coco
 	name = "Hot Coco"
@@ -1434,18 +1459,18 @@
 /datum/chemical_reaction/cheesewheel/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/weapon/reagent_containers/food/snacks/sliceable/cheesewheel(location)
+		new /obj/item/reagent_containers/food/sliceable/cheesewheel(location)
 
-/datum/chemical_reaction/meatball
-	name = "Meatball"
+/datum/chemical_reaction/faggot
+	name = "Faggot"
 	result = null
 	required_reagents = list(/datum/reagent/nutriment/protein = 3, /datum/reagent/nutriment/flour = 5)
 	result_amount = 3
 
-/datum/chemical_reaction/meatball/on_reaction(datum/reagents/holder, created_volume)
+/datum/chemical_reaction/faggot/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/weapon/reagent_containers/food/snacks/meatball(location)
+		new /obj/item/reagent_containers/food/faggot(location)
 
 /datum/chemical_reaction/dough
 	name = "Dough"
@@ -1456,7 +1481,7 @@
 /datum/chemical_reaction/dough/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/weapon/reagent_containers/food/snacks/dough(location)
+		new /obj/item/reagent_containers/food/dough(location)
 
 /datum/chemical_reaction/syntiflesh
 	name = "Syntiflesh"
@@ -1467,7 +1492,7 @@
 /datum/chemical_reaction/syntiflesh/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/weapon/reagent_containers/food/snacks/meat/syntiflesh(location)
+		new /obj/item/reagent_containers/food/meat/syntiflesh(location)
 
 /datum/chemical_reaction/hot_ramen
 	name = "Hot Ramen"
@@ -1647,7 +1672,7 @@
 /datum/chemical_reaction/magellan
 	name = "Magellan"
 	result = /datum/reagent/ethanol/magellan
-	required_reagents = list(/datum/reagent/ethanol/wine = 1, /datum/reagent/ethanol/specialwhiskey = 1)
+	required_reagents = list(/datum/reagent/ethanol/wine = 1,  /datum/reagent/ethanol/whiskey/specialwhiskey = 1)
 	catalysts = list(/datum/reagent/sugar)
 	result_amount = 2
 
@@ -2064,7 +2089,7 @@
 /datum/chemical_reaction/antidexafen
 	name = "Antidexafen"
 	result = /datum/reagent/antidexafen
-	required_reagents = list(/datum/reagent/paracetamol = 1, /datum/reagent/carbon = 1)
+	required_reagents = list(/datum/reagent/painkiller/paracetamol = 1, /datum/reagent/carbon = 1)
 	result_amount = 2
 
 /datum/chemical_reaction/nanoblood

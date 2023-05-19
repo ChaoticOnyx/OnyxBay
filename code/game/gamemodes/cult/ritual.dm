@@ -1,19 +1,18 @@
-/obj/item/weapon/book/tome
+/obj/item/book/tome
 	name = "arcane tome"
 	icon = 'icons/obj/cult.dmi'
 	icon_state = "tome"
-	throw_speed = 1
 	throw_range = 5
 	w_class = 2
 	unique = 1
 	carved = 2 // Don't carve it
 	var/open = 0
 
-/obj/item/weapon/book/tome/New()
+/obj/item/book/tome/New()
 	flick("tome_spawn", src)
 	..()
 
-/obj/item/weapon/book/tome/attack_self(mob/user as mob)
+/obj/item/book/tome/attack_self(mob/user as mob)
 	if(open)
 		open = FALSE
 		icon_state = "tome"
@@ -27,14 +26,14 @@
 		else
 			to_chat(user, "\The [src] seems full of illegible scribbles. Is this a joke?")
 
-/obj/item/weapon/book/tome/examine(mob/user as mob)
+/obj/item/book/tome/_examine_text(mob/user as mob)
 	. = ..()
 	if(!iscultist(user))
 		. += "\nAn old, dusty tome with frayed edges and a sinister looking cover."
 	else
 		. += "\nThe scriptures of Nar-Sie, The One Who Sees, The Geometer of Blood. Contains the details of every ritual his followers could think of. Most of these are useless, though."
 
-/obj/item/weapon/book/tome/afterattack(atom/A, mob/user, proximity)
+/obj/item/book/tome/afterattack(atom/A, mob/user, proximity)
 	if(!proximity || !iscultist(user))
 		return
 	if(A.reagents && A.reagents.has_reagent(/datum/reagent/water/holywater))
@@ -47,14 +46,14 @@
 	var/has_tome = 0
 	var/has_robes = 0
 	var/cult_ground = 0
-	if(istype(get_active_hand(), /obj/item/weapon/book/tome))
-		var/obj/item/weapon/book/tome/B = get_active_hand()
+	if(istype(get_active_hand(), /obj/item/book/tome))
+		var/obj/item/book/tome/B = get_active_hand()
 		if(B.open)
 			has_tome = 1
 		else
 			to_chat(src, "<span class='warning'>You need to open the tome before drawing the rune.</span>")
-	else if(istype(get_inactive_hand(), /obj/item/weapon/book/tome))
-		var/obj/item/weapon/book/tome/B = get_inactive_hand()
+	else if(istype(get_inactive_hand(), /obj/item/book/tome))
+		var/obj/item/book/tome/B = get_inactive_hand()
 		if(B.open)
 			has_tome = 1
 		else
@@ -80,11 +79,11 @@
 	var/timer
 	var/damage = 1
 	if(has_tome)
-		if(istype(get_active_hand(), /obj/item/weapon/book/tome))
-			var/obj/item/weapon/book/tome/B = get_active_hand()
+		if(istype(get_active_hand(), /obj/item/book/tome))
+			var/obj/item/book/tome/B = get_active_hand()
 			flick("tome-flick", B)
-		else if(istype(get_inactive_hand(), /obj/item/weapon/book/tome))
-			var/obj/item/weapon/book/tome/B = get_inactive_hand()
+		else if(istype(get_inactive_hand(), /obj/item/book/tome))
+			var/obj/item/book/tome/B = get_inactive_hand()
 			flick("tome-flick", B)
 		if(has_robes && cult_ground)
 			self = "Feeling greatly empowered, you slice open your finger and make a rune on the engraved floor. It shifts when your blood touches it, and starts vibrating as you begin to chant the ritual that binds your life essence with the dark arcane energies flowing through the surrounding world."
@@ -184,7 +183,7 @@ var/list/Tier2Runes = list(
 	/mob/proc/offering_rune,
 	/mob/proc/drain_rune,
 	/mob/proc/emp_rune,
-	/mob/proc/stun_imbue,	
+	/mob/proc/stun_imbue,
 	/mob/proc/massdefile_rune
 	)
 
@@ -309,12 +308,12 @@ var/list/Tier4Runes = list(
 	set name = "Imbue: EMP"
 
 	make_rune(/obj/effect/rune/imbue/emp)
-	
+
 /mob/proc/stun_imbue()
 	set category = "Cult Magic"
 	set name = "Imbue: Hypnosis"
 
-	make_rune(/obj/effect/rune/imbue/stun)	
+	make_rune(/obj/effect/rune/imbue/stun)
 
 /mob/proc/cult_communicate()
 	set category = "Cult Magic"

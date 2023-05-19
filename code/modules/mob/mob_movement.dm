@@ -25,6 +25,11 @@
 /client/proc/client_dir(input, direction=-1)
 	return turn(input, direction*dir2angle(dir))
 
+/mob/forceMove(atom/destination, unbuckle_mob = TRUE)
+	. = ..()
+	if(. && unbuckle_mob)
+		buckled?.unbuckle_mob()
+
 /client/Northeast()
 	diagonal_action(NORTHEAST)
 /client/Northwest()
@@ -56,10 +61,17 @@
 	to_chat(usr, "<span class='warning'>This mob type cannot drop items.</span>")
 
 /mob/living/carbon/hotkey_drop()
-	if(!get_active_hand())
-		to_chat(usr, "<span class='warning'>You have nothing to drop in your hand.</span>")
+	if(!can_use_hands)
+		return
+	var/obj/item/I = get_active_hand()
+	if(!I)
+		to_chat(usr, SPAN("warning", "You have nothing to drop in your hand."))
+		return
+	if(!(I.force_drop || can_unequip(I)))
+		to_chat(usr, SPAN("warning", "\The [I] cannot be dropped."))
+		return
 	else
-		drop_item()
+		drop_active_hand(force = TRUE)
 
 //This gets called when you press the delete button.
 /client/verb/delete_key_pressed()
@@ -102,8 +114,9 @@
 /client/verb/drop_item()
 	set hidden = 1
 	if(!isrobot(mob) && mob.stat == CONSCIOUS && isturf(mob.loc))
-		return mob.drop_item()
-	return
+		var/obj/item/I = mob.get_active_hand()
+		if(I && mob.can_unequip(I))
+			mob.drop_active_hand()
 
 /atom/movable/proc/set_glide_size(glide_size_override = 0, min = 0.9, max = world.icon_size / 2)
 	if (!glide_size_override || glide_size_override > max)
@@ -120,6 +133,8 @@
 
 //This proc should never be overridden elsewhere at /atom/movable to keep directions sane.
 /atom/movable/Move(newloc, direct)
+	var/old_loc = loc
+
 	if (direct & (direct - 1))
 		if (direct & 1)
 			if (direct & 4)
@@ -164,7 +179,8 @@
 		src.m_flag = 1
 		if ((A != src.loc && A && A.z == src.z))
 			src.last_move = get_dir(A, src.loc)
-	return
+
+	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, loc)
 
 /proc/step_glide(atom/movable/am, dir, glide_size_override)
 	am.set_glide_size(glide_size_override)

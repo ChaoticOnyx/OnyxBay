@@ -11,6 +11,12 @@
 	hitby_sound = 'sound/effects/metalhit2.ogg'
 	explosion_block = 1
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 100 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 20.2 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
 	var/damage = 0
 	var/damage_overlay = 0
 	var/global/damage_overlays[16]
@@ -24,9 +30,12 @@
 	var/hitsound = 'sound/effects/fighting/Genhit.ogg'
 	var/list/wall_connections = list("0", "0", "0", "0")
 	var/floor_type = /turf/simulated/floor/plating //turf it leaves after destruction
+	var/masks_icon = 'icons/turf/wall_masks.dmi'
 
 /turf/simulated/wall/New(newloc, materialtype, rmaterialtype)
 	..(newloc)
+	if(GLOB.using_map.legacy_mode)
+		masks_icon = 'icons/turf/wall_masks_legacy.dmi'
 	icon_state = "blank"
 	if(!materialtype)
 		materialtype = DEFAULT_WALL_MATERIAL
@@ -36,15 +45,6 @@
 	update_material()
 	hitsound = material.hitsound
 
-/turf/simulated/wall/Initialize()
-	START_PROCESSING(SSturf, src) //Used for radiation.
-	. = ..()
-
-/turf/simulated/wall/Destroy()
-	STOP_PROCESSING(SSturf, src)
-	dismantle_wall(null,null,1)
-	. = ..()
-
 // Walls always hide the stuff below them.
 /turf/simulated/wall/levelupdate()
 	for(var/obj/O in src)
@@ -53,13 +53,6 @@
 /turf/simulated/wall/protects_atom(atom/A)
 	var/obj/O = A
 	return (istype(O) && O.hides_under_flooring()) || ..()
-
-/turf/simulated/wall/Process(wait, times_fired)
-	var/how_often = max(round(2 SECONDS/wait), 1)
-	if(times_fired % how_often)
-		return //We only work about every 2 seconds
-	if(!radiate())
-		return PROCESS_KILL
 
 /turf/simulated/wall/proc/get_material()
 	return material
@@ -220,7 +213,7 @@
 	//	burn(500)
 
 	// Bullets ricochet from walls made of specific materials with some little chance.
-	if(istype(Proj,/obj/item/projectile/bullet))
+	if(istype(Proj, /obj/item/projectile/bullet) && Proj.can_ricochet)
 		if(reinf_material)
 			if(material.resilience * reinf_material.resilience > 0)
 				var/ricochetchance = round(sqrt(material.resilience * reinf_material.resilience))
@@ -273,7 +266,7 @@
 	if(ismob(AM))
 		return
 
-	var/tforce = AM:throwforce * (speed / THROWFORCE_SPEED_DIVISOR)
+	var/tforce = AM:throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
 	if(tforce < 17.5)
 		if(!nomsg)
 			visible_message("[AM] bounces off \the [src].")
@@ -298,7 +291,7 @@
 	return ..()
 
 //Appearance
-/turf/simulated/wall/examine(mob/user)
+/turf/simulated/wall/_examine_text(mob/user)
 	. = ..()
 
 	if(!damage)
@@ -390,7 +383,7 @@
 /turf/simulated/wall/ex_act(severity)
 	switch(severity)
 		if(1.0)
-			src.ChangeTurf(get_base_turf(src.z))
+			src.ChangeTurf(get_base_turf_by_area(src))
 			return
 		if(2.0)
 			if(prob(75))
@@ -399,7 +392,6 @@
 				dismantle_wall(1,1)
 		if(3.0)
 			take_damage(rand(0, 250))
-		else
 	return
 
 // Wall-rot effect, a nasty fungus that destroys walls.
@@ -440,14 +432,6 @@
 			qdel(O)
 //	F.sd_LumReset()		//TODO: ~Carn
 	return
-
-/turf/simulated/wall/proc/radiate()
-	var/total_radiation = material.radioactivity + (reinf_material ? reinf_material.radioactivity / 2 : 0)
-	if(!total_radiation)
-		return
-
-	SSradiation.radiate(src, total_radiation)
-	return total_radiation
 
 /turf/simulated/wall/proc/CheckPenetration(base_chance, damage)
 	return round(damage/material.integrity*180)

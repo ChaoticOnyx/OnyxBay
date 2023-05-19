@@ -12,14 +12,14 @@
 	anchored = 1
 
 	component_types = list(
-		/obj/item/weapon/circuitboard/body_scanner,
+		/obj/item/circuitboard/body_scanner,
 		/obj/item/device/healthanalyzer,
-		/obj/item/weapon/stock_parts/scanning_module = 3,
-		/obj/item/weapon/stock_parts/manipulator = 4,
+		/obj/item/stock_parts/scanning_module = 3,
+		/obj/item/stock_parts/manipulator = 4,
 	)
 
-	idle_power_usage = 60
-	active_power_usage = 10000	// 10 kW. It's a big all-body scanner.
+	idle_power_usage = 60 WATTS
+	active_power_usage = 10 KILO WATTS // It's a big all-body scanner.
 
 /obj/machinery/bodyscanner/Destroy()
 	go_out()
@@ -29,7 +29,7 @@
 	..()
 
 /obj/machinery/bodyscanner/Initialize()
-	..()
+	. = ..()
 	for(var/D in GLOB.cardinal)
 		var/obj/machinery/body_scanconsole/console = locate() in get_step(src, D)
 		if(!console || console?.connected)
@@ -40,17 +40,17 @@
 	RefreshParts()
 	update_icon()
 
-/obj/machinery/bodyscanner/relaymove(mob/user as mob)
+/obj/machinery/bodyscanner/relaymove(mob/user)
 	if (user.stat)
 		return
 	src.go_out()
 	return
 
-/obj/machinery/bodyscanner/examine(mob/user)
+/obj/machinery/bodyscanner/_examine_text(mob/user)
 	. = ..()
 	if (user.Adjacent(src))
 		if(occupant)
-			. += "\n[occupant.examine(user)]"
+			. += "\n[occupant._examine_text(user)]"
 
 /obj/machinery/bodyscanner/verb/eject()
 	set src in oview(1)
@@ -214,7 +214,6 @@
 				// SN src = null
 				qdel(src)
 				return
-		else
 	return
 
 /obj/machinery/body_scanconsole/ex_act(severity)
@@ -229,7 +228,6 @@
 				// SN src = null
 				qdel(src)
 				return
-		else
 	return
 
 /obj/machinery/body_scanconsole/update_icon()
@@ -252,7 +250,7 @@
 	anchored = 1
 
 	component_types = list(
-		/obj/item/weapon/circuitboard/bodyscanner_console
+		/obj/item/circuitboard/bodyscanner_console
 	)
 
 /obj/machinery/body_scanconsole/Destroy()
@@ -308,7 +306,7 @@
 				to_chat(usr, SPAN("warning", "The body scanner cannot scan that lifeform."))
 				return TRUE
 
-			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper/(loc)
+			var/obj/item/paper/P = new /obj/item/paper/(loc)
 			P.set_content("<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]", TRUE)
 			return TRUE
 		if ("eject")
@@ -373,9 +371,9 @@
 
 	if(H.should_have_organ(BP_BRAIN))
 		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
-		if (!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
+		if (!brain || H.is_ic_dead() || (H.status_flags & FAKEDEATH) || (isundead(H) && !isfakeliving(H)))
 			data["brain_activity"] = 0
-		else if (H.stat != DEAD)
+		else if (!H.is_ic_dead())
 			if (!brain.damage)
 				data["brain_activity"] = 1
 			else
@@ -392,7 +390,7 @@
 		data["pulse"] = null
 
 	data["blood_volume"] = H.get_blood_volume()
-	data["blood_volume_abs"] = H.vessel.get_reagent_amount(/datum/reagent/blood)
+	data["blood_volume_abs"] = H.get_blood_volume_abs()
 	data["blood_volume_max"] = H.species.blood_volume
 
 	data["blood_type"] = null
@@ -407,8 +405,8 @@
 	if (H.chem_effects[CE_BLOCKAGE])
 		data["warnings"] += list("Warning: Blood clotting detected, blood transfusion recommended.")
 
-	data["body_temperature_c"] = H.bodytemperature - T0C
-	data["body_temperature_f"] = H.bodytemperature*1.8-459.67
+	data["body_temperature_c"] = CONV_KELVIN_CELSIUS(H.get_body_temperature())
+	data["body_temperature_f"] = H.get_body_temperature()*1.8-459.67
 
 	if(H.nutrition < 150)
 		data["warnings"] += list("Warning: Very low nutrition value detected")
@@ -417,8 +415,8 @@
 	data["burn_severity"] = capitalize(get_severity(H.getFireLoss()))
 	data["tox_severity"] = capitalize(get_severity(H.getToxLoss()))
 	data["oxy_severity"] = capitalize(get_severity(H.getOxyLoss()))
-	data["rad_severity"] = capitalize(get_severity(H.radiation/5))
 	data["clone_severity"] = capitalize(get_severity(H.getCloneLoss()))
+	data["rad_dose"] = H.radiation
 
 	if (H.paralysis)
 		data["warnings"] += list("Paralysis Summary: approx. [H.paralysis/4] seconds left")
@@ -526,9 +524,9 @@
 	var/brain_result = "normal"
 	if(H.should_have_organ(BP_BRAIN))
 		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
-		if(!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
+		if(!brain || H.is_ic_dead() || (H.status_flags & FAKEDEATH) || (isundead(H) && !isfakeliving(H)))
 			brain_result = SPAN("danger", "none, patient is braindead")
-		else if(H.stat != DEAD)
+		else if(!H.is_ic_dead())
 			brain_result = "[round(max(0, (1 - brain.damage/brain.max_damage) * 100))]%"
 	else
 		brain_result = SPAN("danger", "ERROR - Nonstandard biology")
@@ -550,11 +548,11 @@
 	if(H.b_type)
 		dat += "<b>Blood type:</b> [H.b_type]"
 	dat += "<b>Blood pressure:</b> [H.get_blood_pressure()] ([H.get_blood_oxygenation()]% blood oxygenation)"
-	dat += "<b>Blood volume:</b> [H.vessel.get_reagent_amount(/datum/reagent/blood)]/[H.species.blood_volume]u"
+	dat += "<b>Blood volume:</b> [H.get_blood_volume_abs()]/[H.species.blood_volume]u"
 	if (H.chem_effects[CE_BLOCKAGE])
 		dat += SPAN("warning", "Warning: Blood clotting detected, blood transfusion recommended.")
 	// Body temperature.
-	dat += "<b>Body temperature:</b> [H.bodytemperature-T0C]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)"
+	dat += "<b>Body temperature:</b> [CONV_KELVIN_CELSIUS(H.get_body_temperature())]&deg;C ([H.get_body_temperature()*1.8-459.67]&deg;F)"
 	if(H.nutrition < 150)
 		dat += SPAN("warning", "Warning: Very low nutrition value detected.")
 
@@ -563,7 +561,7 @@
 	dat += "<b>Systematic Organ Failure:</b>\t[get_severity(H.getToxLoss())]"
 	dat += "<b>Oxygen Deprivation:</b>\t[get_severity(H.getOxyLoss())]"
 
-	dat += "<b>Radiation Level:</b>\t[get_severity(H.radiation/5)]"
+	dat += "<b>Radiation dose:</b>\t[fmt_siunit(H.radiation, "Sv", 3)]"
 	dat += "<b>Genetic Tissue Damage:</b>\t[get_severity(H.getCloneLoss())]"
 	if(H.paralysis)
 		dat += "Paralysis Summary: approx. [H.paralysis/4] seconds left"

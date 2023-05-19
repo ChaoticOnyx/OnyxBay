@@ -3,6 +3,7 @@
 	name = "Phazon"
 	icon_state = "phazon"
 	initial_icon = "phazon"
+	base_color = "#4D79A0"
 	step_in = 1
 	dir_in = 1 //Facing North.
 	step_energy_drain = 100
@@ -17,16 +18,15 @@
 	internal_damage_threshold = 25
 	force = 15
 	var/phasing = 0
-	var/phasing_energy_drain = 5 KILOWATTS
+	var/phasing_energy_drain = 5 KILO WATTS
 	max_equip = 4
 
 /obj/mecha/combat/phazon/Initialize()
-	. = ..()
 	var/obj/item/mecha_parts/mecha_equipment/ME = new /obj/item/mecha_parts/mecha_equipment/tool/rcd
 	ME.attach(src)
 	ME = new /obj/item/mecha_parts/mecha_equipment/gravcatapult
 	ME.attach(src)
-	return
+	. = ..()
 
 /obj/mecha/combat/phazon/Bump(atom/obstacle)
 	if(phasing && get_charge()>=phasing_energy_drain)

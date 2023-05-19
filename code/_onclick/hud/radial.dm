@@ -170,11 +170,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	var/px = round(sin(angle) * radius)
 	if(anim)
 		var/timing = anim_order * 0.5
-		var/matrix/starting = matrix()
-		starting.Scale(0.1,0.1)
-		E.transform = starting
-		var/matrix/TM = matrix()
-		animate(E,pixel_x = px,pixel_y = py, transform = TM, time = timing)
+		E.SetTransform(scale = 0.1)
+		animate(E, pixel_x = px, pixel_y = py, transform = matrix(), time = timing)
 	else
 		E.pixel_y = py
 		E.pixel_x = px

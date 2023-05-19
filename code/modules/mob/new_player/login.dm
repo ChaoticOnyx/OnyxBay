@@ -18,7 +18,7 @@
 
 	holder.screen += src
 	icon_state = ""
-	icon = config.current_lobbyscreen
+	icon = GLOB.current_lobbyscreen
 
 /obj/screen/splash/proc/Fade(out, qdel_after = TRUE)
 	if(QDELETED(src))
@@ -48,7 +48,7 @@
 	if(!mind)
 		mind = new /datum/mind(key)
 		mind.active = 1
-		mind.current = src
+		mind.set_current(src)
 
 	loc = null
 	new /obj/screen/splash(client, TRUE)
@@ -64,13 +64,13 @@
 /mob/new_player/proc/handle_changelog()
 	if(client.prefs.lastchangelog == changelog_hash)
 		return
-	
+
 	client.prefs.lastchangelog = changelog_hash
 	SScharacter_setup.queue_preferences_save(client.prefs)
 
 	to_chat(client, SPAN("info", "You have unread updates in the changelog."))
 
-	if(config.aggressive_changelog)
+	if(config.general.aggressive_changelog)
 		client.changes()
 
 // This is called when the charcter setup system has been sufficiently initialized and prefs are available.
@@ -79,7 +79,7 @@
 /mob/new_player/proc/deferred_login()
 	if(!client)
 		return
-	
+
 	client.prefs.apply_post_login_preferences(client)
 	client.playtitlemusic()
 

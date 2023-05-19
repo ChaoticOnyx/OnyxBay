@@ -31,6 +31,7 @@
 	var/icon_update = 1 //whether icon updating shall take place
 
 	var/datum/body_build/body_build = null
+	var/body_height = HUMAN_HEIGHT_NORMAL
 
 	var/lip_style = null	//no lipstick by default- arguably misleading, as it could be used for general makeup
 
@@ -43,8 +44,7 @@
 
 	// General information
 	var/home_system = ""
-	var/citizenship = ""
-	var/personal_faction = ""
+	var/personal_background = ""
 	var/religion = ""
 
 	//Equipment slots
@@ -105,9 +105,6 @@
 	var/gen_record = ""
 	var/exploit_record = ""
 
-	var/datum/mil_branch/char_branch = null
-	var/datum/mil_rank/char_rank = null
-
 	var/stance_damage = 0 //Whether this mob's ability to stand has been affected
 	var/stance_d_l = 0 // This system should be reworked (using arrays) once we add any non-humanoid species. But it's never gonna happen, so whatever. *shrug
 	var/stance_d_r = 0 // ^
@@ -120,5 +117,6 @@
 	var/obj/item/grab/current_grab_type 	// What type of grab they use when they grab someone.
 	var/skin_state = SKIN_NORMAL
 	var/no_pain = 0
+	var/full_pain = 0 // Cheaper to actually store this than iterate over all the organs for every single check
 
 	var/debug = 0

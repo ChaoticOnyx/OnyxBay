@@ -8,7 +8,7 @@
 	desc = "A coruscating, barely visible field of energy. It is shaped like a slightly flattened torus."
 	icon = 'icons/obj/machines/power/fusion.dmi'
 	icon_state = "emfield_s1"
-	alpha = 50
+	alpha = 200
 	layer = 4
 	light_color = COLOR_BLUE
 
@@ -79,9 +79,9 @@
 		catcher.SetSize((iter*2)+1)
 		particle_catchers.Add(catcher)
 
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
-/obj/effect/fusion_em_field/Process()
+/obj/effect/fusion_em_field/think()
 	//make sure the field generator is still intact
 	if(!owned_core || QDELETED(owned_core))
 		qdel(src)
@@ -143,9 +143,8 @@
 
 	check_instability()
 	Radiate()
-	if(radiation)
-		SSradiation.radiate(src, round(radiation*0.001))
-	return 1
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/effect/fusion_em_field/proc/check_instability()
 	if(tick_instability > 0)
@@ -276,7 +275,6 @@
 	radiation += plasma_temperature/2
 	plasma_temperature = 0
 
-	SSradiation.radiate(src, round(radiation*0.001))
 	Radiate()
 
 /obj/effect/fusion_em_field/proc/Radiate()
@@ -301,17 +299,28 @@
 
 	if(owned_core && owned_core.loc)
 		var/datum/gas_mixture/environment = owned_core.loc.return_air()
-		if(environment && environment.temperature < (T0C+1000)) // Putting an upper bound on it to stop it being used in a TEG.
+		if(environment && environment.temperature < (1000 CELSIUS)) // Putting an upper bound on it to stop it being used in a TEG.
 			environment.add_thermal_energy(plasma_temperature*20000)
 	radiation = 0
 
 /obj/effect/fusion_em_field/proc/change_size(newsize = 1)
 	var/changed = 0
-
-	if( ((newsize-1)%2==0) && (newsize<=13) )
-		icon = 'icons/obj/machines/power/fusion.dmi'
-		if(newsize>1)
-			icon = "icons/effects/[newsize*32]x[newsize*32].dmi"
+	if(((newsize-1)%2==0) && (newsize<=13))
+		switch(newsize)
+			if(1)
+				icon = 'icons/obj/machines/power/fusion.dmi'
+			if(3)
+				icon = 'icons/effects/96x96.dmi'
+			if(5)
+				icon = 'icons/effects/160x160.dmi'
+			if(7)
+				icon = 'icons/effects/224x224.dmi'
+			if(9)
+				icon = 'icons/effects/288x288.dmi'
+			if(11)
+				icon = 'icons/effects/352x352.dmi'
+			if(13)
+				icon = 'icons/effects/416x416.dmi'
 		icon_state = "emfield_s[newsize]"
 		pixel_x = ((newsize-1) * -16) * PIXEL_MULTIPLIER
 		pixel_y = ((newsize-1) * -16) * PIXEL_MULTIPLIER
@@ -442,7 +451,6 @@
 	if(owned_core)
 		owned_core.owned_field = null
 		owned_core = null
-	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/effect/fusion_em_field/bullet_act(obj/item/projectile/Proj)

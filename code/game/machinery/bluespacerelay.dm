@@ -5,7 +5,7 @@
 	icon_state = "bspacerelay"
 	anchored = 1
 	density = 1
-	idle_power_usage = 15000
+	idle_power_usage = 15 KILO WATTS
 
 /obj/machinery/bluespacerelay/update_icon()
 	if(stat & (BROKEN|NOPOWER))
@@ -16,11 +16,11 @@
 /obj/machinery/bluespacerelay/New()
 	..()
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/bluespacerelay(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
-	component_parts += new /obj/item/weapon/stock_parts/subspace/filter(src)
-	component_parts += new /obj/item/weapon/stock_parts/subspace/crystal(src)
+	component_parts += new /obj/item/circuitboard/bluespacerelay(src)
+	component_parts += new /obj/item/stock_parts/manipulator(src)
+	component_parts += new /obj/item/stock_parts/manipulator(src)
+	component_parts += new /obj/item/stock_parts/subspace/filter(src)
+	component_parts += new /obj/item/stock_parts/subspace/crystal(src)
 	component_parts += new /obj/item/stack/cable_coil(src, 30)
 
 /obj/machinery/bluespacerelay/attackby(obj/item/O as obj, mob/user as mob)

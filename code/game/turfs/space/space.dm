@@ -5,28 +5,20 @@
 	name = "\proper space"
 	icon_state = "on_map"
 	dynamic_lighting = 0
-	temperature = T20C
+	temperature = 20 CELSIUS
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
-	var/static/list/dust_cache
 	var/dirt = 0
 
-/turf/space/proc/build_dust_cache()
-	LAZYINITLIST(dust_cache)
-	for (var/i in 0 to 25)
-		var/image/im = image('icons/turf/space_dust.dmi',"[i]")
-		im.plane = DUST_PLANE
-		im.alpha = 80
-		im.blend_mode = BLEND_ADD
-		dust_cache["[i]"] = im
-
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 0,
+		RADIATION_BETA_PARTICLE = 0,
+		RADIATION_HAWKING = 0
+	)
 
 /turf/space/Initialize()
 	. = ..()
 	icon_state = "white"
 	update_starlight()
-	if (!dust_cache)
-		build_dust_cache()
-	overlays += dust_cache["[((x + y) ^ ~(x * y) + z) % 25]"]
 
 	if(!HasBelow(z))
 		return
@@ -57,10 +49,10 @@
 	return locate(/obj/structure/lattice, src) //counts as solid structure if it has a lattice
 
 /turf/space/proc/update_starlight()
-	if(!config.starlight)
+	if(!config.misc.starlight)
 		return
 	if(locate(/turf/simulated) in orange(src,1))
-		set_light(min(0.1*config.starlight, 1), 1, 2.5)
+		set_light(min(0.1*config.misc.starlight, 1), 1, 2.5, 1.5, "#74dcff")
 	else
 		set_light(0)
 
@@ -77,16 +69,19 @@
 			ReplaceWithLattice()
 		return
 
-	if (istype(C, /obj/item/stack/tile/floor))
+	if(istype(C, /obj/item/stack/tile/floor) || istype(C, /obj/item/stack/tile/floor_rough))
 		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
 		if(L)
 			var/obj/item/stack/tile/floor/S = C
-			if (S.get_amount() < 1)
+			if(S.get_amount() < 1)
 				return
 			qdel(L)
 			playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1)
 			S.use(1)
-			ChangeTurf(/turf/simulated/floor/plating/airless)
+			if(istype(C, /obj/item/stack/tile/floor_rough))
+				ChangeTurf(/turf/simulated/floor/plating/rough/airless)
+			else
+				ChangeTurf(/turf/simulated/floor/plating/airless)
 			return
 		else
 			to_chat(user, "<span class='warning'>The plating is going to need some support.</span>")
@@ -98,7 +93,7 @@
 /turf/space/Entered(atom/movable/A as mob|obj)
 	..()
 	if(A && A.loc == src)
-		if (A.x <= TRANSITIONEDGE || A.x >= (world.maxx - TRANSITIONEDGE + 1) || A.y <= TRANSITIONEDGE || A.y >= (world.maxy - TRANSITIONEDGE + 1))
+		if (A.x <= TRANSITION_EDGE || A.x >= (world.maxx - TRANSITION_EDGE + 1) || A.y <= TRANSITION_EDGE || A.y >= (world.maxy - TRANSITION_EDGE + 1))
 			A.touch_map_edge()
 
 /turf/space/proc/Sandbox_Spacemove(atom/movable/A as mob|obj)
@@ -218,6 +213,7 @@
 	return ..(N, tell_universe, TRUE)
 
 //Bluespace turfs for shuttles and possible future transit use
-/turf/space/bluespace
+/turf/bluespace
 	name = "bluespace"
+	icon = 'icons/turf/space.dmi'
 	icon_state = "bluespace"

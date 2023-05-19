@@ -1,6 +1,6 @@
 /obj/structure/window
-	name = "window"
-	desc = "A window."
+	name = "panel"
+	desc = "A glassy panel."
 	icon = 'icons/obj/structures.dmi'
 	density = 1
 	can_atmos_pass = ATMOS_PASS_PROC
@@ -10,7 +10,7 @@
 	anchored = 1.0
 	atom_flags = ATOM_FLAG_CHECKS_BORDER
 	var/maxhealth = 14.0
-	var/maximal_heat = T0C + 100 		// Maximal heat before this window begins taking damage from fire
+	var/maximal_heat = 100 CELSIUS 		// Maximal heat before this window begins taking damage from fire
 	var/damage_per_fire_tick = 2.0 		// Amount of damage per fire tick. Regular windows are not fireproof so they might as well break quickly.
 	var/health
 	var/ini_dir = null
@@ -18,7 +18,7 @@
 	var/reinf = 0
 	var/polarized = 0
 	var/basestate
-	var/shardtype = /obj/item/weapon/material/shard
+	var/shardtype = /obj/item/material/shard
 	var/glasstype = null // Set this in subtypes. Null is assumed strange or otherwise impossible to dismantle, such as for shuttle glass.
 	var/silicate = 0 // number of units of silicate
 	var/real_explosion_block // ignore this, just use explosion_block
@@ -26,8 +26,13 @@
 	hitby_sound = SFX_GLASS_HIT
 	hitby_loudness_multiplier = 2.0
 	pull_sound = SFX_PULL_STONE
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 664 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 4.8 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
-/obj/structure/window/examine(mob/user)
+/obj/structure/window/_examine_text(mob/user)
 	. = ..()
 
 	if(health == maxhealth)
@@ -221,8 +226,8 @@
 							"You hear a banging sound.")
 	else
 		playsound(src.loc, GET_SFX(SFX_GLASS_KNOCK), 80, 1)
-		user.visible_message("[user.name] knocks on the [src.name].",
-							"You knock on the [src.name].",
+		user.visible_message("[user.name] knocks on \the [src.name].",
+							"You knock on \the [src.name].",
 							"You hear a knocking sound.")
 	return
 
@@ -312,6 +317,9 @@
 	if(usr.incapacitated())
 		return 0
 
+	if(is_full_window()) // No point in rotating a window if it is full
+		return 0
+
 	if(anchored)
 		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
 		return 0
@@ -329,6 +337,9 @@
 	set src in oview(1)
 
 	if(usr.incapacitated())
+		return 0
+
+	if(is_full_window()) // No point in rotating a window if it is full
 		return 0
 
 	if(anchored)
@@ -374,7 +385,7 @@
 /obj/structure/window/Move()
 	var/ini_dir = dir
 	update_nearby_tiles(need_rebuild=1)
-	..()
+	. = ..()
 	set_dir(ini_dir)
 	update_nearby_tiles(need_rebuild=1)
 
@@ -439,36 +450,37 @@
 
 
 /obj/structure/window/basic
+	name = "glass panel"
 	desc = "It looks thin and flimsy. A few knocks with... anything, really should shatter it."
 	icon_state = "window"
 	basestate = "window"
 	glasstype = /obj/item/stack/material/glass
-	maximal_heat = T0C + 100
+	maximal_heat = 100 CELSIUS
 	damage_per_fire_tick = 2.0
 	maxhealth = 12.0
 
 /obj/structure/window/plasmabasic
-	name = "plass window"
-	desc = "A plasmasilicate alloy window. It seems to be quite strong."
+	name = "plass panel"
+	desc = "A plasmasilicate alloy panel. It seems to be quite strong."
 	basestate = "plasmawindow"
 	explosion_block = 1
 	icon_state = "plasmawindow"
-	shardtype = /obj/item/weapon/material/shard/plasma
+	shardtype = /obj/item/material/shard/plasma
 	glasstype = /obj/item/stack/material/glass/plass
-	maximal_heat = T0C + 2000
+	maximal_heat = 2000 CELSIUS
 	damage_per_fire_tick = 1.0
 	maxhealth = 40.0
 
 /obj/structure/window/plasmareinforced
-	name = "reinforced plass window"
-	desc = "A plasmasilicate alloy window, with rods supporting it. It seems to be very strong."
+	name = "reinforced plass panel"
+	desc = "A plasmasilicate alloy panel, with rods supporting it. It seems to be very strong."
 	basestate = "plasmarwindow"
 	icon_state = "plasmarwindow"
-	shardtype = /obj/item/weapon/material/shard/plasma
+	shardtype = /obj/item/material/shard/plasma
 	glasstype = /obj/item/stack/material/glass/rplass
 	reinf = 1
 	explosion_block = 2
-	maximal_heat = T0C + 4000
+	maximal_heat = 4000 CELSIUS
 	damage_per_fire_tick = 1.0 // This should last for 80 fire ticks if the window is not damaged at all. The idea is that plass windows have something like ablative layer that protects them for a while.
 	maxhealth = 80.0
 
@@ -477,13 +489,13 @@
 	icon_state = "plasmawindow0"
 
 /obj/structure/window/reinforced
-	name = "reinforced window"
+	name = "reinforced glass panel"
 	desc = "It looks rather strong. Might take a few good hits to shatter it."
 	icon_state = "rwindow"
 	basestate = "rwindow"
 	maxhealth = 40.0
 	reinf = 1
-	maximal_heat = T0C + 750
+	maximal_heat = 750 CELSIUS
 	explosion_block = 1
 	damage_per_fire_tick = 2.0
 	glasstype = /obj/item/stack/material/glass/reinforced
@@ -550,6 +562,17 @@
 	icon = 'icons/obj/podwindows.dmi'
 	icon_state = "window-res"
 	basestate = "window-res"
+	reinf = 1
+	maxhealth = 40
+	explosion_block = 3
+	dir = 5
+
+/obj/structure/window/syndi
+	name = "shuttle window"
+	desc = "It looks rather strong. Might take a few good hits to shatter it."
+	icon = 'icons/obj/podwindows.dmi'
+	icon_state = "window-syndi"
+	basestate = "window-syndi"
 	reinf = 1
 	maxhealth = 40
 	explosion_block = 3

@@ -103,6 +103,8 @@
 		return 0
 	if(!amt)
 		return 0
+	if(!vessel.total_volume) // Oh-oh, nuffin to remove
+		return 0
 	return vessel.remove_reagent(/datum/reagent/blood, amt * (src.mob_size/MOB_MEDIUM))
 
 /****************************************************
@@ -110,7 +112,7 @@
 ****************************************************/
 
 //Gets blood from mob to the container, preserving all data in it.
-/mob/living/carbon/proc/take_blood(obj/item/weapon/reagent_containers/container, amount)
+/mob/living/carbon/proc/take_blood(obj/item/reagent_containers/container, amount)
 	var/datum/reagent/blood/B = get_blood(container.reagents)
 	if(!B)
 		B = new /datum/reagent/blood
@@ -122,7 +124,7 @@
 	return 1
 
 //For humans, blood does not appear from blue, it comes from vessels.
-/mob/living/carbon/human/take_blood(obj/item/weapon/reagent_containers/container, amount)
+/mob/living/carbon/human/take_blood(obj/item/reagent_containers/container, amount)
 
 	if(!should_have_organ(BP_HEART))
 		reagents.trans_to_obj(container, amount)
@@ -271,7 +273,15 @@
 
 //Percentage of maximum blood volume.
 /mob/living/carbon/human/proc/get_blood_volume()
+	if (isfakeliving(src))
+		return 100
 	return round((vessel.get_reagent_amount(/datum/reagent/blood)/species.blood_volume)*100)
+
+//Amount of blood in bloodsystem
+/mob/living/carbon/human/proc/get_blood_volume_abs()
+	if (isfakeliving(src))
+		return species.blood_volume
+	return vessel.get_reagent_amount(/datum/reagent/blood)
 
 //Percentage of maximum blood volume, affected by the condition of circulation organs
 /mob/living/carbon/human/proc/get_blood_circulation()
@@ -310,7 +320,7 @@
 	if(!blood_carries_oxygen())
 		blood_volume = 100
 
-	var/blood_volume_mod = max(0, 1 - getOxyLoss()/(maxHealth/2))
+	var/blood_volume_mod = max(0, 1 - getOxyLoss() / maxHealth)
 	var/oxygenated_mult = 0
 	if(chem_effects[CE_OXYGENATED] == 1) // Dexalin.
 		oxygenated_mult = 0.5

@@ -1,11 +1,25 @@
+#define PLANT_NO_CUT 1
+#define PLANT_CUT 2
+
 //trees
 /obj/structure/flora/tree
 	name = "tree"
 	anchored = 1
 	density = 1
 	pixel_x = -16
-
 	layer = ABOVE_HUMAN_LAYER
+	var/cut_level = PLANT_CUT
+	var/cut_hits = 20
+
+/obj/structure/flora/tree/attackby(obj/item/W, mob/living/user)
+	if(cut_level !=PLANT_NO_CUT && (istype(W, /obj/item/material/hatchet) || istype(W, /obj/item/material/twohanded/fireaxe)))
+		cut_hits--
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		to_chat(user, SPAN_WARNING("You chop \the [src] with \the [W]."))
+		playsound(src, 'sound/effects/fighting/chop3.ogg', 25, 1)
+		if(cut_hits <= 0)
+			qdel(src)
+		return
 
 /obj/structure/flora/tree/pine
 	name = "pine tree"
@@ -20,10 +34,29 @@
 	name = "xmas tree"
 	icon = 'icons/obj/flora/pinetrees.dmi'
 	icon_state = "pine_c"
-
+	var/light_overlay = TRUE
+	var/l_max_bright = 0.5
+	var/l_inner_range = 2
+	var/l_outer_range = 2
+	var/l_falloff_curve = 2
+	var/l_color = "#ec8b2f"
 /obj/structure/flora/tree/pine/xmas/New()
 	..()
 	icon_state = "pine_c"
+
+/obj/structure/flora/tree/pine/xmas/update_icon()
+	overlays.Cut()
+	if(light_overlay)
+		var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay")
+		LO.layer = ABOVE_LIGHTING_LAYER
+		LO.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		overlays.Add(LO)
+		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
+	..()
+
+/obj/structure/flora/tree/pine/xmas/Initialize()
+ 	update_icon()
+ 	. = ..()
 
 /obj/structure/flora/tree/dead/deadtree_0
 	icon = 'icons/obj/flora/deadtrees.dmi'
@@ -66,6 +99,8 @@
 	desc = "Masha, get rid of this fucking yolka!"
 	icon = 'icons/obj/flora/old_pinetrees.dmi'
 	icon_state = "old_pinetree"
+	pixel_x = 0
+	pixel_y = 0
 
 /obj/structure/flora/tree/pine/old_pinteree/New()
 	..()
@@ -110,12 +145,47 @@
 
 /obj/structure/flora/tree/green/spook2
 	icon_state = "spook2"
+/obj/structure/flora/tree/green/pink
+	icon = 'icons/obj/flora/pinktree.dmi'
+	icon_state = "spacesakura"
+	cut_hits = 30
+	var/light_overlay = FALSE
+	var/l_max_bright = 1
+	var/l_inner_range = 2
+	var/l_outer_range = 2
+	var/l_falloff_curve = 1
+	var/l_color = COLOR_BLUE_LIGHT
+
+/obj/structure/flora/tree/green/pink/update_icon()
+	overlays.Cut()
+	if(light_overlay)
+		var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay")
+		LO.layer = ABOVE_LIGHTING_LAYER
+		LO.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		overlays.Add(LO)
+		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
+	..()
+
+/obj/structure/flora/tree/green/pink/Initialize()
+ 	update_icon()
+ 	. = ..()
+
+/obj/structure/flora/tree/green/pink/glowing
+	icon = 'icons/obj/flora/pinktree.dmi'
+	icon_state = "spacesakura"
+	light_overlay = TRUE
+	l_max_bright = 0.5
+	l_inner_range = 1
+	l_outer_range = 6
+	l_falloff_curve = 2
+	l_color = COLOR_PINK
 
 /obj/structure/flora/tree/green/small
 	pixel_x = -32
 	pixel_y = 0
 	icon = 'icons/obj/flora/hdtreesmall.dmi'
 	icon_state = "tree"
+	cut_hits = 10
 
 /obj/structure/flora/tree/green/small/tree1
 	icon_state = "tree1"
@@ -216,17 +286,20 @@
 		return ..()
 	if(!ishuman(user))
 		return 0
-	if(istype(W, /obj/item/weapon/holder))
+	if(istype(W, /obj/item/holder))
 		return 0 //no hiding mobs in there
+	if(!W.canremove)
+		shake_animation(stime = 4)
+		return ..()
 	user.visible_message("[user] begins digging around inside of \the [src].", "You begin digging around in \the [src], trying to hide \the [W].")
 	playsound(loc, 'sound/effects/plantshake.ogg', rand(50, 75), TRUE)
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 	if(do_after(user, 20, src))
 		if(!stored_item)
 			if(W.w_class <= ITEM_SIZE_NORMAL)
-				user.drop_from_inventory(W, src)
-				stored_item = W
-				to_chat(user, SPAN("notice", "You hide \the [W] in \the [src]."))
+				if(user.drop(W, src))
+					stored_item = W
+					to_chat(user, SPAN("notice", "You hide \the [W] in \the [src]."))
 			else
 				to_chat(user, SPAN("notice", "\The [W] can't be hidden in \the [src], it's too big."))
 		else
@@ -241,7 +314,7 @@
 		if(!stored_item)
 			to_chat(user, SPAN("notice", "There is nothing hidden in \the [src]."))
 		else
-			user.put_in_hands(stored_item)
+			user.pick_or_drop(stored_item, loc)
 			to_chat(user, SPAN("notice", "You take \the [stored_item] from \the [src]."))
 			stored_item = null
 		src.add_fingerprint(usr)
@@ -260,10 +333,32 @@
 	icon_state = "firstbush_1"
 	anchored = 1
 	layer = BELOW_DOOR_LAYER
+	var/cut_level = PLANT_CUT
+	var/cut_hits = 3
+
+/obj/structure/flora/ausbushes/attackby(obj/item/W, mob/living/user)
+	if(cut_level !=PLANT_NO_CUT && is_sharp(W))
+		cut_hits--
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		to_chat(user, SPAN_WARNING("You cut [cut_hits > 0 ? "some of" : "all of"] \the [src] away with \the [W]."))
+		playsound(src, 'sound/weapons/vegetation_hit.ogg', 25, 1)
+		if(cut_hits <= 0)
+			qdel(src)
+		return
 
 /obj/structure/flora/ausbushes/New()
 	..()
 	icon_state = "firstbush_[rand(1, 4)]"
+
+/obj/structure/flora/ausbushes/glowshroom
+	name = "glowshroom"
+	icon = 'icons/obj/flora/misc.dmi'
+	icon_state = "glowshroom_1"
+
+/obj/structure/flora/ausbushes/glowshroom/New()
+	..()
+	icon_state = "glowshroom_[rand(1, 4)]"
+	set_light(1, 0.6, 1, "#99FF66")
 
 /obj/structure/flora/ausbushes/reedbush
 	icon_state = "reedbush_1"
@@ -370,6 +465,47 @@
 	..()
 	icon_state = "fullgrass_[rand(1, 3)]"
 
+/obj/structure/flora/ausbushes/jungleflora
+	icon = 'icons/obj/flora/jungleflora.dmi'
+	icon_state = "busha"
+
+/obj/structure/flora/ausbushes/jungleflora/busha
+	icon_state = "busha"
+
+/obj/structure/flora/ausbushes/jungleflora/busha/New()
+	..()
+	icon_state = "busha[rand(1, 3)]"
+
+/obj/structure/flora/ausbushes/jungleflora/bushb
+	icon_state = "bushb"
+
+/obj/structure/flora/ausbushes/jungleflora/bushb/New()
+	..()
+	icon_state = "bushb[rand(1, 3)]"
+
+/obj/structure/flora/ausbushes/jungleflora/bushc
+	icon_state = "bushc"
+
+/obj/structure/flora/ausbushes/jungleflora/bushc/New()
+	..()
+	icon_state = "bushc[rand(1, 3)]"
+
+/obj/structure/flora/ausbushes/jungleflora/grassa
+	name = "grass"
+	icon_state = "grassa"
+
+/obj/structure/flora/ausbushes/jungleflora/grassa/New()
+	..()
+	icon_state = "grassa[rand(1, 5)]"
+
+/obj/structure/flora/ausbushes/jungleflora/grassb
+	name = "grass"
+	icon_state = "grassb"
+
+/obj/structure/flora/ausbushes/jungleflora/grassb/New()
+	..()
+	icon_state = "grassb[rand(1, 5)]"
+
 /obj/structure/flora/goonbushes
 	name = "shrub"
 	icon = 'icons/obj/flora/goonbushes.dmi'
@@ -405,6 +541,290 @@
 	name = "shrub"
 	icon_state = "sick"
 	layer = BELOW_DOOR_LAYER
+
+/obj/structure/flora/junglevines
+	name = "vines"
+	icon = 'icons/obj/flora/junglevines.dmi'
+	icon_state = "light0"
+	desc = "A mass of twisted vines."
+	anchored = 1
+	density = 0
+	layer = ABOVE_HUMAN_LAYER
+	var/cut_level = PLANT_NO_CUT
+	var/cut_hits = 3
+
+/obj/structure/flora/junglevines/attackby(obj/item/W, mob/living/user)
+	if(cut_level !=PLANT_NO_CUT && is_sharp(W))
+		cut_hits--
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		to_chat(user, SPAN_WARNING("You cut [cut_hits > 0 ? "some of" : "all of"] \the [src] away with \the [W]."))
+		playsound(src, 'sound/weapons/vegetation_hit.ogg', 25, 1)
+		if(cut_hits <= 0)
+			qdel(src)
+		return
+
+/obj/structure/flora/jungleplants/relaymove(mob/user)
+  user.setMoveCooldown(100)
+
+/obj/structure/flora/junglevines/light
+	cut_level = PLANT_CUT
+	var/rand_state = TRUE
+
+/obj/structure/flora/junglevines/light/New()
+	if(rand_state)
+		icon_state = "light[rand(0, 2)]"
+	..()
+
+/obj/structure/flora/junglevines/light/CanPass(atom/movable/mover, turf/target)
+	if(istype(mover, /mob/living))
+		if(prob(25))
+			to_chat(mover, "<span class='warning'>You get stuck in \the [src] for a moment.</span>")
+			return FALSE
+	else if(istype(mover, /obj/item/projectile))
+		return prob(30)
+	return TRUE
+
+/obj/structure/flora/junglevines/heavy
+	icon_state = "heavy0"
+	desc = "A thick, coiled mass of twisted vines."
+	opacity = 1
+	cut_level = PLANT_CUT
+	cut_hits = 10
+	var/rand_state = TRUE
+
+/obj/structure/flora/junglevines/heavy/New()
+	if(rand_state)
+		icon_state = "heavy[rand(0, 5)]"
+	..()
+
+/obj/structure/flora/junglevines/heavy/CanPass(atom/movable/mover, turf/target)
+	if(istype(mover, /mob/living))
+		if(prob(65))
+			to_chat(mover, "<span class='warning'>You get stuck in \the [src] for a moment.</span>")
+			return FALSE
+	else if(istype(mover, /obj/item/projectile))
+		return prob(30)
+	return TRUE
+
+/obj/structure/flora/jungleplants
+	name = "plant"
+	icon = 'icons/obj/flora/jungleplants.dmi'
+	icon_state = "junglebush1"
+	anchored = 1
+	layer = ABOVE_HUMAN_LAYER
+	var/light_overlay = FALSE
+	var/l_max_bright = 1
+	var/l_inner_range = 2
+	var/l_outer_range = 2
+	var/l_falloff_curve = 1
+	var/l_color = COLOR_BLUE_LIGHT
+	var/cut_level = PLANT_CUT
+	var/cut_hits = 3
+
+/obj/structure/flora/jungleplants/attackby(obj/item/W, mob/living/user)
+	if(cut_level !=PLANT_NO_CUT && is_sharp(W))
+		cut_hits--
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		to_chat(user, SPAN_WARNING("You cut [cut_hits > 0 ? "some of" : "all of"] \the [src] away with \the [W]."))
+		playsound(src, 'sound/weapons/vegetation_hit.ogg', 25, 1)
+		if(cut_hits <= 0)
+			qdel(src)
+		return
+
+/obj/structure/flora/jungleplants/update_icon()
+	overlays.Cut()
+	if(light_overlay)
+		var/image/LO = overlay_image(icon, "[icon_state]-overlay")
+		LO.layer = ABOVE_LIGHTING_LAYER
+		LO.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		overlays.Add(LO)
+		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
+	..()
+
+/obj/structure/flora/jungleplants/Initialize()
+ 	update_icon()
+ 	. = ..()
+
+/obj/structure/flora/jungleplants/junglebush1
+	name = "bush"
+	icon_state = "junglebush1"
+
+/obj/structure/flora/jungleplants/junglebush2
+	name = "bush"
+	icon_state = "junglebush2"
+
+/obj/structure/flora/jungleplants/junglebush3
+	name = "bush"
+	icon_state = "junglebush3"
+
+/obj/structure/flora/jungleplants/junglebushlarge
+	name = "bush"
+	icon = 'icons/obj/flora/junglebushlarge.dmi'
+	icon_state = "bush1"
+	pixel_x = -16
+	pixel_y = -8
+
+/obj/structure/flora/jungleplants/junglebushlarge/bush1
+	icon_state = "bush1"
+
+/obj/structure/flora/jungleplants/junglebushlarge/bush2
+	icon_state = "bush2"
+
+/obj/structure/flora/jungleplants/junglebushlarge/bush3
+	icon_state = "bush3"
+
+/obj/structure/flora/jungleplants/junglebushlarge/bush4
+	icon_state = "bush4"
+
+/obj/structure/flora/jungleplants/alienplant1
+	name = "alien plant"
+	icon_state = "alienplant1"
+	light_overlay = TRUE
+	l_max_bright = 0.7
+	l_inner_range = 2
+	l_outer_range = 2
+	l_falloff_curve = 3
+
+/obj/structure/flora/jungleplants/alienplant2
+	name = "alien plant"
+	icon_state = "alienplant2"
+
+/obj/structure/flora/jungleplants/alienplant3
+	name = "alien plant"
+	icon_state = "alienplant3"
+	light_overlay = TRUE
+	l_max_bright = 0.3
+	l_inner_range = 1
+	l_outer_range = 2
+	l_falloff_curve = 2
+	l_color = COLOR_WHITE
+
+
+/obj/structure/flora/jungleplants/alienplant4
+	name = "alien plant"
+	icon_state = "alienplant4"
+	light_overlay = TRUE
+	l_max_bright = 0.7
+	l_inner_range = 1
+	l_outer_range = 4
+	l_falloff_curve = 4
+	l_color = COLOR_WHEAT
+
+/obj/structure/flora/jungleplants/alienplant5
+	name = "alien plant"
+	icon_state = "alienplant5"
+	light_overlay = TRUE
+	l_max_bright = 0.7
+	l_inner_range = 1
+	l_outer_range = 4
+	l_falloff_curve = 4
+	l_color = COLOR_WHEAT
+
+/obj/structure/flora/jungleplants/alienplant6
+	name = "alien plant"
+	icon_state = "alienplant6"
+	light_overlay = TRUE
+	l_max_bright = 0.6
+	l_inner_range = 1
+	l_outer_range = 3
+	l_falloff_curve = 2
+	l_color = COLOR_LIGHT_CYAN
+/obj/structure/flora/jungleplants/alienplant7
+	name = "alien plant"
+	icon_state = "alienplant7"
+
+/obj/structure/flora/jungleplants/alienplant8
+	name = "alien plant"
+	icon_state = "alienplant8"
+
+/obj/structure/flora/jungleplants/alienplant9
+	name = "alien plant"
+	icon_state = "alienplant9"
+	light_overlay = TRUE
+	l_max_bright = 0.3
+	l_inner_range = 1
+	l_outer_range = 2
+	l_falloff_curve = 2
+	l_color = COLOR_WHEAT
+
+/obj/structure/flora/jungleplants/alienplant10
+	name = "alien plant"
+	icon_state = "alienplant10"
+	light_overlay = TRUE
+	l_max_bright = 0.3
+	l_inner_range = 1
+	l_outer_range = 2
+	l_falloff_curve = 2
+	l_color = COLOR_WHEAT
+
+/obj/structure/flora/jungleplants/alienplant11
+	name = "alien plant"
+	icon_state = "alienplant11"
+	light_overlay = TRUE
+	l_max_bright = 0.7
+	l_inner_range = 1
+	l_outer_range = 3
+	l_falloff_curve = 1
+	l_color = COLOR_PINK
+
+/obj/structure/flora/jungleplants/alienplant12
+	name = "alien plant"
+	icon_state = "alienplant12"
+
+/obj/structure/flora/jungleplants/glowshroom
+	name = "glowing mushroom"
+	icon_state = "glowshroom0"
+	light_overlay = TRUE
+	l_max_bright = 0.2
+	l_inner_range = 1
+	l_outer_range = 3
+	l_falloff_curve = 1
+	l_color = COLOR_GREEN_GRAY
+	var/rand_state = TRUE
+
+/obj/structure/flora/jungleplants/glowshroom/New()
+	if(rand_state)
+		icon_state = "glowshroom[rand(0, 3)]"
+	..()
+
+/obj/structure/flora/ausbushes/jungleplants/Initialize()
+ 	update_icon()
+ 	. = ..()
+
+/obj/structure/flora/jungleplants/glowingflower
+	name = "fluorescent flower"
+	icon = 'icons/obj/flora/glowingflowers.dmi'
+	icon_state = "ywflowers_1"
+	light_overlay = TRUE
+	l_max_bright = 0.4
+	l_inner_range = 1
+	l_outer_range = 2
+	l_falloff_curve = 1
+
+
+/obj/structure/flora/jungleplants/glowingflower/yellow
+	icon_state = "ywflowers_1"
+	l_color = COLOR_YELLOW
+
+/obj/structure/flora/jungleplants/glowingflower/yellow/New()
+	..()
+	icon_state = "ywflowers_[rand(1, 4)]"
+
+/obj/structure/flora/jungleplants/glowingflower/blue
+	icon_state = "brflowers_1"
+	l_color = COLOR_BLUE_LIGHT
+
+/obj/structure/flora/jungleplants/glowingflower/blue/New()
+	..()
+	icon_state = "brflowers_[rand(1, 3)]"
+
+/obj/structure/flora/jungleplants/glowingflower/purple
+	icon_state = "ppflowers_1"
+	l_color = COLOR_PURPLE
+
+/obj/structure/flora/jungleplants/glowingflower/purple/New()
+	..()
+	icon_state = "brflowers_[rand(1, 3)]"
 
 //potted plants credit: Flashkirby
 /obj/structure/flora/pottedplant
@@ -612,3 +1032,23 @@
 	name = "potted monkey plant"
 	desc = "Perhaps, this is why we no longer have a genetics lab?"
 	icon_state = "monkeyplant"
+
+// Misc Stuff
+/obj/structure/flora/log
+	name = "log"
+	desc = "It's a log. It's not very interesting."
+	icon = 'icons/obj/flora/misc.dmi'
+	icon_state = "log"
+	layer = BELOW_DOOR_LAYER
+	anchored = 1
+
+/obj/effect/firefly
+	name = "firefly"
+	desc = "A small, bioluminescent insect."
+	icon = 'icons/obj/flora/misc.dmi'
+	icon_state = "firefly"
+	layer = ABOVE_HUMAN_LAYER
+
+/obj/effect/firefly/Initialize()
+	. = ..()
+	set_light(0.4, 0.1, 2, 2, "#ffc233")

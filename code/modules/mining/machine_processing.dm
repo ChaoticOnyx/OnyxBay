@@ -7,14 +7,14 @@
 	density = 1
 	anchored = 1
 	use_power = 1
-	idle_power_usage = 15
-	active_power_usage = 50
+	idle_power_usage = 15 WATTS
+	active_power_usage = 50 WATTS
 
 	var/obj/machinery/mineral/processing_unit/machine = null
 	var/machinedir = NORTHEAST
 	var/show_all_ores = 0
 	var/points = 0
-	var/obj/item/weapon/card/id/inserted_id
+	var/obj/item/card/id/inserted_id
 
 /obj/machinery/mineral/processing_unit_console/Initialize()
 	. = ..()
@@ -87,28 +87,23 @@
 	if(href_list["choice"])
 		if(istype(inserted_id))
 			if(href_list["choice"] == "eject")
-				inserted_id.loc = loc
-				if(!usr.get_active_hand())
-					usr.put_in_hands(inserted_id)
+				usr.pick_or_drop(inserted_id, loc)
 				inserted_id = null
 			if(href_list["choice"] == "claim")
-				if(access_mining_station in inserted_id.access)
-					if(points >= 0)
-						inserted_id.mining_points += points
-						if(points != 0)
-							ping( "\The [src] pings, \"Point transfer complete! Transaction total: [points] points!\"" )
-						points = 0
-					else
-						to_chat(usr, "<span class='warning'>[station_name()]'s mining division is currently indebted to NanoTrasen. Transaction incomplete until debt is cleared.</span>")
+				if(points >= 0)
+					inserted_id.mining_points += points
+					if(points != 0)
+						ping( "\The [src] pings, \"Point transfer complete! Transaction total: [points] points!\"" )
+					points = 0
 				else
-					to_chat(usr, "<span class='warning'>Required access not found.</span>")
+					to_chat(usr, SPAN_WARNING("[station_name()]'s mining division is currently indebted to NanoTrasen. Transaction incomplete until debt is cleared."))
 		else if(href_list["choice"] == "insert")
-			var/obj/item/weapon/card/id/I = usr.get_active_hand()
+			var/obj/item/card/id/I = usr.get_active_hand()
 			if(istype(I))
-				usr.drop_item()
-				I.loc = src
-				inserted_id = I
-			else to_chat(usr, "<span class='warning'>No valid ID.</span>")
+				if(usr.drop(I, src))
+					inserted_id = I
+			else
+				to_chat(usr, "<span class='warning'>No valid ID.</span>")
 
 	if(href_list["toggle_smelting"])
 
@@ -138,6 +133,9 @@
 	src.updateUsrDialog()
 	return
 
+/obj/machinery/mineral/processing_unit_console/north
+	machinedir = NORTH
+
 /**********************Mineral processing unit**************************/
 
 
@@ -157,15 +155,15 @@
 	var/static/list/alloy_data
 	var/active = 0
 	use_power = 1
-	idle_power_usage = 15
-	active_power_usage = 50
+	idle_power_usage = 15 WATTS
+	active_power_usage = 50 WATTS
 
 	component_types = list(
-			/obj/item/weapon/circuitboard/refiner,
-			/obj/item/weapon/stock_parts/capacitor = 2,
-			/obj/item/weapon/stock_parts/scanning_module,
-			/obj/item/weapon/stock_parts/micro_laser = 2,
-			/obj/item/weapon/stock_parts/matter_bin
+			/obj/item/circuitboard/refiner,
+			/obj/item/stock_parts/capacitor = 2,
+			/obj/item/stock_parts/scanning_module,
+			/obj/item/stock_parts/micro_laser = 2,
+			/obj/item/stock_parts/matter_bin
 		)
 
 /obj/machinery/mineral/processing_unit/Initialize()
@@ -201,7 +199,7 @@
 
 	//Grab some more ore to process this tick.
 	for(var/i = 0,i<sheets_per_tick,i++)
-		var/obj/item/weapon/ore/O = locate() in input.loc
+		var/obj/item/ore/O = locate() in input.loc
 		if(!O) break
 		if(O.ore && !isnull(ores_stored[O.ore.name]))
 			ores_stored[O.ore.name] += 1
@@ -303,13 +301,13 @@
 				use_power_oneoff(500)
 				ores_stored[metal] -= 1
 				sheets++
-				new /obj/item/weapon/ore/slag(output.loc)
+				new /obj/item/ore/slag(output.loc)
 		else
 			continue
 
 	console.updateUsrDialog()
 
-/obj/machinery/mineral/processing_unit/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/mineral/processing_unit/attackby(obj/item/W, mob/user)
 	if(default_deconstruction_screwdriver(user, W))
 		return
 	else if(default_part_replacement(user, W))
@@ -321,7 +319,7 @@
 	var/cap_rating = 0
 	var/laser_rating = 0
 
-	for(var/obj/item/weapon/stock_parts/P in component_parts)
+	for(var/obj/item/stock_parts/P in component_parts)
 		if(isscanner(P))
 			scan_rating += P.rating
 		else if(iscapacitor(P))

@@ -39,7 +39,7 @@
 			color = null
 			playsound(src, 'sound/items/Ratchet.ogg', 80, 1)
 			return
-		else if(istype(C, /obj/item/weapon/shovel) && (flooring.flags & TURF_REMOVE_SHOVEL))
+		else if(istype(C, /obj/item/shovel) && (flooring.flags & TURF_REMOVE_SHOVEL))
 			to_chat(user, "<span class='notice'>You shovel off the [flooring.descriptor].</span>")
 			make_plating(1)
 			color = null
@@ -114,7 +114,11 @@
 					if(!broken && !burnt || !is_plating())
 						return
 					visible_message(SPAN("warning", "[user] has pried off the damaged plating."))
-					new /obj/item/stack/tile/floor(src)
+					if(istype(src, /turf/simulated/floor/plating))
+						var/turf/simulated/floor/plating/P = src
+						new P.tile_type(src)
+					else
+						new /obj/item/stack/tile/floor(src)
 					color = null
 					ReplaceWithLattice()
 					playsound(src, 'sound/items/Deconstruct.ogg', 80, 1)
@@ -123,13 +127,13 @@
 			return
 
 		else if(isWelder(C))
-			var/obj/item/weapon/weldingtool/welder = C
+			var/obj/item/weldingtool/welder = C
 			if(welder.isOn() && (is_plating()))
 				if(broken || burnt)
 					if(welder.isOn())
 						to_chat(user, "<span class='notice'>You fix some dents on the broken plating.</span>")
 						playsound(src, 'sound/items/Welder.ogg', 80, 1)
-						icon_state = "plating"
+						icon_state = base_icon_state
 						burnt = null
 						broken = null
 					else

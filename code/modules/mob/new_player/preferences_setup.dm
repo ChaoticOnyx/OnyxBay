@@ -2,7 +2,7 @@
 
 /datum/preferences
 	//The mob should have a gender you want before running this proc. Will run fine without H
-	proc/randomize_appearance_and_body_for(var/mob/living/carbon/human/H)
+	proc/randomize_appearance_and_body_for(mob/living/carbon/human/H)
 		var/datum/species/current_species = all_species[species]
 		if(!current_species) current_species = all_species[SPECIES_HUMAN]
 
@@ -12,6 +12,7 @@
 			if (gender in build.genders)
 				available_body_builds += build
 		body = pick(available_body_builds).name
+		body_height = pick(body_heights)
 
 		h_style = random_hair_style(gender, species)
 		f_style = random_facial_hair_style(gender, species)
@@ -54,6 +55,7 @@
 
 	var/update_icon = FALSE
 	copy_to(mannequin, TRUE)
+	mannequin.update_icon = TRUE
 
 	var/datum/job/previewJob
 	if(equip_preview_mob && job_master)
@@ -68,12 +70,15 @@
 	else
 		return
 
-	if((equip_preview_mob & EQUIP_PREVIEW_JOB) && previewJob)
+	if(!previewJob && mannequin.icon)
+		update_icon = TRUE // So we don't end up stuck with a borg/AI icon after setting their priority to non-high
+	else if((equip_preview_mob & EQUIP_PREVIEW_JOB) && previewJob)
 		mannequin.job = previewJob.title
-		previewJob.equip_preview(mannequin, player_alt_titles[previewJob.title], mannequin.char_branch)
-		update_icon = TRUE
+		previewJob.equip_preview(mannequin, player_alt_titles[previewJob.title])
+		if(!previewJob.preview_override)
+			update_icon = TRUE
 
-	if((equip_preview_mob & EQUIP_PREVIEW_LOADOUT) && !(previewJob && (equip_preview_mob & EQUIP_PREVIEW_JOB) && (previewJob.type == /datum/job/ai || previewJob.type == /datum/job/cyborg)))
+	if((equip_preview_mob & EQUIP_PREVIEW_LOADOUT) && !previewJob?.preview_override)
 		// Equip custom gear loadout, replacing any job items
 		var/list/loadout_taken_slots = list()
 		var/list/accessories = list()
@@ -130,12 +135,15 @@
 	preview_icon.Scale(48+32, 16+32)
 
 	var/icon/stamp = getFlatIcon(mannequin, NORTH, always_use_defdir = TRUE)
+	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
 	preview_icon.Blend(stamp, ICON_OVERLAY, 25, 17)
 
 	stamp = getFlatIcon(mannequin, WEST, always_use_defdir = TRUE)
+	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
 	preview_icon.Blend(stamp, ICON_OVERLAY, 1, 9)
 
 	stamp = getFlatIcon(mannequin, SOUTH, always_use_defdir = TRUE)
+	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
 	preview_icon.Blend(stamp, ICON_OVERLAY, 49, 1)
 
 	preview_icon.Scale(preview_icon.Width() * 2, preview_icon.Height() * 2) // Scaling here to prevent blurring in the browser.

@@ -1,11 +1,11 @@
-/obj/item/weapon/gun/energy/temperature
+/obj/item/gun/energy/temperature
 	name = "temperature gun"
 	icon_state = "freezegun"
 	item_state = "freezegun"
 	fire_sound = 'sound/effects/weapons/energy/pulse3.ogg'
 	desc = "A gun that can increase temperatures. It has a small label on the side, 'More extreme temperatures will cost more charge!'"
-	var/temperature = T20C
-	var/current_temperature = T20C
+	var/temperature = 20 CELSIUS
+	var/current_temperature = 20 CELSIUS
 	charge_cost = 10
 	max_shots = 10
 	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 4, TECH_POWER = 3, TECH_MAGNET = 2)
@@ -14,31 +14,25 @@
 	wielded_item_state = "gun_wielded"
 
 	projectile_type = /obj/item/projectile/temp
-	cell_type = /obj/item/weapon/cell/high
+	cell_type = /obj/item/cell/high
 	combustion = 0
 
 
-/obj/item/weapon/gun/energy/temperature/examine(mob/user)
+/obj/item/gun/energy/temperature/_examine_text(mob/user)
 	. = ..()
-	. += "\nThe temperature sensor shows: [round(temperature-T0C)]&deg;C"
+	. += "\nThe temperature sensor shows: [round(CONV_KELVIN_CELSIUS(temperature))]&deg;C"
 
-/obj/item/weapon/gun/energy/temperature/Initialize()
+/obj/item/gun/energy/temperature/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
-
-/obj/item/weapon/gun/energy/temperature/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	. = ..()
-
-
-/obj/item/weapon/gun/energy/temperature/attack_self(mob/living/user)
+/obj/item/gun/energy/temperature/attack_self(mob/living/user)
 	user.set_machine(src)
 	var/temp_text = ""
-	if(temperature > (T0C - 50))
-		temp_text = "<FONT color=black>[temperature] ([round(temperature-T0C)]&deg;C) ([round(temperature*1.8-459.67)]&deg;F)</FONT>"
+	if(temperature > (-50 CELSIUS))
+		temp_text = "<FONT color=black>[temperature] ([round(CONV_KELVIN_CELSIUS(temperature))]&deg;C) ([round(temperature*1.8-459.67)]&deg;F)</FONT>"
 	else
-		temp_text = "<FONT color=blue>[temperature] ([round(temperature-T0C)]&deg;C) ([round(temperature*1.8-459.67)]&deg;F)</FONT>"
+		temp_text = "<FONT color=blue>[temperature] ([round(CONV_KELVIN_CELSIUS(temperature))]&deg;C) ([round(temperature*1.8-459.67)]&deg;F)</FONT>"
 
 	var/dat = {"<meta charset=\"utf-8\"><B>Freeze Gun Configuration: </B><BR>
 	Current output temperature: [temp_text]<BR>
@@ -48,10 +42,10 @@
 	show_browser(user, dat, "window=freezegun;size=450x300;can_resize=1;can_close=1;can_minimize=1")
 	onclose(user, "window=freezegun", src)
 
-/obj/item/weapon/gun/energy/temperature/Topic(user, href_list, state = GLOB.inventory_state)
+/obj/item/gun/energy/temperature/Topic(user, href_list, state = GLOB.inventory_state)
 	..()
 
-/obj/item/weapon/gun/energy/temperature/OnTopic(user, href_list)
+/obj/item/gun/energy/temperature/OnTopic(user, href_list)
 	if(href_list["temp"])
 		var/amount = text2num(href_list["temp"])
 		if(amount > 0)
@@ -62,7 +56,7 @@
 
 		attack_self(user)
 
-/obj/item/weapon/gun/energy/temperature/Process()
+/obj/item/gun/energy/temperature/think()
 	switch(temperature)
 		if(100 to 200) charge_cost = 10
 		if(201 to 200) charge_cost = 20
@@ -83,12 +77,14 @@
 		else
 			temperature = current_temperature
 
-/obj/item/weapon/gun/energy/temperature/Fire(atom/target, mob/living/user, clickparams, pointblank, reflex)
+	set_next_think(world.time + 1 SECOND)
+
+/obj/item/gun/energy/temperature/Fire(atom/target, mob/living/user, clickparams, pointblank, reflex)
 	if(temperature >= 450)
 		temperature -= rand(0,100)
 	. = ..()
 
-/obj/item/weapon/gun/energy/temperature/consume_next_projectile()
+/obj/item/gun/energy/temperature/consume_next_projectile()
 	if(!power_supply) return null
 	if(!ispath(projectile_type)) return null
 	if(!power_supply.checked_use(charge_cost)) return null

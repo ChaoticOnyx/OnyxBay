@@ -68,7 +68,7 @@ SUBSYSTEM_DEF(vote)
 		return FALSE
 
 	if(last_started_time != null && !(is_admin(creator) || automatic))
-		var/next_allowed_time = (last_started_time + config.vote_delay)
+		var/next_allowed_time = (last_started_time + config.vote.delay)
 		if(next_allowed_time > world.time)
 			return FALSE
 
@@ -119,7 +119,7 @@ SUBSYSTEM_DEF(vote)
 		win_y = active_vote.win_y
 	var/datum/browser/popup = new(user, "vote", "Voting Panel", win_x, win_y)
 	popup.set_content(interface(user.client))
-	popup.open(use_onclose = TRUE)
+	popup.open(use_onclose = FALSE)
 	onclose(user, "vote", src)
 
 /datum/controller/subsystem/vote/proc/close_panel(mob/user)
@@ -175,7 +175,7 @@ SUBSYSTEM_DEF(vote)
 
 // Helper proc for determining whether addantag vote can be called.
 /datum/controller/subsystem/vote/proc/is_addantag_allowed(mob/creator, automatic)
-	if(!config.allow_extra_antags)
+	if(!config.vote.allow_extra_antags)
 		return 0
 	// Gamemode has to be determined before we can add antagonists, so we can respect gamemode's add antag vote settings.
 	if((GAME_STATE <= RUNLEVEL_SETUP) || !SSticker.mode)

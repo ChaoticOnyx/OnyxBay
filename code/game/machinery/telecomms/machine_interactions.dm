@@ -11,11 +11,12 @@
 #define TELECOMM_Z 3
 
 /obj/machinery/telecomms
+	panel_open = TRUE
 	var/temp = "" // output message
 	var/construct_op = 0
 
 
-/obj/machinery/telecomms/attackby(obj/item/P as obj, mob/user as mob)
+/obj/machinery/telecomms/attackby(obj/item/P, mob/user)
 
 	// Using a multitool lets you access the receiver's interface
 	if(isMultitool(P))
@@ -65,47 +66,19 @@
 			if(isCoil(P))
 				var/obj/item/stack/cable_coil/A = P
 				if (A.use(5))
-					to_chat(user, "<span class='notice'>You insert the cables.</span>")
+					to_chat(user, SPAN_NOTICE("You insert \the [P] into \the [src]."))
 					construct_op--
 					set_broken(FALSE, TRUE) // the machine's not borked anymore!
 				else
-					to_chat(user, "<span class='warning'>You need five coils of wire for this.</span>")
-			if(isCrowbar(P))
-				to_chat(user, "You begin prying out the circuit board other components...")
-				playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
-				if(do_after(user,60, src))
-					to_chat(user, "You finish prying out the components.")
-
-					// Drop all the component stuff
-					if(contents.len > 0)
-						for(var/obj/x in src)
-							x.loc = user.loc
-					else
-
-						// If the machine wasn't made during runtime, probably doesn't have components:
-						// manually find the components and drop them!
-						var/obj/item/weapon/circuitboard/C = new circuitboard
-						for(var/I in C.req_components)
-							for(var/i = 1, i <= C.req_components[I], i++)
-								var/obj/item/s = new I
-								s.loc = user.loc
-								if(istype(P, /obj/item/stack/cable_coil))
-									var/obj/item/stack/cable_coil/A = P
-									A.amount = 1
-
-						// Drop a circuit board too
-						C.loc = user.loc
-
-					// Create a machine frame and delete the current machine
-					var/obj/machinery/constructable_frame/machine_frame/F = new
-					F.loc = src.loc
-					qdel(src)
+					to_chat(user, SPAN_WARNING("You need five coils of wire for this."))
+			if(default_deconstruction_crowbar(user, P))
+				return
 
 
-/obj/machinery/telecomms/attack_ai(mob/user as mob)
+/obj/machinery/telecomms/attack_ai(mob/user)
 	attack_hand(user)
 
-/obj/machinery/telecomms/attack_hand(mob/user as mob)
+/obj/machinery/telecomms/attack_hand(mob/user)
 
 	if(stat & (BROKEN|NOPOWER))
 		return
@@ -184,32 +157,27 @@
 	var/turf/position = get_turf(src)
 
 	// Toggle on/off getting signals from the station or the current Z level
-	if(src.listening_levels == GLOB.using_map.contact_levels) // equals the station
+	if(src.listening_levels == GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT)) // equals the station
 		src.listening_levels = GetConnectedZlevels(position.z)
 		return 1
 	else
-		src.listening_levels = GLOB.using_map.contact_levels
+		src.listening_levels = GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT)
 		return 1
 
 // Returns a multitool from a user depending on their mobtype.
 
-/obj/machinery/telecomms/proc/get_multitool(mob/user as mob)
+/obj/machinery/telecomms/proc/get_multitool(mob/user)
 
 	var/obj/item/device/multitool/P = null
 	// Let's double check
 	if(!issilicon(user))
 		if(isMultitool(user.get_active_hand()))
 			P = user.get_active_hand()
-		else if(istype(user.get_active_hand(), /obj/item/weapon/combotool))
-			var/obj/item/weapon/combotool/tool = user.get_active_hand()
-			P = tool.tool_u
-			if(!isMultitool(P))
-				P = null
 	else if(isAI(user))
 		var/mob/living/silicon/ai/U = user
 		P = U.aiMulti
 	else if(isrobot(user) && in_range(user, src))
-		if(istype(user.get_active_hand(), /obj/item/device/multitool))
+		if(isMultitool(user.get_active_hand()))
 			P = user.get_active_hand()
 	return P
 
@@ -243,7 +211,7 @@
 /obj/machinery/telecomms/relay/Options_Menu()
 	var/dat = ""
 	if(src.z == TELECOMM_Z)
-		dat += "<br>Signal Locked to the [station_name()]: <A href='?src=\ref[src];change_listening=1'>[listening_levels == GLOB.using_map.contact_levels ? "TRUE" : "FALSE"]</a>"
+		dat += "<br>Signal Locked to the [station_name()]: <A href='?src=\ref[src];change_listening=1'>[listening_levels == GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT) ? "TRUE" : "FALSE"]</a>"
 	dat += "<br>Broadcasting: <A href='?src=\ref[src];broadcast=1'>[broadcasting ? "YES" : "NO"]</a>"
 	dat += "<br>Receiving:    <A href='?src=\ref[src];receive=1'>[receiving ? "YES" : "NO"]</a>"
 	return dat

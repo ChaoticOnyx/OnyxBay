@@ -11,6 +11,7 @@
 	. = ..()
 	for(var/obj/structure/catwalk/C in get_turf(src))
 		if(C != src)
+			util_crash_with("Multiple catwalks on one turf! ([loc.x], [loc.y], [loc.z])")
 			qdel(C)
 	update_icon()
 	redraw_nearby_catwalks()
@@ -55,15 +56,15 @@
 			new /obj/item/stack/rods(src.loc)
 			qdel(src)
 
-/obj/structure/catwalk/attackby(obj/item/C as obj, mob/user as mob)
+/obj/structure/catwalk/attackby(obj/item/C, mob/user)
 	if(isWelder(C))
-		var/obj/item/weapon/weldingtool/WT = C
+		var/obj/item/weldingtool/WT = C
 		if(WT.remove_fuel(0, user))
 			playsound(src, 'sound/items/Welder.ogg', 100, 1)
-			to_chat(user, "<span class='notice'>Slicing catwalk joints ...</span>")
-			new /obj/item/stack/rods(src.loc)
-			new /obj/item/stack/rods(src.loc)
+			to_chat(user, SPAN("notice", "Slicing catwalk joints ..."))
+			new /obj/item/stack/rods(loc)
+			new /obj/item/stack/rods(loc)
 			//Lattice would delete itself, but let's save ourselves a new obj
-			if(istype(src.loc, /turf/space) || istype(src.loc, /turf/simulated/open))
-				new /obj/structure/lattice/(src.loc)
+			if((istype(loc, /turf/space) || istype(loc, /turf/simulated/open)) && !(locate(/obj/structure/lattice) in loc))
+				new /obj/structure/lattice(loc)
 			qdel(src)

@@ -8,13 +8,13 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	icon = 'icons/obj/library.dmi'
 	icon_state = "fax"
 	insert_anim = "faxsend"
-	req_one_access = list(access_lawyer, access_heads, access_armory, access_qm)
+	req_one_access = list(access_iaa, access_heads, access_armory, access_qm)
 
-	idle_power_usage = 30
-	active_power_usage = 200
+	idle_power_usage = 30 WATTS
+	active_power_usage = 200 WATTS
 	layer = BELOW_OBJ_LAYER
 
-	var/obj/item/weapon/card/id/scan = null // identification
+	var/obj/item/card/id/scan = null // identification
 	var/authenticated = 0
 	var/sendcooldown = 0 // to avoid spamming fax messages
 	var/print_cooldown = 0 //to avoid spamming printing complaints
@@ -29,9 +29,15 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	if(!admin_departments)
 		admin_departments = list("[GLOB.using_map.boss_name]", "Colonial Marshal Service", "[GLOB.using_map.boss_short] Supply") + GLOB.using_map.map_admin_faxes
 	GLOB.allfaxes += src
-	if(!destination) destination = "[GLOB.using_map.boss_name]"
-	if( !(("[department]" in GLOB.alldepartments) || ("[department]" in admin_departments)))
+	if(!destination)
+		destination = "[GLOB.using_map.boss_name]"
+	if(!(("[department]" in GLOB.alldepartments) || ("[department]" in admin_departments)))
 		GLOB.alldepartments |= department
+
+/obj/machinery/photocopier/faxmachine/Destroy()
+	QDEL_NULL(scan)
+	GLOB.allfaxes -= src
+	return ..()
 
 /obj/machinery/photocopier/faxmachine/attack_hand(mob/user as mob)
 	user.set_machine(src)
@@ -108,7 +114,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 			playsound(src.loc, 'sound/signals/processing20.ogg', 25)
 			var/id = IAAJ_generate_fake_id()
 			ASSERT(id)
-			new /obj/item/weapon/complaint_folder(src.loc, id)
+			new /obj/item/complaint_folder(src.loc, id)
 			. =  TOPIC_HANDLED
 	if(href_list["send"])
 		if(copyitem)
@@ -125,26 +131,22 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 
 	else if(href_list["remove"])
 		if(copyitem)
-			copyitem.loc = usr.loc
-			usr.put_in_hands(copyitem)
+			usr.pick_or_drop(copyitem, loc)
 			to_chat(usr, "<span class='notice'>You take \the [copyitem] out of \the [src].</span>")
 			copyitem = null
 			updateUsrDialog()
 
 	if(href_list["scan"])
-		if (scan)
+		if(scan)
 			if(ishuman(usr))
-				scan.loc = usr.loc
-				if(!usr.get_active_hand())
-					usr.put_in_hands(scan)
+				usr.pick_or_drop(scan, loc)
 				scan = null
 			else
-				scan.loc = src.loc
+				scan.forceMove(loc)
 				scan = null
 		else
 			var/obj/item/I = usr.get_active_hand()
-			if (istype(I, /obj/item/weapon/card/id) && usr.unEquip(I))
-				I.loc = src
+			if (istype(I, /obj/item/card/id) && usr.drop(I, src))
 				scan = I
 		authenticated = 0
 
@@ -193,11 +195,11 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	// give the sprite some time to flick
 	sleep(20)
 
-	if (istype(incoming, /obj/item/weapon/paper))
+	if (istype(incoming, /obj/item/paper))
 		copy(incoming)
-	else if (istype(incoming, /obj/item/weapon/photo))
+	else if (istype(incoming, /obj/item/photo))
 		photocopy(incoming)
-	else if (istype(incoming, /obj/item/weapon/paper_bundle))
+	else if (istype(incoming, /obj/item/paper_bundle))
 		bundlecopy(incoming)
 	else
 		return 0
@@ -213,14 +215,14 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 
 	//recieved copies should not use toner since it's being used by admins only.
 	var/obj/item/rcvdcopy
-	if (istype(copyitem, /obj/item/weapon/paper))
+	if (istype(copyitem, /obj/item/paper))
 		rcvdcopy = copy(copyitem, 0)
-	else if (istype(copyitem, /obj/item/weapon/photo))
+	else if (istype(copyitem, /obj/item/photo))
 		rcvdcopy = photocopy(copyitem, 0)
-	else if (istype(copyitem, /obj/item/weapon/paper_bundle))
+	else if (istype(copyitem, /obj/item/paper_bundle))
 		rcvdcopy = bundlecopy(copyitem, 0)
-	else if (istype(copyitem, /obj/item/weapon/complaint_folder))
-		var/obj/item/weapon/complaint_folder/CF = copyitem
+	else if (istype(copyitem, /obj/item/complaint_folder))
+		var/obj/item/complaint_folder/CF = copyitem
 		var/fail_reason = CF.prevalidate()
 		if (fail_reason)
 			visible_message("[src] beeps, \"Error transmitting message: [fail_reason].\"")
@@ -252,7 +254,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 
 	fax_message_admins(sender, "[uppertext(destination)] FAX[intercepted ? "(Intercepted by [intercepted])" : null]", rcvdcopy, destination, msg_color)
 
-	var/obj/item/weapon/complaint_folder/CF = rcvdcopy
+	var/obj/item/complaint_folder/CF = rcvdcopy
 	if (istype(CF))
 		var/fail_reason = CF.validate()
 		if (fail_reason)

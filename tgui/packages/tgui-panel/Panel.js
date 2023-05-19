@@ -5,29 +5,29 @@
  * @license MIT
  */
 
-import { Button, Section, Stack } from 'tgui/components'
-import { Pane } from 'tgui/layouts'
-import { NowPlayingWidget, useAudio } from './audio'
-import { ChatPanel, ChatTabs } from './chat'
-import { useGame } from './game'
-import { Notifications } from './Notifications'
-import { SettingsPanel, useSettings } from './settings'
-import { useSpellCheckerSettings, SpellCheckerSettings } from './spellchecker'
+import { Button, Section, Stack } from "tgui/components";
+import { Pane } from "tgui/layouts";
+import { NowPlayingWidget, useAudio } from "./audio";
+import { ChatPanel, ChatTabs } from "./chat";
+import { useGame } from "./game";
+import { Notifications } from "./Notifications";
+import { SettingsPanel, useSettings } from "./settings";
+import { useSpellCheckerSettings, SpellCheckerSettings } from "./spellchecker";
 
 export const Panel = (props, context) => {
   // IE8-10: Needs special treatment due to missing Flex support
   if (Byond.IS_LTE_IE10) {
-    return <HoboPanel />
+    return <HoboPanel />;
   }
-  const audio = useAudio(context)
-  const settings = useSettings(context)
-  const spellChecker = useSpellCheckerSettings(context)
-  const game = useGame(context)
-  if (process.env.NODE_ENV !== 'production') {
-    const { useDebug, KitchenSink } = require('tgui/debug')
-    const debug = useDebug(context)
+  const audio = useAudio(context);
+  const settings = useSettings(context);
+  const spellChecker = useSpellCheckerSettings(context);
+  const game = useGame(context);
+  if (process.env.NODE_ENV !== "production") {
+    const { useDebug, KitchenSink } = require("tgui/debug");
+    const debug = useDebug(context);
     if (debug.kitchenSink) {
-      return <KitchenSink panel />
+      return <KitchenSink panel />;
     }
   }
   return (
@@ -35,38 +35,38 @@ export const Panel = (props, context) => {
       <Stack fill vertical>
         <Stack.Item>
           <Section fitted>
-            <Stack mr={1} align='center'>
-              <Stack.Item grow overflowX='auto'>
+            <Stack mr={1} align="center">
+              <Stack.Item grow overflowX="auto">
                 <ChatTabs />
               </Stack.Item>
               <Stack.Item>
                 <Button
-                  color={spellChecker.enabled ? 'yellow' : 'grey'}
+                  color={spellChecker.enabled ? "yellow" : "grey"}
                   selected={spellChecker.visible}
-                  icon='spell-check'
-                  tooltip='Yandex Spell Checker'
-                  tooltipPosition='bottom-start'
+                  icon="spell-check"
+                  tooltip="Yandex Spell Checker"
+                  tooltipPosition="bottom-start"
                   onClick={() => spellChecker.toggle()}
                 />
               </Stack.Item>
               <Stack.Item>
                 <Button
-                  color='grey'
+                  color="grey"
                   selected={audio.visible}
-                  icon='music'
-                  tooltip='Music player'
-                  tooltipPosition='bottom-start'
+                  icon="music"
+                  tooltip="Music player"
+                  tooltipPosition="bottom-start"
                   onClick={() => audio.toggle()}
                 />
               </Stack.Item>
               <Stack.Item>
                 <Button
-                  icon={settings.visible ? 'times' : 'cog'}
+                  icon={settings.visible ? "times" : "cog"}
                   selected={settings.visible}
                   tooltip={
-                    settings.visible ? 'Close settings' : 'Open settings'
+                    settings.visible ? "Close settings" : "Open settings"
                   }
-                  tooltipPosition='bottom-start'
+                  tooltipPosition="bottom-start"
                   onClick={() => settings.toggle()}
                 />
               </Stack.Item>
@@ -91,8 +91,8 @@ export const Panel = (props, context) => {
           </Stack.Item>
         )}
         <Stack.Item grow>
-          <Section fill fitted position='relative'>
-            <Pane.Content id='chatContainer' scrollable>
+          <Section fill fitted position="relative">
+            <Pane.Content id="chatContainer" scrollable>
               <ChatPanel lineHeight={settings.lineHeight} />
             </Pane.Content>
             <Notifications>
@@ -103,28 +103,29 @@ export const Panel = (props, context) => {
                 </Notifications.Item>
               )}
             </Notifications>
-            <div id='imageContainer' />
+            <div id="imageContainer" />
           </Section>
         </Stack.Item>
       </Stack>
     </Pane>
-  )
-}
+  );
+};
 
 const HoboPanel = (props, context) => {
-  const settings = useSettings(context)
+  const settings = useSettings(context);
   return (
     <Pane theme={settings.theme}>
       <Pane.Content scrollable>
         <Button
           style={{
-            position: 'fixed',
-            top: '1em',
-            right: '2em',
-            'z-index': 1000
+            position: "fixed",
+            top: "1em",
+            right: "2em",
+            "z-index": 1000,
           }}
           selected={settings.visible}
-          onClick={() => settings.toggle()}>
+          onClick={() => settings.toggle()}
+        >
           Settings
         </Button>
         {(settings.visible && <SettingsPanel />) || (
@@ -132,5 +133,5 @@ const HoboPanel = (props, context) => {
         )}
       </Pane.Content>
     </Pane>
-  )
-}
+  );
+};

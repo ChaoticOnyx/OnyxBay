@@ -4,7 +4,7 @@
 
 /datum/integrated_io/string/ask_for_pin_data(mob/user)
 	var/new_data = input(user, "Please type in a string.","[src] string writing")
-	new_data = sanitize(new_data, trim=0)
+	new_data = sanitize(new_data, trim = FALSE, max_length = MAX_PAPER_MESSAGE_LEN)
 	if(holder.check_interactivity(user) )
 		if(!isnull(new_data) && istext(new_data))
 			to_chat(user, SPAN("warning", "Your input contains prohibited words."))

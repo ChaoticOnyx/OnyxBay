@@ -4,14 +4,14 @@
 	icon_state = "arcade"
 	icon_keyboard = null
 	icon_screen = "invaders"
-	var/list/prizes = list(	/obj/item/weapon/storage/box/snappops										= 2,
+	var/list/prizes = list(	/obj/item/storage/box/snappops										= 2,
 							/obj/item/toy/blink															= 2,
 							/obj/item/clothing/under/syndicate/tacticool								= 2,
 							/obj/item/toy/sword															= 2,
-							/obj/item/weapon/gun/projectile/revolver/capgun								= 2,
+							/obj/item/gun/projectile/revolver/capgun								= 2,
 							/obj/item/toy/crossbow														= 2,
 							/obj/item/clothing/suit/syndicatefake										= 2,
-							/obj/item/weapon/storage/fancy/crayons										= 2,
+							/obj/item/storage/fancy/crayons										= 2,
 							/obj/item/toy/spinningtoy													= 2,
 							/obj/item/toy/prize/ripley													= 1,
 							/obj/item/toy/prize/fireripley												= 1,
@@ -24,7 +24,7 @@
 							/obj/item/toy/prize/mauler													= 1,
 							/obj/item/toy/prize/odysseus												= 1,
 							/obj/item/toy/prize/phazon													= 1,
-							/obj/item/weapon/reagent_containers/spray/waterflower						= 1,
+							/obj/item/reagent_containers/spray/waterflower						= 1,
 							/obj/random/action_figure													= 1,
 							/obj/random/plushie															= 1,
 							/obj/item/toy/cultsword														= 1
@@ -35,14 +35,14 @@
 	// If it's a generic arcade machine, pick a random arcade
 	// circuit board for it and make the new machine
 	if(!circuit)
-		var/choice = pick(typesof(/obj/item/weapon/circuitboard/arcade) - /obj/item/weapon/circuitboard/arcade)
-		var/obj/item/weapon/circuitboard/CB = new choice()
+		var/choice = pick(typesof(/obj/item/circuitboard/arcade) - /obj/item/circuitboard/arcade)
+		var/obj/item/circuitboard/CB = new choice()
 		new CB.build_path(loc, CB)
 		return INITIALIZE_HINT_QDEL
 
 /obj/machinery/computer/arcade/proc/prizevend()
 	if(!contents.len)
-		var/prizeselect = pickweight(prizes)
+		var/prizeselect = util_pick_weight(prizes)
 		new prizeselect(src.loc)
 
 		if(istype(prizeselect, /obj/item/clothing/suit/syndicatefake)) //Helmet is part of the suit
@@ -68,7 +68,7 @@
 		if(2)
 			num_of_prizes = rand(0,2)
 	for(num_of_prizes; num_of_prizes > 0; num_of_prizes--)
-		empprize = pickweight(prizes)
+		empprize = util_pick_weight(prizes)
 		new empprize(src.loc)
 
 	..(severity)
@@ -81,7 +81,7 @@
 	name = "arcade machine"
 	desc = "Does not support Pinball."
 	icon_state = "arcade"
-	circuit = /obj/item/weapon/circuitboard/arcade/battle
+	circuit = /obj/item/circuitboard/arcade/battle
 	var/enemy_name = "Space Villian"
 	var/temp = "Winners don't use space drugs" //Temporary message, for attack messages, etc
 	var/player_hp = 30 //Player health/attack points
@@ -123,7 +123,7 @@
 
 /obj/machinery/computer/arcade/battle/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
-	
+
 	if(!ui)
 		ui = new(user, src, "Arcade", "")
 		ui.open()
@@ -146,10 +146,10 @@
 
 /obj/machinery/computer/arcade/battle/tgui_act(action, params)
 	. = ..()
-	
+
 	if(.)
 		return
-	
+
 	switch(action)
 		if("attack")
 			playsound(loc, pick(attack_sounds), 15, TRUE)
@@ -185,7 +185,7 @@
 
 			if(turtle > 0)
 				turtle--
-			
+
 			arcade_action(usr)
 
 			. = TRUE
@@ -202,15 +202,15 @@
 			if(emagged)
 				emagged = 0
 				SetupGame()
-			
+
 			. = TRUE
-	
+
 	if(.)
 		tgui_update()
 
 /obj/machinery/computer/arcade/battle/attack_hand(mob/user)
 	. = ..()
-	
+
 	if(.)
 		return
 

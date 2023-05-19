@@ -29,7 +29,7 @@
 		if(M)
 			dat += "<td><a href='?_src_=holder;adminplayeropts=\ref[M]'>[M.real_name]/([player.key])</a>"
 			if(!M.client)      dat += " <i>(logged out)</i>"
-			if(M.stat == DEAD) dat += " <b><font color=red>(DEAD)</font></b>"
+			if(M.is_ooc_dead()) dat += " <b><font color=red>(DEAD)</font></b>"
 			dat += "</td>"
 			dat += "<td>\[<A href='?src=\ref[caller];priv_msg=\ref[M]'>PM</A>\]\[<A href='?src=\ref[caller];traitor=\ref[M]'>TP</A>\]</td>"
 		else
@@ -39,7 +39,7 @@
 
 	if(flags & ANTAG_HAS_NUKE)
 		dat += "<br><table><tr><td><B>Nuclear disk(s)</B></td></tr>"
-		for(var/obj/item/weapon/disk/nuclear/N in world)
+		for(var/obj/item/disk/nuclear/N in world)
 			dat += "<tr><td>[N.name], "
 			var/atom/disk_loc = N.loc
 			while(!istype(disk_loc, /turf))

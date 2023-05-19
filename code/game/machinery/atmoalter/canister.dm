@@ -14,7 +14,7 @@
 	var/canister_color = "yellow"
 	var/can_label = 1
 	start_pressure = 45 * ONE_ATMOSPHERE
-	var/temperature_resistance = 1000 + T0C
+	var/temperature_resistance = 1000 CELSIUS
 	volume = 1000
 	interact_offline = 1 // Allows this to be used when not in powered area.
 	var/release_log = ""
@@ -207,11 +207,11 @@ update_flag
 	if(valve_open)
 		var/datum/gas_mixture/environment
 		if(holding)
-			environment = holding.air_contents
+			environment = holding.return_air()
 		else
 			environment = loc.return_air()
 
-		var/env_pressure = environment.return_pressure()
+		var/env_pressure = environment?.return_pressure()
 		var/pressure_delta = release_pressure - env_pressure
 
 		if((air_contents.temperature > 0) && (pressure_delta > 0))
@@ -250,8 +250,8 @@ update_flag
 		healthcheck()
 	..()
 
-/obj/machinery/portable_atmospherics/canister/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(!isWrench(W) && !istype(W, /obj/item/weapon/tank) && !istype(W, /obj/item/device/analyzer) && !istype(W, /obj/item/device/pda))
+/obj/machinery/portable_atmospherics/canister/attackby(obj/item/W as obj, mob/user as mob)
+	if(!isWrench(W) && !istype(W, /obj/item/tank) && !istype(W, /obj/item/device/analyzer) && !istype(W, /obj/item/device/pda))
 		user.visible_message(SPAN("danger", "\The [src] has been [pick(W.attack_verb)] with [W] by [user]!"))
 		src.health -= W.force
 		healthcheck()
@@ -260,7 +260,7 @@ update_flag
 		playsound(src.loc, 'sound/effects/fighting/smash.ogg', 50, 1)
 		shake_animation(stime = 4)
 
-	if(istype(user, /mob/living/silicon/robot) && istype(W, /obj/item/weapon/tank/jetpack))
+	if(istype(user, /mob/living/silicon/robot) && istype(W, /obj/item/tank/jetpack))
 		var/datum/gas_mixture/thejetpack = W:air_contents
 		var/env_pressure = thejetpack.return_pressure()
 		var/pressure_delta = min(10*ONE_ATMOSPHERE - env_pressure, (air_contents.return_pressure() - env_pressure)/2)
@@ -329,7 +329,7 @@ update_flag
 		if (valve_open)
 			valve_open = 0
 			release_log += "Valve was <b>closed</b> by [user] ([user.ckey]), stopping the transfer into the [holding]<br>"
-		if(istype(holding, /obj/item/weapon/tank))
+		if(istype(holding, /obj/item/tank))
 			holding.manipulated_by = user.real_name
 		holding.dropInto(loc)
 		holding = null

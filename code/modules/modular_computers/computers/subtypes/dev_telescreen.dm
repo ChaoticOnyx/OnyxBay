@@ -9,8 +9,8 @@
 	hardware_flag = PROGRAM_TELESCREEN
 	anchored = TRUE
 	density = 0
-	base_idle_power_usage = 75
-	base_active_power_usage = 300
+	base_idle_power_usage = 75 WATTS
+	base_active_power_usage = 300 WATTS
 	max_hardware_size = 2
 	steel_sheet_cost = 10
 	light_strength = 4
@@ -23,7 +23,7 @@
 	// Allows us to create "north bump" "south bump" etc. named objects, for more comfortable mapping.
 	name = "telescreen"
 
-/obj/item/modular_computer/telescreen/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/modular_computer/telescreen/attackby(obj/item/W as obj, mob/user as mob)
 	if(isCrowbar(W))
 		if(anchored)
 			shutdown_computer()

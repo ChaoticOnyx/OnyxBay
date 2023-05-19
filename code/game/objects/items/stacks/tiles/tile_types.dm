@@ -18,7 +18,6 @@
 
 	force = 1
 	throwforce = 1
-	throw_speed = 5
 	throw_range = 20
 	item_flags = 0
 	obj_flags = 0
@@ -72,11 +71,50 @@
 	throwforce = 10.5
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 
+/obj/item/stack/tile/floor/fifty
+	amount = 50
+
+/obj/item/stack/tile/floor_rough
+	name = "steel rough floor tile"
+	singular_name = "steel rough floor tile"
+	icon_state = "tile_rough"
+
+/obj/item/stack/tile/floor_rough/fifty
+	amount = 50
+
 /obj/item/stack/tile/floor_white
 	name = "white floor tile"
 	singular_name = "white floor tile"
 	icon_state = "tile_white"
 	matter = list(MATERIAL_PLASTIC = 937.5)
+
+/obj/item/stack/tile/floor_white/fifty
+	amount = 50
+
+/obj/item/stack/tile/floor_white_rough
+	name = "white rough floor tile"
+	singular_name = "white rough floor tile"
+	icon_state = "tile_white_rough"
+
+/obj/item/stack/tile/floor_white_rough/fifty
+	amount = 50
+
+/obj/item/stack/tile/floor_dark
+	name = "dark floor tile"
+	singular_name = "dark floor tile"
+	icon_state = "fr_tile"
+	matter = list(MATERIAL_STEEL = 937.5)
+
+/obj/item/stack/tile/floor_dark/fifty
+	amount = 50
+
+/obj/item/stack/tile/floor_dark_rough
+	name = "dark rough floor tile"
+	singular_name = "dark rough floor tile"
+	icon_state = "fr_tile_rough"
+
+/obj/item/stack/tile/floor_dark_rough/fifty
+	amount = 50
 
 /obj/item/stack/tile/floor_brown
 	name = "brown floor tile"
@@ -84,19 +122,67 @@
 	icon_state = "tile_brown"
 	matter = list(MATERIAL_PLASTIC = 937.5)
 
-/obj/item/stack/tile/floor_white/fifty
-	amount = 50
-
 /obj/item/stack/tile/floor_brown/fifty
 	amount = 50
 
-/obj/item/stack/tile/floor_dark
-	name = "dark floor tile"
-	singular_name = "dark floor tile"
-	icon_state = "fr_tile"
+/obj/item/stack/tile/floor_mono
+	name = "steel mono tile"
+	singular_name = "steel mono tile"
+	icon_state = "tile_rough"
+	matter = list(MATERIAL_STEEL = 937.5)
+
+/obj/item/stack/tile/floor_mono/fifty
+	amount = 50
+
+/obj/item/stack/tile/floor_mono_dark
+	name = "dark mono tile"
+	singular_name = "dark mono tile"
+	icon_state = "fr_tile_rough"
+	matter = list(MATERIAL_STEEL = 937.5)
+
+/obj/item/stack/tile/floor_mono_dark/fifty
+	amount = 50
+
+/obj/item/stack/tile/floor_mono_white
+	name = "white mono tile"
+	singular_name = "white mono tile"
+	icon_state = "tile_white_rough"
+	matter = list(MATERIAL_PLASTIC = 937.5)
+
+/obj/item/stack/tile/floor_mono_white/fifty
+	amount = 50
+
+/obj/item/stack/tile/techfloor
+	name = "tech floor tile"
+	singular_name = "tech floor tile"
+	icon_state = "tile_techfloor"
 	matter = list(MATERIAL_PLASTEEL = 937.5)
 
-/obj/item/stack/tile/floor_dark/fifty
+/obj/item/stack/tile/techfloor/fifty
+	amount = 50
+
+/obj/item/stack/tile/techfloor/maint
+	name = "tech maint tile"
+	singular_name = "tech maint tile"
+	icon_state = "tile_techmaint"
+
+/obj/item/stack/tile/techfloor/maint/fifty
+	amount = 50
+
+/obj/item/stack/tile/techfloor/grid
+	name = "tech grid tile"
+	singular_name = "tech grid tile"
+	icon_state = "tile_techgrid"
+
+/obj/item/stack/tile/techfloor/grid/fifty
+	amount = 50
+
+/obj/item/stack/tile/techfloor/ridge
+	name = "tech ridge tile"
+	singular_name = "tech ridge tile"
+	icon_state = "tile_techridge"
+
+/obj/item/stack/tile/techfloor/ridge/fifty
 	amount = 50
 
 /obj/item/stack/tile/floor_freezer
@@ -117,6 +203,16 @@
 	charge_costs = list(250)
 	stacktype = /obj/item/stack/tile/floor
 	build_type = /obj/item/stack/tile/floor
+
+/obj/item/stack/tile/floor_rough/cyborg
+	name = "rough floor tile synthesizer"
+	desc = "A device that makes rough floor tiles."
+	gender = NEUTER
+	matter = null
+	uses_charge = 1
+	charge_costs = list(250)
+	stacktype = /obj/item/stack/tile/floor_rough
+	build_type = /obj/item/stack/tile/floor_rough
 
 /obj/item/stack/tile/linoleum
 	name = "linoleum"

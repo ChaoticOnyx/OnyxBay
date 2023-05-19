@@ -93,6 +93,8 @@
 			possible -= type
 		if(status & TRADER_BLACKLIST_SUB)
 			possible -= subtypesof(type)
+		if(status & TRADER_BLACKLIST_ALL)
+			possible -= typesof(type)
 
 	if(possible.len)
 		var/picked = pick(possible)
@@ -148,7 +150,7 @@
 		if(blacklisted_trade_items && blacklisted_trade_items.len && is_type_in_list(offer,blacklisted_trade_items))
 			return 0
 
-		if(istype(offer,/obj/item/weapon/spacecash))
+		if(istype(offer,/obj/item/spacecash))
 			if(!(trade_flags & TRADER_MONEY))
 				return TRADER_NO_MONEY
 		else
@@ -205,8 +207,11 @@
 /datum/trader/proc/trade(list/offers, num, turf/location)
 	for(var/offer in offers)
 		if(istype(offer, /mob))
+			var/mob/M = offer
 			var/text = mob_transfer_message
-			to_chat(offer, replacetext(text, "ORIGIN", origin))
+			to_chat(M, replacetext(text, "ORIGIN", origin))
+			if(M.key)
+				M.ghostize()
 		if(istype(offer, /obj/mecha))
 			var/obj/mecha/M = offer
 			M.wreckage = null //So they don't ruin the illusion
@@ -216,6 +221,7 @@
 	var/type = trading_items[num]
 
 	var/atom/movable/M = new type(location)
+	M.on_purchase()
 	playsound(location, 'sound/effects/teleport.ogg', 50, 1)
 
 	disposition += rand(compliment_increase,compliment_increase*3) //Traders like it when you trade with them

@@ -5,7 +5,7 @@
 	icon_state = "empty"
 	density = 0
 	anchored = 1
-	var/obj/item/weapon/nuclear_cylinder/cylinder
+	var/obj/item/nuclear_cylinder/cylinder
 	var/armed = 0
 	var/damaged = 0
 
@@ -14,14 +14,14 @@
 		if(damaged)
 			usr.visible_message("[usr] begins to repair [src].", "You begin repairing [src].")
 			if(do_after(usr, 100, src))
-				var/obj/item/weapon/weldingtool/w
+				var/obj/item/weldingtool/w
 				if(w.burn_fuel(10))
 					damaged = 0
 					usr.visible_message("[usr] repairs [src].", "You repair [src].")
 				else
 					to_chat(usr, "<span class='warning'>There is not enough fuel to repair [src].</span>")
 				return
-	if(istype(W, /obj/item/weapon/nuclear_cylinder))
+	if(istype(W, /obj/item/nuclear_cylinder))
 		if(damaged)
 			to_chat(usr, "<span class='warning'>[src] is damaged, you cannot place the cylinder.</span>")
 			return
@@ -30,7 +30,8 @@
 			return
 		usr.visible_message("[usr] begins to carefully place [W] onto the Inserter.", "You begin to carefully place [W] onto the Inserter.")
 		if(do_after(usr, 80, src))
-			usr.drop_from_inventory(W, src)
+			if(!usr.drop(W, src))
+				return
 			cylinder = W
 			density = 1
 			usr.visible_message("[usr] places [W] onto the Inserter.", "You place [W] onto the Inserter.")
@@ -79,7 +80,8 @@
 		else
 			usr.visible_message("[usr] beings to carefully pick up [cylinder].", "You begin to carefully pick up [cylinder].")
 			if(do_after(usr, 70, src))
-				usr.put_in_hands(cylinder)
+				if(!usr.put_in_hands(cylinder))
+					return
 				usr.visible_message("[usr] picks up [cylinder].", "You pick up [cylinder].")
 				density = 0
 				cylinder = null
@@ -102,7 +104,7 @@
 		src.visible_message("<span class='warning'>[src] dents and chars.</span>")
 		damaged = 1
 
-/obj/machinery/self_destruct/examine(mob/user)
+/obj/machinery/self_destruct/_examine_text(mob/user)
 	. = ..()
 	if(damaged)
 		. += "\n<span class='warning'>[src] is damaged, it needs repairs.</span>"

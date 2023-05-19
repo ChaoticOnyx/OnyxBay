@@ -6,7 +6,7 @@
 	randpixel = 10
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT | SLOT_EARS
-	throwforce = 1
+	throwforce = 0
 	w_class = ITEM_SIZE_TINY
 
 	var/leaves_residue = 1
@@ -15,14 +15,22 @@
 	var/obj/item/projectile/BB = null	//The loaded bullet - make it so that the projectiles are created only when needed?
 	var/spent_icon = "s-casing-spent"
 
-/obj/item/ammo_casing/New()
-	..()
+/obj/item/ammo_casing/Initialize()
+	. = ..()
 	if(ispath(projectile_type))
 		BB = new projectile_type(src)
+
+/obj/item/ammo_casing/Destroy()
+	QDEL_NULL(BB)
+	return ..()
 
 //removes the projectile from the ammo casing
 /obj/item/ammo_casing/proc/expend()
 	. = BB
+	if(BB.projectile_light)
+		BB.layer = ABOVE_LIGHTING_LAYER
+		BB.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		BB.set_light(BB.projectile_max_bright, BB.projectile_inner_range, BB.projectile_outer_range, BB.projectile_falloff_curve, BB.projectile_brightness_color)
 	BB = null
 	set_dir(pick(GLOB.alldirs)) //spin spent casings
 
@@ -49,7 +57,7 @@
 	pixel_x = rand(-randpixel, randpixel)
 	pixel_y = rand(-randpixel, randpixel)
 
-/obj/item/ammo_casing/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/ammo_casing/attackby(obj/item/W as obj, mob/user as mob)
 	if(isScrewdriver(W))
 		if(!BB)
 			to_chat(user, "<span class='notice'>There is no bullet in the casing to inscribe anything into.</span>")
@@ -72,7 +80,7 @@
 	if(spent_icon && !BB)
 		icon_state = spent_icon
 
-/obj/item/ammo_casing/examine(mob/user)
+/obj/item/ammo_casing/_examine_text(mob/user)
 	. = ..()
 	if (!BB)
 		. += "\nThis one is spent."
@@ -95,7 +103,6 @@
 	matter = list(MATERIAL_STEEL = 500)
 	throwforce = 5
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 4
 	throw_range = 10
 
 	var/list/stored_ammo = list()
@@ -114,8 +121,8 @@
 /obj/item/ammo_magazine/box
 	w_class = ITEM_SIZE_NORMAL
 
-/obj/item/ammo_magazine/New()
-	..()
+/obj/item/ammo_magazine/Initialize()
+	. = ..()
 	if(multiple_sprites)
 		initialize_magazine_icondata(src)
 
@@ -127,7 +134,7 @@
 			stored_ammo += new ammo_type(src)
 	update_icon()
 
-/obj/item/ammo_magazine/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/ammo_magazine/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/ammo_casing))
 		var/obj/item/ammo_casing/C = W
 		if(C.caliber != caliber)
@@ -136,8 +143,8 @@
 		if(stored_ammo.len >= max_ammo)
 			to_chat(user, "<span class='warning'>[src] is full!</span>")
 			return
-		user.remove_from_mob(C)
-		C.forceMove(src)
+		if(!user.drop(C, src))
+			return
 		stored_ammo.Add(C)
 
 		playsound(user, "bullet_insert", rand(45, 60), FALSE)
@@ -163,8 +170,8 @@
 			to_chat(user, "<span class='notice'>[src] is already empty!</span>")
 		else
 			var/obj/item/ammo_casing/C = stored_ammo[stored_ammo.len]
-			stored_ammo-=C
-			user.put_in_hands(C)
+			stored_ammo -= C
+			user.pick_or_drop(C, loc)
 			user.visible_message("\The [user] removes \a [C] from [src].", "<span class='notice'>You remove \a [C] from [src].</span>")
 			playsound(user, "bullet_insert", rand(45, 60), FALSE)
 			update_icon()
@@ -183,7 +190,7 @@
 				break
 		icon_state = (new_state)? new_state : initial(icon_state)
 
-/obj/item/ammo_magazine/examine(mob/user)
+/obj/item/ammo_magazine/_examine_text(mob/user)
 	. = ..()
 	. += "\nThere [(stored_ammo.len == 1)? "is" : "are"] [stored_ammo.len] round\s left!"
 
@@ -211,4 +218,3 @@
 
 	magazine_icondata_keys["[M.type]"] = icon_keys
 	magazine_icondata_states["[M.type]"] = ammo_states
-

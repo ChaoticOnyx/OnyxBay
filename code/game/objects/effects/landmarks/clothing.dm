@@ -18,7 +18,7 @@
 	new /obj/item/clothing/gloves/chameleon(loc)
 	new /obj/item/clothing/suit/chameleon(loc)
 	new /obj/item/clothing/head/chameleon(loc)
-	new /obj/item/weapon/storage/backpack/chameleon(loc)
+	new /obj/item/storage/backpack/chameleon(loc)
 
 /obj/effect/landmark/costume/gladiator/New()
 	new /obj/item/clothing/under/gladiator(loc)
@@ -64,7 +64,7 @@
 	new /obj/item/clothing/accessory/wcoat(loc)
 	new /obj/item/clothing/glasses/monocle(loc)
 	new /obj/item/clothing/shoes/black(loc)
-	new /obj/item/weapon/cane(loc)
+	new /obj/item/cane(loc)
 	new /obj/item/clothing/under/sl_suit(loc)
 	new /obj/item/clothing/mask/fakemoustache(loc)
 
@@ -114,12 +114,12 @@
 /obj/effect/landmark/costume/cutewitch/New()
 	new /obj/item/clothing/under/sundress(loc)
 	new /obj/item/clothing/head/witchwig(loc)
-	new /obj/item/weapon/staff/broom(loc)
+	new /obj/item/staff/broom(loc)
 
 /obj/effect/landmark/costume/fakewizard/New()
 	new /obj/item/clothing/suit/wizrobe/fake(loc)
 	new /obj/item/clothing/head/wizard/fake(loc)
-	new /obj/item/weapon/staff/(loc)
+	new /obj/item/staff/(loc)
 
 /obj/effect/landmark/costume/sexyclown/New()
 	new /obj/item/clothing/mask/gas/sexyclown(loc)

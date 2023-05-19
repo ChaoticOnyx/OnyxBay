@@ -48,7 +48,7 @@
 /datum/uplink_item/item/ammo/sniperammo
 	name = "14.5mm"
 	item_cost = 3
-	path = /obj/item/weapon/storage/box/sniperammo
+	path = /obj/item/storage/box/sniperammo
 
 /datum/uplink_item/item/ammo/bullpup //for zipguns
 	name = "7.62 Magazine"
@@ -58,17 +58,17 @@
 /datum/uplink_item/item/ammo/sniperammo/apds
 	name = "14.5mm APDS"
 	item_cost = 4
-	path = /obj/item/weapon/storage/box/sniperammo/apds
+	path = /obj/item/storage/box/sniperammo/apds
 
 /datum/uplink_item/item/ammo/shotgun_shells
 	name = "Shotgun Shells box"
 	item_cost = 2
-	path = /obj/item/weapon/storage/box/shotgun/shells
+	path = /obj/item/storage/box/shotgun/shells
 
 /datum/uplink_item/item/ammo/shotgun_slugs
 	name = "Shotgun Slugs box"
 	item_cost = 2
-	path = /obj/item/weapon/storage/box/shotgun/slugs
+	path = /obj/item/storage/box/shotgun/slugs
 
 /datum/uplink_item/item/ammo/c45uzi
 	name = ".45 SMG Magazine"
@@ -93,4 +93,4 @@
 /datum/uplink_item/item/ammo/flechette
 	name = "Flechette Magazine"
 	item_cost = 3
-	path = /obj/item/weapon/magnetic_ammo
+	path = /obj/item/magnetic_ammo

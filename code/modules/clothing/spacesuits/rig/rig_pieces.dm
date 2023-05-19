@@ -13,6 +13,12 @@
 	species_restricted = null
 	has_visor = 0
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 80.9 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 28.4 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
 /obj/item/clothing/gloves/rig
 	name = "gauntlets"
 	item_flags = ITEM_FLAG_THICKMATERIAL
@@ -21,6 +27,12 @@
 	cold_protection =    HANDS
 	species_restricted = null
 	gender = PLURAL
+
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 80.9 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 28.4 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 /obj/item/clothing/shoes/magboots/rig
 	name = "boots"
@@ -31,9 +43,15 @@
 	gender = PLURAL
 	icon_base = null
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 80.9 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 28.4 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
 /obj/item/clothing/suit/space/rig
 	name = "chestpiece"
-	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/device/suit_cooling_unit)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	heat_protection =    UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	cold_protection =    UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
@@ -45,6 +63,11 @@
 	resilience = 0.2
 	can_breach = 1
 	var/list/supporting_limbs = list() //If not-null, automatically splints breaks. Checked when removing the suit.
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 80.9 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 28.4 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 /obj/item/clothing/suit/space/rig/equipped(mob/M)
 	check_limb_support(M)
@@ -58,7 +81,7 @@
 /obj/item/clothing/suit/space/rig/proc/can_support(mob/living/carbon/human/user)
 	if(user.wear_suit != src)
 		return 0 //not wearing the suit
-	var/obj/item/weapon/rig/rig = user.back
+	var/obj/item/rig/rig = user.back
 	if(!istype(rig) || rig.offline || rig.canremove)
 		return 0 //not wearing a rig control unit or it's offline or unsealed
 	return 1
@@ -98,7 +121,7 @@
 	if(!istype(H) || !H.back)
 		return 0
 
-	var/obj/item/weapon/rig/suit = H.back
+	var/obj/item/rig/suit = H.back
 	if(!suit || !istype(suit) || !suit.installed_modules.len)
 		return 0
 

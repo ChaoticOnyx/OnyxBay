@@ -29,9 +29,9 @@
 		else
 			var/obj/item/I = pick(contents)
 			if(ishuman(user))
-				user.put_in_hands(I)
+				user.pick_or_drop(I)
 			else
-				I.loc = get_turf(src)
+				I.dropInto(loc)
 			to_chat(user, "<span class='notice'>You find \an [I] in the cistern.</span>")
 			w_items -= I.w_class
 			return
@@ -59,8 +59,8 @@
 		if(w_items + I.w_class > 5)
 			to_chat(user, "<span class='notice'>The cistern is full.</span>")
 			return
-		user.drop_item()
-		I.loc = src
+		if(!user.drop(I, src))
+			return
 		w_items += I.w_class
 		to_chat(user, "You carefully place \the [I] into the cistern.")
 		return
@@ -80,21 +80,68 @@
 	desc = "The best in class HS-451 shower unit has three temperature settings, one more than the HS-450 which preceded it."
 	icon = 'icons/obj/watercloset.dmi'
 	icon_state = "shower"
-	density = 0
-	anchored = 1
+	density = FALSE
+	anchored = TRUE
 	use_power = 0
+	layer = ABOVE_WINDOW_LAYER
 	var/on = 0
 	var/obj/effect/mist/mymist = null
 	var/ismist = 0				//needs a var so we can make it linger~
 	var/watertemp = "normal"	//freezing, normal, or boiling
 	var/is_washing = 0
-	var/list/temperature_settings = list("normal" = 310, "boiling" = T0C+100, "freezing" = T0C)
+	var/list/temperature_settings = list("normal" = 310, "boiling" = 100 CELSIUS, "freezing" = 0 CELSIUS)
+
+/obj/machinery/shower/ex_act(severity)
+	switch(severity)
+		if(EXPLODE_DEVASTATE)
+			qdel(src)
+			return
+		if(EXPLODE_HEAVY)
+			if(prob(50))
+				if(prob(50))
+					new /obj/item/shower_parts(get_turf(src))
+				qdel(src)
+				return
+		if(EXPLODE_LIGHT)
+			if(prob(25))
+				new /obj/item/shower_parts(get_turf(src))
+				qdel(src)
+				return
+	return
 
 /obj/machinery/shower/New()
 	..()
 	create_reagents(50)
 
 //add heat controls? when emagged, you can freeze to death in it?
+
+/obj/item/shower_parts
+	name = "shower parts"
+	desc = "It has everything you need to assemble your own shower. Isn't it beautiful?"
+	icon = 'icons/obj/watercloset.dmi'
+	icon_state = "shower_parts"
+
+/obj/item/shower_parts/attack_self(mob/user)
+	add_fingerprint(user)
+
+	if(!isturf(user.loc))
+		return
+
+	place_shower(user)
+
+/obj/item/shower_parts/proc/place_shower(mob/user)
+	if(!in_use)
+		to_chat(user, SPAN("notice", "Assembling shower..."))
+		in_use = TRUE
+		if(!do_after(user, 1 SECOND))
+			in_use = FALSE
+			return
+		var/obj/machinery/shower/S = new /obj/machinery/shower(user.loc)
+		to_chat(user, SPAN("notice", "You assemble a shower"))
+		in_use = FALSE
+		S.add_fingerprint(user)
+		qdel_self()
+	return
 
 /obj/effect/mist
 	name = "mist"
@@ -116,8 +163,18 @@
 			G.clean_blood()
 
 /obj/machinery/shower/attackby(obj/item/I as obj, mob/user as mob)
+	if(isScrewdriver(I))
+		if(on)
+			to_chat(user, SPAN("warning", "The first thing to do is to turn off the water."))
+			return
+		playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
+		new /obj/item/shower_parts(get_turf(src))
+		qdel(src)
+
 	if(I.type == /obj/item/device/analyzer)
 		to_chat(user, "<span class='notice'>The water temperature seems to be [watertemp].</span>")
+		return
+
 	if(isWrench(I))
 		var/newtemp = input(user, "What setting would you like to set the temperature valve to?", "Water Temperature Valve") in temperature_settings
 		to_chat(user, "<span class='notice'>You begin to adjust the temperature valve with \the [I].</span>")
@@ -126,6 +183,9 @@
 			watertemp = newtemp
 			user.visible_message("<span class='notice'>\The [user] adjusts \the [src] with \the [I].</span>", "<span class='notice'>You adjust the shower with \the [I].</span>")
 			add_fingerprint(user)
+		return
+
+	return ..()
 
 /obj/machinery/shower/update_icon()	//this is terribly unreadable, but basically it makes the shower mist up
 	overlays.Cut()					//once it's been on for a while, in addition to handling the water overlay.
@@ -135,7 +195,7 @@
 
 	if(on)
 		overlays += image('icons/obj/watercloset.dmi', src, "water", MOB_LAYER + 1, dir)
-		if(temperature_settings[watertemp] < T20C)
+		if(temperature_settings[watertemp] < (20 CELSIUS))
 			return //no mist for cold water
 		if(!ismist)
 			spawn(50)
@@ -290,7 +350,7 @@
 		else if(temperature <= H.species.cold_level_1)
 			to_chat(H, "<span class='warning'>The water is freezing cold!</span>")
 
-/obj/item/weapon/bikehorn/rubberducky
+/obj/item/bikehorn/rubberducky
 	name = "rubber ducky"
 	desc = "Rubber ducky you're so fine, you make bathtime lots of fuuun. Rubber ducky I'm awfully fooooond of yooooouuuu~"	//thanks doohl
 	icon = 'icons/obj/watercloset.dmi'
@@ -364,15 +424,18 @@
 		to_chat(user, "<span class='warning'>Someone's already washing here.</span>")
 		return
 
-	var/obj/item/weapon/reagent_containers/RG = O
+	var/obj/item/reagent_containers/RG = O
 	if (istype(RG) && RG.is_open_container())
+		if(RG.reagents.total_volume == RG.volume)
+			to_chat(user, SPAN("notice", "\The [RG] is already full!"))
+			return
 		playsound(loc, 'sound/effects/using/sink/filling1.ogg', 75)
 		RG.reagents.add_reagent(/datum/reagent/water, min(RG.volume - RG.reagents.total_volume, RG.amount_per_transfer_from_this))
 		user.visible_message("<span class='notice'>[user] fills \the [RG] using \the [src].</span>","<span class='notice'>You fill \the [RG] using \the [src].</span>")
 		return 1
 
-	else if (istype(O, /obj/item/weapon/melee/baton))
-		var/obj/item/weapon/melee/baton/B = O
+	else if (istype(O, /obj/item/melee/baton))
+		var/obj/item/melee/baton/B = O
 		if(B.bcell)
 			if(B.bcell.charge > 0 && B.status == 1)
 				flick("baton_active", src)
@@ -388,7 +451,7 @@
 					"<span class='danger'>[user] was stunned by \his wet [O]!</span>", \
 					"<span class='userdanger'>[user] was stunned by \his wet [O]!</span>")
 				return 1
-	else if(istype(O, /obj/item/weapon/mop))
+	else if(istype(O, /obj/item/mop))
 		playsound(loc, 'sound/effects/using/sink/filling1.ogg', 75)
 		O.reagents.add_reagent(/datum/reagent/water, 5)
 		to_chat(user, "<span class='notice'>You wet \the [O] in \the [src].</span>")

@@ -18,19 +18,19 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 
 	var/list/item_type = list("Machine Boards", "Console Boards", "Mecha Boards", "Module Boards", "Engineering Boards", "Device")
 
-	idle_power_usage = 30
-	active_power_usage = 2500
+	idle_power_usage = 30 WATTS
+	active_power_usage = 2.500 KILO WATTS
 
 /obj/machinery/r_n_d/circuit_imprinter/Initialize()
 	materials = default_material_composition.Copy()
 
 	. = ..()
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/circuit_imprinter(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
-	component_parts += new /obj/item/weapon/reagent_containers/glass/beaker(src)
-	component_parts += new /obj/item/weapon/reagent_containers/glass/beaker(src)
+	component_parts += new /obj/item/circuitboard/circuit_imprinter(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/stock_parts/manipulator(src)
+	component_parts += new /obj/item/reagent_containers/vessel/beaker(src)
+	component_parts += new /obj/item/reagent_containers/vessel/beaker(src)
 	RefreshParts()
 
 /obj/machinery/r_n_d/circuit_imprinter/Process()
@@ -61,14 +61,17 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 
 /obj/machinery/r_n_d/circuit_imprinter/RefreshParts()
 	var/T = 0
-	for(var/obj/item/weapon/reagent_containers/glass/G in component_parts)
+	for(var/obj/item/reagent_containers/vessel/G in component_parts)
 		T += G.reagents.maximum_volume
-	create_reagents(T)
+	if(reagents)
+		reagents.maximum_volume = T
+	else
+		create_reagents(T)
 	max_material_storage = 0
-	for(var/obj/item/weapon/stock_parts/matter_bin/M in component_parts)
+	for(var/obj/item/stock_parts/matter_bin/M in component_parts)
 		max_material_storage += M.rating * 75000
 	T = 0
-	for(var/obj/item/weapon/stock_parts/manipulator/M in component_parts)
+	for(var/obj/item/stock_parts/manipulator/M in component_parts)
 		T += M.rating
 	mat_efficiency = 1 - (T - 1) / 4
 	speed = T

@@ -7,15 +7,14 @@
 	var/new_icon_file
 	var/uses = 1        // Uses before the kit deletes itself.
 
-/obj/item/device/kit/examine(mob/user)
+/obj/item/device/kit/_examine_text(mob/user)
 	. = ..()
 	. += "\nIt has [uses] use\s left."
 
 /obj/item/device/kit/proc/use(amt, mob/user)
 	uses -= amt
 	playsound(user, 'sound/items/Screwdriver.ogg', 50, 1)
-	if(uses<1)
-		user.drop_item()
+	if(uses < 1)
 		qdel(src)
 
 // Root hardsuit kit defines.
@@ -73,14 +72,14 @@
 	var/removable = null
 	var/list/allowed_types = list()
 
-/obj/item/device/kit/paint/examine(mob/user)
+/obj/item/device/kit/paint/_examine_text(mob/user)
 	. = ..()
 	. += "\nThis kit will convert an exosuit into: [new_name]."
 	. += "\nThis kit can be used on the following exosuit models:"
 	for(var/exotype in allowed_types)
 		. += "\n- [capitalize(exotype)]"
 
-/obj/mecha/attackby(obj/item/weapon/W, mob/user)
+/obj/mecha/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/device/kit/paint))
 		if(occupant)
 			to_chat(user, "You can't customize a mech while someone is piloting it - that would be unsafe!")

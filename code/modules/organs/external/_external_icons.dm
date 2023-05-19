@@ -97,7 +97,7 @@ var/list/limb_icon_cache = list()
 		if(is_stump())
 			stump_icon = "_s"
 
-		icon_state = "[icon_name][gender][body_build][stump_icon]"
+		icon_state = "[icon_name][gender][body_build][stump_icon][owner?.mind?.special_role == "Zombie" && owner.species == all_species[SPECIES_HUMAN] ? "_z" : ""]"
 
 		if (species)
 			if(species.base_skin_colours && !isnull(species.base_skin_colours[s_base]))
@@ -107,7 +107,7 @@ var/list/limb_icon_cache = list()
 		if(force_icon)
 			icon = force_icon
 		else if (BP_IS_ROBOTIC(src))
-			icon = 'icons/mob/human_races/robotic.dmi'
+			icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_main.dmi'
 		else if (!dna)
 			icon = 'icons/mob/human_races/r_human.dmi'
 		else if (status & ORGAN_MUTATED)
@@ -149,6 +149,7 @@ var/list/limb_icon_cache = list()
 			dir = EAST
 		if(mob_icon)
 			icon = mob_icon
+	return icon
 
 /obj/item/organ/external/proc/update_icon_drop(mob/living/carbon/human/powner)
 	return
@@ -165,7 +166,7 @@ var/list/limb_icon_cache = list()
 var/list/flesh_hud_colours = list("#00ff00","#aaff00","#ffff00","#ffaa00","#ff0000","#aa0000","#660000")
 var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#666666","#444444","#222222","#000000")
 
-/obj/item/organ/external/proc/get_damage_hud_image()
+/obj/item/organ/external/proc/get_damage_hud_image(painkiller_mult = 0)
 
 	// Species-standardized old-school health icon
 	// Probably works faster than the new fancy bodyshape-reflective system
@@ -188,7 +189,10 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 		dam_state = min_dam_state
 	// Apply colour and return product.
 	var/list/hud_colours = !BP_IS_ROBOTIC(src) ? flesh_hud_colours : robot_hud_colours
-	hud_damage_image.color = hud_colours[max(1,min(ceil(dam_state*hud_colours.len),hud_colours.len))]
+	var/final_color = hud_colours[max(1, min(ceil(dam_state * hud_colours.len), hud_colours.len))]
+	if(painkiller_mult)
+		final_color = gradient(final_color, "#bfbfbf", min(painkiller_mult, 0.9))
+	hud_damage_image.color = final_color
 	return hud_damage_image
 
 /obj/item/organ/external/proc/apply_colouration(icon/applying)
@@ -217,4 +221,3 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 			icon_cache_key += "_color_[s_col[1]]_[s_col[2]]_[s_col[3]]_[s_col_blend]"
 
 	return applying
-

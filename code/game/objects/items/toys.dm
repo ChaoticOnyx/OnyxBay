@@ -25,7 +25,6 @@
 /obj/item/toy
 	icon = 'icons/obj/toy.dmi'
 	throwforce = 0
-	throw_speed = 4
 	throw_range = 20
 	force = 0
 	mod_weight = 0.25
@@ -69,7 +68,7 @@
 	return
 
 /obj/item/toy/water_balloon/attackby(obj/O, mob/user)
-	if(istype(O, /obj/item/weapon/reagent_containers/glass))
+	if(istype(O, /obj/item/reagent_containers/vessel))
 		if(O.reagents)
 			if(O.reagents.total_volume < 1)
 				to_chat(user, "The [O] is empty.")
@@ -171,14 +170,13 @@
 	attack_verb = list("attacked", "struck", "hit")
 	var/bullets = 5
 
-	examine(mob/user)
+	_examine_text(mob/user)
 		if(..(user, 2) && bullets)
 			to_chat(user, "<span class='notice'>It is loaded with [bullets] foam darts!</span>")
 
 	attackby(obj/item/I, mob/user)
 		if(istype(I, /obj/item/toy/ammo/crossbow))
 			if(bullets <= 4)
-				user.drop_item()
 				qdel(I)
 				bullets++
 				to_chat(user, "<span class='notice'>You load the foam dart into the crossbow.</span>")
@@ -812,7 +810,7 @@
 	w_class = ITEM_SIZE_HUGE
 	attack_verb = list("attacked", "slashed", "stabbed", "poked")
 
-/obj/item/weapon/inflatable_duck
+/obj/item/inflatable_duck
 	name = "inflatable duck"
 	desc = "No bother to sink or swim when you can just float!"
 	icon_state = "inflatable"
@@ -820,7 +818,7 @@
 	icon = 'icons/obj/clothing/belts.dmi'
 	slot_flags = SLOT_BELT
 
-/obj/item/weapon/marshalling_wand
+/obj/item/marshalling_wand
 	name = "marshalling wand"
 	desc = "An illuminated, hand-held baton used by hangar personnel to visually signal shuttle pilots. The signal changes depending on your intent."
 	icon_state = "marshallingwand"
@@ -835,11 +833,11 @@
 	force = 1
 	attack_verb = list("attacked", "whacked", "jabbed", "poked", "marshalled")
 
-/obj/item/weapon/marshalling_wand/Initialize()
+/obj/item/marshalling_wand/Initialize()
 	set_light(0.6, 0.5, 2, 2, "#ff0000")
 	return ..()
 
-/obj/item/weapon/marshalling_wand/attack_self(mob/living/user)
+/obj/item/marshalling_wand/attack_self(mob/living/user)
 	if (user.a_intent == I_HELP)
 		user.visible_message("<span class='notice'>[user] beckons with \the [src], signalling forward motion.</span>",
 							"<span class='notice'>You beckon with \the [src], signalling forward motion.</span>")
@@ -901,7 +899,7 @@
 	pixel_x = 0
 	pixel_y = 0
 
-/obj/item/toy/chubbyskeleton/examine(mob/user)
+/obj/item/toy/chubbyskeleton/_examine_text(mob/user)
 	return "<span class='notice'>*---------*<BR>This is [src], a Skeleton!<BR>He is wearing some black shorts.<BR>He is wearing a blue hoodie.<BR>He is wearing some slippers on his feet.<BR>*---------*</span>"
 
 /obj/item/toy/chubbyskeleton/attack_hand(mob/user)
@@ -966,8 +964,8 @@
 			var/mob/living/carbon/human/H = user
 			if(very_dangerous)
 				H.ChangeToSkeleton()
-			for(var/obj/item/W in H)
-				H.drop_from_inventory(W)
+			for(var/obj/item/I in H)
+				H.drop(I)
 		playsound(user.loc, pick('sound/effects/xylophone1.ogg','sound/effects/xylophone2.ogg','sound/effects/xylophone3.ogg'), 60)
 
 /obj/item/toy/banbanana
@@ -985,7 +983,6 @@
 				var/mob/living/carbon/human/H = M
 				H.eye_blind += 1
 	playsound(user.loc, 'sound/effects/adminhelp.ogg', 100)
-	user.drop_from_inventory(src)
 	qdel(src)
 
 /obj/item/toy/pig
@@ -1041,6 +1038,6 @@
 			if(temp && !temp.is_usable())
 				to_chat(user, SPAN("warning", "You try to pick up \the [src] with your [temp.name], but cannot!"))
 				return
-			to_chat(user, SPAN("notice", "You pick up \the [src]."))
-			user.put_in_hands(src)
+			if(user.pick_or_drop(src, loc))
+				to_chat(user, SPAN("notice", "You pick up \the [src]."))
 	return

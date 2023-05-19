@@ -9,26 +9,26 @@
 	density = 1
 	anchored = 1
 	use_power = POWER_USE_OFF
-	idle_power_usage = 5			// 5 Watts for thermostat related circuitry
+	idle_power_usage = 5 WATTS			  // 5 Watts for thermostat related circuitry
 
-	var/heatsink_temperature = T20C	// The constant temperature reservoir into which the freezer pumps heat. Probably the hull of the station or something.
-	var/internal_volume = 600		// L
+	var/heatsink_temperature = 20 CELSIUS // The constant temperature reservoir into which the freezer pumps heat. Probably the hull of the station or something.
+	var/internal_volume = 600		 // L
 
-	var/max_power_rating = 20000	// Power rating when the usage is turned up to 100
+	var/max_power_rating = 20000	 // Power rating when the usage is turned up to 100
 	var/power_setting = 100
 
-	var/set_temperature = T20C		// Thermostat
+	var/set_temperature = 20 CELSIUS // Thermostat
 	var/cooling = 0
 
 /obj/machinery/atmospherics/unary/freezer/New()
 	..()
 	initialize_directions = dir
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/unary_atmos/cooler(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/capacitor(src)
-	component_parts += new /obj/item/weapon/stock_parts/capacitor(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
+	component_parts += new /obj/item/circuitboard/unary_atmos/cooler(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/stock_parts/capacitor(src)
+	component_parts += new /obj/item/stock_parts/capacitor(src)
+	component_parts += new /obj/item/stock_parts/manipulator(src)
 	component_parts += new /obj/item/stack/cable_coil(src, 2)
 	RefreshParts()
 
@@ -76,14 +76,14 @@
 	data["gasPressure"] = round(air_contents.return_pressure())
 	data["gasTemperature"] = round(air_contents.temperature)
 	data["minGasTemperature"] = 0
-	data["maxGasTemperature"] = round(T20C+500)
+	data["maxGasTemperature"] = round(520 CELSIUS)
 	data["targetGasTemperature"] = round(set_temperature)
 	data["powerSetting"] = power_setting
 
 	var/temp_class = "good"
-	if(air_contents.temperature > (T0C - 20))
+	if(air_contents.temperature > (-20 CELSIUS))
 		temp_class = "bad"
-	else if(air_contents.temperature < (T0C - 20) && air_contents.temperature > (T0C - 100))
+	else if(air_contents.temperature < (-20 CELSIUS) && air_contents.temperature > (-100 CELSIUS))
 		temp_class = "average"
 	data["gasTemperatureClass"] = temp_class
 
@@ -156,12 +156,12 @@
 	var/manip_rating = 0
 	var/bin_rating = 0
 
-	for(var/obj/item/weapon/stock_parts/P in component_parts)
-		if(istype(P, /obj/item/weapon/stock_parts/capacitor))
+	for(var/obj/item/stock_parts/P in component_parts)
+		if(istype(P, /obj/item/stock_parts/capacitor))
 			cap_rating += P.rating
-		if(istype(P, /obj/item/weapon/stock_parts/manipulator))
+		if(istype(P, /obj/item/stock_parts/manipulator))
 			manip_rating += P.rating
-		if(istype(P, /obj/item/weapon/stock_parts/matter_bin))
+		if(istype(P, /obj/item/stock_parts/matter_bin))
 			bin_rating += P.rating
 
 	power_rating = initial(power_rating) * cap_rating / 2			//more powerful
@@ -183,7 +183,7 @@
 
 	..()
 
-/obj/machinery/atmospherics/unary/freezer/examine(mob/user)
+/obj/machinery/atmospherics/unary/freezer/_examine_text(mob/user)
 	. = ..()
 	if(panel_open)
 		. += "\nThe maintenance hatch is open."

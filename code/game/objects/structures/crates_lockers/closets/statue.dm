@@ -45,10 +45,10 @@
 		qdel(src)
 		return
 
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	..()
 
-/obj/structure/closet/statue/Process()
+/obj/structure/closet/statue/think()
 	timer--
 	for(var/mob/living/M in src) //Go-go gadget stasis field
 		M.setToxLoss(intialTox)
@@ -57,8 +57,10 @@
 		M.setOxyLoss(intialOxy)
 	if (timer <= 0)
 		dump_contents()
-		STOP_PROCESSING(SSobj, src)
 		qdel(src)
+		return
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/structure/closet/statue/dump_contents()
 

@@ -1,0 +1,7 @@
+@use '../colors.scss';
+
+.ConditionsDescription em {
+	font-style: normal;
+	color: colors.fg(colors.$blue);
+	font-weight: bold;
+}

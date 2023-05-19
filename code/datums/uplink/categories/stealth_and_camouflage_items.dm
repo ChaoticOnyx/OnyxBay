@@ -16,31 +16,17 @@
 	item_cost = 2
 	path = /obj/item/clothing/shoes/syndigaloshes
 
-/datum/uplink_item/item/stealth_items/spy
-	name = "Bug Kit"
-	desc = "Six small cameras and a totaly-not-suspicious PDA. This kit is required to complete the recon-type contracts."
-	item_cost = 2
-	path = /obj/item/weapon/storage/box/syndie_kit/spy
-
-/datum/uplink_item/item/stealth_items/spy/buy(obj/item/device/uplink/U)
-	. = ..()
-	if(.)
-		var/obj/item/weapon/storage/box/syndie_kit/spy/B = .
-		var/obj/item/device/spy_monitor/SM = locate() in B
-		if(SM)
-			SM.uplink = U
-
 /datum/uplink_item/item/stealth_items/id
 	name = "Agent ID card"
 	desc = "Feel free to write up any job and name you like."
 	item_cost = 1
-	path = /obj/item/weapon/card/id/syndicate
+	path = /obj/item/card/id/syndicate
 
 /datum/uplink_item/item/stealth_items/chameleon_kit
 	name = "Chameleon Kit"
 	desc = "Filled with a full set of chameleon clothes."
 	item_cost = 3
-	path = /obj/item/weapon/storage/backpack/chameleon/sydie_kit
+	path = /obj/item/storage/backpack/chameleon/sydie_kit
 
 /datum/uplink_item/item/stealth_items/voice
 	name = "Chameleon Mask/Voice Changer"
@@ -48,11 +34,17 @@
 	item_cost = 3
 	path = /obj/item/clothing/mask/chameleon/voice
 
+/datum/uplink_item/item/stealth_items/silicone_top
+	name = "Silicone Breasts"
+	desc = "Manufacturer states: \"200% Organic, 100% Real Woman, and Only 50% Straight.\""
+	item_cost = 3
+	path = /obj/item/underwear/top/silicone_top
+
 /datum/uplink_item/item/stealth_items/smuggler_satchel
 	name = "Smuggler's Satchel"
 	desc = "An easy-concealable satchel. Might be much more useful than you expect."
 	item_cost = 3
-	path = /obj/item/weapon/storage/backpack/satchel/flat
+	path = /obj/item/storage/backpack/satchel/flat
 
 /datum/uplink_item/item/stealth_items/chameleon_projector
 	name = "Chameleon Projector"

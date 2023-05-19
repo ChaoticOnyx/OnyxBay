@@ -9,7 +9,7 @@
 	health = maxHealth - getBrainLoss()
 
 	//TODO: fix husking
-	if(((maxHealth - getFireLoss()) < config.health_threshold_dead) && stat == DEAD)
+	if(((maxHealth - getFireLoss()) < config.health.health_threshold_dead) && is_ic_dead())
 		ChangeToHusk()
 	return
 
@@ -58,16 +58,13 @@
 
 //Straight pain values, not affected by painkillers etc
 /mob/living/carbon/human/getHalLoss()
-	var/amount = 0
-	for(var/obj/item/organ/external/E in organs)
-		amount += E.full_pain
-	return amount
+	return full_pain
 
 /mob/living/carbon/human/setHalLoss(amount)
 	adjustHalLoss(getHalLoss() - amount)
 
 /mob/living/carbon/human/adjustHalLoss(amount)
-	if(!amount)
+	if(!amount || no_pain)
 		return
 	var/list/pick_organs = organs.Copy()
 
@@ -193,7 +190,7 @@
 	else
 		var/obj/item/organ/internal/lungs/breathe_organ = internal_organs_by_name[species.breathing_organ]
 		if(!breathe_organ)
-			return maxHealth/2
+			return maxHealth
 		return breathe_organ.get_oxygen_deprivation()
 
 /mob/living/carbon/human/setOxyLoss(amount)
@@ -226,7 +223,7 @@
 	BITSET(hud_updateflag, HEALTH_HUD)
 
 /mob/living/carbon/human/getToxLoss() // In fact, returns internal organs damage. Should be reworked sometime in the future.
-	if((species.species_flags & SPECIES_FLAG_NO_POISON) || isSynthetic())
+	if((species.species_flags & SPECIES_FLAG_NO_POISON) || isSynthetic() || isundead(src))
 		return 0
 	var/amount = 0
 	for(var/obj/item/organ/internal/I in internal_organs)
@@ -234,13 +231,13 @@
 	return amount
 
 /mob/living/carbon/human/setToxLoss(amount)
-	if(!(species.species_flags & SPECIES_FLAG_NO_POISON) && !isSynthetic())
+	if(!(species.species_flags & SPECIES_FLAG_NO_POISON) && !isSynthetic() && !isundead(src))
 		adjustToxLoss(getToxLoss()-amount)
 
 // TODO: better internal organ damage procs.
 /mob/living/carbon/human/adjustToxLoss(amount)
 
-	if((species.species_flags & SPECIES_FLAG_NO_POISON) || isSynthetic())
+	if((species.species_flags & SPECIES_FLAG_NO_POISON) || isSynthetic() || isundead(src))
 		return
 
 	var/heal = amount < 0
@@ -304,9 +301,9 @@
 	if(!species || !dam_type) return FALSE
 
 	if(dam_type == BRUTE)
-		return(getBruteLoss() < species.total_health / 2)
+		return(getBruteLoss() < species.total_health)
 	else if(dam_type == BURN)
-		return(getFireLoss() < species.total_health / 2)
+		return(getFireLoss() < species.total_health)
 	return FALSE
 
 ////////////////////////////////////////////
@@ -433,6 +430,8 @@ This function restores all organs.
 		var/obj/item/organ/external/current_organ = organs_by_name[bodypart]
 		if(istype(current_organ))
 			current_organ.rejuvenate(ignore_prosthetic_prefs)
+	if (src.mind?.vampire)
+		src.replace_vampiric_organs()
 
 /mob/living/carbon/human/proc/HealDamage(zone, brute, burn)
 	var/obj/item/organ/external/E = get_organ(zone)
@@ -520,8 +519,3 @@ This function restores all organs.
 	if(stat == UNCONSCIOUS)
 		traumatic_shock *= 0.6
 	return max(0, traumatic_shock)
-
-/mob/living/carbon/human/apply_effect(effect = 0,effecttype = STUN, blocked = 0)
-	if(effecttype == IRRADIATE && (effect * blocked_mult(blocked) <= RAD_LEVEL_LOW))
-		return 0
-	return ..()

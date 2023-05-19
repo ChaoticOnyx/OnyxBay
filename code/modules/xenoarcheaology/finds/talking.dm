@@ -13,14 +13,15 @@
 
 /datum/talking_atom/proc/init()
 	if(holder_atom)
-		START_PROCESSING(SSprocessing, src)
+		set_next_think(world.time)
 
-/datum/talking_atom/Process()
+/datum/talking_atom/think()
 	if(!holder_atom)
-		STOP_PROCESSING(SSprocessing, src)
-
+		return
 	else if(heard_words.len >= 1 && world.time > last_talk_time + talk_interval && prob(talk_chance))
 		SaySomething()
+
+	set_next_think(world.time + talk_interval)
 
 /datum/talking_atom/proc/catchMessage(msg, mob/source)
 	if(!holder_atom)
@@ -60,7 +61,7 @@
 		spawn(2)
 			SaySomething(pick(seperate))
 
-/*/obj/item/weapon/talkingcrystal/proc/debug()
+/*/obj/item/talkingcrystal/proc/debug()
 	//set src in view()
 	for(var/v in heard_words)
 		log_debug("[uppertext(v)]")
@@ -114,7 +115,7 @@
 			continue //skip monkeys and leavers
 		if (istype(M, /mob/new_player))
 			continue
-		if(M.stat == DEAD && M.get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH)
+		if(M.is_ooc_dead() && M.get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH)
 			listening|=M
 
 	for(var/mob/M in listening)

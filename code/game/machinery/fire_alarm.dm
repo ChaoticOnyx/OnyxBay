@@ -9,14 +9,15 @@
 	var/time = 10
 	var/timing = 0
 	anchored = 1
-	idle_power_usage = 2
-	active_power_usage = 6
+	idle_power_usage = 2 WATTS
+	active_power_usage = 6 WATTS
 	power_channel = STATIC_ENVIRON
+	layer = ABOVE_WINDOW_LAYER
 	var/last_process = 0
 	var/wiresexposed = 0
 	var/buildstage = 2 // 2 = complete, 1 = no wires,  0 = circuit gone
 
-/obj/machinery/firealarm/examine(mob/user)
+/obj/machinery/firealarm/_examine_text(mob/user)
 	. = ..()
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 	. += "\nThe current alert level is [security_state.current_security_level.name]."
@@ -45,7 +46,7 @@
 		if(!src.detecting)
 			icon_state = "fire1"
 			set_light(0.25, 0.5, 1.25, 2, COLOR_RED)
-		else if(z in GLOB.using_map.contact_levels)
+		else if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT))
 			icon_state = "fire0"
 			var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 			var/decl/security_level/sl = security_state.current_security_level
@@ -55,7 +56,7 @@
 
 /obj/machinery/firealarm/fire_act(datum/gas_mixture/air, temperature, volume)
 	if(src.detecting)
-		if(temperature > T0C+200)
+		if(temperature > (200 CELSIUS))
 			src.alarm()			// added check of detector status here
 	return
 
@@ -67,7 +68,7 @@
 		alarm(rand(30/severity, 60/severity))
 	..()
 
-/obj/machinery/firealarm/attackby(obj/item/W as obj, mob/user as mob)
+/obj/machinery/firealarm/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W) && buildstage == 2)
 		wiresexposed = !wiresexposed
 		update_icon()
@@ -89,7 +90,7 @@
 					buildstage = 1
 					update_icon()
 			if(1)
-				if(istype(W, /obj/item/stack/cable_coil))
+				if(isCoil(W))
 					var/obj/item/stack/cable_coil/C = W
 					if (C.use(5))
 						to_chat(user, "<span class='notice'>You wire \the [src].</span>")
@@ -102,12 +103,12 @@
 					to_chat(user, "You pry out the circuit!")
 					playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
 					spawn(20)
-						var/obj/item/weapon/firealarm_electronics/circuit = new /obj/item/weapon/firealarm_electronics()
+						var/obj/item/firealarm_electronics/circuit = new /obj/item/firealarm_electronics()
 						circuit.dropInto(user.loc)
 						buildstage = 0
 						update_icon()
 			if(0)
-				if(istype(W, /obj/item/weapon/firealarm_electronics))
+				if(istype(W, /obj/item/firealarm_electronics))
 					to_chat(user, "You insert the circuit!")
 					qdel(W)
 					buildstage = 1
@@ -223,7 +224,7 @@
 
 /obj/machinery/firealarm/Initialize()
 	. = ..()
-	if(z in GLOB.using_map.contact_levels)
+	if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT))
 		update_icon()
 
 /obj/machinery/firealarm/Destroy()
@@ -234,7 +235,7 @@
 FIRE ALARM CIRCUIT
 Just a object used in constructing fire alarms
 */
-/obj/item/weapon/firealarm_electronics
+/obj/item/firealarm_electronics
 	name = "fire alarm electronics"
 	icon = 'icons/obj/doors/door_assembly.dmi'
 	icon_state = "door_electronics"

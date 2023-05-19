@@ -15,27 +15,27 @@ var/decl/appearance_manager/appearance_manager = new()
 	return appearance_handlers_[handler_type]
 
 /decl/appearance_manager/proc/add_appearance(mob/viewer, datum/appearance_data/ad)
-	var/PriorityQueue/pq = appearances_[viewer]
+	var/datum/priority_queue/pq = appearances_[viewer]
 	if(!pq)
-		pq = new /PriorityQueue(/proc/cmp_appearance_data)
+		pq = new /datum/priority_queue(/proc/cmp_appearance_data)
 		appearances_[viewer] = pq
-		GLOB.logged_in_event.register(viewer, src, /decl/appearance_manager/proc/apply_appearance_images)
-		GLOB.destroyed_event.register(viewer, src, /decl/appearance_manager/proc/remove_appearances)
+		register_signal(viewer, SIGNAL_LOGGED_IN, /decl/appearance_manager/proc/apply_appearance_images)
+		register_signal(viewer, SIGNAL_QDELETING, /decl/appearance_manager/proc/remove_appearances)
 	pq.Enqueue(ad)
 	reset_appearance_images(viewer)
 
 /decl/appearance_manager/proc/remove_appearance(mob/viewer, datum/appearance_data/ad, refresh_images)
-	var/PriorityQueue/pq = appearances_[viewer]
+	var/datum/priority_queue/pq = appearances_[viewer]
 	pq.Remove(ad)
 	if(viewer.client)
 		viewer.client.images -= ad.images
 	if(!pq.Length())
-		GLOB.logged_in_event.unregister(viewer, src, /decl/appearance_manager/proc/apply_appearance_images)
-		GLOB.destroyed_event.register(viewer, src, /decl/appearance_manager/proc/remove_appearances)
+		unregister_signal(viewer, SIGNAL_LOGGED_IN)
+		unregister_signal(viewer, SIGNAL_QDELETING)
 		appearances_ -= viewer
 
 /decl/appearance_manager/proc/remove_appearances(mob/viewer)
-	var/PriorityQueue/pq = appearances_[viewer]
+	var/datum/priority_queue/pq = appearances_[viewer]
 	for(var/entry in pq.L)
 		var/datum/appearance_data/ad = entry
 		ad.RemoveViewer(viewer, FALSE)
@@ -48,7 +48,7 @@ var/decl/appearance_manager/appearance_manager = new()
 /decl/appearance_manager/proc/clear_appearance_images(mob/viewer)
 	if(!viewer.client)
 		return
-	var/PriorityQueue/pq = appearances_[viewer]
+	var/datum/priority_queue/pq = appearances_[viewer]
 	if(!pq)
 		return
 	for(var/entry in pq.L)
@@ -58,7 +58,7 @@ var/decl/appearance_manager/appearance_manager = new()
 /decl/appearance_manager/proc/apply_appearance_images(mob/viewer)
 	if(!viewer.client)
 		return
-	var/PriorityQueue/pq = appearances_[viewer]
+	var/datum/priority_queue/pq = appearances_[viewer]
 	if(!pq)
 		return
 	for(var/entry in pq.L)

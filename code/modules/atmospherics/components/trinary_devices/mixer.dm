@@ -7,7 +7,7 @@
 	name = "Gas mixer"
 
 	use_power = POWER_USE_IDLE
-	idle_power_usage = 150		//internal circuitry, friction losses and stuff
+	idle_power_usage = 150 WATTS //internal circuitry, friction losses and stuff
 	power_rating = 3700	//This also doubles as a measure of how powerful the mixer is, in Watts. 3700 W ~ 5 HP
 
 	var/set_flow_rate = ATMOS_DEFAULT_VOLUME_MIXER
@@ -97,7 +97,7 @@
 
 	return 1
 
-/obj/machinery/atmospherics/trinary/mixer/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/atmospherics/trinary/mixer/attackby(obj/item/W as obj, mob/user as mob)
 	if(!isWrench(W))
 		return ..()
 	var/datum/gas_mixture/int_air = return_air()

@@ -2,10 +2,11 @@
 	name = "\improper Protolathe"
 	icon_state = "protolathe"
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+
 	layer = BELOW_OBJ_LAYER
 
-	idle_power_usage = 30
-	active_power_usage = 5000
+	idle_power_usage = 30 WATTS
+	active_power_usage = 5 KILO WATTS
 
 	var/max_material_storage = 100000
 
@@ -22,13 +23,13 @@
 	materials = default_material_composition.Copy()
 	. = ..()
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/protolathe(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
-	component_parts += new /obj/item/weapon/reagent_containers/glass/beaker(src)
-	component_parts += new /obj/item/weapon/reagent_containers/glass/beaker(src)
+	component_parts += new /obj/item/circuitboard/protolathe(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/stock_parts/manipulator(src)
+	component_parts += new /obj/item/stock_parts/manipulator(src)
+	component_parts += new /obj/item/reagent_containers/vessel/beaker(src)
+	component_parts += new /obj/item/reagent_containers/vessel/beaker(src)
 	RefreshParts()
 
 /obj/machinery/r_n_d/protolathe/Process()
@@ -59,14 +60,17 @@
 
 /obj/machinery/r_n_d/protolathe/RefreshParts()
 	var/T = 0
-	for(var/obj/item/weapon/reagent_containers/glass/G in component_parts)
+	for(var/obj/item/reagent_containers/vessel/G in component_parts)
 		T += G.reagents.maximum_volume
-	create_reagents(T)
+	if(reagents)
+		reagents.maximum_volume = T
+	else
+		create_reagents(T)
 	max_material_storage = 0
-	for(var/obj/item/weapon/stock_parts/matter_bin/M in component_parts)
+	for(var/obj/item/stock_parts/matter_bin/M in component_parts)
 		max_material_storage += M.rating * 75000
 	T = 0
-	for(var/obj/item/weapon/stock_parts/manipulator/M in component_parts)
+	for(var/obj/item/stock_parts/manipulator/M in component_parts)
 		T += M.rating
 	mat_efficiency = 1 - (T - 2) / 8
 	speed = T / 2
@@ -144,7 +148,7 @@
 	queue.Cut(index, index + 1)
 	return
 
-/obj/machinery/r_n_d/protolathe/proc/canBuild(datum/design/D, amount_build)
+/obj/machinery/r_n_d/protolathe/proc/canBuild(datum/design/D, amount_build = 1)
 	for(var/M in D.materials)
 		if(materials[M] < D.materials[M] * mat_efficiency * amount_build)
 			return 0

@@ -26,7 +26,7 @@
 		var/obj/item/clothing/C = input("What piece of clothing do you want to remove?", "Skeleton undressing") as null|anything in list_values(swag)
 		if(C)
 			swag -= get_key_by_value(swag, C)
-			user.put_in_hands(C)
+			user.pick_or_drop(C)
 			to_chat(user,"<span class='notice'>You take \the [C] off \the [src]</span>")
 			update_icon()
 	else
@@ -35,7 +35,7 @@
 /obj/structure/skele_stand/Bumped(atom/thing)
 	rattle_bones(null, thing)
 
-/obj/structure/skele_stand/examine(mob/user)
+/obj/structure/skele_stand/_examine_text(mob/user)
 	. = ..()
 	if(swag.len)
 		var/list/swagnames = list()
@@ -44,8 +44,8 @@
 			swagnames += C.get_examine_line()
 		. += "\n[gender == MALE ? "He" : "She"] is wearing [english_list(swagnames)]."
 
-/obj/structure/skele_stand/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W,/obj/item/weapon/pen))
+/obj/structure/skele_stand/attackby(obj/item/W, mob/user)
+	if(istype(W,/obj/item/pen))
 		var/nuname = sanitize(input(user,"What do you want to name this skeleton as?","Skeleton Christening",name) as text|null)
 		if(nuname && CanPhysicallyInteract(user))
 			SetName(nuname)
@@ -65,9 +65,8 @@
 		if(slot)
 			if(swag[slot])
 				to_chat(user,"<span class='notice'>There is already that kind of clothing on \the [src].</span>")
-			else
+			else if(user.drop(W, src))
 				swag[slot] = W
-				user.drop_from_inventory(W,src)
 				update_icon()
 				return 1
 	else

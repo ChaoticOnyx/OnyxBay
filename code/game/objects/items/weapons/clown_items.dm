@@ -6,7 +6,7 @@
 /*
  * Bike Horns
  */
-/obj/item/weapon/bikehorn
+/obj/item/bikehorn
 	name = "bike horn"
 	desc = "A horn off of a bicycle."
 	icon = 'icons/obj/items.dmi'
@@ -17,12 +17,11 @@
 	mod_weight = 0.25
 	mod_reach = 0.5
 	mod_handy = 0.5
-	throw_speed = 3
 	throw_range = 15
 	attack_verb = list("HONKED")
 	var/spam_flag = 0
 
-/obj/item/weapon/bikehorn/attack_self(mob/user as mob)
+/obj/item/bikehorn/attack_self(mob/user as mob)
 	if(spam_flag == 0)
 		spam_flag = 1
 		playsound(src.loc, 'sound/items/bikehorn.ogg', 50, 1)
@@ -32,7 +31,7 @@
 	return
 
 //Oh no
-/obj/item/weapon/bikehorn/vuvuzela
+/obj/item/bikehorn/vuvuzela
 	name = "VUVUZELA"
 	desc = "RIPS YOUR EARS OFF!!!"
 	icon_state = "vuvuzela"
@@ -43,7 +42,7 @@
 	mod_handy = 0.5
 	attack_verb = list("HONKED","WORLD CUPPED","FOOTBALLED")
 
-/obj/item/weapon/bikehorn/vuvuzela/attack_self(mob/user as mob)
+/obj/item/bikehorn/vuvuzela/attack_self(mob/user as mob)
 	if (spam_flag == 0)
 		spam_flag = 1
 		playsound(src.loc, 'sound/items/AirHorn.ogg', 100, 1)

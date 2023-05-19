@@ -2,7 +2,7 @@
 if (Datum.is_processing) {\
 	if(Datum.is_processing != "SSmachines.[#List]")\
 	{\
-		crash_with("Failed to start processing. [log_info_line(Datum)] is already being processed by [Datum.is_processing] but queue attempt occured on SSmachines.[#List]."); \
+		util_crash_with("Failed to start processing. [log_info_line(Datum)] is already being processed by [Datum.is_processing] but queue attempt occured on SSmachines.[#List]."); \
 	}\
 } else {\
 	Datum.is_processing = "SSmachines.[#List]";\
@@ -14,7 +14,7 @@ if(Datum.is_processing) {\
 	if(SSmachines.List.Remove(Datum)) {\
 		Datum.is_processing = null;\
 	} else {\
-		crash_with("Failed to stop processing. [log_info_line(Datum)] is being processed by [is_processing] and not found in SSmachines.[#List]"); \
+		util_crash_with("Failed to stop processing. [log_info_line(Datum)] is being processed by [is_processing] and not found in SSmachines.[#List]"); \
 	}\
 }
 
@@ -36,9 +36,9 @@ SUBSYSTEM_DEF(machines)
 
 	flags = SS_KEEP_TIMING
 
-	var/list/processing = list()
-	var/list/currentrun = list()
-	var/list/powernets  = list()
+	var/static/list/processing = list()
+	var/static/list/currentrun = list()
+	var/static/list/powernets  = list()
 
 /datum/controller/subsystem/machines/Initialize()
 	makepowernets()
@@ -67,22 +67,20 @@ SUBSYSTEM_DEF(machines)
 
 
 /datum/controller/subsystem/machines/fire(resumed = 0)
-	if (!resumed)
+	if(!resumed)
 		for(var/datum/powernet/Powernet in powernets)
 			Powernet.reset() //reset the power state.
-		src.currentrun = processing.Copy()
+		currentrun = processing.Copy()
 
-	//cache for sanic speed (lists are references anyways)
-	var/list/currentrun = src.currentrun
-
+	var/obj/machinery/thing
 	var/seconds = wait * 0.1
-	while(currentrun.len)
-		var/obj/machinery/thing = currentrun[currentrun.len]
-		currentrun.len--
-		if (QDELETED(thing) || thing.Process(seconds) == PROCESS_KILL)
+	for(var/i = currentrun.len to 1 step -1)
+		thing = currentrun[i]
+		if(QDELETED(thing) || thing.Process(seconds) == PROCESS_KILL)
 			processing -= thing
 			thing.is_processing = null
-		if (MC_TICK_CHECK)
+		if(MC_TICK_CHECK)
+			currentrun.Cut(i)
 			return
 
 /datum/controller/subsystem/machines/proc/setup_template_powernets(list/cables)

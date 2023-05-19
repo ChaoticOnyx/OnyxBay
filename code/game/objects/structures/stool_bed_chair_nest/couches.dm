@@ -15,11 +15,11 @@
 	var/max_health = 100
 	var/health = 100
 
-/obj/structure/bed/couch/attackby(obj/item/weapon/W, mob/user)
+/obj/structure/bed/couch/attackby(obj/item/W, mob/user)
 	if(isWrench(W))
 		to_chat(user, SPAN("notice", "\The [src] doesn't look like it can be disassembled. Breaking it up is the only way to get rid of it."))
-	else if(istype(W,/obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+	else if(isWelder(W))
+		var/obj/item/weldingtool/WT = W
 		if(!WT.isOn())
 			return
 		if(health == max_health)

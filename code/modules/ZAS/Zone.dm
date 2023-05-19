@@ -39,27 +39,46 @@ Class Procs:
 
 */
 
+/datum/lazy_value/zone_movables/calculate(zone/owner)
+	is_dirty = FALSE
+	__value = list()
 
-/zone/var/name
-/zone/var/invalid = 0
-/zone/var/list/contents = list()
-/zone/var/list/fire_tiles = list()
-/zone/var/list/fuel_objs = list()
+	for(var/turf/T in owner.contents)
+		for(var/atom/movable/A in T)
+			if(!A.simulated || A.anchored || istype(A, /obj/effect) || isobserver(A))
+				continue
 
-/zone/var/needs_update = 0
+			__value += weakref(A)
 
-/zone/var/list/edges = list()
+	return __value
 
-/zone/var/datum/gas_mixture/air = new
+/zone
+	var/name
+	var/invalid = 0
+	var/list/contents = list()
+	var/list/fire_tiles = list()
+	var/list/fuel_objs = list()
 
-/zone/var/list/graphic_add = list()
-/zone/var/list/graphic_remove = list()
+	var/needs_update = 0
+
+	var/list/edges = list()
+
+	var/datum/gas_mixture/air = new
+
+	var/list/graphic_add = list()
+	var/list/graphic_remove = list()
+
+	var/datum/lazy_value/zone_movables/movables = new
 
 /zone/New()
 	SSair.add_zone(src)
 	air.temperature = TCMB
 	air.group_multiplier = 1
 	air.volume = CELL_VOLUME
+
+	for(var/turf/T in contents)
+		register_signal(T, SIGNAL_ENTERED, .proc/on_entered)
+		register_signal(T, SIGNAL_EXITED, .proc/on_exited)
 
 /zone/proc/add(turf/simulated/T)
 #ifdef ZASDBG
@@ -165,7 +184,7 @@ Class Procs:
 	to_chat(M, name)
 	for(var/g in air.gas)
 		to_chat(M, "[gas_data.name[g]]: [air.gas[g]]")
-	to_chat(M, "P: [air.return_pressure()] kPa V: [air.volume]L T: [air.temperature]°K ([air.temperature - T0C]°C)")
+	to_chat(M, "P: [air.return_pressure()] kPa V: [air.volume]L T: [air.temperature]°K ([CONV_KELVIN_CELSIUS(air.temperature)]°C)")
 	to_chat(M, "O2 per N2: [(air.gas["nitrogen"] ? air.gas["oxygen"]/air.gas["nitrogen"] : "N/A")] Moles: [air.total_moles]")
 	to_chat(M, "Simulated: [contents.len] ([air.group_multiplier])")
 //	to_chat(M, "Unsimulated: [unsimulated_contents.len]")
@@ -186,3 +205,9 @@ Class Procs:
 
 	//for(var/turf/T in unsimulated_contents)
 //		to_chat(M, "[T] at ([T.x],[T.y])")
+
+/zone/proc/on_entered()
+	LAZY_SET_DIRTY(movables)
+
+/zone/proc/on_exited()
+	LAZY_SET_DIRTY(movables)

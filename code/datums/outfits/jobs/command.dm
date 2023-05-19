@@ -5,15 +5,15 @@
 	uniform = /obj/item/clothing/under/rank/captain
 	l_ear = /obj/item/device/radio/headset/heads/captain
 	shoes = /obj/item/clothing/shoes/brown
-	id_type = /obj/item/weapon/card/id/gold
+	id_type = /obj/item/card/id/gold
 	pda_type = /obj/item/device/pda/captain
-	backpack_contents = list(/obj/item/weapon/storage/box/ids = 1)
+	backpack_contents = list(/obj/item/storage/box/ids = 1)
 
 /decl/hierarchy/outfit/job/captain/New()
 	..()
-	backpack_overrides[/decl/backpack_outfit/backpack]      = /obj/item/weapon/storage/backpack/captain
-	backpack_overrides[/decl/backpack_outfit/satchel]       = /obj/item/weapon/storage/backpack/satchel/cap
-	backpack_overrides[/decl/backpack_outfit/messenger_bag] = /obj/item/weapon/storage/backpack/messenger/com
+	backpack_overrides[/decl/backpack_outfit/backpack]      = /obj/item/storage/backpack/captain
+	backpack_overrides[/decl/backpack_outfit/satchel]       = /obj/item/storage/backpack/satchel/cap
+	backpack_overrides[/decl/backpack_outfit/messenger_bag] = /obj/item/storage/backpack/messenger/com
 
 /decl/hierarchy/outfit/job/captain/post_equip(mob/living/carbon/human/H)
 	..()
@@ -33,9 +33,9 @@
 	uniform = /obj/item/clothing/under/rank/head_of_personnel
 	l_ear = /obj/item/device/radio/headset/heads/hop
 	shoes = /obj/item/clothing/shoes/brown
-	id_type = /obj/item/weapon/card/id/silver
+	id_type = /obj/item/card/id/silver
 	pda_type = /obj/item/device/pda/heads/hop
-	backpack_contents = list(/obj/item/weapon/storage/box/ids = 1)
+	backpack_contents = list(/obj/item/storage/box/ids = 1)
 
 /decl/hierarchy/outfit/deadcap
 	name = "Derelict captain"
@@ -55,5 +55,5 @@
 		else
 			qdel(eyegore)
 
-	var/obj/item/weapon/cell/super/C = new()
+	var/obj/item/cell/super/C = new()
 	H.put_in_any_hand_if_possible(C)

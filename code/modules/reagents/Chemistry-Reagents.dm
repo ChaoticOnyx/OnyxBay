@@ -7,9 +7,13 @@
 	var/reagent_state = SOLID
 	var/list/data = null
 	var/volume = 0
+
+	var/datum/radiation/radiation
 	var/metabolism = REM // This would be 0.2 normally
-	var/ingest_met = 0
-	var/touch_met = 0
+	var/ingest_met = 0 // Speeds up/slows down actual metabolism speed, not to be confused with absorbability. When set to default (0), uses metabolism instead.
+	var/touch_met = 0 // When set to default (0), uses metabolism instead.
+	var/excretion = 1.0 // Rate at which metabolism products (chem_traces) reduce, relative to metabolism
+	var/absorbability = 0.5 // How well the reagent affects blood when ingested
 	var/overdose = INFINITY
 	var/scannable = 0 // Shows up on health analyzers.
 	var/color = "#000000"
@@ -45,7 +49,7 @@
 /datum/reagent/proc/on_mob_life(mob/living/carbon/M, alien, location) // Currently, on_mob_life is called on carbons. Any interaction with non-carbon mobs (lube) will need to be done in touch_mob.
 	if(!istype(M))
 		return
-	if(!(flags & AFFECTS_DEAD) && M.stat == DEAD && (world.time - M.timeofdeath > 150))
+	if(!(flags & AFFECTS_DEAD) && M.is_ic_dead() && (world.time - M.timeofdeath > 150))
 		return
 	if(overdose && (location != CHEM_TOUCH))
 		var/overdose_threshold = overdose * (flags & IGNORE_MOB_SIZE? 1 : MOB_MEDIUM/M.mob_size)
@@ -69,28 +73,30 @@
 	if(!(flags & IGNORE_MOB_SIZE) && location != CHEM_TOUCH)
 		effective *= (MOB_MEDIUM/M.mob_size)
 
-	M.chem_doses[type] = M.chem_doses[type] + effective
-	if(effective >= (metabolism * 0.1) || effective >= 0.1) // If there's too little chemical, don't affect the mob, just remove it
+	M.chem_doses[type] += effective
+	M.chem_traces[type] += effective
+	var/affecting_dose = min(volume, M.chem_doses[type])
+	if((effective >= metabolism * 0.1) || (effective >= 0.1)) // If there's too little chemical, don't affect the mob, just remove it
 		switch(location)
 			if(CHEM_BLOOD)
-				affect_blood(M, alien, effective)
+				affect_blood(M, alien, effective, affecting_dose)
 			if(CHEM_INGEST)
-				affect_ingest(M, alien, effective)
+				affect_ingest(M, alien, effective, affecting_dose)
 			if(CHEM_TOUCH)
-				affect_touch(M, alien, effective)
+				affect_touch(M, alien, effective, affecting_dose)
 
 	if(volume)
 		remove_self(removed)
 	return
 
-/datum/reagent/proc/affect_blood(mob/living/carbon/M, alien, removed)
+/datum/reagent/proc/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	return
 
-/datum/reagent/proc/affect_ingest(mob/living/carbon/M, alien, removed)
-	affect_blood(M, alien, removed * 0.5)
+/datum/reagent/proc/affect_ingest(mob/living/carbon/M, alien, removed, affecting_dose)
+	affect_blood(M, alien, removed * absorbability, affecting_dose)
 	return
 
-/datum/reagent/proc/affect_touch(mob/living/carbon/M, alien, removed)
+/datum/reagent/proc/affect_touch(mob/living/carbon/M, alien, removed, affecting_dose)
 	return
 
 /datum/reagent/proc/overdose(mob/living/carbon/M, alien) // Overdose effect. Doesn't happen instantly.

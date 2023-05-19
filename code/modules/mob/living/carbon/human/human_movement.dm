@@ -3,7 +3,7 @@
 
 	. += species.handle_movement_delay_special(src)
 
-	var/human_delay = config.human_delay
+	var/human_delay = config.movement.human_delay
 
 	if(istype(loc, /turf/space))
 		return (. + human_delay) // It's hard to be slowed down in space by... anything. Except for your shitty physical body restrictions.
@@ -35,9 +35,9 @@
 
 	. += blocking * 1.5
 
-	var/health_deficiency = (maxHealth - health)
-	if(health_deficiency >= 40)
-		. += (health_deficiency / 25)
+	var/health_deficiency_percent = 100 - (health / maxHealth) * 100
+	if(health_deficiency_percent >= 40)
+		. += (health_deficiency_percent / 25)
 
 	var/shock = get_shock()
 	if(shock >= 10)
@@ -79,7 +79,7 @@
 	for(var/E in chem_effects)
 		switch(E)
 			if(CE_SPEEDBOOST)
-				. = max((. - chem_effects[CE_SPEEDBOOST]), (config.run_speed/2))
+				. = max((. - chem_effects[CE_SPEEDBOOST]), (config.movement.run_speed/2))
 			if(CE_SLOWDOWN)
 				. += chem_effects[CE_SLOWDOWN]
 
@@ -91,12 +91,12 @@
 		return 0
 
 	//Do we have a working jetpack?
-	var/obj/item/weapon/tank/jetpack/thrust
+	var/obj/item/tank/jetpack/thrust
 	if(back)
-		if(istype(back,/obj/item/weapon/tank/jetpack))
+		if(istype(back,/obj/item/tank/jetpack))
 			thrust = back
-		else if(istype(back,/obj/item/weapon/rig))
-			var/obj/item/weapon/rig/rig = back
+		else if(istype(back,/obj/item/rig))
+			var/obj/item/rig/rig = back
 			for(var/obj/item/rig_module/maneuvering_jets/module in rig.installed_modules)
 				thrust = module.jets
 				break

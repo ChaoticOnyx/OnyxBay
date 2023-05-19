@@ -5,6 +5,7 @@
 	desc = "A folded bag designed for the storage and transportation of cadavers."
 	icon = 'icons/obj/bodybag.dmi'
 	icon_state = "bodybag_folded"
+	item_state = "bodybag_folded_c"
 	w_class = ITEM_SIZE_SMALL
 	pull_sound = SFX_PULL_BODY
 
@@ -14,7 +15,7 @@
 		qdel(src)
 
 
-/obj/item/weapon/storage/box/bodybags
+/obj/item/storage/box/bodybags
 	name = "body bags"
 	desc = "This box contains body bags."
 	icon_state = "bodybags"
@@ -46,8 +47,8 @@
 	dremovable = 0
 	open_delay = 6
 
-/obj/structure/closet/body_bag/attackby(W as obj, mob/user as mob)
-	if (istype(W, /obj/item/weapon/pen))
+/obj/structure/closet/body_bag/attackby(obj/item/W, mob/user)
+	if (istype(W, /obj/item/pen))
 		var/t = input(user, "What would you like the label to be?", text("[]", src.name), null)  as text
 		if (user.get_active_hand() != W)
 			return

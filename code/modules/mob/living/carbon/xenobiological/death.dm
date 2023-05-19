@@ -1,6 +1,10 @@
 /mob/living/carbon/metroid/death(gibbed, deathmessage, show_dead_message)
 
-	if(stat == DEAD) return
+	if(is_ooc_dead()) return
+
+	if(Leader)
+		Leader = null
+		walk_to(src, 0)
 
 	if(!gibbed && is_adult)
 		var/mob/living/carbon/metroid/M = new /mob/living/carbon/metroid(loc, colour)

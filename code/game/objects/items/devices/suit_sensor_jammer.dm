@@ -8,7 +8,7 @@
 	w_class = ITEM_SIZE_SMALL
 	var/active = FALSE
 	var/range = 2 // This is a radius, thus a range of 7 covers the entire visible screen
-	var/obj/item/weapon/cell/bcell = /obj/item/weapon/cell/high
+	var/obj/item/cell/bcell = /obj/item/cell/high
 	var/suit_sensor_jammer_method/jammer_method
 	var/list/suit_sensor_jammer_methods_by_type
 	var/list/suit_sensor_jammer_methods
@@ -49,11 +49,10 @@
 			bcell = null
 		else
 			to_chat(user, "<span class='warning'>There is no cell to remove.</span>")
-	else if(istype(I, /obj/item/weapon/cell))
+	else if(istype(I, /obj/item/cell))
 		if(bcell)
 			to_chat(user, "<span class='warning'>There's already a cell in \the [src].</span>")
-		else if(user.unEquip(I))
-			I.forceMove(src)
+		else if(user.drop(I, src))
 			bcell = I
 			to_chat(user, "<span class='notice'>You insert \the [bcell] into \the [src]..</span>")
 		else
@@ -99,7 +98,7 @@
 	var/new_range = range + (rand(0,6) / severity) - (rand(0,3) / severity)
 	set_range(new_range)
 
-/obj/item/device/suit_sensor_jammer/examine(user)
+/obj/item/device/suit_sensor_jammer/_examine_text(user)
 	. = ..()
 	if(get_dist(src, user) <= 3)
 		var/list/message = list()
@@ -162,22 +161,26 @@
 				set_method(method)
 				. = TRUE
 
-/obj/item/device/suit_sensor_jammer/Process(wait)
+/obj/item/device/suit_sensor_jammer/think(wait)
 	if(bcell)
 		// With a range of 2 and jammer cost of 3 the default (high capacity) cell will last for almost 14 minutes, give or take
 		// 10000 / (2^2 * 3 / 10) ~= 8333 ticks ~= 13.8 minutes
 		var/deduction = JAMMER_POWER_CONSUMPTION(wait)
 		if(!bcell.use(deduction))
 			disable()
+			return
 	else
 		disable()
+		return
+
 	update_icon()
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/suit_sensor_jammer/proc/enable()
 	if(active)
 		return FALSE
 	active = TRUE
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	jammer_method.enable()
 	update_icon()
 	return TRUE
@@ -187,7 +190,7 @@
 		return FALSE
 	active = FALSE
 	jammer_method.disable()
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 	update_icon()
 	return TRUE
 

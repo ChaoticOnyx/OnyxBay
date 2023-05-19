@@ -16,7 +16,7 @@
 	var/current_energy = 0				// Current stored energy.
 	var/field_radius = 1				// Current field radius.
 	var/running = SHIELD_OFF			// Whether the generator is enabled or not.
-	var/input_cap = 1 MEGAWATTS			// Currently set input limit. Set to 0 to disable limits altogether. The shield will try to input this value per tick at most
+	var/input_cap = 1 MEGA WATTS			// Currently set input limit. Set to 0 to disable limits altogether. The shield will try to input this value per tick at most
 	var/upkeep_power_usage = 0			// Upkeep power usage last tick.
 	var/upkeep_multiplier = 1			// Multiplier of upkeep values.
 	var/power_usage = 0					// Total power usage last tick.
@@ -27,6 +27,8 @@
 	var/mode_changes_locked = 0			// Whether the control wire is cut, locking out changes.
 	var/ai_control_disabled = 0			// Whether the AI control is disabled.
 	var/list/mode_list = null			// A list of shield_mode datums.
+	var/mode_cooldown = 2 SECONDS       // Hiding performance-heavy things behind a cooldown wall.
+	var/last_mode_toggle = 0
 
 /obj/machinery/power/shield_generator/update_icon()
 	if(running)
@@ -38,11 +40,11 @@
 /obj/machinery/power/shield_generator/New()
 	..()
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/shield_generator(src)
-	component_parts += new /obj/item/weapon/stock_parts/capacitor(src)			// Capacitor. Improves shield mitigation when better part is used.
-	component_parts += new /obj/item/weapon/stock_parts/micro_laser(src)
-	component_parts += new /obj/item/weapon/smes_coil(src)						// SMES coil. Improves maximal shield energy capacity.
-	component_parts += new /obj/item/weapon/stock_parts/console_screen(src)
+	component_parts += new /obj/item/circuitboard/shield_generator(src)
+	component_parts += new /obj/item/stock_parts/capacitor(src)			// Capacitor. Improves shield mitigation when better part is used.
+	component_parts += new /obj/item/stock_parts/micro_laser(src)
+	component_parts += new /obj/item/smes_coil(src)						// SMES coil. Improves maximal shield energy capacity.
+	component_parts += new /obj/item/stock_parts/console_screen(src)
 	RefreshParts()
 	connect_to_network()
 	wires = new(src)
@@ -64,12 +66,12 @@
 
 /obj/machinery/power/shield_generator/RefreshParts()
 	max_energy = 0
-	for(var/obj/item/weapon/smes_coil/S in component_parts)
+	for(var/obj/item/smes_coil/S in component_parts)
 		max_energy += (S.ChargeCapacity / CELLRATE)
 	current_energy = between(0, current_energy, max_energy)
 
 	mitigation_max = MAX_MITIGATION_BASE
-	for(var/obj/item/weapon/stock_parts/capacitor/C in component_parts)
+	for(var/obj/item/stock_parts/capacitor/C in component_parts)
 		mitigation_max += MAX_MITIGATION_RESEARCH * C.rating
 	mitigation_em = between(0, mitigation_em, mitigation_max)
 	mitigation_physical = between(0, mitigation_physical, mitigation_max)
@@ -274,7 +276,7 @@
 		var/old_energy = current_energy
 		shutdown_field()
 		log_and_message_admins("has triggered \the [src]'s emergency shutdown!", user)
-		spawn()	
+		spawn()
 			empulse(src, old_energy / 60000000, old_energy / 32000000, 1) // If shields are charged at 450 MJ, the EMP will be 7.5, 14.0625. 90 MJ, 1.5, 2.8125
 		old_energy = 0
 
@@ -300,6 +302,9 @@
 		return TOPIC_REFRESH
 
 	if(href_list["toggle_mode"])
+		if(world.time < last_mode_toggle + mode_cooldown)
+			to_chat(user, SPAN("notice", "\The [src] is still recalibrating!"))
+			return TOPIC_HANDLED
 		// Toggling hacked-only modes requires the hacked var to be set to 1
 		if((text2num(href_list["toggle_mode"]) & (MODEFLAG_OVERCHARGE)) && !hacked)
 			return TOPIC_HANDLED
@@ -359,6 +364,7 @@
 
 
 /obj/machinery/power/shield_generator/proc/toggle_flag(flag)
+	last_mode_toggle = world.time
 	shield_modes ^= flag
 	update_upkeep_multiplier()
 	for(var/obj/effect/shield/S in field_segments)

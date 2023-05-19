@@ -3,12 +3,13 @@
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "launcherbtt"
 	desc = "A remote control switch for something."
+	layer = ABOVE_WINDOW_LAYER
 	var/id = null
 	var/active = 0
 	var/operating = 0
 	anchored = 1.0
-	idle_power_usage = 2
-	active_power_usage = 4
+	idle_power_usage = 2 WATTS
+	active_power_usage = 4 WATTS
 	var/_wifi_id
 	var/datum/wifi/sender/wifi_sender
 
@@ -26,7 +27,7 @@
 /obj/machinery/button/attack_ai(mob/user as mob)
 	return attack_hand(user)
 
-/obj/machinery/button/attackby(obj/item/weapon/W, mob/user as mob)
+/obj/machinery/button/attackby(obj/item/W, mob/user as mob)
 	return attack_hand(user)
 
 /obj/machinery/button/attack_hand(mob/living/user)
@@ -38,6 +39,8 @@
 /obj/machinery/button/proc/activate(mob/living/user)
 	if(operating || !istype(wifi_sender))
 		return
+
+	SEND_SIGNAL(src, SIGNAL_BUTTON_ACTIVATED, src, user)
 
 	operating = 1
 	active = 1

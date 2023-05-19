@@ -36,7 +36,7 @@
 /obj/item/device/radio/headset/list_channels(mob/user)
 	return list_secure_channels()
 
-/obj/item/device/radio/headset/examine(mob/user)
+/obj/item/device/radio/headset/_examine_text(mob/user)
 	. = ..()
 	if(!(get_dist(src, user) <= 1 && radio_desc))
 		return
@@ -78,6 +78,16 @@
 	origin_tech = list(TECH_ILLEGAL = 2)
 	syndie = 1
 	ks1type = /obj/item/device/encryptionkey/raider
+
+/obj/item/device/radio/headset/abductor
+	name = "alien headset"
+	desc = "An advanced alien headset designed to monitor communications of human space stations. Why does it have a microphone? No one knows."
+	origin_tech = list(TECH_ILLEGAL = 2)
+	icon = 'icons/obj/abductor.dmi'
+	icon_state = "abductor_headset"
+	item_state = "headset"
+	syndie = 1
+	var/team_number
 
 /obj/item/device/radio/headset/raider/Initialize()
 	. = ..()
@@ -284,7 +294,7 @@
 			M.ear_deaf = max(M.ear_deaf,15)
 	..()
 
-/obj/item/device/radio/headset/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/device/radio/headset/attackby(obj/item/W as obj, mob/user as mob)
 //	..()
 	user.set_machine(src)
 	if (!( isScrewdriver(W) || (istype(W, /obj/item/device/encryptionkey/ ))))
@@ -323,20 +333,13 @@
 		if(keyslot1 && keyslot2)
 			to_chat(user, "The headset can't hold another key!")
 			return
-
+		if(!user.drop(W, src))
+			return
 		if(!keyslot1)
-			user.drop_item()
-			W.loc = src
 			keyslot1 = W
-
 		else
-			user.drop_item()
-			W.loc = src
 			keyslot2 = W
-
-
 		recalculateChannels()
-
 	return
 
 /obj/item/device/radio/headset/MouseDrop(obj/over_object)

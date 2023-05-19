@@ -7,6 +7,9 @@
 	deform = 'icons/mob/human_races/monkeys/r_monkey.dmi'
 	damage_overlays = 'icons/mob/human_races/masks/dam_monkey.dmi'
 	damage_mask = 'icons/mob/human_races/masks/dam_mask_monkey.dmi'
+
+	has_eyes_icon = FALSE
+
 	language = null
 	default_language = "Chimpanzee"
 	greater_form = SPECIES_HUMAN
@@ -18,6 +21,7 @@
 	dusted_anim = "dust-m"
 	death_message = "lets out a faint chimper as it collapses and stops moving..."
 	tail = "chimptail"
+	y_shift = -8
 
 	body_builds = list(
 		new /datum/body_build/monkey
@@ -26,25 +30,26 @@
 	unarmed_types = list(/datum/unarmed_attack/bite, /datum/unarmed_attack/claws)
 	inherent_verbs = list(/mob/living/proc/ventcrawl)
 	hud_type = /datum/hud_data/monkey
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/monkey
+	meat_type = /obj/item/reagent_containers/food/meat/monkey
 
 	rarity_value = 0.1
-	total_health = 150
+	total_health = 75
 	brute_mod = 1.5
 	burn_mod = 1.5
 
-	spawn_flags = SPECIES_IS_RESTRICTED
+	spawn_flags = SPECIES_IS_RESTRICTED | SPECIES_NO_FBP_CONSTRUCTION | SPECIES_NO_FBP_CHARGEN | SPECIES_NO_LACE
 
 	bump_flag = MONKEY
 	swap_flags = MONKEY|METROID|SIMPLE_ANIMAL
 	push_flags = MONKEY|METROID|SIMPLE_ANIMAL|ALIEN
+	species_flags = SPECIES_FLAG_NO_ANTAG_TARGET
 
 	pass_flags = PASS_FLAG_TABLE
-	holder_type = /obj/item/weapon/holder
+	holder_type = /obj/item/holder
 	has_limbs = list(
 		BP_CHEST =  list("path" = /obj/item/organ/external/chest),
 		BP_GROIN =  list("path" = /obj/item/organ/external/groin),
-		BP_HEAD =   list("path" = /obj/item/organ/external/head/no_eyes),
+		BP_HEAD =   list("path" = /obj/item/organ/external/head),
 		BP_L_ARM =  list("path" = /obj/item/organ/external/arm),
 		BP_R_ARM =  list("path" = /obj/item/organ/external/arm/right),
 		BP_L_LEG =  list("path" = /obj/item/organ/external/leg),
@@ -56,10 +61,12 @@
 		)
 
 	var/list/no_touchie = list(
-		/obj/item/weapon/mirror,
-		/obj/item/weapon/paper,
+		/obj/item/mirror,
+		/obj/item/paper,
 		/obj/item/device/taperecorder,
 		/obj/item/modular_computer,
+		/obj/item/storage/secure/safe,
+		/obj/item/stool,
 	)
 
 /datum/species/monkey/handle_npc(mob/living/carbon/human/H)
@@ -76,11 +83,11 @@
 	if(prob(5) && held)
 		var/turf/T = get_random_turf_in_range(H, 7, 2)
 		if(T && !is_type_in_list(T, no_touchie))
-			if(istype(held, /obj/item/weapon/gun) && prob(80))
-				var/obj/item/weapon/gun/G = held
+			if(istype(held, /obj/item/gun) && prob(80))
+				var/obj/item/gun/G = held
 				G.Fire(T, H)
-			if(istype(held, /obj/item/weapon/reagent_containers) && prob(80))
-				var/obj/item/weapon/reagent_containers/C = held
+			if(istype(held, /obj/item/reagent_containers) && prob(80))
+				var/obj/item/reagent_containers/C = held
 				C.attack(H, H)
 			if(istype(held, /obj/item/) && prob(50))
 				var/obj/item/O = held
@@ -88,11 +95,11 @@
 			else
 				H.throw_item(T)
 		else
-			H.drop_item()
+			H.drop_active_hand()
 	if(prob(5) && !held && !H.restrained() && istype(H.loc, /turf/))
 		var/list/touchables = list()
 		for(var/obj/item/O in range(1,get_turf(H)))
-			if(O.simulated && O.Adjacent(H) && !is_type_in_list(O, no_touchie) && istype(O.loc, /turf/))
+			if(O.simulated && O.Adjacent(H) && !is_type_in_list(O, no_touchie) && isturf(O.loc))
 				touchables += O
 		if(touchables.len)
 			var/obj/touchy = pick(touchables)
@@ -123,6 +130,12 @@
 	..()
 	H.item_state = lowertext(name)
 
+/datum/species/monkey/is_eligible_for_antag_spawn(antag_id)
+	if(antag_id == MODE_CHANGELING) // For memes sake
+		return TRUE
+	return FALSE
+
+
 /datum/species/monkey/tajaran
 	name = "Farwa"
 	name_plural = "Farwa"
@@ -131,9 +144,10 @@
 	icobase = 'icons/mob/human_races/monkeys/r_farwa.dmi'
 	deform = 'icons/mob/human_races/monkeys/r_farwa.dmi'
 
-	greater_form = "Tajaran"
+	greater_form = SPECIES_TAJARA
 	default_language = "Farwa"
 	flesh_color = "#afa59e"
+	blood_color = COLOR_BLOOD_TAJARAN
 	base_color = "#333333"
 	tail = "farwatail"
 
@@ -148,7 +162,7 @@
 	greater_form = SPECIES_SKRELL
 	default_language = "Neaera"
 	flesh_color = "#8cd7a3"
-	blood_color = "#1d2cbf"
+	blood_color = COLOR_BLOOD_SKRELL
 	reagent_tag = IS_SKRELL
 	tail = null
 
@@ -164,5 +178,6 @@
 	greater_form = SPECIES_UNATHI
 	default_language = "Stok"
 	flesh_color = "#34af10"
+	blood_color = COLOR_BLOOD_UNATHI
 	base_color = "#066000"
 	reagent_tag = IS_UNATHI

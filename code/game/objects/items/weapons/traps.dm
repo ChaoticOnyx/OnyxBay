@@ -1,6 +1,5 @@
-/obj/item/weapon/beartrap
+/obj/item/beartrap
 	name = "mechanical trap"
-	throw_speed = 2
 	throw_range = 1
 	gender = PLURAL
 	icon = 'icons/obj/items.dmi'
@@ -14,10 +13,10 @@
 	can_buckle = 0 //disallow manual un/buckling
 	var/deployed = 0
 
-/obj/item/weapon/beartrap/proc/can_use(mob/user)
+/obj/item/beartrap/proc/can_use(mob/user)
 	return (user.IsAdvancedToolUser() && !user.stat && !user.restrained())
 
-/obj/item/weapon/beartrap/user_unbuckle_mob(mob/user as mob)
+/obj/item/beartrap/user_unbuckle_mob(mob/user as mob)
 	if(buckled_mob && can_use(user))
 		user.visible_message(
 			"<span class='notice'>\The [user] begins freeing \the [buckled_mob] from \the [src].</span>",
@@ -29,7 +28,7 @@
 			unbuckle_mob()
 			anchored = 0
 
-/obj/item/weapon/beartrap/attack_self(mob/user as mob)
+/obj/item/beartrap/attack_self(mob/user as mob)
 	..()
 	if(!deployed && can_use(user))
 		user.visible_message(
@@ -38,19 +37,17 @@
 			"You hear the slow creaking of a spring."
 			)
 
-		if (do_after(user, 60, src))
+		if(do_after(user, 60, src) && user.drop(src))
 			user.visible_message(
 				"<span class='danger'>\The [user] has deployed \the [src].</span>",
 				"<span class='danger'>You have deployed \the [src]!</span>",
 				"You hear a latch click loudly."
 				)
-
 			deployed = 1
-			user.drop_from_inventory(src)
 			update_icon()
 			anchored = 1
 
-/obj/item/weapon/beartrap/attack_hand(mob/user as mob)
+/obj/item/beartrap/attack_hand(mob/user as mob)
 	if(buckled_mob)
 		user_unbuckle_mob(user)
 	else if(deployed && can_use(user))
@@ -70,7 +67,7 @@
 	else
 		..()
 
-/obj/item/weapon/beartrap/proc/attack_mob(mob/living/L)
+/obj/item/beartrap/proc/attack_mob(mob/living/L)
 
 	var/target_zone
 	if(L.lying)
@@ -93,7 +90,7 @@
 	to_chat(L, "<span class='danger'>The steel jaws of \the [src] bite into you, trapping you in place!</span>")
 	deployed = 0
 
-/obj/item/weapon/beartrap/Crossed(AM as mob|obj)
+/obj/item/beartrap/Crossed(AM as mob|obj)
 	if(deployed && isliving(AM))
 		var/mob/living/L = AM
 		if(L.m_intent == M_RUN)
@@ -109,7 +106,7 @@
 			update_icon()
 	..()
 
-/obj/item/weapon/beartrap/update_icon()
+/obj/item/beartrap/update_icon()
 	..()
 
 	if(!deployed)

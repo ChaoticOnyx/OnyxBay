@@ -34,7 +34,7 @@
 
 	attackby(obj/item/W as obj, mob/user as mob)
 		if(isWelder(W))
-			var/obj/item/weapon/weldingtool/WT = W
+			var/obj/item/weldingtool/WT = W
 			if(WT.remove_fuel(0, user))
 				overlays.Cut()
 				to_chat(usr, "You slice off [src]'s uneven chunks of aluminum and scorch marks.")
@@ -58,7 +58,7 @@
 				forceMove(user.loc)
 				if(ishuman(user))
 					if(!user.get_active_hand())
-						user.put_in_hands(src)
+						user.pick_or_drop(src)
 						to_chat(user, "You take the target out of the stake.")
 				else
 					src.loc = get_turf(user)
@@ -161,7 +161,7 @@
 	var/b2y1 = 0
 	var/b2y2 = 0
 
-	New(var/obj/item/target/Target, var/pixel_x = 0, var/pixel_y = 0)
+	New(obj/item/target/Target, pixel_x = 0, pixel_y = 0)
 		if(!Target) return
 
 		// Randomize the first box

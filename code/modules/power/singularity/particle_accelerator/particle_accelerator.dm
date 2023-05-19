@@ -111,7 +111,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	src.set_dir(turn(src.dir, 90))
 	return 1
 
-/obj/structure/particle_accelerator/examine(mob/user)
+/obj/structure/particle_accelerator/_examine_text(mob/user)
 	switch(src.construction_state)
 		if(0)
 			src.desc = text("A [name], looks like it's not attached to the flooring")
@@ -136,7 +136,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 
 
 /obj/structure/particle_accelerator/Move()
-	..()
+	. = ..()
 	if(master && master.active)
 		master.toggle_power()
 		investigate_log("was moved whilst active; it <font color='red'>powered down</font>.","singulo")
@@ -154,7 +154,6 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 			if (prob(25))
 				qdel(src)
 				return
-		else
 	return
 
 /obj/structure/particle_accelerator/update_icon()
@@ -197,10 +196,10 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	return 0
 
 
-/obj/structure/particle_accelerator/proc/process_tool_hit(obj/O, mob/user)
+/obj/structure/particle_accelerator/proc/process_tool_hit(obj/item/O, mob/user)
 	if(!(O) || !(user))
 		return 0
-	if(!ismob(user) || !isobj(O))
+	if(!ismob(user) || !istype(O))
 		return 0
 	var/temp_state = src.construction_state
 
@@ -257,8 +256,8 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	anchored = 0
 	density = 1
 	use_power = POWER_USE_OFF
-	idle_power_usage = 0
-	active_power_usage = 0
+	idle_power_usage = 0 WATTS
+	active_power_usage = 0 WATTS
 	var/construction_state = 0
 	var/active = 0
 	var/reference = null
@@ -292,7 +291,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 /obj/machinery/particle_accelerator/update_icon()
 	return
 
-/obj/machinery/particle_accelerator/examine(mob/user)
+/obj/machinery/particle_accelerator/_examine_text(mob/user)
 	switch(src.construction_state)
 		if(0)
 			src.desc = text("A [name], looks like it's not attached to the flooring")
@@ -328,7 +327,6 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 			if (prob(25))
 				qdel(src)
 				return
-		else
 	return
 
 
@@ -336,10 +334,10 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	return 0
 
 
-/obj/machinery/particle_accelerator/proc/process_tool_hit(obj/O, mob/user)
+/obj/machinery/particle_accelerator/proc/process_tool_hit(obj/item/O, mob/user)
 	if(!(O) || !(user))
 		return 0
-	if(!ismob(user) || !isobj(O))
+	if(!ismob(user) || !istype(O))
 		return 0
 	var/temp_state = src.construction_state
 	switch(src.construction_state)//TODO:Might be more interesting to have it need several parts rather than a single list of steps

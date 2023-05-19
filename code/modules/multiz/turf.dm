@@ -8,7 +8,7 @@
 			return !density
 
 /turf/simulated/open/CanZPass(atom/A, direction)
-	if(locate(/obj/structure/catwalk, src))
+	if(locate(/obj/structure/catwalk, src)||locate(/obj/structure/industrial_lift, src))
 		if(z == A.z)
 			if(direction == DOWN)
 				return 0
@@ -45,11 +45,15 @@
 
 
 /turf/simulated/open/proc/update()
-	plane = OPENSPACE_PLANE + (src.z * PLANE_DIFFERENCE)
+	plane = OPENSPACE_PLANE
+	if(below)
+		unregister_signal(below, SIGNAL_TURF_CHANGED)
+		unregister_signal(below, SIGNAL_EXITED)
+		unregister_signal(below, SIGNAL_ENTERED)
 	below = GetBelow(src)
-	GLOB.turf_changed_event.register(below, src,/turf/simulated/open/proc/turf_change)
-	GLOB.exited_event.register(below, src, /turf/simulated/open/proc/handle_move)
-	GLOB.entered_event.register(below, src, /turf/simulated/open/proc/handle_move)
+	register_signal(below, SIGNAL_TURF_CHANGED, /turf/simulated/open/proc/turf_change)
+	register_signal(below, SIGNAL_EXITED, /turf/simulated/open/proc/handle_move)
+	register_signal(below, SIGNAL_ENTERED, /turf/simulated/open/proc/handle_move)
 	levelupdate()
 	for(var/atom/movable/A in src)
 		A.fall()
@@ -77,7 +81,7 @@
 
 
 
-/turf/simulated/open/examine(mob/user, infix, suffix)
+/turf/simulated/open/_examine_text(mob/user, infix, suffix)
 	. = ..()
 	if(get_dist(src, user) <= 2)
 		var/depth = 1
@@ -102,13 +106,12 @@
 
 		else
 			var/image/bottom_turf = image(icon = below.icon, icon_state = below.icon_state, dir=below.dir, layer=below.layer)
-			bottom_turf.plane = below.plane + src.plane
+			bottom_turf.plane = src.plane
 			bottom_turf.color = below.color
 			underlays += bottom_turf
-			for(var/image/I in below.overlays)
-				var/image/temp = I
-				temp.plane = I.plane + src.plane
-				temp.color = I.color
+			for(var/i in 1 to length(below.overlays))
+				var/image/temp = image(below.overlays[i]) //byond moment
+				temp.plane = src.plane
 				overlays += temp
 
 
@@ -118,9 +121,8 @@
 			if(O.invisibility) continue // Ignore objects that have any form of invisibility
 			if(O.loc != below) continue // Ignore multi-turf objects not directly below
 			var/image/temp2 = image(O, dir = O.dir, layer = O.layer)
-			temp2.plane = O.plane + src.plane
+			temp2.plane = src.plane
 			temp2.color = O.color
-			temp2.overlays += O.overlays
 			// TODO Is pixelx/y needed?
 			o_img += temp2
 
@@ -165,7 +167,10 @@
 			qdel(L)
 			playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1)
 			S.use(1)
-			ChangeTurf(/turf/simulated/floor/plating/airless)
+			if(istype(C, /obj/item/stack/tile/floor_rough))
+				ChangeTurf(/turf/simulated/floor/plating/rough/airless)
+			else
+				ChangeTurf(/turf/simulated/floor/plating/airless)
 			return
 		else
 			to_chat(user, "<span class='warning'>The plating is going to need some support.</span>")
@@ -193,9 +198,9 @@
 
 /turf/simulated/open/proc/clean_up()
 	//Unregister
-	GLOB.turf_changed_event.unregister(below, src,/turf/simulated/open/proc/turf_change)
-	GLOB.exited_event.unregister(below, src, /turf/simulated/open/proc/handle_move)
-	GLOB.entered_event.unregister(below, src, /turf/simulated/open/proc/handle_move)
+	unregister_signal(below, SIGNAL_TURF_CHANGED)
+	unregister_signal(below, SIGNAL_EXITED, /turf/simulated/open/proc/handle_move)
+	unregister_signal(below, SIGNAL_ENTERED)
 	//Take care of shadow
 	for(var/mob/zshadow/M in src)
 		qdel(M)
