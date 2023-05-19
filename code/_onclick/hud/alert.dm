@@ -94,7 +94,7 @@
 
 
 /obj/screen/movable/alert
-	icon = 'icons/mob/screen/midnight.dmi'
+	icon = 'icons/hud/style/midnight.dmi'
 	icon_state = "template"
 	name = "Alert"
 	desc = "Something seems to have gone wrong with this alert, so report this bug please"

@@ -6,24 +6,24 @@
 
 	var/mob/living/carbon/human/vrhuman/V = mymob
 	V.vrhuman_shop = new /obj/screen/vrhuman_shop()
-	V.vrhuman_shop.icon = 'icons/mob/screen_vrhuman.dmi'
+	V.vrhuman_shop.icon = 'icons/hud/mob/screen_vrhuman.dmi'
 	V.vrhuman_shop.icon_state = "vrui_shop"
 	V.vrhuman_shop.screen_loc = ui_vrhuman_shop
 	V.vrhuman_shop.alpha = 0
 
 	V.vrhuman_exit = new /obj/screen/vrhuman_exit()
-	V.vrhuman_exit.icon = 'icons/mob/screen_vrhuman.dmi'
+	V.vrhuman_exit.icon = 'icons/hud/mob/screen_vrhuman.dmi'
 	V.vrhuman_exit.icon_state = "vrui_exit"
 	V.vrhuman_exit.screen_loc = ui_vrhuman_exit
 	V.vrhuman_exit.alpha = 0
 
 	V.vrhuman_main = new /obj/screen/vrhuman_main()
-	V.vrhuman_main.icon = 'icons/mob/screen_vrhuman.dmi'
+	V.vrhuman_main.icon = 'icons/hud/mob/screen_vrhuman.dmi'
 	V.vrhuman_main.icon_state = "vrui_main"
 	V.vrhuman_main.screen_loc = ui_vrhuman_main
 
 	V.vrhuman_cleanup = new /obj/screen/vrhuman_cleanup()
-	V.vrhuman_cleanup.icon = 'icons/mob/screen_vrhuman.dmi'
+	V.vrhuman_cleanup.icon = 'icons/hud/mob/screen_vrhuman.dmi'
 	V.vrhuman_cleanup.icon_state = "vrui_cleanup"
 	V.vrhuman_cleanup.screen_loc = ui_vrhuman_cleanup
 	V.vrhuman_cleanup.alpha = 0
