@@ -371,6 +371,19 @@
 #define HUMAN_HEIGHT_LARGE  1.04
 #define HUMAN_HEIGHT_HUGE   1.07
 
+#define POSSIBLE_LIZARD_TOXINS list(/datum/reagent/toxin/plasticide ,\
+									/datum/reagent/toxin/amatoxin ,\
+									/datum/reagent/toxin/carpotoxin ,\
+									/datum/reagent/toxin/plasma ,\
+									/datum/reagent/toxin/chlorine,\
+									/datum/reagent/toxin/potassium_chloride ,\
+									/datum/reagent/toxin/potassium_chlorophoride ,\
+									/datum/reagent/toxin/fertilizer ,\
+									/datum/reagent/mutagen ,\
+									/datum/reagent/space_drugs ,\
+									/datum/reagent/mindbreaker ,\
+									/datum/reagent/psilocybin)
+
 /proc/human_height_text(x)
 	switch(x)
 		if(HUMAN_HEIGHT_TINY) return "Dwarfish"
@@ -379,3 +392,4 @@
 		if(HUMAN_HEIGHT_LARGE) return "Tall"
 		if(HUMAN_HEIGHT_HUGE) return "Towering"
 	return "Unusual"
+
