@@ -68,7 +68,7 @@
 	screen.color = new_color
 
 /obj/screen/fullscreen
-	icon = 'icons/mob/screen_full.dmi'
+	icon = 'icons/hud/screen_full.dmi'
 	icon_state = "default"
 	screen_loc = "CENTER-7,CENTER-7"
 	plane = FULLSCREEN_PLANE
@@ -89,7 +89,7 @@
 	layer = DAMAGE_LAYER
 
 /obj/screen/fullscreen/crit
-	icon_state = "passage"
+	icon_state = "passage0"
 	layer = CRIT_LAYER
 
 /obj/screen/fullscreen/blind
@@ -97,7 +97,7 @@
 	layer = BLIND_LAYER
 
 /obj/screen/fullscreen/blackout
-	icon = 'icons/mob/screen1.dmi'
+	icon = 'icons/hud/screen.dmi'
 	icon_state = "black"
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	layer = BLIND_LAYER
@@ -107,12 +107,12 @@
 	layer = IMPAIRED_LAYER
 
 /obj/screen/fullscreen/blurry
-	icon = 'icons/mob/screen1.dmi'
+	icon = 'icons/hud/screen.dmi'
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	icon_state = "blurry"
 
 /obj/screen/fullscreen/flash
-	icon = 'icons/mob/screen1.dmi'
+	icon = 'icons/hud/screen.dmi'
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	icon_state = "flash"
 
@@ -123,12 +123,12 @@
 	icon_state = "flash_const"
 
 /obj/screen/fullscreen/red
-	icon = 'icons/mob/screen1.dmi'
+	icon = 'icons/hud/screen.dmi'
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	icon_state = "red"
 
 /obj/screen/fullscreen/high
-	icon = 'icons/mob/screen1.dmi'
+	icon = 'icons/hud/screen.dmi'
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	icon_state = "druggy"
 
@@ -140,7 +140,7 @@
 	alpha = 127
 
 /obj/screen/fullscreen/fadeout
-	icon = 'icons/mob/screen1.dmi'
+	icon = 'icons/hud/screen.dmi'
 	icon_state = "black"
 	screen_loc = ui_entire_screen
 	layer = FULLSCREEN_LAYER
@@ -160,7 +160,7 @@
 	blend_mode = BLEND_DEFAULT
 
 /obj/screen/fullscreen/cam_corners
-	icon = 'icons/mob/screen_full.dmi'
+	icon = 'icons/hud/screen_full.dmi'
 	icon_state = "cam_corners"
 	allstate = 1
 	layer = FULLSCREEN_LAYER

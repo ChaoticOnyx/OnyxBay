@@ -48,7 +48,7 @@
 	name = "Airlock Construction"
 
 /datum/rcd_work_mode/construction_airlock/New()
-	preview = image('icons/mob/radial.dmi', "airlock")
+	preview = image('icons/hud/radial.dmi', "airlock")
 
 /datum/rcd_work_mode/construction_airlock/_work_message(atom/target, mob/user, obj/item/rcd/rcd)
 	user.visible_message(SPAN("notice", "\The [user] uses \a [rcd] to construct airlock."), SPAN("notice", "You begin construction."))
@@ -149,7 +149,7 @@
 	name = "Deconstruction"
 
 /datum/rcd_work_mode/deconstruction/New()
-	preview = image('icons/mob/radial.dmi', "delete")
+	preview = image('icons/hud/radial.dmi', "delete")
 
 /datum/rcd_work_mode/deconstruction/_calculate_delay(atom/target)
 	if(istype(target, /obj/machinery/door/airlock))

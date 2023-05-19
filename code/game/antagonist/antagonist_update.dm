@@ -31,7 +31,7 @@
 	if(!antag_indicator || !other.current || !recipient.current)
 		return
 	var/indicator = (faction_indicator && (other in faction_members)) ? faction_indicator : antag_indicator
-	return image('icons/mob/hud.dmi', loc = other.current, icon_state = indicator, layer = ABOVE_HUMAN_LAYER)
+	return image('icons/mob/huds/hud.dmi', loc = other.current, icon_state = indicator, layer = ABOVE_HUMAN_LAYER)
 
 /datum/antagonist/proc/update_all_icons()
 	if(!antag_indicator)

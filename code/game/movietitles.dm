@@ -49,6 +49,7 @@ GLOBAL_LIST(end_titles)
 	sound_to(mob, sound(null, channel = 1))
 
 /obj/screen/credit
+	icon = 'icons/hud/screen.dmi'
 	icon_state = "blank"
 	mouse_opacity = 0
 	alpha = 0
