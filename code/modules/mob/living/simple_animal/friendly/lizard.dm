@@ -52,7 +52,7 @@
 		return TRUE
 	return FALSE
 
-/mob/living/simple_animal/lizard/proc/Breed(var/mob/living/simple_animal/lizard/partner)
+/mob/living/simple_animal/lizard/proc/Breed(mob/living/simple_animal/lizard/partner)
 	if(stat == DEAD)
 		return
 	var/place = pick(get_turf(src), get_turf(partner))
@@ -72,7 +72,7 @@
 		count += 1
 	return count
 
-/mob/living/simple_animal/lizard/proc/CallLizards(var/mob/target)
+/mob/living/simple_animal/lizard/proc/CallLizards(mob/target)
 	var/called_number = 0
 	var/list/Allies = list()
 	for(var/mob/living/simple_animal/lizard/L in view(vision_range, src))
