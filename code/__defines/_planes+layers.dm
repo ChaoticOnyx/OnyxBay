@@ -70,7 +70,7 @@
 	#define DEBRIS_LAYER 1
 	#define DUST_LAYER 2
 
-#define OPENSPACE_PLANE					-4
+#define OPENSPACE_PLANE					-10
 #define OVER_OPENSPACE_PLANE			-3
 #define FLOOR_PLANE						-2
 #define DEFAULT_PLANE					-1
@@ -169,7 +169,7 @@
 	#define LIGHTING_LAYER         		1
 	#define ABOVE_LIGHTING_LAYER   		2
 
-#define EFFECTS_ABOVE_LIGHTING_PLANE   	4 // For glowy eyes, laser beams, etc. that shouldn't be affected by darkness
+#define EFFECTS_ABOVE_LIGHTING_PLANE	4 // For glowy eyes, laser beams, etc. that shouldn't be affected by darkness
 	#define EYE_GLOW_LAYER         		1
 	#define BEAM_PROJECTILE_LAYER  		2
 	#define SUPERMATTER_WALL_LAYER 		3
@@ -203,6 +203,8 @@
 
 #define DEFAULT_APPEARANCE_FLAGS (PIXEL_SCALE)
 
+#define GET_FLOAT_DIFFERENCE(PARENT_PLANE, DESIRED_PLANE) (DESIRED_PLANE - PARENT_PLANE)
+
 /atom
 	plane = DEFAULT_PLANE
 	appearance_flags = DEFAULT_APPEARANCE_FLAGS
@@ -211,12 +213,15 @@
 	appearance_flags = DEFAULT_APPEARANCE_FLAGS
 
 /image/proc/plating_decal_layerise()
-	plane = FLOOR_PLANE
+	plane = FLOAT_PLANE
 	layer = DECAL_PLATING_LAYER
 
 /image/proc/turf_decal_layerise()
-	plane = FLOOR_PLANE
+	plane = FLOAT_PLANE
 	layer = DECAL_LAYER
+
+/image/proc/set_float_plane(var/atom/parent, var/desired_plane)
+	plane = FLOAT_PLANE + GET_FLOAT_DIFFERENCE(parent.plane, desired_plane)
 
 /atom/proc/hud_layerise()
 	plane = HUD_PLANE

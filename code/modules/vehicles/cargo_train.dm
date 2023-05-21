@@ -50,7 +50,7 @@
 	cell = new /obj/item/cell/high(src)
 	key = new(src)
 	var/image/I = new(icon = 'icons/obj/vehicles.dmi', icon_state = "cargo_engine_overlay")
-	I.plane = plane
+	I.plane = FLOAT_PLANE
 	I.layer = layer
 	overlays += I
 	turn_off()	//so engine verbs are correctly set
@@ -60,7 +60,7 @@
 	cell = new /obj/item/cell/super(src)
 	key = new(src)
 	var/image/I = new(icon = 'icons/obj/vehicles.dmi', icon_state = "asteroid_engine_overlay")
-	I.plane = plane
+	I.plane = FLOAT_PLANE
 	I.layer = layer
 	overlays += I
 	turn_off()	//so engine verbs are correctly set
