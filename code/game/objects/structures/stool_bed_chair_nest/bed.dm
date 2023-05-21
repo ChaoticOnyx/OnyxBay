@@ -241,8 +241,10 @@
 /obj/structure/bed/roller/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W) || istype(W, /obj/item/stack) || isWirecutter(W))
 		return
-	else if(istype(W, /obj/item/roller_holder) && !buckled_bodybag)
-		if(buckled_mob || buckled_bodybag)
+	else if(istype(W, /obj/item/roller_holder))
+		if(buckled_mob)
+			user_unbuckle_mob(user)
+		if(buckled_bodybag)
 			manual_unbuckle(user)
 		else if(rollertype)
 			visible_message("[user] collapses \the [src.name].")
