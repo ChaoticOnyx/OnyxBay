@@ -15,7 +15,7 @@
 
 /obj/MouseDrop_T(atom/movable/dropping, mob/living/user)
 	. = ..()
-	if(can_buckle && istype(dropping, /mob/living))
+	if(can_buckle && isliving(dropping))
 		user_buckle_mob(dropping, user)
 
 /obj/Destroy()

@@ -237,7 +237,6 @@
 	else
 		set_density(0)
 		icon_state = "[initial(icon_state)]"
-	return // Doesn't care about material or anything else.
 
 /obj/structure/bed/roller/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W) || istype(W, /obj/item/stack) || isWirecutter(W))
@@ -369,6 +368,10 @@
 
 
 /obj/structure/bed/roller/proc/do_buckle_bodybag(obj/structure/closet/body_bag/B, mob/user)
+	if(isanimal(user))
+		return 0
+	if(!user.Adjacent(B) || user.incapacitated(INCAPACITATION_ALL) || istype(user, /mob/living/silicon/pai))
+		return 0
 	B.visible_message(SPAN_NOTICE("[user] buckles [B] to [src]!"))
 	B.roller_buckled = src
 	B.forceMove(loc)
@@ -390,6 +393,10 @@
 		update_icon()
 
 /obj/structure/bed/roller/proc/manual_unbuckle(mob/user)
+	if(isanimal(user))
+		return 0
+	if(!user.Adjacent(buckled_bodybag) || user.incapacitated(INCAPACITATION_ALL) || istype(user, /mob/living/silicon/pai))
+		return 0
 	if(buckled_bodybag)
 		unbuckle()
 		add_fingerprint(user)
