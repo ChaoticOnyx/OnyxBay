@@ -9,7 +9,7 @@
 	w_class = ITEM_SIZE_SMALL
 	pull_sound = SFX_PULL_BODY
 
-	attack_self(mob/user)
+/obj/item/bodybag/attack_self(mob/user)
 		var/obj/structure/closet/body_bag/R = new /obj/structure/closet/body_bag(user.loc)
 		R.add_fingerprint(user)
 		qdel(src)
@@ -19,7 +19,8 @@
 	name = "body bags"
 	desc = "This box contains body bags."
 	icon_state = "bodybags"
-	New()
+
+/obj/item/storage/box/bodybags/New()
 		..()
 		new /obj/item/bodybag(src)
 		new /obj/item/bodybag(src)
@@ -46,6 +47,9 @@
 	var/contains_body = 0
 	dremovable = 0
 	open_delay = 6
+	var/obj/structure/bed/roller/roller_buckled //the roller bed this bodybag is attached to.
+	var/buckle_offset = 5
+	layer = ABOVE_OBJ_LAYER
 
 /obj/structure/closet/body_bag/attackby(obj/item/W, mob/user)
 	if (istype(W, /obj/item/pen))
