@@ -8,6 +8,8 @@ var/list/all_virtual_listeners = list()
 	sight = SEE_SELF|SEE_BLACKNESS
 	ghost_image_flag = GHOST_IMAGE_NONE
 
+	vis_flags = VIS_HIDE
+
 	virtual_mob = null
 
 	var/atom/movable/host

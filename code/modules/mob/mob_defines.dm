@@ -2,6 +2,7 @@
 	density = 1
 
 	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
+	vis_flags = VIS_INHERIT_PLANE
 	animate_movement = 2
 
 	virtual_mob = /mob/observer/virtual/mob
