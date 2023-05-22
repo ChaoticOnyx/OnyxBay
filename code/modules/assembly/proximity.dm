@@ -57,6 +57,7 @@
 	pulse(0)
 	if(!holder)
 		mainloc.visible_message(SPAN("danger" ,"\icon[src] *beep* *beep*"), SPAN("danger" ,"*beep* *beep*"))
+	playsound(mainloc, 'sound/signals/warning8.ogg', 35)
 	cooldown = 2
 	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
 
