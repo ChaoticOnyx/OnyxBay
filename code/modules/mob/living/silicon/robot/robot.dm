@@ -327,7 +327,7 @@
 		notify_ai(ROBOT_NOTIFICATION_NEW_MODULE, module.name)
 
 
-/mob/living/silicon/robot/proc/updatename(prefix as text)
+/mob/living/silicon/robot/proc/updatename(prefix)
 	if(prefix)
 		modtype = prefix
 

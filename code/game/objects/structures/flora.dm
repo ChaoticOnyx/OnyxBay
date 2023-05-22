@@ -306,7 +306,7 @@
 			to_chat(user, SPAN("notice", "Something is already hidden in \the [src]."))
 	return 0
 
-/obj/structure/flora/pottedplant/attack_hand(mob/user as mob)
+/obj/structure/flora/pottedplant/attack_hand(mob/user)
 	user.visible_message("[user] begins digging around inside of \the [src].", "You begin digging around in \the [src], searching it.")
 	playsound(loc, 'sound/effects/plantshake.ogg', rand(50, 75), TRUE)
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)

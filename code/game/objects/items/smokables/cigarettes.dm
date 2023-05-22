@@ -178,7 +178,7 @@
 		return 1
 	return ..()
 
-/obj/item/clothing/mask/smokable/cigarette/afterattack(obj/item/W, mob/user as mob, proximity)
+/obj/item/clothing/mask/smokable/cigarette/afterattack(obj/item/W, mob/user, proximity)
 	if(istype(W, /obj/item/gun) && !istype(W, /obj/item/gun/energy/plasmacutter) && !istype(W, /obj/item/gun/flamer))
 		return
 
