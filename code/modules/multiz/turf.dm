@@ -109,7 +109,7 @@
 	return PROCESS_KILL
 
 
-/turf/simulated/open/attackby(obj/item/C as obj, mob/user as mob)
+/turf/simulated/open/attackby(obj/item/C, mob/user)
 	if (istype(C, /obj/item/stack/rods))
 		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
 		if(L)

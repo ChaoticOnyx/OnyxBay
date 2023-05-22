@@ -220,7 +220,7 @@
 	plane = FLOAT_PLANE
 	layer = DECAL_LAYER
 
-/image/proc/set_float_plane(var/atom/parent, var/desired_plane)
+/image/proc/set_float_plane(atom/parent, desired_plane)
 	plane = FLOAT_PLANE + GET_FLOAT_DIFFERENCE(parent.plane, desired_plane)
 
 /atom/proc/hud_layerise()
