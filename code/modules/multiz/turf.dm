@@ -169,6 +169,7 @@
 	//Take care of shadow
 	for(var/mob/zshadow/M in src)
 		qdel(M)
+	vis_contents = list()
 
 //When turf changes, a bunch of things can take place
 /turf/simulated/open/proc/turf_change(turf/affected)
