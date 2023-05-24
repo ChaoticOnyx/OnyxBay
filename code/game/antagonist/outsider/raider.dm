@@ -6,7 +6,7 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	role_text_plural = "Raiders"
 	antag_indicator = "hudmutineer"
 	landmark_id = "Vox"
-	welcome_text = "Use :H to talk on your encrypted channel."
+	welcome_text = "You are a member of the vox raid team! Use your equipment and wit to complete your objectives, without overt violence. Do not leave any vox behind, dead or alive, this is considered a great disgrace among your kin. Use :H to talk on your encrypted channel."
 	mob_path = /mob/living/carbon/human/vox
 	flags = ANTAG_OVERRIDE_MOB | ANTAG_OVERRIDE_JOB | ANTAG_CLEAR_EQUIPMENT | ANTAG_VOTABLE | ANTAG_HAS_LEADER
 	antaghud_indicator = "hudmutineer"
