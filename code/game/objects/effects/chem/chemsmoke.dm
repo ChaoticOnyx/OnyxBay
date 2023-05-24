@@ -185,7 +185,7 @@
 				continue
 			if(T in targetTurfs)
 				spawn(0)
-					spawnSmoke(T, I, range)
+					spawnSmoke(T, I, smoke_duration, range)
 
 //------------------------------------------
 // Randomizes and spawns the smoke effect.

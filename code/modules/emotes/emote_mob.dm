@@ -6,7 +6,7 @@
 
 /mob/proc/emote(act, m_type, message)
 	// s-s-snowflake
-	if(src.stat == DEAD && act != "deathgasp")
+	if(src.is_ic_dead() && act != "deathgasp")
 		return
 	if(usr == src) //client-called emote
 		if (client && (client.prefs.muted & MUTE_IC))
@@ -47,7 +47,7 @@
 		to_chat(src, "<span class='warning'>Unknown emote '[act]'. Type <b>say *help</b> for a list of usable emotes.</span>")
 		return
 
-	if(m_type != use_emote.message_type && use_emote.conscious && stat != CONSCIOUS)
+	if((m_type && m_type != use_emote.message_type) || (use_emote.conscious && stat != CONSCIOUS))
 		to_chat(src, "<span class='warning'>You cannot currently [use_emote.message_type == AUDIBLE_MESSAGE ? "audibly" : "visually"] emote!</span>")
 		return
 

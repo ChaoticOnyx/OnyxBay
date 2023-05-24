@@ -153,15 +153,15 @@
 
 	add_robot_verbs()
 
-	hud_list[HEALTH_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[STATUS_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealth100")
-	hud_list[LIFE_HUD]        = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealth100")
-	hud_list[ID_HUD]          = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[WANTED_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPLOYAL_HUD]    = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPCHEM_HUD]     = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPTRACK_HUD]    = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[SPECIALROLE_HUD] = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
+	hud_list[HEALTH_HUD]      = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[STATUS_HUD]      = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[LIFE_HUD]        = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[ID_HUD]          = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[WANTED_HUD]      = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[IMPLOYAL_HUD]    = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[IMPCHEM_HUD]     = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[IMPTRACK_HUD]    = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[SPECIALROLE_HUD] = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
 
 /mob/living/silicon/robot/Initialize()
 	. = ..()
@@ -423,7 +423,7 @@
 	set category = "Silicon Commands"
 	set name = "Toggle Lights"
 
-	if(stat == DEAD)
+	if(is_ic_dead())
 		return
 
 	lights_on = !lights_on
@@ -1007,7 +1007,6 @@
 						var/datum/matter_synth/glass.add_charge(1000)
 						spawn(0) //give the stacks a chance to delete themselves if necessary
 */
-		return
 
 /mob/living/silicon/robot/proc/self_destruct()
 	gib()
@@ -1274,7 +1273,7 @@
 			return 1
 
 /mob/living/silicon/robot/blob_act(damage)
-	if(is_dead())
+	if(is_ic_dead())
 		gib()
 		return
 

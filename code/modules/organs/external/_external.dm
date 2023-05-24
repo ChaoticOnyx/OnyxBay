@@ -929,7 +929,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 					throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), rand(1, 2))
 				dir = 2
 		if(DROPLIMB_BURN)
-			new /obj/effect/decal/cleanable/ash(loc)
+			new /obj/effect/decal/cleanable/ash(victim.loc)
 			for(var/obj/item/I in src)
 				if(I.w_class > ITEM_SIZE_SMALL && !istype(I, /obj/item/organ))
 					I.forceMove(victim.loc)
@@ -1186,8 +1186,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 			return 1
 	return 0
 
-/obj/item/organ/external/is_usable()
-	return ..() && !is_stump() && !(status & ORGAN_TENDON_CUT) && (!can_feel_pain() || get_pain() < pain_disability_threshold) && brute_ratio < 1 && burn_ratio < 1
+/obj/item/organ/external/is_usable(ignore_pain = FALSE)
+	return ..() && !is_stump() && !(status & ORGAN_TENDON_CUT) && (ignore_pain || !can_feel_pain() || get_pain() < pain_disability_threshold) && brute_ratio < 1 && burn_ratio < 1
 
 /obj/item/organ/external/proc/is_malfunctioning()
 	return (BP_IS_ROBOTIC(src) && (brute_dam + burn_dam) >= 10 && prob(brute_dam + burn_dam))

@@ -67,6 +67,7 @@
 		if(modifiers["ctrl"])
 			CtrlRightClickOn(A)
 			return 1
+		return
 	if(modifiers["shift"] && modifiers["ctrl"])
 		CtrlShiftClickOn(A)
 		return 1
@@ -443,8 +444,8 @@
 		facedir(direction)
 
 /obj/screen/click_catcher
-	icon = 'icons/mob/screen_gen.dmi'
-	icon_state = "click_catcher"
+	icon = 'icons/hud/screen_gen.dmi'
+	icon_state = "catcher"
 	plane = CLICKCATCHER_PLANE
 	mouse_opacity = 2
 	screen_loc = "CENTER-7,CENTER-7"

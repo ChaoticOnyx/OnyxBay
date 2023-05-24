@@ -176,10 +176,14 @@ SUBSYSTEM_DEF(storyteller)
 	return __storyteller_tick
 
 /datum/controller/subsystem/storyteller/proc/__create_all_characters()
-	for(var/ty in subtypesof(/datum/storyteller_character))
-		GLOB.all_storytellers += new ty
+    var/list/whitelisted_ST = list()
+    for(var/ty in subtypesof(/datum/storyteller_character))
+        var/datum/storyteller_character/C = new ty
+        GLOB.all_storytellers += C
+        if(C.can_be_voted_for)
+            whitelisted_ST += C
 
-	character = pick(GLOB.all_storytellers)
+    character = pick(whitelisted_ST)
 
 /datum/controller/subsystem/storyteller/proc/__create_all_metrics()
 	for (var/type in subtypesof(/storyteller_metric))

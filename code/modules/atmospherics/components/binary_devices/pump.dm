@@ -62,6 +62,7 @@ Thus, the two variables affect pump operation are set in New():
 	if(!allowed(user))
 		return
 	target_pressure = max_pressure_setting
+	show_splash_text(user, "target pressure set to [target_pressure] kPa")
 
 /obj/machinery/atmospherics/binary/pump/on
 	icon_state = "map_on"

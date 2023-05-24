@@ -393,12 +393,6 @@
 	desc = "Lawyer"
 	region = ACCESS_REGION_GENERAL
 
-/var/const/access_pioneer = 68
-/datum/access/pioneer
-	id = access_pioneer
-	desc = "Pioneer"
-	region = ACCESS_REGION_RESEARCH
-
 /******************
 * Central Command *
 ******************/

@@ -174,15 +174,15 @@ var/list/ai_verbs_default = list(
 
 	create_powersupply()
 
-	hud_list[HEALTH_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[STATUS_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[LIFE_HUD] 		  = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[ID_HUD]          = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[WANTED_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPLOYAL_HUD]    = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPCHEM_HUD]     = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPTRACK_HUD]    = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[SPECIALROLE_HUD] = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
+	hud_list[HEALTH_HUD]      = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[STATUS_HUD]      = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[LIFE_HUD] 		  = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[ID_HUD]          = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[WANTED_HUD]      = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[IMPLOYAL_HUD]    = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[IMPCHEM_HUD]     = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[IMPTRACK_HUD]    = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[SPECIALROLE_HUD] = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
 
 	ai_list += src
 	..()
@@ -429,7 +429,7 @@ var/list/ai_verbs_default = list(
 
 
 /mob/living/silicon/ai/proc/switchCamera(obj/machinery/camera/C)
-	if (!C || stat == DEAD) //C.can_use())
+	if (!C || is_ooc_dead()) //C.can_use())
 		return 0
 
 	if(!src.eyeobj)
@@ -640,7 +640,7 @@ var/list/ai_verbs_default = list(
 	to_chat(usr, "<span class='info'>Your hologram will now [hologram_follow ? "follow" : "no longer follow"] you.</span>")
 
 /mob/living/silicon/ai/proc/check_unable(flags = 0, feedback = 1)
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		if(feedback) to_chat(src, "<span class='warning'>You are dead!</span>")
 		return 1
 
@@ -675,7 +675,7 @@ var/list/ai_verbs_default = list(
 		selected_sprite = decls_repository.get_decl(default_ai_icon)
 
 	icon = selected_sprite.icon
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		icon_state = selected_sprite.dead_icon
 		set_light(0.7, 0.1, 1, 2, selected_sprite.dead_light)
 	else if(!has_power())

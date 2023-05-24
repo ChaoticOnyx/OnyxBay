@@ -90,7 +90,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		cure()
 		return
 
-	if(infected.stat == DEAD)
+	if(infected.is_ic_dead())
 		return
 
 	if(stage <= 1 && clicks == 0) 	// with a certain chance, the mob may become immune to the disease before it starts properly

@@ -12,7 +12,7 @@
 		return
 
 	if(!C.holder)
-		if(!config.misc.dead_ooc_allowed && (C.mob.stat == DEAD))
+		if(!config.misc.dead_ooc_allowed && (C.mob.is_ooc_dead()))
 			to_chat(C, "<span class='danger'>[name] for dead mobs has been turned off.</span>")
 			return FALSE
 		if(findtext(message, "byond://"))

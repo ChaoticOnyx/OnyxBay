@@ -1,5 +1,5 @@
 /mob/living/silicon/ai/Life()
-	if (src.stat == DEAD)
+	if (src.is_ic_dead())
 		return
 
 	if (src.stat!=CONSCIOUS)

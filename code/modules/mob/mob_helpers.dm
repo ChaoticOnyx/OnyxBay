@@ -180,32 +180,35 @@ var/list/global/organ_rel_size = list(
 	return zone
 
 
-/proc/stars(n, pr)
-	if (pr == null)
-		pr = 25
-	if (pr < 0)
+/proc/stars(message, not_changing_char_chance = 25)
+	if (not_changing_char_chance < 0)
 		return null
-	else
-		if (pr >= 100)
-			return n
-	var/te = n
-	var/t = ""
-	n = length_char(n)
-	var/p = null
-	p = 1
-	var/intag = 0
-	while(p <= n)
-		var/char = copytext_char(te, p, p + 1)
+	if (not_changing_char_chance >= 100)
+		return message
+
+	var/message_length = length_char(message)
+	var/output_message = ""
+	var/intag = FALSE
+
+	var/first_char = copytext_char(message, 1, 2) //for not to processing message as emote if first char would made into "*"
+	if (first_char == "<")
+		intag = TRUE
+	output_message = text("[][]", output_message, first_char)
+
+	var/pointer = 2
+
+	while(pointer <= message_length)
+		var/char = copytext_char(message, pointer, pointer + 1)
 		if (char == "<") //let's try to not break tags
-			intag = !intag
-		if (intag || char == " " || prob(pr))
-			t = text("[][]", t, char)
+			intag = TRUE
+		if (intag || char == " " || prob(not_changing_char_chance))
+			output_message = text("[][]", output_message, char)
 		else
-			t = text("[]*", t)
+			output_message = text("[]*", output_message)
 		if (char == ">")
-			intag = !intag
-		p++
-	return t
+			intag = FALSE
+		pointer++
+	return output_message
 
 // This is temporary effect, often caused by alcohol
 /proc/slur(phrase)
@@ -473,7 +476,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 
 #define SAFE_PERP -50
 /mob/living/proc/assess_perp(obj/access_obj, check_access, auth_weapons, check_records, check_arrest)
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return SAFE_PERP
 
 	return 0

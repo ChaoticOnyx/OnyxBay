@@ -37,7 +37,7 @@ GLOBAL_DATUM_INIT(borers, /datum/antagonist/borer, new)
 
 /datum/antagonist/borer/antags_are_dead()
 	for(var/datum/mind/antag in current_antagonists)
-		if(antag.current.stat != DEAD)
+		if(!antag.current.is_ooc_dead())
 			return FALSE
 	return TRUE
 
@@ -70,7 +70,7 @@ GLOBAL_DATUM_INIT(borers, /datum/antagonist/borer, new)
 	if(istype(borer))
 		var/mob/living/carbon/human/host
 		for(var/mob/living/carbon/human/H in SSmobs.mob_list)
-			if(H.mind && H.stat != DEAD && !H.has_brain_worms())
+			if(H.mind && !H.is_ooc_dead() && !H.has_brain_worms())
 				var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
 				if(head && !BP_IS_ROBOTIC(head))
 					host = H

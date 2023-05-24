@@ -74,6 +74,17 @@
 
 	stop_typing()
 
+/mob/verb/me_wrapper()
+	set name = ".Me"
+	set hidden = TRUE
+
+	thinking_IC = TRUE
+	start_typing()
+	var/message = input("","me (text)") as text
+	remove_all_indicators()
+	if(message)
+		me_verb(message)
+
 /mob/proc/should_show_indicator()
 	if(!client)
 		return FALSE
@@ -93,21 +104,10 @@
 		return FALSE
 	create_thinking_indicator()
 
-/mob/verb/me_wrapper()
-	set name = ".Me"
-	set hidden = TRUE
-
-	thinking_IC = TRUE
-	start_typing()
-	var/message = input("","me (text)") as text
-	remove_all_indicators()
-	if(message)
-		me_verb(message)
-
 /mob/living/create_thinking_indicator()
 	if(active_thinking_indicator || active_typing_indicator || !thinking_IC || stat != CONSCIOUS)
 		return FALSE
-	active_thinking_indicator = image('icons/mob/effects/talk.dmi', "[bubble_icon]3", TYPING_LAYER)
+	active_thinking_indicator = create_speech_bubble_image(bubble_icon, 3, src)
 	LAZYADD(overlays, active_thinking_indicator)
 
 /mob/living/remove_thinking_indicator()
@@ -119,7 +119,7 @@
 /mob/living/create_typing_indicator()
 	if(active_typing_indicator || active_thinking_indicator || !thinking_IC || stat != CONSCIOUS)
 		return FALSE
-	active_typing_indicator = image('icons/mob/effects/talk.dmi', "[bubble_icon]3", TYPING_LAYER)
+	active_typing_indicator = create_speech_bubble_image(bubble_icon, 3, src)
 	LAZYADD(overlays, active_typing_indicator)
 
 /mob/living/remove_typing_indicator()

@@ -519,7 +519,7 @@
 		return
 
 	// Sorry for no-fly weather!
-	if(GLOB.using_map.level_has_trait(rift_location.z, ZTRAIT_BLUESPACE_EXIT) || GLOB.using_map.level_has_trait(rift_location.z, ZTRAIT_BLUESPACE_CONVERGENCE))
+	if(GLOB.using_map.level_has_trait(rift_location.z, ZTRAIT_SNOWSTORM) || GLOB.using_map.level_has_trait(rift_location.z, ZTRAIT_SNOWFALL))
 		playsound(src, GET_SFX(SFX_SPARK), 50, 1)
 		return
 

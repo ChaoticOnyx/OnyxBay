@@ -1,6 +1,6 @@
 /mob/living/carbon/metroid/death(gibbed, deathmessage, show_dead_message)
 
-	if(stat == DEAD) return
+	if(is_ooc_dead()) return
 
 	if(Leader)
 		Leader = null

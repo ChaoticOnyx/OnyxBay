@@ -1,7 +1,7 @@
 /mob/living/carbon/metroid/_examine_text(mob/user)
 	. = ..()
 	var/msg = ""
-	if (src.stat == DEAD)
+	if (src.is_ooc_dead())
 		msg += "<span class='deadsay'>It is limp and unresponsive.</span>\n"
 	else
 		if (src.getBruteLoss())

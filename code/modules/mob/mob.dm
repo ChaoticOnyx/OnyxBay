@@ -454,7 +454,7 @@
 	if(client.holder && (client.holder.rights & R_ADMIN))
 		is_admin = 1
 
-	if(is_admin && stat == DEAD)
+	if(is_admin && is_ooc_dead())
 		is_admin = 0
 
 	var/list/names = list()
@@ -643,7 +643,11 @@
 /mob/proc/is_active()
 	return (0 >= usr.stat)
 
-/mob/proc/is_dead()
+/mob/proc/is_ooc_dead()
+	return stat == DEAD
+
+// Returns true if the mob is dead for IC objects (runes, machines, etc.)
+/mob/proc/is_ic_dead()
 	return stat == DEAD
 
 /mob/proc/is_ready()

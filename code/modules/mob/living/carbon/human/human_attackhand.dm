@@ -83,7 +83,7 @@
 					var/obj/item/organ/external/chest = get_organ(BP_CHEST)
 					if(chest)
 						chest.fracture()
-				if(stat != DEAD)
+				if(!is_ic_dead())
 					if(prob(15))
 						resuscitate()
 

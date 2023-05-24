@@ -25,7 +25,7 @@
 			ADD_SORTED(cameras, c, /proc/cmp_camera_ctag_asc)
 	else if(isAI(c))
 		var/mob/living/silicon/AI = c
-		return ..(AI, AI.stat != DEAD)
+		return ..(AI, !AI.is_ooc_dead())
 	else
 		..()
 
@@ -36,6 +36,6 @@
 		. = ..(c, c.can_use())
 	if(isAI(c))
 		var/mob/living/silicon/AI = c
-		return ..(AI, AI.stat != DEAD)
+		return ..(AI, !AI.is_ooc_dead())
 	else
 		..()

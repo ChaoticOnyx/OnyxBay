@@ -1,5 +1,5 @@
 /mob/living/carbon/metroid/regenerate_icons()
-	if (stat == DEAD)
+	if (is_ic_dead())
 		icon_state = "[colour] baby metroid dead"
 	else
 		icon_state = "[colour] [is_adult ? "adult" : "baby"] metroid[Victim ? " eat" : ""]"

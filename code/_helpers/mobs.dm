@@ -112,7 +112,7 @@
 		else				return "unknown"
 
 /proc/RoundHealth(health)
-	var/list/icon_states = icon_states('icons/mob/hud_med.dmi')
+	var/list/icon_states = icon_states('icons/mob/huds/hud.dmi')
 	for(var/icon_state in icon_states)
 		if(health >= text2num(icon_state))
 			return icon_state
@@ -270,7 +270,7 @@
 /mob/living/add_to_dead_mob_list()
 	if((src in GLOB.living_mob_list_) || (src in GLOB.dead_mob_list_))
 		return FALSE
-	
+
 	..()
 	GLOB.dead_mob_list_ += src
 
@@ -289,7 +289,7 @@
 
 	if(include_observers)
 		for(var/mob/M in GLOB.player_list)
-			if((M.stat != DEAD) || (!M.client))
+			if((!M.is_ooc_dead()) || (!M.client))
 				continue
 			if(M.ckey == find_key)
 				selected = M
@@ -297,7 +297,7 @@
 	else
 		for(var/mob/living/M in GLOB.player_list)
 			//Dead people only thanks!
-			if((M.stat != DEAD) || (!M.client))
+			if((!M.is_ooc_dead()) || (!M.client))
 				continue
 			//They need a brain!
 			if(istype(M, /mob/living/carbon/human))

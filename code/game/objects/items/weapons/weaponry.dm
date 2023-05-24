@@ -155,7 +155,7 @@
 	set_next_think(world.time + 1 SECOND)
 
 /obj/effect/energy_net/Move()
-	..()
+	. = ..()
 
 	if(buckled_mob)
 		buckled_mob.forceMove(loc, unbuckle_mob = FALSE)

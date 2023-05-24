@@ -14,13 +14,13 @@
 	duration = 5 SECONDS
 	need_target = FALSE
 	icon_state = "wiz_jaunt"
-	var/reappear_duration = 5
+	var/reappear_duration = 5 //equal to number of animation frames
 	var/obj/effect/dummy/spell_jaunt/jaunt_holder
 	var/atom/movable/overlay/animation
 	var/start_reappear_timer
 
 /datum/spell/targeted/ethereal_jaunt/cast(list/targets, mob/user) //magnets, so mostly hardcoded
-	for(var/mob/living/carbon/target in targets)
+	for(var/mob/living/target in targets)
 		if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(target))
 			continue
 		if(target in jaunt_holder?.contents)
@@ -51,7 +51,7 @@
 			target.forceMove(jaunt_holder)
 			start_reappear_timer = addtimer(CALLBACK(src, .proc/start_reappear, target), duration, TIMER_STOPPABLE)
 
-/datum/spell/targeted/ethereal_jaunt/proc/start_reappear(mob/living/carbon/target)
+/datum/spell/targeted/ethereal_jaunt/proc/start_reappear(mob/living/target)
 	var/mob_loc = jaunt_holder.last_valid_turf
 	jaunt_holder.reappearing = TRUE
 	jaunt_steam(mob_loc)
@@ -59,7 +59,7 @@
 	animation.forceMove(mob_loc)
 	addtimer(CALLBACK(src, .proc/reappear, mob_loc, target), reappear_duration)
 
-/datum/spell/targeted/ethereal_jaunt/proc/reappear(mob_loc, mob/living/carbon/target)
+/datum/spell/targeted/ethereal_jaunt/proc/reappear(mob_loc, mob/living/target)
 	if(!target.forceMove(mob_loc))
 		for(var/direction in list(1,2,4,8,5,6,9,10))
 			var/turf/T = get_step(mob_loc, direction)
@@ -118,7 +118,7 @@
 	return ..()
 
 /obj/effect/dummy/spell_jaunt/relaymove(mob/user, direction)
-	if(!canmove || reappearing) 
+	if(!canmove || reappearing)
 		return
 	var/turf/newLoc = get_step(src, direction)
 	if(!newLoc)
