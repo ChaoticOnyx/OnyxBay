@@ -377,7 +377,7 @@
 	if(H.stat)
 		return
 	if(nanobots)
-		for(var/mob/living/carbon/human/vox/V in range(H, 2))
+		for(var/mob/living/carbon/human/vox/V in range(2, H))
 			for(var/obj/item/organ/external/regen_organ in V.organs)
 				regen_organ.damage = max(regen_organ.damage - 2, 0)
 			if(V.getBruteLoss())
@@ -389,7 +389,7 @@
 			if(V.reagents.get_reagent_amount(/datum/reagent/painkiller/paracetamol) + 5 <= 20)
 				V.reagents.add_reagent(/datum/reagent/painkiller/paracetamol, 5)
 	else
-		for(var/mob/living/carbon/human/vox/V in range(H, 1))
+		for(var/mob/living/carbon/human/vox/V in range(1, H))
 			if(V.getBruteLoss())
 				V.adjustBruteLoss(-2 * config.health.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
 			if(V.getFireLoss())
