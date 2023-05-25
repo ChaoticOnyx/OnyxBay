@@ -334,8 +334,7 @@
 	siemens_coefficient = 0.3
 	armor = list(melee = 60, bullet = 50, laser = 40,energy = 15, bomb = 30, bio = 100)
 	action_button_name = "Toggle Nanobots"
-	var/nanobots = FALSE
-	var/mob/client //user
+	var/nanobots = FALSE //user
 
 /obj/item/clothing/suit/space/vox/medic/New()
 	..()
@@ -343,7 +342,6 @@
 
 /obj/item/clothing/suit/space/vox/medic/attack_self(mob/user)
 	var/mob/living/carbon/human/H = user
-	client = H
 	if(!istype(H))
 		return
 	if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/medic))
@@ -364,14 +362,14 @@
 		set_light(0.5, 0.1, 3, 2, "#e09d37")
 		slowdown_per_slot[slot_wear_suit] = 10
 
-/obj/item/clothing/suit/space/vox/medic/Initialize()
-	. = ..()
+/obj/item/clothing/suit/space/vox/medic/equipped()
 	set_next_think(world.time)
+	return ..()
 
 /obj/item/clothing/suit/space/vox/medic/think()
-	if(!client)
+	if(!ishuman(src.loc))
 		return
-	var/mob/living/carbon/human/H = client
+	var/mob/living/carbon/human/H = loc
 	if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/medic))
 		return
 	if(H.stat)
