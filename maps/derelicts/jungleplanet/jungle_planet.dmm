@@ -1660,7 +1660,7 @@
 "FV" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/jungleplanet/jungle/lake/cabin)
 "FW" = (/obj/item/storage/box/freezer,/obj/structure/table/standard,/obj/item/device/flashlight/lantern/active,/turf/simulated/floor/natural/sand/cave,/area/jungleplanet/jungle/lake/north)
 "FX" = (/obj/item/inflatable_duck,/turf/simulated/floor/natural/jungle/water/edge{icon_state = "beach"; dir = 4},/area/jungleplanet/jungle/lake)
-"FY" = (/obj/structure/closet/cabinet,/obj/item/card/data/clown,/obj/item/ammo_magazine/caps,/obj/item/ammo_magazine/caps,/obj/item/ammo_magazine/caps,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/jungleplanet/jungle/lake/cabin)
+"FY" = (/obj/structure/closet/cabinet,/obj/item/ammo_magazine/caps,/obj/item/ammo_magazine/caps,/obj/item/ammo_magazine/caps,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/jungleplanet/jungle/lake/cabin)
 "FZ" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood{icon_state = "wood_broken4"},/area/jungleplanet/jungle/lake/cabin)
 "Ga" = (/obj/structure/bed/chair/wood,/obj/item/toy/figure/mime,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/jungleplanet/jungle/lake/cabin)
 "Gb" = (/obj/structure/table/woodentable,/obj/item/device/flashlight/lantern,/obj/item/reagent_containers/vessel/bottle/small/beer{pixel_x = 9; pixel_y = 9},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood{icon_state = "wood_broken4"},/area/jungleplanet/jungle/lake/cabin)
