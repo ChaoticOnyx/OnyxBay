@@ -11,6 +11,12 @@
 	item_state = "lizard"
 	icon_living = "lizard"
 	icon_dead = "lizard_dead"
+	color = COLOR_GREEN
+	var/image/face
+	var/image/blood
+	var/icon_face = "lizard_face"
+	var/icon_blood = "lizard_blood"
+
 	speak_emote = list("hisses")
 	pass_flags = PASS_FLAG_TABLE
 	speak_chance = 1
@@ -58,7 +64,7 @@
 	var/place = pick(get_turf(src), get_turf(partner))
 	var/datum/reagent/child_poison = pick(poison, partner.poison)
 	var/mob/living/simple_animal/lizard/child = new /mob/living/simple_animal/lizard(place)
-	child.poison = child_poison
+	child.setPoison(child_poison)
 
 	child.last_breed = world.time
 	partner.last_breed = world.time
@@ -151,10 +157,31 @@
 		aggressive_target = M
 		turns_since_scan = 5
 
+/mob/living/simple_animal/lizard/proc/setPoison(datum/reagent/P)
+	if(poison)
+		poison = P
+		color = GLOB.lizard_colors[poison]
+	else
+		poison = null
+		color = GLOB.lizard_colors["notoxin"]
+
+/mob/living/simple_animal/lizard/proc/setRandomPoison()
+	var/datum/reagent/P = pick(POSSIBLE_LIZARD_TOXINS)
+	setPoison(P)
+
+/mob/living/simple_animal/lizard/death(gibbed, deathmessage, show_dead_message)
+	. = ..()
+	overlays -= face
+	overlays += blood
+
 /mob/living/simple_animal/lizard/Initialize()
 	. = ..()
-	if(!poison)
-		poison = pick(POSSIBLE_LIZARD_TOXINS)
+	setPoison(poison) //To make sure we paint lizard
+	blood = image(icon, icon_state = icon_blood, layer = FLOAT_LAYER+1)
+	blood.color = null	//We don't want to paint it
+	face = image(icon, icon_state = icon_face, layer = FLOAT_LAYER+1)
+	face.color = null	//We don't want to paint it
+	overlays += face
 
 /mob/living/simple_animal/lizard/Life()
 	. = ..()

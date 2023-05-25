@@ -87,7 +87,8 @@
 				S.amount_grown = -1
 			if(istype(S, /mob/living/simple_animal/lizard))
 				var/mob/living/simple_animal/lizard/L = S
-				L.poison = lizard_poison
+				if(prob(50))
+					L.setPoison(lizard_poison)
 
 	set_next_think_ctx("announce", world.time + (30 SECONDS))
 

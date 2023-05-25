@@ -9,6 +9,8 @@ GLOBAL_LIST_EMPTY(listening_objects) // List of objects that need to be able to 
 
 GLOBAL_LIST_EMPTY(global_mutations) // List of hidden mutation things.
 
+GLOBAL_LIST_EMPTY(lizard_colors)
+
 GLOBAL_LIST_EMPTY(reg_dna)
 
 GLOBAL_LIST_EMPTY(global_map)
