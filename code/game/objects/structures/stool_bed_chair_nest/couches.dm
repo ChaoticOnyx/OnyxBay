@@ -110,6 +110,15 @@
 	icon_state = "chair_couch-blue_right"
 	base_icon = "chair_couch-blue_right"
 
+/obj/structure/bed/couch/blue/mid
+	icon_state = "chair_couch-blue_mid"
+	base_icon = "chair_couch-blue_mid"
+
+/obj/structure/bed/couch/blue/corner
+	icon_state = "chair_couch-blue_corner"
+	base_icon = "chair_couch-blue_corner"
+	can_buckle = 0
+
 /obj/structure/bed/couch/brown
 	name = "brown couch"
 
@@ -120,6 +129,15 @@
 /obj/structure/bed/couch/brown/right
 	icon_state = "chair_couch-brown_right"
 	base_icon = "chair_couch-brown_right"
+
+/obj/structure/bed/couch/brown/mid
+	icon_state = "chair_couch-brown_mid"
+	base_icon = "chair_couch-brown_mid"
+
+/obj/structure/bed/couch/brown/corner
+	icon_state = "chair_couch-brown_corner"
+	base_icon = "chair_couch-brown_corner"
+	can_buckle = 0
 
 /obj/structure/bed/couch/red
 	name = "red couch"
@@ -132,6 +150,14 @@
 	icon_state = "chair_couch-red_right"
 	base_icon = "chair_couch-red_right"
 
+/obj/structure/bed/couch/red/mid
+	icon_state = "chair_couch-red_mid"
+	base_icon = "chair_couch-red_mid"
+
+/obj/structure/bed/couch/red/corner
+	icon_state = "chair_couch-red_corner"
+	base_icon = "chair_couch-red_corner"
+	can_buckle = 0
 /obj/structure/bed/couch/green
 	name = "green couch"
 
@@ -142,6 +168,15 @@
 /obj/structure/bed/couch/green/right
 	icon_state = "chair_couch-green_right"
 	base_icon = "chair_couch-green_right"
+
+/obj/structure/bed/couch/green/mid
+	icon_state = "chair_couch-green_mid"
+	base_icon = "chair_couch-green_mid"
+
+/obj/structure/bed/couch/green/corner
+	icon_state = "chair_couch-green_corner"
+	base_icon = "chair_couch-green_corner"
+	can_buckle = 0
 
 /obj/structure/bed/couch/purple
 	name = "purple couch"
