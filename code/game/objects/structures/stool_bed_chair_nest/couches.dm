@@ -189,6 +189,15 @@
 	icon_state = "chair_couch-purple_right"
 	base_icon = "chair_couch-purple_right"
 
+/obj/structure/bed/couch/purple/mid
+	icon_state = "chair_couch-purple_mid"
+	base_icon = "chair_couch-purple_mid"
+
+/obj/structure/bed/couch/purple/corner
+	icon_state = "chair_couch-purple_corner"
+	base_icon = "chair_couch-purple_corner"
+	can_buckle = 0
+
 /obj/structure/bed/couch/sofa
 	name = "comfy sofa"
 	desc = "So lovely, uh."
