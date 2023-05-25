@@ -117,7 +117,13 @@
 /obj/structure/bed/couch/blue/corner
 	icon_state = "chair_couch-blue_corner"
 	base_icon = "chair_couch-blue_corner"
-	can_buckle = 0
+
+/obj/structure/bed/couch/blue/corner/set_dir()
+	..()
+	if (dir == (SOUTH || EAST))
+		buckle_dir = EAST
+	else if(dir == (NORTH || WEST))
+		buckle_dir = WEST
 
 /obj/structure/bed/couch/brown
 	name = "brown couch"
@@ -137,7 +143,13 @@
 /obj/structure/bed/couch/brown/corner
 	icon_state = "chair_couch-brown_corner"
 	base_icon = "chair_couch-brown_corner"
-	can_buckle = 0
+
+/obj/structure/bed/couch/brown/corner/set_dir()
+	..()
+	if (dir == (SOUTH || EAST))
+		buckle_dir = EAST
+	else if(dir == (NORTH || WEST))
+		buckle_dir = WEST
 
 /obj/structure/bed/couch/red
 	name = "red couch"
@@ -157,7 +169,14 @@
 /obj/structure/bed/couch/red/corner
 	icon_state = "chair_couch-red_corner"
 	base_icon = "chair_couch-red_corner"
-	can_buckle = 0
+
+/obj/structure/bed/couch/red/corner/set_dir()
+	..()
+	if (dir == (SOUTH || EAST))
+		buckle_dir = EAST
+	else if(dir == (NORTH || WEST))
+		buckle_dir = WEST
+
 /obj/structure/bed/couch/green
 	name = "green couch"
 
@@ -176,7 +195,13 @@
 /obj/structure/bed/couch/green/corner
 	icon_state = "chair_couch-green_corner"
 	base_icon = "chair_couch-green_corner"
-	can_buckle = 0
+
+/obj/structure/bed/couch/green/corner/set_dir()
+	..()
+	if (dir == (SOUTH || EAST))
+		buckle_dir = EAST
+	else if(dir == (NORTH || WEST))
+		buckle_dir = WEST
 
 /obj/structure/bed/couch/purple
 	name = "purple couch"
@@ -196,7 +221,13 @@
 /obj/structure/bed/couch/purple/corner
 	icon_state = "chair_couch-purple_corner"
 	base_icon = "chair_couch-purple_corner"
-	can_buckle = 0
+
+/obj/structure/bed/couch/purple/corner/set_dir()
+	..()
+	if (dir == (SOUTH || EAST))
+		buckle_dir = EAST
+	else if(dir == (NORTH || WEST))
+		buckle_dir = WEST
 
 /obj/structure/bed/couch/sofa
 	name = "comfy sofa"
