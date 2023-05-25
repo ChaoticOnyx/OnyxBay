@@ -204,7 +204,7 @@
 			say(pick(GLOB.lizard_noises))
 		else
 			set_panic_target(M)
-			say(pick(GLOB.lizard_noises))
+			if(prob(25)) say(pick(GLOB.lizard_noises))
 	..()
 
 #undef COURAGE_MODIFIER
