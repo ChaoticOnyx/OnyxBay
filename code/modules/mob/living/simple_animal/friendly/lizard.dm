@@ -91,6 +91,7 @@
 			called_number += 1
 		if(called_number >= MAX_ALLIES)
 			break
+
 /mob/living/simple_animal/lizard/UnarmedAttack(atom/A, proximity)
 	if(!ishuman(A))
 		return ..()
@@ -122,14 +123,14 @@
 	if(user.a_intent == I_HURT)
 		if(prob(2*CountLizards()*COURAGE_MODIFIER))
 			SetAggressiveTarget(user)
-			say("HSSSSS")
+			say(pick(GLOB.lizard_noises))
 	..()
 
 /mob/living/simple_animal/lizard/attackby(obj/item/O, mob/user)
 	if(user.a_intent == I_HURT)
 		if(prob(2*CountLizards()*COURAGE_MODIFIER))
 			SetAggressiveTarget(user)
-			say("HSSSSS")
+			say(pick(GLOB.lizard_noises))
 	..()
 
 /mob/living/simple_animal/lizard/proc/HandleAggressiveTarget()
@@ -200,10 +201,10 @@
 		var/mob/M = AM
 		if(prob(CountLizards()*COURAGE_MODIFIER))
 			SetAggressiveTarget(M)
-			say("HSSSSS")
+			say(pick(GLOB.lizard_noises))
 		else
 			set_panic_target(M)
-			if(prob(25)) say("HSSSSS")
+			say(pick(GLOB.lizard_noises))
 	..()
 
 #undef COURAGE_MODIFIER
