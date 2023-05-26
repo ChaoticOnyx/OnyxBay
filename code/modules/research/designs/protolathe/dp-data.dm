@@ -1,5 +1,5 @@
 /datum/design/item/disk
-	req_tech = list(TECH_DATA = 1)
+
 	materials = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 10)
 	category_items = list("Data")
 
@@ -21,7 +21,7 @@
 	name = "Holopad"
 	desc = "A holografic communication device."
 	id = "holopad_comm"
-	req_tech = list(TECH_BLUESPACE = 2, TECH_DATA = 1, TECH_BLUESPACE = 3)
+
 	materials = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 70)
 	build_path = /obj/item/device/holopad
 	sort_string = "AAAAC"

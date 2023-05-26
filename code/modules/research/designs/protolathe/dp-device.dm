@@ -4,7 +4,7 @@
 /datum/design/item/powercell/device/standard
 	name = "basic device cell"
 	id = "device_cell_standard"
-	req_tech = list(TECH_POWER = 1)
+
 	materials = list(MATERIAL_STEEL = 70, MATERIAL_GLASS = 5)
 	build_path = /obj/item/cell/device/standard
 	sort_string = "DAAAE"
@@ -13,7 +13,7 @@
 	name = "high-capacity device cell"
 	build_type = PROTOLATHE | MECHFAB
 	id = "device_cell_high"
-	req_tech = list(TECH_POWER = 2)
+
 	materials = list(MATERIAL_STEEL = 70, MATERIAL_GLASS = 6)
 	build_path = /obj/item/cell/device/high
 	sort_string = "DAAAF"
@@ -26,7 +26,7 @@
 /datum/design/item/modularcomponent/disk/normal
 	name = "basic hard drive"
 	id = "hdd_basic"
-	req_tech = list(TECH_DATA = 1, TECH_ENGINEERING = 1)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 400, MATERIAL_GLASS = 100)
 	build_path = /obj/item/computer_hardware/hard_drive/
@@ -35,7 +35,7 @@
 /datum/design/item/modularcomponent/disk/advanced
 	name = "advanced hard drive"
 	id = "hdd_advanced"
-	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 800, MATERIAL_GLASS = 200)
 	build_path = /obj/item/computer_hardware/hard_drive/advanced
@@ -44,7 +44,7 @@
 /datum/design/item/modularcomponent/disk/super
 	name = "super hard drive"
 	id = "hdd_super"
-	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 3)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 1600, MATERIAL_GLASS = 400)
 	build_path = /obj/item/computer_hardware/hard_drive/super
@@ -53,7 +53,7 @@
 /datum/design/item/modularcomponent/disk/cluster
 	name = "cluster hard drive"
 	id = "hdd_cluster"
-	req_tech = list(TECH_DATA = 4, TECH_ENGINEERING = 4)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 3200, MATERIAL_GLASS = 800)
 	build_path = /obj/item/computer_hardware/hard_drive/cluster
@@ -62,7 +62,7 @@
 /datum/design/item/modularcomponent/disk/micro
 	name = "micro hard drive"
 	id = "hdd_micro"
-	req_tech = list(TECH_DATA = 1, TECH_ENGINEERING = 1)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 400, MATERIAL_GLASS = 100)
 	build_path = /obj/item/computer_hardware/hard_drive/micro
@@ -71,7 +71,7 @@
 /datum/design/item/modularcomponent/disk/small
 	name = "small hard drive"
 	id = "hdd_small"
-	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 800, MATERIAL_GLASS = 200)
 	build_path = /obj/item/computer_hardware/hard_drive/small
@@ -81,7 +81,7 @@
 /datum/design/item/modularcomponent/portabledrive/basic
 	name = "basic data crystal"
 	id = "portadrive_basic"
-	req_tech = list(TECH_DATA = 1)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_GLASS = 800)
 	build_path = /obj/item/computer_hardware/hard_drive/portable
@@ -90,7 +90,7 @@
 /datum/design/item/modularcomponent/portabledrive/advanced
 	name = "advanced data crystal"
 	id = "portadrive_advanced"
-	req_tech = list(TECH_DATA = 2)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_GLASS = 1600)
 	build_path = /obj/item/computer_hardware/hard_drive/portable/advanced
@@ -99,7 +99,7 @@
 /datum/design/item/modularcomponent/portabledrive/super
 	name = "super data crystal"
 	id = "portadrive_super"
-	req_tech = list(TECH_DATA = 4)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_GLASS = 3200)
 	build_path = /obj/item/computer_hardware/hard_drive/portable/super
@@ -109,7 +109,7 @@
 /datum/design/item/modularcomponent/accessory/cardslot
 	name = "RFID card slot"
 	id = "cardslot"
-	req_tech = list(TECH_DATA = 2)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 600)
 	build_path = /obj/item/computer_hardware/card_slot
@@ -119,7 +119,7 @@
 /datum/design/item/modularcomponent/accessory/nanoprinter
 	name = "nano printer"
 	id = "nanoprinter"
-	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 600)
 	build_path = /obj/item/computer_hardware/nano_printer
@@ -129,7 +129,7 @@
 /datum/design/item/modularcomponent/accessory/teslalink
 	name = "tesla link"
 	id = "teslalink"
-	req_tech = list(TECH_DATA = 2, TECH_POWER = 3, TECH_ENGINEERING = 2)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 2000)
 	build_path = /obj/item/computer_hardware/tesla_link
@@ -139,7 +139,7 @@
 /datum/design/item/modularcomponent/battery/normal
 	name = "standard battery module"
 	id = "bat_normal"
-	req_tech = list(TECH_POWER = 1, TECH_ENGINEERING = 1)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 400)
 	build_path = /obj/item/computer_hardware/battery_module
@@ -148,7 +148,7 @@
 /datum/design/item/modularcomponent/battery/advanced
 	name = "advanced battery module"
 	id = "bat_advanced"
-	req_tech = list(TECH_POWER = 2, TECH_ENGINEERING = 2)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 800)
 	build_path = /obj/item/computer_hardware/battery_module/advanced
@@ -157,7 +157,7 @@
 /datum/design/item/modularcomponent/battery/super
 	name = "super battery module"
 	id = "bat_super"
-	req_tech = list(TECH_POWER = 3, TECH_ENGINEERING = 3)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 1600)
 	build_path = /obj/item/computer_hardware/battery_module/super
@@ -166,7 +166,7 @@
 /datum/design/item/modularcomponent/battery/ultra
 	name = "ultra battery module"
 	id = "bat_ultra"
-	req_tech = list(TECH_POWER = 5, TECH_ENGINEERING = 4)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 3200)
 	build_path = /obj/item/computer_hardware/battery_module/ultra
@@ -175,7 +175,7 @@
 /datum/design/item/modularcomponent/battery/nano
 	name = "nano battery module"
 	id = "bat_nano"
-	req_tech = list(TECH_POWER = 1, TECH_ENGINEERING = 1)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 200)
 	build_path = /obj/item/computer_hardware/battery_module/nano
@@ -184,7 +184,7 @@
 /datum/design/item/modularcomponent/battery/micro
 	name = "micro battery module"
 	id = "bat_micro"
-	req_tech = list(TECH_POWER = 2, TECH_ENGINEERING = 2)
+
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 400)
 	build_path = /obj/item/computer_hardware/battery_module/micro

@@ -185,12 +185,12 @@
 	description = "Our newly-designed advanced machinery components require practical application tests for hints at possible further advancements, as well as a general confirmation that we didn't actually design worse parts somehow."
 	required_points = 6
 	required_atoms = list(
-		/obj/machinery/rnd/production/protolathe/department/science = 1,
-		/obj/machinery/rnd/production/protolathe/department/engineering = 1,
-		/obj/machinery/rnd/production/techfab/department/cargo = 1,
-		/obj/machinery/rnd/production/techfab/department/medical = 1,
-		/obj/machinery/rnd/production/techfab/department/security = 1,
-		/obj/machinery/rnd/production/techfab/department/service = 1
+		/obj/machinery/r_n_d/production/protolathe/department/science = 1,
+		/obj/machinery/r_n_d/production/protolathe/department/engineering = 1,
+		/obj/machinery/r_n_d/production/techfab/department/cargo = 1,
+		/obj/machinery/r_n_d/production/techfab/department/medical = 1,
+		/obj/machinery/r_n_d/production/techfab/department/security = 1,
+		/obj/machinery/r_n_d/production/techfab/department/service = 1
 	)
 	required_tier = 2
 
@@ -210,7 +210,7 @@
 	required_points = 15
 	required_atoms = list(
 		/obj/machinery/autolathe = 1,
-		/obj/machinery/rnd/production/circuit_imprinter/department/science = 1,
+		/obj/machinery/r_n_d/production/circuit_imprinter/department/science = 1,
 		/obj/machinery/monkey_recycler = 1,
 		/obj/machinery/processor/slime = 1,
 		/obj/machinery/processor = 2,
@@ -242,7 +242,7 @@
 	required_points = 10
 	required_atoms = list(
 		/obj/machinery/mecha_part_fabricator = 1,
-		/obj/machinery/rnd/experimentor = 1,
+		/obj/machinery/r_n_d/experimentor = 1,
 		/obj/machinery/dna_scannernew = 1,
 		/obj/machinery/microwave = 2,
 		/obj/machinery/deepfryer = 2,
@@ -273,10 +273,10 @@
 	required_points = 6
 	required_atoms = list(
 		/obj/machinery/dna_scannernew = 1,
-		/obj/machinery/rnd/experimentor = 1,
+		/obj/machinery/r_n_d/experimentor = 1,
 		/obj/machinery/medical_kiosk = 2,
 		/obj/machinery/piratepad/civilian = 2,
-		/obj/machinery/rnd/bepis = 3
+		/obj/machinery/r_n_d/bepis = 3
 	)
 	required_stock_part = /obj/item/stock_parts/scanning_module/adv
 
@@ -300,7 +300,7 @@
 	required_atoms = list(
 		/obj/machinery/mecha_part_fabricator = 1,
 		/obj/machinery/microwave = 1,
-		/obj/machinery/rnd/experimentor = 1,
+		/obj/machinery/r_n_d/experimentor = 1,
 		/obj/machinery/atmospherics/components/unary/thermomachine/freezer = 2,
 		/obj/machinery/power/emitter = 2,
 		/obj/machinery/chem_heater = 2,
@@ -324,7 +324,9 @@
 	description = "Your exosuit fabricators allow for rapid production on a small scale, but the structural integrity of created parts is inferior to those made with more traditional means. Damage a few exosuits to around [damage_percent]% integrity and scan them to help us determine how the armor fails under stress."
 
 /datum/experiment/scanning/random/mecha_damage_scan/final_contributing_index_checks(atom/target, typepath)
-	var/found_percent = round((target.get_integrity() / target.max_integrity) * 100)
+	if(ismech(target))
+		var/obj/mecha/target_mecha = target
+	var/found_percent = round(target_mecha.health/initial(target_mecha.health)*100)
 	return ..() && (found_percent <= (damage_percent + 2) && found_percent >= (damage_percent - 2))
 
 /datum/experiment/scanning/random/mecha_destroyed_scan

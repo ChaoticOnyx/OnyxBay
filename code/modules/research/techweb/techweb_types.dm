@@ -63,15 +63,3 @@ GLOBAL_LIST_EMPTY(autounlock_techwebs)
 	if(!(design.build_type & allowed_buildtypes))
 		return FALSE
 	return ..()
-
-/datum/techweb/autounlocking/autolathe
-	allowed_buildtypes = AUTOLATHE
-
-/datum/techweb/autounlocking/limbgrower
-	allowed_buildtypes = LIMBGROWER
-
-/datum/techweb/autounlocking/biogenerator
-	allowed_buildtypes = BIOGENERATOR
-
-/datum/techweb/autounlocking/smelter
-	allowed_buildtypes = SMELTER

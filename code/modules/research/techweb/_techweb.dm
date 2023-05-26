@@ -55,7 +55,7 @@
 	///All RD consoles connected to this individual techweb.
 	var/list/obj/machinery/computer/rdconsole/consoles_accessing = list()
 	///All research servers connected to this individual techweb.
-	var/list/obj/machinery/rnd/server/techweb_servers = list()
+	var/list/obj/machinery/r_n_d/server/techweb_servers = list()
 
 	///Boolean on whether the techweb should generate research points overtime.
 	var/should_generate_points = FALSE

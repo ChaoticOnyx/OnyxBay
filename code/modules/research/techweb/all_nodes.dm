@@ -939,11 +939,6 @@
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 2000)
 
-/datum/techweb_node/cyborg_upg_util/New()
-	. = ..()
-	if(!CONFIG_GET(flag/disable_secborg))
-		design_ids += "borg_upgrade_disablercooler"
-
 /datum/techweb_node/cyborg_upg_engiminer
 	id = "cyborg_upg_engiminer"
 	display_name = "Cyborg Upgrades: Engineering & Mining"
@@ -1032,11 +1027,7 @@
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 3000)
 
-//Any kind of point adjustment needs to happen before SSresearch sets up the whole node tree, it gets cached
-/datum/techweb_node/ai/New()
-	. = ..()
-	if(HAS_TRAIT(SSstation, STATION_TRAIT_UNIQUE_AI))
-		research_costs[TECHWEB_POINT_TYPE_GENERIC] *= 3
+
 
 /////////////////////////EMP tech/////////////////////////
 /datum/techweb_node/emp_basic //EMP tech for some reason
@@ -1281,11 +1272,6 @@
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 1000)
 
-/datum/techweb_node/cyber_organs/New()
-	..()
-	if(HAS_TRAIT(SSstation, STATION_TRAIT_CYBERNETIC_REVOLUTION))
-		research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 500)
-
 /datum/techweb_node/cyber_organs_upgraded
 	id = "cyber_organs_upgraded"
 	display_name = "Upgraded Cybernetic Organs"
@@ -1299,11 +1285,6 @@
 		"cybernetic_stomach_tier3",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 1500)
-
-/datum/techweb_node/cyber_organs_upgraded/New()
-	..()
-	if(HAS_TRAIT(SSstation, STATION_TRAIT_CYBERNETIC_REVOLUTION))
-		research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 1000)
 
 /datum/techweb_node/cyber_implants
 	id = "cyber_implants"
@@ -1321,11 +1302,6 @@
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 2500)
 
-/datum/techweb_node/cyber_implants/New()
-	..()
-	if(HAS_TRAIT(SSstation, STATION_TRAIT_CYBERNETIC_REVOLUTION))
-		research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 1000)
-
 /datum/techweb_node/adv_cyber_implants
 	id = "adv_cyber_implants"
 	display_name = "Advanced Cybernetic Implants"
@@ -1338,11 +1314,6 @@
 		"ci-toolset",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 2500)
-
-/datum/techweb_node/adv_cyber_implants/New()
-	..()
-	if(HAS_TRAIT(SSstation, STATION_TRAIT_CYBERNETIC_REVOLUTION))
-		research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 1500)
 
 /datum/techweb_node/combat_cyber_implants
 	id = "combat_cyber_implants"
@@ -1357,11 +1328,6 @@
 		"ci-xray",
 	)
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 2500)
-
-/datum/techweb_node/combat_cyber_implants/New()
-	..()
-	if(HAS_TRAIT(SSstation, STATION_TRAIT_CYBERNETIC_REVOLUTION))
-		research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 1500)
 
 ////////////////////////Tools////////////////////////
 
@@ -2071,9 +2037,6 @@
 	research_costs = list(TECHWEB_POINT_TYPE_GENERIC = 5000)
 	hidden = TRUE
 
-/datum/techweb_node/alientech/on_research() //Unlocks the Zeta shuttle for purchase
-		SSshuttle.shuttle_purchase_requirements_met[SHUTTLE_UNLOCK_ALIENTECH] = TRUE
-
 /datum/techweb_node/alien_bio
 	id = "alien_bio"
 	display_name = "Alien Biological Tools"
@@ -2169,7 +2132,7 @@
 /datum/techweb_node/syndicate_basic/New() //Crappy way of making syndicate gear decon supported until there's another way.
 	. = ..()
 	if(!SSearly_assets.initialized)
-		RegisterSignal(SSearly_assets, COMSIG_SUBSYSTEM_POST_INITIALIZE, PROC_REF(register_uplink_items))
+		register_signal(SSearly_assets, COMSIG_SUBSYSTEM_POST_INITIALIZE, .proc/register_uplink_items)
 	else
 		register_uplink_items()
 
@@ -2179,7 +2142,7 @@
  */
 /datum/techweb_node/syndicate_basic/proc/register_uplink_items()
 	SIGNAL_HANDLER
-	UnregisterSignal(SSearly_assets, COMSIG_SUBSYSTEM_POST_INITIALIZE)
+	unregister_signal(SSearly_assets, COMSIG_SUBSYSTEM_POST_INITIALIZE)
 	boost_item_paths = list()
 	for(var/datum/uplink_item/item_path as anything in SStraitor.uplink_items_by_type)
 		var/datum/uplink_item/item = SStraitor.uplink_items_by_type[item_path]

@@ -86,7 +86,7 @@ SUBSYSTEM_DEF(research)
 		if(!techweb_list.should_generate_points)
 			continue
 		var/list/bitcoins = list()
-		for(var/obj/machinery/rnd/server/miner as anything in techweb_list.techweb_servers)
+		for(var/obj/machinery/r_n_d/server/miner as anything in techweb_list.techweb_servers)
 			if(miner.working)
 				bitcoins = single_server_income.Copy()
 				break //Just need one to work.
