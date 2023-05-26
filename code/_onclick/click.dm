@@ -296,6 +296,7 @@
 	A.AltClick(src)
 
 /atom/proc/AltClick(mob/user)
+	SEND_SIGNAL(src, SIGNAL_CLICK_ALT, user)
 	var/turf/T = get_turf(src)
 	if(T && user.TurfAdjacent(T))
 		if(user.listed_turf == T)

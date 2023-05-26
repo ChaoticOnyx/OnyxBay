@@ -26,6 +26,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 
 // Called when the item is in the active hand, and clicked; alternately, there is an 'activate held object' verb or you can hit pagedown.
 /obj/item/proc/attack_self(mob/user)
+	SEND_SIGNAL(src, SIGNAL_ITEM_ATTACK_SELF, user)
 	return
 
 //I would prefer to rename this to attack(), but that would involve touching hundreds of files.

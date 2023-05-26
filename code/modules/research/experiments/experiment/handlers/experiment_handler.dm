@@ -50,23 +50,23 @@
 	src.start_experiment_callback = start_experiment_callback
 
 	if(isitem(parent))
-		register_signal(parent, COMSIG_ITEM_PRE_ATTACK, .proc/try_run_handheld_experiment)
-		register_signal(parent, COMSIG_ITEM_AFTERATTACK, .proc/ignored_handheld_experiment_attempt)
+		register_signal(parent, SIGNAL_ITEM_PRE_ATTACK, .proc/try_run_handheld_experiment)
+		register_signal(parent, SIGNAL_ITEM_AFTERATTACK, .proc/ignored_handheld_experiment_attempt)
 	if(istype(parent, /obj/machinery/destructive_scanner))
-		register_signal(parent, COMSIG_MACHINERY_DESTRUCTIVE_SCAN, .proc/try_run_destructive_experiment)
+		register_signal(parent, SIGNAL_MACHINERY_DESTRUCTIVE_SCAN, .proc/try_run_destructive_experiment)
 	if(istype(parent, /obj/machinery/computer/operating))
-		register_signal(parent, COMSIG_OPERATING_COMPUTER_DISSECTION_COMPLETE, .proc/try_run_dissection_experiment)
+		register_signal(parent, SIGNAL_OPERATING_COMPUTER_DISSECTION_COMPLETE, .proc/try_run_dissection_experiment)
 
 	// Determine UI display mode
 	switch(config_mode)
 		if(EXPERIMENT_CONFIG_ATTACKSELF)
-			register_signal(parent, COMSIG_ITEM_ATTACK_SELF, .proc/configure_experiment)
+			register_signal(parent, SIGNAL_ITEM_ATTACK_SELF, .proc/configure_experiment)
 		if(EXPERIMENT_CONFIG_ALTCLICK)
-			register_signal(parent, COMSIG_CLICK_ALT, .proc/configure_experiment)
+			register_signal(parent, SIGNAL_CLICK_ALT, .proc/configure_experiment)
 		if(EXPERIMENT_CONFIG_CLICK)
-			register_signal(parent, COMSIG_ATOM_UI_INTERACT, .proc/configure_experiment_click)
+			register_signal(parent, SIGNAL_ATOM_UI_INTERACT, .proc/configure_experiment_click)
 		if(EXPERIMENT_CONFIG_UI)
-			register_signal(parent, COMSIG_UI_ACT, .proc/ui_handle_experiment)
+			register_signal(parent, SIGNAL_UI_ACT, .proc/ui_handle_experiment)
 
 	// Auto connect to the first visible techweb (useful for always active handlers)
 	// Note this won't work at the moment for non-machines that have been included
@@ -104,7 +104,7 @@
 	if (selected_experiment == null && !(config_flags & EXPERIMENT_CONFIG_ALWAYS_ACTIVE))
 		return .
 	playsound(user, 'sound/machines/buzz-sigh.ogg', 25)
-	to_chat(user, span_notice("[target] is not related to your currently selected experiment."))
+	to_chat(user, SPAN_NOTICE("[target] is not related to your currently selected experiment."))
 	return .
 
 /**
@@ -132,16 +132,16 @@
  */
 /datum/component/experiment_handler/proc/try_run_handheld_experiment_async(datum/source, atom/target, mob/user, params)
 	if (selected_experiment == null && !(config_flags & EXPERIMENT_CONFIG_ALWAYS_ACTIVE))
-		to_chat(user, span_notice("You do not have an experiment selected!"))
+		to_chat(user, SPAN_NOTICE("You do not have an experiment selected!"))
 		return
 	if(!do_after(user, 1 SECONDS, target = target))
 		return
 	if(action_experiment(source, target))
 		playsound(user, 'sound/machines/ping.ogg', 25)
-		to_chat(user, span_notice("You scan [target]."))
+		to_chat(user, SPAN_NOTICE("You scan [target]."))
 	else
 		playsound(user, 'sound/machines/buzz-sigh.ogg', 25)
-		to_chat(user, span_notice("[target] is not related to your currently selected experiment."))
+		to_chat(user, SPAN_NOTICE("[target] is not related to your currently selected experiment."))
 
 
 /**
@@ -152,7 +152,7 @@
 	var/atom/movable/our_scanner = parent
 	if (selected_experiment == null)
 		playsound(our_scanner, 'sound/machines/buzz-sigh.ogg', 25)
-		to_chat(our_scanner, span_notice("No experiment selected!"))
+		to_chat(our_scanner, SPAN_NOTICE("No experiment selected!"))
 		return
 	var/successful_scan
 	for(var/scan_target in scanned_atoms)
@@ -161,7 +161,7 @@
 			break
 	if(successful_scan)
 		playsound(our_scanner, 'sound/machines/ping.ogg', 25)
-		to_chat(our_scanner, span_notice("The scan succeeds."))
+		to_chat(our_scanner, SPAN_NOTICE("The scan succeeds."))
 	else
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 25)
 		our_scanner.say("The scan did not result in anything.")

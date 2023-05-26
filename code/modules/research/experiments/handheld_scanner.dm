@@ -9,8 +9,6 @@
 	w_class = ITEM_SIZE_SMALL
 	icon = 'icons/obj/device.dmi'
 	icon_state = "experiscanner"
-	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 
 /obj/item/experi_scanner/Initialize(mapload)
 	..()
@@ -23,8 +21,9 @@
 		allowed_experiments = list(/datum/experiment/scanning, /datum/experiment/physical),\
 		disallowed_traits = EXPERIMENT_TRAIT_DESTRUCTIVE)
 
+/*FIXME
 /obj/item/experi_scanner/suicide_act(mob/living/carbon/user)
-	user.visible_message(span_suicide("[user] is giving in to the Great Toilet Beyond! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message(SPAN_WARNING("[user] is giving in to the Great Toilet Beyond! It looks like [user.p_theyre()] trying to commit suicide!"))
 
 	forceMove(drop_location())
 	user.forceMove(src)
@@ -56,3 +55,4 @@
 	user.gib(FALSE, TRUE, TRUE) //we delete everything but the brain, as it's going to be moved to the cistern
 	toilet_brain.forceMove(result_toilet)
 	result_toilet.w_items += toilet_brain.w_class
+*/

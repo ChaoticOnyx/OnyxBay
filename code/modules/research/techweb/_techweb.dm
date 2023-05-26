@@ -207,7 +207,7 @@
 /datum/techweb/proc/add_design(datum/design/design, custom = FALSE, list/add_to)
 	if(!istype(design))
 		return FALSE
-	SEND_SIGNAL(src, COMSIG_TECHWEB_ADD_DESIGN, design, custom)
+	SEND_SIGNAL(src, SIGNAL_TECHWEB_ADD_DESIGN, design, custom)
 	if(custom)
 		custom_designs[design.id] = TRUE
 
@@ -228,7 +228,7 @@
 		return FALSE
 	if(custom_designs[design.id] && !custom)
 		return FALSE
-	SEND_SIGNAL(src, COMSIG_TECHWEB_REMOVE_DESIGN, design, custom)
+	SEND_SIGNAL(src, SIGNAL_TECHWEB_REMOVE_DESIGN, design, custom)
 	custom_designs -= design.id
 	researched_designs -= design.id
 	return TRUE

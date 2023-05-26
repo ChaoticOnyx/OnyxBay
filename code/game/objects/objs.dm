@@ -92,11 +92,13 @@
 			in_use = 0
 
 /obj/attack_ghost(mob/observer/ghost/user)
+	SEND_SIGNAL(src, SIGNAL_ATOM_UI_INTERACT, user)
 	ui_interact(user)
 	tgui_interact(user)
 	..()
 
 /obj/proc/interact(mob/user)
+
 	return
 
 /mob/proc/unset_machine()

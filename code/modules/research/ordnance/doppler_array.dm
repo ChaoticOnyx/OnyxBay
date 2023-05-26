@@ -25,9 +25,9 @@
 
 /obj/machinery/doppler_array/Initialize(mapload)
 	. = ..()
-	register_signal(SSdcs, COMSIG_GLOB_EXPLOSION, .proc/sense_explosion)
-	register_signal(src, COMSIG_MACHINERY_POWER_LOST, .proc/update_doppler_light)
-	register_signal(src, COMSIG_MACHINERY_POWER_RESTORED, .proc/update_doppler_light)
+	register_signal(SSdcs, SIGNAL_GLOB_EXPLOSION, .proc/sense_explosion)
+	register_signal(src, SIGNAL_MACHINERY_POWER_LOST, .proc/update_doppler_light)
+	register_signal(src, SIGNAL_MACHINERY_POWER_RESTORED, .proc/update_doppler_light)
 	update_doppler_light()
 
 	// Rotation determines the detectable direction.
@@ -46,7 +46,7 @@
 
 /obj/machinery/doppler_array/examine(mob/user)
 	. = ..()
-	. += span_notice("It is currently facing [dir2text(dir)]")
+	. += SPAN_NOTICE("It is currently facing [dir2text(dir)]")
 
 /obj/machinery/doppler_array/attackby(obj/item/item, mob/user, params)
 	if(istype(item, /obj/item/computer_disk))

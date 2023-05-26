@@ -31,11 +31,11 @@
 	for(var/mob/living/living_mob in pickup_zone)
 		if(!emagged && ishuman(living_mob)) //Can only kill humans when emagged.
 			playsound(src, 'sound/machines/buzz-sigh.ogg', 25)
-			say("Cannot scan with humans inside.")
+			state("Cannot scan with humans inside.")
 			return
 		aggressive = TRUE
 	start_closing(aggressive)
-	use_power(idle_power_usage)
+	set_power_use(POWER_USE_IDLE)
 
 ///Closes the machine to kidnap everything in the turf into it.
 /obj/machinery/destructive_scanner/proc/start_closing(aggressive)
@@ -48,7 +48,7 @@
 	scanning = TRUE
 	update_icon()
 	playsound(src, 'sound/machines/destructive_scanner/TubeDown.ogg', 100)
-	use_power(idle_power_usage)
+	set_power_use(POWER_USE_IDLE)
 	addtimer(CALLBACK(src, .proc/start_scanning, aggressive), 1.2 SECONDS)
 
 ///Starts scanning the fancy scanning effects
@@ -57,7 +57,7 @@
 		playsound(src, 'sound/machines/destructive_scanner/ScanDangerous.ogg', 100, extrarange = 5)
 	else
 		playsound(src, 'sound/machines/destructive_scanner/ScanSafe.ogg', 100)
-	use_power(active_power_usage)
+	set_power_use(POWER_USE_ACTIVE)
 	addtimer(CALLBACK(src, .proc/finish_scanning, aggressive), 6 SECONDS)
 
 
@@ -81,22 +81,21 @@
 		movable_atom.forceMove(this_turf)
 		if(isliving(movable_atom))
 			var/mob/living/fucked_up_thing = movable_atom
-			fucked_up_thing.investigate_log("has been gibbed by [src].", INVESTIGATE_DEATHS)
 			fucked_up_thing.gib()
 
-	SEND_SIGNAL(src, COMSIG_MACHINERY_DESTRUCTIVE_SCAN, scanned_atoms)
+	SEND_SIGNAL(src, SIGNAL_MACHINERY_DESTRUCTIVE_SCAN, scanned_atoms)
 
 
 /obj/machinery/destructive_scanner/emag_act(mob/user)
-	if(obj_flags & EMAGGED)
+	if(emagged)
 		return
-	obj_flags |= EMAGGED
-	playsound(src, SFX_SPARKS, 75, TRUE, SILENCED_SOUND_EXTRARANGE)
-	to_chat(user, span_notice("You disable the safety sensor BIOS on [src]."))
+	emagged = TRUE
+	playsound(src, SFX_SPARK_MEDIUM, 75, TRUE, -11)
+	to_chat(user, SPAN_NOTICE("You disable the safety sensor BIOS on [src]."))
 
-/obj/machinery/destructive_scanner/update_icon_state()
-	. = ..()
+/obj/machinery/destructive_scanner/update_icon()
 	icon_state = scanning ? "tube_on" : "tube_open"
+	. = ..()
 
 /obj/machinery/destructive_scanner/attackby(obj/item/object, mob/user, params)
 	if (!scanning && default_deconstruction_screwdriver(user, "tube_open", "tube_open", object) || default_deconstruction_crowbar(object))
