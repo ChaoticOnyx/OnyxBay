@@ -367,7 +367,7 @@
 	return ..()
 
 /obj/item/clothing/suit/space/vox/medic/think()
-	if(!ishuman(src.loc))
+	if(!ishuman(loc))
 		return
 	var/mob/living/carbon/human/H = loc
 	if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/medic))
