@@ -370,6 +370,8 @@
 	if(!ishuman(loc))
 		return
 	var/mob/living/carbon/human/H = loc
+	if(!H.client)
+		return
 	if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/medic))
 		return
 	if(H.stat)
