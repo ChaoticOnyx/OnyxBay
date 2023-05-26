@@ -374,7 +374,7 @@
 		return
 	if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/medic))
 		return
-	if(H.stat)
+	if(H.stat != CONSCIOUS)
 		return
 	if(nanobots)
 		for(var/mob/living/carbon/human/vox/V in range(2, H))
