@@ -169,5 +169,5 @@
 /datum/uplink_item/item/tools/teleporter
 	name = "Teleporter Gate Circuit Board"
 	item_cost = 8
-	path = /obj/machinery/teleporter_gate
+	path = /obj/item/circuitboard/teleporter_gate
 	antag_roles = list(MODE_NUKE)
