@@ -45,7 +45,6 @@
 	var/stun = 0
 	var/weaken = 0
 	var/paralyze = 0
-	var/irradiate = 0
 	var/stutter = 0
 	var/eyeblur = 0
 	var/drowsy = 0
@@ -66,7 +65,7 @@
 	var/fire_sound
 
 	var/vacuum_traversal = 1 //Determines if the projectile can exist in vacuum, if false, the projectile will be deleted if it enters vacuum.
-
+	var/impact_on_original = FALSE // Allow player to shot at floor and do on_impact stuff
 	//Movement parameters
 	var/speed = 0.4		//Amount of deciseconds it takes for projectile to travel
 	var/pixel_speed = 33	//pixels per move - DO NOT FUCK WITH THIS UNLESS YOU ABSOLUTELY KNOW WHAT YOU ARE DOING OR UNEXPECTED THINGS /WILL/ HAPPEN!
@@ -142,8 +141,6 @@
 			H.handle_tasing(agony, tasing, def_zone, src)
 	else
 		L.stun_effect_act(stun, agony, def_zone, src)
-	//radiation protection is handled separately from other armour types.
-	L.apply_effect(irradiate, IRRADIATE, L.getarmor(null, "rad"))
 	return 1
 
 //called when the projectile stops flying because it collided with something
@@ -180,7 +177,7 @@
 	return fire(Angle_override, direct_target)
 
 //called to launch a projectile from a gun
-/obj/item/projectile/proc/launch_from_gun(atom/target, target_zone, mob/user, params, Angle_override, forced_spread, var/obj/item/gun/launcher)
+/obj/item/projectile/proc/launch_from_gun(atom/target, target_zone, mob/user, params, Angle_override, forced_spread, obj/item/gun/launcher)
 	return launch(target, target_zone, user, params)
 
 //sets the click point of the projectile using mouse input params
@@ -198,7 +195,7 @@
 		p_y = between(0, p_y + rand(-radius, radius), world.icon_size)
 
 //Used to change the direction of the projectile in flight.
-/obj/item/projectile/proc/redirect(var/new_x, var/new_y, var/atom/starting_loc, var/mob/new_firer=null, var/is_ricochet = FALSE)
+/obj/item/projectile/proc/redirect(new_x, new_y, atom/starting_loc, mob/new_firer=null, is_ricochet = FALSE)
 	var/turf/starting_turf = get_turf(src)
 	var/turf/new_target = locate(new_x, new_y, src.z)
 
@@ -299,6 +296,13 @@
 	if((bumped && !forced) || (A in permutated))
 		return 0
 
+	if(istype(A, /obj/effect/portal))
+		var/obj/effect/portal/P = A
+		if(P.on_projectile_impact(src, FALSE))
+			bumped = FALSE // reset bumped variable!
+			permutated.Add(P)
+			return
+
 	var/passthrough = 0 //if the projectile should continue flying
 	var/distance = get_dist(starting,loc)
 
@@ -369,7 +373,7 @@
 
 
 //Helper proc to check if you can hit them or not.
-/proc/check_trajectory(atom/target as mob|obj, atom/firer as mob|obj, var/pass_flags=PASS_FLAG_TABLE|PASS_FLAG_GLASS|PASS_FLAG_GRILLE)
+/proc/check_trajectory(atom/target as mob|obj, atom/firer as mob|obj, pass_flags=PASS_FLAG_TABLE|PASS_FLAG_GLASS|PASS_FLAG_GRILLE)
 	if(!istype(target) || !istype(firer))
 		return 0
 
@@ -422,7 +426,7 @@
 		return
 	if(isnull(Angle))	//Try to resolve through offsets if there's no Angle set.
 		if(isnull(xo) || isnull(yo))
-			crash_with("WARNING: Projectile [type] deleted due to being unable to resolve a target after Angle was null!")
+			util_crash_with("WARNING: Projectile [type] deleted due to being unable to resolve a target after Angle was null!")
 			qdel(src)
 			return
 		var/turf/target = locate(Clamp(starting + xo, 1, world.maxx), Clamp(starting + yo, 1, world.maxy), starting.z)
@@ -476,7 +480,7 @@
 		xo = targloc.x - curloc.x
 		setAngle(Get_Angle(src, targloc))
 	else
-		crash_with("WARNING: Projectile [type] fired without either mouse parameters, or a target atom to aim at!")
+		util_crash_with("WARNING: Projectile [type] fired without either mouse parameters, or a target atom to aim at!")
 		qdel(src)
 	if(Angle_offset)
 		setAngle(Angle + Angle_offset)
@@ -526,7 +530,7 @@
 	check_distance_left()
 
 //Returns true if the target atom is on our current turf and above the right layer
-/obj/item/projectile/proc/can_hit_target(atom/target, var/list/passthrough)
+/obj/item/projectile/proc/can_hit_target(atom/target, list/passthrough)
 	return (target && ((target.layer >= TURF_LAYER + 0.3) || ismob(target)) && (loc == get_turf(target)) && (!(target in passthrough)))
 
 /proc/calculate_projectile_Angle_and_pixel_offsets(mob/user, params)
@@ -601,7 +605,7 @@
 		safety--
 		if(safety <= 0)
 			qdel(src)
-			crash_with("WARNING: [type] projectile encountered infinite recursion during hitscanning!")
+			util_crash_with("WARNING: [type] projectile encountered infinite recursion during hitscanning!")
 			return	//Kill!
 		pixel_move(1, 1, TRUE)
 
@@ -702,5 +706,5 @@
 		beam_segments = null
 		QDEL_NULL(beam_index)
 
-/obj/item/projectile/proc/update_effect(var/obj/effect/projectile/effect)
+/obj/item/projectile/proc/update_effect(obj/effect/projectile/effect)
 	return

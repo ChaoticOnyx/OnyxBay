@@ -1,8 +1,8 @@
-proc/generate_tracer_between_points(var/obj/item/projectile/source, datum/point/starting, datum/point/ending, beam_type, color, qdel_in = 5)		//Do not pass z-crossing points as that will not be properly (and likely will never be properly until it's absolutely needed) supported!
+proc/generate_tracer_between_points(obj/item/projectile/source, datum/point/starting, datum/point/ending, beam_type, color, qdel_in = 5)		//Do not pass z-crossing points as that will not be properly (and likely will never be properly until it's absolutely needed) supported!
 	if(!istype(starting) || !istype(ending) || !ispath(beam_type))
 		return
 	if(starting.z != ending.z)
-		crash_with("Projectile tracer generation of cross-Z beam detected. This feature is not supported!")			//Do it anyways though.
+		util_crash_with("Projectile tracer generation of cross-Z beam detected. This feature is not supported!")			//Do it anyways though.
 	var/datum/point/midpoint = point_midpoint_points(starting, ending)
 	var/obj/effect/projectile/tracer/PB = new beam_type
 	source.update_effect(PB)
