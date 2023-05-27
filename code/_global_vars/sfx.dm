@@ -21,21 +21,32 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/weapons/gun/magazine_insert3.ogg'
 	),
 	SFX_SHELL_INSERT = list(
-		'sound/effects/weapons/gun/shell_insert1.ogg',
-		'sound/effects/weapons/gun/shell_insert2.ogg'
+		'sound/effects/weapons/gun/interaction/shell_insert1.ogg',
+		'sound/effects/weapons/gun/interaction/shell_insert2.ogg'
 	),
 	SFX_BULLET_INSERT = list(
-		'sound/effects/weapons/gun/bullet_insert1.ogg',
-		'sound/effects/weapons/gun/bullet_insert2.ogg',
-		'sound/effects/weapons/gun/bullet_insert3.ogg',
-		'sound/effects/weapons/gun/bullet_insert4.ogg',
-		'sound/effects/weapons/gun/bullet_insert5.ogg',
-		'sound/effects/weapons/gun/bullet_insert6.ogg',
-		'sound/effects/weapons/gun/bullet_insert7.ogg',
-		'sound/effects/weapons/gun/bullet_insert8.ogg',
-		'sound/effects/weapons/gun/bullet_insert9.ogg',
-		'sound/effects/weapons/gun/bullet_insert10.ogg',
-		'sound/effects/weapons/gun/bullet_insert11.ogg'
+		'sound/effects/weapons/gun/interaction/bullet_insert1.ogg',
+		'sound/effects/weapons/gun/interaction/bullet_insert2.ogg',
+		'sound/effects/weapons/gun/interaction/bullet_insert3.ogg',
+		'sound/effects/weapons/gun/interaction/bullet_insert4.ogg',
+		'sound/effects/weapons/gun/interaction/bullet_insert5.ogg',
+		'sound/effects/weapons/gun/interaction/bullet_insert6.ogg',
+		'sound/effects/weapons/gun/interaction/bullet_insert7.ogg',
+		'sound/effects/weapons/gun/interaction/bullet_insert8.ogg',
+		'sound/effects/weapons/gun/interaction/bullet_insert9.ogg',
+		'sound/effects/weapons/gun/interaction/bullet_insert10.ogg',
+		'sound/effects/weapons/gun/interaction/bullet_insert11.ogg'
+	),
+	SFX_REM870_SHELL_INSERT = list(
+		'sound/effects/weapons/gun/shotguns/mp133_insert1.ogg',
+		'sound/effects/weapons/gun/shotguns/mp133_insert2.ogg',
+		'sound/effects/weapons/gun/shotguns/mp133_insert3.ogg'
+	),
+	SFX_SPAS12_SHELL_INSERT = list(
+		'sound/effects/weapons/gun/shotguns/spas12_insert1.ogg',
+		'sound/effects/weapons/gun/shotguns/spas12_insert2.ogg',
+		'sound/effects/weapons/gun/shotguns/spas12_insert3.ogg',
+		'sound/effects/weapons/gun/shotguns/spas12_insert4.ogg'
 	),
 	SFX_SHOTGUN_PUMP_IN = list(
 		'sound/effects/weapons/gun/shotgun_pump_in1.ogg',
