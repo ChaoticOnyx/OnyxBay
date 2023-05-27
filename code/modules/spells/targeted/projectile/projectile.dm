@@ -38,7 +38,6 @@ If the spell_projectile is seeking, it will update its target every process and 
 		projectile.xo = target.x - user.x
 		projectile.kill_count = src.duration
 		projectile.hitscan = !proj_step_delay
-		projectile.step_delay = proj_step_delay
 		projectile.launch(target)
 	return
 

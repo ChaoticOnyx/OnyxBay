@@ -10,7 +10,7 @@
 	penetration_modifier = 1.0
 	var/mob_passthrough_check = 0
 
-	muzzle_type = /obj/effect/projectile/bullet/muzzle
+	muzzle_type = /obj/effect/projectile/muzzle/bullet
 
 /obj/item/projectile/bullet/on_hit(atom/target, blocked = 0)
 	if (..(target, blocked))
@@ -226,7 +226,7 @@
 	range_step = 3
 	spread_step = 5
 	penetration_modifier = 1.1
-	muzzle_type = /obj/effect/projectile/accel/muzzle
+	muzzle_type = /obj/effect/projectile/muzzle/accel
 
 /obj/item/projectile/bullet/pellet/accelerated/lesser
 	damage = 20
