@@ -7,7 +7,6 @@
 	desc = "Heavy duty shielded air compressor designed to pressurize tanks above the safe limit."
 	circuit = /obj/item/circuitboard/machine/tank_compressor
 	icon = 'icons/obj/machines/research.dmi'
-	base_icon_state = "tank_compressor"
 	icon_state = "tank_compressor-open"
 	density = TRUE
 
@@ -21,8 +20,6 @@
 	/// Reference to a disk we are going to print to.
 	var/obj/item/computer_disk/inserted_disk
 
-	pipe_flags = PIPING_ONE_PER_TURF | PIPING_DEFAULT_LAYER_ONLY
-
 /obj/machinery/atmospherics/binary/tank_compressor/Initialize(mapload)
 	. = ..()
 	leaked_gas_buffer = new(200)
@@ -30,7 +27,7 @@
 
 	register_signal(src, SIGNAL_ATOM_INTERNAL_EXPLOSION, .proc/explosion_handle)
 
-/obj/machinery/atmospherics/binary/tank_compressor/examine()
+/obj/machinery/atmospherics/binary/tank_compressor/_examine_text(mob/user)
 	. = ..()
 	. += "This one is rated for up to [TANK_COMPRESSOR_PRESSURE_LIMIT] kPa."
 	. += "Can be opened with a screwdriver and rotated with a wrench. The green port is the input, the red one is the output."
@@ -58,7 +55,7 @@
 			return ..()
 		inserted_tank = tank_item
 		last_recorded_pressure = 0
-		register_signal(inserted_tank, SIGNAL_PARENT_QDELETING, .proc/tank_destruction)
+		register_signal(src, SIGNAL_QDELETING, .proc/tank_destruction)
 		update_appearance()
 		return
 	if(istype(item, /obj/item/computer_disk))
@@ -174,8 +171,8 @@
 	new_record.name = "Log Recording #[record_number]"
 	new_record.experiment_source = inserted_tank.name
 	new_record.timestamp = station_time_timestamp()
-	for(var/gas_path in leaked_gas_buffer.gases)
-		new_record.gas_data[gas_path] = leaked_gas_buffer.gases[gas_path][MOLES]
+	for(var/gas_id in leaked_gas_buffer.gas)
+		new_record.gas_data[gas_id] = leaked_gas_buffer.gas[gas_id]
 
 	compressor_record += new_record
 	record_number += 1
@@ -236,7 +233,7 @@
 	if(gone == inserted_disk)
 		inserted_disk = null
 	if(gone == inserted_tank)
-		unregister_signal(inserted_tank, SIGNAL_PARENT_QDELETING)
+		unregister_signal(src, SIGNAL_QDELETING)
 		inserted_tank = null
 		update_appearance()
 	return ..()

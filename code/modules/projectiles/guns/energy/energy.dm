@@ -124,7 +124,7 @@
 		spark_system.start()
 		if(prob(50))
 			visible_message("\The [src]'s reactor heats up uncontrollably!")
-			explosion(src.loc, -1, 1, 2)
+			explosion(src, -1, 1, 2)
 			if(!QDELETED(src))
 				qdel(src)
 			return

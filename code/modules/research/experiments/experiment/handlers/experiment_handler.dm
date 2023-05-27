@@ -91,16 +91,14 @@
 	if (!should_run_handheld_experiment(source, target, user, params))
 		return
 	INVOKE_ASYNC(src, .proc/try_run_handheld_experiment_async, source, target, user, params)
-	return COMPONENT_CANCEL_ATTACK_CHAIN
+	return
 
 /**
  * Provides feedback when an item isn't related to an experiment, and has fully passed the attack chain
  */
 /datum/component/experiment_handler/proc/ignored_handheld_experiment_attempt(datum/source, atom/target, mob/user, proximity_flag, params)
-	SIGNAL_HANDLER
 	if (!proximity_flag)
 		return
-	. |= COMPONENT_AFTERATTACK_PROCESSED_ITEM
 	if (selected_experiment == null && !(config_flags & EXPERIMENT_CONFIG_ALWAYS_ACTIVE))
 		return .
 	playsound(user, 'sound/machines/buzz-sigh.ogg', 25)
@@ -148,7 +146,6 @@
  * Hooks on destructive scans to try and run an experiment (When using a handheld handler)
  */
 /datum/component/experiment_handler/proc/try_run_destructive_experiment(datum/source, list/scanned_atoms)
-	SIGNAL_HANDLER
 	var/atom/movable/our_scanner = parent
 	if (selected_experiment == null)
 		playsound(our_scanner, 'sound/machines/buzz-sigh.ogg', 25)
@@ -164,17 +161,17 @@
 		to_chat(our_scanner, SPAN_NOTICE("The scan succeeds."))
 	else
 		playsound(src, 'sound/machines/buzz-sigh.ogg', 25)
-		our_scanner.say("The scan did not result in anything.")
+		to_chat(our_scanner, SPAN_NOTICE("The scan did not result in anything."))
+
 
 /// Hooks on a successful dissection experiment
 /datum/component/experiment_handler/proc/try_run_dissection_experiment(obj/source, mob/living/target)
-	SIGNAL_HANDLER
 
 	if (action_experiment(source, target))
 		playsound(source, 'sound/machines/ping.ogg', 25)
 	else
 		playsound(source, 'sound/machines/buzz-sigh.ogg', 25)
-		source.say("The dissection did not result in anything, either prior dissections have not been complete, or this one has already been researched.")
+		to_chat(source, SPAN_NOTICE("The dissection did not result in anything, either prior dissections have not been complete, or this one has already been researched."))
 
 /**
  * Announces a message to all experiment handlers
@@ -187,7 +184,7 @@
 		if(experi_handler.linked_web != linked_web)
 			continue
 		var/atom/movable/experi_parent = experi_handler.parent
-		experi_parent.say(message)
+		to_chat(experi_parent,message)
 
 /**
  * Announces a message to this experiment handler
@@ -197,7 +194,7 @@
  */
 /datum/component/experiment_handler/proc/announce_message(message)
 	var/atom/movable/experi_parent = parent
-	experi_parent.say(message)
+	to_chat(experi_parent,message)
 
 /**
  * Attempts to perform the selected experiment given some arguments
@@ -350,19 +347,23 @@
 /datum/component/experiment_handler/proc/find_valid_servers(datum/techweb/checking_web)
 	var/list/valid_servers = list()
 	for(var/obj/machinery/r_n_d/server/server as anything in checking_web.techweb_servers)
-		if(!is_valid_z_level(get_turf(server), get_turf(parent)))
+		var/turf/source_loc = get_turf(server)
+		var/turf/checking_loc = get_turf(parent)
+
+		if(!(is_station_turf(source_loc) && is_station_turf(checking_loc)) && (source_loc.z != checking_loc.z))
 			continue
+
 		valid_servers += server
 	return valid_servers
 
-/datum/component/experiment_handler/ui_interact(mob/user, datum/tgui/ui)
+/datum/component/experiment_handler/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if (!ui)
 		var/atom/parent_atom = parent
 		ui = new(user, src, "ExperimentConfigure", "[parent_atom ? "[parent_atom.name] | " : ""]Experiment Configuration")
 		ui.open()
 
-/datum/component/experiment_handler/ui_data(mob/user)
+/datum/component/experiment_handler/tgui_data(mob/user)
 	. = list(
 		"always_active" = (config_flags & EXPERIMENT_CONFIG_ALWAYS_ACTIVE),
 		"has_start_callback" = !isnull(start_experiment_callback),
@@ -379,7 +380,7 @@
 			web_id = techwebs.id,
 			web_org = techwebs.organization,
 			selected = (techwebs == linked_web),
-			ref = REF(techwebs),
+			ref = "\ref[techwebs]",
 			all_servers = techwebs.techweb_servers,
 		)
 		.["techwebs"] += list(data)
@@ -398,7 +399,7 @@
 			)
 			.["experiments"] += list(data)
 
-/datum/component/experiment_handler/ui_act(action, params)
+/datum/component/experiment_handler/tgui_act(action, params)
 	. = ..()
 	if (.)
 		return

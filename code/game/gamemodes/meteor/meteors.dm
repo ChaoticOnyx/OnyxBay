@@ -243,7 +243,7 @@
 
 /obj/effect/meteor/medium/meteor_effect()
 	..()
-	explosion(src.loc, 0, 1, 2, 3, 0)
+	explosion(src, 0, 1, 2, 3, 0)
 
 //Large-sized
 /obj/effect/meteor/big
@@ -255,7 +255,7 @@
 
 /obj/effect/meteor/big/meteor_effect()
 	..()
-	explosion(src.loc, 1, 2, 3, 4, 0)
+	explosion(src, 1, 2, 3, 4, 0)
 
 //Flaming meteor
 /obj/effect/meteor/flaming
@@ -267,7 +267,7 @@
 
 /obj/effect/meteor/flaming/meteor_effect()
 	..()
-	explosion(src.loc, 1, 2, 3, 4, 0, 0, 5)
+	explosion(src, 1, 2, 3, 4, 0, 0, 5)
 
 //Radiation meteor
 /obj/effect/meteor/irradiated
@@ -278,7 +278,7 @@
 
 /obj/effect/meteor/irradiated/meteor_effect()
 	..()
-	explosion(src.loc, 0, 0, 4, 3, 0)
+	explosion(src, 0, 0, 4, 3, 0)
 	var/obj/effect/decal/cleanable/greenglow/glow = new(get_turf(src))
 	glow.create_reagents(30)
 	glow.reagents.add_reagent(/datum/reagent/uranium, 30)
@@ -323,7 +323,7 @@
 
 /obj/effect/meteor/tunguska/meteor_effect()
 	..()
-	explosion(src.loc, 3, 6, 9, 20, 0)
+	explosion(src, 3, 6, 9, 20, 0)
 
 // This is the final solution against shields - a single impact can bring down most shield generators.
 /obj/effect/meteor/supermatter
@@ -334,7 +334,7 @@
 
 /obj/effect/meteor/supermatter/meteor_effect()
 	..()
-	explosion(src.loc, 1, 2, 3, 4, 0)
+	explosion(src, 1, 2, 3, 4, 0)
 	for(var/obj/machinery/power/apc/A in range(rand(12, 20), src))
 		A.energy_fail(round(10 * rand(8, 12)))
 

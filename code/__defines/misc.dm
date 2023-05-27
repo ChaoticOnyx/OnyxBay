@@ -301,3 +301,8 @@
 #define LOW_VOLUME  1
 #define MID_VOLUME  2
 #define HIGH_VOLUME 3
+
+/// Stringifies whatever you put into it.
+#define STRINGIFY(argument) #argument
+
+#define NUM_E 2.71828183

@@ -130,19 +130,19 @@
 /datum/experiment/scanning/random/material/meat
 	name = "Biological Material Scanning Experiment"
 	description = "They told us we couldn't make chairs out of every material in the world. You're here to prove those nay-sayers wrong."
-	possible_material_types = list(/datum/material/meat)
+	possible_material_types = list(/material/meat)
 
 /datum/experiment/scanning/random/material/easy
 	name = "Low Grade Material Scanning Experiment"
 	description = "Material science is all about a basic understanding of the universe, and how it's built. To explain this, build something basic and we'll show you how to break it."
 	total_requirement = 6
 	possible_types = list(/obj/structure/chair, /obj/structure/toilet, /obj/structure/table)
-	possible_material_types = list(/datum/material/iron, /datum/material/glass)
+	possible_material_types = list(/material/iron, /material/glass)
 
 /datum/experiment/scanning/random/material/medium
 	name = "Medium Grade Material Scanning Experiment"
 	description = "Not all materials are strong enough to hold together a space station. Look at these materials for example, and see what makes them useful for our electronics and equipment."
-	possible_material_types = list(/datum/material/silver, /datum/material/gold, /datum/material/plastic, /datum/material/titanium)
+	possible_material_types = list(/material/silver, /material/gold, /material/plastic, /material/titanium)
 
 /datum/experiment/scanning/random/material/medium/one
 	name = "Medium Grade Material Scanning Experiment One"
@@ -156,7 +156,7 @@
 /datum/experiment/scanning/random/material/hard
 	name = "High Grade Material Scanning Experiment"
 	description = "NT spares no expense to test even the most valuable of materials for their qualities as construction materials. Go build us some of these exotic creations and collect the data."
-	possible_material_types = list(/datum/material/diamond, /datum/material/plasma, /datum/material/uranium)
+	possible_material_types = list(/material/diamond, /material/plasma, /material/uranium)
 
 /datum/experiment/scanning/random/material/hard/one
 	name = "High Grade Material Scanning Experiment One"
@@ -324,8 +324,10 @@
 	description = "Your exosuit fabricators allow for rapid production on a small scale, but the structural integrity of created parts is inferior to those made with more traditional means. Damage a few exosuits to around [damage_percent]% integrity and scan them to help us determine how the armor fails under stress."
 
 /datum/experiment/scanning/random/mecha_damage_scan/final_contributing_index_checks(atom/target, typepath)
-	if(ismech(target))
-		var/obj/mecha/target_mecha = target
+	if(!ismech(target))
+		return
+
+	var/obj/mecha/target_mecha = target
 	var/found_percent = round(target_mecha.health/initial(target_mecha.health)*100)
 	return ..() && (found_percent <= (damage_percent + 2) && found_percent >= (damage_percent - 2))
 

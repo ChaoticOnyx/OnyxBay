@@ -122,5 +122,5 @@
 	density = initial(density)
 	spawn(10)
 		if(src)
-			explosion(get_turf(src), 1, 2, 3, 4)
+			explosion(src, 1, 2, 3, 4)
 			qdel(src)

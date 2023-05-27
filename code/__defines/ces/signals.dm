@@ -7,9 +7,11 @@
 /// Generic topic handler (usr, href_list).
 #define SIGNAL_TOPIC "handle_topic"
 /// From datum ui_act (usr, action).
-#define SIGNAL_UI_ACT "SIGNAL_UI_ACT"
+#define SIGNAL_UI_ACT "signal_ui_act"
 
 /// Fires on the target datum when an element is attached to it (/datum/element).
 #define SIGNAL_ELEMENT_ATTACH "element_attach"
 /// Fires on the target datum when an element is attached to it (/datum/element).
 #define SIGNAL_ELEMENT_DETACH "element_detach"
+
+#define SIGNAL_OPERATING_COMPUTER_DISSECTION_COMPLETE "operating_computer_dissection_complete"

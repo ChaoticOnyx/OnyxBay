@@ -255,7 +255,7 @@
 	if(!stored_power)
 		stored_power = round(sqrt(power) * 0.1 * explosion_power_modifier)
 	stored_power = Clamp(stored_power, 1, 50)
-	explosion(TS, stored_power * 0.5, stored_power, stored_power * 2, stored_power * 4, 1)
+	explosion(src, stored_power * 0.5, stored_power, stored_power * 2, stored_power * 4, 1)
 	qdel(src)
 
 //Changes color and luminosity of the light to these values if they were not already set

@@ -12,6 +12,8 @@ var/list/default_material_composition = list(MATERIAL_STEEL = 0, MATERIAL_GLASS 
 	var/obj/machinery/computer/rdconsole/linked_console
 
 	var/list/materials = list()
+	/// Ref to global science techweb.
+	var/datum/techweb/stored_research
 
 /obj/machinery/r_n_d/attack_hand(mob/user as mob)
 	return

@@ -46,21 +46,18 @@
 	var/strength = convert2energy(mass)
 
 	if (strength < 773.0)
-		var/turf/T = get_turf(src)
 
 		if (strength > (450+T0C))
-			explosion(T, 0, 1, 2, 4)
+			explosion(src, 0, 1, 2, 4)
 		else
 			if (strength > (300+T0C))
-				explosion(T, 0, 0, 2, 3)
+				explosion(src, 0, 0, 2, 3)
 
 		qdel(src)
 		return
 
-	var/turf/ground_zero = get_turf(loc)
-
 	var/ground_zero_range = round(strength / 387)
-	explosion(ground_zero, ground_zero_range, ground_zero_range*2, ground_zero_range*3, ground_zero_range*4)
+	explosion(loc, ground_zero_range, ground_zero_range*2, ground_zero_range*3, ground_zero_range*4)
 
 	//SN src = null
 	qdel(src)

@@ -29,11 +29,8 @@
 /obj/item/grenade/frag/detonate()
 	..()
 
-	var/turf/O = get_turf(src)
-	if(!O) return
-
 	if(explosion_size)
-		on_explosion(O)
+		on_explosion()
 
 	src.fragmentate(O, num_fragments, spread_range, fragment_types)
 
@@ -67,9 +64,9 @@
 
 
 
-/obj/item/grenade/frag/proc/on_explosion(turf/O)
+/obj/item/grenade/frag/proc/on_explosion()
 	if(explosion_size)
-		explosion(O, -1, -1, explosion_size, round(explosion_size/2), 0)
+		explosion(src, -1, -1, explosion_size, round(explosion_size/2), 0)
 
 /obj/item/grenade/frag/shell
 	name = "fragmentation grenade"
@@ -90,6 +87,6 @@
 	num_fragments = 200  //total number of fragments produced by the grenade
 	explosion_size = 3
 
-/obj/item/grenade/frag/high_yield/on_explosion(turf/O)
+/obj/item/grenade/frag/high_yield/on_explosion()
 	if(explosion_size)
-		explosion(O, -1, round(explosion_size/2), explosion_size, round(explosion_size/2), 0) //has a chance to blow a hole in the floor
+		explosion(src, -1, round(explosion_size/2), explosion_size, round(explosion_size/2), 0) //has a chance to blow a hole in the floor

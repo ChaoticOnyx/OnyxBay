@@ -1304,7 +1304,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			"<span class='danger'>\The [victim]'s [src.name] explodes violently!</span>",\
 			"<span class='danger'>Your [src.name] explodes!</span>",\
 			"<span class='danger'>You hear an explosion!</span>")
-		explosion(get_turf(owner), -1, -1, 2, 3)
+		explosion(src, -1, -1, 2, 3)
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(5, 0, victim)
 		spark_system.attach(owner)

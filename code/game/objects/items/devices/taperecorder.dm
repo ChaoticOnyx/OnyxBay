@@ -133,7 +133,7 @@
 		to_chat(M, "<span class='danger'>\The [src] explodes!</span>")
 	if(T)
 		T.hotspot_expose(700,125)
-		explosion(T, -1, -1, 0, 4)
+		explosion(src, -1, -1, 0, 4)
 	qdel(src)
 	return
 

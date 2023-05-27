@@ -17,13 +17,13 @@
 /obj/item/am_containment/ex_act(severity)
 	switch(severity)
 		if(1.0)
-			explosion(get_turf(src), 1, 2, 3, 5)//Should likely be larger but this works fine for now I guess
+			explosion(src, 1, 2, 3, 5)//Should likely be larger but this works fine for now I guess
 			if(src)
 				qdel(src)
 			return
 		if(2.0)
 			if(prob((fuel/10)-stability))
-				explosion(get_turf(src), 1, 2, 3, 5)
+				explosion(src, 1, 2, 3, 5)
 				if(src)
 					qdel(src)
 				return

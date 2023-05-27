@@ -75,15 +75,10 @@ SUBSYSTEM_DEF(explosions)
 	throwturf -= T
 
 /**
- * Handles the effects of an explosion originating from a given point.
- *
- * Primarily handles popagating the balstwave of the explosion to the relevant turfs.
- * Also handles the fireball from the explosion.
- * Also handles the smoke cloud from the explosion.
- * Also handles sfx and screenshake.
+ * Makes a given atom explode. Now on the explosions subsystem!
  *
  * Arguments:
- * - [epicenter][/turf]: The turf that's exploding.
+ * - [origin][/atom]: The atom that's exploding.
  * - devastation_range: The range at which the effects of the explosion are at their strongest.
  * - heavy_impact_range: The range at which the effects of the explosion are relatively severe.
  * - light_impact_range: The range at which the effects of the explosion are relatively weak.
@@ -93,7 +88,62 @@ SUBSYSTEM_DEF(explosions)
  * - shaped: if true make explosions look like circle
  * - sfx_to_play: sound to play, when expolosion near player
  */
-/datum/controller/subsystem/explosions/proc/explode(turf/epicenter, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 0, flash_range = 0, adminlog = 1, z_transfer = UP|DOWN, shaped, sfx_to_play = SFX_EXPLOSION)
+
+/datum/controller/subsystem/explosions/proc/explode(atom/origin, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 0, flash_range = 0, adminlog = 1, z_transfer = UP|DOWN, shaped, sfx_to_play = SFX_EXPLOSION)
+	var/list/arguments = list(
+		EXARG_KEY_ORIGIN = origin,
+		EXARG_KEY_DEV_RANGE = devastation_range,
+		EXARG_KEY_HEAVY_RANGE = heavy_impact_range,
+		EXARG_KEY_LIGHT_RANGE = light_impact_range,
+		EXARG_KEY_FLASH_RANGE = flash_range,
+		EXARG_KEY_ADMIN_LOG = adminlog,
+		EXARG_KEY_Z_TRANSFER = z_transfer,
+		EXARG_KEY_SHAPED = shaped,
+		EXARG_KEY_SFX_TO_PLAY = sfx_to_play,
+	)
+	var/atom/location = isturf(origin) ? origin : origin.loc
+	if(SEND_SIGNAL(origin, SIGNAL_ATOM_EXPLODE, arguments) & SIGNAL_CANCEL_EXPLOSION)
+		return // Signals are incompatible with `arglist(...)` so we can't actually use that for these. Additionally,
+
+	while(location)
+		var/next_loc = location.loc
+		if(SEND_SIGNAL(location, SIGNAL_ATOM_INTERNAL_EXPLOSION, arguments) & SIGNAL_CANCEL_EXPLOSION)
+			return
+		if(isturf(location))
+			break
+		location = next_loc
+
+	if(!location)
+		return
+
+	var/area/epicenter_area = get_area(location)
+	if(SEND_SIGNAL(epicenter_area, SIGNAL_AREA_INTERNAL_EXPLOSION, arguments) & SIGNAL_CANCEL_EXPLOSION)
+		return
+
+	arguments -= EXARG_KEY_ORIGIN
+
+	propagate_blastwave(arglist(list(location) + arguments))
+
+/**
+ * Handles the effects of an explosion originating from a given point.
+ *
+ * Primarily handles popagating the balstwave of the explosion to the relevant turfs.
+ * Also handles the fireball from the explosion.
+ * Also handles the smoke cloud from the explosion.
+ * Also handles sfx and screenshake.
+ *
+ * Arguments:
+ * - [epicenter][/atom]: The location of the explosion rounded to the nearest turf.
+ * - devastation_range: The range at which the effects of the explosion are at their strongest.
+ * - heavy_impact_range: The range at which the effects of the explosion are relatively severe.
+ * - light_impact_range: The range at which the effects of the explosion are relatively weak.
+ * - flash_range: The range at which the explosion flashes people.
+ * - adminlog: Whether to log the explosion/report it to the administration.
+ * - z_transfer: flags that tells if we need to create another explosion on turf.
+ * - shaped: if true make explosions look like circle
+ * - sfx_to_play: sound to play, when expolosion near player
+ */
+/datum/controller/subsystem/explosions/proc/propagate_blastwave(atom/epicenter, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 0, flash_range = 0, adminlog = 1, z_transfer = UP|DOWN, shaped, sfx_to_play = SFX_EXPLOSION)
 	epicenter = get_turf(epicenter)
 	ASSERT(isturf(epicenter))
 	if(isnull(flash_range))
@@ -271,6 +321,8 @@ SUBSYSTEM_DEF(explosions)
 	if(Debug2)
 		var/took = (REALTIMEOFDAY - started_at) / 10
 		log_debug("## DEBUG: Explosion([x0],[y0],[z0])(d[devastation_range],h[heavy_impact_range],l[light_impact_range]): Took [took] seconds.")
+
+	SEND_GLOBAL_SIGNAL(SIGNAL_GLOB_EXPLOSION, epicenter, devastation_range, heavy_impact_range, light_impact_range, took, orig_dev_range, orig_heavy_range, orig_light_range, explosion_cause, explosion_index)
 
 // Explosion SFX defines...
 /// The probability that a quaking explosion will make the station creak per unit. Maths!

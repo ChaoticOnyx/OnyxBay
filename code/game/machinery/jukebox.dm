@@ -181,7 +181,7 @@
 	walk_to(src, 0)
 	src.visible_message(SPAN_DANGER("\the [src] blows apart!"))
 
-	explosion(get_turf(src), 0, 0, 1, rand(1,2), 1)
+	explosion(src, 0, 0, 1, rand(1,2), 1)
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 	s.set_up(3, 1, src)

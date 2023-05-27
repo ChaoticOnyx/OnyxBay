@@ -156,7 +156,7 @@
 
 /mob/living/simple_animal/spiderbot/proc/explode() //When emagged.
 	src.visible_message("<span class='danger'>\The [src] makes an odd warbling noise, fizzles, and explodes!</span>")
-	explosion(get_turf(loc), -1, -1, 3, 5)
+	explosion(loc, -1, -1, 3, 5)
 	eject_brain()
 	death()
 

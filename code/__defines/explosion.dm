@@ -13,3 +13,24 @@
 #define EXPLODE_LIGHT 3
 /// The default explosion severity used to mark that an object is beyond the impact range of the explosion.
 #define EXPLODE_NONE 0
+
+// Internal explosion argument list keys.
+// Must match the arguments to [/datum/controller/subsystem/explosions/proc/propagate_blastwave]
+/// The origin atom of the explosion.
+#define EXARG_KEY_ORIGIN "origin"
+/// The devastation range of the explosion.
+#define EXARG_KEY_DEV_RANGE STRINGIFY(devastation_range)
+/// The heavy impact range of the explosion.
+#define EXARG_KEY_HEAVY_RANGE STRINGIFY(heavy_impact_range)
+/// The light impact range of the explosion.
+#define EXARG_KEY_LIGHT_RANGE STRINGIFY(light_impact_range)
+/// The flash range of the explosion.
+#define EXARG_KEY_FLASH_RANGE STRINGIFY(flash_range)
+/// Whether or not the explosion should be logged.
+#define EXARG_KEY_ADMIN_LOG STRINGIFY(adminlog)
+/// Whether or not the explosion should be transfered through z-levels.
+#define EXARG_KEY_Z_TRANSFER STRINGIFY(z_transfer)
+/// Whether or not the explosion should be shaped like circle.
+#define EXARG_KEY_SHAPED STRINGIFY(shaped)
+/// Whether or not the explosion should produce sound effects.
+#define EXARG_KEY_SFX_TO_PLAY STRINGIFY(sfx_to_play)

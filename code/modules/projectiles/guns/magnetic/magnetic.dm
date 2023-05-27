@@ -223,7 +223,7 @@
 				else
 					spawn(3) // So that it will still fire - considered modifying Fire() to return a value but burst fire makes that annoying.
 						visible_message("<span class='danger'>\The [src] explodes with the force of the shot!</span>")
-						explosion(get_turf(src), -1, 0, 2)
+						explosion(src, -1, 0, 2)
 						qdel(src)
 
 		if(heat_level > 15)

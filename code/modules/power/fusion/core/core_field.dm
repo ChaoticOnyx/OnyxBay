@@ -143,7 +143,7 @@
 
 	check_instability()
 	Radiate()
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/effect/fusion_em_field/proc/check_instability()
@@ -208,7 +208,7 @@
 	empulse(get_turf(src), ceil(plasma_temperature/1000), ceil(plasma_temperature/300))
 	sleep(5)
 	RadiateAll()
-	explosion(get_turf(owned_core),-1,-1,8,10) // Blow out all the windows.
+	explosion(owned_core,-1,-1,8,10) // Blow out all the windows.
 	return
 
 /obj/effect/fusion_em_field/proc/ChangeFieldStrength(new_strength)

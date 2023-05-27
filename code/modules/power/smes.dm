@@ -465,11 +465,11 @@
 		// Depending on stored charge percentage cause damage.
 		switch(Percentage())
 			if(75 to INFINITY)
-				explosion(get_turf(src), 1, 2, 4)
+				explosion(src, 1, 2, 4)
 			if(40 to 74)
-				explosion(get_turf(src), 0, 2, 3)
+				explosion(src, 0, 2, 3)
 			if(5 to 39)
-				explosion(get_turf(src), 0, 1, 2)
+				explosion(src, 0, 1, 2)
 		qdel(src) // Either way we want to ensure the SMES is deleted.
 
 /obj/machinery/power/smes/emp_act(severity)

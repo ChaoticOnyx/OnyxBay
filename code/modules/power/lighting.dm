@@ -868,10 +868,9 @@
 	if(rigged)
 		log_admin("LOG: Rigged light explosion, last touched by [fingerprintslast]")
 		message_admins("LOG: Rigged light explosion, last touched by [fingerprintslast]")
-		var/turf/T = get_turf(src.loc)
 		spawn(0)
 			sleep(2)
-			explosion(T, 0, 0, 3, 5)
+			explosion(src, 0, 0, 3, 5)
 			sleep(1)
 			qdel(src)
 		status = LIGHT_BROKEN

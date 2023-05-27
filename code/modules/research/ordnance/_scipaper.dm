@@ -122,9 +122,10 @@
 	techweb_to_publish.published_papers[experiment_path][tier] = src
 	techweb_to_publish.scientific_cooperation[partner_path] += gains[SCIPAPER_COOPERATION_INDEX]
 	if(istype(techweb_to_publish, /datum/techweb/science))
-		var/datum/bank_account/dept_budget = SSeconomy.get_dep_account(ACCOUNT_SCI)
+		var/datum/money_account/dept_budget = department_accounts["Science"]
 		if(dept_budget)
-			dept_budget.adjust_money(gains[SCIPAPER_FUNDING_INDEX] * SCIPAPER_GAIN_TO_MONEY)
+			var/datum/transaction/T = new(dept_budget.owner_name, "", gains[SCIPAPER_FUNDING_INDEX] * SCIPAPER_GAIN_TO_MONEY, "NTGalaxyNet Terminal #[rand(111,1111)]")
+			dept_budget.do_transaction(T)
 
 /**
  * Clones into a new paper type.
@@ -185,7 +186,7 @@
 		author = "Unknown"
 		et_alia = FALSE
 	if(!abstract)
-		abstract = "Published on [station_time_timestamp()]"
+		abstract = "Published on [stationtime2text()]"
 
 /datum/scientific_paper/explosive
 	/**

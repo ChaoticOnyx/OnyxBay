@@ -30,7 +30,6 @@
 
 /obj/structure/energybarrier/proc/explode()
 	visible_message(SPAN("warning", "\The [src] blows apart!"))
-	var/turf/t_loc = get_turf(src)
 	new /obj/item/stack/rods(t_loc)
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
@@ -38,7 +37,7 @@
 	s.start()
 
 	qdel(src)
-	explosion(t_loc, -1, 0, 1)
+	explosion(src, -1, 0, 1)
 
 /obj/structure/energybarrier/proc/take_damage(dmg = 0)
 	health -= dmg

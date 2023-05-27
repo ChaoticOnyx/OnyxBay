@@ -267,5 +267,5 @@ var/last_chew = 0
 			if(r_hand)
 				r_hand.droplimb(0, DROPLIMB_BLUNT)
 
-	explosion(get_turf(src), -1, 1, 3, 0)
+	explosion(src, -1, 1, 3, 0)
 	qdel(src)

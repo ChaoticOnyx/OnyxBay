@@ -327,8 +327,6 @@
 			return global.dna_activity_bounds;
 		if("dna_genes")
 			return global.dna_genes;
-		if("doppler_arrays")
-			return global.doppler_arrays;
 		if("dreams")
 			return global.dreams;
 		if("dummy_lighting_corner")
@@ -1200,8 +1198,6 @@
 			global.dna_activity_bounds=newval;
 		if("dna_genes")
 			global.dna_genes=newval;
-		if("doppler_arrays")
-			global.doppler_arrays=newval;
 		if("dreams")
 			global.dreams=newval;
 		if("dummy_lighting_corner")

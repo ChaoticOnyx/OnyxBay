@@ -220,7 +220,7 @@
 	src.blink_mode = 0
 	src.holder.set_light(0, 0, 0, 2, "#000000")
 
-	explosion(get_turf(src), explosion_values[1], explosion_values[2], explosion_values[3], explosion_values[4])
+	explosion(src, explosion_values[1], explosion_values[2], explosion_values[3], explosion_values[4])
 	if(holder?.wearer)
 		qdel(holder)
 	qdel(src)

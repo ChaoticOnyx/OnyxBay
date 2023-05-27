@@ -125,7 +125,7 @@
 			new_multiplier = 0.4
 		else if(istype(R,/datum/reagent/sugar)  && R.volume > 1)
 			stat = DEAD
-			explosion(get_turf(src),-1,0,2,3,0)
+			explosion(src,-1,0,2,3,0)
 			return 0
 		multiplier = (multiplier + new_multiplier)/2
 	if(!actually_flameable)

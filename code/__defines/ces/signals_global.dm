@@ -15,3 +15,5 @@
 
 /// Called once upon roundstart
 #define SIGNAL_ROUNDSTART "!roundstart"
+
+#define SIGNAL_GLOB_EXPLOSION "!explosion"

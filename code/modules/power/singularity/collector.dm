@@ -153,7 +153,7 @@ var/global/list/rad_collectors = list()
 			T.assume_air(P.return_air())
 			audible_message(SPAN_DANGER("\The [P] detonates, sending shrapnel flying!"))
 			fragmentate(T, 2, 4, list(/obj/item/projectile/bullet/pellet/fragment/tank/small = 3, /obj/item/projectile/bullet/pellet/fragment/tank = 1))
-			explosion(T, -1, -1, 0)
+			explosion(P, -1, -1, 0)
 			QDEL_NULL(P)
 	disconnect_from_network()
 	stat |= BROKEN

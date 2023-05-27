@@ -21,16 +21,16 @@
 		return
 */
 
-	HasFuel()
+/obj/machinery/power/port_gen/pacman2/HasFuel()
 		if(P.air_contents.plasma >= 0.1)
 			return 1
 		return 0
 
-	UseFuel()
+/obj/machinery/power/port_gen/pacman2/UseFuel()
 		P.air_contents.plasma -= 0.01
 		return
 
-	New()
+/obj/machinery/power/port_gen/pacman2/New()
 		..()
 		component_parts = list()
 		component_parts += new /obj/item/stock_parts/matter_bin(src)
@@ -41,7 +41,7 @@
 		component_parts += new board_path(src)
 		RefreshParts()
 
-	RefreshParts()
+/obj/machinery/power/port_gen/pacman2/RefreshParts()
 		var/temp_rating = 0
 		for(var/obj/item/stock_parts/SP in component_parts)
 			if(istype(SP, /obj/item/stock_parts/matter_bin))
@@ -50,10 +50,10 @@
 				temp_rating += SP.rating
 		power_gen = round(initial(power_gen) * (max(2, temp_rating) / 2))
 
-	_examine_text(mob/user)
+/obj/machinery/power/port_gen/pacman2/_examine_text(mob/user)
 		. = ..(user)
 		to_chat(user, SPAN_NOTICE("\The [src] has [P.air_contents.plasma] units of fuel left, producing [power_gen] per cycle."))
-	handleInactive()
+/obj/machinery/power/port_gen/pacman2/handleInactive()
 		heat -= 2
 		if (heat < 0)
 			heat = 0
@@ -62,11 +62,10 @@
 				if (M.client && M.machine == src)
 					src.updateUsrDialog()
 
-	proc
-		overheat()
-			explosion(get_turf(src), 2, 5, 2, -1)
+/obj/machinery/power/port_gen/pacman2/proc/overheat()
+			explosion(src, 2, 5, 2, -1)
 
-	attackby(obj/item/O, mob/user)
+/obj/machinery/power/port_gen/pacman2/attackby(obj/item/O, mob/user)
 		if(istype(O, /obj/item/tank/plasma))
 			if(P)
 				to_chat(user, SPAN_WARNING("\The [src] already has a plasma tank loaded!"))
@@ -89,21 +88,20 @@
 			if(default_deconstruction_crowbar(user, O))
 				return
 
-	attack_hand(mob/user as mob)
+/obj/machinery/power/port_gen/pacman2/attack_hand(mob/user as mob)
 		..()
 		if (!anchored)
 			return
 
 		interact(user)
 
-	attack_ai(mob/user as mob)
+/obj/machinery/power/port_gen/pacman2/attack_ai(mob/user as mob)
 		interact(user)
 
-	attack_paw(mob/user as mob)
+/obj/machinery/power/port_gen/pacman2/attack_paw(mob/user as mob)
 		interact(user)
 
-	proc
-		interact(mob/user)
+/obj/machinery/power/port_gen/pacman2/proc/interact(mob/user)
 			if (get_dist(src, user) > 1 )
 				if (!istype(user, /mob/living/silicon/ai))
 					user.machine = null
@@ -126,7 +124,7 @@
 			dat += "<br><A href='?src=\ref[src];action=close'>Close</A>"
 			show_browser(user, "[dat]", "window=port_gen")
 
-	Topic(href, href_list)
+/obj/machinery/power/port_gen/pacman2/Topic(href, href_list)
 		if(..())
 			return
 

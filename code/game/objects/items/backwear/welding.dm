@@ -46,7 +46,7 @@
 		else
 			log_and_message_admins("triggered a welding kit explosion with [W].")
 			user.visible_message(SPAN("danger", "[user] puts [W] to [src]!"), SPAN("danger", "You put \the [W] to \the [src] and with a moment of lucidity you realize, this might not have been the smartest thing you've ever done."))
-			explosion(get_turf(src), 0, 1, 3)
+			explosion(src, 0, 1, 3)
 			if(src)
 				qdel(src)
 			return

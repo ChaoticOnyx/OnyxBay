@@ -5,9 +5,6 @@
 
 //! Techweb names for new point types. Can be used to define specific point values for specific types of research (science, security, engineering, etc.)
 #define TECHWEB_POINT_TYPE_GENERIC "General Research"
-#define TECHWEB_POINT_TYPE_GENERIC_ENGINEERING "General Research"
-#define TECHWEB_POINT_TYPE_GENERIC "General Research"
-#define TECHWEB_POINT_TYPE_GENERIC "General Research"
 
 #define TECHWEB_POINT_TYPE_DEFAULT TECHWEB_POINT_TYPE_GENERIC
 
@@ -48,3 +45,9 @@
 #define PROTOLATHE	0x2	//New stuff. Uses glass/metal/chemicals
 #define MECHFAB		0x4	//Mechfab
 #define CHASSIS		0x8	//For protolathe, but differently
+
+#define SCIPAPER_COOPERATION_INDEX 1
+#define SCIPAPER_FUNDING_INDEX 2
+#define SCIENTIFIC_COOPERATION_PURCHASE_MULTIPLIER 0.01
+/// How much money is one point of gain worth.
+#define SCIPAPER_GAIN_TO_MONEY 125

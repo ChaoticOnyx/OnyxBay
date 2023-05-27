@@ -278,7 +278,7 @@
 	blocked = 0
 
 /obj/machinery/computer/arcade/proc/explode()
-	explosion(loc, 0, 1, 2, 3)
+	explosion(src, 0, 1, 2, 3)
 	qdel(src)
 
 /obj/machinery/computer/arcade/battle/emag_act(charges, mob/user)

@@ -148,7 +148,7 @@
 		loc.Exited(src)
 
 		if(prob(30))
-			explosion(get_turf(loc), 0, 0, 1, 3)
+			explosion(loc, 0, 0, 1, 3)
 
 	if(wreckage)
 		var/obj/effect/decal/mecha_wreckage/WR = new wreckage(loc)

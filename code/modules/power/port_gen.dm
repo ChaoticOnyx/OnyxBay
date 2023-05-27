@@ -83,7 +83,7 @@
 			stat &= ~EMPED
 
 /obj/machinery/power/port_gen/proc/explode()
-	explosion(src.loc, -1, 3, 5, -1)
+	explosion(src, -1, 3, 5, -1)
 	qdel(src)
 
 #define TEMPERATURE_DIVISOR 40
@@ -431,7 +431,7 @@
 	var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation/preset/uranium_238(rads))
 	rad_source.schedule_decay(5 MINUTES)
 
-	explosion(src.loc, rad_power+1, rad_power+1, rad_power*2, 3)
+	explosion(src, rad_power+1, rad_power+1, rad_power*2, 3)
 	qdel(src)
 
 /obj/machinery/power/port_gen/pacman/super/potato
@@ -507,5 +507,5 @@
 
 /obj/machinery/power/port_gen/pacman/mrs/explode()
 	//no special effects, but the explosion is pretty big (same as a supermatter shard).
-	explosion(src.loc, 3, 6, 12, 16, 1)
+	explosion(src, 3, 6, 12, 16, 1)
 	qdel(src)
