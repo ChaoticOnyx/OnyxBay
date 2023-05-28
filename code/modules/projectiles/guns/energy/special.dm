@@ -224,6 +224,7 @@
 		list(mode_name="mining mode", projectile_type = /obj/item/projectile/beam/plasmacutter, charge_cost = 0, fire_delay = 10, danger_attack = FALSE),
 		list(mode_name="battle mode", projectile_type = /obj/item/projectile/beam/plasmacutter/danger, charge_cost = 20, fire_delay = 6, danger_attack = TRUE),
 	)
+	has_safety = FALSE
 
 /obj/item/gun/energy/plasmacutter/_examine_text(mob/user)
 	. = ..()

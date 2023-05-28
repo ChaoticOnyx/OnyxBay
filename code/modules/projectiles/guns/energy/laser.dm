@@ -168,6 +168,7 @@
 	recharge_time = 10
 	accuracy = 0 //mounted laser cannons don't need any help, thanks
 	one_hand_penalty = 0
+	has_safety = FALSE
 
 /obj/item/gun/energy/xray
 	name = "x-ray laser carbine"
