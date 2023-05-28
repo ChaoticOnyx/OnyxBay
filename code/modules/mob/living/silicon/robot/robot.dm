@@ -118,6 +118,7 @@
 	wires = new(src)
 
 	robot_modules_background = new()
+	robot_modules_background.icon = 'icons/hud/common/screen_storage.dmi'
 	robot_modules_background.icon_state = "block"
 	ident = random_id(/mob/living/silicon/robot, 1, 999)
 	module_hulls["Basic"] = new /datum/robot_hull/spider/robot
