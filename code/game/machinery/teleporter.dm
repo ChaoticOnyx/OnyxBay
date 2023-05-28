@@ -20,6 +20,7 @@
 	var/obj/machinery/computer/teleporter/console
 
 	component_types = list(
+	/obj/item/circuitboard/teleporter_gate,
 	/obj/item/stock_parts/manipulator = 2,
 	/obj/item/stock_parts/capacitor = 2
 	)

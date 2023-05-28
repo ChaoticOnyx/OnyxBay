@@ -1061,6 +1061,7 @@
 #include "code\game\objects\items\circuitboards\machinery\research.dm"
 #include "code\game\objects\items\circuitboards\machinery\shieldgen.dm"
 #include "code\game\objects\items\circuitboards\machinery\telecomms.dm"
+#include "code\game\objects\items\circuitboards\machinery\teleporter.dm"
 #include "code\game\objects\items\circuitboards\machinery\unary_atmos.dm"
 #include "code\game\objects\items\devices\aicard.dm"
 #include "code\game\objects\items\devices\binoculars.dm"
