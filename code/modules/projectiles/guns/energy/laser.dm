@@ -29,6 +29,7 @@
 	use_external_power = 1
 	one_hand_penalty = 0 //just in case
 	icon_state = "blaser"
+	has_safety = FALSE
 
 /obj/item/gun/energy/laser/mounted/cyborg
 	max_shots = 6

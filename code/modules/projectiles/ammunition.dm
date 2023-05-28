@@ -12,33 +12,39 @@
 	var/leaves_residue = 1
 	var/caliber = ""					//Which kind of guns it can be loaded into
 	var/projectile_type					//The bullet type to create when New() is called
-	var/obj/item/projectile/BB = null	//The loaded bullet - make it so that the projectiles are created only when needed?
 	var/spent_icon = "s-casing-spent"
+	var/is_spent = FALSE
+	var/projectile_label
+	var/fall_sounds = SFX_CASING_DROP
 
 /obj/item/ammo_casing/Initialize()
-	. = ..()
-	if(ispath(projectile_type))
-		BB = new projectile_type(src)
+	if(!ispath(projectile_type))
+		is_spent = TRUE
 
-/obj/item/ammo_casing/Destroy()
-	QDEL_NULL(BB)
-	return ..()
+	if(randpixel)
+		pixel_x = rand(-randpixel, randpixel)
+		pixel_y = rand(-randpixel, randpixel)
+	. = ..()
 
 //removes the projectile from the ammo casing
 /obj/item/ammo_casing/proc/expend()
-	. = BB
-	if(BB.projectile_light)
-		BB.layer = ABOVE_LIGHTING_LAYER
-		BB.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		BB.set_light(BB.projectile_max_bright, BB.projectile_inner_range, BB.projectile_outer_range, BB.projectile_falloff_curve, BB.projectile_brightness_color)
-	BB = null
-	set_dir(pick(GLOB.alldirs)) //spin spent casings
+	if(!ispath(projectile_type))
+		return
+	if(is_spent)
+		return
+
+	var/obj/item/projectile/proj = new projectile_type(src)
+	is_spent = TRUE
+	if(projectile_label)
+		proj.SetName("[initial(proj.name)] (\"[projectile_label]\")")
 
 	// Aurora forensics port, gunpowder residue.
 	if(leaves_residue)
 		leave_residue()
 
 	update_icon()
+
+	return proj
 
 /obj/item/ammo_casing/proc/leave_residue()
 	var/mob/living/carbon/human/H
@@ -58,31 +64,33 @@
 	pixel_y = rand(-randpixel, randpixel)
 
 /obj/item/ammo_casing/attackby(obj/item/W as obj, mob/user as mob)
-	if(isScrewdriver(W))
-		if(!BB)
-			to_chat(user, "<span class='notice'>There is no bullet in the casing to inscribe anything into.</span>")
-			return
+	if(!isScrewdriver(W))
+		return ..()
 
-		var/tmp_label = ""
-		var/label_text = sanitizeSafe(input(user, "Inscribe some text into \the [initial(BB.name)]","Inscription",tmp_label), MAX_NAME_LEN)
-		if(length(label_text) > 20)
-			to_chat(user, "<span class='warning'>The inscription can be at most 20 characters long.</span>")
-		else if(!label_text)
-			to_chat(user, "<span class='notice'>You scratch the inscription off of [initial(BB)].</span>")
-			BB.SetName(initial(BB.name))
-		else
-			to_chat(user, "<span class='notice'>You inscribe \"[label_text]\" into \the [initial(BB.name)].</span>")
-			BB.SetName("[initial(BB.name)] (\"[label_text]\")")
+	if(is_spent)
+		to_chat(user, SPAN_NOTICE("There is no bullet in the casing to inscribe anything into."))
+		return
+
+	var/tmp_label = ""
+	var/label_text = sanitizeSafe(input(user, "Inscribe some text into \the [initial(projectile_type["name"])]","Inscription",tmp_label), MAX_NAME_LEN)
+	if(length(label_text) > 20)
+		to_chat(user, SPAN_WARNING("The inscription can be at most 20 characters long."))
+	else if(!label_text)
+		to_chat(user, SPAN_NOTICE("You scratch the inscription off of [initial(projectile_type["name"])]."))
+		projectile_label = null
 	else
-		..()
+		to_chat(user, SPAN_NOTICE("You inscribe \"[label_text]\" into \the [initial(projectile_type["name"])]."))
+		projectile_label = label_text
 
 /obj/item/ammo_casing/update_icon()
-	if(spent_icon && !BB)
+	if(spent_icon && is_spent)
 		icon_state = spent_icon
 
 /obj/item/ammo_casing/_examine_text(mob/user)
 	. = ..()
-	if (!BB)
+	if(caliber)
+		. += "\nIts caliber is [caliber]."
+	if(is_spent)
 		. += "\nThis one is spent."
 
 //Gun loading types

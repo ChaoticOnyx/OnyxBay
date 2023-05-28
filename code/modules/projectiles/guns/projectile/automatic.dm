@@ -275,8 +275,9 @@
 	//LMG, better sustained fire accuracy than assault rifles (comparable to SMG), higer move delay and one-handing penalty
 	//No single-shot or 3-round-burst modes since using this weapon should come at a cost to flexibility.
 	firemodes = list(
-		list(mode_name = "5-round bursts", burst = 5, move_delay = 12, one_hand_penalty = 8, burst_accuracy = list(0, -1, -1, -1, -2),             dispersion = list(0.0, 0.6, 0.6, 1.0, 1.0)),
-		list(mode_name = "8-round bursts", burst = 8, move_delay = 15, one_hand_penalty = 9, burst_accuracy = list(0, -1, -1, -2, -2, -2, -3, -3), dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2))
+		list(mode_name="short bursts", burst=5, fire_delay=5, one_hand_penalty=8,  burst_accuracy = list(0,-1,-1,-2,-2),          dispersion = list(0.6, 1.0, 1.0, 1.0, 1.2)),
+		list(mode_name="long bursts",  burst=8, fire_delay=5, one_hand_penalty=12, burst_accuracy = list(0,-1,-1,-2,-2,-2,-3,-3), dispersion = list(1.0, 1.0, 1.0, 1.0, 1.2)),
+		list(mode_name="full auto",    burst=1, burst_delay=0.6, fire_delay=0, one_hand_penalty=16, burst_accuracy = list(0,-1,-1,-2,-2,-2,-3,-3), dispersion = list(1.0, 1.0, 1.0, 1.0, 1.2), autofire_enabled=1),
 		)
 
 	var/cover_open = 0

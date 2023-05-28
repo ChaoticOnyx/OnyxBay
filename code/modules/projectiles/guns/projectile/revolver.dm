@@ -215,7 +215,7 @@
 						chambered = new /obj/item/ammo_casing/c38/chem/lethal(src)
 
 	if(chambered)
-		return chambered.BB
+		return chambered.expend()
 	return null
 
 /obj/item/gun/projectile/revolver/m2019/detective/attack_self(mob/living/user as mob)
@@ -236,7 +236,7 @@
 	insert_cell(C, user)
 	return 1
 /obj/item/gun/projectile/revolver/m2019/detective/proc/usecharge(UC)
-	if(bcell && chambered?.BB)
+	if(bcell && chambered?.expend())
 		if(bcell.checked_use(UC))
 			return 1
 		else

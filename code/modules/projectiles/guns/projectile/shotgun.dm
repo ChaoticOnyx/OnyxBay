@@ -23,7 +23,7 @@
 
 /obj/item/gun/projectile/shotgun/pump/consume_next_projectile()
 	if(chambered)
-		return chambered.BB
+		return chambered.expend()
 	return null
 
 /obj/item/gun/projectile/shotgun/pump/attack_self(mob/living/user as mob)
@@ -76,12 +76,13 @@
 	mod_weight = 1.0
 	mod_reach = 0.75
 	mod_handy = 0.75
+	has_safety = FALSE
 
 // Zip gun construction.
 /obj/item/boomstickframe
 	name = "modified welding tool"
 	desc = "A half-finished... gun?"
-	icon = 'icons/obj/gun.dmi'
+	icon = 'icons/obj/guns/gun.dmi'
 	icon_state = "boomstick0"
 	item_state = "welder"
 	force = 5.0

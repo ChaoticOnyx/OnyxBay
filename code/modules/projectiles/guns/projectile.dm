@@ -69,7 +69,7 @@
 			ammo_magazine.stored_ammo -= chambered
 
 	if (chambered)
-		return chambered.BB
+		return chambered.expend()
 	return null
 
 /obj/item/gun/projectile/handle_post_fire()
@@ -164,13 +164,11 @@
 	if(ammo_magazine)
 		if(allow_dump)
 			ammo_magazine.dropInto(user.loc)
-			user.visible_message("<b>[user]</b> ejects [ammo_magazine] from [src].",
-			SPAN("notice", "You eject [ammo_magazine] from [src]."))
+			user.visible_message("[user] ejects [ammo_magazine] from [src].", SPAN_NOTICE("You eject [ammo_magazine] from [src]."))
 		else
 			user.pick_or_drop(ammo_magazine)
-			user.visible_message("<b>[user]</b> removes [ammo_magazine] from [src].",
-			SPAN("notice", "You remove [ammo_magazine] from [src]."))
-		playsound(loc, mag_eject_sound, 75)
+			user.visible_message("[user] removes [ammo_magazine] from [src].", SPAN_NOTICE("You remove [ammo_magazine] from [src]."))
+		playsound(src.loc, mag_eject_sound, 50, 1)
 		ammo_magazine.update_icon()
 		ammo_magazine = null
 	else if(loaded.len)
@@ -180,12 +178,9 @@
 			var/turf/T = get_turf(user)
 			if(T)
 				for(var/obj/item/ammo_casing/C in loaded)
-					C.loc = T
+					C.forceMove(T)
 					C.SpinAnimation(4, 1)
-					if(istype(C, /obj/item/ammo_casing/shotgun))
-						playsound(C, 'sound/effects/weapons/gun/shell_fall.ogg', rand(45, 60), TRUE)
-					else
-						playsound(C, SFX_CASING_DROP, rand(45, 60), TRUE)
+					playsound(C, C.fall_sounds, rand(45, 60), TRUE)
 					count++
 				loaded.Cut()
 			if(count)
@@ -250,16 +245,19 @@
 
 /obj/item/gun/projectile/proc/ejectCasing()
 	if(istype(chambered, /obj/item/ammo_casing/shotgun))
-		chambered.loc = get_turf(src)
+		chambered.forceMove(get_turf(src))
 		chambered.SpinAnimation(4, 1)
 		playsound(chambered, 'sound/effects/weapons/gun/shell_fall.ogg', rand(45, 60), TRUE)
 	else
-		chambered.loc = get_turf(src)
-		if(prob(50))
-			chambered.throw_at(get_ranged_target_turf(get_turf(src), turn(loc.dir, 270), 1), 1, 1)
-		else
-			chambered.SpinAnimation(4, 1)
-		playsound(chambered, SFX_CASING_DROP, rand(45, 60), TRUE)
+		pixel_z = 8
+		chambered.SpinAnimation(4, 1)
+		var/angle_of_movement = ismob(loc) ? (rand(-30, 30)) + dir2angle(turn(loc.dir, -90)) : rand(-30, 30)
+		chambered.AddComponent(/datum/component/movable_physics, _horizontal_velocity = rand(45, 55) / 10, \
+		 _vertical_velocity = rand(40, 45) / 10, _horizontal_friction = rand(20, 24) / 100, _z_gravity = 9.8, \
+		 _z_floor = 0, _angle_of_movement = angle_of_movement, _physic_flags = QDEL_WHEN_NO_MOVEMENT, \
+		 _bounce_sounds = chambered.fall_sounds)
+		if(LAZYLEN(chambered.fall_sounds))
+			playsound(loc, pick(chambered.fall_sounds), rand(45, 60), 1)
 
 /* Unneeded -- so far.
 //in case the weapon has firemodes and can't unload using attack_hand()

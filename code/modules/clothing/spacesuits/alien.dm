@@ -109,7 +109,7 @@
 	name = "Deconstruction device"
 	var/charge = 3
 	var/mob/living/creator //This is just like ninja swords, needed to make sure dumb shit that removes the sword doesn't make it stay around.
-	icon = 'icons/obj/gun.dmi'
+	icon = 'icons/obj/guns/gun.dmi'
 	icon_state = "voxrcd"
 	desc = "A small device filled with biorobots."
 	var/mode = 1 //We have 3 types of mode, 1 - deconstruct, 2 - construct, 3 - construct doors
@@ -184,7 +184,7 @@
 /obj/item/alien_med_device
 	name = "Med-device"
 	var/charge = 3
-	icon = 'icons/obj/gun.dmi'
+	icon = 'icons/obj/guns/gun.dmi'
 	icon_state = "voxrcd"
 	desc = "A small bio-device with teeth."
 	var/recharge_time = 120 SECONDS

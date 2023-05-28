@@ -53,6 +53,7 @@
 		list(mode_name = "stun",   projectile_type = /obj/item/projectile/beam/stun),
 		list(mode_name = "shock",  projectile_type = /obj/item/projectile/beam/stun/shock),
 		)
+	has_safety = FALSE
 
 /obj/item/gun/energy/taser/mounted/cyborg
 	name = "taser gun"
