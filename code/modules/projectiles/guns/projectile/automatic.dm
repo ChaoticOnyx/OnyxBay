@@ -11,6 +11,12 @@
 	multi_aim = 1
 	burst_delay = 2
 
+	firemodes = list(
+		list(mode_name="3-round bursts", burst=3, fire_delay=null, one_hand_penalty=4, burst_accuracy=list(0,-1,-1),       dispersion=list(0.0, 1.6, 2.4, 2.4)),
+		list(mode_name="short bursts",   burst=5, fire_delay=null, one_hand_penalty=5, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(1.6, 1.6, 2.0, 2.0, 2.4)),
+		list(mode_name="full auto",      burst=1, fire_delay=0, burst_delay=1, one_hand_penalty=5, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(1.0, 1.0, 1.2, 1.4, 1.6), autofire_enabled=1)
+	)
+
 /obj/item/gun/projectile/automatic/machine_pistol
 	name = "prototype .45 machine pistol"
 	desc = "A protoype lightweight, fast firing gun. Uses .45 rounds."
@@ -26,8 +32,10 @@
 	firemodes = list(
 		list(mode_name = "semiauto",       burst = 1, fire_delay = 0,    move_delay = null, one_hand_penalty = 0, burst_accuracy = null,                    dispersion = null),
 		list(mode_name = "3-round bursts", burst = 3, fire_delay = null, move_delay = 4,    one_hand_penalty = 1, burst_accuracy = list(0, -1,- 1),         dispersion = list(0.0, 0.6, 1.0)),
-		list(mode_name = "5-round bursts", burst = 5, fire_delay = null, move_delay = 4,    one_hand_penalty = 2, burst_accuracy = list(0, -1, -1, -1, -2), dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2))
+		list(mode_name="short bursts",   burst=5, fire_delay=null, one_hand_penalty=5, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(1.6, 1.6, 2.0, 2.0, 2.4)),
+		list(mode_name="full auto",      burst=1, fire_delay=0, burst_delay=1, one_hand_penalty=5, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(1.0, 1.0, 1.2, 1.4, 1.6), autofire_enabled=1)
 		)
+
 /obj/item/gun/projectile/automatic/machine_pistol/update_icon()
 	if(ammo_magazine)
 		icon_state = "mpistolen"
@@ -85,7 +93,8 @@
 	firemodes = list(
 		list(mode_name = "semiauto",       burst = 1, fire_delay = 0,    move_delay = null, one_hand_penalty = 1, burst_accuracy = null,                    dispersion = null),
 		list(mode_name = "3-round bursts", burst = 3, fire_delay = null, move_delay = 4,    one_hand_penalty = 2, burst_accuracy = list(0, -1, -1),         dispersion = list(0.0, 0.6, 1.0)),
-		list(mode_name = "5-round bursts", burst = 5, fire_delay = null, move_delay = 4,    one_hand_penalty = 3, burst_accuracy = list(0, -1, -1, -1, -2), dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2))
+		list(mode_name = "5-round bursts", burst = 5, fire_delay = null, move_delay = 4,    one_hand_penalty = 3, burst_accuracy = list(0, -1, -1, -1, -2), dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2)),
+		list(mode_name="full auto",      burst=1, fire_delay=0, burst_delay=1, one_hand_penalty=6, burst_accuracy=list(0,-1,-2), dispersion=list(0.4, 0.8, 1.2), autofire_enabled=1),
 		)
 
 /obj/item/gun/projectile/automatic/wt550/update_icon()
@@ -152,7 +161,8 @@
 	firemodes = list(
 		list(mode_name = "semiauto",       burst = 1, fire_delay = 0,    move_delay = null, one_hand_penalty = 3, burst_accuracy = null,                    dispersion = null),
 		list(mode_name = "3-round bursts", burst = 3, fire_delay = null, move_delay = 6,    one_hand_penalty = 5, burst_accuracy = list(0, -1, -1),         dispersion = list(0.0, 0.6, 1.0)),
-		list(mode_name = "5-round bursts", burst = 5, fire_delay = null, move_delay = 6,    one_hand_penalty = 6, burst_accuracy = list(0, -1, -2, -3, -3), dispersion = list(0.6, 1.0, 1.2, 1.2, 1.5))
+		list(mode_name = "5-round bursts", burst = 5, fire_delay = null, move_delay = 6,    one_hand_penalty = 6, burst_accuracy = list(0, -1, -2, -3, -3), dispersion = list(0.6, 1.0, 1.2, 1.2, 1.5)),
+		list(mode_name="full auto",      burst=1,    fire_delay=0,    burst_delay=1,     one_hand_penalty=7,  burst_accuracy=list(0,-1,-1),       dispersion=list(0.2, 0.6, 1.0), autofire_enabled=1)
 		)
 
 /obj/item/gun/projectile/automatic/as75/update_icon()
@@ -196,7 +206,8 @@
 	firemodes = list(
 		list(mode_name = "semiauto",       burst = 1,    fire_delay = 0,    move_delay = null, use_launcher = null, one_hand_penalty = 5, burst_accuracy = null,            dispersion = null),
 		list(mode_name = "3-round bursts", burst = 3,    fire_delay = null, move_delay = 6,    use_launcher = null, one_hand_penalty = 6, burst_accuracy = list(0, -1, -1), dispersion = list(0.0, 0.6, 1.0)),
-		list(mode_name = "fire grenades",  burst = null, fire_delay = null, move_delay = null, use_launcher = 1,    one_hand_penalty = 5, burst_accuracy = null,            dispersion = null)
+		list(mode_name = "fire grenades",  burst = null, fire_delay = null, move_delay = null, use_launcher = 1,    one_hand_penalty = 5, burst_accuracy = null,            dispersion = null),
+		list(mode_name="full auto",      burst=1,    fire_delay=0,    burst_delay=1.5,     use_launcher=null,   one_hand_penalty=10,            burst_accuracy = list(0,-1,-1), dispersion=list(0.2, 0.6, 1.2), autofire_enabled=1),
 		)
 
 	var/use_launcher = 0
