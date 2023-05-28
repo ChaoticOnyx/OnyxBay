@@ -772,45 +772,6 @@
 				if(25 to 40)        pains.icon_state = "pain2"
 				if(10 to 25)        pains.icon_state = "pain1"
 				else                pains.icon_state = "pain0"
-		if(healths)
-			healths.overlays.Cut()
-			var/painkiller_mult = chem_effects[CE_PAINKILLER] / 100
-
-			if(painkiller_mult > 1)
-				healths.icon_state = "health_numb"
-			else
-				// Generate a by-limb health display.
-				healths.icon_state = "health"
-
-				var/no_damage = 1
-				var/trauma_val = 0 // Used in calculating softcrit/hardcrit indicators.
-				var/canfeelpain = can_feel_pain()
-				if(canfeelpain)
-					trauma_val = max(shock_stage, get_shock()) / species.total_health
-				// Collect and apply the images all at once to avoid appearance churn.
-				var/list/health_images = list()
-				for(var/obj/item/organ/external/E in organs)
-					if(no_damage && (E.brute_dam || E.burn_dam))
-						no_damage = 0
-					health_images += E.get_damage_hud_image(painkiller_mult)
-
-				// Apply a fire overlay if we're burning.
-				if(on_fire)
-					health_images += image('icons/hud/common/screen_health.dmi', "burning")
-
-				// Show a general pain/crit indicator if needed.
-				if(is_asystole() && !isundead(src))
-					health_images += image('icons/hud/common/screen_health.dmi', "hardcrit")
-				else if(trauma_val)
-					if(canfeelpain)
-						if(trauma_val > 0.7)
-							health_images += image('icons/hud/common/screen_health.dmi', "softcrit")
-						if(trauma_val >= 1)
-							health_images += image('icons/hud/common/screen_health.dmi', "hardcrit")
-				else if(no_damage)
-					health_images += image('icons/hud/common/screen_health.dmi', "fullhealth")
-
-				healths.overlays += health_images
 
 		if(nutrition_icon)
 			var/normalized_nutrition = nutrition / body_build.stomach_capacity
@@ -903,6 +864,54 @@
 					else
 						bodytemp.icon_state = "temp0"
 	return 1
+
+/mob/living/carbon/human/handle_hud_icons_health()
+	if(!healths)
+		return
+
+	healths.overlays.Cut()
+
+	if(is_ic_dead())
+		LAZYADD(healths.overlays, image('icons/hud/common/screen_health.dmi', "dead"))
+		return
+
+	var/painkiller_mult = chem_effects[CE_PAINKILLER] / 100
+	if(painkiller_mult > 1)
+		LAZYADD(healths.overlays, image('icons/hud/common/screen_health.dmi', "numb"))
+		return
+
+
+	var/trauma_val = 0
+	var/canfeelpain = can_feel_pain()
+	if(canfeelpain)
+		trauma_val = max(shock_stage, get_shock()) / species.total_health
+
+	// Collect and apply the images all at once to avoid appearance churn.
+	var/no_damage = TRUE
+	var/list/health_images = list()
+	for(var/obj/item/organ/external/E in organs)
+		if(no_damage && (E.brute_dam || E.burn_dam))
+			no_damage = FALSE
+		health_images += E.get_damage_hud_image(painkiller_mult)
+
+	// Apply a fire overlay if we're burning.
+	if(on_fire)
+		health_images += image('icons/hud/common/screen_health.dmi', "burning")
+
+	// Show a general pain/crit indicator if needed.
+	if(is_asystole() && !isundead(src))
+		health_images += image('icons/hud/common/screen_health.dmi', "hardcrit")
+	else if(trauma_val)
+		if(canfeelpain)
+			if(trauma_val > 0.7)
+				health_images += image('icons/hud/common/screen_health.dmi', "softcrit")
+			if(trauma_val >= 1)
+				health_images += image('icons/hud/common/screen_health.dmi', "hardcrit")
+	else if(no_damage)
+		health_images += image('icons/hud/common/screen_health.dmi', "fullhealth")
+
+	healths.overlays += health_images
+	return
 
 /mob/living/carbon/human/handle_random_events()
 	// Puke if toxloss is too high
