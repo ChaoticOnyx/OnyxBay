@@ -112,25 +112,25 @@
 /proc/angle2dir(degree)
 	degree = (degree + 22.5) % 360 // 22.5 = 45 / 2
 	if (degree < 45)  return NORTH
-	if (degree < 90)  return NORTHEAST
-	if (degree < 135) return EAST
-	if (degree < 180) return SOUTHEAST
+	if (degree < 90)  return NORTHWEST
+	if (degree < 135) return WEST
+	if (degree < 180) return SOUTHWEST
 	if (degree < 225) return SOUTH
-	if (degree < 270) return SOUTHWEST
-	if (degree < 315) return WEST
-	return NORTH|WEST
+	if (degree < 270) return SOUTHEAST
+	if (degree < 315) return EAST
+	return NORTH|EAST
 
-// Returns the north-zero clockwise angle in degrees, given a direction
+// Returns the north-zero counter-clockwise angle in degrees, given a direction
 /proc/dir2angle(D)
 	switch (D)
 		if (NORTH)     return 0
 		if (SOUTH)     return 180
-		if (EAST)      return 90
-		if (WEST)      return 270
-		if (NORTHEAST) return 45
-		if (SOUTHEAST) return 135
-		if (NORTHWEST) return 315
-		if (SOUTHWEST) return 225
+		if (WEST)      return 90
+		if (EAST)      return 270
+		if (NORTHWEST) return 45
+		if (SOUTHWEST) return 135
+		if (NORTHEAST) return 315
+		if (SOUTHEAST) return 225
 
 // Returns the angle in english
 /proc/angle2text(degree)
