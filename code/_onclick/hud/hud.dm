@@ -46,12 +46,23 @@
 		plane.backdrop(src)
 
 /datum/hud
+	/// The mob this hud belongs to
 	var/mob/mymob
 
-	var/hud_shown = 1			//Used for the HUD toggle (F12)
-	var/inventory_shown = 1		//the inventory
-	var/show_intent_icons = 0
-	var/hotkey_ui_hidden = 0	//This is to hide the buttons that can be used via hotkeys. (hotkeybuttons list of buttons)
+	/// Used to toggle the hud (F12)
+	var/hud_shown = TRUE
+	/// Used to show mob's inventory
+	var/inventory_shown = TRUE
+
+	/// Used to toggle hotkey buttons
+	var/hotkey_buttons_shown = TRUE
+	/// List of all buttons with binded hotkeys
+	var/list/obj/screen/hotkeybuttons
+
+	/// Used to toggle action buttons
+	var/action_buttons_hidden = FALSE
+	/// List of all toggleable action buttons
+	var/obj/screen/movable/action_button/hide_toggle/hide_actions_toggle
 
 	var/obj/screen/lingchemdisplay
 	var/obj/screen/r_hand_hud_object
@@ -59,12 +70,15 @@
 	var/obj/screen/action_intent
 	var/obj/screen/move_intent
 
-	var/list/adding
-	var/list/other
-	var/list/obj/screen/hotkeybuttons
+	/// List of status objects (healths, toxin and etc.)
+	var/list/obj/screen/infodisplay
 
-	var/obj/screen/movable/action_button/hide_toggle/hide_actions_toggle
-	var/action_buttons_hidden = 0
+	/// List of all static buttons
+	var/list/obj/screen/static_inventory
+	/// List of all equipment slot buttons
+	var/list/obj/screen/toggleable_inventory
+	/// List of all buttons that never exit the view
+	var/list/obj/screen/always_visible_inventory
 
 /datum/hud/New(mob/owner)
 	mymob = owner
@@ -78,8 +92,10 @@
 	l_hand_hud_object = null
 	action_intent = null
 	move_intent = null
-	adding = null
-	other = null
+	infodisplay = null
+	static_inventory = null
+	toggleable_inventory = null
+	always_visible_inventory = null
 	hotkeybuttons = null
 	mymob = null
 
