@@ -59,8 +59,7 @@
 	if (!istype(M))
 		return 1
 
-	M.hud_used.hud_shown = 1
-	M.button_pressed_F12(1)
+	M.hud_used.show_hud(HUD_STYLE_NONE)
 
 	M.overlay_fullscreen("scanlines", /obj/screen/fullscreen/scanline)
 	M.overlay_fullscreen("cam_corners", /obj/screen/fullscreen/cam_corners)
@@ -81,8 +80,7 @@
 	if (!istype(M))
 		return 1
 
-	M.hud_used.hud_shown = 0
-	M.button_pressed_F12(0)
+	M.hud_used.show_hud(HUD_STYLE_STANDART)
 
 	var/obj/screen/rec/R = (locate(/obj/screen/rec) in M.client.screen)
 	if (R)
