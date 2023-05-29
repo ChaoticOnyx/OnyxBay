@@ -272,7 +272,7 @@
 	else
 		..()
 
-/obj/machinery/camera/proc/deactivate(user as mob, choice = 1)
+/obj/machinery/camera/proc/deactivate(mob/user, choice = 1)
 	// The only way for AI to reactivate cameras are malf abilities, this gives them different messages.
 	if(istype(user, /mob/living/silicon/ai))
 		user = null
