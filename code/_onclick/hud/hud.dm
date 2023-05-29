@@ -60,9 +60,8 @@
 
 	/// Used to toggle action buttons
 	var/action_buttons_hidden = FALSE
-	/// List of all toggleable action buttons
-	var/obj/screen/movable/action_button/hide_toggle/hide_actions_toggle
 
+	var/obj/screen/movable/action_button/hide_toggle/hide_actions_toggle
 	var/obj/screen/lingchemdisplay
 	var/obj/screen/r_hand_hud_object
 	var/obj/screen/l_hand_hud_object
@@ -212,7 +211,7 @@
 
 	hud_used.show_hud()
 
-/// Used to switch between hud "styles", cycles  if `0` is set
+/// Used to switch between HUD "styles", cycles  if `0` passed
 /datum/hud/proc/show_hud(hud_style = 0)
 	if(!ismob(mymob))
 		return FALSE
