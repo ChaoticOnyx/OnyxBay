@@ -1,20 +1,20 @@
-// Adds a typing indicator over the mob.
+/// Adds a typing indicator over the mob.
 /mob/proc/create_typing_indicator()
 	return
 
-// Removes the typing indicator over the mob.
+/// Removes the typing indicator over the mob.
 /mob/proc/remove_typing_indicator()
 	return
 
-// Adds a thinking indicator over the mob.
+/// Adds a thinking indicator over the mob.
 /mob/proc/create_thinking_indicator()
 	return
 
-// Removes the thinking indicator over the mob.
+/// Removes the thinking indicator over the mob.
 /mob/proc/remove_thinking_indicator()
 	return
 
-// Removes all indicators and marks mob as not speaking IC.
+/// Removes all indicators and marks mob as not speaking IC.
 /mob/proc/remove_all_indicators()
 	return
 
