@@ -50,8 +50,7 @@
 	if(findtext(text, "Say ", 1, 5))
 		thinking_IC = TRUE
 		start_typing()
-	else
-		remove_all_indicators()
+		return
 
 /mob/verb/remove_speech_bubble()
 	set name = ".remove_speech_bubble"
@@ -59,7 +58,19 @@
 
 	ASSERT(client && src == usr)
 
-	stop_typing()
+	var/visible = winget(usr, "saywindow", "is-visible")
+	if(cmptext(visible, "true"))
+		stop_typing()
+		return
+
+	var/focus = winget(usr, ":input", "focus")
+	if(cmptext(focus, "false"))
+		var/text = winget(usr, ":input", "text")
+		if(findtext(text, "Say ", 1, 5) && length(text) > 5)
+			stop_typing()
+			return
+
+	remove_all_indicators()
 
 /mob/verb/me_wrapper()
 	set name = ".Me"
