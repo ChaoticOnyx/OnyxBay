@@ -215,3 +215,5 @@
 	var/active_thinking_indicator
 	/// Is user typing in character
 	var/thinking_IC = FALSE
+	/// Whether typing indicator sould be shown
+	var/thinking_silent = FALSE
