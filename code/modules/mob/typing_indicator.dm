@@ -33,7 +33,7 @@
 	if (return_content)
 		. = winget(src, "saywindow.saywindow-input", "text")
 	winset(src, "saywindow.saywindow-input", "text=\"\"")
-	mob.remove_all_indicators()
+	mob.remove_speech_bubble()
 
 /mob/verb/add_speech_bubble(is_sayinput as num|null)
 	set name = ".add_speech_bubble"
