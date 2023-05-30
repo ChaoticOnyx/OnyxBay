@@ -342,13 +342,14 @@ Class Procs:
 		return 0
 	. = dismantle()
 
-/obj/machinery/proc/default_deconstruction_screwdriver(mob/user, obj/item/S)
+/obj/machinery/proc/default_deconstruction_screwdriver(mob/user, obj/item/S, update_appearance = TRUE)
 	if(!isScrewdriver(S))
 		return 0
 	playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 	panel_open = !panel_open
-	to_chat(user, "<span class='notice'>You [panel_open ? "open" : "close"] the maintenance hatch of \the [src].</span>")
-	update_icon()
+	to_chat(user, SPAN_NOTICE("You [panel_open ? "open" : "close"] the maintenance hatch of \the [src]."))
+	if(update_appearance)
+		update_icon()
 	return 1
 
 /obj/machinery/proc/default_part_replacement(mob/user, obj/item/storage/part_replacer/R)

@@ -165,16 +165,3 @@
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 1
 	has_visor = 0
-
-/obj/item/clothing/head/helmet/pioneer
-	name = "pioneer's helmet"
-	desc = "A helmet with optical and cranial augments coupled to it."
-	icon_state = "pioneer_helmet"
-	valid_accessory_slots = null
-	armor = list(melee = 50, bullet = 90, laser = 50, energy = 5, bomb = 35, bio = 2)
-	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE
-	body_parts_covered = HEAD|BLOCKHEADHAIR|FACE
-	cold_protection = HEAD
-	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
-	siemens_coefficient = 0.4
-	has_visor = 0

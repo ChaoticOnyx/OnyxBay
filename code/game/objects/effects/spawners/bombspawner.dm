@@ -1,7 +1,7 @@
 /* The old single tank bombs that dont really work anymore
 /obj/effect/spawner/bomb
 	name = "bomb"
-	icon = 'icons/mob/screen1.dmi'
+	icon = 'icons/misc/markers.dmi'
 	icon_state = "x"
 	var/btype = 0  //0 = radio, 1= prox, 2=time
 	var/explosive = 1	// 0= firebomb
@@ -127,7 +127,7 @@
 
 /obj/effect/spawner/newbomb
 	name = "TTV bomb"
-	icon = 'icons/mob/screen1.dmi'
+	icon = 'icons/misc/markers.dmi'
 	icon_state = "x"
 
 	var/assembly_type = /obj/item/device/assembly/signaler
@@ -204,7 +204,7 @@
 
 /obj/effect/spawner/onetankbomb
 	name = "Single-tank bomb"
-	icon = 'icons/mob/screen1.dmi'
+	icon = 'icons/misc/markers.dmi'
 	icon_state = "x"
 
 //	var/assembly_type = /obj/item/device/assembly/signaler

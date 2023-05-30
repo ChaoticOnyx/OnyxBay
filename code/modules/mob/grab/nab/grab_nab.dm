@@ -25,8 +25,6 @@
 
 	type_name = GRAB_NAB
 
-	icon = 'icons/mob/screen1.dmi'
-
 	stop_move = 1
 	force_stand = 1
 	reverse_moving = TRUE

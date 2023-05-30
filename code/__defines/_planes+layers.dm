@@ -157,8 +157,7 @@
 	#define OBSERVER_LAYER              5.1
 	#define OBFUSCATION_LAYER           5.2
 
-	#define CHAT_LAYER                  12.0001
-	#define CHAT_LAYER_MAX              12.9999
+	#define TYPING_LAYER                10
 
 	#define BASE_AREA_LAYER             999
 
@@ -174,6 +173,10 @@
 	#define EYE_GLOW_LAYER         		1
 	#define BEAM_PROJECTILE_LAYER  		2
 	#define SUPERMATTER_WALL_LAYER 		3
+	#define SPLASH_TEXT_LAYER           4
+
+	#define CHAT_LAYER                  5.0001
+	#define CHAT_LAYER_MAX              5.9999
 
 #define OBFUSCATION_PLANE				5 // AI
 

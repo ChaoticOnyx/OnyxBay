@@ -12,8 +12,10 @@
 /datum/phenomena/animate/activate(atom/a)
 	..()
 	a.visible_message("\The [a] begins to shift and twist...")
-	var/mob/living/simple_animal/hostile/mimic/mimic = new(get_turf(a), a)
+	var/mob/living/simple_animal/hostile/mimic/mimic = new(get_turf(a), a, make_controllable = TRUE)
+	log_and_message_admins("A mimic has spawned", null, get_turf(a), mimic)
 	mimic.faction = linked.form.faction
+	notify_ghosts("A new mimic available", null, mimic, posses_mob = TRUE)
 
 /datum/phenomena/warp
 	name = "Warp Body"

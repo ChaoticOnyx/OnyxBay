@@ -35,7 +35,7 @@
 
 /mob/living/carbon/human/death(gibbed, deathmessage = "seizes up and falls limp...", show_dead_message = "You have died.")
 
-	if(stat == DEAD)
+	if(is_ic_dead())
 		return
 
 	BITSET(hud_updateflag, HEALTH_HUD)

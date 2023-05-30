@@ -187,7 +187,7 @@ list(\
 
 	H.add_language("Cortical Link")
 
-	if(host.stat == DEAD)
+	if(host.is_ooc_dead())
 		H.verbs |= /mob/living/carbon/human/proc/jumpstart
 
 	H.verbs |= BORER_ALL_ABILITIES["husk"]
@@ -256,7 +256,7 @@ list(\
 
 	var/list/choices = list()
 	for(var/mob/living/carbon/human/H in view(3,src))
-		if(H.stat != DEAD)
+		if(!H.is_ic_dead())
 			choices += H
 
 	var/mob/living/carbon/human/H = input(src,"Who do you wish to dominate?") in null|choices
@@ -410,7 +410,7 @@ list(\
 
 	verbs -= /mob/living/carbon/human/proc/jumpstart
 
-	if(stat != DEAD)
+	if(!is_ic_dead())
 		to_chat(usr, "Your host is already alive.")
 		return
 

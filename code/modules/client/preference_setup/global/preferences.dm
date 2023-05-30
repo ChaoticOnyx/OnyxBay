@@ -96,6 +96,12 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 	default_value = GLOB.PREF_YES
 
+/datum/client_preference/splashes
+	description = "Show Splashes (Runechat-Like-Popups)"
+	key = "CHAT_SPLASHES"
+	default_value = GLOB.PREF_YES
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
 /datum/client_preference/play_admin_midis
 	description ="Play admin midis"
 	key = "SOUND_MIDI"
@@ -153,35 +159,11 @@ var/global/list/_client_preferences_by_type
 	key = "SOUND_HITMARKER"
 	category = PREF_CATEGORY_AUDIO
 
-/datum/client_preference/ghost_ears
-	description ="Ghost ears"
-	key = "CHAT_GHOSTEARS"
-	category = PREF_CATEGORY_GHOST
-	options = list(GLOB.PREF_ALL_SPEECH, GLOB.PREF_NEARBY)
-
-/datum/client_preference/ghost_sight
-	description ="Ghost sight"
-	key = "CHAT_GHOSTSIGHT"
-	category = PREF_CATEGORY_GHOST
-	options = list(GLOB.PREF_ALL_EMOTES, GLOB.PREF_NEARBY)
-
-/datum/client_preference/ghost_radio
-	description ="Ghost radio"
-	key = "CHAT_GHOSTRADIO"
-	category = PREF_CATEGORY_GHOST
-	options = list(GLOB.PREF_ALL_CHATTER, GLOB.PREF_NEARBY)
-
 /datum/client_preference/language_display
 	description = "Display Language Names"
 	key = "LANGUAGE_DISPLAY"
 	category = PREF_CATEGORY_CHAT
 	options = list(GLOB.PREF_FULL, GLOB.PREF_SHORTHAND, GLOB.PREF_OFF)
-
-/datum/client_preference/ghost_follow_link_length
-	description ="Ghost Follow Links"
-	key = "CHAT_GHOSTFOLLOWLINKLENGTH"
-	category = PREF_CATEGORY_GHOST
-	options = list(GLOB.PREF_SHORT, GLOB.PREF_LONG)
 
 /datum/client_preference/show_typing_indicator
 	description ="Typing indicator"
@@ -190,8 +172,7 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
 /datum/client_preference/show_typing_indicator/changed(mob/preference_mob, new_value)
-	if(new_value == GLOB.PREF_HIDE)
-		QDEL_NULL(preference_mob.typing_indicator)
+	preference_mob?.client.typing_indicators = new_value
 
 /datum/client_preference/show_progress_bar
 	description ="Progress Bar"
@@ -235,6 +216,24 @@ var/global/list/_client_preferences_by_type
 	key = "TGUI_THEME"
 	category = PREF_CATEGORY_TGUI
 	options = list(GLOB.PREF_WHITE, GLOB.PREF_DARK)
+
+/datum/client_preference/tgui_input
+	description = "TGUI Input"
+	key = "TGUI_INPUT"
+	category = PREF_CATEGORY_TGUI
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
+/datum/client_preference/tgui_input_large
+	description = "TGUI Input Large Buttons"
+	key = "TGUI_INPUT_BUTTONS"
+	category = PREF_CATEGORY_TGUI
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
+/datum/client_preference/tgui_input_swapped
+	description = "TGUI Input Swapped Buttons"
+	key = "TGUI_INPUT_SWAPPED"
+	category = PREF_CATEGORY_TGUI
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 
 /datum/client_preference/tgui_chat
 	description = "TGUI Chat"
@@ -316,6 +315,64 @@ var/global/list/_client_preferences_by_type
 	category = PREF_CATEGORY_CONTROL
 	default_value = GLOB.PREF_NO
 
+/********************
+* Ghost Preferences *
+********************/
+/datum/client_preference/ghost_ears
+	description ="Ghost ears"
+	key = "CHAT_GHOSTEARS"
+	category = PREF_CATEGORY_GHOST
+	options = list(GLOB.PREF_ALL_SPEECH, GLOB.PREF_NEARBY)
+
+/datum/client_preference/ghost_sight
+	description ="Ghost sight"
+	key = "CHAT_GHOSTSIGHT"
+	category = PREF_CATEGORY_GHOST
+	options = list(GLOB.PREF_ALL_EMOTES, GLOB.PREF_NEARBY)
+
+/datum/client_preference/ghost_radio
+	description ="Ghost radio"
+	key = "CHAT_GHOSTRADIO"
+	category = PREF_CATEGORY_GHOST
+	options = list(GLOB.PREF_ALL_CHATTER, GLOB.PREF_NEARBY)
+
+/datum/client_preference/ghost_follow_link_length
+	description ="Ghost Follow Links"
+	key = "CHAT_GHOSTFOLLOWLINKLENGTH"
+	category = PREF_CATEGORY_GHOST
+	options = list(GLOB.PREF_SHORT, GLOB.PREF_LONG)
+
+/datum/client_preference/affects_ghost/changed(mob/preference_mob, new_value)
+	var/mob/observer/ghost/preference_ghost = preference_mob
+	if(istype(preference_ghost))
+		preference_ghost.updateghostprefs()
+		preference_ghost.updateghostsight()
+
+/datum/client_preference/affects_ghost/ghost_anonymous_chat
+	description = "Ghost anonymous chat"
+	key = "CHAT_GHOSTANONSAY"
+	category = PREF_CATEGORY_GHOST
+	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+
+/datum/client_preference/affects_ghost/ghost_see_ghosts
+	description = "Ghost see ghosts"
+	key = "GHOST_SEEGHOSTS"
+	category = PREF_CATEGORY_GHOST
+	default_value = GLOB.PREF_YES
+	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+
+/datum/client_preference/affects_ghost/ghost_inquisitiveness
+	description = "Ghost inquisitiveness"
+	key = "GHOST_INQUISITIVENESS"
+	category = PREF_CATEGORY_GHOST
+	default_value = GLOB.PREF_YES
+	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+
+/datum/client_preference/affects_ghost/ghost_lighting
+	description = "Ghost lighting"
+	key = "GHOST_DARKVISION"
+	category = PREF_CATEGORY_GHOST
+	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
 
 /********************
 * General Staff Preferences *

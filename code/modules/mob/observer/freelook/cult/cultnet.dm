@@ -6,7 +6,7 @@
 	for(var/source in sources)
 		if(istype(source, /mob/living))
 			var/mob/living/L = source
-			if(L.stat == DEAD)
+			if(L.is_ic_dead())
 				continue
 
 		for(var/turf/t in seen_turfs_in_range(source, world.view))

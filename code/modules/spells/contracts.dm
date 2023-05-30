@@ -1,7 +1,7 @@
 /obj/item/contract
 	name = "contract"
 	desc = "written in the blood of some unfortunate fellow."
-	icon = 'icons/mob/screen_spells.dmi'
+	icon = 'icons/hud/screen_spells.dmi'
 	icon_state = "master_open"
 
 	var/contract_master = null
@@ -157,4 +157,3 @@
 /obj/item/contract/boon/wizard/charge
 	path = /datum/spell/aoe_turf/charge
 	desc = "This contract is made of 100% post-consumer wizard."
-

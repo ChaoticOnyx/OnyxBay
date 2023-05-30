@@ -8,7 +8,6 @@
 */
 /obj/screen
 	name = ""
-	icon = 'icons/mob/screen1.dmi'
 	plane = HUD_PLANE
 	layer = HUD_BASE_LAYER
 	appearance_flags = DEFAULT_APPEARANCE_FLAGS |NO_CLIENT_COLOR
@@ -80,6 +79,12 @@
 		var/obj/item/I = usr.get_active_hand()
 		if(I)
 			usr.ClickOn(master)
+	return 1
+
+/obj/screen/stored
+	name = "stored"
+
+/obj/screen/stored/Click()
 	return 1
 
 /obj/screen/zone_sel
@@ -157,10 +162,10 @@
 
 /obj/screen/zone_sel/update_icon()
 	overlays.Cut()
-	overlays += image('icons/mob/zone_sel.dmi', "[selecting]")
+	overlays += image('icons/hud/common/screen_zone_sel.dmi', "[selecting]")
+
 /obj/screen/intent
 	name = "intent"
-	icon = 'icons/mob/screen1_white.dmi'
 	icon_state = "intent_help"
 	screen_loc = ui_acti
 	var/intent = I_HELP

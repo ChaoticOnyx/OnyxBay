@@ -9,6 +9,9 @@
 	new_alien.faction = "xenomorph"
 	return new_alien
 
+/mob/living/carbon/human/xenos
+	bubble_icon = "alien"
+
 /mob/living/carbon/human/xenos/New(new_loc, new_species)
 	h_style = "Bald"
 	faction = "xenomorph"

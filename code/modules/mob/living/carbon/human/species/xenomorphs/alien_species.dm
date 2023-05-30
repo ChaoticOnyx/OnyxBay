@@ -125,7 +125,7 @@
 	..()
 
 /datum/species/xenos/proc/regenerate(mob/living/carbon/human/H)
-	if(H.stat == DEAD)
+	if(H.is_ooc_dead())
 		return TRUE // So we neither regenerate nor gain plasma once dead
 	var/heal_rate = weeds_heal_rate
 	var/mend_prob = 20
@@ -414,7 +414,7 @@
 
 /datum/hud_data/alien
 
-	icon = 'icons/mob/screen1_alien.dmi'
+	icon = 'icons/hud/mob/screen_alien.dmi'
 	has_a_intent =  1
 	has_m_intent =  1
 	has_warnings =  0

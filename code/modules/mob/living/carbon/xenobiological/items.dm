@@ -305,7 +305,7 @@
 	for(var/mob/observer/ghost/O in src.loc)
 		if(!O.client)
 			continue
-		if(O.mind && O.mind.current && O.mind.current.stat != DEAD)
+		if(O.mind && O.mind.current && !O.mind.current.is_ooc_dead())
 			continue
 		ghost = O
 		break
@@ -321,7 +321,7 @@
 	for(var/mob/observer/ghost/O in src.loc)
 		if(!O.client)
 			continue
-		if(O.mind && O.mind.current && O.mind.current.stat != DEAD)
+		if(O.mind && O.mind.current && !O.mind.current.is_ooc_dead())
 			continue
 		ghost = O
 		break

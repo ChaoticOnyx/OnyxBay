@@ -20,8 +20,15 @@
 	message = sanitize(message)
 	var/obj/item/organ/internal/voicebox/vox = locate() in internal_organs
 	var/snowflake_speak = (language?.flags & (NONVERBAL|SIGNLANG)) || (vox?.is_usable() && (language in vox.assists_languages))
-	if(!full_prosthetic && need_breathe() && failed_last_breath && !snowflake_speak)
+
+	if(stat == CONSCIOUS && !full_prosthetic && need_breathe() && failed_last_breath && !snowflake_speak)
 		var/obj/item/organ/internal/lungs/L = internal_organs_by_name[species.breathing_organ]
+		
+		var/first_char = copytext_char(message, 1, 2)
+		if (first_char == "*" && (QDELETED(L) || L.is_broken() || L.breath_fail_ratio > 0.4))
+			emote(copytext_char(message, 2), VISIBLE_MESSAGE)
+			return
+
 		if(QDELETED(L) || L.is_broken())
 			visible_message(SPAN("warning", "[src] moves his lips as if trying to say something"), SPAN("danger", "You try to make sounds but you can't exhale."))
 			return
@@ -32,14 +39,14 @@
 				L.last_successful_breath = world.time - 2 MINUTES
 				return ..(message, alt_name = alt_name, language = language)
 
-			to_chat(src, "<span class='warning'>You don't have enough air in [L] to make a sound!</span>")
+			visible_message(SPAN("warning", "[src] moves his lips as if trying to say something"), SPAN("danger", "You don't have enough air in [L] to make a sound!"))
 			return FALSE
 		else if(L.breath_fail_ratio > 0.7)
-			return whisper_say(length(message) > 5 ? stars(message) : message, language, alt_name)
+			return ..(length(message) > 5 ? stars(message, 50) : message, alt_name = alt_name, language = language, whispering = whispering)
 		else if(L.breath_fail_ratio > 0.4)
-			return whisper_say(length(message) > 10 ? stars(message) : message, language, alt_name)
-	else
-		return ..(message, alt_name = alt_name, language = language, whispering = whispering)
+			return ..(length(message) > 10 ? stars(message, 75) : message, alt_name = alt_name, language = language, whispering = whispering)
+
+	return ..(message, alt_name = alt_name, language = language, whispering = whispering)
 
 
 /mob/living/carbon/human/proc/forcesay(list/append)

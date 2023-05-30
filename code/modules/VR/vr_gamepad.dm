@@ -18,40 +18,20 @@
 			to_chat(user, SPAN_NOTICE("It is already payed."))
 			return
 		scan_card(I)
-	else if(istype(I, /obj/item/card/emag))
+	if(istype(I, /obj/item/card/emag))
 		if(emagged)
 			to_chat(user, SPAN_NOTICE("It is already broken."))
 			return
 		else
 			to_chat(user, SPAN_NOTICE("You broke something."))
 		emagged = TRUE
-	else if(isScrewdriver(I))
-		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
-		if(!panel_open)
-			panel_open = 1
-			if(occupant)
-				move_outside()
-			to_chat(user, SPAN_NOTICE("You open the maintenance hatch of [src]."))
-			return
-		panel_open = 0
-		to_chat(user, SPAN_NOTICE("You close the maintenance hatch of [src]."))
+	if(default_deconstruction_screwdriver(user, I))
 		return
-	else if(isCrowbar(I))
-		if(!panel_open)
-			to_chat(user, SPAN_NOTICE("You must open the maintenance hatch first."))
-			return
-		playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
-		to_chat(user, SPAN_NOTICE("You pry off the circutry."))
-		var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(loc)
-		M.state = 2
-		M.icon_state = "box_1"
-		for(var/obj/item/T in component_parts)
-			T.loc = src.loc
-		qdel(src)
+	if(default_deconstruction_crowbar(user, I))
 		return
 
 /obj/machinery/gamepod/proc/scan_card(obj/item/card/id/C, mob/user)
-	visible_message("<span class='info'>[user] swipes a card through [src].</span>")
+	visible_message(SPAN_INFO("[user] swipes a card through [src]."))
 	if(!station_account)
 		return
 	var/datum/money_account/D = get_account(C.associated_account_number)
@@ -177,6 +157,11 @@
 		move_outside()
 
 /obj/machinery/gamepod/Destroy()
+	if(occupant)
+		move_outside()
+	return ..()
+
+/obj/machinery/gamepod/dismantle()
 	if(occupant)
 		move_outside()
 	return ..()

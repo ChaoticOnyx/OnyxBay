@@ -21,7 +21,7 @@ jobs:
       - name: .NET SDK setup
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 7.0.x
       - name: Install depends
         run: dotnet tool install -g dotnet-script
       - name: Check changelog in PR

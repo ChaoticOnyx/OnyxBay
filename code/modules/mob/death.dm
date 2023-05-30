@@ -55,7 +55,7 @@
 
 /mob/proc/death(gibbed, deathmessage = "seizes up and falls limp...", show_dead_message = "You have died.")
 
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return 0
 
 	facing_dir = null

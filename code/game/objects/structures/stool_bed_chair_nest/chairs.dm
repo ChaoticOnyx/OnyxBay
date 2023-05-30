@@ -91,7 +91,7 @@
 	if(!usr || !Adjacent(usr))
 		return
 
-	if(usr.stat == DEAD && config.ghost.ghost_interaction)
+	if(usr.is_ic_dead() && config.ghost.ghost_interaction)
 		var/area/A = get_area(src)
 		if(A?.holy)
 			to_chat(usr, SPAN("warning", "\The [src] is on sacred ground, you cannot turn it."))

@@ -198,7 +198,7 @@
 /mob/living/simple_animal/mouse/update_icon()
 	overlays.Cut()
 	if(holding_item)
-		overlays += "holding_item[stat ? stat == DEAD ? "_dead" : "_lay" : ""]"
+		overlays += "holding_item[stat ? is_ic_dead() ? "_dead" : "_lay" : ""]"
 
 /*
  * Mouse types

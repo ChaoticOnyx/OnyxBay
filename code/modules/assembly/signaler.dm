@@ -32,71 +32,55 @@
 		holder.update_icon()
 	return
 
-/obj/item/device/assembly/signaler/interact(mob/user, flag1)
-	var/t1 = "-------"
-//		if ((src.b_stat && !( flag1 )))
-//			t1 = text("-------<BR>\nGreen Wire: []<BR>\nRed Wire:   []<BR>\nBlue Wire:  []<BR>\n", (src.wires & 4 ? text("<A href='?src=\ref[];wires=4'>Cut Wire</A>", src) : text("<A href='?src=\ref[];wires=4'>Mend Wire</A>", src)), (src.wires & 2 ? text("<A href='?src=\ref[];wires=2'>Cut Wire</A>", src) : text("<A href='?src=\ref[];wires=2'>Mend Wire</A>", src)), (src.wires & 1 ? text("<A href='?src=\ref[];wires=1'>Cut Wire</A>", src) : text("<A href='?src=\ref[];wires=1'>Mend Wire</A>", src)))
-//		else
-//			t1 = "-------"	Speaker: [src.listening ? "<A href='byond://?src=\ref[src];listen=0'>Engaged</A>" : "<A href='byond://?src=\ref[src];listen=1'>Disengaged</A>"]<BR>
-	var/dat = {"
-		<meta charset=\"utf-8\">
-		<TT>
+/obj/item/device/assembly/signaler/attack_self(mob/user)
+	tgui_interact(user)
 
-		<A href='byond://?src=\ref[src];send=1'>Send Signal</A><BR>
-		<B>Frequency/Code</B> for signaler:<BR>
-		Frequency:
-		<A href='byond://?src=\ref[src];freq=-10'>-</A>
-		<A href='byond://?src=\ref[src];freq=-2'>-</A>
-		[format_frequency(src.frequency)]
-		<A href='byond://?src=\ref[src];freq=2'>+</A>
-		<A href='byond://?src=\ref[src];freq=10'>+</A><BR>
+/obj/item/device/assembly/signaler/tgui_host(mob/user)
+	if(holder)
+		return holder
+	else
+		return ..()
 
-		Code:
-		<A href='byond://?src=\ref[src];code=-5'>-</A>
-		<A href='byond://?src=\ref[src];code=-1'>-</A>
-		[src.code]
-		<A href='byond://?src=\ref[src];code=1'>+</A>
-		<A href='byond://?src=\ref[src];code=5'>+</A><BR>
-		[t1]
-		</TT>"}
-	show_browser(user, dat, "window=radio")
-	onclose(user, "radio")
+/obj/item/device/assembly/signaler/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "Signaler", "Remote Signaling Device")
+		ui.open()
+
+/obj/item/device/assembly/signaler/tgui_data(mob/user)
+	var/list/data = list(
+		"maxFrequency" = RADIO_HIGH_FREQ,
+		"minFrequency" = RADIO_LOW_FREQ,
+		"frequency" = frequency,
+		"code" = code
+	)
+
+	return data
+
+/obj/item/device/assembly/signaler/tgui_act(action, params)
+	. = ..()
+
+	if(.)
+		return
+
+	switch(action)
+		if("adjust")
+			if(params["freq"])
+				set_frequency(sanitize_frequency(text2num(params["freq"]), RADIO_LOW_FREQ, RADIO_HIGH_FREQ))
+			else if(params["code"])
+				code = clamp(text2num(params["code"]), 1, 100)
+		if("reset")
+			if(params["reset"])
+				switch(params["reset"])
+					if("freq")
+						set_frequency(RADIO_LOW_FREQ)
+					if("code")
+						code = 1
+		if("signal")
+			activate()
+	. = TRUE
+
 	return
-
-
-/obj/item/device/assembly/signaler/Topic(href, href_list, state = GLOB.physical_state)
-	var/mob/user = usr
-	if(CanUseTopic(user) != STATUS_INTERACTIVE)
-		return
-	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
-		if(H.is_physically_disabled())
-			return
-	if((. = ..()))
-		close_browser(usr, "window=radio")
-		onclose(usr, "radio")
-		return
-
-	if (href_list["freq"])
-		var/new_frequency = (frequency + text2num(href_list["freq"]))
-		if(new_frequency < RADIO_LOW_FREQ || new_frequency > RADIO_HIGH_FREQ)
-			new_frequency = sanitize_frequency(new_frequency, RADIO_LOW_FREQ, RADIO_HIGH_FREQ)
-		set_frequency(new_frequency)
-
-	if(href_list["code"])
-		src.code += text2num(href_list["code"])
-		src.code = round(src.code)
-		src.code = min(100, src.code)
-		src.code = max(1, src.code)
-
-	if(href_list["send"])
-		activate()
-
-	if(user)
-		attack_self(user)
-
-	return TOPIC_REFRESH
-
 
 /obj/item/device/assembly/signaler/proc/signal()
 	if(!radio_connection) return
@@ -150,7 +134,7 @@
 	radio_connection = radio_controller.add_object(src, frequency, RADIO_CHAT)
 	return
 
-/obj/item/device/assembly/signaler/Process()
+/obj/item/device/assembly/signaler/think()
 	if(!deadman)
 		return
 	var/mob/M = src.loc

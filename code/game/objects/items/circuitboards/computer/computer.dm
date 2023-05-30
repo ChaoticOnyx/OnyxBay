@@ -120,6 +120,11 @@
 	build_path = /obj/machinery/computer/shuttle_control/research
 	origin_tech = list(TECH_DATA = 2)
 
+/obj/item/circuitboard/security_shuttle
+	name = T_BOARD("security shuttle console")
+	build_path = /obj/machinery/computer/shuttle_control/security
+	origin_tech = list(TECH_DATA = 2)
+
 /obj/item/circuitboard/area_atmos
 	name = T_BOARD("area air control console")
 	build_path = /obj/machinery/computer/area_atmos

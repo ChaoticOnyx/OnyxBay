@@ -146,7 +146,7 @@
 	if(length(ai_list))
 		var/list/mob/living/silicon/ai/valid_AIs = list()
 		for(var/mob/living/silicon/ai/AI in ai_list)
-			if(AI.stat != DEAD)
+			if(!AI.is_ic_dead())
 				valid_AIs.Add(AI)
 		if(length(valid_AIs))
 			announcer = pick(valid_AIs)

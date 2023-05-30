@@ -15,7 +15,7 @@
 	..()
 
 /obj/machinery/cablelayer/Move(new_turf,M_Dir)
-	..()
+	. = ..()
 	layCable(new_turf,M_Dir)
 
 /obj/machinery/cablelayer/attack_hand(mob/user)

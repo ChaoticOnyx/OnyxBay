@@ -454,6 +454,12 @@
 	required_reagents = list(/datum/reagent/radium = 1, /datum/reagent/potassium = 1, /datum/reagent/acid/hydrochloric = 1)
 	result_amount = 3
 
+/datum/chemical_reaction/hair_grower
+	name = "Hair Grower"
+	result = /datum/reagent/toxin/hair_grower
+	required_reagents = list(/datum/reagent/arithrazine = 1, /datum/reagent/potassium = 1, /datum/reagent/acid/polyacid = 1)
+	result_amount = 1
+
 /datum/chemical_reaction/noexcutite
 	name = "Noexcutite"
 	result = /datum/reagent/noexcutite
@@ -505,6 +511,10 @@
 
 /datum/chemical_reaction/explosion/potassium
 	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/potassium = 1)
+
+/datum/chemical_reaction/explosion/hair_solution
+	required_reagents = list(/datum/reagent/toxin/hair_grower = 1, /datum/reagent/toxin/hair_remover = 1)
+	result_amount = 1
 
 /datum/chemical_reaction/explosion/nitroglycerin
 	name = "Nitroglycerin"

@@ -346,7 +346,7 @@ Buildable meters
 	return
 
 /obj/item/pipe/Move()
-	..()
+	. = ..()
 	if ((pipe_type in list (PIPE_SIMPLE_BENT, PIPE_SUPPLY_BENT, PIPE_SCRUBBERS_BENT, PIPE_HE_BENT, PIPE_FUEL_BENT)) \
 		&& (src.dir in GLOB.cardinal))
 		src.set_dir(src.dir|turn(src.dir, 90))
@@ -355,7 +355,6 @@ Buildable meters
 			set_dir(1)
 		else if(dir==8)
 			set_dir(4)
-	return
 
 // returns all pipe's endpoints
 

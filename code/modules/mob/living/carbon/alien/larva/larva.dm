@@ -1,7 +1,7 @@
 /mob/living/carbon/alien/larva
 	name = "alien larva"
 	real_name = "alien larva"
-	adult_form = /mob/living/carbon/human
+	adult_form = /mob/living/carbon/human/xenos
 	speak_emote = list("hisses")
 	icon_state = "larva"
 	language = "Hivemind"
@@ -65,9 +65,7 @@
 		GLOB.xenomorphs.add_antagonist(mind, 1)
 
 /mob/living/carbon/alien/larva/proc/larva_announce_to_ghosts()
-	for(var/mob/observer/ghost/O in GLOB.ghost_mob_list)
-		if(O.client && !jobban_isbanned(O, MODE_XENOMORPH))
-			to_chat(O, SPAN("notice", "A new alien larva has been born! ([ghost_follow_link(src, O)]) (<a href='byond://?src=\ref[src];occupy=1'>OCCUPY</a>)"))
+	notify_ghosts("A new alien larva has been born!(<a href='byond://?src=\ref[src];occupy=1'>Occupy</a>)", source = src, action = NOTIFY_FOLLOW)
 
 /mob/living/carbon/alien/larva/update_living_sight()
 	..()

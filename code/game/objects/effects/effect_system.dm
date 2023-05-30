@@ -127,7 +127,7 @@ steam.start() -- spawns the effect
 	return ..()
 
 /obj/effect/sparks/Move()
-	..()
+	. = ..()
 	var/turf/T = src.loc
 	if (istype(T, /turf))
 		T.hotspot_expose(1000,100)
@@ -183,14 +183,23 @@ steam.start() -- spawns the effect
 	pixel_x = -32
 	pixel_y = -32
 
-/obj/effect/effect/smoke/New()
-	..()
-	QDEL_IN(src, time_to_live)
+/obj/effect/effect/smoke/Initialize()
+	. = ..()
+	addtimer(CALLBACK(src, /obj/effect/effect/smoke/proc/fade_out), time_to_live)
 
 /obj/effect/effect/smoke/Crossed(mob/living/carbon/M as mob)
 	..()
 	if(istype(M))
 		affect(M)
+
+/obj/effect/effect/smoke/proc/fade_out(frames = 16)
+	set_opacity(FALSE)
+	frames = max(frames, 1) //We will just assume that by 0 frames, the coder meant "during one frame".
+	var/alpha_step = round(alpha / frames)
+	while(alpha > 0)
+		alpha = max(0, alpha - alpha_step)
+		stoplag()
+	qdel(src)
 
 /obj/effect/effect/smoke/proc/affect(mob/living/carbon/M)
 	if (!istype(M))
@@ -227,7 +236,7 @@ steam.start() -- spawns the effect
 	time_to_live = 200
 
 /obj/effect/effect/smoke/bad/Move()
-	..()
+	. = ..()
 	for(var/mob/living/carbon/M in get_turf(src))
 		affect(M)
 
@@ -258,7 +267,7 @@ steam.start() -- spawns the effect
 /obj/effect/effect/smoke/sleepy
 
 /obj/effect/effect/smoke/sleepy/Move()
-	..()
+	. = ..()
 	for(var/mob/living/carbon/M in get_turf(src))
 		affect(M)
 
@@ -286,7 +295,7 @@ steam.start() -- spawns the effect
 	icon_state = "mustard"
 
 /obj/effect/effect/smoke/mustard/Move()
-	..()
+	. = ..()
 	for(var/mob/living/carbon/human/R in get_turf(src))
 		affect(R)
 

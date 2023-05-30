@@ -126,7 +126,7 @@
 	if(RCon)
 		..()
 	else // RCON wire cut
-		to_chat(usr, "<span class='warning'>Connection error: Destination Unreachable.</span>")
+		to_chat(usr, SPAN_WARNING("Connection error: Destination Unreachable."))
 
 	// Cyborgs standing next to the SMES can play with the wiring.
 	if(istype(usr, /mob/living/silicon/robot) && Adjacent(usr) && panel_open)
@@ -326,10 +326,10 @@
 // Proc: attackby()
 // Parameters: 2 (W - object that was used on this machine, user - person which used the object)
 // Description: Handles tool interaction. Allows deconstruction/upgrading/fixing.
-/obj/machinery/power/smes/buildable/attackby(obj/item/W as obj, mob/user as mob)
+/obj/machinery/power/smes/buildable/attackby(obj/item/W, mob/user)
 	// No more disassembling of overloaded SMESs. You broke it, now enjoy the consequences.
 	if (failing)
-		to_chat(user, "<span class='warning'>The [src]'s screen is flashing with alerts. It seems to be overloaded! Touching it now is probably not a good idea.</span>")
+		to_chat(user, SPAN_WARNING("\The [src]'s screen is flashing with alerts. It seems to be overloaded! Touching it now is probably not a good idea."))
 		return
 	// If parent returned 1:
 	// - Hatch is open, so we can modify the SMES
@@ -341,15 +341,15 @@
 			var/newtag = input(user, "Enter new RCON tag. Use \"NO_TAG\" to disable RCON or leave empty to cancel.", "SMES RCON system") as text
 			if(newtag)
 				RCon_tag = newtag
-				to_chat(user, "<span class='notice'>You changed the RCON tag to: [newtag]</span>")
+				to_chat(user, SPAN_NOTICE("You changed the RCON tag to: [newtag]"))
 			return
 		// Charged above 1% and safeties are enabled.
 		if((charge > (capacity/100)) && safeties_enabled)
-			to_chat(user, "<span class='warning'>Safety circuit of [src] is preventing modifications while it's charged!</span>")
+			to_chat(user, SPAN_WARNING("Safety circuit of \the [src] is preventing modifications while it's charged!"))
 			return
 
 		if (output_attempt || input_attempt)
-			to_chat(user, "<span class='warning'>Turn off the [src] first!</span>")
+			to_chat(user, SPAN_WARNING("Turn off \the [src] first!"))
 			return
 
 		// Probability of failure if safety circuit is disabled (in %)
@@ -361,26 +361,17 @@
 
 		// Crowbar - Disassemble the SMES.
 		if(isCrowbar(W))
-			if (terminals.len)
-				to_chat(user, "<span class='warning'>You have to disassemble the terminal first!</span>")
+			if(length(terminals))
+				to_chat(user, SPAN_WARNING("You have to disassemble the terminal first!"))
 				return
 
 			playsound(src, 'sound/items/Crowbar.ogg', 50, 1)
-			to_chat(user, "<span class='warning'>You begin to disassemble the [src]!</span>")
-			if (do_after(usr, 50 * cur_coils, src)) // More coils = takes longer to disassemble. It's complex so largest one with 6 coils will take 30s
-
+			to_chat(user, "You begin to disassemble \the [src]!")
+			if(do_after(usr, 50 * cur_coils, src)) // More coils = takes longer to disassemble. It's complex so largest one with 6 coils will take 30s
 				if (failure_probability && prob(failure_probability))
 					total_system_failure(failure_probability, user)
 					return
-
-				to_chat(usr, "<span class='warning'>You have disassembled the SMES cell!</span>")
-				var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(src.loc)
-				M.state = STAGE_CIRCUIT
-				M.icon_state = "box_1"
-				for(var/obj/I in component_parts)
-					I.forceMove(src.loc)
-					component_parts -= I
-				qdel(src)
+				dismantle()
 				return
 
 		// Superconducting Magnetic Coil - Upgrade the SMES
@@ -391,11 +382,11 @@
 					return
 				if(!user.drop(W, src))
 					return
-				to_chat(usr, "You install the coil into the SMES unit!")
+				to_chat(usr, SPAN_NOTICE("You install \the [W] into \the [src]!"))
 				component_parts += W
 				recalc_coils()
 			else
-				to_chat(usr, "<span class='warning'>You can't insert more coils to this SMES unit!</span>")
+				to_chat(usr, SPAN_WARNING("You can't insert more coils to this [src]!"))
 
 // Proc: toggle_input()
 // Parameters: None

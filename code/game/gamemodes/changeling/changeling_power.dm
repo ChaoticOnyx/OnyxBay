@@ -4,7 +4,7 @@
 	var/desc = "Get the Power!"
 	var/text_activate = "We use some power."
 
-	var/icon = 'icons/mob/screen_spells.dmi'
+	var/icon = 'icons/hud/screen_spells.dmi'
 	var/icon_state = "ling_open"
 
 	var/chems_drain = 0 // Chemicals drain while active

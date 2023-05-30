@@ -163,7 +163,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 		to_chat(src, SPAN_WARNING("You can't find any wounds to wrap up."))
 		return
 
-	if(hurt_spider.stat == DEAD)
+	if(hurt_spider.is_ic_dead())
 		to_chat(src, SPAN_WARNING("You're a nurse, not a miracle worker."))
 		return
 
@@ -310,7 +310,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
  * If the target is a human who hasn't been drained before, ups the spider's fed counter so it can lay enriched eggs.
  */
 /mob/living/simple_animal/hostile/giant_spider/midwife/proc/cocoon()
-	if(stat == DEAD || !cocoon_target || cocoon_target.anchored)
+	if(is_ic_dead() || !cocoon_target || cocoon_target.anchored)
 		return
 	if(cocoon_target == src)
 		to_chat(src, SPAN_WARNING("You can't wrap yourself!"))
@@ -332,7 +332,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 			var/obj/structure/spider/cocoon/casing = new(cocoon_target.loc)
 			if(isliving(cocoon_target))
 				var/mob/living/living_target = cocoon_target
-				if(ishuman(living_target) && (living_target.stat != DEAD || !consumed_mobs[living_target.tag])) //if they're not dead, you can consume them anyway
+				if(ishuman(living_target) && (!living_target.is_ooc_dead() || !consumed_mobs[living_target.tag])) //if they're not dead, you can consume them anyway
 					consumed_mobs[living_target.tag] = TRUE
 					fed++
 					visible_message(SPAN_NOTICE("[src] sticks a proboscis into [living_target] and sucks a viscous substance out."),SPAN_NOTICE("You suck the nutriment out of [living_target], feeding you enough to lay a cluster of eggs."))

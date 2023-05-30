@@ -180,7 +180,7 @@
 #define SANITIZE_LIST(L) ( islist(L) ? L : list() )
 
 // Adds value V to associati list L[K]
-#define LAZYADDASSOC(L, K, V) if(!L) { L = list(); } L[K] += list(V);
+#define LAZYADDASSOC(L, K, V) if(!L) { L = list(); } L[K] += islist(V) ? list(V) : V;
 // Removes value V and key K from associative list L
 #define LAZYREMOVEASSOC(L, K, V) if(L) { if(L[K]) { L[K] -= V; if(!length(L[K])) L -= K; } if(!length(L)) L = null; }
 
@@ -199,6 +199,8 @@
 #define JOINTEXT(X) jointext(X, null)
 
 #define SPAN(class, X) "<span class='" + ##class + "'>" + ##X + "</span>"
+
+#define SPAN_INFO(X)     SPAN("info", X)
 
 #define SPAN_NOTICE(X)   SPAN("notice", X)
 

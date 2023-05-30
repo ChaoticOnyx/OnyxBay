@@ -1,7 +1,7 @@
 /mob/living/silicon/ai/_examine_text(mob/user)
 	. = ..()
 	var/msg = ""
-	if (stat == DEAD)
+	if (is_ic_dead())
 		msg += "<span class='deadsay'>It appears to be powered-down.</span>\n"
 	else
 		msg += "<span class='warning'>"
