@@ -121,7 +121,7 @@
 		if(0 to 20)
 			healths.icon_state = "[constructtype]_health5"
 		else
-			healths.icon_state = "health6"
+			healths.icon_state = "[constructtype]_health6"
 
 	return
 
