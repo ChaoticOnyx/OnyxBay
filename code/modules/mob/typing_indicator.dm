@@ -1,16 +1,3 @@
-// TO-DO: move all mob variables to one file 'cause it's cringe. - N
-/mob
-	// Icon state name for speech bubble.
-	var/bubble_icon = "default"
-
-	// Icon used for the typing indicator's bubble.
-	var/active_typing_indicator
-	// Icon used for the thinking inicator's bubble.
-	var/active_thinking_indicator
-
-	// Is user typing in character.
-	var/thinking_IC = FALSE
-
 // Adds a typing indicator over the mob.
 /mob/proc/create_typing_indicator()
 	return
