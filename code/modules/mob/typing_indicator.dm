@@ -37,7 +37,6 @@
 	if (return_content)
 		. = winget(src, "saywindow.saywindow-input", "text")
 	winset(src, "saywindow.saywindow-input", "text=\"\"")
-	mob.thinking_silent = FALSE
 	mob.remove_speech_bubble()
 
 /mob/verb/add_speech_bubble(is_sayinput as num|null)
