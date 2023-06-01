@@ -90,7 +90,7 @@
 /obj/item/rcd/attack_self(mob/user)
 	var/list/choices = _collect_radial_choices()
 
-	selected_work = show_radial_menu(user, src, choices, require_near = TRUE)
+	selected_work = show_radial_menu(user, user, choices, require_near = TRUE)
 
 	if(!selected_work)
 		return
