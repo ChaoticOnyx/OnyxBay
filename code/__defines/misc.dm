@@ -301,3 +301,6 @@
 #define LOW_VOLUME  1
 #define MID_VOLUME  2
 #define HIGH_VOLUME 3
+
+//Lawgiver gun
+#define LAWGIVER_MAX_AMMO 5
