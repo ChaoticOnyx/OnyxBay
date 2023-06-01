@@ -1,5 +1,27 @@
 [
   {
+    "author": "TatarTheBuilder",
+    "date": "2023-06-01T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "RscAdd",
+        "message": "Добавлены новые варианты диванов.",
+        "pr": 10291
+      }
+    ]
+  },
+  {
+    "author": "NoneOfYourBsns",
+    "date": "2023-06-01T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "мозги снова выпадают из ММИ.",
+        "pr": 10307
+      }
+    ]
+  },
+  {
     "author": "Nod404",
     "date": "2023-05-27T00:00:00+03:00",
     "changes": [
