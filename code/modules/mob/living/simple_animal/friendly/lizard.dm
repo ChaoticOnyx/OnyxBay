@@ -52,14 +52,14 @@
 	var/mob/aggressive_target = null
 
 /mob/living/simple_animal/lizard/proc/isFertile()
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return FALSE
 	if(!last_breed || world.time - last_breed > BREEDING_COOLDOWN)
 		return TRUE
 	return FALSE
 
 /mob/living/simple_animal/lizard/proc/Breed(mob/living/simple_animal/lizard/partner)
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return
 	var/place = pick(get_turf(src), get_turf(partner))
 	var/datum/reagent/child_poison = pick(poison, partner.poison)
@@ -73,7 +73,7 @@
 /mob/living/simple_animal/lizard/proc/CountLizards()
 	var/count = 0
 	for(var/mob/living/simple_animal/lizard/L in view(vision_range, src))
-		if(L.stat == DEAD || L == src)
+		if(L.is_ooc_dead() || L == src)
 			continue
 		count += 1
 	return count
@@ -82,7 +82,7 @@
 	var/called_number = 0
 	var/list/Allies = list()
 	for(var/mob/living/simple_animal/lizard/L in view(vision_range, src))
-		if(L.stat == DEAD || L == src)
+		if(L.is_ooc_dead() || L == src)
 			continue
 		Allies.Add(L)
 	for(var/mob/living/simple_animal/lizard/ally in shuffle(Allies))
@@ -135,7 +135,7 @@
 
 /mob/living/simple_animal/lizard/proc/HandleAggressiveTarget()
 	//see if we should stop being aggressive
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		aggressive_target = null
 		return
 	if(aggressive_target)
