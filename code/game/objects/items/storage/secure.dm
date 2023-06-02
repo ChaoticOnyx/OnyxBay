@@ -545,12 +545,13 @@
 /obj/item/storage/secure/guncase/security/hos
 	name = "high command security hardcase"
 	desc = "A heavy-duty container with an ID-based locking system. This one is painted in NT High Command Security colors."
+	icon_state = "guncasehos"
 	override_w_class = list(/obj/item/gun/projectile/lawgiver)
 
 /obj/item/storage/secure/guncase/security/hos/attackby(obj/item/W, mob/user)
 	var/obj/item/card/id/I = W.get_id_card()
 	if(I) // For IDs and PDAs and wallets with IDs
-		if(!(access_security in I.GetAccess()))
+		if(!(access_hos in I.GetAccess()))
 			to_chat(user, SPAN("warning", "Access denied!"))
 			return
 		if(!guntype)
@@ -571,10 +572,10 @@
 	if(gunspawned)
 		return
 	switch(set_name)
-		if("Lawgiver")
+		if("lawgiver")
 			new /obj/item/gun/projectile/lawgiver(src)
 			new /obj/item/ammo_magazine/lawgiver(src)
-		if("Energy Riffle")
+		if("energy_riffle")
 			new /obj/item/gun/energy/rifle/cheap(src)
 			// Delete lawgiver steal contract, we can't get lawgiver legally.
 			GLOB.contracts_steal_items.Remove("the head of security's lawgiver gun")
@@ -594,7 +595,7 @@
 	dat += text("<p><HR>\nChosen Gun: []", "[guntype ? guntype : "none"]")
 	if(!gunspawned)
 		dat += text("<p>\n Be careful! Once you chose your weapon and unlock the gun case, you won't be able to change it.")
-		dat += text("<HR><p>\n<A href='?src=\ref[];type=energy riffle'>\"Razor\" energy riffle</A>", src)
+		dat += text("<HR><p>\n<A href='?src=\ref[];type=energy_riffle'>\"Razor\" energy riffle</A>", src)
 		dat += text("<p>\n<A href='?src=\ref[];type=lawgiver'>Lawgiver multitask pistol</A>", src)
 	dat += text("<HR>")
 	if(guntype)

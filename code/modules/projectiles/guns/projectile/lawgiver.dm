@@ -161,6 +161,7 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 			var/datum/effect/effect/system/spark_spread/spark = new /datum/effect/effect/system/spark_spread()
 			spark.set_up(3, 1, src)
 			spark.start()
+			QDEL_IN(spark, 5)
 
 /obj/item/gun/projectile/lawgiver/special_check(mob/user)
 	if(!dna_check(user))
