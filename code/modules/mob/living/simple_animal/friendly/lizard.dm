@@ -192,7 +192,7 @@
 		for(var/mob/living/simple_animal/lizard/L in view(1, src))
 			if(L == src)
 				continue
-			if(L && L.stat != DEAD && L.panic_target == null && L.aggressive_target == null && L.isFertile())
+			if(L && !L.is_ooc_dead() && L.panic_target == null && L.aggressive_target == null && L.isFertile())
 				Breed(L)
 				break
 
