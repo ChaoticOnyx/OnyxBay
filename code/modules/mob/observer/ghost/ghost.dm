@@ -203,7 +203,7 @@ Works together with spawning an observer, noted above.
 	hide_fullscreens()
 	ghost.key = key
 	ghost.can_reenter_corpse = can_reenter_corpse
-	ghost.timeofdeath = src.stat == DEAD ? src.timeofdeath : world.time
+	ghost.timeofdeath = is_ooc_dead() ? src.timeofdeath : world.time
 
 	if(!ghost.client?.holder && !config.ghost.allow_antag_hud)
 		ghost.verbs -= /mob/observer/ghost/verb/toggle_antagHUD
@@ -224,7 +224,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Ghost"
 	set desc = "Leave your body and enter the land of the dead."
 
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		announce_ghost_joinleave(ghostize(can_reenter_corpse = TRUE))
 		return
 

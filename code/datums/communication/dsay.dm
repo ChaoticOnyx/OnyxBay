@@ -44,14 +44,15 @@
 	return DSAY_ASK_BASE
 
 /decl/dsay_communication/proc/can_receive(client/C, mob/M)
+	// only dead ppl!
+	if(!M.is_ooc_dead())
+		return FALSE
 	if(istype(C) && C.mob == M)
 		return TRUE
 	if(istype(C) && M.is_key_ignored(C.key))
 		return FALSE
 	if(M.client.holder && !is_mentor(M.client))
 		return TRUE
-	if(!M.is_ooc_dead())
-		return FALSE
 	if(isnewplayer(M))
 		return FALSE
 	return TRUE
