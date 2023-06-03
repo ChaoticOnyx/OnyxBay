@@ -688,6 +688,10 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	plane = pre_plane
 	layer = pre_layer
 	opacity = pre_opacity
+
+	overlays -= target.active_typing_indicator
+	overlays -= target.active_thinking_indicator
+
 	set_invisibility(pre_invis)
 	ClearTransform()	//make goast stand up
 

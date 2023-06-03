@@ -99,74 +99,126 @@
 	if(buckled_mob)
 		buckled_mob.set_dir(dir)
 
-/obj/structure/bed/couch/blue
-	name = "blue couch"
+/obj/structure/bed/couch/corner/set_dir()
+	..()
+	if (dir == SOUTH)
+		buckle_dir = EAST
+	else if (dir == NORTH)
+		buckle_dir = WEST
 
-/obj/structure/bed/couch/blue/left
+/obj/structure/bed/couch/left/blue
+	name = "blue couch"
 	icon_state = "chair_couch-blue_left"
 	base_icon = "chair_couch-blue_left"
 
-/obj/structure/bed/couch/blue/right
+/obj/structure/bed/couch/right/blue
+	name = "blue couch"
 	icon_state = "chair_couch-blue_right"
 	base_icon = "chair_couch-blue_right"
 
-/obj/structure/bed/couch/brown
-	name = "brown couch"
+/obj/structure/bed/couch/middle/blue
+	name = "blue couch"
+	icon_state = "chair_couch-blue_mid"
+	base_icon = "chair_couch-blue_mid"
 
-/obj/structure/bed/couch/brown/left
+/obj/structure/bed/couch/corner/blue
+	name = "blue couch"
+	icon_state = "chair_couch-blue_corner"
+	base_icon = "chair_couch-blue_corner"
+
+/obj/structure/bed/couch/left/brown
+	name = "brown couch"
 	icon_state = "chair_couch-brown_left"
 	base_icon = "chair_couch-brown_left"
 
-/obj/structure/bed/couch/brown/right
+/obj/structure/bed/couch/right/brown
+	name = "brown couch"
 	icon_state = "chair_couch-brown_right"
 	base_icon = "chair_couch-brown_right"
 
-/obj/structure/bed/couch/red
-	name = "red couch"
+/obj/structure/bed/couch/middle/brown
+	name = "brown couch"
+	icon_state = "chair_couch-brown_mid"
+	base_icon = "chair_couch-brown_mid"
 
-/obj/structure/bed/couch/red/left
+/obj/structure/bed/couch/corner/brown
+	name = "brown couch"
+	icon_state = "chair_couch-brown_corner"
+	base_icon = "chair_couch-brown_corner"
+
+/obj/structure/bed/couch/left/red
+	name = "red couch"
 	icon_state = "chair_couch-red_left"
 	base_icon = "chair_couch-red_left"
 
-/obj/structure/bed/couch/red/right
+/obj/structure/bed/couch/right/red
+	name = "red couch"
 	icon_state = "chair_couch-red_right"
 	base_icon = "chair_couch-red_right"
 
-/obj/structure/bed/couch/green
-	name = "green couch"
+/obj/structure/bed/couch/middle/red
+	name = "red couch"
+	icon_state = "chair_couch-red_mid"
+	base_icon = "chair_couch-red_mid"
 
-/obj/structure/bed/couch/green/left
+/obj/structure/bed/couch/corner/red
+	name = "red couch"
+	icon_state = "chair_couch-red_corner"
+	base_icon = "chair_couch-red_corner"
+
+/obj/structure/bed/couch/left/green
+	name = "green couch"
 	icon_state = "chair_couch-green_left"
 	base_icon = "chair_couch-green_left"
 
-/obj/structure/bed/couch/green/right
+/obj/structure/bed/couch/right/green
+	name = "green couch"
 	icon_state = "chair_couch-green_right"
 	base_icon = "chair_couch-green_right"
 
-/obj/structure/bed/couch/purple
-	name = "purple couch"
+/obj/structure/bed/couch/middle/green
+	name = "green couch"
+	icon_state = "chair_couch-green_mid"
+	base_icon = "chair_couch-green_mid"
 
-/obj/structure/bed/couch/purple/left
+/obj/structure/bed/couch/corner/green
+	name = "green couch"
+	icon_state = "chair_couch-green_corner"
+	base_icon = "chair_couch-green_corner"
+
+/obj/structure/bed/couch/left/purple
+	name = "purple couch"
 	icon_state = "chair_couch-purple_left"
 	base_icon = "chair_couch-purple_left"
 
-/obj/structure/bed/couch/purple/right
+/obj/structure/bed/couch/right/purple
+	name = "purple couch"
 	icon_state = "chair_couch-purple_right"
 	base_icon = "chair_couch-purple_right"
 
-/obj/structure/bed/couch/sofa
+/obj/structure/bed/couch/middle/purple
+	name = "purple couch"
+	icon_state = "chair_couch-purple_mid"
+	base_icon = "chair_couch-purple_mid"
+
+/obj/structure/bed/couch/corner/purple
+	name = "purple couch"
+	icon_state = "chair_couch-purple_corner"
+	base_icon = "chair_couch-purple_corner"
+
+/obj/structure/bed/couch/middle/sofa
 	name = "comfy sofa"
 	desc = "So lovely, uh."
 	icon_state = "sofa_middle_preview"
 	base_icon = "sofa_middle"
 
-/obj/structure/bed/couch/sofa/left
+/obj/structure/bed/couch/left/sofa
 	name = "comfy sofa"
 	desc = "So lovely, uh."
 	icon_state = "sofa_left_preview"
 	base_icon = "sofa_left"
 
-/obj/structure/bed/couch/sofa/right
+/obj/structure/bed/couch/right/sofa
 	name = "comfy sofa"
 	desc = "So lovely, uh."
 	icon_state = "sofa_right_preview"

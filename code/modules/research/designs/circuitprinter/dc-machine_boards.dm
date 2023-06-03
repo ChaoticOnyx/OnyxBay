@@ -242,5 +242,5 @@
 	name = "Teleporter Gate"
 	id = "telegate"
 	req_tech = list(TECH_DATA = 3, TECH_BLUESPACE = 2)
-	build_path = /obj/machinery/teleporter_gate
+	build_path = /obj/item/circuitboard/teleporter_gate
 	sort_string = "WAAAS"
