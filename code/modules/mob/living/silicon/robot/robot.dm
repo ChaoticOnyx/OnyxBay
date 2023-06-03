@@ -840,12 +840,6 @@
 				eye_overlays[eye_icon_state] = eye_overlay
 			overlays += eye_overlay
 
-		if(active_typing_indicator)
-			overlays |= active_typing_indicator
-
-		if(active_thinking_indicator)
-			overlays |= active_thinking_indicator
-
 	if(opened)
 		var/panelprefix = custom_sprite ? module_hulls[icontype] : "ov"
 		if(wiresexposed)
