@@ -88,19 +88,29 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	new_damage = clamp(new_damage, 0, 200)
 
 	var/mob/living/carbon/human/H = my_mob
-	if(new_damage == 0 && genome_damage > 0 && istype(H)) // hide the biostructure if no gendamage
-		to_chat(my_mob, SPAN("changeling", "We feel our genomes have assembled. Our biostructure cannot be easily seen now."))
+	if(new_damage == 0 && old_damage > 0 && istype(H)) // hide the biostructure if no gendamage
+		biostructure_hide(H)
 
-		var/obj/item/organ/internal/biostructure/biostructure = H.internal_organs_by_name[BP_CHANG]
-		biostructure.hidden = TRUE
-
-	if(new_damage > 0 && genome_damage == 0 && istype(H)) // show the biostructure if we gain some gendamage
-		to_chat(my_mob, SPAN("changeling", "You feel your genomes start to disassemble. Your special biostructure can now be easily spotted."))
-
-		var/obj/item/organ/internal/biostructure/biostructure = H.internal_organs_by_name[BP_CHANG]
-		biostructure.hidden = FALSE
+	if(new_damage > 0 && old_damage == 0 && istype(H)) // show the biostructure if we gain some gendamage
+		biostructure_show(H)
 
 	genome_damage = new_damage
+
+/datum/changeling/proc/biostructure_hide(mob/living/carbon/human/H, silent=FALSE)
+	if(!silent)
+		to_chat(my_mob, SPAN("changeling", "We feel our genomes have assembled. Our biostructure cannot be easily seen now."))
+
+	var/obj/item/organ/internal/biostructure/biostructure = H.internal_organs_by_name[BP_CHANG]
+	if(biostructure)
+		biostructure.hidden = TRUE
+
+/datum/changeling/proc/biostructure_show(mob/living/carbon/human/H, silent=FALSE)
+	if(!silent)
+		to_chat(my_mob, SPAN("changeling", "You feel your genomes start to disassemble. Your special biostructure can now be easily spotted."))
+
+	var/obj/item/organ/internal/biostructure/biostructure = H.internal_organs_by_name[BP_CHANG]
+	if(biostructure)
+		biostructure.hidden = FALSE
 
 // Transfers us and our biostructure to another mob. Called by /datum/mind/transfer_to() and hopefully we will never need to call it manually.
 /datum/changeling/proc/transfer_to(mob/living/L)
