@@ -87,14 +87,16 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 /datum/changeling/proc/set_genome_damage(new_damage)
 	new_damage = clamp(new_damage, 0, 200)
 
+	var/old_damage = genome_damage
+
+	genome_damage = new_damage
+
 	var/mob/living/carbon/human/H = my_mob
 	if(new_damage == 0 && old_damage > 0 && istype(H)) // hide the biostructure if no gendamage
 		biostructure_hide(H)
 
 	if(new_damage > 0 && old_damage == 0 && istype(H)) // show the biostructure if we gain some gendamage
 		biostructure_show(H)
-
-	genome_damage = new_damage
 
 /datum/changeling/proc/biostructure_hide(mob/living/carbon/human/H, silent=FALSE)
 	if(!silent)
