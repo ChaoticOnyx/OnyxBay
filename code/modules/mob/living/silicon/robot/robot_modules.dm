@@ -1,4 +1,4 @@
-var/global/list/robot_modules = list(
+GLOBAL_LIST_INIT(robot_modules, list(
 	"Standard"		= /obj/item/robot_module/standard,
 	"Service" 		= /obj/item/robot_module/service/butler,
 	"Research" 		= /obj/item/robot_module/research/general,
@@ -11,7 +11,7 @@ var/global/list/robot_modules = list(
 	"Advanced Medical"		= /obj/item/robot_module/medical/crisis_adv,
 	"Advanced Engineering"	= /obj/item/robot_module/engineering/adv,
 	"Advanced Miner"		= /obj/item/robot_module/miner/adv
-	)
+))
 
 /obj/item/robot_module
 	name = "robot module"

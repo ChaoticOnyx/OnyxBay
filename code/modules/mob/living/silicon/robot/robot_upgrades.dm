@@ -82,7 +82,7 @@
 			qdel(R.module)
 			R.module = null
 		R.drop_all_upgrades()
-		var/module_type = robot_modules[module]
+		var/module_type = GLOB.robot_modules[module]
 		new module_type(R)
 		R.modtype = module
 		R.hands.icon_state = lowertext(module)

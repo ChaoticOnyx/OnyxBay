@@ -328,7 +328,7 @@
 	sensor_mode = 0
 	active_hud = null
 
-	var/module_type = robot_modules[modtype]
+	var/module_type = GLOB.robot_modules[modtype]
 	new module_type(src)
 	if(modtype != "Standard")
 		GLOB.robot_module_types.Remove(modtype)
