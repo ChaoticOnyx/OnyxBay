@@ -12,4 +12,4 @@
 		winset(src, null, "mainwindow.macro=borgmacro hotkey_toggle.is-checked=false input.focus=true input.background-color=#d3b5b5")
 
 	if(!icon_chosen)
-		set_custom_sprite()
+		choose_hull(module_hulls)
