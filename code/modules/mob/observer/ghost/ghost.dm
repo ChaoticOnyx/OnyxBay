@@ -336,7 +336,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	if(config.ghost.antag_hud_restricted && !has_enabled_antagHUD && (!client.holder || mentor))
 		var/response = tgui_alert(src, "If you turn this on, you will not be able to take any part in the round.", "Toggle Antag HUD", list("Yes", "No"))
-		if(response == "No")
+		if(isnull(response) || response == "No")
 			return
 		can_reenter_corpse = 0
 
