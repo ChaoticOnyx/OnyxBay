@@ -849,6 +849,12 @@
 		else
 			icon_state = module_hulls[icontype].icon_state
 
+	if(active_typing_indicator)
+		overlays |= active_typing_indicator
+
+	if(active_thinking_indicator)
+		overlays |= active_thinking_indicator
+
 /mob/living/silicon/robot/proc/installed_modules()
 	if(weapon_lock)
 		to_chat(src, "<span class='warning'>Weapon lock active, unable to use modules! Count:[weaponlock_time]</span>")

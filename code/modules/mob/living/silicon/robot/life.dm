@@ -24,7 +24,9 @@
 		if(connected_ai && !dead)
 			notify_ai(ROBOT_NOTIFICATION_SIGNAL_LOST)
 			dead = TRUE
+
 	update_canmove()
+	update_icon()
 
 /mob/living/silicon/robot/proc/clamp_values()
 //	SetStunned(min(stunned, 30))
