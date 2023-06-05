@@ -38,7 +38,7 @@
 
 		data["preferences"] += list(preferences_data)
 
-	for(var/style in all_ui_styles)
+	for(var/style in GLOB.all_ui_styles)
 		data["themes"] += list(list(
 			"name" = style,
 			"selected" = owner.prefs.UI_style == style

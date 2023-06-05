@@ -100,6 +100,7 @@
 
 	var/obj/screen/movable/M = new()
 	M.SetName("Movable UI Object")
+	M.icon = 'icons/hud/common/screen_storage.dmi'
 	M.icon_state = "block"
 	M.maptext = "Movable"
 	M.maptext_width = 64
