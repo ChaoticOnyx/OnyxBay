@@ -7,6 +7,7 @@
 	For more information, see the byond documentation on the screen_loc and screen vars.
 */
 /obj/screen
+	name = ""
 	plane = HUD_PLANE
 	layer = HUD_BASE_LAYER
 	appearance_flags = DEFAULT_APPEARANCE_FLAGS |NO_CLIENT_COLOR

@@ -445,7 +445,7 @@
 
 /obj/screen/click_catcher
 	icon = 'icons/hud/screen_gen.dmi'
-	icon_state = "click_catcher"
+	icon_state = "catcher"
 	plane = CLICKCATCHER_PLANE
 	mouse_opacity = 2
 	screen_loc = "CENTER-7,CENTER-7"
