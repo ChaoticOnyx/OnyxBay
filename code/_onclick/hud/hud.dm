@@ -24,6 +24,9 @@
 	if (!master_planes)
 		master_planes = list()
 
+	if(!client)
+		return
+
 	var/list/planes = list(
 		/obj/screen/plane_master/openspace,
 		/obj/screen/plane_master/over_openspace,

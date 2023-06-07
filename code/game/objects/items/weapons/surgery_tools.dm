@@ -1,3 +1,8 @@
+#define CHAINSAW_ADD_COIL 0
+#define CHAINSAW_CAPACITOR_INSTALL 1
+#define CHAINSAW_CREATE_CASE 2
+#define CHANISAW_WELDING_CASE 3
+
 /* Surgery Tools
  * Contains:
  *		Retractor
@@ -158,6 +163,7 @@
 	sharp = 1
 	edge = 1
 	var/improved = 0
+	var/craft_step = 0 // Using for creating the chainsaw
 
 /obj/item/circular_saw/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/material/wirerod) && improved == 0)
@@ -184,6 +190,36 @@
 		w_class = ITEM_SIZE_NORMAL
 		improved = 0
 		surgery_speed = 1.0
+
+	// Making a chainsaw steps
+	if(isCoil(W)) 
+		if(craft_step == CHAINSAW_ADD_COIL)
+			var/obj/item/stack/cable_coil/C = W
+			if(C.use(3))
+				playsound(user,'sound/effects/using/cuffs/cable_use1.ogg', 50, 5, 7)
+				visible_message(SPAN("notice", "[usr] added wires to [src]"))
+				craft_step++
+	if(iscapacitor(W))
+		if(craft_step == CHAINSAW_CAPACITOR_INSTALL)
+			playsound(user,'sound/effects/using/cuffs/cable_use1.ogg', 50, 5, 7)
+			visible_message(SPAN("notice", "[usr] connected wires from [src] to [W]"))
+			qdel(W)
+			craft_step++
+	if(istype(W, /obj/item/stack/material/plasteel))
+		if(craft_step == CHAINSAW_CREATE_CASE)
+			var/obj/item/stack/material/plasteel/P = W
+			if(P.use(5))
+				playsound(user,'sound/effects/weightdrop.ogg', 50, 5, 7)
+				visible_message(SPAN("notice", "[usr] making a case from [W] for a [src]"))
+				craft_step++
+	if(isWelder(W))
+		if(craft_step == CHANISAW_WELDING_CASE)
+			var/obj/item/weldingtool/weldtool = W
+			if(weldtool.remove_fuel(5,user))
+				playsound(user,'sound/effects/flare.ogg', 50, 5, 7)
+				visible_message(SPAN("notice", "[usr] welding a case of a [src]!"))
+				new /obj/item/material/twohanded/chainsaw(src.loc)
+				qdel(src)
 	..()
 
 
@@ -363,3 +399,8 @@
 
 /obj/item/organfixer/advanced/bluespace/refill()
 	return 0
+
+#undef CHAINSAW_ADD_COIL
+#undef CHAINSAW_CAPACITOR_INSTALL
+#undef CHAINSAW_CREATE_CASE
+#undef CHANISAW_WELDING_CASE

@@ -180,7 +180,9 @@
 	message.maptext = complete_text
 
 	// View the message
-	LAZYADDASSOC(owned_by.seen_messages, message_loc, src)
+	if(!owned_by.seen_messages)
+		owned_by.seen_messages = list()
+	owned_by.seen_messages[message_loc] += list(src);
 	owned_by.images |= message
 	animate(message, alpha = 255, time = CHAT_MESSAGE_SPAWN_TIME)
 
