@@ -106,9 +106,6 @@
 	if(!proximity)
 		return
 
-	if(isrobot(user))
-		return FALSE
-
 	if(istype(get_area(A), /area/shuttle) || istype(get_area(A), /turf/space/transit))
 		return FALSE
 
