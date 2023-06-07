@@ -40,7 +40,7 @@
 	set_dir(ndir)
 	return 1
 
-/mob/observer/eye/examinate()
+/mob/observer/eye/examinate_verb()
 	set popup_menu = 0
 	set src = usr.contents
 	return 0

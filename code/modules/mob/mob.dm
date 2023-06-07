@@ -276,13 +276,20 @@
 	return
 
 //mob verbs are faster than object verbs. See http://www.byond.com/forum/?post=1326139&page=2#comment8198716 for why this isn't atom/verb/_examine_text()
-/mob/verb/examinate(atom/A as mob|obj|turf in view(src.client.eye))
+/mob/verb/examinate_verb(atom/A as mob|obj|turf in view(src.client.eye))
 	set name = "Examine"
 	set category = "IC"
 
+	return examinate(A)
+
+/mob/proc/examinate(atom/A)
 	if((is_blind(src) || usr?.stat) && !isobserver(src))
-		to_chat(src, "<span class='notice'>Something is there but you can't see it.</span>")
-		return 1
+		to_chat(src, SPAN("notice", "Something is there but you can't see it."))
+		return TRUE
+
+	if(isturf(A) && !(sight & SEE_TURFS) && !(A in view(client ? client.view : world.view, src)))
+		// shift-click catcher may issue examinate() calls for out-of-sight turfs
+		return FALSE
 
 	var/examine_result
 

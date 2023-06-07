@@ -64,13 +64,14 @@ be able to influence the host through various commands.
 	var/list/indoctrinated = list()
 
 
-/mob/living/parasite/meme/examinate(atom/A as mob|obj|turf in view(host))
+/mob/living/parasite/meme/examinate_verb(atom/A as mob|obj|turf in view(host))
 	set name = "Examine"
 	set category = "IC"
 
+/mob/living/parasite/meme/examinate(atom/A)
 	if(is_blind(host) || usr.stat)
 		to_chat(src,"Something is there but you can't see it.")
-		return 1
+		return TRUE
 
 	A.examine(src)
 
