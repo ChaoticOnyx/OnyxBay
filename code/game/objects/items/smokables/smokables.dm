@@ -4,7 +4,7 @@
 /obj/item/clothing/mask/smokable
 	name = "smokable item"
 	desc = "You're not sure what this is. You should probably ahelp it."
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	icon = 'icons/obj/cigarettes.dmi'
 	var/lit = 0
 	var/ever_lit = FALSE // Has it ever been lit
@@ -76,7 +76,7 @@
 							  SPAN("danger", "[src] ignites \the [H.head] on your head. You are on fire!"))
 			H.adjust_fire_stacks(1)
 			H.IgniteMob()
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/clothing/mask/smokable/update_icon()

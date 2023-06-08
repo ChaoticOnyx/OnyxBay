@@ -27,7 +27,7 @@
 	name = "fingerless gloves"
 	desc = "A pair of fingerless gloves, they look like they belong to a soul hungry for rebellion."
 	icon_state = "color_fingerless"
-	body_parts_covered = 0	//fingerless gloves don't prevent from leaving fingerprints
+	body_parts_covered = NO_BODYPARTS	//fingerless gloves don't prevent from leaving fingerprints
 	clipped = TRUE
 	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_VOX)
 

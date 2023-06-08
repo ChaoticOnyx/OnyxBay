@@ -688,7 +688,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	species_restricted = list(SPECIES_ABDUCTOR)
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|BLOCKHAIR
 	body_parts_covered = HEAD|FACE|EYES
-	visor_body_parts_covered = 0
+	visor_body_parts_covered = NO_BODYPARTS
 
 // Operating Table / Beds / Lockers
 /obj/structure/bed/abductor

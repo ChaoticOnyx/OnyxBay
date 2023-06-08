@@ -225,7 +225,7 @@
 	name = "warden's hat"
 	desc = "It's a special helmet issued to the Warden of a securiy force."
 	icon_state = "policehelm"
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 
 /obj/item/clothing/head/warden/drill
 	name = "warden's drill hat"

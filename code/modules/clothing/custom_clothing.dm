@@ -69,7 +69,7 @@
 	icon_state = "wehrhelm"
 	valid_accessory_slots = null
 	body_parts_covered = HEAD
-	visor_body_parts_covered = 0
+	visor_body_parts_covered = NO_BODYPARTS
 	armor = list(melee = 45, bullet = 60, laser = 45,energy = 10, bomb = 40, bio = 2)
 	siemens_coefficient = 1
 

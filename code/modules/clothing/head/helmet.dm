@@ -85,7 +85,7 @@
 	valid_accessory_slots = null
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|BLOCKHAIR
 	body_parts_covered = HEAD|FACE
-	visor_body_parts_covered = 0
+	visor_body_parts_covered = NO_BODYPARTS
 	siemens_coefficient = 1
 
 /obj/item/clothing/head/helmet/captain
@@ -94,7 +94,7 @@
 	item_state = "caphelmet"
 	desc = "A special extra-durable helmet designed for the most fashionable of military figureheads."
 	body_parts_covered = HEAD|EYES
-	visor_body_parts_covered = 0
+	visor_body_parts_covered = NO_BODYPARTS
 	flags_inv = HIDEFACE|BLOCKHAIR
 	armor = list(melee = 65, bullet = 65, laser = 65,energy = 35, bomb = 45, bio = 10)
 	siemens_coefficient = 0.5
@@ -106,7 +106,7 @@
 	desc = "An in-atmosphere helmet worn by NanoTrasen's elite Emergency Response Teams. Has blue highlights."
 	icon_state = "erthelmet_cmd"
 	body_parts_covered = HEAD|EYES
-	visor_body_parts_covered = 0
+	visor_body_parts_covered = NO_BODYPARTS
 	valid_accessory_slots = null
 	item_state_slots = list(
 		slot_l_hand_str = "syndicate-helm-green",
@@ -139,7 +139,7 @@
 	desc = "They're often used by highly trained SWAT Members."
 	icon_state = "swat"
 	body_parts_covered = HEAD|EYES
-	visor_body_parts_covered = 0
+	visor_body_parts_covered = NO_BODYPARTS
 	armor = list(melee = 85, bullet = 85, laser = 85,energy = 55, bomb = 50, bio = 50)
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
@@ -153,7 +153,7 @@
 	armor = list(melee = 70, bullet = 60, laser = 50,energy = 25, bomb = 50, bio = 10)
 	flags_inv = HIDEEARS|HIDEEYES
 	body_parts_covered = HEAD|EYES|BLOCKHEADHAIR
-	visor_body_parts_covered = 0
+	visor_body_parts_covered = NO_BODYPARTS
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.4
@@ -172,7 +172,7 @@
 	desc = "<i>'Let the battle commence!'</i>"
 	icon_state = "thunderdome"
 	body_parts_covered = HEAD
-	visor_body_parts_covered = 0
+	visor_body_parts_covered = NO_BODYPARTS
 	valid_accessory_slots = null
 	armor = list(melee = 80, bullet = 60, laser = 50,energy = 10, bomb = 25, bio = 10)
 	cold_protection = HEAD
