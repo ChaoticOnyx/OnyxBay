@@ -132,6 +132,8 @@
 		if(active)
 			turnOff()
 		update_icon()
+	else
+		..()
 
 /obj/item/material/twohanded/chainsaw/proc/get_fuel()
 	return tank ? tank.reagents.get_reagent_amount(/datum/reagent/fuel) : 0
