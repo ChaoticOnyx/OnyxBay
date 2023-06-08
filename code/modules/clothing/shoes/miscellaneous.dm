@@ -51,7 +51,7 @@
 	name = "sandals"
 	icon_state = "wizard"
 	species_restricted = null
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	siemens_coefficient = 1.0
 
 	wizard_garb = 1

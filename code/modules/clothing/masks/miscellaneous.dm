@@ -142,7 +142,7 @@
 	desc = "A red neck scarf."
 	icon_state = "red_scarf"
 	item_state = "red_scarf"
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	w_class = ITEM_SIZE_SMALL
 
 /obj/item/clothing/mask/ai
