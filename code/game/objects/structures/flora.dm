@@ -58,7 +58,7 @@
 	if(light_overlay)
 		var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay")
 		LO.layer = ABOVE_LIGHTING_LAYER
-		LO.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		LO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 		overlays.Add(LO)
 		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
 	..()
@@ -170,7 +170,7 @@
 	if(light_overlay)
 		var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay")
 		LO.layer = ABOVE_LIGHTING_LAYER
-		LO.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		LO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 		overlays.Add(LO)
 		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
 	..()
@@ -315,7 +315,7 @@
 			to_chat(user, SPAN("notice", "Something is already hidden in \the [src]."))
 	return 0
 
-/obj/structure/flora/pottedplant/attack_hand(mob/user as mob)
+/obj/structure/flora/pottedplant/attack_hand(mob/user)
 	user.visible_message("[user] begins digging around inside of \the [src].", "You begin digging around in \the [src], searching it.")
 	playsound(loc, 'sound/effects/plantshake.ogg', rand(50, 75), TRUE)
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
@@ -645,7 +645,7 @@
 	if(light_overlay)
 		var/image/LO = overlay_image(icon, "[icon_state]-overlay")
 		LO.layer = ABOVE_LIGHTING_LAYER
-		LO.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		LO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 		overlays.Add(LO)
 		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
 	..()

@@ -28,10 +28,11 @@
 		return
 
 	var/list/planes = list(
-		/obj/screen/plane_master/ambient_occlusion,
-		/obj/screen/plane_master/openspace_blur,
-		/obj/screen/plane_master/over_openspace_darkness,
-		/obj/screen/plane_master/mouse_invisible
+		/obj/screen/plane_master/openspace,
+		/obj/screen/plane_master/over_openspace,
+		/obj/screen/plane_master/game_world,
+		/obj/screen/plane_master/mouse_invisible,
+		/obj/screen/plane_master/lighting
 	)
 
 	for (var/plane_type in planes)

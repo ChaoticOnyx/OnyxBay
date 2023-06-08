@@ -7,6 +7,7 @@ var/list/all_virtual_listeners = list()
 	see_invisible = SEE_INVISIBLE_LIVING
 	sight = SEE_SELF|SEE_BLACKNESS
 	ghost_image_flag = GHOST_IMAGE_NONE
+	vis_flags = VIS_HIDE
 
 	virtual_mob = null
 

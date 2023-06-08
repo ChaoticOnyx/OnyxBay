@@ -70,11 +70,11 @@
 	#define DEBRIS_LAYER 1
 	#define DUST_LAYER 2
 
-#define OPENSPACE_PLANE					-4
+#define OPENSPACE_PLANE					-10
 #define OVER_OPENSPACE_PLANE			-3
 #define FLOOR_PLANE						-2
-#define DEFAULT_PLANE                   -1
-#define BLACKNESS_PLANE 0
+#define DEFAULT_PLANE					-1
+#define BLACKNESS_PLANE					0
 
 	#define PLATING_LAYER               1
 	// ABOVE PLATING
@@ -169,7 +169,7 @@
 	#define LIGHTING_LAYER         		1
 	#define ABOVE_LIGHTING_LAYER   		2
 
-#define EFFECTS_ABOVE_LIGHTING_PLANE   	4 // For glowy eyes, laser beams, etc. that shouldn't be affected by darkness
+#define EFFECTS_ABOVE_LIGHTING_PLANE	4 // For glowy eyes, laser beams, etc. that shouldn't be affected by darkness
 	#define EYE_GLOW_LAYER         		1
 	#define BEAM_PROJECTILE_LAYER  		2
 	#define SUPERMATTER_WALL_LAYER 		3
@@ -203,6 +203,8 @@
 
 #define DEFAULT_APPEARANCE_FLAGS (PIXEL_SCALE)
 
+#define GET_FLOAT_DIFFERENCE(PARENT_PLANE, DESIRED_PLANE) (DESIRED_PLANE - PARENT_PLANE)
+
 /atom
 	plane = DEFAULT_PLANE
 	appearance_flags = DEFAULT_APPEARANCE_FLAGS
@@ -211,12 +213,15 @@
 	appearance_flags = DEFAULT_APPEARANCE_FLAGS
 
 /image/proc/plating_decal_layerise()
-	plane = FLOOR_PLANE
+	plane = FLOAT_PLANE
 	layer = DECAL_PLATING_LAYER
 
 /image/proc/turf_decal_layerise()
-	plane = FLOOR_PLANE
+	plane = FLOAT_PLANE
 	layer = DECAL_LAYER
+
+/image/proc/set_float_plane(atom/parent, desired_plane)
+	plane = FLOAT_PLANE + GET_FLOAT_DIFFERENCE(parent.plane, desired_plane)
 
 /atom/proc/hud_layerise()
 	plane = HUD_PLANE
@@ -237,32 +242,49 @@
 
 /obj/screen/plane_master/proc/backdrop(mob/mymob)
 	CAN_BE_REDEFINED(TRUE)
-/obj/screen/plane_master/ambient_occlusion
+
+/obj/screen/plane_master/skybox
 	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
-	blend_mode = BLEND_OVERLAY
-	plane = DEFAULT_PLANE
+	blend_mode = BLEND_MULTIPLY
+	plane = SKYBOX_PLANE
+	mouse_opacity = 0
 
-/obj/screen/plane_master/ambient_occlusion/backdrop(mob/mymob)
-	filters = list()
-
-	if (istype(mymob) && mymob.client && mymob.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_YES)
-		filters += filter(type = "drop_shadow", x = 0, y = -2, size = 4, color = "#04080FAA")
-
-/obj/screen/plane_master/openspace_blur
+/obj/screen/plane_master/openspace
 	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
 	blend_mode = BLEND_OVERLAY
 	plane = OPENSPACE_PLANE
 
-/obj/screen/plane_master/openspace_blur/backdrop(mob/mymob)
+/obj/screen/plane_master/openspace/backdrop(mob/mymob)
 	filters = list()
 
 	if (istype(mymob) && mymob.client)
 		filters += filter(type = "blur", size = 0.67)
 
-/obj/screen/plane_master/over_openspace_darkness
+/obj/screen/plane_master/over_openspace
 	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
 	plane = OVER_OPENSPACE_PLANE
 	mouse_opacity = 0
+
+/obj/screen/plane_master/floor
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	blend_mode = BLEND_OVERLAY
+	plane = FLOOR_PLANE
+
+/obj/screen/plane_master/game_world
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	blend_mode = BLEND_OVERLAY
+	plane = DEFAULT_PLANE
+
+/obj/screen/plane_master/game_world/backdrop(mob/mymob)
+	filters = list()
+
+	if (istype(mymob) && mymob.client && mymob.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_YES)
+		filters += filter(type = "drop_shadow", x = 0, y = -2, size = 4, color = "#04080FAA")
+
+/obj/screen/plane_master/blackness
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	blend_mode = BLEND_OVERLAY
+	plane = BLACKNESS_PLANE
 
 /obj/screen/plane_master/mouse_invisible
 	appearance_flags = PLANE_MASTER
@@ -283,3 +305,35 @@ GLOBAL_LIST_INIT(ghost_master, list(
 	new /obj/screen/plane_master/ghost_master(),
 	new /obj/screen/plane_master/ghost_dummy()
 ))
+
+/obj/screen/plane_master/lighting
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | PLANE_MASTER | NO_CLIENT_COLOR
+	blend_mode = BLEND_MULTIPLY
+	plane = LIGHTING_PLANE
+	mouse_opacity = 0
+	color = list(
+			-1, 00, 00, 00,
+			00, -1, 00, 00,
+			00, 00, -1, 00,
+			00, 00, 00, 00,
+			01, 01, 01, 01
+		)
+
+/obj/screen/plane_master/lighting/backdrop(mob/mymob)
+	. = ..()
+	mymob.overlay_fullscreen("lighting_backdrop", /obj/screen/fullscreen/lighting_backdrop)
+
+/obj/screen/plane_master/fullscreen
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	blend_mode = BLEND_OVERLAY
+	plane = FULLSCREEN_PLANE
+
+/obj/screen/plane_master/hud
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	blend_mode = BLEND_OVERLAY
+	plane = HUD_PLANE
+
+/obj/screen/plane_master/above_hud
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	blend_mode = BLEND_OVERLAY
+	plane = ABOVE_HUD_PLANE
