@@ -90,7 +90,7 @@
 /obj/item/rcd/attack_self(mob/user)
 	var/list/choices = _collect_radial_choices()
 
-	var/atom/anchor = istype(loc, /obj/item/rig_module/device) ? loc.loc : src
+	var/atom/anchor = get_rig() || src
 	selected_work = show_radial_menu(user, anchor, choices, require_near = TRUE, in_screen = TRUE)
 
 	if(!selected_work)
