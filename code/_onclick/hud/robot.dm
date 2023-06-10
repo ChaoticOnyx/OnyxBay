@@ -11,7 +11,6 @@ var/obj/screen/robot_inventory
 	var/mob/living/silicon/robot/R = mymob
 
 	infodisplay = list()
-	hotkeybuttons = list()
 	static_inventory = list()
 
 	var/obj/screen/using
@@ -104,7 +103,7 @@ var/obj/screen/robot_inventory
 	R.throw_icon.icon_state = "store"
 	R.throw_icon.SetName("store")
 	R.throw_icon.screen_loc = ui_borg_store
-	hotkeybuttons += R.throw_icon
+	static_inventory += R.throw_icon
 
 //Inventory
 	robot_inventory = new /obj/screen()
@@ -134,7 +133,7 @@ var/obj/screen/robot_inventory
 	R.pullin.icon_state = "pull0"
 	R.pullin.SetName("pull")
 	R.pullin.screen_loc = ui_borg_pull
-	hotkeybuttons += R.pullin
+	static_inventory += R.pullin
 
 	R.zone_sel = new /obj/screen/zone_sel()
 	R.zone_sel.icon = 'icons/hud/mob/screen_robot.dmi'

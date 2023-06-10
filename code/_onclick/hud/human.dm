@@ -15,7 +15,6 @@
 	infodisplay = list()
 	static_inventory = list()
 	toggleable_inventory = list()
-	hotkeybuttons = list()
 
 	var/obj/screen/using
 	var/obj/screen/inventory/inv_box
@@ -83,7 +82,7 @@
 		using.screen_loc = ui_drop_throw
 		using.color = ui_color
 		using.alpha = ui_alpha
-		hotkeybuttons += using
+		static_inventory += using
 
 	if(hud_data.has_rest)
 		using = new /obj/screen()
@@ -160,7 +159,7 @@
 		using.screen_loc = ui_pull_resist
 		using.color = ui_color
 		using.alpha = ui_alpha
-		hotkeybuttons += using
+		static_inventory += using
 
 	if(hud_data.has_throw)
 		mymob.throw_icon = new /obj/screen()
@@ -170,14 +169,14 @@
 		mymob.throw_icon.screen_loc = ui_drop_throw
 		mymob.throw_icon.color = ui_color
 		mymob.throw_icon.alpha = ui_alpha
-		hotkeybuttons += mymob.throw_icon
+		static_inventory += mymob.throw_icon
 
 		mymob.pullin = new /obj/screen()
 		mymob.pullin.icon = ui_style
 		mymob.pullin.icon_state = "pull0"
 		mymob.pullin.SetName("pull")
 		mymob.pullin.screen_loc = ui_pull_resist
-		hotkeybuttons += mymob.pullin
+		static_inventory += mymob.pullin
 
 	if(hud_data.has_block)
 		mymob.block_icon = new /obj/screen()
@@ -187,7 +186,7 @@
 		mymob.block_icon.screen_loc = ui_block
 		mymob.block_icon.color = ui_color
 		mymob.block_icon.alpha = ui_alpha
-		hotkeybuttons += mymob.block_icon
+		static_inventory += mymob.block_icon
 
 	if(hud_data.has_blockswitch)
 		mymob.blockswitch_icon = new /obj/screen()
@@ -197,7 +196,7 @@
 		mymob.blockswitch_icon.screen_loc = ui_blockswitch
 		mymob.blockswitch_icon.color = ui_color
 		mymob.blockswitch_icon.alpha = ui_alpha
-		hotkeybuttons += mymob.blockswitch_icon
+		static_inventory += mymob.blockswitch_icon
 
 	if(hud_data.has_internals)
 		mymob.internals = new /obj/screen()
@@ -320,18 +319,6 @@
 	mymob.radio_use_icon.alpha = ui_alpha
 
 	inventory_shown = FALSE
-
-/mob/living/carbon/human/verb/toggle_hotkey_verbs()
-	set category = "OOC"
-	set name = "Toggle hotkey buttons"
-	set desc = "This disables or enables the user interface buttons which can be used with hotkeys."
-
-	if(hud_used.hotkey_buttons_shown)
-		client.screen -= hud_used.hotkeybuttons
-		hud_used.hotkey_buttons_shown = FALSE
-	else
-		client.screen |= hud_used.hotkeybuttons
-		hud_used.hotkey_buttons_shown = TRUE
 
 /mob/living/carbon/human/rejuvenate()
 	. = ..()

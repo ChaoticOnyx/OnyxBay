@@ -53,11 +53,6 @@
 	/// Used to show mob's inventory
 	var/inventory_shown = TRUE
 
-	/// Used to toggle hotkey buttons
-	var/hotkey_buttons_shown = TRUE
-	/// List of all buttons with binded hotkeys
-	var/list/obj/screen/hotkeybuttons
-
 	/// Used to toggle action buttons
 	var/action_buttons_hidden = FALSE
 
@@ -94,7 +89,6 @@
 	static_inventory = null
 	toggleable_inventory = null
 	always_visible_inventory = null
-	hotkeybuttons = null
 	mymob = null
 
 /datum/hud/proc/hidden_inventory_update()
@@ -233,8 +227,6 @@
 				mymob.client.screen |= static_inventory
 			if(length(toggleable_inventory) && inventory_shown)
 				mymob.client.screen |= toggleable_inventory
-			if(length(hotkeybuttons) && hotkey_buttons_shown)
-				mymob.client.screen |= hotkeybuttons
 			if(length(always_visible_inventory))
 				mymob.client.screen |= always_visible_inventory
 			if(action_intent)
@@ -247,8 +239,6 @@
 				mymob.client.screen -= static_inventory
 			if(length(toggleable_inventory))
 				mymob.client.screen -= toggleable_inventory
-			if(length(hotkeybuttons))
-				mymob.client.screen -= hotkeybuttons
 			if(length(always_visible_inventory))
 				mymob.client.screen |= always_visible_inventory
 			if(l_hand_hud_object)
@@ -268,8 +258,6 @@
 				mymob.client.screen -= static_inventory
 			if(length(toggleable_inventory))
 				mymob.client.screen -= toggleable_inventory
-			if(length(hotkeybuttons))
-				mymob.client.screen -= hotkeybuttons
 			if(length(always_visible_inventory))
 				mymob.client.screen |= always_visible_inventory
 

@@ -17,7 +17,6 @@
 		return
 
 	infodisplay = list()
-	hotkeybuttons = list()
 	static_inventory = list()
 
 	mymob.pullin = new /obj/screen()
@@ -25,7 +24,7 @@
 	mymob.pullin.icon_state = "pull0"
 	mymob.pullin.SetName("pull")
 	mymob.pullin.screen_loc = ui_construct_pull
-	hotkeybuttons += mymob.pullin
+	static_inventory += mymob.pullin
 
 	mymob.fire = new /obj/screen()
 	mymob.fire.icon = 'icons/hud/mob/screen_construct.dmi'
