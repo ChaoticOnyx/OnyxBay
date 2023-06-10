@@ -24,3 +24,6 @@
 
 /// From base of atom/proc/Initialize(): sent any time a new atom is created in this atom
 #define SIGNAL_ATOM_INITIALIZED_ON "atom_initialized_on"
+
+/// Called on 'atom/examine' (/mob, list/examine_texts)
+#define SIGNAL_ATOM_EXAMINED "atom_examined"
