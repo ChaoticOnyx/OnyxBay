@@ -137,6 +137,9 @@
 				stat("Chemical Storage: ", mind.changeling.chem_charges)
 				stat("Genetic Damage Time: ", mind.changeling.geneticdamage)
 
+			if(mind.special_role == "Borer Husk")
+				stat("Chemicals: ", get_organ(BP_BRAIN):chemicals)
+
 /mob/living/carbon/human/ex_act(severity)
 	if(!blinded)
 		flash_eyes()

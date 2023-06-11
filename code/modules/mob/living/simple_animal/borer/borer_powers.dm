@@ -2,7 +2,7 @@ GLOBAL_LIST_INIT(borer_reagent_types_by_name, setup_borer_reagents())
 
 /proc/setup_borer_reagents()
 	. = list()
-	for(var/reagent_type in list(/datum/reagent/alkysine, /datum/reagent/bicaridine, /datum/reagent/hyperzine, /datum/reagent/painkiller/tramadol))
+	for(var/reagent_type in list(/datum/reagent/alkysine, /datum/reagent/bicaridine, /datum/reagent/hyperzine, /datum/reagent/peridaxon))
 		var/datum/reagent/R = reagent_type
 		.[initial(R.name)] = reagent_type
 
@@ -11,6 +11,8 @@ list(\
 "in_host" = list(\
 /mob/living/simple_animal/borer/verb/release_host,\
 /mob/living/simple_animal/borer/verb/secrete_chemicals,\
+/mob/living/simple_animal/borer/verb/no_pain,\
+/mob/living/simple_animal/borer/verb/devour_brain,\
 ),\
 "controlling" = list(\
 /mob/living/carbon/proc/punish_host,\
@@ -29,6 +31,7 @@ list(\
 "husk" = list(\
 /mob/living/carbon/human/proc/psychic_whisper,\
 /mob/living/carbon/human/proc/tackle,\
+/mob/living/carbon/human/proc/no_self_pain,\
 /mob/living/carbon/proc/spawn_larvae,\
 )\
 )
@@ -91,7 +94,7 @@ list(\
 		to_chat(src, "You cannot infest someone who is already infested!")
 		return
 
-	var/obj/item/organ/external/E = H.organs_by_name[BP_HEAD]
+	var/obj/item/organ/external/E = H.get_organ(BP_HEAD)
 	if(!E || E.is_stump())
 		to_chat(src, "\The [H] does not have a head!")
 		return
@@ -137,44 +140,47 @@ list(\
 
 		update_abilities()
 
-		var/obj/item/organ/I = H.internal_organs_by_name[BP_BRAIN]
-		if(!I) // No brain organ, so the borer moves in and replaces it permanently.
-			replace_brain()
-		else
-			// If they're in normally, implant removal can get them out.
-			var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
-			head.implants |= src
+		var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
+		head.implants |= src
 
 	else
 		to_chat(src, "They are no longer in range!")
 
-/*
 /mob/living/simple_animal/borer/verb/devour_brain()
 	set category = "Abilities"
 	set name = "Devour Brain"
 	set desc = "Take permanent control of a dead host."
 
-	if(!host)
+	var/mob/living/carbon/human/H = host
+
+	if(!istype(H))
 		to_chat(src, "You are not inside a host body.")
 		return
 
-	if(host.stat != DEAD)
+	if(!host.is_ic_dead())
 		to_chat(src, "Your host is still alive.")
 		return
 
-	if(stat)
+	if(is_ooc_dead())
 		to_chat(src, "You cannot do that in your current state.")
+		return
 
 	if(docile)
 		to_chat(src, SPAN("notice", "You are feeling far too docile to do that."))
 		return
 
+	var/obj/item/organ/external/E = H.get_organ(BP_HEAD)
+	if(!E || E.is_stump())
+		to_chat(src, "\The [H] does not have a head!")
+		return
+
+	if(BP_IS_ROBOTIC(E))
+		to_chat(src, "\The [H]'s head is not living!")
+		return
 
 	to_chat(src, SPAN("danger", "It only takes a few moments to render the dead host brain down into a nutrient-rich slurry..."))
 	replace_brain()
-*/
 
-// BRAIN WORM ZOMBIES AAAAH.
 /mob/living/simple_animal/borer/proc/replace_brain()
 
 	var/mob/living/carbon/human/H = host
@@ -199,8 +205,6 @@ list(\
 		src.mind.special_role = "Borer Husk"
 		src.mind.transfer_to(host)
 
-	H.ChangeToHusk()
-
 	var/obj/item/organ/internal/borer/B = new(H)
 	H.internal_organs_by_name[BP_BRAIN] = B
 	H.internal_organs |= B
@@ -208,16 +212,31 @@ list(\
 	var/obj/item/organ/external/affecting = H.get_organ(BP_HEAD)
 	affecting.implants -= src
 
-	var/s2h_id = src.computer_id
-	var/s2h_ip= src.lastKnownIP
-	src.computer_id = null
-	src.lastKnownIP = null
+	host.jumpstart()
 
-	if(!H.computer_id)
-		H.computer_id = s2h_id
+/mob/living/simple_animal/borer/verb/no_pain()
+	set category = "Abilities"
+	set name = "No Host Pain"
+	set desc = "Shut down pain receptors of your host for some time."
 
-	if(!H.lastKnownIP)
-		H.lastKnownIP = s2h_ip
+	var/needed_location = "in_host"
+	if(!can_use_abilities(needed_location))
+		return
+
+	if(chemicals < 100)
+		to_chat(src, SPAN("warning", "You do not have enough chemicals stored!"))
+		return
+
+	to_chat(src, SPAN("danger", "You shut down \the [host]'s pain receptors for a while."))
+	to_chat(host, SPAN("danger", "Your whole body feels strangely numb."))
+
+	host.no_pain = TRUE
+	chemicals -= 100
+
+	addtimer(CALLBACK(src, .proc/pain_disable), 30 SECONDS)
+
+/mob/living/simple_animal/borer/proc/pain_disable()
+	host.no_pain = FALSE
 
 /mob/living/simple_animal/borer/verb/secrete_chemicals()
 	set category = "Abilities"
@@ -229,7 +248,7 @@ list(\
 		return
 
 	if(chemicals < 50)
-		to_chat(src, "You don't have enough chemicals!")
+		to_chat(src, SPAN("warning", "You do not have enough chemicals stored!"))
 		return
 
 	var/chem = input("Select a chemical to secrete.", "Chemicals") as null|anything in GLOB.borer_reagent_types_by_name
@@ -318,6 +337,7 @@ list(\
 			host_brain.lastKnownIP = h2b_ip
 
 		// self -> host
+
 		var/s2h_id = src.computer_id
 		var/s2h_ip = src.lastKnownIP
 		src.computer_id = null
@@ -416,9 +436,7 @@ list(\
 
 	visible_message(SPAN("warning", "With a hideous, rattling moan, [src] shudders back to life!"))
 
-	rejuvenate()
-	restore_blood()
-	fixblood()
+	revive()
 	update_canmove()
 
 /mob/living/simple_animal/borer/proc/can_use_abilities(needed_location)
@@ -474,5 +492,9 @@ list(\
 		verbs -= BORER_ALL_ABILITIES[abilities_type]
 		if(host)
 			host.verbs -= BORER_ALL_ABILITIES[abilities_type]
+
+/mob/living/simple_animal/borer/proc/on_mob_death()
+	GLOB.borers.remove_antagonist(host.mind)
+	clear_abilities()
 
 #undef BORER_ALL_ABILITIES

@@ -35,7 +35,7 @@
 
 	var/mob/living/simple_animal/borer/B = has_brain_worms()
 
-	if(B && B.can_use_abilities("controlling") && B.chemicals >= 100)
+	if(B && B.can_use_abilities("in_host") && B.chemicals >= 100)
 		to_chat(src, SPAN("danger", "Your host twitches and quivers as you rapidly excrete a larva from your sluglike body."))
 		visible_message(SPAN("danger", "\The [src] heaves violently, expelling a rush of vomit and a wriggling, sluglike creature!"))
 		B.chemicals -= 100

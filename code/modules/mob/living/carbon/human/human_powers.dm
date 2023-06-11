@@ -77,6 +77,25 @@
 
 	process_tackle(target)
 
+/mob/living/carbon/human/proc/no_self_pain()
+	set category = "Abilities"
+	set name = "No Pain"
+	set desc = "Shut down your pain receptors for some time."
+
+	var/mob/living/simple_animal/borer/B = has_brain_worms()
+
+	if(B && B.can_use_abilities("in_host") && B.chemicals >= 100)
+		to_chat(src, SPAN("danger", "Your whole body feels strangely numb."))
+
+	else
+		to_chat(src, SPAN("warning", "You do not have enough chemicals stored!"))
+		return
+
+	no_pain = TRUE
+	get_organ(BP_BRAIN).chemicals -= 100
+
+	addtimer(CALLBACK(src, /mob/living/simple_animal/borer/proc/pain_disable), 30 SECONDS)
+
 /mob/living/carbon/human/proc/process_tackle(mob/living/T)
 	if(!T || !src || src.stat)
 		return
