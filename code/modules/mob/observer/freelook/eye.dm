@@ -43,7 +43,7 @@
 /mob/observer/eye/examinate_verb()
 	set popup_menu = 0
 	set src = usr.contents
-	return 0
+	return FALSE
 
 /mob/observer/eye/pointed()
 	set popup_menu = 0

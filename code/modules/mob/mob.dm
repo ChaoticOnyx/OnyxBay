@@ -283,7 +283,7 @@
 	return examinate(A)
 
 /mob/proc/examinate(atom/A)
-	if((is_blind(src) || usr?.stat) && !isobserver(src))
+	if((is_blind(src) || (usr?.stat != CONSCIOUS)) && !isobserver(src))
 		to_chat(src, SPAN("notice", "Something is there but you can't see it."))
 		return TRUE
 
@@ -300,7 +300,7 @@
 		if(fake)
 			examine_result = fake.examine(src)
 
-	if (isnull(examine_result))
+	if(isnull(examine_result))
 		examine_result = A.examine(src)
 
 	to_chat(usr, examine_result)
