@@ -68,13 +68,10 @@ be able to influence the host through various commands.
 	set name = "Examine"
 	set category = "IC"
 
+	return examinate(A)
+
 /mob/living/parasite/meme/examinate(atom/A)
-	if(is_blind(host) || usr.stat)
-		to_chat(src,"Something is there but you can't see it.")
-		return TRUE
-
-	A.examine(src)
-
+	host.examinate(A)
 
 /mob/living/parasite/meme/New(mob/living/carbon/human/host)
 	..()
