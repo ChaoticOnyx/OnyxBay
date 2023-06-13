@@ -139,7 +139,7 @@
 
 			if(mind.special_role == "Borer Husk")
 				var/mob/living/simple_animal/borer/B = get_organ(BP_BRAIN)
-				stat("Chemicals: ", B.chemicals)
+				stat("Chemicals: ", B?.chemicals)
 
 
 /mob/living/carbon/human/ex_act(severity)
