@@ -8,27 +8,27 @@ GLOBAL_LIST_INIT(borer_reagent_types_by_name, setup_borer_reagents())
 
 #define BORER_ALL_ABILITIES \
 list(\
-"in_host" = list(\
+BORER_STATUS_IN_HOST = list(\
 /mob/living/simple_animal/borer/verb/release_host,\
 /mob/living/simple_animal/borer/verb/secrete_chemicals,\
 /mob/living/simple_animal/borer/verb/no_pain,\
 /mob/living/simple_animal/borer/verb/devour_brain,\
 ),\
-"controlling" = list(\
+BORER_STATUS_CONTROLLING = list(\
 /mob/living/carbon/proc/punish_host,\
 /mob/living/carbon/proc/spawn_larvae,\
 /mob/living/carbon/proc/release_control,\
 ),\
-"not_controlling" = list(\
+BORER_STATUS_NOT_CONTROLLING = list(\
 /mob/living/simple_animal/borer/verb/bond_brain,\
 ),\
-"out_host" = list(\
+BORER_STATUS_OUT_HOST = list(\
 /mob/living/simple_animal/borer/verb/infest,\
 /mob/living/simple_animal/borer/verb/dominate_victim,\
 /mob/living/proc/ventcrawl,\
 /mob/living/proc/hide,\
 ),\
-"husk" = list(\
+BORER_STATUS_HUSK = list(\
 /mob/living/carbon/human/proc/psychic_whisper,\
 /mob/living/carbon/human/proc/tackle,\
 /mob/living/carbon/human/proc/no_self_pain,\
@@ -175,7 +175,7 @@ list(\
 		return
 
 	var/obj/item/organ/internal/I = H.get_organ(BP_BRAIN)
-	if(!istype(BP_BRAIN))
+	if(!istype(I))
 		to_chat(src, SPAN("notice", "[H] has no brain to devour."))
 
 	if(BP_IS_ROBOTIC(E))
