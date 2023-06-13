@@ -171,8 +171,12 @@ list(\
 
 	var/obj/item/organ/external/E = H.get_organ(BP_HEAD)
 	if(!E || E.is_stump())
-		to_chat(src, "\The [H] does not have a head!")
+		to_chat(src, "\The [H] does not seem to have an ear canal to breach.")
 		return
+
+	var/obj/item/organ/internal/I = H.get_organ(BP_BRAIN)
+	if(!istype(BP_BRAIN))
+		to_chat(src, SPAN("notice", "[H] has no brain to devour."))
 
 	if(BP_IS_ROBOTIC(E))
 		to_chat(src, "\The [H]'s head is not living!")
