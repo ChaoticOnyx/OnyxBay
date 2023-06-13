@@ -92,7 +92,7 @@
 		return
 
 	no_pain = TRUE
-	get_organ(BP_BRAIN).chemicals -= 100
+	B.chemicals -= 100
 
 	addtimer(CALLBACK(src, /mob/living/simple_animal/borer/proc/pain_disable), 30 SECONDS)
 
