@@ -8,27 +8,27 @@ GLOBAL_LIST_INIT(borer_reagent_types_by_name, setup_borer_reagents())
 
 #define BORER_ALL_ABILITIES \
 list(\
-BORER_STATUS_IN_HOST = list(\
+"in_host" = list(\
 /mob/living/simple_animal/borer/verb/release_host,\
 /mob/living/simple_animal/borer/verb/secrete_chemicals,\
 /mob/living/simple_animal/borer/verb/no_pain,\
 /mob/living/simple_animal/borer/verb/devour_brain,\
 ),\
-BORER_STATUS_CONTROLLING = list(\
+"controlling" = list(\
 /mob/living/carbon/proc/punish_host,\
 /mob/living/carbon/proc/spawn_larvae,\
 /mob/living/carbon/proc/release_control,\
 ),\
-BORER_STATUS_NOT_CONTROLLING = list(\
+"not_controlling" = list(\
 /mob/living/simple_animal/borer/verb/bond_brain,\
 ),\
-BORER_STATUS_OUT_HOST = list(\
+"out_host" = list(\
 /mob/living/simple_animal/borer/verb/infest,\
 /mob/living/simple_animal/borer/verb/dominate_victim,\
 /mob/living/proc/ventcrawl,\
 /mob/living/proc/hide,\
 ),\
-BORER_STATUS_HUSK = list(\
+"husk" = list(\
 /mob/living/carbon/human/proc/psychic_whisper,\
 /mob/living/carbon/human/proc/tackle,\
 /mob/living/carbon/human/proc/no_self_pain,\
@@ -224,7 +224,7 @@ BORER_STATUS_HUSK = list(\
 		return
 
 	if(host.no_pain)
-		to_chat(src, SPAN("warning", "Your host's pain receptors are already numb!"))
+		to_chat(src, SPAN("warning", "Your host's pain receptors are already numb		!"))
 		return
 
 	if(chemicals < 100)
