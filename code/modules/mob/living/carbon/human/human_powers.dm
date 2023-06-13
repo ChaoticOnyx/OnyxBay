@@ -84,7 +84,7 @@
 
 	var/mob/living/simple_animal/borer/B = has_brain_worms()
 
-	if(B && B.can_use_abilities("in_host") && B.chemicals >= 100)
+	if(B && B.can_use_abilities(BORER_STATUS_IN_HOST) && B.chemicals >= 100)
 		to_chat(src, SPAN("danger", "Your whole body feels strangely numb."))
 
 	else

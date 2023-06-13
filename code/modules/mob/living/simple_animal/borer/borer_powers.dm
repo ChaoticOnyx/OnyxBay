@@ -8,27 +8,27 @@ GLOBAL_LIST_INIT(borer_reagent_types_by_name, setup_borer_reagents())
 
 #define BORER_ALL_ABILITIES \
 list(\
-"in_host" = list(\
+BORER_STATUS_IN_HOST = list(\
 /mob/living/simple_animal/borer/verb/release_host,\
 /mob/living/simple_animal/borer/verb/secrete_chemicals,\
 /mob/living/simple_animal/borer/verb/no_pain,\
 /mob/living/simple_animal/borer/verb/devour_brain,\
 ),\
-"controlling" = list(\
+BORER_STATUS_CONTROLLING = list(\
 /mob/living/carbon/proc/punish_host,\
 /mob/living/carbon/proc/spawn_larvae,\
 /mob/living/carbon/proc/release_control,\
 ),\
-"not_controlling" = list(\
+BORER_STATUS_NOT_CONTROLLING = list(\
 /mob/living/simple_animal/borer/verb/bond_brain,\
 ),\
-"out_host" = list(\
+BORER_STATUS_OUT_HOST = list(\
 /mob/living/simple_animal/borer/verb/infest,\
 /mob/living/simple_animal/borer/verb/dominate_victim,\
 /mob/living/proc/ventcrawl,\
 /mob/living/proc/hide,\
 ),\
-"husk" = list(\
+BORER_STATUS_HUSK = list(\
 /mob/living/carbon/human/proc/psychic_whisper,\
 /mob/living/carbon/human/proc/tackle,\
 /mob/living/carbon/human/proc/no_self_pain,\
@@ -41,7 +41,7 @@ list(\
 	set name = "Release Host"
 	set desc = "Slither out of your host."
 
-	var/needed_location = "in_host"
+	var/needed_location = BORER_STATUS_IN_HOST
 	if(!can_use_abilities(needed_location))
 		return
 
@@ -69,7 +69,7 @@ list(\
 	set name = "Infest"
 	set desc = "Infest a suitable humanoid host."
 
-	var/needed_location = "out_host"
+	var/needed_location = BORER_STATUS_OUT_HOST
 	if(!can_use_abilities(needed_location))
 		return
 
@@ -196,7 +196,7 @@ list(\
 	if(host.is_ooc_dead())
 		H.verbs |= /mob/living/carbon/human/proc/jumpstart
 
-	H.verbs |= BORER_ALL_ABILITIES["husk"]
+	H.verbs |= BORER_ALL_ABILITIES[BORER_STATUS_HUSK]
 
 	if(H.client)
 		H.ghostize(0)
@@ -219,8 +219,12 @@ list(\
 	set name = "No Host Pain"
 	set desc = "Shut down pain receptors of your host for some time."
 
-	var/needed_location = "in_host"
+	var/needed_location = BORER_STATUS_IN_HOST
 	if(!can_use_abilities(needed_location))
+		return
+
+	if(host.no_pain)
+		to_chat(src, SPAN("warning", "Your host's pain receptors are already numb!"))
 		return
 
 	if(chemicals < 100)
@@ -243,7 +247,7 @@ list(\
 	set name = "Secrete Chemicals"
 	set desc = "Push some chemicals into your host's bloodstream."
 
-	var/needed_location = "in_host"
+	var/needed_location = BORER_STATUS_IN_HOST
 	if(!can_use_abilities(needed_location))
 		return
 
@@ -265,7 +269,7 @@ list(\
 	set name = "Paralyze Victim"
 	set desc = "Freeze the limbs of a potential host with supernatural fear."
 
-	var/needed_location = "out_host"
+	var/needed_location = BORER_STATUS_OUT_HOST
 	if(!can_use_abilities(needed_location))
 		return
 
@@ -303,7 +307,7 @@ list(\
 	set name = "Assume Control"
 	set desc = "Fully connect to the brain of your host."
 
-	var/needed_location = "not_controlling"
+	var/needed_location = BORER_STATUS_NOT_CONTROLLING
 	if(!can_use_abilities(needed_location))
 		return
 
@@ -444,22 +448,22 @@ list(\
 		return FALSE
 
 	switch(needed_location)
-		if("in_host")
+		if(BORER_STATUS_IN_HOST)
 			if(!host)
 				to_chat(src, "You are not inside a host body.")
 				return FALSE
-		if("out_host")
+		if(BORER_STATUS_OUT_HOST)
 			if(host)
 				to_chat(src, "You cannot do that from within a host body.")
 				return FALSE
-		if("controlling")
+		if(BORER_STATUS_CONTROLLING)
 			if(!host)
 				to_chat(src, "You are not inside a host body.")
 				return FALSE
 			if(!controlling)
 				to_chat(src, "You need control a host body to do it.")
 				return FALSE
-		if("not_controlling")
+		if(BORER_STATUS_NOT_CONTROLLING)
 			if(!host)
 				to_chat(src, "You are not inside a host body.")
 				return FALSE
@@ -482,10 +486,10 @@ list(\
 	clear_abilities()
 	if(host)
 		if(controlling)
-			host.verbs |= BORER_ALL_ABILITIES["controlling"]
-	verbs |= BORER_ALL_ABILITIES["not_controlling"]
-	verbs |= BORER_ALL_ABILITIES["in_host"]
-	verbs |= BORER_ALL_ABILITIES["out_host"]
+			host.verbs |= BORER_ALL_ABILITIES[BORER_STATUS_CONTROLLING]
+	verbs |= BORER_ALL_ABILITIES[BORER_STATUS_NOT_CONTROLLING]
+	verbs |= BORER_ALL_ABILITIES[BORER_STATUS_IN_HOST]
+	verbs |= BORER_ALL_ABILITIES[BORER_STATUS_OUT_HOST]
 
 /mob/living/simple_animal/borer/proc/clear_abilities()
 	for(var/abilities_type in BORER_ALL_ABILITIES)
