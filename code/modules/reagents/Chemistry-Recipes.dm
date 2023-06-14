@@ -460,6 +460,18 @@
 	required_reagents = list(/datum/reagent/arithrazine = 1, /datum/reagent/potassium = 1, /datum/reagent/acid/polyacid = 1)
 	result_amount = 1
 
+/datum/chemical_reaction/mass_gainer
+	name = "Mass Gainer"
+	result = /datum/reagent/toxin/mass_gainer
+	required_reagents = list(/datum/reagent/sugar = 1, /datum/reagent/radium = 1, /datum/reagent/potassium = 1)
+	result_amount = 1
+
+/datum/chemical_reaction/fat_burner
+	name = "Fat Burner"
+	result = /datum/reagent/toxin/fat_burner
+	required_reagents = list(/datum/reagent/acetone = 1, /datum/reagent/ethanol = 1, /datum/reagent/acid/polyacid = 1)
+	result_amount = 1
+
 /datum/chemical_reaction/noexcutite
 	name = "Noexcutite"
 	result = /datum/reagent/noexcutite
@@ -514,6 +526,10 @@
 
 /datum/chemical_reaction/explosion/hair_solution
 	required_reagents = list(/datum/reagent/toxin/hair_grower = 1, /datum/reagent/toxin/hair_remover = 1)
+	result_amount = 1
+
+/datum/chemical_reaction/explosion/weigth_solution
+	required_reagents = list(/datum/reagent/toxin/mass_gainer = 1, /datum/reagent/toxin/fat_burner = 1)
 	result_amount = 1
 
 /datum/chemical_reaction/explosion/nitroglycerin

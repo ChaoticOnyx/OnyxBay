@@ -755,6 +755,67 @@
 	M.update_hair()
 	to_chat(M, SPAN_WARNING("You feel a chill, your skin feels heavier..."))
 
+/datum/reagent/toxin/mass_gainer
+	name = "Mass Gainer"
+	description = "An extremely effective mass gainer cocktail."
+	taste_description = "sugar"
+	reagent_state = LIQUID
+	color = "#e7e3d8"
+	strength = 1
+	overdose = REAGENTS_OVERDOSE
+
+/datum/reagent/toxin/mass_gainer/affect_touch(mob/living/carbon/human/M, alien, removed)
+	var/datum/species/S = all_species[M.get_species()]
+	if(!alien)
+		M.change_body_build(S.body_builds[5])
+	else switch(alien)
+		if(IS_SKRELL)
+			M.change_body_build(S.body_builds[1])
+		if(IS_TAJARA)
+			M.change_body_build(S.body_builds[3])
+		else return
+	to_chat(M, SPAN_WARNING("You feel heavier..."))
+	remove_self(volume)
+
+/datum/reagent/toxin/fat_burner
+	name = "Fat Burner"
+	description = "An extremely effective weight loss drug."
+	taste_description = "acid"
+	reagent_state = LIQUID
+	color = "#82c238"
+	strength = 1
+	overdose = REAGENTS_OVERDOSE
+
+/datum/reagent/toxin/fat_burner/overdose(mob/living/carbon/human/M, alien, removed)
+	M.get_ingested_reagents().del_reagent(/datum/reagent/toxin/fat_burner)
+	M.reagents.del_reagent(/datum/reagent/toxin/fat_burner)
+	var/datum/species/S = all_species[M.get_species()]
+	if(!alien)
+		if(M.body_build == S.body_builds[5])
+			M.change_body_build(S.body_builds[1])
+		else if(M.body_build == S.body_builds[1])
+			M.gender == MALE ? M.change_body_build(S.body_builds[4]) : M.change_body_build(S.body_builds[2])
+		else if(M.body_build == S.body_builds[2])
+			M.change_body_build(S.body_builds[3])
+		else return
+	else switch(alien)
+		if(IS_SKRELL)
+			if(M.gender == FEMALE)
+				if(M.body_build == S.body_builds[1])
+					M.change_body_build(S.body_builds[2])
+				if(M.body_build == S.body_builds[2])
+					M.change_body_build(S.body_builds[3])
+		if(IS_TAJARA)
+			if(M.body_build == S.body_builds[3])
+				M.change_body_build(S.body_builds[1])
+			if(M.body_build == S.body_builds[1])
+				if(M.gender == FEMALE)
+					M.change_body_build(S.body_builds[2])
+			else return
+		else return
+	to_chat(M, SPAN_WARNING("You feel like a feather..."))
+	remove_self(volume)
+
 /datum/reagent/toxin/zombie
 	name = "Liquid Corruption"
 	description = "A filthy, oily substance which slowly churns of its own accord."

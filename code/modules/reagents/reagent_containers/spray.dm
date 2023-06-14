@@ -152,6 +152,16 @@
 	desc = "Very effective at growing hair."
 	startswith = list(/datum/reagent/toxin/hair_grower)
 
+/obj/item/reagent_containers/spray/mass_gainer
+	name = "mass gainer"
+	desc = "Very effective at gaining mass."
+	startswith = list(/datum/reagent/toxin/mass_gainer)
+
+/obj/item/reagent_containers/spray/fat_burner
+	name = "fat burner"
+	desc = "Very effective at burning fat."
+	startswith = list(/datum/reagent/toxin/fat_burner)
+
 /obj/item/reagent_containers/spray/pepper
 	name = "pepperspray"
 	desc = "Manufactured by Uhang Inc., it fires a mist of condensed capsaicin to blind and down an opponent quickly."
