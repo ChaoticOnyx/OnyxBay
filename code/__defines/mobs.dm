@@ -306,6 +306,21 @@
 #define SPECIES_GOLEM       "Golem"
 #define SPECIES_ABDUCTOR    "Abductor"
 
+//Body builds
+#define HUMAN_DEFAULT 1
+#define HUMAN_SLIM_FEMALE 2
+#define HUMAN_SLIM_ALT_FEMALE 3
+#define HUMAN_SLIM_MALE 4
+#define HUMAN_FAT 5
+
+#define TAJARA_DEFAULT 1
+#define TAJARA_SLIM_FEMALE 2
+#define TAJARA_FAT 3
+
+#define SKRELL_DEFAULT 1
+#define SKRELL_SLIM_FEMALE 2
+#define SKRELL_SLIM_ALT_FEMALE 3
+
 // Ayyy IDs.
 #define SPECIES_XENO                 "Xenomorph"
 #define SPECIES_XENO_DRONE           "Xenomorph Drone"
