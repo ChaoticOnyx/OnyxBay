@@ -87,7 +87,7 @@
 
 /obj/item/organ/external/head/robotize(company, skip_prosthetics = FALSE, keep_organs = FALSE, just_printed = FALSE)
 	if(company)
-		var/datum/robolimb/R = all_robolimbs[company]
+		var/datum/robolimb/R = GLOB.all_robolimbs[company]
 		if(R)
 			can_intake_reagents = R.can_eat
 	. = ..(company, skip_prosthetics, 1)
@@ -110,7 +110,7 @@
 		var/datum/species/S = owner.species
 		var/has_eyes_overlay = S.has_eyes_icon
 		if(BP_IS_ROBOTIC(src)) // Robolimbs don't always have eye icon.
-			var/datum/robolimb/R = all_robolimbs[model]
+			var/datum/robolimb/R = GLOB.all_robolimbs[model]
 			has_eyes_overlay = R.has_eyes_icon
 
 		var/datum/body_build/BB = owner.body_build
