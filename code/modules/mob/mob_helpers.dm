@@ -302,7 +302,9 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	if(!islist(logging[message_type]))
 		logging[message_type] = list()
 
-	var/list/timestamped_message = list("[LAZYLEN(logging[message_type]) + 1]\[[time_stamp()]\] [message_tag] [key_name(src)]" = message)
+	var/list/message_data = list("message" = message, "tag" = message_tag)
+
+	var/list/timestamped_message = list("[LAZYLEN(logging[message_type]) + 1]\[[time_stamp()]\] [message_tag] [key_name(src)]" = message_data)
 
 	logging[message_type] += timestamped_message
 

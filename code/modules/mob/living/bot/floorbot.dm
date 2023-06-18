@@ -81,7 +81,7 @@
 		addTiles(1)
 
 	if(prob(1))
-		custom_emote(2, "makes an excited booping beeping sound!")
+		audible_emote("makes an excited booping beeping sound!")
 
 /mob/living/bot/floorbot/handleAdjacentTarget()
 	if(get_turf(target) == src.loc)
@@ -217,7 +217,7 @@
 
 /* Assembly */
 
-/obj/item/storage/toolbox/mechanical/attackby(obj/item/stack/tile/floor/T, mob/user as mob)
+/obj/item/storage/toolbox/mechanical/attackby(obj/item/stack/tile/floor/T, mob/user)
 	if(!istype(T, /obj/item/stack/tile/floor))
 		..()
 		return

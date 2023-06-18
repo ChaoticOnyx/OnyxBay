@@ -758,7 +758,7 @@
 				Stun(3)
 				var/obj/item/organ/internal/stomach/stomach = internal_organs_by_name[BP_STOMACH]
 				if(nutrition <= STOMACH_FULLNESS_SUPER_LOW || !istype(stomach))
-					custom_emote(1, "dry heaves.")
+					custom_emote(VISIBLE_MESSAGE, "dry heaves.", "AUTO_EMOTE")
 				else
 					for(var/a in stomach_contents)
 						var/atom/movable/A = a

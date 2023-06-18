@@ -254,7 +254,7 @@
 			target = M
 			awaiting_surrender = -1
 			say("Level [threat] infraction alert!")
-			custom_emote(1, "points at [M.name]!")
+			visible_emote("points at [M.name]!")
 			playsound(src.loc, pick(threat_found_sounds), 50)
 			return
 
@@ -454,7 +454,7 @@
 		var/mob/custom_target = input("Which subject is dangerous?", "Nearby subjects:") as null|anything in mobs_in_secbot_range
 		if(check_threat(custom_target) > 0)
 			say("Level [check_threat(custom_target)] infraction alert!")
-			custom_emote(1, "points at [custom_target.name]!")
+			visible_emote("points at [custom_target.name]!")
 			playsound(src.loc, pick(threat_found_sounds), 50)
 		else
 			to_chat(usr,"<span class='warning'>This target is safe.</span>")

@@ -282,7 +282,7 @@ var/list/channel_to_radio_key = new
 		var/verb = pick(message_data["language"].signlang_verb)
 
 		if(message_data["language"].flags & NONVERBAL && prob(30))
-			src.custom_emote(1, "[verb].")
+			src.custom_emote(VISIBLE_MESSAGE, "[verb].")
 
 		if(message_data["language"].flags & SIGNLANG)
 			if(message_data["log_message"])
