@@ -416,6 +416,7 @@
 		'html/images/stamp_images/stamp-syndicate.png',
 		'html/images/stamp_images/stamp-cargo.png',
 		'html/images/stamp_images/stamp-intaff.png',
+		'html/images/stamp_images/stamp-ward.png',
 		'html/search.js',
 		'html/panels.css',
 		'html/spacemag.css',
