@@ -90,7 +90,8 @@
 /obj/item/rcd/attack_self(mob/user)
 	var/list/choices = _collect_radial_choices()
 
-	selected_work = show_radial_menu(user, src, choices, require_near = TRUE)
+	var/atom/anchor = get_rig() || src
+	selected_work = show_radial_menu(user, anchor, choices, require_near = TRUE, in_screen = TRUE)
 
 	if(!selected_work)
 		return
@@ -104,9 +105,6 @@
 /obj/item/rcd/afterattack(atom/A, mob/user, proximity)
 	if(!proximity)
 		return
-
-	if(isrobot(user))
-		return FALSE
 
 	if(istype(get_area(A), /area/shuttle) || istype(get_area(A), /turf/space/transit))
 		return FALSE
