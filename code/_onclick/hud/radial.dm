@@ -7,6 +7,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	icon = 'icons/hud/radial.dmi'
 	layer = ABOVE_HUD_BASE_LAYER
 	plane = ABOVE_HUD_PLANE
+	vis_flags = VIS_INHERIT_PLANE
 	var/datum/radial_menu/parent
 
 /obj/screen/radial/slice
