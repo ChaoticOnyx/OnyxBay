@@ -52,7 +52,7 @@
 	name = "Bald"
 	icon_state = "bald"
 	gender = MALE
-	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_VOX)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_VOX, SPECIES_SWINE)
 	flags = VERY_SHORT
 
 /datum/sprite_accessory/hair/short
@@ -1049,7 +1049,7 @@ May God have mercy.
 	name = "Shaved"
 	icon_state = "shaved"
 	gender = NEUTER
-	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_VOX, SPECIES_IPC)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_VOX, SPECIES_IPC, SPECIES_SWINE)
 
 /datum/sprite_accessory/facial_hair/watson
 	name = "Watson Mustache"
@@ -1374,6 +1374,37 @@ May God have mercy.
 	icon_state = "smallstache"
 	species_allowed = list(SPECIES_TAJARA)
 
+// Swines
+/datum/sprite_accessory/facial_hair/swine_tusks
+	name = "Tusks"
+	icon_state = "tusks"
+	species_allowed = list(SPECIES_SWINE)
+
+/datum/sprite_accessory/facial_hair/swine_goatee
+	name = "Tusks & Goatee"
+	icon_state = "goatee"
+	species_allowed = list(SPECIES_SWINE)
+
+/datum/sprite_accessory/facial_hair/swine_sideburns
+	name = "Tusks & Sideburns"
+	icon_state = "sideburns"
+	species_allowed = list(SPECIES_SWINE)
+
+/datum/sprite_accessory/facial_hair/swine_stache
+	name = "Stache"
+	icon_state = "stache"
+	species_allowed = list(SPECIES_SWINE)
+
+/datum/sprite_accessory/facial_hair/swine_moustache
+	name = "Moustache"
+	icon_state = "moustache"
+	species_allowed = list(SPECIES_SWINE)
+
+/datum/sprite_accessory/facial_hair/swine_longbeard
+	name = "Tusks & Beard"
+	icon_state = "longbeard"
+	species_allowed = list(SPECIES_SWINE)
+
 //skin styles - WIP
 //going to have to re-integrate this with surgery
 //let the icon_state hold an icon preview for now
@@ -1437,36 +1468,36 @@ May God have mercy.
 	name = "Tattoo (Heart, Torso)"
 	icon_state = "tat_heart"
 	body_parts = list(BP_CHEST)
-	species_allowed = list(SPECIES_HUMAN)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_SWINE)
 
 /datum/sprite_accessory/marking/tat_hive
 	name = "Tattoo (Hive, Back)"
 	icon_state = "tat_hive"
 	body_parts = list(BP_CHEST)
-	species_allowed = list(SPECIES_HUMAN)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_SWINE)
 
 /datum/sprite_accessory/marking/tat_nightling
 	name = "Tattoo (Nightling, Back)"
 	icon_state = "tat_nightling"
 	body_parts = list(BP_CHEST)
-	species_allowed = list(SPECIES_HUMAN)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_SWINE)
 
 /datum/sprite_accessory/marking/tat_campbell
 	name = "Tattoo (Campbell, R.Arm)"
 	icon_state = "tat_campbell"
 	body_parts = list(BP_R_ARM)
-	species_allowed = list(SPECIES_HUMAN)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_SWINE)
 
 /datum/sprite_accessory/marking/tat_campbell/left
 	name = "Tattoo (Campbell, L.Arm)"
 	body_parts = list(BP_L_ARM)
-	species_allowed = list(SPECIES_HUMAN)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_SWINE)
 
 /datum/sprite_accessory/marking/tat_tiger
 	name = "Tattoo (Tiger Stripes, Body)"
 	icon_state = "tat_tiger"
 	body_parts = list(BP_L_FOOT,BP_R_FOOT,BP_L_LEG,BP_R_LEG,BP_L_ARM,BP_R_ARM,BP_L_HAND,BP_R_HAND,BP_CHEST,BP_GROIN)
-	species_allowed = list(SPECIES_HUMAN)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_SWINE)
 
 /datum/sprite_accessory/marking/taj_paw_socks
 	name = "Socks Coloration (Taj)"
