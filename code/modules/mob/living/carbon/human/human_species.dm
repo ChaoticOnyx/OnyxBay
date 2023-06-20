@@ -42,6 +42,10 @@
 	h_style = "Horns"
 	..(new_loc, SPECIES_UNATHI)
 
+/mob/living/carbon/human/swine/New(new_loc)
+	h_style = "Bald"
+	..(new_loc, SPECIES_SWINE)
+
 /mob/living/carbon/human/vox/New(new_loc)
 	h_style = "Long Vox Quills"
 	..(new_loc, SPECIES_VOX)
