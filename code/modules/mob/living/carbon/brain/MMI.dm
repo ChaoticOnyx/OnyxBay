@@ -10,7 +10,7 @@
 	var/locked = FALSE
 	var/mob/living/carbon/brain/brainmob = null //The current occupant.
 	var/obj/item/organ/internal/brain/brainobj = null	//The current brain organ.
-	var/list/whitelisted_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_VOX, SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_MONKEY, SPECIES_SWINE)
+	var/list/whitelisted_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_VOX, SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_MONKEY)
 	var/obj/mecha = null //This does not appear to be used outside of reference in mecha.dm.
 
 /obj/item/device/mmi/update_icon()
