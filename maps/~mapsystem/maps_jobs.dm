@@ -66,6 +66,7 @@
 			/datum/job/chef,
 			/datum/job/hydro,
 			/datum/job/cargo_tech,
+			/datum/job/mining,
 			/datum/job/janitor,
 			/datum/job/librarian,
 			/datum/job/officer,

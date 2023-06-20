@@ -1895,6 +1895,15 @@
 	startswith = list(/datum/reagent/nutriment/protein = 2)
 	bitesize = 2
 
+/obj/item/reagent_containers/food/bacon
+	name = "bacon"
+	desc = "A thin slice of pork."
+	icon = 'icons/obj/food.dmi'
+	icon_state = "bacon"
+	center_of_mass = "x=17;y=20"
+	startswith = list(/datum/reagent/nutriment/protein = 2)
+	bitesize = 1
+
 /obj/item/reagent_containers/food/rawfaggot
 	name = "raw faggot"
 	desc = "A raw faggot."

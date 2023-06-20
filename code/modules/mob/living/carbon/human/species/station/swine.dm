@@ -22,6 +22,7 @@
 	num_alternate_languages = 2
 	name_language = null
 	hunger_factor = DEFAULT_HUNGER_FACTOR * 3
+	meat_type = /obj/item/reagent_containers/food/meat/pork
 
 	min_age = 14
 	max_age = 80
