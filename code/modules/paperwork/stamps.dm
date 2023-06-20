@@ -67,7 +67,7 @@
 	icon_state = "stamp-ok"
 
 /obj/item/stamp/syndicate
-	name = "syndicate rubber stamp"
+	name = "\improper 'criminal' rubber stamp"
 	icon_state = "stamp-syndicate"
 
 /obj/item/stamp/void
@@ -83,7 +83,7 @@
 	icon_state = "stamp-law"
 
 /obj/item/stamp/chapel
-	name = "law rubber stamp"
+	name = "chapel rubber stamp"
 	icon_state = "stamp-chap"
 
 // Syndicate stamp to forge documents.
