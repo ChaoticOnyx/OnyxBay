@@ -440,6 +440,11 @@ I said no!
 	items = list(/obj/item/reagent_containers/food/meat/syntiflesh)
 	result = /obj/item/reagent_containers/food/meatsteak
 
+/datum/recipe/porkchop
+	reagents = list(/datum/reagent/sodiumchloride = 1, /datum/reagent/blackpepper = 1)
+	items = list(/obj/item/reagent_containers/food/meat/pork)
+	result = /obj/item/reagent_containers/food/porkchop
+
 /datum/recipe/pizzamargherita
 	fruit = list("tomato" = 1)
 	items = list(

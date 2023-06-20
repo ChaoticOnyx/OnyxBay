@@ -59,6 +59,8 @@
 			playsound(user, "[gender_prefix]_sneeze", rand(25, 40), FALSE)
 		if ("long_scream")
 			playsound(user, "[gender_prefix]_long_scream", rand(25, 40), FALSE)
+		if ("oink")
+			playsound(user, pick('sound/effects/pig1.ogg','sound/effects/pig2.ogg','sound/effects/pig3.ogg'), 100, 1)
 
 /decl/emote/proc/do_emote(atom/user, extra_params)
 
