@@ -797,10 +797,16 @@
 		b_facial = hex2num(copytext(new_facial, 6, 8))
 
 	var/new_hair = input("Please select hair color.", "Character Generation",rgb(r_hair,g_hair,b_hair)) as color
-	if(new_facial)
+	if(new_hair)
 		r_hair = hex2num(copytext(new_hair, 2, 4))
 		g_hair = hex2num(copytext(new_hair, 4, 6))
 		b_hair = hex2num(copytext(new_hair, 6, 8))
+
+	var/new_s_hair = input("Please select secondary hair color.", "Character Generation",rgb(r_s_hair,g_s_hair,b_s_hair)) as color
+	if(new_s_hair)
+		r_s_hair = hex2num(copytext(new_hair, 2, 4))
+		g_s_hair = hex2num(copytext(new_hair, 4, 6))
+		b_s_hair = hex2num(copytext(new_hair, 6, 8))
 
 	var/new_eyes = input("Please select eye color.", "Character Generation",rgb(r_eyes,g_eyes,b_eyes)) as color
 	if(new_eyes)

@@ -71,6 +71,16 @@
 				if(owner.change_hair_color(r_hair, g_hair, b_hair))
 					update_dna()
 					return 1
+	if(href_list["hair_s_color"])
+		if(can_change(APPEARANCE_HAIR_COLOR))
+			var/new_hair = input("Please select secoundary hair color.", "Secondary Hair Color", rgb(owner.r_hair, owner.g_hair, owner.b_hair)) as color|null
+			if(new_hair && can_still_topic(state))
+				var/r_hair = hex2num(copytext(new_hair, 2, 4))
+				var/g_hair = hex2num(copytext(new_hair, 4, 6))
+				var/b_hair = hex2num(copytext(new_hair, 6, 8))
+				if(owner.change_s_hair_color(r_hair, g_hair, b_hair))
+					update_dna()
+					return 1
 	if(href_list["facial_hair"])
 		if(can_change(APPEARANCE_FACIAL_HAIR) && (href_list["facial_hair"] in valid_facial_hairstyles))
 			if(owner.change_facial_hair(href_list["facial_hair"]))

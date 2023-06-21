@@ -34,7 +34,10 @@
 #define DNA_UI_BEARD_STYLE 15
 #define DNA_UI_HAIR_STYLE  16
 #define DNA_UI_BODY_HEIGHT 17
-#define DNA_UI_LENGTH      17 // Update this when you add something, or you WILL break shit.
+#define DNA_UI_S_HAIR_R    18
+#define DNA_UI_S_HAIR_G    19
+#define DNA_UI_S_HAIR_B    20
+#define DNA_UI_LENGTH      20 // Update this when you add something, or you WILL break shit.
 
 #define DNA_SE_LENGTH 27
 // For later:
@@ -138,6 +141,10 @@ var/global/list/datum/dna/gene/dna_genes[0]
 	SetUIValueRange(DNA_UI_HAIR_R,    character.r_hair,    255,    1)
 	SetUIValueRange(DNA_UI_HAIR_G,    character.g_hair,    255,    1)
 	SetUIValueRange(DNA_UI_HAIR_B,    character.b_hair,    255,    1)
+
+	SetUIValueRange(DNA_UI_S_HAIR_R,    character.r_s_hair,    255,    1)
+	SetUIValueRange(DNA_UI_S_HAIR_G,    character.g_s_hair,    255,    1)
+	SetUIValueRange(DNA_UI_S_HAIR_B,    character.b_s_hair,    255,    1)
 
 	SetUIValueRange(DNA_UI_BEARD_R,   character.r_facial,  255,    1)
 	SetUIValueRange(DNA_UI_BEARD_G,   character.g_facial,  255,    1)

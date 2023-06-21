@@ -47,6 +47,7 @@
 
 /datum/sprite_accessory/hair
 	var/flags
+	var/has_secondary = FALSE
 
 /datum/sprite_accessory/hair/bald
 	name = "Bald"
@@ -54,6 +55,7 @@
 	gender = MALE
 	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_VOX, SPECIES_SWINE)
 	flags = VERY_SHORT
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/short
 	name = "Short Hair"   // try to capatilize the names please~
@@ -189,6 +191,7 @@
 	name = "Beehive"
 	icon_state = "beehive"
 	gender = FEMALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/beehive2
 	name = "Beehive 2"
@@ -378,6 +381,7 @@
 	name = "Pigtails 2"
 	icon_state = "pigtails_b"
 	gender = FEMALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/himecut
 	name = "Hime Cut"
@@ -1270,71 +1274,85 @@ May God have mercy.
 	name = "Ears"
 	icon_state = "bald"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_small
 	name = "Small Ears"
 	icon_state = "small"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_clean
 	name = "Clean"
 	icon_state = "clean"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_bangs
 	name = "Bangs"
 	icon_state = "bangs"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_braid
 	name = "Braid"
 	icon_state = "braid"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_shaggy
 	name = "Shaggy"
 	icon_state = "shaggy"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_plait
 	name = "Plait"
 	icon_state = "plait"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_straight
 	name = "Straight"
 	icon_state = "straight"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_long
 	name = "Long"
 	icon_state = "long"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_rattail
 	name = "Rat Tail"
 	icon_state = "rattail"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_fingerwave
 	name = "Fingerwave"
 	icon_state = "fingerwave"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_victory
 	name = "Victory"
 	icon_state = "victory"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_wife
 	name = "Wifey"
 	icon_state = "wife"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_curly
 	name = "Curly"
 	icon_state = "curly"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 // Vox Hairstyles
 /datum/sprite_accessory/hair/vox_quills_long
@@ -1375,6 +1393,13 @@ May God have mercy.
 	species_allowed = list(SPECIES_TAJARA)
 
 // Swines
+
+/datum/sprite_accessory/hair/swine_mohawk
+	name = "Trottine Mohawk"
+	icon_state = "mohawk"
+	species_allowed = list(SPECIES_SWINE)
+	has_secondary = TRUE
+
 /datum/sprite_accessory/facial_hair/swine_tusks
 	name = "Tusks"
 	icon_state = "tusks"
