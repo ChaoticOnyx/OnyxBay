@@ -5,7 +5,7 @@ GLOBAL_LIST_EMPTY(common_report)
 	var/list/parts = list()
 	var/mob/Player = C.mob
 	if(Player.mind && !isnewplayer(Player))
-		if(Player.stat != DEAD && !isbrain(Player))
+		if(!Player.is_ooc_dead() && !isbrain(Player))
 			var/turf/playerTurf = get_turf(Player)
 			if(evacuation_controller.round_over() && evacuation_controller.emergency_evacuation)
 				if(!isAdminLevel(playerTurf.z))
@@ -50,7 +50,7 @@ GLOBAL_LIST_EMPTY(common_report)
 		if(!M.client)
 			continue
 		clients++
-		if(M.stat != DEAD)
+		if(!M.is_ooc_dead())
 			surviving_total++
 			if(ishuman(M))
 				surviving_humans++
@@ -92,7 +92,7 @@ GLOBAL_LIST_EMPTY(common_report)
 	var/borg_spacer = FALSE //inserts an extra linebreak to seperate AIs from independent borgs, and then multiple independent borgs.
 	//Silicon laws report
 	for (var/mob/living/silicon/ai/aiPlayer in SSmobs.mob_list)
-		if (aiPlayer.stat != DEAD)
+		if (!aiPlayer.is_ooc_dead())
 			parts += "<b>[aiPlayer.name] (Played by: [aiPlayer.key])'s laws at the end of the round were:</b>"
 		else
 			parts += "<b>[aiPlayer.name] (Played by: [aiPlayer.key])'s laws when it was deactivated were:</b>"
@@ -117,7 +117,7 @@ GLOBAL_LIST_EMPTY(common_report)
 			continue
 
 		if (!robo.connected_ai)
-			parts += "[borg_spacer?"<br>":""]<b>[robo.name]</b> (Played by: <b>[robo.mind.key]</b>) [(robo.stat != DEAD)? "<span class='greentext'>survived</span> as an AI-less borg!" : "was <span class='redtext'>unable to survive</span> the rigors of being a cyborg without an AI."] Its laws were:"
+			parts += "[borg_spacer?"<br>":""]<b>[robo.name]</b> (Played by: <b>[robo.mind.key]</b>) [(!robo.is_ooc_dead())? "<span class='greentext'>survived</span> as an AI-less borg!" : "was <span class='redtext'>unable to survive</span> the rigors of being a cyborg without an AI."] Its laws were:"
 
 			if(robo) //How the hell do we lose robo between here and the world messages directly above this?
 				parts += robo.laws?.print_laws()

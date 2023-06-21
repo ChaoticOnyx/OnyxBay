@@ -624,7 +624,7 @@
 	icon_state = "gear_harness"
 	worn_state = "gear_harness"
 	species_restricted = null
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 
 /obj/item/clothing/under/grayson
 	name = "\improper Grayson overalls"

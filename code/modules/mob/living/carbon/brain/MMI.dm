@@ -10,7 +10,7 @@
 	var/locked = FALSE
 	var/mob/living/carbon/brain/brainmob = null //The current occupant.
 	var/obj/item/organ/internal/brain/brainobj = null	//The current brain organ.
-	var/list/whitelisted_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_VOX, SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_MONKEY)
+	var/list/whitelisted_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_VOX, SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_MONKEY, SPECIES_SWINE)
 	var/obj/mecha = null //This does not appear to be used outside of reference in mecha.dm.
 
 /obj/item/device/mmi/update_icon()
@@ -23,12 +23,12 @@
 		overlays += "mmi-error"
 	else
 		overlays += "mmi-[lowertext(brainobj.species.name)]"
-	if(brainmob?.stat == DEAD)
+	if(brainmob?.is_ooc_dead())
 		overlays += "mmi-outer-dead"
 	else
 		overlays += "mmi-outer"
 
-/obj/item/device/mmi/attackby(obj/item/O as obj, mob/user as mob)
+/obj/item/device/mmi/attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/organ/internal/brain) && !brainmob) // Time to stick a brain in it --NEO
 		var/obj/item/organ/internal/brain/B = O
 		if(B.damage >= B.max_damage)
@@ -39,20 +39,22 @@
 			return
 		user.visible_message(SPAN("notice", "\The [user] sticks \a [B] into \the [src]."))
 		add_brain(B, user)
-		feedback_inc("cyborg_mmis_filled",1)
+		feedback_inc("cyborg_mmis_filled", 1)
 		return
 
-	if((istype(O,/obj/item/card/id)||istype(O,/obj/item/device/pda)) && brainmob)
+	if((istype(O, /obj/item/card/id) || istype(O, /obj/item/device/pda)) && brainmob)
 		if(allowed(user))
 			locked = !locked
 			to_chat(user, SPAN("notice", "You [locked ? "lock" : "unlock"] the brain holder."))
 		else
 			to_chat(user, SPAN("warning", "Access denied."))
 		return
+
 	if(brainmob)
 		O.attack(brainmob, user)
 		return
-	..()
+
+	return ..()
 
 /obj/item/device/mmi/attack_self(mob/user)
 	if(!brainmob)
@@ -66,7 +68,7 @@
 /obj/item/device/mmi/proc/update_info()
 	desc = initial(desc)
 	update_icon()
-	if(brainmob?.stat == DEAD)
+	if(brainmob?.is_ooc_dead())
 		desc += SPAN_DEADSAY("\nScans indicate that [brainmob?.name] seems to be dead.")
 	else if(brainmob?.ssd_check())
 		desc += SPAN_DEADSAY("\nScans indicate that [brainmob?.name] seems to be unconscious.")
@@ -89,20 +91,23 @@
 
 /obj/item/device/mmi/proc/remove_brain()
 	var/obj/item/organ/internal/brain/brain
-	if (brainobj) //Pull brain organ out of MMI.
-		brainobj.forceMove(loc)
+	if(brainobj)
+		brainobj.forceMove(get_turf(src))
 		brain = brainobj
 		brainobj = null
-	else //Or make a new one if empty.
-		brain = new(loc)
+	else
+		brain = new(get_turf(src))
+
 	unregister_signal(brainmob, SIGNAL_LOGGED_IN)
 	unregister_signal(brainmob, SIGNAL_LOGGED_OUT)
 	unregister_signal(brainmob, SIGNAL_MOB_DEATH)
-	brainmob.container = null // Reset brainmob mmi var.
-	brainmob.loc = brain // Throw mob into brain.
-	brainmob.remove_from_living_mob_list() // Get outta here!
-	brain.brainmob = brainmob // Set the brain to use the brainmob.
-	brainmob = null // Set mmi brainmob var to null.
+
+	brainmob.container = null
+	brainmob.forceMove(brain)
+	brainmob.remove_from_living_mob_list()
+	brain.brainmob = brainmob
+	brainmob = null
+
 	SetName(initial(name))
 	update_info()
 

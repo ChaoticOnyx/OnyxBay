@@ -53,6 +53,7 @@
 				any_effect = TRUE
 			if(regen_organ.status & ORGAN_DEAD)
 				regen_organ.status &= ~ORGAN_DEAD
+				to_chat(H, SPAN("changeling", "Our [regen_organ] is functioning again."))
 				any_effect = TRUE
 
 	if(prob(10))

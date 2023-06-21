@@ -8,7 +8,7 @@
 		)
 	//Not given any special protective value since the magic robes are full-body protection --NEO
 	siemens_coefficient = 0.8
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	wizard_garb = 1
 
 /obj/item/clothing/head/wizard/red

@@ -44,7 +44,7 @@
 	..()
 	if(!owner)
 		return
-	if(owner.stat == DEAD)	//not a drain anymore
+	if(owner.is_ic_dead())	//not a drain anymore
 		return
 	if(!is_usable())
 		owner.Paralyse(3)
@@ -96,7 +96,7 @@
 	..()
 	// This is very ghetto way of rebooting an IPC. TODO better way.
 	// It's time to do it. This code doesn't allow to resurrect a organic human this way.
-	if(owner && owner.stat == DEAD && BP_IS_ROBOTIC(owner.organs_by_name[parent_organ]))
+	if(owner && owner.is_ic_dead() && BP_IS_ROBOTIC(owner.organs_by_name[parent_organ]))
 		owner.set_stat(CONSCIOUS)
 		owner.visible_message(SPAN_DANGER("\The [owner] twitches visibly!"))
 
@@ -149,7 +149,7 @@
 	stored_mmi.icon_state = "mmi_full"
 	icon_state = stored_mmi.icon_state
 
-	if(owner && owner.stat == DEAD)
+	if(owner && owner.is_ic_dead())
 		owner.set_stat(CONSCIOUS)
 		owner.switch_from_dead_to_living_mob_list()
 		owner.visible_message("<span class='danger'>\The [owner] twitches visibly!</span>")

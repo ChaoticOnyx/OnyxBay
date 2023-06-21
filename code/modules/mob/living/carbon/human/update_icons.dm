@@ -186,6 +186,12 @@ Please contact me on #coderbus IRC. ~Carn x
 	if(auras)
 		overlays_to_apply |= auras
 
+	if(active_typing_indicator)
+		overlays_to_apply |= active_typing_indicator
+
+	if(active_thinking_indicator)
+		overlays_to_apply |= active_thinking_indicator
+
 	overlays = overlays_to_apply
 
 	update_transform()
@@ -778,7 +784,7 @@ var/global/list/damage_icon_parts = list()
 	if(update_icons) queue_icon_update()
 
 /mob/living/carbon/human/proc/animate_tail_reset(update_icons=1)
-	if(stat != DEAD)
+	if(!is_ic_dead())
 		set_tail_state("[species.get_tail(src)]_idle[rand(0,9)]")
 	else
 		set_tail_state("[species.get_tail(src)]")

@@ -10,7 +10,7 @@
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_EARS | SLOT_MASK
 	attack_verb = list("attacked", "poked", "battered")
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	var/brightness_on = 1
 	chem_volume = 0 //ecig has no storage on its own but has reagent container created by parent obj
 	item_state = "ecigoff"

@@ -230,7 +230,7 @@ var/list/channel_to_radio_key = new
 
 /mob/living/proc/say_check_stat(list/message_data)
 	if(stat)
-		if(stat == DEAD)
+		if(is_ooc_dead())
 			message_data["say_result"] = say_dead(message_data["message"])
 		message_data["say_result"] = FALSE
 		return FALSE
@@ -282,7 +282,7 @@ var/list/channel_to_radio_key = new
 		var/verb = pick(message_data["language"].signlang_verb)
 
 		if(message_data["language"].flags & NONVERBAL && prob(30))
-			src.custom_emote(1, "[verb].")
+			src.custom_emote(VISIBLE_MESSAGE, "[verb].")
 
 		if(message_data["language"].flags & SIGNLANG)
 			if(message_data["log_message"])
@@ -337,10 +337,14 @@ var/list/channel_to_radio_key = new
 
 /mob/living/proc/say_do_say(list/message_data)
 	var/mob/above = shadow
+	var/above_range = message_data["message_range"] //Gets lower every z-level
 	while(!QDELETED(above))
 		var/turf/ST = get_turf(above)
+		above_range = max(--above_range, 0)
 		if(ST)
-			get_mobs_and_objs_in_view_fast(ST, world.view, message_data["listening"], message_data["listening_obj"], /datum/client_preference/ghost_ears)
+			get_mobs_and_objs_in_view_fast(ST, above_range, message_data["listening"], message_data["listening_obj"]) //No need to check for ghosts, that will hear anyway
+		if(!above_range)
+			break
 		above = above.shadow
 
 	for(var/mob/M in message_data["listening"])

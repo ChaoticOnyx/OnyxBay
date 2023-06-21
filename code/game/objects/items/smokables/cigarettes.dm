@@ -178,7 +178,7 @@
 		return 1
 	return ..()
 
-/obj/item/clothing/mask/smokable/cigarette/afterattack(obj/item/W, mob/user as mob, proximity)
+/obj/item/clothing/mask/smokable/cigarette/afterattack(obj/item/W, mob/user, proximity)
 	if(istype(W, /obj/item/gun) && !istype(W, /obj/item/gun/energy/plasmacutter) && !istype(W, /obj/item/gun/flamer))
 		return
 
@@ -238,7 +238,7 @@
 	if(lit == 1)
 		var/image/ember = overlay_image(res.icon, "cigember", flags=RESET_COLOR)
 		ember.layer = ABOVE_LIGHTING_LAYER
-		ember.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		ember.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 		res.overlays += ember
 	return res
 

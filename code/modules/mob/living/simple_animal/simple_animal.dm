@@ -104,7 +104,7 @@
 	mob_ai.listen(speaker, message)
 
 /mob/living/simple_animal/Life()
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return 0
 	. = ..()
 	if(!.)
@@ -183,12 +183,6 @@
 /mob/living/simple_animal/gib()
 	..(icon_gib,1)
 
-/mob/living/simple_animal/proc/visible_emote(act_desc)
-	custom_emote(1, act_desc)
-
-/mob/living/simple_animal/proc/audible_emote(act_desc)
-	custom_emote(2, act_desc)
-
 /mob/living/simple_animal/bullet_act(obj/item/projectile/Proj)
 	if(!Proj || Proj.nodamage)
 		return
@@ -223,7 +217,7 @@
 
 /mob/living/simple_animal/attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/stack/medical))
-		if(stat != DEAD)
+		if(!is_ooc_dead())
 			var/obj/item/stack/medical/MED = O
 			if(!MED.animal_heal)
 				to_chat(user, "<span class='notice'>That [MED] won't help \the [src] at all!</span>")
@@ -240,7 +234,7 @@
 		else
 			to_chat(user, "<span class='notice'>\The [src] is dead, medical items won't bring \him back to life.</span>")
 		return
-	if(meat_type && (stat == DEAD))	//if the animal has a meat, and if it is dead.
+	if(meat_type && (is_ooc_dead()))	//if the animal has a meat, and if it is dead.
 		if(istype(O, /obj/item/material/knife) || istype(O, /obj/item/material/knife/butch))
 			harvest(user)
 	else
@@ -300,7 +294,7 @@
 	set_density(1)
 
 /mob/living/simple_animal/updatehealth()
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return
 	if(status_flags & GODMODE)
 		health = maxHealth
@@ -374,7 +368,7 @@
 // Harvest an animal's delicious byproducts
 /mob/living/simple_animal/proc/harvest(mob/user)
 	var/actual_meat_amount = max(1,(meat_amount/2))
-	if(meat_type && actual_meat_amount>0 && (stat == DEAD))
+	if(meat_type && actual_meat_amount>0 && (is_ooc_dead()))
 		for(var/i=0;i<actual_meat_amount;i++)
 			var/obj/item/meat = new meat_type(get_turf(src))
 			meat.SetName("[src.name] [meat.name]")

@@ -813,11 +813,11 @@
 /obj/item/integrated_circuit/input/teleporter_locator/ask_for_input(mob/user)
 	var/list/teleporters_id = list()
 	var/list/teleporters = list()
-	for(var/obj/machinery/teleport/hub/R in GLOB.machines)
-		var/obj/machinery/computer/teleporter/com = R.com
-		if(istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
-			teleporters_id.Add(com.id)
-			teleporters[com.id] = com
+	for(var/obj/machinery/teleporter_gate/gate in GLOB.machines)
+		var/obj/machinery/computer/teleporter/cons = gate.console
+		if(istype(cons, /obj/machinery/computer/teleporter) && gate.is_ready())
+			teleporters_id.Add(cons.id)
+			teleporters[cons.id] = cons
 
 	var/obj/machinery/computer/teleporter/selected_console
 	var/selected_id = input("Please select a teleporter to lock in. Do not select anything for random", "Teleport Selector") as null|anything in teleporters_id
@@ -835,10 +835,10 @@
 
 	var/output = "Current selection: [(current_console && current_console.id) || "None"]"
 	output += "\nList of avaliable teleporters:"
-	for(var/obj/machinery/teleport/hub/R in GLOB.machines)
-		var/obj/machinery/computer/teleporter/com = R.com
-		if(istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
-			output += "\n[com.id] ([R.icon_state == "tele1" ? "Active" : "Inactive"])"
+	for(var/obj/machinery/teleporter_gate/gate in GLOB.machines)
+		var/obj/machinery/computer/teleporter/cons = gate.console
+		if(istype(cons, /obj/machinery/computer/teleporter) && gate.is_ready())
+			output += "\n[cons.id] ([gate.engaged ? "Active" : "Inactive"])"
 	to_chat(user, output)
 
 /obj/item/integrated_circuit/input/teleporter_locator/get_topic_data(mob/user)
@@ -848,10 +848,10 @@
 	. = list()
 	. += "Current selection: [(current_console && current_console.id) || "None"]"
 	. += "Please select a teleporter to lock in on:"
-	for(var/obj/machinery/teleport/hub/R in GLOB.machines)
-		var/obj/machinery/computer/teleporter/com = R.com
-		if(istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
-			.["[com.id] ([R.icon_state == "tele1" ? "Active" : "Inactive"])"] = "tport=[any2ref(com)]"
+	for(var/obj/machinery/teleporter_gate/gate in GLOB.machines)
+		var/obj/machinery/computer/teleporter/cons = gate.console
+		if(istype(cons, /obj/machinery/computer/teleporter) && gate.is_ready())
+			.["[cons.id] ([gate.engaged ? "Active" : "Inactive"])"] = "tport=[any2ref(cons)]"
 	.["None (Dangerous)"] = "tport=random"
 
 /obj/item/integrated_circuit/input/teleporter_locator/OnICTopic(href_list, mob/user)

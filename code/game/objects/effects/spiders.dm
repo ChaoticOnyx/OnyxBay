@@ -290,7 +290,7 @@
 	else if(isorgan(loc))
 		if(!amount_grown) amount_grown = 1
 		var/obj/item/organ/external/O = loc
-		if(!O.owner || O.owner.stat == DEAD || amount_grown > 80)
+		if(!O.owner || O.owner.is_ic_dead() || amount_grown > 80)
 			amount_grown = 20 //reset amount_grown so that people have some time to react to spiderlings before they grow big
 			O.implants -= src
 			src.loc = O.owner ? O.owner.loc : O.loc

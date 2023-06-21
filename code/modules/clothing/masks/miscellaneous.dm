@@ -60,7 +60,7 @@
 	desc = "Warning: moustache is fake."
 	icon_state = "fake-moustache"
 	flags_inv = HIDEFACE
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	visible_name = "Scoundrel"
 
 /obj/item/clothing/mask/snorkel
@@ -68,14 +68,14 @@
 	desc = "For the Swimming Savant."
 	icon_state = "snorkel"
 	flags_inv = HIDEFACE
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 
 /obj/item/clothing/mask/bluescarf
 	name = "blue neck scarf"
 	desc = "A blue neck scarf."
 	icon_state = "blueneckscarf"
 	item_state = "blueneckscarf"
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
 
@@ -84,7 +84,7 @@
 	desc = "Weaboo mask."
 	icon_state = "uwu"
 	item_state = "uwu"
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
 
@@ -93,7 +93,7 @@
 	desc = "A red and white checkered neck scarf."
 	icon_state = "redwhite_scarf"
 	item_state = "redwhite_scarf"
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
 
@@ -102,7 +102,7 @@
 	desc = "A green neck scarf."
 	icon_state = "green_scarf"
 	item_state = "green_scarf"
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	w_class = ITEM_SIZE_SMALL
 
 /obj/item/clothing/mask/ninjascarf
@@ -110,7 +110,7 @@
 	desc = "A stealthy, dark scarf."
 	icon_state = "ninja_scarf"
 	item_state = "ninja_scarf"
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	w_class = ITEM_SIZE_SMALL
 
 /obj/item/clothing/mask/sbluescarf
@@ -118,7 +118,7 @@
 	desc = "A stripped blue neck scarf."
 	icon_state = "sblue_scarf"
 	item_state = "sblue_scarf"
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	w_class = ITEM_SIZE_SMALL
 
 /obj/item/clothing/mask/sgreenscarf
@@ -126,7 +126,7 @@
 	desc = "A stripped green neck scarf."
 	icon_state = "sgreen_scarf"
 	item_state = "sgreen_scarf"
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	w_class = ITEM_SIZE_SMALL
 
 /obj/item/clothing/mask/sredscarf
@@ -134,7 +134,7 @@
 	desc = "A stripped red neck scarf."
 	icon_state = "sred_scarf"
 	item_state = "sred_scarf"
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	w_class = ITEM_SIZE_SMALL
 
 /obj/item/clothing/mask/redscarf
@@ -142,7 +142,7 @@
 	desc = "A red neck scarf."
 	icon_state = "red_scarf"
 	item_state = "red_scarf"
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	w_class = ITEM_SIZE_SMALL
 
 /obj/item/clothing/mask/ai

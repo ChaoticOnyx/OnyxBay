@@ -334,13 +334,13 @@
 /obj/item/abductor/mind_device/proc/mind_message(atom/target, mob/living/user)
 	if(isliving(target))
 		var/mob/living/L = target
-		if(L.stat == DEAD)
+		if(L.is_ic_dead())
 			to_chat(user, SPAN_WARNING("Your target is dead!"))
 			return
 		var/message = input(user, "Message to send to your target's brain", "Enter message")
 		if(!message)
 			return
-		if(QDELETED(L) || L.stat == DEAD)
+		if(QDELETED(L) || L.is_ic_dead())
 			return
 
 		to_chat(L, SPAN_NOTICE("You hear a voice in your head saying: </span><span class='abductor'>[message]"))
@@ -687,6 +687,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	item_state = "alienhelmet"
 	species_restricted = list(SPECIES_ABDUCTOR)
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|BLOCKHAIR
+	body_parts_covered = HEAD|FACE|EYES
+	visor_body_parts_covered = NO_BODYPARTS
 
 // Operating Table / Beds / Lockers
 /obj/structure/bed/abductor

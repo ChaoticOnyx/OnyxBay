@@ -125,7 +125,7 @@
 			if(!occupant)
 				return
 			var/mob/living/mob_occupant = occupant
-			if(mob_occupant.stat == DEAD)
+			if(mob_occupant.is_ic_dead())
 				return
 			flash = experiment(mob_occupant, params["experiment_type"], usr)
 			return TRUE
@@ -150,7 +150,7 @@
 		return "Invalid or missing specimen."
 	if(H in history)
 		return "Specimen already in database."
-	if(H.stat == DEAD)
+	if(H.is_ic_dead())
 		state("Specimen deceased - please provide fresh sample.")
 		return "Specimen deceased."
 	var/obj/item/organ/internal/heart/gland/GlandTest = locate() in H.internal_organs

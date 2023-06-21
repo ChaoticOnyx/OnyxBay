@@ -4,9 +4,10 @@
 GLOBAL_LIST_EMPTY(radial_menus)
 
 /obj/screen/radial
-	icon = 'icons/mob/radial.dmi'
+	icon = 'icons/hud/radial.dmi'
 	layer = ABOVE_HUD_BASE_LAYER
 	plane = ABOVE_HUD_PLANE
+	vis_flags = VIS_INHERIT_PLANE
 	var/datum/radial_menu/parent
 
 /obj/screen/radial/slice
@@ -183,7 +184,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	if(choice_id == NEXT_PAGE_ID)
 		E.name = "Next Page"
 		E.next_page = TRUE
-		var/image/I = image('icons/mob/radial.dmi', "radial_next")
+		var/image/I = image('icons/hud/radial.dmi', "radial_next")
 		E.overlays += I
 	else
 		if(istext(choices_values[choice_id]))

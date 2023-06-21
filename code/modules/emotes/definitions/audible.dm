@@ -158,3 +158,8 @@
 	key ="chitter"
 	emote_message_3p = "USER chitters."
 	emote_sound = 'sound/voice/Bug.ogg'
+
+/decl/emote/audible/oink
+	key = "oink"
+	emote_message_1p = "You oink!"
+	emote_message_3p = "USER oinks!"

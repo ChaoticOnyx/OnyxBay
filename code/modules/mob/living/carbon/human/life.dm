@@ -76,7 +76,7 @@
 	voice = GetVoice()
 
 	//No need to update all of these procs if the guy is dead.
-	if(stat != DEAD && !InStasis())
+	if(!is_ooc_dead() && !InStasis())
 		//Organs and blood
 		handle_organs()
 		handle_organs_pain()
@@ -193,7 +193,7 @@
 
 /mob/living/carbon/human/handle_disabilities()
 	..()
-	if(stat != DEAD)
+	if(!is_ic_dead())
 		if((disabilities & COUGHING) && prob(5) && paralysis <= 1)
 			if(prob(50))
 				drop_active_hand()
@@ -593,7 +593,7 @@
 	//SSD check, if a logged player is awake put them back to sleep!
 	if(ssd_check() && species.get_ssd(src))
 		Sleeping(2)
-	if(stat == DEAD)	//DEAD. BROWN BREAD. SWIMMING WITH THE SPESS CARP
+	if(is_ic_dead())	//DEAD. BROWN BREAD. SWIMMING WITH THE SPESS CARP
 		blinded = 1
 		silent = 0
 	else				//ALIVE. LIGHTS ARE ON
@@ -713,7 +713,7 @@
 	if(!..())
 		return
 
-	if(stat != DEAD)
+	if(!is_ic_dead())
 		if(stat == UNCONSCIOUS && health < maxHealth * 0.25)
 			//Critical damage passage overlay
 			var/severity = 0
@@ -772,45 +772,6 @@
 				if(25 to 40)        pains.icon_state = "pain2"
 				if(10 to 25)        pains.icon_state = "pain1"
 				else                pains.icon_state = "pain0"
-		if(healths)
-			healths.overlays.Cut()
-			var/painkiller_mult = chem_effects[CE_PAINKILLER] / 100
-
-			if(painkiller_mult > 1)
-				healths.icon_state = "health_numb"
-			else
-				// Generate a by-limb health display.
-				healths.icon_state = "health"
-
-				var/no_damage = 1
-				var/trauma_val = 0 // Used in calculating softcrit/hardcrit indicators.
-				var/canfeelpain = can_feel_pain()
-				if(canfeelpain)
-					trauma_val = max(shock_stage, get_shock()) / species.total_health
-				// Collect and apply the images all at once to avoid appearance churn.
-				var/list/health_images = list()
-				for(var/obj/item/organ/external/E in organs)
-					if(no_damage && (E.brute_dam || E.burn_dam))
-						no_damage = 0
-					health_images += E.get_damage_hud_image(painkiller_mult)
-
-				// Apply a fire overlay if we're burning.
-				if(on_fire)
-					health_images += image('icons/mob/screen1_health.dmi', "burning")
-
-				// Show a general pain/crit indicator if needed.
-				if(is_asystole() && !isundead(src))
-					health_images += image('icons/mob/screen1_health.dmi', "hardcrit")
-				else if(trauma_val)
-					if(canfeelpain)
-						if(trauma_val > 0.7)
-							health_images += image('icons/mob/screen1_health.dmi', "softcrit")
-						if(trauma_val >= 1)
-							health_images += image('icons/mob/screen1_health.dmi', "hardcrit")
-				else if(no_damage)
-					health_images += image('icons/mob/screen1_health.dmi', "fullhealth")
-
-				healths.overlays += health_images
 
 		if(nutrition_icon)
 			var/normalized_nutrition = nutrition / body_build.stomach_capacity
@@ -904,6 +865,54 @@
 						bodytemp.icon_state = "temp0"
 	return 1
 
+/mob/living/carbon/human/handle_hud_icons_health()
+	if(!healths)
+		return
+
+	healths.overlays.Cut()
+
+	if(is_ic_dead())
+		LAZYADD(healths.overlays, image('icons/hud/common/screen_health.dmi', "dead"))
+		return
+
+	var/painkiller_mult = chem_effects[CE_PAINKILLER] / 100
+	if(painkiller_mult > 1)
+		LAZYADD(healths.overlays, image('icons/hud/common/screen_health.dmi', "numb"))
+		return
+
+
+	var/trauma_val = 0
+	var/canfeelpain = can_feel_pain()
+	if(canfeelpain)
+		trauma_val = max(shock_stage, get_shock()) / species.total_health
+
+	// Collect and apply the images all at once to avoid appearance churn.
+	var/no_damage = TRUE
+	var/list/health_images = list()
+	for(var/obj/item/organ/external/E in organs)
+		if(no_damage && (E.brute_dam || E.burn_dam))
+			no_damage = FALSE
+		health_images += E.get_damage_hud_image(painkiller_mult)
+
+	// Apply a fire overlay if we're burning.
+	if(on_fire)
+		health_images += image('icons/hud/common/screen_health.dmi', "burning")
+
+	// Show a general pain/crit indicator if needed.
+	if(is_asystole() && !isundead(src))
+		health_images += image('icons/hud/common/screen_health.dmi', "hardcrit")
+	else if(trauma_val)
+		if(canfeelpain)
+			if(trauma_val > 0.7)
+				health_images += image('icons/hud/common/screen_health.dmi', "softcrit")
+			if(trauma_val >= 1)
+				health_images += image('icons/hud/common/screen_health.dmi', "hardcrit")
+	else if(no_damage)
+		health_images += image('icons/hud/common/screen_health.dmi', "fullhealth")
+
+	healths.overlays += health_images
+	return
+
 /mob/living/carbon/human/handle_random_events()
 	// Puke if toxloss is too high
 	var/vomit_score = 0
@@ -919,7 +928,7 @@
 		vomit_score += 10 * chem_effects[CE_ALCOHOL_TOXIC]
 	if(chem_effects[CE_ALCOHOL])
 		vomit_score += 10
-	if(stat != DEAD && !isundead(src) && vomit_score > 25 && prob(10))
+	if(!is_ic_dead() && !isundead(src) && vomit_score > 25 && prob(10))
 		spawn vomit(1, vomit_score, vomit_score/25)
 
 	//0.1% chance of playing a scary sound to someone who's in complete darkness
@@ -942,7 +951,7 @@
 				continue
 			if(iscarbon(a)|| isanimal(a))
 				var/mob/living/M = a
-				if(M.stat == DEAD)
+				if(M.is_ic_dead())
 					M.death(1)
 					stomach_contents.Remove(M)
 					qdel(M)
@@ -1043,7 +1052,7 @@
 /mob/living/carbon/human/proc/handle_hud_list()
 	if(BITTEST(hud_updateflag, HEALTH_HUD) && hud_list[HEALTH_HUD])
 		var/image/holder = hud_list[HEALTH_HUD]
-		if(stat == DEAD || status_flags & FAKEDEATH || (isundead(src) && !isfakeliving(src)))
+		if(is_ic_dead() || status_flags & FAKEDEATH || (isundead(src) && !isfakeliving(src)))
 			holder.icon_state = "0" 	// X_X
 		else if(is_asystole())
 			holder.icon_state = "flatline"
@@ -1053,7 +1062,7 @@
 
 	if(BITTEST(hud_updateflag, LIFE_HUD) && hud_list[LIFE_HUD])
 		var/image/holder = hud_list[LIFE_HUD]
-		if(stat == DEAD || status_flags & FAKEDEATH || (isundead(src) && !isfakeliving(src)))
+		if(is_ic_dead() || status_flags & FAKEDEATH || (isundead(src) && !isfakeliving(src)))
 			holder.icon_state = "huddead"
 		else
 			holder.icon_state = "hudhealthy"
@@ -1067,7 +1076,7 @@
 				break
 
 		var/image/holder = hud_list[STATUS_HUD]
-		if(stat == DEAD || (isundead(src) && !isfakeliving(src)))
+		if(is_ic_dead() || (isundead(src) && !isfakeliving(src)))
 			holder.icon_state = "huddead"
 		else if(status_flags & XENO_HOST)
 			holder.icon_state = "hudxeno"
@@ -1083,7 +1092,7 @@
 			holder.icon_state = "hudhealthy"
 
 		var/image/holder2 = hud_list[STATUS_HUD_OOC]
-		if(stat == DEAD || (isundead(src) && !isfakeliving(src)))
+		if(is_ic_dead() || (isundead(src) && !isfakeliving(src)))
 			holder2.icon_state = "huddead"
 		else if(status_flags & XENO_HOST)
 			holder2.icon_state = "hudxeno"

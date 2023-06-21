@@ -36,3 +36,9 @@
 		to_chat(src, "<span class='notice'>You are currently speaking [default_language] by default.</span>")
 	else
 		to_chat(src, "<span class='notice'>Your current default language is your species or mob type default.</span>")
+
+/mob/living/proc/visible_emote(act_desc)
+	visible_message("<B>[src]</B> [act_desc]")
+
+/mob/living/proc/audible_emote(act_desc)
+	audible_message("<B>[src]</B> [act_desc]")

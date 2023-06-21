@@ -45,6 +45,16 @@
 	name = "right"
 	icon_state = "burst_r"
 
+/obj/structure/shuttle/engine/propulsion/burst/big
+	name = "burst"
+	icon_state = "thruster_big"
+	icon = 'icons/turf/thruster_big.dmi'
+
+/obj/structure/shuttle/engine/propulsion/burst/huge
+	name = "burst"
+	icon_state = "thruster_huge"
+	icon = 'icons/turf/thruster_huge.dmi'
+
 /obj/structure/shuttle/engine/router
 	name = "router"
 	icon_state = "router"

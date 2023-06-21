@@ -35,7 +35,7 @@
 
 // Death handling
 /datum/movement_handler/mob/death/DoMove(direction, mob/mover)
-	if(mob.stat != DEAD)
+	if(!mob.is_ooc_dead())
 		return
 	. = MOVEMENT_HANDLED
 	if(!mob.client)

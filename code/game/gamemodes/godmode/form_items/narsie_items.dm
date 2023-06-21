@@ -20,7 +20,7 @@
 			var/mob/living/carbon/human/H = L
 			if(H.should_have_organ(BP_HEART))
 				multiplier++
-		if(L.stat == DEAD)
+		if(L.is_ic_dead())
 			to_chat(user, "<span class='warning'>\The [a] is already dead! There is nothing to take!</span>")
 			return
 
@@ -57,7 +57,7 @@
 			return
 	if(ismob(a))
 		var/mob/M = a
-		if(M.stat != DEAD)
+		if(!M.is_ooc_dead())
 			register_signal(M, SIGNAL_MOB_DEATH, /obj/item/material/twohanded/fireaxe/cult/proc/gain_power)
 		spawn(30)
 			unregister_signal(M, SIGNAL_MOB_DEATH)

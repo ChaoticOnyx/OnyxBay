@@ -289,7 +289,7 @@
 		set_light(0.2, 0.1, 1) // Very dim so the rest of the flag is barely visible - if the turf is completely dark, you can't see anything on it, no matter what
 		var/image/addon = image(icon = src.icon, icon_state = fringe) // Bright fringe
 		addon.layer = ABOVE_LIGHTING_LAYER
-		addon.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		addon.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 		overlays += addon
 
 /obj/item/stack/flag/proc/knock_down()
@@ -401,7 +401,7 @@
 	if(isliving(target) && proximity_flag)
 		if(isanimal(target))
 			var/mob/living/simple_animal/M = target
-			if(M.stat == DEAD)
+			if(M.is_ooc_dead())
 				M.faction = "neutral"
 				if(emagged)	//if emagged, will set anything revived to the syndicate. Convert station pets to the traitor side!
 					M.faction = "syndicate"

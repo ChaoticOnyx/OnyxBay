@@ -177,7 +177,7 @@
 			if("infectee")
 				var/list/candidates = list()
 				for(var/mob/living/carbon/G in GLOB.living_mob_list_)
-					if(G.stat != DEAD && G.species)
+					if(!G.is_ooc_dead() && G.species)
 						if(G.species.name in species)
 							candidates["[G.name][G.client ? "" : " (no client)"]"] = G
 						else

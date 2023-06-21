@@ -24,10 +24,10 @@ const UI_IMAGE = {
   Goon: uiGoon,
   Midnight: uiMidnight,
   Orange: uiOrange,
-  old: uiOld,
+  Old: uiOld,
   White: uiWhite,
-  "old-noborder": uiOldNoborder,
-  minimalist: uiMinimalist,
+  "Old-noborder": uiOldNoborder,
+  Minimalist: uiMinimalist,
 };
 
 const TABS = [

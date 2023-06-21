@@ -13,6 +13,9 @@ GLOBAL_LIST_INIT(robot_module_types, list(
 // Noises made when hit while typing.
 GLOBAL_LIST_INIT(hit_appends, world.file2list("config/translation/hit_appends.txt"))
 
+// Noises made by lizards when disturbed.
+GLOBAL_LIST_INIT(lizard_noises, world.file2list("config/translation/lizard_noises.txt"))
+
 // Some scary sounds.
 GLOBAL_LIST_INIT(scarySounds, list(
 	'sound/weapons/thudswoosh.ogg',

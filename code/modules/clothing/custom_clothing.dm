@@ -33,6 +33,7 @@
 	icon_state = "helmet_police"
 	valid_accessory_slots = null
 	body_parts_covered = HEAD|FACE|EYES //face shield
+	visor_body_parts_covered = FACE|EYES
 	armor = list(melee = 55, bullet = 55, laser = 55, energy = 25, bomb = 35, bio = 5)
 	siemens_coefficient = 0.6
 	action_button_name = "Toggle Visor"
@@ -68,9 +69,9 @@
 	icon_state = "wehrhelm"
 	valid_accessory_slots = null
 	body_parts_covered = HEAD
+	visor_body_parts_covered = NO_BODYPARTS
 	armor = list(melee = 45, bullet = 60, laser = 45,energy = 10, bomb = 40, bio = 2)
 	siemens_coefficient = 1
-	has_visor = 0
 
 //Schutze88
 

@@ -23,3 +23,6 @@
 #define MESSAGE_TYPE_ATTACKLOG "attacklog"
 #define MESSAGE_TYPE_DEBUG "debug"
 #define MESSAGE_TYPE_UIDEBUG "uidebug"
+
+/// Adds a generic box around whatever message you're sending in chat. Really makes things stand out.
+#define EXAMINE_BLOCK(str) ("<div class='Examine'>" + str + "</div>")

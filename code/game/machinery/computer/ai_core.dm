@@ -151,7 +151,7 @@
 				if(!B)
 					to_chat(user, SPAN("warning", "Sticking an empty [P] into the frame would sort of defeat the purpose."))
 					return
-				if(B.stat == DEAD)
+				if(B.is_ooc_dead())
 					to_chat(user, SPAN("warning", "Sticking a dead [P] into the frame would sort of defeat the purpose."))
 					return
 

@@ -316,7 +316,7 @@
 	else
 		M.apply_effect(agony_amount, PAIN, 0)
 		if(prob(5))
-			M.custom_emote(2, "[pick("dry heaves!","coughs!","splutters!")]")
+			M.custom_emote(AUDIBLE_MESSAGE, pick("dry heaves!","coughs!","splutters!"), "AUTO_EMOTE")
 			to_chat(M, "<span class='danger'>You feel like your insides are burning!</span>")
 	if(istype(M, /mob/living/carbon/metroid))
 		M.bodytemperature += rand(0, 15) + metroid_temp_adj
@@ -384,7 +384,7 @@
 	else if(!no_pain)
 		message = "<span class='danger'>Your face and throat burn!</span>"
 		if(prob(25))
-			M.custom_emote(2, "[pick("coughs!","coughs hysterically!","splutters!")]")
+			M.custom_emote(AUDIBLE_MESSAGE, pick("coughs!","coughs hysterically!","splutters!"), "AUTO_EMOTE")
 		M.Weaken(5)
 		M.Stun(6)
 

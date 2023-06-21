@@ -23,7 +23,7 @@
 	// human/handle_regular_status_updates() needs a cleanup, as blindness should be handled in handle_disabilities()
 	handle_regular_status_updates() // Status & health update, are we dead or alive etc.
 
-	if(stat != DEAD)
+	if(!is_ic_dead())
 		aura_check(AURA_TYPE_LIFE)
 
 	//Check if we're on fire
@@ -76,7 +76,7 @@
 //This updates the health and status of the mob (conscious, unconscious, dead)
 /mob/living/proc/handle_regular_status_updates()
 	updatehealth()
-	if(stat != DEAD)
+	if(!is_ic_dead())
 		if(paralysis)
 			set_stat(UNCONSCIOUS)
 		else if (status_flags & FAKEDEATH)
@@ -178,17 +178,18 @@
 
 //this handles hud updates. Calls update_vision() and handle_hud_icons()
 /mob/living/proc/handle_regular_hud_updates()
-	if(!client)	return 0
+	if(!client)
+		return FALSE
 
 	handle_hud_icons()
 	handle_vision()
 
-	return 1
+	return TRUE
 
 /mob/living/proc/handle_vision()
 	update_sight()
 
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return
 
 	if(eye_blind)
@@ -214,7 +215,7 @@
 		reset_view(null)
 
 /mob/living/proc/update_sight()
-	if(stat == DEAD || eyeobj)
+	if(is_ooc_dead() || eyeobj)
 		update_dead_sight()
 	else
 		update_living_sight()
@@ -234,4 +235,28 @@
 	handle_hud_glasses()
 
 /mob/living/proc/handle_hud_icons_health()
+	if(!healths)
+		return
+
+	if(is_ic_dead())
+		healths.icon_state = "health7"
+		return
+
+	var/health_ratio = health / maxHealth * 100
+	switch(health_ratio)
+		if(100 to INFINITY)
+			healths.icon_state = "health0"
+		if(80 to 100)
+			healths.icon_state = "health1"
+		if(60 to 80)
+			healths.icon_state = "health2"
+		if(40 to 60)
+			healths.icon_state = "health3"
+		if(20 to 40)
+			healths.icon_state = "health4"
+		if(0 to 20)
+			healths.icon_state = "health5"
+		else
+			healths.icon_state = "health6"
+
 	return

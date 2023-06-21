@@ -30,7 +30,7 @@
 		if(H.species.species_flags & (SPECIES_FLAG_NO_POISON|SPECIES_FLAG_NO_SCAN))
 			//they can't take clone or tox damage, then for the most part they aren't affected by being fed on - and presumably feeding on them would not affect the metroid either
 			return "This subject does not have an edible life energy..."
-	if (istype(M, /mob/living/carbon) && M.getCloneLoss() >= M.maxHealth * 3 || istype(M, /mob/living/simple_animal) && M.stat == DEAD)
+	if (istype(M, /mob/living/carbon) && M.getCloneLoss() >= M.maxHealth * 3 || istype(M, /mob/living/simple_animal) && M.is_ic_dead())
 		return "This subject does not have an edible life energy..."
 	for(var/mob/living/carbon/metroid/met in view())
 		if(met.Victim == M && met != src)

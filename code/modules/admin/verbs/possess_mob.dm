@@ -15,7 +15,7 @@ GLOBAL_LIST_EMPTY(available_mobs_for_possess)
 	if(M.ckey && copytext(M.ckey, 1, 2) == "@")
 		to_chat(src, SPAN_WARNING("[M] is occupied with aghosted admin."))
 		return
-	if(M.stat == DEAD)
+	if(M.is_ooc_dead())
 		to_chat(src, SPAN_WARNING("[M] is dead. There's no point to toggle possess mode!"))
 		return
 

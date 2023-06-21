@@ -118,6 +118,7 @@
 	wires = new(src)
 
 	robot_modules_background = new()
+	robot_modules_background.icon = 'icons/hud/common/screen_storage.dmi'
 	robot_modules_background.icon_state = "block"
 	ident = random_id(/mob/living/silicon/robot, 1, 999)
 	module_hulls["Basic"] = new /datum/robot_hull/spider/robot
@@ -153,15 +154,15 @@
 
 	add_robot_verbs()
 
-	hud_list[HEALTH_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[STATUS_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealth100")
-	hud_list[LIFE_HUD]        = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealth100")
-	hud_list[ID_HUD]          = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[WANTED_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPLOYAL_HUD]    = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPCHEM_HUD]     = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPTRACK_HUD]    = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[SPECIALROLE_HUD] = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
+	hud_list[HEALTH_HUD]      = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[STATUS_HUD]      = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[LIFE_HUD]        = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[ID_HUD]          = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[WANTED_HUD]      = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[IMPLOYAL_HUD]    = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[IMPCHEM_HUD]     = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[IMPTRACK_HUD]    = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[SPECIALROLE_HUD] = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
 
 /mob/living/silicon/robot/Initialize()
 	. = ..()
@@ -327,7 +328,7 @@
 		notify_ai(ROBOT_NOTIFICATION_NEW_MODULE, module.name)
 
 
-/mob/living/silicon/robot/proc/updatename(prefix as text)
+/mob/living/silicon/robot/proc/updatename(prefix)
 	if(prefix)
 		modtype = prefix
 
@@ -423,7 +424,7 @@
 	set category = "Silicon Commands"
 	set name = "Toggle Lights"
 
-	if(stat == DEAD)
+	if(is_ic_dead())
 		return
 
 	lights_on = !lights_on
@@ -825,7 +826,7 @@
 			var/image/eye_overlay = eye_overlays[eye_icon_state]
 			if(!eye_overlay)
 				eye_overlay = image(icon, eye_icon_state)
-				eye_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+				eye_overlay.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 				eye_overlay.layer = EYE_GLOW_LAYER
 				eye_overlays[eye_icon_state] = eye_overlay
 			overlays += eye_overlay
@@ -1007,7 +1008,6 @@
 						var/datum/matter_synth/glass.add_charge(1000)
 						spawn(0) //give the stacks a chance to delete themselves if necessary
 */
-		return
 
 /mob/living/silicon/robot/proc/self_destruct()
 	gib()
@@ -1274,7 +1274,7 @@
 			return 1
 
 /mob/living/silicon/robot/blob_act(damage)
-	if(is_dead())
+	if(is_ic_dead())
 		gib()
 		return
 

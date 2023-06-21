@@ -236,7 +236,7 @@
 	desc = "A pair of kitty ears. Meow!"
 	icon_state = "kitty"
 	slot_flags = SLOT_HEAD | SLOT_EARS
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	siemens_coefficient = 1.5
 	item_icons = list()
 
@@ -265,7 +265,7 @@
 	name = "Tinfoil hat"
 	desc = "Big brother is watching you!"
 	icon_state = "foilhat"
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	armor = list(melee = 0, bullet = 0, laser = 5, energy = 5, bomb = 0, bio = 0)
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 30 MEGA ELECTRONVOLT,

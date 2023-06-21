@@ -101,6 +101,11 @@
 					to_chat(src, {"[SPAN("name", speaker_name)][alt_name] talks but the music is too loud!"})
 					return
 
+		if(src.z < speaker.z)
+			verb += " from above"
+		else if(src.z > speaker.z)
+			verb += " from below"
+
 		if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SYNDICATE_SUSPICIOUSLY_AWARE)
 			message = highlight_codewords(message, GLOB.code_phrase_highlight_rule)  //  Same can be done with code_response or any other list of words, using regex created by generate_code_regex(). You can also add the name of CSS class as argument to change highlight style.
 		if(language)

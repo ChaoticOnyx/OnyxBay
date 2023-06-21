@@ -80,7 +80,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sandal(H),slot_shoes)
 
 /datum/species/unathi/handle_environment_special(mob/living/carbon/human/H)
-	if(H.InStasis() || H.stat == DEAD || isundead(H))
+	if(H.InStasis() || H.is_ic_dead() || isundead(H))
 		return
 	if(H.nutrition < 50)
 		H.adjustToxLoss(2,0)
@@ -125,7 +125,7 @@
 		for(var/limb_type in has_limbs)
 			var/list/obj/item/organ/internal/foreign_organs = list()
 			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
-			if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
+			if(E && E.organ_tag != (BP_HEAD || BP_GROIN) && !E.vital && !E.is_usable(ignore_pain = TRUE))	//Skips heads and vital bits...
 				E.removed()			//...because no one wants their head to explode to make way for a new one.
 				for(var/obj/item/organ/internal/O in E.internal_organs)
 					if(istype(O) && O.foreign)
@@ -135,6 +135,12 @@
 				qdel(E)
 				E = null
 			if(!E)
+				var/path = has_limbs[limb_type]["path"]
+				var/regenerating_limb = text2path("[path]")
+				var/parent_organ = initial(regenerating_limb["parent_organ"])
+				if(!(parent_organ in H.organs_by_name) || H.organs_by_name[parent_organ].is_stump())
+					continue
+
 				var/list/organ_data = has_limbs[limb_type]
 				var/limb_path = organ_data["path"]
 				var/obj/item/organ/external/O = new limb_path(H)
