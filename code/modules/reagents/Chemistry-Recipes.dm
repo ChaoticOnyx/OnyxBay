@@ -463,13 +463,13 @@
 /datum/chemical_reaction/mass_gainer
 	name = "Mass Gainer"
 	result = /datum/reagent/toxin/mass_gainer
-	required_reagents = list(/datum/reagent/sugar = 1, /datum/reagent/radium = 1, /datum/reagent/potassium = 1)
+	required_reagents = list(/datum/reagent/diethylamine = 1, /datum/reagent/mutagen = 1, /datum/reagent/ryetalyn = 1)
 	result_amount = 1
 
 /datum/chemical_reaction/fat_burner
 	name = "Fat Burner"
 	result = /datum/reagent/toxin/fat_burner
-	required_reagents = list(/datum/reagent/acetone = 1, /datum/reagent/ethanol = 1, /datum/reagent/acid/polyacid = 1)
+	required_reagents = list(/datum/reagent/inaprovaline = 1, /datum/reagent/hyperzine = 1, /datum/reagent/lipozine = 1)
 	result_amount = 1
 
 /datum/chemical_reaction/noexcutite
