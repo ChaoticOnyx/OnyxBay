@@ -254,6 +254,7 @@
 	name = "Father"
 	icon_state = "father"
 	gender = MALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/reversemohawk
 	name = "Reverse Mohawk"
@@ -313,6 +314,7 @@
 	name = "Long Emo"
 	icon_state = "emolong"
 	gender = FEMALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/shortovereye
 	name = "Overeye Short"
@@ -376,6 +378,7 @@
 	name = "Pigtails"
 	icon_state = "kagami"
 	gender = FEMALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/pigtails_b
 	name = "Pigtails 2"
@@ -463,6 +466,7 @@
 	name = "Poofy"
 	icon_state = "poofy"
 	gender = FEMALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/crono
 	name = "Chrono"
@@ -493,6 +497,7 @@
 	name = "Nitori"
 	icon_state = "nitori"
 	gender = FEMALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/joestar
 	name = "Joestar"
@@ -526,6 +531,11 @@
 /datum/sprite_accessory/hair/doublebun
 	name = "Double-Bun"
 	icon_state = "doublebun"
+
+/datum/sprite_accessory/hair/doublebun2
+	name = "Double-Bun 2"
+	icon_state = "doublebun2"
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/lowfade
 	name = "Fade (Low)"
@@ -622,6 +632,7 @@
 	name = "Topknot"
 	icon_state = "topknot"
 	gender = MALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/ronin
 	name = "Ronin"
@@ -897,6 +908,7 @@
 /datum/sprite_accessory/hair/samurai_swtgr
 	name = "Samurai"
 	icon_state = "samurai"
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/unkept
 	name = "Unkept"
@@ -923,6 +935,7 @@
 /datum/sprite_accessory/hair/zieglertail
 	name = "Zieglertail"
 	icon_state = "ziegler"
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/zone
 	name = "Zone Braid"
@@ -938,6 +951,7 @@
 	name = "Mist"
 	icon_state = "mist"
 	gender = FEMALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/maid_b
 	name = "Maid tail"
@@ -993,6 +1007,7 @@
 	name = "African Pigtails"
 	icon_state = "african_pigtails"
 	gender = FEMALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/missingno
 	name = "MissingNo"
