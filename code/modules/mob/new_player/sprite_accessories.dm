@@ -202,7 +202,7 @@
 	name = "Bob"
 	icon_state = "bob"
 	gender = FEMALE
-	species_allowed = list(SPECIES_HUMAN, SPECIES_TAJARA)
+	species_allowed = list(SPECIES_HUMAN)
 
 /datum/sprite_accessory/hair/bob2
 	name = "Bob 2"
@@ -334,7 +334,7 @@
 /datum/sprite_accessory/hair/mohawk
 	name = "Mohawk"
 	icon_state = "mohawk"
-	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_TAJARA)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI)
 
 /datum/sprite_accessory/hair/jensen
 	name = "Adam Jensen Hair"
@@ -370,7 +370,7 @@
 /datum/sprite_accessory/hair/spiky
 	name = "Spiky"
 	icon_state = "spiky"
-	species_allowed = list(SPECIES_HUMAN, SPECIES_TAJARA)
+	species_allowed = list(SPECIES_HUMAN)
 
 /datum/sprite_accessory/hair/kagami
 	name = "Pigtails"
@@ -671,7 +671,7 @@
 /datum/sprite_accessory/hair/messyhair
 	name = "Messy"
 	icon_state = "messy"
-	species_allowed = list(SPECIES_HUMAN, SPECIES_TAJARA)
+	species_allowed = list(SPECIES_HUMAN)
 
 /datum/sprite_accessory/hair/messyhair2
 	name = "Messy 2"
@@ -1351,6 +1351,31 @@ May God have mercy.
 /datum/sprite_accessory/hair/taj_curly
 	name = "Curly"
 	icon_state = "curly"
+	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/taj_bob
+	name = "Tajaran Bob"
+	icon_state = "bob"
+	gender = FEMALE
+	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/taj_spiky
+	name = "Tajaran Spiky"
+	icon_state = "spiky"
+	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/taj_messy
+	name = "Tajaran Messy"
+	icon_state = "messy"
+	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/taj_mohawk
+	name = "Tajaran Mohawk"
+	icon_state = "mohawk"
 	species_allowed = list(SPECIES_TAJARA)
 	has_secondary = TRUE
 

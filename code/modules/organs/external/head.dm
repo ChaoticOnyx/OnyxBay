@@ -174,15 +174,18 @@
 
 				if(H.has_secondary)
 					if(istype(owner.body_build,/datum/body_build/slim))
-						HSI = icon(GLOB.facial_hair_icons["slim"][species.hair_key], H.icon_state + "_s")
+						HSI = icon(GLOB.hair_icons["slim"][species.hair_key], H.icon_state + "_s")
 					else
-						HSI = icon(GLOB.facial_hair_icons["default"][species.hair_key], H.icon_state + "_s")
+						HSI = icon(GLOB.hair_icons["default"][species.hair_key], H.icon_state + "_s")
 					if(species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
-						if(!isnull(s_tone))
-							HSI.Blend(rgb(s_tone, s_tone, s_tone), H.blend)
+						if(species.appearance_flags & HAS_A_SKIN_TONE)
+							if(s_tone >= 0)
+								HSI.Blend(rgb(s_tone, s_tone, s_tone), ICON_ADD)
+							else
+								HSI.Blend(rgb(-s_tone,  -s_tone,  -s_tone), ICON_SUBTRACT)
 						else
-							HSI.Blend(rgb(s_col[1], s_col[2], s_col[3]), H.blend)
-					else
+							HSI.Blend(rgb(s_col[1], s_col[2], s_col[3]), s_col_blend)
+					else if(length(h_col) >= 3)
 						HSI.Blend(rgb(h_s_col[1], h_s_col[2], h_s_col[3]), H.blend)
 		if(HI)
 			var/list/sorted_hair_markings = list()
