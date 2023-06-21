@@ -2,7 +2,7 @@
  * Base class for underfloor plumbing machines that mess with floor liquids.
  */
 /obj/machinery/plumbing/floor_pump
-	icon = 'packages/liquids/assets/obj/structures/drains.dmi'
+	icon = 'modules/liquids/assets/obj/structures/drains.dmi'
 	icon_state = "active_input"
 	anchored = FALSE
 	density = FALSE
@@ -33,12 +33,12 @@
 
 /obj/machinery/plumbing/floor_pump/Initialize(mapload, bolt, layer)
 	. = ..()
-	RegisterSignal(src, COMSIG_OBJ_HIDE, PROC_REF(on_hide))
+	register_signal(src, COMSIG_OBJ_HIDE, PROC_REF(on_hide))
 
 /obj/machinery/plumbing/floor_pump/examine(mob/user)
 	. = ..()
-	. += span_notice("It's currently turned [turned_on ? "ON" : "OFF"].")
-	. += span_notice("Its height regulator [height_regulator ? "points at [height_regulator]" : "is disabled"]. Click while unanchored to change.")
+	. += SPAN_NOTICE("It's currently turned [turned_on ? "ON" : "OFF"].")
+	. += SPAN_NOTICE("Its height regulator [height_regulator ? "points at [height_regulator]" : "is disabled"]. Click while unanchored to change.")
 
 /obj/machinery/plumbing/floor_pump/update_appearance(updates)
 	. = ..()
@@ -245,9 +245,9 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/plumbing/floor_pump/input/on/waste, 0
 /obj/machinery/plumbing/floor_pump/output/examine(mob/user)
 	. = ..()
 	if(over_pressure)
-		. += span_warning("The gas regulator light is blinking.")
+		. += SPAN_WARNING("The gas regulator light is blinking.")
 	if(over_volume)
-		. += span_warning("The liquid volume regulator light is blinking.")
+		. += SPAN_WARNING("The liquid volume regulator light is blinking.")
 
 /obj/machinery/plumbing/floor_pump/output/are_reagents_ready()
 	return reagents.total_volume > 0
@@ -267,7 +267,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/plumbing/floor_pump/input/on/waste, 0
 
 	if(affected_turf.liquids?.height >= max_ext_volume)
 		return FALSE
-	var/turf/open/open_turf = affected_turf
+	var/turf/simulated/open_turf = affected_turf
 	var/datum/gas_mixture/gas_mix = open_turf?.return_air()
 	if(gas_mix?.return_pressure() > max_ext_kpa)
 		over_pressure = TRUE

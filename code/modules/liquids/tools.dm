@@ -16,7 +16,7 @@
 		else
 			valid_id = TRUE
 		if(!valid_id)
-			to_chat(usr, span_warning("A reagent with that ID doesn't exist!"))
+			to_chat(usr, SPAN_WARNING("A reagent with that ID doesn't exist!"))
 	if(!choice)
 		return
 	var/volume = tgui_input_number(usr, "Volume:", "Choose volume")

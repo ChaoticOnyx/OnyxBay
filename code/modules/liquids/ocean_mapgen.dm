@@ -42,7 +42,7 @@
 	for(var/t in turfs) //Go through all the turfs and generate them
 		var/turf/gen_turf = t
 
-		if(istype(gen_turf, /turf/open/space/mirage) || istype(gen_turf, /turf/open/openspace/ocean))
+		if(istype(gen_turf, /turf/simulated/space/mirage) || istype(gen_turf, /turf/simulated/openspace/ocean))
 			continue
 
 		var/drift_x = (gen_turf.x + rand(-BIOME_RANDOM_SQUARE_DRIFT, BIOME_RANDOM_SQUARE_DRIFT)) / perlin_zoom
@@ -83,9 +83,10 @@
 		selected_biome.generate_turf(gen_turf)
 		CHECK_TICK
 
+/*
 /datum/map_generator/cave_generator/trench
 	name = "Trench Generator"
-	open_turf_types =  list(/turf/open/misc/ocean/rock/heavy = 1)
+	open_turf_types =  list(/turf/simulated/misc/ocean/rock/heavy = 1)
 	closed_turf_types =  list(/turf/closed/mineral/random/ocean = 1)
 
 	feature_spawn_list = null
@@ -95,5 +96,5 @@
 
 	flora_spawn_chance = 4
 	flora_spawn_list = list(/obj/structure/flora/rock = 1, /obj/structure/flora/rock/pile = 1)
-
+*/
 #undef BIOME_RANDOM_SQUARE_DRIFT

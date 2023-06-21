@@ -20,10 +20,13 @@
 	var/importance         = 1
 	var/loyalty            = 0
 
+	///This datum, if set, allows terrain generation behavior to be ran on Initialize()
+	var/datum/map_generator/map_generator
+
 /area/New()
 	icon_state = ""
 	uid = ++global_uid
-
+	GLOB.areas += src
 	if(!requires_power)
 		power_light = 0
 		power_equip = 0
@@ -362,3 +365,11 @@ var/list/mob/living/forced_ambiance_list = new
 
 /area/drop_location()
 	CRASH("Bad op: area/drop_location() called")
+
+/area/proc/RunGeneration()
+	if(map_generator)
+		map_generator = new map_generator()
+		var/list/turfs = list()
+		for(var/turf/T in contents)
+			turfs += T
+		map_generator.generate_terrain(turfs, src)

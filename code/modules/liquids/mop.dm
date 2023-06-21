@@ -1,14 +1,17 @@
 /obj/item/mop/Initialize(mapload)
 	. = ..()
 
-	AddComponent(/datum/component/liquids_interaction, TYPE_PROC_REF(/obj/item/mop, attack_on_liquids_turf))
+	AddComponent(/datum/component/liquids_interaction, /obj/item/mop/proc/attack_on_liquids_turf)
 
-/obj/item/mop/should_clean(datum/cleaning_source, atom/atom_to_clean, mob/living/cleaner)
+/obj/item/mop/afterattack(atom/atom_to_clean, mob/cleaner, proximity)
+	if(!proximity)
+		return
+
 	var/turf/turf_to_clean = atom_to_clean
 
 	// Disable normal cleaning if there are liquids.
 	if(isturf(atom_to_clean) && turf_to_clean.liquids)
-		return DO_NOT_CLEAN
+		return FALSE
 
 	return ..()
 
@@ -26,12 +29,12 @@
 
 	var/free_space = reagents.maximum_volume - reagents.total_volume
 	if(free_space <= 0)
-		to_chat(user, span_warning("Your [src] can't absorb any more liquid!"))
+		to_chat(user, SPAN_WARNING("Your [src] can't absorb any more liquid!"))
 		return TRUE
 
 	var/datum/reagents/tempr = liquids.take_reagents_flat(free_space)
 	tempr.trans_to(reagents, tempr.total_volume)
-	to_chat(user, span_notice("You soak \the [src] with some liquids."))
+	to_chat(user, SPAN_NOTICE("You soak \the [src] with some liquids."))
 	qdel(tempr)
-	user.changeNext_move(CLICK_CD_MELEE)
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	return TRUE

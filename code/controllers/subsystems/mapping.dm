@@ -6,9 +6,14 @@ SUBSYSTEM_DEF(mapping)
 	var/list/map_templates = list()
 	var/list/random_room_templates = list()
 
+	///All possible biomes in assoc list as type || instance
+	var/list/biomes = list()
+
 /datum/controller/subsystem/mapping/Initialize(timeofday)
+	initialize_biomes()
 	preloadTemplates()
 	preloadRandomRoomsTemplates()
+	run_map_generation()
 	..()
 
 /datum/controller/subsystem/mapping/Recover()
@@ -27,3 +32,13 @@ SUBSYSTEM_DEF(mapping)
 	for(var/map in maplists)
 		var/datum/map_template/random_room/T = new map
 		random_room_templates[T.room_id] = T
+
+///Initialize all biomes, assoc as type || instance
+/datum/controller/subsystem/mapping/proc/initialize_biomes()
+	for(var/biome_path in subtypesof(/datum/biome))
+		var/datum/biome/biome_instance = new biome_path()
+		biomes[biome_path] += biome_instance
+
+/datum/controller/subsystem/mapping/proc/run_map_generation()
+	for(var/area/A in GLOB.areas)
+		A.RunGeneration()

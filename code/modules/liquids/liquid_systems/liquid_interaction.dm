@@ -12,10 +12,10 @@
 	interaction_callback = CALLBACK(parent, on_interaction_callback)
 
 /datum/component/liquids_interaction/RegisterWithParent()
-	RegisterSignal(parent, COMSIG_ITEM_AFTERATTACK, PROC_REF(AfterAttack)) //The only signal allowing item -> turf interaction
+	register_signal(parent, COMSIG_ITEM_AFTERATTACK, PROC_REF(AfterAttack)) //The only signal allowing item -> turf interaction
 
 /datum/component/liquids_interaction/UnregisterFromParent()
-	UnregisterSignal(parent, COMSIG_ITEM_AFTERATTACK)
+	unregister_signal(parent, COMSIG_ITEM_AFTERATTACK)
 
 /datum/component/liquids_interaction/proc/AfterAttack(obj/item/target, turf/turf_target, mob/user)
 	SIGNAL_HANDLER

@@ -1,21 +1,16 @@
 /obj/effect/abstract/liquid_turf
 	name = "liquid"
-	icon = 'packages/liquids/assets/obj/effects/liquid.dmi'
+	icon = 'modules/liquids/assets/obj/effects/liquid.dmi'
 	icon_state = "water-0"
-	base_icon_state = "water"
 	anchored = TRUE
 	plane = FLOOR_PLANE
-	layer = ABOVE_OPEN_TURF_LAYER
+	layer = SHALLOW_FLUID_LAYER
 	color = "#DDF"
 
 	//For being on fire
-	light_range = 0
-	light_power = 1
-	light_color = LIGHT_COLOR_FIRE
-
-	smoothing_flags = SMOOTH_BITMASK
-	smoothing_groups = SMOOTH_GROUP_WATER
-	canSmoothWith = SMOOTH_GROUP_WATER + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
+	var/light_range = 0
+	var/light_power = 1
+	light_color = "#FAA019"
 
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	var/height = 1
@@ -30,23 +25,12 @@
 
 	var/list/reagent_list = list()
 	var/total_reagents = 0
-	var/temp = T20C
+	var/temp = 20 CELSIUS
 
 	var/fire_state = LIQUID_FIRE_STATE_NONE
 
 	var/no_effects = FALSE
 
-	/// State-specific message chunks for examine_turf()
-	var/static/list/liquid_state_messages = list(
-		"[LIQUID_STATE_PUDDLE]" = "a puddle of $",
-		"[LIQUID_STATE_ANKLES]" = "$ going [span_warning("up to your ankles")]",
-		"[LIQUID_STATE_WAIST]" = "$ going [span_warning("up to your waist")]",
-		"[LIQUID_STATE_SHOULDERS]" = "$ going [span_warning("up to your shoulders")]",
-		"[LIQUID_STATE_FULLTILE]" = "$ going [span_danger("over your head")]",
-	)
-
-/obj/effect/abstract/liquid_turf/onShuttleMove(turf/newT, turf/oldT, list/movement_force, move_dir, obj/docking_port/stationary/old_dock, obj/docking_port/mobile/moving_dock)
-	return
 
 /obj/effect/abstract/liquid_turf/proc/check_fire(hotspotted = FALSE)
 	var/my_burn_power = get_burn_power(hotspotted)
@@ -78,19 +62,19 @@
 	fire_state = new_state
 	switch(fire_state)
 		if(LIQUID_FIRE_STATE_NONE)
-			set_light_range(0)
+			light_inner_range = 0
 		if(LIQUID_FIRE_STATE_SMALL)
-			set_light_range(LIGHT_RANGE_FIRE)
+			light_inner_range = LIGHT_RANGE_FIRE
 		if(LIQUID_FIRE_STATE_MILD)
-			set_light_range(LIGHT_RANGE_FIRE)
+			light_inner_range = LIGHT_RANGE_FIRE
 		if(LIQUID_FIRE_STATE_MEDIUM)
-			set_light_range(LIGHT_RANGE_FIRE)
+			light_inner_range = LIGHT_RANGE_FIRE
 		if(LIQUID_FIRE_STATE_HUGE)
-			set_light_range(LIGHT_RANGE_FIRE)
+			light_inner_range = LIGHT_RANGE_FIRE
 		if(LIQUID_FIRE_STATE_INFERNO)
-			set_light_range(LIGHT_RANGE_FIRE)
+			light_inner_range = LIGHT_RANGE_FIRE
 	update_light()
-	update_icon(UPDATE_OVERLAYS)
+	update_icon()
 
 /obj/effect/abstract/liquid_turf/proc/get_burn_power(hotspotted = FALSE)
 	//We are not on fire and werent ignited by a hotspot exposure, no fire pls
@@ -111,23 +95,17 @@
 	//Finally, we burn
 	return total_burn_power
 
-/obj/effect/abstract/liquid_turf/extinguish()
-	. = ..()
-	if(fire_state)
-		set_fire_state(LIQUID_FIRE_STATE_NONE)
-
 /obj/effect/abstract/liquid_turf/proc/process_fire()
 	if(!fire_state)
 		SSliquids.processing_fire -= my_turf
+		set_fire_state(LIQUID_FIRE_STATE_NONE)
 	var/old_state = fire_state
 	if(!check_fire())
 		SSliquids.processing_fire -= my_turf
 	//Try spreading
 	if(fire_state == old_state) //If an extinguisher made our fire smaller, dont spread, else it's too hard to put out
-		for(var/t in my_turf.atmos_adjacent_turfs)
-			var/turf/T = t
-			if(T.liquids && !T.liquids.fire_state && T.liquids.check_fire(TRUE))
-				SSliquids.processing_fire[T] = TRUE
+		if(my_turf.liquids && !my_turf.liquids.fire_state && my_turf.liquids.check_fire(TRUE))
+			SSliquids.processing_fire[my_turf] = TRUE
 	//Burn our resources
 	var/datum/reagent/R //Faster declaration
 	var/burn_rate
@@ -143,11 +121,11 @@
 				reagent_list[reagent_type] -= burn_rate
 				total_reagents -= burn_rate
 
-	my_turf.hotspot_expose((T20C+50) + (50*fire_state), 125)
+	my_turf.hotspot_expose((20 CELSIUS+50) + (50*fire_state), 125)
 	for(var/A in my_turf.contents)
 		var/atom/AT = A
 		if(!QDELETED(AT))
-			AT.fire_act((T20C+50) + (50*fire_state), 125)
+			AT.fire_act((20 CELSIUS+50) + (50*fire_state), 125)
 
 	if(reagent_list.len == 0)
 		qdel(src, TRUE)
@@ -207,7 +185,7 @@
 	PRIVATE_PROC(TRUE)
 
 	return mutable_appearance(
-		'packages/liquids/assets/obj/effects/liquid_overlays.dmi',
+		'modules/liquids/assets/obj/effects/liquid_overlays.dmi',
 		overlay_state,
 		overlay_layer,
 		src,
@@ -233,10 +211,9 @@
 
 /obj/effect/abstract/liquid_turf/proc/set_new_liquid_state(new_state)
 	liquid_state = new_state
-	update_icon(UPDATE_OVERLAYS)
+	update_icon()
 
-/obj/effect/abstract/liquid_turf/update_overlays()
-	. = ..()
+/obj/effect/abstract/liquid_turf/proc/update_overlays()
 
 	if(no_effects)
 		return
@@ -274,7 +251,6 @@
 			fire_icon_state = "fire_big"
 
 	. += mutable_appearance(icon, fire_icon_state, BELOW_MOB_LAYER, src, GAME_PLANE, appearance_flags = RESET_COLOR|RESET_ALPHA)
-	. += emissive_appearance(icon, fire_icon_state, src, alpha = src.alpha)
 
 //Takes a flat of our reagents and returns it, possibly qdeling our liquids
 /obj/effect/abstract/liquid_turf/proc/take_reagents_flat(flat_amount)
@@ -292,7 +268,7 @@
 			passed_list[reagent_type] = amount
 		tempr.add_noreact_reagent_list(passed_list)
 		has_cached_share = FALSE
-	tempr.chem_temp = temp
+	
 	return tempr
 
 /obj/effect/abstract/liquid_turf/immutable/take_reagents_flat(flat_amount)
@@ -308,7 +284,7 @@
 			continue
 		passed_list[reagent_type] = amount
 	tempr.add_noreact_reagent_list(passed_list)
-	tempr.chem_temp = temp
+	
 	return tempr
 
 //Returns a flat of our reagents without any effects on the liquids
@@ -323,7 +299,7 @@
 			var/amount = fraction * reagent_list[reagent_type]
 			passed_list[reagent_type] = amount
 		tempr.add_noreact_reagent_list(passed_list)
-	tempr.chem_temp = temp
+	
 	return tempr
 
 /obj/effect/abstract/liquid_turf/fire_act(temperature, volume)
@@ -380,13 +356,13 @@
 		//Splash
 		if(prob(WATER_HEIGH_DIFFERENCE_SOUND_CHANCE))
 			var/sound_to_play = pick(list(
-				'packages/liquids/assets/sound/effects/water_wade1.ogg',
-				'packages/liquids/assets/sound/effects/water_wade2.ogg',
-				'packages/liquids/assets/sound/effects/water_wade3.ogg',
-				'packages/liquids/assets/sound/effects/water_wade4.ogg'
+				'modules/liquids/assets/sound/effects/water_wade1.ogg',
+				'modules/liquids/assets/sound/effects/water_wade2.ogg',
+				'modules/liquids/assets/sound/effects/water_wade3.ogg',
+				'modules/liquids/assets/sound/effects/water_wade4.ogg'
 				))
 			playsound(my_turf, sound_to_play, 60, 0)
-		var/obj/splashy = new /obj/effect/temp_visual/liquid_splash(my_turf)
+		var/obj/splashy = new /obj/effect/liquid_splash(my_turf)
 		splashy.color = color
 		if(height >= LIQUID_WAIST_LEVEL_HEIGHT)
 			//Push things into some direction, like space wind
@@ -413,7 +389,7 @@
 							if(!(C.shoes && C.shoes.clothing_flags))
 								step(C, dir)
 								if(prob(60) && C.body_position != LYING_DOWN)
-									to_chat(C, span_userdanger("The current knocks you down!"))
+									to_chat(C, SPAN_DANGER("The current knocks you down!"))
 									C.Paralyze(60)
 						else
 							step(AM, dir)
@@ -422,17 +398,16 @@
 	height = new_height
 
 /obj/effect/abstract/liquid_turf/proc/movable_entered(datum/source, atom/movable/AM)
-	SIGNAL_HANDLER
 	var/turf/T = source
 	if(isobserver(AM))
 		return //ghosts, camera eyes, etc. don't make water splashy splashy
 	if(liquid_state >= LIQUID_STATE_ANKLES)
 		if(prob(30))
 			var/sound_to_play = pick(list(
-				'packages/liquids/assets/sound/effects/water_wade1.ogg',
-				'packages/liquids/assets/sound/effects/water_wade2.ogg',
-				'packages/liquids/assets/sound/effects/water_wade3.ogg',
-				'packages/liquids/assets/sound/effects/water_wade4.ogg'
+				'modules/liquids/assets/sound/effects/water_wade1.ogg',
+				'modules/liquids/assets/sound/effects/water_wade2.ogg',
+				'modules/liquids/assets/sound/effects/water_wade3.ogg',
+				'modules/liquids/assets/sound/effects/water_wade4.ogg'
 				))
 			playsound(T, sound_to_play, 50, 0)
 		if(iscarbon(AM))
@@ -443,13 +418,12 @@
 		if(prob(7) && !(L.movement_type & FLYING))
 			L.slip(60, T, NO_SLIP_WHEN_WALKING, 20, TRUE)
 	if(fire_state)
-		AM.fire_act((T20C+50) + (50*fire_state), 125)
+		AM.fire_act((20 CELSIUS+50) + (50*fire_state), 125)
 
 /obj/effect/abstract/liquid_turf/proc/mob_fall(datum/source, mob/M)
-	SIGNAL_HANDLER
 	var/turf/T = source
 	if(liquid_state >= LIQUID_STATE_ANKLES && T.has_gravity(T))
-		playsound(T, 'packages/liquids/assets/sound/effects/splash.ogg', 50, 0)
+		playsound(T, 'modules/liquids/assets/sound/effects/splash.ogg', 50, 0)
 		if(iscarbon(M))
 			var/mob/living/carbon/falling_carbon = M
 
@@ -458,17 +432,18 @@
 				return
 
 			if(falling_carbon.wear_mask && falling_carbon.wear_mask.flags_cover & MASKCOVERSMOUTH)
-				to_chat(falling_carbon, span_userdanger("You fall in the [reagents_to_text()]!"))
+				to_chat(falling_carbon, SPAN_DANGER("You fall in the [reagents_to_text()]!"))
 			else
 				var/datum/reagents/tempr = take_reagents_flat(CHOKE_REAGENTS_INGEST_ON_FALL_AMOUNT)
-				tempr.trans_to(falling_carbon, tempr.total_volume, methods = INGEST)
+				tempr.trans_to_mob(falling_carbon, tempr.total_volume, type = CHEM_INGEST)
+				
 				qdel(tempr)
 				falling_carbon.adjustOxyLoss(5)
 				//C.emote("cough")
-				INVOKE_ASYNC(falling_carbon, TYPE_PROC_REF(/mob, emote), "cough")
-				to_chat(falling_carbon, span_userdanger("You fall in and swallow some [reagents_to_text()]!"))
+				INVOKE_ASYNC(falling_carbon, /mob/proc/emote, "cough")
+				to_chat(falling_carbon, SPAN_DANGER("You fall in and swallow some [reagents_to_text()]!"))
 		else
-			to_chat(M, span_userdanger("You fall in the [reagents_to_text()]!"))
+			to_chat(M, SPAN_DANGER("You fall in the [reagents_to_text()]!"))
 
 /obj/effect/abstract/liquid_turf/Initialize(mapload)
 	. = ..()
@@ -476,14 +451,13 @@
 		CRASH("Liquid Turf created with the liquids sybsystem not yet initialized!")
 	if(!immutable)
 		my_turf = loc
-		RegisterSignal(my_turf, COMSIG_ATOM_ENTERED, PROC_REF(movable_entered))
-		RegisterSignal(my_turf, COMSIG_TURF_MOB_FALL, PROC_REF(mob_fall))
-		RegisterSignal(my_turf, COMSIG_ATOM_EXAMINE, PROC_REF(examine_turf))
+		register_signal(my_turf, COMSIG_ATOM_ENTERED, PROC_REF(movable_entered))
+		register_signal(my_turf, COMSIG_TURF_MOB_FALL, PROC_REF(mob_fall))
 		SSliquids.add_active_turf(my_turf)
 
-		SEND_SIGNAL(my_turf, COMSIG_TURF_LIQUIDS_CREATION, src)
+		SEND_SIGNAL(my_turf, SIGNAL_TURF_LIQUIDS_CREATION, src)
 
-	update_icon(UPDATE_OVERLAYS)
+	update_icon()
 	if(z)
 		QUEUE_SMOOTH(src)
 		QUEUE_SMOOTH_NEIGHBORS(src)
@@ -495,7 +469,7 @@
 
 /obj/effect/abstract/liquid_turf/Destroy(force)
 	if(force)
-		UnregisterSignal(my_turf, list(COMSIG_ATOM_ENTERED, COMSIG_TURF_MOB_FALL, COMSIG_ATOM_EXAMINE))
+		unregister_signal(my_turf, list(COMSIG_ATOM_ENTERED, COMSIG_TURF_MOB_FALL, COMSIG_ATOM_EXAMINE))
 		if(my_turf.lgroup)
 			my_turf.lgroup.remove_from_group(my_turf)
 		if(SSliquids.evaporation_queue[my_turf])
@@ -513,7 +487,7 @@
 
 /obj/effect/abstract/liquid_turf/immutable/Destroy(force)
 	if(force)
-		stack_trace("Something tried to hard destroy an immutable liquid.")
+		CRASH("Something tried to hard destroy an immutable liquid.")
 	return ..()
 
 //Exposes my turf with simulated reagents
@@ -524,9 +498,9 @@
 
 /obj/effect/abstract/liquid_turf/proc/ChangeToNewTurf(turf/NewT)
 	if(NewT.liquids)
-		stack_trace("Liquids tried to change to a new turf, that already had liquids on it!")
+		CRASH("Liquids tried to change to a new turf, that already had liquids on it!")
 
-	UnregisterSignal(my_turf, list(COMSIG_ATOM_ENTERED, COMSIG_TURF_MOB_FALL))
+	unregister_signal(my_turf, list(COMSIG_ATOM_ENTERED, COMSIG_TURF_MOB_FALL))
 	if(SSliquids.active_turfs[my_turf])
 		SSliquids.active_turfs -= my_turf
 		SSliquids.active_turfs[NewT] = TRUE
@@ -540,54 +514,9 @@
 	my_turf = NewT
 	NewT.liquids = src
 	loc = NewT
-	RegisterSignal(my_turf, COMSIG_ATOM_ENTERED, PROC_REF(movable_entered))
-	RegisterSignal(my_turf, COMSIG_TURF_MOB_FALL, PROC_REF(mob_fall))
+	register_signal(my_turf, COMSIG_ATOM_ENTERED, PROC_REF(movable_entered))
+	register_signal(my_turf, COMSIG_TURF_MOB_FALL, PROC_REF(mob_fall))
 
-/**
- * Handles COMSIG_ATOM_EXAMINE for the turf.
- *
- * Adds reagent info to examine text.
- * Arguments:
- * * source - the turf we're peekin at
- * * examiner - the user
- * * examine_text - the examine list
- *  */
-/obj/effect/abstract/liquid_turf/proc/examine_turf(turf/source, mob/examiner, list/examine_list)
-	SIGNAL_HANDLER
-
-	// This should always have reagents if this effect object exists, but as a sanity check...
-	if(!length(reagent_list))
-		return
-
-	var/liquid_state_template = liquid_state_messages["[liquid_state]"]
-
-	examine_list += EXAMINE_SECTION_BREAK
-
-	if(examiner.can_see_reagents())
-		examine_list += EXAMINE_SECTION_BREAK
-
-		if(length(reagent_list) == 1)
-			// Single reagent text.
-			var/datum/reagent/reagent_type = reagent_list[1]
-			var/reagent_name = initial(reagent_type.name)
-			var/volume = round(reagent_list[reagent_type], 0.01)
-
-			examine_list += span_notice("There is [replacetext(liquid_state_template, "$", "[volume] units of [reagent_name]")] here.")
-		else
-			// Show each individual reagent
-			examine_list += "There is [replacetext(liquid_state_template, "$", "the following")] here:"
-
-			for(var/datum/reagent/reagent_type as anything in reagent_list)
-				var/reagent_name = initial(reagent_type.name)
-				var/volume = round(reagent_list[reagent_type], 0.01)
-				examine_list += "&bull; [volume] units of [reagent_name]"
-
-		examine_list += span_notice("The solution has a temperature of [temp]K.")
-		examine_list += EXAMINE_SECTION_BREAK
-		return
-
-	// Otherwise, just show the total volume
-	examine_list += span_notice("There is [replacetext(liquid_state_template, "$", "liquid")] here.")
 
 /**
  * Creates a string of the reagents that make up this liquid.
@@ -624,43 +553,40 @@
 
 	return lowertext(reagents_string)
 
-/obj/effect/temp_visual/liquid_splash
-	icon = 'packages/liquids/assets/obj/effects/splash.dmi'
+/obj/effect/liquid_splash
+	icon = 'modules/liquids/assets/obj/effects/splash.dmi'
 	icon_state = "splash"
 	layer = FLY_LAYER
-	randomdir = FALSE
 
 /obj/effect/abstract/liquid_turf/immutable
 	immutable = TRUE
 	var/list/starting_mixture = list(/datum/reagent/water = 600)
-	var/starting_temp = T20C
+	var/starting_temp = 20 CELSIUS
 
 //STRICTLY FOR IMMUTABLES DESPITE NOT BEING /immutable
 /obj/effect/abstract/liquid_turf/proc/add_turf(turf/T)
 	T.liquids = src
 	T.vis_contents += src
 	SSliquids.active_immutables[T] = TRUE
-	RegisterSignal(T, COMSIG_ATOM_ENTERED, PROC_REF(movable_entered))
-	RegisterSignal(T, COMSIG_TURF_MOB_FALL, PROC_REF(mob_fall))
+	register_signal(T, COMSIG_ATOM_ENTERED, PROC_REF(movable_entered))
+	register_signal(T, COMSIG_TURF_MOB_FALL, PROC_REF(mob_fall))
 
 /obj/effect/abstract/liquid_turf/proc/remove_turf(turf/T)
 	SSliquids.active_immutables -= T
 	T.liquids = null
 	T.vis_contents -= src
-	UnregisterSignal(T, list(COMSIG_ATOM_ENTERED, COMSIG_TURF_MOB_FALL))
+	unregister_signal(T, list(COMSIG_ATOM_ENTERED, COMSIG_TURF_MOB_FALL))
 
 /obj/effect/abstract/liquid_turf/immutable/ocean
-	smoothing_flags = NONE
 	icon_state = "ocean"
-	base_icon_state = "ocean"
 	plane = WALL_PLANE //Same as weather, etc.
 	layer = OBJ_LAYER
-	starting_temp = T20C-150
+	starting_temp = 20 CELSIUS-150
 	no_effects = TRUE
 	vis_flags = NONE
 
 /obj/effect/abstract/liquid_turf/immutable/ocean/warm
-	starting_temp = T20C+20
+	starting_temp = 20 CELSIUS+20
 
 /obj/effect/abstract/liquid_turf/immutable/Initialize(mapload)
 	. = ..()

@@ -18,7 +18,7 @@
 
 	src.height_applied = height_applied
 
-	RegisterSignal(target, COMSIG_MOVABLE_MOVED, PROC_REF(on_target_move))
+	register_signal(target, COMSIG_MOVABLE_MOVED, PROC_REF(on_target_move))
 	var/atom/movable/movable_target = target
 	if(isturf(movable_target.loc))
 		var/turf/turf_loc = movable_target.loc
@@ -28,7 +28,7 @@
 /datum/element/liquids_height/Detach(atom/movable/target)
 	. = ..()
 
-	UnregisterSignal(target, list(COMSIG_MOVABLE_MOVED))
+	unregister_signal(target, list(COMSIG_MOVABLE_MOVED))
 	var/atom/movable/movable_target = target
 	if(isturf(movable_target.loc))
 		var/turf/turf_loc = movable_target.loc

@@ -14,189 +14,189 @@
 /*
 *	ALCOHOL REAGENTS
 */
-/datum/reagent/consumable/ethanol
+/datum/reagent/ethanol
 	liquid_fire_power = 10
 	liquid_fire_burnrate = 0.1
 
 // 0 fire power
-/datum/reagent/consumable/ethanol/beer/light
+/datum/reagent/ethanol/beer/light
 	liquid_fire_power = 0
 
-/datum/reagent/consumable/ethanol/threemileisland
+/datum/reagent/ethanol/threemileisland
 	liquid_fire_power = 0
 
-/datum/reagent/consumable/ethanol/grog
+/datum/reagent/ethanol/grog
 	liquid_fire_power = 0
 
-/datum/reagent/consumable/ethanol/fetching_fizz
+/datum/reagent/ethanol/fetching_fizz
 	liquid_fire_power = 0
 
-/datum/reagent/consumable/ethanol/sugar_rush
+/datum/reagent/ethanol/sugar_rush
 	liquid_fire_power = 0
 
-/datum/reagent/consumable/ethanol/crevice_spike
+/datum/reagent/ethanol/crevice_spike
 	liquid_fire_power = 0
 
-/datum/reagent/consumable/ethanol/fanciulli
+/datum/reagent/ethanol/fanciulli
 	liquid_fire_power = 0
 
 // 2 fire power
-/datum/reagent/consumable/ethanol/beer
+/datum/reagent/ethanol/beer
 	liquid_fire_power = 2
 
-/datum/reagent/consumable/ethanol/wine
+/datum/reagent/ethanol/wine
 	liquid_fire_power = 2
 
-/datum/reagent/consumable/ethanol/lizardwine
+/datum/reagent/ethanol/lizardwine
 	liquid_fire_power = 2
 
-/datum/reagent/consumable/ethanol/amaretto
+/datum/reagent/ethanol/amaretto
 	liquid_fire_power = 2
 
-/datum/reagent/consumable/ethanol/goldschlager
+/datum/reagent/ethanol/goldschlager
 	liquid_fire_power = 2
 
-/datum/reagent/consumable/ethanol/gintonic
+/datum/reagent/ethanol/gintonic
 	liquid_fire_power = 2
 
-/datum/reagent/consumable/ethanol/iced_beer
+/datum/reagent/ethanol/iced_beer
 	liquid_fire_power = 2
 
-/datum/reagent/consumable/ethanol/irishcarbomb
+/datum/reagent/ethanol/irishcarbomb
 	liquid_fire_power = 2
 
-/datum/reagent/consumable/ethanol/hcider
+/datum/reagent/ethanol/hcider
 	liquid_fire_power = 2
 
-/datum/reagent/consumable/ethanol/narsour
+/datum/reagent/ethanol/narsour
 	liquid_fire_power = 2
 
-/datum/reagent/consumable/ethanol/peppermint_patty
+/datum/reagent/ethanol/peppermint_patty
 	liquid_fire_power = 2
 
-/datum/reagent/consumable/ethanol/blank_paper
+/datum/reagent/ethanol/blank_paper
 	liquid_fire_power = 2
 
-/datum/reagent/consumable/ethanol/applejack
+/datum/reagent/ethanol/applejack
 	liquid_fire_power = 2
 
-/datum/reagent/consumable/ethanol/jack_rose
+/datum/reagent/ethanol/jack_rose
 	liquid_fire_power = 2
 
-/datum/reagent/consumable/ethanol/old_timer
+/datum/reagent/ethanol/old_timer
 	liquid_fire_power = 2
 
-/datum/reagent/consumable/ethanol/duplex
+/datum/reagent/ethanol/duplex
 	liquid_fire_power = 2
 
-/datum/reagent/consumable/ethanol/painkiller
+/datum/reagent/ethanol/painkiller
 	liquid_fire_power = 2
 
 // 3 fire power
-/datum/reagent/consumable/ethanol/longislandicedtea
+/datum/reagent/ethanol/longislandicedtea
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/irishcoffee
+/datum/reagent/ethanol/irishcoffee
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/margarita
+/datum/reagent/ethanol/margarita
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/manhattan
+/datum/reagent/ethanol/manhattan
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/snowwhite
+/datum/reagent/ethanol/snowwhite
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/bahama_mama
+/datum/reagent/ethanol/bahama_mama
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/singulo
+/datum/reagent/ethanol/singulo
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/red_mead
+/datum/reagent/ethanol/red_mead
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/mead
+/datum/reagent/ethanol/mead
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/aloe
+/datum/reagent/ethanol/aloe
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/andalusia
+/datum/reagent/ethanol/andalusia
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/alliescocktail
+/datum/reagent/ethanol/alliescocktail
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/amasec
+/datum/reagent/ethanol/amasec
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/erikasurprise
+/datum/reagent/ethanol/erikasurprise
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/whiskey_sour
+/datum/reagent/ethanol/whiskey_sour
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/triple_sec
+/datum/reagent/ethanol/triple_sec
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/creme_de_menthe
+/datum/reagent/ethanol/creme_de_menthe
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/creme_de_cacao
+/datum/reagent/ethanol/creme_de_cacao
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/creme_de_coconut
+/datum/reagent/ethanol/creme_de_coconut
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/quadruple_sec
+/datum/reagent/ethanol/quadruple_sec
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/grasshopper
+/datum/reagent/ethanol/grasshopper
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/stinger
+/datum/reagent/ethanol/stinger
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/bastion_bourbon
+/datum/reagent/ethanol/bastion_bourbon
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/squirt_cider
+/datum/reagent/ethanol/squirt_cider
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/amaretto_alexander
+/datum/reagent/ethanol/amaretto_alexander
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/sidecar
+/datum/reagent/ethanol/sidecar
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/mojito
+/datum/reagent/ethanol/mojito
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/moscow_mule
+/datum/reagent/ethanol/moscow_mule
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/fruit_wine
+/datum/reagent/ethanol/fruit_wine
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/champagne
+/datum/reagent/ethanol/champagne
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/pina_colada
+/datum/reagent/ethanol/pina_colada
 	liquid_fire_power = 3
 
-/datum/reagent/consumable/ethanol/ginger_amaretto
+/datum/reagent/ethanol/ginger_amaretto
 	liquid_fire_power = 3
 
 // 4 fire power
-/datum/reagent/consumable/ethanol/rum_coke
+/datum/reagent/ethanol/rum_coke
 	liquid_fire_power = 4
 
-/datum/reagent/consumable/ethanol/booger
+/datum/reagent/ethanol/booger
 	liquid_fire_power = 4
 
-/datum/reagent/consumable/ethanol/tequila_sunrise
+/datum/reagent/ethanol/tequila_sunrise
 	liquid_fire_power = 4
 
 /*
@@ -204,18 +204,6 @@
 */
 /datum/reagent/thermite
 	liquid_fire_power = 20
-	liquid_fire_burnrate = 0.1
-
-/datum/reagent/phlogiston
-	liquid_fire_power = 20
-	liquid_fire_burnrate = 0.1
-
-/datum/reagent/clf3
-	liquid_fire_power = 30
-	liquid_fire_burnrate = 0.1
-
-/datum/reagent/napalm
-	liquid_fire_power = 30
 	liquid_fire_burnrate = 0.1
 
 /*

@@ -2,4 +2,4 @@
 /datum/reagents/proc/add_noreact_reagent_list(list/list_reagents, list/data=null)
 	for(var/r_id in list_reagents)
 		var/amt = list_reagents[r_id]
-		add_reagent(r_id, amt, data, no_react = TRUE)
+		add_reagent(r_id, amt, data, safety = TRUE)

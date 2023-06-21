@@ -62,8 +62,8 @@
 		var/assoc_atmos_turfs = list()
 		for(var/tur in get_atmos_adjacent_turfs())
 			assoc_atmos_turfs[tur] = TRUE
-		//Check any cardinals that may have a matching group
-		for(var/direction in GLOB.cardinals)
+		//Check any cardinal that may have a matching group
+		for(var/direction in GLOB.cardinal)
 			var/turf/T = get_step(src, direction)
 			//Same group of which we do not share atmos adjacency
 			if(!assoc_atmos_turfs[T] && T.lgroup && T.lgroup == lgroup)
@@ -173,7 +173,7 @@
 	if(T.liquids && T.liquids.immutable)
 		return FALSE
 
-	if(istype(T, /turf/open/space)) //No space liquids - Maybe add an ice system later
+	if(istype(T, /turf/simulated/space)) //No space liquids - Maybe add an ice system later
 		return FALSE
 
 	var/my_liquid_height = liquids ? liquids.height : 0
@@ -247,14 +247,14 @@
 
 //Consider making all of these behaviours a smart component/element? Something that's only applied wherever it needs to be
 //Could probably have the variables on the turf level, and the behaviours being activated/deactived on the component level as the vars are updated
-/turf/open/CanPass(atom/movable/mover, turf/location)
+/turf/simulated/CanPass(atom/movable/mover, turf/location)
 	if(isliving(mover))
 		var/turf/current_turf = get_turf(mover)
 		if(current_turf && current_turf.turf_height - turf_height <= -TURF_HEIGHT_BLOCK_THRESHOLD)
 			return FALSE
 	return ..()
 
-/turf/open/Exit(atom/movable/mover, atom/newloc)
+/turf/simulated/Exit(atom/movable/mover, atom/newloc)
 	. = ..()
 	if(. && isliving(mover) && mover.has_gravity() && isturf(newloc))
 		var/mob/living/moving_mob = mover
@@ -264,7 +264,7 @@
 			moving_mob.onZImpact(new_turf, 1)
 
 // Handles climbing up and down between turfs with height differences, as well as manipulating others to do the same.
-/turf/open/MouseDrop_T(mob/living/dropped_mob, mob/living/user)
+/turf/simulated/MouseDrop_T(mob/living/dropped_mob, mob/living/user)
 	if(!isliving(dropped_mob) || !isliving(user) || !dropped_mob.has_gravity() || !Adjacent(user) || !dropped_mob.Adjacent(user) || !(user.stat == CONSCIOUS) || user.body_position == LYING_DOWN)
 		return
 	if(!dropped_mob.has_gravity())

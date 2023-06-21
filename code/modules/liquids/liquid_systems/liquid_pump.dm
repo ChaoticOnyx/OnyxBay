@@ -2,7 +2,7 @@
 /obj/structure/liquid_pump
 	name = "portable liquid pump"
 	desc = "An industrial grade pump, capable of either siphoning or spewing liquids. Needs to be anchored first to work. Has a limited capacity internal storage."
-	icon = 'packages/liquids/assets/obj/structures/liquid_pump.dmi'
+	icon = 'modules/liquids/assets/obj/structures/liquid_pump.dmi'
 	icon_state = "liquid_pump"
 	density = TRUE
 	max_integrity = 500
@@ -28,24 +28,24 @@
 
 /obj/structure/liquid_pump/attack_hand(mob/user)
 	if(!anchored)
-		to_chat(user, span_warning("[src] needs to be anchored first!"))
+		to_chat(user, SPAN_WARNING("[src] needs to be anchored first!"))
 		return
-	to_chat(user, span_notice("You turn [src] [turned_on ? "off" : "on"]."))
+	to_chat(user, SPAN_NOTICE("You turn [src] [turned_on ? "off" : "on"]."))
 	toggle_working()
 
 /obj/structure/liquid_pump/AltClick(mob/living/user)
 	if(!user.can_perform_action(src, NEED_DEXTERITY))
 		return
-	to_chat(user, span_notice("You flick [src]'s spewing mode [spewing_mode ? "off" : "on"]."))
+	to_chat(user, SPAN_NOTICE("You flick [src]'s spewing mode [spewing_mode ? "off" : "on"]."))
 	spewing_mode = !spewing_mode
 	update_icon()
 
 /obj/structure/liquid_pump/examine(mob/user)
 	. = ..()
-	. += span_notice("It's anchor bolts are [anchored ? "down and secured" : "up"].")
-	. += span_notice("It's currently [turned_on ? "ON" : "OFF"].")
-	. += span_notice("It's mode currently is set to [spewing_mode ? "SPEWING" : "SIPHONING"]. (Alt-click to switch)")
-	. += span_notice("The pressure gauge shows [reagents.total_volume]/[reagents.maximum_volume].")
+	. += SPAN_NOTICE("It's anchor bolts are [anchored ? "down and secured" : "up"].")
+	. += SPAN_NOTICE("It's currently [turned_on ? "ON" : "OFF"].")
+	. += SPAN_NOTICE("It's mode currently is set to [spewing_mode ? "SPEWING" : "SIPHONING"]. (Alt-click to switch)")
+	. += SPAN_NOTICE("The pressure gauge shows [reagents.total_volume]/[reagents.maximum_volume].")
 
 /obj/structure/liquid_pump/process()
 	if(!isturf(loc))

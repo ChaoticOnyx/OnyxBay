@@ -1,5 +1,5 @@
 /obj/structure/flora/ocean
-	icon = 'packages/liquids/assets/obj/flora/ocean_flora.dmi'
+	icon = 'modules/liquids/assets/obj/flora/ocean_flora.dmi'
 	var/random_variants = 0
 
 /obj/structure/flora/ocean/Initialize(mapload)
@@ -43,7 +43,7 @@
 /obj/structure/flora/scrap
 	name = "scrap metal"
 	desc = "A huge chunk of metal, rusted and worn. Perhaps it can still be salvaged into something useful."
-	icon = 'packages/liquids/assets/obj/flora/scrap.dmi'
+	icon = 'modules/liquids/assets/obj/flora/scrap.dmi'
 	icon_state = "scrap"
 	anchored = FALSE
 	density = TRUE
@@ -63,11 +63,11 @@
 
 	playsound(src, 'sound/items/welder2.ogg', 50, TRUE)
 	if(first)
-		to_chat(user, span_notice("You start slicing the [src]..."))
+		to_chat(user, SPAN_NOTICE("You start slicing the [src]..."))
 	if(I.use_tool(src, user, 2 SECONDS))
 		welds_remaining--
 		if(welds_remaining <= 0)
-			to_chat(user, span_notice("You successfully salvage [src]."))
+			to_chat(user, SPAN_NOTICE("You successfully salvage [src]."))
 			new /obj/item/stack/sheet/iron(get_turf(src), rand(SCRAP_METAL_YIELD_LOW, SCRAP_METAL_YIELD_HIGH))
 			qdel(src)
 		else
@@ -82,7 +82,7 @@
 
 /obj/effect/spawner/liquids_spawner
 	name = "Liquids Spawner (Water, Waist-Deep)"
-	icon = 'packages/liquids/assets/obj/effects/liquid.dmi'
+	icon = 'modules/liquids/assets/obj/effects/liquid.dmi'
 	icon_state = "spawner"
 	color = "#AAAAAA77"
 	var/reagent_list = list(/datum/reagent/water = ONE_LIQUIDS_HEIGHT*LIQUID_WAIST_LEVEL_HEIGHT)

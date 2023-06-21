@@ -137,4 +137,3 @@
 	broken = !broken
 	update_icon()
 	return
-

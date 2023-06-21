@@ -224,6 +224,3 @@
 			if (H.reagents)
 				H.reagents.trans_to_obj(new_meat, round(buckled_mob.reagents.total_volume / meat_limbs_left, 1))
 	return
-
-
-

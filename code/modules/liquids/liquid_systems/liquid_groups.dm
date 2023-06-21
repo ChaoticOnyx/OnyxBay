@@ -39,7 +39,7 @@ GLOBAL_VAR_INIT(liquid_debug_colors, FALSE)
 
 /datum/liquid_group/New(height)
 	SSliquids.active_groups[src] = TRUE
-	color = "#[random_short_color()]"
+	color = "#[rand_hex_color()]"
 	expected_turf_height = height
 
 /datum/liquid_group/proc/can_merge_group(datum/liquid_group/otherg)
@@ -104,7 +104,7 @@ GLOBAL_VAR_INIT(liquid_debug_colors, FALSE)
 		if(!recursive_adjacent[t])
 			remove_from_group(t)
 			new_group.add_to_group(t)
-
+can_atmos_pass()
 /datum/liquid_group/proc/share(use_liquids_color = FALSE)
 	var/any_share = FALSE
 	var/cached_shares = 0
@@ -213,7 +213,7 @@ GLOBAL_VAR_INIT(liquid_debug_colors, FALSE)
 		//Immutable check thing
 		if(T2.liquids && T2.liquids.immutable)
 			if(T.z != T2.z)
-				var/turf/Z_turf_below = SSmapping.get_turf_below(T)
+				var/turf/Z_turf_below = GetBelow(T)
 				if(T2 == Z_turf_below)
 					qdel(T.liquids, TRUE)
 					return
@@ -238,7 +238,7 @@ GLOBAL_VAR_INIT(liquid_debug_colors, FALSE)
 		//END OF IMMUTABLE MADNESS
 
 		if(T.z != T2.z)
-			var/turf/Z_turf_below = SSmapping.get_turf_below(T)
+			var/turf/Z_turf_below = GetBelow(T)
 			if(T2 == Z_turf_below)
 				if(!(T2.liquids && T2.liquids.height + T2.liquid_height >= LIQUID_HEIGHT_CONSIDER_FULL_TILE))
 					T.liquid_fraction_share(T2, 1)
