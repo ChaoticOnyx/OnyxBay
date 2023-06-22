@@ -438,6 +438,7 @@
 				/obj/structure/closet/boxinggloves = 2,
 				/obj/structure/largecrate = 5,
 				/obj/structure/largecrate/animal/goat = 1,
+				/obj/structure/largecrate/animal/pig = 1,
 				/obj/structure/closet/wardrobe/grey = 5,
 				/obj/structure/closet/wardrobe/xenos = 2,
 				/obj/structure/closet/wardrobe/mixed = 3,
