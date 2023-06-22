@@ -42,6 +42,10 @@
 	var/poise = HUMAN_DEFAULT_POISE
 	var/blocking_hand = 0 //0 for main hand, 1 for offhand
 	var/last_block = 0
+	var/starve = FALSE
+	var/starve_start = 0
+	var/overeat = FALSE
+	var/overeat_start = 0
 
 /mob/living/carbon/human/Initialize()
 	. = ..()
@@ -684,6 +688,93 @@
 					nutrition_reduction *= mod.metabolism_percent
 			nutrition = max (0, nutrition - nutrition_reduction)
 
+		// body build correction
+		if(nutrition/body_build.stomach_capacity <= STOMACH_FULLNESS_SUPER_LOW)
+			if(!starve)
+				starve_start = world.time
+				starve = TRUE
+		else
+			starve = FALSE
+
+		if(nutrition/body_build.stomach_capacity >= STOMACH_FULLNESS_SUPER_HIGH)
+			if(!overeat)
+				overeat_start = world.time
+				overeat = TRUE
+		else
+			overeat = FALSE
+
+		if(starve && (world.time > starve_start + 5 MINUTES))
+			starve = FALSE
+			var/body_build_changed = TRUE
+			var/datum/species/S = src.species
+			switch(src.get_species())
+				if(SPECIES_HUMAN)
+					if(src.body_build == S.body_builds[HUMAN_FAT])
+						src.change_body_build(S.body_builds[HUMAN_DEFAULT])
+					else if(src.body_build == S.body_builds[HUMAN_DEFAULT])
+						switch(src.gender)
+							if(MALE)
+								src.change_body_build(S.body_builds[HUMAN_SLIM_MALE])
+							if(FEMALE)
+								src.change_body_build(S.body_builds[HUMAN_SLIM_FEMALE])
+					else if(src.body_build == S.body_builds[HUMAN_SLIM_FEMALE])
+						src.change_body_build(S.body_builds[HUMAN_SLIM_ALT_FEMALE])
+					else 
+						body_build_changed = FALSE
+				if(SPECIES_TAJARA)
+					if(src.body_build == S.body_builds[TAJARA_FAT])
+						src.change_body_build(S.body_builds[TAJARA_DEFAULT])
+					else if(src.body_build == S.body_builds[TAJARA_DEFAULT])
+						if(src.gender == FEMALE)
+							src.change_body_build(S.body_builds[TAJARA_SLIM_FEMALE])
+					else 
+						body_build_changed = FALSE
+				if(SPECIES_SKRELL)
+					if(src.gender == FEMALE)
+						if(src.body_build == S.body_builds[SKRELL_DEFAULT])
+							src.change_body_build(S.body_builds[SKRELL_SLIM_FEMALE])
+						else if(src.body_build == S.body_builds[SKRELL_SLIM_FEMALE])
+							src.change_body_build(S.body_builds[SKRELL_SLIM_ALT_FEMALE])
+					else 
+						body_build_changed = FALSE
+			if(body_build_changed)
+				to_chat(src, SPAN("warning", "You've lost some weight!"))
+
+		if(overeat && (world.time > overeat_start + 5 MINUTES))
+			overeat = FALSE
+			var/body_build_changed = TRUE
+			var/datum/species/S = src.species
+			switch(src.get_species())
+				if(SPECIES_HUMAN)
+					if(src.body_build == S.body_builds[HUMAN_SLIM_ALT_FEMALE])
+						src.change_body_build(S.body_builds[HUMAN_DEFAULT])
+					else if(src.body_build == S.body_builds[HUMAN_SLIM_FEMALE])
+						src.change_body_build(S.body_builds[HUMAN_DEFAULT])
+					else if(src.body_build == S.body_builds[HUMAN_SLIM_MALE])
+						src.change_body_build(S.body_builds[HUMAN_DEFAULT])
+					else if(src.body_build == S.body_builds[HUMAN_DEFAULT])
+						src.change_body_build(S.body_builds[HUMAN_FAT])
+					else 
+						body_build_changed = FALSE
+				if(SPECIES_TAJARA)		
+					if(src.body_build == S.body_builds[TAJARA_SLIM_FEMALE])
+						src.change_body_build(S.body_builds[TAJARA_DEFAULT])
+					else if(src.body_build == S.body_builds[TAJARA_DEFAULT])
+						src.change_body_build(S.body_builds[TAJARA_FAT])
+					else 
+						body_build_changed = FALSE
+				if(SPECIES_SKRELL)		
+					if(src.body_build == S.body_builds[SKRELL_SLIM_ALT_FEMALE])
+						src.change_body_build(S.body_builds[SKRELL_DEFAULT])
+					else if(src.body_build == S.body_builds[SKRELL_SLIM_FEMALE])
+						src.change_body_build(S.body_builds[SKRELL_DEFAULT])
+					else 
+						body_build_changed = FALSE
+				else 
+					body_build_changed = FALSE
+			if(body_build_changed)
+				to_chat(src, SPAN("warning", "You've gained some weight!"))
+						
 		// malnutrition \ obesity
 		if(prob(1) && stat == CONSCIOUS && !isSynthetic(src) && !isundead(src))
 			var/normalized_nutrition = nutrition / body_build.stomach_capacity
