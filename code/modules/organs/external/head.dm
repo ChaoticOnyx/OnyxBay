@@ -158,6 +158,7 @@
 
 	if(owner.h_style)
 		var/icon/HI
+		var/icon/HSI
 		var/datum/sprite_accessory/hair/H = GLOB.hair_styles_list[owner.h_style]
 		if((owner.head?.flags_inv & BLOCKHEADHAIR) && !(H.flags & VERY_SHORT))
 			H = GLOB.hair_styles_list["Short Hair"]
@@ -170,6 +171,22 @@
 
 				if(H.do_coloration && length(h_col) >= 3)
 					HI.Blend(rgb(h_col[1], h_col[2], h_col[3]), H.blend)
+
+				if(H.has_secondary)
+					if(istype(owner.body_build,/datum/body_build/slim))
+						HSI = icon(GLOB.hair_icons["slim"][species.hair_key], H.icon_state + "_s")
+					else
+						HSI = icon(GLOB.hair_icons["default"][species.hair_key], H.icon_state + "_s")
+					if(species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
+						if(species.appearance_flags & HAS_A_SKIN_TONE)
+							if(s_tone >= 0)
+								HSI.Blend(rgb(s_tone, s_tone, s_tone), ICON_ADD)
+							else
+								HSI.Blend(rgb(-s_tone,  -s_tone,  -s_tone), ICON_SUBTRACT)
+						else
+							HSI.Blend(rgb(s_col[1], s_col[2], s_col[3]), s_col_blend)
+					else if(length(h_col) >= 3)
+						HSI.Blend(rgb(h_s_col[1], h_s_col[2], h_s_col[3]), H.blend)
 		if(HI)
 			var/list/sorted_hair_markings = list()
 			for(var/E in markings)
@@ -183,6 +200,9 @@
 			for(var/entry in sorted_hair_markings)
 				HI.Blend(entry[2], ICON_OVERLAY)
 			res.overlays |= HI
+
+		if(HSI)
+			res.overlays |= HSI
 
 	var/list/sorted_head_markings = list()
 	for(var/E in markings)

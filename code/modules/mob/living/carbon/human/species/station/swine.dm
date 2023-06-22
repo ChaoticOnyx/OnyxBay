@@ -24,7 +24,7 @@
 	hunger_factor = DEFAULT_HUNGER_FACTOR * 3
 	meat_type = /obj/item/reagent_containers/food/meat/pork
 
-	min_age = 14
+	min_age = 18
 	max_age = 80
 
 	blurb = "Human-pig hybrids, Trottines were initially created for organ-harvesting \
@@ -45,7 +45,7 @@
 	heat_level_3 = 1100 //Default 1000
 
 	spawn_flags = SPECIES_CAN_JOIN | SPECIES_IS_WHITELISTED
-	appearance_flags = HAS_HAIR_COLOR | HAS_LIPS | HAS_UNDERWEAR | HAS_SKIN_TONE_NORMAL | HAS_EYE_COLOR
+	appearance_flags = HAS_HAIR_COLOR | HAS_LIPS | HAS_UNDERWEAR | HAS_EYE_COLOR | HAS_SKIN_TONE_SPCR | SECONDARY_HAIR_IS_SKIN
 
 	sexybits_location = BP_GROIN
 
