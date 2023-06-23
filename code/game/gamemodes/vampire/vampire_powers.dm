@@ -616,7 +616,7 @@
 			user.heal_organ_damage(50, 50)
 			blood_used += 12
 			vampire.use_blood(blood_used - temp_blood_used)
-			temp_blood used = blood_used
+			temp_blood_used = blood_used
 
 		if (vampire.blood_usable <= 15)
 			vampire.status &= ~VAMP_HEALING
@@ -650,7 +650,7 @@
 
 			if (healed)
 				vampire.use_blood(blood_used - temp_blood_used)
-				temp_blood used = blood_used
+				temp_blood_used = blood_used
 				break
 
 		if (vampire.blood_usable <= 15)
@@ -678,7 +678,7 @@
 				H.visible_message(SPAN_DANGER("With a shower of dark blood, a length of biomass shoots from [H]'s [O.amputation_point], forming a new [O.name]!"))
 				blood_used += 12
 				vampire.use_blood(blood_used - temp_blood_used)
-				temp_blood used = blood_used
+				temp_blood_used = blood_used
 				var/datum/reagent/blood/B = new /datum/reagent/blood
 				blood_splatter(H,B,1)
 				O.set_dna(H.dna)
