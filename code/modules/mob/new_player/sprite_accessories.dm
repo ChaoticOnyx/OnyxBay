@@ -1707,10 +1707,12 @@ May God have mercy.
 /datum/sprite_accessory/marking/hair_fade/fade_up_short
 	name = "Fade (Up, Short)"
 	icon_state = "fade_up_short"
+	species_allowed = list(SPECIES_HUMAN, SPECIES_SKRELL)
 
 /datum/sprite_accessory/marking/hair_fade/fade_up_long
 	name = "Fade (Up, Long)"
 	icon_state = "fade_up_long"
+	species_allowed = list(SPECIES_HUMAN, SPECIES_SKRELL)
 
 /datum/sprite_accessory/marking/hair_fade/fade_down_short
 	name = "Fade (Down, Short)"
