@@ -1,5 +1,16 @@
 [
   {
+    "author": "Lovla",
+    "date": "2023-06-23T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "RscAdd",
+        "message": "Зеркала теперь имеют отражения.",
+        "pr": 10411
+      }
+    ]
+  },
+  {
     "author": "TobyThorne",
     "date": "2023-06-22T00:00:00+03:00",
     "changes": [
