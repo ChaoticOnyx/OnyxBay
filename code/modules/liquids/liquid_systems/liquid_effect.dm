@@ -1,6 +1,6 @@
 /obj/effect/abstract/liquid_turf
 	name = "liquid"
-	icon = 'modules/liquids/assets/obj/effects/liquid.dmi'
+	icon = 'icons/obj/liquids/effects/liquid.dmi'
 	icon_state = "water-0"
 	anchored = TRUE
 	plane = FLOOR_PLANE
@@ -185,7 +185,7 @@
 	PRIVATE_PROC(TRUE)
 
 	return mutable_appearance(
-		'modules/liquids/assets/obj/effects/liquid_overlays.dmi',
+		'icons/obj/liquids/effects/liquid_overlays.dmi',
 		overlay_state,
 		overlay_layer,
 		src,
@@ -202,12 +202,12 @@
 /obj/effect/abstract/liquid_turf/proc/make_state_layer(state, has_top)
 	PRIVATE_PROC(TRUE)
 
-	. = list(make_liquid_overlay("stage[state]_bottom", ABOVE_MOB_LAYER, GAME_PLANE_UPPER))
+	. = list(make_liquid_overlay("stage[state]_bottom", DEEP_FLUID_LAYER, DEFAULT_PLANE))
 
 	if(!has_top)
 		return
 
-	. += make_liquid_overlay("stage[state]_top", GATEWAY_UNDERLAY_LAYER, GAME_PLANE)
+	. += make_liquid_overlay("stage[state]_top", BELOW_OBJ_LAYER, DEFAULT_PLANE)
 
 /obj/effect/abstract/liquid_turf/proc/set_new_liquid_state(new_state)
 	liquid_state = new_state
@@ -250,7 +250,7 @@
 		if(LIQUID_FIRE_STATE_INFERNO)
 			fire_icon_state = "fire_big"
 
-	. += mutable_appearance(icon, fire_icon_state, BELOW_MOB_LAYER, src, GAME_PLANE, appearance_flags = RESET_COLOR|RESET_ALPHA)
+	. += mutable_appearance(icon, fire_icon_state, ABOVE_OBJ_LAYER, src, DEFAULT_PLANE, appearance_flags = RESET_COLOR|RESET_ALPHA)
 
 //Takes a flat of our reagents and returns it, possibly qdeling our liquids
 /obj/effect/abstract/liquid_turf/proc/take_reagents_flat(flat_amount)
@@ -268,7 +268,7 @@
 			passed_list[reagent_type] = amount
 		tempr.add_noreact_reagent_list(passed_list)
 		has_cached_share = FALSE
-	
+
 	return tempr
 
 /obj/effect/abstract/liquid_turf/immutable/take_reagents_flat(flat_amount)
@@ -284,7 +284,7 @@
 			continue
 		passed_list[reagent_type] = amount
 	tempr.add_noreact_reagent_list(passed_list)
-	
+
 	return tempr
 
 //Returns a flat of our reagents without any effects on the liquids
@@ -299,7 +299,7 @@
 			var/amount = fraction * reagent_list[reagent_type]
 			passed_list[reagent_type] = amount
 		tempr.add_noreact_reagent_list(passed_list)
-	
+
 	return tempr
 
 /obj/effect/abstract/liquid_turf/fire_act(temperature, volume)
@@ -356,10 +356,10 @@
 		//Splash
 		if(prob(WATER_HEIGH_DIFFERENCE_SOUND_CHANCE))
 			var/sound_to_play = pick(list(
-				'modules/liquids/assets/sound/effects/water_wade1.ogg',
-				'modules/liquids/assets/sound/effects/water_wade2.ogg',
-				'modules/liquids/assets/sound/effects/water_wade3.ogg',
-				'modules/liquids/assets/sound/effects/water_wade4.ogg'
+				'sound/effects/water_wade1.ogg',
+				'sound/effects/water_wade2.ogg',
+				'sound/effects/water_wade3.ogg',
+				'sound/effects/water_wade4.ogg'
 				))
 			playsound(my_turf, sound_to_play, 60, 0)
 		var/obj/splashy = new /obj/effect/liquid_splash(my_turf)
@@ -404,10 +404,10 @@
 	if(liquid_state >= LIQUID_STATE_ANKLES)
 		if(prob(30))
 			var/sound_to_play = pick(list(
-				'modules/liquids/assets/sound/effects/water_wade1.ogg',
-				'modules/liquids/assets/sound/effects/water_wade2.ogg',
-				'modules/liquids/assets/sound/effects/water_wade3.ogg',
-				'modules/liquids/assets/sound/effects/water_wade4.ogg'
+				'sound/effects/water_wade1.ogg',
+				'sound/effects/water_wade2.ogg',
+				'sound/effects/water_wade3.ogg',
+				'sound/effects/water_wade4.ogg'
 				))
 			playsound(T, sound_to_play, 50, 0)
 		if(iscarbon(AM))
@@ -423,7 +423,7 @@
 /obj/effect/abstract/liquid_turf/proc/mob_fall(datum/source, mob/M)
 	var/turf/T = source
 	if(liquid_state >= LIQUID_STATE_ANKLES && T.has_gravity(T))
-		playsound(T, 'modules/liquids/assets/sound/effects/splash.ogg', 50, 0)
+		playsound(T, 'sound/effects/splash.ogg', 50, 0)
 		if(iscarbon(M))
 			var/mob/living/carbon/falling_carbon = M
 
@@ -436,7 +436,7 @@
 			else
 				var/datum/reagents/tempr = take_reagents_flat(CHOKE_REAGENTS_INGEST_ON_FALL_AMOUNT)
 				tempr.trans_to_mob(falling_carbon, tempr.total_volume, type = CHEM_INGEST)
-				
+
 				qdel(tempr)
 				falling_carbon.adjustOxyLoss(5)
 				//C.emote("cough")
@@ -554,7 +554,7 @@
 	return lowertext(reagents_string)
 
 /obj/effect/liquid_splash
-	icon = 'modules/liquids/assets/obj/effects/splash.dmi'
+	icon = 'icons/obj/liquids/effects/splash.dmi'
 	icon_state = "splash"
 	layer = FLY_LAYER
 

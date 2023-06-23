@@ -1,5 +1,5 @@
 /obj/structure/flora/ocean
-	icon = 'modules/liquids/assets/obj/flora/ocean_flora.dmi'
+	icon = 'icons/obj/liquids/flora/ocean_flora.dmi'
 	var/random_variants = 0
 
 /obj/structure/flora/ocean/Initialize(mapload)
@@ -12,8 +12,8 @@
 	icon_state = "glowweed"
 	desc = "A plant with glowing bulbs at the end of it."
 	random_variants = 3
-	light_color = LIGHT_COLOR_CYAN
-	light_range = 1.5
+	light_color = COLOR_CYAN
+	light_inner_range = 1.5
 
 /obj/structure/flora/ocean/seaweed
 	name = "sea weed"
@@ -43,7 +43,7 @@
 /obj/structure/flora/scrap
 	name = "scrap metal"
 	desc = "A huge chunk of metal, rusted and worn. Perhaps it can still be salvaged into something useful."
-	icon = 'modules/liquids/assets/obj/flora/scrap.dmi'
+	icon = 'icons/obj/liquids/flora/scrap.dmi'
 	icon_state = "scrap"
 	anchored = FALSE
 	density = TRUE
@@ -82,11 +82,11 @@
 
 /obj/effect/spawner/liquids_spawner
 	name = "Liquids Spawner (Water, Waist-Deep)"
-	icon = 'modules/liquids/assets/obj/effects/liquid.dmi'
+	icon = 'icons/obj/liquids/effects/liquid.dmi'
 	icon_state = "spawner"
 	color = "#AAAAAA77"
 	var/reagent_list = list(/datum/reagent/water = ONE_LIQUIDS_HEIGHT*LIQUID_WAIST_LEVEL_HEIGHT)
-	var/temp = T20C
+	var/temp = 20 CELSIUS
 
 /obj/effect/spawner/liquids_spawner/Initialize(mapload)
 	. = ..()

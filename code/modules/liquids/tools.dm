@@ -24,7 +24,7 @@
 		return
 	var/turf/epicenter = get_turf(mob)
 	epicenter.add_liquid(choice, volume)
-	message_admins("[ADMIN_LOOKUPFLW(usr)] spawned liquid at [epicenter.loc] ([choice] - [volume]).")
+	message_admins("[usr] ([usr.ckey]) spawned liquid at [epicenter.loc] ([choice] - [volume]).")
 	log_admin("[key_name(usr)] spawned liquid at [epicenter.loc] ([choice] - [volume]).")
 
 /client/proc/remove_liquid(turf/epicenter in world)
