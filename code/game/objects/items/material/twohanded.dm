@@ -1,4 +1,3 @@
-#define FUEL_CONSUMPTION 0.05
 
 /* Two-handed Weapons
  * Contains:
@@ -56,12 +55,13 @@
 
 /obj/item/material/twohanded/update_force()
 	base_name = name
+	var/force_raw
 	if(sharp || edge)
-		force_wielded = material.get_edge_damage()
+		force_raw = material.get_edge_damage()
 	else
-		force_wielded = material.get_blunt_damage()
-	force_wielded = force_const + round(force_wielded * force_divisor, 0.1)
-	force_unwielded = unwielded_force_const + round(force_wielded * unwielded_force_divisor, 0.1)
+		force_raw = material.get_blunt_damage()
+	force_wielded = force_const + round(force_raw * force_divisor, 0.1)
+	force_unwielded = unwielded_force_const + round(force_raw * unwielded_force_divisor, 0.1)
 	force = force_unwielded
 	throwforce = round(force * thrown_force_divisor)
 //	log_debug("[src] has unwielded force [force_unwielded], wielded force [force_wielded] and throwforce [throwforce] when made from default material [material.name]")
@@ -81,11 +81,11 @@
 */
 /obj/item/material/twohanded/chainsaw
 	name = "chainsaw"
-	desc = "It`s time to reap and tear.. the trees right?"
+	desc = "It`s time to rip and tear... The trees. Right?"
 	icon_state = "chainsaw"
 	base_icon = "chainsaw"
-	sharp = 0 // Hard to cut with a not working chainsaw
-	edge = 0
+	sharp = FALSE // Hard to cut with a not working chainsaw
+	edge = FALSE
 	w_class = ITEM_SIZE_LARGE
 	mod_handy_w = 1.6
 	mod_handy_u = 0.4
@@ -98,18 +98,20 @@
 	unwielded_force_divisor = 0.2
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked") // Beating with not working chainsaw
 	hitsound = SFX_FIGHTING_SWING
-	applies_material_colour = 0
-	unbreakable = 1
+	applies_material_colour = FALSE
+	unbreakable = TRUE
 	var/active = FALSE
 	var/obj/item/welder_tank/tank = null // chainsaw fuel tank
+	var/fuel_consumption = 0.05
 
 /obj/item/material/twohanded/chainsaw/think()
-	if(active)
-		if(get_fuel() >= FUEL_CONSUMPTION)
-			tank.reagents.remove_reagent(/datum/reagent/fuel, FUEL_CONSUMPTION)
-		else
-			turnOff()
-		set_next_think(world.time + 1 SECOND)
+	if(!active)
+		return
+	if(get_fuel() >= fuel_consumption)
+		tank.reagents.remove_reagent(/datum/reagent/fuel, fuel_consumption)
+	else
+		turnOff()
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/material/twohanded/chainsaw/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/welder_tank))
@@ -123,6 +125,7 @@
 		user.visible_message("[user] slots \a [W] into \the [src].", "You slot \a [W] into \the [src].")
 		update_icon()
 		return
+	..()
 
 /obj/item/material/twohanded/chainsaw/attack_hand(mob/user)
 	if(tank && user.get_inactive_hand() == src)
@@ -132,54 +135,82 @@
 		if(active)
 			turnOff()
 		update_icon()
+		return
+	..()
 
 /obj/item/material/twohanded/chainsaw/proc/get_fuel()
 	return tank ? tank.reagents.get_reagent_amount(/datum/reagent/fuel) : 0
 
 /obj/item/material/twohanded/chainsaw/_examine_text(mob/user)
 	. = ..()
-	if(get_dist(src, user) <= 0)
-		if(tank)
-			. += "\n\icon[tank] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!"
-		else
-			. += "\nThere is no tank attached."
+	if(get_dist(src, user) > 0)
+		return
+	if(tank)
+		. += "\n\icon[tank] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!"
+	else
+		. += "\nThere is no tank attached."
 
 /obj/item/material/twohanded/chainsaw/attack_self(mob/user)
 	if(active)
 		turnOff()
 	else
 		turnOn()
+	add_fingerprint(user)
+
+/obj/item/material/twohanded/chainsaw/afterattack(atom/A, mob/user, proximity)
+	if(!proximity)
+		return
+	..()
+	if(A && wielded && active)
+		if(istype(A,/obj/structure/grille))
+			qdel(A)
+		else if(istype(A,/obj/effect/vine))
+			var/obj/effect/vine/P = A
+			P.die_off()
 
 /obj/item/material/twohanded/chainsaw/proc/turnOn()
-	if(get_fuel() > 0)
-		if(do_after(usr, 5))
-			playsound(loc, 'sound/weapons/chainsaw_start.ogg', 50, 1, -1)
-			visible_message(SPAN("danger", "[usr] starts the chainsaw!"))
-			icon_state = "chainsaw_active"
-			base_icon = "chainsaw_active"
-			attack_verb = list("tears", "rips")
-			hitsound = SFX_CHAINSAW
-			sharp = 1
-			edge = 1
-			active = TRUE
-			update_icon()
-			update_twohanding()
-			think()
-	else
+	if(get_fuel() <= 0)
 		to_chat(usr, SPAN_WARNING("No fuel in [src]!"))
+		return
+	THROTTLE(toggle_cooldown, 0.5 SECONDS)
+	if(!toggle_cooldown)
+		return
+	if(!do_after(usr, 5))
+		return
+
+	playsound(loc, 'sound/weapons/chainsaw_start.ogg', 50, 1, -1)
+	visible_message(SPAN("danger", "[usr] starts the chainsaw!"))
+
+	icon_state = "chainsaw_active"
+	base_icon = "chainsaw_active"
+	attack_verb = list("tears", "rips")
+	hitsound = SFX_CHAINSAW
+	sharp = TRUE
+	edge = TRUE
+	active = TRUE
+
+	update_icon()
+	update_force()
+	update_twohanding()
+	think()
+
 
 /obj/item/material/twohanded/chainsaw/proc/turnOff()
 	playsound(loc, 'sound/weapons/chainsaw_stop.ogg', 50, 1, -1)
 	visible_message(SPAN("danger", "[usr] stops the chainsaw!"))
+
 	icon_state = "chainsaw"
 	base_icon = "chainsaw"
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked")
 	hitsound = SFX_FIGHTING_SWING
-	sharp = 0
-	edge = 0
+	sharp = FALSE
+	edge = FALSE
 	active = FALSE
+
 	update_icon()
+	update_force()
 	update_twohanding()
+
 /*
  * Fireaxe
 */
