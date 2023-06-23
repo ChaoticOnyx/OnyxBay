@@ -152,8 +152,8 @@
 	if(vampire.stealth)
 		endsuckmsg += "They will remember nothing of this occurance, provided they survived."
 	user.visible_message(SPAN_DANGER("[user.name] stops biting [T.name]'s neck!"), SPAN_NOTICE("[endsuckmsg]"))
+	T.paralysis = 0
 	if(target_aware)
-		T.paralysis = 0
 		if(!T.is_ooc_dead() && vampire.stealth)
 			spawn()			//Spawned in the same manner the brain damage alert is, just so the proc keeps running without stops.
 				alert(T, "You remember NOTHING about the cause of your blackout. Instead, you remember having a pleasant encounter with [user.name].", "Bitten by a vampire")
