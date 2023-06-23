@@ -87,15 +87,17 @@
 	sharp = FALSE // Hard to cut with a not working chainsaw
 	edge = FALSE
 	w_class = ITEM_SIZE_LARGE
-	mod_handy_w = 1.6
-	mod_handy_u = 0.4
-	mod_weight_w = 2.4
-	mod_weight_u = 1.5
-	mod_reach_w = 2.0
-	mod_reach_u = 1.0
+
+	mod_handy_w = 0.95
+	mod_weight_w = 1.5
+	mod_reach_w = 1.75
+	mod_handy_u = 0.8
+	mod_weight_u = 1.2
+	mod_reach_u = 1.25
+
 	force_wielded = 30
 	force_divisor = 0.5
-	unwielded_force_divisor = 0.2
+	unwielded_force_divisor = 0.33
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked") // Beating with not working chainsaw
 	hitsound = SFX_FIGHTING_SWING
 	applies_material_colour = FALSE
