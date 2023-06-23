@@ -16,7 +16,7 @@
 	var/plays = FALSE
 	var/skin_variation = 0
 	///break-even point for slots when this is set to 2500. make lower to make slots pay out better, or higher to give the house an edge
-	var/max_roll = 2250
+	var/max_roll = 2000
 	var/wager = 0
 	var/current_player = ""
 
@@ -76,8 +76,8 @@
 	var/exclamation = ""
 	var/amount = 0
 
-	//300x and 100x jackpots fall through to 50x winner if wager <= 250
-	if(wager < 250)
+	//300x and 100x jackpots fall through to 50x winner if wager <= 150
+	if(wager < 150)
 		roll = max(6, roll)
 	if(emagged)
 		roll = min(roll * 2, max_roll)
@@ -102,7 +102,7 @@
 	else if(roll <= 265) //100 - 300
 		exclamation = "Winner! "
 		amount = 3 * wager
-	else if(roll <= 715 && wager < 250) //450 - 450, if wager <= 250, to make up for not having jackpots
+	else if(roll <= 715 && wager < 150) //450 - 450, if wager <= 150, to make up for not having jackpots
 		exclamation = "Small Winner! "
 		amount = 1 * wager
 	else
@@ -148,7 +148,7 @@
 
 	var/obj/item/card/id/I = W.get_id_card()
 
-	if(plays) // One thingy at a time!
+	if(plays || wager) // One thingy at a time!
 		to_chat(user, SPAN("warning", "\The [src] is busy at the moment!"))
 		return TRUE
 
@@ -160,7 +160,7 @@
 	else if(istype(W, /obj/item/spacecash/bundle))
 		var/obj/item/spacecash/bundle/C = W
 		paid = pay_with_cash(C)*/
-
+	update_icon()
 	return TRUE
 
 /obj/machinery/slot_machine/proc/pay_with_card(obj/item/card/id/I, obj/item/ID_container, mob/user)
