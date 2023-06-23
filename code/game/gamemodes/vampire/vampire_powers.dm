@@ -603,11 +603,25 @@
 			user.adjustCloneLoss(0 - to_heal)
 			blood_used += round(to_heal * 1.2)
 
+		var temp_blood_used = blood_used
+		vampire.use_blood(temp_blood_used)
+		if (vampire.blood_usable <= 15)
+			vampire.status &= ~VAMP_HEALING
+			to_chat(user, SPAN_WARNING("You ran out of blood, and are unable to continue!"))
+			break
+
 		var/list/organs = user.get_damaged_organs(1, 1)
 		if (organs.len)
 			// Heal an absurd amount, basically regenerate one organ.
 			user.heal_organ_damage(50, 50)
 			blood_used += 12
+			vampire.use_blood(blood_used - temp_blood_used)
+			temp_blood used = blood_used
+
+		if (vampire.blood_usable <= 15)
+			vampire.status &= ~VAMP_HEALING
+			to_chat(user, SPAN_WARNING("You ran out of blood, and are unable to continue!"))
+			break
 
 		for(var/obj/item/organ/external/current_organ in organs)
 			for(var/datum/wound/wound in current_organ.wounds)
@@ -635,7 +649,14 @@
 				healed = TRUE
 
 			if (healed)
+				vampire.use_blood(blood_used - temp_blood_used)
+				temp_blood used = blood_used
 				break
+
+		if (vampire.blood_usable <= 15)
+			vampire.status &= ~VAMP_HEALING
+			to_chat(user, SPAN_WARNING("You ran out of blood, and are unable to continue!"))
+			break
 
 		for(var/ID in user.virus2)
 			var/datum/disease2/disease/V = user.virus2[ID]
@@ -656,11 +677,18 @@
 				to_chat(H, SPAN_DANGER("With a shower of dark blood, a new [O.name] forms."))
 				H.visible_message(SPAN_DANGER("With a shower of dark blood, a length of biomass shoots from [H]'s [O.amputation_point], forming a new [O.name]!"))
 				blood_used += 12
+				vampire.use_blood(blood_used - temp_blood_used)
+				temp_blood used = blood_used
 				var/datum/reagent/blood/B = new /datum/reagent/blood
 				blood_splatter(H,B,1)
 				O.set_dna(H.dna)
 				H.update_body()
 				break
+
+		if (vampire.blood_usable <= 15)
+			vampire.status &= ~VAMP_HEALING
+			to_chat(user, SPAN_WARNING("You ran out of blood, and are unable to continue!"))
+			break
 
 		var/list/emotes_lookers = list("[user]'s skin appears to liquefy for a moment, sealing up their wounds.",
 									"[user]'s veins turn black as their damaged flesh regenerates before your eyes!",
@@ -678,12 +706,7 @@
 		if (prob(20))
 			user.visible_message(SPAN_DANGER("[pick(emotes_lookers)]"), SPAN_NOTICE("[pick(emotes_self)]"))
 
-		if (vampire.blood_usable <= blood_used)
-			vampire.use_blood(blood_used)
-			vampire.status &= ~VAMP_HEALING
-			to_chat(user, SPAN_WARNING("You ran out of blood, and are unable to continue!"))
-			break
-		else if (!blood_used)
+		if (!blood_used)
 			vampire.status &= ~VAMP_HEALING
 			to_chat(user, SPAN_NOTICE("Your body has finished healing. You are ready to continue."))
 			break
