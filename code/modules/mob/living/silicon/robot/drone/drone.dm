@@ -61,10 +61,12 @@ var/list/mob_hat_cache = list()
 	var/hat_y_offset = -13
 
 	holder_type = /obj/item/holder/drone
+	var/hull_type = /datum/robot_hull/drone
 
 /mob/living/silicon/robot/drone/New()
 	..()
-
+	module_hulls["Basic"] = new hull_type
+	apply_hull("Basic")
 	register_signal(src, SIGNAL_MOVED, /mob/living/silicon/robot/drone/proc/on_moved)
 
 /mob/living/silicon/robot/drone/Destroy()
@@ -123,6 +125,7 @@ var/list/mob_hat_cache = list()
 	hat_y_offset = -12
 	can_pull_size = ITEM_SIZE_NO_CONTAINER
 	can_pull_mobs = MOB_PULL_SAME
+	hull_type = /datum/robot_hull/drone/construction
 
 /mob/living/silicon/robot/drone/New()
 

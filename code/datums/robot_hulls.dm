@@ -180,3 +180,9 @@
 
 /datum/robot_hull/flying/eyebot_engineering
 	icon_state = "eyebot-engineering"
+
+/datum/robot_hull/drone
+	icon_state = "repairbot"
+
+/datum/robot_hull/drone/construction
+	icon_state = "constructiondrone"
