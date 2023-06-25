@@ -126,7 +126,8 @@
 	ident = random_id(/mob/living/silicon/robot, 1, 999)
 
 	module_hulls["Basic"] = new /datum/robot_hull/spider/robot
-	apply_hull("Basic")
+	icontype = "Basic"
+	footstep_sound = module_hulls[icontype].footstep_sound
 
 	updatename(modtype)
 
