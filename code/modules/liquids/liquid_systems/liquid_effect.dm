@@ -254,7 +254,7 @@
 
 //Takes a flat of our reagents and returns it, possibly qdeling our liquids
 /obj/effect/abstract/liquid_turf/proc/take_reagents_flat(flat_amount)
-	var/datum/reagents/tempr = new(10000)
+	var/datum/reagents/tempr = new /datum/reagents(10000, GLOB.temp_reagents_holder)
 	if(flat_amount >= total_reagents)
 		tempr.add_noreact_reagent_list(reagent_list)
 		qdel(src, TRUE)
@@ -276,7 +276,7 @@
 
 //Returns a reagents holder with all the reagents with a higher volume than the threshold
 /obj/effect/abstract/liquid_turf/proc/simulate_reagents_threshold(amount_threshold)
-	var/datum/reagents/tempr = new(10000)
+	var/datum/reagents/tempr = new /datum/reagents(10000, GLOB.temp_reagents_holder)
 	var/passed_list = list()
 	for(var/reagent_type in reagent_list)
 		var/amount = reagent_list[reagent_type]
@@ -289,7 +289,7 @@
 
 //Returns a flat of our reagents without any effects on the liquids
 /obj/effect/abstract/liquid_turf/proc/simulate_reagents_flat(flat_amount)
-	var/datum/reagents/tempr = new(10000)
+	var/datum/reagents/tempr = new /datum/reagents(10000, GLOB.temp_reagents_holder)
 	if(flat_amount >= total_reagents)
 		tempr.add_noreact_reagent_list(reagent_list)
 	else
@@ -383,14 +383,14 @@
 				var/atom/movable/AM
 				for(var/thing in my_turf)
 					AM = thing
-					if(!AM.anchored && !AM.pulledby && !isobserver(AM) && (AM.move_resist < INFINITY))
-						if(iscarbon(AM))
-							var/mob/living/carbon/C = AM
-							if(!(C.shoes && C.shoes.clothing_flags))
-								step(C, dir)
-								if(prob(60) && C.body_position != LYING_DOWN)
-									to_chat(C, SPAN_DANGER("The current knocks you down!"))
-									C.Paralyze(60)
+					if(!AM.anchored && !AM.pulledby && !isobserver(AM))
+						if(ishuman(AM))
+							var/mob/living/carbon/human/H = AM
+							if(!(H.shoes))
+								step(H, dir)
+								if(prob(60) && !H.lying)
+									to_chat(H, SPAN_DANGER("The current knocks you down!"))
+									H.Paralyse(60)
 						else
 							step(AM, dir)
 
@@ -415,12 +415,14 @@
 			C.add_modifier(/datum/modifier/status_effect/water_affected)
 	else if (isliving(AM))
 		var/mob/living/L = AM
+		if(prob(7))
+			L.slip(T, 60)
 	if(fire_state)
 		AM.fire_act((20 CELSIUS+50) + (50*fire_state), 125)
 
 /obj/effect/abstract/liquid_turf/proc/mob_fall(datum/source, mob/M)
 	var/turf/T = source
-	if(liquid_state >= LIQUID_STATE_ANKLES && T.has_gravity(T))
+	if(liquid_state >= LIQUID_STATE_ANKLES && has_gravity(T))
 		playsound(T, 'sound/effects/splash.ogg', 50, 0)
 		if(iscarbon(M))
 			var/mob/living/carbon/falling_carbon = M
@@ -456,13 +458,13 @@
 		SEND_SIGNAL(my_turf, SIGNAL_TURF_LIQUIDS_CREATION, src)
 
 	update_icon()
-	if(z)
+	/*FIXME if(z)
 		QUEUE_SMOOTH(src)
-		QUEUE_SMOOTH_NEIGHBORS(src)
+		QUEUE_SMOOTH_NEIGHBORS(src)*/
 
 /obj/effect/abstract/liquid_turf/Destroy(force)
 	if(force)
-		unregister_signal(my_turf, list(SIGNAL_ENTERED, SIGNAL_ATOM_FALL, COMSIG_ATOM_EXAMINE))
+		unregister_signal(my_turf, list(SIGNAL_ENTERED, SIGNAL_ATOM_FALL))
 		if(my_turf.lgroup)
 			my_turf.lgroup.remove_from_group(my_turf)
 		if(SSliquids.evaporation_queue[my_turf])
@@ -473,7 +475,7 @@
 		SSliquids.add_active_turf(my_turf)
 		my_turf.liquids = null
 		my_turf = null
-		QUEUE_SMOOTH_NEIGHBORS(src)
+		//QUEUE_SMOOTH_NEIGHBORS(src)
 	else
 		return QDEL_HINT_LETMELIVE
 	return ..()
@@ -486,7 +488,7 @@
 //Exposes my turf with simulated reagents
 /obj/effect/abstract/liquid_turf/proc/ExposeMyTurf()
 	var/datum/reagents/tempr = simulate_reagents_threshold(LIQUID_REAGENT_THRESHOLD_TURF_EXPOSURE)
-	tempr.expose(my_turf, TOUCH, tempr.total_volume)
+	tempr.touch_turf(my_turf)
 	qdel(tempr)
 
 /obj/effect/abstract/liquid_turf/proc/ChangeToNewTurf(turf/NewT)
@@ -576,7 +578,7 @@
 	layer = OBJ_LAYER
 	starting_temp = 20 CELSIUS-150
 	no_effects = TRUE
-	vis_flags = null
+	vis_flags = 0
 
 /obj/effect/abstract/liquid_turf/immutable/ocean/warm
 	starting_temp = 20 CELSIUS+20

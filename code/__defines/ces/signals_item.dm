@@ -3,3 +3,5 @@
 
 /// Called on `/obj/item/proc/dropped`, (/obj/item, /mob)
 #define SIGNAL_ITEM_UNEQUIPPED "item_unequipped"
+
+#define SIGNAL_ITEM_AFTERATTACK "item_afterattack"

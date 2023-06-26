@@ -8,7 +8,6 @@
 			/obj/effect/decal/cleanable = "CLEANABLE",
 			/obj/item/device/radio/headset = "HEADSET",
 			/obj/item/clothing/head/helmet/space = "SPESSHELMET",
-			/obj/item/book/manual = "MANUAL",
 			/obj/item/reagent_containers/vessel/glass = "DRINK", //longest paths comes first
 			/obj/item/reagent_containers/food = "FOOD",
 			/obj/item/reagent_containers = "REAGENT_CONTAINERS",

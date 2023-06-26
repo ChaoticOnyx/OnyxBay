@@ -1,7 +1,7 @@
 /datum/modifier/status_effect/water_affected
 	name = "wateraffected"
 
-/datum/modifier/status_effect/water_affected/on_apply()
+/datum/modifier/status_effect/water_affected/on_applied()
 	//We should be inside a liquid turf if this is applied
 	calculate_water_slow()
 	return TRUE
@@ -25,5 +25,5 @@
 	qdel(tempr)
 	return ..()
 
-/datum/modifier/status_effect/water_affected/on_remove()
+/datum/modifier/status_effect/water_affected/on_expire()
 	holder.setMoveCooldown(holder.movement_delay())

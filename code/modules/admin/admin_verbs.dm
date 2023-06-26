@@ -143,7 +143,9 @@ var/list/admin_verbs_fun = list(
 	/client/proc/create_dungeon,
 	/datum/admins/proc/ai_hologram_set,
 	/client/proc/projectile_basketball,
-	/client/proc/toggle_possess_mode
+	/client/proc/toggle_possess_mode,
+	/client/proc/spawn_liquid,
+	/client/proc/remove_liquid,
 	)
 
 var/list/admin_verbs_spawn = list(

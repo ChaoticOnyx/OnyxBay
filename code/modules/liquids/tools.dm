@@ -1,5 +1,5 @@
 /client/proc/spawn_liquid()
-	set category = "Admin.Fun"
+	set category = "Fun"
 	set name = "Spawn Liquid"
 	set desc = "Spawns an amount of chosen liquid at your current location."
 
@@ -29,7 +29,7 @@
 
 /client/proc/remove_liquid(turf/epicenter in world)
 	set name = "Remove Liquids"
-	set category = "Admin.Game"
+	set category = "Fun"
 	set desc = "Remove liquids in a range."
 
 	var/range = tgui_input_number(usr, "Enter range:", "Range selection", 2)

@@ -306,7 +306,6 @@ its easier to just keep the beam vertical.
 
 /atom/proc/examine(...)
 	SHOULD_NOT_OVERRIDE(TRUE)
-	SEND_SIGNAL(src, SIGNAL_EXAMINE, arglist(args))
 	var/content = "<div class='Examine'>"
 
 	content += _examine_text(arglist(args))

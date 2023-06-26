@@ -32,6 +32,7 @@
 	///Used to select "zoom" level into the perlin noise, higher numbers result in slower transitions
 	var/perlin_zoom = 65
 
+/* FIXME
 ///Seeds the rust-g perlin noise with a random number.
 /datum/map_generator/ocean_generator/generate_terrain(list/turfs)
 	. = ..()
@@ -83,7 +84,7 @@
 		selected_biome.generate_turf(gen_turf)
 		CHECK_TICK
 
-/*
+
 /datum/map_generator/cave_generator/trench
 	name = "Trench Generator"
 	open_turf_types =  list(/turf/simulated/floor/natural/ocean/rock/heavy = 1)

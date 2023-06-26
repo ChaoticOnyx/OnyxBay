@@ -104,7 +104,7 @@ GLOBAL_VAR_INIT(liquid_debug_colors, FALSE)
 		if(!recursive_adjacent[t])
 			remove_from_group(t)
 			new_group.add_to_group(t)
-can_atmos_pass()
+
 /datum/liquid_group/proc/share(use_liquids_color = FALSE)
 	var/any_share = FALSE
 	var/cached_shares = 0
