@@ -1,8 +1,9 @@
+/*
 /**
  * Base class for underfloor plumbing machines that mess with floor liquids.
  */
 /obj/machinery/plumbing/floor_pump
-	icon = 'modules/liquids/assets/obj/structures/drains.dmi'
+	icon = 'icons/obj/liquids/structures/drains.dmi'
 	icon_state = "active_input"
 	anchored = FALSE
 	density = FALSE
@@ -139,7 +140,7 @@
 	// Determine what tiles should be pumped. We grab from a 3x3 area,
 	// but overall try to pump the same volume regardless of number of affected tiles
 	var/turf/local_turf = get_turf(src)
-	var/list/turf/candidate_turfs = local_turf.get_atmos_adjacent_turfs(alldir = TRUE)
+	var/list/turf/candidate_turfs = local_turf.get_atmos_adjacent_turfs()
 	candidate_turfs += local_turf
 
 	var/list/turf/affected_turfs = list()
@@ -325,3 +326,4 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/plumbing/floor_pump/output/on/supply,
 /obj/machinery/duct/waste
 	duct_color = COLOR_BROWN
 	duct_layer = SECOND_DUCT_LAYER
+*/
