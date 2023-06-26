@@ -1,7 +1,7 @@
 //Structure as this doesn't need any power to work
 /obj/structure/drain
 	name = "drain"
-	icon = 'modules/liquids/assets/obj/structures/drains.dmi'
+	icon = 'icons/obj/liquids/structures/drains.dmi'
 	icon_state = "drain"
 	desc = "Drainage inlet embedded in the floor to prevent flooding."
 	density = FALSE

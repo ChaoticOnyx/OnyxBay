@@ -78,10 +78,10 @@
 		compiled_list[R.type] = R.volume * reagent_multiplier
 	if(!compiled_list.len) //No reagents to add, don't bother going further
 		return
-	add_liquid_list(compiled_list, no_react, giver.chem_temp)
+	add_liquid_list(compiled_list, no_react)
 
 //More efficient than add_liquid for multiples
-/turf/proc/add_liquid_list(reagent_list, no_react = FALSE, chem_temp = 300)
+/turf/proc/add_liquid_list(reagent_list, no_react = FALSE)
 	if(!liquids)
 		liquids = new(src)
 	if(liquids.immutable)
@@ -96,15 +96,14 @@
 		liquids.reagent_list[reagent] += reagent_list[reagent]
 		liquids.total_reagents += reagent_list[reagent]
 
-	var/recieved_thermal_energy = (liquids.total_reagents - prev_total_reagents) * chem_temp
+	var/recieved_thermal_energy = (liquids.total_reagents - prev_total_reagents)
 	liquids.temp = (recieved_thermal_energy + prev_thermal_energy) / liquids.total_reagents
 
 	if(!no_react)
 		//We do react so, make a simulation
 		create_reagents(10000) //Reagents are on turf level, should they be on liquids instead?
 		reagents.add_noreact_reagent_list(liquids.reagent_list)
-		reagents.chem_temp = liquids.temp
-		if(reagents.handle_reactions())//Any reactions happened, so re-calculate our reagents
+		if(reagents.process_reactions())//Any reactions happened, so re-calculate our reagents
 			liquids.reagent_list = list()
 			liquids.total_reagents = 0
 			for(var/r in reagents.reagent_list)
@@ -112,7 +111,6 @@
 				liquids.reagent_list[R.type] = R.volume
 				liquids.total_reagents += R.volume
 
-			liquids.temp = reagents.chem_temp
 			if(!liquids.total_reagents) //Our reaction exerted all of our reagents, remove self
 				qdel(reagents)
 				qdel(liquids)
@@ -128,7 +126,7 @@
 	if(lgroup)
 		lgroup.dirty = TRUE
 
-/turf/proc/add_liquid(reagent, amount, no_react = FALSE, chem_temp = 300)
+/turf/proc/add_liquid(reagent, amount, no_react = FALSE)
 	if(!liquids)
 		liquids = new(src)
 	if(liquids.immutable)
@@ -141,20 +139,19 @@
 	liquids.reagent_list[reagent] += amount
 	liquids.total_reagents += amount
 
-	liquids.temp = ((amount * chem_temp) + prev_thermal_energy) / liquids.total_reagents
+	liquids.temp = (amount + prev_thermal_energy) / liquids.total_reagents
 
 	if(!no_react)
 		//We do react so, make a simulation
 		create_reagents(10000)
 		reagents.add_noreact_reagent_list(liquids.reagent_list)
-		if(reagents.handle_reactions())//Any reactions happened, so re-calculate our reagents
+		if(reagents.process_reactions())//Any reactions happened, so re-calculate our reagents
 			liquids.reagent_list = list()
 			liquids.total_reagents = 0
 			for(var/r in reagents.reagent_list)
 				var/datum/reagent/R = r
 				liquids.reagent_list[R.type] = R.volume
 				liquids.total_reagents += R.volume
-			liquids.temp = reagents.chem_temp
 		qdel(reagents)
 		//Expose turf
 		liquids.ExposeMyTurf()
@@ -173,7 +170,7 @@
 	if(T.liquids && T.liquids.immutable)
 		return FALSE
 
-	if(istype(T, /turf/simulated/space)) //No space liquids - Maybe add an ice system later
+	if(istype(T, /turf/space)) //No space liquids - Maybe add an ice system later
 		return FALSE
 
 	var/my_liquid_height = liquids ? liquids.height : 0
@@ -256,18 +253,18 @@
 
 /turf/simulated/Exit(atom/movable/mover, atom/newloc)
 	. = ..()
-	if(. && isliving(mover) && mover.has_gravity() && isturf(newloc))
+	if(. && isliving(mover) && isturf(newloc))
 		var/mob/living/moving_mob = mover
-		var/turf/new_turf = get_turf(newloc)
-		if(new_turf && new_turf.turf_height - turf_height <= -TURF_HEIGHT_BLOCK_THRESHOLD)
-			moving_mob.on_fall()
-			moving_mob.onZImpact(new_turf, 1)
+		if(moving_mob.mob_has_gravity())
+			var/turf/new_turf = get_turf(newloc)
+			if(new_turf && new_turf.turf_height - turf_height <= -TURF_HEIGHT_BLOCK_THRESHOLD)
+				moving_mob.handle_fall()
 
 // Handles climbing up and down between turfs with height differences, as well as manipulating others to do the same.
-/turf/simulated/MouseDrop_T(mob/living/dropped_mob, mob/living/user)
-	if(!isliving(dropped_mob) || !isliving(user) || !dropped_mob.has_gravity() || !Adjacent(user) || !dropped_mob.Adjacent(user) || !(user.stat == CONSCIOUS) || user.body_position == LYING_DOWN)
+/turf/simulated/MouseDrop_T(mob/dropped_mob, mob/user)
+	if(!isliving(dropped_mob) || !isliving(user) || !dropped_mob.mob_has_gravity() || !Adjacent(user) || !dropped_mob.Adjacent(user) || !(user.stat == CONSCIOUS) || user.lying)
 		return
-	if(!dropped_mob.has_gravity())
+	if(!dropped_mob.mob_has_gravity())
 		return
 	var/turf/mob_turf = get_turf(dropped_mob)
 	if(!mob_turf)
@@ -275,18 +272,18 @@
 	if(mob_turf.turf_height - turf_height <= -TURF_HEIGHT_BLOCK_THRESHOLD)
 		//Climb up
 		if(user == dropped_mob)
-			user.balloon_alert_to_viewers("climbing...")
+			user.visible_message("climbing...")
 		else
-			dropped_mob.balloon_alert_to_viewers("being pulled up...")
+			dropped_mob.visible_message("being pulled up...")
 		if(do_after(user, 2 SECONDS, dropped_mob))
 			dropped_mob.forceMove(src)
 		return
 	if(turf_height - mob_turf.turf_height <= -TURF_HEIGHT_BLOCK_THRESHOLD)
 		//Climb down
 		if(user == dropped_mob)
-			user.balloon_alert_to_viewers("climbing down...")
+			user.visible_message("climbing down...")
 		else
-			dropped_mob.balloon_alert_to_viewers("being lowered...")
+			dropped_mob.visible_message("being lowered...")
 		if(do_after(user, 2 SECONDS, dropped_mob))
 			dropped_mob.forceMove(src)
 		return

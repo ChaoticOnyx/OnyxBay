@@ -62,17 +62,17 @@
 	fire_state = new_state
 	switch(fire_state)
 		if(LIQUID_FIRE_STATE_NONE)
-			light_inner_range = 0
+			light_outer_range = 0
 		if(LIQUID_FIRE_STATE_SMALL)
-			light_inner_range = LIGHT_RANGE_FIRE
+			light_outer_range = LIGHT_RANGE_FIRE
 		if(LIQUID_FIRE_STATE_MILD)
-			light_inner_range = LIGHT_RANGE_FIRE
+			light_outer_range = LIGHT_RANGE_FIRE
 		if(LIQUID_FIRE_STATE_MEDIUM)
-			light_inner_range = LIGHT_RANGE_FIRE
+			light_outer_range = LIGHT_RANGE_FIRE
 		if(LIQUID_FIRE_STATE_HUGE)
-			light_inner_range = LIGHT_RANGE_FIRE
+			light_outer_range = LIGHT_RANGE_FIRE
 		if(LIQUID_FIRE_STATE_INFERNO)
-			light_inner_range = LIGHT_RANGE_FIRE
+			light_outer_range = LIGHT_RANGE_FIRE
 	update_light()
 	update_icon()
 
@@ -412,11 +412,9 @@
 			playsound(T, sound_to_play, 50, 0)
 		if(iscarbon(AM))
 			var/mob/living/carbon/C = AM
-			C.apply_status_effect(/datum/status_effect/water_affected)
+			C.add_modifier(/datum/modifier/status_effect/water_affected)
 	else if (isliving(AM))
 		var/mob/living/L = AM
-		if(prob(7) && !(L.movement_type & FLYING))
-			L.slip(60, T, NO_SLIP_WHEN_WALKING, 20, TRUE)
 	if(fire_state)
 		AM.fire_act((20 CELSIUS+50) + (50*fire_state), 125)
 
@@ -431,7 +429,7 @@
 			if(falling_carbon.stat >= DEAD)
 				return
 
-			if(falling_carbon.wear_mask && falling_carbon.wear_mask.flags_cover & MASKCOVERSMOUTH)
+			if(falling_carbon.wear_mask && falling_carbon.wear_mask.body_parts_covered & FACE)
 				to_chat(falling_carbon, SPAN_DANGER("You fall in the [reagents_to_text()]!"))
 			else
 				var/datum/reagents/tempr = take_reagents_flat(CHOKE_REAGENTS_INGEST_ON_FALL_AMOUNT)
@@ -451,8 +449,8 @@
 		CRASH("Liquid Turf created with the liquids sybsystem not yet initialized!")
 	if(!immutable)
 		my_turf = loc
-		register_signal(my_turf, COMSIG_ATOM_ENTERED, PROC_REF(movable_entered))
-		register_signal(my_turf, COMSIG_TURF_MOB_FALL, PROC_REF(mob_fall))
+		register_signal(my_turf, SIGNAL_ENTERED, .proc/movable_entered)
+		register_signal(my_turf, SIGNAL_ATOM_FALL, .proc/mob_fall)
 		SSliquids.add_active_turf(my_turf)
 
 		SEND_SIGNAL(my_turf, SIGNAL_TURF_LIQUIDS_CREATION, src)
@@ -462,14 +460,9 @@
 		QUEUE_SMOOTH(src)
 		QUEUE_SMOOTH_NEIGHBORS(src)
 
-	/* //Cant do it immediately, hmhm
-	if(isspaceturf(my_turf))
-		qdel(src, TRUE)
-	*/
-
 /obj/effect/abstract/liquid_turf/Destroy(force)
 	if(force)
-		unregister_signal(my_turf, list(COMSIG_ATOM_ENTERED, COMSIG_TURF_MOB_FALL, COMSIG_ATOM_EXAMINE))
+		unregister_signal(my_turf, list(SIGNAL_ENTERED, SIGNAL_ATOM_FALL, COMSIG_ATOM_EXAMINE))
 		if(my_turf.lgroup)
 			my_turf.lgroup.remove_from_group(my_turf)
 		if(SSliquids.evaporation_queue[my_turf])
@@ -500,7 +493,7 @@
 	if(NewT.liquids)
 		CRASH("Liquids tried to change to a new turf, that already had liquids on it!")
 
-	unregister_signal(my_turf, list(COMSIG_ATOM_ENTERED, COMSIG_TURF_MOB_FALL))
+	unregister_signal(my_turf, list(SIGNAL_ENTERED, SIGNAL_ATOM_FALL))
 	if(SSliquids.active_turfs[my_turf])
 		SSliquids.active_turfs -= my_turf
 		SSliquids.active_turfs[NewT] = TRUE
@@ -514,8 +507,8 @@
 	my_turf = NewT
 	NewT.liquids = src
 	loc = NewT
-	register_signal(my_turf, COMSIG_ATOM_ENTERED, PROC_REF(movable_entered))
-	register_signal(my_turf, COMSIG_TURF_MOB_FALL, PROC_REF(mob_fall))
+	register_signal(my_turf, SIGNAL_ENTERED, .proc/movable_entered)
+	register_signal(my_turf, SIGNAL_ATOM_FALL, .proc/mob_fall)
 
 
 /**
@@ -568,22 +561,22 @@
 	T.liquids = src
 	T.vis_contents += src
 	SSliquids.active_immutables[T] = TRUE
-	register_signal(T, COMSIG_ATOM_ENTERED, PROC_REF(movable_entered))
-	register_signal(T, COMSIG_TURF_MOB_FALL, PROC_REF(mob_fall))
+	register_signal(T, SIGNAL_ENTERED, .proc/movable_entered)
+	register_signal(T, SIGNAL_ATOM_FALL, .proc/mob_fall)
 
 /obj/effect/abstract/liquid_turf/proc/remove_turf(turf/T)
 	SSliquids.active_immutables -= T
 	T.liquids = null
 	T.vis_contents -= src
-	unregister_signal(T, list(COMSIG_ATOM_ENTERED, COMSIG_TURF_MOB_FALL))
+	unregister_signal(T, list(SIGNAL_ENTERED, SIGNAL_ATOM_FALL))
 
 /obj/effect/abstract/liquid_turf/immutable/ocean
 	icon_state = "ocean"
-	plane = WALL_PLANE //Same as weather, etc.
+	plane = DEFAULT_PLANE //Same as weather, etc.
 	layer = OBJ_LAYER
 	starting_temp = 20 CELSIUS-150
 	no_effects = TRUE
-	vis_flags = NONE
+	vis_flags = null
 
 /obj/effect/abstract/liquid_turf/immutable/ocean/warm
 	starting_temp = 20 CELSIUS+20

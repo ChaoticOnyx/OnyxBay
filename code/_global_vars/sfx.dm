@@ -1207,8 +1207,8 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/vent/vent19.ogg'
 	),
 	SFX_CHAINSAW = list(
-		'sound/weapons/chainsaw_attack1.ogg', 
-		'sound/weapons/chainsaw_attack2.ogg', 
+		'sound/weapons/chainsaw_attack1.ogg',
+		'sound/weapons/chainsaw_attack2.ogg',
 		'sound/weapons/chainsaw_attack3.ogg'
 	),
 	SFX_GLASS_HIT = list(
@@ -1391,5 +1391,5 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/robot_footstep/spider01.ogg',
 		'sound/effects/robot_footstep/spider02.ogg',
 		'sound/effects/robot_footstep/spider03.ogg'
-	)
+	),
 ))

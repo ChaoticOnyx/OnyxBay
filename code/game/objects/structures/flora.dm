@@ -1061,3 +1061,54 @@
 /obj/effect/firefly/Initialize()
 	. = ..()
 	set_light(0.4, 0.1, 2, 2, "#ffc233")
+
+/*********
+ * Rocks *
+ *********/
+// (I know these aren't plants)
+
+/obj/structure/rock/flora
+	name = "large rock"
+	icon_state = "basalt1"
+	iconlist = list("basalt1")
+	desc = "A volcanic rock. Pioneers used to ride these babies for miles."
+	icon = 'icons/obj/flora/rocksflora.dmi'
+	density = TRUE
+	structure
+	mineralSpawnChanceList = list(/obj/item/ore/glass = 40, iron = 20, coal = 20, diamond = 2, silver = 8, plasma = 10)
+	harvest_amount_low = 10
+	harvest_amount_high = 20
+
+/obj/structure/rock/flora/style_2
+	icon_state = "basalt2"
+	iconlist = list("basalt2")
+
+/obj/structure/rock/flora/style_3
+	icon_state = "basalt3"
+	iconlist = list("basalt3")
+
+/obj/structure/rock/flora/style_4
+	icon_state = "basalt4"
+	iconlist = list("basalt4")
+
+/obj/structure/rock/flora/style_random
+	iconlist = list("basalt1", "basalt2", "basalt3", "basalt4")
+
+/obj/structure/rock/flora/pile
+	name = "rock pile"
+	desc = "A pile of rocks."
+	icon_state = "lavarocks1"
+	iconlist = list("lavarocks1")
+	harvest_amount_low = 5
+	harvest_amount_high = 10
+	density = FALSE
+
+/obj/structure/rock/flora/pile/style_2
+	iconlist = list("lavarocks2")
+
+/obj/structure/rock/flora/pile/style_3
+	icon_state = "lavarocks3"
+	iconlist = list("lavarocks3")
+
+/obj/structure/rock/flora/pile/style_random
+	iconlist = list("lavarocks1", "lavarocks2", "lavarocks3")

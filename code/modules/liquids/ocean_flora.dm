@@ -13,7 +13,7 @@
 	desc = "A plant with glowing bulbs at the end of it."
 	random_variants = 3
 	light_color = COLOR_CYAN
-	light_inner_range = 1.5
+	light_outer_range = 1.5
 
 /obj/structure/flora/ocean/seaweed
 	name = "sea weed"
@@ -56,22 +56,30 @@
 	if(random_variants)
 		icon_state = "[icon_state][rand(1,random_variants)]"
 
-/obj/structure/flora/scrap/welder_act(mob/living/user, obj/item/I, first = TRUE)
+/obj/structure/flora/scrap/attackby(obj/item/O, mob/user)
 	..()
-	if(!I.tool_start_check(user, amount=0))
-		return TRUE
+	if(isWelder(O))
+		welder_act(user, O, TRUE)
+
+
+/obj/structure/flora/scrap/proc/welder_act(mob/living/user, obj/item/weldingtool/WT, first = FALSE)
+	if(!WT.isOn()) return
+	if (WT.get_fuel() <5) // uses up 5 fuel.
+		return
 
 	playsound(src, 'sound/items/welder2.ogg', 50, TRUE)
 	if(first)
 		to_chat(user, SPAN_NOTICE("You start slicing the [src]..."))
-	if(I.use_tool(src, user, 2 SECONDS))
+
+	if(do_after(user, 20, src))
+		if(!src || !user || !WT.remove_fuel(5, user)) return
 		welds_remaining--
 		if(welds_remaining <= 0)
 			to_chat(user, SPAN_NOTICE("You successfully salvage [src]."))
-			new /obj/item/stack/sheet/iron(get_turf(src), rand(SCRAP_METAL_YIELD_LOW, SCRAP_METAL_YIELD_HIGH))
+			new /obj/item/stack/material/steel(get_turf(src), rand(SCRAP_METAL_YIELD_LOW, SCRAP_METAL_YIELD_HIGH))
 			qdel(src)
 		else
-			welder_act(user, I, FALSE)
+			welder_act(user, WT)
 	return TRUE
 
 #undef SCRAP_WELD_LOW
@@ -115,11 +123,11 @@
 /obj/effect/spawner/liquids_spawner/acid
 	name = "Liquids Spawner (Sulfuric Acid, Waist-Deep)"
 	color = "#00FF32"
-	reagent_list = list(/datum/reagent/toxin/acid = ONE_LIQUIDS_HEIGHT*LIQUID_WAIST_LEVEL_HEIGHT)
+	reagent_list = list(/datum/reagent/acid = ONE_LIQUIDS_HEIGHT*LIQUID_WAIST_LEVEL_HEIGHT)
 
 /obj/effect/spawner/liquids_spawner/acid/puddle
 	name = "Liquids Spawner (Sulfuric Acid, Puddle)"
-	reagent_list = list(/datum/reagent/toxin/acid = ONE_LIQUIDS_HEIGHT)
+	reagent_list = list(/datum/reagent/acid = ONE_LIQUIDS_HEIGHT)
 
 /obj/effect/spawner/ocean_curio
 	name = "Ocean Curio Spawner"
@@ -135,7 +143,7 @@
 	if(!allowed_area_types[A.type])
 		return
 	var/turf/T = get_turf(src)
-	if(T.turf_flags & NO_RUINS)
+	if(T.turf_flags & TURF_FLAG_NORUINS)
 		return
 
 	var/to_spawn_path
@@ -145,7 +153,7 @@
 		if(1 to 3)
 			to_spawn_path = /obj/structure/flora/scrap
 		if(4 to 6) //Ocean trash, I guess
-			to_spawn_path = /obj/effect/spawner/random/maintenance
+			to_spawn_path = /obj/random/maintenance
 		else
 			if(prob(50))
 				to_spawn_path = default_1
@@ -154,5 +162,5 @@
 	new to_spawn_path(T)
 
 /obj/effect/spawner/ocean_curio/rock
-	default_1 = /obj/structure/flora/rock
-	default_2 = /obj/structure/flora/rock/pile
+	default_1 = /obj/structure/rock/flora
+	default_2 = /obj/structure/rock/flora/pile
