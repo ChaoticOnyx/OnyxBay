@@ -56,7 +56,7 @@
 	. += SPAN_WARNING("\The [target] has no gases!")
 
 /turf/proc/get_atmos_adjacent_turfs()
-	var/list/atmos_adjacent_turfs
+	var/list/atmos_adjacent_turfs = list()
 	var/canpass = CanZASPass(src)
 	for(var/direction in GLOB.alldirs+list(UP, DOWN))
 		var/turf/current_turf
@@ -66,7 +66,7 @@
 			current_turf = GetAbove(src)
 		if(direction == DOWN)
 			current_turf = GetBelow(src)
-		
+
 		if(!istype(current_turf, /turf/simulated)) // not interested in you brother
 			continue
 
