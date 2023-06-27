@@ -74,7 +74,7 @@
 		if(LIQUID_FIRE_STATE_INFERNO)
 			light_outer_range = LIGHT_RANGE_FIRE
 	update_light()
-	update_icon()
+	update_overlays()
 
 /obj/effect/abstract/liquid_turf/proc/get_burn_power(hotspotted = FALSE)
 	//We are not on fire and werent ignited by a hotspot exposure, no fire pls
@@ -186,10 +186,7 @@
 
 	return mutable_appearance(
 		'icons/obj/liquids/effects/liquid_overlays.dmi',
-		overlay_state,
-		overlay_layer,
-		src,
-		overlay_plane,
+		overlay_state
 	)
 
 /**
@@ -211,26 +208,28 @@
 
 /obj/effect/abstract/liquid_turf/proc/set_new_liquid_state(new_state)
 	liquid_state = new_state
-	update_icon()
+	update_overlays()
 
 /obj/effect/abstract/liquid_turf/proc/update_overlays()
 
 	if(no_effects)
 		return
-
+	src.overlays.Cut()
+	var/mutable_appearance/liquid_state_overlay
 	switch(liquid_state)
 		if(LIQUID_STATE_ANKLES)
-			. += make_state_layer(1, has_top = TRUE)
+			liquid_state_overlay+= make_state_layer(1, has_top = TRUE)
 		if(LIQUID_STATE_WAIST)
-			. += make_state_layer(2, has_top = TRUE)
+			liquid_state_overlay += make_state_layer(2, has_top = TRUE)
 		if(LIQUID_STATE_SHOULDERS)
-			. += make_state_layer(3, has_top = TRUE)
+			liquid_state_overlay += make_state_layer(3, has_top = TRUE)
 		if(LIQUID_STATE_FULLTILE)
-			. += make_state_layer(4, has_top = FALSE)
+			liquid_state_overlay += make_state_layer(4, has_top = FALSE)
+
+	src.overlays += liquid_state_overlay
 
 	var/mutable_appearance/shine = mutable_appearance(icon, "shine", offset_spokesman = src, alpha = 32, appearance_flags = RESET_COLOR|RESET_ALPHA)
-	shine.blend_mode = BLEND_ADD
-	. += shine
+	src.overlays += shine
 
 	//Add a fire overlay too
 
@@ -250,7 +249,7 @@
 		if(LIQUID_FIRE_STATE_INFERNO)
 			fire_icon_state = "fire_big"
 
-	. += mutable_appearance(icon, fire_icon_state, ABOVE_OBJ_LAYER, src, DEFAULT_PLANE, appearance_flags = RESET_COLOR|RESET_ALPHA)
+	src.overlays += mutable_appearance(icon, fire_icon_state, ABOVE_OBJ_LAYER, src, DEFAULT_PLANE, appearance_flags = RESET_COLOR|RESET_ALPHA)
 
 //Takes a flat of our reagents and returns it, possibly qdeling our liquids
 /obj/effect/abstract/liquid_turf/proc/take_reagents_flat(flat_amount)
@@ -457,10 +456,10 @@
 
 		SEND_SIGNAL(my_turf, SIGNAL_TURF_LIQUIDS_CREATION, src)
 
-	update_icon()
-	/*FIXME if(z)
-		QUEUE_SMOOTH(src)
-		QUEUE_SMOOTH_NEIGHBORS(src)*/
+	update_overlays()
+	if(z)
+		smooth(src, "water")
+		smooth_neighbors(src, "water")
 
 /obj/effect/abstract/liquid_turf/Destroy(force)
 	if(force)
@@ -475,7 +474,7 @@
 		SSliquids.add_active_turf(my_turf)
 		my_turf.liquids = null
 		my_turf = null
-		//QUEUE_SMOOTH_NEIGHBORS(src)
+		smooth_neighbors(src, "water")
 	else
 		return QDEL_HINT_LETMELIVE
 	return ..()
@@ -553,6 +552,10 @@
 	icon_state = "splash"
 	layer = FLY_LAYER
 
+/obj/effect/liquid_splash/Initialize()
+	. = ..()
+	QDEL_IN(src, 5 SECONDS)
+
 /obj/effect/abstract/liquid_turf/immutable
 	immutable = TRUE
 	var/list/starting_mixture = list(/datum/reagent/water = 600)
@@ -592,3 +595,28 @@
 	temp = starting_temp
 	calculate_height()
 	set_reagent_color_for_liquid()
+
+proc/smooth_neighbors(atom/smoothing_atom, base_icon)
+	for(var/direction in GLOB.alldirs)
+		var/atom/L = locate(smoothing_atom.type) in get_step(smoothing_atom, direction)
+		if(L)
+			smooth(L, base_icon) //so siding get updated properly
+
+
+proc/smooth(atom/smoothing_atom, base_icon)
+	var/connectdir = 0
+	for(var/direction in GLOB.cardinal)
+		if(locate(smoothing_atom.type, get_step(smoothing_atom, direction)))
+			connectdir |= direction
+
+	//Check the diagonal connections for corners, where you have, for example, connections both north and east. In this case it checks for a north-east connection to determine whether to add a corner marker or not.
+	var/diagonalconnect = 0 //1 = NE; 2 = SE; 4 = NW; 8 = SW
+	var/dirs = list(1,2,4,8)
+	var/i = 1
+	for(var/diag in list(NORTHEAST, SOUTHEAST,NORTHWEST,SOUTHWEST))
+		if((connectdir & diag) == diag)
+			if(locate(smoothing_atom.type, get_step(smoothing_atom, diag)))
+				diagonalconnect |= dirs[i]
+		i += 1
+
+	smoothing_atom.icon_state = "[base_icon]-[connectdir]-[diagonalconnect]"
