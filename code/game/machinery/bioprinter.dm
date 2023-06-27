@@ -170,7 +170,7 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if(!ishuman(usr))
+	if(!CanPhysicallyInteract(usr))
 		return
 
 	var/choice = tgui_input_list(usr, "Select a company for the prosthetic.", "Selection", GLOB.all_robolimbs)
