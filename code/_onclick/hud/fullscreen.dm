@@ -89,7 +89,7 @@
 	layer = DAMAGE_LAYER
 
 /obj/screen/fullscreen/crit
-	icon_state = "passage0"
+	icon_state = "passage"
 	layer = CRIT_LAYER
 
 /obj/screen/fullscreen/blind
