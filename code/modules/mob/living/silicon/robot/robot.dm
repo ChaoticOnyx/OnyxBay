@@ -24,8 +24,8 @@
 
 	/// Whether this type of robot supports custom icons
 	var/custom_sprite = TRUE
-
-//Icon stuff
+	/// Default hull typepath
+	var/default_hull = /datum/robot_hull/spider/robot
 
 	var/static/list/eye_overlays
 	/// Key used to look up an appropriate hull datum in the `module_hulls`
@@ -125,9 +125,8 @@
 	robot_modules_background.icon_state = "block"
 	ident = random_id(/mob/living/silicon/robot, 1, 999)
 
-	module_hulls["Basic"] = new /datum/robot_hull/spider/robot
-	icontype = "Basic"
-	footstep_sound = module_hulls[icontype].footstep_sound
+	module_hulls["Default"] = new default_hull
+	apply_hull("Default")
 
 	updatename(modtype)
 
