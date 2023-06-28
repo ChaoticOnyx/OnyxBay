@@ -177,7 +177,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	if(has_flag(mob_species, HAS_BASE_SKIN_COLOURS))
 		. += "Base Colour: <a href='?src=\ref[src];base_skin=1'>[pref.s_base]</a><br>"
 
-	if(has_flag(mob_species, HAS_A_SKIN_TONE))
+	if(has_flag(mob_species, HAS_SKIN_TONE_NORMAL))
 		. += "Skin Tone: <a href='?src=\ref[src];skin_tone=1'>[-pref.s_tone + 35]/[mob_species.max_skin_tone()]</a><br>"
 
 
@@ -452,11 +452,11 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if(href_list["skin_tone"])
-		if(!has_flag(mob_species, HAS_A_SKIN_TONE))
+		if(!has_flag(mob_species, HAS_SKIN_TONE_NORMAL))
 			return TOPIC_NOACTION
 		var/new_s_tone = input(user, "Choose your character's skin-tone. Lower numbers are lighter, higher are darker. Range: 1 to [mob_species.max_skin_tone()]", CHARACTER_PREFERENCE_INPUT_TITLE, (-pref.s_tone) + 35) as num|null
 		mob_species = all_species[pref.species]
-		if(new_s_tone && has_flag(mob_species, HAS_A_SKIN_TONE) && CanUseTopic(user))
+		if(new_s_tone && has_flag(mob_species, HAS_SKIN_TONE_NORMAL) && CanUseTopic(user))
 			pref.s_tone = 35 - max(min(round(new_s_tone), mob_species.max_skin_tone()), 1)
 
 			if(has_flag(mob_species, SECONDARY_HAIR_IS_SKIN))
@@ -757,7 +757,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		dat += "</br><b>Has excellent traction.</b>"
 	if(current_species.species_flags & SPECIES_FLAG_NO_POISON)
 		dat += "</br><b>Immune to most poisons.</b>"
-	if(current_species.appearance_flags & HAS_A_SKIN_TONE)
+	if(current_species.appearance_flags & HAS_SKIN_TONE_NORMAL)
 		dat += "</br><b>Has a variety of skin tones.</b>"
 	if(current_species.appearance_flags & HAS_SKIN_COLOR)
 		dat += "</br><b>Has a variety of skin colours.</b>"

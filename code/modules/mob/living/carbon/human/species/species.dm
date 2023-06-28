@@ -670,9 +670,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	return "<span class='danger'>[T.His] face is horribly mangled!</span>\n"
 
 /datum/species/proc/max_skin_tone()
-	if(appearance_flags & HAS_SKIN_TONE_GRAV)
-		return 100
-	if(appearance_flags & HAS_SKIN_TONE_SPCR)
+	if(appearance_flags & HAS_SKIN_TONE_SWINE)
 		return 165
 	return 220
 

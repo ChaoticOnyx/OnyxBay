@@ -1481,11 +1481,6 @@ May God have mercy.
 	icon_state = "default"
 	species_allowed = list(SPECIES_HUMAN)
 
-/datum/sprite_accessory/skin/human_tatt01
-	name = "Tatt01 human skin"
-	icon_state = "tatt1"
-	species_allowed = list(SPECIES_HUMAN)
-
 /datum/sprite_accessory/skin/tajaran
 	name = "Default tajaran skin"
 	icon_state = "default"

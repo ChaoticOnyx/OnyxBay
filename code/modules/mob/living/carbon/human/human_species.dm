@@ -76,12 +76,6 @@
 /mob/living/carbon/human/vrhuman/New(new_loc)
 	..(new_loc, "VR human")
 
-/mob/living/carbon/human/gravworlder/New(new_loc)
-	..(new_loc, "Grav-Adapted Human")
-
-/mob/living/carbon/human/spacer/New(new_loc)
-	..(new_loc, "Space-Adapted Human")
-
 /mob/living/carbon/human/vatgrown/New(new_loc)
 	..(new_loc, "Vat-Grown Human")
 
