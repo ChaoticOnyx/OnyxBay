@@ -348,8 +348,6 @@
 
 	if(istype(mmi, /obj/item/organ/internal/posibrain))
 		braintype = "Android"
-	else if(istype(mmi, /obj/item/device/mmi/digital/robot))
-		braintype = "Robot"
 	else
 		braintype = "Cyborg"
 

@@ -129,7 +129,7 @@
 		AnnounceArrivalSimple(name, rank, "has been downloaded to the empty core in AI Core", "Common")
 		return
 
-	if(rank in list("Cyborg", "Android", "Robot"))
+	if(rank in list("Cyborg", "Android"))
 		AnnounceArrivalSimple(name, rank, "A new [rank] has arrived", "Common")
 		return
 
