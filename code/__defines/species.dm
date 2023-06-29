@@ -33,7 +33,7 @@
 #define HAS_SKIN_TONE_SWINE                                                       0x100  // Skin tone selectable in chargen for spacer humans (0-165)
 #define HAS_BASE_SKIN_COLOURS                                                     0x200  // Has multiple base skin sprites to go off of
 #define SECONDARY_HAIR_IS_SKIN                                                    0x400  // Secondary hair color mimics skin color (i.e. trotter ears)
-#define HAS_A_SKIN_TONE (HAS_SKIN_TONE_NORMAL | HAS_SKIN_TONE_GRAV | HAS_SKIN_TONE_SWINE) // Species has a numeric skintone
+#define HAS_A_SKIN_TONE (HAS_SKIN_TONE_NORMAL | HAS_SKIN_TONE_SWINE) // Species has a numeric skintone
 
 // Skin Defines
 #define SKIN_NORMAL 0
