@@ -169,7 +169,7 @@
 	return owner && (flags & flag)
 
 /datum/nano_module/appearance_changer/proc/can_change_skin_tone()
-	return owner && (flags & APPEARANCE_SKIN) && owner.species.appearance_flags & HAS_SKIN_TONE_NORMAL
+	return owner && (flags & APPEARANCE_SKIN) && owner.species.appearance_flags & HAS_A_SKIN_TONE
 
 /datum/nano_module/appearance_changer/proc/can_change_skin_color()
 	return owner && (flags & APPEARANCE_SKIN) && owner.species.appearance_flags & HAS_SKIN_COLOR

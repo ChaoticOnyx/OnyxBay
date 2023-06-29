@@ -178,7 +178,7 @@
 					else
 						HSI = icon(GLOB.hair_icons["default"][species.hair_key], H.icon_state + "_s")
 					if(species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
-						if(species.appearance_flags & HAS_SKIN_TONE_NORMAL)
+						if(species.appearance_flags & HAS_A_SKIN_TONE)
 							if(s_tone >= 0)
 								HSI.Blend(rgb(s_tone, s_tone, s_tone), ICON_ADD)
 							else
