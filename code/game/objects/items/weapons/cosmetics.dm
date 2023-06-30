@@ -64,7 +64,7 @@
 
 		if(user.a_intent == I_HELP && target_zone == BP_HEAD)
 			head.write_on(user, src.name)
-		else if(head.has_lips)
+		else if(BP_IS_ROBOTIC(head))
 			if(H.lip_style)	// If they already have lipstick on.
 				to_chat(user, SPAN_NOTICE("You need to wipe off the old lipstick first!"))
 				return

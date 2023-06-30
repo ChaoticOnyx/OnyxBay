@@ -215,7 +215,6 @@
 	generic_attack_mod = 3.5
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_drone.dmi'
-	deform =  'icons/mob/human_races/xenos/r_xenos_drone.dmi'
 
 	has_organ = list(
 		BP_BRAIN =		/obj/item/organ/internal/brain/xeno,
@@ -243,7 +242,6 @@
 	caste_name = "vile drone"
 	weeds_plasma_rate = 20
 	icobase = 'icons/mob/human_races/xenos/r_xenos_drone_vile.dmi'
-	deform =  'icons/mob/human_races/xenos/r_xenos_drone_vile.dmi'
 
 	inherent_verbs = list(
 		/mob/living/proc/ventcrawl,
@@ -272,7 +270,6 @@
 	generic_attack_mod = 4.5
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_hunter.dmi'
-	deform =  'icons/mob/human_races/xenos/r_xenos_hunter.dmi'
 
 	has_organ = list(
 		BP_BRAIN =    /obj/item/organ/internal/brain/xeno,
@@ -300,7 +297,6 @@
 	caste_name = "feral hunter"
 	unarmed_types = list(/datum/unarmed_attack/claws/strong/xeno/feral, /datum/unarmed_attack/bite/strong/xeno)
 	icobase = 'icons/mob/human_races/xenos/r_xenos_hunter_feral.dmi'
-	deform =  'icons/mob/human_races/xenos/r_xenos_hunter_feral.dmi'
 	tail = "xenos_hunter_feral_tail"
 	slowdown = -1
 
@@ -317,7 +313,6 @@
 	burn_mod  = 1.4
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_sentinel.dmi'
-	deform =  'icons/mob/human_races/xenos/r_xenos_sentinel.dmi'
 
 	has_organ = list(
 		BP_BRAIN =    /obj/item/organ/internal/brain/xeno,
@@ -348,7 +343,6 @@
 	weeds_heal_rate = 20
 	burn_mod  = 1.3
 	icobase = 'icons/mob/human_races/xenos/r_xenos_sentinel_primal.dmi'
-	deform =  'icons/mob/human_races/xenos/r_xenos_sentinel_primal.dmi'
 	tail = "xenos_sentinel_primal_tail"
 
 /datum/species/xenos/queen
@@ -368,7 +362,6 @@
 	generic_attack_mod = 4.5
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_queen.dmi'
-	deform =  'icons/mob/human_races/xenos/r_xenos_queen.dmi'
 
 	unarmed_types = list(/datum/unarmed_attack/claws/strong/xeno/queen, /datum/unarmed_attack/bite/strong/xeno)
 

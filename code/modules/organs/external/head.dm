@@ -20,8 +20,6 @@
 
 	var/can_intake_reagents = 1
 
-	var/has_lips = TRUE
-
 	var/forehead_graffiti
 	var/graffiti_style
 
@@ -91,7 +89,6 @@
 		if(R)
 			can_intake_reagents = R.can_eat
 	. = ..(company, skip_prosthetics, 1)
-	has_lips = FALSE
 
 /obj/item/organ/external/head/take_external_damage(brute, burn, damage_flags, used_weapon = null)
 	. = ..()

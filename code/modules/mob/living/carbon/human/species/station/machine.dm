@@ -9,8 +9,7 @@
 	inhuman in outlook and perspective."
 
 	icobase = 'icons/mob/human_races/r_machine.dmi'
-	deform = 'icons/mob/human_races/r_machine.dmi'
-	
+
 	has_eyes_icon = FALSE
 
 	language = LANGUAGE_EAL

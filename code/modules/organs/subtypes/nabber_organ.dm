@@ -211,5 +211,4 @@
 /obj/item/organ/external/head/nabber
 	name = "head"
 	vital = 0
-	has_lips = 0
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_CAN_BREAK
