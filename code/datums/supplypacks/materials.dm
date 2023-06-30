@@ -22,7 +22,7 @@
 
 /decl/hierarchy/supply_pack/materials/darkwoodwood50
 	name = "50 darkwooden planks"
-	contains = list(/obj/item/stack/material/wood/fifty)
+	contains = list(/obj/item/stack/material/darkwood/fifty)
 	cost = 100
 	containername = "\improper Darkwooden planks crate"
 

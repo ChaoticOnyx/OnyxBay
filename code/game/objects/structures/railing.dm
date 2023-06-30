@@ -1,6 +1,6 @@
 /obj/structure/railing
 	name = "railing"
-	desc = "A standart railing. Prevents from human stupidity."
+	desc = "A standard railing. Prevents human stupidity."
 	icon = 'icons/obj/railing.dmi'
 	icon_state = "railing"
 	density = 1
@@ -321,17 +321,17 @@
 /obj/structure/railing/steel
 	icon_state = "steel_railing"
 	material = "steel_"
-	desc = "A steel railing. Prevents from human stupidity."
+	desc = "A steel railing. Prevents human stupidity."
 	material_path = "/obj/item/stack/steel"
 
 /obj/structure/railing/wood
 	icon_state = "wood_railing"
 	material = "wood_"
-	desc = "A wood railing. Prevents from human stupidity."
+	desc = "A wooden railing. Prevents human stupidity."
 	material_path = "/obj/item/stack/wood"
 
 /obj/structure/railing/darkwood
 	icon_state = "darkwood_railing"
 	material = "darkwood_"
-	desc = "A darkwood railing. Prevents from human stupidity."
+	desc = "A darkwood railing. Prevents human stupidity."
 	material_path = "/obj/item/stack/darkwood"

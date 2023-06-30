@@ -272,7 +272,7 @@
 	amount = 50
 
 /obj/item/stack/material/darkwood
-	name = "darkwooden plank"
+	name = "darkwood plank"
 	icon_state = "darkwood"
 	default_type = MATERIAL_DARKWOOD
 
