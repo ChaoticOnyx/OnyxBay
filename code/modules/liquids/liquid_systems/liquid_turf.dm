@@ -54,6 +54,9 @@
 	liquids.has_cached_share = FALSE
 
 /turf/proc/liquid_update_turf()
+	if(!liquids)
+		return
+
 	if(liquids && liquids.immutable)
 		SSliquids.active_immutables[src] = TRUE
 		return
