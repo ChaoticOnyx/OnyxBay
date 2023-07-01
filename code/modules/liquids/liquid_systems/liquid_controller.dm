@@ -27,18 +27,23 @@ SUBSYSTEM_DEF(liquids)
 		singleton_immutables[type] = new_one
 	return singleton_immutables[type]
 
+/datum/controller/subsystem/liquids/Initialize()
+	fire(FALSE, TRUE)
+	. = ..()
 
 /datum/controller/subsystem/liquids/stat_entry(msg)
 	msg += "AT:[active_turfs.len]|AG:[active_groups.len]|AIM:[active_immutables.len]|EQ:[evaporation_queue.len]|PF:[processing_fire.len]"
 	return ..()
 
 
-/datum/controller/subsystem/liquids/fire(resumed = FALSE)
+/datum/controller/subsystem/liquids/fire(resumed = FALSE, no_mc_tick = FALSE)
 	if(run_type == SSLIQUIDS_RUN_TYPE_TURFS)
 		if(!currentrun_active_turfs.len && active_turfs.len)
 			currentrun_active_turfs = active_turfs.Copy()
 		for(var/tur in currentrun_active_turfs)
-			if(MC_TICK_CHECK)
+			if (no_mc_tick)
+				CHECK_TICK
+			else if (MC_TICK_CHECK)
 				return
 			var/turf/T = tur
 			T.process_liquid_cell()
@@ -65,7 +70,9 @@ SUBSYSTEM_DEF(liquids)
 			var/turf/T = t
 			T.process_immutable_liquid()
 			/*
-			if(MC_TICK_CHECK)
+			if (no_mc_tick)
+				CHECK_TICK
+			else if (MC_TICK_CHECK)
 				return
 			*/
 		run_type = SSLIQUIDS_RUN_TYPE_EVAPORATION
@@ -88,7 +95,9 @@ SUBSYSTEM_DEF(liquids)
 			for(var/t in processing_fire)
 				var/turf/T = t
 				T.liquids.process_fire()
-			if(MC_TICK_CHECK)
+			if (no_mc_tick)
+				CHECK_TICK
+			else if (MC_TICK_CHECK)
 				return
 			fire_counter = 0
 		run_type = SSLIQUIDS_RUN_TYPE_TURFS
