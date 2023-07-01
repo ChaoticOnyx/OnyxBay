@@ -22,6 +22,7 @@
 	var/fraction = SUBMERGEMENT_PERCENT(holder, T.liquids)
 	var/datum/reagents/tempr = T.liquids.simulate_reagents_flat(SUBMERGEMENT_REAGENTS_TOUCH_AMOUNT*fraction)
 	tempr.touch_mob(holder)
+	tempr.trans_to(holder)
 	qdel(tempr)
 	return ..()
 

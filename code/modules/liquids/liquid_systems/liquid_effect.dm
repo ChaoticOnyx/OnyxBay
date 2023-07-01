@@ -1,6 +1,6 @@
 /obj/effect/abstract/liquid_turf
 	name = "liquid"
-	icon = 'icons/obj/liquids/effects/liquid.dmi'
+	icon = 'icons/effects/liquid.dmi'
 	icon_state = "water-0"
 	anchored = TRUE
 	plane = FLOOR_PLANE
@@ -104,8 +104,9 @@
 		SSliquids.processing_fire -= my_turf
 	//Try spreading
 	if(fire_state == old_state) //If an extinguisher made our fire smaller, dont spread, else it's too hard to put out
-		if(my_turf.liquids && !my_turf.liquids.fire_state && my_turf.liquids.check_fire(TRUE))
-			SSliquids.processing_fire[my_turf] = TRUE
+		for(var/turf/T in my_turf.atmos_adjacent_turfs)
+			if(T.liquids && !T.liquids.fire_state && T.liquids.check_fire(TRUE))
+				SSliquids.processing_fire[T] = TRUE
 	//Burn our resources
 	var/datum/reagent/R //Faster declaration
 	var/burn_rate
@@ -169,10 +170,6 @@
 		calculate_height()
 		set_reagent_color_for_liquid()
 
-/obj/effect/abstract/liquid_turf/forceMove(atom/destination, no_tp=FALSE, harderforce = FALSE)
-	if(harderforce)
-		. = ..()
-
 /**
  * Makes and returns the liquid effect overlay.
  *
@@ -185,7 +182,7 @@
 	PRIVATE_PROC(TRUE)
 
 	return mutable_appearance(
-		'icons/obj/liquids/effects/liquid_overlays.dmi',
+		'icons/effects/liquid_overlays.dmi',
 		overlay_state
 	)
 
@@ -228,7 +225,7 @@
 
 	src.overlays += liquid_state_overlay
 
-	var/mutable_appearance/shine = mutable_appearance(icon, "shine", offset_spokesman = src, alpha = 32, appearance_flags = RESET_COLOR|RESET_ALPHA)
+	var/mutable_appearance/shine = mutable_appearance(icon, "shine", alpha = 32, appearance_flags = RESET_COLOR|RESET_ALPHA)
 	src.overlays += shine
 
 	//Add a fire overlay too
@@ -249,7 +246,7 @@
 		if(LIQUID_FIRE_STATE_INFERNO)
 			fire_icon_state = "fire_big"
 
-	src.overlays += mutable_appearance(icon, fire_icon_state, ABOVE_OBJ_LAYER, src, DEFAULT_PLANE, appearance_flags = RESET_COLOR|RESET_ALPHA)
+	src.overlays += mutable_appearance(icon, fire_icon_state, appearance_flags = RESET_COLOR|RESET_ALPHA)
 
 //Takes a flat of our reagents and returns it, possibly qdeling our liquids
 /obj/effect/abstract/liquid_turf/proc/take_reagents_flat(flat_amount)
@@ -449,7 +446,7 @@
 	if(!SSliquids)
 		CRASH("Liquid Turf created with the liquids sybsystem not yet initialized!")
 	if(!immutable)
-		my_turf = loc
+		my_turf = get_turf(src)
 		register_signal(my_turf, SIGNAL_ENTERED, .proc/movable_entered)
 		register_signal(my_turf, SIGNAL_ATOM_FALL, .proc/mob_fall)
 		SSliquids.add_active_turf(my_turf)
@@ -458,10 +455,11 @@
 
 	update_overlays()
 	if(z)
-		smooth(src, "water")
-		smooth_neighbors(src, "water")
+		src.smooth(get_turf(src))
+		src.smooth_neighbors(get_turf(src))
 
 /obj/effect/abstract/liquid_turf/Destroy(force)
+	..()
 	if(force)
 		unregister_signal(my_turf, list(SIGNAL_ENTERED, SIGNAL_ATOM_FALL))
 		if(my_turf.lgroup)
@@ -473,11 +471,11 @@
 		//Is added because it could invoke a change to neighboring liquids
 		SSliquids.add_active_turf(my_turf)
 		my_turf.liquids = null
+		src.smooth_neighbors(my_turf)
 		my_turf = null
-		smooth_neighbors(src, "water")
 	else
 		return QDEL_HINT_LETMELIVE
-	return ..()
+	return
 
 /obj/effect/abstract/liquid_turf/immutable/Destroy(force)
 	if(force)
@@ -548,7 +546,7 @@
 	return lowertext(reagents_string)
 
 /obj/effect/liquid_splash
-	icon = 'icons/obj/liquids/effects/splash.dmi'
+	icon = 'icons/effects/splash.dmi'
 	icon_state = "splash"
 	layer = FLY_LAYER
 
@@ -596,17 +594,18 @@
 	calculate_height()
 	set_reagent_color_for_liquid()
 
-proc/smooth_neighbors(atom/smoothing_atom, base_icon)
+/obj/effect/abstract/liquid_turf/proc/smooth_neighbors(smoothing_turf)
 	for(var/direction in GLOB.alldirs)
-		var/atom/L = locate(smoothing_atom.type) in get_step(smoothing_atom, direction)
+		var/obj/effect/abstract/liquid_turf/L = locate() in get_step(smoothing_turf, direction)
 		if(L)
-			smooth(L, base_icon) //so siding get updated properly
+			L.smooth(L.loc) //so siding get updated properly
 
 
-proc/smooth(atom/smoothing_atom, base_icon)
+/obj/effect/abstract/liquid_turf/proc/smooth(smoothing_turf)
+	ASSERT(!isnull(smoothing_turf))
 	var/connectdir = 0
 	for(var/direction in GLOB.cardinal)
-		if(locate(smoothing_atom.type, get_step(smoothing_atom, direction)))
+		if(locate(/obj/effect/abstract/liquid_turf) in get_step(smoothing_turf, direction))
 			connectdir |= direction
 
 	//Check the diagonal connections for corners, where you have, for example, connections both north and east. In this case it checks for a north-east connection to determine whether to add a corner marker or not.
@@ -615,8 +614,8 @@ proc/smooth(atom/smoothing_atom, base_icon)
 	var/i = 1
 	for(var/diag in list(NORTHEAST, SOUTHEAST,NORTHWEST,SOUTHWEST))
 		if((connectdir & diag) == diag)
-			if(locate(smoothing_atom.type, get_step(smoothing_atom, diag)))
+			if(locate(/obj/effect/abstract/liquid_turf) in get_step(smoothing_turf, diag))
 				diagonalconnect |= dirs[i]
 		i += 1
 
-	smoothing_atom.icon_state = "[base_icon]-[connectdir]-[diagonalconnect]"
+	src.icon_state = "water-[connectdir]-[diagonalconnect]"

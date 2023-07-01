@@ -32,7 +32,7 @@
 	set category = "Fun"
 	set desc = "Remove liquids in a range."
 
-	var/range = tgui_input_number(usr, "Enter range:", "Range selection", 2)
+	var/range = input(usr, "Enter range:", "Range selection", 2) as num
 
 	for(var/obj/effect/abstract/liquid_turf/liquid in range(range, epicenter))
 		qdel(liquid, TRUE)

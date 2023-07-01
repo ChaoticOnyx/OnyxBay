@@ -6,7 +6,7 @@
 	var/liquid_fire_power = 0
 
 	///How fast does the liquid burn on simulated turfs, if it does
-	var/liquid_fire_burnrate = 0
+	var/liquid_fire_burnrate = 0.1
 
 	///Whether a fire from this requires oxygen in the atmosphere
 	var/fire_needs_oxygen = TRUE
@@ -204,7 +204,7 @@
 */
 /datum/reagent/thermite
 	liquid_fire_power = 20
-	liquid_fire_burnrate = 0.1
+	liquid_fire_burnrate = 0.3
 
 /*
 *	OTHER
@@ -212,4 +212,8 @@
 
 /datum/reagent/fuel
 	liquid_fire_power = 10
-	liquid_fire_burnrate = 0.1
+	liquid_fire_burnrate = 0.2
+
+/datum/reagent/plasma
+	liquid_fire_power = 15
+	liquid_fire_burnrate = 0.2

@@ -13,3 +13,6 @@
 #define SIGNAL_ELEMENT_ATTACH "element_attach"
 /// Fires on the target datum when an element is attached to it (/datum/element).
 #define SIGNAL_ELEMENT_DETACH "element_detach"
+
+/// Fires on the afterattack when an element is designed to clean liquids
+#define SIGNAL_CLEAN_LIQUIDS "clean_liquids"

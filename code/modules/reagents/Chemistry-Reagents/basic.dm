@@ -9,6 +9,7 @@
 	glass_name = "water"
 	glass_desc = "The father of all refreshments."
 	var/slippery = 1
+	evaporates = TRUE
 
 /datum/reagent/water/affect_blood(mob/living/carbon/M, alien, removed)
 	if(!istype(M, /mob/living/carbon/metroid) && alien != IS_METROID)

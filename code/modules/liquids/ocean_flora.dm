@@ -90,7 +90,7 @@
 
 /obj/effect/spawner/liquids_spawner
 	name = "Liquids Spawner (Water, Waist-Deep)"
-	icon = 'icons/obj/liquids/effects/liquid.dmi'
+	icon = 'icons/effects/liquid.dmi'
 	icon_state = "spawner"
 	color = "#AAAAAA77"
 	var/reagent_list = list(/datum/reagent/water = ONE_LIQUIDS_HEIGHT*LIQUID_WAIST_LEVEL_HEIGHT)

@@ -1882,7 +1882,6 @@
 #include "code\modules\lighting\~lighting_undefs.dm"
 #include "code\modules\liquids\drains.dm"
 #include "code\modules\liquids\height_floors.dm"
-#include "code\modules\liquids\mop.dm"
 #include "code\modules\liquids\ocean_areas.dm"
 #include "code\modules\liquids\ocean_biomes.dm"
 #include "code\modules\liquids\ocean_flora.dm"
