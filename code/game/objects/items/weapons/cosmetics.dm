@@ -64,7 +64,7 @@
 
 		if(user.a_intent == I_HELP && target_zone == BP_HEAD)
 			head.write_on(user, src.name)
-		else if(BP_IS_ROBOTIC(head))
+		else if(head.has_lips)
 			if(H.lip_style)	// If they already have lipstick on.
 				to_chat(user, SPAN_NOTICE("You need to wipe off the old lipstick first!"))
 				return
@@ -77,7 +77,7 @@
 				user.visible_message(SPAN_WARNING("[user] begins to do [H]'s lips with \the [src]."), \
 									 SPAN_NOTICE("You begin to apply \the [src]."))
 				// User needs to keep their active hand, H does not.
-				if(do_after(user, 20, H) && do_after(H, 20, needhand = 0, progress = 0, incapacitation_flags = INCAPACITATION_NONE))	
+				if(do_after(user, 20, H) && do_after(H, 20, needhand = 0, progress = 0, incapacitation_flags = INCAPACITATION_NONE))
 					user.visible_message(SPAN_NOTICE("[user] does [H]'s lips with \the [src]."), \
 										 SPAN_NOTICE("You apply \the [src]."))
 					H.lip_style = colour

@@ -20,6 +20,8 @@
 
 	var/can_intake_reagents = 1
 
+	var/has_lips = TRUE
+
 	var/forehead_graffiti
 	var/graffiti_style
 
