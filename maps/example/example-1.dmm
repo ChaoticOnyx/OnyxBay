@@ -35,11 +35,7 @@
 "J" = (/turf/space,/area/space)
 "K" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/map_ent/trigger_mob{pixel_x = -7; ev_tag = "ent_tp_wv"; tag = "ent_tp_trigger"},/obj/map_ent/func_teleport{pixel_x = 14; ev_dest_tag = "ent_showcase_tp_dest"; tag = "ent_tp_src"},/obj/map_ent/func_write_var{pixel_y = 9; ev_activate_writer = 1; ev_read_tag = "ent_tp_trigger"; ev_table = list("ev_tag"="ev_triggered"); ev_write_tag = "ent_tp_src"; tag = "ent_tp_wv"},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "P" = (/obj/map_ent/info_maptext{ev_text = "Map entities showcase"},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"Q" = (/obj/structure/table/steel_reinforced,/obj/item/reagent_containers/vessel/beaker/large,/obj/item/reagent_containers/vessel/beaker/large,/obj/item/reagent_containers/vessel/beaker/large,/obj/item/reagent_containers/vessel/beaker/large,/obj/item/reagent_containers/vessel/beaker/large,/turf/simulated/floor/tiled,/area/engineering/toilet)
-"S" = (/obj/item/reagent_containers/food/sliceable/pizza/meatpizza,/obj/item/reagent_containers/food/sliceable/pizza/meatpizza,/obj/item/reagent_containers/food/sliceable/pizza/meatpizza,/obj/item/reagent_containers/food/sliceable/pizza/meatpizza,/obj/item/reagent_containers/food/sliceable/pizza/meatpizza,/obj/item/reagent_containers/food/sliceable/pizza/meatpizza,/obj/item/reagent_containers/food/sliceable/pizza/meatpizza,/obj/item/reagent_containers/food/sliceable/pizza/meatpizza,/obj/item/reagent_containers/food/sliceable/pizza/meatpizza,/obj/item/reagent_containers/food/sliceable/pizza/meatpizza,/turf/simulated/floor/tiled,/area/engineering/toilet)
-"U" = (/obj/machinery/light{dir = 4},/obj/structure/table/steel_reinforced,/obj/machinery/reagentgrinder,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "X" = (/obj/effect/landmark/joinlate,/turf/simulated/floor/tiled,/area/engineering/toilet)
-"Z" = (/obj/structure/table/steel_reinforced,/obj/item/stack/material/plasma/fifty,/obj/item/stack/material/plasma/fifty,/obj/item/stack/material/plasma/fifty,/obj/item/stack/material/plasma/fifty,/obj/item/stack/material/plasma/fifty,/obj/item/stack/material/plasma/fifty,/obj/item/stack/material/plasma/fifty,/obj/item/stack/material/plasma/fifty,/turf/simulated/floor/tiled,/area/engineering/toilet)
 
 (1,1,1) = {"
 JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
@@ -61,10 +57,10 @@ JJJJJJJJJJJJyyyJcabbbbbbXbbbnopacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJzAzccaqbbbbbrlbbbbbacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJzBzaaabbbbbbbbbbsotacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJDCEuvwbbbbbbbbbbxbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJyyyaaaibbbbbbbbbbbUacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJccaFbbbbbbbbbbbZacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcaGbbbbbPbbbbbQacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcaHbbIbbKbbIbbSacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJyyyaaaibbbbbbbbbbbkacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJccaFbbbbbbbbbbbbacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcaGbbbbbPbbbbbbacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcaHbbIbbKbbIbbbacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcaaaaaaaaaaaaaaacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcccccccccccccccccJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
