@@ -166,20 +166,19 @@
 
 // Returns a multitool from a user depending on their mobtype.
 
-/obj/machinery/telecomms/proc/get_multitool(mob/user)
-
-	var/obj/item/device/multitool/P = null
-	// Let's double check
+// TO-DO: find a better place for this proc.
+/proc/get_multitool(mob/user)
+	var/obj/item/device/multitool/MT = null
 	if(!issilicon(user))
 		if(isMultitool(user.get_active_hand()))
-			P = user.get_active_hand()
+			MT = user.get_active_hand()
 	else if(isAI(user))
-		var/mob/living/silicon/ai/U = user
-		P = U.aiMulti
-	else if(isrobot(user) && in_range(user, src))
+		var/mob/living/silicon/ai/AI = user
+		MT = AI.aiMulti
+	else if(isrobot(user))
 		if(isMultitool(user.get_active_hand()))
-			P = user.get_active_hand()
-	return P
+			MT = user.get_active_hand()
+	return MT
 
 // Additional Options for certain machines. Use this when you want to add an option to a specific machine.
 // Example of how to use below.

@@ -42,18 +42,18 @@
 		if(mind)
 			mind.name = real_name
 
-	hud_list[HEALTH_HUD]       = new /image/hud_overlay('icons/mob/hud_med.dmi', src, "100")
-	hud_list[STATUS_HUD]       = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealthy")
-	hud_list[LIFE_HUD]	       = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealthy")
-	hud_list[ID_HUD]           = new /image/hud_overlay(GLOB.using_map.id_hud_icons, src, "hudunknown")
-	hud_list[WANTED_HUD]       = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPLOYAL_HUD]     = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPCHEM_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPTRACK_HUD]     = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[SPECIALROLE_HUD]  = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[STATUS_HUD_OOC]   = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealthy")
-	hud_list[XENO_HUD]         = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[GLAND_HUD]        = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
+	hud_list[HEALTH_HUD]       = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[STATUS_HUD]       = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[LIFE_HUD]	       = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[ID_HUD]           = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[WANTED_HUD]       = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[IMPLOYAL_HUD]     = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[IMPCHEM_HUD]      = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[IMPTRACK_HUD]     = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[SPECIALROLE_HUD]  = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
+	hud_list[STATUS_HUD_OOC]   = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[XENO_HUD]         = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
+	hud_list[GLAND_HUD]        = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
 
 	GLOB.human_mob_list |= src
 	..()
@@ -64,6 +64,8 @@
 		dna.s_base = s_base
 		sync_organ_dna()
 	make_blood()
+
+	BITSET(hud_updateflag, STATUS_HUD)
 
 /mob/living/carbon/human/Destroy()
 	GLOB.human_mob_list -= src
@@ -756,7 +758,7 @@
 				Stun(3)
 				var/obj/item/organ/internal/stomach/stomach = internal_organs_by_name[BP_STOMACH]
 				if(nutrition <= STOMACH_FULLNESS_SUPER_LOW || !istype(stomach))
-					custom_emote(1, "dry heaves.")
+					custom_emote(VISIBLE_MESSAGE, "dry heaves.", "AUTO_EMOTE")
 				else
 					for(var/a in stomach_contents)
 						var/atom/movable/A = a
@@ -795,10 +797,16 @@
 		b_facial = hex2num(copytext(new_facial, 6, 8))
 
 	var/new_hair = input("Please select hair color.", "Character Generation",rgb(r_hair,g_hair,b_hair)) as color
-	if(new_facial)
+	if(new_hair)
 		r_hair = hex2num(copytext(new_hair, 2, 4))
 		g_hair = hex2num(copytext(new_hair, 4, 6))
 		b_hair = hex2num(copytext(new_hair, 6, 8))
+
+	var/new_s_hair = input("Please select secondary hair color.", "Character Generation",rgb(r_s_hair,g_s_hair,b_s_hair)) as color
+	if(new_s_hair)
+		r_s_hair = hex2num(copytext(new_hair, 2, 4))
+		g_s_hair = hex2num(copytext(new_hair, 4, 6))
+		b_s_hair = hex2num(copytext(new_hair, 6, 8))
 
 	var/new_eyes = input("Please select eye color.", "Character Generation",rgb(r_eyes,g_eyes,b_eyes)) as color
 	if(new_eyes)

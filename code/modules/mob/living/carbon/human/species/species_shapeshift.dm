@@ -67,6 +67,9 @@ var/list/wrapped_species_by_ref = list()
 		H.r_hair =   H.r_skin
 		H.g_hair =   H.g_skin
 		H.b_hair =   H.b_skin
+		H.r_s_hair = H.r_skin
+		H.g_s_hair = H.g_skin
+		H.b_s_hair = H.b_skin
 		H.r_facial = H.r_skin
 		H.g_facial = H.g_skin
 		H.b_facial = H.b_skin
@@ -169,6 +172,9 @@ var/list/wrapped_species_by_ref = list()
 		r_hair =   r_skin
 		g_hair =   g_skin
 		b_hair =   b_skin
+		r_s_hair = r_skin
+		g_s_hair = g_skin
+		b_s_hair = b_skin
 		r_facial = r_skin
 		g_facial = g_skin
 		b_facial = b_skin
@@ -186,7 +192,7 @@ var/list/wrapped_species_by_ref = list()
 	if(stat)
 		to_chat(usr, SPAN_WARNING("You can't use your abilities while you unconscious."))
 		return
-	
+
 	THROTTLE_SHARED(cooldown, 30, last_special)
 	if(!cooldown)
 		to_chat(usr, SPAN_WARNING("You can't use your abilities so fast!"))

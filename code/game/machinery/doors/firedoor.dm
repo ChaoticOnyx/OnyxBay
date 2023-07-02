@@ -261,7 +261,8 @@
 								 "You hear metal strain and groan, and a door [density ? "opening" : "closing"].")
 		if(density)
 			INVOKE_ASYNC(src, /obj/machinery/door/proc/open, TRUE)
-			addtimer(CALLBACK(src, /obj/machinery/door/proc/close), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
+			if(!(stat & (BROKEN|NOPOWER)))
+				addtimer(CALLBACK(src, /obj/machinery/door/proc/close), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
 		else
 			INVOKE_ASYNC(src, /obj/machinery/door/proc/close)
 		return
@@ -288,15 +289,15 @@
 		START_PROCESSING(SSmachines, src)
 	return ..()
 
-/obj/machinery/door/firedoor/can_open()
-	. = ..()
-	if(blocked || (stat & (NOPOWER|BROKEN)))
+/obj/machinery/door/firedoor/can_open(forced = FALSE)
+	if(blocked || (!forced && (stat & (NOPOWER|BROKEN))))
 		return FALSE
+	return ..()
 
-/obj/machinery/door/firedoor/can_close()
-	. = ..()
-	if(blocked || (stat & (NOPOWER|BROKEN)))
+/obj/machinery/door/firedoor/can_close(forced = FALSE)
+	if(blocked)
 		return FALSE
+	return ..()
 
 /obj/machinery/door/firedoor/open(forced = 0)
 	lockdown = FALSE

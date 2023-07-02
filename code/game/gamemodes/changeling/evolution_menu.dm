@@ -341,9 +341,9 @@ var/list/datum/power/changeling/powerinstances = list()
 	return GLOB.tgui_always_state
 
 /datum/changeling/tgui_static_data(mob/user)
-	var/static/icon/genom = new /icon('icons/mob/screen_spells.dmi', "genetics_closed")
-	var/static/icon/spell_background = new /icon('icons/mob/screen_spells.dmi', "changeling_spell_base")
-	var/static/icon/spell_unlocked_background = new /icon('icons/mob/screen_spells.dmi', "changeling_spell_ready")
+	var/static/icon/genom = new /icon('icons/hud/screen_spells.dmi', "genetics_closed")
+	var/static/icon/spell_background = new /icon('icons/hud/screen_spells.dmi', "changeling_spell_base")
+	var/static/icon/spell_unlocked_background = new /icon('icons/hud/screen_spells.dmi', "changeling_spell_ready")
 
 	return list(
 		"icons" = list(

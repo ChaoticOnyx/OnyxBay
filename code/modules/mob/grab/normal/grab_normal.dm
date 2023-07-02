@@ -30,7 +30,7 @@
 
 	var/drop_headbutt = 1
 
-	icon = 'icons/mob/screen1.dmi'
+	icon = 'icons/hud/actions.dmi'
 
 	help_action = "inspect"
 	disarm_action = "pin"

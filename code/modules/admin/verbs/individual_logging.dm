@@ -12,12 +12,12 @@
 		for(var/log_type in M.logging)
 			dat += "<center>[log_type]</center><br>"
 			for(var/entry in M.logging[log_type])
-				dat += "<font size=2px>[entry]: [M.logging[log_type][entry]]</font><br>"
+				dat += "<font size=2px>[entry]: [M.logging[log_type][entry]["message"]]</font><br>"
 			dat += "<hr>"
 	else
 		dat += "<center>[type] of [key_name(M)]</center><br>"
 		for(var/entry in M.logging[type])
-			dat += "<font size=2px>[entry]: [M.logging[type][entry]]</font><hr>"
+			dat += "<font size=2px>[entry]: [M.logging[type][entry]["message"]]</font><hr>"
 
 	var/datum/browser/popup = new(user, "individual_logging_panel", "Individual logging panel", 600, 480)
 	popup.set_content(dat)

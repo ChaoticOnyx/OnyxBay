@@ -6,7 +6,7 @@
 	icon_state = "viral"
 	mind_control_uses = 1
 	mind_control_duration = 1800
-	var/list/virus_whitelist_species = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_TAJARA)
+	var/list/virus_whitelist_species = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_SWINE)
 
 /obj/item/organ/internal/heart/gland/viral/activate()
 	to_chat(owner, SPAN_WARNING("You feel sick."))

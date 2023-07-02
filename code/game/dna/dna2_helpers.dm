@@ -143,6 +143,10 @@
 		H.g_hair   = dna.GetUIValueRange(DNA_UI_HAIR_G,    255)
 		H.b_hair   = dna.GetUIValueRange(DNA_UI_HAIR_B,    255)
 
+		H.r_s_hair   = dna.GetUIValueRange(DNA_UI_S_HAIR_R,    255)
+		H.g_s_hair   = dna.GetUIValueRange(DNA_UI_S_HAIR_G,    255)
+		H.b_s_hair   = dna.GetUIValueRange(DNA_UI_S_HAIR_B,    255)
+
 		H.r_facial = dna.GetUIValueRange(DNA_UI_BEARD_R,   255)
 		H.g_facial = dna.GetUIValueRange(DNA_UI_BEARD_G,   255)
 		H.b_facial = dna.GetUIValueRange(DNA_UI_BEARD_B,   255)

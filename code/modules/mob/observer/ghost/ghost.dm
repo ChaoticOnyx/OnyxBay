@@ -1,5 +1,8 @@
-var/global/list/image/ghost_darkness_images = list() //this is a list of images for things ghosts should still be able to see when they toggle darkness
-var/global/list/image/ghost_sightless_images = list() //this is a list of images for things ghosts should still be able to see even without ghost sight
+/// A list of images for things ghosts should still be able to see when they toggle darkness
+GLOBAL_LIST_EMPTY(ghost_darkness_images)
+
+/// A list of images for things ghosts should still be able to see even without ghost sight
+GLOBAL_LIST_EMPTY(ghost_sightless_images)
 
 /mob/observer/ghost
 	name = "ghost"
@@ -200,7 +203,7 @@ Works together with spawning an observer, noted above.
 	hide_fullscreens()
 	ghost.key = key
 	ghost.can_reenter_corpse = can_reenter_corpse
-	ghost.timeofdeath = src.stat == DEAD ? src.timeofdeath : world.time
+	ghost.timeofdeath = is_ooc_dead() ? src.timeofdeath : world.time
 
 	if(!ghost.client?.holder && !config.ghost.allow_antag_hud)
 		ghost.verbs -= /mob/observer/ghost/verb/toggle_antagHUD
@@ -221,7 +224,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Ghost"
 	set desc = "Leave your body and enter the land of the dead."
 
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		announce_ghost_joinleave(ghostize(can_reenter_corpse = TRUE))
 		return
 
@@ -304,7 +307,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 /mob/observer/ghost/verb/toggle_medHUD()
 	set category = "Ghost"
-	set name = "Toggle Medical HUD"
+	set name = "ToggleHUD Medical HUD"
 	set desc = "Toggles Medical HUD allowing you to see how everyone is doing"
 
 	if(!client)
@@ -316,7 +319,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 /mob/observer/ghost/verb/toggle_antagHUD()
 	set category = "Ghost"
-	set name = "Toggle Antag HUD"
+	set name = "ToggleHUD Antag HUD"
 	set desc = "Toggles Antag HUD allowing you to see who is the antagonist"
 
 	if(!client)
@@ -333,7 +336,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	if(config.ghost.antag_hud_restricted && !has_enabled_antagHUD && (!client.holder || mentor))
 		var/response = tgui_alert(src, "If you turn this on, you will not be able to take any part in the round.", "Toggle Antag HUD", list("Yes", "No"))
-		if(response == "No")
+		if(isnull(response) || response == "No")
 			return
 		can_reenter_corpse = 0
 
@@ -353,11 +356,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 
 	var/response = tgui_input_list(src, "Choose an area to teleport to.", "Teleport", area_repository.get_areas_by_z_level())
-	if(!response)
+	if(isnull(response))
 		return
 
-	var/area/chosen_area = response
-	if(!chosen_area)
+	var/area/chosen_area = area_repository.get_areas_by_z_level()[response]
+	if(!istype(chosen_area))
 		to_chat(src, "Chosen area is unavailable.")
 		return
 
@@ -387,7 +390,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 
 	var/turf/T = locate(turf_x, turf_y, turf_z)
-	if(T)
+	if(istype(T))
+		if(shall_check_if_holy() && is_holy_turf(T))
+			return
 		ghost_to_turf(T)
 	else
 		to_chat(src, SPAN_WARNING("Invalid coordinates."))
@@ -461,9 +466,24 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/PostIncorporealMovement()
 	stop_following()
 
+/mob/observer/ghost/verb/analyse_health(mob/living/carbon/human/H in GLOB.human_mob_list)
+	set category = null
+	set name = "Analyse Health"
+
+	show_browser(usr, medical_scan_results(H, TRUE), "window=scanconsole;size=430x350")
+
+/mob/observer/ghost/verb/toggle_inquisition()
+	set category = "Ghost"
+	set name = "ToggleCheck Inquisitiveness"
+	set desc = "Sets whether your ghost examines everything on click by default"
+
+	inquisitiveness = !inquisitiveness
+
+	to_chat(src, SPAN_NOTICE("You [inquisitiveness ? "now" : "no longer"] examine everything you click on."))
+
 /mob/observer/ghost/verb/toggle_health_scan()
 	set category = "Ghost"
-	set name = "Toggle Health Scan"
+	set name = "ToggleCheck Health Scan"
 	set desc = "Toggles whether you health-scan living beings on click"
 
 	health_scan = !health_scan
@@ -472,7 +492,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 /mob/observer/ghost/verb/toggle_chem_scan()
 	set category = "Ghost"
-	set name = "Toggle Chem Scan"
+	set name = "ToggleCheck Chem Scan"
 	set desc = "Toggles whether you scan living beings for chemicals and addictions on click"
 
 	chem_scan = !chem_scan
@@ -481,7 +501,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 /mob/observer/ghost/verb/toggle_gas_scan()
 	set category = "Ghost"
-	set name = "Toggle Gas Scan"
+	set name = "ToggleCheck Gas Scan"
 	set desc = "Toggles whether you analyze gas contents on click"
 
 	gas_scan = !gas_scan
@@ -490,12 +510,12 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 /mob/observer/ghost/verb/check_radiation()
 	set category = "Ghost"
-	set name = "Toggle Rads Scan"
+	set name = "ToggleCheck Rads Scan"
 	set desc = "Toggles whether you analyze radiation on click"
 
 	rads_scan = !rads_scan
 
-	to_chat(src, SPAN_NOTICE("Radiation scan has been [gas_scan ? "enabled" : "disabled"]"))
+	to_chat(src, SPAN_NOTICE("Radiation scan has been [rads_scan ? "enabled" : "disabled"]"))
 
 /mob/observer/ghost/verb/view_manfiest()
 	set name = "Show Crew Manifest"
@@ -571,7 +591,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 /mob/observer/ghost/verb/toggle_ghostsee()
 	set category = "Ghost"
-	set name = "Toggle Ghost Vision"
+	set name = "ToggleVision Ghost Vision"
 	set desc = "Toggles your ability to see things only ghosts can see, like other ghosts"
 
 	ghostvision = !ghostvision
@@ -581,7 +601,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	to_chat(src, SPAN_NOTICE("You [ghostvision ? "now" : "no longer"] have ghost vision."))
 
 /mob/observer/ghost/verb/toggle_darkness()
-	set name = "Toggle Darkness"
+	set name = "ToggleVision Darkness"
 	set category = "Ghost"
 
 	seeindarkness = !seeindarkness
@@ -589,15 +609,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	updateghostsight()
 
 	to_chat(src, SPAN_NOTICE("You [seeindarkness ? "now" : "no longer"] see in darkness."))
-
-/mob/observer/ghost/verb/toggle_inquisition()
-	set category = "Ghost"
-	set name = "Toggle Inquisitiveness"
-	set desc = "Sets whether your ghost examines everything on click by default"
-
-	inquisitiveness = !inquisitiveness
-
-	to_chat(src, SPAN_NOTICE("You [inquisitiveness ? "now" : "no longer"] examine everything you click on."))
 
 /mob/observer/ghost/proc/updateghostprefs()
 	anonsay = cmptext(get_preference_value("CHAT_GHOSTANONSAY"), GLOB.PREF_YES)
@@ -615,15 +626,17 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/proc/updateghostimages()
 	if(!client)
 		return
-	client.images -= ghost_sightless_images
-	client.images -= ghost_darkness_images
+
+	client.images -= GLOB.ghost_sightless_images
+	client.images -= GLOB.ghost_darkness_images
+
 	if(!seeindarkness)
-		client.images |= ghost_sightless_images
-		if(ghostvision)
-			client.images |= ghost_darkness_images
-	else if(seeindarkness && !ghostvision)
-		client.images |= ghost_sightless_images
-	client.images -= ghost_image //remove ourself
+		client.images |= GLOB.ghost_sightless_images
+
+	if(ghostvision)
+		client.images |= GLOB.ghost_darkness_images
+
+	client.images -= ghost_image
 
 /mob/observer/ghost/MayRespawn(feedback = FALSE, respawn_time = 0)
 	if(!client)
@@ -675,6 +688,10 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	plane = pre_plane
 	layer = pre_layer
 	opacity = pre_opacity
+
+	overlays -= target.active_typing_indicator
+	overlays -= target.active_thinking_indicator
+
 	set_invisibility(pre_invis)
 	ClearTransform()	//make goast stand up
 

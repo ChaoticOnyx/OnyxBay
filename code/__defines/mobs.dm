@@ -313,6 +313,7 @@
 #define SPECIES_EGYNO       "Egyno"
 #define SPECIES_MONKEY      "Monkey"
 #define SPECIES_ABDUCTOR    "Abductor"
+#define SPECIES_SWINE		"Trottine"
 
 
 // Xenomorphs IDs.
@@ -407,6 +408,19 @@
 #define HUMAN_HEIGHT_NORMAL 1.0
 #define HUMAN_HEIGHT_LARGE  1.04
 #define HUMAN_HEIGHT_HUGE   1.07
+
+#define POSSIBLE_LIZARD_TOXINS list(/datum/reagent/toxin/plasticide,\
+									/datum/reagent/toxin/amatoxin,\
+									/datum/reagent/toxin/carpotoxin,\
+									/datum/reagent/toxin/plasma,\
+									/datum/reagent/toxin/chlorine,\
+									/datum/reagent/toxin/potassium_chloride,\
+									/datum/reagent/toxin/potassium_chlorophoride,\
+									/datum/reagent/toxin/fertilizer,\
+									/datum/reagent/mutagen,\
+									/datum/reagent/space_drugs,\
+									/datum/reagent/mindbreaker,\
+									/datum/reagent/psilocybin)
 
 /proc/human_height_text(x)
 	switch(x)

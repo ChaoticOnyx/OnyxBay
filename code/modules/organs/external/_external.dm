@@ -54,6 +54,7 @@
 	var/list/s_col                     // skin colour
 	var/s_col_blend = ICON_ADD         // How the skin colour is applied.
 	var/list/h_col                     // hair colour
+	var/list/h_s_col                   // Secondary hair color
 	var/body_hair                      // Icon blend for body hair if any.
 	var/list/markings = list()         // Markings (body_markings) to apply to the icon
 
@@ -1186,8 +1187,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 			return 1
 	return 0
 
-/obj/item/organ/external/is_usable()
-	return ..() && !is_stump() && !(status & ORGAN_TENDON_CUT) && (!can_feel_pain() || get_pain() < pain_disability_threshold) && brute_ratio < 1 && burn_ratio < 1
+/obj/item/organ/external/is_usable(ignore_pain = FALSE)
+	return ..() && !is_stump() && !(status & ORGAN_TENDON_CUT) && (ignore_pain || !can_feel_pain() || get_pain() < pain_disability_threshold) && brute_ratio < 1 && burn_ratio < 1
 
 /obj/item/organ/external/proc/is_malfunctioning()
 	return (BP_IS_ROBOTIC(src) && (brute_dam + burn_dam) >= 10 && prob(brute_dam + burn_dam))

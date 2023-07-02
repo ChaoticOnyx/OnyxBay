@@ -499,7 +499,7 @@ BLIND     // can't see anything
 	var/list/say_messages
 	var/list/say_verbs
 	var/down_gas_transfer_coefficient = 0
-	var/down_body_parts_covered = 0
+	var/down_body_parts_covered = NO_BODYPARTS
 	var/down_icon_state = 0
 	var/down_item_flags = 0
 	var/down_flags_inv = 0

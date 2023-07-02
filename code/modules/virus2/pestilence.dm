@@ -117,7 +117,7 @@
 	speed = 4
 	spreadtype = "Contact"
 	max_stage = 4
-	affected_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI)
+	affected_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI, SPECIES_SWINE)
 
 /datum/disease2/disease/gbs/New()
 	..()
@@ -164,7 +164,7 @@
 	speed = 4
 	spreadtype = "Contact"
 	max_stage = 4
-	affected_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI)
+	affected_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI, SPECIES_SWINE)
 
 /datum/disease2/disease/fake_gbs/New()
 	..()
@@ -475,7 +475,7 @@
 	speed = 1
 	spreadtype = "Airborne"
 	max_stage = 4
-	affected_species = list(SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI)
+	affected_species = list(SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI, SPECIES_SWINE)
 
 /datum/disease2/disease/xeno/New()
 	..()

@@ -39,7 +39,7 @@
 /mob/living/simple_animal/hostile/carp/find_target()
 	. = ..()
 	if(.)
-		custom_emote(1,"nashes at [.]")
+		visible_emote("nashes at [.].")
 
 /mob/living/simple_animal/hostile/carp/AttackingTarget()
 	. =..()

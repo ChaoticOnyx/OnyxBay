@@ -96,6 +96,12 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 	default_value = GLOB.PREF_YES
 
+/datum/client_preference/splashes
+	description = "Show Splashes (Runechat-Like-Popups)"
+	key = "CHAT_SPLASHES"
+	default_value = GLOB.PREF_YES
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
 /datum/client_preference/play_admin_midis
 	description ="Play admin midis"
 	key = "SOUND_MIDI"
@@ -352,12 +358,14 @@ var/global/list/_client_preferences_by_type
 	description = "Ghost see ghosts"
 	key = "GHOST_SEEGHOSTS"
 	category = PREF_CATEGORY_GHOST
+	default_value = GLOB.PREF_YES
 	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
 
 /datum/client_preference/affects_ghost/ghost_inquisitiveness
 	description = "Ghost inquisitiveness"
 	key = "GHOST_INQUISITIVENESS"
 	category = PREF_CATEGORY_GHOST
+	default_value = GLOB.PREF_YES
 	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
 
 /datum/client_preference/affects_ghost/ghost_lighting

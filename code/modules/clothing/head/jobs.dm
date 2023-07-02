@@ -101,7 +101,7 @@
 	name = "beret"
 	desc = "A beret, an artists favorite headwear."
 	icon_state = "beret"
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/beret/sec
@@ -225,7 +225,7 @@
 	name = "warden's hat"
 	desc = "It's a special helmet issued to the Warden of a securiy force."
 	icon_state = "policehelm"
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 
 /obj/item/clothing/head/warden/drill
 	name = "warden's drill hat"

@@ -11,7 +11,6 @@
 	cold_protection =    HEAD|FACE|EYES
 	brightness_on = 4
 	species_restricted = null
-	has_visor = 0
 
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 80.9 MEGA ELECTRONVOLT,

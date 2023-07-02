@@ -27,6 +27,10 @@
 		if(target_turf)
 			AltClickOn(target_turf)
 
+	if(modifiers["shift"])
+		if(!inquisitiveness)
+			examinate(A)
+
 	A.attack_ghost(src)
 
 // Oh by the way this didn't work with old click code which is why clicking shit didn't spam you
@@ -36,41 +40,43 @@
 	if(user.client)
 		if(user.gas_scan)
 			print_atmos_analysis(user, atmosanalyzer_scan(src))
-		else if(user.chem_scan)
+		if(user.chem_scan)
 			reagent_scanner_scan(user, src)
-		else if(user.rads_scan)
+		if(user.rads_scan)
 			var/dose = SSradiation.get_total_absorbed_dose_at_turf(get_turf(src), AVERAGE_HUMAN_WEIGHT)
 			to_chat(user, EXAMINE_BLOCK(SPAN_NOTICE("Radiation: [fmt_siunit(dose, "Gy/s", 3)].")))
-		else if(user.inquisitiveness)
+		if(user.inquisitiveness)
 			user.examinate(src)
 	return
 
 /mob/living/attack_ghost(mob/observer/ghost/user)
 	if(user.client && user.health_scan)
-		to_chat(user, EXAMINE_BLOCK(medical_scan_results(src, 1)))
+		show_browser(user, medical_scan_results(src, TRUE), "window=scanconsole;size=430x350")
 	return ..()
 
 // ---------------------------------------
 // And here are some good things for free:
 // Now you can click through portals, wormholes, gateways, and teleporters while observing. -Sayu
 
-/obj/machinery/teleport/hub/attack_ghost(mob/user as mob)
+/obj/machinery/teleport/hub/attack_ghost(mob/user)
 	var/atom/l = loc
-	var/obj/machinery/computer/teleporter/com = locate(/obj/machinery/computer/teleporter, locate(l.x - 2, l.y, l.z))
-	if(com.locked)
-		user.forceMove(get_turf(com.locked))
+	var/obj/machinery/computer/teleporter/cons = locate(/obj/machinery/computer/teleporter, locate(l.x - 2, l.y, l.z))
+	if(cons?.gate?.is_ready())
+		if(!cons.target_ref)
+			return
+		user.forceMove(get_turf(cons.target_ref.resolve()))
 
-/obj/effect/portal/attack_ghost(mob/user as mob)
+/obj/effect/portal/attack_ghost(mob/user)
 	if(target)
 		user.forceMove(get_turf(target))
 
-/obj/machinery/gateway/centerstation/attack_ghost(mob/user as mob)
+/obj/machinery/gateway/centerstation/attack_ghost(mob/user)
 	if(awaygate)
 		user.forceMove(awaygate.loc)
 	else
 		to_chat(user, "[src] has no destination.")
 
-/obj/machinery/gateway/centeraway/attack_ghost(mob/user as mob)
+/obj/machinery/gateway/centeraway/attack_ghost(mob/user)
 	if(stationgate)
 		user.forceMove(stationgate.loc)
 	else
@@ -82,7 +88,7 @@
 // but I'm leaving it here anyway
 // commented out, of course.
 /*
-/atom/proc/attack_admin(mob/user as mob)
+/atom/proc/attack_admin(mob/user)
 	if(!user || !user.client || !user.client.holder)
 		return
 	attack_hand(user)

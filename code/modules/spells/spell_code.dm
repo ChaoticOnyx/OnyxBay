@@ -4,7 +4,7 @@
 	var/feedback = "" //what gets sent if this spell gets chosen by the spellbook.
 	var/panel = "Spells"//What panel the proc holder needs to go on.
 
-	var/icon = 'icons/mob/screen_spells.dmi'
+	var/icon = 'icons/hud/screen_spells.dmi'
 	// Name of the icon used in generating the spell hud object
 	var/icon_state = "fullblock"
 

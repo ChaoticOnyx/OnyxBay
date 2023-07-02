@@ -161,7 +161,13 @@
 	path = /obj/item/aiModule/syndicate
 
 /datum/uplink_item/item/tools/teleporter
-	name = "Teleporter Circuit Board"
+	name = "Teleporter Console Circuit Board"
 	item_cost = 8
 	path = /obj/item/circuitboard/teleporter
+	antag_roles = list(MODE_NUKE)
+
+/datum/uplink_item/item/tools/teleporter
+	name = "Teleporter Gate Circuit Board"
+	item_cost = 8
+	path = /obj/item/circuitboard/teleporter_gate
 	antag_roles = list(MODE_NUKE)
