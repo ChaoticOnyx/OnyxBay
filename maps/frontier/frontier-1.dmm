@@ -2638,7 +2638,7 @@
 "beE" = (/obj/machinery/r_n_d/protolathe,/obj/effect/floor_decal/industrial/outline/blue,/turf/simulated/floor/tiled/rough,/area/rnd/lab)
 "beF" = (/turf/simulated/wall/r_wall,/area/maintenance/substation/atmospherics)
 "beG" = (/obj/machinery/r_n_d/destructive_analyzer,/obj/effect/floor_decal/industrial/outline/blue,/obj/structure/extinguisher_cabinet{pixel_x = 25},/turf/simulated/floor/tiled/rough,/area/rnd/lab)
-"beH" = (/obj/effect/floor_decal/corner/paleblue,/obj/structure/table/standard,/obj/item/device/mmi,/obj/item/device/mmi,/obj/item/pen,/turf/simulated/floor/tiled/dark/rough,/area/assembly/robotics)
+"beH" = (/obj/effect/floor_decal/corner/paleblue,/obj/structure/table/standard,/obj/item/organ/internal/mastermind/mmi,/obj/item/organ/internal/mastermind/mmi,/obj/item/pen,/turf/simulated/floor/tiled/dark/rough,/area/assembly/robotics)
 "beI" = (/obj/effect/floor_decal/corner/paleblue{dir = 10},/obj/structure/table/standard,/obj/item/device/robotanalyzer{pixel_y = 6},/obj/item/reagent_containers/spray/sterilizine,/obj/item/device/radio/intercom{pixel_y = 22},/obj/machinery/atmospherics/unary/vent_pump/on,/turf/simulated/floor/tiled/dark/rough,/area/assembly/robotics)
 "beJ" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/rough,/area/engineering)
 "beK" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/light,/turf/simulated/floor/tiled/rough,/area/engineering)
