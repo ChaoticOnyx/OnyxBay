@@ -973,7 +973,7 @@
 	to_chat(T, SPAN_NOTICE("You feel pure bliss as [user] touches you."))
 	vampire.use_blood(power_use_cost)
 
-	T.reagents.add_reagent(/datum/reagent/rezadone, 3)
+	T.reagents.add_reagent(/datum/reagent/rezadone, 2)
 	T.reagents.add_reagent(/datum/reagent/painkiller, 1.0) //enough to get back onto their feet
 
 // Convert a human into a vampire.
