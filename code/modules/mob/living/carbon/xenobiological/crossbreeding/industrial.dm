@@ -180,8 +180,8 @@ Industrial extracts:
 /obj/item/metroidcross/industrial/oil
 	colour = "oil"
 	effect_desc = "Produces grenade casings."
-	plasmarequired = 60
-	itempath = /obj/item/grenade/chem_grenade/metalfoam
+	plasmarequired = 20
+	itempath = /obj/item/grenade/chem_grenade
 
 /obj/item/metroidcross/industrial/black //What does this have to do with black metroids? No clue! Fun, though
 	colour = "black"

@@ -1028,7 +1028,7 @@
 
 /datum/modifier/status_effect/stabilized/gold/think()
 	var/obj/item/metroidcross/stabilized/gold/linked = linked_extract
-	if(QDELETED(familiar))
+	if(isnull(familiar))
 		familiar = new linked.mob_type(get_turf(holder.loc))
 		familiar.name = linked.mob_name
 		familiar.add_language(LANGUAGE_GALCOM)

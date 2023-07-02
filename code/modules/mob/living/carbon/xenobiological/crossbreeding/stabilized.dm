@@ -36,14 +36,14 @@ Stabilized extracts:
 		return
 
 	var/mob/living/carbon/human/H = humanfound
-	effectpath = /datum/modifier/status_effect/stabilized
 	var/static/list/effects = subtypesof(/datum/modifier/status_effect/stabilized)
 
-	for(var/X in effects)
-		var/datum/modifier/status_effect/stabilized/S = X
-		if(initial(S.colour) == colour)
-			effectpath = S
-			break
+	if(isnull(effectpath))
+		for(var/X in effects)
+			var/datum/modifier/status_effect/stabilized/S = X
+			if(initial(S.colour) == colour)
+				effectpath = S
+				break
 
 	if(!H.has_modifier_of_type(effectpath))
 		var/datum/modifier/status_effect/stabilized/S = H.add_modifier(effectpath)
@@ -148,6 +148,8 @@ Stabilized extracts:
 			L.remove_a_modifier_of_type(/datum/modifier/status_effect/stabilized/gold)
 	if(choice == "Familiar Location")
 		to_chat(user, SPAN_NOTICE("You prod [src], and it shudders slightly."))
+		var/datum/modifier/status_effect/stabilized/gold/G = linked_effect
+		do_teleport(G.familiar, get_turf(src))
 		set_next_think(world.time + 1 SECOND)
 
 	if(choice == "Familiar Species")

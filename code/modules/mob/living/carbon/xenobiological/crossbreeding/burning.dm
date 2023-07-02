@@ -17,7 +17,7 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/attack_self(mob/user)
 	if(!reagents.has_reagent(/datum/reagent/toxin/plasma, plasma_value))
-		to_chat(user, SPAN_WARNING("This extract needs to be some amount of plasma to activate!"))
+		to_chat(user, SPAN_WARNING("This extract needs some amount of plasma to activate!"))
 		return
 	reagents.remove_reagent(/datum/reagent/toxin/plasma, plasma_value)
 	to_chat(user, SPAN_NOTICE("You squeeze the extract, and it absorbs the plasma!"))
