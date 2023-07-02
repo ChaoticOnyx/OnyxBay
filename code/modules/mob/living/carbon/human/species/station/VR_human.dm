@@ -13,7 +13,7 @@
 	poison_type = null
 
 	has_organ = list(
-		BP_BRAIN = /obj/item/organ/internal/brain,
+		BP_BRAIN = /obj/item/organ/internal/mastermind/brain,
 		BP_STOMACH = /obj/item/organ/internal/stomach,
 		BP_HEART = /obj/item/organ/internal/heart
 		)

@@ -42,7 +42,7 @@ var/datum/species/shapeshifter/promethean/prometheans
 	limbs_are_nonsolid =  TRUE
 
 	unarmed_types = list(/datum/unarmed_attack/metroid_glomp)
-	has_organ =     list(BP_BRAIN = /obj/item/organ/internal/brain/metroid) // Metroid core.
+	has_organ =     list(BP_BRAIN = /obj/item/organ/internal/mastermind/brain/metroid) // Metroid core.
 	has_limbs = list(
 		BP_CHEST =  list("path" = /obj/item/organ/external/chest/unbreakable/metroid),
 		BP_GROIN =  list("path" = /obj/item/organ/external/groin/unbreakable/metroid),

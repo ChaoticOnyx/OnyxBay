@@ -512,14 +512,6 @@
 			playsound(target.loc, 'sound/effects/squelch1.ogg', 15, 1)
 		else
 			playsound(target.loc, 'sound/items/Ratchet.ogg', 50, 1)
-	if(istype(O, /obj/item/organ/internal/mmi_holder))
-		var/obj/item/organ/internal/mmi_holder/brain = O
-		brain.transfer_and_delete()
-
-	// Just in case somehow the organ we're extracting from an organic is an MMI
-	if(istype(O, /obj/item/organ/internal/mmi_holder))
-		var/obj/item/organ/internal/mmi_holder/brain = O
-		brain.transfer_and_delete()
 
 /datum/surgery_step/internal/remove_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
@@ -757,7 +749,7 @@
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
 		return SURGERY_FAILURE
-	if(!surgery_organ.can_recover() && istype(surgery_organ, /obj/item/organ/internal/brain))
+	if(!surgery_organ.can_recover() && istype(surgery_organ, /obj/item/organ/internal/mastermind/brain))
 		to_chat(user, SPAN("warning", "The [surgery_organ.name] is destroyed and can't be saved."))
 		return SURGERY_FAILURE
 

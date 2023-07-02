@@ -224,11 +224,11 @@
 /obj/mecha/combat/brain_moved_inside(obj/item/I, mob/user)
 	if(..())
 		var/mob/brainmob
-		if(istype(I, /obj/item/device/mmi))
-			var/obj/item/device/mmi/MMI = I
+		if(istype(I, /obj/item/organ/internal/mastermind/mmi))
+			var/obj/item/organ/internal/mastermind/mmi/MMI = I
 			brainmob = MMI.brainmob
-		else if(istype(I, /obj/item/organ/internal/posibrain))
-			var/obj/item/organ/internal/posibrain/PB = I
+		else if(istype(I, /obj/item/organ/internal/mastermind/posibrain))
+			var/obj/item/organ/internal/mastermind/posibrain/PB = I
 			brainmob = PB.brainmob
 		if(brainmob.client)
 			brainmob.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")

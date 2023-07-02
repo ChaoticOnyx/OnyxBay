@@ -275,9 +275,6 @@
 						current_child.internal_organs.Remove(removing)
 
 						status |= ORGAN_CUT_AWAY
-						if(istype(removing, /obj/item/organ/internal/mmi_holder))
-							var/obj/item/organ/internal/mmi_holder/O = removing
-							removing = O.transfer_and_delete()
 
 						removing.forceMove(get_turf(src))
 						user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))

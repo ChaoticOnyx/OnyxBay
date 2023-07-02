@@ -302,10 +302,14 @@
 #define SPECIES_NABBER      "Giant Armoured Serpentid"
 #define SPECIES_PROMETHEAN  "Promethean"
 #define SPECIES_EGYNO       "Egyno"
-#define SPECIES_MONKEY      "Monkey"
 #define SPECIES_GOLEM       "Golem"
 #define SPECIES_ABDUCTOR    "Abductor"
 #define SPECIES_SWINE		"Trottine"
+
+#define SPECIES_MONKEY      "Monkey"
+#define SPECIES_FARWA       "Farwa"
+#define SPECIES_NEAERA      "Neaera"
+#define SPECIES_STOK        "Stok"
 
 // Ayyy IDs.
 #define SPECIES_XENO                 "Xenomorph"

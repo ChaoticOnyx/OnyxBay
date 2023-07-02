@@ -72,7 +72,7 @@
 	var/list/eye_overlays = list()
 
 	has_organ = list(    // which required-organ checks are conducted.
-		BP_BRAIN =    /obj/item/organ/internal/brain/nabber,
+		BP_BRAIN =    /obj/item/organ/internal/mastermind/brain/nabber,
 		BP_EYES =     /obj/item/organ/internal/eyes/nabber,
 		BP_TRACH =    /obj/item/organ/internal/lungs/nabber,
 		BP_HEART =    /obj/item/organ/internal/heart/nabber,
@@ -195,8 +195,8 @@
 	H.remove_cloaking_source(src)
 
 	var/obj/item/organ/internal/B = H.internal_organs_by_name[BP_BRAIN]
-	if(istype(B,/obj/item/organ/internal/brain/nabber))
-		var/obj/item/organ/internal/brain/nabber/N = B
+	if(istype(B,/obj/item/organ/internal/mastermind/brain/nabber))
+		var/obj/item/organ/internal/mastermind/brain/nabber/N = B
 
 		tally += N.lowblood_tally
 

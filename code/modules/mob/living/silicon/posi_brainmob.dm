@@ -1,5 +1,5 @@
 /mob/living/silicon/sil_brainmob
-	var/obj/item/organ/internal/posibrain/container = null
+	var/obj/item/organ/internal/mastermind/posibrain/container = null
 	var/emp_damage = 0//Handles a type of MMI damage
 	var/alert = null
 	var/list/owner_channels = list()
@@ -14,7 +14,7 @@
 
 /mob/living/silicon/sil_brainmob/New()
 	reagents = new /datum/reagents(1000, src)
-	if(istype(loc, /obj/item/organ/internal/posibrain))
+	if(istype(loc, /obj/item/organ/internal/mastermind/posibrain))
 		container = loc
 	add_language("Robot Talk", 1)
 
@@ -31,7 +31,7 @@
 /mob/living/silicon/sil_brainmob/update_canmove()
 	if(in_contents_of(/obj/mecha))
 		use_me = 1
-	else if(container && istype(container, /obj/item/organ/internal/posibrain) && istype(container.loc, /turf))
+	else if(container && istype(container, /obj/item/organ/internal/mastermind/posibrain) && istype(container.loc, /turf))
 		use_me = 1
 
 /mob/living/silicon/sil_brainmob/isSynthetic()

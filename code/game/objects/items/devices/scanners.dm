@@ -90,15 +90,14 @@ REAGENT SCANNER
 	var/brain_data = list()
 	var/brain_result = "normal"
 
-	var/obj/item/organ/internal/brain/brain
-	if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/brain))
+	var/obj/item/organ/internal/mastermind/brain/brain
+	if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/mastermind/brain))
 		brain = H.internal_organs_by_name[BP_BRAIN]
-	else if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/mmi_holder))
-		var/obj/item/organ/internal/mmi_holder/MMI = H.internal_organs_by_name[BP_BRAIN]
-		brain = MMI.stored_mmi?.brainobj
+	else if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/mastermind/mmi))
+		brain = H.internal_organs_by_name[BP_BRAIN]?.brainobj
 
 	if(H.should_have_organ(BP_BRAIN))
-		if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/posibrain))
+		if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/mastermind/posibrain))
 			brain_result = SPAN("danger", "ERROR - No organic tissue found")
 		else if(!brain || H.is_ic_dead() || (H.status_flags & FAKEDEATH) || (isundead(H) && !isfakeliving(H)))
 			brain_result = SPAN("danger", "none, patient is braindead")
