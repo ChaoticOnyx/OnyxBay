@@ -233,8 +233,8 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			if(ind > 1)
 				. += ", "
 			var/datum/robolimb/R
-			if(pref.rlimb_data[name] && all_robolimbs[pref.rlimb_data[name]])
-				R = all_robolimbs[pref.rlimb_data[name]]
+			if(pref.rlimb_data[name] && GLOB.all_robolimbs[pref.rlimb_data[name]])
+				R = GLOB.all_robolimbs[pref.rlimb_data[name]]
 			else
 				R = basic_robolimb
 			. += "\t[R.company] [organ_name] prosthesis"
