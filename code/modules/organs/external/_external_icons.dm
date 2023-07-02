@@ -19,7 +19,7 @@ var/list/limb_icon_cache = list()
 	h_col = list(human.r_hair, human.g_hair, human.b_hair)
 	h_s_col = list(human.r_s_hair, human.g_s_hair, human.b_s_hair)
 	if(BP_IS_ROBOTIC(src))
-		var/datum/robolimb/franchise = all_robolimbs[model]
+		var/datum/robolimb/franchise = GLOB.all_robolimbs[model]
 		if(!(franchise && franchise.skintone))
 			return
 	if(species && human.species && species.name != human.species.name)
@@ -42,7 +42,7 @@ var/list/limb_icon_cache = list()
 	h_col = list(dna.GetUIValue(DNA_UI_HAIR_R),dna.GetUIValue(DNA_UI_HAIR_G),dna.GetUIValue(DNA_UI_HAIR_B))
 	h_s_col = list(dna.GetUIValue(DNA_UI_S_HAIR_R),dna.GetUIValue(DNA_UI_S_HAIR_G),dna.GetUIValue(DNA_UI_S_HAIR_B))
 	if(BP_IS_ROBOTIC(src))
-		var/datum/robolimb/franchise = all_robolimbs[model]
+		var/datum/robolimb/franchise = GLOB.all_robolimbs[model]
 		if(!(franchise && franchise.skintone))
 			return
 	if(!isnull(dna.GetUIValue(DNA_UI_SKIN_TONE)) && (species.appearance_flags & HAS_A_SKIN_TONE))

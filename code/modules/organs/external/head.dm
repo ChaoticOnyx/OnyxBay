@@ -31,7 +31,7 @@
 	if(BP_IS_ROBOTIC(src) && disintegrate == DROPLIMB_BURN)
 		var/obj/item/organ/internal/mmi_holder/FBP_brain = owner.internal_organs_by_name[BP_BRAIN]
 		if(istype(FBP_brain))
-			FBP_brain.stored_mmi.visible_message(SPAN_DANGER("You see a bright flash as you get catapulted out of your body. You feel disoriented, which must be normal since you're just a brain in can."), SPAN_NOTICE("[owner]'s head ejects an MMI!"))
+			FBP_brain.stored_mmi.visible_message(SPAN_DANGER("You see a bright flash as you get catapulted out of your body. You feel disoriented, which must be normal since you're just a brain in a can."), SPAN_NOTICE("[owner]'s head ejects an MMI!"))
 			FBP_brain.removed()
 			FBP_brain.transfer_and_delete()
 	return ..()
@@ -87,7 +87,7 @@
 
 /obj/item/organ/external/head/robotize(company, skip_prosthetics = FALSE, keep_organs = FALSE, just_printed = FALSE)
 	if(company)
-		var/datum/robolimb/R = all_robolimbs[company]
+		var/datum/robolimb/R = GLOB.all_robolimbs[company]
 		if(R)
 			can_intake_reagents = R.can_eat
 	. = ..(company, skip_prosthetics, 1)
@@ -110,7 +110,7 @@
 		var/datum/species/S = owner.species
 		var/has_eyes_overlay = S.has_eyes_icon
 		if(BP_IS_ROBOTIC(src)) // Robolimbs don't always have eye icon.
-			var/datum/robolimb/R = all_robolimbs[model]
+			var/datum/robolimb/R = GLOB.all_robolimbs[model]
 			has_eyes_overlay = R.has_eyes_icon
 
 		var/datum/body_build/BB = owner.body_build
