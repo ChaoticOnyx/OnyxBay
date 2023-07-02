@@ -603,7 +603,7 @@
 			user.adjustCloneLoss(0 - to_heal)
 			blood_used += round(to_heal * 1.2)
 
-		var temp_blood_used = blood_used
+		var/temp_blood_used = blood_used
 		vampire.use_blood(temp_blood_used)
 		if (vampire.blood_usable <= 15)
 			vampire.status &= ~VAMP_HEALING
