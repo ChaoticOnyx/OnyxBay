@@ -14,7 +14,7 @@
 #define LASER     "laser"
 #define ENERGY    "energy"
 #define BULLET    "bullet"
-#define BOMB	  "BOMB"
+#define BOMB	  "bomb"
 
 #define STUN      "stun"
 #define WEAKEN    "weaken"

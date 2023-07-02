@@ -342,16 +342,12 @@
 #define SPECIES_GOLEM_SAND 			"Sand Golem"
 #define SPECIES_GOLEM_GLASS 		"Glass Golem"
 #define SPECIES_GOLEM_BLUESPACE 	"Bluespace Golem"
-#define SPECIES_GOLEM_BANANIUM 		"Bananium Golem"
 #define SPECIES_GOLEM_CULT 			"Cult Golem"
 #define SPECIES_GOLEM_CLOTH 		"Cloth Golem"
 #define SPECIES_GOLEM_PLASTIC 		"Plastic Golem"
 #define SPECIES_GOLEM_BRONZE 		"Bronze Golem"
 #define SPECIES_GOLEM_CARDBOARD 	"Cardboard Golem"
 #define SPECIES_GOLEM_LEATHER 		"Leather Golem"
-#define SPECIES_GOLEM_DURATHREAD 	"Durathread Golem"
-#define SPECIES_GOLEM_BONE 			"Bone Golem"
-#define SPECIES_GOLEM_SNOW 			"Snow Golem"
 #define SPECIES_GOLEM_HYDROGEN 		"Hydrogen Golem"
 
 #define SURGERY_CLOSED 0

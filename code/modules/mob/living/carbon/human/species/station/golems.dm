@@ -165,6 +165,7 @@
 			to_chat(owner, SPAN_NOTICE("You ignite yourself!"))
 		else
 			to_chat(owner, SPAN_WARNING("You try to ignite yourself, but fail!"))
+			return
 		H.IgniteMob() //firestacks are already there passively
 
 //Harder to hurt
@@ -231,30 +232,20 @@
 	..()
 	species_flags |= SPECIES_FLAG_NO_SLIP
 
-//Immune to ash storms
 /datum/species/golem/titanium
 	name = SPECIES_GOLEM_TITANIUM
 	fixed_mut_color = "#5F5F5F"
 	meat_type = /obj/item/stack/material/plasteel/titanium
-	info_text = "As a <span class='danger'>Titanium Golem</span>, you are immune to ash storms, and slightly more resistant to burn damage."
+	info_text = "As a <span class='danger'>Titanium Golem</span>, you are slightly more resistant to burn damage."
 	burn_mod = 0.9
 	prefix = "Titanium"
 	special_names = list("Dioxide")
-//No ashshtorms
-/datum/species/golem/titanium/handle_post_spawn(mob/living/carbon/human/H)
-	..()
-	//ADD_TRAIT(C, TRAIT_ASHSTORM_IMMUNE)
 
-/datum/species/golem/titanium/on_species_loss(mob/living/carbon/human/H)
-	. = ..()
-	//REMOVE_TRAIT(C, TRAIT_ASHSTORM_IMMUNE)
-
-//Immune to ash storms and lava
 /datum/species/golem/plastitanium
 	name = SPECIES_GOLEM_PLASTITANIUM
 	fixed_mut_color = "#262737"
 	meat_type = /obj/item/stack/material/ocp
-	info_text = "As a <span class='danger'>Plastitanium Golem</span>, you are immune to both ash storms and lava, and slightly more resistant to burn damage."
+	info_text = "As a <span class='danger'>Plastitanium Golem</span>, you are slightly more resistant to burn damage."
 	burn_mod = 0.8
 	prefix = "Plastitanium"
 	special_names = null
@@ -291,7 +282,6 @@
 	H.adjustToxLoss(-1 * 0.1)
 	H.adjustOxyLoss(-1 * 0.1)
 
-//Since this will usually be created from a collaboration between podpeople and free golems, wood golems are a mix between the two races
 /datum/species/golem/wood
 	name = SPECIES_GOLEM_WOOD
 	fixed_mut_color = "#512704"
@@ -403,6 +393,7 @@
 /datum/species/golem/glass/on_species_loss(mob/living/carbon/human/H)
 	. = ..()
 	H.alpha = 255
+
 /datum/species/golem/glass/handle_death(mob/living/carbon/human/H)
 	playsound(H, 'sound/effects/materials/glass/glassbr.ogg', 70, TRUE)
 	H.visible_message(SPAN_DANGER("[H] shatters!"))
@@ -693,6 +684,7 @@
 /datum/species/golem/bronze/handle_post_spawn(mob/living/carbon/human/H)
 	. = ..()
 	H.AddComponent(/datum/component/golem/bronze)
+
 /datum/species/golem/bronze/on_species_loss(mob/living/carbon/human/H)
 	. = ..()
 	var/datum/component/golem/bronze/golem_comp = H.get_component(/datum/component/golem/bronze)

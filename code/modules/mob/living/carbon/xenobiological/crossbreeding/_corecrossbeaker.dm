@@ -29,7 +29,7 @@
 	name = "blood extract"
 	desc = "A sphere of liquid blood, somehow managing to stay together."
 	color = "#FF0000"
-	list_reagents = list(/datum/reagent/blood = 50)
+	list_reagents = list(/datum/reagent/nanoblood = 50)
 
 /obj/item/metroidcrossbeaker/soporific //10u soporific
 	name = "sleepy extract"

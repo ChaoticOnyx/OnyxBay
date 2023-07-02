@@ -85,6 +85,7 @@ Burning extracts:
 /obj/item/metroidcross/burning/purple/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] fills with a bubbling liquid!"))
 	new /obj/item/metroidcrossbeaker/autoinjector/metroidstimulant(get_turf(user))
+	user.add_modifier(/datum/modifier/movespeed/lightpink)
 	..()
 
 /obj/item/metroidcross/burning/blue
