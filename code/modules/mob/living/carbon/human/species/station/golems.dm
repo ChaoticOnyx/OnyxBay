@@ -467,7 +467,7 @@
 	name = "Unstable Teleport"
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "jaunt"
-	button_icon = 'icons/mob/actions.dmi'
+	button_icon = 'icons/hud/actions.dmi'
 	cooldown_time = 15 SECONDS
 
 /datum/action/cooldown/unstable_teleport/Activate()

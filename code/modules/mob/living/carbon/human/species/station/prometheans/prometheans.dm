@@ -168,7 +168,7 @@
 	name = "Regenerate Limbs"
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "metroidheal"
-	button_icon = 'icons/mob/actions.dmi'
+	button_icon = 'icons/hud/actions.dmi'
 	background_icon_state = "bg_alien"
 
 /datum/action/innate/regenerate_limbs/Trigger()

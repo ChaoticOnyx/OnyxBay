@@ -19,7 +19,7 @@
 	/// A callback invoked after an unlink is done. Optional.
 	var/datum/callback/post_unlink_callback
 	/// The icon file given to the speech action handed out.
-	var/speech_action_icon = 'icons/mob/actions.dmi'
+	var/speech_action_icon = 'icons/hud/actions.dmi'
 	/// The icon state applied to the speech action handed out.
 	var/speech_action_icon_state = "link_speech"
 	/// The icon background for the speech action handed out.
@@ -40,7 +40,7 @@
 	unlink_message,
 	signals_which_destroy_us,
 	datum/callback/post_unlink_callback,
-	speech_action_icon = 'icons/mob/actions.dmi',
+	speech_action_icon = 'icons/hud/actions.dmi',
 	speech_action_icon_state = "link_speech",
 	speech_action_background_icon_state = "bg_alien",
 	)
@@ -163,7 +163,7 @@
 	name = "Mind Link Speech"
 	//desc = "Send a psychic message to everyone connected to your Link."
 	button_icon_state = "link_speech"
-	button_icon = 'icons/mob/actions.dmi'
+	button_icon = 'icons/hud/actions.dmi'
 	background_icon_state = "bg_alien"
 
 /datum/action/innate/linked_speech/New(Target)
@@ -210,7 +210,7 @@
 	name = "Send Thought"
 	//desc = "Send a private psychic message to someone you can see."
 	button_icon_state = "send_mind"
-	button_icon = 'icons/mob/actions.dmi'
+	button_icon = 'icons/hud/actions.dmi'
 	background_icon_state = "bg_alien"
 
 
@@ -260,7 +260,7 @@
 	name = "Link Minds"
 	//desc = "Link someone's mind to your Slime Link, allowing them to communicate telepathically with other linked minds."
 	button_icon_state = "mindlink"
-	button_icon = 'icons/mob/actions.dmi'
+	button_icon = 'icons/hud/actions.dmi'
 	background_icon_state = "bg_alien"
 	/// The species required to use this ability. Typepath.
 	var/req_species = /datum/species/promethean/stargazer

@@ -98,7 +98,7 @@
 
 /datum/action/innate/metroid_place
 	name = "Place metroids"
-	button_icon = 'icons/mob/actions.dmi'
+	button_icon = 'icons/hud/actions.dmi'
 	button_icon_state = "metroid_down"
 
 /datum/action/innate/metroid_place/Activate()
@@ -118,7 +118,7 @@
 
 /datum/action/innate/metroid_pick_up
 	name = "Pick up metroid"
-	button_icon = 'icons/mob/actions.dmi'
+	button_icon = 'icons/hud/actions.dmi'
 	button_icon_state = "metroid_up"
 
 /datum/action/innate/metroid_pick_up/Activate()
@@ -144,7 +144,7 @@
 
 /datum/action/innate/feed_metroid
 	name = "Feed metroids"
-	button_icon = 'icons/mob/actions.dmi'
+	button_icon = 'icons/hud/actions.dmi'
 	button_icon_state = "monkey_down"
 
 /datum/action/innate/feed_metroid/Activate()
@@ -170,7 +170,7 @@
 
 /datum/action/innate/monkey_recycle
 	name = "Recycle Monkeys"
-	button_icon = 'icons/mob/actions.dmi'
+	button_icon = 'icons/hud/actions.dmi'
 	button_icon_state = "monkey_up"
 
 /datum/action/innate/monkey_recycle/Activate()
@@ -199,7 +199,7 @@
 
 /datum/action/innate/metroid_scan
 	name = "Scan metroid"
-	button_icon = 'icons/mob/actions.dmi'
+	button_icon = 'icons/hud/actions.dmi'
 	button_icon_state = "metroid_scan"
 
 /datum/action/innate/metroid_scan/Activate()
@@ -215,7 +215,7 @@
 		to_chat(owner, SPAN_WARNING("Target is not near a camera. Cannot proceed."))
 /datum/action/innate/hotkey_help
 	name = "Hotkey Help"
-	button_icon = 'icons/mob/actions.dmi'
+	button_icon = 'icons/hud/actions.dmi'
 	button_icon_state = "hotkey_help"
 
 /datum/action/innate/hotkey_help/Activate()

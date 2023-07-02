@@ -67,7 +67,7 @@
 	//desc = "Eat a metroid extract to use its properties."
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "metroidconsume"
-	button_icon = 'icons/mob/actions.dmi'
+	button_icon = 'icons/hud/actions.dmi'
 	background_icon_state = "bg_alien"
 
 /datum/action/innate/integrate_extract/New(Target)
@@ -130,7 +130,7 @@
 	action_type = AB_INNATE
 	check_flags = AB_CHECK_CONSCIOUS
 	button_icon_state = "metroiduse1"
-	button_icon = 'icons/mob/actions.dmi'
+	button_icon = 'icons/hud/actions.dmi'
 	background_icon_state = "bg_alien"
 	var/activation_type = METROID_ACTIVATE_MINOR
 	shared_cooldown = TRUE
