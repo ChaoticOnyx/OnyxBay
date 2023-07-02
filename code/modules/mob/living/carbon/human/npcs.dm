@@ -31,7 +31,7 @@
 		C.sensor_mode = SUIT_SENSOR_OFF
 
 /mob/living/carbon/human/blank/New(new_loc)
-	..(new_loc, "Vat-Grown Human")
+	..(new_loc, SPECIES_VATGROWN)
 
 /mob/living/carbon/human/blank/Initialize()
 	. = ..()

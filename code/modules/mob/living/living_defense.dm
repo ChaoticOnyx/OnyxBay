@@ -79,6 +79,10 @@
 			//this is mostly so that armour doesn't cause people to lose MORE fluid from lasers than they would otherwise
 			damage *= FLUIDLOSS_CONC_BURN/FLUIDLOSS_WIDE_BURN
 		flags &= ~(DAM_SHARP|DAM_EDGE)
+	if(iscarbon(src))
+		var/mob/living/carbon/C = src
+		if(!C.species.bullet_act(P, C))
+			return
 
 	if(!P.nodamage)
 		apply_damage(damage, P.damage_type, def_zone, absorb, flags, P)

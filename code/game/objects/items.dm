@@ -625,6 +625,9 @@ var/list/global/slot_flags_enumeration = list(
 	return loc
 
 /obj/item/proc/eyestab(mob/living/carbon/M, mob/living/carbon/user)
+	if(is_pacifist(user))
+		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		return
 
 	var/mob/living/carbon/human/H = M
 	if(istype(H))

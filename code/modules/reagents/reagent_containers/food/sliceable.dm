@@ -420,6 +420,31 @@
 	filled = TRUE
 
 ////////////////////////
+/obj/item/reagent_containers/food/sliceable/metroidcake
+	name = "Metroid Cake"
+	desc = "A cake with some slimy filling."
+	icon_state = "metroidcake"
+	slice_path = /obj/item/reagent_containers/food/slice/metroidcake
+	slices_num = 5
+	filling_color = "#D3D3D3"
+	center_of_mass = "x=16;y=10"
+	nutriment_desc = list("cake" = 10, "sweetness" = 10, "goo" = 15)
+	nutriment_amt = 15
+
+/obj/item/reagent_containers/food/slice/metroidcake
+	name = "Metroid Cake slice"
+	desc = "Just a slice of cake, it is enough for everyone."
+	icon_state = "metroidcake_slice"
+	trash = /obj/item/trash/dish/plate
+	filling_color = "#D3D3D3"
+	bitesize = 2
+	center_of_mass = "x=16;y=14"
+	whole_path = /obj/item/reagent_containers/food/sliceable/metroidcake
+
+/obj/item/reagent_containers/food/slice/chocolatecake/filled
+	filled = TRUE
+
+////////////////////////
 /obj/item/reagent_containers/food/sliceable/cheesewheel
 	name = "Cheese wheel"
 	desc = "A big wheel of delcious Cheddar."

@@ -234,6 +234,12 @@
 	for(var/e in L)
 		. += L[e]
 
+// Return a list of the keys in an assoc list
+/proc/list_keys(list/L)
+	. = list()
+	for(var/k in L)
+		. += k
+
 //Mergesort: divides up the list into halves to begin the sort
 /proc/sortKey(list/client/L, order = 1)
 	if(isnull(L) || L.len < 2)

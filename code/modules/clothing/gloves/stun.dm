@@ -107,6 +107,10 @@
 	if(!istype(user) || !istype(victim))
 		return
 
+	if(is_pacifist(user))
+		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		return
+
 	var/aim = check_aim(user.zone_sel.selecting)
 	var/obj/item/organ/external/affecting = victim.get_organ(aim)
 	if(!affecting)
