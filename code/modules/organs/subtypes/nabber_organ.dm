@@ -126,14 +126,14 @@
 /obj/item/organ/internal/heart/nabber
 	open = 1
 
-/obj/item/organ/internal/mastermind/brain/nabber
+/obj/item/organ/internal/cerebrum/brain/nabber
 	var/lowblood_tally = 0
 	var/lowblood_mult = 2
 	name = "distributed nervous system"
 	parent_organ = BP_CHEST
 
 
-/obj/item/organ/internal/mastermind/brain/nabber/think()
+/obj/item/organ/internal/cerebrum/brain/nabber/think()
 	if(!owner || !owner.should_have_organ(BP_HEART))
 		return
 

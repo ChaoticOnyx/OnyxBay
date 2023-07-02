@@ -63,7 +63,7 @@
 	// Components are basically robot organs.
 	var/list/components = list()
 
-	var/obj/item/organ/internal/mastermind/mmi = null
+	var/obj/item/organ/internal/cerebrum/mmi = null
 
 	var/obj/item/device/pda/ai/rbPDA = null
 
@@ -346,7 +346,7 @@
 	if(prefix)
 		modtype = prefix
 
-	if(istype(mmi, /obj/item/organ/internal/mastermind/posibrain))
+	if(istype(mmi, /obj/item/organ/internal/cerebrum/posibrain))
 		braintype = "Android"
 	else
 		braintype = "Cyborg"

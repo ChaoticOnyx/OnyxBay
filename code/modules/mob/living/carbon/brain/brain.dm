@@ -23,22 +23,22 @@
 
 /mob/living/carbon/brain/incapacitated(incapacitation_flags = INCAPACITATION_DEFAULT)
 	// brain can't be knocked out.
-	if((incapacitation_flags & INCAPACITATION_KNOCKOUT) && (container && istype(container, /obj/item/organ/internal/mastermind/mmi)))
+	if((incapacitation_flags & INCAPACITATION_KNOCKOUT) && (container && istype(container, /obj/item/organ/internal/cerebrum/mmi)))
 		return FALSE
 	return TRUE
 
 /mob/living/carbon/brain/say_understands(mob/other, datum/language/speaking)
 	// If brain is not in MMI, it can't hear mob/other.
-	if(!(container && istype(container, /obj/item/organ/internal/mastermind/mmi)))
+	if(!(container && istype(container, /obj/item/organ/internal/cerebrum/mmi)))
 		return FALSE
 	return ..()
 
 /mob/living/carbon/brain/update_canmove()
-	if(in_contents_of(/obj/mecha) || istype(loc, /obj/item/organ/internal/mastermind/mmi))
+	if(in_contents_of(/obj/mecha) || istype(loc, /obj/item/organ/internal/cerebrum/mmi))
 		use_me = 1
 
 /mob/living/carbon/brain/isSynthetic()
-	return istype(loc, /obj/item/organ/internal/mastermind/mmi)
+	return istype(loc, /obj/item/organ/internal/cerebrum/mmi)
 
 /mob/living/carbon/brain/binarycheck()
 	return isSynthetic()

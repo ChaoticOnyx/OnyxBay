@@ -749,7 +749,7 @@
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
 		return SURGERY_FAILURE
-	if(!surgery_organ.can_recover() && istype(surgery_organ, /obj/item/organ/internal/mastermind/brain))
+	if(!surgery_organ.can_recover() && istype(surgery_organ, /obj/item/organ/internal/cerebrum/brain))
 		to_chat(user, SPAN("warning", "The [surgery_organ.name] is destroyed and can't be saved."))
 		return SURGERY_FAILURE
 

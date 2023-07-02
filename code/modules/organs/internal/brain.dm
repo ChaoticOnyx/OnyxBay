@@ -1,6 +1,6 @@
 #define BRAIN_DAMAGE_THRESHOLD 10
 
-/obj/item/organ/internal/mastermind/brain
+/obj/item/organ/internal/cerebrum/brain
 	name = "\improper Brain"
 	desc = "A piece of juicy meat found in a person's head."
 
@@ -9,7 +9,7 @@
 	var/damage_threshold_value
 	var/healed_threshold = 1
 
-/obj/item/organ/internal/mastermind/brain/New(newLoc, mob/living/carbon/holder)
+/obj/item/organ/internal/cerebrum/brain/New(newLoc, mob/living/carbon/holder)
 	. = ..()
 
 	max_damage = isnull(holder?.species) ? 100 : species.total_health
@@ -18,14 +18,14 @@
 
 	damage_threshold_value = round(max_damage / BRAIN_DAMAGE_THRESHOLD)
 
-/obj/item/organ/internal/mastermind/brain/update_desc()
+/obj/item/organ/internal/cerebrum/brain/update_desc()
 	desc = initial(desc)
 	if(brainmob?.is_ic_dead())
 		desc += SPAN("deadsay", "\nThis one seems particularly lifeless. Perhaps it will regain some of its luster later...")
 	else if(brainmob?.ssd_check())
 		desc += SPAN("deadsay", "\nYou can feel the small spark of life still left in this one.")
 
-/obj/item/organ/internal/mastermind/brain/_setup_brainmob(mob/living/brain_self, mob/living/carbon/old_self)
+/obj/item/organ/internal/cerebrum/brain/_setup_brainmob(mob/living/brain_self, mob/living/carbon/old_self)
 	brain_self.dna = old_self.dna.Clone()
 	brain_self.languages = old_self.languages
 	brain_self:timeofhostdeath = old_self.timeofdeath
@@ -35,29 +35,29 @@
 		brain_self.add_modifier(M.type)
 	return ..()
 
-/obj/item/organ/internal/mastermind/brain/robotize()
-	replace_self_with(/obj/item/organ/internal/mastermind/posibrain)
+/obj/item/organ/internal/cerebrum/brain/robotize()
+	replace_self_with(/obj/item/organ/internal/cerebrum/posibrain)
 
-/obj/item/organ/internal/mastermind/brain/mechassist()
-	replace_self_with(/obj/item/organ/internal/mastermind/mmi)
+/obj/item/organ/internal/cerebrum/brain/mechassist()
+	replace_self_with(/obj/item/organ/internal/cerebrum/mmi)
 
-/obj/item/organ/internal/mastermind/brain/proc/replace_self_with(replace_path)
+/obj/item/organ/internal/cerebrum/brain/proc/replace_self_with(replace_path)
 	var/mob/living/carbon/human/tmp_owner = owner
 	if(tmp_owner)
 		tmp_owner.internal_organs_by_name[organ_tag] = new replace_path(tmp_owner)
 		tmp_owner = null
 	qdel(src)
 
-/obj/item/organ/internal/mastermind/brain/getToxLoss()
+/obj/item/organ/internal/cerebrum/brain/getToxLoss()
 	return 0
 
-/obj/item/organ/internal/mastermind/brain/proc/get_current_damage_threshold()
+/obj/item/organ/internal/cerebrum/brain/proc/get_current_damage_threshold()
 	return round(damage / damage_threshold_value)
 
-/obj/item/organ/internal/mastermind/brain/proc/past_damage_threshold(threshold)
+/obj/item/organ/internal/cerebrum/brain/proc/past_damage_threshold(threshold)
 	return (get_current_damage_threshold() > threshold)
 
-/obj/item/organ/internal/mastermind/brain/think()
+/obj/item/organ/internal/cerebrum/brain/think()
 	if(isnull(owner))
 		return ..()
 
@@ -119,7 +119,7 @@
 
 	return ..()
 
-/obj/item/organ/internal/mastermind/brain/proc/handle_disabilities()
+/obj/item/organ/internal/cerebrum/brain/proc/handle_disabilities()
 	if(owner.stat)
 		return
 
@@ -139,7 +139,7 @@
 	else if((owner.disabilities & NERVOUS) && prob(10))
 		owner.stuttering = max(10, owner.stuttering)
 
-/obj/item/organ/internal/mastermind/brain/proc/handle_damage_effects()
+/obj/item/organ/internal/cerebrum/brain/proc/handle_damage_effects()
 	if(owner.stat)
 		return
 
@@ -165,19 +165,19 @@
 			to_chat(owner, SPAN("danger", "You black out!"))
 		owner.Paralyse(10)
 
-/obj/item/organ/internal/mastermind/brain/xeno
+/obj/item/organ/internal/cerebrum/brain/xeno
 	name = "thinkpan"
 	desc = "It looks kind of like an enormous wad of purple bubblegum."
 	icon = 'icons/mob/alien.dmi'
 	icon_state = "chitin"
 
-/obj/item/organ/internal/mastermind/brain/metroid
+/obj/item/organ/internal/cerebrum/brain/metroid
 	name = "metroid core"
 	desc = "A complex, organic knot of jelly and crystalline particles."
 	icon = 'icons/mob/metroids.dmi'
 	icon_state = "green metroid extract"
 
-/obj/item/organ/internal/mastermind/brain/golem
+/obj/item/organ/internal/cerebrum/brain/golem
 	name = "adamantite brain"
 	desc = "What else could be inside the adamantite creature's head?"
 	icon = 'icons/obj/materials.dmi'

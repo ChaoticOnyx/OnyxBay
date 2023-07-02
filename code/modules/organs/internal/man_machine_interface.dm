@@ -3,7 +3,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_SWINE,
 	SPECIES_MONKEY, SPECIES_FARWA, SPECIES_NEAERA, SPECIES_STOK))
 
-/obj/item/organ/internal/mastermind/mmi
+/obj/item/organ/internal/cerebrum/mmi
 	name = "\improper Man-Machine Interface"
 	desc = "A complex life support shell that interfaces between a brain and electronic devices."
 
@@ -16,9 +16,9 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 
 	var/locked = FALSE
 
-	var/obj/item/organ/internal/mastermind/brain/brainobj = null
+	var/obj/item/organ/internal/cerebrum/brain/brainobj = null
 
-/obj/item/organ/internal/mastermind/mmi/New(newLoc, mob/living/carbon/human/old_shell)
+/obj/item/organ/internal/cerebrum/mmi/New(newLoc, mob/living/carbon/human/old_shell)
 	if(!istype(old_shell))
 		return ..()
 
@@ -27,8 +27,8 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 
 	return ..()
 
-/obj/item/organ/internal/mastermind/mmi/proc/_create_brain(mob/living/carbon/human/brain_owner)
-	var/obj/item/organ/internal/mastermind/brain/new_brain = new(src)
+/obj/item/organ/internal/cerebrum/mmi/proc/_create_brain(mob/living/carbon/human/brain_owner)
+	var/obj/item/organ/internal/cerebrum/brain/new_brain = new(src)
 
 	var/brain_gender = brain_owner?.gender | pick(list(MALE, FEMALE))
 	var/brain_species = brain_owner?.get_species() | pick(GLOB.whitelisted_mmi_species)
@@ -41,18 +41,18 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	brainobj = new_brain
 	locked = TRUE
 
-/obj/item/organ/internal/mastermind/mmi/_setup_brainmob(mob/living/brain_self, mob/living/carbon/old_self)
+/obj/item/organ/internal/cerebrum/mmi/_setup_brainmob(mob/living/brain_self, mob/living/carbon/old_self)
 	brain_self.add_language(LANGUAGE_ROBOT)
 	brain_self.add_language(LANGUAGE_EAL)
 	brain_self.add_language(LANGUAGE_GALCOM)
 	return ..()
 
-/obj/item/organ/internal/mastermind/mmi/Destroy()
+/obj/item/organ/internal/cerebrum/mmi/Destroy()
 	QDEL_NULL(brainobj)
 	return ..()
 
-/obj/item/organ/internal/mastermind/mmi/attackby(obj/item/O, mob/user)
-	if(istype(O, /obj/item/organ/internal/mastermind/brain))
+/obj/item/organ/internal/cerebrum/mmi/attackby(obj/item/O, mob/user)
+	if(istype(O, /obj/item/organ/internal/cerebrum/brain))
 		try_add_brain(O, user)
 		return
 
@@ -62,7 +62,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	if(brainmob)
 		O.attack(brainmob, user)
 
-/obj/item/organ/internal/mastermind/mmi/proc/try_add_brain(obj/item/organ/internal/mastermind/brain/new_brain, mob/user)
+/obj/item/organ/internal/cerebrum/mmi/proc/try_add_brain(obj/item/organ/internal/cerebrum/brain/new_brain, mob/user)
 	if(!istype(new_brain) || !istype(user))
 		return
 	if(brainobj || brainmob?.key)
@@ -78,7 +78,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	show_splash_text(user, "sticks brain into device.")
 	feedback_inc("cyborg_mmis_filled", 1)
 
-/obj/item/organ/internal/mastermind/mmi/proc/try_access(mob/user)
+/obj/item/organ/internal/cerebrum/mmi/proc/try_access(mob/user)
 	if(!istype(user))
 		return
 	if(!allowed(user))
@@ -91,14 +91,14 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	show_splash_text(user, "device [locked ? "locked" : "unlocked"].")
 	update_icon()
 
-/obj/item/organ/internal/mastermind/mmi/attack_self(mob/user)
+/obj/item/organ/internal/cerebrum/mmi/attack_self(mob/user)
 	if(locked)
 		show_splash_text(user, "brain is clamped into place!")
 		return
 	_remove_brain()
 	show_splash_text_to_viewers("brain ejected.")
 
-/obj/item/organ/internal/mastermind/mmi/relaymove(mob/user, direction)
+/obj/item/organ/internal/cerebrum/mmi/relaymove(mob/user, direction)
 	if(user.stat || user.stunned)
 		return
 
@@ -110,7 +110,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 		var/obj/item/integrated_circuit/input/mmi_tank/tank = loc
 		tank.relaymove(user, direction)
 
-/obj/item/organ/internal/mastermind/mmi/proc/_add_brain(obj/item/organ/internal/mastermind/brain/new_brain, mob/user)
+/obj/item/organ/internal/cerebrum/mmi/proc/_add_brain(obj/item/organ/internal/cerebrum/brain/new_brain, mob/user)
 	if(!istype(user))
 		return
 	if(!user.drop(new_brain, src))
@@ -125,7 +125,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	update_desc()
 	update_icon()
 
-/obj/item/organ/internal/mastermind/mmi/proc/_add_brainmob(obj/item/organ/internal/mastermind/brain/new_brain)
+/obj/item/organ/internal/cerebrum/mmi/proc/_add_brainmob(obj/item/organ/internal/cerebrum/brain/new_brain)
 	var/mob/living/carbon/brain/new_occupant = new_brain.brainmob
 	if(!istype(new_occupant))
 		return
@@ -139,7 +139,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 
 	_register_mob_signals()
 
-/obj/item/organ/internal/mastermind/mmi/proc/_remove_brainmob(obj/item/organ/internal/mastermind/brain/new_container)
+/obj/item/organ/internal/cerebrum/mmi/proc/_remove_brainmob(obj/item/organ/internal/cerebrum/brain/new_container)
 	_unregister_mob_signals()
 
 	brainmob:container = null
@@ -150,19 +150,19 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	new_container.brainmob = brainmob
 	brainmob = null
 
-/obj/item/organ/internal/mastermind/mmi/proc/_drop_brain()
+/obj/item/organ/internal/cerebrum/mmi/proc/_drop_brain()
 	if(isnull(brainobj))
 		return new brainobj(get_turf(src))
 
-	var/obj/item/organ/internal/mastermind/brain/new_brain
+	var/obj/item/organ/internal/cerebrum/brain/new_brain
 	brainobj.forceMove(get_turf(src))
 	new_brain = brainobj
 	brainobj = null
 
 	return new_brain
 
-/obj/item/organ/internal/mastermind/mmi/proc/_remove_brain()
-	var/obj/item/organ/internal/mastermind/brain/new_brain = _drop_brain()
+/obj/item/organ/internal/cerebrum/mmi/proc/_remove_brain()
+	var/obj/item/organ/internal/cerebrum/brain/new_brain = _drop_brain()
 
 	_remove_brainmob(new_brain)
 
@@ -170,14 +170,14 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	update_desc()
 	update_icon()
 
-/obj/item/organ/internal/mastermind/mmi/update_desc()
+/obj/item/organ/internal/cerebrum/mmi/update_desc()
 	desc = initial(desc)
 	if(brainmob?.is_ic_dead())
 		desc += SPAN_DEADSAY("\nScans indicate that \the [brainmob?.name] seems to be dead.")
 	else if(brainmob?.ssd_check())
 		desc += SPAN_DEADSAY("\nScans indicate that \the [brainmob?.name] seems to be unconscious.")
 
-/obj/item/organ/internal/mastermind/mmi/update_icon()
+/obj/item/organ/internal/cerebrum/mmi/update_icon()
 	overlays.Cut()
 	if(isnull(brainobj))
 		icon_state = "mmi-empty"

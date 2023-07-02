@@ -136,9 +136,9 @@
 	O.job = "Cyborg"
 	if(O.mind.assigned_role == "Cyborg")
 		if(O.mind.role_alt_title == "Android")
-			O.mmi = new /obj/item/organ/internal/mastermind/posibrain(O, src)
+			O.mmi = new /obj/item/organ/internal/cerebrum/posibrain(O, src)
 		else
-			O.mmi = new /obj/item/organ/internal/mastermind/mmi(O, src)
+			O.mmi = new /obj/item/organ/internal/cerebrum/mmi(O, src)
 
 		O.mmi.transfer_identity(src)
 

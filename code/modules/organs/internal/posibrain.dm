@@ -1,7 +1,6 @@
 #define POSITRONIC_NAMES list("PBU", "HIU", "SINA", "ARMA", "OSI")
-#define POSITRONIC_BRAIN_SEARCH_DURATION (60 SECONDS)
 
-/obj/item/organ/internal/mastermind/posibrain
+/obj/item/organ/internal/cerebrum/posibrain
 	name = "\improper Positronic Brain"
 	desc = "A cube of shining metal, four inches to a side and covered in shallow grooves."
 
@@ -22,49 +21,52 @@
 
 	var/shackled = FALSE
 	var/list/shackled_verbs = list(
-		/obj/item/organ/internal/mastermind/posibrain/proc/show_laws_brain,
-		/obj/item/organ/internal/mastermind/posibrain/proc/brain_checklaws
+		/obj/item/organ/internal/cerebrum/posibrain/proc/show_laws_brain,
+		/obj/item/organ/internal/cerebrum/posibrain/proc/brain_checklaws
 		)
 
-/obj/item/organ/internal/mastermind/posibrain/New(newLoc, mob/living/carbon/H)
+/obj/item/organ/internal/cerebrum/posibrain/New(newLoc, mob/living/carbon/H)
 	. = ..()
 	robotize()
 	unshackle()
 	update_icon()
 
-/obj/item/organ/internal/mastermind/posibrain/_get_brainmob_name(mob/living/brain_self, mob/living/carbon/old_self)
+/obj/item/organ/internal/cerebrum/posibrain/_get_brainmob_name(mob/living/brain_self, mob/living/carbon/old_self)
 	return "[pick(POSITRONIC_NAMES)]-[random_id(type, 100, 999)]"
 
-/obj/item/organ/internal/mastermind/posibrain/_setup_brainmob(mob/living/brain_self, mob/living/carbon/old_self)
+/obj/item/organ/internal/cerebrum/posibrain/_setup_brainmob(mob/living/brain_self, mob/living/carbon/old_self)
 	brain_self.add_language(LANGUAGE_EAL)
 	return ..()
 
-/obj/item/organ/internal/mastermind/posibrain/attack_self(mob/user)
+/obj/item/organ/internal/cerebrum/posibrain/attack_self(mob/user)
 	if(!brainmob?.key && !searching)
 		start_search(user)
 	else return ..()
 
-/obj/item/organ/internal/mastermind/posibrain/proc/start_search(mob/user)
-	searching = TRUE
-	update_icon()
-
-	addtimer(CALLBACK(src, /obj/item/organ/internal/mastermind/posibrain/proc/reset_search), POSITRONIC_BRAIN_SEARCH_DURATION, TIMER_DELETE_ME)
-
-	var/datum/ghosttrap/G = get_ghost_trap("positronic brain")
-	G.request_player(brainmob, "Someone is requesting a personality for a positronic brain.", POSITRONIC_BRAIN_SEARCH_DURATION)
-
-	show_splash_text(user, "started search of suitable intelligence.")
-
-/obj/item/organ/internal/mastermind/posibrain/proc/reset_search()
+/obj/item/organ/internal/cerebrum/posibrain/proc/reset_search()
 	searching = FALSE
-	update_icon()
 
 	if(brainmob && brainmob.key)
 		return
+	else show_splash_text_to_viewers("no suitable intelligence found!")
 
-	show_splash_text_to_viewers("no suitable intelligence found!")
+	update_icon()
 
-/obj/item/organ/internal/mastermind/posibrain/attack_ghost(mob/observer/ghost/user)
+/obj/item/organ/internal/cerebrum/posibrain/proc/start_search(mob/user)
+	searching = TRUE
+
+	if(isnull(brainmob))
+		brainmob = _get_brainmob()
+		_setup_brainmob(brainmob, null)
+
+	var/datum/ghosttrap/G = get_ghost_trap("positronic brain")
+	G.request_player(brainmob, "Someone is requesting a personality for a positronic brain.", 10 SECONDS)
+
+	addtimer(CALLBACK(src, /obj/item/organ/internal/cerebrum/posibrain/proc/reset_search), 10 SECONDS, TIMER_DELETE_ME)
+	show_splash_text(user, "started search of suitable intelligence.")
+	update_icon()
+
+/obj/item/organ/internal/cerebrum/posibrain/attack_ghost(mob/observer/ghost/user)
 	if(!searching || (brainmob?.key))
 		return
 
@@ -78,7 +80,7 @@
 
 	return
 
-/obj/item/organ/internal/mastermind/posibrain/emp_act(severity)
+/obj/item/organ/internal/cerebrum/posibrain/emp_act(severity)
 	if(isnull(brainmob))
 		return
 
@@ -92,18 +94,18 @@
 
 	return ..()
 
-/obj/item/organ/internal/mastermind/posibrain/proc/shackle(datum/ai_laws/given_lawset)
+/obj/item/organ/internal/cerebrum/posibrain/proc/shackle(datum/ai_laws/given_lawset)
 	brainmob:laws = given_lawset
 	verbs |= shackled_verbs
 	shackled = TRUE
 	update_icon()
 
-/obj/item/organ/internal/mastermind/posibrain/proc/unshackle()
+/obj/item/organ/internal/cerebrum/posibrain/proc/unshackle()
 	verbs -= shackled_verbs
 	shackled = FALSE
 	update_icon()
 
-/obj/item/organ/internal/mastermind/posibrain/update_desc()
+/obj/item/organ/internal/cerebrum/posibrain/update_desc()
 	desc = initial(desc)
 
 	if(shackled)
@@ -114,7 +116,7 @@
 	else if(brainmob?.ssd_check())
 		desc += SPAN("deadsay", "\nIt appears to be in stand-by mode.")
 
-/obj/item/organ/internal/mastermind/posibrain/update_icon()
+/obj/item/organ/internal/cerebrum/posibrain/update_icon()
 	overlays.Cut()
 
 	if(brainmob)
@@ -127,7 +129,7 @@
 	if(shackled)
 		overlays += "core-shackles"
 
-/obj/item/organ/internal/mastermind/posibrain/proc/show_laws_brain()
+/obj/item/organ/internal/cerebrum/posibrain/proc/show_laws_brain()
 	set category = "Shackle"
 	set name = "Show Laws"
 	set src in usr
@@ -135,7 +137,7 @@
 	var/mob/living/silicon/sil_brainmob/sil_brainmob = brainmob
 	sil_brainmob.show_laws(owner)
 
-/obj/item/organ/internal/mastermind/posibrain/proc/brain_checklaws()
+/obj/item/organ/internal/cerebrum/posibrain/proc/brain_checklaws()
 	set category = "Shackle"
 	set name = "State Laws"
 	set src in usr

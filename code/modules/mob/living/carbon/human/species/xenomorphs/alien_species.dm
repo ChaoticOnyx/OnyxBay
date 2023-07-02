@@ -53,7 +53,7 @@
 	darksight_tint = DARKTINT_GOOD
 
 	has_organ = list(
-		O_BRAIN =    /obj/item/organ/internal/mastermind/brain/xeno,
+		O_BRAIN =    /obj/item/organ/internal/cerebrum/brain/xeno,
 		O_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel,
 		O_HIVE =     /obj/item/organ/internal/xenos/hivenode,
 		O_NUTRIENT = /obj/item/organ/internal/diona/nutrients,
@@ -218,7 +218,7 @@
 	deform =  'icons/mob/human_races/xenos/r_xenos_drone.dmi'
 
 	has_organ = list(
-		BP_BRAIN =		/obj/item/organ/internal/mastermind/brain/xeno,
+		BP_BRAIN =		/obj/item/organ/internal/cerebrum/brain/xeno,
 		BP_PLASMA =		/obj/item/organ/internal/xenos/plasmavessel/queen,
 		BP_ACID =		/obj/item/organ/internal/xenos/acidgland,
 		BP_HIVE =		/obj/item/organ/internal/xenos/hivenode,
@@ -275,7 +275,7 @@
 	deform =  'icons/mob/human_races/xenos/r_xenos_hunter.dmi'
 
 	has_organ = list(
-		BP_BRAIN =    /obj/item/organ/internal/mastermind/brain/xeno,
+		BP_BRAIN =    /obj/item/organ/internal/cerebrum/brain/xeno,
 		BP_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel/hunter,
 		BP_HIVE =     /obj/item/organ/internal/xenos/hivenode,
 		BP_NUTRIENT = /obj/item/organ/internal/diona/nutrients,
@@ -320,7 +320,7 @@
 	deform =  'icons/mob/human_races/xenos/r_xenos_sentinel.dmi'
 
 	has_organ = list(
-		BP_BRAIN =    /obj/item/organ/internal/mastermind/brain/xeno,
+		BP_BRAIN =    /obj/item/organ/internal/cerebrum/brain/xeno,
 		BP_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel/sentinel,
 		BP_ACID =     /obj/item/organ/internal/xenos/acidgland,
 		BP_HIVE =     /obj/item/organ/internal/xenos/hivenode,
@@ -373,7 +373,7 @@
 	unarmed_types = list(/datum/unarmed_attack/claws/strong/xeno/queen, /datum/unarmed_attack/bite/strong/xeno)
 
 	has_organ = list(
-		BP_BRAIN =    /obj/item/organ/internal/mastermind/brain/xeno,
+		BP_BRAIN =    /obj/item/organ/internal/cerebrum/brain/xeno,
 		BP_EGG =      /obj/item/organ/internal/xenos/eggsac,
 		BP_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel/queen,
 		BP_ACID =     /obj/item/organ/internal/xenos/acidgland,

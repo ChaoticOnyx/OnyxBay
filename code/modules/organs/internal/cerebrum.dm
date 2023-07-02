@@ -1,4 +1,4 @@
-/obj/item/organ/internal/mastermind
+/obj/item/organ/internal/cerebrum
 	name = "\improper Mastermind"
 	desc = "That's definitly a thing, containing owner's intelligence, yup."
 	icon = 'icons/mob/human_races/organs/human.dmi'
@@ -21,32 +21,32 @@
 
 	var/mob/living/brainmob = null
 
-/obj/item/organ/internal/mastermind/New(newLoc, mob/living/carbon/old_self)
+/obj/item/organ/internal/cerebrum/New(newLoc, mob/living/carbon/old_self)
 	return ..(newLoc, newLoc)
 
-/obj/item/organ/internal/mastermind/Destroy()
+/obj/item/organ/internal/cerebrum/Destroy()
 	if(!isnull(brainmob))
 		_unregister_mob_signals()
 		QDEL_NULL(brainmob)
 	return ..()
 
-/obj/item/organ/internal/mastermind/proc/_get_brainmob_name(mob/living/brain_self, mob/living/carbon/old_self)
+/obj/item/organ/internal/cerebrum/proc/_get_brainmob_name(mob/living/brain_self, mob/living/carbon/old_self)
 	return old_self.real_name
 
-/obj/item/organ/internal/mastermind/proc/_setup_brainmob(mob/living/brain_self, mob/living/carbon/old_self)
+/obj/item/organ/internal/cerebrum/proc/_setup_brainmob(mob/living/brain_self, mob/living/carbon/old_self)
 	brain_self.SetName(_get_brainmob_name(brain_self, old_self))
 	brain_self.real_name = name
 
-/obj/item/organ/internal/mastermind/proc/_create_brainmob()
+/obj/item/organ/internal/cerebrum/proc/_create_brainmob()
 	var/mob/living/new_brainmob = new brainmob_type(src)
 	new_brainmob.set_stat(CONSCIOUS)
 	new_brainmob:container = src
 	return new_brainmob
 
-/obj/item/organ/internal/mastermind/proc/_get_brainmob()
+/obj/item/organ/internal/cerebrum/proc/_get_brainmob()
 	return brainmob | _create_brainmob()
 
-/obj/item/organ/internal/mastermind/proc/transfer_identity(mob/living/carbon/old_self)
+/obj/item/organ/internal/cerebrum/proc/transfer_identity(mob/living/carbon/old_self)
 	if(!istype(old_self))
 		return
 
@@ -60,25 +60,25 @@
 	to_chat(brainmob, SPAN("notice", "You feel slightly disoriented. That's normal when you're just \a [initial(name)]."))
 	callHook("debrain", list(brainmob))
 
-/obj/item/organ/internal/mastermind/proc/_register_mob_signals()
-	register_signal(brainmob, SIGNAL_LOGGED_IN, /obj/item/organ/internal/mastermind/proc/update_info)
-	register_signal(brainmob, SIGNAL_LOGGED_OUT, /obj/item/organ/internal/mastermind/proc/update_info)
-	register_signal(brainmob, SIGNAL_MOB_DEATH, /obj/item/organ/internal/mastermind/proc/update_info)
+/obj/item/organ/internal/cerebrum/proc/_register_mob_signals()
+	register_signal(brainmob, SIGNAL_LOGGED_IN, /obj/item/organ/internal/cerebrum/proc/update_info)
+	register_signal(brainmob, SIGNAL_LOGGED_OUT, /obj/item/organ/internal/cerebrum/proc/update_info)
+	register_signal(brainmob, SIGNAL_MOB_DEATH, /obj/item/organ/internal/cerebrum/proc/update_info)
 
-/obj/item/organ/internal/mastermind/proc/_unregister_mob_signals()
+/obj/item/organ/internal/cerebrum/proc/_unregister_mob_signals()
 	unregister_signal(brainmob, SIGNAL_LOGGED_IN)
 	unregister_signal(brainmob, SIGNAL_LOGGED_OUT)
 	unregister_signal(brainmob, SIGNAL_MOB_DEATH)
 
-/obj/item/organ/internal/mastermind/proc/update_desc()
+/obj/item/organ/internal/cerebrum/proc/update_desc()
 	return
 
-/obj/item/organ/internal/mastermind/proc/update_info()
+/obj/item/organ/internal/cerebrum/proc/update_info()
 	SIGNAL_HANDLER
 	update_desc()
 	update_icon()
 
-/obj/item/organ/internal/mastermind/replaced(mob/living/target)
+/obj/item/organ/internal/cerebrum/replaced(mob/living/target)
 	. = ..()
 	if(!.)
 		return FALSE
@@ -90,17 +90,17 @@
 
 	if(brainmob?.mind)
 		brainmob.mind.transfer_to(target)
-	else
+	else if(brainmob?.key)
 		target.key = brainmob.key
 
 	target.set_stat(CONSCIOUS)
 
 	return TRUE
 
-/obj/item/organ/internal/mastermind/proc/update_name()
+/obj/item/organ/internal/cerebrum/proc/update_name()
 	SetName("\the [owner.real_name]'s [initial(name)]")
 
-/obj/item/organ/internal/mastermind/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
+/obj/item/organ/internal/cerebrum/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	if(!istype(owner))
 		return ..()
 
@@ -111,7 +111,7 @@
 		borer.detatch()
 		borer.leave_host()
 
-	if(vital)
+	if(vital && isnull(owner?.mind?.changeling))
 		transfer_identity(owner)
 
 	return ..()

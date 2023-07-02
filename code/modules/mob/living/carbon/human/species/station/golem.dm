@@ -19,7 +19,7 @@
 	flesh_color = "#137e8f"
 
 	has_organ = list(
-		BP_BRAIN = /obj/item/organ/internal/mastermind/brain/golem
+		BP_BRAIN = /obj/item/organ/internal/cerebrum/brain/golem
 		)
 
 	death_message = "becomes completely motionless..."

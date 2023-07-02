@@ -29,7 +29,7 @@
 
 /obj/item/organ/external/head/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent)
 	if(BP_IS_ROBOTIC(src) && disintegrate == DROPLIMB_BURN)
-		var/obj/item/organ/internal/mastermind/mmi/brain = owner.internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/mmi/brain = owner.internal_organs_by_name[BP_BRAIN]
 		if(istype(brain))
 			brain.visible_message(SPAN_DANGER("You see a bright flash as you get catapulted out of your body. You feel disoriented, which must be normal since you're just a brain in can."), SPAN_NOTICE("[owner]'s head ejects an MMI!"))
 			brain.removed()

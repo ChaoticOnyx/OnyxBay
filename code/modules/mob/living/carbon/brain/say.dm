@@ -5,7 +5,7 @@
 
 	message = sanitize(message)
 
-	if(!(container && istype(container, /obj/item/organ/internal/mastermind/mmi)))
+	if(!(container && istype(container, /obj/item/organ/internal/cerebrum/mmi)))
 		return //No MMI, can't speak, bucko./N
 	else
 		var/datum/language/speaking = parse_language(message)
