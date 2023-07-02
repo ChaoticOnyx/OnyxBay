@@ -5,7 +5,7 @@
 	name = "\improper Positronic Brain"
 	desc = "A cube of shining metal, four inches to a side and covered in shallow grooves."
 
-	icon = 'icons/mob/human_races/organs/cyber.dmi'
+	icon = 'icons/mob/human_races/organs/ai_core.dmi'
 	icon_state = "posibrain"
 
 	override_organic_icon = FALSE
@@ -15,7 +15,6 @@
 	parent_organ = BP_CHEST
 
 	origin_tech = list(TECH_ENGINEERING = 4, TECH_MATERIAL = 4, TECH_BLUESPACE = 2, TECH_DATA = 4)
-	req_access = list(access_robotics)
 
 	brainmob_type = /mob/living/silicon/sil_brainmob
 
@@ -49,10 +48,10 @@
 	searching = TRUE
 	update_icon()
 
-	addtimer(CALLBACK(src, /obj/item/organ/internal/mastermind/posibrain/proc/reset_search), 1 MINUTE, TIMER_UNIQUE | TIMER_OVERRIDE)
+	addtimer(CALLBACK(src, /obj/item/organ/internal/mastermind/posibrain/proc/reset_search), POSITRONIC_BRAIN_SEARCH_DURATION, TIMER_DELETE_ME)
 
 	var/datum/ghosttrap/G = get_ghost_trap("positronic brain")
-	G.request_player(brainmob, "Someone is requesting a personality for a positronic brain.", 1 MINUTE)
+	G.request_player(brainmob, "Someone is requesting a personality for a positronic brain.", POSITRONIC_BRAIN_SEARCH_DURATION)
 
 	show_splash_text(user, "started search of suitable intelligence.")
 
@@ -117,10 +116,16 @@
 
 /obj/item/organ/internal/mastermind/posibrain/update_icon()
 	overlays.Cut()
-	icon_state = isnull(brainmob?.key) ? "posibrain" : "posibrain-occupied"
+
+	if(brainmob)
+		icon_state = "core-occupied"
+	else if(searching)
+		icon_state = "core-search"
+	else
+		icon_state = "core-idle"
 
 	if(shackled)
-		overlays |= image('icons/mob/human_races/organs/cyber.dmi', "posibrain-shackles")
+		overlays += "core-shackles"
 
 /obj/item/organ/internal/mastermind/posibrain/proc/show_laws_brain()
 	set category = "Shackle"
