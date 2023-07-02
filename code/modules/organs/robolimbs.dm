@@ -1,4 +1,4 @@
-var/list/all_robolimbs = list()
+GLOBAL_LIST_INIT(all_robolimbs, list())
 var/list/chargen_robolimbs = list()
 var/datum/robolimb/basic_robolimb
 
@@ -6,7 +6,7 @@ var/datum/robolimb/basic_robolimb
 	basic_robolimb = new()
 	for(var/limb_type in typesof(/datum/robolimb))
 		var/datum/robolimb/R = new limb_type()
-		all_robolimbs[R.company] = R
+		GLOB.all_robolimbs[R.company] = R
 		if(!R.unavailable_at_chargen)
 			chargen_robolimbs[R.company] = R
 

@@ -1084,6 +1084,11 @@ I said no!
 	)
 	result = /obj/item/reagent_containers/food/sliceable/chocolatecake
 
+/datum/recipe/cake/metroid
+	items = list(/obj/item/metroid_extract)
+	reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/nutriment/flour = 15, /datum/reagent/nutriment/protein/egg = 9, /datum/reagent/sugar = 15)
+	result = /obj/item/reagent_containers/food/sliceable/metroidcake
+
 /datum/recipe/cake/birthday
 	items = list(/obj/item/clothing/head/cakehat)
 	reagents = list(

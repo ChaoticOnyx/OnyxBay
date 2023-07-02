@@ -28,7 +28,7 @@
 		ASSERT(energy > 0)
 
 		src.energy = energy
-	
+
 	switch(radiation_type)
 		if(RADIATION_ALPHA_PARTICLE)
 			src.quality_factor = 20
@@ -60,7 +60,7 @@
 		var/obj/current_obj = current_point
 		energy = max(energy - current_obj.calc_rad_resistance(src), 0)
 		current_point = current_point.loc
-	
+
 	energy = max(energy / (get_dist(get_turf(source), get_turf(target)) ** 2), 0)
 
 	if(!is_ionizing())
@@ -77,7 +77,7 @@
 
 		if(!is_ionizing())
 			return FALSE
-		
+
 		current_point = current_point.loc
 
 	// Example of traverse: [turf] -> [turf] -> [closet] -> [human]
@@ -101,7 +101,7 @@
 
 				if(!is_ionizing())
 					return FALSE
-				
+
 				target_parent = target_parent.loc
 
 			return TRUE
@@ -182,6 +182,10 @@
 	radiation += R.calc_equivalent_dose(AVERAGE_HUMAN_WEIGHT)
 
 /mob/living/carbon/human/rad_act(datum/radiation_source/rad_source)
+
+	if(HAS_TRAIT(src, TRAIT_RADIMMUNE))
+		return
+
 	// `body_coverage` with clothing which coats all parts of the body with 100% resistance to a certain radiation should not give more than 1.0
 	var/static/list/slots_info = list(
 		list(HEAD, 0.02),

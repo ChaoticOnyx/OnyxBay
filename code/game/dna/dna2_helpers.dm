@@ -132,7 +132,7 @@
 // Use mob.UpdateAppearance() instead.
 
 // Simpler. Don't specify UI in order for the mob to use its own.
-/mob/proc/UpdateAppearance(list/UI=null)
+/mob/proc/UpdateAppearance(list/UI=null, mutcolor_update=FALSE)
 	if(istype(src, /mob/living/carbon/human))
 		if(UI!=null)
 			src.dna.UI=UI
@@ -150,17 +150,22 @@
 		H.r_facial = dna.GetUIValueRange(DNA_UI_BEARD_R,   255)
 		H.g_facial = dna.GetUIValueRange(DNA_UI_BEARD_G,   255)
 		H.b_facial = dna.GetUIValueRange(DNA_UI_BEARD_B,   255)
-
-		H.r_skin   = dna.GetUIValueRange(DNA_UI_SKIN_R,    255)
-		H.g_skin   = dna.GetUIValueRange(DNA_UI_SKIN_G,    255)
-		H.b_skin   = dna.GetUIValueRange(DNA_UI_SKIN_B,    255)
+		if(mutcolor_update)
+			var/RGB = hex2rgb(dna.mcolor)
+			H.r_skin   = RGB[1]
+			H.g_skin   = RGB[2]
+			H.b_skin   = RGB[3]
+		else
+			H.r_skin   = dna.GetUIValueRange(DNA_UI_SKIN_R,    255)
+			H.g_skin   = dna.GetUIValueRange(DNA_UI_SKIN_G,    255)
+			H.b_skin   = dna.GetUIValueRange(DNA_UI_SKIN_B,    255)
 
 		H.r_eyes   = dna.GetUIValueRange(DNA_UI_EYES_R,    255)
 		H.g_eyes   = dna.GetUIValueRange(DNA_UI_EYES_G,    255)
 		H.b_eyes   = dna.GetUIValueRange(DNA_UI_EYES_B,    255)
 		H.update_eyes()
 
-		H.s_tone   = 35 - dna.GetUIValueRange(DNA_UI_SKIN_TONE, 220) // Value can be negative.
+		H.s_tone   = H.species.fixed_skin_tone ? H.species.fixed_skin_tone : (35 - dna.GetUIValueRange(DNA_UI_SKIN_TONE, 220)) // Value can be negative.
 
 		if(H.gender != NEUTER)
 			if (dna.GetUIState(DNA_UI_GENDER))

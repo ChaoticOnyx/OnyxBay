@@ -108,7 +108,8 @@
 	/// Boolean. If TRUE, the Click() proc will attempt to Click() on the master first if there is a master.
 	var/click_master = TRUE
 
-
+/obj/screen/movable/alert/status_effect
+	icon = 'icons/mob/screen/status_effects.dmi'
 // Notify for ghosts
 /obj/screen/movable/alert/notify_action
 	name = "Body created"
