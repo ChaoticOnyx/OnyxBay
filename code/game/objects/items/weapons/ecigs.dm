@@ -12,6 +12,7 @@
 
 	chem_volume = 0 //ecig has no storage on its own but has reagent container created by parent obj
 	filter_trans = 0.5
+	smokeamount = 0.5
 
 	var/active = FALSE
 	var/obj/item/cell/cigcell = null
@@ -234,7 +235,7 @@
 /obj/item/clothing/mask/smokable/ecig/simple/_examine_text(mob/user)
 	. = ..()
 	if(ec_cartridge)
-		. += SPAN("notice", "\nThere is roughly [round(ec_cartridge.reagents.total_volume / ec_cartridge.volume, 25)]% of liquid remaining.")
+		. += SPAN("notice", "\nThere is roughly [round((ec_cartridge.reagents.total_volume / ec_cartridge.volume) * 100, 25)]% of liquid remaining.")
 	else
 		. += SPAN("notice", "\nThere is no cartridge connected.")
 
@@ -249,6 +250,7 @@
 	var/current_color = 2
 
 /obj/item/clothing/mask/smokable/ecig/util/update_icon()
+	..()
 	if(active)
 		icon_state = "[base_icon]_on_[led_colors[current_color]]"
 
@@ -272,6 +274,7 @@
 		current_color = 1
 	var/_led = led_descs[current_color]
 	to_chat(usr, SPAN("notice", "\The [src]'s LEDs are set to \"[_led]\" mode now."))
+	update_icon()
 
 /obj/item/clothing/mask/smokable/ecig/deluxe
 	name = "deluxe electronic cigarette"
@@ -314,6 +317,7 @@
 	overlays += over
 
 /obj/item/reagent_containers/ecig_cartridge/proc/make_disposable() // Sweet hacks
+	volume *= 4
 	reagents.maximum_volume *= 4
 	for(var/thing in reagents.reagent_list)
 		var/datum/reagent/R = thing
@@ -437,6 +441,7 @@
 	cartridge_type = null
 	idle_treshold = -1
 	active = TRUE
+	smokeamount = 1
 
 /obj/item/clothing/mask/smokable/ecig/disposable/Initialize()
 	. = ..()
