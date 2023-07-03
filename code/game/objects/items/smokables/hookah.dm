@@ -12,6 +12,7 @@
 	mod_weight = 1.35
 	mod_reach = 1.0
 	mod_handy = 0.6
+	w_class = ITEM_SIZE_LARGE
 	matter = list(MATERIAL_GLASS = 5000)
 	brittle = FALSE
 	filling_states = "5;10;25;50;75;80;100"
@@ -23,26 +24,32 @@
 		RADIATION_BETA_PARTICLE = 0.8 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+	volume = 60
 
 	var/obj/item/hookah_coal/HC = null
 	var/obj/item/hookah_hose/H1 = null
 	var/obj/item/hookah_hose/H2 = null
 	var/has_second_hose = TRUE
+	var/lit = FALSE
 
 /obj/item/reagent_containers/vessel/hookah/Initialize()
 	. = ..()
-	H1 = new /obj/item/hookah_hose(src)
-	if(has_second_hose)
-		H2 = new /obj/item/hookah_hose(src)
 	HC = new /obj/item/hookah_coal(src)
+	fix_hoses()
+	update_icon()
 
 /obj/item/reagent_containers/vessel/hookah/update_icon()
-	if(H1)
+	if(HC)
+		icon_state = "[base_icon][lit ? "_lit" : ""]"
+	else
+		icon_state = "[base_icon]_empty"
+
+	if(H1.loc == src)
 		overlays += image(icon, "[base_icon]_left_0"
 	else
 		overlays += image(icon, "[base_icon]_left_1"
 	if(has_second_hose)
-		if(H2)
+		if(H2.loc == src)
 			overlays += image(icon, "[base_icon]_right_0"
 		else
 			overlays += image(icon, "[base_icon]_right_1"
@@ -56,20 +63,199 @@
 	if(H2)
 		QDEL_NULL(H2)
 
+/obj/item/reagent_containers/vessel/hookah/think()
+	if(!H1 || !(has_second_hose && H2))
+		fix_hoses()
+
+	if(!isturf(loc))
+		reattach_hose()
+		if(has_second_hose)
+			reattack_hose(TRUE)
+		set_next_think(0)
+		return
+
+	var/atom/A = ismob(H1.loc) ? H1.loc : H1
+	if(!(Adjacent(A) || A.loc == src))
+		reattach_hose()
+
+	if(has_second_hose)
+		A = ismob(H2.loc) ? H2.loc : H2
+		if(!(Adjacent(A) || A.loc == src))
+			reattach_hose(TRUE)
+
+	update_icon()
+	if(H1.loc != src || (has_second_hose && H2.loc != src))
+		set_next_think(world.time + 1 SECOND)
+	else
+		set_next_think(0)
+
+/obj/item/reagent_containers/vessel/hookah/attack_hand(mob/user)
+	if(H1.loc == src)
+		user.put_in_hands(H1)
+		to_chat(user, SPAN("notice", "You grab \the [src]'s [H1]."))
+		set_next_think(world.time + 1 SECOND)
+		update_icon()
+	else if(H2?.loc == src)
+		user.put_in_hands(H2)
+		to_chat(user, SPAN("notice", "You grab \the [src]'s [H2]."))
+		set_next_think(world.time + 1 SECOND)
+		update_icon()
+	else
+		to_chat(user, SPAN("notice", "\The [src] is already in use!"))
+	return TRUE
+
+/obj/item/reagent_containers/vessel/hookah/MouseDrop(mob/user)
+	if(!CanMouseDrop(src, usr))
+		return
+	if(user == usr && (user.contents.Find(src) || in_range(src, user)))
+		if(ishuman(user) && !user.get_active_hand())
+			var/mob/living/carbon/human/H = user
+			var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
+			if(H.hand)
+				temp = H.organs_by_name[BP_L_HAND]
+			if(temp && !temp.is_usable())
+				to_chat(user, SPAN("warning", "You try to pick up \the [src] with your [temp.name], but cannot!"))
+				return
+			if(user.pick_or_drop(src, loc))
+				to_chat(user, SPAN("notice", "You pick up \the [src]."))
+	return
+
+/obj/structure/iv_drip/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/hookah_coal))
+		if(HC)
+			to_chat(user, "There is already a coal installed!")
+			return
+		if(!user.drop(W, src))
+			return
+		HC = W
+		to_chat(user, "You attach \the [W] to \the [src].")
+		update_icon()
+	else if(!lit && HC?.pulls_left && (W.get_temperature_as_from_ignitor() || istype(W, /obj/item/device/assembly/igniter)))
+		light()
+		user.visible_message("[user] lights \the [src]'s [HC] with \the [W].", \
+							 "You light \the [src].")
+	else
+		return ..()
+
+/obj/item/reagent_containers/vessel/hookah/proc/smoke(mob/living/M)
+	if(HC.reagents?.total_volume && HC.pulls_left) // check if it has any reagents at all
+		var/mob/living/carbon/human/C = loc
+		if(C.check_has_mouth()) // if it's in the human/monkey mouth, transfer reagents to the mob
+			reagents.trans_to_mob(C, HC.smokeamount, CHEM_INGEST, (reagents.total_volume ? 0.5 : 1.0)) // No filter = full ingest
+			if(reagents?.total_volume)
+				reagents.trans_to_mob(C, 0.2, CHEM_BLOOD) // Poisonous hookah be scary
+		smoke_loc = C.loc
+		new /obj/effect/effect/cig_smoke(C.loc)
+		HC.pulls_left--
+		if(!HC.pulls_left)
+			die()
+		update_icon()
+	else
+		die()
+
+/obj/item/reagent_containers/vessel/hookah/proc/reattach_hose(second = FALSE)
+	var/obj/item/hookah_hose/HH = second ? H2 : H1
+	if(!HH)
+		fix_hoses()
+		return
+	if(HH.loc == src)
+		return
+
+	if(ismob(HH.loc))
+		var/mob/M = HH.loc
+		M.drop(HH, src, TRUE)
+	else
+		HH.forceMove(src)
+
+/obj/item/reagent_containers/vessel/hookah/proc/fix_hoses()
+	if(H1)
+		QDEL_NULL(H1)
+	if(H2)
+		QDEL_NULL(H2)
+
+	H1 = new /obj/item/hookah_hose(src)
+	H1.my_hookah = src
+	if(has_second_hose)
+		H2 = new /obj/item/hookah_hose(src)
+		H2.my_hookah = src
+
+/obj/item/reagent_containers/vessel/hookah/proc/light()
+	lit = TRUE
+	update_icon()
+
+/obj/item/reagent_containers/vessel/hookah/proc/die()
+	lit = FALSE
+	update_icon()
+
+/obj/item/reagent_containers/vessel/hookah/proc/remove_coal(mob/user = null)
+	lit = FALSE
+	if(!HC)
+		return
+	HC.forceMove(get_turf(src))
+	if(user)
+		user.pick_or_drop(HC)
+		to_chat(user, SPAN("notice", "You take \the [HC] from \the [src]."))
+	HC = null
+	update_icon()
+
+/obj/item/reagent_containers/vessel/hookah/AltClick()
+	if(Adjacent(usr) && ishuman(usr))
+		remove_coal(usr)
+
+/obj/item/reagent_containers/vessel/hookah/verb/take_coal()
+	set name = "Take Coal"
+	set category = "Object"
+	set src in view(1)
+
+	if(Adjacent(usr) && ishuman(usr))
+		remove_coal(usr)
+
 // Mouthpieces
 /obj/item/hookah_hose
 	name = "hookah mouthpiece"
 	desc = "God knows how many tongues this thing has seen so far."
 	icon = 'icons/obj/hookah.dmi'
 	icon_state = "mouthpiece"
+	w_class = ITEM_SIZE_NO_CONTAINER
+	var/obj/item/reagent_containers/vessel/hookah/my_hookah = null
+
+/obj/item/hookah_hose/attack(mob/living/M, mob/user, def_zone)
+	if(!my_hookah)
+		qdel_self()
+		return
+	if(M == user && ishuman(M))
+		if(!my_hookah.HC)
+			to_chat(user, SPAN("warning", "\The [my_hookah] has no coal installed!"))
+			return
+		if(!my_hookah.lit)
+			to_chat(user, SPAN("warning", "\The [my_hookah]'s [my_hookah.HC] ain't lit!"))
+			return
+
+		var/mob/living/carbon/human/H = M
+		var/obj/item/blocked = H.check_mouth_coverage()
+
+		if(blocked)
+			to_chat(H, SPAN("warning", "\The [blocked] is in the way!"))
+			return TRUE
+
+		user.visible_message("[user] takes a [pick("drag","puff","pull")] from \the [my_hookah].", \
+							 "You take a [pick("drag","puff","pull")] on \the [my_hookah].")
+
+		smoke(user)
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		return TRUE
+	return ..()
 
 // Coal
 /obj/item/hookah_coal
 	name = "electric hookah coal"
 	desc = "No real coals aboard the station. Period."
 	icon = 'icons/obj/hookah.dmi'
+	icon_state = "hookah_coal0"
+	w_class = ITEM_SIZE_SMALL
 	var/chem_volume = 40
 	var/pulls_left = 0
+	var/smoke_amount = 0
 
 /obj/item/hookah_coal/New()
 	..()
@@ -85,8 +271,10 @@
 		user.visible_message(SPAN("notice", "[user] empties out [src]."), SPAN("notice", "You empty out [src]."))
 		new /obj/effect/decal/cleanable/ash(location)
 		pulls_left = 0
+		smoke_amount = 0
 		reagents.clear_reagents()
 		SetName("empty [initial(name)]")
+		icon_state = "hookah_coal0"
 
 /obj/item/hookah_coal/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/reagent_containers/food))
@@ -104,5 +292,7 @@
 		pulls_left = 40
 		if(G.reagents)
 			G.reagents.trans_to_obj(src, G.reagents.total_volume)
+		smokeamount = reagents.total_volume / pulls_left
 		SetName("[G.name]-packed [initial(name)]")
+		icon_state = "hookah_coal1"
 		qdel(G)
