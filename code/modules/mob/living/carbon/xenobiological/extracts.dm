@@ -45,26 +45,25 @@
 /obj/item/metroid_extract/grey
 	name = "grey metroid extract"
 	icon_state = "grey metroid extract"
-	effectmod = "reproductive"
+	effectmod = "mutative"
 
 /obj/item/metroid_extract/grey/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			var/obj/item/reagent_containers/food/monkeycube/M = new
-			if(!user.put_in_active_hand(M))
-				M.forceMove(user.drop_location())
-			playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
-			to_chat(user, SPAN_NOTICE("You spit out a monkey cube."))
-			return 120
+			to_chat(user, SPAN_WARNING("You feel yourself reverting to human form..."))
+			if(do_after(user, 120, target = user))
+				to_chat(user, SPAN_WARNING("You feel human again!"))
+				user.set_species(/datum/species/human)
+				return
+			to_chat(user, SPAN_NOTICE("You stop the transformation."))
+
 		if(METROID_ACTIVATE_MAJOR)
-			to_chat(user, SPAN_NOTICE("Your [name] starts pulsing..."))
-			if(do_after(user, 40, target = user))
-				var/mob/living/carbon/metroid/S = new(get_turf(user), "grey")
-				playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
-				to_chat(user, SPAN_NOTICE("You spit out [S]."))
-				return 350
-			else
-				return 0
+			to_chat(user, SPAN_WARNING("You feel yourself radically changing your metroid type..."))
+			if(do_after(user, 120, target = user))
+				to_chat(user, SPAN_WARNING("You feel different!"))
+				user.set_species(pick(/datum/species/promethean/slime, /datum/species/promethean/stargazer))
+				return
+			to_chat(user, SPAN_NOTICE("You stop the transformation."))
 
 /obj/item/metroid_extract/gold
 	name = "gold metroid extract"
@@ -339,25 +338,26 @@
 /obj/item/metroid_extract/green
 	name = "green metroid extract"
 	icon_state = "green metroid extract"
-	effectmod = "mutative"
+	effectmod = "reproductive"
 
 /obj/item/metroid_extract/green/activate(mob/living/carbon/human/user, datum/component/extract_eater/extract_eater_comp, activation_type)
 	switch(activation_type)
 		if(METROID_ACTIVATE_MINOR)
-			to_chat(user, SPAN_WARNING("You feel yourself reverting to human form..."))
-			if(do_after(user, 120, target = user))
-				to_chat(user, SPAN_WARNING("You feel human again!"))
-				user.set_species(/datum/species/human)
-				return
-			to_chat(user, SPAN_NOTICE("You stop the transformation."))
-
+			var/obj/item/reagent_containers/food/monkeycube/M = new
+			if(!user.put_in_active_hand(M))
+				M.forceMove(user.drop_location())
+			playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
+			to_chat(user, SPAN_NOTICE("You spit out a monkey cube."))
+			return 120
 		if(METROID_ACTIVATE_MAJOR)
-			to_chat(user, SPAN_WARNING("You feel yourself radically changing your metroid type..."))
-			if(do_after(user, 120, target = user))
-				to_chat(user, SPAN_WARNING("You feel different!"))
-				user.set_species(pick(/datum/species/promethean/slime, /datum/species/promethean/stargazer))
-				return
-			to_chat(user, SPAN_NOTICE("You stop the transformation."))
+			to_chat(user, SPAN_NOTICE("Your [name] starts pulsing..."))
+			if(do_after(user, 40, target = user))
+				var/mob/living/carbon/metroid/S = new(get_turf(user), "grey")
+				playsound(user, 'sound/effects/splat.ogg', 50, TRUE)
+				to_chat(user, SPAN_NOTICE("You spit out [S]."))
+				return 350
+			else
+				return 0
 
 /obj/item/metroid_extract/lightpink
 	name = "light pink metroid extract"
