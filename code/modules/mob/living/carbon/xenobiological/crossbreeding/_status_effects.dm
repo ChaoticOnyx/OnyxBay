@@ -844,60 +844,9 @@
 	var/lasthealth
 	var/think_delay = 5 SECONDS
 
-/datum/modifier/status_effect/pinkdamagetracker/think()
-	if((lasthealth - holder.health) > 0)
-		damage += (lasthealth - holder.health)
-	lasthealth = holder.health
-	set_next_think(world.time+think_delay)
-	..()
-
 /datum/modifier/status_effect/stabilized/pink
 	name = "stabilizedpink"
 	colour = "pink"
-	var/list/mobs = list()
-	var/faction_name
-
-/datum/modifier/status_effect/stabilized/pink/on_applied()
-	faction_name = "\ref[holder]"
-	set_next_think(world.time)
-	return ..()
-
-/datum/modifier/status_effect/stabilized/pink/think()
-	for(var/mob/living/simple_animal/M in view(7,get_turf(holder)))
-		if(!(M in mobs))
-			mobs += M
-			M.add_modifier(/datum/modifier/status_effect/pinkdamagetracker)
-			M.faction |= faction_name
-	for(var/mob/living/simple_animal/M in mobs)
-		if(!(M in view(7,get_turf(holder))))
-			M.faction -= faction_name
-			M.remove_a_modifier_of_type(/datum/modifier/status_effect/pinkdamagetracker)
-			mobs -= M
-		var/datum/modifier/status_effect/pinkdamagetracker/C = M.has_modifier_of_type(/datum/modifier/status_effect/pinkdamagetracker)
-		if(istype(C) && C.damage > 0)
-			C.damage = 0
-			holder.add_modifier(/datum/modifier/status_effect/brokenpeace)
-	var/HasFaction = FALSE
-	for(var/i in holder.faction)
-		if(i == faction_name)
-			HasFaction = TRUE
-
-	if(HasFaction && holder.has_modifier_of_type(/datum/modifier/status_effect/brokenpeace))
-		holder.faction -= faction_name
-		to_chat(holder, SPAN_DANGER("The peace has been broken! Hostile creatures will now react to you!"))
-	if(!HasFaction && !holder.has_modifier_of_type(/datum/modifier/status_effect/brokenpeace))
-		to_chat(holder, SPAN_NOTICE("[linked_extract] pulses, generating a fragile aura of peace."))
-		holder.faction |= faction_name
-	return ..()
-
-/datum/modifier/status_effect/stabilized/pink/on_expire()
-	for(var/mob/living/simple_animal/M in mobs)
-		M.faction -= faction_name
-		M.remove_a_modifier_of_type(/datum/modifier/status_effect/pinkdamagetracker)
-	for(var/i in holder.faction)
-		if(i == faction_name)
-			holder.faction -= faction_name
-	set_next_think(0)
 
 /datum/modifier/status_effect/stabilized/oil
 	name = "stabilizedoil"
