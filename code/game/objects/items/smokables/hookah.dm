@@ -4,7 +4,7 @@
 	name = "hookah"
 	desc = "What was supposed to be a cyborg hull once, but ended up being a hookah because of an intern roboticist's genius. Nevertheless, the design was so breathtaking, it was adapted by Acme Co., resulting in the most iconic hookah of the 26th century."
 	icon = 'icons/obj/hookah.dmi'
-	icon_state = "hookah"
+	icon_state = "hookah_preview"
 	base_icon = "hookah"
 	item_state = "beaker"
 	center_of_mass = "x=16;y=5"
@@ -15,7 +15,6 @@
 	w_class = ITEM_SIZE_LARGE
 	matter = list(MATERIAL_GLASS = 5000)
 	brittle = FALSE
-	filling_states = "5;10;25;50;75;80;100"
 	label_icon = FALSE
 	overlay_icon = FALSE
 	lid_type = null
@@ -31,6 +30,7 @@
 	var/obj/item/hookah_hose/H2 = null
 	var/has_second_hose = TRUE
 	var/lit = FALSE
+	var/hose_color = null
 
 /obj/item/reagent_containers/vessel/hookah/Initialize()
 	. = ..()
@@ -40,20 +40,36 @@
 
 /obj/item/reagent_containers/vessel/hookah/update_icon()
 	..()
-	if(HC)
-		icon_state = "[base_icon][lit ? "_lit" : ""]"
-	else
-		icon_state = "[base_icon]_empty"
+	icon_state = base_icon
 
-	if(H1.loc == src)
-		overlays += image(icon, "[base_icon]_left_0")
+	if(HC)
+		var/image/temp = image(icon, "[HC.icon_state]_over")
+		temp.color = HC.color
+		overlays += temp
+		if(lit)
+			overlays += overlay_image(icon, "[HC.icon_state]_over_lit", flags=RESET_COLOR)
+
+	if(H1?.loc == src)
+		var/image/temp = image(icon, "[base_icon]_left_0")
+		if(hose_color)
+			temp.color = hose_color
+		overlays += temp
 	else
-		overlays += image(icon, "[base_icon]_left_1")
+		var/image/temp = image(icon, "[base_icon]_left_1")
+		if(hose_color)
+			temp.color = hose_color
+		overlays += temp
 	if(has_second_hose)
-		if(H2.loc == src)
-			overlays += image(icon, "[base_icon]_right_0")
+		if(H2?.loc == src)
+			var/image/temp = image(icon, "[base_icon]_right_0")
+			if(hose_color)
+				temp.color = hose_color
+			overlays += temp
 		else
-			overlays += image(icon, "[base_icon]_right_1")
+			var/image/temp = image(icon, "[base_icon]_right_1")
+			if(hose_color)
+				temp.color = hose_color
+			overlays += temp
 
 /obj/item/reagent_containers/vessel/hookah/Destroy()
 	. = ..()
@@ -136,6 +152,16 @@
 		HC = W
 		to_chat(user, "You attach \the [W] to \the [src].")
 		update_icon()
+	else if(istype(W, /obj/item/hookah_hose))
+		var/obj/item/hookah_hose/HH = W
+		if(!HH.my_hookah == src)
+			return
+		if(HH == H1)
+			reattach_hose()
+		else if(HH == H2)
+			reattach_hose(TRUE)
+		else
+			HH.qdel_self()
 	else if(!lit && HC?.pulls_left && (W.get_temperature_as_from_ignitor() || istype(W, /obj/item/device/assembly/igniter)))
 		light()
 		user.visible_message("[user] lights \the [src]'s [HC] with \the [W].", \
@@ -145,7 +171,7 @@
 
 /obj/item/reagent_containers/vessel/hookah/proc/smoke(mob/living/M)
 	if(HC.reagents?.total_volume && HC.pulls_left) // check if it has any reagents at all
-		var/mob/living/carbon/human/C = loc
+		var/mob/living/carbon/human/C = M
 		if(C.check_has_mouth()) // if it's in the human/monkey mouth, transfer reagents to the mob
 			reagents.trans_to_mob(C, HC.smoke_amount, CHEM_INGEST, (reagents.total_volume ? 0.5 : 1.0)) // No filter = full ingest
 			if(reagents?.total_volume)
@@ -171,6 +197,7 @@
 		M.drop(HH, src, TRUE)
 	else
 		HH.forceMove(src)
+	update_icon()
 
 /obj/item/reagent_containers/vessel/hookah/proc/fix_hoses()
 	if(H1)
@@ -183,6 +210,7 @@
 	if(has_second_hose)
 		H2 = new /obj/item/hookah_hose(src)
 		H2.my_hookah = src
+	update_icon()
 
 /obj/item/reagent_containers/vessel/hookah/proc/light()
 	lit = TRUE
@@ -214,6 +242,16 @@
 
 	if(Adjacent(usr) && ishuman(usr))
 		remove_coal(usr)
+
+
+/obj/item/reagent_containers/vessel/hookah/makeshift
+	name = "makeshift hookah"
+	desc = "What a monstrosity..."
+	filling_states = null
+	has_second_hose = FALSE
+	icon_state = "makeshift_preview"
+	base_icon = "makeshift"
+	item_state = "bucket"
 
 // Mouthpieces
 /obj/item/hookah_hose
@@ -268,8 +306,9 @@
 	name = "electric hookah coal"
 	desc = "No real coals aboard the station. Period."
 	icon = 'icons/obj/hookah.dmi'
-	icon_state = "hookah_coal0"
+	icon_state = "hookah_coal"
 	w_class = ITEM_SIZE_SMALL
+	atom_flags = null
 	var/chem_volume = 40
 	var/pulls_left = 0
 	var/smoke_amount = 0
@@ -282,6 +321,11 @@
 	. = ..()
 	create_reagents(chem_volume) // making the cigarrete a chemical holder with a maximum volume of [chem_volume]
 
+/obj/item/hookah_coal/update_icon()
+	overlays.Cut()
+	if(pulls_left)
+		overlays += overlay_image(icon, "[icon_state]_fill", flags=RESET_COLOR)
+
 /obj/item/hookah_coal/attack_self(mob/user)
 	if(pulls_left)
 		var/turf/location = get_turf(user)
@@ -291,7 +335,7 @@
 		smoke_amount = 0
 		reagents.clear_reagents()
 		SetName("empty [initial(name)]")
-		icon_state = "hookah_coal0"
+		update_icon()
 
 /obj/item/hookah_coal/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/reagent_containers/food))
@@ -311,5 +355,42 @@
 			G.reagents.trans_to_obj(src, G.reagents.total_volume)
 		smoke_amount = reagents.total_volume / pulls_left
 		SetName("[G.name]-packed [initial(name)]")
-		icon_state = "hookah_coal1"
+		update_icon()
 		qdel(G)
+
+/obj/item/hookah_coal/makeshift
+	name = "makeshift hookah coal"
+	desc = "It's an ashtray with holes. And a tiny handle."
+	icon_state = "makeshift_coal"
+
+// Makeshift hookah craft
+/obj/item/hookah_construction
+	name = "pipe in a bucket"
+	desc = "Well... That's how adventures begin."
+	icon = 'icons/obj/hookah.dmi'
+	icon_state = "c_makeshift0"
+	w_class = ITEM_SIZE_LARGE
+	var/stage = 0
+
+/obj/item/hookah_construction/update_icon()
+	icon_state = "c_makeshift[stage]"
+
+/obj/item/hookah_construction/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/tape_roll) && stage == 0)
+		to_chat(user, SPAN("notice", "You somehow fix the pipe in place."))
+		stage++
+		return
+	else if(istype(W, /obj/item/pen) && !istype(W, /obj/item/pen/energy_dagger) && stage == 1)
+		to_chat(user, SPAN("notice", "You disassemble \the [W] to make a valve and a mouthpiece."))
+		qdel(W)
+		stage++
+		return
+	else if(isCoil(W))
+		var/obj/item/stack/cable_coil/coil = W
+		var/_color = coil.color
+		coil.use(1)
+		var/obj/item/reagent_containers/vessel/hookah/makeshift/M = new (get_turf(src))
+		M.hose_color = _color
+		qdel_self()
+		return
+	return ..()
