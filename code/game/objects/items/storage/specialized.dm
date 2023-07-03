@@ -42,6 +42,22 @@
 	allow_quick_empty = 1
 	use_to_pickup = 1
 
+// -----------------------------
+//          Xenobio bag
+// -----------------------------
+/obj/item/storage/xenobag
+	name = "Xenobiology satchel"
+	desc = "This bag can be used to store all kinds of plant products and botanical specimen."
+	icon = 'icons/obj/objects.dmi'
+	icon_state = "xenobag"
+	slot_flags = SLOT_BELT
+	max_storage_space = 100
+	max_w_class = ITEM_SIZE_SMALL
+	w_class = ITEM_SIZE_NORMAL
+	can_hold = list(/obj/item/metroid_extract, /obj/item/metroidcross, /obj/item/reagent_containers/food/monkeycube)
+	allow_quick_gather = 1
+	allow_quick_empty = 1
+	use_to_pickup = 1
 
 // -----------------------------
 //        Sheet Snatcher

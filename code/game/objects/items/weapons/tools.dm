@@ -129,6 +129,9 @@
 /obj/item/screwdriver/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(!istype(M) || user.a_intent == "help")
 		return ..()
+	if(is_pacifist(user))
+		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		return
 	if(user.zone_sel.selecting != BP_EYES)
 		return ..()
 	if(istype(user.l_hand,/obj/item/grab) || istype(user.r_hand,/obj/item/grab))

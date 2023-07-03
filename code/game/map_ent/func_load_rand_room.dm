@@ -5,6 +5,7 @@
 	var/list/rooms = list()
 	ev_activate_at_startup = FALSE
 	icon_state = "random_room"
+	ev_clear_conents = FALSE
 
 /obj/map_ent/func_load_map/room/Initialize()
 	..()

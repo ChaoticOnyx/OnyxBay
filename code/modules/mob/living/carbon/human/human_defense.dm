@@ -171,6 +171,8 @@ meteor_act
 		if(istype(C) && (C.body_parts_covered & def_zone.body_part)) // Is that body part being targeted covered?
 			siemens_coefficient *= C.siemens_coefficient
 
+	for(var/datum/modifier/M in modifiers)
+		siemens_coefficient *= M.siemens_coefficient
 	return siemens_coefficient
 
 //this proc returns the armour value for a particular external organ.

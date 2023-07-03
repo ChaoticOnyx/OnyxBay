@@ -1,0 +1,15 @@
+"a" = (/obj/structure/table/woodentable,/obj/item/device/radio,/obj/effect/floor_decal/industrial/warning,/turf/simulated/floor/tiled/dark/rough,/area/template_noop)
+"m" = (/obj/structure/table/woodentable,/obj/item/device/radio/intercom{dir = 1; pixel_y = -25},/obj/item/device/radio,/obj/item/device/radio/intercom{dir = 8; pixel_x = 25},/obj/effect/floor_decal/industrial/warning{dir = 6},/turf/simulated/floor/tiled/dark/rough,/area/template_noop)
+"r" = (/obj/structure/bed/chair/comfy,/turf/simulated/floor/tiled/dark/rough,/area/template_noop)
+"x" = (/obj/structure/table/woodentable,/obj/item/device/radio/intercom{pixel_y = 25},/obj/item/device/radio,/obj/item/device/radio/intercom{dir = 8; pixel_x = 25},/obj/effect/floor_decal/industrial/warning{dir = 5},/turf/simulated/floor/tiled/dark/rough,/area/template_noop)
+"N" = (/obj/structure/table/woodentable,/obj/item/device/radio/intercom{dir = 1; pixel_y = -25},/obj/item/device/radio,/obj/item/device/radio/intercom{dir = 4; pixel_x = -25},/obj/effect/floor_decal/industrial/warning{dir = 10},/turf/simulated/floor/tiled/dark/rough,/area/template_noop)
+"O" = (/obj/effect/floor_decal/rust,/obj/structure/table/woodentable,/obj/item/device/radio,/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark/rough,/area/template_noop)
+"P" = (/obj/structure/table/woodentable,/obj/item/device/radio,/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/template_noop)
+"V" = (/obj/structure/table/woodentable,/obj/item/device/radio/intercom{pixel_y = 25},/obj/item/device/radio,/obj/item/device/radio/intercom{dir = 4; pixel_x = -25},/obj/effect/floor_decal/industrial/warning{dir = 9},/turf/simulated/floor/tiled/dark/rough,/area/template_noop)
+"Y" = (/obj/effect/floor_decal/rust,/obj/structure/table/woodentable,/obj/item/device/radio,/obj/effect/floor_decal/industrial/warning{dir = 1},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark/rough,/area/template_noop)
+
+(1,1,1) = {"
+VYx
+OrP
+Nam
+"}
