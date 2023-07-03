@@ -12,7 +12,7 @@ Reproductive extracts:
 	effect = "reproductive"
 	effect_desc = "When fed monkey cubes it produces more extracts. Bio bag compatible as well."
 	var/extract_type = /obj/item/metroid_extract
-	var/cooldown = 30 SECONDS
+	var/cooldown = 5 SECONDS
 	var/feedAmount = 3
 	var/last_produce = 0
 
@@ -42,8 +42,8 @@ Reproductive extracts:
 
 	if(feedAmount<=0)
 		feedAmount=3
-		to_chat(user, SPAN_NOTICE("The [src] starts to fizzle!"))
-		spawn(10 SECONDS)
+		visible_message(SPAN_NOTICE("The [src] starts to fizzle!"))
+		spawn(cooldown)
 		for(var/i in 1 to rand(1,4))
 			new extract_type(get_turf(src))
 

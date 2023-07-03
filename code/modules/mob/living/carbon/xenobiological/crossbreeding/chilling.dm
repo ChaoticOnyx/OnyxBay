@@ -293,9 +293,30 @@ Chilling extracts:
 		user.visible_message(SPAN_NOTICE("[src] crystallizes along [user]'s skin, turning into metallic scales!"))
 		var/mob/living/carbon/human/H = user
 
-		var/static/list/random_golem_types
-		random_golem_types = subtypesof(/datum/species/golem) - H.species.type
-		H.set_species(random_golem_types)
+		var/static/list/random_golem_types= list(
+			SPECIES_GOLEM,
+			SPECIES_GOLEM_ADAMANTINE,
+			SPECIES_GOLEM_PLASMA,
+			SPECIES_GOLEM_DIAMOND,
+			SPECIES_GOLEM_GOLD,
+			SPECIES_GOLEM_SILVER,
+			SPECIES_GOLEM_PLASTEEL,
+			SPECIES_GOLEM_TITANIUM,
+			SPECIES_GOLEM_PLASTITANIUM,
+			SPECIES_GOLEM_ALIEN,
+			SPECIES_GOLEM_WOOD,
+			SPECIES_GOLEM_URANIUM,
+			SPECIES_GOLEM_SAND,
+			SPECIES_GOLEM_GLASS,
+			SPECIES_GOLEM_BLUESPACE,
+			SPECIES_GOLEM_CLOTH,
+			SPECIES_GOLEM_PLASTIC,
+			SPECIES_GOLEM_BRONZE,
+			SPECIES_GOLEM_CARDBOARD,
+			SPECIES_GOLEM_LEATHER,
+			SPECIES_GOLEM_HYDROGEN,
+			)
+		H.set_species(pick(random_golem_types))
 	..()
 
 /obj/item/metroidcross/chilling/lightpink

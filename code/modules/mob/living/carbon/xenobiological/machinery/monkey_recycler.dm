@@ -1,12 +1,15 @@
 GLOBAL_LIST_EMPTY(monkey_recyclers)
 
 /obj/item/circuitboard/machine/monkey_recycler
+
 	name = "circuit board (monkey recycler)"
 	build_path = /obj/machinery/monkey_recycler
 	origin_tech = list(TECH_DATA = 1, TECH_ENGINEERING = 1)
 	req_components = list(
 							/obj/item/stock_parts/manipulator = 1,
-							/obj/item/stock_parts/matter_bin = 31)
+							/obj/item/stock_parts/matter_bin = 1
+							)
+	board_type = "machine"
 
 /obj/machinery/monkey_recycler
 	name = "monkey recycler"
@@ -19,6 +22,11 @@ GLOBAL_LIST_EMPTY(monkey_recyclers)
 	var/stored_matter = 0
 	var/cube_production = 0.2
 	var/list/connected = list() //Keeps track of connected xenobio consoles, for deletion in /Destroy()
+	component_types = list(
+		/obj/item/circuitboard/machine/monkey_recycler,
+		/obj/item/stock_parts/manipulator,
+		/obj/item/stock_parts/matter_bin,
+	)
 
 /obj/machinery/monkey_recycler/Initialize(mapload)
 	. = ..()
@@ -46,8 +54,11 @@ GLOBAL_LIST_EMPTY(monkey_recyclers)
 	if(in_range(user, src) || isobserver(user))
 		. += SPAN_NOTICE("The status display reads: Producing <b>[cube_production]</b> cubes for every monkey inserted.")
 
+/obj/machinery/monkey_recycler/update_icon()
+	icon_state = (panel_open ? "grinder_open" : "grinder")
+
 /obj/machinery/monkey_recycler/attackby(obj/item/O, mob/user, params)
-	if(default_deconstruction_screwdriver(user, "grinder_open", "grinder", O))
+	if(default_deconstruction_screwdriver(user, O, TRUE))
 		return
 
 	if(isWrench(O))
@@ -57,8 +68,15 @@ GLOBAL_LIST_EMPTY(monkey_recyclers)
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 		return
 
-	if(default_deconstruction_crowbar(O))
+	if(default_deconstruction_crowbar(user, O))
 		return
+
+	if(isMultitool(O))
+		if(panel_open)
+			var/obj/item/device/multitool/MT = O
+			to_chat(user, SPAN_NOTICE("You upload \the [src] data to \the [MT]'s buffer."))
+			MT.set_buffer(src)
+			return
 
 	return ..()
 

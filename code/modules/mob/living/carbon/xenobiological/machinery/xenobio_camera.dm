@@ -78,12 +78,28 @@
 	..()
 
 /obj/machinery/computer/camera_advanced/xenobio/attackby(obj/item/O, mob/user, params)
+
+	if(isMultitool(O))
+		var/passed_alert = FALSE
+		if(!isnull(connected_recycler))
+			if(alert("It seems like console have connected monkey recycler would you like to rewrite it?", "Connect Monkey Recycler", "Yes", "No") == "Yes")
+				passed_alert = TRUE
+
+		if(passed_alert || isnull(connected_recycler))
+			var/obj/item/device/multitool/MT = O
+			var/atom/buffered_object = MT.get_buffer(/obj/machinery/monkey_recycler)
+			MT.set_buffer(null)
+			connected_recycler = buffered_object
+			to_chat(user, SPAN_NOTICE("You upload the data from \the [MT]'s buffer."))
+		return
+
 	if(istype(O, /obj/item/reagent_containers/food/monkeycube))
 		monkeys++
 		to_chat(user, SPAN_NOTICE("You feed [O] to [src]. It now has [monkeys] monkey cubes stored."))
 		qdel(O)
 		return
-	else if(istype(O, /obj/item/storage/xenobag))
+
+	if(istype(O, /obj/item/storage/xenobag))
 		var/obj/item/storage/P = O
 		var/loaded = FALSE
 		for(var/obj/G in P.contents)

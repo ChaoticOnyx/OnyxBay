@@ -657,7 +657,7 @@
 
 /mob/living/proc/process_resist()
 
-	SEND_SIGNAL(src, SIGNAL_MOB_RESIST)
+	SEND_SIGNAL(src, SIGNAL_MOB_RESIST, src)
 	//Getting out of someone's inventory.
 	if(istype(src.loc, /obj/item/holder))
 		escape_inventory(src.loc)
