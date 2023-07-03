@@ -201,7 +201,7 @@
 	set_next_think(world.time)
 
 /obj/item/clothing/mask/smokable/ecig/attack_hand(mob/user)// Open lid or eject cartridge
-	if(user.get_inactive_hand() == src)// If being hold
+	if(user.get_inactive_hand() == src && !istype(src, /obj/item/clothing/mask/smokable/ecig/disposable))// If being hold
 		active = FALSE
 		if(!opened)
 			opened = TRUE
@@ -220,8 +220,8 @@
 	if(!Adjacent(usr))
 		return
 	opened = !opened
+	active = FALSE
 	to_chat(usr, SPAN("notice", "You [opened ? "open" : "close"] \the [src]."))
-
 	update_icon()
 	return
 
