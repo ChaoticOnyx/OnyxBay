@@ -2,7 +2,6 @@
 	name = SPECIES_VOX
 	name_plural = SPECIES_VOX
 	icobase = 'icons/mob/human_races/r_vox.dmi'
-	deform = 'icons/mob/human_races/r_def_vox.dmi'
 	hair_key = SPECIES_VOX
 	default_language = "Vox-pidgin"
 	language = LANGUAGE_GALCOM
