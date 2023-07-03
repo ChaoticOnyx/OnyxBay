@@ -181,16 +181,22 @@ Charged extracts:
 	if(!istype(human_user))
 		to_chat(user, SPAN_WARNING("You must be a humanoid to use this!"))
 		return
-	var/list/choice_list = list()
-	for(var/datum/species/species_type as anything in subtypesof(/datum/species/promethean))
-		choice_list[initial(species_type.name)] = species_type
+	var/list/choice_list = list(
+		SPECIES_PROMETHEAN,
+		SPECIES_STARGAZER,
+		SPECIES_SLIMEPERSON,
+		SPECIES_LUMINESCENT,
+	)
+
 	var/racechoice = tgui_input_list(human_user, "Choose your metroid subspecies", "metroid Selection", sort_list(choice_list))
 	if(isnull(racechoice))
 		to_chat(user, SPAN_NOTICE("You decide not to become a metroid for now."))
 		return
+
 	if(!CanUseTopic(user))
 		return
-	human_user.set_species(choice_list[racechoice])
+
+	human_user.set_species(racechoice)
 	human_user.visible_message(SPAN_WARNING("[human_user] suddenly shifts form as [src] dissolves into [human_user] skin!"))
 	..()
 
