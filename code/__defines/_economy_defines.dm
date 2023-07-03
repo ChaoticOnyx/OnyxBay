@@ -48,7 +48,6 @@
 //Note that you have to specify each subspecies individually. Shouldn't be a big deal.
 /var/list/economic_species_modifier = list(
 												/datum/species/human             = 10,
-												/datum/species/human/vatgrown    = 10, //now lore-friendly,
 												/datum/species/skrell            = 12,
 												/datum/species/tajaran           = 7,
 												/datum/species/unathi            = 7,

@@ -386,7 +386,7 @@
 	pull_slowdown = PULL_SLOWDOWN_LIGHT
 
 /obj/structure/closet/crate/secure/biohazard/blanks/WillContain()
-	return list(/mob/living/carbon/human/blank, /obj/item/usedcryobag)
+	return list(/mob/living/carbon/human/vatgrown/blank, /obj/item/usedcryobag)
 
 /obj/structure/closet/crate/paper_refill
 	name = "paper refill crate"

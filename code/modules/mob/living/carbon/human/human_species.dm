@@ -72,23 +72,30 @@
 /mob/living/carbon/human/stok/New(new_loc)
 	..(new_loc, "Stok")
 
-
 /mob/living/carbon/human/vrhuman/New(new_loc)
 	..(new_loc, "VR human")
 
-/mob/living/carbon/human/gravworlder/New(new_loc)
-	..(new_loc, SPECIES_GRAVWORLDER)
-
-/mob/living/carbon/human/spacer/New(new_loc)
-	..(new_loc, SPECIES_SPACER)
+/mob/living/carbon/human/vatgrown/fully_replace_character_name(new_name, in_depth)
+	#define LTR ascii2text(rand(65,90))
+	#define NUM ascii2text(rand(48,57))
+	#define NAME capitalize(pick(gender == FEMALE ? GLOB.first_names_female : GLOB.first_names_male))
+	switch(rand(1, 4))
+		if(1) new_name = NAME
+		if(2) new_name = "[LTR][LTR]-[NAME]"
+		if(3) new_name = "[NAME]-[NUM][NUM][NUM]"
+		if(4) new_name = "[LTR][LTR]-[NUM][NUM][NUM]"
+	. = ..(new_name, in_depth)
+	#undef LTR
+	#undef NUM
+	#undef NAME
 
 /mob/living/carbon/human/vatgrown/New(new_loc)
-	..(new_loc, SPECIES_VATGROWN)
+	LAZYADD(mutations, MUTATION_VATGROWN)
+	..(new_loc, SPECIES_HUMAN)
 
 /mob/living/carbon/human/vatgrown/female/New(new_loc)
-	..(new_loc, SPECIES_VATGROWN)
-	gender = "female"
-	regenerate_icons()
+	gender = FEMALE
+	..(new_loc, SPECIES_HUMAN)
 
 /mob/living/carbon/human/abductor/New(new_loc)
 	..(new_loc, SPECIES_ABDUCTOR)

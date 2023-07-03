@@ -2056,7 +2056,6 @@
 #include "code\modules\mob\living\carbon\human\species\outsider\shadow.dm"
 #include "code\modules\mob\living\carbon\human\species\outsider\vox.dm"
 #include "code\modules\mob\living\carbon\human\species\station\golems.dm"
-#include "code\modules\mob\living\carbon\human\species\station\human_subspecies.dm"
 #include "code\modules\mob\living\carbon\human\species\station\lizard.dm"
 #include "code\modules\mob\living\carbon\human\species\station\machine.dm"
 #include "code\modules\mob\living\carbon\human\species\station\monkey.dm"

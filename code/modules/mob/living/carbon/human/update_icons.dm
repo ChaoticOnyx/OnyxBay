@@ -249,9 +249,11 @@ var/global/list/damage_icon_parts = list()
 	if(QDELETED(src))
 		return
 
+	var/vatgrown_color_mod = rgb(232, 214, 192)
 	var/husk_color_mod = rgb(96,88,80)
 	var/hulk_color_mod = rgb(48,224,40)
 
+	var/vatgrown = (MUTATION_VATGROWN in mutations)
 	var/husk = (MUTATION_HUSK in src.mutations)
 	var/fat = (MUTATION_FAT in src.mutations)
 	var/hulk = (MUTATION_HULK in src.mutations)
@@ -316,7 +318,7 @@ var/global/list/damage_icon_parts = list()
 		else
 			icon_key += "1"
 
-	icon_key = "[icon_key][husk ? 1 : 0][fat ? 1 : 0][hulk ? 1 : 0][skeleton ? 1 : 0][mind?.special_role == "Zombie" ? 1 : 0]"
+	icon_key = "[icon_key][husk ? 1 : 0][fat ? 1 : 0][hulk ? 1 : 0][vatgrown ? 1 : 0][skeleton ? 1 : 0][mind?.special_role == "Zombie" ? 1 : 0]"
 
 	var/icon/base_icon
 	if(human_icon_cache[icon_key])
@@ -357,6 +359,8 @@ var/global/list/damage_icon_parts = list()
 			else if(hulk)
 				var/list/tone = ReadRGB(hulk_color_mod)
 				base_icon.MapColors(rgb(tone[1],0,0),rgb(0,tone[2],0),rgb(0,0,tone[3]))
+			else if(vatgrown)
+				base_icon.ColorTone(vatgrown_color_mod)
 
 		//Handle husk overlay.
 		if(husk && ("overlay_husk" in icon_states(species.get_icobase(src))))
@@ -447,7 +451,7 @@ var/global/list/damage_icon_parts = list()
 	if(update_icons) queue_icon_update()
 
 
-/mob/living/carbon/human/update_mutations(update_icons=1)
+/mob/living/carbon/human/update_mutations(update_icons = TRUE, on_creation = FALSE)
 	var/fat
 	if(MUTATION_FAT in mutations)
 		fat = "fat"
@@ -475,6 +479,16 @@ var/global/list/damage_icon_parts = list()
 	else
 		overlays_standing[HO_MUTATIONS_LAYER]	= null
 
+	if(MUTATION_VATGROWN in mutations)
+		var/obj/item/organ/internal/appendix/appendix = internal_organs_by_name[BP_APPENDIX]
+		if(!isnull(appendix))
+			appendix.removed(src, TRUE, TRUE)
+			if(on_creation) qdel(appendix)
+			else
+				vomit(0, 10, 3)
+				appendix.removed(src)
+				visible_message(SPAN_WARNING("[src] vomits up his [appendix]!"), SPAN_DANGER("You suddenly vomit up your [appendix]!"))
+
 	if(update_icons) queue_icon_update()
 
 /* --------------------------------------- */
@@ -484,7 +498,7 @@ var/global/list/damage_icon_parts = list()
 	if(HasMovementHandler(/datum/movement_handler/mob/transformation) || QDELETED(src))
 		return
 
-	update_mutations(0)
+	update_mutations(FALSE, TRUE)
 	update_body(0)
 	update_skin(0)
 	update_underwear(0)
