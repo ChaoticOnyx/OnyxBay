@@ -22,7 +22,7 @@
 	var/cartridge_type = /obj/item/reagent_containers/ecig_cartridge/med_nicotine
 
 	var/brightness_on = 1
-	var/power_usage = 450 //value for simple ecig, enough for about 1 cartridge, in JOULES!
+	var/power_usage = 225 //value for simple ecig, enough for about 1 cartridge, in JOULES!
 	var/idle_time = 0
 	var/idle_treshold = 10
 	var/opened = FALSE
@@ -442,6 +442,7 @@
 	idle_treshold = -1
 	active = TRUE
 	smokeamount = 1
+	power_usage = 450
 
 /obj/item/clothing/mask/smokable/ecig/disposable/Initialize()
 	. = ..()
