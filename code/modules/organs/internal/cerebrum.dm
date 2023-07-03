@@ -34,8 +34,8 @@
 	return old_self.real_name
 
 /obj/item/organ/internal/cerebrum/proc/_setup_brainmob(mob/living/brain_self, mob/living/carbon/old_self)
-	brain_self.SetName(_get_brainmob_name(brain_self, old_self))
-	brain_self.real_name = name
+	brain_self.real_name = _get_brainmob_name(brain_self, old_self)
+	brain_self.SetName(brain_self.real_name)
 
 /obj/item/organ/internal/cerebrum/proc/_create_brainmob()
 	var/mob/living/new_brainmob = new brainmob_type(src)
@@ -83,17 +83,20 @@
 	if(!.)
 		return FALSE
 
-	target.ghostize()
-
 	if(isnull(brainmob))
 		return TRUE
 
-	if(brainmob?.mind)
-		brainmob.mind.transfer_to(target)
-	else if(brainmob?.key)
-		target.key = brainmob.key
+	if(!isnull(target?.mind?.changeling))
+		brainmob.death(FALSE)
+		brainmob.ghostize()
+		return TRUE
 
-	target.set_stat(CONSCIOUS)
+	target.ghostize()
+
+	if(brainmob.mind)
+		brainmob.mind.transfer_to(target)
+	else if(brainmob.key)
+		target.key = brainmob.key
 
 	return TRUE
 
@@ -111,7 +114,10 @@
 		borer.detatch()
 		borer.leave_host()
 
-	if(vital && isnull(owner?.mind?.changeling))
+	if(!isnull(owner?.mind?.changeling))
+		return ..()
+
+	if(vital)
 		transfer_identity(owner)
 
 	return ..()

@@ -103,16 +103,3 @@
 /obj/item/organ/internal/cell/listen()
 	if(get_charge())
 		return "faint hum of the power bank"
-
-// /obj/item/organ/internal/mmi_holder/proc/transfer_and_delete()
-// 	if(stored_mmi)
-// 		. = stored_mmi
-// 		stored_mmi.forceMove(src.loc)
-// 		if(persistantMind)
-// 			persistantMind.transfer_to(stored_mmi.brainmob)
-// 		else
-// 			var/response = input(find_dead_player(ownerckey, 1), "Your [initial(stored_mmi.name)] has been removed from your body. Do you wish to return to life?", "Robotic Rebirth") as anything in list("Yes", "No")
-// 			if(response == "Yes")
-// 				persistantMind.transfer_to(stored_mmi.brainmob)
-// 		stored_mmi.update_icon()
-// 	qdel(src)

@@ -28,7 +28,6 @@
 /obj/item/organ/internal/cerebrum/brain/_setup_brainmob(mob/living/brain_self, mob/living/carbon/old_self)
 	brain_self.dna = old_self.dna.Clone()
 	brain_self.languages = old_self.languages
-	brain_self:timeofhostdeath = old_self.timeofdeath
 	for(var/datum/modifier/M in old_self.modifiers)
 		if(!(M.flags & MODIFIER_GENETIC))
 			continue

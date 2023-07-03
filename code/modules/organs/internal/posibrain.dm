@@ -45,12 +45,11 @@
 
 /obj/item/organ/internal/cerebrum/posibrain/proc/reset_search()
 	searching = FALSE
+	update_icon()
 
-	if(brainmob && brainmob.key)
+	if(!searching || brainmob && brainmob.key)
 		return
 	else show_splash_text_to_viewers("no suitable intelligence found!")
-
-	update_icon()
 
 /obj/item/organ/internal/cerebrum/posibrain/proc/start_search(mob/user)
 	searching = TRUE
@@ -60,9 +59,9 @@
 		_setup_brainmob(brainmob, null)
 
 	var/datum/ghosttrap/G = get_ghost_trap("positronic brain")
-	G.request_player(brainmob, "Someone is requesting a personality for a positronic brain.", 10 SECONDS)
+	G.request_player(brainmob, "Someone is requesting a personality for a positronic brain.", 60 SECONDS)
 
-	addtimer(CALLBACK(src, /obj/item/organ/internal/cerebrum/posibrain/proc/reset_search), 10 SECONDS, TIMER_DELETE_ME)
+	addtimer(CALLBACK(src, /obj/item/organ/internal/cerebrum/posibrain/proc/reset_search), 60 SECONDS, TIMER_DELETE_ME)
 	show_splash_text(user, "started search of suitable intelligence.")
 	update_icon()
 
@@ -105,6 +104,9 @@
 	shackled = FALSE
 	update_icon()
 
+/obj/item/organ/internal/cerebrum/posibrain/update_name()
+	SetName("Positronic Brain ([brainmob?.real_name])")
+
 /obj/item/organ/internal/cerebrum/posibrain/update_desc()
 	desc = initial(desc)
 
@@ -119,7 +121,7 @@
 /obj/item/organ/internal/cerebrum/posibrain/update_icon()
 	overlays.Cut()
 
-	if(brainmob)
+	if(brainmob?.key)
 		icon_state = "core-occupied"
 	else if(searching)
 		icon_state = "core-search"

@@ -4,7 +4,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	SPECIES_MONKEY, SPECIES_FARWA, SPECIES_NEAERA, SPECIES_STOK))
 
 /obj/item/organ/internal/cerebrum/mmi
-	name = "\improper Man-Machine Interface"
+	name = "Man-Machine Interface"
 	desc = "A complex life support shell that interfaces between a brain and electronic devices."
 
 	icon = 'icons/mob/human_races/organs/mmi.dmi'
@@ -121,7 +121,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 
 	_add_brainmob(new_brain)
 
-	SetName("[initial(name)]: [brainmob.real_name]")
+	update_name()
 	update_desc()
 	update_icon()
 
@@ -136,6 +136,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	new_occupant.container = src
 	new_occupant.set_stat(CONSCIOUS)
 	new_occupant.switch_from_dead_to_living_mob_list()
+	new_occupant?.client?.eye = src
 
 	_register_mob_signals()
 
@@ -144,8 +145,8 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 
 	brainmob:container = null
 	brainmob.forceMove(new_container)
-	brainmob:timeofhostdeath = world.time
 	brainmob.remove_from_living_mob_list()
+	brainmob?.client?.eye = new_container
 
 	new_container.brainmob = brainmob
 	brainmob = null
@@ -166,9 +167,12 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 
 	_remove_brainmob(new_brain)
 
-	SetName(initial(name))
+	update_name()
 	update_desc()
 	update_icon()
+
+/obj/item/organ/internal/cerebrum/mmi/update_name()
+	SetName(isnull(brainmob) ? initial(name) : "[initial(name)]: [brainmob?.real_name]")
 
 /obj/item/organ/internal/cerebrum/mmi/update_desc()
 	desc = initial(desc)
