@@ -39,6 +39,7 @@
 	update_icon()
 
 /obj/item/reagent_containers/vessel/hookah/update_icon()
+	..()
 	if(HC)
 		icon_state = "[base_icon][lit ? "_lit" : ""]"
 	else
@@ -120,6 +121,9 @@
 				return
 			if(user.pick_or_drop(src, loc))
 				to_chat(user, SPAN("notice", "You pick up \the [src]."))
+				reattach_hose()
+				if(has_second_hose)
+					reattach_hose(TRUE)
 	return
 
 /obj/item/reagent_containers/vessel/hookah/attackby(obj/item/W, mob/user)
@@ -219,6 +223,18 @@
 	icon_state = "mouthpiece"
 	w_class = ITEM_SIZE_NO_CONTAINER
 	var/obj/item/reagent_containers/vessel/hookah/my_hookah = null
+
+/obj/item/hookah_hose/dropped(mob/user)
+	..()
+	if(!my_hookah)
+		qdel_self()
+		return
+	if(src == my_hookah.H1)
+		my_hookah.reattach_hose()
+	else if(src == my_hookah.H2)
+		my_hookah.reattach_hose(TRUE)
+	else
+		qdel_self()
 
 /obj/item/hookah_hose/attack(mob/living/M, mob/user, def_zone)
 	if(!my_hookah)
