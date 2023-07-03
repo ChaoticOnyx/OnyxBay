@@ -386,7 +386,7 @@ Sells devices, odds and ends, and medical stuff
 								/obj/item/reagent_containers/chem_disp_cartridge/dexalin/small	= TRADER_THIS_TYPE,
 								/obj/item/reagent_containers/hypospray/autoinjector/combatpain	= TRADER_THIS_TYPE,
 								/obj/item/sign/medipolma												= TRADER_THIS_TYPE,
-								/mob/living/carbon/human/vatgrown/blank											= TRADER_THIS_TYPE
+								/mob/living/carbon/human/vatgrown/blank									= TRADER_THIS_TYPE
 								)
 
 ///datum/trader/ship/mining     		Merged with trader/ship/trading_beacon/manufacturing
