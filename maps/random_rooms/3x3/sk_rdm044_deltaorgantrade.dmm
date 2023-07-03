@@ -1,0 +1,15 @@
+"a" = (/obj/effect/floor_decal/corner/white{dir = 4},/obj/effect/floor_decal/industrial/box/yellow,/obj/machinery/optable,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/template_noop)
+"d" = (/obj/effect/floor_decal/corner/old/red/full,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/plating,/area/template_noop)
+"h" = (/obj/effect/floor_decal/corner/white{dir = 8},/obj/structure/table/standard,/obj/item/book/wiki/surgery,/obj/item/clothing/gloves/latex,/obj/item/clothing/mask/muzzle,/obj/item/handcuffs,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/template_noop)
+"q" = (/obj/effect/floor_decal/corner/white{dir = 9},/obj/item/remains/human,/obj/effect/decal/cleanable/blood,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/template_noop)
+"w" = (/obj/effect/floor_decal/corner/white{dir = 1},/obj/structure/table/standard,/obj/item/retractor,/obj/item/hemostat,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/template_noop)
+"A" = (/obj/effect/floor_decal/corner/white{dir = 6},/obj/effect/floor_decal/industrial/box/yellow,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/template_noop)
+"B" = (/obj/effect/floor_decal/corner/white{dir = 5},/obj/structure/table/standard,/obj/item/storage/box/freezer,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/template_noop)
+"F" = (/obj/effect/floor_decal/corner/white,/obj/effect/floor_decal/industrial/box/yellow,/obj/structure/closet/crate/freezer,/obj/structure/sink/kitchen{pixel_y = 28},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled,/area/template_noop)
+"Y" = (/obj/effect/floor_decal/corner/white{dir = 10},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/template_noop)
+
+(1,1,1) = {"
+FYh
+Adq
+aBw
+"}

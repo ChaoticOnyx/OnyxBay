@@ -151,3 +151,12 @@
 	delay = 20
 	eye_attack_text = "a forelimb"
 	eye_attack_text_victim = "a forelimb"
+
+/datum/unarmed_attack/punch/strong/golem/plasteel
+	damage = 17.5
+
+/datum/unarmed_attack/kick/strong/golem/plasteel
+	damage = 12
+
+/datum/unarmed_attack/stomp/strong/golem/plasteel
+	damage = 10

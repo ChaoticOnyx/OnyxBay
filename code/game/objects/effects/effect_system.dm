@@ -531,3 +531,10 @@ steam.start() -- spawns the effect
 	icon_state = "heal"
 	anchored = TRUE
 	mouse_opacity = FALSE
+
+/obj/effect/mummy_animation
+	icon_state = "mummy_revive"
+
+/obj/effect/mummy_animation/Initialize()
+	..()
+	QDEL_IN(src, 2 SECONDS)

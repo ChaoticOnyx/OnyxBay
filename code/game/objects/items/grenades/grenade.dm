@@ -50,7 +50,7 @@
 
 /obj/item/grenade/attack_self(mob/user)
 	if(!active)
-		if(clown_check(user))
+		if(clown_check(user)&&!is_pacifist(user))
 			activate(user)
 			add_fingerprint(user)
 			if(iscarbon(user))

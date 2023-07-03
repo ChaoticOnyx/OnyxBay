@@ -68,6 +68,7 @@
 		comment = "heads"
 	user.visible_message(SPAN("notice", "[user] has thrown \the [src]. It lands on [comment]!"), \
 						 SPAN("notice", "You throw \the [src]. It lands on [comment]!"))
+	playsound(src, 'sound/items/coinflip.ogg', 50, TRUE)
 
 
 /obj/item/material/coin/gold

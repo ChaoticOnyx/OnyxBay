@@ -12,6 +12,7 @@
 #define SPECIES_FLAG_NO_TANGLE           0x0400  // This species wont get tangled up in weeds
 #define SPECIES_FLAG_NO_BLOOD            0x0800  // Cannot be drained by vampire, machine, diona, golem.
 #define SPECIES_FLAG_NO_ANTAG_TARGET     0x1000  // Cannot be randomly chosen as a target for antag objectives or traitor contracts (i.e. assassination).
+#define SPECIES_FLAG_NO_FIRE			 0x2000  // Cannot be ignited
 // unused: 0x8000 - higher than this will overflow
 
 // Species spawn flags

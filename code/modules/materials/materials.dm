@@ -439,6 +439,7 @@ var/list/name_to_material
 
 /material/plasteel/titanium
 	name = MATERIAL_TITANIUM
+	stack_type = /obj/item/stack/material/plasteel/titanium
 	brute_armor = 10
 	burn_armor = 8
 	integrity = 200
