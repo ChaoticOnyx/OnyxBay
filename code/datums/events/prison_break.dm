@@ -135,9 +135,7 @@
 
 /datum/event/prison_break/proc/announce()
 	if(areas && areas.len > 0)
-		command_announcement.Announce(
+		SSannounce.play_station_announce(/datum/announce/prison_break,
 			"[pick("Gr3y.T1d3 virus","Malignant trojan")] detected in [station_name()] [(eventDept == "Security")? "imprisonment":"containment"] subroutines. Secure any compromised areas immediately. [station_name()] AI involvement is recommended.",
 			"[eventDept] Alert",
-			zlevels = affecting_z,
-			new_sound = 'sound/AI/prisonbreakstart.ogg'
 		)

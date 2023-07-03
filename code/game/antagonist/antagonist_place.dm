@@ -14,10 +14,7 @@
 		spawn(0)
 			if(spawn_announcement_delay)
 				sleep(spawn_announcement_delay)
-			if(spawn_announcement_sound)
-				command_announcement.Announce("[spawn_announcement]", "[spawn_announcement_title ? spawn_announcement_title : "Priority Alert"]", new_sound = spawn_announcement_sound)
-			else
-				command_announcement.Announce("[spawn_announcement]", "[spawn_announcement_title ? spawn_announcement_title : "Priority Alert"]")
+			SSannounce.play_station_announce(spawn_announcement)
 	return
 
 /datum/antagonist/proc/place_mob(mob/living/mob)

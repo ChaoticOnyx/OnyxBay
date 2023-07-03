@@ -29,9 +29,8 @@
 	var/obj/effect/shuttle_landmark/home_waypoint
 
 	var/cloaked = 1
-	var/announcer
-	var/arrival_message
-	var/departure_message
+	var/arrival_announce
+	var/departure_announce
 	var/return_warning = 0
 
 	category = /datum/shuttle/autodock/multi/antag
@@ -51,14 +50,16 @@
 	..()
 
 /datum/shuttle/autodock/multi/antag/proc/announce_departure()
-	if(cloaked || isnull(departure_message))
+	if(cloaked || isnull(departure_announce))
 		return
-	command_announcement.Announce(departure_message, announcer || "[GLOB.using_map.boss_name]")
+
+	SSannounce.play_station_announce(departure_announce)
 
 /datum/shuttle/autodock/multi/antag/proc/announce_arrival()
-	if(cloaked || isnull(arrival_message))
+	if(cloaked || isnull(arrival_announce))
 		return
-	command_announcement.Announce(arrival_message, announcer || "[GLOB.using_map.boss_name]")
+
+	SSannounce.play_station_announce(arrival_announce)
 
 /datum/shuttle/autodock/multi/antag/set_destination(destination_key, mob/user)
 	if(!return_warning && destination_key == home_waypoint.name)

@@ -144,27 +144,6 @@
 	user.research.stored_cpu -= price
 	return 1
 
-// Proc: announce_hack_failure()
-// Parameters 2 - (user - hacking user, text - Used in alert text creation)
-// Description: Sends a hack failure message
-/proc/announce_hack_failure(mob/living/silicon/ai/user = null, text)
-	if(!user || !text)
-		return 0
-	var/fulltext = ""
-	switch(user.hack_fails)
-		if(1)
-			fulltext = "We have detected a hack attempt into your [text]. The intruder failed to access anything of importance, but disconnected before we could complete our traces."
-		if(2)
-			fulltext = "We have detected another hack attempt. It was targeting [text]. The intruder almost gained control of the system, so we had to disconnect them. We partially finished our trace and it seems to be originating either from the [station_name()], or its immediate vicinity."
-		if(3)
-			fulltext = "Another hack attempt has been detected, this time targeting [text]. We are certain the intruder entered the network via a terminal located somewhere on the [station_name()]."
-		if(4)
-			fulltext = "We have finished our traces and it seems the recent hack attempts are originating from your AI system [user.name]. We recommend investigation."
-		else
-			fulltext = "Another hack attempt has been detected, targeting [text]. The source still seems to be your AI system [user.name]."
-
-	command_announcement.Announce(fulltext)
-
 // Proc: get_unhacked_apcs()
 // Parameters: None
 // Description: Returns a list of all unhacked APCs. APCs on station Zs are on top of the list.
