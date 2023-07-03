@@ -17,3 +17,9 @@
 /obj/effect/effect/cig_smoke/Initialize()
 	. = ..()
 	QDEL_IN(src, time_to_live)
+
+/obj/effect/effect/cig_smoke/vapor
+	name = "vapor"
+	icon_state = "smallsmoke2"
+	time_to_live = 150
+
