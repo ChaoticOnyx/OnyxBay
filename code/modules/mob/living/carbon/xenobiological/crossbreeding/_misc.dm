@@ -30,6 +30,24 @@
 	icon = 'icons/obj/xenobiology/metroidcrossing.dmi'
 	icon_state = "metroidbarrier"
 	maxhealth = 60
+	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
+
+/obj/structure/barricade/metroid/New(newloc, material_name)
+	..()
+	material = null
+	name = "gelatinous barrier"
+	desc = "A huge chunk of grey metroid. Bullets might get stuck in it."
+	color = null
+
+/obj/structure/barricade/metroid/dismantle()
+	qdel(src)
+	return
+
+/obj/structure/barricade/metroid/bullet_act(obj/item/projectile/Proj, def_zone)
+	if(!(Proj.damage_type == BRUTE || Proj.damage_type == BURN))
+		return
+
+	take_damage(Proj.damage)
 
 //metroid forcefield - Chilling Metal
 /obj/effect/forcefield/metroidwall
@@ -39,7 +57,11 @@
 	icon_state = "metroidbarrier_thick"
 
 /obj/effect/forcefield/metroidwall/New()
-	addtimer(CALLBACK(src, .proc/qdel, src), 300)
+	addtimer(CALLBACK(src, .proc/finish_existance), 300)
+
+/obj/effect/forcefield/metroidwall/proc/finish_existance()
+	qdel(src)
+	return
 
 //Rainbow barrier - Chilling Rainbow
 /obj/effect/forcefield/metroidwall/rainbow
