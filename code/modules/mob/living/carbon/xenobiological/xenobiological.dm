@@ -285,6 +285,7 @@
 
 	if(istype(W,/obj/item/metroid_extract))
 		handle_crossbreeding(W,user)
+		return
 
 	if(istype(W, /obj/item/storage/xenobag))
 		var/obj/item/storage/P = W
@@ -311,6 +312,7 @@
 			else
 				to_chat(user, SPAN_NOTICE("You feed the slime some extracts from the bag."))
 				playsound(src, 'sound/effects/attackblob.ogg', 50, TRUE)
+		return
 
 	if(W.force > 0)
 		attacked += 10
