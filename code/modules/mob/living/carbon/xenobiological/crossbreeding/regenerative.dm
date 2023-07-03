@@ -40,8 +40,8 @@ Regenerative extracts:
 	playsound(target, 'sound/effects/splat.ogg', 40, TRUE)
 	qdel(src)
 
-/obj/item/metroidcross/regenerative/grey
-	colour = "grey" //Has no bonus effect.
+/obj/item/metroidcross/regenerative/green
+	colour = "green" //Has no bonus effect.
 	effect_desc = "Fully heals the target and does nothing else."
 
 /obj/item/metroidcross/regenerative/orange
@@ -195,11 +195,11 @@ Regenerative extracts:
 	to_chat(target, SPAN_NOTICE("You feel... <i>faster.</i>"))
 	target.reagents.add_reagent(/datum/reagent/hyperzine, 15)
 
-/obj/item/metroidcross/regenerative/green
-	colour = "green"
+/obj/item/metroidcross/regenerative/grey
+	colour = "grey"
 	effect_desc = "Fully heals the target and changes the spieces or color of a metroid or jellyperson."
 
-/obj/item/metroidcross/regenerative/green/core_effect(mob/living/target, mob/user)
+/obj/item/metroidcross/regenerative/grey/core_effect(mob/living/target, mob/user)
 	if(ismetroid(target))
 		target.visible_message(SPAN_WARNING("The [target] suddenly changes color!"))
 		var/mob/living/carbon/metroid/S = target
