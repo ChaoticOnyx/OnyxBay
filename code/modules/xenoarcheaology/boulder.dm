@@ -38,9 +38,9 @@
 
 	if(istype(I, /obj/item/device/measuring_tape))
 		var/obj/item/device/measuring_tape/P = I
-		user.visible_message("<span class='notice'>\The [user] extends \the [P] towards \the [src].</span>", "<span class='notice'>You extend \the [P] towards \the [src].</span>")
+		user.visible_message(SPAN_NOTICE("\The [user] extends \the [P] towards \the [src]."), SPAN_NOTICE("You extend \the [P] towards \the [src]."))
 		if(do_after(user, 15))
-			to_chat(user, "<span class='notice'>\The [src] has been excavated to a depth of [src.excavation_level]cm.</span>")
+			to_chat(user, SPAN_NOTICE("\The [src] has been excavated to a depth of [src.excavation_level]cm."))
 		return
 
 	if(istype(I, /obj/item/pickaxe))
@@ -56,14 +56,14 @@
 			if(!do_after(user, D.digspeed))
 				return
 
-		to_chat(user, "<span class='warning'>You start [P.drill_verb] [src].</span>")
+		to_chat(user, SPAN_WARNING("You start [P.drill_verb] [src]."))
 
-		to_chat(user, "<span class='notice'>You finish [P.drill_verb] [src].</span>")
+		to_chat(user, SPAN_NOTICE("You finish [P.drill_verb] [src]."))
 		excavation_level += P.excavation_amount
 
 		if(excavation_level > 200)
 			//failure
-			user.visible_message("<span class='warning'>\The [src] suddenly crumbles away.</span>", "<span class='warning'>\The [src] has disintegrated under your onslaught, any secrets it was holding are long gone.</span>")
+			user.visible_message(SPAN_WARNING("\The [src] suddenly crumbles away."), SPAN_WARNING("\The [src] has disintegrated under your onslaught, any secrets it was holding are long gone."))
 			qdel(src)
 			return
 
@@ -76,9 +76,9 @@
 					var/obj/machinery/artifact/X = O
 					if(X.main_effect)
 						X.main_effect.artifact_id = artifact_find.artifact_id
-				src.visible_message("<span class='warning'>\The [src] suddenly crumbles away.</span>")
+				src.visible_message(SPAN_WARNING("\The [src] suddenly crumbles away."))
 			else
-				user.visible_message("<span class='warning'>\The [src] suddenly crumbles away.</span>", "<span class='notice'>\The [src] has been whittled away under your careful excavation, but there was nothing of interest inside.</span>")
+				user.visible_message(SPAN_WARNING("\The [src] suddenly crumbles away."), SPAN_NOTICE("\The [src] has been whittled away under your careful excavation, but there was nothing of interest inside."))
 			qdel(src)
 
 /obj/structure/boulder/Bumped(AM)
