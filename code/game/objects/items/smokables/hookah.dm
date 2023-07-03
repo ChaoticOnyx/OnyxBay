@@ -5,7 +5,7 @@
 	desc = "What was supposed to be a cyborg hull once, but ended up being a hookah because of an intern roboticist's genius. Nevertheless, the design was so breathtaking, it was adapted by Acme Co., resulting in the most iconic hookah of the 26th century."
 	icon = 'icons/obj/hookah.dmi'
 	icon_state = "hookah"
-	var/base_icon = "hookah"
+	base_icon = "hookah"
 	item_state = "beaker"
 	center_of_mass = "x=16;y=5"
 	force = 12.5
@@ -45,14 +45,14 @@
 		icon_state = "[base_icon]_empty"
 
 	if(H1.loc == src)
-		overlays += image(icon, "[base_icon]_left_0"
+		overlays += image(icon, "[base_icon]_left_0")
 	else
-		overlays += image(icon, "[base_icon]_left_1"
+		overlays += image(icon, "[base_icon]_left_1")
 	if(has_second_hose)
 		if(H2.loc == src)
-			overlays += image(icon, "[base_icon]_right_0"
+			overlays += image(icon, "[base_icon]_right_0")
 		else
-			overlays += image(icon, "[base_icon]_right_1"
+			overlays += image(icon, "[base_icon]_right_1")
 
 /obj/item/reagent_containers/vessel/hookah/Destroy()
 	. = ..()
@@ -70,7 +70,7 @@
 	if(!isturf(loc))
 		reattach_hose()
 		if(has_second_hose)
-			reattack_hose(TRUE)
+			reattach_hose(TRUE)
 		set_next_think(0)
 		return
 
@@ -90,7 +90,9 @@
 		set_next_think(0)
 
 /obj/item/reagent_containers/vessel/hookah/attack_hand(mob/user)
-	if(H1.loc == src)
+	if(!H1 || !(has_second_hose && H2))
+		fix_hoses()
+	else if(H1.loc == src)
 		user.put_in_hands(H1)
 		to_chat(user, SPAN("notice", "You grab \the [src]'s [H1]."))
 		set_next_think(world.time + 1 SECOND)
@@ -120,7 +122,7 @@
 				to_chat(user, SPAN("notice", "You pick up \the [src]."))
 	return
 
-/obj/structure/iv_drip/attackby(obj/item/W, mob/user)
+/obj/item/reagent_containers/vessel/hookah/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/hookah_coal))
 		if(HC)
 			to_chat(user, "There is already a coal installed!")
@@ -141,10 +143,9 @@
 	if(HC.reagents?.total_volume && HC.pulls_left) // check if it has any reagents at all
 		var/mob/living/carbon/human/C = loc
 		if(C.check_has_mouth()) // if it's in the human/monkey mouth, transfer reagents to the mob
-			reagents.trans_to_mob(C, HC.smokeamount, CHEM_INGEST, (reagents.total_volume ? 0.5 : 1.0)) // No filter = full ingest
+			reagents.trans_to_mob(C, HC.smoke_amount, CHEM_INGEST, (reagents.total_volume ? 0.5 : 1.0)) // No filter = full ingest
 			if(reagents?.total_volume)
 				reagents.trans_to_mob(C, 0.2, CHEM_BLOOD) // Poisonous hookah be scary
-		smoke_loc = C.loc
 		new /obj/effect/effect/cig_smoke(C.loc)
 		HC.pulls_left--
 		if(!HC.pulls_left)
@@ -241,7 +242,7 @@
 		user.visible_message("[user] takes a [pick("drag","puff","pull")] from \the [my_hookah].", \
 							 "You take a [pick("drag","puff","pull")] on \the [my_hookah].")
 
-		smoke(user)
+		my_hookah.smoke(user)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		return TRUE
 	return ..()
@@ -286,13 +287,13 @@
 				return
 		else if(!istype(W, /obj/item/reagent_containers/food/tobacco))
 			return
-		if(smoketime)
+		if(pulls_left)
 			to_chat(user, SPAN("notice", "[src] is already packed."))
 			return
 		pulls_left = 40
 		if(G.reagents)
 			G.reagents.trans_to_obj(src, G.reagents.total_volume)
-		smokeamount = reagents.total_volume / pulls_left
+		smoke_amount = reagents.total_volume / pulls_left
 		SetName("[G.name]-packed [initial(name)]")
 		icon_state = "hookah_coal1"
 		qdel(G)
