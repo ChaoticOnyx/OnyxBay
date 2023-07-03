@@ -28,13 +28,15 @@
 	var/obj/item/hookah_coal/HC = null
 	var/obj/item/hookah_hose/H1 = null
 	var/obj/item/hookah_hose/H2 = null
+	var/coal_path = /obj/item/hookah_coal
 	var/has_second_hose = TRUE
 	var/lit = FALSE
 	var/hose_color = null
 
 /obj/item/reagent_containers/vessel/hookah/Initialize()
 	. = ..()
-	HC = new /obj/item/hookah_coal(src)
+	if(ispath(coal_path))
+		HC = new coal_path(src)
 	fix_hoses()
 	update_icon()
 
@@ -81,7 +83,7 @@
 		QDEL_NULL(H2)
 
 /obj/item/reagent_containers/vessel/hookah/think()
-	if(!H1 || !(has_second_hose && H2))
+	if(!H1 || (has_second_hose && !H2))
 		fix_hoses()
 
 	if(!isturf(loc))
@@ -107,7 +109,7 @@
 		set_next_think(0)
 
 /obj/item/reagent_containers/vessel/hookah/attack_hand(mob/user)
-	if(!H1 || !(has_second_hose && H2))
+	if(!H1 || (has_second_hose && !H2))
 		fix_hoses()
 	else if(H1.loc == src)
 		user.put_in_hands(H1)
@@ -176,6 +178,8 @@
 			reagents.trans_to_mob(C, HC.smoke_amount, CHEM_INGEST, (reagents.total_volume ? 0.5 : 1.0)) // No filter = full ingest
 			if(reagents?.total_volume)
 				reagents.trans_to_mob(C, 0.2, CHEM_BLOOD) // Poisonous hookah be scary
+			else if(prob(25))
+				C.emote("cough")
 		new /obj/effect/effect/cig_smoke(C.loc)
 		HC.pulls_left--
 		if(!HC.pulls_left)
@@ -252,6 +256,7 @@
 	icon_state = "makeshift_preview"
 	base_icon = "makeshift"
 	item_state = "bucket"
+	coal_path = null
 
 // Mouthpieces
 /obj/item/hookah_hose
@@ -327,7 +332,7 @@
 		overlays += overlay_image(icon, "[icon_state]_fill", flags=RESET_COLOR)
 
 /obj/item/hookah_coal/attack_self(mob/user)
-	if(pulls_left)
+	if(smoke_amount)
 		var/turf/location = get_turf(user)
 		user.visible_message(SPAN("notice", "[user] empties out [src]."), SPAN("notice", "You empty out [src]."))
 		new /obj/effect/decal/cleanable/ash(location)
@@ -379,11 +384,13 @@
 	if(istype(W, /obj/item/tape_roll) && stage == 0)
 		to_chat(user, SPAN("notice", "You somehow fix the pipe in place."))
 		stage++
+		update_icon()
 		return
 	else if(istype(W, /obj/item/pen) && !istype(W, /obj/item/pen/energy_dagger) && stage == 1)
 		to_chat(user, SPAN("notice", "You disassemble \the [W] to make a valve and a mouthpiece."))
 		qdel(W)
 		stage++
+		update_icon()
 		return
 	else if(isCoil(W))
 		var/obj/item/stack/cable_coil/coil = W
@@ -391,6 +398,7 @@
 		coil.use(1)
 		var/obj/item/reagent_containers/vessel/hookah/makeshift/M = new (get_turf(src))
 		M.hose_color = _color
+		M.update_icon()
 		qdel_self()
 		return
 	return ..()
