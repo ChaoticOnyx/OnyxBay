@@ -267,7 +267,9 @@
 */
 /mob/proc/ShiftClickOn(atom/A)
 	A.ShiftClick(src)
+	SEND_SIGNAL(src, SIGNAL_MOB_SHIFT_CLICK, src, A)
 	return
+
 /atom/proc/ShiftClick(mob/user)
 	if(user.client && (src in view(user.client.eye)))
 		user.examinate(src)
@@ -280,7 +282,9 @@
 */
 /mob/proc/CtrlClickOn(atom/A)
 	A.CtrlClick(src)
+	SEND_SIGNAL(src, SIGNAL_MOB_CTRL_CLICK, src, A)
 	return
+
 /atom/proc/CtrlClick(mob/user)
 	return
 
