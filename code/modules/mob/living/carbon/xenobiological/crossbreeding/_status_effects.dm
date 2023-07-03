@@ -184,7 +184,7 @@
 	holder.adjustFireLoss(1)
 	holder.color = "#007BA7"
 
-/obj/screen/movable/alert/clone_decay
+/obj/screen/movable/alert/status_effect/clone_decay
 	name = "Clone Decay"
 	desc = "You are simply a construct, and cannot maintain this form forever. You will be returned to your original body if you should fall."
 	icon_state = "metroid_clone"
