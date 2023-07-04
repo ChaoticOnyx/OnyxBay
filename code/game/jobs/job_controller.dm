@@ -26,6 +26,7 @@ var/global/datum/controller/occupations/job_master
 		for(var/J in all_jobs)
 			var/datum/job/job = decls_repository.get_decl(J)
 			if(!job)	continue
+			if(!job.show_in_setup) continue
 			occupations += job
 			occupations_by_type[job.type] = job
 			occupations_by_title[job.title] = job
