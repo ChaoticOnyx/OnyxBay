@@ -84,6 +84,8 @@
 			return /obj/item/metroid_extract/adamantine
 		if("black")
 			return /obj/item/metroid_extract/black
+		if("rainbow")
+			return /obj/item/metroid_extract/rainbow
 	return /obj/item/metroid_extract/green
 
 /mob/living/carbon/metroid/proc/random_colour()
