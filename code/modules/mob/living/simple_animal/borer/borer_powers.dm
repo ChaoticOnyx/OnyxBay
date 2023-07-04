@@ -155,7 +155,7 @@ BORER_STATUS_HUSK = list(\
 		to_chat(src, "You are not inside a host body.")
 		return
 
-	if(!host.is_ic_dead())
+	if(!host.is_ooc_dead())
 		to_chat(src, "Your host is still alive.")
 		return
 
