@@ -61,7 +61,7 @@
 					/obj/item/storage/fancy/cigarettes/killthroat = 5,
 					/obj/item/storage/tobaccopack/premium = 3,
 					/obj/item/clothing/mask/smokable/pipe = 1,
-					/obj/item/hookah_hose = 1)
+					/obj/item/reagent_containers/vessel/hookah = 1)
 	prices = list(	/obj/item/storage/fancy/cigarettes = 45,
 					/obj/item/storage/fancy/cigarettes/luckystars = 50,
 					/obj/item/storage/fancy/cigarettes/jerichos = 65,
@@ -156,7 +156,7 @@
 					/obj/item/storage/fancy/cigarettes/killthroat = 5,
 					/obj/item/storage/tobaccopack/premium = 3,
 					/obj/item/clothing/mask/smokable/pipe = 1,
-					/obj/item/hookah_hose = 1)
+					/obj/item/reagent_containers/vessel/hookah = 1)
 	prices = list(	/obj/item/storage/fancy/cigarettes = 45,
 					/obj/item/storage/fancy/cigarettes/luckystars = 50,
 					/obj/item/storage/fancy/cigarettes/jerichos = 65,
