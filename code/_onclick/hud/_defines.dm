@@ -1,3 +1,12 @@
+/// Full HUD shown
+#define HUD_STYLE_STANDART 1
+/// Only static elements are shown
+#define HUD_STYLE_REDUCED  2
+/// No HUD shown
+#define HUD_STYLE_NONE     3
+/// Total amount of HUD styles, keep this up-to-date
+#define HUD_STYLE_TOTAL    3
+
 /*
 	These defines specificy screen locations.  For more information, see the byond documentation on the screen_loc var.
 
