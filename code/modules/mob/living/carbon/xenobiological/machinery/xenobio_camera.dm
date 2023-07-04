@@ -220,9 +220,10 @@
 
 	if(remote_eye.visualnet.is_turf_visible(remote_eye.loc))
 		for(var/mob/living/carbon/metroid/S in remote_eye.loc)
-			metroid_scan(src, S, C, FALSE)
+			metroid_scan(src, S, C, TRUE)
 	else
 		to_chat(owner, SPAN_WARNING("Target is not near a camera. Cannot proceed."))
+
 /datum/action/innate/hotkey_help
 	name = "Hotkey Help"
 	button_icon = 'icons/hud/actions.dmi'
@@ -234,7 +235,7 @@
 	to_chat(owner, "<b>Click shortcuts:</b>")
 	to_chat(owner, "Shift-click a metroid to pick it up, or the floor to drop all held metroids.")
 	to_chat(owner, "Ctrl-click a metroid to scan it.")
-	to_chat(owner, "Ctrl-click or a dead monkey to recycle it, or the floor to place a new monkey.")
+	to_chat(owner, "Ctrl-click a dead monkey to recycle it, or the floor to place a new monkey.")
 
 //
 // Alternate clicks for metroid, monkey and open turf if using a xenobio console
@@ -265,7 +266,7 @@
 		return
 	var/area/mobarea = get_area(S.loc)
 	if(mobarea.name == E.allowed_area )
-		metroid_scan(src, S, C, FALSE)
+		metroid_scan(src, S, C, TRUE)
 
 //Picks up metroid
 /obj/machinery/computer/camera_advanced/xenobio/proc/XenometroidClickShift(mob/living/user, mob/living/carbon/metroid/S)
