@@ -10,7 +10,6 @@
 	num_alternate_languages = 1
 	language = LANGUAGE_GALCOM
 	icobase = 'icons/mob/human_races/r_abductor.dmi'
-	deform = 'icons/mob/human_races/r_abductor.dmi'
 
 	blood_color = "#972ab3"
 	flesh_color = "#707070"

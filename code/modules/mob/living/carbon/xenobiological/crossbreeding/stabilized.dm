@@ -55,8 +55,8 @@ Stabilized extracts:
 
 
 //Colors and subtypes:
-/obj/item/metroidcross/stabilized/grey
-	colour = "grey"
+/obj/item/metroidcross/stabilized/green
+	colour = "green"
 	effect_desc = "Makes metroids friendly to the owner"
 
 /obj/item/metroidcross/stabilized/orange
@@ -111,8 +111,8 @@ Stabilized extracts:
 	colour = "red"
 	effect_desc = "Nullifies all equipment based slowdowns."
 
-/obj/item/metroidcross/stabilized/green
-	colour = "green"
+/obj/item/metroidcross/stabilized/grey
+	colour = "grey"
 	effect_desc = "Changes the owner's name and appearance while holding this extract."
 
 /obj/item/metroidcross/stabilized/pink

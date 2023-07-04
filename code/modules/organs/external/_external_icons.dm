@@ -116,8 +116,6 @@ var/list/limb_icon_cache = list()
 			icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_main.dmi'
 		else if (!dna)
 			icon = 'icons/mob/human_races/r_human.dmi'
-		else if (status & ORGAN_MUTATED)
-			icon = species.deform
 		else if (owner && (MUTATION_SKELETON in owner.mutations))
 			icon = 'icons/mob/human_races/r_skeleton.dmi'
 		else

@@ -2,7 +2,7 @@
 	name = SPECIES_UNATHI
 	name_plural = SPECIES_UNATHI
 	icobase = 'icons/mob/human_races/r_lizard.dmi'
-	deform = 'icons/mob/human_races/r_def_lizard.dmi'
+
 	tail = "sogtail"
 	tail_animation = 'icons/mob/species/unathi/tail.dmi'
 	hair_key = SPECIES_UNATHI

@@ -32,7 +32,6 @@
 
 	icon_template = 'icons/mob/human_races/r_template_tall.dmi'
 	icobase = 'icons/mob/human_races/r_nabber.dmi'
-	deform = 'icons/mob/human_races/r_nabber.dmi'
 
 	limb_blend = ICON_MULTIPLY
 
