@@ -2,18 +2,12 @@
 	hud_type = /datum/hud/deity
 
 /datum/hud/deity/FinalizeInstantiation(ui_style = 'icons/hud/style/midnight.dmi')
-	src.adding = list()
-	src.other = list()
+	static_inventory = list()
 
-	var/obj/screen/intent/deity/D = new()
-
-	src.adding += D
-	action_intent = D
-
-	mymob.client.screen = list()
-	mymob.client.screen += src.adding
-	D.sync_to_mob(mymob)
-
+	var/obj/screen/intent/deity/intent = new()
+	intent.sync_to_mob(mymob)
+	action_intent = intent
+	static_inventory += action_intent
 
 /obj/screen/intent/deity
 	var/list/desc_screens = list()
