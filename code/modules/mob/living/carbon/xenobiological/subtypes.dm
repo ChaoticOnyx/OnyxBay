@@ -1,4 +1,7 @@
 /mob/living/carbon/metroid/proc/GetMutations()
+	if(src.mutation_chance>=100)
+		return list("rainbow")
+
 	switch(src.colour)
 		if("green")
 			return list("orange", "metal", "blue", "purple")
