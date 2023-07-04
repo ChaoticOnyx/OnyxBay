@@ -24,7 +24,7 @@
 	name = "50 darkwooden planks"
 	contains = list(/obj/item/stack/material/darkwood/fifty)
 	cost = 100
-	containername = "\improper Darkwooden planks crate"
+	containername = "\improper Darkwood planks crate"
 
 /decl/hierarchy/supply_pack/materials/plastic50
 	name = "50 plastic sheets"
