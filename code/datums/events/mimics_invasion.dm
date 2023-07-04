@@ -14,7 +14,7 @@
 /datum/event/mimics_invasion/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(null, /proc/level_seven_announcement), 0)
+	add_think_ctx("announce", CALLBACK(null, .proc/announce), 0)
 
 /datum/event/mimics_invasion/get_mtth()
 	. = ..()
@@ -51,6 +51,9 @@
 		spawned += 1
 
 	set_next_think_ctx("announce", world.time + (30 SECONDS))
+
+/datum/event/mimics_invasion/proc/announce()
+	SSannounce.play_station_announce(/datum/announce/level_7_biohazard)
 
 #undef MAX_MIMICS
 #undef MIN_MIMICS

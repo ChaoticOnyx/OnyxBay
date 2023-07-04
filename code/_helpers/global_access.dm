@@ -235,8 +235,6 @@
 			return global.cameranet;
 		if("can_call_ert")
 			return global.can_call_ert;
-		if("captain_announcement")
-			return global.captain_announcement;
 		if("cargo_supply_pack_root")
 			return global.cargo_supply_pack_root;
 		if("cargo_supply_packs")
@@ -263,8 +261,6 @@
 			return global.combatlog;
 		if("comm_message_listeners")
 			return global.comm_message_listeners;
-		if("command_announcement")
-			return global.command_announcement;
 		if("command_name")
 			return global.command_name;
 		if("common_tools")
@@ -535,8 +531,6 @@
 			return global.mining_walls;
 		if("minor_air_alarms")
 			return global.minor_air_alarms;
-		if("minor_announcement")
-			return global.minor_announcement;
 		if("mob_hat_cache")
 			return global.mob_hat_cache;
 		if("mob_repository")
@@ -621,8 +615,6 @@
 			return global.vampirepowers
 		if("priority_air_alarms")
 			return global.priority_air_alarms;
-		if("priority_announcement")
-			return global.priority_announcement;
 		if("priv_all_access")
 			return global.priv_all_access;
 		if("priv_all_access_datums")
@@ -1098,8 +1090,6 @@
 			global.cameranet=newval;
 		if("can_call_ert")
 			global.can_call_ert=newval;
-		if("captain_announcement")
-			global.captain_announcement=newval;
 		if("cargo_supply_pack_root")
 			global.cargo_supply_pack_root=newval;
 		if("cargo_supply_packs")
@@ -1126,8 +1116,6 @@
 			global.combatlog=newval;
 		if("comm_message_listeners")
 			global.comm_message_listeners=newval;
-		if("command_announcement")
-			global.command_announcement=newval;
 		if("command_name")
 			global.command_name=newval;
 		if("common_tools")
@@ -1398,8 +1386,6 @@
 			global.mining_walls=newval;
 		if("minor_air_alarms")
 			global.minor_air_alarms=newval;
-		if("minor_announcement")
-			global.minor_announcement=newval;
 		if("mob_hat_cache")
 			global.mob_hat_cache=newval;
 		if("mob_repository")
@@ -1484,8 +1470,6 @@
 			global.vampirepowers=newval;
 		if("priority_air_alarms")
 			global.priority_air_alarms=newval;
-		if("priority_announcement")
-			global.priority_announcement=newval;
 		if("priv_all_access")
 			global.priv_all_access=newval;
 		if("priv_all_access_datums")

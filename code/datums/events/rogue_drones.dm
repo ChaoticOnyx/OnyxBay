@@ -63,7 +63,7 @@
 	else
 		msg = "Class II Laser Fire detected nearby the [station_name()]."
 
-	command_announcement.Announce(msg, "[station_name()] Sensor Array", zlevels = affecting_z)
+	SSannounce.play_station_announce(/datum/announce/rogue_drones_start, msg)
 
 /datum/event/rogue_drones/proc/end()
 	SSevents.evars["rogue_drones_running"] = FALSE
@@ -80,4 +80,4 @@
 
 		qdel(D)
 
-	command_announcement.Announce("Be advised: sensors indicate the unidentified drone swarm has left the immediate proximity of the [station_name()].", "[station_name()] Sensor Array", zlevels = affecting_z)
+	SSannounce.play_station_announce(/datum/announce/rogue_drones_end)

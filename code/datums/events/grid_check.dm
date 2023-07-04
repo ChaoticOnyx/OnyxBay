@@ -22,4 +22,4 @@
 	set_next_think_ctx("announce", world.time + (30 SECONDS))
 
 /datum/event/grid_check/proc/announce()
-	GLOB.using_map.grid_check_announcement()
+	SSannounce.play_station_announce(/datum/announce/grid_check)

@@ -3,7 +3,7 @@
 /datum/ictus/New()
 	start()
 	if(prob(65))
-		command_announcement.Announce("Suspicious biological activity was noticed at the station. The medical crew should immediately prepare for the fight against the pathogen. Infected crew members must not leave the station under any circumstances.")
+		SSannounce.play_station_announce(/datum/announce/ictus)
 	..()
 
 /datum/ictus/proc/start()

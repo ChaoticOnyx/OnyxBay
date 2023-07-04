@@ -203,16 +203,6 @@
 			effects.Add(ITCH_EFFECT_WARNING(organ.name), IMMORTAL_RECOVER_EFFECT_WARNING(organ.name), IMMORTAL_HEALING_EFFECT_WARNING(organ.name), ORGANS_SHUTDOWN_EFFECT_WARNING(organ.name), GIBBINGTONS_EFFECT_WARNING(organ.name))
 	to_chat(holder, pick(effects))
 
-/datum/hallucination/evacuation
-	min_power = 60 // Very high
-
-/datum/hallucination/evacuation/can_affect()
-	return prob(5)
-
-/datum/hallucination/evacuation/start()
-	holder.playsound_local(holder, 'sound/effects/Evacuation.ogg', 35)
-	to_chat(holder, "<h1 class='alert'>Priority Announcement</h1><br>[SPAN("alert", replacetext(GLOB.using_map.emergency_shuttle_docked_message, "%ETD%", "3 minutes"))]")
-
 //Seeing stuff
 /datum/hallucination/mirage
 	duration = 30 SECONDS

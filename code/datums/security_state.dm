@@ -163,17 +163,14 @@
 	var/up_description
 	var/down_description
 
-	var/static/datum/announcement/priority/security/security_announcement_up = new(do_log = 0, do_newscast = 1, new_sound = sound('sound/signals/alarm2.ogg'))
-	var/static/datum/announcement/priority/security/security_announcement_down = new(do_log = 0, do_newscast = 1, new_sound = sound('sound/signals/start1.ogg'))
-
 /decl/security_level/default/switching_up_to()
 	if(up_description)
-		security_announcement_up.Announce(up_description, "Attention! Alert level elevated to [name]!")
+		SSannounce.play_station_announce(/datum/announce/security_level_elevated, up_description, "Attention! Alert level elevated to [name]!")
 	notify_station()
 
 /decl/security_level/default/switching_down_to()
 	if(down_description)
-		security_announcement_down.Announce(down_description, "Attention! Alert level changed to [name]!")
+		SSannounce.play_station_announce(/datum/announce/security_level_down, down_description,  "Attention! Alert level changed to [name]!")
 	notify_station()
 
 /decl/security_level/default/proc/notify_station()
@@ -242,8 +239,6 @@
 	overlay_alarm = "alarm_delta"
 	overlay_status_display = "status_display_delta"
 
-	var/static/datum/announcement/priority/security/security_announcement_delta = new(do_log = 0, do_newscast = 1, new_sound = sound('sound/effects/siren.ogg'))
-
 /decl/security_level/default/code_delta/switching_up_to()
-	security_announcement_delta.Announce("The self-destruct mechanism has been engaged. All crew are instructed to obey all instructions given by heads of staff. Any violations of these orders can be punished by death. This is not a drill.", "Attention! Delta security level reached!")
+	SSannounce.play_station_announce(/datum/announce/code_delta)
 	notify_station()
