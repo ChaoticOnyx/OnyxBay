@@ -204,7 +204,7 @@
 	change_ctate(/datum/click_handler/changeling/infest)
 
 
-/mob/living/simple_animal/hostile/little_changeling/proc/infest(mob/living/carbon/human/target as mob in oview(1))
+/mob/living/simple_animal/hostile/little_changeling/proc/infest(mob/living/carbon/human/target in oview(1))
 	var/datum/changeling/changeling = src.mind.changeling
 	if(!changeling)
 		return
@@ -320,7 +320,7 @@
 /mob/living/simple_animal/hostile/little_changeling/find_target()
 	. = ..()
 	if(.)
-		custom_emote(1, "nashes at [.]")
+		visible_emote("nashes at [.].")
 
 
 /mob/living/simple_animal/hostile/little_changeling/AttackingTarget()

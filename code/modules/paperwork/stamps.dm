@@ -62,6 +62,30 @@
 	name = "cargo rubber stamp"
 	icon_state = "stamp-cargo"
 
+/obj/item/stamp/ok
+	name = "\improper APPROVED rubber stamp"
+	icon_state = "stamp-ok"
+
+/obj/item/stamp/syndicate
+	name = "\improper 'criminal' rubber stamp"
+	icon_state = "stamp-syndicate"
+
+/obj/item/stamp/void
+	name = "void rubber stamp"
+	icon_state = "stamp-void"
+
+/obj/item/stamp/mime
+	name = "mime rubber stamp"
+	icon_state = "stamp-mime"
+
+/obj/item/stamp/law
+	name = "law rubber stamp"
+	icon_state = "stamp-law"
+
+/obj/item/stamp/chapel
+	name = "chapel rubber stamp"
+	icon_state = "stamp-chap"
+
 // Syndicate stamp to forge documents.
 /obj/item/stamp/chameleon/attack_self(mob/user as mob)
 

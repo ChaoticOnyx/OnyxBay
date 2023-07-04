@@ -243,8 +243,8 @@
 
 	if(hud_data.has_health)
 		mymob.healths = new /obj/screen()
-		mymob.healths.icon = 'icons/hud/common/screen_health.dmi'
-		mymob.healths.icon_state = "health0"
+		mymob.healths.icon = ui_style
+		mymob.healths.icon_state = "health"
 		mymob.healths.SetName("health")
 		mymob.healths.screen_loc = ui_health
 		hud_elements |= mymob.healths
@@ -275,7 +275,7 @@
 
 	else if(hud_data.has_nutrition)
 		mymob.nutrition_icon = new /obj/screen()
-		mymob.nutrition_icon.icon = 'icons/hud/common/screen_health.dmi'
+		mymob.nutrition_icon.icon = ui_style
 		mymob.nutrition_icon.icon_state = "nutrition0"
 		mymob.nutrition_icon.SetName("nutrition")
 		mymob.nutrition_icon.screen_loc = ui_nutrition

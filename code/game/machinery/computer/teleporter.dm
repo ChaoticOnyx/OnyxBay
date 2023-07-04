@@ -233,7 +233,7 @@
 				if(!implant.implanted || !ismob(implant.loc))
 					continue
 				var/mob/M = implant.loc
-				if(M.stat == DEAD)
+				if(M.is_ic_dead())
 					if(M.timeofdeath + 10 MINUTES < world.time)
 						continue
 				var/turf/T = get_turf(M)

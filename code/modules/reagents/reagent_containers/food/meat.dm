@@ -54,3 +54,19 @@
 		/datum/reagent/nutriment/protein = 9,
 		/datum/reagent/acid/polyacid = 9)
 	bitesize = 6
+
+/obj/item/reagent_containers/food/meat/pork
+	name = "pork slab"
+	desc = "It tastes... Humane."
+	icon_state = "pork"
+
+/obj/item/reagent_containers/food/meat/pork/attackby(obj/item/W, mob/user)
+	if(istype(W,/obj/item/material/knife))
+		new /obj/item/reagent_containers/food/bacon(src)
+		new /obj/item/reagent_containers/food/bacon(src)
+		new /obj/item/reagent_containers/food/bacon(src)
+		to_chat(user, "You cut the meat into thin strips.")
+		qdel(src)
+		return
+	else
+		..()

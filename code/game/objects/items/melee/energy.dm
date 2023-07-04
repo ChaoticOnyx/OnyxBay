@@ -53,6 +53,10 @@
 	check_armour = "melee"
 
 /obj/item/melee/energy/attack_self(mob/living/user)
+	if(is_pacifist(user))
+		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		return
+
 	if(active)
 		if(!clumsy_unaffected && (MUTATION_CLUMSY in user.mutations) && prob(50))
 			user.visible_message(SPAN("danger", "\The [user] accidentally cuts \himself with \the [src]."), \

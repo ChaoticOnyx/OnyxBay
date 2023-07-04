@@ -199,7 +199,7 @@
 			to_chat(user, "<span class='notice'>[target] is empty.</span>")
 			return
 
-		if(!target.is_open_container() && !istype(target, /obj/structure/reagent_dispensers) && !istype(target, /obj/item/backwear/reagent) && !istype(target, /obj/item/metroid_extract))
+		if(!target.is_open_container() && !istype(target, /obj/structure/reagent_dispensers) && !istype(target, /obj/item/backwear/reagent) && !istype(target, /obj/item/metroid_extract) && !istype(target, /obj/item/metroidcrossbeaker))
 			to_chat(user, "<span class='notice'>You cannot directly remove reagents from this object.</span>")
 			return
 

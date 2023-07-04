@@ -1288,8 +1288,7 @@
 
 /datum/chemical_reaction/metroid/golem/on_reaction(datum/reagents/holder)
 	..()
-	var/obj/effect/golemrune/Z = new /obj/effect/golemrune(get_turf(holder.my_atom))
-	Z.announce_to_ghosts()
+	new /obj/item/golem_shell(get_turf(holder.my_atom))
 
 //Sepia
 /datum/chemical_reaction/metroid/film
@@ -1324,13 +1323,7 @@
 	reaction_sound = 'sound/effects/teleport.ogg'
 
 /datum/chemical_reaction/metroid/teleport/on_reaction(datum/reagents/holder)
-	var/list/turfs = list()
-	for(var/turf/T in orange(holder.my_atom,6))
-		turfs += T
-	for(var/atom/movable/a in viewers(holder.my_atom,2))
-		if(!a.simulated)
-			continue
-		a.forceMove(pick(turfs))
+	new /obj/item/stack/telecrystal/bluespace_crystal(get_turf(holder.my_atom))
 	..()
 
 //pyrite

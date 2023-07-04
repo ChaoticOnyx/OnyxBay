@@ -302,7 +302,9 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	if(!islist(logging[message_type]))
 		logging[message_type] = list()
 
-	var/list/timestamped_message = list("[LAZYLEN(logging[message_type]) + 1]\[[time_stamp()]\] [message_tag] [key_name(src)]" = message)
+	var/list/message_data = list("message" = message, "tag" = message_tag)
+
+	var/list/timestamped_message = list("[LAZYLEN(logging[message_type]) + 1]\[[time_stamp()]\] [message_tag] [key_name(src)]" = message_data)
 
 	logging[message_type] += timestamped_message
 
@@ -378,6 +380,10 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 				a_intent = intent_numeric((intent_numeric(a_intent)+1) % 4)
 			if("left")
 				a_intent = intent_numeric((intent_numeric(a_intent)+3) % 4)
+
+		if(is_pacifist(src))
+			a_intent = I_HELP
+
 		if(hud_used && hud_used.action_intent)
 			hud_used.action_intent.icon_state = "intent_[a_intent]"
 
@@ -389,6 +395,10 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 				a_intent = I_HURT
 			if("right","left")
 				a_intent = intent_numeric(intent_numeric(a_intent) - 3)
+
+		if(is_pacifist(src))
+			a_intent = I_HELP
+
 		if(hud_used && hud_used.action_intent)
 			if(a_intent == I_HURT)
 				hud_used.action_intent.icon_state = I_HURT
@@ -400,6 +410,12 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 		var/mob/living/carbon/C = A
 		if(C.sdisabilities & BLIND || C.blinded)
 			return 1
+	return 0
+
+/proc/is_pacifist(A)
+	if(istype(A, /mob/living))
+		var/mob/living/C = A
+		return HAS_TRAIT(C, TRAIT_PACIFISM)
 	return 0
 
 /proc/broadcast_security_hud_message(message, broadcast_source)

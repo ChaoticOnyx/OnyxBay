@@ -105,12 +105,25 @@
 	return 1
 
 /mob/living/carbon/human/proc/change_hair_color(red, green, blue)
-	if(red == r_eyes && green == g_eyes && blue == b_eyes)
+	if(red == r_hair && green == g_hair && blue == b_hair)
 		return
 
 	r_hair = red
 	g_hair = green
 	b_hair = blue
+
+	force_update_limbs()
+	update_body()
+	update_hair()
+	return 1
+
+/mob/living/carbon/human/proc/change_s_hair_color(red, green, blue)
+	if(red == r_eyes && green == g_eyes && blue == b_eyes)
+		return
+
+	r_s_hair = red
+	g_s_hair = green
+	b_s_hair = blue
 
 	force_update_limbs()
 	update_body()

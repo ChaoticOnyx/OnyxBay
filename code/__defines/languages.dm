@@ -16,6 +16,7 @@
 #define LANGUAGE_NABBER "Serpentid"
 #define LANGUAGE_SPACER "Spacer"
 #define LANGUAGE_ROBOT "Robot Talk"
+#define LANGUAGE_DRONE "Drone Talk"
 #define LANGUAGE_LING "Changeling"
 #define LANGUAGE_ABDUCTOR "Mother Ship Mental Interface"
 #define LANGUAGE_SPIDER "Spider"

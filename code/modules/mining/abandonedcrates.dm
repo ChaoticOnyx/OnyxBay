@@ -34,8 +34,11 @@
 			new /obj/item/device/taperecorder(src)
 			new /obj/item/clothing/suit/space(src)
 			new /obj/item/clothing/head/helmet/space(src)
-		if(11 to 15)
+		if(11 to 13)
 			new /obj/item/reagent_containers/vessel/beaker/bluespace(src)
+		if(14 to 15)
+			new /obj/item/clothing/head/helmet/space/void/slayer(src)
+			new /obj/item/clothing/suit/space/void/slayer(src)
 		if(16 to 20)
 			for(var/i = 0, i < 10, i++)
 				new /obj/item/ore/diamond(src)
@@ -146,7 +149,7 @@
 		if(100)
 			new /obj/item/clothing/head/bearpelt(src)
 
-/obj/structure/closet/crate/secure/loot/togglelock(mob/user as mob)
+/obj/structure/closet/crate/secure/loot/togglelock(mob/user)
 	if(!locked)
 		return
 
@@ -187,7 +190,7 @@
 		if(guesschar != code[i])
 			. = 0
 
-/obj/structure/closet/crate/secure/loot/attackby(obj/item/W as obj, mob/user as mob)
+/obj/structure/closet/crate/secure/loot/attackby(obj/item/W, mob/user)
 	if(locked)
 		if (isMultitool(W)) // Greetings Urist McProfessor, how about a nice game of cows and bulls?
 			to_chat(user, "<span class='notice'>DECA-CODE LOCK ANALYSIS:</span>")

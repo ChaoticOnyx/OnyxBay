@@ -47,7 +47,6 @@
 /mob/living/simple_animal/corgi/Life()
 	..()
 	update_hat() // In case somewhere something unpredictable happens - it'll fix it, I guess.
-	regular_hud_updates()
 
 	// Feeding, chasing food, FOOOOODDDD
 	if(!stat && !resting && !buckled)
@@ -100,7 +99,10 @@
 					sleep(1)
 
 
-/mob/living/simple_animal/corgi/proc/regular_hud_updates()
+/mob/living/simple_animal/corgi/handle_regular_hud_updates()
+	if(!..())
+		return FALSE
+
 	if(pullin)
 		if(pulling)
 			pullin.icon_state = "pull1"
@@ -122,25 +124,6 @@
 			toxin.icon_state = "tox1"
 		else
 			toxin.icon_state = "tox0"
-
-	if (healths)
-		switch(health)
-			if(30 to INFINITY)
-				healths.icon_state = "health0"
-			if(26 to 29)
-				healths.icon_state = "health1"
-			if(21 to 25)
-				healths.icon_state = "health2"
-			if(16 to 20)
-				healths.icon_state = "health3"
-			if(11 to 15)
-				healths.icon_state = "health4"
-			if(6 to 10)
-				healths.icon_state = "health5"
-			if(1 to 5)
-				healths.icon_state = "health6"
-			else
-				healths.icon_state = "health7"
 
 /obj/item/reagent_containers/food/meat/corgi
 	name = "Corgi meat"
@@ -354,7 +337,7 @@
 
 
 		if(prob(1))
-			visible_emote(pick("dances around","chases her tail"))
+			visible_emote(pick("dances around.","chases her tail."))
 			spawn(0)
 				for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2,1,2,4,8,4,2))
 					set_dir(i)

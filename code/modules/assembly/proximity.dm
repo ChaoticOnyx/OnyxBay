@@ -22,6 +22,7 @@
 	if(!..())
 		return FALSE
 	timing = !timing
+	set_next_think(world.time)
 	update_icon()
 	return TRUE
 
@@ -55,19 +56,21 @@
 		return 0
 	pulse(0)
 	if(!holder)
-		mainloc.visible_message("\icon[src] *beep* *beep*", "*beep* *beep*")
+		mainloc.visible_message(SPAN("danger" ,"\icon[src] *beep* *beep*"), SPAN("danger" ,"*beep* *beep*"))
+	playsound(mainloc, 'sound/signals/warning8.ogg', 35)
 	cooldown = 2
 	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
 
 /obj/item/device/assembly/prox_sensor/think()
-	if(timing && (time >= 0))
+	if(!timing)
+		return
+	if(time > 0)
 		time--
+		set_next_think(world.time + 1 SECOND)
 	else
 		timing = FALSE
 		toggle_scan()
 		time = 10
-
-	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/assembly/prox_sensor/dropped()
 	sense()
@@ -78,7 +81,7 @@
 
 /obj/item/device/assembly/prox_sensor/proc/toggle_scan()
 	if(!secured)
-		return 0
+		return
 	scanning = !scanning
 	update_icon()
 
@@ -106,8 +109,8 @@
 
 /obj/item/device/assembly/prox_sensor/interact(mob/user)//TODO: Change this to the wires thingy
 	if(!secured)
-		user.show_message(SPAN("warning", "The [name] is unsecured!"))
-		return 0
+		user.show_message(SPAN("warning", "\the [src] is unsecured!"))
+		return
 	var/second = time % 60
 	var/minute = (time - second) / 60
 	var/dat = "<meta charset=\"utf-8\">"
@@ -139,8 +142,7 @@
 		toggle_scan()
 
 	if(href_list["time"])
-		timing = !timing
-		update_icon()
+		activate()
 
 	if(href_list["tp"])
 		var/tp = text2num(href_list["tp"])

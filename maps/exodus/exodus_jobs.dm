@@ -58,5 +58,23 @@
 								/datum/job/ai,
 								/datum/job/cyborg,
 								/datum/job/merchant
+									),
+		/datum/species/swine = list(/datum/job/assistant,
+									/datum/job/bartender,
+									/datum/job/chef,
+									/datum/job/hydro,
+									/datum/job/cargo_tech,
+									/datum/job/mining,
+									/datum/job/janitor,
+									/datum/job/librarian,
+									/datum/job/officer,
+									/datum/job/clown,
+									/datum/job/mime,
+									/datum/job/lawyer,
+									/datum/job/roboticist,
+									/datum/job/engineer,
+									/datum/job/ai,
+									/datum/job/cyborg,
+									/datum/job/merchant
 									)
 	)

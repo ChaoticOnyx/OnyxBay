@@ -137,6 +137,12 @@
 	var/target_loc = target.loc
 
 	var/holding = affecter.get_active_item()
+
+	if(istype(user,/mob/living))
+		var/mob/living/L = user
+		for(var/datum/modifier/actionspeed/ASM in L.modifiers)
+			time = time * ASM.actionspeed_coefficient
+
 	var/datum/progressbar/progbar
 	if(is_mob_type && progress)
 		progbar = new(user, time, target)
@@ -192,6 +198,11 @@
 	var/atom/original_loc = user.loc
 
 	var/holding = user.get_active_hand()
+
+	if(istype(user,/mob/living))
+		var/mob/living/L = user
+		for(var/datum/modifier/actionspeed/ASM in L.modifiers)
+			delay = delay * ASM.actionspeed_coefficient
 
 	var/datum/progressbar/progbar
 	if (progress)
@@ -280,6 +291,8 @@
 /mob/proc/remove_from_dead_mob_list()
 	return GLOB.dead_mob_list_.Remove(src)
 
+/mob/proc/can_block_magic()
+	return FALSE
 //Find a dead mob with a brain and client.
 /proc/find_dead_player(find_key, include_observers = 0)
 	if(isnull(find_key))

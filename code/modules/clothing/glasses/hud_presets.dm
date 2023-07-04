@@ -104,7 +104,7 @@
 	icon_state = "thermoncle"
 	item_state = "thermoncle"
 	matrix = /obj/item/device/hudmatrix/thermal
-	body_parts_covered = 0 //doesn't protect eyes because it's a monocle, duh
+	body_parts_covered = NO_BODYPARTS //doesn't protect eyes because it's a monocle, duh
 
 /obj/item/clothing/glasses/hud/plain/thermal/jensen
 	name = "optical thermal implants"
@@ -117,4 +117,4 @@
 		slot_r_hand_str = "syringe_kit"
 		)
 	matrix = /obj/item/device/hudmatrix/thermal
-	body_parts_covered = 0 //don't protect eyes because, well, contacts
+	body_parts_covered = NO_BODYPARTS //don't protect eyes because, well, contacts

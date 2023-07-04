@@ -187,6 +187,7 @@
 	if(toner == 0)
 		visible_message(SPAN("notice", "A red light on \the [src] flashes, indicating that it is out of toner."))
 	c.update_icon()
+	c.photocopied = TRUE
 	return c
 
 /obj/machinery/photocopier/proc/complaintcopy(obj/item/complaint_folder/copy, need_toner=1)

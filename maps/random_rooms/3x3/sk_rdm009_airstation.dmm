@@ -1,0 +1,12 @@
+"a" = (/obj/machinery/atmospherics/pipe/simple/visible{dir = 5},/turf/simulated/floor/plating,/area/template_noop)
+"b" = (/obj/machinery/atmospherics/pipe/simple/visible{dir = 4},/obj/machinery/meter,/turf/simulated/floor/plating,/area/template_noop)
+"o" = (/obj/machinery/atmospherics/pipe/tank/air{dir = 8},/obj/machinery/light{dir = 4},/turf/simulated/floor/plating,/area/template_noop)
+"A" = (/obj/machinery/atmospherics/valve,/turf/simulated/floor/plating,/area/template_noop)
+"W" = (/obj/effect/decal/warning_stripes,/obj/machinery/atmospherics/portables_connector,/obj/item/wrench/red,/obj/machinery/portable_atmospherics/canister/air,/turf/simulated/floor/plating,/area/template_noop)
+"Z" = (/turf/simulated/floor/plating,/area/template_noop)
+
+(1,1,1) = {"
+WZZ
+AZZ
+abo
+"}

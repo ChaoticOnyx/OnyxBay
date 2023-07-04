@@ -230,7 +230,7 @@
 
 //stripper
 /obj/item/clothing/under/stripper
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 
 /obj/item/clothing/under/stripper/stripper_pink
 	name = "pink swimsuit"
@@ -277,7 +277,7 @@
 //swimsuit
 /obj/item/clothing/under/swimsuit/
 	siemens_coefficient = 1
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 
 /obj/item/clothing/under/swimsuit/black
 	name = "black swimsuit"
