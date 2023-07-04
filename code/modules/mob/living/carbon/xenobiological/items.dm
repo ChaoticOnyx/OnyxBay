@@ -233,6 +233,14 @@
 		/obj/item/stack/material/mhydrogen = SPECIES_GOLEM_HYDROGEN,
 	)
 
+	if(!LAZYLEN(GLOB.golems_resonator))
+		qdel(I)
+		to_chat(user, SPAN_NOTICE("You feel some magic pulse from shell."))
+		to_chat(user, SPAN_NOTICE("You finish up the golem shell with adamantine?!"))
+		new shell_type(get_turf(src), SPECIES_GOLEM_ADAMANTINE, user)
+		qdel(src)
+		return
+
 	if(istype(I,/obj/item/device/soulstone))
 		qdel(I)
 		to_chat(user, SPAN_NOTICE("You finish up the golem shell with [I]."))
