@@ -17,6 +17,7 @@
 
 	brainmob_type = /mob/living/silicon/sil_brainmob
 
+	var/timer = null
 	var/searching = FALSE
 
 	var/shackled = FALSE
@@ -44,12 +45,13 @@
 	else return ..()
 
 /obj/item/organ/internal/cerebrum/posibrain/proc/reset_search()
-	searching = FALSE
-	update_icon()
-
-	if(!searching || brainmob && brainmob.key)
+	if(!searching || brainmob?.key)
 		return
 	else show_splash_text_to_viewers("no suitable intelligence found!")
+	searching = FALSE
+	brainmob.controllable = TRUE
+	GLOB.available_mobs_for_possess -= brainmob
+	update_icon()
 
 /obj/item/organ/internal/cerebrum/posibrain/proc/start_search(mob/user)
 	searching = TRUE
@@ -57,27 +59,31 @@
 	if(isnull(brainmob))
 		brainmob = _get_brainmob()
 		_setup_brainmob(brainmob, null)
+		_register_mob_signals()
 
-	var/datum/ghosttrap/G = get_ghost_trap("positronic brain")
-	G.request_player(brainmob, "Someone is requesting a personality for a positronic brain.", 60 SECONDS)
+	notify_ghosts("Someone is requesting a personality for a positronic brain.", source = brainmob, alert_overlay = new/mutable_appearance(src), action = NOTIFY_FOLLOW, posses_mob = TRUE)
+	timer = addtimer(CALLBACK(src, /obj/item/organ/internal/cerebrum/posibrain/proc/reset_search), 100, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE)
 
-	addtimer(CALLBACK(src, /obj/item/organ/internal/cerebrum/posibrain/proc/reset_search), 60 SECONDS, TIMER_DELETE_ME)
+	brainmob.controllable = TRUE
+	GLOB.available_mobs_for_possess |= brainmob
+
 	show_splash_text(user, "started search of suitable intelligence.")
 	update_icon()
 
 /obj/item/organ/internal/cerebrum/posibrain/attack_ghost(mob/observer/ghost/user)
-	if(!searching || (brainmob?.key))
-		return
+	if(!searching || isnull(brainmob) || (brainmob?.key))
+		return ..()
 
-	var/datum/ghosttrap/G = get_ghost_trap("positronic brain")
-	if(!G.assess_candidate(user))
-		return
+	brainmob.attack_ghost(user)
+	if(isnull(brainmob.key))
+		return ..()
 
-	var/response = tgui_alert(user, "Are you sure you wish to possess this [src]?", "Possess \the [src]", list("Yes", "No"))
-	if(response == "Yes")
-		G.transfer_personality(user, brainmob)
+	visible_message(SPAN("notice", "\The [src] chimes quietly."))
+	GLOB.available_mobs_for_possess -= brainmob
+	reset_search()
+	update_name()
 
-	return
+	return ..()
 
 /obj/item/organ/internal/cerebrum/posibrain/emp_act(severity)
 	if(isnull(brainmob))

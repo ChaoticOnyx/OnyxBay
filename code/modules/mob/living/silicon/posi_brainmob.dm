@@ -25,7 +25,7 @@
 		if(stat!=DEAD)	//If not dead.
 			death(1)	//Brains can die again. AND THEY SHOULD AHA HA HA HA HA HA
 		ghostize()		//Ghostize checks for key so nothing else is necessary.
-
+	GLOB.available_mobs_for_possess -= src
 	return ..()
 
 /mob/living/silicon/sil_brainmob/update_canmove()
@@ -98,3 +98,13 @@
 		return 0
 
 	dostatelaws(lawchannel, law_channels[lawchannel], laws)
+
+/mob/living/silicon/sil_brainmob/attack_ghost(mob/observer/ghost/user)
+	if(jobban_isbanned(user, "Cyborg"))
+		to_chat("You are banned from playing as \a [src].")
+
+	var/response = tgui_alert(user, "Are you sure you wish to possess \the [src]?", "Possess \the [src]", list("Yes", "No"))
+	if(response == "Yes")
+		user.try_to_occupy(src)
+
+	return ..()

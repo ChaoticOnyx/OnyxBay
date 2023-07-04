@@ -78,7 +78,7 @@
 	update_desc()
 	update_icon()
 
-/obj/item/organ/internal/cerebrum/replaced(mob/living/target)
+/obj/item/organ/internal/cerebrum/replaced(mob/living/carbon/human/target)
 	. = ..()
 	if(!.)
 		return FALSE
@@ -97,6 +97,8 @@
 		brainmob.mind.transfer_to(target)
 	else if(brainmob.key)
 		target.key = brainmob.key
+
+	if(BP_IS_ROBOTIC(target.get_organ(parent_organ))) target.set_stat(CONSCIOUS)
 
 	return TRUE
 

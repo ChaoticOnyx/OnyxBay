@@ -114,29 +114,6 @@ var/list/ghost_traps
 		target.real_name = new_name
 		target.SetName(target.real_name)
 
-/datum/ghosttrap/posibrain
-	object = "positronic brain"
-	ban_checks = list("Cyborg")
-	pref_check = BE_SYNTH
-	ghost_trap_message = "They are occupying a positronic brain now."
-	ghost_trap_role = "Positronic Brain"
-	can_set_own_name = FALSE
-
-/datum/ghosttrap/posibrain/welcome_candidate(mob/target)
-	to_chat(target, "<b>You are a positronic brain, brought into existence on [station_name()].</b>")
-	to_chat(target, "<b>As a synthetic intelligence, you answer to all crewmembers, as well as the AI.</b>")
-	to_chat(target, "<b>Remember, the purpose of your existence is to serve the crew and the [station_name()]. Above all else, do no harm.</b>")
-	to_chat(target, "<b>Use say [target.get_language_prefix()]b to speak to other artificial intelligences.</b>")
-
-	var/turf/T = get_turf(target)
-	var/obj/item/organ/internal/cerebrum/posibrain/P = target.loc
-	T.visible_message(SPAN("notice", "\The [P] chimes quietly."))
-	if(!istype(P))
-		return
-
-	P.update_name()
-	P.reset_search()
-
 /***********************************
 * Diona pods and walking mushrooms *
 ***********************************/

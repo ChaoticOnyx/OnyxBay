@@ -44,7 +44,7 @@
 	var/mob/living/carbon/human/tmp_owner = owner
 	qdel(src)
 	if(tmp_owner)
-		tmp_owner.internal_organs_by_name[organ_tag] = new replace_path(loc, tmp_owner)
+		tmp_owner.internal_organs_by_name[organ_tag] = new replace_path(tmp_owner, tmp_owner)
 		tmp_owner = null
 
 /obj/item/organ/internal/cerebrum/brain/getToxLoss()
