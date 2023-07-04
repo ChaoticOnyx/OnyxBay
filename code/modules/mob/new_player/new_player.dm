@@ -406,7 +406,7 @@
 		var/mob/living/silicon/ai/A = character
 		A.on_mob_init()
 
-		AnnounceArrival(character.real_name, job)
+		SSannounce.announce_arrival(character.real_name, job)
 		SSticker.mode.handle_latejoin(character)
 
 		qdel(C)
@@ -420,7 +420,7 @@
 			CreateModularRecord(character)
 			SSticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
 
-		AnnounceArrival(character.real_name, job, spawnpoint)
+		SSannounce.announce_arrival(character.real_name, job, spawnpoint)
 
 		matchmaker.do_matchmaking()
 	log_and_message_admins("has joined the round as [character.mind.assigned_role].", character)

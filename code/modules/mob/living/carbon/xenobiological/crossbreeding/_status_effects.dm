@@ -184,7 +184,7 @@
 	holder.adjustFireLoss(1)
 	holder.color = "#007BA7"
 
-/obj/screen/movable/alert/clone_decay
+/obj/screen/movable/alert/status_effect/clone_decay
 	name = "Clone Decay"
 	desc = "You are simply a construct, and cannot maintain this form forever. You will be returned to your original body if you should fall."
 	icon_state = "metroid_clone"
@@ -433,6 +433,7 @@
 		if(!QDELETED(linked_extract))
 			linked_extract.owner = null
 		holder.remove_specific_modifier(src)
+		return
 	set_next_think(world.time + think_delay)
 	return ..()
 
@@ -442,7 +443,7 @@
 	colour = "grey"
 
 /datum/modifier/status_effect/stabilized/grey/on_applied()
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 /datum/modifier/status_effect/stabilized/grey/on_expire()
 	set_next_think(0)
@@ -459,7 +460,7 @@
 	colour = "orange"
 
 /datum/modifier/status_effect/stabilized/orange/on_applied()
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 /datum/modifier/status_effect/stabilized/orange/on_expire()
 	set_next_think(0)
@@ -476,7 +477,7 @@
 	var/healed_last_tick = FALSE
 
 /datum/modifier/status_effect/stabilized/purple/on_applied()
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 /datum/modifier/status_effect/stabilized/purple/on_expire()
 	set_next_think(0)
@@ -527,7 +528,7 @@
 	var/max_cooldown = 30
 
 /datum/modifier/status_effect/stabilized/metal/on_applied()
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 /datum/modifier/status_effect/stabilized/metal/on_expire()
 	set_next_think(0)
@@ -559,7 +560,7 @@
 	return SPAN_WARNING("Nearby electronics seem just a little more charged wherever [holder] go[holder].")
 
 /datum/modifier/status_effect/stabilized/yellow/on_applied()
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 /datum/modifier/status_effect/stabilized/yellow/on_expire()
 	set_next_think(0)
@@ -594,7 +595,7 @@
 /datum/modifier/status_effect/stabilized/darkpurple/on_applied()
 	ADD_TRAIT(holder, TRAIT_RESISTHEATHANDS)
 	fire = new(holder)
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 	return ..()
 
 /datum/modifier/status_effect/stabilized/darkpurple/on_expire()
@@ -616,7 +617,7 @@
 	colour = "dark blue"
 
 /datum/modifier/status_effect/stabilized/darkblue/on_applied()
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 /datum/modifier/status_effect/stabilized/darkblue/on_expire()
 	set_next_think(0)
@@ -661,7 +662,7 @@
 	think_delay = 5 SECONDS
 
 /datum/modifier/status_effect/stabilized/bluespace/on_applied()
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 /datum/modifier/status_effect/stabilized/bluespace/on_expire()
 	..()
@@ -703,7 +704,7 @@
 
 /datum/modifier/status_effect/stabilized/sepia/on_applied()
 	speed_mod = holder.add_modifier(/datum/modifier/movespeed/sepia)
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 /datum/modifier/status_effect/stabilized/sepia/on_expire()
 	holder.remove_a_modifier_of_type(/datum/modifier/movespeed/sepia)
@@ -735,7 +736,7 @@
 		C.h_style = O.h_style
 		C.f_style = O.f_style
 		C.UpdateAppearance()
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 	return ..()
 
 /datum/modifier/status_effect/stabilized/cerulean/think()
@@ -767,7 +768,7 @@
 
 /datum/modifier/status_effect/stabilized/pyrite/on_applied()
 	originalcolor = holder.color
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 	return ..()
 
 /datum/modifier/status_effect/stabilized/pyrite/think()
@@ -785,7 +786,7 @@
 /datum/modifier/status_effect/stabilized/red/on_applied()
 	. = ..()
 	holder.add_modifier(/datum/modifier/movespeed/equipment_immunity_speedmod)
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 /datum/modifier/status_effect/stabilized/red/on_expire()
 	holder.remove_modifiers_of_type(/datum/modifier/movespeed/equipment_immunity_speedmod)
@@ -804,10 +805,13 @@
 		var/mob/living/carbon/human/H = holder
 		originalDNA = H.dna.Clone()
 		originalname = H.real_name
+		H.real_name = H.species.get_random_name(H.gender)
 		for(var/i=1 to H.dna.UI.len)
 			H.dna.SetUIValue(i,rand(1,4095))
-		H.real_name = H.species.get_random_name(H.gender)
-	set_next_think(world.time)
+
+		domutcheck(H, null)
+		H.UpdateAppearance()
+	set_next_think(world.time+1)
 	return ..()
 
 // Only occasionally give examiners a warning.
@@ -822,6 +826,8 @@
 		var/mob/living/carbon/human/H = holder
 		H.real_name = originalname
 		H.setDNA(originalDNA)
+		domutcheck(H, null)
+		H.UpdateAppearance()
 	set_next_think(0)
 	return ..()
 
@@ -838,67 +844,16 @@
 	var/lasthealth
 	var/think_delay = 5 SECONDS
 
-/datum/modifier/status_effect/pinkdamagetracker/think()
-	if((lasthealth - holder.health) > 0)
-		damage += (lasthealth - holder.health)
-	lasthealth = holder.health
-	set_next_think(world.time+think_delay)
-	..()
-
 /datum/modifier/status_effect/stabilized/pink
 	name = "stabilizedpink"
 	colour = "pink"
-	var/list/mobs = list()
-	var/faction_name
-
-/datum/modifier/status_effect/stabilized/pink/on_applied()
-	faction_name = "\ref[holder]"
-	set_next_think(world.time)
-	return ..()
-
-/datum/modifier/status_effect/stabilized/pink/think()
-	for(var/mob/living/simple_animal/M in view(7,get_turf(holder)))
-		if(!(M in mobs))
-			mobs += M
-			M.add_modifier(/datum/modifier/status_effect/pinkdamagetracker)
-			M.faction |= faction_name
-	for(var/mob/living/simple_animal/M in mobs)
-		if(!(M in view(7,get_turf(holder))))
-			M.faction -= faction_name
-			M.remove_a_modifier_of_type(/datum/modifier/status_effect/pinkdamagetracker)
-			mobs -= M
-		var/datum/modifier/status_effect/pinkdamagetracker/C = M.has_modifier_of_type(/datum/modifier/status_effect/pinkdamagetracker)
-		if(istype(C) && C.damage > 0)
-			C.damage = 0
-			holder.add_modifier(/datum/modifier/status_effect/brokenpeace)
-	var/HasFaction = FALSE
-	for(var/i in holder.faction)
-		if(i == faction_name)
-			HasFaction = TRUE
-
-	if(HasFaction && holder.has_modifier_of_type(/datum/modifier/status_effect/brokenpeace))
-		holder.faction -= faction_name
-		to_chat(holder, SPAN_DANGER("The peace has been broken! Hostile creatures will now react to you!"))
-	if(!HasFaction && !holder.has_modifier_of_type(/datum/modifier/status_effect/brokenpeace))
-		to_chat(holder, SPAN_NOTICE("[linked_extract] pulses, generating a fragile aura of peace."))
-		holder.faction |= faction_name
-	return ..()
-
-/datum/modifier/status_effect/stabilized/pink/on_expire()
-	for(var/mob/living/simple_animal/M in mobs)
-		M.faction -= faction_name
-		M.remove_a_modifier_of_type(/datum/modifier/status_effect/pinkdamagetracker)
-	for(var/i in holder.faction)
-		if(i == faction_name)
-			holder.faction -= faction_name
-	set_next_think(0)
 
 /datum/modifier/status_effect/stabilized/oil
 	name = "stabilizedoil"
 	colour = "oil"
 
 /datum/modifier/status_effect/stabilized/oil/on_applied()
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 /datum/modifier/status_effect/stabilized/oil/on_expire()
 	set_next_think(0)
@@ -925,7 +880,7 @@
 
 /datum/modifier/status_effect/stabilized/black/on_applied()
 	register_signal(holder, SIGNAL_MOB_GRAB_SET_STATE, .proc/on_grab)
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 	return ..()
 
 /datum/modifier/status_effect/stabilized/black/on_expire()
@@ -1002,7 +957,7 @@
 /datum/modifier/status_effect/stabilized/lightpink/on_applied()
 	holder.add_modifier(/datum/modifier/movespeed/lightpink)
 	ADD_TRAIT(holder, TRAIT_PACIFISM)
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 	return ..()
 
 /datum/modifier/status_effect/stabilized/lightpink/think()
@@ -1024,7 +979,7 @@
 	var/mob/living/simple_animal/familiar
 
 /datum/modifier/status_effect/stabilized/gold/on_applied()
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 /datum/modifier/status_effect/stabilized/gold/think()
 	var/obj/item/metroidcross/stabilized/gold/linked = linked_extract
@@ -1058,7 +1013,7 @@
 	colour = "rainbow"
 
 /datum/modifier/status_effect/stabilized/rainbow/on_applied()
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 /datum/modifier/status_effect/stabilized/rainbow/on_expire()
 	set_next_think(0)

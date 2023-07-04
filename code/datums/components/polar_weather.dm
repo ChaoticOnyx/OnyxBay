@@ -5,10 +5,6 @@
 #define SNOWFALL_TEMP 203.15 // -70C
 #define SNOWSTORM_TEMP 153.15 // -120C
 
-/datum/announcement/priority/ams
-	title = "Autonomous Meteorological Station"
-	announcement_type = "Autonomous Meteorological Station"
-
 /datum/component/polar_weather
 	dupe_mode = COMPONENT_DUPE_UNIQUE
 
@@ -16,7 +12,6 @@
 	var/next_state = null
 	var/next_state_change = null
 	var/was_weather_message = FALSE
-	var/datum/announcement/priority/ams/AMS = new
 	var/light_initialized = FALSE
 	var/list/turfs_to_process
 
@@ -161,11 +156,11 @@
 /datum/component/polar_weather/proc/_weather_announce()
 	switch(next_state)
 		if(WEATHER_NORMAL)
-			AMS.Announce("Weather forecast: cloudless weather is expected in 2 minutes, the temperature is -30 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE)
+			SSannounce.play_station_announce(/datum/announce/weather_normal)
 		if(WEATHER_SNOWFALL)
-			AMS.Announce("Weather forecast: snowfall is expected in 2 minutes, the temperature will drop to -70 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE)
+			SSannounce.play_station_announce(/datum/announce/weather_snowfall)
 		if(WEATHER_SNOWSTORM)
-			AMS.Announce("Weather forecast: blizzard is expected in 2 minutes, the temperature will drop to -120 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE, new_sound = sound('sound/effects/siren.ogg'))
+			SSannounce.play_station_announce(/datum/announce/weather_snowstorm)
 
 /datum/component/polar_weather/think()
 	if(GAME_STATE < RUNLEVEL_GAME)

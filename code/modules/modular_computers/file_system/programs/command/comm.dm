@@ -33,13 +33,8 @@
 	var/msg_line2 = ""
 	var/centcomm_message_cooldown = 0
 	var/announcment_cooldown = 0
-	var/datum/announcement/priority/crew_announcement = new(do_log = TRUE)
 	var/current_viewing_message_id = 0
 	var/current_viewing_message = null
-
-/datum/nano_module/program/comm/New()
-	..()
-	crew_announcement.newscast = 1
 
 /datum/nano_module/program/comm/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 
@@ -129,11 +124,12 @@
 		if("announce")
 			. = 1
 			if(is_autenthicated(user) && !issilicon(usr) && ntn_comm)
+				var/sender
 				if(user)
 					var/obj/item/card/id/id_card = user.get_id_card()
-					crew_announcement.announcer = GetNameAndAssignmentFromId(id_card)
+					sender = GetNameAndAssignmentFromId(id_card)
 				else
-					crew_announcement.announcer = "Unknown"
+					sender = "Unknown"
 				if(announcment_cooldown)
 					to_chat(usr, "Please allow at least one minute to pass between announcements")
 					return TRUE
@@ -141,7 +137,7 @@
 				if(!input || !can_still_topic())
 					return 1
 				usr.client?.spellcheck(input)
-				crew_announcement.Announce(input, msg_sanitized = TRUE)
+				SSannounce.play_station_announce(/datum/announce/comm_program, input, sender_override = sender, msg_sanitized = TRUE)
 				announcment_cooldown = 1
 				spawn(600)// One minute cooldown
 					announcment_cooldown = 0

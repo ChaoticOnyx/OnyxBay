@@ -141,17 +141,6 @@
 
 		if(8)		user.visible_message("<span class='danger'>[user] landed a heavy blow with their [pick(attack_noun)] against [target]'s [organ]!</span>")
 
-/datum/unarmed_attack/nabber
-	attack_verb = list("mauled", "slashed", "struck", "pierced")
-	attack_noun = list("forelimb")
-	damage = 8
-	shredding = 1
-	sharp = 1
-	edge = 1
-	delay = 20
-	eye_attack_text = "a forelimb"
-	eye_attack_text_victim = "a forelimb"
-
 /datum/unarmed_attack/punch/strong/golem/plasteel
 	damage = 17.5
 

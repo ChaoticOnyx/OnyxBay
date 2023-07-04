@@ -149,14 +149,14 @@ var/can_call_ert
 
 	// there's only a certain chance a team will be sent
 	if(!prob(send_team_chance))
-		command_announcement.Announce("It would appear that an emergency response team was requested for [station_name()]. Unfortunately, we were unable to send one at this time.", "[GLOB.using_map.boss_name]")
+		SSannounce.play_station_announce(/datum/announce/ert_unable_to_send, title_override = GLOB.using_map.boss_name)
 		can_call_ert = 0 // Only one call per round, ladies.
 		return
 
 	if(call_reason)
 		GLOB.ert.message_from_station = call_reason
 
-	command_announcement.Announce("It would appear that an emergency response team was requested for [station_name()]. We will prepare and send one as soon as possible.", "[GLOB.using_map.boss_name]")
+	SSannounce.play_station_announce(/datum/announce/ert_send, title_override = GLOB.using_map.boss_name)
 	evacuation_controller.add_can_call_predicate(new /datum/evacuation_predicate/ert())
 
 	can_call_ert = 0 // Only one call per round, gentleman.

@@ -19,8 +19,6 @@
 
 // Grab Types
 #define GRAB_NORMAL			"normal"
-#define GRAB_NAB			"nab"
-#define GRAB_NAB_SPECIAL	"special nab"
 
 // Grab levels.
 #define NORM_PASSIVE    "normal passive"
@@ -28,10 +26,6 @@
 #define NORM_AGGRESSIVE "normal aggressive"
 #define NORM_NECK       "normal neck"
 #define NORM_KILL       "normal kill"
-
-#define NAB_PASSIVE		"nab passive"
-#define NAB_AGGRESSIVE	"nab aggressive"
-#define NAB_KILL		"nab kill"
 
 #define BORGMESON 0x1
 #define BORGTHERM 0x2
@@ -305,7 +299,6 @@
 #define SPECIES_IPC         "Machine"
 #define SPECIES_UNATHI      "Unathi"
 #define SPECIES_SKRELL      "Skrell"
-#define SPECIES_NABBER      "Giant Armoured Serpentid"
 #define SPECIES_PROMETHEAN  "Promethean"
 #define SPECIES_STARGAZER  	"Stargazer"
 #define SPECIES_SLIMEPERSON "Slimeperson"

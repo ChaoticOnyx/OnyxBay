@@ -30,6 +30,24 @@
 	icon = 'icons/obj/xenobiology/metroidcrossing.dmi'
 	icon_state = "metroidbarrier"
 	maxhealth = 60
+	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
+
+/obj/structure/barricade/metroid/New(newloc, material_name)
+	..()
+	material = null
+	name = "gelatinous barrier"
+	desc = "A huge chunk of grey metroid. Bullets might get stuck in it."
+	color = null
+
+/obj/structure/barricade/metroid/dismantle()
+	qdel(src)
+	return
+
+/obj/structure/barricade/metroid/bullet_act(obj/item/projectile/Proj, def_zone)
+	if(!(Proj.damage_type == BRUTE || Proj.damage_type == BURN))
+		return
+
+	take_damage(Proj.damage)
 
 //metroid forcefield - Chilling Metal
 /obj/effect/forcefield/metroidwall
@@ -39,7 +57,11 @@
 	icon_state = "metroidbarrier_thick"
 
 /obj/effect/forcefield/metroidwall/New()
-	addtimer(CALLBACK(src, .proc/qdel, src), 300)
+	addtimer(CALLBACK(src, .proc/finish_existance), 300)
+
+/obj/effect/forcefield/metroidwall/proc/finish_existance()
+	qdel(src)
+	return
 
 //Rainbow barrier - Chilling Rainbow
 /obj/effect/forcefield/metroidwall/rainbow
@@ -109,6 +131,18 @@
 	icon_state = "capturedevice"
 	var/hacked = FALSE
 
+/obj/item/capturedevice/hacked
+	hacked = TRUE
+
+/obj/item/capturedevice/emag_act(remaining_charges, mob/user, emag_source)
+	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+	spark_system.set_up(5, 0, src.loc)
+	if(!hacked)
+		playsound(loc, 'sound/effects/computer_emag.ogg', 25)
+		to_chat(user, SPAN("warning", "You swipe [emag_source] at [src] and you feel something changed inside it!"))
+		hacked = TRUE
+		return 1
+
 /obj/item/capturedevice/resolve_attackby(atom/A, mob/user, click_params)
 	..()
 
@@ -132,9 +166,7 @@
 			to_chat(user, SPAN_NOTICE("You offer the device to [pokemon]."))
 			if(tgui_alert(pokemon, "Would you like to enter [user]'s capture device?", "Gold Capture Device", list("Yes", "No")) == "Yes")
 				if(user.incapacitated(INCAPACITATION_DEFAULT))
-					to_chat(user, SPAN_NOTICE("You store [pokemon] in the capture device."))
 					to_chat(pokemon, SPAN_NOTICE("The world warps around you, and you're suddenly in an endless void, with a window to the outside floating in front of you."))
-					store(pokemon, user)
 				else
 					to_chat(user, SPAN_WARNING("You were too far away from [pokemon]."))
 					to_chat(pokemon, SPAN_WARNING("You were too far away from [user]."))
@@ -143,11 +175,23 @@
 				return
 
 		else
+			if(user==pokemon)
+				to_chat(user, SPAN_NOTICE("You peeking inside strange gold egg."))
+				if(!do_after(user, 100))
+					return
+
+				to_chat(user, SPAN_NOTICE("You feeling that something looking on you."))
+
+				if(!do_after(user, 100))
+					return
+				to_chat(pokemon, SPAN_NOTICE("The world warps around you, and you're suddenly in an endless void, with a window to the outside floating in front of you."))
+				pokemon.drop(src, force = TRUE)
+				to_chat(user, SPAN_NOTICE("You store [pokemon] in the capture device."))
+				store(pokemon)
+				return
 
 			if(!user.incapacitated(INCAPACITATION_DEFAULT) && do_after(user, 300, pokemon))
-				to_chat(user, SPAN_NOTICE("You store [pokemon] in the capture device."))
 				to_chat(pokemon, SPAN_NOTICE("The world warps around you, and you're suddenly in an endless void, with a window to the outside floating in front of you."))
-				store(pokemon, user)
 			else
 				to_chat(user, SPAN_WARNING("You were too far away from [pokemon]."))
 				to_chat(pokemon, SPAN_WARNING("You were too far away from [user]."))
@@ -168,6 +212,12 @@
 
 /obj/item/capturedevice/proc/store(mob/living/M)
 	M.forceMove(src)
+	register_signal(M, SIGNAL_MOB_RESIST, .proc/resist_act)
+
+/obj/item/capturedevice/proc/resist_act(mob/living/M)
+	to_chat(M, SPAN_NOTICE("You trying to release yourself."))
+	if(do_after(M, 300))
+		release()
 
 /obj/item/capturedevice/proc/release()
 	for(var/atom/movable/M in contents)

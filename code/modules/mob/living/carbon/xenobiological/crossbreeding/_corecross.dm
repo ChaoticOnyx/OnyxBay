@@ -51,6 +51,9 @@ To add a crossbreed:
 	return
 
 /mob/living/carbon/metroid/proc/spawn_corecross()
+	if(is_ic_dead())
+		return
+
 	var/static/list/crossbreeds = subtypesof(/obj/item/metroidcross)
 	visible_message(SPAN_DANGER("[src] shudders, its mutated core consuming the rest of its body!"))
 	var/datum/effect/effect/system/smoke_spread/s = new /datum/effect/effect/system/smoke_spread

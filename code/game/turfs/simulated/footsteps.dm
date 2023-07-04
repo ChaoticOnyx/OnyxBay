@@ -14,9 +14,6 @@
 		R.handle_footsteps()
 		R.step_count++
 
-/datum/species/var/silent_steps
-/datum/species/nabber/silent_steps = 1
-
 /mob/living/carbon/human/var/step_count
 
 /mob/living/carbon/human/proc/handle_footsteps()
@@ -34,9 +31,6 @@
 	if(m_intent == M_RUN)
 		if(step_count % 2) //every other turf makes a sound
 			return
-
-	if(species.silent_steps)
-		return //species is silent
 
 	if(!has_gravity(src))
 		if(step_count % 3) // don't need to step as often when you hop around

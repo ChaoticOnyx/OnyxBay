@@ -109,7 +109,8 @@
 	var/click_master = TRUE
 
 /obj/screen/movable/alert/status_effect
-	icon = 'icons/mob/screen/status_effects.dmi'
+	icon = 'icons/hud/status_effects.dmi'
+
 // Notify for ghosts
 /obj/screen/movable/alert/notify_action
 	name = "Body created"

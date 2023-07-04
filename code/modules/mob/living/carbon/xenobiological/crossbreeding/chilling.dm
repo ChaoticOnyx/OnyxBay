@@ -27,12 +27,12 @@ Chilling extracts:
 	qdel(src)
 	return
 
-/obj/item/metroidcross/chilling/grey
-	colour = "grey"
+/obj/item/metroidcross/chilling/green
+	colour = "green"
 	effect_desc = "Creates some metroid barrier cubes. When used they create slimy barricades."
 
-/obj/item/metroidcross/chilling/grey/do_effect(mob/user)
-	user.visible_message(SPAN_NOTICE("[src] produces a few small, grey cubes"))
+/obj/item/metroidcross/chilling/green/do_effect(mob/user)
+	user.visible_message(SPAN_NOTICE("[src] produces a few small, green cubes"))
 	for(var/i in 1 to 3)
 		new /obj/item/barriercube(get_turf(user))
 	..()
@@ -234,11 +234,11 @@ Chilling extracts:
 		user.visible_message(SPAN_NOTICE("[src] lets out a peaceful ring as it shatters, but nothing happens..."))
 	return ..()
 
-/obj/item/metroidcross/chilling/green
-	colour = "green"
+/obj/item/metroidcross/chilling/grey
+	colour = "grey"
 	effect_desc = "Creates a bone gun in the hand it is used in, which uses blood as ammo."
 
-/obj/item/metroidcross/chilling/green/do_effect(mob/user)
+/obj/item/metroidcross/chilling/grey/do_effect(mob/user)
 	var/mob/living/L = user
 	if(!istype(user))
 		return
@@ -293,9 +293,30 @@ Chilling extracts:
 		user.visible_message(SPAN_NOTICE("[src] crystallizes along [user]'s skin, turning into metallic scales!"))
 		var/mob/living/carbon/human/H = user
 
-		var/static/list/random_golem_types
-		random_golem_types = subtypesof(/datum/species/golem) - H.species.type
-		H.set_species(random_golem_types)
+		var/static/list/random_golem_types= list(
+			SPECIES_GOLEM,
+			SPECIES_GOLEM_ADAMANTINE,
+			SPECIES_GOLEM_PLASMA,
+			SPECIES_GOLEM_DIAMOND,
+			SPECIES_GOLEM_GOLD,
+			SPECIES_GOLEM_SILVER,
+			SPECIES_GOLEM_PLASTEEL,
+			SPECIES_GOLEM_TITANIUM,
+			SPECIES_GOLEM_PLASTITANIUM,
+			SPECIES_GOLEM_ALIEN,
+			SPECIES_GOLEM_WOOD,
+			SPECIES_GOLEM_URANIUM,
+			SPECIES_GOLEM_SAND,
+			SPECIES_GOLEM_GLASS,
+			SPECIES_GOLEM_BLUESPACE,
+			SPECIES_GOLEM_CLOTH,
+			SPECIES_GOLEM_PLASTIC,
+			SPECIES_GOLEM_BRONZE,
+			SPECIES_GOLEM_CARDBOARD,
+			SPECIES_GOLEM_LEATHER,
+			SPECIES_GOLEM_HYDROGEN,
+			)
+		H.set_species(pick(random_golem_types))
 	..()
 
 /obj/item/metroidcross/chilling/lightpink

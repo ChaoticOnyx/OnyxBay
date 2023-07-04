@@ -3,7 +3,6 @@
 	name_plural = "golems"
 
 	icobase = 'icons/mob/human_races/golems/r_golem.dmi'
-	deform = 'icons/mob/human_races/golems/r_golem.dmi'
 	language = LANGUAGE_GALCOM
 	additional_langs = LANGUAGE_SOL_COMMON
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/punch)

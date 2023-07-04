@@ -83,7 +83,6 @@
 	name = SPECIES_TAJARA
 	name_plural = "Tajaran"
 	icobase = 'icons/mob/human_races/r_tajaran.dmi'
-	deform = 'icons/mob/human_races/r_def_tajaran.dmi'
 	tail = "tajtail"
 	tail_animation = 'icons/mob/species/tajaran/tail.dmi'
 	default_h_style = "Ears"
@@ -162,7 +161,6 @@
 	name = SPECIES_SKRELL
 	name_plural = SPECIES_SKRELL
 	icobase = 'icons/mob/human_races/r_skrell.dmi'
-	deform = 'icons/mob/human_races/r_def_skrell.dmi'
 	primitive_form = "Neaera"
 	hair_key = SPECIES_SKRELL
 	unarmed_types = list(/datum/unarmed_attack/punch)
@@ -195,7 +193,7 @@
 	warning_high_pressure = WARNING_HIGH_PRESSURE / 0.8125
 	hazard_high_pressure = HAZARD_HIGH_PRESSURE / 0.84615
 
-	body_temperature = null // cold-blooded, implemented the same way nabbers do it
+	body_temperature = null // cold-blooded
 
 	darksight_range = 4
 	darksight_tint = DARKTINT_MODERATE
@@ -241,7 +239,6 @@
 	name = SPECIES_DIONA
 	name_plural = "Dionaea"
 	icobase = 'icons/mob/human_races/r_diona.dmi'
-	deform = 'icons/mob/human_races/r_def_plant.dmi'
 
 	has_eyes_icon = FALSE
 

@@ -1289,3 +1289,9 @@ I said no!
 	/datum/reagent/drink/milk = 5
 	)
 	result = /obj/item/reagent_containers/food/sliceable/choccherrycake
+
+/datum/recipe/capturedevice_hacked
+	items = list(
+		/obj/item/capturedevice
+	)
+	result = /obj/item/capturedevice/hacked

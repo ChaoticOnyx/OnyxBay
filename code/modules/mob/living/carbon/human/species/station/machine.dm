@@ -9,7 +9,6 @@
 	inhuman in outlook and perspective."
 
 	icobase = 'icons/mob/human_races/r_machine.dmi'
-	deform = 'icons/mob/human_races/r_machine.dmi'
 
 	has_eyes_icon = FALSE
 
@@ -49,7 +48,7 @@
 	virus_immune = 1
 
 	has_organ = list(
-		BP_POSIBRAIN = /obj/item/organ/internal/cerebrum/posibrain,
+		BP_POSIBRAIN = /obj/item/organ/internal/posibrain,
 		BP_OPTICS = /obj/item/organ/internal/eyes/optics
 		)
 

@@ -943,7 +943,7 @@
 	log_and_message_admins_many(cultists, "started summoning Nar-sie.")
 
 	var/area/A = get_area(src)
-	command_announcement.Announce("High levels of bluespace interference detected at \the [A]. Suspected wormhole forming. Investigate it immediately.")
+	SSannounce.play_station_announce(/datum/announce/wormholes, "High levels of bluespace interference detected at \the [A]. Suspected wormhole forming. Investigate it immediately.")
 	while(cultists.len > 4 || the_end_comes)
 		cultists = get_cultists()
 		if(cultists.len > 8)
@@ -966,7 +966,7 @@
 	if(the_end_comes >= the_time_has_come)
 		HECOMES = new /obj/singularity/narsie(get_turf(src))
 	else
-		command_announcement.Announce("Bluespace anomaly has ceased.")
+		SSannounce.play_station_announce(/datum/announce/wormholes_end)
 		qdel(src)
 
 /obj/effect/rune/tearreality/attack_hand(mob/living/user)

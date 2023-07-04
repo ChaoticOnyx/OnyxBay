@@ -28,8 +28,6 @@ var/list/limb_icon_cache = list()
 		s_tone = human.s_tone
 		if(human.species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
 			h_s_col = list(s_tone, s_tone, s_tone)
-	if(!isnull(human.s_base) && (human.species.appearance_flags & HAS_BASE_SKIN_COLOURS))
-		s_base = human.s_base
 	if(human.species.appearance_flags & HAS_SKIN_COLOR)
 		s_col = list(human.r_skin, human.g_skin, human.b_skin)
 		if(human.species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
@@ -106,18 +104,12 @@ var/list/limb_icon_cache = list()
 
 		icon_state = "[icon_name][gender][body_build][stump_icon]"
 
-		if (species)
-			if(species.base_skin_colours && !isnull(species.base_skin_colours[s_base]))
-				icon_state += species.base_skin_colours[s_base]
-
 		if(force_icon)
 			icon = force_icon
 		else if (BP_IS_ROBOTIC(src))
 			icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_main.dmi'
 		else if (!dna)
 			icon = 'icons/mob/human_races/r_human.dmi'
-		else if (status & ORGAN_MUTATED)
-			icon = species.deform
 		else if (owner && (MUTATION_SKELETON in owner.mutations))
 			icon = 'icons/mob/human_races/r_skeleton.dmi'
 		else

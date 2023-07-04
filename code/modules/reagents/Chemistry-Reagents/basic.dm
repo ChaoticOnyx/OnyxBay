@@ -90,8 +90,6 @@
 	metabolism = REM * 0.2
 
 /datum/reagent/acetone/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
-	if(alien == IS_NABBER)
-		return
 	M.adjustToxLoss(removed * 3)
 	if(affecting_dose > 5.0)
 		M.adjustBrainLoss(removed * 12.5) // Acetone causes nerve tissue damage, don't chug on it

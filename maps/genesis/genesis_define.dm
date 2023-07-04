@@ -42,11 +42,6 @@
 	company_short = "NT"
 	system_name   = "Nyx"
 
-	shuttle_docked_message = "The scheduled Crew Transfer Shuttle to %Dock_name% has docked with the station. It will depart in approximately %ETD%"
-	shuttle_leaving_dock = "The Crew Transfer Shuttle has left the station. Estimate %ETA% until the shuttle docks at %dock_name%."
-	shuttle_called_message = "A crew transfer to %Dock_name% has been scheduled. The shuttle has been called. It will arrive in approximately %ETA%"
-	shuttle_recall_message = "The scheduled crew transfer has been cancelled."
-
 	evac_controller_type = /datum/evacuation_controller/shuttle
 
 	station_networks = list(

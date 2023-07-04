@@ -56,11 +56,8 @@
 
 /obj/machinery/computer/camera_advanced/xenobio/GrantActions(mob/living/user)
 	..()
-	register_signal(user, SIGNAL_XENO_METROID_CLICK_CTRL,  .proc/XenometroidClickCtrl)
-	register_signal(user, SIGNAL_XENO_TURF_CLICK_CTRL, 	 .proc/XenoTurfClickCtrl)
-	register_signal(user, SIGNAL_XENO_MONKEY_CLICK_CTRL, .proc/XenoMonkeyClickCtrl)
-	register_signal(user, SIGNAL_XENO_METROID_CLICK_SHIFT, .proc/XenometroidClickShift)
-	register_signal(user, SIGNAL_XENO_TURF_CLICK_SHIFT,  .proc/XenoTurfClickShift)
+	register_signal(user, SIGNAL_MOB_SHIFT_CLICK, .proc/ShiftClickHandler)
+	register_signal(user, SIGNAL_MOB_CTRL_CLICK, .proc/CtrlClickHandler)
 
 	//Checks for recycler on every interact, prevents issues with load order on certain maps.
 	if(!connected_recycler)
@@ -70,20 +67,33 @@
 				connected_recycler.connected += src
 
 /obj/machinery/computer/camera_advanced/xenobio/release(mob/living/user)
-	unregister_signal(user, SIGNAL_XENO_METROID_CLICK_CTRL)
-	unregister_signal(user, SIGNAL_XENO_TURF_CLICK_CTRL)
-	unregister_signal(user, SIGNAL_XENO_MONKEY_CLICK_CTRL)
-	unregister_signal(user, SIGNAL_XENO_METROID_CLICK_SHIFT)
-	unregister_signal(user, SIGNAL_XENO_TURF_CLICK_SHIFT)
+	unregister_signal(user, SIGNAL_MOB_SHIFT_CLICK)
+	unregister_signal(user, SIGNAL_MOB_CTRL_CLICK)
 	..()
 
 /obj/machinery/computer/camera_advanced/xenobio/attackby(obj/item/O, mob/user, params)
+
+	if(isMultitool(O))
+		var/passed_alert = FALSE
+		if(!isnull(connected_recycler))
+			if(alert("It seems like console have connected monkey recycler would you like to rewrite it?", "Connect Monkey Recycler", "Yes", "No") == "Yes")
+				passed_alert = TRUE
+
+		if(passed_alert || isnull(connected_recycler))
+			var/obj/item/device/multitool/MT = O
+			var/atom/buffered_object = MT.get_buffer(/obj/machinery/monkey_recycler)
+			MT.set_buffer(null)
+			connected_recycler = buffered_object
+			to_chat(user, SPAN_NOTICE("You upload the data from \the [MT]'s buffer."))
+		return
+
 	if(istype(O, /obj/item/reagent_containers/food/monkeycube))
 		monkeys++
 		to_chat(user, SPAN_NOTICE("You feed [O] to [src]. It now has [monkeys] monkey cubes stored."))
 		qdel(O)
 		return
-	else if(istype(O, /obj/item/storage/xenobag))
+
+	if(istype(O, /obj/item/storage/xenobag))
 		var/obj/item/storage/P = O
 		var/loaded = FALSE
 		for(var/obj/G in P.contents)
@@ -230,30 +240,21 @@
 // Alternate clicks for metroid, monkey and open turf if using a xenobio console
 
 
-//Picks up metroid
-/mob/observer/eye/cameranet/xenobio/ShiftClick(mob/user)
-	SEND_SIGNAL(user, SIGNAL_XENO_METROID_CLICK_SHIFT, src)
-	..()
+//Picks up metroid && Place metroids
+/obj/machinery/computer/camera_advanced/xenobio/proc/ShiftClickHandler(mob/user, atom/A)
+	if(ismetroid(A))
+		XenometroidClickShift(user, A)
+	if(isturf(A))
+		XenoTurfClickShift(user, A)
 
-//Place metroids
-/mob/observer/eye/cameranet/xenobio/ShiftClick(mob/user)
-	SEND_SIGNAL(user, SIGNAL_XENO_TURF_CLICK_SHIFT, src)
-	..()
-
-//scans metroids
-/mob/observer/eye/cameranet/xenobio/CtrlClick(mob/user)
-	SEND_SIGNAL(user, SIGNAL_XENO_METROID_CLICK_CTRL, src)
-	..()
-
-//picks up dead monkies
-/mob/observer/eye/cameranet/xenobio/CtrlClick(mob/user)
-	SEND_SIGNAL(user, SIGNAL_XENO_MONKEY_CLICK_CTRL, src)
-	..()
-
-//places monkies
-/mob/observer/eye/cameranet/xenobio/CtrlClick(mob/user)
-	SEND_SIGNAL(user, SIGNAL_XENO_TURF_CLICK_CTRL, src)
-	..()
+//scans metroids && picks up dead monkies && //places monkies
+/obj/machinery/computer/camera_advanced/xenobio/proc/CtrlClickHandler(mob/user, atom/A)
+	if(ismetroid(A))
+		XenometroidClickCtrl(user, A)
+	if(isMonkey(A))
+		XenoMonkeyClickCtrl(user, A)
+	if(isturf(A))
+		XenoTurfClickCtrl(user, A)
 
 // Scans metroid
 /obj/machinery/computer/camera_advanced/xenobio/proc/XenometroidClickCtrl(mob/living/user, mob/living/carbon/metroid/S)
@@ -273,10 +274,9 @@
 	if(!E.visualnet.is_turf_visible(S.loc))
 		to_chat(user, SPAN_WARNING("Target is not near a camera. Cannot proceed."))
 		return
-	var/obj/machinery/computer/camera_advanced/xenobio/X = E.origin
 	var/area/mobarea = get_area(S.loc)
 	if(mobarea.name == E.allowed_area )
-		if(X.stored_metroids.len >= X.max_metroids)
+		if(stored_metroids.len >= max_metroids)
 			to_chat(C, SPAN_WARNING("metroid storage is full."))
 			return
 		if(S.ckey)
@@ -285,8 +285,8 @@
 		if(S.buckled)
 			S.Feedstop()
 		S.visible_message(SPAN_NOTICE("[S] vanishes in a flash of light!"))
-		S.forceMove(X)
-		X.stored_metroids += S
+		S.forceMove(src)
+		stored_metroids += S
 
 //Place metroids
 /obj/machinery/computer/camera_advanced/xenobio/proc/XenoTurfClickShift(mob/living/user, turf/T)
@@ -296,13 +296,12 @@
 	if(!E.visualnet.is_turf_visible(T))
 		to_chat(user, SPAN_WARNING("Target is not near a camera. Cannot proceed."))
 		return
-	var/obj/machinery/computer/camera_advanced/xenobio/X = E.origin
 	var/area/turfarea = get_area(T)
 	if(turfarea.name == E.allowed_area)
-		for(var/mob/living/carbon/metroid/S in X.stored_metroids)
+		for(var/mob/living/carbon/metroid/S in stored_metroids)
 			S.forceMove(T)
 			S.visible_message(SPAN_NOTICE("[S] warps in!"))
-			X.stored_metroids -= S
+			stored_metroids -= S
 
 //Place monkey
 /obj/machinery/computer/camera_advanced/xenobio/proc/XenoTurfClickCtrl(mob/living/user, turf/T)
@@ -312,18 +311,17 @@
 	if(!E.visualnet.is_turf_visible(T))
 		to_chat(user, SPAN_WARNING("Target is not near a camera. Cannot proceed."))
 		return
-	var/obj/machinery/computer/camera_advanced/xenobio/X = E.origin
 	var/area/turfarea = get_area(T)
 	if(turfarea.name == E.allowed_area)
-		if(X.monkeys >= 1)
+		if(monkeys >= 1)
 			var/mob/living/carbon/human/food = new /mob/living/carbon/human/monkey(T, TRUE, C)
 			if (!QDELETED(food))
 				food.LAssailant = weakref(C)
-				X.monkeys--
-				X.monkeys = round(X.monkeys, 0.1) //Prevents rounding errors
-				to_chat(C, SPAN_NOTICE("[X] now has [X.monkeys] monkeys stored."))
+				monkeys--
+				monkeys = round(monkeys, 0.1) //Prevents rounding errors
+				to_chat(C, SPAN_NOTICE("[src] now has [monkeys] monkeys stored."))
 		else
-			to_chat(C, SPAN_WARNING("[X] needs to have at least 1 monkey stored. Currently has [X.monkeys] monkeys stored."))
+			to_chat(C, SPAN_WARNING("[src] needs to have at least 1 monkey stored. Currently has [monkeys] monkeys stored."))
 
 //Pick up monkey
 /obj/machinery/computer/camera_advanced/xenobio/proc/XenoMonkeyClickCtrl(mob/living/user, mob/living/carbon/human/M)
@@ -335,16 +333,15 @@
 	if(!isturf(M.loc) || !E.visualnet.is_turf_visible(M.loc))
 		to_chat(user, SPAN_WARNING("Target is not near a camera. Cannot proceed."))
 		return
-	var/obj/machinery/computer/camera_advanced/xenobio/X = E.origin
 	var/area/mobarea = get_area(M.loc)
-	if(!X.connected_recycler)
+	if(!connected_recycler)
 		to_chat(C, SPAN_WARNING("There is no connected monkey recycler. Use a multitool to link one."))
 		return
 	if(mobarea.name == E.allowed_area)
 		if(!M.stat)
 			return
 		M.visible_message(SPAN_NOTICE("[M] vanishes reclaimed for recycling!"))
-		X.monkeys += connected_recycler.cube_production
-		X.monkeys = round(X.monkeys, 0.1) //Prevents rounding errors
+		monkeys += connected_recycler.cube_production
+		monkeys = round(monkeys, 0.1) //Prevents rounding errors
 		qdel(M)
-		to_chat(C, SPAN_NOTICE("[X] now has [X.monkeys] monkeys available."))
+		to_chat(C, SPAN_NOTICE("[src] now has [monkeys] monkeys available."))

@@ -15,7 +15,6 @@
 
 	// Icon/appearance vars.
 	var/icobase = 'icons/mob/human_races/r_human.dmi'   // Normal icon set.
-	var/deform = 'icons/mob/human_races/r_def_human.dmi' // Mutated icon set.
 
 	// Damage overlay and masks.
 	var/damage_overlays = 'icons/mob/human_races/masks/dam_human.dmi'
@@ -24,7 +23,6 @@
 	var/icon/organs_icon // species specific internal organs icons
 
 	var/prone_icon                            // If set, draws this from icobase when mob is prone.
-	var/has_floating_eyes                     // Eyes will overlay over darkness (glow)
 
 	var/blood_color = COLOR_BLOOD_HUMAN               // Red.
 	var/flesh_color = "#ffc896"               // Pink.
@@ -195,9 +193,6 @@
 		BP_L_FOOT = list("path" = /obj/item/organ/external/foot),
 		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right)
 		)
-
-	// The basic skin colours this species uses
-	var/list/base_skin_colours
 
 	var/list/genders = list(MALE, FEMALE)
 

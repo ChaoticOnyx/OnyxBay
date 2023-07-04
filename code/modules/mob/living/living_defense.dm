@@ -391,13 +391,13 @@
 	if(!hud_used) return
 	if(!client) return
 
-	if(hud_used.hud_shown != 1)	//Hud toggled to minimal
-		return
-
 	client.screen -= hud_used.hide_actions_toggle
 	for(var/datum/action/A in actions)
 		if(A.button)
 			client.screen -= A.button
+
+	if(!hud_used.hud_shown)
+		return
 
 	if(hud_used.action_buttons_hidden)
 		if(!hud_used.hide_actions_toggle)

@@ -697,7 +697,7 @@
 	return 1
 
 /mob/living/carbon/human/IsAdvancedToolUser(silent)
-	if(species.has_fine_manipulation && !nabbing)
+	if(species.has_fine_manipulation)
 		return 1
 	if(!silent)
 		to_chat(src, FEEDBACK_YOU_LACK_DEXTERITY)
