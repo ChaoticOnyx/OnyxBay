@@ -335,7 +335,7 @@
 /obj/item/reagent_containers/ecig_cartridge/blanknico/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tobacco/liquid, 5)
-	reagents.add_reagent(/datum/reagent/water, 10)
+	reagents.add_reagent(/datum/reagent/glycerol, 10)
 
 /obj/item/reagent_containers/ecig_cartridge/med_nicotine
 	name = "tobacco flavour cartridge"
@@ -343,7 +343,7 @@
 /obj/item/reagent_containers/ecig_cartridge/med_nicotine/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tobacco, 5)
-	reagents.add_reagent(/datum/reagent/water, 15)
+	reagents.add_reagent(/datum/reagent/glycerol, 15)
 	flavor = "tobacco"
 	label_color = "#7C512E"
 
@@ -356,7 +356,7 @@
 /obj/item/reagent_containers/ecig_cartridge/high_nicotine/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tobacco, 10)
-	reagents.add_reagent(/datum/reagent/water, 10)
+	reagents.add_reagent(/datum/reagent/glycerol, 10)
 
 /obj/item/reagent_containers/ecig_cartridge/orange
 	name = "orange flavour cartridge"
@@ -367,7 +367,7 @@
 /obj/item/reagent_containers/ecig_cartridge/orange/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tobacco/liquid, 5)
-	reagents.add_reagent(/datum/reagent/water, 10)
+	reagents.add_reagent(/datum/reagent/glycerol, 10)
 	reagents.add_reagent(/datum/reagent/drink/juice/orange, 5)
 
 /obj/item/reagent_containers/ecig_cartridge/mint
@@ -379,7 +379,7 @@
 /obj/item/reagent_containers/ecig_cartridge/mint/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tobacco/liquid, 5)
-	reagents.add_reagent(/datum/reagent/water, 10)
+	reagents.add_reagent(/datum/reagent/glycerol, 10)
 	reagents.add_reagent(/datum/reagent/menthol, 5)
 
 /obj/item/reagent_containers/ecig_cartridge/watermelon
@@ -391,7 +391,7 @@
 /obj/item/reagent_containers/ecig_cartridge/watermelon/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tobacco/liquid, 5)
-	reagents.add_reagent(/datum/reagent/water, 10)
+	reagents.add_reagent(/datum/reagent/glycerol, 10)
 	reagents.add_reagent(/datum/reagent/drink/juice/watermelon, 5)
 
 /obj/item/reagent_containers/ecig_cartridge/grape
@@ -403,7 +403,7 @@
 /obj/item/reagent_containers/ecig_cartridge/grape/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tobacco/liquid, 5)
-	reagents.add_reagent(/datum/reagent/water, 10)
+	reagents.add_reagent(/datum/reagent/glycerol, 10)
 	reagents.add_reagent(/datum/reagent/drink/juice/grape, 5)
 
 /obj/item/reagent_containers/ecig_cartridge/lemonlime
@@ -415,7 +415,7 @@
 /obj/item/reagent_containers/ecig_cartridge/lemonlime/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tobacco/liquid, 5)
-	reagents.add_reagent(/datum/reagent/water, 10)
+	reagents.add_reagent(/datum/reagent/glycerol, 10)
 	reagents.add_reagent(/datum/reagent/drink/lemon_lime, 5)
 
 /obj/item/reagent_containers/ecig_cartridge/coffee
@@ -427,7 +427,7 @@
 /obj/item/reagent_containers/ecig_cartridge/coffee/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tobacco/liquid, 5)
-	reagents.add_reagent(/datum/reagent/water, 10)
+	reagents.add_reagent(/datum/reagent/glycerol, 10)
 	reagents.add_reagent(/datum/reagent/drink/coffee, 5)
 
 
