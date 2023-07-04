@@ -213,10 +213,8 @@
 				if(L.pulling)
 					L.pulling.forceMove(target)
 			if(ishuman(A))
-				var/mob/living/carbon/human/H = A
-				if(!H.species.silent_steps)
-					playsound(source, 'sound/effects/stairs_step.ogg', 50)
-					playsound(target, 'sound/effects/stairs_step.ogg', 50)
+				playsound(source, 'sound/effects/stairs_step.ogg', 50)
+				playsound(target, 'sound/effects/stairs_step.ogg', 50)
 		else
 			to_chat(A, SPAN("warning", "Something blocks the path."))
 	else

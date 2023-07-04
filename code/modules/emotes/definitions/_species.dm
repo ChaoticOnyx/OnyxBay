@@ -41,13 +41,6 @@
 		/decl/emote/human/stopsway
 		)
 
-/datum/species/nabber
-	default_emotes = list(
-		/decl/emote/audible/bug_hiss,
-		/decl/emote/audible/bug_buzz,
-		/decl/emote/audible/bug_chitter
-		)
-
 /datum/species/swine
 	default_emotes = list(
 		/decl/emote/audible/oink

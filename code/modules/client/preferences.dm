@@ -264,7 +264,6 @@
 	character.b_skin = b_skin
 
 	character.s_tone = s_tone
-	character.s_base = s_base
 
 	character.h_style = h_style
 	character.f_style = f_style
