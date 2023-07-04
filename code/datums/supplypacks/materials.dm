@@ -21,7 +21,7 @@
 	containername = "\improper Wooden planks crate"
 
 /decl/hierarchy/supply_pack/materials/darkwoodwood50
-	name = "50 darkwooden planks"
+	name = "50 darkwood planks"
 	contains = list(/obj/item/stack/material/darkwood/fifty)
 	cost = 100
 	containername = "\improper Darkwood planks crate"
