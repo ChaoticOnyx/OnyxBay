@@ -50,10 +50,10 @@
 	if(!istype(old_self))
 		return
 
-	brainmob = _get_brainmob()
-
-	_setup_brainmob(brainmob, old_self)
-	_register_mob_signals()
+	if(isnull(brainmob))
+		brainmob = _get_brainmob()
+		_setup_brainmob(brainmob, old_self)
+		_register_mob_signals()
 
 	old_self.mind?.transfer_to(brainmob)
 

@@ -19,20 +19,16 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	var/obj/item/organ/internal/cerebrum/brain/brainobj = null
 
 /obj/item/organ/internal/cerebrum/mmi/New(newLoc, mob/living/carbon/human/old_shell)
-	if(!istype(old_shell))
-		return ..()
-
 	robotize()
-	_create_brain(old_shell)
-
+	if(istype(old_shell)) _create_brain(old_shell)
 	return ..()
 
 /obj/item/organ/internal/cerebrum/mmi/proc/_create_brain(mob/living/carbon/human/brain_owner)
 	var/obj/item/organ/internal/cerebrum/brain/new_brain = new(src)
 
-	var/brain_gender = brain_owner?.gender | pick(list(MALE, FEMALE))
-	var/brain_species = brain_owner?.get_species() | pick(GLOB.whitelisted_mmi_species)
-	var/brain_name = brain_owner?.real_name | random_name(brain_gender, brain_species)
+	var/brain_gender = brain_owner.gender || pick(list(MALE, FEMALE))
+	var/brain_species = brain_owner?.get_species() || pick(GLOB.whitelisted_mmi_species)
+	var/brain_name = brain_owner?.real_name || random_name(brain_gender, brain_species)
 
 	new_brain.SetName("\the [brain_name]'s [initial(new_brain.name)]")
 	new_brain.species = all_species[brain_species]
