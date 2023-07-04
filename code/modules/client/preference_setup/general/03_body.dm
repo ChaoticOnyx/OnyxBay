@@ -21,7 +21,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	var/r_eyes = 0						//Eye color
 	var/g_eyes = 0						//Eye color
 	var/b_eyes = 0						//Eye color
-	var/s_base = ""						//Base skin colour
 	var/list/body_markings = list()
 	var/body_height = HUMAN_HEIGHT_NORMAL // Character's height scale
 
@@ -56,7 +55,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	pref.r_skin = R.read("skin_red")
 	pref.g_skin = R.read("skin_green")
 	pref.b_skin = R.read("skin_blue")
-	pref.s_base = R.read("skin_base")
 	pref.h_style = R.read("hair_style_name")
 	pref.f_style = R.read("facial_style_name")
 	pref.r_eyes = R.read("eyes_red")
@@ -86,7 +84,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	W.write("skin_tone", pref.s_tone)
 	W.write("skin_red", pref.r_skin)
 	W.write("skin_green", pref.g_skin)
-	W.write("skin_base", pref.s_base)
 	W.write("skin_blue", pref.b_skin)
 	W.write("hair_style_name", pref.h_style)
 	W.write("facial_style_name", pref.f_style)
@@ -137,9 +134,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	var/low_skin_tone = mob_species ? (35 - mob_species.max_skin_tone()) : -185
 	sanitize_integer(pref.s_tone, low_skin_tone, 34, initial(pref.s_tone))
 
-	if(!mob_species.base_skin_colours || isnull(mob_species.base_skin_colours[pref.s_base]))
-		pref.s_base = ""
-
 	pref.disabilities	= sanitize_integer(pref.disabilities, 0, 65535, initial(pref.disabilities))
 	if(!istype(pref.organ_data)) pref.organ_data = list()
 	if(!istype(pref.rlimb_data)) pref.rlimb_data = list()
@@ -173,9 +167,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	. += "Height: <a href='?src=\ref[src];body_height=1'>[human_height_text(pref.body_height)]</a><br>"
 	. += "Species: <a href='?src=\ref[src];show_species=1'>[pref.species]</a><br>"
 	. += "Blood Type: <a href='?src=\ref[src];blood_type=1'>[pref.b_type]</a><br>"
-
-	if(has_flag(mob_species, HAS_BASE_SKIN_COLOURS))
-		. += "Base Colour: <a href='?src=\ref[src];base_skin=1'>[pref.s_base]</a><br>"
 
 	if(has_flag(mob_species, HAS_A_SKIN_TONE))
 		. += "Skin Tone: <a href='?src=\ref[src];skin_tone=1'>[-pref.s_tone + 35]/[mob_species.max_skin_tone()]</a><br>"
@@ -441,14 +432,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			pref.r_eyes = hex2num(copytext(new_eyes, 2, 4))
 			pref.g_eyes = hex2num(copytext(new_eyes, 4, 6))
 			pref.b_eyes = hex2num(copytext(new_eyes, 6, 8))
-			return TOPIC_REFRESH_UPDATE_PREVIEW
-
-	else if(href_list["base_skin"])
-		if(!has_flag(mob_species, HAS_BASE_SKIN_COLOURS))
-			return TOPIC_NOACTION
-		var/new_s_base = input(user, "Choose your character's base color:", CHARACTER_PREFERENCE_INPUT_TITLE) as null|anything in mob_species.base_skin_colours
-		if(new_s_base && CanUseTopic(user))
-			pref.s_base = new_s_base
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if(href_list["skin_tone"])

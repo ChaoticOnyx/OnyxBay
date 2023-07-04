@@ -193,7 +193,7 @@
 	warning_high_pressure = WARNING_HIGH_PRESSURE / 0.8125
 	hazard_high_pressure = HAZARD_HIGH_PRESSURE / 0.84615
 
-	body_temperature = null // cold-blooded, implemented the same way nabbers do it
+	body_temperature = null // cold-blooded
 
 	darksight_range = 4
 	darksight_tint = DARKTINT_MODERATE
