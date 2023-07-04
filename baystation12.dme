@@ -1149,6 +1149,7 @@
 #include "code\game\objects\items\melee\misc.dm"
 #include "code\game\objects\items\melee\telescopic_baton.dm"
 #include "code\game\objects\items\smokables\cigarettes.dm"
+#include "code\game\objects\items\smokables\hookah.dm"
 #include "code\game\objects\items\smokables\pipes.dm"
 #include "code\game\objects\items\smokables\rolling.dm"
 #include "code\game\objects\items\smokables\smokables.dm"
