@@ -83,8 +83,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/default_law_type = /datum/ai_laws/nanotrasen  // The default lawset use by synth units, if not overriden by their laws var.
 	var/security_state = /decl/security_state/default // The default security state system to use.
 
-	var/id_hud_icons = 'icons/mob/hud.dmi' // Used by the ID HUD (primarily sechud) overlay.
-
 	var/list/loadout_blacklist	//list of types of loadout items that will not be pickable
 	var/legacy_mode = FALSE // When TRUE, some things (like walls and windows) use their classical appearance and mechanics
 

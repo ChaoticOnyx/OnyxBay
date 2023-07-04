@@ -662,20 +662,23 @@ REAGENT SCANNER
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
 
-/obj/item/device/metroid_scanner/proc/list_gases(gases)
+/obj/item/device/metroid_scanner/afterattack(mob/target, mob/user, proximity)
+	metroid_scan(src, target, user, proximity)
+
+proc/list_gases(gases)
 	. = list()
 	for(var/g in gases)
 		. += "[gas_data.name[g]] ([gases[g]]%)"
 	return english_list(.)
 
-/obj/item/device/metroid_scanner/afterattack(mob/target, mob/user, proximity)
+proc/metroid_scan(source, mob/target, mob/user, proximity)
 	if(!proximity)
 		return
 
 	if(!istype(target))
 		return
 
-	user.visible_message("\The [user] scans \the [target] with \the [src]")
+	user.visible_message("\The [user] scans \the [target] with \the [source]")
 	if(istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = target
 		user.show_message("<span class='notice'>Data for [H]:</span>")

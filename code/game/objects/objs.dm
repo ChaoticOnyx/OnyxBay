@@ -1,5 +1,6 @@
 /obj
 	layer = OBJ_LAYER
+	vis_flags = VIS_INHERIT_PLANE|VIS_INHERIT_ID
 
 	var/obj_flags
 

@@ -94,7 +94,7 @@
 
 
 /obj/screen/movable/alert
-	icon = 'icons/mob/screen/midnight.dmi'
+	icon = 'icons/hud/style/midnight.dmi'
 	icon_state = "template"
 	name = "Alert"
 	desc = "Something seems to have gone wrong with this alert, so report this bug please"
@@ -108,6 +108,8 @@
 	/// Boolean. If TRUE, the Click() proc will attempt to Click() on the master first if there is a master.
 	var/click_master = TRUE
 
+/obj/screen/movable/alert/status_effect
+	icon = 'icons/hud/status_effects.dmi'
 
 // Notify for ghosts
 /obj/screen/movable/alert/notify_action

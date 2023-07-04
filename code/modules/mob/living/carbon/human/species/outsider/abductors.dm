@@ -6,10 +6,10 @@
 	species_flags = SPECIES_FLAG_NO_BLOOD
 	spawn_flags = SPECIES_IS_RESTRICTED
 	default_language = LANGUAGE_ABDUCTOR
+	has_eyes_icon = FALSE
 	num_alternate_languages = 1
 	language = LANGUAGE_GALCOM
 	icobase = 'icons/mob/human_races/r_abductor.dmi'
-	deform = 'icons/mob/human_races/r_abductor.dmi'
 
 	blood_color = "#972ab3"
 	flesh_color = "#707070"

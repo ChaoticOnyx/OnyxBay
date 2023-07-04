@@ -24,6 +24,14 @@
 		if(!isnull(M.slowdown))
 			. += M.slowdown
 
+	var/equipment_slowdown_immunity = FALSE
+	for(var/datum/modifier/movespeed/MS in modifiers)
+		if(!isnull(MS.movespeed_modifier))
+			. += MS.movespeed_modifier
+
+		if(!equipment_slowdown_immunity && MS.equipment_slowdown_immunity)
+			equipment_slowdown_immunity = TRUE
+
 	if(species.slowdown)
 		. += species.slowdown
 
@@ -52,8 +60,8 @@
 			if(STOMACH_FULLNESS_HIGH to INFINITY)
 				. += nut_level - 4.25
 
-	if(body_build.equipment_modifier > 0) // Is our equipment_modifier a good thing?
-		if(equipment_slowdown + 1 > body_build.equipment_modifier)  // Lowering equipment cooldown if it's higher
+	if(body_build.equipment_modifier > 0 || equipment_slowdown_immunity) // Is our equipment_modifier a good thing?
+		if(equipment_slowdown + 1 > body_build.equipment_modifier && !equipment_slowdown_immunity)  // Lowering equipment cooldown if it's higher
 			. += equipment_slowdown - body_build.equipment_modifier // than equipment_modifier, ignoring it otherwise
 		else
 			. -= 1 // Since default equipment_slowdown is -1 for some reason

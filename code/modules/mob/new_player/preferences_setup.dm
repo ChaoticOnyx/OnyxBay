@@ -35,6 +35,10 @@
 					else
 						ASSIGN_LIST_TO_COLORS(current_species.get_random_facial_hair_color(), r_facial, g_facial, b_facial)
 
+				hair_colors = current_species.get_random_hair_color()
+				if(hair_colors)
+					ASSIGN_LIST_TO_COLORS(hair_colors, r_s_hair, g_s_hair, b_s_hair)
+
 		if(current_species.appearance_flags & HAS_UNDERWEAR)
 			all_underwear.Cut()
 			for(var/datum/category_group/underwear/WRC in GLOB.underwear.categories)

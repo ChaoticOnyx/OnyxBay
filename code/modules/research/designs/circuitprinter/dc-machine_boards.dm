@@ -237,3 +237,10 @@
 
 	build_path = /obj/item/circuitboard/replicator
 	sort_string = "WAAAR"
+
+/datum/design/circuit/telegate
+	name = "Teleporter Gate"
+	id = "telegate"
+	req_tech = list(TECH_DATA = 3, TECH_BLUESPACE = 2)
+	build_path = /obj/item/circuitboard/teleporter_gate
+	sort_string = "WAAAS"

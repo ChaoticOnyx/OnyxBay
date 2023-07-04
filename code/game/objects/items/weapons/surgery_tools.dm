@@ -1,3 +1,4 @@
+
 /* Surgery Tools
  * Contains:
  *		Retractor
@@ -138,6 +139,12 @@
 /*
  * Circular Saw
  */
+#define CHAINSAW_UNAVAILABLE -1
+#define CHAINSAW_ADD_COIL 0
+#define CHAINSAW_CAPACITOR_INSTALL 1
+#define CHAINSAW_CREATE_CASE 2
+#define CHANISAW_WELDING_CASE 3
+
 /obj/item/circular_saw
 	name = "circular saw"
 	desc = "For heavy duty cutting."
@@ -158,6 +165,7 @@
 	sharp = 1
 	edge = 1
 	var/improved = 0
+	var/craft_step = CHAINSAW_ADD_COIL // Using for creating the chainsaw
 
 /obj/item/circular_saw/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/material/wirerod) && improved == 0)
@@ -184,6 +192,50 @@
 		w_class = ITEM_SIZE_NORMAL
 		improved = 0
 		surgery_speed = 1.0
+
+	// Making a chainsaw steps
+	switch(craft_step)
+		if(CHAINSAW_ADD_COIL)
+			if(!isCoil(W))
+				return ..()
+			var/obj/item/stack/cable_coil/C = W
+			if(C.use(3))
+				playsound(user,'sound/effects/using/cuffs/cable_use1.ogg', 50, 5, 7)
+				visible_message(SPAN("notice", "[usr] added wires to \the [src]"))
+				craft_step++
+
+		if(CHAINSAW_CAPACITOR_INSTALL)
+			if(!iscapacitor(W))
+				return ..()
+			playsound(user,'sound/effects/using/cuffs/cable_use1.ogg', 50, 5, 7)
+			visible_message(SPAN("notice", "[usr] connected wires from [src] to \the [W]"))
+			qdel(W)
+			craft_step++
+
+		if(CHAINSAW_CREATE_CASE)
+			if(!istype(W, /obj/item/stack/material/plasteel))
+				return ..()
+			var/obj/item/stack/material/plasteel/P = W
+			if(P.use(5))
+				playsound(user,'sound/effects/weightdrop.ogg', 50, 5, 7)
+				visible_message(SPAN("notice", "[usr] made a case from [W] for \the [src]"))
+				craft_step++
+
+		if(CHANISAW_WELDING_CASE)
+			if(!isWelder(W))
+				return ..()
+			var/obj/item/weldingtool/weldtool = W
+			if(weldtool.remove_fuel(5, user))
+				playsound(user, 'sound/effects/flare.ogg', 50, 5, 7)
+				visible_message(SPAN("notice", "[usr] welded a case of \the [src]!"))
+				var/inhandy = (loc == user) && ishuman(user)
+				var/obj/item/material/twohanded/chainsaw/C = new /obj/item/material/twohanded/chainsaw(user.loc)
+				if(inhandy)
+					user.drop(src)
+					user.put_in_hands(C)
+				C.add_fingerprint(user)
+				qdel(src)
+
 	..()
 
 
@@ -194,6 +246,7 @@
 	force = 22.5
 	surgery_speed = 0.5
 	//improved = 2 // Jeez I'm waaay to lazy to draw sprites for plasma chainspear
+	craft_step = CHAINSAW_UNAVAILABLE
 
 /obj/item/circular_saw/plasmasaw/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/material/wirerod) && improved == 0)
@@ -221,6 +274,12 @@
 		improved = 0
 		surgery_speed = 1.0
 	..()
+
+#undef CHAINSAW_UNAVAILABLE
+#undef CHAINSAW_ADD_COIL
+#undef CHAINSAW_CAPACITOR_INSTALL
+#undef CHAINSAW_CREATE_CASE
+#undef CHANISAW_WELDING_CASE
 
 //misc, formerly from code/defines/weapons.dm
 /obj/item/bonegel

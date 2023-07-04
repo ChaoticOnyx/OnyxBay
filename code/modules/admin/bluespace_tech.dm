@@ -114,7 +114,7 @@
 /mob/living/carbon/human/bluespace_tech/proc/suicide()
 	if(QDELETED(src))
 		return
-	custom_emote(VISIBLE_MESSAGE, "presses a button on their suit, followed by a polite bow.")
+	custom_emote(VISIBLE_MESSAGE, "presses a button on their suit, followed by a polite bow.", "AUTO_EMOTE")
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 	s.set_up(5, 1, src)
 	s.start()

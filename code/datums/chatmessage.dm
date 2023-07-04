@@ -18,8 +18,6 @@
 #define CHAT_LAYER_Z_STEP           0.0001
 /// The number of z-layer 'slices' usable by the chat message layering
 #define CHAT_LAYER_MAX_Z            ((CHAT_LAYER_MAX - CHAT_LAYER) / CHAT_LAYER_Z_STEP)
-/// Macro from Lummox used to get height from a MeasureText proc
-#define WXH_TO_HEIGHT(x)            text2num(copytext(x, findtextEx(x, "x") + 1))
 #define CHAT_MESSAGE_APPEAR_STATE   1
 #define CHAT_MESSAGE_FADEOUT_STATE  2
 
@@ -144,7 +142,7 @@
 
 	// Approximate text height
 	var/static/regex/html_metachars = new(@"&[A-Za-z]{1,7};", "g")
-	var/complete_text = "<span class='center maptext[size ? " [size]" : ""]' style='color: [tgt_color]'>[text]</span>"
+	var/complete_text = MAPTEXT("<span class='center[size ? " [size]" : ""]' style='color: [tgt_color]'>[text]</span>")
 	var/mheight = WXH_TO_HEIGHT(owned_by.MeasureText(complete_text, null, CHAT_MESSAGE_WIDTH))
 	approx_lines = max(1, mheight / CHAT_MESSAGE_APPROX_LHEIGHT)
 
@@ -172,7 +170,7 @@
 
 	// Build message image
 	message = image(loc = message_loc, layer = CHAT_LAYER + CHAT_LAYER_Z_STEP * current_z_idx++)
-	message.plane = DEFAULT_PLANE
+	message.plane = FLOAT_PLANE
 	message.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA | KEEP_APART
 	message.alpha = 0
 	message.pixel_y = owner.bound_height * 0.95
@@ -182,7 +180,9 @@
 	message.maptext = complete_text
 
 	// View the message
-	LAZYADDASSOC(owned_by.seen_messages, message_loc, src)
+	if(!owned_by.seen_messages)
+		owned_by.seen_messages = list()
+	owned_by.seen_messages[message_loc] += list(src);
 	owned_by.images |= message
 	animate(message, alpha = 255, time = CHAT_MESSAGE_SPAWN_TIME)
 

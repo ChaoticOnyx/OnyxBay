@@ -61,7 +61,7 @@
 			vermstring = "mice"
 		if(VERM_LIZARDS)
 			spawn_types = list(/mob/living/simple_animal/lizard)
-			max_number = 6
+			max_number = 4
 			vermstring = "lizards"
 		if(VERM_SPIDERS)
 			spawn_types = list(/obj/structure/spider/spiderling)
@@ -74,6 +74,7 @@
 
 	spawn(0)
 		var/num = rand(2, max_number)
+		var/datum/reagent/lizard_poison = pick(POSSIBLE_LIZARD_TOXINS)
 		log_and_message_admins("Vermin infestation spawned ([vermstring] x[num]) in \the [location]", location = pick_area_turf(location))
 		while(vermin_turfs.len && num > 0)
 			var/turf/simulated/floor/T = pick(vermin_turfs)
@@ -84,6 +85,10 @@
 			var/obj/structure/spider/spiderling/S = new spawn_type(T)
 			if(istype(S))
 				S.amount_grown = -1
+			if(istype(S, /mob/living/simple_animal/lizard))
+				var/mob/living/simple_animal/lizard/L = S
+				if(prob(50))
+					L.setPoison(lizard_poison)
 
 	set_next_think_ctx("announce", world.time + (30 SECONDS))
 

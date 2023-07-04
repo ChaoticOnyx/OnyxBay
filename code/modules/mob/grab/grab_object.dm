@@ -206,12 +206,14 @@
 		adjust_position()
 		update_icons()
 		current_grab.enter_as_up(src)
+		SEND_SIGNAL(assailant, SIGNAL_MOB_GRAB_SET_STATE, assailant, current_grab.state_name, affecting)
 
 /obj/item/grab/proc/downgrade()
 	var/datum/grab/downgrab = current_grab.downgrade()
 	if(downgrab)
 		current_grab = downgrab
 		update_icons()
+		SEND_SIGNAL(assailant, SIGNAL_MOB_GRAB_SET_STATE, assailant, current_grab.state_name, affecting)
 
 /obj/item/grab/proc/update_icons()
 	if(!current_grab)

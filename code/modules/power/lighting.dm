@@ -272,7 +272,7 @@
 		TO = overlay_image(icon, "[icon_state]-over", flags=RESET_COLOR)
 		TO.color = lightbulb.b_color
 		TO.layer = ABOVE_LIGHTING_LAYER
-		TO.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		TO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 		TO.alpha = between(128, (lightbulb.b_max_bright * 1.25 * 255), 255)
 
 	if(on)
@@ -294,7 +294,7 @@
 		set_light(0)
 		if(TO)
 			TO.layer = layer + 0.001
-			TO.plane = plane
+			TO.set_float_plane(src, plane)
 
 	if(TO)
 		overlays += TO

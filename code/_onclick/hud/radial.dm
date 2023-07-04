@@ -4,9 +4,10 @@
 GLOBAL_LIST_EMPTY(radial_menus)
 
 /obj/screen/radial
-	icon = 'icons/mob/radial.dmi'
-	layer = ABOVE_HUD_BASE_LAYER
+	icon = 'icons/hud/radial.dmi'
 	plane = ABOVE_HUD_PLANE
+	layer = ABOVE_HUD_BASE_LAYER
+	vis_flags = VIS_INHERIT_PLANE
 	var/datum/radial_menu/parent
 
 /obj/screen/radial/slice
@@ -183,7 +184,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	if(choice_id == NEXT_PAGE_ID)
 		E.name = "Next Page"
 		E.next_page = TRUE
-		var/image/I = image('icons/mob/radial.dmi', "radial_next")
+		var/image/I = image('icons/hud/radial.dmi', "radial_next")
 		E.overlays += I
 	else
 		if(istext(choices_values[choice_id]))
@@ -231,6 +232,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	var/mutable_appearance/MA = new /mutable_appearance(E)
 	if(MA)
 		MA.layer = ABOVE_HUD_BASE_LAYER
+		MA.plane = ABOVE_HUD_PLANE
 		MA.appearance_flags |= RESET_TRANSFORM
 	return MA
 
@@ -248,6 +250,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	current_user = M.client
 	//Blank
 	menu_holder = image(icon='icons/effects/effects.dmi',loc=anchor,icon_state="nothing",layer = ABOVE_HUD_BASE_LAYER)
+	menu_holder.plane = ABOVE_HUD_PLANE
 	menu_holder.appearance_flags |= KEEP_APART
 	menu_holder.vis_contents += elements + close_button
 	current_user.images += menu_holder

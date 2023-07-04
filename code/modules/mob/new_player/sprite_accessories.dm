@@ -47,13 +47,15 @@
 
 /datum/sprite_accessory/hair
 	var/flags
+	var/has_secondary = FALSE
 
 /datum/sprite_accessory/hair/bald
 	name = "Bald"
 	icon_state = "bald"
 	gender = MALE
-	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_VOX)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_VOX, SPECIES_SWINE)
 	flags = VERY_SHORT
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/short
 	name = "Short Hair"   // try to capatilize the names please~
@@ -189,6 +191,7 @@
 	name = "Beehive"
 	icon_state = "beehive"
 	gender = FEMALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/beehive2
 	name = "Beehive 2"
@@ -199,7 +202,7 @@
 	name = "Bob"
 	icon_state = "bob"
 	gender = FEMALE
-	species_allowed = list(SPECIES_HUMAN, SPECIES_TAJARA)
+	species_allowed = list(SPECIES_HUMAN)
 
 /datum/sprite_accessory/hair/bob2
 	name = "Bob 2"
@@ -251,6 +254,7 @@
 	name = "Father"
 	icon_state = "father"
 	gender = MALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/reversemohawk
 	name = "Reverse Mohawk"
@@ -310,6 +314,7 @@
 	name = "Long Emo"
 	icon_state = "emolong"
 	gender = FEMALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/shortovereye
 	name = "Overeye Short"
@@ -331,7 +336,7 @@
 /datum/sprite_accessory/hair/mohawk
 	name = "Mohawk"
 	icon_state = "mohawk"
-	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_TAJARA)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI)
 
 /datum/sprite_accessory/hair/jensen
 	name = "Adam Jensen Hair"
@@ -367,17 +372,19 @@
 /datum/sprite_accessory/hair/spiky
 	name = "Spiky"
 	icon_state = "spiky"
-	species_allowed = list(SPECIES_HUMAN, SPECIES_TAJARA)
+	species_allowed = list(SPECIES_HUMAN)
 
 /datum/sprite_accessory/hair/kagami
 	name = "Pigtails"
 	icon_state = "kagami"
 	gender = FEMALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/pigtails_b
 	name = "Pigtails 2"
 	icon_state = "pigtails_b"
 	gender = FEMALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/himecut
 	name = "Hime Cut"
@@ -459,6 +466,7 @@
 	name = "Poofy"
 	icon_state = "poofy"
 	gender = FEMALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/crono
 	name = "Chrono"
@@ -489,6 +497,7 @@
 	name = "Nitori"
 	icon_state = "nitori"
 	gender = FEMALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/joestar
 	name = "Joestar"
@@ -522,6 +531,11 @@
 /datum/sprite_accessory/hair/doublebun
 	name = "Double-Bun"
 	icon_state = "doublebun"
+
+/datum/sprite_accessory/hair/doublebun2
+	name = "Double-Bun 2"
+	icon_state = "doublebun2"
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/lowfade
 	name = "Fade (Low)"
@@ -618,6 +632,7 @@
 	name = "Topknot"
 	icon_state = "topknot"
 	gender = MALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/ronin
 	name = "Ronin"
@@ -667,7 +682,7 @@
 /datum/sprite_accessory/hair/messyhair
 	name = "Messy"
 	icon_state = "messy"
-	species_allowed = list(SPECIES_HUMAN, SPECIES_TAJARA)
+	species_allowed = list(SPECIES_HUMAN)
 
 /datum/sprite_accessory/hair/messyhair2
 	name = "Messy 2"
@@ -893,6 +908,7 @@
 /datum/sprite_accessory/hair/samurai_swtgr
 	name = "Samurai"
 	icon_state = "samurai"
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/unkept
 	name = "Unkept"
@@ -919,6 +935,7 @@
 /datum/sprite_accessory/hair/zieglertail
 	name = "Zieglertail"
 	icon_state = "ziegler"
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/zone
 	name = "Zone Braid"
@@ -934,6 +951,7 @@
 	name = "Mist"
 	icon_state = "mist"
 	gender = FEMALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/maid_b
 	name = "Maid tail"
@@ -989,6 +1007,7 @@
 	name = "African Pigtails"
 	icon_state = "african_pigtails"
 	gender = FEMALE
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/missingno
 	name = "MissingNo"
@@ -1049,7 +1068,7 @@ May God have mercy.
 	name = "Shaved"
 	icon_state = "shaved"
 	gender = NEUTER
-	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_VOX, SPECIES_IPC)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_VOX, SPECIES_IPC, SPECIES_SWINE)
 
 /datum/sprite_accessory/facial_hair/watson
 	name = "Watson Mustache"
@@ -1270,71 +1289,110 @@ May God have mercy.
 	name = "Ears"
 	icon_state = "bald"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_small
 	name = "Small Ears"
 	icon_state = "small"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_clean
 	name = "Clean"
 	icon_state = "clean"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_bangs
 	name = "Bangs"
 	icon_state = "bangs"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_braid
 	name = "Braid"
 	icon_state = "braid"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_shaggy
 	name = "Shaggy"
 	icon_state = "shaggy"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_plait
 	name = "Plait"
 	icon_state = "plait"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_straight
 	name = "Straight"
 	icon_state = "straight"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_long
 	name = "Long"
 	icon_state = "long"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_ears_rattail
 	name = "Rat Tail"
 	icon_state = "rattail"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_fingerwave
 	name = "Fingerwave"
 	icon_state = "fingerwave"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_victory
 	name = "Victory"
 	icon_state = "victory"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_wife
 	name = "Wifey"
 	icon_state = "wife"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 /datum/sprite_accessory/hair/taj_curly
 	name = "Curly"
 	icon_state = "curly"
 	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/taj_bob
+	name = "Tajaran Bob"
+	icon_state = "bob"
+	gender = FEMALE
+	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/taj_spiky
+	name = "Tajaran Spiky"
+	icon_state = "spiky"
+	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/taj_messy
+	name = "Tajaran Messy"
+	icon_state = "messy"
+	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/taj_mohawk
+	name = "Tajaran Mohawk"
+	icon_state = "mohawk"
+	species_allowed = list(SPECIES_TAJARA)
+	has_secondary = TRUE
 
 // Vox Hairstyles
 /datum/sprite_accessory/hair/vox_quills_long
@@ -1373,6 +1431,44 @@ May God have mercy.
 	name = "Tajara Smallsatche"
 	icon_state = "smallstache"
 	species_allowed = list(SPECIES_TAJARA)
+
+// Swines
+
+/datum/sprite_accessory/hair/swine_mohawk
+	name = "Trottine Mohawk"
+	icon_state = "mohawk"
+	species_allowed = list(SPECIES_SWINE)
+	has_secondary = TRUE
+
+/datum/sprite_accessory/facial_hair/swine_tusks
+	name = "Tusks"
+	icon_state = "tusks"
+	species_allowed = list(SPECIES_SWINE)
+
+/datum/sprite_accessory/facial_hair/swine_goatee
+	name = "Tusks & Goatee"
+	icon_state = "goatee"
+	species_allowed = list(SPECIES_SWINE)
+
+/datum/sprite_accessory/facial_hair/swine_sideburns
+	name = "Tusks & Sideburns"
+	icon_state = "sideburns"
+	species_allowed = list(SPECIES_SWINE)
+
+/datum/sprite_accessory/facial_hair/swine_stache
+	name = "Stache"
+	icon_state = "stache"
+	species_allowed = list(SPECIES_SWINE)
+
+/datum/sprite_accessory/facial_hair/swine_moustache
+	name = "Moustache"
+	icon_state = "moustache"
+	species_allowed = list(SPECIES_SWINE)
+
+/datum/sprite_accessory/facial_hair/swine_longbeard
+	name = "Tusks & Beard"
+	icon_state = "longbeard"
+	species_allowed = list(SPECIES_SWINE)
 
 //skin styles - WIP
 //going to have to re-integrate this with surgery
@@ -1437,36 +1533,36 @@ May God have mercy.
 	name = "Tattoo (Heart, Torso)"
 	icon_state = "tat_heart"
 	body_parts = list(BP_CHEST)
-	species_allowed = list(SPECIES_HUMAN)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_SWINE)
 
 /datum/sprite_accessory/marking/tat_hive
 	name = "Tattoo (Hive, Back)"
 	icon_state = "tat_hive"
 	body_parts = list(BP_CHEST)
-	species_allowed = list(SPECIES_HUMAN)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_SWINE)
 
 /datum/sprite_accessory/marking/tat_nightling
 	name = "Tattoo (Nightling, Back)"
 	icon_state = "tat_nightling"
 	body_parts = list(BP_CHEST)
-	species_allowed = list(SPECIES_HUMAN)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_SWINE)
 
 /datum/sprite_accessory/marking/tat_campbell
 	name = "Tattoo (Campbell, R.Arm)"
 	icon_state = "tat_campbell"
 	body_parts = list(BP_R_ARM)
-	species_allowed = list(SPECIES_HUMAN)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_SWINE)
 
 /datum/sprite_accessory/marking/tat_campbell/left
 	name = "Tattoo (Campbell, L.Arm)"
 	body_parts = list(BP_L_ARM)
-	species_allowed = list(SPECIES_HUMAN)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_SWINE)
 
 /datum/sprite_accessory/marking/tat_tiger
 	name = "Tattoo (Tiger Stripes, Body)"
 	icon_state = "tat_tiger"
 	body_parts = list(BP_L_FOOT,BP_R_FOOT,BP_L_LEG,BP_R_LEG,BP_L_ARM,BP_R_ARM,BP_L_HAND,BP_R_HAND,BP_CHEST,BP_GROIN)
-	species_allowed = list(SPECIES_HUMAN)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_SWINE)
 
 /datum/sprite_accessory/marking/taj_paw_socks
 	name = "Socks Coloration (Taj)"
@@ -1611,10 +1707,12 @@ May God have mercy.
 /datum/sprite_accessory/marking/hair_fade/fade_up_short
 	name = "Fade (Up, Short)"
 	icon_state = "fade_up_short"
+	species_allowed = list(SPECIES_HUMAN, SPECIES_SKRELL)
 
 /datum/sprite_accessory/marking/hair_fade/fade_up_long
 	name = "Fade (Up, Long)"
 	icon_state = "fade_up_long"
+	species_allowed = list(SPECIES_HUMAN, SPECIES_SKRELL)
 
 /datum/sprite_accessory/marking/hair_fade/fade_down_short
 	name = "Fade (Down, Short)"

@@ -21,10 +21,12 @@ var/list/mob_hat_cache = list()
 /mob/living/silicon/robot/drone
 	name = "maintenance drone"
 	real_name = "drone"
-	icon = 'icons/mob/robots.dmi'
 	icon_state = "repairbot"
 	maxHealth = 35
 	health = 35
+
+	default_hull = /datum/robot_hull/drone
+
 	cell_emp_mult = 1
 	universal_speak = 0
 	universal_understand = 1
@@ -118,6 +120,9 @@ var/list/mob_hat_cache = list()
 /mob/living/silicon/robot/drone/construction
 	name = "construction drone"
 	icon_state = "constructiondrone"
+
+	default_hull = /datum/robot_hull/drone/construction
+
 	module_type = /obj/item/robot_module/drone/construction
 	hat_x_offset = 1
 	hat_y_offset = -12
@@ -129,9 +134,9 @@ var/list/mob_hat_cache = list()
 	..()
 
 	verbs += /mob/living/proc/hide
-	remove_language("Robot Talk")
-	add_language("Robot Talk", 0)
-	add_language("Drone Talk", 1)
+	remove_language(LANGUAGE_ROBOT)
+	add_language(LANGUAGE_ROBOT, FALSE)
+	add_language(LANGUAGE_DRONE, TRUE)
 
 	// NO BRAIN.
 	mmi = null

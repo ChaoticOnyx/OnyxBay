@@ -69,6 +69,14 @@
 	containername = "\improper Chicken crate"
 	access = access_hydroponics
 
+/decl/hierarchy/supply_pack/hydroponics/pig
+	name = "Pig crate"
+	contains = list(/mob/living/simple_animal/pig)
+	cost = 60
+	containertype = /obj/structure/largecrate/animal/pig
+	containername = "\improper Pig crate"
+	access = access_hydroponics
+
 /decl/hierarchy/supply_pack/hydroponics/hydroponics // -- Skie
 	name = "Hydroponics Supply Crate"
 	contains = list(/obj/item/reagent_containers/spray/plantbgone = 4,

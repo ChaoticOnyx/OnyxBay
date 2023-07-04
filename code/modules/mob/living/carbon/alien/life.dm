@@ -92,26 +92,6 @@
 
 /mob/living/carbon/alien/handle_regular_hud_updates()
 	update_sight()
-	if(healths)
-		if(stat != 2)
-			var/health_ratio = health / maxHealth * 100
-			switch(health_ratio)
-				if(100 to INFINITY)
-					healths.icon_state = "health0"
-				if(80 to 100)
-					healths.icon_state = "health1"
-				if(60 to 80)
-					healths.icon_state = "health2"
-				if(40 to 60)
-					healths.icon_state = "health3"
-				if(20 to 40)
-					healths.icon_state = "health4"
-				if(0 to 20)
-					healths.icon_state = "health5"
-				else
-					healths.icon_state = "health6"
-		else
-			healths.icon_state = "health7"
 
 	if(!is_ooc_dead())
 		if(blinded)

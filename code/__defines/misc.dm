@@ -306,3 +306,10 @@
 #define STRINGIFY(argument) #argument
 
 #define NUM_E 2.71828183
+// Bitflags for magic resistance types
+/// Default magic resistance that blocks normal magic (wizard, spells, magical staff projectiles)
+#define MAGIC_RESISTANCE (1<<0)
+/// Tinfoil hat magic resistance that blocks mental magic (telepathy / mind links, mind curses, abductors)
+#define MAGIC_RESISTANCE_MIND (1<<1)
+/// Holy magic resistance that blocks unholy magic (vampire)
+#define MAGIC_RESISTANCE_HOLY (1<<2)

@@ -24,7 +24,7 @@
 	var/processing = 0
 	var/active = 0
 	var/obj/screen/movable/action_button/button = null
-	var/button_icon = 'icons/mob/actions.dmi'
+	var/button_icon = 'icons/hud/actions.dmi'
 	var/button_icon_state = "default"
 	var/background_icon_state = "bg_default"
 	var/transparent_when_unavailable = TRUE
@@ -168,7 +168,7 @@
 //Hide/Show Action Buttons ... Button
 /obj/screen/movable/action_button/hide_toggle
 	name = "Hide Buttons"
-	icon = 'icons/mob/actions.dmi'
+	icon = 'icons/hud/actions.dmi'
 	icon_state = "bg_default"
 	var/hidden = 0
 
@@ -352,7 +352,7 @@
 // Mobs cooldown action
 /datum/action/cooldown/mob_cooldown
 	name = "Standard Mob Cooldown Ability"
-	button_icon = 'icons/mob/actions.dmi'
+	button_icon = 'icons/hud/actions.dmi'
 	button_icon_state = "default"
 	check_flags = AB_CHECK_CONSCIOUS
 	cooldown_time = 1.5 SECONDS

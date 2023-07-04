@@ -267,7 +267,9 @@
 */
 /mob/proc/ShiftClickOn(atom/A)
 	A.ShiftClick(src)
+	SEND_SIGNAL(src, SIGNAL_MOB_SHIFT_CLICK, src, A)
 	return
+
 /atom/proc/ShiftClick(mob/user)
 	if(user.client && (src in view(user.client.eye)))
 		user.examinate(src)
@@ -280,7 +282,9 @@
 */
 /mob/proc/CtrlClickOn(atom/A)
 	A.CtrlClick(src)
+	SEND_SIGNAL(src, SIGNAL_MOB_CTRL_CLICK, src, A)
 	return
+
 /atom/proc/CtrlClick(mob/user)
 	return
 
@@ -445,8 +449,8 @@
 		facedir(direction)
 
 /obj/screen/click_catcher
-	icon = 'icons/mob/screen_gen.dmi'
-	icon_state = "click_catcher"
+	icon = 'icons/hud/screen_gen.dmi'
+	icon_state = "catcher"
 	plane = CLICKCATCHER_PLANE
 	mouse_opacity = 2
 	screen_loc = "CENTER-7,CENTER-7"

@@ -1,33 +1,24 @@
-// TO-DO: move all mob variables to one file 'cause it's cringe. - N
-/mob
-	// Icon state name for speech bubble.
-	var/bubble_icon = "default"
+/// Checks whether a typing indicator should be created, 'FALSE' by default
+/mob/proc/should_show_typing_indicator()
+	return FALSE
 
-	// Icon used for the typing indicator's bubble.
-	var/active_typing_indicator
-	// Icon used for the thinking inicator's bubble.
-	var/active_thinking_indicator
-
-	// Is user typing in character.
-	var/thinking_IC = FALSE
-
-// Adds a typing indicator over the mob.
+/// Adds a typing indicator over the mob.
 /mob/proc/create_typing_indicator()
 	return
 
-// Removes the typing indicator over the mob.
+/// Removes the typing indicator over the mob.
 /mob/proc/remove_typing_indicator()
 	return
 
-// Adds a thinking indicator over the mob.
+/// Adds a thinking indicator over the mob.
 /mob/proc/create_thinking_indicator()
 	return
 
-// Removes the thinking indicator over the mob.
+/// Removes the thinking indicator over the mob.
 /mob/proc/remove_thinking_indicator()
 	return
 
-// Removes all indicators and marks mob as not speaking IC.
+/// Removes all indicators and marks mob as not speaking IC.
 /mob/proc/remove_all_indicators()
 	return
 
@@ -46,13 +37,15 @@
 	if (return_content)
 		. = winget(src, "saywindow.saywindow-input", "text")
 	winset(src, "saywindow.saywindow-input", "text=\"\"")
-	mob.remove_all_indicators()
+	mob.remove_speech_bubble()
 
 /mob/verb/add_speech_bubble(is_sayinput as num|null)
 	set name = ".add_speech_bubble"
 	set hidden = TRUE
 
 	ASSERT(client && src == usr)
+
+	thinking_silent = should_show_typing_indicator()
 
 	if(is_sayinput)
 		thinking_IC = TRUE
@@ -63,8 +56,7 @@
 	if(findtext(text, "Say ", 1, 5))
 		thinking_IC = TRUE
 		start_typing()
-	else
-		remove_all_indicators()
+		return
 
 /mob/verb/remove_speech_bubble()
 	set name = ".remove_speech_bubble"
@@ -72,7 +64,19 @@
 
 	ASSERT(client && src == usr)
 
-	stop_typing()
+	var/visible = winget(usr, "saywindow", "is-visible")
+	if(cmptext(visible, "true"))
+		stop_typing()
+		return
+
+	var/focus = winget(usr, ":input", "focus")
+	if(cmptext(focus, "false"))
+		var/text = winget(usr, ":input", "text")
+		if(findtext(text, "Say ", 1, 5) && length(text) > 5)
+			stop_typing()
+			return
+
+	remove_all_indicators()
 
 /mob/verb/me_wrapper()
 	set name = ".Me"
@@ -85,14 +89,9 @@
 	if(message)
 		me_verb(message)
 
-/mob/proc/should_show_indicator()
-	if(!client)
-		return FALSE
-	return (get_preference_value(/datum/client_preference/show_typing_indicator) == GLOB.PREF_SHOW) == (client.shift_released_at <= world.time - 2)
-
 /mob/proc/start_typing()
 	remove_thinking_indicator()
-	if(!thinking_IC || !should_show_indicator())
+	if(!thinking_IC || thinking_silent)
 		return FALSE
 	create_typing_indicator()
 
@@ -100,9 +99,15 @@
 	if(!src)
 		return FALSE
 	remove_typing_indicator()
-	if(!thinking_IC || !should_show_indicator())
+	if(!thinking_IC || thinking_silent)
 		return FALSE
 	create_thinking_indicator()
+
+/mob/living/should_show_typing_indicator()
+	if(!client)
+		return FALSE
+	var/pref = cmptext(get_preference_value("SHOW_TYPING"), GLOB.PREF_SHOW)
+	return client.shift_released_at <= world.time - 2 ? !pref : pref
 
 /mob/living/create_thinking_indicator()
 	if(active_thinking_indicator || active_typing_indicator || !thinking_IC || stat != CONSCIOUS)
