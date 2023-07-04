@@ -84,17 +84,33 @@
 
 	var/mob/living/simple_animal/borer/B = has_brain_worms()
 
-	if(B && B.can_use_abilities(BORER_STATUS_IN_HOST) && B.chemicals >= 100)
-		to_chat(src, SPAN("danger", "Your whole body feels strangely numb."))
+	if(!B)
+		return
 
-	else
+	if(!B.can_use_abilities(BORER_STATUS_IN_HOST))
+		return
+
+	if(B.chemicals >= 100)
 		to_chat(src, SPAN("warning", "You do not have enough chemicals stored!"))
 		return
 
-	no_pain = TRUE
+	if(!host_pain_disable())
+		to_chat(src, SPAN("warning", "Your host's pain receptors are already numb!"))
+		return
+
 	B.chemicals -= 100
 
-	addtimer(CALLBACK(src, /mob/living/simple_animal/borer/proc/pain_disable), 30 SECONDS)
+	addtimer(CALLBACK(src, .proc/host_pain_disable), 30 SECONDS)
+
+/mob/living/carbon/human/proc/host_pain_disable()
+	if(no_pain)
+		return FALSE
+	no_pain = TRUE
+	to_chat(src, SPAN("danger", "Your whole body feels strangely numb."))
+	return TRUE
+
+/mob/living/carbon/human/proc/host_pain_enable()
+	no_pain = FALSE
 
 /mob/living/carbon/human/proc/process_tackle(mob/living/T)
 	if(!T || !src || src.stat)

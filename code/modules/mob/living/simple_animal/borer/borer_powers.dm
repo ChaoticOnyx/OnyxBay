@@ -11,7 +11,7 @@ list(\
 BORER_STATUS_IN_HOST = list(\
 /mob/living/simple_animal/borer/verb/release_host,\
 /mob/living/simple_animal/borer/verb/secrete_chemicals,\
-/mob/living/simple_animal/borer/verb/no_pain,\
+/mob/living/simple_animal/borer/verb/no_host_pain,\
 /mob/living/simple_animal/borer/verb/devour_brain,\
 ),\
 BORER_STATUS_CONTROLLING = list(\
@@ -41,8 +41,7 @@ BORER_STATUS_HUSK = list(\
 	set name = "Release Host"
 	set desc = "Slither out of your host."
 
-	var/needed_location = BORER_STATUS_IN_HOST
-	if(!can_use_abilities(needed_location))
+	if(!can_use_abilities(BORER_STATUS_IN_HOST))
 		return
 
 	to_chat(src, "You begin disconnecting from [host]'s synapses and prodding at their internal ear canal.")
@@ -51,7 +50,7 @@ BORER_STATUS_HUSK = list(\
 		to_chat(host, "An odd, uncomfortable pressure begins to build inside your skull, behind your ear...")
 
 	spawn(100)
-		if(!can_use_abilities(needed_location))
+		if(!can_use_abilities(BORER_STATUS_IN_HOST))
 			return
 
 		to_chat(src, "You wiggle out of [host]'s ear and plop to the ground.")
@@ -69,8 +68,7 @@ BORER_STATUS_HUSK = list(\
 	set name = "Infest"
 	set desc = "Infest a suitable humanoid host."
 
-	var/needed_location = BORER_STATUS_OUT_HOST
-	if(!can_use_abilities(needed_location))
+	if(!can_use_abilities(BORER_STATUS_OUT_HOST))
 		return
 
 	var/list/choices = list()
@@ -218,41 +216,34 @@ BORER_STATUS_HUSK = list(\
 
 	host.jumpstart()
 
-/mob/living/simple_animal/borer/verb/no_pain()
+/mob/living/simple_animal/borer/verb/no_host_pain()
 	set category = "Abilities"
 	set name = "No Host Pain"
 	set desc = "Shut down pain receptors of your host for some time."
 
-	var/needed_location = BORER_STATUS_IN_HOST
-	if(!can_use_abilities(needed_location))
-		return
-
-	if(host.no_pain)
-		to_chat(src, SPAN("warning", "Your host's pain receptors are already numb		!"))
+	if(!can_use_abilities(BORER_STATUS_IN_HOST))
 		return
 
 	if(chemicals < 100)
 		to_chat(src, SPAN("warning", "You do not have enough chemicals stored!"))
 		return
 
-	to_chat(src, SPAN("danger", "You shut down \the [host]'s pain receptors for a while."))
-	to_chat(host, SPAN("danger", "Your whole body feels strangely numb."))
+	if(!host.host_pain_disable())
+		to_chat(src, SPAN("warning", "Your host's pain receptors are already numb!"))
+		return
 
-	host.no_pain = TRUE
+	to_chat(src, SPAN("danger", "You shut down \the [host]'s pain receptors for a while."))
+
 	chemicals -= 100
 
-	addtimer(CALLBACK(src, .proc/pain_disable), 30 SECONDS)
-
-/mob/living/simple_animal/borer/proc/pain_disable()
-	host.no_pain = FALSE
+	addtimer(CALLBACK(host, /mob/living/carbon/human/proc/host_pain_enable), 30 SECONDS)
 
 /mob/living/simple_animal/borer/verb/secrete_chemicals()
 	set category = "Abilities"
 	set name = "Secrete Chemicals"
 	set desc = "Push some chemicals into your host's bloodstream."
 
-	var/needed_location = BORER_STATUS_IN_HOST
-	if(!can_use_abilities(needed_location))
+	if(!can_use_abilities(BORER_STATUS_IN_HOST))
 		return
 
 	if(chemicals < 50)
@@ -261,7 +252,7 @@ BORER_STATUS_HUSK = list(\
 
 	var/chem = input("Select a chemical to secrete.", "Chemicals") as null|anything in GLOB.borer_reagent_types_by_name
 
-	if(!chem || chemicals < 50 || !can_use_abilities(needed_location) || controlling) //Sanity check.
+	if(!chem || chemicals < 50 || !can_use_abilities(BORER_STATUS_IN_HOST) || controlling) //Sanity check.
 		return
 
 	to_chat(src, SPAN("danger", "You squirt a measure of [chem] from your reservoirs into \the [host]'s bloodstream."))
@@ -273,8 +264,7 @@ BORER_STATUS_HUSK = list(\
 	set name = "Paralyze Victim"
 	set desc = "Freeze the limbs of a potential host with supernatural fear."
 
-	var/needed_location = BORER_STATUS_OUT_HOST
-	if(!can_use_abilities(needed_location))
+	if(!can_use_abilities(BORER_STATUS_OUT_HOST))
 		return
 
 	if(world.time - used_dominate < 150)
@@ -311,15 +301,14 @@ BORER_STATUS_HUSK = list(\
 	set name = "Assume Control"
 	set desc = "Fully connect to the brain of your host."
 
-	var/needed_location = BORER_STATUS_NOT_CONTROLLING
-	if(!can_use_abilities(needed_location))
+	if(!can_use_abilities(BORER_STATUS_NOT_CONTROLLING))
 		return
 
 	to_chat(src, "You begin delicately adjusting your connection to the host brain...")
 
 	spawn(100+(host.getBrainLoss()*5))
 
-		if(!can_use_abilities(needed_location))
+		if(!can_use_abilities(BORER_STATUS_NOT_CONTROLLING))
 			return
 
 		to_chat(src, SPAN("danger", "You plunge your probosci deep into the cortex of the host brain, interfacing directly with their nervous system."))
