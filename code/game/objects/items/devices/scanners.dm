@@ -642,7 +642,7 @@ REAGENT SCANNER
 	throw_range = 3
 	matter = list(MATERIAL_STEEL = 25, MATERIAL_GLASS = 25)
 
-/obj/item/device/price_scanner/afterattack(atom/movable/target, mob/user as mob, proximity)
+/obj/item/device/price_scanner/afterattack(atom/movable/target, mob/user, proximity)
 	if(!proximity)
 		return
 
