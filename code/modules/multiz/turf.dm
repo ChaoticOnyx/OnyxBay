@@ -51,9 +51,10 @@
 		unregister_signal(below, SIGNAL_EXITED)
 		unregister_signal(below, SIGNAL_ENTERED)
 	below = GetBelow(src)
-	register_signal(below, SIGNAL_TURF_CHANGED, /turf/simulated/open/proc/turf_change)
-	register_signal(below, SIGNAL_EXITED, /turf/simulated/open/proc/handle_move)
-	register_signal(below, SIGNAL_ENTERED, /turf/simulated/open/proc/handle_move)
+	if(below)
+		register_signal(below, SIGNAL_TURF_CHANGED, /turf/simulated/open/proc/turf_change)
+		register_signal(below, SIGNAL_EXITED, /turf/simulated/open/proc/handle_move)
+		register_signal(below, SIGNAL_ENTERED, /turf/simulated/open/proc/handle_move)
 	levelupdate()
 	for(var/atom/movable/A in src)
 		A.fall()
@@ -163,9 +164,10 @@
 
 /turf/simulated/open/proc/clean_up()
 	//Unregister
-	unregister_signal(below, SIGNAL_TURF_CHANGED)
-	unregister_signal(below, SIGNAL_EXITED, /turf/simulated/open/proc/handle_move)
-	unregister_signal(below, SIGNAL_ENTERED)
+	if(below)
+		unregister_signal(below, SIGNAL_TURF_CHANGED)
+		unregister_signal(below, SIGNAL_EXITED, /turf/simulated/open/proc/handle_move)
+		unregister_signal(below, SIGNAL_ENTERED)
 	//Take care of shadow
 	for(var/mob/zshadow/M in src)
 		qdel(M)
@@ -173,7 +175,7 @@
 
 //When turf changes, a bunch of things can take place
 /turf/simulated/open/proc/turf_change(turf/affected)
-	if(!isopenspace(affected))//If affected is openspace it will add itself
+	if(!(isopenspace(affected) || isTurfTransparent(affected)))//If affected is openspace it will add itself
 		SSopen_space.add_turf(src, 1)
 
 
