@@ -25,7 +25,7 @@
 	if(!..())
 		return FALSE
 	timing = !timing
-	set_next_think(world.time + 1 SECOND)
+	set_next_think(world.time)
 	update_icon()
 	return TRUE
 

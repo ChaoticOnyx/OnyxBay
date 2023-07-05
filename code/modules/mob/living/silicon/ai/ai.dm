@@ -69,7 +69,6 @@ var/list/ai_verbs_default = list(
 	var/datum/trackable/track = null
 	var/last_announcement = ""
 	var/control_disabled = 0
-	var/datum/announcement/priority/announcement
 	var/obj/machinery/ai_powersupply/psupply = null // Backwards reference to AI's powersupply object.
 	var/hologram_follow = 1 //This is used for the AI eye, to determine if a holopad's hologram should follow it or not
 	var/power_override_active = 0 				// If set to 1 the AI gains oxyloss (power loss damage) much faster, but is able to work as if powered normally.
@@ -105,6 +104,7 @@ var/list/ai_verbs_default = list(
 
 	var/default_ai_icon = /datum/ai_icon/blue
 	var/static/list/custom_ai_icons_by_ckey_and_name
+	var/announce_sender
 
 	give_ghost_proc_at_initialize = FALSE
 
@@ -115,12 +115,6 @@ var/list/ai_verbs_default = list(
 	src.verbs -= ai_verbs_default
 
 /mob/living/silicon/ai/New(loc, datum/ai_laws/L, obj/item/device/mmi/B, safety = 0)
-	announcement = new()
-	announcement.title = "A.I. Announcement"
-	announcement.announcement_type = "A.I. Announcement"
-	announcement.newscast = 1
-	announcement.log = TRUE
-
 	var/list/possibleNames = GLOB.ai_names
 
 	var/pickedName = null
@@ -223,7 +217,6 @@ var/list/ai_verbs_default = list(
 	ai_list -= src
 	ai_radio = null
 
-	QDEL_NULL(announcement)
 	QDEL_NULL(eyeobj)
 	QDEL_NULL(psupply)
 	QDEL_NULL(aiPDA)
@@ -249,7 +242,7 @@ var/list/ai_verbs_default = list(
 
 /mob/living/silicon/ai/fully_replace_character_name(pickedName as text)
 	..()
-	announcement.announcer = pickedName
+	announce_sender = pickedName
 	if(eyeobj)
 		eyeobj.SetName("[pickedName] (AI Eye)")
 
@@ -306,7 +299,7 @@ var/list/ai_verbs_default = list(
 	if(check_unable(AI_CHECK_WIRELESS | AI_CHECK_RADIO))
 		return
 
-	announcement.Announce(input)
+	SSannounce.play_station_announce(/datum/announce/ai, input, sender_override = announce_sender)
 	message_cooldown = 1
 	spawn(600)//One minute cooldown
 		message_cooldown = 0

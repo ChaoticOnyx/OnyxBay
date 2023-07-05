@@ -9,7 +9,7 @@
 	icon_state = "apron"
 	item_state = "apron"
 	blood_overlay_type = "armorblood"
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 	allowed = list (/obj/item/reagent_containers/spray/plantbgone,/obj/item/device/analyzer/plant_analyzer,/obj/item/seeds,/obj/item/reagent_containers/vessel/bottle/chemical,/obj/item/material/minihoe)
 
 //Captain
@@ -72,7 +72,7 @@
 	icon_state = "apronchef"
 	item_state = "apronchef"
 	blood_overlay_type = "armorblood"
-	body_parts_covered = 0
+	body_parts_covered = NO_BODYPARTS
 
 //Security
 /obj/item/clothing/suit/security/navyofficer

@@ -110,7 +110,7 @@
 
 	return pretext + nametext + subtext
 
-/mob/proc/custom_emote(m_type = VISIBLE_MESSAGE, message = null)
+/mob/proc/custom_emote(m_type = VISIBLE_MESSAGE, message = null, tag = "EMOTE")
 
 	if((usr && stat) || (!use_me && usr == src))
 		to_chat(src, "You are unable to emote.")
@@ -129,7 +129,7 @@
 
 	if (message)
 		log_emote("[key_name(src)]: [message]")
-		log_message(input, INDIVIDUAL_SAY_LOG, "\[EMOTE\]")
+		log_message(input, INDIVIDUAL_SAY_LOG, "\[[tag]\]")
 
 	//do not show NPC animal emotes to ghosts, it turns into hellscape
 	var/check_ghosts = client ? /datum/client_preference/ghost_sight : null

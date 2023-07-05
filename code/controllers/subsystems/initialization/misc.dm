@@ -21,5 +21,13 @@ SUBSYSTEM_DEF(misc)
 
 	setupgenetics()
 
+	//Create colors for different poisonous lizards
+	var/list/toxin_color = list()
+	toxin_color["notoxin"] = hex2rgb(rand_hex_color())
+	var/list/toxin_list = POSSIBLE_LIZARD_TOXINS
+	for(var/T in toxin_list)
+		toxin_color[T] = hex2rgb(rand_hex_color())
+	GLOB.lizard_colors = toxin_color
+
 	transfer_controller = new
 	. = ..()

@@ -1,7 +1,3 @@
-#define MODIFIER_STACK_FORBID	1	// Disallows stacking entirely.
-#define MODIFIER_STACK_EXTEND	2	// Disallows a second instance, but will extend the first instance if possible.
-#define MODIFIER_STACK_ALLOWED	3	// Multiple instances are allowed.
-
 #define MODIFIER_GENETIC	1	// Modifiers with this flag will be copied to mobs who get cloned.
 
 
@@ -33,6 +29,7 @@
 	var/max_health_flat                 // Adjusts max health by a flat (e.g. +20) amount.  Note this is added to base health.
 	var/max_health_percent              // Adjusts max health by a percentage (e.g. -30%).
 	var/disable_duration_percent        // Adjusts duration of 'disables' (stun, weaken, paralyze, confusion, sleep, halloss, etc)  Setting to 0 will grant immunity.
+	var/siemens_coefficient=1
 	var/incoming_damage_percent         // Adjusts all incoming damage.
 	var/incoming_brute_damage_percent   // Only affects bruteloss.
 	var/incoming_fire_damage_percent    // Only affects fireloss.
@@ -94,6 +91,9 @@
 
 // Called every Life() tick.  Override for special behaviour.
 /datum/modifier/proc/tick()
+	return
+
+/datum/modifier/proc/_examine_text()
 	return
 
 /mob/living
@@ -247,4 +247,3 @@
 	if(abs)
 		return "[abs( ((multi - 1) * 100) )]%"
 	return "[((multi - 1) * 100)]%"
-

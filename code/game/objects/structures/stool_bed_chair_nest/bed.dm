@@ -164,8 +164,8 @@
 
 /obj/structure/bed/forceMove()
 	. = ..()
-	if(buckled_mob)
-		if(isturf(loc))
+	if(isturf(src.loc))
+		if(buckled_mob)
 			buckled_mob.forceMove(loc, unbuckle_mob = FALSE)
 		else
 			unbuckle_mob()
@@ -218,6 +218,9 @@
 	pull_slowdown = PULL_SLOWDOWN_TINY
 	var/bedtype = /obj/structure/bed/roller
 	var/rollertype = /obj/item/roller
+	var/obj/structure/closet/body_bag/buckled_bodybag
+	var/accepts_bodybag = TRUE
+	var/buckling_y = 3
 
 /obj/structure/bed/roller/adv
 	name = "advanced roller bed"
@@ -228,7 +231,12 @@
 	pull_slowdown = PULL_SLOWDOWN_NONE
 
 /obj/structure/bed/roller/update_icon()
-	return // Doesn't care about material or anything else.
+	if(buckled_mob || buckled_bodybag)
+		set_density(1)
+		icon_state = "[initial(icon_state)]_up"
+	else
+		set_density(0)
+		icon_state = "[initial(icon_state)]"
 
 /obj/structure/bed/roller/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W) || istype(W, /obj/item/stack) || isWirecutter(W))
@@ -236,6 +244,8 @@
 	else if(istype(W, /obj/item/roller_holder))
 		if(buckled_mob)
 			user_unbuckle_mob(user)
+		if(buckled_bodybag)
+			manual_unbuckle(user)
 		else if(rollertype)
 			visible_message("[user] collapses \the [src.name].")
 			new rollertype(get_turf(src))
@@ -303,7 +313,7 @@
 	QDEL_NULL(held)
 
 /obj/structure/bed/roller/post_buckle_mob(mob/living/M)
-	if(M == buckled_mob)
+	if(M == buckled_mob || buckled_bodybag)
 		set_density(1)
 		icon_state = "[initial(icon_state)]_up"
 	else
@@ -327,6 +337,81 @@
 		qdel(src)
 		return
 
+
+/obj/structure/bed/roller/MouseDrop_T(atom/movable/dropping, mob/user)
+	if(accepts_bodybag && !buckled_bodybag && !buckled_mob && istype(dropping,/obj/structure/closet/body_bag) && ishuman(user))
+		var/obj/structure/closet/body_bag/B = dropping
+		if(!B.roller_buckled)
+			do_buckle_bodybag(B, user)
+			return TRUE
+	else
+		. = ..()
+
+/obj/structure/bed/roller/Destroy()
+	if(buckled_bodybag)
+		unbuckle()
+	. = ..()
+
+/obj/structure/bed/roller/forceMove()
+	. = ..()
+	if(isturf(src.loc))
+		if(buckled_bodybag)
+			buckled_bodybag.set_glide_size(glide_size)
+			buckled_bodybag.forceMove(loc)
+	else
+		unbuckle()
+
+
+/obj/structure/bed/roller/Move()
+	. = ..()
+	if(buckled_bodybag)
+		buckled_bodybag.set_glide_size(glide_size)
+		buckled_bodybag.forceMove(loc)
+
+
+/obj/structure/bed/roller/proc/do_buckle_bodybag(obj/structure/closet/body_bag/B, mob/user)
+	if(isanimal(user))
+		return 0
+	if(!user.Adjacent(B) || user.incapacitated(INCAPACITATION_ALL) || istype(user, /mob/living/silicon/pai))
+		return 0
+	B.visible_message(SPAN_NOTICE("[user] buckles [B] to [src]!"))
+	B.roller_buckled = src
+	B.forceMove(loc)
+	B.set_dir(dir)
+	buckled_bodybag = B
+	density = 1
+	update_icon()
+	if(buckling_y)
+		buckled_bodybag.pixel_y = buckled_bodybag.buckle_offset + buckling_y
+	add_fingerprint(user)
+
+/obj/structure/bed/roller/proc/unbuckle()
+	if(buckled_bodybag)
+		buckled_bodybag.glide_size = initial(buckled_bodybag.glide_size)
+		buckled_bodybag.pixel_y = initial(buckled_bodybag.pixel_y)
+		buckled_bodybag.roller_buckled = null
+		buckled_bodybag = null
+		density = 0
+		update_icon()
+
+/obj/structure/bed/roller/proc/manual_unbuckle(mob/user)
+	if(isanimal(user))
+		return 0
+	if(!user.Adjacent(buckled_bodybag) || user.incapacitated(INCAPACITATION_ALL) || istype(user, /mob/living/silicon/pai))
+		return 0
+	if(buckled_bodybag)
+		unbuckle()
+		add_fingerprint(user)
+		return 1
+
+/obj/structure/bed/roller/buckle_mob(mob/living/M)
+	if(buckled_bodybag)
+		return 0
+	. = ..()
+
+/obj/structure/bed/roller/attack_hand(mob/user)
+	manual_unbuckle(user)
+	. = ..()
 ///
 /// BETTER rolling bed huh
 ///

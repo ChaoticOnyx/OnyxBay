@@ -49,11 +49,6 @@
 	company_short = "NT"
 	system_name   = "Arcturus"
 
-	emergency_shuttle_docked_message = "The Emergency Shuttle has docked with the station. You have approximately %ETD% to board the Emergency Shuttle."
-	emergency_shuttle_leaving_dock = "The Emergency Shuttle has left the station. Estimate %ETA% until the shuttle docks at %dock_name%."
-	emergency_shuttle_called_message = "An emergency evacuation shuttle has been called. It will arrive in approximately %ETA%"
-	emergency_shuttle_recall_message = "The emergency shuttle has been recalled."
-
 	evac_controller_type = /datum/evacuation_controller/shuttle
 
 	station_networks = list(

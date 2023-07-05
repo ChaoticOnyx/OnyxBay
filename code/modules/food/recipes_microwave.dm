@@ -440,6 +440,11 @@ I said no!
 	items = list(/obj/item/reagent_containers/food/meat/syntiflesh)
 	result = /obj/item/reagent_containers/food/meatsteak
 
+/datum/recipe/porkchop
+	reagents = list(/datum/reagent/sodiumchloride = 1, /datum/reagent/blackpepper = 1)
+	items = list(/obj/item/reagent_containers/food/meat/pork)
+	result = /obj/item/reagent_containers/food/porkchop
+
 /datum/recipe/pizzamargherita
 	fruit = list("tomato" = 1)
 	items = list(
@@ -1079,6 +1084,11 @@ I said no!
 	)
 	result = /obj/item/reagent_containers/food/sliceable/chocolatecake
 
+/datum/recipe/cake/metroid
+	items = list(/obj/item/metroid_extract)
+	reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/nutriment/flour = 15, /datum/reagent/nutriment/protein/egg = 9, /datum/reagent/sugar = 15)
+	result = /obj/item/reagent_containers/food/sliceable/metroidcake
+
 /datum/recipe/cake/birthday
 	items = list(/obj/item/clothing/head/cakehat)
 	reagents = list(
@@ -1279,3 +1289,9 @@ I said no!
 	/datum/reagent/drink/milk = 5
 	)
 	result = /obj/item/reagent_containers/food/sliceable/choccherrycake
+
+/datum/recipe/capturedevice_hacked
+	items = list(
+		/obj/item/capturedevice
+	)
+	result = /obj/item/capturedevice/hacked

@@ -1,5 +1,6 @@
 /turf/space
 	plane = SPACE_PLANE
+	vis_flags = VIS_INHERIT_ID
 	icon = 'icons/turf/space.dmi'
 
 	name = "\proper space"

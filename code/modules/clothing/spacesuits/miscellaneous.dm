@@ -24,9 +24,9 @@
 	item_state = "pirate"
 	armor = list(melee = 60, bullet = 50, laser = 30,energy = 15, bomb = 30, bio = 30)
 	flags_inv = BLOCKHAIR
-	body_parts_covered = 0
+	body_parts_covered = HEAD
+	visor_body_parts_covered = NO_BODYPARTS
 	siemens_coefficient = 0.9
-	has_visor = 0
 
 /obj/item/clothing/suit/space/pirate
 	name = "pirate coat"

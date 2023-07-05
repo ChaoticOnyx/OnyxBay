@@ -310,10 +310,6 @@
 		to_chat(src, SPAN("warning", "I have no prey to gut."))
 		return
 
-	if(G.type_name < NAB_AGGRESSIVE)
-		to_chat(src, SPAN("warning", "I must have a firmer grab on my prey!"))
-		return
-
 	last_special = world.time + 50
 
 	visible_message(SPAN("danger", "<b>\The [src]</b> rips viciously at \the [G.affecting]'s body with its claws!"))

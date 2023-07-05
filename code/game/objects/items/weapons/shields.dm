@@ -130,6 +130,9 @@
 	return
 
 /obj/item/shield/energy/attack_self(mob/living/user)
+	if(is_pacifist(user))
+		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		return
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
 		to_chat(user, "<span class='warning'>You beat yourself in the head with [src].</span>")
 		user.take_organ_damage(5)
@@ -305,7 +308,9 @@
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
 		to_chat(user, SPAN("warning", "You beat yourself in the head with [src]."))
 		user.take_organ_damage(5)
+	if(is_pacifist(user))
+		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		return
 	toggle(user)
 	add_fingerprint(user)
 	return
-

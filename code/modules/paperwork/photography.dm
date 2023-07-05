@@ -151,6 +151,7 @@ var/global/photo_count = 0
 	var/icon_on = "camera"
 	var/icon_off = "camera_off"
 	var/size = 3
+	var/see_ghosts = FALSE
 
 /obj/item/device/camera/update_icon()
 	if(is_on)
@@ -195,6 +196,13 @@ var/global/photo_count = 0
 
 /obj/item/device/camera/proc/get_mobs(turf/the_turf as turf)
 	var/mob_detail
+	if(see_ghosts)
+		for(var/mob/observer/ghost/A in the_turf)
+			if(!mob_detail)
+				mob_detail = "You can see [A] on the photo. "
+			else
+				mob_detail += "You can also see [A] on the photo."
+
 	for(var/mob/living/carbon/A in the_turf)
 		if(A.invisibility) continue
 		var/holding = null
@@ -257,7 +265,7 @@ var/global/photo_count = 0
 	var/x_c = target.x - (size-1)/2
 	var/y_c = target.y - (size-1)/2
 	var/z_c	= target.z
-	var/icon/photoimage = generate_image(x_c, y_c, z_c, size, CAPTURE_MODE_REGULAR, user, 0)
+	var/icon/photoimage = generate_image(x_c, y_c, z_c, size, CAPTURE_MODE_REGULAR, user, 0, see_ghosts=src.see_ghosts)
 
 	var/obj/item/photo/p = new()
 	p.img = photoimage
@@ -285,3 +293,35 @@ var/global/photo_count = 0
 		p.id = id
 
 	return p
+
+/obj/item/device/camera/spooky
+	name = "camera obscura"
+	desc = "A polaroid camera, some say it can see ghosts!"
+	see_ghosts = TRUE
+
+/obj/item/device/camera/random
+	name = "camera "
+	desc = "A polaroid camera. It seems to have an extra magnifier on the end."
+
+/obj/item/device/camera/random/createpicture(atom/target, mob/user, mobs, flag)
+	var/atom/new_target = pick(GLOB.player_list)
+
+	var/x_c = new_target.x - (size-1)/2
+	var/y_c = new_target.y - (size-1)/2
+	var/z_c	= new_target.z
+	var/icon/photoimage = generate_image(x_c, y_c, z_c, size, CAPTURE_MODE_REGULAR, user, 0, see_ghosts=src.see_ghosts)
+
+	var/obj/item/photo/p = new()
+	p.img = photoimage
+	p.desc = mobs
+	p.photo_size = size
+	p.update_icon()
+
+	return p
+
+/obj/item/device/camera/fiery
+	name = "camera "
+	desc = "A polaroid camera. It seems to be kinda hot."
+
+/obj/item/device/camera/fiery/get_temperature_as_from_ignitor()
+	return 300

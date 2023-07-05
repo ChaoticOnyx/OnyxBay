@@ -17,32 +17,40 @@ var/list/limb_icon_cache = list()
 	s_col = null
 	s_base = ""
 	h_col = list(human.r_hair, human.g_hair, human.b_hair)
+	h_s_col = list(human.r_s_hair, human.g_s_hair, human.b_s_hair)
 	if(BP_IS_ROBOTIC(src))
-		var/datum/robolimb/franchise = all_robolimbs[model]
+		var/datum/robolimb/franchise = GLOB.all_robolimbs[model]
 		if(!(franchise && franchise.skintone))
 			return
 	if(species && human.species && species.name != human.species.name)
 		return
 	if(!isnull(human.s_tone) && (human.species.appearance_flags & HAS_A_SKIN_TONE))
 		s_tone = human.s_tone
-	if(!isnull(human.s_base) && (human.species.appearance_flags & HAS_BASE_SKIN_COLOURS))
-		s_base = human.s_base
+		if(human.species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
+			h_s_col = list(s_tone, s_tone, s_tone)
 	if(human.species.appearance_flags & HAS_SKIN_COLOR)
 		s_col = list(human.r_skin, human.g_skin, human.b_skin)
+		if(human.species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
+			h_s_col = s_col
 
 /obj/item/organ/external/proc/sync_colour_to_dna()
 	s_tone = null
 	s_col = null
 	s_base = dna.s_base
 	h_col = list(dna.GetUIValue(DNA_UI_HAIR_R),dna.GetUIValue(DNA_UI_HAIR_G),dna.GetUIValue(DNA_UI_HAIR_B))
+	h_s_col = list(dna.GetUIValue(DNA_UI_S_HAIR_R),dna.GetUIValue(DNA_UI_S_HAIR_G),dna.GetUIValue(DNA_UI_S_HAIR_B))
 	if(BP_IS_ROBOTIC(src))
-		var/datum/robolimb/franchise = all_robolimbs[model]
+		var/datum/robolimb/franchise = GLOB.all_robolimbs[model]
 		if(!(franchise && franchise.skintone))
 			return
 	if(!isnull(dna.GetUIValue(DNA_UI_SKIN_TONE)) && (species.appearance_flags & HAS_A_SKIN_TONE))
 		s_tone = dna.GetUIValue(DNA_UI_SKIN_TONE)
+		if(species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
+			h_s_col = list(s_tone, s_tone, s_tone)
 	if(species.appearance_flags & HAS_SKIN_COLOR)
 		s_col = list(dna.GetUIValue(DNA_UI_SKIN_R), dna.GetUIValue(DNA_UI_SKIN_G), dna.GetUIValue(DNA_UI_SKIN_B))
+		if(species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
+			h_s_col = s_col
 
 /obj/item/organ/external/head/sync_colour_to_human(mob/living/carbon/human/human)
 	..()
@@ -96,18 +104,12 @@ var/list/limb_icon_cache = list()
 
 		icon_state = "[icon_name][gender][body_build][stump_icon]"
 
-		if (species)
-			if(species.base_skin_colours && !isnull(species.base_skin_colours[s_base]))
-				icon_state += species.base_skin_colours[s_base]
-
 		if(force_icon)
 			icon = force_icon
 		else if (BP_IS_ROBOTIC(src))
 			icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_main.dmi'
 		else if (!dna)
 			icon = 'icons/mob/human_races/r_human.dmi'
-		else if (status & ORGAN_MUTATED)
-			icon = species.deform
 		else if (owner && (MUTATION_SKELETON in owner.mutations))
 			icon = 'icons/mob/human_races/r_skeleton.dmi'
 		else

@@ -144,6 +144,10 @@
 	message = format_message(message, get_spoken_verb(message))
 
 	for(var/mob/player in GLOB.player_list)
-		if(isabductor(player))
-			if(player.mind.abductor.team.team_number == speaker.mind.abductor.team.team_number)
+		if(isabductor(player) )
+			if((player.mind.abductor.team.team_number == speaker.mind.abductor.team.team_number))
 				player.hear_broadcast(src, speaker, speaker_mask, message)
+			continue
+
+		if(is_species(player, /datum/species/golem/alloy) && is_species(speaker, /datum/species/golem/alloy))
+			player.hear_broadcast(src, speaker, speaker_mask, message)

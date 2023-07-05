@@ -1,0 +1,18 @@
+"a" = (/obj/structure/closet/coffin,/obj/effect/floor_decal/industrial/hatch/yellow,/turf/simulated/floor/tiled/dirty,/area/template_noop)
+"m" = (/obj/structure/closet/coffin,/obj/effect/floor_decal/industrial/outline/yellow,/turf/simulated/floor/tiled/dirty,/area/template_noop)
+"s" = (/obj/effect/decal/cleanable/blood,/obj/item/device/radio/intercom{pixel_x = 28; pixel_y = -10},/turf/simulated/floor/tiled/dirty,/area/template_noop)
+"t" = (/turf/simulated/wall,/area/template_noop)
+"u" = (/obj/structure/closet/coffin,/obj/effect/decal/cleanable/cobweb2,/obj/effect/floor_decal/industrial/outline/yellow,/turf/simulated/floor/tiled/dirty,/area/template_noop)
+"w" = (/turf/simulated/floor/trim/wood/broken1,/area/template_noop)
+"L" = (/obj/effect/decal/cleanable/blood,/turf/simulated/floor/trim/wood,/area/template_noop)
+"N" = (/obj/structure/table/standard,/obj/item/storage/box/bodybags,/obj/item/shovel,/turf/simulated/floor/tiled/dirty,/area/template_noop)
+"T" = (/obj/effect/decal/cleanable/blood,/turf/simulated/floor/trim/wood/broken5,/area/template_noop)
+"V" = (/turf/simulated/floor/trim/wood,/area/template_noop)
+
+(1,1,1) = {"
+Nst
+mVu
+mwm
+mLm
+aTa
+"}

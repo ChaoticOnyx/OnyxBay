@@ -47,7 +47,7 @@
 				var/message = pick(messagevoice)
 				say(message)
 				playsound(src, messagevoice[message], 75, FALSE)
-				custom_emote(1, "points at [H.name].")
+				visible_emote("points at [H.name].")
 			break
 
 /mob/living/bot/medbot/UnarmedAttack(mob/living/carbon/human/H, proximity)
@@ -282,7 +282,7 @@
 
 /* Construction */
 
-/obj/item/storage/firstaid/attackby(obj/item/robot_parts/S, mob/user as mob)
+/obj/item/storage/firstaid/attackby(obj/item/robot_parts/S, mob/user)
 	if ((!istype(S, /obj/item/robot_parts/l_arm)) && (!istype(S, /obj/item/robot_parts/r_arm)))
 		..()
 		return

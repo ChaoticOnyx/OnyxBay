@@ -20,7 +20,7 @@
 		if(isnull(model))
 			model = "Unbranded"
 		model_info = model
-		var/datum/robolimb/R = all_robolimbs[model]
+		var/datum/robolimb/R = GLOB.all_robolimbs[model]
 		if(R)
 			SetName("[R.company] [initial(name)]")
 			desc = "[R.desc]"

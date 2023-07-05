@@ -61,7 +61,7 @@
 			vermstring = "mice"
 		if(VERM_LIZARDS)
 			spawn_types = list(/mob/living/simple_animal/lizard)
-			max_number = 6
+			max_number = 4
 			vermstring = "lizards"
 		if(VERM_SPIDERS)
 			spawn_types = list(/obj/structure/spider/spiderling)
@@ -74,6 +74,7 @@
 
 	spawn(0)
 		var/num = rand(2, max_number)
+		var/datum/reagent/lizard_poison = pick(POSSIBLE_LIZARD_TOXINS)
 		log_and_message_admins("Vermin infestation spawned ([vermstring] x[num]) in \the [location]", location = pick_area_turf(location))
 		while(vermin_turfs.len && num > 0)
 			var/turf/simulated/floor/T = pick(vermin_turfs)
@@ -84,16 +85,15 @@
 			var/obj/structure/spider/spiderling/S = new spawn_type(T)
 			if(istype(S))
 				S.amount_grown = -1
+			if(istype(S, /mob/living/simple_animal/lizard))
+				var/mob/living/simple_animal/lizard/L = S
+				if(prob(50))
+					L.setPoison(lizard_poison)
 
 	set_next_think_ctx("announce", world.time + (30 SECONDS))
 
 /datum/event/infestation/proc/announce()
-	command_announcement.Announce(
-		"Bioscans indicate that [vermstring] have been breeding in \the [location]. Clear them out, before this starts to affect productivity.",
-		"Major Bill's Shipping Critter Sensor",
-		zlevels = affecting_z,
-		new_sound = 'sound/AI/infestationstart.ogg'
-	)
+	SSannounce.play_station_announce(/datum/announce/infestation, "Bioscans indicate that [vermstring] have been breeding in \the [location]. Clear them out, before this starts to affect productivity.")
 
 /datum/event/infestation/proc/set_location_get_infestation_turfs()
 	location = pick_area(list(/proc/is_not_space_area, /proc/is_station_area))

@@ -190,6 +190,7 @@
 // MISC
 #define SFX_VENT                    "vent"
 #define SFX_GLASS_HIT               "glass_hit"
+#define SFX_CHAINSAW                "chainsaw"
 #define SFX_GLASS_KNOCK             "glass_knock"
 #define SFX_GIB                     "gib"
 #define SFX_CLOWN                   "clown"

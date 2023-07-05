@@ -65,7 +65,7 @@
 	SSevents.evars["space_dust_running"] = TRUE
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 
-	command_announcement.Announce("The [station_name()] is now passing through a belt of space dust.", "[station_name()] Sensor Array", zlevels = affecting_z)
+	SSannounce.play_station_announce(/datum/announce/space_dust_start)
 
 	set_next_think_ctx("end", world.time + (rand(1, 3) MINUTES))
 	set_next_think(world.time)
@@ -73,7 +73,7 @@
 /datum/event/space_dust/proc/end()
 	set_next_think(0)
 	SSevents.evars["space_dust_running"] = FALSE
-	command_announcement.Announce("The [station_name()] has now passed through the belt of space dust.", "[station_name()] Sensor Array", zlevels = affecting_z)
+	SSannounce.play_station_announce(/datum/announce/space_dust_end)
 
 /datum/event/space_dust/think()
 	if(!prob(10))

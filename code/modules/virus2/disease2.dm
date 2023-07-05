@@ -12,7 +12,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	var/mob/living/carbon/human/infected = null // Someone who will suffer from disease
 	var/antigen = list() // 16 bits describing the antigens, when one bit is set, a cure with that bit can dock here
 	var/max_stage = 4
-	var/list/affected_species = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_TAJARA)
+	var/list/affected_species = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_SWINE)
 
 /datum/disease2/disease/New(random_severity = 0)
 	uniqueID = rand(0, 10000)

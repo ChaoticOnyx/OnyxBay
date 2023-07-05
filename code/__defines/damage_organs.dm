@@ -12,6 +12,9 @@
 #define BRUISE    "bruise"
 #define PIERCE    "pierce"
 #define LASER     "laser"
+#define ENERGY    "energy"
+#define BULLET    "bullet"
+#define BOMB	  "bomb"
 
 #define STUN      "stun"
 #define WEAKEN    "weaken"
