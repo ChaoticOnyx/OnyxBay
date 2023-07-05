@@ -2005,9 +2005,6 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/numbers/nine
 	icon_state = "number_9"
 
-/obj/effect/floor_decal/bot
-	icon_state = "bot"
-
 /obj/effect/floor_decal/bot/right
 	icon_state = "bot_right"
 
