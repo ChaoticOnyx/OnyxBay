@@ -1,7 +1,7 @@
 /datum/map/glowstation
-	name = "Exodus"
-	full_name = "NSS Exodus"
-	path = "exodus"
+	name = "Glowstation"
+	full_name = "NSS Glowstation"
+	path = "glowstation"
 
 	shuttle_types = list(
 		/datum/shuttle/autodock/ferry/escape_pod/escape_pod1,
@@ -34,8 +34,8 @@
 		new /datum/space_level/glowstation_5
 	)
 
-	station_name  = "NSS Exodus"
-	station_short = "Exodus"
+	station_name  = "NSS Glowstation"
+	station_short = "Glowstation"
 	dock_name     = "NAS Crescent"
 	boss_name     = "Central Command"
 	boss_short    = "Centcomm"
