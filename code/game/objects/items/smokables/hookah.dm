@@ -156,7 +156,7 @@
 		update_icon()
 	else if(istype(W, /obj/item/hookah_hose))
 		var/obj/item/hookah_hose/HH = W
-		if(!HH.my_hookah == src)
+		if(HH.my_hookah != src)
 			return
 		if(HH == H1)
 			reattach_hose()
