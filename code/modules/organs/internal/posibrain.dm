@@ -4,7 +4,7 @@
 	name = "\improper Positronic Brain"
 	desc = "A cube of shining metal, four inches to a side and covered in shallow grooves."
 
-	icon = 'icons/mob/human_races/organs/ai_core.dmi'
+	icon = 'icons/mob/human_races/organs/posibrain.dmi'
 	icon_state = "posibrain"
 
 	override_organic_icon = FALSE
@@ -130,14 +130,14 @@
 	overlays.Cut()
 
 	if(brainmob?.key)
-		icon_state = "core-occupied"
+		icon_state = "posibrain-occupied"
 	else if(searching)
-		icon_state = "core-search"
+		icon_state = "posibrain-search"
 	else
-		icon_state = "core-idle"
+		icon_state = "posibrain-idle"
 
 	if(shackled)
-		overlays += "core-shackles"
+		overlays += "posibrain-shackles"
 
 /obj/item/organ/internal/cerebrum/posibrain/proc/show_laws_brain()
 	set category = "Shackle"
