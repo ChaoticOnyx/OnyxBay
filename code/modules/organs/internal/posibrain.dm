@@ -48,9 +48,11 @@
 	if(!searching || brainmob?.key)
 		return
 	else show_splash_text_to_viewers("no suitable intelligence found!")
+
 	searching = FALSE
 	brainmob.controllable = TRUE
 	GLOB.available_mobs_for_possess -= brainmob
+
 	update_icon()
 
 /obj/item/organ/internal/cerebrum/posibrain/proc/start_search(mob/user)

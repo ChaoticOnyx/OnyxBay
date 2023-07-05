@@ -26,22 +26,11 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 /obj/item/organ/internal/cerebrum/mmi/proc/_create_brain(mob/living/carbon/human/brain_owner)
 	var/obj/item/organ/internal/cerebrum/brain/new_brain = new(src)
 
-	var/brain_gender = brain_owner.gender || pick(list(MALE, FEMALE))
-	var/brain_species = brain_owner?.get_species() || pick(GLOB.whitelisted_mmi_species)
-	var/brain_name = brain_owner?.real_name || random_name(brain_gender, brain_species)
-
-	new_brain.SetName("\the [brain_name]'s [initial(new_brain.name)]")
-	new_brain.species = all_species[brain_species]
+	new_brain.species = brain_owner?.get_species() || pick(GLOB.whitelisted_mmi_species)
 	new_brain.update_icon()
 
 	brainobj = new_brain
 	locked = TRUE
-
-/obj/item/organ/internal/cerebrum/mmi/_setup_brainmob(mob/living/brain_self, mob/living/carbon/old_self)
-	brain_self.add_language(LANGUAGE_ROBOT)
-	brain_self.add_language(LANGUAGE_EAL)
-	brain_self.add_language(LANGUAGE_GALCOM)
-	return ..()
 
 /obj/item/organ/internal/cerebrum/mmi/Destroy()
 	QDEL_NULL(brainobj)
