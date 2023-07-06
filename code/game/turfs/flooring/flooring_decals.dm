@@ -2028,3 +2028,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/bot_red/left
 	icon_state = "bot_left_red"
+
+/obj/effect/floor_decal/diagonal_centre
+	icon_state = "diagonal_centre"
+
+/obj/effect/floor_decal/diagonal_edge
+	icon_state = "diagonal_edge"
