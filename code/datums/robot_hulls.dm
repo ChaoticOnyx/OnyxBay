@@ -182,7 +182,7 @@
 
 /datum/robot_hull/drone
 	icon_state = "repairbot"
-	footstep_sound = SFX_FOOTSTEP_ROBOT_LEGS
+	footstep_sound = SFX_FOOTSTEP_ROBOT_SPIDER
 
 /datum/robot_hull/drone/construction
 	icon_state = "constructiondrone"
