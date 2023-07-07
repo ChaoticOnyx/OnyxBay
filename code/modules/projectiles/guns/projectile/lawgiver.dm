@@ -10,7 +10,7 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	name = "lawgiver"
 	desc = "The Lawgiver II. A twenty-five round sidearm with mission-variable voice-programmed ammunition. \
 	You can see the words STUN, LASER, RAPID, FLASH and AP written in small print on its barreling. \
-	There's a little notation on it: \"Designed by combat specialist Lin Srank for combat specialists.\""
+	There's a little notation on it: \"Designed by combat specialist R. R. for combat specialists.\""
 	icon_state = "lawgiver"
 	item_state = "lawgiver"
 	load_method = MAGAZINE
