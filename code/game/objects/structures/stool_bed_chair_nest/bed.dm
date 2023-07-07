@@ -371,27 +371,39 @@
 
 /obj/structure/bed/roller/proc/do_buckle_bodybag(obj/structure/closet/body_bag/B, mob/user)
 	if(isanimal(user))
-		return 0
+		return FALSE
 	if(!user.Adjacent(B) || user.incapacitated(INCAPACITATION_ALL) || istype(user, /mob/living/silicon/pai))
-		return 0
+		return FALSE
 	B.visible_message(SPAN_NOTICE("[user] buckles [B] to [src]!"))
 	B.roller_buckled = src
 	B.forceMove(loc)
 	B.set_dir(dir)
 	buckled_bodybag = B
-	density = 1
+	density = TRUE
 	update_icon()
 	if(buckling_y)
 		buckled_bodybag.pixel_y = buckled_bodybag.buckle_offset + buckling_y
 	add_fingerprint(user)
+	register_signal(B, SIGNAL_MOVED, .proc/on_move)
+
+/obj/structure/bed/roller/proc/on_move()
+	if(buckled_bodybag)
+		var/turf/body_bag_turf = get_turf(buckled_bodybag)
+		var/turf/roller_turf = get_turf(src)
+		if(body_bag_turf != roller_turf)
+			if(body_bag_turf.z != roller_turf.z)
+				src.forceMove(body_bag_turf)
+				return
+			step_glide(src, get_dir(roller_turf, body_bag_turf), glide_size)
 
 /obj/structure/bed/roller/proc/unbuckle()
 	if(buckled_bodybag)
+		unregister_signal(buckled_bodybag, SIGNAL_MOVED)
 		buckled_bodybag.glide_size = initial(buckled_bodybag.glide_size)
 		buckled_bodybag.pixel_y = initial(buckled_bodybag.pixel_y)
 		buckled_bodybag.roller_buckled = null
 		buckled_bodybag = null
-		density = 0
+		density = FALSE
 		update_icon()
 
 /obj/structure/bed/roller/proc/manual_unbuckle(mob/user)
