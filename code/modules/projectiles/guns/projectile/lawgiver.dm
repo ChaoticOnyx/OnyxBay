@@ -27,6 +27,9 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 
 	var/static/voice_activators_init_complete = FALSE
 
+	var/hack_in_progress = FALSE // if anyone remembers how to do it with do_after by internal tools, replace this shit by internal tools
+	var/hacks_remains = 3
+
 /obj/item/gun/projectile/lawgiver/proc/init_voice_activators()
 	if(voice_activators_init_complete)
 		return
@@ -38,10 +41,10 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	for(ind = 1, ind <= length(GLOB.lawgiver_modes), ind++)
 		GLOB.lawgiver_modes[ind]["voice_activator"] = splittext(voice_activators[ind], ";")
 
-/obj/item/gun/projectile/lawgiver/New()
+/obj/item/gun/projectile/lawgiver/Initialize()
 	init_voice_activators()
 	firemodes = GLOB.lawgiver_modes.Copy()
-	..()
+	. = ..()
 	verbs -= /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample
 	update_icon()
 	// for firemode voice-triggers
@@ -150,6 +153,28 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(5, 0, src.loc)
 		spark_system.start()
+
+/obj/item/gun/projectile/lawgiver/attackby(obj/item/A, mob/user)
+	. = ..()
+	if(isMultitool(A) && !hack_in_progress)
+		if(!dna_profile)
+			to_chat(user, SPAN("notice", "You think you're being silly trying to reset the DNA profile from \the [src] because there is no DNA profile here."))
+			return
+		hack_in_progress = TRUE
+		if(do_after(user, 10 SECOND, src) && prob(25))
+			hack_in_progress = FALSE
+			if(--hacks_remains)
+				to_chat(user, SPAN("notice", "\The [src] cracks, after a few tries, you will be able to reset the DNA lock."))
+			else
+				to_chat(user, SPAN("notice", "You reset the DNA profile from \the [src]."))
+				remove_dna()
+				hacks_remains = initial(hacks_remains)
+			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+			spark_system.set_up(5, 0, src.loc)
+			spark_system.start()
+		else
+			to_chat(user, SPAN("notice", "It looks like the lock is harder than you think. You must make one more attempt to reset it."))
+			hack_in_progress = FALSE
 
 /obj/item/gun/projectile/lawgiver/proc/bad_dna_action(mob/user)
 	if(access_security in user.GetAccess())
