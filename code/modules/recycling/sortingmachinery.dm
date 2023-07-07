@@ -238,7 +238,6 @@
 		switch(icon_state)
 			if("deliverycrate1")
 				I.pixel_y = -4
-				I = image(
 			if("deliverycrate2")
 				I.pixel_y = -2
 			if("deliverycrate3")
