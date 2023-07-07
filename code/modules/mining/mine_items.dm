@@ -125,7 +125,7 @@
 
 /obj/item/pickaxe/drill/borgdrill
 	name = "cyborg mining drill"
-	icon_state = "pickaxe"
+	icon_state = "borgdrill"
 	item_state = "jackhammer"
 	digspeed = 10
 	desc = ""
