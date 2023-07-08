@@ -550,6 +550,13 @@
 /obj/effect/dummy/veil_walk/bullet_act(vars)
 	return
 
+/datum/vampire/proc/check_healing_continue(amount, mob/user)
+	var/datum/vampire/vampire = user.vampire_power(0, 0)
+	if(vampire.blood_usable < amount)
+		to_chat(user, SPAN_WARNING("You ran out of blood, and are unable to continue!"))
+		return FALSE
+	return TRUE
+
 // Heals the vampire at the cost of blood.
 /datum/vampire/proc/vampire_bloodheal()
 	set category = "Vampire"
@@ -605,9 +612,7 @@
 
 		var/temp_blood_used = blood_used
 		vampire.use_blood(temp_blood_used)
-		if (vampire.blood_usable <= 15)
-			vampire.status &= ~VAMP_HEALING
-			to_chat(user, SPAN_WARNING("You ran out of blood, and are unable to continue!"))
+		if (!vampire.check_healing_continue(15, user))
 			break
 
 		var/list/organs = user.get_damaged_organs(1, 1)
@@ -618,9 +623,7 @@
 			vampire.use_blood(blood_used - temp_blood_used)
 			temp_blood_used = blood_used
 
-		if (vampire.blood_usable <= 15)
-			vampire.status &= ~VAMP_HEALING
-			to_chat(user, SPAN_WARNING("You ran out of blood, and are unable to continue!"))
+		if (!vampire.check_healing_continue(15, user))
 			break
 
 		for(var/obj/item/organ/external/current_organ in organs)
@@ -653,9 +656,7 @@
 				temp_blood_used = blood_used
 				break
 
-		if (vampire.blood_usable <= 15)
-			vampire.status &= ~VAMP_HEALING
-			to_chat(user, SPAN_WARNING("You ran out of blood, and are unable to continue!"))
+		if (!vampire.check_healing_continue(15, user))
 			break
 
 		for(var/ID in user.virus2)
@@ -685,9 +686,7 @@
 				H.update_body()
 				break
 
-		if (vampire.blood_usable <= 15)
-			vampire.status &= ~VAMP_HEALING
-			to_chat(user, SPAN_WARNING("You ran out of blood, and are unable to continue!"))
+		if (!vampire.check_healing_continue(15, user))
 			break
 
 		var/list/emotes_lookers = list("[user]'s skin appears to liquefy for a moment, sealing up their wounds.",
