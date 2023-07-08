@@ -405,6 +405,8 @@
 	var/list/obj/item/organ/internal/weakref_list = list()
 	if(H.Adjacent(get_turf(src))) // Like normal analysers, it can't be used at range.
 		for(var/obj/item/organ/internal/I in H.internal_organs)
+			if(I.hidden)
+				continue
 			if(I?.damage > 0)
 				weakref_list.Add(weakref(I))
 	set_pin_data(IC_OUTPUT, 1, weakref_list)
@@ -436,6 +438,8 @@
 /obj/item/integrated_circuit/medical/organ_info/do_work()
 	var/obj/item/organ/internal/I = get_pin_data_as_type(IC_INPUT, 1, /obj/item/organ/internal)
 	if(!istype(I)) // invalid input
+		return
+	if(I.hidden)
 		return
 	var/mob/living/carbon/human/H = I.owner
 	if(!istype(H)) //Invalid input

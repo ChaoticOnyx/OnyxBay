@@ -488,6 +488,9 @@
 	data["internal_organs"] = list()
 
 	for (var/obj/item/organ/internal/I in H.internal_organs)
+		if (I.hidden)
+			continue // we shouldn't be able to see that
+
 		var/organ_data = list(
 			"name" = capitalize(I.name), "status" = list(), "damage" = list()
 		)
@@ -617,6 +620,9 @@
 
 	table += "<tr><td>---</td><td><b>INTERNAL ORGANS</b></td><td>---</td></tr>"
 	for(var/obj/item/organ/internal/I in H.internal_organs)
+		if (I.hidden)
+			continue // we shouldn't be able to see that
+
 		table += "<tr><td>[I.name]</td>"
 		table += "<td>"
 		if(I.is_broken())

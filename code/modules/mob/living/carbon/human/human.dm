@@ -135,7 +135,7 @@
 
 			if(mind.changeling)
 				stat("Chemical Storage: ", mind.changeling.chem_charges)
-				stat("Genetic Damage Time: ", mind.changeling.geneticdamage)
+				stat("Genetic Damage Time: ", mind.changeling.genome_damage)
 
 			if(mind.special_role == "Borer Husk")
 				var/mob/living/simple_animal/borer/B = get_organ(BP_BRAIN)
