@@ -1,8 +1,8 @@
 /mob/living/carbon/metroid/proc/GetMutations()
-	if(src.mutation_chance>=100)
+	if(mutation_chance >= 100)
 		return list("rainbow")
 
-	switch(src.colour)
+	switch(colour)
 		if("green")
 			return list("orange", "metal", "blue", "purple")
 		if("purple")
@@ -36,7 +36,7 @@
 			return list()
 
 /mob/living/carbon/metroid/proc/GetCoreType()
-	switch(src.colour)
+	switch(colour)
 		// Tier 1
 		if("green")
 			return /obj/item/metroid_extract/green

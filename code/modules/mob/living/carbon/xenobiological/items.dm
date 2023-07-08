@@ -274,7 +274,7 @@
 	desc = "A strange slime-based chemical that, when used, allows the user to transfer their consciousness to a lesser being."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potorange"
-	var/prompted = 0
+	var/prompted = FALSE
 
 /obj/item/metroid_transference/attack(mob/living/carbon/metroid/M, mob/user)
 	..()
@@ -297,9 +297,9 @@
 	if(QDELETED(src) || QDELETED(switchy_mob) || QDELETED(user))
 		return
 
-	prompted = 1
-	if(alert(usr,"This will permanently transfer your consciousness to [switchy_mob]. Are you sure you want to do this?",,list("Yes","No")) == "No")
-		prompted = 0
+	prompted = TRUE
+	if(alert(usr, "This will permanently transfer your consciousness to [switchy_mob]. Are you sure you want to do this?",,list("Yes","No")) == "No")
+		prompted = FALSE
 		return
 
 	to_chat(user, SPAN_NOTICE("You drink the potion then place your hands on [switchy_mob]..."))
@@ -324,7 +324,7 @@
 
 	for(,numspawned > 0, numspawned--)
 		new /obj/item/grenade/clusterbang/metroid/segment(get_turf(src.loc))//Launches flashbangs
-		playsound(src.loc, 'sound/weapons/armbomb.ogg', 75, 1, -3)
+		playsound(loc, 'sound/weapons/armbomb.ogg', 75, 1, -3)
 	qdel(src)
 	return
 
@@ -336,11 +336,11 @@
 /obj/item/grenade/clusterbang/metroid/segment/New()//Segments should never exist except part of the clusterbang, since these immediately 'do their thing' and asplode
 	..()
 	icon_state = "metroidbang_segment_active"
-	active = 1
-	var/stepdist = rand(1,4)//How far to step
-	var/temploc = src.loc//Saves the current location to know where to step away from
-	walk_away(src,temploc,stepdist)//I must go, my people need me
-	var/dettime = rand(15,60)
+	active = TRUE
+	var/stepdist = rand(1, 4)
+	var/temploc = loc
+	walk_away(src, temploc, stepdist)
+	var/dettime = rand(15, 60)
 	spawn(dettime)
 		detonate()
 
