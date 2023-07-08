@@ -29,12 +29,12 @@ Burning extracts:
 	qdel(src)
 	return
 
-/obj/item/metroidcross/burning/grey
-	colour = "grey"
+/obj/item/metroidcross/burning/green
+	colour = "green"
 	effect_desc = "Creates a hungry and speedy metroid that will love you forever."
 
-/obj/item/metroidcross/burning/grey/do_effect(mob/user)
-	var/mob/living/carbon/metroid/S = new(get_turf(user),"grey")
+/obj/item/metroidcross/burning/green/do_effect(mob/user)
+	var/mob/living/carbon/metroid/S = new(get_turf(user),"green")
 	S.visible_message(SPAN_DANGER("A baby metroid emerges from [src], and it nuzzles [user] before burbling hungrily!"))
 	S.Friends += user
 	S.bodytemperature = 400 + 0 CELSIUS //We gonna step on the gas.
@@ -260,11 +260,11 @@ Burning extracts:
 		S.visible_message(SPAN_DANGER("The [S] is driven into a dangerous frenzy!"))
 	..()
 
-/obj/item/metroidcross/burning/green
-	colour = "green"
+/obj/item/metroidcross/burning/grey
+	colour = "grey"
 	effect_desc = "The user gets a dull arm blade in the hand it is used in."
 
-/obj/item/metroidcross/burning/green/do_effect(mob/user)
+/obj/item/metroidcross/burning/grey/do_effect(mob/user)
 	var/mob/living/carbon/human/target
 	if(ishuman(user))
 		target = user
