@@ -1,5 +1,74 @@
 [
   {
+    "author": "Moscowchief",
+    "date": "2023-07-08T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Tweak",
+        "message": "Шипастыми растениями теперь можно БИТЬ на HARM интенте.",
+        "pr": 10444
+      }
+    ]
+  },
+  {
+    "author": "TobyThorne",
+    "date": "2023-07-08T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "ImageAdd",
+        "message": "Обновлены спрайты ручных буров.",
+        "pr": 10485
+      },
+      {
+        "prefix": "ImageAdd",
+        "message": "Обновлены спрайты предметов в обёрточной бумаге.",
+        "pr": 10487
+      },
+      {
+        "prefix": "ImageAdd",
+        "message": "Обновлены спрайты мозгов.",
+        "pr": 10491
+      },
+      {
+        "prefix": "ImageAdd",
+        "message": "Обновлены спрайты коробок.",
+        "pr": 10488
+      }
+    ]
+  },
+  {
+    "author": "igorsaux feat. Ashley Barrett",
+    "date": "2023-07-08T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Admin",
+        "message": "Добавлен рик-ролл по пути `sounds/announcer/ashley/fun_rick_roll.ogg`",
+        "pr": 10470
+      }
+    ]
+  },
+  {
+    "author": "kreeperHLC",
+    "date": "2023-07-08T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "RscAdd",
+        "message": "Добавлены деревянные поручни и поручни из тёмного дерева.",
+        "pr": 10445
+      },
+      {
+        "prefix": "RscAdd",
+        "message": "Поручни теперь можно сделать.",
+        "pr": 10445
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "Обновлён Сансет.",
+        "pr": 10445
+      }
+    ]
+  },
+  {
     "author": "TobyThorne",
     "date": "2023-07-04T00:00:00+03:00",
     "changes": [
