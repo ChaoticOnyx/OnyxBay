@@ -2061,7 +2061,6 @@
 #include "code\modules\mob\living\carbon\human\species\station\machine.dm"
 #include "code\modules\mob\living\carbon\human\species\station\monkey.dm"
 #include "code\modules\mob\living\carbon\human\species\station\station.dm"
-#include "code\modules\mob\living\carbon\human\species\station\swine.dm"
 #include "code\modules\mob\living\carbon\human\species\station\VR_human.dm"
 #include "code\modules\mob\living\carbon\human\species\station\prometheans\luminescent.dm"
 #include "code\modules\mob\living\carbon\human\species\station\prometheans\prometheans.dm"

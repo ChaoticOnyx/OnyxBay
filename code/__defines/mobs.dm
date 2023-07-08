@@ -306,7 +306,6 @@
 #define SPECIES_EGYNO       "Egyno"
 #define SPECIES_MONKEY      "Monkey"
 #define SPECIES_ABDUCTOR    "Abductor"
-#define SPECIES_SWINE		"Trottine"
 
 
 // Xenomorphs IDs.
