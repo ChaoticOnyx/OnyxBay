@@ -43,7 +43,7 @@
 	if(istype(new_brainmob, /mob/living/silicon/sil_brainmob))
 		var/mob/living/silicon/sil_brainmob/SB = new_brainmob
 		SB.container = src
-	else if(istype(new_brainmob, /mob/living/brainmob))
+	else if(istype(new_brainmob, /mob/living/carbon/brain))
 		var/mob/living/brainmob/B = new_brainmob
 		B.container = src
 	return new_brainmob
