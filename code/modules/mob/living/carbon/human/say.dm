@@ -150,10 +150,20 @@
 	if(silent || (sdisabilities & MUTE))
 		message_data["message"] = ""
 		. = TRUE
-
-	else if(istype(wear_mask, /obj/item/clothing/mask))
+	else if(wear_mask)
 		var/obj/item/clothing/mask/M = wear_mask
-		if(M.voicechange)
+		if(is_muzzled() && !(message_data["language"]?.flags & (NONVERBAL|SIGNLANG)))
+			if(istype(M, /obj/item/clothing/mask))
+				if(M.say_messages)
+					message_data["message"] = pick(M.say_messages)
+				if(M.say_verbs)
+					message_data["verb"] = pick(M.say_verbs)
+				. = TRUE
+			else
+				message_data["message"] = pick("Mmfph!", "Mmmf mrrfff!", "Mmmf mnnf!")
+				message_data["verb"] = pick("mumbles", "says")
+				. = TRUE
+		else if(istype(M, /obj/item/clothing/mask) && M.voicechange)
 			message_data["message"] = pick(M.say_messages)
 			message_data["verb"] = pick(M.say_verbs)
 			. = TRUE
