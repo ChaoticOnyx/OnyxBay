@@ -45,7 +45,8 @@ SUBSYSTEM_DEF(announce)
 	var/client/C = player
 
 	if(ismob(player))
-		C = player:client
+		var/mob/M = player
+		C = M.client
 
 	ASSERT(!isnull(C) && istype(C))
 
