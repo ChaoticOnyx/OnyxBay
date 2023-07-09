@@ -159,6 +159,26 @@ var/global/list/_client_preferences_by_type
 	key = "SOUND_HITMARKER"
 	category = PREF_CATEGORY_AUDIO
 
+/datum/client_preference/announcer
+	description = "Announcer"
+	key = "SOUND_ANNOUNCER"
+	category = PREF_CATEGORY_AUDIO
+	default_value = GLOB.PREF_ANNOUNCER_DEFAULT
+	options = list(
+		GLOB.PREF_ANNOUNCER_DEFAULT,
+		GLOB.PREF_ANNOUNCER_VGSTATION,
+		GLOB.PREF_ANNOUNCER_BAYSTATION12,
+		GLOB.PREF_ANNOUNCER_BAYSTATION12_TORCH,
+		GLOB.PREF_ANNOUNCER_TGSTATION
+	)
+
+/datum/client_preference/announcer/changed(mob/preference_mob, new_value)
+	if(!preference_mob.client)
+		return
+
+	if(!SSannounce.is_announcer_available(preference_mob, new_value))
+		to_chat(preference_mob, SPAN_WARNING("Selected announcer is not available due to a low patron tier, default announcer will be used instead."))
+
 /datum/client_preference/language_display
 	description = "Display Language Names"
 	key = "LANGUAGE_DISPLAY"
