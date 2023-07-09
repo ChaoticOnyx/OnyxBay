@@ -91,18 +91,20 @@
 	if(isnull(brainmob))
 		return
 
+	var/mob/living/silicon/sil_brainmob/sil_brainmob = brainmob
 	switch(severity)
 		if(1)
-			brainmob:emp_damage += rand(20, 30)
+			sil_brainmob.emp_damage += rand(20, 30)
 		if(2)
-			brainmob:emp_damage += rand(10, 20)
+			sil_brainmob.emp_damage += rand(10, 20)
 		if(3)
-			brainmob:emp_damage += rand(0, 10)
+			sil_brainmob.emp_damage += rand(0, 10)
 
 	return ..()
 
 /obj/item/organ/internal/cerebrum/posibrain/proc/shackle(datum/ai_laws/given_lawset)
-	brainmob:laws = given_lawset
+	var/mob/living/silicon/sil_brainmob/sil_brainmob = brainmob
+	sil_brainmob.laws = given_lawset
 	verbs |= shackled_verbs
 	shackled = TRUE
 	update_icon()

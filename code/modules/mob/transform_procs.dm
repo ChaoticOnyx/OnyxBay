@@ -142,6 +142,11 @@
 
 		O.mmi.transfer_identity(src)
 
+		if(O.mmi.brainmob)
+			O.mmi.brainmob.add_language(LANGUAGE_EAL)
+			O.mmi.brainmob.add_language(LANGUAGE_ROBOT)
+			O.mmi.brainmob.add_language(LANGUAGE_GALCOM)
+
 	callHook("borgify", list(O))
 	O.Namepick()
 

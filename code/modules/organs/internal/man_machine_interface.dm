@@ -1,7 +1,7 @@
 GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_VOX,
-	SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_SWINE,
-	SPECIES_MONKEY, SPECIES_FARWA, SPECIES_NEAERA, SPECIES_STOK))
+	SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_MONKEY,
+	SPECIES_FARWA, SPECIES_NEAERA, SPECIES_STOK))
 
 /obj/item/organ/internal/cerebrum/mmi
 	name = "Man-Machine Interface"
@@ -128,12 +128,13 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 /obj/item/organ/internal/cerebrum/mmi/proc/_remove_brainmob(obj/item/organ/internal/cerebrum/brain/new_container)
 	_unregister_mob_signals()
 
-	brainmob:container = null
-	brainmob.forceMove(new_container)
-	brainmob.remove_from_living_mob_list()
-	brainmob?.client?.eye = new_container
+	var/mob/living/carbon/brain/living_brainmob = brainmob
+	living_brainmob.container = null
+	living_brainmob.forceMove(new_container)
+	living_brainmob.remove_from_living_mob_list()
+	living_brainmob?.client?.eye = new_container
 
-	new_container.brainmob = brainmob
+	new_container.brainmob = living_brainmob
 	brainmob = null
 
 /obj/item/organ/internal/cerebrum/mmi/proc/_drop_brain()
