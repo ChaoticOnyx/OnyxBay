@@ -175,7 +175,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 
 	icon_state = "mmi-inner"
 
-	var/brain_overlay = "mmi-[lowertext(brainobj?.species?.name)]"
+	var/brain_overlay = "mmi-[lowertext(brainobj?.species)]"
 	overlays += (brain_overlay in icon_states(icon)) ? brain_overlay : "mmi-error"
 
 	if(locked)
