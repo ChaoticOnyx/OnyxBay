@@ -36,7 +36,7 @@ SUBSYSTEM_DEF(announce)
 	else if(pref == GLOB.PREF_ANNOUNCER_TGSTATION)
 		A = announcer_by_type(/datum/announcer/tgstation)
 
-	ASSERT(A != null)
+	ASSERT(!isnull(A))
 
 	return A
 
@@ -47,7 +47,7 @@ SUBSYSTEM_DEF(announce)
 	if(ismob(player))
 		C = player:client
 
-	ASSERT(C != null && istype(C))
+	ASSERT(!isnull(C) && istype(C))
 
 	var/announcer_pref = C.get_preference_value(/datum/client_preference/announcer)
 	var/datum/announcer/A = announcer_by_pref(announcer_pref)
@@ -61,11 +61,12 @@ SUBSYSTEM_DEF(announce)
 /// announcer - type, preference value or an instance.
 /datum/controller/subsystem/announce/proc/is_announcer_available(player, announcer)
 	var/client/C = player
+	var/mob/M = player
 
-	if(ismob(player))
-		C = player:client
+	if(istype(M))
+		C = M.client
 
-	ASSERT(C != null && istype(C))
+	ASSERT(!isnull(C) && istype(C))
 
 	var/datum/announcer/A = announcer
 
@@ -74,7 +75,7 @@ SUBSYSTEM_DEF(announce)
 	else if(istext(announcer))
 		A = announcer_by_pref(announcer)
 
-	ASSERT(A != null && istype(A))
+	ASSERT(!isnull(A) && istype(A))
 
 	return C.donator_info.patreon_tier_available(A.required_tier)
 
