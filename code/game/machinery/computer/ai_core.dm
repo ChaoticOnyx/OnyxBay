@@ -13,7 +13,7 @@
 	var/state = AI_STAGE_FRAME
 	var/datum/ai_laws/laws = new /datum/ai_laws/nanotrasen
 	var/obj/item/circuitboard/circuit = null
-	var/obj/item/device/mmi/brain = null
+	var/obj/item/organ/internal/cerebrum/mmi/brain = null
 	var/authorized = FALSE
 
 /obj/structure/AIcore/emag_act(remaining_charges, mob/user, emag_source)
@@ -24,7 +24,7 @@
 		return 1
 	. = ..()
 
-/obj/structure/AIcore/attackby(obj/item/P as obj, mob/user as mob)
+/obj/structure/AIcore/attackby(obj/item/P, mob/user)
 	if(!authorized)
 		if(access_ai_upload in P.GetAccess())
 			to_chat(user, SPAN("notice", "You swipe [P] at [src] and authorize it to connect into the systems of [GLOB.using_map.full_name]."))
@@ -140,13 +140,13 @@
 				laws.add_inherent_law(M.newFreeFormLaw)
 				to_chat(usr, "Added a freeform law.")
 
-			if(!brain && (istype(P, /obj/item/device/mmi) || istype(P, /obj/item/organ/internal/posibrain)))
+			if(!brain && (istype(P, /obj/item/organ/internal/cerebrum/mmi) || istype(P, /obj/item/organ/internal/cerebrum/posibrain)))
 				var/mob/living/carbon/brain/B
-				if(istype(P, /obj/item/device/mmi))
-					var/obj/item/device/mmi/M = P
+				if(istype(P, /obj/item/organ/internal/cerebrum/mmi))
+					var/obj/item/organ/internal/cerebrum/mmi/M = P
 					B = M.brainmob
 				else
-					var/obj/item/organ/internal/posibrain/PB = P
+					var/obj/item/organ/internal/cerebrum/posibrain/PB = P
 					B = PB.brainmob
 				if(!B)
 					to_chat(user, SPAN("warning", "Sticking an empty [P] into the frame would sort of defeat the purpose."))

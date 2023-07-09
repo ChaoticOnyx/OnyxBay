@@ -233,7 +233,7 @@ Sells devices, odds and ends, and medical stuff
 								/obj/item/device/batterer						= TRADER_THIS_TYPE,
 								/obj/item/device/hailer							= TRADER_THIS_TYPE,
 								/obj/item/device/uv_light						= TRADER_THIS_TYPE,
-								/obj/item/device/mmi							= TRADER_ALL,
+								/obj/item/organ/internal/cerebrum/mmi			= TRADER_ALL,
 								/obj/item/device/robotanalyzer					= TRADER_THIS_TYPE,
 								/obj/item/device/toner							= TRADER_THIS_TYPE,
 								/obj/item/device/camera_film					= TRADER_THIS_TYPE,
@@ -277,7 +277,7 @@ Sells devices, odds and ends, and medical stuff
 								/obj/item/aicard						    		= TRADER_THIS_TYPE,
 								/mob/living/bot										= TRADER_SUBTYPES_ONLY,
 								/mob/living/bot/mulebot                             = TRADER_BLACKLIST,
-								/obj/item/organ/internal/posibrain					= TRADER_THIS_TYPE,
+								/obj/item/organ/internal/cerebrum/posibrain			= TRADER_THIS_TYPE,
 								/obj/item/robot_parts								= TRADER_SUBTYPES_ONLY,
 								/obj/item/stock_parts/manipulator			        = TRADER_THIS_TYPE
 								)

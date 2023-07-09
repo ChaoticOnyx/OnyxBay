@@ -633,7 +633,7 @@
 		/obj/item/clothing/gloves/latex,
 		/obj/item/cane,
 		/obj/item/clothing/glasses/regular,
-		/obj/item/device/mmi,
+		/obj/item/organ/internal/cerebrum/mmi,
 		/obj/item/paper,
 		/obj/item/organ
 		)

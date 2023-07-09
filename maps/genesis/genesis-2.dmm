@@ -4129,7 +4129,7 @@
 "bBF" = (/obj/machinery/power/breakerbox/activated{RCon_tag = "Medical Substation Bypass"},/turf/simulated/floor/plating,/area/maintenance/substation/medical)
 "bBG" = (/obj/machinery/light/small{dir = 1},/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/obj/machinery/alarm{dir = 8; icon_state = "alarm0"; pixel_x = 24},/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/plating,/area/maintenance/substation/medical)
 "bBH" = (/obj/structure/disposalpipe/segment,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/industrial/warning/corner{dir = 8},/turf/simulated/floor/plating,/area/maintenance/research_port)
-"bBI" = (/obj/effect/floor_decal/corner/paleblue,/obj/structure/table/standard,/obj/item/device/mmi,/obj/item/device/mmi,/obj/item/pen,/turf/simulated/floor/tiled/dark,/area/assembly/robotics)
+"bBI" = (/obj/effect/floor_decal/corner/paleblue,/obj/structure/table/standard,/obj/item/organ/internal/cerebrum/mmi,/obj/item/organ/internal/cerebrum/mmi,/obj/item/pen,/turf/simulated/floor/tiled/dark,/area/assembly/robotics)
 "bBJ" = (/obj/effect/floor_decal/corner/paleblue{dir = 10},/obj/structure/table/standard,/obj/item/device/robotanalyzer{pixel_y = 6},/turf/simulated/floor/tiled/dark,/area/assembly/robotics)
 "bBK" = (/obj/effect/floor_decal/corner/paleblue{dir = 10},/obj/structure/table/standard,/obj/item/device/radio/intercom{pixel_y = 22},/turf/simulated/floor/tiled/dark,/area/assembly/robotics)
 "bBL" = (/obj/effect/floor_decal/corner/paleblue{dir = 10},/obj/structure/table/standard,/obj/item/storage/firstaid/surgery{pixel_x = 1; pixel_y = 1},/turf/simulated/floor/tiled/dark,/area/assembly/robotics)

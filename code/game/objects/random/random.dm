@@ -642,7 +642,7 @@
 				/obj/item/device/healthanalyzer = 2,
 				/obj/item/device/paicard = 2,
 				/obj/item/device/destTagger = 2,
-				/obj/item/device/mmi = 1,
+				/obj/item/organ/internal/cerebrum/mmi = 1,
 				/obj/item/beartrap = 2,
 				/obj/item/handcuffs = 1,
 				/obj/item/camera_assembly = 5,

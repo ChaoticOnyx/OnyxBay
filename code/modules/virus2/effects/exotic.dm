@@ -263,7 +263,7 @@
 		return
 	if(prob(10))
 		to_chat(mob, SPAN_DANGER("The atom was mistaken in you, you received a great gift and could not live up to expectations, good luck."))
-		var/obj/item/organ/internal/brain/B = mob.internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/B = mob.internal_organs_by_name[BP_BRAIN]
 		if(B && B.damage < B.min_broken_damage)
 			B.take_internal_damage(150)
 

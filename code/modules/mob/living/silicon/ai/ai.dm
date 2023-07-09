@@ -114,7 +114,7 @@ var/list/ai_verbs_default = list(
 /mob/living/silicon/ai/proc/remove_ai_verbs()
 	src.verbs -= ai_verbs_default
 
-/mob/living/silicon/ai/New(loc, datum/ai_laws/L, obj/item/device/mmi/B, safety = 0)
+/mob/living/silicon/ai/New(loc, datum/ai_laws/L,  obj/item/organ/internal/cerebrum/mmi/B, safety = 0)
 	var/list/possibleNames = GLOB.ai_names
 
 	var/pickedName = null
