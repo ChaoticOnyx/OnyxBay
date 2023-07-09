@@ -44,7 +44,7 @@
 		var/mob/living/silicon/sil_brainmob/SB = new_brainmob
 		SB.container = src
 	else if(istype(new_brainmob, /mob/living/carbon/brain))
-		var/mob/living/brainmob/B = new_brainmob
+		var/mob/living/carbon/brain/B = new_brainmob
 		B.container = src
 	return new_brainmob
 
