@@ -2,6 +2,7 @@
 #define CLEAR_CASINGS	1 //clear chambered so that the next round will be automatically loaded and fired, but don't drop anything on the floor
 #define EJECT_CASINGS	2 //drop spent casings on the ground after firing
 #define CYCLE_CASINGS	3 //cycle casings, like a revolver. Also works for multibarrelled guns
+#define AMMO_NO_DISPLAY -1
 
 /obj/item/gun/projectile
 	name = "gun"
@@ -235,15 +236,19 @@
 		. += "\n<span class='warning'>It looks jammed.</span>"
 	if(ammo_magazine)
 		. += "\nIt has \a [ammo_magazine] loaded."
-	. += "\nHas [getAmmo()] round\s remaining."
+	if(getAmmo() != AMMO_NO_DISPLAY)
+		. += "\nHas [getAmmo()] round\s remaining."
 	return
 
 /obj/item/gun/projectile/proc/getAmmo()
 	var/bullets = 0
 	if(loaded)
 		bullets += loaded.len
-	if(ammo_magazine && ammo_magazine.stored_ammo)
-		bullets += ammo_magazine.stored_ammo.len
+	if(ammo_magazine)
+		if(!ammo_magazine.display_default_ammo_left)
+			return AMMO_NO_DISPLAY
+		if(ammo_magazine.stored_ammo)
+			bullets += ammo_magazine.stored_ammo.len
 	if(chambered)
 		bullets += 1
 	return bullets
@@ -272,3 +277,4 @@
 
 	unload_ammo(usr)
 */
+#undef AMMO_NO_DISPLAY

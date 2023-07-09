@@ -9,7 +9,11 @@
 	idle_power_usage = 4 WATTS
 	active_power_usage = 30 KILO WATTS
 	var/obj/item/charging = null
-	var/list/allowed_devices = list(/obj/item/gun/energy, /obj/item/gun/magnetic/railgun, /obj/item/melee/baton, /obj/item/cell, /obj/item/modular_computer/, /obj/item/device/suit_sensor_jammer, /obj/item/computer_hardware/battery_module, /obj/item/shield_diffuser, /obj/item/clothing/mask/smokable/ecig, /obj/item/shield/barrier)
+	var/list/allowed_devices = list(
+		/obj/item/gun/energy, /obj/item/gun/magnetic/railgun, /obj/item/melee/baton, /obj/item/cell,
+		/obj/item/modular_computer/, /obj/item/device/suit_sensor_jammer, /obj/item/computer_hardware/battery_module,
+		/obj/item/shield_diffuser, /obj/item/clothing/mask/smokable/ecig, /obj/item/shield/barrier, /obj/item/ammo_magazine/lawgiver
+	)
 	var/icon_state_charged = "recharger2"
 	var/icon_state_charging = "recharger1"
 	var/icon_state_idle = "recharger0" //also when unpowered
@@ -78,7 +82,7 @@
 	if(default_part_replacement(user, G))
 		return
 
-/obj/machinery/recharger/attack_hand(mob/user as mob)
+/obj/machinery/recharger/attack_hand(mob/user)
 	if(istype(user,/mob/living/silicon))
 		return
 
@@ -131,6 +135,22 @@
 		else if(istype(charging, /obj/item/shield/barrier))
 			var/obj/item/shield/barrier/SB = charging
 			cell = SB.cell
+		else if(istype(charging, /obj/item/ammo_magazine/lawgiver))
+			var/obj/item/ammo_magazine/lawgiver/L = charging
+			var/power_used = round(active_power_usage*CELLRATE)
+			if(!L.isFull())
+				icon_state = icon_state_charging
+				for(var/mode in L.ammo_counters)
+					if(L.ammo_counters[mode] == LAWGIVER_MAX_AMMO)
+						continue
+					if(--power_used)
+						L.ammo_counters[mode] = min(L.ammo_counters[mode] + 1, LAWGIVER_MAX_AMMO)
+					else
+						break
+				update_use_power(POWER_USE_ACTIVE)
+			else
+				icon_state = icon_state_charged
+				update_use_power(POWER_USE_IDLE)
 
 		if(istype(cell, /obj/item/cell))
 			var/obj/item/cell/C = cell
