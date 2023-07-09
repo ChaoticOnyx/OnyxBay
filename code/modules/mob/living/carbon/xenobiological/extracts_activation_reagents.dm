@@ -118,3 +118,10 @@
 	activate_reagents = list(
 		"Plasma",
 	)
+
+/obj/item/metroid_extract/rainbow
+	activate_reagents = list(
+		"Plasma",
+		"Blood",
+		"Metroid Jelly"
+	)

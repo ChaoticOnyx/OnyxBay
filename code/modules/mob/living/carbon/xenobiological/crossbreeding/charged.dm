@@ -28,11 +28,11 @@ Charged extracts:
 	qdel(src)
 	return
 
-/obj/item/metroidcross/charged/grey
-	colour = "grey"
+/obj/item/metroidcross/charged/green
+	colour = "green"
 	effect_desc = "Produces a metroid reviver potion, which revives dead metroids."
 
-/obj/item/metroidcross/charged/grey/do_effect(mob/user)
+/obj/item/metroidcross/charged/green/do_effect(mob/user)
 	new /obj/item/metroidpotion/metroid_reviver(get_turf(user))
 	user.visible_message(SPAN_NOTICE("[src] distills into a potion!"))
 	..()
@@ -172,11 +172,11 @@ Charged extracts:
 	user.visible_message(SPAN_NOTICE("[src] distills into a potion!"))
 	..()
 
-/obj/item/metroidcross/charged/green
-	colour = "green"
+/obj/item/metroidcross/charged/grey
+	colour = "grey"
 	effect_desc = "Lets you choose what metroid species you want to be."
 
-/obj/item/metroidcross/charged/green/do_effect(mob/user)
+/obj/item/metroidcross/charged/grey/do_effect(mob/user)
 	var/mob/living/carbon/human/human_user = user
 	if(!istype(human_user))
 		to_chat(user, SPAN_WARNING("You must be a humanoid to use this!"))

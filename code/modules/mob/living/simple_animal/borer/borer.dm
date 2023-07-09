@@ -60,6 +60,11 @@
 	if(!initial)
 		request_player()
 
+/mob/living/simple_animal/borer/Initialize()
+	. = ..()
+	register_signal(src, SIGNAL_MOB_DEATH, CALLBACK(src, /mob/living/simple_animal/borer/proc/on_mob_death))
+
+
 /mob/living/simple_animal/borer/Life()
 
 	..()

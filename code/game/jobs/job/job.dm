@@ -42,6 +42,7 @@
 	var/off_station = FALSE
 
 	var/hud_icon						  //icon used for Sec HUD overlay
+	var/show_in_setup = TRUE
 
 /datum/job/New()
 	..()

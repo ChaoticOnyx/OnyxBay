@@ -156,7 +156,7 @@
 		update_icon()
 	else if(istype(W, /obj/item/hookah_hose))
 		var/obj/item/hookah_hose/HH = W
-		if(!HH.my_hookah == src)
+		if(HH.my_hookah != src)
 			return
 		if(HH == H1)
 			reattach_hose()
@@ -175,7 +175,7 @@
 	if(HC.reagents?.total_volume && HC.pulls_left) // check if it has any reagents at all
 		var/mob/living/carbon/human/C = M
 		if(C.check_has_mouth()) // if it's in the human/monkey mouth, transfer reagents to the mob
-			reagents.trans_to_mob(C, HC.smoke_amount, CHEM_INGEST, (reagents.total_volume ? 0.5 : 1.0)) // No filter = full ingest
+			HC.reagents.trans_to_mob(C, HC.smoke_amount, CHEM_INGEST, (reagents.total_volume ? 0.5 : 1.0)) // No filter = full ingest
 			if(reagents?.total_volume)
 				reagents.trans_to_mob(C, 0.2, CHEM_BLOOD) // Poisonous hookah be scary
 			else if(prob(25))

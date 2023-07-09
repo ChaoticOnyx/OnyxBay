@@ -780,7 +780,7 @@ var/list/name_to_material
 /material/darkwood
 	name = MATERIAL_DARKWOOD
 	adjective_name = "darkwooden"
-	stack_type = /obj/item/stack/material/wood
+	stack_type = /obj/item/stack/material/darkwood
 	icon_colour = "#892929"
 	integrity = 50
 	icon_base = "solid"

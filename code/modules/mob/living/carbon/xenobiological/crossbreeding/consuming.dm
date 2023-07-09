@@ -78,12 +78,12 @@ Consuming extracts:
 		return
 	..()
 
-/obj/item/metroidcross/consuming/grey
-	colour = "grey"
+/obj/item/metroidcross/consuming/green
+	colour = "green"
 	effect_desc = "Creates a metroid cookie."
-	cookietype = /obj/item/metroid_cookie/grey
+	cookietype = /obj/item/metroid_cookie/green
 
-/obj/item/metroid_cookie/grey
+/obj/item/metroid_cookie/green
 	name = "metroid cookie"
 	desc = "A grey-ish transparent cookie. Nutritious, probably."
 	icon_state = "grey"
@@ -323,12 +323,12 @@ Consuming extracts:
 		var/mob/living/carbon/human/C = M
 		C.regenerate_blood(25)
 
-/obj/item/metroidcross/consuming/green
-	colour = "green"
+/obj/item/metroidcross/consuming/grey
+	colour = "grey"
 	effect_desc = "Creates a metroid cookie that is absolutely disgusting, makes the target vomit, however all reagent in their body are also removed."
-	cookietype = /obj/item/metroid_cookie/green
+	cookietype = /obj/item/metroid_cookie/grey
 
-/obj/item/metroid_cookie/green
+/obj/item/metroid_cookie/grey
 	name = "gross cookie"
 	desc = "A disgusting green cookie, seeping with pus. You kind of feel ill just looking at it."
 	icon_state = "green"

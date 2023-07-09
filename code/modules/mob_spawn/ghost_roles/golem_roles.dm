@@ -46,7 +46,13 @@
 			forced_name =  "[initial(golem_species.prefix)] Golem ([rand(1,999)])"
 		else
 			forced_name =  golem_species.get_random_name()
-	return ..()
+
+	spawned_mob.fully_replace_character_name(forced_name)
+	return
+/obj/effect/mob_spawn/ghost_role/human/golem/create(mob/mob_possessor, newname)
+	if(!LAZYLEN(GLOB.golems_resonator))
+		mob_species = SPECIES_GOLEM_ADAMANTINE
+	..()
 
 /obj/effect/mob_spawn/ghost_role/human/golem/special(mob/living/new_spawn, mob/mob_possessor)
 	. = ..()

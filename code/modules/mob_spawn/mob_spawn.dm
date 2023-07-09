@@ -83,7 +83,7 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 	if(!chosen_name)
 		return
 	//not using an old name doesn't update records- but ghost roles don't have records so who cares
-	spawned_mob.fully_replace_character_name(null, chosen_name)
+	spawned_mob.fully_replace_character_name(chosen_name)
 
 /obj/effect/mob_spawn/proc/equip(mob/living/spawned_mob)
 	if(!istype(spawned_mob, /mob/living/carbon/human))

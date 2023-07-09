@@ -160,6 +160,11 @@
 			if(src) qdel(src)
 			return
 
+/obj/item/reagent_containers/food/grown/attack(mob/M, mob/user, def_zone)
+	if(seed && seed.get_trait(TRAIT_STINGS) && user.a_intent == I_HURT)
+		apply_hit_effect(M, user, def_zone)
+	else return ..()
+
 /obj/item/reagent_containers/food/grown/throw_impact(atom/hit_atom)
 	seed?.thrown_at(src, hit_atom)
 	..()
