@@ -40,7 +40,12 @@
 /obj/item/organ/internal/cerebrum/proc/_create_brainmob()
 	var/mob/living/new_brainmob = new brainmob_type(src)
 	new_brainmob.set_stat(CONSCIOUS)
-	new_brainmob:container = src
+	if(istype(new_brainmob, /mob/living/silicon/sil_brainmob))
+		var/mob/living/silicon/sil_brainmob/SB = new_brainmob
+		SB.container = src
+	else if(istype(new_brainmob, /mob/living/brainmob))
+		var/mob/living/brainmob/B = new_brainmob
+		B.container = src
 	return new_brainmob
 
 /obj/item/organ/internal/cerebrum/proc/_get_brainmob()
