@@ -586,7 +586,7 @@
 			return
 	gunspawned = TRUE
 
-/obj/item/storage/secure/guncase/security/show_lock_menu(mob/user)
+/obj/item/storage/secure/guncase/security/hos/show_lock_menu(mob/user)
 	if(user.incapacitated() || !user.Adjacent(src) || !user.client)
 		return
 	user.set_machine(src)
@@ -617,7 +617,7 @@
 		lock_menu.update()
 	return
 
-/obj/item/storage/secure/guncase/security/Topic(href, href_list)
+/obj/item/storage/secure/guncase/security/hos/Topic(href, href_list)
 	if((usr.stat || usr.restrained()) || (get_dist(src, usr) > 1))
 		return
 	if(href_list["type"])
