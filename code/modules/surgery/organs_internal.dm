@@ -23,6 +23,12 @@
 	else
 		return affected.open() == (affected.encased ? SURGERY_ENCASED : SURGERY_RETRACTED)
 
+/datum/surgery_step/internal/proc/tweak_image(obj/item/organ/I)
+	var/image/img = image(icon = I.icon, icon_state = I.icon_state)
+	img.overlays = I.overlays
+	img.pixel_y = -5
+	return img
+
 //////////////////////////////////////////////////////////////////
 //	 Single organ mending surgery step
 //////////////////////////////////////////////////////////////////
@@ -56,11 +62,7 @@
 	var/list/damaged_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
-			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
-			img.overlays = I.overlays
-			img.SetTransform(scale = 1.5)
-			img.pixel_y = -5
-			img.pixel_x = 3
+			var/image/img = tweak_image(I)
 			damaged_organs[I] = img
 
 	var/obj/item/organ/surgery_organ = preselected_organ
@@ -265,11 +267,7 @@
 	var/list/damaged_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
-			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
-			img.overlays = I.overlays
-			img.SetTransform(scale = 1.5)
-			img.pixel_y = -5
-			img.pixel_x = 3
+			var/image/img = tweak_image(I)
 			damaged_organs[I] = img
 
 	var/obj/item/organ/surgery_organ = preselected_organ
@@ -388,11 +386,7 @@
 	var/list/attached_organs = list()
 	for(var/obj/item/organ/organ in target.internal_organs)
 		if(organ && !(organ.status & ORGAN_CUT_AWAY) && organ.parent_organ == target_zone)
-			var/image/img = image(icon = organ.icon, icon_state = organ.icon_state)
-			img.overlays = organ.overlays
-			img.SetTransform(scale = 1.5)
-			img.pixel_y = -5
-			img.pixel_x = 3
+			var/image/img = tweak_image(organ)
 			attached_organs[organ] = img
 
 	var/obj/item/organ/surgery_organ = preselected_organ
@@ -464,11 +458,7 @@
 	var/list/removable_organs = list()
 	for(var/obj/item/organ/internal/I in affected.implants)
 		if(I.status & ORGAN_CUT_AWAY)
-			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
-			img.overlays = I.overlays
-			img.SetTransform(scale = 1.5)
-			img.pixel_y = -5
-			img.pixel_x = 3
+			var/image/img = tweak_image(I)
 			removable_organs[I] = img
 
 	var/obj/item/organ/surgery_organ = preselected_organ
@@ -637,11 +627,7 @@
 	var/list/attachable_organs = list()
 	for(var/obj/item/organ/I in affected.implants)
 		if(I && (I.status & ORGAN_CUT_AWAY))
-			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
-			img.overlays = I.overlays
-			img.SetTransform(scale = 1.5)
-			img.pixel_y = -5
-			img.pixel_x = 3
+			var/image/img = tweak_image(I)
 			attachable_organs[I] = img
 
 	var/obj/item/organ/surgery_organ = preselected_organ
@@ -727,11 +713,7 @@
 	var/list/dead_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.status & ORGAN_DEAD && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
-			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
-			img.overlays = I.overlays
-			img.SetTransform(scale = 1.5)
-			img.pixel_y = -5
-			img.pixel_x = 3
+			var/image/img = tweak_image(I)
 			dead_organs[I] = img
 
 	var/obj/item/organ/surgery_organ = preselected_organ
