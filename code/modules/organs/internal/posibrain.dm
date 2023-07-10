@@ -1,11 +1,11 @@
 #define POSITRONIC_NAMES list("PBU", "HIU", "SINA", "ARMA", "OSI")
 
 /obj/item/organ/internal/cerebrum/posibrain
-	name = "\improper Positronic Brain"
+	name = "Positronic Brain"
 	desc = "A cube of shining metal, four inches to a side and covered in shallow grooves."
 
 	icon = 'icons/mob/human_races/organs/posibrain.dmi'
-	icon_state = "posibrain"
+	icon_state = "posibrain-idle"
 
 	override_organic_icon = FALSE
 
