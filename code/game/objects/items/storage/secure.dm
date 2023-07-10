@@ -575,7 +575,7 @@
 		if("lawgiver")
 			new /obj/item/gun/projectile/lawgiver(src)
 			new /obj/item/ammo_magazine/lawgiver(src)
-		if("energy_riffle")
+		if("Razor")
 			new /obj/item/gun/energy/rifle/cheap(src)
 			// Delete lawgiver steal contract, we can't get lawgiver legally.
 			GLOB.contracts_steal_items.Remove("the head of security's lawgiver gun")
@@ -586,7 +586,7 @@
 			return
 	gunspawned = TRUE
 
-/obj/item/storage/secure/guncase/security/show_lock_menu(mob/user)
+/obj/item/storage/secure/guncase/security/hos/show_lock_menu(mob/user)
 	if(user.incapacitated() || !user.Adjacent(src) || !user.client)
 		return
 	user.set_machine(src)
@@ -595,13 +595,13 @@
 	dat += text("<p><HR>\nChosen Gun: []", "[guntype ? guntype : "none"]")
 	if(!gunspawned)
 		dat += text("<p>\n Be careful! Once you chose your weapon and unlock the gun case, you won't be able to change it.")
-		dat += text("<HR><p>\n<A href='?src=\ref[];type=energy_riffle'>\"Razor\" energy riffle</A>", src)
+		dat += text("<HR><p>\n<A href='?src=\ref[];type=Razor'>\"Razor\" energy rifle</A>", src)
 		dat += text("<p>\n<A href='?src=\ref[];type=lawgiver'>Lawgiver multitask pistol</A>", src)
 	dat += text("<HR>")
 	if(guntype)
 		switch(guntype)
 			// not cool type
-			if("energy rifle")
+			if("Razor")
 				dat += text("<p>\n Hephaestus Industries G50SE \"Razor\", a cheaper version of G50XS \"Raijin\".")
 				dat += text("<p>\n It has lethal and stun settings.")
 			// cool type
@@ -617,7 +617,7 @@
 		lock_menu.update()
 	return
 
-/obj/item/storage/secure/guncase/security/Topic(href, href_list)
+/obj/item/storage/secure/guncase/security/hos/Topic(href, href_list)
 	if((usr.stat || usr.restrained()) || (get_dist(src, usr) > 1))
 		return
 	if(href_list["type"])
