@@ -10,7 +10,7 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	name = "lawgiver"
 	desc = "The Lawgiver II. A twenty-five round sidearm with mission-variable voice-programmed ammunition. \
 	You can see the words STUN, LASER, RAPID, FLASH and AP written in small print on its barreling. \
-	There's a little notation on it: \"Designed by combat specialist R. R. for combat specialists.\""
+	There's a little notation on it: \"Designed by combat specialist R.R. for combat specialists.\""
 	icon_state = "lawgiver"
 	item_state = "lawgiver"
 	load_method = MAGAZINE
@@ -31,6 +31,16 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 
 	var/hack_in_progress = FALSE // if anyone remembers how to do it with do_after by internal tools, replace this shit by internal tools
 	var/hacks_remains = 3
+
+/obj/item/gun/projectile/lawgiver/get_description_info()
+	. = ..()
+	. += "\n\The [src] fires 5 different types of charges: stun, laser, rapid, flash, armor piercing.\n\
+	Charge type selection is controlled by voice.\n\
+	For the voice recognition module to work, you must give your DNA to \the [src].\n\
+	To reload the gun magazine you must remove it from the gun and place it in the recharger.\n\
+	List of words/word combinations to activate different types of charges:\n"
+	for(var/list/mode in GLOB.lawgiver_modes)
+		. += "[mode["mode_name"]] - [english_list(mode["voice_activator"])]\n"
 
 /obj/item/gun/projectile/lawgiver/proc/init_voice_activators()
 	if(voice_activators_init_complete)
