@@ -575,7 +575,7 @@
 		if("lawgiver")
 			new /obj/item/gun/projectile/lawgiver(src)
 			new /obj/item/ammo_magazine/lawgiver(src)
-		if("energy_riffle")
+		if("energy_rifle")
 			new /obj/item/gun/energy/rifle/cheap(src)
 			// Delete lawgiver steal contract, we can't get lawgiver legally.
 			GLOB.contracts_steal_items.Remove("the head of security's lawgiver gun")
@@ -595,7 +595,7 @@
 	dat += text("<p><HR>\nChosen Gun: []", "[guntype ? guntype : "none"]")
 	if(!gunspawned)
 		dat += text("<p>\n Be careful! Once you chose your weapon and unlock the gun case, you won't be able to change it.")
-		dat += text("<HR><p>\n<A href='?src=\ref[];type=energy_riffle'>\"Razor\" energy riffle</A>", src)
+		dat += text("<HR><p>\n<A href='?src=\ref[];type=energy_rifle'>\"Razor\" energy rifle</A>", src)
 		dat += text("<p>\n<A href='?src=\ref[];type=lawgiver'>Lawgiver multitask pistol</A>", src)
 	dat += text("<HR>")
 	if(guntype)
