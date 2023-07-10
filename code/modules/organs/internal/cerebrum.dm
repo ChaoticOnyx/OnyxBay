@@ -2,7 +2,7 @@
 	name = "\improper Mastermind"
 	desc = "That's definitly a thing, containing owner's intelligence, yup."
 	icon = 'icons/mob/human_races/organs/human.dmi'
-	icon_state = "brain2"
+	icon_state = "brain"
 
 	vital = TRUE
 	organ_tag = BP_BRAIN
