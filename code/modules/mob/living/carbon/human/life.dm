@@ -692,7 +692,7 @@
 				if(!isnull(mod.metabolism_percent))
 					nutrition_reduction *= mod.metabolism_percent
 			nutrition = max (0, nutrition - nutrition_reduction)
-						
+			
 		// malnutrition \ obesity
 		if(prob(1) && stat == CONSCIOUS && !isSynthetic(src) && !isundead(src))
 			var/normalized_nutrition = nutrition / body_build.stomach_capacity
