@@ -30,6 +30,9 @@
 
 #define RADIATION_SPEED_COEFFICIENT (0.0005 SIEVERT)
 
+#define STARVATION 1
+#define OVEREATING 2
+
 /mob/living/carbon/human
 	var/oxygen_alert = 0
 	var/plasma_alert = 0
@@ -46,6 +49,8 @@
 	var/starve_start = 0
 	var/overeat = FALSE
 	var/overeat_start = 0
+	var/nutrition_problem = FALSE
+	var/nutrition_problem_start = 0
 
 /mob/living/carbon/human/Initialize()
 	. = ..()
@@ -787,7 +792,38 @@
 					to_chat(src, SPAN("warning", "[pick("It seems you overate a bit", "Your own weight pulls you to the floor", "It would be nice to lose some weight")]..."))
 				if(STOMACH_FULLNESS_SUPER_HIGH to INFINITY)
 					to_chat(src, SPAN("warning", "[pick("You definitely overate", "Thinking about food makes you gag", "It would be nice to clear your stomach")]..."))
+		
+		// body build correction
+		var/normalized_nutrition = nutrition / body_build.stomach_capacity
+		if(normalized_nutrition <= STOMACH_FULLNESS_SUPER_LOW)
+			if(!nutrition_problem)
+				nutrition_problem_start = world.time
+				nutrition_problem = STARVATION
+		else if(normalized_nutrition >= STOMACH_FULLNESS_SUPER_HIGH)
+			if(!nutrition_problem)
+				nutrition_problem_start = world.time
+				nutrition_problem = OVEREATING
+		else
+			nutrition_problem = FALSE
 
+		if(nutrition_problem && (world.time > nutrition_problem_start + 3 MINUTES))
+			var/BB = null
+			switch(nutrition_problem)
+				if(STARVATION)
+					BB = src.body_build.previous_body_build
+				if(OVEREATING)
+					BB = src.body_build.next_body_build
+			if(BB)
+				var/datum/body_build/new_body_build = src.species.get_body_build(src.gender, BB)
+				if(new_body_build)
+					src.change_body_build(new_body_build)
+					switch(nutrition_problem)
+						if(STARVATION)
+							to_chat(src, SPAN("warning", "You've lost some weight!"))
+						if(OVEREATING)
+							to_chat(src, SPAN("warning", "You've gain some weight!"))
+			nutrition_problem = FALSE
+		
 		if(stasis_value > 1 && drowsyness < stasis_value * 4)
 			drowsyness += min(stasis_value, 3)
 			if(!stat && prob(1))
