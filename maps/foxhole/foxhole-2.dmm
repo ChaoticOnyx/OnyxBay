@@ -4,7 +4,8 @@
 "ay" = (/obj/effect/decal/cleanable/dirt,/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/rough,/area/space)
 "aB" = (/obj/structure/bed,/obj/item/bedsheet/green,/turf/simulated/floor/tiled/white/rough,/area/space)
 "aD" = (/obj/machinery/door/airlock/maintenance_hatch,/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/plating,/area/space)
-"aH" = (/obj/structure/closet/crate/bin{name = "tactical bin"},/turf/simulated/floor/tiled/dark/rough,/area/space)
+"aE" = (/obj/structure/window_frame/rglass,/obj/machinery/door/blast/shutters{density = 0; dir = 8; icon_state = "shutter0"; id = "warden2"; name = "Warden's Office Shutters"; opacity = 0},/turf/simulated/floor/plating,/area/space)
+"aH" = (/obj/machinery/atmospherics/unary/vent_scrubber/on,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "aM" = (/obj/effect/floor_decal/siding/wood{dir = 6},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/trim/darkwood,/area/space)
 "aQ" = (/obj/machinery/chem_master,/turf/simulated/floor/tiled/dark/rough{dir = 1},/area/space)
 "aT" = (/obj/structure/disposalpipe/segment,/obj/machinery/door/airlock/maintenance_hatch,/obj/structure/catwalk,/turf/space,/area/space)
@@ -22,29 +23,36 @@
 "bB" = (/obj/machinery/door/airlock/research{name = "Chemical Storage"},/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/rough,/area/space)
 "bF" = (/obj/effect/floor_decal/bot_white,/obj/effect/decal/cleanable/dirt,/obj/machinery/door/firedoor/border_only{dir = 4},/turf/space,/area/space)
 "bI" = (/obj/structure/reagent_dispensers/water_cooler,/obj/effect/floor_decal/trimline/red/arrow_ccw,/obj/effect/floor_decal/trimline/red/mid_joiner,/turf/simulated/floor/tiled/dark/rough,/area/space)
-"bK" = (/obj/machinery/computer/crew{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/space)
+"bK" = (/obj/structure/table/steel,/obj/item/paper_bin,/obj/item/pen,/obj/effect/floor_decal/industrial/outline/red,/obj/item/modular_computer/tablet/preset/custom_loadout/advanced,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"bM" = (/obj/machinery/light/small/quartz{dir = 1},/turf/simulated/floor/trim/carpet/arcade,/area/space)
 "bS" = (/obj/effect/floor_decal/trimline/brown/filled/warning{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "bX" = (/obj/structure/disposalpipe/trunk{dir = 4},/turf/simulated/floor/tiled/rough{dir = 4},/area/space)
 "bY" = (/obj/structure/table/glass,/obj/machinery/reagentgrinder,/turf/simulated/floor/tiled/white/rough{dir = 4},/area/space)
+"cg" = (/obj/effect/floor_decal/floordetail/tiled,/obj/structure/window/reinforced{dir = 8; health = 1e+006},/turf/simulated/floor/tiled/white/rough,/area/space)
 "ci" = (/obj/effect/floor_decal/trimline/green/warning{dir = 8},/obj/effect/floor_decal/trimline/green/mid_joiner{dir = 8},/turf/simulated/floor/tiled/dark/rough{dir = 8},/area/space)
 "cr" = (/obj/item/folder/red{pixel_y = -1; pixel_x = 4},/obj/item/hand_labeler,/obj/structure/disposalpipe/segment{dir = 9},/turf/space,/area/space)
-"cu" = (/obj/structure/disposalpipe/trunk,/obj/structure/disposaloutlet{dir = 1},/turf/space,/area/space)
+"cu" = (/obj/structure/window_frame/reinforced/hull,/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plating,/area/space)
 "cB" = (/obj/machinery/portable_atmospherics/canister/carbon_dioxide,/obj/effect/floor_decal/bot,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"cC" = (/obj/machinery/vending/tool,/obj/machinery/camera/network/civilian_west{c_tag = "Tool Storage - Primary"},/obj/machinery/light{dir = 1},/turf/simulated/floor/tiled/rough,/area/space)
+"cJ" = (/obj/structure/ladder,/obj/structure/catwalk,/turf/simulated/open,/area/space)
 "cR" = (/obj/effect/decal/cleanable/dirt,/turf/space,/area/space)
 "cY" = (/turf/simulated/floor/tiled/dark/rough,/area/space)
 "dd" = (/turf/simulated/wall,/area/space)
-"df" = (/obj/structure/disposalpipe/trunk{dir = 4},/turf/simulated/floor/plating/airless,/area/space)
+"df" = (/obj/structure/disposalpipe/trunk{dir = 4},/obj/machinery/disposal/deliveryChute{dir = 8},/turf/simulated/floor/plating/airless,/area/space)
+"dg" = (/obj/structure/fitness/weightlifter,/turf/simulated/floor/tiled/white/rough,/area/space)
 "di" = (/obj/structure/table/standard,/turf/simulated/floor/tiled/rough,/area/space)
 "dp" = (/obj/effect/floor_decal/siding/wood,/turf/simulated/floor/trim/wood,/area/space)
 "dr" = (/obj/machinery/recharger,/turf/space,/area/space)
 "du" = (/obj/structure/ladder,/turf/simulated/floor/plating,/area/space)
 "dw" = (/obj/machinery/meter,/turf/simulated/floor/tiled/white/rough,/area/space)
 "dy" = (/obj/machinery/turretid{control_area = "/area/station/ai_monitored/turret_protected/ai_upload"; icon_state = "control_stun"; name = "AI Upload turret control"; pixel_x = -28},/turf/simulated/floor/tiled/dark/mono,/area/space)
-"dL" = (/obj/effect/floor_decal/trimline/red/filled/line{dir = 4},/obj/effect/floor_decal/trimline/red/filled/mid_joiner{dir = 4},/turf/simulated/floor/tiled/dark/rough{dir = 4},/area/space)
+"dL" = (/obj/machinery/atmospherics/unary/vent_pump/on{dir = 8},/obj/effect/landmark/start/crew/assistant,/turf/simulated/floor/tiled/rough,/area/space)
+"dM" = (/obj/structure/disposalpipe/segment{dir = 4},/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/tiled/rough{dir = 1},/area/space)
 "dN" = (/obj/effect/floor_decal/siding/wood{dir = 4},/turf/simulated/floor/tiled/dark/rough{dir = 1},/area/space)
 "dS" = (/obj/effect/floor_decal/trimline/dark_blue/warning{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "dW" = (/obj/effect/floor_decal/siding/wood{dir = 8},/turf/simulated/floor/trim/wood,/area/space)
 "dX" = (/obj/effect/floor_decal/jungledirt,/obj/effect/floor_decal/jungledirt/grass/corner,/turf/simulated/floor/plating/airless,/area/space)
+"ec" = (/obj/structure/casino/oh_bandit,/turf/simulated/floor/trim/carpet/arcade,/area/space)
 "ed" = (/obj/machinery/portable_atmospherics/canister/plasma,/obj/effect/floor_decal/bot,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "eg" = (/obj/machinery/door/firedoor,/turf/simulated/floor/tiled/rough,/area/space)
 "eh" = (/obj/machinery/recharge_station,/turf/simulated/floor/tiled/rough,/area/space)
@@ -56,20 +64,24 @@
 "ey" = (/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/dark/rough{dir = 8},/area/space)
 "eE" = (/obj/effect/decal/cleanable/cobweb,/obj/effect/decal/cleanable/dirt,/turf/space,/area/space)
 "eF" = (/obj/structure/disposalpipe/segment,/turf/simulated/floor/plating,/area/space)
+"eH" = (/obj/structure/table/standard{name = "plastic table frame"},/obj/random/medical/lite,/obj/structure/window/reinforced{dir = 8; health = 1e+006},/turf/simulated/floor/tiled/white/rough,/area/space)
 "eM" = (/turf/simulated/floor/tiled/dark/rough{dir = 5},/area/space)
 "eP" = (/obj/structure/curtain,/turf/space,/area/space)
 "eQ" = (/obj/machinery/door/airlock/command,/obj/effect/floor_decal/siding/wood{dir = 4},/obj/effect/floor_decal/siding/wood{dir = 8},/turf/simulated/floor/trim/wood,/area/space)
 "eT" = (/obj/effect/floor_decal/trimline/red/filled/line{dir = 8},/obj/effect/floor_decal/trimline/red/filled/mid_joiner{dir = 8},/turf/space,/area/space)
+"eX" = (/obj/machinery/alarm{dir = 4; pixel_x = -24},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "fa" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/space)
+"fe" = (/obj/structure/bed/chair{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "ff" = (/obj/machinery/door/airlock{id_tag = "Toilet2"; name = "Toilet Unit 2"},/turf/simulated/floor/tiled/rough,/area/space)
 "fi" = (/obj/effect/floor_decal/trimline/red/line{dir = 4},/turf/simulated/floor/tiled/rough,/area/space)
 "fj" = (/obj/structure/closet/secure_closet/detective,/obj/effect/floor_decal/siding/wood,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"fl" = (/obj/machinery/light/small/quartz{dir = 1},/obj/machinery/computer/arcade,/turf/simulated/floor/trim/carpet/arcade,/area/space)
 "ft" = (/obj/effect/floor_decal/trimline/yellow/warning{dir = 4},/turf/space,/area/space)
 "fx" = (/obj/effect/floor_decal/trimline/purple/filled/warning{dir = 1},/turf/simulated/floor/tiled/white/rough,/area/space)
 "fz" = (/obj/effect/floor_decal/trimline/purple/corner{dir = 4},/turf/space,/area/space)
 "fB" = (/obj/item/borg/upgrade/rename,/turf/space,/area/space)
 "fD" = (/obj/structure/disposalpipe/segment{dir = 4},/obj/structure/girder/reinforced,/turf/simulated/floor/plating,/area/space)
-"fF" = (/obj/machinery/conveyor{dir = 1; id = "AtmosStorage"},/obj/machinery/portable_atmospherics/canister/plasma,/turf/space,/area/space)
+"fF" = (/obj/machinery/conveyor{dir = 1; id = "AtmosStorage"},/obj/machinery/portable_atmospherics/canister/plasma,/turf/simulated/floor/reinforced,/area/space)
 "fH" = (/obj/structure/grille,/turf/simulated/floor/plating,/area/space)
 "fI" = (/obj/effect/floor_decal/jungledirt/grass/corner2,/turf/simulated/floor/plating/airless,/area/space)
 "fL" = (/obj/machinery/door/airlock/external,/turf/simulated/floor/plating,/area/space)
@@ -80,10 +92,11 @@
 "gc" = (/obj/machinery/door/firedoor,/turf/space,/area/space)
 "gg" = (/obj/effect/decal/cleanable/cobweb,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/space)
 "gi" = (/obj/structure/disposalpipe/segment{dir = 9},/obj/structure/catwalk,/turf/space,/area/space)
-"gB" = (/obj/effect/floor_decal/trimline/blue/filled/corner{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/space)
+"gB" = (/obj/effect/landmark/start/crew/assistant,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/structure/cable/yellow{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/tiled/rough,/area/space)
 "gG" = (/obj/structure/table/glass,/obj/item/reagent_containers/dropper{pixel_y = -6},/turf/simulated/floor/tiled/dark/rough{dir = 1},/area/space)
 "gH" = (/obj/machinery/door/firedoor/border_only{dir = 8},/turf/simulated/floor/plating,/area/space)
 "gK" = (/obj/structure/closet{name = "Evidence Closet 1"},/turf/space,/area/space)
+"gL" = (/obj/machinery/door/airlock/glass{name = "Holodeck"},/obj/machinery/door/firedoor/border_only,/obj/effect/floor_decal/corner/grey{dir = 8},/turf/simulated/floor/tiled/dark,/area/space)
 "gM" = (/turf/simulated/floor/tiled/white/rough{dir = 4},/area/space)
 "gN" = (/obj/machinery/door/airlock/security,/obj/effect/floor_decal/siding/wood,/obj/structure/disposalpipe/segment,/turf/space,/area/space)
 "gO" = (/obj/effect/floor_decal/siding/wood,/obj/structure/reagent_dispensers/water_cooler,/turf/simulated/floor/trim/darkwood,/area/space)
@@ -97,11 +110,11 @@
 "hg" = (/obj/effect/floor_decal/siding/wood,/obj/effect/decal/cleanable/cobweb,/turf/space,/area/space)
 "hh" = (/obj/machinery/navbeacon{codes_txt = "patrol;next_patrol=Deck2ForePort"; location = "Deck2AftPort"},/turf/simulated/floor/tiled/rough,/area/space)
 "hi" = (/obj/structure/table/standard,/obj/item/storage/toolbox/electrical{pixel_y = 10; pixel_x = 3},/turf/simulated/floor/tiled/dark/rough,/area/space)
-"hk" = (/obj/effect/floor_decal/siding/wood{dir = 4},/obj/effect/floor_decal/siding/wood{dir = 8},/obj/machinery/door/airlock{id_tag = "private_a"; name = "Private Booth A"},/turf/simulated/floor/trim/wood,/area/space)
+"hk" = (/obj/structure/window/reinforced{dir = 4},/obj/structure/fitness/punchingbag,/turf/simulated/floor/tiled/white/rough,/area/space)
 "hn" = (/obj/effect/floor_decal/bot_red,/turf/simulated/floor/tiled/rough,/area/space)
 "hq" = (/obj/structure/lattice,/turf/space,/area/space)
 "hz" = (/obj/machinery/door/firedoor/border_only{dir = 1},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/rough,/area/space)
-"hA" = (/obj/effect/floor_decal/siding/wood{dir = 4},/turf/space,/area/space)
+"hA" = (/obj/effect/floor_decal/corner/grey/three_quarters{dir = 8},/turf/simulated/wall,/area/space)
 "hC" = (/obj/effect/floor_decal/trimline/green/filled/line{dir = 5},/obj/machinery/camera{c_tag = "Virology Airlock"; dir = 9; network = list("ss13","medbay")},/obj/structure/closet/emcloset,/turf/simulated/floor/tiled/white/rough,/area/space)
 "hD" = (/obj/effect/floor_decal/siding/wood,/turf/simulated/floor/trim/darkwood,/area/space)
 "hF" = (/turf/simulated/floor/tiled/white/rough{dir = 1},/area/space)
@@ -109,39 +122,46 @@
 "hN" = (/obj/effect/floor_decal/jungledirt/grass/corner2{dir = 8},/turf/simulated/floor/plating/airless,/area/space)
 "hR" = (/obj/machinery/door/airlock,/turf/simulated/floor/tiled/rough,/area/space)
 "hV" = (/obj/machinery/portable_atmospherics/canister/plasma,/turf/space,/area/space)
-"hW" = (/obj/machinery/conveyor{dir = 1; id = "AtmosStorage"},/obj/machinery/portable_atmospherics/canister/oxygen,/turf/space,/area/space)
+"hW" = (/obj/machinery/conveyor{dir = 1; id = "AtmosStorage"},/obj/machinery/portable_atmospherics/canister/oxygen,/turf/simulated/floor/reinforced,/area/space)
 "hY" = (/obj/structure/closet/secure_closet/warden,/obj/effect/floor_decal/bot_red,/turf/space,/area/space)
 "hZ" = (/obj/effect/floor_decal/siding/wood{dir = 4},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/trim/darkwood,/area/space)
 "ik" = (/obj/machinery/microwave{pixel_y = 6},/obj/effect/floor_decal/siding/wood,/turf/simulated/floor/tiled/white/rough,/area/space)
 "il" = (/obj/machinery/portable_atmospherics/canister/air,/turf/space,/area/space)
 "im" = (/obj/effect/floor_decal/trimline/dark_red/corner{dir = 1},/turf/simulated/floor/tiled/rough,/area/space)
 "is" = (/obj/structure/closet/firecloset,/turf/simulated/floor/tiled/rough,/area/space)
+"iu" = (/obj/structure/window_frame/rglass,/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plating,/area/space)
 "iy" = (/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/dark/rough{dir = 1},/area/space)
 "iz" = (/obj/structure/disposalpipe/segment{dir = 5},/turf/space,/area/space)
 "iA" = (/obj/machinery/door/airlock/hatch,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "iB" = (/obj/structure/table/standard,/obj/machinery/reagentgrinder{pixel_y = 7},/obj/item/storage/fancy/egg_box{pixel_y = 3},/turf/simulated/floor/tiled/dark/rough,/area/space)
+"iD" = (/obj/structure/catwalk,/turf/simulated/open,/area/space)
+"iI" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/structure/catwalk,/turf/simulated/floor/plating,/area/space)
 "iL" = (/obj/effect/floor_decal/trimline/neutral/corner{dir = 4},/turf/simulated/floor/plating,/area/space)
 "iN" = (/obj/structure/disposalpipe/segment{dir = 4},/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/white/rough,/area/space)
 "iP" = (/obj/effect/floor_decal/trimline/white/line,/obj/effect/floor_decal/trimline/red/warning,/turf/space,/area/space)
+"iQ" = (/obj/item/modular_computer/console/preset/security,/turf/simulated/floor/tiled/rough,/area/space)
+"iR" = (/obj/structure/disposalpipe/segment{dir = 8; icon_state = "pipe-c"},/turf/simulated/floor/tiled/rough,/area/space)
 "iV" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/dark/mono,/area/space)
 "iW" = (/obj/effect/floor_decal/trimline/yellow/warning{dir = 10},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/white/rough{dir = 4},/area/space)
 "iX" = (/obj/machinery/door/firedoor/border_only{dir = 4},/obj/machinery/navbeacon{codes_txt = "delivery;dir=8"; location = "Research Division"},/turf/simulated/floor/plating,/area/space)
 "jc" = (/obj/item/bikehorn/rubberducky,/turf/space,/area/space)
 "jf" = (/obj/machinery/telecomms/relay/preset/station,/turf/space,/area/space)
-"jn" = (/obj/item/clothing/suit/armor/riot{pixel_x = 3; pixel_y = 2},/obj/item/clothing/suit/armor/riot{pixel_y = 2},/obj/item/clothing/suit/armor/riot{pixel_x = -3; pixel_y = 2},/obj/item/clothing/suit/armor/bulletproof{pixel_x = 5},/obj/item/clothing/suit/armor/bulletproof,/obj/item/clothing/suit/armor/bulletproof{pixel_x = -6},/turf/simulated/floor/tiled/dark/rough{dir = 1},/area/space)
+"jn" = (/obj/item/clothing/suit/armor/riot{pixel_x = 3; pixel_y = 2},/obj/item/clothing/suit/armor/riot{pixel_y = 2},/obj/item/clothing/suit/armor/riot{pixel_x = -3; pixel_y = 2},/obj/item/clothing/suit/armor/bulletproof{pixel_x = 5},/obj/item/clothing/suit/armor/bulletproof,/obj/item/clothing/suit/armor/bulletproof{pixel_x = -6},/obj/structure/table/rack/dark,/turf/simulated/floor/tiled/dark/rough{dir = 1},/area/space)
 "jq" = (/obj/structure/filingcabinet,/obj/effect/floor_decal/bot_white,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "ju" = (/obj/item/folder/yellow{pixel_x = -6},/turf/space,/area/space)
 "jw" = (/obj/structure/disposalpipe/segment{dir = 9},/turf/simulated/floor/tiled/dark/rough,/area/space)
-"jF" = (/obj/effect/floor_decal/siding/wood{dir = 4},/obj/effect/decal/cleanable/dirt,/turf/space,/area/space)
+"jF" = (/obj/effect/floor_decal/siding/wood{dir = 4},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/space)
 "jK" = (/obj/structure/table/standard,/obj/item/folder/red,/turf/space,/area/space)
 "jW" = (/obj/structure/disposalpipe/segment,/obj/structure/catwalk,/turf/space,/area/space)
-"jY" = (/obj/effect/floor_decal/bot_red,/obj/item/gun/energy/laser{pixel_y = 7},/obj/item/gun/energy/laser{pixel_y = 7},/obj/item/gun/energy/laser{pixel_y = 7},/turf/simulated/floor/tiled/dark/rough{dir = 1},/area/space)
+"jY" = (/obj/effect/floor_decal/bot_red,/obj/item/gun/energy/laser{pixel_y = 7},/obj/item/gun/energy/laser{pixel_y = 7},/obj/item/gun/energy/laser{pixel_y = 7},/obj/structure/table/rack/dark,/turf/simulated/floor/tiled/dark/rough{dir = 1},/area/space)
 "kc" = (/obj/item/cigbutt/cigarbutt{pixel_x = 5; pixel_y = -1},/turf/space,/area/space)
-"kf" = (/obj/machinery/door/firedoor,/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/rough,/area/space)
+"kf" = (/obj/machinery/door/firedoor,/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/mono,/area/space)
 "kh" = (/obj/effect/floor_decal/siding/wood{dir = 10},/turf/simulated/floor/trim/wood,/area/space)
 "kn" = (/obj/effect/floor_decal/trimline/green/warning{dir = 1},/turf/space,/area/space)
 "kp" = (/obj/effect/floor_decal/trimline/yellow/warning,/turf/space,/area/space)
 "kq" = (/obj/machinery/door/firedoor/border_only,/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/rough,/area/space)
+"ks" = (/obj/machinery/door/firedoor,/obj/machinery/door/blast/regular/open{dir = 4; id = "dorms"; name = "Dorms Blast Doors"},/turf/simulated/floor/tiled/mono,/area/space)
+"kw" = (/obj/structure/window_frame/reinforced/hull,/obj/machinery/door/firedoor/border_only,/obj/machinery/camera/network/civilian_east{c_tag = "Dormitory Holodeck North"; pixel_y = -32},/turf/simulated/floor/plating,/area/space)
 "kJ" = (/obj/machinery/door/firedoor/border_only{dir = 8},/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/dark/mono,/area/space)
 "kP" = (/obj/machinery/computer/rdservercontrol{dir = 1},/turf/simulated/floor/tiled/dark/mono,/area/space)
 "kR" = (/turf/simulated/floor/tiled/white/rough,/area/space)
@@ -164,7 +184,7 @@
 "md" = (/obj/effect/decal/cleanable/dirt,/obj/structure/disposalpipe/segment{dir = 4},/obj/machinery/navbeacon{codes_txt = "delivery;dir=2"; location = "QM #2"},/turf/simulated/floor/plating,/area/space)
 "me" = (/obj/machinery/door/airlock/glass{name = "Cell 2"},/turf/space,/area/space)
 "mk" = (/obj/structure/disposalpipe/segment{dir = 4},/obj/machinery/door/airlock/maintenance_hatch,/obj/structure/catwalk,/turf/space,/area/space)
-"ml" = (/obj/machinery/door/firedoor/border_only{dir = 4},/obj/structure/disposalpipe/segment{dir = 4},/turf/space,/area/space)
+"ml" = (/obj/machinery/door/firedoor/border_only{dir = 4},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/trim/carpet/arcade,/area/space)
 "mn" = (/obj/structure/table/standard,/obj/structure/bedsheetbin,/turf/simulated/floor/tiled/white,/area/space)
 "mp" = (/obj/item/paper_bin{pixel_y = 4; pixel_x = -5},/obj/item/pen,/turf/simulated/floor/trim/wood,/area/space)
 "mt" = (/obj/structure/disposalpipe/trunk{dir = 8},/obj/structure/disposaloutlet{dir = 4},/turf/simulated/floor/plating/airless,/area/space)
@@ -173,7 +193,7 @@
 "mB" = (/obj/effect/decal/cleanable/dirt,/obj/structure/disposalpipe/segment{dir = 9},/turf/simulated/floor/tiled/rough,/area/space)
 "mC" = (/obj/item/pen,/obj/item/toy/figure/detective{pixel_y = 10; pixel_x = 9},/turf/space,/area/space)
 "mE" = (/obj/effect/floor_decal/siding/wood,/obj/structure/reagent_dispensers/water_cooler,/obj/effect/floor_decal/trimline/neutral/warning{dir = 1},/turf/simulated/floor/trim/wood,/area/space)
-"mF" = (/obj/machinery/door/firedoor/border_only{dir = 4},/obj/machinery/door/firedoor/border_only{dir = 1},/obj/structure/catwalk,/turf/space,/area/space)
+"mF" = (/obj/machinery/door/firedoor/border_only{dir = 4},/obj/machinery/door/firedoor/border_only{dir = 1},/obj/structure/catwalk,/obj/structure/railing{dir = 8},/turf/simulated/open,/area/space)
 "mI" = (/obj/effect/floor_decal/trimline/green/warning{dir = 9},/turf/space,/area/space)
 "mJ" = (/obj/effect/floor_decal/bot_red,/obj/structure/disposalpipe/segment{dir = 6},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "mM" = (/obj/machinery/door/firedoor,/obj/structure/disposalpipe/segment{dir = 6},/turf/space,/area/space)
@@ -186,9 +206,10 @@
 "nr" = (/obj/structure/table/standard,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "nt" = (/obj/structure/disposalpipe/trunk{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "nv" = (/obj/machinery/door/firedoor,/obj/effect/decal/cleanable/dirt,/turf/space,/area/space)
+"nA" = (/obj/structure/disposaloutlet{dir = 4},/obj/structure/disposalpipe/trunk{dir = 8},/obj/structure/window/reinforced{dir = 8; health = 1e+006},/turf/simulated/floor/plating,/area/space)
 "nE" = (/obj/effect/floor_decal/trimline/dark_blue/corner,/obj/effect/floor_decal/trimline/dark_blue,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "nF" = (/obj/effect/floor_decal/siding/wood{dir = 5},/turf/simulated/floor/trim/wood,/area/space)
-"nH" = (/obj/structure/closet/lasertag/blue,/obj/effect/floor_decal/trimline/dark,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"nH" = (/obj/structure/table/standard,/obj/random/tech_supply,/obj/random/tech_supply,/obj/random/tech_supply,/obj/random/tech_supply,/obj/random/tech_supply,/obj/structure/sign/poster{pixel_x = -32},/turf/simulated/floor/tiled/rough,/area/space)
 "nK" = (/obj/effect/floor_decal/trimline/brown/corner{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "nN" = (/obj/effect/floor_decal/trimline/yellow/corner{dir = 4},/turf/space,/area/space)
 "nT" = (/obj/item/aicard,/obj/item/circuitboard/aicore,/turf/simulated/floor/tiled/white/rough,/area/space)
@@ -206,11 +227,12 @@
 "oy" = (/obj/structure/disposalpipe/segment{dir = 6},/turf/simulated/floor/tiled/rough,/area/space)
 "oz" = (/obj/item/wrench,/obj/item/crowbar/red,/turf/simulated/floor/plating,/area/space)
 "oE" = (/obj/effect/floor_decal/siding/wood{dir = 8},/obj/effect/floor_decal/siding/wood{dir = 4},/turf/simulated/floor/trim/wood,/area/space)
-"oG" = (/obj/machinery/conveyor{dir = 1; id = "AtmosStorage"},/obj/machinery/portable_atmospherics/canister/oxygen,/obj/machinery/light/small,/turf/space,/area/space)
+"oG" = (/obj/machinery/conveyor{dir = 1; id = "AtmosStorage"},/obj/machinery/portable_atmospherics/canister/oxygen,/obj/machinery/light/small,/turf/simulated/floor/reinforced,/area/space)
 "oQ" = (/obj/structure/table/standard,/obj/item/clothing/mask/surgical,/obj/item/clothing/gloves/latex,/turf/simulated/floor/tiled/dark/rough{dir = 8},/area/space)
 "oS" = (/obj/item/folder/blue,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "oV" = (/obj/machinery/door/airlock/mining,/turf/space,/area/space)
 "pe" = (/obj/structure/table/glass,/turf/simulated/floor/tiled/dark/rough{dir = 4},/area/space)
+"pg" = (/obj/machinery/door/window/southleft,/turf/simulated/floor/reinforced,/area/space)
 "ph" = (/obj/structure/table/standard,/turf/simulated/floor/trim/darkwood,/area/space)
 "pm" = (/obj/effect/floor_decal/trimline/green/arrow_cw{dir = 8},/turf/simulated/floor/tiled/rough,/area/space)
 "pn" = (/obj/machinery/door/airlock/security,/obj/effect/floor_decal/trimline/neutral/filled/line{dir = 1},/obj/effect/floor_decal/trimline/neutral/filled/mid_joiner{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/space)
@@ -221,27 +243,36 @@
 "px" = (/obj/machinery/door/firedoor/border_only,/obj/effect/floor_decal/trimline/purple/line{dir = 1},/obj/effect/floor_decal/trimline/purple/mid_joiner{dir = 1},/turf/simulated/floor/tiled/white/rough,/area/space)
 "pA" = (/obj/structure/table/reinforced,/turf/space,/area/space)
 "pB" = (/obj/structure/reagent_dispensers/watertank,/turf/space,/area/space)
+"pC" = (/obj/structure/catwalk,/obj/machinery/power/apc{dir = 1; name = "north bump"; pixel_y = 24},/turf/simulated/floor/plating,/area/space)
 "pE" = (/obj/effect/floor_decal/trimline/red/line{dir = 1},/turf/simulated/floor/tiled/rough,/area/space)
+"pG" = (/obj/effect/floor_decal/floordetail/tiled,/obj/machinery/vending/wallmed1{pixel_y = 32},/turf/simulated/floor/tiled/white/rough,/area/space)
 "pI" = (/obj/machinery/ai_slipper{uses = 10},/turf/simulated/floor/tiled/dark/rough{dir = 4},/area/space)
-"pO" = (/obj/effect/floor_decal/trimline/red/filled/line,/obj/effect/floor_decal/trimline/red/filled/mid_joiner,/turf/simulated/floor/tiled/dark/rough,/area/space)
-"pQ" = (/obj/machinery/photocopier,/obj/effect/floor_decal/siding/wood,/obj/effect/decal/cleanable/dirt,/turf/space,/area/space)
-"pS" = (/obj/machinery/conveyor{id = "garbage"},/turf/space,/area/space)
+"pO" = (/obj/structure/table/standard,/obj/random/tech_supply,/obj/random/tech_supply,/obj/random/tech_supply,/obj/random/tech_supply,/obj/random/tech_supply,/turf/simulated/floor/tiled/rough,/area/space)
+"pQ" = (/obj/machinery/photocopier,/obj/effect/floor_decal/siding/wood,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/space)
+"pS" = (/obj/effect/landmark/start/crew/assistant,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 6},/obj/structure/cable/yellow{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/rough,/area/space)
 "pV" = (/obj/machinery/recharge_station,/obj/effect/floor_decal/bot_red/left,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "pZ" = (/obj/machinery/cryopod,/obj/effect/floor_decal/trimline/blue/filled/line{dir = 1},/obj/effect/floor_decal/trimline/blue/filled/mid_joiner{dir = 1},/obj/effect/floor_decal/trimline/white/warning{dir = 1},/obj/effect/floor_decal/trimline/white/mid_joiner{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "qa" = (/obj/effect/floor_decal/trimline/neutral/corner,/turf/simulated/floor/plating,/area/space)
 "qc" = (/obj/structure/disposalpipe/segment{dir = 6},/turf/simulated/floor/tiled/white/mono,/area/space)
 "qf" = (/obj/effect/floor_decal/trimline/white/warning,/obj/machinery/door/firedoor/border_only{dir = 1},/turf/simulated/floor/tiled/rough,/area/space)
 "qh" = (/obj/effect/floor_decal/trimline/green/corner{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/space)
+"qs" = (/obj/structure/disposalpipe/segment{dir = 4},/obj/structure/catwalk,/turf/simulated/floor/plating,/area/space)
 "qt" = (/obj/effect/floor_decal/trimline/blue/filled/line,/obj/effect/floor_decal/trimline/blue/filled/mid_joiner,/obj/effect/floor_decal/trimline/white/warning,/obj/effect/floor_decal/trimline/white/mid_joiner,/turf/simulated/floor/tiled/dark/rough,/area/space)
-"qB" = (/obj/item/stack/rods/fifty,/obj/structure/catwalk,/turf/space,/area/space)
+"qx" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/structure/cable/yellow{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/rough,/area/space)
+"qB" = (/obj/item/stack/rods/fifty,/obj/structure/catwalk,/turf/simulated/open,/area/space)
+"qW" = (/obj/machinery/computer/HolodeckControl{linkedholodeck_area = /area/holodeck/alphadeck; programs_list_id = "ExodusMainPrograms"},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "ri" = (/obj/effect/floor_decal/trimline/yellow/warning{dir = 1},/obj/effect/decal/cleanable/dirt,/turf/space,/area/space)
 "ru" = (/obj/machinery/door/airlock/hatch{name = "AI Satellite"},/turf/simulated/floor/tiled/rough,/area/space)
 "rx" = (/obj/effect/floor_decal/jungledirt/grass/edge{dir = 8},/turf/simulated/floor/plating/airless,/area/space)
 "rK" = (/obj/structure/disposalpipe/segment{dir = 5},/turf/simulated/floor/tiled/rough,/area/space)
+"rQ" = (/turf/simulated/floor/reinforced,/area/space)
+"rR" = (/obj/structure/railing,/turf/simulated/floor/tiled/rough,/area/space)
 "rU" = (/obj/effect/floor_decal/trimline/yellow/warning{dir = 1},/turf/simulated/floor/tiled/white/rough,/area/space)
+"rX" = (/obj/structure/railing{dir = 1},/turf/simulated/floor/plating,/area/space)
 "rY" = (/obj/machinery/door/airlock/engineering,/turf/space,/area/space)
+"sa" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/structure/catwalk,/turf/simulated/floor/plating,/area/space)
 "sb" = (/obj/effect/floor_decal/trimline/brown/warning,/turf/space,/area/space)
-"se" = (/obj/effect/floor_decal/bot_white,/turf/simulated/floor/tiled/rough,/area/space)
+"se" = (/obj/structure/catwalk,/turf/simulated/floor/plating,/area/space)
 "sh" = (/obj/effect/decal/cleanable/dirt,/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/rough,/area/space)
 "sj" = (/obj/machinery/meter,/turf/simulated/floor/tiled/rough,/area/space)
 "sk" = (/obj/effect/floor_decal/trimline/purple/corner,/obj/structure/disposalpipe/segment{dir = 5},/turf/space,/area/space)
@@ -263,16 +294,20 @@
 "sP" = (/obj/effect/floor_decal/trimline/dark_red/arrow_cw{dir = 1},/turf/simulated/floor/tiled/rough,/area/space)
 "sS" = (/obj/structure/filingcabinet/chestdrawer,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/rough,/area/space)
 "sZ" = (/obj/machinery/turretid{control_area = "/area/station/ai_monitored/turret_protected/aisat_interior"; name = "Antechamber Turret Control"; pixel_x = 28},/turf/space,/area/space)
+"ti" = (/obj/machinery/button/remote/airlock{dir = 4; id = "HoloControl"; name = "Maintenance Lock"; pixel_x = -25; pixel_y = -5; specialfunctions = 4},/obj/structure/closet/lasertag/red,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "tp" = (/obj/machinery/meter,/turf/space,/area/space)
 "tq" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/door/firedoor/border_only{dir = 1},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/rough,/area/space)
-"tu" = (/obj/effect/floor_decal/siding/wood{dir = 4},/obj/effect/floor_decal/siding/wood{dir = 8},/turf/simulated/floor/trim/wood,/area/space)
+"tu" = (/obj/effect/floor_decal/siding/wood{dir = 4},/obj/effect/floor_decal/siding/wood{dir = 8},/obj/machinery/door/unpowered/simple/wood,/obj/effect/decal/cleanable/cobweb2,/turf/simulated/floor/trim/wood,/area/space)
 "tx" = (/obj/effect/floor_decal/bot_white,/obj/machinery/door/firedoor/border_only{dir = 8},/turf/space,/area/space)
 "tz" = (/obj/structure/disposalpipe/trunk,/turf/space,/area/space)
 "tD" = (/obj/structure/table/standard,/turf/simulated/floor/tiled/dark/mono,/area/space)
 "tE" = (/obj/structure/table/reinforced,/obj/item/folder/red,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "tP" = (/obj/machinery/turretid{icon_state = "control_stun"; name = "AI Chamber turret control"; pixel_x = -28; pixel_y = -4},/turf/simulated/floor/tiled/dark/rough{dir = 6},/area/space)
 "tQ" = (/obj/structure/reagent_dispensers/water_cooler,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"tR" = (/obj/machinery/light{dir = 1},/obj/machinery/atmospherics/unary/vent_pump/on,/obj/item/device/radio/intercom{pixel_y = 22},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "tS" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/space,/area/space)
+"tV" = (/obj/effect/floor_decal/floordetail/tiled,/turf/simulated/floor/tiled/white/rough,/area/space)
+"tX" = (/obj/effect/decal/cleanable/cobweb,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/space)
 "ub" = (/obj/effect/floor_decal/trimline/red/corner{dir = 8},/turf/simulated/floor/tiled/rough,/area/space)
 "uc" = (/obj/structure/table/standard,/obj/item/clothing/glasses/welding{pixel_x = -2; pixel_y = 7},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "uf" = (/turf/simulated/floor/tiled/white,/area/space)
@@ -280,12 +315,14 @@
 "up" = (/turf/simulated/floor/tiled/dark/mono,/area/space)
 "ur" = (/obj/effect/floor_decal/siding/wood{dir = 4},/obj/effect/floor_decal/siding/wood{dir = 8},/turf/space,/area/space)
 "uu" = (/obj/effect/floor_decal/trimline/red/filled/line{dir = 4},/obj/effect/floor_decal/trimline/red/filled/mid_joiner{dir = 4},/turf/space,/area/space)
+"uz" = (/obj/machinery/computer/prisoner,/turf/simulated/floor/tiled/rough,/area/space)
 "uA" = (/obj/effect/decal/cleanable/dirt,/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/rough{dir = 1},/area/space)
 "uD" = (/obj/structure/table/glass,/obj/item/storage/box/monkeycubes{pixel_x = -5; pixel_y = 1},/turf/simulated/floor/tiled/white/mono,/area/space)
 "uU" = (/obj/structure/table/reinforced,/obj/item/paper_bin,/obj/item/pen,/turf/simulated/floor/tiled/dark/rough{dir = 8},/area/space)
 "uW" = (/obj/effect/floor_decal/trimline/blue/line{dir = 8},/obj/effect/floor_decal/trimline/blue/mid_joiner{dir = 8},/turf/space,/area/space)
 "uY" = (/obj/item/integrated_circuit,/turf/simulated/floor/plating,/area/space)
 "vd" = (/obj/effect/floor_decal/trimline/green/filled/line{dir = 4},/obj/item/storage/box/beakers{pixel_x = 2; pixel_y = 2},/obj/item/storage/box/syringes,/turf/simulated/floor/tiled/white/rough,/area/space)
+"ve" = (/obj/structure/table/rack/dark,/turf/simulated/floor/tiled/dark/rough{dir = 1},/area/space)
 "vg" = (/turf/simulated/floor/tiled/dark/rough{dir = 10},/area/space)
 "vh" = (/obj/effect/floor_decal/siding/wood,/obj/structure/disposalpipe/segment{dir = 5},/turf/simulated/floor/trim/darkwood,/area/space)
 "vj" = (/obj/effect/floor_decal/trimline/green/filled/line{dir = 1},/obj/structure/closet/l3closet/virology,/turf/simulated/floor/tiled/white/rough,/area/space)
@@ -299,6 +336,8 @@
 "vD" = (/obj/structure/table/glass,/obj/item/storage/box/monkeycubes{pixel_x = 6; pixel_y = 4},/turf/simulated/floor/tiled/white/mono,/area/space)
 "vE" = (/obj/effect/floor_decal/siding/wood{dir = 4},/turf/simulated/floor/trim/darkwood,/area/space)
 "vG" = (/obj/effect/floor_decal/trimline/white/warning{dir = 4},/obj/machinery/door/firedoor/border_only{dir = 8},/turf/simulated/floor/tiled/rough{dir = 4},/area/space)
+"vH" = (/obj/machinery/light/small/quartz,/turf/simulated/floor/trim/carpet/arcade,/area/space)
+"vL" = (/obj/machinery/door/firedoor,/turf/simulated/floor/tiled/mono,/area/space)
 "vM" = (/obj/structure/disposalpipe/junction{dir = 4},/turf/simulated/floor/plating,/area/space)
 "vO" = (/obj/effect/floor_decal/trimline/yellow/warning{dir = 10},/turf/space,/area/space)
 "vV" = (/obj/structure/closet/secure_closet/injection,/turf/simulated/floor/tiled/rough,/area/space)
@@ -327,12 +366,14 @@
 "xB" = (/obj/effect/floor_decal/trimline/dark/filled/line{dir = 8},/obj/structure/closet/secure_closet/personal/cabinet,/turf/simulated/floor/trim/wood,/area/space)
 "xC" = (/obj/machinery/portable_atmospherics/canister/nitrogen,/obj/effect/floor_decal/bot,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "xD" = (/obj/structure/closet/secure_closet/personal/patient,/turf/simulated/floor/tiled/white/rough,/area/space)
-"xK" = (/obj/structure/closet/lasertag/red,/obj/effect/floor_decal/trimline/dark,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"xI" = (/obj/structure/disposalpipe/segment{dir = 4},/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/rough{dir = 1},/area/space)
+"xK" = (/obj/machinery/lapvend,/obj/machinery/light,/turf/simulated/floor/tiled/rough,/area/space)
 "xL" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "xO" = (/obj/structure/closet/firecloset,/obj/effect/floor_decal/trimline/dark_red/end{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "xP" = (/turf/space,/area/space)
+"xR" = (/obj/structure/window_frame/rglass,/obj/machinery/door/firedoor/border_only{dir = 4},/turf/simulated/floor/plating,/area/space)
 "xW" = (/obj/structure/disposalpipe/segment{dir = 6},/turf/space,/area/space)
-"xX" = (/obj/effect/floor_decal/siding/wood,/obj/effect/decal/cleanable/dirt,/turf/space,/area/space)
+"xX" = (/obj/effect/floor_decal/siding/wood,/obj/effect/decal/cleanable/dirt,/obj/random/pottedplant,/turf/simulated/floor/trim/wood,/area/space)
 "yb" = (/obj/effect/floor_decal/trimline/dark/filled/line,/turf/simulated/floor/trim/wood,/area/space)
 "yc" = (/turf/simulated/floor/tiled/rough{dir = 8},/area/space)
 "yd" = (/obj/effect/floor_decal/bot_red,/turf/simulated/floor/tiled/white/rough,/area/space)
@@ -340,51 +381,57 @@
 "yk" = (/obj/structure/table/standard,/obj/item/storage/box/lights/mixed{pixel_y = 10; pixel_x = -5},/turf/simulated/floor/tiled/mono,/area/space)
 "ym" = (/obj/machinery/photocopier,/turf/simulated/floor/tiled/dark/mono,/area/space)
 "yp" = (/obj/structure/window_frame/rglass,/obj/structure/curtain,/turf/simulated/floor/plating,/area/space)
-"yq" = (/obj/structure/closet/lasertag/red,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"yq" = (/obj/structure/table/standard,/obj/machinery/recharger,/turf/simulated/floor/tiled/rough,/area/space)
 "yu" = (/obj/effect/floor_decal/bot_white/left,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "yx" = (/obj/effect/floor_decal/siding/wood/corner{dir = 8},/obj/structure/disposalpipe/trunk{dir = 1},/turf/simulated/floor/tiled/dark/rough{dir = 1},/area/space)
 "yz" = (/obj/structure/disposalpipe/segment,/turf/space,/area/space)
 "yC" = (/obj/effect/floor_decal/trimline/yellow/warning{dir = 4},/turf/simulated/floor/tiled/white/rough{dir = 8},/area/space)
 "yD" = (/turf/simulated/floor/plating/airless,/area/space)
-"yG" = (/obj/machinery/door/firedoor,/turf/simulated/floor/tiled/dark/rough{dir = 1},/area/space)
+"yG" = (/turf/simulated/floor/reinforced{name = "Holodeck Projector Floor"},/area/space)
 "yJ" = (/obj/effect/floor_decal/trimline/yellow/warning{dir = 5},/turf/simulated/floor/tiled/white/rough{dir = 8},/area/space)
 "yM" = (/obj/item/target,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating/airless,/area/space)
 "yN" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/rough,/area/space)
 "yP" = (/obj/effect/floor_decal/bot_red,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/rough,/area/space)
 "yQ" = (/obj/effect/floor_decal/trimline/green/warning,/turf/space,/area/space)
 "yU" = (/obj/effect/floor_decal/bot_red,/obj/structure/table/reinforced,/obj/machinery/recharger,/turf/simulated/floor/tiled/dark/rough,/area/space)
-"yW" = (/obj/effect/floor_decal/trimline/blue/filled/line{dir = 8},/obj/effect/floor_decal/trimline/blue/filled/mid_joiner{dir = 8},/turf/simulated/floor/tiled/dark/rough{dir = 8},/area/space)
+"yW" = (/obj/effect/landmark/start/crew/assistant,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/structure/cable/yellow{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/rough,/area/space)
 "zc" = (/obj/structure/disposalpipe/segment{dir = 6},/turf/simulated/floor/tiled/dark/rough,/area/space)
+"zd" = (/obj/effect/floor_decal/bot_red,/obj/structure/table/rack/dark,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "zj" = (/obj/structure/table/glass,/obj/machinery/reagentgrinder{pixel_y = 8},/obj/item/reagent_containers/dropper{pixel_y = -5},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "zk" = (/obj/structure/ladder,/obj/machinery/door/firedoor/border_only,/obj/structure/catwalk,/turf/space,/area/space)
 "zl" = (/obj/machinery/door/firedoor,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/space)
 "zp" = (/obj/effect/floor_decal/trimline/yellow,/turf/space,/area/space)
 "zB" = (/obj/effect/floor_decal/jungledirt/grass/edge{dir = 4},/turf/simulated/floor/plating/airless,/area/space)
 "zF" = (/obj/machinery/door/airlock/command,/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/dark/rough{dir = 1},/area/space)
-"zK" = (/obj/machinery/door/firedoor/border_only{dir = 4},/obj/structure/catwalk,/turf/space,/area/space)
+"zK" = (/obj/machinery/door/firedoor/border_only{dir = 4},/obj/structure/catwalk,/obj/structure/railing{dir = 8},/turf/simulated/open,/area/space)
 "zP" = (/obj/structure/disposalpipe/segment{dir = 10},/obj/structure/catwalk,/turf/space,/area/space)
 "zV" = (/turf/simulated/floor/tiled/white/rough{dir = 8},/area/space)
 "zX" = (/obj/machinery/door/airlock/research,/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "Aa" = (/obj/structure/closet/crate,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "Ad" = (/obj/effect/floor_decal/jungledirt,/obj/effect/floor_decal/junglepath{dir = 9},/turf/simulated/floor/plating/airless,/area/space)
+"Ak" = (/obj/machinery/door/airlock/glass{name = "Holodeck Control"},/turf/space,/area/space)
+"Ap" = (/obj/machinery/door/firedoor/border_only{dir = 4},/obj/structure/catwalk,/obj/structure/railing{dir = 8},/obj/structure/railing{dir = 1},/turf/simulated/open,/area/space)
 "As" = (/obj/item/wrench,/obj/structure/table/standard,/turf/space,/area/space)
 "At" = (/obj/effect/decal/cleanable/dirt,/obj/structure/disposalpipe/segment{dir = 6},/turf/simulated/floor/tiled/rough,/area/space)
 "Au" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/plating,/area/space)
-"Aw" = (/obj/machinery/door/firedoor,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"Aw" = (/obj/structure/table/standard,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/item/material/ashtray/plastic,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "Ax" = (/obj/machinery/ai_slipper{uses = 8},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "Az" = (/obj/structure/closet/l3closet/scientist,/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/white/mono,/area/space)
 "AJ" = (/obj/structure/curtain,/obj/effect/floor_decal/jungledirt/grass/edge{dir = 1},/turf/simulated/floor/plating/airless,/area/space)
 "AR" = (/obj/machinery/door/airlock/virology{autoclose = 0; frequency = 1449; id_tag = "virology_airlock_exterior"; name = "Virology Exterior Airlock"},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/white/rough,/area/space)
 "AT" = (/obj/structure/closet/secure_closet/hos,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "Ba" = (/obj/machinery/monkey_recycler,/turf/space,/area/space)
+"Bc" = (/obj/structure/bed/chair/pedalgen{dir = 1},/turf/simulated/floor/tiled/white/rough,/area/space)
 "Be" = (/obj/effect/floor_decal/trimline/yellow/warning{dir = 6},/turf/space,/area/space)
 "Bk" = (/obj/effect/floor_decal/trimline/blue/line{dir = 8},/obj/effect/floor_decal/trimline/blue/mid_joiner{dir = 8},/obj/structure/disposalpipe/segment{dir = 9},/turf/simulated/floor/tiled/white/rough{dir = 1},/area/space)
 "Bo" = (/obj/structure/disposalpipe/segment{dir = 10},/turf/simulated/floor/tiled/rough,/area/space)
+"Bq" = (/obj/effect/decal/cleanable/dirt,/obj/structure/bed/chair/office/dark,/turf/simulated/floor/tiled/rough,/area/space)
 "Bs" = (/obj/effect/floor_decal/trimline/purple/corner{dir = 8},/obj/structure/disposalpipe/segment{dir = 10},/turf/space,/area/space)
 "Bw" = (/obj/machinery/cryopod{dir = 1},/obj/effect/floor_decal/trimline/blue/filled/line,/obj/effect/floor_decal/trimline/blue/filled/mid_joiner,/obj/effect/floor_decal/trimline/white/warning,/obj/effect/floor_decal/trimline/white/mid_joiner,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "Bx" = (/turf/simulated/floor/tiled/rough{dir = 1},/area/space)
 "By" = (/obj/structure/toilet{dir = 8},/turf/simulated/floor/tiled/rough,/area/space)
 "BB" = (/obj/effect/floor_decal/siding/wood,/obj/effect/floor_decal/siding/wood{dir = 1},/obj/structure/disposalpipe/segment,/turf/simulated/floor/trim/wood,/area/space)
+"BD" = (/obj/structure/disposalpipe/segment,/obj/structure/catwalk,/turf/simulated/floor/plating,/area/space)
 "BF" = (/obj/effect/floor_decal/trimline/dark_red/line{dir = 4},/obj/effect/floor_decal/trimline/dark_red/line{dir = 8},/obj/effect/floor_decal/trimline/dark_red/mid_joiner{dir = 4},/obj/effect/floor_decal/trimline/dark_red/mid_joiner{dir = 8},/turf/space,/area/space)
 "BJ" = (/obj/effect/floor_decal/trimline/white/arrow_cw,/obj/effect/floor_decal/trimline/white/arrow_cw{dir = 1},/obj/effect/floor_decal/trimline/white/mid_joiner,/obj/effect/floor_decal/trimline/white/mid_joiner{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "BV" = (/obj/structure/disposalpipe/segment{dir = 10},/turf/simulated/floor/tiled/white/mono,/area/space)
@@ -403,17 +450,17 @@
 "CR" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/dark/rough{dir = 1},/area/space)
 "CS" = (/obj/effect/floor_decal/trimline/red/line,/turf/simulated/floor/tiled/rough,/area/space)
 "CV" = (/obj/structure/closet/wardrobe/mixed,/obj/effect/floor_decal/trimline/dark_blue/warning{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/space)
-"CZ" = (/obj/machinery/conveyor_switch{id = "AtmosStorage"},/turf/space,/area/space)
+"CZ" = (/obj/machinery/conveyor_switch{id = "AtmosStorage"},/turf/simulated/floor/reinforced,/area/space)
 "Dj" = (/obj/structure/disposalpipe/trunk{dir = 8},/turf/simulated/floor/tiled/white/rough,/area/space)
 "Dn" = (/obj/machinery/vending/cigarette,/obj/effect/floor_decal/siding/wood,/turf/simulated/floor/trim/wood,/area/space)
-"Dq" = (/obj/machinery/conveyor{dir = 6; id = "garbage"},/turf/space,/area/space)
+"Dq" = (/obj/structure/table/woodentable,/obj/item/modular_computer/laptop/preset/custom_loadout/cheap,/turf/simulated/floor/tiled/rough,/area/space)
 "Dx" = (/obj/structure/table/glass,/obj/item/storage/toolbox/mechanical,/turf/simulated/floor/tiled/dark/rough{dir = 4},/area/space)
-"DE" = (/obj/effect/floor_decal/trimline/blue/filled/line,/obj/effect/floor_decal/trimline/blue/filled/mid_joiner,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"DE" = (/obj/structure/table/standard,/obj/random/tech_supply,/obj/random/tech_supply,/obj/random/tech_supply,/obj/random/tech_supply,/obj/random/tech_supply,/obj/machinery/power/apc{dir = 8; name = "west bump"; pixel_x = -24},/obj/structure/cable/yellow{d2 = 4; icon_state = "0-4"},/turf/simulated/floor/tiled/rough,/area/space)
 "DF" = (/obj/effect/floor_decal/trimline/brown/warning{dir = 1},/turf/space,/area/space)
 "DS" = (/obj/effect/floor_decal/siding/wood{dir = 10},/turf/space,/area/space)
 "DT" = (/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/white/mono,/area/space)
 "Ei" = (/obj/effect/floor_decal/jungledirt,/obj/effect/floor_decal/junglepath{dir = 4},/turf/simulated/floor/plating/airless,/area/space)
-"En" = (/obj/machinery/suit_storage_unit/atmos,/obj/structure/catwalk,/turf/space,/area/space)
+"En" = (/obj/machinery/suit_storage_unit/atmos,/obj/structure/catwalk,/turf/simulated/open,/area/space)
 "Eo" = (/obj/effect/floor_decal/trimline/green/filled/line{dir = 10},/obj/structure/disposalpipe/trunk{dir = 1},/turf/simulated/floor/tiled/white/rough,/area/space)
 "Es" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/tiled/rough{dir = 1},/area/space)
 "Et" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/white/rough,/area/space)
@@ -424,11 +471,15 @@
 "EK" = (/obj/effect/floor_decal/siding/wood,/obj/effect/floor_decal/siding/wood{dir = 1},/obj/machinery/door/airlock/command,/turf/simulated/floor/trim/wood,/area/space)
 "EN" = (/obj/effect/floor_decal/trimline/dark_blue/corner{dir = 8},/obj/effect/floor_decal/trimline/dark_blue,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "EP" = (/obj/machinery/navbeacon{codes_txt = "patrol;next_patrol=Deck2ForeStarboard"; location = "Deck2ForePort"},/turf/simulated/floor/tiled/rough,/area/space)
+"EQ" = (/obj/machinery/papershredder,/turf/simulated/floor/trim/wood,/area/space)
+"ET" = (/obj/machinery/camera/network/civilian_east{c_tag = "Dormitory Holodeck Control"; dir = 4},/obj/structure/closet/lasertag/blue,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "EU" = (/obj/effect/floor_decal/jungledirt,/turf/simulated/floor/plating/airless,/area/space)
+"Fa" = (/obj/effect/floor_decal/siding/wood,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/space)
 "Ff" = (/obj/machinery/portable_atmospherics/canister,/turf/space,/area/space)
 "Fk" = (/obj/structure/closet/crate/secure/loot,/obj/item/stack/cable_coil,/turf/space,/area/space)
 "Fm" = (/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plating,/area/space)
 "Fo" = (/obj/structure/table/glass,/obj/item/folder/white{pixel_x = 4; pixel_y = -3},/obj/item/folder/white{pixel_x = 4; pixel_y = -3},/obj/item/pen/red,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"Fp" = (/obj/structure/table/standard,/obj/item/paper/exodus_holodeck,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "Fw" = (/obj/structure/disposalpipe/segment{dir = 10},/turf/simulated/floor/plating,/area/space)
 "Fy" = (/obj/effect/floor_decal/trimline/purple/line{dir = 1},/obj/effect/floor_decal/trimline/purple/mid_joiner{dir = 1},/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/white/rough,/area/space)
 "FI" = (/obj/structure/table/standard,/obj/machinery/cell_charger,/turf/simulated/floor/tiled/dark/rough,/area/space)
@@ -447,16 +498,19 @@
 "Gv" = (/obj/machinery/door/firedoor/border_only,/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/dark/mono,/area/space)
 "Gx" = (/obj/effect/floor_decal/trimline/dark_blue/corner,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "GG" = (/obj/machinery/door/firedoor/border_only{dir = 1},/obj/effect/floor_decal/trimline/green/warning,/turf/space,/area/space)
+"GI" = (/obj/effect/landmark/start/crew/assistant,/obj/machinery/vending/wallmed1{pixel_y = 30},/turf/simulated/floor/tiled/rough,/area/space)
 "GJ" = (/obj/structure/closet/bombcloset,/turf/simulated/floor/tiled/rough,/area/space)
 "GL" = (/obj/structure/table/reinforced,/turf/simulated/floor/tiled/dark/rough{dir = 4},/area/space)
+"GR" = (/obj/effect/landmark/start/crew/assistant,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/tiled/rough,/area/space)
 "GU" = (/obj/effect/floor_decal/trimline/red/warning{dir = 8},/turf/space,/area/space)
-"GY" = (/obj/machinery/conveyor{dir = 5; id = "garbage"},/turf/space,/area/space)
+"GV" = (/obj/machinery/disposal/deliveryChute{dir = 8},/obj/structure/disposalpipe/trunk{dir = 4},/turf/simulated/floor/plating,/area/space)
+"GY" = (/obj/structure/window_frame/reinforced/hull,/turf/simulated/floor/plating,/area/space)
 "Hg" = (/obj/structure/disposalpipe/segment{dir = 10},/turf/simulated/floor/tiled/dark/mono,/area/space)
 "Hr" = (/obj/structure/ladder,/obj/structure/ladder,/obj/machinery/door/firedoor/border_only,/obj/structure/catwalk,/turf/space,/area/space)
 "Ht" = (/obj/machinery/chem_master,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "Hv" = (/obj/effect/floor_decal/trimline/red/corner{dir = 4},/turf/simulated/floor/tiled/rough,/area/space)
 "HD" = (/obj/structure/reagent_dispensers/watertank,/obj/effect/floor_decal/bot,/turf/simulated/floor/tiled/rough,/area/space)
-"HE" = (/obj/machinery/door/firedoor/border_only{dir = 4},/turf/simulated/floor/tiled/rough{dir = 1},/area/space)
+"HE" = (/turf/simulated/floor/trim/carpet/arcade,/area/space)
 "HJ" = (/obj/effect/floor_decal/bot_red/right,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "HK" = (/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/white/rough{dir = 1},/area/space)
 "HO" = (/obj/machinery/door/airlock/centcom,/turf/space,/area/space)
@@ -473,7 +527,8 @@
 "Ip" = (/obj/structure/ladder,/obj/structure/catwalk,/turf/space,/area/space)
 "Ir" = (/obj/machinery/portable_atmospherics/canister/nitrogen,/turf/space,/area/space)
 "It" = (/obj/effect/floor_decal/trimline/dark_blue/warning{dir = 8},/turf/simulated/floor/tiled/dark/rough{dir = 4},/area/space)
-"IH" = (/obj/structure/disposalpipe/segment{dir = 9},/turf/simulated/floor/plating/airless,/area/space)
+"IC" = (/obj/machinery/door/airlock/glass{name = "Holodeck"},/obj/machinery/door/firedoor/border_only,/obj/effect/floor_decal/corner/grey,/turf/simulated/floor/tiled/dark,/area/space)
+"IH" = (/obj/structure/disposalpipe/segment{dir = 8; icon_state = "pipe-c"},/turf/simulated/floor/plating/airless,/area/space)
 "II" = (/obj/machinery/portable_atmospherics/canister/oxygen,/obj/effect/floor_decal/bot,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "IK" = (/obj/effect/floor_decal/siding/wood{dir = 1},/obj/effect/floor_decal/siding/wood,/obj/machinery/door/airlock/virology,/turf/simulated/floor/trim/wood,/area/space)
 "IP" = (/obj/effect/floor_decal/trimline/green/end,/turf/simulated/floor/tiled/rough,/area/space)
@@ -482,6 +537,7 @@
 "IY" = (/obj/machinery/door/firedoor,/turf/simulated/floor/tiled/rough{dir = 1},/area/space)
 "Jc" = (/obj/machinery/power/smes{charge = 5e+006},/turf/space,/area/space)
 "Jg" = (/obj/item/mop,/obj/item/mop,/turf/simulated/floor/tiled/mono,/area/space)
+"Jj" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/space)
 "Jl" = (/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/tiled/white/rough,/area/space)
 "Jn" = (/obj/machinery/door/firedoor/border_only{dir = 1},/turf/simulated/floor/tiled/dark/rough{dir = 1},/area/space)
 "Jr" = (/obj/item/paper_bin,/obj/item/pen,/turf/space,/area/space)
@@ -490,7 +546,7 @@
 "JB" = (/obj/effect/floor_decal/siding/wood,/turf/simulated/floor/sand_floor,/area/space)
 "JF" = (/obj/structure/table/glass,/obj/item/reagent_containers/dropper{pixel_y = -5},/turf/simulated/floor/tiled/white/mono,/area/space)
 "JG" = (/obj/structure/toilet{pixel_y = 12},/turf/space,/area/space)
-"JL" = (/obj/effect/floor_decal/siding/wood{dir = 4},/obj/effect/floor_decal/siding/wood{dir = 8},/obj/machinery/door/airlock{id_tag = "private_b"; name = "Private Booth B"},/turf/simulated/floor/trim/wood,/area/space)
+"JL" = (/obj/structure/window/reinforced{dir = 4},/turf/simulated/floor/tiled/white/rough,/area/space)
 "JP" = (/obj/effect/floor_decal/siding/wood,/obj/effect/floor_decal/trimline/neutral/warning{dir = 1},/obj/structure/disposalpipe/trunk,/turf/simulated/floor/trim/wood,/area/space)
 "JS" = (/obj/structure/table/standard,/obj/machinery/door/firedoor,/turf/simulated/floor/tiled/rough{dir = 1},/area/space)
 "JW" = (/obj/structure/table/standard,/obj/item/storage/box/condimentbottles{pixel_y = 10},/obj/item/storage/box/beakers{pixel_x = 5; pixel_y = 3},/turf/space,/area/space)
@@ -500,20 +556,24 @@
 "Kw" = (/obj/effect/floor_decal/trimline/yellow/warning{dir = 1},/turf/simulated/floor/tiled/white/rough{dir = 1},/area/space)
 "KA" = (/obj/effect/floor_decal/trimline/red/corner{dir = 1},/obj/effect/floor_decal/trimline/dark_red/line{dir = 4},/turf/space,/area/space)
 "KE" = (/obj/effect/floor_decal/trimline/blue/corner{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/space)
-"KG" = (/obj/machinery/door/firedoor/border_only{dir = 4},/turf/space,/area/space)
-"KK" = (/obj/structure/disposalpipe/segment,/obj/machinery/door/firedoor,/turf/simulated/floor/tiled/rough,/area/space)
+"KG" = (/obj/machinery/door/firedoor/border_only{dir = 4},/turf/simulated/floor/trim/carpet/arcade,/area/space)
+"KK" = (/obj/effect/floor_decal/stairs{dir = 1},/turf/simulated/floor/tiled/rough,/area/space)
 "KL" = (/obj/effect/floor_decal/trimline/white/line{dir = 8},/obj/effect/floor_decal/trimline/red/warning{dir = 8},/obj/effect/floor_decal/trimline/dark_red/line{dir = 4},/turf/space,/area/space)
 "KP" = (/obj/machinery/door/firedoor,/obj/structure/disposalpipe/segment{dir = 9},/turf/space,/area/space)
 "KQ" = (/obj/effect/floor_decal/bot_white,/obj/machinery/door/firedoor/border_only{dir = 4},/obj/effect/decal/cleanable/dirt,/turf/space,/area/space)
+"KT" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/tiled/rough{dir = 1},/area/space)
 "KU" = (/obj/item/clipboard,/obj/item/toy/figure/qm,/obj/structure/disposalpipe/segment{dir = 4},/turf/space,/area/space)
-"KY" = (/obj/machinery/mineral/stacking_machine{input_dir = 1; stack_amt = 10; output_dir = 2},/turf/space,/area/space)
+"KY" = (/turf/simulated/open,/area/space)
 "Lb" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/trim/wood,/area/space)
 "Le" = (/obj/effect/floor_decal/trimline/green/filled/line{dir = 9},/obj/structure/closet/l3closet/virology,/turf/simulated/floor/tiled/white/rough,/area/space)
+"Ln" = (/obj/structure/table/standard,/obj/random/tech_supply,/obj/random/tech_supply,/obj/random/tech_supply,/obj/random/tech_supply,/obj/random/tech_supply,/obj/machinery/light{dir = 1},/turf/simulated/floor/tiled/rough,/area/space)
 "Lp" = (/obj/machinery/door/firedoor,/obj/structure/catwalk,/turf/space,/area/space)
 "Lt" = (/obj/effect/floor_decal/siding/wood,/obj/structure/disposalpipe/trunk,/turf/simulated/floor/trim/wood,/area/space)
 "Lw" = (/obj/machinery/navbeacon{codes_txt = "patrol;next_patrol=Deck2AftStarboard"; location = "Deck2ForeStarboard"},/turf/simulated/floor/tiled/rough,/area/space)
 "Lz" = (/obj/machinery/door/firedoor/border_only{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "LF" = (/obj/item/storage/toolbox/mechanical,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"LJ" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/rough{dir = 1},/area/space)
+"LO" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass{name = "Holodeck Control"},/turf/simulated/floor/plating,/area/space)
 "LW" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/dark/rough{dir = 8},/area/space)
 "LY" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plating,/area/space)
 "Md" = (/obj/structure/table/glass,/obj/item/clothing/glasses/hud/health,/turf/simulated/floor/tiled/dark/rough,/area/space)
@@ -522,7 +582,7 @@
 "Ml" = (/obj/effect/floor_decal/bot_red,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "Mm" = (/obj/machinery/door/airlock/research,/turf/space,/area/space)
 "Mn" = (/obj/effect/decal/cleanable/dirt,/obj/structure/disposalpipe/segment{dir = 9},/turf/simulated/floor/plating,/area/space)
-"Mq" = (/obj/effect/floor_decal/trimline/red/filled/corner,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"Mq" = (/obj/item/stool,/obj/effect/landmark/start/crew/assistant,/turf/simulated/floor/tiled/rough,/area/space)
 "Mz" = (/obj/structure/disposalpipe/trunk{dir = 1},/turf/simulated/floor/tiled/rough,/area/space)
 "MB" = (/obj/effect/floor_decal/bot,/turf/simulated/floor/tiled/rough,/area/space)
 "MK" = (/obj/structure/table/reinforced,/obj/machinery/door/firedoor,/turf/simulated/floor/plating,/area/space)
@@ -534,6 +594,7 @@
 "Nl" = (/obj/structure/disposalpipe/segment,/turf/simulated/floor/trim/darkwood,/area/space)
 "No" = (/obj/effect/floor_decal/trimline/dark_blue/warning{dir = 1},/turf/space,/area/space)
 "Nq" = (/obj/item/target,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating/airless,/area/space)
+"NA" = (/obj/machinery/light/small/quartz,/obj/machinery/computer/arcade,/turf/simulated/floor/trim/carpet/arcade,/area/space)
 "NE" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/dark/rough{dir = 4},/area/space)
 "NF" = (/obj/structure/disposalpipe/segment{dir = 5},/obj/machinery/door/firedoor/border_only{dir = 8},/obj/structure/catwalk,/turf/space,/area/space)
 "NG" = (/obj/structure/closet/emcloset,/turf/simulated/floor/tiled/dark/rough,/area/space)
@@ -546,7 +607,8 @@
 "Oc" = (/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/tiled/rough,/area/space)
 "Oe" = (/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/dark/rough{dir = 4},/area/space)
 "Op" = (/obj/effect/floor_decal/siding/wood,/turf/simulated/floor/tiled/white/rough,/area/space)
-"Ow" = (/obj/item/folder/blue{pixel_x = -8; pixel_y = -2},/obj/item/pen/blue{pixel_y = -2},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/rough,/area/space)
+"Ow" = (/obj/item/folder/blue{pixel_x = -8; pixel_y = -2},/obj/item/pen/blue{pixel_y = -2},/obj/effect/decal/cleanable/dirt,/obj/structure/table/woodentable,/turf/simulated/floor/tiled/rough,/area/space)
+"Ox" = (/obj/machinery/door/firedoor/border_only{dir = 4},/obj/structure/catwalk,/obj/structure/railing{dir = 1},/turf/simulated/open,/area/space)
 "Oy" = (/obj/item/stack/cable_coil,/turf/simulated/floor/plating,/area/space)
 "OB" = (/obj/effect/floor_decal/trimline/green/filled/line,/turf/simulated/floor/tiled/white/rough,/area/space)
 "OC" = (/obj/machinery/door/firedoor,/turf/simulated/floor/plating,/area/space)
@@ -554,19 +616,24 @@
 "ON" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/rough,/area/space)
 "OR" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/rough{dir = 1},/area/space)
 "OS" = (/obj/structure/table/standard,/obj/machinery/microwave{pixel_y = 6},/turf/simulated/floor/tiled/dark/rough,/area/space)
+"OT" = (/obj/structure/window_frame/grille,/turf/simulated/floor/plating,/area/space)
+"Pc" = (/obj/structure/table/rack/dark,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "Pf" = (/obj/structure/closet/secure_closet/personal/cabinet,/turf/simulated/floor/trim/wood,/area/space)
+"Ph" = (/obj/structure/closet/lasertag/red,/turf/simulated/floor/tiled/rough,/area/space)
 "Pm" = (/obj/effect/decal/cleanable/cobweb,/obj/structure/disposalpipe/segment{dir = 6},/obj/machinery/navbeacon{codes_txt = "delivery;dir=2"; location = "QM #1"},/turf/space,/area/space)
 "Pq" = (/obj/structure/disposalpipe/segment{dir = 5},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "PA" = (/obj/effect/floor_decal/trimline/dark_red/arrow_ccw,/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/rough,/area/space)
 "PE" = (/obj/machinery/door/airlock/maintenance_hatch,/turf/simulated/floor/tiled/dark/rough,/area/space)
-"PG" = (/obj/structure/disposalpipe/trunk{dir = 4},/turf/space,/area/space)
+"PG" = (/obj/structure/disposalpipe/trunk{dir = 4},/turf/simulated/floor/trim/carpet/arcade,/area/space)
 "PI" = (/obj/effect/floor_decal/siding/wood{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "PK" = (/obj/machinery/door/airlock/maintenance_hatch,/turf/simulated/floor/tiled/rough,/area/space)
 "PO" = (/obj/machinery/vending/security,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "PS" = (/obj/effect/floor_decal/trimline/dark_blue/corner{dir = 1},/obj/effect/floor_decal/trimline/dark_blue,/turf/simulated/floor/tiled/dark/rough,/area/space)
-"PX" = (/obj/item/gun/energy/ionrifle,/obj/item/storage/box/teargas{pixel_x = 1; pixel_y = -2},/obj/effect/floor_decal/bot_red,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"PX" = (/obj/item/gun/energy/ionrifle,/obj/item/storage/box/teargas{pixel_x = 1; pixel_y = -2},/obj/effect/floor_decal/bot_red,/obj/structure/table/rack/dark,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"PZ" = (/obj/structure/closet/lasertag/blue,/turf/simulated/floor/tiled/rough,/area/space)
 "Qk" = (/obj/effect/decal/cleanable/dirt,/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/plating,/area/space)
-"Qw" = (/obj/item/shield/riot{pixel_x = -3; pixel_y = 3},/obj/item/shield/riot,/obj/item/shield/riot{pixel_x = 3; pixel_y = -3},/turf/simulated/floor/tiled/dark/rough,/area/space)
+"Qo" = (/obj/structure/window/reinforced{dir = 8; health = 1e+006},/obj/machinery/vending/fitness,/turf/simulated/floor/tiled/white/rough,/area/space)
+"Qw" = (/obj/item/shield/riot{pixel_x = -3; pixel_y = 3},/obj/item/shield/riot,/obj/item/shield/riot{pixel_x = 3; pixel_y = -3},/obj/structure/table/rack/dark,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "Qx" = (/obj/effect/floor_decal/trimline/dark_blue/corner{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "QE" = (/obj/structure/disposalpipe/segment,/obj/machinery/door/firedoor/border_only{dir = 8},/obj/structure/catwalk,/turf/space,/area/space)
 "QF" = (/obj/structure/disposalpipe/segment{dir = 6},/turf/simulated/floor/tiled/dark/rough{dir = 4},/area/space)
@@ -593,6 +660,7 @@
 "Sj" = (/obj/structure/girder/reinforced,/turf/simulated/floor/plating,/area/space)
 "Sl" = (/obj/structure/table/standard,/turf/space,/area/space)
 "Sn" = (/obj/machinery/door/firedoor/border_only{dir = 8},/turf/simulated/floor/tiled/rough,/area/space)
+"So" = (/obj/effect/landmark/start/crew/assistant,/obj/machinery/hologram/holopad,/turf/simulated/floor/tiled/rough,/area/space)
 "Sp" = (/obj/machinery/door/firedoor/border_only,/obj/effect/floor_decal/trimline/purple/line{dir = 1},/obj/effect/floor_decal/trimline/purple/mid_joiner{dir = 1},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/white/rough,/area/space)
 "Sq" = (/obj/effect/floor_decal/siding/wood{dir = 4},/obj/effect/floor_decal/siding/wood{dir = 8},/obj/machinery/door/airlock/command,/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/trim/wood,/area/space)
 "Sy" = (/obj/machinery/door/airlock/medical,/obj/effect/floor_decal/siding/wood{dir = 8},/obj/effect/floor_decal/siding/wood{dir = 4},/turf/simulated/floor/trim/wood,/area/space)
@@ -607,6 +675,7 @@
 "Tc" = (/obj/machinery/door/airlock/vault,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "Tf" = (/obj/effect/floor_decal/trimline/red/warning{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/space,/area/space)
 "Ti" = (/obj/machinery/door/firedoor/border_only{dir = 1},/turf/simulated/floor/plating,/area/space)
+"Tm" = (/obj/machinery/computer/arcade,/turf/simulated/floor/trim/carpet/arcade,/area/space)
 "Tp" = (/obj/structure/transit_tube,/turf/simulated/floor/plating,/area/space)
 "Tq" = (/obj/structure/disposalpipe/segment{dir = 10},/turf/space,/area/space)
 "Tw" = (/obj/effect/floor_decal/trimline/blue/line{dir = 8},/obj/effect/floor_decal/trimline/blue/mid_joiner{dir = 8},/obj/structure/disposalpipe/segment{dir = 10},/turf/simulated/floor/tiled/white/rough{dir = 1},/area/space)
@@ -625,21 +694,25 @@
 "UF" = (/obj/effect/floor_decal/trimline/brown/corner,/turf/space,/area/space)
 "UJ" = (/obj/effect/floor_decal/siding/wood/corner{dir = 8},/turf/simulated/floor/trim/wood,/area/space)
 "UM" = (/turf/simulated/floor/tiled/dark/rough{dir = 4},/area/space)
+"Va" = (/obj/structure/window/reinforced{dir = 4},/obj/effect/floor_decal/floordetail/tiled,/turf/simulated/floor/tiled/white/rough,/area/space)
 "Vd" = (/obj/effect/floor_decal/trimline/brown/warning{dir = 9},/turf/space,/area/space)
 "Vk" = (/obj/machinery/door/firedoor,/obj/structure/disposalpipe/segment{dir = 4},/turf/space,/area/space)
+"Vl" = (/obj/structure/synthesized_instrument/synthesizer/piano,/turf/simulated/floor/trim/carpet/arcade,/area/space)
 "Vo" = (/obj/structure/disposalpipe/segment{dir = 9},/turf/simulated/floor/tiled/white/rough{dir = 1},/area/space)
 "Vu" = (/obj/machinery/door/firedoor/border_only{dir = 4},/turf/simulated/floor/tiled/white/rough{dir = 1},/area/space)
 "VF" = (/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "VM" = (/obj/structure/disposalpipe/segment{dir = 5},/turf/simulated/floor/tiled/white/rough{dir = 1},/area/space)
 "VS" = (/obj/item/pickaxe,/turf/simulated/floor/tiled/white/rough,/area/space)
-"VT" = (/obj/structure/closet/lasertag/blue,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"VT" = (/obj/machinery/vending/assist,/obj/machinery/light,/turf/simulated/floor/tiled/rough,/area/space)
 "VU" = (/obj/effect/floor_decal/trimline/red/corner,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "VY" = (/obj/effect/floor_decal/siding/wood{dir = 1},/obj/effect/floor_decal/siding/wood,/obj/machinery/door/airlock{id_tag = "dorm4"; name = "Dormitory 4"},/turf/simulated/floor/trim/wood,/area/space)
 "We" = (/obj/machinery/flasher/portable,/obj/effect/floor_decal/bot_red,/turf/simulated/floor/tiled/rough{dir = 1},/area/space)
 "Wf" = (/obj/effect/floor_decal/trimline/yellow/warning{dir = 8},/turf/simulated/floor/tiled/white/rough{dir = 4},/area/space)
+"Wm" = (/obj/structure/window/reinforced{dir = 8; health = 1e+006},/obj/effect/floor_decal/floordetail/tiled,/turf/simulated/floor/tiled/white/rough,/area/space)
 "Wq" = (/obj/structure/closet/emcloset,/obj/effect/floor_decal/trimline/dark_blue/end{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "Wt" = (/obj/machinery/portable_atmospherics/canister/oxygen,/turf/space,/area/space)
 "WB" = (/obj/effect/floor_decal/siding/wood,/turf/simulated/floor/tiled/dark/rough,/area/space)
+"WH" = (/obj/structure/railing{dir = 4},/turf/simulated/floor/plating,/area/space)
 "WJ" = (/obj/machinery/door/morgue{elevator_linked_id = "medivator"; elevator_mode = 1; req_access = list("tcomms"); name = "Elevator Door"},/turf/simulated/floor/tiled/white/rough,/area/space)
 "WL" = (/obj/effect/floor_decal/trimline/yellow/warning{dir = 9},/turf/simulated/floor/tiled/white/rough,/area/space)
 "WN" = (/obj/effect/floor_decal/trimline/purple/warning,/obj/effect/floor_decal/trimline/purple/warning{dir = 1},/obj/effect/floor_decal/trimline/purple/mid_joiner,/obj/effect/floor_decal/trimline/purple/mid_joiner{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/space)
@@ -649,14 +722,14 @@
 "Xw" = (/obj/machinery/door/window,/turf/space,/area/space)
 "Xy" = (/obj/effect/floor_decal/trimline/green/filled/warning,/obj/effect/floor_decal/trimline/green/filled/shrink_cw{dir = 4},/turf/simulated/floor/tiled/white/rough,/area/space)
 "XD" = (/obj/effect/floor_decal/trimline/blue,/turf/simulated/floor/tiled/white/rough,/area/space)
-"XE" = (/obj/machinery/conveyor{dir = 1; id = "garbage"},/turf/space,/area/space)
+"XE" = (/obj/structure/disposaloutlet{dir = 4},/obj/structure/disposalpipe/trunk,/turf/space,/area/space)
 "XI" = (/obj/effect/floor_decal/trimline/green/warning,/obj/effect/floor_decal/trimline/green/warning{dir = 4},/obj/effect/decal/cleanable/dirt,/turf/space,/area/space)
 "XL" = (/obj/effect/floor_decal/trimline/blue/filled/warning,/turf/simulated/floor/tiled/dark/rough,/area/space)
 "XN" = (/obj/machinery/door/airlock/research,/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "XT" = (/obj/item/pickaxe,/turf/simulated/floor/plating,/area/space)
 "XW" = (/obj/effect/floor_decal/trimline/yellow/warning{dir = 8},/turf/space,/area/space)
 "Yb" = (/obj/structure/disposalpipe/segment{dir = 5},/turf/simulated/floor/trim/darkwood,/area/space)
-"Yf" = (/obj/machinery/conveyor{dir = 1; id = "AtmosStorage"},/obj/machinery/portable_atmospherics/canister/carbon_dioxide,/turf/space,/area/space)
+"Yf" = (/obj/machinery/conveyor{dir = 1; id = "AtmosStorage"},/obj/machinery/portable_atmospherics/canister/carbon_dioxide,/obj/structure/window/reinforced{dir = 4},/turf/simulated/floor/reinforced,/area/space)
 "Yp" = (/obj/machinery/door/airlock/virology{name = "Break Room"},/obj/effect/floor_decal/siding/wood,/obj/effect/floor_decal/siding/wood{dir = 1},/turf/simulated/floor/trim/wood,/area/space)
 "Yy" = (/obj/structure/catwalk,/turf/space,/area/space)
 "YF" = (/obj/structure/disposalpipe/segment{dir = 4},/obj/machinery/door/firedoor/border_only{dir = 4},/turf/simulated/floor/plating,/area/space)
@@ -667,14 +740,15 @@
 "Zd" = (/obj/effect/floor_decal/siding/wood{dir = 8},/obj/effect/floor_decal/siding/wood{dir = 4},/obj/machinery/door/airlock/hatch,/turf/simulated/floor/trim/wood,/area/space)
 "Zh" = (/turf/simulated/floor/tiled/dark/rough{dir = 9},/area/space)
 "Zm" = (/obj/structure/disposalpipe/segment{dir = 9},/turf/simulated/floor/tiled/rough,/area/space)
-"Zp" = (/obj/effect/floor_decal/siding/wood{dir = 1},/obj/effect/floor_decal/siding/wood,/obj/machinery/door/airlock{id_tag = "dorm1"; name = "Dormitory 1"},/turf/simulated/floor/trim/wood,/area/space)
+"Zp" = (/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/turf/simulated/floor/tiled/rough,/area/space)
 "Zr" = (/obj/effect/floor_decal/siding/wood{dir = 8},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/trim/wood,/area/space)
 "Zt" = (/obj/machinery/door/firedoor/border_only{dir = 4},/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/white/rough{dir = 1},/area/space)
-"ZA" = (/obj/machinery/conveyor{dir = 1; id = "AtmosStorage"},/obj/machinery/portable_atmospherics/canister/nitrogen,/turf/space,/area/space)
+"ZA" = (/obj/machinery/conveyor{dir = 1; id = "AtmosStorage"},/obj/machinery/portable_atmospherics/canister/nitrogen,/turf/simulated/floor/reinforced,/area/space)
 "ZG" = (/turf/simulated/floor/tiled/white/mono,/area/space)
 "ZH" = (/obj/machinery/door/firedoor,/obj/structure/disposalpipe/trunk{dir = 4},/obj/structure/catwalk,/turf/space,/area/space)
 "ZJ" = (/obj/machinery/door/airlock/external,/turf/simulated/floor/tiled/rough{dir = 1},/area/space)
 "ZL" = (/obj/machinery/door/firedoor,/obj/effect/floor_decal/trimline/brown/filled/warning{dir = 4},/turf/simulated/floor/tiled/dark/rough{dir = 8},/area/space)
+"ZM" = (/obj/machinery/door/firedoor,/obj/structure/disposalpipe/segment{dir = 4},/obj/machinery/door/blast/regular/open{dir = 4; id = "dorms"; name = "Dorms Blast Doors"},/turf/simulated/floor/tiled/mono,/area/space)
 "ZN" = (/obj/effect/floor_decal/trimline/blue/corner{dir = 1},/turf/simulated/floor/tiled/white/rough,/area/space)
 "ZS" = (/obj/machinery/ai_slipper{uses = 10},/turf/simulated/floor/tiled/dark/rough,/area/space)
 "ZV" = (/obj/effect/floor_decal/jungledirt/grass/corner2{dir = 4},/turf/simulated/floor/plating/airless,/area/space)
@@ -742,48 +816,48 @@ xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
 xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
 xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
 xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddddddddddddddddddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddcYxPxPxPcYcYddGYppDqddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfafafafafafafaxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddxPxPddcYEBEBddXEYypSddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPwbxPxPxPxPxPxPxPxPxPfafaJvcYcYcYJvfafaxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddxPxPgPcYcYcYddXEYyxPEBEBxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPdfIHxPxPxPxPxPxPxPxPxPfaJvJvcYcYcYJvmAfaxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddddxPcYxPcYcYddcuxPKYddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOcYcYxPxPxPcYcYNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddddxPEBxPxPddddddddeFEBxPxPddfaddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOoScYcYcYcYcYcYNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddddxPxPxPyGxPxPddxPxPddeFEBEBEBEBEBddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONONONOxPddNONONOcYfacYNONONOddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddcYEBxPcYxPyGxPxPddfafaddeFEBEBEBEBddddxPddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONONOxmjqNOxPfacYcYRvhchchcQxcYcYddotddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddcYcYEBxPaHxPddddddddxPxPddeFEBddddddddxXxXpQddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOSYxPgPxPNOfaddSTcYWYWYWYWYWYcYGxdddpdpdpddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddcYcYgPxPxPxPddoyyNyNyNyNyNJvBoddeExPjFONONsSfaxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOSYwfSYUMTcxPZLbSlpxPxPddxPxPLzlsoEfSfSfSphddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddAwAwEBAwEBddexEPJvJvJvJvLwextucRcRhAOwJvfafaxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddddddddxPxPxPNOSYxPcYxPNOfaddnKlpxPxPddxPxPLzRvddfSfSfSphddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddxPxPxPxPxPddexJvMjsmSEnFJvexddxPcRjFONONfaxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddgVcYcYddxPxPxPNONONOSYSYNOxPfacYlpxPxPxPxPxPLzcYfahDhDhDhDddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddcYxPxPxPxPddexJvoExPxPkUyNJvddddddddddxzddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddhHKfWBfjddxPxPxPxPxPNONONONOxPddcYlpxPxPxPxPxPLzcYfaxPxPxPxPxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddDEgBMqpOddexJvetddddddJvexJvddpZpZddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddxPyzxPxPddxPxPxPxPxPxPxPxPxPxPddcYlpxPxPxPxPxPLzcYfaxPxPxPlGxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddnHyWdLyqddKKegddddduddJvexJvwuBJBJBJddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddxWtScrxPmCddxPxPxPxPxPxPxPxPxPxPddcYcYxqxqxqxqxqcYcYfaxPxPxPJrxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddVTyWdLxKddexJvddEBEBddJvexJvddBwBwqtddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddyzxPxPxPxPddxPxPxPxPxPxPNONONONONOcYcYcYlHXLKEcYcYcYddxPxPxPxPxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPKLxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddddcYddddexJvddEBEBJxJvexddddddddddddxPddxPxPxPxPddxPxPxPxPddxPddddddddddddddgNddddxPxPddxPxPxPxPxPNONOcYcYcYNONONONONOiANONONOddddddddddddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPKLxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaxPxPxPxPKGexJvddddddddJvexkhdpdpDnddxPxPxPxPxPxPxPegxPxPxPxPxPxPxPddoyyNkqkqkqOcBoddSESEddxPxPxPxPxPNOcYxPgPgPNOdyupNOcYgPcYBZNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPbgbgKAddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaxPxPxPPGmlJvJvvGxPxPQJJvrKyNyNyNyNkfORORtSORORORORkfORORORORtSORORkfZmRlxPxPxPxPgWddddddddxPxPxPxPxPNOcYUMAxcYYHupupYHcYxPcYxPNOxPxPNONONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPptxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaxPxPxPxPKGexJvvGxPxPQJJvoyyNyNyNyNkfORORtSORORORORkfORORORORtSORORkfBoRlxPxPxPxPwEAuAuFwddddddddxPxPNOcYxPcYcYNOupupNOcYxPcYGiNOxPNONOxPNONONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxkptxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaxPxPxPxPKGexJvddddddddJvextQSYcYcYddxPxPxPxPxPxPxPegxPxPxPxPxPxPxPddrKyNhzhzhzhzyNaDFweFEBEBEBddxPxPNONOcYcYcYNONOfaNOcYcYcYNONONONOxPcYcYcYNONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPptxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddddddddddexJvddxPxPhkJvexddEBEBddddddxPddxPxPxPxPddxPxPxPxPddxPddddNONONOqfqfddddddEBeFEBEBEBddxPxPxPNONONONONOJcJcNONOiANONOxPxPPEgPxPxPcYxPNONOxPxPxPxPxPxPxPxPxPxPxPxPiPiPiPiPiPiPEGddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddfSfSxPxPddexJvddxPxPddegKKddmnufufufddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOxPxPddxPxPxPyzxPxPxPxPxPxPxPfLEBfLEBJvGnGnNOxPxPxPNOxPxPNOgPNONOeMcYarNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPKLxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddfSfSxPxPddexJvddddddddJvexEBxlufufufddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOxPxPddxPEBxPyzxPxPxPxPxPxPxPNONONOEBehJvJvCrxPxPxPiAcYcYiAZSNOxPpIcYJcNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPKLxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddsOddddfSddexJvddxPxPddJvexddJvJvJvJvddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONONONOxPxPxPiztStStStStStStSTqxPNONOehJvJvNOxPxPsZNOxPxPNOgPNONOtPcYxPNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPKLxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddCMxPxPddVYddexJvddxPxPJLJvexegJvJvJvJvJvfaxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOxPxPxPxPxPxPxPxPxPxPxPyzxPxPNONONONONONOiANONOxPxPPEgPxPxPcYxPNONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddddddddcYsoexJvddddddddJvexegJvJvJvJvJvfaxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONOxPxPxPxPxPxPxPxPxPxPiztStStStSTqxPNOcYcYcYNONONONOxPgPgPgPNONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPhAcucucucucukwcucucucuddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPGYyGyGyGyGyGyGyGyGyGyGcuxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPGYyGyGyGyGyGyGyGyGyGyGcuxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPGYyGyGyGyGyGyGyGyGyGyGcuxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPGYyGyGyGyGyGyGyGyGyGyGddddddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPGYyGyGyGyGyGyGyGyGyGyGddxPxPxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfafafafafafafaxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPGYyGyGyGyGyGyGyGyGyGyGddxPxPxPddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPwbxPxPxPxPxPxPxPxPxPfafaJvcYcYcYJvfafaxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPGYyGyGyGyGyGyGyGyGyGyGddXEppppGVnAxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPdfIHxPxPxPxPxPxPxPxPxPfaJvJvcYcYcYJvmAfaxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPGYyGyGyGyGyGyGyGyGyGyGddyzxPxPddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOcYcYxPxPxPcYcYNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPGYyGyGyGyGyGyGyGyGyGyGddeFEBxPxPddfaddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOoScYcYcYcYcYcYNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPGYyGyGyGyGyGyGyGyGyGyGddeFEBEBEBEBEBddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONONONOxPddNONONOcYfacYNONONOddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddiuiuLOOTddgLICddiuiuddeFEBEBEBEBddddEQddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONONOxmjqNOxPfacYcYRvhchchcQxcYcYddotddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddticYaHtRAkJvJvJvPhPZddeFddddddddddxXFapQddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOSYxPgPxPNOfaddSTcYWYWYWYWYWYcYGxdddpdpdpddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddETcYfeqWxRJvJvJvJvJvJvZpBoddtXwpjFONBqsSGYxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOSYwfSYUMTcxPZLbSlpxPxPddxPxPLzlsoEfSfSfSphddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddeXcYAwFpxRJvEPJvJvJvJvLwextuJjJjsIOwDqGYGYxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddddddddxPxPxPNOSYxPcYxPNOfaddnKlpxPxPddxPxPLzRvddfSfSfSphddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddddddddddJvJvMjsmSEnFJvexddwpJjjFONONGYxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddgVcYcYddxPxPxPNONONOSYSYNOxPfacYlpxPxPxPxPxPLzcYfahDhDhDhDddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddcCGRGILnxRJvJvoExPxPkUyNJvddddddddddxzddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddhHKfWBfjddxPxPxPxPxPNONONONOxPddcYlpxPxPxPxPxPLzcYfaxPxPxPxPxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddDEgBMqpOxRJvJvetddddddJvexJvddpZpZddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddxPyzxPxPddxPxPxPxPxPxPxPxPxPxPddcYlpxPxPxPxPxPLzcYfaxPxPxPlGxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddnHyWSoyqxRegegddddduddJvexJvwuBJBJBJddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddxWtScrxPmCddxPxPxPxPxPxPxPxPxPxPddcYcYxqxqxqxqxqcYcYfaxPxPxPJrxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddVTpSdLxKxRJvJvddEBEBddJvexJvddBwBwqtddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddyzxPxPxPxPddxPxPxPxPxPxPNONONONONOcYcYcYlHXLKEcYcYcYddxPxPxPxPxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPKLxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddqxJvddddJvJvddEBEBJxJvexddddddddddddGYddGYGYGYGYddGYGYGYGYddGYddddddddddddddgNddddxPxPddxPxPxPxPxPNONOcYcYcYNONONONONOiANONONOddddddddddddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPKLxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaflHEHEbMKGJvJvddddddddJvexkhdpdpDnddseseseseseseiIkssasesesepCseseddoyyNkqkqkqOcBoddSESEddxPxPxPxPxPNOcYxPgPgPNOdyupNOcYgPcYBZNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPbgbgKAddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaTmHEecPGmlJvJvvGxPxPQJJvJvyNyNyNyNkfORORqsORORORdMZMxIORORORqsORORkfZmRlxPxPxPxPgWddddddddxPxPxPxPxPNOcYUMAxcYYHupupYHcYxPcYxPNOxPxPNONONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPptxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaTmHEecVlKGexJvvGxPxPQJJvoyJvJvJvJvvLBxBxseBxBxBxKTksLJBxBxBxseBxBxvLBoRlxPxPxPxPwEAuAuFwddddddddxPxPNOcYxPcYcYNOupupNOcYxPcYGiNOxPNONOxPNONONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxkptxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaNAHEHEvHKGexJvddddddddJvextQSYcYcYddseseseseseseiIkssaseseseseseseddrKyNhzhzhzhzyNaDFweFEBEBEBddxPxPNONOcYcYcYNONOfaNOcYcYcYNONONONOxPcYcYcYNONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPptxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddddddddddexJvQodgpGhkJvexddEBEBddddddGYddGYGYGYGYddGYGYGYGYddGYddddNONONOqfqfddddddEBeFEBEBEBddxPxPxPNONONONONOJcJcNONOiANONOxPxPPEgPxPxPcYxPNONOxPxPxPxPxPxPxPxPxPxPxPxPiPiPiPiPiPiPEGddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddfSfSxPxPddexJvcgtVtVVaJvexddmnufufufddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOxPxPddxPxPxPyzxPxPxPxPxPxPxPfLEBfLEBJvGnGnNOxPxPxPNOxPxPNOgPNONOeMcYarNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPKLxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddfSfSxPxPddexJvWmBctVhkJvexEBxlufufufddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOxPxPddxPEBxPyzxPxPxPxPxPxPxPNONONOEBehJvJvCrxPxPxPiAcYcYiAZSNOxPpIcYJcNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPKLxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddsOddddfSddexJveHtVtVVaJvexddJvJvJvJvddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONONONOxPxPxPiztStStStStStStSTqxPNONOehJvJvNOxPxPsZNOxPxPNOgPNONOtPcYxPNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPKLxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddCMxPxPddVYddexJvWmkRtVJLJvexegJvJvJvJvJvfaxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOxPxPxPxPxPxPxPxPxPxPxPyzxPxPNONONONONONOiANONOxPxPPEgPxPxPcYxPNONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddddddddcYsoexJvKKKKKKKKJvexegJvJvJvJvJvfaxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONOxPxPxPxPxPxPxPxPxPxPiztStStStSTqxPNOcYcYcYNONONONOxPgPgPgPNONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
 xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddxPxPsAxPxPsoexhhJvJvJvJvXnexddcYxPcYJvJvddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPyzEBfacYcYNGfaxPxPNONOxPNONONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaxPxPxPddddddddrKyNyNyNyNyNyNZmddcYxPcYJvJvItddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONOxPxPxPxPxPxPxPxPxPxPxPxPxPyzEBNOfafafaNOxPxPxPNONONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaxPxPxPddxPxPddJnJnddseJvddhRddddddddxPJvJvItddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONOxPxPxPxPxPxPxPxPxPxPxPxPyzEBxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaxPxPxPddddddddZpyNyNyNyNyNyNiRddcYxPcYJvJvItddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONOxPxPxPxPxPxPxPxPxPxPxPxPxPyzEBNOfafafaNOxPxPxPNONONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaxPxPxPddxPxPddJnJnddJvJvddhRddddddddxPJvJvItddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONOxPxPxPxPxPxPxPxPxPxPxPxPyzEBxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
 xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddxPddddxPxPlnxPWqddfafaddJvJvfWByddxPCVdSddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPEBxPEBxPxPNOxPxPxPxPxPxPxPxPxPxPxPxPyzTpxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
 xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddddxPxPxPddxPxOddxPxPddJvJvddddddxPddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPEBEBxPxPxPNOxPxPxPxPxPxPxPxPxPxPxPxPyzEBxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddfafaxPddZpddddxPxPddJvJvffSiddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPEBEBxPxPNOxPxPxPxPxPxPxPxPxPxPxPxPyzTpxPxPxPxPxPxPxPxPxPddddddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaddddxPxPddxPxPddddePddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPpBNOxPxPxPxPxPxPxPxPxPxPxPxPyzEBxPxPxPxPxPxPxPxPddddxPxPnZddddddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddxPxPxPddxPxPEBxPxPxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOxPxPxPxPxPxPxPxPxPxPxPxPyzEBddfafafaxPxPxPddddxPxPxPnZddxPddxPddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddxPxPxPddxPxPEBxPxPxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONOddddddddddxPxPxPxPxPxPxPyzEBfaONONisfaxPddddvwxPxPxPnZddTPmkKvzPYyddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddxPxPxPddxPxPEBxPxPxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPXTEBxPEBNOJvJvBFJvJvddxPxPxPxPxPxPxPizTqxPONONONddddddyQHPHPGGHPXIddjWddxPcRxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddfafafaddxPxPddddddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPVSkRbsOyNOdidiBFdidifaxPxPxPxPxPxPxPxPeFxPddruxPddEBddcRcRcRcRcRddddjWddddddddddddFkxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddfafaxPddddddddxPxPddJvJvffSiddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPEBEBxPxPNOxPxPxPxPxPxPxPxPxPxPxPxPyzTpxPxPxPxPxPxPxPxPxPddddddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaddddxPxPxPxPxPddddePddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPpBNOxPxPxPxPxPxPxPxPxPxPxPxPyzEBxPxPxPxPxPxPxPxPddddxPxPnZddddddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaxPxPxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOxPxPxPxPxPxPxPxPxPxPxPxPyzEBddfafafaxPxPxPddddxPxPxPnZddxPddxPddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaxPxPxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONOddddddddddxPxPxPxPxPxPxPyzEBfaONONisfaxPddddvwxPxPxPnZddTPmkKvzPYyddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfaxPxPxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPXTEBxPEBNOJvJvBFJvJvddxPxPxPxPxPxPxPizTqxPONONONddddddyQHPHPGGHPXIddjWddxPcRxPddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddddddddxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPVSkRbsOyNOdidiBFdidifaxPxPxPxPxPxPxPxPeFxPddruxPddEBddcRcRcRcRcRddddjWddddddddddddFkxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
 xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONOMmNONONOJvJvBFJvJvfaxPxPxPxPxPddddEBeFddNoNoNoddddddddddSgddddddcRjWddeExPcRcREBxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
 xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONONOxPhFxPNOntiViVGvGvHgfaxPxPxPxPddddTPKvgiYyYyYyYyIfYyYyYyYyYyYyLpYyYyjWZdcRcRcRNONONONONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
 xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOxPxPxPhFxPNOcYupxPxPxPkJfaxPxPxPddddTPgixPmIknknddddddxPcREBxPcRcRddcRxPjWddxPcRcRNOxPxPxPNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
@@ -820,17 +894,17 @@ xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPhqxPhqxPxP
 xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPyDxPddddddAdEiEiQHssmpSDSDssssdXfMxPNOxPxPxPEBJGNOxPxPxPUMwfMlgPwfcYcYcYcYcYxPxPcYcYcYcYcYxPxPddTfjWNOsExPxPxPNONONONONONOpmJvJvEBEBNOxPxPxPxPxPNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
 xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPfLEBfLQHwwouIlsssssOssssdXfMEUxPNOddamddddHONOxPxPxPUMxPmJCRLWxLxLxLxLxLtStSxLxLxLxLxLtStSHYKvgiNOEBwRCdxPEBxPhVxPxPEBpmJvJvEBEBNOddIKddIKddNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
 xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPddddddIlIlfIEUEUZVIlIlIlfMEUEUNONOciJvJvJvJvNONOddJvUMwfVFcYRcNObISzSzvXgPgPVUSzSzSzvXgPgPddTfYyNOEBJvRlxPNONONONONONOpmJvJvEBEBNOybIVurCOybNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOpsciJvBxJvOcOcNOTQJvUMXoovgPPONONONONONOcYcYNOxPxPxPddcYcYddddLpNOEBJvRlxPEBxPxPxPxPEBpmJvJvNONONONOxBurGjNONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONONONONONONONOEBEBddBxHExPxPNOTQJvUMwfVFgPcYNOYyIpNOeToqCSubUMxPQMJvJvJvuuddYyNOEBJvRlxPNONONONONONOpmJvJvNOxPxPNONONONONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONOUdcYcYcYIYxPxPcYcYIYBxHExPxPNONOfaMKfaVFNONONOxPxPNOeTfipAooKmxPuUJvxPJvuuddYyNOEBJvRlxPEBxPxPxPxPEBpmJvJvNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOsHufufufufIYcYcYcYcYIYBxHExPxPfaJvLFYyMlVFblNOEBxPxPNOeTfipAooBYNOUAJvxPJvuuddYyNOEBJvRlxPNONONONONONOpmJvJvNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOnrufSlSlufJScYcYupupddBxHExPxPfaJvcYYycYVFhYNOddJxddNOxPHvpECoUMlQwfJvJvJvxPddYyNOozJvJvwRJvJvJvJvJvJvpmJvJvNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOiBufJWSlufJScYcYtDtDEBBxHExPxPNONObKYybuVFddNOxPxPxPNONONOfaZJfaNOfaZJfaddddddYyNOozJvJvJvJvJvOcOcOcOcIPgaJvNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOAaufufufufJScYcYupupddBxHExPxPxPNOMlYyyUVFMlNOxPhqxPddYyEBfaBxfaEBfaBxfaEBYyddLpNONOxPxPxPCZsExPxPxPxPNONONONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOddEBEBEBEBddddegddddddBxBxmFxPxPNOYyYyYyjWYyNOxPEBEBddYyEBfaZJfaEBfaZJfaEBYyddYyMONOxPxPxPxPsExPxPxPxPNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOykmYSnJvJvJvJvJvJvJvJvBxBxzKxPxPNOgPgPjniyjYNOxPEBEBddYyxPxPxPxPxPxPxPxPxPYyddYyMONOfFhWZAYfsExPxPxPxPNOxPNOEBNONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOJgmYSnJvJvJvJvJvJvJvJvJvBxNONONONOQwcYcYVFPXNOxPEBEBddYyxPxPxPxPxPxPxPxPxPYyddYyftNOfFhWZAYfEBTiTiTiTiNOxPNOEBEBNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
-xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOTAmYLzcYddmeddddcYcYcYcYNONOxPxPNOxPxPddzFddNOxPEBEBEBYyxPxPxPxPxPxPxPxPxPYyYyYyMONOfFhWZAYfIpqBEnEnYyNONONOEBddNONONONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOpsciJvBxJvJvJvNOTQJvUMXoovgPPONONONONONOcYcYNOxPxPxPddcYcYddddLpNOEBJvRlxPEBxPxPxPxPEBpmJvJvNONONONOxBurGjNONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONONONONONONONOEBEBddBxBxApOxNOTQJvUMwfVFgPcYNOYyIpNOeToqCSubUMxPQMJvJvJvuuddYyNOEBJvRlxPNONONONONONOpmJvJvNOxPxPNONONONONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONOUdcYcYcYIYxPxPcYcYIYBxBxzKKYNONOfaMKfaVFNONONOxPxPNOeTfipAooKmxPuUJvxPJvuuddYyNOEBJvRlxPEBxPxPxPxPEBpmJvJvNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOsHufufufufIYcYcYcYcYIYBxBxzKKYaEuzLFseMlVFblNOEBxPxPNOeTfipAooBYNOUAJvxPJvuuddYyNOEBJvRlxPNONONONONONOpmJvJvNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOnrufSlSlufJScYcYupupddBxBxzKKYaEiQcYsecYVFhYNOddJxddNOxPHvpECoUMlQwfJvJvJvxPddYyNOozJvJvwRJvJvJvJvJvJvpmJvJvNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOiBufJWSlufJScYcYtDtDEBBxBxzKKYNONObKsebuVFddNOxPxPxPNONONOfaZJfaNOfaZJfaddddddYyNOozJvJvJvJvJvJvJvJvrRIPgaJvNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOAaufufufufJScYcYupupddBxBxzKKYKYaEzdseyUVFMlNOxPhqxPddYyEBfaBxfaEBfaBxfaEBYyddLpNONOrQrQrQCZWHKYKYKYKYNONONONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOddEBEBEBEBddddegddddddBxBxmFKYKYaEseseseBDseNOxPEBEBddYyEBfaZJfaEBfaZJfaEBYyddYyMONOpgpgpgpgWHKYKYKYKYNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOykmYSnJvJvJvJvJvJvJvJvBxBxzKKYKYaEvegPjniyjYNOxPEBEBddYyxPxPxPxPxPxPxPxPxPYyddYyMONOfFhWZAYfWHKYKYKYKYNOxPNOEBNONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOJgmYSnJvJvJvJvJvJvJvJvJvBxNONONONOQwcYPcVFPXNOxPEBEBddYyxPxPxPxPxPxPxPxPxPYyddYyftNOfFhWZAYfEBrXrXrXrXNOxPNOEBEBNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
+xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOTAmYLzcYddmeddddcYcYcYcYNONOxPxPNOcYcYddzFddNOxPEBEBEBYyxPxPxPxPxPxPxPxPxPYyYyYyMONOfFhWZAYfcJqBEnEniDNONONOEBddNONONONOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
 xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNONONOddEFddBxJvddddaWNONONOxPxPNONOddddddiyxPNOxPEBEBddYyxPxPxPxPxPxPxPxPxPYyddYyMONOfFoGZANONONONONONONOggeieieixPxPxPNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
 xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOJvBxddBxJvddJvBxNOxPxPxPNONOgPgPgPgPiyNONOxPEBEBddYyxPxPxPxPxPxPxPxPxPYyddYyftNONONONONOxPxPxPxPxPxPeieiEBeiEBxPxPNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
 xPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPNOJvBxddBxxPddJvBxNOxPxPxPNOymvtWBWBWByxNOYyYyYyEBddYyYyYyYyYyYyYyYyYyYyYyddYynNsqririsqslxPxPxPxPxPOCEBeieieiddxPxPNOxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxPxP
