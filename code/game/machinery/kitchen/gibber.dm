@@ -194,7 +194,7 @@
 		if(loud) to_chat(user, SPAN("danger","\The [src] is locked and running, wait for it to finish."))
 		return FALSE
 
-	if(!iscarbon(victim) && !issimple(victim))
+	if(!iscarbon(victim) && !isanimal(victim))
 		if(loud) to_chat(user, SPAN("danger","This is not suitable for \the [src]!"))
 		return FALSE
 
@@ -259,7 +259,7 @@
 	if(iscarbon(victim))
 		var/mob/living/carbon/C = victim
 		slab_nutrition = C.nutrition / 15
-	if(issimple(victim))
+	if(isanimal(victim))
 		var/mob/living/simple_animal/S = victim
 		if(S.meat_amount)
 			slab_count = S.meat_amount
