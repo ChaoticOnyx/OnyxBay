@@ -476,7 +476,7 @@ its easier to just keep the beam vertical.
 	for(var/m in hearing_mobs)
 		var/mob/M = m
 		M.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
-		show_splash_text_to_viewers(message)
+		show_splash_text(M, message)
 
 /atom/movable/proc/dropInto(atom/destination)
 	while(istype(destination))
