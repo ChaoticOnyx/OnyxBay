@@ -45,10 +45,6 @@
 	var/poise = HUMAN_DEFAULT_POISE
 	var/blocking_hand = 0 //0 for main hand, 1 for offhand
 	var/last_block = 0
-	var/starve = FALSE
-	var/starve_start = 0
-	var/overeat = FALSE
-	var/overeat_start = 0
 	var/nutrition_problem = FALSE
 	var/nutrition_problem_start = 0
 
