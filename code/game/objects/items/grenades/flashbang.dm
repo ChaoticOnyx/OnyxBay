@@ -113,14 +113,12 @@
 			numspawned --
 
 	for(,numspawned > 0, numspawned--)
-		spawn(0)
-			new /obj/item/grenade/flashbang/cluster(src.loc)//Launches flashbangs
-			playsound(src.loc, 'sound/weapons/armbomb.ogg', 75, 1, -3)
+		new /obj/item/grenade/flashbang/cluster(src.loc)//Launches flashbangs
+		playsound(src.loc, 'sound/weapons/armbomb.ogg', 75, 1, -3)
 
 	for(,again > 0, again--)
-		spawn(0)
-			new /obj/item/grenade/flashbang/clusterbang/segment(src.loc)//Creates a 'segment' that launches a few more flashbangs
-			playsound(src.loc, 'sound/weapons/armbomb.ogg', 75, 1, -3)
+		new /obj/item/grenade/flashbang/clusterbang/segment(src.loc)//Creates a 'segment' that launches a few more flashbangs
+		playsound(src.loc, 'sound/weapons/armbomb.ogg', 75, 1, -3)
 	qdel(src)
 	return
 
@@ -149,9 +147,8 @@
 			numspawned --
 
 	for(,numspawned > 0, numspawned--)
-		spawn(0)
-			new /obj/item/grenade/flashbang/cluster(src.loc)
-			playsound(src.loc, 'sound/weapons/armbomb.ogg', 75, 1, -3)
+		new /obj/item/grenade/flashbang/cluster(src.loc)
+		playsound(src.loc, 'sound/weapons/armbomb.ogg', 75, 1, -3)
 	qdel(src)
 	return
 
