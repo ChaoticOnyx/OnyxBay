@@ -701,7 +701,7 @@
 					to_chat(src, SPAN("warning", "[pick("It seems you overate a bit", "Your own weight pulls you to the floor", "It would be nice to lose some weight")]..."))
 				if(STOMACH_FULLNESS_SUPER_HIGH to INFINITY)
 					to_chat(src, SPAN("warning", "[pick("You definitely overate", "Thinking about food makes you gag", "It would be nice to clear your stomach")]..."))
-		
+
 		// body build correction
 		var/normalized_nutrition = nutrition / body_build.stomach_capacity
 		if(normalized_nutrition <= STOMACH_FULLNESS_SUPER_LOW)
