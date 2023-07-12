@@ -1237,6 +1237,7 @@
 		H.visible_message("<span class='warning'>A screeching creature bursts out of [M]'s chest!</span>")
 		var/obj/item/organ/external/organ = H.get_organ(BP_CHEST)
 		organ.take_external_damage(50, 0, 0, "Animal escaping the ribcage")
+	else M.gib()
 	Expand()
 
 /obj/item/reagent_containers/food/monkeycube/on_reagent_change()
