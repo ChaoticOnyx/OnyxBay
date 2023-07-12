@@ -76,6 +76,8 @@
 
 #define ismetroid(A) istype(A, /mob/living/carbon/metroid)
 
+#define islarva(A) istype(A, /mob/living/carbon/alien/larva)
+
 #define isunderwear(A) istype(A, /obj/item/underwear)
 
 #define isvirtualmob(A) istype(A, /mob/observer/virtual)
