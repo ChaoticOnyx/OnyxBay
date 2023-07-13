@@ -64,6 +64,9 @@
 
 	ASSERT(client && src == usr)
 
+	if(QDELETED(usr))
+		return
+
 	var/visible = winget(usr, "saywindow", "is-visible")
 	if(cmptext(visible, "true"))
 		stop_typing()
