@@ -31,6 +31,12 @@
 /obj/machinery/computer/camera_advanced/attack_ghost(mob/ghost)
 	return
 
+/obj/machinery/computer/camera_advanced/attack_ai(mob/user)
+	return
+
+/obj/machinery/computer/camera_advanced/attack_robot(mob/user)
+	return
+
 /obj/machinery/computer/camera_advanced/attack_hand(obj/item/I, user)
 	..()
 	if(!vision.owner)
