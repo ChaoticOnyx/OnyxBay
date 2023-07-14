@@ -62,7 +62,7 @@
 	set name = ".remove_speech_bubble"
 	set hidden = TRUE
 
-	ASSERT(client && src == usr)
+	ASSERT(src == usr)
 
 	if(QDELETED(usr))
 		return
