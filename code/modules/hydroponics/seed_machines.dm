@@ -20,7 +20,8 @@
 
 /obj/item/storage/box/botanydisk
 	name = "flora disk box"
-	desc = "A box of flora data disks, apparently."
+	desc = "A box of flora data disks, apparently.
+	icon_state = "hydrodisks"
 	startswith = list(/obj/item/disk/botany = 14)
 
 /obj/machinery/botany

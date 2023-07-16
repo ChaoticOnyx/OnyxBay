@@ -358,7 +358,7 @@
 /obj/item/storage/box/seccarts
 	name = "box of spare R.O.B.U.S.T. Cartridges"
 	desc = "A box full of R.O.B.U.S.T. Cartridges, used by Security."
-	icon_state = "pda"
+	icon_state = "seccarts"
 	startswith = list(/obj/item/cartridge/security = 7)
 
 /obj/item/storage/box/handcuffs
