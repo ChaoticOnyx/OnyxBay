@@ -43,7 +43,7 @@
 	..(new_loc, SPECIES_UNATHI)
 
 /mob/living/carbon/human/swine/New(new_loc)
-	h_style = "Bald"
+	h_style = pick("Bald", "Floppy Ears", "Pointy Ears")
 	..(new_loc, SPECIES_SWINE)
 
 /mob/living/carbon/human/vox/New(new_loc)

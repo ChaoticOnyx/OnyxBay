@@ -159,13 +159,13 @@
 			parts[part.bp_tag] = part
 			update_icon()
 
-	if(istype(W, /obj/item/device/mmi) || istype(W, /obj/item/organ/internal/posibrain))
+	if(istype(W, /obj/item/organ/internal/cerebrum/mmi) || istype(W, /obj/item/organ/internal/cerebrum/posibrain))
 		var/mob/living/carbon/brain/B
-		if(istype(W, /obj/item/device/mmi))
-			var/obj/item/device/mmi/M = W
+		if(istype(W, /obj/item/organ/internal/cerebrum/mmi))
+			var/obj/item/organ/internal/cerebrum/mmi/M = W
 			B = M.brainmob
 		else
-			var/obj/item/organ/internal/posibrain/P = W
+			var/obj/item/organ/internal/cerebrum/posibrain/P = W
 			B = P.brainmob
 		if(check_completion())
 			if(!istype(loc,/turf))
@@ -289,7 +289,7 @@
 				qdel(organ)
 
 			// Remove brain (we want to put one in).
-			var/obj/item/organ/internal/brain = H.internal_organs_by_name[BP_BRAIN]
+			var/obj/item/organ/internal/cerebrum/brain = H.internal_organs_by_name[BP_BRAIN]
 			H.organs -= brain
 			H.organs_by_name.Remove(brain.organ_tag)
 			qdel(brain)

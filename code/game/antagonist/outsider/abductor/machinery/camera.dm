@@ -37,22 +37,8 @@
 	else
 		to_chat(user,SPAN_NOTICE("You can't figure out how it's working."))
 
-/mob/observer/eye/cameranet/abductor/possess(mob/user)
-	if(owner && owner != user)
-		return
-
-	if(owner && owner.eyeobj != src)
-		return
-
-	owner = user
-	owner.eyeobj = src
-
-	SetName("[owner.name] ([name_sufix])") // Update its name
-
-	if(owner.client)
-		owner.client.eye = src
-
-	visualnet.update_eye_chunks(src, TRUE)
+/mob/observer/eye/cameranet/abductor/possess(mob/user, reset_location = FALSE)
+	return ..()
 
 /datum/action/innate/teleport_in
 ///Is the amount of time required between uses

@@ -304,10 +304,13 @@
 #define SPECIES_SLIMEPERSON "Slimeperson"
 #define SPECIES_LUMINESCENT "Luminescent"
 #define SPECIES_EGYNO       "Egyno"
-#define SPECIES_MONKEY      "Monkey"
 #define SPECIES_ABDUCTOR    "Abductor"
 #define SPECIES_SWINE		"Trottine"
 
+#define SPECIES_MONKEY      "Monkey"
+#define SPECIES_FARWA       "Farwa"
+#define SPECIES_NEAERA      "Naera"
+#define SPECIES_STOK        "Stok"
 
 // Xenomorphs IDs.
 #define SPECIES_XENO                 "Xenomorph"

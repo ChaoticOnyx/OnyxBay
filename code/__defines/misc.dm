@@ -302,6 +302,9 @@
 #define MID_VOLUME  2
 #define HIGH_VOLUME 3
 
+//Lawgiver gun
+#define LAWGIVER_MAX_AMMO 5
+
 // Bitflags for magic resistance types
 /// Default magic resistance that blocks normal magic (wizard, spells, magical staff projectiles)
 #define MAGIC_RESISTANCE (1<<0)

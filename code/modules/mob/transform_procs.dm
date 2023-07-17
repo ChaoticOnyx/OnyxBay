@@ -136,13 +136,16 @@
 	O.job = "Cyborg"
 	if(O.mind.assigned_role == "Cyborg")
 		if(O.mind.role_alt_title == "Android")
-			O.mmi = new /obj/item/organ/internal/posibrain(O)
-		else if(O.mind.role_alt_title == "Robot")
-			O.mmi = new /obj/item/device/mmi/digital/robot(O)
+			O.mmi = new /obj/item/organ/internal/cerebrum/posibrain(O, src)
 		else
-			O.mmi = new /obj/item/device/mmi(O)
+			O.mmi = new /obj/item/organ/internal/cerebrum/mmi(O, src)
 
 		O.mmi.transfer_identity(src)
+
+		if(O.mmi.brainmob)
+			O.mmi.brainmob.add_language(LANGUAGE_EAL)
+			O.mmi.brainmob.add_language(LANGUAGE_ROBOT)
+			O.mmi.brainmob.add_language(LANGUAGE_GALCOM)
 
 	callHook("borgify", list(O))
 	O.Namepick()

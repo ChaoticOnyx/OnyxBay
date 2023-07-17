@@ -28,7 +28,7 @@
 	var/special_name_chance = 5
 
 	has_organ = list(
-		BP_BRAIN = /obj/item/organ/internal/brain/golem,
+		BP_BRAIN = /obj/item/organ/internal/cerebrum/brain/golem,
 		BP_ADAMANTINE_RESONATOR = /obj/item/organ/internal/adamantine_resonator
 		)
 
@@ -94,7 +94,7 @@
 		TRAIT_ANTIMAGIC
 	)
 	has_organ = list(
-		BP_BRAIN = /obj/item/organ/internal/brain/golem,
+		BP_BRAIN = /obj/item/organ/internal/cerebrum/brain/golem,
 		BP_ADAMANTINE_RESONATOR = /obj/item/organ/internal/adamantine_resonator,
 		BP_ADAMANTINE_VOCAL_CORDS = /obj/item/organ/internal/vocal_cords/adamantine
 	)

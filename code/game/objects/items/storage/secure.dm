@@ -541,3 +541,89 @@
 				show_lock_menu(M)
 			return
 	return
+
+/obj/item/storage/secure/guncase/security/hos
+	name = "high command security hardcase"
+	desc = "A heavy-duty container with an ID-based locking system. This one is painted in NT High Command Security colors."
+	icon_state = "guncasehos"
+	override_w_class = list(/obj/item/gun/projectile/lawgiver)
+
+/obj/item/storage/secure/guncase/security/hos/attackby(obj/item/W, mob/user)
+	var/obj/item/card/id/I = W.get_id_card()
+	if(I) // For IDs and PDAs and wallets with IDs
+		if(!(access_hos in I.GetAccess()))
+			to_chat(user, SPAN("warning", "Access denied!"))
+			return
+		if(!guntype)
+			to_chat(user, SPAN("warning", "\The [src] blinks red. You need to make a choice first."))
+			return
+		if(!gunspawned)
+			spawn_set(guntype)
+			lock_menu.close(user)
+		to_chat(user, SPAN("notice", "You [locked ? "un" : ""]lock \the [src]."))
+		locked = !locked
+		overlays.Cut()
+		if(!locked)
+			overlays += image(icon, icon_opened)
+		return
+	return ..()
+
+/obj/item/storage/secure/guncase/security/hos/spawn_set(set_name)
+	if(gunspawned)
+		return
+	switch(set_name)
+		if("lawgiver")
+			new /obj/item/gun/projectile/lawgiver(src)
+			new /obj/item/ammo_magazine/lawgiver(src)
+		if("Razor")
+			new /obj/item/gun/energy/rifle/cheap(src)
+			// Delete lawgiver steal contract, we can't get lawgiver legally.
+			GLOB.contracts_steal_items.Remove("the head of security's lawgiver gun")
+			for(var/datum/antag_contract/item/steal/C in GLOB.all_contracts)
+				if(C.target_type == /obj/item/gun/projectile/lawgiver)
+					C.remove()
+		else
+			return
+	gunspawned = TRUE
+
+/obj/item/storage/secure/guncase/security/hos/show_lock_menu(mob/user)
+	if(user.incapacitated() || !user.Adjacent(src) || !user.client)
+		return
+	user.set_machine(src)
+	var/dat = text("It can be locked and unlocked by swiping your ID card across the lock.<br>")
+
+	dat += text("<p><HR>\nChosen Gun: []", "[guntype ? guntype : "none"]")
+	if(!gunspawned)
+		dat += text("<p>\n Be careful! Once you chose your weapon and unlock the gun case, you won't be able to change it.")
+		dat += text("<HR><p>\n<A href='?src=\ref[];type=Razor'>\"Razor\" energy rifle</A>", src)
+		dat += text("<p>\n<A href='?src=\ref[];type=lawgiver'>Lawgiver multitask pistol</A>", src)
+	dat += text("<HR>")
+	if(guntype)
+		switch(guntype)
+			// not cool type
+			if("Razor")
+				dat += text("<p>\n Hephaestus Industries G50SE \"Razor\", a cheaper version of G50XS \"Raijin\".")
+				dat += text("<p>\n It has lethal and stun settings.")
+			// cool type
+			if("lawgiver")
+				dat += text("<p>\n The Lawgiver II. A twenty-five round sidearm with mission-variable voice-programmed ammunition.")
+				dat += text("<p>\n You must use the words STUN, LASER, RAPID, FLASH and AP to change modes.")
+
+	if(!lock_menu || lock_menu.user != user)
+		lock_menu = new /datum/browser(user, "mob[name]", "<B>[src]</B>", 300, 280)
+		lock_menu.set_content(dat)
+	else
+		lock_menu.set_content(dat)
+		lock_menu.update()
+	return
+
+/obj/item/storage/secure/guncase/security/hos/Topic(href, href_list)
+	if((usr.stat || usr.restrained()) || (get_dist(src, usr) > 1))
+		return
+	if(href_list["type"])
+		guntype = href_list["type"]
+		for(var/mob/M in viewers(1, loc))
+			if((M.client && M.machine == src))
+				show_lock_menu(M)
+			return
+	return

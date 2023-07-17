@@ -54,7 +54,7 @@
 				new_mob.set_invisibility(0)
 				new_mob.job = "Cyborg"
 				var/mob/living/silicon/robot/Robot = new_mob
-				Robot.mmi = new /obj/item/device/mmi(new_mob)
+				Robot.mmi = new /obj/item/organ/internal/cerebrum/mmi(new_mob)
 				Robot.mmi.transfer_identity(M)	//Does not transfer key/client.
 			if("metroid")
 				new_mob = new /mob/living/carbon/metroid(M.loc)

@@ -1434,11 +1434,74 @@ May God have mercy.
 
 // Swines
 
+/datum/sprite_accessory/hair/swine_floppy
+	name = "Floppy Ears"
+	icon_state = "floppy"
+	species_allowed = list(SPECIES_SWINE)
+	flags = VERY_SHORT
+	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/swine_pointy
+	name = "Pointy Ears"
+	icon_state = "floppy"
+	species_allowed = list(SPECIES_SWINE)
+	flags = VERY_SHORT
+	has_secondary = TRUE
+
 /datum/sprite_accessory/hair/swine_mohawk
 	name = "Trottine Mohawk"
 	icon_state = "mohawk"
 	species_allowed = list(SPECIES_SWINE)
 	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/swine_mohawk_floppy
+	name = "Trottine Mohawk (Floppy)"
+	icon_state = "mohawk_floppy"
+	species_allowed = list(SPECIES_SWINE)
+	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/swine_mohawk_pointy
+	name = "Trottine Mohawk (Pointy)"
+	icon_state = "mohawk"
+	species_allowed = list(SPECIES_SWINE)
+	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/swine_mane
+	name = "Trottine Mane"
+	icon_state = "mane"
+	species_allowed = list(SPECIES_SWINE)
+	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/swine_mane_floppy
+	name = "Trottine Mane (Floppy)"
+	icon_state = "mane_floppy"
+	species_allowed = list(SPECIES_SWINE)
+	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/swine_mane_pointy
+	name = "Trottine Mane (Pointy)"
+	icon_state = "mane_pointy"
+	species_allowed = list(SPECIES_SWINE)
+	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/swine_chancellor
+	name = "Trottine Chancellor"
+	icon_state = "chancellor"
+	species_allowed = list(SPECIES_SWINE)
+	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/swine_chancellor_floppy
+	name = "Trottine Chancellor (Floppy)"
+	icon_state = "chancellor_floppy"
+	species_allowed = list(SPECIES_SWINE)
+	has_secondary = TRUE
+
+/datum/sprite_accessory/hair/swine_chancellor_pointy
+	name = "Trottine Chancellor (Pointy)"
+	icon_state = "chancellor_pointy"
+	species_allowed = list(SPECIES_SWINE)
+	has_secondary = TRUE
+
 
 /datum/sprite_accessory/facial_hair/swine_tusks
 	name = "Tusks"

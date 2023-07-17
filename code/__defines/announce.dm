@@ -1,3 +1,11 @@
+#define DEFAULT_ANNOUNCER /datum/announcer/default
+
+GLOBAL_VAR_CONST(PREF_ANNOUNCER_DEFAULT, "Default")
+GLOBAL_VAR_CONST(PREF_ANNOUNCER_VGSTATION, "\[Cargo\] /VG/station (Legacy)")
+GLOBAL_VAR_CONST(PREF_ANNOUNCER_BAYSTATION12, "\[Cargo\] BayStation12 (Legacy)")
+GLOBAL_VAR_CONST(PREF_ANNOUNCER_BAYSTATION12_TORCH, "\[Cargo\] BayStation12-Torch (Legacy)")
+GLOBAL_VAR_CONST(PREF_ANNOUNCER_TGSTATION, "\[Cargo\] /TG/station (Legacy)")
+
 /datum/announce
 	var/text = null
 	var/title = "Attention"

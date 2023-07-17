@@ -227,26 +227,28 @@
 /obj/item/smallDelivery/update_icon()
 	overlays = new()
 	if((nameset || examtext) && icon_state != "deliverycrate1")
-		var/image/I = new /image('icons/obj/storage.dmi',"delivery_label")
-		if(icon_state == "deliverycrate5")
-			I.pixel_y = -1
+		var/image/I
+		if(icon_state == "deliverycrate1")
+			I = image('icons/obj/storage.dmi', "delivery_label_small")
+		else
+			I = image('icons/obj/storage.dmi', "delivery_label")
 		overlays += I
 	if(src.sortTag)
-		var/image/I = new /image('icons/obj/storage.dmi',"delivery_tag")
+		var/image/I = image('icons/obj/storage.dmi', "delivery_tag")
 		switch(icon_state)
 			if("deliverycrate1")
-				I.pixel_y = -5
+				I.pixel_y = -4
 			if("deliverycrate2")
 				I.pixel_y = -2
 			if("deliverycrate3")
 				I.pixel_y = 0
 			if("deliverycrate4")
 				if(tag_x == null)
-					tag_x = rand(0,5)
+					tag_x = rand(0, 5)
 				I.pixel_x = tag_x
 				I.pixel_y = 3
 			if("deliverycrate5")
-				I.pixel_y = -3
+				I.pixel_y = 0
 			if("deliverybox")
 				I.pixel_y = 1
 		overlays += I

@@ -12,11 +12,17 @@
 	var/min_bruised_damage = 10       // Damage before considered bruised
 	var/foreign = FALSE 			  // foreign organs shouldn't be removed or recreated on revive
 	var/override_species_icon = FALSE // Should we ignore species-specific icons?
+	/// Should this organs icon changed to prosthetic?
+	var/override_organic_icon = TRUE
+	/// Should this organ be hidden on scanners?
+	var/hidden = FALSE
 
-/obj/item/organ/internal/New(mob/living/carbon/holder)
+/obj/item/organ/internal/New(newLoc, mob/living/carbon/holder)
 	if(max_damage)
 		min_bruised_damage = Floor(max_damage / 4)
-	..()
+
+	..(newLoc, holder)
+
 	if(istype(holder))
 		holder.internal_organs |= src
 
@@ -113,7 +119,9 @@
 	min_broken_damage += 10
 
 	override_species_icon = TRUE
-	icon = 'icons/mob/human_races/organs/cyber.dmi'
+
+	if(override_organic_icon)
+		icon = 'icons/mob/human_races/organs/cyber.dmi'
 
 /obj/item/organ/internal/proc/getToxLoss()
 	if(BP_IS_ROBOTIC(src))

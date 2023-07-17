@@ -154,7 +154,7 @@
 /// `sig_type_or_types` - Either a string signal name, or a list of signal names (strings).
 /// `proctype` - The proc to call back when the signal is emitted.
 /// `override` - If a previous registration exists you must explicitly set this.
-/datum/proc/register_signal(datum/target, sig_type_or_types, proctype, override = FALSE)
+/datum/proc/register_signal(datum/target, sig_type_or_types, proctype, override)
 	if(QDELETED(src) || QDELETED(target))
 		return
 

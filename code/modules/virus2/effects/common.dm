@@ -169,7 +169,7 @@
 /datum/disease2/effect/mind/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	var/obj/item/organ/internal/brain/B = mob.internal_organs_by_name[BP_BRAIN]
+	var/obj/item/organ/internal/cerebrum/brain/B = mob.internal_organs_by_name[BP_BRAIN]
 	if(B && B.damage < B.min_broken_damage)
 		B.take_internal_damage(5)
 

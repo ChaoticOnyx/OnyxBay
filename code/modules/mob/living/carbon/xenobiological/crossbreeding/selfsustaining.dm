@@ -49,6 +49,9 @@ Self-sustaining extracts:
 		reagentselect = /datum/reagent/water
 	if(reagentselect == "Blood")
 		reagentselect = /datum/reagent/blood
+	if(reagentselect == "Metroid Jelly")
+		reagentselect = /datum/reagent/metroidjelly
+
 	extract.forceMove(user.drop_location())
 	qdel(src)
 	user.put_in_active_hand(extract)

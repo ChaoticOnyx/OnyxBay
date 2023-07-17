@@ -51,7 +51,7 @@
 
 	unarmed_types = list(/datum/unarmed_attack/metroid_glomp)
 	has_organ =     list(
-		BP_BRAIN = /obj/item/organ/internal/brain/metroid,
+		BP_BRAIN = /obj/item/organ/internal/cerebrum/brain/metroid,
 		BP_METROID = /obj/item/organ/internal/promethean/metroid_jelly_vessel // Literaly hate baymed
 	) // Metroid core.
 	has_limbs = list(

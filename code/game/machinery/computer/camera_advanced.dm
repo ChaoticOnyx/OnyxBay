@@ -31,12 +31,17 @@
 /obj/machinery/computer/camera_advanced/attack_ghost(mob/ghost)
 	return
 
+/obj/machinery/computer/camera_advanced/attack_ai(mob/user)
+	var/mob/living/silicon/ai/AI = user
+	AI.destroy_eyeobj()
+	attack_hand(user)
+
 /obj/machinery/computer/camera_advanced/attack_hand(obj/item/I, user)
 	..()
 	if(!vision.owner)
 		var/mob/living/L = I
 		GrantActions(L)
-		vision.possess(L)
+		vision.possess(L, FALSE)
 		register_signal(L, SIGNAL_QDELETING, /obj/machinery/computer/camera_advanced/proc/release)
 		register_signal(L, SIGNAL_LOGGED_OUT, /obj/machinery/computer/camera_advanced/proc/release)
 		register_signal(L, SIGNAL_MOB_DEATH, /obj/machinery/computer/camera_advanced/proc/release)
@@ -64,8 +69,18 @@
 /datum/action/innate/camera_off/Activate()
 	if(!owner || !isliving(owner))
 		return
+
+	var/mob/living/L = owner
 	var/obj/machinery/computer/camera_advanced/origin = target
-	origin.release(owner)
+
+	origin.release(L)
+
+	if(!isAI(L))
+		return
+
+	var/mob/living/silicon/ai/AI = L
+	AI.create_eyeobj(get_turf(origin.vision))
+
 
 /datum/action/innate/camera_reset
 	name = "Reset Camera View"

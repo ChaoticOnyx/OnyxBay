@@ -29,7 +29,7 @@
 			for(var/datum/modifier/M in modifiers)
 				if(!isnull(M.incoming_healing_percent))
 					amount *= M.incoming_healing_percent
-		var/obj/item/organ/internal/brain/sponge = internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/sponge = internal_organs_by_name[BP_BRAIN]
 		if(sponge)
 			sponge.take_internal_damage(amount)
 
@@ -37,7 +37,7 @@
 	if(status_flags & GODMODE)
 		return 0
 	if(should_have_organ(BP_BRAIN))
-		var/obj/item/organ/internal/brain/sponge = internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/sponge = internal_organs_by_name[BP_BRAIN]
 		if(sponge)
 			sponge.damage = min(max(amount, 0),sponge.species.total_health)
 			updatehealth()
@@ -46,7 +46,7 @@
 	if(status_flags & GODMODE)
 		return 0
 	if(should_have_organ(BP_BRAIN))
-		var/obj/item/organ/internal/brain/sponge = internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/sponge = internal_organs_by_name[BP_BRAIN]
 		if(sponge)
 			if(sponge.status & ORGAN_DEAD)
 				return sponge.species.total_health
@@ -267,7 +267,7 @@
 
 	// Move the brain to the very end since damage to it is vastly more dangerous
 	// (and isn't technically counted as toxloss) than general organ damage.
-	var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
+	var/obj/item/organ/internal/cerebrum/brain/brain = internal_organs_by_name[BP_BRAIN]
 	if(brain)
 		pick_organs -= brain
 		pick_organs += brain
