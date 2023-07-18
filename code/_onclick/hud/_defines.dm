@@ -180,6 +180,14 @@
 #define ui_ai_view_images "SOUTH:6+1,WEST+13"
 #define ui_ai_del_picture "SOUTH:6+1,WEST+14"
 
+// Ghost
+#define ui_ghost_spawners_menu "SOUTH:6,CENTER-2:24"
+#define ui_ghost_follow "SOUTH:6,CENTER-1:24"
+#define ui_ghost_reenter_corpse "SOUTH:6,CENTER:24"
+#define ui_ghost_teleport "SOUTH:6,CENTER+1:24"
+#define ui_ghost_move_up "SOUTH+1:6,EAST-1:28"
+#define ui_ghost_move_down "SOUTH:6,EAST-1:28"
+
 //Upper-middle right (alerts)
 #define ui_alert1 "EAST-1:28,CENTER+5:27"
 #define ui_alert2 "EAST-1:28,CENTER+4:25"

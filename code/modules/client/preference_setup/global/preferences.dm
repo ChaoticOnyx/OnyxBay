@@ -338,26 +338,37 @@ var/global/list/_client_preferences_by_type
 /********************
 * Ghost Preferences *
 ********************/
+/datum/client_preference/ghost_hud
+	description = "Ghost HUD"
+	key = "GHOST_SEEHUD"
+	category = PREF_CATEGORY_GHOST
+	default_value = GLOB.PREF_YES
+	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+
+/datum/client_preference/ghost_hud/changed(mob/preference_mob, new_value)
+	if(isobserver(preference_mob))
+		preference_mob?.hud_used?.show_hud()
+
 /datum/client_preference/ghost_ears
-	description ="Ghost ears"
+	description = "Ghost ears"
 	key = "CHAT_GHOSTEARS"
 	category = PREF_CATEGORY_GHOST
 	options = list(GLOB.PREF_ALL_SPEECH, GLOB.PREF_NEARBY)
 
 /datum/client_preference/ghost_sight
-	description ="Ghost sight"
+	description = "Ghost sight"
 	key = "CHAT_GHOSTSIGHT"
 	category = PREF_CATEGORY_GHOST
 	options = list(GLOB.PREF_ALL_EMOTES, GLOB.PREF_NEARBY)
 
 /datum/client_preference/ghost_radio
-	description ="Ghost radio"
+	description = "Ghost radio"
 	key = "CHAT_GHOSTRADIO"
 	category = PREF_CATEGORY_GHOST
 	options = list(GLOB.PREF_ALL_CHATTER, GLOB.PREF_NEARBY)
 
 /datum/client_preference/ghost_follow_link_length
-	description ="Ghost Follow Links"
+	description = "Ghost Follow Links"
 	key = "CHAT_GHOSTFOLLOWLINKLENGTH"
 	category = PREF_CATEGORY_GHOST
 	options = list(GLOB.PREF_SHORT, GLOB.PREF_LONG)
