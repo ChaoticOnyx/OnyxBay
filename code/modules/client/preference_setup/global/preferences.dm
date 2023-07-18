@@ -338,6 +338,17 @@ var/global/list/_client_preferences_by_type
 /********************
 * Ghost Preferences *
 ********************/
+/datum/client_preference/ghost_hud
+	description = "Ghost HUD"
+	key = "GHOST_SEEHUD"
+	category = PREF_CATEGORY_GHOST
+	default_value = GLOB.PREF_YES
+	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+
+/datum/client_preference/ghost_hud/changed(mob/preference_mob, new_value)
+	if(isobserver(preference_mob))
+		preference_mob?.hud_used?.show_hud()
+
 /datum/client_preference/ghost_ears
 	description = "Ghost ears"
 	key = "CHAT_GHOSTEARS"
