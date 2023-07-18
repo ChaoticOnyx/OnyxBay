@@ -51,6 +51,9 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 
 	var/list/hud_images // A list of hud images
 
+	/// Holder for a spawners menu.
+	var/datum/spawners_menu/spawners_menu = null
+
 /mob/observer/ghost/New(mob/body)
 	see_in_dark = 100
 	verbs += /mob/proc/toggle_antag_pool
@@ -346,6 +349,16 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	antagHUD = !antagHUD
 
 	to_chat(src, SPAN_NOTICE("Antag HUD has been [antagHUD ? "enabled" : "disabled"]"))
+
+/mob/observer/ghost/verb/open_spawners_menu()
+	set category = "Ghost"
+	set name = "Spawners Menu"
+	set desc = "See all currently available spawners"
+
+	if(isnull(spawners_menu))
+		spawners_menu = new(src)
+
+	spawners_menu.tgui_interact(src)
 
 /mob/observer/ghost/verb/dead_tele()
 	set category = "Ghost"
