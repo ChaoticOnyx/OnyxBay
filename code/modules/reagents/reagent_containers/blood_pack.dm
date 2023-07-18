@@ -1,7 +1,7 @@
 /obj/item/storage/box/bloodpacks
 	name = "blood packs box"
 	desc = "This box contains blood packs."
-	icon_state = "sterile"
+	icon_state = "bloodbags"
 	startswith = list(/obj/item/reagent_containers/ivbag = 7)
 
 /obj/item/reagent_containers/ivbag

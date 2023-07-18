@@ -227,37 +227,37 @@
 /obj/item/storage/box/teargas
 	name = "box of pepperspray grenades"
 	desc = "A box containing 7 tear gas grenades. A gas mask is printed on the label.<br> WARNING: Exposure carries risk of serious injury or death. Keep away from persons with lung conditions."
-	icon_state = "flashbang"
+	icon_state = "peppers"
 	startswith = list(/obj/item/grenade/chem_grenade/teargas = 7)
 
 /obj/item/storage/box/emps
 	name = "box of emp grenades"
 	desc = "A box containing 5 military grade EMP grenades.<br> WARNING: Do not use near unshielded electronics or biomechanical augmentations, death or permanent paralysis may occur."
-	icon_state = "flashbang"
+	icon_state = "EMPs"
 	startswith = list(/obj/item/grenade/empgrenade = 5)
 
 /obj/item/storage/box/frags
 	name = "box of frag grenades"
 	desc = "A box containing 5 military grade fragmentation grenades.<br> WARNING: Live explosives. Misuse may result in serious injury or death."
-	icon_state = "flashbang"
+	icon_state = "frags"
 	startswith = list(/obj/item/grenade/frag = 5)
 
 /obj/item/storage/box/fragshells
 	name = "box of frag shells"
 	desc = "A box containing 5 military grade fragmentation shells.<br> WARNING: Live explosive munitions. Misuse may result in serious injury or death."
-	icon_state = "flashbang"
+	icon_state = "fragshells"
 	startswith = list(/obj/item/grenade/frag/shell = 5)
 
 /obj/item/storage/box/smokes
 	name = "box of smoke bombs"
 	desc = "A box containing 5 smoke bombs."
-	icon_state = "flashbang"
+	icon_state = "smokebombs"
 	startswith = list(/obj/item/grenade/smokebomb = 5)
 
 /obj/item/storage/box/anti_photons
 	name = "box of anti-photon grenades"
 	desc = "A box containing 5 experimental photon disruption grenades."
-	icon_state = "flashbang"
+	icon_state = "antiphotons"
 	startswith = list(/obj/item/grenade/anti_photon = 5)
 
 /obj/item/storage/box/supermatters
@@ -305,6 +305,7 @@
 /obj/item/storage/box/cups
 	name = "box of paper cups"
 	desc = "It has pictures of paper cups on the front."
+	icon_state = "papercups"
 	startswith = list(/obj/item/reagent_containers/vessel/sillycup = 7)
 
 /obj/item/storage/box/donkpockets
@@ -357,7 +358,7 @@
 /obj/item/storage/box/seccarts
 	name = "box of spare R.O.B.U.S.T. Cartridges"
 	desc = "A box full of R.O.B.U.S.T. Cartridges, used by Security."
-	icon_state = "pda"
+	icon_state = "seccarts"
 	startswith = list(/obj/item/cartridge/security = 7)
 
 /obj/item/storage/box/handcuffs
@@ -377,6 +378,7 @@
 
 /obj/item/storage/box/pillbottles
 	name = "box of pill bottles"
+	icon_state = "pillbox"
 	desc = "It has pictures of pill bottles on its front."
 	startswith = list(/obj/item/storage/pill_bottle = 7)
 
@@ -515,14 +517,14 @@
 
 /obj/item/storage/box/glowsticks
 	name = "box of mixed glowsticks"
-	icon_state = "box"
+	icon_state = "glowsticks"
 	startswith = list(/obj/item/device/flashlight/glowstick = 1, /obj/item/device/flashlight/glowstick/red = 1,
 					/obj/item/device/flashlight/glowstick/blue = 1, /obj/item/device/flashlight/glowstick/orange = 1,
 					/obj/item/device/flashlight/glowstick/yellow = 1, /obj/item/device/flashlight/glowstick/random = 1)
 
 /obj/item/storage/box/greenglowsticks
 	name = "box of green glowsticks"
-	icon_state = "box"
+	icon_state = "glowsticks_green"
 	startswith = list(/obj/item/device/flashlight/glowstick = 6)
 
 /obj/item/storage/box/freezer
