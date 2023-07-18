@@ -1,5 +1,0 @@
-stun;taser;стан;тазер;оглушающий
-laser;lethal;beam;лазер;летал;луч
-rapid;auto;рапид;авто;автоматический
-flash;signal;флеш;сигнальный
-armor piercing;ap;бронебойный;бб;ар
