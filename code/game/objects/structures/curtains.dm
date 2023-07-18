@@ -2,7 +2,7 @@
 	name = "curtain"
 	icon = 'icons/obj/curtain.dmi'
 	icon_state = "closed"
-	layer = BASE_ABOVE_OBJ_LAYER
+	layer = ABOVE_HUMAN_LAYER
 	opacity = 1
 	density = 0
 	breakable = TRUE
@@ -10,7 +10,6 @@
 /obj/structure/curtain/open
 	icon_state = "open"
 
-	layer = ABOVE_HUMAN_LAYER
 	opacity = 0
 
 /obj/structure/curtain/bullet_act(obj/item/projectile/P, def_zone)
@@ -44,7 +43,6 @@
 
 	else
 		icon_state = "open"
-		layer = ABOVE_OBJ_LAYER
 
 /obj/structure/curtain/black
 	name = "black curtain"
