@@ -33,22 +33,11 @@
 	var/turf/loc = get_turf(O)
 	return loc ? loc.z : 0
 
-/proc/get_area(O)
-	if(isarea(O))
-		return O
-	var/turf/loc = get_turf(O)
-	return loc ? loc.loc : null
-
-/proc/get_area_name(N) // get area by its name
+/proc/get_area_by_name(N) // get area by its name
 	for(var/area/A in world)
 		if(A.name == N)
 			return A
 	return 0
-
-/proc/get_area_master(const/O)
-	var/area/A = get_area(O)
-	if (isarea(A))
-		return A
 
 /proc/in_range(source, user)
 	if(get_dist(source, user) <= 1)

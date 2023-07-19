@@ -172,7 +172,7 @@
 			to_chat(usr, SPAN_NOTICE("Data collection initiated."))
 			start()
 			if(uplink?.uplink_owner == usr.mind)
-				var/area/A = get_area_name(area_name)
+				var/area/A = get_area_by_name(area_name)
 				active_recon_areas_list += A
 				for(var/datum/antag_contract/recon/C in GLOB.all_contracts)
 					if(C.completed)
