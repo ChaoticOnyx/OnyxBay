@@ -93,10 +93,10 @@
 
 	if(!isnull(target?.mind?.changeling))
 		brainmob.death(FALSE)
-		brainmob.ghostize()
+		brainmob.ghostize(FALSE)
 		return TRUE
 
-	target.ghostize()
+	target.ghostize(brainmob.mind || brainmob.key || FALSE)
 
 	if(brainmob.mind)
 		brainmob.mind.transfer_to(target)
@@ -126,5 +126,6 @@
 
 	if(vital)
 		transfer_identity(owner)
+		if(!BP_IS_ROBOTIC(src)) brainmob?.death()
 
 	return ..()
