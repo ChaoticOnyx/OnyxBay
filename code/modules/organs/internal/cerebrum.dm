@@ -96,7 +96,7 @@
 		brainmob.ghostize(FALSE)
 		return TRUE
 
-	target.ghostize(brainmob.mind || brainmob.key || FALSE)
+	target.ghostize(!isnull(brainmob?.mind) || !isnull(brainmob?.key) || FALSE)
 
 	if(brainmob.mind)
 		brainmob.mind.transfer_to(target)
