@@ -242,7 +242,8 @@ GLOBAL_LIST_EMPTY(world_awaygateways)
 /obj/machinery/gateway/centeraway/Initialize()
 	update_icon()
 	. = ..()
-	gateway_area_name = get_area(src).name
+	var/area/A = get_area(src)
+	gateway_area_name = A.name
 	GLOB.world_awaygateways[gateway_area_name] = src
 
 /obj/machinery/gateway/centeraway/Destroy()
