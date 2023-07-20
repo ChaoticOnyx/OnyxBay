@@ -374,7 +374,7 @@
 	. = ..()
 
 	set_next_think(world.time)
-	add_think_ctx("pickup", CALLBACK(src, .proc/do_pickup), world.time + GIBBER_THINK_DELTA)
+	add_think_ctx("pickup", CALLBACK(src, .proc/perform_pickup), world.time + GIBBER_THINK_DELTA)
 
 /obj/machinery/gibber/industrial/RefreshParts()
 	. = ..()
@@ -388,16 +388,35 @@
 	. = ..(user, slipshod, gore)
 	flick("ind_gibber-out", src)
 
-/obj/machinery/gibber/industrial/proc/do_pickup()
-	if(!(stat & (NOPOWER|BROKEN)))
-		var/scoop_counter = scoops_per_attempt
-		while(scoop_counter > 0)
-			var/mob/possible_prey = locate() in get_turf(src)
-			if(!possible_prey.stat || !do_move_inside_checks(null, possible_prey, FALSE))
-				continue
+/obj/machinery/gibber/industrial/proc/_do_pickup(turf/target_turf, scoops_left)
+	if(!istype(target_turf))
+		return scoops_left
 
-			move_inside(possible_prey)
-			scoop_counter--
+	var/scoop_counter = scoops_left
+	while(scoop_counter > 0)
+		var/mob/possible_prey = locate() in get_turf(target_turf)
+		if(!possible_prey.stat || !do_move_inside_checks(null, possible_prey, FALSE))
+			continue
+
+		move_inside(possible_prey)
+		scoop_counter--
+
+	return scoop_counter
+
+
+/obj/machinery/gibber/industrial/proc/perform_pickup()
+	if(!(stat & (NOPOWER|BROKEN)))
+		var/turf/src_turf = get_turf(src)
+		var/scoops_left = scoops_per_attempt
+
+		scoops_left = _do_pickup(src_turf, scoops_left)
+
+		for(var/step_dir in GLOB.cardinal)
+			if(scoops_left <= 0)
+				break
+
+			var/turf/new_turf = get_step(src_turf, step_dir)
+			scoops_left = _do_pickup(new_turf, scoops_left)
 
 		flick("ind_gibber-in", src)
 
