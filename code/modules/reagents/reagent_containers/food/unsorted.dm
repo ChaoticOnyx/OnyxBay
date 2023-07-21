@@ -1234,9 +1234,14 @@
 /obj/item/reagent_containers/food/monkeycube/On_Consume(mob/M)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		H.visible_message("<span class='warning'>A screeching creature bursts out of [M]'s chest!</span>")
+		H.visible_message(SPAN("warning", "A screeching creature bursts out of [H]'s chest!"))
 		var/obj/item/organ/external/organ = H.get_organ(BP_CHEST)
 		organ.take_external_damage(50, 0, 0, "Animal escaping the ribcage")
+	else
+		M.visible_message(\
+			SPAN("warning", "A screeching creature bursts out of [M]!"),\
+			SPAN("warning", "You feel like your body is being torn apart from the inside!"))
+		M.gib(do_gibs = TRUE)
 	Expand()
 
 /obj/item/reagent_containers/food/monkeycube/on_reagent_change()
