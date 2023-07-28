@@ -852,8 +852,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 //Handles dismemberment
 /obj/item/organ/external/proc/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent)
 
-	if(is_stump() == TRUE)			//The variable species in stumps is null after creation, for some unknown reason.
-		src.species = owner.species	//To make sawing off a stump possible, the value of the variable is set here
+	if(is_stump())			//The variable species in stumps is null after creation, for some unknown reason.
+		species = owner.species	//To make sawing off a stump possible, the value of the variable is set here
 
 	if(!(limb_flags & ORGAN_FLAG_CAN_AMPUTATE) || !owner)
 		return
