@@ -852,8 +852,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 //Handles dismemberment
 /obj/item/organ/external/proc/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent)
 
-	if(is_stump() == TRUE)
-		src.species = owner.species
+	if(is_stump() == TRUE)			//The variable species in stumps is null after creation, for some unknown reason.
+		src.species = owner.species	//To make sawing off a stump possible, the value of the variable is set here
 
 	if(!(limb_flags & ORGAN_FLAG_CAN_AMPUTATE) || !owner)
 		return
@@ -894,6 +894,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		else
 			var/obj/item/organ/external/stump/stump = new (victim, 0, src)
 			stump.SetName("stump of \a [name]")
+			//stump.species = parent.species 	Causes the rolling to malfunction, the stump will not appear and the person sprite will remain intact
 			stump.artery_name = "mangled [artery_name]"
 			stump.arterial_bleed_severity = arterial_bleed_severity
 			stump.adjust_pain(max_damage)
