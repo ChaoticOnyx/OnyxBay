@@ -894,7 +894,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		else
 			var/obj/item/organ/external/stump/stump = new (victim, 0, src)
 			stump.SetName("stump of \a [name]")
-			//stump.species = parent.species 	Causes the rolling to malfunction, the stump will not appear and the person sprite will remain intact
+			// TODO: Fix the caching issue that the stump will not appear and the person sprite will remain intact, see proc update_body for caching mechanism
 			stump.artery_name = "mangled [artery_name]"
 			stump.arterial_bleed_severity = arterial_bleed_severity
 			stump.adjust_pain(max_damage)
