@@ -57,8 +57,8 @@ var/list/organ_cache = list()
 /obj/item/organ/proc/is_broken()
 	return (damage >= min_broken_damage || (status & ORGAN_CUT_AWAY) || (status & ORGAN_BROKEN))
 
-/obj/item/organ/New(newLoc, mob/living/carbon/holder)
-	..(newLoc, holder)
+/obj/item/organ/New(mob/living/carbon/holder)
+	..(holder)
 
 	if(food_organ_type && !disable_food_organ)
 		food_organ = new food_organ_type(src)
