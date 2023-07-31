@@ -1,5 +1,16 @@
 [
   {
+    "author": "ilido",
+    "date": "2023-07-31T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Обрубки теперь можно отпилить.",
+        "pr": 10549
+      }
+    ]
+  },
+  {
     "author": "BaraBara",
     "date": "2023-07-22T00:00:00+03:00",
     "changes": [
