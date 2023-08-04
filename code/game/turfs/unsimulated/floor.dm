@@ -28,3 +28,6 @@
 
 /turf/unsimulated/floor/shuttle_ceiling
 	icon_state = "reinforced"
+
+/turf/unsimulated/floor/liquid_plasma
+	icon_state = "liquid_plasma"
