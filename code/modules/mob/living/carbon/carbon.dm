@@ -87,7 +87,7 @@
 				stomach_contents.Remove(A)
 			gib()
 
-/mob/living/carbon/gib()
+/mob/living/carbon/gib(anim, do_gibs)
 	for(var/mob/M in src)
 		if(M in src.stomach_contents)
 			src.stomach_contents.Remove(M)
