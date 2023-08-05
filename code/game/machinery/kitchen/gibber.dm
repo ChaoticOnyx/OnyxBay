@@ -31,9 +31,9 @@
 	/// Whether the machine is processing pigs.
 	var/operating = FALSE
 	/// Max mount of mobs that can fit into the machine.
-	var/pig_capacity
+	var/mob_capacity
 	/// List of mobs to be gibbed.
-	var/list/mob/pigs_to_process
+	var/list/mob/mobs_to_process
 
 /obj/machinery/gibber/update_icon()
 	overlays.Cut()
@@ -48,7 +48,7 @@
 
 	if(operating)
 		overlays += "gibber-use"
-	else if(length(pigs_to_process))
+	else if(length(mobs_to_process))
 		overlays += "gibber-jam"
 	else
 		overlays += "gibber-idle"
@@ -62,7 +62,7 @@
 	var/capacity_modifier = 0
 	for(var/obj/item/stock_parts/matter_bin/MB in component_parts)
 		capacity_modifier += MB.rating
-	pig_capacity = clamp(capacity_modifier * (capacity_modifier - 1), 1, 12)
+	mob_capacity = clamp(capacity_modifier * (capacity_modifier - 1), 1, 12)
 
 /obj/machinery/gibber/Initialize()
 	. = ..()
@@ -80,11 +80,11 @@
 
 /obj/machinery/gibber/Destroy()
 	if(operating || timer)
-		for(var/atom/A in contents - pigs_to_process - component_parts)
+		for(var/atom/A in contents - mobs_to_process - component_parts)
 			qdel(A) // No drops for cheaters...
 		deltimer(timer)
-	if(length(pigs_to_process))
-		for(var/mob/M in pigs_to_process)
+	if(length(mobs_to_process))
+		for(var/mob/M in mobs_to_process)
 			M.forceMove(loc)
 	return ..()
 
@@ -96,7 +96,7 @@
 		to_chat(user, SPAN("danger", "\The [src] is locked and running, wait for it to finish!"))
 		return
 
-	process_pigs(user)
+	process_mobs(user)
 
 /obj/machinery/gibber/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/grab))
@@ -124,6 +124,9 @@
 		return
 
 	if(default_deconstruction_crowbar(user, W))
+		return
+
+	if(default_part_replacement(user, W))
 		return
 
 	return ..()
@@ -161,19 +164,19 @@
 	if(operating)
 		return FALSE
 
-	for(var/mob/M in pigs_to_process)
+	for(var/mob/M in mobs_to_process)
 		M.dropInto(loc)
 		if(M.client)
 			M.client.eye = M.client.mob
 			M.client.perspective = MOB_PERSPECTIVE
 
-	LAZYCLEARLIST(pigs_to_process)
+	LAZYCLEARLIST(mobs_to_process)
 	update_icon()
 	return TRUE
 
 /obj/machinery/gibber/proc/move_inside(mob/victim)
 	victim.forceMove(src)
-	LAZYADD(pigs_to_process, victim)
+	LAZYADD(mobs_to_process, victim)
 
 	if(victim.client)
 		victim.client.perspective = EYE_PERSPECTIVE
@@ -186,7 +189,7 @@
 	if(isnull(victim))
 		return FALSE
 
-	if(length(pigs_to_process) >= pig_capacity)
+	if(length(mobs_to_process) >= mob_capacity)
 		if(loud) to_chat(user, SPAN("danger", "\The [src] is full, empty it first!"))
 		return FALSE
 
@@ -210,16 +213,16 @@
 
 	user.visible_message(SPAN("danger", "\The [user] starts to put \the [victim] into \the [src]!"))
 	add_fingerprint(user)
-	if(do_after(user, 30, src) && victim.Adjacent(src) && user.Adjacent(src) && victim.Adjacent(user) && length(pigs_to_process) < pig_capacity)
+	if(do_after(user, 30, src) && victim.Adjacent(src) && user.Adjacent(src) && victim.Adjacent(user) && length(mobs_to_process) < mob_capacity)
 		user.visible_message(SPAN("danger", "\The [user] stuffs \the [victim] into \the [src]!"))
 		move_inside(victim)
 		update_icon()
 
-/obj/machinery/gibber/proc/process_pigs(mob/user)
+/obj/machinery/gibber/proc/process_mobs(mob/user = null)
 	if(operating)
 		return
 
-	if(!length(pigs_to_process))
+	if(!length(mobs_to_process))
 		visible_message(SPAN("danger", "You hear a loud metallic grinding sound."))
 		if(cursed)
 			playsound(loc, 'sound/signals/error3.ogg', 100, TRUE)
@@ -233,12 +236,12 @@
 	update_icon()
 
 	operating = TRUE
-	for(var/mob/pig in pigs_to_process)
-		create_pig_drop(pig)
+	for(var/mob/pig in mobs_to_process)
+		create_mob_drop(pig)
 
-	timer = addtimer(CALLBACK(src, .proc/finish_processing, user), length(pigs_to_process) * gib_time, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE)
+	timer = addtimer(CALLBACK(src, .proc/finish_processing, user), length(mobs_to_process) * gib_time, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE)
 
-/obj/machinery/gibber/proc/create_pig_drop(mob/victim)
+/obj/machinery/gibber/proc/create_mob_drop(mob/victim)
 	if(istype(victim, /mob/living/simple_animal/hostile/faithless))
 		new /obj/item/ectoplasm(src)
 		return
@@ -313,8 +316,8 @@
 		new /obj/item/stack/material/steel(src, rand(3, 5))
 
 /obj/machinery/gibber/proc/finish_processing(mob/user, slipshod = TRUE, gore = TRUE)
-	for(var/mob/pig in pigs_to_process)
-		admin_attack_log(user, pig, "Gibbed the victim", "Was gibbed", "gibbed")
+	for(var/mob/pig in mobs_to_process)
+		if(user) admin_attack_log(user, pig, "Gibbed the victim", "Was gibbed", "gibbed")
 		pig.gib(do_gibs = gore)
 		qdel(pig)
 
@@ -322,7 +325,7 @@
 	operating = FALSE
 
 	playsound(loc, 'sound/effects/splat.ogg', 50, 1)
-	LAZYCLEARLIST(pigs_to_process)
+	LAZYCLEARLIST(mobs_to_process)
 	update_icon()
 
 	for(var/obj/O in contents - component_parts)
@@ -336,7 +339,7 @@
 
 		O.throw_at(get_edge_target_turf(src, gib_throw_dir), rand(0, 3), 0.5)
 
-#define GIBBER_THINK_DELTA (1 SECOND)
+#define GIBBER_THINK_DELTA (10 SECOND)
 
 /obj/machinery/gibber/industrial
 	name = "Industrial Gibber"
@@ -364,11 +367,10 @@
 
 	if(operating)
 		overlays += "ind_gibber-use"
-	else if(length(pigs_to_process))
+	else if(length(mobs_to_process))
 		overlays += "ind_gibber-jam"
 
 	return
-
 
 /obj/machinery/gibber/industrial/Initialize()
 	. = ..()
@@ -384,42 +386,39 @@
 		scoop_modifier += MM.rating
 	scoops_per_attempt = scoop_modifier
 
+/obj/machinery/gibber/industrial/power_change()
+	. = ..()
+	if(stat & NOPOWER)
+		return
+
+	if(operating)
+		return
+
+	set_next_think_ctx("pickup", world.time + GIBBER_THINK_DELTA)
+
 /obj/machinery/gibber/industrial/finish_processing(mob/user, slipshod = FALSE, gore = FALSE)
 	. = ..(user, slipshod, gore)
 	flick("ind_gibber-out", src)
+	set_next_think_ctx("pickup", world.time + GIBBER_THINK_DELTA)
 
-/obj/machinery/gibber/industrial/proc/_do_pickup(turf/target_turf, scoops_left)
-	if(!istype(target_turf))
-		return scoops_left
+/obj/machinery/gibber/industrial/proc/perform_pickup()
+	if(operating || stat & (NOPOWER|BROKEN))
+		return
 
-	var/scoop_counter = scoops_left
-	while(scoop_counter > 0)
-		var/mob/possible_prey = locate() in get_turf(target_turf)
-		if(!possible_prey.stat || !do_move_inside_checks(null, possible_prey, FALSE))
+	var/scoops_left = scoops_per_attempt
+	for(var/mob/living/possible_prey in range(1, src))
+		if(scoops_left <= 0)
+			process_mobs()
+			break
+
+		if(!possible_prey?.stat || !do_move_inside_checks(null, possible_prey, FALSE))
 			continue
 
 		move_inside(possible_prey)
-		scoop_counter--
+		scoops_left--
 
-	return scoop_counter
-
-
-/obj/machinery/gibber/industrial/proc/perform_pickup()
-	if(!(stat & (NOPOWER|BROKEN)))
-		var/turf/src_turf = get_turf(src)
-		var/scoops_left = scoops_per_attempt
-
-		scoops_left = _do_pickup(src_turf, scoops_left)
-
-		for(var/step_dir in GLOB.cardinal)
-			if(scoops_left <= 0)
-				break
-
-			var/turf/new_turf = get_step(src_turf, step_dir)
-			scoops_left = _do_pickup(new_turf, scoops_left)
-
-		flick("ind_gibber-in", src)
-
-	set_next_think_ctx("pickup", world.time + GIBBER_THINK_DELTA)
+	flick("ind_gibber-in", src)
+	if(scoops_left > 0)
+		set_next_think_ctx("pickup", world.time + GIBBER_THINK_DELTA)
 
 #undef GIBBER_THINK_DELTA
