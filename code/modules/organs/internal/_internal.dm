@@ -17,11 +17,11 @@
 	/// Should this organ be hidden on scanners?
 	var/hidden = FALSE
 
-/obj/item/organ/internal/New(newLoc, mob/living/carbon/holder)
+/obj/item/organ/internal/New(mob/living/carbon/holder)
 	if(max_damage)
 		min_bruised_damage = Floor(max_damage / 4)
 
-	..(newLoc, holder)
+	..(holder)
 
 	if(istype(holder))
 		holder.internal_organs |= src
