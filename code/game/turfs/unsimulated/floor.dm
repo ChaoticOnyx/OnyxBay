@@ -29,5 +29,5 @@
 /turf/unsimulated/floor/shuttle_ceiling
 	icon_state = "reinforced"
 
-/turf/unsimulated/floor/liquid_plasma
+/turf/unsimulated/floor/liquid_plasma //read TODO
 	icon_state = "liquidplasma"
