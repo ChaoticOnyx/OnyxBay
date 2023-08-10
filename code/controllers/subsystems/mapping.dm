@@ -6,8 +6,8 @@ SUBSYSTEM_DEF(mapping)
 
 	var/list/map_templates = list()
 	var/list/random_room_templates = list()
-	var/asteroid_folder_name = "asteroid"
 	var/list/asteroid_derelict_templates = list()
+	var/asteroid_folder_name = "asteroid"
 
 /datum/controller/subsystem/mapping/Initialize(timeofday)
 	preloadTemplates()
