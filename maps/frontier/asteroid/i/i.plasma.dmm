@@ -1,0 +1,15 @@
+"a" = (/turf/simulated/floor/tiled/rough,/area/space)
+"X" = (/turf/simulated/wall,/area/space)
+
+(1,1,1) = {"
+aaaaaaaaaa
+aaXXXXXaaa
+aaXaaaXaaa
+aaXaaaXaaa
+aaXaaaXaaa
+aaXaaaXaaa
+aaaaaaaaaa
+aaaaaaaaaa
+aaaaaaaaaa
+aaaaaaaaaa
+"}

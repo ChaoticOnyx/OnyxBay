@@ -7,7 +7,9 @@ SUBSYSTEM_DEF(mapping)
 	var/list/map_templates = list()
 	var/list/random_room_templates = list()
 	var/list/asteroid_derelict_templates = list()
+	var/list/z_levels_to_place = list()
 	var/asteroid_folder_name = "asteroid"
+	var/multi_z_map_folder_name = "another"
 
 /datum/controller/subsystem/mapping/Initialize(timeofday)
 	preloadTemplates()
@@ -48,3 +50,17 @@ SUBSYSTEM_DEF(mapping)
 		return null
 	var/datum/map_template/T = new(paths = list(path))
 	return T
+
+/datum/controller/subsystem/mapping/proc/load_multi_z_derelicts(name)
+	var/path = "maps/[GLOB.using_map.path]/[asteroid_folder_name]/[multi_z_map_folder_name]/[name]/"
+	if(!fexists(path))
+		util_crash_with("folder [name] doesn't exist")
+		return
+
+	var/list/mappaths = new
+	for(var/file_name in flist(path))
+		mappaths += "[path][file_name]"
+		log_to_dd("found additional z-level for derelict: [file_name]")
+	var/datum/map/T = new(map_levels = mappaths, path = path, rename = "[name]")
+	log_to_dd(T.path, T.map_levels)
+	T.setup_map()

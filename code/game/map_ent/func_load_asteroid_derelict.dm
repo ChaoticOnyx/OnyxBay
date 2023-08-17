@@ -7,7 +7,7 @@
 	var/height		// Preferred heigh of the derelict to spawn
 	var/force_map	// Force spawn of a specific map template using full path, format example: "maps/frontier/asteroid/camp/camp.dmm
 	var/id			//Need for identification many entity, and check this map path
-	var/place_chance = 50
+	var/place_chance = 0
 
 /obj/map_ent/func_load_map/derelict/Initialize(...)
 	select_map()
@@ -20,21 +20,29 @@
 			log_to_dd("[name] placed with invalid force_map path")
 			return
 		ev_map_path = force_map
-	else
-		if(prob(place_chance))
-			log_to_dd("[name] not working, its sleep")
-			return
-		else
-			var/list/valid_map_templates = list()
-			var/list/available_templates = SSmapping.asteroid_derelict_templates
-			for(var/template_name in available_templates)
-				var/datum/map_template/T = available_templates[template_name]
-				if(T.width == width && T.height == height)
-					valid_map_templates += T
-			if(!valid_map_templates.len)
-				log_to_dd("Out of maps to place")
-				return
-			var/picked_map_template = pick(valid_map_templates)
-			ev_map_path = pick(picked_map_template.mappaths[1])
-			SSmapping.asteroid_derelict_templates -= picked_map_template.name
-			log_to_dd("Try to remove [picked_map_template.name]]")
+		return
+
+	if(prob(place_chance))
+		log_to_dd("[name] not working, its sleep")
+		return
+
+	var/list/valid_map_templates = list()
+	var/list/available_templates = SSmapping.asteroid_derelict_templates
+	for(var/template_name in available_templates)
+		var/datum/map_template/T = available_templates[template_name]
+		if(T.width == width && T.height == height)
+			valid_map_templates += T
+	if(!valid_map_templates.len)
+		log_to_dd("Out of maps to place, dimensions: [width]x[height]")
+		return
+	var/datum/map_template/picked_map_template = pick(valid_map_templates)
+	var/derelict_name = picked_map_template.name
+	ev_map_path = picked_map_template.mappaths[1]
+	SSmapping.asteroid_derelict_templates -= derelict_name
+	log_to_dd("New derelict is placed: [derelict_name]")
+
+	if(copytext(derelict_name, 1, 3) == "i.")
+		log_to_dd("Derelict entrance detected: [derelict_name]")
+		var/target_name = copytext("[derelict_name]", 3, -4) // cut prefix "i." and extension ".dmm"
+		log_to_dd(target_name)
+		SSmapping.load_multi_z_derelicts(target_name)
