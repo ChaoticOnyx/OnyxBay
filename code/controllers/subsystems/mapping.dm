@@ -61,6 +61,5 @@ SUBSYSTEM_DEF(mapping)
 	for(var/file_name in flist(path))
 		mappaths += "[path][file_name]"
 		log_to_dd("found additional z-level for derelict: [file_name]")
-	var/datum/map/T = new(map_levels = mappaths, path = path, rename = "[name]")
-	log_to_dd(T.path, T.map_levels)
-	T.setup_map()
+	var/datum/map_template/T = new(paths = mappaths, rename = "[name]")
+	T.load_new_z()

@@ -3027,6 +3027,7 @@
 #include "maps\frontier\frontier_define.dm"
 #include "maps\frontier\frontier_holodecks.dm"
 #include "maps\frontier\frontier_levels.dm"
+#include "maps\frontier\asteroid\another\plasma\plasma.dm"
 #include "maps\genesis\genesis_define.dm"
 #include "maps\genesis\genesis_levels.dm"
 #include "maps\polar\polar_areas.dm"

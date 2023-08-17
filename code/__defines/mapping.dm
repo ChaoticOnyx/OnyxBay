@@ -47,31 +47,3 @@
 #define MAP_BAR_CLASSIC "classic"
 #define MAP_BAR_MODERN  "modern"
 #define MAP_BAR_SALOON  "saloon"
-
-// Asteroid derelicts
-// 10X10
-
-#define MAP_DERELICT_10X10_CAMP 	   "camp"
-#define MAP_DERELICT_10X10_ENGENEERING "engeneering"
-#define MAP_DERELICT_10X10_RADIO 	   "sm-rstation"
-
-//12X12
-
-#define MAP_DERELICT_12X12_SHUTTLE "shuttle"
-
-//16x16
-
-#define MAP_DERELICT_16X16_BASE "base"
-
-//20x20
-
-#define MAP_DERELICT_20X20_RESEARCH "research"
-
-//30X30
-
-#define MAP_DERELICT_30X30_COMMIBASE "commibase"
-#define MAP_DERELICT_30X30_MINING 	 "mining"
-
-//MULTI_Z
-
-#define MAP_DERELICT_ALTZ_PLASMA_RESEARCH "plasma"
