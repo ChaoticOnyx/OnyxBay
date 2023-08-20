@@ -3,11 +3,11 @@
 	name = "util_derelict"
 	icon_state = "random_room"
 
-	var/width		// Preferred width of the derelict to spawn
-	var/height		// Preferred heigh of the derelict to spawn
-	var/force_map	// Force spawn of a specific map template using full path, format example: "maps/frontier/asteroid/camp/camp.dmm
-	var/id			//Need for identification many entity, and check this map path
-	var/place_chance = 50
+	var/width				// Preferred width of the derelict to spawn
+	var/height				// Preferred heigh of the derelict to spawn
+	var/force_map			// Force spawn of a specific map template using full path, format example: "maps/frontier/asteroid/camp/camp.dmm
+	var/id					//Need for identification many entity, and check this map path
+	var/place_chance = 25	//This can be changed in the mapping
 
 /obj/map_ent/func_load_map/derelict/Initialize(...)
 	select_map()
