@@ -41,6 +41,6 @@
       "request": "launch",
       "script": "${workspaceFolder}/scripts/IEChooser.ps1",
       "cwd": "${workspaceFolder}"
-    },
+    }
   ]
 }
