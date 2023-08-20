@@ -1,49 +1,70 @@
-"a" = (/turf/simulated/mineral,/area/space)
-"c" = (/turf/simulated/floor/plating,/area/space)
-"j" = (/turf/simulated/floor/plating{icon_state = "dmg1"},/area/space)
-"C" = (/turf/simulated/open,/area/space)
-"I" = (/turf/simulated/floor/plating{icon_state = "dmg3"},/area/space)
-"Z" = (/turf/simulated/floor/asteroid,/area/space)
+"a" = (/turf/unsimulated/mineral,/area/space)
+"c" = (/obj/structure/lattice,/obj/structure/lattice,/turf/space,/area/space)
+"j" = (/obj/item/remains,/turf/simulated/floor/plating/airless,/area/space)
+"k" = (/obj/structure/table/rack,/obj/random/trash,/turf/simulated/floor/shuttle/pod,/area/space)
+"l" = (/obj/effect/decal/cleanable/cobweb2{icon_state = "cobweb1"},/turf/simulated/floor/shuttle/pod,/area/space)
+"m" = (/obj/item/skull,/turf/simulated/floor/plating/airless,/area/space)
+"o" = (/obj/item/stack/material/iron,/turf/simulated/floor,/area/space)
+"p" = (/turf/simulated/floor/shuttle/pod,/area/space)
+"t" = (/obj/effect/decal/cleanable/cobweb{dir = 1},/turf/simulated/floor/plating/airless,/area/space)
+"v" = (/obj/item/bodybag,/turf/simulated/floor/shuttle/pod,/area/space)
+"w" = (/obj/item/shovel,/turf/simulated/floor/plating/airless,/area/space)
+"B" = (/obj/structure/noticeboard/anomaly,/turf/simulated/wall/iron,/area/space)
+"C" = (/turf/simulated/mineral,/area/space)
+"D" = (/obj/structure/bed,/turf/simulated/floor/plating/airless,/area/space)
+"F" = (/obj/effect/decal/cleanable/cobweb,/turf/simulated/floor/plating/airless,/area/space)
+"H" = (/turf/space,/area/space)
+"I" = (/turf/simulated/floor,/area/space)
+"M" = (/obj/structure/lattice,/obj/item/stack/material/iron,/turf/space,/area/space)
+"N" = (/turf/simulated/wall/iron,/area/space)
+"O" = (/obj/structure/bed/alien,/turf/simulated/floor/plating/airless,/area/space)
+"P" = (/turf/simulated/floor/plating/airless,/area/space)
+"R" = (/obj/structure/table/rack,/obj/item/archaeological_find/laser,/turf/simulated/floor/shuttle/pod,/area/space)
+"T" = (/obj/structure/lattice,/turf/space,/area/space)
+"U" = (/obj/item/ammo_casing/chemdart,/turf/simulated/floor/shuttle/pod,/area/space)
+"V" = (/obj/effect/decal/cleanable/cobweb2{icon_state = "cobweb1"},/turf/simulated/floor/plating/airless,/area/space)
+"W" = (/obj/structure/girder,/turf/simulated/floor,/area/space)
+"Y" = (/obj/structure/girder,/obj/item/stack/material/iron,/turf/simulated/floor,/area/space)
 
 (1,1,1) = {"
-cccccccccccccccccccccccccccccccccaaaaaaa
-cccccccccccccccccccccccccccccccccaaaaaaa
-cccccccccccccccccccccccccccccccccaaaaaaa
-cccccccccccccccccccccccccccccccccaaaaaaa
-cccccccccccccccccccccccccccccccccZaaaaaa
-ccccccccccccccccccccccccccccccccccaaaaaa
-ccccccccccccccccccccccccccccccccccccccaa
-ccccccccccccccccccccccccccccccccccccccaa
-ccccccccccccccccccccccccccccccccccccccaa
-ccccccccccccccccccccccccccccccccccccccca
-ccccccccccccccccccccccccccccccccccccccca
-ccccccccccccccccccccccccccccccccccccZZca
-ccccccccccccccccccccccccccccccccccccZZca
-acccccccccccccccccccccccccccccccccccccca
-acccccccccccccccccccccccccccccccccccZZca
-acccccccccccccccccccccccccccccccccccccca
-acccccccccccccccccccccccccccccccccccaaZa
-accccccccccccccccccccccccccccccccccccccc
-accccccccccccccccccccccccccccccccccccccc
-accccccccccccccccccccccccccccccccccccccc
-accccccccccccccccccccccccccccccccccccccc
-accccccccccccccccccccccccccccccccccccccc
-acccccccccccIccCcCcccccccccccccccccccccc
-acccccccccccccCCCCCccccccccccccccccccccc
-acccccccccccICCCCCCCcccccccccccccccccccc
-acccccccccccCCCCCCCCCccccccccccccccccccc
-accccccccccjCCCCCCCCCCcccccccccccccccccc
-accccccccccCCCCCCCCCCCcccccccccccccccccc
-accccccccccCCCCCCCCCjCcccccccccccccccccc
-acccccccccccCCCCCCCIjccccccccccccccccccc
-accccccccccccCCCCCCjcccccccccccccccccccc
-aZZZccccccccccCCjCCcccccccccccccccccZZZa
-accccccccccccccCjjcccccccccccccccccZZZZa
-accccccccccccccccccccccccccccccccccZZZaa
-acccccccccccccccccccccccccccccccccccZZaa
-acccccccccccccccccccccccccccccccccccZZaa
-acccccccccccccccccccccccccccccccccZZZaaa
-acccccccccZcaaZZZZZZZZccccccccccccZZZaaa
-accccccccccaaaaaaaaaZZccccccccccccccZaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaNNNNNaaaaa
+aCCCCCCCCCCCCCCCCCCCCCCCCCCCCCNHHHNNNNCa
+aCCCCCCCCCCCCCCCCCCCCCCCCCCNNNNHHHPPPNCa
+aCCCCCCCCCCCCCCCNNNNNNNCCCNNppNHHHPPPNCa
+aCCCCCCCCCCCCCCCNlpppPPCCCPNpPNHHNPPPNCa
+aCCCCCCCCCCCCPPPNpppppPPPPPNPpPIPPPPPNCa
+aCCCCCCCCCCCCPPPNPpppPPPPppNPpPIPPPPPNCa
+aCCCCCCCCCCCCPPPIPPPPPPPPppNppPNIIIIINCa
+aCCCCCCCCCPPPPPPNPPPppCCCPpNppPNNNNNNNCa
+aCCCCCCCCCPPPPPPNPPpppCCCCPNPPPNVppCCCCa
+aCCCCCCCNNNNNNNNNNPNNNCCCCNNPPPNPpCCCCCa
+aCCCCCCCPPPpPPPPPppPPPPCCPPPPppNPpCCCCCa
+aCNPCCPCPPppppPPpPpPPPPmCppppppNPpCCCCCa
+aCNPPPPPPCNNNNNNNBPNNNPPpppppppNPpppCCCa
+aCNPPPppppNDPpNppUppRNpppNNNNNNNPppppCCa
+aCNPPpppppNPPppppppppNpppNPPPPPNpPpppNCa
+aCNPPpppppNNNNNpppppkNPPpNPPPPPNPPpppNCa
+aCNNNNNpNNNPPPNppppppNPPpPPPPPPNNPNNNNCa
+aCCCCCppppNPPPPppppvpNPPPNPPPPPNPPPCCCCa
+aCCCCCppppNOPPNPPpppkNPPPNPPPPPNPPCCCCaa
+aaCCCCppppNNNNNNNNNNNNPPPNNNNNNNppCCCCaa
+aaCCCCppppPPPppppPPPPPPPPNPPPPPNppCCCCaa
+aaCCCCppppPPppppPPpPPpPPPNPPpPPNPPCCCCaa
+aCCCCCpppNNNNNNNYoWoWWpIIPPPppPNPPPCCCaa
+aCCCCNpppNFPjTTTTTTIoWIIICPPPPPNPPPPCCaa
+aCCCPNpppNPPTTHHHHTMoNICCCCCPPPNPPPPCCaa
+aCCCpNpppNPTTTHHHHHcTPPCCCCCCCNNPPppCCaa
+aCCCpNpppNPHTHHHHHHHTNPPCCCCPPPPPPppCCaa
+aCCCppPppNPHHHHHHHHHTNPpwpppPPPPPPppCCaa
+aCCCPNpppNPTcHHHHHHTPPPpPNNNNNNNNNNNCCaa
+aCCCPNpppNPTTHHHHHHTPPPpPNPppPpPPPPPCCaa
+aCCCPNpppNPPTTHHHHHTPNPppNpppppppPPCCCaa
+aCCCINpppNppPTTTTTTIPNPppNpppppppPPCCCaa
+aCCCCNpppNppppPPPPPPPPPpppIIppIIppICCCaa
+aCCCCCppCCCCppCpppPPPNpppNPPPPPCpPCCCCaa
+aCCCCCCPCCCCCCCPpPPPtNpppNPpppCCppCCCCaa
+aCCCCCCCCCCCCCCCCCCCCCCCCNNNNNCCCCCCCCaa
+aCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 "}

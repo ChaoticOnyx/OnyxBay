@@ -58,7 +58,6 @@
 "oT" = (/mob/living/simple_animal/hostile/little_changeling/arm_chan,/turf/simulated/floor/asteroid,/area/space)
 "oU" = (/obj/item/ammo_casing/a50/used,/turf/simulated/floor/asteroid,/area/space)
 "pm" = (/obj/structure/barricade,/turf/simulated/floor/tiled/techfloor,/area/space)
-"pn" = (/obj/structure/grille,/obj/structure/window_frame/rglass,/obj/structure/window_frame/glass{health = 6; icon_state = "winframe_damage2"},/turf/simulated/floor/plating/rough/airless,/area/space)
 "pD" = (/obj/effect/floor_decal/rust,/obj/structure/inflatable/wall,/turf/simulated/floor/shuttle/pod,/area/space)
 "pL" = (/obj/effect/decal/cleanable/ash,/turf/simulated/mineral,/area/space)
 "qh" = (/turf/simulated/mineral/random,/area/space)
@@ -72,7 +71,7 @@
 "rn" = (/turf/simulated/floor/plating,/area/space)
 "rv" = (/obj/machinery/door/airlock/external{frequency = 1380; icon_state = "door_locked"; id_tag = "ancient_inner"; locked = 1; req_access = list(13)},/turf/simulated/floor/shuttle/black,/area/space)
 "rw" = (/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/shuttle/pod,/area/space)
-"rI" = (/obj/structure/grille,/obj/structure/window_frame/glass{health = 6; icon_state = "winframe_damage1"},/obj/structure/window_frame/rglass,/turf/simulated/floor/plating/rough/airless,/area/space)
+"rI" = (/obj/structure/grille,/obj/structure/window_frame/glass{health = 6; icon_state = "winframe_damage1"},/turf/simulated/floor/plating/rough/airless,/area/space)
 "rM" = (/obj/structure/shuttle/engine/heater{dir = 8},/turf/simulated/shuttle/wall{icon_state = "swall_t"},/area/space)
 "rN" = (/obj/item/frame/light{dir = 8; pixel_x = -15},/turf/simulated/floor/shuttle/pod,/area/space)
 "rR" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/spiderling_remains,/turf/simulated/floor/shuttle/purple,/area/space)
@@ -210,16 +209,16 @@ zjzjzjzjzjgygygygygygygygygygygyMgQfrnSWhmQfgDWgMgMgMgMgMgMghmGIGlDNZEQdYDUvhmqh
 zjzjzjzjzjzjgygygygygygygygygygyMgQfrnQfvQQfQfrwZzHqsnrnZErnZzrnAVrnezcvjrfrhmqh
 zjzjzjzjzjzjgygygygygygygygygygyMgQfQfQfhmQfQfzjhmDNrnwrsnrwhmicrnUxhvQdtdnBhmqh
 zjzjzjzjzjzjzjgygygygygygygygygyMgQfQfrwhmhmzjzjzjpDQfsnQfsnZzhvezWsrnHztdnBhmqh
-zjzjzjhmzjzjhmhmhmhmMgMgMgMgMgMgMgQfrwQftSzjzjzjrIMgpnMgpnMghmqvbsezegZEcZfrhmqh
+zjzjzjhmzjzjhmhmhmhmMgMgMgMgMgMgMgQfrwQftSzjzjzjrIMgMgMgMgMghmqvbsezegZEcZfrhmqh
 zjzjzjhmzjiszjzjmJhmQfQfQfQfQfYzhmrnrnrnhmzjzjzjMggygygygygyhmAJZEkoqKKiPlUvhmqh
 zjzjzjhmzjVzvvjlUxCCQfUxrnUxQfrwkbrnUxzjzjzjzjzjMggygygygygyhmhvFGhTiPJhggcMhmqh
 zjzjzjhmDdCCDdDdhmhmMfBeQfQfQfQfhmrnrndthmzjzjzjMggygygygygyhmwXJHezkoychFSphmqh
-zjzjzjzjxflzDkZChmhmMgMYpnpnpnMghmhmHlhmhmzjzjzjMggygygygygyhmhmhmvDhmhmhmhmhmqh
+zjzjzjzjxflzDkZChmhmMgMYMgMgMgMghmhmHlhmhmzjzjzjMggygygygygyhmhmhmvDhmhmhmhmhmqh
 zjzjzjTqRerRTUlrhmgygygygygygygyMgXwrnQfHlrnzjQfMggygygygygyhmicezrnobDzmGmGhmqh
 zjzjeLsQeLIIeLyJhmgygygygygygygyMgrnrnQfhmrnrnQfMggygygygygyhmPfrnrnZEmoZEYJhmqh
-zjzjZuQOcglfTUHxhmgygygygygygygypnrnrnrnhmrnrnclMggygygygygyhmicZEhmlbijhmhmhmqh
-zjzjLlkoqLIIZokthmgygygygygygygypnkokodthmOfQfLmMggygygygygyhmicichmicicJDhvhmqh
-zjzjzjuOqGSjRUsohmhmhmhmzZzqgygypnQfcshmhmhmhmhmhmgygygygygyhmLDhmhmJzhvXzhvhmqh
+zjzjZuQOcglfTUHxhmgygygygygygygyMgrnrnrnhmrnrnclMggygygygygyhmicZEhmlbijhmhmhmqh
+zjzjLlkoqLIIZokthmgygygygygygygyMgkokodthmOfQfLmMggygygygygyhmicichmicicJDhvhmqh
+zjzjzjuOqGSjRUsohmhmhmhmzZzqgygyMgQfcshmhmhmhmhmhmgygygygygyhmLDhmhmJzhvXzhvhmqh
 zjzjzjhmNEkbNEhmzZrncsejMTzqgygyrIrnrnIzrnQfzxkohmgygygygygyhmhvGNhmzjAVzjzjqhzj
 zjzjzjhmzjxIwnzjzZkoqoejzqzqgygyMYBeMThmEIAAzjZnhmgygygygygyhmAIexzjzjAVzjzjkYzj
 zjzjzjhmzjHwxIzjcskozqzqgyzqzqgygyzqzqzZxCYWzjQfhmgygygygygyhmhmhmqhqhkohmhmkYzj
@@ -228,15 +227,15 @@ zjzjzjhmrnSvrnejMTzqgygygyzqzqgyzqzqgyzqynQfzjzjhmgygygygygygygyzjzjtVoUkYYikYzj
 zjzjzjhmzjkoejejzqgygygyzqgyzqgygyzqzqzqzqQfpLzjzjzjzjzjgygygyzjzjdYkYlgQgqQgazj
 zjzjzjhmzjzjkoMThggyzqgygygyzqgygygyzqzqBernzjzjzjzjzjzjzjgyzjzjzjzjzjzjRBlgzjzj
 zjzjzjhmzjkornMTzqzqzqzqzqgygygygygyzqzqrnzjzjzjzjzjzjzjzjzjzjzjzjzjzjzjzjzjzjzj
-zjzjzjzjzjpLHwMTzqgygygygygygygygygygyzqMTrnzjzjUVzjzjzjzjzjFEFEFEFEFEFEFEFEFEXU
+zjzjzjzjzjpLHwMTzqgygygygygygygygygygyzqMTrnzjzjUVzjzjzjzjzjzjFEFEFEFEFEFEzjzjXU
 zjzjzjzjzjzjrnejzqzqgygygygyzqzqgygyzqBeMTQfzjkoMgzjzjzjzjzjFExKTTVxFEFEFEFEFEXU
 zjzjzjhmzjzjzjzjcsMTzqgygygygyzqzqzqzqejrnkoQfQfhmzjhmhmhmhmFExKqiXLanYKVxFEFEXU
 zjzjzjhmhmhmhmhmUXMTzqgygygygygyzqzqynzxrnQfQfzjzjzjzjWgQfjfTnYQhwOMOMOMFYVxFEXU
 zjzjzjgygygygygyzqzqgygygygygygyMYejrnrnkokoQfQfQfzjQfQfQfrvQfQfJVlGlGlGbZJtFEXU
 zjzjzjzjgygygygygygygygygygygygyrIrnrnQfQfQfQfQfQfQfQfzjQfYQYQYQWlokokokFRmUFEXU
-zjzjzjzjzjgygygygygygygygygygygypnzxrnQfQfzjQfQfhmhmzjzjhmhmFExKrMXLanYKmUFEFEXU
+zjzjzjzjzjgygygygygygygygygygygyMgzxrnQfQfzjQfQfhmhmzjzjhmhmFExKrMXLanYKmUFEFEXU
 zjzjzjzjgygygygygygygygygygygygyMgQfQfzjzjzjQfgyhmzjzjzjzjzjFExKTTQRFEFEFEFEFEXU
 zjzjzjgygygygygygygygygyxxgygygyMgQfzjzjzjzjQfgyhmzjzjzjzjzjzjFEFEFEFEFEFEFEFEXU
-zjzjzjzjgygygyzjzjgygyzjzjzjzjgyzjzjzjzjzjzjhmhmzjzjzjzjzjzjzjzjzjzjzjzjzjFEFEXU
+zjzjzjzjgygygyzjzjgygyzjzjzjzjgyzjzjzjzjzjzjhmhmzjzjzjzjzjzjzjzjzjzjzjzjzjFEzjXU
 zjzjzjzjzjzjzjzjzjzjzjzjzjzjzjzjzjzjzjzjzjzjzjzjhmzjzjzjzjzjzjzjzjzjzjzjzjzjzjzj
 "}
