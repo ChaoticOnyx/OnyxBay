@@ -40,13 +40,6 @@
 		new /datum/space_level/science_ship_2
 	)
 
-	derelict_levels = list(
-		new /datum/space_level/plasma_1,
-		new /datum/space_level/plasma_2,
-		new /datum/space_level/plasma_3,
-		new /datum/space_level/plasma_4
-	)
-
 	station_name  = "NSS Frontier"
 	station_short = "Frontier"
 	dock_name     = "NAS Crescent"

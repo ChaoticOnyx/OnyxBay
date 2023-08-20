@@ -9,7 +9,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		var/datum/map/M
 		if(type == GLOB.using_map.type)
 			M = GLOB.using_map
-			M.setup_derelict_levels()
 			M.setup_map()
 		else
 			M = new type
@@ -27,7 +26,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 	var/shuttle_types = null         // Only the specified shuttles will be initialized.
 	var/list/map_levels
-	var/list/derelict_levels //Needed for load certain multi-z derelicts in early initialization
 
 	var/list/usable_email_tlds = list("freemail.nt")
 	var/base_floor_type = /turf/simulated/floor/plating/airless // The turf type used when generating floors between Z-levels at startup.
@@ -138,11 +136,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 /datum/map/proc/level_has_trait(z, trait)
 	return map_levels[z].has_trait(trait)
-
-/datum/map/proc/setup_derelict_levels()
-//Make this more usable.
-	map_levels += derelict_levels
-
 
 /datum/map/proc/setup_map()
 	ASSERT(length(map_levels))
