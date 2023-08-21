@@ -7,5 +7,5 @@
 // 	if(istype(/obj/item/reagent_containers))
 // 		standard_dispenser_refill
 
-/turf/unsimulated/floor/frozenground/is_plating(mob/user)
+/turf/unsimulated/floor/liquid_plasma/is_plating(mob/user)
 	return 1
