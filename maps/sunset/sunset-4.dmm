@@ -1343,7 +1343,7 @@
 "azW" = (/obj/machinery/recharge_station,/turf/unsimulated/floor{dir = 1; icon_state = "vault"},/area/centcom/specops)
 "azX" = (/obj/effect/floor_decal/corner/green{dir = 6},/turf/unsimulated/floor{icon_state = "steel"},/area/centcom/control)
 "azY" = (/turf/simulated/floor/shuttle/white,/area/shuttle/escape/centcom)
-"azZ" = (/obj/machinery/door/airlock/external{frequency = 1380; icon_state = "door_locked"; id_tag = "escape_shuttle_hatch"; locked = 1; name = "Shuttle Hatch"; req_access = list(13)},/obj/machinery/mech_sensor{dir = 8; frequency = 1380; id_tag = "shuttle_dock_north_mech"; pixel_y = -19},/turf/simulated/floor/shuttle/white,/area/shuttle/escape/centcom)
+"azZ" = (/obj/machinery/door/airlock/external{frequency = 1380; icon_state = "door_locked"; id_tag = "escape_shuttle_hatch"; locked = 1; name = "Shuttle Hatch"; req_access = list(13)},/turf/simulated/floor/shuttle/white,/area/shuttle/escape/centcom)
 "aAa" = (/obj/structure/closet/emcloset,/turf/simulated/floor/shuttle/yellow,/area/shuttle/escape/centcom)
 "aAb" = (/obj/structure/closet{icon_closed = "cabinet_closed"; icon_opened = "cabinet_open"; icon_state = "cabinet_closed"},/obj/item/clothing/head/wizard/violetwizard,/obj/item/clothing/suit/wizrobe/violetwizard,/obj/item/staff/broom,/turf/unsimulated/floor{icon_state = "lino"},/area/wizard_station)
 "aAc" = (/obj/structure/table/rack,/obj/item/backwear/reagent/extinguisher,/obj/item/backwear/reagent/extinguisher,/obj/item/backwear/reagent/extinguisher,/turf/simulated/floor/plating,/area/rescue_base/start)
