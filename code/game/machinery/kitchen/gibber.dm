@@ -23,8 +23,6 @@
 
 	/// Direction to spit meat and gibs in.
 	var/gib_throw_dir = WEST
-	/// Whether this gibber was cusred by the coding gods!1!!
-	var/cursed = FALSE
 
 	/// Time to gib a single entity.
 	var/gib_time
@@ -39,9 +37,6 @@
 	overlays.Cut()
 	if(panel_open)
 		overlays += "gibber-panel"
-
-	if(cursed)
-		overlays += "gibber-bloody"
 
 	if(stat & (NOPOWER|BROKEN))
 		return
@@ -66,14 +61,6 @@
 
 /obj/machinery/gibber/Initialize()
 	. = ..()
-
-	if(prob(10))
-		cursed = TRUE
-		name = "meat grinder"
-		desc = "Okay, if I... if I chop you up in a meat grinder, and the only thing that comes out, that's left of you, is your eyeball, \
-			you'r- you're PROBABLY DEAD! You're probably going to - not you, I'm just sayin', like, if you- if somebody were to, like, \
-			push you into a meat grinder, and, like, your- one of your finger bones is still intact, they're not gonna pick it up and go, \
-			Well see, yeah it wasn't deadly, it wasn't an instant kill move! You still got, like, this part of your finger left!"
 
 	update_icon()
 	RefreshParts()
@@ -224,10 +211,7 @@
 
 	if(!length(mobs_to_process))
 		visible_message(SPAN("danger", "You hear a loud metallic grinding sound."))
-		if(cursed)
-			playsound(loc, 'sound/signals/error3.ogg', 100, TRUE)
-		else
-			playsound(loc, 'sound/signals/error4.ogg', 50, TRUE)
+		playsound(loc, 'sound/signals/error4.ogg', 50, TRUE)
 		return
 
 	visible_message(SPAN("danger", "You hear a loud squelchy grinding sound."))
@@ -359,9 +343,6 @@
 
 /obj/machinery/gibber/industrial/update_icon()
 	overlays.Cut()
-	if(cursed)
-		overlays += "ind_gibber-bloody"
-
 	if(stat & (NOPOWER|BROKEN))
 		return
 
