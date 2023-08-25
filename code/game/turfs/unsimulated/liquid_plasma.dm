@@ -8,4 +8,4 @@
 // 		standard_dispenser_refill
 
 /turf/unsimulated/floor/liquid_plasma/is_plating(mob/user)
-	return 1
+	return TRUE
