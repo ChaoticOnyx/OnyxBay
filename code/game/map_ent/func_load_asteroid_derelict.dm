@@ -39,10 +39,4 @@
 	SSmapping.asteroid_derelict_templates -= derelict_name
 	log_to_dd("New derelict is placed: [derelict_name]")
 
-	// if(copytext(derelict_name, 1, 3) == "i.")
-	// 	log_to_dd("Derelict entrance detected: [derelict_name]")
-	// 	var/target_name = copytext("[derelict_name]", 3, -4) // cut prefix "i." and extension ".dmm"
-	// 	log_to_dd(target_name)
-	// 	SSmapping.load_multi_z_derelicts(target_name)
-
 // TODO: Make some multi-z derelicts
