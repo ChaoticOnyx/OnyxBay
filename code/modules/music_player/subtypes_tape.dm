@@ -125,7 +125,7 @@
 		"I Can't Begin To Tell You"           = 'sound/music/retrojazz/i_cant_begin_to_tell_you.ogg',
 		"I Don't Care If It Rains All Night"  = 'sound/music/retrojazz/i_dont_care_if_it_rains_all_night.ogg',
 		"I Wanna Be Loved By You"             = 'sound/music/retrojazz/i_wanna_be_loved_by_you.ogg',
-		"We'll Meet Again"                    = 'sound/music/halloween/well_meet_again.ogg'
+		"We'll Meet Again"                    = 'sound/music/retrojazz/well_meet_again.ogg'
 	)
 
 /obj/item/music_tape/custom
