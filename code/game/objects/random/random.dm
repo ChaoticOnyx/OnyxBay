@@ -1173,6 +1173,7 @@ something, make sure it's not in one of the other lists.
 				/obj/item/music_tape_box/classic = 30,
 				/obj/item/music_tape_box/frontier = 5,
 				/obj/item/music_tape_box/exodus = 5,
+				/obj/item/music_tape_box/retrojazz = 5,
 				/obj/item/music_tape_box/valhalla = 3)
 
 // Selects one spawn point out of a group of points with the same ID and asks it to generate its items
