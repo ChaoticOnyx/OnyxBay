@@ -237,6 +237,7 @@
 		add_fingerprint(user)
 		attack_hand(user)
 		return TRUE
+
 /obj/item/music_tape_box/newyear
 	name = "New Year tape box"
 	icon_closed = "box_xmas"
@@ -276,3 +277,8 @@
 	name = "Spooky tape box"
 	icon_closed = "box_pumpkin"
 	music_tape = /obj/item/music_tape/random/halloween
+
+/obj/item/music_tape_box/retrojazz
+	name = "Retro Jazz tape box"
+	icon_closed = "box_retrojazz"
+	music_tape = /obj/item/music_tape/random/retrojazz
