@@ -39,8 +39,30 @@ Thus, the two variables affect pump operation are set in New():
 	air1.volume = ATMOS_DEFAULT_VOLUME_PUMP
 	air2.volume = ATMOS_DEFAULT_VOLUME_PUMP
 
-/obj/machinery/atmospherics/binary/pump/AltClick()
-	Topic(src, list("power" = "1"))
+/obj/machinery/atmospherics/binary/pump/Initialize()
+	if(frequency)
+		set_frequency(frequency)
+	return ..()
+
+/obj/machinery/atmospherics/binary/pump/AltClick(mob/user)
+	if(user.stat || user.restrained())
+		return
+	if(!Adjacent(user, src) && !issilicon(user))
+		return
+	if(!allowed(user))
+		return
+	update_use_power(!use_power)
+	update_icon()
+
+/obj/machinery/atmospherics/binary/pump/AltRightClick(mob/user)
+	if(user.stat || user.restrained())
+		return
+	if(!Adjacent(user, src) && !issilicon(user))
+		return
+	if(!allowed(user))
+		return
+	target_pressure = max_pressure_setting
+	show_splash_text(user, "target pressure set to [target_pressure] kPa")
 
 /obj/machinery/atmospherics/binary/pump/on
 	icon_state = "map_on"
@@ -146,11 +168,6 @@ Thus, the two variables affect pump operation are set in New():
 		ui.open()					// open the new ui window
 		ui.set_auto_update(1)		// auto update every Master Controller tick
 
-/obj/machinery/atmospherics/binary/pump/Initialize()
-	. = ..()
-	if(frequency)
-		set_frequency(frequency)
-
 /obj/machinery/atmospherics/binary/pump/receive_signal(datum/signal/signal)
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
 		return 0
@@ -181,18 +198,18 @@ Thus, the two variables affect pump operation are set in New():
 	update_icon()
 	return
 
-/obj/machinery/atmospherics/binary/pump/attack_hand(user as mob)
+/obj/machinery/atmospherics/binary/pump/attack_hand(mob/user)
 	if(..())
 		return
-	src.add_fingerprint(usr)
+	src.add_fingerprint(user)
 	if(!src.allowed(user))
-		to_chat(user, "<span class='warning'>Access denied.</span>")
+		to_chat(user, SPAN_WARNING("Access denied."))
 		return
-	usr.set_machine(src)
+	user.set_machine(src)
 	ui_interact(user)
 	return
 
-/obj/machinery/atmospherics/binary/pump/Topic(href,href_list)
+/obj/machinery/atmospherics/binary/pump/Topic(href, href_list)
 	if((. = ..())) return
 
 	if(href_list["power"])
@@ -214,24 +231,24 @@ Thus, the two variables affect pump operation are set in New():
 	if(.)
 		src.update_icon()
 
-/obj/machinery/atmospherics/binary/pump/attackby(obj/item/W as obj, mob/user as mob)
+/obj/machinery/atmospherics/binary/pump/attackby(obj/item/W, mob/user)
 	if(!isWrench(W))
 		return ..()
 	if (!(stat & NOPOWER) && use_power)
-		to_chat(user, "<span class='warning'>You cannot unwrench this [src], turn it off first.</span>")
+		to_chat(user, SPAN_WARNING("You cannot unwrench this [src], turn it off first."))
 		return 1
 	var/datum/gas_mixture/int_air = return_air()
 	var/datum/gas_mixture/env_air = loc.return_air()
 	if ((int_air.return_pressure()-env_air.return_pressure()) > 2*ONE_ATMOSPHERE)
-		to_chat(user, "<span class='warning'>You cannot unwrench this [src], it too exerted due to internal pressure.</span>")
+		to_chat(user, SPAN_WARNING("You cannot unwrench this [src], it too exerted due to internal pressure."))
 		add_fingerprint(user)
 		return 1
 	playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-	to_chat(user, "<span class='notice'>You begin to unfasten \the [src]...</span>")
+	to_chat(user, SPAN_NOTICE("You begin to unfasten \the [src]..."))
 	if (do_after(user, 40, src))
 		user.visible_message( \
-			"<span class='notice'>\The [user] unfastens \the [src].</span>", \
-			"<span class='notice'>You have unfastened \the [src].</span>", \
+			SPAN_NOTICE("\The [user] unfastens \the [src]."), \
+			SPAN_NOTICE("You have unfastened \the [src]."), \
 			"You hear ratchet.")
 		new /obj/item/pipe(loc, make_from=src)
 		qdel(src)

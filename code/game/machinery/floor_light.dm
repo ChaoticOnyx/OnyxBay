@@ -112,7 +112,7 @@ var/list/floor_light_cache = list()
 			if(!floor_light_cache[cache_key])
 				var/image/I = image("on")
 				I.color = default_light_colour
-				I.plane = plane
+				I.plane = FLOAT_PLANE
 				I.layer = layer+0.001
 				floor_light_cache[cache_key] = I
 			overlays |= floor_light_cache[cache_key]
@@ -123,7 +123,7 @@ var/list/floor_light_cache = list()
 			if(!floor_light_cache[cache_key])
 				var/image/I = image("flicker[damaged]")
 				I.color = default_light_colour
-				I.plane = plane
+				I.plane = FLOAT_PLANE
 				I.layer = layer+0.001
 				floor_light_cache[cache_key] = I
 			overlays |= floor_light_cache[cache_key]

@@ -26,7 +26,7 @@
 				H.confused = max(H.confused, 10)
 				if(!H.should_have_organ(BP_BRAIN)) return //no brain
 
-				var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
+				var/obj/item/organ/internal/cerebrum/brain/brain = H.internal_organs_by_name[BP_BRAIN]
 				if(!brain) return //no brain
 
 				H.setBrainLoss(rand(min_brain_damage,max_brain_damage))

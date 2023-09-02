@@ -180,32 +180,35 @@ var/list/global/organ_rel_size = list(
 	return zone
 
 
-/proc/stars(n, pr)
-	if (pr == null)
-		pr = 25
-	if (pr < 0)
+/proc/stars(message, not_changing_char_chance = 25)
+	if (not_changing_char_chance < 0)
 		return null
-	else
-		if (pr >= 100)
-			return n
-	var/te = n
-	var/t = ""
-	n = length_char(n)
-	var/p = null
-	p = 1
-	var/intag = 0
-	while(p <= n)
-		var/char = copytext_char(te, p, p + 1)
+	if (not_changing_char_chance >= 100)
+		return message
+
+	var/message_length = length_char(message)
+	var/output_message = ""
+	var/intag = FALSE
+
+	var/first_char = copytext_char(message, 1, 2) //for not to processing message as emote if first char would made into "*"
+	if (first_char == "<")
+		intag = TRUE
+	output_message = text("[][]", output_message, first_char)
+
+	var/pointer = 2
+
+	while(pointer <= message_length)
+		var/char = copytext_char(message, pointer, pointer + 1)
 		if (char == "<") //let's try to not break tags
-			intag = !intag
-		if (intag || char == " " || prob(pr))
-			t = text("[][]", t, char)
+			intag = TRUE
+		if (intag || char == " " || prob(not_changing_char_chance))
+			output_message = text("[][]", output_message, char)
 		else
-			t = text("[]*", t)
+			output_message = text("[]*", output_message)
 		if (char == ">")
-			intag = !intag
-		p++
-	return t
+			intag = FALSE
+		pointer++
+	return output_message
 
 // This is temporary effect, often caused by alcohol
 /proc/slur(phrase)
@@ -299,7 +302,9 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	if(!islist(logging[message_type]))
 		logging[message_type] = list()
 
-	var/list/timestamped_message = list("[LAZYLEN(logging[message_type]) + 1]\[[time_stamp()]\] [message_tag] [key_name(src)]" = message)
+	var/list/message_data = list("message" = message, "tag" = message_tag)
+
+	var/list/timestamped_message = list("[LAZYLEN(logging[message_type]) + 1]\[[time_stamp()]\] [message_tag] [key_name(src)]" = message_data)
 
 	logging[message_type] += timestamped_message
 
@@ -375,6 +380,10 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 				a_intent = intent_numeric((intent_numeric(a_intent)+1) % 4)
 			if("left")
 				a_intent = intent_numeric((intent_numeric(a_intent)+3) % 4)
+
+		if(is_pacifist(src))
+			a_intent = I_HELP
+
 		if(hud_used && hud_used.action_intent)
 			hud_used.action_intent.icon_state = "intent_[a_intent]"
 
@@ -386,6 +395,10 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 				a_intent = I_HURT
 			if("right","left")
 				a_intent = intent_numeric(intent_numeric(a_intent) - 3)
+
+		if(is_pacifist(src))
+			a_intent = I_HELP
+
 		if(hud_used && hud_used.action_intent)
 			if(a_intent == I_HURT)
 				hud_used.action_intent.icon_state = I_HURT
@@ -397,6 +410,12 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 		var/mob/living/carbon/C = A
 		if(C.sdisabilities & BLIND || C.blinded)
 			return 1
+	return 0
+
+/proc/is_pacifist(A)
+	if(istype(A, /mob/living))
+		var/mob/living/C = A
+		return HAS_TRAIT(C, TRAIT_PACIFISM)
 	return 0
 
 /proc/broadcast_security_hud_message(message, broadcast_source)
@@ -473,7 +492,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 
 #define SAFE_PERP -50
 /mob/living/proc/assess_perp(obj/access_obj, check_access, auth_weapons, check_records, check_arrest)
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		return SAFE_PERP
 
 	return 0

@@ -33,22 +33,11 @@
 	var/turf/loc = get_turf(O)
 	return loc ? loc.z : 0
 
-/proc/get_area(O)
-	if(isarea(O))
-		return O
-	var/turf/loc = get_turf(O)
-	return loc ? loc.loc : null
-
-/proc/get_area_name(N) // get area by its name
+/proc/get_area_by_name(N) // get area by its name
 	for(var/area/A in world)
 		if(A.name == N)
 			return A
 	return 0
-
-/proc/get_area_master(const/O)
-	var/area/A = get_area(O)
-	if (isarea(A))
-		return A
 
 /proc/in_range(source, user)
 	if(get_dist(source, user) <= 1)
@@ -260,7 +249,7 @@
 			continue
 
 		var/mob/M = mob
-		if(checkghosts && M && M.stat == DEAD && M.get_preference_value(checkghosts) != GLOB.PREF_NEARBY)
+		if(checkghosts && M && M.is_ooc_dead() && M.get_preference_value(checkghosts) != GLOB.PREF_NEARBY)
 			mobs |= M
 
 	// For objects below the top level who still want to hear
@@ -345,7 +334,7 @@
 		for(var/mob/observer/ghost/G in GLOB.player_list)
 			// The most active players are more likely to become an alien
 			if(((G.client.inactivity/10)/60) <= buffer + i)
-				if(!(G.mind && G.mind.current && G.mind.current.stat != DEAD))
+				if(!(G.mind && G.mind.current && !G.mind.current.is_ooc_dead()))
 					candidates += G.key
 		i++
 	return candidates
@@ -360,7 +349,7 @@
 			if(MODE_XENOMORPH in G.client.prefs.be_special_role)
 				// The most active players are more likely to become an alien
 				if(((G.client.inactivity/10)/60) <= ALIEN_SELECT_AFK_BUFFER + i)
-					if(!(G.mind && G.mind.current && G.mind.current.stat != DEAD))
+					if(!(G.mind && G.mind.current && !G.mind.current.is_ooc_dead()))
 						candidates += G.key
 		i++
 	return candidates

@@ -235,14 +235,14 @@
 	if(cell_type)
 		src.cell = new cell_type(src)
 
-	var/area/A = src.loc.loc
+	var/area/A = get_area(src)
 
 	//if area isn't specified use current
 	if(isarea(A) && src.areastring == null)
-		src.area = A
+		area = A
 		SetName("\improper [area.name] APC")
 	else
-		src.area = get_area_name(areastring)
+		area = get_area_by_name(areastring)
 		SetName("\improper [area.name] APC")
 	area.apc = src
 	update_icon()
@@ -1280,7 +1280,7 @@
 
 // Malfunction: Transfers APC under AI's control
 /obj/machinery/power/apc/proc/ai_hack(mob/living/silicon/ai/A = null)
-	if(!A || !A.hacked_apcs || hacker || aidisabled || A.stat == DEAD)
+	if(!A || !A.hacked_apcs || hacker || aidisabled || A.is_ooc_dead())
 		return 0
 	src.hacker = A
 	A.hacked_apcs += src

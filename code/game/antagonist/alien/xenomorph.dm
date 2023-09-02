@@ -22,14 +22,12 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 	initial_spawn_req = 4
 	initial_spawn_target = 6
 
-	spawn_announcement_title = "Lifesign Alert"
+	spawn_announcement = /datum/announce/unidentified_lifesigns
 	spawn_announcement_delay = 5000
 
 	station_crew_involved = FALSE
 
 /datum/antagonist/xenos/Initialize()
-	spawn_announcement = replacetext(GLOB.using_map.unidentified_lifesigns_message, "%STATION_NAME%", station_name())
-	spawn_announcement_sound = GLOB.using_map.unidentified_lifesigns_sound
 	. = ..()
 	if(config.game.xeno_min_age)
 		min_player_age = config.game.xeno_min_age
@@ -52,7 +50,7 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 
 /datum/antagonist/xenos/antags_are_dead()
 	for(var/datum/mind/antag in current_antagonists)
-		if(antag.current.stat != DEAD)
+		if(!antag.current.is_ooc_dead())
 			return FALSE
 	return TRUE
 

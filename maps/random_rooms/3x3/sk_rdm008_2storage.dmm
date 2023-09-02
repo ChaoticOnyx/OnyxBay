@@ -1,0 +1,9 @@
+"a" = (/turf/simulated/floor/plating,/area/template_noop)
+"v" = (/obj/structure/closet/crate,/obj/random/maintenance,/obj/machinery/light/small/red{dir = 1},/turf/simulated/floor/plating,/area/template_noop)
+"Q" = (/obj/structure/closet/crate/secure,/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+
+(1,1,1) = {"
+vaa
+aaa
+aaQ
+"}

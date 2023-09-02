@@ -7,14 +7,14 @@
 
 		message = sanitize(message)
 
-		if (stat == DEAD)
+		if (is_ooc_dead())
 			return say_dead(message)
 
 		if(copytext(message,1,2) == "*")
 			return emote(copytext(message,2))
 
 		if(copytext(message,1,2) == ";")
-			var/datum/language/L = all_languages["Drone Talk"]
+			var/datum/language/L = all_languages[LANGUAGE_DRONE]
 			if(istype(L))
 				return L.broadcast(src,trim(copytext(message,2)))
 
@@ -32,7 +32,7 @@
 		for (var/mob/M in GLOB.player_list)
 			if (istype(M, /mob/new_player))
 				continue
-			else if(M.stat == DEAD && M.get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH)
+			else if(M.is_ooc_dead() && M.get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH)
 				if(M.client) to_chat(M, "<b>[src]</b> transmits, \"[message]\"")
 		return 1
 	return ..(message, 0)

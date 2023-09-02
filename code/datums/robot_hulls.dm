@@ -1,14 +1,12 @@
 /datum/robot_hull
-	var/icon_state = ""
-	var/footstep_sound = null
+	var/icon = 'icons/mob/robots.dmi'
+	var/icon_state = "robot"
+	var/footstep_sound = SFX_FOOTSTEP_ROBOT_SPIDER
 
-/datum/robot_hull/custom
-	var/icon
-
-/datum/robot_hull/custom/New(state = "robot", footstep = SFX_FOOTSTEP_ROBOT_SPIDER, cstm_icon = CUSTOM_ITEM_ROBOTS)
-	icon_state = state
-	footstep_sound = footstep
-	icon = cstm_icon
+/datum/robot_hull/New(icon, icon_state, footstep_sound)
+	src.icon = icon ? icon : initial(src.icon)
+	src.icon_state = icon_state ? icon_state : initial(src.icon_state)
+	src.footstep_sound = footstep_sound ? footstep_sound : initial(src.footstep_sound)
 
 /datum/robot_hull/spider
 	footstep_sound = SFX_FOOTSTEP_ROBOT_SPIDER
@@ -51,7 +49,6 @@
 
 /datum/robot_hull/legs
 	footstep_sound = SFX_FOOTSTEP_ROBOT_LEGS
-
 
 /datum/robot_hull/legs/robot_old
 	icon_state = "robot_old"
@@ -182,3 +179,10 @@
 
 /datum/robot_hull/flying/eyebot_engineering
 	icon_state = "eyebot-engineering"
+
+/datum/robot_hull/drone
+	icon_state = "repairbot"
+	footstep_sound = SFX_FOOTSTEP_ROBOT_SPIDER
+
+/datum/robot_hull/drone/construction
+	icon_state = "constructiondrone"

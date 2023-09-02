@@ -6,6 +6,8 @@
 /// Similar to clamp but the bottom rolls around to the top and vice versa. min is inclusive, max is exclusive
 #define WRAP(val, min, max) ( min == max ? min : (val) - (round(((val) - (min))/((max) - (min))) * ((max) - (min))) )
 
+#define get_area(A) (isarea(A) ? A : get_step(A,0)?.loc)
+
 #define get_turf(A) get_step(A,0)
 
 #define isAI(A) istype(A, /mob/living/silicon/ai)
@@ -36,6 +38,8 @@
 
 #define isabductor(A) (is_species(A, /datum/species/abductor))
 
+#define ispromethean(A) (is_species(A, /datum/species/promethean))
+#define isgolem(A) (is_species(A, /datum/species/golem))
 #define isitem(A) istype(A, /obj/item)
 
 #define islist(A) istype(A, /list)
@@ -73,6 +77,8 @@
 #define issilicon(A) istype(A, /mob/living/silicon)
 
 #define ismetroid(A) istype(A, /mob/living/carbon/metroid)
+
+#define islarva(A) istype(A, /mob/living/carbon/alien/larva)
 
 #define isunderwear(A) istype(A, /obj/item/underwear)
 
@@ -180,7 +186,7 @@
 #define SANITIZE_LIST(L) ( islist(L) ? L : list() )
 
 // Adds value V to associati list L[K]
-#define LAZYADDASSOC(L, K, V) if(!L) { L = list(); } L[K] += list(V);
+#define LAZYADDASSOC(L, K, V) if(!L) { L = list(); } L[K] += islist(V) ? list(V) : V;
 // Removes value V and key K from associative list L
 #define LAZYREMOVEASSOC(L, K, V) if(L) { if(L[K]) { L[K] -= V; if(!length(L[K])) L -= K; } if(!length(L)) L = null; }
 
@@ -199,6 +205,8 @@
 #define JOINTEXT(X) jointext(X, null)
 
 #define SPAN(class, X) "<span class='" + ##class + "'>" + ##X + "</span>"
+
+#define SPAN_INFO(X)     SPAN("info", X)
 
 #define SPAN_NOTICE(X)   SPAN("notice", X)
 

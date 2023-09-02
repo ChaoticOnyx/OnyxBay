@@ -1,19 +1,13 @@
 /mob/living/deity
 	hud_type = /datum/hud/deity
 
-/datum/hud/deity/FinalizeInstantiation(ui_style = 'icons/mob/screen1_midnight.dmi')
-	src.adding = list()
-	src.other = list()
+/datum/hud/deity/FinalizeInstantiation(ui_style = 'icons/hud/style/midnight.dmi')
+	static_inventory = list()
 
-	var/obj/screen/intent/deity/D = new()
-
-	src.adding += D
-	action_intent = D
-
-	mymob.client.screen = list()
-	mymob.client.screen += src.adding
-	D.sync_to_mob(mymob)
-
+	var/obj/screen/intent/deity/intent = new()
+	intent.sync_to_mob(mymob)
+	action_intent = intent
+	static_inventory += action_intent
 
 /obj/screen/intent/deity
 	var/list/desc_screens = list()
@@ -21,7 +15,7 @@
 
 /obj/screen/intent/deity/New()
 	..()
-	overlays += image('icons/mob/screen_phenomena.dmi', icon_state = "hud", pixel_x = -138, pixel_y = -1)
+	overlays += image('icons/hud/screen_phenomena.dmi', icon_state = "hud", pixel_x = -138, pixel_y = -1)
 
 /obj/screen/intent/deity/proc/sync_to_mob(mob)
 	var/mob/living/deity/D = mob

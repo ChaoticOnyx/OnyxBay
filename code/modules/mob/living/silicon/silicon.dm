@@ -320,7 +320,7 @@
 	updatehealth()
 
 /mob/living/silicon/blob_act(damage)
-	if(is_dead())
+	if(is_ic_dead())
 		return
 
 	var/protection = blocked_mult(getarmor(null, "bomb"))

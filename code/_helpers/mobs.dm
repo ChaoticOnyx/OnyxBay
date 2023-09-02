@@ -112,7 +112,7 @@
 		else				return "unknown"
 
 /proc/RoundHealth(health)
-	var/list/icon_states = icon_states('icons/mob/hud_med.dmi')
+	var/list/icon_states = icon_states('icons/mob/huds/hud.dmi')
 	for(var/icon_state in icon_states)
 		if(health >= text2num(icon_state))
 			return icon_state
@@ -137,6 +137,12 @@
 	var/target_loc = target.loc
 
 	var/holding = affecter.get_active_item()
+
+	if(istype(user,/mob/living))
+		var/mob/living/L = user
+		for(var/datum/modifier/actionspeed/ASM in L.modifiers)
+			time = time * ASM.actionspeed_coefficient
+
 	var/datum/progressbar/progbar
 	if(is_mob_type && progress)
 		progbar = new(user, time, target)
@@ -192,6 +198,11 @@
 	var/atom/original_loc = user.loc
 
 	var/holding = user.get_active_hand()
+
+	if(istype(user,/mob/living))
+		var/mob/living/L = user
+		for(var/datum/modifier/actionspeed/ASM in L.modifiers)
+			delay = delay * ASM.actionspeed_coefficient
 
 	var/datum/progressbar/progbar
 	if (progress)
@@ -270,7 +281,7 @@
 /mob/living/add_to_dead_mob_list()
 	if((src in GLOB.living_mob_list_) || (src in GLOB.dead_mob_list_))
 		return FALSE
-	
+
 	..()
 	GLOB.dead_mob_list_ += src
 
@@ -280,6 +291,8 @@
 /mob/proc/remove_from_dead_mob_list()
 	return GLOB.dead_mob_list_.Remove(src)
 
+/mob/proc/can_block_magic()
+	return FALSE
 //Find a dead mob with a brain and client.
 /proc/find_dead_player(find_key, include_observers = 0)
 	if(isnull(find_key))
@@ -289,7 +302,7 @@
 
 	if(include_observers)
 		for(var/mob/M in GLOB.player_list)
-			if((M.stat != DEAD) || (!M.client))
+			if((!M.is_ooc_dead()) || (!M.client))
 				continue
 			if(M.ckey == find_key)
 				selected = M
@@ -297,7 +310,7 @@
 	else
 		for(var/mob/living/M in GLOB.player_list)
 			//Dead people only thanks!
-			if((M.stat != DEAD) || (!M.client))
+			if((!M.is_ooc_dead()) || (!M.client))
 				continue
 			//They need a brain!
 			if(istype(M, /mob/living/carbon/human))

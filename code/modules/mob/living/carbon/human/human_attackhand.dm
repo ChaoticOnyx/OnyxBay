@@ -16,7 +16,7 @@
 		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
 		if(H.hand)
 			temp = H.organs_by_name[BP_L_HAND]
-		if(!temp || (!temp.is_usable() && !M.nabbing))
+		if(!temp || !temp.is_usable())
 			to_chat(H, "<span class='warning'>You can't use your hand.</span>")
 			return
 
@@ -83,7 +83,7 @@
 					var/obj/item/organ/external/chest = get_organ(BP_CHEST)
 					if(chest)
 						chest.fracture()
-				if(stat != DEAD)
+				if(!is_ic_dead())
 					if(prob(15))
 						resuscitate()
 

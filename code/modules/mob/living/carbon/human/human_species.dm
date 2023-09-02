@@ -42,6 +42,10 @@
 	h_style = "Horns"
 	..(new_loc, SPECIES_UNATHI)
 
+/mob/living/carbon/human/swine/New(new_loc)
+	h_style = pick("Bald", "Floppy Ears", "Pointy Ears")
+	..(new_loc, SPECIES_SWINE)
+
 /mob/living/carbon/human/vox/New(new_loc)
 	h_style = "Long Vox Quills"
 	..(new_loc, SPECIES_VOX)
@@ -51,10 +55,6 @@
 
 /mob/living/carbon/human/machine/New(new_loc)
 	..(new_loc, SPECIES_IPC)
-
-/mob/living/carbon/human/nabber/New(new_loc)
-	pulling_punches = 1
-	..(new_loc, SPECIES_NABBER)
 
 /mob/living/carbon/human/monkey/New(new_loc)
 	..(new_loc, "Monkey")
@@ -73,18 +73,30 @@
 	..(new_loc, "VR human")
 
 /mob/living/carbon/human/gravworlder/New(new_loc)
-	..(new_loc, "Grav-Adapted Human")
+	..(new_loc, SPECIES_GRAVWORLDER)
 
 /mob/living/carbon/human/spacer/New(new_loc)
-	..(new_loc, "Space-Adapted Human")
+	..(new_loc, SPECIES_SPACER)
 
 /mob/living/carbon/human/vatgrown/New(new_loc)
-	..(new_loc, "Vat-Grown Human")
+	..(new_loc, SPECIES_VATGROWN)
 
 /mob/living/carbon/human/vatgrown/female/New(new_loc)
-	..(new_loc, "Vat-Grown Human")
+	..(new_loc, SPECIES_VATGROWN)
 	gender = "female"
 	regenerate_icons()
 
 /mob/living/carbon/human/abductor/New(new_loc)
 	..(new_loc, SPECIES_ABDUCTOR)
+
+/mob/living/carbon/human/promethean/New(new_loc)
+	..(new_loc, SPECIES_PROMETHEAN)
+
+/mob/living/carbon/human/slimeperson/New(new_loc)
+	..(new_loc, SPECIES_SLIMEPERSON)
+
+/mob/living/carbon/human/stargazer/New(new_loc)
+	..(new_loc, SPECIES_STARGAZER)
+
+/mob/living/carbon/human/luminescent/New(new_loc)
+	..(new_loc, SPECIES_LUMINESCENT)

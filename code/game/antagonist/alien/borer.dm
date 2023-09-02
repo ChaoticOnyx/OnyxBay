@@ -20,14 +20,12 @@ GLOBAL_DATUM_INIT(borers, /datum/antagonist/borer, new)
 	initial_spawn_req = 3
 	initial_spawn_target = 5
 
-	spawn_announcement_title = "Lifesign Alert"
+	spawn_announcement = /datum/announce/unidentified_lifesigns
 	spawn_announcement_delay = 5000
 
 	station_crew_involved = FALSE
 
 /datum/antagonist/borer/Initialize()
-	spawn_announcement = replacetext(GLOB.using_map.unidentified_lifesigns_message, "%STATION_NAME%", station_name())
-	spawn_announcement_sound = GLOB.using_map.unidentified_lifesigns_sound
 	. = ..()
 	if(config.game.borer_min_age)
 		min_player_age = config.game.borer_min_age
@@ -37,7 +35,7 @@ GLOBAL_DATUM_INIT(borers, /datum/antagonist/borer, new)
 
 /datum/antagonist/borer/antags_are_dead()
 	for(var/datum/mind/antag in current_antagonists)
-		if(antag.current.stat != DEAD)
+		if(!antag.current.is_ooc_dead())
 			return FALSE
 	return TRUE
 
@@ -70,7 +68,7 @@ GLOBAL_DATUM_INIT(borers, /datum/antagonist/borer, new)
 	if(istype(borer))
 		var/mob/living/carbon/human/host
 		for(var/mob/living/carbon/human/H in SSmobs.mob_list)
-			if(H.mind && H.stat != DEAD && !H.has_brain_worms())
+			if(H.mind && !H.is_ooc_dead() && !H.has_brain_worms())
 				var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
 				if(head && !BP_IS_ROBOTIC(head))
 					host = H

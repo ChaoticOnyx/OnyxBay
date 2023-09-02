@@ -61,8 +61,9 @@
 /mob/living/silicon/ai/proc/create_eyeobj(newloc)
 	if(eyeobj) destroy_eyeobj()
 	if(!newloc) newloc = get_turf(src)
-	eyeobj = new /mob/observer/eye/aiEye(newloc)
+	eyeobj = new /mob/observer/eye/aiEye
 	eyeobj.possess(src)
+	eyeobj.setLoc(newloc)
 
 // Intiliaze the eye by assigning it's "ai" variable to us. Then set it's loc to us.
 /mob/living/silicon/ai/New()

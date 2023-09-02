@@ -9,7 +9,7 @@
 /datum/action/cooldown/charge
 	name = "Charge"
 	action_type = AB_INNATE
-	button_icon = 'icons/mob/actions.dmi'
+	button_icon = 'icons/hud/actions.dmi'
 	button_icon_state = "charge"
 	//desc = "Allows you to charge at a chosen position."
 	cooldown_time = 1.5 SECONDS
@@ -102,7 +102,7 @@
 
 	if(ismob(charger))
 		var/mob/sleep_check_death_mob = charger;
-		if(sleep_check_death_mob.stat == DEAD)
+		if(sleep_check_death_mob.is_ic_dead())
 			return;
 
 	walk(charger,dir,1,charge_speed)

@@ -4,11 +4,12 @@
 
 /proc/animate_speech_bubble(image/I, list/show_to, duration)
 	add_image_to_clients(I, show_to)
-	addtimer(CALLBACK(GLOBAL_PROC, /.proc/fade_out_speech_bubble, I), duration - 0.5 SECONDS)
+	addtimer(CALLBACK(GLOBAL_PROC, /.proc/fade_out_speech_bubble, I, show_to), duration - 0.5 SECONDS)
 
+/// Returns the speech bubble image with an apropriate layer and plane set.
 /proc/create_speech_bubble_image(bubble_icon, bubble_icon_state, atom/source)
 	var/image/speech_bubble = image('icons/mob/effects/talk.dmi', source, "[bubble_icon][bubble_icon_state]", FLOAT_LAYER)
-	speech_bubble.plane = MOUSE_INVISIBLE_PLANE
+	speech_bubble.set_float_plane(source, MOUSE_INVISIBLE_PLANE)
 	speech_bubble.appearance_flags |= APPEARANCE_UI_IGNORE_ALPHA
 	return speech_bubble
 

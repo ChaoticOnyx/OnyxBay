@@ -60,6 +60,11 @@
 	if(!initial)
 		request_player()
 
+/mob/living/simple_animal/borer/Initialize()
+	. = ..()
+	register_signal(src, SIGNAL_MOB_DEATH, CALLBACK(src, /mob/living/simple_animal/borer/proc/on_mob_death))
+
+
 /mob/living/simple_animal/borer/Life()
 
 	..()
@@ -72,7 +77,7 @@
 			loc = stored_loc
 			return
 		health = min(health + 1, maxHealth)
-		if(!stat && host.stat != DEAD)
+		if(!stat && !host.is_ic_dead())
 			if(host.reagents.has_reagent(/datum/reagent/sugar))
 				if(!docile)
 					to_chat(controlling ? host : src, SPAN("notice", "You feel the soporific flow of sugar in your host's blood, lulling you into docility."))
@@ -96,7 +101,7 @@
 
 				if(prob(host.getBrainLoss()/20))
 					host.emote("[pick(list("blink","blink_r","choke","aflap","drool","twitch","twitch_v","gasp"))]")
-		else if((stat == DEAD || host.stat == DEAD) && controlling)
+		else if((is_ooc_dead() || host.is_ooc_dead()) && controlling)
 			detatch()
 
 /mob/living/simple_animal/borer/Stat()

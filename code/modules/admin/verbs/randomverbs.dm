@@ -268,7 +268,7 @@
 
 	var/show_log = alert(src, "Show ion message?", "Message", "Yes", "No")
 	if(show_log == "Yes")
-		command_announcement.Announce("Ion storm detected near the [station_name()]. Please check all AI-controlled equipment for errors.", "Anomaly Alert", new_sound = 'sound/AI/ionstorm.ogg')
+		SSannounce.play_station_announce(/datum/announce/ion_storm)
 
 	IonStorm(0)
 	feedback_add_details("admin_verb","ION") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -486,7 +486,7 @@ Ccomp's first proc.
 		if(!record_found && !player_is_antag(new_character.mind, only_offstation_roles = 1)) //If there are no records for them. If they have a record, this info is already in there. MODE people are not announced anyway.
 			if(alert(new_character,"Would you like an active AI to announce this character?",,"No","Yes")=="Yes")
 				var/datum/spawnpoint/arrivals/spawnpoint = new()
-				call(/proc/AnnounceArrival)(new_character.real_name, job, spawnpoint)
+				SSannounce.announce_arrival(new_character.real_name, job, spawnpoint)
 
 	log_and_message_admins("has respawned [player_key] as [new_character.real_name].")
 
@@ -519,7 +519,7 @@ Ccomp's first proc.
 
 	var/show_log = alert(src, "Show ion message?", "Message", "Yes", "No")
 	if(show_log == "Yes")
-		command_announcement.Announce("Ion storm detected near the [station_name()]. Please check all AI-controlled equipment for errors.", "Anomaly Alert", new_sound = 'sound/AI/ionstorm.ogg')
+		SSannounce.play_station_announce(/datum/announce/ion_storm)
 	feedback_add_details("admin_verb","IONC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_rejuvenate(mob/living/M as mob in SSmobs.mob_list)
@@ -559,9 +559,9 @@ Ccomp's first proc.
 
 	switch(alert("Should this be announced to the general population?",,"Yes","No"))
 		if("Yes")
-			command_announcement.Announce(input, customname, new_sound = GLOB.using_map.command_report_sound, msg_sanitized = 1);
+			SSannounce.play_station_announce(/datum/announce/command_report, input, customname, msg_sanitized = TRUE)
 		if("No")
-			minor_announcement.Announce(message = "New [GLOB.using_map.company_name] Update available at all communication consoles.")
+			SSannounce.play_station_announce(/datum/announce/command_report, "New [GLOB.using_map.company_name] Update available at all communication consoles.", msg_sanitized = TRUE)
 
 	log_admin("[key_name(src)] has created a command report: [input]")
 	message_admins("[key_name_admin(src)] has created a command report", 1)

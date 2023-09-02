@@ -51,11 +51,11 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 		if(hairstyle)
 			spawned_human.change_hair(hairstyle)
 		else
-			spawned_human.change_hair(random_hair_style(spawned_human.gender, spawned_human.species))
+			spawned_human.change_hair(random_hair_style(spawned_human.gender, spawned_human.species.name))
 		if(facial_hairstyle)
 			spawned_human.change_facial_hair(facial_hairstyle)
 		else
-			spawned_human.change_facial_hair(random_facial_hair_style(spawned_human.gender, spawned_human.species))
+			spawned_human.change_facial_hair(random_facial_hair_style(spawned_human.gender, spawned_human.species.name))
 		if(haircolor)
 			spawned_human.change_hair_color(hex2rgb_r(haircolor),hex2rgb_g(haircolor),hex2rgb_b(haircolor))
 		else
@@ -83,7 +83,7 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 	if(!chosen_name)
 		return
 	//not using an old name doesn't update records- but ghost roles don't have records so who cares
-	spawned_mob.fully_replace_character_name(null, chosen_name)
+	spawned_mob.fully_replace_character_name(chosen_name)
 
 /obj/effect/mob_spawn/proc/equip(mob/living/spawned_mob)
 	if(!istype(spawned_mob, /mob/living/carbon/human))

@@ -90,19 +90,18 @@ REAGENT SCANNER
 	var/brain_data = list()
 	var/brain_result = "normal"
 
-	var/obj/item/organ/internal/brain/brain
-	if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/brain))
+	var/obj/item/organ/internal/cerebrum/brain/brain
+	if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/cerebrum/brain))
 		brain = H.internal_organs_by_name[BP_BRAIN]
-	else if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/mmi_holder))
-		var/obj/item/organ/internal/mmi_holder/MMI = H.internal_organs_by_name[BP_BRAIN]
-		brain = MMI.stored_mmi?.brainobj
+	else if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/cerebrum/mmi))
+		brain = H.internal_organs_by_name[BP_BRAIN]?.brainobj
 
 	if(H.should_have_organ(BP_BRAIN))
-		if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/posibrain))
+		if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/cerebrum/posibrain))
 			brain_result = SPAN("danger", "ERROR - No organic tissue found")
-		else if(!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH) || (isundead(H) && !isfakeliving(H)))
+		else if(!brain || H.is_ic_dead() || (H.status_flags & FAKEDEATH) || (isundead(H) && !isfakeliving(H)))
 			brain_result = SPAN("danger", "none, patient is braindead")
-		else if(H.stat != DEAD)
+		else if(!H.is_ic_dead())
 			switch(brain.get_current_damage_threshold())
 				if(0)
 					brain_result = SPAN("notice", "normal")
@@ -120,7 +119,7 @@ REAGENT SCANNER
 		brain_result = SPAN("danger", "ERROR - Nonstandard biology")
 	brain_data += "<span class='notice'>Brain activity:</span> [brain_result]."
 
-	if(brain && (H.stat == DEAD || (H.status_flags & FAKEDEATH)))
+	if(brain && (H.is_ic_dead() || (H.status_flags & FAKEDEATH)))
 		brain_data += SPAN("notice", "<b>Time of Death:</b> [worldtime2stationtime(H.timeofdeath)]")
 
 	if(H.internal_organs_by_name[BP_STACK])
@@ -163,7 +162,7 @@ REAGENT SCANNER
 	if(H.getBruteLoss() > 50)
 		status_data += "<font color='red'><b>Severe anatomical damage detected.</b></font>"
 
-	if(H.stat != DEAD)
+	if(!H.is_ic_dead())
 		// Traumatic shock.
 		if(H.is_asystole())
 			status_data += "<span class='danger'>Patient is suffering from cardiovascular shock. Administer CPR immediately.</span>"
@@ -591,7 +590,7 @@ REAGENT SCANNER
 	var/details = 0
 	var/recent_fail = 0
 
-/obj/item/device/reagent_scanner/afterattack(obj/O, mob/user as mob, proximity)
+/obj/item/device/reagent_scanner/afterattack(obj/O, mob/user, proximity)
 	if(!proximity)
 		return
 	if (user.incapacitated())
@@ -601,20 +600,30 @@ REAGENT SCANNER
 	if(!istype(O))
 		return
 
-	if(!isnull(O.reagents))
-		var/dat = ""
-		if(O.reagents.reagent_list.len > 0)
-			var/one_percent = O.reagents.total_volume / 100
-			for (var/datum/reagent/R in O.reagents.reagent_list)
-				dat += "\n \t <span class='notice'>[R][details ? ": [R.volume / one_percent]%" : ""]</span>"
-		if(dat)
-			to_chat(user, "<span class='notice'>Chemicals found: [dat]</span>")
-		else
-			to_chat(user, "<span class='notice'>No active chemical agents found in [O].</span>")
-	else
-		to_chat(user, "<span class='notice'>No significant chemical agents found in [O].</span>")
+	reagent_scanner_scan(user, O)
 
 	return
+
+/proc/reagent_scanner_scan(mob/user, atom/target)
+	if(!istype(target))
+		return
+	if(!isnull(target.reagents))
+		var/list/reagents_out
+		var/list/reagents_block
+
+		for(var/datum/reagent/reagent in target.reagents.reagent_list)
+			LAZYADD(reagents_block, SPAN_NOTICE("[round(reagent.volume, 0.001)] units of [reagent.name]\n"))
+
+		if(!length(reagents_block))
+			LAZYADD(reagents_out, SPAN_NOTICE("No active chemical agents found in \the [target]."))
+		else
+			LAZYADD(reagents_out, SPAN_NOTICE("\The [target] contains the following reagents:\n"))
+			LAZYADD(reagents_out, reagents_block)
+			reagents_block.Cut()
+
+		var/message = EXAMINE_BLOCK(jointext(reagents_out, ""))
+
+		to_chat(user, message)
 
 /obj/item/device/reagent_scanner/adv
 	name = "advanced reagent scanner"
@@ -633,7 +642,7 @@ REAGENT SCANNER
 	throw_range = 3
 	matter = list(MATERIAL_STEEL = 25, MATERIAL_GLASS = 25)
 
-/obj/item/device/price_scanner/afterattack(atom/movable/target, mob/user as mob, proximity)
+/obj/item/device/price_scanner/afterattack(atom/movable/target, mob/user, proximity)
 	if(!proximity)
 		return
 
@@ -652,20 +661,23 @@ REAGENT SCANNER
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
 
-/obj/item/device/metroid_scanner/proc/list_gases(gases)
+/obj/item/device/metroid_scanner/afterattack(mob/target, mob/user, proximity)
+	metroid_scan(src, target, user, proximity)
+
+proc/list_gases(gases)
 	. = list()
 	for(var/g in gases)
 		. += "[gas_data.name[g]] ([gases[g]]%)"
 	return english_list(.)
 
-/obj/item/device/metroid_scanner/afterattack(mob/target, mob/user, proximity)
+proc/metroid_scan(source, mob/target, mob/user, proximity)
 	if(!proximity)
 		return
 
 	if(!istype(target))
 		return
 
-	user.visible_message("\The [user] scans \the [target] with \the [src]")
+	user.visible_message("\The [user] scans \the [target] with \the [source]")
 	if(istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = target
 		user.show_message("<span class='notice'>Data for [H]:</span>")

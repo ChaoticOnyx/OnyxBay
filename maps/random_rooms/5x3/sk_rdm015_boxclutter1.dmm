@@ -1,0 +1,13 @@
+"a" = (/turf/simulated/floor/plating,/area/template_noop)
+"m" = (/obj/structure/bed/chair,/turf/simulated/floor/plating,/area/template_noop)
+"t" = (/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+"u" = (/obj/effect/decal/cleanable/cobweb,/obj/structure/closet/emcloset,/turf/simulated/floor/plating,/area/template_noop)
+"D" = (/obj/structure/table/rack,/obj/random/maintenance,/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+"P" = (/obj/structure/reagent_dispensers/watertank,/turf/simulated/floor/plating,/area/template_noop)
+"Z" = (/obj/structure/table/rack,/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+
+(1,1,1) = {"
+utmaa
+aaaat
+DDaPZ
+"}

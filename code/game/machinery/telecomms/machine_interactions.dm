@@ -11,6 +11,7 @@
 #define TELECOMM_Z 3
 
 /obj/machinery/telecomms
+	panel_open = TRUE
 	var/temp = "" // output message
 	var/construct_op = 0
 
@@ -65,41 +66,13 @@
 			if(isCoil(P))
 				var/obj/item/stack/cable_coil/A = P
 				if (A.use(5))
-					to_chat(user, "<span class='notice'>You insert the cables.</span>")
+					to_chat(user, SPAN_NOTICE("You insert \the [P] into \the [src]."))
 					construct_op--
 					set_broken(FALSE, TRUE) // the machine's not borked anymore!
 				else
-					to_chat(user, "<span class='warning'>You need five coils of wire for this.</span>")
-			if(isCrowbar(P))
-				to_chat(user, "You begin prying out the circuit board other components...")
-				playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
-				if(do_after(user,60, src))
-					to_chat(user, "You finish prying out the components.")
-
-					// Drop all the component stuff
-					if(contents.len > 0)
-						for(var/obj/x in src)
-							x.loc = user.loc
-					else
-
-						// If the machine wasn't made during runtime, probably doesn't have components:
-						// manually find the components and drop them!
-						var/obj/item/circuitboard/C = new circuitboard
-						for(var/I in C.req_components)
-							for(var/i = 1, i <= C.req_components[I], i++)
-								var/obj/item/s = new I
-								s.loc = user.loc
-								if(isCoil(P))
-									var/obj/item/stack/cable_coil/A = P
-									A.amount = 1
-
-						// Drop a circuit board too
-						C.loc = user.loc
-
-					// Create a machine frame and delete the current machine
-					var/obj/machinery/constructable_frame/machine_frame/F = new
-					F.loc = src.loc
-					qdel(src)
+					to_chat(user, SPAN_WARNING("You need five coils of wire for this."))
+			if(default_deconstruction_crowbar(user, P))
+				return
 
 
 /obj/machinery/telecomms/attack_ai(mob/user)
@@ -193,20 +166,19 @@
 
 // Returns a multitool from a user depending on their mobtype.
 
-/obj/machinery/telecomms/proc/get_multitool(mob/user)
-
-	var/obj/item/device/multitool/P = null
-	// Let's double check
+// TO-DO: find a better place for this proc.
+/proc/get_multitool(mob/user)
+	var/obj/item/device/multitool/MT = null
 	if(!issilicon(user))
 		if(isMultitool(user.get_active_hand()))
-			P = user.get_active_hand()
+			MT = user.get_active_hand()
 	else if(isAI(user))
-		var/mob/living/silicon/ai/U = user
-		P = U.aiMulti
-	else if(isrobot(user) && in_range(user, src))
+		var/mob/living/silicon/ai/AI = user
+		MT = AI.aiMulti
+	else if(isrobot(user))
 		if(isMultitool(user.get_active_hand()))
-			P = user.get_active_hand()
-	return P
+			MT = user.get_active_hand()
+	return MT
 
 // Additional Options for certain machines. Use this when you want to add an option to a specific machine.
 // Example of how to use below.

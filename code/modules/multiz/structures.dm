@@ -19,8 +19,8 @@
 	var/const/drag_time = 15 SECONDS
 	var/static/list/climbsounds = list('sound/effects/ladder.ogg','sound/effects/ladder2.ogg','sound/effects/ladder3.ogg','sound/effects/ladder4.ogg')
 
-	var/static/radial_ladder_down = image(icon = 'icons/mob/radial.dmi', icon_state = "radial_ladder_down")
-	var/static/radial_ladder_up = image(icon = 'icons/mob/radial.dmi', icon_state = "radial_ladder_up")
+	var/static/radial_ladder_down = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_ladder_down")
+	var/static/radial_ladder_up = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_ladder_up")
 
 	var/static/list/radial_options = list("up" = radial_ladder_up, "down" = radial_ladder_down)
 
@@ -213,10 +213,8 @@
 				if(L.pulling)
 					L.pulling.forceMove(target)
 			if(ishuman(A))
-				var/mob/living/carbon/human/H = A
-				if(!H.species.silent_steps)
-					playsound(source, 'sound/effects/stairs_step.ogg', 50)
-					playsound(target, 'sound/effects/stairs_step.ogg', 50)
+				playsound(source, 'sound/effects/stairs_step.ogg', 50)
+				playsound(target, 'sound/effects/stairs_step.ogg', 50)
 		else
 			to_chat(A, SPAN("warning", "Something blocks the path."))
 	else

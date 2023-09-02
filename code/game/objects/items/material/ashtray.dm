@@ -13,6 +13,7 @@
 	hitsound = SFX_FIGHTING_SWING
 	material_amount = 2
 	var/max_butts = 10
+	var/holey = FALSE
 
 /obj/item/material/ashtray/Destroy()
 	for(var/obj/O in contents)
@@ -65,6 +66,19 @@
 		return
 	if(store(W, user))
 		return
+	if(isScrewdriver(W))
+		to_chat(user, "You punch some holes in \the [src]!")
+		holey = TRUE
+		return
+	else if(holey && istype(W, /obj/item/stack/rods))
+		var/obj/item/stack/rods/V = W
+		V.use(1)
+		var/obj/item/hookah_coal/makeshift/HC = new (get_turf(src))
+		HC.color = color
+		if(user.get_inactive_hand() == src)
+			user.drop(src)
+			user.pick_or_drop(HC)
+		qdel_self()
 	else
 		..()
 		health = max(0, health - W.force)

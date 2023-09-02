@@ -147,6 +147,11 @@
 	desc = "Very effective at removing hair, feathers, spines and horns."
 	startswith = list(/datum/reagent/toxin/hair_remover)
 
+/obj/item/reagent_containers/spray/hair_grower
+	name = "hair grower"
+	desc = "Very effective at growing hair."
+	startswith = list(/datum/reagent/toxin/hair_grower)
+
 /obj/item/reagent_containers/spray/pepper
 	name = "pepperspray"
 	desc = "Manufactured by Uhang Inc., it fires a mist of condensed capsaicin to blind and down an opponent quickly."

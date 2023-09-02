@@ -332,7 +332,8 @@
 					/obj/item/music_tape_box/newyear,
 					/obj/item/music_tape_box/frontier,
 					/obj/item/music_tape_box/valhalla,
-					/obj/item/music_tape_box/halloween
+					/obj/item/music_tape_box/halloween,
+					/obj/item/music_tape_box/retrojazz
 					)
 	cost = 40
 	containername = "\improper Music tapes crate"

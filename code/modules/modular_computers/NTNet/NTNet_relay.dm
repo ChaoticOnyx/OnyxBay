@@ -116,22 +116,9 @@
 
 	return ..()
 
-/obj/machinery/ntnet_relay/attackby(obj/item/W as obj, mob/user as mob)
-	if(isScrewdriver(W))
-		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-		panel_open = !panel_open
-		to_chat(user, "You [panel_open ? "open" : "close"] the maintenance hatch")
+/obj/machinery/ntnet_relay/attackby(obj/item/W, mob/user)
+	if(default_deconstruction_screwdriver(user, W))
 		return
-	if(isCrowbar(W))
-		if(!panel_open)
-			to_chat(user, "Open the maintenance panel first.")
-			return
-		playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
-		to_chat(user, "You disassemble \the [src]!")
-
-		for(var/atom/movable/A in component_parts)
-			A.forceMove(src.loc)
-		new /obj/machinery/constructable_frame/machine_frame(src.loc)
-		qdel(src)
+	if(default_deconstruction_crowbar(user, W))
 		return
 	..()

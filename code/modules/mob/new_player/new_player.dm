@@ -406,7 +406,7 @@
 		var/mob/living/silicon/ai/A = character
 		A.on_mob_init()
 
-		AnnounceArrival(character.real_name, job)
+		SSannounce.announce_arrival(character.real_name, job)
 		SSticker.mode.handle_latejoin(character)
 
 		qdel(C)
@@ -420,7 +420,7 @@
 			CreateModularRecord(character)
 			SSticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
 
-		AnnounceArrival(character.real_name, job, spawnpoint)
+		SSannounce.announce_arrival(character.real_name, job, spawnpoint)
 
 		matchmaker.do_matchmaking()
 	log_and_message_admins("has joined the round as [character.mind.assigned_role].", character)
@@ -501,7 +501,7 @@
 			return null
 		new_character = new(spawn_turf, chosen_species.name)
 		/*if(chosen_species.has_organ[BP_POSIBRAIN] && client && client.prefs.is_shackled)
-			var/obj/item/organ/internal/posibrain/B = new_character.internal_organs_by_name[BP_POSIBRAIN]
+			var/obj/item/organ/internal/cerebrum/posibrain/B = new_character.internal_organs_by_name[BP_POSIBRAIN]
 			if(B)
 				B.shackle(client.prefs.get_lawset())*/ // Removed until we get those cyberdummies working
 

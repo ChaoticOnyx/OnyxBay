@@ -279,6 +279,36 @@
 	landmark_tag = "nav_mining_transition"
 	autoset = 1
 
+//Security shuttle
+
+/datum/shuttle/autodock/ferry/security
+	name = "Security"
+	warmup_time = 10
+	move_time = 10
+	location = 0
+	shuttle_area = /area/shuttle/security
+	dock_target = "security_shuttle"
+	waypoint_station = "nav_security_station"
+	waypoint_offsite = "nav_security_outpost"
+	landmark_transition = "nav_security_transition"
+
+/obj/effect/shuttle_landmark/security/station
+	name = "Station"
+	landmark_tag = "nav_security_station"
+	docking_controller = "security_dock_airlock"
+	autoset = 0
+
+/obj/effect/shuttle_landmark/security/asteroid
+	name = "Asteroid Outpost"
+	landmark_tag = "nav_security_outpost"
+	docking_controller = "security_outpost_airlock"
+	autoset = 1
+
+/obj/effect/shuttle_landmark/security/internim
+	name = "In transit"
+	landmark_tag = "nav_security_transition"
+	autoset = 1
+
 //Emergency Response Team Shuttle
 
 /datum/shuttle/autodock/multi/antag/rescue
@@ -425,12 +455,11 @@
 	dock_target = "merc_shuttle"
 	current_location = "nav_merc_start"
 	landmark_transition = "nav_merc_transition"
-	announcer = "NMV Icarus Sensor Array"
 	home_waypoint = "nav_merc_start"
 	cloaked = 0
 	move_time = 120
-	arrival_message = "Attention, you have a large signature approaching the station - looks unarmed to surface scans. We're too far out to intercept - brace for visitors."
-	departure_message = "Your visitors are on their way out of the system, burning delta-v like it's nothing. Good riddance."
+	arrival_announce = /datum/announce/nukeops_arrival
+	departure_announce = /datum/announce/nukeops_departure
 
 /obj/effect/shuttle_landmark/syndi/start
 	name = "Syndicate Base"
@@ -570,8 +599,7 @@
 	home_waypoint = "nav_merchant_start"
 	cloaked = 1
 	move_time = 60
-	announcer = "NMV Icarus Sensor Array"
-	arrival_message = "Attention, you have an unarmed cargo vessel, which appears to be a merchant ship, approaching the station."
+	arrival_announce = /datum/announce/merchants_arrival
 
 /obj/effect/shuttle_landmark/merchant/start
 	name = "Merchant Base"
@@ -626,9 +654,8 @@
 	home_waypoint = "nav_skipjack_start"
 	cloaked = 1
 	move_time = 120
-	announcer = "NMV Icarus Sensor Array"
-	arrival_message = "Attention, you have a large signature approaching the station - looks unarmed to surface scans. We're too far out to intercept - brace for visitors."
-	departure_message = "Your visitors are on their way out of the system, burning delta-v like it's nothing. Good riddance."
+	arrival_announce = /datum/announce/skipjack_arrival
+	departure_announce = /datum/announce/skipjack_departure
 
 /obj/effect/shuttle_landmark/skipjack/start
 	name = "Raider Base"

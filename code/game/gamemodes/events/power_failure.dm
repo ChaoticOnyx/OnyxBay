@@ -1,7 +1,7 @@
 
 /proc/power_failure(announce = 1, severity = 2, list/affected_z_levels)
 	if(announce)
-		GLOB.using_map.grid_check_announcement()
+		SSannounce.play_station_announce(/datum/announce/grid_check)
 
 	for(var/obj/machinery/power/smes/buildable/S in GLOB.smes_list)
 		S.energy_fail(rand(15 * severity,30 * severity))
@@ -13,7 +13,7 @@
 
 /proc/power_restore(announce = 1)
 	if(announce)
-		GLOB.using_map.grid_restored_announcement()
+		SSannounce.play_station_announce(/datum/announce/grid_restored)
 	for(var/obj/machinery/power/apc/C in GLOB.apc_list)
 		C.failure_timer = 0
 		if(C.cell)
@@ -25,9 +25,8 @@
 		S.power_change()
 
 /proc/power_restore_quick(announce = 1)
-
 	if(announce)
-		command_announcement.Announce("All SMESs on the [station_name()] have been recharged. We apologize for the inconvenience.", "Power Systems Nominal", new_sound = GLOB.using_map.grid_restored_sound)
+		SSannounce.play_station_announce(/datum/announce/grid_restored)
 	for(var/obj/machinery/power/smes/S in GLOB.smes_list)
 		S.failure_timer = 0
 		S.charge = S.capacity

@@ -237,7 +237,8 @@
 	/obj/item/cautery = 100,			\
 	/obj/item/clothing/mask/smokable/cigarette = 75,	\
 	/obj/item/flame/lighter = 50,			\
-	/obj/item/weldingtool = 25
+	/obj/item/weldingtool = 25,
+	/obj/item/hothands = 20
 	)
 
 	duration = CAUTERIZE_DURATION

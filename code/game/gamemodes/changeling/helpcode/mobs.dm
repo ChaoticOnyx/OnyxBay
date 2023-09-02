@@ -159,7 +159,7 @@
 
 
 /mob/living/simple_animal/hostile/little_changeling/proc/paralyse_sting(mob/living/carbon/human/target as mob in oview(1))
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		to_chat(src, SPAN("changeling", "We cannot use this ability. We are dead."))
 		return
 
@@ -204,12 +204,12 @@
 	change_ctate(/datum/click_handler/changeling/infest)
 
 
-/mob/living/simple_animal/hostile/little_changeling/proc/infest(mob/living/carbon/human/target as mob in oview(1))
+/mob/living/simple_animal/hostile/little_changeling/proc/infest(mob/living/carbon/human/target in oview(1))
 	var/datum/changeling/changeling = src.mind.changeling
 	if(!changeling)
 		return
 
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		to_chat(src, SPAN("changeling", "We cannot use this ability. We are dead."))
 		return
 
@@ -237,7 +237,7 @@
 		to_chat(src, SPAN("changeling", "We are already infesting!"))
 		return
 
-	if(target.stat != DEAD && !target.is_asystole() && !target.incapacitated(INCAPACITATION_ALL))
+	if(!target.is_ic_dead() && !target.is_asystole() && !target.incapacitated(INCAPACITATION_ALL))
 		to_chat(src, SPAN("changeling", "We need our victim to be paralysed, dead or somehow else incapable of defending themself for us to latch on!"))
 		return
 
@@ -294,7 +294,7 @@
 	else if(istype(src, /mob/living/simple_animal/hostile/little_changeling/head_chan))
 		if(!target.has_limb(BP_HEAD))
 			target.restore_limb(BP_HEAD)
-			target.internal_organs_by_name[BP_BRAIN] = new /obj/item/organ/internal/brain(target)
+			target.internal_organs_by_name[BP_BRAIN] = new /obj/item/organ/internal/cerebrum/brain(target, target)
 			target.internal_organs_by_name[BP_EYES] = new /obj/item/organ/internal/eyes(target)
 
 	target.sync_organ_dna()
@@ -320,7 +320,7 @@
 /mob/living/simple_animal/hostile/little_changeling/find_target()
 	. = ..()
 	if(.)
-		custom_emote(1, "nashes at [.]")
+		visible_emote("nashes at [.].")
 
 
 /mob/living/simple_animal/hostile/little_changeling/AttackingTarget()
@@ -412,7 +412,7 @@
 	set name = "Freeze and vanish"
 	set desc = "We smooth and contract our chromatophores, almost vanishing in the air."
 
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		to_chat(src, SPAN("changeling", "We can't use this ability. We are dead."))
 		return
 

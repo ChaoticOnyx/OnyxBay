@@ -200,7 +200,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			candidates -= candidate_mind
 
 			H = candidate_mind.current
-			if(!istype(H) || H.stat == DEAD || !is_station_turf(get_turf(H)))
+			if(!istype(H) || H.is_ooc_dead() || !is_station_turf(get_turf(H)))
 				continue
 
 			target_mind = candidate_mind
@@ -317,7 +317,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		var/list/mob/living/silicon/ai/valid_AIs = list()
 		if(length(ai_list))
 			for(var/mob/living/silicon/ai/AI in ai_list)
-				if(AI.stat != DEAD)
+				if(!AI.is_ooc_dead())
 					valid_AIs.Add(AI)
 		if(!length(valid_AIs))
 			return
@@ -427,7 +427,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 			_H = candidate_mind.current
 			H = weakref(_H)
-			if(!istype(_H) || _H.stat == DEAD || !is_station_turf(get_turf(_H)))
+			if(!istype(_H) || _H.is_ooc_dead() || !is_station_turf(get_turf(_H)))
 				continue
 
 			target_real_name = _H.real_name
@@ -471,8 +471,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	return ..() && target && !QDELETED(target_mind) && !QDELETED(target_mind.current)
 
 /datum/antag_contract/item/assassinate/check_contents(list/contents)
-	var/obj/item/organ/internal/brain/_brain = brain?.resolve()
-	var/obj/item/device/mmi/MMI = _brain?.loc
+	var/obj/item/organ/internal/cerebrum/brain/_brain = brain?.resolve()
+	var/obj/item/organ/internal/cerebrum/mmi/MMI = _brain?.loc
 	detected_less_tc = ((istype(MMI) && (MMI in contents)) || (_brain in contents))
 	if(detected_less_tc)
 		target_detected_in_STD = TRUE
@@ -488,9 +488,9 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/assassinate/complete(obj/item/device/uplink/close_uplink)
 	var/datum/mind/M = close_uplink.uplink_owner
-	var/obj/item/organ/internal/brain/_brain = brain?.resolve()
+	var/obj/item/organ/internal/cerebrum/brain/_brain = brain?.resolve()
 	var/mob/living/carbon/human/_H = H?.resolve()
-	if((istype(_H) && !_H.stat && _H.mind) || (istype(_brain?.loc, /obj/item/device/mmi) && !target_detected_in_STD))
+	if((istype(_H) && !_H.stat && _H.mind) || (istype(_brain?.loc, /obj/item/organ/internal/cerebrum/mmi) && !target_detected_in_STD))
 		if(M)
 			to_chat(M, SPAN("danger", "According to our information, the target ([target_real_name]) specified in the contract is still alive, don't try to deceive us or the consequences will be... Inevitable."))
 		return

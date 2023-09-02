@@ -14,7 +14,7 @@
 				visible[t] = t
 		else if(isAI(source))
 			var/mob/living/silicon/ai/AI = source
-			if(AI.stat == DEAD)
+			if(AI.is_ooc_dead())
 				continue
 			for(var/turf/t in seen_turfs_in_range(AI, world.view))
 				visible[t] = t

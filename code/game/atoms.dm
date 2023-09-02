@@ -476,8 +476,7 @@ its easier to just keep the beam vertical.
 	for(var/m in hearing_mobs)
 		var/mob/M = m
 		M.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
-		if(M.get_preference_value(/datum/client_preference/runechat) == GLOB.PREF_YES)
-			M.create_chat_message(src, message)
+		show_splash_text(M, message)
 
 /atom/movable/proc/dropInto(atom/destination)
 	while(istype(destination))
@@ -614,7 +613,7 @@ its easier to just keep the beam vertical.
 			H.updatehealth()
 	return
 
-/atom/MouseDrop_T(mob/target, mob/user)
+/atom/MouseDrop_T(atom/movable/target, mob/user)
 	var/mob/living/H = user
 	if(istype(H) && can_climb(H) && target == user)
 		do_climb(target)

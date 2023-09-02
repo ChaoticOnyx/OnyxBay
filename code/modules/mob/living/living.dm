@@ -1,6 +1,6 @@
 /mob/living/Initialize()
 	. = ..()
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		add_to_dead_mob_list()
 	else
 		add_to_living_mob_list()
@@ -481,7 +481,7 @@
 	restore_all_organs(ignore_prosthetic_prefs)
 
 	// remove the character from the list of the dead
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		switch_from_dead_to_living_mob_list()
 		timeofdeath = 0
 
@@ -598,6 +598,8 @@
 			if(t)
 				M.start_pulling(t)
 
+	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, pulling.loc)
+
 	handle_dir_after_pull()
 
 	if(m_intent == M_RUN && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
@@ -656,6 +658,8 @@
 			process_resist()
 
 /mob/living/proc/process_resist()
+
+	SEND_SIGNAL(src, SIGNAL_MOB_RESIST, src)
 	//Getting out of someone's inventory.
 	if(istype(src.loc, /obj/item/holder))
 		escape_inventory(src.loc)

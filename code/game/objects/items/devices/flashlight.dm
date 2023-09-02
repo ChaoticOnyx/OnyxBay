@@ -40,7 +40,7 @@
 			var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay", flags=RESET_COLOR)
 			LO.color = brightness_color
 			LO.layer = ABOVE_LIGHTING_LAYER
-			LO.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+			LO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 			overlays += LO
 	else
 		icon_state = "[initial(icon_state)]"
@@ -78,6 +78,10 @@
 /obj/item/device/flashlight/attack(mob/living/M, mob/living/user)
 	add_fingerprint(user)
 	if(on && user.zone_sel.selecting == BP_EYES)
+
+		if(is_pacifist(user))
+			to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+			return
 
 		if((MUTATION_CLUMSY in user.mutations) && prob(50))	//too dumb to use flashlight properly
 			return ..()	//just hit them in the head
@@ -118,7 +122,7 @@
 
 	if(!BP_IS_ROBOTIC(vision))
 
-		if(vision.owner.stat == DEAD || H.blinded)	//mob is dead or fully blind
+		if(vision.owner.is_ic_dead() || H.blinded)	//mob is dead or fully blind
 			to_chat(user, SPAN("warning", "\The [H]'s pupils do not react to the light!"))
 			return
 		if(MUTATION_XRAY in H.mutations)
@@ -131,7 +135,7 @@
 			to_chat(user, SPAN("notice", "There's visible lag between left and right pupils' reactions."))
 		if(H.get_blood_volume() <= 60)
 			to_chat(user, SPAN("notice", "\The [H]'s eyelids look pale."))
-		if(length(H.virus2)) 
+		if(length(H.virus2))
 			to_chat(user, SPAN("notice", "\The [H]'s eyes look red."))
 		else if(H.should_have_organ(BP_LIVER)) // Yea we probably do not want yellow and red eyes at the same time.
 			var/obj/item/organ/internal/liver/L = H.internal_organs_by_name[BP_LIVER]
@@ -308,7 +312,7 @@
 		icon_state = "[initial(icon_state)]-on"
 		var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay", flags=RESET_COLOR)
 		LO.layer = ABOVE_LIGHTING_LAYER
-		LO.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		LO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 		overlays += LO
 	else
 		icon_state = "[initial(icon_state)][fuel ? "" : "-empty"]"

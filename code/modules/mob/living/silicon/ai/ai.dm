@@ -69,7 +69,6 @@ var/list/ai_verbs_default = list(
 	var/datum/trackable/track = null
 	var/last_announcement = ""
 	var/control_disabled = 0
-	var/datum/announcement/priority/announcement
 	var/obj/machinery/ai_powersupply/psupply = null // Backwards reference to AI's powersupply object.
 	var/hologram_follow = 1 //This is used for the AI eye, to determine if a holopad's hologram should follow it or not
 	var/power_override_active = 0 				// If set to 1 the AI gains oxyloss (power loss damage) much faster, but is able to work as if powered normally.
@@ -105,6 +104,7 @@ var/list/ai_verbs_default = list(
 
 	var/default_ai_icon = /datum/ai_icon/blue
 	var/static/list/custom_ai_icons_by_ckey_and_name
+	var/announce_sender
 
 	give_ghost_proc_at_initialize = FALSE
 
@@ -114,13 +114,7 @@ var/list/ai_verbs_default = list(
 /mob/living/silicon/ai/proc/remove_ai_verbs()
 	src.verbs -= ai_verbs_default
 
-/mob/living/silicon/ai/New(loc, datum/ai_laws/L, obj/item/device/mmi/B, safety = 0)
-	announcement = new()
-	announcement.title = "A.I. Announcement"
-	announcement.announcement_type = "A.I. Announcement"
-	announcement.newscast = 1
-	announcement.log = TRUE
-
+/mob/living/silicon/ai/New(loc, datum/ai_laws/L,  obj/item/organ/internal/cerebrum/mmi/B, safety = 0)
 	var/list/possibleNames = GLOB.ai_names
 
 	var/pickedName = null
@@ -174,15 +168,15 @@ var/list/ai_verbs_default = list(
 
 	create_powersupply()
 
-	hud_list[HEALTH_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[STATUS_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[LIFE_HUD] 		  = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[ID_HUD]          = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[WANTED_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPLOYAL_HUD]    = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPCHEM_HUD]     = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPTRACK_HUD]    = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[SPECIALROLE_HUD] = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
+	hud_list[HEALTH_HUD]      = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[STATUS_HUD]      = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[LIFE_HUD] 		  = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[ID_HUD]          = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[WANTED_HUD]      = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[IMPLOYAL_HUD]    = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[IMPCHEM_HUD]     = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[IMPTRACK_HUD]    = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+	hud_list[SPECIALROLE_HUD] = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
 
 	ai_list += src
 	..()
@@ -223,7 +217,6 @@ var/list/ai_verbs_default = list(
 	ai_list -= src
 	ai_radio = null
 
-	QDEL_NULL(announcement)
 	QDEL_NULL(eyeobj)
 	QDEL_NULL(psupply)
 	QDEL_NULL(aiPDA)
@@ -249,7 +242,7 @@ var/list/ai_verbs_default = list(
 
 /mob/living/silicon/ai/fully_replace_character_name(pickedName as text)
 	..()
-	announcement.announcer = pickedName
+	announce_sender = pickedName
 	if(eyeobj)
 		eyeobj.SetName("[pickedName] (AI Eye)")
 
@@ -306,7 +299,7 @@ var/list/ai_verbs_default = list(
 	if(check_unable(AI_CHECK_WIRELESS | AI_CHECK_RADIO))
 		return
 
-	announcement.Announce(input)
+	SSannounce.play_station_announce(/datum/announce/ai, input, sender_override = announce_sender)
 	message_cooldown = 1
 	spawn(600)//One minute cooldown
 		message_cooldown = 0
@@ -429,7 +422,7 @@ var/list/ai_verbs_default = list(
 
 
 /mob/living/silicon/ai/proc/switchCamera(obj/machinery/camera/C)
-	if (!C || stat == DEAD) //C.can_use())
+	if (!C || is_ooc_dead()) //C.can_use())
 		return 0
 
 	if(!src.eyeobj)
@@ -640,7 +633,7 @@ var/list/ai_verbs_default = list(
 	to_chat(usr, "<span class='info'>Your hologram will now [hologram_follow ? "follow" : "no longer follow"] you.</span>")
 
 /mob/living/silicon/ai/proc/check_unable(flags = 0, feedback = 1)
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		if(feedback) to_chat(src, "<span class='warning'>You are dead!</span>")
 		return 1
 
@@ -675,7 +668,7 @@ var/list/ai_verbs_default = list(
 		selected_sprite = decls_repository.get_decl(default_ai_icon)
 
 	icon = selected_sprite.icon
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		icon_state = selected_sprite.dead_icon
 		set_light(0.7, 0.1, 1, 2, selected_sprite.dead_light)
 	else if(!has_power())

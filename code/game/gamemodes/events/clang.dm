@@ -91,4 +91,5 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	for(var/obj/effect/immovablerod/imm in world)
 		return
 	sleep(50)
-	command_announcement.Announce("What the fuck was that?!", "General Alert")
+
+	SSannounce.play_station_announce(/datum/announce/immovable_rod)

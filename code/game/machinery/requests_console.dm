@@ -52,7 +52,9 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	var/recipient = ""; //the department which will be receiving the message
 	var/priority = -1 ; //Priority of the message being sent
 	light_outer_range = 0
-	var/datum/announcement/announcement = new
+	var/announce_title
+	var/announce_do_newscast = TRUE
+	var/announce_sender
 
 /obj/machinery/requests_console/update_icon()
 	if(stat & NOPOWER)
@@ -67,8 +69,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 /obj/machinery/requests_console/New()
 	..()
 
-	announcement.title = "[department] announcement"
-	announcement.newscast = 1
+	announce_title = "[department] announcement"
 
 	name = "[department] Requests Console"
 	allConsoles += src
@@ -155,7 +156,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 
 	if(href_list["sendAnnouncement"])
 		if(!announcementConsole)	return
-		announcement.Announce(message, msg_sanitized = 1)
+		SSannounce.play_station_announce(/datum/announce/request_console_announce, message, announce_title, announce_sender, do_newscast = announce_do_newscast, msg_sanitized = TRUE)
 		reset_message(1)
 
 	if( href_list["department"] && message )
@@ -227,7 +228,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 			var/obj/item/card/id/ID = O
 			if (access_RC_announce in ID.GetAccess())
 				announceAuth = 1
-				announcement.announcer = ID.assignment ? "[ID.assignment] [ID.registered_name]" : ID.registered_name
+				announce_sender = ID.assignment ? "[ID.assignment] [ID.registered_name]" : ID.registered_name
 			else
 				reset_message()
 				to_chat(user, "<span class='warning'>You are not authorized to send announcements.</span>")
@@ -247,6 +248,6 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	msgVerified = ""
 	msgStamped = ""
 	announceAuth = 0
-	announcement.announcer = ""
+	announce_sender = ""
 	if(mainmenu)
 		screen = RCS_MAINMENU

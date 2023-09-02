@@ -79,6 +79,12 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 /mob/proc/update_floating()
 
+	if(iscarbon(src))
+		var/mob/living/carbon/C = src
+		if(C?.species?.negates_gravity())
+			make_floating(0)
+			return
+
 	if(anchored || buckled || check_solid_ground())
 		make_floating(0)
 		return
@@ -197,6 +203,8 @@ note dizziness decrements automatically in the mob's Life() proc.
 	animate(I, alpha = 175, pixel_x = 0, pixel_y = 0, pixel_z = 0, time = 3)
 
 /mob/proc/spin(spintime, speed)
+	if(!spintime || !speed)
+		return
 	spawn()
 		var/D = dir
 		while(spintime >= speed)

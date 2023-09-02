@@ -28,10 +28,4 @@
 	set_next_think_ctx("announce", world.time + (rand(30, 60) SECONDS))
 
 /datum/event/gravity/proc/announce()
-	var/list/affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
-	command_announcement.Announce(
-		"Feedback surge detected in mass-distributions systems. Engineers are strongly advised to deal with the problem.",
-		"Gravity Failure",
-		new_sound = 'sound/AI/gravitystart.ogg',
-		zlevels = affecting_z
-	)
+	SSannounce.play_announce(/datum/announce/gravity_failure)

@@ -17,32 +17,40 @@ var/list/limb_icon_cache = list()
 	s_col = null
 	s_base = ""
 	h_col = list(human.r_hair, human.g_hair, human.b_hair)
+	h_s_col = list(human.r_s_hair, human.g_s_hair, human.b_s_hair)
 	if(BP_IS_ROBOTIC(src))
-		var/datum/robolimb/franchise = all_robolimbs[model]
+		var/datum/robolimb/franchise = GLOB.all_robolimbs[model]
 		if(!(franchise && franchise.skintone))
 			return
 	if(species && human.species && species.name != human.species.name)
 		return
 	if(!isnull(human.s_tone) && (human.species.appearance_flags & HAS_A_SKIN_TONE))
 		s_tone = human.s_tone
-	if(!isnull(human.s_base) && (human.species.appearance_flags & HAS_BASE_SKIN_COLOURS))
-		s_base = human.s_base
+		if(human.species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
+			h_s_col = list(s_tone, s_tone, s_tone)
 	if(human.species.appearance_flags & HAS_SKIN_COLOR)
 		s_col = list(human.r_skin, human.g_skin, human.b_skin)
+		if(human.species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
+			h_s_col = s_col
 
 /obj/item/organ/external/proc/sync_colour_to_dna()
 	s_tone = null
 	s_col = null
 	s_base = dna.s_base
 	h_col = list(dna.GetUIValue(DNA_UI_HAIR_R),dna.GetUIValue(DNA_UI_HAIR_G),dna.GetUIValue(DNA_UI_HAIR_B))
+	h_s_col = list(dna.GetUIValue(DNA_UI_S_HAIR_R),dna.GetUIValue(DNA_UI_S_HAIR_G),dna.GetUIValue(DNA_UI_S_HAIR_B))
 	if(BP_IS_ROBOTIC(src))
-		var/datum/robolimb/franchise = all_robolimbs[model]
+		var/datum/robolimb/franchise = GLOB.all_robolimbs[model]
 		if(!(franchise && franchise.skintone))
 			return
 	if(!isnull(dna.GetUIValue(DNA_UI_SKIN_TONE)) && (species.appearance_flags & HAS_A_SKIN_TONE))
 		s_tone = dna.GetUIValue(DNA_UI_SKIN_TONE)
+		if(species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
+			h_s_col = list(s_tone, s_tone, s_tone)
 	if(species.appearance_flags & HAS_SKIN_COLOR)
 		s_col = list(dna.GetUIValue(DNA_UI_SKIN_R), dna.GetUIValue(DNA_UI_SKIN_G), dna.GetUIValue(DNA_UI_SKIN_B))
+		if(species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
+			h_s_col = s_col
 
 /obj/item/organ/external/head/sync_colour_to_human(mob/living/carbon/human/human)
 	..()
@@ -67,13 +75,10 @@ var/list/limb_icon_cache = list()
 			var/color = markings[E]
 			var/icon/I = icon(M.icon, "[M.icon_state]-[organ_tag]")
 			I.Blend(color, M.blend)
-			icon_cache_key += "[M.name][color]"
 			ADD_SORTED(sorted, list(list(M.draw_order, I, M)), /proc/cmp_marking_order)
 	for (var/entry in sorted)
 		overlays |= entry[2]
 		mob_icon.Blend(entry[2], entry[3]["layer_blend"])
-
-/obj/item/organ/external/var/icon_cache_key
 
 /obj/item/organ/external/update_icon(regenerate = 0)
 	if (!icon_name)
@@ -97,12 +102,7 @@ var/list/limb_icon_cache = list()
 		if(is_stump())
 			stump_icon = "_s"
 
-		icon_state = "[icon_name][gender][body_build][stump_icon][owner?.mind?.special_role == "Zombie" && owner.species == all_species[SPECIES_HUMAN] ? "_z" : ""]"
-
-		if (species)
-			if(species.base_skin_colours && !isnull(species.base_skin_colours[s_base]))
-				icon_state += species.base_skin_colours[s_base]
-			icon_cache_key = "[icon_state]_[species ? species.name : SPECIES_HUMAN]"
+		icon_state = "[icon_name][gender][body_build][stump_icon]"
 
 		if(force_icon)
 			icon = force_icon
@@ -110,12 +110,21 @@ var/list/limb_icon_cache = list()
 			icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_main.dmi'
 		else if (!dna)
 			icon = 'icons/mob/human_races/r_human.dmi'
-		else if (status & ORGAN_MUTATED)
-			icon = species.deform
 		else if (owner && (MUTATION_SKELETON in owner.mutations))
 			icon = 'icons/mob/human_races/r_skeleton.dmi'
 		else
 			icon = species.get_icobase(owner)
+			icon_state = "[icon_state][owner?.mind?.special_role == "Zombie" && owner.species == all_species[SPECIES_HUMAN] ? "_z" : ""]"
+
+		var/icon/temp_icon = icon(icon)
+		var/list/icon_states = temp_icon.IconStates()
+		if(!icon_states.Find(icon_state))
+			if(icon_states.Find("[icon_name][gender]"))
+				icon_state = "[icon_name][gender]"
+			else if(icon_states.Find("[icon_name]"))
+				icon_state = "[icon_name]"
+			else
+				CRASH("Can't find proper icon_state for \the [src].")
 
 		mob_icon = apply_colouration(new /icon(icon, icon_state))
 
@@ -126,7 +135,6 @@ var/list/limb_icon_cache = list()
 				var/color = markings[E]
 				var/icon/I = icon(M.icon, "[M.icon_state]-[organ_tag]")
 				I.Blend(color, M.blend)
-				icon_cache_key += "[M.name][color]"
 				ADD_SORTED(sorted, list(list(M.draw_order, I, M)), /proc/cmp_marking_order)
 		for(var/entry in sorted)
 			overlays |= entry[2]
@@ -139,9 +147,6 @@ var/list/limb_icon_cache = list()
 				I.Blend(rgb(h_col[1],h_col[2],h_col[3]), ICON_ADD)
 				limb_icon_cache[cache_key] = I
 			mob_icon.Blend(limb_icon_cache[cache_key], ICON_OVERLAY)
-
-		if(model)
-			icon_cache_key += "_model_[model]"
 
 		if(force_icon && (status & ORGAN_CUT_AWAY))
 			dir = SOUTH // Facing towards the screen
@@ -171,7 +176,7 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 	// Species-standardized old-school health icon
 	// Probably works faster than the new fancy bodyshape-reflective system
 	if(!hud_damage_image)
-		var/image/temp = image('icons/mob/screen1_health.dmi',"[icon_name]")
+		var/image/temp = image('icons/hud/common/screen_health.dmi',"[icon_name]")
 		if(species)
 			// Calculate the required colour matrix.
 			var/r = 0.30 * species.health_hud_intensity
@@ -205,7 +210,6 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 		applying += rgb(,,,180) // Makes the icon translucent, SO INTUITIVE TY BYOND
 
 	else if(status & ORGAN_DEAD)
-		icon_cache_key += "_dead"
 		applying.ColorTone(rgb(10,50,0))
 		applying.SetIntensity(0.7)
 
@@ -214,10 +218,8 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 			applying.Blend(rgb(s_tone, s_tone, s_tone), ICON_ADD)
 		else
 			applying.Blend(rgb(-s_tone,  -s_tone,  -s_tone), ICON_SUBTRACT)
-		icon_cache_key += "_tone_[s_tone]"
 	if(species && species.appearance_flags & HAS_SKIN_COLOR)
 		if(s_col && s_col.len >= 3)
 			applying.Blend(rgb(s_col[1], s_col[2], s_col[3]), s_col_blend)
-			icon_cache_key += "_color_[s_col[1]]_[s_col[2]]_[s_col[3]]_[s_col_blend]"
 
 	return applying

@@ -435,7 +435,7 @@
 
 /obj/item/clothing/glasses/hud/one_eyed
 	one_eyed = TRUE
-	body_parts_covered = 0 // Covering one eye isn't enough to protect you from eye-forking
+	body_parts_covered = NO_BODYPARTS // Covering one eye isn't enough to protect you from eye-forking
 	var/flipped = FALSE // Indicates left or right eye; FALSE = on the left
 
 /obj/item/clothing/glasses/hud/one_eyed/verb/flip_patch()

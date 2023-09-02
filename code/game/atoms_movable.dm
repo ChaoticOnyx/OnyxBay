@@ -1,5 +1,6 @@
 /atom/movable
 	appearance_flags = DEFAULT_APPEARANCE_FLAGS | TILE_BOUND
+	vis_flags = VIS_INHERIT_PLANE|VIS_INHERIT_ID
 	glide_size = 8
 
 	var/last_move = null
@@ -147,7 +148,7 @@
 			if(A.density && !A.throwpass)	// **TODO: Better behaviour for windows which are dense, but shouldn't always stop movement
 				throw_impact(A, speed)
 
-/atom/movable/proc/throw_at(atom/target, range, speed = throw_speed, atom/thrower, thrown_with, target_zone, launched_mult)
+/atom/movable/proc/throw_at(atom/target, range, speed = throw_speed, atom/thrower, thrown_with, target_zone, launched_div)
 	set waitfor = FALSE
 
 	if(!target || QDELETED(src))
@@ -177,8 +178,8 @@
 	var/tiles_per_tick = speed
 	speed = round(speed)
 	var/impact_speed = speed
-	if(launched_mult)
-		impact_speed *= launched_mult
+	if(launched_div)
+		impact_speed /= launched_div
 		pre_launched()
 	var/area/a = get_area(loc)
 
@@ -256,7 +257,7 @@
 	if(isobj(src))
 		throw_impact(get_turf(src), impact_speed)
 
-	if(launched_mult)
+	if(launched_div)
 		post_launched()
 
 	thrown_to = null

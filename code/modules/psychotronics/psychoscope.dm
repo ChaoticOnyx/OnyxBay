@@ -6,12 +6,12 @@
 
 	// Creates HUD icons.
 
-	var/image/psychoscope_dot = new /image/hud_overlay('icons/mob/hud.dmi', src, "psychoscope_dot")
-	psychoscope_dot.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	var/image/psychoscope_dot = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "psychoscope_dot")
+	psychoscope_dot.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 
-	var/image/psychoscope_scan = new /image('icons/mob/hud.dmi', src, "psychoscope_scan")
+	var/image/psychoscope_scan = new /image('icons/mob/huds/hud.dmi', src, "psychoscope_scan")
 	psychoscope_scan.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR | RESET_TRANSFORM | KEEP_APART
-	psychoscope_scan.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	psychoscope_scan.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 
 	psychoscope_icons[PSYCHOSCOPE_ICON_DOT] = psychoscope_dot
 	psychoscope_icons[PSYCHOSCOPE_ICON_SCAN] = psychoscope_scan
@@ -844,5 +844,5 @@
 		var/datum/arranged_hud_process/P = arrange_hud_process(M, 0, GLOB.med_hud_users)
 
 		for(var/mob/living/target in P.Mob.in_view(P.Turf) - M)
-			if(!target.is_dead())
+			if(!target.is_ic_dead())
 				P.Client.images += target.psychoscope_icons[PSYCHOSCOPE_ICON_DOT]

@@ -140,7 +140,7 @@
 			Stun(2)
 		if(21 to 25)
 			Weaken(2)
-		if(26 to 25)
+		if(26 to 30)
 			Weaken(5)
 		if(31 to INFINITY)
 			Weaken(10) //This should work for now, more is really silly and makes you lay there forever
@@ -248,7 +248,7 @@
 				if(M.on_fire)
 					src.IgniteMob()
 
-			if(stat != DEAD)
+			if(!is_ic_dead())
 				AdjustParalysis(-3)
 				AdjustStunned(-3)
 				AdjustWeakened(-3)
@@ -406,6 +406,8 @@
 	var/area/A = get_area(src)
 	if(!A.has_gravity())
 		return 0
+	if(HAS_TRAIT(src, TRAIT_NOSLIP))
+		return 0
 	if(buckled)
 		return 0
 	if(weakened)
@@ -560,3 +562,22 @@
 
 /mob/living/carbon/proc/set_species()
 	return FALSE
+
+/mob/living/carbon/IgniteMob()
+	if(species.species_flags & SPECIES_FLAG_NO_FIRE)
+		return
+	..()
+
+/mob/living/carbon/can_block_magic(casted_magic_flags)
+	if(casted_magic_flags == null) // magic with the null flag is immune to blocking
+		return FALSE
+
+	var/is_magic_blocked = FALSE
+
+	if(HAS_TRAIT(src, TRAIT_ANTIMAGIC))
+		return TRUE
+
+	if((casted_magic_flags & MAGIC_RESISTANCE_HOLY) && HAS_TRAIT(src, TRAIT_HOLY))
+		is_magic_blocked = TRUE
+
+	return is_magic_blocked

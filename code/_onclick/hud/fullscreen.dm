@@ -22,7 +22,7 @@
 	screen.severity = severity
 
 	screens[category] = screen
-	if(client && (stat != DEAD || screen.allstate))
+	if(client && (!is_ooc_dead() || screen.allstate))
 		client.screen += screen
 	return screen
 
@@ -59,8 +59,16 @@
 		for(var/category in screens)
 			client.screen |= screens[category]
 
+//this is used for changing color of lighting backdrop
+/mob/proc/set_fullscreen_color(category, new_color)
+	var/obj/screen/fullscreen/screen = screens[category]
+	if(!screen)
+		return
+
+	screen.color = new_color
+
 /obj/screen/fullscreen
-	icon = 'icons/mob/screen_full.dmi'
+	icon = 'icons/hud/screen_full.dmi'
 	icon_state = "default"
 	screen_loc = "CENTER-7,CENTER-7"
 	plane = FULLSCREEN_PLANE
@@ -89,7 +97,7 @@
 	layer = BLIND_LAYER
 
 /obj/screen/fullscreen/blackout
-	icon = 'icons/mob/screen1.dmi'
+	icon = 'icons/hud/screen.dmi'
 	icon_state = "black"
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	layer = BLIND_LAYER
@@ -99,12 +107,12 @@
 	layer = IMPAIRED_LAYER
 
 /obj/screen/fullscreen/blurry
-	icon = 'icons/mob/screen1.dmi'
+	icon = 'icons/hud/screen.dmi'
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	icon_state = "blurry"
 
 /obj/screen/fullscreen/flash
-	icon = 'icons/mob/screen1.dmi'
+	icon = 'icons/hud/screen.dmi'
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	icon_state = "flash"
 
@@ -115,12 +123,12 @@
 	icon_state = "flash_const"
 
 /obj/screen/fullscreen/red
-	icon = 'icons/mob/screen1.dmi'
+	icon = 'icons/hud/screen.dmi'
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	icon_state = "red"
 
 /obj/screen/fullscreen/high
-	icon = 'icons/mob/screen1.dmi'
+	icon = 'icons/hud/screen.dmi'
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	icon_state = "druggy"
 
@@ -132,7 +140,7 @@
 	alpha = 127
 
 /obj/screen/fullscreen/fadeout
-	icon = 'icons/mob/screen1.dmi'
+	icon = 'icons/hud/screen.dmi'
 	icon_state = "black"
 	screen_loc = ui_entire_screen
 	layer = FULLSCREEN_LAYER
@@ -152,7 +160,7 @@
 	blend_mode = BLEND_DEFAULT
 
 /obj/screen/fullscreen/cam_corners
-	icon = 'icons/mob/screen_full.dmi'
+	icon = 'icons/hud/screen_full.dmi'
 	icon_state = "cam_corners"
 	allstate = 1
 	layer = FULLSCREEN_LAYER
@@ -165,3 +173,14 @@
 /obj/screen/fullscreen/pain
 	icon_state = "brutedamageoverlay6"
 	alpha = 0
+
+//Provides darkness to the back of the lighting plane
+/obj/screen/fullscreen/lighting_backdrop
+	icon = LIGHTING_ICON
+	icon_state = LIGHTING_ICON_STATE_DARK
+	plane = LIGHTING_PLANE
+	layer = LIGHTING_LAYER
+	transform = matrix(200, 0, 0, 0, 200, 0)
+	blend_mode = BLEND_MULTIPLY
+	color = "#ffffff" //Lighting plane colors are negative, so this is actually black.
+	allstate = TRUE

@@ -4,7 +4,7 @@
 /mob/living/carbon/brain/handle_mutations_and_radiation()
 	radiation -= (0.001 SIEVERT)
 	radiation = Clamp(radiation, SPACE_RADIATION, (3 SIEVERT))
-	
+
 	if(radiation <= SAFE_RADIATION_DOSE)
 		return
 
@@ -19,7 +19,7 @@
 	if(damage)
 		adjustToxLoss(damage)
 		updatehealth()
-	
+
 		if(prob(5))
 			if(!container)
 				to_chat(src, "<span class='warning'>You feel weak.</span>")
@@ -84,11 +84,11 @@
 /mob/living/carbon/brain/handle_regular_status_updates()	//TODO: comment out the unused bits >_>
 	updatehealth()
 
-	if(stat == DEAD)	//DEAD. BROWN BREAD. SWIMMING WITH THE SPESS CARP
+	if(is_ooc_dead())	//DEAD. BROWN BREAD. SWIMMING WITH THE SPESS CARP
 		blinded = 1
 		silent = 0
 	else				//ALIVE. LIGHTS ARE ON
-		if( !container && (health < config.health.health_threshold_dead || ((world.time - timeofhostdeath) > config.revival.revival_brain_life)) )
+		if(!container && ((health < config.health.health_threshold_dead) || (world.time - timeofhostdeath > config.revival.revival_brain_life) && (config.revival.revival_brain_life >= 0)))
 			death()
 			blinded = 1
 			silent = 0
@@ -96,7 +96,7 @@
 
 		//Handling EMP effect in the Life(), it's made VERY simply, and has some additional effects handled elsewhere
 		if(emp_damage)			//This is pretty much a damage type only used by MMIs, dished out by the emp_act
-			if(!(container && istype(container, /obj/item/device/mmi)))
+			if(!(container && istype(container, /obj/item/organ/internal/cerebrum/mmi)))
 				emp_damage = 0
 			else
 				emp_damage = round(emp_damage,1)//Let's have some nice numbers to work with
@@ -151,27 +151,8 @@
 
 /mob/living/carbon/brain/handle_regular_hud_updates()
 	update_sight()
-	if (healths)
-		if (stat != 2)
-			switch(health)
-				if(100 to INFINITY)
-					healths.icon_state = "health0"
-				if(80 to 100)
-					healths.icon_state = "health1"
-				if(60 to 80)
-					healths.icon_state = "health2"
-				if(40 to 60)
-					healths.icon_state = "health3"
-				if(20 to 40)
-					healths.icon_state = "health4"
-				if(0 to 20)
-					healths.icon_state = "health5"
-				else
-					healths.icon_state = "health6"
-		else
-			healths.icon_state = "health7"
 
-	if(stat != DEAD)
+	if(!is_ooc_dead())
 		if(blinded)
 			overlay_fullscreen("blind", /obj/screen/fullscreen/blind)
 		else

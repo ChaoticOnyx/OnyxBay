@@ -22,7 +22,7 @@
 
 /datum/spell/targeted/shapeshift/cast(list/targets, mob/user)
 	for(var/mob/living/M in targets)
-		if(M.stat == DEAD)
+		if(M.is_ic_dead())
 			to_chat(user, "[name] can only transform living targets.")
 			continue
 		if(M.buckled)
@@ -199,3 +199,46 @@
 						"maxHealth" = 200)
 			duration = 0
 			return "You revel in the corruption. There is no turning back."
+
+/datum/spell/targeted/shapeshift/metroid_form
+
+/datum/spell/targeted/shapeshift/metroid_form/cast(mob/M)
+	var/new_mob = /mob/living/carbon/metroid/transformed_metroid
+
+	var/mob/living/trans = new new_mob(get_turf(M))
+	for(var/varName in newVars) //stolen shamelessly from Conjure
+		if(varName in trans.vars)
+			trans.vars[varName] = newVars[varName]
+
+	if(M.mind)
+		M.mind.transfer_to(trans)
+	else
+		trans.key = M.key
+
+	var/atom/movable/overlay/effect = new /atom/movable/overlay(get_turf(M))
+	effect.set_density(0)
+	effect.anchored = 1
+	effect.icon = 'icons/effects/effects.dmi'
+	effect.layer = 3
+	flick("summoning",effect)
+	spawn(10)
+		qdel(effect)
+	M.forceMove(trans) //move inside the new dude to hide him.
+	M.status_flags |= GODMODE //dont want him to die or breathe or do ANYTHING
+	transformed_dudes[trans] = M
+	register_signal(trans, SIGNAL_MOB_DEATH, /datum/spell/targeted/shapeshift/proc/stop_transformation)
+	register_signal(trans, SIGNAL_QDELETING, /datum/spell/targeted/shapeshift/proc/stop_transformation)
+	register_signal(M, SIGNAL_QDELETING, /datum/spell/targeted/shapeshift/proc/destroyed_transformer)
+	var/datum/action/unshapeshift = new /datum/action/innate/unshapeshift(src)
+	unshapeshift.Grant(trans)
+
+/datum/action/innate/unshapeshift
+	name = "Return to human form"
+	button_icon_state = "wiz_metroidform"
+	var/datum/spell/targeted/shapeshift/shapeshift_spell
+
+/datum/action/innate/unshapeshift/New(ShapeshiftSpell)
+	shapeshift_spell = ShapeshiftSpell
+
+/datum/action/innate/unshapeshift/Activate()
+	shapeshift_spell.stop_transformation(owner)

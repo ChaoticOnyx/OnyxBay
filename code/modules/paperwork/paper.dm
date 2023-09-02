@@ -19,9 +19,11 @@
 	body_parts_covered = HEAD
 	attack_verb = list("bapped")
 
-	var/info = ""   //What's actually written on the paper.
-	var/info_links  //A different version of the paper which includes html links at fields and EOF
-	var/stamps      //The (text for the) stamps on the paper.
+	var/info = ""   	//What's actually written on the paper.
+	var/info_links  	//A different version of the paper which includes html links at fields and EOF
+	var/stamps      	//The (text for the) stamps on the paper.
+	var/stamps_images 	//The stamps on the paper
+	var/photocopied = FALSE
 	var/free_space = MAX_PAPER_MESSAGE_LEN
 	var/stamps_generated = TRUE
 	var/list/stamped
@@ -108,6 +110,7 @@
 	P.info_links = info_links
 	P.migrateinfolinks(src)
 	P.stamps = stamps
+	P.stamps_images = stamps_images
 	P.free_space = free_space
 	P.stamped = stamped
 	P.ico = ico
@@ -202,6 +205,17 @@
 	. = ..()
 	if(name != "sheet of paper")
 		. += "\nIt's titled '[name]'."
+		. += stamps
+
+	if(length(stamped))
+		if(is_type_in_list(/obj/item/stamp/void, stamped))
+			. += SPAN_NOTICE("It looks like it's been marked as 'VOID' on the front. It's unlikely that anyone will accept these now.")
+		else
+			if(photocopied)
+				. += SPAN_NOTICE("The stamp on the front appears to be smudged and faded. Central Command will probably still accept these, right?")
+
+		. += stamps
+
 	if(user && (in_range(user, src) || isghost(user)))
 		show_content(user)
 	else
@@ -225,7 +239,7 @@
 		<style>[styles]</style>
 	</head>
 	<body bgcolor='[color ? color : COLOR_WHITE]' text='[text_color]'>
-		[can_read ? info : stars(info)][stamps]
+		[can_read ? info : stars(info)][stamps_images]
 	</body>
 </html>
 "}
@@ -396,7 +410,7 @@
 		<style>[styles]</style>
 	</head>
 	<body bgcolor='[color]'>
-		[info_links][stamps]
+		[info_links][stamps_images]
 	</body>
 </html>
 "}
@@ -408,6 +422,7 @@
 			return
 
 		stamps += (stamps=="" ? "<hr>" : "<br>") + "<i>This paper has been stamped with the [P.name].</i>"
+		stamps_images += (stamps=="" ? "<hr>" : "<br>") + "<img src = [P.icon_state].png>"
 
 		var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')
 		var/x
@@ -657,7 +672,7 @@
 		<style>[styles]</style>
 	</head>
 	<body bgcolor='[color]'>
-		[info_links][stamps]
+		[info_links][stamps_images]
 	</body>
 </html>
 "}
@@ -725,7 +740,7 @@
 		<style>[styles]</style>
 	</head>
 	<body bgcolor='[color]'>
-		[info_links][stamps]
+		[info_links][stamps_images]
 	</body>
 </html>
 "}

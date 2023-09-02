@@ -47,7 +47,7 @@
 				var/message = pick(messagevoice)
 				say(message)
 				playsound(src, messagevoice[message], 75, FALSE)
-				custom_emote(1, "points at [H.name].")
+				visible_emote("points at [H.name].")
 			break
 
 /mob/living/bot/medbot/UnarmedAttack(mob/living/carbon/human/H, proximity)
@@ -64,7 +64,7 @@
 		return
 
 	// TODO: Fix bot ai so this check can actually be done somewhen
-	if(H.stat == DEAD)
+	if(H.is_ic_dead())
 		var/list/death_messagevoice = list("No! NO!" = 'sound/voice/medbot/no.ogg', "Live, damnit! LIVE!" = 'sound/voice/medbot/live.ogg', "I... I've never lost a patient before. Not today, I mean." = 'sound/voice/medbot/lost.ogg')
 		var/death_message = pick(death_messagevoice)
 		say(death_message)
@@ -255,7 +255,7 @@
 	if(!..())
 		return 0
 
-	if(H.stat == DEAD) // He's dead, Jim
+	if(H.is_ic_dead()) // He's dead, Jim
 		return 0
 
 	if(emagged)
@@ -282,7 +282,7 @@
 
 /* Construction */
 
-/obj/item/storage/firstaid/attackby(obj/item/robot_parts/S, mob/user as mob)
+/obj/item/storage/firstaid/attackby(obj/item/robot_parts/S, mob/user)
 	if ((!istype(S, /obj/item/robot_parts/l_arm)) && (!istype(S, /obj/item/robot_parts/r_arm)))
 		..()
 		return

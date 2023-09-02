@@ -257,7 +257,8 @@ var/global/list/additional_antag_types = list()
 		"radical Skrellian transevolutionaries",
 		"classified security operations"
 		)
-	command_announcement.Announce("The presence of [pick(reasons)] in the region is tying up all available local emergency resources; emergency response teams cannot be called at this time, and post-evacuation recovery efforts will be substantially delayed.","Emergency Transmission")
+
+	SSannounce.play_station_announce(/datum/announce/ert_cancelled, "The presence of [pick(reasons)] in the region is tying up all available local emergency resources; emergency response teams cannot be called at this time, and post-evacuation recovery efforts will be substantially delayed.")
 
 /datum/game_mode/proc/check_finished()
 	if(evacuation_controller.round_over() || station_was_nuked)
@@ -411,7 +412,7 @@ var/global/list/additional_antag_types = list()
 				if(L.stat == UNCONSCIOUS)
 					msg += "<b>[L.name]</b> ([L.ckey]), the [L.job] (Dying)\n"
 					continue //Unconscious
-				if(L.stat == DEAD)
+				if(L.is_ooc_dead())
 					msg += "<b>[L.name]</b> ([L.ckey]), the [L.job] (Dead)\n"
 					continue //Dead
 
@@ -419,7 +420,7 @@ var/global/list/additional_antag_types = list()
 		for(var/mob/observer/ghost/D in SSmobs.mob_list)
 			var/mob/living/original_mob = D.mind?.original_mob?.resolve()
 			if(D.mind && ((istype(original_mob) && original_mob == L) || D.mind.current == L))
-				if(L.stat == DEAD)
+				if(L.is_ooc_dead())
 					msg += "<b>[L.name]</b> ([ckey(D.mind.key)]), the [L.job] (Dead)\n"
 					continue //Dead mob, ghost abandoned
 				else

@@ -260,7 +260,8 @@
 
 /mob/living/carbon/human/proc/handle_vampire()
 	// Apply frenzy while in the holy location.
-	if (get_area(loc)?.holy)
+	var/area/A = get_area(src)
+	if(A?.holy)
 		mind.vampire.frenzy += 3
 		if(prob(20))
 			to_chat(src, "You feel like you`re burning!")

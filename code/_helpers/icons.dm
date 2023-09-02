@@ -728,7 +728,7 @@
 	cap_mode is capturing mode (optional), user is capturing mob (requred only wehen cap_mode = CAPTURE_MODE_REGULAR),
 	lighting determines lighting capturing (optional), suppress_errors suppreses errors and continues to capture (optional).
 */
-/proc/generate_image(tx, ty, tz, range, cap_mode = CAPTURE_MODE_PARTIAL, mob/living/user, lighting = 1, suppress_errors = 1)
+/proc/generate_image(tx, ty, tz, range, cap_mode = CAPTURE_MODE_PARTIAL, mob/living/user, lighting = 1, suppress_errors = 1, see_ghosts = FALSE)
 	var/list/turfstocapture = list()
 	// Lines below determine what tiles will be rendered
 	for(var/xoff = 0 to range)
@@ -753,7 +753,7 @@
 			if(istype(A, /atom/movable/lighting_overlay) && lighting) // Special case for lighting
 				atoms.Add(A)
 				continue
-			if(isghost(A) && prob(1 + GLOB.cult.cult_rating * 0.1))
+			if(isghost(A) && (prob(1 + GLOB.cult.cult_rating * 0.1) || see_ghosts))
 				atoms.Add(A)
 				continue
 			if(A.invisibility)

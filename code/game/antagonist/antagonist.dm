@@ -37,9 +37,7 @@
 	var/initial_spawn_req = 1               // Gamemode using this template won't start without this # candidates.
 	var/initial_spawn_target = 3            // Gamemode will attempt to spawn this many antags.
 	var/announced                           // Has an announcement been sent?
-	var/spawn_announcement                  // When the datum spawn proc is called, does it announce to the world? (ie. xenos)
-	var/spawn_announcement_title            // Report title.
-	var/spawn_announcement_sound            // Report sound clip.
+	var/spawn_announcement                  // Announce datum
 	var/spawn_announcement_delay            // Time between initial spawn and round announcement.
 
 	// Misc.
@@ -189,9 +187,6 @@
 	if(!isStationLevel(player_zlevel))
 		return 50
 	return 100
-
-/datum/antagonist/proc/special_eligibility_check(datum/mind/player, override = FALSE)
-	return TRUE
 
 /datum/antagonist/proc/attempt_random_spawn()
 	update_current_antag_max(SSticker.mode)

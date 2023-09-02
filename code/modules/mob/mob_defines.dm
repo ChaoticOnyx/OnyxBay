@@ -2,6 +2,7 @@
 	density = 1
 
 	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
+	vis_flags = VIS_INHERIT_PLANE
 	animate_movement = 2
 
 	virtual_mob = /mob/observer/virtual/mob
@@ -196,8 +197,6 @@
 	var/flavor_text = ""
 	var/datum/browser/show_inventory
 
-	var/nabbing = 0  // Whether a creature with a CAN_NAB tag is grabbing normally or in nab mode.
-
 	var/last_time_pointed_at = 0
 
 	/// Contains [/obj/screen/movable/alert] only.
@@ -206,3 +205,14 @@
 	var/list/alerts = list()
 
 	var/is_view_shifted = FALSE
+
+	/// Icon state name for speech bubble
+	var/bubble_icon = "default"
+	/// Icon used for the typing indicator's bubble
+	var/active_typing_indicator
+	/// Icon used for the thinking inicator's bubble
+	var/active_thinking_indicator
+	/// Is user typing in character
+	var/thinking_IC = FALSE
+	/// Whether typing indicator sould be shown
+	var/thinking_silent = FALSE

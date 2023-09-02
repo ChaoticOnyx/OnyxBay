@@ -30,7 +30,7 @@
 		data["backup_capacitor"] = carded_ai.backup_capacitor()
 		data["radio"] = !carded_ai.ai_radio.disabledAi
 		data["wireless"] = !carded_ai.control_disabled
-		data["operational"] = carded_ai.stat != DEAD
+		data["operational"] = !carded_ai.is_ic_dead()
 		data["flushing"] = flush
 
 		var/laws[0]
@@ -60,7 +60,7 @@
 			admin_attack_log(user, carded_ai, "Wiped using \the [src.name]", "Was wiped with \the [src.name]", "used \the [src.name] to wipe")
 			flush = 1
 			to_chat(carded_ai, "Your core files are being wiped!")
-			while (carded_ai && carded_ai.stat != DEAD)
+			while (carded_ai && !carded_ai.is_ooc_dead())
 				carded_ai.adjustOxyLoss(2)
 				carded_ai.updatehealth()
 				sleep(10)

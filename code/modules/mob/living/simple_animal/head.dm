@@ -35,7 +35,7 @@
 	stop_automated_movement = 1
 
 /mob/living/simple_animal/head/Life()
-	if(stat == DEAD)
+	if(is_ooc_dead())
 		if(health > 0)
 			icon_state = icon_living
 			set_stat(CONSCIOUS)

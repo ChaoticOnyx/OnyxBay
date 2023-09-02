@@ -19,7 +19,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/chem_recharge_rate = 0.5
 	var/chem_storage = 100
 
-	var/geneticdamage = 0
+	var/genome_damage = 0 // use (set|apply)_genome_damage
 	var/geneticpoints = 10
 
 	var/list/purchasedpowers = list() // Purchased instances of /datum/power/changeling; not to be confused with available_powers.
@@ -55,12 +55,12 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		set_next_think(world.time + 1 SECOND)
 		reset_my_mob(null)
 		return
-	if(!my_mob || my_mob.stat == DEAD || my_mob.InStasis())
+	if(!my_mob || my_mob.is_ooc_dead() || my_mob.InStasis())
 		set_next_think(world.time + 1 SECOND)
 		return
 
 	chem_charges = min(max(0, chem_charges + chem_recharge_rate), chem_storage)
-	geneticdamage = max(0, geneticdamage - 1)
+	apply_genome_damage(-1)
 
 	set_next_think(world.time + 1 SECOND)
 
@@ -80,6 +80,39 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		to_chat(my_mob, SPAN("changeling", "That's it. We hunt no more."))
 	true_dead = TRUE
 
+
+/datum/changeling/proc/apply_genome_damage(damage)
+	set_genome_damage(genome_damage + damage)
+
+/datum/changeling/proc/set_genome_damage(new_damage)
+	new_damage = clamp(new_damage, 0, 200)
+
+	var/old_damage = genome_damage
+
+	genome_damage = new_damage
+
+	var/mob/living/carbon/human/H = my_mob
+	if(new_damage == 0 && old_damage > 0 && istype(H)) // hide the biostructure if no gendamage
+		biostructure_hide(H)
+
+	if(new_damage > 0 && old_damage == 0 && istype(H)) // show the biostructure if we gain some gendamage
+		biostructure_show(H)
+
+/datum/changeling/proc/biostructure_hide(mob/living/carbon/human/H, silent=FALSE)
+	if(!silent)
+		to_chat(my_mob, SPAN("changeling", "We feel our genomes have assembled. Our biostructure cannot be easily seen now."))
+
+	var/obj/item/organ/internal/biostructure/biostructure = H.internal_organs_by_name[BP_CHANG]
+	if(biostructure)
+		biostructure.hidden = TRUE
+
+/datum/changeling/proc/biostructure_show(mob/living/carbon/human/H, silent=FALSE)
+	if(!silent)
+		to_chat(my_mob, SPAN("changeling", "You feel your genomes start to disassemble. Your special biostructure can now be easily spotted."))
+
+	var/obj/item/organ/internal/biostructure/biostructure = H.internal_organs_by_name[BP_CHANG]
+	if(biostructure)
+		biostructure.hidden = FALSE
 
 // Transfers us and our biostructure to another mob. Called by /datum/mind/transfer_to() and hopefully we will never need to call it manually.
 /datum/changeling/proc/transfer_to(mob/living/L)
@@ -104,7 +137,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
-		if(H.stat == DEAD) // Resurrects dead bodies, yet doesn't heal damage
+		if(H.is_ooc_dead()) // Resurrects dead bodies, yet doesn't heal damage
 			H.setBrainLoss(0)
 			H.SetParalysis(0)
 			H.SetStunned(0)

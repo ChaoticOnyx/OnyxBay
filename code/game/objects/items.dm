@@ -50,7 +50,7 @@
 	//This flag is used to determine when items in someone's inventory cover others. IE helmets making it so you can't see glasses, etc.
 	//It should be used purely for appearance. For gameplay effects caused by items covering body parts, use body_parts_covered.
 	var/flags_inv = 0
-	var/body_parts_covered = 0 //see code/__defines/items_clothing.dm for appropriate bit flags
+	var/body_parts_covered = NO_BODYPARTS //see code/__defines/items_clothing.dm for appropriate bit flags
 
 	var/item_flags = 0 //Miscellaneous flags pertaining to equippable objects.
 
@@ -625,6 +625,9 @@ var/list/global/slot_flags_enumeration = list(
 	return loc
 
 /obj/item/proc/eyestab(mob/living/carbon/M, mob/living/carbon/user)
+	if(is_pacifist(user))
+		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		return
 
 	var/mob/living/carbon/human/H = M
 	if(istype(H))
@@ -782,7 +785,8 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		return
 
 	if(user.hud_used.hud_shown)
-		user.toggle_zoom_hud()	// If the user has already limited their HUD this avoids them having a HUD when they zoom in
+		user.hud_used.show_hud(HUD_STYLE_REDUCED)
+
 	user.client.view = viewsize
 	zoom = 1
 
@@ -838,7 +842,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 	user.client.view = world.view
 	if(!user.hud_used.hud_shown)
-		user.toggle_zoom_hud()
+		user.hud_used.show_hud(HUD_STYLE_STANDART)
 
 	user.shift_view(0, 0)
 	user.visible_message("[zoomdevicename ? "\The [user] looks up from [src]" : "\The [user] lowers [src]"].")
