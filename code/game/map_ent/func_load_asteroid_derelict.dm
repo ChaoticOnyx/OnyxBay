@@ -17,7 +17,7 @@
 	if(force_map)
 		var/datum/map_template/T = SSmapping.loadAsteroidDerelict(force_map)
 		if(!T)
-			log_to_dd("[name] placed with invalid force_map path")
+			CRASH("[name] placed with invalid force_map path")
 			return
 		ev_map_path = force_map
 		return
@@ -31,12 +31,10 @@
 		var/datum/map_template/T = available_templates[template_name]
 		if(T.width == width && T.height == height)
 			valid_map_templates += T
-	if(!valid_map_templates.len)
+	if(!valid_map_templates.length())
 		return
 	var/datum/map_template/picked_map_template = pick(valid_map_templates)
 	var/derelict_name = picked_map_template.name
 	ev_map_path = picked_map_template.mappaths[1]
 	SSmapping.asteroid_derelict_templates -= derelict_name
 	log_to_dd("New derelict is placed: [derelict_name]")
-
-// TODO: Make some multi-z derelicts
