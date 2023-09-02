@@ -90,7 +90,7 @@ To add a crossbreed:
 /obj/item/metroidcross/_examine_text(mob/user)
 	. = ..()
 	if(effect_desc)
-		. += SPAN_NOTICE("[effect_desc]")
+		. += SPAN_NOTICE("\n[effect_desc]")
 
 /obj/item/metroidcross/Initialize(mapload)
 	. = ..()
