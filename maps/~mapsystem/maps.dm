@@ -145,13 +145,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		log_to_dd("Loading map '[L.path]' at [level]")
 		maploader.load_map(L.path, 1, 1, level, FALSE, FALSE, TRUE, FALSE)
 
-//For randomize new derelict z-levels
-/*
-	proc()
-		pick(some muli-z derelict name's list)
-	result(derelict name)
-*/
-
 	world.update_status()
 	var/list/antags = GLOB.all_antag_types_
 	for(var/id in antags)
