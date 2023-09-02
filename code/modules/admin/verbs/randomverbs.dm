@@ -847,10 +847,10 @@ Ccomp's first proc.
 	if(!check_rights(R_ADMIN | R_SERVER | R_PERMISSIONS))
 		return
 
-	var/admin_input = input(usr, "Enter new station date. \[YEAR]-\[MONTH]-\[DAY] (Year should be from 4 numbers, or like 0906, Month 2, Day too 2)", "Station Date")
+	var/admin_input = tgui_input_text(usr, "Enter new station date. \[YEAR]-\[MONTH]-\[DAY] (Year should be from 4 numbers, or like 0906, Month 2, Day too 2)", "Station Date", station_date)
 	if(!length(admin_input))
 		return
-		
+
 	var/regex/sanitize_regex = regex("\[0-9]{4}-\[0-9]{2}-\[0-9]{2}")
 	if(sanitize_regex.Find(admin_input))
 		station_date = admin_input
