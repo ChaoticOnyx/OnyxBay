@@ -1,9 +1,5 @@
-/*
-Reproductive extracts:
-	When fed three monkey cubes, produces between
-	1 and 4 normal metroid extracts of the same colour.
-*/
-
+#define REPRODUCTIVE_EXTRACT_VOLUME 3
+#define DIGESTION_COOLDOWN 3 SECONDS
 
 /obj/item/metroidcross/reproductive
 	name = "reproductive extract"
@@ -11,42 +7,80 @@ Reproductive extracts:
 	icon_state = "reproductive"
 	effect = "reproductive"
 	effect_desc = "When fed monkey cubes it produces more extracts. Bio bag compatible as well."
+
 	var/extract_type = /obj/item/metroid_extract
-	var/cooldown = 5 SECONDS
-	var/feedAmount = 3
-	var/last_produce = 0
+
+	var/meals_left = REPRODUCTIVE_EXTRACT_VOLUME
+
+	var/last_meal = 0
 
 /obj/item/metroidcross/reproductive/_examine_text(mob/user)
 	. = ..()
-	. += SPAN_DANGER("It appears to need eat [feedAmount] monkey cubes more")
-
-/obj/item/metroidcross/reproductive/Initialize(mapload)
-	. = ..()
+	. += SPAN("notice", "\nIt looks like it has space for [meals_left] more cubes.")
 
 /obj/item/metroidcross/reproductive/attackby(obj/item/O, mob/user)
-	if((last_produce + cooldown) > world.time)
-		to_chat(user, SPAN_WARNING("[src] is still digesting!"))
+	if((last_meal + DIGESTION_COOLDOWN) > world.time)
+		show_splash_text(user, "still digesting!")
 		return
 
 	if(istype(O, /obj/item/reagent_containers/food/monkeycube))
-		if(feedAmount>0)
-			to_chat(user, SPAN_NOTICE("You feed 1 Monkey Cube to [src], and it pulses gently."))
-			feedAmount-=1
-			playsound(src, 'sound/items/eatfood.ogg', 20, TRUE)
-			qdel(O)
-			last_produce = world.time + cooldown
-		else
-			to_chat(user, SPAN_NOTICE("The [src] rejects the Monkey Cube!")) //in case it fails to insert for whatever reason you get feedback
-	else
-		to_chat(user, SPAN_NOTICE("The [src] rejects the [O]!"))
+		if(!_feed_extract(O))
+			return
+		show_splash_text(user, "cube was successfuly fed.")
 
-	if(feedAmount<=0)
-		feedAmount=3
-		visible_message(SPAN_NOTICE("The [src] starts to fizzle!"))
-		spawn(cooldown)
-		for(var/i in 1 to rand(1,4))
-			new extract_type(get_turf(src))
+	if(istype(O, /obj/item/storage/xenobag))
+		if(!_feed_extracts_from_bag(O, user))
+			return
+		show_splash_text(user, "extract was successfuly fed from bag.")
 
+	_reproduce()
+
+/obj/item/metroidcross/reproductive/proc/_feed_extract(obj/item/reagent_containers/food/monkeycube/cube)
+	if(!istype(cube))
+		return FALSE
+
+	if(meals_left <= 0)
+		return FALSE
+
+	meals_left -= 1
+
+	qdel(cube)
+	playsound(src, 'sound/items/eatfood.ogg', 20, TRUE)
+
+	return TRUE
+
+/obj/item/metroidcross/reproductive/proc/_feed_extracts_from_bag(obj/item/storage/xenobag/bag)
+	if(!istype(bag))
+		return FALSE
+
+	if(!length(bag.contents))
+		return FALSE
+
+	var/meals_left_temp = meals_left
+	for(var/obj/item/reagent_containers/food/monkeycube/M in bag.contents)
+		if(meals_left <= 0)
+			break
+
+		bag.remove_from_storage(M, src)
+		_feed_extract(M)
+	if(meals_left_temp == meals_left)
+		return FALSE
+
+	return TRUE
+
+/obj/item/metroidcross/reproductive/proc/_reproduce()
+	if(meals_left > 0)
+		return
+
+	show_splash_text_to_viewers("starts to swell!")
+	meals_left = REPRODUCTIVE_EXTRACT_VOLUME
+	last_meal = world.time
+
+	for(var/i in 1 to rand(1,4))
+		new extract_type(get_turf(src))
+
+#undef REPRODUCTIVE_EXTRACT_VOLUME
+#undef DIGESTION_COOLDOWN
 
 /obj/item/metroidcross/reproductive/grey
 	extract_type = /obj/item/metroid_extract/grey
