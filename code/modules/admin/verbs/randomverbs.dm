@@ -848,7 +848,9 @@ Ccomp's first proc.
 		return
 
 	var/admin_input = input(usr, "Enter new station date. \[YEAR]-\[MONTH]-\[DAY] (Year should be from 4 numbers, or like 0906, Month 2, Day too 2)", "Station Date")
-	if(length(admin_input))
-		var/regex/sanitize_regex = regex("\[0-9]{4}-\[0-9]{2}-\[0-9]{2}")
-		if(sanitize_regex.Find(admin_input))
-			station_date = admin_input
+	if(!length(admin_input))
+		return
+		
+	var/regex/sanitize_regex = regex("\[0-9]{4}-\[0-9]{2}-\[0-9]{2}")
+	if(sanitize_regex.Find(admin_input))
+		station_date = admin_input
