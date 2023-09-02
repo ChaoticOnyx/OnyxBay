@@ -32,6 +32,7 @@
 			valid_map_templates += T
 	if(!length(valid_map_templates))
 		return
+		
 	var/datum/map_template/picked_map_template = pick(valid_map_templates)
 	var/derelict_name = picked_map_template.name
 	ev_map_path = picked_map_template.mappaths[1]

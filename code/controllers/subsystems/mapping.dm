@@ -3,7 +3,6 @@ SUBSYSTEM_DEF(mapping)
 	init_order = SS_INIT_MAPPING
 	flags = SS_NO_FIRE
 
-
 	var/list/map_templates = list()
 	var/list/random_room_templates = list()
 	var/list/asteroid_derelict_templates = list()
