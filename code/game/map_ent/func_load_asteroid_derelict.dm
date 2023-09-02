@@ -18,7 +18,6 @@
 		var/datum/map_template/T = SSmapping.loadAsteroidDerelict(force_map)
 		if(!T)
 			CRASH("[name] placed with invalid force_map path")
-			return
 		ev_map_path = force_map
 		return
 
@@ -31,7 +30,7 @@
 		var/datum/map_template/T = available_templates[template_name]
 		if(T.width == width && T.height == height)
 			valid_map_templates += T
-	if(!valid_map_templates.length())
+	if(!valid_map_templates.len)
 		return
 	var/datum/map_template/picked_map_template = pick(valid_map_templates)
 	var/derelict_name = picked_map_template.name

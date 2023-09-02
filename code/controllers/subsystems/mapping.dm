@@ -35,7 +35,7 @@ SUBSYSTEM_DEF(mapping)
 /datum/controller/subsystem/mapping/proc/preloadAsteroidDerelicts(path = "maps/derelicts/[asteroid_folder_name]/")
 	var/list/derelict_folder_list = flist(path)
 	for(var/derelict_folder in derelict_folder_list)
-		if(copytext("[derelict_folder]", -1) != "/") // skip if not a folder
+		if(copytext("[derelict_folder]", -1) != "dmm" &&! "/") // skip if not a folder or map
 			continue
 		var/list/map_variants = flist("[path][derelict_folder]")
 		var/picked_map_variant = pick(map_variants)
