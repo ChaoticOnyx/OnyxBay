@@ -30,7 +30,7 @@
 		var/datum/map_template/T = available_templates[template_name]
 		if(T.width == width && T.height == height)
 			valid_map_templates += T
-	if(!valid_map_templates.len)
+	if(!length(valid_map_templates))
 		return
 	var/datum/map_template/picked_map_template = pick(valid_map_templates)
 	var/derelict_name = picked_map_template.name

@@ -7,7 +7,6 @@ SUBSYSTEM_DEF(mapping)
 	var/list/map_templates = list()
 	var/list/random_room_templates = list()
 	var/list/asteroid_derelict_templates = list()
-	var/asteroid_folder_name = "asteroid"
 
 /datum/controller/subsystem/mapping/Initialize(timeofday)
 	preloadTemplates()
@@ -32,7 +31,7 @@ SUBSYSTEM_DEF(mapping)
 		var/datum/map_template/random_room/T = new map
 		random_room_templates[T.room_id] = T
 
-/datum/controller/subsystem/mapping/proc/preloadAsteroidDerelicts(path = "maps/derelicts/[asteroid_folder_name]/")
+/datum/controller/subsystem/mapping/proc/preloadAsteroidDerelicts(path = "maps/derelicts/asteroid/")
 	var/list/derelict_folder_list = flist(path)
 	for(var/derelict_folder in derelict_folder_list)
 		if(copytext("[derelict_folder]", -1) != "dmm" &&! "/") // skip if not a folder or map
