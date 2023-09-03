@@ -817,7 +817,7 @@
 // Only occasionally give examiners a warning.
 /datum/modifier/status_effect/stabilized/grey/_examine_text()
 	if(prob(50))
-		return SPAN_WARNING("[holder] look[holder] a bit green and gooey...")
+		return SPAN_WARNING("[holder] look[holder] a bit grey and gooey...")
 	return null
 
 /datum/modifier/status_effect/stabilized/grey/on_expire()
