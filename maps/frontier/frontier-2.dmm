@@ -1166,7 +1166,7 @@
 "awA" = (/obj/effect/floor_decal/industrial/outline/yellow,/turf/unsimulated/floor{icon_state = "steel"},/area/centcom/living)
 "awB" = (/obj/effect/step_trigger/teleporter/random/admin,/obj/effect/step_trigger/teleporter/random/admin,/turf/space/transit/south,/area/space)
 "awC" = (/obj/structure/closet/medical_wall{pixel_y = 32},/obj/item/reagent_containers/vessel/bottle/chemical/antitoxin{pixel_x = -4; pixel_y = 8},/obj/item/reagent_containers/vessel/bottle/chemical/inaprovaline{pixel_x = 4; pixel_y = 7},/obj/item/reagent_containers/syringe,/obj/item/reagent_containers/syringe/antiviral/packaged,/obj/item/reagent_containers/syringe/antiviral/packaged,/turf/simulated/floor/shuttle/white,/area/rescue_base/start)
-"awD" = (/turf/simulated/shuttle/wall/corner/smoothwhite/nw{dir = 4},/area/shuttle/escape/centcom)
+"awD" = (/turf/simulated/shuttle/wall/corner/smoothwhite/nw,/area/shuttle/escape/centcom)
 "awE" = (/obj/item/stool,/turf/simulated/floor/shuttle/black,/area/rescue_base/start)
 "awF" = (/obj/structure/toilet{dir = 8},/turf/simulated/floor/shuttle/black,/area/rescue_base/start)
 "awG" = (/obj/structure/table/rack,/turf/simulated/floor/shuttle/darkred,/area/rescue_base/start)
