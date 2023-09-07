@@ -838,3 +838,19 @@ Ccomp's first proc.
 	to_chat(usr, "<i>Remember: you can always disable the randomness by using the verb again, assuming the round hasn't started yet</i>.")
 	GLOB.random_players = 1
 	feedback_add_details("admin_verb","MER") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+
+/client/proc/cmd_set_station_date()
+	set category = "Server"
+	set name = "Set Station Date"
+
+	if(!check_rights(R_ADMIN | R_SERVER | R_PERMISSIONS))
+		return
+
+	var/admin_input = tgui_input_text(usr, "Enter new station date. \[YEAR]-\[MONTH]-\[DAY] (Year should be from 4 numbers, or like 0906, Month 2, Day too 2)", "Station Date", station_date)
+	if(!length(admin_input))
+		return
+
+	var/regex/sanitize_regex = regex("\[0-9]{4}-\[0-9]{2}-\[0-9]{2}")
+	if(sanitize_regex.Find(admin_input))
+		station_date = admin_input

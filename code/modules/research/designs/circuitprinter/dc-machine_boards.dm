@@ -244,3 +244,17 @@
 	req_tech = list(TECH_DATA = 3, TECH_BLUESPACE = 2)
 	build_path = /obj/item/circuitboard/teleporter_gate
 	sort_string = "WAAAS"
+
+/datum/design/circuit/gibber
+	name = "Gibber"
+	id = "gibber"
+	req_tech = list(TECH_ENGINEERING = 3, TECH_POWER = 2)
+	build_path = /obj/item/circuitboard/gibber
+	sort_string = "WAAAT"
+
+/datum/design/circuit/ind_gibber
+	name = "Industrial Gibber"
+	id = "ind_gibber"
+	req_tech = list(TECH_ENGINEERING = 4, TECH_POWER = 3, TECH_BLUESPACE = 3)
+	build_path = /obj/item/circuitboard/industrial_gibber
+	sort_string = "WAAAU"

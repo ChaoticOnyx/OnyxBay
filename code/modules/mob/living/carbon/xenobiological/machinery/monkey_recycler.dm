@@ -14,8 +14,8 @@ GLOBAL_LIST_EMPTY(monkey_recyclers)
 /obj/machinery/monkey_recycler
 	name = "monkey recycler"
 	desc = "A machine used for recycling dead monkeys into monkey cubes."
-	icon = 'icons/obj/kitchen.dmi'
-	icon_state = "grinder"
+	icon = 'icons/obj/machines/gibber.dmi'
+	icon_state = "gibber"
 	layer = BELOW_OBJ_LAYER
 	density = TRUE
 	anchored = TRUE
@@ -55,7 +55,8 @@ GLOBAL_LIST_EMPTY(monkey_recyclers)
 		. += SPAN_NOTICE("The status display reads: Producing <b>[cube_production]</b> cubes for every monkey inserted.")
 
 /obj/machinery/monkey_recycler/update_icon()
-	icon_state = (panel_open ? "grinder_open" : "grinder")
+	overlays.Cut()
+	if(panel_open) overlays += "gibber-panel"
 
 /obj/machinery/monkey_recycler/attackby(obj/item/O, mob/user, params)
 	if(default_deconstruction_screwdriver(user, O, TRUE))

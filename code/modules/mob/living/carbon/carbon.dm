@@ -87,7 +87,7 @@
 				stomach_contents.Remove(A)
 			gib()
 
-/mob/living/carbon/gib()
+/mob/living/carbon/gib(anim, do_gibs)
 	for(var/mob/M in src)
 		if(M in src.stomach_contents)
 			src.stomach_contents.Remove(M)
@@ -97,7 +97,7 @@
 				N.show_message(text("<span class='danger'>[M] bursts out of [src]!</span>"), 2)
 	..()
 
-/mob/living/carbon/attack_hand(mob/M as mob)
+/mob/living/carbon/attack_hand(mob/M)
 	if(!istype(M, /mob/living/carbon)) return
 	if (ishuman(M))
 		var/mob/living/carbon/human/H = M
@@ -140,7 +140,7 @@
 			Stun(2)
 		if(21 to 25)
 			Weaken(2)
-		if(26 to 25)
+		if(26 to 30)
 			Weaken(5)
 		if(31 to INFINITY)
 			Weaken(10) //This should work for now, more is really silly and makes you lay there forever

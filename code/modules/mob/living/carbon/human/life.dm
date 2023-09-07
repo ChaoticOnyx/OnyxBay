@@ -1183,9 +1183,9 @@
 		else
 			if(AE.damage >= AE.max_damage)
 				holder.icon_state = "hudblank"
-			else if(AE.growth < AE.growth_max*0.33)
+			else if(AE.growth < ALIEN_EMBRYO_GROWTH_CAP*0.33)
 				holder.icon_state = "hudxeno1"
-			else if(AE.growth < AE.growth_max*0.67)
+			else if(AE.growth < ALIEN_EMBRYO_GROWTH_CAP*0.67)
 				holder.icon_state = "hudxeno2"
 			else
 				holder.icon_state = "hudxeno3"

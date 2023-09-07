@@ -1241,7 +1241,7 @@
 		M.visible_message(\
 			SPAN("warning", "A screeching creature bursts out of [M]!"),\
 			SPAN("warning", "You feel like your body is being torn apart from the inside!"))
-		M.gib(do_gibs = TRUE)
+		M.gib()
 	Expand()
 
 /obj/item/reagent_containers/food/monkeycube/on_reagent_change()
