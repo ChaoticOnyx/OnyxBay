@@ -438,17 +438,17 @@
 	return ..()
 
 //Stabilized effects start below.
-/datum/modifier/status_effect/stabilized/grey
-	name = "stabilizedgrey"
-	colour = "grey"
+/datum/modifier/status_effect/stabilized/green
+	name = "stabilizedgreen"
+	colour = "green"
 
-/datum/modifier/status_effect/stabilized/grey/on_applied()
+/datum/modifier/status_effect/stabilized/green/on_applied()
 	set_next_think(world.time+1)
 
-/datum/modifier/status_effect/stabilized/grey/on_expire()
+/datum/modifier/status_effect/stabilized/green/on_expire()
 	set_next_think(0)
 
-/datum/modifier/status_effect/stabilized/grey/think()
+/datum/modifier/status_effect/stabilized/green/think()
 	for(var/mob/living/carbon/metroid/S in range(1, get_turf(holder)))
 		if(!(holder in S.Friends))
 			to_chat(holder, SPAN_NOTICE("[linked_extract] pulses gently as it communicates with [S]."))
@@ -793,13 +793,13 @@
 	set_next_think(0)
 	return ..()
 
-/datum/modifier/status_effect/stabilized/green
-	name = "stabilizedgreen"
-	colour = "green"
+/datum/modifier/status_effect/stabilized/grey
+	name = "stabilizedgrey"
+	colour = "grey"
 	var/datum/dna/originalDNA
 	var/originalname
 
-/datum/modifier/status_effect/stabilized/green/on_applied()
+/datum/modifier/status_effect/stabilized/grey/on_applied()
 	to_chat(holder, SPAN_WARNING("You feel different..."))
 	if(ishuman(holder))
 		var/mob/living/carbon/human/H = holder
@@ -815,12 +815,12 @@
 	return ..()
 
 // Only occasionally give examiners a warning.
-/datum/modifier/status_effect/stabilized/green/_examine_text()
+/datum/modifier/status_effect/stabilized/grey/_examine_text()
 	if(prob(50))
-		return SPAN_WARNING("[holder] look[holder] a bit green and gooey...")
+		return SPAN_WARNING("[holder] look[holder] a bit grey and gooey...")
 	return null
 
-/datum/modifier/status_effect/stabilized/green/on_expire()
+/datum/modifier/status_effect/stabilized/grey/on_expire()
 	to_chat(holder, SPAN_NOTICE("You feel more like yourself."))
 	if(ishuman(holder))
 		var/mob/living/carbon/human/H = holder
@@ -1034,3 +1034,15 @@
 	name = "adamantine"
 	incoming_brute_damage_percent = 0.75
 	duration = 1200
+
+/datum/modifier/status_effect/burningpurple
+	name = "burningpurple"
+	stacks = MODIFIER_STACK_EXTEND
+
+	duration = 1 MINUTE
+
+/datum/modifier/status_effect/burningpurple/on_applied()
+	ADD_TRAIT(holder, /datum/modifier/movespeed/lightpink)
+
+/datum/modifier/status_effect/burningpurple/on_expire()
+	REMOVE_TRAIT(holder, /datum/modifier/movespeed/lightpink)
