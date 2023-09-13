@@ -87,8 +87,8 @@ Burning extracts:
 	new /obj/item/metroidcrossbeaker/autoinjector/metroidstimulant(get_turf(user))
 	if(isliving(user))
 		var/mob/living/L = user
-		L.add_modifier(/datum/modifier/movespeed/lightpink)
-	..()
+		ADD_TRAIT(L, /datum/modifier/status_effect/burningpurple)
+	return ..()
 
 /obj/item/metroidcross/burning/blue
 	colour = "blue"
