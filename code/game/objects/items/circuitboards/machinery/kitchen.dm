@@ -6,8 +6,8 @@
 	name = T_BOARD("Gibber")
 	board_type = "machine"
 	req_components = list(
-		/obj/item/stock_parts/micro_laser,
-		/obj/item/stock_parts/matter_bin
+		/obj/item/stock_parts/micro_laser = 1,
+		/obj/item/stock_parts/matter_bin = 1
 	)
 	build_path = /obj/machinery/gibber
 	origin_tech = list(TECH_ENGINEERING = 3, TECH_POWER = 2)
@@ -16,9 +16,9 @@
 	name = T_BOARD("Industrial Gibber")
 	board_type = "machine"
 	req_components = list(
-		/obj/item/stock_parts/micro_laser,
-		/obj/item/stock_parts/manipulator,
-		/obj/item/stock_parts/matter_bin
+		/obj/item/stock_parts/micro_laser = 1,
+		/obj/item/stock_parts/manipulator = 1,
+		/obj/item/stock_parts/matter_bin = 1
 	)
 	build_path = /obj/machinery/gibber/industrial
 	origin_tech = list(TECH_ENGINEERING = 4, TECH_POWER = 3, TECH_BLUESPACE = 3)

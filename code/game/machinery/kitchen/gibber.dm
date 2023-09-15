@@ -83,9 +83,25 @@
 		to_chat(user, SPAN("danger", "\The [src] is locked and running, wait for it to finish!"))
 		return
 
+	if(!length(mobs_to_process))
+		to_chat(user, SPAN("danger", "\The [src] has nothing grindable inside!"))
+		return
+
 	process_mobs(user)
 
 /obj/machinery/gibber/attackby(obj/item/W, mob/user)
+	if(operating)
+		return ..()
+
+	if(default_deconstruction_screwdriver(user, W))
+		return
+
+	if(default_deconstruction_crowbar(user, W))
+		return
+
+	if(default_part_replacement(user, W))
+		return
+
 	if(istype(W, /obj/item/grab))
 		var/obj/item/grab/G = W
 		if(!G.force_danger())
@@ -102,18 +118,6 @@
 
 		user.visible_message(SPAN("danger", "\The [user] feeds \the [W] into \the [src], obliterating it."))
 		qdel(W)
-		return
-
-	if(operating)
-		return ..()
-
-	if(default_deconstruction_screwdriver(user, W))
-		return
-
-	if(default_deconstruction_crowbar(user, W))
-		return
-
-	if(default_part_replacement(user, W))
 		return
 
 	return ..()
@@ -223,7 +227,7 @@
 	for(var/mob/pig in mobs_to_process)
 		create_mob_drop(pig)
 
-	timer = addtimer(CALLBACK(src, .proc/finish_processing, user), length(mobs_to_process) * gib_time, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE)
+	timer = addtimer(CALLBACK(src, .proc/finish_processing, user), length(mobs_to_process) * gib_time, TIMER_STOPPABLE)
 
 /obj/machinery/gibber/proc/create_mob_drop(mob/victim)
 	if(istype(victim, /mob/living/simple_animal/hostile/faithless))
@@ -323,7 +327,7 @@
 
 		O.throw_at(get_edge_target_turf(src, gib_throw_dir), rand(0, 3), 0.5)
 
-#define GIBBER_THINK_DELTA (10 SECOND)
+#define GIBBER_THINK_DELTA (15 SECONDS)
 
 /obj/machinery/gibber/industrial
 	name = "Industrial Gibber"
@@ -367,29 +371,18 @@
 		scoop_modifier += MM.rating
 	scoops_per_attempt = scoop_modifier
 
-/obj/machinery/gibber/industrial/power_change()
-	. = ..()
-	if(stat & NOPOWER)
-		return
-
-	if(operating)
-		return
-
-	set_next_think_ctx("pickup", world.time + GIBBER_THINK_DELTA)
-
 /obj/machinery/gibber/industrial/finish_processing(mob/user, slipshod = FALSE, gore = FALSE)
 	. = ..(user, slipshod, gore)
 	flick("ind_gibber-out", src)
 	set_next_think_ctx("pickup", world.time + GIBBER_THINK_DELTA)
 
 /obj/machinery/gibber/industrial/proc/perform_pickup()
-	if(operating || stat & (NOPOWER|BROKEN))
+	if(operating)
 		return
 
 	var/scoops_left = scoops_per_attempt
 	for(var/mob/living/possible_prey in range(1, src))
 		if(scoops_left <= 0)
-			process_mobs()
 			break
 
 		if(!possible_prey?.stat || !do_move_inside_checks(null, possible_prey, FALSE))
@@ -398,8 +391,11 @@
 		move_inside(possible_prey)
 		scoops_left--
 
-	flick("ind_gibber-in", src)
-	if(scoops_left > 0)
-		set_next_think_ctx("pickup", world.time + GIBBER_THINK_DELTA)
+	if(scoops_left <= 0)
+		flick("ind_gibber-in", src)
+		process_mobs()
+		return
+
+	set_next_think_ctx("pickup", world.time + GIBBER_THINK_DELTA)
 
 #undef GIBBER_THINK_DELTA
