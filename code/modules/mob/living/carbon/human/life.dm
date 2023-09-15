@@ -721,7 +721,7 @@
 				var/datum/body_build/new_body_build = species.get_body_build(gender, BB)
 				if(new_body_build)
 					change_body_build(new_body_build)
-					to_chat(src, SPAN("warning", "You've [nutrition_problem == OVEREATING ? "gained" | "lost"] some weight!"))
+					to_chat(src, SPAN("warning", "You've [nutrition_problem == OVEREATING ? "gained" : "lost"] some weight!"))
 			nutrition_problem = FALSE
 
 		if(stasis_value > 1 && drowsyness < stasis_value * 4)
