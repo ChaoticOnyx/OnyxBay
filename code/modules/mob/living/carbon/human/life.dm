@@ -715,24 +715,15 @@
 		else
 			nutrition_problem = FALSE
 
-		if(nutrition_problem && (world.time > nutrition_problem_start + 3 MINUTES))
-			var/BB = null
-			switch(nutrition_problem)
-				if(STARVATION)
-					BB = src.body_build.previous_body_build
-				if(OVEREATING)
-					BB = src.body_build.next_body_build
+		if(nutrition_problem && (world.time > nutrition_problem_start + config.health.bodybuild_change_time))
+			var/BB = nutrition_problem == OVEREATING ? body_build.next_body_build : body_build.previous_body_build
 			if(BB)
-				var/datum/body_build/new_body_build = src.species.get_body_build(src.gender, BB)
+				var/datum/body_build/new_body_build = species.get_body_build(gender, BB)
 				if(new_body_build)
-					src.change_body_build(new_body_build)
-					switch(nutrition_problem)
-						if(STARVATION)
-							to_chat(src, SPAN("warning", "You've lost some weight!"))
-						if(OVEREATING)
-							to_chat(src, SPAN("warning", "You've gain some weight!"))
+					change_body_build(new_body_build)
+					to_chat(src, SPAN("warning", "You've [nutrition_problem == OVEREATING ? "gained" | "lost"] some weight!"))
 			nutrition_problem = FALSE
-		
+
 		if(stasis_value > 1 && drowsyness < stasis_value * 4)
 			drowsyness += min(stasis_value, 3)
 			if(!stat && prob(1))
