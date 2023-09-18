@@ -422,7 +422,7 @@ organ_regeneration_multiplier = 0.25
 organ_damage_spillover_multiplier = 0.5
 
 ## Amount of time (in hundredths of seconds) a spessman must starve / overat before changing bodybuild (set to -1 to disable).
-bodybuild_change_time = 2400
+bodybuild_change_time = -1
 
 [revival]
 ## If cortical stacks (aka neurolace) are to be used.
