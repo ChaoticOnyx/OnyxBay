@@ -9,16 +9,18 @@
 	return ..()
 
 /datum/vote/map/setup_vote()
-	for(var/name in GLOB.all_maps)
-		choices += name
+	for(name in GLOB.all_maps)
+		var/datum/map/M = GLOB.all_maps[name]
+		if(M.can_be_voted)
+			choices += M.name
 	..()
 
 /datum/vote/map/report_result()
 	if(..())
 		return 1
 	var/datum/map/M = GLOB.all_maps[result[1]]
-	
-	if (M)	
+
+	if (M)
 		to_world("<span class='notice'>Map has been changed to: <b>[M.name]</b></span>")
 		fdel("data/use_map")
 		text2file("[M.type]", "data/use_map")
