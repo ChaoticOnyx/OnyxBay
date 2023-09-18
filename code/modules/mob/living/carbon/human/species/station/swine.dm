@@ -33,7 +33,7 @@
 	organs such as hearts and lungs - creating a more humanlike being than anticipated."
 
 	body_builds = list(
-		new /datum/body_build/fat/trottine
+		new /datum/body_build/fat
 	)
 
 	cold_level_1 = 240 //Default 260 - Lower is better
