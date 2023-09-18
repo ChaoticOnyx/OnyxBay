@@ -186,10 +186,6 @@ var/global/datum/body_build/default_body_build = new
 	next_body_build = null
 	previous_body_build = "Default"
 
-/datum/body_build/fat/trottine
-	next_body_build = null
-	previous_body_build = null
-
 /datum/body_build/slim/alt/tajaran //*sigh. I regret of doing this.
 	name                 = "Slim Tajaran"
 
