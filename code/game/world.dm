@@ -373,13 +373,17 @@ var/world_topic_spam_protect_time = world.timeofday
 			world_topic_spam_protect_time = world.time
 			return "Bad Key"
 		var/username = input["username"]
-		var/message = "<font color='#39034f'>" + strip_html_properly(input["message"]) + "</font>"
-		if(!username)
-			return "missing username"
+		var/message = sanitize(input["message"])
+
 		if(!message)
 			return "missing message"
+		if(!username)
+			return "missing username"
 		if(!config.misc.ooc_allowed)
 			return "globally muted"
+
+		GLOB.indigo_bot.chat_webhook(config.indigo_bot.ooc_webhook, "**[username]:** [message]")
+
 		var/sent_message = "[create_text_tag("dooc", "Discord")] <EM>[username]:</EM> <span class='message linkify'>[message]</span>"
 		for(var/client/target in GLOB.clients)
 			if(!target)
