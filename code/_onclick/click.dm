@@ -256,14 +256,8 @@
 		if(pointed(A))
 			return
 
-/atom/proc/MiddleClick(mob/M as mob)
+/atom/proc/MiddleClick(mob/M)
 	return
-
-// In case of use break glass
-/*
-/atom/proc/MiddleClick(mob/M as mob)
-	return
-*/
 
 /*
 	Shift click
