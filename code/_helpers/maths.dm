@@ -12,6 +12,7 @@
 
 #define MODULUS_FLOAT(X, Y) ( (X) - (Y) * round((X) / (Y)) )
 
+#define SIMPLIFY_DEGREES(degrees) (MODULUS_FLOAT((degrees), 360))
 // min is inclusive, max is exclusive
 /proc/Wrap(val, min, max)
 	var/d = max - min

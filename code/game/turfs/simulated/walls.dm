@@ -175,12 +175,6 @@
 				reflectchance = min(max(reflectchance, 0), 100)
 				var/damagediff = round(proj_damage * reflectchance / 100)
 				proj_damage /= reinf_material.burn_armor
-				if(reflectchance > 0)
-					visible_message("\red <B>\The [Proj] gets reflected by shiny surface of reinforced wall!</B>")
-					projectile_reflection(Proj)
-					Proj.damage = damagediff
-					take_damage(min(proj_damage - damagediff, 100))
-					return PROJECTILE_CONTINUE // complete projectile permutation
 				// Walls with positive reflection values deal with laser better than walls with negative.
 				burn(1500)
 			else
@@ -198,12 +192,6 @@
 					reflectchance = round(projectile_reflection(Proj, 1) * reflectchance)
 				reflectchance = min(max(reflectchance, 0), 100)
 				var/damagediff = round(proj_damage * reflectchance / 100)
-				if(reflectchance > 0)
-					visible_message("\red <B>\The [Proj] gets reflected by shiny surface of wall!</B>")
-					projectile_reflection(Proj)
-					Proj.damage = damagediff
-					take_damage(min(proj_damage - damagediff, 100))
-					return PROJECTILE_CONTINUE // complete projectile permutation
 				// Walls with positive reflection values deal with laser better than walls with negative.
 				burn(2000)
 			else
@@ -225,12 +213,7 @@
 				ricochetchance = min(max(ricochetchance, 0), 100)
 				var/damagediff = round(proj_damage * ricochetchance / 100)
 				if(prob(ricochetchance))
-					visible_message("\red <B>\The [Proj] ricochets from the surface of reinforced wall!</B>")
-					projectile_reflection(Proj)
-					proj_damage /= reinf_material.brute_armor
-					Proj.damage = damagediff
 					take_damage(min(proj_damage - damagediff, 100))
-					return PROJECTILE_CONTINUE // complete projectile permutation
 		else
 			if(material.resilience > 0)
 				var/ricochetchance = round(material.resilience)
@@ -242,11 +225,7 @@
 				ricochetchance = min(max(ricochetchance, 0), 100)
 				var/damagediff = round(proj_damage * ricochetchance / 100)
 				if(prob(ricochetchance))
-					visible_message("\red <B>\The [Proj] ricochets from the surface of wall!</B>")
-					projectile_reflection(Proj)
-					Proj.damage = damagediff
 					take_damage(min(proj_damage - damagediff, 100))
-					return PROJECTILE_CONTINUE // complete projectile permutation
 
 	if(reinf_material)
 		if(Proj.damage_type == BURN)
