@@ -319,7 +319,7 @@
 	if(!istype(H)) //Invalid input
 		return
 	if(H.Adjacent(get_turf(src))) // Like normal analysers, it can't be used at range.
-		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/brain = H.internal_organs_by_name[BP_BRAIN]
 		set_pin_data(IC_OUTPUT, 1, (brain && !H.is_ic_dead()))
 		set_pin_data(IC_OUTPUT, 2, H.get_pulse_as_number())
 		set_pin_data(IC_OUTPUT, 3, (H.stat == 0))
@@ -370,7 +370,7 @@
 	if(!istype(H)) //Invalid input
 		return
 	if(H in view(get_turf(src))) // Like medbot's analyzer it can be used in range..
-		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/brain = H.internal_organs_by_name[BP_BRAIN]
 		set_pin_data(IC_OUTPUT, 1, (brain && !H.is_ic_dead()))
 		set_pin_data(IC_OUTPUT, 2, (H.stat == 0))
 		set_pin_data(IC_OUTPUT, 3, damage_to_severity(100 * H.getBruteLoss() / H.maxHealth))
@@ -405,6 +405,8 @@
 	var/list/obj/item/organ/internal/weakref_list = list()
 	if(H.Adjacent(get_turf(src))) // Like normal analysers, it can't be used at range.
 		for(var/obj/item/organ/internal/I in H.internal_organs)
+			if(I.hidden)
+				continue
 			if(I?.damage > 0)
 				weakref_list.Add(weakref(I))
 	set_pin_data(IC_OUTPUT, 1, weakref_list)
@@ -436,6 +438,8 @@
 /obj/item/integrated_circuit/medical/organ_info/do_work()
 	var/obj/item/organ/internal/I = get_pin_data_as_type(IC_INPUT, 1, /obj/item/organ/internal)
 	if(!istype(I)) // invalid input
+		return
+	if(I.hidden)
 		return
 	var/mob/living/carbon/human/H = I.owner
 	if(!istype(H)) //Invalid input

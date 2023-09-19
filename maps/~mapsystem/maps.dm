@@ -49,14 +49,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 	var/map_admin_faxes = list()
 
-	var/shuttle_docked_message
-	var/shuttle_leaving_dock
-	var/shuttle_called_message
-	var/shuttle_recall_message
-	var/emergency_shuttle_docked_message
-	var/emergency_shuttle_leaving_dock
-	var/emergency_shuttle_recall_message
-
 	/// Areas where crew members are considered to have safely left the station.
 	/// Defaults to all area types on the centcom levels if left empty.
 	var/list/post_round_safe_areas = list()

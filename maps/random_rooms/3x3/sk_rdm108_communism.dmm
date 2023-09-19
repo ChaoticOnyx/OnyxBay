@@ -1,0 +1,8 @@
+"a" = (/obj/structure/closet/gimmick/russian,/turf/simulated/floor/shuttle/red,/area/template_noop)
+"B" = (/obj/item/flame/lighter/zippo/sov,/turf/simulated/floor/shuttle/red,/area/template_noop)
+
+(1,1,1) = {"
+aaa
+aBa
+aaa
+"}

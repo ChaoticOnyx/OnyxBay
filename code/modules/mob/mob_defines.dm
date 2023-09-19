@@ -2,6 +2,7 @@
 	density = 1
 
 	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
+	vis_flags = VIS_INHERIT_PLANE
 	animate_movement = 2
 
 	virtual_mob = /mob/observer/virtual/mob
@@ -195,8 +196,6 @@
 	var/memory = ""
 	var/flavor_text = ""
 	var/datum/browser/show_inventory
-
-	var/nabbing = 0  // Whether a creature with a CAN_NAB tag is grabbing normally or in nab mode.
 
 	var/last_time_pointed_at = 0
 

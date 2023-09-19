@@ -34,6 +34,12 @@
 	item_cost = DEFAULT_TELECRYSTAL_AMOUNT - 1
 	path = /obj/item/flame/lighter/zippo/syndie
 
+/datum/uplink_item/item/badassery/stamp
+	name = "For showing that You Love Bureaucracy"
+	desc = "A beautiful stamp."
+	item_cost = DEFAULT_TELECRYSTAL_AMOUNT/2
+	path = /obj/item/stamp/syndicate
+
 /**************
 * Random Item *
 **************/

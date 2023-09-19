@@ -2,7 +2,6 @@
 	name = SPECIES_VOX
 	name_plural = SPECIES_VOX
 	icobase = 'icons/mob/human_races/r_vox.dmi'
-	deform = 'icons/mob/human_races/r_def_vox.dmi'
 	hair_key = SPECIES_VOX
 	default_language = "Vox-pidgin"
 	language = LANGUAGE_GALCOM
@@ -75,7 +74,7 @@
 		BP_LUNGS =    /obj/item/organ/internal/lungs/vox,
 		BP_LIVER =    /obj/item/organ/internal/liver/vox,
 		BP_KIDNEYS =  /obj/item/organ/internal/kidneys/vox,
-		BP_BRAIN =    /obj/item/organ/internal/brain,
+		BP_BRAIN =    /obj/item/organ/internal/cerebrum/brain,
 		BP_EYES =     /obj/item/organ/internal/eyes,
 		BP_STACK =    /obj/item/organ/internal/stack/vox
 		)

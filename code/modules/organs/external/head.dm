@@ -29,11 +29,10 @@
 
 /obj/item/organ/external/head/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent)
 	if(BP_IS_ROBOTIC(src) && disintegrate == DROPLIMB_BURN)
-		var/obj/item/organ/internal/mmi_holder/FBP_brain = owner.internal_organs_by_name[BP_BRAIN]
-		if(istype(FBP_brain))
-			FBP_brain.stored_mmi.visible_message(SPAN_DANGER("You see a bright flash as you get catapulted out of your body. You feel disoriented, which must be normal since you're just a brain in can."), SPAN_NOTICE("[owner]'s head ejects an MMI!"))
-			FBP_brain.removed()
-			FBP_brain.transfer_and_delete()
+		var/obj/item/organ/internal/cerebrum/mmi/MMI = owner.internal_organs_by_name[BP_BRAIN]
+		if(istype(MMI))
+			MMI.visible_message(SPAN_DANGER("You see a bright flash as you get catapulted out of your body. You feel disoriented, which must be normal since you're just a brain in a can."), SPAN_NOTICE("[owner]'s head ejects an MMI!"))
+			MMI.removed()
 	return ..()
 
 /obj/item/organ/external/head/organ_eaten(mob/user)
@@ -87,7 +86,7 @@
 
 /obj/item/organ/external/head/robotize(company, skip_prosthetics = FALSE, keep_organs = FALSE, just_printed = FALSE)
 	if(company)
-		var/datum/robolimb/R = all_robolimbs[company]
+		var/datum/robolimb/R = GLOB.all_robolimbs[company]
 		if(R)
 			can_intake_reagents = R.can_eat
 	. = ..(company, skip_prosthetics, 1)
@@ -110,7 +109,7 @@
 		var/datum/species/S = owner.species
 		var/has_eyes_overlay = S.has_eyes_icon
 		if(BP_IS_ROBOTIC(src)) // Robolimbs don't always have eye icon.
-			var/datum/robolimb/R = all_robolimbs[model]
+			var/datum/robolimb/R = GLOB.all_robolimbs[model]
 			has_eyes_overlay = R.has_eyes_icon
 
 		var/datum/body_build/BB = owner.body_build
@@ -158,6 +157,7 @@
 
 	if(owner.h_style)
 		var/icon/HI
+		var/icon/HSI
 		var/datum/sprite_accessory/hair/H = GLOB.hair_styles_list[owner.h_style]
 		if((owner.head?.flags_inv & BLOCKHEADHAIR) && !(H.flags & VERY_SHORT))
 			H = GLOB.hair_styles_list["Short Hair"]
@@ -170,6 +170,22 @@
 
 				if(H.do_coloration && length(h_col) >= 3)
 					HI.Blend(rgb(h_col[1], h_col[2], h_col[3]), H.blend)
+
+				if(H.has_secondary)
+					if(istype(owner.body_build,/datum/body_build/slim))
+						HSI = icon(GLOB.hair_icons["slim"][species.hair_key], H.icon_state + "_s")
+					else
+						HSI = icon(GLOB.hair_icons["default"][species.hair_key], H.icon_state + "_s")
+					if(species.appearance_flags & SECONDARY_HAIR_IS_SKIN)
+						if(species.appearance_flags & HAS_A_SKIN_TONE)
+							if(s_tone >= 0)
+								HSI.Blend(rgb(s_tone, s_tone, s_tone), ICON_ADD)
+							else
+								HSI.Blend(rgb(-s_tone,  -s_tone,  -s_tone), ICON_SUBTRACT)
+						else
+							HSI.Blend(rgb(s_col[1], s_col[2], s_col[3]), s_col_blend)
+					else if(length(h_col) >= 3)
+						HSI.Blend(rgb(h_s_col[1], h_s_col[2], h_s_col[3]), H.blend)
 		if(HI)
 			var/list/sorted_hair_markings = list()
 			for(var/E in markings)
@@ -183,6 +199,9 @@
 			for(var/entry in sorted_hair_markings)
 				HI.Blend(entry[2], ICON_OVERLAY)
 			res.overlays |= HI
+
+		if(HSI)
+			res.overlays |= HSI
 
 	var/list/sorted_head_markings = list()
 	for(var/E in markings)

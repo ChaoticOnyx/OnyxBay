@@ -3,7 +3,8 @@
 	siemens_coefficient = 0.9
 	var/flash_protection = FLASH_PROTECTION_NONE	// Sets the item's level of flash protection.
 	var/tint = TINT_NONE							// Sets the item's level of visual impairment tint.
-	var/list/species_restricted = list("exclude", SPECIES_NABBER) //Only these species can wear this kit.
+	/// Only these species can wear this kit.
+	var/list/species_restricted = null
 	var/gunshot_residue //Used by forensics.
 
 	var/list/accessories = list()
@@ -244,7 +245,7 @@ BLIND     // can't see anything
 	body_parts_covered = HANDS
 	slot_flags = SLOT_GLOVES
 	attack_verb = list("challenged")
-	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
+	species_restricted = list("exclude", SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "bloodyhands"
 
 /obj/item/clothing/gloves/Initialize()
@@ -499,7 +500,7 @@ BLIND     // can't see anything
 	var/list/say_messages
 	var/list/say_verbs
 	var/down_gas_transfer_coefficient = 0
-	var/down_body_parts_covered = 0
+	var/down_body_parts_covered = NO_BODYPARTS
 	var/down_icon_state = 0
 	var/down_item_flags = 0
 	var/down_flags_inv = 0
@@ -576,7 +577,7 @@ BLIND     // can't see anything
 	permeability_coefficient = 0.50
 	force = 2
 	var/overshoes = 0
-	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
+	species_restricted = list("exclude", SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "shoeblood"
 
 	armor = list(melee = 25, bullet = 25, laser = 25,energy = 15, bomb = 25, bio = 10)
@@ -697,7 +698,7 @@ BLIND     // can't see anything
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 	w_class = ITEM_SIZE_NORMAL
 	force = 0
-	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_MONKEY)
+	species_restricted = list("exclude", SPECIES_MONKEY)
 	var/has_sensor = SUIT_HAS_SENSORS //For the crew computer 2 = unable to change mode
 	var/sensor_mode = 0
 		/*
@@ -930,6 +931,6 @@ BLIND     // can't see anything
 	icon = 'icons/obj/clothing/rings.dmi'
 	slot_flags = SLOT_GLOVES
 	gender = NEUTER
-	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_DIONA)
+	species_restricted = list("exclude", SPECIES_DIONA)
 	var/undergloves = 1
 	blood_overlay_type = null

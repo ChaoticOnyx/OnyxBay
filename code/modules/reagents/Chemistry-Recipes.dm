@@ -1288,8 +1288,7 @@
 
 /datum/chemical_reaction/metroid/golem/on_reaction(datum/reagents/holder)
 	..()
-	var/obj/effect/golemrune/Z = new /obj/effect/golemrune(get_turf(holder.my_atom))
-	Z.announce_to_ghosts()
+	new /obj/item/golem_shell(get_turf(holder.my_atom))
 
 //Sepia
 /datum/chemical_reaction/metroid/film
@@ -1324,13 +1323,7 @@
 	reaction_sound = 'sound/effects/teleport.ogg'
 
 /datum/chemical_reaction/metroid/teleport/on_reaction(datum/reagents/holder)
-	var/list/turfs = list()
-	for(var/turf/T in orange(holder.my_atom,6))
-		turfs += T
-	for(var/atom/movable/a in viewers(holder.my_atom,2))
-		if(!a.simulated)
-			continue
-		a.forceMove(pick(turfs))
+	new /obj/item/stack/telecrystal/bluespace_crystal(get_turf(holder.my_atom))
 	..()
 
 //pyrite
@@ -1381,6 +1374,67 @@
 	if(S.key_data)
 		var/obj/item/key/soap/key = new(get_turf(holder.my_atom), S.key_data)
 		key.uses = strength
+	..()
+
+//rainbow
+/datum/chemical_reaction/metroid/random_metroid
+	name = "Random Metroid"
+	result = null
+	required_reagents = list(/datum/reagent/toxin/plasma = 5)
+	required = /obj/item/metroid_extract/rainbow
+
+/datum/chemical_reaction/metroid/random_metroid/on_reaction(datum/reagents/holder)
+	var/colour = pick(list(
+		"green",
+		"purple",
+		"metal",
+		"orange",
+		"blue",
+		"dark blue",
+		"dark purple",
+		"yellow",
+		"silver",
+		"pink",
+		"red",
+		"gold",
+		"grey",
+		"sepia",
+		"bluespace",
+		"cerulean",
+		"pyrite",
+		"light pink",
+		"oil",
+		"adamantine",
+		"black"))
+	new /mob/living/carbon/metroid(get_turf(holder.my_atom), colour)
+	..()
+
+/datum/chemical_reaction/metroid/mind_tansfer
+	name = "Mind Transfer"
+	result = null
+	required_reagents = list(/datum/reagent/blood = 5)
+	required = /obj/item/metroid_extract/rainbow
+
+/datum/chemical_reaction/metroid/mind_tansfer/on_reaction(datum/reagents/holder)
+	new /obj/item/metroid_transference/(get_turf(holder.my_atom))
+	..()
+
+/datum/chemical_reaction/metroid/metroidbomb
+	name = "Metroid Bomb"
+	result = null
+	required_reagents = list(/datum/reagent/metroidjelly = 5)
+	required = /obj/item/metroid_extract/rainbow
+
+/datum/chemical_reaction/metroid/metroidbomb/on_reaction(datum/reagents/holder)
+	var/turf/T = get_turf(holder.my_atom)
+	var/obj/item/grenade/clusterbang/metroid/S = new (T)
+	S.visible_message(SPAN_DANGER("Infused with slime jelly, the core begins to expand uncontrollably!"))
+	S.icon_state = "metroidbang_active"
+	S.active = TRUE
+	addtimer(CALLBACK(S, /obj/item/grenade/proc/detonate), rand(15,60))
+	var/lastkey = holder.my_atom.fingerprintslast
+	message_admins("[key_name_admin(lastkey)] primed an explosive Brorble Brorble for detonation.")
+	log_game("[key_name(lastkey)] primed an explosive Brorble Brorble for detonation.")
 	..()
 
 /* Food */

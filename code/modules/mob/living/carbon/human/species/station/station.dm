@@ -44,7 +44,7 @@
 		H.emote("scream")
 
 	if(!H.restrained() && H.lying && H.shock_stage >= 60 && prob(3))
-		H.custom_emote("thrashes in agony")
+		H.visible_emote("thrashes in agony.")
 
 	if(!H.restrained() && H.shock_stage < 40 && prob(3))
 		var/maxdam = 0
@@ -60,19 +60,19 @@
 		var/datum/gender/T = gender_datums[H.get_gender()]
 		if(damaged_organ)
 			if(damaged_organ.status & ORGAN_BLEEDING)
-				H.custom_emote("clutches [T.his] [damaged_organ.name], trying to stop the blood.")
+				H.visible_emote("clutches [T.his] [damaged_organ.name], trying to stop the blood.")
 			else if(damaged_organ.status & ORGAN_BROKEN)
-				H.custom_emote("holds [T.his] [damaged_organ.name] carefully.")
+				H.visible_emote("holds [T.his] [damaged_organ.name] carefully.")
 			else if(damaged_organ.burn_dam > damaged_organ.brute_dam && damaged_organ.organ_tag != BP_HEAD)
-				H.custom_emote("blows on [T.his] [damaged_organ.name] carefully.")
+				H.visible_emote("blows on [T.his] [damaged_organ.name] carefully.")
 			else
-				H.custom_emote("rubs [T.his] [damaged_organ.name] carefully.")
+				H.visible_emote("rubs [T.his] [damaged_organ.name] carefully.")
 
 		for(var/obj/item/organ/I in H.internal_organs)
 			if((I.status & ORGAN_DEAD) || BP_IS_ROBOTIC(I)) continue
 			if(I.damage > 2) if(prob(2))
 				var/obj/item/organ/external/parent = H.get_organ(I.parent_organ)
-				H.custom_emote("clutches [T.his] [parent.name]!")
+				H.visible_emote("clutches [T.his] [parent.name]!")
 
 /datum/species/human/get_ssd(mob/living/carbon/human/H)
 	if(H.stat == CONSCIOUS)
@@ -83,7 +83,6 @@
 	name = SPECIES_TAJARA
 	name_plural = "Tajaran"
 	icobase = 'icons/mob/human_races/r_tajaran.dmi'
-	deform = 'icons/mob/human_races/r_def_tajaran.dmi'
 	tail = "tajtail"
 	tail_animation = 'icons/mob/species/tajaran/tail.dmi'
 	default_h_style = "Ears"
@@ -162,7 +161,6 @@
 	name = SPECIES_SKRELL
 	name_plural = SPECIES_SKRELL
 	icobase = 'icons/mob/human_races/r_skrell.dmi'
-	deform = 'icons/mob/human_races/r_def_skrell.dmi'
 	primitive_form = "Neaera"
 	hair_key = SPECIES_SKRELL
 	unarmed_types = list(/datum/unarmed_attack/punch)
@@ -195,7 +193,7 @@
 	warning_high_pressure = WARNING_HIGH_PRESSURE / 0.8125
 	hazard_high_pressure = HAZARD_HIGH_PRESSURE / 0.84615
 
-	body_temperature = null // cold-blooded, implemented the same way nabbers do it
+	body_temperature = null // cold-blooded
 
 	darksight_range = 4
 	darksight_tint = DARKTINT_MODERATE
@@ -241,7 +239,6 @@
 	name = SPECIES_DIONA
 	name_plural = "Dionaea"
 	icobase = 'icons/mob/human_races/r_diona.dmi'
-	deform = 'icons/mob/human_races/r_def_plant.dmi'
 
 	has_eyes_icon = FALSE
 

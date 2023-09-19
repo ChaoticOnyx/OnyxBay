@@ -54,13 +54,15 @@
 					/obj/item/reagent_containers/ecig_cartridge/grape = 5,
 					/obj/item/reagent_containers/ecig_cartridge/lemonlime = 5,
 					/obj/item/reagent_containers/ecig_cartridge/coffee = 5,
-					/obj/item/reagent_containers/ecig_cartridge/blanknico = 2)
+					/obj/item/reagent_containers/ecig_cartridge/blanknico = 2,
+					/obj/item/clothing/mask/smokable/ecig/disposable = 15)
 	illegal = list(	/obj/item/flame/lighter/zippo = 4,
 						/obj/item/storage/tobaccopack/contraband = 1)
 	premium = list(	/obj/item/storage/fancy/cigar = 5,
 					/obj/item/storage/fancy/cigarettes/killthroat = 5,
 					/obj/item/storage/tobaccopack/premium = 3,
-					/obj/item/clothing/mask/smokable/pipe = 1)
+					/obj/item/clothing/mask/smokable/pipe = 1,
+					/obj/item/reagent_containers/vessel/hookah = 1)
 	prices = list(	/obj/item/storage/fancy/cigarettes = 45,
 					/obj/item/storage/fancy/cigarettes/luckystars = 50,
 					/obj/item/storage/fancy/cigarettes/jerichos = 65,
@@ -89,7 +91,8 @@
 					/obj/item/reagent_containers/ecig_cartridge/grape = 15,
 					/obj/item/reagent_containers/ecig_cartridge/lemonlime = 15,
 					/obj/item/reagent_containers/ecig_cartridge/coffee = 15,
-					/obj/item/reagent_containers/ecig_cartridge/blanknico = 15)
+					/obj/item/reagent_containers/ecig_cartridge/blanknico = 15,
+					/obj/item/clothing/mask/smokable/ecig/disposable = 25)
 
 /obj/item/vending_cartridge/cigarette
 	name = "cigarette"
@@ -148,13 +151,15 @@
 					/obj/item/reagent_containers/ecig_cartridge/grape = 5,
 					/obj/item/reagent_containers/ecig_cartridge/lemonlime = 5,
 					/obj/item/reagent_containers/ecig_cartridge/coffee = 5,
-					/obj/item/reagent_containers/ecig_cartridge/blanknico = 2)
+					/obj/item/reagent_containers/ecig_cartridge/blanknico = 2,
+					/obj/item/clothing/mask/smokable/ecig/disposable = 15)
 	illegal = list(	/obj/item/flame/lighter/zippo = 4,
 						/obj/item/storage/tobaccopack/contraband = 1)
 	premium = list(	/obj/item/storage/fancy/cigar = 5,
 					/obj/item/storage/fancy/cigarettes/killthroat = 5,
 					/obj/item/storage/tobaccopack/premium = 3,
-					/obj/item/clothing/mask/smokable/pipe = 1)
+					/obj/item/clothing/mask/smokable/pipe = 1,
+					/obj/item/reagent_containers/vessel/hookah = 1)
 	prices = list(	/obj/item/storage/fancy/cigarettes = 45,
 					/obj/item/storage/fancy/cigarettes/luckystars = 50,
 					/obj/item/storage/fancy/cigarettes/jerichos = 65,
@@ -183,7 +188,8 @@
 					/obj/item/reagent_containers/ecig_cartridge/grape = 15,
 					/obj/item/reagent_containers/ecig_cartridge/lemonlime = 15,
 					/obj/item/reagent_containers/ecig_cartridge/coffee = 15,
-					/obj/item/reagent_containers/ecig_cartridge/blanknico = 15)
+					/obj/item/reagent_containers/ecig_cartridge/blanknico = 15,
+					/obj/item/clothing/mask/smokable/ecig/disposable = 25)
 
 /obj/item/vending_cartridge/cigars
 	name = "cigars midcentury"

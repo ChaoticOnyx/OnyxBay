@@ -169,9 +169,6 @@ var/list/channel_to_radio_key = new
 
 	say_get_alt_name(message_data)
 
-	if(!say_check_special(message_data))
-		return message_data["say_result"]
-
 	client?.spellcheck(message_data["message"])
 
 	// This is broadcast to all mobs with the language,
@@ -246,13 +243,6 @@ var/list/channel_to_radio_key = new
 		return FALSE
 	return TRUE
 
-/mob/living/proc/say_check_special(list/message_data)
-	if(is_muzzled() && !(message_data["language"]?.flags & (NONVERBAL|SIGNLANG)))
-		to_chat(src, SPAN("danger", "You're muzzled and cannot speak!"))
-		message_data["say_result"] = FALSE
-		return FALSE
-	return TRUE
-
 /mob/living/proc/say_get_radio(list/message_data)
 	message_data["message_mode"] = parse_message_mode(message_data["message"], "headset")
 	if(message_data["message_mode"])
@@ -282,7 +272,7 @@ var/list/channel_to_radio_key = new
 		var/verb = pick(message_data["language"].signlang_verb)
 
 		if(message_data["language"].flags & NONVERBAL && prob(30))
-			src.custom_emote(1, "[verb].")
+			src.custom_emote(VISIBLE_MESSAGE, "[verb].")
 
 		if(message_data["language"].flags & SIGNLANG)
 			if(message_data["log_message"])
@@ -337,10 +327,14 @@ var/list/channel_to_radio_key = new
 
 /mob/living/proc/say_do_say(list/message_data)
 	var/mob/above = shadow
+	var/above_range = message_data["message_range"] //Gets lower every z-level
 	while(!QDELETED(above))
 		var/turf/ST = get_turf(above)
+		above_range = max(--above_range, 0)
 		if(ST)
-			get_mobs_and_objs_in_view_fast(ST, world.view, message_data["listening"], message_data["listening_obj"], /datum/client_preference/ghost_ears)
+			get_mobs_and_objs_in_view_fast(ST, above_range, message_data["listening"], message_data["listening_obj"]) //No need to check for ghosts, that will hear anyway
+		if(!above_range)
+			break
 		above = above.shadow
 
 	for(var/mob/M in message_data["listening"])

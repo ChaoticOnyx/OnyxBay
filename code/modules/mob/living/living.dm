@@ -598,6 +598,8 @@
 			if(t)
 				M.start_pulling(t)
 
+	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, pulling.loc)
+
 	handle_dir_after_pull()
 
 	if(m_intent == M_RUN && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
@@ -656,6 +658,8 @@
 			process_resist()
 
 /mob/living/proc/process_resist()
+
+	SEND_SIGNAL(src, SIGNAL_MOB_RESIST, src)
 	//Getting out of someone's inventory.
 	if(istype(src.loc, /obj/item/holder))
 		escape_inventory(src.loc)

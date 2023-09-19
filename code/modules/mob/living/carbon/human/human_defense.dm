@@ -171,6 +171,8 @@ meteor_act
 		if(istype(C) && (C.body_parts_covered & def_zone.body_part)) // Is that body part being targeted covered?
 			siemens_coefficient *= C.siemens_coefficient
 
+	for(var/datum/modifier/M in modifiers)
+		siemens_coefficient *= M.siemens_coefficient
 	return siemens_coefficient
 
 //this proc returns the armour value for a particular external organ.
@@ -889,7 +891,7 @@ meteor_act
 		if(istype(O, /obj/item))
 			var/obj/item/I = O
 			mass = I.w_class / THROWNOBJ_KNOCKBACK_DIVISOR
-		var/momentum = speed * mass
+		var/momentum = (1 / speed) * mass
 
 		if(O.throw_source && momentum >= THROWNOBJ_KNOCKBACK_SPEED)
 			var/dir = get_dir(O.throw_source, src)

@@ -88,17 +88,10 @@
 		infectedMachine.shut_up = 1
 		infectedMachine.shoot_inventory = 0
 
-	command_announcement.Announce("All traces of the rampant brand intelligence have disappeared from the systems.", "[station_name()] Firewall Subroutines")
+	SSannounce.play_station_announce(/datum/announce/brand_intelligence_end)
 	originMachine = null
 	infectedVendingMachines.Cut()
 	vendingMachines.Cut()
 
 /datum/event/brand_intelligence/proc/announce()
-	var/list/affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
-
-	command_announcement.Announce(
-		"Rampant brand intelligence has been detected aboard the [station_name()]. The origin is believed to be \a \"[initial(originMachine.name)]\" type. Fix it, before it spreads to other vending machines.",
-		"Machine Learning Alert",
-		zlevels = affecting_z,
-		new_sound = 'sound/AI/rampantstart.ogg'
-	)
+	SSannounce.play_station_announce(/datum/announce/brand_intelligence_start, "Rampant brand intelligence has been detected aboard the [station_name()]. The origin is believed to be \a \"[initial(originMachine.name)]\" type. Fix it, before it spreads to other vending machines.")

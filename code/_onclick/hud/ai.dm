@@ -5,8 +5,7 @@ var/obj/screen/ai
 
 /datum/hud/ai/FinalizeInstantiation()
 
-	adding = list()
-	other = list()
+	static_inventory = list()
 
 	var/obj/screen/using
 
@@ -18,7 +17,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "ai_core"
 	using.screen_loc = ui_ai_core
-	adding += using
+	static_inventory += using
 
 //AI Core Display
 
@@ -28,7 +27,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "set_ai_core_display"
 	using.screen_loc = ui_ai_core_display
-	adding += using
+	static_inventory += using
 
 //AI Status
 
@@ -38,7 +37,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "ai_status"
 	using.screen_loc = ui_ai_status
-	adding += using
+	static_inventory += using
 
 //Change Hologram
 
@@ -48,7 +47,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "change_hologram"
 	using.screen_loc = ui_ai_change_hologram
-	adding += using
+	static_inventory += using
 
 //Camera list
 
@@ -58,7 +57,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "camera"
 	using.screen_loc = ui_ai_camera_list
-	adding += using
+	static_inventory += using
 
 //Track
 
@@ -68,7 +67,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "track"
 	using.screen_loc = ui_ai_track_with_camera
-	adding += using
+	static_inventory += using
 
 
 //Camera light
@@ -79,7 +78,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "camera_light"
 	using.screen_loc = ui_ai_camera_light
-	adding += using
+	static_inventory += using
 
 //Crew Manifest
 
@@ -90,7 +89,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "manifest"
 	using.screen_loc = ui_ai_crew_manifest
-	adding += using
+	static_inventory += using
 
 //Announcement
 
@@ -100,7 +99,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "announcement"
 	using.screen_loc = ui_ai_announcement
-	adding += using
+	static_inventory += using
 
 //Shuttle
 
@@ -110,7 +109,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "call_shuttle"
 	using.screen_loc = ui_ai_shuttle
-	adding += using
+	static_inventory += using
 
 //Laws
 
@@ -120,7 +119,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "state_laws"
 	using.screen_loc = ui_ai_state_laws
-	adding += using
+	static_inventory += using
 
 //Medical/Security sensors
 
@@ -130,7 +129,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "ai_sensor"
 	using.screen_loc = ui_ai_sensor
-	adding += using
+	static_inventory += using
 
 //Take Image
 
@@ -140,7 +139,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "take_picture"
 	using.screen_loc = ui_ai_take_picture
-	adding += using
+	static_inventory += using
 
 //View Images
 
@@ -150,7 +149,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "view_images"
 	using.screen_loc = ui_ai_view_images
-	adding += using
+	static_inventory += using
 
 //Delete Image
 
@@ -160,7 +159,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "del_images"
 	using.screen_loc = ui_ai_del_picture
-	adding += using
+	static_inventory += using
 
 //Store Camera Location
 
@@ -170,7 +169,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "store_camera_location"
 	using.screen_loc = ui_ai_scl
-	adding += using
+	static_inventory += using
 
 //Goto Camera Location
 
@@ -180,7 +179,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "goto_camera_location"
 	using.screen_loc = ui_ai_gcl
-	adding += using
+	static_inventory += using
 
 //Delete Camera Location
 
@@ -190,7 +189,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "delete_camera_location"
 	using.screen_loc = ui_ai_dcl
-	adding += using
+	static_inventory += using
 
 //PDA Ringer
 
@@ -200,7 +199,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "pda_ringer"
 	using.screen_loc = ui_ai_pda_ringer
-	adding += using
+	static_inventory += using
 
 //PDA Send Message
 
@@ -210,7 +209,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "pda_send"
 	using.screen_loc = ui_ai_pda_send
-	adding += using
+	static_inventory += using
 
 //PDA Log
 
@@ -220,7 +219,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "pda_log"
 	using.screen_loc = ui_ai_pda_log
-	adding += using
+	static_inventory += using
 
 //PDA Toggle Sender/Receiver
 
@@ -230,7 +229,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "pda_receive"
 	using.screen_loc = ui_ai_pda_sr
-	adding += using
+	static_inventory += using
 
 //Multitool Mode
 
@@ -240,7 +239,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "toggle_multitool_mode"
 	using.screen_loc = ui_ai_multitool
-	adding += using
+	static_inventory += using
 
 //Shutdown
 
@@ -250,7 +249,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "shutdown"
 	using.screen_loc = ui_ai_shutdown
-	adding += using
+	static_inventory += using
 
 //Power Override
 
@@ -260,7 +259,7 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "override"
 	using.screen_loc = ui_ai_override
-	adding += using
+	static_inventory += using
 
 //Radio Settings
 
@@ -270,7 +269,4 @@ var/obj/screen/ai
 	using.icon = 'icons/hud/mob/screen_ai.dmi'
 	using.icon_state = "radio_settings"
 	using.screen_loc = ui_ai_radio
-	adding += using
-
-	mymob.client.screen = list()
-	mymob.client.screen += adding + other
+	static_inventory += using

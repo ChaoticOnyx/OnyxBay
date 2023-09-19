@@ -100,42 +100,7 @@
 	var/turf/below = GetBelow(src)
 	if(below)
 		var/below_is_open = isopenspace(below)
-		if(below_is_open)
-			underlays = below.underlays
-			overlays += below.overlays
-
-		else
-			var/image/bottom_turf = image(icon = below.icon, icon_state = below.icon_state, dir=below.dir, layer=below.layer)
-			bottom_turf.plane = src.plane
-			bottom_turf.color = below.color
-			underlays += bottom_turf
-			for(var/i in 1 to length(below.overlays))
-				var/image/temp = image(below.overlays[i]) //byond moment
-				temp.plane = src.plane
-				overlays += temp
-
-
-		// get objects (not mobs, they are handled by /obj/zshadow)
-		var/list/o_img = list()
-		for(var/obj/O in below)
-			if(O.invisibility) continue // Ignore objects that have any form of invisibility
-			if(O.loc != below) continue // Ignore multi-turf objects not directly below
-			var/image/temp2 = image(O, dir = O.dir, layer = O.layer)
-			temp2.plane = src.plane
-			temp2.color = O.color
-			// TODO Is pixelx/y needed?
-			o_img += temp2
-
-		var/overlays_pre = overlays.len
-		overlays += o_img
-
-		var/overlays_post = overlays.len
-		if(overlays_post != (overlays_pre + o_img.len)) //Here we go!
-			//log_world("Corrupted openspace turf at [x],[y],[z] being replaced. Pre: [overlays_pre], Post: [overlays_post]")
-			ChangeTurf(/turf/simulated/open)
-			return //Let's get out of here.
-
-		//TODO : Add overlays if people fall down holes
+		vis_contents += below
 
 		if(!below_is_open)
 			overlays += GLOB.over_OS_darkness
@@ -144,7 +109,7 @@
 	return PROCESS_KILL
 
 
-/turf/simulated/open/attackby(obj/item/C as obj, mob/user as mob)
+/turf/simulated/open/attackby(obj/item/C, mob/user)
 	if (istype(C, /obj/item/stack/rods))
 		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
 		if(L)
@@ -204,6 +169,7 @@
 	//Take care of shadow
 	for(var/mob/zshadow/M in src)
 		qdel(M)
+	vis_contents = list()
 
 //When turf changes, a bunch of things can take place
 /turf/simulated/open/proc/turf_change(turf/affected)

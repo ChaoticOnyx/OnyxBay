@@ -17,6 +17,7 @@
 	attack_verb = list("attacked", "slapped", "whacked")
 	relative_size = 10
 	foreign = TRUE
+	hidden = TRUE
 	max_damage = 600
 
 	var/mob/living/carbon/brain/brainchan = null 	//notice me, biostructure-kun~ (✿˵•́ ‸ •̀˵)
@@ -177,7 +178,7 @@
 			if(status & ORGAN_CUT_AWAY)
 				status &= ~ORGAN_CUT_AWAY
 
-		var/obj/item/organ/internal/brain/B = H.internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/B = H.internal_organs_by_name[BP_BRAIN]
 		B?.vital = FALSE
 	else
 		owner = null

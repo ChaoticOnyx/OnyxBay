@@ -16,14 +16,14 @@
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100)
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|BLOCKHAIR
 	body_parts_covered = HEAD|FACE|EYES
+	visor_body_parts_covered = NO_BODYPARTS
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.9
 	center_of_mass = null
 	randpixel = 0
-	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_DIONA, "Xenomorph")
+	species_restricted = list("exclude", SPECIES_DIONA, "Xenomorph")
 	flash_protection = FLASH_PROTECTION_MAJOR
-	has_visor = 0
 
 	var/obj/machinery/camera/camera
 
@@ -94,5 +94,5 @@
 	siemens_coefficient = 0.9
 	center_of_mass = null
 	randpixel = 0
-	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_DIONA, "Xenomorph")
+	species_restricted = list("exclude", SPECIES_DIONA, "Xenomorph")
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)

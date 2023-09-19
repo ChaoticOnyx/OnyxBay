@@ -3,7 +3,7 @@
 /datum/ictus/New()
 	start()
 	if(prob(65))
-		command_announcement.Announce("Suspicious biological activity was noticed at the station. The medical crew should immediately prepare for the fight against the pathogen. Infected crew members must not leave the station under any circumstances.")
+		SSannounce.play_station_announce(/datum/announce/ictus)
 	..()
 
 /datum/ictus/proc/start()
@@ -117,7 +117,7 @@
 	speed = 4
 	spreadtype = "Contact"
 	max_stage = 4
-	affected_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI)
+	affected_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI, SPECIES_SWINE)
 
 /datum/disease2/disease/gbs/New()
 	..()
@@ -164,7 +164,7 @@
 	speed = 4
 	spreadtype = "Contact"
 	max_stage = 4
-	affected_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI)
+	affected_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI, SPECIES_SWINE)
 
 /datum/disease2/disease/fake_gbs/New()
 	..()
@@ -475,7 +475,7 @@
 	speed = 1
 	spreadtype = "Airborne"
 	max_stage = 4
-	affected_species = list(SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI)
+	affected_species = list(SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI, SPECIES_SWINE)
 
 /datum/disease2/disease/xeno/New()
 	..()

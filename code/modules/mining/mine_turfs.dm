@@ -526,6 +526,18 @@ var/list/mining_floors = list()
 		MATERIAL_PLASMA = 20
 		)
 
+
+/turf/simulated/mineral/air //Rock piece
+	name = "rock"
+	icon = 'icons/turf/walls.dmi'
+	icon_state = "rock"
+	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+	opacity = 1
+	density = 1
+	blocks_air = 1
+	temperature = 30 CELSIUS
+	mined_turf = /turf/simulated/floor/asteroid/air
+
 /**********************Asteroid**************************/
 
 // Setting icon/icon_state initially will use these values when the turf is built on/replaced.

@@ -6,6 +6,8 @@
 /// Similar to clamp but the bottom rolls around to the top and vice versa. min is inclusive, max is exclusive
 #define WRAP(val, min, max) ( min == max ? min : (val) - (round(((val) - (min))/((max) - (min))) * ((max) - (min))) )
 
+#define get_area(A) (isarea(A) ? A : get_step(A,0)?.loc)
+
 #define get_turf(A) get_step(A,0)
 
 #define isAI(A) istype(A, /mob/living/silicon/ai)
@@ -36,6 +38,8 @@
 
 #define isabductor(A) (is_species(A, /datum/species/abductor))
 
+#define ispromethean(A) (is_species(A, /datum/species/promethean))
+#define isgolem(A) (is_species(A, /datum/species/golem))
 #define isitem(A) istype(A, /obj/item)
 
 #define islist(A) istype(A, /list)
@@ -73,6 +77,8 @@
 #define issilicon(A) istype(A, /mob/living/silicon)
 
 #define ismetroid(A) istype(A, /mob/living/carbon/metroid)
+
+#define islarva(A) istype(A, /mob/living/carbon/alien/larva)
 
 #define isunderwear(A) istype(A, /obj/item/underwear)
 

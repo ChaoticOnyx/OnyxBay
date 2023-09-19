@@ -250,6 +250,9 @@
 	character.r_hair = r_hair
 	character.g_hair = g_hair
 	character.b_hair = b_hair
+	character.r_s_hair = r_s_hair
+	character.g_s_hair = g_s_hair
+	character.b_s_hair = b_s_hair
 
 	character.f_style = f_style
 	character.r_facial = r_facial
@@ -261,7 +264,6 @@
 	character.b_skin = b_skin
 
 	character.s_tone = s_tone
-	character.s_base = s_base
 
 	character.h_style = h_style
 	character.f_style = f_style

@@ -107,11 +107,11 @@
 		"categories" = categories
 	)
 
-	if(all_robolimbs)
+	if(GLOB.all_robolimbs)
 		var/list/T = list()
 
-		for(var/A in all_robolimbs)
-			var/datum/robolimb/R = all_robolimbs[A]
+		for(var/A in GLOB.all_robolimbs)
+			var/datum/robolimb/R = GLOB.all_robolimbs[A]
 
 			if(R.unavailable_at_fab || R.applies_to_part.len)
 				continue

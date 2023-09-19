@@ -4,7 +4,7 @@
 	dislocated = -1
 	disable_food_organ = TRUE
 
-/obj/item/organ/external/stump/New(mob/living/carbon/holder, internal, obj/item/organ/external/limb)
+/obj/item/organ/external/stump/New(mob/living/carbon/holder, obj/item/organ/external/limb)
 	if(istype(limb))
 		organ_tag = limb.organ_tag
 		if(!BP_IS_ROBOTIC(limb)) // These nasty fucks are broken, fuck robolimbs, their dumb icons and whomever the fuck created them in their current fucking state
@@ -13,7 +13,7 @@
 		amputation_point = limb.amputation_point
 		joint = limb.joint
 		parent_organ = limb.parent_organ
-	..(holder, internal)
+	..(holder)
 	if(istype(limb))
 		max_damage = limb.max_damage
 		if(BP_IS_ROBOTIC(limb) && (!parent || BP_IS_ROBOTIC(parent)))

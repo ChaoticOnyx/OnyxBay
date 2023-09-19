@@ -135,7 +135,12 @@
 
 			if(mind.changeling)
 				stat("Chemical Storage: ", mind.changeling.chem_charges)
-				stat("Genetic Damage Time: ", mind.changeling.geneticdamage)
+				stat("Genetic Damage Time: ", mind.changeling.genome_damage)
+
+			if(mind.special_role == "Borer Husk")
+				var/mob/living/simple_animal/borer/B = get_organ(BP_BRAIN)
+				stat("Chemicals: ", B?.chemicals)
+
 
 /mob/living/carbon/human/ex_act(severity)
 	if(!blinded)
@@ -697,7 +702,7 @@
 	return 1
 
 /mob/living/carbon/human/IsAdvancedToolUser(silent)
-	if(species.has_fine_manipulation && !nabbing)
+	if(species.has_fine_manipulation)
 		return 1
 	if(!silent)
 		to_chat(src, FEEDBACK_YOU_LACK_DEXTERITY)
@@ -758,7 +763,7 @@
 				Stun(3)
 				var/obj/item/organ/internal/stomach/stomach = internal_organs_by_name[BP_STOMACH]
 				if(nutrition <= STOMACH_FULLNESS_SUPER_LOW || !istype(stomach))
-					custom_emote(1, "dry heaves.")
+					custom_emote(VISIBLE_MESSAGE, "dry heaves.", "AUTO_EMOTE")
 				else
 					for(var/a in stomach_contents)
 						var/atom/movable/A = a
@@ -797,10 +802,16 @@
 		b_facial = hex2num(copytext(new_facial, 6, 8))
 
 	var/new_hair = input("Please select hair color.", "Character Generation",rgb(r_hair,g_hair,b_hair)) as color
-	if(new_facial)
+	if(new_hair)
 		r_hair = hex2num(copytext(new_hair, 2, 4))
 		g_hair = hex2num(copytext(new_hair, 4, 6))
 		b_hair = hex2num(copytext(new_hair, 6, 8))
+
+	var/new_s_hair = input("Please select secondary hair color.", "Character Generation",rgb(r_s_hair,g_s_hair,b_s_hair)) as color
+	if(new_s_hair)
+		r_s_hair = hex2num(copytext(new_hair, 2, 4))
+		g_s_hair = hex2num(copytext(new_hair, 4, 6))
+		b_s_hair = hex2num(copytext(new_hair, 6, 8))
 
 	var/new_eyes = input("Please select eye color.", "Character Generation",rgb(r_eyes,g_eyes,b_eyes)) as color
 	if(new_eyes)
@@ -947,7 +958,7 @@
 	species.create_organs(src) // Reset our organs/limbs.
 
 	if(!client || !key) //Don't boot out anyone already in the mob.
-		for(var/obj/item/organ/internal/brain/H in world)
+		for(var/obj/item/organ/internal/cerebrum/brain/H in world)
 			if(H.brainmob)
 				if(H.brainmob.real_name == real_name)
 					if(H.brainmob.mind)
@@ -1118,7 +1129,7 @@
 		for(var/datum/language/L in species.assisted_langs)
 			remove_language(L)
 		// Clear out their species abilities.
-		species.remove_inherent_verbs(src)
+		species.on_species_loss(src)
 		holder_type = null
 
 	species = all_species[new_species]
@@ -1338,7 +1349,7 @@
 
 /mob/living/carbon/human/has_brain()
 	if(internal_organs_by_name[BP_BRAIN])
-		var/obj/item/organ/internal/brain = internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain = internal_organs_by_name[BP_BRAIN]
 		if(brain && istype(brain))
 			return 1
 	return 0
@@ -1723,7 +1734,7 @@
 	set hidden = 1
 
 	if(internal_organs_by_name[BP_BRAIN])
-		var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/brain = internal_organs_by_name[BP_BRAIN]
 		if(!brain.is_broken() || stat != UNCONSCIOUS)
 			return
 

@@ -1,0 +1,17 @@
+"a" = (/obj/item/storage/box/glowsticks,/turf/simulated/floor/natural/jungle/sand,/area/template_noop)
+"d" = (/mob/living/simple_animal/crab,/turf/simulated/floor/natural/jungle/sand,/area/template_noop)
+"j" = (/obj/effect/overlay/coconut,/mob/living/simple_animal/crab,/turf/simulated/floor/natural/jungle/sand,/area/template_noop)
+"m" = (/obj/item/reagent_containers/food/grown/coconut,/turf/simulated/floor/natural/jungle/sand,/area/template_noop)
+"r" = (/mob/living/simple_animal/familiar/carcinus,/turf/simulated/floor/natural/jungle/sand,/area/template_noop)
+"s" = (/obj/effect/overlay/palmtree_r,/turf/simulated/floor/natural/jungle/sand,/area/template_noop)
+"H" = (/obj/item/reagent_containers/food/grown/coconut,/mob/living/simple_animal/crab,/turf/simulated/floor/natural/jungle/sand,/area/template_noop)
+"K" = (/obj/effect/overlay/palmtree_l,/turf/simulated/floor/natural/jungle/sand,/area/template_noop)
+"V" = (/turf/simulated/floor/natural/jungle/sand,/area/template_noop)
+
+(1,1,1) = {"
+jad
+VHs
+ara
+Kjm
+dad
+"}

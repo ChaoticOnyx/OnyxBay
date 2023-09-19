@@ -746,14 +746,14 @@
 //////////////////////
 
 /obj/mecha/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/device/mmi))
+	if(istype(W, /obj/item/organ/internal/cerebrum/mmi))
 		if(move_mmi_inside(W,user))
 			to_chat(user, "[src]-MMI interface initialized successfully.")
 		else
 			to_chat(user, "[src]-MMI interface initialization failed.")
 		return
 
-	if(istype(W, /obj/item/organ/internal/posibrain))
+	if(istype(W, /obj/item/organ/internal/cerebrum/posibrain))
 		if(move_posibrain_inside(W, user))
 			to_chat(user, "[src]-posibrain interface initialized successfully.")
 		else
@@ -1119,7 +1119,7 @@
 		sound_to(occupant, sound('sound/mecha/nominal.ogg', volume = 50))
 	return TRUE
 
-/obj/mecha/proc/move_mmi_inside(obj/item/device/mmi/MMI, mob/user)
+/obj/mecha/proc/move_mmi_inside(obj/item/organ/internal/cerebrum/mmi/MMI, mob/user)
 	if(!MMI?.brainmob?.client)
 		to_chat(user, "Consciousness matrix not detected.")
 		return FALSE
@@ -1147,7 +1147,7 @@
 		to_chat(user, "You stop inserting \the [src].")
 	return FALSE
 
-/obj/mecha/proc/move_posibrain_inside(obj/item/organ/internal/posibrain/PB, mob/user)
+/obj/mecha/proc/move_posibrain_inside(obj/item/organ/internal/cerebrum/posibrain/PB, mob/user)
 	if(!PB?.brainmob?.client)
 		to_chat(user, "Consciousness matrix not detected.")
 		return FALSE
@@ -1175,8 +1175,8 @@
 	if(!I || !user.Adjacent(src))
 		return FALSE
 	var/mob/brainmob
-	if(istype(I, /obj/item/device/mmi))
-		var/obj/item/device/mmi/MMI = I
+	if(istype(I, /obj/item/organ/internal/cerebrum/mmi))
+		var/obj/item/organ/internal/cerebrum/mmi/MMI = I
 		if(!MMI?.brainmob?.client)
 			to_chat(user, "Consciousness matrix not detected.")
 			return FALSE
@@ -1184,8 +1184,8 @@
 			to_chat(user, "Beta-rhythm below acceptable level.")
 			return FALSE
 		brainmob = MMI.brainmob
-	else if(istype(I, /obj/item/organ/internal/posibrain))
-		var/obj/item/organ/internal/posibrain/PB = I
+	else if(istype(I, /obj/item/organ/internal/cerebrum/posibrain))
+		var/obj/item/organ/internal/cerebrum/posibrain/PB = I
 		if(!PB?.brainmob?.client)
 			to_chat(user, "Consciousness matrix not detected.")
 			return FALSE
@@ -1279,14 +1279,13 @@
 		occupant.reset_view()
 		show_browser(occupant, null, "window=exosuit")
 
-		if(istype(mob_container, /obj/item/device/mmi))
-			var/obj/item/device/mmi/mmi = mob_container
+		if(istype(mob_container, /obj/item/organ/internal/cerebrum/mmi))
+			var/obj/item/organ/internal/cerebrum/mmi/mmi = mob_container
 			if(mmi.brainmob)
 				occupant.loc = mmi
-			mmi.mecha = null
 			verbs += /obj/mecha/verb/eject
-		if(istype(mob_container, /obj/item/organ/internal/posibrain))
-			var/obj/item/organ/internal/posibrain/pb = mob_container
+		if(istype(mob_container, /obj/item/organ/internal/cerebrum/posibrain))
+			var/obj/item/organ/internal/cerebrum/posibrain/pb = mob_container
 			if(pb.brainmob)
 				occupant.loc = pb
 			verbs += /obj/mecha/verb/eject

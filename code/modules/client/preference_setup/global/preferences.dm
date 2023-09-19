@@ -159,6 +159,26 @@ var/global/list/_client_preferences_by_type
 	key = "SOUND_HITMARKER"
 	category = PREF_CATEGORY_AUDIO
 
+/datum/client_preference/announcer
+	description = "Announcer"
+	key = "SOUND_ANNOUNCER"
+	category = PREF_CATEGORY_AUDIO
+	default_value = GLOB.PREF_ANNOUNCER_DEFAULT
+	options = list(
+		GLOB.PREF_ANNOUNCER_DEFAULT,
+		GLOB.PREF_ANNOUNCER_VGSTATION,
+		GLOB.PREF_ANNOUNCER_BAYSTATION12,
+		GLOB.PREF_ANNOUNCER_BAYSTATION12_TORCH,
+		GLOB.PREF_ANNOUNCER_TGSTATION
+	)
+
+/datum/client_preference/announcer/changed(mob/preference_mob, new_value)
+	if(!preference_mob.client)
+		return
+
+	if(!SSannounce.is_announcer_available(preference_mob, new_value))
+		to_chat(preference_mob, SPAN_WARNING("Selected announcer is not available due to a low patron tier, default announcer will be used instead."))
+
 /datum/client_preference/language_display
 	description = "Display Language Names"
 	key = "LANGUAGE_DISPLAY"
@@ -318,26 +338,37 @@ var/global/list/_client_preferences_by_type
 /********************
 * Ghost Preferences *
 ********************/
+/datum/client_preference/ghost_hud
+	description = "Ghost HUD"
+	key = "GHOST_SEEHUD"
+	category = PREF_CATEGORY_GHOST
+	default_value = GLOB.PREF_YES
+	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+
+/datum/client_preference/ghost_hud/changed(mob/preference_mob, new_value)
+	if(isobserver(preference_mob))
+		preference_mob?.hud_used?.show_hud()
+
 /datum/client_preference/ghost_ears
-	description ="Ghost ears"
+	description = "Ghost ears"
 	key = "CHAT_GHOSTEARS"
 	category = PREF_CATEGORY_GHOST
 	options = list(GLOB.PREF_ALL_SPEECH, GLOB.PREF_NEARBY)
 
 /datum/client_preference/ghost_sight
-	description ="Ghost sight"
+	description = "Ghost sight"
 	key = "CHAT_GHOSTSIGHT"
 	category = PREF_CATEGORY_GHOST
 	options = list(GLOB.PREF_ALL_EMOTES, GLOB.PREF_NEARBY)
 
 /datum/client_preference/ghost_radio
-	description ="Ghost radio"
+	description = "Ghost radio"
 	key = "CHAT_GHOSTRADIO"
 	category = PREF_CATEGORY_GHOST
 	options = list(GLOB.PREF_ALL_CHATTER, GLOB.PREF_NEARBY)
 
 /datum/client_preference/ghost_follow_link_length
-	description ="Ghost Follow Links"
+	description = "Ghost Follow Links"
 	key = "CHAT_GHOSTFOLLOWLINKLENGTH"
 	category = PREF_CATEGORY_GHOST
 	options = list(GLOB.PREF_SHORT, GLOB.PREF_LONG)

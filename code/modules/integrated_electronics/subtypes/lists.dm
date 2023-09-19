@@ -42,7 +42,7 @@
 	. = ..()
 	var/list/check_list = get_pin_data(IC_INPUT, 1)
 	var/check_mod = get_pin_data(IC_INPUT, 2)
-	if((input_list != check_list) && (check_mod != mode))
+	if((input_list != check_list) || (check_mod != mode))
 		step = 0
 
 /obj/item/integrated_circuit/lists/for_lists/do_work()

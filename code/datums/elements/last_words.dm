@@ -27,19 +27,23 @@ GLOBAL_LIST_EMPTY(last_words)
 		detach(L)
 		return
 
-	var/index = 0
-	for(var/entry in L.logging[INDIVIDUAL_SAY_LOG])
-		index += 1
+	var/last = length(L.logging[INDIVIDUAL_SAY_LOG])
 
-		if(index == length(L.logging[INDIVIDUAL_SAY_LOG]))
-			var/datum/last_words_data/data = new()
+	for(last; last > 0; last--)
+		var/entry = L.logging[INDIVIDUAL_SAY_LOG][last]
+		var/tag = L.logging[INDIVIDUAL_SAY_LOG][entry]["tag"]
+		
+		if(tag == "\[AUTO_EMOTE\]")
+			continue
 
-			data.words = L.logging[INDIVIDUAL_SAY_LOG][entry]
-			data.time_of_death = L.timeofdeath
-			data.real_name = L.real_name || L.name
-			data.job_title = L.job || "Unemployed"
+		var/datum/last_words_data/data = new()
 
-			GLOB.last_words += data
-			break
+		data.words = L.logging[INDIVIDUAL_SAY_LOG][entry]["message"]
+		data.time_of_death = L.timeofdeath
+		data.real_name = L.real_name || L.name
+		data.job_title = L.job || "Unemployed"
+
+		GLOB.last_words += data
+		break
 
 	detach(L)

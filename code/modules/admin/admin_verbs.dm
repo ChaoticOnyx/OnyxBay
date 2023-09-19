@@ -178,7 +178,8 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/toggle_alien_eggs,
 	/datum/admins/proc/toggle_space_ninja,
 	/client/proc/check_customitem_activity,
-	/client/proc/nanomapgen_DumpImage
+	/client/proc/nanomapgen_DumpImage,
+	/client/proc/cmd_set_station_date
 	)
 
 var/list/admin_verbs_debug = list(
@@ -836,10 +837,16 @@ var/list/admin_verbs_mentor = list(
 		M.b_facial = hex2num(copytext(new_facial, 6, 8))
 
 	var/new_hair = input("Please select hair color.", "Character Generation") as color
-	if(new_facial)
+	if(new_hair)
 		M.r_hair = hex2num(copytext(new_hair, 2, 4))
 		M.g_hair = hex2num(copytext(new_hair, 4, 6))
 		M.b_hair = hex2num(copytext(new_hair, 6, 8))
+
+	var/new_s_hair = input("Please select secondary hair color.", "Character Generation") as color
+	if(new_s_hair)
+		M.r_s_hair = hex2num(copytext(new_s_hair, 2, 4))
+		M.g_s_hair = hex2num(copytext(new_s_hair, 4, 6))
+		M.b_s_hair = hex2num(copytext(new_s_hair, 6, 8))
 
 	var/new_eyes = input("Please select eye color.", "Character Generation") as color
 	if(new_eyes)

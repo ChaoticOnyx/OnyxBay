@@ -184,8 +184,14 @@
 			intent = I_HELP
 	else if(icon_y <= world.icon_size/2)
 		intent = I_GRAB
+
+	if(is_pacifist(usr))
+		intent = I_HELP
+
 	update_icon()
 	usr.a_intent = intent
+
+
 
 /obj/screen/intent/update_icon()
 	icon_state = "intent_[intent]"
@@ -194,11 +200,11 @@
 	switch(name)
 		if("toggle")
 			if(usr.hud_used.inventory_shown)
-				usr.hud_used.inventory_shown = 0
-				usr.client.screen -= usr.hud_used.other
+				usr.hud_used.inventory_shown = FALSE
+				usr.client.screen -= usr.hud_used.toggleable_inventory
 			else
-				usr.hud_used.inventory_shown = 1
-				usr.client.screen += usr.hud_used.other
+				usr.hud_used.inventory_shown = TRUE
+				usr.client.screen += usr.hud_used.toggleable_inventory
 
 			usr.hud_used.hidden_inventory_update()
 

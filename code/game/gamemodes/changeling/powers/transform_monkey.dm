@@ -24,7 +24,7 @@
 
 	changeling.chem_charges--
 	H.visible_message("<span class='warning'>[H] transforms!</span>")
-	changeling.geneticdamage = 30
+	changeling.set_genome_damage(30)
 	to_chat(H, "<span class='warning'>Our genes cry out!</span>")
 	H = H.monkeyize()
 	if(istype(H))

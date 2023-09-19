@@ -334,8 +334,7 @@
 	siemens_coefficient = 0.3
 	armor = list(melee = 60, bullet = 50, laser = 40,energy = 15, bomb = 30, bio = 100)
 	action_button_name = "Toggle Nanobots"
-	var/nanobots = FALSE
-	var/mob/client //user
+	var/nanobots = FALSE //user
 
 /obj/item/clothing/suit/space/vox/medic/New()
 	..()
@@ -343,7 +342,6 @@
 
 /obj/item/clothing/suit/space/vox/medic/attack_self(mob/user)
 	var/mob/living/carbon/human/H = user
-	client = H
 	if(!istype(H))
 		return
 	if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/medic))
@@ -364,20 +362,22 @@
 		set_light(0.5, 0.1, 3, 2, "#e09d37")
 		slowdown_per_slot[slot_wear_suit] = 10
 
-/obj/item/clothing/suit/space/vox/medic/Initialize()
-	. = ..()
+/obj/item/clothing/suit/space/vox/medic/equipped()
 	set_next_think(world.time)
+	return ..()
 
 /obj/item/clothing/suit/space/vox/medic/think()
-	if(!client)
+	if(!ishuman(loc))
 		return
-	var/mob/living/carbon/human/H = client
+	var/mob/living/carbon/human/H = loc
+	if(!H.client)
+		return
 	if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/medic))
 		return
-	if(H.stat)
+	if(H.stat != CONSCIOUS)
 		return
 	if(nanobots)
-		for(var/mob/living/carbon/human/vox/V in range(H, 2))
+		for(var/mob/living/carbon/human/vox/V in range(2, H))
 			for(var/obj/item/organ/external/regen_organ in V.organs)
 				regen_organ.damage = max(regen_organ.damage - 2, 0)
 			if(V.getBruteLoss())
@@ -389,7 +389,7 @@
 			if(V.reagents.get_reagent_amount(/datum/reagent/painkiller/paracetamol) + 5 <= 20)
 				V.reagents.add_reagent(/datum/reagent/painkiller/paracetamol, 5)
 	else
-		for(var/mob/living/carbon/human/vox/V in range(H, 1))
+		for(var/mob/living/carbon/human/vox/V in range(1, H))
 			if(V.getBruteLoss())
 				V.adjustBruteLoss(-2 * config.health.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
 			if(V.getFireLoss())
@@ -480,13 +480,3 @@
 	. = ..()
 	if (magpulse)
 		. += "\nIt would be hard to take these off without relaxing your grip first."//theoretically this message should only be seen by the wearer when the claws are equipped.
-
-
-/obj/item/clothing/gloves/nabber
-	desc = "These insulated gloves have only three fingers."
-	name = "three-fingered insulated gloves"
-	icon_state = "white-glove-nabber"
-	color = COLOR_YELLOW
-	siemens_coefficient = 0
-	permeability_coefficient = 0.05
-	species_restricted = list(SPECIES_NABBER)

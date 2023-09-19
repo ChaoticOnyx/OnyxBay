@@ -29,7 +29,7 @@
 			for(var/datum/modifier/M in modifiers)
 				if(!isnull(M.incoming_healing_percent))
 					amount *= M.incoming_healing_percent
-		var/obj/item/organ/internal/brain/sponge = internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/sponge = internal_organs_by_name[BP_BRAIN]
 		if(sponge)
 			sponge.take_internal_damage(amount)
 
@@ -37,7 +37,7 @@
 	if(status_flags & GODMODE)
 		return 0
 	if(should_have_organ(BP_BRAIN))
-		var/obj/item/organ/internal/brain/sponge = internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/sponge = internal_organs_by_name[BP_BRAIN]
 		if(sponge)
 			sponge.damage = min(max(amount, 0),sponge.species.total_health)
 			updatehealth()
@@ -46,7 +46,7 @@
 	if(status_flags & GODMODE)
 		return 0
 	if(should_have_organ(BP_BRAIN))
-		var/obj/item/organ/internal/brain/sponge = internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/sponge = internal_organs_by_name[BP_BRAIN]
 		if(sponge)
 			if(sponge.status & ORGAN_DEAD)
 				return sponge.species.total_health
@@ -210,6 +210,8 @@
 				amount *= M.incoming_damage_percent
 			if(!isnull(M.incoming_tox_damage_percent))
 				amount *= M.incoming_tox_damage_percent
+				heal = istype(M, TRAIT_TOXINLOVER)
+
 	else if(amount < 0)
 		for(var/datum/modifier/M in modifiers)
 			if(!isnull(M.incoming_healing_percent))
@@ -240,7 +242,7 @@
 	if((species.species_flags & SPECIES_FLAG_NO_POISON) || isSynthetic() || isundead(src))
 		return
 
-	var/heal = amount < 0
+	var/heal = amount < 0 || HAS_TRAIT(src, TRAIT_TOXINLOVER)
 	amount = abs(amount)
 
 	if(!heal && (CE_ANTITOX in chem_effects))
@@ -265,7 +267,7 @@
 
 	// Move the brain to the very end since damage to it is vastly more dangerous
 	// (and isn't technically counted as toxloss) than general organ damage.
-	var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
+	var/obj/item/organ/internal/cerebrum/brain/brain = internal_organs_by_name[BP_BRAIN]
 	if(brain)
 		pick_organs -= brain
 		pick_organs += brain
@@ -281,6 +283,7 @@
 				amount *= M.incoming_damage_percent
 			if(!isnull(M.incoming_tox_damage_percent))
 				amount *= M.incoming_tox_damage_percent
+
 		if(heal)
 			if(I.damage < amount)
 				amount -= I.damage
@@ -505,6 +508,7 @@ This function restores all organs.
 
 	// Will set our damageoverlay icon to the next level, which will then be set back to the normal level the next mob.Life().
 	updatehealth()
+	species.handle_damage(src)
 	BITSET(hud_updateflag, HEALTH_HUD)
 	return created_wound
 

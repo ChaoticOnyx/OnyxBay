@@ -113,9 +113,9 @@
 /datum/event/meteor_wave/proc/announce()
 	switch(severity)
 		if(EVENT_LEVEL_MAJOR)
-			command_announcement.Announce(replacetext(GLOB.using_map.meteor_detected_message, "%STATION_NAME%", station_name()), "[station_name()] Sensor Array", new_sound = GLOB.using_map.meteor_detected_sound, zlevels = affecting_z)
+			SSannounce.play_station_announce(/datum/announce/meteors_major_detected)
 		else
-			command_announcement.Announce("The [station_name()] is now in a meteor shower.", "[station_name()] Sensor Array", zlevels = affecting_z)
+			SSannounce.play_station_announce(/datum/announce/meteors_detected)
 
 /datum/event/meteor_wave/proc/end()
 	set_next_think(0)
@@ -123,9 +123,9 @@
 
 	switch(severity)
 		if(EVENT_LEVEL_MAJOR)
-			command_announcement.Announce("The [station_name()] has cleared the meteor storm.", "[station_name()] Sensor Array", zlevels = affecting_z)
+			SSannounce.play_station_announce(/datum/announce/meteors_major_end)
 		else
-			command_announcement.Announce("The [station_name()] has cleared the meteor shower", "[station_name()] Sensor Array", zlevels = affecting_z)
+			SSannounce.play_station_announce(/datum/announce/meteors_end)
 
 /datum/event/meteor_wave/proc/worst_case_end()
 	return 2 MINUTE + ((30 / severity) * waves) + (30 SECONDS)

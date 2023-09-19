@@ -438,6 +438,7 @@
 				/obj/structure/closet/boxinggloves = 2,
 				/obj/structure/largecrate = 5,
 				/obj/structure/largecrate/animal/goat = 1,
+				/obj/structure/largecrate/animal/pig = 1,
 				/obj/structure/closet/wardrobe/grey = 5,
 				/obj/structure/closet/wardrobe/xenos = 2,
 				/obj/structure/closet/wardrobe/mixed = 3,
@@ -641,7 +642,7 @@
 				/obj/item/device/healthanalyzer = 2,
 				/obj/item/device/paicard = 2,
 				/obj/item/device/destTagger = 2,
-				/obj/item/device/mmi = 1,
+				/obj/item/organ/internal/cerebrum/mmi = 1,
 				/obj/item/beartrap = 2,
 				/obj/item/handcuffs = 1,
 				/obj/item/camera_assembly = 5,
@@ -1172,6 +1173,7 @@ something, make sure it's not in one of the other lists.
 				/obj/item/music_tape_box/classic = 30,
 				/obj/item/music_tape_box/frontier = 5,
 				/obj/item/music_tape_box/exodus = 5,
+				/obj/item/music_tape_box/retrojazz = 5,
 				/obj/item/music_tape_box/valhalla = 3)
 
 // Selects one spawn point out of a group of points with the same ID and asks it to generate its items

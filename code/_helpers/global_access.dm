@@ -185,8 +185,6 @@
 			return global.all_money_accounts;
 		if("all_objectives")
 			return global.all_objectives;
-		if("all_robolimbs")
-			return global.all_robolimbs;
 		if("all_species")
 			return global.all_species;
 		if("announced_news_types")
@@ -237,8 +235,6 @@
 			return global.cameranet;
 		if("can_call_ert")
 			return global.can_call_ert;
-		if("captain_announcement")
-			return global.captain_announcement;
 		if("cargo_supply_pack_root")
 			return global.cargo_supply_pack_root;
 		if("cargo_supply_packs")
@@ -265,8 +261,6 @@
 			return global.combatlog;
 		if("comm_message_listeners")
 			return global.comm_message_listeners;
-		if("command_announcement")
-			return global.command_announcement;
 		if("command_name")
 			return global.command_name;
 		if("common_tools")
@@ -537,8 +531,6 @@
 			return global.mining_walls;
 		if("minor_air_alarms")
 			return global.minor_air_alarms;
-		if("minor_announcement")
-			return global.minor_announcement;
 		if("mob_hat_cache")
 			return global.mob_hat_cache;
 		if("mob_repository")
@@ -623,8 +615,6 @@
 			return global.vampirepowers
 		if("priority_air_alarms")
 			return global.priority_air_alarms;
-		if("priority_announcement")
-			return global.priority_announcement;
 		if("priv_all_access")
 			return global.priv_all_access;
 		if("priv_all_access_datums")
@@ -641,8 +631,6 @@
 			return global.priv_station_access;
 		if("priv_syndicate_access")
 			return global.priv_syndicate_access;
-		if("prometheans")
-			return global.prometheans;
 		if("protected_objects")
 			return global.protected_objects;
 		if("rad_collectors")
@@ -679,8 +667,6 @@
 			return global.robot_hud_colours;
 		if("robot_inventory")
 			return global.robot_inventory;
-		if("robot_modules")
-			return global.robot_modules;
 		if("round_start_time")
 			return global.round_start_time;
 		if("roundstart_hour")
@@ -1050,8 +1036,6 @@
 			global.all_money_accounts=newval;
 		if("all_objectives")
 			global.all_objectives=newval;
-		if("all_robolimbs")
-			global.all_robolimbs=newval;
 		if("all_species")
 			global.all_species=newval;
 		if("all_virtual_listeners")
@@ -1106,8 +1090,6 @@
 			global.cameranet=newval;
 		if("can_call_ert")
 			global.can_call_ert=newval;
-		if("captain_announcement")
-			global.captain_announcement=newval;
 		if("cargo_supply_pack_root")
 			global.cargo_supply_pack_root=newval;
 		if("cargo_supply_packs")
@@ -1134,8 +1116,6 @@
 			global.combatlog=newval;
 		if("comm_message_listeners")
 			global.comm_message_listeners=newval;
-		if("command_announcement")
-			global.command_announcement=newval;
 		if("command_name")
 			global.command_name=newval;
 		if("common_tools")
@@ -1406,8 +1386,6 @@
 			global.mining_walls=newval;
 		if("minor_air_alarms")
 			global.minor_air_alarms=newval;
-		if("minor_announcement")
-			global.minor_announcement=newval;
 		if("mob_hat_cache")
 			global.mob_hat_cache=newval;
 		if("mob_repository")
@@ -1492,8 +1470,6 @@
 			global.vampirepowers=newval;
 		if("priority_air_alarms")
 			global.priority_air_alarms=newval;
-		if("priority_announcement")
-			global.priority_announcement=newval;
 		if("priv_all_access")
 			global.priv_all_access=newval;
 		if("priv_all_access_datums")
@@ -1510,8 +1486,6 @@
 			global.priv_station_access=newval;
 		if("priv_syndicate_access")
 			global.priv_syndicate_access=newval;
-		if("prometheans")
-			global.prometheans=newval;
 		if("protected_objects")
 			global.protected_objects=newval;
 		if("rad_collectors")
@@ -1548,8 +1522,6 @@
 			global.robot_hud_colours=newval;
 		if("robot_inventory")
 			global.robot_inventory=newval;
-		if("robot_modules")
-			global.robot_modules=newval;
 		if("round_start_time")
 			global.round_start_time=newval;
 		if("roundstart_hour")
@@ -1831,7 +1803,6 @@
 	"all_languages",
 	"all_money_accounts",
 	"all_objectives",
-	"all_robolimbs",
 	"all_species",
 	"all_virtual_listeners",
 	"announced_news_types",
@@ -2080,7 +2051,6 @@
 	"priv_station_access",
 	"priv_syndicate_access",
 	"prizes",
-	"prometheans",
 	"protected_objects",
 	"rad_collectors",
 	"radio_controller",
@@ -2100,7 +2070,6 @@
 	"rkeys",
 	"robot_hud_colours",
 	"robot_inventory",
-	"robot_modules",
 	"round_start_time",
 	"roundstart_hour",
 	"rune_list",

@@ -1,0 +1,15 @@
+"a" = (/turf/simulated/floor/plating,/area/template_noop)
+"i" = (/obj/structure/table/rack,/obj/random/maintenance,/obj/item/clothing/head/sombrero,/obj/item/clothing/suit/poncho/colored,/turf/simulated/floor/plating,/area/template_noop)
+"n" = (/obj/structure/closet,/obj/random/maintenance,/obj/item/reagent_containers/vessel/can/machpellabeer,/turf/simulated/floor/plating,/area/template_noop)
+"z" = (/obj/structure/table/rack,/obj/random/maintenance,/obj/item/organ/internal/cerebrum/mmi,/turf/simulated/floor/plating,/area/template_noop)
+"D" = (/obj/structure/easel,/turf/simulated/floor/plating,/area/template_noop)
+"J" = (/obj/structure/table/standard,/obj/item/tank/emergency,/obj/item/clothing/mask/breath/emergency,/turf/simulated/floor/plating,/area/template_noop)
+"S" = (/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+"V" = (/obj/structure/table/rack,/obj/item/clothing/gloves/insulated,/obj/item/storage/belt/utility,/obj/effect/decal/cleanable/cobweb,/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+"W" = (/obj/structure/table/rack,/obj/random/maintenance,/obj/item/book/wiki/engineering_construction,/obj/item/device/lightreplacer,/turf/simulated/floor/plating,/area/template_noop)
+
+(1,1,1) = {"
+VJaDn
+aaSaS
+iSazW
+"}

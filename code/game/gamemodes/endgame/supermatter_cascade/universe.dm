@@ -44,7 +44,7 @@ var/global/universe_has_ended = 0
 		M.flash_eyes()
 
 	if(evacuation_controller.cancel_evacuation())
-		priority_announcement.Announce("The evacuation has been aborted due to bluespace distortion.")
+		SSannounce.play_station_announce(/datum/announce/cascade_evacuation_canceled)
 
 	AreaSet()
 	MiscSet()
@@ -71,7 +71,7 @@ God help your s\[\[###!!!-
 AUTOMATED ALERT: Link to [command_name()] lost.
 
 "}
-		priority_announcement.Announce(txt,"SUPERMATTER CASCADE DETECTED")
+		SSannounce.play_announce(/datum/announce/cascade, txt, "SUPERMATTER CASCADE DETECTED")
 
 		spawn(5 MINUTES)
 			GLOB.cinematic.station_explosion_cinematic(0,null) // TODO: Custom cinematic

@@ -4,7 +4,7 @@
 	blurb = "Ook."
 
 	icobase = 'icons/mob/human_races/monkeys/r_monkey.dmi'
-	deform = 'icons/mob/human_races/monkeys/r_monkey.dmi'
+
 	damage_overlays = 'icons/mob/human_races/masks/dam_monkey.dmi'
 	damage_mask = 'icons/mob/human_races/masks/dam_mask_monkey.dmi'
 
@@ -112,7 +112,7 @@
 		H.emote(pick("scratch","jump","roll","tail"))
 
 	if(H.get_shock() && H.shock_stage < 40 && prob(3))
-		H.custom_emote("chimpers pitifully")
+		H.visible_emote("chimpers pitifully.")
 
 	if(H.shock_stage > 10 && prob(3))
 		H.emote(pick("cry","whimper"))
@@ -121,7 +121,7 @@
 		H.emote("scream")
 
 	if(!H.restrained() && H.lying && H.shock_stage >= 60 && prob(3))
-		H.custom_emote("thrashes in agony")
+		H.visible_emote("thrashes in agony.")
 
 /datum/species/monkey/get_random_name()
 	return "[lowertext(name)] ([rand(100,999)])"
@@ -142,7 +142,6 @@
 	health_hud_intensity = 2
 
 	icobase = 'icons/mob/human_races/monkeys/r_farwa.dmi'
-	deform = 'icons/mob/human_races/monkeys/r_farwa.dmi'
 
 	greater_form = SPECIES_TAJARA
 	default_language = "Farwa"
@@ -157,7 +156,6 @@
 	health_hud_intensity = 1.75
 
 	icobase = 'icons/mob/human_races/monkeys/r_neaera.dmi'
-	deform = 'icons/mob/human_races/monkeys/r_neaera.dmi'
 
 	greater_form = SPECIES_SKRELL
 	default_language = "Neaera"
@@ -172,7 +170,6 @@
 	health_hud_intensity = 1.5
 
 	icobase = 'icons/mob/human_races/monkeys/r_stok.dmi'
-	deform = 'icons/mob/human_races/monkeys/r_stok.dmi'
 
 	tail = "stoktail"
 	greater_form = SPECIES_UNATHI

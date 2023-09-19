@@ -54,6 +54,7 @@
 	var/list/s_col                     // skin colour
 	var/s_col_blend = ICON_ADD         // How the skin colour is applied.
 	var/list/h_col                     // hair colour
+	var/list/h_s_col                   // Secondary hair color
 	var/body_hair                      // Icon blend for body hair if any.
 	var/list/markings = list()         // Markings (body_markings) to apply to the icon
 
@@ -274,9 +275,6 @@
 						current_child.internal_organs.Remove(removing)
 
 						status |= ORGAN_CUT_AWAY
-						if(istype(removing, /obj/item/organ/internal/mmi_holder))
-							var/obj/item/organ/internal/mmi_holder/O = removing
-							removing = O.transfer_and_delete()
 
 						removing.forceMove(get_turf(src))
 						user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))
@@ -891,7 +889,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			parent_organ.wounds |= W
 			parent_organ.update_damages()
 		else
-			var/obj/item/organ/external/stump/stump = new (victim, 0, src)
+			var/obj/item/organ/external/stump/stump = new (victim, src)
 			stump.SetName("stump of \a [name]")
 			stump.artery_name = "mangled [artery_name]"
 			stump.arterial_bleed_severity = arterial_bleed_severity
@@ -1136,7 +1134,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		status |= ORGAN_CUT_AWAY
 
 	if(company)
-		var/datum/robolimb/R = all_robolimbs[company]
+		var/datum/robolimb/R = GLOB.all_robolimbs[company]
 		if(!R || (species && (species.name in R.species_cannot_use)) || \
 		 (R.restricted_to.len && !(species.name in R.restricted_to)) || \
 		 (R.applies_to_part.len && !(organ_tag in R.applies_to_part)))

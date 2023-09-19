@@ -1,0 +1,22 @@
+"a" = (/obj/effect/floor_decal/corner/black{dir = 6},/obj/structure/computerframe,/turf/simulated/floor/tiled/rough,/area/template_noop)
+"g" = (/obj/machinery/light/small/red{dir = 4},/turf/simulated/floor/trim/lino,/area/template_noop)
+"j" = (/obj/effect/floor_decal/corner/black{dir = 6},/obj/structure/closet/cabinet,/obj/item/clothing/suit/johnny_coat,/obj/item/clothing/under/johnny,/obj/item/clothing/head/det,/turf/simulated/floor/tiled/rough,/area/template_noop)
+"p" = (/obj/effect/decal/cleanable/blood,/obj/random/maintenance,/turf/simulated/floor/trim/lino,/area/template_noop)
+"s" = (/obj/machinery/photocopier,/obj/item/newspaper,/obj/item/newspaper,/obj/effect/decal/cleanable/cobweb2,/turf/simulated/floor/trim/wood,/area/template_noop)
+"t" = (/obj/structure/bed/chair/office/dark,/turf/simulated/floor/trim/lino,/area/template_noop)
+"u" = (/obj/effect/floor_decal/corner/black{dir = 4},/obj/structure/table/woodentable,/obj/item/storage/box/evidence,/obj/item/device/taperecorder,/obj/item/grenade/flashbang,/turf/simulated/floor/tiled/rough,/area/template_noop)
+"v" = (/obj/effect/decal/cleanable/blood,/obj/item/remains/human,/obj/item/clothing/accessory/bowtie/ugly,/turf/simulated/floor/trim/lino,/area/template_noop)
+"A" = (/obj/effect/floor_decal/corner/black{dir = 5},/obj/structure/filingcabinet/filingcabinet,/turf/simulated/floor/tiled/rough,/area/template_noop)
+"D" = (/obj/effect/floor_decal/corner/black{dir = 5},/turf/simulated/floor/tiled/rough,/area/template_noop)
+"J" = (/obj/structure/noticeboard{pixel_y = 27},/turf/simulated/floor/trim/wood,/area/template_noop)
+"P" = (/obj/effect/floor_decal/corner/black{dir = 6},/obj/structure/computerframe,/obj/machinery/newscaster{pixel_x = -30},/turf/simulated/floor/tiled/rough,/area/template_noop)
+"T" = (/turf/simulated/floor/trim/wood,/area/template_noop)
+"U" = (/obj/effect/floor_decal/corner/black{dir = 6},/obj/item/device/flashlight/lamp,/obj/structure/table/steel,/turf/simulated/floor/tiled/rough,/area/template_noop)
+
+(1,1,1) = {"
+jJs
+PTT
+Utp
+avg
+uDA
+"}

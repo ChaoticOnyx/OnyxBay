@@ -964,6 +964,19 @@
 		/datum/reagent/nutriment/garlicsauce = 2)
 	bitesize = 3
 
+/obj/item/reagent_containers/food/porkchop
+	name = "Pork chop"
+	desc = "This steak tastes like haram."
+	icon_state = "porkchop"
+	trash = /obj/item/trash/dish/plate
+	filling_color = "#7a3d11"
+	center_of_mass = "x=16;y=13"
+	startswith = list(
+		/datum/reagent/nutriment/protein = 4,
+		/datum/reagent/sodiumchloride = 1,
+		/datum/reagent/blackpepper = 1)
+	bitesize = 3
+
 /obj/item/reagent_containers/food/spacylibertyduff
 	name = "Spacy Liberty Duff"
 	desc = "Jello gelatin, from Alfred Hubbard's cookbook."
@@ -1221,9 +1234,14 @@
 /obj/item/reagent_containers/food/monkeycube/On_Consume(mob/M)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		H.visible_message("<span class='warning'>A screeching creature bursts out of [M]'s chest!</span>")
+		H.visible_message(SPAN("warning", "A screeching creature bursts out of [H]'s chest!"))
 		var/obj/item/organ/external/organ = H.get_organ(BP_CHEST)
 		organ.take_external_damage(50, 0, 0, "Animal escaping the ribcage")
+	else
+		M.visible_message(\
+			SPAN("warning", "A screeching creature bursts out of [M]!"),\
+			SPAN("warning", "You feel like your body is being torn apart from the inside!"))
+		M.gib()
 	Expand()
 
 /obj/item/reagent_containers/food/monkeycube/on_reagent_change()
@@ -1894,6 +1912,15 @@
 	center_of_mass = "x=17;y=20"
 	startswith = list(/datum/reagent/nutriment/protein = 2)
 	bitesize = 2
+
+/obj/item/reagent_containers/food/bacon
+	name = "bacon"
+	desc = "A thin slice of pork."
+	icon = 'icons/obj/food.dmi'
+	icon_state = "bacon"
+	center_of_mass = "x=17;y=20"
+	startswith = list(/datum/reagent/nutriment/protein = 2)
+	bitesize = 1
 
 /obj/item/reagent_containers/food/rawfaggot
 	name = "raw faggot"
