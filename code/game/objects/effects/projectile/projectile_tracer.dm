@@ -25,7 +25,7 @@ proc/generate_tracer_between_points(obj/item/projectile/source, datum/point/star
 	light_color = COLOR_BLUE_LIGHT
 
 /obj/effect/projectile/tracer/laser/omni
-	icon_state = "omni"
+	icon_state = "beam_omni"
 	light_color = COLOR_LUMINOL
 
 /obj/effect/projectile/tracer/laser/small
