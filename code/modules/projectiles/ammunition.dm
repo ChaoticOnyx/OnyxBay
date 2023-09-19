@@ -63,7 +63,7 @@
 	pixel_x = rand(-randpixel, randpixel)
 	pixel_y = rand(-randpixel, randpixel)
 
-/obj/item/ammo_casing/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/ammo_casing/attackby(obj/item/W, mob/user)
 	if(!isScrewdriver(W))
 		return ..()
 
