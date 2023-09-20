@@ -27,3 +27,4 @@
 	)
 
 	allowed_spawns = list("Arrivals Shuttle")
+	can_be_voted = FALSE
