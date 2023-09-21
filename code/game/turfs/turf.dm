@@ -3,8 +3,7 @@
 	level = 1
 
 	layer = TURF_LAYER
-	plane = FLOOR_PLANE
-	vis_flags = VIS_INHERIT_PLANE|VIS_INHERIT_ID
+
 
 	var/turf_flags
 
@@ -292,13 +291,13 @@ var/const/enterloopsanity = 100
 
 /turf/_examine_text(mob/user, infix, suffix)
 	. = ..()
-	
+
 	if(hasHUD(user, HUD_SCIENCE))
 		. += "\nStopping Power:"
 
 		. += "\nα-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_ALPHA_PARTICLE]), "eV", 3)]"
 		. += "\nβ-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_BETA_PARTICLE]), "eV", 3)]"
-	
+
 	return .
 
 /turf/proc/get_footstep_sound()

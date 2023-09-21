@@ -289,7 +289,6 @@
 		set_light(0.2, 0.1, 1) // Very dim so the rest of the flag is barely visible - if the turf is completely dark, you can't see anything on it, no matter what
 		var/image/addon = image(icon = src.icon, icon_state = fringe) // Bright fringe
 		addon.layer = ABOVE_LIGHTING_LAYER
-		addon.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 		overlays += addon
 
 /obj/item/stack/flag/proc/knock_down()

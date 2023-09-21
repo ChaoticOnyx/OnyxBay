@@ -1,6 +1,5 @@
 /atom/movable
-	appearance_flags = DEFAULT_APPEARANCE_FLAGS | TILE_BOUND
-	vis_flags = VIS_INHERIT_PLANE|VIS_INHERIT_ID
+	appearance_flags
 	glide_size = 8
 
 	var/last_move = null

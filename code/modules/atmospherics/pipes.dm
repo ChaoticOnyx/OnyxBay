@@ -186,7 +186,7 @@
 	//  be null. For mapping purposes color is defined in the object definitions.
 	icon = null
 	alpha = 255
-	plane = FLOOR_PLANE
+
 
 	switch(dir)
 		if(SOUTH, NORTH)
@@ -457,7 +457,7 @@
 	..()
 	alpha = 255
 	icon = null
-	plane = FLOOR_PLANE
+
 
 	switch(dir)
 		if(NORTH)

@@ -9,7 +9,6 @@
 /// Returns the speech bubble image with an apropriate layer and plane set.
 /proc/create_speech_bubble_image(bubble_icon, bubble_icon_state, atom/source)
 	var/image/speech_bubble = image('icons/mob/effects/talk.dmi', source, "[bubble_icon][bubble_icon_state]", FLOAT_LAYER)
-	speech_bubble.set_float_plane(source, MOUSE_INVISIBLE_PLANE)
 	speech_bubble.appearance_flags |= APPEARANCE_UI_IGNORE_ALPHA
 	return speech_bubble
 

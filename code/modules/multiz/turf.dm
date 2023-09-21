@@ -29,7 +29,7 @@
 	name = "open space"
 	icon = 'icons/turf/space.dmi'
 	icon_state = ""
-	plane = OPENSPACE_PLANE
+	plane = OPEN_SPACE_PLANE
 	density = 0
 	pathweight = 100000 //Seriously, don't try and path over this one numbnuts
 
@@ -45,7 +45,6 @@
 
 
 /turf/simulated/open/proc/update()
-	plane = OPENSPACE_PLANE
 	if(below)
 		unregister_signal(below, SIGNAL_TURF_CHANGED)
 		unregister_signal(below, SIGNAL_EXITED)
