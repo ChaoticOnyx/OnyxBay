@@ -157,7 +157,9 @@
 			for(var/J in all_jobs)
 				var/list/job = all_jobs[J]
 				for(var/name in job)
-					var/chance = clamp(abs(job_master.occupations_by_title[job[name]].spawn_positions/job.len*100), 0, 100)
+					var/job_slots = job_master.occupations_by_title[job[name]].spawn_positions
+					var/chance
+					job_slots == -1 ? (chance = 100) : (chance = clamp(job_slots/job.len*100, 0, 100))
 					dat += "<tr class='candystripe'><td>[name]</td><td>[job[name]]</td><td>[chance]%</td></tr>"
 
 	dat += "</table>"
