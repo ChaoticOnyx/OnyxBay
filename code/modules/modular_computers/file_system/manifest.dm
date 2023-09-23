@@ -83,6 +83,88 @@
 	dat = replacetext(dat, "\t", "")
 	return dat
 
+/proc/manifest_prediction()
+	var/list/dept_data = list(
+		list("jobs" = list(), "header" = "Heads of Staff", "flag" = COM),
+		list("jobs" = list(), "header" = "Command Support", "flag" = SPT),
+		list("jobs" = list(), "header" = "Research", "flag" = SCI),
+		list("jobs" = list(), "header" = "Security", "flag" = SEC),
+		list("jobs" = list(), "header" = "Medical", "flag" = MED),
+		list("jobs" = list(), "header" = "Engineering", "flag" = ENG),
+		list("jobs" = list(), "header" = "Supply", "flag" = SUP),
+		list("jobs" = list(), "header" = "Exploration", "flag" = EXP),
+		list("jobs" = list(), "header" = "Service", "flag" = SRV),
+		list("jobs" = list(), "header" = "Civilian", "flag" = CIV),
+		list("jobs" = list(), "header" = "Miscellaneous", "flag" = MSC),
+		list("jobs" = list(), "header" = "Silicon")
+	)
+	var/dat = {"
+	<head><style>
+		.manifest {border-collapse:collapse;}
+		.manifest td, th {border:1px solid ["black; background-color:#272727; color:white"]; padding:.25em}
+		.manifest th {height: 2em; ["background-color: ["#40628A"]; color:white"]}
+		.manifest tr.head th {["background-color: ["#013D3B"]"]}
+		.manifest td:first-child {text-align:right}
+		.manifest tr.alt td {["background-color: ["#373737"]; color:white"]"]}
+	</style></head>
+	<table class="manifest" width='350px'>
+	<tr class='head'><th>Name</th><th>Position</th><th>Chances</th></tr>
+	"}
+
+	for(var/mob/new_player/player in GLOB.player_list)
+		if(player.ready)
+			var/datum/preferences/player_prefs = player.client.prefs
+			var/player_name = player_prefs.real_name
+			var/silicon = FALSE
+
+			var/list/preferenced_jobs
+			if("Assistant" in player_prefs.job_low)
+				preferenced_jobs = list(
+					list("Assistant")
+					)
+			else
+				preferenced_jobs = list(
+					player_prefs.job_high ? list(player_prefs.job_high) : list(),
+					player_prefs.job_medium,
+					player_prefs.job_low
+					)
+
+			for(var/list/J in preferenced_jobs)
+				var/list/jobs = J
+				if(jobs.len > 0)
+					var/job = pick(jobs)
+					
+					if(job in list("AI", "Cyborg"))
+						silicon = TRUE
+
+					for(var/list/department in dept_data)
+						var/flag = job_master.occupations_by_title[job].department_flag
+
+						if(!silicon)
+							if(department["flag"]&flag)
+								department["jobs"][job] += list("[player_name]" = player_prefs.player_alt_titles[job] ? player_prefs.player_alt_titles[job] : job)
+								break
+						else
+							if(department["header"] == "Silicon")
+								department["jobs"][job] += list("\[Unknown\]" = player_prefs.player_alt_titles[job] ? player_prefs.player_alt_titles[job] : job)
+								break
+					break
+
+	for(var/list/department in dept_data)
+		var/list/all_jobs = department["jobs"]
+		if(all_jobs.len > 0)
+			dat += "<tr><th colspan=3>[department["header"]]</th></tr>"
+			for(var/J in all_jobs)
+				var/list/job = all_jobs[J]
+				for(var/name in job)
+					var/chance = clamp(abs(job_master.occupations_by_title[job[name]].spawn_positions/job.len*100), 0, 100)
+					dat += "<tr class='candystripe'><td>[name]</td><td>[job[name]]</td><td>[chance]%</td></tr>"
+
+	dat += "</table>"
+	dat = replacetext(dat, "\n", "") // so it can be placed on paper correctly
+	dat = replacetext(dat, "\t", "")
+	return dat
+
 /proc/silicon_nano_crew_manifest(list/filter)
 	var/list/filtered_entries = list()
 

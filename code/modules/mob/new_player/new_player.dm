@@ -42,6 +42,7 @@
 	output += "<p><a href='byond://?src=\ref[src];show_settings=1'>Settings</a></p>"
 
 	if(GAME_STATE <= RUNLEVEL_LOBBY)
+		output += "<a href='byond://?src=\ref[src];predict_manifest=1'>View Crew Manifest Prediction</A><br><br>"
 		if(ready)
 			output += "<p>\[ <span class='linkOn'><b>Ready</b></span> | <a href='byond://?src=\ref[src];ready=0'>Not Ready</a> \]</p>"
 		else
@@ -199,6 +200,9 @@
 
 	if(href_list["manifest"])
 		ViewManifest()
+
+	if(href_list["predict_manifest"])
+		ViewManifestPrediction()
 
 	if(href_list["SelectedJob"])
 		var/datum/job/job = job_master.GetJob(href_list["SelectedJob"])
@@ -577,6 +581,16 @@
 	dat += html_crew_manifest(OOC = 1)
 	//show_browser(src, dat, "window=manifest;size=370x420;can_close=1")
 	var/datum/browser/popup = new(src, "Crew Manifest", "Crew Manifest", 370, 420, src)
+	popup.set_content(dat)
+	popup.open()
+
+/mob/new_player/proc/ViewManifestPrediction()
+	if(SSatoms.init_state < INITIALIZATION_INNEW_REGULAR)
+		to_chat(src, SPAN("notice", "Please, wait for the game to initialize!"))
+		return
+	var/dat = "<div align='center'>"
+	dat += manifest_prediction()
+	var/datum/browser/popup = new(src, "Crew Manifest Prediction", "Crew Manifest Prediction", 370, 420, src)
 	popup.set_content(dat)
 	popup.open()
 
