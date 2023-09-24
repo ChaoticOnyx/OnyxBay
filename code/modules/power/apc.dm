@@ -1224,7 +1224,7 @@
 		return
 	if (cell && cell.charge>=20)
 		cell.use(20);
-		INVOKE_ASYNC(src, .proc/break_lights)
+		INVOKE_ASYNC(src, nameof(.proc/break_lights))
 
 /obj/machinery/power/apc/proc/break_lights()
 	for(var/obj/machinery/light/L in area)

@@ -24,7 +24,7 @@
 	else if(hasprox_receiver == host) //Default case
 		hasprox_receiver = H
 	host = H
-	register_signal(host, SIGNAL_MOVED, .proc/HandleMove)
+	register_signal(host, SIGNAL_MOVED, nameof(.proc/HandleMove))
 	last_host_loc = host.loc
 	SetRange(current_range,TRUE)
 

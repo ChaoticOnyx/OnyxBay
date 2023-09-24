@@ -30,7 +30,7 @@
 /datum/event/infestation/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
+	add_think_ctx("announce", CALLBACK(src, nameof(.proc/announce)), 0)
 
 /datum/event/infestation/get_mtth()
 	. = ..()
@@ -96,12 +96,12 @@
 	SSannounce.play_station_announce(/datum/announce/infestation, "Bioscans indicate that [vermstring] have been breeding in \the [location]. Clear them out, before this starts to affect productivity.")
 
 /datum/event/infestation/proc/set_location_get_infestation_turfs()
-	location = pick_area(list(/proc/is_not_space_area, /proc/is_station_area))
+	location = pick_area(list(/proc/is_not_space_area), /proc/is_station_area)
 	if(!location)
 		log_debug("Vermin infestation failed to find a viable area. Aborting.")
 		return
 
-	var/list/vermin_turfs = get_area_turfs(location, list(/proc/not_turf_contains_dense_objects, /proc/IsTurfAtmosSafe))
+	var/list/vermin_turfs = get_area_turfs(location, list(/proc/not_turf_contains_dense_objects), /proc/IsTurfAtmosSafe)
 	if(!vermin_turfs.len)
 		log_debug("Vermin infestation failed to find viable turfs in \the [location].")
 		return

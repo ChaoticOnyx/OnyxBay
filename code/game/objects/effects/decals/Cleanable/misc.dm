@@ -97,7 +97,7 @@
 /obj/effect/decal/cleanable/vomit/Initialize()
 	. = ..()
 	var/drytime = DRYING_TIME * (rand(20, 30) / 10) // 10 to 15 minutes
-	addtimer(CALLBACK(src, .proc/dry), drytime)
+	addtimer(CALLBACK(src, nameof(.proc/dry)), drytime)
 	if(prob(75))
 		SetTransform(rotation = pick(90, 180, 270))
 

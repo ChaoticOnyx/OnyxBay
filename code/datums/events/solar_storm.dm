@@ -16,8 +16,8 @@
 /datum/event/solar_storm/New()
 	. = ..()
 
-	add_think_ctx("start", CALLBACK(src, .proc/start), 0)
-	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+	add_think_ctx("start", CALLBACK(src, nameof(.proc/start)), 0)
+	add_think_ctx("end", CALLBACK(src, nameof(.proc/end)), 0)
 
 /datum/event/solar_storm/get_mtth()
 	. = ..()

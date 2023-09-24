@@ -80,7 +80,7 @@
 	var/icon/bluespace
 
 /datum/modifier/status_effect/metroidrecall/on_applied()
-	register_signal(holder, SIGNAL_MOB_RESIST, .proc/resistField)
+	register_signal(holder, SIGNAL_MOB_RESIST, nameof(.proc/resistField))
 	to_chat(holder, SPAN_DANGER("You feel a sudden tug from an unknown force, and feel a pull to bluespace!"))
 	to_chat(holder, SPAN_NOTICE("Resist if you wish avoid the force!"))
 	bluespace = icon('icons/effects/effects.dmi',"chronofield")
@@ -112,7 +112,7 @@
 	alert_type = /obj/screen/movable/alert/status_effect/freon/stasis
 
 /datum/modifier/status_effect/frozenstasis/on_applied()
-	register_signal(holder, SIGNAL_MOB_RESIST, .proc/breakCube)
+	register_signal(holder, SIGNAL_MOB_RESIST, nameof(.proc/breakCube))
 	cube = new /obj/structure/ice_stasis(get_turf(holder))
 	holder.forceMove(cube)
 	holder.status_flags |= GODMODE
@@ -687,7 +687,7 @@
 		sparks.set_up(5, 0, holder.loc)
 		sparks.start()
 
-		var/list/F = get_area_turfs(pick(playerlocs), list(/proc/not_turf_contains_dense_objects, /proc/IsTurfAtmosSafe))
+		var/list/F = get_area_turfs(pick(playerlocs), list(/proc/not_turf_contains_dense_objects), /proc/IsTurfAtmosSafe)
 		var/range = 0
 		if(!length(F))
 			F = get_turf(holder)
@@ -887,7 +887,7 @@
 	var/weakref/draining_ref
 
 /datum/modifier/status_effect/stabilized/black/on_applied()
-	register_signal(holder, SIGNAL_MOB_GRAB_SET_STATE, .proc/on_grab)
+	register_signal(holder, SIGNAL_MOB_GRAB_SET_STATE, nameof(.proc/on_grab))
 	set_next_think(world.time+1)
 	return ..()
 

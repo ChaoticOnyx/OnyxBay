@@ -97,7 +97,7 @@
 		target.mind.store_memory("<hr>[msg]")
 
 	set_next_think(world.time)
-	add_think_ctx("reminder", CALLBACK(src, .proc/remind_think), world.time + 5 MINUTES)
+	add_think_ctx("reminder", CALLBACK(src, nameof(.proc/remind_think)), world.time + 5 MINUTES)
 
 	return TRUE
 

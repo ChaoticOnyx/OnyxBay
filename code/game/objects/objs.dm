@@ -135,7 +135,7 @@
 	if(machine)
 		unset_machine()
 	machine = O
-	register_signal(O, SIGNAL_QDELETING, .proc/unset_machine)
+	register_signal(O, SIGNAL_QDELETING, nameof(.proc/unset_machine))
 	if(istype(O))
 		O.in_use = TRUE
 

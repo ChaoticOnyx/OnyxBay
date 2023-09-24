@@ -19,9 +19,9 @@
 /datum/event/radiation_storm/New()
 	. = ..()
 
-	add_think_ctx("enter", CALLBACK(src, .proc/enter_belt), 0)
-	add_think_ctx("exit", CALLBACK(src, .proc/exit_belt), 0)
-	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+	add_think_ctx("enter", CALLBACK(src, nameof(.proc/enter_belt)), 0)
+	add_think_ctx("exit", CALLBACK(src, nameof(.proc/exit_belt)), 0)
+	add_think_ctx("end", CALLBACK(src, nameof(.proc/end)), 0)
 
 /datum/event/radiation_storm/get_conditions_description()
 	. = "<em>Radiation Storm</em> should not be <em>running</em>.<br>"
