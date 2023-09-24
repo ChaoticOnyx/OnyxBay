@@ -11,7 +11,7 @@
 	owner.visible_message(SPAN_DANGER("[owner]'s skin starts emitting electric arcs!"),\
 	SPAN_WARNING("You feel electric energy building up inside you!"))
 	playsound(get_turf(owner), GET_SFX(SFX_SPARK_MEDIUM), 100, TRUE)
-	addtimer(CALLBACK(src, .proc/zap), rand(30, 150))
+	addtimer(CALLBACK(src, nameof(.proc/zap)), rand(30, 150))
 
 /obj/item/organ/internal/heart/gland/emp/proc/zap()
 	empulse(owner, rand(2,5),rand(4,7))

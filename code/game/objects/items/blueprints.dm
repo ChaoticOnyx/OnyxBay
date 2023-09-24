@@ -138,7 +138,7 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 
 	A.always_unpowered = 0
 
-	addtimer(CALLBACK(src, .proc/interact), 10)
+	addtimer(CALLBACK(src, nameof(.proc/interact)), 10)
 
 /obj/item/blueprints/proc/move_turfs_to_area(list/turf/turfs, area/A)
 	A.contents.Add(turfs)

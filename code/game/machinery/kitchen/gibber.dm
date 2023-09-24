@@ -227,7 +227,7 @@
 	for(var/mob/pig in mobs_to_process)
 		create_mob_drop(pig)
 
-	timer = addtimer(CALLBACK(src, .proc/finish_processing, user), length(mobs_to_process) * gib_time, TIMER_STOPPABLE)
+	timer = addtimer(CALLBACK(src, nameof(.proc/finish_processing), user), length(mobs_to_process) * gib_time, TIMER_STOPPABLE)
 
 /obj/machinery/gibber/proc/create_mob_drop(mob/victim)
 	if(istype(victim, /mob/living/simple_animal/hostile/faithless))
@@ -361,7 +361,7 @@
 	. = ..()
 
 	set_next_think(world.time)
-	add_think_ctx("pickup", CALLBACK(src, .proc/perform_pickup), world.time + GIBBER_THINK_DELTA)
+	add_think_ctx("pickup", CALLBACK(src, nameof(.proc/perform_pickup)), world.time + GIBBER_THINK_DELTA)
 
 /obj/machinery/gibber/industrial/RefreshParts()
 	. = ..()

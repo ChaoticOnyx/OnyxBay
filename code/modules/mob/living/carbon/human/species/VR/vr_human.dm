@@ -45,7 +45,7 @@
 /mob/living/carbon/human/vrhuman/proc/give_spawn_protection()
 	status_flags ^= GODMODE
 	animate(src, alpha = 255, time = SPAWN_PROTECTION_TIME)
-	addtimer(CALLBACK(src, .proc/lift_spawn_protection), SPAWN_PROTECTION_TIME)
+	addtimer(CALLBACK(src, nameof(.proc/lift_spawn_protection)), SPAWN_PROTECTION_TIME)
 
 /mob/living/carbon/human/vrhuman/proc/lift_spawn_protection()
 	status_flags ^= GODMODE

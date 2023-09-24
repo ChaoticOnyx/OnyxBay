@@ -17,7 +17,7 @@
 	power_draw_per_use = 2
 
 /obj/item/integrated_circuit/time/delay/do_work()
-	addtimer(CALLBACK(src, .proc/activate_pin, 2), delay)
+	addtimer(CALLBACK(src, nameof(.proc/activate_pin), 2), delay)
 
 /obj/item/integrated_circuit/time/delay/five_sec
 	name = "five-sec delay circuit"

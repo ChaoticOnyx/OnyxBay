@@ -22,11 +22,11 @@
 /datum/contract_fixer/proc/roundstart()
 	if(enable_roundstart_proc)
 		create_random_contract(min(6 + round(SSticker.minds.len / 5), 12))
-		addtimer(CALLBACK(src, .proc/contract_tick), time_to_nex_contract)
+		addtimer(CALLBACK(src, nameof(.proc/contract_tick)), time_to_nex_contract)
 
 /datum/contract_fixer/proc/contract_tick()
 	create_random_contract(1)
-	addtimer(CALLBACK(src, .proc/contract_tick), time_to_nex_contract)
+	addtimer(CALLBACK(src, nameof(.proc/contract_tick)), time_to_nex_contract)
 
 /datum/contract_fixer/proc/create_random_contract(count = 1)
 	while(count--)

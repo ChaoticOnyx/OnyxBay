@@ -146,7 +146,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	if(ext_moved_triggerable)
 		moved_event_created = TRUE
 		moved_object = get_object()
-		register_signal(moved_object, SIGNAL_MOVED, .proc/ext_moved)
+		register_signal(moved_object, SIGNAL_MOVED, nameof(.proc/ext_moved))
 
 /obj/item/integrated_circuit/proc/on_data_written() //Override this for special behaviour when new data gets pushed to the circuit.
 	return

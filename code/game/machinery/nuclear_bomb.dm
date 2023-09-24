@@ -41,7 +41,7 @@ var/bomb_set
 	if(timing)
 		timeleft = max(timeleft - wait, 0)
 		if(timeleft <= 0)
-			addtimer(CALLBACK(src, .proc/explode), 0)
+			addtimer(CALLBACK(src, nameof(.proc/explode)), 0)
 		SSnano.update_uis(src)
 
 /obj/machinery/nuclearbomb/attackby(obj/item/O as obj, mob/user as mob, params)

@@ -96,7 +96,7 @@
 		if((istype(O, /obj/item/paper) || istype(O, /obj/item/book/wiki/template)) && user.drop(O, src))
 			user.visible_message("[user] loads some paper into [src].", "You load some paper into [src].")
 			visible_message("[src] begins to hum as it warms up its printing drums.")
-			addtimer(CALLBACK(src, .proc/handle_paper, O), rand(200,400))
+			addtimer(CALLBACK(src, nameof(.proc/handle_paper), O), rand(200,400))
 		else if(istype(O, /obj/item/canvas) && user.drop(O, src))
 			print_object = O
 			user.visible_message("[user] loads \the [O] into [src].", "You load \the [O] into [src].")

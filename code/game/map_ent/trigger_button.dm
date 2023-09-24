@@ -11,7 +11,7 @@
 
 /obj/map_ent/trigger_button/Initialize(mapload)
 	. = ..()
-	
+
 	var/obj/machinery/button/B
 	if(!ev_button_tag)
 		B = locate(/obj/machinery/button) in get_turf(src)
@@ -26,7 +26,7 @@
 			return INITIALIZE_HINT_QDEL
 
 	_button = weakref(B)
-	register_signal(B, SIGNAL_BUTTON_ACTIVATED, .proc/_on_button_activate)
+	register_signal(B, SIGNAL_BUTTON_ACTIVATED, nameof(.proc/_on_button_activate))
 
 /obj/map_ent/trigger_button/Destroy()
 	var/obj/machinery/button/B = _button.resolve()
@@ -39,7 +39,7 @@
 		return
 
 	var/obj/map_ent/E = locate(ev_tag)
-	
+
 	if(!istype(E))
 		util_crash_with("ev_tag is invalid")
 		return

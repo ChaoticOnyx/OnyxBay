@@ -52,7 +52,7 @@
 		if(AREA_GRAVITY_ALWAYS)
 			has_gravity = 1
 
-	is_station = all_predicates_true(list(src), list(/proc/is_not_space_area, /proc/is_station_area))
+	is_station = all_predicates_true(list(src), list(/proc/is_not_space_area), /proc/is_station_area)
 	if(is_station)
 		GLOB.station_areas.Add(src)
 

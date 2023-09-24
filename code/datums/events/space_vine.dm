@@ -9,7 +9,7 @@
 /datum/event/space_vine/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
+	add_think_ctx("announce", CALLBACK(src, nameof(.proc/announce)), 0)
 
 /datum/event/space_vine/get_mtth()
 	. = ..()

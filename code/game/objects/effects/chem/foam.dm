@@ -23,7 +23,7 @@
 	spawn(3 + metal * 3)
 		set_next_think(world.time)
 		checkReagents()
-	addtimer(CALLBACK(src, .proc/remove_foam), 12 SECONDS)
+	addtimer(CALLBACK(src, nameof(.proc/remove_foam)), 12 SECONDS)
 
 /obj/effect/effect/foam/proc/remove_foam()
 	set_next_think(0)

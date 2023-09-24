@@ -97,7 +97,7 @@
 
 /obj/item/asteroid/anomalous_core/New()
 	. = ..()
-	addtimer(CALLBACK(src, .proc/make_inert), 1200)
+	addtimer(CALLBACK(src, nameof(.proc/make_inert)), 1200)
 
 /obj/item/asteroid/anomalous_core/proc/make_inert()
 	inert = 1

@@ -175,6 +175,3 @@ var/global/datum/ntnet/ntnet_global = new()
 		if(A.login == login)
 			return 1
 	return 0
-
-
-

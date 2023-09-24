@@ -15,7 +15,7 @@
 /datum/event/brand_intelligence/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
+	add_think_ctx("announce", CALLBACK(src, nameof(.proc/announce)), 0)
 
 /datum/event/brand_intelligence/get_mtth()
 	. = ..()

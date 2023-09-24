@@ -128,7 +128,7 @@ SUBSYSTEM_DEF(ticker)
 	if((mode_finished && game_finished()) || force_end)
 		Master.SetRunLevel(RUNLEVEL_POSTGAME)
 		end_game_state = END_GAME_READY_TO_END
-		INVOKE_ASYNC(src, .proc/declare_completion)
+		INVOKE_ASYNC(src, nameof(.proc/declare_completion))
 		if(config.game.map_switching && GLOB.all_maps.len > 1)
 			if (config.game.auto_map_vote)
 				SSvote.initiate_vote(/datum/vote/map/end_game, automatic = 1)

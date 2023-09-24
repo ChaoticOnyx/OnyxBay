@@ -408,7 +408,7 @@
 	operating = FALSE
 
 	if(autoclose)
-		addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
+		addtimer(CALLBACK(src, nameof(.proc/close)), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 	return TRUE
 
@@ -417,7 +417,7 @@
 	if(!can_close(forced))
 		if(autoclose)
 			tryingToLock = TRUE
-			addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
+			addtimer(CALLBACK(src, nameof(.proc/close)), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
 		return FALSE
 	operating = TRUE
 

@@ -29,7 +29,7 @@
 		return
 	new_lift_platform.lift_master_datum = src
 	LAZYADD(lift_platforms, new_lift_platform)
-	register_signal(new_lift_platform, SIGNAL_QDELETING, .proc/remove_lift_platforms)
+	register_signal(new_lift_platform, SIGNAL_QDELETING, nameof(.proc/remove_lift_platforms))
 
 /datum/lift_master/proc/remove_lift_platforms(obj/structure/industrial_lift/old_lift_platform)
 	SHOULD_NOT_SLEEP(TRUE)
@@ -195,12 +195,12 @@ GLOBAL_LIST_EMPTY(lifts)
 	. = ..()
 	GLOB.lifts.Add(src)
 	var/static/list/loc_connections = list(
-		SIGNAL_EXITED =.proc/AtomExitHandler,
-		SIGNAL_ENTERED = .proc/AtomEnterHandler,
-		SIGNAL_ATOM_INITIALIZED_ON = .proc/AddItemOnLift
+		SIGNAL_EXITED =nameof(.proc/AtomExitHandler),
+		SIGNAL_ENTERED = nameof(.proc/AtomEnterHandler),
+		SIGNAL_ATOM_INITIALIZED_ON = nameof(.proc/AddItemOnLift)
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
-	register_signal(src, SIGNAL_MOVABLE_BUMP, .proc/GracefullyBreak)
+	register_signal(src, SIGNAL_MOVABLE_BUMP, nameof(.proc/GracefullyBreak))
 
 	if(!lift_master_datum)
 		lift_master_datum = new(src)
@@ -230,7 +230,7 @@ GLOBAL_LIST_EMPTY(lifts)
 	if(AM in lift_load)
 		return
 	LAZYADD(lift_load, AM)
-	register_signal(AM, SIGNAL_QDELETING, .proc/RemoveItemFromLift)
+	register_signal(AM, SIGNAL_QDELETING, nameof(.proc/RemoveItemFromLift))
 
 /obj/structure/industrial_lift/proc/RemoveItemFromLift(atom/movable/potential_rider)
 	SHOULD_NOT_SLEEP(TRUE)

@@ -91,8 +91,8 @@
 /datum/event/prison_break/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
-	add_think_ctx("release", CALLBACK(src, .proc/release), 0)
+	add_think_ctx("announce", CALLBACK(src, nameof(.proc/announce)), 0)
+	add_think_ctx("release", CALLBACK(src, nameof(.proc/release)), 0)
 
 /datum/event/prison_break/on_fire()
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)

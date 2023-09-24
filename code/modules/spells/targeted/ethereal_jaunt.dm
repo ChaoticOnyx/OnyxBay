@@ -26,7 +26,7 @@
 		if(target in jaunt_holder?.contents)
 			if(start_reappear_timer)
 				deltimer(start_reappear_timer)
-			start_reappear_timer = addtimer(CALLBACK(src, .proc/start_reappear, target), duration, TIMER_STOPPABLE)
+			start_reappear_timer = addtimer(CALLBACK(src, nameof(.proc/start_reappear), target), duration, TIMER_STOPPABLE)
 			break
 		if(target.buckled)
 			target.buckled.unbuckle_mob()
@@ -49,7 +49,7 @@
 			target.can_use_hands = FALSE
 			jaunt_steam(mobloc)
 			target.forceMove(jaunt_holder)
-			start_reappear_timer = addtimer(CALLBACK(src, .proc/start_reappear, target), duration, TIMER_STOPPABLE)
+			start_reappear_timer = addtimer(CALLBACK(src, nameof(.proc/start_reappear), target), duration, TIMER_STOPPABLE)
 
 /datum/spell/targeted/ethereal_jaunt/proc/start_reappear(mob/living/target)
 	var/mob_loc = jaunt_holder.last_valid_turf
@@ -57,7 +57,7 @@
 	jaunt_steam(mob_loc)
 	jaunt_reappear(animation, target)
 	animation.forceMove(mob_loc)
-	addtimer(CALLBACK(src, .proc/reappear, mob_loc, target), reappear_duration)
+	addtimer(CALLBACK(src, nameof(.proc/reappear), mob_loc, target), reappear_duration)
 
 /datum/spell/targeted/ethereal_jaunt/proc/reappear(mob_loc, mob/living/target)
 	if(!target.forceMove(mob_loc))
@@ -131,7 +131,7 @@
 	else
 		to_chat(user, SPAN_WARNING("Some strange aura is blocking the way!"))
 	canmove = FALSE
-	addtimer(CALLBACK(src, .proc/allow_move), 2)
+	addtimer(CALLBACK(src, nameof(.proc/allow_move)), 2)
 
 /obj/effect/dummy/spell_jaunt/proc/allow_move()
 	canmove = TRUE

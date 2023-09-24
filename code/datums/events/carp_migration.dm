@@ -67,8 +67,8 @@
 /datum/event/carp_migration/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
-	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+	add_think_ctx("announce", CALLBACK(src, nameof(.proc/announce)), 0)
+	add_think_ctx("end", CALLBACK(src, nameof(.proc/end)), 0)
 
 /datum/event/carp_migration/on_fire()
 	SSevents.evars["carp_migration_running"] = TRUE

@@ -67,7 +67,7 @@
 /datum/event/meteor_wave/New()
 	. = ..()
 
-	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+	add_think_ctx("end", CALLBACK(src, nameof(.proc/end)), 0)
 
 /datum/event/meteor_wave/on_fire()
 	SSevents.evars["meteor_wave_running"] = TRUE

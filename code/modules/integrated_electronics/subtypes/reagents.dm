@@ -188,7 +188,7 @@
 			L.visible_message(SPAN("danger", "[acting_object] is trying to inject [L]!"), \
 								SPAN("danger", "[acting_object] is trying to inject you!"))
 			busy = TRUE
-			addtimer(CALLBACK(src, .proc/inject_after, weakref(L)), injection_status * 3 SECONDS)
+			addtimer(CALLBACK(src, nameof(.proc/inject_after), weakref(L)), injection_status * 3 SECONDS)
 			return
 		else
 			if(!AM.is_open_container())
@@ -215,7 +215,7 @@
 			C.visible_message(SPAN("danger", "[acting_object] takes a blood sample from [C]!"), \
 			SPAN("danger", "[acting_object] takes a blood sample from you!"))
 			busy = TRUE
-			addtimer(CALLBACK(src, .proc/draw_after, weakref(C), tramount), injection_status * 3 SECONDS)
+			addtimer(CALLBACK(src, nameof(.proc/draw_after), weakref(C), tramount), injection_status * 3 SECONDS)
 			return
 
 		else

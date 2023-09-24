@@ -10,7 +10,7 @@
 /datum/event/biohazard_outbreak/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(null, .proc/announce), 0)
+	add_think_ctx("announce", CALLBACK(null, nameof(.proc/announce)), 0)
 
 /datum/event/biohazard_outbreak/get_mtth()
 	. = ..()
@@ -20,11 +20,11 @@
 /datum/event/biohazard_outbreak/on_fire()
 	var/counts = 0
 	var/turf/T = null
-	pick_subarea_turf(/area/maintenance, list(/proc/is_station_turf, /proc/not_turf_contains_dense_objects))
+	pick_subarea_turf(/area/maintenance, list(/proc/is_station_turf), /proc/not_turf_contains_dense_objects)
 
 	while(!T || counts < 5)
 		counts++
-		T = pick_subarea_turf(/area/maintenance, list(/proc/is_station_turf, /proc/not_turf_contains_dense_objects))
+		T = pick_subarea_turf(/area/maintenance, list(/proc/is_station_turf), /proc/not_turf_contains_dense_objects)
 
 	if(!T)
 		log_and_message_admins("Blob didn't found a space for spawning.")

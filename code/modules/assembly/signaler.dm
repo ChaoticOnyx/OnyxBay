@@ -17,7 +17,7 @@
 
 /obj/item/device/assembly/signaler/New()
 	..()
-	addtimer(CALLBACK(src, .proc/set_frequency, frequency), 4 SECOND)
+	addtimer(CALLBACK(src, nameof(.proc/set_frequency), frequency), 4 SECOND)
 	return
 
 

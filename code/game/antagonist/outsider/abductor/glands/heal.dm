@@ -127,7 +127,7 @@
 	else
 		to_chat(owner, SPAN_WARNING("You feel a weird rumble behind your eye sockets..."))
 
-	addtimer(CALLBACK(src, .proc/finish_replace_eyes), rand(100, 200))
+	addtimer(CALLBACK(src, nameof(.proc/finish_replace_eyes)), rand(100, 200))
 
 /obj/item/organ/internal/heart/gland/heal/proc/finish_replace_eyes()
 	owner.restore_organ(BP_EYES)
@@ -154,7 +154,7 @@
 	else
 		to_chat(owner, SPAN_WARNING("You feel a weird tingle in your [limb.name]."))
 
-	addtimer(CALLBACK(src, .proc/finish_replace_limb, limb), rand(150, 300))
+	addtimer(CALLBACK(src, nameof(.proc/finish_replace_limb), limb), rand(150, 300))
 
 /obj/item/organ/internal/heart/gland/heal/proc/finish_replace_limb(obj/item/organ/external/limb)
 	owner.visible_message(SPAN_WARNING("With a loud snap, [owner]'s [limb.name] rapidly grows back from \his body!"),
@@ -198,7 +198,7 @@
 		if(owner.reagents.has_reagent(R.type))
 			keep_going = TRUE
 	if(keep_going)
-		addtimer(CALLBACK(src, .proc/keep_replacing_blood), 30)
+		addtimer(CALLBACK(src, nameof(.proc/keep_replacing_blood)), 30)
 
 /obj/item/organ/internal/heart/gland/heal/proc/replace_chest(obj/item/organ/external/chest/chest)
 	if(BP_IS_ROBOTIC(chest))

@@ -8,15 +8,15 @@ GLOBAL_LIST_EMPTY(last_words)
 
 /datum/element/last_words/attach(mob/living/target)
 	. = ..()
-	
+
 	if(!istype(target))
 		return ELEMENT_INCOMPATIBLE
 
-	register_signal(target, SIGNAL_STAT_SET, .proc/on_stat_set)
+	register_signal(target, SIGNAL_STAT_SET, nameof(.proc/on_stat_set))
 
 /datum/element/last_words/detach(datum/target)
 	unregister_signal(target, SIGNAL_STAT_SET)
-	
+
 	. = ..()
 
 /datum/element/last_words/proc/on_stat_set(mob/living/L, old_stat, new_stat)
@@ -32,7 +32,7 @@ GLOBAL_LIST_EMPTY(last_words)
 	for(last; last > 0; last--)
 		var/entry = L.logging[INDIVIDUAL_SAY_LOG][last]
 		var/tag = L.logging[INDIVIDUAL_SAY_LOG][entry]["tag"]
-		
+
 		if(tag == "\[AUTO_EMOTE\]")
 			continue
 
