@@ -5,6 +5,8 @@
 	path = "frontier"
 
 	shuttle_types = list(
+		/datum/shuttle/autodock/ferry/escape_pod/escape_pod1,
+		/datum/shuttle/autodock/ferry/escape_pod/escape_pod2,
 		/datum/shuttle/autodock/ferry/escape_pod/escape_pod3,
 		/datum/shuttle/autodock/ferry/escape_pod/escape_pod5,
 		/datum/shuttle/autodock/ferry/supply/drone,
