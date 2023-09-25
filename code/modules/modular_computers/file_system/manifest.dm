@@ -1,6 +1,8 @@
+GLOBAL_LIST_EMPTY(dept_data)
+
 // Generates a simple HTML crew manifest for use in various places
 /proc/html_crew_manifest(monochrome, OOC)
-	var/list/dept_data = list(
+	GLOB.dept_data = list(
 		list("names" = list(), "header" = "Heads of Staff", "flag" = COM),
 		list("names" = list(), "header" = "Command Support", "flag" = SPT),
 		list("names" = list(), "header" = "Research", "flag" = SCI),
@@ -16,7 +18,7 @@
 	)
 	var/list/misc //Special departments for easier access
 	var/list/bot
-	for(var/list/department in dept_data)
+	for(var/list/department in GLOB.dept_data)
 		if(department["flag"] == MSC)
 			misc = department["names"]
 		if(isnull(department["flag"]))
@@ -51,7 +53,7 @@
 			isactive[name] = CR.get_status_physical()
 
 		var/found_place = FALSE
-		for(var/list/department in dept_data)
+		for(var/list/department in GLOB.dept_data)
 			var/list/names = department["names"]
 			//if(CR.get_department() && (GLOB.text_to_department_flags[CR.get_department()] & department["flag"]))
 			if(department["flag"] in CR.assigned_deparment_flags)
@@ -71,9 +73,9 @@
 
 		bot[robot.name] = "[robot.modtype] [robot.braintype]"
 
-	for(var/list/department in dept_data)
+	for(var/list/department in GLOB.dept_data)
 		var/list/names = department["names"]
-		if(names.len > 0)
+		if(length(names))
 			dat += "<tr><th colspan=3>[department["header"]]</th></tr>"
 			for(var/name in names)
 				dat += "<tr class='candystripe'><td>[name]</td><td>[names[name]]</td><td>[isactive[name]]</td></tr>"
@@ -84,7 +86,7 @@
 	return dat
 
 /proc/manifest_prediction()
-	var/list/dept_data = list(
+	GLOB.dept_data = list(
 		list("jobs" = list(), "header" = "Heads of Staff", "flag" = COM),
 		list("jobs" = list(), "header" = "Command Support", "flag" = SPT),
 		list("jobs" = list(), "header" = "Research", "flag" = SCI),
@@ -112,54 +114,51 @@
 	"}
 
 	for(var/mob/new_player/player in GLOB.player_list)
-		if(player.ready)
-			var/datum/preferences/player_prefs = player.client.prefs
-			var/player_name = player_prefs.real_name
-			var/silicon = FALSE
+		if(!player.ready)
+			continue
 
-			var/list/preferenced_jobs
-			if("Assistant" in player_prefs.job_low)
-				preferenced_jobs = list(
-					list("Assistant")
-					)
-			else
-				preferenced_jobs = list(
-					player_prefs.job_high ? list(player_prefs.job_high) : list(),
-					player_prefs.job_medium,
-					player_prefs.job_low
-					)
+		var/datum/preferences/player_prefs = player.client.prefs
+		var/player_name = player_prefs.real_name
+		var/silicon = FALSE
 
-			for(var/list/J in preferenced_jobs)
-				var/list/jobs = J
-				if(jobs.len > 0)
-					var/job = pick(jobs)
+		var/list/preferenced_jobs
+		if("Assistant" in player_prefs.job_low)
+			preferenced_jobs = list(
+				list("Assistant")
+				)
+		else
+			preferenced_jobs = list(
+				player_prefs.job_high ? list(player_prefs.job_high) : list(),
+				player_prefs.job_medium,
+				player_prefs.job_low
+				)
+
+		for(var/list/J in preferenced_jobs)
+			var/list/jobs = J
+			if(length(jobs))
+				var/job = pick(jobs)
 					
-					if(job in list("AI", "Cyborg"))
-						silicon = TRUE
+				if(job in list("AI", "Cyborg"))
+					silicon = TRUE
 
-					for(var/list/department in dept_data)
-						var/flag = job_master.occupations_by_title[job].department_flag
+				for(var/list/department in GLOB.dept_data)
+					var/flag = job_master.occupations_by_title[job].department_flag
 
-						if(!silicon)
-							if(department["flag"]&flag)
-								department["jobs"][job] += list("[player_name]" = player_prefs.player_alt_titles[job] ? player_prefs.player_alt_titles[job] : job)
-								break
-						else
-							if(department["header"] == "Silicon")
-								department["jobs"][job] += list("\[Unknown\]" = player_prefs.player_alt_titles[job] ? player_prefs.player_alt_titles[job] : job)
-								break
-					break
+					if(!silicon ? department["flag"]&flag : department["header"] == "Silicon")
+						department["jobs"][job] += list(!silicon ? "[player_name]" : "\[Unknown\]" = player_prefs.player_alt_titles[job] ? player_prefs.player_alt_titles[job] : job)
+						break
+				break
 
-	for(var/list/department in dept_data)
+	for(var/list/department in GLOB.dept_data)
 		var/list/all_jobs = department["jobs"]
-		if(all_jobs.len > 0)
+		if(length(all_jobs))
 			dat += "<tr><th colspan=3>[department["header"]]</th></tr>"
 			for(var/J in all_jobs)
 				var/list/job = all_jobs[J]
 				for(var/name in job)
 					var/job_slots = job_master.occupations_by_title[job[name]].spawn_positions
 					var/chance
-					job_slots == -1 ? (chance = 100) : (chance = clamp(job_slots/job.len*100, 0, 100))
+					job_slots == -1 ? (chance = 100) : (chance = clamp(job_slots/length(job)*100, 0, 100))
 					dat += "<tr class='candystripe'><td>[name]</td><td>[job[name]]</td><td>[chance]%</td></tr>"
 
 	dat += "</table>"
