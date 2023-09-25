@@ -1,30 +1,23 @@
 GLOBAL_LIST_EMPTY(dept_data)
 
-// Generates a simple HTML crew manifest for use in various places
-/proc/html_crew_manifest(monochrome, OOC)
-	GLOB.dept_data = list(
-		list("names" = list(), "header" = "Heads of Staff", "flag" = COM),
-		list("names" = list(), "header" = "Command Support", "flag" = SPT),
-		list("names" = list(), "header" = "Research", "flag" = SCI),
-		list("names" = list(), "header" = "Security", "flag" = SEC),
-		list("names" = list(), "header" = "Medical", "flag" = MED),
-		list("names" = list(), "header" = "Engineering", "flag" = ENG),
-		list("names" = list(), "header" = "Supply", "flag" = SUP),
-		list("names" = list(), "header" = "Exploration", "flag" = EXP),
-		list("names" = list(), "header" = "Service", "flag" = SRV),
-		list("names" = list(), "header" = "Civilian", "flag" = CIV),
-		list("names" = list(), "header" = "Miscellaneous", "flag" = MSC),
-		list("names" = list(), "header" = "Silicon")
-	)
-	var/list/misc //Special departments for easier access
-	var/list/bot
-	for(var/list/department in GLOB.dept_data)
-		if(department["flag"] == MSC)
-			misc = department["names"]
-		if(isnull(department["flag"]))
-			bot = department["names"]
+/proc/manifest_data_initialization(monochrome = FALSE, OOC = FALSE, prediction = FALSE)
+	var/key = prediction ? "all_jobs_in_dept" : "names"
 
-	var/list/isactive = new()
+	GLOB.dept_data = list(
+		list("[key]" = list(), "header" = "Heads of Staff", "flag" = COM),
+		list("[key]" = list(), "header" = "Command Support", "flag" = SPT),
+		list("[key]" = list(), "header" = "Research", "flag" = SCI),
+		list("[key]" = list(), "header" = "Security", "flag" = SEC),
+		list("[key]" = list(), "header" = "Medical", "flag" = MED),
+		list("[key]" = list(), "header" = "Engineering", "flag" = ENG),
+		list("[key]" = list(), "header" = "Supply", "flag" = SUP),
+		list("[key]" = list(), "header" = "Exploration", "flag" = EXP),
+		list("[key]" = list(), "header" = "Service", "flag" = SRV),
+		list("[key]" = list(), "header" = "Civilian", "flag" = CIV),
+		list("[key]" = list(), "header" = "Miscellaneous", "flag" = MSC),
+		list("[key]" = list(), "header" = "Silicon")
+	)
+
 	var/dat = {"
 	<head><style>
 		.manifest {border-collapse:collapse;}
@@ -35,8 +28,25 @@ GLOBAL_LIST_EMPTY(dept_data)
 		.manifest tr.alt td {[monochrome?"border-top-width: 2px":"background-color: [OOC?"#373737; color:white":"#DEF"]"]}
 	</style></head>
 	<table class="manifest" width='350px'>
-	<tr class='head'><th>Name</th><th>Position</th><th>Activity</th></tr>
+	<tr class='head'><th>Name</th><th>Position</th><th>[prediction?"Chances":"Activity"]</th></tr>
 	"}
+
+	return dat
+
+// Generates a simple HTML crew manifest for use in various places
+/proc/html_crew_manifest(monochrome, OOC)
+	var/dat = manifest_data_initialization(monochrome, OOC)
+	var/list/misc //Special departments for easier access
+	var/list/bot
+
+	for(var/list/department in GLOB.dept_data)
+		if(department["flag"] == MSC)
+			misc = department["names"]
+		if(isnull(department["flag"]))
+			bot = department["names"]
+
+	var/list/isactive = new()
+	
 	// sort mobs
 	for(var/datum/computer_file/crew_record/CR in GLOB.all_crew_records)
 		var/name = CR.get_name()
@@ -86,32 +96,7 @@ GLOBAL_LIST_EMPTY(dept_data)
 	return dat
 
 /proc/manifest_prediction()
-	GLOB.dept_data = list(
-		list("jobs" = list(), "header" = "Heads of Staff", "flag" = COM),
-		list("jobs" = list(), "header" = "Command Support", "flag" = SPT),
-		list("jobs" = list(), "header" = "Research", "flag" = SCI),
-		list("jobs" = list(), "header" = "Security", "flag" = SEC),
-		list("jobs" = list(), "header" = "Medical", "flag" = MED),
-		list("jobs" = list(), "header" = "Engineering", "flag" = ENG),
-		list("jobs" = list(), "header" = "Supply", "flag" = SUP),
-		list("jobs" = list(), "header" = "Exploration", "flag" = EXP),
-		list("jobs" = list(), "header" = "Service", "flag" = SRV),
-		list("jobs" = list(), "header" = "Civilian", "flag" = CIV),
-		list("jobs" = list(), "header" = "Miscellaneous", "flag" = MSC),
-		list("jobs" = list(), "header" = "Silicon")
-	)
-	var/dat = {"
-	<head><style>
-		.manifest {border-collapse:collapse;}
-		.manifest td, th {border:1px solid ["black; background-color:#272727; color:white"]; padding:.25em}
-		.manifest th {height: 2em; ["background-color: ["#40628A"]; color:white"]}
-		.manifest tr.head th {["background-color: ["#013D3B"]"]}
-		.manifest td:first-child {text-align:right}
-		.manifest tr.alt td {["background-color: ["#373737"]; color:white"]"]}
-	</style></head>
-	<table class="manifest" width='350px'>
-	<tr class='head'><th>Name</th><th>Position</th><th>Chances</th></tr>
-	"}
+	var/dat = manifest_data_initialization(monochrome = FALSE, OOC = TRUE, prediction = TRUE)
 
 	for(var/mob/new_player/player in GLOB.player_list)
 		if(!player.ready)
@@ -145,12 +130,12 @@ GLOBAL_LIST_EMPTY(dept_data)
 					var/flag = job_master.occupations_by_title[job].department_flag
 
 					if(!silicon ? department["flag"]&flag : department["header"] == "Silicon")
-						department["jobs"][job] += list(!silicon ? "[player_name]" : "\[Unknown\]" = player_prefs.player_alt_titles[job] ? player_prefs.player_alt_titles[job] : job)
+						department["all_jobs_in_dept"][job] += list(!silicon ? "[player_name]" : "\[Unknown\]" = player_prefs.player_alt_titles[job] ? player_prefs.player_alt_titles[job] : job)
 						break
 				break
 
 	for(var/list/department in GLOB.dept_data)
-		var/list/all_jobs = department["jobs"]
+		var/list/all_jobs = department["all_jobs_in_dept"]
 		if(length(all_jobs))
 			dat += "<tr><th colspan=3>[department["header"]]</th></tr>"
 			for(var/J in all_jobs)
