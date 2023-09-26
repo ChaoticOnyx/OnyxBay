@@ -16,7 +16,7 @@
 	. = max(1 HOUR, .)
 
 /datum/event/stray_facehugger/on_fire()
-	var/turf/T = pick_subarea_turf(/area/maintenance, list(/proc/is_station_turf), /proc/not_turf_contains_dense_objects)
+	var/turf/T = pick_subarea_turf(/area/maintenance, list(/proc/is_station_turf, /proc/not_turf_contains_dense_objects))
 
 	if(!T)
 		log_debug("Facehugger event failed to find a proper spawn point. Aborting.")
