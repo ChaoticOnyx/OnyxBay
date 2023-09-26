@@ -687,7 +687,7 @@
 		sparks.set_up(5, 0, holder.loc)
 		sparks.start()
 
-		var/list/F = get_area_turfs(pick(playerlocs), list(/proc/not_turf_contains_dense_objects), /proc/IsTurfAtmosSafe)
+		var/list/F = get_area_turfs(pick(playerlocs), list(/proc/not_turf_contains_dense_objects, /proc/IsTurfAtmosSafe))
 		var/range = 0
 		if(!length(F))
 			F = get_turf(holder)
