@@ -1,84 +1,261 @@
-"a" = (/turf/space,/area/space)
-"b" = (/obj/effect/landmark/map_data{height = 2},/turf/space,/area/space)
-"c" = (/turf/simulated/wall/r_wall,/area/space)
-"d" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/structure/iv_drip,/obj/item/reagent_containers/ivbag/blood/OMinus,/obj/item/reagent_containers/ivbag/blood/OMinus,/obj/item/reagent_containers/ivbag/blood/OMinus,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"e" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/machinery/optable,/obj/machinery/oxygen_pump/anesthetic{pixel_y = 32},/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"f" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/machinery/computer/operating,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"g" = (/obj/machinery/light{dir = 1},/obj/effect/floor_decal/corner/blue/diagonal,/obj/structure/table/glass,/obj/item/storage/box/syringes,/obj/item/storage/box/freezer,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"h" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/structure/table/glass,/obj/item/storage/box/gloves,/obj/item/storage/box/masks,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"i" = (/obj/effect/floor_decal/corner/blue/diagonal,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"j" = (/obj/structure/lattice,/turf/simulated/open,/area/medical/surgery)
-"k" = (/obj/machinery/light{dir = 1},/obj/effect/floor_decal/corner/blue/diagonal,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"l" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/structure/table/glass,/obj/item/storage/firstaid/surgery,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"m" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/structure/sink{icon_state = "sink"; dir = 4},/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"n" = (/turf/simulated/open,/area/medical/surgery)
-"o" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/structure/table/glass,/obj/item/reagent_containers/dropper,/obj/item/reagent_containers/chem_disp_cartridge/peridaxon,/obj/item/stack/nanopaste,/obj/machinery/light{icon_state = "tube1"; dir = 8},/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"p" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/machinery/body_scanconsole{icon_state = "body_scannerconsole"; dir = 4},/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"q" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/machinery/bodyscanner{icon_state = "body_scanner_0"; dir = 4},/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"r" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/machinery/sleeper{icon_state = "sleeper_0"; dir = 8},/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"s" = (/obj/machinery/light_switch{on = 1; pixel_x = 25},/obj/effect/floor_decal/corner/blue/diagonal,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"t" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/structure/table/glass,/obj/item/scalpel/laser1,/obj/item/scalpel/laser2,/obj/item/scalpel/laser3,/obj/item/device/robotanalyzer,/obj/item/device/healthanalyzer,/obj/item/storage/firstaid/adv,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"u" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/structure/ladder/updown,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"v" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/machinery/atmospherics/unary/freezer,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"w" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/machinery/atmospherics/unary/cryo_cell,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"x" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/machinery/portable_atmospherics/canister/oxygen/prechilled,/obj/machinery/atmospherics/portables_connector,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"y" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/machinery/light{icon_state = "tube1"; dir = 4},/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"z" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/structure/closet/secure_closet/freezer/meat,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"A" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/machinery/mecha_part_fabricator,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"B" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/machinery/atmospherics/pipe/simple/visible/blue{icon_state = "intact"; dir = 5},/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"C" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/machinery/atmospherics/pipe/manifold/visible/blue,/obj/item/reagent_containers/vessel/beaker/cryoxadone,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"D" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/machinery/atmospherics/pipe/simple/visible/blue{icon_state = "intact"; dir = 9},/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"E" = (/obj/machinery/atmospherics/unary/vent_pump/on,/obj/effect/floor_decal/corner/blue/diagonal,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"F" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/machinery/organ_printer/flesh/mapped,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"G" = (/obj/machinery/atmospherics/pipe/simple/visible{icon_state = "intact"; dir = 5},/obj/effect/floor_decal/corner/blue/diagonal,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"H" = (/obj/machinery/atmospherics/pipe/simple/visible{icon_state = "intact"; dir = 4},/obj/effect/floor_decal/corner/blue/diagonal,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"I" = (/obj/machinery/atmospherics/portables_connector{icon_state = "map_connector"; dir = 8},/obj/machinery/portable_atmospherics/canister/air,/obj/effect/floor_decal/corner/blue/diagonal,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"J" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/machinery/organ_printer/robot/mapped,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"K" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/structure/table/rack,/obj/item/stack/material/plasteel/fifty,/obj/item/stack/material/steel/fifty,/obj/item/stack/material/glass/fifty,/obj/item/stack/material/gold/ten,/obj/item/stack/material/mhydrogen/ten,/obj/item/stack/material/silver/ten,/obj/item/stack/material/uranium/ten,/obj/item/stack/material/diamond/ten,/obj/item/stack/material/plasma/fifty,/obj/item/storage/belt/utility/full,/obj/item/stack/material/steel/fifty,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"L" = (/obj/machinery/atmospherics/pipe/simple/visible{icon_state = "intact"; dir = 6},/obj/effect/floor_decal/corner/blue/diagonal,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"M" = (/obj/machinery/atmospherics/portables_connector{icon_state = "map_connector"; dir = 8},/obj/machinery/portable_atmospherics/canister/empty,/obj/effect/floor_decal/corner/blue/diagonal,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"N" = (/obj/machinery/light_switch{on = 1; pixel_x = -25},/obj/effect/floor_decal/corner/blue/diagonal,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"O" = (/obj/machinery/atmospherics/unary/vent_scrubber/on{icon_state = "map_scrubber_on"; dir = 1},/obj/effect/floor_decal/corner/blue/diagonal,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"P" = (/obj/machinery/light{icon_state = "tube1"; dir = 8},/obj/effect/floor_decal/corner/blue/diagonal,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"Q" = (/obj/machinery/light{icon_state = "tube1"; dir = 4},/obj/effect/floor_decal/corner/blue/diagonal,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"R" = (/obj/effect/floor_decal/corner/blue/diagonal,/obj/structure/table/glass,/obj/item/card/id/all_access,/obj/item/card/id/all_access,/obj/item/card/id/all_access,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"S" = (/obj/structure/cable{d2 = 2; icon_state = "0-2"; pixel_y = 0},/obj/machinery/power/apc{dir = 8; name = "west bump"; pixel_x = -24},/turf/simulated/floor,/area/medical/surgery)
-"T" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0},/turf/simulated/floor,/area/medical/surgery)
-"U" = (/obj/machinery/light,/obj/effect/floor_decal/corner/blue/diagonal,/turf/simulated/floor/tiled/white,/area/medical/surgery)
-"V" = (/obj/structure/cable,/obj/machinery/power/debug_items/infinite_generator,/turf/simulated/floor,/area/medical/surgery)
-"W" = (/turf/simulated/wall/r_wall,/area/medical/surgery)
+"ah" = (/obj/effect/decal/remains,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"aJ" = (/obj/machinery/conveyor{dir = 8; id = "merchantbelt2"},/obj/structure/plasticflaps,/turf/simulated/floor/plating,/area/medical/surgery)
+"aW" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/tiled/dirty,/area/medical/surgery)
+"be" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small{dir = 4},/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"bq" = (/obj/structure/table/standard{name = "plastic table frame"},/obj/machinery/door/window/westleft{dir = 2},/obj/machinery/door/window/westleft{dir = 1},/obj/structure/window/reinforced{dir = 8},/obj/item/reagent_containers/food/xenoburger,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"bA" = (/obj/structure/closet/body_bag,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/blood,/obj/machinery/light/small{dir = 8},/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"bG" = (/obj/effect/decal/cleanable/blood,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"bR" = (/obj/structure/lattice,/obj/structure/foamedmetal,/turf/simulated/wall/r_wall,/area/space)
+"cd" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/carpet/blue2,/area/medical/surgery)
+"ce" = (/obj/structure/railing/steel{dir = 4},/mob/living/simple_animal/pig,/obj/machinery/light/small/red{dir = 1},/turf/simulated/floor/plating,/area/medical/surgery)
+"cm" = (/obj/structure/railing/steel,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"cn" = (/obj/item/scalpel/laser1,/obj/item/clothing/suit/surgicalapron,/turf/simulated/floor/plating,/area/medical/surgery)
+"cq" = (/obj/structure/closet/body_bag,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"cs" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/medical/surgery)
+"dm" = (/obj/item/stack/tile/floor,/obj/item/stack/tile/floor,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dirty,/area/medical/surgery)
+"dn" = (/obj/item/storage/briefcase/inflatable,/obj/effect/decal/cleanable/dirt,/obj/structure/table/woodentable,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"do" = (/obj/structure/table/standard{name = "plastic table frame"},/obj/machinery/door/window/westleft{dir = 2},/obj/machinery/door/window/westleft{dir = 1},/obj/structure/window/reinforced{dir = 8},/obj/item/reagent_containers/food/tofukabob,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"dH" = (/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning{dir = 1},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"dR" = (/obj/machinery/microwave{pixel_x = 3; pixel_y = -3},/obj/machinery/light/small{dir = 4},/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"dW" = (/obj/machinery/conveyor{dir = 8; id = "merchantbelt2"},/obj/machinery/light/small/hl,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"ez" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"eH" = (/obj/structure/lattice,/turf/simulated/wall/r_wall,/area/space)
+"eN" = (/obj/effect/decal/cleanable/blood,/obj/machinery/button/remote/blast_door{id = "pigs"; pixel_y = 29},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"fh" = (/obj/structure/foamedmetal,/obj/structure/foamedmetal,/obj/structure/foamedmetal,/turf/simulated/floor/asteroid,/area/space)
+"fj" = (/turf/simulated/floor/trim/wood{icon_state = "wood_broken5"},/area/medical/surgery)
+"fl" = (/obj/structure/table/woodentable,/obj/item/card/id/merchant,/obj/machinery/light/small/hl{dir = 1; icon_state = "hanginglantern1"},/turf/simulated/floor/trim/carpet/green,/area/medical/surgery)
+"fC" = (/obj/machinery/light/small/he{dir = 8},/turf/simulated/floor/natural/grass,/area/medical/surgery)
+"fK" = (/obj/effect/floor_decal/corner/lime{dir = 10},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"fM" = (/obj/machinery/portable_atmospherics/hydroponics,/obj/machinery/light/small/he,/turf/simulated/floor/natural/grass,/area/medical/surgery)
+"fT" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/plating,/area/medical/surgery)
+"gv" = (/obj/structure/bed/chair/office/dark{dir = 8},/obj/machinery/button/remote/blast_door{id = "bridge_doors"; name = "Bridge Door Shutters Control"; pixel_x = 6; pixel_y = 27; req_access = list(19)},/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"hn" = (/obj/item/storage/firstaid/surgery,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"hr" = (/obj/item/reagent_containers/ivbag/nanoblood,/obj/machinery/light/small{dir = 4},/turf/simulated/floor/plating,/area/medical/surgery)
+"hw" = (/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"hL" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"hT" = (/obj/structure/inflatable/wall,/turf/simulated/floor/asteroid,/area/space)
+"hW" = (/obj/machinery/door/airlock/highsecurity,/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "bridge_window"; name = "Bridge Window Shutters"; opacity = 0},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"ig" = (/obj/structure/bed/wheel/padded,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"in" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/medical/surgery)
+"iO" = (/obj/structure/table/standard,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"iV" = (/turf/simulated/mineral,/area/space)
+"jw" = (/obj/structure/table/woodentable,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/carpet/oldred,/area/medical/surgery)
+"jx" = (/obj/structure/table/standard{name = "plastic table frame"},/obj/machinery/door/window/westleft{dir = 2},/obj/machinery/door/window/westleft{dir = 1},/obj/structure/window/reinforced{dir = 8},/obj/item/reagent_containers/food/vegetablesoup,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"jC" = (/obj/structure/table/woodentable,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/trim/carpet/oldred,/area/medical/surgery)
+"jX" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/tiled/dirty,/area/medical/surgery)
+"kc" = (/obj/item/stack/tile/floor,/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/tiled/dirty,/area/medical/surgery)
+"ks" = (/obj/structure/table/woodentable,/obj/item/stack/medical/advanced/bruise_pack{pixel_x = -6; pixel_y = 2},/obj/item/stack/medical/advanced/ointment,/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small{dir = 8},/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"kv" = (/obj/machinery/light/small/hl,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"kz" = (/obj/structure/bed/wheel/padded,/obj/structure/iv_drip{pixel_x = 8},/obj/structure/closet/medical_wall/filled{pixel_x = 26},/obj/effect/decal/cleanable/blood,/obj/machinery/light/small{dir = 4},/turf/simulated/floor/trim/carpet/blue2,/area/medical/surgery)
+"kK" = (/obj/item/stack/tile/floor,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/structure/foamedmetal,/turf/simulated/floor/plating,/area/medical/surgery)
+"lr" = (/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/natural/grass,/area/medical/surgery)
+"lJ" = (/obj/structure/table/marble,/obj/machinery/reagentgrinder,/turf/simulated/floor/tiled/freezer,/area/medical/surgery)
+"mh" = (/obj/structure/bed/chair/wood{dir = 1},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/carpet/oldred,/area/medical/surgery)
+"my" = (/obj/structure/lattice,/turf/space,/area/space)
+"na" = (/obj/structure/window_frame/grille/rglass,/turf/simulated/floor/plating,/area/medical/surgery)
+"nr" = (/obj/item/storage/briefcase/inflatable,/obj/effect/decal/cleanable/dirt,/obj/structure/table/woodentable,/turf/simulated/floor/tiled/dirty,/area/medical/surgery)
+"oc" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"oe" = (/obj/machinery/door/unpowered/simple/wood,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"of" = (/obj/structure/bed/wheel/padded,/obj/structure/iv_drip{pixel_x = -6},/obj/effect/decal/cleanable/blood,/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small{dir = 8},/turf/simulated/floor/trim/carpet/blue2,/area/medical/surgery)
+"ot" = (/obj/structure/railing/steel{dir = 4},/mob/living/simple_animal/pig,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/medical/surgery)
+"oz" = (/obj/structure/table/marble,/turf/simulated/floor/tiled/freezer,/area/medical/surgery)
+"oJ" = (/obj/structure/railing/steel,/obj/structure/railing/steel{dir = 4},/turf/simulated/floor/plating,/area/medical/surgery)
+"oM" = (/obj/item/stack/tile/floor,/turf/simulated/floor/tiled/dirty,/area/medical/surgery)
+"oV" = (/obj/structure/sign/redcross{name = "Medbay"; pixel_y = 32},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"pB" = (/obj/machinery/light/small/hl{dir = 1},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"qd" = (/obj/structure/table/standard{name = "plastic table frame"},/obj/machinery/door/window/westleft{dir = 2},/obj/machinery/door/window/westleft{dir = 1},/obj/structure/window/reinforced{dir = 8},/obj/item/reagent_containers/food/tomatosoup,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"qx" = (/obj/machinery/biogenerator,/obj/machinery/light/small/hl,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"qy" = (/obj/item/inflatable/door,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/tiled/dirty,/area/medical/surgery)
+"qz" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/freezer,/area/medical/surgery)
+"rc" = (/obj/effect/decal/cleanable/dirt,/obj/structure/foamedmetal,/turf/simulated/floor/tiled/dirty,/area/medical/surgery)
+"rq" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood{icon_state = "wood_broken1"},/area/medical/surgery)
+"rs" = (/obj/structure/closet/secure_closet/freezer/fridge,/turf/simulated/floor/tiled/freezer,/area/medical/surgery)
+"rF" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/carpet/blue2,/area/medical/surgery)
+"rZ" = (/turf/simulated/floor/asteroid,/area/space)
+"sa" = (/obj/machinery/conveyor{dir = 8; id = "merchantbelt2"},/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"si" = (/obj/structure/closet/secure_closet/freezer/kitchen,/obj/effect/landmark/map_data{height = 2},/turf/simulated/floor/tiled/freezer,/area/medical/surgery)
+"sj" = (/obj/structure/lattice,/obj/structure/inflatable/wall,/turf/simulated/floor/asteroid,/area/space)
+"sC" = (/obj/structure/ladder/up,/obj/effect/floor_decal/industrial/warning/red/full,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"sD" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dirty,/area/medical/surgery)
+"sX" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/wall/r_wall,/area/medical/surgery)
+"th" = (/obj/machinery/vending/hydronutrients,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"uw" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/wall/r_wall,/area/medical/surgery)
+"ux" = (/obj/structure/table/standard{name = "plastic table frame"},/obj/machinery/door/window/westleft{dir = 2},/obj/machinery/door/window/westleft{dir = 1},/obj/structure/window/reinforced{dir = 8},/obj/item/reagent_containers/food/waffles/variable,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"uB" = (/obj/structure/railing/steel{dir = 4},/turf/simulated/floor/plating,/area/medical/surgery)
+"uH" = (/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/machinery/light/small/red{dir = 4; pixel_y = 8},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"va" = (/obj/structure/window/reinforced{dir = 8},/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"vE" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"vF" = (/obj/machinery/light/small/hl,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"vG" = (/obj/structure/railing/steel{dir = 4},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/medical/surgery)
+"wD" = (/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"wJ" = (/obj/structure/bed/wheel/padded,/obj/structure/iv_drip{pixel_x = 8},/obj/machinery/light/small{dir = 4},/turf/simulated/floor/trim/carpet/blue2,/area/medical/surgery)
+"wL" = (/obj/structure/bed/wheel/padded,/obj/structure/iv_drip{pixel_x = 8},/turf/simulated/floor/trim/carpet/blue2,/area/medical/surgery)
+"wP" = (/obj/structure/kitchenspike,/obj/effect/floor_decal/industrial/warning/red/full,/obj/machinery/light/small/red{dir = 4; pixel_y = 8},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"xg" = (/obj/structure/window/reinforced{dir = 4},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"xJ" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood{icon_state = "wood_broken2"},/area/medical/surgery)
+"xK" = (/obj/structure/window/reinforced{dir = 8},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"xR" = (/obj/structure/kitchenspike,/obj/effect/decal/cleanable/blood,/obj/effect/floor_decal/industrial/warning/red/full,/obj/machinery/light/small/red{dir = 4; pixel_y = 8},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"xY" = (/obj/structure/foamedmetal,/turf/simulated/floor/asteroid,/area/space)
+"ye" = (/obj/structure/closet/body_bag,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/medical/surgery)
+"yj" = (/obj/structure/lattice,/turf/simulated/floor/asteroid,/area/space)
+"ym" = (/mob/living/simple_animal/pig,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/medical/surgery)
+"yG" = (/obj/structure/bed/chair/office/dark{dir = 4},/turf/simulated/floor/trim/carpet/green,/area/medical/surgery)
+"yN" = (/obj/structure/foamedmetal,/obj/structure/foamedmetal,/turf/simulated/floor/asteroid,/area/space)
+"yU" = (/obj/machinery/atm,/turf/simulated/wall/r_wall,/area/medical/surgery)
+"zj" = (/obj/effect/floor_decal/corner/lime{dir = 5},/turf/simulated/floor/plating,/area/medical/surgery)
+"zk" = (/obj/structure/curtain/medical,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/medical/surgery)
+"zD" = (/obj/structure/table/woodentable,/obj/item/stack/medical/splint/ghetto,/obj/item/stack/medical/splint/ghetto,/turf/simulated/floor/plating,/area/medical/surgery)
+"zR" = (/obj/item/device/healthanalyzer_advanced,/obj/structure/table/woodentable,/obj/machinery/light/small{dir = 8},/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"Aw" = (/obj/machinery/portable_atmospherics/hydroponics,/turf/simulated/floor/natural/grass,/area/medical/surgery)
+"Ax" = (/obj/machinery/seed_extractor,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"AK" = (/obj/machinery/merchant_pad,/obj/machinery/light/small/hl,/turf/simulated/floor/trim/carpet/green,/area/medical/surgery)
+"AO" = (/obj/structure/reagent_dispensers/composttank,/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/plating,/area/medical/surgery)
+"AW" = (/obj/structure/inflatable/wall,/turf/simulated/floor/plating,/area/medical/surgery)
+"Bt" = (/obj/structure/window_frame/relectric/rglass,/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "bridge_window"; name = "Bridge Window Shutters"; opacity = 0},/turf/simulated/floor/plating,/area/medical/surgery)
+"Bz" = (/turf/simulated/floor/tiled/freezer,/area/medical/surgery)
+"BA" = (/turf/space,/area/space)
+"BN" = (/obj/machinery/media/jukebox,/obj/item/music_tape/random/retrojazz,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"BY" = (/obj/machinery/light/small/he{dir = 4; icon_state = "hebulb1"},/turf/simulated/floor/natural/grass,/area/medical/surgery)
+"Ca" = (/obj/structure/table/woodentable,/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/trim/carpet/oldred,/area/medical/surgery)
+"Cn" = (/turf/simulated/floor/trim/carpet/green,/area/medical/surgery)
+"Cq" = (/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"CG" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood{icon_state = "wood_broken5"},/area/medical/surgery)
+"CQ" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/plating,/area/medical/surgery)
+"CX" = (/mob/living/simple_animal/pig,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/numbers/one,/turf/simulated/floor/plating,/area/medical/surgery)
+"CY" = (/obj/item/storage/toolbox/mechanical,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"Da" = (/obj/structure/foamedmetal,/obj/structure/foamedmetal,/obj/structure/foamedmetal,/obj/structure/foamedmetal,/turf/simulated/floor/asteroid,/area/space)
+"Ds" = (/obj/structure/sink{dir = 1; pixel_y = 20},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"DC" = (/obj/machinery/door/blast/regular{id = "pigs"; tag = "pigs"},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"Es" = (/obj/structure/foamedmetal,/turf/simulated/wall/r_wall,/area/medical/surgery)
+"EL" = (/obj/structure/lattice,/obj/structure/foamedmetal,/turf/simulated/floor/asteroid,/area/space)
+"Fd" = (/turf/simulated/floor/tiled/dirty,/area/medical/surgery)
+"Fk" = (/obj/item/stack/tile/floor,/obj/item/stack/tile/floor,/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/tiled/dirty,/area/medical/surgery)
+"Fy" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"FB" = (/obj/item/clothing/head/surgery/green,/turf/simulated/floor/plating,/area/medical/surgery)
+"Gb" = (/obj/structure/railing/steel,/obj/structure/railing/steel{dir = 4},/obj/effect/decal/cleanable/blood,/turf/simulated/floor/plating,/area/medical/surgery)
+"GG" = (/obj/item/inflatable/door/torn,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"GI" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/tiled/dirty,/area/medical/surgery)
+"GT" = (/obj/structure/bed/chair/wood{dir = 1},/turf/simulated/floor/trim/carpet/oldred,/area/medical/surgery)
+"Hu" = (/obj/item/inflatable/door,/obj/effect/decal/cleanable/dirt,/obj/machinery/power/apc/high{dir = 4; name = "east bump"; pixel_x = 24},/obj/structure/cable{d2 = 8; dir = 1; icon_state = "0-8"},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"HX" = (/obj/effect/floor_decal/corner/lime{dir = 5},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"Id" = (/obj/structure/closet/medical_wall/filled{pixel_y = 30},/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"In" = (/obj/structure/table/standard{name = "plastic table frame"},/obj/machinery/door/window/westleft{dir = 2},/obj/machinery/door/window/westleft{dir = 1},/obj/structure/window/reinforced{dir = 8},/obj/item/reagent_containers/food/taco,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"Ip" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/wall/r_wall,/area/medical/surgery)
+"Iq" = (/obj/structure/table/woodentable,/obj/machinery/door/window/westleft{name = "Cargo Desk"; req_access = list(50)},/turf/simulated/floor/plating,/area/medical/surgery)
+"IL" = (/obj/machinery/portable_atmospherics/hydroponics,/obj/machinery/light/small/he{dir = 1},/turf/simulated/floor/natural/grass,/area/medical/surgery)
+"IN" = (/obj/structure/table/standard{name = "plastic table frame"},/obj/machinery/door/window/westleft{dir = 1},/obj/machinery/door/window/westleft{dir = 2},/obj/item/reagent_containers/food/wishsoup,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"IQ" = (/turf/simulated/floor/natural/grass,/area/medical/surgery)
+"IT" = (/obj/machinery/light/small/he{dir = 8},/obj/machinery/smartfridge/secure/food,/turf/simulated/floor/tiled/freezer,/area/medical/surgery)
+"IW" = (/obj/item/modular_computer/console/preset/medical,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/medical/surgery)
+"Ja" = (/obj/structure/table/woodentable,/turf/simulated/floor/trim/carpet/green,/area/medical/surgery)
+"Jj" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/blood,/obj/machinery/light/small{dir = 4},/turf/simulated/floor/plating,/area/medical/surgery)
+"Js" = (/obj/structure/table/woodentable,/obj/item/spacecash/bundle/c1000,/obj/item/spacecash/bundle/c1000,/obj/item/spacecash/bundle/c1000,/obj/item/spacecash/bundle/c1000,/obj/item/spacecash/bundle/c1000,/turf/simulated/floor/trim/carpet/green,/area/medical/surgery)
+"Ju" = (/obj/structure/bed/wheel/padded,/obj/structure/iv_drip{pixel_x = -6},/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small{dir = 8},/turf/simulated/floor/trim/carpet/blue2,/area/medical/surgery)
+"Kf" = (/obj/structure/closet/crate/medical,/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"Kh" = (/obj/structure/table/marble,/obj/item/material/kitchen/rollingpin,/obj/item/reagent_containers/vessel/condiment/enzyme,/turf/simulated/floor/tiled/freezer,/area/medical/surgery)
+"Kp" = (/turf/simulated/floor/trim/wood{icon_state = "wood_broken2"},/area/medical/surgery)
+"KE" = (/obj/effect/floor_decal/numbers/two,/turf/simulated/floor/plating,/area/medical/surgery)
+"KR" = (/obj/structure/girder,/turf/simulated/floor/plating,/area/medical/surgery)
+"KW" = (/obj/structure/table/woodentable,/obj/item/storage/belt/medical,/obj/machinery/light/small{dir = 4},/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"KX" = (/obj/structure/table/woodentable,/obj/item/gun/projectile/dartgun/vox/medical,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"Lh" = (/obj/structure/foamedmetal,/turf/simulated/wall/r_wall,/area/space)
+"Lz" = (/obj/machinery/gibber,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning/red/full,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"LI" = (/obj/effect/floor_decal/corner/lime{dir = 10},/turf/simulated/floor/plating,/area/medical/surgery)
+"LQ" = (/obj/structure/reagent_dispensers/watertank,/obj/item/reagent_containers/vessel/bucket,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"Ma" = (/obj/structure/table/marble,/obj/item/material/knife/kitchen,/obj/item/reagent_containers/vessel/beaker{pixel_x = 5},/turf/simulated/floor/tiled/freezer,/area/medical/surgery)
+"MB" = (/obj/structure/foamedmetal,/turf/simulated/floor/plating,/area/medical/surgery)
+"MT" = (/obj/item/reagent_containers/ivbag/nanoblood,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"MX" = (/obj/machinery/power/apc/super,/turf/simulated/wall/r_wall,/area/medical/surgery)
+"Nt" = (/obj/machinery/vending/dinnerware,/turf/simulated/floor/tiled/freezer,/area/medical/surgery)
+"Nv" = (/obj/structure/lattice,/obj/structure/foamedmetal,/obj/structure/foamedmetal,/turf/simulated/floor/asteroid,/area/space)
+"NI" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/carpet/blue2,/area/medical/surgery)
+"NN" = (/obj/structure/foamedmetal,/obj/structure/foamedmetal,/turf/simulated/wall/r_wall,/area/space)
+"Oq" = (/turf/simulated/floor/plating,/area/medical/surgery)
+"OB" = (/obj/machinery/camera/network/civilian_east{c_tag = "Hydroponics"},/obj/structure/table/standard,/obj/item/device/analyzer/plant_analyzer,/obj/item/material/minihoe,/obj/machinery/light/small/hl{dir = 1},/obj/item/shovel/spade,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"Py" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/hypospray/autoinjector/combatpain{pixel_x = 1; pixel_y = -2; randpixel = 0},/obj/item/reagent_containers/hypospray/autoinjector/combatpain{pixel_x = 1; pixel_y = 2; randpixel = 0},/obj/item/reagent_containers/hypospray/autoinjector/combatpain{pixel_x = 1; pixel_y = -6; randpixel = 0},/obj/item/reagent_containers/hypospray/autoinjector/combatpain{pixel_x = 1; pixel_y = 5; randpixel = 0},/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small{dir = 8},/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"PO" = (/obj/structure/girder,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/medical/surgery)
+"PR" = (/mob/living/simple_animal/pig,/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small/red{dir = 8},/turf/simulated/floor/plating,/area/medical/surgery)
+"PW" = (/obj/structure/table/woodentable,/turf/simulated/floor/trim/carpet/oldred,/area/medical/surgery)
+"PX" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"Qh" = (/obj/machinery/light/small/hl{dir = 1; icon_state = "hanginglantern1"},/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"Qr" = (/obj/structure/foamedmetal,/turf/space,/area/space)
+"Qs" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"QR" = (/obj/machinery/chem_master/condimaster{name = "CondiMaster Neo"; pixel_x = -5},/obj/machinery/light/small/he{dir = 4},/turf/simulated/floor/tiled/freezer,/area/medical/surgery)
+"QS" = (/obj/structure/sink/kitchen{dir = 8; pixel_x = 20},/obj/machinery/light/small/he{dir = 4; pixel_y = 11},/turf/simulated/floor/tiled/freezer,/area/medical/surgery)
+"QY" = (/obj/item/modular_computer/console/preset/merchant,/turf/simulated/floor/trim/carpet/green,/area/medical/surgery)
+"QZ" = (/obj/machinery/light/small/hl{dir = 4},/obj/structure/reagent_dispensers/watertank,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"Rl" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"RA" = (/obj/effect/floor_decal/corner/lime{dir = 5},/obj/structure/flora/pottedplant/monkey{name = "Sun Sun"},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"RK" = (/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"RW" = (/obj/structure/table/woodentable,/obj/item/stack/medical/bruise_pack,/obj/item/stack/medical/ointment,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"Sj" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/medical/surgery)
+"Sn" = (/obj/effect/decal/cleanable/dirt,/obj/structure/table/woodentable,/turf/simulated/floor/tiled/dirty,/area/medical/surgery)
+"Sq" = (/obj/structure/foamedmetal,/obj/structure/foamedmetal,/obj/structure/foamedmetal,/turf/simulated/wall/r_wall,/area/space)
+"Sr" = (/obj/structure/window/reinforced{dir = 4},/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"SY" = (/obj/structure/reagent_dispensers/composttank,/obj/item/reagent_containers/vessel/bucket,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"Td" = (/obj/item/stack/tile/floor,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/medical/surgery)
+"Tg" = (/obj/machinery/light/small/hl,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"TE" = (/obj/machinery/door/unpowered/simple/wood,/turf/simulated/floor/plating,/area/medical/surgery)
+"TJ" = (/obj/structure/lattice,/turf/simulated/wall/r_wall,/area/medical/surgery)
+"TR" = (/obj/structure/table/marble,/obj/machinery/microwave{pixel_y = 6},/turf/simulated/floor/tiled/freezer,/area/medical/surgery)
+"TW" = (/obj/machinery/light/small/hl,/turf/simulated/floor/plating,/area/medical/surgery)
+"TZ" = (/turf/simulated/wall/r_wall,/area/medical/surgery)
+"Ug" = (/obj/structure/railing/steel{dir = 4},/obj/machinery/light/small/red,/turf/simulated/floor/plating,/area/medical/surgery)
+"Up" = (/obj/structure/sink/kitchen{dir = 4; pixel_x = -19},/obj/machinery/light/small/he{dir = 8; pixel_y = 11},/turf/simulated/floor/tiled/freezer,/area/medical/surgery)
+"UJ" = (/obj/machinery/seed_storage/garden,/obj/machinery/light/small/hl,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"UP" = (/obj/structure/railing/steel,/obj/effect/floor_decal/numbers/three,/turf/simulated/floor/plating,/area/medical/surgery)
+"US" = (/obj/structure/railing/steel,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/numbers/four,/turf/simulated/floor/plating,/area/medical/surgery)
+"UU" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dirty,/area/medical/surgery)
+"Vp" = (/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"VA" = (/obj/machinery/door/airlock,/turf/simulated/floor/plating,/area/medical/surgery)
+"Wf" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small/red{dir = 8},/turf/simulated/floor/plating,/area/medical/surgery)
+"Wi" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/tiled/dirty,/area/medical/surgery)
+"WG" = (/obj/structure/lattice,/obj/machinery/power/debug_items/infinite_generator,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/asteroid,/area/space)
+"WV" = (/obj/item/bodybag/cryobag/syndi{pixel_x = -5},/obj/item/bodybag/cryobag/syndi,/obj/item/bodybag/cryobag/syndi{pixel_x = 7},/obj/structure/table/woodentable,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"WX" = (/obj/machinery/light/small/hl{dir = 1; icon_state = "hanginglantern1"},/turf/simulated/floor/plating,/area/medical/surgery)
+"Xs" = (/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/plating,/area/medical/surgery)
+"XK" = (/obj/machinery/conveyor_switch{id = "merchantbelt2"},/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"XT" = (/obj/structure/bed/wheel/padded,/obj/structure/iv_drip{pixel_x = -6},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/carpet/blue2,/area/medical/surgery)
+"XZ" = (/obj/machinery/light/small/hl{dir = 1; icon_state = "hanginglantern1"},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"Yc" = (/obj/structure/foamedmetal,/obj/structure/foamedmetal,/turf/simulated/wall/r_wall,/area/medical/surgery)
+"YX" = (/obj/structure/railing/steel{dir = 4},/mob/living/simple_animal/pig,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/plating,/area/medical/surgery)
+"Zh" = (/obj/structure/sign/redcross{name = "Medbay"; pixel_y = 32},/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"ZH" = (/obj/structure/railing/steel,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning,/turf/simulated/floor/tiled/rough,/area/medical/surgery)
+"ZI" = (/obj/structure/lattice,/obj/structure/inflatable/wall,/obj/structure/inflatable/wall,/turf/simulated/floor/asteroid,/area/space)
+"ZM" = (/obj/structure/table/woodentable,/obj/machinery/microwave{pixel_x = 3; pixel_y = -3},/obj/effect/decal/cleanable/dirt,/obj/machinery/light/small{dir = 8},/turf/simulated/floor/trim/wood,/area/medical/surgery)
+"ZX" = (/obj/item/stack/tile/floor,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dirty,/area/medical/surgery)
 
 (1,1,1) = {"
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaacccccccccccccccccaaaaaaaaaaaaaaa
-aaaaaaaaaaaaabaacWWWWWWWWWWWWWWWcaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaacWdefghijiikiiiWcaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaacWliiimjjniiiiiWcaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaacWopqirnnniiiisWcaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaacWtiiiuvwxiiiiyWcaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaacWziAiiBCDiiEiiWcaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaacWFiiiiiiiiiGHIWcaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaacWJiKiiiiiiiiiiWcaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaacWRiiiiiiiiiLHMWcaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaacWNiiiiiiiiiOiiWcaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaacWPiiiiiiiiiiiQWcaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaacWSiiiiiiiiiiiiWcaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaacWTiiiiiiiiiiiiWcaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaacWViiUiiiiiUiiiWcaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaacWWWWWWWWWWWWWWWcaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaacccccccccccccccccaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+BABABABABABABABABABABABABABABABABArZrZyjTZTZTZnananaTZTZTZmyBABABABABABABABABABABABABABABABABABA
+BABABABABABABABABABABABABABABArZrZrZyjTZTZXZOqOqwDwDwDQZTZTZmyBABABABABABABABABABABABABABABABABA
+BABABABABABABABABABABABABABABArZrZyjTZTZwDOqwDvFOqwDOqOqwDTZTZmyBABArZrZrZBABABABABABABABABABABA
+BABABABABABABABABABABABABABABArZyjTZTZTZTZoeTZTZoeTZTZwDOqwDTZTZTZTZTZTZrZrZrZrZBABABABABABABABA
+BABABABABABABABABABABABABABABArZyjTZTZzRFBOqKRcqCQbesXTZTWOqSYTZILAwILTZrZrZrZrZrZBABABABABABABA
+BABABABABABABABABABABABABABABArZyjIpahVpcnigKRyecshLWVTZTZOqCqTZfCIQBYTZTZTZTZTZTZBABABABABABABA
+BABABABABABABABABABABABABABArZrZyjsXPyinhnhrTZbAcsJjTZTZTZwDwDTZHXzjRATZDsOBLQAOTZrZBABABABABABA
+BABABABABABABABABABABABABABArZrZyjTZTZzkTZKRTZTZPOKRTZdRTZIQIQTEOqwDwDoewDOqwDwDTZrZBABABABABABA
+BABABABABABABABABABABABABABArZrZiVTZksSjinkzTZJuinVpIdMTKRwDlrTZwDwDiOTZqxAxthUJTZrZBABABABABABA
+BABABABABABABABABABABABABABArZrZiVTZRWQsrFwLKRXTrFSjSjKXKRwDwDTZfKLIfKTZTZTZTZTZTZBABABABABABABA
+BABABABABABAyjyjyjBABABABArZrZrZyjTZZMoccdwJTZofNIIWzDKWTZwDOqTZfCIQBYTZiViViViViVBABABABABABABA
+BABABABABAyjrZrZrZyjBABABArZrZrZyjyUTZoeTZTZTZTZoeTZKRTZTZwDXsTZfMAwfMTZiViViViVrZBABABABABABABA
+BABABAyjyjrZrZrZrZrZyjyjBArZiVhTsjTZKfvEZhWXOqininoVvEvEvESjvETZTJTZTZTZrZrZyjrZBABABABABABABABA
+BABAyjrZrZrZrZrZrZrZrZrZELyNxYiVyjAWvESjvEvEsCvEwDwDOqOqOqinvETZyjrZrZyjyjyjBABABABABABABABABABA
+BAyjrZrZrZrZrZrZrZrZrZrZyNNvxYhTELAWinSjTZTZTZBtBtBtTZTZTZvEfTTZTZyjyjrZrZrZrZBABABABABABABABABA
+yjrZrZrZrZrZrZrZrZrZxYxYfhNNeHxYELMBSjPXIqgvQhVpVpCnflJsTZvEvETZTZTZTZTZTZTZTZrZrZBABABABABABABA
+yjrZrZrZrZrZrZrZrZxYxYLhDayNELELELMBkKPXhWVpVpVpXKCnyGQYBtTdWiTZTZPRuBinceuHTZTZrZBABABABABABABA
+rZrZrZrZrZrZrZrZrZxYxYLhDayNxYxYxYMBrcvEaJsadWsasaCnAKJaBtUUUUTZTZUPGbUSoJRKwPTZrZBABABABABABABA
+rZrZrZrZrZrZrZrZrZxYxYxYDayNxYxYxYMBUUFyTZTZTZBtBtBtTZTZTZUUUUeNDCdHdHdHdHPXLzTZrZBABABABABABABA
+rZrZrZrZrZrZrZrZrZxYxYxYfhyNxYxYxYMBsDUUTZITrsozsilJNtQRTZUUvEwDDCZHZHZHcmbGLzTZrZBABABABABABABA
+yjrZrZrZrZrZrZrZrZrZxYxYSqyNeHELELEsCYFdnaqzBzBzqzBzqzBznaUUGITZTZCXvGKEYXRKxRTZrZBABABABABABABA
+yjrZrZrZrZrZrZrZrZrZrZrZyNyNELxYELYcdmFdVAqzMaBzBzBzMaBzVAsDvETZTZWfotymUguHsXTZrZBABABABABABABA
+BAyjrZrZrZrZrZrZrZrZrZrZrZELELLhbRTZRloMTZUpTRKhqzKhTRQSTZsDGITZTZTZMXTZTZTZTZrZrZBABABABABABABA
+BABAyjrZrZrZrZrZrZrZrZrZyjQrrZrZyjTZPXvESrBzBzqzBzqzBzBzvasDUUnarZyjyjrZrZrZrZrZBABABABABABABABA
+BABABAyjyjrZrZrZrZrZyjyjBABArZrZyjTZqyUUxgINuxbqjxqddoInxKsDvEAWyjyjrZrZrZrZBABABABABABABABABABA
+BABABABABArZrZrZrZrZBABABArZrZrZyjTZsDwDwDocezrqocCGococwDsDUUTZyjrZyjrZBABAmyBABABABABABABABABA
+BABABABABABABABABABABABABArZrZrZsjTZaWUUvEjwKpTgezkvezjwwDPXkcTZyjyjrZrZrZBABAmyBABABABABABABABA
+BABABABABABABABABABABArZrZrZrZrZsjKRGGFdvFmhVpTZBNTZVpGTvFsDHuuwWGrZiViVrZrZBABAmyBABABABABABABA
+BABABABABABABABABAiViViViVrZrZrZZIKRFdFdTZVpVppBezhwVpfjTZUUCYTZyjiViViVrZrZBABABABABABABABABABA
+BABABABABABABABABArZrZrZiViVrZrZsjTZjXvETZCaPWezxJezPWjCTZZXFkTZyjrZrZrZrZBABABABABABABABABABABA
+BABABABABABABABABABArZrZrZrZrZrZyjTZSndnTZGTGTVpVpocmhGTTZnrSnTZyjyjrZBABABABABABABABABABABABABA
+BABABABABABABABABABABABArZrZrZrZrZTJTZTZTZTZTZTZTZTZTZTZTZTZTZTJBABABABABABABABABABABABABABABABA
 "}
