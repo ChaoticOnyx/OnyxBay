@@ -38,6 +38,12 @@
 	// turf animation
 	var/atom/movable/overlay/c_animation = null
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 350 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.5 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 81 MILLI ELECTRONVOLT
+	)
+
 /obj/machinery/door/attack_generic(mob/user, damage)
 	if(damage >= 10)
 		visible_message("<span class='danger'>\The [user] smashes into \the [src]!</span>")
