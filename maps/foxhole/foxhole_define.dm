@@ -10,7 +10,6 @@
 		/datum/shuttle/autodock/ferry/escape_pod/escape_pod1,
 		/datum/shuttle/autodock/ferry/escape_pod/escape_pod2,
 		/datum/shuttle/autodock/ferry/escape_pod/escape_pod3,
-		/datum/shuttle/autodock/ferry/escape_pod/escape_pod5,
 		/datum/shuttle/autodock/ferry/supply/drone,
 		/datum/shuttle/autodock/ferry/elevator,
 		/datum/shuttle/autodock/multi/antag/mining,
