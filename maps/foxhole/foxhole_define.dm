@@ -32,12 +32,9 @@
 	map_levels = list(
 		new /datum/space_level/foxhole_1,
 		new /datum/space_level/foxhole_2,
-		new /datum/space_level/exodus_3,
-		new /datum/space_level/exodus_4,
 		new /datum/space_level/foxhole_3,
 		new /datum/space_level/foxhole_4,
 		new /datum/space_level/null_space,
-		new /datum/space_level/telecomms,
 		new /datum/space_level/construction_site,
 		new /datum/space_level/snow_asteroid,
 		new /datum/space_level/derelict,
