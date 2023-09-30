@@ -1,5 +1,113 @@
 [
   {
+    "author": "igorsaux",
+    "date": "2023-09-30T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Исправлена формула распространения радиации",
+        "pr": 10597
+      }
+    ]
+  },
+  {
+    "author": "Devyashka",
+    "date": "2023-09-30T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "MapTweak",
+        "message": "Добавлен топор в медбей.",
+        "pr": 10593
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "Добавлены чемоданы в шкафы офицеров.",
+        "pr": 10593
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "Добавлены APC в инженерный.",
+        "pr": 10593
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "Обновлена шахта.",
+        "pr": 10593
+      }
+    ]
+  },
+  {
+    "author": "Lovla",
+    "date": "2023-09-30T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "MapTweak",
+        "message": "Foxhole - На станции теперь часть света включена раундстартом.",
+        "pr": 10600
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "Foxhole - На мостике теперь есть свет и воздух.",
+        "pr": 10600
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "Foxhole - Телекомы перенесены на станцию.",
+        "pr": 10600
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "Foxhole - Шахта с тюрьмы убрана в связи с наличием громадного тюремного блока на станции.",
+        "pr": 10600
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "Foxhole - Эвак теперь имеет точку прилёта.",
+        "pr": 10600
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "Foxhole - Слегка переделаны дормы.",
+        "pr": 10600
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "Foxhole - Детективу добавлена лаборатория и перила напротив выхода.",
+        "pr": 10600
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "Foxhole - В бриге слегка изменено расположение шкафчиков в угоду удобства игроков.",
+        "pr": 10600
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "Foxhole - Убраны коридоры в космос.",
+        "pr": 10600
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "Foxhole - В техах сверху теперь сложнее упасть.",
+        "pr": 10600
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "Foxhole - Эмитер у материи вновь работает.",
+        "pr": 10600
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "Foxhole - Поправлены доступы на дверях.",
+        "pr": 10600
+      },
+      {
+        "prefix": "MapTweak",
+        "message": "Foxhole - Лестницы теперь соединены.",
+        "pr": 10600
+      }
+    ]
+  },
+  {
     "author": "Primudash",
     "date": "2023-09-24T00:00:00+03:00",
     "changes": [
