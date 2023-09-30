@@ -260,7 +260,7 @@
 "cux" = (/obj/machinery/door/firedoor,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/turf/simulated/floor/tiled/mono,/area/hallway/primary/central_three)
 "cvA" = (/turf/simulated/floor/tiled/dark/mono,/area/security/checkpoint2)
 "cwi" = (/obj/effect/floor_decal/corner/paleblue/diagonal,/obj/effect/decal/cleanable/vomit,/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/turf/simulated/floor/tiled/white/rough,/area/security/prison)
-"cwB" = (/obj/structure/catwalk,/obj/machinery/door/airlock/hatch{name = "Telecoms Control Room"; req_access = list(61)},/obj/structure/catwalk,/obj/structure/cable/blue{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/tcommsat/computer)
+"cwB" = (/obj/machinery/door/airlock/hatch{name = "Telecoms Control Room"; req_access = list(61)},/obj/structure/catwalk,/obj/structure/cable/blue{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/tcommsat/computer)
 "cwH" = (/obj/machinery/alarm{dir = 1; pixel_y = -24},/turf/simulated/floor/tiled/rough,/area/hallway/primary/port)
 "cxQ" = (/obj/effect/floor_decal/corner/blue,/obj/effect/floor_decal/corner/white{dir = 8},/obj/machinery/atmospherics/pipe/manifold/hidden/supply,/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers,/obj/machinery/firealarm{pixel_y = -27; dir = 1},/turf/simulated/floor/tiled/rough,/area/hallway/primary/port)
 "czf" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/machinery/light_switch{name = "light switch "; pixel_x = -5; pixel_y = -22},/turf/simulated/floor/trim/wood,/area/crew_quarters/underdorm/theater)
