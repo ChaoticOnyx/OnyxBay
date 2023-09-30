@@ -22,4 +22,4 @@
 /obj/item/modular_computer/console/CouldUseTopic(mob/user)
 	..()
 	if(istype(user, /mob/living/carbon))
-		playsound(src, SFX_KEYBOARD, 60, 1)
+		playsound(src, SFX_KEYBOARD, 50, 1)
