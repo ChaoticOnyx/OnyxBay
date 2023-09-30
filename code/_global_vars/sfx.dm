@@ -150,6 +150,21 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/damage/falling/f_fall_dead10.ogg',
 		'sound/effects/damage/falling/f_fall_dead11.ogg'
 	),
+	SFX_FEMALE_CRY = list(
+		'sound/effects/emotes/f_cry1.ogg',
+		'sound/effects/emotes/f_cry2.ogg',
+		'sound/effects/emotes/f_cry3.ogg',
+		'sound/effects/emotes/f_cry4.ogg'
+	),
+	SFX_FEMALE_LAUGH = list(
+		'sound/effects/emotes/f_laugh.ogg'
+	),
+	SFX_FEMALE_YAWN = list(
+		'sound/effects/emotes/f_yawn.ogg'
+	),
+	SFX_FEMALE_SIGH = list(
+		'sound/effects/emotes/f_sigh.ogg'
+	),
 	// MALE EMOTES
 	SFX_MALE_INTERNAL_BREATH = list(
 		'sound/effects/emotes/m_internal1.ogg',
@@ -259,6 +274,22 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/damage/falling/m_fall_dead9.ogg',
 		'sound/effects/damage/falling/m_fall_dead10.ogg',
 		'sound/effects/damage/falling/m_fall_dead11.ogg'
+	),
+	SFX_MALE_CRY = list(
+		'sound/effects/emotes/m_cry1.ogg',
+		'sound/effects/emotes/m_cry2.ogg',
+		'sound/effects/emotes/m_cry3.ogg',
+		'sound/effects/emotes/m_cry4.ogg'
+	),
+	SFX_MALE_LAUGH = list(
+		'sound/effects/emotes/m_laugh1.ogg',
+		'sound/effects/emotes/m_laugh2.ogg'
+	),
+	SFX_MALE_YAWN = list(
+		'sound/effects/emotes/m_yawn.ogg'
+	),
+	SFX_MALE_SIGH = list(
+		'sound/effects/emotes/m_sigh.ogg'
 	),
 	// AMBIENT
 	SFX_AMBIENT_POWERED_GLOBAL = list(
@@ -1243,6 +1274,23 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/voice/hiss2.ogg',
 		'sound/voice/hiss3.ogg',
 		'sound/voice/hiss4.ogg'
+	),
+	SFX_WHISTLE = list(
+		'sound/effects/emotes/whistle1.ogg',
+		'sound/effects/emotes/whistle2.ogg',
+		'sound/effects/emotes/whistle3.ogg',
+		'sound/effects/emotes/whistle4.ogg'
+	),
+	SFX_SNORE = list(
+		'sound/effects/emotes/snore1.ogg',
+		'sound/effects/emotes/snore2.ogg',
+		'sound/effects/emotes/snore3.ogg'
+	),
+	SFX_CLAP = list(
+		'sound/effects/emotes/clap1.ogg',
+		'sound/effects/emotes/clap2.ogg',
+		'sound/effects/emotes/clap3.ogg',
+		'sound/effects/emotes/clap4.ogg'
 	),
 	SFX_CHOP = list(
 		'sound/effects/fighting/chop1.ogg',
