@@ -129,6 +129,7 @@
 #define SFX_USE_BUTTON              "use_button"
 #define SFX_USE_LIGHTER             "use_lighter"
 #define SFX_USE_CHISEL              "use_chisel"
+#define SFX_KEYBOARD                "use_keyboard"
 
 // PULLING
 #define SFX_PULL_BODY               "pull_body"
