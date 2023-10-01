@@ -261,7 +261,7 @@
 /obj/item/silencer
 	name = "silencer"
 	desc = "A silencer."
-	icon = 'icons/obj/gun.dmi'
+	icon = 'icons/obj/guns/gun.dmi'
 	icon_state = "silencer"
 	w_class = ITEM_SIZE_SMALL
 
@@ -277,6 +277,8 @@
 	mod_handy = 1.0
 	max_shells = 1 //literally just a barrel
 	fire_sound = 'sound/effects/weapons/gun/fire6.ogg'
+
+	has_safety = FALSE
 
 	var/global/list/ammo_types = list(
 		/obj/item/ammo_casing/a357              = ".357",

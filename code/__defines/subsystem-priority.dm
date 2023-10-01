@@ -14,6 +14,7 @@
 #define SS_PRIORITY_TICKER         100   // Gameticker.
 #define SS_PRIORITY_MOB            95    // Mob Life().
 #define SS_PRIORITY_MACHINERY      95    // Machinery + powernet ticks.
+#define SS_PRIORITY_PHYSICS  	   94
 #define SS_PRIORITY_AIR            80    // ZAS processing.
 #define SS_PRIORITY_ALARM          20    // Alarm processing.
 #define SS_PRIORITY_EVENT          20    // Event processing and queue handling.
@@ -29,6 +30,7 @@
 #define SS_PRIORITY_INACTIVITY     10    // Idle kicking.
 #define SS_PRIORITY_SUPPLY         10    // Supply point accumulation.
 #define SS_PRIORITY_TRADE          10    // Adds/removes traders.
+#define SS_PRIORITY_PROJECTILES    10    // Projectile processing.
 
 // SS_BACKGROUND
 #define SS_PRIORITY_OBJECTS       60    // processing_objects processing.

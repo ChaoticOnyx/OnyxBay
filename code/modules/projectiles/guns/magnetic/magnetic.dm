@@ -25,6 +25,7 @@
 
 	var/power_cost = 950                                       // Cost per fire, should consume almost an entire basic cell.
 	var/power_per_tick                                         // Capacitor charge per think(). Updated based on capacitor rating.
+	has_safety = FALSE
 
 /obj/item/gun/magnetic/Initialize()
 	set_next_think(world.time)

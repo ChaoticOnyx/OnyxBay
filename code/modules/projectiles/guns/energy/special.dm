@@ -143,7 +143,7 @@
 /obj/item/gun/energy/staff
 	name = "staff of change"
 	desc = "An artefact that spits bolts of coruscating energy which cause the target's very form to reshape itself."
-	icon = 'icons/obj/gun.dmi'
+	icon = 'icons/obj/guns/gun.dmi'
 	item_icons = null
 	icon_state = "staffofchange"
 	item_state = "staffofchange"
@@ -224,6 +224,7 @@
 		list(mode_name="mining mode", projectile_type = /obj/item/projectile/beam/plasmacutter, charge_cost = 0, fire_delay = 10, danger_attack = FALSE),
 		list(mode_name="battle mode", projectile_type = /obj/item/projectile/beam/plasmacutter/danger, charge_cost = 20, fire_delay = 6, danger_attack = TRUE),
 	)
+	has_safety = FALSE
 
 /obj/item/gun/energy/plasmacutter/_examine_text(mob/user)
 	. = ..()

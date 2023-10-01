@@ -88,6 +88,8 @@
 	slot_flags = SLOT_BACK
 	one_hand_penalty = 5 // The thing is huge AF
 
+	has_safety = FALSE
+
 	var/obj/item/bolt
 	var/tension = 0                         // Current draw on the bow.
 	var/max_tension = 5                     // Highest possible tension.

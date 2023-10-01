@@ -29,6 +29,7 @@
 	use_external_power = 1
 	one_hand_penalty = 0 //just in case
 	icon_state = "blaser"
+	has_safety = FALSE
 
 /obj/item/gun/energy/laser/mounted/cyborg
 	max_shots = 6
@@ -167,6 +168,7 @@
 	recharge_time = 10
 	accuracy = 0 //mounted laser cannons don't need any help, thanks
 	one_hand_penalty = 0
+	has_safety = FALSE
 
 /obj/item/gun/energy/xray
 	name = "x-ray laser carbine"
