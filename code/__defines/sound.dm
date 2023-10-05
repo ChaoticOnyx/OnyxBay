@@ -78,6 +78,10 @@
 #define SFX_FEMALE_LONG_SCREAM      "female_long_scream"
 #define SFX_FEMALE_FALL_ALIVE       "female_fall_alive"
 #define SFX_FEMALE_FALL_DEAD        "female_fall_dead"
+#define SFX_FEMALE_CRY              "female_cry"
+#define SFX_FEMALE_LAUGH            "female_laugh"
+#define SFX_FEMALE_YAWN             "female_yawn"
+#define SFX_FEMALE_SIGH             "female_sigh"
 
 // MALE EMOTES
 #define SFX_MALE_INTERNAL_BREATH    "male_internal_breath"
@@ -88,6 +92,10 @@
 #define SFX_MALE_LONG_SCREAM        "male_long_scream"
 #define SFX_MALE_FALL_ALIVE         "male_fall_alive"
 #define SFX_MALE_FALL_DEAD          "male_fall_dead"
+#define SFX_MALE_CRY                "male_cry"
+#define SFX_MALE_LAUGH              "male_laugh"
+#define SFX_MALE_YAWN               "male_yawn"
+#define SFX_MALE_SIGH               "male_sigh"
 
 // AMBIENT
 #define SFX_AMBIENT_POWERED_GLOBAL      "ambient_powered_global"
@@ -131,6 +139,7 @@
 #define SFX_USE_BUTTON              "use_button"
 #define SFX_USE_LIGHTER             "use_lighter"
 #define SFX_USE_CHISEL              "use_chisel"
+#define SFX_KEYBOARD                "use_keyboard"
 
 // PULLING
 #define SFX_PULL_BODY               "pull_body"
@@ -197,6 +206,9 @@
 #define SFX_GIB                     "gib"
 #define SFX_CLOWN                   "clown"
 #define SFX_HISS                    "hiss"
+#define SFX_WHISTLE                 "whistle"
+#define SFX_SNORE                   "snore"
+#define SFX_CLAP                    "clap"
 #define SFX_CHOP                    "chop"
 #define SFX_TRR                     "trr"
 #define SFX_RADIO                   "radio"

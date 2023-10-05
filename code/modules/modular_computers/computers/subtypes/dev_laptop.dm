@@ -37,3 +37,8 @@
 
 /obj/item/modular_computer/laptop/preset
 	anchored = FALSE
+
+/obj/item/modular_computer/laptop/CouldUseTopic(mob/user)
+	..()
+	if(istype(user, /mob/living/carbon))
+		playsound(src, SFX_KEYBOARD, 50, 1)

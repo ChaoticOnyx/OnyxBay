@@ -14,3 +14,8 @@
 	desc = "A small portable microcomputer. This one has a gold and blue stripe, and a serial number stamped into the case."
 	icon_state = "tabletsol"
 	icon_state_unpowered = "tabletsol"
+
+/obj/item/modular_computer/tablet/CouldUseTopic(mob/user)
+	..()
+	if(istype(user, /mob/living/carbon))
+		playsound(src, 'sound/effects/using/console/press7.ogg', 30, 1)
