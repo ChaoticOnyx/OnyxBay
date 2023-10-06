@@ -242,3 +242,9 @@
 	icon_closed = "heart_jacket"
 	body_parts_covered = UPPER_TORSO|ARMS
 	initial_closed = TRUE
+
+// Popky_dau
+/obj/item/clothing/under/soviet/tcc
+	name = "TCC uniform"
+	desc = "For Magnitka!"
+	icon_state = "soviet_tcc"
