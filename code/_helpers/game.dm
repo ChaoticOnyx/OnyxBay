@@ -396,7 +396,7 @@
 		return
 	for(var/client/add_to in show_to)
 		LAZYADD(add_to.images, image_to_show)
-	addtimer(CALLBACK(GLOBAL_PROC, nameof(.proc/remove_image_from_clients), image_to_show, show_to), duration)
+	addtimer(CALLBACK(GLOBAL_PROC, /proc/remove_image_from_clients, image_to_show, show_to), duration)
 
 // Flicks a certain overlay onto an atom, handling icon_state strings.
 /atom/proc/flick_overlay(image_to_show, list/show_to, duration, layer)
