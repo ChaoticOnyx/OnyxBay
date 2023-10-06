@@ -2,6 +2,13 @@
 // Some SPECIAL clothes for the exceptionally important onyx residents //
 /////////////////////////////////////////////////////////////////////////
 
+// KeepMan
+/obj/item/shield/riot/assault
+    name = "assault shield"
+    desc = "An assault composite shield, looks like one of the old Nova-Magnitka models."
+    icon_state = "assault"
+    item_state = "assault"
+
 // HentaiStorm
 /obj/item/clothing/suit/storage/toggle/det_trench/gilded
 	name = "detective gilded trenchcoat"
