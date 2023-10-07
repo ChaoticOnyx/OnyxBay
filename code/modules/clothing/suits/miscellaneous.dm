@@ -733,3 +733,4 @@
 	flags_inv = HIDEEARS | BLOCKHAIR
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	armor = list(melee = 30, bullet = 20, laser = 20,energy = 20, bomb = 20, bio = 20)
+	
