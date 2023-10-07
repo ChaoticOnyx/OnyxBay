@@ -80,6 +80,13 @@
 	else
 		..()
 
+/obj/item/shield/riot/assault
+    name = "assault shield"
+    desc = "An assault composite shield, looks like one of the old Nova-Magnitka models."
+    icon_state = "assault"
+    item_state = "assault"
+
+
 /obj/item/shield/buckler
 	name = "buckler"
 	desc = "A wooden buckler used to block sharp things from entering your body back in the day.."
