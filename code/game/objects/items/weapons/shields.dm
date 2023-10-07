@@ -86,7 +86,6 @@
     icon_state = "assault"
     item_state = "assault"
 
-
 /obj/item/shield/buckler
 	name = "buckler"
 	desc = "A wooden buckler used to block sharp things from entering your body back in the day.."
