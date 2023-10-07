@@ -89,7 +89,7 @@
     parts = new /list(1)
     original = new /list(1)
     finished = new /list(1)
-    parts[1] =    1
+    parts[1] = 1
     original[1] = /obj/item/shield/riot
     finished[1] = /obj/item/shield/riot/assault
 
