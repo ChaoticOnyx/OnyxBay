@@ -681,3 +681,55 @@
 	flags_inv = HIDEEARS | BLOCKHAIR
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	armor = list(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10)
+
+/obj/item/clothing/suit/storage/hooded/wizard_pink_robe
+	name = "wizard pink robe"
+	desc = "Shadow Wizard Money Gang, you either drip or drown."
+	icon_state = "wizard_pink"
+	item_state = "wizard_pink"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|HANDS|LEGS|FEET
+	initial_closed = TRUE
+	gas_transfer_coefficient = 0.01 // IT'S MAGICAL OKAY JEEZ +1 TO NOT DIE
+	permeability_coefficient = 0.01
+	armor = list(melee = 30, bullet = 20, laser = 20,energy = 20, bomb = 20, bio = 20)
+	allowed = list(/obj/item/teleportation_scroll)
+	siemens_coefficient = 0.8
+	wizard_garb = 1
+	action_button_name = "Toggle hood"
+	hoodtype = /obj/item/clothing/head/wizardpinkhood
+
+/obj/item/clothing/head/wizardpinkhood
+	name = "wizard pink hood"
+	desc = "A pink wizard robe hood."
+	icon_state = "generic_hood"
+	body_parts_covered = HEAD
+	cold_protection = HEAD
+	flags_inv = HIDEEARS | BLOCKHAIR
+	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
+	armor = list(melee = 30, bullet = 20, laser = 20,energy = 20, bomb = 20, bio = 20)
+
+/obj/item/clothing/suit/storage/hooded/wizard_yellow_robe
+	name = "wizard yellow robe"
+	desc = "Shadow Wizard Money Gang, you either drip or drown."
+	icon_state = "wizard_yellow"
+	item_state = "wizard_yellow"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|HANDS|LEGS|FEET
+	initial_closed = TRUE
+	gas_transfer_coefficient = 0.01 // IT'S MAGICAL OKAY JEEZ +1 TO NOT DIE
+	permeability_coefficient = 0.01
+	armor = list(melee = 30, bullet = 20, laser = 20,energy = 20, bomb = 20, bio = 20)
+	allowed = list(/obj/item/teleportation_scroll)
+	siemens_coefficient = 0.8
+	wizard_garb = 1
+	action_button_name = "Toggle hood"
+	hoodtype = /obj/item/clothing/head/wizardyellowhood
+
+/obj/item/clothing/head/wizardyellowhood
+	name = "wizard yellow hood"
+	desc = "A yellow wizard robe hood."
+	icon_state = "generic_hood"
+	body_parts_covered = HEAD
+	cold_protection = HEAD
+	flags_inv = HIDEEARS | BLOCKHAIR
+	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
+	armor = list(melee = 30, bullet = 20, laser = 20,energy = 20, bomb = 20, bio = 20)
