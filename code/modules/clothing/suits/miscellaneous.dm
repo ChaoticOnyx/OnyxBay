@@ -701,7 +701,7 @@
 /obj/item/clothing/head/wizardpinkhood
 	name = "wizard pink hood"
 	desc = "A pink wizard robe hood."
-	icon_state = "generic_hood"
+	icon_state = "wizard_pink_hood"
 	body_parts_covered = HEAD
 	cold_protection = HEAD
 	flags_inv = HIDEEARS | BLOCKHAIR
@@ -727,10 +727,9 @@
 /obj/item/clothing/head/wizardyellowhood
 	name = "wizard yellow hood"
 	desc = "A yellow wizard robe hood."
-	icon_state = "generic_hood"
+	icon_state = "wizard_yellow_hood"
 	body_parts_covered = HEAD
 	cold_protection = HEAD
 	flags_inv = HIDEEARS | BLOCKHAIR
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	armor = list(melee = 30, bullet = 20, laser = 20,energy = 20, bomb = 20, bio = 20)
-	
