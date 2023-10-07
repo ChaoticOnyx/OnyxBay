@@ -79,7 +79,7 @@
 		icon_state = "dartgun-empty"
 		return 1
 
-	if(!ammo_magazine.stored_ammo || ammo_magazine.stored_ammo.len)
+	if(!ammo_magazine.stored_ammo || !ammo_magazine.stored_ammo.len)
 		icon_state = "dartgun-0"
 	else if(ammo_magazine.stored_ammo.len > 5)
 		icon_state = "dartgun-5"
