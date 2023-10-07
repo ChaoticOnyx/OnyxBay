@@ -28,9 +28,6 @@
 	projectile_type = /obj/item/projectile/bullet/chemdart
 	leaves_residue = 0
 
-/obj/item/ammo_casing/chemdart/expend()
-	qdel(src)
-
 /obj/item/ammo_magazine/chemdart
 	name = "dart cartridge"
 	desc = "A rack of hollow darts."
