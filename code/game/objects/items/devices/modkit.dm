@@ -78,7 +78,6 @@
 	original[1] = /obj/item/gun/energy/gun
 	finished[1] = /obj/item/gun/energy/gun/nuclear
 
-
 /obj/item/device/modkit/assault_shield
     name = "riot shield modkit"
     desc = "A kit containing all the needed tools and parts to modify a riot shield into an assault shield."
