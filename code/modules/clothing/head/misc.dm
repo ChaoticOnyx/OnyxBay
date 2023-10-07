@@ -414,3 +414,10 @@
 	icon_state = "vpp_cap"
 	item_state = "vpp_cap"
 	desc = "Green cap of unknown design. The emblem proudly bears the abbreviation V.P.P."
+/obj/item/clothing/head/rebellion
+	name = "rebellion helmet"
+	icon_state = "rebellion"
+	item_state = "rebellion"
+	desc = "A sloppy helmet that resembles an astronaut's helmet. Don't be fooled."
+	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|BLOCKHAIR
+	body_parts_covered = HEAD|FACE|EYES

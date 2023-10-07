@@ -681,3 +681,10 @@
 	flags_inv = HIDEEARS | BLOCKHAIR
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	armor = list(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10)
+
+/obj/item/clothing/suit/rebellion
+	name = "rebellion coat"
+	desc = "It's kind of pretty fashionable."
+	icon_state = "rebellion"
+	item_state = "rebellion"
+	body_parts_covered = UPPER_TORSO

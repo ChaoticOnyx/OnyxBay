@@ -775,3 +775,9 @@
 		var/pipe = user.start_ventcrawl()
 		if(pipe)
 			user.handle_ventcrawl(pipe)
+
+/obj/item/clothing/under/rebellion
+	name = "rebellion suit"
+	desc = "A uniform once worn by the greatest conquerors."
+	icon_state = "rebellion"
+	item_state = "rebellion"
