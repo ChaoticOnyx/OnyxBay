@@ -74,7 +74,7 @@
 		if ("clap")
 			playsound(user, SFX_CLAP, 30, 0)
 		if ("snore")
-			playsound(user, SFX_SNORE, 25, 1)
+			playsound(user, SFX_SNORE, 15, 1)
 
 /decl/emote/proc/do_emote(atom/user, extra_params)
 
