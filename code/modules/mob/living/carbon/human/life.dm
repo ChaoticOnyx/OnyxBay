@@ -682,7 +682,7 @@
 			adjustToxLoss(total_plasmaloss)
 
 		// nutrition decrease
-		if(nutrition > 0 && !isSynthetic(src) && !isundead(src))
+		if(nutrition > 0 && !isundead(src))
 			var/nutrition_reduction = species.hunger_factor * body_build.stomach_capacity
 			for(var/datum/modifier/mod in modifiers)
 				if(!isnull(mod.metabolism_percent))
@@ -701,7 +701,7 @@
 					to_chat(src, SPAN("warning", "[pick("It seems you overate a bit", "Your own weight pulls you to the floor", "It would be nice to lose some weight")]..."))
 				if(STOMACH_FULLNESS_SUPER_HIGH to INFINITY)
 					to_chat(src, SPAN("warning", "[pick("You definitely overate", "Thinking about food makes you gag", "It would be nice to clear your stomach")]..."))
-
+		
 		// body build correction
 		if(!isSynthetic(src) && !isundead(src))
 			var/normalized_nutrition = nutrition / body_build.stomach_capacity
