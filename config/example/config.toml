@@ -14,7 +14,7 @@ subserver_name = "Chaotic"
 
 # Set to true to generate numeric suffix after server name based on server port.
 server_suffix = false
--1
+
 ## Set a different port to use.
 # server_port = 8080
 
