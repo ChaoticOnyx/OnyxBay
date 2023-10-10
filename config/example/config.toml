@@ -14,7 +14,7 @@ subserver_name = "Chaotic"
 
 # Set to true to generate numeric suffix after server name based on server port.
 server_suffix = false
-
+-1
 ## Set a different port to use.
 # server_port = 8080
 
@@ -64,7 +64,7 @@ minute_topic_limit = 100
 wait_for_sigusr1 = false
 
 [lobby]
-splashes = ["icons/splashes/onyx_old.png", "icons/splashes/onyx_new.png"]
+splashes = ["icons/splashes/onyx_new.png"]
 
 [log]
 ## Log client say.
