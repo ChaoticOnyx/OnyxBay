@@ -66,7 +66,7 @@
 	QDEL_NULL(st)
 	if(istype(I, /obj/item/organfixer/advanced))
 		operation_intent = SURGERY_ORGAN_HEAL
-		st = new /datum/surgery_step/internal/fix_organ_multiple()
+//		st = new /datum/surgery_step/internal/fix_organ_multiple()
 
 /obj/item/integrated_circuit/medical/surgery_device/get_selected_zone()
 	return selected_zone
@@ -134,9 +134,9 @@
 	if(!selected_zone || !(selected_zone in BP_ALL_LIMBS))
 		activate_pin(3)
 		return
-	if(selected_zone in H.op_stage.in_progress) //Can't operate on someone repeatedly.
-		activate_pin(3)
-		return
+	// if(selected_zone in H.op_stage.in_progress) //Can't operate on someone repeatedly.
+	// 	activate_pin(3)
+	// 	return
 
 	var/status = do_int_surgery(H)
 	if(status && !(status == SURGERY_FAILURE || status == SURGERY_BLOCKED))
@@ -150,7 +150,7 @@
 	return TRUE
 
 /obj/item/integrated_circuit/medical/surgery_device/proc/do_int_surgery(mob/living/carbon/M)
-	for(var/datum/surgery_step/S in surgery_steps)
+	for(var/datum/surgery_step/S in GLOB.surgery_steps)
 		if(istype(S, /datum/surgery_step/internal) && S.type != st?.type)
 			continue
 		var/status = do_real_surgery(M, S)
@@ -160,15 +160,15 @@
 
 /obj/item/integrated_circuit/medical/surgery_device/proc/do_real_surgery(mob/living/carbon/M, datum/surgery_step/S, use_integrated_circuit_can_use_check = FALSE, obj/item/organ/organ)
 	//check if tool is right or close enough and if this step is possible
-	var/obj/item/user = get_object()
-	if(S.tool_quality(instrument))
-		var/step_is_valid
-		if(use_integrated_circuit_can_use_check)
-			step_is_valid = can_use(M, organ, selected_zone)
-		else
-			step_is_valid = S.can_use(user, M, selected_zone, instrument)
-		if(step_is_valid && S.is_valid_target(M))
-			return S.do_surgery_process(M, user, selected_zone, instrument, step_is_valid)
+	//var/obj/item/user = get_object()
+	// if(S.tool_quality(instrument))
+	// 	var/step_is_valid
+	// 	if(use_integrated_circuit_can_use_check)
+	// 		step_is_valid = can_use(M, organ, selected_zone)
+	// 	else
+	// 		step_is_valid = S.can_use(user, M, selected_zone, instrument)
+	// 	if(step_is_valid && S.is_valid_target(M))
+	// 		return S.do_surgery_process(M, user, selected_zone, instrument, step_is_valid)
 	return SURGERY_FAILED_STATE // for checks...
 /*
 	SUBTYPES.
@@ -202,22 +202,22 @@
 		return
 	if(istype(I, /obj/item/scalpel))
 		operation_intent = SURGERY_ORGAN_DISCONNECT
-		st = new /datum/surgery_step/internal/detatch_organ()
+//		st = new /datum/surgery_step/internal/detatch_organ()
 	else if(istype(I, /obj/item/hemostat))
 		operation_intent = SURGERY_ORGAN_REMOVE
-		st = new /datum/surgery_step/internal/remove_organ()
+//		st = new /datum/surgery_step/internal/remove_organ()
 	else if(istype(I, /obj/item/FixOVein))
 		operation_intent = SURGERY_ORGAN_CONNECT
-		st = new /datum/surgery_step/internal/attach_organ()
+//		st = new /datum/surgery_step/internal/attach_organ()
 	else if(istype(I, /obj/item/organfixer))
 		operation_intent = SURGERY_ORGAN_HEAL
-		st = new /datum/surgery_step/internal/fix_organ()
+//		st = new /datum/surgery_step/internal/fix_organ()
 	else if(istype(I, /obj/item/reagent_containers/dropper))
 		operation_intent = SURGERY_ORGAN_TREAT
-		st = new /datum/surgery_step/internal/treat_necrosis()
+//		st = new /datum/surgery_step/internal/treat_necrosis()
 	else
 		operation_intent = SURGERY_ORGAN_INSERT
-		st = new /datum/surgery_step/internal/replace_organ()
+//		st = new /datum/surgery_step/internal/replace_organ()
 
 /obj/item/integrated_circuit/medical/surgery_device/internal/do_work(ord)
 	var/mob/living/carbon/human/H = get_pin_data(IC_INPUT, 1)
@@ -234,9 +234,9 @@
 	if(!selected_zone || !(selected_zone in BP_ALL_LIMBS))
 		activate_pin(3)
 		return
-	if(selected_zone in H.op_stage.in_progress) //Can't operate on someone repeatedly.
-		activate_pin(3)
-		return
+	// if(selected_zone in H.op_stage.in_progress) //Can't operate on someone repeatedly.
+	// 	activate_pin(3)
+	// 	return
 	if(operation_intent == SURGERY_ORGAN_INSERT)
 		E = H.organs_by_name[O.parent_organ]
 	else
@@ -261,12 +261,12 @@
 	return FALSE
 
 /obj/item/integrated_circuit/medical/surgery_device/internal/can_use(mob/living/carbon/human/target, obj/item/organ/internal/organ, target_zone)
-	if(operation_intent == SURGERY_ORGAN_INSERT)
-		return st.can_use(src, target, target_zone, organ)
-	else
-		st.ignore_tool = TRUE
-		st.preselected_organ = organ
-		return st.can_use(src, target, target_zone, instrument)
+	// if(operation_intent == SURGERY_ORGAN_INSERT)
+	// 	return st.can_use(src, target, target_zone, organ)
+	// else
+	// 	st.ignore_tool = TRUE
+	// 	st.preselected_organ = organ
+	// 	return st.can_use(src, target, target_zone, instrument)
 
 /obj/item/integrated_circuit/medical/surgery_device/face
 	name = "plastic surgery device"
