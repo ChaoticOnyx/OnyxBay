@@ -242,6 +242,9 @@
 	Only used for swapping hands
 */
 /mob/proc/MiddleClickOn(atom/A)
+	if(A.MiddleClick(src))
+		return
+
 	if(get_preference_value(/datum/client_preference/pointing) == GLOB.PREF_MIDDLE_CLICK)
 		if(pointed(A))
 			return
@@ -253,12 +256,8 @@
 		if(pointed(A))
 			return
 
-
-// In case of use break glass
-/*
-/atom/proc/MiddleClick(mob/M as mob)
+/atom/proc/MiddleClick(mob/M)
 	return
-*/
 
 /*
 	Shift click

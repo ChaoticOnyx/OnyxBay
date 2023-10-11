@@ -14,17 +14,21 @@
 /datum/radiation/preset/singularity_beta
 	activity = 15 KILO CURIE
 	radiation_type = RADIATION_BETA_PARTICLE
-	energy = 4.2 MEGA ELECTRONVOLT
+	energy = 3.2 MEGA ELECTRONVOLT
 
 /datum/radiation/preset/hawking
-	activity = 1 MEGA CURIE
+	activity = 0.2 MEGA CURIE
+	radiation_type = RADIATION_HAWKING
+	energy = 50 MILLI ELECTRONVOLT
+/datum/radiation/preset/gravitaty_generator
+	activity = 0.1 MEGA CURIE
 	radiation_type = RADIATION_HAWKING
 	energy = 122 MILLI ELECTRONVOLT
 
 /datum/radiation/preset/supermatter
-	activity = 50 KILO CURIE
+	activity = 30 KILO CURIE
 	radiation_type = RADIATION_BETA_PARTICLE
-	energy = 100 KILO ELECTRONVOLT
+	energy = 500 KILO ELECTRONVOLT
 
 /datum/radiation/preset/artifact
 	activity = 15 KILO CURIE

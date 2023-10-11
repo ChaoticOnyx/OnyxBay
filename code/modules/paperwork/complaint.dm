@@ -20,7 +20,7 @@
 		signed = TRUE
 		signed_ckey = user?.client?.ckey
 		if (isnull(signed_ckey))
-			util_crash_with("THIS IS NOT AN ERROR. obj/item/paper/complaint_form got signed by mob/user with no client/ckey, if it is intended remove that `crash_with`")
+			util_crash_with("THIS IS NOT AN ERROR. obj/item/paper/complaint_form got signed by mob/user with no client/ckey, if it is intended remove that `util_crash_with`")
 		signed_name = strip_html_properly(.)
 		name += ", signed by [signed_name]"
 		make_readonly() //nanomachines, son

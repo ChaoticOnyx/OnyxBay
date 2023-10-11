@@ -64,7 +64,7 @@ minute_topic_limit = 100
 wait_for_sigusr1 = false
 
 [lobby]
-splashes = ["icons/splashes/onyx_old.png", "icons/splashes/onyx_new.png"]
+splashes = ["icons/splashes/onyx_new.png"]
 
 [log]
 ## Log client say.

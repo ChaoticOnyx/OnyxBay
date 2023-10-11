@@ -75,10 +75,10 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	var/obj/item/ammo_magazine/lawgiver/M = ammo_magazine
 	var/datum/firemode/F = firemodes[sel_mode]
 	if(M)
-		var/image/magazine_overlay = image('icons/obj/gun.dmi', src, "[initial(icon_state)]Mag")
+		var/image/magazine_overlay = image('icons/obj/guns/gun.dmi', src, "[initial(icon_state)]Mag")
 		var/image/ammo_overlay = null
 		var/icon_state_suffix = round(M.ammo_counters[F.name], 1)
-		ammo_overlay = image('icons/obj/gun.dmi', src, "[initial(icon_state)][icon_state_suffix]")
+		ammo_overlay = image('icons/obj/guns/gun.dmi', src, "[initial(icon_state)][icon_state_suffix]")
 		overlays += magazine_overlay
 		overlays += ammo_overlay
 
@@ -88,9 +88,9 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 		if(istype(H))
 			if(dna_profile)
 				if(dna_profile == H.dna.unique_enzymes)
-					DNA_overlay = image('icons/obj/gun.dmi', src, "[initial(icon_state)]DNAgood")
+					DNA_overlay = image('icons/obj/guns/gun.dmi', src, "[initial(icon_state)]DNAgood")
 				else
-					DNA_overlay = image('icons/obj/gun.dmi', src, "[initial(icon_state)]DNAbad")
+					DNA_overlay = image('icons/obj/guns/gun.dmi', src, "[initial(icon_state)]DNAbad")
 				overlays += DNA_overlay
 
 /obj/item/gun/projectile/lawgiver/attack_self(mob/user )

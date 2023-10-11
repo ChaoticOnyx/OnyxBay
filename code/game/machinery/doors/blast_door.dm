@@ -40,6 +40,12 @@
 	var/datum/wifi/receiver/button/door/wifi_receiver
 	var/material/implicit_material
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 600 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 10 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1.5 ELECTRONVOLT
+	)
+
 /obj/machinery/door/blast/Initialize()
 	. = ..()
 	if(_wifi_id)
