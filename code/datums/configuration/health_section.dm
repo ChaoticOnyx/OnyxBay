@@ -8,7 +8,6 @@
 	var/organ_health_multiplier = 0.9
 	var/organ_regeneration_multiplier = 0.25
 	var/organ_damage_spillover_multiplier = 0.5
-	var/bodybuild_change_time = 4 MINUTES
 
 /datum/configuration_section/health/load_data(list/data)
 	CONFIG_LOAD_NUM(health_threshold_dead, data["health_threshold_dead"])
@@ -18,4 +17,3 @@
 	CONFIG_LOAD_NUM(organ_health_multiplier, data["organ_health_multiplier"])
 	CONFIG_LOAD_NUM(organ_regeneration_multiplier, data["organ_regeneration_multiplier"])
 	CONFIG_LOAD_NUM(organ_damage_spillover_multiplier, data["organ_damage_spillover_multiplier"])
-	CONFIG_LOAD_NUM(bodybuild_change_time, data["bodybuild_change_time"])
