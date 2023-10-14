@@ -1861,7 +1861,6 @@
 #include "code\modules\integrated_electronics\subtypes\lists.dm"
 #include "code\modules\integrated_electronics\subtypes\logic.dm"
 #include "code\modules\integrated_electronics\subtypes\manipulation.dm"
-#include "code\modules\integrated_electronics\subtypes\medical.dm"
 #include "code\modules\integrated_electronics\subtypes\memory.dm"
 #include "code\modules\integrated_electronics\subtypes\mining.dm"
 #include "code\modules\integrated_electronics\subtypes\output.dm"
