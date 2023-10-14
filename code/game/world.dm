@@ -104,7 +104,7 @@ var/server_name = "OnyxBay"
 	if(world.system_type == MS_WINDOWS)
 		tracy_lib = "prof.dll"
 	else
-		tracy_lib = "libprof.so"
+		tracy_lib = "./libprof.so"
 
 	var/tracy_init = call(tracy_lib, "init")()
 
