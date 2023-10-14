@@ -23,3 +23,7 @@
 /area/engineering/singularity
 	name = "\improper Singularity Generator"
 	icon_state = "engine"
+
+/area/maintenance/law
+	name = "\improper Abandoned Law Office"
+	icon_state = "abandonlaw"
