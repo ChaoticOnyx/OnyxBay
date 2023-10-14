@@ -6,6 +6,8 @@
 	/**
 	 * Associative list of string -> type, where string is zone name and
 	 * type is a reference to an operated organ.
+	 *
+	 * Exists 'cause of integrated crcuits.
 	 */
 	var/list/operated_organs = list()
 

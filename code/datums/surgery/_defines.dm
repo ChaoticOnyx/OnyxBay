@@ -6,8 +6,8 @@
 /// Delta multiplier for all surgeries, ranges from 0.9 to 1.1.
 #define SURGERY_DURATION_DELTA rand(9, 11) / 10
 
-#define SURGERY_FAILURE -1
-#define SURGERY_BLOCKED -2
+#define SURGERY_FAILURE  -1
+#define SURGERY_BLOCKED  -2
 
 #define CUT_DURATION           30
 #define AMPUTATION_DURATION   125
