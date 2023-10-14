@@ -81,10 +81,10 @@
 
 	if(!length(ammo_magazine.stored_ammo))
 		icon_state = "dartgun-0"
-	else if(ammo_magazine.stored_ammo.len > 5)
+	else if(length(ammo_magazine.stored_ammo) > 5)
 		icon_state = "dartgun-5"
 	else
-		icon_state = "dartgun-[ammo_magazine.stored_ammo.len]"
+		icon_state = "dartgun-[length(ammo_magazine.stored_ammo)]"
 	return 1
 
 /obj/item/gun/projectile/dartgun/consume_next_projectile()
