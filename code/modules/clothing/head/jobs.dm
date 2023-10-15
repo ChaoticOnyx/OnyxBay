@@ -183,6 +183,11 @@
 	desc = "For artists only!"
 	icon_state = "beret_classique"
 
+/obj/item/clothing/head/beret/sec/tactical
+	name = "tactical beret"
+	desc = "A green beret with an officer's rank emblem."
+	icon_state = "beret_tactical"
+
 //Some retard put these in /under/jobs/security.dm. What a shame.
 /obj/item/clothing/head/det
 	name = "fedora"
