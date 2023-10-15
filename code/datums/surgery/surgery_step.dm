@@ -36,7 +36,7 @@
  *
  * Checks clothing.
  *
- * Checks parent and target organ.
+ * Checks parent and posiibly overriden target organ.
  *
  * Adds operated organ to target's operated_organs associative list.
  *
@@ -48,6 +48,9 @@
  *
  */
 /datum/surgery_step/proc/do_step(atom/user, mob/living/carbon/human/target, obj/item/tool, target_zone)
+	if(!hasorgans(target))
+		return FALSE
+
 	if(!get_tool_quality(tool))
 		return FALSE
 
@@ -59,14 +62,17 @@
 		return FALSE
 
 	var/obj/item/organ/parent_organ = target.get_organ(parent_zone)
-	var/obj/item/organ/target_organ = target.get_organ(target_zone || override_tag(user, target, target_zone))
-	if(!check_organs(parent_organ, target_organ, target, tool))
+	if(!check_parent_organ(parent_organ, target, tool))
+		return FALSE
+
+	var/obj/item/organ/target_organ = pick_target_organ(user, target, target_zone)
+	if(!check_target_organ(target_organ, target, tool))
 		return FALSE
 
 	// At this point we can access selected organ via `surgery_status`.
 	target.surgery_status.start_surgery(target_organ, parent_zone)
 	initiate(parent_organ, target_organ, target, tool, user)
-	target.surgery_status.stop_surgery(parent_zone)
+	target.surgery_status.stop_surgery(target_organ, parent_zone)
 
 	target.update_surgery()
 
@@ -108,35 +114,47 @@
 	return target_zone
 
 /**
- * Override to change target tag to organ tag of your choice. If zone is present
- * in target's operated_organs returns its tag, null otherwise.
+ * Returns organ from 'organs_by_name' associative list based on tag, override
+ * to rerturn something else.
  *
  * Vars:
  * * user - atom that fired this step.
  * * target - human mob this step is fired upon.
  * * target_zone - zone selected by user.
  */
-/datum/surgery_step/proc/override_tag(atom/user, mob/living/carbon/target, target_zone)
-	var/parent_zone = get_parent_zone(target_zone)
-	var/obj/item/organ/preselected_organ = target.surgery_status.operated_organs[parent_zone]
-	if(istype(preselected_organ))
-		return preselected_organ.organ_tag
-
-	return null
+/datum/surgery_step/proc/pick_target_organ(atom/user, mob/living/carbon/human/target, target_zone)
+	return target.get_organ(target_zone)
 
 /**
- * Performs checks on parent and target organ, override to add extra ones.
+ * Performs checks on parent a.e external organ, override to add extra ones.
  *
  * Vars:
  * * parent_organ - external organ, where target organ is located.
- * * target_organ - target organ, can be equal to parent.
  * * target - human mob this step is fired upon.
  * * tool - tool used to fire this step.
+ * * user - atom that fired this step.
  *
  * Checks if parent and target organs are present.
  */
-/datum/surgery_step/proc/check_organs(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool)
-	if(!istype(parent_organ) || !istype(target_organ))
+/datum/surgery_step/proc/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
+	if(!istype(parent_organ))
+		return FALSE
+
+	return TRUE
+
+/**
+ * Performs checks on target organ, override to add extra ones.
+ *
+ * Vars:
+ * * target_organ - target organ, can be equal to parent.
+ * * target - human mob this step is fired upon.
+ * * tool - tool used to fire this step.
+ * * user - atom that fired this step.
+ *
+ * Checks if parent and target organs are present.
+ */
+/datum/surgery_step/proc/check_target_organ(obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
+	if(!istype(target_organ))
 		return FALSE
 
 	return TRUE
