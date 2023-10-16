@@ -30,10 +30,10 @@
 	else
 		info.energy = new_energy
 		if(!flat)
-			range = world.view * 2
+			range = MAX_RADIATION_DIST
 
 /datum/radiation_source/proc/travel(atom/target)
-	var/datum/radiation/R = info.copy()
+	var/datum/radiation/R = info.copy(GLOB.rad_instance)
 
 	var/atom/source = flat ? get_turf(target) : holder
 	R.travel(source, target)
