@@ -457,7 +457,7 @@
 "iS" = (/obj/structure/closet/crate/bin{desc = "A large bin. For trash."; name = "Trash bin"},/obj/effect/floor_decal/corner/mauve,/obj/machinery/camera/network/research{dir = 8},/turf/simulated/floor/tiled/white/rough,/area/polarplanet/rnd/xenobiology)
 "iT" = (/obj/machinery/door/window/northleft{dir = 4; name = "Containment Pen"; req_access = list(55)},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/white/rough,/area/polarplanet/rnd/xenobiology)
 "iU" = (/obj/item/device/flashlight/lamp,/obj/structure/table/glass,/turf/simulated/floor/tiled/white/rough,/area/polarplanet/rnd/xenobiology)
-"iV" = (/obj/machinery/computer/rdconsole,/turf/simulated/floor/trim/carpet,/area/polarplanet/crew_quarters/heads/hor)
+"iV" = (/obj/item/modular_computer/console/preset/research,/turf/simulated/floor/trim/carpet,/area/polarplanet/crew_quarters/heads/hor)
 "iW" = (/turf/simulated/floor/trim/carpet,/area/polarplanet/crew_quarters/heads/hor)
 "iX" = (/obj/item/storage/secure/safe{pixel_x = 30},/turf/simulated/floor/trim/wood,/area/polarplanet/crew_quarters/heads/hor)
 "iY" = (/obj/effect/floor_decal/industrial/warning{dir = 10},/turf/simulated/floor/tiled/rough,/area/polarplanet/rnd/xenobiology/dorm)
