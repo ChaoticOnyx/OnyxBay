@@ -239,7 +239,7 @@
 			//Do subprocessing for open turfs
 			for(T = O.below; !isnull(T); T = process_the_turf(T,update_gen));
 
-
+	END_FOR_DVIEW
 
 	update_gen++
 
