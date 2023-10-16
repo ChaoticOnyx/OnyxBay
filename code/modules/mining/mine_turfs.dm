@@ -526,8 +526,7 @@ var/list/mining_floors = list()
 		MATERIAL_PLASMA = 20
 		)
 
-
-/turf/simulated/mineral/air //Rock piece
+/turf/simulated/mineral/air
 	name = "rock"
 	icon = 'icons/turf/walls.dmi'
 	icon_state = "rock"
@@ -709,5 +708,9 @@ var/list/mining_floors = list()
 							ore.Move(OB)
 
 /turf/simulated/floor/asteroid/air
+	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
+
+// Contains extra CO2 for better breathing.
+/turf/simulated/floor/asteroid/air/prison
 	initial_gas = list("oxygen" = 1.05 * MOLES_O2STANDARD, "nitrogen" = 1.05 * MOLES_N2STANDARD, "carbon_dioxide" = MOLES_CELLSTANDARD * 0.1)
 	temperature = 30 CELSIUS
