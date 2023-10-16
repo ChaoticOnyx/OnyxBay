@@ -427,6 +427,7 @@
 	siemens_coefficient = 0.7
 	initial_closed = TRUE
 
+//fox231 's custom item
 /obj/item/clothing/suit/storage/toggle/punk_jacket_RD/punk_jacket_RD_cropped
 	name = "cropped punk jacket"
 	desc = "A raven leather jacket but shortened in the belly area. Women's fashion!"

@@ -183,6 +183,7 @@
 	desc = "For artists only!"
 	icon_state = "beret_classique"
 
+//iogacool 's custom item
 /obj/item/clothing/head/beret/sec/tactical
 	name = "tactical beret"
 	desc = "A green beret with an officer's rank emblem."
