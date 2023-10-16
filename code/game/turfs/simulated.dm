@@ -56,6 +56,16 @@
 		holy = TRUE
 	levelupdate()
 
+/turf/simulated/Destroy()
+	if (zone && !zone.invalid)
+		// Try to remove it gracefully first.
+		if (can_safely_remove_from_zone())
+			c_copy_air()
+			zone.remove(src)
+		else	// Can't remove it safely, just rebuild the entire thing.
+			zone.rebuild()
+	return ..()
+
 /turf/simulated/proc/AddTracks(typepath,bloodDNA,comingdir,goingdir,bloodcolor=COLOR_BLOOD_HUMAN)
 	var/obj/effect/decal/cleanable/blood/tracks/tracks = locate(typepath) in src
 	if(!tracks)

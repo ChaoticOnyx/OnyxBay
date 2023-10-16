@@ -22,7 +22,7 @@
 	ASSERT(N)
 
 	// This makes sure that turfs are not changed to space when one side is part of a zone
-	if(N == /turf/space)
+	if(ispath(N, /turf/space))
 		var/turf/below = GetBelow(src)
 		if(istype(below) && !istype(below,/turf/space))
 			N = below.density ? /turf/simulated/floor/plating/airless : /turf/simulated/open
