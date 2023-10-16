@@ -9,7 +9,7 @@
   */
 /client/verb/nanoclose(uiref as text)
 	set hidden = 1	// hide this verb from the user's panel
-	set name = "nanoclose"
+	set name = ".nanoclose"
 
 	var/datum/nanoui/ui = locate(uiref)
 
