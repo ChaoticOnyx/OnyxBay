@@ -429,7 +429,7 @@
 		environment_smash = initial(environment_smash)
 		destroy_surroundings = initial(destroy_surroundings)
 
-/mob/living/simple_animal/hostile/carp/holodeck/gib()
+/mob/living/simple_animal/hostile/carp/holodeck/gib(anim, do_gibs)
 	death()
 
 /mob/living/simple_animal/hostile/carp/holodeck/death()

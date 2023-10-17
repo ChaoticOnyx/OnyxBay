@@ -47,7 +47,7 @@ var/const/GHOST_IMAGE_ALL = ~GHOST_IMAGE_NONE
 /mob/observer/dust()	//observers can't be vaporised.
 	return
 
-/mob/observer/gib()		//observers can't be gibbed.
+/mob/observer/gib(anim, do_gibs)		//observers can't be gibbed.
 	return
 
 /mob/observer/is_blind()	//Not blind either.
