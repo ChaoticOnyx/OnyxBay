@@ -63,7 +63,7 @@ SUBSYSTEM_DEF(eams)
 		for (var/client/C in clients_to_check)
 			CollectDataForClient(C)
 			CHECK_TICK
-	log_debug("EAMS is [__active ? "enabled" : "disabled"][__panic ? "with panic bunker" : ""]!")
+	log_debug("EAMS is [__active ? "enabled" : "disabled"][__panic ? " with panic bunker" : ""]!")
 	return __active
 
 /datum/controller/subsystem/eams/proc/GetPlayerPanelButton(datum/admins/source, client/player)
