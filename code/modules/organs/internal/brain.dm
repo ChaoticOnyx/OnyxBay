@@ -14,7 +14,7 @@
 
 	max_damage = isnull(holder?.species) ? 100 : species.total_health
 	min_bruised_damage = max_damage * 0.25
-	min_broken_damage = max_damage * 0.75
+	min_broken_damage = max_damage * 0.50
 
 	damage_threshold_value = round(max_damage / BRAIN_DAMAGE_THRESHOLD)
 

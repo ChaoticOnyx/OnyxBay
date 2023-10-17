@@ -8,7 +8,7 @@
 	name = "upper body"
 	organ_tag = BP_CHEST
 	icon_name = "torso"
-	max_damage = 110
+	max_damage = 115
 	min_broken_damage = 45
 	w_class = ITEM_SIZE_HUGE //Used for dismembering thresholds, in addition to storage. Humans are w_class 6, so it makes sense that chest is w_class 5.
 	body_part = UPPER_TORSO
