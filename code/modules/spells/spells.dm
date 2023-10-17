@@ -1,7 +1,7 @@
 /datum/mind
 	var/list/learned_spells = list()
 
-/mob/Stat()
+/mob/create_stat()
 	. = ..()
 	if(. && ability_master?.spell_objects)
 		for(var/obj/screen/ability/spell/screen in ability_master.spell_objects)

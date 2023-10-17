@@ -43,7 +43,7 @@
 /mob/living/carbon/alien/__unequip(obj/W)
 	return
 
-/mob/living/carbon/alien/Stat()
+/mob/living/carbon/alien/create_stat()
 	. = ..()
 
 /mob/living/carbon/alien/restrained()

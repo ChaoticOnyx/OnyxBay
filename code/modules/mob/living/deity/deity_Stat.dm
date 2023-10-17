@@ -1,6 +1,7 @@
-/mob/living/deity/Stat()
-	. = ..()
+/mob/living/deity/create_stat()
+	var/delay_to_update_is_long = ..()
 	if(statpanel("Status"))
+		delay_to_update_is_long = FALSE
 		stat("Health", "[health]/[maxHealth]")
 		stat("Power", mob_uplink.uses)
 		stat("Power Minimum", power_min)
@@ -15,3 +16,4 @@
 				var/obj/O = current_boon
 				boon_name = O.name
 		stat("Current Boon",boon_name)
+		return delay_to_update_is_long

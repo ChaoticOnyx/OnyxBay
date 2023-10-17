@@ -71,7 +71,7 @@
 	if(istype(SSS))
 		SSS.Click()
 
-/mob/living/silicon/Stat()
+/mob/living/silicon/create_stat()
 	. = ..()
 	if(!.)
 		return

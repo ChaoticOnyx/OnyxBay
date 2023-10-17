@@ -111,7 +111,7 @@ NOTE: It checks usr by default. Supply the "user" argument if you wish to check 
 		//qdel(holder)
 	return 1
 
-/mob/Stat()
+/mob/create_stat()
 	. = ..()
 	if(!client)
 		return

@@ -274,11 +274,14 @@
 
 	return tally + config.movement.animal_delay
 
-/mob/living/simple_animal/Stat()
-	. = ..()
+/mob/living/simple_animal/create_stat()
+	var/delay_to_update_is_long = ..()
 
 	if(statpanel("Status") && show_stat_health)
+		delay_to_update_is_long = FALSE
 		stat(null, "Health: [round((health / maxHealth) * 100)]%")
+
+	return delay_to_update_is_long
 
 /mob/living/simple_animal/death(gibbed, deathmessage = "dies!", show_dead_message)
 	. = ..()

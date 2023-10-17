@@ -468,7 +468,7 @@
 	if(!client && prob(10))
 		to_chat(src, SPAN_NOTICE("...[pick(secbot_dreams)]..."))
 
-/mob/living/bot/secbot/Stat()
+/mob/living/bot/secbot/create_stat()
 	..()
 	if(statpanel("Status"))
 		stat(null,"-------------")

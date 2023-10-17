@@ -584,15 +584,19 @@ be able to influence the host through various commands.
 	to_chat(usr, "<b>Meme Points: [src.meme_points]/[maximum_points]</b>")
 
 // Stat panel to show meme points, copypasted from alien
-/mob/living/parasite/meme/Stat()
-	..()
+/mob/living/parasite/meme/create_stat()
+	var/delay_to_update_is_long = ..()
 
 	statpanel("Status")
 	if (client && client.holder)
+		delay_to_update_is_long = FALSE
 		stat(null, "([x], [y], [z])")
 
 	if (client && client.statpanel == "Status")
+		delay_to_update_is_long = FALSE
 		stat(null, "Meme Points: [src.meme_points]")
+
+	return delay_to_update_is_long
 
 // Game mode helpers, used for theft objectives
 // --------------------------------------------

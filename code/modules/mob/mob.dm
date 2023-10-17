@@ -668,16 +668,21 @@
 
 /mob/Stat()
 	..()
-	. = (is_client_active(10 MINUTES))
+	. = (is_client_active(1 MINUTES))
 	if(!.)
 		return
+	var/delay_to_update_is_long = create_stat()
+	sleep_after_stat(delay_to_update_is_long)
 
+/mob/proc/create_stat()
+	var/delay_to_update_is_long = TRUE
 	if(statpanel("Status"))
 		if(GAME_STATE >= RUNLEVEL_LOBBY)
 			stat("Local Time", stationtime2text())
 			stat("Local Date", stationdate2text())
 			stat("Round Duration", roundduration2text())
 		if(client.holder || isghost(client.mob))
+			delay_to_update_is_long = FALSE
 			stat("Location:", "([x], [y], [z]) [loc]")
 
 	if(client.holder)
@@ -713,6 +718,15 @@
 						continue
 					stat(A)
 
+	return delay_to_update_is_long
+
+/mob/proc/sleep_after_stat(delay_to_update_is_long)
+	if(statpanel("Lobby"))
+		return
+	if(statpanel("Status"))
+		sleep(delay_to_update_is_long ? 100 : 20)
+	else
+		sleep(10)
 
 // facing verbs
 /mob/proc/canface()

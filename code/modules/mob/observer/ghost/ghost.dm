@@ -277,13 +277,17 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/is_active()
 	return 0
 
-/mob/observer/ghost/Stat()
-	. = ..()
+/mob/observer/ghost/create_stat()
+	var/delay_to_update_is_long = ..()
+
 	if(statpanel("Status"))
 		if(evacuation_controller)
 			var/eta_status = evacuation_controller.get_status_panel_eta()
 			if(eta_status)
+				delay_to_update_is_long = FALSE
 				stat(null, eta_status)
+
+	return delay_to_update_is_long
 
 /mob/observer/ghost/verb/reenter_corpse()
 	set category = "Ghost"

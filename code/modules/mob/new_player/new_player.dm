@@ -61,7 +61,7 @@
 	panel.open()
 	return
 
-/mob/new_player/Stat()
+/mob/new_player/create_stat()
 	. = ..()
 
 	if(statpanel("Lobby"))

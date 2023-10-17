@@ -524,9 +524,11 @@
 		stat(null, text("Current location:[T.x]:[T.y]:[T.z]"))
 
 // update the status screen display
-/mob/living/silicon/robot/Stat()
-	. = ..()
+/mob/living/silicon/robot/create_stat()
+	var/delay_to_update_is_long = ..()
+
 	if (statpanel("Status"))
+		delay_to_update_is_long = FALSE
 		show_gps()
 		show_cell_power()
 		show_jetpack_pressure()
@@ -534,6 +536,8 @@
 		if(module)
 			for(var/datum/matter_synth/ms in module.synths)
 				stat("[ms.name]: [ms.energy]/[ms.max_energy_multiplied]")
+
+	return delay_to_update_is_long
 
 /mob/living/silicon/robot/restrained()
 	return 0

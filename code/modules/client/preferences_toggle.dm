@@ -27,7 +27,7 @@ var/list/client_preference_stats_
 	if(istype(scp))
 		scp.Click()
 
-/mob/Stat()
+/mob/create_stat()
 	. = ..()
 	if(!client || !statpanel("Preferences"))
 		return

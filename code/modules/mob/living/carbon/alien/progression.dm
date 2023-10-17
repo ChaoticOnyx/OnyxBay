@@ -1,7 +1,10 @@
-/mob/living/carbon/alien/Stat()
-	. = ..()
-	if(. && statpanel("Status") && adult_form)
+/mob/living/carbon/alien/create_stat()
+	var/delay_to_update_is_long = ..()
+
+	if(statpanel("Status") && adult_form)
+		delay_to_update_is_long = FALSE
 		stat("Growth", "[round(amount_grown)]/[max_grown]")
+	return delay_to_update_is_long
 
 /mob/living/carbon/alien/verb/evolve()
 

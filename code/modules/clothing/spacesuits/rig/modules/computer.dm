@@ -50,7 +50,7 @@
 /mob
 	var/get_rig_stats = 0
 
-/mob/living/Stat()
+/mob/living/create_stat()
 	. = ..()
 	if(. && get_rig_stats)
 		var/obj/item/rig/rig = get_rig()

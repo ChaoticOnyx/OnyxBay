@@ -114,11 +114,15 @@
 		stat(null, "Communications system reboot in -[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
 
 
-/mob/living/silicon/pai/Stat()
-	. = ..()
+/mob/living/silicon/pai/create_stat()
+	var/delay_to_update_is_long = ..()
+
 	statpanel("Status")
 	if (src.client.statpanel == "Status")
+		delay_to_update_is_long = FALSE
 		show_silenced()
+
+	return delay_to_update_is_long
 
 /mob/living/silicon/pai/check_eye(mob/user as mob)
 	if (!src.current)

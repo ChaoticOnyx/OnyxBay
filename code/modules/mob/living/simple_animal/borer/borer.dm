@@ -104,8 +104,8 @@
 		else if((is_ooc_dead() || host.is_ooc_dead()) && controlling)
 			detatch()
 
-/mob/living/simple_animal/borer/Stat()
-	. = ..()
+/mob/living/simple_animal/borer/create_stat()
+	var/delay_to_update_is_long = ..()
 	statpanel("Status")
 
 	if(evacuation_controller)
@@ -114,7 +114,10 @@
 			stat(null, eta_status)
 
 	if (client.statpanel == "Status")
+		delay_to_update_is_long = FALSE
 		stat("Chemicals", chemicals)
+
+	return delay_to_update_is_long
 
 /mob/living/simple_animal/borer/handle_environment(datum/gas_mixture/environment)
 	if(host)

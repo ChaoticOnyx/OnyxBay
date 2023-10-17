@@ -53,7 +53,7 @@
 	description_holders["icon"] = "\icon[A]"
 	description_holders["desc"] = A.desc
 
-/mob/Stat()
+/mob/create_stat()
 	. = ..()
 	if(client && statpanel("Examine"))
 		stat(null,"[client.description_holders["icon"]]    <font size='5'>[client.description_holders["name"]]</font>") //The name, written in big letters.

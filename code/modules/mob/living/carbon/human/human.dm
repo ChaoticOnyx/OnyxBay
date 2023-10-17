@@ -93,36 +93,39 @@
 		if(stomach)
 			stomach.metabolize()
 
-/mob/living/carbon/human/Stat()
-	. = ..()
-	if(statpanel("Status"))
-		stat("Intent:", "[a_intent]")
-		stat("Move Mode:", "[m_intent]")
-		stat("Poise:", "[round(100/poise_pool*poise)]%")
-		stat("Special Ability:", "[active_ability]")
 
+/mob/living/carbon/human/create_stat()
+	var/delay_to_update_is_long = ..()
+	if(statpanel("Status"))
 		if(evacuation_controller)
 			var/eta_status = evacuation_controller.get_status_panel_eta()
 			if(eta_status)
+				delay_to_update_is_long = FALSE
 				stat(null, eta_status)
 
+		log_and_message_admins("/mob/living/carbon/human/create_stat()")
 		if (istype(internal))
 			if (!internal.air_contents)
+				delay_to_update_is_long = FALSE
 				qdel(internal)
 			else
+				delay_to_update_is_long = FALSE
 				stat("Internal Atmosphere Info: ", internal.name)
 				stat("Tank Pressure: ", internal.air_contents.return_pressure())
 				stat("Distribution Pressure: ", internal.distribute_pressure)
 
 		var/obj/item/organ/internal/xenos/plasmavessel/P = internal_organs_by_name[BP_PLASMA]
 		if(P)
+			delay_to_update_is_long = FALSE
 			stat(null, "Plasma Stored: [P.stored_plasma]/[P.max_plasma]")
 
 		var/obj/item/organ/internal/cell/potato = internal_organs_by_name[BP_CELL]
 		if(potato && potato.cell)
+			delay_to_update_is_long = FALSE
 			stat("Battery charge:", "[potato.get_charge()]/[potato.cell.maxcharge]")
 
 		if(back && istype(back,/obj/item/rig))
+			delay_to_update_is_long = FALSE
 			var/obj/item/rig/suit = back
 			var/cell_status = "ERROR"
 			if(suit.cell) cell_status = "[suit.cell.charge]/[suit.cell.maxcharge]"
@@ -130,16 +133,20 @@
 
 		if(mind)
 			if(mind.vampire)
+				delay_to_update_is_long = FALSE
 				stat("Usable Blood: ", mind.vampire.blood_usable)
 				stat("Total Blood: ", mind.vampire.blood_total)
 
 			if(mind.changeling)
+				delay_to_update_is_long = FALSE
 				stat("Chemical Storage: ", mind.changeling.chem_charges)
 				stat("Genetic Damage Time: ", mind.changeling.genome_damage)
 
 			if(mind.special_role == "Borer Husk")
+				delay_to_update_is_long = FALSE
 				var/mob/living/simple_animal/borer/B = get_organ(BP_BRAIN)
 				stat("Chemicals: ", B?.chemicals)
+	return delay_to_update_is_long
 
 
 /mob/living/carbon/human/ex_act(severity)
