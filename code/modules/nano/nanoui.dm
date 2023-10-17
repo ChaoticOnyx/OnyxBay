@@ -482,7 +482,7 @@ nanoui is used to open and update nano browser uis
 
 /mob/proc/post_close_winset(window_id, param)
 	if(client)
-		winset(src, window_id, "on-close=\".nanoclose [param]\"")
+		winset(src, window_id, "on-close=\"nanoclose [param]\"")
 
  /**
   * Push data to an already open UI window
