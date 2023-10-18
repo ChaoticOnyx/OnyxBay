@@ -116,7 +116,7 @@ SUBSYSTEM_DEF(lighting)
 	for(i in 1 to length(queue))
 		var/datum/lighting_corner/C = queue[i]
 
-		if(QDELETED(L))
+		if(QDELETED(C))
 			continue
 
 		C.needs_update = FALSE
