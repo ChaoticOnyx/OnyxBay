@@ -82,6 +82,9 @@ SUBSYSTEM_DEF(lighting)
 	for(i in 1 to length(queue))
 		var/datum/light_source/L = queue[i]
 
+		if(QDELETED(L))
+			continue
+
 		if(L.check() || L.destroyed || L.force_update)
 			L.remove_lum()
 			if(!L.destroyed)
@@ -112,6 +115,9 @@ SUBSYSTEM_DEF(lighting)
 	queue = corner_queue
 	for(i in 1 to length(queue))
 		var/datum/lighting_corner/C = queue[i]
+
+		if(QDELETED(C))
+			continue
 
 		C.needs_update = FALSE
 		C.update_overlays()
