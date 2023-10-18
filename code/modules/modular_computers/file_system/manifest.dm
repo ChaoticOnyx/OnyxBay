@@ -120,7 +120,6 @@ GLOBAL_LIST_EMPTY(dept_data)
 				var/datum/job/job = job_master.GetJob(command_position)
 				for(var/priority = JOB_PRIORITY_HIGH to JOB_PRIORITY_LOW)
 					if(player_prefs.IsJobPriority(job, priority))
-						//command_candidates["[command_position]"] += list("[priority]" = player_name)
 						if(!command_positions_with_candidates[command_position])
 							command_positions_with_candidates[command_position] = list(
 								JOB_PRIORITY_HIGH = list(),
