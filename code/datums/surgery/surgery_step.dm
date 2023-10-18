@@ -36,7 +36,13 @@
  *
  * Checks clothing.
  *
- * Checks parent and posiibly overriden target organ.
+ * Checks parent organ.
+ *
+ * Picks target organ.
+ *
+ * Runs check to ensure that tool was not changed.
+ *
+ * Checks target organ.
  *
  * Adds operated organ to target's operated_organs associative list.
  *
@@ -66,6 +72,13 @@
 		return FALSE
 
 	var/obj/item/organ/target_organ = pick_target_organ(user, target, target_zone)
+
+	var/mob/possible_mob = user
+	if(istype(possible_mob))
+		var/obj/item/active_item = possible_mob.get_active_item()
+		if(active_item != tool)
+			return FALSE
+
 	if(!check_target_organ(target_organ, target, tool))
 		return FALSE
 
