@@ -97,6 +97,9 @@ GLOBAL_LIST_EMPTY(dept_data)
 
 /proc/manifest_prediction()
 	var/dat = manifest_data_initialization(monochrome = FALSE, OOC = TRUE, prediction = TRUE)
+	var/list/empty_command_positions = GLOB.command_positions.Copy()
+	var/list/command_positions_with_candidates = list()
+	var/list/command_candidates = list()
 
 	for(var/mob/new_player/player in GLOB.player_list)
 		if(!player.ready)
@@ -112,6 +115,25 @@ GLOBAL_LIST_EMPTY(dept_data)
 				list("Assistant")
 				)
 		else
+			var/has_command_position_prefs = FALSE
+			for(var/command_position in GLOB.command_positions)
+				var/datum/job/job = job_master.GetJob(command_position)
+				for(var/priority = JOB_PRIORITY_HIGH to JOB_PRIORITY_LOW)
+					if(player_prefs.IsJobPriority(job, priority))
+						//command_candidates["[command_position]"] += list("[priority]" = player_name)
+						if(!command_positions_with_candidates[command_position])
+							command_positions_with_candidates[command_position] = list(
+								JOB_PRIORITY_HIGH = list(),
+								JOB_PRIORITY_MIDDLE = list(),
+								JOB_PRIORITY_LOW = list()
+								)
+						command_positions_with_candidates[command_position][priority] += list("[player_name]" = player.client.ckey)
+						command_candidates |= player.client.ckey
+						has_command_position_prefs = TRUE
+
+			if(has_command_position_prefs)
+				continue
+
 			preferenced_jobs = list(
 				player_prefs.job_high ? list(player_prefs.job_high) : list(),
 				player_prefs.job_medium,
@@ -122,7 +144,7 @@ GLOBAL_LIST_EMPTY(dept_data)
 			var/list/jobs = J
 			if(length(jobs))
 				var/job = pick(jobs)
-					
+
 				if(job in list("AI", "Cyborg"))
 					silicon = TRUE
 
@@ -134,6 +156,40 @@ GLOBAL_LIST_EMPTY(dept_data)
 						break
 				break
 
+	var/list/command_positions_by_ckey = list()
+	for(var/CP in command_positions_with_candidates)
+		var/command_position = CP
+		var/list/candidates = command_positions_with_candidates[command_position]
+		for(var/priority = JOB_PRIORITY_HIGH to JOB_PRIORITY_LOW)
+			if(!(command_position in empty_command_positions))
+				break
+			for(var/candidate in candidates[priority])
+				empty_command_positions -= command_position
+				var/ckey = candidates[priority][candidate]
+				if(!command_positions_by_ckey[ckey])
+					command_positions_by_ckey[ckey] = list(
+						"positions" = list(
+							JOB_PRIORITY_HIGH = list(),
+							JOB_PRIORITY_MIDDLE = list(),
+							JOB_PRIORITY_LOW = list()
+							), 
+						"player_name" = "[candidate]"
+						)
+				command_positions_by_ckey[ckey]["positions"][priority] += command_position
+
+	for(var/ckey in command_positions_by_ckey)
+		var/command_position
+		for(var/priority = JOB_PRIORITY_HIGH to JOB_PRIORITY_LOW)
+			if(length(command_positions_by_ckey[ckey]["positions"][priority]))
+				command_position = pick(command_positions_by_ckey[ckey]["positions"][priority])
+				break
+		var/player_name = command_positions_by_ckey[ckey]["player_name"]
+		for(var/list/department in GLOB.dept_data)
+			var/flag = job_master.occupations_by_title[command_position].department_flag
+			if(department["flag"]&flag)
+				department["all_jobs_in_dept"][command_position] += list("[player_name]" = command_position)
+				break
+
 	for(var/list/department in GLOB.dept_data)
 		var/list/all_jobs = department["all_jobs_in_dept"]
 		if(length(all_jobs))
@@ -142,8 +198,7 @@ GLOBAL_LIST_EMPTY(dept_data)
 				var/list/job = all_jobs[J]
 				for(var/name in job)
 					var/job_slots = job_master.occupations_by_title[job[name]].spawn_positions
-					var/chance
-					job_slots == -1 ? (chance = 100) : (chance = clamp(job_slots/length(job)*100, 0, 100))
+					var/chance = job_slots == -1 ? 100 : clamp(job_slots/length(job)*100, 0, 100)
 					dat += "<tr class='candystripe'><td>[name]</td><td>[job[name]]</td><td>[chance]%</td></tr>"
 
 	dat += "</table>"
