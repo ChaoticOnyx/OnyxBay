@@ -94,7 +94,7 @@
 	if(..())
 		return
 
-	var/datum/radiation_source/rad_source = SSradiation.radiate(mob, new /datum/radiation/preset/radium_226(400))
+	var/datum/radiation_source/rad_source = SSradiation.radiate(mob, new /datum/radiation_info/preset/radium_226(400))
 	rad_source.schedule_decay(15 SECONDS)
 
 /datum/disease2/effect/loyalty

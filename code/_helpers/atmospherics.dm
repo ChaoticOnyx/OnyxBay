@@ -50,7 +50,7 @@
 					if(gas_data.flags[mix] & XGM_GAS_FUSION_FUEL)
 						traits += "can be used to fuel fusion reaction"
 					. += "\t" + SPAN_NOTICE("Specific heat: [gas_data.specific_heat[mix]] J/(mol*K), Molar mass: [gas_data.molar_mass[mix]] kg/mol.[traits.len ? "\n\tThis gas [english_list(traits)]" : ""]")
-			. += SPAN_NOTICE("Temperature: [round(CONV_KELVIN_CELSIUS(mixture.temperature))]&deg;C / [round(mixture.temperature)]K")
+			. += SPAN_NOTICE("Temperature: [round(CONV_K2C(mixture.temperature))]&deg;C / [round(mixture.temperature)]K")
 			return
 
 	. += SPAN_WARNING("\The [target] has no gases!")

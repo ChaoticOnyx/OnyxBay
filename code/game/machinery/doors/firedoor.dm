@@ -96,7 +96,7 @@
 			o += "<span class='warning'>DATA UNAVAILABLE</span>"
 			. += "\n[o]"
 			continue
-		var/celsius = CONV_KELVIN_CELSIUS(tile_info[index][1])
+		var/celsius = CONV_K2C(tile_info[index][1])
 		var/pressure = tile_info[index][2]
 		o += "<span class='[(dir_alerts[index] & (FIREDOOR_ALERT_HOT|FIREDOOR_ALERT_COLD)) ? "warning" : "color:blue"]'>"
 		o += "[celsius]&deg;C</span> "
@@ -403,7 +403,7 @@
 		var/list/tileinfo=tile_info[index]
 		if(tileinfo==null)
 			continue // Bad data.
-		var/celsius = CONV_KELVIN_CELSIUS(tileinfo[1])
+		var/celsius = CONV_K2C(tileinfo[1])
 
 		var/alerts=0
 

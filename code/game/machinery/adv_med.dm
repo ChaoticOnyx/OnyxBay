@@ -405,7 +405,7 @@
 	if (H.chem_effects[CE_BLOCKAGE])
 		data["warnings"] += list("Warning: Blood clotting detected, blood transfusion recommended.")
 
-	data["body_temperature_c"] = CONV_KELVIN_CELSIUS(H.get_body_temperature())
+	data["body_temperature_c"] = CONV_K2C(H.get_body_temperature())
 	data["body_temperature_f"] = H.get_body_temperature()*1.8-459.67
 
 	if(H.nutrition < 150)
@@ -555,7 +555,7 @@
 	if (H.chem_effects[CE_BLOCKAGE])
 		dat += SPAN("warning", "Warning: Blood clotting detected, blood transfusion recommended.")
 	// Body temperature.
-	dat += "<b>Body temperature:</b> [CONV_KELVIN_CELSIUS(H.get_body_temperature())]&deg;C ([H.get_body_temperature()*1.8-459.67]&deg;F)"
+	dat += "<b>Body temperature:</b> [CONV_K2C(H.get_body_temperature())]&deg;C ([H.get_body_temperature()*1.8-459.67]&deg;F)"
 	if(H.nutrition < 150)
 		dat += SPAN("warning", "Warning: Very low nutrition value detected.")
 

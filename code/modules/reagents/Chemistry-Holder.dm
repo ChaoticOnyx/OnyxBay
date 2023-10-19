@@ -235,7 +235,7 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 		. += "[current.name] ([current.volume])"
 	return english_list(., "EMPTY", "", ", ", ", ")
 
-/// Return all the `/datum/radiation` from reagents.
+/// Return all the `/datum/radiation_info` from reagents.
 /datum/reagents/proc/get_radiation()
 	var/list/info = list()
 

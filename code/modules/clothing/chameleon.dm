@@ -325,9 +325,10 @@
 	origin_tech = list(TECH_ILLEGAL = 3)
 	var/global/list/clothing_choices
 	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 23 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 6.6 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 1.0,
+		RADIATION_GAMMA_RAY = 0.0,
+		RADIATION_HAWKING_RAY = 0.7
 	)
 
 /obj/item/clothing/mask/chameleon/New()

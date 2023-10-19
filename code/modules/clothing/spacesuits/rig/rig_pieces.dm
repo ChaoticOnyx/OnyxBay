@@ -13,9 +13,10 @@
 	species_restricted = null
 
 	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 80.9 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 28.4 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 1.0,
+		RADIATION_GAMMA_RAY = 0.9,
+		RADIATION_HAWKING_RAY = 1.0
 	)
 
 /obj/item/clothing/gloves/rig
@@ -28,9 +29,10 @@
 	gender = PLURAL
 
 	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 80.9 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 28.4 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 1.0,
+		RADIATION_GAMMA_RAY = 0.9,
+		RADIATION_HAWKING_RAY = 1.0
 	)
 
 /obj/item/clothing/shoes/magboots/rig
@@ -43,9 +45,10 @@
 	icon_base = null
 
 	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 80.9 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 28.4 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 1.0,
+		RADIATION_GAMMA_RAY = 0.9,
+		RADIATION_HAWKING_RAY = 1.0
 	)
 
 /obj/item/clothing/suit/space/rig
@@ -62,11 +65,6 @@
 	resilience = 0.2
 	can_breach = 1
 	var/list/supporting_limbs = list() //If not-null, automatically splints breaks. Checked when removing the suit.
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 80.9 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 28.4 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
 
 /obj/item/clothing/suit/space/rig/equipped(mob/M)
 	check_limb_support(M)

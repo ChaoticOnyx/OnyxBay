@@ -1,70 +1,76 @@
-/datum/radiation
+/datum/radiation_info
 	var/activity = 0 BECQUEREL
-	var/radiation_type = RADIATION_ALPHA_PARTICLE
-	var/energy = 0
+	var/ray_type = RADIATION_ALPHA_RAY
+	var/energy = null
 
 	/// Keeps initial value of activity, used primary in reagents.
-	var/specific_activity = 0
+	var/specific_activity = null
 	var/quality_factor = 1
 
-/datum/radiation/New(activity, radiation_type, energy = null)
+/datum/radiation_info/New(activity, ray_type, energy = null)
 	ASSERT(activity >= 0)
-	ASSERT(IS_VALID_RADIATION_TYPE(radiation_type))
+	ASSERT(IS_VALID_RAD_RAY(ray_type))
 
 	src.activity = activity
-	src.radiation_type = radiation_type
+	src.ray_type = ray_type
 
 	if(energy == null)
-		switch(radiation_type)
-			if(RADIATION_ALPHA_PARTICLE)
-				src.energy = ALPHA_PARTICLE_ENERGY
-			if(RADIATION_BETA_PARTICLE)
-				src.energy = BETA_PARTICLE_ENERGY
-			if(RADIATION_HAWKING)
+		switch(ray_type)
+			if(RADIATION_ALPHA_RAY)
+				src.energy = ALPHA_RAY_ENERGY
+			if(RADIATION_BETA_RAY)
+				src.energy = BETA_RAY_ENERGY
+			if(RADIATION_GAMMA_RAY)
+				src.energy = GAMMA_RAY_ENERGY
+			if(RADIATION_HAWKING_RAY)
 				src.energy = HAWKING_RAY_ENERGY
 			else
-				CRASH("invalid radiation_type: [radiation_type]")
+				CRASH("invalid ray_type: [ray_type]")
 	else
 		ASSERT(energy > 0)
 
 		src.energy = energy
 
-	switch(radiation_type)
-		if(RADIATION_ALPHA_PARTICLE)
+	switch(ray_type)
+		if(RADIATION_ALPHA_RAY)
 			src.quality_factor = 20
-		if(RADIATION_BETA_PARTICLE)
+		if(RADIATION_BETA_RAY)
 			src.quality_factor = 1
+		if(RADIATION_GAMMA_RAY)
+			src.quality_factor = 1
+		if(RADIATION_HAWKING_RAY)
+			src.quality_factor = 5
 		else
-			quality_factor = 1
+			CRASH("invalid ray_type: [ray_type]")
 
 	specific_activity = activity
 
-/datum/radiation/proc/copy()
-	var/datum/radiation/R = new(activity, radiation_type, energy)
+/// Returns J
+/datum/radiation_info/proc/calc_energy(dist)
+	var/result =  energy / (dist ** 2)
 
-	R.specific_activity = specific_activity
+	if(result < INSUFFICIENT_RADIATON_ENERGY)
+		return 0
 
-	return R
+	return result
 
-/datum/radiation/proc/is_ionizing()
-	return energy >= (10 ELECTRONVOLT)
-
-/datum/radiation/proc/travel(atom/source, atom/target)
+/// Returns J
+/datum/radiation_info/proc/calc_energy_rt(atom/source, atom/target)
+	var/result_energy = energy
 	var/atom/current_point = source
-	var/turf/source_turf = get_turf(source)
 
 	ASSERT(source.loc)
 	ASSERT(target.loc)
 
 	if(isobj(current_point))
 		var/obj/current_obj = current_point
-		energy -= current_obj.calc_rad_resistance(src)
+		result_energy -= (result_energy * current_obj.calc_rad_resistance(src))
 		current_point = current_point.loc
 
-	energy = energy / (get_dist(get_turf(source), get_turf(target)) ** 2)
+	result_energy = result_energy / (get_dist(get_turf(source), get_turf(target)) ** 2)
 
-	if(!is_ionizing())
-		return FALSE
+	if(result_energy < INSUFFICIENT_RADIATON_ENERGY)
+		return 0
 
 	// Example of traverse: [beaker] -> [box] -> [human] -> [turf]
 	while(!isturf(current_point) && current_point != target)
@@ -73,10 +79,10 @@
 			continue
 
 		var/obj/current_obj = current_point
-		energy -= current_obj.calc_rad_resistance(src)
+		result_energy -= (result_energy * current_obj.calc_rad_resistance(src))
 
-		if(!is_ionizing())
-			return FALSE
+		if(result_energy < INSUFFICIENT_RADIATON_ENERGY)
+			return 0
 
 		current_point = current_point.loc
 
@@ -90,6 +96,12 @@
 
 		// On the same turf.
 		if(dist == 0)
+			var/turf/target_turf = get_turf(current_point)
+			result_energy -= (result_energy * target_turf.rad_resist[ray_type])
+
+			if(result_energy < INSUFFICIENT_RADIATON_ENERGY)
+				return 0
+
 			var/obj/target_parent = target.loc
 
 			while(!isturf(target_parent))
@@ -97,58 +109,136 @@
 					target_parent = target_parent.loc
 					continue
 
-				energy -= target_parent.calc_rad_resistance(src)
+				result_energy -= (result_energy * target_parent.calc_rad_resistance(src))
 
-				if(!is_ionizing())
-					return FALSE
+				if(result_energy < INSUFFICIENT_RADIATON_ENERGY)
+					return 0
 
 				target_parent = target_parent.loc
 
-			return TRUE
+			return result_energy
 		// Not on the same turf
 		else
 			var/turf/current_turf = get_turf(current_point)
+			var/on_same_turf = get_turf(source) == current_turf
 
-			energy -= current_turf.calc_rad_resistance(src)
+			if(!on_same_turf)
+				result_energy -= (result_energy * current_turf.calc_rad_resistance(src))
 
-			if(!is_ionizing())
-				return FALSE
+			if(result_energy < INSUFFICIENT_RADIATON_ENERGY)
+				return 0
 
-			if(source_turf != current_turf)
+			if(!on_same_turf)
 				for(var/obj/O in current_turf)
 					if(O.density)
-						energy -= O.calc_rad_resistance(src)
+						result_energy -= (result_energy * O.calc_rad_resistance(src))
 						break
 
 			current_point = get_step_towards(current_turf, target)
 
-	return (is_ionizing())
+	return result_energy
 
 /// Returns Gy
-/datum/radiation/proc/calc_absorbed_dose(weight = AVERAGE_HUMAN_WEIGHT)
+/datum/radiation_info/proc/calc_absorbed_dose_rt(atom/source, atom/target, weight = AVERAGE_HUMAN_WEIGHT)
+	return (activity * calc_energy_rt(source, target)) / weight
+
+/// Returns Gy
+/datum/radiation_info/proc/calc_absorbed_dose(weight = AVERAGE_HUMAN_WEIGHT)
 	return (activity * energy) / weight
 
 /// Returns Sv
-/datum/radiation/proc/calc_equivalent_dose(weight = AVERAGE_HUMAN_WEIGHT)
+/datum/radiation_info/proc/calc_equivalent_dose_rt(atom/source, atom/target, weight = AVERAGE_HUMAN_WEIGHT)
+	return calc_absorbed_dose_rt(source, target, weight) * quality_factor
+
+/// Returns Sv
+/datum/radiation_info/proc/calc_equivalent_dose(weight = AVERAGE_HUMAN_WEIGHT)
 	return calc_absorbed_dose(weight) * quality_factor
 
-/turf/proc/calc_rad_resistance(datum/radiation/info)
+/// Describes a point source of radiation.  Created either in response to a pulse of radiation, or over an irradiated atom.
+/// Sources will decay over time, unless something is renewing their power!
+/datum/radiation_source
+	/// Location of the radiation source.
+	var/atom/holder
+	/// True for not affecting RAD_SHIELDED areas.
+	var/respect_maint = FALSE
+	/// True for power falloff with distance.
+	var/flat = FALSE
+	/// Cached maximum range, used for quick checks against mobs.
+	var/range
+	var/datum/radiation_info/info
+
+/datum/radiation_source/New(datum/radiation_info/info, atom/holder = null)
+	src.info = info
+	src.holder = holder
+
+	update_energy(info.energy)
+
+/datum/radiation_source/Destroy()
+	SSradiation.sources -= src
+	holder = null
+	. = ..()
+
+/datum/radiation_source/proc/update_energy(new_energy = null)
+	if(new_energy == null)
+		return // No change
+	else if(new_energy <= 0)
+		qdel(src) // Decayed to nothing
+	else
+		info.energy = new_energy
+		if(!flat)
+			range = min(round(sqrt(info.energy / INSUFFICIENT_RADIATON_ENERGY)), world.view * 2)
+
+/// Returns J
+/datum/radiation_source/proc/calc_energy_rt(atom/A)
+	var/turf/from = flat ? get_turf(A) : holder
+
+	return info.calc_energy_rt(from, A)
+
+/// Returns J
+/datum/radiation_source/proc/calc_energy(atom/A)
+	var/turf/from = flat ? get_turf(A) : holder
+
+	return info.calc_energy(get_dist(get_turf(A), from))
+
+/// Returns Gy
+/datum/radiation_source/proc/calc_absorbed_dose_rt(atom/target, weight = AVERAGE_HUMAN_WEIGHT)
+	return info.calc_absorbed_dose_rt(holder, target, weight)
+
+/// Returns Gy
+/datum/radiation_source/proc/calc_absorbed_dose(weight = AVERAGE_HUMAN_WEIGHT)
+	return info.calc_absorbed_dose(weight)
+
+/// Returns Sv
+/datum/radiation_source/proc/calc_equivalent_dose_rt(atom/target, weight = AVERAGE_HUMAN_WEIGHT)
+	return info.calc_equivalent_dose(holder, target, weight)
+
+/// Returns Sv
+/datum/radiation_source/proc/calc_equivalent_dose(weight = AVERAGE_HUMAN_WEIGHT)
+	return info.calc_equivalent_dose(weight)
+
+/// Destroy self after specified time.
+/datum/radiation_source/proc/schedule_decay(time)
+	ASSERT(time > 0)
+
+	addtimer(CALLBACK(src, .proc/Destroy), time, TIMER_UNIQUE)
+
+/turf/proc/calc_rad_resistance(datum/radiation_info/info)
 	if(!density && length(return_air().gas) == 0)
 		return 0
 
-	var/resist = rad_resist[info.radiation_type]
+	var/resist = rad_resist[info.ray_type]
 
 	if(resist == 1.0)
 		return resist
 
 	for(var/obj/O in src)
 		if(O.density)
-			resist += O.rad_resist[info.radiation_type]
+			resist += O.rad_resist[info.ray_type]
 
 	return Clamp(resist, 0.0, 1.0)
 
-/obj/proc/calc_rad_resistance(datum/radiation/info)
-	var/resist = rad_resist[info.radiation_type]
+/obj/proc/calc_rad_resistance(datum/radiation_info/info)
+	var/resist = rad_resist[info.ray_type]
 
 	if(atom_flags & ATOM_FLAG_OPEN_CONTAINER)
 		return 0
@@ -162,24 +252,23 @@
 	return 1
 
 /mob/living/rad_act(datum/radiation_source/rad_source)
-	if(!rad_source.info.is_ionizing())
-		return
-
 	// 1. Simulate ray traverse.
-	var/datum/radiation/R = rad_source.travel(src)
+	var/energy_remain = rad_source.calc_energy_rt(src)
 
 	// 2. If rays have too small energy after traversing - ignore it.
-	if(!R.is_ionizing())
+	if(energy_remain < INSUFFICIENT_RADIATON_ENERGY)
 		return
 
 	// 3. Calculate energy resistance from skin.
-	R.energy -= rad_resist[R.radiation_type]
+	energy_remain = max(0, energy_remain - (energy_remain * rad_resist[rad_source.info.ray_type]))
 
-	if(!R.is_ionizing())
+	if(energy_remain < INSUFFICIENT_RADIATON_ENERGY)
 		return
 
+	var/datum/radiation_info/new_info = new(rad_source.info.activity, rad_source.info.ray_type, energy_remain)
+
 	// 4. Calculate the dose and apply
-	radiation += R.calc_equivalent_dose(AVERAGE_HUMAN_WEIGHT)
+	radiation += new_info.calc_equivalent_dose(AVERAGE_HUMAN_WEIGHT)
 
 /mob/living/carbon/human/rad_act(datum/radiation_source/rad_source)
 
@@ -203,17 +292,13 @@
 		list(HAND_RIGHT, 0.02)
 	)
 
-	if(!rad_source.info.is_ionizing())
-		return
+	// 1. Simulate ray traverse.
+	var/energy_remain = rad_source.calc_energy_rt(src)
+	var/activity_remain = rad_source.info.activity
 
-	// 1. Simulate particle traverse.
-	var/datum/radiation/R = rad_source.travel(src)
-
-	// 2. If particles have too small energy after traversing - ignore it.
-	if(!R.is_ionizing())
+	// 2. If rays have too small energy after traversing - ignore it.
+	if(energy_remain < INSUFFICIENT_RADIATON_ENERGY)
 		return
-	var/energy_remain = R.energy
-	var/activity_remain = R.activity
 
 	var/slots_resist = list()
 
@@ -224,36 +309,37 @@
 			var/resist = 0
 
 			if(C.body_parts_covered & slot)
-				resist = C.rad_resist[R.radiation_type]
+				resist = C.rad_resist[rad_source.info.ray_type]
 
 			if(slots_resist["[slot]"] == null)
 				slots_resist["[slot]"] = resist
 			else
 				slots_resist["[slot]"] += resist
 
+	var/datum/radiation_info/new_info = new(rad_source.info.activity, rad_source.info.ray_type, energy_remain)
 	for(var/slot_info in slots_info)
 		var/slot = slot_info[1]
 		var/size = slot_info[2]
 
-		var/slot_resist = slots_resist["[slot]"]
+		var/slot_resist = Clamp(slots_resist["[slot]"], 0.0, 1.0)
 		var/slot_energy = energy_remain
 		var/particles_count = activity_remain * size
 
 		// 4. Calculate energy resistance from slots.
-		slot_energy -= slot_resist
+		slot_energy = max(0, slot_energy - (slot_energy * slot_resist))
 
 		// 5. Calculate energy resistance from skin.
-		var/skin_resist = rad_resist[R.radiation_type]
+		var/skin_resist = rad_resist[rad_source.info.ray_type]
 
 		if(slot == FACE && slot_resist == 0.0)
-			skin_resist *= 0.2
+			skin_resist *= 0.5
 
-		slot_energy -= skin_resist
+		slot_energy = max(0, slot_energy - (slot_energy * skin_resist))
 
-		if(slot_energy <= (10 ELECTRONVOLT))
+		if(slot_energy < INSUFFICIENT_RADIATON_ENERGY)
 			continue
 
 		// 6. Calculate the dose and apply
-		R.energy = slot_energy
-		R.activity = particles_count
-		radiation += R.calc_equivalent_dose(AVERAGE_HUMAN_WEIGHT)
+		new_info.energy = slot_energy
+		new_info.activity = particles_count
+		radiation += new_info.calc_equivalent_dose(AVERAGE_HUMAN_WEIGHT)

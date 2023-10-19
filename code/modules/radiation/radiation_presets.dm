@@ -1,37 +1,26 @@
-/datum/radiation/preset/New(activity_multiplier = 1)
-	..(activity * activity_multiplier, radiation_type, energy)
+/datum/radiation_info/preset/New(activity_multiplier = 1)
+	..(activity * activity_multiplier, ray_type, energy)
 
-/datum/radiation/preset/uranium_238
+/datum/radiation_info/preset/uranium_238
 	activity = 33.7 MICRO CURIE
-	radiation_type = RADIATION_ALPHA_PARTICLE
-	energy = 4.2 MEGA ELECTRONVOLT
+	ray_type = RADIATION_ALPHA_RAY
 
-/datum/radiation/preset/radium_226
+/datum/radiation_info/preset/radium_226
 	activity = 100 CURIE
-	radiation_type = RADIATION_ALPHA_PARTICLE
-	energy = 4.8 MEGA ELECTRONVOLT
+	ray_type = RADIATION_ALPHA_RAY
 
-/datum/radiation/preset/singularity_beta
-	activity = 15 KILO CURIE
-	radiation_type = RADIATION_BETA_PARTICLE
-	energy = 4.2 MEGA ELECTRONVOLT
+/datum/radiation_info/preset/hawking
+	activity = 5000 KILO CURIE
+	ray_type = RADIATION_HAWKING_RAY
 
-/datum/radiation/preset/hawking
-	activity = 1 MEGA CURIE
-	radiation_type = RADIATION_HAWKING
-	energy = 122 MILLI ELECTRONVOLT
-
-/datum/radiation/preset/supermatter
+/datum/radiation_info/preset/supermatter
 	activity = 50 KILO CURIE
-	radiation_type = RADIATION_BETA_PARTICLE
-	energy = 1.2 MEGA ELECTRONVOLT
+	ray_type = RADIATION_BETA_RAY
 
-/datum/radiation/preset/artifact
-	activity = 15 KILO CURIE
-	radiation_type = RADIATION_BETA_PARTICLE
-	energy = 233 KILO ELECTRONVOLT
+/datum/radiation_info/preset/artifact
+	activity = 5 KILO CURIE
+	ray_type = RADIATION_GAMMA_RAY
 
-/datum/radiation/preset/carbon_14
+/datum/radiation_info/preset/carbon_14
 	activity = 450 CURIE
-	radiation_type = RADIATION_BETA_PARTICLE
-	energy = 156 KILO ELECTRONVOLT
+	ray_type = RADIATION_BETA_RAY

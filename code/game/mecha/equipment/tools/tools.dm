@@ -946,7 +946,7 @@
 /datum/global_iterator/mecha_generator/nuclear/process(obj/item/mecha_parts/mecha_equipment/generator/nuclear/EG)
 	if(..())
 		if(EG.rad_source == null)
-			EG.rad_source = SSradiation.radiate(EG, new /datum/radiation/preset/uranium_238(EG.fuel.amount))
+			EG.rad_source = SSradiation.radiate(EG, new /datum/radiation_info/preset/uranium_238(EG.fuel.amount))
 		else
 			EG.rad_source.info.activity = EG.rad_source.info.specific_activity * EG.fuel.amount
 	return 1

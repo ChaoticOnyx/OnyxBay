@@ -28,9 +28,10 @@
 	var/pathweight = 1          // How much does it cost to pathfind over this turf?
 	var/blessed = 0             // Has the turf been blessed?
 	var/list/rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 38 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 365 KILO ELECTRONVOLT,
-		RADIATION_HAWKING = 81 MILLI ELECTRONVOLT
+		RADIATION_ALPHA_RAY = 0.8,
+		RADIATION_BETA_RAY = 0.4,
+		RADIATION_GAMMA_RAY = 0.1,
+		RADIATION_HAWKING_RAY = 0.1
 	)
 
 	var/list/decals
@@ -289,17 +290,6 @@ var/const/enterloopsanity = 100
 
 /turf/allow_drop()
 	return TRUE
-
-/turf/_examine_text(mob/user, infix, suffix)
-	. = ..()
-	
-	if(hasHUD(user, HUD_SCIENCE))
-		. += "\nStopping Power:"
-
-		. += "\nα-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_ALPHA_PARTICLE]), "eV", 3)]"
-		. += "\nβ-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_BETA_PARTICLE]), "eV", 3)]"
-	
-	return .
 
 /turf/proc/get_footstep_sound()
 	if(footstep_sound)

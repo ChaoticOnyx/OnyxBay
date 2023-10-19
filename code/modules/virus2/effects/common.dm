@@ -245,7 +245,7 @@
 /datum/disease2/effect/radian/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	var/datum/radiation/rad_info = new (3.7 TERA BECQUEREL * multiplier, RADIATION_ALPHA_PARTICLE)
+	var/datum/radiation_info/rad_info = new (3.7 TERA BECQUEREL * multiplier, RADIATION_ALPHA_RAY)
 	mob.radiation += rad_info.calc_equivalent_dose(AVERAGE_HUMAN_WEIGHT)
 
 

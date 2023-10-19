@@ -14,9 +14,10 @@
 	down_icon_state = "breathdown"
 	pull_mask = 1
 	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 16.8 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 2.6 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 0.9,
+		RADIATION_GAMMA_RAY = 0.0,
+		RADIATION_HAWKING_RAY = 0.1
 	)
 /obj/item/clothing/mask/breath/medical
 	desc = "A close-fitting sterile mask that can be manually connected to an air supply for treatment."

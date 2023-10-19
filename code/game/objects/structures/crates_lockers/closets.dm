@@ -9,12 +9,6 @@
 	w_class = ITEM_SIZE_NO_CONTAINER
 	layer = STRUCTURE_LAYER
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 41 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 3.4 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
-
 	var/icon_closed = "closed"
 	var/icon_opened = "open"
 

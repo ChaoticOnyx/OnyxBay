@@ -144,9 +144,10 @@
 	/// Total radiation dose. Sv.
 	var/radiation = SPACE_RADIATION
 	var/list/rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 6 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 0.1 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
+		RADIATION_ALPHA_RAY = 0.99,
+		RADIATION_BETA_RAY = 0.0,
+		RADIATION_GAMMA_RAY = 0.0,
+		RADIATION_HAWKING_RAY = 0.25
 	)
 
 	var/voice_name = "unidentifiable voice"

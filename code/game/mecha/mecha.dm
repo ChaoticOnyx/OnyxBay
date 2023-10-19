@@ -24,9 +24,10 @@
 	w_class = ITEM_SIZE_NO_CONTAINER
 
 	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 120 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 60 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 1.0,
+		RADIATION_GAMMA_RAY = 0.99,
+		RADIATION_HAWKING_RAY = 1.0
 	)
 
 	var/initial_icon = null //Mech type for resetting icon. Only used for reskinning kits (see custom items)
@@ -1416,7 +1417,7 @@
 						<b>Airtank pressure: </b>[tank_pressure]kPa<br>
 						<b>Airtank temperature: </b>[tank_temperature]K|[isnum(tank_temperature) ? "tank_temperature - T0C&deg;C" : ""]<br>
 						<b>Cabin pressure: </b>[cabin_pressure>WARNING_HIGH_PRESSURE ? "<font color='red'>[cabin_pressure]</font>": cabin_pressure]kPa<br>
-						<b>Cabin temperature: </b> [return_temperature()]K|[CONV_KELVIN_CELSIUS(return_temperature())]&deg;C<br>
+						<b>Cabin temperature: </b> [return_temperature()]K|[CONV_K2C(return_temperature())]&deg;C<br>
 						<b>Lights: </b>[lights?"on":"off"]<br>
 						[src.dna?"<b>DNA-locked:</b><br> <span style='font-size:10px;letter-spacing:-1px;'>[src.dna]</span> \[<a href='?src=\ref[src];reset_dna=1'>Reset</a>\]<br>":null]
 					"}

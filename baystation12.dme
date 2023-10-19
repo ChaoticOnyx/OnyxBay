@@ -2574,7 +2574,6 @@
 #include "code\modules\projectiles\targeting\targeting_triggers.dm"
 #include "code\modules\radiation\radiation.dm"
 #include "code\modules\radiation\radiation_presets.dm"
-#include "code\modules\radiation\radiation_source.dm"
 #include "code\modules\random_map\_random_map_setup.dm"
 #include "code\modules\random_map\random_map.dm"
 #include "code\modules\random_map\random_map_verbs.dm"

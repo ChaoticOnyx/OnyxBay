@@ -153,7 +153,7 @@
 	taste_description = "the inside of a reactor"
 	reagent_state = SOLID
 	color = "#b8b8c0"
-	radiation = new /datum/radiation/preset/uranium_238
+	radiation = new /datum/radiation_info/preset/uranium_238
 
 /datum/reagent/uranium/affect_touch(mob/living/carbon/M, alien, removed)
 	affect_ingest(M, alien, removed)

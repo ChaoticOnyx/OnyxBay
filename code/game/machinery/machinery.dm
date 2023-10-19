@@ -86,12 +86,6 @@ Class Procs:
 	pull_sound = SFX_PULL_MACHINE
 	layer = BELOW_OBJ_LAYER
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 160 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 26.6 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
-
 	var/stat = 0
 	var/emagged = 0
 	var/malf_upgraded = 0

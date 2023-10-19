@@ -19,9 +19,10 @@
 	armor = list(melee = 80, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10)
 	siemens_coefficient = 0.3
 	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 33.8 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 6.42 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 1.0,
+		RADIATION_GAMMA_RAY = 0.3,
+		RADIATION_HAWKING_RAY = 0.9
 	)
 
 /obj/item/clothing/shoes/magboots/proc/set_slowdown()

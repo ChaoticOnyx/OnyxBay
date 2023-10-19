@@ -1,8 +1,8 @@
 var/global/list/rad_collectors = list()
 
 /obj/machinery/power/rad_collector
-	name = "Hawking Collector Array"
-	desc = "A device which uses Hawking radiation and plasma to produce power. WARNING: Working with temperature 400C and higher can break the device"
+	name = "Radiation Collector Array"
+	desc = "A device which uses Hawking rays and plasma to produce power. WARNING: Working with doses of 1 Gy/s and higher can broke the device"
 	icon = 'icons/obj/singularity.dmi'
 	icon_state = "ca"
 	anchored = 0
@@ -10,14 +10,13 @@ var/global/list/rad_collectors = list()
 	req_access = list(access_engine_equip)
 	var/obj/item/tank/plasma/P = null
 	var/last_power = 0
-	var/last_temp_dif = 0
 	var/last_power_new = 0
 	var/active = 0
 	var/locked = 0
 	var/drainratio = 1
 
 	var/health = 100
-	var/max_safe_temp = 400 CELSIUS
+	var/max_safe_temp = 1000 CELSIUS
 	var/melted
 
 /obj/machinery/power/rad_collector/New()
@@ -45,15 +44,24 @@ var/global/list/rad_collectors = list()
 		if(health <= 0)
 			collector_break()
 
+		var/total_dose = 0
 		var/list/sources = SSradiation.get_sources_in_range(src)
 		for(var/datum/radiation_source/source in sources)
-			if(source.info.radiation_type != RADIATION_HAWKING)
+			if(source.info.ray_type != RADIATION_HAWKING_RAY)
 				continue
 
-			var/datum/radiation/R = source.travel(src)
-			var/total_energy = R.energy * R.activity
+			var/remain_energy = source.calc_energy_rt(src)
+			var/old_energy = source.info.energy
 
-			receive_pulse(total_energy)
+			source.info.energy = remain_energy
+			total_dose += source.calc_absorbed_dose(AVERAGE_HUMAN_WEIGHT)
+			source.info.energy = old_energy
+
+			var/exceed = max(0.0, total_dose - (1 GREY))
+			if(exceed > 0)
+				health -= (exceed * 2)
+
+			receive_pulse((remain_energy * source.info.activity))
 
 	if(P)
 		var/datum/gas_mixture/M = P.return_air()
@@ -132,13 +140,7 @@ var/global/list/rad_collectors = list()
 /obj/machinery/power/rad_collector/_examine_text(mob/user, distance)
 	. = ..()
 	if (distance <= 3 && !(stat & BROKEN))
-		. += "\nSensor readings:"
-		. += "\nPower rate: [fmt_siunit(last_power, "W/s", 3)]"
-		if(P?.air_contents)
-			. += "\nTank temperature: [P.air_contents.temperature]K"
-		else
-			. += "\nTank temperature: N/A"
-		. += "\nEntropy drift: [last_temp_dif] K/s"
+		. += "\nThe meter indicates that \the [src] is collecting [fmt_siunit(last_power, "W", 3)]."
 
 /obj/machinery/power/rad_collector/ex_act(severity)
 	switch(severity)
@@ -182,23 +184,11 @@ var/global/list/rad_collectors = list()
 
 /obj/machinery/power/rad_collector/proc/receive_pulse(pulse_strength)
 	if(P && active)
-		var/power_produced = P.air_contents.gas["plasma"] * (pulse_strength * 150 MEGA WATT)
+		var/power_produced = 0
+		power_produced = (P.air_contents.gas["plasma"] * (1 WATT)) * pulse_strength
 		add_avail(power_produced)
 		last_power_new = power_produced
-
-		var/turf/T = get_turf(src)
-		var/datum/gas_mixture/air_gas = T.return_air()
-		var/datum/gas_mixture/plasma_gas = P.return_air()
-		last_temp_dif = max((power_produced / (1500000 KELVIN)) - 0.4, 0)
-
-		if(last_temp_dif == 0)
-			return
-
-		plasma_gas.add_thermal_energy(plasma_gas.get_thermal_energy_change(plasma_gas.temperature + last_temp_dif))
-		if(plasma_gas.temperature > air_gas.temperature)
-			var/new_temp = air_gas.temperature + last_temp_dif
-			air_gas.add_thermal_energy(air_gas.get_thermal_energy_change(new_temp))
-
+		return
 	return
 
 /obj/machinery/power/rad_collector/update_icon()

@@ -402,7 +402,7 @@ GLOBAL_VAR(station_gravity_generator)
 	if(announcer)
 		GLOB.global_announcer.autosay("Alert! Gravitational Generator has been discharged! Gravitation is disabled.", get_announcement_computer("Gravity Generator Alert System"))
 
-	var/datum/radiation_source/temp_source = SSradiation.radiate(src, new /datum/radiation/preset/supermatter(2))
+	var/datum/radiation_source/temp_source = SSradiation.radiate(src, new /datum/radiation_info/preset/supermatter(2))
 	temp_source.schedule_decay(2 MINUTES)
 
 	playsound(loc, 'sound/effects/EMPulse.ogg', 100, 1)
@@ -491,7 +491,7 @@ GLOBAL_VAR(station_gravity_generator)
 
 	if(charge_count > 0)
 		if(rad_source == null)
-			rad_source = SSradiation.radiate(src, new /datum/radiation/preset/supermatter(charge_count / 20))
+			rad_source = SSradiation.radiate(src, new /datum/radiation_info/preset/supermatter(charge_count / 20))
 		else
 			rad_source.info.activity = rad_source.info.specific_activity * (charge_count / 20)
 

@@ -268,7 +268,7 @@
 	taste_description = "the color blue, and regret"
 	reagent_state = SOLID
 	color = "#c7c7c7"
-	radiation = new /datum/radiation/preset/radium_226
+	radiation = new /datum/radiation_info/preset/radium_226
 
 /datum/reagent/radium/affect_blood(mob/living/carbon/M, alien, removed)
 	radiation.activity = radiation.specific_activity * volume
