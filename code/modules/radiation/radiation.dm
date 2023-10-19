@@ -61,8 +61,7 @@
 		energy = max(energy - current_obj.calc_rad_resistance(src), 0)
 		current_point = current_point.loc
 
-	var/dst = get_dist(get_turf(source), get_turf(target))
-	energy /= log(2, max(2, dst + 2))
+	energy = max(energy / (get_dist(get_turf(source), get_turf(target)) ** 2), 0)
 
 	if(!is_ionizing())
 		return FALSE

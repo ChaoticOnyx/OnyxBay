@@ -20,15 +20,11 @@
 	activity = 1 MEGA CURIE
 	radiation_type = RADIATION_HAWKING
 	energy = 122 MILLI ELECTRONVOLT
-/datum/radiation/preset/gravitaty_generator
-	activity = 1 MEGA CURIE
-	radiation_type = RADIATION_HAWKING
-	energy = 122 MILLI ELECTRONVOLT
 
 /datum/radiation/preset/supermatter
-	activity = 30 KILO CURIE
+	activity = 50 KILO CURIE
 	radiation_type = RADIATION_BETA_PARTICLE
-	energy = 500 KILO ELECTRONVOLT
+	energy = 100 KILO ELECTRONVOLT
 
 /datum/radiation/preset/artifact
 	activity = 15 KILO CURIE
