@@ -101,60 +101,26 @@ GLOBAL_LIST_EMPTY(dept_data)
 	var/list/command_positions_with_candidates = list()
 	var/list/command_candidates = list()
 
+	//searching for heads positions
 	for(var/mob/new_player/player in GLOB.player_list)
-		if(!player.ready)
+		if(!player.ready || ("Assistant" in player.client.prefs.job_low))
 			continue
 
 		var/datum/preferences/player_prefs = player.client.prefs
 		var/player_name = player_prefs.real_name
-		var/silicon = FALSE
+		for(var/command_position in GLOB.command_positions)
+			var/datum/job/job = job_master.GetJob(command_position)
+			for(var/priority = JOB_PRIORITY_HIGH to JOB_PRIORITY_LOW)
+				if(player_prefs.IsJobPriority(job, priority))
+					if(!command_positions_with_candidates[command_position])
+						command_positions_with_candidates[command_position] = list(
+							JOB_PRIORITY_HIGH = list(),
+							JOB_PRIORITY_MIDDLE = list(),
+							JOB_PRIORITY_LOW = list()
+							)
+					command_positions_with_candidates[command_position][priority] += list("[player_name]" = player.client.ckey)
 
-		var/list/preferenced_jobs
-		if("Assistant" in player_prefs.job_low)
-			preferenced_jobs = list(
-				list("Assistant")
-				)
-		else
-			var/has_command_position_prefs = FALSE
-			for(var/command_position in GLOB.command_positions)
-				var/datum/job/job = job_master.GetJob(command_position)
-				for(var/priority = JOB_PRIORITY_HIGH to JOB_PRIORITY_LOW)
-					if(player_prefs.IsJobPriority(job, priority))
-						if(!command_positions_with_candidates[command_position])
-							command_positions_with_candidates[command_position] = list(
-								JOB_PRIORITY_HIGH = list(),
-								JOB_PRIORITY_MIDDLE = list(),
-								JOB_PRIORITY_LOW = list()
-								)
-						command_positions_with_candidates[command_position][priority] += list("[player_name]" = player.client.ckey)
-						command_candidates |= player.client.ckey
-						has_command_position_prefs = TRUE
-
-			if(has_command_position_prefs)
-				continue
-
-			preferenced_jobs = list(
-				player_prefs.job_high ? list(player_prefs.job_high) : list(),
-				player_prefs.job_medium,
-				player_prefs.job_low
-				)
-
-		for(var/list/J in preferenced_jobs)
-			var/list/jobs = J
-			if(length(jobs))
-				var/job = pick(jobs)
-
-				if(job in list("AI", "Cyborg"))
-					silicon = TRUE
-
-				for(var/list/department in GLOB.dept_data)
-					var/flag = job_master.occupations_by_title[job].department_flag
-
-					if(!silicon ? department["flag"]&flag : department["header"] == "Silicon")
-						department["all_jobs_in_dept"][job] += list(!silicon ? "[player_name]" : "\[Unknown\]" = player_prefs.player_alt_titles[job] ? player_prefs.player_alt_titles[job] : job)
-						break
-				break
-
+	//sorting head positions
 	var/list/command_positions_by_ckey = list()
 	for(var/CP in command_positions_with_candidates)
 		var/command_position = CP
@@ -175,7 +141,9 @@ GLOBAL_LIST_EMPTY(dept_data)
 						"player_name" = "[candidate]"
 						)
 				command_positions_by_ckey[ckey]["positions"][priority] += command_position
+				command_candidates |= ckey
 
+	//inserting choosen heads in GLOB.dept_data
 	for(var/ckey in command_positions_by_ckey)
 		var/command_position
 		for(var/priority = JOB_PRIORITY_HIGH to JOB_PRIORITY_LOW)
@@ -189,6 +157,45 @@ GLOBAL_LIST_EMPTY(dept_data)
 				department["all_jobs_in_dept"][command_position] += list("[player_name]" = command_position)
 				break
 
+	//searching for rest non-heads positions
+	for(var/mob/new_player/player in GLOB.player_list)
+		if(!player.ready || (player.client.ckey in command_candidates))
+			continue
+
+		var/datum/preferences/player_prefs = player.client.prefs
+		var/player_name = player_prefs.real_name
+		var/silicon = FALSE
+
+		var/list/preferenced_jobs
+		if("Assistant" in player_prefs.job_low)
+			preferenced_jobs = list(
+				list("Assistant")
+				)
+		else
+			preferenced_jobs = list(
+				player_prefs.job_high ? list(player_prefs.job_high) : list(),
+				player_prefs.job_medium,
+				player_prefs.job_low
+				)
+				
+		//inserting positions in GLOB.dept_data
+		for(var/list/J in preferenced_jobs)
+			var/list/jobs = J
+			if(length(jobs))
+				var/job = pick(jobs)
+
+				if(job in list("AI", "Cyborg"))
+					silicon = TRUE
+
+				for(var/list/department in GLOB.dept_data)
+					var/flag = job_master.occupations_by_title[job].department_flag
+
+					if(!silicon ? department["flag"]&flag : department["header"] == "Silicon")
+						department["all_jobs_in_dept"][job] += list(!silicon ? "[player_name]" : "\[Unknown\]" = player_prefs.player_alt_titles[job] ? player_prefs.player_alt_titles[job] : job)
+						break
+				break
+
+	//building manifest page
 	for(var/list/department in GLOB.dept_data)
 		var/list/all_jobs = department["all_jobs_in_dept"]
 		if(length(all_jobs))
