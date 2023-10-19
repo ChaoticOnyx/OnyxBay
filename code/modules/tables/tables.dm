@@ -8,14 +8,6 @@
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	layer = TABLE_LAYER
 	throwpass = 1
-
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 0.05,
-		RADIATION_BETA_RAY = 0.05,
-		RADIATION_GAMMA_RAY = 0.0,
-		RADIATION_HAWKING_RAY = 0.0
-	)
-
 	var/flipped = 0
 	var/maxhealth = 10
 	var/health = 10

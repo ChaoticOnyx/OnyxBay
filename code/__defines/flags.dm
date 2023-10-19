@@ -19,7 +19,6 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define ATOM_FLAG_INITIALIZED            (1 << 5) // Has this atom been initialized
 #define ATOM_FLAG_FULLTILE_OBJECT        (1 << 6) // Blocks interactions with most atoms on the same tile, except mobs, items and anything that has the flag below, i.e. fulltile windows
 #define ATOM_FLAG_ADJACENT_EXCEPTION     (1 << 7) // Skips adjacent checks for atoms that should always be reachable in window tiles
-#define ATOM_FLAG_IGNORE_RADIATION       (1 << 8) // It will not produce any radiation when it will be a radiation source.
 
 #define OBJ_FLAG_ANCHORABLE              0x0001 // This object can be stuck in place with a tool
 #define OBJ_FLAG_CONDUCTIBLE             0x0002 // Conducts electricity. (metal etc.)
@@ -42,5 +41,7 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define PASS_FLAG_TABLE  0x1
 #define PASS_FLAG_GLASS  0x2
 #define PASS_FLAG_GRILLE 0x4
-#define PASS_FLAG_MOB    0x8
 
+// Flags for effect_flags
+// Does not pass the radiation.
+#define EFFECT_FLAG_RAD_SHIELDED (1 << 0)

@@ -31,13 +31,6 @@
 	var/list/avaliable_huds
 	var/active_hud
 
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.5,
-		RADIATION_HAWKING_RAY = 0.9
-	)
-
 /mob/living/silicon/New()
 	if(playable_mob)
 		GLOB.silicon_mob_list += src

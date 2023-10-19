@@ -152,6 +152,7 @@
 	fire_sound = 'sound/effects/weapons/energy/pulse3.ogg'
 	damage = 30
 	damage_type = CLONE
+	irradiate = 40
 	projectile_light = TRUE
 	projectile_brightness_color = COLOR_LIME
 
@@ -202,6 +203,7 @@
 	fire_sound = 'sound/effects/stealthoff.ogg'
 	damage = 20
 	damage_type = TOX
+	irradiate = 20
 
 /obj/item/projectile/energy/plasmastun
 	name = "plasma pulse"

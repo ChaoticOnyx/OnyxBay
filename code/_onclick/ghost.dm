@@ -43,8 +43,8 @@
 		if(user.chem_scan)
 			reagent_scanner_scan(user, src)
 		if(user.rads_scan)
-			var/dose = SSradiation.get_total_absorbed_dose_at_turf(get_turf(src), AVERAGE_HUMAN_WEIGHT)
-			to_chat(user, EXAMINE_BLOCK(SPAN_NOTICE("Radiation: [fmt_siunit(dose, "Gy/s", 3)].")))
+			var/rads = SSradiation.get_rads_at_turf(get_turf(src))
+			to_chat(src, SPAN_NOTICE("Radiation level: [rads ? rads : "0"] Bq."))
 		if(user.inquisitiveness)
 			user.examinate(src)
 	return

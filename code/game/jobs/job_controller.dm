@@ -117,12 +117,12 @@ var/global/datum/controller/occupations/job_master
 		return TRUE
 
 	proc/CheckUnsafeSpawn(mob/living/spawner, turf/spawn_turf)
-		var/rad_dose = SSradiation.get_total_absorbed_dose_at_turf(spawn_turf, AVERAGE_HUMAN_WEIGHT)
+		var/radlevel = SSradiation.get_rads_at_turf(spawn_turf)
 		var/airstatus = IsTurfAtmosUnsafe(spawn_turf)
-		if(airstatus || rad_dose > SAFE_RADIATION_DOSE)
+		if(airstatus || radlevel > 0)
 			var/reply = alert(spawner, "Warning. Your selected spawn location seems to have unfavorable conditions. \
 			You may die shortly after spawning. \
-			Spawn anyway? More information: [airstatus] Radiation: [fmt_siunit(rad_dose, "Gy/s", 3)]", "Atmosphere warning", "Abort", "Spawn anyway")
+			Spawn anyway? More information: [airstatus] Radiation: [radlevel] Bq", "Atmosphere warning", "Abort", "Spawn anyway")
 			if(reply == "Abort")
 				return FALSE
 			else

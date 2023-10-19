@@ -376,7 +376,7 @@
 	anchored = 0
 	idle_power_usage = 5 WATTS
 	active_power_usage = 100 WATTS
-
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 	component_types = list(
 		/obj/item/circuitboard/grinder,
 		/obj/item/stock_parts/scanning_module,

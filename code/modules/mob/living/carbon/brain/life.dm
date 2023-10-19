@@ -2,30 +2,37 @@
 	return
 
 /mob/living/carbon/brain/handle_mutations_and_radiation()
-	radiation -= (0.001 SIEVERT)
-	radiation = Clamp(radiation, SPACE_RADIATION, (3 SIEVERT))
-
-	if(radiation <= SAFE_RADIATION_DOSE)
+	if(!radiation)
 		return
 
-	if(radiation >= (3 SIEVERT))
-		if(!container)//If it's not in an MMI
-			to_chat(src, "<span class='notice'>You feel weak.</span>")
-		else//Fluff-wise, since the brain can't detect anything itself, the MMI handles thing like that
-			to_chat(src, "<span class='warning'>STATUS: CRITICAL AMOUNTS OF RADIATION DETECTED.</span>")
+	if(radiation > 100)
+		radiation = 100
+		if(!container) //If it's not in an MMI
+			to_chat(src, SPAN_NOTICE("You feel weak."))
+		else //Fluff-wise, since the brain can't detect anything itself, the MMI handles thing like that
+			to_chat(src, SPAN_WARNING("STATUS: CRITICAL AMOUNTS OF RADIATION DETECTED."))
+	switch(radiation)
+		if(1 to 49)
+			radiation--
+			if(prob(25))
+				adjustToxLoss(1)
+				updatehealth()
 
-	var/damage = radiation / (0.05 SIEVERT)
+		if(50 to 74)
+			radiation -= 2
+			adjustToxLoss(1)
+			if(prob(5))
+				radiation -= 5
+				if(!container)
+					to_chat(src, SPAN_WARNING("You feel weak."))
+				else
+					to_chat(src, SPAN_WARNING("STATUS: DANGEROUS LEVELS OF RADIATION DETECTED."))
+			updatehealth()
 
-	if(damage)
-		adjustToxLoss(damage)
-		updatehealth()
-
-		if(prob(5))
-			if(!container)
-				to_chat(src, "<span class='warning'>You feel weak.</span>")
-			else
-				to_chat(src, "<span class='warning'>STATUS: DANGEROUS LEVELS OF RADIATION DETECTED.</span>")
-
+		if(75 to 100)
+			radiation -= 3
+			adjustToxLoss(3)
+			updatehealth()
 
 /mob/living/carbon/brain/handle_environment(datum/gas_mixture/environment)
 	if(!environment)
@@ -43,7 +50,7 @@
 	if(stat==2)
 		bodytemperature += 0.1*(environment.temperature - bodytemperature)*environment_heat_capacity/(environment_heat_capacity + 270000)
 
-	//Account for massive pressure differences
+	// Account for massive pressure differences
 
 	return //TODO: DEFERRED
 
@@ -99,18 +106,18 @@
 			if(!(container && istype(container, /obj/item/organ/internal/cerebrum/mmi)))
 				emp_damage = 0
 			else
-				emp_damage = round(emp_damage,1)//Let's have some nice numbers to work with
+				emp_damage = round(emp_damage,1) //Let's have some nice numbers to work with
 			switch(emp_damage)
 				if(31 to INFINITY)
-					emp_damage = 30//Let's not overdo it
-				if(21 to 30)//High level of EMP damage, unable to see, hear, or speak
+					emp_damage = 30 //Let's not overdo it
+				if(21 to 30) //High level of EMP damage, unable to see, hear, or speak
 					eye_blind = 1
 					blinded = 1
 					ear_deaf = 1
 					silent = 1
-					if(!alert)//Sounds an alarm, but only once per 'level'
+					if(!alert) //Sounds an alarm, but only once per 'level'
 						emote("alarm")
-						to_chat(src, "<span class='warning'>Major electrical distruption detected: System rebooting.</span>")
+						to_chat(src, SPAN_WARNING("Major electrical distruption detected: System rebooting."))
 						alert = 1
 					if(prob(75))
 						emp_damage -= 1
@@ -121,12 +128,12 @@
 					ear_deaf = 0
 					silent = 0
 					emp_damage -= 1
-				if(11 to 19)//Moderate level of EMP damage, resulting in nearsightedness and ear damage
+				if(11 to 19) //Moderate level of EMP damage, resulting in nearsightedness and ear damage
 					eye_blurry = 1
 					ear_damage = 1
 					if(!alert)
 						emote("alert")
-						to_chat(src, "<span class='warning'>Primary systems are now online.</span>")
+						to_chat(src, SPAN_WARNING("Primary systems are now online."))
 						alert = 1
 					if(prob(50))
 						emp_damage -= 1
@@ -135,16 +142,16 @@
 					eye_blurry = 0
 					ear_damage = 0
 					emp_damage -= 1
-				if(2 to 9)//Low level of EMP damage, has few effects(handled elsewhere)
+				if(2 to 9) //Low level of EMP damage, has few effects(handled elsewhere)
 					if(!alert)
 						emote("notice")
-						to_chat(src, "<span class='warning'>System reboot nearly complete.</span>")
+						to_chat(src, SPAN_WARNING("System reboot nearly complete."))
 						alert = 1
 					if(prob(25))
 						emp_damage -= 1
 				if(1)
 					alert = 0
-					to_chat(src, "<span class='warning'>All systems restored.</span>")
+					to_chat(src, SPAN_WARNING("All systems restored."))
 					emp_damage -= 1
 
 	return 1

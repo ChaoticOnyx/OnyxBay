@@ -103,7 +103,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		cure()
 		return
 
-	if(infected.radiation > (0.1 SIEVERT))
+	if(infected.radiation > 50)
 		if(prob(4))
 			majormutate()
 

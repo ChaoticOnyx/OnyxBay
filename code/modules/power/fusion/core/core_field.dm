@@ -143,6 +143,8 @@
 
 	check_instability()
 	Radiate()
+	if(radiation)
+		SSradiation.radiate(src, round(radiation*0.001))
 	
 	set_next_think(world.time + 1 SECOND)
 
@@ -275,6 +277,7 @@
 	radiation += plasma_temperature/2
 	plasma_temperature = 0
 
+	SSradiation.radiate(src, round(radiation*0.001))
 	Radiate()
 
 /obj/effect/fusion_em_field/proc/Radiate()

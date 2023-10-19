@@ -925,13 +925,8 @@
 	fuel_per_cycle_idle = 10
 	fuel_per_cycle_active = 30
 	power_per_cycle = 5 KILO WATTS
-
-	var/datum/radiation_source/rad_source = null
-
-/obj/item/mecha_parts/mecha_equipment/generator/nuclear/Destroy()
-	qdel(rad_source)
-
-	. = ..()
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+	var/rad_per_cycle = 0.3
 
 /obj/item/mecha_parts/mecha_equipment/generator/nuclear/init()
 	fuel = new /obj/item/stack/material/uranium(src)
@@ -945,10 +940,7 @@
 
 /datum/global_iterator/mecha_generator/nuclear/process(obj/item/mecha_parts/mecha_equipment/generator/nuclear/EG)
 	if(..())
-		if(EG.rad_source == null)
-			EG.rad_source = SSradiation.radiate(EG, new /datum/radiation_info/preset/uranium_238(EG.fuel.amount))
-		else
-			EG.rad_source.info.activity = EG.rad_source.info.specific_activity * EG.fuel.amount
+		SSradiation.radiate(EG, (EG.rad_per_cycle * 3))
 	return 1
 
 

@@ -15,6 +15,7 @@ GLOBAL_REAL(config, /datum/server_configuration) = new
 	var/datum/configuration_section/game/game = new
 	var/datum/configuration_section/character_setup/character_setup = new
 	var/datum/configuration_section/ghost/ghost = new
+	var/datum/configuration_section/radiation/radiation = new
 	var/datum/configuration_section/health/health = new
 	var/datum/configuration_section/revival/revival = new
 	var/datum/configuration_section/movement/movement = new

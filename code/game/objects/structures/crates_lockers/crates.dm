@@ -219,12 +219,7 @@
 	icon_state = "radiation"
 	icon_opened = "radiationopen"
 	icon_closed = "radiation"
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.95,
-		RADIATION_HAWKING_RAY = 1.0
-	)
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 
 /obj/structure/closet/crate/science
 	name = "science crate"
@@ -246,7 +241,7 @@
 	icon_state = "radiation"
 	icon_opened = "radiationopen"
 	icon_closed = "radiation"
-
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 
 /obj/structure/closet/crate/radiation_gear/WillContain()
 	return list(/obj/item/clothing/suit/radiation = 8)
@@ -405,7 +400,7 @@
 	icon_state = "radiation"
 	icon_opened = "radiationopen"
 	icon_closed = "radiation"
-
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 
 /obj/structure/closet/crate/uranium/WillContain()
 	return list(/obj/item/stack/material/uranium/ten = 5)

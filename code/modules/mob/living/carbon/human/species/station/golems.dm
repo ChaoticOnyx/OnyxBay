@@ -327,9 +327,7 @@
 	if(!COOLDOWN_FINISHED(src, radiation_emission_cooldown))
 		return
 	else
-		var/datum/radiation_source/rad_source = SSradiation.radiate(H, new /datum/radiation/preset/artifact)
-		rad_source.info.energy = (100 MEGA ELECTRONVOLT)
-		rad_source.schedule_decay(5 SECONDS)
+		SSradiation.radiate(H, 3)
 		COOLDOWN_START(src, radiation_emission_cooldown, 60 SECONDS)
 
 /datum/species/golem/uranium

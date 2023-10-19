@@ -10,7 +10,7 @@
 	restricted_accessory_slots = list(ACCESSORY_SLOT_HELM_C)
 	item_flags = ITEM_FLAG_THICKMATERIAL
 	body_parts_covered = HEAD|EYES
-	armor = list(melee = 50, bullet = 50, laser = 50, energy = 25, bomb = 35, bio = 0)
+	armor = list(melee = 50, bullet = 50, laser = 50, energy = 25, bomb = 35, bio = 0, rad = 0)
 	flags_inv = HIDEEARS|BLOCKHEADHAIR
 	cold_protection = HEAD
 	min_cold_protection_temperature = HELMET_MIN_COLD_PROTECTION_TEMPERATURE
@@ -20,12 +20,6 @@
 	w_class = ITEM_SIZE_NORMAL
 	var/visor_body_parts_covered = EYES //body parts covered by visor, switches them if you switch visor
 	ear_protection = 1
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.2,
-		RADIATION_HAWKING_RAY = 0.4
-	)
 
 /obj/item/clothing/head/helmet/attack_self(mob/user)
 	if(visor_body_parts_covered)
@@ -55,7 +49,7 @@
 	valid_accessory_slots = null
 	body_parts_covered = HEAD|FACE|EYES //face shield
 	visor_body_parts_covered = FACE|EYES
-	armor = list(melee = 85, bullet = 50, laser = 50, energy = 25, bomb = 35, bio = 5)
+	armor = list(melee = 85, bullet = 50, laser = 50, energy = 25, bomb = 35, bio = 5, rad = 0)
 	siemens_coefficient = 0.5
 	action_button_name = "Toggle Visor"
 
@@ -66,7 +60,7 @@
 	valid_accessory_slots = null
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = EYES
-	armor = list(melee = 50, bullet = 50, laser = 90, energy = 60, bomb = 35, bio = 2)
+	armor = list(melee = 50, bullet = 50, laser = 90, energy = 60, bomb = 35, bio = 2, rad = 0)
 	siemens_coefficient = 0
 
 /obj/item/clothing/head/helmet/ballistic
@@ -76,7 +70,7 @@
 	valid_accessory_slots = null
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = EYES
-	armor = list(melee = 50, bullet = 90, laser = 50, energy = 5, bomb = 35, bio = 2)
+	armor = list(melee = 50, bullet = 90, laser = 50, energy = 5, bomb = 35, bio = 2, rad = 0)
 	siemens_coefficient = 0.6
 
 /obj/item/clothing/head/helmet/gladiator
@@ -97,7 +91,7 @@
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = NO_BODYPARTS
 	flags_inv = HIDEFACE|BLOCKHAIR
-	armor = list(melee = 65, bullet = 65, laser = 65,energy = 35, bomb = 45, bio = 10)
+	armor = list(melee = 65, bullet = 65, laser = 65,energy = 35, bomb = 45, bio = 10, rad = 10)
 	siemens_coefficient = 0.5
 
 //Non-powersuit ERT helmets.
@@ -113,7 +107,7 @@
 		slot_l_hand_str = "syndicate-helm-green",
 		slot_r_hand_str = "syndicate-helm-green",
 		)
-	armor = list(melee = 62, bullet = 50, laser = 50,energy = 35, bomb = 10, bio = 2)
+	armor = list(melee = 62, bullet = 50, laser = 50,energy = 35, bomb = 10, bio = 2, rad = 0)
 	siemens_coefficient = 0.5
 
 //Security
@@ -141,7 +135,7 @@
 	icon_state = "swat"
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 85, bullet = 85, laser = 85,energy = 55, bomb = 50, bio = 50)
+	armor = list(melee = 85, bullet = 85, laser = 85,energy = 55, bomb = 50, bio = 50, rad = 0)
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.3
@@ -151,7 +145,7 @@
 	desc = "A helmet with optical and cranial augments coupled to it."
 	icon_state = "v62"
 	valid_accessory_slots = null
-	armor = list(melee = 70, bullet = 60, laser = 50,energy = 25, bomb = 50, bio = 10)
+	armor = list(melee = 70, bullet = 60, laser = 50,energy = 25, bomb = 50, bio = 10, rad = 0)
 	flags_inv = HIDEEARS|HIDEEYES
 	body_parts_covered = HEAD|EYES|BLOCKHEADHAIR
 	visor_body_parts_covered = NO_BODYPARTS
@@ -165,7 +159,7 @@
 	icon_state = "helmet_merc"
 	body_parts_covered = HEAD|EYES
 	visor_body_parts_covered = EYES
-	armor = list(melee = 75, bullet = 75, laser = 75, energy = 50, bomb = 50, bio = 50)
+	armor = list(melee = 75, bullet = 75, laser = 75, energy = 50, bomb = 50, bio = 50, rad = 0)
 	siemens_coefficient = 0.4
 
 /obj/item/clothing/head/helmet/thunderdome
@@ -175,7 +169,7 @@
 	body_parts_covered = HEAD
 	visor_body_parts_covered = NO_BODYPARTS
 	valid_accessory_slots = null
-	armor = list(melee = 80, bullet = 60, laser = 50,energy = 10, bomb = 25, bio = 10)
+	armor = list(melee = 80, bullet = 60, laser = 50,energy = 10, bomb = 25, bio = 10, rad = 0)
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 1

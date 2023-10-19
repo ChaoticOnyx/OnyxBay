@@ -24,7 +24,7 @@
 
 // Base variants are applied to everyone on the same Z level
 // Range variants are applied on per-range basis: numbers here are on point blank, it scales with the map size (assumes square shaped Z levels)
-#define DETONATION_RADS (100 KILO CURIE)
+#define DETONATION_RADS 20
 #define DETONATION_MOB_CONCUSSION 4			// Value that will be used for Weaken() for mobs.
 
 // Base amount of ticks for which a specific type of machine will be offline for. +- 20% added by RNG.
@@ -103,8 +103,6 @@
 	var/aw_emerg = FALSE
 	var/aw_delam = FALSE
 	var/aw_EPR = FALSE
-
-	var/datum/radiation_source/rad_source = null
 
 /obj/machinery/power/supermatter/Initialize()
 	. = ..()
@@ -198,8 +196,7 @@
 
 	// Effect 1: Radiation, weakening to all mobs on Z level
 	for(var/z in affected_z)
-		var/datum/radiation_source/rad_explode = SSradiation.z_radiate(locate(1, 1, z), new /datum/radiation_info(DETONATION_RADS, RADIATION_BETA_RAY, BETA_RAY_ENERGY * 5), 1)
-		rad_explode.schedule_decay(6 MINUTES)
+		SSradiation.z_radiate(locate(1, 1, z), DETONATION_RADS, 1)
 
 	for(var/mob/living/mob in GLOB.living_mob_list_)
 		var/turf/TM = get_turf(mob)
@@ -395,29 +392,16 @@
 			if(istype(G) && istype(G.matrix, /obj/item/device/hudmatrix/meson))
 				continue
 			var/obj/item/rig/R = H.back
-
 			if(istype(R) && istype(R.visor, /obj/item/rig_module/vision/meson) && R.visor.active)
 				continue
 			var/effect = max(0, min(200, power * config_hallucination_power * sqrt(1 / max(1, get_dist(H, src)))))
 			H.adjust_hallucination(effect, 0.25 * effect)
 
-	if(power > 0)
-		if(rad_source == null)
-			rad_source = SSradiation.radiate(src, new /datum/radiation_info/preset/supermatter)
-
-		rad_source.info.energy = max((power / 10) * BETA_RAY_ENERGY, INSUFFICIENT_RADIATON_ENERGY)
-	else
-		qdel(rad_source)
-
+	SSradiation.radiate(src, power * 1.5) //Better close those shutters!
 	power -= (power/DECAY_FACTOR)**3		//energy losses due to radiation
 	handle_admin_warnings()
 
 	return 1
-
-/obj/machinery/power/supermatter/Destroy()
-	qdel(rad_source)
-
-	. = ..()
 
 /obj/machinery/power/supermatter/bullet_act(obj/item/projectile/Proj)
 	var/turf/L = loc
@@ -490,7 +474,7 @@
 	user.drop(W, force = TRUE)
 	Consume(W)
 
-	user.rad_act(new /datum/radiation_source(new /datum/radiation_info(5 TERA BECQUEREL, RADIATION_BETA_RAY), src))
+	user.apply_effect(150, IRRADIATE, blocked = user.getarmor(null, "rad"))
 
 /obj/machinery/power/supermatter/Bumped(atom/AM)
 	if(istype(AM, /obj/effect))
@@ -521,8 +505,9 @@
 				"<span class=\"warning\">The unearthly ringing subsides and you notice you have new radiation burns.</span>", 2)
 		else
 			l.show_message("<span class=\"warning\">You hear an uneartly ringing and notice your skin is covered in fresh radiation burns.</span>", 2)
+	var/rads = 500
+	SSradiation.radiate(src, rads)
 
-	SSradiation.radiate(src, new /datum/radiation_info/preset/supermatter(10))
 
 /proc/supermatter_pull(atom/target, pull_range = 255, pull_power = STAGE_FIVE)
 	var/list/movable_atoms = list()

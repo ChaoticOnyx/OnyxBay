@@ -15,7 +15,7 @@
 	item_state_slots = list(
 		slot_hand_str = "red"
 		)
-	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 0.8
 
 /obj/item/clothing/under/rank/security
@@ -25,7 +25,7 @@
 	item_state_slots = list(
 		slot_hand_str = "red"
 		)
-	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 0.8
 
 /obj/item/clothing/under/rank/dispatch
@@ -35,7 +35,7 @@
 	item_state_slots = list(
 		slot_hand_str = "blue"
 		)
-	armor = list(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0, rad = 0)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS
 	siemens_coefficient = 0.9
 
@@ -66,7 +66,7 @@
 	item_state_slots = list(
 		slot_hand_str = "black"
 		)
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 0.9
 
 /*
@@ -76,7 +76,7 @@
 	name = "detective's suit"
 	desc = "A rumpled white dress shirt paired with well-worn grey slacks."
 	icon_state = "detective"
-	armor = list(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 10, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 0.9
 	starting_accessories = list(/obj/item/clothing/accessory/blue_clip)
 
@@ -106,7 +106,7 @@
 	item_state_slots = list(
 		slot_hand_str = "red"
 		)
-	armor = list(melee = 20, bullet = 25, laser = 25, energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 20, bullet = 25, laser = 25, energy = 0, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 0.7
 
 /obj/item/clothing/under/rank/head_of_security/corp
@@ -134,7 +134,7 @@
 	icon_state = "secpants"
 	gender = PLURAL
 	body_parts_covered = LOWER_TORSO|LEGS
-	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/under/security_pants/equipped // Preequipped w/ a shirt

@@ -406,8 +406,7 @@
 /obj/machinery/power/port_gen/pacman/super/UseFuel()
 	//produces a tiny amount of radiation when in use
 	if (prob(rad_power*power_output))
-		var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation_info/preset/uranium_238(2 * rad_power))
-		rad_source.schedule_decay(5 SECONDS)
+		SSradiation.radiate(src, 2*rad_power)
 	..()
 
 /obj/machinery/power/port_gen/pacman/super/update_icon()
@@ -428,8 +427,7 @@
 /obj/machinery/power/port_gen/pacman/super/explode()
 	//a nice burst of radiation
 	var/rads = rad_power*25 + (sheets + sheet_left)*1.5
-	var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation_info/preset/uranium_238(rads))
-	rad_source.schedule_decay(5 MINUTES)
+	SSradiation.radiate(src, (max(20, rads)))
 
 	explosion(src.loc, rad_power+1, rad_power+1, rad_power*2, 3)
 	qdel(src)

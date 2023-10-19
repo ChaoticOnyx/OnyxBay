@@ -21,7 +21,7 @@
 		)
 	matter = list(MATERIAL_STEEL = 3000, MATERIAL_GLASS = 1000)
 	var/up = 0
-	armor = list(melee = 45, bullet = 45, laser = 55, energy = 20, bomb = 20, bio = 0)
+	armor = list(melee = 45, bullet = 45, laser = 55, energy = 20, bomb = 20, bio = 0, rad = 0)
 	flags_inv = (HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
 	body_parts_covered = HEAD|FACE|EYES
 	action_button_name = "Flip Welding Mask"
@@ -79,7 +79,7 @@
 			icon_state = "[cover ? "[cover.icon_state]welding" : base_state]"
 			item_state = "[cover ? "[cover.icon_state]welding" : base_state]"
 			to_chat(usr, "You flip the [src] down to protect your eyes.")
-			armor = list(melee = 45, bullet = 45, laser = 55, energy = 20, bomb = 20, bio = 0)
+			armor = list(melee = 45, bullet = 45, laser = 55, energy = 20, bomb = 20, bio = 0, rad = 0)
 		else
 			src.up = !src.up
 			body_parts_covered &= ~(EYES|FACE)
@@ -89,7 +89,7 @@
 			icon_state = "[cover ? "[cover.icon_state]welding" : base_state]up"
 			item_state = "[cover ? "[cover.icon_state]welding" : base_state]up"
 			to_chat(usr, "You push the [src] up out of your face.")
-			armor = list(melee = 25, bullet = 25, laser = 30, energy = 10, bomb = 10, bio = 0)
+			armor = list(melee = 25, bullet = 25, laser = 30, energy = 10, bomb = 10, bio = 0, rad = 0)
 		update_clothing_icon()	//so our mob-overlays
 		update_vision()
 		usr.update_action_buttons()
@@ -150,7 +150,7 @@
 	item_state = "cake0"
 	var/onfire = 0
 	body_parts_covered = HEAD
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/head/cakehat/think()
 	if(!onfire)
@@ -198,7 +198,7 @@
 	flags_inv = HIDEEARS|BLOCKHEADHAIR
 	cold_protection = HEAD
 	min_cold_protection_temperature = HELMET_MIN_COLD_PROTECTION_TEMPERATURE
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/head/ushanka/attack_self(mob/user as mob)
 	if(icon_state == initial(icon_state))
@@ -226,7 +226,7 @@
 	brightness_on = 2
 	light_overlay = "helmet_light"
 	w_class = ITEM_SIZE_NORMAL
-	armor = list(melee = 15, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 15, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /*
  * Kitty ears
@@ -257,7 +257,7 @@
 	icon_state = "richard"
 	body_parts_covered = HEAD|FACE
 	flags_inv = BLOCKHAIR
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 /*
  * Tinfoil hat
  */
@@ -266,10 +266,4 @@
 	desc = "Big brother is watching you!"
 	icon_state = "foilhat"
 	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 0, bullet = 0, laser = 5, energy = 5, bomb = 0, bio = 0)
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.0,
-		RADIATION_HAWKING_RAY = 1.0
-	)
+	armor = list(melee = 0, bullet = 0, laser = 5, energy = 5, bomb = 0, bio = 0, rad = 0)

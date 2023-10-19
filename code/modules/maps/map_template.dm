@@ -68,6 +68,8 @@
 		T.post_change()
 		if(template_flags & TEMPLATE_FLAG_NO_RUINS)
 			T.turf_flags |= TURF_FLAG_NORUINS
+		if(template_flags & TEMPLATE_FLAG_NO_RADS)
+			qdel(SSradiation.sources_assoc[i])
 
 /datum/map_template/proc/init_shuttles()
 	for (var/shuttle_type in shuttles_to_initialise)

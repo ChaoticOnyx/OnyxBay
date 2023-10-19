@@ -18,7 +18,7 @@
 		slot_r_hand_str = "fire_suit",
 	)
 	w_class = ITEM_SIZE_HUGE//bulky item
-	armor = list(melee = 20, bullet = 10, laser = 15,energy = 5, bomb = 0, bio = 0)
+	armor = list(melee = 20, bullet = 10, laser = 15,energy = 5, bomb = 0, bio = 0, rad = 0)
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.50
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
@@ -62,16 +62,11 @@
 	name = "bomb hood"
 	desc = "Use in case of bomb."
 	icon_state = "bombsuit"
-	armor = list(melee = 70, bullet = 15, laser = 30, energy = 50, bomb = 90, bio = 0)
+	armor = list(melee = 70, bullet = 15, laser = 30, energy = 50, bomb = 90, bio = 0, rad = 0)
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|BLOCKHAIR
 	body_parts_covered = HEAD|FACE|EYES
 	siemens_coefficient = 0
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.5,
-		RADIATION_HAWKING_RAY = 0.5
-	)
+
 
 /obj/item/clothing/suit/bomb_suit
 	name = "bomb suit"
@@ -80,7 +75,7 @@
 	w_class = ITEM_SIZE_HUGE//bulky item
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.01
-	armor = list(melee = 70, bullet = 15, laser = 30, energy = 50, bomb = 90, bio = 0)
+	armor = list(melee = 70, bullet = 15, laser = 30, energy = 50, bomb = 90, bio = 0, rad = 0)
 	flags_inv = HIDEJUMPSUIT|HIDETAIL
 	heat_protection = UPPER_TORSO|LOWER_TORSO
 	max_heat_protection_temperature = ARMOR_MAX_HEAT_PROTECTION_TEMPERATURE
@@ -108,7 +103,7 @@
 	desc = "A hood with radiation protective properties. Label: Made with lead, do not eat insulation."
 	flags_inv = BLOCKHAIR
 	body_parts_covered = HEAD|FACE|EYES
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 60)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 60, rad = 100)
 
 
 /obj/item/clothing/suit/radiation
@@ -124,15 +119,8 @@
 	permeability_coefficient = 0.50
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|HANDS|FEET
 	allowed = list(/obj/item/device/flashlight, /obj/item/device/geiger, /obj/item/tank/emergency,/obj/item/clothing/head/radiation,/obj/item/clothing/mask/gas)
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 60)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 60, rad = 100)
 	flags_inv = HIDEJUMPSUIT|HIDETAIL|HIDEGLOVES|HIDESHOES
-
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.8,
-		RADIATION_HAWKING_RAY = 0.7
-	)
 
 /obj/item/clothing/suit/radiation/New()
 	..()

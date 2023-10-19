@@ -3,7 +3,7 @@
 /mob/living/carbon/human/proc/wizard_heal(datum/spell/targeted/heal)
 	if(!heal)
 		return
-	radiation += heal.amt_radiation
+	radiation += min(radiation, heal.amt_radiation)
 	regenerate_blood(heal.amt_blood)
 	adjustBrainLoss(heal.amt_brain)
 	for(var/A in organs)

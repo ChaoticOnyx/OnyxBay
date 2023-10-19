@@ -8,16 +8,18 @@
 	radiation_strength = rand(10, 50)
 	effect_type = pick(EFFECT_PARTICLE, EFFECT_ORGANIC)
 
+/datum/artifact_effect/radiate/DoEffectTouch(mob/living/user)
+	if(user)
+		user.apply_effect(radiation_strength * 2,IRRADIATE, blocked = user.getarmor(null, "rad"))
+		user.updatehealth()
+		return 1
+
 /datum/artifact_effect/radiate/DoEffectAura()
 	if(holder)
-		var/datum/radiation_source/rad_source = SSradiation.radiate(holder, new /datum/radiation_info/preset/artifact(radiation_strength))
-		rad_source.schedule_decay(10 SECONDS)
-
+		SSradiation.radiate(holder, radiation_strength)
 		return 1
 
 /datum/artifact_effect/radiate/DoEffectPulse()
 	if(holder)
-		var/datum/radiation_source/rad_source = SSradiation.radiate(holder, new /datum/radiation_info/preset/artifact(rand(5, 10)))
-		rad_source.schedule_decay(10 SECONDS)
-
+		SSradiation.radiate(holder, radiation_strength * rand(5, 10)) //Need to get feedback on this
 		return 1

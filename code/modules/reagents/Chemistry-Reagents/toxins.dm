@@ -322,7 +322,7 @@
 				randmutg(M)
 			domutcheck(M, null)
 			M.UpdateAppearance()
-	M.radiation += (0.05 SIEVERT) * removed
+	M.apply_effect(10 * removed, IRRADIATE, blocked = 0)
 
 /datum/reagent/mutagen/industrial
 	name = "Industrial mutagen"

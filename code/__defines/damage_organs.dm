@@ -19,6 +19,7 @@
 #define STUN      "stun"
 #define WEAKEN    "weaken"
 #define PARALYZE  "paralize"
+#define IRRADIATE "irradiate"
 #define SLUR      "slur"
 #define STUTTER   "stutter"
 #define EYE_BLUR  "eye_blur"

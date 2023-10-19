@@ -38,7 +38,7 @@
 /mob/living/carbon/alien/handle_mutations_and_radiation()
 	if(!radiation)
 		return
-	var/rads = radiation / (0.05 SIEVERT)
+	var/rads = radiation/25
 	radiation -= rads
 	nutrition += rads
 	heal_overall_damage(rads, rads)

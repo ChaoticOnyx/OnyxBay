@@ -13,13 +13,7 @@
 	var/gas_filter_strength = 1			//For gas mask filters
 	var/list/filtered_gases = list("plasma", "sleeping_agent")
 	var/istinted = 0
-	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 75)
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.3,
-		RADIATION_HAWKING_RAY = 0.4
-	)
+	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 75, rad = 25)
 
 /obj/item/clothing/mask/gas/Initialize()
 	. = ..()
@@ -45,7 +39,7 @@
 	icon_state = "gas_mask"
 	item_state = "gas_mask"
 
-	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 55)
+	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 55, rad = 25)
 
 //Plague Dr suit can be found in clothing/suits/bio.dm
 /obj/item/clothing/mask/gas/plaguedoctor
@@ -53,7 +47,7 @@
 	desc = "A modernised version of the classic design, this mask will not only filter out plasma but it can also be connected to an air supply."
 	icon_state = "plaguedoctor"
 	item_state = "plaguedoctor"
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 2, bomb = 0, bio = 90)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 2, bomb = 0, bio = 90, rad = 10)
 	body_parts_covered = HEAD|FACE|EYES
 	siemens_coefficient = 0.9
 
@@ -65,7 +59,7 @@
 	istinted = 0
 	siemens_coefficient = 0.5
 	body_parts_covered = FACE|EYES
-	armor = list(melee = 15, bullet = 15, laser = 15, energy = 0, bomb = 0, bio = 75)
+	armor = list(melee = 15, bullet = 15, laser = 15, energy = 0, bomb = 0, bio = 75, rad = 50)
 
 /obj/item/clothing/mask/gas/tactical
 	name = "\improper tactical mask"
@@ -81,7 +75,7 @@
 	flags_inv = HIDEEARS
 	istinted = 0
 	siemens_coefficient = 0.9
-	armor = list(melee = 5, bullet = 2.5, laser = 5, energy = 0, bomb = 0, bio = 75)
+	armor = list(melee = 5, bullet = 2.5, laser = 5, energy = 0, bomb = 0, bio = 75, rad = 25)
 
 /obj/item/clothing/mask/gas/captain
 	name = "captain's gas mask"
@@ -122,7 +116,7 @@
 	item_state = "swat"
 	istinted = 0
 	siemens_coefficient = 0.5
-	armor = list(melee = 15, bullet = 15, laser = 15, energy = 0, bomb = 0, bio = 75)
+	armor = list(melee = 15, bullet = 15, laser = 15, energy = 0, bomb = 0, bio = 75, rad = 50)
 
 /obj/item/clothing/mask/gas/clown_hat
 	name = "clown wig and mask"

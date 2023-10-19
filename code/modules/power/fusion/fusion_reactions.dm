@@ -125,10 +125,10 @@ var/list/fusion_reactions
 	var/turf/origin = get_turf(holder)
 	holder.Rupture()
 	qdel(holder)
+	var/radiation_level = rand(100, 200)
 
 	// Copied from the SM for proof of concept. //Not any more --Cirra //Use the whole z proc --Leshana
-	var/datum/radiation_source/rad_source = SSradiation.z_radiate(locate(1, 1, holder.z), new /datum/radiation_info((2 TERA BECQUEREL) * rand(1, 5), RADIATION_BETA_RAY), 1)
-	rad_source.schedule_decay(5 MINUTES)
+	SSradiation.z_radiate(locate(1, 1, holder.z), radiation_level, 1)
 
 	for(var/mob/living/mob in GLOB.living_mob_list_)
 		var/turf/T = get_turf(mob)

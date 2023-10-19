@@ -173,14 +173,6 @@
 	can_atmos_pass = ATMOS_PASS_PROC
 	layer = WINDOW_FRAME_LAYER
 	explosion_resistance = 1
-
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.1,
-		RADIATION_HAWKING_RAY = 0.2
-	)
-
 	var/max_health = 8
 	var/health = 8
 	var/pane_melee_mult = 1.0 // Stronger frames protect their windowpanes from some damage.

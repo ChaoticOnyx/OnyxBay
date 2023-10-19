@@ -141,14 +141,7 @@
 	var/list/mutations = list() //Carbon -- Doohl
 	//see: setup.dm for list of mutations
 
-	/// Total radiation dose. Sv.
-	var/radiation = SPACE_RADIATION
-	var/list/rad_resist = list(
-		RADIATION_ALPHA_RAY = 0.99,
-		RADIATION_BETA_RAY = 0.0,
-		RADIATION_GAMMA_RAY = 0.0,
-		RADIATION_HAWKING_RAY = 0.25
-	)
+	var/radiation = 0.0//Carbon
 
 	var/voice_name = "unidentifiable voice"
 

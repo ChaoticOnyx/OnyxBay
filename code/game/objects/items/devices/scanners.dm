@@ -150,7 +150,21 @@ REAGENT SCANNER
 	status_data += "<span class='notice'>Body temperature: <b>[CONV_K2C(H.bodytemperature)]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)</b></span>"
 
 	// Radiation.
-	status_data += SPAN("notice", "Radiation dose: [fmt_siunit(H.radiation, "Sv", 3)]")
+	switch(H.radiation)
+		if(-INFINITY to 0)
+			status_data += "<span class='notice'>No radiation detected.</span>"
+		if(1 to 30)
+			status_data += "<span class='notice'>Patient shows minor traces of radiation exposure.</span>"
+		if(31 to 60)
+			status_data += "<span class='notice'>Patient is suffering from mild radiation poisoning.</span>"
+		if(61 to 90)
+			status_data += "<span class='warning'>Patient is suffering from advanced radiation poisoning.</span>"
+		if(91 to 120)
+			status_data += "<span class='warning'>Patient is suffering from severe radiation poisoning.</span>"
+		if(121 to 240)
+			status_data += "<span class='danger'>Patient is suffering from extreme radiation poisoning. Immediate treatment recommended.</span>"
+		if(241 to INFINITY)
+			status_data += "<span class='danger'>Patient is suffering from acute radiation poisoning. Immediate treatment recommended.</span>"
 
 	// Other general warnings.
 	if(H.getOxyLoss() > 50)

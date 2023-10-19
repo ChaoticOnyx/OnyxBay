@@ -11,7 +11,6 @@ import {
   Divider,
 } from "../components";
 import { Window } from "../layouts";
-import { formatSiUnit } from "../format";
 
 interface Organ {
   name: string;
@@ -37,7 +36,7 @@ interface MedicalData {
   burn_severity: string;
   tox_severity: string;
   oxy_severity: string;
-  rad_dose: number;
+  rad_severity: string;
   clone_severity: string;
   immunity: number;
   external_organs: Organ[];
@@ -245,9 +244,15 @@ const ScanData = (props: any, context: any) => {
 
             <LabeledList.Item
               label="Radiation Level"
-              color={data.medical_data.rad_dose > 0.001 ? "bad" : "good"}
+              color={
+                data.medical_data.rad_severity === "None"
+                  ? "good"
+                  : data.medical_data.rad_severity === "Severe"
+                  ? "bad"
+                  : "average"
+              }
             >
-              {formatSiUnit(data.medical_data.rad_dose, -1, "Sv")}
+              {data.medical_data.rad_severity}
             </LabeledList.Item>
 
             <LabeledList.Item

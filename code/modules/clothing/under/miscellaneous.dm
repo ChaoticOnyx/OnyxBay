@@ -21,7 +21,7 @@
 	item_state_slots = list(
 		slot_hand_str = "black"
 		)
-	armor = list(melee = 15, bullet = 10, laser = 0, energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 15, bullet = 10, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/under/gorka/mob_can_equip(mob/user)
 	.=..()
@@ -34,7 +34,7 @@
 	name = "rosa dress"
 	icon_state = "rosa"
 	permeability_coefficient = 0.50
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 10)
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 10, rad = 0)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 
 /obj/item/clothing/under/captain_fly
@@ -108,7 +108,7 @@
 	item_state_slots = list(
 		slot_hand_str = "black"
 		)
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/under/space
@@ -132,7 +132,7 @@
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.01
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
-	armor = list(melee = 100, bullet = 100, laser = 100,energy = 100, bomb = 100, bio = 100)
+	armor = list(melee = 100, bullet = 100, laser = 100,energy = 100, bomb = 100, bio = 100, rad = 100)
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS | HANDS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0
@@ -552,14 +552,8 @@
 	desc = "A high visibility jumpsuit made from heat and radiation resistant materials."
 	icon_state = "hazard"
 	siemens_coefficient = 0.8
-	armor = list(melee = 0, bullet = 0, laser = 5,energy = 0, bomb = 5, bio = 0)
+	armor = list(melee = 0, bullet = 0, laser = 5,energy = 0, bomb = 5, bio = 0, rad = 20)
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.2,
-		RADIATION_HAWKING_RAY = 0.05
-	)
 
 /obj/item/clothing/under/sterile
 	name = "sterile jumpsuit"
@@ -569,7 +563,7 @@
 		slot_hand_str = "white"
 		)
 	permeability_coefficient = 0.50
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 30)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 30, rad = 0)
 
 /obj/item/clothing/under/suit_jacket/charcoal
 	name = "charcoal suit"

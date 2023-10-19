@@ -69,7 +69,8 @@
 	return
 
 /obj/effect/accelerated_particle/proc/toxmob(mob/living/M)
-	M.rad_act(new /datum/radiation_source(new /datum/radiation_info(1000 KILO BECQUEREL * energy, RADIATION_BETA_RAY), src))
+	var/radiation = (energy*2)
+	M.apply_effect((radiation*3),IRRADIATE,blocked = M.getarmor(null, "rad"))
 	M.updatehealth()
 //	to_chat(M, "<span class='warning'>You feel odd.</span>")
 	return

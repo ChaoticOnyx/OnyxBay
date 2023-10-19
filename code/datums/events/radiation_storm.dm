@@ -13,6 +13,7 @@
 
 	var/list/affecting_z = list()
 	var/target_energy = 0
+	var/base_radlevel = 25
 	var/state = 0
 	var/list/rad_sources = list()
 
@@ -43,7 +44,6 @@
 	for(var/area/A in GLOB.hallway)
 		A.set_lighting_mode(LIGHTMODE_RADSTORM, TRUE)
 
-	target_energy = BETA_PARTICLE_ENERGY * rand(5, 10)
 	set_next_think_ctx("enter", world.time + (30 SECONDS))
 
 /datum/event/radiation_storm/proc/enter_belt()
@@ -66,13 +66,10 @@
 /datum/event/radiation_storm/think()
 	switch(state)
 		if(STATE_ENTERED_BELT)
-			for(var/datum/radiation_source/rad_source in rad_sources)
-				rad_source.info.energy += target_energy * 0.15
-				rad_source.info.energy = Clamp(rad_source.info.energy, 0, target_energy)
+			radiate(base_radlevel + rand(-10, 10))
 		if(STATE_EXITED_BELT)
-			for(var/datum/radiation_source/rad_source in rad_sources)
-				rad_source.info.energy -= rad_source.info.energy - (rad_source.info.energy * 0.1)
-				rad_source.info.energy = Clamp(rad_source.info.energy, 0, target_energy)
+			base_radlevel -= 1
+			radiate(base_radlevel)
 
 	set_next_think(world.time + 2 SECONDS)
 
@@ -82,11 +79,25 @@
 	revoke_maint_all_access()
 	QDEL_LIST(rad_sources)
 
-/datum/event/radiation_storm/proc/radiate()
-	rad_sources = list()
-
+/datum/event/radiation_storm/proc/radiate(radiation_level = 25)
 	for(var/z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
-		rad_sources += SSradiation.z_radiate(locate(1, 1, z), new /datum/radiation(50 KILO CURIE, RADIATION_BETA_PARTICLE, target_energy * 0.1), TRUE)
+		SSradiation.z_radiate(locate(1, 1, z), radiation_level, 1)
+
+	for(var/mob/living/carbon/C in GLOB.living_mob_list_)
+		var/area/A = get_area(C)
+		if(!A)
+			continue
+		if(A.area_flags & AREA_FLAG_RAD_SHIELDED)
+			continue
+		if(istype(C,/mob/living/carbon/human))
+			var/mob/living/carbon/human/H = C
+			if(prob(5 * (0.01 * (100 - H.getarmor(null, "rad")))))
+				if (prob(75))
+					randmutb(H) // Applies bad mutation
+					domutcheck(H,null,MUTCHK_FORCED)
+				else
+					randmutg(H) // Applies good mutation
+					domutcheck(H,null,MUTCHK_FORCED)
 
 /datum/event/radiation_storm/syndicate
 	id = "radiation_storm_syndicate"

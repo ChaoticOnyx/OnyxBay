@@ -119,7 +119,7 @@
 /datum/disease2/effect/adaptation_rads/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	if(mob.radiation > (0.1 SIEVERT) * multiplier)
+	if(mob.radiation > 10*multiplier)
 		parent_disease.cure()
 ////////////////////////STAGE 3/////////////////////////////////
 
@@ -245,8 +245,8 @@
 /datum/disease2/effect/radian/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	var/datum/radiation_info/rad_info = new (3.7 TERA BECQUEREL * multiplier, RADIATION_ALPHA_RAY)
-	mob.radiation += rad_info.calc_equivalent_dose(AVERAGE_HUMAN_WEIGHT)
+	mob.apply_effect(2*multiplier, IRRADIATE, blocked = 0)
+
 
 
 /datum/disease2/effect/gas

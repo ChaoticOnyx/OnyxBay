@@ -324,12 +324,6 @@
 	desc = "It looks like a plain gask mask, but on closer inspection, it seems to have a small dial inside."
 	origin_tech = list(TECH_ILLEGAL = 3)
 	var/global/list/clothing_choices
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.0,
-		RADIATION_HAWKING_RAY = 0.7
-	)
 
 /obj/item/clothing/mask/chameleon/New()
 	..()

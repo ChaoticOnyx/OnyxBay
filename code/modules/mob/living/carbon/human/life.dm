@@ -28,7 +28,7 @@
 #define COLD_GAS_DAMAGE_LEVEL_2 1.5 //Amount of damage applied when the current breath's temperature passes the 200K point
 #define COLD_GAS_DAMAGE_LEVEL_3 3 //Amount of damage applied when the current breath's temperature passes the 120K point
 
-#define RADIATION_SPEED_COEFFICIENT (0.0005 SIEVERT)
+#define RADIATION_SPEED_COEFFICIENT 0.025
 
 /mob/living/carbon/human
 	var/oxygen_alert = 0
@@ -215,65 +215,70 @@
 		if(gene.is_active(src))
 			gene.OnMobLife(src)
 
-	radiation -= RADIATION_SPEED_COEFFICIENT
-	radiation = max(radiation, SPACE_RADIATION)
+	radiation = Clamp(radiation, 0, 500)
 
-	// Okay, let's imagine that there is no radiation
-	if(radiation <= SAFE_RADIATION_DOSE)
+	if(!radiation)
 		if(species.appearance_flags & RADIATION_GLOWS)
 			set_light(0)
 	else
-		if(radiation >= (100 SIEVERT))
-			dust()
-			return
-
 		if(species.appearance_flags & RADIATION_GLOWS)
-			set_light(0.3, 0.1, max(1,min(20, radiation * 25)), 2, species.get_flesh_colour(src))
+			set_light(0.3, 0.1, max(1, min(20, radiation/20)), 2, species.get_flesh_colour(src))
+		// END DOGSHIT SNOWFLAKE
 
 		var/obj/item/organ/internal/diona/nutrients/rad_organ = locate() in internal_organs
-
 		if(rad_organ && !rad_organ.is_broken())
-			var/rads = radiation / (0.01 SIEVERT)
+			var/rads = radiation/25
 
-			radiation -= (0.01 SIEVERT)
+			radiation -= rads
 			nutrition += rads
 
-			if(radiation < (0.1 SIEVERT))
-				radiation = SPACE_RADIATION
+			if(radiation < 2)
+				radiation = 0
 
 			nutrition = Clamp(nutrition, 0, STOMACH_FULLNESS_HIGH)
 
 			return
 
-		var/damage = radiation / (0.05 SIEVERT)
+		var/damage = 0
+		radiation -= 1 * RADIATION_SPEED_COEFFICIENT
+		if(prob(25))
+			damage = 2
 
-		if(radiation > (1 SIEVERT))
-			if(!full_prosthetic && !isundead(src))
-				if(prob(5))
-					to_chat(src, SPAN("warning", "You feel weak."))
+		if(radiation > 50)
+			damage = 2
+			radiation -= 2 * RADIATION_SPEED_COEFFICIENT
+			if(!full_prosthetic)
+				if(prob(5) && prob(100 * RADIATION_SPEED_COEFFICIENT))
+					radiation -= 5 * RADIATION_SPEED_COEFFICIENT
+					to_chat(src, SPAN_WARNING("You feel weak."))
 					Weaken(3)
-
 					if(!lying)
 						emote("collapse")
+
 				if(prob(5) && species.name == SPECIES_HUMAN) // Apes go bald
 					if((h_style != species.default_h_style || f_style != species.default_f_style))
-						to_chat(src, SPAN("warning", "Your hair falls out."))
+						to_chat(src, SPAN_WARNING("Your hair falls out."))
 						h_style = species.default_h_style
 						f_style = species.default_f_style
 						update_hair()
 
-		if(radiation > (2 SIEVERT))
+		if(radiation > 75)
+			damage = 3
+			radiation -= 3 * RADIATION_SPEED_COEFFICIENT
 			if(!full_prosthetic && !isundead(src))
 				if(prob(5))
-					take_overall_damage(0, damage, used_weapon = "Radiation Burns")
+					take_overall_damage(0, 5 * RADIATION_SPEED_COEFFICIENT, used_weapon = "Radiation Burns")
 				if(prob(1))
-					to_chat(src, SPAN("warning", "You feel strange!"))
-					adjustCloneLoss(radiation * damage)
+					to_chat(src, SPAN_WARNING("You feel strange!"))
+					adjustCloneLoss(5 * RADIATION_SPEED_COEFFICIENT)
 					emote("gasp")
+		if(radiation > 150)
+			damage = 8
+			radiation -= 4 * RADIATION_SPEED_COEFFICIENT
 
 		if(damage)
 			damage *= full_prosthetic ? 0.5 : species.radiation_mod
-			adjustToxLoss(damage)
+			adjustToxLoss(damage * RADIATION_SPEED_COEFFICIENT)
 			updatehealth()
 
 			if(!full_prosthetic && !isundead(src) && organs.len)

@@ -22,14 +22,6 @@
 	infra_luminosity = 15 //byond implementation is bugged.
 	anchor_fall = TRUE
 	w_class = ITEM_SIZE_NO_CONTAINER
-
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.99,
-		RADIATION_HAWKING_RAY = 1.0
-	)
-
 	var/initial_icon = null //Mech type for resetting icon. Only used for reskinning kits (see custom items)
 	var/base_color = null // Mecha padding color. Used to paint visible equipment in special color.
 	var/can_move = 1

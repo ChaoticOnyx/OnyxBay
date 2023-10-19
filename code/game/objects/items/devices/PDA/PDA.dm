@@ -1279,7 +1279,10 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					O.show_message("<span class='warning'>\The [user] has analyzed [C]'s radiation levels!</span>", 1)
 
 				user.show_message("<span class='notice'>Analyzing Results for [C]:</span>")
-				user.show_message("<span class='notice'>Radiation dose: [fmt_siunit(C.radiation, "Sv", 3)]</span>")
+				if(C.radiation)
+					user.show_message("<span class='notice'>Radiation Level: [C.radiation] mSv</span>")
+				else
+					user.show_message("<span class='notice'>No radiation detected.</span>")
 
 /obj/item/device/pda/afterattack(atom/A as mob|obj|turf|area, mob/user as mob, proximity)
 	if(!proximity) return

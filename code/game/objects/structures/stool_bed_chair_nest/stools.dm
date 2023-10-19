@@ -14,14 +14,6 @@ var/global/list/stool_cache = list() //haha stool
 	mod_handy = 0.85
 	throwforce = 10
 	w_class = ITEM_SIZE_HUGE
-
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 0.05,
-		RADIATION_BETA_RAY = 0.05,
-		RADIATION_GAMMA_RAY = 0.0,
-		RADIATION_HAWKING_RAY = 0.0
-	)
-
 	var/base_icon = "stool"
 	var/material/material
 	var/material/padding_material

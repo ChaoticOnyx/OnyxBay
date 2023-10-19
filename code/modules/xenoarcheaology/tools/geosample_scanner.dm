@@ -197,8 +197,7 @@
 					radiation = rand() * 15 + 85
 					if(!rad_shield)
 						//irradiate nearby mobs
-						var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation_info/preset/carbon_14(radiation))
-						rad_source.schedule_decay(30 SECONDS)
+						SSradiation.radiate(src, radiation / 25)
 				else
 					t_left_radspike = pick(10,15,25)
 

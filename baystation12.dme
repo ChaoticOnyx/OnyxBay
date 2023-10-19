@@ -8,7 +8,6 @@
 // END_FILE_DIR
 // BEGIN_PREFERENCES
 #define DEBUG
-// #define TRACY_PROFILER
 // END_PREFERENCES
 // BEGIN_INCLUDE
 #include "code\__spaceman_dmm.dm"
@@ -67,7 +66,6 @@
 #include "code\__defines\proc_presets.dm"
 #include "code\__defines\process_scheduler.dm"
 #include "code\__defines\qdel.dm"
-#include "code\__defines\radiation.dm"
 #include "code\__defines\research.dm"
 #include "code\__defines\shields.dm"
 #include "code\__defines\sound.dm"
@@ -2573,7 +2571,6 @@
 #include "code\modules\projectiles\targeting\targeting_overlay.dm"
 #include "code\modules\projectiles\targeting\targeting_triggers.dm"
 #include "code\modules\radiation\radiation.dm"
-#include "code\modules\radiation\radiation_presets.dm"
 #include "code\modules\random_map\_random_map_setup.dm"
 #include "code\modules\random_map\random_map.dm"
 #include "code\modules\random_map\random_map_verbs.dm"

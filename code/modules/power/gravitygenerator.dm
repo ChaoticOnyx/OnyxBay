@@ -93,7 +93,6 @@ GLOBAL_VAR(station_gravity_generator)
 	var/list/connected_areas = list()
 	var/datum/wires/gravity_generator/wires = null
 	var/obj/machinery/gravity_generator/part/middle = null
-	var/datum/radiation_source/rad_source = null
 
 	// Wires
 	var/announcer = TRUE                  // if true - notifies about the switching of the state of the generator to the engineering channel
@@ -109,7 +108,6 @@ GLOBAL_VAR(station_gravity_generator)
 	wires = new(src)
 
 /obj/machinery/gravity_generator/main/Destroy()
-	qdel(rad_source)
 	QDEL_NULL(wires)
 	for(var/obj/machinery/gravity_generator/part/P in parts)
 		P.main_part = null
@@ -402,9 +400,7 @@ GLOBAL_VAR(station_gravity_generator)
 	if(announcer)
 		GLOB.global_announcer.autosay("Alert! Gravitational Generator has been discharged! Gravitation is disabled.", get_announcement_computer("Gravity Generator Alert System"))
 
-	var/datum/radiation_source/temp_source = SSradiation.radiate(src, new /datum/radiation_info/preset/supermatter(2))
-	temp_source.schedule_decay(2 MINUTES)
-
+	SSradiation.radiate(src, 3 * charge)
 	playsound(loc, 'sound/effects/EMPulse.ogg', 100, 1)
 	empulse(loc, 7 * (charge * 0.01), 14 * (charge * 0.01))
 
@@ -490,10 +486,7 @@ GLOBAL_VAR(station_gravity_generator)
 		return
 
 	if(charge_count > 0)
-		if(rad_source == null)
-			rad_source = SSradiation.radiate(src, new /datum/radiation_info/preset/supermatter(charge_count / 20))
-		else
-			rad_source.info.activity = rad_source.info.specific_activity * (charge_count / 20)
+		SSradiation.radiate(src, 30 * (charge_count * 0.01))
 
 	if(charging_state != POWER_IDLE)
 		update_icon()

@@ -6,15 +6,9 @@
 	icon_state = "deathsquad"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS
 	allowed = list(/obj/item/gun, /obj/item/ammo_magazine, /obj/item/ammo_casing, /obj/item/melee/baton, /obj/item/handcuffs, /obj/item/tank)
-	armor = list(melee = 80, bullet = 70, laser = 70, energy = 45, bomb = 65, bio = 100)
+	armor = list(melee = 80, bullet = 70, laser = 70, energy = 45, bomb = 65, bio = 100, rad = 100)
 	flags_inv = HIDESHOES|HIDEJUMPSUIT
 	siemens_coefficient = 0.6
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.9,
-		RADIATION_HAWKING_RAY = 1.0
-	)
 
 /obj/item/clothing/suit/space/void/swat/New()
 	..()
@@ -28,16 +22,10 @@
 		slot_l_hand_str = "syndicate-helm-black-red",
 		slot_r_hand_str = "syndicate-helm-black-red",
 		)
-	armor = list(melee = 80, bullet = 70, laser = 70, energy = 45, bomb = 65, bio = 100)
+	armor = list(melee = 80, bullet = 70, laser = 70, energy = 45, bomb = 65, bio = 100, rad = 100)
 	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE | ITEM_FLAG_THICKMATERIAL
 	flags_inv = BLOCKHAIR
 	siemens_coefficient = 0.6
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.9,
-		RADIATION_HAWKING_RAY = 1.0
-	)
 
 
 // Captain
@@ -49,7 +37,7 @@
 		slot_l_hand_str = "caphelmet",
 		slot_r_hand_str = "caphelmet",
 	)
-	armor = list(melee = 75, bullet = 60, laser = 60, energy = 35, bomb = 55, bio = 100)
+	armor = list(melee = 75, bullet = 60, laser = 60, energy = 35, bomb = 55, bio = 100, rad = 50)
 	siemens_coefficient = 0.5
 	light_overlay = "helmet_light_dual"
 
@@ -61,7 +49,7 @@
 		slot_l_hand_str = "capspacesuit",
 		slot_r_hand_str = "capspacesuit",
 	)
-	armor = list(melee = 75, bullet = 60, laser = 60, energy = 35, bomb = 55, bio = 100)
+	armor = list(melee = 75, bullet = 60, laser = 60, energy = 35, bomb = 55, bio = 100, rad = 50)
 	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit, /obj/item/ammo_magazine, /obj/item/ammo_casing, /obj/item/melee/baton, /obj/item/handcuffs, /obj/item/disk/nuclear)
 	siemens_coefficient = 0.5
 
@@ -76,14 +64,14 @@
 	desc = "A radiation-resistant helmet made especially for exploring unknown planetary environments."
 	icon_state = "helm_explorer"
 	item_state = "helm_explorer"
-	armor = list(melee = 20, bullet = 10, laser = 15,energy = 45, bomb = 30, bio = 100)
+	armor = list(melee = 20, bullet = 10, laser = 15,energy = 45, bomb = 30, bio = 100, rad = 90)
 	light_overlay = "explorer_light"
 
 /obj/item/clothing/suit/space/void/exploration
 	name = "exploration voidsuit"
 	desc = "A lightweight, radiation-resistant voidsuit, featuring the Expeditionary Corps emblem on its chest plate. Designed for exploring unknown planetary environments."
 	icon_state = "void_explorer"
-	armor = list(melee = 20, bullet = 10, laser = 15,energy = 45, bomb = 30, bio = 100)
+	armor = list(melee = 20, bullet = 10, laser = 15,energy = 45, bomb = 30, bio = 100, rad = 90)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/device/healthanalyzer,/obj/item/device/gps,/obj/item/pinpointer/radio,/obj/item/device/radio/beacon,/obj/item/material/hatchet/machete,/obj/item/shovel)
 
 /obj/item/clothing/suit/space/void/exploration/prepared
@@ -101,7 +89,7 @@
 		slot_l_hand_str = "eng_helm",
 		slot_r_hand_str = "eng_helm",
 		)
-	armor = list(melee = 50, bullet = 10, laser = 30,energy = 15, bomb = 35, bio = 100)
+	armor = list(melee = 50, bullet = 10, laser = 30,energy = 15, bomb = 35, bio = 100, rad = 80)
 
 /obj/item/clothing/suit/space/void/engineering/salvage
 	name = "salvage voidsuit"
@@ -111,7 +99,7 @@
 		slot_l_hand_str = "eng_voidsuit",
 		slot_r_hand_str = "eng_voidsuit",
 	)
-	armor = list(melee = 50, bullet = 10, laser = 30,energy = 15, bomb = 35, bio = 100)
+	armor = list(melee = 50, bullet = 10, laser = 30,energy = 15, bomb = 35, bio = 100, rad = 80)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
 
 /obj/item/clothing/suit/space/void/engineering/salvage/prepared
@@ -125,7 +113,7 @@
 	desc = "An atmos resistant helmet for space and planet exploration."
 	icon_state = "rig0_pilot"
 	item_state = "pilot_helm"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100, rad = 50)
 	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
 	light_overlay = "helmet_light_dual"
 
@@ -134,7 +122,7 @@
 	desc = "An atmos resistant voidsuit for space and planet exploration."
 	icon_state = "rig-pilot"
 	item_state = "rig-pilot"
-	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
+	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100, rad = 50)
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/rcd)
 
@@ -149,7 +137,7 @@
 	desc = "A bulky helmet with some heavy armor plating."
 	icon_state = "hardsuit-helm-knight"
 	item_state = "hardsuit-helm-knight"
-	armor = list(melee = 70, bullet = 35, laser = 35, energy = 25, bomb = 55, bio = 100)
+	armor = list(melee = 70, bullet = 35, laser = 35, energy = 25, bomb = 55, bio = 100, rad = 10)
 	siemens_coefficient = 0.7
 	light_overlay = "helmet_light_dual"
 
@@ -158,7 +146,7 @@
 	item_state = "hardsuit-knight"
 	name = "strange voidsuit"
 	desc = "A bulky set of space-proof armor, that looks kinda ancient. 'Lancelot X-40' is written on the front plate."
-	armor = list(melee = 70, bullet = 35, laser = 35, energy = 25, bomb = 55, bio = 100)
+	armor = list(melee = 70, bullet = 35, laser = 35, energy = 25, bomb = 55, bio = 100, rad = 10)
 	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/melee/baton)
 	siemens_coefficient = 0.7
 
@@ -169,7 +157,7 @@
 	icon_state = "hardsuit-optical"
 	desc = "Strange looking, smoothly contoured helmet. It looks a bit blurry."
 	siemens_coefficient = 0
-	armor = list(melee = 35, bullet = 40, laser = 45, energy = 40, bomb = 20, bio = 100)
+	armor = list(melee = 35, bullet = 40, laser = 45, energy = 40, bomb = 20, bio = 100, rad = 60)
 
 /obj/item/clothing/suit/space/void/optical
 	name = "experimental voidsuit"
@@ -177,7 +165,7 @@
 	desc = "Strange black voidsuit, with some devices attached to it. It looks a bit blurry."
 	action_button_name = "Toggle Optical Disruptor"
 	siemens_coefficient = 0
-	armor = list(melee = 35, bullet = 40, laser = 45, energy = 40, bomb = 20, bio = 100)
+	armor = list(melee = 35, bullet = 40, laser = 45, energy = 40, bomb = 20, bio = 100, rad = 60)
 	var/cloak = FALSE
 
 /obj/item/clothing/suit/space/void/optical/New()

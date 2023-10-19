@@ -5,7 +5,6 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	var/total_volume = 0
 	var/maximum_volume = 120
 	var/atom/my_atom = null
-	var/list/rad_sources = list()
 
 /datum/reagents/New(maximum_volume = 120, atom/my_atom)
 	if(!istype(my_atom))
@@ -235,47 +234,53 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 		. += "[current.name] ([current.volume])"
 	return english_list(., "EMPTY", "", ", ", ", ")
 
-/// Return all the `/datum/radiation_info` from reagents.
+/// Calculate total radiation level.
 /datum/reagents/proc/get_radiation()
-	var/list/info = list()
+	var/radiation = 0
 
 	for(var/datum/reagent/R in reagent_list)
-		if(!R.radiation)
-			continue
-		
-		info += R.radiation
+		radiation += R.get_radiation()
 
-	return info
+	return radiation
 
 /// Starts thinking if reagents has some persistent effects, stop otherwise.
 /datum/reagents/proc/update_thinking()
 	var/has_effects = 0
 
 	for(var/datum/reagent/R in reagent_list)
-		if(R.radiation)
+		if(R.get_radiation())
 			has_effects = TRUE
 			break
 
 	if(has_effects)
 		set_next_think(world.time)
 	else
-		QDEL_LIST(rad_sources)
 		set_next_think(0)
+
+#define CHECK_FLAG_R(target, flag, bool) \
+var/atom/__##target = target;\
+while(__##target != null)\
+{\
+	if(__##target.effect_flags & flag) {\
+		bool = TRUE;\
+		break;\
+	} else {\
+		__##target = __##target.loc;\
+	}\
+}
 
 // Update effects.
 /// Update radiation effect.
 /datum/reagents/proc/update_radiation_effect()
-	QDEL_LIST(rad_sources)
+	var/has_flag = FALSE
+	CHECK_FLAG_R(my_atom, EFFECT_FLAG_RAD_SHIELDED, has_flag)
 
-	if(my_atom.atom_flags & ATOM_FLAG_IGNORE_RADIATION)
+	if(has_flag)
 		return
 
-	for(var/datum/reagent/R in reagent_list)
-		if(!R.radiation)
-			continue
+	SSradiation.radiate(my_atom, get_radiation())
 
-		R.radiation.activity = (R.radiation.specific_activity * R.volume)
-		rad_sources += SSradiation.radiate(my_atom, R.radiation)
+#undef CHECK_FLAG_R
 
 /* Holder-to-holder and similar procs */
 

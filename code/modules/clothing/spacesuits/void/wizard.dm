@@ -8,7 +8,7 @@
 		slot_r_hand_str = "wiz_helm",
 		)
 	unacidable = TRUE //No longer shall our kind be foiled by lone chemists with spray bottles!
-	armor = list(melee = 40, bullet = 30, laser = 30, energy = 30, bomb = 35, bio = 100)
+	armor = list(melee = 40, bullet = 30, laser = 30, energy = 30, bomb = 35, bio = 100, rad = 60)
 	siemens_coefficient = 0.7
 	sprite_sheets_obj = null
 	wizard_garb = TRUE
@@ -20,7 +20,7 @@
 	desc = "A bizarre gem-encrusted suit that radiates magical energies."
 	w_class = ITEM_SIZE_LARGE //normally voidsuits are bulky but this one is magic I suppose
 	unacidable = TRUE
-	armor = list(melee = 50, bullet = 30, laser = 30,energy = 30, bomb = 35, bio = 100)
+	armor = list(melee = 50, bullet = 30, laser = 30,energy = 30, bomb = 35, bio = 100, rad = 60)
 	siemens_coefficient = 0.7
 	sprite_sheets_obj = null
 	wizard_garb = TRUE
@@ -66,5 +66,5 @@
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.02
 	unacidable = TRUE
-	armor = list(melee = 40, bullet = 20, laser = 20,energy = 20, bomb = 35, bio = 100)
+	armor = list(melee = 40, bullet = 20, laser = 20,energy = 20, bomb = 35, bio = 100, rad = 60)
 	siemens_coefficient = 0.7

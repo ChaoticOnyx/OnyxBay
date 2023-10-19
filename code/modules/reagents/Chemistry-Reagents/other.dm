@@ -113,7 +113,7 @@
 /datum/reagent/adminordrazine/affect_blood(mob/living/carbon/M, alien, removed)
 	M.setCloneLoss(0)
 	M.setOxyLoss(0)
-	M.radiation = SPACE_RADIATION
+	M.radiation = 0
 	M.heal_organ_damage(5,5)
 	M.adjustToxLoss(-5)
 	M.hallucination_power = 0
@@ -153,14 +153,13 @@
 	taste_description = "the inside of a reactor"
 	reagent_state = SOLID
 	color = "#b8b8c0"
-	radiation = new /datum/radiation_info/preset/uranium_238
+	radiation = 0.05
 
 /datum/reagent/uranium/affect_touch(mob/living/carbon/M, alien, removed)
 	affect_ingest(M, alien, removed)
 
 /datum/reagent/uranium/affect_blood(mob/living/carbon/M, alien, removed)
-	radiation.activity = radiation.specific_activity * volume
-	M.radiation += radiation.calc_equivalent_dose(AVERAGE_HUMAN_WEIGHT)
+	M.apply_effect(5 * removed, IRRADIATE, blocked = 0)
 
 /datum/reagent/uranium/touch_turf(turf/T)
 	if(volume >= 3)

@@ -11,13 +11,6 @@
 	hitby_sound = 'sound/effects/metalhit2.ogg'
 	explosion_block = 1
 
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.1,
-		RADIATION_HAWKING_RAY = 0.9
-	)
-
 	var/damage = 0
 	var/damage_overlay = 0
 	var/global/damage_overlays[16]
