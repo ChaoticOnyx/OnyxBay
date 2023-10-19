@@ -338,7 +338,8 @@
 
 /datum/reagent/ethanol/vodka/affect_ingest(mob/living/carbon/M, alien, removed)
 	..()
-	M.radiation = max(SPACE_RADIATION, M.radiation - ((0.009 SIEVERT) * removed))
+
+	M.radiation -= (0.009 SIEVERT) * removed
 
 /datum/reagent/ethanol/vodka/premium
 	name = "Premium Vodka"
@@ -379,7 +380,7 @@
 
 /datum/reagent/ethanol/wine/affect_ingest(mob/living/carbon/M, alien, removed)
 	..()
-	M.radiation = max(SPACE_RADIATION, M.radiation - ((0.005 SIEVERT) * removed))
+	M.radiation -= (0.005 SIEVERT) * removed
 
 /datum/reagent/ethanol/wine/premium
 	name = "White Wine"

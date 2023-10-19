@@ -465,7 +465,7 @@
 	flags = IGNORE_MOB_SIZE
 
 /datum/reagent/hyronalin/affect_blood(mob/living/carbon/M, alien, removed)
-	M.radiation = max(SPACE_RADIATION, M.radiation - ((0.01 SIEVERT) * removed))
+	M.radiation -= (0.01 SIEVERT) * removed
 
 /datum/reagent/arithrazine
 	name = "Arithrazine"
@@ -478,7 +478,7 @@
 	flags = IGNORE_MOB_SIZE
 
 /datum/reagent/arithrazine/affect_blood(mob/living/carbon/M, alien, removed)
-	M.radiation = max(SPACE_RADIATION, M.radiation - ((0.1 SIEVERT) * removed))
+	M.radiation -= (0.1 SIEVERT) * removed
 	M.adjustToxLoss(-10 * removed)
 	if(prob(60))
 		if(ishuman(M))
