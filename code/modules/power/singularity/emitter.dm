@@ -11,12 +11,6 @@
 	anchored = 0
 	density = 1
 	req_access = list(access_engine_equip)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 0,
-		RADIATION_BETA_PARTICLE = 0,
-		RADIATION_HAWKING = 0
-	)
-
 	var/id = null
 
 	active_power_usage = 100 KILO WATTS
