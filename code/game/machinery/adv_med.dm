@@ -415,7 +415,7 @@
 	data["burn_severity"] = capitalize(get_severity(H.getFireLoss()))
 	data["tox_severity"] = capitalize(get_severity(H.getToxLoss()))
 	data["oxy_severity"] = capitalize(get_severity(H.getOxyLoss()))
-	data["rad_severity"] = capitalize(get_severity(H.radiation/5))
+	data["rad_dose"] = capitalize(get_severity(H.radiation/5))
 	data["clone_severity"] = capitalize(get_severity(H.getCloneLoss()))
 
 	if (H.paralysis)
