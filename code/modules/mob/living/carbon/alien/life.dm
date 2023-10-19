@@ -36,10 +36,10 @@
 // Currently both Dionaea and larvae like to eat radiation, so I'm defining the
 // rad absorbtion here. This will need to be changed if other baby aliens are added.
 /mob/living/carbon/alien/handle_mutations_and_radiation()
-	if(radiation <= SAFE_RADIATION_DOSE)
+	if(!radiation)
 		return
 	var/rads = radiation / (0.05 SIEVERT)
-	radiation = max(SPACE_RADIATION, radiation - rads)
+	radiation -= rads
 	nutrition += rads
 	heal_overall_damage(rads, rads)
 	adjustOxyLoss(-rads)
