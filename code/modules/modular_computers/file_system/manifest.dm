@@ -178,9 +178,9 @@ GLOBAL_LIST_EMPTY(dept_data)
 				player_prefs.job_low
 				)
 				
-		//inserting positions in GLOB.dept_data
+		//inserting non-head positions in GLOB.dept_data
 		for(var/list/J in preferenced_jobs)
-			var/list/jobs = J
+			var/list/jobs = J - GLOB.command_positions
 			if(length(jobs))
 				var/job = pick(jobs)
 
