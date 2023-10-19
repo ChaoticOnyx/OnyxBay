@@ -45,7 +45,7 @@ GLOBAL_LIST_EMPTY(dept_data)
 		if(isnull(department["flag"]))
 			bot = department["names"]
 
-	var/list/isactive = new()
+	var/list/isactive = list()
 	
 	// sort mobs
 	for(var/datum/computer_file/crew_record/CR in GLOB.all_crew_records)
