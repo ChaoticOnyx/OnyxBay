@@ -92,12 +92,12 @@
 		if(istype(C,/mob/living/carbon/human))
 			var/mob/living/carbon/human/H = C
 			if(prob(5 * (0.01 * (100 - H.getarmor(null, "rad")))))
-				if (prob(75))
+				if(prob(75))
 					randmutb(H) // Applies bad mutation
-					domutcheck(H,null,MUTCHK_FORCED)
+					domutcheck(H, null, 1)
 				else
 					randmutg(H) // Applies good mutation
-					domutcheck(H,null,MUTCHK_FORCED)
+					domutcheck(H, null, 1)
 
 /datum/event/radiation_storm/syndicate
 	id = "radiation_storm_syndicate"
