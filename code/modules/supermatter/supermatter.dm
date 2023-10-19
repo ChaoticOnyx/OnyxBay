@@ -405,7 +405,7 @@
 		if(rad_source == null)
 			rad_source = SSradiation.radiate(src, new /datum/radiation/preset/supermatter)
 
-		rad_source.info.energy = power * (1.2 MEGA ELECTRONVOLT)
+		rad_source.info.energy = (power / 100) * (1.2 MEGA ELECTRONVOLT)
 	else
 		qdel(rad_source)
 
