@@ -24,7 +24,7 @@
 /datum/radiation/preset/supermatter
 	activity = 50 KILO CURIE
 	radiation_type = RADIATION_BETA_PARTICLE
-	energy = 100 KILO ELECTRONVOLT
+	energy = 1.2 MEGA ELECTRONVOLT
 
 /datum/radiation/preset/artifact
 	activity = 15 KILO CURIE
