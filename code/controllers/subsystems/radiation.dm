@@ -51,7 +51,11 @@ SUBSYSTEM_DEF(radiation)
 				if(source_turf.z != T.z)
 					continue // Radiation is not multi-z
 
-				var/E = source.info.energy / RADIATION_DISTANCE_MULT(get_dist(T, source_turf))
+				var/dist = get_dist(T, source_turf)
+				if(dist > source.range)
+					continue
+
+				var/E = source.info.energy / RADIATION_DISTANCE_MULT(dist)
 
 				if(isobj(source.holder))
 					var/obj/current_obj = source.holder
