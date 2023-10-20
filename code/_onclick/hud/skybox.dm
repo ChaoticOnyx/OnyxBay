@@ -1,9 +1,8 @@
 /obj/skybox
 	name = "skybox"
 	plane = SKYBOX_PLANE
+	layer = SKYBOX_LAYER
 	mouse_opacity = 0
-	blend_mode = BLEND_MULTIPLY
-	vis_flags = VIS_INHERIT_ID
 	anchored = TRUE
 	var/mob/owner
 	var/image/image
@@ -16,11 +15,15 @@
 	owner = M
 	loc = null
 	image = image('icons/turf/skybox.dmi', src, "background_[SSskybox.BGstate]")
+	image.plane = SKYBOX_PLANE
+	image.layer = SKYBOX_LAYER
 	overlays += image
 
 	if(SSskybox.use_stars)
 		stars = image('icons/turf/skybox.dmi', src, SSskybox.star_state)
-		stars.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
+		stars.plane = DUST_PLANE
+		stars.layer = DUST_LAYER
+		stars.appearance_flags = RESET_COLOR
 		overlays += stars
 	DoRotate()
 	update()

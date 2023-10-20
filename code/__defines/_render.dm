@@ -135,9 +135,11 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 
 /atom/movable/renderer/skybox
 	name = "Skybox"
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
 	group = RENDER_GROUP_SCENE
 	plane = SKYBOX_PLANE
-	relay_blend_mode = BLEND_MULTIPLY
+	blend_mode = BLEND_MULTIPLY
+
 /atom/movable/renderer/turf
 	name = "Turf"
 	group = RENDER_GROUP_SCENE
