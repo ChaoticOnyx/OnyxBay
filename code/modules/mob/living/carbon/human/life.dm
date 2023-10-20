@@ -257,7 +257,7 @@
 
 				if(prob(5) && species.name == SPECIES_HUMAN) // Apes go bald
 					if((h_style != species.default_h_style || f_style != species.default_f_style))
-						to_chat(src, SPAN_WARNING("Your hair falls out."))
+						to_chat(src,  SPAN("warning", "Your hair falls out."))
 						h_style = species.default_h_style
 						f_style = species.default_f_style
 						update_hair()

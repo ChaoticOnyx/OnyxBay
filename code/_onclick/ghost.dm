@@ -44,7 +44,7 @@
 			reagent_scanner_scan(user, src)
 		if(user.rads_scan)
 			var/rads = SSradiation.get_rads_at_turf(get_turf(user))
-			to_chat(user, SPAN_NOTICE("Radiation level: [rads ? rads : "0"] Bq."))
+			to_chat(user, EXAMINE_BLOCK(SPAN_NOTICE("Radiation level: [rads ? rads : "0"] Bq.")))
 		if(user.inquisitiveness)
 			user.examinate(src)
 	return

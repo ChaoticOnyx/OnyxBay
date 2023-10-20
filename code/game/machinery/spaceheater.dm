@@ -84,11 +84,11 @@
 			shake_animation(stime = 4)
 	return
 
-/obj/machinery/space_heater/attack_hand(mob/user as mob)
+/obj/machinery/space_heater/attack_hand(mob/user)
 	..()
 	interact(user)
 
-/obj/machinery/space_heater/interact(mob/user as mob)
+/obj/machinery/space_heater/interact(mob/user)
 
 	if(panel_open)
 
@@ -105,7 +105,7 @@
 
 		dat += "<A href='?src=\ref[src];op=temp;val=-5'>-</A>"
 
-		dat += " [set_temperature]K ([CONV_K2C(set_temperature)]&deg;C)"
+		dat += " [set_temperature]K ([CONV_KELVIN_CELSIUS(set_temperature)]&deg;C)"
 		dat += "<A href='?src=\ref[src];op=temp;val=5'>+</A><BR>"
 
 		var/datum/browser/popup = new(usr, "spaceheater", "Space Heater Control Panel")

@@ -201,7 +201,7 @@
 	*/
 	var/datum/gas_mixture/environment = loc.return_air()
 	if (environment)
-		var/outer_temp = CONV_C2K(0.1 * temperature)
+		var/outer_temp = CONV_CELSIUS_KELVIN(0.1 * temperature)
 		if(outer_temp > environment.temperature) //sharing the heat
 			var/heat_transfer = environment.get_thermal_energy_change(outer_temp)
 			if(heat_transfer > 1)
@@ -254,7 +254,7 @@
 	var/plasma = (sheets+sheet_left)*20
 	var/datum/gas_mixture/environment = loc.return_air()
 	if (environment)
-		environment.adjust_gas_temp("plasma", plasma/10, CONV_C2K(temperature))
+		environment.adjust_gas_temp("plasma", plasma/10, CONV_CELSIUS_KELVIN(temperature))
 
 	sheets = 0
 	sheet_left = 0

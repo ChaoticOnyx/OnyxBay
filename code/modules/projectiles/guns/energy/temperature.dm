@@ -20,7 +20,7 @@
 
 /obj/item/gun/energy/temperature/_examine_text(mob/user)
 	. = ..()
-	. += "\nThe temperature sensor shows: [round(CONV_K2C(temperature))]&deg;C"
+	. += "\nThe temperature sensor shows: [round(CONV_KELVIN_CELSIUS(temperature))]&deg;C"
 
 /obj/item/gun/energy/temperature/Initialize()
 	. = ..()
@@ -30,9 +30,9 @@
 	user.set_machine(src)
 	var/temp_text = ""
 	if(temperature > (-50 CELSIUS))
-		temp_text = "<FONT color=black>[temperature] ([round(CONV_K2C(temperature))]&deg;C) ([round(temperature*1.8-459.67)]&deg;F)</FONT>"
+		temp_text = "<FONT color=black>[temperature] ([round(CONV_KELVIN_CELSIUS(temperature))]&deg;C) ([round(temperature*1.8-459.67)]&deg;F)</FONT>"
 	else
-		temp_text = "<FONT color=blue>[temperature] ([round(CONV_K2C(temperature))]&deg;C) ([round(temperature*1.8-459.67)]&deg;F)</FONT>"
+		temp_text = "<FONT color=blue>[temperature] ([round(CONV_KELVIN_CELSIUS(temperature))]&deg;C) ([round(temperature*1.8-459.67)]&deg;F)</FONT>"
 
 	var/dat = {"<meta charset=\"utf-8\"><B>Freeze Gun Configuration: </B><BR>
 	Current output temperature: [temp_text]<BR>

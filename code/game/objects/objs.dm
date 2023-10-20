@@ -156,6 +156,21 @@
 			return
 	return ..()
 
+/obj/_examine_text(mob/user, infix, suffix)
+	. = ..()
+
+	if(!hasHUD(user, HUD_SCIENCE))
+		return .
+
+	if(!isitem(src))
+		return .
+
+	var/obj/item/I = src
+	if(I.armor && I.armor["rad"])
+		. += "\nRadiation Resistance: [I.armor["rad"]]%"
+
+	return .
+
 /obj/proc/wrench_floor_bolts(mob/user, delay=20)
 	playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
 	if(anchored)
