@@ -5,8 +5,9 @@ GLOBAL_LIST_EMPTY(radial_menus)
 
 /obj/screen/radial
 	icon = 'icons/hud/radial.dmi'
-	plane = HUD_PLANE
 	layer = ABOVE_HUD_LAYER
+	plane = HUD_PLANE
+	vis_flags = VIS_INHERIT_PLANE
 	var/datum/radial_menu/parent
 
 /obj/screen/radial/Destroy()
@@ -168,14 +169,17 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	E.choice = null
 	E.next_page = FALSE
 
-/datum/radial_menu/proc/SetElement(obj/screen/radial/slice/E, choice_id, angle,anim, anim_order)
+/datum/radial_menu/proc/SetElement(obj/screen/radial/slice/E, choice_id, angle, anim, anim_order)
 	//Position
 	var/py = round(cos(angle) * radius) + py_shift
 	var/px = round(sin(angle) * radius)
 	if(anim)
 		var/timing = anim_order * 0.5
-		E.SetTransform(scale = 0.1)
-		animate(E, pixel_x = px, pixel_y = py, transform = matrix(), time = timing)
+		var/matrix/starting = matrix()
+		starting.Scale(0.1,0.1)
+		E.transform = starting
+		var/matrix/TM = matrix()
+		animate(E,pixel_x = px,pixel_y = py, transform = TM, time = timing)
 	else
 		E.pixel_y = py
 		E.pixel_x = px
@@ -210,6 +214,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	choices_icons.Cut()
 	choices_values.Cut()
 	current_page = 1
+	QDEL_NULL(custom_check_callback)
 
 /datum/radial_menu/proc/element_chosen(choice_id,mob/user)
 	selected_choice = choices_values[choice_id]
@@ -235,7 +240,6 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	var/mutable_appearance/MA = new /mutable_appearance(E)
 	if(MA)
 		MA.layer = ABOVE_HUD_LAYER
-		MA.plane = ABOVE_HUD_PLANE
 		MA.appearance_flags |= RESET_TRANSFORM
 	return MA
 
@@ -253,7 +257,6 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	current_user = M.client
 	//Blank
 	menu_holder = image(icon='icons/effects/effects.dmi',loc=anchor,icon_state="nothing",layer = ABOVE_HUD_LAYER)
-	menu_holder.plane = ABOVE_HUD_PLANE
 	menu_holder.appearance_flags |= KEEP_APART
 	menu_holder.vis_contents += elements + close_button
 	current_user.images += menu_holder
@@ -278,9 +281,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 /datum/radial_menu/Destroy()
 	Reset()
 	hide()
-	QDEL_NULL(custom_check_callback)
 	. = ..()
-
 /*
 	Presents radial menu to user anchored to anchor (or user if the anchor is currently in users screen)
 	Choices should be a list where list keys are movables or text used for element names and return value
@@ -319,10 +320,8 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	Helper to make a radial menu button with a name and icon for a given atom.
 */
 /proc/make_item_radial_menu_button(atom/movable/AM, name_prefix = "", name_suffix = "")
-	var/image/radial_button = new
-	radial_button.appearance = AM
-	radial_button.plane = FLOAT_PLANE
-	radial_button.layer = FLOAT_LAYER
+	var/image/radial_button = image(icon = AM.icon, icon_state = AM.icon_state)
+	radial_button.overlays = AM.overlays
 	radial_button.name = "[name_prefix][AM.name][name_suffix]"
 	return radial_button
 

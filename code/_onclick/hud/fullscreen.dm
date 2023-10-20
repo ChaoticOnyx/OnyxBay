@@ -5,6 +5,9 @@
 /mob/proc/set_fullscreen(condition, screen_name, screen_type, arg)
 	condition ? overlay_fullscreen(screen_name, screen_type, arg) : clear_fullscreen(screen_name)
 
+/mob/proc/set_renderer_filter(condition, renderer_name = GAME_RENDERER, filter_name, priority, list/params)
+	condition?renderers[renderer_name].add_filter(filter_name, priority, params) : renderers[renderer_name].remove_filter(filter_name)
+
 /mob/proc/overlay_fullscreen(category, type, severity)
 	var/obj/screen/fullscreen/screen = screens[category]
 

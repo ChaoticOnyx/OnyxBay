@@ -30,17 +30,11 @@
 	#define DEBRIS_LAYER                 1
 	#define DUST_LAYER                   2
 
-// Openspace uses planes -80 through -70.
-#define OPEN_SPACE_PLANE -5
+#define OPENSPACE_PLANE -5
 #define OVER_OPENSPACE_PLANE        -4
 
-#define BLACKNESS_PLANE                 0 //Blackness plane as per DM documentation.
-
-#define HEAT_EFFECT_PLANE -3
-#define HEAT_EFFECT_TARGET    "*heat"
-#define HEAT_COMPOSITE_TARGET "*heatc"
-
 #define WARP_EFFECT_PLANE -2
+#define BLACKNESS_PLANE                 0 //Blackness plane as per DM documentation.
 
 #define DEFAULT_PLANE                   1
 	#define PLATING_LAYER               1
@@ -172,6 +166,7 @@
 	#define ABOVE_HUD_LAYER              5
 
 //-------------------- Rendering ---------------------
+#define GAME_RENDERER "Game"
 
 /// Semantics - The final compositor or a filter effect renderer
 #define RENDER_GROUP_NONE null

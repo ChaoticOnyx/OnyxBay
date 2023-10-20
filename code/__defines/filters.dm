@@ -1,3 +1,5 @@
+#define EYE_BLURRY_FILTER "eye_blurry"
+
 /atom
 	var/list/filter_data // For handling persistent filters
 

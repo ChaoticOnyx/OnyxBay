@@ -88,7 +88,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 		renderers = list()
 	for (var/atom/movable/renderer/renderer as anything in subtypesof(/atom/movable/renderer))
 		renderer = new renderer (null, src)
-		renderers[renderer] = renderer.plane // (renderer = plane) format for visual debugging
+		renderers[renderer.name] = renderer
 		if (renderer.relay)
 			my_client.screen += renderer.relay
 		my_client.screen += renderer
@@ -141,10 +141,14 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 
 // Draws the game world; live mobs, items, turfs, etc.
 /atom/movable/renderer/game
-	name = "Game"
+	name = GAME_RENDERER
 	group = RENDER_GROUP_SCENE
 	plane = DEFAULT_PLANE
 
+/atom/movable/renderer/game/Initialize()
+	. = ..()
+	if (istype(owner) && owner.client && owner.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_YES)
+		add_filter("AO",0,list(type = "drop_shadow", x = 0, y = -2, size = 4, color = "#04080FAA"))
 
 /// Draws observers; ghosts, camera eyes, etc.
 /atom/movable/renderer/observers
@@ -207,6 +211,14 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	plane = RENDER_GROUP_SCENE
 	mouse_opacity = MOUSE_OPACITY_NORMAL
 
+/atom/movable/renderer/open_space
+	name = "open_space"
+	group = RENDER_GROUP_NONE
+	plane = OPENSPACE_PLANE
+
+/atom/movable/renderer/open_space/Initialize()
+	. = ..()
+	add_filter("blurry",0,list(type="blur",size=0.65))
 
 /// Render group for stuff OUTSIDE the typical game context - UI, full screen effects, etc.
 /atom/movable/renderer/screen_group
@@ -244,7 +256,6 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 /atom/movable/renderer/scene_group/Initialize()
 	. = ..()
 	filters += filter(type = "displace", render_source = "*warp", size = 5)
-	filters += filter(type = "displace", render_source = HEAT_COMPOSITE_TARGET, size = 2.5)
 
 /// Example of a warp filter for /renderer use
 /obj/effect/effect/warp
@@ -254,49 +265,3 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	icon_state = "singularity_s11"
 	pixel_x = -176
 	pixel_y = -176
-
-//Similar to warp but not as strong
-/atom/movable/renderer/heat
-	name = "Heat Effect"
-	group = RENDER_GROUP_NONE
-	plane = HEAT_EFFECT_PLANE
-	render_target_name = HEAT_COMPOSITE_TARGET
-	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
-
-	var/obj/gas_heat_object = null
-
-/atom/movable/renderer/heat/proc/Setup()
-	var/mob/M = owner
-
-	if(!istype(M))
-		return
-
-	var/quality = M.get_preference_value(/datum/client_preference/graphics_quality)
-
-	if(gas_heat_object)
-		vis_contents -= gas_heat_object
-	/*
-	if (quality == GLOB.PREF_LOW)
-		if(!istype(gas_heat_object, /obj/effect/heat))
-			QDEL_NULL(gas_heat_object)
-			gas_heat_object = new /obj/effect/heat(null)
-	else
-		if(!istype(gas_heat_object, /obj/particle_emitter/heat))
-			QDEL_NULL(gas_heat_object)
-			gas_heat_object = new /obj/particle_emitter/heat(null, -1)
-		if (quality == GLOB.PREF_MED)
-			gas_heat_object.particles?.count = 250
-			gas_heat_object.particles?.spawning = 15
-		else if (quality == GLOB.PREF_HIGH)
-			gas_heat_object.particles?.count = 600
-			gas_heat_object.particles?.spawning = 35
-*/
-	vis_contents += gas_heat_object
-
-/atom/movable/renderer/heat/Initialize()
-	. = ..()
-	Setup()
-
-/atom/movable/renderer/heat/GraphicsUpdate()
-	. = ..()
-	Setup()

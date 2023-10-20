@@ -35,27 +35,27 @@
 		if("pockets")
 			if(stripping)
 				visible_message("<span class='danger'>\The [user] is trying to empty [src]'s pockets!</span>")
-				if(do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
+				if(do_after(user, HUMAN_STRIP_DELAY, src))
 					empty_pockets(user)
 			else
 				//should it be possible to discreetly slip something into someone's pockets?
 				visible_message("<span class='danger'>\The [user] is trying to stuff \a [held] into [src]'s pocket!</span>")
-				if(do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
+				if(do_after(user, HUMAN_STRIP_DELAY, src))
 					place_in_pockets(held, user)
 			return
 		if("splints")
 			visible_message("<span class='danger'>\The [user] is trying to remove \the [src]'s splints!</span>")
-			if(do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
+			if(do_after(user, HUMAN_STRIP_DELAY, src))
 				remove_splints(user)
 			return
 		if("sensors")
 			visible_message("<span class='danger'>\The [user] is trying to set \the [src]'s sensors!</span>")
-			if(do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
+			if(do_after(user, HUMAN_STRIP_DELAY, src))
 				toggle_sensors(user)
 			return
 		if("rolldown")
 			visible_message(SPAN_DANGER("\The [user] is trying to roll down \the [src]'s uniform!"))
-			if(do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
+			if(do_after(user, HUMAN_STRIP_DELAY, src))
 				var/obj/item/clothing/under/U = w_uniform
 				if(U)
 					U.rollsuit()
@@ -63,7 +63,7 @@
 			return
 		if("internals")
 			visible_message("<span class='danger'>\The [usr] is trying to set \the [src]'s internals!</span>")
-			if(do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
+			if(do_after(user, HUMAN_STRIP_DELAY, src))
 				toggle_internals(user)
 			return
 		if("tie")
@@ -76,7 +76,7 @@
 				return
 			visible_message("<span class='danger'>\The [user] is trying to remove \the [src]'s [A.name]!</span>")
 
-			if(!do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
+			if(!do_after(user, HUMAN_STRIP_DELAY, src))
 				return
 
 			if(!A || holder.loc != src || !(A in holder.accessories))

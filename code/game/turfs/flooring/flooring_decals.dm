@@ -8,7 +8,7 @@ var/list/floor_decals = list()
 	icon = 'icons/turf/flooring/decals.dmi'
 
 	layer = DECAL_LAYER
-	appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
+	appearance_flags = RESET_COLOR
 	var/supplied_dir
 
 /obj/effect/floor_decal/New(newloc, newdir, newcolour)
@@ -25,7 +25,7 @@ var/list/floor_decals = list()
 		var/cache_key = "[alpha]-[color]-[dir]-[icon_state]-[plane]-[layer]-[pixel_x]-[pixel_y]"
 		if(!floor_decals[cache_key])
 			var/image/I = image(icon = src.icon, icon_state = src.icon_state, dir = src.dir)
-			I.turf_decal_layerise()
+			I.layer = layer
 			I.appearance_flags = appearance_flags
 			I.color = src.color
 			I.alpha = src.alpha
