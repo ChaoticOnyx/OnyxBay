@@ -225,13 +225,6 @@
 //Error handler defines
 #define ERROR_USEFUL_LEN 2
 
-#define RAD_LEVEL_LOW 0.5 // Around the level at which radiation starts to become harmful
-#define RAD_LEVEL_MODERATE 5
-#define RAD_LEVEL_HIGH 25
-#define RAD_LEVEL_VERY_HIGH 75
-
-#define RADIATION_THRESHOLD_CUTOFF 0.1	// Radiation will not affect a tile when below this value.
-
 #define LEGACY_RECORD_STRUCTURE(X, Y) GLOBAL_LIST_EMPTY(##X);/datum/computer_file/data/##Y/var/list/fields[0];/datum/computer_file/data/##Y/New(){..();GLOB.##X.Add(src);}/datum/computer_file/data/##Y/Destroy(){..();GLOB.##X.Remove(src);}
 
 #define EDIT_SHORTTEXT 1	// Short (single line) text input field

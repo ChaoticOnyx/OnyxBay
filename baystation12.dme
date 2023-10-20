@@ -8,7 +8,6 @@
 // END_FILE_DIR
 // BEGIN_PREFERENCES
 #define DEBUG
-// #define TRACY_PROFILER
 // END_PREFERENCES
 // BEGIN_INCLUDE
 #include "code\__spaceman_dmm.dm"
@@ -70,7 +69,6 @@
 #include "code\__defines\preferences.dm"
 #include "code\__defines\proc_presets.dm"
 #include "code\__defines\process_scheduler.dm"
-#include "code\__defines\qdel.dm"
 #include "code\__defines\radiation.dm"
 #include "code\__defines\research.dm"
 #include "code\__defines\shields.dm"
