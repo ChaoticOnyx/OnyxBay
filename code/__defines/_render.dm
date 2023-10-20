@@ -13,7 +13,6 @@
 	screen_loc = "CENTER"
 	plane = LOWEST_PLANE
 	blend_mode = BLEND_OVERLAY
-
 	/// The compositing renderer this renderer belongs to.
 	var/group = RENDER_GROUP_FINAL
 
@@ -79,7 +78,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 */
 
 /// The list of renderers associated with this mob.
-/mob/var/list/atom/movable/renderer/renderers
+/mob/var/list/renderers
 
 
 /// Creates the mob's renderers on /Login()
@@ -97,7 +96,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 /// Removes the mob's renderers on /Logout()
 /mob/proc/RemoveRenderers()
 	if(my_client)
-		for(var/atom/movable/renderer/renderer as anything in renderers)
+		for(var/renderer_name as anything in renderers)
+			var/atom/movable/renderer/renderer = renderers[renderer_name]
 			my_client.screen -= renderer
 			if (renderer.relay)
 				my_client.screen -= renderer.relay
@@ -138,6 +138,10 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	group = RENDER_GROUP_SCENE
 	plane = SKYBOX_PLANE
 	relay_blend_mode = BLEND_MULTIPLY
+/atom/movable/renderer/turf
+	name = "Turf"
+	group = RENDER_GROUP_SCENE
+	plane = TURF_PLANE
 
 // Draws the game world; live mobs, items, turfs, etc.
 /atom/movable/renderer/game
@@ -147,8 +151,13 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 
 /atom/movable/renderer/game/Initialize()
 	. = ..()
+	GraphicsUpdate()
+
+/atom/movable/renderer/game/GraphicsUpdate()
 	if (istype(owner) && owner.client && owner.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_YES)
 		add_filter("AO",0,list(type = "drop_shadow", x = 0, y = -2, size = 4, color = "#04080FAA"))
+	if (istype(owner) && owner.client && owner.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_NO)
+		remove_filter("AO")
 
 /// Draws observers; ghosts, camera eyes, etc.
 /atom/movable/renderer/observers

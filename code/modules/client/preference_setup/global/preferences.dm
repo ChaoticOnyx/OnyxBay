@@ -287,6 +287,11 @@ var/global/list/_client_preferences_by_type
 	category = PREF_CATEGORY_GRAPHICS
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 
+/datum/client_preference/ambient_occlusion/changed(mob/preference_mob, new_value)
+	if(preference_mob?.client)
+		var/atom/movable/renderer/R = preference_mob.renderers[GAME_RENDERER]
+		R.GraphicsUpdate()
+
 /datum/client_preference/graphics_quality
 	description = "Graphics quality (where relevant it will reduce effects)"
 	key = "GRAPHICS_QUALITY"
@@ -296,7 +301,7 @@ var/global/list/_client_preferences_by_type
 /datum/client_preference/graphics_quality/changed(mob/preference_mob, new_value)
 	if(preference_mob?.client)
 		for(var/atom/movable/renderer/R as anything in preference_mob.renderers)
-			R.GraphicsUpdate()
+			preference_mob.renderers[R].GraphicsUpdate()
 
 /datum/client_preference/fullscreen_mode
 	description = "Fullscreen Mode"

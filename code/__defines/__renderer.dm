@@ -21,20 +21,22 @@
 
 #define CLICKCATCHER_PLANE -100
 
-#define SPACE_PLANE               -99
-	#define SPACE_LAYER                  1
-#define SKYBOX_PLANE              -98
-	#define SKYBOX_LAYER                 1
+#define OPENSPACE_PLANE -8
+#define OVER_OPENSPACE_PLANE        -7
 
-#define DUST_PLANE                 -97
+#define WARP_EFFECT_PLANE -6
+
+#define BLACKNESS_PLANE                 -5 //Blackness plane as per DM documentation.
+
+#define SPACE_PLANE               -4
+	#define SPACE_LAYER                  1
+#define SKYBOX_PLANE              -3
+	#define SKYBOX_LAYER                 1
+#define DUST_PLANE                 -2
 	#define DEBRIS_LAYER                 1
 	#define DUST_LAYER                   2
 
-#define OPENSPACE_PLANE -5
-#define OVER_OPENSPACE_PLANE        -4
-
-#define WARP_EFFECT_PLANE -2
-#define BLACKNESS_PLANE                 0 //Blackness plane as per DM documentation.
+#define TURF_PLANE -1
 
 #define DEFAULT_PLANE                   1
 	#define PLATING_LAYER               1
@@ -48,7 +50,7 @@
 	#define WIRE_TERMINAL_LAYER         1.07
 	#define ABOVE_WIRE_LAYER            1.08
 	//TURF PLANE
-	//TURF_LAYER = 2
+	#define TURF_LAYER					2
 	#define TURF_DETAIL_LAYER           2.01
 	#define TURF_SHADOW_LAYER           2.02
 	//ABOVE TURF
