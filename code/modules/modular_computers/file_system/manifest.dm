@@ -181,31 +181,35 @@ GLOBAL_LIST_EMPTY(dept_data)
 		//inserting non-head positions in GLOB.dept_data
 		for(var/list/J in preferenced_jobs)
 			var/list/jobs = J - GLOB.command_positions
-			if(length(jobs))
-				var/job = pick(jobs)
+			if(!length(jobs))
+				continue
 
-				if(job in list("AI", "Cyborg"))
-					silicon = TRUE
+			var/job = pick(jobs)
+			
+			if(job in list("AI", "Cyborg"))
+				silicon = TRUE
 
-				for(var/list/department in GLOB.dept_data)
-					var/flag = job_master.occupations_by_title[job].department_flag
+			for(var/list/department in GLOB.dept_data)
+				var/flag = job_master.occupations_by_title[job].department_flag
 
-					if(!silicon ? department["flag"]&flag : department["header"] == "Silicon")
-						department["all_jobs_in_dept"][job] += list(!silicon ? "[player_name]" : "\[Unknown\]" = player_prefs.player_alt_titles[job] ? player_prefs.player_alt_titles[job] : job)
-						break
-				break
+				if(!silicon ? department["flag"]&flag : department["header"] == "Silicon")
+					department["all_jobs_in_dept"][job] += list(!silicon ? "[player_name]" : "\[Unknown\]" = player_prefs.player_alt_titles[job] ? player_prefs.player_alt_titles[job] : job)
+					break
+			break
 
 	//building manifest page
 	for(var/list/department in GLOB.dept_data)
 		var/list/all_jobs = department["all_jobs_in_dept"]
-		if(length(all_jobs))
-			dat += "<tr><th colspan=3>[department["header"]]</th></tr>"
-			for(var/J in all_jobs)
-				var/list/job = all_jobs[J]
-				for(var/name in job)
-					var/job_slots = job_master.occupations_by_title[job[name]].spawn_positions
-					var/chance = job_slots == -1 ? 100 : clamp(job_slots/length(job)*100, 0, 100)
-					dat += "<tr class='candystripe'><td>[name]</td><td>[job[name]]</td><td>[chance]%</td></tr>"
+		if(!length(all_jobs))
+			continue
+
+		dat += "<tr><th colspan=3>[department["header"]]</th></tr>"
+		for(var/J in all_jobs)
+			var/list/job = all_jobs[J]
+			for(var/name in job)
+				var/job_slots = job_master.occupations_by_title[job[name]].spawn_positions
+				var/chance = job_slots == -1 ? 100 : clamp(job_slots/length(job)*100, 0, 100)
+				dat += "<tr class='candystripe'><td>[name]</td><td>[job[name]]</td><td>[chance]%</td></tr>"
 
 	dat += "</table>"
 	dat = replacetext(dat, "\n", "") // so it can be placed on paper correctly
