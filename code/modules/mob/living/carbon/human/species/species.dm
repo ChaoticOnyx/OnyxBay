@@ -568,7 +568,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		H.set_fullscreen(H.equipment_tint_total, "welder", /obj/screen/fullscreen/impaired, H.equipment_tint_total)
 	var/how_nearsighted = get_how_nearsighted(H)
 	H.set_fullscreen(how_nearsighted, "nearsighted", /obj/screen/fullscreen/oxy, how_nearsighted)
-	H.set_renderer_filter(H.eye_blurry, GAME_RENDERER, EYE_BLURRY_FILTER, 0, list(type="blur",size=clamp(H.eye_blurry/2, 0, 2)))
+	H.set_renderer_filter(H.eye_blurry, GAME_RENDERER, EYE_BLURRY_FILTER, 0, list(type="blur",size=clamp(0.05/(0.05+2.718**(-1 * H.eye_blurry)), 0, 1)))
 	H.set_fullscreen(H.druggy, "high", /obj/screen/fullscreen/high)
 
 	for(var/overlay in H.equipment_overlays)
