@@ -13,38 +13,6 @@
 
 	hud_used.show_hud(HUD_STYLE_STANDART)
 
-	InitializePlanes()
-	UpdatePlanes()
-
-/mob/proc/InitializePlanes()
-	if (!master_planes)
-		master_planes = list()
-
-	if(!client)
-		return
-
-	var/list/planes = list(
-		/obj/screen/plane_master/openspace,
-		/obj/screen/plane_master/over_openspace,
-		/obj/screen/plane_master/game_world,
-		/obj/screen/plane_master/mouse_invisible,
-		/obj/screen/plane_master/lighting
-	)
-
-	for (var/plane_type in planes)
-		var/obj/screen/plane_master/plane = new plane_type()
-
-		master_planes["[plane.plane]"] = plane
-		client.screen += plane
-
-/mob/proc/UpdatePlanes()
-	if (!master_planes)
-		return
-
-	for (var/plane_num in master_planes)
-		var/obj/screen/plane_master/plane = master_planes[plane_num]
-		plane.backdrop(src)
-
 /datum/hud
 	/// The mob this hud belongs to
 	var/mob/mymob

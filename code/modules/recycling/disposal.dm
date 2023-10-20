@@ -695,7 +695,7 @@
 		alpha = 255
 		base_icon_state = icon_state
 		layer = DISPOSALS_PIPE_LAYER
-		plane = FLOOR_PLANE
+
 		return
 
 	// pipe is deleted

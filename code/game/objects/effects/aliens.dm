@@ -144,7 +144,7 @@
 
 	anchored = 1
 	density = 0
-	plane = FLOOR_PLANE
+
 	layer = ABOVE_TILE_LAYER
 	var/obj/effect/alien/weeds/node/linked_node = null
 

@@ -647,8 +647,6 @@ proc/dd_sortedObjectList(list/incoming)
 /datum/alarm/dd_SortValue()
 	return "[sanitize_old(last_name)]"
 
-#define subtypesof(prototype) (typesof(prototype) - prototype)
-
 //creates every subtype of prototype (excluding prototype) and adds it to list L.
 //if no list/L is provided, one is created.
 /proc/init_subtypes(prototype, list/L)

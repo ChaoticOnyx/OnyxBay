@@ -73,4 +73,3 @@
 	menu.set_choices(choices)
 	menu.show_to(user)
 	return menu
-

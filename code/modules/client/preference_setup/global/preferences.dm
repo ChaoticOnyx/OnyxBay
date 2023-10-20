@@ -25,6 +25,9 @@ GLOBAL_VAR_CONST(PREF_SILENT, "Silent")
 GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 GLOBAL_VAR_CONST(PREF_WHITE, "White")
 GLOBAL_VAR_CONST(PREF_DARK, "Dark")
+GLOBAL_VAR_CONST(PREF_LOW, "Low")
+GLOBAL_VAR_CONST(PREF_MED, "Medium")
+GLOBAL_VAR_CONST(PREF_HIGH, "High")
 
 var/global/list/_client_preferences
 var/global/list/_client_preferences_by_key
@@ -284,9 +287,16 @@ var/global/list/_client_preferences_by_type
 	category = PREF_CATEGORY_GRAPHICS
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 
-/datum/client_preference/ambient_occlusion/changed(mob/preference_mob, new_value)
-	if (preference_mob.client)
-		preference_mob.UpdatePlanes()
+/datum/client_preference/graphics_quality
+	description = "Graphics quality (where relevant it will reduce effects)"
+	key = "GRAPHICS_QUALITY"
+	options = list(GLOB.PREF_LOW, GLOB.PREF_MED, GLOB.PREF_HIGH)
+	default_value = GLOB.PREF_HIGH
+
+/datum/client_preference/graphics_quality/changed(mob/preference_mob, new_value)
+	if(preference_mob?.client)
+		for(var/atom/movable/renderer/R as anything in preference_mob.renderers)
+			R.GraphicsUpdate()
 
 /datum/client_preference/fullscreen_mode
 	description = "Fullscreen Mode"

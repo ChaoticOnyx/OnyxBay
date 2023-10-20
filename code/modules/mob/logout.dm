@@ -4,6 +4,9 @@
 	GLOB.player_list -= src
 	log_access("Logout: [key_name(src, include_name = FALSE)]")
 	handle_admin_logout()
+	if(my_client)
+		my_client.screen -= l_general
+	RemoveRenderers()
 	hide_client_images()
 	..()
 

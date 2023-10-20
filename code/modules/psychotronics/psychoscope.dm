@@ -7,11 +7,9 @@
 	// Creates HUD icons.
 
 	var/image/psychoscope_dot = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "psychoscope_dot")
-	psychoscope_dot.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 
 	var/image/psychoscope_scan = new /image('icons/mob/huds/hud.dmi', src, "psychoscope_scan")
 	psychoscope_scan.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR | RESET_TRANSFORM | KEEP_APART
-	psychoscope_scan.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 
 	psychoscope_icons[PSYCHOSCOPE_ICON_DOT] = psychoscope_dot
 	psychoscope_icons[PSYCHOSCOPE_ICON_SCAN] = psychoscope_scan
