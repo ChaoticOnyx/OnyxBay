@@ -40,7 +40,6 @@
 			var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay", flags=RESET_COLOR)
 			LO.color = brightness_color
 			LO.layer = ABOVE_LIGHTING_LAYER
-			LO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 			overlays += LO
 	else
 		icon_state = "[initial(icon_state)]"
@@ -312,7 +311,6 @@
 		icon_state = "[initial(icon_state)]-on"
 		var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay", flags=RESET_COLOR)
 		LO.layer = ABOVE_LIGHTING_LAYER
-		LO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 		overlays += LO
 	else
 		icon_state = "[initial(icon_state)][fuel ? "" : "-empty"]"

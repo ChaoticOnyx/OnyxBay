@@ -3,7 +3,6 @@
 	level = 1
 
 	layer = TURF_LAYER
-	plane = FLOOR_PLANE
 	vis_flags = VIS_INHERIT_PLANE|VIS_INHERIT_ID
 
 	var/turf_flags

@@ -27,7 +27,7 @@
 /obj/machinery/power/terminal/hide(do_hide)
 	if(do_hide && level == 1)
 		layer = WIRE_TERMINAL_LAYER
-		plane = FLOOR_PLANE
+
 	else
 		reset_plane_and_layer()
 
