@@ -253,6 +253,7 @@
 	projectile_type = /obj/item/projectile/beam/lasertag/blue
 	var/required_vest
 	combustion = FALSE
+	has_safety = FALSE
 
 /obj/item/gun/energy/lasertag/special_check(mob/living/carbon/human/M)
 	if(ishuman(M))

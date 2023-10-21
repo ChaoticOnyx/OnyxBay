@@ -15,6 +15,7 @@
 	var/charges = 0
 	var/max_charges = 1
 	canremove = FALSE
+	has_safety = FALSE
 
 /obj/item/gun/projectile/magic/bloodchill/think()
 	charge_timer += 0.1
