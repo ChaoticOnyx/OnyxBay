@@ -1,4 +1,5 @@
-#define EYE_BLURRY_FILTER "eye_blurry"
+#define EYE_BLURRY_FILTER_NAME "eye_blurry"
+#define EYE_BLURRY_FILTER(time) list(type="blur", size=clamp(0.08/(0.05+2.618**(-0.5*time)), 0, 1.5))
 
 /atom
 	var/list/filter_data // For handling persistent filters
