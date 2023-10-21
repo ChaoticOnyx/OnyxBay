@@ -535,6 +535,9 @@ fun_hydroponics = 1
 ## Set to false to allow singularities to follow ghosts.
 forbid_singulo_following = true
 
+## Set to false to disable safety on guns
+toggle_gun_safety = false
+
 [mapping]
 ## Which engine should be on map (not all the maps support this).
 ## Pick one from: "random", "singularity", "supermatter"

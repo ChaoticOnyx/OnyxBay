@@ -28,6 +28,7 @@
 	var/projectile_basketball = FALSE
 	var/fun_hydroponics = 1
 	var/forbid_singulo_following = FALSE
+	var/toogle_gun_safety = FALSE
 
 
 /datum/configuration_section/misc/load_data(list/data)
@@ -58,3 +59,4 @@
 	CONFIG_LOAD_BOOL(projectile_basketball, data["projectile_basketball"])
 	CONFIG_LOAD_NUM(fun_hydroponics, data["fun_hydroponics"])
 	CONFIG_LOAD_BOOL(forbid_singulo_following, data["forbid_singulo_following"])
+	CONFIG_LOAD_BOOL(toogle_gun_safety, data["toogle_gun_safety"])
