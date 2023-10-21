@@ -99,7 +99,7 @@
 		else
 			clear_fullscreen("blind")
 			set_fullscreen(disabilities & NEARSIGHTED, "impaired", /obj/screen/fullscreen/impaired, 1)
-			set_fullscreen(eye_blurry, "blurry", /obj/screen/fullscreen/blurry)
+			set_renderer_filter(eye_blurry, SCENE_GROUP_RENDERER, EYE_BLURRY_FILTER_NAME, 0, EYE_BLURRY_FILTER(eye_blurry))
 			set_fullscreen(druggy, "high", /obj/screen/fullscreen/high)
 		if(machine)
 			if(machine.check_eye(src) < 0)
