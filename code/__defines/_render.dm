@@ -211,7 +211,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 
 /atom/movable/renderer/open_space/Initialize()
 	. = ..()
-	add_filter("blurry",0,list(type="blur",size=0.65))
+	add_filter("blurry", 0, list(type="blur", size=0.65))
 
 /* *
 * Group renderers
