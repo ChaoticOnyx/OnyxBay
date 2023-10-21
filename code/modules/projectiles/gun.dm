@@ -588,7 +588,7 @@
 	if(firemodes.len > 1)
 		var/datum/firemode/current_mode = firemodes[sel_mode]
 		. += "\nThe fire selector is set to [current_mode.name]."
-	if(has_safety)
+	if(config.misc.toogle_gun_safety && has_safety)
 		. += "\nThe safety is [safety() ? "on" : "off"]"
 
 // (re)Setting firemodes from the given list
@@ -624,9 +624,15 @@
 	return (autofire_enabled && world.time >= next_fire_time)
 
 /obj/item/gun/proc/safety()
+	if(!config.misc.toogle_gun_safety)
+		return FALSE
+
 	return has_safety && safety_state
 
 /obj/item/gun/proc/toggle_safety(mob/user)
+	if(!config.misc.toogle_gun_safety)
+		return
+
 	if(!has_safety)
 		return
 
@@ -641,6 +647,9 @@
 		playsound(src, 'sound/weapons/flipblade.ogg', 15, 1)
 
 /obj/item/gun/proc/update_safety_icon()
+	if(!config.misc.toogle_gun_safety)
+		return
+
 	overlays.Cut()
 	update_icon()
 	overlays += (image('icons/obj/guns/gui.dmi',"safety[safety()]"))
@@ -648,6 +657,9 @@
 		overlays += (image(icon,"[safety_icon][safety()]"))
 
 /obj/item/gun/verb/toggle_safety_verb()
+	if(!config.misc.toogle_gun_safety)
+		return
+
 	set src in usr
 	set category = "Object"
 	set name = "Toggle Gun Safety"

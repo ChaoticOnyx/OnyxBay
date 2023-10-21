@@ -158,6 +158,7 @@
 	charge_meter = 0
 	clumsy_unaffected = 1
 	combustion = FALSE
+	has_safety = FALSE
 
 /obj/item/gun/energy/staff/special_check(mob/user)
 	if((user.mind && !GLOB.wizards.is_antagonist(user.mind)))
