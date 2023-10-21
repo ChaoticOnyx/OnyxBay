@@ -168,7 +168,23 @@
 	#define ABOVE_HUD_LAYER              5
 
 //-------------------- Rendering ---------------------
-#define GAME_RENDERER "Game"
+
+#define LETTERBOX_RENDERER 			"LETTERBOX"
+#define SPACE_RENDERER 				"SPACE"
+#define SKYBOX_RENDERER 			"SKYBOX"
+#define TURF_RENDERER 				"TURF"
+#define GAME_RENDERER 				"GAME"
+#define OBSERVERS_RENDERER 			"OBSERVERS"
+#define LIGHTING_RENDERER 			"LIGHTING"
+#define ABOVE_LIGHTING_RENDERER 	"ABOVE_LIGHTING"
+#define SCREEN_EFFECTS_RENDERER 	"SCREEN_EFFECTS"
+#define INTERFACE_RENDERER 			"INTERFACE"
+#define OPEN_SPACE_RENDERER 		"OPEN_SPACE"
+#define WARP_EFFECT_RENDERER 		"WARP_EFFECT"
+
+#define SCENE_GROUP_RENDERER 		"SCENE_GROUP"
+#define SCREEN_GROUP_RENDERER 		"SCREEN_GROUP"
+#define FINAL_GROUP_RENDERER 		"FINAL_GROUP"
 
 /// Semantics - The final compositor or a filter effect renderer
 #define RENDER_GROUP_NONE null
