@@ -222,7 +222,7 @@
 		else
 			clear_fullscreen("blind")
 			set_fullscreen(disabilities & NEARSIGHTED, "impaired", /obj/screen/fullscreen/impaired, 1)
-			set_renderer_filter(eye_blurry, GAME_RENDERER, EYE_BLURRY_FILTER, 0, list(type="blur",size=clamp(0.05/(0.05+2.718**(-1 * eye_blurry)), 0, 1)))
+			set_fullscreen(eye_blurry, "blurry", /obj/screen/fullscreen/blurry)
 			set_fullscreen(druggy, "high", /obj/screen/fullscreen/high)
 
 		if(machine)
