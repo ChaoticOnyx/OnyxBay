@@ -292,17 +292,6 @@ var/global/list/_client_preferences_by_type
 		var/atom/movable/renderer/R = preference_mob.renderers[GAME_RENDERER]
 		R.GraphicsUpdate()
 
-/datum/client_preference/graphics_quality
-	description = "Graphics quality (where relevant it will reduce effects)"
-	key = "GRAPHICS_QUALITY"
-	options = list(GLOB.PREF_LOW, GLOB.PREF_MED, GLOB.PREF_HIGH)
-	default_value = GLOB.PREF_HIGH
-
-/datum/client_preference/graphics_quality/changed(mob/preference_mob, new_value)
-	if(preference_mob?.client)
-		for(var/atom/movable/renderer/R as anything in preference_mob.renderers)
-			preference_mob.renderers[R].GraphicsUpdate()
-
 /datum/client_preference/fullscreen_mode
 	description = "Fullscreen Mode"
 	key = "FULLSCREEN"
