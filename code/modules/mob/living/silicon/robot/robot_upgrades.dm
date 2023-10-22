@@ -736,26 +736,26 @@
 		set_next_think(world.time)
 		return 1
 
-/obj/item/borg/upgrade/integrated_circuit_upgrade
-	name = "integrated circuit module"
-	desc = "A system that allows cyborgs to create and use integrated circuit assemblies."
-	icon_state = "cyborg_upgrade1"
-	origin_tech = list(TECH_DATA = 3, TECH_MATERIAL = 5)
-	require_module = 1
+// /obj/item/borg/upgrade/integrated_circuit_upgrade
+// 	name = "integrated circuit module"
+// 	desc = "A system that allows cyborgs to create and use integrated circuit assemblies."
+// 	icon_state = "cyborg_upgrade1"
+// 	origin_tech = list(TECH_DATA = 3, TECH_MATERIAL = 5)
+// 	require_module = 1
 
-/obj/item/borg/upgrade/integrated_circuit_upgrade/action(mob/living/silicon/robot/R)
-	if(..())
-		return FALSE
+// /obj/item/borg/upgrade/integrated_circuit_upgrade/action(mob/living/silicon/robot/R)
+// 	if(..())
+// 		return FALSE
 
-	if(!can_install(src, R))
-		return FALSE
-	else
-		R.module.modules += new /obj/item/device/integrated_circuit_printer/cyborg(R.module)
-		R.module.modules += new /obj/item/gripper/integrated_circuit(R.module)
-		R.module.modules += new /obj/item/device/integrated_electronics/wirer(R.module)
-		R.module.modules += new /obj/item/device/integrated_electronics/debugger(R.module)
-		R.module.modules += new /obj/item/device/integrated_electronics/analyzer(R.module)
-		R.module.modules += new /obj/item/device/integrated_electronics/detailer(R.module)
+// 	if(!can_install(src, R))
+// 		return FALSE
+// 	else
+// 		R.module.modules += new /obj/item/device/integrated_circuit_printer/cyborg(R.module)
+// 		R.module.modules += new /obj/item/gripper/integrated_circuit(R.module)
+// 		R.module.modules += new /obj/item/device/integrated_electronics/wirer(R.module)
+// 		R.module.modules += new /obj/item/device/integrated_electronics/debugger(R.module)
+// 		R.module.modules += new /obj/item/device/integrated_electronics/analyzer(R.module)
+// 		R.module.modules += new /obj/item/device/integrated_electronics/detailer(R.module)
 
-		installed = TRUE
-		return TRUE
+// 		installed = TRUE
+// 		return TRUE

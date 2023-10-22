@@ -614,16 +614,16 @@
 				/obj/structure/flora/pottedplant/dead = 2,
 				/obj/structure/flora/pottedplant/eye = 1)
 
-/obj/random/assembly
-	name = "random assembly"
-	desc = "This is a random circuit assembly."
-	icon_state = "landmark_circuit"
+// /obj/random/assembly
+// 	name = "random assembly"
+// 	desc = "This is a random circuit assembly."
+// 	icon_state = "landmark_circuit"
 
-/obj/random/assembly/spawn_choices()
-	return list(/obj/item/device/electronic_assembly,
-				/obj/item/device/electronic_assembly/medium,
-				/obj/item/device/electronic_assembly/large,
-				/obj/item/device/electronic_assembly/drone)
+// /obj/random/assembly/spawn_choices()
+// 	return list(/obj/item/device/electronic_assembly,
+// 				/obj/item/device/electronic_assembly/medium,
+// 				/obj/item/device/electronic_assembly/large,
+// 				/obj/item/device/electronic_assembly/drone)
 
 /obj/random/advdevice
 	name = "random advanced device"

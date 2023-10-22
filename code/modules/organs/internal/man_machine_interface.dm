@@ -91,9 +91,9 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	if(istype(rig))
 		rig.forced_move(direction, user)
 
-	if(istype(loc, /obj/item/integrated_circuit/input/mmi_tank))
-		var/obj/item/integrated_circuit/input/mmi_tank/tank = loc
-		tank.relaymove(user, direction)
+	// if(istype(loc, /obj/item/integrated_circuit/input/mmi_tank))
+	// 	var/obj/item/integrated_circuit/input/mmi_tank/tank = loc
+	// 	tank.relaymove(user, direction)
 
 /obj/item/organ/internal/cerebrum/mmi/proc/_add_brain(obj/item/organ/internal/cerebrum/brain/new_brain, mob/user)
 	if(!istype(user))

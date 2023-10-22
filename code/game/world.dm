@@ -114,10 +114,15 @@ var/server_name = "OnyxBay"
 	return
 #endif
 
-#define RECOMMENDED_VERSION 514
+#define RECOMMENDED_VERSION 515
 /world/New()
+	// __auxtools_init()
 	__init_tracy()
 	SetupLogs()
+
+	bxl_init(new /datum/bxl_settings{
+		log_proc = nameof(/proc/bxl_log_callback)
+	})
 
 	if(world.system_type == UNIX)
 		GLOB.converter_dll = "./libconverter.so"
@@ -555,6 +560,8 @@ var/world_topic_spam_protect_time = world.timeofday
 
 /world/Del()
 	callHook("shutdown")
+	__auxtools_shutdown()
+
 	return ..()
 
 /world/proc/save_mode(the_mode)

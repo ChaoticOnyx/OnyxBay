@@ -114,21 +114,21 @@
 	storage_type = list(
 		/obj/item/storage/
 		)
-/obj/item/gripper/integrated_circuit
-	name = "integrated circuit assemblies manipulator"
-	desc = "Complex grasping tool for integrated circuit assemblies"
+// /obj/item/gripper/integrated_circuit
+// 	name = "integrated circuit assemblies manipulator"
+// 	desc = "Complex grasping tool for integrated circuit assemblies"
 
-	can_hold = list(
-		/obj/item/device/electronic_assembly,
-		/obj/item/integrated_circuit,
-	)
+// 	can_hold = list(
+// 		/obj/item/device/electronic_assembly,
+// 		/obj/item/integrated_circuit,
+// 	)
 
-/obj/item/gripper/integrated_circuit/afterattack(atom/target, mob/user, proximity, click_parameters)
-	if(istype(wrapped, /obj/item/device/electronic_assembly))
-		var/obj/item/device/electronic_assembly/EA = wrapped
-		EA.afterattack(target, user, proximity)
-	else
-		..()
+// /obj/item/gripper/integrated_circuit/afterattack(atom/target, mob/user, proximity, click_parameters)
+// 	if(istype(wrapped, /obj/item/device/electronic_assembly))
+// 		var/obj/item/device/electronic_assembly/EA = wrapped
+// 		EA.afterattack(target, user, proximity)
+// 	else
+// 		..()
 
 /obj/item/gripper/archeologist
 	name = "archeologist gripper"
@@ -306,12 +306,12 @@
 	user.do_attack_animation(src)
 
 	if(wrapped)
-		if(istype(target, /obj/item/device/electronic_assembly) && istype(wrapped, /obj/item/integrated_circuit))
-			var/obj/item/device/electronic_assembly/AS = target
-			wrapped.forceMove(get_turf(AS), params)
-			AS.try_add_component(wrapped, user, AS)
-			wrapped = null
-			return
+		// if(istype(target, /obj/item/device/electronic_assembly) && istype(wrapped, /obj/item/integrated_circuit))
+		// 	var/obj/item/device/electronic_assembly/AS = target
+		// 	wrapped.forceMove(get_turf(AS), params)
+		// 	AS.try_add_component(wrapped, user, AS)
+		// 	wrapped = null
+		// 	return
 		if(istype(target, /obj/structure/table)) //Putting item on the table if any
 			var/obj/structure/table/T = target
 			to_chat(src.loc, SPAN("notice", "You place \the [wrapped] on \the [target]."))

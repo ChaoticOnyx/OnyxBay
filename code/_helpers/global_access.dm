@@ -47,12 +47,8 @@
 			return global.SSatoms;
 		if("SScharacter_setup")
 			return global.SScharacter_setup;
-		if("SScircuit")
-			return global.SScircuit;
 		if("SSvirus")
 			return global.SSvirus;
-		if("SScircuit_components")
-			return global.SScircuit_components;
 		if("SSevac")
 			return global.SSevac;
 		if("SSgarbage")
@@ -896,12 +892,8 @@
 			global.SSatoms=newval;
 		if("SScharacter_setup")
 			global.SScharacter_setup=newval;
-		if("SScircuit")
-			global.SScircuit=newval;
 		if("SSvirus")
 			global.SSvirus=newval;
-		if("SScircuit_components")
-			global.SScircuit_components=newval;
 		if("SSevac")
 			global.SSevac=newval;
 		if("SSgarbage")

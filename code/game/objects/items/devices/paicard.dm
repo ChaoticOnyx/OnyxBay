@@ -16,9 +16,6 @@
 	var/obj/item/rig/rig = get_rig()
 	if(istype(rig))
 		rig.forced_move(direction, user)
-	if(istype(loc, /obj/item/integrated_circuit/input/pAI_connector))
-		var/obj/item/integrated_circuit/input/pAI_connector/tank = loc
-		tank.relaymove(user, direction)
 
 /obj/item/device/paicard/New()
 	..()

@@ -240,11 +240,7 @@
 	if(!cooldown)
 		return
 
-	//I'm not sure how much of this is necessary, but I would rather avoid issues.
-	if(istype(card.loc, /obj/item/rig_module) || istype(card.loc, /obj/item/integrated_circuit/input/pAI_connector))
-		to_chat(src, "There is no room to unfold inside \the [card.loc]. You're good and stuck.")
-		return 0
-	else if(istype(card.loc, /mob))
+	if(istype(card.loc, /mob))
 		var/mob/holder = card.loc
 		if(ishuman(holder))
 			var/mob/living/carbon/human/H = holder
@@ -408,4 +404,3 @@
 	visible_message("<b>[src]</b> fades away from the screen, the pAI device goes silent.")
 	card.removePersonality()
 	clear_client()
-
