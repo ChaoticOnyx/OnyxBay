@@ -779,12 +779,18 @@
 	if(alien == IS_DIONA)
 		return
 
-	if(M.chem_doses[type] < 0.2)	//not that effective after initial rush
-		M.add_chemical_effect(CE_PAINKILLER, min(30*volume, 80))
-		M.add_chemical_effect(CE_PULSE, 1)
-	else if(M.chem_doses[type] < 1)
-		M.add_chemical_effect(CE_PAINKILLER, min(10*volume, 20))
-	M.add_chemical_effect(CE_PULSE, 2)
+	var/max_painkiller = min(80, volume*20)
+	if(max_painkiller > 10)
+		if(M.chem_doses[type] < 0.7)
+			M.add_chemical_effect(CE_PAINKILLER, round(max_painkiller / (1 + 2.7 ** (-M.chem_doses[type] * 12)))) //80 / (1 + e^(-12x))
+		else
+			M.add_chemical_effect(CE_PAINKILLER, round(max_painkiller * 2.7 ** (-((M.chem_doses[type]-0.6) ** 2)/50))) //80 * e^(-((x-0.6)^2)/50)
+
+	if(volume > 8)
+		M.add_chemical_effect(CE_PULSE, 3)
+	else if(volume > 1)
+		M.add_chemical_effect(CE_PULSE, 2)
+
 	if(M.chem_doses[type] > 10)
 		M.make_jittery(5)
 	if(volume >= 5 && M.is_asystole())

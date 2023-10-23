@@ -275,6 +275,8 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 	if(change > 0 && owner)
 		owner.full_pain += pain - last_pain
+		if(owner.full_pain >= 5 && prob(owner.full_pain*8))
+			owner.make_adrenaline(owner.full_pain/10)
 		if((change > 15 && prob(20)) || (change > 30 && prob(60)))
 			owner.emote("scream")
 
