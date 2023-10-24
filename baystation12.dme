@@ -456,6 +456,7 @@
 #include "code\datums\surgery\surgery_status.dm"
 #include "code\datums\surgery\surgery_step.dm"
 #include "code\datums\surgery\steps\face.dm"
+#include "code\datums\surgery\steps\misc.dm"
 #include "code\datums\trading\_trading_defines.dm"
 #include "code\datums\trading\ai.dm"
 #include "code\datums\trading\armor.dm"
