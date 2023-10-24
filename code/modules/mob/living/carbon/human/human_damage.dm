@@ -475,6 +475,14 @@ This function restores all organs.
 
 	var/datum/wound/created_wound
 	damageoverlaytemp = 20
+	if(getHalLoss() < last_body_response_to_pain)
+		last_body_response_to_pain = getHalLoss()
+	if(can_feel_pain() && damage > 5 && prob(damage*4))
+		make_adrenaline(round(damage/10))
+		last_body_response_to_pain = getHalLoss()
+	else if(can_feel_pain() && getHalLoss() - last_body_response_to_pain > 5)
+		make_adrenaline(round(getHalLoss() - last_body_response_to_pain/10))
+		last_body_response_to_pain = getHalLoss()
 
 	switch(damagetype)
 		if(BRUTE)

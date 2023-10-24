@@ -774,27 +774,30 @@
 	scannable = 1
 	overdose = 20
 	metabolism = REM * 0.5
+	var/effective_dose = 0.6
 
 /datum/reagent/adrenaline/affect_blood(mob/living/carbon/human/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 
-	var/max_painkiller = min(80, volume*20)
+	var/max_painkiller = min(60, volume*20)
+	var/painkiller = 0
 	if(max_painkiller > 10)
-		if(M.chem_doses[type] < 0.7)
-			M.add_chemical_effect(CE_PAINKILLER, round(max_painkiller / (1 + 2.7 ** (-M.chem_doses[type] * 12)))) //80 / (1 + e^(-12x))
+		if(M.chem_doses[type] <= effective_dose)
+			painkiller = max(0, round(-(200/volume) * (M.chem_doses[type] - effective_dose) ** 2 + max_painkiller)) //-(200/20)*(x-0.6)^2+60
 		else
-			M.add_chemical_effect(CE_PAINKILLER, round(max_painkiller * 2.7 ** (-((M.chem_doses[type]-0.6) ** 2)/50))) //80 * e^(-((x-0.6)^2)/50)
-
+			painkiller = round(max_painkiller * 2.7 ** (-((M.chem_doses[type]-effective_dose) ** 2)/(volume*2))) //60 * e^(-((x-0.6)^2)/40)
+		if(painkiller > 5)
+			M.add_chemical_effect(CE_PAINKILLER, painkiller)
 	if(volume > 8)
 		M.add_chemical_effect(CE_PULSE, 3)
 	else if(volume > 1)
 		M.add_chemical_effect(CE_PULSE, 2)
 
-	if(M.chem_doses[type] > 10)
+	if(M.chem_doses[type] > 15)
 		M.make_jittery(5)
-	if(volume >= 5 && M.is_asystole())
-		remove_self(5)
+	if(volume >= 8 && M.is_asystole())
+		remove_self(8)
 		M.resuscitate()
 
 /datum/reagent/nanoblood
