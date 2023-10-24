@@ -43,6 +43,11 @@
 	minimal_player_age = 14
 	outfit_type = /decl/hierarchy/outfit/job/security/warden
 
+/datum/job/warden/equip(mob/living/carbon/human/H)
+	. = ..()
+	if(.)
+		H.implant_mindshield(H)
+
 /datum/job/detective
 	title = "Detective"
 	department = "Security"
@@ -59,6 +64,11 @@
 	minimal_player_age = 14
 	outfit_type = /decl/hierarchy/outfit/job/security/detective
 
+/datum/job/detective/equip(mob/living/carbon/human/H)
+	. = ..()
+	if(.)
+		H.implant_mindshield(H)
+
 /datum/job/officer
 	title = "Security Officer"
 	department = "Security"
@@ -74,3 +84,8 @@
 	minimal_access = list(access_security, access_eva, access_sec_doors, access_brig, access_maint_tunnels, access_external_airlocks)
 	minimal_player_age = 14
 	outfit_type = /decl/hierarchy/outfit/job/security/officer
+
+/datum/job/officer/equip(mob/living/carbon/human/H)
+	. = ..()
+	if(.)
+		H.implant_mindshield(H)

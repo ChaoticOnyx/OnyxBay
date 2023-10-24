@@ -11,6 +11,9 @@
 	if(!(src in able_mobs_in_oview(M)))
 		to_chat(src, SPAN_WARNING("\The [M] can't see you."))
 		return
+	if(M.ismindshielded())
+		to_chat(src, SPAN_WARNING("\The [M] is protected by a mindshield implant. Remove it first."))
+		return
 
 	var/datum/antagonist/antag
 	for(var/antag_type in GLOB.all_antag_types_)

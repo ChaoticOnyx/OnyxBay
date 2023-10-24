@@ -166,6 +166,8 @@
 	hud_list[IMPCHEM_HUD]     = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
 	hud_list[IMPTRACK_HUD]    = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
 	hud_list[SPECIALROLE_HUD] = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
+	hud_list[MINDSHIELD_HUD]    = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+
 
 /mob/living/silicon/robot/Initialize()
 	. = ..()

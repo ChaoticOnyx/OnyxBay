@@ -45,6 +45,7 @@
 #define        LIFE_HUD 10 // STATUS_HUD that only reports dead or alive
 #define        XENO_HUD 11 // Alien embryo status.
 #define       GLAND_HUD 12 // Abductors data hud
+#define  MINDSHIELD_HUD 13 // Mindshield implant
 
 // Shuttle moving status.
 #define SHUTTLE_IDLE      0

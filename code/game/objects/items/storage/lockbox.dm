@@ -118,6 +118,18 @@
 	new /obj/item/implantcase/loyalty(src)
 	new /obj/item/implanter/loyalty(src)
 
+/obj/item/storage/lockbox/mindshield
+	name = "lockbox of mindshield implants"
+	req_access = list(access_security)
+
+/obj/item/storage/lockbox/mindshield/Initialize()
+	. = ..()
+	new /obj/item/implantcase/mindshield(src)
+	new /obj/item/implantcase/mindshield(src)
+	new /obj/item/implantcase/mindshield(src)
+	new /obj/item/implantcase/mindshield(src)
+	new /obj/item/implanter/mindshield(src)
+
 
 /obj/item/storage/lockbox/clusterbang
 	name = "lockbox of clusterbangs"
@@ -137,4 +149,3 @@
 	broken = !broken
 	update_icon()
 	return
-

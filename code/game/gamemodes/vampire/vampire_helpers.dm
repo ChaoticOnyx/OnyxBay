@@ -135,6 +135,10 @@
 				if (notify)
 					to_chat(src, SPAN_WARNING("You feel that [T]'s mind is protected from our powers."))
 				return FALSE
+	if (T.ismindshielded())
+		if(notify)
+			to_chat(src, SPAN_WARNING("You feel that [T]'s mind is protected from our powers."))
+		return FALSE
 
 	return TRUE
 

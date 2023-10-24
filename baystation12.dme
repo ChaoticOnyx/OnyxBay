@@ -1146,6 +1146,7 @@
 #include "code\game\objects\items\implants\implants\freedom.dm"
 #include "code\game\objects\items\implants\implants\imprinting.dm"
 #include "code\game\objects\items\implants\implants\loyalty.dm"
+#include "code\game\objects\items\implants\implants\mindshield.dm"
 #include "code\game\objects\items\implants\implants\spy.dm"
 #include "code\game\objects\items\implants\implants\tracking.dm"
 #include "code\game\objects\items\implants\implants\uplink.dm"

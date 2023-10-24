@@ -45,6 +45,7 @@ the HUD updates properly! */
 			P.Client.images += perp.hud_list[IMPTRACK_HUD]
 			P.Client.images += perp.hud_list[IMPLOYAL_HUD]
 			P.Client.images += perp.hud_list[IMPCHEM_HUD]
+			P.Client.images += perp.hud_list[MINDSHIELD_HUD]
 
 /proc/process_xeno_hud(mob/M, mob/Alt)
 	if(!can_process_hud(M))

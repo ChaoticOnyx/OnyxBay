@@ -177,7 +177,7 @@
 	cultname = "convert"
 	var/spamcheck = FALSE
 
-/obj/effect/rune/convert/proc/antag_check(mob/living/target, list/mob/living/cultists)
+/obj/effect/rune/convert/proc/is_convertable_to_cult(mob/living/target, list/mob/living/cultists)
 	if(!target || !target.mind)
 		return FALSE
 
@@ -205,6 +205,9 @@
 		if(antag.is_antagonist(target.mind))
 			to_chat(target, SPAN_DANGER("<b>As your newfound belief takes over your mind, you distantly notice your previous values fade away entirely...</b>"))
 			antag.remove_antagonist(target.mind, TRUE, FALSE)
+
+	if (target.ismindshielded())
+		return FALSE
 
 	return TRUE
 
@@ -247,7 +250,7 @@
 	spawn(30)
 		spamcheck = FALSE
 		if(!iscultist(target) && target.loc == get_turf(src) && GLOB.cult.can_become_antag(target.mind, TRUE) && cultists.len >= 2)
-			if(antag_check(target, cultists))
+			if(is_convertable_to_cult(target, cultists))
 				GLOB.cult.add_antagonist(target.mind, ignore_role = TRUE, do_not_equip = TRUE)
 		else // They hesitated, resisted, or can't join, and they are still on the rune - damage them
 			if(target.stat == CONSCIOUS)
@@ -268,7 +271,7 @@
 /obj/effect/rune/convert/Topic(href, href_list)
 	var/list/mob/living/cultists = get_cultists()
 	if(href_list["join"] && cultists.len)
-		if(usr.loc == loc && !iscultist(usr) && antag_check(usr, cultists))
+		if(usr.loc == loc && !iscultist(usr) && is_convertable_to_cult(usr, cultists))
 			GLOB.cult.add_antagonist(usr.mind, ignore_role = TRUE, do_not_equip = TRUE)
 
 /obj/effect/rune/teleport

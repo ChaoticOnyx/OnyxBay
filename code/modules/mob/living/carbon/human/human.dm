@@ -8,7 +8,7 @@
 	throw_range = 4
 
 	var/equipment_slowdown = -1
-	var/list/hud_list[12]
+	var/list/hud_list[13]
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/obj/item/rig/wearing_rig // This is very not good, but it's much much better than calling get_rig() every update_canmove() call.
 
@@ -54,6 +54,8 @@
 	hud_list[STATUS_HUD_OOC]   = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
 	hud_list[XENO_HUD]         = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
 	hud_list[GLAND_HUD]        = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
+	hud_list[MINDSHIELD_HUD]   = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
+
 
 	GLOB.human_mob_list |= src
 	..()
@@ -221,6 +223,16 @@
 	affected.implants += L
 	L.part = affected
 	L.implanted(src)
+
+/mob/living/carbon/human/proc/implant_mindshield(mob/living/carbon/human/M, override = FALSE)
+	if(!config.game.use_loyalty_implants && !override) return // Attached this logic to the loyalty config. At the end of the day they are mostly the same.
+
+	var/obj/item/implant/mindshield/L = new /obj/item/implant/mindshield(M)
+	L.imp_in = M
+	L.implanted = TRUE
+	var/obj/item/organ/external/affected = M.organs_by_name[BP_HEAD]
+	affected.implants += L
+	L.part = affected
 
 /mob/living/carbon/human/proc/is_loyalty_implanted(mob/living/carbon/human/M)
 	for(var/L in M.contents)

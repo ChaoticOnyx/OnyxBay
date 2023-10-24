@@ -407,3 +407,11 @@
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Security biohazard gear crate"
 	access = access_security
+
+/decl/hierarchy/supply_pack/security/mindshield
+	name = "Misc - Mindshield implants"
+	contains = list(/obj/item/storage/lockbox/mindshield = 1)
+	cost = 60
+	containertype = /obj/structure/closet/crate/secure
+	containername = "\improper Mindshield implant crate"
+	access = access_security

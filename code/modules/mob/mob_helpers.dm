@@ -658,6 +658,13 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 /mob/proc/is_eligible_for_antag_spawn(antag_id)
 	return FALSE
 
+// Checks if the mob contains a mindshield implant, then if it is actually implanted
+/mob/proc/ismindshielded()
+	for(var/obj/item/implant/mindshield/L in src)
+		if(L.implanted)
+			return TRUE
+	return FALSE
+
 /**
  * Fancy notifications for ghosts
  *
