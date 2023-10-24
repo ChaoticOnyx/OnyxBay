@@ -89,6 +89,9 @@
 /mob/living/carbon/human/abductor/New(new_loc)
 	..(new_loc, SPECIES_ABDUCTOR)
 
+/mob/living/carbon/human/shadowling/New(new_loc)
+	..(new_loc, SPECIES_SHADOWLING)
+
 /mob/living/carbon/human/promethean/New(new_loc)
 	..(new_loc, SPECIES_PROMETHEAN)
 

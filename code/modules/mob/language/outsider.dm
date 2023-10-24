@@ -151,3 +151,16 @@
 
 		if(is_species(player, /datum/species/golem/alloy) && is_species(speaker, /datum/species/golem/alloy))
 			player.hear_broadcast(src, speaker, speaker_mask, message)
+
+/datum/language/shadow
+	name = LANGUAGE_SHADOW
+	desc = "The omnipresent shadows may converse with one another."
+	speech_verb = "conveys"
+	colour = "cult"
+	key = "s"
+	syllables = list("ssaa", "has", "uu", "hhh", "klt", "shs")
+	shorthand = "N/A"
+	flags = RESTRICTED | HIVEMIND | NO_STUTTER
+
+/datum/language/shadow/get_random_name()
+	return "[pick("Anguished", "Dark", "Dismal", "Dreadful", "Dreary", "Fearful", "Frightful", "Mournful", "Sorrowful", "Somber", "Swarthy")] [pick("Anguish", "Darkness", "Dusk", "Gloom", "Night", "Nox", "Shadow", "Sombra", "Tenebris", "Terror", "Umbra")]"
