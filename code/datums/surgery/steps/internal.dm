@@ -36,7 +36,10 @@
 	var/list/attachable_organs = list()
 	var/obj/item/organ/external/parent_organ = target.get_organ(target_zone)
 	for(var/obj/item/organ/O in parent_organ.implants)
-		if(O && (O.status & ORGAN_CUT_AWAY))
+		if(O.parent_organ != target_zone)
+			continue
+
+		if(O.status & ORGAN_CUT_AWAY)
 			attachable_organs[O] = agjust_organ_image(O)
 
 	var/obj/item/organ/preselected_organ = ..()
@@ -707,7 +710,7 @@
 	return TRUE
 
 /datum/surgery_step/internal/treat_necrosis/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
-	user.visible_message(
+	announce_preop(user,
 		"[user] starts applying medication to the affected tissue in [target]'s [parent_organ] with \the [tool].",
 		"You start applying medication to the affected tissue in [target]'s [parent_organ] with \the [tool]."
 		)
