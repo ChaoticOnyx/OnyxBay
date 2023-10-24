@@ -10,11 +10,12 @@
 	 * Exists 'cause of integrated crcuits.
 	 */
 	var/list/operated_organs = list()
+	/// Number, used to detemine current face surgery step, refactor this shit.
+	var/face = 0
 
 /datum/surgery_status/proc/start_surgery(obj/item/organ/target_organ, target_zone)
 	LAZYADD(ongoing_steps, target_zone)
 	LAZYADDASSOC(operated_organs, target_zone, target_organ)
 
 /datum/surgery_status/proc/stop_surgery(target_zone)
-	LAZYREMOVE(ongoing_steps, target_zone)
-	LAZYREMOVE(operated_organs, target_zone)
+	operated_organs[target_zone] = null

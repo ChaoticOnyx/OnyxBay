@@ -85,7 +85,7 @@
 	// At this point we can access selected organ via `surgery_status`.
 	target.surgery_status.start_surgery(target_organ, parent_zone)
 	initiate(parent_organ, target_organ, target, tool, user)
-	target.surgery_status.stop_surgery(target_organ, parent_zone)
+	target.surgery_status.stop_surgery(parent_zone)
 
 	target.update_surgery()
 
