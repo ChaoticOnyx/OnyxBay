@@ -15,7 +15,8 @@
 
 /datum/surgery_status/proc/start_surgery(obj/item/organ/target_organ, target_zone)
 	LAZYADD(ongoing_steps, target_zone)
-	LAZYADDASSOC(operated_organs, target_zone, target_organ)
+	operated_organs[target_zone] = target_organ
 
 /datum/surgery_status/proc/stop_surgery(target_zone)
+	LAZYREMOVE(ongoing_steps, target_zone)
 	operated_organs[target_zone] = null
