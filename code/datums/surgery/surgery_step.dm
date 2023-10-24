@@ -73,6 +73,7 @@
 
 	var/obj/item/organ/target_organ = pick_target_organ(user, target, target_zone)
 
+	// Integrated circuits can't change tool during organ picking step, but spessmen can.
 	var/mob/possible_mob = user
 	if(istype(possible_mob))
 		var/obj/item/active_item = possible_mob.get_active_item()
@@ -83,7 +84,7 @@
 		return FALSE
 
 	// At this point we can access selected organ via `surgery_status`.
-	target.surgery_status.start_surgery(target_organ, parent_zone)
+	target.surgery_status.start_surgery(target_organ || parent_organ, parent_zone)
 	initiate(parent_organ, target_organ, target, tool, user)
 	target.surgery_status.stop_surgery(parent_zone)
 
