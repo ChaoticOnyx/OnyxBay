@@ -47,7 +47,7 @@ SUBSYSTEM_DEF(eams)
 	Toggle()
 	return ..()
 
-/datum/controller/subsystem/eams/proc/Toggle(mob/user, panic = FALSE)
+/datum/controller/subsystem/eams/proc/Toggle(mob/user)
 	if (!initialized && user)
 		to_chat(user, SPAN("adminnotice", "Wait until EAMS initialized!"))
 		return
@@ -56,13 +56,14 @@ SUBSYSTEM_DEF(eams)
 		return
 
 	__active = !__active
-	__panic = panic
 	if (__active)
 		var/list/clients_to_check = __postponed_clients.Copy()
 		__postponed_clients.Cut()
 		for (var/client/C in clients_to_check)
 			CollectDataForClient(C)
 			CHECK_TICK
+	else
+		__panic = FALSE
 	log_debug("EAMS is [__active ? "enabled" : "disabled"][__panic ? " with panic bunker" : ""]!")
 	return __active
 
@@ -291,16 +292,6 @@ SUBSYSTEM_DEF(eams)
 		return
 
 	var/eams_status = SSeams.Toggle()
-	log_and_message_admins("has [eams_status ? "enabled" : "disabled"] the Epic Anti-Multiaccount System!")
-
-
-/client/proc/PEAMS_toggle()
-	set category = "Server"
-	set name = "Toggle panic EAMS"
-
-	if (!establish_db_connection())
-		to_chat(usr, SPAN("adminnotice", "The Database is not connected!"))
-		return
-
-	var/eams_status = SSeams.Toggle(TRUE)
-	log_and_message_admins("has [eams_status ? "enabled" : "disabled"] the Epic Anti-Multiaccount System with panic bunker!")
+	if(eams_status && tgui_alert("Enable panic mode?",,"Yes","No") == "Yes")
+		SSeams.__panic = TRUE
+	log_and_message_admins("has [eams_status ? "enabled" : "disabled"] the Epic Anti-Multiaccount System [SSeams.__panic ? "with panic mode" : ""]!")
