@@ -102,7 +102,15 @@
 		)
 
 /datum/surgery_step/generic/cut_open/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return (..() && !parent_organ.open())
+	. = ..()
+	if(!.)
+		return
+
+	if(parent_organ.open())
+		target.show_splash_text(user, "incision is already present!")
+		return FALSE
+
+	return TRUE
 
 /datum/surgery_step/generic/cut_open/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,
@@ -197,7 +205,7 @@
 		/obj/item/scalpel/manager = 100
 		)
 
-/datum/surgery_step/generic/incision_manager/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool)
+/datum/surgery_step/generic/incision_manager/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && (parent_organ.open() == SURGERY_CLOSED || parent_organ.open() == SURGERY_OPEN))
 
 /datum/surgery_step/generic/incision_manager/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
@@ -402,7 +410,15 @@
 		)
 
 /datum/surgery_step/generic/amputate/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return (..() && !parent_organ.open() && (parent_organ.limb_flags & ORGAN_FLAG_CAN_AMPUTATE))
+	. = ..()
+	if(!.)
+		return
+
+	if(!parent_organ.open())
+		target.show_splash_text(user, "cauterize incisions first")
+		return FALSE
+
+	return parent_organ.limb_flags & ORGAN_FLAG_CAN_AMPUTATE
 
 /datum/surgery_step/generic/amputate/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,

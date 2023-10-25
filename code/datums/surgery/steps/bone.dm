@@ -7,14 +7,7 @@
 	shock_level = 20
 
 /datum/surgery_step/bone/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	. = ..()
-	if(!.)
-		return .
-
-	if(BP_IS_ROBOTIC(parent_organ))
-		return FALSE
-
-	return parent_organ.open() >= SURGERY_RETRACTED
+	return (..() && !BP_IS_ROBOTIC(parent_organ) && parent_organ.open() >= SURGERY_RETRACTED)
 
 /**
  * Bone glueing step.

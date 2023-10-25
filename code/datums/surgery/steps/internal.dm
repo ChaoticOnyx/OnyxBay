@@ -10,7 +10,7 @@
 /datum/surgery_step/internal/pick_target_organ(atom/user, mob/living/carbon/human/target, target_zone)
 	return target.surgery_status.operated_organs[get_parent_zone(target_zone)]
 
-/datum/surgery_step/internal/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool)
+/datum/surgery_step/internal/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	. = ..()
 	if(!.)
 		return .
@@ -55,12 +55,8 @@
 
 	return selected_organ
 
-/datum/surgery_step/internal/attach_organ/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool)
-	. = ..()
-	if(!.)
-		return
-
-	return !BP_IS_ROBOTIC(parent_organ)
+/datum/surgery_step/internal/attach_organ/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
+	return (..() && !BP_IS_ROBOTIC(parent_organ))
 
 /datum/surgery_step/internal/attach_organ/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,
@@ -103,12 +99,8 @@
 		/obj/item/material/shard = 50
 		)
 
-/datum/surgery_step/internal/detatch_organ/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool)
-	. = ..()
-	if(!.)
-		return .
-
-	return !BP_IS_ROBOTIC(parent_organ)
+/datum/surgery_step/internal/detatch_organ/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
+	return (..() && !BP_IS_ROBOTIC(parent_organ))
 
 /datum/surgery_step/internal/detatch_organ/pick_target_organ(atom/user, mob/living/carbon/human/target, target_zone)
 	var/list/attached_organs = list()
@@ -231,7 +223,7 @@
 		/obj/item/organ/internal = 100
 		)
 
-/datum/surgery_step/internal/replace_organ/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool)
+/datum/surgery_step/internal/replace_organ/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	. = ..()
 	if(!.)
 		return
@@ -241,19 +233,23 @@
 		return FALSE
 
 	if(BP_IS_ROBOTIC(parent_organ) && !BP_IS_ROBOTIC(target_organ))
-		return FALSE // organic to robotic is bad
+		target.show_splash_text(user, "organic organ can't be connected to a robotic body!")
+		return FALSE
 
 	if(!target.species)
 		CRASH("Target ([target]) of surgery [type] has no species!")
 
 	if(target_organ.organ_tag == BP_POSIBRAIN && !target.species.has_organ[BP_POSIBRAIN])
-		return FALSE // Posibrain to synth body is bad
+		target.show_splash_text(user, "this type of body isn't supported!")
+		return FALSE
 
 	if(target_organ.damage > (target_organ.max_damage * 0.75))
-		return FALSE // Too damageed
+		target.show_splash_text(user, "organ is too damaged!")
+		return FALSE
 
 	if(target_organ.w_class > parent_organ.cavity_max_w_class)
-		return FALSE // Too big
+		target.show_splash_text(user, "organ won't fit inside!")
+		return FALSE
 
 	var/obj/item/organ/internal/O = target.internal_organs_by_name[target_organ.organ_tag]
 	if(O && (O.parent_organ == parent_organ.organ_tag || istype(target_organ, /obj/item/organ/internal/stack)))
@@ -268,7 +264,8 @@
 	for(var/obj/item/I in parent_organ.internal_organs)
 		used_volume += I.get_storage_cost()
 	if((base_storage_capacity(parent_organ.cavity_max_w_class) + parent_organ.internal_organs_size) < used_volume + target_organ.get_storage_cost())
-		return FALSE // There's no space...
+		target.show_splash_text(user, "not enough space!")
+		return FALSE
 
 	return TRUE
 
@@ -318,7 +315,7 @@
 /datum/surgery_step/internal/fix_organ
 	duration = ORGAN_FIX_DURATION
 
-/datum/surgery_step/internal/fix_organ/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool)
+/datum/surgery_step/internal/fix_organ/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (istype(parent_organ) && !BP_IS_ROBOTIC(parent_organ))
 
 /datum/surgery_step/internal/fix_organ/pick_target_organ(atom/user, mob/living/carbon/human/target, target_zone)
@@ -364,7 +361,8 @@
 		return FALSE
 
 	if(!target_organ.can_recover())
-		return FALSE // Destroyed organ
+		target.show_splash_text(user, "organ is damaged beyond recover!")
+		return FALSE
 
 	return !!target_organ.damage
 
@@ -390,7 +388,11 @@
 	if(!. && !organ_fixer.emagged)
 		return FALSE
 
-	return organ_fixer.gel_amt > 0
+	if(organ_fixer.gel_amt == 0)
+		target.show_splash_text(user, "not enough gel!")
+		return FALSE
+
+	return TRUE
 
 /datum/surgery_step/internal/fix_organ/default/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,
@@ -478,7 +480,8 @@
 
 	var/obj/item/stack/medical/M = tool
 	if(M.amount < 1)
-		return FALSE // Nothing left
+		target.show_splash_text(user, "not enough medicine to complete this step!")
+		return FALSE
 
 	return TRUE
 
@@ -550,7 +553,7 @@
 		/obj/item/organfixer/advanced = 100
 		)
 
-/datum/surgery_step/internal/fix_organ/multiple/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool)
+/datum/surgery_step/internal/fix_organ/multiple/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	. = ..()
 	if(!.)
 		return
@@ -560,6 +563,7 @@
 		return FALSE
 
 	if(organ_fixer.gel_amt == 0)
+		target.show_splash_text(user, "not enough gel!")
 		return FALSE
 
 	for(var/obj/item/organ/internal/I in parent_organ.internal_organs)
@@ -666,7 +670,7 @@
 		/obj/item/reagent_containers/vessel/bucket = 50
 	)
 
-/datum/surgery_step/internal/treat_necrosis/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool)
+/datum/surgery_step/internal/treat_necrosis/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && !BP_IS_ROBOTIC(parent_organ))
 
 /datum/surgery_step/internal/treat_necrosis/pick_target_organ(atom/user, mob/living/carbon/human/target, target_zone)

@@ -33,10 +33,12 @@
 		return FALSE
 
 	var/obj/item/organ/external/P = target.get_organ(E.parent_organ)
-	if(isnull(P) || P.is_stump())
+	if(!isnull(P) || P.is_stump())
+		target.show_splash_text(user, "limb is already present!")
 		return FALSE
 
 	if(BP_IS_ROBOTIC(P) && !BP_IS_ROBOTIC(E))
+		target.show_splash_text(user, "organic limb can't be connected to a robotic body!")
 		return FALSE
 
 	return !isnull(target.species.has_limbs["[E.organ_tag]"])
@@ -98,7 +100,7 @@
 	if(parent_organ.is_stump())
 		return FALSE
 
-	return (parent_organ.status & ORGAN_CUT_AWAY)
+	return parent_organ.status & ORGAN_CUT_AWAY
 
 /datum/surgery_step/limb/connect/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_success(user,
