@@ -371,7 +371,7 @@
 /**
  * Fixes chosen organ using organ fixer.
  */
-/datum/surgery_step/internal/fix_organ/default/default
+/datum/surgery_step/internal/fix_organ/default
 	duration = ORGAN_FIX_DURATION
 
 	allowed_tools = list(

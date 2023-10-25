@@ -146,7 +146,11 @@
 	for(var/datum/surgery_step/S in GLOB.surgery_steps)
 		if(istype(S, /datum/surgery_step/internal) && S.type != st?.type)
 			continue
-		return S.do_step(get_object(), M, instrument, selected_zone)
+
+		if(!S.do_step(get_object(), M, instrument, selected_zone))
+			continue
+
+		return TRUE
 	return FALSE
 
 /*
@@ -190,7 +194,7 @@
 		st = new /datum/surgery_step/internal/attach_organ()
 	else if(istype(I, /obj/item/organfixer))
 		operation_intent = SURGERY_ORGAN_HEAL
-		st = new /datum/surgery_step/internal/fix_organ()
+		st = new /datum/surgery_step/internal/fix_organ/default()
 	else if(istype(I, /obj/item/reagent_containers/dropper))
 		operation_intent = SURGERY_ORGAN_TREAT
 		st = new /datum/surgery_step/internal/treat_necrosis()
