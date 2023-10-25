@@ -780,7 +780,7 @@
 	if(alien == IS_DIONA)
 		return
 
-	var/max_painkiller = min(60, volume*20)
+	var/max_painkiller = min(70, volume*3 + rand(20, 35))
 	var/painkiller = 0
 	if(max_painkiller > 10)
 		if(M.chem_doses[type] <= effective_dose)
