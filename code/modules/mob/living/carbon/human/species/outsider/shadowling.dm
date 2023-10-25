@@ -39,8 +39,8 @@
 	H.g_eyes = 0
 	H.update_eyes()
 	..()
-//	if(H.mind && !GLOB.shadowlings.is_antagonist(H.mind))
-//		GLOB.shadowlings.add_antagonist(H.mind, TRUE)
+	if(H.mind && !GLOB.shadowlings.is_antagonist(H.mind))
+		GLOB.shadowlings.add_antagonist(H.mind, TRUE)
 
 /datum/species/shadowling/handle_death(mob/living/carbon/human/H)
 	H.dust()
@@ -57,8 +57,8 @@
 	if(light_amount > 2)
 		H.take_overall_damage(0, 5) // Light sucks! It burns and blinds us!
 		H.eye_blurry += 2
-		if(prob(20))
-			to_chat(H, SPAN_WARNING("<font size='3'>[pick("The light is burning you!", "The light! It burns!", "There's too much light around!", "You can't handle this light for much longer!")]</font>"))
+		if(prob(33))
+			to_chat(H, SPAN_WARNING("<font size='4'>[pick("The light is burning you!", "The light! It burns!", "There's too much light around!", "You can't handle this light for much longer!")]</font>"))
 	else
 		H.heal_overall_damage(2, 2) // On the other hand, the cold embrace of darkness heals!
 

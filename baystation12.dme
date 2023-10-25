@@ -561,6 +561,7 @@
 #include "code\game\antagonist\outsider\ert.dm"
 #include "code\game\antagonist\outsider\ninja.dm"
 #include "code\game\antagonist\outsider\raider.dm"
+#include "code\game\antagonist\outsider\shadowling.dm"
 #include "code\game\antagonist\outsider\syndicate.dm"
 #include "code\game\antagonist\outsider\wizard.dm"
 #include "code\game\antagonist\outsider\abductor\abductor.dm"

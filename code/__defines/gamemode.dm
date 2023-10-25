@@ -62,6 +62,7 @@
 #define MODE_DEITY "deity"
 #define MODE_SPIDER "spider"
 #define MODE_GODCULTIST "god cultist"
+#define MODE_SHADOWLING "shadowling"
 
 #define DEFAULT_TELECRYSTAL_AMOUNT 12
 #define NUCLEAR_TELECRYSTAL_AMOUNT 15
