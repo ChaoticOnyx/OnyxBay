@@ -657,9 +657,6 @@
 		overlays += (image(icon,"[safety_icon][safety()]"))
 
 /obj/item/gun/verb/toggle_safety_verb()
-	if(!config.misc.toogle_gun_safety)
-		return
-
 	set src in usr
 	set category = "Object"
 	set name = "Toggle Gun Safety"
