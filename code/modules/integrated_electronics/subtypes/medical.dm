@@ -110,7 +110,7 @@
 			activate_pin(2)
 		if(3)
 			activate_pin(3)
-	var/mob/living/carbon/H = get_pin_data(IC_INPUT, 1)
+	var/mob/living/carbon/human/H = get_pin_data(IC_INPUT, 1)
 	if(!istype(H))
 		activate_pin(3)
 		return
@@ -139,18 +139,21 @@
 	else
 		activate_pin(3)
 
-/obj/item/integrated_circuit/medical/surgery_device/proc/can_use(mob/living/carbon/human/target, obj/item/organ/internal/organ, target_zone)
-	return TRUE
-
-/obj/item/integrated_circuit/medical/surgery_device/proc/do_int_surgery(mob/living/carbon/M)
+/obj/item/integrated_circuit/medical/surgery_device/proc/do_int_surgery(mob/living/carbon/human/H)
 	for(var/datum/surgery_step/S in GLOB.surgery_steps)
 		if(istype(S, /datum/surgery_step/internal) && S.type != st?.type)
 			continue
 
-		if(!S.do_step(get_object(), M, instrument, selected_zone))
+		// `do_step` can return `0` or `-1` if failed, we handle those differently in internal surgery circuit!
+		var/step_status = S.do_step(get_object(), H, instrument, selected_zone)
+		if(!step_status)
 			continue
 
+		if(step_status == SURGERY_FAILURE)
+			return FALSE
+
 		return TRUE
+
 	return FALSE
 
 /*
@@ -232,6 +235,16 @@
 		activate_pin(2)
 	else
 		activate_pin(3)
+
+/obj/item/integrated_circuit/medical/surgery_device/internal/do_int_surgery(mob/living/carbon/human/H)
+	// We are doing a bit risky stuff here!
+	H.surgery_status.operated_organs[check_zone(selected_zone)] = organ
+	. = ..()
+	if(.)
+		return
+
+	// If super call returned `FALSE` organ ref wasn't automatically nullified and it WILL cause runtimes in the future.
+	H.surgery_status.operated_organs[check_zone(selected_zone)] = null
 
 /obj/item/integrated_circuit/medical/surgery_device/face
 	name = "plastic surgery device"
