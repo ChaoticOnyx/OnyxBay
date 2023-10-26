@@ -183,6 +183,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 		 1,  1,  1,  1  // Mapping
 	)
 	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+
 /atom/movable/renderer/lighting/Initialize(mapload, mob/owner)
 	. = ..()
 	owner.overlay_fullscreen("lighting_backdrop", /obj/screen/fullscreen/lighting_backdrop)
