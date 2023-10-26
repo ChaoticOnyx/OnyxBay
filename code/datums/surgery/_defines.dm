@@ -1,3 +1,5 @@
+#define SURGERY_FAILURE -1
+
 /// Causes hands to become bloody.
 #define BLOODY_HANDS (1 << 0)
 /// Causes body to become bloody.

@@ -22,6 +22,9 @@
 		/obj/item/material/shard = 50
 		)
 
+/datum/surgery_step/generic/cut_face/check_zone(target_zone)
+	return (..() && target_zone == BP_MOUTH)
+
 /datum/surgery_step/generic/cut_face/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && target.surgery_status.face == 0)
 

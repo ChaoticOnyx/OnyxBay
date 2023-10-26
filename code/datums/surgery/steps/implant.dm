@@ -14,7 +14,7 @@
 	if(BP_IS_ROBOTIC(parent_organ))
 		return parent_organ.hatch_state == HATCH_OPENED
 
-	return parent_organ.open() >= (parent_organ.encased ? SURGERY_ENCASED : SURGERY_RETRACTED)
+	return (parent_organ.open() >= (parent_organ.encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
 
 /datum/surgery_step/cavity/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
@@ -125,7 +125,7 @@
 
 	if(tool.get_storage_cost() > max_volume || parent_organ.cavity_max_w_class < tool.w_class)
 		target.show_splash_text(user, "tool is too big!")
-		return FALSE
+		return SURGERY_FAILURE
 
 	var/total_volume = tool.get_storage_cost()
 	for(var/obj/item/I in parent_organ.implants)

@@ -226,11 +226,11 @@
 
 	var/obj/item/stack/cable_coil/C = tool
 	if(!istype(C))
-		return
+		return FALSE
 
 	if(!C.use(3))
 		target.show_splash_text(user, "not enough coil length!")
-		return FALSE
+		return SURGERY_FAILURE
 
 	return TRUE
 

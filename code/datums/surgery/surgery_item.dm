@@ -1,12 +1,16 @@
-/obj/item/proc/do_surgery(mob/living/carbon/target, mob/living/user)
+/obj/item/proc/do_surgery(mob/living/carbon/human/target, mob/user)
 	if(!hasorgans(target))
 		return FALSE
 
 	if(user.a_intent == I_HURT)
 		return FALSE
 
+	if(!target.can_operate(user))
+		return FALSE
+
 	for(var/datum/surgery_step/S in GLOB.surgery_steps)
-		if(S.do_step(user, target, src, user.zone_sel.selecting))
+		var/status = S.do_step(user, target, src, user.zone_sel.selecting)
+		if(status || status == SURGERY_FAILURE)
 			return TRUE
 
 	return FALSE

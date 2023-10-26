@@ -24,6 +24,9 @@
 /**
  * Performs preop checks and fires step if succeeded.
  *
+ * Returns `FALSE` if step requirements weren't met or `SURGERY_FAILURE`
+ * if any organ checks were failed.
+ *
  * Vars:
  * * user - atom that fired this step.
  * * target - human mob over which this step would be fired.
@@ -65,11 +68,12 @@
 		return FALSE
 
 	if(accessible && !check_clothing(target, target_zone))
-		return FALSE
+		return SURGERY_FAILURE
 
 	var/obj/item/organ/parent_organ = target.get_organ(parent_zone)
-	if(!check_parent_organ(parent_organ, target, tool))
-		return FALSE
+	var/parent_status = check_parent_organ(parent_organ, target, tool, user)
+	if(!parent_status || parent_status == SURGERY_FAILURE)
+		return parent_status
 
 	var/obj/item/organ/target_organ = pick_target_organ(user, target, target_zone)
 
@@ -78,10 +82,11 @@
 	if(istype(possible_mob))
 		var/obj/item/active_item = possible_mob.get_active_item()
 		if(active_item != tool)
-			return FALSE
+			return SURGERY_FAILURE
 
-	if(!check_target_organ(target_organ, target, tool))
-		return FALSE
+	var/target_status = check_target_organ(target_organ, target, tool, user)
+	if(!target_status || target_status == SURGERY_FAILURE)
+		return target_status
 
 	// At this point we can access selected organ via `surgery_status`.
 	target.surgery_status.start_surgery(target_organ || parent_organ, parent_zone)

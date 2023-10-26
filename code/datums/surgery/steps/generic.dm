@@ -47,7 +47,8 @@
 		return .
 
 	if(!parent_organ.get_incision(TRUE))
-		return FALSE
+		target.show_splash_text(user, "no incisions that can be closed cleanly!")
+		return SURGERY_FAILURE
 
 	if(parent_organ.is_stump())
 		return parent_organ.status & ORGAN_ARTERY_CUT
@@ -86,13 +87,19 @@
 		)
 	parent_organ.take_external_damage(0, 3, used_weapon = tool)
 
+/**
+ * Default incision creation step, does nothing.
+ */
+/datum/surgery_step/generic/cut
+	duration = CUT_DURATION
+
+/datum/surgery_step/generic/cut/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
+	return (..() && !parent_organ.open())
 
 /**
  * Default icision with scalpel, nothing extra.
  */
-/datum/surgery_step/generic/cut_open
-	duration = CUT_DURATION
-
+/datum/surgery_step/generic/cut/default
 	allowed_tools = list(
 		/obj/item/scalpel = 100,
 		/obj/item/material/knife = 75,
@@ -101,18 +108,7 @@
 		/obj/item/material/shard = 50
 		)
 
-/datum/surgery_step/generic/cut_open/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	. = ..()
-	if(!.)
-		return
-
-	if(parent_organ.open())
-		target.show_splash_text(user, "incision is already present!")
-		return FALSE
-
-	return TRUE
-
-/datum/surgery_step/generic/cut_open/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/generic/cut/default/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,
 		"[user] starts the incision on [target]'s [parent_organ] with \the [tool].",
 		"You start the incision on [target]'s [parent_organ] with \the [tool]."
@@ -124,7 +120,7 @@
 		)
 	return ..()
 
-/datum/surgery_step/generic/cut_open/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/generic/cut/default/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_success(user,
 		"[user] has made an incision on [target]'s [parent_organ] with \the [tool].",
 		"You have made an incision on [target]'s [parent_organ] with \the [tool]."
@@ -132,7 +128,7 @@
 	parent_organ.createwound(CUT, parent_organ.min_broken_damage / 2, 1)
 	playsound(target.loc, 'sound/weapons/bladeslice.ogg', 15, 1)
 
-/datum/surgery_step/generic/cut_open/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/generic/cut/default/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
 		"[user]'s hand slips, slicing open [target]'s [parent_organ] in the wrong place with \the [tool]!",
 		"Your hand slips, slicing open [target]'s [parent_organ] in the wrong place with \the [tool]!"
@@ -147,9 +143,8 @@
 /**
  * Incision made with laser scalpel, clamps bleeders.
  */
-/datum/surgery_step/generic/cut_with_laser
+/datum/surgery_step/generic/cut/laser
 	priority = 2
-	duration = CUT_DURATION
 
 	allowed_tools = list(
 		/obj/item/scalpel/laser3 = 100,
@@ -158,10 +153,7 @@
 		/obj/item/melee/energy/sword/one_hand = 50
 		)
 
-/datum/surgery_step/generic/cut_with_laser/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return (..() && !parent_organ.open())
-
-/datum/surgery_step/generic/cut_with_laser/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/generic/cut/laser/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,
 		"[user] starts the bloodless incision on [target]'s [parent_organ] with \the [tool].",
 		"You start the bloodless incision on [target]'s [parent_organ] with \the [tool]."
@@ -173,7 +165,7 @@
 		)
 	return ..()
 
-/datum/surgery_step/generic/cut_with_laser/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/generic/cut/laser/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_success(user,
 		"[user] has made a bloodless incision on [target]'s [parent_organ] with \the [tool].",
 		"You have made a bloodless incision on [target]'s [parent_organ] with \the [tool].",
@@ -182,7 +174,7 @@
 	parent_organ.clamp_organ()
 	spread_germs_to_organ(user, parent_organ)
 
-/datum/surgery_step/generic/cut_with_laser/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/generic/cut/laser/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
 		"[user]'s hand slips as the blade sputters, searing a long gash in [target]'s [parent_organ] with \the [tool]!",
 		"Your hand slips as the blade sputters, searing a long gash in [target]'s [parent_organ] with \the [tool]!"
@@ -347,7 +339,6 @@
  * Saws off bones, covering interal organs.
  */
 /datum/surgery_step/generic/saw
-	can_infect = TRUE
 	delicate = TRUE
 	blood_level = BLOODY_HANDS
 	shock_level = 40
@@ -414,9 +405,9 @@
 	if(!.)
 		return
 
-	if(!parent_organ.open())
-		target.show_splash_text(user, "cauterize incisions first")
-		return FALSE
+	if(parent_organ.open())
+		target.show_splash_text(user, "can't get a clean cut due to present incisions!")
+		return SURGERY_FAILURE
 
 	return parent_organ.limb_flags & ORGAN_FLAG_CAN_AMPUTATE
 

@@ -33,13 +33,13 @@
 		return FALSE
 
 	var/obj/item/organ/external/P = target.get_organ(E.parent_organ)
-	if(!isnull(P) || P.is_stump())
+	if(isnull(P) || P.is_stump())
 		target.show_splash_text(user, "limb is already present!")
-		return FALSE
+		return SURGERY_FAILURE
 
 	if(BP_IS_ROBOTIC(P) && !BP_IS_ROBOTIC(E))
 		target.show_splash_text(user, "organic limb can't be connected to a robotic body!")
-		return FALSE
+		return SURGERY_FAILURE
 
 	return !isnull(target.species.has_limbs["[E.organ_tag]"])
 
