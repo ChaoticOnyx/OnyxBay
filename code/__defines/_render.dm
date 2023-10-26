@@ -184,6 +184,10 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	)
 	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
 
+/atom/movable/renderer/lighting/Initialize(mapload, mob/owner)
+	. = ..()
+	owner.overlay_fullscreen("lighting_backdrop", /obj/screen/fullscreen/lighting_backdrop)
+
 /// Draws visuals that should not be affected by darkness.
 /atom/movable/renderer/above_lighting
 	name  = ABOVE_LIGHTING_RENDERER
