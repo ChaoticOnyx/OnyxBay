@@ -114,22 +114,6 @@
 	else
 		icon_state = "VP78tactic-e"
 
-/obj/item/gun/projectile/pistol/vp78/debug
-	name = "VP78 Tactical"
-	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one is heavily modified and painted in green camo. Uses .45 rounds."
-	icon_state = "VP78tactic"
-	magazine_type = /obj/item/ammo_magazine/c45m/debug
-	allowed_magazines = /obj/item/ammo_magazine/c45m
-	auto_eject = 1
-	auto_eject_sound = 'sound/effects/weapons/misc/smg_empty_alarm.ogg'
-	fire_delay = 6.5
-
-/obj/item/gun/projectile/pistol/vp78/debug/Initialize()
-	..()
-	if(!Debug2)
-		return INITIALIZE_HINT_QDEL_FORCE
-
-
 /obj/item/gun/projectile/pistol/silenced
 	name = "silenced pistol"
 	desc = "A handgun with an integral silencer. Uses .45 rounds."

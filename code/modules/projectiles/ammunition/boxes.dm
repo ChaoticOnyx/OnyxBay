@@ -80,11 +80,6 @@
 /obj/item/ammo_magazine/c45m/empty
 	initial_ammo = 0
 
-/obj/item/ammo_magazine/c45m/debug
-	name = "magazine (.45, DEBUG)"
-	max_ammo = 999
-	initial_ammo = 999
-
 /obj/item/ammo_magazine/c45m/rubber
 	name = "magazine (.45, rubber)"
 	icon_state = "45r"
