@@ -160,7 +160,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 
 /obj/item/organ/internal/cerebrum/mmi/proc/_drop_brain()
 	var/obj/item/organ/internal/cerebrum/brain/new_brain = brainobj
-	new_brain.forceMove(get_turf(src))
+	new_brain?.forceMove(get_turf(src))
 	brainobj = null
 
 	return new_brain
