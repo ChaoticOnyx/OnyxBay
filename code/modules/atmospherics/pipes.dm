@@ -13,6 +13,7 @@
 	can_buckle = 1
 	buckle_require_restraints = 1
 	buckle_lying = -1
+	plane = TURF_PLANE
 
 /obj/machinery/atmospherics/pipe/drain_power()
 	return -1
