@@ -15,13 +15,7 @@
 		target.visible_message(SPAN("warning", "\The [target] bounces off the teleporter!"))
 		return
 
-	var/turf/start = get_turf(target)
 	target.forceMove(destination)
-	// For projectiles we need to rebuild trajectory
-	var/obj/item/projectile/proj = target
-	if (istype(proj))
-		proj.fire(proj.Angle)
-
 	if(isliving(target))
 		var/mob/living/L = target
 		if(L.buckled)
