@@ -50,36 +50,48 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 /obj/item/organ/internal/cerebrum/mmi/proc/try_add_brain(obj/item/organ/internal/cerebrum/brain/new_brain, mob/user)
 	if(!istype(new_brain) || !istype(user))
 		return
+
 	if(brainobj || brainmob?.key)
 		show_splash_text(user, "already has a brain inside!")
 		return
+
 	if(new_brain.damage >= new_brain.max_damage)
 		show_splash_text(user, "brain is truly dead!")
 		return
+
 	if(!new_brain.brainmob || !(new_brain.species?.name in GLOB.whitelisted_mmi_species))
 		show_splash_text(user, "won't fit into device!")
 		return
+
 	_add_brain(new_brain, user)
-	show_splash_text(user, "sticks brain into device.")
+	show_splash_text(user, "brain inserted into device.")
 	feedback_inc("cyborg_mmis_filled", 1)
 
 /obj/item/organ/internal/cerebrum/mmi/proc/try_access(mob/user)
 	if(!istype(user))
 		return
+
 	if(!allowed(user))
 		show_splash_text(user, "access denied!")
 		return
+
 	if(isnull(brainobj))
 		show_splash_text(user, "no suitable brain to lock!")
 		return
+
 	locked = !locked
 	show_splash_text(user, "device [locked ? "locked" : "unlocked"].")
 	update_icon()
 
 /obj/item/organ/internal/cerebrum/mmi/attack_self(mob/user)
+	if(isnull(brainobj))
+		show_splash_text(user, "no brain detected!")
+		return
+
 	if(locked)
 		show_splash_text(user, "brain is clamped into place!")
 		return
+
 	_remove_brain()
 	show_splash_text_to_viewers("brain ejected.")
 
@@ -98,6 +110,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 /obj/item/organ/internal/cerebrum/mmi/proc/_add_brain(obj/item/organ/internal/cerebrum/brain/new_brain, mob/user)
 	if(!istype(user))
 		return
+
 	if(!user.drop(new_brain, src))
 		return
 
@@ -138,12 +151,8 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	brainmob = null
 
 /obj/item/organ/internal/cerebrum/mmi/proc/_drop_brain()
-	if(isnull(brainobj))
-		return new brainobj(get_turf(src))
-
-	var/obj/item/organ/internal/cerebrum/brain/new_brain
-	brainobj.forceMove(get_turf(src))
-	new_brain = brainobj
+	var/obj/item/organ/internal/cerebrum/brain/new_brain = brainobj
+	new_brain.forceMove(get_turf(src))
 	brainobj = null
 
 	return new_brain
