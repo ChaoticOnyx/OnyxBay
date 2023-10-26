@@ -1,5 +1,4 @@
 /obj/machinery/atmospherics/pipe
-	plane = TURF_PLANE
 	var/datum/gas_mixture/air_temporary // used when reconstructing a pipeline that broke
 	var/datum/pipeline/parent
 	var/volume = 0
@@ -13,7 +12,6 @@
 	can_buckle = 1
 	buckle_require_restraints = 1
 	buckle_lying = -1
-	plane = TURF_PLANE
 
 /obj/machinery/atmospherics/pipe/drain_power()
 	return -1
@@ -164,7 +162,6 @@
 	var/pipe_icon = "" //what kind of pipe it is and from which dmi is the icon manager getting its icons, "" for simple pipes, "hepipe" for HE pipes, "hejunction" for HE junctions
 	name = "pipe"
 	desc = "A one meter section of regular pipe."
-	plane = DEFAULT_PLANE
 
 	volume = ATMOS_DEFAULT_VOLUME_PIPE
 
@@ -443,7 +440,6 @@
 	icon_state = ""
 	name = "pipe manifold"
 	desc = "A manifold composed of regular pipes."
-	plane = DEFAULT_PLANE
 
 	volume = ATMOS_DEFAULT_VOLUME_PIPE * 1.5
 
