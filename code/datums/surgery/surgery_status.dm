@@ -1,7 +1,5 @@
 /datum/surgery_status
-	/**
-	 * List of zones where surgery steps are currently performed.
-	 */
+	/// List of zones where surgery steps are currently performed.
 	var/list/ongoing_steps = list()
 	/**
 	 * Associative list of string -> type, where string is zone name and
