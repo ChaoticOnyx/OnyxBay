@@ -17,7 +17,7 @@ var/global/datum/matchmaker/matchmaker = new()
 /datum/matchmaker/proc/do_matchmaking()
 	var/list/to_warn = list()
 	for(var/datum/relation/R in relations)
-		if(R.holder.current.isSynthetic())
+		if(!R.holder.current || R.holder.current.isSynthetic())
 			continue
 		if(!R.other)
 			R.find_match()
