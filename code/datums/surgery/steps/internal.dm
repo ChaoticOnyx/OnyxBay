@@ -593,15 +593,12 @@
 	return FALSE
 
 /datum/surgery_step/internal/fix_organ/multiple/pick_target_organ(atom/user, mob/living/carbon/human/target, target_zone)
-	return null
-
-/datum/surgery_step/internal/fix_organ/multiple/check_target_organ(obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return TRUE
+	return target.get_organ(target_zone)
 
 /datum/surgery_step/internal/fix_organ/multiple/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,
-		"[user] starts treating damage inside [target]'s [parent_organ] with \the [tool].",
-		"You start treating damage to inside [target]'s [parent_organ] with \the [tool]."
+		"[user] starts treating damage to [target]'s [parent_organ] with \the [tool].",
+		"You start treating damage to [target]'s [parent_organ] with \the [tool]."
 		)
 	target.custom_pain("The pain in your [parent_organ] is living hell!", 100)
 	return ..()

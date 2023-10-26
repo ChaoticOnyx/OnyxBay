@@ -76,6 +76,8 @@
 		return parent_status
 
 	var/obj/item/organ/target_organ = pick_target_organ(user, target, target_zone)
+	if(isnull(target_organ))
+		return SURGERY_FAILURE
 
 	// Integrated circuits can't change tool during organ picking step, but spessmen can.
 	var/mob/possible_mob = user
