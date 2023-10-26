@@ -26,6 +26,13 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 		return 1
 
 /datum/antagonist/traitor/get_special_objective_text(datum/mind/player)
+	var/detected = FALSE
+	for(var/datum/objective/objective in player.objectives)
+		if(istype(objective, /datum/objective/contracts))
+			detected = TRUE
+			break
+	if(!detected)
+		return
 	var/contracts_num = player.completed_contracts
 	if(!contracts_num)
 		return "<br>The traitor hasn't completed a single contract. <b>[pick("What a shame", "Loser", "Sorry sight", "Lame duck", "Schlimazel", "Pantywaist", "We will talk about it later")].</b>"

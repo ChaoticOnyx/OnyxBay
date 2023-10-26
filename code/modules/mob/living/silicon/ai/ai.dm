@@ -182,6 +182,7 @@ var/list/ai_verbs_default = list(
 	..()
 	ai_radio = silicon_radio
 	ai_radio.myAi = src
+	GLOB.all_synthetic_mind_to_data[mind] = list(name, type, weakref(src), laws?.print_laws())
 
 /mob/living/silicon/ai/proc/on_mob_init()
 	to_chat(src, "<B>You are playing the [station_name()]'s AI. The AI cannot move, but can interact with many objects while viewing them (through cameras).</B>")
@@ -209,6 +210,7 @@ var/list/ai_verbs_default = list(
 	eyeobj.possess(src)
 
 /mob/living/silicon/ai/Destroy()
+	GLOB.all_synthetic_mind_to_data[mind] = list(name, type, weakref(null), laws?.print_laws())
 	for(var/robot in connected_robots)
 		var/mob/living/silicon/robot/S = robot
 		S.connected_ai = null
