@@ -102,7 +102,7 @@
 /datum/sprite_accessory/hair/longest_stylish
 	name = "Very Long Hair S"
 	icon_state = "longest_stylish"
-	
+
 /datum/sprite_accessory/hair/longfringe
 	name = "Long Fringe"
 	icon_state = "longfringe"
@@ -323,8 +323,8 @@
 /datum/sprite_accessory/hair/shortovereye
 	name = "Overeye Short"
 	icon_state = "shortovereye"
-	
-	/datum/sprite_accessory/hair/shortovereye_stylish
+
+/datum/sprite_accessory/hair/shortovereye_stylish
 	name = "Overeye Short Stylish"
 	icon_state = "shortovereye_stylish"
 
@@ -459,12 +459,12 @@
 	name = "Drillruru"
 	icon_state = "drillruru"
 	gender = FEMALE
-	
+
 /datum/sprite_accessory/hair/drillruru_stylish
 	name = "Drillruru Stylish"
 	icon_state = "drillruru_stylish"
 	gender = FEMALE
-	
+
 /datum/sprite_accessory/hair/fringetail
 	name = "Fringetail"
 	icon_state = "fringetail"
@@ -520,7 +520,7 @@
 /datum/sprite_accessory/hair/volaju
 	name = "Volaju"
 	icon_state = "volaju"
-	
+
 /datum/sprite_accessory/hair/volaju_stylish
 	name = "Volaju Stylish"
 	icon_state = "volaju_stylish"
@@ -790,7 +790,7 @@
 /datum/sprite_accessory/hair/chop
 	name = "Chop"
 	icon_state = "chop"
-	
+
 /datum/sprite_accessory/hair/cossack
 	name = "Cossack"
 	icon_state = "cossack"
@@ -837,7 +837,7 @@
 /datum/sprite_accessory/hair/kusangi
 	name = "Kusanagi Hair"
 	icon_state = "kusanagi"
-	
+
 /datum/sprite_accessory/hair/ladylike_stylish
 	name = "Ladylike Stylish"
 	icon_state = "ladylike_stylish"
@@ -989,8 +989,8 @@
 	name = "Long Sideparts"
 	icon_state = "long_sideparts"
 	gender = FEMALE
-	
-	/datum/sprite_accessory/hair/long_straight_ponytail
+
+/datum/sprite_accessory/hair/long_straight_ponytail
 	name = "Long Straight Ponytail"
 	icon_state = "long_straight_ponytail"
 	gender = FEMALE
