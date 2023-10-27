@@ -63,7 +63,7 @@
 		)
 
 /datum/surgery_step/bone/mend_bone/check_zone(mob/living/carbon/human/target, target_zone)
-	return (..() && target_zone == BP_HEAD)
+	return (..() && target_zone != BP_HEAD)
 
 /datum/surgery_step/bone/mend_bone/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && parent_organ.stage == 1)
