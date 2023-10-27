@@ -18,6 +18,11 @@ if(Datum.is_processing) {\
 	}\
 }
 
+#define SSMACHINES_DEFERREDPOWERNETS 1
+#define SSMACHINES_POWERNETS 2
+#define SSMACHINES_PREMACHINERY 3
+#define SSMACHINES_MACHINERY 4
+
 #define START_PROCESSING_PIPENET(Datum) START_PROCESSING_IN_LIST(Datum, pipenets)
 #define STOP_PROCESSING_PIPENET(Datum) STOP_PROCESSING_IN_LIST(Datum, pipenets)
 
@@ -36,9 +41,12 @@ SUBSYSTEM_DEF(machines)
 
 	flags = SS_KEEP_TIMING
 
-	var/static/list/processing = list()
-	var/static/list/currentrun = list()
-	var/static/list/powernets  = list()
+	var/list/processing = list()
+	var/list/currentrun = list()
+	var/list/powernets = list()
+	var/list/deferred_powernet_rebuilds = list()
+
+	var/currentpart = SSMACHINES_DEFERREDPOWERNETS
 
 /datum/controller/subsystem/machines/Initialize()
 	makepowernets()
@@ -65,23 +73,75 @@ SUBSYSTEM_DEF(machines)
 	msg += "PN:[powernets.len]"
 	..(jointext(msg, null))
 
+/datum/controller/subsystem/machines/proc/process_defered_powernets(resumed = 0)
+	if(!resumed)
+		src.currentrun = deferred_powernet_rebuilds.Copy()
+	//cache for sanid speed (lists are references anyways)
+	var/list/currentrun = src.currentrun
+	while(currentrun.len)
+		var/obj/O = currentrun[currentrun.len]
+		currentrun.len--
+		if(O && !QDELETED(O))
+			var/datum/powernet/newPN = new() // create a new powernet...
+			propagate_network(O, newPN)//... and propagate it to the other side of the cable
+		deferred_powernet_rebuilds.Remove(O)
+		if(MC_TICK_CHECK)
+			return
+
+/datum/controller/subsystem/machines/proc/process_powernets(resumed = 0)
+	if(!resumed)
+		src.currentrun = powernets.Copy()
+	//cache for sanid speed (lists are references anyways)
+	var/list/currentrun = src.currentrun
+	while(currentrun.len)
+		var/datum/powernet/P = currentrun[currentrun.len]
+		currentrun.len--
+		if(P)
+			P.reset() // reset the power state
+		else
+			powernets.Remove(P)
+		if(MC_TICK_CHECK)
+			return
+
+/datum/controller/subsystem/machines/proc/process_machines(resumed = 0)
+	var/seconds = wait * 0.1
+	if(!resumed)
+		src.currentrun = processing.Copy()
+	//cache for sanic speed (lists are references anyways)
+	var/list/currentrun = src.currentrun
+	while(currentrun.len)
+		var/obj/machinery/thing = currentrun[currentrun.len]
+		currentrun.len--
+		if(!QDELETED(thing) && thing.Process(seconds) != PROCESS_KILL)
+			if(thing.use_power)
+				thing.auto_use_power() //add back the power state
+		else
+			processing -= thing
+			if(!QDELETED(thing))
+				thing.is_processing = FALSE
+		if(MC_TICK_CHECK)
+			return
 
 /datum/controller/subsystem/machines/fire(resumed = 0)
-	if(!resumed)
-		for(var/datum/powernet/Powernet in powernets)
-			Powernet.reset() //reset the power state.
-		currentrun = processing.Copy()
-
-	var/obj/machinery/thing
-	var/seconds = wait * 0.1
-	for(var/i = currentrun.len to 1 step -1)
-		thing = currentrun[i]
-		if(QDELETED(thing) || thing.Process(seconds) == PROCESS_KILL)
-			processing -= thing
-			thing.is_processing = null
-		if(MC_TICK_CHECK)
-			currentrun.Cut(i)
+	if(currentpart == SSMACHINES_DEFERREDPOWERNETS || !resumed)
+		process_defered_powernets(resumed)
+		if(state != SS_RUNNING)
 			return
+		resumed = 0
+		currentpart = SSMACHINES_POWERNETS
+
+	if(currentpart == SSMACHINES_POWERNETS || !resumed)
+		process_powernets(resumed)
+		if(state != SS_RUNNING)
+			return
+		resumed = 0
+		currentpart = SSMACHINES_MACHINERY
+	if(currentpart == SSMACHINES_MACHINERY || !resumed)
+		process_machines(resumed)
+		if(state != SS_RUNNING)
+			return
+		resumed = 0
+	currentpart = SSMACHINES_DEFERREDPOWERNETS
 
 /datum/controller/subsystem/machines/proc/setup_template_powernets(list/cables)
 	for(var/A in cables)
