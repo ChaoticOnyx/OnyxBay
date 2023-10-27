@@ -127,7 +127,7 @@
 		changeling.transfer_to(new_character)
 
 	if(vampire)
-		new_character.make_vampire()
+		vampire.transfer_to(new_character)
 
 	if(active)
 		new_character.key = key		//now transfer the key to link the client to our new body

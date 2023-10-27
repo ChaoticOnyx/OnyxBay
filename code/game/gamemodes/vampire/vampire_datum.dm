@@ -11,13 +11,23 @@
 	var/last_frenzy_message = 0                            // Keeps track of when the last frenzy alert was sent.
 	var/status = 0                                         // Bitfield including different statuses.
 	var/stealth = TRUE                                     // Do you want your victims to know of your sucking?
-	var/list/datum/power/vampire/purchased_powers = list() // List of power datums available for use.
+
+	var/list/datum/vampire_power/available_powers = list() // List of power datums available for use.
 	var/obj/effect/dummy/veil_walk/holder = null           // The veil_walk dummy.
 	var/weakref/master = null                              // The vampire/thrall's master.
 	var/mob/living/carbon/human/my_mob = null              // Vampire mob
 
 /datum/vampire/thrall
 	status = VAMP_ISTHRALL
+
+/datum/vampire/proc/transfer_to(mob/living/new_character)
+	if(my_mob && (status & VAMP_FRENZIED))
+		stop_frenzy(TRUE)
+		for(var/datum/datum/vampire_power/VP in available_powers)
+			qdel(VP)
+		available_powers.Cut()
+
+	my_mob = new_character
 
 /datum/vampire/proc/add_power(datum/mind/vampire, datum/power/vampire/power, announce = 0)
 	if(!vampire || !power)
@@ -90,6 +100,80 @@
 	vampire_check_frenzy()
 
 	set_next_think(world.time + 1 SECOND)
+
+
+// Proc to safely remove blood, without resulting in negative amounts of blood.
+/datum/vampire/proc/use_blood(blood_to_use)
+	if(blood_to_use <= 0)
+		return FALSE
+	blood_usable -= min(blood_to_use, blood_usable)
+	return TRUE
+
+/datum/vampire/proc/gain_blood(blood_to_get)
+	blood_usable += blood_to_get
+	return
+
+
+/datum/vampire/proc/set_up_organs()
+	var/mob/living/carbon/human/H = src
+	if(H.mind.vampire?.status & VAMP_ISTHRALL)
+		return
+	var/obj/item/organ/internal/heart/O = H.internal_organs_by_name[BP_HEART]
+	if(O)
+		O.rejuvenate(ignore_prosthetic_prefs = TRUE)
+		O.max_damage = 150
+		O.min_bruised_damage = 30
+		O.min_broken_damage = 70
+		O.vital = TRUE
+	return
+
+
+// Checks whether or not the target can be affected by a vampire's abilities.
+#define NOTIFIED_WARNING(msg) if(notify) {to_chat(src, SPAWN("warning", msg))}
+/datum/vampire/proc/can_affect(mob/living/carbon/human/target, notify = TRUE, check_loyalty_implant = FALSE, check_thrall = TRUE)
+	if(!istype(target))
+		return FALSE
+	if(!target.mind)
+		// The target's dumbey-dumbey, not even worth the effort
+		NOTIFIED_WARNING("[T] doesn't seem to even have a mind.")
+		return FALSE
+
+	if((status & VAMP_FULLPOWER) && !(target.mind.vampire && (T.mind.vampire.status & VAMP_FULLPOWER)))
+		// We are a fullpowered vampire and our target isn't
+		return TRUE
+
+	if(T.mind.assigned_role == "Chaplain")
+		NOTIFIED_WARNING("Your connection with the Veil is not strong enough to affect a being as devout as them.")
+		return FALSE
+
+	if(T.mind.vampire)
+		if(!(T.mind.vampire.status & VAMP_ISTHRALL))
+			// The target is a vampire
+			NOTIFIED_WARNING("You lack the power required to affect another creature of the Veil.")
+			return FALSE
+		else if(check_thrall)
+			// The target is a thrall
+			NOTIFIED_WARNING("You lack the power required to affect a lesser creature of the Veil.")
+			return FALSE
+	else if(is_special_character(T))
+		// The target is some non-vampire antag
+		NOTIFIED_WARNING("[T]'s mind is too strong to be affected by our powers!")
+		return FALSE
+
+	if(T.isSynthetic())
+		// The target is a cyberass
+		NOTIFIED_WARNING("You lack the power to affect mechanical constructs.")
+		return FALSE
+
+	if(check_loyalty_implant)
+		for(var/obj/item/implant/loyalty/I in T)
+			if(I.implanted)
+				// Found an active loyalty implant
+				NOTIFIED_WARNING("You feel that [T]'s mind is protected from our powers.")
+				return FALSE
+
+	return TRUE
+#undef NOTIFIED_WARNING
 
 /*
  * Frenzy info:

@@ -52,30 +52,6 @@
 	var/datum/vampire/thrall/thrall = new()
 	mind.vampire = thrall
 
-/datum/vampire/proc/set_up_organs()
-	var/mob/living/carbon/human/H = src
-	if(H.mind.vampire?.status & VAMP_ISTHRALL)
-		return
-	var/obj/item/organ/internal/heart/O = H.internal_organs_by_name[BP_HEART]
-	if(O)
-		O.rejuvenate(ignore_prosthetic_prefs = TRUE)
-		O.max_damage = 150
-		O.min_bruised_damage = 30
-		O.min_broken_damage = 70
-		O.vital = TRUE
-	return
-
-// Proc to safely remove blood, without resulting in negative amounts of blood.
-/datum/vampire/proc/use_blood(blood_to_use)
-	if(blood_to_use <= 0)
-		return FALSE
-	blood_usable -= min(blood_to_use, blood_usable)
-	return TRUE
-
-/datum/vampire/proc/gain_blood(blood_to_get)
-	blood_usable += blood_to_get
-	return
-
 
 // Checks the vampire's bloodlevel and unlocks new powers based on that.
 /mob/proc/check_vampire_upgrade()
@@ -95,107 +71,67 @@
 
 // Runs the checks for whether or not we can use a power.
 /mob/proc/vampire_power(required_blood = 0, max_stat = 0, ignore_holder = 0, disrupt_healing = 1,required_vampire_blood = 0)
-	if (!mind)
-		return
-	if (!ishuman(src))
-		return
-	var/datum/vampire/vampire = mind.vampire
-	if (!vampire)
-		log_debug("[src] has a vampire power but is not a vampire.")
-		return
-	if (vampire.holder && !ignore_holder)
-		to_chat(src, SPAN_WARNING("You cannot use this power while walking through the Veil."))
-		return
-	if (stat > max_stat)
-		to_chat(src, SPAN_WARNING("You are incapacitated."))
-		return
-	if (required_blood > vampire.blood_usable)
-		to_chat(src, SPAN_WARNING("You do not have enough usable blood. [required_blood] needed."))
-		return
-
-	if ((vampire.status & VAMP_HEALING) && disrupt_healing)
-		vampire.status &= ~VAMP_HEALING
-
 	return vampire
 
 
-// Checks whether or not the target can be affected by a vampire's abilities.
-#define NOTIFIED_WARNING(msg) if(notify) {to_chat(src, SPAWN("warning", msg))}
-/datum/vampire/proc/can_affect_target(mob/living/carbon/human/target, notify = TRUE, check_loyalty_implant = FALSE, check_thrall = TRUE)
-	if(!istype(target))
-		return FALSE
-	if(!target.mind)
-		// The target's dumbey-dumbey, not even worth the effort
-		NOTIFIED_WARNING("[T] doesn't seem to even have a mind.")
-		return FALSE
+/datum/vampire/proc/vampire_dominate_handler(ability = "suggestion")
+	. = FALSE
 
-	if((status & VAMP_FULLPOWER) && !(target.mind.vampire && (T.mind.vampire.status & VAMP_FULLPOWER)))
-		// We are a fullpowered vampire and our target isn't
-		return TRUE
+	var/list/victims = list()
+	for(var/mob/living/carbon/human/H in view(7, my_mob))
+		if(my_mob == user)
+			continue
+		victims += H
 
-	if(T.mind.assigned_role == "Chaplain")
-		NOTIFIED_WARNING("Your connection with the Veil is not strong enough to affect a being as devout as them.")
-		return FALSE
-
-	if(T.mind.vampire)
-		if(!(T.mind.vampire.status & VAMP_ISTHRALL))
-			// The target is a vampire
-			NOTIFIED_WARNING("You lack the power required to affect another creature of the Veil.")
-			return FALSE
-		else if(check_thrall)
-			// The target is a thrall
-			NOTIFIED_WARNING("You lack the power required to affect a lesser creature of the Veil.")
-			return FALSE
-	else if(is_special_character(T))
-		// The target is some non-vampire antag
-		NOTIFIED_WARNING("[T]'s mind is too strong to be affected by our powers!")
-		return FALSE
-
-	if(T.isSynthetic())
-		// The target is a cyberass
-		NOTIFIED_WARNING("You lack the power to affect mechanical constructs.")
-		return FALSE
-
-	if(check_loyalty_implant)
-		for(var/obj/item/implant/loyalty/I in T)
-			if(I.implanted)
-				// Found an active loyalty implant
-				NOTIFIED_WARNING("You feel that [T]'s mind is protected from our powers.")
-				return FALSE
-
-	return TRUE
-#undef NOTIFIED_WARNING
-
-// Plays the vampire phase in animation.
-/mob/proc/vampire_phase_in(turf/T)
-	if (!T)
-		return
-	anim(T,src,'icons/mob/mob.dmi',null,"bloodify_in", null,dir)
-
-// Plays the vampire phase out animation.
-/mob/proc/vampire_phase_out(turf/T)
-	if (!T)
-		return
-	anim(T,src,'icons/mob/mob.dmi',null,"bloodify_out", null,dir)
-
-
-// Removes all vampire powers.
-/mob/proc/remove_vampire_powers()
-	if (!mind || !mind.vampire)
+	if(!victims.len)
+		to_chat(my_mob, SPAN("warning", "No suitable targets."))
 		return
 
-	for (var/datum/power/vampire/P in mind.vampire.purchased_powers)
-		if (P.is_active)
-			verbs -= P.verbpath
+	var/mob/living/carbon/human/T = input(my_mob, "Select Victim") as null|mob in victims
 
-	if (mind.vampire.status & VAMP_FRENZIED)
-		vampire_stop_frenzy(1)
-
-/mob/living/carbon/human/proc/finish_vamp_timeout(vamp_flags = 0)
-	if (!src)
+	if(!can_affect(T, TRUE, TRUE))
 		return
-	if (!mind || !mind.vampire)
-		return FALSE
-	if (vamp_flags && !(mind.vampire.status & vamp_flags))
-		return FALSE
+
+	if(!(status & VAMP_FULLPOWER))
+		to_chat(my_mob, SPAN("notice", "You begin peering into [T]'s mind, looking for a way to gain control."))
+
+		if(!do_mob(my_mob, T, 50, incapacitation_flags = INCAPACITATION_DISABLED))
+			to_chat(user, SPAN("warning", "Your concentration is broken!"))
+			return
+
+		to_chat(my_mob, SPAN("notice", "You succeed in dominating [T]'s mind. They are yours to command."))
+	else
+		to_chat(my_mob, SPAN("notice", "You instantly dominate [T]'s mind, forcing them to obey your command."))
+
+	var/command
+	if(ability == "suggestion")
+		command = input(my_mob, "Command your victim.", "Your command.") as text|null
+	else if(ability == "order")
+		command = input(my_mob, "Command your victim with single word.", "Your command.") as text|null
+
+	if(!command)
+		to_chat(my_mob, SPAN("alert", "Cancelled."))
+		return
+
+	if(ability == "suggestion")
+		command = sanitizeSafe(command, extra = 0)
+	else if(ability == "order")
+		command = sanitizeSafe(command)
+		var/spaceposition = findtext_char(command, " ")
+		if(spaceposition)
+			command = copytext_char(command, 1, spaceposition + 1)
+
+	my_mob.say(command)
+
+	if(T.is_deaf() || !T.say_understands(my_mob, my_mob.get_default_language()))
+		to_chat(my_mob, SPAN("warning", "Target does not understand you!"))
+		return
+
+	admin_attack_log(my_mob, T, "used dominate on [key_name(T)]", "was dominated by [key_name(my_mob)]", "used dominate and issued the command of '[command]' to")
+
+	show_browser(T, "<HTML><meta charset=\"utf-8\"><center>You feel a strong presence enter your mind. For a moment, you hear nothing but what it says, <b>and are compelled to follow its direction without question or hesitation:</b><br>[command]</center></BODY></HTML>", "window=vampiredominate")
+	to_chat(T, SPAN("notice", "You feel a strong presence enter your mind. For a moment, you hear nothing but what it says, and are compelled to follow its direction without question or hesitation:"))
+	to_chat(T, "<span style='color: green;'><i><em>[command]</em></i></span>")
+	to_chat(my_mob, SPAN("notice", "You command [T], and they will obey."))
+
 	return TRUE
