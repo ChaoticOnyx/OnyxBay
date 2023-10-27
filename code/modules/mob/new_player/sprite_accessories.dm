@@ -911,6 +911,10 @@
 /datum/sprite_accessory/hair/ramona
 	name = "Ramona"
 	icon_state = "ramona"
+	
+/datum/sprite_accessory/hair/ramona_stylish
+	name = "Ramona Stylish"
+	icon_state = "ramona_stylish"
 
 /datum/sprite_accessory/hair/sidepart
 	name = "Sidepart"
