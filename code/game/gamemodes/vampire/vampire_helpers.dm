@@ -53,27 +53,6 @@
 	mind.vampire = thrall
 
 
-// Checks the vampire's bloodlevel and unlocks new powers based on that.
-/mob/proc/check_vampire_upgrade()
-	if (!mind.vampire)
-		return
-
-	var/datum/vampire/vampire = mind.vampire
-
-	for (var/datum/power/vampire/P in vampirepowers)
-		if (P.blood_cost <= vampire.blood_total)
-			if (!(P in vampire.purchased_powers))
-				vampire.add_power(mind, P, 1)
-
-	if (!(vampire.status & VAMP_FULLPOWER) && vampire.blood_total >= 650)
-		vampire.status |= VAMP_FULLPOWER
-		to_chat(src, SPAN_NOTICE("You've gained full power. Some abilities now have bonus functionality, or work faster."))
-
-// Runs the checks for whether or not we can use a power.
-/mob/proc/vampire_power(required_blood = 0, max_stat = 0, ignore_holder = 0, disrupt_healing = 1,required_vampire_blood = 0)
-	return vampire
-
-
 /datum/vampire/proc/vampire_dominate_handler(ability = "suggestion")
 	. = FALSE
 

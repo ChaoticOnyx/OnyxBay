@@ -128,6 +128,20 @@
 	return
 
 
+// Checks the vampire's bloodlevel and unlocks new powers based on that.
+/datum/vampire/proc/check_vampire_upgrade()
+	var/datum/vampire/vampire = mind.vampire
+
+	for (var/datum/power/vampire/P in vampirepowers)
+		if (P.blood_cost <= vampire.blood_total)
+			if (!(P in vampire.purchased_powers))
+				vampire.add_power(mind, P, 1)
+
+	if (!(vampire.status & VAMP_FULLPOWER) && vampire.blood_total >= 650)
+		vampire.status |= VAMP_FULLPOWER
+		to_chat(my_mob, SPAN("notice", "You've gained full power. Some abilities now have bonus functionality, or work faster."))
+
+
 // Checks whether or not the target can be affected by a vampire's abilities.
 #define NOTIFIED_WARNING(msg) if(notify) {to_chat(src, SPAWN("warning", msg))}
 /datum/vampire/proc/can_affect(mob/living/carbon/human/target, notify = TRUE, check_loyalty_implant = FALSE, check_thrall = TRUE)
