@@ -324,7 +324,7 @@
 	name = "Overeye Short"
 	icon_state = "shortovereye"
 	
-/datum/sprite_accessory/hair/shortovereye_stylish
+	/datum/sprite_accessory/hair/shortovereye_stylish
 	name = "Overeye Short Stylish"
 	icon_state = "shortovereye_stylish"
 
@@ -911,10 +911,6 @@
 /datum/sprite_accessory/hair/ramona
 	name = "Ramona"
 	icon_state = "ramona"
-	
-/datum/sprite_accessory/hair/ramona_stylish
-	name = "Ramona Stylish"
-	icon_state = "ramona_stylish"
 
 /datum/sprite_accessory/hair/sidepart
 	name = "Sidepart"
@@ -994,13 +990,13 @@
 	icon_state = "long_sideparts"
 	gender = FEMALE
 	
-/datum/sprite_accessory/hair/long_straight_ponytail
+	/datum/sprite_accessory/hair/long_straight_ponytail
 	name = "Long Straight Ponytail"
 	icon_state = "long_straight_ponytail"
 	gender = FEMALE
 
 /datum/sprite_accessory/hair/long_braid
-	name = "Long Braid"
+	name = "Long Braid Stylish"
 	icon_state = "long_braid"
 	gender = FEMALE
 
