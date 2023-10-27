@@ -6,7 +6,7 @@ GLOBAL_DATUM_INIT(thralls, /datum/antagonist/thrall, new)
 	role_text_plural = "Thralls"
 	feedback_tag = "thrall_objective"
 	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/chaplain)
-	welcome_text = "You are a vampire or psionic operant's thrall: a pawn to be commanded by them at will."
+	welcome_text = "You are a vampire's thrall: a pawn to be commanded by them at will."
 	antaghud_indicator = "hudthrall"
 
 /datum/antagonist/thrall/Initialize()
@@ -22,4 +22,4 @@ GLOBAL_DATUM_INIT(thralls, /datum/antagonist/thrall, new)
 
 /datum/antagonist/thrall/update_antag_mob(datum/mind/player)
 	..()
-	player.current.vampire_make_thrall()
+	player.current.make_vampire_thrall()

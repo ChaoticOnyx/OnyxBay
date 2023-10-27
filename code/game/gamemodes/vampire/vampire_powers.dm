@@ -117,7 +117,7 @@
 
 				// And drain the vampire as well.
 				draining_vamp.use_blood(min(blood, draining_vamp.blood_usable))
-				user.vampire_check_frenzy()
+				user.mind.vampire.check_frenzy()
 
 				frenzy_lower_chance = 0
 		// SSD/protohuman or dead.
@@ -1096,7 +1096,7 @@
 
 	T.mind.vampire.use_blood(T.mind.vampire.blood_usable)
 	T.mind.vampire.frenzy = 50
-	T.vampire_check_frenzy()
+	T.mind.vampire.check_frenzy()
 
 	vampire.status &= ~VAMP_DRAINING
 
