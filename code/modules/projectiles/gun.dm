@@ -286,6 +286,13 @@
 			pointblank = 0
 
 	//update timing
+	var/turf/T = get_turf(user)
+	var/area/A = get_area(T)
+	if((istype(T, /turf/space)) || (A.has_gravity == FALSE))
+		user.inertia_dir = get_dir(target, src)
+		user.setMoveCooldown(shoot_time) //no moving while shooting either
+		step(user, user.inertia_dir) // they're in space, move em in the opposite direction
+
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 	user.setMoveCooldown(move_delay)
 	next_fire_time = world.time + fire_delay

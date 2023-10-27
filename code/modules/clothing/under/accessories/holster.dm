@@ -6,6 +6,30 @@
 	high_visibility = 1
 	var/obj/item/holstered = null
 	var/list/can_hold
+	var/datum/action/item_action/holster_action
+
+/datum/action/item_action/holster
+	name = "Holster"
+	check_flags = AB_CHECK_RESTRAINED|AB_CHECK_STUNNED|AB_CHECK_LYING|AB_CHECK_ALIVE
+
+/datum/action/item_action/holster/CheckRemoval(mob/living/user)
+	var/obj/item/clothing/accessory/A = target
+	if(!istype(A))
+		return TRUE
+	if(..() && isnull(A.has_suit))
+		return TRUE
+
+/obj/item/clothing/accessory/holster/Initialize()
+	. = ..()
+	holster_action = new /datum/action/item_action/holster
+	holster_action.target = src
+
+/obj/item/clothing/accessory/holster/equipped(mob/user)
+	. = ..()
+	holster_action.Grant(user)
+
+/obj/item/clothing/accessory/holster/ui_action_click()
+	holster_verb()
 
 /obj/item/clothing/accessory/holster/proc/holster(obj/item/I, mob/living/user)
 	var/new_w_class = max(w_class, I.w_class)
@@ -99,8 +123,12 @@
 	set name = "Holster"
 	set category = "Object"
 	set src in usr
-	if(!istype(usr, /mob/living)) return
-	if(usr.stat) return
+
+	if(!istype(usr, /mob/living))
+		return
+
+	if(usr.stat)
+		return
 
 	//can't we just use src here?
 	var/obj/item/clothing/accessory/holster/H = null
