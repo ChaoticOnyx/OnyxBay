@@ -469,8 +469,7 @@
 
 	allowed_tools = list(
 		/obj/item/stack/medical/advanced/bruise_pack= 67,
-		/obj/item/stack/medical/bruise_pack = 34,
-		/obj/item/tape_roll = 20
+		/obj/item/stack/medical/bruise_pack = 34
 		)
 
 /datum/surgery_step/internal/fix_organ/ghetto/check_target_organ(obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
