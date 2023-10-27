@@ -188,11 +188,11 @@
 	user.visible_message(SPAN_DANGER("[user.name]'s eyes emit a blinding flash"))
 	var/list/victims = list()
 	for (var/mob/living/carbon/human/H in view(2))
-		if (H == user)
+		if(H == user)
 			continue
-		if (!user.vampire_can_affect_target(H, 0))
+		if(!can_affect_target(H, FALSE))
 			continue
-		if (H.eyecheck() > FLASH_PROTECTION_NONE)
+		if(H.eyecheck() > FLASH_PROTECTION_NONE)
 			continue
 		H.Weaken(8)
 		H.Stun(6)
@@ -235,7 +235,7 @@
 
 	var/mob/living/carbon/human/T = input(user, "Select Victim") as null|mob in victims
 
-	if (!user.vampire_can_affect_target(T))
+	if(!can_affect_target(T))
 		return
 
 	to_chat(user, SPAN_NOTICE("You begin peering into [T.name]'s mind, looking for a way to render them useless."))
@@ -361,11 +361,11 @@
 	var/list/victims = list()
 
 	for (var/mob/living/carbon/human/T in hearers(4, user))
-		if (T == user)
+		if(T == user)
 			continue
-		if (T.get_ear_protection() > 2)
+		if(T.get_ear_protection() > 2)
 			continue
-		if (!user.vampire_can_affect_target(T, 0))
+		if(!can_affect_target(T, FALSE))
 			continue
 
 		to_chat(T, SPAN_DANGER("You hear an ear piercing shriek and feel your senses go dull!"))
@@ -762,7 +762,7 @@
 
 	var/mob/living/carbon/human/T = input(user, "Select Victim") as null|mob in victims
 
-	if (!user.vampire_can_affect_target(T, 1, 1))
+	if(!can_affect_target(T, TRUE, TRUE))
 		return
 
 	if (!(vampire.status & VAMP_FULLPOWER))
@@ -832,7 +832,7 @@
 	if(!istype(T) || T.isSynthetic())
 		to_chat(user, SPAN_WARNING("[T] is not a creature you can enthrall."))
 		return
-	if (!user.vampire_can_affect_target(T, 1, 1))
+	if(!can_affect_target(T, TRUE, TRUE))
 		return
 	if (!T.client || !T.mind)
 		to_chat(user, SPAN_WARNING("[T]'s mind is empty and useless. They cannot be forced into a blood bond."))
@@ -905,7 +905,7 @@
 		for (var/mob/living/carbon/human/T in view(5))
 			if (T == user)
 				continue
-			if (!user.vampire_can_affect_target(T, 0, 1))
+			if(!can_affect_target(T, FALSE, TRUE))
 				continue
 			if (!T.client)
 				continue
@@ -1019,7 +1019,7 @@
 		return
 
 	var/mob/living/carbon/human/T = G.affecting
-	if (!user.vampire_can_affect_target(T, ignore_thrall = TRUE))
+	if(!can_affect_target(T, check_thrall = FALSE))
 		return
 	if (!T.client)
 		to_chat(user, SPAN_WARNING("[T] is a mindless husk. The Veil has no purpose for them."))

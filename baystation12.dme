@@ -8,7 +8,6 @@
 // END_FILE_DIR
 // BEGIN_PREFERENCES
 #define DEBUG
-// #define TRACY_PROFILER
 // END_PREFERENCES
 // BEGIN_INCLUDE
 #include "code\__spaceman_dmm.dm"
