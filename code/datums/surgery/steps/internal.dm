@@ -271,6 +271,9 @@
 
 	return TRUE
 
+/datum/surgery_step/internal/replace_organ/pick_target_organ(atom/user, mob/living/carbon/human/target, target_zone)
+	return target.get_organ(target_zone)
+
 /datum/surgery_step/internal/replace_organ/check_target_organ(obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return TRUE
 

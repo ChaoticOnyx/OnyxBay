@@ -193,3 +193,69 @@
 		"Your hand slips, damaging [target]'s flesh!"
 		)
 	target.apply_damage(10, BRUTE, null, damage_flags = DAM_SHARP)
+
+/**
+ * Amputates limb.
+ */
+/datum/surgery_step/amputate
+	can_infect = TRUE
+	shock_level = 10
+	duration = AMPUTATION_DURATION
+
+	allowed_tools = list(
+		/obj/item/circular_saw = 100,
+		/obj/item/material/hatchet = 75,
+		/obj/item/material/twohanded/fireaxe = 85,
+		/obj/item/gun/energy/plasmacutter = 90
+		)
+
+/datum/surgery_step/amputate/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
+	. = ..()
+	if(!.)
+		return
+
+	if(parent_organ.open())
+		target.show_splash_text(user, "can't get a clean cut due to present incisions!")
+		return SURGERY_FAILURE
+
+	return parent_organ.limb_flags & ORGAN_FLAG_CAN_AMPUTATE
+
+/datum/surgery_step/amputate/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	announce_preop(user,
+		"[user] is beginning to amputate [target]'s [parent_organ] with \the [tool].",
+		"You are beginning to cut through [target]'s [parent_organ.amputation_point] with \the [tool]."
+		)
+	target.custom_pain(
+		"Your [parent_organ.amputation_point] is being ripped apart!",
+		100,
+		affecting = parent_organ
+		)
+	return ..()
+
+/datum/surgery_step/amputate/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	announce_success(user,
+		"[user] amputates [target]'s [parent_organ] at the [parent_organ.amputation_point] with \the [tool].",
+		"You amputate [target]'s [parent_organ] with \the [tool]."
+		)
+	parent_organ.droplimb(TRUE, DROPLIMB_EDGE)
+
+/datum/surgery_step/amputate/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	announce_failure(user,
+		"[user]'s hand slips, sawing through the bone in [target]'s [parent_organ] with \the [tool]!",
+		"Your hand slips, sawwing through the bone in [target]'s [parent_organ] with \the [tool]!"
+		)
+	parent_organ.take_external_damage(30, 0, (DAM_SHARP|DAM_EDGE), used_weapon = tool)
+	parent_organ.fracture()
+
+/datum/surgery_step/amputate/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	announce_failure(user,
+		"[user]'s hand slips, sawing through the bone in [target]'s [parent_organ] with \the [tool]!",
+		"Your hand slips, sawwing through the bone in [target]'s [parent_organ] with \the [tool]!"
+		)
+	parent_organ.take_external_damage(
+		30,
+		0,
+		(DAM_SHARP|DAM_EDGE),
+		used_weapon = tool
+		)
+	parent_organ.fracture()

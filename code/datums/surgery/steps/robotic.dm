@@ -321,9 +321,9 @@
 		"Your hand slips, disconnecting \the [tool]."
 		)
 
-//////////////////////////////////////////////////////////////////
-//	robotic organ transplant finalization surgery step
-//////////////////////////////////////////////////////////////////
+/**
+ * Robotic organ transplant finalization step.
+ */
 /datum/surgery_step/robotics/internal/attach_organ
 	allowed_tools = list(
 		/obj/item/screwdriver = 100
