@@ -14,12 +14,6 @@ GLOBAL_DATUM_INIT(thralls, /datum/antagonist/thrall, new)
 	if(config.game.thrall_min_age)
 		min_player_age = config.game.thrall_min_age
 
-/proc/isghoul(mob/player)
-	if(!GLOB.thralls || !player.mind)
-		return FALSE
-	if(player.mind in GLOB.thralls.current_antagonists)
-		return TRUE
-
 /datum/antagonist/thrall/update_antag_mob(datum/mind/player)
 	..()
 	player.current.make_vampire_thrall()

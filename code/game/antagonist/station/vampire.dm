@@ -27,7 +27,7 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 	var/kill
 	var/escape
 	var/protect
-	var/ghouls
+	var/enthrall
 	var/vampirize
 
 	switch(rand(1, 100))
@@ -44,7 +44,7 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 			vampirize = TRUE
 			escape = TRUE
 		else
-			ghouls = TRUE
+			enthrall = TRUE
 			kill = TRUE
 			escape = TRUE
 
@@ -64,10 +64,10 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 		vampirize_objective.owner = player
 		vampirize_objective.find_target()
 		player.objectives += vampirize_objective
-	if(ghouls)
-		var/datum/objective/ghouls/ghouls_objective = new
-		ghouls_objective.owner = player
-		player.objectives += ghouls_objective
+	if(enthrall)
+		var/datum/objective/enthrall/enthrall_objective = new
+		enthrall_objective.owner = player
+		player.objectives += enthrall_objective
 	if(escape)
 		var/datum/objective/survive/survive_objective = new
 		survive_objective.owner = player
