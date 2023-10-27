@@ -118,11 +118,6 @@
 		QDEL_NULL(trajectory)
 	return ..()
 
-/obj/item/projectile/forceMove()
-	..()
-	if(istype(loc, /turf/space/) && istype(loc.loc, /area/space))
-		qdel(src)
-
 //TODO: make it so this is called more reliably, instead of sometimes by bullet_act() and sometimes not
 /obj/item/projectile/proc/on_hit(atom/target, blocked = 0, def_zone = null)
 	if(blocked >= 100)
