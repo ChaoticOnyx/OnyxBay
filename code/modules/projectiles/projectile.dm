@@ -118,11 +118,6 @@
 		QDEL_NULL(trajectory)
 	return ..()
 
-/obj/item/projectile/forceMove()
-	..()
-	if(istype(loc, /turf/space/) && istype(loc.loc, /area/space))
-		qdel(src)
-
 //TODO: make it so this is called more reliably, instead of sometimes by bullet_act() and sometimes not
 /obj/item/projectile/proc/on_hit(atom/target, blocked = 0, def_zone = null)
 	if(blocked >= 100)
@@ -409,7 +404,7 @@
 /obj/item/projectile/proc/old_style_target(atom/target, atom/source)
 	if(!source)
 		source = get_turf(src)
-	setAngle(Get_Angle(source, target))
+	setAngle(get_projectile_angle(source, target))
 
 /obj/item/projectile/proc/fire(angle, atom/direct_target)
 	//If no Angle needs to resolve it from xo/yo!
@@ -430,7 +425,7 @@
 			qdel(src)
 			return
 		var/turf/target = locate(Clamp(starting + xo, 1, world.maxx), Clamp(starting + yo, 1, world.maxy), starting.z)
-		setAngle(Get_Angle(src, target))
+		setAngle(get_projectile_angle(src, target))
 	if(dispersion)
 		var/DeviationAngle = (dispersion * 15)
 		setAngle(Angle + rand(-DeviationAngle, DeviationAngle))
@@ -478,7 +473,7 @@
 	else if(targloc && curloc)
 		yo = targloc.y - curloc.y
 		xo = targloc.x - curloc.x
-		setAngle(Get_Angle(src, targloc))
+		setAngle(get_projectile_angle(src, targloc))
 	else
 		util_crash_with("WARNING: Projectile [type] fired without either mouse parameters, or a target atom to aim at!")
 		qdel(src)

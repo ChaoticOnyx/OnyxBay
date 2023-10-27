@@ -28,9 +28,6 @@
 	projectile_type = /obj/item/projectile/bullet/chemdart
 	leaves_residue = 0
 
-/obj/item/ammo_casing/chemdart/expend()
-	qdel(src)
-
 /obj/item/ammo_magazine/chemdart
 	name = "dart cartridge"
 	desc = "A rack of hollow darts."
@@ -60,6 +57,7 @@
 	auto_eject = 0
 	handle_casings = CLEAR_CASINGS //delete casings instead of dropping them
 	combustion = FALSE
+	has_safety = FALSE
 
 	var/list/beakers = list() //All containers inside the gun.
 	var/list/mixing = list() //Containers being used for mixing.
@@ -82,12 +80,12 @@
 		icon_state = "dartgun-empty"
 		return 1
 
-	if(!ammo_magazine.stored_ammo || ammo_magazine.stored_ammo.len)
+	if(!length(ammo_magazine.stored_ammo))
 		icon_state = "dartgun-0"
-	else if(ammo_magazine.stored_ammo.len > 5)
+	else if(length(ammo_magazine.stored_ammo) > 5)
 		icon_state = "dartgun-5"
 	else
-		icon_state = "dartgun-[ammo_magazine.stored_ammo.len]"
+		icon_state = "dartgun-[length(ammo_magazine.stored_ammo)]"
 	return 1
 
 /obj/item/gun/projectile/dartgun/consume_next_projectile()

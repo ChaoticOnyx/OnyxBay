@@ -97,8 +97,26 @@ var/server_name = "OnyxBay"
 
 	return match
 
+/world/proc/__init_tracy()
+#ifdef TRACY_PROFILER
+	var/tracy_lib
+
+	if(world.system_type == MS_WINDOWS)
+		tracy_lib = "prof.dll"
+	else
+		tracy_lib = "./libprof.so"
+
+	var/tracy_init = call(tracy_lib, "init")()
+
+	if(tracy_init != "0")
+		CRASH("[tracy_lib] init error: [tracy_init]")
+#else
+	return
+#endif
+
 #define RECOMMENDED_VERSION 514
 /world/New()
+	__init_tracy()
 	SetupLogs()
 
 	if(world.system_type == UNIX)

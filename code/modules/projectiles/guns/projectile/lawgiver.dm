@@ -31,6 +31,7 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 
 	var/hack_in_progress = FALSE // if anyone remembers how to do it with do_after by internal tools, replace this shit by internal tools
 	var/hacks_remains = 3
+	has_safety = FALSE
 
 /obj/item/gun/projectile/lawgiver/get_description_info()
 	. = ..()

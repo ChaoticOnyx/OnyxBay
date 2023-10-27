@@ -1,4 +1,4 @@
-/mob/living/carbon/human/gib()
+/mob/living/carbon/human/gib(anim, do_gibs)
 	if(status_flags & GODMODE)
 		return
 
@@ -22,7 +22,7 @@
 		drop(I, force = TRUE)
 		I.throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), 1)
 
-	..(species.gibbed_anim)
+	..(species.gibbed_anim, FALSE)
 	gibs(loc, dna, null, species.get_flesh_colour(src), species.get_blood_colour(src))
 
 /mob/living/carbon/human/dust()

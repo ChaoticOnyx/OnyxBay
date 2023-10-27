@@ -5,10 +5,14 @@ GLOBAL_LIST_EMPTY(radial_menus)
 
 /obj/screen/radial
 	icon = 'icons/hud/radial.dmi'
-	plane = ABOVE_HUD_PLANE
-	layer = ABOVE_HUD_BASE_LAYER
+	layer = ABOVE_HUD_LAYER
+	plane = HUD_PLANE
 	vis_flags = VIS_INHERIT_PLANE
 	var/datum/radial_menu/parent
+
+/obj/screen/radial/Destroy()
+	parent = null
+	return ..()
 
 /obj/screen/radial/slice
 	icon_state = "radial_slice"
@@ -114,9 +118,9 @@ GLOBAL_LIST_EMPTY(radial_menus)
 		zone = 360 - starting_angle + ending_angle
 
 	max_elements = round(zone / min_angle)
-	var/paged = max_elements < choices.len
-	if(elements.len < max_elements)
-		var/elements_to_add = max_elements - elements.len
+	var/paged = max_elements < length(choices)
+	if(length(elements) < max_elements)
+		var/elements_to_add = max_elements - length(elements)
 		for(var/i in 1 to elements_to_add) //Create all elements
 			var/obj/screen/radial/slice/new_element = new /obj/screen/radial/slice
 			new_element.parent = src
@@ -126,18 +130,18 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	page_data = list(null)
 	var/list/current = list()
 	var/list/choices_left = choices.Copy()
-	while(choices_left.len)
-		if(current.len == max_elements)
+	while(length(choices_left))
+		if(length(current) == max_elements)
 			page_data[page] = current
 			page++
 			page_data.len++
 			current = list()
-		if(paged && current.len == max_elements - 1)
+		if(paged && length(current) == max_elements - 1)
 			current += NEXT_PAGE_ID
 			continue
 		else
 			current += popleft(choices_left)
-	if(paged && current.len < max_elements)
+	if(paged && length(current) < max_elements)
 		current += NEXT_PAGE_ID
 
 	page_data[page] = current
@@ -147,11 +151,11 @@ GLOBAL_LIST_EMPTY(radial_menus)
 
 /datum/radial_menu/proc/update_screen_objects(anim = FALSE)
 	var/list/page_choices = page_data[current_page]
-	var/angle_per_element = round(zone / page_choices.len)
-	for(var/i in 1 to elements.len)
+	var/angle_per_element = round(zone / length(page_choices))
+	for(var/i in 1 to length(elements))
 		var/obj/screen/radial/E = elements[i]
 		var/angle = WRAP(starting_angle + (i - 1) * angle_per_element,0,360)
-		if(i > page_choices.len)
+		if(i > length(page_choices))
 			HideElement(E)
 		else
 			SetElement(E,page_choices[i],angle,anim = anim,anim_order = i)
@@ -165,14 +169,17 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	E.choice = null
 	E.next_page = FALSE
 
-/datum/radial_menu/proc/SetElement(obj/screen/radial/slice/E, choice_id, angle,anim, anim_order)
+/datum/radial_menu/proc/SetElement(obj/screen/radial/slice/E, choice_id, angle, anim, anim_order)
 	//Position
 	var/py = round(cos(angle) * radius) + py_shift
 	var/px = round(sin(angle) * radius)
 	if(anim)
 		var/timing = anim_order * 0.5
-		E.SetTransform(scale = 0.1)
-		animate(E, pixel_x = px, pixel_y = py, transform = matrix(), time = timing)
+		var/matrix/starting = matrix()
+		starting.Scale(0.1,0.1)
+		E.transform = starting
+		var/matrix/TM = matrix()
+		animate(E,pixel_x = px,pixel_y = py, transform = TM, time = timing)
 	else
 		E.pixel_y = py
 		E.pixel_x = px
@@ -207,15 +214,16 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	choices_icons.Cut()
 	choices_values.Cut()
 	current_page = 1
+	QDEL_NULL(custom_check_callback)
 
 /datum/radial_menu/proc/element_chosen(choice_id,mob/user)
 	selected_choice = choices_values[choice_id]
 
 /datum/radial_menu/proc/get_next_id()
-	return "c_[choices.len]"
+	return "c_[length(choices)]"
 
 /datum/radial_menu/proc/set_choices(list/new_choices)
-	if(choices.len)
+	if(length(choices))
 		Reset()
 	for(var/E in new_choices)
 		var/id = get_next_id()
@@ -231,8 +239,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 /datum/radial_menu/proc/extract_image(E)
 	var/mutable_appearance/MA = new /mutable_appearance(E)
 	if(MA)
-		MA.layer = ABOVE_HUD_BASE_LAYER
-		MA.plane = ABOVE_HUD_PLANE
+		MA.layer = ABOVE_HUD_LAYER
 		MA.appearance_flags |= RESET_TRANSFORM
 	return MA
 
@@ -249,8 +256,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 		return
 	current_user = M.client
 	//Blank
-	menu_holder = image(icon='icons/effects/effects.dmi',loc=anchor,icon_state="nothing",layer = ABOVE_HUD_BASE_LAYER)
-	menu_holder.plane = ABOVE_HUD_PLANE
+	menu_holder = image(icon='icons/effects/effects.dmi',loc=anchor,icon_state="nothing",layer = ABOVE_HUD_LAYER)
 	menu_holder.appearance_flags |= KEEP_APART
 	menu_holder.vis_contents += elements + close_button
 	current_user.images += menu_holder
@@ -275,9 +281,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 /datum/radial_menu/Destroy()
 	Reset()
 	hide()
-	QDEL_NULL(custom_check_callback)
 	. = ..()
-
 /*
 	Presents radial menu to user anchored to anchor (or user if the anchor is currently in users screen)
 	Choices should be a list where list keys are movables or text used for element names and return value
@@ -309,3 +313,21 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	qdel(menu)
 	GLOB.radial_menus -= uniqueid
 	return answer
+
+#define RADIAL_INPUT(user, choices) show_radial_menu(user, user, choices)
+
+/*
+	Helper to make a radial menu button with a name and icon for a given atom.
+*/
+/proc/make_item_radial_menu_button(atom/movable/AM, name_prefix = "", name_suffix = "")
+	var/image/radial_button = image(icon = AM.icon, icon_state = AM.icon_state)
+	radial_button.overlays = AM.overlays
+	radial_button.name = "[name_prefix][AM.name][name_suffix]"
+	return radial_button
+
+/*
+	Helper to make a radial menu button for a set of atoms with their names and icons.
+*/
+/proc/make_item_radial_menu_choices(list/items, name_prefix = "", name_suffix = "")
+	for(var/atom/movable/AM in items)
+		LAZYSET(., AM, make_item_radial_menu_button(AM, name_prefix, name_suffix))

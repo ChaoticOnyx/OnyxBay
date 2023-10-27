@@ -97,7 +97,7 @@
 	if(!accessories.len) return
 	var/obj/item/clothing/accessory/A
 	if(accessories.len > 1)
-		A = input("Select an accessory to remove from [src]") as null|anything in accessories
+		A = show_radial_menu(usr, usr, make_item_radial_menu_choices(accessories), radius = 42)
 	else
 		A = accessories[1]
 	src.remove_accessory(usr,A)

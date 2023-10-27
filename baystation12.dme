@@ -8,6 +8,7 @@
 // END_FILE_DIR
 // BEGIN_PREFERENCES
 #define DEBUG
+// #define TRACY_PROFILER
 // END_PREFERENCES
 // BEGIN_INCLUDE
 #include "code\__spaceman_dmm.dm"
@@ -17,9 +18,12 @@
 #include "code\stylesheet.dm"
 #include "code\world.dm"
 #include "code\__datastructures\globals.dm"
+#include "code\__defines\__initialization.dm"
+#include "code\__defines\__qdel.dm"
+#include "code\__defines\__renderer.dm"
 #include "code\__defines\_compile_options.dm"
 #include "code\__defines\_economy_defines.dm"
-#include "code\__defines\_planes+layers.dm"
+#include "code\__defines\_render.dm"
 #include "code\__defines\_symbols.dm"
 #include "code\__defines\_tick.dm"
 #include "code\__defines\admin.dm"
@@ -43,6 +47,7 @@
 #include "code\__defines\donations_defines.dm"
 #include "code\__defines\explosion.dm"
 #include "code\__defines\feedback.dm"
+#include "code\__defines\filters.dm"
 #include "code\__defines\flags.dm"
 #include "code\__defines\gamemode.dm"
 #include "code\__defines\hydroponics.dm"
@@ -65,7 +70,6 @@
 #include "code\__defines\preferences.dm"
 #include "code\__defines\proc_presets.dm"
 #include "code\__defines\process_scheduler.dm"
-#include "code\__defines\qdel.dm"
 #include "code\__defines\radiation.dm"
 #include "code\__defines\research.dm"
 #include "code\__defines\shields.dm"
@@ -1896,6 +1900,7 @@
 #include "code\modules\lighting\lighting_atom.dm"
 #include "code\modules\lighting\lighting_corner.dm"
 #include "code\modules\lighting\lighting_overlay.dm"
+#include "code\modules\lighting\lighting_planemaster.dm"
 #include "code\modules\lighting\lighting_setup.dm"
 #include "code\modules\lighting\lighting_source.dm"
 #include "code\modules\lighting\lighting_turf.dm"

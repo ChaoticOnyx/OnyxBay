@@ -421,9 +421,6 @@ organ_regeneration_multiplier = 0.25
 ## 1.0 means normal, 0.5 means half.
 organ_damage_spillover_multiplier = 0.5
 
-## Amount of time (in hundredths of seconds) a spessman must starve / overat before changing bodybuild (set to -1 to disable).
-bodybuild_change_time = -1
-
 [revival]
 ## If cortical stacks (aka neurolace) are to be used.
 use_cortical_stacks = true
@@ -537,6 +534,9 @@ fun_hydroponics = 1
 
 ## Set to false to allow singularities to follow ghosts.
 forbid_singulo_following = true
+
+## Set to false to disable safety on guns
+toggle_gun_safety = false
 
 [mapping]
 ## Which engine should be on map (not all the maps support this).

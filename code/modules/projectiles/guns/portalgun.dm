@@ -13,6 +13,7 @@
 	fire_delay = 2
 	fire_sound = 'sound/weapons/portalgun_blue.ogg'
 	fire_sound_text = "laser beam"
+	has_safety = FALSE
 	var/setting = BLUE_PORTAL // BLUE_PORTAL = Blue, ORANGE_PORTAL = Red.
 	var/obj/effect/portal/linked/blue_portal
 	var/obj/effect/portal/linked/red_portal

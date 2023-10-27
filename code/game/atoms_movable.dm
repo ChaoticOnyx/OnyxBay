@@ -238,6 +238,10 @@
 		src.loc = null
 		if (Move(previous))
 			Move(step)
+		if(!loc)
+			// we got into nullspace! abort!
+			loc = previous
+			break
 		hit_check(impact_speed)
 		dist_travelled++
 		dist_since_sleep += tiles_per_tick

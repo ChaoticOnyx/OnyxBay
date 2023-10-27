@@ -1,9 +1,8 @@
 /obj
 	layer = OBJ_LAYER
-	vis_flags = VIS_INHERIT_PLANE|VIS_INHERIT_ID
 
 	var/obj_flags
-
+	vis_flags = VIS_INHERIT_PLANE|VIS_INHERIT_ID
 	//Used to store information about the contents of the object.
 	var/list/matter
 	var/w_class // Size of the object.

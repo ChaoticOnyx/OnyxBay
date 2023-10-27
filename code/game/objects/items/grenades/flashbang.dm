@@ -54,7 +54,7 @@
 		M.confused = max(M.confused, eye_effect) // No need to stack these
 
 	if(eye_effect >= 3)
-		M.eye_blurry += eye_effect // But stacking these doesn't hurt too much
+		M.eye_blurry += 3*eye_effect // But stacking these doesn't hurt too much
 
 	if(eye_effect >= 0)
 		M.flash_eyes(intensity = INFINITY, type = /obj/screen/fullscreen/flash/persistent, effect_duration = (10 * eye_effect))

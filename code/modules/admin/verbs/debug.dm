@@ -420,6 +420,7 @@
 		var/netcolor = rgb(rand(100,255),rand(100,255),rand(100,255))
 		for(var/obj/structure/cable/C in PN.cables)
 			var/image/I = image('icons/effects/lighting_overlay.dmi', get_turf(C), "transparent")
+			I.plane = DEFAULT_PLANE
 			I.layer = DECAL_LAYER
 			I.alpha = 127
 			I.color = netcolor

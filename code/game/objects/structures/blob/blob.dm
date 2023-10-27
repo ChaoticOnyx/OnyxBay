@@ -3,7 +3,7 @@
 	icon_state = "blob"
 	anchored = TRUE
 
-	layer = BLOB_BASE_LAYER
+	layer = BLOB_SHIELD_LAYER
 
 	var/health = BLOB_HEALTH
 	var/max_health = BLOB_HEALTH

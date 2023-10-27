@@ -182,7 +182,7 @@ GLOBAL_LIST_EMPTY(lifts)
 	density = FALSE
 	anchored = TRUE
 	layer = LATTICE_LAYER //under pipes
-	plane = FLOOR_PLANE
+
 
 
 	var/id = null //ONLY SET THIS TO ONE OF THE LIFT'S PARTS. THEY'RE CONNECTED! ONLY ONE NEEDS THE SIGNAL!

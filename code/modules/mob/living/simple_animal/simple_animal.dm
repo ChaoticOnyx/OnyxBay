@@ -180,8 +180,8 @@
 	if(purge)
 		purge -= 1
 
-/mob/living/simple_animal/gib()
-	..(icon_gib,1)
+/mob/living/simple_animal/gib(anim, do_gibs = TRUE)
+	..(icon_gib, do_gibs)
 
 /mob/living/simple_animal/bullet_act(obj/item/projectile/Proj)
 	if(!Proj || Proj.nodamage)

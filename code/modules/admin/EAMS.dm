@@ -31,6 +31,7 @@ SUBSYSTEM_DEF(eams)
 
 	var/__active = FALSE
 	var/__errors_counter = 0
+	var/__panic = FALSE
 
 	var/list/__postponed_clients = new
 
@@ -46,7 +47,7 @@ SUBSYSTEM_DEF(eams)
 	Toggle()
 	return ..()
 
-/datum/controller/subsystem/eams/proc/Toggle(mob/user)
+/datum/controller/subsystem/eams/proc/Toggle(mob/user, panic = FALSE)
 	if (!initialized && user)
 		to_chat(user, SPAN("adminnotice", "Wait until EAMS initialized!"))
 		return
@@ -55,13 +56,14 @@ SUBSYSTEM_DEF(eams)
 		return
 
 	__active = !__active
+	__panic = panic
 	if (__active)
 		var/list/clients_to_check = __postponed_clients.Copy()
 		__postponed_clients.Cut()
 		for (var/client/C in clients_to_check)
 			CollectDataForClient(C)
 			CHECK_TICK
-	log_debug("EAMS is [__active ? "enabled" : "disabled"]!")
+	log_debug("EAMS is [__active ? "enabled" : "disabled"][__panic ? " with panic bunker" : ""]!")
 	return __active
 
 /datum/controller/subsystem/eams/proc/GetPlayerPanelButton(datum/admins/source, client/player)
@@ -145,7 +147,7 @@ SUBSYSTEM_DEF(eams)
 
 /datum/controller/subsystem/eams/proc/__LoadResponseFromCache(ip)
 	ASSERT(istext(ip))
-	
+
 	if(!establish_db_connection())  // Database isn't connected
 		__DBError()
 		return FALSE
@@ -258,6 +260,10 @@ SUBSYSTEM_DEF(eams)
 
 	if (C.eams_info.loaded)
 		if ((C.eams_info.ip_countryCode in __allowed_countries) && !C.eams_info.ip_proxy)
+			if(__panic)
+				to_chat(C, SPAN_WARNING("You were blocked by EAMS! Please, contact Administrators."))
+				log_and_message_admins("Blocked by panic EAMS: [C.key] ([C.address]) connected from [C.eams_info.ip_country] ([C.eams_info.ip_countryCode])", 0)
+				return FALSE
 			return TRUE
 
 		// Bad IP and player isn't whitelisted.. so create a warning
@@ -286,3 +292,15 @@ SUBSYSTEM_DEF(eams)
 
 	var/eams_status = SSeams.Toggle()
 	log_and_message_admins("has [eams_status ? "enabled" : "disabled"] the Epic Anti-Multiaccount System!")
+
+
+/client/proc/PEAMS_toggle()
+	set category = "Server"
+	set name = "Toggle panic EAMS"
+
+	if (!establish_db_connection())
+		to_chat(usr, SPAN("adminnotice", "The Database is not connected!"))
+		return
+
+	var/eams_status = SSeams.Toggle(TRUE)
+	log_and_message_admins("has [eams_status ? "enabled" : "disabled"] the Epic Anti-Multiaccount System with panic bunker!")

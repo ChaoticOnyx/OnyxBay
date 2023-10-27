@@ -58,7 +58,6 @@
 	if(light_overlay)
 		var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay")
 		LO.layer = ABOVE_LIGHTING_LAYER
-		LO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 		overlays.Add(LO)
 		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
 	..()
@@ -170,7 +169,6 @@
 	if(light_overlay)
 		var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay")
 		LO.layer = ABOVE_LIGHTING_LAYER
-		LO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 		overlays.Add(LO)
 		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
 	..()
@@ -645,7 +643,6 @@
 	if(light_overlay)
 		var/image/LO = overlay_image(icon, "[icon_state]-overlay")
 		LO.layer = ABOVE_LIGHTING_LAYER
-		LO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
 		overlays.Add(LO)
 		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
 	..()

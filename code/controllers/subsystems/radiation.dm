@@ -1,3 +1,5 @@
+GLOBAL_DATUM_INIT(rad_instance, /datum/radiation, new(1, RADIATION_ALPHA_PARTICLE))
+
 SUBSYSTEM_DEF(radiation)
 	name = "Radiation"
 	wait = 2 SECONDS
@@ -40,16 +42,35 @@ SUBSYSTEM_DEF(radiation)
 				log_debug("NULLSPACE ALERT: [A.name] | loc: `[A.loc]` | ckey: `[A.ckey]`")
 				continue
 
-			var/list/sources = get_sources_in_range(T)
 			for(var/datum/radiation_source/source in sources)
 				if(source.info.activity <= 0 || source.info.energy <= 0)
 					qdel(source)
 
-				if(!source.info.is_ionizing())
+				var/turf/source_turf = get_turf(source.holder)
+
+				if(source_turf.z != T.z)
+					continue // Radiation is not multi-z
+
+				var/dist = get_dist(T, source_turf)
+				if(dist > source.range)
+					continue
+
+				var/E = source.info.energy / RADIATION_DISTANCE_MULT(dist)
+
+				if(isobj(source.holder))
+					var/obj/current_obj = source.holder
+					E = max(E - RADIATION_CALC_OBJ_RESIST(source.info, current_obj), 0)
+
+				if(E < RADIATION_MIN_IONIZATION)
 					continue
 
 				if(source.flat)
-					A.rad_act(source, get_turf(A))
+					if(source.respect_maint)
+						var/area/AR = T.loc
+						if(AR.area_flags & AREA_FLAG_RAD_SHIELDED)
+							continue // In shielded area
+
+					A.rad_act(source, T)
 				else
 					A.rad_act(source, source.holder)
 		if (MC_TICK_CHECK)

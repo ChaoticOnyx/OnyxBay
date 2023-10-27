@@ -22,7 +22,7 @@
 	ASSERT(N)
 
 	// This makes sure that turfs are not changed to space when one side is part of a zone
-	if(N == /turf/space)
+	if(ispath(N, /turf/space))
 		var/turf/below = GetBelow(src)
 		if(istype(below) && !istype(below,/turf/space))
 			N = below.density ? /turf/simulated/floor/plating/airless : /turf/simulated/open
@@ -104,12 +104,18 @@
 
 	if(lighting_overlays_initialised)
 		lighting_overlay = old_lighting_overlay
+		if (lighting_overlay && lighting_overlay.loc != src)
+			// This is a hack, but I can't figure out why the fuck they're not on the correct turf in the first place.
+			lighting_overlay.forceMove(src)
+
 		affecting_lights = old_affecting_lights
 		corners = old_corners
-		if((old_opacity != opacity) || (dynamic_lighting != old_dynamic_lighting))
+
+		if ((old_opacity != opacity) || (dynamic_lighting != old_dynamic_lighting) || force_lighting_update)
 			reconsider_lights()
-		if(dynamic_lighting != old_dynamic_lighting)
-			if(dynamic_lighting)
+
+		if (dynamic_lighting != old_dynamic_lighting)
+			if (dynamic_lighting)
 				lighting_build_overlay()
 			else
 				lighting_clear_overlay()

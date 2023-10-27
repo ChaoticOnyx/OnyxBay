@@ -1,6 +1,6 @@
 //This is the proc for gibbing a mob. Cannot gib ghosts.
 //added different sort of gibs and animations. N
-/mob/proc/gib(anim = "gibbed-m", do_gibs)
+/mob/proc/gib(anim = "gibbed-m", do_gibs = FALSE)
 	if(status_flags & GODMODE)
 		return
 	death(1)

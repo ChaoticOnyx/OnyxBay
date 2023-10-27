@@ -168,3 +168,7 @@
 
 /datum/job/proc/is_species_allowed(datum/species/S)
 	return !GLOB.using_map.is_species_job_restricted(S, src)
+
+/datum/job/proc/set_positions(value)
+	total_positions = value
+	spawn_positions = value

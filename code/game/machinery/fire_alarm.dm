@@ -31,12 +31,12 @@
 /obj/machinery/firealarm/update_icon()
 	if(!alarm_overlay)
 		alarm_overlay = image(icon, "fire[activated]")
-		alarm_overlay.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
+		alarm_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 		alarm_overlay.layer = ABOVE_LIGHTING_LAYER
 
 	if(!seclevel_overlay)
 		seclevel_overlay = image(icon, "seclevel-null")
-		seclevel_overlay.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
+		seclevel_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 		seclevel_overlay.layer = ABOVE_LIGHTING_LAYER
 
 	overlays.Cut()

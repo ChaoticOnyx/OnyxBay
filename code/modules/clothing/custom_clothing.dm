@@ -242,3 +242,33 @@
 	icon_closed = "heart_jacket"
 	body_parts_covered = UPPER_TORSO|ARMS
 	initial_closed = TRUE
+
+// Popky_dau
+/obj/item/clothing/under/soviet/tcc
+	name = "TCC uniform"
+	desc = "For Magnitka!"
+	icon_state = "soviet_tcc"
+
+/obj/item/clothing/head/helmet/tcc
+	name = "TCC army helmet"
+	desc = "For Magnitka! Protects the head from Gaian sentiments."
+	icon_state = "tcchelm"
+	valid_accessory_slots = null
+	body_parts_covered = HEAD
+	visor_body_parts_covered = NO_BODYPARTS
+
+/obj/item/device/modkit/helmet_tcc
+	name = "TCC army helmet modkit"
+	desc = "A kit containing all the needed tools and parts to modify a helmet into a TCC army helmet."
+	icon_state = "modkit"
+
+/obj/item/device/modkit/helmet_tcc/New()
+	..()
+	parts = new /list(1)
+	original = new /list(1)
+	finished = new /list(1)
+
+	parts[1] =	1
+	original[1] =  /obj/item/clothing/head/helmet
+	finished[1] = /obj/item/clothing/head/helmet/tcc
+
