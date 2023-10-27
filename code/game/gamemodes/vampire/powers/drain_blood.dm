@@ -129,7 +129,7 @@
 			to_chat(my_mob, SPAN("warning", "You have enough amount of drained blood."))
 
 
-		my_mob.check_vampire_upgrade()
+		vampire.update_powers()
 		T.vessel.remove_reagent(/datum/reagent/blood, 15)
 
 	vampire.status &= ~VAMP_DRAINING

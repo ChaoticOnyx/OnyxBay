@@ -98,7 +98,7 @@
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/effect/dummy/veil_walk/proc/activate(datum/vampire/owner, /datum/vampire_power/toggled/veilwalk/VW)
+/obj/effect/dummy/veil_walk/proc/activate(datum/vampire/owner, datum/vampire_power/toggled/veilwalk/VW)
 	if(!owner)
 		qdel(src)
 		return

@@ -1,6 +1,6 @@
 
 // Makes us able to see in the dark.
-/datum/vampire_power/toggled/darksight
+/datum/vampire_power/toggled/darkvision
 	name = "Darkvision"
 	desc = "You're are able to see in the dark."
 	icon_state = "vamp_darksight"

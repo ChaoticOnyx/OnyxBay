@@ -148,3 +148,4 @@
 		vampire.status &= ~VAMP_HEALING
 		to_chat(my_mob, SPAN("warning", "Your concentration is broken! You are no longer regenerating!"))
 	return
+#undef CHECK_HEAL_BREAK

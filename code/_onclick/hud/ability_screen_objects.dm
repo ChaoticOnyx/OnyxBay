@@ -510,9 +510,6 @@
 	if(!power)
 		return
 
-	if(istype(power, /datum/vampire_power/passive))
-		return
-
 	if(get_ability_by_vampire_power(power))
 		return
 

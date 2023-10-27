@@ -27,6 +27,8 @@
 			qdel(VP)
 		available_powers.Cut()
 
+	if(!ishuman(new_character))
+		set_next_think(0) // Let's just sit straight and wait for a proper body
 	my_mob = new_character
 
 /datum/vampire/proc/add_power(datum/mind/vampire, datum/power/vampire/power, announce = 0)
@@ -78,7 +80,7 @@
 	if(A?.holy)
 		frenzy += 3
 		if(prob(20))
-			to_chat(my_mob, "You feel like you're [pick("burning", "on fire", "melting", "scorching"!")
+			to_chat(my_mob, "You feel like you're [pick("burning", "on fire", "melting", "scorching")]!")
 
 	if(!(status & VAMP_ISTHRALL))
 		if(my_mob.reagents.has_reagent(/datum/reagent/water/holywater) || my_mob.get_ingested_reagents().has_reagent(/datum/reagent/water/holywater))
@@ -127,9 +129,11 @@
 		O.vital = TRUE
 	return
 
+/datum/vampire/proc/remove_powers()
+
 
 // Checks the vampire's bloodlevel and unlocks new powers based on that.
-/datum/vampire/proc/check_vampire_upgrade()
+/datum/vampire/proc/update_powers()
 	var/datum/vampire/vampire = mind.vampire
 
 	for (var/datum/power/vampire/P in vampirepowers)

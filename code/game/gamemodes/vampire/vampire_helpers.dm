@@ -1,6 +1,6 @@
 // Make a vampire, add initial powers.
 /mob/proc/make_vampire()
-	if(!isuman(src))
+	if(!ishuman(src))
 		log_debug("Trying to make a nonhuman mob [name] / [real_name] ([key]) a vampire! Aborting.")
 		return
 	if(!mind)
@@ -43,7 +43,7 @@
 
 // Make a vampire thrall
 /mob/proc/make_vampire_thrall()
-	if(!isuman(src))
+	if(!ishuman(src))
 		log_debug("Trying to make a nonhuman mob [name] / [real_name] ([key]) a vampire thrall! Aborting.")
 		return
 	if(!mind)

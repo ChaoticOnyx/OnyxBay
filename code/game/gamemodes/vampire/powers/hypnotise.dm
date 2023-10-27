@@ -1,3 +1,4 @@
+
 // Small area of effect stun.
 /datum/vampire_power/hypnotise
 	name = "Hypnotise"

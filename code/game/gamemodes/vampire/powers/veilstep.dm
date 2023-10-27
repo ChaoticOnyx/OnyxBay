@@ -17,6 +17,7 @@
 	anim(T, my_mob, 'icons/mob/mob.dmi', null, "bloodify_out", null, my_mob.dir)
 
 // This one is different from other vampire powers, as it neither an actual "clickable" verb nor an onscreen ability, rather being used via alt+click on a tile
+// It's pretty much preferable to rewrite it from scratch, but I'm feeling too lazy now
 /datum/vampire/proc/vampire_veilstep(turf/simulated/floor/T in view(7))
 	set category = null
 	set name = "Veil Step (20)"
