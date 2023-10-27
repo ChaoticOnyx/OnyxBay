@@ -385,7 +385,7 @@
 		if(scoops_left <= 0)
 			break
 
-		if(!possible_prey?.stat || !do_move_inside_checks(null, possible_prey, FALSE))
+		if(!possible_prey?.is_ic_dead() || !do_move_inside_checks(null, possible_prey, FALSE))
 			continue
 
 		move_inside(possible_prey)
