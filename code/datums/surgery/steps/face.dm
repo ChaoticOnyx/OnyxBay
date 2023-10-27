@@ -1,3 +1,5 @@
+#define FACE_SPEED_MOFIFIER 1.25
+
 /**
  * Generic face surgry step, does nothing.
  */
@@ -14,7 +16,7 @@
  * Facial tissue cutting step.
  */
 /datum/surgery_step/generic/cut_face
-	duration = CUT_DURATION * 1.25
+	duration = CUT_DURATION * FACE_SPEED_MOFIFIER
 
 	allowed_tools = list(
 		/obj/item/scalpel = 100,
@@ -59,7 +61,7 @@
  * Vaocal mending step.
  */
 /datum/surgery_step/face/mend_vocal
-	duration = CLAMP_DURATION * 1.25
+	duration = CLAMP_DURATION * FACE_SPEED_MOFIFIER
 
 	allowed_tools = list(
 		/obj/item/hemostat = 100,
@@ -135,7 +137,7 @@
  * Facial cauterization step.
  */
 /datum/surgery_step/face/cauterize
-	duration = CAUTERIZE_DURATION * 1.25
+	duration = CAUTERIZE_DURATION * FACE_SPEED_MOFIFIER
 
 	allowed_tools = list(
 		/obj/item/cautery = 100,
@@ -173,3 +175,5 @@
 		"Your hand slips, leaving a small burn on [target]'s face with \the [tool]!"
 		)
 	parent_organ.take_external_damage(0, 4, used_weapon = tool)
+
+#undef FACE_SPEED_MOFIFIER
