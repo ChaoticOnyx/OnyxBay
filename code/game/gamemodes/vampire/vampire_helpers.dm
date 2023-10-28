@@ -14,6 +14,7 @@
 		return
 
 	verbs += /datum/game_mode/vampire/verb/vampire_help
+	mind.vampire.set_up_organs()
 	mind.vampire.update_powers(FALSE)
 
 	return TRUE

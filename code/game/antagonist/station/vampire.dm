@@ -106,3 +106,19 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 	if(show_message)
 		player.current.visible_message(SPAN("notice", "It looks like something veil's just abandoned [player.current]'s body..."))
 	player.current.unmake_vampire()
+
+/datum/antagonist/vampire/get_special_objective_text(datum/mind/player)
+	var/total_blood = player.vampire.blood_total
+	var/message = ""
+	switch(total_blood)
+		if(0 to 100)
+			message = pick("What a loser.", "Worse than a mosquito.", "A leech would do better.", "Almost reached a flea's level!", "Comparable to a bed bug.")
+		if(101 to 250)
+			message = pick("Not so impressive.", "Could do better.", "Try harder next time.")
+		if(251 to 450)
+			message = pick("Not so bad.", "Fine job.")
+		if(451 to 800)
+			message = pick("Nice job!", "Great results!", "What a creature of the night!", "A professional bloodfeeder!")
+		else
+			message = pick("Dear God.", "Somebody, stop them!", "The beast of bedtime tales!", "Night-time is their time!", "A bloody feast!")
+	return "<br><b>They drank </b>[player.vampire.blood_total]<br> units of blood. [message]"

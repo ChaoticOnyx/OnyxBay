@@ -547,11 +547,11 @@
 	var/image/T = image(icon, "blank")
 	if(!power.blood_drain)
 		if(power.blood_cost)
-			T.maptext = "[power.blood_cost]" // Slot number not needed, blood cost holds more importance.
+			T.maptext = " [power.blood_cost]" // Slot number not needed, blood cost holds more importance.
 		else
 			T.maptext = ""
 	else
-		T.maptext = "[power.blood_cost] ([power.blood_drain])"
+		T.maptext = " [power.blood_cost] ([power.blood_drain])"
 
 	overlays.Add(T)
 

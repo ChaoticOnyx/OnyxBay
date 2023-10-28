@@ -203,6 +203,9 @@
 		status |= VAMP_FULLPOWER
 		to_chat(my_mob, SPAN("notice", "You've gained full power. Some abilities now have bonus functionality, or work faster."))
 
+	my_mob.ability_master.reskin_changeling()
+	my_mob.ability_master.update_abilities()
+
 
 // Checks whether or not the target can be affected by a vampire's abilities.
 #define NOTIFIED_WARNING(msg) if(notify) {to_chat(src, SPAN("warning", msg))}

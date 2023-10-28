@@ -6,16 +6,6 @@
 	icon_state = "vamp_leap"
 	blood_cost = 0
 
-/datum/vampire_power/grapple/is_usable(no_message = FALSE)
-	if(!..())
-		return FALSE
-
-	if(my_mob.eyecheck() > FLASH_PROTECTION_NONE)
-		to_chat(my_mob, SPAN("warning", "You can't do that, because no one will see the light of your eyes!"))
-		return FALSE
-
-	return TRUE
-
 /datum/vampire_power/grapple/activate()
 	if(!..())
 		return
