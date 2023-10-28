@@ -826,6 +826,8 @@
 
 	to_chat(src, "<b>You are now \the [src]!</b>")
 	to_chat(src, "<span class='notice'>Remember to stay in character for a mob of this type!</span>")
+	if("\ref[src]" in GLOB.available_mobs_for_possess)
+		GLOB.available_mobs_for_possess -= "\ref[src]"
 	return 1
 
 /mob/living/reset_layer()
