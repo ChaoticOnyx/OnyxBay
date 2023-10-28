@@ -236,7 +236,7 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "sleeper_1"
 	mob_type = /mob/living/carbon/human
-	outfit = /decl/hierarchy/outfit/death_command
+	outfit = /decl/hierarchy/outfit
 
 /obj/effect/mob_spawn/corpse/human
 	icon_state = "corpsehuman"
