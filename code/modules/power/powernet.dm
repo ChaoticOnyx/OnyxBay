@@ -21,17 +21,19 @@
 	var/problem = 0				// If this is not 0 there is some sort of issue in the powernet. Monitors will display warnings.
 
 /datum/powernet/New()
-	START_PROCESSING_POWERNET(src)
-	..()
+	. = ..()
+	SSmachines.powernets += src
 
 /datum/powernet/Destroy()
-	for(var/obj/structure/cable/C in cables)
+	//Go away references, you suck!
+	for(var/obj/structure/cable/C as anything in cables)
 		cables -= C
 		C.powernet = null
-	for(var/obj/machinery/power/M in nodes)
+	for(var/obj/machinery/power/M as anything in nodes)
 		nodes -= M
 		M.powernet = null
-	STOP_PROCESSING_POWERNET(src)
+
+	SSmachines.powernets -= src
 	return ..()
 
 //Returns the amount of excess power (before refunding to SMESs) from last tick.
@@ -173,6 +175,25 @@
 			return min(rand(10,20),rand(10,20))
 		else
 			return 0
+
+/// Returns the clamped difference between available power on the net and the demanded power, i.g. the surplus power available
+/datum/powernet/proc/calculate_surplus()
+	return clamp(avail - load, 0, avail)
+
+/datum/powernet/proc/process_power()
+	//Calculate excess power in the net, so the difference between how much is used vs. how much is sent into the powernet
+	netexcess = calculate_surplus()
+
+	if(netexcess > 100 && length(nodes))
+		for(var/obj/machinery/power/smes/S in nodes)	// find the SMESes in the network
+			S.restore()									// and restore some of the power that was used
+
+	viewload = round(0.8 * viewload + 0.2 * load)
+
+	// reset the powernet
+	load = 0
+	avail = newavail
+	newavail = 0
 
 ////////////////////////////////////////////////
 // Misc.

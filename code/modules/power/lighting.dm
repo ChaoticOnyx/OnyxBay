@@ -482,7 +482,7 @@
 	var/area/A = get_area(src)
 	return A && A.lightswitch && ..(power_channel)
 
-/obj/machinery/light/proc/flicker(amount = rand(10, 20))
+/obj/machinery/light/flicker(amount = rand(10, 20))
 	if(flickering) return
 	flickering = 1
 	spawn(0)

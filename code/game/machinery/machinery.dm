@@ -458,11 +458,5 @@ Class Procs:
 /obj/machinery/wrenched_change()
 	update_power_use()
 
-/obj/machinery/proc/auto_use_power()
-	if(!powered(power_channel))
-		return 0
-	if(use_power == IDLE_POWER_USE)
-		use_power(idle_power_usage,power_channel, 1)
-	else if(use_power >= ACTIVE_POWER_USE)
-		use_power(active_power_usage,power_channel, 1)
-	return 1
+/obj/machinery/proc/flicker()
+	return FALSE

@@ -1,36 +1,7 @@
-#define START_PROCESSING_IN_LIST(Datum, List) \
-if (Datum.is_processing) {\
-	if(Datum.is_processing != "SSmachines.[#List]")\
-	{\
-		util_crash_with("Failed to start processing. [log_info_line(Datum)] is already being processed by [Datum.is_processing] but queue attempt occured on SSmachines.[#List]."); \
-	}\
-} else {\
-	Datum.is_processing = "SSmachines.[#List]";\
-	SSmachines.List += Datum;\
-}
-
-#define STOP_PROCESSING_IN_LIST(Datum, List) \
-if(Datum.is_processing) {\
-	if(SSmachines.List.Remove(Datum)) {\
-		Datum.is_processing = null;\
-	} else {\
-		util_crash_with("Failed to stop processing. [log_info_line(Datum)] is being processed by [is_processing] and not found in SSmachines.[#List]"); \
-	}\
-}
-
 #define SSMACHINES_DEFERREDPOWERNETS 1
 #define SSMACHINES_POWERNETS 2
 #define SSMACHINES_PREMACHINERY 3
 #define SSMACHINES_MACHINERY 4
-
-#define START_PROCESSING_PIPENET(Datum) START_PROCESSING_IN_LIST(Datum, pipenets)
-#define STOP_PROCESSING_PIPENET(Datum) STOP_PROCESSING_IN_LIST(Datum, pipenets)
-
-#define START_PROCESSING_POWERNET(Datum) START_PROCESSING_IN_LIST(Datum, powernets)
-#define STOP_PROCESSING_POWERNET(Datum) STOP_PROCESSING_IN_LIST(Datum, powernets)
-
-#define START_PROCESSING_POWER_OBJECT(Datum) START_PROCESSING_IN_LIST(Datum, power_objects)
-#define STOP_PROCESSING_POWER_OBJECT(Datum) STOP_PROCESSING_IN_LIST(Datum, power_objects)
 
 SUBSYSTEM_DEF(machines)
 /datum/controller/subsystem/machines
@@ -51,7 +22,6 @@ SUBSYSTEM_DEF(machines)
 /datum/controller/subsystem/machines/Initialize()
 	makepowernets()
 	fire()
-	..()
 
 /datum/controller/subsystem/machines/proc/makepowernets()
 	for(var/datum/powernet/PN in powernets)
@@ -97,7 +67,7 @@ SUBSYSTEM_DEF(machines)
 		var/datum/powernet/P = currentrun[currentrun.len]
 		currentrun.len--
 		if(P)
-			P.reset() // reset the power state
+			P.process_power() // reset the power state
 		else
 			powernets.Remove(P)
 		if(MC_TICK_CHECK)
@@ -113,8 +83,8 @@ SUBSYSTEM_DEF(machines)
 		var/obj/machinery/thing = currentrun[currentrun.len]
 		currentrun.len--
 		if(!QDELETED(thing) && thing.Process(seconds) != PROCESS_KILL)
-			if(thing.use_power)
-				thing.auto_use_power() //add back the power state
+			if(prob(0.05))
+				thing.flicker()
 		else
 			processing -= thing
 			if(!QDELETED(thing))
