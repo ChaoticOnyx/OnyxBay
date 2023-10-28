@@ -33,6 +33,7 @@
 	icon_state = "shuttle"
 	base_turf = /turf/space
 	dynamic_lighting = 0
+	requires_power = 0
 
 /area/elpaso/shuttle/escape
 	name = "\improper Emergency Shuttle"
@@ -246,13 +247,43 @@
 
 //Street_areas
 
-/area/elpaso/street_north
+/area/elpaso/street/north
 	name = "Streets North"
 	base_turf = /turf/simulated/floor/natural/sand/gray
 	dynamic_lighting = 0
 
-/area/elpaso/street_south
+/area/elpaso/street/south
 	name = "Streets South"
+	base_turf = /turf/simulated/floor/natural/sand/gray
+	dynamic_lighting = 0
+
+/area/elpaso/alley/lib
+	name = "Alley Library"
+	base_turf = /turf/simulated/floor/natural/sand/gray
+	dynamic_lighting = 0
+
+/area/elpaso/alley/med
+	name = "Alley Medical"
+	base_turf = /turf/simulated/floor/natural/sand/gray
+	dynamic_lighting = 0
+
+/area/elpaso/alley/rnd
+	name = "Alley Research"
+	base_turf = /turf/simulated/floor/natural/sand/gray
+	dynamic_lighting = 0
+
+/area/elpaso/alley/eng
+	name = "Alley Engineering"
+	base_turf = /turf/simulated/floor/natural/sand/gray
+	dynamic_lighting = 0
+
+/area/elpaso/alley/cargo
+	name = "Alley Cargo"
+	base_turf = /turf/simulated/floor/natural/sand/gray
+	dynamic_lighting = 0
+
+/area/elpaso/alley/bar
+	name = "Alley Saloon"
 	base_turf = /turf/simulated/floor/natural/sand/gray
 	dynamic_lighting = 0
 

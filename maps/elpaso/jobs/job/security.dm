@@ -6,7 +6,7 @@
 
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the captain"
+	supervisors = "the mayor"
 	selection_color = "#8e2929"
 	req_admin_notify = 1
 	economic_modifier = 10
@@ -43,21 +43,6 @@
 	minimal_player_age = 14
 	outfit_type = /decl/hierarchy/outfit/job/security/warden
 
-/datum/job/ranger
-	title = "Ranger"
-	department = "Security"
-	department_flag = SEC
-
-	total_positions = 0
-	spawn_positions = 0
-	supervisors = "the colonial marshal"
-	selection_color = "#601c1c"
-	alt_titles = list("Veteran Ranger" = /decl/hierarchy/outfit/job/security/detective/forensic)
-	economic_modifier = 5
-	access = list(access_security, access_sec_doors, access_forensics_lockers, access_morgue, access_maint_tunnels)
-	minimal_access = list(access_security, access_sec_doors, access_forensics_lockers, access_morgue, access_maint_tunnels)
-	minimal_player_age = 14
-	outfit_type = /decl/hierarchy/outfit/job/security/detective
 
 /datum/job/deputy
 	title = "County Deputy"
@@ -66,7 +51,7 @@
 
 	total_positions = 0
 	spawn_positions = 0
-	supervisors = "the colonial marshal"
+	supervisors = "the sheriff"
 	selection_color = "#601c1c"
 	alt_titles = list("Town Deputy")
 	economic_modifier = 4

@@ -1,4 +1,4 @@
-/datum/map/foxhole
+/datum/map/elpaso
 	name = "Elpaso"
 	full_name = "Town Of El Paso"
 	path = "elpaso"
