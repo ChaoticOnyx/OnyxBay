@@ -137,3 +137,15 @@
 				ghost_owner.forceMove(target_turf)
 		if(NOTIFY_FOLLOW)
 			ghost_owner.ManualFollow(target)
+
+		if(NOTIFY_POSSES)
+			ghost_owner.ManualFollow(target)
+
+			if(istype(target, /obj/effect/mob_spawn/ghost_role))
+				target.attack_ghost(ghost_owner)
+				return
+			if(!("\ref[target]" in GLOB.available_mobs_for_possess))
+				to_chat(ghost_owner, SPAN_NOTICE("Unnable to posses mob!"))
+				return
+			if(tgui_alert(ghost_owner, "Become [target.name]?","Possesing mob",list("Yes","No")) == "Yes")
+				ghost_owner.try_to_occupy(target)
