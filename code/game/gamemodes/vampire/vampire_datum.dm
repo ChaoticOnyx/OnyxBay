@@ -203,7 +203,7 @@
 		status |= VAMP_FULLPOWER
 		to_chat(my_mob, SPAN("notice", "You've gained full power. Some abilities now have bonus functionality, or work faster."))
 
-	my_mob.ability_master.reskin_changeling()
+	my_mob.ability_master.reskin_vampire()
 	my_mob.ability_master.update_abilities()
 
 

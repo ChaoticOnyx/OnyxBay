@@ -313,7 +313,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 					continue checking_purchased
 			add_changeling_power(P)
 
-	my_mob.ability_master.reskin_vampire()
+	my_mob.ability_master.reskin_changeling()
 	my_mob.ability_master.update_abilities()
 
 
