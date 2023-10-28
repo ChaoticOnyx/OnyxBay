@@ -12,7 +12,8 @@
 	var/status = 0                                         // Bitfield including different statuses.
 	var/stealth = TRUE                                     // Do you want your victims to know of your sucking?
 
-	var/list/datum/vampire_power/available_powers = list() // List of power datums available for use.
+	var/list/purchased_powers = list()                      // List of power datums we currently use.
+	var/list/datum/vampire_power/available_powers = list() // List of vampire_power datums available for use.
 	var/obj/effect/dummy/veil_walk/holder = null           // The veil_walk dummy.
 	var/weakref/master = null                              // The vampire/thrall's master.
 	var/mob/living/carbon/human/my_mob = null              // Vampire mob
@@ -21,31 +22,16 @@
 	status = VAMP_ISTHRALL
 
 /datum/vampire/proc/transfer_to(mob/living/new_character)
-	if(my_mob && (status & VAMP_FRENZIED))
-		stop_frenzy(TRUE)
-		for(var/datum/datum/vampire_power/VP in available_powers)
-			qdel(VP)
-		available_powers.Cut()
+	if(my_mob)
+		my_mob.unmake_vampire(TRUE)
 
 	if(!ishuman(new_character))
 		set_next_think(0) // Let's just sit straight and wait for a proper body
+		return
+
 	my_mob = new_character
-
-/datum/vampire/proc/add_power(datum/mind/vampire, datum/power/vampire/power, announce = 0)
-	if(!vampire || !power)
-		return
-	if(power in purchased_powers)
-		return
-
-	purchased_powers += power
-
-	if(power.is_active && power.verbpath)
-		vampire.current.verbs += power.verbpath
-	if(announce)
-		to_chat(vampire.current, SPAN_NOTICE("<b>You have unlocked a new power:</b> [power.name]."))
-		to_chat(vampire.current, SPAN_NOTICE("[power.desc]"))
-		if(power.helptext)
-			to_chat(vampire.current, "<font color='green'>[power.helptext]</font>")
+	my_mob.make_vampire()
+	set_next_think(world.time + 1 SECOND)
 
 /datum/vampire/New(mob/_M)
 	..()
@@ -53,9 +39,9 @@
 	set_next_think(world.time + 1 SECOND)
 
 /datum/vampire/Destroy()
-	if(my_mob && (status & VAMP_FRENZIED))
+	if(my_mob)
 		stop_frenzy(TRUE)
-	purchased_powers.Cut()
+	remove_powers()
 	thralls.Cut()
 	my_mob = null
 	master = null
@@ -99,7 +85,7 @@
 
 	frenzy = min(frenzy, 450)
 
-	vampire_check_frenzy()
+	check_frenzy()
 
 	set_next_think(world.time + 1 SECOND)
 
@@ -117,10 +103,27 @@
 
 
 /datum/vampire/proc/set_up_organs()
-	var/mob/living/carbon/human/H = src
-	if(H.mind.vampire?.status & VAMP_ISTHRALL)
+	if(status & VAMP_ISTHRALL)
 		return
-	var/obj/item/organ/internal/heart/O = H.internal_organs_by_name[BP_HEART]
+
+	blood_usable = 30
+
+	my_mob.does_not_breathe = 1
+	my_mob.remove_blood(my_mob.species.blood_volume)
+	my_mob.status_flags |= UNDEAD
+	my_mob.oxygen_alert = 0
+	my_mob.add_modifier(/datum/modifier/trait/low_metabolism)
+	my_mob.innate_heal = 0
+
+	for(var/datum/modifier/mod in my_mob.modifiers)
+		if(!isnull(mod.metabolism_percent))
+			mod.metabolism_percent = 0 // Vampire is not affected by chemicals
+
+	if(!vampirepowers.len)
+		for(var/P in vampirepower_types)
+			vampirepowers += new P()
+
+	var/obj/item/organ/internal/heart/O = my_mob.internal_organs_by_name[BP_HEART]
 	if(O)
 		O.rejuvenate(ignore_prosthetic_prefs = TRUE)
 		O.max_damage = 150
@@ -129,43 +132,98 @@
 		O.vital = TRUE
 	return
 
+/datum/vampire/proc/unset_organs()
+	my_mob.does_not_breathe = 0
+	my_mob.regenerate_blood(my_mob.species.blood_volume)
+	my_mob.status_flags &= ~UNDEAD
+	my_mob.oxygen_alert = 1
+	my_mob.remove_modifiers_of_type(/datum/modifier/trait/low_metabolism, TRUE)
+	my_mob.innate_heal = 1
+
+	var/obj/item/organ/internal/heart/O = my_mob.internal_organs_by_name[BP_HEART]
+	if(O)
+		O.max_damage = initial(O.max_damage)
+		O.damage = min(O.damage, O.max_damage)
+		O.min_bruised_damage = initial(O.min_bruised_damage)
+		O.min_broken_damage = initial(O.min_bruised_damage)
+		O.vital = initial(O.vital)
+
+// Adds a power
+/datum/vampire/proc/add_power(datum/power/vampire/P, announce = FALSE)
+	if(P in purchased_powers)
+		return
+
+	purchased_powers.Add(P)
+
+	if(P.legacy_handling)
+		my_mob.verbs += P.verbpath
+	else
+		new P.verbpath(my_mob)
+
+	if(announce)
+		to_chat(my_mob, SPAN("notice", "<b>You have unlocked a new power:</b> [P.name]:\n[P.desc]"))
+		if(P.helptext)
+			to_chat(my_mob, "<font color='green'>[P.helptext]</font>")
+
+/datum/vampire/proc/remove_power(datum/power/vampire/P)
+	if(!(P in purchased_powers))
+		return
+
+	if(P.legacy_handling)
+		my_mob.verbs -= P.verbpath
+	else
+		for(var/datum/vampire_power/VP in available_powers)
+			if(VP.type == P.verbpath)
+				qdel(VP)
+				break
+	purchased_powers.Remove(P)
+	return
+
+// Removes everything
 /datum/vampire/proc/remove_powers()
+	for(var/datum/power/vampire/P in purchased_powers)
+		if(P.legacy_handling)
+			my_mob.verbs -= P.verbpath
+			continue
+	purchased_powers.Cut()
+	for(var/thing in available_powers)
+		qdel(thing)
+	available_powers.Cut()
+	return
 
+// Checks the vampire's bloodlevel and unlocks powers based on it.
+/datum/vampire/proc/update_powers(announce = TRUE)
+	for(var/datum/power/vampire/P in vampirepowers)
+		if(P.blood_cost <= blood_total)
+			if(P in purchased_powers)
+				continue
+			add_power(P, announce)
 
-// Checks the vampire's bloodlevel and unlocks new powers based on that.
-/datum/vampire/proc/update_powers()
-	var/datum/vampire/vampire = mind.vampire
-
-	for (var/datum/power/vampire/P in vampirepowers)
-		if (P.blood_cost <= vampire.blood_total)
-			if (!(P in vampire.purchased_powers))
-				vampire.add_power(mind, P, 1)
-
-	if (!(vampire.status & VAMP_FULLPOWER) && vampire.blood_total >= 650)
-		vampire.status |= VAMP_FULLPOWER
+	if(!(status & VAMP_FULLPOWER) && blood_total >= 650)
+		status |= VAMP_FULLPOWER
 		to_chat(my_mob, SPAN("notice", "You've gained full power. Some abilities now have bonus functionality, or work faster."))
 
 
 // Checks whether or not the target can be affected by a vampire's abilities.
-#define NOTIFIED_WARNING(msg) if(notify) {to_chat(src, SPAWN("warning", msg))}
+#define NOTIFIED_WARNING(msg) if(notify) {to_chat(src, SPAN("warning", msg))}
 /datum/vampire/proc/can_affect(mob/living/carbon/human/target, notify = TRUE, check_loyalty_implant = FALSE, check_thrall = TRUE)
 	if(!istype(target))
 		return FALSE
 	if(!target.mind)
 		// The target's dumbey-dumbey, not even worth the effort
-		NOTIFIED_WARNING("[T] doesn't seem to even have a mind.")
+		NOTIFIED_WARNING("[target] doesn't seem to even have a mind.")
 		return FALSE
 
-	if((status & VAMP_FULLPOWER) && !(target.mind.vampire && (T.mind.vampire.status & VAMP_FULLPOWER)))
+	if((status & VAMP_FULLPOWER) && !(target.mind.vampire && (target.mind.vampire.status & VAMP_FULLPOWER)))
 		// We are a fullpowered vampire and our target isn't
 		return TRUE
 
-	if(T.mind.assigned_role == "Chaplain")
+	if(target.mind.assigned_role == "Chaplain")
 		NOTIFIED_WARNING("Your connection with the Veil is not strong enough to affect a being as devout as them.")
 		return FALSE
 
-	if(T.mind.vampire)
-		if(!(T.mind.vampire.status & VAMP_ISTHRALL))
+	if(target.mind.vampire)
+		if(!(target.mind.vampire.status & VAMP_ISTHRALL))
 			// The target is a vampire
 			NOTIFIED_WARNING("You lack the power required to affect another creature of the Veil.")
 			return FALSE
@@ -173,21 +231,21 @@
 			// The target is a thrall
 			NOTIFIED_WARNING("You lack the power required to affect a lesser creature of the Veil.")
 			return FALSE
-	else if(is_special_character(T))
+	else if(is_special_character(target))
 		// The target is some non-vampire antag
-		NOTIFIED_WARNING("[T]'s mind is too strong to be affected by our powers!")
+		NOTIFIED_WARNING("[target]'s mind is too strong to be affected by our powers!")
 		return FALSE
 
-	if(T.isSynthetic())
+	if(target.isSynthetic())
 		// The target is a cyberass
 		NOTIFIED_WARNING("You lack the power to affect mechanical constructs.")
 		return FALSE
 
 	if(check_loyalty_implant)
-		for(var/obj/item/implant/loyalty/I in T)
+		for(var/obj/item/implant/loyalty/I in target)
 			if(I.implanted)
 				// Found an active loyalty implant
-				NOTIFIED_WARNING("You feel that [T]'s mind is protected from our powers.")
+				NOTIFIED_WARNING("You feel that [target]'s mind is protected from our powers.")
 				return FALSE
 
 	return TRUE
@@ -206,7 +264,7 @@
 
 	if(status & VAMP_FRENZIED)
 		if(frenzy < 10)
-			vampire_stop_frenzy()
+			stop_frenzy()
 		return
 
 	var/next_alert = 0
@@ -228,7 +286,7 @@
 			next_alert = 30 SECONDS
 			message = SPAN("danger", "The corruption of the Veil is about to take over. You have little time left.")
 		else
-			vampire_start_frenzy(force_frenzy)
+			start_frenzy(force_frenzy)
 
 	if(message && next_alert && last_frenzy_message + next_alert < world.time)
 		to_chat(my_mob, message)
@@ -246,9 +304,12 @@
 		my_mob.mutations.Add(MUTATION_HULK)
 		my_mob.update_mutations()
 
-		my_mob.set_sight(sight|SEE_MOBS)
+		my_mob.set_sight(my_mob.sight|SEE_MOBS)
 
-		my_mob.verbs += /datum/vampire/proc/grapple
+		for(var/datum/power/vampire/P in vampirepowers)
+			if(P.name == "Grapple")
+				add_power(P)
+				break
 
 /datum/vampire/proc/stop_frenzy(force_stop = FALSE, show_msg = TRUE)
 	if(!(status & VAMP_FRENZIED))
@@ -260,11 +321,14 @@
 		my_mob.mutations.Remove(MUTATION_HULK)
 		my_mob.update_mutations()
 
-		my_mob.set_sight(sight&(~SEE_MOBS))
+		my_mob.set_sight(my_mob.sight&(~SEE_MOBS))
 
 		if(show_msg)
 			my_mob.visible_message(SPAN("danger", "[my_mob]'s eyes no longer glow with violent rage, their form reverting to resemble that of a normal person's."),\
 								   SPAN("danger", "The beast within you retreats. You gain control over your body once more."))
 
-		my_mob.verbs -= /datum/vampire/proc/grapple
+		for(var/datum/power/vampire/P in vampirepowers)
+			if(P.name == "Grapple")
+				remove_power(P)
+				break
 		my_mob.regenerate_icons()

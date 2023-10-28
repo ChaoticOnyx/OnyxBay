@@ -10,6 +10,8 @@
 	if(!..())
 		return
 
+	var/list/locs = list()
+
 	for(var/direction in GLOB.alldirs)
 		if(locs.len == 2)
 			break

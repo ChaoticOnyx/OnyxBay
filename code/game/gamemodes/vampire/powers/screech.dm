@@ -32,7 +32,7 @@
 
 		victims += T
 
-	for(var/obj/structure/window in view(7))
+	for(var/obj/structure/window/W in view(7))
 		W.ex_act(2)
 
 	for(var/obj/structure/window_frame/W in view(7))

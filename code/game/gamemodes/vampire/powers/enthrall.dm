@@ -22,7 +22,7 @@
 	if(!istype(T) || T.isSynthetic())
 		to_chat(my_mob, SPAN("warning", "[T] is not a creature you can enthrall."))
 		return
-	if(!can_affect_target(T, TRUE, TRUE))
+	if(!vampire.can_affect(T, TRUE, TRUE))
 		return
 	if (!T.client || !T.mind)
 		to_chat(my_mob, SPAN("warning", "[T]'s mind is empty and useless. They cannot be forced into a blood bond."))

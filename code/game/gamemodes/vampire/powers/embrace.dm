@@ -19,7 +19,7 @@
 		return
 
 	var/mob/living/carbon/human/T = G.affecting
-	if(!can_affect_target(T, check_thrall = FALSE))
+	if(!vampire.can_affect(T, check_thrall = FALSE))
 		return
 	if(!T.client)
 		to_chat(my_mob, SPAN("warning", "[T] is a mindless husk. The Veil has no purpose for them."))

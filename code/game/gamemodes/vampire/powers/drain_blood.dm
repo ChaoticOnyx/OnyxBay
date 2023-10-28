@@ -147,7 +147,6 @@
 		else if(!T.is_ooc_dead())
 			spawn()
 				alert(T, "You remember everything that happened. Remember how blood was sucked from your neck. It gave you pleasure, like a pleasant dream. You feel great. How you react to [my_mob]'s actions is up to you.", "Bitten by a vampire")
-	my_mob.verbs -= /datum/vampire/proc/vampire_drain_blood
 
 	if(blood_drained <= 85)
 		set_cooldown(60 SECONDS)

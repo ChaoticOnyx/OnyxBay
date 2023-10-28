@@ -17,7 +17,7 @@
 	var/max_stat = CONSCIOUS // In what state we can use the ability
 	var/ignore_veil = FALSE
 
-	var/mob/my_mob = null
+	var/mob/living/carbon/human/my_mob = null
 	var/datum/vampire/vampire
 
 /datum/vampire_power/New(mob/_M)
@@ -91,7 +91,7 @@
 
 /datum/vampire_power/proc/use_blood(amount)
 	if(!amount)
-		amount = required_chems
+		amount = blood_cost
 	vampire.use_blood(amount)
 
 /datum/vampire_power/proc/use()
@@ -111,7 +111,7 @@
 /datum/vampire_power/proc/set_cooldown(value)
 	cooldown = value
 	if(!CDH)
-		CDH = new datum/vampire_cooldown_handler(src)
+		CDH = new /datum/vampire_cooldown_handler(src)
 	CDH.start()
 	update_screen_button()
 	return
@@ -150,7 +150,7 @@
 		deactivate()
 		return FALSE
 	if(blood_drain)
-		use_blood(chems_drain)
+		use_blood(blood_drain)
 		if(vampire.blood_usable <= 0)
 			if(my_mob)
 				to_chat(my_mob, SPAN("notice", text_noblood))

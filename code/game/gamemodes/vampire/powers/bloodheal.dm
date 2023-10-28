@@ -7,8 +7,7 @@
 	icon_state = "vamp_veil"
 	blood_cost = 15
 
-#define CHECK_HEAL_BREAK(amount) if(vampire.blood_usable < amount) {to_chat(my_mob, SPAN("warning", "You ran out of blood, and are unable to continue!")); break}
-	return TRUE
+#define CHECK_HEAL_BREAK(amount) if(vampire.blood_usable < amount) {to_chat(my_mob, SPAN("warning", "You ran out of blood, and are unable to continue!")); return TRUE}
 /datum/vampire_power/bloodheal/activate()
 	if(!..())
 		return

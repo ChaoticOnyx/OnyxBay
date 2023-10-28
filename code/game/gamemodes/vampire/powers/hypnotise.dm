@@ -33,7 +33,7 @@
 
 	var/mob/living/carbon/human/T = input(my_mob, "Select Victim") as null|mob in victims
 
-	if(!vampire.can_affect_target(T))
+	if(!vampire.can_affect(T))
 		return
 
 	to_chat(my_mob, SPAN("notice", "You begin peering into [T]'s mind, looking for a way to render them useless."))

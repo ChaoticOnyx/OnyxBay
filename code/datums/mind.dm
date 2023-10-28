@@ -109,11 +109,9 @@
 		return FALSE
 
 	if(current)					//remove ourself from our old body's mind variable
-		if(vampire)
-			current.remove_vampire_powers()
 		current.mind = null
-
 		SSnano.user_transferred(current, new_character) // transfer active NanoUI instances to new user
+
 	if(new_character.mind)		//remove any mind currently in our new body's mind variable
 		new_character.mind.set_current(null)
 

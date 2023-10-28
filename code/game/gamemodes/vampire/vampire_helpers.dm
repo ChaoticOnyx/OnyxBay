@@ -13,33 +13,36 @@
 	else if(mind.vampire.status & VAMP_ISTHRALL)
 		return
 
-	mind.vampire.set_up_organs()
-	mind.vampire.blood_usable = 30
-
-	H.does_not_breathe = 1
-	H.remove_blood(H.species.blood_volume)
-	H.status_flags |= UNDEAD
-	H.oxygen_alert = 0
-	H.add_modifier(/datum/modifier/trait/low_metabolism)
-	H.innate_heal = 0
-
-	for(var/datum/modifier/mod in H.modifiers)
-		if(!isnull(mod.metabolism_percent))
-			mod.metabolism_percent = 0 // Vampire is not affected by chemicals
-
-	if(!vampirepowers.len)
-		for(var/P in vampirepower_types)
-			vampirepowers += new P()
-
 	verbs += /datum/game_mode/vampire/verb/vampire_help
+	mind.vampire.update_powers(FALSE)
 
-	for(var/datum/power/vampire/P in vampirepowers)
-		if(!(P in mind.vampire.purchased_powers))
-			if(!P.blood_cost)
-				mind.vampire.add_power(mind, P, 0)
-		else if(P.is_active && P.verbpath)
-			verbs += P.verbpath
 	return TRUE
+
+/mob/proc/unmake_vampire(keep_vampire_datum = FALSE)
+	if(!ishuman(src))
+		return
+	var/mob/living/carbon/human/H = src
+
+	if(mind?.vampire)
+		if(mind.vampire.status & VAMP_FRENZIED)
+			mind.vampire.stop_frenzy(TRUE)
+		mind.vampire.unset_organs()
+		mind.vampire.remove_powers()
+		if(!keep_vampire_datum)
+			qdel(mind.vampire)
+		mind.vampire = null
+	else // doing it the hard way, hopefully will never happen in practice
+		H.does_not_breathe = 0
+		H.regenerate_blood(H.species.blood_volume)
+		H.status_flags &= ~UNDEAD
+		H.oxygen_alert = 1
+		H.remove_modifiers_of_type(/datum/modifier/trait/low_metabolism, TRUE)
+		H.innate_heal = 1
+
+	verbs -= /datum/game_mode/vampire/verb/vampire_help
+
+	return TRUE
+
 
 // Make a vampire thrall
 /mob/proc/make_vampire_thrall()
@@ -58,7 +61,7 @@
 
 	var/list/victims = list()
 	for(var/mob/living/carbon/human/H in view(7, my_mob))
-		if(my_mob == user)
+		if(my_mob == H)
 			continue
 		victims += H
 
@@ -75,7 +78,7 @@
 		to_chat(my_mob, SPAN("notice", "You begin peering into [T]'s mind, looking for a way to gain control."))
 
 		if(!do_mob(my_mob, T, 50, incapacitation_flags = INCAPACITATION_DISABLED))
-			to_chat(user, SPAN("warning", "Your concentration is broken!"))
+			to_chat(my_mob, SPAN("warning", "Your concentration is broken!"))
 			return
 
 		to_chat(my_mob, SPAN("notice", "You succeed in dominating [T]'s mind. They are yours to command."))

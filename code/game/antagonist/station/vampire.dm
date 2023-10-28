@@ -97,3 +97,12 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 						return 0
 					return 1
 	return 0
+
+/datum/antagonist/vampire/remove_antagonist(datum/mind/player, show_message, implanted)
+	if(!..())
+		return 0
+	to_chat(player.current, SPAN("danger", "An unfamiliar white light flashes through your mind... You can feel you fangs shrink, reverting to their normal size. Your hands get soft and warm yet again. Eh... What was that \"Veil\" thing, again?.."))
+	player.memory = ""
+	if(show_message)
+		player.current.visible_message(SPAN("notice", "It looks like something veil's just abandoned [player.current]'s body..."))
+	player.current.unmake_vampire()

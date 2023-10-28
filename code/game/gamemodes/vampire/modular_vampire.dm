@@ -110,3 +110,9 @@ var/list/datum/power/vampire/vampirepowers = list()
 	name = "Darkvision"
 	desc = "Peek through the Veil to cast shadows away and see in the dark."
 	verbpath = /datum/vampire_power/toggled/darkvision
+
+/datum/power/vampire/grapple
+	name = "Grapple"
+	desc = "Lunge towards a target like an animal, and grapple them."
+	verbpath = /datum/vampire_power/grapple
+	blood_cost = 666 // Can't gain via normal means

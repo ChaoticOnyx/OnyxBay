@@ -5,16 +5,20 @@
 	..()
 
 // Plays the vampire phase in animation.
-/datum/vampire/proc/phase_in(turf/T)
+/datum/vampire/proc/phase_in(turf/T, mob/M = null)
 	if(!T)
 		return
-	anim(T, my_mob, 'icons/mob/mob.dmi', null, "bloodify_in", null, my_mob.dir)
+	if(isnull(M))
+		M = my_mob
+	anim(T, M, 'icons/mob/mob.dmi', null, "bloodify_in", null, M.dir)
 
 // Plays the vampire phase out animation.
-/datum/vampire/proc/phase_out(turf/T)
+/datum/vampire/proc/phase_out(turf/T, mob/M = null)
 	if(!T)
 		return
-	anim(T, my_mob, 'icons/mob/mob.dmi', null, "bloodify_out", null, my_mob.dir)
+	if(isnull(M))
+		M = my_mob
+	anim(T, M, 'icons/mob/mob.dmi', null, "bloodify_out", null, M.dir)
 
 // This one is different from other vampire powers, as it neither an actual "clickable" verb nor an onscreen ability, rather being used via alt+click on a tile
 // It's pretty much preferable to rewrite it from scratch, but I'm feeling too lazy now
@@ -32,11 +36,11 @@
 		to_chat(my_mob, SPAN("warning", "You are incapacitated."))
 		return
 
-	if(usable_blood < blood_cost)
+	if(blood_usable < blood_cost)
 		to_chat(my_mob, SPAN("warning", "You do not have enough usable blood. [blood_cost] needed."))
 		return
 
-	if(holder && !ignore_veil)
+	if(holder)
 		to_chat(my_mob, SPAN("warning", "You cannot use this power while walking through the Veil."))
 		return
 
@@ -53,14 +57,14 @@
 		to_chat(my_mob, SPAN("warning", "The destination is too bright."))
 		return
 
-	vampire.phase_out(get_turf(my_mob))
-	vampire.phase_in(T)
+	phase_out(get_turf(my_mob))
+	phase_in(T)
 	my_mob.forceMove(T)
 
 	for(var/obj/item/grab/G in my_mob.contents)
 		if(G.affecting && (status & VAMP_FULLPOWER))
-			G.affecting.vampire_phase_out(get_turf(G.affecting.loc))
-			G.affecting.vampire_phase_in(get_turf(G.affecting.loc))
+			phase_out(get_turf(G.affecting), G.affecting)
+			phase_in(get_turf(G.affecting), G.affecting)
 			G.affecting.forceMove(locate(T.x + rand(-1,1), T.y + rand(-1,1), T.z))
 		else
 			qdel(G)
