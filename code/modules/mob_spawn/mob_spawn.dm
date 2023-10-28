@@ -132,13 +132,10 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 
 /obj/effect/mob_spawn/ghost_role/Initialize(mapload)
 	. = ..()
-	LAZYADD(GLOB.mob_spawners[name], src)
+	GLOB.mob_spawners["\ref[src]"] = src
 
 /obj/effect/mob_spawn/Destroy()
-	var/list/spawners = GLOB.mob_spawners[name]
-	LAZYREMOVE(spawners, src)
-	if(!LAZYLEN(spawners))
-		GLOB.mob_spawners -= name
+	GLOB.mob_spawners -= "\ref[src]"
 	return ..()
 
 //ATTACK GHOST IGNORING PARENT RETURN VALUE

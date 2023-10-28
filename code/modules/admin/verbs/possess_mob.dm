@@ -26,7 +26,7 @@ GLOBAL_LIST_EMPTY(available_mobs_for_possess)
 		notify_ghosts("[capitalize(M.name)] is now available to possess!", source = M, action = NOTIFY_POSSES, posses_mob = TRUE)
 		GLOB.available_mobs_for_possess["\ref[M]"] += M
 	else
-		GLOB.available_mobs_for_possess -= M
+		GLOB.available_mobs_for_possess -= "\ref[M]"
 
 /proc/possess_link(mob/observer/ghost/G, mob/living/M)
 	return "<a href='byond://?src=\ref[G];possess=\ref[M]'>(Occupy)</a>"

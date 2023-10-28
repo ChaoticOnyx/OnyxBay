@@ -74,7 +74,7 @@ var/global/list/protected_objects = list(
 	health = maxHealth
 	if(make_controllable)
 		controllable = TRUE
-		GLOB.available_mobs_for_possess += src
+		GLOB.available_mobs_for_possess["\ref[src]"] += src
 
 	register_signal(src, SIGNAL_MOVED, .proc/_on_moved)
 

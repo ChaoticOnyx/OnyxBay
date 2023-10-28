@@ -9,7 +9,7 @@
 		verbs |= /mob/living/proc/ghost
 
 	if(controllable)
-		GLOB.available_mobs_for_possess += src
+		GLOB.available_mobs_for_possess["\ref[src]"] += src
 
 	update_transform() // Some mobs may start bigger or smaller than normal.
 
@@ -857,7 +857,7 @@
 	QDEL_NULL(aiming)
 	if(controllable)
 		controllable = FALSE
-		GLOB.available_mobs_for_possess -= src
+		GLOB.available_mobs_for_possess -= "\ref[src]"
 	return ..()
 
 /mob/living/proc/set_m_intent(intent)
