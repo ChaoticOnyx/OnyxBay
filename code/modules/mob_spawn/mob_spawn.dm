@@ -237,6 +237,9 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 	icon_state = "sleeper_1"
 	mob_type = /mob/living/carbon/human
 	outfit = /decl/hierarchy/outfit
+	name = "Cryo Capsule"
+	prompt_name = "A human"
+	you_are_text = "You are a human."
 
 /obj/effect/mob_spawn/corpse/human
 	icon_state = "corpsehuman"
