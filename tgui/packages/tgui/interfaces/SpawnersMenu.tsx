@@ -5,6 +5,7 @@ import { Window } from "../layouts"
 import { capitalize } from "common/string"
 
 type Spawner = {
+  spawner_ref: string;
   name: string;
   origin: string;
   directives: string;
@@ -34,11 +35,11 @@ function SpawnersList(props: Spawner[], context: any) {
               <Stack.Item>
                 <Button
                 content="Jump"
-                onClick={() => act('jump', {name: spawner.name})}
+                onClick={() => act('jump', {spawner_ref: spawner.spawner_ref})}
                 />
                 <Button
                 content="Spawn"
-                onClick={() => act('spawn', {name: spawner.name})}
+                onClick={() => act('spawn', {spawner_ref: spawner.spawner_ref})}
                 />
               </Stack.Item>
             </Stack>
