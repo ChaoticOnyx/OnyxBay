@@ -132,13 +132,10 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 
 /obj/effect/mob_spawn/ghost_role/Initialize(mapload)
 	. = ..()
-	LAZYADD(GLOB.mob_spawners[name], src)
+	GLOB.mob_spawners["\ref[src]"] = src
 
 /obj/effect/mob_spawn/Destroy()
-	var/list/spawners = GLOB.mob_spawners[name]
-	LAZYREMOVE(spawners, src)
-	if(!LAZYLEN(spawners))
-		GLOB.mob_spawners -= name
+	GLOB.mob_spawners -= "\ref[src]"
 	return ..()
 
 //ATTACK GHOST IGNORING PARENT RETURN VALUE
@@ -239,7 +236,10 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "sleeper_1"
 	mob_type = /mob/living/carbon/human
-	outfit = /decl/hierarchy/outfit/death_command
+	outfit = /decl/hierarchy/outfit
+	name = "Cryo Capsule"
+	prompt_name = "A human"
+	you_are_text = "You are a human."
 
 /obj/effect/mob_spawn/corpse/human
 	icon_state = "corpsehuman"

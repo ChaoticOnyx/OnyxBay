@@ -25,7 +25,7 @@
 		if(stat!=DEAD)	//If not dead.
 			death(1)	//Brains can die again. AND THEY SHOULD AHA HA HA HA HA HA
 		ghostize()		//Ghostize checks for key so nothing else is necessary.
-	GLOB.available_mobs_for_possess -= src
+	GLOB.available_mobs_for_possess -= "\ref[src]"
 	return ..()
 
 /mob/living/silicon/sil_brainmob/update_canmove()
