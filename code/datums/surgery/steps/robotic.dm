@@ -268,14 +268,14 @@
 /**
  * Robotic organ detachment step.
  */
-/datum/surgery_step/robotics/internal/detatch_organ
+/datum/surgery_step/robotics/internal/detach_organ
 	duration = CUT_DURATION * 1.75
 
 	allowed_tools = list(
 		/obj/item/device/multitool = 100
 		)
 
-/datum/surgery_step/robotics/internal/detatch_organ/pick_target_organ(atom/user, mob/living/carbon/human/target, target_zone)
+/datum/surgery_step/robotics/internal/detach_organ/pick_target_organ(atom/user, mob/living/carbon/human/target, target_zone)
 	var/list/attached_organs = list()
 	for(var/obj/item/organ/O in target.internal_organs)
 		if(O.parent_organ != target_zone)
@@ -297,14 +297,14 @@
 
 	return selected_organ
 
-/datum/surgery_step/robotics/internal/detatch_organ/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/robotics/internal/detach_organ/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,
 		"[user] starts to decouple [target]'s [target_organ] with \the [tool].",
 		"You start to decouple [target]'s [target_organ] with \the [tool]."
 		)
 	return ..()
 
-/datum/surgery_step/robotics/internal/detatch_organ/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/robotics/internal/detach_organ/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	var/obj/item/organ/internal/I = target_organ
 	if(!istype(I))
 		return
@@ -315,7 +315,7 @@
 		)
 	I.cut_away(user)
 
-/datum/surgery_step/robotics/internal/detatch_organ/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/robotics/internal/detach_organ/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
 		"[user]'s hand slips, disconnecting \the [tool].",
 		"Your hand slips, disconnecting \the [tool]."
