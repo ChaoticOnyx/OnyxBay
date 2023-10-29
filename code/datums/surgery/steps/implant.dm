@@ -172,11 +172,10 @@
 	parent_organ.cavity = FALSE
 
 /**
- * Implant removal step. Be sure it is placed higher than any internal step.
+ * Implant removal step.
  */
 /datum/surgery_step/cavity/implant_removal
 	duration = CLAMP_DURATION
-	priority = 3
 
 	allowed_tools = list(
 		/obj/item/hemostat = 100,
