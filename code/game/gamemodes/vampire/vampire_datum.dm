@@ -161,7 +161,7 @@
 		new P.verbpath(my_mob)
 
 	if(announce)
-		to_chat(my_mob, SPAN("notice", "<b>You have unlocked a new power:</b> [P.name]:\n[P.desc]"))
+		to_chat(my_mob, SPAN("notice", "<b>You have unlocked a new power:</b> [P.name]!\n[P.desc]"))
 		if(P.helptext)
 			to_chat(my_mob, "<font color='green'>[P.helptext]</font>")
 
@@ -208,7 +208,7 @@
 
 
 // Checks whether or not the target can be affected by a vampire's abilities.
-#define NOTIFIED_WARNING(msg) if(notify) {to_chat(src, SPAN("warning", msg))}
+#define NOTIFIED_WARNING(msg) if(notify) {to_chat(my_mob, SPAN("warning", msg))}
 /datum/vampire/proc/can_affect(mob/living/carbon/human/target, notify = TRUE, check_loyalty_implant = FALSE, check_thrall = TRUE)
 	if(!istype(target))
 		return FALSE

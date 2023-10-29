@@ -63,13 +63,14 @@
 		return
 
 	if(cooldown)
-		if(prob(95))
-			to_chat(my_mob, SPAN("warning", "The ability is not ready yet..."))
-		else
-			if(prob(70))
-				to_chat(my_mob, SPAN("danger", "I'm not ready!"))
+		if(!no_message)
+			if(prob(95))
+				to_chat(my_mob, SPAN("warning", "The ability is not ready yet..."))
 			else
-				to_chat(my_mob, SPAN("danger", "I'M. NOT! READY!!!")) // Doto Seconda referencio
+				if(prob(70))
+					to_chat(my_mob, SPAN("danger", "I'm not ready!"))
+				else
+					to_chat(my_mob, SPAN("danger", "I'M. NOT! READY!!!")) // Doto Seconda referencio
 		return
 
 	if(vampire.holder && !ignore_veil)

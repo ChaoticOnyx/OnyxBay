@@ -4,7 +4,7 @@
 /datum/vampire_power/bloodheal
 	name = "Blood Heal"
 	desc = "At the cost of blood and time, heal any injuries you have sustained."
-	icon_state = "vamp_veil"
+	icon_state = "vamp_blood_heal"
 	blood_cost = 15
 
 #define CHECK_HEAL_BREAK(amount) if(vampire.blood_usable < amount) {to_chat(my_mob, SPAN("warning", "You ran out of blood, and are unable to continue!")); return TRUE}

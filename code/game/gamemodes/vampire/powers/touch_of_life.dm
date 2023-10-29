@@ -2,7 +2,7 @@
 /datum/vampire_power/touch_of_life
 	name = "Touch of Life"
 	desc = "You lay your hands on the target, transferring healing chemicals to them."
-	icon_state = "vamp_order"
+	icon_state = "vamp_touch_of_life"
 	blood_cost = 30
 
 /datum/vampire_power/touch_of_life/activate()

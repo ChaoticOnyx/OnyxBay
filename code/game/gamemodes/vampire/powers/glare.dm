@@ -20,7 +20,6 @@
 	if(!..())
 		return
 
-	use_blood()
 	my_mob.visible_message(SPAN("danger", "[my_mob]'s eyes emit a blinding flash"))
 
 	var/list/victims = list()
