@@ -112,3 +112,30 @@
 		friends -= weakref(former_friend)
 		visible_emote("roars at [former_friend]!")
 
+/mob/living/simple_animal/hostile/commanded/_examine_text(mob/user)
+	. = ..()
+	if (is_ooc_dead())
+		. += "<span class='deadsay'>It appears to be dead.</span>\n"
+	else if (health < maxHealth)
+		. += "<span class='warning'>"
+		if (health >= maxHealth/2)
+			. += "It looks slightly beaten!\n"
+		else
+			. += "<B>It looks severely beaten!</B>\n"
+		. += "</span>"
+	switch(stance)
+		if(HOSTILE_STANCE_IDLE)
+			. += SPAN("warning", "[src] wanders aimlessly.\n")
+		if(HOSTILE_STANCE_ALERT)
+			. += SPAN("warning", "[src] looks alert!\n")
+		if(HOSTILE_STANCE_ATTACK)
+			. += SPAN("warning", "[src] is in an aggressive stance!\n")
+		if(HOSTILE_STANCE_ATTACKING)
+			. += SPAN("warning", "[src] !\n")
+		if(HOSTILE_STANCE_TIRED)
+			. += SPAN("warning", "[src] looks severly tired!\n")
+		if(COMMANDED_STOP)
+			. += SPAN("warning", "[src] sits patiently, waiting for its master!\n")
+
+
+	return
