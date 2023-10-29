@@ -26,24 +26,35 @@
 	response_disarm = "pushes"
 	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
-	known_commands = list("stay", "stop", "attack", "follow", "dance", "boogie", "boogy")
+	known_commands = list("stay", "stop", "attack", "follow", "dance", "befriend", "forget")
 
 /mob/living/simple_animal/hostile/commanded/bear/hit_with_weapon(obj/item/O, mob/living/user, effective_force, hit_zone)
 	. = ..()
 	if(!.)
-		emote("roars in rage!")
+		visible_emote("roars in rage!")
 
 /mob/living/simple_animal/hostile/commanded/bear/attack_hand(mob/living/carbon/human/M)
 	. = ..()
 	if(M.a_intent == I_HURT)
-		emote("roars in rage!")
+		visible_emote("roars in rage!")
 
 /mob/living/simple_animal/hostile/commanded/bear/listen()
 	if(stance != COMMANDED_MISC) //cant listen if its booty shakin'
 		return ..()
 
-//WE DANCE!
+//Handles cursed dancing command as well as adds/removes friends
 /mob/living/simple_animal/hostile/commanded/bear/misc_command(mob/speaker,text)
+	for(var/command in known_commands)
+		if(findtext(text,command))
+			switch(command)
+				if("dance")
+					dance()
+				if("befriend")
+					add_friend(speaker, text)
+				if("forget")
+					remove_friend(speaker, text)
+
+/mob/living/simple_animal/hostile/commanded/bear/proc/dance()
 	stay_command()
 	stance = COMMANDED_MISC //nothing can stop this ride
 	spawn(0)
@@ -69,3 +80,35 @@
 		stance = COMMANDED_STOP
 		set_dir(SOUTH)
 		src.visible_message("\The [src] bows, finished with [G.his] dance.")
+
+/mob/living/simple_animal/hostile/commanded/proc/add_friend(mob/speaker,text)
+	var/list/targets = get_targets_by_name(text)
+	if(targets.len > 1 || !targets.len)
+		return FALSE
+
+	var/mob/living/future_friend = targets[1]
+
+	if(!isliving(future_friend)) //Again, get_targets_by_name takes hearers(), which can add ghosts to the list. I do not find ghosts worthy of friendship.
+		return
+
+	if(weakref(future_friend) in friends) // Already befriended
+		visible_emote("shakes his head, visibly confused!") // Feedback for players
+		return
+	friends += weakref(future_friend)
+	visible_emote("growls affirmatevly, slightly bowing to [future_friend]!")
+
+
+/mob/living/simple_animal/hostile/commanded/proc/remove_friend(mob/speaker,text)
+	var/list/targets = get_targets_by_name(text)
+	if(targets.len > 1 || !targets.len)
+		return FALSE
+
+	var/mob/living/former_friend = targets[1]
+
+	if(!isliving(former_friend)) //something is wrong. VERY wrong.
+		return
+
+	if(weakref(former_friend) in friends)
+		friends -= weakref(former_friend)
+		visible_emote("roars at [former_friend]!")
+
