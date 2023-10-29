@@ -79,7 +79,9 @@
 	if(target_mob in ListTargets(10))
 		walk_to(src,target_mob,1,move_to_delay)
 
-/mob/living/simple_animal/hostile/commanded/proc/commanded_stop() //basically a proc that runs whenever we are asked to stay put. Probably going to remain unused.
+/mob/living/simple_animal/hostile/commanded/proc/commanded_stop() //Overrides enabling automated movement in /hostile/Life()
+	stop_automated_movement = TRUE
+	walk_to(src, 0)
 	return
 
 /mob/living/simple_animal/hostile/commanded/proc/listen(mob/speaker, text)
