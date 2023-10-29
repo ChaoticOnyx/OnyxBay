@@ -146,6 +146,8 @@
 		O.min_bruised_damage = initial(O.min_bruised_damage)
 		O.min_broken_damage = initial(O.min_bruised_damage)
 		O.vital = initial(O.vital)
+		O.pulse = PULSE_NORM
+		O.think()
 
 // Adds a power
 /datum/vampire/proc/add_power(datum/power/vampire/P, announce = FALSE)

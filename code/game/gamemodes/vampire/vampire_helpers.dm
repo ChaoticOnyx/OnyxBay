@@ -39,6 +39,16 @@
 		H.remove_modifiers_of_type(/datum/modifier/trait/low_metabolism, TRUE)
 		H.innate_heal = 1
 
+		var/obj/item/organ/internal/heart/O = H.internal_organs_by_name[BP_HEART]
+		if(O)
+			O.max_damage = initial(O.max_damage)
+			O.damage = min(O.damage, O.max_damage)
+			O.min_bruised_damage = initial(O.min_bruised_damage)
+			O.min_broken_damage = initial(O.min_bruised_damage)
+			O.vital = initial(O.vital)
+			O.pulse = PULSE_NORM
+			O.think()
+
 	verbs -= /datum/game_mode/vampire/verb/vampire_help
 
 	return TRUE
