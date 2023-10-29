@@ -13,11 +13,11 @@
 /datum/vampire_power/toggled/darkvision/activate()
 	if(!..())
 		return
-	icon_state = "vamp_alertness_on"
+	icon_state = "vamp_darksight_on"
 	my_mob.seeDarkness = TRUE
 
 /datum/vampire_power/toggled/darkvision/deactivate(no_message = TRUE)
 	if(!..())
 		return
-	icon_state = "vamp_alertness_off"
+	icon_state = "vamp_darksight_off"
 	my_mob.seeDarkness = FALSE

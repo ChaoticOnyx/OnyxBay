@@ -414,6 +414,7 @@
 	..()
 	if(ability_master)
 		ability_master.update_changeling_powers()
+		ability_master.update_vampire_powers()
 
 // Changeling
 

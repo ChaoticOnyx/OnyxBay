@@ -134,9 +134,8 @@
 
 /datum/vampire/proc/unset_organs()
 	my_mob.does_not_breathe = 0
-	my_mob.regenerate_blood(my_mob.species.blood_volume)
+	my_mob.restore_blood()
 	my_mob.status_flags &= ~UNDEAD
-	my_mob.oxygen_alert = 1
 	my_mob.remove_modifiers_of_type(/datum/modifier/trait/low_metabolism, TRUE)
 	my_mob.innate_heal = 1
 

@@ -34,9 +34,8 @@
 		mind.vampire = null
 	else // doing it the hard way, hopefully will never happen in practice
 		H.does_not_breathe = 0
-		H.regenerate_blood(H.species.blood_volume)
+		H.restore_blood()
 		H.status_flags &= ~UNDEAD
-		H.oxygen_alert = 1
 		H.remove_modifiers_of_type(/datum/modifier/trait/low_metabolism, TRUE)
 		H.innate_heal = 1
 
