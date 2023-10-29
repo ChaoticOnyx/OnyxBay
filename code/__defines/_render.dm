@@ -201,6 +201,10 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	group = RENDER_GROUP_SCENE
 	plane = FULLSCREEN_PLANE
 
+/atom/movable/renderer/obfuscation
+	name  = OBFUSCATION_RENDERER
+	group = RENDER_GROUP_SCENE
+	plane = OBFUSCATION_PLANE
 
 /// Draws user interface elements.
 /atom/movable/renderer/interface
