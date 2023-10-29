@@ -95,7 +95,7 @@
 /datum/surgery_step/limb/connect/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	. = ..()
 	if(!.)
-		return .
+		return
 
 	if(parent_organ.is_stump())
 		return FALSE
