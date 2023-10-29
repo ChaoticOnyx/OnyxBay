@@ -1,13 +1,14 @@
 /mob/living/simple_animal/hostile/commanded/bear
 	name = "bear"
-	desc = "A large brown bear."
+	desc = "A large bear."
 	stance = HOSTILE_STANCE_ALERT
 
 
-	icon_state = "brownbear"
-	icon_living = "brownbear"
-	icon_dead = "brownbear_dead"
-	icon_gib = "brownbear_gib"
+	icon_state = "bear"
+	icon_living = "bear"
+	icon_dead = "bear_dead"
+	icon_gib = "bear_gib"
+	var/icon/icon_sit = "bear_sit"
 
 	health = 75
 	maxHealth = 75
@@ -81,7 +82,7 @@
 		set_dir(SOUTH)
 		src.visible_message("\The [src] bows, finished with [G.his] dance.")
 
-/mob/living/simple_animal/hostile/commanded/proc/add_friend(mob/speaker,text)
+/mob/living/simple_animal/hostile/commanded/bear/proc/add_friend(mob/speaker,text)
 	var/list/targets = get_targets_by_name(text)
 	if(targets.len > 1 || !targets.len)
 		return FALSE
@@ -98,7 +99,7 @@
 	visible_emote("growls affirmatevly, slightly bowing to [future_friend]!")
 
 
-/mob/living/simple_animal/hostile/commanded/proc/remove_friend(mob/speaker,text)
+/mob/living/simple_animal/hostile/commanded/bear/proc/remove_friend(mob/speaker,text)
 	var/list/targets = get_targets_by_name(text)
 	if(targets.len > 1 || !targets.len)
 		return FALSE
@@ -112,7 +113,7 @@
 		friends -= weakref(former_friend)
 		visible_emote("roars at [former_friend]!")
 
-/mob/living/simple_animal/hostile/commanded/_examine_text(mob/user)
+/mob/living/simple_animal/hostile/commanded/bear/_examine_text(mob/user)
 	. = ..()
 	if (is_ooc_dead())
 		. += "<span class='deadsay'>It appears to be dead.</span>\n"
@@ -139,3 +140,37 @@
 
 
 	return
+
+/mob/living/simple_animal/hostile/commanded/bear/stay_command()
+	..()
+	update_icon()
+
+/mob/living/simple_animal/hostile/commanded/bear/update_icon()
+	if(stance == COMMANDED_STOP)
+		icon_state = icon_sit
+	else
+		icon_state = icon_living
+
+/mob/living/simple_animal/hostile/commanded/bear/find_target()
+	. = ..()
+	update_icon()
+
+/mob/living/simple_animal/hostile/commanded/bear/follow_target()
+	. = ..()
+	update_icon()
+
+/mob/living/simple_animal/hostile/commanded/bear/stop_command()
+	. = ..()
+	update_icon()
+
+/mob/living/simple_animal/hostile/commanded/bear/follow_command()
+	. = ..()
+	update_icon()
+
+/mob/living/simple_animal/hostile/commanded/bear/attack_command()
+	. = ..()
+	update_icon()
+
+/mob/living/simple_animal/hostile/commanded/bear/MoveToTarget()
+	. = ..()
+	update_icon()
