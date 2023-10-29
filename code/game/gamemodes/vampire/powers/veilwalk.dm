@@ -6,6 +6,12 @@
 	icon_state = "vamp_veil"
 	blood_cost = 60
 	blood_drain = 5
+	text_activate = "You slip into the Veil."
+	text_deactivate = "You leave the Veil and return to the physical world."
+	text_noblood = "You are ejected from the Veil as you run out of blood."
+
+/datum/vampire_power/toggled/veilwalk/is_usable(no_message = FALSE)
+	return vampire?.holder ? TRUE : (..())
 
 /datum/vampire_power/toggled/veilwalk/activate()
 	if(!..())
@@ -117,7 +123,7 @@
 
 	set_next_think(world.time)
 
-/obj/effect/dummy/veil_walk/proc/deactivate()
+/obj/effect/dummy/veil_walk/proc/deactivate(no_message = TRUE)
 	set_next_think(0)
 	can_move = FALSE
 

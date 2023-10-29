@@ -10,12 +10,12 @@
 	text_activate = "You no longer need light to see."
 	text_deactivate = "You allow the shadows to return."
 
-/datum/vampire_power/toggled/darksight/activate()
+/datum/vampire_power/toggled/darkvision/activate()
 	if(!..())
 		return
 	my_mob.seeDarkness = TRUE
 
-/datum/vampire_power/toggled/darksight/deactivate(no_message = TRUE)
+/datum/vampire_power/toggled/darkvision/deactivate(no_message = TRUE)
 	if(!..())
 		return
 	my_mob.seeDarkness = FALSE

@@ -97,6 +97,7 @@
 
 /datum/vampire_power/proc/use()
 	activate()
+	update_screen_button()
 	return
 
 /datum/vampire_power/proc/activate()
@@ -126,25 +127,25 @@
 
 /datum/vampire_power/toggled/use()
 	active ? deactivate(FALSE) : activate()
+	update_screen_button()
 
 /datum/vampire_power/toggled/activate()
 	. = ..()
 	if(!.)
 		return
-	to_chat(my_mob, SPAN("notice", text_activate))
+	if(text_activate)
+		to_chat(my_mob, SPAN("notice", text_activate))
 	if(power_processing)
 		set_next_think(world.time)
-	update_screen_button()
 
 /datum/vampire_power/toggled/deactivate(no_message = TRUE)
 	. = ..()
 	if(!.)
 		return
-	if(!no_message)
+	if(!no_message && text_deactivate)
 		to_chat(my_mob, SPAN("notice", text_deactivate))
 	if(power_processing)
 		set_next_think(0)
-	update_screen_button()
 
 /datum/vampire_power/toggled/think()
 	if(QDELETED(my_mob) || my_mob.stat > max_stat)
@@ -154,7 +155,8 @@
 		use_blood(blood_drain)
 		if(vampire.blood_usable <= 0)
 			if(my_mob)
-				to_chat(my_mob, SPAN("notice", text_noblood))
+				if(text_noblood)
+					to_chat(my_mob, SPAN("notice", text_noblood))
 				deactivate()
 				update_screen_button()
 				return FALSE

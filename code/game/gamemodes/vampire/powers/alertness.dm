@@ -3,7 +3,7 @@
 /datum/vampire_power/toggled/alertness
 	name = "Victim Alertness"
 	desc = "Toggle whether you wish for your victims to forget your deeds."
-	icon_state = "vamp_alertness"
+	icon_state = "vamp_alertness_off"
 	power_processing = FALSE
 	max_stat = UNCONSCIOUS
 
@@ -13,9 +13,11 @@
 /datum/vampire_power/toggled/alertness/activate()
 	if(!..())
 		return
+	icon_state = "vamp_alertness_on"
 	vampire.stealth = FALSE
 
 /datum/vampire_power/toggled/alertness/deactivate(no_message = TRUE)
 	if(!..())
 		return
+	icon_state = "vamp_alertness_off"
 	vampire.stealth = TRUE
