@@ -119,10 +119,6 @@
 		if(!isnull(mod.metabolism_percent))
 			mod.metabolism_percent = 0 // Vampire is not affected by chemicals
 
-	if(!vampirepowers.len)
-		for(var/P in vampirepower_types)
-			vampirepowers += new P()
-
 	var/obj/item/organ/internal/heart/O = my_mob.internal_organs_by_name[BP_HEART]
 	if(O)
 		O.rejuvenate(ignore_prosthetic_prefs = TRUE)
