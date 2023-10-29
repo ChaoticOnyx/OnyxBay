@@ -20,6 +20,28 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 	if(config.game.vampire_min_age)
 		min_player_age = config.game.vampire_min_age
 
+	// Building vampire powers list.
+	if(!vampirepowers.len)
+		for(var/P in vampirepower_types)
+			vampirepowers += new P()
+
+/datum/antagonist/vampire/get_special_objective_text(datum/mind/player)
+	var/total_blood = player.vampire.blood_total
+	var/message = ""
+	switch(total_blood)
+		if(0 to 100)
+			message = pick("What a loser.", "Worse than a mosquito.", "A leech would do better.", "Almost reached a flea's level!", "Comparable to a bed bug.")
+		if(101 to 250)
+			message = pick("Not so impressive.", "Could do better.", "Try harder next time.")
+		if(251 to 450)
+			message = pick("Not so bad.", "Fine job.")
+		if(451 to 800)
+			message = pick("Nice job!", "Great results!", "What a creature of the night!", "A professional bloodfeeder!")
+		else
+			message = pick("Dear God.", "Somebody, stop them!", "The beast of bedtime tales!", "Night-time is their time!", "A bloody feast!")
+	return "<br><b>They drank </b>[player.vampire.blood_total]<br> units of blood. [message]"
+
+
 /datum/antagonist/vampire/create_objectives(datum/mind/player)
 	if(!..())
 		return
@@ -27,7 +49,7 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 	var/kill
 	var/escape
 	var/protect
-	var/ghouls
+	var/enthrall
 	var/vampirize
 
 	switch(rand(1, 100))
@@ -38,13 +60,13 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 			protect = TRUE
 			escape = TRUE
 		if(51 to 75)
-			kill = TRUE
-			vampirize = TRUE
+			enthrall = TRUE
+			escape = TRUE
 		if(76 to 98)
 			vampirize = TRUE
 			escape = TRUE
 		else
-			ghouls = TRUE
+			enthrall = TRUE
 			kill = TRUE
 			escape = TRUE
 
@@ -64,10 +86,10 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 		vampirize_objective.owner = player
 		vampirize_objective.find_target()
 		player.objectives += vampirize_objective
-	if(ghouls)
-		var/datum/objective/ghouls/ghouls_objective = new
-		ghouls_objective.owner = player
-		player.objectives += ghouls_objective
+	if(enthrall)
+		var/datum/objective/enthrall/enthrall_objective = new
+		enthrall_objective.owner = player
+		player.objectives += enthrall_objective
 	if(escape)
 		var/datum/objective/survive/survive_objective = new
 		survive_objective.owner = player
@@ -97,3 +119,12 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 						return 0
 					return 1
 	return 0
+
+/datum/antagonist/vampire/remove_antagonist(datum/mind/player, show_message, implanted)
+	if(!..())
+		return 0
+	to_chat(player.current, SPAN("danger", "An unfamiliar white light flashes through your mind... You can feel you fangs shrink, reverting to their normal size. Your hands get soft and warm yet again. Eh... What was that \"Veil\" thing, again?.."))
+	player.memory = ""
+	if(show_message)
+		player.current.visible_message(SPAN("notice", "It looks like something veil's just abandoned [player.current]'s body..."))
+	player.current.unmake_vampire()

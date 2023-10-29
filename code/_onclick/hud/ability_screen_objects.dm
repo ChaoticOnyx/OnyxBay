@@ -5,6 +5,7 @@
 	var/list/obj/screen/ability/ability_objects = list()
 	var/list/obj/screen/ability/spell_objects = list()
 	var/list/obj/screen/ability/changeling_power_objects = list()
+	var/list/obj/screen/ability/vampire_power_objects = list()
 	var/showing = 0 // If we're 'open' or not.
 
 	var/open_state = "master_open"		// What the button looks like when it's 'open', showing the other buttons.
@@ -30,6 +31,9 @@
 
 	remove_all_changeling_powers()
 	changeling_power_objects.Cut()
+
+	remove_all_vampire_powers()
+	vampire_power_objects.Cut()
 
 	for(var/obj/screen/ability/spell/spell in spell_objects)
 		remove_ability(spell)
@@ -102,7 +106,9 @@
 	for(var/obj/screen/ability/ability in ability_objects)
 		ability.update_icon(forced)
 		if(istype(ability, /obj/screen/ability/changeling_power))
-			continue // Lings' powers display chemcost and stuff.
+			continue // Lings' powers display chemcost and stuff
+		else if(istype(ability, /obj/screen/ability/vampire_power))
+			continue // The same with vamps' powers.
 		ability.maptext = "[i]" // Slot number
 		i++
 
@@ -148,6 +154,10 @@
 	for(var/obj/screen/ability/changeling_power/CP in changeling_power_objects)
 		remove_ability(CP)
 
+/obj/screen/movable/ability_master/proc/remove_all_vampire_powers()
+	for(var/obj/screen/ability/vampire_power/VP in vampire_power_objects)
+		remove_ability(VP)
+
 /obj/screen/movable/ability_master/proc/get_ability_by_name(name_to_search)
 	for(var/obj/screen/ability/A in ability_objects)
 		if(A.name == name_to_search)
@@ -178,6 +188,13 @@
 		var/obj/screen/ability/changeling_power/CP = screen
 		if(CP.power == cp)
 			return CP
+	return null
+
+/obj/screen/movable/ability_master/proc/get_ability_by_vampire_power(datum/vampire_power/vp)
+	for(var/screen in vampire_power_objects)
+		var/obj/screen/ability/vampire_power/VP = screen
+		if(VP.power == vp)
+			return VP
 	return null
 
 /mob/Login()
@@ -393,6 +410,12 @@
 		spell.update_charge(1)
 
 
+/mob/Life()
+	..()
+	if(ability_master)
+		ability_master.update_changeling_powers()
+		ability_master.update_vampire_powers()
+
 // Changeling
 
 /obj/screen/movable/ability_master/proc/reskin_changeling()
@@ -432,11 +455,6 @@
 	if(my_mob.client)
 		toggle_open(2) //forces the icons to refresh on screen
 
-/mob/Life()
-	..()
-	if(ability_master)
-		ability_master.update_changeling_powers()
-
 /obj/screen/movable/ability_master/proc/update_changeling_powers()
 	for(var/obj/screen/ability/changeling_power/P in changeling_power_objects)
 		P.update_icon()
@@ -467,4 +485,75 @@
 	overlays.Add(T)
 
 /obj/screen/ability/changeling_power/activate()
+	power.use(usr)
+
+// Vampire
+
+/obj/screen/movable/ability_master/proc/reskin_vampire()
+	icon_state = "vampire_spell_base"
+	open_state = "vamp_open"
+	closed_state = "vamp_closed"
+	overlays.len = 0
+	overlays.Add(open_state)
+
+/obj/screen/ability/vampire_power
+	background_base_state = "vampire"
+	var/datum/vampire_power/power
+	var/blood_cost = 0
+	var/icon/last_charged_icon
+
+/obj/screen/ability/vampire_power/Destroy()
+	power = null
+	return ..()
+
+/obj/screen/movable/ability_master/proc/add_vampire_power(datum/vampire_power/power)
+	if(!power)
+		return
+
+	if(get_ability_by_vampire_power(power))
+		return
+
+	var/obj/screen/ability/vampire_power/P = new()
+	P.ability_master = src
+	P.power = power
+	P.SetName("[power.name] ([power.blood_cost])")
+
+	vampire_power_objects.Add(P)
+	ability_objects.Add(P)
+	if(my_mob.client)
+		toggle_open(2) //forces the icons to refresh on screen
+
+/obj/screen/movable/ability_master/proc/update_vampire_powers()
+	for(var/obj/screen/ability/vampire_power/P in vampire_power_objects)
+		P.update_icon()
+
+/obj/screen/ability/vampire_power/update_icon()
+	if(!power)
+		qdel(src)
+		return
+
+	overlays.Cut()
+
+	icon_state = "[background_base_state]_spell_[power.is_usable(TRUE) ? "ready" : "base"]"
+	overlays.Add(power.icon_state)
+
+	if(power.cooldown > 0)
+		overlays.Add("vampire_cooldown")
+
+	if(istype(power, /datum/vampire_power/toggled))
+		if(power.active)
+			overlays.Add("vampire_spell_active")
+
+	var/image/T = image(icon, "blank")
+	if(!power.blood_drain)
+		if(power.blood_cost)
+			T.maptext = " [power.blood_cost]" // Slot number not needed, blood cost holds more importance.
+		else
+			T.maptext = ""
+	else
+		T.maptext = " [power.blood_cost] ([power.blood_drain])"
+
+	overlays.Add(T)
+
+/obj/screen/ability/vampire_power/activate()
 	power.use(usr)

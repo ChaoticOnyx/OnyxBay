@@ -18,14 +18,14 @@
 			return TRUE
 		return FALSE
 
-/datum/objective/ghouls
+/datum/objective/enthrall
 	var/amount = 1
 
-/datum/objective/ghouls/New()
+/datum/objective/enthrall/New()
 	amount = rand(2, 7)
-	explanation_text = "Ghoul at least [amount] people"
+	explanation_text = "Enthrall at least [amount] people."
 
-/datum/objective/ghouls/check_completion()
+/datum/objective/enthrall/check_completion()
 	if(GLOB.thralls.current_antagonists.len >= amount)
 		return TRUE
 	else
