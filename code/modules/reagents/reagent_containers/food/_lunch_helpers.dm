@@ -90,7 +90,7 @@ var/list/lunchables_ethanol_reagents_ = list(
 // Add reagent to [vacuum]-flask no need delete reagent from lunchables_ethanol_reagents_ it's works fine
 var/list/additional_reagents = list(
 										/datum/reagent/drink/tea,
-										/datum/reagent/ethanol/coffee,
+										/datum/reagent/drink/coffee,
 										/datum/reagent/drink/hot_coco,
 										/datum/reagent/drink/milkshake
 									)
