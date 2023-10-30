@@ -168,7 +168,7 @@
 		if(!computer.nano_printer)
 			error = "Missing Hardware: Your computer does not have the required hardware to complete this operation."
 			return 1
-		if(!computer.nano_printer.print_text(loaded_data))
+		if(!computer.nano_printer.print_text(loaded_data, rawhtml=TRUE))
 			error = "Hardware error: Printer was unable to print the file. It may be out of paper."
 			return 1
 
