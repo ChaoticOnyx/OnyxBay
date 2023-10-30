@@ -27,7 +27,7 @@
 	response_disarm = "pushes"
 	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
-	known_commands = list("stay", "stop", "attack", "follow", "dance", "befriend", "forget")
+	known_commands = list("stay", "stop", "attack", "follow", "dance", "add friend", "remove friend")
 
 /mob/living/simple_animal/hostile/commanded/bear/hit_with_weapon(obj/item/O, mob/living/user, effective_force, hit_zone)
 	. = ..()
@@ -49,46 +49,52 @@
 		stop_automated_movement = TRUE
 
 //Handles cursed dancing command as well as adds/removes friends
-/mob/living/simple_animal/hostile/commanded/bear/misc_command(mob/speaker,text)
+/mob/living/simple_animal/hostile/commanded/bear/misc_command(mob/speaker, text)
 	for(var/command in known_commands)
 		if(findtext(text,command))
 			switch(command)
 				if("dance")
 					dance()
-				if("befriend")
+				if("add friend")
 					add_friend(speaker, text)
-				if("forget")
+				if("remove friend")
 					remove_friend(speaker, text)
 
 /mob/living/simple_animal/hostile/commanded/bear/on_radial_click(mob/living/carbon/human/M, command)
 	if(stance == COMMANDED_MISC) // bear won't accept commands while dancing
-		to_chat(M, "<span class='warning'>Your [src] is dancing, it won't listen to your orders for a while.</span>")
+		to_chat(M, SPAN_WARNING("Your [src] is dancing, it won't listen to your orders for a while."))
 		return
+
 	. = ..()
 	if(!.)
 		return
+
 	var/list/possible_targets = radial_targets(M, FALSE)
 	var/mob/target = null
 	switch(command)
-		if("befriend")
+		if("add friend")
 			for(var/mob/T in possible_targets)
 				if(weakref(T) in friends)
 					possible_targets -= M
 			if(!possible_targets.len)
 				return
+
 			target = input(M, "Choose whom to follow.", "Targeting") as null|anything in possible_targets
 			if(!target)
 				return
+
 			add_friend(M, text, target)
-		if("forget")
+		if("remove friend")
 			for(var/mob/T in possible_targets)
 				if(!(weakref(T) in friends))
 					possible_targets -= M
 			if(!possible_targets.len)
 				return
+
 			target = input(M, "Choose whom to follow.", "Targeting") as null|anything in possible_targets
 			if(!target)
 				return
+
 			remove_friend(M, null, target)
 		if("dance")
 			dance()
@@ -97,7 +103,7 @@
 	stop_automated_movement = TRUE
 	stance = COMMANDED_MISC //nothing can stop this ride
 	update_icon()
-	src.visible_message("\The [src] starts to dance!.")
+	visible_message("\The [src] starts to dance!.")
 	var/datum/gender/G = gender_datums[gender]
 	var/decl/emote/human/dance/dance_emote = new /decl/emote/human/dance
 	spawn(0)
@@ -105,6 +111,7 @@
 	for(var/i in 1 to 10)
 		if(stance != COMMANDED_MISC || incapacitated()) //something has stopped this ride.
 			return
+
 		var/message = pick(\
 						"moves [G.his] head back and forth!",\
 						"bobs [G.his] booty!",\
@@ -117,11 +124,12 @@
 			set_dir(WEST)
 		else
 			set_dir(EAST)
-		src.visible_message("\The [src] [message]")
+		visible_message("\The [src] [message]")
 		sleep(30)
+
 	dance_emote.dancing.Remove(weakref(src))
 	set_dir(SOUTH)
-	src.visible_message("\The [src] bows, finished with [G.his] dance.")
+	visible_message("\The [src] bows, finished with [G.his] dance.")
 	stance = COMMANDED_STOP
 	stop_automated_movement = FALSE
 
@@ -132,8 +140,10 @@
 		var/list/targets = get_targets_by_name(text)
 		if(targets.len > 1 || !targets.len)
 			return FALSE
+
 		if(!isliving(targets[1])) //Ghosts are not worthy of friendships
 			return
+
 		future_friend = targets[1]
 	else
 		future_friend = target
@@ -141,17 +151,21 @@
 	if(weakref(future_friend) in friends) // Already befriended
 		audible_emote("shakes his head, visibly confused!") // Feedback for players
 		return FALSE
+
 	friends += weakref(future_friend)
 	audible_emote("growls affirmatevly, slightly bowing to [future_friend]!")
 
 /mob/living/simple_animal/hostile/commanded/bear/proc/remove_friend(mob/speaker,text, mob/target = null)
 	var/mob/living/former_friend = null
+
 	if(!target)
 		var/list/targets = get_targets_by_name(text)
 		if(targets.len > 1 || !targets.len)
 			return FALSE
+
 		if(!isliving(targets[1])) //something is wrong. VERY wrong.
 			return
+
 		former_friend = targets[1]
 	else
 		former_friend = target
@@ -166,30 +180,23 @@
 
 /mob/living/simple_animal/hostile/commanded/bear/_examine_text(mob/user)
 	. = ..()
-	if (is_ooc_dead())
-		. += "<span class='deadsay'>It appears to be dead.</span>\n"
-	else if (health < maxHealth)
-		. += "<span class='warning'>"
-		if (health >= maxHealth/2)
-			. += "It looks slightly beaten!\n"
-		else
-			. += "<B>It looks severely beaten!</B>\n"
-		. += "</span>"
+	if(is_ic_dead())
+		. += SPAN("deadsay", "It appears to be dead.\n")
+	else if(health < maxHealth)
+		. += SPAN("warning", "It looks [health >= maxHealth / 2 ? "slightly" : "<b>severely</b>"] beaten!\n")
 	switch(stance)
 		if(HOSTILE_STANCE_IDLE)
-			. += SPAN("warning", "[src] wanders aimlessly.\n")
+			. += SPAN("warning", "[src] wanders aimlessly.")
 		if(HOSTILE_STANCE_ALERT)
-			. += SPAN("warning", "[src] looks alert!\n")
+			. += SPAN("warning", "[src] looks alert!")
 		if(HOSTILE_STANCE_ATTACK)
-			. += SPAN("warning", "[src] is in an aggressive stance!\n")
+			. += SPAN("warning", "[src] is in an aggressive stance!")
 		if(HOSTILE_STANCE_ATTACKING)
 			. += SPAN("warning", "[src] !\n")
 		if(HOSTILE_STANCE_TIRED)
-			. += SPAN("warning", "[src] looks severly tired!\n")
+			. += SPAN("warning", "[src] looks severly tired!")
 		if(COMMANDED_STOP)
-			. += SPAN("warning", "[src] sits patiently, waiting for its master!\n")
-
-
+			. += SPAN("warning", "[src] sits patiently, waiting for its master!")
 	return
 
 /mob/living/simple_animal/hostile/commanded/bear/stay_command()
