@@ -1370,12 +1370,12 @@ May God have mercy.
 	species_allowed = list(SPECIES_SKRELL)
 
 /datum/sprite_accessory/hair/skrell_left_emo_long
-	name = "Long Emo Headtails (left)"
+	name = "Long Overeye Headtails (left)"
 	icon_state = "skrell_left_emo_long"
 	species_allowed = list(SPECIES_SKRELL)
 
 /datum/sprite_accessory/hair/skrell_right_emo_long
-	name = "Long Emo Headtails (right)"
+	name = "Long Overeye Headtails (right)"
 	icon_state = "skrell_right_emo_long"
 	species_allowed = list(SPECIES_SKRELL)
 
