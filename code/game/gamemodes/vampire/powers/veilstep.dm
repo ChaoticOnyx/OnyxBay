@@ -26,6 +26,14 @@
 	set category = null
 	set name = "Veil Step (20)"
 	set desc = "For a moment, move through the Veil and emerge at a shadow of your choice."
+	if(ishuman(src)) // When used via the context menu the proc reparents to the mob, thank you lummox
+		var/mob/living/carbon/human/H = src
+		H.mind?.vampire?._vampire_veilstep(T)
+	else
+		_vampire_veilstep(T)
+	log_and_message_admins("activated veil step.")
+
+/datum/vampire/proc/_vampire_veilstep(turf/T)
 	var/blood_cost = 20
 
 	if (!T || T.density || T.contains_dense_objects())
@@ -68,7 +76,5 @@
 			G.affecting.forceMove(locate(T.x + rand(-1,1), T.y + rand(-1,1), T.z))
 		else
 			qdel(G)
-
-	log_and_message_admins("activated veil step.")
 
 	use_blood(blood_cost)
