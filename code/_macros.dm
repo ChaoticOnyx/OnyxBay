@@ -230,4 +230,6 @@
 
 #define FONT_GIANT(X)    SPAN("giant", X)
 
+#define SPAN_BOLD(X)	 SPAN("bold", X)
+
 #define EMPTY_BITFIELD 0
