@@ -77,7 +77,7 @@
 	amount_grown += rand(0, 3)
 	if(amount_grown >= 100 && !ready)
 		ready = TRUE
-		notify_ghosts("[src] is ready to hatch!", null, source = src, action = NOTIFY_FOLLOW)
+		notify_ghosts("[src] is ready to hatch!", null, source = src, action = NOTIFY_POSSES)
 		set_next_think(0)
 		return
 	set_next_think(world.time + 1 SECONDS)

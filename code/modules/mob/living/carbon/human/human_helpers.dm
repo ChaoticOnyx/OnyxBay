@@ -41,6 +41,33 @@
 #undef HUMAN_EATING_NBP_MOUTH
 #undef HUMAN_EATING_BLOCKED_MOUTH
 
+/// Check whether mob is lying down on something we can operate him on.
+/mob/living/carbon/human/proc/can_operate(mob/user)
+	var/turf/T = get_turf(src)
+	if(locate(/obj/machinery/optable, T))
+		. = TRUE
+	if(locate(/obj/structure/bed, T))
+		. = TRUE
+	if(locate(/obj/structure/table, T))
+		. = TRUE
+	if(locate(/obj/effect/rune/, T))
+		. = TRUE
+
+
+	if(src == user)
+		var/mob/living/carbon/human/H = user // No way it can't be human at this point.
+		var/hitzone = check_zone(H.zone_sel.selecting)
+		var/list/badzones = list(BP_HEAD)
+		if(H.hand)
+			badzones += BP_L_ARM
+			badzones += BP_L_HAND
+		else
+			badzones += BP_R_ARM
+			badzones += BP_R_HAND
+
+		if(hitzone in badzones)
+			return FALSE
+
 /mob/living/carbon/human/proc/update_equipment_vision()
 	flash_protection = 0
 	equipment_tint_total = 0

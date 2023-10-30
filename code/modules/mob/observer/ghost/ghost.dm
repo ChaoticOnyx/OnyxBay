@@ -146,6 +146,8 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 	L.teleop = null
 	L.reload_fullscreen()
 	L.on_ghost_possess()
+	if("\ref[L]" in GLOB.available_mobs_for_possess)
+		GLOB.available_mobs_for_possess -= "\ref[L]"
 
 /mob/observer/ghost/verb/ghost_possess(mob/living/M in GLOB.available_mobs_for_possess)
 	set name = "Ghost Possess"

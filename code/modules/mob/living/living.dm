@@ -9,7 +9,7 @@
 		verbs |= /mob/living/proc/ghost
 
 	if(controllable)
-		GLOB.available_mobs_for_possess += src
+		GLOB.available_mobs_for_possess["\ref[src]"] += src
 
 	update_transform() // Some mobs may start bigger or smaller than normal.
 
@@ -826,6 +826,8 @@
 
 	to_chat(src, "<b>You are now \the [src]!</b>")
 	to_chat(src, "<span class='notice'>Remember to stay in character for a mob of this type!</span>")
+	if("\ref[src]" in GLOB.available_mobs_for_possess)
+		GLOB.available_mobs_for_possess -= "\ref[src]"
 	return 1
 
 /mob/living/reset_layer()
@@ -857,7 +859,7 @@
 	QDEL_NULL(aiming)
 	if(controllable)
 		controllable = FALSE
-		GLOB.available_mobs_for_possess -= src
+		GLOB.available_mobs_for_possess -= "\ref[src]"
 	return ..()
 
 /mob/living/proc/set_m_intent(intent)

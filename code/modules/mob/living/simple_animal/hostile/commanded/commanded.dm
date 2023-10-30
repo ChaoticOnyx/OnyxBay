@@ -55,11 +55,13 @@
 			continue
 		if(isliving(A))
 			M = A
-		if(istype(A,/obj/mecha))
+		else if(istype(A,/obj/mecha))
 			var/obj/mecha/mecha = A
 			if(!mecha.occupant)
 				continue
 			M = mecha.occupant
+		else // If it is not living and not /obj/mecha/, then we have something strange going on.
+			continue
 		if(M && M.stat)
 			continue
 		if(mode == "specific")
@@ -194,7 +196,6 @@
 		if(weakref(user) in friends) //We were buds :'(
 			friends -= weakref(user)
 
-
 /mob/living/simple_animal/hostile/commanded/attack_hand(mob/living/carbon/human/M)
 	. = ..()
 	if(M.a_intent == I_HURT && retribution && !client) //assume he wants to hurt us.
@@ -248,8 +249,6 @@
 
 	return command
 
-
-
 /mob/living/simple_animal/hostile/commanded/proc/radial_targets(mob/commander = null, include_user = FALSE)
 	var/list/possible_targets = list()
 
@@ -279,3 +278,9 @@
 		choices[C] = C
 
 	return choices
+
+/mob/living/simple_animal/hostile/commanded/AttackingTarget()
+	if(!client && target_mob == master) // we don't want mob attacking its master
+		return
+	. = ..()
+
