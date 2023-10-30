@@ -68,30 +68,55 @@
 	if(stance != COMMANDED_HEAL || stance != COMMANDED_HEALING) //dont want attack to bleed into heal.
 		allowed_targets = list()
 		set_target_mob(null)
-	if(findtext(text,"heal")) //heal shit pls
+	if(findtext(text,"heal"))
+		command_heal(speaker, text)
+	if(findtext(text,"emergency protocol"))
+		emprotocol(speaker, text)
+
+/mob/living/simple_animal/hostile/commanded/nanomachine/on_radial_click(mob/living/carbon/human/M, command)
+	. = ..()
+	if(!.)
+		return
+	switch(command)
+		if("emergency protocol")
+			var/mode = alert(M, "", "Toggle emergency protocols", "activate", "deactivate", "check")
+			if(!mode)
+				return
+			emprotocol(M, mode)
+		if("heal")
+			var/list/possible_targets = radial_targets(M, TRUE)
+			var/mob/target = input(M, "Choose whom to heal.", "Targeting") as null|mob in possible_targets
+			if(!target)
+				return
+			command_heal(M, null, target)
+
+/mob/living/simple_animal/hostile/commanded/nanomachine/proc/command_heal(mob/speaker, text, mob/target = null)
+	if(target)
+		set_target_mob(target)
+		stance = COMMANDED_HEAL
+	else
 		if(findtext(text,"me")) //assumed want heals on master.
 			set_target_mob(speaker)
 			stance = COMMANDED_HEAL
-			return 1
+			return TRUE
 		var/list/targets = get_targets_by_name(text)
 		if(targets.len > 1 || !targets.len)
 			src.say("ERROR. TARGET COULD NOT BE PARSED.")
-			return 0
+			return FALSE
 		set_target_mob(targets[1])
 		stance = COMMANDED_HEAL
-		return 1
-	if(findtext(text,"emergency protocol"))
-		if(findtext(text,"deactivate"))
-			if(emergency_protocols)
-				src.say("EMERGENCY PROTOCOLS DEACTIVATED.")
-			emergency_protocols = 0
-			return 1
-		if(findtext(text,"activate"))
-			if(!emergency_protocols)
-				src.say("EMERGENCY PROTOCOLS ACTIVATED.")
-			emergency_protocols = 1
-			return 1
-		if(findtext(text,"check"))
-			src.say("EMERGENCY PROTOCOLS [emergency_protocols ? "ACTIVATED" : "DEACTIVATED"].")
-			return 1
-	return 0
+		return TRUE
+
+/mob/living/simple_animal/hostile/commanded/nanomachine/proc/emprotocol(mob/speaker, text)
+	if(findtext(text,"deactivate") && emergency_protocols)
+		src.say("EMERGENCY PROTOCOLS DEACTIVATED.")
+		emergency_protocols = FALSE
+		return TRUE
+	if(findtext(text,"activate"))
+		if(!emergency_protocols)
+			src.say("EMERGENCY PROTOCOLS ACTIVATED.")
+		emergency_protocols = TRUE
+		return TRUE
+	if(findtext(text,"check"))
+		src.say("EMERGENCY PROTOCOLS [emergency_protocols ? "ACTIVATED" : "DEACTIVATED"].")
+		return TRUE

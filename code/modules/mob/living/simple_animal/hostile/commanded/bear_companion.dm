@@ -60,9 +60,43 @@
 				if("forget")
 					remove_friend(speaker, text)
 
+/mob/living/simple_animal/hostile/commanded/bear/on_radial_click(mob/living/carbon/human/M, command)
+	if(stance == COMMANDED_MISC) // bear won't accept commands while dancing
+		to_chat(M, "<span class='warning'>Your [src] is dancing, it won't listen to your orders for a while.</span>")
+		return
+	. = ..()
+	if(!.)
+		return
+	var/list/possible_targets = radial_targets(M, FALSE)
+	var/mob/target = null
+	switch(command)
+		if("befriend")
+			for(var/mob/T in possible_targets)
+				if(weakref(T) in friends)
+					possible_targets -= M
+			if(!possible_targets.len)
+				return
+			target = input(M, "Choose whom to follow.", "Targeting") as null|anything in possible_targets
+			if(!target)
+				return
+			add_friend(M, text, target)
+		if("forget")
+			for(var/mob/T in possible_targets)
+				if(!(weakref(T) in friends))
+					possible_targets -= M
+			if(!possible_targets.len)
+				return
+			target = input(M, "Choose whom to follow.", "Targeting") as null|anything in possible_targets
+			if(!target)
+				return
+			remove_friend(M, null, target)
+		if("dance")
+			dance()
+
 /mob/living/simple_animal/hostile/commanded/bear/proc/dance()
 	stop_automated_movement = TRUE
 	stance = COMMANDED_MISC //nothing can stop this ride
+	update_icon()
 	src.visible_message("\The [src] starts to dance!.")
 	var/datum/gender/G = gender_datums[gender]
 	var/decl/emote/human/dance/dance_emote = new /decl/emote/human/dance
@@ -91,36 +125,44 @@
 	stance = COMMANDED_STOP
 	stop_automated_movement = FALSE
 
-/mob/living/simple_animal/hostile/commanded/bear/proc/add_friend(mob/speaker,text)
-	var/list/targets = get_targets_by_name(text)
-	if(targets.len > 1 || !targets.len)
-		return FALSE
+/mob/living/simple_animal/hostile/commanded/bear/proc/add_friend(mob/speaker,text, mob/target = null)
+	var/mob/living/future_friend = null
 
-	var/mob/living/future_friend = targets[1]
-
-	if(!isliving(future_friend)) //Again, get_targets_by_name takes hearers(), which can add ghosts to the list. I do not find ghosts worthy of friendship.
-		return
+	if(!target)
+		var/list/targets = get_targets_by_name(text)
+		if(targets.len > 1 || !targets.len)
+			return FALSE
+		if(!isliving(targets[1])) //Ghosts are not worthy of friendships
+			return
+		future_friend = targets[1]
+	else
+		future_friend = target
 
 	if(weakref(future_friend) in friends) // Already befriended
 		audible_emote("shakes his head, visibly confused!") // Feedback for players
-		return
+		return FALSE
 	friends += weakref(future_friend)
 	audible_emote("growls affirmatevly, slightly bowing to [future_friend]!")
 
-
-/mob/living/simple_animal/hostile/commanded/bear/proc/remove_friend(mob/speaker,text)
-	var/list/targets = get_targets_by_name(text)
-	if(targets.len > 1 || !targets.len)
-		return FALSE
-
-	var/mob/living/former_friend = targets[1]
-
-	if(!isliving(former_friend)) //something is wrong. VERY wrong.
-		return
+/mob/living/simple_animal/hostile/commanded/bear/proc/remove_friend(mob/speaker,text, mob/target = null)
+	var/mob/living/former_friend = null
+	if(!target)
+		var/list/targets = get_targets_by_name(text)
+		if(targets.len > 1 || !targets.len)
+			return FALSE
+		if(!isliving(targets[1])) //something is wrong. VERY wrong.
+			return
+		former_friend = targets[1]
+	else
+		former_friend = target
 
 	if(weakref(former_friend) in friends)
 		friends -= weakref(former_friend)
 		audible_emote("roars at [former_friend]!")
+	else
+		audible_emote("shakes his head, visibly confused!") // Feedback for players
+
+
 
 /mob/living/simple_animal/hostile/commanded/bear/_examine_text(mob/user)
 	. = ..()
