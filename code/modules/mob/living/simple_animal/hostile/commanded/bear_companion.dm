@@ -32,12 +32,12 @@
 /mob/living/simple_animal/hostile/commanded/bear/hit_with_weapon(obj/item/O, mob/living/user, effective_force, hit_zone)
 	. = ..()
 	if(!.)
-		visible_emote("roars in rage!")
+		audible_emote("roars in rage!")
 
 /mob/living/simple_animal/hostile/commanded/bear/attack_hand(mob/living/carbon/human/M)
 	. = ..()
 	if(M.a_intent == I_HURT)
-		visible_emote("roars in rage!")
+		audible_emote("roars in rage!")
 
 /mob/living/simple_animal/hostile/commanded/bear/listen()
 	if(stance != COMMANDED_MISC) //cant listen if its booty shakin'
@@ -102,10 +102,10 @@
 		return
 
 	if(weakref(future_friend) in friends) // Already befriended
-		visible_emote("shakes his head, visibly confused!") // Feedback for players
+		audible_emote("shakes his head, visibly confused!") // Feedback for players
 		return
 	friends += weakref(future_friend)
-	visible_emote("growls affirmatevly, slightly bowing to [future_friend]!")
+	audible_emote("growls affirmatevly, slightly bowing to [future_friend]!")
 
 
 /mob/living/simple_animal/hostile/commanded/bear/proc/remove_friend(mob/speaker,text)
@@ -120,7 +120,7 @@
 
 	if(weakref(former_friend) in friends)
 		friends -= weakref(former_friend)
-		visible_emote("roars at [former_friend]!")
+		audible_emote("roars at [former_friend]!")
 
 /mob/living/simple_animal/hostile/commanded/bear/_examine_text(mob/user)
 	. = ..()
