@@ -43,6 +43,11 @@
 	if(stance != COMMANDED_MISC) //cant listen if its booty shakin'
 		return ..()
 
+/mob/living/simple_animal/hostile/commanded/bear/Life()
+	. = ..()
+	if(. && stance == COMMANDED_MISC)
+		stop_automated_movement = TRUE
+
 //Handles cursed dancing command as well as adds/removes friends
 /mob/living/simple_animal/hostile/commanded/bear/misc_command(mob/speaker,text)
 	for(var/command in known_commands)
@@ -56,31 +61,35 @@
 					remove_friend(speaker, text)
 
 /mob/living/simple_animal/hostile/commanded/bear/proc/dance()
-	stay_command()
+	stop_automated_movement = TRUE
 	stance = COMMANDED_MISC //nothing can stop this ride
+	src.visible_message("\The [src] starts to dance!.")
+	var/datum/gender/G = gender_datums[gender]
+	var/decl/emote/human/dance/dance_emote = new /decl/emote/human/dance
 	spawn(0)
-		src.visible_message("\The [src] starts to dance!.")
-		var/datum/gender/G = gender_datums[gender]
-		for(var/i in 1 to 10)
-			if(stance != COMMANDED_MISC || incapacitated()) //something has stopped this ride.
-				return
-			var/message = pick(\
-							"moves [G.his] head back and forth!",\
-							"bobs [G.his] booty!",\
-							"shakes [G.his] paws in the air!",\
-							"wiggles [G.his] ears!",\
-							"taps [G.his] foot!",\
-							"shrugs [G.his] shoulders!",\
-							"dances like you've never seen!")
-			if(dir != WEST)
-				set_dir(WEST)
-			else
-				set_dir(EAST)
-			src.visible_message("\The [src] [message]")
-			sleep(30)
-		stance = COMMANDED_STOP
-		set_dir(SOUTH)
-		src.visible_message("\The [src] bows, finished with [G.his] dance.")
+		dance_emote.do_emote(src)
+	for(var/i in 1 to 10)
+		if(stance != COMMANDED_MISC || incapacitated()) //something has stopped this ride.
+			return
+		var/message = pick(\
+						"moves [G.his] head back and forth!",\
+						"bobs [G.his] booty!",\
+						"shakes [G.his] paws in the air!",\
+						"wiggles [G.his] ears!",\
+						"taps [G.his] foot!",\
+						"shrugs [G.his] shoulders!",\
+						"dances like you've never seen!")
+		if(dir != WEST)
+			set_dir(WEST)
+		else
+			set_dir(EAST)
+		src.visible_message("\The [src] [message]")
+		sleep(30)
+	dance_emote.dancing.Remove(weakref(src))
+	set_dir(SOUTH)
+	src.visible_message("\The [src] bows, finished with [G.his] dance.")
+	stance = COMMANDED_STOP
+	stop_automated_movement = FALSE
 
 /mob/living/simple_animal/hostile/commanded/bear/proc/add_friend(mob/speaker,text)
 	var/list/targets = get_targets_by_name(text)
