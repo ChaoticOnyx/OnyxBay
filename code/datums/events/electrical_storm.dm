@@ -92,7 +92,7 @@
 	set_next_think(world.time + 3 SECONDS)
 
 /datum/event/electrical_storm/proc/end()
-	valid_apcs = list()
+	valid_apcs.Cut()
 	SSannounce.play_station_announce(/datum/announce/electrical_storm_clear)
 	SSevents.evars["electrical_storm_running"] = FALSE
 
