@@ -53,11 +53,13 @@
 			continue
 		if(isliving(A))
 			M = A
-		if(istype(A,/obj/mecha))
+		else if(istype(A,/obj/mecha))
 			var/obj/mecha/mecha = A
 			if(!mecha.occupant)
 				continue
 			M = mecha.occupant
+		else // If it is not living and not /obj/mecha/, then we have something strange going on.
+			continue
 		if(M && M.stat)
 			continue
 		if(mode == "specific")
@@ -190,3 +192,8 @@
 		stance = HOSTILE_STANCE_ATTACK
 		if(weakref(M) in friends)
 			friends -= weakref(M)
+
+/mob/living/simple_animal/hostile/commanded/AttackingTarget()
+	if(!client && target_mob == master) // we don't want mob attacking its master
+		return
+	. = ..()
