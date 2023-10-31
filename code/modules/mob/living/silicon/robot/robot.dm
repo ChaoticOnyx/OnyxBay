@@ -965,9 +965,9 @@
 /mob/living/silicon/robot/get_active_item()
 	var/obj/item/I = ..()
 	var/obj/item/gripper/grip = I
-	var/obj/item/surgical_selector/SS = I
 	if(istype(grip))
 		return grip.wrapped
+	var/obj/item/surgical_selector/SS = I
 	if(istype(SS))
 		return SS.selected_tool
 	return I
