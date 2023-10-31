@@ -5,6 +5,7 @@ GLOBAL_LIST_EMPTY(landmarks_list) // List of all landmarks created.
 
 var/global/list/cable_list = list()					//Index for all cables, so that powernets don't have to look through the entire world all the time
 var/global/list/chemical_reactions_list				//list of all /datum/chemical_reaction datums. Used during chemical reactions
+var/global/list/surgery_steps = list()				//list of all surgery steps  |BS12
 var/global/list/side_effects = list()				//list of all medical sideeffects types by thier names |BS12
 var/global/list/mechas_list = list()				//list of all mechs. Used by hostile mobs target tracking.
 var/global/list/joblist = list()					//list of all jobstypes, minus borg and AI
@@ -41,9 +42,6 @@ var/global/list/all_grabobjects[0]
 
 // Uplinks
 var/list/obj/item/device/uplink/world_uplinks = list()
-
-// Surgery steps
-GLOBAL_LIST_EMPTY(surgery_steps)
 
 //Preferences stuff
 //Hairstyles
@@ -187,10 +185,10 @@ var/global/list/string_slot_flags = list(
 		GLOB.body_marking_styles_list[M.name] = M
 
 	//Surgery Steps - Initialize all /datum/surgery_step into a list
-	paths = typesof(/datum/surgery_step) - /datum/surgery_step
-	for(var/path in paths)
-		var/datum/surgery_step/S = new path()
-		GLOB.surgery_steps += S
+	paths = typesof(/datum/surgery_step)-/datum/surgery_step
+	for(var/T in paths)
+		var/datum/surgery_step/S = new T
+		surgery_steps += S
 	sort_surgeries()
 
 	//List of job. I can't believe this was calculated multiple times per tick!
