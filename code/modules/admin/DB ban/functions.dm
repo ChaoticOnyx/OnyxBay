@@ -117,6 +117,21 @@
 		to_chat(usr, "<span class='notice'>Ban saved to database.</span>")
 		setter = key_name_admin(usr)
 	message_admins("[setter] has added a [bantype_str] for [ckey] [(job)?"([job])":""] [(duration > 0)?"([duration] minutes)":""] with the reason: \"[reason]\" to the ban database.",1)
+
+	if(config.indigo_bot.ban_webhook)
+		var/webhook_str = "BAN ADDED\n"
+		webhook_str += "**Type:** [bantype_str]\n"
+
+		if(job)
+			webhook_str += "**Job:** [job]\n"
+
+		webhook_str += "**Admin:** [a_ckey]\n"
+		webhook_str += "**Player:** [ckey]\n"
+		webhook_str += "**Reason:** [reason]\n"
+		webhook_str += "**Duration:** [(duration > 0)?"([duration] minutes)":"PERMANENT"]"
+
+		GLOB.indigo_bot.chat_webhook(config.indigo_bot.ban_webhook, webhook_str)
+
 	if(ismob(banned_mob) && banned_mob.client)
 		var/rendered_text = uppertext("You have been [(duration > 0) ? "temporarily ([duration] minutes)" : "permanently"] banned with the reason: ")
 		rendered_text = rendered_text + "\n\"[reason]\"."
@@ -195,6 +210,18 @@
 	if(!isnum(ban_id))
 		to_chat(usr, "<span class='warning'>Database update failed due to a ban ID mismatch. Contact the database admin.</span>")
 		return
+
+
+	if(config.indigo_bot.ban_webhook)
+		var/webhook_str = "BAN LIFTED\n"
+		webhook_str += "**Type:** [bantype_str]\n"
+
+		if(job)
+			webhook_str += "**Job:** [job]\n"
+
+		webhook_str += "**Player:** [ckey]"
+
+		GLOB.indigo_bot.chat_webhook(config.indigo_bot.ban_webhook, webhook_str)
 
 	DB_ban_unban_by_id(ban_id)
 
