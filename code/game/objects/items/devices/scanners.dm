@@ -125,6 +125,29 @@ REAGENT SCANNER
 	if(H.internal_organs_by_name[BP_STACK])
 		brain_data += SPAN("notice", "Subject has a neural lace implant.")
 
+	if(iscarbon(target))
+		var/mob/living/carbon/carbontarget = target
+		if(LAZYLEN(carbontarget.get_traumas()))
+			var/list/trauma_text = list()
+			for(var/datum/brain_trauma/trauma in carbontarget.get_traumas())
+				var/trauma_desc = ""
+				switch(trauma.resilience)
+					if(TRAUMA_RESILIENCE_SURGERY)
+						trauma_desc += "severe "
+					if(TRAUMA_RESILIENCE_LOBOTOMY)
+						trauma_desc += "deep-rooted "
+					if(TRAUMA_RESILIENCE_WOUND)
+						trauma_desc += "fracture-derived "
+					if(TRAUMA_RESILIENCE_MAGIC, TRAUMA_RESILIENCE_ABSOLUTE)
+						trauma_desc += "permanent "
+				trauma_desc += trauma.scan_desc
+				trauma_text += trauma_desc
+			brain_data += "<span class='alert ml-1'>Cerebral traumas detected: subject appears to be suffering from [english_list(trauma_text)].</span>\n"
+		if(carbontarget.quirks.len)
+			brain_data += "<span class='info ml-1'>Subject Major Disabilities: [carbontarget.get_quirk_string(FALSE, CAT_QUIRK_MAJOR_DISABILITY, from_scan = TRUE)].</span>\n"
+			if(advanced)
+				brain_data += "<span class='info ml-1'>Subject Minor Disabilities: [carbontarget.get_quirk_string(FALSE, CAT_QUIRK_MINOR_DISABILITY, TRUE)].</span>\n"
+
 	// Pulse rate.
 	var/blood_data = list()
 	var/pulse_result = "normal"

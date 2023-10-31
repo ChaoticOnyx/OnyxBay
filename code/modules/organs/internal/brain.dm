@@ -8,6 +8,7 @@
 
 	var/damage_threshold_value
 	var/healed_threshold = 1
+	var/list/datum/brain_trauma/traumas = list()
 
 /obj/item/organ/internal/cerebrum/brain/New(newLoc, mob/living/carbon/holder)
 	. = ..()
@@ -163,6 +164,132 @@
 		if(!owner.lying)
 			to_chat(owner, SPAN("danger", "You black out!"))
 		owner.Paralyse(10)
+
+////////////////////////////////////TRAUMAS////////////////////////////////////////
+
+/obj/item/organ/internal/cerebrum/brain/proc/has_trauma_type(brain_trauma_type = /datum/brain_trauma, resilience = TRAUMA_RESILIENCE_ABSOLUTE)
+	for(var/X in traumas)
+		var/datum/brain_trauma/BT = X
+		if(istype(BT, brain_trauma_type) && (BT.resilience <= resilience))
+			return BT
+
+/obj/item/organ/internal/cerebrum/brain/proc/get_traumas_type(brain_trauma_type = /datum/brain_trauma, resilience = TRAUMA_RESILIENCE_ABSOLUTE)
+	. = list()
+	for(var/X in traumas)
+		var/datum/brain_trauma/BT = X
+		if(istype(BT, brain_trauma_type) && (BT.resilience <= resilience))
+			. += BT
+
+/obj/item/organ/internal/cerebrum/brain/proc/can_gain_trauma(datum/brain_trauma/trauma, resilience, natural_gain = FALSE)
+	if(!ispath(trauma))
+		trauma = trauma.type
+	if(!initial(trauma.can_gain))
+		return FALSE
+	if(!resilience)
+		resilience = initial(trauma.resilience)
+
+	var/resilience_tier_count = 0
+	for(var/X in traumas)
+		if(istype(X, trauma))
+			return FALSE
+		var/datum/brain_trauma/T = X
+		if(resilience == T.resilience)
+			resilience_tier_count++
+
+	var/max_traumas
+	switch(resilience)
+		if(TRAUMA_RESILIENCE_BASIC)
+			max_traumas = TRAUMA_LIMIT_BASIC
+		if(TRAUMA_RESILIENCE_SURGERY)
+			max_traumas = TRAUMA_LIMIT_SURGERY
+		if(TRAUMA_RESILIENCE_WOUND)
+			max_traumas = TRAUMA_LIMIT_WOUND
+		if(TRAUMA_RESILIENCE_LOBOTOMY)
+			max_traumas = TRAUMA_LIMIT_LOBOTOMY
+		if(TRAUMA_RESILIENCE_MAGIC)
+			max_traumas = TRAUMA_LIMIT_MAGIC
+		if(TRAUMA_RESILIENCE_ABSOLUTE)
+			max_traumas = TRAUMA_LIMIT_ABSOLUTE
+
+	if(natural_gain && resilience_tier_count >= max_traumas)
+		return FALSE
+	return TRUE
+
+//Proc to use when directly adding a trauma to the brain, so extra args can be given
+/obj/item/organ/internal/cerebrum/brain/proc/gain_trauma(datum/brain_trauma/trauma, resilience, ...)
+	var/list/arguments = list()
+	if(args.len > 2)
+		arguments = args.Copy(3)
+	. = brain_gain_trauma(trauma, resilience, arguments)
+
+//Direct trauma gaining proc. Necessary to assign a trauma to its brain. Avoid using directly.
+/obj/item/organ/internal/cerebrum/brain/proc/brain_gain_trauma(datum/brain_trauma/trauma, resilience, list/arguments)
+	if(!can_gain_trauma(trauma, resilience))
+		return FALSE
+
+	var/datum/brain_trauma/actual_trauma
+	if(ispath(trauma))
+		if(!LAZYLEN(arguments))
+			actual_trauma = new trauma() //arglist with an empty list runtimes for some reason
+		else
+			actual_trauma = new trauma(arglist(arguments))
+	else
+		actual_trauma = trauma
+
+	if(actual_trauma.brain) //we don't accept used traumas here
+		WARNING("gain_trauma was given an already active trauma.")
+		return FALSE
+
+	add_trauma_to_traumas(actual_trauma)
+	if(owner)
+		actual_trauma.owner = owner
+		SEND_SIGNAL(owner, SIGNAL_CARBON_GAIN_TRAUMA, trauma)
+		actual_trauma.on_gain()
+	if(resilience)
+		actual_trauma.resilience = resilience
+	return actual_trauma
+
+/// Adds the passed trauma instance to our list of traumas and links it to our brain.
+/// DOES NOT handle setting up the trauma, that's done by [proc/brain_gain_trauma]!
+/obj/item/organ/internal/cerebrum/brain/proc/add_trauma_to_traumas(datum/brain_trauma/trauma)
+	trauma.brain = src
+	traumas += trauma
+
+/// Removes the passed trauma instance to our list of traumas and links it to our brain
+/// DOES NOT handle removing the trauma's effects, that's done by [/datum/brain_trauma/Destroy()]!
+/obj/item/organ/internal/cerebrum/brain/proc/remove_trauma_from_traumas(datum/brain_trauma/trauma)
+	trauma.brain = null
+	traumas -= trauma
+
+//Add a random trauma of a certain subtype
+/obj/item/organ/internal/cerebrum/brain/proc/gain_trauma_type(brain_trauma_type = /datum/brain_trauma, resilience, natural_gain = FALSE)
+	var/list/datum/brain_trauma/possible_traumas = list()
+	for(var/T in subtypesof(brain_trauma_type))
+		var/datum/brain_trauma/BT = T
+		if(can_gain_trauma(BT, resilience, natural_gain) && initial(BT.random_gain))
+			possible_traumas += BT
+
+	if(!LAZYLEN(possible_traumas))
+		return
+
+	var/trauma_type = pick(possible_traumas)
+	return gain_trauma(trauma_type, resilience)
+
+//Cure a random trauma of a certain resilience level
+/obj/item/organ/internal/cerebrum/brain/proc/cure_trauma_type(brain_trauma_type = /datum/brain_trauma, resilience = TRAUMA_RESILIENCE_BASIC)
+	var/list/traumas = get_traumas_type(brain_trauma_type, resilience)
+	if(LAZYLEN(traumas))
+		qdel(pick(traumas))
+
+/obj/item/organ/internal/cerebrum/brain/proc/cure_all_traumas(resilience = TRAUMA_RESILIENCE_BASIC)
+	var/amount_cured = 0
+	var/list/traumas = get_traumas_type(resilience = resilience)
+	for(var/X in traumas)
+		qdel(X)
+		amount_cured++
+	return amount_cured
+
+
 
 /obj/item/organ/internal/cerebrum/brain/xeno
 	name = "thinkpan"

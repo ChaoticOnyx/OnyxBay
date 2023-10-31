@@ -21,3 +21,8 @@
 
 /// from turf CtrlClickOn(): (/mob)
 #define SIGNAL_MOB_CTRL_CLICK "mob_ctrl_click"
+
+///Called when a carbon gets a brain trauma (source = carbon, trauma = what trauma was added) - this is before on_gain()
+#define SIGNAL_CARBON_GAIN_TRAUMA "carbon_gain_trauma"
+///Called when a carbon loses a brain trauma (source = carbon, trauma = what trauma was removed)
+#define SIGNAL_CARBON_LOSE_TRAUMA "carbon_lose_trauma"
