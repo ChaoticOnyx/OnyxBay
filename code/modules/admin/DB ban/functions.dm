@@ -128,7 +128,7 @@
 		webhook_str += "**Admin:** [a_ckey]\n"
 		webhook_str += "**Player:** [ckey]\n"
 		webhook_str += "**Reason:** [reason]\n"
-		webhook_str += "**Duration:** [(duration > 0)?"([duration] minutes)":"PERMANENT"]"
+		webhook_str += "**Duration:** [(duration > 0) ? "[duration] minutes" : "PERMANENT"]"
 
 		GLOB.indigo_bot.chat_webhook(config.indigo_bot.ban_webhook, webhook_str)
 
