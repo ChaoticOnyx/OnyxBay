@@ -14,7 +14,7 @@
 /datum/surgery_step/internal/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	. = ..()
 	if(!.)
-		return
+		return .
 
 	if(BP_IS_ROBOTIC(parent_organ))
 		return parent_organ.hatch_state == HATCH_OPENED
@@ -90,8 +90,8 @@
 /**
  * Organ detachment step using any sharp object, doesn't work on sinths.
  */
-/datum/surgery_step/internal/detach_organ
-	duration = DETACH_DURATION
+/datum/surgery_step/internal/detatch_organ
+	duration = DETATCH_DURATION
 
 	allowed_tools = list(
 		/obj/item/scalpel = 100,
@@ -100,10 +100,10 @@
 		/obj/item/material/shard = 50
 		)
 
-/datum/surgery_step/internal/detach_organ/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
+/datum/surgery_step/internal/detatch_organ/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && !BP_IS_ROBOTIC(parent_organ))
 
-/datum/surgery_step/internal/detach_organ/pick_target_organ(atom/user, mob/living/carbon/human/target, target_zone)
+/datum/surgery_step/internal/detatch_organ/pick_target_organ(atom/user, mob/living/carbon/human/target, target_zone)
 	var/list/attached_organs = list()
 	for(var/obj/item/organ/O in target.internal_organs)
 		if(O.parent_organ != target_zone)
@@ -125,7 +125,7 @@
 
 	return selected_organ
 
-/datum/surgery_step/internal/detach_organ/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/internal/detatch_organ/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,
 		"[user] starts to separate [target]'s [target_organ] with \the [tool].",
 		"You start to separate [target]'s [target_organ] with \the [tool]."
@@ -133,14 +133,14 @@
 	target.custom_pain("Someone's ripping out your [target_organ]!", 100)
 	return ..()
 
-/datum/surgery_step/internal/detach_organ/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/internal/detatch_organ/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_success(user,
 		"[user] has separated [target]'s [target_organ] with \the [tool].",
 		"You have separated [target]'s [target_organ] with \the [tool]."
 		)
 	target_organ.cut_away(target_organ.owner)
 
-/datum/surgery_step/internal/detach_organ/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/internal/detatch_organ/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
 		"[user]'s hand slips, slicing an artery inside [target]'s [parent_organ] with \the [tool]!",
 		"Your hand slips, slicing an artery inside [target]'s [parent_organ] with \the [tool]!"
@@ -156,6 +156,7 @@
  * Removes organ from parent using any poking tool.
  */
 /datum/surgery_step/internal/remove_organ
+	priority = 2
 	duration = CLAMP_DURATION
 
 	allowed_tools = list(

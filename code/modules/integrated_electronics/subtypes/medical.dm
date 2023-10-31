@@ -188,7 +188,7 @@
 		return
 	if(istype(I, /obj/item/scalpel))
 		operation_intent = SURGERY_ORGAN_DISCONNECT
-		st = new /datum/surgery_step/internal/detach_organ()
+		st = new /datum/surgery_step/internal/detatch_organ()
 	else if(istype(I, /obj/item/hemostat))
 		operation_intent = SURGERY_ORGAN_REMOVE
 		st = new /datum/surgery_step/internal/remove_organ()
