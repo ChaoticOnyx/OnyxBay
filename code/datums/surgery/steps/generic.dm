@@ -7,8 +7,8 @@
 	/// Whether parent organ is required not to be a stump.
 	var/check_stump = TRUE
 
-/datum/surgery_step/generic/check_zone(mob/living/carbon/human/target, target_zone)
-	return ..() && target_zone != BP_MOUTH
+/datum/surgery_step/generic/check_zone(target_zone)
+	return ..() && target_zone != BP_EYES
 
 /datum/surgery_step/generic/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	. = ..()
@@ -38,7 +38,7 @@
 	duration = CAUTERIZE_DURATION
 	check_stump = FALSE
 
-/datum/surgery_step/generic/cauterize/check_zone(mob/living/carbon/human/target, target_zone)
+/datum/surgery_step/generic/cauterize/check_zone(target_zone)
 	return (..() && target_zone != BP_MOUTH)
 
 /datum/surgery_step/generic/cauterize/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)

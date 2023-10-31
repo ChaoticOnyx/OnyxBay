@@ -10,19 +10,12 @@
 	return (..() && target_zone == BP_MOUTH)
 
 /datum/surgery_step/face/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	. = ..()
-	if(!.)
-		return
-
-	if(BP_IS_ROBOTIC(parent_organ))
-		return FALSE
-
-	return !parent_organ.is_stump()
+	return (..() && !BP_IS_ROBOTIC(parent_organ))
 
 /**
  * Facial tissue cutting step.
  */
-/datum/surgery_step/face/cut_face
+/datum/surgery_step/generic/cut_face
 	duration = CUT_DURATION * FACE_SPEED_MOFIFIER
 
 	allowed_tools = list(
@@ -31,24 +24,27 @@
 		/obj/item/material/shard = 50
 		)
 
-/datum/surgery_step/face/cut_face/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
-	return target.surgery_status.face == 0
+/datum/surgery_step/generic/cut_face/check_zone(target_zone)
+	return (..() && target_zone == BP_MOUTH)
 
-/datum/surgery_step/face/cut_face/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/generic/cut_face/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
+	return (..() && target.surgery_status.face == 0)
+
+/datum/surgery_step/generic/cut_face/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,
 		"[user] starts to cut open [target]'s face and neck with \the [tool].",
 		"You start to cut open [target]'s face and neck with \the [tool]."
 		)
 	return ..()
 
-/datum/surgery_step/face/cut_face/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/generic/cut_face/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_success(user,
 		"[user] has cut open [target]'s face and neck with \the [tool].",
 		"You have cut open [target]'s face and neck with \the [tool]."
 		)
 	target.surgery_status.face = 1
 
-/datum/surgery_step/face/cut_face/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+/datum/surgery_step/generic/cut_face/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
 		"[user]'s hand slips, slicing [target]'s throat wth \the [tool]!",
 		"Your hand slips, slicing [target]'s throat wth \the [tool]!"

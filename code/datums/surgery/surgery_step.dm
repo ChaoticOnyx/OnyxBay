@@ -127,7 +127,7 @@
 
 /// Returns parent organ's tag depending on zone, currently used by eyes only.
 /datum/surgery_step/proc/get_parent_zone(target_zone)
-	if(target_zone == BP_EYES)
+	if(target_zone == BP_EYES || target_zone == BP_MOUTH)
 		return BP_HEAD
 
 	return target_zone
