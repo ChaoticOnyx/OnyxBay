@@ -74,6 +74,10 @@
 				A = show_radial_menu(usr, usr, make_item_radial_menu_choices(holder.accessories), radius = 42)
 			if(!istype(A))
 				return
+
+			if(user.incapacitated()  || !user.Adjacent(src))
+				return
+
 			visible_message("<span class='danger'>\The [user] is trying to remove \the [src]'s [A.name]!</span>")
 
 			if(!do_after(user, HUMAN_STRIP_DELAY, src))
