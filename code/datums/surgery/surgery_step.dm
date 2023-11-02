@@ -1,6 +1,8 @@
 /datum/surgery_step
 	/// Whether performing this step can cause infection.
 	var/can_infect = FALSE
+	/// Whether this step require not covered organ.
+	var/need_uncovered_organ = TRUE
 	/// Whether this step can be successfully performed on any surface.
 	var/delicate = FALSE
 	/**
@@ -65,7 +67,7 @@
 	if(!check_zone(target, parent_zone))
 		return FALSE
 
-	if(!check_clothing(target, target_zone))
+	if(need_uncovered_organ && !check_clothing(target, target_zone))
 		to_chat(user, SPAN_DANGER("Clothing on [target]'s [organ_name_by_zone(target, target_zone)] blocks surgery!"))
 		return SURGERY_FAILURE
 
