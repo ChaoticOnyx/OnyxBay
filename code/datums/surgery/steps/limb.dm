@@ -2,7 +2,6 @@
  * Default limb attachment step, does nothing.
  */
 /datum/surgery_step/limb
-	accessible = FALSE
 	delicate = TRUE
 	shock_level = 40
 	priority = 3 // Must be higher than /datum/surgery_step/internal.
