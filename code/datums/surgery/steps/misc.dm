@@ -2,7 +2,7 @@
  * Cutting powersuit step.
  */
 /datum/surgery_step/powersuit
-	need_uncovered_organ = FALSE
+	needs_uncovered_organ = FALSE
 	priority = 3
 	duration = SAW_DURATION * 2
 
