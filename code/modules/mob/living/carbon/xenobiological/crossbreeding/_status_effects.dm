@@ -543,6 +543,10 @@
 			if(S.amount < S.max_amount)
 				sheets += S
 
+		for(var/obj/item/stack/material/S in holder.back.contents)
+			if(S.amount < S.max_amount)
+				sheets += S
+
 		if(sheets.len > 0)
 			var/obj/item/stack/material/S = pick(sheets)
 			S.amount++
