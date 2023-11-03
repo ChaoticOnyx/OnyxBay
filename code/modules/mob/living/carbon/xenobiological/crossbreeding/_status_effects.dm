@@ -1034,7 +1034,7 @@
 	if(H.is_asystole() && !isundead(H))
 		return TRUE
 	var/trauma_val = max(H.shock_stage, H.get_shock()) / H.species.total_health
-	if(trauma_val >= 1)
+	if(trauma_val > 0.7)
 		return TRUE
 
 /datum/modifier/status_effect/stabilized/rainbow/think()
