@@ -344,6 +344,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 		if(!newname)	//we'll stick with the oldname then
 			return
 
+		log_and_message_admins("has renamed the [role] '[oldname]' to '[newname]'")
 		fully_replace_character_name(newname)
 
 
