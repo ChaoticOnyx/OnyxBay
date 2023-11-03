@@ -119,7 +119,7 @@ Industrial extracts:
 	colour = "silver"
 	effect_desc = "Produces random food and drink items."
 	plasmarequired = 30
-	//Item picked below.
+	itempath = /obj/item/reagent_containers/food/candy_corn
 
 /obj/item/metroidcross/industrial/silver/do_after_spawn(obj/item/spawned)
 	itempath = pick(typesof(/obj/item/reagent_containers/food) - /obj/item/reagent_containers/food)
