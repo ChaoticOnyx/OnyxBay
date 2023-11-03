@@ -828,3 +828,83 @@
 	name = "Janitor cyborg model"
 	id = "remodel_janitor"
 	build_path = /obj/item/borg/upgrade/remodel/janitor
+
+/datum/design/item/robot_upgrade/gal_com_speech_synthesis_module
+	name = "'Galactic Common' speech synthesis module"
+	id = "gal_com_speech_synthesis_module"
+	build_type = MECHFAB
+	category = "Robot Modules"
+	time = 12
+	req_tech = list(TECH_DATA = 1, TECH_BIO = 3)
+	materials = list(MATERIAL_STEEL = 20000, MATERIAL_GLASS = 4000)
+	build_path = /obj/item/borg/upgrade/speech_synthesis_module/gal_com
+
+/datum/design/item/robot_upgrade/sol_com_speech_synthesis_module
+	name = "'Sol Commonn' speech synthesis module"
+	id = "sol_com_speech_synthesis_module"
+	build_type = MECHFAB
+	category = "Robot Modules"
+	time = 12
+	req_tech = list(TECH_DATA = 1, TECH_BIO = 3)
+	materials = list(MATERIAL_STEEL = 20000, MATERIAL_GLASS = 4000)
+	build_path = /obj/item/borg/upgrade/speech_synthesis_module/sol_com
+
+/datum/design/item/robot_upgrade/unathi_speech_synthesis_module
+	name = "'Unathi' speech synthesis module"
+	id = "unathi_speech_synthesis_module"
+	build_type = MECHFAB
+	category = "Robot Modules"
+	time = 12
+	req_tech = list(TECH_DATA = 1, TECH_BIO = 3)
+	materials = list(MATERIAL_STEEL = 20000, MATERIAL_GLASS = 4000)
+	build_path = /obj/item/borg/upgrade/speech_synthesis_module/unathi
+
+/datum/design/item/robot_upgrade/skrellian_speech_synthesis_module
+	name = "'Skrellian' speech synthesis module"
+	id = "skrellian_speech_synthesis_module"
+	build_type = MECHFAB
+	category = "Robot Modules"
+	time = 12
+	req_tech = list(TECH_DATA = 1, TECH_BIO = 3)
+	materials = list(MATERIAL_STEEL = 20000, MATERIAL_GLASS = 4000)
+	build_path = /obj/item/borg/upgrade/speech_synthesis_module/skrellian
+
+/datum/design/item/robot_upgrade/lunar_speech_synthesis_module
+	name = "'Lunar' speech synthesis module"
+	id = "lunar_speech_synthesis_module"
+	build_type = MECHFAB
+	category = "Robot Modules"
+	time = 12
+	req_tech = list(TECH_DATA = 1, TECH_BIO = 3)
+	materials = list(MATERIAL_STEEL = 20000, MATERIAL_GLASS = 4000)
+	build_path = /obj/item/borg/upgrade/speech_synthesis_module/lunar
+
+/datum/design/item/robot_upgrade/gutter_speech_synthesis_module
+	name = "'Gutter' speech synthesis module"
+	id = "gutter_speech_synthesis_module"
+	build_type = MECHFAB
+	category = "Robot Modules"
+	time = 12
+	req_tech = list(TECH_DATA = 1, TECH_BIO = 3)
+	materials = list(MATERIAL_STEEL = 20000, MATERIAL_GLASS = 4000)
+	build_path = /obj/item/borg/upgrade/speech_synthesis_module/gutter
+
+/datum/design/item/robot_upgrade/independent_speech_synthesis_module
+	name = "'Independent' speech synthesis module"
+	id = "independent_speech_synthesis_module"
+	build_type = MECHFAB
+	category = "Robot Modules"
+	time = 12
+	req_tech = list(TECH_DATA = 1, TECH_BIO = 3)
+	materials = list(MATERIAL_STEEL = 20000, MATERIAL_GLASS = 4000)
+	build_path = /obj/item/borg/upgrade/speech_synthesis_module/independent
+
+/datum/design/item/robot_upgrade/spacer_speech_synthesis_module
+	name = "'Spacer' speech synthesis module"
+	id = "spacer_speech_synthesis_module"
+	build_type = MECHFAB
+	category = "Robot Modules"
+	time = 12
+	req_tech = list(TECH_DATA = 1, TECH_BIO = 3)
+	materials = list(MATERIAL_STEEL = 20000, MATERIAL_GLASS = 4000)
+	build_path = /obj/item/borg/upgrade/speech_synthesis_module/spacer

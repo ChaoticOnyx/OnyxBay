@@ -24,15 +24,15 @@ GLOBAL_LIST_INIT(robot_modules, list(
 	var/channels = list()
 	var/networks = list()
 	var/languages = list(
-		LANGUAGE_SOL_COMMON = 1,
-		LANGUAGE_LUNAR = 1,
+		LANGUAGE_SOL_COMMON = 0,
+		LANGUAGE_LUNAR = 0,
 		LANGUAGE_UNATHI = 0,
 		LANGUAGE_SIIK_MAAS = 0,
 		LANGUAGE_SKRELLIAN = 0,
-		LANGUAGE_GUTTER = 1,
+		LANGUAGE_GUTTER = 0,
 		LANGUAGE_SIGN = 0,
-		LANGUAGE_INDEPENDENT = 1,
-		LANGUAGE_SPACER = 1)
+		LANGUAGE_INDEPENDENT = 0,
+		LANGUAGE_SPACER = 0)
 	var/hulls = list()
 	var/can_be_pushed = 1
 	var/no_slip = 0
@@ -48,7 +48,15 @@ GLOBAL_LIST_INIT(robot_modules, list(
 		/obj/item/borg/upgrade/visor/x_ray,
 		/obj/item/borg/upgrade/storage,
 		/obj/item/borg/upgrade/visor/flash_screen,
-		/obj/item/borg/upgrade/death_alarm
+		/obj/item/borg/upgrade/death_alarm,
+		/obj/item/borg/upgrade/speech_synthesis_module/gal_com,
+		/obj/item/borg/upgrade/speech_synthesis_module/sol_com,
+		/obj/item/borg/upgrade/speech_synthesis_module/unathi,
+		/obj/item/borg/upgrade/speech_synthesis_module/skrellian,
+		/obj/item/borg/upgrade/speech_synthesis_module/lunar,
+		/obj/item/borg/upgrade/speech_synthesis_module/gutter,
+		/obj/item/borg/upgrade/speech_synthesis_module/independent,
+		/obj/item/borg/upgrade/speech_synthesis_module/spacer
 	)
 
 	// Bookkeeping

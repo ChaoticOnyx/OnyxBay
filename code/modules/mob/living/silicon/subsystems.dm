@@ -7,6 +7,9 @@
 	)
 
 /mob/living/silicon/ai/New()
+	add_language(LANGUAGE_GALCOM)
+	default_language = all_languages[LANGUAGE_GALCOM]
+
 	silicon_subsystems.Cut()
 	for(var/subtype in subtypesof(/datum/nano_module))
 		var/datum/nano_module/NM = subtype
