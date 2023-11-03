@@ -1430,7 +1430,6 @@ May God have mercy.
 	species_allowed = list(SPECIES_SKRELL)
 
 /datum/sprite_accessory/hair/skrell_short_mid_bun
-
 	name = "Skrell Short Bun"
 	icon_state = "skrell_short_mid_bun"
 	species_allowed = list(SPECIES_SKRELL)
