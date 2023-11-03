@@ -840,7 +840,7 @@
 	build_path = /obj/item/borg/upgrade/speech_synthesis_module/gal_com
 
 /datum/design/item/robot_upgrade/sol_com_speech_synthesis_module
-	name = "'Sol Commonn' speech synthesis module"
+	name = "'Sol Common' speech synthesis module"
 	id = "sol_com_speech_synthesis_module"
 	build_type = MECHFAB
 	category = "Robot Modules"
