@@ -63,6 +63,20 @@
 	// Components are basically robot organs.
 	var/list/components = list()
 
+	var/static/default_languages = list(
+		LANGUAGE_ROBOT = 1,
+		LANGUAGE_EAL =  1,
+		LANGUAGE_GALCOM = 0,
+		LANGUAGE_SOL_COMMON = 0,
+		LANGUAGE_LUNAR = 0,
+		LANGUAGE_UNATHI = 0,
+		LANGUAGE_SIIK_MAAS = 0,
+		LANGUAGE_SKRELLIAN = 0,
+		LANGUAGE_GUTTER = 0,
+		LANGUAGE_SIGN = 0,
+		LANGUAGE_INDEPENDENT = 0,
+		LANGUAGE_SPACER = 0)
+
 	var/obj/item/organ/internal/cerebrum/mmi = null
 
 	var/obj/item/device/pda/ai/rbPDA = null
@@ -115,8 +129,9 @@
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
 
-	add_language(LANGUAGE_ROBOT, 1)
-	add_language(LANGUAGE_EAL, 1)
+	add_languages()
+	default_language = all_languages[LANGUAGE_EAL]
+	species_language = all_languages[LANGUAGE_EAL]
 
 	wires = new(src)
 
@@ -170,6 +185,10 @@
 /mob/living/silicon/robot/Initialize()
 	. = ..()
 	AddMovementHandler(/datum/movement_handler/robot/use_power, /datum/movement_handler/mob/space)
+
+/mob/living/silicon/robot/proc/add_languages()
+	for(var/lang in default_languages)
+		add_language(lang, default_languages[lang])
 
 /mob/living/silicon/robot/proc/recalculate_synth_capacities()
 	if(!module || !module.synths)

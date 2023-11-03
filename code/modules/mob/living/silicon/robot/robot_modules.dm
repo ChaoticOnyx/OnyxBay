@@ -24,6 +24,7 @@ GLOBAL_LIST_INIT(robot_modules, list(
 	var/channels = list()
 	var/networks = list()
 	var/languages = list(
+		LANGUAGE_GALCOM = 0,
 		LANGUAGE_SOL_COMMON = 0,
 		LANGUAGE_LUNAR = 0,
 		LANGUAGE_UNATHI = 0,

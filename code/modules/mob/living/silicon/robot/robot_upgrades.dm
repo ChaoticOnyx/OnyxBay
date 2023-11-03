@@ -770,11 +770,6 @@
 
 	var/language
 
-/obj/item/borg/upgrade/speech_synthesis_module/Initialize()
-	. = ..()
-
-	name = "'[language]'' speech synthesis module"
-
 /obj/item/borg/upgrade/speech_synthesis_module/action(mob/living/silicon/robot/R)
 	if(..())
 		return FALSE
@@ -791,6 +786,7 @@
 	return TRUE
 
 /obj/item/borg/upgrade/speech_synthesis_module/gal_com
+	name = "'Galactic Common' speech synthesis module"
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 	origin_tech = list(TECH_DATA = 1, TECH_BIO = 3)
@@ -798,6 +794,7 @@
 	language = LANGUAGE_GALCOM
 
 /obj/item/borg/upgrade/speech_synthesis_module/sol_com
+	name = "'Sol Commonn' speech synthesis module"
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 	origin_tech = list(TECH_DATA = 1, TECH_BIO = 3)
@@ -805,6 +802,7 @@
 	language = LANGUAGE_SOL_COMMON
 
 /obj/item/borg/upgrade/speech_synthesis_module/unathi
+	name = "'Unathi' speech synthesis module"
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 	origin_tech = list(TECH_DATA = 1, TECH_BIO = 3)
@@ -812,6 +810,7 @@
 	language = LANGUAGE_UNATHI
 
 /obj/item/borg/upgrade/speech_synthesis_module/skrellian
+	name = "'Skrellian' speech synthesis module"
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 	origin_tech = list(TECH_DATA = 1, TECH_BIO = 3)
@@ -819,6 +818,7 @@
 	language = LANGUAGE_SKRELLIAN
 
 /obj/item/borg/upgrade/speech_synthesis_module/lunar
+	name = "'Lunar' speech synthesis module"
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 	origin_tech = list(TECH_DATA = 1, TECH_BIO = 3)
@@ -826,6 +826,7 @@
 	language = LANGUAGE_LUNAR
 
 /obj/item/borg/upgrade/speech_synthesis_module/gutter
+	name = "'Gutter' speech synthesis module"
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 	origin_tech = list(TECH_DATA = 1, TECH_BIO = 3)
@@ -833,6 +834,7 @@
 	language = LANGUAGE_GUTTER
 
 /obj/item/borg/upgrade/speech_synthesis_module/independent
+	name = "'Independent' speech synthesis module"
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 	origin_tech = list(TECH_DATA = 1, TECH_BIO = 3)
@@ -840,6 +842,7 @@
 	language = LANGUAGE_INDEPENDENT
 
 /obj/item/borg/upgrade/speech_synthesis_module/spacer
+	name = "'Spacer' speech synthesis module"
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 	origin_tech = list(TECH_DATA = 1, TECH_BIO = 3)
