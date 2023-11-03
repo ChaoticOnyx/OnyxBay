@@ -76,6 +76,7 @@ meteor_act
 				SP.loc = organ
 				organ.embed(SP)
 
+	projectile_affect_poise(P, P.poisedamage * blocked_mult(blocked), def_zone)
 	projectile_hit_bloody(P, P.damage*blocked_mult(blocked), def_zone)
 
 	return blocked
@@ -747,6 +748,30 @@ meteor_act
 					update_inv_glasses(0)
 			if(BP_CHEST)
 				bloody_body(src)
+
+/mob/living/carbon/human/proc/projectile_affect_poise(obj/item/projectile/P, poisedamage, hit_zone)
+	if(!poisedamage)
+		return 0 //save a couple of nanoseconds
+
+	if(status_flags & GODMODE)
+		return 0 //godmode
+
+	var/pd_mult = 1.0
+	switch(hit_zone)
+		if(BP_HEAD)
+			pd_mult = 1.35
+		if(BP_CHEST)
+			pd_mult = 1.0
+		if(BP_GROIN)
+			pd_mult = 1.15
+		else
+			pd_mult = 0.75
+
+	damage_poise(poisedamage * pd_mult)
+	if(poise <= 25 && !prob(poise * 3))
+		apply_effect(max(3, (poisedamage * pd_mult / 4)), WEAKEN)
+		if(!lying)
+			visible_message(SPAN("danger", "[src] goes down under the impact of \the [P]!"))
 
 /mob/living/carbon/human/proc/attack_joint(obj/item/organ/external/organ, obj/item/W, effective_force, dislocate_mult, blocked)
 	if(!organ || (organ.dislocated == 2) || (organ.dislocated == -1) || blocked >= 100)
