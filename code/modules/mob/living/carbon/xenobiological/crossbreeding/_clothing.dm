@@ -123,10 +123,10 @@
 			set_next_think(world.time+10 SECOND)
 
 /obj/item/clothing/head/hairflower/peaceflower/can_be_unequipped_by(mob/M, slot, disable_warning)
-	if(M==loc)
+	if(M==loc && slot==slot_head)
 		to_chat(M, SPAN_WARNING("You feel at peace. <b style='color:pink'>Why would you want anything else?</b>"))
 		return FALSE
-	..()
+	return ..()
 
 /obj/item/clothing/head/hairflower/peaceflower/dropped()
 	if(ishuman(loc))

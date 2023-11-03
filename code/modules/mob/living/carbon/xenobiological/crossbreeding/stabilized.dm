@@ -73,7 +73,7 @@ Stabilized extracts:
 
 /obj/item/metroidcross/stabilized/metal
 	colour = "metal"
-	effect_desc = "Every 30 seconds, adds a sheet of material to a random stack in the owner's backpack."
+	effect_desc = "Every 30 seconds, adds a sheet of material to a random stack in the owner's backpack or hands."
 
 /obj/item/metroidcross/stabilized/yellow
 	colour = "yellow"
@@ -195,6 +195,7 @@ Stabilized extracts:
 	if(istype(regen) && !regencore)
 		to_chat(user, SPAN_NOTICE("You place [O] in [src], prepping the extract for automatic application!"))
 		regencore = regen
+		user.drop(regen)
 		regen.forceMove(src)
 		return
 	return ..()

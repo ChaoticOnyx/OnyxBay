@@ -118,9 +118,9 @@
 /obj/item/flame/lighter/zippo/metroid
 	name = "metroid zippo"
 	desc = "A specialty zippo made from metroids and industry. Has a much hotter flame than normal."
-	icon_state = "slighter"
-	light_color = COLOR_LIGHT_CYAN
-	flame_overlay = "metroid"
+	icon_state = "zippo-metroid"
+	light_color = COLOR_PALE_GREEN_GRAY
+	flame_overlay = "metroidoverlay"
 
 //Gold capture device - Chilling Gold
 /obj/item/capturedevice

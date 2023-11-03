@@ -12,7 +12,7 @@ Consuming extracts:
 	var/nutriment_required = 10
 	var/cooldown = 600 //1 minute.
 	var/last_produced = 0
-	var/cookies = 5 //Number of cookies to spawn
+	var/cookies = 3 //Number of cookies to spawn
 	var/cookietype = /obj/item/metroid_cookie
 
 /obj/item/metroidcross/consuming/attackby(obj/item/O, mob/user)
@@ -20,14 +20,21 @@ Consuming extracts:
 		if(last_produced + cooldown > world.time)
 			to_chat(user, SPAN_WARNING("[src] is still digesting after its last meal!"))
 			return
-		var/datum/reagent/N = O.reagents.has_reagent(/datum/reagent/nutriment)
-		if(N)
-			nutriment_eaten += N.volume
-			to_chat(user, SPAN_NOTICE("[src] opens up and swallows [O] whole!"))
-			qdel(O)
-			playsound(src, 'sound/items/eatfood.ogg', 20, TRUE)
-		else
+		var/list/nutriments = new /list()
+		for(var/datum/reagent/nutriment/N in O.reagents.reagent_list)
+			if(istype(N, /datum/reagent/nutriment))
+				nutriments += N
+
+		if(isemptylist(nutriments))
 			to_chat(user, SPAN_WARNING("[src] burbles unhappily at the offering."))
+			return
+
+		for(var/datum/reagent/nutriment/N in nutriments)
+			nutriment_eaten += N.volume
+
+		to_chat(user, SPAN_NOTICE("[src] opens up and swallows [O] whole!"))
+		qdel(O)
+		playsound(src, 'sound/items/eatfood.ogg', 20, TRUE)
 		if(nutriment_eaten >= nutriment_required)
 			nutriment_eaten = 0
 			user.visible_message(SPAN_NOTICE("[src] swells up and produces a small pile of cookies!"))
@@ -249,7 +256,7 @@ Consuming extracts:
 	colour = "cerulean"
 	effect_desc = "Creates a metroid cookie that has a chance to make another once you eat it."
 	cookietype = /obj/item/metroid_cookie/cerulean
-	cookies = 3 //You're gonna get more.
+	cookies = 2 //You're gonna get more.
 
 /obj/item/metroid_cookie/cerulean
 	name = "duplicookie"
