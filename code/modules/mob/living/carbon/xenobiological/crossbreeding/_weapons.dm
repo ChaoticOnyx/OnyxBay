@@ -44,7 +44,7 @@
 	mod_handy = 1.5
 	mod_shield = 2.0
 	block_tier = BLOCK_TIER_PROJECTILE
-	force = 0
+	force = 15.0
 	throw_range = 1 //How far do you think you're gonna throw a solid crystalline shield...?
 	throw_speed = 2
 	attack_verb = list("bashes", "pounds", "slams")
