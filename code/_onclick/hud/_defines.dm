@@ -137,13 +137,6 @@
 #define ui_block "EAST-4:24,SOUTH:5"
 #define ui_blockswitch "EAST-4:24,SOUTH:5"
 
-//Vrhuman
-#define ui_vrhuman_shop "WEST+2:-2,SOUTH+4:20"
-#define ui_vrhuman_exit "WEST+1:-2,SOUTH+4:20"
-#define ui_vrhuman_main "WEST:-2,SOUTH+4:20"
-#define ui_vrhuman_cleanup "WEST+3:-2,SOUTH+4:20"
-#define ui_vrhuman_dienow "WEST+4:-2,SOUTH+4:20"
-
 // AI
 #define ui_ai_core "SOUTH:6,WEST"
 #define ui_ai_core_display "SOUTH:6,WEST+1"
