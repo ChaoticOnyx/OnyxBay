@@ -1,17 +1,13 @@
 //Rainbow knife - Burning Rainbow
-/obj/item/knife/rainbowknife
+/obj/item/material/hatchet/tacknife/rainbowknife
 	name = "rainbow knife"
 	desc = "A strange, transparent knife which constantly shifts color. It hums slightly when moved."
 	icon = 'icons/obj/xenobiology/metroidcrossing.dmi'
 	icon_state = "rainbowknife"
 	item_state = "rainbowknife"
-	force = 15
-	throwforce = 15
-	damtype = BRUTE
 
-/obj/item/knife/rainbowknife/afterattack(atom/O, mob/user, proximity)
-	if(proximity && isliving(O))
-		damtype = pick(BRUTE, BURN, TOX, OXY, CLONE)
+/obj/item/material/hatchet/tacknife/rainbowknife/resolve_attackby(atom/A, mob/user, click_params)
+	damtype = pick(BRUTE, BURN, TOX, OXY, CLONE)
 	switch(damtype)
 		if(BRUTE)
 			hitsound = 'sound/weapons/bladeslice.ogg'

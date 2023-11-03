@@ -396,5 +396,5 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/rainbow/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] flattens into a glowing rainbow blade."))
-	new /obj/item/knife/rainbowknife(get_turf(user))
+	new /obj/item/material/hatchet/tacknife/rainbowknife(get_turf(user))
 	..()
