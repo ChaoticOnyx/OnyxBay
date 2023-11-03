@@ -787,7 +787,6 @@
 
 /obj/item/borg/upgrade/speech_synthesis_module/gal_com
 	name = "'Galactic Common' speech synthesis module"
-	desc = "Allows to synthesize natural speech."
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 	origin_tech = list(TECH_DATA = 1, TECH_BIO = 3)
@@ -796,7 +795,6 @@
 
 /obj/item/borg/upgrade/speech_synthesis_module/sol_com
 	name = "'Sol Commonn' speech synthesis module"
-	desc = "Allows to synthesize natural speech."
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 	origin_tech = list(TECH_DATA = 1, TECH_BIO = 3)
@@ -805,7 +803,6 @@
 
 /obj/item/borg/upgrade/speech_synthesis_module/unathi
 	name = "'Unathi' speech synthesis module"
-	desc = "Allows to synthesize natural speech."
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 	origin_tech = list(TECH_DATA = 1, TECH_BIO = 3)
@@ -814,7 +811,6 @@
 
 /obj/item/borg/upgrade/speech_synthesis_module/skrellian
 	name = "'Skrellian' speech synthesis module"
-	desc = "Allows to synthesize natural speech."
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 	origin_tech = list(TECH_DATA = 1, TECH_BIO = 3)
@@ -823,7 +819,6 @@
 
 /obj/item/borg/upgrade/speech_synthesis_module/lunar
 	name = "'Lunar' speech synthesis module"
-	desc = "Allows to synthesize natural speech."
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 	origin_tech = list(TECH_DATA = 1, TECH_BIO = 3)
@@ -832,7 +827,6 @@
 
 /obj/item/borg/upgrade/speech_synthesis_module/gutter
 	name = "'Gutter' speech synthesis module"
-	desc = "Allows to synthesize natural speech."
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 	origin_tech = list(TECH_DATA = 1, TECH_BIO = 3)
@@ -841,7 +835,6 @@
 
 /obj/item/borg/upgrade/speech_synthesis_module/independent
 	name = "'Independent' speech synthesis module"
-	desc = "Allows to synthesize natural speech."
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 	origin_tech = list(TECH_DATA = 1, TECH_BIO = 3)
@@ -850,7 +843,6 @@
 
 /obj/item/borg/upgrade/speech_synthesis_module/spacer
 	name = "'Spacer' speech synthesis module"
-	desc = "Allows to synthesize natural speech."
 	icon_state = "cyborg_upgrade3"
 	require_module = 1
 	origin_tech = list(TECH_DATA = 1, TECH_BIO = 3)
