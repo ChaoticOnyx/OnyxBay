@@ -729,6 +729,10 @@
 	var/mob/living/clone
 
 /datum/modifier/status_effect/stabilized/cerulean/on_applied()
+	if(holder.stat==DEAD)
+		holder.dust()
+		holder.drop(src)
+		return
 	var/typepath = holder.type
 	clone = new typepath(holder.loc)
 	var/mob/living/carbon/human/O = holder
