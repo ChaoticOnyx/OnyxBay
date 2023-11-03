@@ -2,7 +2,7 @@
 	/// Whether performing this step can cause infection.
 	var/can_infect = FALSE
 	/// Whether this step require not covered organ.
-	var/accessible = FALSE
+	var/needs_uncovered_organ = TRUE
 	/// Whether this step can be successfully performed on any surface.
 	var/delicate = FALSE
 	/**
@@ -67,7 +67,8 @@
 	if(!check_zone(target, parent_zone))
 		return FALSE
 
-	if(accessible && !check_clothing(target, target_zone))
+	if(needs_uncovered_organ && !check_clothing(target, target_zone))
+		to_chat(user, SPAN_DANGER("Clothing on [target]'s [organ_name_by_zone(target, target_zone)] blocks surgery!"))
 		return SURGERY_FAILURE
 
 	var/obj/item/organ/parent_organ = target.get_organ(parent_zone)
@@ -76,8 +77,6 @@
 		return parent_status
 
 	var/obj/item/organ/target_organ = pick_target_organ(user, target, target_zone)
-	if(isnull(target_organ))
-		return SURGERY_FAILURE
 
 	// Integrated circuits can't change tool during organ picking step, but spessmen can.
 	var/mob/possible_mob = user
@@ -129,7 +128,7 @@
 
 /// Returns parent organ's tag depending on zone, currently used by eyes only.
 /datum/surgery_step/proc/get_parent_zone(target_zone)
-	if(target_zone == BP_EYES || target_zone == BP_MOUTH)
+	if(target_zone == BP_EYES)
 		return BP_HEAD
 
 	return target_zone
@@ -155,7 +154,7 @@
  * * tool - tool used to fire this step.
  * * user - atom that fired this step.
  *
- * Checks if parent and target organs are present.
+ * Checks if parent organ is present.
  */
 /datum/surgery_step/proc/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	if(!istype(parent_organ))
@@ -172,7 +171,7 @@
  * * tool - tool used to fire this step.
  * * user - atom that fired this step.
  *
- * Checks if parent and target organs are present.
+ * Checks if target organ is present.
  */
 /datum/surgery_step/proc/check_target_organ(obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	if(!istype(target_organ))

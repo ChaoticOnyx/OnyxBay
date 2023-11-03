@@ -2,7 +2,6 @@
  * Default limb attachment step, does nothing.
  */
 /datum/surgery_step/limb
-	accessible = FALSE
 	delicate = TRUE
 	shock_level = 40
 	priority = 3 // Must be higher than /datum/surgery_step/internal.
@@ -95,7 +94,7 @@
 /datum/surgery_step/limb/connect/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	. = ..()
 	if(!.)
-		return .
+		return
 
 	if(parent_organ.is_stump())
 		return FALSE

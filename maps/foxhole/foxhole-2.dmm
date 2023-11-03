@@ -1712,7 +1712,7 @@
 "Mi" = (/obj/machinery/flasher/portable,/obj/effect/floor_decal/bot_red,/turf/simulated/floor/tiled/rough,/area/security/storage)
 "Mj" = (/obj/effect/floor_decal/siding/wood/end{dir = 1},/obj/structure/railing/steel{dir = 4},/obj/machinery/vending/snack,/turf/simulated/floor/trim/wood,/area/crew_quarters/sleep)
 "Mk" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 9},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 5},/turf/simulated/floor/tiled/techfloor,/area/maintenance/atmos_control)
-"Ml" = (/obj/structure/closet/secure_closet/guncabinet,/obj/item/storage/box/shotgun/stunshells,/obj/item/gun/projectile/shotgun/pump,/obj/item/clothing/accessory/storage/bandolier,/obj/item/storage/box/shotgun/beanbags,/obj/effect/floor_decal/bot_red,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dark/rough,/area/security/warden)
+"Ml" = (/obj/structure/closet/secure_closet/guncabinet,/obj/item/storage/box/shotgun/stunshells,/obj/item/gun/projectile/shotgun/pump,/obj/item/clothing/accessory/storage/bandolier,/obj/item/storage/box/shotgun/beanbags,/obj/effect/floor_decal/bot_red,/obj/effect/floor_decal/rust,/obj/item/backwear/reagent/pepper,/turf/simulated/floor/tiled/dark/rough,/area/security/warden)
 "Mm" = (/obj/structure/catwalk,/obj/machinery/light/small{dir = 8; icon_state = "bulb1"},/turf/simulated/open,/area/maintenance/atmos_control)
 "Mn" = (/obj/effect/decal/cleanable/dirt,/obj/structure/cable/green{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor/plating,/area/maintenance/cargo)
 "Mo" = (/turf/simulated/shuttle/wall/research{dir = 1},/area/shuttle/research/station)

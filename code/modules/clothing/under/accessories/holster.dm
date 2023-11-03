@@ -16,7 +16,11 @@
 	var/obj/item/clothing/accessory/A = target
 	if(!istype(A))
 		return TRUE
+
 	if(..() && isnull(A.has_suit))
+		return TRUE
+
+	if(!isnull(A.has_suit) && !(A.has_suit in user))
 		return TRUE
 
 /obj/item/clothing/accessory/holster/Initialize()
