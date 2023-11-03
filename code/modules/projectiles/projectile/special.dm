@@ -72,6 +72,7 @@
 	nodamage = 1
 	check_armour = "bullet"
 	blockable = FALSE
+	poisedamage = 255 // slammy jammy
 
 /obj/item/projectile/meteor/Bump(atom/A, forced = FALSE)
 	if(A == firer)
