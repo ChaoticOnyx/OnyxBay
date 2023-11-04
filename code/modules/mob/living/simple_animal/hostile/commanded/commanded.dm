@@ -33,10 +33,10 @@
 		var/mob/speaker = command_buffer[1]
 		var/text = command_buffer[2]
 		var/filtered_name = lowertext(html_decode(name))
-		if(dd_hasprefix(text,filtered_name) || dd_hasprefix(text,"everyone") || dd_hasprefix(text, "everybody")) //in case somebody wants to command 8 bears at once.
-			var/substring = copytext(text,length(filtered_name)+1) //get rid of the name.
-			listen(speaker,substring)
-		command_buffer.Remove(command_buffer[1],command_buffer[2])
+		if(dd_hasprefix(text, filtered_name) || dd_hasprefix(text, "everyone") || dd_hasprefix(text, "everybody")) //in case somebody wants to command 8 bears at once.
+			var/substring = copytext(text, length(filtered_name)+1) //get rid of the name.
+			listen(speaker, substring)
+		command_buffer.Remove(command_buffer[1], command_buffer[2])
 	. = ..()
 	if(.)
 		switch(stance)
@@ -63,7 +63,7 @@
 
 		if(isliving(A))
 			M = A
-		else if(istype(A,/obj/mecha))
+		else if(istype(A, /obj/mecha))
 			var/obj/mecha/mecha = A
 			if(!mecha.occupant)
 				continue
@@ -96,7 +96,7 @@
 		return
 
 	if(target_mob in ListTargets(10))
-		walk_to(src,target_mob,1,move_to_delay)
+		walk_to(src, target_mob, 1, move_to_delay)
 
 /mob/living/simple_animal/hostile/commanded/proc/commanded_stop() //Overrides enabling automated movement in /hostile/Life()
 	stop_automated_movement = TRUE
@@ -105,28 +105,28 @@
 
 /mob/living/simple_animal/hostile/commanded/proc/listen(mob/speaker, text)
 	for(var/command in known_commands)
-		if(findtext(text,command))
+		if(findtext(text, command))
 			switch(command)
 				if("stay")
-					if(stay_command(speaker,text)) //find a valid command? Stop. Dont try and find more.
+					if(stay_command(speaker, text)) //find a valid command? Stop. Dont try and find more.
 						break
 				if("stop")
-					if(stop_command(speaker,text))
+					if(stop_command(speaker, text))
 						break
 				if("attack")
-					if(attack_command(speaker,text))
+					if(attack_command(speaker, text))
 						break
 				if("follow")
-					if(follow_command(speaker,text))
+					if(follow_command(speaker, text))
 						break
 				else
-					misc_command(speaker,text) //for specific commands
+					misc_command(speaker, text) //for specific commands
 
 	return TRUE
 
 //returns a list of everybody we wanna do stuff with.
 /mob/living/simple_animal/hostile/commanded/proc/get_targets_by_name(text, filter_friendlies = 0)
-	var/list/possible_targets = hearers(src,10)
+	var/list/possible_targets = hearers(src, 10)
 	. = list()
 
 	for(var/mob/M in possible_targets)
@@ -142,7 +142,7 @@
 				if(a == "the" || length(a) < 2) //get rid of shit words.
 					continue
 
-				if(findtext(text,"[a]"))
+				if(findtext(text, "[a]"))
 					found = TRUE
 					break
 
@@ -157,7 +157,7 @@
 	if(target)
 		allowed_targets |= target
 		set_target_mob(target)
-	else if(findtext(text,"everyone") || findtext(text,"anybody") || findtext(text, "somebody") || findtext(text, "someone")) //if its just 'attack' then just attack anybody, same for if they say 'everyone', somebody, anybody. Assuming non-pickiness.
+	else if(findtext(text, "everyone") || findtext(text, "anybody") || findtext(text, "somebody") || findtext(text, "someone")) //if its just 'attack' then just attack anybody, same for if they say 'everyone', somebody, anybody. Assuming non-pickiness.
 		allowed_targets = list("everyone")//everyone? EVERYONE
 		return TRUE
 
@@ -185,7 +185,7 @@
 	var/mob/to_follow = null
 	if(!target)
 		//we can assume 'stop following' is handled by stop_command
-		if(findtext(text,"me"))
+		if(findtext(text, "me"))
 			stance = COMMANDED_FOLLOW
 			set_target_mob(speaker) //this wont bite me in the ass later.
 			return TRUE
@@ -244,9 +244,9 @@
 
 	switch(command)
 		if("stay")
-			stay_command(M,"stay")
+			stay_command(M, "stay")
 		if("stop")
-			stop_command(M,"stop")
+			stop_command(M, "stop")
 		if("attack")
 			var/list/possible_targets = radial_targets(M, FALSE)
 			possible_targets += "everyone"
@@ -282,7 +282,7 @@
 
 		if(isliving(A))
 			M = A
-		else if(istype(A,/obj/mecha))
+		else if(istype(A, /obj/mecha))
 			var/obj/mecha/mecha = A
 			if(!mecha.occupant)
 				continue

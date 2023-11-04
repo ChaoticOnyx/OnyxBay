@@ -51,7 +51,7 @@
 //Handles cursed dancing command as well as adds/removes friends
 /mob/living/simple_animal/hostile/commanded/bear/misc_command(mob/speaker, text)
 	for(var/command in known_commands)
-		if(findtext(text,command))
+		if(findtext(text, command))
 			switch(command)
 				if("dance")
 					dance()
@@ -133,7 +133,7 @@
 	stance = COMMANDED_STOP
 	stop_automated_movement = FALSE
 
-/mob/living/simple_animal/hostile/commanded/bear/proc/add_friend(mob/speaker,text, mob/target = null)
+/mob/living/simple_animal/hostile/commanded/bear/proc/add_friend(mob/speaker, text, mob/target = null)
 	var/mob/living/future_friend = null
 
 	if(!target)
@@ -155,7 +155,7 @@
 	friends += weakref(future_friend)
 	audible_emote("growls affirmatevly, slightly bowing to [future_friend]!")
 
-/mob/living/simple_animal/hostile/commanded/bear/proc/remove_friend(mob/speaker,text, mob/target = null)
+/mob/living/simple_animal/hostile/commanded/bear/proc/remove_friend(mob/speaker, text, mob/target = null)
 	var/mob/living/former_friend = null
 
 	if(!target)
