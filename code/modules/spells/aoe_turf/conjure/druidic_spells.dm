@@ -113,7 +113,7 @@
 	if(!user || !user.mind)
 		return
 
-	to_chat(M, "A short note regarding the available commands for your bear has been placed in your notes.")
+	to_chat(user, "A short note regarding the available commands for your bear has been placed in your notes.")
 	var/bear_guide = {"<br/><b>Congratulations, you now can summon a magic, bluespace bear.</b><br/>
 						The bear's mind is dominated, so it should not attack you under any circumstances. You can command your bear through words, but remember that it must hear you.<br/>
 						<b> Your bear knows the following commands:</b><br/>
@@ -126,7 +126,7 @@
 						- remove friend: use to cancel previous command.<br/>
 						Simply pronounce your bear name when issuing a command. Remember to address your bear by name or else it will not heed the command.<br/>"}
 
-	M.mind.store_memory(bear_guide)
+	user.mind.store_memory(bear_guide)
 
 /datum/spell/aoe_turf/conjure/summon/bear/Destroy()
 	unregister_signal(src, SIGNAL_MOB_SPELL_LEARNED)
