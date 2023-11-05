@@ -250,6 +250,10 @@
 	base_turf = /turf/simulated/floor/natural/sand/gray
 	dynamic_lighting = 0
 
+/area/elpaso/street/Initialize()
+	. = ..()
+	GLOB.hallway += src
+
 /area/elpaso/street/north
 	name = "Streets North"
 
