@@ -88,6 +88,32 @@
 
 	var/lockable = FALSE
 
+/obj/item/shield/closet/update_icon()
+	..()
+	if(isturf(loc))
+		SetTransform(rotation = 90)
+		pixel_y = -8
+	else
+		SetTransform(rotation = 0)
+		pixel_y = initial(pixel_y)
+
+/obj/item/shield/closet/pickup(mob/user)
+	..()
+	update_icon()
+
+/obj/item/shield/closet/dropped(mob/user)
+	..()
+	update_icon()
+
+/obj/item/shield/closet/attack_hand()
+	..()
+	update_icon()
+
+/obj/item/shield/closet/on_enter_storage(obj/item/storage/S)
+	..()
+	update_icon()
+
+
 /obj/structure/closet/Initialize()
 	..()
 
@@ -203,11 +229,11 @@
 	if(storage_types & CLOSET_STORAGE_STRUCTURES)
 		stored_units += store_structures(stored_units)
 
-/obj/structure/closet/proc/open()
-	if(src.opened)
+/obj/structure/closet/proc/open(force = FALSE)
+	if(opened)
 		return FALSE
 
-	if(!src.can_open())
+	if(!can_open() && !force)
 		return FALSE
 
 	src.dump_contents()
@@ -325,18 +351,24 @@
 /obj/structure/closet/ex_act(severity)
 	switch(severity)
 		if(1)
+			destroy_door()
 			for(var/atom/movable/A in src)//pulls everything out of the locker and hits it with an explosion
 				A.forceMove(loc)
 				A.ex_act(severity + 1)
 			qdel(src)
 		if(2)
 			if(prob(50))
-				for (var/atom/movable/A in src)
+				if(prob(50))
+					destroy_door()
+				else
+					remove_door()
+				for(var/atom/movable/A in src)
 					A.forceMove(src.loc)
 					A.ex_act(severity + 1)
 				qdel(src)
 		if(3)
 			if(prob(5))
+				remove_door()
 				for(var/atom/movable/A in src)
 					A.forceMove(loc)
 				qdel(src)
@@ -344,6 +376,7 @@
 /obj/structure/closet/proc/damage(damage)
 	health -= damage
 	if(health <= 0)
+		remove_door()
 		for(var/atom/movable/A in src)
 			A.forceMove(src.loc)
 		qdel(src)
@@ -363,6 +396,7 @@
 
 /obj/structure/closet/blob_act()
 	if(opened)
+		remove_door()
 		qdel(src)
 	else
 		break_open()
@@ -494,6 +528,7 @@
 	else
 		log_debug("\The [src] doesnt have material, this is bug", loc, type)
 	user.visible_message(SPAN_NOTICE("\The [src] has been cut apart by [user] with \the [WT]."), SPAN_NOTICE("You have cut \the [src] apart with \the [WT]."), "You hear welding.")
+	remove_door()
 	qdel(src)
 
 /obj/structure/closet/MouseDrop_T(atom/movable/O, mob/user)
@@ -769,12 +804,11 @@
 		return FALSE
 	if(welded || locked)
 		return FALSE
-	open()
+	open(TRUE)
 	broken = FALSE
 	locked = FALSE
-	cdoor.SetTransform(rotation = 90)
-	cdoor.pixel_y = -8
 	cdoor.forceMove(loc)
+	cdoor.update_icon()
 	cdoor = null
 
 	setup = CLOSET_CAN_BE_WELDED
@@ -794,10 +828,20 @@
 	req_access = cdoor.req_access
 	req_one_access = cdoor.req_one_access
 
-	if(cdoor.lockable) setup = CLOSET_HAS_LOCK
+	if(cdoor.lockable)
+		setup = CLOSET_HAS_LOCK
 
+	cdoor.update_icon()
 	update_icon()
 
+	return TRUE
+
+/obj/structure/closet/proc/destroy_door()
+	if(!cdoor)
+		return FALSE
+	var/obj/item/shield/closet/C = cdoor
+	remove_door()
+	qdel(C)
 	return TRUE
 
 /obj/structure/closet/hides_inside_walls() // Let's just don't
