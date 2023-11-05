@@ -1,6 +1,8 @@
 /datum/vote/storyteller
 	name = "storyteller"
 
+	force_show_panel = TRUE
+
 /datum/vote/storyteller/can_run(mob/creator, automatic)
 	if(!automatic && !is_admin(creator))
 		return FALSE // Must be an admin.

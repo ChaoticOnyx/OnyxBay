@@ -1,6 +1,8 @@
 /datum/vote/map
 	name = "map"
 
+	force_show_panel = TRUE
+
 /datum/vote/map/can_run(mob/creator, automatic)
 	if(!config.game.map_switching)
 		return FALSE

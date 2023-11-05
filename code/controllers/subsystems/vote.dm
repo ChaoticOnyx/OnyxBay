@@ -41,9 +41,6 @@ SUBSYSTEM_DEF(vote)
 			LAZYADD(old_votes, active_vote) // Store the datum for future reference.
 			reset()
 			return
-		if(VOTE_PROCESS_ONGOING)
-			for(var/client/C in voting)
-				show_panel(C.mob)
 
 /datum/controller/subsystem/vote/stat_entry()
 	..("Vote:[active_vote ? "[active_vote.name], [active_vote.time_remaining]" : "none"]")
@@ -78,6 +75,11 @@ SUBSYSTEM_DEF(vote)
 
 	active_vote = new_vote
 	last_started_time = world.time
+
+	if(new_vote.force_show_panel)
+		for(var/client/C in GLOB.clients)
+			show_panel(C.mob)
+
 	return TRUE
 
 /datum/controller/subsystem/vote/proc/interface(client/C)
