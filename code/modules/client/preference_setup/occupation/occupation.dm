@@ -22,25 +22,25 @@
 
 /datum/category_item/player_setup_item/occupation/save_character(datum/pref_record_writer/W)
 	W.write("alternate_option",  pref.alternate_option)
-	W.write("job_high",          pref.job_high)
-	W.write("job_medium",        pref.job_medium)
-	W.write("job_low",           pref.job_low)
-	W.write("player_alt_titles", pref.player_alt_titles)
+	W.write("job_high",          get_job_title(pref.job_high, TRUE))
+	W.write("job_medium",        get_job_title(pref.job_medium, TRUE))
+	W.write("job_low",           get_job_title(pref.job_low, TRUE))
+	W.write("player_alt_titles", get_job_title_list(pref.player_alt_titles, TRUE))
 
 /datum/category_item/player_setup_item/occupation/sanitize_character()
-	pref.job_high = sanitize(pref.job_high, null)
+	pref.job_high = get_job_title(sanitize(pref.job_high, null))
 
 	if(!istype(pref.job_medium))
 		pref.job_medium = list()
 	else
 		for(var/i in 1 to length(pref.job_medium))
-			pref.job_medium[i] = sanitize(pref.job_medium[i])
+			pref.job_medium[i] = get_job_title(sanitize(pref.job_medium[i]))
 
 	if(!istype(pref.job_low))
 		pref.job_low = list()
 	else
 		for(var/i in 1 to length(pref.job_low))
-			pref.job_low[i] = sanitize(pref.job_low[i])
+			pref.job_low[i] =  get_job_title(sanitize(pref.job_low[i]))
 
 	pref.alternate_option = sanitize_integer(pref.alternate_option, 0, 2, initial(pref.alternate_option))
 
@@ -54,7 +54,7 @@
 		return
 
 	for(var/datum/job/job in job_master.occupations)
-		var/alt_title = pref.player_alt_titles[job.title]
+		var/alt_title = get_job_title(pref.player_alt_titles[get_job_title(job.title, TRUE)])
 		if(alt_title && !(alt_title in job.alt_titles))
 			pref.player_alt_titles -= job.title
 
@@ -215,6 +215,8 @@
 	var/datum/job/job = job_master.GetJob(role)
 	if(!job)
 		return 0
+
+	role = get_job_title(role, TRUE)
 
 	if(role == "Assistant")
 		if(job.title in pref.job_low)

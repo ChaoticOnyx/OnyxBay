@@ -464,9 +464,10 @@ var/global/datum/controller/occupations/job_master
 		var/alt_title = null
 		if(H.mind)
 			H.mind.assigned_role = rank
-			alt_title = H.mind.role_alt_title
+			alt_title = get_job_title(H.mind.role_alt_title)
 
-			switch(rank)
+			var/title_job = get_job_title(rank, normal_name = TRUE)
+			switch(title_job)
 				if("Cyborg")
 					return H.Robotize()
 				if("AI")
@@ -561,7 +562,7 @@ var/global/datum/controller/occupations/job_master
 			var/name = replacetext_char(job, "_", " ")
 			var/value = jobEntries[job]
 
-			if(name && value)
+			if(name && !isnull(value))
 				var/datum/job/J = GetJob(name)
 				if(!J)
 					continue
@@ -654,7 +655,7 @@ var/global/datum/controller/occupations/job_master
 /datum/controller/occupations/proc/get_roundstart_spawnpoint(rank)
 	var/list/loc_list = list()
 	for(var/obj/effect/landmark/sloc in GLOB.landmarks_list)
-		if(sloc.name != rank)
+		if(sloc.name != get_job_title(rank, TRUE))
 			continue
 		if(locate(/mob/living) in sloc.loc)
 			continue

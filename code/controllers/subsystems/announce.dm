@@ -104,28 +104,28 @@ SUBSYSTEM_DEF(announce)
 	if (GAME_STATE != RUNLEVEL_GAME)
 		return
 
-	var/rank = job.title
+	var/job_title = get_job_title(job.title, normal_name = TRUE)
 
 	for(var/mob/M in GLOB.player_list)
 		M.playsound_local(M.loc, 'sound/signals/arrival1.ogg', arrival_sound_volume)
+	switch(job_title)
+		if("AI")
+			__announce_arrival_simple(name, job_title, "has been downloaded to the empty core in AI Core", "Common")
+			return
 
-	if(rank == "AI")
-		__announce_arrival_simple(name, rank, "has been downloaded to the empty core in AI Core", "Common")
-		return
+		if("Cyborg")
+			__announce_arrival_simple(name, job_title, "A new [job_title] has arrived", "Common")
+			return
 
-	if(rank in list("Cyborg", "Android", "Robot"))
-		__announce_arrival_simple(name, rank, "A new [rank] has arrived", "Common")
-		return
+		if("Captain")
+			play_station_announce(/datum/announce/captain_arrival, "All hands, [job.title] [name] on deck!")
 
-	if(rank == "Captain")
-		play_station_announce(/datum/announce/captain_arrival, "All hands, Captain [name] on deck!")
-
-	__announce_arrival_simple(name, rank, spawnpoint.msg, "Common")
+	__announce_arrival_simple(name, job_title, spawnpoint.msg, "Common")
 
 	var/announce_freq = get_announcement_frequency(job)
 
 	if("Common" != announce_freq)
-		__announce_arrival_simple(name, rank, spawnpoint.msg, announce_freq)
+		__announce_arrival_simple(name, job_title, spawnpoint.msg, announce_freq)
 
 /datum/controller/subsystem/announce/proc/__announce_arrival_simple(name, rank = "visitor", join_message = "has arrived on the [station_name()]", frequency)
 	GLOB.global_announcer.autosay("[name], [rank], [join_message].", get_announcement_computer(), frequency)
