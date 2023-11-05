@@ -68,10 +68,6 @@
 /mob/living/carbon/human/stok/New(new_loc)
 	..(new_loc, "Stok")
 
-
-/mob/living/carbon/human/vrhuman/New(new_loc)
-	..(new_loc, "VR human")
-
 /mob/living/carbon/human/gravworlder/New(new_loc)
 	..(new_loc, SPECIES_GRAVWORLDER)
 

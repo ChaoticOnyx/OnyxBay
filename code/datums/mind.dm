@@ -76,11 +76,6 @@
 	//used to store what traits the player had picked out in their preferences before joining, in text form.
 	var/list/traits = list()
 
-	var/thunder_points = 0
-	var/thunder_respawns = 0
-	var/mob/living/carbon/human/thunderfield_owner
-	var/thunderfield_cheater = FALSE
-
 /datum/mind/New(key)
 	src.key = key
 	..()
