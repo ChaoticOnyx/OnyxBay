@@ -4,7 +4,6 @@
 	path = "elpaso"
 
 	shuttle_types = list(
-		/datum/shuttle/autodock/ferry/escape_pod/escape_pod3,
 		/datum/shuttle/autodock/ferry/supply/drone,
 		/datum/shuttle/autodock/ferry/emergency/centcom_paso,
 		/datum/shuttle/autodock/multi/antag/syndicate_paso,
