@@ -246,53 +246,38 @@
 	dynamic_lighting = 0
 
 //Street_areas
+/area/elpaso/street
+	base_turf = /turf/simulated/floor/natural/sand/gray
+	dynamic_lighting = 0
 
 /area/elpaso/street/north
 	name = "Streets North"
-	base_turf = /turf/simulated/floor/natural/sand/gray
-	dynamic_lighting = 0
 
 /area/elpaso/street/south
 	name = "Streets South"
-	base_turf = /turf/simulated/floor/natural/sand/gray
-	dynamic_lighting = 0
 
-/area/elpaso/alley/lib
+/area/elpaso/street/alley/lib
 	name = "Alley Library"
-	base_turf = /turf/simulated/floor/natural/sand/gray
-	dynamic_lighting = 0
 
-/area/elpaso/alley/med
+/area/elpaso/street/alley/med
 	name = "Alley Medical"
-	base_turf = /turf/simulated/floor/natural/sand/gray
-	dynamic_lighting = 0
 
-/area/elpaso/alley/rnd
+/area/elpaso/street/alley/rnd
 	name = "Alley Research"
-	base_turf = /turf/simulated/floor/natural/sand/gray
-	dynamic_lighting = 0
 
-/area/elpaso/alley/eng
+/area/elpaso/street/alley/eng
 	name = "Alley Engineering"
-	base_turf = /turf/simulated/floor/natural/sand/gray
-	dynamic_lighting = 0
 
-/area/elpaso/alley/cargo
+/area/elpaso/street/alley/cargo
 	name = "Alley Cargo"
-	base_turf = /turf/simulated/floor/natural/sand/gray
-	dynamic_lighting = 0
 
-/area/elpaso/alley/bar
+/area/elpaso/street/alley/bar
 	name = "Alley Saloon"
-	base_turf = /turf/simulated/floor/natural/sand/gray
-	dynamic_lighting = 0
 
-area/elpaso/desert
+/area/elpaso/street/desert
 	name = "Desert"
-	base_turf = /turf/simulated/floor/natural/sand/gray
-	dynamic_lighting = 0
 
-area/elpaso/desert_inside
+/area/elpaso/desert_inside
 	name = "Desert Building"
 	base_turf = /turf/simulated/floor/natural/sand/gray
 	requires_power = 0

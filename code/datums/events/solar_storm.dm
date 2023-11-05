@@ -49,6 +49,11 @@
 		if(!istype(T.loc,/area/space) && !istype(T,/turf/space))
 			continue
 
+		//Elpaso handling
+		if(istype(GLOB.using_map, /datum/map/elpaso))
+			if(!istype(T.loc,/area/elpaso/street))
+				continue
+
 		// Apply some heat or burn damage from the sun.
 		if(istype(L, /mob/living/carbon/human))
 			L.bodytemperature += temp_incr
