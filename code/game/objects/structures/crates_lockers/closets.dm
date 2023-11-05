@@ -89,7 +89,7 @@
 	var/lockable = FALSE
 
 /obj/item/shield/closet/Initialize()
-	..()
+	. = ..()
 	update_icon()
 
 /obj/item/shield/closet/update_icon()
@@ -119,7 +119,7 @@
 
 
 /obj/structure/closet/Initialize()
-	..()
+	. = ..()
 
 	if((setup & CLOSET_HAS_LOCK))
 		verbs += /obj/structure/closet/proc/togglelock_verb
