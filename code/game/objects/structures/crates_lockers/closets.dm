@@ -88,6 +88,10 @@
 
 	var/lockable = FALSE
 
+/obj/item/shield/closet/Initialize()
+	..()
+	update_icon()
+
 /obj/item/shield/closet/update_icon()
 	..()
 	if(isturf(loc))
