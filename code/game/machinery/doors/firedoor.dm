@@ -47,6 +47,8 @@
 		"hot",
 		"cold"
 	)
+	var/open_sound = 'sound/machines/blastdoor_open.ogg'
+	var/close_sound = 'sound/machines/blastdoor_close.ogg'
 
 /obj/machinery/door/firedoor/Initialize()
 	. = ..()
@@ -129,7 +131,7 @@
 		return//Already doing something.
 
 	if(blocked)
-		to_chat(user, "<span class='warning'>\The [src] is welded solid!</span>")
+		to_chat(user, SPAN("warning", "\The [src] is welded solid!"))
 		return
 
 	if(ishuman(user))
@@ -138,29 +140,33 @@
 			if(do_after(user, 30, src))
 				if(density)
 					visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
-					open(TRUE)
+					INVOKE_ASYNC(src, /obj/machinery/door/proc/open)
 					shake_animation(2, 2)
 			return
+
+	if(density && (stat & (BROKEN|NOPOWER))) // Can still close without power
+		to_chat(user, "\The [src] is not functioning, you'll have to force it open manually.")
+		return
 
 	var/alarmed = lockdown
 	for(var/area/A in areas_added)		//Checks if there are fire alarms in any areas associated with that firedoor
 		if(A.fire || A.air_doors_activated)
 			alarmed = 1
 
-	if(user.incapacitated() || (get_dist(src, user) > 1  && !issilicon(user)))
-		to_chat(user, "Sorry, you must remain able bodied and close to \the [src] in order to use it.")
-		return
-	if(density && (stat & (BROKEN|NOPOWER))) //can still close without power
-		to_chat(user, "\The [src] is not functioning, you'll have to force it open manually.")
+	if(user.incapacitated() || !user.Adjacent(src) && !issilicon(user))
+		to_chat(user, SPAN("warning", "You must remain able bodied and close to \the [src] in order to use it."))
 		return
 
 	if(alarmed && density && lockdown && !allowed(user))
 		to_chat(user, "<span class='warning'>Access denied. Please wait for authorities to arrive, or for the alert to clear.</span>")
 		return
 	else
-		user.visible_message("<span class='notice'>\The [src] [density ? "open" : "close"]s for \the [user].</span>",\
-		"\The [src] [density ? "open" : "close"]s.",\
-		"You hear a beep, and a door opening.")
+		user.visible_message(
+			SPAN("notice", "\The [src] [density ? "open" : "close"]s for \the [user]."),\
+			SPAN("notice", "\The [src] [density ? "open" : "close"]s."),\
+			SPAN("notice", "You hear a beep, and a door opening.")
+		)
+		playsound(loc, 'sound/piano/A#6.ogg', 50)
 
 	var/needs_to_close = 0
 	if(density)
@@ -178,12 +184,14 @@
 /obj/machinery/door/firedoor/attack_generic(mob/user, damage)
 	if(stat & (BROKEN|NOPOWER))
 		if(damage >= 10)
-			if(src.density)
+			if(density)
 				visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
-				open(TRUE)
+				INVOKE_ASYNC(src, /obj/machinery/door/proc/open, TRUE)
+				if(!(stat & (BROKEN|NOPOWER)))
+					addtimer(CALLBACK(src, /obj/machinery/door/proc/close), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
 			else
 				visible_message(SPAN("danger","\The [user] forces \the [src] closed!"))
-				close(TRUE)
+				INVOKE_ASYNC(src, /obj/machinery/door/proc/close)
 		else
 			visible_message(SPAN("notice","\The [user] strains fruitlessly to force \the [src] [density ? "open" : "closed"]."))
 		return
@@ -244,10 +252,13 @@
 			if(!F.wielded)
 				return
 
-		user.visible_message("<span class='danger'>\The [user] starts to force \the [src] [density ? "open" : "closed"] with \a [C]!</span>",\
-				"You start forcing \the [src] [density ? "open" : "closed"] with \the [C]!",\
-				"You hear metal strain.")
+		user.visible_message(
+			SPAN("danger", "\The [user] starts to force \the [src] [density ? "open" : "closed"] with \a [C]!"),\
+			SPAN("warning", "You start forcing \the [src] [density ? "open" : "closed"] with \the [C]!"),\
+			SPAN("danger", "You hear metal strain.")
+			)
 		var/forcing_time = istype(C, /obj/item/crowbar/emergency) ? 60 : 30
+		playsound(loc, 'sound/machines/airlock/creaking.ogg', 30, TRUE)
 		if(!do_after(user, forcing_time, src))
 			return
 		if(isCrowbar(C))
@@ -285,8 +296,9 @@
 	return FA
 
 /obj/machinery/door/firedoor/close()
-	if (!is_processing)
+	if(!is_processing)
 		START_PROCESSING(SSmachines, src)
+	playsound(loc, close_sound, 50, TRUE)
 	return ..()
 
 /obj/machinery/door/firedoor/can_open(forced = FALSE)
@@ -312,6 +324,8 @@
 	else
 		var/area/A = get_area(src)
 		log_admin("[usr]([usr.ckey]) has forced open an emergency shutter at X:[x], Y:[y], Z:[z] Area: [A.name].")
+
+	playsound(loc, open_sound, 50, TRUE)
 	return ..()
 
 // Only opens when all areas connecting with our turf have an air alarm and are cleared
