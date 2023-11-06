@@ -50,6 +50,8 @@
 	var/const/STATUS_DISPLAY_IMAGE = 5
 	var/const/STATUS_DISPLAY_CUSTOM = 99
 
+	var/last_stat = 0
+
 /obj/machinery/status_display/Destroy()
 	GLOB.ai_status_display_list -= src
 	if(radio_controller)
@@ -86,14 +88,20 @@
 
 // timed process
 /obj/machinery/status_display/Process()
+	if(stat == last_stat)
+		return
 	if(stat & NOPOWER)
+		last_stat = stat
 		if(overlays.len)
 			overlays.Cut()
 		if(picture_overlight.maptext)
 			picture_overlight.maptext = ""
 		set_light(0)
 		return
-	update()
+	if(stat == last_stat)
+		update()
+	else
+		update(TRUE)
 
 /obj/machinery/status_display/emp_act(severity)
 	if(stat & (BROKEN|NOPOWER))
@@ -103,7 +111,7 @@
 	..(severity)
 
 // set what is displayed
-/obj/machinery/status_display/proc/update()
+/obj/machinery/status_display/proc/update(force_update = FALSE)
 	if(friendc && !ignore_friendc)
 		set_picture("ai_friend")
 		return 1
@@ -121,13 +129,13 @@
 					message2 = get_evac_shuttle_timer()
 					if(length(message2) > CHARS_PER_LINE)
 						message2 = "Error"
-				update_display(message1, message2)
+				update_display(message1, message2, force_update)
 			else if(evacuation_controller.has_eta())
 				message1 = "-ETA-"
 				message2 = get_evac_shuttle_timer()
 				if(length(message2) > CHARS_PER_LINE)
 					message2 = "Error"
-				update_display(message1, message2)
+				update_display(message1, message2, force_update)
 			return 1
 		if(STATUS_DISPLAY_MESSAGE)	//custom messages
 			var/line1
@@ -150,18 +158,18 @@
 				index2 += SCROLL_SPEED
 				if(index2 > message2_len)
 					index2 -= message2_len
-			update_display(line1, line2)
+			update_display(line1, line2, force_update)
 			return 1
 		if(STATUS_DISPLAY_ALERT)
-			display_alert()
+			display_alert(force_update)
 			return 1
 		if(STATUS_DISPLAY_TIME)
 			message1 = "TIME"
 			message2 = stationtime2text()
-			update_display(message1, message2)
+			update_display(message1, message2, force_update)
 			return 1
 		if(STATUS_DISPLAY_IMAGE)
-			set_picture(picture_state)
+			set_picture(picture_state, force_update)
 			return 1
 	return 0
 
@@ -195,19 +203,19 @@
 		message2 = ""
 		index2 = 0
 
-/obj/machinery/status_display/proc/display_alert()
+/obj/machinery/status_display/proc/display_alert(force_update = FALSE)
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 	var/decl/security_level/sl = security_state.current_security_level
 
-	set_picture(sl.overlay_status_display)
+	set_picture(sl.overlay_status_display, force_update)
 	set_light(sl.light_max_bright, sl.light_inner_range, sl.light_outer_range, 2, sl.light_color_alarm)
 
-/obj/machinery/status_display/proc/set_picture(state)
+/obj/machinery/status_display/proc/set_picture(state, force_update = FALSE)
 	if(state == "ai_off")
 		remove_display()
 		return
 
-	if(picture_state != state)
+	if(picture_state != state || force_update)
 		remove_display(FALSE)
 		picture_state = state
 		picture.icon_state = "[picture_state]"
@@ -219,9 +227,9 @@
 
 		set_light(0.5, 0.1, 1, 2, COLOR_WHITE)
 
-/obj/machinery/status_display/proc/update_display(line1, line2)
+/obj/machinery/status_display/proc/update_display(line1, line2, force_update = FALSE)
 	var/new_text = {"<div style="font-size:[FONT_SIZE];color:[FONT_COLOR];font:'[FONT_STYLE]';text-align:center;" valign="top">[line1]<br>[line2]</div>"}
-	if(picture_overlight.maptext != new_text)
+	if(picture_overlight.maptext != new_text || force_update)
 		remove_display(FALSE)
 		picture_overlight.icon_state = "blank"
 		picture_overlight.maptext = new_text
