@@ -257,12 +257,14 @@
 
 	//actually attempt to shoot
 	var/turf/targloc = get_turf(target) //cache this in case target gets deleted during shooting, e.g. if it was a securitron that got destroyed.
+	var/fired = FALSE
 	for(var/i in 1 to burst)
 		var/obj/projectile = consume_next_projectile(user)
 		if(!projectile)
 			handle_click_empty(user)
 			break
 
+		fired = TRUE
 		process_accuracy(projectile, user, target, i, held_twohanded)
 
 		if(pointblank)
@@ -288,7 +290,7 @@
 	//update timing
 	var/turf/T = get_turf(user)
 	var/area/A = get_area(T)
-	if((istype(T, /turf/space)) || (A.has_gravity == FALSE))
+	if(((istype(T, /turf/space)) || (A.has_gravity == FALSE)) && fired)
 		user.inertia_dir = get_dir(target, src)
 		user.setMoveCooldown(shoot_time) //no moving while shooting either
 		step(user, user.inertia_dir) // they're in space, move em in the opposite direction
