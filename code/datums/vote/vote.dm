@@ -23,7 +23,7 @@
 
 	var/manual_allowed = 1         // Whether humans can start it.
 
-	var/force_show_panel = FALSE   // принудительно открывать панель голосования при запуске самого голосования.
+	var/force_show_panel = FALSE   // לאלץ את לוח ההצבעות להיפתח כשההצבעה עצמה מתחילה
 
 //Expected to be run immediately after creation; a false return means that the vote could not be run and the datum will be deleted.
 /datum/vote/proc/setup(mob/creator, automatic)
