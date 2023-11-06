@@ -101,6 +101,7 @@
 	if(stat == last_stat)
 		update()
 	else
+		last_stat = stat
 		update(TRUE)
 
 /obj/machinery/status_display/emp_act(severity)
