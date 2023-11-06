@@ -23,6 +23,8 @@
 
 	var/manual_allowed = 1         // Whether humans can start it.
 
+	var/force_show_panel = FALSE   // לאלץ את לוח ההצבעות להיפתח כשההצבעה עצמה מתחילה
+
 //Expected to be run immediately after creation; a false return means that the vote could not be run and the datum will be deleted.
 /datum/vote/proc/setup(mob/creator, automatic)
 	if(!can_run(creator, automatic))
@@ -193,3 +195,4 @@
 		return // If the input was invalid, we don't continue recording the vote.
 
 	submit_vote(user, choice, priority)
+	SSvote.show_panel(user)
