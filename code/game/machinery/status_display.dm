@@ -67,6 +67,9 @@
 	if(radio_controller)
 		radio_controller.add_object(src, frequency)
 
+	if(!picture)
+		picture = image('icons/obj/status_display.dmi', icon_state = "blank")
+
 	if(!picture_overlight)
 		picture_overlight = image('icons/obj/status_display.dmi', icon_state = "blank")
 		picture_overlight.alpha = 128
@@ -204,9 +207,6 @@
 		remove_display()
 		return
 
-	if(!picture)
-		picture = image('icons/obj/status_display.dmi', icon_state = "blank")
-
 	if(picture_state != state)
 		remove_display(FALSE)
 		picture_state = state
@@ -224,9 +224,9 @@
 	if(picture_overlight.maptext != new_text)
 		remove_display(FALSE)
 		picture_overlight.icon_state = "blank"
+		picture_overlight.maptext = new_text
 		overlays += picture_overlight
 		overlays += static_overlay
-		picture_overlight.maptext = new_text
 		set_light(0.5, 0.1, 1, 2, COLOR_WHITE)
 
 /obj/machinery/status_display/proc/get_evac_shuttle_timer()
