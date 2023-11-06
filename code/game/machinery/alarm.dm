@@ -35,7 +35,7 @@
 /obj/machinery/alarm
 	name = "alarm"
 	icon = 'icons/obj/monitors.dmi'
-	icon_state = "alarm0"
+	icon_state = "alarm"
 	anchored = 1
 	idle_power_usage = 80 WATTS
 	active_power_usage = 1 KILO WATT //For heating/cooling rooms. 1000 joules equates to about 1 degree every 2 seconds for a single tile of air.
@@ -83,6 +83,8 @@
 	var/other_dangerlevel = 0
 
 	var/report_danger_level = 1
+
+	var/image/alarm_overlay
 
 /obj/machinery/alarm/cold
 	target_temperature = 4 CELSIUS
@@ -150,6 +152,8 @@
 	set_frequency(frequency)
 	if (!master_is_operating())
 		elect_master()
+
+	update_icon()
 
 /obj/machinery/alarm/Process()
 	if((stat & (NOPOWER|BROKEN)) || shorted || buildstage != 2)
@@ -299,6 +303,13 @@
 	return 0
 
 /obj/machinery/alarm/update_icon()
+	if(!alarm_overlay)
+		alarm_overlay = image(icon, "alarm_over0")
+		alarm_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		alarm_overlay.layer = ABOVE_LIGHTING_LAYER
+
+	overlays.Cut()
+
 	if(wiresexposed)
 		icon_state = "alarmx"
 		set_light(0)
@@ -308,21 +319,21 @@
 		set_light(0)
 		return
 
+	icon_state = "alarm"
 	var/icon_level = danger_level
-	if (alarm_area.atmosalm)
+	if(alarm_area.atmosalm)
 		icon_level = max(icon_level, 1)	//if there's an atmos alarm but everything is okay locally, no need to go past yellow
 
 	var/new_color = null
 	switch(icon_level)
-		if (0)
-			icon_state = "alarm0"
+		if(0)
 			new_color = COLOR_LIME
-		if (1)
-			icon_state = "alarm2" //yes, alarm2 is yellow alarm
+		if(1)
 			new_color = COLOR_SUN
-		if (2)
-			icon_state = "alarm1"
+		if(2)
 			new_color = COLOR_RED_LIGHT
+	alarm_overlay.icon_state = "alarm_over[icon_level]"
+	overlays += alarm_overlay
 
 	set_light(0.25, 0.1, 1, 2, new_color)
 
@@ -845,8 +856,8 @@ Just a object used in constructing air alarms
 */
 /obj/item/airalarm_electronics
 	name = "air alarm electronics"
-	icon = 'icons/obj/doors/door_assembly.dmi'
-	icon_state = "door_electronics"
+	icon = 'icons/obj/monitors.dmi'
+	icon_state = "alarm_electronics"
 	desc = "Looks like a circuit. Probably is."
 	w_class = ITEM_SIZE_SMALL
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)

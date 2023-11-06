@@ -23,12 +23,14 @@
 					// 3 = alert picture
 					// 4 = Supply shuttle timer
 
-	var/picture_state = "greenalert" // icon_state of alert picture
-	var/message1 = ""                // message line 1
-	var/message2 = ""                // message line 2
-	var/index1                       // display index for scrolling messages or 0 if non-scrolling
+	var/picture_state = "blank" // icon_state of alert picture
+	var/message1 = ""           // message line 1
+	var/message2 = ""           // message line 2
+	var/index1                  // display index for scrolling messages or 0 if non-scrolling
 	var/index2
-	var/picture = null
+	var/image/picture = null
+	var/image/picture_overlight = null
+	var/image/static_overlay = null
 
 	var/frequency = 1435		// radio frequency
 
@@ -51,7 +53,11 @@
 /obj/machinery/status_display/Destroy()
 	GLOB.ai_status_display_list -= src
 	if(radio_controller)
-		radio_controller.remove_object(src,frequency)
+		radio_controller.remove_object(src, frequency)
+	overlays.Cut()
+	QDEL_NULL(picture)
+	QDEL_NULL(picture_overlight)
+	QDEL_NULL(static_overlay)
 	return ..()
 
 // register for radio system
@@ -61,10 +67,28 @@
 	if(radio_controller)
 		radio_controller.add_object(src, frequency)
 
+	if(!picture_overlight)
+		picture_overlight = image('icons/obj/status_display.dmi', icon_state = "blank")
+		picture_overlight.alpha = 128
+		picture_overlight.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		picture_overlight.layer = ABOVE_LIGHTING_LAYER
+		picture_overlight.maptext_height = maptext_height
+		picture_overlight.maptext_width = maptext_width
+		picture_overlight.maptext_y = maptext_y
+
+	if(!static_overlay)
+		static_overlay = image('icons/obj/status_display.dmi', icon_state = "static")
+		static_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		static_overlay.layer = ABOVE_LIGHTING_LAYER
+
 // timed process
 /obj/machinery/status_display/Process()
 	if(stat & NOPOWER)
-		remove_display()
+		if(overlays.len)
+			overlays.Cut()
+		if(picture_overlight.maptext)
+			picture_overlight.maptext = ""
+		set_light(0)
 		return
 	update()
 
@@ -77,13 +101,13 @@
 
 // set what is displayed
 /obj/machinery/status_display/proc/update()
-	remove_display()
 	if(friendc && !ignore_friendc)
 		set_picture("ai_friend")
 		return 1
 
 	switch(mode)
 		if(STATUS_DISPLAY_BLANK)	//blank
+			remove_display()
 			return 1
 		if(STATUS_DISPLAY_TRANSFER_SHUTTLE_TIME)				//emergency shuttle timer
 			if(evacuation_controller.is_prepared())
@@ -140,11 +164,18 @@
 
 /obj/machinery/status_display/_examine_text(mob/user)
 	. = ..()
-	if(mode != STATUS_DISPLAY_BLANK && mode != STATUS_DISPLAY_ALERT)
-		. += "\nThe display says:<br>\t[sanitize(message1)]<br>\t[sanitize(message2)]"
-	if(mode == STATUS_DISPLAY_ALERT)
-		var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
-		. += "\nThe current alert level is [security_state.current_security_level.name]."
+	switch(mode)
+		if(STATUS_DISPLAY_BLANK)
+			return
+		if(STATUS_DISPLAY_ALERT)
+			var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
+			. += "\nThe current alert level is [security_state.current_security_level.name]."
+		if(STATUS_DISPLAY_TRANSFER_SHUTTLE_TIME)
+			. += "\nTime until the shuttle arives: [get_evac_shuttle_timer()]."
+		if(STATUS_DISPLAY_IMAGE)
+			. += "\nThere is a picture on the display."
+		else
+			. += "\nThe display says:<br>\t[sanitize(message1)]<br>\t[sanitize(message2)]"
 
 /obj/machinery/status_display/proc/set_message(m1, m2)
 	if(m1)
@@ -162,28 +193,41 @@
 		index2 = 0
 
 /obj/machinery/status_display/proc/display_alert()
-	remove_display()
-
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 	var/decl/security_level/sl = security_state.current_security_level
 
-	var/image/alert = image(sl.icon, sl.overlay_status_display)
+	set_picture(sl.overlay_status_display)
 	set_light(sl.light_max_bright, sl.light_inner_range, sl.light_outer_range, 2, sl.light_color_alarm)
-	overlays |= alert
 
 /obj/machinery/status_display/proc/set_picture(state)
-	remove_display()
-	if(!picture || picture_state != state)
+	if(state == "ai_off")
+		remove_display()
+		return
+
+	if(!picture)
+		picture = image('icons/obj/status_display.dmi', icon_state = "blank")
+
+	if(picture_state != state)
+		remove_display(FALSE)
 		picture_state = state
-		picture = image('icons/obj/status_display.dmi', icon_state=picture_state)
-	overlays |= picture
-	set_light(0.5, 0.1, 1, 2, COLOR_WHITE)
+		picture.icon_state = "[picture_state]"
+		picture_overlight.icon_state = "[picture_state]"
+
+		overlays += picture
+		overlays += picture_overlight
+		overlays += static_overlay
+
+		set_light(0.5, 0.1, 1, 2, COLOR_WHITE)
 
 /obj/machinery/status_display/proc/update_display(line1, line2)
 	var/new_text = {"<div style="font-size:[FONT_SIZE];color:[FONT_COLOR];font:'[FONT_STYLE]';text-align:center;" valign="top">[line1]<br>[line2]</div>"}
-	if(maptext != new_text)
-		maptext = new_text
-	set_light(0.5, 0.1, 1, 2, COLOR_WHITE)
+	if(picture_overlight.maptext != new_text)
+		remove_display(FALSE)
+		picture_overlight.icon_state = "blank"
+		overlays += picture_overlight
+		overlays += static_overlay
+		picture_overlight.maptext = new_text
+		set_light(0.5, 0.1, 1, 2, COLOR_WHITE)
 
 /obj/machinery/status_display/proc/get_evac_shuttle_timer()
 	var/timeleft = evacuation_controller.get_eta()
@@ -202,12 +246,14 @@
 		return "[add_zero(num2text((timeleft / 60) % 60),2)]:[add_zero(num2text(timeleft % 60), 2)]"
 	return ""
 
-/obj/machinery/status_display/proc/remove_display()
+/obj/machinery/status_display/proc/remove_display(update_light = TRUE)
+	picture_state = ""
 	if(overlays.len)
 		overlays.Cut()
-	if(maptext)
-		maptext = ""
-	set_light(0)
+	if(picture_overlight.maptext)
+		picture_overlight.maptext = ""
+	if(update_light)
+		set_light(0)
 
 /obj/machinery/status_display/receive_signal(datum/signal/signal)
 	switch(signal.data["command"])
