@@ -22,6 +22,34 @@
 	var/image/alarm_overlay
 	var/image/seclevel_overlay
 
+/obj/machinery/firealarm/New(loc, dir, atom/frame)
+	..(loc)
+
+	if(dir)
+		set_dir(dir)
+
+	if(istype(frame))
+		buildstage = FIREALARM_NOCIRCUIT
+		wiresexposed = TRUE
+		icon_state = "fire_b0"
+		overlays.Cut()
+		pixel_x = (dir & 3)? 0 : (dir == 4 ? -24 : 24)
+		pixel_y = (dir & 3)? (dir ==1 ? -24 : 24) : 0
+		frame.transfer_fingerprints_to(src)
+	GLOB.firealarm_list += src
+
+/obj/machinery/firealarm/Initialize()
+	. = ..()
+	if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT))
+		update_icon()
+
+/obj/machinery/firealarm/Destroy()
+	GLOB.firealarm_list -= src
+	overlays.Cut()
+	QDEL_NULL(alarm_overlay)
+	QDEL_NULL(seclevel_overlay)
+	return ..()
+
 /obj/machinery/firealarm/_examine_text(mob/user)
 	. = ..()
 	if(detecting && !wiresexposed)
@@ -264,31 +292,6 @@
 	update_icon()
 	playsound(src, 'sound/machines/fire_alarm.ogg', 25, 0)
 	return TRUE
-
-/obj/machinery/firealarm/New(loc, dir, atom/frame)
-	..(loc)
-
-	if(dir)
-		src.set_dir(dir)
-
-	if(istype(frame))
-		buildstage = FIREALARM_NOCIRCUIT
-		wiresexposed = TRUE
-		icon_state = "fire_b0"
-		overlays.Cut()
-		pixel_x = (dir & 3)? 0 : (dir == 4 ? -24 : 24)
-		pixel_y = (dir & 3)? (dir ==1 ? -24 : 24) : 0
-		frame.transfer_fingerprints_to(src)
-	GLOB.firealarm_list += src
-
-/obj/machinery/firealarm/Initialize()
-	. = ..()
-	if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT))
-		update_icon()
-
-/obj/machinery/firealarm/Destroy()
-	GLOB.firealarm_list -= src
-	..()
 
 /*
 FIRE ALARM CIRCUIT

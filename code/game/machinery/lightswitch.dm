@@ -27,6 +27,13 @@
 	connected_area.set_lightswitch(on)
 	update_icon()
 
+/obj/machinery/light_switch/Destroy()
+	connected_area = null
+	other_area = null
+	overlays.Cut()
+	QDEL_NULL(overlay)
+	return ..()
+
 /obj/machinery/light_switch/update_icon()
 	if(!overlay)
 		overlay = image(icon, "light1-overlay")
