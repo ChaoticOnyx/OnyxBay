@@ -1,4 +1,4 @@
-[preset-name]
+[Default]
 ## Default state for unspecified events (enable all the other events in this case)
 default = true
 ## Disables the event 'meteor_wave_base'
