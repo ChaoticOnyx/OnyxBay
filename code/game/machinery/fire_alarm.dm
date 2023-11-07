@@ -33,11 +33,13 @@
 		alarm_overlay = image(icon, "fire[activated]")
 		alarm_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 		alarm_overlay.layer = ABOVE_LIGHTING_LAYER
+		alarm_overlay.alpha = 200
 
 	if(!seclevel_overlay)
 		seclevel_overlay = image(icon, "seclevel-null")
 		seclevel_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 		seclevel_overlay.layer = ABOVE_LIGHTING_LAYER
+		seclevel_overlay.alpha = 200
 
 	overlays.Cut()
 

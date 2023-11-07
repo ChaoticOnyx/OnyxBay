@@ -307,6 +307,7 @@
 		alarm_overlay = image(icon, "alarm_over0")
 		alarm_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 		alarm_overlay.layer = ABOVE_LIGHTING_LAYER
+		alarm_overlay.alpha = 200
 
 	overlays.Cut()
 
