@@ -503,6 +503,7 @@
 		M.Turn(Angle)
 		transform = M
 	trajectory.increment(trajectory_multiplier)
+	var/datum/point/vector/_trajectory = trajectory
 	var/turf/T = trajectory.return_turf()
 
 	if (!T) // Nowhere to go. Just die.
@@ -517,18 +518,18 @@
 		trajectory_ignore_forcemove = FALSE
 		after_move()
 		if(!hitscanning)
-			pixel_x = trajectory.return_px()
-			pixel_y = trajectory.return_py()
+			pixel_x = _trajectory.return_px()
+			pixel_y = _trajectory.return_py()
 	else
 		if(T != loc)
 			before_move()
 			Move(T)
 			after_move()
 		if(!hitscanning)
-			pixel_x = trajectory.return_px() - trajectory.mpx * trajectory_multiplier
-			pixel_y = trajectory.return_py() - trajectory.mpy * trajectory_multiplier
+			pixel_x = _trajectory.return_px() - _trajectory.mpx * trajectory_multiplier
+			pixel_y = _trajectory.return_py() - _trajectory.mpy * trajectory_multiplier
 	if(!hitscanning)
-		animate(src, pixel_x = trajectory.return_px(), pixel_y = trajectory.return_py(), time = 1, flags = ANIMATION_END_NOW)
+		animate(src, pixel_x = _trajectory.return_px(), pixel_y = _trajectory.return_py(), time = 1, flags = ANIMATION_END_NOW)
 	if(isturf(loc))
 		hitscan_last = loc
 	if(can_hit_target(original, permutated))
