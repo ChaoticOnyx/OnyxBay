@@ -105,11 +105,12 @@
 /obj/machinery/alarm/Destroy()
 	GLOB.alarm_list -= src
 	unregister_radio(src, frequency)
-	qdel(wires)
-	wires = null
+	QDEL_NULL(wires)
 	if(alarm_area && alarm_area.master_air_alarm == src)
 		alarm_area.master_air_alarm = null
 		elect_master(exclude_self = TRUE)
+	overlays.Cut()
+	QDEL_NULL(alarm_overlay)
 	return ..()
 
 /obj/machinery/alarm/New(loc, dir, atom/frame)

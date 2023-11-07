@@ -93,6 +93,10 @@ var/list/ai_status_emotions = list(
 
 /obj/machinery/ai_status_display/Destroy()
 	GLOB.ai_status_display_list -= src
+	overlays.Cut()
+	QDEL_NULL(picture)
+	QDEL_NULL(picture_overlight)
+	QDEL_NULL(static_overlay)
 	return ..()
 
 /obj/machinery/ai_status_display/attack_ai/(mob/user)
