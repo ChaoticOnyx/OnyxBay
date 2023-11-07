@@ -88,8 +88,6 @@
 
 // timed process
 /obj/machinery/status_display/Process()
-	if(stat == last_stat)
-		return
 	if(stat & NOPOWER)
 		last_stat = stat
 		if(overlays.len)
@@ -217,7 +215,7 @@
 		return
 
 	if(picture_state != state || force_update)
-		remove_display(FALSE)
+		remove_display(force_update)
 		picture_state = state
 		picture.icon_state = "[picture_state]"
 		picture_overlight.icon_state = "[picture_state]"
@@ -231,7 +229,7 @@
 /obj/machinery/status_display/proc/update_display(line1, line2, force_update = FALSE)
 	var/new_text = {"<div style="font-size:[FONT_SIZE];color:[FONT_COLOR];font:'[FONT_STYLE]';text-align:center;" valign="top">[line1]<br>[line2]</div>"}
 	if(picture_overlight.maptext != new_text || force_update)
-		remove_display(FALSE)
+		remove_display(force_update)
 		picture_overlight.icon_state = "blank"
 		picture_overlight.maptext = new_text
 		overlays += picture_overlight
