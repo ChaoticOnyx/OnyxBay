@@ -32,6 +32,7 @@
 		overlay = image(icon, "light1-overlay")
 		overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 		overlay.layer = ABOVE_LIGHTING_LAYER
+		overlay.alpha = 200
 
 	overlays.Cut()
 	if(stat & (NOPOWER|BROKEN))

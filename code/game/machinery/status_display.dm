@@ -74,7 +74,7 @@
 
 	if(!picture_overlight)
 		picture_overlight = image('icons/obj/status_display.dmi', icon_state = "blank")
-		picture_overlight.alpha = 128
+		picture_overlight.alpha = 96
 		picture_overlight.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 		picture_overlight.layer = ABOVE_LIGHTING_LAYER
 		picture_overlight.maptext_height = maptext_height
