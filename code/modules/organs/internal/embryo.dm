@@ -36,13 +36,16 @@
 
 		var/mob/living/carbon/human/H = owner
 		var/larva_path = H?.species?.xenomorph_type
-		if(!larva_path)
+		if(!larva_path) // Something went very wrong, the host cannot give birth
 			die()
 			return
 
-		var/mob/living/carbon/alien/larva/L = new larva_path(owner)
-		L.larva_announce_to_ghosts()
+		var/birth_loc = loc
+		spawn(1 SECOND) // We use spawn here for a reason. Callbacks are cool and stuff, but trust me, you should really just leave this as is.
+			var/mob/living/carbon/alien/larva/L = new larva_path(get_turf(birth_loc))
+			L.larva_announce_to_ghosts()
 
+		die()
 		owner.gib()
 		qdel(src)
 		return
