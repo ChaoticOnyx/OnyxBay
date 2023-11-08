@@ -30,7 +30,7 @@
 	var/index2
 	var/image/picture = null
 	var/image/picture_overlight = null
-	var/image/static_overlay = null
+	var/global/image/static_overlay = null
 
 	var/frequency = 1435		// radio frequency
 
@@ -59,7 +59,6 @@
 	overlays.Cut()
 	QDEL_NULL(picture)
 	QDEL_NULL(picture_overlight)
-	QDEL_NULL(static_overlay)
 	return ..()
 
 // register for radio system

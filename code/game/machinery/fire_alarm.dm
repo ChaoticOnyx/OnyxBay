@@ -19,8 +19,10 @@
 	layer = ABOVE_WINDOW_LAYER
 	var/wiresexposed = FALSE
 	var/buildstage = FIREALARM_COMPLETE
-	var/image/alarm_overlay
-	var/image/seclevel_overlay
+
+	var/global/status_overlays = FALSE
+	var/global/list/alarm_overlays
+	var/image/seclevel_overlay // There's a whole system for different seclevels across different maps so let's just leave it like this until I figure out what the fuck
 
 /obj/machinery/firealarm/New(loc, dir, atom/frame)
 	..(loc)
@@ -46,7 +48,6 @@
 /obj/machinery/firealarm/Destroy()
 	GLOB.firealarm_list -= src
 	overlays.Cut()
-	QDEL_NULL(alarm_overlay)
 	QDEL_NULL(seclevel_overlay)
 	return ..()
 
@@ -57,11 +58,9 @@
 		. += "\nThe current alert level is <span style='color:[security_state.current_security_level.light_color_alarm];'>[security_state.current_security_level.name]</span>."
 
 /obj/machinery/firealarm/update_icon()
-	if(!alarm_overlay)
-		alarm_overlay = image(icon, "fire[activated]")
-		alarm_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		alarm_overlay.layer = ABOVE_LIGHTING_LAYER
-		alarm_overlay.alpha = 200
+	if(!status_overlays)
+		status_overlays = TRUE
+		generate_overlays()
 
 	if(!seclevel_overlay)
 		seclevel_overlay = image(icon, "seclevel-null")
@@ -93,8 +92,7 @@
 		set_light(0)
 		return
 
-	alarm_overlay.icon_state = "fire[activated]"
-	overlays += alarm_overlay
+	overlays += alarm_overlays[activated+1]
 
 	if(!detecting)
 		return
@@ -107,6 +105,14 @@
 		seclevel_overlay.icon = sl.icon
 		seclevel_overlay.icon_state = sl.overlay_alarm
 		overlays += seclevel_overlay
+
+#define OVERLIGHT_IMAGE(a, b) a=image(icon, b); a.alpha=192; a.plane = EFFECTS_ABOVE_LIGHTING_PLANE; a.layer = ABOVE_LIGHTING_LAYER;
+/obj/machinery/firealarm/proc/generate_overlays()
+	alarm_overlays = new
+	alarm_overlays.len = 2
+	OVERLIGHT_IMAGE(alarm_overlays[1], "fire0")
+	OVERLIGHT_IMAGE(alarm_overlays[2], "fire1")
+#undef OVERLIGHT_IMAGE
 
 /obj/machinery/firealarm/fire_act(datum/gas_mixture/air, temperature, volume)
 	if(!detecting)
