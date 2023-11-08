@@ -471,7 +471,7 @@
 		if(new_overlay_state != overlay_state)
 			overlay_state = new_overlay_state
 			if(overlay_state)
-				overlays += overlay_image('icons/obj/ecig.dmi', overlay_state, flags=RESET_COLOR)
+				overlays += image_repository.overlay_image('icons/obj/ecig.dmi', overlay_state, alpha, RESET_COLOR, null, SOUTH)
 	else
 		overlay_state = ""
 		overlays.Cut()

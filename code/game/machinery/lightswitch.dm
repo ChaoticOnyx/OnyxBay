@@ -12,7 +12,8 @@
 	var/on = 0
 	var/area/connected_area = null
 	var/other_area = null
-	var/image/overlay
+	var/global/image/on_overlay
+	var/global/image/off_overlay
 
 /obj/machinery/light_switch/Initialize()
 	. = ..()
@@ -31,15 +32,20 @@
 	connected_area = null
 	other_area = null
 	overlays.Cut()
-	QDEL_NULL(overlay)
 	return ..()
 
 /obj/machinery/light_switch/update_icon()
-	if(!overlay)
-		overlay = image(icon, "light1-overlay")
-		overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		overlay.layer = ABOVE_LIGHTING_LAYER
-		overlay.alpha = 200
+	if(!on_overlay)
+		on_overlay = image(icon, "light1-overlay")
+		on_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		on_overlay.layer = ABOVE_LIGHTING_LAYER
+		on_overlay.alpha = 160
+
+	if(!off_overlay)
+		off_overlay = image(icon, "light0-overlay")
+		off_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		off_overlay.layer = ABOVE_LIGHTING_LAYER
+		off_overlay.alpha = 160
 
 	overlays.Cut()
 	if(stat & (NOPOWER|BROKEN))
@@ -47,8 +53,7 @@
 		set_light(0)
 	else
 		icon_state = "light[on]"
-		overlay.icon_state = "light[on]-overlay"
-		overlays += overlay
+		overlays += on ? on_overlay : off_overlay
 		set_light(0.15, 0.1, 1, 2, (on ? "#82ff4c" : "#f86060"))
 
 /obj/machinery/light_switch/_examine_text(mob/user)

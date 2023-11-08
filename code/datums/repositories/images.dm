@@ -47,6 +47,7 @@
 		var/image/I = image(icon = icon, icon_state = icon_state, dir = dir)
 		I.alpha = alpha
 		I.appearance_flags = DEFAULT_APPEARANCE_FLAGS | appearance_flags
+		I.color = color
 		I.plane = plane
 		I.layer = layer
 		image_cache_for_overlays[cache_key] = I

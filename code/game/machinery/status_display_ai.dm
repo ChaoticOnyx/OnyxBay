@@ -71,7 +71,7 @@ var/list/ai_status_emotions = list(
 	var/emotion = "Neutral"
 	var/image/picture = null
 	var/image/picture_overlight = null
-	var/image/static_overlay = null
+	var/global/image/static_overlay = null
 
 /obj/machinery/ai_status_display/Initialize()
 	. = ..()
@@ -96,7 +96,6 @@ var/list/ai_status_emotions = list(
 	overlays.Cut()
 	QDEL_NULL(picture)
 	QDEL_NULL(picture_overlight)
-	QDEL_NULL(static_overlay)
 	return ..()
 
 /obj/machinery/ai_status_display/attack_ai/(mob/user)
