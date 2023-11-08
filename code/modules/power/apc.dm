@@ -114,15 +114,23 @@
 	var/update_overlay = -1
 	var/list/update_overlay_chan		// Used to determine if there is a change in channels
 	var/is_critical = 0
-	var/global/status_overlays = 0
 	var/failure_timer = 0
 	var/force_update = 0
 	var/emp_hardened = 0
+
+	var/global/status_overlays = 0
+
 	var/global/list/status_overlays_lock
 	var/global/list/status_overlays_charging
 	var/global/list/status_overlays_equipment
 	var/global/list/status_overlays_lighting
 	var/global/list/status_overlays_environ
+
+	var/global/list/overlight_overlays_lock
+	var/global/list/overlight_overlays_charging
+	var/global/list/overlight_overlays_equipment
+	var/global/list/overlight_overlays_lighting
+	var/global/list/overlight_overlays_environ
 
 
 /obj/machinery/power/apc/updateDialog()
@@ -197,10 +205,9 @@
 	area.power_equip = 0
 	area.power_environ = 0
 	area.power_change()
-	qdel(wires)
-	wires = null
-	qdel(terminal)
-	terminal = null
+	QDEL_NULL(wires)
+	QDEL_NULL(terminal)
+
 	if(cell)
 		cell.forceMove(loc)
 		cell = null
@@ -271,48 +278,12 @@
 			else
 				. += "\nThe cover is closed."
 
-
 // update the APC icon to show the three base states
 // also add overlays for indicator lights
 /obj/machinery/power/apc/update_icon()
-	if (!status_overlays)
-		status_overlays = 1
-		status_overlays_lock = new
-		status_overlays_charging = new
-		status_overlays_equipment = new
-		status_overlays_lighting = new
-		status_overlays_environ = new
-
-		status_overlays_lock.len = 2
-		status_overlays_charging.len = 3
-		status_overlays_equipment.len = 5
-		status_overlays_lighting.len = 5
-		status_overlays_environ.len = 5
-
-		status_overlays_lock[1] = image(icon, "apcox-0")    // 0=blue 1=red
-		status_overlays_lock[2] = image(icon, "apcox-1")
-
-		status_overlays_charging[1] = image(icon, "apco3-0")
-		status_overlays_charging[2] = image(icon, "apco3-1")
-		status_overlays_charging[3] = image(icon, "apco3-2")
-
-		status_overlays_equipment[POWERCHAN_OFF + 1] = image(icon, "apco0-0")
-		status_overlays_equipment[POWERCHAN_OFF_TEMP + 1] = image(icon, "apco0-1")
-		status_overlays_equipment[POWERCHAN_OFF_AUTO + 1] = image(icon, "apco0-1")
-		status_overlays_equipment[POWERCHAN_ON + 1] = image(icon, "apco0-2")
-		status_overlays_equipment[POWERCHAN_ON_AUTO + 1] = image(icon, "apco0-3")
-
-		status_overlays_lighting[POWERCHAN_OFF + 1] = image(icon, "apco1-0")
-		status_overlays_lighting[POWERCHAN_OFF_TEMP + 1] = image(icon, "apco1-1")
-		status_overlays_lighting[POWERCHAN_OFF_AUTO + 1] = image(icon, "apco1-1")
-		status_overlays_lighting[POWERCHAN_ON + 1] = image(icon, "apco1-2")
-		status_overlays_lighting[POWERCHAN_ON_AUTO + 1] = image(icon, "apco1-3")
-
-		status_overlays_environ[POWERCHAN_OFF + 1] = image(icon, "apco2-0")
-		status_overlays_environ[POWERCHAN_OFF_TEMP + 1] = image(icon, "apco2-1")
-		status_overlays_environ[POWERCHAN_OFF_AUTO + 1] = image(icon, "apco2-1")
-		status_overlays_environ[POWERCHAN_ON + 1] = image(icon, "apco2-2")
-		status_overlays_environ[POWERCHAN_ON_AUTO + 1] = image(icon, "apco2-3")
+	if(!status_overlays)
+		status_overlays = TRUE
+		generate_overlays()
 
 	var/update = check_updates() 		//returns 0 if no need to update icons.
 						// 1 if we need to update the icon_state
@@ -354,6 +325,13 @@
 				overlays += status_overlays_equipment[equipment+1]
 				overlays += status_overlays_lighting[lighting+1]
 				overlays += status_overlays_environ[environ+1]
+
+				// Lock and Charging only "glow" if operating, on purpose
+				overlays += overlight_overlays_lock[locked+1]
+				overlays += overlight_overlays_charging[charging+1]
+				overlays += overlight_overlays_equipment[equipment+1]
+				overlays += overlight_overlays_lighting[lighting+1]
+				overlays += overlight_overlays_environ[environ+1]
 
 	if(update & 3)
 		if(update_state & (UPDATE_OPENED1|UPDATE_OPENED2|UPDATE_BROKE))
@@ -1287,6 +1265,102 @@
 	locked = 1
 	update_icon()
 	return 1
+
+#define OVERLIGHT_IMAGE(a, b) a=image(icon, b); a.alpha=96; a.
+/obj/machinery/power/apc/proc/generate_overlays()
+	status_overlays_lock = new
+	status_overlays_charging = new
+	status_overlays_equipment = new
+	status_overlays_lighting = new
+	status_overlays_environ = new
+
+	status_overlays_lock.len = 2
+	status_overlays_charging.len = 3
+	status_overlays_equipment.len = 5
+	status_overlays_lighting.len = 5
+	status_overlays_environ.len = 5
+
+	status_overlays_lock[1] = image(icon, "apcox-0")    // 0=blue 1=red
+	status_overlays_lock[2] = image(icon, "apcox-1")
+
+	status_overlays_charging[1] = image(icon, "apco3-0")
+	status_overlays_charging[2] = image(icon, "apco3-1")
+	status_overlays_charging[3] = image(icon, "apco3-2")
+
+	status_overlays_equipment[POWERCHAN_OFF + 1] = image(icon, "apco0-0")
+	status_overlays_equipment[POWERCHAN_OFF_TEMP + 1] = image(icon, "apco0-1")
+	status_overlays_equipment[POWERCHAN_OFF_AUTO + 1] = image(icon, "apco0-1")
+	status_overlays_equipment[POWERCHAN_ON + 1] = image(icon, "apco0-2")
+	status_overlays_equipment[POWERCHAN_ON_AUTO + 1] = image(icon, "apco0-3")
+
+	status_overlays_lighting[POWERCHAN_OFF + 1] = image(icon, "apco1-0")
+	status_overlays_lighting[POWERCHAN_OFF_TEMP + 1] = image(icon, "apco1-1")
+	status_overlays_lighting[POWERCHAN_OFF_AUTO + 1] = image(icon, "apco1-1")
+	status_overlays_lighting[POWERCHAN_ON + 1] = image(icon, "apco1-2")
+	status_overlays_lighting[POWERCHAN_ON_AUTO + 1] = image(icon, "apco1-3")
+
+	status_overlays_environ[POWERCHAN_OFF + 1] = image(icon, "apco2-0")
+	status_overlays_environ[POWERCHAN_OFF_TEMP + 1] = image(icon, "apco2-1")
+	status_overlays_environ[POWERCHAN_OFF_AUTO + 1] = image(icon, "apco2-1")
+	status_overlays_environ[POWERCHAN_ON + 1] = image(icon, "apco2-2")
+	status_overlays_environ[POWERCHAN_ON_AUTO + 1] = image(icon, "apco2-3")
+
+	overlight_overlays_lock = new
+	overlight_overlays_charging = new
+	overlight_overlays_equipment = new
+	overlight_overlays_lighting = new
+	overlight_overlays_environ = new
+
+	overlight_overlays_lock.len = 2
+	overlight_overlays_charging.len = 3
+	overlight_overlays_equipment.len = 5
+	overlight_overlays_lighting.len = 5
+	overlight_overlays_environ.len = 5
+
+	overlight_overlays_lock[1] = image(icon, "apcox-0")    // 0=blue 1=red
+	overlight_overlays_lock[2] = image(icon, "apcox-1")
+
+	overlight_overlays_charging[1] = image(icon, "apco3-0")
+	overlight_overlays_charging[2] = image(icon, "apco3-1")
+	overlight_overlays_charging[3] = image(icon, "apco3-2")
+
+	overlight_overlays_equipment[POWERCHAN_OFF + 1] = image(icon, "apco0-0")
+	overlight_overlays_equipment[POWERCHAN_OFF_TEMP + 1] = image(icon, "apco0-1")
+	overlight_overlays_equipment[POWERCHAN_OFF_AUTO + 1] = image(icon, "apco0-1")
+	overlight_overlays_equipment[POWERCHAN_ON + 1] = image(icon, "apco0-2")
+	overlight_overlays_equipment[POWERCHAN_ON_AUTO + 1] = image(icon, "apco0-3")
+
+	overlight_overlays_lighting[POWERCHAN_OFF + 1] = image(icon, "apco1-0")
+	overlight_overlays_lighting[POWERCHAN_OFF_TEMP + 1] = image(icon, "apco1-1")
+	overlight_overlays_lighting[POWERCHAN_OFF_AUTO + 1] = image(icon, "apco1-1")
+	overlight_overlays_lighting[POWERCHAN_ON + 1] = image(icon, "apco1-2")
+	overlight_overlays_lighting[POWERCHAN_ON_AUTO + 1] = image(icon, "apco1-3")
+
+	overlight_overlays_environ[POWERCHAN_OFF + 1] = image(icon, "apco2-0")
+	overlight_overlays_environ[POWERCHAN_OFF_TEMP + 1] = image(icon, "apco2-1")
+	overlight_overlays_environ[POWERCHAN_OFF_AUTO + 1] = image(icon, "apco2-1")
+	overlight_overlays_environ[POWERCHAN_ON + 1] = image(icon, "apco2-2")
+	overlight_overlays_environ[POWERCHAN_ON_AUTO + 1] = image(icon, "apco2-3")
+
+	for(var/image/I in overlight_overlays_lock
+	overlight_overlays_lock.alpha = 96
+	overlight_overlays_charging.alpha = 96
+	overlight_overlays_equipment.alpha = 96
+	overlight_overlays_lighting.alpha = 96
+	overlight_overlays_environ.alpha = 96
+
+	overlight_overlays_lock.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	overlight_overlays_charging.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	overlight_overlays_equipment.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	overlight_overlays_lighting.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	overlight_overlays_environ.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+
+	overlight_overlays_lock.layer = ABOVE_LIGHTING_LAYER
+	overlight_overlays_charging.layer = ABOVE_LIGHTING_LAYER
+	overlight_overlays_equipment.layer = ABOVE_LIGHTING_LAYER
+	overlight_overlays_lighting.layer = ABOVE_LIGHTING_LAYER
+	overlight_overlays_environ.layer = ABOVE_LIGHTING_LAYER
+
 
 /obj/item/module/power_control
 	name = "power control module"

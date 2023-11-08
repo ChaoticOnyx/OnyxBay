@@ -84,7 +84,7 @@
 
 	var/report_danger_level = 1
 
-	var/image/alarm_overlay
+	var/global/list/alarm_overlays
 
 /obj/machinery/alarm/cold
 	target_temperature = 4 CELSIUS
@@ -338,6 +338,9 @@
 	overlays += alarm_overlay
 
 	set_light(0.25, 0.1, 1, 2, new_color)
+
+/obj/machinery/alarm/proc/generate_overlays()
+	alarm_overlays = new
 
 /obj/machinery/alarm/receive_signal(datum/signal/signal)
 	if(stat & (NOPOWER|BROKEN))
