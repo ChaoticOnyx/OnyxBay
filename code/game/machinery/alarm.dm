@@ -84,6 +84,7 @@
 
 	var/report_danger_level = 1
 
+	var/global/status_overlays = FALSE
 	var/global/list/alarm_overlays
 
 /obj/machinery/alarm/cold
@@ -110,7 +111,6 @@
 		alarm_area.master_air_alarm = null
 		elect_master(exclude_self = TRUE)
 	overlays.Cut()
-	QDEL_NULL(alarm_overlay)
 	return ..()
 
 /obj/machinery/alarm/New(loc, dir, atom/frame)
@@ -304,11 +304,9 @@
 	return 0
 
 /obj/machinery/alarm/update_icon()
-	if(!alarm_overlay)
-		alarm_overlay = image(icon, "alarm_over0")
-		alarm_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		alarm_overlay.layer = ABOVE_LIGHTING_LAYER
-		alarm_overlay.alpha = 200
+	if(!status_overlays)
+		status_overlays = TRUE
+		generate_overlays()
 
 	overlays.Cut()
 
@@ -334,13 +332,19 @@
 			new_color = COLOR_SUN
 		if(2)
 			new_color = COLOR_RED_LIGHT
-	alarm_overlay.icon_state = "alarm_over[icon_level]"
-	overlays += alarm_overlay
+
+	overlays += alarm_overlays[icon_level+1]
 
 	set_light(0.25, 0.1, 1, 2, new_color)
 
 /obj/machinery/alarm/proc/generate_overlays()
 	alarm_overlays = new
+	alarm_overlays.len = 3
+#define OVERLIGHT_IMAGE(a, b) a=image(icon, b); a.alpha=192; a.plane = EFFECTS_ABOVE_LIGHTING_PLANE; a.layer = ABOVE_LIGHTING_LAYER;
+	OVERLIGHT_IMAGE(alarm_overlays[1], "alarm_over0")
+	OVERLIGHT_IMAGE(alarm_overlays[2], "alarm_over1")
+	OVERLIGHT_IMAGE(alarm_overlays[3], "alarm_over2")
+#undef OVERLIGHT_IMAGE
 
 /obj/machinery/alarm/receive_signal(datum/signal/signal)
 	if(stat & (NOPOWER|BROKEN))

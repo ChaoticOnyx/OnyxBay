@@ -118,7 +118,7 @@
 	var/force_update = 0
 	var/emp_hardened = 0
 
-	var/global/status_overlays = 0
+	var/global/status_overlays = FALSE
 
 	var/global/list/status_overlays_lock
 	var/global/list/status_overlays_charging
@@ -1266,7 +1266,7 @@
 	update_icon()
 	return 1
 
-#define OVERLIGHT_IMAGE(a, b) a=image(icon, b); a.alpha=96; a.
+#define OVERLIGHT_IMAGE(a, b) a=image(icon, b); a.alpha=96; a.plane = EFFECTS_ABOVE_LIGHTING_PLANE; a.layer = ABOVE_LIGHTING_LAYER;
 /obj/machinery/power/apc/proc/generate_overlays()
 	status_overlays_lock = new
 	status_overlays_charging = new
@@ -1317,49 +1317,31 @@
 	overlight_overlays_lighting.len = 5
 	overlight_overlays_environ.len = 5
 
-	overlight_overlays_lock[1] = image(icon, "apcox-0")    // 0=blue 1=red
-	overlight_overlays_lock[2] = image(icon, "apcox-1")
+	OVERLIGHT_IMAGE(overlight_overlays_lock[1], "apcox-0")    // 0=blue 1=red
+	OVERLIGHT_IMAGE(overlight_overlays_lock[2], "apcox-1")
 
-	overlight_overlays_charging[1] = image(icon, "apco3-0")
-	overlight_overlays_charging[2] = image(icon, "apco3-1")
-	overlight_overlays_charging[3] = image(icon, "apco3-2")
+	OVERLIGHT_IMAGE(overlight_overlays_charging[1], "apco3-0")
+	OVERLIGHT_IMAGE(overlight_overlays_charging[2], "apco3-1")
+	OVERLIGHT_IMAGE(overlight_overlays_charging[3], "apco3-2")
 
-	overlight_overlays_equipment[POWERCHAN_OFF + 1] = image(icon, "apco0-0")
-	overlight_overlays_equipment[POWERCHAN_OFF_TEMP + 1] = image(icon, "apco0-1")
-	overlight_overlays_equipment[POWERCHAN_OFF_AUTO + 1] = image(icon, "apco0-1")
-	overlight_overlays_equipment[POWERCHAN_ON + 1] = image(icon, "apco0-2")
-	overlight_overlays_equipment[POWERCHAN_ON_AUTO + 1] = image(icon, "apco0-3")
+	OVERLIGHT_IMAGE(overlight_overlays_equipment[POWERCHAN_OFF + 1], "apco0-0")
+	OVERLIGHT_IMAGE(overlight_overlays_equipment[POWERCHAN_OFF_TEMP + 1], "apco0-1")
+	OVERLIGHT_IMAGE(overlight_overlays_equipment[POWERCHAN_OFF_AUTO + 1], "apco0-1")
+	OVERLIGHT_IMAGE(overlight_overlays_equipment[POWERCHAN_ON + 1], "apco0-2")
+	OVERLIGHT_IMAGE(overlight_overlays_equipment[POWERCHAN_ON_AUTO + 1], "apco0-3")
 
-	overlight_overlays_lighting[POWERCHAN_OFF + 1] = image(icon, "apco1-0")
-	overlight_overlays_lighting[POWERCHAN_OFF_TEMP + 1] = image(icon, "apco1-1")
-	overlight_overlays_lighting[POWERCHAN_OFF_AUTO + 1] = image(icon, "apco1-1")
-	overlight_overlays_lighting[POWERCHAN_ON + 1] = image(icon, "apco1-2")
-	overlight_overlays_lighting[POWERCHAN_ON_AUTO + 1] = image(icon, "apco1-3")
+	OVERLIGHT_IMAGE(overlight_overlays_lighting[POWERCHAN_OFF + 1], "apco1-0")
+	OVERLIGHT_IMAGE(overlight_overlays_lighting[POWERCHAN_OFF_TEMP + 1], "apco1-1")
+	OVERLIGHT_IMAGE(overlight_overlays_lighting[POWERCHAN_OFF_AUTO + 1], "apco1-1")
+	OVERLIGHT_IMAGE(overlight_overlays_lighting[POWERCHAN_ON + 1], "apco1-2")
+	OVERLIGHT_IMAGE(overlight_overlays_lighting[POWERCHAN_ON_AUTO + 1], "apco1-3")
 
-	overlight_overlays_environ[POWERCHAN_OFF + 1] = image(icon, "apco2-0")
-	overlight_overlays_environ[POWERCHAN_OFF_TEMP + 1] = image(icon, "apco2-1")
-	overlight_overlays_environ[POWERCHAN_OFF_AUTO + 1] = image(icon, "apco2-1")
-	overlight_overlays_environ[POWERCHAN_ON + 1] = image(icon, "apco2-2")
-	overlight_overlays_environ[POWERCHAN_ON_AUTO + 1] = image(icon, "apco2-3")
-
-	for(var/image/I in overlight_overlays_lock
-	overlight_overlays_lock.alpha = 96
-	overlight_overlays_charging.alpha = 96
-	overlight_overlays_equipment.alpha = 96
-	overlight_overlays_lighting.alpha = 96
-	overlight_overlays_environ.alpha = 96
-
-	overlight_overlays_lock.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-	overlight_overlays_charging.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-	overlight_overlays_equipment.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-	overlight_overlays_lighting.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-	overlight_overlays_environ.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-
-	overlight_overlays_lock.layer = ABOVE_LIGHTING_LAYER
-	overlight_overlays_charging.layer = ABOVE_LIGHTING_LAYER
-	overlight_overlays_equipment.layer = ABOVE_LIGHTING_LAYER
-	overlight_overlays_lighting.layer = ABOVE_LIGHTING_LAYER
-	overlight_overlays_environ.layer = ABOVE_LIGHTING_LAYER
+	OVERLIGHT_IMAGE(overlight_overlays_environ[POWERCHAN_OFF + 1], "apco2-0")
+	OVERLIGHT_IMAGE(overlight_overlays_environ[POWERCHAN_OFF_TEMP + 1], "apco2-1")
+	OVERLIGHT_IMAGE(overlight_overlays_environ[POWERCHAN_OFF_AUTO + 1], "apco2-1")
+	OVERLIGHT_IMAGE(overlight_overlays_environ[POWERCHAN_ON + 1], "apco2-2")
+	OVERLIGHT_IMAGE(overlight_overlays_environ[POWERCHAN_ON_AUTO + 1], "apco2-3")
+#undef OVERLIGHT_IMAGE
 
 
 /obj/item/module/power_control
