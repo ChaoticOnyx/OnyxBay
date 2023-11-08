@@ -49,7 +49,11 @@ GLOBAL_LIST_INIT(elpaso_jobs, list(
 	"Head of Security" = "Colonial Marshal",
 	"Warden" = "Sheriff",
 	"Security Officer" = "County Deputy",
-	"Junior Officer" = "Town Deputy"
+	"Junior Officer" = "Town Deputy",
+	"Technical Assistant" = "Prospector",
+	"Medical Intern" = "Aesculapius Trainee",
+	"Research Assistant" = "HighGrad Student",
+	"Medical Doctor" = "Aesculapius",
 ))
 
 GLOBAL_LIST_INIT(elpaso_jobs_to_normal_job, reverse_assoc_list(GLOB.elpaso_jobs))
