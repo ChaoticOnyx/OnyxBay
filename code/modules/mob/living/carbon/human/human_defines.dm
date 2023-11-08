@@ -1,5 +1,6 @@
 /mob/living/carbon/human
 	layer = BASE_HUMAN_LAYER
+	blocks_emissive = EMISSIVE_BLOCK_UNIQUE
 
 	//Hair color, secondary color and style
 	var/r_hair = 0

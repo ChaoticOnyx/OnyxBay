@@ -560,6 +560,9 @@
 		var/addY2 = 0
 
 		for(var/image/layer_image as anything in layers)
+			if(layer_image.plane == EMISSIVE_PLANE) // Just replace this with whatever it is TG is doing these days sometime. Getflaticon breaks emissives
+				continue
+
 			if(layer_image.alpha == 0)
 				continue
 

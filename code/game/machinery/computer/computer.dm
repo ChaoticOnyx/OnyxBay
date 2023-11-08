@@ -30,7 +30,7 @@
 
 /obj/machinery/computer/Destroy()
 	GLOB.computer_list -= src
-	
+
 	return ..()
 
 /obj/machinery/computer/emp_act(severity)
@@ -73,20 +73,28 @@
 /obj/machinery/computer/update_icon()
 	overlays.Cut()
 	if(stat & NOPOWER)
-		set_light(0)
 		if(icon_keyboard)
 			overlays += image(icon,"[icon_keyboard]_off", overlay_layer)
 		return
-	else
-		set_light(light_max_bright_on, light_inner_range_on, light_outer_range_on, 3.5, light_color)
 
 	if(stat & BROKEN)
 		overlays += image(icon, "[icon_state]_broken", overlay_layer)
 	else
 		overlays += image(icon, icon_screen, overlay_layer)
 
-	if(icon_keyboard)
-		overlays += image(icon, icon_keyboard, overlay_layer)
+	var/should_glow = update_glow()
+	if(should_glow)
+		overlays += emissive_appearance(icon, icon_screen)
+		if(icon_keyboard)
+			overlays += emissive_appearance(icon, icon_keyboard)
+
+/obj/machinery/computer/proc/update_glow()
+	if(stat & NOPOWER|BROKEN)
+		set_light(light_max_bright_on, light_inner_range_on, light_outer_range_on, 3.5, light_color)
+		return TRUE
+	else
+		set_light(0)
+		return FALSE
 
 /obj/machinery/computer/proc/decode(text)
 	// Adds line breaks

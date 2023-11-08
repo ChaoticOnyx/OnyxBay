@@ -23,6 +23,19 @@
 	var/item_state = null // Used to specify the item state for the on-mob overlays.
 	var/pull_sound = null
 
+	/// Either [EMISSIVE_BLOCK_NONE], [EMISSIVE_BLOCK_GENERIC], or [EMISSIVE_BLOCK_UNIQUE]
+	var/blocks_emissive = EMISSIVE_BLOCK_NONE
+	///Internal holder for emissive blocker object, DO NOT USE DIRECTLY. Use blocks_emissive
+	var/mutable_appearance/em_block
+
+/atom/movable/Initialize()
+	. = ..()
+	var/emissive_block = update_emissive_blocker()
+	if(emissive_block)
+		overlays += emissive_block
+		// Since this overlay is managed by the update_overlays proc
+		LAZYADD(managed_overlays, emissive_block)
+
 /atom/movable/Destroy()
 	if(!(atom_flags & ATOM_FLAG_INITIALIZED))
 		util_crash_with("GC: -- [name] | [type] was deleted before initalization --")
@@ -43,6 +56,9 @@
 
 	if(virtual_mob && !ispath(virtual_mob))
 		QDEL_NULL(virtual_mob)
+
+	if(em_block)
+		QDEL_NULL(em_block)
 
 	thrown_to = null
 	throwed_dist = 0
@@ -277,6 +293,29 @@
 
 /atom/movable/proc/post_launched()
 	return
+
+/atom/movable/proc/update_emissive_blocker()
+	if(!blocks_emissive)
+		return
+	if(blocks_emissive == EMISSIVE_BLOCK_GENERIC)
+		return fast_emissive_blocker(src)
+	if(blocks_emissive == EMISSIVE_BLOCK_UNIQUE)
+		if(!em_block && !QDELETED(src))
+			appearance_flags |= KEEP_TOGETHER
+			render_target = ref(src)
+			var/mutable_appearance/gen_emissive_blocker = emissive_blocker(
+				icon = icon,
+				appearance_flags = appearance_flags,
+				source = render_target
+			)
+			em_block = gen_emissive_blocker
+		return em_block
+
+/atom/movable/update_overlays()
+	. = ..()
+	var/emissive_blocker = update_emissive_blocker()
+	if(emissive_blocker)
+		. += emissive_blocker
 
 //Overlays
 /atom/movable/overlay

@@ -187,6 +187,11 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 /atom/movable/renderer/lighting/Initialize(mapload, mob/owner)
 	. = ..()
 	owner.overlay_fullscreen("lighting_backdrop", /obj/screen/fullscreen/lighting_backdrop)
+	filters += filter(
+		type = "alpha",
+		render_source = EMISSIVE_TARGET,
+		flags = MASK_INVERSE
+	)
 
 /// Draws visuals that should not be affected by darkness.
 /atom/movable/renderer/above_lighting
@@ -283,3 +288,32 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	icon_state = "singularity_s11"
 	pixel_x = -176
 	pixel_y = -176
+
+
+/* *
+ * This system works by exploiting BYONDs color matrix filter to use layers to handle emissive blockers.
+ *
+ * Emissive overlays are pasted with an atom color that converts them to be entirely some specific color.
+ * Emissive blockers are pasted with an atom color that converts them to be entirely some different color.
+ * Emissive overlays and emissive blockers are put onto the same plane.
+ * The layers for the emissive overlays and emissive blockers cause them to mask eachother similar to normal BYOND objects.
+ * A color matrix filter is applied to the emissive plane to mask out anything that isn't whatever the emissive color is.
+ * This is then used to alpha mask the lighting plane.
+ *
+ * This works best if emissive overlays applied only to objects that emit light,
+ * since luminosity=0 turfs may not be rendered.
+ */
+
+/atom/movable/renderer/emissive
+	name = "Emissive"
+	group = RENDER_GROUP_NONE
+	plane = EMISSIVE_PLANE
+	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
+	render_target_name = EMISSIVE_TARGET
+
+/atom/movable/renderer/emissive/Initialize()
+	. = ..()
+	filters += filter(
+		type = "color",
+		color = GLOB.em_mask_matrix
+	)

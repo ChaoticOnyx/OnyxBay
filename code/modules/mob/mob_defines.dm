@@ -7,6 +7,8 @@
 	animate_movement = 2
 	virtual_mob = /mob/observer/virtual/mob
 
+	blocks_emissive = EMISSIVE_BLOCK_GENERIC
+
 	movement_handlers = list(
 		/datum/movement_handler/mob/relayed_movement,
 		/datum/movement_handler/mob/death,
