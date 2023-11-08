@@ -44,6 +44,7 @@
 	if(istype(GLOB.using_map, /datum/map/elpaso))
 		if(!istype(T.loc,/area/elpaso/street))
 			. = FALSE
+		return .
 
 	if(!istype(T.loc,/area/space) && !istype(T,/turf/space))
 		. = FALSE
