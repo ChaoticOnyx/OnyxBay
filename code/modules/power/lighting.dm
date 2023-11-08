@@ -269,10 +269,10 @@
 
 	var/image/TO
 	if(lightbulb?.tone_overlay)
-		TO = overlay_image(icon, "[icon_state]-over", flags=RESET_COLOR)
-		TO.color = lightbulb.b_color
-		TO.layer = ABOVE_LIGHTING_LAYER
-		TO.alpha = between(128, (lightbulb.b_max_bright * 1.25 * 255), 255)
+		var/overlay_alpha = between(128, (lightbulb.b_max_bright * 1.25 * 255), 255)
+		var/overlay_plane = on ? EFFECTS_ABOVE_LIGHTING_PLANE : FLOAT_PLANE
+		var/overlay_layer = on ? ABOVE_LIGHTING_LAYER : layer
+		TO = image_repository.overlay_image(icon, "[icon_state]-over", overlay_alpha, RESET_COLOR, lightbulb.b_color, dir, overlay_plane, overlay_layer)
 
 	if(on)
 		update_use_power(POWER_USE_ACTIVE)
