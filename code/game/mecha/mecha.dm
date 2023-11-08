@@ -197,10 +197,10 @@
 	operation_req_access = list() // trader disable locks on mech on their site.
 
 /obj/mecha/proc/removeVerb(verb_path)
-	verbs -= verb_path
+	remove_verb(src, verb_path)
 
 /obj/mecha/proc/addVerb(verb_path)
-	verbs += verb_path
+	add_verb(src, verb_path)
 
 /obj/mecha/proc/add_airtank()
 	internal_tank = new /obj/machinery/portable_atmospherics/canister/air(src)
@@ -995,8 +995,8 @@
 	if(possible_port)
 		if(connect(possible_port))
 			src.occupant_message("<span class='notice'>\The [name] connects to the port.</span>")
-			src.verbs += /obj/mecha/verb/disconnect_from_port
-			src.verbs -= /obj/mecha/verb/connect_to_port
+			add_verb(src, /obj/mecha/verb/disconnect_from_port)
+			remove_verb(src, /obj/mecha/verb/connect_to_port)
 			return
 		else
 			src.occupant_message("<span class='danger'>\The [name] failed to connect to the port.</span>")
@@ -1015,8 +1015,8 @@
 		return
 	if(disconnect())
 		src.occupant_message("<span class='notice'>[name] disconnects from the port.</span>")
-		src.verbs -= /obj/mecha/verb/disconnect_from_port
-		src.verbs += /obj/mecha/verb/connect_to_port
+		remove_verb(src, /obj/mecha/verb/disconnect_from_port)
+		add_verb(src, /obj/mecha/verb/connect_to_port)
 	else
 		src.occupant_message("<span class='danger'>[name] is not connected to the port at the moment.</span>")
 
@@ -1206,7 +1206,7 @@
 	brainmob.forceMove(src) // should allow relaymove
 	//brainmob.canmove = TRUE
 	//mmi_as_oc.mecha = src
-	verbs -= /obj/mecha/verb/eject
+	remove_verb(src, /obj/mecha/verb/eject)
 	Entered(I)
 	forceMove(loc)
 	icon_state = reset_icon()

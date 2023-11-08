@@ -1085,7 +1085,7 @@
 /obj/item/mecha_parts/mecha_equipment/tool/passenger/attach()
 	..()
 	if(chassis)
-		chassis.verbs |= /obj/mecha/proc/move_inside_passenger
+		add_verb(chassis, /obj/mecha/proc/move_inside_passenger)
 
 /obj/item/mecha_parts/mecha_equipment/tool/passenger/detach()
 	if(occupant)
@@ -1095,7 +1095,7 @@
 	var/obj/mecha/M = chassis
 	..()
 	if(M && !(locate(/obj/item/mecha_parts/mecha_equipment/tool/passenger) in M))
-		M.verbs -= /obj/mecha/proc/move_inside_passenger
+		remove_verb(M, /obj/mecha/proc/move_inside_passenger)
 
 /obj/item/mecha_parts/mecha_equipment/tool/passenger/get_equip_info()
 	return "[..()] <br />[occupant? "\[Occupant: [occupant]\]|" : ""]Exterior Hatch: <a href='?src=\ref[src];toggle_lock=1'>Toggle Lock</a>"

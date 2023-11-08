@@ -533,7 +533,7 @@
 	icon_state = "shield2"
 	layer = 5
 	anchored = TRUE
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	var/resonance_damage = 10
 	var/creator
 	var/obj/item/resonator/res

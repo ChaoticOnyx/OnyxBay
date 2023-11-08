@@ -779,12 +779,13 @@
 
 	return cap
 
-/proc/icon2html(thing, target, icon_state, dir, frame = 1, moving = FALSE, realsize = FALSE, class = null)
+/proc/icon2html(thing, target, icon_state, dir, frame = 1, moving = FALSE, realsize = FALSE, sourceonly = FALSE, class = null)
 	if (!thing)
 		return
 
 	var/key
-	var/icon/I = thing
+	var/icon/icon2collapse = thing
+
 	if (!target)
 		return
 	if (target == world)
@@ -795,9 +796,14 @@
 		targets = list(target)
 	else
 		targets = target
-		if (!targets.len)
-			return
-	if (!isicon(I))
+	if(!length(targets))
+		return
+
+	//check if the given object is associated with a dmi file in the icons folder. if it is then we dont need to do a lot of work
+	//for asset generation to get around byond limitations
+	var/icon_path = get_icon_dmi_path(thing)
+
+	if (!isicon(icon2collapse))
 		if (isfile(thing)) // special snowflake
 			var/name = "[generate_asset_name(thing)].png"
 			register_asset(name, thing)
@@ -809,17 +815,23 @@
 						continue
 					thing2 = M.client
 				send_asset(thing2, key, FALSE)
+			if(sourceonly)
+				return url_encode(key)
 			return "<img class='icon icon-misc [class]' src=\"[url_encode(name)]\">"
+
 		var/atom/A = thing
+		icon2collapse = A.icon
+
 		if (isnull(dir))
 			dir = A.dir
+
 		if (isnull(icon_state))
 			icon_state = A.icon_state
-		I = A.icon
+
 		if (ishuman(thing)) // Shitty workaround for a BYOND issue.
-			var/icon/temp = I
-			I = icon()
-			I.Insert(temp, dir = SOUTH)
+			var/icon/temp = icon2collapse
+			icon2collapse = icon()
+			icon2collapse.Insert(temp, dir = SOUTH)
 			dir = SOUTH
 	else
 		if (isnull(dir))
@@ -827,10 +839,13 @@
 		if (isnull(icon_state))
 			icon_state = ""
 
-	I = icon(I, icon_state, dir, frame, moving)
+	icon2collapse = icon(icon2collapse, icon_state, dir, frame, moving)
 
-	key = "[generate_asset_name(I)].png"
-	register_asset(key, I)
+	var/list/name_and_ref = generate_and_hash_rsc_file(icon2collapse, icon_path) //pretend that tuples exist
+
+	key = "[name_and_ref[3]].png"
+
+	register_asset(key, icon2collapse)
 	for (var/thing2 in targets)
 		ASSERT(isclient(thing2) || ismob(thing2))
 		if(ismob(thing2))
@@ -841,7 +856,7 @@
 		send_asset(thing2, key, FALSE)
 
 	if(realsize)
-		return "<img class='icon icon-[icon_state] [class]' style='width:[I.Width()]px;height:[I.Height()]px;min-height:[I.Height()]px' src=\"[url_encode(key)]\">"
+		return "<img class='icon icon-[icon_state] [class]' style='width:[icon2collapse.Width()]px;height:[icon2collapse.Height()]px;min-height:[icon2collapse.Height()]px' src=\"[url_encode(key)]\">"
 
 	return "<img class='icon icon-[icon_state] [class]' src=\"[url_encode(key)]\">"
 
@@ -885,6 +900,82 @@
 	// make sure to still call unlock on the savefile after every write to unlock it.
 	fdel("tmp/dummySave.sav")
 
+/// generates a filename for a given asset.
+/// like generate_asset_name(), except returns the rsc reference and the rsc file hash as well as the asset name (sans extension)
+/// used so that certain asset files dont have to be hashed twice
+/proc/generate_and_hash_rsc_file(file, dmi_file_path)
+	var/rsc_ref = fcopy_rsc(file)
+	var/hash
+	//if we have a valid dmi file path we can trust md5'ing the rsc file because we know it doesnt have the bug described in http://www.byond.com/forum/post/2611357
+	if(dmi_file_path)
+		hash = md5(rsc_ref)
+	else //otherwise, we need to do the expensive fcopy() workaround
+		hash = md5asfile(rsc_ref)
+
+	return list(rsc_ref, hash, "asset.[hash]")
+
+///given a text string, returns whether it is a valid dmi icons folder path
+/proc/is_valid_dmi_file(icon_path)
+	if(!istext(icon_path) || !length(icon_path))
+		return FALSE
+
+	var/is_in_icon_folder = findtextEx(icon_path, "icons/")
+	var/is_dmi_file = findtextEx(icon_path, ".dmi")
+
+	if(is_in_icon_folder && is_dmi_file)
+		return TRUE
+	return FALSE
+
+/// given an icon object, dmi file path, or atom/image/mutable_appearance, attempts to find and return an associated dmi file path.
+/// a weird quirk about dm is that /icon objects represent both compile-time or dynamic icons in the rsc,
+/// but stringifying rsc references returns a dmi file path
+/// ONLY if that icon represents a completely unchanged dmi file from when the game was compiled.
+/// so if the given object is associated with an icon that was in the rsc when the game was compiled, this returns a path. otherwise it returns ""
+/proc/get_icon_dmi_path(icon/icon)
+	/// the dmi file path we attempt to return if the given object argument is associated with a stringifiable icon
+	/// if successful, this looks like "icons/path/to/dmi_file.dmi"
+	var/icon_path = ""
+
+	if(isatom(icon) || istype(icon, /image) || istype(icon, /mutable_appearance))
+		var/atom/atom_icon = icon
+		icon = atom_icon.icon
+		//atom icons compiled in from 'icons/path/to/dmi_file.dmi' are weird and not really icon objects that you generate with icon().
+		//if theyre unchanged dmi's then they're stringifiable to "icons/path/to/dmi_file.dmi"
+
+	if(isicon(icon) && isfile(icon))
+		//icons compiled in from 'icons/path/to/dmi_file.dmi' at compile time are weird and arent really /icon objects,
+		///but they pass both isicon() and isfile() checks. theyre the easiest case since stringifying them gives us the path we want
+		var/icon_ref = text_ref(icon)
+		var/locate_icon_string = "[locate(icon_ref)]"
+
+		icon_path = locate_icon_string
+
+	else if(isicon(icon) && "[icon]" == "/icon")
+		// icon objects generated from icon() at runtime are icons, but they ARENT files themselves, they represent icon files.
+		// if the files they represent are compile time dmi files in the rsc, then
+		// the rsc reference returned by fcopy_rsc() will be stringifiable to "icons/path/to/dmi_file.dmi"
+		var/rsc_ref = fcopy_rsc(icon)
+
+		var/icon_ref = text_ref(rsc_ref)
+
+		var/icon_path_string = "[locate(icon_ref)]"
+
+		icon_path = icon_path_string
+
+	else if(istext(icon))
+		var/rsc_ref = fcopy_rsc(icon)
+		//if its the text path of an existing dmi file, the rsc reference returned by fcopy_rsc() will be stringifiable to a dmi path
+
+		var/rsc_ref_ref = text_ref(rsc_ref)
+		var/rsc_ref_string = "[locate(rsc_ref_ref)]"
+
+		icon_path = rsc_ref_string
+
+	if(is_valid_dmi_file(icon_path))
+		return icon_path
+
+	return FALSE
+
 // This proc accepts an icon or a path you need the icon from.
 /proc/icon2base64html(thing)
 	var/static/list/bicon_cache = list()
@@ -910,6 +1001,17 @@
 		return "<img class='game-icon' src='data:image/png;base64,[cached]'>"
 
 	CRASH("[thing] is must be a path or an icon")
+
+//Costlier version of icon2html() that uses getFlatIcon() to account for overlays, underlays, etc. Use with extreme moderation, ESPECIALLY on mobs.
+/proc/costly_icon2html(thing, target, sourceonly = FALSE)
+	if (!thing)
+		return
+
+	if (isicon(thing))
+		return icon2html(thing, target)
+
+	var/icon/I = getFlatIcon(thing)
+	return icon2html(I, target, sourceonly = sourceonly)
 
 /mob/living/carbon/human/proc/generate_preview()
 	var/icon/flat = icon('icons/effects/blank.dmi') // Final flattened icon

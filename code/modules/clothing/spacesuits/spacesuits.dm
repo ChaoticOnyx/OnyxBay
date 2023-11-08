@@ -45,7 +45,7 @@
 /obj/item/clothing/head/helmet/space/Initialize()
 	. = ..()
 	if(camera)
-		verbs += /obj/item/clothing/head/helmet/space/proc/toggle_camera
+		add_verb(src, /obj/item/clothing/head/helmet/space/proc/toggle_camera)
 
 /obj/item/clothing/head/helmet/space/proc/toggle_camera()
 	set name = "Toggle Helmet Camera"

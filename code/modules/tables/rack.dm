@@ -9,8 +9,8 @@
 
 /obj/structure/table/rack/New()
 	..()
-	verbs -= /obj/structure/table/verb/do_flip
-	verbs -= /obj/structure/table/proc/do_put
+	remove_verb(src, /obj/structure/table/verb/do_flip)
+	remove_verb(src, /obj/structure/table/proc/do_put)
 
 /obj/structure/table/rack/Initialize()
 	auto_align()

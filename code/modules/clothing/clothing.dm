@@ -523,7 +523,7 @@ BLIND     // can't see anything
 /obj/item/clothing/mask/New()
 	if(pull_mask)
 		action_button_name = "Adjust Mask"
-		verbs += /obj/item/clothing/mask/proc/adjust_mask
+		add_verb(src, /obj/item/clothing/mask/proc/adjust_mask)
 	..()
 
 /obj/item/clothing/mask/Destroy()
@@ -624,7 +624,7 @@ BLIND     // can't see anything
 		holding.forceMove(src)
 
 	if(!holding)
-		verbs -= /obj/item/clothing/shoes/proc/draw_knife
+		remove_verb(src, /obj/item/clothing/shoes/proc/draw_knife)
 
 	update_icon()
 	return
@@ -644,7 +644,7 @@ BLIND     // can't see anything
 			return
 		holding = I
 		user.visible_message("<span class='notice'>\The [user] shoves \the [I] into \the [src].</span>", range = 1)
-		verbs |= /obj/item/clothing/shoes/proc/draw_knife
+		add_verb(src, /obj/item/clothing/shoes/proc/draw_knife)
 		update_icon()
 	else if(istype(I, /obj/item/flame/match))
 		var/obj/item/flame/match/M = I
@@ -759,9 +759,9 @@ BLIND     // can't see anything
 	update_rolldown_status()
 	update_rollsleeves_status()
 	if(rolled_down == -1)
-		verbs -= /obj/item/clothing/under/verb/rollsuit
+		remove_verb(src, /obj/item/clothing/under/verb/rollsuit)
 	if(rolled_sleeves == -1)
-		verbs -= /obj/item/clothing/under/verb/rollsleeves
+		remove_verb(src, /obj/item/clothing/under/verb/rollsleeves)
 
 /obj/item/clothing/under/attack_hand(mob/user)
 	if(accessories && accessories.len)

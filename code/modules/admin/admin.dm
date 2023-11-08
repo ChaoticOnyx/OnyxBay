@@ -1535,3 +1535,7 @@ datum/admins/var/obj/item/paper/admin/faxreply // var to hold fax replies in
 		src = usr.client.holder
 
 	follow_panel.tgui_interact(usr, null)
+
+/atom/proc/Admin_Coordinates_Readable(area_name, admin_jump_ref)
+	var/turf/T = get_turf(src)
+	return T ? "[area_name ? "[get_area_by_name(T, TRUE)] " : " "]([T.x],[T.y],[T.z])[admin_jump_ref ? " [ADMIN_JMP(T)]" : ""]" : "nonexistent location"

@@ -75,7 +75,7 @@
 /obj/item/clothing/proc/attach_accessory(mob/user, obj/item/clothing/accessory/A)
 	accessories += A
 	A.on_attached(src, user)
-	src.verbs |= /obj/item/clothing/proc/removetie_verb
+	add_verb(src, /obj/item/clothing/proc/removetie_verb)
 	update_accessory_slowdown()
 	update_clothing_icon()
 
@@ -102,7 +102,7 @@
 		A = accessories[1]
 	src.remove_accessory(usr,A)
 	if(!accessories.len)
-		src.verbs -= /obj/item/clothing/proc/removetie_verb
+		remove_verb(src, /obj/item/clothing/proc/removetie_verb)
 
 /obj/item/clothing/emp_act(severity)
 	if(accessories.len)

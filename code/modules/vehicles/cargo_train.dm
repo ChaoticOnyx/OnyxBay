@@ -92,7 +92,7 @@
 	if(istype(W, /obj/item/key/cargo_train))
 		if(!key && user.drop(W, src))
 			key = W
-			verbs += /obj/vehicle/train/cargo/engine/verb/remove_key
+			add_verb(src, /obj/vehicle/train/cargo/engine/verb/remove_key)
 		return
 	..()
 
@@ -143,24 +143,24 @@
 		..()
 		update_stats()
 
-		verbs -= /obj/vehicle/train/cargo/engine/verb/stop_engine
-		verbs -= /obj/vehicle/train/cargo/engine/verb/start_engine
+		remove_verb(src, /obj/vehicle/train/cargo/engine/verb/stop_engine)
+		remove_verb(src, /obj/vehicle/train/cargo/engine/verb/start_engine)
 
 		if(on)
-			verbs += /obj/vehicle/train/cargo/engine/verb/stop_engine
+			add_verb(src, /obj/vehicle/train/cargo/engine/verb/stop_engine)
 		else
-			verbs += /obj/vehicle/train/cargo/engine/verb/start_engine
+			add_verb(src, /obj/vehicle/train/cargo/engine/verb/start_engine)
 
 /obj/vehicle/train/cargo/engine/turn_off()
 	..()
 
-	verbs -= /obj/vehicle/train/cargo/engine/verb/stop_engine
-	verbs -= /obj/vehicle/train/cargo/engine/verb/start_engine
+	remove_verb(src, /obj/vehicle/train/cargo/engine/verb/stop_engine)
+	remove_verb(src, /obj/vehicle/train/cargo/engine/verb/start_engine)
 
 	if(!on)
-		verbs += /obj/vehicle/train/cargo/engine/verb/start_engine
+		add_verb(src, /obj/vehicle/train/cargo/engine/verb/start_engine)
 	else
-		verbs += /obj/vehicle/train/cargo/engine/verb/stop_engine
+		add_verb(src, /obj/vehicle/train/cargo/engine/verb/stop_engine)
 
 /obj/vehicle/train/cargo/RunOver(mob/living/carbon/human/H)
 	var/list/parts = list(BP_HEAD, BP_CHEST, BP_L_LEG, BP_R_LEG, BP_L_ARM, BP_R_ARM)
@@ -268,7 +268,7 @@
 	usr.pick_or_drop(key, loc)
 	key = null
 
-	verbs -= /obj/vehicle/train/cargo/engine/verb/remove_key
+	remove_verb(src, /obj/vehicle/train/cargo/engine/verb/remove_key)
 
 //-------------------------------------------
 // Loading/unloading procs

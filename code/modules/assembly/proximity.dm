@@ -73,6 +73,7 @@
 		time = 10
 
 /obj/item/device/assembly/prox_sensor/dropped()
+	. = ..()
 	sense()
 
 /obj/item/device/assembly/prox_sensor/retransmit_moved(mover, old_loc, new_loc)

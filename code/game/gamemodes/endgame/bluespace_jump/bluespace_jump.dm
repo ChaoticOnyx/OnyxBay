@@ -20,7 +20,7 @@
 			else
 				apply_bluespaced(M)
 	for(var/mob/goast in GLOB.ghost_mob_list)
-		goast.mouse_opacity = 0	//can't let you click that Dave
+		goast.mouse_opacity = MOUSE_OPACITY_TRANSPARENT	//can't let you click that Dave
 		goast.set_invisibility(SEE_INVISIBLE_LIVING)
 		goast.alpha = 255
 	old_accessible_z_levels = GLOB.using_map.get_levels_without_trait(ZTRAIT_SEALED)

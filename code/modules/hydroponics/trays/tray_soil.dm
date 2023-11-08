@@ -15,8 +15,8 @@
 
 /obj/machinery/portable_atmospherics/hydroponics/soil/New()
 	..()
-	verbs -= /obj/machinery/portable_atmospherics/hydroponics/verb/close_lid_verb
-	verbs -= /obj/machinery/portable_atmospherics/hydroponics/verb/setlight
+	remove_verb(src, /obj/machinery/portable_atmospherics/hydroponics/verb/close_lid_verb)
+	remove_verb(src, /obj/machinery/portable_atmospherics/hydroponics/verb/setlight)
 
 // Holder for vine plants.
 // Icons for plants are generated as overlays, so setting it to invisible wouldn't work.

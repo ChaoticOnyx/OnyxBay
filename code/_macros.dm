@@ -20,6 +20,8 @@
 
 #define isatom(A) istype(A, /atom)
 
+#define isdatum(target) istype(target, /datum)
+
 #define isbrain(A) istype(A, /mob/living/carbon/brain)
 
 #define iscarbon(A) istype(A, /mob/living/carbon)
@@ -201,6 +203,8 @@
 #define FLAGS_EQUALS(flag, flags) ((flag & (flags)) == (flags))
 
 #define JOINTEXT(X) jointext(X, null)
+
+#define text_ref(datum) (isdatum(datum) ? (datum:cached_ref ||= "\ref[datum]") : ("\ref[datum]"))
 
 #define SPAN(class, X) "<span class='" + ##class + "'>" + ##X + "</span>"
 

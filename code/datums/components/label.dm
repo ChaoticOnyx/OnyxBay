@@ -13,7 +13,7 @@
 /datum/component/label/proc/apply_label()
 	var/atom/owner = parent
 	owner.name += " ([label_name])"
-	owner.verbs += /atom/proc/RemoveLabel
+	add_verb(owner, /atom/proc/RemoveLabel)
 	owner.post_attach_label(src)
 
 /// Removes the label from the parent's name.
@@ -44,4 +44,4 @@
 		label.remove_label()
 
 		if(!length(get_components(/datum/component/label)))
-			verbs -= /atom/proc/RemoveLabel
+			remove_verb(src, /atom/proc/RemoveLabel)

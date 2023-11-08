@@ -75,7 +75,7 @@
 	return
 
 /obj/item/melee/energy/dropped()
-	..()
+	. = ..()
 	spawn(9)
 		if(isturf(loc))
 			deactivate()

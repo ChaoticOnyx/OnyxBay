@@ -105,12 +105,12 @@
 /obj/item/organ/internal/cerebrum/posibrain/proc/shackle(datum/ai_laws/given_lawset)
 	var/mob/living/silicon/sil_brainmob/sil_brainmob = brainmob
 	sil_brainmob.laws = given_lawset
-	verbs |= shackled_verbs
+	add_verb(src, shackled_verbs)
 	shackled = TRUE
 	update_icon()
 
 /obj/item/organ/internal/cerebrum/posibrain/proc/unshackle()
-	verbs -= shackled_verbs
+	remove_verb(src, shackled_verbs)
 	shackled = FALSE
 	update_icon()
 

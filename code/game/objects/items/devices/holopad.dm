@@ -121,6 +121,7 @@
 	qdel(hologram)
 
 /obj/item/device/holopad/dropped()
+	. = ..()
 	update_holo()
 	..()
 

@@ -178,14 +178,27 @@
 	GLOB.ckey_directory[ckey] = src
 
 	// Instantiate tgui panel
-	tgui_panel = new(src)
+	tgui_panel = new(src, "browseroutput")
+	// Instantiate stat panel
+	stat_panel = new(src, "statbrowser")
+
+	stat_panel.subscribe(src, PROC_REF(on_stat_panel_message))
+
+	tgui_panel.initialize()
+
+	// Initialize stat panel
+	stat_panel.initialize(
+		inline_html = file("html/statbrowser.html"),
+		inline_js = file("html/statbrowser.js"),
+		inline_css = file("html/statbrowser.css"),
+	)
 
 	// Admin Authorisation
 	var/datum/admins/admin_datum = admin_datums[ckey]
 	if(admin_datum)
 		if(admin_datum in GLOB.deadmined_list)
 			deadmin_holder = admin_datum
-			verbs |= /client/proc/readmin_self
+			add_verb(src, /client/proc/readmin_self)
 		else
 			holder = admin_datum
 			GLOB.admins += src
@@ -376,19 +389,6 @@
 /client/proc/inactivity2text()
 	var/seconds = inactivity/10
 	return "[round(seconds / 60)] minute\s, [seconds % 60] second\s"
-
-// Byond seemingly calls stat, each tick.
-// Calling things each tick can get expensive real quick.
-// So we slow this down a little.
-// See: http://www.byond.com/docs/ref/info.html#/client/proc/Stat
-/client/Stat()
-	if(!usr)
-		return
-	// Add always-visible stat panel calls here, to define a consistent display order.
-	statpanel("Status")
-
-	. = ..()
-	stoplag(1)
 
 // send resources to the client. It's here in its own proc so we can move it around easiliy if need be
 /client/proc/send_resources()
@@ -631,3 +631,46 @@
 	var/mob/living/M = mob
 	if(istype(M) && !M.in_throw_mode)
 		M.OnMouseDown(object, location, control, params)
+
+
+/**
+ * Handles incoming messages from the stat-panel TGUI.
+ */
+/client/proc/on_stat_panel_message(type, payload)
+	switch(type)
+		if("Update-Verbs")
+			init_verbs()
+		if("Remove-Tabs")
+			panel_tabs -= payload["tab"]
+		if("Send-Tabs")
+			panel_tabs |= payload["tab"]
+		if("Reset-Tabs")
+			panel_tabs = list()
+		if("Set-Tab")
+			stat_tab = payload["tab"]
+			SSstatpanels.immediate_send_stat_data(src)
+
+/// compiles a full list of verbs and sends it to the browser
+/client/proc/init_verbs()
+	var/list/verblist = list()
+	var/list/verbstoprocess = verbs.Copy()
+	if(mob)
+		verbstoprocess += mob.verbs
+		for(var/atom/movable/thing as anything in mob.contents)
+			verbstoprocess += thing.verbs
+	panel_tabs.Cut() // panel_tabs get reset in init_verbs on JS side anyway
+	for(var/procpath/verb_to_init as anything in verbstoprocess)
+		if(!verb_to_init)
+			continue
+		if(verb_to_init.hidden)
+			continue
+		if(!istext(verb_to_init.category))
+			continue
+		panel_tabs |= verb_to_init.category
+		verblist[++verblist.len] = list(verb_to_init.category, verb_to_init.name)
+	src.stat_panel.send_message("init_verbs", list(panel_tabs = panel_tabs, verblist = verblist))
+
+/client/proc/check_panel_loaded()
+	if(stat_panel.is_ready())
+		return
+	to_chat(src, SPAN_DANGER("Statpanel failed to load, click <a href='?src=[ref(src)];reload_statbrowser=1'>here</a> to reload the panel "))

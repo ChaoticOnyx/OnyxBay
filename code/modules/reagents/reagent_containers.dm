@@ -23,7 +23,7 @@
 /obj/item/reagent_containers/Initialize()
 	. = ..()
 	if(!possible_transfer_amounts)
-		src.verbs -= /obj/item/reagent_containers/verb/set_APTFT
+		remove_verb(src, /obj/item/reagent_containers/verb/set_APTFT)
 	create_reagents(volume)
 	if(startswith)
 		for(var/thing in startswith)

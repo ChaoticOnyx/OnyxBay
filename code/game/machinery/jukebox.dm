@@ -225,7 +225,7 @@
 			tracks += tape.tracks
 		else
 			tracks += tape.track
-		verbs += /obj/machinery/media/jukebox/verb/eject
+		add_verb(src, /obj/machinery/media/jukebox/verb/eject)
 		return
 	return ..()
 
@@ -293,4 +293,4 @@
 
 		tape = null
 		visible_message(SPAN_NOTICE("[usr] eject \a [tape] from \the [src]."))
-		verbs -= /obj/machinery/media/jukebox/verb/eject
+		remove_verb(src, /obj/machinery/media/jukebox/verb/eject)

@@ -6,7 +6,7 @@
 		add_to_living_mob_list()
 
 	if(give_ghost_proc_at_initialize)
-		verbs |= /mob/living/proc/ghost
+		add_verb(src, /mob/living/proc/ghost)
 
 	if(controllable)
 		GLOB.available_mobs_for_possess["\ref[src]"] += src

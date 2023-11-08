@@ -10,7 +10,7 @@
 	unacidable = 1
 	anchored = 1 //There's a reason this is here, Mport. God fucking damn it -Agouri. Find&Fix by Pete. The reason this is here is to stop the curving of emitter shots.
 	pass_flags = PASS_FLAG_TABLE
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 	check_armour = "bullet" //Defines what armor to use when it hits things.  Must be set to bullet, laser, energy,or bomb	//Cael - bio and rad are also valid
 
@@ -108,7 +108,7 @@
 
 	if(config.misc.projectile_basketball)
 		anchored = 0
-		mouse_opacity = 1
+		mouse_opacity = MOUSE_OPACITY_ICON
 	. = ..()
 
 /obj/item/projectile/CanPass()

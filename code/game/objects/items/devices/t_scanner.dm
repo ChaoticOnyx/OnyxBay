@@ -112,7 +112,7 @@
 			I.underlays += M.underlays.Copy()
 
 		I.alpha = 128
-		I.mouse_opacity = 0
+		I.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 		. = I
 
 	// Add it to cache, cutting old entries if the list is too long
