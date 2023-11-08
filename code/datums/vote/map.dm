@@ -25,12 +25,16 @@
 
 //Used by the ticker.
 /datum/vote/map/end_game
-	name = null
+	name = "Round End Map Vote"
 
 /datum/vote/map/end_game/can_be_initiated(mob/by_who, forced)
-	if(forced)
-		return TRUE
-	..()
+	. = ..()
+	if(!config.game.map_switching)
+		return FALSE
+	if(GAME_STATE !=  RUNLEVEL_POSTGAME)
+		return FALSE
+	if(!forced)
+		return FALSE
 
 /datum/vote/map/end_game/finalize_vote()
 	SSticker.end_game_state = END_GAME_READY_TO_END
@@ -38,4 +42,4 @@
 
 /datum/vote/map/end_game/create_vote(mob/vote_creator, forced)
 	SSticker.end_game_state = END_GAME_AWAITING_MAP
-	..()
+	. = ..()
