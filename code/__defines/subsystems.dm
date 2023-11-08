@@ -43,9 +43,16 @@
 #define SS_INIT_TICKER          -20
 #define SS_INIT_EXPLOSIONS      -69
 #define SS_INIT_ANNOUNCERS      -90
+#define SS_INIT_VOTE      		-95
 #define SS_INIT_ORDER_CHAT 		-100 // Should be last to ensure chat remains smooth during init.
 
 // Explosion Subsystem subtasks
 #define SSEXPLOSIONS_MOVABLES 1
 #define SSEXPLOSIONS_TURFS    2
 #define SSEXPLOSIONS_THROWS   3
+
+// Vote subsystem counting methods
+/// First past the post. One selection per person, and the selection with the most votes wins.
+#define VOTE_COUNT_METHOD_SINGLE 1
+/// Approval voting. Any number of selections per person, and the selection with the most votes wins.
+#define VOTE_COUNT_METHOD_MULTI 2

@@ -8,7 +8,6 @@
 // END_FILE_DIR
 // BEGIN_PREFERENCES
 #define DEBUG
-// #define TRACY_PROFILER
 // END_PREFERENCES
 // BEGIN_INCLUDE
 #include "code\__spaceman_dmm.dm"
@@ -518,10 +517,8 @@
 #include "code\datums\uplink\deity\form_specific\wizard\wizard_transmutation.dm"
 #include "code\datums\vending\stored_item.dm"
 #include "code\datums\vending\vending.dm"
-#include "code\datums\vote\add_antag.dm"
 #include "code\datums\vote\custom.dm"
 #include "code\datums\vote\end.dm"
-#include "code\datums\vote\gamemode.dm"
 #include "code\datums\vote\map.dm"
 #include "code\datums\vote\restart.dm"
 #include "code\datums\vote\storyteller.dm"

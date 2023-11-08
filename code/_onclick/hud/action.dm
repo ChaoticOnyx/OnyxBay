@@ -62,7 +62,7 @@
 
 /datum/action/proc/Trigger()
 	if(!Checks())
-		return
+		return FALSE
 	switch(action_type)
 		if(AB_ITEM)
 			if(target)
@@ -80,7 +80,7 @@
 		if(AB_GENERIC)
 			if(target && procname)
 				call(target,procname)(usr)
-	return
+	return TRUE
 
 /datum/action/proc/Activate()
 	return
