@@ -35,11 +35,11 @@
 				verbs_list += element_or_list
 
 	if(mob_target)
-		add_verb(mob_target, verbs_list)
+		mob_target.verbs += verbs_list
 		if(!target)
 			return //Our work is done.
 	else
-		add_verb(target, verbs_list)
+		target.verbs += verbs_list
 
 	var/list/output_list = list()
 	for(var/thing in verbs_list)
@@ -79,11 +79,11 @@
 				verbs_list += element_or_list
 
 	if(mob_target)
-		remove_verb(mob_target, verbs_list)
+		mob_target.verbs -= verbs_list
 		if(!target)
 			return //Our work is done.
 	else
-		remove_verb(target, verbs_list)
+		target.verbs -= verbs_list
 
 	var/list/output_list = list()
 	for(var/thing in verbs_list)

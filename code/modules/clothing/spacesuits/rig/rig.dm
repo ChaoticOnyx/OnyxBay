@@ -130,18 +130,18 @@
 		air_supply = new air_type(src)
 	if(glove_type)
 		gloves = new glove_type(src)
-		add_verb(src, /obj/item/rig/proc/toggle_gauntlets)
+		verbs += /obj/item/rig/proc/toggle_gauntlets
 	if(helm_type)
 		helmet = new helm_type(src)
-		add_verb(src, /obj/item/rig/proc/toggle_helmet)
+		verbs += /obj/item/rig/proc/toggle_helmet
 	if(boot_type)
 		boots = new boot_type(src)
-		add_verb(src, /obj/item/rig/proc/toggle_boots)
+		verbs += /obj/item/rig/proc/toggle_boots
 	if(chest_type)
 		chest = new chest_type(src)
 		if(allowed)
 			chest.allowed = allowed
-		add_verb(src, /obj/item/rig/proc/toggle_chest)
+		verbs += /obj/item/rig/proc/toggle_chest
 
 	for(var/obj/item/piece in list(gloves,helmet,boots,chest))
 		if(!istype(piece))

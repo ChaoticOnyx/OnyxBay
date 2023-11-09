@@ -143,24 +143,24 @@
 		..()
 		update_stats()
 
-		remove_verb(src, /obj/vehicle/train/cargo/engine/verb/stop_engine)
-		remove_verb(src, /obj/vehicle/train/cargo/engine/verb/start_engine)
+		verbs -= /obj/vehicle/train/cargo/engine/verb/stop_engine
+		verbs -= /obj/vehicle/train/cargo/engine/verb/start_engine
 
 		if(on)
-			add_verb(src, /obj/vehicle/train/cargo/engine/verb/stop_engine)
+			verbs += /obj/vehicle/train/cargo/engine/verb/stop_engine
 		else
-			add_verb(src, /obj/vehicle/train/cargo/engine/verb/start_engine)
+			verbs += /obj/vehicle/train/cargo/engine/verb/start_engine
 
 /obj/vehicle/train/cargo/engine/turn_off()
 	..()
 
-	remove_verb(src, /obj/vehicle/train/cargo/engine/verb/stop_engine)
-	remove_verb(src, /obj/vehicle/train/cargo/engine/verb/start_engine)
+	verbs -= /obj/vehicle/train/cargo/engine/verb/stop_engine
+	verbs -= /obj/vehicle/train/cargo/engine/verb/start_engine
 
 	if(!on)
-		add_verb(src, /obj/vehicle/train/cargo/engine/verb/start_engine)
+		verbs += /obj/vehicle/train/cargo/engine/verb/start_engine
 	else
-		add_verb(src, /obj/vehicle/train/cargo/engine/verb/stop_engine)
+		verbs += /obj/vehicle/train/cargo/engine/verb/stop_engine
 
 /obj/vehicle/train/cargo/RunOver(mob/living/carbon/human/H)
 	var/list/parts = list(BP_HEAD, BP_CHEST, BP_L_LEG, BP_R_LEG, BP_L_ARM, BP_R_ARM)

@@ -523,7 +523,7 @@ BLIND     // can't see anything
 /obj/item/clothing/mask/New()
 	if(pull_mask)
 		action_button_name = "Adjust Mask"
-		add_verb(src, /obj/item/clothing/mask/proc/adjust_mask)
+		verbs += /obj/item/clothing/mask/proc/adjust_mask
 	..()
 
 /obj/item/clothing/mask/Destroy()
@@ -759,9 +759,9 @@ BLIND     // can't see anything
 	update_rolldown_status()
 	update_rollsleeves_status()
 	if(rolled_down == -1)
-		remove_verb(src, /obj/item/clothing/under/verb/rollsuit)
+		verbs -= /obj/item/clothing/under/verb/rollsuit
 	if(rolled_sleeves == -1)
-		remove_verb(src, /obj/item/clothing/under/verb/rollsleeves)
+		verbs -= /obj/item/clothing/under/verb/rollsleeves
 
 /obj/item/clothing/under/attack_hand(mob/user)
 	if(accessories && accessories.len)

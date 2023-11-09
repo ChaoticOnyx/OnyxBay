@@ -478,7 +478,7 @@ var/bomb_set
 
 /obj/machinery/nuclearbomb/station/Initialize()
 	. = ..()
-	remove_verb(src, /obj/machinery/nuclearbomb/verb/toggle_deployable)
+	verbs -= /obj/machinery/nuclearbomb/verb/toggle_deployable
 	for(var/turf/simulated/floor/T in get_area(src))
 		if(istype(T.flooring, /decl/flooring/reinforced/circuit/red))
 			flash_tiles += T

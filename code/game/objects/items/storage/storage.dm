@@ -386,14 +386,14 @@
 /obj/item/storage/Initialize()
 	. = ..()
 	if(allow_quick_empty)
-		add_verb(src, /obj/item/storage/verb/quick_empty)
+		verbs += /obj/item/storage/verb/quick_empty
 	else
-		remove_verb(src, /obj/item/storage/verb/quick_empty)
+		verbs -= /obj/item/storage/verb/quick_empty
 
 	if(allow_quick_gather)
-		add_verb(src, /obj/item/storage/verb/toggle_gathering_mode)
+		verbs += /obj/item/storage/verb/toggle_gathering_mode
 	else
-		remove_verb(src, /obj/item/storage/verb/toggle_gathering_mode)
+		verbs -= /obj/item/storage/verb/toggle_gathering_mode
 
 	if(isnull(max_storage_space) && !isnull(storage_slots))
 		max_storage_space = storage_slots * base_storage_cost(max_w_class)

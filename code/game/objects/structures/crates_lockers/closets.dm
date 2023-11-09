@@ -121,7 +121,7 @@
 	. = ..()
 
 	if((setup & CLOSET_HAS_LOCK))
-		add_verb(src, /obj/structure/closet/proc/togglelock_verb)
+		verbs += /obj/structure/closet/proc/togglelock_verb
 
 	return INITIALIZE_HINT_LATELOAD
 

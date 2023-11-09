@@ -29,10 +29,10 @@
 	switch(state)
 		if(LID_NONE, LID_OPEN)
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
-			add_verb(owner, /obj/item/reagent_containers/vessel/verb/drink_whole)
+			owner.verbs -= /obj/item/reagent_containers/vessel/verb/drink_whole
 		if(LID_CLOSED, LID_SEALED)
 			owner.atom_flags &= ~ATOM_FLAG_OPEN_CONTAINER
-			remove_verb(owner, /obj/item/reagent_containers/vessel/verb/drink_whole)
+			owner.verbs -= /obj/item/reagent_containers/vessel/verb/drink_whole
 
 /datum/vessel_lid/proc/toggle(mob/user)
 	return
