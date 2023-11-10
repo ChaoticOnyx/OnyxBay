@@ -4,6 +4,7 @@ var/list/client_preference_stats_
 	. = list()
 	if(!user)
 		return
+	usr = user // Yes, fuck this shit. It's for the chromosomal (47) line: update_name(usr)
 	if(!SScharacter_setup.initialized)
 		return
 	if(!client_preference_stats_)

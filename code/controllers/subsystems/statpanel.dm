@@ -50,7 +50,7 @@ SUBSYSTEM_DEF(statpanels)
 		if(!target.holder)
 			target.stat_panel.send_message("remove_admin_tabs")
 		else
-			/// This should be implemented eventually, but for now we don't need it - Aurora admins are used to suffering.
+			/// This should be implemented eventually, but for now we don't need it - Onyx admins are used to suffering.
 			target.stat_panel.send_message("update_split_admin_tabs", FALSE)
 
 			if(!("MC" in target.panel_tabs))
