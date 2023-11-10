@@ -53,6 +53,8 @@
 	// Closest we can do as far as giving sane alerts to listeners. In particular, this calls Exited and moved events in a self-consistent way.
 	var/list/old_contents = list()
 	for(var/atom/movable/A in src)
+		if(QDELING(A))
+			continue
 		old_contents += A
 		A.forceMove(null)
 

@@ -15,8 +15,14 @@
 /obj/item/device/transfer_valve/proc/process_activation(obj/item/device/D)
 
 /obj/item/device/transfer_valve/Destroy()
+	if(!QDELETED(attached_device))
+		qdel(attached_device)
 	attached_device = null
+	if(!QDELETED(tank_one))
+		qdel(tank_one)
 	tank_one = null
+	if(!QDELETED(tank_two))
+		qdel(tank_two)
 	tank_two = null
 	attacher = null
 	return ..()

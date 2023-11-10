@@ -164,8 +164,6 @@
 			if(P.clamp)
 				to_chat(user, SPAN("warning", "There is already \a [P.clamp] attached to \the [P]."))
 				return
-			if(!user.unEquip(src))
-				return
 			to_chat(user, SPAN("notice", "You have attached \the [src] to \the [A]."))
 			new /obj/machinery/clamp(A.loc, A)
 			qdel(src)
