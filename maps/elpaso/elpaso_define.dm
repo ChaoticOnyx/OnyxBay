@@ -2,6 +2,7 @@
 	name = "Elpaso"
 	full_name = "Town Of El Paso"
 	path = "elpaso"
+	can_be_voted = FALSE
 
 	shuttle_types = list(
 		/datum/shuttle/autodock/ferry/supply/drone,
