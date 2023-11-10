@@ -49,12 +49,12 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 	outputwindow.text-color = #000000;
 	statwindow.background-color = none;
 	statwindow.text-color = #000000;
-	stat.background-color = #FFFFFF;
-	stat.tab-background-color = none;
-	stat.text-color = #000000;
-	stat.tab-text-color = #000000;
-	stat.prefix-color = #000000;
-	stat.suffix-color = #000000;
+	statbrowser.background-color = #FFFFFF;
+	statbrowser.tab-background-color = none;
+	statbrowser.text-color = #000000;
+	statbrowser.tab-text-color = #000000;
+	statbrowser.prefix-color = #000000;
+	statbrowser.suffix-color = #000000;
 
 	hotkey_toggle.background-color = none;
 	hotkey_toggle.text-color = #000000;
@@ -108,12 +108,12 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 	outputwindow.text-color = [COLOR_DARKMODE_TEXT];
 	statwindow.background-color = [COLOR_DARKMODE_DARKBACKGROUND];
 	statwindow.text-color = [COLOR_DARKMODE_TEXT];
-	stat.background-color = [COLOR_DARKMODE_DARKBACKGROUND];
-	stat.tab-background-color = [COLOR_DARKMODE_BACKGROUND];
-	stat.text-color = [COLOR_DARKMODE_TEXT];
-	stat.tab-text-color = [COLOR_DARKMODE_TEXT];
-	stat.prefix-color = [COLOR_DARKMODE_TEXT];
-	stat.suffix-color = [COLOR_DARKMODE_TEXT];
+	statbrowser.background-color = [COLOR_DARKMODE_DARKBACKGROUND];
+	statbrowser.tab-background-color = [COLOR_DARKMODE_BACKGROUND];
+	statbrowser.text-color = [COLOR_DARKMODE_TEXT];
+	statbrowser.tab-text-color = [COLOR_DARKMODE_TEXT];
+	statbrowser.prefix-color = [COLOR_DARKMODE_TEXT];
+	statbrowser.suffix-color = [COLOR_DARKMODE_TEXT];
 
 	saybutton.background-color = #494949;
 	saybutton.text-color = [COLOR_DARKMODE_TEXT];
