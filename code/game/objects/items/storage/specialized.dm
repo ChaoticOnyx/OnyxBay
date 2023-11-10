@@ -282,3 +282,8 @@
 	name = "Retro Jazz tape box"
 	icon_closed = "box_retrojazz"
 	music_tape = /obj/item/music_tape/random/retrojazz
+
+/obj/item/music_tape_box/elpaso
+	name = "El Paso tape box"
+	icon_closed = "box_elpaso"
+	music_tape = /obj/item/music_tape/random/elpaso
