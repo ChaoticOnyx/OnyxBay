@@ -8,15 +8,15 @@
 		player.assigned_role = role_text
 	player.special_role = role_text
 
-	if(player.current)
-		BITSET(player.current.hud_updateflag, SPECIALROLE_HUD)
-
 	if(isghostmind(player) || isnewplayer(player.current))
 		create_default(player.current, team)
 	else
 		create_antagonist(player, move_to_spawn, do_not_announce, preserve_appearance, team)
 		if(!do_not_equip)
 			equip(player.current)
+
+	if(player.current)
+		BITSET(player.current.hud_updateflag, SPECIALROLE_HUD)
 
 	player.current.faction = faction
 	return TRUE

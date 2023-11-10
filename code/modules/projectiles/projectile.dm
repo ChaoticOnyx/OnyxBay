@@ -14,7 +14,7 @@
 
 	check_armour = "bullet" //Defines what armor to use when it hits things.  Must be set to bullet, laser, energy,or bomb	//Cael - bio and rad are also valid
 
-	var/bumped = 0		//Prevents it from hitting more than one guy at once
+	var/bumped = FALSE		//Prevents it from hitting more than one guy at once
 	var/def_zone = ""	//Aiming at
 	var/mob/firer = null//Who shot it
 	var/silenced = 0	//Attack message
@@ -283,14 +283,14 @@
 
 /obj/item/projectile/Bump(atom/A, forced = FALSE)
 	if(A == src)
-		return 0 //no
+		return FALSE //no
 
 	if(A == firer)
 		loc = A.loc
-		return 0 //cannot shoot yourself
+		return FALSE //cannot shoot yourself
 
 	if((bumped && !forced) || (A in permutated))
-		return 0
+		return FALSE
 
 	if(istype(A, /obj/effect/portal))
 		var/obj/effect/portal/P = A
@@ -299,10 +299,10 @@
 			permutated.Add(P)
 			return
 
-	var/passthrough = 0 //if the projectile should continue flying
+	var/passthrough = FALSE //if the projectile should continue flying
 	var/distance = get_dist(starting,loc)
 
-	bumped = 1
+	bumped = TRUE
 	if(ismob(A))
 		var/mob/M = A
 		if(istype(A, /mob/living))
@@ -315,7 +315,7 @@
 
 			passthrough = !attack_mob(M, distance)
 		else
-			passthrough = 1 //so ghosts don't stop bullets
+			passthrough = TRUE //so ghosts don't stop bullets
 	else
 		passthrough = (A.bullet_act(src, def_zone) == PROJECTILE_CONTINUE) //backwards compatibility
 		if(isturf(A))
@@ -327,7 +327,7 @@
 	//penetrating projectiles can pass through things that otherwise would not let them
 	if(!passthrough && penetrating > 0)
 		if(check_penetrate(A))
-			passthrough = 1
+			passthrough = TRUE
 		penetrating--
 
 	//the bullet passes through a dense object!
@@ -339,8 +339,8 @@
 			else
 				loc = A.loc
 			permutated.Add(A)
-		bumped = 0 //reset bumped variable!
-		return 0
+		bumped = FALSE //reset bumped variable!
+		return FALSE
 
 	//stop flying
 	on_impact(A)
@@ -493,13 +493,23 @@
 				on_impact(loc)
 			qdel(src)
 		return
+
+	if (QDELETED(src))
+		return
+
 	last_projectile_move = world.time
 	if(!nondirectional_sprite && !hitscanning)
 		var/matrix/M = new
 		M.Turn(Angle)
 		transform = M
 	trajectory.increment(trajectory_multiplier)
+	var/datum/point/vector/_trajectory = trajectory
 	var/turf/T = trajectory.return_turf()
+
+	if (!T) // Nowhere to go. Just die.
+		qdel(src)
+		return
+
 	if(T.z != loc.z)
 		before_move()
 		before_z_change(loc, T)
@@ -508,17 +518,18 @@
 		trajectory_ignore_forcemove = FALSE
 		after_move()
 		if(!hitscanning)
-			pixel_x = trajectory.return_px()
-			pixel_y = trajectory.return_py()
+			pixel_x = _trajectory.return_px()
+			pixel_y = _trajectory.return_py()
 	else
-		before_move()
-		step_towards(src, T)
-		after_move()
+		if(T != loc)
+			before_move()
+			Move(T)
+			after_move()
 		if(!hitscanning)
-			pixel_x = trajectory.return_px() - trajectory.mpx * trajectory_multiplier
-			pixel_y = trajectory.return_py() - trajectory.mpy * trajectory_multiplier
+			pixel_x = _trajectory.return_px() - _trajectory.mpx * trajectory_multiplier
+			pixel_y = _trajectory.return_py() - _trajectory.mpy * trajectory_multiplier
 	if(!hitscanning)
-		animate(src, pixel_x = trajectory.return_px(), pixel_y = trajectory.return_py(), time = 1, flags = ANIMATION_END_NOW)
+		animate(src, pixel_x = _trajectory.return_px(), pixel_y = _trajectory.return_py(), time = 1, flags = ANIMATION_END_NOW)
 	if(isturf(loc))
 		hitscan_last = loc
 	if(can_hit_target(original, permutated))

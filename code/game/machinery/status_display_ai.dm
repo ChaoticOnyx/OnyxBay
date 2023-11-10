@@ -69,14 +69,34 @@ var/list/ai_status_emotions = list(
 	var/picture_state	// icon_state of ai picture
 
 	var/emotion = "Neutral"
+	var/image/picture = null
+	var/image/picture_overlight = null
+	var/global/image/static_overlay = null
 
-/obj/machinery/ai_status_display/New()
+/obj/machinery/ai_status_display/Initialize()
+	. = ..()
 	GLOB.ai_status_display_list += src
-	..()
+
+	if(!picture)
+		picture = image('icons/obj/status_display.dmi', icon_state = "blank")
+
+	if(!picture_overlight)
+		picture_overlight = image('icons/obj/status_display.dmi', icon_state = "blank")
+		picture_overlight.alpha = 96
+		picture_overlight.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		picture_overlight.layer = ABOVE_LIGHTING_LAYER
+
+	if(!static_overlay)
+		static_overlay = image('icons/obj/status_display.dmi', icon_state = "static")
+		static_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		static_overlay.layer = ABOVE_LIGHTING_LAYER
 
 /obj/machinery/ai_status_display/Destroy()
 	GLOB.ai_status_display_list -= src
-	..()
+	overlays.Cut()
+	QDEL_NULL(picture)
+	QDEL_NULL(picture_overlight)
+	return ..()
 
 /obj/machinery/ai_status_display/attack_ai/(mob/user)
 	var/list/ai_emotions = get_ai_emotions(user.ckey)
@@ -94,6 +114,7 @@ var/list/ai_status_emotions = list(
 	switch(mode)
 		if(0) //Blank
 			overlays.Cut()
+			picture_state = ""
 		if(1) // AI emoticon
 			var/datum/ai_emotion/ai_emotion = ai_status_emotions[emotion]
 			set_picture(ai_emotion.overlay)
@@ -101,7 +122,20 @@ var/list/ai_status_emotions = list(
 			set_picture("ai_bsod")
 
 /obj/machinery/ai_status_display/proc/set_picture(state)
+	if(picture_state == state)
+		return
+
+	if(state == "ai_off")
+		mode = 0
+		update_icon()
+		return
+
 	picture_state = state
-	if(overlays.len)
-		overlays.Cut()
-	overlays += image('icons/obj/status_display.dmi', icon_state=picture_state)
+	overlays.Cut()
+
+	picture.icon_state = picture_state
+	picture_overlight.icon_state = picture_state
+
+	overlays += picture
+	overlays += picture_overlight
+	overlays += static_overlay

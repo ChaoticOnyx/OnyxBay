@@ -35,7 +35,7 @@
 /obj/machinery/alarm
 	name = "alarm"
 	icon = 'icons/obj/monitors.dmi'
-	icon_state = "alarm0"
+	icon_state = "alarm"
 	anchored = 1
 	idle_power_usage = 80 WATTS
 	active_power_usage = 1 KILO WATT //For heating/cooling rooms. 1000 joules equates to about 1 degree every 2 seconds for a single tile of air.
@@ -84,6 +84,9 @@
 
 	var/report_danger_level = 1
 
+	var/global/status_overlays = FALSE
+	var/global/list/alarm_overlays
+
 /obj/machinery/alarm/cold
 	target_temperature = 4 CELSIUS
 
@@ -103,11 +106,11 @@
 /obj/machinery/alarm/Destroy()
 	GLOB.alarm_list -= src
 	unregister_radio(src, frequency)
-	qdel(wires)
-	wires = null
+	QDEL_NULL(wires)
 	if(alarm_area && alarm_area.master_air_alarm == src)
 		alarm_area.master_air_alarm = null
 		elect_master(exclude_self = TRUE)
+	overlays.Cut()
 	return ..()
 
 /obj/machinery/alarm/New(loc, dir, atom/frame)
@@ -150,6 +153,8 @@
 	set_frequency(frequency)
 	if (!master_is_operating())
 		elect_master()
+
+	update_icon()
 
 /obj/machinery/alarm/Process()
 	if((stat & (NOPOWER|BROKEN)) || shorted || buildstage != 2)
@@ -299,6 +304,12 @@
 	return 0
 
 /obj/machinery/alarm/update_icon()
+	if(!status_overlays)
+		status_overlays = TRUE
+		generate_overlays()
+
+	overlays.Cut()
+
 	if(wiresexposed)
 		icon_state = "alarmx"
 		set_light(0)
@@ -308,23 +319,32 @@
 		set_light(0)
 		return
 
+	icon_state = "alarm"
 	var/icon_level = danger_level
-	if (alarm_area.atmosalm)
+	if(alarm_area.atmosalm)
 		icon_level = max(icon_level, 1)	//if there's an atmos alarm but everything is okay locally, no need to go past yellow
 
 	var/new_color = null
 	switch(icon_level)
-		if (0)
-			icon_state = "alarm0"
+		if(0)
 			new_color = COLOR_LIME
-		if (1)
-			icon_state = "alarm2" //yes, alarm2 is yellow alarm
+		if(1)
 			new_color = COLOR_SUN
-		if (2)
-			icon_state = "alarm1"
+		if(2)
 			new_color = COLOR_RED_LIGHT
 
+	overlays += alarm_overlays[icon_level+1]
+
 	set_light(0.25, 0.1, 1, 2, new_color)
+
+/obj/machinery/alarm/proc/generate_overlays()
+	alarm_overlays = new
+	alarm_overlays.len = 3
+#define OVERLIGHT_IMAGE(a, b) a=image(icon, b); a.alpha=192; a.plane = EFFECTS_ABOVE_LIGHTING_PLANE; a.layer = ABOVE_LIGHTING_LAYER;
+	OVERLIGHT_IMAGE(alarm_overlays[1], "alarm_over0")
+	OVERLIGHT_IMAGE(alarm_overlays[2], "alarm_over1")
+	OVERLIGHT_IMAGE(alarm_overlays[3], "alarm_over2")
+#undef OVERLIGHT_IMAGE
 
 /obj/machinery/alarm/receive_signal(datum/signal/signal)
 	if(stat & (NOPOWER|BROKEN))
@@ -845,8 +865,8 @@ Just a object used in constructing air alarms
 */
 /obj/item/airalarm_electronics
 	name = "air alarm electronics"
-	icon = 'icons/obj/doors/door_assembly.dmi'
-	icon_state = "door_electronics"
+	icon = 'icons/obj/monitors.dmi'
+	icon_state = "alarm_electronics"
 	desc = "Looks like a circuit. Probably is."
 	w_class = ITEM_SIZE_SMALL
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
