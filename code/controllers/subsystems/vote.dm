@@ -243,7 +243,7 @@ SUBSYSTEM_DEF(vote)
 	var/list/data = list()
 
 	var/is_lower_admin = !!user.client?.holder
-	var/is_upper_admin = check_rights(R_ADMIN, TRUE, user.client)
+	var/is_upper_admin = check_rights(R_ADMIN, FALSE, user.client)
 
 	data["user"] = list(
 		"ckey" = user.client?.ckey,
