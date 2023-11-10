@@ -318,7 +318,7 @@ Helpers
 	var/captainless = TRUE
 	for(var/mob/living/carbon/human/player in GLOB.player_list)
 		if(player && player.mind && player.mind.assigned_role)
-			if(player.mind.assigned_role == "Captain")
+			if(get_job_title(player.mind.assigned_role, TRUE) == "Captain")
 				captainless = FALSE
 			if(!player_is_antag(player.mind, only_offstation_roles = 1))
 				job_master.EquipRank(player, player.mind.assigned_role, 0)

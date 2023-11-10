@@ -49,7 +49,7 @@
 		for (var/datum/computer_file/crew_record/CR in GLOB.all_crew_records)
 			if (CR.get_name() == M.real_name && !M.is_ooc_dead()  && !M.ssd_check())
 				var/add_manpower = 0
-				switch (CR.get_job())
+				switch (get_job_title(CR.get_job(), TRUE))
 					if ("Captain")          add_manpower = 7
 					if ("Head of Security") add_manpower = 6
 					if ("Warden")           add_manpower = 5

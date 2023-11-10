@@ -38,6 +38,17 @@
 
 	set_next_think(world.time + (2 SECONDS))
 
+
+/datum/event/solar_storm/proc/check_turf(turf/T)
+	. = TRUE
+	if(istype(GLOB.using_map, /datum/map/elpaso))
+		if(!istype(T.loc,/area/elpaso/street))
+			. = FALSE
+		return .
+
+	if(!istype(T.loc,/area/space) && !istype(T,/turf/space))
+		. = FALSE
+
 /datum/event/solar_storm/proc/radiate()
 	// Note: Too complicated to be worth trying to use the radiation system for this. Its only in space anyway, so we make an exception in this case.
 	for(var/mob/living/L in GLOB.living_mob_list_)
@@ -45,8 +56,8 @@
 		if(!T || !(T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
 			continue
 
-		// Make sure you're in a space area or on a space turf
-		if(!istype(T.loc,/area/space) && !istype(T,/turf/space))
+		// Make sure you're in a space area or on a space turf, or at ELPASO
+		if(!check_turf(T))
 			continue
 
 		// Apply some heat or burn damage from the sun.

@@ -46,11 +46,19 @@
 
 /datum/job/New()
 	..()
+	if(rename_check())
+		title = get_job_title(title)
+		alt_titles = get_job_title_list(alt_titles)
 	if(prob(100-availablity_chance))	//Close positions, blah blah.
 		total_positions = 0
 		spawn_positions = 0
 	if(!hud_icon)
 		hud_icon = "hud[ckey(title)]"
+
+/datum/job/proc/rename_check()
+	if(istype(GLOB.using_map, /datum/map/elpaso))
+		return TRUE
+	return FALSE
 
 /datum/job/dd_SortValue()
 	return title
