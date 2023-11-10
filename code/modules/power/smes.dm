@@ -60,6 +60,18 @@
 		'sound/effects/machinery/engineer/beep6.ogg'
 	)
 
+	var/global/status_overlays = FALSE
+
+	var/global/list/status_overlays_charge
+	var/global/list/status_overlays_inputting
+	var/global/list/status_overlays_outputting
+
+	var/global/list/overlight_overlays_charge
+	var/global/list/overlight_overlays_inputting
+	var/global/list/overlight_overlays_outputting
+
+	var/global/list/charge_colors = list("#FF0000", "#FF9900", "#FFFF00", "#C2F282", "#00FF00")
+
 /obj/machinery/power/smes/drain_power(drain_check, surge, amount = 0)
 
 	if(drain_check)
@@ -92,6 +104,7 @@
 
 /obj/machinery/power/smes/Destroy()
 	GLOB.smes_list -= src
+	overlays.Cut()
 	return ..()
 
 /obj/machinery/power/smes/add_avail(amount)
@@ -106,28 +119,33 @@
 	term.master = null
 
 /obj/machinery/power/smes/update_icon()
+	if(!status_overlays)
+		status_overlays = TRUE
+		generate_overlays()
+
 	overlays.Cut()
-	if(stat & BROKEN)	return
-
-	overlays += image('icons/obj/power.dmi', "smes-op[outputting]")
-
-	if(inputting == 2)
-		overlays += image('icons/obj/power.dmi', "smes-oc2")
-	else if (inputting == 1)
-		overlays += image('icons/obj/power.dmi', "smes-oc1")
-	else if (input_attempt)
-		overlays += image('icons/obj/power.dmi', "smes-oc0")
+	if(stat & BROKEN)
+		set_light(0)
+		return
 
 	var/clevel = chargedisplay()
 	if(clevel)
-		overlays += image('icons/obj/power.dmi', "smes-og[clevel]")
+		overlays += status_overlays_charge[clevel]
+		overlays += overlight_overlays_charge[clevel]
+		set_light(0.35, 0.5, 1, 2, charge_colors[clevel])
 
-	if(outputting == 2)
-		overlays += image('icons/obj/power.dmi', "smes-op2")
-	else if (outputting == 1)
-		overlays += image('icons/obj/power.dmi', "smes-op1")
-	else
-		overlays += image('icons/obj/power.dmi', "smes-op0")
+	overlays += status_overlays_outputting[outputting+1]
+	overlays += overlight_overlays_outputting[outputting+1]
+
+	if(inputting == 2)
+		overlays += status_overlays_outputting[3]
+		overlays += overlight_overlays_outputting[3]
+	else if(inputting == 1)
+		overlays += status_overlays_outputting[2]
+		overlays += overlight_overlays_outputting[2]
+	else if(input_attempt)
+		overlays += status_overlays_outputting[1]
+		overlays += overlight_overlays_outputting[1]
 
 /obj/machinery/power/smes/proc/chargedisplay()
 	return round(5.5*charge/(capacity ? capacity : 5e6))
@@ -522,3 +540,50 @@
 			. += "\n<span class='notice'>It's casing is quite seriously damaged.</span>"
 		if(0 to 24)
 			. += "\nIt's casing has some minor damage."
+
+#define OVERLIGHT_IMAGE(a, b) a=image(icon, b); a.alpha=128; a.plane = EFFECTS_ABOVE_LIGHTING_PLANE; a.layer = ABOVE_LIGHTING_LAYER;
+/obj/machinery/power/smes/proc/generate_overlays()
+	status_overlays_charge = new
+	status_overlays_inputting = new
+	status_overlays_outputting = new
+
+	status_overlays_charge.len = 5
+	status_overlays_inputting.len = 3
+	status_overlays_outputting.len = 3
+
+	status_overlays_charge[1] = image(icon, "smes-og1")
+	status_overlays_charge[2] = image(icon, "smes-og2")
+	status_overlays_charge[3] = image(icon, "smes-og3")
+	status_overlays_charge[4] = image(icon, "smes-og4")
+	status_overlays_charge[5] = image(icon, "smes-og5")
+
+	status_overlays_inputting[1] = image(icon, "smes-oc0")
+	status_overlays_inputting[2] = image(icon, "smes-oc1")
+	status_overlays_inputting[3] = image(icon, "smes-oc2")
+
+	status_overlays_outputting[1] = image(icon, "smes-op0")
+	status_overlays_outputting[2] = image(icon, "smes-op1")
+	status_overlays_outputting[3] = image(icon, "smes-op2")
+
+	overlight_overlays_charge = new
+	overlight_overlays_inputting = new
+	overlight_overlays_outputting = new
+
+	overlight_overlays_charge.len = 5
+	overlight_overlays_inputting.len = 3
+	overlight_overlays_outputting.len = 3
+
+	OVERLIGHT_IMAGE(overlight_overlays_charge[1], "overlight_smes-og1")
+	OVERLIGHT_IMAGE(overlight_overlays_charge[2], "overlight_smes-og2")
+	OVERLIGHT_IMAGE(overlight_overlays_charge[3], "overlight_smes-og3")
+	OVERLIGHT_IMAGE(overlight_overlays_charge[4], "overlight_smes-og4")
+	OVERLIGHT_IMAGE(overlight_overlays_charge[5], "overlight_smes-og5")
+
+	OVERLIGHT_IMAGE(overlight_overlays_inputting[1], "overlight_smes-oc0")
+	OVERLIGHT_IMAGE(overlight_overlays_inputting[2], "overlight_smes-oc1")
+	OVERLIGHT_IMAGE(overlight_overlays_inputting[3], "overlight_smes-oc2")
+
+	OVERLIGHT_IMAGE(overlight_overlays_outputting[1], "overlight_smes-op0")
+	OVERLIGHT_IMAGE(overlight_overlays_outputting[2], "overlight_smes-op1")
+	OVERLIGHT_IMAGE(overlight_overlays_outputting[3], "overlight_smes-op2")
+#undef OVERLIGHT_IMAGE

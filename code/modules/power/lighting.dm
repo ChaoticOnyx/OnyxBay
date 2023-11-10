@@ -268,11 +268,8 @@
 			on = 0
 
 	var/image/TO
-	if(lightbulb?.tone_overlay)
-		TO = overlay_image(icon, "[icon_state]-over", flags=RESET_COLOR)
-		TO.color = lightbulb.b_color
-		TO.layer = ABOVE_LIGHTING_LAYER
-		TO.alpha = between(128, (lightbulb.b_max_bright * 1.25 * 255), 255)
+	var/TO_alpha = between(128, (lightbulb.b_max_bright * 1.25 * 255), 255)
+	var/TO_color = lightbulb.b_color
 
 	if(on)
 		update_use_power(POWER_USE_ACTIVE)
@@ -280,19 +277,22 @@
 		var/changed = 0
 		if(current_mode && (current_mode in lightbulb.lighting_modes))
 			changed = set_light(arglist(lightbulb.lighting_modes[current_mode]))
-			if(TO)
-				TO.color = lightbulb.lighting_modes[current_mode]["l_color"]
-				TO.alpha = between(128, (lightbulb.lighting_modes[current_mode]["l_max_bright"] * 1.5 * 255), 255) // Some fine tuning here
+			if(lightbulb?.tone_overlay)
+				TO_color = lightbulb.lighting_modes[current_mode]["l_color"]
+				TO_alpha = between(128, (lightbulb.lighting_modes[current_mode]["l_max_bright"] * 1.5 * 255), 255) // Some fine tuning here
 		else
 			changed = set_light(lightbulb.b_max_bright, lightbulb.b_inner_range, lightbulb.b_outer_range, lightbulb.b_curve, lightbulb.b_color)
+
+		if(lightbulb?.tone_overlay)
+			TO = image_repository.overlay_image(icon, "[icon_state]-over", TO_alpha, RESET_COLOR, TO_color, dir, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
 
 		if(trigger && changed && get_status() == LIGHT_OK)
 			switch_check()
 	else
+		if(lightbulb?.tone_overlay)
+			TO = image_repository.overlay_image(icon, "[icon_state]-over", TO_alpha, RESET_COLOR, TO_color, dir)
 		update_use_power(POWER_USE_OFF)
 		set_light(0)
-		if(TO)
-			TO.layer = layer + 0.001
 
 	if(TO)
 		overlays += TO

@@ -149,3 +149,6 @@
 				return
 			if(tgui_alert(ghost_owner, "Become [target.name]?","Possesing mob",list("Yes","No")) == "Yes")
 				ghost_owner.try_to_occupy(target)
+
+		if(NOTIFY_VOTE)
+			ghost_owner.vote()

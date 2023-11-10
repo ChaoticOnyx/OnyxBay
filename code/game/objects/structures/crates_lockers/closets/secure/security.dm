@@ -24,7 +24,7 @@
 		/obj/item/clothing/gloves/captain,
 		/obj/item/clothing/shoes/brown,
 		/obj/item/device/radio/headset/heads/captain,
-		/obj/item/gun/energy/egun,
+		/obj/item/gun/energy/egun/elite,
 		/obj/item/melee/telebaton,
 		/obj/item/cartridge/captain,
 	)
@@ -46,7 +46,7 @@
 		/obj/item/cartridge/hop,
 		/obj/item/device/radio/headset/heads/hop,
 		/obj/item/storage/box/ids = 2,
-		/obj/item/gun/energy/classictaser,
+		/obj/item/gun/energy/egun/elite,
 		/obj/item/device/flash
 	)
 
@@ -103,7 +103,7 @@
 		/obj/item/clothing/mask/gas/clear,
 		/obj/item/device/flash,
 		/obj/item/shield/riot,
-		/obj/item/gun/energy/egun,
+		/obj/item/gun/energy/egun/elite,
 		/obj/item/melee/telebaton,
 		/obj/item/melee/baton/loaded,
 		/obj/item/clothing/accessory/holster/waist,

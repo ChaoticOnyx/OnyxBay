@@ -56,9 +56,7 @@
 /obj/structure/flora/tree/pine/xmas/update_icon()
 	overlays.Cut()
 	if(light_overlay)
-		var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay")
-		LO.layer = ABOVE_LIGHTING_LAYER
-		overlays.Add(LO)
+		overlays += image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
 		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
 	..()
 
@@ -167,9 +165,7 @@
 /obj/structure/flora/tree/green/pink/update_icon()
 	overlays.Cut()
 	if(light_overlay)
-		var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay")
-		LO.layer = ABOVE_LIGHTING_LAYER
-		overlays.Add(LO)
+		overlays += image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
 		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
 	..()
 
@@ -641,9 +637,7 @@
 /obj/structure/flora/jungleplants/update_icon()
 	overlays.Cut()
 	if(light_overlay)
-		var/image/LO = overlay_image(icon, "[icon_state]-overlay")
-		LO.layer = ABOVE_LIGHTING_LAYER
-		overlays.Add(LO)
+		overlays += image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
 		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
 	..()
 

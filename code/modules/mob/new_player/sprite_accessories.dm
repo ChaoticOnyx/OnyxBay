@@ -1430,27 +1430,27 @@ May God have mercy.
 	species_allowed = list(SPECIES_SKRELL)
 
 /datum/sprite_accessory/hair/skrell_short_mid_bun
-	name = "Short Bun"
+	name = "Skrell Short Bun"
 	icon_state = "skrell_short_mid_bun"
 	species_allowed = list(SPECIES_SKRELL)
 
 /datum/sprite_accessory/hair/skrell_mid_bun
-	name = "Bun"
+	name = "Skrell Bun"
 	icon_state = "skrell_mid_bun"
 	species_allowed = list(SPECIES_SKRELL)
 
 /datum/sprite_accessory/hair/skrell_long_mid_bun
-	name = "Long Bun"
+	name = "Skrell Long Bun"
 	icon_state = "skrell_long_mid_bun"
 	species_allowed = list(SPECIES_SKRELL)
 
 /datum/sprite_accessory/hair/skrell_mullet
-	name = "Mullet"
+	name = "Skrell Mullet"
 	icon_state = "skrell_mullet"
 	species_allowed = list(SPECIES_SKRELL)
 
 /datum/sprite_accessory/hair/skrell_low_bun
-	name = "Low Bun"
+	name = "Skrell Low Bun"
 	icon_state = "skrell_low_bun"
 	species_allowed = list(SPECIES_SKRELL)
 

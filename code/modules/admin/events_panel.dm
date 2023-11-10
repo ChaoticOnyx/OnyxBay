@@ -9,8 +9,12 @@
 /datum/events_panel/tgui_data(mob/user)
 	var/list/data = list(
 		"events" = list(),
-		"paused" = SSevents.paused
+		"paused" = SSevents.paused,
+		"presets" = list()
 	)
+
+	for(var/preset_name in SSevents.event_presets)
+		data["presets"] += preset_name
 
 	for(var/datum/event/E  in SSevents.scheduled_events)
 		if(E.triggered_only || E.fire_only_once && E.fired && !E._waiting_option)
@@ -80,6 +84,20 @@
 
 			var/event_id = params["event_id"]
 			SSevents.disabled_events[event_id] = !SSevents.disabled_events[event_id]
+
+			return TRUE
+		if("apply_preset")
+			ASSERT(params["preset_name"])
+
+			SSevents.apply_events_preset(params["preset_name"])
+
+			return TRUE
+		if("enable_all_events")
+			SSevents.enable_all_events()
+
+			return TRUE
+		if("disable_all_events")
+			SSevents.disable_all_events()
 
 			return TRUE
 

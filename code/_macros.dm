@@ -58,8 +58,6 @@
 
 #define isghost(A) istype(A, /mob/observer/ghost)
 
-#define isvrhuman(A) (istype(A, /mob/living/carbon/human/vrhuman))
-
 #define isobserver(A) istype(A, /mob/observer)
 
 #define isorgan(A) istype(A, /obj/item/organ/external)
@@ -219,6 +217,8 @@
 #define SPAN_DEADSAY(X)  SPAN("deadsay", X)
 
 #define SPAN_SPIDER(X)   SPAN("spider", X)
+
+#define SPAN_BOLD(X)	 SPAN("bold", X)
 
 #define FONT_SMALL(X)    SPAN("small", X)
 

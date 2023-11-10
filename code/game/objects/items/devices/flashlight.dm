@@ -30,6 +30,7 @@
 /obj/item/device/flashlight/Destroy()
 	activation_sound = null
 	switch_light(FALSE)
+	overlays.Cut()
 	return ..()
 
 /obj/item/device/flashlight/update_icon()
@@ -37,10 +38,7 @@
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
 		if(light_overlay)
-			var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay", flags=RESET_COLOR)
-			LO.color = brightness_color
-			LO.layer = ABOVE_LIGHTING_LAYER
-			overlays += LO
+			overlays += image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, brightness_color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
 	else
 		icon_state = "[initial(icon_state)]"
 
@@ -309,9 +307,7 @@
 	overlays.Cut()
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
-		var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay", flags=RESET_COLOR)
-		LO.layer = ABOVE_LIGHTING_LAYER
-		overlays += LO
+		overlays += image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, brightness_color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
 	else
 		icon_state = "[initial(icon_state)][fuel ? "" : "-empty"]"
 
@@ -390,8 +386,8 @@
 	if(!fuel)
 		icon_state = "glowstick-empty"
 		set_light(0)
-	else if (on)
-		var/image/I = overlay_image(icon, "glowstick-on", brightness_color)
+	else if(on)
+		var/image/I = image_repository.overlay_image(icon, "glowstick-on", alpha, RESET_COLOR, brightness_color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
 		I.blend_mode = BLEND_ADD
 		overlays += I
 		item_state = "glowstick-on"
