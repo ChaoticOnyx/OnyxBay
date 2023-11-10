@@ -128,6 +128,13 @@
 	density = 1
 	layer = ABOVE_HUMAN_LAYER
 
+/obj/structure/sign/elpaso
+	name = "\improper El Paso Colony sign"
+	icon = 'icons/obj/el-paso-sign.dmi'
+	icon_state = "elpaso-sign"
+	density = 1
+	layer = ABOVE_HUMAN_LAYER
+
 /obj/structure/sign/junglecamo
 	name = "camo netting"
 	icon = 'icons/turf/jungle_turfs.dmi'
