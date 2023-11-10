@@ -231,8 +231,8 @@
 		var/datum/species/S = all_species[client.prefs.species]
 		if(!check_species_allowed(S))
 			return 0
-		var/role = get_job_title(job.title, TRUE)
-		if(role in GLOB.command_positions)
+
+		if(job.title in GLOB.command_positions)
 			SSwarnings.show_warning(client, WARNINGS_HEADS, "window=Warning;size=440x300;can_resize=0;can_minimize=0")
 
 		AttemptLateSpawn(job, client.prefs.spawnpoint)

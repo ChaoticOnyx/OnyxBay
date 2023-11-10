@@ -781,11 +781,3 @@ proc/dd_sortedObjectList(list/incoming)
 /// Sort any value in a list.
 /proc/sort_list(list/list_to_sort, cmp=/proc/cmp_text_asc)
 	return sortTim(list_to_sort.Copy(), cmp)
-
-// Just reverse position of key and value
-/proc/reverse_assoc_list(list/L)
-	var/list/output = list()
-	if(length(L))
-		for(var/key in L)
-			output[L[key]] = key
-	return output
