@@ -79,9 +79,6 @@
 	for(var/atom/movable/A in old_contents)
 		A.forceMove(W)
 
-	for(var/atom/movable/A in old_contents)
-		A.forceMove(W)
-
 	W.opaque_counter = old_opaque_counter
 	W.RecalculateOpacity()
 
