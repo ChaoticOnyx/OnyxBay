@@ -17,8 +17,6 @@ SUBSYSTEM_DEF(vote)
 	var/list/voted = list()
 	/// A list of all ckeys currently voting for the current vote.
 	var/list/voting = list()
-	//Enforces a maximum of one added antag per round.
-	var/antag_added = FALSE
 
 /datum/controller/subsystem/vote/Initialize()
 	. = ..()
