@@ -83,7 +83,8 @@
 	if(air_temporary)
 		loc.assume_air(air_temporary)
 		air_temporary = null
-	return ..()
+	. = ..()
+	return QDEL_HINT_QUEUE
 
 /obj/machinery/atmospherics/pipe/attackby(obj/item/W as obj, mob/user as mob)
 	if (istype(src, /obj/machinery/atmospherics/pipe/tank))
