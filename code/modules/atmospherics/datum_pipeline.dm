@@ -15,9 +15,10 @@
 	air = new
 
 /datum/pipeline/Destroy()
+	set_next_think(0)
 	QDEL_NULL(network)
 
-	if(air.volume)
+	if(air?.volume)
 		for(var/obj/machinery/atmospherics/pipe/member in members)
 			var/datum/gas_mixture/G = new
 			G.copy_from(air)

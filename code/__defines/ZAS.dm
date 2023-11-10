@@ -14,11 +14,6 @@
 #define ATMOS_PASS_DENSITY  3 // Blocks air and zones if density = 1, allows both if density = 0
 #define ATMOS_PASS_PROC     4 // Call CanZASPass() using c_airblock
 
-#define CANPASS_ALWAYS 1
-#define CANPASS_DENSITY 2
-#define CANPASS_PROC 3
-#define CANPASS_NEVER 4
-
 #define NORTHUP (NORTH|UP)
 #define EASTUP (EAST|UP)
 #define SOUTHUP (SOUTH|UP)
@@ -58,23 +53,23 @@ GLOBAL_LIST_INIT(csrfz_check, list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST, N
 	else if (A.blocks_air & ZONE_BLOCKED || B.blocks_air & ZONE_BLOCKED) { \
 		ret = (A.z == B.z) ? ZONE_BLOCKED : AIR_BLOCKED; \
 	} \
-	else if (A.contents.len) { \
+	else if (length(A.contents)) { \
 		ret = 0;\
 		for (var/thing in A) { \
 			var/atom/movable/AM = thing; \
-			switch (AM.atmos_canpass) { \
-				if (CANPASS_ALWAYS) { \
+			switch (AM.can_atmos_pass) { \
+				if (ATMOS_PASS_YES) { \
 					continue; \
 				} \
-				if (CANPASS_DENSITY) { \
+				if (ATMOS_PASS_DENSITY) { \
 					if (AM.density) { \
 						ret |= AIR_BLOCKED; \
 					} \
 				} \
-				if (CANPASS_PROC) { \
+				if (ATMOS_PASS_PROC) { \
 					ret |= AM.c_airblock(B); \
 				} \
-				if (CANPASS_NEVER) { \
+				if (ATMOS_PASS_NO) { \
 					ret = BLOCKED; \
 				} \
 			} \
@@ -99,19 +94,19 @@ GLOBAL_LIST_INIT(csrfz_check, list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
 		ret = 0;\
 		for (var/thing in A) { \
 			var/atom/movable/AM = thing; \
-			switch (AM.atmos_canpass) { \
-				if (CANPASS_ALWAYS) { \
+			switch (AM.can_atmos_pass) { \
+				if (ATMOS_PASS_YES) { \
 					continue; \
 				} \
-				if (CANPASS_DENSITY) { \
+				if (ATMOS_PASS_DENSITY) { \
 					if (AM.density) { \
 						ret |= AIR_BLOCKED; \
 					} \
 				} \
-				if (CANPASS_PROC) { \
+				if (ATMOS_PASS_PROC) { \
 					ret |= AM.c_airblock(B); \
 				} \
-				if (CANPASS_NEVER) { \
+				if (ATMOS_PASS_NO) { \
 					ret = BLOCKED; \
 				} \
 			} \

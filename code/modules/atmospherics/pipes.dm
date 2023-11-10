@@ -9,6 +9,8 @@
 	var/in_stasis = 0
 		//minimum pressure before check_pressure(...) should be called
 
+	var/obj/machinery/clamp/clamp // Linked stasis clamp
+
 	can_buckle = 1
 	buckle_require_restraints = 1
 	buckle_lying = -1
@@ -20,6 +22,15 @@
 	if(istype(get_turf(src), /turf/simulated/wall) || istype(get_turf(src), /turf/simulated/shuttle/wall) || istype(get_turf(src), /turf/unsimulated/wall))
 		level = 1
 	..()
+
+/obj/machinery/atmospherics/pipe/Destroy()
+	QDEL_NULL(parent)
+	if(clamp)
+		clamp.detach()
+	if(air_temporary)
+		loc.assume_air(air_temporary)
+		QDEL_NULL(air_temporary)
+	return ..()
 
 /obj/machinery/atmospherics/pipe/hides_under_flooring()
 	return level != 2
@@ -51,40 +62,32 @@
 	return 1
 
 /obj/machinery/atmospherics/pipe/return_air()
-	if(!parent)
+	if(!parent && !QDELING(src))
 		parent = new /datum/pipeline()
 		parent.build_pipeline(src)
 
 	return parent.air
 
 /obj/machinery/atmospherics/pipe/build_network()
-	if(!parent)
+	if(!parent && !QDELING(src))
 		parent = new /datum/pipeline()
 		parent.build_pipeline(src)
 
 	return parent.return_network()
 
 /obj/machinery/atmospherics/pipe/network_expand(datum/pipe_network/new_network, obj/machinery/atmospherics/pipe/reference)
-	if(!parent)
+	if(!parent && !QDELING(src))
 		parent = new /datum/pipeline()
 		parent.build_pipeline(src)
 
 	return parent.network_expand(new_network, reference)
 
 /obj/machinery/atmospherics/pipe/return_network(obj/machinery/atmospherics/reference)
-	if(!parent)
+	if(!parent && !QDELING(src))
 		parent = new /datum/pipeline()
 		parent.build_pipeline(src)
 
 	return parent.return_network(reference)
-
-/obj/machinery/atmospherics/pipe/Destroy()
-	QDEL_NULL(parent)
-	if(air_temporary)
-		loc.assume_air(air_temporary)
-		QDEL_NULL(air_temporary)
-	. = ..()
-	return QDEL_HINT_QUEUE
 
 /obj/machinery/atmospherics/pipe/attackby(obj/item/W as obj, mob/user as mob)
 	if (istype(src, /obj/machinery/atmospherics/pipe/tank))
@@ -101,11 +104,19 @@
 	if (level==1 && isturf(T) && !T.is_plating())
 		to_chat(user, "<span class='warning'>You must remove the plating first.</span>")
 		return 1
+
+	if(clamp)
+		to_chat(user, SPAN("warning", "You must remove \the [clamp] first."))
+		return TRUE
+
 	var/datum/gas_mixture/int_air = return_air()
 	var/datum/gas_mixture/env_air = loc.return_air()
 	playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 	to_chat(user, "<span class='notice'>You begin to unfasten \the [src]...</span>")
 	if (do_after(user, 40, src))
+		if(clamp)
+			to_chat(user, SPAN("warning", "You must remove \the [clamp] first."))
+			return TRUE
 		user.visible_message( \
 			"<span class='notice'>\The [user] unfastens \the [src].</span>", \
 			"<span class='notice'>You have unfastened \the [src].</span>", \
@@ -235,7 +246,6 @@
 
 /obj/machinery/atmospherics/pipe/simple/proc/burst()
 	ASSERT(parent)
-	parent.temporarily_store_air()
 	src.visible_message("<span class='danger'>\The [src] bursts!</span>");
 	playsound(src.loc, 'sound/effects/bang.ogg', 25, 1)
 	var/datum/effect/effect/system/smoke_spread/smoke = new

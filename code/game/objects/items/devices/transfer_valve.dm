@@ -16,6 +16,9 @@
 
 /obj/item/device/transfer_valve/Destroy()
 	attached_device = null
+	tank_one = null
+	tank_two = null
+	attacher = null
 	return ..()
 
 /obj/item/device/transfer_valve/IsAssemblyHolder()
@@ -165,8 +168,10 @@
 	else
 		return
 
-	if(!tank_one && !tank_two) src.w_class = initial(src.w_class) //returns it to just the transfer valve size
-	T.dropInto(loc)
+	if(!tank_one && !tank_two)
+		w_class = initial(src.w_class) //returns it to just the transfer valve size
+	if(!QDELETED(T))
+		T.dropInto(loc)
 	update_icon()
 
 /obj/item/device/transfer_valve/proc/merge_gases()

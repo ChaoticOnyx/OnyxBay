@@ -105,7 +105,7 @@
 	// autofire timer is automatically cleaned up
 	autofiring_at = null
 	autofiring_by = null
-	aim_targets.Cut()
+	aim_targets = null
 	last_moved_mob = null
 	QDEL_LIST(firemodes)
 	. = ..()
