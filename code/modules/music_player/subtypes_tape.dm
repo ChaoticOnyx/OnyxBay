@@ -128,6 +128,23 @@
 		"We'll Meet Again"                    = 'sound/music/retrojazz/well_meet_again.ogg'
 	)
 
+/obj/item/music_tape/random/elpaso
+	name = "El Paso tape"
+	tracklist = list(
+		"El Paso"                 			= 'sound/music/elpaso/El_paso.ogg',
+		"Tall Handsome Stranger"			= 'sound/music/elpaso/tall_handsome_stranger.ogg',
+		"Big Iron"                  		= 'sound/music/elpaso/big_iron.ogg',
+		"Pioneer's Song"                	= 'sound/music/elpaso/Luck_of_the_pioneer.ogg',
+		"Sixteen Tons"                  	= 'sound/music/elpaso/Sixteen_tons.ogg',
+		"A Wish Or Two"                 	= 'sound/music/elpaso/wish_or_two.ogg',
+		"The Rope and the Colt"     		= 'sound/music/elpaso/Rope_and_the_colt.ogg',
+		"I'll Build It"						= 'sound/music/elpaso/Build_it.ogg',
+		"Felt Tip Pen"						= 'sound/music/elpaso/Felt_Tip_Pen.ogg',
+		"Chicken Bone"						= 'sound/music/elpaso/chicken_bone.ogg',
+		"Riders In The Sky"					= 'sound/music/elpaso/ghost_riders.ogg',
+		"Saddle Tramp"						= 'sound/music/elpaso/saddle_tramp.ogg'
+	)
+
 /obj/item/music_tape/custom
 	name = "dusty tape"
 	desc = "A dusty tape, which can hold anything. Only what you need is blow the dust away and you will be able to play it again."
