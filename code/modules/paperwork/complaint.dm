@@ -206,7 +206,7 @@
 	var/datum/job/actual_job = job_master.GetJob(CR.get_job())
 	if (!actual_job)
 		return 0
-	if (get_job_title(actual_job.title,TRUE) == "Captain")
+	if (actual_job.title == "Captain")
 		return enum_CAPTAIN
 	if (actual_job.head_position)
 		return enum_HEAD

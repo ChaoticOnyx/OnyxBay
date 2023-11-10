@@ -40,46 +40,8 @@ GLOBAL_LIST_INIT(commandjobs, list("Captain", "Head of Personnel", "Head of Secu
 
 GLOBAL_LIST_INIT(whitejobs, list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Chief Medical Officer", "Research Director", "AI"))
 
-GLOBAL_LIST_INIT(elpaso_jobs, list(
-	"Captain" = "Mayor",
-	"Assistant" = "Cowboy",
-	"Head of Personnel" = "Clerk",
-	"Gardener" = "Farmer",
-	"Quartermaster" = "Gun Dealer",
-	"Head of Security" = "Colonial Marshal",
-	"Warden" = "Sheriff",
-	"Security Officer" = "County Deputy",
-	"Junior Officer" = "Town Deputy",
-	"Technical Assistant" = "Prospector",
-	"Medical Intern" = "Aesculapius Trainee",
-	"Research Assistant" = "HighGrad Student",
-	"Medical Doctor" = "Aesculapius",
-))
-
-GLOBAL_LIST_INIT(elpaso_jobs_to_normal_job, reverse_assoc_list(GLOB.elpaso_jobs))
-
 /proc/guest_jobbans(job)
-	return (get_job_title(job, TRUE) in GLOB.whitejobs) //rot beycev ebal
-
-/proc/get_job_title(old_name, normal_name = FALSE)
-	if(!((old_name in GLOB.elpaso_jobs) || (old_name in GLOB.elpaso_jobs_to_normal_job)))
-		return old_name
-	var/title
-	if(normal_name)
-		if(old_name in GLOB.elpaso_jobs || !(old_name in GLOB.elpaso_jobs_to_normal_job))
-			return old_name
-		title = GLOB.elpaso_jobs_to_normal_job[old_name]
-	else
-		title = GLOB.elpaso_jobs[old_name]
-	if(!title)
-		title = old_name
-	return title
-
-/proc/get_job_title_list(list/job_titles, normal_name = FALSE)
-	var/list/output = list()
-	for(var/title in job_titles)
-		output.Add(get_job_title(title, normal_name))
-	return output
+	return (job in GLOB.whitejobs) //rot beycev ebal
 
 /proc/get_job_datums()
 	var/list/occupations = list()
@@ -98,7 +60,6 @@ GLOBAL_LIST_INIT(elpaso_jobs_to_normal_job, reverse_assoc_list(GLOB.elpaso_jobs)
 
 	for(var/datum/job/J in jobs)
 		if(J.title == job)
-			for(var/title in J.alt_titles)
-				titles.Add(get_job_title(title))
+			titles = J.alt_titles
 
 	return titles
