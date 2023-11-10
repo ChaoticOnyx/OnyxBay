@@ -7113,7 +7113,7 @@
 "cKX" = (/obj/random/maintenance,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled{color = "#ceb689"; icon_state = "steel_dirty"},/area/eclipse/maintenance/tunnel/research/ghetto_arena)
 "cKY" = (/obj/structure/table/standard,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0},/obj/item/screwdriver,/obj/item/device/paicard,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/eclipse/maintenance/tunnel/cargo/ghetto_rnd)
 "cKZ" = (/obj/structure/table/standard,/obj/item/stack/material/steel{amount = 25},/obj/effect/decal/cleanable/cobweb2{tag = "icon-cobweb1"; icon_state = "cobweb1"},/obj/random/loot,/turf/simulated/floor/plating,/area/eclipse/maintenance/tunnel/cargo/ghetto_rnd)
-"cLa" = (/obj/structure/table/standard,/obj/random/tech_supply,/obj/random/tech_supply,/turf/simulated/floor/tiled,/area/eclipse/maintenance/tunnel/cargo/ghetto_rnd)
+"cLa" = (/obj/structure/table/standard,/obj/random/tech_supply,/obj/random/tech_supply,/obj/item/clothing/mask/gas/cyborg,/turf/simulated/floor/tiled,/area/eclipse/maintenance/tunnel/cargo/ghetto_rnd)
 "cLb" = (/obj/machinery/light{dir = 8; icon_state = "tube1"; pixel_y = 0},/turf/simulated/floor/tiled,/area/eclipse/engineering/tech/atmospherics)
 "cLc" = (/obj/machinery/atmospherics/pipe/simple/visible/green{dir = 6},/turf/simulated/floor/tiled,/area/eclipse/engineering/tech/atmospherics)
 "cLd" = (/obj/machinery/atmospherics/pipe/manifold/visible/green{tag = "icon-map (EAST)"; icon_state = "map"; dir = 4},/turf/simulated/floor/tiled,/area/eclipse/engineering/tech/atmospherics)

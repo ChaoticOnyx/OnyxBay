@@ -903,6 +903,12 @@
 /area/eclipse/maintenance/tunnel
 	name = "Tunnel"
 	icon_state = "party"
+	area_flags = AREA_FLAG_RAD_SHIELDED
+	sound_env = TUNNEL_ENCLOSED
+	turf_initializer = /decl/turf_initializer/maintenance
+	ambience_off = list(SFX_AMBIENT_OFF_GLOBAL, SFX_AMBIENT_OFF_MAINTENANCE)
+	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE)
+	ambient_music_tags = list(MUSIC_TAG_MYSTIC)
 
 /area/eclipse/maintenance/tunnel/general/spaceport
 	name = "\improper Spaceport Maintenance"
