@@ -82,7 +82,7 @@
 	QDEL_NULL(parent)
 	if(air_temporary)
 		loc.assume_air(air_temporary)
-		air_temporary = null
+		QDEL_NULL(air_temporary)
 	. = ..()
 	return QDEL_HINT_QUEUE
 
@@ -333,12 +333,12 @@
 /obj/machinery/atmospherics/pipe/simple/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
 		if(istype(node1, /obj/machinery/atmospherics/pipe))
-			qdel(parent)
+			QDEL_NULL(parent)
 		node1 = null
 
 	if(reference == node2)
 		if(istype(node2, /obj/machinery/atmospherics/pipe))
-			qdel(parent)
+			QDEL_NULL(parent)
 		node2 = null
 
 	update_icon()
@@ -497,17 +497,17 @@
 /obj/machinery/atmospherics/pipe/manifold/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
 		if(istype(node1, /obj/machinery/atmospherics/pipe))
-			qdel(parent)
+			QDEL_NULL(parent)
 		node1 = null
 
 	if(reference == node2)
 		if(istype(node2, /obj/machinery/atmospherics/pipe))
-			qdel(parent)
+			QDEL_NULL(parent)
 		node2 = null
 
 	if(reference == node3)
 		if(istype(node3, /obj/machinery/atmospherics/pipe))
-			qdel(parent)
+			QDEL_NULL(parent)
 		node3 = null
 
 	update_icon()
@@ -749,22 +749,22 @@
 /obj/machinery/atmospherics/pipe/manifold4w/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
 		if(istype(node1, /obj/machinery/atmospherics/pipe))
-			qdel(parent)
+			QDEL_NULL(parent)
 		node1 = null
 
 	if(reference == node2)
 		if(istype(node2, /obj/machinery/atmospherics/pipe))
-			qdel(parent)
+			QDEL_NULL(parent)
 		node2 = null
 
 	if(reference == node3)
 		if(istype(node3, /obj/machinery/atmospherics/pipe))
-			qdel(parent)
+			QDEL_NULL(parent)
 		node3 = null
 
 	if(reference == node4)
 		if(istype(node4, /obj/machinery/atmospherics/pipe))
-			qdel(parent)
+			QDEL_NULL(parent)
 		node4 = null
 
 	update_icon()
@@ -1006,7 +1006,7 @@
 /obj/machinery/atmospherics/pipe/cap/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node)
 		if(istype(node, /obj/machinery/atmospherics/pipe))
-			qdel(parent)
+			QDEL_NULL(parent)
 		node = null
 
 	update_icon()
@@ -1154,7 +1154,7 @@
 /obj/machinery/atmospherics/pipe/tank/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
 		if(istype(node1, /obj/machinery/atmospherics/pipe))
-			qdel(parent)
+			QDEL_NULL(parent)
 		node1 = null
 
 	update_underlays()
@@ -1336,7 +1336,7 @@
 /obj/machinery/atmospherics/pipe/vent/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
 		if(istype(node1, /obj/machinery/atmospherics/pipe))
-			qdel(parent)
+			QDEL_NULL(parent)
 		node1 = null
 
 	update_icon()
@@ -1372,10 +1372,12 @@
 		if(node2)
 			universal_underlays(node2)
 		else
-			var/node1_dir = get_dir(node1, src)
-			universal_underlays(null, node1_dir)
+			var/node2_dir = turn(get_dir(src, node1), -180)
+			universal_underlays(null, node2_dir)
 	else if(node2)
 		universal_underlays(node2)
+		var/node1_dir = turn(get_dir(src, node2), -180)
+		universal_underlays(null, node1_dir)
 	else
 		universal_underlays(null, dir)
 		universal_underlays(null, turn(dir, 180))

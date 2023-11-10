@@ -12,15 +12,26 @@
 
 /datum/pipeline/New()
 	set_next_think(world.time)
+	air = new
 
 /datum/pipeline/Destroy()
 	QDEL_NULL(network)
 
-	if(air && air.volume)
-		temporarily_store_air()
-		QDEL_NULL(air)
-	for(var/obj/machinery/atmospherics/pipe/P in members)
-		P.parent = null
+	if(air.volume)
+		for(var/obj/machinery/atmospherics/pipe/member in members)
+			var/datum/gas_mixture/G = new
+			G.copy_from(air)
+			G.volume = member.volume
+			G.multiply(member.volume / air.volume)
+			member.air_temporary = G
+			member.parent = null
+	else
+		for(var/obj/machinery/atmospherics/pipe/member in members)
+			member.air_temporary = null
+			member.parent = null
+
+	QDEL_NULL(air)
+
 	leaks.Cut()
 	members.Cut()
 	edges.Cut()
@@ -37,18 +48,7 @@
 
 	set_next_think(world.time + 1 SECOND)
 
-/datum/pipeline/proc/temporarily_store_air()
-	//Update individual gas_mixtures by volume ratio
-
-	for(var/obj/machinery/atmospherics/pipe/member in members)
-		member.air_temporary = new
-		member.air_temporary.copy_from(air)
-		member.air_temporary.volume = member.volume
-		member.air_temporary.multiply(member.volume / air.volume)
-
 /datum/pipeline/proc/build_pipeline(obj/machinery/atmospherics/pipe/base)
-	air = new
-
 	var/list/possible_expansions = list(base)
 	members = list(base)
 	edges = list()
@@ -58,10 +58,9 @@
 	alert_pressure = base.alert_pressure
 
 	if(base.air_temporary)
-		air = base.air_temporary
+		air.copy_from(base.air_temporary)
+		qdel(base.air_temporary)
 		base.air_temporary = null
-	else
-		air = new
 
 	if(base.leaking)
 		leaks |= base
@@ -87,6 +86,8 @@
 
 						if(item.air_temporary)
 							air.merge(item.air_temporary)
+							qdel(item.air_temporary)
+							item.air_temporary = null
 
 						if(item.leaking)
 							leaks |= item
