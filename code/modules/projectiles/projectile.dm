@@ -115,8 +115,6 @@
 	return TRUE
 
 /obj/item/projectile/Destroy()
-	if(trajectory)
-		QDEL_NULL(trajectory)
 	if(hitscan)
 		if(loc && trajectory)
 			var/datum/point/pcache = trajectory.copy_to()
@@ -127,6 +125,8 @@
 	original = null
 	previous = null
 	starting = null
+	if(trajectory)
+		QDEL_NULL(trajectory)
 	STOP_PROCESSING(SSprojectiles, src)
 	return ..()
 

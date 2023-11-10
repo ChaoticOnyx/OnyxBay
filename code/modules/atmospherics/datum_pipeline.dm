@@ -37,6 +37,7 @@
 	members.Cut()
 	edges.Cut()
 	. = ..()
+	return QDEL_HINT_QUEUE
 
 /datum/pipeline/think()//This use to be called called from the pipe networks
 	//Check to see if pressure is within acceptable limits
