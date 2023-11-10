@@ -129,7 +129,7 @@
 	)
 
 /obj/item/music_tape/random/elpaso
-	name = "El Paso tape"
+	name = "Wild West tape"
 	tracklist = list(
 		"El Paso"                 			= 'sound/music/elpaso/El_paso.ogg',
 		"Tall Handsome Stranger"			= 'sound/music/elpaso/tall_handsome_stranger.ogg',
