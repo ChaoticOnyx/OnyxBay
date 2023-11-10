@@ -290,6 +290,7 @@
 #define NOTIFY_ATTACK "attack"
 #define NOTIFY_FOLLOW "follow"
 #define NOTIFY_POSSES "posses"
+#define NOTIFY_VOTE "vote"
 
 // Atmospherics vents
 #define VENT_UNDAMAGED 0
