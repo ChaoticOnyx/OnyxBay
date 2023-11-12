@@ -18,10 +18,10 @@
 /obj/machinery/atmospherics/pipe/drain_power()
 	return -1
 
-/obj/machinery/atmospherics/pipe/New()
+/obj/machinery/atmospherics/pipe/Initialize()
+	. = ..()
 	if(istype(get_turf(src), /turf/simulated/wall) || istype(get_turf(src), /turf/simulated/shuttle/wall) || istype(get_turf(src), /turf/unsimulated/wall))
 		level = 1
-	..()
 
 /obj/machinery/atmospherics/pipe/Destroy()
 	QDEL_NULL(parent)
@@ -189,9 +189,8 @@
 
 	level = 1
 
-/obj/machinery/atmospherics/pipe/simple/New()
-	..()
-
+/obj/machinery/atmospherics/pipe/simple/Initialize()
+	. = ..()
 	// Pipe colors and icon states are handled by an image cache - so color and icon should
 	//  be null. For mapping purposes color is defined in the object definitions.
 	icon = null
@@ -461,8 +460,8 @@
 
 	level = 1
 
-/obj/machinery/atmospherics/pipe/manifold/New()
-	..()
+/obj/machinery/atmospherics/pipe/manifold/Initialize()
+	. = ..()
 	alpha = 255
 	icon = null
 
@@ -494,13 +493,13 @@
 /obj/machinery/atmospherics/pipe/manifold/Destroy()
 	if(node1)
 		node1.disconnect(src)
-		node1 = null
+	node1 = null
 	if(node2)
 		node2.disconnect(src)
-		node2 = null
+	node2 = null
 	if(node3)
 		node3.disconnect(src)
-		node3 = null
+	node3 = null
 
 	return ..()
 
@@ -726,8 +725,8 @@
 
 	level = 1
 
-/obj/machinery/atmospherics/pipe/manifold4w/New()
-	..()
+/obj/machinery/atmospherics/pipe/manifold4w/Initialize()
+	. = ..()
 	alpha = 255
 	icon = null
 
@@ -990,8 +989,8 @@
 
 	var/obj/machinery/atmospherics/node
 
-/obj/machinery/atmospherics/pipe/cap/New()
-	..()
+/obj/machinery/atmospherics/pipe/cap/Initialize()
+	. = ..()
 	initialize_directions = dir
 
 /obj/machinery/atmospherics/pipe/cap/hide(i)
@@ -1294,9 +1293,9 @@
 
 	var/build_killswitch = 1
 
-/obj/machinery/atmospherics/pipe/vent/New()
+/obj/machinery/atmospherics/pipe/vent/Initialize()
+	. = ..()
 	initialize_directions = dir
-	..()
 
 /obj/machinery/atmospherics/pipe/vent/high_volume
 	name = "Larger vent"
