@@ -88,7 +88,7 @@
 	//Also means that images are reused if multiple people are using t-rays to look at the same objects.
 	var/weakref/S = weakref(scanned)
 	if(S in overlay_cache)
-		. = overlay_cache[scanned]
+		. = overlay_cache[S]
 	else
 		var/image/I = image(loc = scanned, icon = scanned.icon, icon_state = scanned.icon_state)
 		I.plane = HUD_PLANE
@@ -98,8 +98,8 @@
 		if(istype(scanned, /obj/machinery/atmospherics/pipe))
 			var/obj/machinery/atmospherics/pipe/P = scanned
 			I.color = P.pipe_color
-			I.overlays += P.overlays
-			I.underlays += P.underlays
+			I.overlays += P.overlays.Copy()
+			I.underlays += P.underlays.Copy()
 
 		if(ismob(scanned))
 			if(ishuman(scanned))
@@ -108,8 +108,8 @@
 					I.color = rgb(H.r_skin, H.g_skin, H.b_skin)
 			var/mob/M = scanned
 			I.color = M.color
-			I.overlays += M.overlays
-			I.underlays += M.underlays
+			I.overlays += M.overlays.Copy()
+			I.underlays += M.underlays.Copy()
 
 		I.alpha = 128
 		I.mouse_opacity = 0

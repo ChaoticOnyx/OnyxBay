@@ -15,7 +15,6 @@
 	air = new
 
 /datum/pipeline/Destroy()
-	set_next_think(0)
 	QDEL_NULL(network)
 
 	if(air?.volume)
