@@ -46,7 +46,7 @@ Pipelines + Other Objects -> Pipe network
 	. = ..()
 
 /obj/machinery/atmospherics/Destroy()
-	GLOB.atmos_machinery -= src
+	GLOB.atmos_machinery.Remove(src)
 	node1 = null
 	node2 = null
 	return ..()

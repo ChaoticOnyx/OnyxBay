@@ -281,6 +281,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 /datum/radial_menu/Destroy()
 	Reset()
 	hide()
+	QDEL_NULL(close_button)
 	. = ..()
 /*
 	Presents radial menu to user anchored to anchor (or user if the anchor is currently in users screen)

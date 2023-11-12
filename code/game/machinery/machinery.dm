@@ -141,13 +141,13 @@ Class Procs:
 		component_parts = list()
 		for (var/type in component_types)
 			var/count = component_types[type]
-			if (count > 1)
+			if(count > 1)
 				for (var/i in 1 to count)
-					component_parts += new type(src)
+					component_parts.Add(new type(src))
 			else
-				component_parts += new type(src)
+				component_parts.Add(new type(src))
 
-		if(component_parts.len)
+		if(length(component_parts))
 			RefreshParts()
 
 	START_PROCESSING(SSmachines, src) // It's safe to remove machines from here.
@@ -162,15 +162,11 @@ Class Procs:
 		playsound(src.loc, pick(beepsounds), 30)
 
 /obj/machinery/Destroy()
-	GLOB.machines -= src
+	GLOB.machines.Remove(src)
 	set_power_use(NO_POWER_USE)
 	STOP_PROCESSING(SSmachines, src)
 	if(component_parts)
-		for(var/atom/A in component_parts)
-			if(A.loc == src) // If the components are inside the machine, delete them.
-				qdel(A)
-			else // Otherwise we assume they were dropped to the ground during deconstruction, and were not removed from the component_parts list by deconstruction code.
-				component_parts -= A
+		QDEL_NULL_LIST(component_parts)
 	current_power_area = null
 	return ..()
 
@@ -370,10 +366,10 @@ Class Procs:
 					if(B.rating > A.rating)
 						R.remove_from_storage(B, src)
 						R.handle_item_insertion(A, 1)
-						component_parts -= A
-						component_parts += B
-						B.loc = null
-						to_chat(user, "<span class='notice'>[A.name] replaced with [B.name].</span>")
+						component_parts.Remove(A)
+						component_parts.Add(B)
+						B.forceMove(src)
+						to_chat(user, SPAN("notice", "[A.name] has been replaced with [B.name]."))
 						break
 			update_icon()
 			RefreshParts()
@@ -388,7 +384,9 @@ Class Procs:
 	M.state = 1
 	M.update_icon()
 	for(var/obj/I in component_parts)
-		I.forceMove(get_turf(src))
+		if(!QDELETED(I))
+			I.forceMove(get_turf(src))
+	component_parts.Cut()
 	qdel(src)
 	return 1
 

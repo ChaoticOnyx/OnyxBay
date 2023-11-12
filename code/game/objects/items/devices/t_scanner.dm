@@ -23,9 +23,9 @@
 	var/global/list/overlay_cache = list() //cache recent overlays
 
 /obj/item/device/t_scanner/Destroy()
-	. = ..()
 	if(on)
 		set_active(FALSE)
+	return ..()
 
 /obj/item/device/t_scanner/update_icon()
 	icon_state = "[base_state][on]"
@@ -86,7 +86,8 @@
 /obj/item/device/t_scanner/proc/get_overlay(atom/movable/scanned)
 	//Use a cache so we don't create a whole bunch of new images just because someone's walking back and forth in a room.
 	//Also means that images are reused if multiple people are using t-rays to look at the same objects.
-	if(scanned in overlay_cache)
+	var/weakref/S = weakref(scanned)
+	if(S in overlay_cache)
 		. = overlay_cache[scanned]
 	else
 		var/image/I = image(loc = scanned, icon = scanned.icon, icon_state = scanned.icon_state)
@@ -115,7 +116,7 @@
 		. = I
 
 	// Add it to cache, cutting old entries if the list is too long
-	overlay_cache[scanned] = .
+	overlay_cache[S] = .
 	if(overlay_cache.len > OVERLAY_CACHE_LEN)
 		overlay_cache.Cut(1, overlay_cache.len-OVERLAY_CACHE_LEN-1)
 
