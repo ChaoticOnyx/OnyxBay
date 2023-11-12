@@ -152,6 +152,16 @@ Class Procs:
 
 	START_PROCESSING(SSmachines, src) // It's safe to remove machines from here.
 
+/obj/machinery/Destroy()
+	GLOB.machines.Remove(src)
+	set_power_use(NO_POWER_USE)
+	STOP_PROCESSING(SSmachines, src)
+	if(component_parts)
+		QDEL_NULL_LIST(component_parts)
+	component_parts = null
+	current_power_area = null
+	return ..()
+
 
 /obj/machinery/proc/play_beep()
 	if (isnull(beepsounds))
@@ -160,15 +170,6 @@ Class Procs:
 	if(!stat && world.time > beep_last_played + 60 SECONDS && prob(10))
 		beep_last_played = world.time
 		playsound(src.loc, pick(beepsounds), 30)
-
-/obj/machinery/Destroy()
-	GLOB.machines.Remove(src)
-	set_power_use(NO_POWER_USE)
-	STOP_PROCESSING(SSmachines, src)
-	if(component_parts)
-		QDEL_NULL_LIST(component_parts)
-	current_power_area = null
-	return ..()
 
 /obj/machinery/Process()
 	return PROCESS_KILL // Only process if you need to.

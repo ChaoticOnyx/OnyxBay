@@ -124,7 +124,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 		for(var/i in 1 to elements_to_add) //Create all elements
 			var/obj/screen/radial/slice/new_element = new /obj/screen/radial/slice
 			new_element.parent = src
-			elements += new_element
+			elements.Add(new_element)
 
 	var/page = 1
 	page_data = list(null)
@@ -214,7 +214,10 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	choices_icons.Cut()
 	choices_values.Cut()
 	current_page = 1
+	selected_choice = null
+	anchor = null
 	QDEL_NULL(custom_check_callback)
+	QDEL_NULL_LIST(elements)
 
 /datum/radial_menu/proc/element_chosen(choice_id,mob/user)
 	selected_choice = choices_values[choice_id]
@@ -262,6 +265,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	current_user.images += menu_holder
 
 /datum/radial_menu/proc/hide()
+	menu_holder.vis_contents = null
 	if(current_user)
 		current_user.images -= menu_holder
 

@@ -56,7 +56,7 @@
 
 	clear_signal_refs()
 	clear_think()
-
+	weakref = null
 	return QDEL_HINT_QUEUE
 
 /// Only override this if you know what you're doing. You do not know what you're doing

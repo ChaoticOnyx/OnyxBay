@@ -111,6 +111,10 @@
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	filling_overlay_levels = 6
 
+/obj/structure/reagent_dispensers/fueltank/Destroy()
+	QDEL_NULL(rig)
+	return ..()
+
 /obj/structure/reagent_dispensers/fueltank/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
