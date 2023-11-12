@@ -68,7 +68,6 @@ var/list/global/tank_gauge_cache = list()
 	update_icon(TRUE)
 
 /obj/item/tank/Destroy()
-	set_next_think(0)
 	manipulated_by = null
 
 	QDEL_NULL(air_contents)

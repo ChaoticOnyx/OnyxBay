@@ -287,8 +287,8 @@
 		)
 
 /obj/item/gun/projectile/pirate/Initialize()
-	..()
-	. = ammo_type = pick(ammo_types)
+	. = ..()
+	ammo_type = pick(ammo_types)
 	desc += " Uses [ammo_types[ammo_type]] rounds."
 
 	var/obj/item/ammo_casing/ammo = ammo_type
