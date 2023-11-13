@@ -11,7 +11,7 @@
 	var/alert_pressure = 0
 
 /datum/pipeline/New()
-	set_next_think(world.time)
+	set_next_think(world.time + 1 SECOND)
 	air = new
 
 /datum/pipeline/Destroy()
@@ -75,6 +75,8 @@
 			if(result.len>0)
 				for(var/obj/machinery/atmospherics/pipe/item in result)
 					if(item.in_stasis)
+						continue
+					if(QDELETED(item))
 						continue
 					if(!members.Find(item))
 						members += item

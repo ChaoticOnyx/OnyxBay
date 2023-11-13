@@ -54,6 +54,15 @@
 			qdel(C, FALSE, TRUE)
 		dc.Cut()
 
+	if(extensions)
+		for(var/expansion_key in extensions)
+			var/list/extension = extensions[expansion_key]
+			if(islist(extension))
+				extension.Cut()
+			else
+				qdel(extension)
+		extensions = null
+
 	clear_signal_refs()
 	clear_think()
 	weakref = null
@@ -170,4 +179,4 @@
 /datum/proc/clear_think()
 	set_next_think(0)
 	QDEL_LIST_ASSOC_VAL(_think_ctxs)
-	qdel(_main_think_ctx)
+	QDEL_NULL(_main_think_ctx)
