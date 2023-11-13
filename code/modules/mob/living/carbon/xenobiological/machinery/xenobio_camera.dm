@@ -29,7 +29,7 @@
 	icon_screen = "rdcomp"
 	icon_keyboard = "rd_key"
 
-/obj/machinery/computer/camera_advanced/xenobio/Initialize(mapload)
+/obj/machinery/computer/camera_advanced/xenobio/Initialize()
 	. = ..()
 	actions += new /datum/action/innate/metroid_place(src)
 	actions += new /datum/action/innate/metroid_pick_up(src)

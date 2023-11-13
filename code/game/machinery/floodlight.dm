@@ -14,9 +14,13 @@
 	var/l_inner_range = 1 // inner range of light when on, can be negative
 	var/l_outer_range = 6 // outer range of light when on, can be negative
 
-/obj/machinery/floodlight/New()
+/obj/machinery/floodlight/Initialize()
+	. = ..()
 	cell = new /obj/item/cell/crap(src)
-	..()
+
+/obj/machinery/floodlight/Destroy()
+	QDEL_NULL(cell)
+	return ..()
 
 /obj/machinery/floodlight/update_icon()
 	overlays.Cut()

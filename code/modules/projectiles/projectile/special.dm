@@ -309,6 +309,9 @@
 	Bump(A)
 
 /obj/item/projectile/facehugger_proj/Destroy()
+	if(!holder)
+		return ..()
+
 	if(kill_count)
 		QDEL_NULL(holder)
 	else
@@ -316,7 +319,8 @@
 		if(T)
 			holder.forceMove(T)
 			holder = null
-
+		else
+			QDEL_NULL(holder)
 	return ..()
 
 /obj/item/projectile/portal

@@ -30,6 +30,8 @@
 	verbs += /mob/proc/join_as_actor
 	verbs += /mob/proc/join_response_team
 
+	return INITIALIZE_HINT_NORMAL
+
 /mob/new_player/proc/new_player_panel(forced = FALSE)
 	if(!SScharacter_setup.initialized && !forced)
 		return // Not ready yet.

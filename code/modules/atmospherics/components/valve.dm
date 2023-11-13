@@ -72,8 +72,6 @@
 	return null
 
 /obj/machinery/atmospherics/valve/Destroy()
-	loc = null
-
 	if(node1)
 		node1.disconnect(src)
 		qdel(network_node1)
@@ -83,8 +81,10 @@
 
 	node1 = null
 	node2 = null
+	network_node1 = null
+	network_node2 = null
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/valve/proc/open()
 	if(open) return 0

@@ -115,8 +115,19 @@
 	return TRUE
 
 /obj/item/projectile/Destroy()
+	if(hitscan)
+		if(loc && trajectory)
+			var/datum/point/pcache = trajectory.copy_to()
+			beam_segments[beam_index] = pcache
+		generate_hitscan_tracers()
+	firer = null
+	current = null
+	original = null
+	previous = null
+	starting = null
 	if(trajectory)
 		QDEL_NULL(trajectory)
+	STOP_PROCESSING(SSprojectiles, src)
 	return ..()
 
 //TODO: make it so this is called more reliably, instead of sometimes by bullet_act() and sometimes not
@@ -682,15 +693,6 @@
 	. = ..()
 	if(trajectory && !trajectory_ignore_forcemove && isturf(target))
 		trajectory.initialize_location(target.x, target.y, target.z, 0, 0)
-
-/obj/item/projectile/Destroy()
-	if(hitscan)
-		if(loc && trajectory)
-			var/datum/point/pcache = trajectory.copy_to()
-			beam_segments[beam_index] = pcache
-		generate_hitscan_tracers()
-	STOP_PROCESSING(SSprojectiles, src)
-	return ..()
 
 /obj/item/projectile/proc/generate_hitscan_tracers(cleanup = TRUE, duration = 3)
 	if(!length(beam_segments))
