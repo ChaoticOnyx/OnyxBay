@@ -36,7 +36,7 @@
 	return ..()
 
 /obj/item/clothing/glasses/prism_glasses/equipped(mob/user)
-	..()
+	. = ..()
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.get_equipped_item(slot_glasses) == src)

@@ -1,6 +1,6 @@
 SUBSYSTEM_DEF(statpanels)
 	name = "Stat Panels"
-	wait = 4
+	wait = 4 SECONDS
 	init_order = SS_INIT_MISC_FIRST
 	priority = SS_PRIORITY_STATPANELS
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
@@ -99,7 +99,7 @@ SUBSYSTEM_DEF(statpanels)
 	target.stat_panel.send_message("update_mc", list(mc_data = mc_data, "coord_entry" = coord_entry))
 
 /// Set up the various action tabs.
-/datum/controller/subsystem/statpanels/proc/set_action_tabs	(client/target, mob/target_mob)
+/datum/controller/subsystem/statpanels/proc/set_action_tabs(client/target, mob/target_mob)
 	var/list/actions = target_mob.get_actions_for_statpanel()
 	target.spell_tabs.Cut()
 

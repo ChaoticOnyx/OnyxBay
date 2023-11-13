@@ -364,7 +364,7 @@
 	QDEL_IN(src, 0)
 
 /obj/item/melee/energy/blade/dropped()
-	..()
+	. = ..()
 	QDEL_IN(src, 0)
 
 /obj/item/melee/energy/blade/think()

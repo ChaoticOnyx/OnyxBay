@@ -184,8 +184,6 @@
 
 	stat_panel.subscribe(src, PROC_REF(on_stat_panel_message))
 
-	tgui_panel.initialize()
-
 	// Initialize stat panel
 	stat_panel.initialize(
 		inline_html = file("html/statbrowser.html"),
@@ -668,7 +666,7 @@
 			continue
 		panel_tabs |= verb_to_init.category
 		verblist[++verblist.len] = list(verb_to_init.category, verb_to_init.name)
-	src.stat_panel.send_message("init_verbs", list(panel_tabs = panel_tabs, verblist = verblist))
+	stat_panel.send_message("init_verbs", list(panel_tabs = panel_tabs, verblist = verblist))
 
 /client/proc/check_panel_loaded()
 	if(stat_panel.is_ready())
