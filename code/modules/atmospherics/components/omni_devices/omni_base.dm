@@ -21,7 +21,7 @@
 	var/overlays_error[2]
 	var/underlays_current[4]
 
-	var/list/ports = new()
+	var/list/ports = list()
 
 /obj/machinery/atmospherics/omni/Initialize()
 	. = ..()
@@ -224,13 +224,12 @@
 	return null
 
 /obj/machinery/atmospherics/omni/Destroy()
-	loc = null
-
 	for(var/datum/omni_port/P in ports)
 		if(P.node)
 			P.node.disconnect(src)
 			qdel(P.network)
 			P.node = null
+	ports.Cut()
 
 	return ..()
 

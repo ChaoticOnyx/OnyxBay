@@ -45,6 +45,7 @@
 	if(initial_loc)
 		initial_loc.air_scrub_info -= id_tag
 		initial_loc.air_scrub_names -= id_tag
+		initial_loc = null
 	return ..()
 
 /obj/machinery/atmospherics/unary/vent_scrubber/update_icon(safety = 0)

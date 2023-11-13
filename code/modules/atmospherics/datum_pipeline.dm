@@ -10,11 +10,19 @@
 
 	var/alert_pressure = 0
 
+	#ifdef TESTING
+	var/global/pipelines_count = 0
+	var/pipeline_id = 0
+	#endif
+
 /datum/pipeline/New()
 	set_next_think(world.time + 1 SECOND)
 	air = new
 
 /datum/pipeline/Destroy()
+	#ifdef TESTING
+	to_world_log("Destroying pipeline #[pipeline_id] (\ref[src]).")
+	#endif
 	QDEL_NULL(network)
 
 	if(air?.volume)
@@ -50,6 +58,14 @@
 	set_next_think(world.time + 1 SECOND)
 
 /datum/pipeline/proc/build_pipeline(obj/machinery/atmospherics/pipe/base)
+	if(QDELETED(base) || base.getting_pipelined)
+		qdel(src)
+		return
+	#ifdef TESTING
+	pipelines_count++
+	pipeline_id = pipelines_count
+	to_world_log("Building pipeline #[pipeline_id] (\ref[src]).")
+	#endif
 	var/list/possible_expansions = list(base)
 	members = list(base)
 	edges = list()
@@ -66,23 +82,25 @@
 	if(base.leaking)
 		leaks |= base
 
-	while(possible_expansions.len>0)
+	while(possible_expansions.len > 0)
 		for(var/obj/machinery/atmospherics/pipe/borderline in possible_expansions)
-
+			if(QDELETED(borderline))
+				continue
 			var/list/result = borderline.pipeline_expansion()
 			var/edge_check = result.len
 
-			if(result.len>0)
+			if(result.len > 0)
 				for(var/obj/machinery/atmospherics/pipe/item in result)
-					if(item.in_stasis)
-						continue
-					if(QDELETED(item))
+					if(QDELETED(item) || item.getting_pipelined || item.in_stasis)
 						continue
 					if(!members.Find(item))
+						if(!possible_expansions.Find(item))
+							possible_expansions += item
+						item.getting_pipelined = TRUE
 						members += item
-						possible_expansions += item
 
 						volume += item.volume
+
 						item.parent = src
 
 						alert_pressure = min(alert_pressure, item.alert_pressure)
@@ -97,12 +115,15 @@
 
 					edge_check--
 
-			if(edge_check>0)
+			if(edge_check > 0)
 				edges += borderline
 
 			possible_expansions -= borderline
 
 	air.volume = volume
+
+	for(var/obj/machinery/atmospherics/pipe/item in members)
+		item.getting_pipelined = FALSE
 
 /datum/pipeline/proc/network_expand(datum/pipe_network/new_network, obj/machinery/atmospherics/pipe/reference)
 

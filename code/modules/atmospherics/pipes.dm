@@ -15,6 +15,8 @@
 	buckle_require_restraints = 1
 	buckle_lying = -1
 
+	var/getting_pipelined = FALSE // A shitty hack, prevents rogue pipelines from getting built and wrecking pipes GCing. Should probably be replaced with something like SSpipes and adequate queues.
+
 /obj/machinery/atmospherics/pipe/drain_power()
 	return -1
 
@@ -66,28 +68,28 @@
 		parent = new /datum/pipeline()
 		parent.build_pipeline(src)
 
-	return parent.air
+	return parent?.air
 
 /obj/machinery/atmospherics/pipe/build_network()
 	if(!parent && !QDELING(src))
 		parent = new /datum/pipeline()
 		parent.build_pipeline(src)
 
-	return parent.return_network()
+	return parent?.return_network()
 
 /obj/machinery/atmospherics/pipe/network_expand(datum/pipe_network/new_network, obj/machinery/atmospherics/pipe/reference)
 	if(!parent && !QDELING(src))
 		parent = new /datum/pipeline()
 		parent.build_pipeline(src)
 
-	return parent.network_expand(new_network, reference)
+	return parent?.network_expand(new_network, reference)
 
 /obj/machinery/atmospherics/pipe/return_network(obj/machinery/atmospherics/reference)
 	if(!parent && !QDELING(src))
 		parent = new /datum/pipeline()
 		parent.build_pipeline(src)
 
-	return parent.return_network(reference)
+	return parent?.return_network(reference)
 
 /obj/machinery/atmospherics/pipe/attackby(obj/item/W as obj, mob/user as mob)
 	if (istype(src, /obj/machinery/atmospherics/pipe/tank))
@@ -1009,6 +1011,7 @@
 /obj/machinery/atmospherics/pipe/cap/Destroy()
 	if(node)
 		node.disconnect(src)
+	node = null
 
 	return ..()
 
@@ -1131,6 +1134,7 @@
 /obj/machinery/atmospherics/pipe/tank/Destroy()
 	if(node1)
 		node1.disconnect(src)
+	node1 = null
 
 	return ..()
 
@@ -1315,7 +1319,7 @@
 /obj/machinery/atmospherics/pipe/vent/Destroy()
 	if(node1)
 		node1.disconnect(src)
-
+	node1 = null
 	return ..()
 
 /obj/machinery/atmospherics/pipe/vent/pipeline_expansion()
