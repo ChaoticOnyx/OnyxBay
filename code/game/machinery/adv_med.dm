@@ -266,7 +266,7 @@
 	if(connected)
 		connected.BSC = null
 		connected = null
-	..()
+	return ..()
 
 /obj/machinery/body_scanconsole/Initialize()
 	for(var/D in GLOB.cardinal)
