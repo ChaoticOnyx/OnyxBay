@@ -2,6 +2,26 @@
 //CONTAINS: Air Alarms and Fire Alarms//
 ////////////////////////////////////////
 
+#define GET_DANGER_LEVEL(ret, current_value, danger_levels) \
+	if((current_value > danger_levels[4] && danger_levels[4] > 0) || current_value < danger_levels[1]) { ret = 2; } \
+	else if((current_value > danger_levels[3] && danger_levels[3] > 0) || current_value < danger_levels[2]) { ret = 1; } \
+	else { ret = 0; }
+
+#define OVERALL_DANGER_LEVEL(ret, environment) \
+	ret = 0; \
+	var/partial_pressure = R_IDEAL_GAS_EQUATION * environment.temperature / environment.volume; \
+	var/environment_pressure = environment.return_pressure(); \
+	var/other_moles = 0; \
+	for(var/g in trace_gas) { \
+		other_moles += environment.gas[g]; } \
+	GET_DANGER_LEVEL(pressure_dangerlevel, environment_pressure, TLV["pressure"]) \
+	GET_DANGER_LEVEL(oxygen_dangerlevel, (environment.gas["oxygen"] * partial_pressure), TLV["oxygen"]) \
+	GET_DANGER_LEVEL(co2_dangerlevel, (environment.gas["carbon_dioxide"] * partial_pressure), TLV["carbon dioxide"]) \
+	GET_DANGER_LEVEL(temperature_dangerlevel, environment.temperature, TLV["temperature"]) \
+	GET_DANGER_LEVEL(other_dangerlevel, (other_moles * partial_pressure), TLV["other"]) \
+	ret = max(pressure_dangerlevel, oxygen_dangerlevel, co2_dangerlevel, other_dangerlevel, temperature_dangerlevel);
+
+
 #define AALARM_MODE_SCRUBBING	1
 #define AALARM_MODE_REPLACEMENT	2 //like scrubbing, but faster.
 #define AALARM_MODE_PANIC		3 //constantly sucks all air
@@ -161,7 +181,8 @@
 		return
 
 	var/turf/simulated/location = loc
-	if(!istype(location))	return PROCESS_KILL//returns if loc is not simulated
+	if(!istype(location))
+		return PROCESS_KILL // returns if loc is not simulated
 
 	var/datum/gas_mixture/environment = location.return_air()
 
@@ -170,18 +191,18 @@
 
 	var/old_level = danger_level
 	var/old_pressurelevel = pressure_dangerlevel
-	danger_level = overall_danger_level(environment)
+	OVERALL_DANGER_LEVEL(danger_level, environment)
 
-	if (old_level != danger_level)
+	if(old_level != danger_level)
 		apply_danger_level(danger_level)
 
-	if (old_pressurelevel != pressure_dangerlevel)
-		if (breach_detected())
+	if(old_pressurelevel != pressure_dangerlevel)
+		if(breach_detected())
 			mode = AALARM_MODE_OFF
 			apply_mode()
 
-	if (mode==AALARM_MODE_CYCLE && environment.return_pressure()<ONE_ATMOSPHERE*0.05)
-		mode=AALARM_MODE_FILL
+	if(mode == AALARM_MODE_CYCLE && environment.return_pressure() < ONE_ATMOSPHERE * 0.05)
+		mode = AALARM_MODE_FILL
 		apply_mode()
 
 	//atmos computer remote controll stuff
@@ -199,16 +220,20 @@
 	return
 
 /obj/machinery/alarm/proc/handle_heating_cooling(datum/gas_mixture/environment)
-	if (!regulating_temperature)
+	if(!regulating_temperature)
+		var/danger_check
+		GET_DANGER_LEVEL(danger_check, target_temperature, TLV["temperature"])
 		//check for when we should start adjusting temperature
-		if(!get_danger_level(target_temperature, TLV["temperature"]) && abs(environment.temperature - target_temperature) > 2.0)
+		if(!danger_check && abs(environment.temperature - target_temperature) > 2.0)
 			update_use_power(POWER_USE_ACTIVE)
 			regulating_temperature = 1
 			visible_message("\The [src] clicks as it starts [environment.temperature > target_temperature ? "cooling" : "heating"] the room.",\
 			"You hear a click and a faint electronic hum.")
 	else
+		var/danger_check
+		GET_DANGER_LEVEL(danger_check, target_temperature, TLV["temperature"])
 		//check for when we should stop adjusting temperature
-		if (get_danger_level(target_temperature, TLV["temperature"]) || abs(environment.temperature - target_temperature) <= 0.5)
+		if(danger_check || abs(environment.temperature - target_temperature) <= 0.5)
 			update_use_power(POWER_USE_IDLE)
 			regulating_temperature = 0
 			visible_message("\The [src] clicks quietly as it stops [environment.temperature > target_temperature ? "cooling" : "heating"] the room.",\
@@ -238,28 +263,6 @@
 				heat_transfer = -gas.add_thermal_energy(-heat_transfer)	//get the actual heat transfer
 
 			environment.merge(gas)
-
-/obj/machinery/alarm/proc/overall_danger_level(datum/gas_mixture/environment)
-	var/partial_pressure = R_IDEAL_GAS_EQUATION*environment.temperature/environment.volume
-	var/environment_pressure = environment.return_pressure()
-
-	var/other_moles = 0
-	for(var/g in trace_gas)
-		other_moles += environment.gas[g] //this is only going to be used in a partial pressure calc, so we don't need to worry about group_multiplier here.
-
-	pressure_dangerlevel = get_danger_level(environment_pressure, TLV["pressure"])
-	oxygen_dangerlevel = get_danger_level(environment.gas["oxygen"]*partial_pressure, TLV["oxygen"])
-	co2_dangerlevel = get_danger_level(environment.gas["carbon_dioxide"]*partial_pressure, TLV["carbon dioxide"])
-	temperature_dangerlevel = get_danger_level(environment.temperature, TLV["temperature"])
-	other_dangerlevel = get_danger_level(other_moles*partial_pressure, TLV["other"])
-
-	return max(
-		pressure_dangerlevel,
-		oxygen_dangerlevel,
-		co2_dangerlevel,
-		other_dangerlevel,
-		temperature_dangerlevel
-		)
 
 // Returns whether this air alarm thinks there is a breach, given the sensors that are available to it.
 /obj/machinery/alarm/proc/breach_detected()
@@ -294,13 +297,6 @@
 		if (!(AA.stat & (NOPOWER|BROKEN)))
 			alarm_area.master_air_alarm = AA
 			return 1
-	return 0
-
-/obj/machinery/alarm/proc/get_danger_level(current_value, list/danger_levels)
-	if((current_value > danger_levels[4] && danger_levels[4] > 0) || current_value < danger_levels[1])
-		return 2
-	if((current_value > danger_levels[3] && danger_levels[3] > 0) || current_value < danger_levels[2])
-		return 1
 	return 0
 
 /obj/machinery/alarm/update_icon()
@@ -870,3 +866,6 @@ Just a object used in constructing air alarms
 	desc = "Looks like a circuit. Probably is."
 	w_class = ITEM_SIZE_SMALL
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
+
+#undef GET_DANGER_LEVEL
+#undef OVERALL_DANGER_LEVEL

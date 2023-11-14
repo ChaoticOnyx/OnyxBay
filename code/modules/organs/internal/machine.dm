@@ -23,7 +23,7 @@
 /obj/item/organ/internal/cell/proc/percent()
 	if(!cell)
 		return 0
-	return get_charge()/cell.maxcharge * 100
+	return PERCENT(get_charge(), cell.maxcharge)
 
 /obj/item/organ/internal/cell/proc/get_charge()
 	if(!cell)

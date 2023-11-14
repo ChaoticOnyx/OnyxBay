@@ -153,7 +153,7 @@
 			. += "\n[SPAN("warning", "It feels pleasantly warm.")]"
 
 /obj/item/gun/energy/gun/nuclear/proc/get_charge_overlay()
-	var/ratio = power_supply.percent()
+	var/ratio = CELL_PERCENT(power_supply)
 	ratio = round(ratio, 25)
 	return "nucgun-[ratio]"
 
@@ -162,7 +162,7 @@
 		return "nucgun-crit"
 	if(fail_counter > 15)
 		return "nucgun-medium"
-	if(power_supply.percent() <= 50)
+	if(CELL_PERCENT(power_supply) <= 50)
 		return "nucgun-light"
 	return "nucgun-clean"
 
@@ -255,7 +255,7 @@
 /obj/item/gun/energy/rifle/update_icon()
 	var/ratio = 0
 	if(power_supply && power_supply.charge >= charge_cost)
-		ratio = max(round(power_supply.percent(), icon_rounder), icon_rounder)
+		ratio = max(round(CELL_PERCENT(power_supply), icon_rounder), icon_rounder)
 
 	icon_state = "[modifystate][ratio]"
 
