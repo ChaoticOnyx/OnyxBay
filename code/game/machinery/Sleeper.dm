@@ -67,7 +67,7 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 
-	if (!(occupant in src))
+	if(occupant && !(occupant in src))
 		go_out()
 
 	play_beep()
@@ -389,10 +389,9 @@
 		update_icon()
 
 /obj/machinery/sleeper/proc/go_out()
-	if(!occupant)
+	if(!occupant || locked)
 		return
-	if(locked)
-		return
+
 	if(occupant.client)
 		occupant.client.eye = occupant.client.mob
 		occupant.client.perspective = MOB_PERSPECTIVE
@@ -402,6 +401,7 @@
 	for(var/atom/movable/A in src) // In case an object was dropped inside or something
 		if(locate(A) in component_parts)
 			continue
+
 		A.dropInto(loc)
 	update_use_power(POWER_USE_IDLE)
 	update_icon()
@@ -430,3 +430,7 @@
 			to_chat(user, "The subject has too many chemicals.")
 	else
 		to_chat(user, "There's no suitable occupant in \the [src].")
+
+/obj/machinery/sleeper/Destroy()
+	go_out()
+	return ..()
