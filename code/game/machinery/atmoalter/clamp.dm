@@ -137,7 +137,7 @@
 /obj/machinery/clamp/proc/detach()
 	if(target?.clamp == src)
 		target.clamp = null
-	new/obj/item/clamp(loc)
+	new /obj/item/clamp(loc)
 	qdel(src)
 
 /obj/item/clamp
