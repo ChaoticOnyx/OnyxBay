@@ -45,7 +45,7 @@
 		open()
 	else
 		close()
-	to_chat(user, "<span class='notice'>You turn [open ? "off" : "on"] \the [src]</span>")
+	to_chat(user, SPAN("notice", "You turn [open ? "off" : "on"] \the [src]"))
 
 /obj/machinery/clamp/Destroy()
 	if(!open)
@@ -122,9 +122,9 @@
 		return
 
 	if(open && over_object == usr && Adjacent(usr))
-		to_chat(usr, "<span class='notice'>You begin to remove \the [src]...</span>")
+		to_chat(usr, SPAN("notice", "You begin to remove \the [src]..."))
 		if (do_after(usr, 30, src))
-			to_chat(usr, "<span class='notice'>You have removed \the [src].</span>")
+			to_chat(usr, SPAN("notice", "You have removed \the [src]."))
 			var/obj/item/clamp/C = new /obj/item/clamp(src.loc)
 			C.forceMove(usr.loc)
 			if(ishuman(usr))
@@ -132,12 +132,12 @@
 			qdel(src)
 			return
 	else
-		to_chat(usr, "<span class='warning'>You can't remove \the [src] while it's active!</span>")
+		to_chat(usr, SPAN("warning", "You can't remove \the [src] while it's active!"))
 
 /obj/machinery/clamp/proc/detach()
 	if(target?.clamp == src)
 		target.clamp = null
-	new/obj/item/clamp(loc)
+	new /obj/item/clamp(loc)
 	qdel(src)
 
 /obj/item/clamp
