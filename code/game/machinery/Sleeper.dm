@@ -389,7 +389,10 @@
 		update_icon()
 
 /obj/machinery/sleeper/proc/go_out()
-	if(!occupant || locked)
+	if(!occupant)
+		return
+
+	if(locked)
 		return
 
 	if(occupant.client)
