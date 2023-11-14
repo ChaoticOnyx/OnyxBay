@@ -143,7 +143,7 @@
 			robot["cell"] = 1
 			robot["cell_capacity"] = R.cell.maxcharge
 			robot["cell_current"] = R.cell.charge
-			robot["cell_percentage"] = round(R.cell.percent())
+			robot["cell_percentage"] = round(CELL_PERCENT(R.cell))
 		else
 			robot["cell"] = 0
 

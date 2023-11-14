@@ -224,7 +224,7 @@
 /obj/item/shield/barrier/_examine_text(mob/user)
 	. = ..()
 	if(cell)
-		. += SPAN("notice", "\nHas <b>[cell.percent()]%</b> charge left.")
+		. += SPAN("notice", "\nHas <b>[CELL_PERCENT(cell)]%</b> charge left.")
 	else
 		. += "\n<b>Has no battery installed.</b>"
 

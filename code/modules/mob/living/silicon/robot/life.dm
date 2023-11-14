@@ -173,7 +173,7 @@
 
 	if(cells)
 		if(cell)
-			var/chargeNum = Clamp(ceil(cell.percent() / 25), 0, 4)	//0-100 maps to 0-4, but give it a paranoid clamp just in case.
+			var/chargeNum = Clamp(ceil(CELL_PERCENT(cell) / 25), 0, 4)	//0-100 maps to 0-4, but give it a paranoid clamp just in case.
 			cells.icon_state = "charge[chargeNum]"
 		else
 			cells.icon_state = "charge-empty"

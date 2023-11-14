@@ -31,7 +31,7 @@
 						[internal_damage&MECHA_INT_TANK_BREACH?"<font color='red'><b>GAS TANK HONK</b></font><br>":null]
 						[internal_damage&MECHA_INT_CONTROL_LOST?"<font color='red'><b>HONK-A-DOODLE</b></font> - <a href='?src=\ref[src];repair_int_control_lost=1'>Recalibrate</a><br>":null]
 						<b>IntegriHONK: </b> [health/initial(health)*100] %) <br>
-						<b>PowerHONK charge: </b>[isnull(cell_charge)?"Someone HONKed powerHonk!!!":"[cell.percent()]%"])<br>
+						<b>PowerHONK charge: </b>[isnull(cell_charge)?"Someone HONKed powerHonk!!!":"[CELL_PERCENT(cell)]%"])<br>
 						<b>Air source: </b>[use_internal_tank?"Internal AirHONK":"EnvironHONK"]<br>
 						<b>AirHONK pressure: </b>[src.return_pressure()]HoNKs<br>
 						<b>Internal HONKature: </b> [src.return_temperature()]&deg;honK|[CONV_KELVIN_CELSIUS(src.return_temperature())]&deg;honCk<br>

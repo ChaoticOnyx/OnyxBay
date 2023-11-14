@@ -42,7 +42,7 @@
 	if(!bcell)
 		. += "<br>\The [src] have no power cell installed."
 	else
-		. += "<br>\The [src] are [round(bcell.percent())]% charged."
+		. += "<br>\The [src] are [round(CELL_PERCENT(bcell))]% charged."
 
 /obj/item/clothing/gloves/stun/attackby(obj/item/W, mob/user)
 	if(isWirecutter(W))

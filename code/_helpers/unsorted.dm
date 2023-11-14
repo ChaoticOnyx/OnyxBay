@@ -1092,3 +1092,6 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 
 /proc/pass()
 	return
+
+// Checking /obj/item/cell's charge percentage
+#define CELL_PERCENT(a) (PERCENT(a.charge, a.maxcharge))

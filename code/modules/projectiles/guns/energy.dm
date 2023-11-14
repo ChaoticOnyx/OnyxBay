@@ -112,7 +112,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 			if(power_supply.charge < charge_cost)
 				ratio = 0
 			else
-				ratio = max(round(power_supply.percent(), icon_rounder), icon_rounder)
+				ratio = max(round(CELL_PERCENT(power_supply), icon_rounder), icon_rounder)
 		else
 			ratio = 0
 

@@ -161,7 +161,8 @@
 		return
 
 	var/turf/simulated/location = loc
-	if(!istype(location))	return PROCESS_KILL//returns if loc is not simulated
+	if(!istype(location))
+		return PROCESS_KILL // returns if loc is not simulated
 
 	var/datum/gas_mixture/environment = location.return_air()
 

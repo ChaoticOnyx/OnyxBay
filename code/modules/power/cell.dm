@@ -42,7 +42,7 @@
 
 /obj/item/cell/update_icon()
 	var/new_overlay_state = null
-	if(percent() >= 95)
+	if(CELL_PERCENT(src) >= 95)
 		new_overlay_state = "cell-o2"
 	else if(charge >= 0.05)
 		new_overlay_state = "cell-o1"
@@ -53,8 +53,9 @@
 		if(overlay_state)
 			overlays += image('icons/obj/power.dmi', overlay_state)
 
-/obj/item/cell/proc/percent()		// return % charge of cell
-	return maxcharge && (100.0 * charge / maxcharge)
+// Legacy proc for compatibility, use CELL_PERCENT(cell) instead
+/obj/item/cell/proc/percent()
+	return CELL_PERCENT(src)
 
 /obj/item/cell/proc/fully_charged()
 	return charge == maxcharge
@@ -102,7 +103,7 @@
 /obj/item/cell/_examine_text(mob/user)
 	. = ..()
 	. += "\nThe label states it's capacity is [maxcharge] Wh"
-	. += "\nThe charge meter reads [round(src.percent(), 0.1)]%"
+	. += "\nThe charge meter reads [round(CELL_PERCENT(src), 0.1)]%"
 
 /obj/item/cell/emp_act(severity)
 	//remove this once emp changes on dev are merged in
@@ -289,7 +290,7 @@
 
 /obj/item/cell/metroid/Initialize()
 	. = ..()
-	
+
 	set_next_think(world.time)
 	add_think_ctx("selfcharge", CALLBACK(src, .proc/selfcharge_think), world.time)
 
@@ -309,7 +310,7 @@
 
 /obj/item/cell/quantum/update_icon()
 	var/new_overlay_state = null
-	if(percent() >= 95)
+	if(CELL_PERCENT(src) >= 95)
 		new_overlay_state = "qcell-o2"
 	else if(charge >= 0.05)
 		new_overlay_state = "qcell-o1"
