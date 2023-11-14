@@ -105,6 +105,9 @@
 	// autofire timer is automatically cleaned up
 	autofiring_at = null
 	autofiring_by = null
+	aim_targets = null
+	last_moved_mob = null
+	QDEL_LIST(firemodes)
 	. = ..()
 
 /obj/item/gun/proc/set_autofire(atom/fire_at, mob/fire_by)

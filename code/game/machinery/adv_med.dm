@@ -26,7 +26,7 @@
 	if(BSC)
 		BSC.connected = null
 		BSC = null
-	..()
+	return ..()
 
 /obj/machinery/bodyscanner/Initialize()
 	. = ..()

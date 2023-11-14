@@ -115,8 +115,19 @@
 	return TRUE
 
 /obj/item/projectile/Destroy()
+	if(hitscan)
+		if(loc && trajectory)
+			var/datum/point/pcache = trajectory.copy_to()
+			beam_segments[beam_index] = pcache
+		generate_hitscan_tracers()
+	firer = null
+	current = null
+	original = null
+	previous = null
+	starting = null
 	if(trajectory)
 		QDEL_NULL(trajectory)
+	STOP_PROCESSING(SSprojectiles, src)
 	return ..()
 
 //TODO: make it so this is called more reliably, instead of sometimes by bullet_act() and sometimes not
@@ -435,7 +446,6 @@
 		var/matrix/M = new
 		M.Turn(Angle)
 		transform = M
-	forceMove(starting)
 	trajectory = new(starting.x, starting.y, starting.z, 0, 0, Angle, pixel_speed)
 	last_projectile_move = world.time
 	fired = TRUE
@@ -460,13 +470,13 @@
 /obj/item/projectile/proc/preparePixelProjectile(atom/target, atom/source, params, Angle_offset = 0)
 	var/turf/curloc = get_turf(source)
 	var/turf/targloc = get_turf(target)
-	forceMove(get_turf(source))
-	starting = get_turf(source)
+	forceMove(curloc)
+	starting = curloc
 	original = target
 
 	var/list/calculated = list(null,null,null)
 	if(isliving(source) && params)
-		calculated = calculate_projectile_Angle_and_pixel_offsets(source, params)
+		calculated = calculate_projectile_Angle_and_pixel_offsets(source, target, params2list(params))
 		p_x = calculated[2]
 		p_y = calculated[3]
 		setAngle(calculated[1])
@@ -540,36 +550,48 @@
 /obj/item/projectile/proc/can_hit_target(atom/target, list/passthrough)
 	return (target && ((target.layer >= TURF_LAYER + 0.3) || ismob(target)) && (loc == get_turf(target)) && (!(target in passthrough)))
 
-/proc/calculate_projectile_Angle_and_pixel_offsets(mob/user, params)
-	var/list/mouse_control = params2list(params)
-	var/p_x = 0
-	var/p_y = 0
-	var/Angle = 0
-	if(mouse_control["icon-x"])
-		p_x = text2num(mouse_control["icon-x"])
-	if(mouse_control["icon-y"])
-		p_y = text2num(mouse_control["icon-y"])
-	if(mouse_control["screen-loc"])
-		//Split screen-loc up into X+Pixel_X and Y+Pixel_Y
-		var/list/screen_loc_params = splittext(mouse_control["screen-loc"], ",")
+/proc/calculate_projectile_Angle_and_pixel_offsets(atom/source, atom/target, modifiers)
+	var/angle = 0
+	var/p_x = modifiers["icon-x"] ? text2num(modifiers["icon-x"]) : world.icon_size / 2 // ICON_(X|Y) are measured from the bottom left corner of the icon.
+	var/p_y = modifiers["icon-y"] ? text2num(modifiers["icon-y"]) : world.icon_size / 2 // This centers the target if modifiers aren't passed.
 
-		//Split X+Pixel_X up into list(X, Pixel_X)
-		var/list/screen_loc_X = splittext(screen_loc_params[1],":")
+	if(target)
+		var/turf/source_loc = get_turf(source)
+		var/turf/target_loc = get_turf(target)
+		var/dx = ((target_loc.x - source_loc.x) * world.icon_size) + (target.pixel_x - source.pixel_x) + (p_x - (world.icon_size / 2))
+		var/dy = ((target_loc.y - source_loc.y) * world.icon_size) + (target.pixel_y - source.pixel_y) + (p_y - (world.icon_size / 2))
 
-		//Split Y+Pixel_Y up into list(Y, Pixel_Y)
-		var/list/screen_loc_Y = splittext(screen_loc_params[2],":")
-		var/x = text2num(screen_loc_X[1]) * 32 + text2num(screen_loc_X[2]) - 32
-		var/y = text2num(screen_loc_Y[1]) * 32 + text2num(screen_loc_Y[2]) - 32
+		angle = Atan2(dy, dx)
+		return list(angle, p_x, p_y)
 
-		//Calculate the "resolution" of screen based on client's view and world's icon size. This will work if the user can view more tiles than average.
-		var/list/screenview = getviewsize(user.client.view)
-		var/screenviewX = screenview[1] * world.icon_size
-		var/screenviewY = screenview[2] * world.icon_size
+	if(!ismob(source) || !modifiers["screen-loc"])
+		CRASH("Can't make trajectory calculations without a target or click modifiers and a client.")
 
-		var/ox = round(screenviewX/2) - user.client.pixel_x //"origin" x
-		var/oy = round(screenviewY/2) - user.client.pixel_y //"origin" y
-		Angle = Atan2(y - oy, x - ox)
-	return list(Angle, p_x, p_y)
+	var/mob/user = source
+	if(!user.client)
+		CRASH("Can't make trajectory calculations without a target or click modifiers and a client.")
+
+	//Split screen-loc up into X+Pixel_X and Y+Pixel_Y
+	var/list/screen_loc_params = splittext(modifiers["screen-loc"], ",")
+	//Split X+Pixel_X up into list(X, Pixel_X)
+	var/list/screen_loc_X = splittext(screen_loc_params[1],":")
+	//Split Y+Pixel_Y up into list(Y, Pixel_Y)
+	var/list/screen_loc_Y = splittext(screen_loc_params[2],":")
+
+	var/tx = (text2num(screen_loc_X[1]) - 1) * world.icon_size + text2num(screen_loc_X[2])
+	var/ty = (text2num(screen_loc_Y[1]) - 1) * world.icon_size + text2num(screen_loc_Y[2])
+
+	//Calculate the "resolution" of screen based on client's view and world's icon size. This will work if the user can view more tiles than average.
+	if(!user.client.view)
+		return list(0, 0)
+	var/list/screenview = getviewsize(user.client.view)
+	screenview[1] *= world.icon_size
+	screenview[2] *= world.icon_size
+
+	var/ox = round(screenview[1] / 2) - user.client.pixel_x //"origin" x
+	var/oy = round(screenview[2] / 2) - user.client.pixel_y //"origin" y
+	angle = Atan2(tx - oy, ty - ox)
+	return list(angle, p_x, p_y)
 
 /obj/item/projectile/proc/check_distance_left()
 	range--
@@ -671,15 +693,6 @@
 	. = ..()
 	if(trajectory && !trajectory_ignore_forcemove && isturf(target))
 		trajectory.initialize_location(target.x, target.y, target.z, 0, 0)
-
-/obj/item/projectile/Destroy()
-	if(hitscan)
-		if(loc && trajectory)
-			var/datum/point/pcache = trajectory.copy_to()
-			beam_segments[beam_index] = pcache
-		generate_hitscan_tracers()
-	STOP_PROCESSING(SSprojectiles, src)
-	return ..()
 
 /obj/item/projectile/proc/generate_hitscan_tracers(cleanup = TRUE, duration = 3)
 	if(!length(beam_segments))

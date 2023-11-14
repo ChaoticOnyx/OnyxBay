@@ -20,6 +20,7 @@
 	else
 		target = locate(/obj/machinery/atmospherics/pipe/simple) in loc
 	if(target)
+		target.clamp = src
 		update_networks()
 		dir = target.dir
 	return 1
@@ -49,7 +50,9 @@
 /obj/machinery/clamp/Destroy()
 	if(!open)
 		spawn(-1) open()
-	. = ..()
+	if(target?.clamp == src)
+		target.clamp = null
+	return ..()
 
 /obj/machinery/clamp/proc/open()
 	if(open || !target)
@@ -131,6 +134,12 @@
 	else
 		to_chat(usr, "<span class='warning'>You can't remove \the [src] while it's active!</span>")
 
+/obj/machinery/clamp/proc/detach()
+	if(target?.clamp == src)
+		target.clamp = null
+	new/obj/item/clamp(loc)
+	qdel(src)
+
 /obj/item/clamp
 	name = "stasis clamp"
 	desc = "A magnetic clamp which can halt the flow of gas in a pipe, via a localised stasis field."
@@ -143,9 +152,18 @@
 		return
 
 	if(istype(A, /obj/machinery/atmospherics/pipe/simple))
-		to_chat(user, "<span class='notice'>You begin to attach \the [src] to \the [A]...</span>")
+		var/obj/machinery/atmospherics/pipe/simple/P = A
+		if(P.clamp)
+			to_chat(user, SPAN("warning", "There is already \a [P.clamp] attached to \the [P]."))
+			return
+
+		to_chat(user, SPAN("notice", "You begin to attach \the [src] to \the [A]..."))
 		if(do_after(user, 30, src) && user.drop(src))
-			to_chat(user, "<span class='notice'>You have attached \the [src] to \the [A].</span>")
+			if(QDELETED(P))
+				return
+			if(P.clamp)
+				to_chat(user, SPAN("warning", "There is already \a [P.clamp] attached to \the [P]."))
+				return
+			to_chat(user, SPAN("notice", "You have attached \the [src] to \the [A]."))
 			new /obj/machinery/clamp(A.loc, A)
 			qdel(src)
-

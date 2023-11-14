@@ -77,7 +77,7 @@ SUBSYSTEM_DEF(machines)
 	for(var/i = currentrun.len to 1 step -1)
 		thing = currentrun[i]
 		if(QDELETED(thing) || thing.Process(seconds) == PROCESS_KILL)
-			processing -= thing
+			processing.Remove(thing)
 			thing.is_processing = null
 		if(MC_TICK_CHECK)
 			currentrun.Cut(i)

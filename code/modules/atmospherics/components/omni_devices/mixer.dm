@@ -8,7 +8,7 @@
 	idle_power_usage = 150 WATTS //internal circuitry, friction losses and stuff
 	power_rating = 3700			//3700 W ~ 5 HP
 
-	var/list/inputs = new()
+	var/list/inputs = list()
 	var/datum/omni_port/output
 	var/max_output_pressure = MAX_OMNI_PRESSURE
 
@@ -23,8 +23,8 @@
 
 	var/list/mixing_inputs = list()
 
-/obj/machinery/atmospherics/omni/mixer/New()
-	..()
+/obj/machinery/atmospherics/omni/mixer/Initialize()
+	. = ..()
 	if(mapper_set())
 		var/con = 0
 		for(var/datum/omni_port/P in ports)

@@ -46,9 +46,9 @@
 /obj/machinery/atmospherics/tvalve/hide(i)
 	update_underlays()
 
-/obj/machinery/atmospherics/tvalve/New()
+/obj/machinery/atmospherics/tvalve/Initialize()
+	. = ..()
 	initialize_directions()
-	..()
 
 /obj/machinery/atmospherics/tvalve/proc/initialize_directions()
 	switch(dir)
@@ -100,8 +100,6 @@
 	return null
 
 /obj/machinery/atmospherics/tvalve/Destroy()
-	loc = null
-
 	if(node1)
 		node1.disconnect(src)
 		qdel(network_node1)
@@ -115,6 +113,9 @@
 	node1 = null
 	node2 = null
 	node3 = null
+	network_node1 = null
+	network_node2 = null
+	network_node3 = null
 
 	return ..()
 

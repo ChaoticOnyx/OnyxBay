@@ -5,7 +5,7 @@
 	name = "omni gas filter"
 	icon_state = "map_filter"
 
-	var/list/gas_filters = new()
+	var/list/gas_filters = list()
 	var/datum/omni_port/input
 	var/datum/omni_port/output
 	var/max_output_pressure = MAX_OMNI_PRESSURE
@@ -18,8 +18,8 @@
 
 	var/list/filtering_outputs = list()	//maps gasids to gas_mixtures
 
-/obj/machinery/atmospherics/omni/filter/New()
-	..()
+/obj/machinery/atmospherics/omni/filter/Initialize()
+	. = ..()
 	rebuild_filtering_list()
 	for(var/datum/omni_port/P in ports)
 		P.air.volume = ATMOS_DEFAULT_VOLUME_FILTER
@@ -28,7 +28,8 @@
 	input = null
 	output = null
 	gas_filters.Cut()
-	. = ..()
+	filtering_outputs.Cut()
+	return ..()
 
 /obj/machinery/atmospherics/omni/filter/sort_ports()
 	for(var/datum/omni_port/P in ports)

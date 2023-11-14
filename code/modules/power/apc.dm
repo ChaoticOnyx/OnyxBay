@@ -208,9 +208,9 @@
 	QDEL_NULL(wires)
 	QDEL_NULL(terminal)
 
-	if(cell)
+	if(!QDELETED(cell))
 		cell.forceMove(loc)
-		cell = null
+	cell = null
 
 	GLOB.apc_list -= src
 	// Malf AI, removes the APC from AI's hacked APCs list.

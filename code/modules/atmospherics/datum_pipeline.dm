@@ -10,21 +10,41 @@
 
 	var/alert_pressure = 0
 
+	#ifdef TESTING
+	var/global/pipelines_count = 0
+	var/pipeline_id = 0
+	#endif
+
 /datum/pipeline/New()
-	set_next_think(world.time)
+	set_next_think(world.time + 1 SECOND)
+	air = new
 
 /datum/pipeline/Destroy()
+	#ifdef TESTING
+	to_world_log("Destroying pipeline #[pipeline_id] (\ref[src]).")
+	#endif
 	QDEL_NULL(network)
 
-	if(air && air.volume)
-		temporarily_store_air()
-		QDEL_NULL(air)
-	for(var/obj/machinery/atmospherics/pipe/P in members)
-		P.parent = null
+	if(air?.volume)
+		for(var/obj/machinery/atmospherics/pipe/member in members)
+			var/datum/gas_mixture/G = new
+			G.copy_from(air)
+			G.volume = member.volume
+			G.multiply(member.volume / air.volume)
+			member.air_temporary = G
+			member.parent = null
+	else
+		for(var/obj/machinery/atmospherics/pipe/member in members)
+			member.air_temporary = null
+			member.parent = null
+
+	QDEL_NULL(air)
+
 	leaks.Cut()
 	members.Cut()
 	edges.Cut()
 	. = ..()
+	return QDEL_HINT_QUEUE
 
 /datum/pipeline/think()//This use to be called called from the pipe networks
 	//Check to see if pressure is within acceptable limits
@@ -37,18 +57,15 @@
 
 	set_next_think(world.time + 1 SECOND)
 
-/datum/pipeline/proc/temporarily_store_air()
-	//Update individual gas_mixtures by volume ratio
-
-	for(var/obj/machinery/atmospherics/pipe/member in members)
-		member.air_temporary = new
-		member.air_temporary.copy_from(air)
-		member.air_temporary.volume = member.volume
-		member.air_temporary.multiply(member.volume / air.volume)
-
 /datum/pipeline/proc/build_pipeline(obj/machinery/atmospherics/pipe/base)
-	air = new
-
+	if(QDELETED(base) || base.getting_pipelined)
+		qdel(src)
+		return
+	#ifdef TESTING
+	pipelines_count++
+	pipeline_id = pipelines_count
+	to_world_log("Building pipeline #[pipeline_id] (\ref[src]).")
+	#endif
 	var/list/possible_expansions = list(base)
 	members = list(base)
 	edges = list()
@@ -58,47 +75,55 @@
 	alert_pressure = base.alert_pressure
 
 	if(base.air_temporary)
-		air = base.air_temporary
+		air.copy_from(base.air_temporary)
+		qdel(base.air_temporary)
 		base.air_temporary = null
-	else
-		air = new
 
 	if(base.leaking)
 		leaks |= base
 
-	while(possible_expansions.len>0)
+	while(possible_expansions.len > 0)
 		for(var/obj/machinery/atmospherics/pipe/borderline in possible_expansions)
-
+			if(QDELETED(borderline))
+				continue
 			var/list/result = borderline.pipeline_expansion()
 			var/edge_check = result.len
 
-			if(result.len>0)
+			if(result.len > 0)
 				for(var/obj/machinery/atmospherics/pipe/item in result)
-					if(item.in_stasis)
+					if(QDELETED(item) || item.getting_pipelined || item.in_stasis)
 						continue
 					if(!members.Find(item))
+						if(!possible_expansions.Find(item))
+							possible_expansions += item
+						item.getting_pipelined = TRUE
 						members += item
-						possible_expansions += item
 
 						volume += item.volume
+
 						item.parent = src
 
 						alert_pressure = min(alert_pressure, item.alert_pressure)
 
 						if(item.air_temporary)
 							air.merge(item.air_temporary)
+							qdel(item.air_temporary)
+							item.air_temporary = null
 
 						if(item.leaking)
 							leaks |= item
 
 					edge_check--
 
-			if(edge_check>0)
+			if(edge_check > 0)
 				edges += borderline
 
 			possible_expansions -= borderline
 
 	air.volume = volume
+
+	for(var/obj/machinery/atmospherics/pipe/item in members)
+		item.getting_pipelined = FALSE
 
 /datum/pipeline/proc/network_expand(datum/pipe_network/new_network, obj/machinery/atmospherics/pipe/reference)
 

@@ -46,6 +46,10 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 		set_next_think(world.time)
 	update_icon()
 
+/obj/item/gun/energy/Destroy()
+	QDEL_NULL(power_supply)
+	return ..()
+
 /obj/item/gun/energy/think()
 	if(self_recharge) //Every [recharge_time] ticks, recharge a shot for the cyborg
 		charge_tick++
@@ -66,7 +70,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 
 		power_supply.give(charge_cost) //... to recharge the shot
 		update_icon()
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/gun/energy/consume_next_projectile()
