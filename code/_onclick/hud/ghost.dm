@@ -6,6 +6,9 @@
 
 	var/obj/screen/using
 
+	using = new /obj/screen/ghost/ghost_arena_menu()
+	static_inventory += using
+
 	using = new /obj/screen/ghost/spawners_menu()
 	static_inventory += using
 
@@ -47,6 +50,15 @@
 /obj/screen/ghost/on_update_icon()
 	ClearOverlays()
 	LAZYADD(overlays, image('icons/hud/screen_ghost.dmi', icon_state = ghost_icon_state))
+
+/obj/screen/ghost/ghost_arena_menu
+	name = "Ghost arena menu"
+	ghost_icon_state = "spawners"
+	screen_loc = ui_ghost_arena_menu
+
+/obj/screen/ghost/ghost_arena_menu/Click(location, control, params)
+	var/mob/observer/ghost/G = usr
+	G.open_ghost_arena_menu()
 
 /obj/screen/ghost/spawners_menu
 	name = "Spawners Menu"

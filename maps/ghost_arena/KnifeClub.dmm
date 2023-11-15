@@ -1,0 +1,78 @@
+"ah" = (/obj/effect/decal/cleanable/dirt,/obj/structure/bed/chair{dir = 1},/turf/simulated/floor/trim/darkwood{light_outer_range = 5},/area/ghost_arena)
+"ax" = (/obj/structure/table/standard,/obj/item/material/kitchen/utensil/knife,/obj/item/material/kitchen/utensil/knife,/obj/item/material/kitchen/utensil/knife,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"dJ" = (/obj/structure/closet/crate/freezer,/obj/item/reagent_containers/food/carpmeat,/obj/item/reagent_containers/food/carpmeat,/obj/item/reagent_containers/food/carpmeat,/obj/item/reagent_containers/food/carpmeat,/obj/item/reagent_containers/food/carpmeat,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"gd" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/structure/bed/chair,/turf/simulated/floor/trim/darkwood{light_outer_range = 5},/area/ghost_arena)
+"gL" = (/obj/machinery/door/airlock/sandstone,/turf/simulated/floor/trim/darkwood{light_outer_range = 5},/area/ghost_arena)
+"jg" = (/obj/effect/landmark/ghost_arena_spawn/greytide,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"jW" = (/obj/structure/table/standard,/obj/machinery/microwave,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"kc" = (/turf/simulated/wall/sandstonediamond,/area/ghost_arena)
+"kt" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/darkwood{light_outer_range = 5},/area/ghost_arena)
+"kv" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/door/unpowered/simple/sandstone,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"lU" = (/obj/structure/window_frame/grille/rglass,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"mt" = (/obj/structure/table/woodentable,/obj/item/clothing/under/syndicate/tacticool/bundeswehr{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0); color = "#dc143c"},/obj/item/clothing/gloves/thick/swat{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0)},/obj/item/clothing/shoes/combat{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0)},/obj/item/material/hatchet/tacknife{throwforce = 5; force = 15; force_const = 15; mod_handy = 0.70},/obj/item/clothing/glasses/sunglasses/big,/obj/item/clothing/suit/armor/bulletproof/vest{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0); color = "#dc143c"},/obj/item/clothing/mask/balaclava{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0); color = "#dc143c"},/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"mv" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"ns" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/wall/sandstonediamond,/area/ghost_arena)
+"oN" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/structure/bed/chair{dir = 1},/turf/simulated/floor/trim/darkwood{light_outer_range = 5},/area/ghost_arena)
+"qo" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/wall/sandstonediamond,/area/ghost_arena)
+"rx" = (/obj/effect/decal/cleanable/blood,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"ub" = (/obj/effect/landmark/ghost_arena_spawn,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"vJ" = (/obj/structure/table/standard,/obj/item/material/kitchen/rollingpin,/obj/item/reagent_containers/vessel/condiment/small/saltshaker,/obj/item/reagent_containers/vessel/condiment/small/saltshaker,/obj/item/reagent_containers/vessel/condiment/small/peppermill,/obj/item/reagent_containers/vessel/condiment/small/peppermill,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"wv" = (/obj/structure/fitness/punchingbag,/turf/simulated/floor/sand_floor,/area/ghost_arena)
+"wN" = (/obj/effect/landmark/ghost_arena_spawn,/turf/simulated/floor/sand_floor,/area/ghost_arena)
+"wU" = (/obj/structure/closet/crate/freezer,/obj/item/reagent_containers/food/bearmeat,/obj/item/reagent_containers/food/bearmeat,/obj/item/reagent_containers/food/bearmeat,/obj/item/reagent_containers/food/bearmeat,/obj/item/reagent_containers/food/bearmeat,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"xg" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/darkwood{light_outer_range = 5},/area/ghost_arena)
+"xo" = (/turf/simulated/floor/sand_floor,/area/ghost_arena)
+"yx" = (/obj/structure/table/woodentable,/obj/item/clothing/under/syndicate/tacticool/bundeswehr{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0); color = "#dc143c"},/obj/item/clothing/shoes/combat{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0)},/obj/item/clothing/gloves/thick/swat{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0)},/obj/item/material/hatchet/tacknife{throwforce = 5; force = 15; force_const = 15; mod_handy = 0.70},/obj/item/clothing/suit/armor/bulletproof/vest{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0); color = "#dc143c"},/obj/item/clothing/mask/balaclava{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0); color = "#dc143c"},/obj/item/clothing/glasses/sunglasses/big,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"zH" = (/turf/unsimulated/wall,/area/ghost_arena)
+"BG" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/darkwood{light_outer_range = 5},/area/ghost_arena)
+"CC" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/darkwood{light_outer_range = 5},/area/ghost_arena)
+"De" = (/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"Dj" = (/obj/structure/kitchenspike,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"Ds" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/structure/bed/chair{dir = 1},/turf/simulated/floor/trim/darkwood{light_outer_range = 5},/area/ghost_arena)
+"El" = (/obj/machinery/door/unpowered/simple/sandstone,/turf/simulated/floor/sand_floor,/area/ghost_arena)
+"EV" = (/obj/structure/table/woodentable,/obj/item/clothing/gloves/thick/swat{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0)},/obj/item/clothing/glasses/sunglasses/big,/obj/item/clothing/suit/armor/bulletproof/vest{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0); color = "#00bfff"},/obj/item/clothing/shoes/combat{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0)},/obj/item/clothing/under/syndicate/tacticool/bundeswehr{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0); color = "#00bfff"},/obj/item/clothing/mask/balaclava{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0); color = "#00bfff"},/obj/item/material/hatchet/tacknife{throwforce = 5; force = 15; force_const = 15; mod_handy = 0.70},/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"Gc" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/structure/bed/chair,/turf/simulated/floor/trim/darkwood{light_outer_range = 5},/area/ghost_arena)
+"JX" = (/obj/effect/decal/cleanable/dirt,/obj/structure/bed/chair,/turf/simulated/floor/trim/darkwood{light_outer_range = 5},/area/ghost_arena)
+"KV" = (/obj/structure/toilet{dir = 8},/turf/simulated/floor/sand_floor,/area/ghost_arena)
+"Mc" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"NX" = (/obj/item/clothing/under/syndicate/tacticool/bundeswehr{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0); color = "#00bfff"},/obj/structure/table/woodentable,/obj/item/clothing/glasses/sunglasses/big,/obj/item/clothing/suit/armor/bulletproof/vest{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0); color = "#00bfff"},/obj/item/clothing/gloves/thick/swat{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0)},/obj/item/clothing/shoes/combat{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0)},/obj/item/clothing/mask/balaclava{armor = list("melee"=20,"bullet"=35,"laser"=40,"energy"=15,"bomb"=25,"bio"=0); color = "#00bfff"},/obj/item/material/hatchet/tacknife{throwforce = 5; force = 15; force_const = 15; mod_handy = 0.70},/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"Pc" = (/obj/structure/table/standard,/obj/item/material/knife/kitchen,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"Pe" = (/obj/structure/table/standard,/obj/item/tray,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"Pq" = (/obj/item/remains/human,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"Px" = (/obj/structure/bed,/obj/item/clothing/mask/gas/plasticbag,/obj/item/handcuffs/cable/white,/obj/item/reagent_containers/syringe,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"Qh" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"Qs" = (/obj/structure/table/standard,/obj/item/material/kitchen/utensil/spoon,/obj/item/material/kitchen/utensil/spoon,/obj/item/material/kitchen/utensil/spoon,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"QB" = (/obj/structure/fitness/weightlifter,/turf/simulated/floor/sand_floor,/area/ghost_arena)
+"TV" = (/obj/effect/landmark/ghost_arena_spawn/security,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"Ur" = (/obj/machinery/shower{dir = 1},/obj/item/soap,/turf/simulated/floor/sand_floor,/area/ghost_arena)
+"UB" = (/obj/structure/toilet{dir = 4},/turf/simulated/floor/sand_floor,/area/ghost_arena)
+"Wx" = (/obj/structure/table/standard,/obj/item/material/kitchen/utensil/fork,/obj/item/material/kitchen/utensil/fork,/obj/item/material/kitchen/utensil/fork,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"XH" = (/obj/effect/decal/cleanable/blood,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"YR" = (/obj/machinery/door/unpowered/simple/sandstone,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"Za" = (/obj/effect/decal/cleanable/dirt,/obj/item/remains/human,/turf/simulated/floor/natural/sand{light_outer_range = 5},/area/ghost_arena)
+"Zv" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/dirt,/obj/structure/bed/chair,/turf/simulated/floor/trim/darkwood{light_outer_range = 5},/area/ghost_arena)
+
+(1,1,1) = {"
+zHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzH
+zHkckckckckckckckckckckckcgLkckckckckckckckckckckckczH
+zHkcPxYRDeDeDeDeDeubkcJXJXktJXZvkcubDeDeDeDeDeYRPxkczH
+zHkcyxkckcYRkckckcDekcktktxgxgxgkcDekckckcYRkckcNXkczH
+zHkckckcDeDeDeDekcDekcZvgdCCGcJXkcDekcDjDeDePekckckczH
+zHkcQBQBDeDewvDekcDekcktBGBGxgktkcDekcDjDeDeaxQsWxkczH
+zHkcjgjgjgDeubDekcDekcJXJXktJXJXkcDekcDjubDeDeDeDekczH
+zHkcjgwvjgDewvDekcYRkclUlUlUlUlUkcYRkcdJDeDeDeDeDekczH
+zHkcjgjgjgDeDeDeYRDelUmvXHDeDeDelUDekvDeDeDePcvJjWkczH
+zHkckckckcYRkckckcDelUDemvQhrxmvlUDeqokckcYRkckckckczH
+zHkcwNxoElxoElxokcDeDeZaQhnsMcQhDeDeqoxoElxoElxowNkczH
+zHkcUBKVkcxokcUrkcDemvQhMcnsQhQhDeDekcUrkcxokcUBKVkczH
+zHkckckckcYRkckckcDelUDeQhMcQhPqlUDekckckcYRkckckckczH
+zHkcjWvJPcDeDeDeYRDelUXHmvQhQhmvlUDeYRDeDeDeTVTVTVkczH
+zHkcDeDeDeDeDewUkcYRkclUlUlUlUlUkcYRkcDewvDeTVwvTVkczH
+zHkcDeDeDeDeubDjkcDekcahoNBGoNahkcDekcDeubDeTVTVTVkczH
+zHkcWxQsaxDeDeDjkcDekcxgBGBGxgktkcDekcDewvDeDeQBQBkczH
+zHkckckcPeDeDeDjkcDekcoNDsBGoNahkcDekcDeDeDeDekckckczH
+zHkcmtkckcYRkckckcDekcxgBGBGxgktkcDekckckcYRkckcEVkczH
+zHkcPxYRDeDeDeDeDeubkcahahktahahkcubDeDeDeDeDeYRPxkczH
+zHkckckckckckckckckckckckcgLkckckckckckckckckckckckczH
+zHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzHzH
+"}

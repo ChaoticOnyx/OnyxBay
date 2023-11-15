@@ -60,6 +60,8 @@
 
 #define isobserver(A) istype(A, /mob/observer)
 
+#define isarenamob(A) istype (A, /mob/living/carbon/human/arenahuman)
+
 #define isorgan(A) istype(A, /obj/item/organ/external)
 
 #define isstack(A) istype(A, /obj/item/stack)

@@ -6,11 +6,13 @@ SUBSYSTEM_DEF(mapping)
 	var/list/map_templates = list()
 	var/list/random_room_templates = list()
 	var/list/asteroid_derelict_templates = list()
+	var/list/ghost_arena_templates = list()
 
 /datum/controller/subsystem/mapping/Initialize(timeofday)
 	preloadTemplates()
 	preloadRandomRoomsTemplates()
 	preloadAsteroidDerelicts()
+	preloadGhostArenaTemplates()
 	..()
 
 /datum/controller/subsystem/mapping/Recover()
@@ -39,6 +41,12 @@ SUBSYSTEM_DEF(mapping)
 		var/picked_map_variant = pick(map_variants)
 		var/datum/map_template/T = new(paths = list("[path][derelict_folder][picked_map_variant]"), rename = "[picked_map_variant]")
 		asteroid_derelict_templates[T.name] = T
+
+/datum/controller/subsystem/mapping/proc/preloadGhostArenaTemplates(path = "maps/ghost_arena/")
+	var/list/maplists = subtypesof(/datum/map_template/arena_map)
+	for(var/map in maplists)
+		var/datum/map_template/arena_map/T = new map
+		ghost_arena_templates[T.name] = T
 
 /datum/controller/subsystem/mapping/proc/loadAsteroidDerelict(path)
 	if(!fexists(path))

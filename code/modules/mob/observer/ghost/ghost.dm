@@ -54,6 +54,9 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 	/// Holder for a spawners menu.
 	var/datum/spawners_menu/spawners_menu = null
 
+	//Holds ghost arena menu
+	var/datum/ghost_arena_menu/ghost_arena_menu = null
+
 /mob/observer/ghost/New(mob/body)
 	see_in_dark = 100
 	verbs += /mob/proc/toggle_antag_pool
@@ -351,6 +354,16 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	antagHUD = !antagHUD
 
 	to_chat(src, SPAN_NOTICE("Antag HUD has been [antagHUD ? "enabled" : "disabled"]"))
+
+/mob/observer/ghost/verb/open_ghost_arena_menu()
+	set category = "Ghost"
+	set name = "Ghost arena menu"
+	set desc = "Play Toolbox Strike: Greytide Offensive"
+
+	if(isnull(ghost_arena_menu))
+		ghost_arena_menu = new(src)
+
+	ghost_arena_menu.tgui_interact(src)
 
 /mob/observer/ghost/verb/open_spawners_menu()
 	set category = "Ghost"

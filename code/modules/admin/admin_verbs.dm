@@ -143,7 +143,8 @@ var/list/admin_verbs_fun = list(
 	/client/proc/create_dungeon,
 	/datum/admins/proc/ai_hologram_set,
 	/client/proc/projectile_basketball,
-	/client/proc/toggle_possess_mode
+	/client/proc/toggle_possess_mode,
+	/client/proc/toggle_ghost_arena
 	)
 
 var/list/admin_verbs_spawn = list(
@@ -317,7 +318,8 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/enable_profiler,
 	/client/proc/bluespace_tech,
 	/client/proc/delbook,
-	/client/proc/debug_glob_variables
+	/client/proc/debug_glob_variables,
+	/client/proc/toggle_ghost_arena
 	)
 
 var/list/admin_verbs_mod = list(
@@ -986,6 +988,18 @@ var/list/admin_verbs_mentor = list(
 	config.misc.projectile_basketball = !(config.misc.projectile_basketball)
 	log_and_message_admins("toggled projectile basketball mode.")
 	feedback_add_details("admin_verb","PROBAS")
+
+/client/proc/toggle_ghost_arena()
+	set category = "Fun"
+	set desc="Toggle arena for ghosts"
+	set name="Toggle Ghost Arena"
+
+	if(!check_rights(R_ADMIN))
+		return
+
+	SSarena.toggle()
+	log_and_message_admins("toggled ghost arena.")
+	feedback_add_details("admin_verb","GHOSTARENA")
 
 /client/proc/enable_profiler()
 	set category = "Debug"
