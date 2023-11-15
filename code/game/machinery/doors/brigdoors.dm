@@ -38,7 +38,7 @@
 		if (M.id == src.id)
 			targets += M
 
-	for(var/obj/machinery/flasher/F in GLOB.machines)
+	for(var/obj/machinery/flasher/F in SSmachines.machinery)
 		if(F.id == src.id)
 			targets += F
 

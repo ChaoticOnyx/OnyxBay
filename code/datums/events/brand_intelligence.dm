@@ -31,7 +31,7 @@
 /datum/event/brand_intelligence/on_fire()
 	GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 
-	for(var/obj/machinery/vending/V in GLOB.machines)
+	for(var/obj/machinery/vending/V in SSmachines.machinery)
 		if(V.z in affecting_z)
 			vendingMachines += weakref(V)
 

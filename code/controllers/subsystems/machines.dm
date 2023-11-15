@@ -1,3 +1,7 @@
+#define SSMACHINES_PIPENETS 1
+#define SSMACHINES_MACHINERY 2
+#define SSMACHINES_POWERNETS 3
+
 #define START_PROCESSING_IN_LIST(Datum, List) \
 if (Datum.is_processing) {\
 	if(Datum.is_processing != "SSmachines.[#List]")\
@@ -24,11 +28,7 @@ if(Datum.is_processing) {\
 #define START_PROCESSING_POWERNET(Datum) START_PROCESSING_IN_LIST(Datum, powernets)
 #define STOP_PROCESSING_POWERNET(Datum) STOP_PROCESSING_IN_LIST(Datum, powernets)
 
-#define START_PROCESSING_POWER_OBJECT(Datum) START_PROCESSING_IN_LIST(Datum, power_objects)
-#define STOP_PROCESSING_POWER_OBJECT(Datum) STOP_PROCESSING_IN_LIST(Datum, power_objects)
-
 SUBSYSTEM_DEF(machines)
-/datum/controller/subsystem/machines
 	name = "Machines"
 
 	init_order = SS_INIT_MACHINES
@@ -36,14 +36,29 @@ SUBSYSTEM_DEF(machines)
 
 	flags = SS_KEEP_TIMING
 
+	var/static/current_step = SSMACHINES_PIPENETS
+	var/static/cost_pipenets = 0
+	var/static/cost_machinery = 0
+	var/static/cost_powernets = 0
+
+	var/static/list/pipenets = list()
+	var/static/list/machinery = list()
+	var/static/list/powernets = list()
+
 	var/static/list/processing = list()
-	var/static/list/currentrun = list()
-	var/static/list/powernets  = list()
+	var/static/list/queue = list()
+
+/datum/controller/subsystem/machines/Recover()
+	current_step = SSMACHINES_PIPENETS
+	queue.Cut()
+
 
 /datum/controller/subsystem/machines/Initialize()
 	makepowernets()
-	fire()
+	setup_atmos_machinery(machinery)
+	fire(FALSE, TRUE)
 	..()
+
 
 /datum/controller/subsystem/machines/proc/makepowernets()
 	for(var/datum/powernet/PN in powernets)
@@ -51,12 +66,27 @@ SUBSYSTEM_DEF(machines)
 	powernets.Cut()
 	setup_powernets_for_cables(cable_list)
 
+
 /datum/controller/subsystem/machines/proc/setup_powernets_for_cables(list/cables)
-	for(var/obj/structure/cable/PC in cables)
-		if(!PC.powernet)
-			var/datum/powernet/NewPN = new()
-			NewPN.add_cable(PC)
-			propagate_network(PC,PC.powernet)
+	for(var/obj/structure/cable/cable in cables)
+		if(cable.powernet)
+			continue
+		var/datum/powernet/network = new
+		network.add_cable(cable)
+		propagate_network(cable, cable.powernet)
+
+
+/datum/controller/subsystem/machines/proc/setup_atmos_machinery(list/machines)
+	set background = TRUE
+	var/list/atmos_machines = list()
+	for(var/obj/machinery/atmospherics/machine in machines)
+		atmos_machines += machine
+	for(var/obj/machinery/atmospherics/machine as anything in atmos_machines)
+		machine.atmos_init()
+		CHECK_TICK
+	for(var/obj/machinery/atmospherics/machine as anything in atmos_machines)
+		machine.build_network()
+		CHECK_TICK
 
 
 /datum/controller/subsystem/machines/stat_entry()
@@ -66,22 +96,37 @@ SUBSYSTEM_DEF(machines)
 	..(jointext(msg, null))
 
 
-/datum/controller/subsystem/machines/fire(resumed = 0)
+/datum/controller/subsystem/machines/fire(resumed, no_mc_tick)
+	var/timer
 	if(!resumed)
-		for(var/datum/powernet/Powernet in powernets)
-			Powernet.reset() //reset the power state.
-		currentrun = processing.Copy()
+		current_step = SSMACHINES_PIPENETS
 
-	var/obj/machinery/thing
-	var/seconds = wait * 0.1
-	for(var/i = currentrun.len to 1 step -1)
-		thing = currentrun[i]
-		if(QDELETED(thing) || thing.Process(seconds) == PROCESS_KILL)
-			processing.Remove(thing)
-			thing.is_processing = null
-		if(MC_TICK_CHECK)
-			currentrun.Cut(i)
+	if(current_step == SSMACHINES_PIPENETS)
+		timer = world.tick_usage
+		process_pipenets(resumed, no_mc_tick)
+		cost_pipenets = MC_AVERAGE(cost_pipenets, (world.tick_usage - timer) * world.tick_lag)
+		if(state != SS_RUNNING)
 			return
+		current_step = SSMACHINES_MACHINERY
+		resumed = FALSE
+
+	if(current_step == SSMACHINES_MACHINERY)
+		timer = world.tick_usage
+		process_machinery(resumed, no_mc_tick)
+		cost_machinery = MC_AVERAGE(cost_machinery, (world.tick_usage - timer) * world.tick_lag)
+		if(state != SS_RUNNING)
+			return
+		current_step = SSMACHINES_POWERNETS
+		resumed = FALSE
+
+	if(current_step == SSMACHINES_POWERNETS)
+		timer = world.tick_usage
+		process_powernets(resumed, no_mc_tick)
+		cost_powernets = MC_AVERAGE(cost_powernets, (world.tick_usage - timer) * world.tick_lag)
+		if(state != SS_RUNNING)
+			return
+		current_step = SSMACHINES_PIPENETS
+
 
 /datum/controller/subsystem/machines/proc/setup_template_powernets(list/cables)
 	for(var/A in cables)
@@ -91,8 +136,63 @@ SUBSYSTEM_DEF(machines)
 			NewPN.add_cable(PC)
 			propagate_network(PC,PC.powernet)
 
-/datum/controller/subsystem/machines/Recover()
-	if (istype(SSmachines.processing))
-		processing = SSmachines.processing
-	if (istype(SSmachines.powernets))
-		powernets = SSmachines.powernets
+
+/datum/controller/subsystem/machines/proc/process_pipenets(resumed, no_mc_tick)
+	if(!resumed)
+		queue = pipenets.Copy()
+	var/datum/pipe_network/network
+	for(var/i = length(queue) to 1 step -1)
+		network = queue[i]
+		if(QDELETED(network))
+			network?.is_processing = null
+			pipenets -= network
+			continue
+
+		network.Process(wait)
+
+		if(no_mc_tick)
+			CHECK_TICK
+		else if(MC_TICK_CHECK)
+			queue.Cut(i)
+			return
+
+
+/datum/controller/subsystem/machines/proc/process_machinery(resumed, no_mc_tick)
+	if(!resumed)
+		queue = processing.Copy()
+	var/obj/machinery/machine
+	for(var/i = length(queue) to 1 step -1)
+		machine = queue[i]
+		if(QDELETED(machine))
+			machine?.is_processing = null
+			processing -= machine
+			continue
+
+		if(machine.Process(wait) == PROCESS_KILL)
+			processing -= machine
+
+		if(no_mc_tick)
+			CHECK_TICK
+		else if(MC_TICK_CHECK)
+			queue.Cut(i)
+			return
+
+
+/datum/controller/subsystem/machines/proc/process_powernets(resumed, no_mc_tick)
+	if(!resumed)
+		queue = powernets.Copy()
+	var/datum/powernet/network
+	for(var/i = length(queue) to 1 step -1)
+		network = queue[i]
+		if(QDELETED(network))
+			network?.is_processing = null
+			powernets -= network
+			continue
+
+		network.reset(wait)
+
+		if(no_mc_tick)
+			CHECK_TICK
+		else if(MC_TICK_CHECK)
+			queue.Cut(i)
+			return
