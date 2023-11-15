@@ -169,7 +169,7 @@ SUBSYSTEM_DEF(machines)
 			continue
 
 		if(machine.Process(wait) == PROCESS_KILL)
-			processing -= machine
+			STOP_PROCESSING(src, machine)
 
 		if(no_mc_tick)
 			CHECK_TICK
