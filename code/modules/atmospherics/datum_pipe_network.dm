@@ -9,7 +9,7 @@
 	var/update = 1
 
 /datum/pipe_network/Destroy()
-	STOP_PROCESSING(SSmachines, src)
+	STOP_PROCESSING_PIPENET(src)
 	for(var/datum/pipeline/line_member in line_members)
 		line_member.network = null
 	for(var/obj/machinery/atmospherics/normal_member in normal_members)
@@ -41,8 +41,8 @@
 
 	update_network_gases()
 
-	if((normal_members.len>0)||(line_members.len>0))
-		START_PROCESSING(SSmachines, src)
+	if((normal_members.len > 0)||(line_members.len > 0))
+		START_PROCESSING_PIPENET(src)
 		return 1
 	qdel(src)
 

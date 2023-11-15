@@ -55,7 +55,7 @@
 				members.Remove(member)
 				break //Only delete 1 pipe per process
 
-	set_next_think(world.time + 1 SECOND)
+	set_next_think(world.time + 1.5 SECONDS)
 
 /datum/pipeline/proc/build_pipeline(obj/machinery/atmospherics/pipe/base)
 	if(QDELETED(base) || base.getting_pipelined)

@@ -812,7 +812,7 @@
 /obj/item/integrated_circuit/input/teleporter_locator/ask_for_input(mob/user)
 	var/list/teleporters_id = list()
 	var/list/teleporters = list()
-	for(var/obj/machinery/teleporter_gate/gate in GLOB.machines)
+	for(var/obj/machinery/teleporter_gate/gate in SSmachines.machinery)
 		var/obj/machinery/computer/teleporter/cons = gate.console
 		if(istype(cons, /obj/machinery/computer/teleporter) && gate.is_ready())
 			teleporters_id.Add(cons.id)
@@ -834,7 +834,7 @@
 
 	var/output = "Current selection: [(current_console && current_console.id) || "None"]"
 	output += "\nList of avaliable teleporters:"
-	for(var/obj/machinery/teleporter_gate/gate in GLOB.machines)
+	for(var/obj/machinery/teleporter_gate/gate in SSmachines.machinery)
 		var/obj/machinery/computer/teleporter/cons = gate.console
 		if(istype(cons, /obj/machinery/computer/teleporter) && gate.is_ready())
 			output += "\n[cons.id] ([gate.engaged ? "Active" : "Inactive"])"
@@ -847,7 +847,7 @@
 	. = list()
 	. += "Current selection: [(current_console && current_console.id) || "None"]"
 	. += "Please select a teleporter to lock in on:"
-	for(var/obj/machinery/teleporter_gate/gate in GLOB.machines)
+	for(var/obj/machinery/teleporter_gate/gate in SSmachines.machinery)
 		var/obj/machinery/computer/teleporter/cons = gate.console
 		if(istype(cons, /obj/machinery/computer/teleporter) && gate.is_ready())
 			.["[cons.id] ([gate.engaged ? "Active" : "Inactive"])"] = "tport=[any2ref(cons)]"

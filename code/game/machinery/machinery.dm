@@ -135,14 +135,14 @@ Class Procs:
 	if(d)
 		set_dir(d)
 
-	GLOB.machines |= src
+	SSmachines.machinery.Add(src)
 
-	if (populate_components && component_types)
+	if(populate_components && component_types)
 		component_parts = list()
-		for (var/type in component_types)
+		for(var/type in component_types)
 			var/count = component_types[type]
 			if(count > 1)
-				for (var/i in 1 to count)
+				for(var/i in 1 to count)
 					component_parts.Add(new type(src))
 			else
 				component_parts.Add(new type(src))
@@ -153,7 +153,7 @@ Class Procs:
 	START_PROCESSING(SSmachines, src) // It's safe to remove machines from here.
 
 /obj/machinery/Destroy()
-	GLOB.machines.Remove(src)
+	SSmachines.machinery.Remove(src)
 	set_power_use(NO_POWER_USE)
 	STOP_PROCESSING(SSmachines, src)
 	if(component_parts)
