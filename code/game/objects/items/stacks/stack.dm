@@ -49,11 +49,11 @@
 	if(get_dist(src, user) <= 1)
 		if(!uses_charge)
 			if(plural_name)
-				. += "\nThere [amount == 1 ? "is" : "are"] [amount] [amount == 1 ? "[singular_name]" : "[plural_name]"] in the stack."
+				. += "\nThere [amount == 1 ? "is" : "are"] <b>[amount] [amount == 1 ? "[singular_name]" : "[plural_name]"]</b> in the stack."
 			else
-				. += "\nThere [amount == 1 ? "is" : "are"] [amount] [singular_name]\s in the stack."
+				. += "\nThere [amount == 1 ? "is" : "are"] <b>[amount] [singular_name]\s</b> in the stack."
 		else
-			. += "\nThere is enough charge for [get_amount()]."
+			. += "\nThere is enough charge for <b>[get_amount()]</b>."
 	if(color)
 		. += "\nIt's painted."
 	if (istype(src,/obj/item/stack/tile))

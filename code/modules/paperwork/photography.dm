@@ -52,7 +52,7 @@ var/global/photo_count = 0
 	overlays |= small_img
 
 	tiny = image(img)
-	small_img.SetTransform(scale = 0.5 * scale)
+	tiny.SetTransform(scale = 0.5 * scale)
 	tiny.underlays += image('icons/obj/bureaucracy.dmi',"photo")
 	tiny.pixel_x = -32*(photo_size-1)/2 - 3
 	tiny.pixel_y = -32*(photo_size-1)/2 + 3

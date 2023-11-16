@@ -102,8 +102,8 @@
 
 /obj/item/cell/_examine_text(mob/user)
 	. = ..()
-	. += "\nThe label states it's capacity is [maxcharge] Wh"
-	. += "\nThe charge meter reads [round(CELL_PERCENT(src), 0.1)]%"
+	. += "\nThe label states it's capacity is <b>[maxcharge] Wh</b>."
+	. += "\nThe charge meter reads <b>[round(CELL_PERCENT(src), 0.1)]%<b>."
 
 /obj/item/cell/emp_act(severity)
 	//remove this once emp changes on dev are merged in

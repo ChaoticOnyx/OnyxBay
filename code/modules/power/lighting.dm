@@ -260,6 +260,9 @@
 		if(LIGHT_EMPTY)
 			icon_state = "[base_state]-empty"
 			on = 0
+			update_use_power(POWER_USE_OFF)
+			set_light(0)
+			return
 		if(LIGHT_BURNED)
 			icon_state = "[base_state]-burned"
 			on = 0
@@ -300,7 +303,7 @@
 	change_power_consumption((light_outer_range * light_max_bright) * LIGHTING_POWER_FACTOR, POWER_USE_ACTIVE)
 
 /obj/machinery/light/proc/get_status()
-	if(!lightbulb)
+	if(QDELETED(lightbulb))
 		return LIGHT_EMPTY
 	else
 		return lightbulb.status
@@ -667,12 +670,6 @@
 		"#fef6ea"
 	)
 
-/obj/item/light/Initialize()
-	. = ..()
-	if(random_tone)
-		b_color = pick(random_tone_options)
-		update_icon()
-
 /obj/item/light/tube
 	name = "light tube"
 	desc = "A replacement light tube."
@@ -800,19 +797,40 @@
 	random_tone = FALSE
 	tone_overlay = FALSE
 
+
+/obj/item/light/Initialize()
+	. = ..()
+	if(random_tone)
+		b_color = pick(random_tone_options)
+	update_icon()
+
+/obj/item/light/Destroy()
+	if(istype(loc, /obj/machinery/light))
+		var/obj/machinery/light/L = loc
+		L.lightbulb = null
+		L.current_mode = null
+		if(!QDELETED(L))
+			L.update_icon()
+	return ..()
+
+/obj/item/light/_examine_text(mob/user)
+	. = ..()
+	switch(status)
+		if(LIGHT_BURNED)
+			. += "\nIt appears to be burnt-out."
+		if(LIGHT_BROKEN)
+			. += "\nIt's broken."
+
 // update the icon state and description of the light
 /obj/item/light/update_icon()
 	overlays.Cut()
 	switch(status)
 		if(LIGHT_OK)
 			icon_state = base_state
-			desc = "A replacement [name]."
 		if(LIGHT_BURNED)
 			icon_state = "[base_state]-burned"
-			desc = "A burnt-out [name]."
 		if(LIGHT_BROKEN)
 			icon_state = "[base_state]-broken"
-			desc = "A broken [name]."
 	if(tone_overlay)
 		var/image/TO = overlay_image(icon, "[icon_state]-over", flags=RESET_COLOR)
 		TO.color = b_color
