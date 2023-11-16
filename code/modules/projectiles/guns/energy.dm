@@ -103,7 +103,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 
 /obj/item/gun/energy/_examine_text(mob/user)
 	. = ..()
-	. += "\nHas [power_supply ? round(power_supply.charge / charge_cost) : "0"] shot\s remaining."
+	. += "\nHas <b>[power_supply ? round(power_supply.charge / charge_cost) : "0"]</b> shot\s remaining."
 
 /obj/item/gun/energy/update_icon()
 	if(charge_meter)

@@ -377,16 +377,18 @@
 				add_fingerprint(user)
 				return
 		var/obj/item/paper_bundle/B = new(loc)
-		if (name != "paper")
+		if(name != "paper")
 			B.SetName(name)
-		else if (P.name != "paper" && P.name != "photo")
+		else if(P.name != "paper" && P.name != "photo")
 			B.SetName(P.name)
 
-		user.replace_item(src, B)
-		user.drop(P, B)
-		forceMove(B)
+		if(loc == user)
+			user.replace_item(src, B)
+			forceMove(B)
+		else
+			user.drop(P, B)
 
-		to_chat(user, SPAN_NOTICE("You clip the [P.name] to \the [src.name]."))
+		to_chat(user, SPAN("notice", "You clip the [P.name] to \the [name]."))
 
 		B.pages += src
 		B.pages += P
