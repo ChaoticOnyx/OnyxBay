@@ -175,6 +175,7 @@
 
 /obj/item/projectile/proc/launch(atom/target, target_zone, mob/user, params, Angle_override, forced_spread = 0)
 	original = target
+	previous = get_turf(loc)
 	def_zone = check_zone(target_zone)
 	firer = user
 	var/direct_target
@@ -369,6 +370,7 @@
 	return 1
 
 /obj/item/projectile/proc/before_move()
+	previous = loc
 	return
 
 /obj/item/projectile/proc/after_move()

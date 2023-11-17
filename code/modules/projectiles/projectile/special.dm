@@ -251,15 +251,18 @@
 	var/mob/living/simple_animal/hostile/facehugger/holder = null
 
 /obj/item/projectile/facehugger_proj/Bump(atom/A, forced = FALSE)
+	if(A == src)
+		return FALSE // no idea how this could ever happen but let's ensure
+
 	if(A == firer)
 		loc = A.loc
-		return
+		return FALSE
 
 	if(!holder)
-		return
+		return FALSE
 
 	if(bumped)
-		return
+		return FALSE
 	bumped = TRUE
 
 	if(istype(A, /mob/living/carbon/human))
