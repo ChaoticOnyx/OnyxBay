@@ -143,8 +143,8 @@
 			stored_ammo += new ammo_type(src)
 	update_icon()
 
-/obj/item/gun/projectile/Destroy()
-	QDEL_NULL_LIST(ammo_magazine)
+/obj/item/ammo_magazine/Destroy()
+	QDEL_NULL_LIST(stored_ammo)
 	return ..()
 
 /obj/item/ammo_magazine/attackby(obj/item/W, mob/user)

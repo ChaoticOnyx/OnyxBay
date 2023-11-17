@@ -169,9 +169,13 @@
 	var/obj/item/cell/bcell
 
 /obj/item/gun/projectile/revolver/m2019/detective/Initialize()
+	. = ..()
 	bcell = new /obj/item/cell/device/high(src)
 	update_icon()
-	..()
+
+/obj/item/gun/projectile/revolver/m2019/detective/Destroy()
+	QDEL_NULL(bcell)
+	return ..()
 
 /*obj/item/gun/projectile/revolver/m2019/detective/proc/deductcharge(chrgdeductamt)
 	if(bcell)

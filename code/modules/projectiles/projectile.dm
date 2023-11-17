@@ -208,7 +208,7 @@
 
 	original = new_target
 	if(new_firer)
-		firer = src
+		firer = new_firer
 	var/new_Angle = Atan2(starting_turf, new_target)
 	if(is_ricochet) // Add some dispersion.
 		new_Angle += (rand(-5,5) * 5)

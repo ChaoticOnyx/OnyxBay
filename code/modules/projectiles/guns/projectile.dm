@@ -54,7 +54,7 @@
 	update_icon()
 
 /obj/item/gun/projectile/Destroy()
-	QDEL_NULL(ammo_magazine)
+	QDEL_NULL_LIST(ammo_magazine)
 	return ..()
 
 /obj/item/gun/projectile/consume_next_projectile()
