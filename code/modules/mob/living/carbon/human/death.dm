@@ -19,8 +19,10 @@
 	sleep(1)
 
 	for(var/obj/item/I in src)
-		drop(I, force = TRUE)
-		I.throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), 1)
+		if(I.loc == src) // Belts are dropped after uni removal etc.
+			drop(I, force = TRUE)
+		if(!QDELETED(I) && isturf(I.loc))
+			I.throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), 1)
 
 	..(species.gibbed_anim, FALSE)
 	gibs(loc, dna, null, species.get_flesh_colour(src), species.get_blood_colour(src))
