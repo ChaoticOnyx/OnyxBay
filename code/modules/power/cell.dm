@@ -13,7 +13,8 @@
 	var/c_uid			 // Unique ID
 	var/charge			 // Current charge
 	var/maxcharge = 250 // Capacity in Wh
-	var/overlay_state
+	var/overlay_state = 0
+	var/overlay_key = "cell-o"
 	matter = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 50)
 
 /obj/item/cell/New()
@@ -41,17 +42,17 @@
 	charge = between(0, charge + amount, maxcharge)
 
 /obj/item/cell/update_icon()
-	var/new_overlay_state = null
-	if(CELL_PERCENT(src) >= 95)
-		new_overlay_state = "cell-o2"
+	var/new_overlay_state = 0
+	if(charge / maxcharge >= 0.95)
+		new_overlay_state = 2
 	else if(charge >= 0.05)
-		new_overlay_state = "cell-o1"
+		new_overlay_state = 1
 
 	if(new_overlay_state != overlay_state)
 		overlay_state = new_overlay_state
 		overlays.Cut()
 		if(overlay_state)
-			overlays += image('icons/obj/power.dmi', overlay_state)
+			overlays += image('icons/obj/power.dmi', "[overlay_key][overlay_state]")
 
 // Legacy proc for compatibility, use CELL_PERCENT(cell) instead
 /obj/item/cell/proc/percent()
@@ -300,26 +301,14 @@
 	desc = "This special experimental power cell utilizes bluespace manipulation techniques; it can form a recursive quantum connection with another cell of its kind, making them share their charge through virtually any distance."
 	icon_state = "qcell"
 	origin_tech = list(TECH_POWER = 6, TECH_MATERIAL = 6, TECH_BLUESPACE = 3, TECH_MAGNET = 5)
-	var/obj/item/cell/quantum/partner = null
 	maxcharge = 3000
+	overlay_key = "qcell-o"
+	var/obj/item/cell/quantum/partner = null
 	var/quantum_id = 0
 
 /obj/item/cell/quantum/Initialize()
 	. = ..()
 	quantum_id = rand(10000, 99999)
-
-/obj/item/cell/quantum/update_icon()
-	var/new_overlay_state = null
-	if(CELL_PERCENT(src) >= 95)
-		new_overlay_state = "qcell-o2"
-	else if(charge >= 0.05)
-		new_overlay_state = "qcell-o1"
-
-	if(new_overlay_state != overlay_state)
-		overlay_state = new_overlay_state
-		overlays.Cut()
-		if(overlay_state)
-			overlays += image('icons/obj/power.dmi', overlay_state)
 
 /obj/item/cell/quantum/_examine_text(mob/user)
 	. = ..()

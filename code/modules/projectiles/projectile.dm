@@ -175,6 +175,7 @@
 
 /obj/item/projectile/proc/launch(atom/target, target_zone, mob/user, params, Angle_override, forced_spread = 0)
 	original = target
+	previous = get_turf(loc)
 	def_zone = check_zone(target_zone)
 	firer = user
 	var/direct_target
@@ -208,7 +209,7 @@
 
 	original = new_target
 	if(new_firer)
-		firer = src
+		firer = new_firer
 	var/new_Angle = Atan2(starting_turf, new_target)
 	if(is_ricochet) // Add some dispersion.
 		new_Angle += (rand(-5,5) * 5)
@@ -369,6 +370,7 @@
 	return 1
 
 /obj/item/projectile/proc/before_move()
+	previous = loc
 	return
 
 /obj/item/projectile/proc/after_move()
