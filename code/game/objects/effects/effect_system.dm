@@ -24,11 +24,15 @@ would spawn and follow the beaker, even if it is carried or thrown.
 	number = min(n, 10)
 	cardinals = c
 	location = loc
+	register_signal(holder, SIGNAL_QDELETING, /datum/effect/effect/system/proc/onHolderDeleted)
 	setup = 1
 
 /datum/effect/effect/system/proc/attach(atom/atom)
 	if(holder)
 		unregister_signal(holder, SIGNAL_QDELETING)
+	if(QDELETED(atom))
+		qdel(src)
+		return
 	holder = atom
 	register_signal(holder, SIGNAL_QDELETING, /datum/effect/effect/system/proc/onHolderDeleted)
 

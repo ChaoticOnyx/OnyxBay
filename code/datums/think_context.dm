@@ -20,6 +20,5 @@
 
 /datum/think_context/Destroy()
 	stop()
-	qdel(callback)
-	
-	. = ..()
+	QDEL_NULL(callback)
+	return ..()

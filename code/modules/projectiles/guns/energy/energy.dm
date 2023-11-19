@@ -151,7 +151,7 @@
 			. += "\n[SPAN("warning", "It feels pleasantly warm.")]"
 
 /obj/item/gun/energy/gun/nuclear/proc/get_charge_overlay()
-	var/ratio = power_supply.percent()
+	var/ratio = CELL_PERCENT(power_supply)
 	ratio = round(ratio, 25)
 	return "nucgun-[ratio]"
 
@@ -160,7 +160,7 @@
 		return "nucgun-crit"
 	if(fail_counter > 15)
 		return "nucgun-medium"
-	if(power_supply.percent() <= 50)
+	if(CELL_PERCENT(power_supply) <= 50)
 		return "nucgun-light"
 	return "nucgun-clean"
 
@@ -185,7 +185,7 @@
 	name = "energy gun"
 	desc = "A basic energy-based gun with two settings: Stun and kill."
 	icon_state = "egunstun100"
-	modifystate = "egun"
+	modifystate = "egunstun"
 	item_state = null	//so the human update icon uses the icon_state instead.
 	max_shots = 10
 	fire_delay = 10 // To balance for the fact that it is a pistol and can be used one-handed without penalty
@@ -196,12 +196,28 @@
 
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 4, TECH_POWER = 3)
-	modifystate = "egunstun"
 	combustion = FALSE
 
 	firemodes = list(
 		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode,    modifystate="egunstun"),
 		list(mode_name = "lethal", projectile_type = /obj/item/projectile/energy/laser/lesser, modifystate="egunkill")
+		)
+
+/obj/item/gun/energy/egun/elite
+	name = "energy pistol"
+	desc = "A high-quality energy-based gun with two settings: Stun and kill."
+	icon_state = "egunestun100"
+	modifystate = "egunestun"
+	fire_delay = 8 // Slightly better than a regular egun
+	force = 8.5 // It's taser pistol sized after all
+	mod_weight = 0.7
+	mod_reach = 0.5
+	mod_handy = 1.0
+	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 5, TECH_POWER = 3)
+
+	firemodes = list(
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode,    modifystate="egunestun"),
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/energy/laser/lesser, modifystate="egunekill")
 		)
 
 /obj/item/gun/energy/rifle
@@ -237,7 +253,7 @@
 /obj/item/gun/energy/rifle/update_icon()
 	var/ratio = 0
 	if(power_supply && power_supply.charge >= charge_cost)
-		ratio = max(round(power_supply.percent(), icon_rounder), icon_rounder)
+		ratio = max(round(CELL_PERCENT(power_supply), icon_rounder), icon_rounder)
 
 	icon_state = "[modifystate][ratio]"
 

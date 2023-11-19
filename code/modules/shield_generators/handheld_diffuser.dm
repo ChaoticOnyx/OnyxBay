@@ -32,7 +32,7 @@
 			// 10kJ per pulse, but gap in the shield lasts for longer than regular diffusers.
 			if(istype(S) && cell.checked_use(10 KILO WATTS * CELLRATE))
 				qdel(S)
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/shield_diffuser/attack_self()
@@ -46,5 +46,5 @@
 
 /obj/item/shield_diffuser/_examine_text(mob/user)
 	. = ..()
-	. += "\nThe charge meter reads [cell ? cell.percent() : 0]%"
+	. += "\nThe charge meter reads [cell ? CELL_PERCENT(cell) : 0]%"
 	. += "\nIt is [enabled ? "enabled" : "disabled"]."

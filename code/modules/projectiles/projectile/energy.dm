@@ -215,6 +215,7 @@
 	agony = 70
 	damage_type = BURN
 	vacuum_traversal = 0
+	poisedamage = 20.0
 
 /obj/item/projectile/energy/plasmastun/proc/bang(mob/living/carbon/M)
 

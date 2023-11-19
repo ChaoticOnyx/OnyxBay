@@ -33,7 +33,7 @@
 	update_icon()
 
 /obj/machinery/recharge_station/proc/has_cell_power()
-	return cell && cell.percent() > 0
+	return cell && CELL_PERCENT(cell) > 0
 
 /obj/machinery/recharge_station/Process()
 	if(stat & (BROKEN))
@@ -101,7 +101,7 @@
 		if(potato)
 			target = potato.cell
 
-		if((!target || target.percent() > 95) && istype(H.back,/obj/item/rig))
+		if((!target || CELL_PERCENT(target) > 95) && istype(H.back,/obj/item/rig))
 			var/obj/item/rig/R = H.back
 			if(R.cell && !R.cell.fully_charged())
 				target = R.cell
@@ -119,7 +119,7 @@
 /obj/machinery/recharge_station/proc/chargepercentage()
 	if(!cell)
 		return 0
-	return cell.percent()
+	return CELL_PERCENT(cell)
 
 /obj/machinery/recharge_station/relaymove(mob/user as mob)
 	if(user.stat)

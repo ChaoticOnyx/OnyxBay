@@ -510,7 +510,7 @@
 // this function displays the cyborgs current cell charge in the stat panel
 /mob/living/silicon/robot/proc/show_cell_power()
 	if(cell)
-		stat(null, text("Charge Left: [round(cell.percent())]%"))
+		stat(null, text("Charge Left: [round(CELL_PERCENT(cell))]%"))
 		stat(null, text("Cell Rating: [round(cell.maxcharge)]")) // Round just in case we somehow get crazy values
 		stat(null, text("Power Cell Load: [round(used_power_this_tick)]W"))
 	else
@@ -833,6 +833,7 @@
 			var/image/eye_overlay = eye_overlays[eye_icon_state]
 			if(!eye_overlay)
 				eye_overlay = image(icon, eye_icon_state)
+				eye_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 				eye_overlay.layer = EYE_GLOW_LAYER
 				eye_overlays[eye_icon_state] = eye_overlay
 			overlays += eye_overlay
@@ -961,6 +962,16 @@
 
 /mob/living/silicon/robot/proc/radio_menu()
 	silicon_radio.interact(src)//Just use the radio's Topic() instead of bullshit special-snowflake code
+
+/mob/living/silicon/robot/get_active_item()
+	var/obj/item/I = ..()
+	var/obj/item/gripper/grip = I
+	if(istype(grip))
+		return grip.wrapped
+	var/obj/item/surgical_selector/SS = I
+	if(istype(SS))
+		return SS.selected_tool
+	return I
 
 
 /mob/living/silicon/robot/Move(a, b, flag)

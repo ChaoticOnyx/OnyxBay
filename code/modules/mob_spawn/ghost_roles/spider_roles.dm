@@ -5,10 +5,10 @@
 	/// Mob spawner handling the actual spawn of the spider
 	var/obj/effect/mob_spawn/ghost_role/spider/spawner
 
-/obj/structure/spider/eggcluster/Initialize(mapload)
-	pixel_x = rand(3,-3)
-	pixel_y = rand(3,-3)
-	return ..()
+/obj/structure/spider/eggcluster/Initialize()
+	. = ..()
+	pixel_x = rand(3, -3)
+	pixel_y = rand(3, -3)
 
 /obj/structure/spider/eggcluster/Destroy()
 	if(spawner)
@@ -77,7 +77,7 @@
 	amount_grown += rand(0, 3)
 	if(amount_grown >= 100 && !ready)
 		ready = TRUE
-		notify_ghosts("[src] is ready to hatch!", null, source = src, action = NOTIFY_FOLLOW)
+		notify_ghosts("[src] is ready to hatch!", null, source = src, action = NOTIFY_POSSES)
 		set_next_think(0)
 		return
 	set_next_think(world.time + 1 SECONDS)

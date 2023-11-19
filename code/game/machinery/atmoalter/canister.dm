@@ -199,10 +199,19 @@ update_flag
 		return 1
 
 /obj/machinery/portable_atmospherics/canister/Process()
-	if (destroyed)
-		return
+	if(destroyed)
+		return PROCESS_KILL
 
 	..()
+
+	if(air_contents.return_pressure() < 1)
+		can_label = TRUE
+		// Not significant enought to process all the gassy stuff below
+		// It prevents us from completely emptying canisters by opening their valves in space
+		// But I'm fully willing to sacrifice that for the sake of performance ~~Toby
+		return
+	else
+		can_label = FALSE
 
 	if(valve_open)
 		var/datum/gas_mixture/environment
@@ -216,18 +225,11 @@ update_flag
 
 		if((air_contents.temperature > 0) && (pressure_delta > 0))
 			var/transfer_moles = calculate_transfer_moles(air_contents, environment, pressure_delta)
-			transfer_moles = min(transfer_moles, (release_flow_rate/air_contents.volume)*air_contents.total_moles) //flow rate limit
+			transfer_moles = min(transfer_moles, (release_flow_rate / air_contents.volume) * air_contents.total_moles) //flow rate limit
 
 			var/returnval = pump_gas_passive(src, air_contents, environment, transfer_moles)
 			if(returnval >= 0)
-				src.update_icon()
-
-	if(air_contents.return_pressure() < 1)
-		can_label = 1
-	else
-		can_label = 0
-
-	air_contents.react() //cooking up air cans - add plasma and oxygen, then heat above PLASMA_MINIMUM_BURN_TEMPERATURE
+				update_icon()
 
 /obj/machinery/portable_atmospherics/canister/proc/return_temperature()
 	var/datum/gas_mixture/GM = src.return_air()

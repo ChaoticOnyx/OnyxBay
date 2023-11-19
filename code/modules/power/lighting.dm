@@ -260,6 +260,9 @@
 		if(LIGHT_EMPTY)
 			icon_state = "[base_state]-empty"
 			on = 0
+			update_use_power(POWER_USE_OFF)
+			set_light(0)
+			return
 		if(LIGHT_BURNED)
 			icon_state = "[base_state]-burned"
 			on = 0
@@ -268,11 +271,8 @@
 			on = 0
 
 	var/image/TO
-	if(lightbulb?.tone_overlay)
-		TO = overlay_image(icon, "[icon_state]-over", flags=RESET_COLOR)
-		TO.color = lightbulb.b_color
-		TO.layer = ABOVE_LIGHTING_LAYER
-		TO.alpha = between(128, (lightbulb.b_max_bright * 1.25 * 255), 255)
+	var/TO_alpha = between(128, (lightbulb.b_max_bright * 1.25 * 255), 255)
+	var/TO_color = lightbulb.b_color
 
 	if(on)
 		update_use_power(POWER_USE_ACTIVE)
@@ -280,19 +280,22 @@
 		var/changed = 0
 		if(current_mode && (current_mode in lightbulb.lighting_modes))
 			changed = set_light(arglist(lightbulb.lighting_modes[current_mode]))
-			if(TO)
-				TO.color = lightbulb.lighting_modes[current_mode]["l_color"]
-				TO.alpha = between(128, (lightbulb.lighting_modes[current_mode]["l_max_bright"] * 1.5 * 255), 255) // Some fine tuning here
+			if(lightbulb?.tone_overlay)
+				TO_color = lightbulb.lighting_modes[current_mode]["l_color"]
+				TO_alpha = between(128, (lightbulb.lighting_modes[current_mode]["l_max_bright"] * 1.5 * 255), 255) // Some fine tuning here
 		else
 			changed = set_light(lightbulb.b_max_bright, lightbulb.b_inner_range, lightbulb.b_outer_range, lightbulb.b_curve, lightbulb.b_color)
+
+		if(lightbulb?.tone_overlay)
+			TO = image_repository.overlay_image(icon, "[icon_state]-over", TO_alpha, RESET_COLOR, TO_color, dir, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
 
 		if(trigger && changed && get_status() == LIGHT_OK)
 			switch_check()
 	else
+		if(lightbulb?.tone_overlay)
+			TO = image_repository.overlay_image(icon, "[icon_state]-over", TO_alpha, RESET_COLOR, TO_color, dir)
 		update_use_power(POWER_USE_OFF)
 		set_light(0)
-		if(TO)
-			TO.layer = layer + 0.001
 
 	if(TO)
 		overlays += TO
@@ -300,7 +303,7 @@
 	change_power_consumption((light_outer_range * light_max_bright) * LIGHTING_POWER_FACTOR, POWER_USE_ACTIVE)
 
 /obj/machinery/light/proc/get_status()
-	if(!lightbulb)
+	if(QDELETED(lightbulb))
 		return LIGHT_EMPTY
 	else
 		return lightbulb.status
@@ -667,12 +670,6 @@
 		"#fef6ea"
 	)
 
-/obj/item/light/Initialize()
-	. = ..()
-	if(random_tone)
-		b_color = pick(random_tone_options)
-		update_icon()
-
 /obj/item/light/tube
 	name = "light tube"
 	desc = "A replacement light tube."
@@ -800,19 +797,40 @@
 	random_tone = FALSE
 	tone_overlay = FALSE
 
+
+/obj/item/light/Initialize()
+	. = ..()
+	if(random_tone)
+		b_color = pick(random_tone_options)
+	update_icon()
+
+/obj/item/light/Destroy()
+	if(istype(loc, /obj/machinery/light))
+		var/obj/machinery/light/L = loc
+		L.lightbulb = null
+		L.current_mode = null
+		if(!QDELETED(L))
+			L.update_icon()
+	return ..()
+
+/obj/item/light/_examine_text(mob/user)
+	. = ..()
+	switch(status)
+		if(LIGHT_BURNED)
+			. += "\nIt appears to be burnt-out."
+		if(LIGHT_BROKEN)
+			. += "\nIt's broken."
+
 // update the icon state and description of the light
 /obj/item/light/update_icon()
 	overlays.Cut()
 	switch(status)
 		if(LIGHT_OK)
 			icon_state = base_state
-			desc = "A replacement [name]."
 		if(LIGHT_BURNED)
 			icon_state = "[base_state]-burned"
-			desc = "A burnt-out [name]."
 		if(LIGHT_BROKEN)
 			icon_state = "[base_state]-broken"
-			desc = "A broken [name]."
 	if(tone_overlay)
 		var/image/TO = overlay_image(icon, "[icon_state]-over", flags=RESET_COLOR)
 		TO.color = b_color

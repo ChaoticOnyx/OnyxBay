@@ -31,15 +31,21 @@
 	actions += new /datum/action/item_action/prism_glasses/change_prism_colour(src)
 	actions += new /datum/action/item_action/prism_glasses/place_light_prism(src)
 
+/obj/item/clothing/glasses/prism_glasses/Destroy()
+	QDEL_NULL_LIST(actions)
+	return ..()
+
 /obj/item/clothing/glasses/prism_glasses/equipped(mob/user)
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
-		if(H.get_equipped_item(slot_glasses)==src)
+		if(H.get_equipped_item(slot_glasses) == src)
 			for(var/datum/action/action in actions)
 				action.Grant(H)
 
 /obj/item/clothing/glasses/prism_glasses/dropped()
 	for(var/datum/action/action in actions)
+		if(!action.owner)
+			continue
 		action.Remove(action.owner)
 
 /obj/structure/light_prism
@@ -68,7 +74,7 @@
 
 	if(ishuman(owner))
 		var/mob/living/carbon/human/H = owner
-		if(!istype(H.get_equipped_item(slot_glasses),/obj/item/clothing/glasses/prism_glasses))
+		if(!istype(H.get_equipped_item(slot_glasses), /obj/item/clothing/glasses/prism_glasses))
 			return TRUE
 
 	return FALSE
@@ -123,10 +129,10 @@
 			set_next_think(world.time+10 SECOND)
 
 /obj/item/clothing/head/hairflower/peaceflower/can_be_unequipped_by(mob/M, slot, disable_warning)
-	if(M==loc)
+	if(M==loc && slot==slot_head)
 		to_chat(M, SPAN_WARNING("You feel at peace. <b style='color:pink'>Why would you want anything else?</b>"))
 		return FALSE
-	..()
+	return ..()
 
 /obj/item/clothing/head/hairflower/peaceflower/dropped()
 	if(ishuman(loc))

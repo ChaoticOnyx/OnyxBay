@@ -100,9 +100,6 @@
 	//Update our name based on whether our face is obscured/disfigured
 	SetName(get_visible_name())
 
-	if(mind?.vampire)
-		handle_vampire()
-
 /mob/living/carbon/human/set_stat(new_stat)
 	. = ..()
 	if(stat != new_stat)

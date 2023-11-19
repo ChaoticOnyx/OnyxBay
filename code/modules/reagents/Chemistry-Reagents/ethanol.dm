@@ -1315,6 +1315,9 @@
 	if(M.confused)
 		M.confused = max(0, M.confused - 5)
 
+	if(isundead(M) && prob(3))
+		to_chat(M, SPAN("notice", "For some reason, you feel a distant homely feeling..."))
+
 /datum/reagent/ethanol/shroombeer
 	name = "shroom berr"
 	description = "A brew made of toxic mushrooms. What can go wrong?"

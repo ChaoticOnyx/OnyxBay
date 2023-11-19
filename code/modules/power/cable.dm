@@ -36,7 +36,7 @@ var/list/possible_cable_coil_colours
 	var/d2 = 1
 
 	layer = TURF_DETAIL_LAYER
-
+	plane = TURF_PLANE
 
 	color = COLOR_RED
 	var/obj/machinery/power/breakerbox/breaker_box

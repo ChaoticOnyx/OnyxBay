@@ -51,7 +51,7 @@
 
 	searching = FALSE
 	brainmob.controllable = TRUE
-	GLOB.available_mobs_for_possess -= brainmob
+	GLOB.available_mobs_for_possess -= "\ref[brainmob]"
 
 	update_icon()
 
@@ -63,11 +63,11 @@
 		_setup_brainmob(brainmob, null)
 		_register_mob_signals()
 
-	notify_ghosts("Someone is requesting a personality for a positronic brain.", source = brainmob, alert_overlay = new /mutable_appearance(src), action = NOTIFY_FOLLOW, posses_mob = TRUE)
+	notify_ghosts("Someone is requesting a personality for a positronic brain.", source = brainmob, alert_overlay = new /mutable_appearance(src), action = NOTIFY_POSSES, posses_mob = TRUE)
 	timer = addtimer(CALLBACK(src, /obj/item/organ/internal/cerebrum/posibrain/proc/reset_search), 100, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE)
 
 	brainmob.controllable = TRUE
-	GLOB.available_mobs_for_possess |= brainmob
+	GLOB.available_mobs_for_possess["\ref[brainmob]"] |= brainmob
 
 	show_splash_text(user, "started search of suitable intelligence.")
 	update_icon()
@@ -81,7 +81,7 @@
 		return ..()
 
 	visible_message(SPAN("notice", "\The [src] chimes quietly."))
-	GLOB.available_mobs_for_possess -= brainmob
+	GLOB.available_mobs_for_possess -= "\ref[brainmob]"
 	reset_search()
 	update_name()
 

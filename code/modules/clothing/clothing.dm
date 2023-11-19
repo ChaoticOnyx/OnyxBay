@@ -112,7 +112,9 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 
 /obj/item/clothing/equipped(mob/user)
 	playsound(src, SFX_USE_OUTFIT, 75, 1)
-
+	SHOULD_CALL_PARENT(TRUE)
+	for(var/obj/item/clothing/accessory/accessory in accessories)
+		accessory.equipped(user)
 	if(needs_vision_update())
 		update_vision()
 	return ..()

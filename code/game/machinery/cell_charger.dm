@@ -25,7 +25,7 @@
 			overlays += "cell"
 		overlays += "ccharger-wires"
 		if(!(stat & (BROKEN|NOPOWER)))
-			chargelevel = round(charging.percent() * 4.0 / 99)
+			chargelevel = round(CELL_PERCENT(charging) * 4.0 / 99)
 			overlays += "ccharger-o[chargelevel]"
 	else
 		overlays.Cut()

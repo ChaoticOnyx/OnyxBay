@@ -1,4 +1,4 @@
-
+GLOBAL_LIST_EMPTY(all_synthetic_mind_to_data) // data: list of name and type of synthetic
 
 /mob/living/silicon
 	gender = NEUTER
@@ -56,6 +56,15 @@
 	for(var/datum/alarm_handler/AH in SSalarm.all_handlers)
 		AH.unregister_alarm(src)
 	return ..()
+
+/mob/living/silicon/mind_initialize()
+	. = ..()
+	GLOB.all_synthetic_mind_to_data[mind] = list(name, type, weakref(src))
+
+/mob/living/silicon/SetName(new_name)
+	. = ..()
+	if(mind)
+		GLOB.all_synthetic_mind_to_data[mind][1] = name
 
 /mob/living/silicon/fully_replace_character_name(new_name)
 	..()

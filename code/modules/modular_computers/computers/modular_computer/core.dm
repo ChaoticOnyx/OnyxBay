@@ -240,8 +240,8 @@
 
 /obj/item/modular_computer/proc/check_update_ui_need()
 	var/ui_update_needed = 0
-	if(battery_module)
-		var/batery_percent = battery_module.battery.percent()
+	if(battery_module?.battery)
+		var/batery_percent = CELL_PERCENT(battery_module.battery)
 		if(last_battery_percent != batery_percent) //Let's update UI on percent change
 			ui_update_needed = 1
 			last_battery_percent = batery_percent

@@ -16,7 +16,7 @@
 
 /obj/item/robot_parts/New(newloc, model)
 	..(newloc)
-	if(model_info && model)
+	if(model_info)
 		if(isnull(model))
 			model = "Unbranded"
 		model_info = model

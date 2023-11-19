@@ -169,6 +169,8 @@
 				reflectchance = min(max(reflectchance, 0), 100)
 				var/damagediff = round(proj_damage * reflectchance / 100)
 				proj_damage /= reinf_material.burn_armor
+				if(reflectchance > 0)
+					take_damage(min(proj_damage - damagediff, 100))
 				// Walls with positive reflection values deal with laser better than walls with negative.
 				burn(1500)
 			else
@@ -186,6 +188,8 @@
 					reflectchance = round(projectile_reflection(Proj, 1) * reflectchance)
 				reflectchance = min(max(reflectchance, 0), 100)
 				var/damagediff = round(proj_damage * reflectchance / 100)
+				if(reflectchance > 0)
+					take_damage(min(proj_damage - damagediff, 100))
 				// Walls with positive reflection values deal with laser better than walls with negative.
 				burn(2000)
 			else

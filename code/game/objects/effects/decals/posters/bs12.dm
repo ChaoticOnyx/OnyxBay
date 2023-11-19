@@ -374,3 +374,13 @@
 	name = "26st Century Wyccoid Man"
 	desc = "The poster depicts a man in a straitjacket. One side of the man has turned into a monkey. The writing on the poster cannot explain to you any of what is happening on it."
 
+/datum/poster/bay_76
+	icon_state="bsposter76"
+	name = "Space Pork"
+	desc = "The poster depicts a piggy face in space. It reads, \"Space Pork\". Perhaps it's some sort of a racist thing depicting trottines?"
+
+/datum/poster/bay_77
+	icon_state="bsposter77"
+	name = "Bring Them"
+	desc = "The poster depicts an adorable toy piglet. What makes these so popular?.."
+

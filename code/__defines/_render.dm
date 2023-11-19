@@ -13,7 +13,6 @@
 	screen_loc = "CENTER"
 	plane = LOWEST_PLANE
 	blend_mode = BLEND_OVERLAY
-
 	/// The compositing renderer this renderer belongs to.
 	var/group = RENDER_GROUP_FINAL
 
@@ -79,7 +78,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 */
 
 /// The list of renderers associated with this mob.
-/mob/var/list/atom/movable/renderer/renderers
+/mob/var/list/renderers
 
 
 /// Creates the mob's renderers on /Login()
@@ -97,7 +96,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 /// Removes the mob's renderers on /Logout()
 /mob/proc/RemoveRenderers()
 	if(my_client)
-		for(var/atom/movable/renderer/renderer as anything in renderers)
+		for(var/renderer_name as anything in renderers)
+			var/atom/movable/renderer/renderer = renderers[renderer_name]
 			my_client.screen -= renderer
 			if (renderer.relay)
 				my_client.screen -= renderer.relay
@@ -118,7 +118,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 
  /// Handles byond internal letterboxing. Avoid touching.
 /atom/movable/renderer/letterbox
-	name = "Letterbox"
+	name  = LETTERBOX_RENDERER
 	group = RENDER_GROUP_SCENE
 	plane = BLACKNESS_PLANE
 	appearance_flags = PLANE_MASTER | NO_CLIENT_COLOR
@@ -128,38 +128,49 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 
 
 /atom/movable/renderer/space
-	name = "Space"
+	name  = SPACE_RENDERER
 	group = RENDER_GROUP_SCENE
 	plane = SPACE_PLANE
 
 
 /atom/movable/renderer/skybox
-	name = "Skybox"
+	name = SKYBOX_RENDERER
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
 	group = RENDER_GROUP_SCENE
 	plane = SKYBOX_PLANE
-	relay_blend_mode = BLEND_MULTIPLY
+	blend_mode = BLEND_MULTIPLY
+
+/atom/movable/renderer/turf
+	name  = TURF_RENDERER
+	group = RENDER_GROUP_SCENE
+	plane = TURF_PLANE
 
 // Draws the game world; live mobs, items, turfs, etc.
 /atom/movable/renderer/game
-	name = GAME_RENDERER
+	name  = GAME_RENDERER
 	group = RENDER_GROUP_SCENE
 	plane = DEFAULT_PLANE
 
 /atom/movable/renderer/game/Initialize()
 	. = ..()
+	GraphicsUpdate()
+
+/atom/movable/renderer/game/GraphicsUpdate()
 	if (istype(owner) && owner.client && owner.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_YES)
 		add_filter("AO",0,list(type = "drop_shadow", x = 0, y = -2, size = 4, color = "#04080FAA"))
+	if (istype(owner) && owner.client && owner.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_NO)
+		remove_filter("AO")
 
 /// Draws observers; ghosts, camera eyes, etc.
 /atom/movable/renderer/observers
-	name = "Observers"
+	name  = OBSERVERS_RENDERER
 	group = RENDER_GROUP_SCENE
 	plane = OBSERVER_PLANE
 
 
 /// Draws darkness effects.
 /atom/movable/renderer/lighting
-	name = "Lighting"
+	name  = LIGHTING_RENDERER
 	group = RENDER_GROUP_SCENE
 	plane = LIGHTING_PLANE
 	appearance_flags = PLANE_MASTER | NO_CLIENT_COLOR
@@ -173,26 +184,42 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	)
 	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
 
+/atom/movable/renderer/lighting/Initialize(mapload, mob/owner)
+	. = ..()
+	owner.overlay_fullscreen("lighting_backdrop", /obj/screen/fullscreen/lighting_backdrop)
+
 /// Draws visuals that should not be affected by darkness.
 /atom/movable/renderer/above_lighting
-	name = "Above Lighting"
+	name  = ABOVE_LIGHTING_RENDERER
 	group = RENDER_GROUP_SCENE
 	plane = EFFECTS_ABOVE_LIGHTING_PLANE
 
 
 /// Draws full screen visual effects, like pain and bluespace.
 /atom/movable/renderer/screen_effects
-	name = "Screen Effects"
+	name  = SCREEN_EFFECTS_RENDERER
 	group = RENDER_GROUP_SCENE
 	plane = FULLSCREEN_PLANE
 
+/atom/movable/renderer/obfuscation
+	name  = OBFUSCATION_RENDERER
+	group = RENDER_GROUP_SCENE
+	plane = OBFUSCATION_PLANE
 
 /// Draws user interface elements.
 /atom/movable/renderer/interface
-	name = "Interface"
+	name  = INTERFACE_RENDERER
 	group = RENDER_GROUP_SCREEN
 	plane = HUD_PLANE
 
+/atom/movable/renderer/open_space
+	name  =	OPEN_SPACE_RENDERER
+	group = RENDER_GROUP_NONE
+	plane = OPENSPACE_PLANE
+
+/atom/movable/renderer/open_space/Initialize()
+	. = ..()
+	add_filter("blurry", 0, list(type="blur", size=0.65))
 
 /* *
 * Group renderers
@@ -206,30 +233,21 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 
 /// Render group for stuff INSIDE the typical game context - people, items, lighting, etc.
 /atom/movable/renderer/scene_group
-	name = "Scene Group"
+	name  = SCENE_GROUP_RENDERER
 	group = RENDER_GROUP_FINAL
 	plane = RENDER_GROUP_SCENE
 	mouse_opacity = MOUSE_OPACITY_NORMAL
 
-/atom/movable/renderer/open_space
-	name = "open_space"
-	group = RENDER_GROUP_NONE
-	plane = OPENSPACE_PLANE
-
-/atom/movable/renderer/open_space/Initialize()
-	. = ..()
-	add_filter("blurry",0,list(type="blur",size=0.65))
-
 /// Render group for stuff OUTSIDE the typical game context - UI, full screen effects, etc.
 /atom/movable/renderer/screen_group
-	name = "Screen Group"
+	name  =	SCREEN_GROUP_RENDERER
 	group = RENDER_GROUP_FINAL
 	plane = RENDER_GROUP_SCREEN
 
 
 /// Render group for final compositing before user display.
 /atom/movable/renderer/final_group
-	name = "Final Group"
+	name  =	FINAL_GROUP_RENDERER
 	group = RENDER_GROUP_NONE
 	plane = RENDER_GROUP_FINAL
 
@@ -246,7 +264,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 
 /// Renders the /obj/effect/effect/warp example effect
 /atom/movable/renderer/warp
-	name = "Warp Effect"
+	name  = WARP_EFFECT_RENDERER
 	group = RENDER_GROUP_NONE
 	plane = WARP_EFFECT_PLANE
 	render_target_name = "*warp"
@@ -255,7 +273,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 /// Adds the warp effect to the game rendering group
 /atom/movable/renderer/scene_group/Initialize()
 	. = ..()
-	filters += filter(type = "displace", render_source = "*warp", size = 5)
+	add_filter(WARP_EFFECT_RENDERER,0,list(type = "displace", render_source = "*warp", size = 5))
 
 /// Example of a warp filter for /renderer use
 /obj/effect/effect/warp

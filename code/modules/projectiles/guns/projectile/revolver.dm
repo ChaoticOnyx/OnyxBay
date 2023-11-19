@@ -15,6 +15,7 @@
 	var/chamber_offset = 0 //how many empty chambers in the cylinder until you hit a round
 	fire_sound = 'sound/effects/weapons/gun/fire2.ogg'
 	mag_insert_sound = 'sound/effects/weapons/gun/spin_cylinder1.ogg'
+	has_safety = FALSE
 
 /obj/item/gun/projectile/revolver/coltpython
 	name = "Colt Python"
@@ -168,9 +169,13 @@
 	var/obj/item/cell/bcell
 
 /obj/item/gun/projectile/revolver/m2019/detective/Initialize()
+	. = ..()
 	bcell = new /obj/item/cell/device/high(src)
 	update_icon()
-	..()
+
+/obj/item/gun/projectile/revolver/m2019/detective/Destroy()
+	QDEL_NULL(bcell)
+	return ..()
 
 /*obj/item/gun/projectile/revolver/m2019/detective/proc/deductcharge(chrgdeductamt)
 	if(bcell)
@@ -188,7 +193,7 @@
 	if(!bcell)
 		. += "\n\The [src] has no power cell installed."
 	else
-		. += "\n\The [src] is [round(bcell.percent())]% charged."
+		. += "\n\The [src] is [round(CELL_PERCENT(bcell))]% charged."
 
 /obj/item/gun/projectile/revolver/m2019/detective/consume_next_projectile()
 	if(chamber_offset)

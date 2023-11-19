@@ -2,6 +2,7 @@
 	name = "mounted proto-kinetic accelerator"
 	self_recharge = 1
 	use_external_power = 1
+	has_safety = FALSE
 
 /obj/item/gun/energy/kinetic_accelerator
 	name = "proto-kinetic accelerator"

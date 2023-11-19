@@ -17,7 +17,7 @@ Pipelines + Other Objects -> Pipe network
 	var/nodealert = 0
 	var/power_rating //the maximum amount of power the machine can use to do work, affects how powerful the machine is, in Watts
 
-
+	plane = TURF_PLANE
 	layer = EXPOSED_PIPE_LAYER
 
 	var/connect_types = CONNECT_TYPE_REGULAR
@@ -32,7 +32,7 @@ Pipelines + Other Objects -> Pipe network
 
 	var/atmos_initalized = FALSE
 
-/obj/machinery/atmospherics/New()
+/obj/machinery/atmospherics/Initialize()
 	if(!icon_manager)
 		icon_manager = new()
 
@@ -43,10 +43,10 @@ Pipelines + Other Objects -> Pipe network
 	if(!pipe_color_check(pipe_color))
 		pipe_color = null
 	GLOB.atmos_machinery |= src
-	..()
+	. = ..()
 
 /obj/machinery/atmospherics/Destroy()
-	GLOB.atmos_machinery -= src
+	GLOB.atmos_machinery.Remove(src)
 	node1 = null
 	node2 = null
 	return ..()

@@ -64,7 +64,8 @@ var/list/flooring_cache = list()
 /turf/simulated/floor/proc/get_flooring_overlay(cache_key, icon_base, icon_dir = 0)
 	if(!flooring_cache[cache_key])
 		var/image/I = image(icon = flooring.icon, icon_state = icon_base, dir = icon_dir)
-		I.turf_decal_layerise()
+		I.plane = plane
+		I.layer = DECAL_LAYER
 		flooring_cache[cache_key] = I
 	return flooring_cache[cache_key]
 
@@ -73,6 +74,7 @@ var/list/flooring_cache = list()
 		var/image/I = image(icon = 'icons/turf/flooring/damage.dmi', icon_state = cache_key)
 		if(blend)
 			I.blend_mode = blend
-		I.turf_decal_layerise()
+		I.plane = plane
+		I.layer = DECAL_LAYER
 		flooring_cache[cache_key] = I
 	return flooring_cache[cache_key]

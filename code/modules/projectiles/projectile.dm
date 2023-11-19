@@ -14,7 +14,7 @@
 
 	check_armour = "bullet" //Defines what armor to use when it hits things.  Must be set to bullet, laser, energy,or bomb	//Cael - bio and rad are also valid
 
-	var/bumped = 0		//Prevents it from hitting more than one guy at once
+	var/bumped = FALSE		//Prevents it from hitting more than one guy at once
 	var/def_zone = ""	//Aiming at
 	var/mob/firer = null//Who shot it
 	var/silenced = 0	//Attack message
@@ -53,6 +53,7 @@
 	var/embed = 0 // whether or not the projectile can embed itself in the mob
 	var/penetration_modifier = 0.2 //How much internal damage this projectile can deal, as a multiplier.
 	var/tasing = 0 //Whether or not it will stun the target once they reach the pain limit
+	var/poisedamage = 0 //Kinda self-decriptive
 
 
 	// effect types to be used
@@ -115,14 +116,20 @@
 	return TRUE
 
 /obj/item/projectile/Destroy()
+	if(hitscan)
+		if(loc && trajectory)
+			var/datum/point/pcache = trajectory.copy_to()
+			beam_segments[beam_index] = pcache
+		generate_hitscan_tracers()
+	firer = null
+	current = null
+	original = null
+	previous = null
+	starting = null
 	if(trajectory)
 		QDEL_NULL(trajectory)
+	STOP_PROCESSING(SSprojectiles, src)
 	return ..()
-
-/obj/item/projectile/forceMove()
-	..()
-	if(istype(loc, /turf/space/) && istype(loc.loc, /area/space))
-		qdel(src)
 
 //TODO: make it so this is called more reliably, instead of sometimes by bullet_act() and sometimes not
 /obj/item/projectile/proc/on_hit(atom/target, blocked = 0, def_zone = null)
@@ -171,6 +178,7 @@
 
 /obj/item/projectile/proc/launch(atom/target, target_zone, mob/user, params, Angle_override, forced_spread = 0)
 	original = target
+	previous = get_turf(loc)
 	def_zone = check_zone(target_zone)
 	firer = user
 	var/direct_target
@@ -204,7 +212,7 @@
 
 	original = new_target
 	if(new_firer)
-		firer = src
+		firer = new_firer
 	var/new_Angle = Atan2(starting_turf, new_target)
 	if(is_ricochet) // Add some dispersion.
 		new_Angle += (rand(-5,5) * 5)
@@ -290,14 +298,14 @@
 
 /obj/item/projectile/Bump(atom/A, forced = FALSE)
 	if(A == src)
-		return 0 //no
+		return FALSE //no
 
 	if(A == firer)
 		loc = A.loc
-		return 0 //cannot shoot yourself
+		return FALSE //cannot shoot yourself
 
 	if((bumped && !forced) || (A in permutated))
-		return 0
+		return FALSE
 
 	if(istype(A, /obj/effect/portal))
 		var/obj/effect/portal/P = A
@@ -306,10 +314,10 @@
 			permutated.Add(P)
 			return
 
-	var/passthrough = 0 //if the projectile should continue flying
+	var/passthrough = FALSE //if the projectile should continue flying
 	var/distance = get_dist(starting,loc)
 
-	bumped = 1
+	bumped = TRUE
 	if(ismob(A))
 		var/mob/M = A
 		if(istype(A, /mob/living))
@@ -322,7 +330,7 @@
 
 			passthrough = !attack_mob(M, distance)
 		else
-			passthrough = 1 //so ghosts don't stop bullets
+			passthrough = TRUE //so ghosts don't stop bullets
 	else
 		passthrough = (A.bullet_act(src, def_zone) == PROJECTILE_CONTINUE) //backwards compatibility
 		if(isturf(A))
@@ -334,7 +342,7 @@
 	//penetrating projectiles can pass through things that otherwise would not let them
 	if(!passthrough && penetrating > 0)
 		if(check_penetrate(A))
-			passthrough = 1
+			passthrough = TRUE
 		penetrating--
 
 	//the bullet passes through a dense object!
@@ -346,8 +354,8 @@
 			else
 				loc = A.loc
 			permutated.Add(A)
-		bumped = 0 //reset bumped variable!
-		return 0
+		bumped = FALSE //reset bumped variable!
+		return FALSE
 
 	//stop flying
 	on_impact(A)
@@ -365,6 +373,7 @@
 	return 1
 
 /obj/item/projectile/proc/before_move()
+	previous = loc
 	return
 
 /obj/item/projectile/proc/after_move()
@@ -412,7 +421,7 @@
 /obj/item/projectile/proc/old_style_target(atom/target, atom/source)
 	if(!source)
 		source = get_turf(src)
-	setAngle(Get_Angle(source, target))
+	setAngle(get_projectile_angle(source, target))
 
 /obj/item/projectile/proc/fire(angle, atom/direct_target)
 	//If no Angle needs to resolve it from xo/yo!
@@ -433,7 +442,7 @@
 			qdel(src)
 			return
 		var/turf/target = locate(Clamp(starting + xo, 1, world.maxx), Clamp(starting + yo, 1, world.maxy), starting.z)
-		setAngle(Get_Angle(src, target))
+		setAngle(get_projectile_angle(src, target))
 	if(dispersion)
 		var/DeviationAngle = (dispersion * 15)
 		setAngle(Angle + rand(-DeviationAngle, DeviationAngle))
@@ -442,7 +451,6 @@
 		var/matrix/M = new
 		M.Turn(Angle)
 		transform = M
-	forceMove(starting)
 	trajectory = new(starting.x, starting.y, starting.z, 0, 0, Angle, pixel_speed)
 	last_projectile_move = world.time
 	fired = TRUE
@@ -467,13 +475,13 @@
 /obj/item/projectile/proc/preparePixelProjectile(atom/target, atom/source, params, Angle_offset = 0)
 	var/turf/curloc = get_turf(source)
 	var/turf/targloc = get_turf(target)
-	forceMove(get_turf(source))
-	starting = get_turf(source)
+	forceMove(curloc)
+	starting = curloc
 	original = target
 
 	var/list/calculated = list(null,null,null)
 	if(isliving(source) && params)
-		calculated = calculate_projectile_Angle_and_pixel_offsets(source, params)
+		calculated = calculate_projectile_Angle_and_pixel_offsets(source, target, params2list(params))
 		p_x = calculated[2]
 		p_y = calculated[3]
 		setAngle(calculated[1])
@@ -481,7 +489,7 @@
 	else if(targloc && curloc)
 		yo = targloc.y - curloc.y
 		xo = targloc.x - curloc.x
-		setAngle(Get_Angle(src, targloc))
+		setAngle(get_projectile_angle(src, targloc))
 	else
 		util_crash_with("WARNING: Projectile [type] fired without either mouse parameters, or a target atom to aim at!")
 		qdel(src)
@@ -500,13 +508,23 @@
 				on_impact(loc)
 			qdel(src)
 		return
+
+	if (QDELETED(src))
+		return
+
 	last_projectile_move = world.time
 	if(!nondirectional_sprite && !hitscanning)
 		var/matrix/M = new
 		M.Turn(Angle)
 		transform = M
 	trajectory.increment(trajectory_multiplier)
+	var/datum/point/vector/_trajectory = trajectory
 	var/turf/T = trajectory.return_turf()
+
+	if (!T) // Nowhere to go. Just die.
+		qdel(src)
+		return
+
 	if(T.z != loc.z)
 		before_move()
 		before_z_change(loc, T)
@@ -515,17 +533,18 @@
 		trajectory_ignore_forcemove = FALSE
 		after_move()
 		if(!hitscanning)
-			pixel_x = trajectory.return_px()
-			pixel_y = trajectory.return_py()
+			pixel_x = _trajectory.return_px()
+			pixel_y = _trajectory.return_py()
 	else
-		before_move()
-		step_towards(src, T)
-		after_move()
+		if(T != loc)
+			before_move()
+			Move(T)
+			after_move()
 		if(!hitscanning)
-			pixel_x = trajectory.return_px() - trajectory.mpx * trajectory_multiplier
-			pixel_y = trajectory.return_py() - trajectory.mpy * trajectory_multiplier
+			pixel_x = _trajectory.return_px() - _trajectory.mpx * trajectory_multiplier
+			pixel_y = _trajectory.return_py() - _trajectory.mpy * trajectory_multiplier
 	if(!hitscanning)
-		animate(src, pixel_x = trajectory.return_px(), pixel_y = trajectory.return_py(), time = 1, flags = ANIMATION_END_NOW)
+		animate(src, pixel_x = _trajectory.return_px(), pixel_y = _trajectory.return_py(), time = 1, flags = ANIMATION_END_NOW)
 	if(isturf(loc))
 		hitscan_last = loc
 	if(can_hit_target(original, permutated))
@@ -536,36 +555,48 @@
 /obj/item/projectile/proc/can_hit_target(atom/target, list/passthrough)
 	return (target && ((target.layer >= TURF_LAYER + 0.3) || ismob(target)) && (loc == get_turf(target)) && (!(target in passthrough)))
 
-/proc/calculate_projectile_Angle_and_pixel_offsets(mob/user, params)
-	var/list/mouse_control = params2list(params)
-	var/p_x = 0
-	var/p_y = 0
-	var/Angle = 0
-	if(mouse_control["icon-x"])
-		p_x = text2num(mouse_control["icon-x"])
-	if(mouse_control["icon-y"])
-		p_y = text2num(mouse_control["icon-y"])
-	if(mouse_control["screen-loc"])
-		//Split screen-loc up into X+Pixel_X and Y+Pixel_Y
-		var/list/screen_loc_params = splittext(mouse_control["screen-loc"], ",")
+/proc/calculate_projectile_Angle_and_pixel_offsets(atom/source, atom/target, modifiers)
+	var/angle = 0
+	var/p_x = modifiers["icon-x"] ? text2num(modifiers["icon-x"]) : world.icon_size / 2 // ICON_(X|Y) are measured from the bottom left corner of the icon.
+	var/p_y = modifiers["icon-y"] ? text2num(modifiers["icon-y"]) : world.icon_size / 2 // This centers the target if modifiers aren't passed.
 
-		//Split X+Pixel_X up into list(X, Pixel_X)
-		var/list/screen_loc_X = splittext(screen_loc_params[1],":")
+	if(target)
+		var/turf/source_loc = get_turf(source)
+		var/turf/target_loc = get_turf(target)
+		var/dx = ((target_loc.x - source_loc.x) * world.icon_size) + (target.pixel_x - source.pixel_x) + (p_x - (world.icon_size / 2))
+		var/dy = ((target_loc.y - source_loc.y) * world.icon_size) + (target.pixel_y - source.pixel_y) + (p_y - (world.icon_size / 2))
 
-		//Split Y+Pixel_Y up into list(Y, Pixel_Y)
-		var/list/screen_loc_Y = splittext(screen_loc_params[2],":")
-		var/x = text2num(screen_loc_X[1]) * 32 + text2num(screen_loc_X[2]) - 32
-		var/y = text2num(screen_loc_Y[1]) * 32 + text2num(screen_loc_Y[2]) - 32
+		angle = Atan2(dy, dx)
+		return list(angle, p_x, p_y)
 
-		//Calculate the "resolution" of screen based on client's view and world's icon size. This will work if the user can view more tiles than average.
-		var/list/screenview = getviewsize(user.client.view)
-		var/screenviewX = screenview[1] * world.icon_size
-		var/screenviewY = screenview[2] * world.icon_size
+	if(!ismob(source) || !modifiers["screen-loc"])
+		CRASH("Can't make trajectory calculations without a target or click modifiers and a client.")
 
-		var/ox = round(screenviewX/2) - user.client.pixel_x //"origin" x
-		var/oy = round(screenviewY/2) - user.client.pixel_y //"origin" y
-		Angle = Atan2(y - oy, x - ox)
-	return list(Angle, p_x, p_y)
+	var/mob/user = source
+	if(!user.client)
+		CRASH("Can't make trajectory calculations without a target or click modifiers and a client.")
+
+	//Split screen-loc up into X+Pixel_X and Y+Pixel_Y
+	var/list/screen_loc_params = splittext(modifiers["screen-loc"], ",")
+	//Split X+Pixel_X up into list(X, Pixel_X)
+	var/list/screen_loc_X = splittext(screen_loc_params[1],":")
+	//Split Y+Pixel_Y up into list(Y, Pixel_Y)
+	var/list/screen_loc_Y = splittext(screen_loc_params[2],":")
+
+	var/tx = (text2num(screen_loc_X[1]) - 1) * world.icon_size + text2num(screen_loc_X[2])
+	var/ty = (text2num(screen_loc_Y[1]) - 1) * world.icon_size + text2num(screen_loc_Y[2])
+
+	//Calculate the "resolution" of screen based on client's view and world's icon size. This will work if the user can view more tiles than average.
+	if(!user.client.view)
+		return list(0, 0)
+	var/list/screenview = getviewsize(user.client.view)
+	screenview[1] *= world.icon_size
+	screenview[2] *= world.icon_size
+
+	var/ox = round(screenview[1] / 2) - user.client.pixel_x //"origin" x
+	var/oy = round(screenview[2] / 2) - user.client.pixel_y //"origin" y
+	angle = Atan2(tx - oy, ty - ox)
+	return list(angle, p_x, p_y)
 
 /obj/item/projectile/proc/check_distance_left()
 	range--
@@ -667,15 +698,6 @@
 	. = ..()
 	if(trajectory && !trajectory_ignore_forcemove && isturf(target))
 		trajectory.initialize_location(target.x, target.y, target.z, 0, 0)
-
-/obj/item/projectile/Destroy()
-	if(hitscan)
-		if(loc && trajectory)
-			var/datum/point/pcache = trajectory.copy_to()
-			beam_segments[beam_index] = pcache
-		generate_hitscan_tracers()
-	STOP_PROCESSING(SSprojectiles, src)
-	return ..()
 
 /obj/item/projectile/proc/generate_hitscan_tracers(cleanup = TRUE, duration = 3)
 	if(!length(beam_segments))

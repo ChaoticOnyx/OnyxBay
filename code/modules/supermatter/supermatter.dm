@@ -242,7 +242,7 @@
 			S.grounding = 0
 	// Effect 3: Break solar arrays
 
-	for(var/obj/machinery/power/solar/S in GLOB.machines)
+	for(var/obj/machinery/power/solar/S in SSmachines.machinery)
 		if(!(S.z in affected_z))
 			continue
 		if(prob(DETONATION_SOLAR_BREAK_CHANCE))

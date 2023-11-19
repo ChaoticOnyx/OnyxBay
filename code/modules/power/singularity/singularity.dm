@@ -45,7 +45,7 @@
 
 	..()
 	set_next_think(world.time)
-	for(var/obj/machinery/power/singularity_beacon/singubeacon in GLOB.machines)
+	for(var/obj/machinery/power/singularity_beacon/singubeacon in SSmachines.machinery)
 		if(singubeacon.active)
 			target = singubeacon
 			break
@@ -122,7 +122,7 @@
 
 		else if(!target)
 			pick_ghost()
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/singularity/proc/pick_ghost()

@@ -38,6 +38,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 
 
 	layer = ABOVE_TILE_LAYER
+	plane = TURF_PLANE
 
 	var/power_per_hologram = 500 //per usage per hologram
 	idle_power_usage = 5 WATTS
@@ -95,7 +96,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 				last_request = world.time
 				var/list/holopadlist = list()
 				var/zlevels = GetConnectedZlevels(z)
-				for(var/obj/machinery/hologram/holopad/H in GLOB.machines)
+				for(var/obj/machinery/hologram/holopad/H in SSmachines.machinery)
 					if((H.z in zlevels) && H.operable())
 						holopadlist["[H.loc.loc.name]"] = H	//Define a list and fill it with the area of every holopad in the world
 				holopadlist = sortAssoc(holopadlist)

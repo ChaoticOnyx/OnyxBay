@@ -24,6 +24,10 @@
 		/obj/item/stock_parts/capacitor
 	)
 
+/obj/machinery/recharger/Destroy()
+	QDEL_NULL(charging)
+	return ..()
+
 /obj/machinery/recharger/attackby(obj/item/G, mob/user)
 	if(istype(user,/mob/living/silicon))
 		return

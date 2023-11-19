@@ -72,6 +72,7 @@
 	nodamage = 1
 	check_armour = "bullet"
 	blockable = FALSE
+	poisedamage = 255 // slammy jammy
 
 /obj/item/projectile/meteor/Bump(atom/A, forced = FALSE)
 	if(A == firer)
@@ -250,15 +251,18 @@
 	var/mob/living/simple_animal/hostile/facehugger/holder = null
 
 /obj/item/projectile/facehugger_proj/Bump(atom/A, forced = FALSE)
+	if(A == src)
+		return FALSE // no idea how this could ever happen but let's ensure
+
 	if(A == firer)
 		loc = A.loc
-		return
+		return FALSE
 
 	if(!holder)
-		return
+		return FALSE
 
 	if(bumped)
-		return
+		return FALSE
 	bumped = TRUE
 
 	if(istype(A, /mob/living/carbon/human))
@@ -308,6 +312,9 @@
 	Bump(A)
 
 /obj/item/projectile/facehugger_proj/Destroy()
+	if(!holder)
+		return ..()
+
 	if(kill_count)
 		QDEL_NULL(holder)
 	else
@@ -315,7 +322,8 @@
 		if(T)
 			holder.forceMove(T)
 			holder = null
-
+		else
+			QDEL_NULL(holder)
 	return ..()
 
 /obj/item/projectile/portal

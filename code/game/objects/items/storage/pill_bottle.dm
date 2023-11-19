@@ -36,9 +36,7 @@
 /obj/item/storage/pill_bottle/update_icon()
 	overlays.Cut()
 	if(label_color)
-		var/image/label_over = overlay_image(icon, "[icon_state]-overlay")
-		label_over.color = label_color
-		overlays += label_over
+		overlays += image_repository.overlay_image(icon, "[icon_state]-overlay", alpha, RESET_COLOR, label_color, SOUTH)
 
 /obj/item/storage/pill_bottle/attack_self(mob/user)
 	if(user.get_inactive_hand())

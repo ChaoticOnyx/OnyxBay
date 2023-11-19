@@ -29,7 +29,9 @@
 
 	walk(src, 0) // Because we might have called walk_to, we must stop the walk loop or BYOND keeps an internal reference to us forever.
 
-	for(var/A in src)
+	for(var/atom/A in src)
+		if(QDELING(A))
+			continue
 		qdel(A)
 
 	forceMove(null)
@@ -238,6 +240,10 @@
 		src.loc = null
 		if (Move(previous))
 			Move(step)
+		if(!loc)
+			// we got into nullspace! abort!
+			loc = previous
+			break
 		hit_check(impact_speed)
 		dist_travelled++
 		dist_since_sleep += tiles_per_tick
