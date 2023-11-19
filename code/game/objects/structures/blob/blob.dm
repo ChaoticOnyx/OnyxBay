@@ -22,7 +22,7 @@
 	var/_health_cooldown
 
 /obj/structure/blob/New(loc, obj/structure/blob/core)
-	. = ..()
+	..()
 
 	src.core = core
 	health = max_health

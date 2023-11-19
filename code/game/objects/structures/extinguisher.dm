@@ -8,9 +8,13 @@
 	var/obj/item/extinguisher/has_extinguisher
 	var/opened = 0
 
-/obj/structure/extinguisher_cabinet/New()
-	..()
+/obj/structure/extinguisher_cabinet/Initialize()
+	. = ..()
 	has_extinguisher = new /obj/item/extinguisher(src)
+
+/obj/structure/extinguisher_cabinet/Destroy()
+	QDEL_NULL(has_extinguisher)
+	return ..()
 
 /obj/structure/extinguisher_cabinet/attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/extinguisher))

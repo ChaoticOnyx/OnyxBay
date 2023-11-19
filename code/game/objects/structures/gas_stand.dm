@@ -15,9 +15,9 @@
 	var/is_loosen = TRUE
 	var/valve_opened = FALSE
 
-/obj/structure/gas_stand/New()
-	..()
-	if (spawn_type)
+/obj/structure/gas_stand/Initialize()
+	. = ..()
+	if(spawn_type)
 		tank = new spawn_type (src)
 	contained = new mask_type (src)
 	update_icon()
@@ -49,13 +49,11 @@
 		breather.internal = null
 		if(breather.internals)
 			breather.internals.icon_state = "internal0"
-	if(tank)
-		qdel(tank)
-	if(breather)
-		breather.drop(contained)
-		visible_message("<span class='notice'>The mask rapidly retracts just before \the [src] is destroyed!</span>")
-	qdel(contained)
-	contained = null
+		if(contained)
+			breather.drop(contained)
+		visible_message(SPAN("notice", "The mask rapidly retracts just before \the [src] is destroyed!"))
+	QDEL_NULL(tank)
+	QDEL_NULL(contained)
 	breather = null
 	return ..()
 
