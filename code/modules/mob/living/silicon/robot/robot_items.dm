@@ -400,36 +400,45 @@
 	icon = 'icons/obj/decals.dmi'
 	icon_state = "shock"
 
+#define INFLATABLE_MODES list("walls", "doors", "panels")
 /obj/item/inflatable_dispenser
 	name = "inflatables dispenser"
-	desc = "Hand-held device which allows rapid deployment and removal of inflatables."
+	desc = "A hand-held device which allows rapid deployment and removal of inflatables."
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "inf_deployer"
 	w_class = ITEM_SIZE_LARGE
 
 	var/stored_walls = 5
 	var/stored_doors = 2
+	var/stored_panels = 2
 	var/max_walls = 5
 	var/max_doors = 2
-	var/mode = 0 // 0 - Walls   1 - Doors
+	var/max_panels = 2
+	var/mode = 1 // 1 - Walls   2 - Doors   3 - Panels
 
 /obj/item/inflatable_dispenser/robot
+	desc = "A machinery-mounted device which allows rapid deployment and removal of inflatables. Has a higher storage capacity than the hand-held variation."
+	icon_state = "inf_deployer_borg"
 	w_class = ITEM_SIZE_HUGE
 	stored_walls = 10
 	stored_doors = 5
+	stored_panels = 4
 	max_walls = 10
 	max_doors = 5
+	max_panels = 4
 
 /obj/item/inflatable_dispenser/_examine_text(mob/user)
 	. = ..()
 	if(!.)
 		return
-	. += "\nIt has [stored_walls] wall segment\s and [stored_doors] door segment\s stored."
-	. += "\nIt is set to deploy [mode ? "doors" : "walls"]"
+	. += "\nIt has [stored_walls] wall segment\s, [stored_doors] door segment\s and [stored_panels] panel segment\s stored."
+	. += "\nIt is set to deploy [INFLATABLE_MODES[mode]]."
 
 /obj/item/inflatable_dispenser/attack_self()
-	mode = !mode
-	to_chat(usr, "You set \the [src] to deploy [mode ? "doors" : "walls"].")
+	mode++
+	if(mode > 3)
+		mode = 1
+	to_chat(usr, "You set \the [src] to deploy [INFLATABLE_MODES[mode]].")
 
 /obj/item/inflatable_dispenser/afterattack(atom/A, mob/user)
 	..(A, user)
@@ -444,62 +453,89 @@
 		pick_up(A, user)
 
 /obj/item/inflatable_dispenser/proc/try_deploy_inflatable(turf/T, mob/living/user)
-	if(mode) // Door deployment
-		if(!stored_doors)
-			to_chat(user, "\The [src] is out of doors!")
-			return
+	var/result_name = ""
+	switch(mode)
+		if(3) // Panel deployment
+			if(!stored_panels)
+				to_chat(user, "\The [src] is out of panels!")
+				return
 
-		if(T && istype(T))
-			new /obj/structure/inflatable/door(T)
-			stored_doors--
+			result_name = "panel"
+			if(T && istype(T))
+				var/obj/structure/inflatable/door/panel/P = new /obj/structure/inflatable/door/panel(T)
+				P.dir = turn(user.dir, 180)
+				stored_doors--
+		if(2) // Door deployment
+			if(!stored_doors)
+				to_chat(user, "\The [src] is out of doors!")
+				return
 
-	else // Wall deployment
-		if(!stored_walls)
-			to_chat(user, "\The [src] is out of walls!")
-			return
+			result_name = "door"
+			if(T && istype(T))
+				new /obj/structure/inflatable/door(T)
+				stored_doors--
 
-		if(T && istype(T))
-			new /obj/structure/inflatable/wall(T)
-			stored_walls--
+		if(1) // Wall deployment
+			if(!stored_walls)
+				to_chat(user, "\The [src] is out of walls!")
+				return
+
+			result_name = "wall"
+			if(T && istype(T))
+				new /obj/structure/inflatable/wall(T)
+				stored_walls--
 
 	playsound(T, 'sound/items/zip.ogg', 75, 1)
-	to_chat(user, "You deploy the inflatable [mode ? "door" : "wall"]!")
+	to_chat(user, "You deploy the inflatable [result_name]!")
 
 /obj/item/inflatable_dispenser/proc/pick_up(obj/A, mob/living/user)
 	if(istype(A, /obj/structure/inflatable))
-		if(istype(A, /obj/structure/inflatable/wall))
-			if(stored_walls >= max_walls)
+		if(istype(A, /obj/structure/inflatable/door/panel))
+			if(stored_panels >= max_panels)
 				to_chat(user, "\The [src] is full.")
 				return
-			stored_walls++
+			stored_panels++
 			qdel(A)
-		else
+		else if(istype(A, /obj/structure/inflatable/door))
 			if(stored_doors >= max_doors)
 				to_chat(user, "\The [src] is full.")
 				return
 			stored_doors++
+			qdel(A)
+		else
+			if(stored_walls >= max_walls)
+				to_chat(user, "\The [src] is full.")
+				return
+			stored_walls++
 			qdel(A)
 		playsound(loc, 'sound/machines/hiss.ogg', 75, 1)
 		visible_message("\The [user] deflates \the [A] with \the [src]!")
 		return
 	if(istype(A, /obj/item/inflatable))
-		if(istype(A, /obj/item/inflatable/wall))
-			if(stored_walls >= max_walls)
+		if(istype(A, /obj/item/inflatable/panel))
+			if(stored_panels >= max_panels)
 				to_chat(user, "\The [src] is full.")
 				return
-			stored_walls++
+			stored_panels++
 			qdel(A)
-		else
+		else if(istype(A, /obj/item/inflatable/door))
 			if(stored_doors >= max_doors)
 				to_chat(usr, "\The [src] is full!")
 				return
 			stored_doors++
+			qdel(A)
+		else
+			if(stored_walls >= max_walls)
+				to_chat(user, "\The [src] is full.")
+				return
+			stored_walls++
 			qdel(A)
 		visible_message("\The [user] picks up \the [A] with \the [src]!")
 		return
 
 	to_chat(user, "You fail to pick up \the [A] with \the [src]")
 	return
+#undef INFLATABLE_MODES
 
 /obj/item/reagent_containers/spray/cleaner/drone
 	name = "space cleaner"
