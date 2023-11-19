@@ -341,7 +341,7 @@
 /obj/structure/inflatable/door/panel/Open()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_opening", src)
-	sleep(10)
+	sleep(6)
 	set_density(FALSE)
 	set_opacity(FALSE)
 	state = 1
@@ -352,7 +352,7 @@
 /obj/structure/inflatable/door/panel/Close()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_closing", src)
-	sleep(10)
+	sleep(6)
 	set_density(TRUE)
 	set_opacity(FALSE)
 	state = 0

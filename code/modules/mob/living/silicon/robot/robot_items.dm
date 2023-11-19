@@ -463,8 +463,11 @@
 			result_name = "panel"
 			if(T && istype(T))
 				var/obj/structure/inflatable/door/panel/P = new /obj/structure/inflatable/door/panel(T)
-				P.dir = turn(user.dir, 180)
-				stored_doors--
+				if(user.loc == T)
+					P.dir = user.dir
+				else
+					P.dir = turn(user.dir, 180)
+				stored_panels--
 		if(2) // Door deployment
 			if(!stored_doors)
 				to_chat(user, "\The [src] is out of doors!")
