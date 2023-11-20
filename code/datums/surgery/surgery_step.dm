@@ -67,14 +67,14 @@
 	if(!check_zone(target, parent_zone))
 		return FALSE
 
-	if(needs_uncovered_organ && !check_clothing(target, target_zone))
-		to_chat(user, SPAN_DANGER("Clothing on [target]'s [organ_name_by_zone(target, target_zone)] blocks surgery!"))
-		return SURGERY_FAILURE
-
 	var/obj/item/organ/parent_organ = target.get_organ(parent_zone)
 	var/parent_status = check_parent_organ(parent_organ, target, tool, user)
 	if(!parent_status || parent_status == SURGERY_FAILURE)
 		return parent_status
+
+	if(needs_uncovered_organ && !check_clothing(target, target_zone))
+		to_chat(user, SPAN_DANGER("Clothing on [target]'s [organ_name_by_zone(target, target_zone)] blocks surgery!"))
+		return SURGERY_FAILURE
 
 	var/obj/item/organ/target_organ = pick_target_organ(user, target, target_zone)
 
