@@ -110,6 +110,17 @@
 
 	return
 
+/mob/living/carbon/attack_ghost(mob/observer/ghost/user)
+	if(HAS_TRAIT(src, TRAIT_GHOSTATTACKABLE)) //Used for wizard's spell "No remorse" which allows ghosts to attack target
+		resolve_ghost_attack(src)
+		return
+
+	return ..()
+
+/mob/living/carbon/proc/resolve_ghost_attack(mob/observer/ghost/user)
+	adjustFireLoss(DAMAGE_PER_GHOST)
+	admin_attack_log(user, src, "You burn [src] with all the fury you can muster!", "You are being burned by something!", "[user] has used nercomancy to attack [src]")
+
 /mob/living/carbon/electrocute_act(shock_damage, obj/source, siemens_coeff = 1.0, def_zone = null)
 	if(status_flags & GODMODE)
 		return 0

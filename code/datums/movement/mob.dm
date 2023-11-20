@@ -121,6 +121,9 @@
 		if(istype(mob.buckled, /obj/structure/bed/chair/pedalgen))
 			mob.buckled.relaymove(mob, direction)
 			return MOVEMENT_HANDLED
+		if(istype(mob.buckled, /obj/effect/dummy/immaterial_form))
+			mob.buckled.relaymove(mob, direction)
+			return MOVEMENT_HANDLED
 		if(istype(mob.pulledby, /obj/structure/bed/chair/wheelchair))
 			. = MOVEMENT_HANDLED
 			mob.pulledby.DoMove(direction, mob)

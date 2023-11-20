@@ -200,6 +200,45 @@ var/list/ghost_traps
 /datum/ghosttrap/familiar/welcome_candidate(mob/target)
 	return 0
 
+/datum/ghosttrap/undead
+	object = "undead"
+	pref_check = BE_UNDEAD
+	ghost_trap_message = "They are now occupying an undead body."
+	ghost_trap_role = "Undead"
+	ban_checks = list(MODE_WIZARD)
+	var/necromancer = null
+
+/datum/ghosttrap/undead/request_player(mob/target, request_string, request_timeout, mob/living/caster)
+	necromancer = caster
+	return ..()
+
+/datum/ghosttrap/undead/transfer_personality(mob/candidate, mob/target)
+	report_progress("Transfering personality")
+	target.ckey = candidate.ckey
+	if(target.mind)
+		target.mind.assigned_role = "[ghost_trap_role]"
+	announce_ghost_joinleave(candidate, 0, "[ghost_trap_message]")
+
+	target.mind = candidate.mind
+	target.mind.current.reload_fullscreen()
+
+	welcome_candidate(target)
+
+/datum/ghosttrap/undead/welcome_candidate(mob/target)
+	ASSERT(ishuman(target))
+	var/mob/living/carbon/human/new_undead = target
+	new_undead.make_undead(necromancer)
+
+/datum/ghosttrap/undead/assess_candidate(mob/observer/ghost/candidate, mob/target, feedback = TRUE)
+	return TRUE
+
+/datum/ghosttrap/undead/Destroy()
+	necromancer = null
+	return ..()
+
+/datum/ghosttrap/familiar/welcome_candidate(mob/target)
+	return 0
+
 /datum/ghosttrap/cult
 	object = "cultist"
 	ban_checks = list("cultist")
