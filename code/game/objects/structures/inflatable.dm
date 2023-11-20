@@ -10,6 +10,8 @@
 /obj/item/inflatable/attack_self(mob/user)
 	if(!deploy_path)
 		return
+	if(!isturf(user.loc))
+		return
 	user.visible_message("[user] starts inflating \the [src].", "You start inflating \the [src].")
 	if(!do_after(user, 1 SECOND, src))
 		return
