@@ -14,9 +14,9 @@
 	else
 		icon_state = "hdiffuser_off"
 
-/obj/item/shield_diffuser/New()
+/obj/item/shield_diffuser/Initialize()
+	. = ..()
 	cell = new(src)
-	..()
 
 /obj/item/shield_diffuser/Destroy()
 	QDEL_NULL(cell)

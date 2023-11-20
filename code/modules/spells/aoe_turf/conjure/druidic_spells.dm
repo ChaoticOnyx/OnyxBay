@@ -130,5 +130,4 @@
 
 /datum/spell/aoe_turf/conjure/summon/bear/Destroy()
 	unregister_signal(src, SIGNAL_MOB_SPELL_LEARNED)
-
-	..()
+	return ..()

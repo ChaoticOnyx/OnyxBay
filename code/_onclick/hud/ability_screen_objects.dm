@@ -137,6 +137,8 @@
 		spell_objects.Remove(ability)
 	if(istype(ability, /obj/screen/ability/changeling_power))
 		changeling_power_objects.Remove(ability)
+	if(istype(ability, /obj/screen/ability/vampire_power))
+		vampire_power_objects.Remove(ability)
 	qdel(ability)
 
 
@@ -193,7 +195,7 @@
 /obj/screen/movable/ability_master/proc/get_ability_by_vampire_power(datum/vampire_power/vp)
 	for(var/screen in vampire_power_objects)
 		var/obj/screen/ability/vampire_power/VP = screen
-		if(VP.power == vp)
+		if(istype(VP) && VP.power == vp)
 			return VP
 	return null
 

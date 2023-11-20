@@ -113,7 +113,8 @@
 /atom/Destroy()
 	QDEL_NULL(reagents)
 	QDEL_NULL(proximity_monitor)
-
+	overlays.Cut()
+	underlays.Cut()
 	return ..()
 
 /atom/proc/reveal_blood()
