@@ -51,7 +51,7 @@
 			breather.internals.icon_state = "internal0"
 		if(contained)
 			breather.drop(contained)
-		visible_message(SPAN("notice", "The mask rapidly retracts just before \the [src] is destroyed!"))
+			visible_message(SPAN("notice", "The mask rapidly retracts just before \the [src] is destroyed!"))
 	QDEL_NULL(tank)
 	QDEL_NULL(contained)
 	breather = null
