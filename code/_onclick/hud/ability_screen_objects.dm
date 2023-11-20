@@ -337,6 +337,7 @@
 	A.ability_master = src
 	A.spell = spell
 	A.SetName(spell.name)
+	spell.connected_button = A
 
 	if(!spell.override_base) //if it's not set, we do basic checks
 		if(spell.spell_flags & CONSTRUCT_CHECK)
@@ -400,6 +401,17 @@
 
 /obj/screen/ability/spell/on_update_icon(forced = 0)
 	update_charge(forced)
+
+	if(istype(spell, /datum/spell/toggled))
+		overlays.Cut()
+		var/datum/spell/toggled/attached_spell = spell
+		overlays.Add(spell.icon_state)
+		if(attached_spell.toggled)
+			overlays.Add("vampire_spell_active")
+		if(attached_spell.mana_drain_per_tick)
+			var/image/T = image(icon, "blank")
+			T.maptext = MAPTEXT("[attached_spell.mana_current]/[attached_spell.mana_max]")
+			overlays.Add(T)
 	return
 
 /obj/screen/ability/spell/activate()

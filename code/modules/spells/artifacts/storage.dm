@@ -43,3 +43,11 @@
 	..()
 	new /obj/item/contract/boon/wizard/artificer(src)
 	new /obj/item/storage/belt/soulstone/full(src)
+
+/obj/structure/closet/wizard/lich_garbs
+	name = "Lich garbs"
+	desc = "Clothes for the lich"
+
+/obj/structure/closet/wizard/lich_garbs/New()
+	..()
+	return

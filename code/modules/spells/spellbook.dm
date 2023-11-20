@@ -12,7 +12,10 @@ var/list/artefact_feedback = list(
 	/obj/item/teleportation_scroll     = "TS",
 	/obj/item/gun/energy/staff         = "ST",
 	/obj/item/gun/energy/staff/animate = "SA",
-	/obj/item/dice/d20/cursed          = "DW"
+	/obj/item/dice/d20/cursed          = "DW",
+	/obj/item/gun/whip_of_torment = "WOT",
+	/obj/item/staff/plague_bell           = "PB",
+	/obj/item/device/ghost_gramophone     = "GG"
 )
 
 /obj/item/spellbook
