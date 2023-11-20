@@ -104,8 +104,6 @@
 	var/aw_delam = FALSE
 	var/aw_EPR = FALSE
 
-	var/datum/radiation_source/rad_source = null
-
 /obj/machinery/power/supermatter/Initialize()
 	. = ..()
 	uid = gl_uid++
@@ -401,23 +399,10 @@
 			var/effect = max(0, min(200, power * config_hallucination_power * sqrt(1 / max(1, get_dist(H, src)))))
 			H.adjust_hallucination(effect, 0.25 * effect)
 
-	if(power > 0)
-		if(rad_source == null)
-			rad_source = SSradiation.radiate(src, new /datum/radiation/preset/supermatter)
-
-		rad_source.info.energy = power * (100 KILO ELECTRONVOLT)
-	else
-		qdel(rad_source)
-
 	power -= (power/DECAY_FACTOR)**3		//energy losses due to radiation
 	handle_admin_warnings()
 
 	return 1
-
-/obj/machinery/power/supermatter/Destroy()
-	qdel(rad_source)
-
-	. = ..()
 
 /obj/machinery/power/supermatter/bullet_act(obj/item/projectile/Proj)
 	var/turf/L = loc
