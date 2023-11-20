@@ -44,15 +44,14 @@
 /// Check whether mob is lying down on something we can operate him on.
 /mob/living/carbon/human/proc/can_operate(mob/user)
 	var/turf/T = get_turf(src)
-	if(locate(/obj/machinery/optable, T))
+	if(lying && locate(/obj/structure/table, T))
 		. = TRUE
-	if(locate(/obj/structure/bed, T))
+	if(lying && locate(/obj/machinery/optable, T))
 		. = TRUE
-	if(locate(/obj/structure/table, T))
+	if(lying && locate(/obj/effect/rune/, T))
 		. = TRUE
-	if(locate(/obj/effect/rune/, T))
+	if(buckled && istype(buckled, /obj/structure/bed))
 		. = TRUE
-
 
 	if(src == user)
 		var/mob/living/carbon/human/H = user // No way it can't be human at this point.
