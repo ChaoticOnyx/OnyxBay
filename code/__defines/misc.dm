@@ -314,3 +314,6 @@
 #define MAGIC_RESISTANCE_MIND (1<<1)
 /// Holy magic resistance that blocks unholy magic (vampire)
 #define MAGIC_RESISTANCE_HOLY (1<<2)
+
+//How much damage the ghosts do when attacking mobs
+#define DAMAGE_PER_GHOST 2

@@ -5,6 +5,8 @@
 	/// Points that a wizard spends to buy artifacts or spells.
 	var/points = 0
 	var/can_reset_class = TRUE
+	var/mob/living/lich = null //Variable used for necromancers to store reference to their lich
+	var/list/thralls = list()
 
 /datum/wizard/proc/reset()
 	class = null
@@ -25,3 +27,13 @@
 
 	return TRUE
 
+/datum/wizard/proc/escape_to_lich(datum/mind/necromancer)
+	if(!isliving(lich))
+		return
+
+	necromancer.transfer_to(lich)
+
+/datum/wizard/Destroy()
+	lich = null
+	QDEL_NULL(thralls)
+	return ..()

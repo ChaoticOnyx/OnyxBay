@@ -59,6 +59,7 @@
 	var/datum/vampire/vampire 			// Vampire holder
 	var/datum/wizard/wizard				// Wizard holder
 	var/datum/abductor/abductor 		// Abductor holder
+	var/datum/wizard/undead/undead             // Undead holder
 	var/weakref/enslaved_to
 	var/rev_cooldown = 0
 
