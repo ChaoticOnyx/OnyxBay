@@ -17,6 +17,7 @@
 
 
 /obj/structure/janitorialcart/New()
+	..()
 	create_reagents(180)
 
 
@@ -184,6 +185,7 @@
 
 
 /obj/structure/bed/chair/janicart/New()
+	..()
 	create_reagents(100)
 
 
