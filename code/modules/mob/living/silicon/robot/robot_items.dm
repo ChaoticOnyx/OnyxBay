@@ -401,6 +401,9 @@
 	icon_state = "shock"
 
 #define INFLATABLE_MODES list("walls", "doors", "panels")
+#define INFLATABLE_MODE_WALLS 1
+#define INFLATABLE_MODE_DOORS 2
+#define INFLATABLE_MODE_PANELS 3
 /obj/item/inflatable_dispenser
 	name = "inflatables dispenser"
 	desc = "A hand-held device which allows rapid deployment and removal of inflatables."
@@ -414,7 +417,7 @@
 	var/max_walls = 5
 	var/max_doors = 2
 	var/max_panels = 2
-	var/mode = 1 // 1 - Walls   2 - Doors   3 - Panels
+	var/mode = INFLATABLE_MODE_WALLS
 
 /obj/item/inflatable_dispenser/robot
 	desc = "A machinery-mounted device which allows rapid deployment and removal of inflatables. Has a higher storage capacity than the hand-held variation."
@@ -436,8 +439,8 @@
 
 /obj/item/inflatable_dispenser/attack_self()
 	mode++
-	if(mode > 3)
-		mode = 1
+	if(mode > INFLATABLE_MODE_PANELS)
+		mode = INFLATABLE_MODE_WALLS
 	to_chat(usr, "You set \the [src] to deploy [INFLATABLE_MODES[mode]].")
 
 /obj/item/inflatable_dispenser/afterattack(atom/A, mob/user)
@@ -455,7 +458,7 @@
 /obj/item/inflatable_dispenser/proc/try_deploy_inflatable(turf/T, mob/living/user)
 	var/result_name = ""
 	switch(mode)
-		if(3) // Panel deployment
+		if(INFLATABLE_MODE_PANELS) // Panel deployment
 			if(!stored_panels)
 				to_chat(user, "\The [src] is out of panels!")
 				return
@@ -468,7 +471,7 @@
 				else
 					P.dir = turn(user.dir, 180)
 				stored_panels--
-		if(2) // Door deployment
+		if(INFLATABLE_MODE_DOORS) // Door deployment
 			if(!stored_doors)
 				to_chat(user, "\The [src] is out of doors!")
 				return
@@ -478,7 +481,7 @@
 				new /obj/structure/inflatable/door(T)
 				stored_doors--
 
-		if(1) // Wall deployment
+		if(INFLATABLE_MODE_WALLS) // Wall deployment
 			if(!stored_walls)
 				to_chat(user, "\The [src] is out of walls!")
 				return
@@ -539,6 +542,9 @@
 	to_chat(user, "You fail to pick up \the [A] with \the [src]")
 	return
 #undef INFLATABLE_MODES
+#undef INFLATABLE_MODE_WALLS
+#undef INFLATABLE_MODE_DOORS
+#undef INFLATABLE_MODE_PANELS
 
 /obj/item/reagent_containers/spray/cleaner/drone
 	name = "space cleaner"
