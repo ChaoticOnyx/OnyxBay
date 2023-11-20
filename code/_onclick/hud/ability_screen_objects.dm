@@ -137,6 +137,8 @@
 		spell_objects.Remove(ability)
 	if(istype(ability, /obj/screen/ability/changeling_power))
 		changeling_power_objects.Remove(ability)
+	if(istype(ability, /obj/screen/ability/vampire_power))
+		vampire_power_objects.Remove(ability)
 	qdel(ability)
 
 
