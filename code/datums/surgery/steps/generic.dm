@@ -355,9 +355,10 @@
 	return (..() && parent_organ.open() == SURGERY_RETRACTED)
 
 /datum/surgery_step/generic/saw/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	var/bone = parent_organ.encased ? "[target]'s [parent_organ.encased]" : "bones in [target]'s [parent_organ]"
 	announce_preop(user,
-		"[user] begins to cut through [target]'s [parent_organ.encased] with \the [tool].",
-		"You begin to cut through [target]'s [parent_organ.encased] with \the [tool]."
+		"[user] begins to cut through [bone] with \the [tool].",
+		"You begin to cut through [bone] with \the [tool]."
 		)
 	target.custom_pain(
 		"Something hurts horribly in your [parent_organ]!",
@@ -367,16 +368,18 @@
 	return ..()
 
 /datum/surgery_step/generic/saw/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	var/bone = parent_organ.encased ? "[target]'s [parent_organ.encased]" : "bones in [target]'s [parent_organ]"
 	announce_success(user,
-		"[user] has cut [target]'s [parent_organ.encased] open with \the [tool].",
-		"You have cut [target]'s [parent_organ.encased] open with \the [tool]."
+		"[user] has cut [bone] open with \the [tool].",
+		"You have cut [bone] open with \the [tool]."
 		)
 	parent_organ.fracture()
 
 /datum/surgery_step/generic/saw/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	var/bone = parent_organ.encased ? "[target]'s [parent_organ.encased]" : "bones in [target]'s [parent_organ]"
 	announce_failure(user,
-		"[user]'s hand slips, cracking [target]'s [parent_organ.encased] with \the [tool]!" ,
-		"Your hand slips, cracking [target]'s [parent_organ.encased] with \the [tool]!"
+		"[user]'s hand slips, cracking [bone] with \the [tool]!" ,
+		"Your hand slips, cracking [bone] with \the [tool]!"
 		)
 	parent_organ.take_external_damage(
 		15,
