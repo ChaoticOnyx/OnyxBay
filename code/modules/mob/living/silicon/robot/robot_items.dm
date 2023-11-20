@@ -403,7 +403,7 @@
 /obj/item/inflatable_dispenser
 	name = "inflatables dispenser"
 	desc = "Hand-held device which allows rapid deployment and removal of inflatables."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "inf_deployer"
 	w_class = ITEM_SIZE_LARGE
 
@@ -620,7 +620,7 @@
 /obj/item/robot_rack/medical
 	name = "medical rack"
 	desc = "A rack for carrying folded stasis bags, body bags, blood packs and medical utensils."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "med_borg_box"
 	object_type = list(
 		/obj/item/bodybag,
@@ -643,7 +643,7 @@
 /obj/item/robot_rack/general
 	name = "item rack"
 	desc = "A rack for carrying various items."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "gen_borg_box"
 	object_type = list(
 		/obj/item
@@ -653,7 +653,7 @@
 /obj/item/robot_rack/weapon
 	name = "weapon rack"
 	desc = "A rack for carrying melee weapons, energy weapons and firearms."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "weaponcrate"
 	object_type = list(
 		/obj/item/melee,
@@ -664,7 +664,7 @@
 /obj/item/robot_rack/cargo
 	name = "small cargo rack"
 	desc = "A rack for carrying small and medium cargo parcels."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "cargo_borg_box"
 	object_type = list(
 		/obj/item/smallDelivery
@@ -687,7 +687,7 @@
 /obj/item/robot_rack/archeologist
 	name = "archeologist rack"
 	desc = "A rack for carrying artifacts and science samples."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "arch_borg_box"
 	object_type = list(
 		/obj/item/evidencebag,
@@ -701,7 +701,7 @@
 /obj/item/robot_rack/engineer
 	name = "engineer rack"
 	desc = "A rack for construction components."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "eng_borg_box"
 	object_type = list(
 		/obj/item/tank,
@@ -727,7 +727,7 @@
 /obj/item/robot_rack/miner
 	name = "miner rack"
 	desc = "A rack for carrying ore box."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "miner_borg_box_empty"
 	icon_state_active = "miner_borg_box_full"
 	pickup_sound = 'sound/effects/lift_heavy_start.ogg'

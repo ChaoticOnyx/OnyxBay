@@ -135,9 +135,9 @@
 /obj/item/floodlight_diy
 	name = "Emergency Floodlight Kit"
 	desc = "A do-it-yourself kit for constructing the finest of emergency floodlights."
-	icon = 'icons/obj/storage.dmi'
-	icon_state = "inf_box"
-	item_state = "syringe_kit"
+	icon = 'icons/obj/storage/misc.dmi'
+	icon_state = "flood_box"
+	item_state = "lockbox"
 
 /obj/item/floodlight_diy/attack_self(mob/user)
 	to_chat(usr, "<span class='notice'>You start piecing together the kit...</span>")
