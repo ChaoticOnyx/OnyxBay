@@ -9,7 +9,6 @@
 
 	var/list/undead_powerinstances = list()
 
-
 /datum/wizard/undead/New(mob/M, mob/necromancer)
 	..()
 	my_mob = M

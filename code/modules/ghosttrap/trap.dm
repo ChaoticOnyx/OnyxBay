@@ -206,10 +206,12 @@ var/list/ghost_traps
 	ghost_trap_message = "They are now occupying an undead body."
 	ghost_trap_role = "Undead"
 	ban_checks = list(MODE_WIZARD)
-	var/necromancer = null
+	var/necromancer
+	var/lichify
 
-/datum/ghosttrap/undead/request_player(mob/target, request_string, request_timeout, mob/living/caster)
+/datum/ghosttrap/undead/request_player(mob/target, request_string, request_timeout, mob/living/caster, should_lichify = FALSE)
 	necromancer = caster
+	lichify = should_lichify
 	return ..()
 
 /datum/ghosttrap/undead/transfer_personality(mob/candidate, mob/target)
@@ -227,7 +229,7 @@ var/list/ghost_traps
 /datum/ghosttrap/undead/welcome_candidate(mob/target)
 	ASSERT(ishuman(target))
 	var/mob/living/carbon/human/new_undead = target
-	new_undead.make_undead(necromancer)
+	new_undead.make_undead(necromancer, lichify)
 
 /datum/ghosttrap/undead/assess_candidate(mob/observer/ghost/candidate, mob/target, feedback = TRUE)
 	return TRUE

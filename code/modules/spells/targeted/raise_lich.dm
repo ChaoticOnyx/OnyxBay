@@ -1,4 +1,4 @@
-/datum/spell/targeted/raiselich
+/datum/spell/targeted/raiseundead/lichify
 	name = "Raise Lich"
 	desc = "This spell turns your undead to a powerful lich that can learn spells and will serve you as a reserve vessel for your soul should your original body decease."
 	feedback = "" /// IDK WHAT IT DOES, TODO: understand var/feedback
@@ -17,29 +17,28 @@
 
 	icon_state = "wiz_lichify"
 
-/datum/spell/targeted/raiselich/perform(mob/user = usr)
+	should_lichify = TRUE
+
+/datum/spell/targeted/raiseundead/lichify/perform(mob/user = usr, skipcharge = TRUE)
 	if(user.mind.wizard.lich)
 		to_chat(user, SPAN_WARNING("You can only have one lich!"))
-		return FALSE
+		return
 
 	return ..()
 
-/datum/spell/targeted/raiselich/choose_targets(mob/user = usr)
+/datum/spell/targeted/raiseundead/lichify/choose_targets(mob/user = usr)
 	var/list/possible_targets = list()
 
-	for(var/mob/living/target in user.mind.wizard.thralls)
-		if(!target.mind.wizard || !istype(target.mind.wizard, /datum/wizard/undead))
+	for(var/mob/living/target in view(world.view, user))
+		if(target.mind.wizard && (target.mind.wizard in user.mind.wizard.thralls))
+			possible_targets += target
 			continue
-		if(get_dist(user, target) > world.view)
+
+		if(!target.is_ic_dead() || target.isSynthetic())
 			continue
+
 		possible_targets += target
 
 	var/mob/target = tgui_input_list(user, "Choose the target for the spell.", "Targeting", possible_targets)
-	if(!target)
-		return
 
 	return target
-
-/datum/spell/targeted/raiselich/cast(mob/living/target)
-	var/datum/wizard/undead/undead = target.mind.wizard
-	undead.lichify()

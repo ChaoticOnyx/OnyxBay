@@ -17,7 +17,7 @@ proc/generate_tracer_between_points(obj/item/projectile/source, datum/point/star
 
 /obj/effect/projectile/tracer/laser
 	name = "laser"
-	icon_state = "beam"
+	icon_state = "tracer_whip"
 	light_color = COLOR_RED_LIGHT
 
 /obj/effect/projectile/tracer/laser/blue
