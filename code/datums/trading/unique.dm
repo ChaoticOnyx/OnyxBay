@@ -51,7 +51,7 @@
 		TRADER_NO_MONEY           = "I d-don't NEED cash.",
 		TRADER_NOT_ENOUGH         = "N-no, no no no. M-more than that... more...",
 		TRADER_FOUND_UNWANTED     = "I d-don't think you GET what I want, fr- from your offer.",
-		TRADER_HOW_MUCH           = "Meat. I want meat. The kind they don't serve in the- the mess hall."
+		TRADER_HOW_MUCH           = "Meat. I want meat. The kind they don't serve in the- the mess hall.",
 		TRADER_WHAT_WANT          = "Long p-pork. Yes... that's what I want...",
 
 		TRADER_COMPLEMENT_FAILURE = "Your lies won't ch-change what I did.",

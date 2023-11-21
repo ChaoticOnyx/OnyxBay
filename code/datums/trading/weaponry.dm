@@ -72,9 +72,6 @@
 		TRADER_COMPLEMENT_SUCCESS = "Yes, I am very smart.",
 		TRADER_INSULT_GOOD        = "Energy weapons are TWICE the gun kinetic guns are!",
 		TRADER_INSULT_BAD         = "That's... very mean. I won't think twice about blacklisting your channel, so stop."
-
-		TRADER_BRIBE_FAILURE      =
-		TRADER_BRIBE_SUCCESS      =
 	)
 
 	possible_trading_items = list(/obj/item/gun/energy/taser							= TRADER_THIS_TYPE,

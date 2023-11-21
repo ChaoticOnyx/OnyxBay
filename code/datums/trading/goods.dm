@@ -220,7 +220,7 @@ Sells devices, odds and ends, and medical stuff
 	possible_origins = list("Buy 'n Save", "Drug Carnival", "C&B", "Fentles", "Dr. Goods", "Beevees", "McGillicuddy's")
 
 	speech = list(
-		TRADER_HAIL_GENERIC       = "Hello, hello! Bits and bobs and everything in between, I hope you find what you're looking for!"
+		TRADER_HAIL_GENERIC       = "Hello, hello! Bits and bobs and everything in between, I hope you find what you're looking for!",
 		TRADER_HAIL_DENY          = "Oh no. I don't want to deal with YOU.",
 
 		TRADER_TRADE_COMPLETE     = "Thank you! Now remember, there isn't any return policy here, so be careful with that!",

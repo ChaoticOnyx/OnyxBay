@@ -6,25 +6,6 @@
 	possible_origins = list("Paws-Out", "Pets-R-Smart", "Tentacle Companions", "Xeno-Pets and Assorted Goods", "Barks and Drools")
 
 	speech = list(
-		TRADER_HAIL_GENERIC       =
-		TRADER_HAIL_DENY          =
-
-		TRADER_TRADE_COMPLETE     =
-		TRADER_NO_BLACKLISTED     =
-		TRADER_NOT_ENOUGH         =
-		TRADER_HOW_MUCH           =
-		TRADER_WHAT_WANT          =
-
-		TRADER_COMPLEMENT_FAILURE =
-		TRADER_COMPLEMENT_SUCCESS =
-		TRADER_INSULT_GOOD        =
-		TRADER_INSULT_BAD         =
-
-		TRADER_BRIBE_FAILURE      =
-		TRADER_BRIBE_SUCCESS      =
-	)
-
-	speech = list(
 		TRADER_HAIL_GENERIC       = "Welcome to my xeno-pet shop! Here you will find many wonderful companions. Some a bit more... aggressive than others. But companions none the less. I also buy pets, or trade them.",
 		TRADER_HAIL_DENY          = "I no longer wish to speak to you.",
 

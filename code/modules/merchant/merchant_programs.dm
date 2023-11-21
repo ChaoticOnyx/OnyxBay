@@ -79,7 +79,7 @@
 	if(pad)
 		get_response(T.offer_money_for_trade(num, bank, get_turf(pad)))
 	else
-	last_comms = "PAD NOT CONNECTED"
+		last_comms = "PAD NOT CONNECTED"
 
 /datum/computer_file/program/merchant/proc/bribe(datum/trader/T, amt)
 	if(bank < amt)
@@ -101,7 +101,7 @@
 /datum/computer_file/program/merchant/proc/sell_items(datum/trader/T)
 	if(pad)
 		var/list/targets = pad.get_targets()
-		get_response(T.sell_items(targets, skill))
+		get_response(T.sell_items(targets))
 	else
 		last_comms = "PAD NOT CONNECTED"
 
@@ -198,7 +198,7 @@
 				offer_item(T,text2num(href_list["PRG_offer_item"]) + 1)
 			if(href_list["PRG_how_much_do_you_want"])
 				. = 1
-				get_response(T.how_much_do_you_want(text2num(href_list["PRG_how_much_do_you_want"]) + 1, user.get_skill_value(SKILL_FINANCE)))
+				get_response(T.how_much_do_you_want(text2num(href_list["PRG_how_much_do_you_want"]) + 1))
 			if(href_list["PRG_offer_money_for_item"])
 				. = 1
 				offer_money(T, text2num(href_list["PRG_offer_money_for_item"])+1)

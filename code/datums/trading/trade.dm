@@ -105,7 +105,7 @@
 /datum/trader/proc/get_possible_item(list/trading_pool)
 	if(!trading_pool || !trading_pool.len)
 		return
-	var/picked = pick(possible)
+	var/picked = pick(trading_pool)
 	var/atom/A = picked
 	// Weed out a few of the common bad types. Reason we don't check types specifically is that (hopefully) further bad subtypes don't set their name up and are similar.
 	if(initial(A.name) in list("object", "item","weapon", "structure", "machinery", "Mecha", "organ", "snack"))
@@ -283,6 +283,7 @@
 	playsound(offers[1], 'sound/effects/teleport.ogg', 50, 1)
 	for(var/offer in offers)
 		qdel(offer)
+	return make_response(TRADER_TRADE_COMPLETE, "Thanks for the goods!", total, TRUE)
 
 /datum/trader/proc/bribe_to_stay_longer(amt)
 	return make_response(TRADER_BRIBE_FAILURE, "How about no?", 0, FALSE)
