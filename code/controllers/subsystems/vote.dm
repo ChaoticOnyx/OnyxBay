@@ -212,9 +212,11 @@ SUBSYSTEM_DEF(vote)
 		You have [duration] seconds to vote."))))
 
 	// And now that it's going, give everyone a voter action
-	notify_ghosts("Vote: [current_vote.override_question || current_vote.name]", sound(current_vote.vote_sound), src, image('icons/hud/actions.dmi',"vote"), NOTIFY_VOTE, header = "Vote: [current_vote.override_question || current_vote.name]")
+	notify_ghosts("Vote: [current_vote.override_question || current_vote.name]", src, image('icons/hud/actions.dmi',"vote"), NOTIFY_VOTE, header = "Vote: [current_vote.override_question || current_vote.name]", flashwindow=FALSE)
 
-	for(var/mob/living/new_voter in GLOB.player_list)
+	for(var/mob/new_voter in GLOB.player_list)
+		sound_to(new_voter, sound(current_vote.vote_sound))
+		winset(new_voter.client, "mainwindow", "flash=5")
 		if(!isliving(new_voter))
 			continue
 		var/datum/action/vote/voting_action = new()
@@ -222,10 +224,6 @@ SUBSYSTEM_DEF(vote)
 		voting_action.Grant(new_voter)
 
 		generated_actions += voting_action
-
-		sound_to(new_voter, sound(current_vote.vote_sound))
-		winset(new_voter.client, "mainwindow", "flash=5")
-
 	return TRUE
 
 /datum/controller/subsystem/vote/tgui_state()
@@ -264,29 +262,36 @@ SUBSYSTEM_DEF(vote)
 
 		var/list/vote_data = list(
 			"name" = vote_name,
-			"canBeInitiated" = vote.can_be_initiated(forced = is_lower_admin),
+			"canBeInitiated" = vote.can_be_initiated(user.client.mob, forced = is_lower_admin),
 			"config" = vote.is_config_enabled(),
 			"message" = vote.message,
 		)
 
-		if(vote == current_vote)
-			var/list/choices = list()
-			for(var/key in current_vote.choices)
-				choices += list(list(
-					"name" = key,
-					"votes" = current_vote.choices[key],
-				))
-
-			data["currentVote"] = list(
-				"name" = current_vote.name,
-				"question" = current_vote.override_question,
-				"timeRemaining" = current_vote.time_remaining,
-				"countMethod" = current_vote.count_method,
-				"choices" = choices,
-				"vote" = vote_data,
-			)
-
 		all_vote_data += list(vote_data)
+
+	if(!isnull(current_vote))
+		var/list/vote_data = list(
+			"name" = current_vote.name,
+			"canBeInitiated" = current_vote.can_be_initiated(user.client.mob, forced = is_lower_admin),
+			"config" = current_vote.is_config_enabled(),
+			"message" = current_vote.message,
+		)
+
+		var/list/choices = list()
+		for(var/key in current_vote.choices)
+			choices += list(list(
+				"name" = key,
+				"votes" = current_vote.choices[key],
+			))
+
+		data["currentVote"] = list(
+			"name" = current_vote.name,
+			"question" = current_vote.override_question,
+			"timeRemaining" = current_vote.time_remaining,
+			"countMethod" = current_vote.count_method,
+			"choices" = choices,
+			"vote" = vote_data,
+		)
 
 	data["possibleVotes"] = all_vote_data
 
