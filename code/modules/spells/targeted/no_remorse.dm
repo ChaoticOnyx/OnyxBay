@@ -17,10 +17,9 @@
 
 	compatible_mobs = list(/mob/living)
 
-	icon_state = "wiz_disint"
+	icon_state = "wiz_noremorse"
 
 	cast_sound = 'sound/effects/squelch2.ogg'
-
 
 /datum/spell/targeted/noremorse/cast(list/targets, mob/user)
 	var/mob/living/victim = targets[1]
@@ -29,8 +28,5 @@
 
 	notify_ghosts("A powerful necromancer has allowed you to exact revenge on [victim] ", null, victim, action = NOTIFY_JUMP, posses_mob = FALSE)
 
-
 /datum/modifier/status_effect/ghostattackable
-	name = "" //TODO WRITE
-	desc = "" //TODO WRITE
-	duration = 100 //10 seconds
+	duration = 10 SECONDS

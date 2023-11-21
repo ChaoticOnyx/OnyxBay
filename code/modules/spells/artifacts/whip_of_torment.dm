@@ -1,46 +1,39 @@
-/obj/item/melee/baton/whip_of_torment
+/obj/item/gun/whip_of_torment // Yes, it is a gun but a whip. Nuff said.
 	name = "Whip of torment"
-	desc = ""//THINK THINK
-	icon = 'icons/obj/weapons.dmi'
-	icon_state = "baton"
-	item_state = "classic_baton"
-	slot_flags = SLOT_BELT
-	force = 20
-	mod_weight = 1.25
-	mod_reach = 1.25
-	mod_handy = 1.5
-	hitcost = 0 //YEP
-	stunforce = 8
-	agonyforce = 80
-	status = 1 //It is always ON
+	desc = "" //TODO THINK THINK
+	icon = 'icons/obj/wizard.dmi'
+	icon_state = "whip_of_torment"
+	item_state = "whip_of_torment"
 
-/obj/item/melee/baton/whip_of_torment/New()
-	bcell = new /obj/item/cell/device/high(src)
+	var/projectile_type = /obj/item/projectile/whip_of_torment
 
-/obj/item/melee/baton/whip_of_torment/examine_cell()
-	return
+/obj/item/gun/whip_of_torment/consume_next_projectile()
+	var/obj/item/projectile/whip_of_torment/P = new projectile_type(src)
+	return(P)
 
-/obj/item/melee/baton/whip_of_torment/change_status()
-	return
+/obj/item/projectile/whip_of_torment
+	name = "Whip"
+	icon_state = null
+	hitscan = TRUE
 
-/obj/item/melee/baton/whip_of_torment/set_status()
-	return
+	var/list/tracer_list = list()
+	muzzle_type = /obj/effect/projectile/muzzle/wizardwhip
+	tracer_type = /obj/effect/projectile/tracer/wizardwhip
+	impact_type = /obj/effect/projectile/impact/wizardwhip
 
-/obj/item/melee/baton/whip_of_torment/attack(mob/M, mob/user)
-	if(user != master && ((MUTATION_CLUMSY in user.mutations) && prob(50)))
-		to_chat(user, "<span class='danger'>You accidentally hit yourself with the [src]!</span>")
-		user.Weaken(30)
+/obj/item/projectile/changeling_whip/on_hit(atom/target, def_zone = BP_CHEST, blocked = 0)
+	if(isturf(target))
 		return
 
+	var/atom/movable/T = target
 	return ..()
 
+/obj/effect/projectile/muzzle/wizardwhip
+	icon_state = "muzzle_whip"
 
-/obj/item/melee/baton/whip_of_torment/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/cell/device))
-		return
+/obj/effect/projectile/tracer/wizardwhip
+	icon_state = "tracer_whip"
 
-	else if(isScrewdriver(W))
-		return
-
-	else
-		..()
+/obj/effect/projectile/impact/wizardwhip
+	var/time_to_live = 2
+	icon_state = "impact_whip"

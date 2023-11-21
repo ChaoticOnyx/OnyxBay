@@ -7,6 +7,7 @@
 /obj/item/staff/plague_bell
 	name = "Cursed Plague Bell"
 	desc = "" //TODO THINK MORON THINK
+	icon_state = "plague_bell"
 
 	var/siphon = FALSE //Used to toggle life siphoning from surrounding mobs
 	var/accumulated_heal = 0 //Stores accumulated charge that is spent on healing attacks
@@ -19,7 +20,6 @@
 	var/damage_notification = "You are hit with a blast of something vile and abhorrent!"
 	action_button_name = "Toggle Siphon"
 
-
 /obj/item/staff/plague_bell/attack_self(mob/user)
 	if(!master)
 		master = user
@@ -29,7 +29,6 @@
 	toggle_siphon(!siphon, user)
 	user.update_action_buttons()
 	return TRUE
-
 
 /obj/item/staff/plague_bell/proc/toggle_siphon(state, mob/living/M)
 	if(M != master)
@@ -42,7 +41,6 @@
 		set_next_think(world.time +1 SECONDS)
 	else
 		set_next_think(0)
-
 
 /obj/item/staff/plague_bell/think()
 	if(!isliving(src.loc) || !ishuman(src.loc))
@@ -107,7 +105,6 @@
 
 	set_next_think(world.time +1 SECONDS)
 
-
 /obj/item/staff/plague_bell/_examine_text(mob/user)
 	. = ..()
 	if(user != master)
@@ -123,7 +120,6 @@
 		return FALSE
 
 	..()
-
 
 /obj/item/staff/plague_bell/apply_hit_effect(mob/living/target, mob/user, proximity)
 	if(!istype(user,/mob/living/carbon/human)) //Something went wrong, master of this staff should be human
@@ -155,19 +151,16 @@
 	can_heal = FALSE
 	can_damage = FALSE
 
-
 /datum/spell/targeted/siphon_heal
 	name = "Siphon heal"
 	desc = "A spell to reduce copypasta. You should not see this at all."
 
 	heals_internal_bleeding = TRUE
 
-
 /datum/spell/targeted/siphon_heal/major
 	heals_external_bleeding = TRUE
 	heal_bones = TRUE
 	amt_organ = 20
-
 
 #undef VALUE_REDUCTION
 #undef HEALING_THRESHOLD_MINOR

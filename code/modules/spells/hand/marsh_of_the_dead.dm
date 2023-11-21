@@ -14,16 +14,14 @@
 	invocation_type = SPI_NONE
 	show_message = " snaps their fingers."
 	spell_delay = 50
-	icon_state = ""///
+	icon_state = "wiz_marsh"
 	level_max = list(SP_TOTAL = 3, SP_SPEED = 1, SP_POWER = 2)
 	var/damage = 0
-
 
 /datum/spell/hand/marsh_of_the_dead/cast_hand(atom/a, mob/user)
 	for(var/turf/simulated/T in view(1,a))
 		new /obj/effect/deadhands(T, damage)
 	return ..()
-
 
 /datum/spell/hand/marsh_of_the_dead/empower_spell()
 	. = ..()
@@ -32,7 +30,6 @@
 	damage += MARSH_DAMAGE_PER_UPGRADE
 
 	return "[src] now lasts longer."
-
 
 ///////////////////////////////////
 /// Hands effect TODO change file loc
@@ -49,7 +46,6 @@
 	unacidable = 1
 	var/damage = 0
 
-
 /obj/effect/deadhands/New(turf/t, damage_amount)
 	. = ..()
 	set_next_think(world.time + MARSH_ACTIVE_TIME)
@@ -59,11 +55,9 @@
 	qdel_self()
 	set_next_think(0)
 
-
 /obj/effect/deadhands/Crossed(atom/movable/O)
 	if(is_valid_target(O))
 		grab(O)
-
 
 /obj/effect/deadhands/proc/is_valid_target(mob/living/victim)
 	if(!victim)
@@ -73,7 +67,6 @@
 		return FALSE
 
 	return TRUE
-
 
 /obj/effect/deadhands/proc/grab(mob/living/victim)
 	if(victim.anchored) //Already got em
@@ -97,13 +90,11 @@
 		victim.set_dir(pick(GLOB.cardinal))
 		to_chat(victim, SPAN_DANGER("The hands clench around your ankles!"))
 
-
 /obj/effect/deadhands/attack_hand(mob/user)
 	if(buckled_mob)
 		user_unbuckle_mob(user)
 	else
 		..()
-
 
 /obj/effect/deadhands/user_unbuckle_mob(mob/user)
 	visible_message(
@@ -116,7 +107,6 @@
 
 	else
 		return FALSE
-
 
 #undef MARSH_ACTIVE_TIME
 #undef MARSH_MIN_UNBUCKLE_TIME
