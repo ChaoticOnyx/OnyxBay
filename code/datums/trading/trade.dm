@@ -63,12 +63,17 @@
 
 /datum/trader/proc/generate_pool(var/list/trading_pool)
 	. = list()
+	// Add types
 	for(var/type in trading_pool)
 		var/status = trading_pool[type]
 		if(status & TRADER_THIS_TYPE)
 			. += type
 		if(status & TRADER_SUBTYPES_ONLY)
 			. += subtypesof(type)
+
+	// Remove blacklisted
+	for(var/type in .)
+		var/status = trading_pool[type]
 		if(status & TRADER_BLACKLIST)
 			. -= type
 		if(status & TRADER_BLACKLIST_SUB)
