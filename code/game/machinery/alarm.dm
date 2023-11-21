@@ -11,9 +11,7 @@
 	ret = 0; \
 	var/partial_pressure = R_IDEAL_GAS_EQUATION * environment.temperature / environment.volume; \
 	var/environment_pressure = environment.return_pressure(); \
-	var/other_moles = 0; \
-	for(var/g in trace_gas) { \
-		other_moles += environment.gas[g]; } \
+	var/other_moles = environment.total_moles - (environment.gas["oxygen"] + environment.gas["nitrogen"] + environment.gas["carbon_dioxide"]); \
 	GET_DANGER_LEVEL(pressure_dangerlevel, environment_pressure, TLV["pressure"]) \
 	GET_DANGER_LEVEL(oxygen_dangerlevel, (environment.gas["oxygen"] * partial_pressure), TLV["oxygen"]) \
 	GET_DANGER_LEVEL(co2_dangerlevel, (environment.gas["carbon_dioxide"] * partial_pressure), TLV["carbon dioxide"]) \
@@ -93,7 +91,6 @@
 	var/datum/radio_frequency/radio_connection
 
 	var/list/TLV = list()
-	var/list/trace_gas = list() //list of other gases that this air alarm is able to detect
 
 	var/danger_level = 0
 	var/pressure_dangerlevel = 0
@@ -165,10 +162,6 @@
 	TLV["other"] =			list(-1.0, -1.0, 0.2, 0.5) // Partial pressure, kpa
 	TLV["pressure"] =		list(ONE_ATMOSPHERE*0.80,ONE_ATMOSPHERE*0.90,ONE_ATMOSPHERE*1.10,ONE_ATMOSPHERE*1.20) /* kpa */
 	TLV["temperature"] =	list(-26 CELSIUS, 0 CELSIUS, 40 CELSIUS, 66 CELSIUS)
-
-	for(var/g in gas_data.gases)
-		if(!(g in list("oxygen","nitrogen","carbon_dioxide")))
-			trace_gas += g
 
 	set_frequency(frequency)
 	if (!master_is_operating())
@@ -541,9 +534,7 @@
 		environment_data[++environment_data.len] = list("name" = "Nitrogen", "value" = environment.gas["nitrogen"] / total * 100, "unit" = "%", "danger_level" = oxygen_dangerlevel)
 		environment_data[++environment_data.len] = list("name" = "Carbon dioxide", "value" = environment.gas["carbon_dioxide"] / total * 100, "unit" = "%", "danger_level" = co2_dangerlevel)
 
-		var/other_moles = 0
-		for(var/g in trace_gas)
-			other_moles += environment.gas[g]
+		var/other_moles = total - (environment.gas["oxygen"] + environment.gas["nitrogen"] + environment.gas["carbon_dioxide"])
 		environment_data[++environment_data.len] = list("name" = "Other Gases", "value" = other_moles / total * 100, "unit" = "%", "danger_level" = other_dangerlevel)
 
 		environment_data[++environment_data.len] = list("name" = "Temperature", "value" = environment.temperature, "unit" = "K ([round(CONV_KELVIN_CELSIUS(environment.temperature), 0.1)]C)", "danger_level" = temperature_dangerlevel)
