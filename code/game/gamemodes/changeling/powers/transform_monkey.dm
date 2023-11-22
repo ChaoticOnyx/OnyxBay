@@ -71,7 +71,7 @@
 	C.icon = null
 	C.overlays.Cut()
 	C.set_invisibility(101)
-	var/atom/movable/overlay/animation = new /atom/movable/overlay( C.loc )
+	var/atom/movable/fake_overlay/animation = new /atom/movable/fake_overlay( C.loc )
 	animation.icon_state = "blank"
 	animation.icon = 'icons/mob/mob.dmi'
 	animation.master = src

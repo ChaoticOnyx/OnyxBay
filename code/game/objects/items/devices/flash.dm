@@ -100,7 +100,7 @@
 		var/mob/living/silicon/S = user
 		if (S.sensor_mode != FLASH_PROTECTION_VISION)
 			spawn(0)
-				var/atom/movable/overlay/animation = new(user.loc)
+				var/atom/movable/fake_overlay/animation = new(user.loc)
 				animation.plane = user.plane
 				animation.layer = user.layer + 0.01
 				animation.icon_state = "blank"
@@ -152,7 +152,7 @@
 		var/mob/living/silicon/robot/S = user
 		if (S.sensor_mode != FLASH_PROTECTION_VISION)
 			spawn(0)
-				var/atom/movable/overlay/animation = new(user.loc)
+				var/atom/movable/fake_overlay/animation = new(user.loc)
 				animation.plane = user.plane
 				animation.layer = user.layer + 0.01
 				animation.icon_state = "blank"

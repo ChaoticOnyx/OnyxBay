@@ -27,7 +27,7 @@
 		M.canmove = 0
 		M.icon = null
 		M.set_invisibility(101)
-		var/atom/movable/overlay/animation = new( M.loc )
+		var/atom/movable/fake_overlay/animation = new( M.loc )
 		animation.icon_state = "blank"
 		animation.icon = 'icons/mob/mob.dmi'
 		animation.master = src
@@ -102,7 +102,7 @@
 		M.canmove = 0
 		M.icon = null
 		M.set_invisibility(101)
-		var/atom/movable/overlay/animation = new( M.loc )
+		var/atom/movable/fake_overlay/animation = new( M.loc )
 		animation.icon_state = "blank"
 		animation.icon = 'icons/mob/mob.dmi'
 		animation.master = src

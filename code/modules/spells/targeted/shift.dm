@@ -11,12 +11,12 @@
 
 	icon_state = "const_shift"
 
-/datum/spell/targeted/ethereal_jaunt/shift/jaunt_disappear(atom/movable/overlay/animation, mob/living/target)
+/datum/spell/targeted/ethereal_jaunt/shift/jaunt_disappear(atom/movable/fake_overlay/animation, mob/living/target)
 	animation.icon_state = "phase_shift"
 	animation.dir = target.dir
 	flick("phase_shift",animation)
 
-/datum/spell/targeted/ethereal_jaunt/shift/jaunt_reappear(atom/movable/overlay/animation, mob/living/target)
+/datum/spell/targeted/ethereal_jaunt/shift/jaunt_reappear(atom/movable/fake_overlay/animation, mob/living/target)
 	animation.icon_state = "phase_shift2"
 	animation.dir = target.dir
 	flick("phase_shift2",animation)
