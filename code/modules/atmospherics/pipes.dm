@@ -300,10 +300,10 @@
 				qdel(meter)
 		qdel(src)
 	else if(node1 && node2)
-		AddOverlays(icon_manager.get_atmos_icon("pipe",) , pipe_color, "[pipe_icon]intact[icon_connect_type]")
+		AddOverlays(icon_manager.get_atmos_icon("pipe", , pipe_color, "[pipe_icon]intact[icon_connect_type]"))
 		set_leaking(FALSE)
 	else
-		AddOverlays(icon_manager.get_atmos_icon("pipe",) , pipe_color, "[pipe_icon]exposed[node1?1:0][node2?1:0][icon_connect_type]")
+		AddOverlays(icon_manager.get_atmos_icon("pipe", , pipe_color, "[pipe_icon]exposed[node1?1:0][node2?1:0][icon_connect_type]"))
 		set_leaking(TRUE)
 
 /obj/machinery/atmospherics/pipe/simple/update_underlays()
