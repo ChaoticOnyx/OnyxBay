@@ -99,7 +99,7 @@ var/list/holder_mob_icon_cache = list()
 	color = held_mob.color
 	name = held_mob.name
 	desc = held_mob.desc
-	overlays |= held_mob.overlays
+	AddOverlays(held_mob.overlays)
 
 	update_held_icon()
 

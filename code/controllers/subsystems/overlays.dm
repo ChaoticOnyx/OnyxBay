@@ -301,6 +301,6 @@ SUBSYSTEM_DEF(overlays)
 	if(!istype(other))
 		return
 	if(cache_target & ATOM_ICON_CACHE_PROTECTED)
-		overlays |= other.atom_protected_overlay_cache
+		AddOverlays(other.atom_protected_overlay_cache)
 	if(cache_target & ATOM_ICON_CACHE_NORMAL)
-		overlays |= other.atom_overlay_cache
+		AddOverlays(other.atom_overlay_cache)

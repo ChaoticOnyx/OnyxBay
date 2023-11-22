@@ -115,7 +115,7 @@ var/list/floor_light_cache = list()
 				I.plane = FLOAT_PLANE
 				I.layer = layer+0.001
 				floor_light_cache[cache_key] = I
-			overlays |= floor_light_cache[cache_key]
+			AddOverlays(floor_light_cache[cache_key])
 		else
 			if(damaged == 0) //Needs init.
 				damaged = rand(1,4)
@@ -126,7 +126,7 @@ var/list/floor_light_cache = list()
 				I.plane = FLOAT_PLANE
 				I.layer = layer+0.001
 				floor_light_cache[cache_key] = I
-			overlays |= floor_light_cache[cache_key]
+			AddOverlays(floor_light_cache[cache_key])
 
 /obj/machinery/floor_light/proc/broken()
 	return (stat & (BROKEN|NOPOWER))

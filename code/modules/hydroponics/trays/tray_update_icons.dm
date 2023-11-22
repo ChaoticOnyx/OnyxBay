@@ -70,7 +70,7 @@
 			set_density(0)
 		set_opacity(0)
 
-	overlays |= new_overlays
+	AddOverlays(new_overlays)
 	//shift that shit pls god
 	if(istype(src, /obj/machinery/portable_atmospherics/hydroponics/soil) && length(overlays) == 1)
 		var/icon/fockenplant = overlays[1]

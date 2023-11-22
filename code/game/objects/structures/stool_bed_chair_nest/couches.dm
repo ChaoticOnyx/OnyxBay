@@ -79,7 +79,7 @@
 			I.color = material.icon_colour
 		I.layer = ABOVE_HUMAN_LAYER
 		stool_cache[cache_key] = I
-	overlays |= stool_cache[cache_key]
+	AddOverlays(stool_cache[cache_key])
 	if(buckled_mob)
 		cache_key = "[base_icon]_armrest"
 		var/image/I = image('icons/obj/furniture.dmi', "[base_icon]_armrest")
@@ -87,7 +87,7 @@
 		if(material_alteration & MATERIAL_ALTERATION_COLOR)
 			I.color = padding_material.icon_colour
 		stool_cache[cache_key] = I
-		overlays |= stool_cache[cache_key]
+		AddOverlays(stool_cache[cache_key])
 
 	if(health <= max_health*0.33)
 		AddOverlays(icon('icons/obj/furniture.dmi',) "couch-tear")

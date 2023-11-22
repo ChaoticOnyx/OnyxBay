@@ -179,7 +179,7 @@
 			if (i != 1)
 				I.Shift(WEST, i)
 
-			overlays |= I
+			AddOverlays(I)
 
 /obj/item/storage/box/shotgun/shells
 	icon_state = "shotgunshells"

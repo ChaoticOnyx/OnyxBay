@@ -183,7 +183,7 @@ var/list/mob_hat_cache = list()
 		CutOverlays("eyes")
 
 	if(hat) // Let the drones wear hats.
-		overlays |= get_hat_icon(hat, hat_x_offset, hat_y_offset)
+		AddOverlays(get_hat_icon(hat,) hat_x_offset, hat_y_offset)
 
 /mob/living/silicon/robot/drone/choose_hull()
 	return

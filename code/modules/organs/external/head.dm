@@ -157,7 +157,7 @@
 
 	overlays = mob_overlays
 
-	overlays |= get_hair_icon() // Hair is handled separately for mob icon so we do not add it to mob_overlays Maybe this should change sometime
+	AddOverlays(get_hair_icon()) // Hair is handled separately for mob icon so we do not add it to mob_overlays Maybe this should change sometime
 
 /obj/item/organ/external/head/proc/get_hair_icon()
 	var/image/res = image(species.icon_template,"")

@@ -29,33 +29,33 @@ var/list/flooring_cache = list()
 				var/turf/simulated/floor/T = get_step(src, step_dir)
 				if(!istype(T) || !T.flooring || T.flooring.name != flooring.name)
 					has_border |= step_dir
-					overlays |= get_flooring_overlay("[flooring.icon_base]-edge-[step_dir]", "[flooring.icon_base]_edges", step_dir)
+					AddOverlays(get_flooring_overlay("[flooring.icon_base]-edge-[step_dir]",) "[flooring.icon_base]_edges", step_dir)
 
 			for(var/diagonal in list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
 				if((has_border & diagonal) == diagonal)
-					overlays |= get_flooring_overlay("[flooring.icon_base]-edge-[diagonal]", "[flooring.icon_base]_edges", diagonal)
+					AddOverlays(get_flooring_overlay("[flooring.icon_base]-edge-[diagonal]",) "[flooring.icon_base]_edges", diagonal)
 				if((has_border & diagonal) == 0 && (flooring.flags & TURF_HAS_CORNERS))
 					var/turf/simulated/floor/T = get_step(src, diagonal)
 					if(!(istype(T) && T.flooring && T.flooring.name == flooring.name))
-						overlays |= get_flooring_overlay("[flooring.icon_base]-corner-[diagonal]", "[flooring.icon_base]_corners", diagonal)
+						AddOverlays(get_flooring_overlay("[flooring.icon_base]-corner-[diagonal]",) "[flooring.icon_base]_corners", diagonal)
 
 		if(flooring.can_paint && decals && decals.len)
-			overlays |= decals
+			AddOverlays(decals)
 
 	else if(decals && decals.len)
 		for(var/image/I in decals)
 			if(I.layer < layer)
 				continue
-			overlays |= I
+			AddOverlays(I)
 
 	if(is_plating() && !(isnull(broken) && isnull(burnt))) //temp, todo
 		icon = 'icons/turf/flooring/plating.dmi'
 		icon_state = "[base_icon_state]_dmg[rand(1,4)]"
 	else if(flooring)
 		if(!isnull(broken) && (flooring.flags & TURF_CAN_BREAK))
-			overlays |= get_damage_overlay("broken[broken]", BLEND_MULTIPLY)
+			AddOverlays(get_damage_overlay("broken[broken]",) BLEND_MULTIPLY)
 		if(!isnull(burnt) && (flooring.flags & TURF_CAN_BURN))
-			overlays |= get_damage_overlay("burned[burnt]")
+			AddOverlays(get_damage_overlay("burned[burnt]"))
 
 	if(update_neighbors)
 		for(var/turf/simulated/floor/F in orange(src, 1))

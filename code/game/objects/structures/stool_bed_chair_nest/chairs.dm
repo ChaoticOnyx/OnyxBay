@@ -51,7 +51,7 @@
 			I.color = material.icon_colour
 		I.layer = ABOVE_HUMAN_LAYER
 		stool_cache[cache_key] = I
-	overlays |= stool_cache[cache_key]
+	AddOverlays(stool_cache[cache_key])
 	// Padding overlay.
 	if(padding_material)
 		var/padding_cache_key = "[base_icon]-padding-[padding_material.name]-over"
@@ -61,7 +61,7 @@
 				I.color = padding_material.icon_colour
 			I.layer = ABOVE_HUMAN_LAYER
 			stool_cache[padding_cache_key] = I
-		overlays |= stool_cache[padding_cache_key]
+		AddOverlays(stool_cache[padding_cache_key])
 
 	if(buckled_mob && padding_material)
 		cache_key = "[base_icon]-armrest-[padding_material.name]"
@@ -71,7 +71,7 @@
 			if(material_alteration & MATERIAL_ALTERATION_COLOR)
 				I.color = padding_material.icon_colour
 			stool_cache[cache_key] = I
-		overlays |= stool_cache[cache_key]
+		AddOverlays(stool_cache[cache_key])
 
 /obj/structure/bed/chair/set_dir()
 	..()
