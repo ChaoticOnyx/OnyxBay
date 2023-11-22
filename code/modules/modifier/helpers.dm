@@ -105,7 +105,7 @@
 /mob/living/carbon/human/proc/remove_layer(cache_index)
 	var/I = overlays_standing[cache_index]
 	if(I)
-		overlays.Cut(I)
+	.ClearOverlays()(I)
 		overlays_standing[cache_index] = null
 
 

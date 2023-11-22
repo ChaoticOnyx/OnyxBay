@@ -866,7 +866,7 @@
 	if(!healths)
 		return
 
-	healths.overlays.Cut()
+	healths.ClearOverlays()()
 
 	if(is_ic_dead())
 		LAZYADD(healths.overlays, image('icons/hud/common/screen_health.dmi', "dead"))

@@ -412,7 +412,7 @@ GLOBAL_VAR(station_gravity_generator)
 	. = ..()
 	ClearOverlays()
 	for(var/obj/machinery/gravity_generator/part/P in lights)
-		P.overlays.Cut()
+		P.ClearOverlays()()
 
 	var/console
 	if(power_supply && !(stat & (BROKEN|NOPOWER)))
@@ -450,7 +450,7 @@ GLOBAL_VAR(station_gravity_generator)
 			set_light(1, 1, 8, 2, "#7de1e1")
 
 	if(middle)
-		middle.overlays.Cut()
+		middle.ClearOverlays()()
 		if(overlay_state)
 			middle.overlays += overlay_state
 

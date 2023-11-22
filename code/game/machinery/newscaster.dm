@@ -196,7 +196,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 			overlays += image(src.icon, "crack3")
 		return
 
-	src.overlays.Cut() //reset overlays
+	src.ClearOverlays()() //reset overlays
 
 	if(news_network.wanted_issue) //wanted icon state, there can be no overlays on it as it's a priority message
 		icon_state = "newscaster_wanted"

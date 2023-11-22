@@ -80,7 +80,7 @@
 	if(!blue_portal || !red_portal)
 		var/obj/effect/portal/linked/single_portal = blue_portal || red_portal
 		if(single_portal)
-			single_portal.overlays.Cut()
+			single_portal.ClearOverlays()()
 			single_portal.target = null
 			single_portal.disconnect_atmospheres()
 		return

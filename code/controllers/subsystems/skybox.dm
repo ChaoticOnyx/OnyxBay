@@ -36,7 +36,7 @@ SUBSYSTEM_DEF(skybox)
 
 	for(var/obj/skybox/P in skyboxes)
 		P.color = null //We don't want the skybox to be colored.
-		P.overlays.Cut(0)
+		P.ClearOverlays()
 
 		var/image/BG = image(BGpath, src, "background_[BGstate]")
 		BG.plane = SKYBOX_PLANE

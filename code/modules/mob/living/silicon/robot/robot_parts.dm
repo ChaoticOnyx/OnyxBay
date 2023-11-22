@@ -116,7 +116,7 @@
 	src.update_icon()
 
 /obj/item/robot_parts/robot_suit/update_icon()
-	src.overlays.Cut()
+	src.ClearOverlays()()
 	if(src.parts[BP_L_ARM])
 		src.overlays += "l_arm+o"
 	if(src.parts[BP_R_ARM])
