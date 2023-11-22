@@ -103,7 +103,7 @@
 	var/equipment_prescription				// Eye prescription granted by equipped items
 	var/equipment_light_protection
 	var/list/equipment_overlays = list()	// Extra overlays from equipped items
-	var/list/icon_render_keys = list()
+	var/list/limb_render_keys = list()
 
 	var/med_record = ""
 	var/sec_record = ""

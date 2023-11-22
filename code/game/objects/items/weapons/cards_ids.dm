@@ -172,6 +172,7 @@ var/const/NO_EMAG_ACT = -50
 	SetName(final_name)
 
 /obj/item/card/id/proc/set_id_photo(mob/M)
+	M.ImmediateOverlayUpdate()
 	front = getFlatIcon(M, SOUTH, always_use_defdir = TRUE)
 	side = getFlatIcon(M, WEST, always_use_defdir = TRUE)
 

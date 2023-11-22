@@ -506,7 +506,7 @@
 
 	var/render_icon = curicon
 
-	if (render_icon)
+	if(render_icon)
 		var/curstates = icon_states(curicon)
 		if(!(curstate in curstates))
 			if ("" in curstates)
@@ -559,7 +559,8 @@
 		var/addY1 = 0
 		var/addY2 = 0
 
-		for(var/image/layer_image as anything in layers)
+		for(var/I in layers)
+			var/image/layer_image = I
 			if(layer_image.plane == EMISSIVE_PLANE) // Just replace this with whatever it is TG is doing these days sometime. Getflaticon breaks emissives
 				continue
 

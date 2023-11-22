@@ -51,7 +51,7 @@
 	else if(error_check())
 		SetOverlays(overlays_error)
 	else
-		SetOverlays(use_power) ? (overlays_on) : (overlays_off)
+		SetOverlays(use_power ? (overlays_on) : (overlays_off))
 
 	underlays = underlays_current
 

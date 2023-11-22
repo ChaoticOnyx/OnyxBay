@@ -7,8 +7,12 @@ var/list/limb_icon_cache = list()
 	return
 
 /obj/item/organ/external/proc/compile_icon()
-	ClearOverlays()
 	update_icon()
+	for(var/obj/item/organ/external/organ in contents)
+		if(organ.children && length(organ.children))
+			for(var/obj/item/organ/external/child in organ.children)
+				AddOverlays(child.mob_overlays)
+			AddOverlays(organ.mob_overlays)
 
 /obj/item/organ/external/proc/sync_colour_to_human(mob/living/carbon/human/human)
 	s_tone = null
@@ -84,10 +88,11 @@ var/list/limb_icon_cache = list()
 		else
 			bb = owner.body_build.roboindex
 
+	. += "[organ_tag]"
 	. += "[gender]"
-	. += "[bb]-"
-	. += "[organ_tag]-"
 	. += "[species.get_race_key(owner)]"
+	. += "[bb]"
+	. += is_stump() ? "_s" : ""
 
 	if(force_icon)
 		. += "[force_icon]"
@@ -118,15 +123,20 @@ var/list/limb_icon_cache = list()
 
 	if(body_hair && islist(h_col) && length(h_col) >= 3)
 		. += "[body_hair]-[icon_name]-[h_col[1]][h_col[2]][h_col[3]]"
-
-	if(is_stump())
-		. += "-stump"
 	return .
 
 
 /obj/item/organ/external/update_icon(regenerate = 0)
 	ClearOverlays()
 	mob_overlays = list()
+
+	/////
+	if(GLOB.limb_overlays_cache[render_key]) // We're good, no need to go through all of this.
+		mob_overlays = GLOB.limb_overlays_cache[render_key]
+		AddOverlays(mob_overlays)
+		return
+
+	/////
 	var/husk_color_mod = rgb(96,88,80)
 	var/hulk_color_mod = rgb(48,224,40)
 	var/husk = owner && (MUTATION_HUSK in owner.mutations)
@@ -147,13 +157,10 @@ var/list/limb_icon_cache = list()
 		else
 			body_build = owner.body_build.roboindex
 
-	var/stump_icon = ""
-	if(is_stump())
-		stump_icon = "_s"
-
 	var/chosen_icon = ""
 	var/chosen_icon_state = ""
 
+	var/stump_icon = is_stump() ? "_s" : ""
 	chosen_icon_state = "[icon_name][gender][body_build][stump_icon]"
 
 	/////
@@ -188,7 +195,7 @@ var/list/limb_icon_cache = list()
 		mob_icon.MapColors(rgb(tone[1], 0, 0), rgb(0, tone[2], 0), rgb(0, 0, tone[3]))
 
 	//	Handle husk overlay.
-	if(husk && ("overlay_husk" in icon_states(species.get_icobase(src))))
+	if(husk && ("overlay_husk" in icon_states(chosen_icon)))
 		var/icon/mask = new/icon(chosen_icon)
 		var/icon/husk_over = new(species.get_icobase(src), "overlay_husk")
 		mask.MapColors(0,0,0,1, 0,0,0,1, 0,0,0,1, 0,0,0,1, 0,0,0,0)
@@ -254,6 +261,7 @@ var/list/limb_icon_cache = list()
 		mob_overlays += limb_em_block
 
 	AddOverlays(mob_overlays)
+	GLOB.limb_overlays_cache[render_key] = mob_overlays
 	dir = EAST
 	icon = null
 
