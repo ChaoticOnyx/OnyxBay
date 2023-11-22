@@ -12,8 +12,8 @@
 	var/on = 0
 	var/area/connected_area = null
 	var/other_area = null
-	var/global/image/on_overlay
-	var/global/image/off_overlay
+	var/global/mutable_appearance/on_overlay
+	var/global/mutable_appearance/off_overlay
 
 /obj/machinery/light_switch/Initialize()
 	. = ..()
@@ -36,16 +36,10 @@
 
 /obj/machinery/light_switch/update_icon()
 	if(!on_overlay)
-		on_overlay = image(icon, "light1-overlay")
-		on_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		on_overlay.layer = ABOVE_LIGHTING_LAYER
-		on_overlay.alpha = 160
+		on_overlay = emissive_appearance(icon, "light1-overlay", alpha = 128)
 
 	if(!off_overlay)
-		off_overlay = image(icon, "light0-overlay")
-		off_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		off_overlay.layer = ABOVE_LIGHTING_LAYER
-		off_overlay.alpha = 160
+		off_overlay = emissive_appearance(icon, "light0-overlay", alpha = 128)
 
 	overlays.Cut()
 	if(stat & (NOPOWER|BROKEN))

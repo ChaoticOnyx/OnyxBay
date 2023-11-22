@@ -38,7 +38,8 @@
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
 		if(light_overlay)
-			overlays += image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, brightness_color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
+			var/mutable_appearance/MA = emissive_appearance(icon, "[initial(icon_state)]-overlay")
+			overlays += MA
 	else
 		icon_state = "[initial(icon_state)]"
 
@@ -307,7 +308,9 @@
 	overlays.Cut()
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
-		overlays += image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, brightness_color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
+		var/mutable_appearance/MA = emissive_appearance(icon, "[initial(icon_state)]-overlay")
+		MA.color = brightness_color
+		overlays += MA
 	else
 		icon_state = "[initial(icon_state)][fuel ? "" : "-empty"]"
 
@@ -387,9 +390,10 @@
 		icon_state = "glowstick-empty"
 		set_light(0)
 	else if(on)
-		var/image/I = image_repository.overlay_image(icon, "glowstick-on", alpha, RESET_COLOR, brightness_color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
-		I.blend_mode = BLEND_ADD
-		overlays += I
+		icon_state = "[initial(icon_state)]-on"
+		var/mutable_appearance/MA = emissive_appearance(icon, "[initial(icon_state)]-overlay")
+		MA.color = brightness_color
+		overlays += MA
 		item_state = "glowstick-on"
 		set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, 2, brightness_color)
 	else

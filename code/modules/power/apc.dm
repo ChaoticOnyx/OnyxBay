@@ -1266,7 +1266,7 @@
 	update_icon()
 	return 1
 
-#define OVERLIGHT_IMAGE(a, b) a=image(icon, b); a.alpha=96; a.plane = EFFECTS_ABOVE_LIGHTING_PLANE; a.layer = ABOVE_LIGHTING_LAYER;
+#define OVERLIGHT_IMAGE(a, b) a=emissive_appearance(icon, b, alpha = 192);
 /obj/machinery/power/apc/proc/generate_overlays()
 	status_overlays_lock = new
 	status_overlays_charging = new

@@ -70,8 +70,8 @@ var/list/ai_status_emotions = list(
 
 	var/emotion = "Neutral"
 	var/image/picture = null
-	var/image/picture_overlight = null
-	var/global/image/static_overlay = null
+	var/mutable_appearance/picture_overlight = null
+	var/global/mutable_appearance/static_overlay = null
 
 /obj/machinery/ai_status_display/Initialize()
 	. = ..()
@@ -81,15 +81,11 @@ var/list/ai_status_emotions = list(
 		picture = image('icons/obj/status_display.dmi', icon_state = "blank")
 
 	if(!picture_overlight)
-		picture_overlight = image('icons/obj/status_display.dmi', icon_state = "blank")
+		picture_overlight = emissive_appearance('icons/obj/status_display.dmi', "blank")
 		picture_overlight.alpha = 96
-		picture_overlight.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		picture_overlight.layer = ABOVE_LIGHTING_LAYER
 
 	if(!static_overlay)
-		static_overlay = image('icons/obj/status_display.dmi', icon_state = "static")
-		static_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		static_overlay.layer = ABOVE_LIGHTING_LAYER
+		static_overlay = emissive_appearance('icons/obj/status_display.dmi', icon_state = "static")
 
 /obj/machinery/ai_status_display/Destroy()
 	GLOB.ai_status_display_list -= src

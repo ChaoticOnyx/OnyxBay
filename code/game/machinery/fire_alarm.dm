@@ -22,7 +22,7 @@
 
 	var/global/status_overlays = FALSE
 	var/global/list/alarm_overlays
-	var/image/seclevel_overlay // There's a whole system for different seclevels across different maps so let's just leave it like this until I figure out what the fuck
+	var/mutable_appearance/seclevel_overlay // There's a whole system for different seclevels across different maps so let's just leave it like this until I figure out what the fuck
 
 /obj/machinery/firealarm/New(loc, dir, atom/frame)
 	..(loc)
@@ -63,9 +63,7 @@
 		generate_overlays()
 
 	if(!seclevel_overlay)
-		seclevel_overlay = image(icon, "seclevel-null")
-		seclevel_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		seclevel_overlay.layer = ABOVE_LIGHTING_LAYER
+		seclevel_overlay = emissive_appearance(icon, "seclevel-null")
 		seclevel_overlay.alpha = 200
 
 	overlays.Cut()
@@ -93,6 +91,7 @@
 		return
 
 	overlays += alarm_overlays[activated+1]
+	overlays += alarm_overlays[activated+3]
 
 	if(!detecting)
 		return
@@ -106,12 +105,14 @@
 		seclevel_overlay.icon_state = sl.overlay_alarm
 		overlays += seclevel_overlay
 
-#define OVERLIGHT_IMAGE(a, b) a=image(icon, b); a.alpha=192; a.plane = EFFECTS_ABOVE_LIGHTING_PLANE; a.layer = ABOVE_LIGHTING_LAYER;
 /obj/machinery/firealarm/proc/generate_overlays()
 	alarm_overlays = new
-	alarm_overlays.len = 2
-	OVERLIGHT_IMAGE(alarm_overlays[1], "fire0")
-	OVERLIGHT_IMAGE(alarm_overlays[2], "fire1")
+	alarm_overlays.len = 4
+	alarm_overlays[1] = image(icon, "fire0")
+	alarm_overlays[2] = image(icon, "fire1")
+#define OVERLIGHT_IMAGE(a, b) a=emissive_appearance(icon, b, alpha = 128);
+	OVERLIGHT_IMAGE(alarm_overlays[3], "fire_ea0")
+	OVERLIGHT_IMAGE(alarm_overlays[4], "fire_ea1")
 #undef OVERLIGHT_IMAGE
 
 /obj/machinery/firealarm/fire_act(datum/gas_mixture/air, temperature, volume)

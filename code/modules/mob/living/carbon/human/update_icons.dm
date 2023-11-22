@@ -9,8 +9,12 @@ var/global/list/tail_icon_cache = list() //key is [species.race_key][r_skin][g_s
 var/global/list/light_overlay_cache = list()
 GLOBAL_LIST_EMPTY(limb_overlays_cache)
 
-/proc/overlay_image(icon,icon_state,color,flags)
+/proc/overlay_image(icon, icon_state, color, flags, plane, layer)
 	var/image/ret = image(icon,icon_state)
+	if(plane)
+		ret.plane = plane
+	if(layer)
+		ret.layer = layer
 	ret.color = color
 	ret.appearance_flags = DEFAULT_APPEARANCE_FLAGS | flags
 	return ret
@@ -153,6 +157,8 @@ Please contact me on #coderbus IRC. ~Carn x
 
 //UPDATES OVERLAYS FROM OVERLAYS_LYING/OVERLAYS_STANDING
 /mob/living/carbon/human/update_icons()
+	if(QDELING(src))
+		return
 	update_hud()		//TODO: remove the need for this
 
 	var/list/overlays_to_apply = list()
@@ -283,7 +289,8 @@ var/global/list/damage_icon_parts = list()
 	//tail
 	update_tail_showing(0)
 
-	if(update_icons) queue_icon_update()
+	if(update_icons)
+		queue_icon_update()
 
 //UNDERWEAR OVERLAY
 

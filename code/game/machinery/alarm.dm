@@ -330,16 +330,20 @@
 			new_color = COLOR_RED_LIGHT
 
 	overlays += alarm_overlays[icon_level+1]
+	overlays += alarm_overlays[icon_level+4]
 
 	set_light(0.25, 0.1, 1, 2, new_color)
 
 /obj/machinery/alarm/proc/generate_overlays()
 	alarm_overlays = new
-	alarm_overlays.len = 3
-#define OVERLIGHT_IMAGE(a, b) a=image(icon, b); a.alpha=192; a.plane = EFFECTS_ABOVE_LIGHTING_PLANE; a.layer = ABOVE_LIGHTING_LAYER;
-	OVERLIGHT_IMAGE(alarm_overlays[1], "alarm_over0")
-	OVERLIGHT_IMAGE(alarm_overlays[2], "alarm_over1")
-	OVERLIGHT_IMAGE(alarm_overlays[3], "alarm_over2")
+	alarm_overlays.len = 6
+	alarm_overlays[1] = image(icon, "alarm_over0")
+	alarm_overlays[2] = image(icon, "alarm_over1")
+	alarm_overlays[3] = image(icon, "alarm_over2")
+#define OVERLIGHT_IMAGE(a, b) a=emissive_appearance(icon, b, alpha = 128)
+	OVERLIGHT_IMAGE(alarm_overlays[4], "alarm_ea0")
+	OVERLIGHT_IMAGE(alarm_overlays[5], "alarm_ea1")
+	OVERLIGHT_IMAGE(alarm_overlays[6], "alarm_ea2")
 #undef OVERLIGHT_IMAGE
 
 /obj/machinery/alarm/receive_signal(datum/signal/signal)

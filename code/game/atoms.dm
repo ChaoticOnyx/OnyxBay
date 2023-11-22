@@ -118,6 +118,8 @@
 	QDEL_NULL(proximity_monitor)
 	overlays.Cut()
 	underlays.Cut()
+	if(managed_overlays)
+		managed_overlays.Cut()
 	return ..()
 
 /atom/proc/reveal_blood()

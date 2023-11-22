@@ -101,7 +101,7 @@
 
 /obj/item/organ/external/head/get_icon_key()
 	. = ..()
-	if(owner.lip_style && !BP_IS_ROBOTIC(src) && (species && (species.appearance_flags & HAS_LIPS)))
+	if(owner?.lip_style && !BP_IS_ROBOTIC(src) && (species && (species.appearance_flags & HAS_LIPS)))
 		. += "[owner.lip_style]"
 	else
 		. += "nolips"
@@ -143,6 +143,7 @@
 					if(istype(thing, /obj/item/organ/internal/eyes))
 						eyes = thing
 			if(eyes)
+				eyes_icon.Blend(rgb(eyes.eye_colour[1], eyes.eye_colour[2], eyes.eye_colour[3]), ICON_ADD)
 				var/mutable_appearance/eye_appearance = mutable_appearance(eyes_icon, flags = DEFAULT_APPEARANCE_FLAGS)
 				mob_overlays |= eye_appearance
 			else if(owner.should_have_organ(BP_EYES))

@@ -29,8 +29,8 @@
 	var/index1                  // display index for scrolling messages or 0 if non-scrolling
 	var/index2
 	var/image/picture = null
-	var/image/picture_overlight = null
-	var/global/image/static_overlay = null
+	var/mutable_appearance/picture_overlight = null
+	var/global/mutable_appearance/static_overlay = null
 
 	var/frequency = 1435		// radio frequency
 
@@ -72,18 +72,13 @@
 		picture = image('icons/obj/status_display.dmi', icon_state = "blank")
 
 	if(!picture_overlight)
-		picture_overlight = image('icons/obj/status_display.dmi', icon_state = "blank")
-		picture_overlight.alpha = 96
-		picture_overlight.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		picture_overlight.layer = ABOVE_LIGHTING_LAYER
+		picture_overlight = emissive_appearance('icons/obj/status_display.dmi', "blank", alpha = 96)
 		picture_overlight.maptext_height = maptext_height
 		picture_overlight.maptext_width = maptext_width
 		picture_overlight.maptext_y = maptext_y
 
 	if(!static_overlay)
-		static_overlay = image('icons/obj/status_display.dmi', icon_state = "static")
-		static_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		static_overlay.layer = ABOVE_LIGHTING_LAYER
+		static_overlay = emissive_appearance('icons/obj/status_display.dmi', "static", alpha = 64)
 
 // timed process
 /obj/machinery/status_display/Process()
