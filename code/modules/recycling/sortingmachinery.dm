@@ -84,7 +84,7 @@
 					                     "You hear the sound of a small printer.")
 
 /obj/structure/bigDelivery/update_icon()
-	SetOverlays(new())
+	ClearOverlays()
 	if(nameset || examtext)
 		var/image/I = new /image(icon, "delivery_label")
 		if(icon_state == "deliverycloset")
@@ -225,7 +225,7 @@
 	return
 
 /obj/item/smallDelivery/update_icon()
-	SetOverlays(new())
+	ClearOverlays()
 	if((nameset || examtext) && icon_state != "deliverycrate1")
 		var/image/I
 		if(icon_state == "deliverycrate1")

@@ -53,7 +53,7 @@
 
 /obj/item/device/assembly/timer/update_icon()
 	ClearOverlays()
-	attached.ClearOverlays()
+	attached_overlays = list()
 	if(timing)
 		AddOverlays("timer_timing")
 		attached_overlays += "timer_timing"

@@ -99,21 +99,21 @@
 	else
 		icon_state = "[material]railing_full"
 		if (check & 32)
-			AddOverlays(image) ('icons/obj/railing.dmi', src, "[material]corneroverlay")
+			AddOverlays(image('icons/obj/railing.dmi', "[material]corneroverlay"))
 		if ((check & 16) || !(check & 32) || (check & 64))
-			AddOverlays(image) ('icons/obj/railing.dmi', src, "[material]frontoverlay_l")
+			AddOverlays(image('icons/obj/railing.dmi', "[material]frontoverlay_l"))
 		if (!(check & 2) || (check & 1) || (check & 4))
-			AddOverlays(image) ('icons/obj/railing.dmi', src, "[material]frontoverlay_r")
+			AddOverlays(image('icons/obj/railing.dmi', "[material]frontoverlay_r"))
 			if(check & 4)
 				switch (src.dir)
 					if (NORTH)
-						AddOverlays(image) ('icons/obj/railing.dmi', src, "[material]mcorneroverlay", pixel_x = 32)
+						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_x = 32))
 					if (SOUTH)
-						AddOverlays(image) ('icons/obj/railing.dmi', src, "[material]mcorneroverlay", pixel_x = -32)
+						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_x = -32))
 					if (EAST)
-						AddOverlays(image) ('icons/obj/railing.dmi', src, "[material]mcorneroverlay", pixel_y = -32)
+						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_y = -32))
 					if (WEST)
-						AddOverlays(image) ('icons/obj/railing.dmi', src, "[material]mcorneroverlay", pixel_y = 32)
+						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_y = 32))
 
 /obj/structure/railing/verb/rotate()
 	set name = "Rotate Counter-Clockwise"
