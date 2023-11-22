@@ -56,7 +56,7 @@ GLOBAL_LIST_EMPTY(monkey_recyclers)
 
 /obj/machinery/monkey_recycler/update_icon()
 	ClearOverlays()
-	if(panel_open) overlays += "gibber-panel"
+	if(panel_open) AddOverlays("gibber-panel")
 
 /obj/machinery/monkey_recycler/attackby(obj/item/O, mob/user, params)
 	if(default_deconstruction_screwdriver(user, O, TRUE))

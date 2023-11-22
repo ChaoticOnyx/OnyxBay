@@ -404,13 +404,13 @@ var/list/global/tank_gauge_cache = list()
 	ClearOverlays() // Each time you modify this, the object is redrawn. Cunts.
 
 	if(proxyassembly.assembly || wired)
-		overlays += image(icon,"bomb_assembly")
+		AddOverlays(image(icon,"bomb_assembly"))
 		if(proxyassembly.assembly)
 			var/image/bombthing = image(proxyassembly.assembly.icon, proxyassembly.assembly.icon_state)
 			bombthing.overlays |= proxyassembly.assembly.overlays
 			bombthing.pixel_y = -1
 			bombthing.pixel_x = -3
-			overlays += bombthing
+			AddOverlays(bombthing)
 
 	if(!gauge_icon)
 		return
@@ -418,7 +418,7 @@ var/list/global/tank_gauge_cache = list()
 	var/indicator = "[gauge_icon][(gauge_pressure == -1) ? "overload" : gauge_pressure]"
 	if(!tank_gauge_cache[indicator])
 		tank_gauge_cache[indicator] = image(icon, indicator)
-	overlays += tank_gauge_cache[indicator]
+	AddOverlays(tank_gauge_cache[indicator])
 
 /// Handle exploding, leaking, and rupturing of the tank.
 /// Returns `TRUE` if it should continue thinking.

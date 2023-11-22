@@ -27,7 +27,7 @@
 /obj/item/music_tape/update_icon()
 	ClearOverlays()
 	if(ruined)
-		overlays += "ribbonoverlay"
+		AddOverlays("ribbonoverlay")
 
 /obj/item/music_tape/_examine_text(mob/user)
 	. = ..()

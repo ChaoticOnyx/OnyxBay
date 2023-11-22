@@ -5,5 +5,5 @@
 		icon_state = "[colour] [is_adult ? "adult" : "baby"] metroid[Victim ? " eat" : ""]"
 	overlays.len = 0
 	if (mood)
-		overlays += image('icons/mob/metroids.dmi', icon_state = "ametroid-[mood]")
+		AddOverlays(image('icons/mob/metroids.dmi',) icon_state = "ametroid-[mood]")
 	..()

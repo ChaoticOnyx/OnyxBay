@@ -149,7 +149,7 @@
 		I1.Blend(I2,ICON_MULTIPLY)
 		portal_cache["icon[initial(T.icon)]_iconstate[T.icon_state]_[type]"] = I1 // And cache it!
 
-	overlays += portal_cache["icon[initial(T.icon)]_iconstate[T.icon_state]_[type]"]
+	AddOverlays(portal_cache["icon[initial(T.icon)]_iconstate[T.icon_state]_[type]"])
 
 // In layman's terms, speedy thing goes in, speedy thing comes out.
 // projectile redirect is not cool, I made my own cool method!

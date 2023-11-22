@@ -37,10 +37,10 @@
 		icon_state = "psiphon:0"
 
 	if(holding)
-		overlays += "siphon-open"
+		AddOverlays("siphon-open")
 
 	if(connected_port)
-		overlays += "siphon-connector"
+		AddOverlays("siphon-connector")
 
 	return
 

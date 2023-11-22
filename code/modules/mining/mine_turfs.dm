@@ -91,16 +91,16 @@ var/list/mining_floors = list()
 					rock_side.pixel_x += world.icon_size
 				if(WEST)
 					rock_side.pixel_x -= world.icon_size
-			overlays += rock_side
+			AddOverlays(rock_side)
 
 	if(ore_overlay)
-		overlays += ore_overlay
+		AddOverlays(ore_overlay)
 
 	if(excav_overlay)
-		overlays += excav_overlay
+		AddOverlays(excav_overlay)
 
 	if(archaeo_overlay)
-		overlays += archaeo_overlay
+		AddOverlays(archaeo_overlay)
 
 /turf/simulated/mineral/ex_act(severity)
 	switch(severity)
@@ -659,7 +659,7 @@ var/list/mining_floors = list()
 		if(istype(get_step(src, step_overlays[direction]), /turf/space))
 			var/image/aster_edge = image('icons/turf/flooring/asteroid.dmi', "asteroid_edges", dir = step_overlays[direction])
 			aster_edge.turf_decal_layerise()
-			overlays += aster_edge
+			AddOverlays(aster_edge)
 
 	//todo cache
 	if(overlay_detail)

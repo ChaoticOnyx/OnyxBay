@@ -43,7 +43,7 @@
 /obj/structure/christmas/snowman/update_icon()
 	ClearOverlays()
 	if(istype(my_hat, /obj/item/clothing/head))
-		overlays += image('icons/inv_slots/hats/mob.dmi', "[my_hat.icon_state]")
+		AddOverlays(image('icons/inv_slots/hats/mob.dmi',) "[my_hat.icon_state]")
 
 /obj/structure/sign/christmas
 	name = "CHRISTMAS"

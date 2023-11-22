@@ -44,7 +44,7 @@
 				if(80 to 90)	filling.icon_state = "reagent80"
 				if(91 to INFINITY)	filling.icon_state = "reagent100"
 			filling.icon += reagents.get_color()
-			overlays += filling
+			AddOverlays(filling)
 
 		if(attached)
 			var/image/light = image('icons/obj/iv_drip.dmi', "light_full")
@@ -52,7 +52,7 @@
 				light.icon_state = "light_low"
 			else if(percent < 60)
 				light.icon_state = "light_mid"
-			overlays += light
+			AddOverlays(light)
 
 /obj/structure/iv_drip/MouseDrop(over_object, src_location, over_location)
 	if(!CanMouseDrop(over_object))

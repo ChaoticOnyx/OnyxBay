@@ -33,7 +33,7 @@
 	if(rebuild_overlay)
 		ClearOverlays()
 		if(panel_open)
-			overlays  += "sheater-open"
+			AddOverlays("sheater-open")
 
 /obj/machinery/space_heater/_examine_text(mob/user)
 	. = ..()

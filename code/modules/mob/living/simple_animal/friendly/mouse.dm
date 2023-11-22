@@ -198,7 +198,7 @@
 /mob/living/simple_animal/mouse/update_icon()
 	ClearOverlays()
 	if(holding_item)
-		overlays += "holding_item[stat ? is_ic_dead() ? "_dead" : "_lay" : ""]"
+		AddOverlays("holding_item[stat) ? is_ic_dead() ? "_dead" : "_lay" : ""]"
 
 /*
  * Mouse types

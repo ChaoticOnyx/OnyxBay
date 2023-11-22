@@ -132,6 +132,6 @@ var/list/ai_status_emotions = list(
 	picture.icon_state = picture_state
 	picture_overlight.icon_state = picture_state
 
-	overlays += picture
-	overlays += picture_overlight
-	overlays += static_overlay
+	AddOverlays(picture)
+	AddOverlays(picture_overlight)
+	AddOverlays(static_overlay)

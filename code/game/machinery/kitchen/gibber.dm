@@ -36,17 +36,17 @@
 /obj/machinery/gibber/update_icon()
 	ClearOverlays()
 	if(panel_open)
-		overlays += "gibber-panel"
+		AddOverlays("gibber-panel")
 
 	if(stat & (NOPOWER|BROKEN))
 		return
 
 	if(operating)
-		overlays += "gibber-use"
+		AddOverlays("gibber-use")
 	else if(length(mobs_to_process))
-		overlays += "gibber-jam"
+		AddOverlays("gibber-jam")
 	else
-		overlays += "gibber-idle"
+		AddOverlays("gibber-idle")
 
 /obj/machinery/gibber/RefreshParts()
 	var/time_modifier = 0
@@ -351,9 +351,9 @@
 		return
 
 	if(operating)
-		overlays += "ind_gibber-use"
+		AddOverlays("ind_gibber-use")
 	else if(length(mobs_to_process))
-		overlays += "ind_gibber-jam"
+		AddOverlays("ind_gibber-jam")
 
 	return
 

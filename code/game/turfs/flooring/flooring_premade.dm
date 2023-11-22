@@ -498,7 +498,7 @@
 
 /turf/simulated/floor/natural/beach/water/New()
 	..()
-	overlays += image("icon"='icons/misc/beach.dmi',"icon_state"="water5","layer"=MOB_LAYER+0.1)
+	AddOverlays(image("icon"='icons/misc/beach.dmi',"icon_state"="water5","layer"=MOB_LAYER+0.1))
 
 //JUNGLE
 
@@ -549,7 +549,7 @@
 /turf/simulated/floor/natural/jungle/water/New()
 	..()
 	if(overlay)
-		overlays += image("icon"='icons/misc/beach.dmi',"icon_state"="riverwater","layer"=MOB_LAYER+1)
+		AddOverlays(image("icon"='icons/misc/beach.dmi',"icon_state"="riverwater","layer"=MOB_LAYER+1))
 
 /turf/simulated/floor/natural/jungle/water/edge
 	icon_state = "beach"

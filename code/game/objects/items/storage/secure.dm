@@ -125,7 +125,7 @@
 			else if((src.code == src.l_code) && (src.emagged == 0) && (src.l_set == 1))
 				src.locked = 0
 				src.overlays = null
-				overlays += image(icon, icon_opened)
+				AddOverlays(image(icon,) icon_opened)
 				src.code = null
 			else
 				src.code = "ERROR"
@@ -159,10 +159,10 @@
 	playsound(src.loc, "spark", 50, 1)
 	if(!emagged)
 		emagged = TRUE
-		overlays += image(icon, icon_sparking)
+		AddOverlays(image(icon,) icon_sparking)
 		sleep(6)
 		overlays = null
-		overlays += image(icon, icon_locking)
+		AddOverlays(image(icon,) icon_locking)
 		locked = FALSE
 
 // -----------------------------
@@ -352,7 +352,7 @@
 			else if((code == l_code) && !emagged && (l_set == 1))
 				locked = 0
 				ClearOverlays()
-				overlays += image(icon, icon_opened)
+				AddOverlays(image(icon,) icon_opened)
 				code = null
 				if(!gunspawned)
 					spawn_set(guntype)
@@ -447,7 +447,7 @@
 		locked = !locked
 		ClearOverlays()
 		if(!locked)
-			overlays += image(icon, icon_opened)
+			AddOverlays(image(icon,) icon_opened)
 		return
 	return ..()
 
@@ -561,7 +561,7 @@
 		locked = !locked
 		ClearOverlays()
 		if(!locked)
-			overlays += image(icon, icon_opened)
+			AddOverlays(image(icon,) icon_opened)
 		return
 	return ..()
 

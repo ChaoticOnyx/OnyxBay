@@ -253,7 +253,7 @@ var/list/limb_icon_cache = list()
 		limb_em_block.dir = dir
 		mob_overlays += limb_em_block
 
-	overlays += mob_overlays
+	AddOverlays(mob_overlays)
 	dir = EAST
 	icon = null
 

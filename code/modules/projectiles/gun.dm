@@ -666,9 +666,9 @@
 
 	ClearOverlays()
 	update_icon()
-	overlays += (image('icons/obj/guns/gui.dmi',"safety[safety()]"))
+	AddOverlays((image('icons/obj/guns/gui.dmi',"safety[safety()]")))
 	if(safety_icon)
-		overlays += (image(icon,"[safety_icon][safety()]"))
+		AddOverlays((image(icon,"[safety_icon][safety()]")))
 
 /obj/item/gun/verb/toggle_safety_verb()
 	set src in usr

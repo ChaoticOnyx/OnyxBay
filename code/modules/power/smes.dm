@@ -130,22 +130,22 @@
 
 	var/clevel = chargedisplay()
 	if(clevel)
-		overlays += status_overlays_charge[clevel]
-		overlays += overlight_overlays_charge[clevel]
+		AddOverlays(status_overlays_charge[clevel])
+		AddOverlays(overlight_overlays_charge[clevel])
 		set_light(0.35, 0.5, 1, 2, charge_colors[clevel])
 
-	overlays += status_overlays_outputting[outputting+1]
-	overlays += overlight_overlays_outputting[outputting+1]
+	AddOverlays(status_overlays_outputting[outputting+1])
+	AddOverlays(overlight_overlays_outputting[outputting+1])
 
 	if(inputting == 2)
-		overlays += status_overlays_outputting[3]
-		overlays += overlight_overlays_outputting[3]
+		AddOverlays(status_overlays_outputting[3])
+		AddOverlays(overlight_overlays_outputting[3])
 	else if(inputting == 1)
-		overlays += status_overlays_outputting[2]
-		overlays += overlight_overlays_outputting[2]
+		AddOverlays(status_overlays_outputting[2])
+		AddOverlays(overlight_overlays_outputting[2])
 	else if(input_attempt)
-		overlays += status_overlays_outputting[1]
-		overlays += overlight_overlays_outputting[1]
+		AddOverlays(status_overlays_outputting[1])
+		AddOverlays(overlight_overlays_outputting[1])
 
 /obj/machinery/power/smes/proc/chargedisplay()
 	return round(5.5*charge/(capacity ? capacity : 5e6))

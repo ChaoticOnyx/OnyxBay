@@ -48,7 +48,7 @@
 	var/icon/portal_icon = icon(icon, "pg[setting]")
 	AddOverlays(portal_icon)
 	if(blood_overlay)
-		overlays += blood_overlay
+		AddOverlays(blood_overlay)
 	return ..()
 
 /obj/item/gun/portalgun/proc/open_portal(proj_setting, turf/T, atom/A, mob/firer)

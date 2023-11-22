@@ -375,7 +375,7 @@
 /obj/item/device/tape/update_icon()
 	ClearOverlays()
 	if(ruined)
-		overlays += "ribbonoverlay"
+		AddOverlays("ribbonoverlay")
 
 
 /obj/item/device/tape/fire_act()

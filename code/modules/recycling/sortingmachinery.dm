@@ -97,7 +97,7 @@
 				label_x = rand(-8, 6)
 			I.pixel_x = label_x
 			I.pixel_y = -3
-		overlays += I
+		AddOverlays(I)
 	if(src.sortTag)
 		var/image/I = new /image(icon, "delivery_tag")
 		if(icon_state == "deliverycloset")
@@ -110,7 +110,7 @@
 				tag_x = rand(-8, 6)
 			I.pixel_x = tag_x
 			I.pixel_y = -3
-		overlays += I
+		AddOverlays(I)
 
 /obj/structure/bigDelivery/_examine_text(mob/user)
 	. = ..()
@@ -232,7 +232,7 @@
 			I = image(icon, "delivery_label_small")
 		else
 			I = image(icon, "delivery_label")
-		overlays += I
+		AddOverlays(I)
 	if(src.sortTag)
 		var/image/I = image(icon, "delivery_tag")
 		switch(icon_state)
@@ -251,7 +251,7 @@
 				I.pixel_y = 0
 			if("deliverybox")
 				I.pixel_y = 1
-		overlays += I
+		AddOverlays(I)
 
 /obj/item/smallDelivery/_examine_text(mob/user)
 	. = ..()

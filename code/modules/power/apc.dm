@@ -319,19 +319,19 @@
 		if(overlays.len)
 			overlays.len = 0
 		if(!(stat & (BROKEN|MAINT)) && update_state & UPDATE_ALLGOOD)
-			overlays += status_overlays_lock[locked+1]
-			overlays += status_overlays_charging[charging+1]
+			AddOverlays(status_overlays_lock[locked+1])
+			AddOverlays(status_overlays_charging[charging+1])
 			if(operating)
-				overlays += status_overlays_equipment[equipment+1]
-				overlays += status_overlays_lighting[lighting+1]
-				overlays += status_overlays_environ[environ+1]
+				AddOverlays(status_overlays_equipment[equipment+1])
+				AddOverlays(status_overlays_lighting[lighting+1])
+				AddOverlays(status_overlays_environ[environ+1])
 
 				// Lock and Charging only "glow" if operating, on purpose
-				overlays += overlight_overlays_lock[locked+1]
-				overlays += overlight_overlays_charging[charging+1]
-				overlays += overlight_overlays_equipment[equipment+1]
-				overlays += overlight_overlays_lighting[lighting+1]
-				overlays += overlight_overlays_environ[environ+1]
+				AddOverlays(overlight_overlays_lock[locked+1])
+				AddOverlays(overlight_overlays_charging[charging+1])
+				AddOverlays(overlight_overlays_equipment[equipment+1])
+				AddOverlays(overlight_overlays_lighting[lighting+1])
+				AddOverlays(overlight_overlays_environ[environ+1])
 
 	if(update & 3)
 		if(update_state & (UPDATE_OPENED1|UPDATE_OPENED2|UPDATE_BROKE))

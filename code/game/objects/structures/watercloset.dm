@@ -198,7 +198,7 @@
 		mymist = null
 
 	if(on)
-		overlays += image('icons/obj/watercloset.dmi', src, "water", MOB_LAYER + 1, dir)
+		AddOverlays(image('icons/obj/watercloset.dmi',) src, "water", MOB_LAYER + 1, dir)
 		if(temperature_settings[watertemp] < (20 CELSIUS))
 			return //no mist for cold water
 		if(!ismist)

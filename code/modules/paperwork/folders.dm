@@ -28,7 +28,7 @@
 /obj/item/folder/update_icon()
 	ClearOverlays()
 	if(contents.len)
-		overlays += "folder_paper"
+		AddOverlays("folder_paper")
 	return
 
 /obj/item/folder/attackby(obj/item/W, mob/user)

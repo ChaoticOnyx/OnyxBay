@@ -300,10 +300,10 @@
 				qdel(meter)
 		qdel(src)
 	else if(node1 && node2)
-		overlays += icon_manager.get_atmos_icon("pipe", , pipe_color, "[pipe_icon]intact[icon_connect_type]")
+		AddOverlays(icon_manager.get_atmos_icon("pipe",) , pipe_color, "[pipe_icon]intact[icon_connect_type]")
 		set_leaking(FALSE)
 	else
-		overlays += icon_manager.get_atmos_icon("pipe", , pipe_color, "[pipe_icon]exposed[node1?1:0][node2?1:0][icon_connect_type]")
+		AddOverlays(icon_manager.get_atmos_icon("pipe",) , pipe_color, "[pipe_icon]exposed[node1?1:0][node2?1:0][icon_connect_type]")
 		set_leaking(TRUE)
 
 /obj/machinery/atmospherics/pipe/simple/update_underlays()
@@ -554,8 +554,8 @@
 		qdel(src)
 	else
 		ClearOverlays()
-		overlays += icon_manager.get_atmos_icon("manifold", , pipe_color, "core" + icon_connect_type)
-		overlays += icon_manager.get_atmos_icon("manifold", , , "clamps" + icon_connect_type)
+		AddOverlays(icon_manager.get_atmos_icon("manifold",) , pipe_color, "core" + icon_connect_type)
+		AddOverlays(icon_manager.get_atmos_icon("manifold",) , , "clamps" + icon_connect_type)
 		underlays.Cut()
 
 		var/turf/T = get_turf(src)
@@ -813,8 +813,8 @@
 		qdel(src)
 	else
 		ClearOverlays()
-		overlays += icon_manager.get_atmos_icon("manifold", , pipe_color, "4way" + icon_connect_type)
-		overlays += icon_manager.get_atmos_icon("manifold", , , "clamps_4way" + icon_connect_type)
+		AddOverlays(icon_manager.get_atmos_icon("manifold",) , pipe_color, "4way" + icon_connect_type)
+		AddOverlays(icon_manager.get_atmos_icon("manifold",) , , "clamps_4way" + icon_connect_type)
 		underlays.Cut()
 
 		/*
@@ -1038,7 +1038,7 @@
 	alpha = 255
 
 	ClearOverlays()
-	overlays += icon_manager.get_atmos_icon("pipe", , pipe_color, "cap")
+	AddOverlays(icon_manager.get_atmos_icon("pipe",) , pipe_color, "cap")
 
 /obj/machinery/atmospherics/pipe/cap/atmos_init()
 	..()
@@ -1377,7 +1377,7 @@
 	alpha = 255
 
 	ClearOverlays()
-	overlays += icon_manager.get_atmos_icon("pipe", , pipe_color, "universal")
+	AddOverlays(icon_manager.get_atmos_icon("pipe",) , pipe_color, "universal")
 	underlays.Cut()
 
 	if(node1)
@@ -1414,7 +1414,7 @@
 	alpha = 255
 
 	ClearOverlays()
-	overlays += icon_manager.get_atmos_icon("pipe", , pipe_color, "universal")
+	AddOverlays(icon_manager.get_atmos_icon("pipe",) , pipe_color, "universal")
 	underlays.Cut()
 
 	if(node1)

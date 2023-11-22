@@ -90,8 +90,8 @@
 		set_light(0)
 		return
 
-	overlays += alarm_overlays[activated+1]
-	overlays += alarm_overlays[activated+3]
+	AddOverlays(alarm_overlays[activated+1])
+	AddOverlays(alarm_overlays[activated+3])
 
 	if(!detecting)
 		return
@@ -103,7 +103,7 @@
 		set_light(sl.light_max_bright, sl.light_inner_range, sl.light_outer_range, 2, sl.light_color_alarm)
 		seclevel_overlay.icon = sl.icon
 		seclevel_overlay.icon_state = sl.overlay_alarm
-		overlays += seclevel_overlay
+		AddOverlays(seclevel_overlay)
 
 /obj/machinery/firealarm/proc/generate_overlays()
 	alarm_overlays = new

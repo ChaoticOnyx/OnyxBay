@@ -197,7 +197,7 @@ var/global/list/image/splatter_cache=list()
 
 	icon = blood
 	ClearOverlays()
-	overlays += giblets
+	AddOverlays(giblets)
 
 /obj/effect/decal/cleanable/blood/gibs/up
 	random_icon_states = list("gib1", "gib2", "gib3", "gib4", "gib5", "gib6","gibup1","gibup1","gibup1")
@@ -262,6 +262,6 @@ var/global/list/image/splatter_cache=list()
 		var/image/mucus_overlay = image(icon = 'icons/effects/blood.dmi', icon_state = "mucus", pixel_x = rand(-8, 8), pixel_y = rand(-8, 8))
 		mucus_overlay.layer = FLOAT_LAYER
 		mucus_overlay.transform = turn(src.transform, rand(0, 359))
-		overlays += mucus_overlay
+		AddOverlays(mucus_overlay)
 	dry_timer_id = addtimer(CALLBACK(src, .proc/dry), drytime, TIMER_STOPPABLE)
 	virus2 |= viruses

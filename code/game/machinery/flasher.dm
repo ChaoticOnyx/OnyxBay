@@ -133,7 +133,7 @@
 
 		else if (src.anchored)
 			user.show_message(text("<span class='warning'>[src] is now secured.</span>"))
-			overlays += "[base_state]-s"
+			AddOverlays("[base_state]-s")
 			proximity_monitor.SetRange(range)
 
 /obj/machinery/button/flasher

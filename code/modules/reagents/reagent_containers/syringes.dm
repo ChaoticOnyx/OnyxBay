@@ -130,10 +130,10 @@
 		filling.icon_state = "syringe[rounded_vol]"
 
 		filling.color = reagents.get_color()
-		overlays += filling
+		AddOverlays(filling)
 
 	if(mode == SYRINGE_PACKAGED && package_state)
-		overlays += package_state
+		AddOverlays(package_state)
 		return
 
 	if(ismob(loc))
@@ -144,7 +144,7 @@
 			if(SYRINGE_INJECT)
 				injoverlay = "inject"
 		if(injoverlay)
-			overlays += injoverlay
+			AddOverlays(injoverlay)
 
 /obj/item/reagent_containers/syringe/proc/handleTarget(atom/target, mob/user)
 	switch(mode)

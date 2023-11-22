@@ -420,16 +420,16 @@ GLOBAL_VAR(station_gravity_generator)
 			console = charge_count ? "console_charged" : "console_discharged"
 		else
 			console = "console_charging"
-		overlays += console
+		AddOverlays(console)
 		if(breaker)
 			for(var/obj/machinery/gravity_generator/part/P in lights)
 				P.overlays += "[P.sprite_number]_light"
 
 	if(!panel_open)
 		if(power_supply && !(stat & BROKEN|NOPOWER))
-			overlays += "keyboard_on"
+			AddOverlays("keyboard_on")
 		else
-			overlays += "keyboard_off"
+			AddOverlays("keyboard_off")
 
 	var/overlay_state
 	switch(charge_count)

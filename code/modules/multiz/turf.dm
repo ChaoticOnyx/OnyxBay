@@ -103,7 +103,7 @@
 		vis_contents += below
 
 		if(!below_is_open)
-			overlays += GLOB.over_OS_darkness
+			AddOverlays(GLOB.over_OS_darkness)
 
 		return 0
 	return PROCESS_KILL

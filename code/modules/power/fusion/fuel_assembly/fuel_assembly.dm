@@ -34,7 +34,7 @@
 	icon_state = "blank"
 	var/image/I = image(icon, "fuel_assembly")
 	I.color = fuel_colour
-	overlays += list(I, image(icon, "fuel_assembly_bracket"))
+	AddOverlays(list(I,) image(icon, "fuel_assembly_bracket"))
 	rod_quantities[fuel_type] = initial_amount
 
 	set_next_think(world.time)

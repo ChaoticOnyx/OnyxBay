@@ -20,19 +20,19 @@
 	ClearOverlays()
 	icon_state = "beehive"
 	if(closed)
-		overlays += "lid"
+		AddOverlays("lid")
 	if(frames)
-		overlays += "empty[frames]"
+		AddOverlays("empty[frames]")
 	if(honeycombs >= 100)
-		overlays += "full[round(honeycombs / 100)]"
+		AddOverlays("full[round(honeycombs) / 100)]"
 	if(!smoked)
 		switch(bee_count)
 			if(1 to 40)
-				overlays += "bees1"
+				AddOverlays("bees1")
 			if(41 to 80)
-				overlays += "bees2"
+				AddOverlays("bees2")
 			if(81 to 100)
-				overlays += "bees3"
+				AddOverlays("bees3")
 
 /obj/machinery/beehive/_examine_text(mob/user)
 	. = ..()
@@ -210,7 +210,7 @@
 
 /obj/item/honey_frame/filled/New()
 	..()
-	overlays += "honeycomb"
+	AddOverlays("honeycomb")
 
 /obj/item/beehive_assembly
 	name = "beehive assembly"
@@ -251,21 +251,21 @@ var/global/list/datum/stack_recipe/wax_recipes = list( \
 
 /obj/item/bee_pack/New()
 	..()
-	overlays += "beepack-full"
+	AddOverlays("beepack-full")
 
 /obj/item/bee_pack/proc/empty()
 	full = 0
 	name = "empty bee pack"
 	desc = "A stasis pack for moving bees. It's empty."
 	ClearOverlays()
-	overlays += "beepack-empty"
+	AddOverlays("beepack-empty")
 
 /obj/item/bee_pack/proc/fill()
 	full = initial(full)
 	SetName(initial(name))
 	desc = initial(desc)
 	ClearOverlays()
-	overlays += "beepack-full"
+	AddOverlays("beepack-full")
 
 /obj/structure/closet/crate/hydroponics/beekeeping
 	name = "beekeeping crate"

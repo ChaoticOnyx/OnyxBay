@@ -298,7 +298,7 @@
 		set_light(0)
 
 	if(TO)
-		overlays += TO
+		AddOverlays(TO)
 
 	change_power_consumption((light_outer_range * light_max_bright) * LIGHTING_POWER_FACTOR, POWER_USE_ACTIVE)
 
@@ -834,7 +834,7 @@
 	if(tone_overlay)
 		var/image/TO = overlay_image(icon, "[icon_state]-over", flags=RESET_COLOR)
 		TO.color = b_color
-		overlays += TO
+		AddOverlays(TO)
 
 // attack bulb/tube with object
 // if a syringe, can inject plasma to make it explode

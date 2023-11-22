@@ -159,17 +159,17 @@ update_flag
 	src.overlays = 0
 
 	if(update_flag & 1)
-		overlays += "can-open"
+		AddOverlays("can-open")
 	if(update_flag & 2)
-		overlays += "can-connector"
+		AddOverlays("can-connector")
 	if(update_flag & 4)
-		overlays += "can-o0"
+		AddOverlays("can-o0")
 	if(update_flag & 8)
-		overlays += "can-o1"
+		AddOverlays("can-o1")
 	else if(update_flag & 16)
-		overlays += "can-o2"
+		AddOverlays("can-o2")
 	else if(update_flag & 32)
-		overlays += "can-o3"
+		AddOverlays("can-o3")
 	return
 
 /obj/machinery/portable_atmospherics/canister/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)

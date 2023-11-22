@@ -72,10 +72,10 @@
 	if(reagents.total_volume)
 		var/image/filling = image('icons/obj/bloodpack.dmi', "[round(percent,25)]")
 		filling.color = reagents.get_color()
-		overlays += filling
-	overlays += image('icons/obj/bloodpack.dmi', "top")
+		AddOverlays(filling)
+	AddOverlays(image('icons/obj/bloodpack.dmi',) "top")
 	if(attached)
-		overlays += image('icons/obj/bloodpack.dmi', "dongle")
+		AddOverlays(image('icons/obj/bloodpack.dmi',) "dongle")
 
 /obj/item/reagent_containers/ivbag/MouseDrop(over_object, src_location, over_location)
 	if(!CanMouseDrop(over_object))

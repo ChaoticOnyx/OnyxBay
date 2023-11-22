@@ -277,7 +277,7 @@ BLIND     // can't see anything
 	ClearOverlays()
 
 	if(wired)
-		overlays += image(icon, "gloves_wire")
+		AddOverlays(image(icon,) "gloves_wire")
 
 /obj/item/clothing/gloves/get_fibers()
 	var/fiber_id = copytext(md5("\ref[src] fiber"), 1, 6)
@@ -641,7 +641,7 @@ BLIND     // can't see anything
 /obj/item/clothing/shoes/update_icon()
 	ClearOverlays()
 	if(holding)
-		overlays += image(icon, "[icon_state]_knife")
+		AddOverlays(image(icon,) "[icon_state]_knife")
 	return ..()
 
 /obj/item/clothing/shoes/proc/handle_movement(turf/walking, running)

@@ -82,7 +82,7 @@
 			offset_x = rand(-6, 6),
 			offset_y = rand(-4, 8)
 		)
-		overlays += banknote
+		AddOverlays(banknote)
 
 	src.desc = "They are worth [worth] Credit."
 	if(worth in denominations)

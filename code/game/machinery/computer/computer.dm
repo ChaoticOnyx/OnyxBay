@@ -74,19 +74,19 @@
 	ClearOverlays()
 	if(stat & NOPOWER)
 		if(icon_keyboard)
-			overlays += image(icon,"[icon_keyboard]_off", overlay_layer)
+			AddOverlays(image(icon,"[icon_keyboard]_off",) overlay_layer)
 		return
 
 	if(stat & BROKEN)
-		overlays += image(icon, "[icon_state]_broken", overlay_layer)
+		AddOverlays(image(icon,) "[icon_state]_broken", overlay_layer)
 	else
-		overlays += image(icon, icon_screen, overlay_layer)
+		AddOverlays(image(icon,) icon_screen, overlay_layer)
 
 	var/should_glow = update_glow()
 	if(should_glow)
-		overlays += emissive_appearance(icon, icon_screen)
+		AddOverlays(emissive_appearance(icon,) icon_screen)
 		if(icon_keyboard)
-			overlays += emissive_appearance(icon, icon_keyboard)
+			AddOverlays(emissive_appearance(icon,) icon_keyboard)
 
 /obj/machinery/computer/proc/update_glow()
 	if(stat & NOPOWER|BROKEN)

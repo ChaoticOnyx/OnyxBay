@@ -95,7 +95,7 @@
 	var/image/img = image(src.icon, src.icon_state)
 	img.color = "#ffffff"
 	img.alpha = silicate * 255 / 100
-	overlays += img
+	AddOverlays(img)
 
 /obj/structure/window/proc/shatter(display_message = 1)
 	playsound(src, SFX_BREAK_WINDOW, 70, 1)
@@ -438,7 +438,7 @@
 	icon_state = ""
 	for(var/i = 1 to 4)
 		var/image/I = image(icon, "[basestate][connections[i]]", dir = 1<<(i-1))
-		overlays += I
+		AddOverlays(I)
 
 	return
 

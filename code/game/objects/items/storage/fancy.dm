@@ -121,9 +121,9 @@
 
 /obj/item/storage/fancy/crayons/update_icon()
 	overlays = list() //resets list
-	overlays += image('icons/obj/crayons.dmi',"crayonbox")
+	AddOverlays(image('icons/obj/crayons.dmi',"crayonbox"))
 	for(var/obj/item/pen/crayon/crayon in contents)
-		overlays += image('icons/obj/crayons.dmi',crayon.colourName)
+		AddOverlays(image('icons/obj/crayons.dmi',crayon.colourName))
 
 	. = ..()
 
@@ -352,11 +352,11 @@
 	ClearOverlays()
 	icon_state = "vialbox[Floor(total_contents)]"
 	if (!broken)
-		overlays += image(icon, src, "led[locked]")
+		AddOverlays(image(icon,) src, "led[locked]")
 		if(locked)
-			overlays += image(icon, src, "cover")
+			AddOverlays(image(icon,) src, "cover")
 	else
-		overlays += image(icon, src, "ledb")
+		AddOverlays(image(icon,) src, "ledb")
 	return
 
 /*

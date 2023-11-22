@@ -35,7 +35,7 @@
 /obj/item/clothing/gloves/stun/update_icon(needs_updating = FALSE)
 	..()
 	if(bcell)
-		overlays += image(icon, "gloves_cell")
+		AddOverlays(image(icon,) "gloves_cell")
 
 /obj/item/clothing/gloves/stun/_examine_text()
 	. = ..()

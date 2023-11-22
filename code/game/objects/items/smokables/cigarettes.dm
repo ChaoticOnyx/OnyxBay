@@ -29,9 +29,9 @@
 		var/ratio = round(smoketime / initial(smoketime), 0.25) * 100
 		icon_state = ever_lit ? "[initial(icon_state)][ratio]" : initial(icon_state)
 		if(lit)
-			overlays += image_repository.overlay_image(icon, "[ember_state][ratio]", alpha, RESET_COLOR, null, SOUTH)
+			AddOverlays(image_repository.overlay_image(icon,) "[ember_state][ratio]", alpha, RESET_COLOR, null, SOUTH)
 	else if(lit)
-		overlays += image_repository.overlay_image(icon, ember_state, alpha, RESET_COLOR, null, SOUTH)
+		AddOverlays(image_repository.overlay_image(icon,) ember_state, alpha, RESET_COLOR, null, SOUTH)
 
 /obj/item/clothing/mask/smokable/cigarette/die(nomessage = FALSE, nodestroy = FALSE)
 	..()

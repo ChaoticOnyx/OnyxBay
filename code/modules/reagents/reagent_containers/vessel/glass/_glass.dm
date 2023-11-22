@@ -137,7 +137,7 @@
 		desc = initial(desc)
 
 	if(overlay_icon)
-		overlays += image(icon, src, overlay_icon)
+		AddOverlays(image(icon,) src, overlay_icon)
 
 	var/side = "left"
 	for(var/item in extras)
@@ -147,7 +147,7 @@
 			if(GE.glass_color)
 				I.color = GE.glass_color
 			if(GE.isoverlaying)
-				overlays += I
+				AddOverlays(I)
 			else
 				underlays += I
 		else if(rim_pos && istype(item, /obj/item/reagent_containers/food/fruit_slice))

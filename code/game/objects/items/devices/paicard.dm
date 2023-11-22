@@ -22,7 +22,7 @@
 
 /obj/item/device/paicard/New()
 	..()
-	overlays += "pai-off"
+	AddOverlays("pai-off")
 
 /obj/item/device/paicard/Destroy()
 	//Will stop people throwing friend pAIs into the singularity so they can respawn

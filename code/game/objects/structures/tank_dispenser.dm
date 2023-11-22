@@ -31,11 +31,11 @@
 /obj/structure/dispenser/update_icon()
 	ClearOverlays()
 	switch(oxygentanks)
-		if(1 to 3)	overlays += "oxygen-[oxygentanks]"
-		if(4 to INFINITY) overlays += "oxygen-4"
+		if(1 to 3)	AddOverlays("oxygen-[oxygentanks]")
+		if(4 to INFINITY) AddOverlays("oxygen-4")
 	switch(plasmatanks)
-		if(1 to 4)	overlays += "plasma-[plasmatanks]"
-		if(5 to INFINITY) overlays += "plasma-5"
+		if(1 to 4)	AddOverlays("plasma-[plasmatanks]")
+		if(5 to INFINITY) AddOverlays("plasma-5")
 
 /obj/structure/dispenser/attack_ai(mob/user)
 	if(user.Adjacent(src))

@@ -214,9 +214,9 @@
 		picture.icon_state = "[picture_state]"
 		picture_overlight.icon_state = "[picture_state]"
 
-		overlays += picture
-		overlays += picture_overlight
-		overlays += static_overlay
+		AddOverlays(picture)
+		AddOverlays(picture_overlight)
+		AddOverlays(static_overlay)
 
 		set_light(0.5, 0.1, 1, 2, COLOR_WHITE)
 
@@ -226,8 +226,8 @@
 		remove_display(force_update)
 		picture_overlight.icon_state = "blank"
 		picture_overlight.maptext = new_text
-		overlays += picture_overlight
-		overlays += static_overlay
+		AddOverlays(picture_overlight)
+		AddOverlays(static_overlay)
 		set_light(0.5, 0.1, 1, 2, COLOR_WHITE)
 
 /obj/machinery/status_display/proc/get_evac_shuttle_timer()

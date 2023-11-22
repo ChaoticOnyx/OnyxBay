@@ -329,8 +329,8 @@
 		if(2)
 			new_color = COLOR_RED_LIGHT
 
-	overlays += alarm_overlays[icon_level+1]
-	overlays += alarm_overlays[icon_level+4]
+	AddOverlays(alarm_overlays[icon_level+1])
+	AddOverlays(alarm_overlays[icon_level+4])
 
 	set_light(0.25, 0.1, 1, 2, new_color)
 

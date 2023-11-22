@@ -47,30 +47,30 @@
 	if(!density)
 		I = image(masks_icon, "[material.icon_base]fwall_open")
 		I.color = material.icon_colour
-		overlays += I
+		AddOverlays(I)
 		return
 
 	for(var/i = 1 to 4)
 		I = image(masks_icon, "[material.icon_base][wall_connections[i]]", dir = 1<<(i-1))
 		I.color = material.icon_colour
-		overlays += I
+		AddOverlays(I)
 
 	if(reinf_material)
 		if(construction_stage != null && construction_stage < 6)
 			I = image(masks_icon, "reinf_construct-[construction_stage]")
 			I.color = reinf_material.icon_colour
-			overlays += I
+			AddOverlays(I)
 		else
 			if("[reinf_material.icon_reinf]0" in icon_states(masks_icon))
 				// Directional icon
 				for(var/i = 1 to 4)
 					I = image(masks_icon, "[reinf_material.icon_reinf][wall_connections[i]]", dir = 1<<(i-1))
 					I.color = reinf_material.icon_colour
-					overlays += I
+					AddOverlays(I)
 			else
 				I = image(masks_icon, reinf_material.icon_reinf)
 				I.color = reinf_material.icon_colour
-				overlays += I
+				AddOverlays(I)
 
 	if(damage != 0)
 		var/integrity = material.integrity
@@ -81,7 +81,7 @@
 		if(overlay > damage_overlays.len)
 			overlay = damage_overlays.len
 
-		overlays += damage_overlays[overlay]
+		AddOverlays(damage_overlays[overlay])
 	return
 
 /turf/simulated/wall/proc/generate_overlays()

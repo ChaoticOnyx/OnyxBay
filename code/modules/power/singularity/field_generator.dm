@@ -41,16 +41,16 @@ field_generator power level display
 	ClearOverlays()
 	if(!active)
 		if(warming_up)
-			overlays += "+a[warming_up]"
+			AddOverlays("+a[warming_up]")
 	if(fields.len)
-		overlays += "+on"
+		AddOverlays("+on")
 	// Power level indicator
 	// Scale % power to % num_power_levels and truncate value
 	var/level = round(num_power_levels * power / field_generator_max_power)
 	// Clamp between 0 and num_power_levels for out of range power values
 	level = between(0, level, num_power_levels)
 	if(level)
-		overlays += "+p[level]"
+		AddOverlays("+p[level]")
 
 	return
 

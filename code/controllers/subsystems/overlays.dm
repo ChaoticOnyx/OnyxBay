@@ -278,7 +278,7 @@ SUBSYSTEM_DEF(overlays)
 /// Adds sources to the image's overlays.
 /image/proc/AddOverlays(sources)
 	SHOULD_NOT_OVERRIDE(TRUE)
-	overlays += sources
+	AddOverlays(sources)
 
 
 /// Removes sources from the image's overlays.

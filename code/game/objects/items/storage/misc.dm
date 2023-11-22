@@ -45,7 +45,7 @@
 	for(var/obj/item/reagent_containers/food/donut/D in contents)
 		var/image/lying_donut = image('icons/obj/food.dmi', "[i][D.overlay_state]")
 		lying_donut.color = D.color
-		overlays += lying_donut
+		AddOverlays(lying_donut)
 		i++
 
 /obj/item/storage/box/donut/empty

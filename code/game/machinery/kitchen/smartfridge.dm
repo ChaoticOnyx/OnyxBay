@@ -182,9 +182,9 @@
 	else
 		icon_state = icon_on
 	if(contents.len)
-		overlays += "drying_rack_filled"
+		AddOverlays("drying_rack_filled")
 		if(!inoperable())
-			overlays += "drying_rack_drying"
+			AddOverlays("drying_rack_drying")
 
 /obj/machinery/smartfridge/drying_rack/proc/dry()
 	for(var/datum/stored_items/I in item_records)
@@ -217,7 +217,7 @@
 	if(shows_number_of_items)
 		ClearOverlays()
 		if(stat & (BROKEN|NOPOWER))
-			overlays += icon_off // The use of overlays allows us to see how much is stored inside, even if the machine happens to be unpowered
+			AddOverlays(icon_off) // The use of overlays allows us to see how much is stored inside, even if the machine happens to be unpowered
 		switch(contents.len)
 			if(0)
 				icon_state = icon_on
@@ -238,7 +238,7 @@
 		user.visible_message("[user] [panel_open ? "opens" : "closes"] the maintenance panel of \the [src].", "You [panel_open ? "open" : "close"] the maintenance panel of \the [src].")
 		ClearOverlays()
 		if(panel_open)
-			overlays += image(icon, icon_panel)
+			AddOverlays(image(icon,) icon_panel)
 		SSnano.update_uis(src)
 		return
 

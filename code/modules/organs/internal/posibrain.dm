@@ -139,7 +139,7 @@
 		icon_state = "posibrain-idle"
 
 	if(shackled)
-		overlays += "posibrain-shackles"
+		AddOverlays("posibrain-shackles")
 
 /obj/item/organ/internal/cerebrum/posibrain/proc/show_laws_brain()
 	set category = "Shackle"

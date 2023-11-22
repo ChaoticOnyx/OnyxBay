@@ -20,13 +20,13 @@
 	if(charging)
 		ClearOverlays()
 		if(charging.icon == icon)
-			overlays += charging.icon_state
+			AddOverlays(charging.icon_state)
 		else
-			overlays += "cell"
-		overlays += "ccharger-wires"
+			AddOverlays("cell")
+		AddOverlays("ccharger-wires")
 		if(!(stat & (BROKEN|NOPOWER)))
 			chargelevel = round(CELL_PERCENT(charging) * 4.0 / 99)
-			overlays += "ccharger-o[chargelevel]"
+			AddOverlays("ccharger-o[chargelevel]")
 	else
 		ClearOverlays()
 

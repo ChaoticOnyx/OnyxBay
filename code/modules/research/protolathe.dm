@@ -121,7 +121,7 @@
 	var/amount = min(stack.get_amount(), round((max_material_storage - TotalMaterials()) / SHEET_MATERIAL_AMOUNT))
 
 	var/t = stack.material.name
-	overlays += "protolathe_[t]"
+	AddOverlays("protolathe_[t]")
 	spawn(10)
 		CutOverlays("protolathe_[t]")
 

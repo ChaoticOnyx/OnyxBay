@@ -193,18 +193,18 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	icon_state = "mmi-inner"
 
 	var/brain_overlay = "mmi-[lowertext(brainobj?.species)]"
-	overlays += (brain_overlay in icon_states(icon)) ? brain_overlay : "mmi-error"
+	AddOverlays((brain_overlay) in icon_states(icon)) ? brain_overlay : "mmi-error"
 
 	if(locked)
-		overlays += "mmi-lid"
+		AddOverlays("mmi-lid")
 
-	overlays += "mmi-outer"
+	AddOverlays("mmi-outer")
 
 	if(brainmob?.is_ic_dead())
-		overlays += "mmi-dead"
+		AddOverlays("mmi-dead")
 	else if(brainmob?.ssd_check())
-		overlays += "mmi-ssd"
+		AddOverlays("mmi-ssd")
 	else
-		overlays += "mmi-stable"
+		AddOverlays("mmi-stable")
 
 	return

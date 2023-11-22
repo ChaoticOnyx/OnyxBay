@@ -80,7 +80,7 @@
 	else
 		icon_state = "[base_icon]-off"
 	if(panel_open)
-		overlays += image(icon, "[base_icon]-panel")
+		AddOverlays(image(icon,) "[base_icon]-panel")
 
 /obj/machinery/vending/Initialize(mapload)
 	. = ..()

@@ -67,7 +67,7 @@
 		ClearOverlays()
 
 		if(lastgenlev != 0)
-			overlays += image('icons/obj/power.dmi', "teg-op[lastgenlev]")
+			AddOverlays(image('icons/obj/power.dmi',) "teg-op[lastgenlev]")
 
 /obj/machinery/power/generator/Process()
 	if(!circ1 || !circ2 || !anchored || stat & (BROKEN|NOPOWER))

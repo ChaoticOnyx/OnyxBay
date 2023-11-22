@@ -68,15 +68,15 @@
 	var/charge_level = between(0, round(Percentage() / 12), 7)
 
 
-	overlays += "charge[charge_level]"
+	AddOverlays("charge[charge_level]")
 
 	for(var/obj/item/cell/C in internal_cells)
 		cellcount++
-		overlays += "cell[cellcount]"
+		AddOverlays("cell[cellcount]")
 		if(C.fully_charged())
-			overlays += "cell[cellcount]f"
+			AddOverlays("cell[cellcount]f")
 		else if(!C.charge)
-			overlays += "cell[cellcount]e"
+			AddOverlays("cell[cellcount]e")
 
 // Recalculate maxcharge and similar variables.
 /obj/machinery/power/smes/batteryrack/proc/update_maxcharge()

@@ -76,9 +76,9 @@
 	icon_state = state_base
 	if(playing)
 		if(emagged)
-			overlays += "[state_base]-emagged"
+			AddOverlays("[state_base]-emagged")
 		else
-			overlays += "[state_base]-running"
+			AddOverlays("[state_base]-running")
 
 /obj/machinery/media/jukebox/interact(mob/user)
 	if(!anchored)

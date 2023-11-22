@@ -36,7 +36,7 @@
 /obj/item/storage/pill_bottle/update_icon()
 	ClearOverlays()
 	if(label_color)
-		overlays += image_repository.overlay_image(icon, "[icon_state]-overlay", alpha, RESET_COLOR, label_color, SOUTH)
+		AddOverlays(image_repository.overlay_image(icon,) "[icon_state]-overlay", alpha, RESET_COLOR, label_color, SOUTH)
 
 /obj/item/storage/pill_bottle/attack_self(mob/user)
 	if(user.get_inactive_hand())

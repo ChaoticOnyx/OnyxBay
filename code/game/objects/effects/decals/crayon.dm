@@ -10,7 +10,7 @@
 
 		name = visible_name
 		desc = "A [visible_name] drawn in crayon."
-		overlays += get_crayon_preview(main, shade, drawing)
+		AddOverlays(get_crayon_preview(main,) shade, drawing)
 
 		add_hiddenprint(usr)
 

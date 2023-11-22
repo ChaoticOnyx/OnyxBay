@@ -52,9 +52,9 @@ var/list/all_virtual_listeners = list()
 	ClearOverlays()
 
 	if(abilities & VIRTUAL_ABILITY_HEAR)
-		overlays += overlay_icons["hear"]
+		AddOverlays(overlay_icons["hear"])
 	if(abilities & VIRTUAL_ABILITY_SEE)
-		overlays += overlay_icons["see"]
+		AddOverlays(overlay_icons["see"])
 
 /***********************
 * Virtual Mob Creation *

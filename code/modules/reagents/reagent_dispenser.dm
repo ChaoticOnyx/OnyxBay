@@ -84,9 +84,9 @@
 			var/reagents_amt = 0
 			for(var/datum/reagent/R in reagents.reagent_list)
 				reagents_amt += R.volume
-			overlays += image(icon, src, "[icon_state]-[ceil(reagents_amt / (initial_capacity / filling_overlay_levels))]")
+			AddOverlays(image(icon,) src, "[icon_state]-[ceil(reagents_amt / (initial_capacity / filling_overlay_levels))]")
 		else
-			overlays += image(icon, src, "[icon_state]-0")
+			AddOverlays(image(icon,) src, "[icon_state]-0")
 
 //Dispensers
 /obj/structure/reagent_dispensers/watertank
@@ -192,7 +192,7 @@
 		var/icon/rig_icon = getFlatIcon(rig)
 		rig_icon.Shift(NORTH,1)
 		rig_icon.Shift(EAST,6)
-		overlays += rig_icon
+		AddOverlays(rig_icon)
 
 /obj/structure/reagent_dispensers/fueltank/bullet_act(obj/item/projectile/Proj)
 	if(Proj.get_structure_damage())

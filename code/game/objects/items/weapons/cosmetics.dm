@@ -42,7 +42,7 @@
 		var/icon/lipstick_icon = icon(icon, "lipstick_mask")
 		if(colour)
 			lipstick_icon.Blend(colour, ICON_ADD)
-		overlays += lipstick_icon
+		AddOverlays(lipstick_icon)
 	else
 		icon_state = initial(icon_state)
 

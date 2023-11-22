@@ -365,23 +365,23 @@
 	if(density)
 		icon_state = "door_closed"
 		if(hatch_open)
-			overlays += "hatch"
+			AddOverlays("hatch")
 		if(blocked)
-			overlays += "welded"
+			AddOverlays("welded")
 		if(pdiff_alert)
-			overlays += "palert"
+			AddOverlays("palert")
 			do_set_light = TRUE
 		if(dir_alerts)
 			for(var/d = 1; d <= 4; d++)
 				var/cdir = GLOB.cardinal[d]
 				for(var/i = 1; i <= ALERT_STATES.len; i++)
 					if(dir_alerts[d] & (1 << (i-1)))
-						overlays += new /icon(icon,"alert_[ALERT_STATES[i]]", dir = cdir)
+						AddOverlays(new) /icon(icon,"alert_[ALERT_STATES[i]]", dir = cdir)
 						do_set_light = TRUE
 	else
 		icon_state = "door_open"
 		if(blocked)
-			overlays += "welded_open"
+			AddOverlays("welded_open")
 
 	if(do_set_light)
 		set_light(0.25, 0.1, 1, 2, COLOR_SUN)

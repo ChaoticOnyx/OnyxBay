@@ -36,11 +36,11 @@
 /obj/item/clipboard/update_icon()
 	ClearOverlays()
 	if(toppaper)
-		overlays += toppaper.icon_state
-		overlays += toppaper.overlays
+		AddOverlays(toppaper.icon_state)
+		AddOverlays(toppaper.overlays)
 	if(haspen)
-		overlays += "clipboard_pen"
-	overlays += "clipboard_over"
+		AddOverlays("clipboard_pen")
+	AddOverlays("clipboard_over")
 	return
 
 /obj/item/clipboard/attackby(obj/item/W, mob/user)

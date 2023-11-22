@@ -47,31 +47,31 @@
 	if(HC)
 		var/image/temp = image(icon, "[HC.icon_state]_over")
 		temp.color = HC.color
-		overlays += temp
+		AddOverlays(temp)
 		if(lit)
-			overlays += image_repository.overlay_image(icon, "[HC.icon_state]_over_lit", alpha, RESET_COLOR, null, SOUTH)
+			AddOverlays(image_repository.overlay_image(icon,) "[HC.icon_state]_over_lit", alpha, RESET_COLOR, null, SOUTH)
 
 	if(H1?.loc == src)
 		var/image/temp = image(icon, "[base_icon]_left_0")
 		if(hose_color)
 			temp.color = hose_color
-		overlays += temp
+		AddOverlays(temp)
 	else
 		var/image/temp = image(icon, "[base_icon]_left_1")
 		if(hose_color)
 			temp.color = hose_color
-		overlays += temp
+		AddOverlays(temp)
 	if(has_second_hose)
 		if(H2?.loc == src)
 			var/image/temp = image(icon, "[base_icon]_right_0")
 			if(hose_color)
 				temp.color = hose_color
-			overlays += temp
+			AddOverlays(temp)
 		else
 			var/image/temp = image(icon, "[base_icon]_right_1")
 			if(hose_color)
 				temp.color = hose_color
-			overlays += temp
+			AddOverlays(temp)
 
 /obj/item/reagent_containers/vessel/hookah/Destroy()
 	. = ..()
@@ -329,7 +329,7 @@
 /obj/item/hookah_coal/update_icon()
 	ClearOverlays()
 	if(pulls_left)
-		overlays += image_repository.overlay_image(icon, "[icon_state]_fill", alpha, RESET_COLOR, null, SOUTH)
+		AddOverlays(image_repository.overlay_image(icon,) "[icon_state]_fill", alpha, RESET_COLOR, null, SOUTH)
 
 /obj/item/hookah_coal/attack_self(mob/user)
 	if(smoke_amount)

@@ -121,7 +121,7 @@
 			overlay_state = new_overlay_state
 			ClearOverlays()
 			if(overlay_state)
-				overlays += image('icons/obj/ecig.dmi', overlay_state)
+				AddOverlays(image('icons/obj/ecig.dmi',) overlay_state)
 	else
 		set_light(0)
 		if(opened)
@@ -314,7 +314,7 @@
 	. = ..()
 	var/image/over = image('icons/obj/ecig.dmi', "[icon_state]_over")
 	over.color = label_color
-	overlays += over
+	AddOverlays(over)
 
 /obj/item/reagent_containers/ecig_cartridge/proc/make_disposable() // Sweet hacks
 	volume *= 4
@@ -471,7 +471,7 @@
 		if(new_overlay_state != overlay_state)
 			overlay_state = new_overlay_state
 			if(overlay_state)
-				overlays += image_repository.overlay_image('icons/obj/ecig.dmi', overlay_state, alpha, RESET_COLOR, null, SOUTH)
+				AddOverlays(image_repository.overlay_image('icons/obj/ecig.dmi',) overlay_state, alpha, RESET_COLOR, null, SOUTH)
 	else
 		overlay_state = ""
 		ClearOverlays()

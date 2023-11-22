@@ -619,7 +619,7 @@
 					var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_closed]")
 					src.overlays += cdoor_icon
 				if(welded)
-					overlays += "welded"
+					AddOverlays("welded")
 			else
 				var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_opened]")
 				src.overlays += cdoor_icon
@@ -627,13 +627,13 @@
 		if(!opened)
 			if(broken && icon_off)
 				icon_state = icon_off
-				overlays += icon_broken
+				AddOverlays(icon_broken)
 			else if((setup & CLOSET_HAS_LOCK) && locked && icon_locked)
 				icon_state = icon_locked
 			else
 				icon_state = icon_closed
 			if(welded)
-				overlays += "welded"
+				AddOverlays("welded")
 		else
 			icon_state = icon_opened
 

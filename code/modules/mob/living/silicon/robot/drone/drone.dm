@@ -174,11 +174,11 @@ var/list/mob_hat_cache = list()
 	ClearOverlays()
 	if(stat == 0)
 		if(controlling_ai)
-			overlays += "eyes-[icon_state]-ai"
+			AddOverlays("eyes-[icon_state]-ai")
 		else if(emagged)
-			overlays += "eyes-[icon_state]-emag"
+			AddOverlays("eyes-[icon_state]-emag")
 		else
-			overlays += "eyes-[icon_state]"
+			AddOverlays("eyes-[icon_state]")
 	else
 		CutOverlays("eyes")
 

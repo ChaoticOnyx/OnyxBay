@@ -39,7 +39,7 @@
 		icon_state = "[initial(icon_state)]-on"
 		if(light_overlay)
 			var/mutable_appearance/MA = emissive_appearance(icon, "[initial(icon_state)]-overlay")
-			overlays += MA
+			AddOverlays(MA)
 	else
 		icon_state = "[initial(icon_state)]"
 
@@ -310,7 +310,7 @@
 		icon_state = "[initial(icon_state)]-on"
 		var/mutable_appearance/MA = emissive_appearance(icon, "[initial(icon_state)]-overlay")
 		MA.color = brightness_color
-		overlays += MA
+		AddOverlays(MA)
 	else
 		icon_state = "[initial(icon_state)][fuel ? "" : "-empty"]"
 
@@ -393,7 +393,7 @@
 		icon_state = "[initial(icon_state)]-on"
 		var/mutable_appearance/MA = emissive_appearance(icon, "[initial(icon_state)]-overlay")
 		MA.color = brightness_color
-		overlays += MA
+		AddOverlays(MA)
 		item_state = "glowstick-on"
 		set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, 2, brightness_color)
 	else

@@ -80,8 +80,8 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 		var/image/ammo_overlay = null
 		var/icon_state_suffix = round(M.ammo_counters[F.name], 1)
 		ammo_overlay = image('icons/obj/guns/gun.dmi', src, "[initial(icon_state)][icon_state_suffix]")
-		overlays += magazine_overlay
-		overlays += ammo_overlay
+		AddOverlays(magazine_overlay)
+		AddOverlays(ammo_overlay)
 
 	if (istype(loc,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = loc
@@ -92,7 +92,7 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 					DNA_overlay = image('icons/obj/guns/gun.dmi', src, "[initial(icon_state)]DNAgood")
 				else
 					DNA_overlay = image('icons/obj/guns/gun.dmi', src, "[initial(icon_state)]DNAbad")
-				overlays += DNA_overlay
+				AddOverlays(DNA_overlay)
 
 /obj/item/gun/projectile/lawgiver/attack_self(mob/user )
 	unload_ammo(user)

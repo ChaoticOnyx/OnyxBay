@@ -162,7 +162,7 @@
 		if (grayscale)
 			img.color = list(0.3,0.3,0.3, 59,59,59, 11,11,11)
 		img.alpha = saturation * 255
-		overlays += img
+		AddOverlays(img)
 	update_icon()
 
 /obj/item/paper/proc/set_content(text, title, rawhtml = FALSE)
@@ -454,7 +454,7 @@
 		if(!stamped)
 			stamped = new
 		stamped += P.type
-		overlays += stampoverlay
+		AddOverlays(stampoverlay)
 
 		to_chat(user, SPAN_NOTICE("You stamp the paper with your [P.name]."))
 

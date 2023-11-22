@@ -51,9 +51,9 @@
 /obj/machinery/organ_printer/update_icon()
 	ClearOverlays()
 	if(panel_open)
-		overlays += "bioprinter_panel_open"
+		AddOverlays("bioprinter_panel_open")
 	if(printing)
-		overlays += "bioprinter_working"
+		AddOverlays("bioprinter_working")
 
 /obj/machinery/organ_printer/New()
 	..()
