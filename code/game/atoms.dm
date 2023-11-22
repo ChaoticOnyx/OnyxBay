@@ -41,9 +41,6 @@
 	var/chat_color
 	var/chat_color_darkened
 
-	/// Stores overlays managed by update_overlays() to prevent removing overlays that were not added by the same proc
-	var/list/managed_overlays
-
 	/// This atom's cache of non-protected overlays, used for normal icon additions. Do not manipulate directly- See SSoverlays.
 	var/list/atom_overlay_cache
 
@@ -124,8 +121,6 @@
 	QDEL_NULL(proximity_monitor)
 	overlays.Cut()
 	underlays.Cut()
-	if(managed_overlays)
-		managed_overlays.Cut()
 	return ..()
 
 /atom/proc/reveal_blood()
@@ -349,19 +344,7 @@ its easier to just keep the beam vertical.
 
 /atom/proc/update_icon()
 	CAN_BE_REDEFINED(TRUE)
-	var/list/new_overlays = update_overlays()
-	if(managed_overlays)
-		overlays -= managed_overlays
-		managed_overlays = null
-	if(length(new_overlays))
-		managed_overlays = new_overlays
-		overlays += new_overlays
 	return
-
-// Updates the overlays of the atom
-/atom/proc/update_overlays()
-	SHOULD_CALL_PARENT(TRUE)
-	. = list()
 
 /atom/proc/blob_act(damage)
 	CAN_BE_REDEFINED(TRUE)
