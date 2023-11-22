@@ -42,7 +42,9 @@
 
 	walk(src, 0) // Because we might have called walk_to, we must stop the walk loop or BYOND keeps an internal reference to us forever.
 
-	for(var/A in src)
+	for(var/atom/A in src)
+		if(QDELING(A))
+			continue
 		qdel(A)
 
 	forceMove(null)

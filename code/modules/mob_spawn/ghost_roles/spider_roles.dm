@@ -5,10 +5,10 @@
 	/// Mob spawner handling the actual spawn of the spider
 	var/obj/effect/mob_spawn/ghost_role/spider/spawner
 
-/obj/structure/spider/eggcluster/Initialize(mapload)
-	pixel_x = rand(3,-3)
-	pixel_y = rand(3,-3)
-	return ..()
+/obj/structure/spider/eggcluster/Initialize()
+	. = ..()
+	pixel_x = rand(3, -3)
+	pixel_y = rand(3, -3)
 
 /obj/structure/spider/eggcluster/Destroy()
 	if(spawner)

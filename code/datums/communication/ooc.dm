@@ -42,7 +42,7 @@
 	var/decorated_ckey = C.donator_info.get_decorated_ooc_name(C)
 	message = emoji_parse(C, message)
 
-	GLOB.indigo_bot.chat_webhook(config.indigo_bot.ooc_webhook, "**[C.ckey]:** [message]")
+	GLOB.indigo_bot.chat_webhook(config.indigo_bot.ooc_webhook, "OOC: **[C.ckey]:** [message]")
 
 	for(var/client/target in GLOB.clients)
 		if(target.is_key_ignored(C.key)) // If we're ignored by this person, then do nothing.

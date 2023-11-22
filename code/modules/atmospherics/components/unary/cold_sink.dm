@@ -20,8 +20,8 @@
 	var/set_temperature = 20 CELSIUS // Thermostat
 	var/cooling = 0
 
-/obj/machinery/atmospherics/unary/freezer/New()
-	..()
+/obj/machinery/atmospherics/unary/freezer/Initialize()
+	. = ..()
 	initialize_directions = dir
 	component_parts = list()
 	component_parts += new /obj/item/circuitboard/unary_atmos/cooler(src)

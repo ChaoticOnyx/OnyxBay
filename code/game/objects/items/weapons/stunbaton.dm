@@ -70,7 +70,7 @@
 // Addition made by Techhead0, thanks for fullfilling the todo!
 /obj/item/melee/baton/proc/examine_cell()
 	if(bcell)
-		return "<span class='notice'>The baton is [round(bcell.percent())]% charged.</span>"
+		return "<span class='notice'>The baton is [round(CELL_PERCENT(bcell))]% charged.</span>"
 	else
 		return "<span class='warning'>The baton does not have a power source installed.</span>"
 

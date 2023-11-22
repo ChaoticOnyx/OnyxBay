@@ -112,9 +112,9 @@
 		icon_state = "[base_icon]_on"
 
 		var/new_overlay_state = "[base_icon]_charge1"
-		if(cigcell.percent() >= 50)
+		if(CELL_PERCENT(cigcell) >= 50)
 			new_overlay_state = "[base_icon]_charge3"
-		else if(cigcell.percent() >= 25)
+		else if(CELL_PERCENT(cigcell) >= 25)
 			new_overlay_state = "[base_icon]_charge2"
 
 		if(new_overlay_state != overlay_state)
@@ -260,7 +260,7 @@
 		. += SPAN("notice", "\nThere are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.")
 	else
 		. += SPAN("notice", "\nThere is no cartridge connected.")
-	. += SPAN("notice", "\nGauge shows about [round(cigcell.percent(), 25)]% energy remaining.")
+	. += SPAN("notice", "\nGauge shows about [round(CELL_PERCENT(cigcell), 25)]% energy remaining.")
 	var/_led = led_descs[current_color]
 	. += SPAN("notice", "\nLEDs are set to \"[_led]\" mode.")
 
@@ -290,7 +290,7 @@
 		. += SPAN("notice", "\nThere are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.")
 	else
 		. += SPAN("notice", "\nThere is no cartridge connected.")
-	. += SPAN("notice", "\nGauge shows [round(cigcell.percent(), 1)]% energy remaining.")
+	. += SPAN("notice", "\nGauge shows [round(CELL_PERCENT(cigcell), 1)]% energy remaining.")
 
 
 /// Cartridges
@@ -463,9 +463,9 @@
 
 	if(active)
 		var/new_overlay_state = "[base_icon]_charge1"
-		if(cigcell.percent() >= 50)
+		if(CELL_PERCENT(cigcell) >= 50)
 			new_overlay_state = "[base_icon]_charge3"
-		else if(cigcell.percent() >= 25)
+		else if(CELL_PERCENT(cigcell) >= 25)
 			new_overlay_state = "[base_icon]_charge2"
 
 		if(new_overlay_state != overlay_state)

@@ -14,9 +14,13 @@
 	var/l_inner_range = 1 // inner range of light when on, can be negative
 	var/l_outer_range = 6 // outer range of light when on, can be negative
 
-/obj/machinery/floodlight/New()
+/obj/machinery/floodlight/Initialize()
+	. = ..()
 	cell = new /obj/item/cell/crap(src)
-	..()
+
+/obj/machinery/floodlight/Destroy()
+	QDEL_NULL(cell)
+	return ..()
 
 /obj/machinery/floodlight/update_icon()
 	overlays.Cut()
@@ -31,7 +35,7 @@
 		return
 
 	// If the cell is almost empty rarely "flicker" the light. Aesthetic only.
-	if((cell.percent() < 10) && prob(5))
+	if((CELL_PERCENT(cell) < 10) && prob(5))
 		set_light(l_max_bright / 2, l_inner_range, l_outer_range)
 		spawn(20)
 			if(on)
@@ -131,9 +135,9 @@
 /obj/item/floodlight_diy
 	name = "Emergency Floodlight Kit"
 	desc = "A do-it-yourself kit for constructing the finest of emergency floodlights."
-	icon = 'icons/obj/storage.dmi'
-	icon_state = "inf_box"
-	item_state = "syringe_kit"
+	icon = 'icons/obj/storage/misc.dmi'
+	icon_state = "flood_box"
+	item_state = "lockbox"
 
 /obj/item/floodlight_diy/attack_self(mob/user)
 	to_chat(usr, "<span class='notice'>You start piecing together the kit...</span>")

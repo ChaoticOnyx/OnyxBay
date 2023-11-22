@@ -75,7 +75,7 @@
 
 // Have it automatically push research to the centcomm server so wild griffins can't fuck up R&D's work
 /obj/machinery/computer/rdconsole/proc/griefProtection()
-	for(var/obj/machinery/r_n_d/server/centcom/C in GLOB.machines)
+	for(var/obj/machinery/r_n_d/server/centcom/C in SSmachines.machinery)
 		for(var/datum/tech/T in files.known_tech)
 			C.files.AddTech2Known(T)
 		for(var/datum/design/D in files.known_designs)
@@ -86,7 +86,7 @@
 	..()
 	files = new /datum/research(src) // Setup the research data holder.
 	if(!id)
-		for(var/obj/machinery/r_n_d/server/centcom/S in GLOB.machines)
+		for(var/obj/machinery/r_n_d/server/centcom/S in SSmachines.machinery)
 			S.update_connections()
 			break
 
@@ -582,7 +582,7 @@
 		if(!src)
 			return
 
-		for(var/obj/machinery/r_n_d/server/S in GLOB.machines)
+		for(var/obj/machinery/r_n_d/server/S in SSmachines.machinery)
 			var/server_processed = 0
 			if((id in S.id_with_upload) || istype(S, /obj/machinery/r_n_d/server/centcom))
 				for(var/datum/tech/T in files.known_tech)

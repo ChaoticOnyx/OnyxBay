@@ -1,18 +1,14 @@
 /datum/vote/restart
-	name = "restart"
-	choices = list("Restart Round","Continue Playing")
+	name = "Restart"
+	default_choices = list("Restart Round","Continue Playing")
 
-/datum/vote/restart/can_run(mob/creator, automatic)
-	if(!automatic && (!config.vote.allow_vote_restart || !is_admin(creator)))
+/datum/vote/restart/can_be_initiated(mob/by_who, forced)
+	if(!forced && (!config.vote.allow_vote_restart || !is_admin(by_who)))
 		return FALSE // Admins and autovotes bypass the config setting.
 	return ..()
 
-/datum/vote/restart/handle_default_votes()
-	var/non_voters = ..()
-	choices["Continue Playing"] += non_voters
-
-/datum/vote/restart/report_result()
+/datum/vote/restart/finalize_vote(winning_option)
 	if(..())
 		return 1
-	if(result[1] == "Restart Round")
+	if(winning_option == "Restart Round")
 		SSvote.restart_world()

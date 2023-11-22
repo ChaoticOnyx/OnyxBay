@@ -218,6 +218,8 @@
 
 #define SPAN_SPIDER(X)   SPAN("spider", X)
 
+#define SPAN_BOLD(X)	 SPAN("bold", X)
+
 #define FONT_SMALL(X)    SPAN("small", X)
 
 #define FONT_NORMAL(X)   SPAN("normal", X)

@@ -1,31 +1,27 @@
 /datum/vote/storyteller
-	name = "storyteller"
+	name = "Select Storyteller"
 
-/datum/vote/storyteller/can_run(mob/creator, automatic)
-	if(!automatic && !is_admin(creator))
+/datum/vote/storyteller/can_be_initiated(mob/by_who, forced)
+	if(!forced && !is_admin(by_who))
 		return FALSE // Must be an admin.
 
 	return ..()
 
-/datum/vote/storyteller/setup_vote(mob/creator, automatic)
-	initiator = (!automatic && istype(creator)) ? creator.ckey : "the server"
-
-	for(var/datum/storyteller_character/C in GLOB.all_storytellers)
+/datum/vote/storyteller/New()
+	. = ..()
+	for(var/datum/storyteller_character/C in list_values(GLOB.all_storytellers))
 		if(!C.can_be_voted_for)
 			continue
-		choices += C
-		display_choices[C] = "[C.name] - [C.desc]"
+		default_choices += "[C.name]"
 
-	choices += "Random"
-	display_choices["Random"] = "Random"
+	default_choices += "Random"
 
-/datum/vote/storyteller/report_result()
+/datum/vote/storyteller/finalize_vote(winning_option)
 	if(..())
 		return TRUE
 
-	if(result[1] == "Random")
-		SSstoryteller.character = pick(choices - "Random")
+	if(winning_option == "Random")
+		SSstoryteller.character = GLOB.all_storytellers[pick(default_choices - "Random")]
 		log_and_message_admins("Storyteller's character was changed to [SSstoryteller.character.name].")
 		return
-
-	SSstoryteller.character = result[1]
+	SSstoryteller.character = GLOB.all_storytellers[winning_option]

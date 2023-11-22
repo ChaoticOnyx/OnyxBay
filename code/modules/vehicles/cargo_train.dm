@@ -212,7 +212,7 @@
 		return
 
 	. += "\nThe power light is [on ? "on" : "off"].\nThere are[key ? "" : " no"] keys in the ignition."
-	. += "\nThe charge meter reads [cell? round(cell.percent(), 0.01) : 0]%"
+	. += "\nThe charge meter reads [cell? round(CELL_PERCENT(cell), 0.01) : 0]%"
 
 /obj/vehicle/train/cargo/engine/verb/start_engine()
 	set name = "Start engine"

@@ -47,7 +47,7 @@
 
 	..()
 	set_next_think(world.time)
-	for(var/obj/machinery/power/singularity_beacon/singubeacon in GLOB.machines)
+	for(var/obj/machinery/power/singularity_beacon/singubeacon in SSmachines.machinery)
 		if(singubeacon.active)
 			target = singubeacon
 			break
@@ -119,7 +119,7 @@
 
 		if(QDELETED(pulse_source))
 			pulse_source = SSradiation.radiate(src, new /datum/radiation/preset/hawking)
-		
+
 		pulse_source.update_energy((energy / 50) * HAWKING_RAY_ENERGY)
 
 		if(prob(event_chance)) //Chance for it to run a special event TODO: Come up with one or two more that fit.
@@ -134,7 +134,7 @@
 
 		else if(!target)
 			pick_ghost()
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/singularity/proc/pick_ghost()
@@ -556,7 +556,7 @@
 			to_chat(M, SPAN("danger", "You hear an uneartly ringing, then what sounds like a shrilling kettle as you are washed with a wave of heat."))
 			to_chat(M, SPAN("danger", "You don't even have a moment to react as you are reduced to ashes by the intense radiation."))
 			M.dust()
-	
+
 	var/datum/radiation_source/temp_source = SSradiation.radiate(src, new /datum/radiation/preset/singularity_beta)
 	temp_source.schedule_decay(10 SECONDS)
 

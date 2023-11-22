@@ -1,5 +1,5 @@
 /proc/get_abductor_console(team_number)
-	for(var/obj/machinery/abductor/console/C in GLOB.machines)
+	for(var/obj/machinery/abductor/console/C in SSmachines.machinery)
 		if(C.team_number == team_number)
 			return C
 
@@ -258,7 +258,7 @@
 	if(vest == V)
 		return FALSE
 
-	for(var/obj/machinery/abductor/console/C in GLOB.machines)
+	for(var/obj/machinery/abductor/console/C in SSmachines.machinery)
 		if(C.vest == V)
 			C.vest = null
 			break

@@ -279,8 +279,6 @@
 			return global.created;
 		if("crew_repository")
 			return global.crew_repository;
-		if("csrfz_check")
-			return global.csrfz_check;
 		if("custom_event_msg")
 			return global.custom_event_msg;
 		if("custom_items")
@@ -407,8 +405,6 @@
 			return global.global_vars_;
 		if("gyrotrons")
 			return global.gyrotrons;
-		if("gzn_check")
-			return global.gzn_check;
 		if("hadevent")
 			return global.hadevent;
 		if("hazard_overlays")
@@ -1132,8 +1128,6 @@
 			global.created=newval;
 		if("crew_repository")
 			global.crew_repository=newval;
-		if("csrfz_check")
-			global.csrfz_check=newval;
 		if("custom_event_msg")
 			global.custom_event_msg=newval;
 		if("custom_items")
@@ -1260,8 +1254,6 @@
 			global.global_vars_=newval;
 		if("gyrotrons")
 			global.gyrotrons=newval;
-		if("gzn_check")
-			global.gzn_check=newval;
 		if("hadevent")
 			global.hadevent=newval;
 		if("hazard_overlays")
@@ -1857,7 +1849,6 @@
 	"create_turf_html",
 	"created",
 	"crew_repository",
-	"csrfz_check",
 	"custom_event_msg",
 	"custom_items",
 	"damage_icon_parts",
@@ -1923,7 +1914,6 @@
 	"global_message_listener",
 	"global_vars_",
 	"gyrotrons",
-	"gzn_check",
 	"hadevent",
 	"hazard_overlays",
 	"hidden_skill_types",

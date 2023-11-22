@@ -1,15 +1,16 @@
 /datum/vote/end_round
-	name = "end round"
-	choices = list("End the Round", "Continue Playing")
+	name = "End Round"
+	default_choices = list("End the Round", "Continue Playing")
 
-/datum/vote/end_round/can_run(mob/creator, automatic)
+/datum/vote/end_round/can_be_initiated(mob/by_who, forced)
 	if(GAME_STATE !=  RUNLEVEL_GAME)
 		return FALSE
-	if(automatic || check_rights(R_SERVER, FALSE, creator))
-		return TRUE
+	if(!forced && !check_rights(R_SERVER, FALSE, by_who))
+		return FALSE
+	return ..()
 
-/datum/vote/end_round/report_result()
+/datum/vote/end_round/finalize_vote(winning_option)
 	if(..())
 		return TRUE
-	if(result[1] == "End the Round")
+	if(winning_option == "End the Round")
 		SSticker.force_end = TRUE

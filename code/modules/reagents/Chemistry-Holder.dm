@@ -15,10 +15,9 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	src.maximum_volume = maximum_volume
 
 /datum/reagents/Destroy()
-	. = ..()
-
 	QDEL_NULL_LIST(reagent_list)
 	my_atom = null
+	return ..()
 
 /datum/reagents/think()
 	if(!my_atom?.loc)
@@ -242,7 +241,7 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	for(var/datum/reagent/R in reagent_list)
 		if(!R.radiation)
 			continue
-		
+
 		info += R.radiation
 
 	return info

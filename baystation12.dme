@@ -1,6 +1,7 @@
 // DM Environment file for baystation12.dme.
 // All manual changes should be made outside the BEGIN_ and END_ blocks.
- // New source code should be placed in .dm files: choose File/New --> Code File.
+// New source code should be placed in .dm files: choose File/New --> Code File.
+// #define TRACY_PROFILER
 // BEGIN_INTERNALS
 // END_INTERNALS
 // BEGIN_FILE_DIR
@@ -482,6 +483,7 @@
 #include "code\datums\trading\ship.dm"
 #include "code\datums\trading\spacesuits.dm"
 #include "code\datums\trading\trade.dm"
+#include "code\datums\trading\trade_response.dm"
 #include "code\datums\trading\unique.dm"
 #include "code\datums\trading\vox.dm"
 #include "code\datums\trading\weaponry.dm"
@@ -520,10 +522,8 @@
 #include "code\datums\uplink\deity\form_specific\wizard\wizard_transmutation.dm"
 #include "code\datums\vending\stored_item.dm"
 #include "code\datums\vending\vending.dm"
-#include "code\datums\vote\add_antag.dm"
 #include "code\datums\vote\custom.dm"
 #include "code\datums\vote\end.dm"
-#include "code\datums\vote\gamemode.dm"
 #include "code\datums\vote\map.dm"
 #include "code\datums\vote\restart.dm"
 #include "code\datums\vote\storyteller.dm"
@@ -1055,6 +1055,7 @@
 #include "code\game\objects\effects\decals\Cleanable\robots.dm"
 #include "code\game\objects\effects\decals\Cleanable\tracks.dm"
 #include "code\game\objects\effects\decals\posters\bs12.dm"
+#include "code\game\objects\effects\decals\posters\tgposters.dm"
 #include "code\game\objects\effects\landmarks\clothing.dm"
 #include "code\game\objects\effects\landmarks\events.dm"
 #include "code\game\objects\effects\landmarks\jobs.dm"
@@ -3042,6 +3043,11 @@
 #include "maps\derelicts\science_ship\science_ship.dm"
 #include "maps\derelicts\sensor_array\sensor_array.dm"
 #include "maps\derelicts\snow_asteroid\snow_asteroid.dm"
+#include "maps\eclipse\eclipse_areas.dm"
+#include "maps\eclipse\eclipse_define.dm"
+#include "maps\eclipse\eclipse_holodecks.dm"
+#include "maps\eclipse\eclipse_levels.dm"
+#include "maps\eclipse\eclipse_shuttles.dm"
 #include "maps\example\example_areas.dm"
 #include "maps\example\example_define.dm"
 #include "maps\example\example_jobs.dm"

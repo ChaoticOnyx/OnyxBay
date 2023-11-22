@@ -21,3 +21,6 @@
 
 /// from turf CtrlClickOn(): (/mob)
 #define SIGNAL_MOB_CTRL_CLICK "mob_ctrl_click"
+
+// Called on '/mob/proc/add_spell' (/mob, )
+#define SIGNAL_MOB_SPELL_LEARNED "mob_spell_learned"

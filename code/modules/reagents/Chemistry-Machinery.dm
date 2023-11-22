@@ -50,7 +50,7 @@
 		beaker = null
 	if(matter_storage >= matter_amount_per_sheet)
 		new /obj/item/stack/material/glass(get_turf(src), Floor(matter_storage / matter_amount_per_sheet))
-	..()
+	return ..()
 
 /obj/machinery/chem_master/ex_act(severity)
 	switch(severity)
@@ -402,7 +402,7 @@
 	if(beaker)
 		beaker.forceMove(get_turf(src))
 		beaker = null
-	..()
+	return ..()
 
 /obj/machinery/reagentgrinder/attackby(obj/item/O as obj, mob/user as mob)
 	if(default_deconstruction_screwdriver(user, O))

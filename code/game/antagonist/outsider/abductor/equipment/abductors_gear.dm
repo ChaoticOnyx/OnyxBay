@@ -122,7 +122,7 @@
 		cooldown = world.time + combat_cooldown
 
 /obj/item/clothing/suit/armor/abductor/Destroy()
-	for(var/obj/machinery/abductor/console/C in GLOB.machines)
+	for(var/obj/machinery/abductor/console/C in SSmachines.machinery)
 		if(C.vest == src)
 			C.vest = null
 			break
