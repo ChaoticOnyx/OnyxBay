@@ -69,23 +69,25 @@
 	return (..() && parent_organ.stage == 1)
 
 /datum/surgery_step/bone/mend_bone/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	var/bone = parent_organ.encased ? "[target]'s [parent_organ.encased]" : "bones in [target]'s [parent_organ]"
 	announce_preop(user,
-		"[user] is beginning to piece together [target]'s skull with \the [tool].",
-		"You are beginning to piece together [target]'s skull with \the [tool]."
+		"[user] is beginning to piece together [bone] with \the [tool].",
+		"You are beginning to piece together [bone] with \the [tool]."
 		)
 	return ..()
 
 /datum/surgery_step/bone/mend_bone/success(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
+	var/bone = parent_organ.encased ? "[target]'s [parent_organ.encased]" : "bones in [target]'s [parent_organ]"
 	announce_success(user,
-		"[user] sets [target]'s skull with \the [tool].",
-		"You set [target]'s skull with \the [tool]."
+		"[user] sets [bone] with \the [tool].",
+		"You set [bone] with \the [tool]."
 		)
 	parent_organ.stage = 2
 
 /datum/surgery_step/bone/mend_bone/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_failure(user,
-		"[user]'s hand slips, damaging [target]'s face with \the [tool]!",
-		"Your hand slips, damaging [target]'s face with \the [tool]!"
+		"[user]'s hand slips, damaging [target]'s [parent_organ.name] with \the [tool]!",
+		"Your hand slips, damaging [target]'s [parent_organ.name] with \the [tool]!"
 		)
 	parent_organ.take_external_damage(10, used_weapon = tool)
 	parent_organ.status |= ORGAN_DISFIGURED
