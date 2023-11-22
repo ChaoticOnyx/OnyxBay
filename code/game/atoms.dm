@@ -44,6 +44,12 @@
 	/// Stores overlays managed by update_overlays() to prevent removing overlays that were not added by the same proc
 	var/list/managed_overlays
 
+	/// This atom's cache of non-protected overlays, used for normal icon additions. Do not manipulate directly- See SSoverlays.
+	var/list/atom_overlay_cache
+
+	/// This atom's cache of overlays that can only be removed explicitly, like C4. Do not manipulate directly- See SSoverlays.
+	var/list/atom_protected_overlay_cache
+
 /atom/New(loc, ...)
 	CAN_BE_REDEFINED(TRUE)
 	//atom creation method that preloads variables at creation
