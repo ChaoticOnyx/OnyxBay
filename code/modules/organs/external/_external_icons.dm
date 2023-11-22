@@ -131,12 +131,6 @@ var/list/limb_icon_cache = list()
 	mob_overlays = list()
 
 	/////
-	if(GLOB.limb_overlays_cache[render_key]) // We're good, no need to go through all of this.
-		mob_overlays = GLOB.limb_overlays_cache[render_key]
-		AddOverlays(mob_overlays)
-		return
-
-	/////
 	var/husk_color_mod = rgb(96,88,80)
 	var/hulk_color_mod = rgb(48,224,40)
 	var/husk = owner && (MUTATION_HUSK in owner.mutations)
@@ -261,7 +255,6 @@ var/list/limb_icon_cache = list()
 		mob_overlays += limb_em_block
 
 	AddOverlays(mob_overlays)
-	GLOB.limb_overlays_cache[render_key] = mob_overlays
 	dir = EAST
 	icon = null
 
