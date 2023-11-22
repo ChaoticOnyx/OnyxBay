@@ -838,7 +838,7 @@
 				var/mutable_appearance/A = emissive_appearance(icon, eye_icon_state)
 				A.render_target = "*I am testing stuff ok"
 				eye_overlay.filters += filter(type = "layer", render_source = "*I am testing stuff ok")
-				eye_overlay.overlays += A
+				eye_overlay.AddOverlays(A)
 				eye_overlays[eye_icon_state] = eye_overlay
 			AddOverlays(eye_overlay)
 

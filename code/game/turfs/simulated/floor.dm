@@ -70,7 +70,7 @@
 				T.stored_decals = src.decals
 				src.decals = null
 				if(T.stored_decals)
-					F.overlays += icon("icons/obj/tiles.dmi", "decal_state")
+					F.AddOverlays(image("icons/obj/tiles.dmi", "decal_state"))
 		flooring = null
 
 	if (base_color)

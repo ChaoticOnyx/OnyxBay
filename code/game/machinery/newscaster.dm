@@ -196,17 +196,17 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 			AddOverlays(image(icon, "crack3"))
 		return
 
-	src.ClearOverlays() //reset overlays
+	ClearOverlays() //reset overlays
 
 	if(news_network.wanted_issue) //wanted icon state, there can be no overlays on it as it's a priority message
 		icon_state = "newscaster_wanted"
 		return
 
 	if(alert) //new message alert overlay
-		src.overlays += "newscaster_alert"
+		AddOverlays(image(icon, "newscaster_alert"))
 
 	if(hitstaken > 0) //Cosmetic damage overlay
-		src.overlays += image(src.icon, "crack[hitstaken]")
+		AddOverlays(image(icon, "crack[hitstaken]"))
 
 	icon_state = "newscaster_normal"
 	return

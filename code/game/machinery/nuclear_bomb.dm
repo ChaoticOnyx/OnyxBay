@@ -456,7 +456,7 @@ var/bomb_set
 	var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')
 	stampoverlay.icon_state = "paper_stamp-hos"
 	R.stamped += /obj/item/stamp
-	R.overlays += stampoverlay
+	R.AddOverlays(stampoverlay)
 	R.stamps += "<HR><i>This paper has been stamped as 'Top Secret'.</i>"
 
 //====vessel self-destruct system====

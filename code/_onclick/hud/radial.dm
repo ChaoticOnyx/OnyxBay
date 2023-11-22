@@ -192,7 +192,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 		E.name = "Next Page"
 		E.next_page = TRUE
 		var/image/I = image('icons/hud/radial.dmi', "radial_next")
-		E.overlays += I
+		E.AddOverlays(I)
 	else
 		if(istext(choices_values[choice_id]))
 			E.name = choices_values[choice_id]
@@ -203,7 +203,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 		E.maptext = null
 		E.next_page = FALSE
 		if(choices_icons[choice_id])
-			E.overlays += choices_icons[choice_id]
+			E.AddOverlays(choices_icons[choice_id])
 
 /datum/radial_menu/New()
 	close_button = new

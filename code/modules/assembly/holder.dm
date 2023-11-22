@@ -68,7 +68,7 @@
 		for(var/O in a_left.attached_overlays)
 			AddOverlays("[O]_l")
 	if(a_right)
-		src.overlays += "[a_right.icon_state]_right"
+		AddOverlays("[a_right.icon_state]_right")
 		for(var/O in a_right.attached_overlays)
 			AddOverlays("[O]_r")
 	if(master)

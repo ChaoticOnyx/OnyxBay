@@ -730,7 +730,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 
 				alert_overlay.layer = FLOAT_LAYER
 				alert_overlay.plane = FLOAT_PLANE
-				A.overlays += alert_overlay
+				A.AddOverlays(alert_overlay)
 
 /mob/proc/shift_view(new_pixel_x = 0, new_pixel_y = 0, animate = 0)
 	if(!client)

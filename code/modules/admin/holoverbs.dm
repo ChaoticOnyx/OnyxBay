@@ -36,7 +36,7 @@
 	// Combine the mob image and the scanlines into a single KEEP_TOGETHER'd image
 	var/image/I2 = image(null)
 	I2.underlays += I
-	I2.overlays += scan
+	I2.AddOverlays(scan)
 	I2.appearance_flags = DEFAULT_APPEARANCE_FLAGS | KEEP_TOGETHER
 	I2.color = rgb(125, 180, 225) // make it blue!
 	AI.holo_icon = I2

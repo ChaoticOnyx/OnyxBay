@@ -11,7 +11,7 @@
 	if(pylon)
 		leave_pylon()
 	pylon = P
-	pylon.overlays += pylon_image
+	pylon.AddOverlays(pylon_image)
 	playsound(pylon,'sound/effects/phasein.ogg',40,1)
 
 /mob/living/deity/proc/leave_pylon()

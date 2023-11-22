@@ -60,7 +60,7 @@
 		return
 	has_suit = S
 	forceMove(has_suit)
-	has_suit.overlays += get_inv_overlay()
+	has_suit.AddOverlays(get_inv_overlay())
 
 	if(user)
 		to_chat(user, "<span class='notice'>You attach \the [src] to \the [has_suit].</span>")

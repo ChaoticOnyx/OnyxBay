@@ -293,7 +293,7 @@
 	mymob.zone_sel.color = ui_color
 	mymob.zone_sel.alpha = ui_alpha
 	mymob.zone_sel.ClearOverlays()
-	mymob.zone_sel.overlays += image('icons/hud/common/screen_zone_sel.dmi', "[mymob.zone_sel.selecting]")
+	mymob.zone_sel.AddOverlays(image('icons/hud/common/screen_zone_sel.dmi', "[mymob.zone_sel.selecting]"))
 	static_inventory |= mymob.zone_sel
 
 	//Handle the gun settings buttons

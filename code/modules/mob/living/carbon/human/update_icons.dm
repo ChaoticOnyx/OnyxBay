@@ -246,7 +246,7 @@ var/global/list/damage_icon_parts = list()
 		else
 			DI = damage_icon_parts[cache_index]
 
-		standing_image.overlays += DI
+		standing_image.AddOverlays(DI)
 
 	overlays_standing[HO_DAMAGE_LAYER]	= standing_image
 
@@ -348,12 +348,12 @@ var/global/list/damage_icon_parts = list()
 	var/add_image = 0
 
 	if(head_organ.deformities == 1)
-		standing.overlays += "bloodysmile"
+		standing.AddOverlays("bloodysmile")
 		add_image = 1
 
 	var/obj/item/organ/internal/eyes/E = src.internal_organs_by_name[BP_EYES]
 	if(!E && should_have_organ(BP_EYES))
-		standing.overlays += "eyeloss"
+		standing.AddOverlays("eyeloss")
 		add_image = 1
 
 	if(add_image)
@@ -492,9 +492,9 @@ var/global/list/damage_icon_parts = list()
 		// Blank image upon which to layer left & right overlays.
 		var/image/both = image("icon" = 'icons/effects/blank.dmi')
 		if(l_ear)
-			both.overlays += l_ear.get_mob_overlay(src, slot_l_ear_str)
+			both.AddOverlays(l_ear.get_mob_overlay(src, slot_l_ear_str))
 		if(r_ear)
-			both.overlays += r_ear.get_mob_overlay(src, slot_r_ear_str)
+			both.AddOverlays(r_ear.get_mob_overlay(src, slot_r_ear_str))
 		overlays_standing[HO_EARS_LAYER] = both
 
 	else
@@ -739,7 +739,7 @@ var/global/list/damage_icon_parts = list()
 	for(var/obj/item/organ/external/E in organs)
 		if(!BP_IS_ROBOTIC(E) && E.open())
 			var/image/I = image("icon"='icons/mob/surgery.dmi', "icon_state"="[E.icon_name][round(E.open())]", "layer"=-HO_SURGERY_LAYER)
-			total.overlays += I
+			total.AddOverlays(I)
 	total.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 	overlays_standing[HO_SURGERY_LAYER] = total
 

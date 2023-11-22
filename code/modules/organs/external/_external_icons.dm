@@ -286,7 +286,7 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 			var/b = 0.11 * species.health_hud_intensity
 			temp.color = list(r, r, r, g, g, g, b, b, b)
 		hud_damage_image = image(null)
-		hud_damage_image.overlays += temp
+		hud_damage_image.AddOverlays(temp)
 
 
 	// Calculate the required color index.
