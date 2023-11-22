@@ -278,29 +278,29 @@ SUBSYSTEM_DEF(overlays)
 /// Adds sources to the image's overlays.
 /image/proc/AddOverlays(sources)
 	SHOULD_NOT_OVERRIDE(TRUE)
-	AddOverlays(sources)
+	overlays += sources
 
 
 /// Removes sources from the image's overlays.
 /image/proc/CutOverlays(sources)
 	SHOULD_NOT_OVERRIDE(TRUE)
-	CutOverlays(sources)
+	overlays -= sources
 
 
 /// Removes all of the image's overlays.
 /image/proc/ClearOverlays()
 	SHOULD_NOT_OVERRIDE(TRUE)
-	ClearOverlays()
+	overlays.Cut()
 
 
 /// Copies the overlays from the atom other, clearing first if set, and using the caches indicated.
 /image/proc/CopyOverlays(atom/other, clear, cache_target = ATOM_ICON_CACHE_ALL)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(clear)
-		ClearOverlays()
+		overlays.Cut()
 	if(!istype(other))
 		return
 	if(cache_target & ATOM_ICON_CACHE_PROTECTED)
-		AddOverlays(other.atom_protected_overlay_cache)
+		overlays |= other.atom_protected_overlay_cache
 	if(cache_target & ATOM_ICON_CACHE_NORMAL)
-		AddOverlays(other.atom_overlay_cache)
+		overlays |= other.atom_overlay_cache
