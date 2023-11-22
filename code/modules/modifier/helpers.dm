@@ -100,7 +100,7 @@
 
 /mob/living/carbon/human/proc/apply_layer(cache_index)
 	if((. = overlays_standing[cache_index]))
-		overlays.Add(.)
+		AddOverlays(.)
 
 /mob/living/carbon/human/proc/remove_layer(cache_index)
 	var/I = overlays_standing[cache_index]

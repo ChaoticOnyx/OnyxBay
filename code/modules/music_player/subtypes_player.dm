@@ -24,14 +24,14 @@
 	ClearOverlays()
 
 	if(mode == PLAYER_STATE_PLAY)
-		overlays.Add(overlay_image(icon, "[icon_state]_playing", flags = RESET_COLOR))
+		AddOverlays(overlay_image(icon, "[icon_state]_playing", flags = RESET_COLOR))
 
 	if(panel == PANEL_OPENED)
 		var/image/panel_open = overlay_image(icon, "[icon_state]_p-open", flags = RESET_COLOR)
 		panel_open.color = color
-		overlays.Add(panel_open)
+		AddOverlays(panel_open)
 
-		overlays.Add(overlay_image(icon, "[icon_state]_curcit", flags = RESET_COLOR))
+		AddOverlays(overlay_image(icon, "[icon_state]_curcit", flags = RESET_COLOR))
 
 // This one for debug pruporses
 // I'll yell on you if you will use it in game without good reason >:(

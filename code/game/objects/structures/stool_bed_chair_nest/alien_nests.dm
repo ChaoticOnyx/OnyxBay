@@ -25,7 +25,7 @@
 /obj/structure/bed/nest/post_buckle_mob(mob/living/M)
 	..()
 	if(M == buckled_mob)
-		overlays.Add(over)
+		AddOverlays(over)
 	else
 		ClearOverlays()
 

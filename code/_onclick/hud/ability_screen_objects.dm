@@ -66,13 +66,13 @@
 //			O.handle_icon_updates = 0
 		showing = 0
 		overlays.len = 0
-		overlays.Add(closed_state)
+		AddOverlays(closed_state)
 	else if(forced_state != 1) // We're opening it, show the icons.
 		open_ability_master()
 		update_abilities(1)
 		showing = 1
 		overlays.len = 0
-		overlays.Add(open_state)
+		AddOverlays(open_state)
 	update_icon()
 
 /obj/screen/movable/ability_master/proc/open_ability_master()
@@ -425,7 +425,7 @@
 	open_state = "ling_open"
 	closed_state = "ling_closed"
 	overlays.len = 0
-	overlays.Add(open_state)
+	AddOverlays(open_state)
 
 /obj/screen/ability/changeling_power
 	background_base_state = "changeling"
@@ -469,11 +469,11 @@
 	ClearOverlays()
 
 	icon_state = "[background_base_state]_spell_[power.is_usable(TRUE) ? "ready" : "base"]"
-	overlays.Add(power.icon_state)
+	AddOverlays(power.icon_state)
 
 	if(istype(power, /datum/changeling_power/toggled))
 		if(power.active)
-			overlays.Add("changeling_spell_active")
+			AddOverlays("changeling_spell_active")
 
 	var/image/T = image(icon, "blank")
 	if(!power.chems_drain)
@@ -484,7 +484,7 @@
 	else
 		T.maptext = "[power.required_chems] ([power.chems_drain])"
 
-	overlays.Add(T)
+	AddOverlays(T)
 
 /obj/screen/ability/changeling_power/activate()
 	power.use(usr)
@@ -496,7 +496,7 @@
 	open_state = "vamp_open"
 	closed_state = "vamp_closed"
 	overlays.len = 0
-	overlays.Add(open_state)
+	AddOverlays(open_state)
 
 /obj/screen/ability/vampire_power
 	background_base_state = "vampire"
@@ -537,14 +537,14 @@
 	ClearOverlays()
 
 	icon_state = "[background_base_state]_spell_[power.is_usable(TRUE) ? "ready" : "base"]"
-	overlays.Add(power.icon_state)
+	AddOverlays(power.icon_state)
 
 	if(power.cooldown > 0)
-		overlays.Add("vampire_cooldown")
+		AddOverlays("vampire_cooldown")
 
 	if(istype(power, /datum/vampire_power/toggled))
 		if(power.active)
-			overlays.Add("vampire_spell_active")
+			AddOverlays("vampire_spell_active")
 
 	var/image/T = image(icon, "blank")
 	if(!power.blood_drain)
@@ -555,7 +555,7 @@
 	else
 		T.maptext = " [power.blood_cost] ([power.blood_drain])"
 
-	overlays.Add(T)
+	AddOverlays(T)
 
 /obj/screen/ability/vampire_power/activate()
 	power.use(usr)

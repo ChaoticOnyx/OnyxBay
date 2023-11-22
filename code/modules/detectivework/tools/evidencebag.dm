@@ -79,7 +79,7 @@
 	img.SetTransform(scale = 0.7)
 	I.pixel_x = item_x		//and then return it
 	I.pixel_y = item_y
-	overlays.Add(img, base_icon_state)	//should look nicer for transparent stuff. not really that important, but hey.
+	AddOverlays(img, base_icon_state)	//should look nicer for transparent stuff. not really that important, but hey.
 
 	desc = "\A [initial(name)] containing [I]."
 	stored_item = I

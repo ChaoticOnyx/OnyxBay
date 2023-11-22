@@ -231,7 +231,7 @@
 			overlays += blood_overlay
 	if(is_propaganda)
 		var/image/detail_overlay = image(icon, src, "[icon_state]frame_[is_revolutionary]")
-		overlays.Add(detail_overlay)
+		AddOverlays(detail_overlay)
 	if(icon_generated)
 		return
 	if(!wip_detail_added && used)

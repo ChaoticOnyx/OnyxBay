@@ -91,20 +91,20 @@
 
 	ClearOverlays()
 	if(bsod)
-		overlays.Add("bsod")
+		AddOverlays("bsod")
 		return
 	if(!enabled)
 		if(icon_state_screensaver)
-			overlays.Add(icon_state_screensaver)
+			AddOverlays(icon_state_screensaver)
 		set_light(0)
 		return
 	set_light(0.2, 0.1, light_strength)
 	if(active_program)
-		overlays.Add(active_program.program_icon_state ? active_program.program_icon_state : icon_state_menu)
+		AddOverlays(active_program.program_icon_state ? active_program.program_icon_state : icon_state_menu)
 		if(active_program.program_key_state)
-			overlays.Add(active_program.program_key_state)
+			AddOverlays(active_program.program_key_state)
 	else
-		overlays.Add(icon_state_menu)
+		AddOverlays(icon_state_menu)
 
 /obj/item/modular_computer/proc/turn_on(mob/user)
 	if(bsod)

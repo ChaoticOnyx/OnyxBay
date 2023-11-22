@@ -77,7 +77,7 @@
 		var/image/shitseed = image(fockenplant)
 		shitseed.pixel_y = 8
 		ClearOverlays()
-		overlays.Add(shitseed)
+		AddOverlays(shitseed)
 	//shift that shit pls god
 	// Update bioluminescence.
 	if(seed && seed.get_trait(TRAIT_BIOLUM))

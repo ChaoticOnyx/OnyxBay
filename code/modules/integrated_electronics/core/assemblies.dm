@@ -528,7 +528,7 @@
 		return
 	var/image/detail_overlay = image('icons/obj/assemblies/electronic_setups.dmi', src,"[icon_state]-color")
 	detail_overlay.color = detail_color
-	overlays.Add(detail_overlay)
+	AddOverlays(detail_overlay)
 
 /obj/item/device/electronic_assembly/proc/return_total_complexity()
 	var/returnvalue = 0
