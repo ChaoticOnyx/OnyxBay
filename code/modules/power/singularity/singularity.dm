@@ -202,7 +202,7 @@
 			dissipate_delay = 10
 			dissipate_track = 0
 			dissipate_strength = 1
-			SetOverlays(0)
+			ClearOverlays()
 			follows_ghosts = FALSE
 			the_chosen = null
 			if(chained)
@@ -222,7 +222,7 @@
 			dissipate_delay = 5
 			dissipate_track = 0
 			dissipate_strength = 5
-			SetOverlays(0)
+			ClearOverlays()
 			follows_ghosts = FALSE
 			the_chosen = null
 			if(chained)
@@ -246,7 +246,7 @@
 				dissipate_delay = 4
 				dissipate_track = 0
 				dissipate_strength = 20
-				SetOverlays(0)
+				ClearOverlays()
 				follows_ghosts = FALSE
 				the_chosen = null
 				if(chained)
@@ -270,7 +270,7 @@
 				dissipate_delay = 10
 				dissipate_track = 0
 				dissipate_strength = 10
-				SetOverlays(0)
+				ClearOverlays()
 				follows_ghosts = FALSE
 				the_chosen = null
 				if(chained)
@@ -291,7 +291,7 @@
 			grav_pull = 10
 			consume_range = 4
 			dissipate = 0 // It cant go smaller due to e loss.
-			SetOverlays(0)
+			ClearOverlays()
 			if(!config.misc.forbid_singulo_following)
 				follows_ghosts = TRUE
 			if(chained)
@@ -565,7 +565,7 @@
 
 /obj/singularity/proc/on_capture()
 	chained = 1
-	SetOverlays(0)
+	ClearOverlays()
 	move_self = 0
 	switch(current_size)
 		if(STAGE_ONE)
@@ -584,7 +584,7 @@
 
 /obj/singularity/proc/on_release()
 	chained = 0
-	SetOverlays(0)
+	ClearOverlays()
 	move_self = 1
 
 	for(var/obj/singularity/child/SC in childs)

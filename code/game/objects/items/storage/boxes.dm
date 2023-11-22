@@ -170,7 +170,7 @@
 /obj/item/storage/box/shotgun/update_icon()
 	. = ..()
 
-	SetOverlays(list())
+	ClearOverlays()
 
 	for (var/i = 1, i < contents.len, i++)
 		if (i == 1 || i % 3 == 0)

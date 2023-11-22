@@ -789,7 +789,7 @@
 
 /obj/item/pizzabox/update_icon()
 
-	SetOverlays(list())
+	ClearOverlays()
 
 	// Set appropriate description
 	if( open && pizza )

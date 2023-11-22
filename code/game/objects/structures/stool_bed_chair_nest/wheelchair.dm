@@ -23,7 +23,7 @@
 
 /obj/structure/bed/chair/wheelchair/set_dir()
 	..()
-	SetOverlays(null)
+	ClearOverlays()
 	var/image/O = image(icon = 'icons/obj/furniture.dmi', icon_state = "w_overlay", dir = src.dir)
 	O.layer = ABOVE_HUMAN_LAYER
 	AddOverlays(O)
