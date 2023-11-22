@@ -210,11 +210,11 @@ var/global/list/rad_collectors = list()
 		icon_state = "ca"
 	ClearOverlays()
 	if(P)
-		AddOverlays(image('icons/obj/singularity.dmi',) "ptank")
+		AddOverlays(image('icons/obj/singularity.dmi', "ptank"))
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(active)
-		AddOverlays(image('icons/obj/singularity.dmi',) "on")
+		AddOverlays(image('icons/obj/singularity.dmi', "on"))
 
 
 /obj/machinery/power/rad_collector/proc/toggle_power()

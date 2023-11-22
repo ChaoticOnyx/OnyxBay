@@ -9,4 +9,4 @@
 
 	ClearOverlays()
 	if(hat)
-		AddOverlays(get_hat_icon(hat,) 0, -8)
+		AddOverlays(get_hat_icon(hat, 0, -8))

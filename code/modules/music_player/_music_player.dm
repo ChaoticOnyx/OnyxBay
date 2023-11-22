@@ -89,13 +89,13 @@ GLOBAL_LIST_EMPTY(music_players)
 	ClearOverlays()
 
 	if(mode == PLAYER_STATE_PLAY)
-		AddOverlays(image(icon,) "[icon_state]_play")
+		AddOverlays(image(icon, "[icon_state]_play"))
 
 	if(panel == PANEL_OPENED)
-		AddOverlays(image(icon,) "[icon_state]_panel-open")
+		AddOverlays(image(icon, "[icon_state]_panel-open"))
 
 		if(cell)
-			AddOverlays(image(icon,) "[icon_state]_panel-cell")
+			AddOverlays(image(icon, "[icon_state]_panel-cell"))
 
 /obj/item/music_player/think()
 	if(!get_cell() || !cell.checked_use(power_usage * CELLRATE))

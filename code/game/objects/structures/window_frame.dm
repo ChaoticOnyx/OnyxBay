@@ -354,7 +354,7 @@
 		AddOverlays(I)
 
 	if(signaler)
-		AddOverlays(image(icon,) "winframe_signaler")
+		AddOverlays(image(icon, "winframe_signaler"))
 
 	if(inner_pane)
 		var/list/dirs = list()

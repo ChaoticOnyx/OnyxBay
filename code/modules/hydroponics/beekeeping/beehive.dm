@@ -24,7 +24,7 @@
 	if(frames)
 		AddOverlays("empty[frames]")
 	if(honeycombs >= 100)
-		AddOverlays("full[round(honeycombs) / 100)]"
+		AddOverlays("full[round(honeycombs / 100)]")
 	if(!smoked)
 		switch(bee_count)
 			if(1 to 40)

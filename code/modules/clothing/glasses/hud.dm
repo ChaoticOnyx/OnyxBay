@@ -252,9 +252,9 @@
 /obj/item/clothing/glasses/hud/update_icon()
 	ClearOverlays()
 	if(active && matrix)
-		AddOverlays(image_repository.overlay_image(icon,) "[hud_icon]_[matrix.matrix_icon]", alpha, 0, null, SOUTH)
+		AddOverlays(image_repository.overlay_image(icon, "[hud_icon]_[matrix.matrix_icon]", alpha, 0, null, SOUTH))
 	if(lenses)
-		AddOverlays(image_repository.overlay_image(icon,) "[hud_icon]_[lenses.icon_state]", alpha, 0, null, SOUTH)
+		AddOverlays(image_repository.overlay_image(icon, "[hud_icon]_[lenses.icon_state]", alpha, 0, null, SOUTH))
 
 /obj/item/clothing/glasses/hud/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))

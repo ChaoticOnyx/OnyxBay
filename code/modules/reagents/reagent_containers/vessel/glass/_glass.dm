@@ -137,7 +137,7 @@
 		desc = initial(desc)
 
 	if(overlay_icon)
-		AddOverlays(image(icon,) src, overlay_icon)
+		AddOverlays(image(icon, src, overlay_icon))
 
 	var/side = "left"
 	for(var/item in extras)

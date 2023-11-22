@@ -92,9 +92,9 @@ var/list/solars_list = list()
 	..()
 	ClearOverlays()
 	if(stat & BROKEN)
-		AddOverlays(image('icons/obj/power.dmi',) icon_state = "solar_panel-b", layer = FLY_LAYER)
+		AddOverlays(image('icons/obj/power.dmi', icon_state = "solar_panel-b", layer = FLY_LAYER))
 	else
-		AddOverlays(image('icons/obj/power.dmi',) icon_state = "solar_panel", layer = FLY_LAYER)
+		AddOverlays(image('icons/obj/power.dmi', icon_state = "solar_panel", layer = FLY_LAYER))
 		src.set_dir(angle2dir(adir))
 	return
 
@@ -365,7 +365,7 @@ var/list/solars_list = list()
 	icon_state = "solar"
 	ClearOverlays()
 	if(cdir > -1)
-		AddOverlays(image('icons/obj/computer.dmi',) "solcon-o", FLY_LAYER, angle2dir(cdir))
+		AddOverlays(image('icons/obj/computer.dmi', "solcon-o", FLY_LAYER, angle2dir(cdir)))
 	return
 
 /obj/machinery/power/solar_control/attack_hand(mob/user)

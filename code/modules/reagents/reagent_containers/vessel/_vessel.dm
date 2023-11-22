@@ -141,13 +141,13 @@
 		desc = base_desc
 
 	if(overlay_icon)
-		AddOverlays(image(icon,) src, overlay_icon)
+		AddOverlays(image(icon, src, overlay_icon))
 
 	if(has_label && label_icon)
-		AddOverlays(image(icon,) src, label_icon)
+		AddOverlays(image(icon, src, label_icon))
 
 	if(lid)
-		AddOverlays(image(lid.icon,) src, lid.get_icon_state())
+		AddOverlays(image(lid.icon, src, lid.get_icon_state()))
 
 /obj/item/reagent_containers/vessel/proc/get_filling_state()
 	var/percent = round((reagents.total_volume / volume) * 100)

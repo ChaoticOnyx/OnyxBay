@@ -845,11 +845,11 @@
 	if(opened)
 		var/panelprefix = custom_sprite ? module_hulls[icontype] : "ov"
 		if(wiresexposed)
-			AddOverlays("[panelprefix]-openpanel) +w"
+			AddOverlays("[panelprefix]-openpanel +w")
 		else if(cell)
-			AddOverlays("[panelprefix]-openpanel) +c"
+			AddOverlays("[panelprefix]-openpanel +c")
 		else
-			AddOverlays("[panelprefix]-openpanel) -c"
+			AddOverlays("[panelprefix]-openpanel -c")
 
 	if(module_active && istype(module_active,/obj/item/borg/combat/shield))
 		AddOverlays("[module_hulls[icontype].icon_state]-shield")

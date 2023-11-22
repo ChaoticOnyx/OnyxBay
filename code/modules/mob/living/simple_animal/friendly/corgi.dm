@@ -267,7 +267,7 @@
 		hat_offset_x = -8
 		hat_offset_y = -8
 	ClearOverlays()
-	AddOverlays(get_hat_icon(hat,) hat_offset_x, hat_offset_y)
+	AddOverlays(get_hat_icon(hat, hat_offset_x, hat_offset_y))
 ///////////////////////
 // END OF HAT STUFF //
 /////////////////////

@@ -84,9 +84,9 @@
 			var/reagents_amt = 0
 			for(var/datum/reagent/R in reagents.reagent_list)
 				reagents_amt += R.volume
-			AddOverlays(image(icon,) src, "[icon_state]-[ceil(reagents_amt / (initial_capacity / filling_overlay_levels))]")
+			AddOverlays(image(icon, src, "[icon_state]-[ceil(reagents_amt / (initial_capacity / filling_overlay_levels))]"))
 		else
-			AddOverlays(image(icon,) src, "[icon_state]-0")
+			AddOverlays(image(icon, src, "[icon_state]-0"))
 
 //Dispensers
 /obj/structure/reagent_dispensers/watertank

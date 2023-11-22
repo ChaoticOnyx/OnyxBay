@@ -52,7 +52,7 @@
 		overlay_state = new_overlay_state
 		ClearOverlays()
 		if(overlay_state)
-			AddOverlays(image('icons/obj/power.dmi',) "[overlay_key][overlay_state]")
+			AddOverlays(image('icons/obj/power.dmi', "[overlay_key][overlay_state]"))
 
 // Legacy proc for compatibility, use CELL_PERCENT(cell) instead
 /obj/item/cell/proc/percent()

@@ -39,7 +39,7 @@
 
 /obj/item/gun/energy/accelerator/update_icon()
 	ClearOverlays()
-	AddOverlays(image(icon,) "[initial(icon_state)]_over[pumped]")
+	AddOverlays(image(icon, "[initial(icon_state)]_over[pumped]"))
 	..()
 
 /obj/item/gun/energy/accelerator/pistol

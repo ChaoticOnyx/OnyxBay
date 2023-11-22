@@ -243,5 +243,5 @@
 		desc = "A single sheet of paper."
 	if(photo)
 		desc += "\nThere is a photo attached to it."
-	AddOverlays(image('icons/obj/bureaucracy.dmi',) "clip")
+	AddOverlays(image('icons/obj/bureaucracy.dmi', "clip"))
 	return

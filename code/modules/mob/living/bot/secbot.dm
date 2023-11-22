@@ -374,7 +374,7 @@
 		var/obj/item/weldingtool/WT = O
 		if(WT.remove_fuel(0, user))
 			build_step = 1
-			AddOverlays(image('icons/obj/aibots.dmi',) "hs_hole")
+			AddOverlays(image('icons/obj/aibots.dmi', "hs_hole"))
 			to_chat(user, "You weld a hole in \the [src].")
 
 	else if(isprox(O) && (build_step == 1))
@@ -382,7 +382,7 @@
 			return
 		build_step = 2
 		to_chat(user, "You add \the [O] to [src].")
-		AddOverlays(image('icons/obj/aibots.dmi',) "hs_eye")
+		AddOverlays(image('icons/obj/aibots.dmi', "hs_eye"))
 		SetName("helmet/signaler/prox sensor assembly")
 		qdel(O)
 
@@ -392,7 +392,7 @@
 		build_step = 3
 		to_chat(user, "You add \the [O] to [src].")
 		SetName("helmet/signaler/prox sensor/robot arm assembly")
-		AddOverlays(image('icons/obj/aibots.dmi',) "hs_arm")
+		AddOverlays(image('icons/obj/aibots.dmi', "hs_arm"))
 		qdel(O)
 
 	else if(istype(O, /obj/item/melee/baton) && build_step == 3)

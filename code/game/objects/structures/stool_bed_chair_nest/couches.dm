@@ -90,9 +90,9 @@
 		AddOverlays(stool_cache[cache_key])
 
 	if(health <= max_health*0.33)
-		AddOverlays(icon('icons/obj/furniture.dmi',) "couch-tear")
+		AddOverlays(image('icons/obj/furniture.dmi', "couch-tear"))
 	else if (health <= max_health*0.67)
-		AddOverlays(icon('icons/obj/furniture.dmi',) "couch-rip")
+		AddOverlays(image('icons/obj/furniture.dmi', "couch-rip"))
 
 /obj/structure/bed/couch/set_dir()
 	..()

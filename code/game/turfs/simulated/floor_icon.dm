@@ -29,15 +29,15 @@ var/list/flooring_cache = list()
 				var/turf/simulated/floor/T = get_step(src, step_dir)
 				if(!istype(T) || !T.flooring || T.flooring.name != flooring.name)
 					has_border |= step_dir
-					AddOverlays(get_flooring_overlay("[flooring.icon_base]-edge-[step_dir]",) "[flooring.icon_base]_edges", step_dir)
+					AddOverlays(get_flooring_overlay("[flooring.icon_base]-edge-[step_dir]", "[flooring.icon_base]_edges", step_dir))
 
 			for(var/diagonal in list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
 				if((has_border & diagonal) == diagonal)
-					AddOverlays(get_flooring_overlay("[flooring.icon_base]-edge-[diagonal]",) "[flooring.icon_base]_edges", diagonal)
+					AddOverlays(get_flooring_overlay("[flooring.icon_base]-edge-[diagonal]", "[flooring.icon_base]_edges", diagonal))
 				if((has_border & diagonal) == 0 && (flooring.flags & TURF_HAS_CORNERS))
 					var/turf/simulated/floor/T = get_step(src, diagonal)
 					if(!(istype(T) && T.flooring && T.flooring.name == flooring.name))
-						AddOverlays(get_flooring_overlay("[flooring.icon_base]-corner-[diagonal]",) "[flooring.icon_base]_corners", diagonal)
+						AddOverlays(get_flooring_overlay("[flooring.icon_base]-corner-[diagonal]", "[flooring.icon_base]_corners", diagonal))
 
 		if(flooring.can_paint && decals && decals.len)
 			AddOverlays(decals)
@@ -53,7 +53,7 @@ var/list/flooring_cache = list()
 		icon_state = "[base_icon_state]_dmg[rand(1,4)]"
 	else if(flooring)
 		if(!isnull(broken) && (flooring.flags & TURF_CAN_BREAK))
-			AddOverlays(get_damage_overlay("broken[broken]",) BLEND_MULTIPLY)
+			AddOverlays(get_damage_overlay("broken[broken]", BLEND_MULTIPLY))
 		if(!isnull(burnt) && (flooring.flags & TURF_CAN_BURN))
 			AddOverlays(get_damage_overlay("burned[burnt]"))
 
