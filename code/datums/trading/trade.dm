@@ -61,7 +61,7 @@
 		add_to_pool(trading_items, possible_trading_items, force = 1)
 		add_to_pool(wanted_items, possible_wanted_items, force = 1)
 
-/datum/trader/proc/generate_pool(var/list/trading_pool)
+/datum/trader/proc/generate_pool(list/trading_pool)
 	. = list()
 	// Add types
 	for(var/type in trading_pool)
