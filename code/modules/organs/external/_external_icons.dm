@@ -1,5 +1,8 @@
 var/list/limb_icon_cache = list()
 
+/// Layer for bodyparts that should appear behind every other bodypart - Mostly, legs when facing WEST or EAST
+#define BODYPARTS_LOW_LAYER -2
+
 /obj/item/organ/external/set_dir()
 	return
 
@@ -9,8 +12,8 @@ var/list/limb_icon_cache = list()
 	for(var/obj/item/organ/external/organ in contents)
 		if(organ.children && organ.children.len)
 			for(var/obj/item/organ/external/child in organ.children)
-				overlays += child.mob_icon
-		overlays += organ.mob_icon
+				overlays += child.mob_overlays
+		overlays += organ.mob_overlays
 
 /obj/item/organ/external/proc/sync_colour_to_human(mob/living/carbon/human/human)
 	s_tone = null
@@ -68,100 +71,202 @@ var/list/limb_icon_cache = list()
 	update_icon_drop(victim)
 	victim.update_hair()
 
-	var/list/sorted = list()
+/obj/item/organ/external/proc/get_icon_key()
+	. = list()
+
+	var/gender = "_m"
+	if(!(limb_flags & ORGAN_FLAG_GENDERED_ICON))
+		gender = null
+	else if(dna?.GetUIState(DNA_UI_GENDER))
+		gender = "_f"
+	else if(owner?.gender == FEMALE)
+		gender = "_f"
+
+	var/bb = ""
+	if(owner)
+		if(!BP_IS_ROBOTIC(src))
+			bb = owner.body_build.index
+		else
+			bb = owner.body_build.roboindex
+
+	. += "[gender]"
+	. += "[bb]-"
+	. += "[organ_tag]-"
+	. += "[species.get_race_key(owner)]"
+
+	if(force_icon)
+		. += "[force_icon]"
+	else if(BP_IS_ROBOTIC(src))
+		. += "robot"
+	else if(owner && (MUTATION_SKELETON in owner.mutations))
+		. += "skeleton"
+	else if(owner && (MUTATION_HUSK in owner.mutations))
+		. += "husk"
+	else if (owner && (MUTATION_HULK in owner.mutations))
+		. += "hulk"
+
+	//Colour, maybe simplify this one day and actually calculate it once
+	if(status & ORGAN_DEAD)
+		. += "_dead"
+
+	if(s_tone)
+		. += "_tone_[s_tone]"
+
+	if(species && species.appearance_flags & HAS_SKIN_COLOR)
+		if(s_col && length(s_col) >= 3)
+			. += "_color_[s_col[1]]_[s_col[2]]_[s_col[3]]_[s_col_blend]"
+
 	for(var/E in markings)
 		var/datum/sprite_accessory/marking/M = E
 		if (M.draw_target == MARKING_TARGET_SKIN)
+			. += "-[M.name][color]"
+
+	if(body_hair && islist(h_col) && length(h_col) >= 3)
+		. += "[body_hair]-[icon_name]-[h_col[1]][h_col[2]][h_col[3]]"
+
+	if(is_stump())
+		. += "-stump"
+	return .
+
+
+/obj/item/organ/external/update_icon(regenerate = 0)
+	mob_overlays = list()
+	var/husk_color_mod = rgb(96,88,80)
+	var/hulk_color_mod = rgb(48,224,40)
+	var/husk = owner && (MUTATION_HUSK in owner.mutations)
+	var/hulk = owner && (MUTATION_HULK in owner.mutations)
+
+	/////
+	var/gender = "_m"
+	if(!(limb_flags & ORGAN_FLAG_GENDERED_ICON))
+		gender = null
+	else if (dna && dna.GetUIState(DNA_UI_GENDER))
+		gender = "_f"
+	else if(owner && owner.gender == FEMALE)
+		gender = "_f"
+
+	if(owner)
+		if(!BP_IS_ROBOTIC(src))
+			body_build = owner.body_build.index
+		else
+			body_build = owner.body_build.roboindex
+
+	var/stump_icon = ""
+	if(is_stump())
+		stump_icon = "_s"
+
+	var/chosen_icon = ""
+	var/chosen_icon_state = ""
+
+	chosen_icon_state = "[icon_name][gender][body_build][stump_icon]"
+
+	/////
+	if(force_icon)
+		chosen_icon = force_icon
+	else if(BP_IS_ROBOTIC(src))
+		chosen_icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_main.dmi'
+	else if(!dna)
+		chosen_icon = 'icons/mob/human_races/r_human.dmi'
+	else if(owner && (MUTATION_SKELETON in owner.mutations))
+		chosen_icon = 'icons/mob/human_races/r_skeleton.dmi'
+	else
+		chosen_icon = species.get_icobase(owner)
+
+	/////
+	var/icon/temp_icon = icon(chosen_icon)
+	var/list/icon_states = temp_icon.IconStates()
+	if(!icon_states.Find(chosen_icon_state))
+		if(icon_states.Find("[icon_name][gender]"))
+			chosen_icon_state = "[icon_name][gender]"
+		else if(icon_states.Find("[icon_name]"))
+			chosen_icon_state = "[icon_name]"
+		else
+			CRASH("Can't find proper icon_state for \the [src].")
+
+	/////
+	var/icon/mob_icon = apply_colouration(new/icon(chosen_icon, chosen_icon_state))
+	if(husk)
+		mob_icon.ColorTone(husk_color_mod)
+	if(hulk)
+		var/list/tone = ReadRGB(hulk_color_mod)
+		mob_icon.MapColors(rgb(tone[1], 0, 0), rgb(0, tone[2], 0), rgb(0, 0, tone[3]))
+
+	//	Handle husk overlay.
+	if(husk && ("overlay_husk" in icon_states(species.get_icobase(src))))
+		var/icon/mask = new/icon(chosen_icon)
+		var/icon/husk_over = new(species.get_icobase(src), "overlay_husk")
+		mask.MapColors(0,0,0,1, 0,0,0,1, 0,0,0,1, 0,0,0,1, 0,0,0,0)
+		husk_over.Blend(mask, ICON_ADD)
+		mob_icon.Blend(husk_over, ICON_OVERLAY)
+
+	/////
+	var/list/sorted = list()
+	for(var/E in markings)
+		var/datum/sprite_accessory/marking/M = E
+		if(M.draw_target == MARKING_TARGET_SKIN)
 			var/color = markings[E]
 			var/icon/I = icon(M.icon, "[M.icon_state]-[organ_tag]")
 			I.Blend(color, M.blend)
 			ADD_SORTED(sorted, list(list(M.draw_order, I, M)), /proc/cmp_marking_order)
-	for (var/entry in sorted)
-		overlays |= entry[2]
+
+	for(var/entry in sorted) // Revisit this with blendmodes
 		mob_icon.Blend(entry[2], entry[3]["layer_blend"])
 
-/obj/item/organ/external/update_icon(regenerate = 0)
-	if (!icon_name)
-		icon = null
+
+	if(body_hair && islist(h_col) && h_col.len >= 3)
+		var/cache_key = "[body_hair]-[icon_name]-[h_col[1]][h_col[2]][h_col[3]]"
+		if(!limb_icon_cache[cache_key])
+			var/icon/I = icon(species.get_icobase(owner), "[icon_name]_[body_hair]")
+			I.Blend(rgb(h_col[1],h_col[2],h_col[3]), ICON_ADD)
+			limb_icon_cache[cache_key] = I
+		mob_icon.Blend(limb_icon_cache[cache_key], ICON_OVERLAY)
+
+	// Fix leg layering here
+	// Alternatively you could use masks but it's about same amount of work
+	// Note: This really only works because everything up until now was icon ops to build an icon we can work with
+	// If we ever move to pure overlays for body hair / modifiers / cosmetic changes to a limb, look up daedalusdock's implementation
+	if(icon_position & (LEFT | RIGHT))
+		var/icon/under_icon = new('icons/mob/human_races/r_human.dmi', "blank")
+		under_icon.Insert(new/icon(mob_icon, dir = NORTH), dir = NORTH)
+		under_icon.Insert(new/icon(mob_icon, dir = SOUTH), dir = SOUTH)
+		if(!(icon_position & LEFT))
+			under_icon.Insert(new/icon(mob_icon, dir = EAST), dir = EAST)
+		if(!(icon_position & RIGHT))
+			under_icon.Insert(new/icon(mob_icon, dir = WEST), dir = WEST)
+		// At this point, the icon has all the valid states for both left and right leg overlays
+		var/mutable_appearance/upper_appearance = mutable_appearance(under_icon, chosen_icon_state, flags = DEFAULT_APPEARANCE_FLAGS)
+		upper_appearance.layer = FLOAT_LAYER
+		mob_overlays += upper_appearance
+
+		if(icon_position & LEFT)
+			under_icon.Insert(new/icon(mob_icon, dir = EAST), dir = EAST)
+		if(icon_position & RIGHT)
+			under_icon.Insert(new/icon(mob_icon, dir = WEST),dir = WEST)
+
+		var/mutable_appearance/under_appearance = mutable_appearance(under_icon, chosen_icon_state, flags = DEFAULT_APPEARANCE_FLAGS)
+		upper_appearance.layer = BODYPARTS_LOW_LAYER
+		mob_overlays += under_appearance
 	else
-		var/gender = "_m"
-		if(!(limb_flags & ORGAN_FLAG_GENDERED_ICON))
-			gender = null
-		else if (dna && dna.GetUIState(DNA_UI_GENDER))
-			gender = "_f"
-		else if(owner && owner.gender == FEMALE)
-			gender = "_f"
+		var/mutable_appearance/limb_appearance = mutable_appearance(mob_icon, chosen_icon_state, flags = DEFAULT_APPEARANCE_FLAGS)
+		if(icon_position & UNDER)
+			limb_appearance.layer = BODYPARTS_LOW_LAYER
+		mob_overlays += limb_appearance
 
-		if (owner)
-			if (!BP_IS_ROBOTIC(src))
-				body_build = owner.body_build.index
-			else
-				body_build = owner.body_build.roboindex
+	if(blocks_emissive)
+		var/mutable_appearance/limb_em_block = emissive_blocker(chosen_icon, chosen_icon_state, FLOAT_LAYER)
+		limb_em_block.dir = dir
+		mob_overlays += limb_em_block
 
-		var/stump_icon = ""
-		if(is_stump())
-			stump_icon = "_s"
-
-		icon_state = "[icon_name][gender][body_build][stump_icon]"
-
-		if(force_icon)
-			icon = force_icon
-		else if (BP_IS_ROBOTIC(src))
-			icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_main.dmi'
-		else if (!dna)
-			icon = 'icons/mob/human_races/r_human.dmi'
-		else if (owner && (MUTATION_SKELETON in owner.mutations))
-			icon = 'icons/mob/human_races/r_skeleton.dmi'
-		else
-			icon = species.get_icobase(owner)
-			icon_state = "[icon_state][owner?.mind?.special_role == "Zombie" && owner.species == all_species[SPECIES_HUMAN] ? "_z" : ""]"
-
-		var/icon/temp_icon = icon(icon)
-		var/list/icon_states = temp_icon.IconStates()
-		if(!icon_states.Find(icon_state))
-			if(icon_states.Find("[icon_name][gender]"))
-				icon_state = "[icon_name][gender]"
-			else if(icon_states.Find("[icon_name]"))
-				icon_state = "[icon_name]"
-			else
-				CRASH("Can't find proper icon_state for \the [src].")
-
-		mob_icon = apply_colouration(new /icon(icon, icon_state))
-
-		var/list/sorted = list()
-		for(var/E in markings)
-			var/datum/sprite_accessory/marking/M = E
-			if(M.draw_target == MARKING_TARGET_SKIN)
-				var/color = markings[E]
-				var/icon/I = icon(M.icon, "[M.icon_state]-[organ_tag]")
-				I.Blend(color, M.blend)
-				ADD_SORTED(sorted, list(list(M.draw_order, I, M)), /proc/cmp_marking_order)
-		for(var/entry in sorted)
-			overlays |= entry[2]
-			mob_icon.Blend(entry[2], entry[3]["layer_blend"])
-
-		if(body_hair && islist(h_col) && h_col.len >= 3)
-			var/cache_key = "[body_hair]-[icon_name]-[h_col[1]][h_col[2]][h_col[3]]"
-			if(!limb_icon_cache[cache_key])
-				var/icon/I = icon(species.get_icobase(owner), "[icon_name]_[body_hair]")
-				I.Blend(rgb(h_col[1],h_col[2],h_col[3]), ICON_ADD)
-				limb_icon_cache[cache_key] = I
-			mob_icon.Blend(limb_icon_cache[cache_key], ICON_OVERLAY)
-
-		if(force_icon && (status & ORGAN_CUT_AWAY))
-			dir = SOUTH // Facing towards the screen
-		else
-			dir = EAST
-		if(mob_icon)
-			icon = mob_icon
-	return icon
+	overlays += mob_overlays
+	dir = EAST
+	icon = null
 
 /obj/item/organ/external/proc/update_icon_drop(mob/living/carbon/human/powner)
 	return
 
-/obj/item/organ/external/proc/get_icon()
+/obj/item/organ/external/proc/get_overlays()
 	update_icon()
-	return mob_icon
+	return mob_overlays
 
 // Returns an image for use by the human health dolly HUD element.
 // If the limb is in pain, it will be used as a minimum damage

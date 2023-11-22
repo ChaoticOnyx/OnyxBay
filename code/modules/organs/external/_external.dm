@@ -46,7 +46,7 @@
 	var/icon_position = 0              // Used in mob overlay layering calculations.
 	var/model                          // Used when caching robolimb icons.
 	var/force_icon                     // Used to force override of species-specific limb icons (for prosthetics).
-	var/icon/mob_icon                  // Cached icon for use in mob overlays.
+	var/list/mob_overlays              // Cached limb overlays
 	var/gendered_icon = 0              // Whether or not the icon state appends a gender.
 	var/body_build = ""
 	var/s_tone                         // Skin tone.
@@ -126,7 +126,7 @@
 			max_pain = min(max_damage * 2.5, owner.species.total_health * 1.5)
 	else if(isnull(max_pain))
 		max_pain = max_damage * 1.5 // Should not ~probably~ happen
-	get_icon()
+	get_overlays()
 
 	if(food_organ in implants)
 		implants -= food_organ
