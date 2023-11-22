@@ -232,7 +232,7 @@
 	return ..()
 
 /obj/screen/ability/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	icon_state = "[background_base_state]_spell_base"
 
 	overlays += ability_icon_state
@@ -466,7 +466,7 @@
 		qdel(src)
 		return
 
-	overlays.Cut()
+	ClearOverlays()
 
 	icon_state = "[background_base_state]_spell_[power.is_usable(TRUE) ? "ready" : "base"]"
 	overlays.Add(power.icon_state)
@@ -534,7 +534,7 @@
 		qdel(src)
 		return
 
-	overlays.Cut()
+	ClearOverlays()
 
 	icon_state = "[background_base_state]_spell_[power.is_usable(TRUE) ? "ready" : "base"]"
 	overlays.Add(power.icon_state)

@@ -86,7 +86,7 @@ GLOBAL_LIST_EMPTY(music_players)
 		. += "\n[SPAN_WARNING("It's broken.")]"
 
 /obj/item/music_player/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 
 	if(mode == PLAYER_STATE_PLAY)
 		overlays += image(icon, "[icon_state]_play")

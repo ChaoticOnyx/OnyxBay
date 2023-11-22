@@ -60,7 +60,7 @@
 
 /obj/structure/closet/body_bag/cryobag/update_icon()
 	..()
-	overlays.Cut()
+	ClearOverlays()
 	var/image/I = image(icon, "indicator[opened]")
 	I.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 	var/maxstasis = initial(stasis_power)

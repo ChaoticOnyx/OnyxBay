@@ -185,7 +185,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 		desc += SPAN_DEADSAY("\nScans indicate that \the [brainmob?.name] seems to be unconscious.")
 
 /obj/item/organ/internal/cerebrum/mmi/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(isnull(brainobj))
 		icon_state = "mmi-empty"
 		return

@@ -30,7 +30,7 @@
 		. += "\nIt has [contents.len] cig butts in it."
 
 /obj/item/material/ashtray/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if (contents.len == max_butts)
 		overlays |= image('icons/obj/objects.dmi', "ashtray_full")
 	else if (contents.len >= max_butts/2)

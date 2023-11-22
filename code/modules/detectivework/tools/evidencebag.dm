@@ -92,7 +92,7 @@
 		var/obj/item/I = contents[1]
 		user.visible_message("[user] takes [I] out of [src]", "You take [I] out of [src].",\
 		"You hear someone rustle around in a plastic bag, and remove something.")
-		overlays.Cut()	//remove the overlays
+		ClearOverlays()	//remove the overlays
 
 		user.pick_or_drop(I)
 		stored_item = null

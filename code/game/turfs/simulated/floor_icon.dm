@@ -22,7 +22,7 @@ var/list/flooring_cache = list()
 				flooring_override = icon_state
 
 		// Apply edges, corners, and inner corners.
-		overlays.Cut()
+		ClearOverlays()
 		var/has_border = 0
 		if(flooring.flags & TURF_HAS_EDGES)
 			for(var/step_dir in GLOB.cardinal)

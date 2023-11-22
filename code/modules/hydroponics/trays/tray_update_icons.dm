@@ -9,7 +9,7 @@
 	else
 		SetName(initial(name))
 
-	overlays.Cut()
+	ClearOverlays()
 	var/new_overlays = list()
 	// Updates the plant overlay.
 	if(seed)
@@ -76,7 +76,7 @@
 		var/icon/fockenplant = overlays[1]
 		var/image/shitseed = image(fockenplant)
 		shitseed.pixel_y = 8
-		overlays.Cut()
+		ClearOverlays()
 		overlays.Add(shitseed)
 	//shift that shit pls god
 	// Update bioluminescence.

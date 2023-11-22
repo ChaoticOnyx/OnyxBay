@@ -81,7 +81,7 @@
 	..()
 
 /obj/item/soap/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(key_data)
 		overlays += image('icons/obj/items.dmi', icon_state = "soap_key_overlay")
 

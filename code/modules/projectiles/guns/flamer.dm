@@ -64,7 +64,7 @@
 		. += "\n[SPAN_WARNING("Gauge not installed, you have no idea how much fuel left in [src]!")]"
 
 /obj/item/gun/flamer/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(igniter)
 		overlays += "+igniter"
 	if(fuel_tank)

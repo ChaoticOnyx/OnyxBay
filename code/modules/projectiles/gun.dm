@@ -171,7 +171,7 @@
 
 /obj/item/gun/dropped(mob/living/user)
 	. = ..()
-	overlays.Cut()
+	ClearOverlays()
 	update_icon()
 	clear_autofire()
 
@@ -664,7 +664,7 @@
 	if(!config.misc.toogle_gun_safety)
 		return
 
-	overlays.Cut()
+	ClearOverlays()
 	update_icon()
 	overlays += (image('icons/obj/guns/gui.dmi',"safety[safety()]"))
 	if(safety_icon)

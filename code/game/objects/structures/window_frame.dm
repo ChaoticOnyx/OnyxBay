@@ -338,7 +338,7 @@
 
 // The scariest thing present. Let's just -=HoPe=- it's not -=ThAt=- performance-heavy.
 /obj/structure/window_frame/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	underlays.Cut()
 	icon_state = icon_base
 	var/new_opacity = FALSE

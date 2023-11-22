@@ -43,7 +43,7 @@
 /obj/structure/bed/update_icon()
 	// Prep icon.
 	icon_state = ""
-	overlays.Cut()
+	ClearOverlays()
 	// Base icon.
 	var/cache_key = "[base_icon]-[material.name]"
 	if(isnull(stool_cache[cache_key]))

@@ -208,7 +208,7 @@ var/global/list/rad_collectors = list()
 		icon_state = "ca_on"
 	else
 		icon_state = "ca"
-	overlays.Cut()
+	ClearOverlays()
 	if(P)
 		overlays += image('icons/obj/singularity.dmi', "ptank")
 	if(stat & (NOPOWER|BROKEN))

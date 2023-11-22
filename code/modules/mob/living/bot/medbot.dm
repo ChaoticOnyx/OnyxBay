@@ -99,7 +99,7 @@
 	playsound(src, messagevoice[message], 75, FALSE)
 
 /mob/living/bot/medbot/update_icons()
-	overlays.Cut()
+	ClearOverlays()
 	if(skin)
 		overlays += image('icons/obj/aibots.dmi', "medskin_[skin]")
 	if(busy)

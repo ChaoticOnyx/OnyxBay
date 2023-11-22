@@ -128,7 +128,7 @@
 
 		if (!anchored)
 			user.show_message(text("<span class='warning'>[src] can now be moved.</span>"))
-			overlays.Cut()
+			ClearOverlays()
 			proximity_monitor.SetRange(0)
 
 		else if (src.anchored)

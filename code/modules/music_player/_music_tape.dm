@@ -25,7 +25,7 @@
 		icon_state = "tape_[pick("white", "blue", "red", "yellow", "purple")]"
 
 /obj/item/music_tape/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(ruined)
 		overlays += "ribbonoverlay"
 

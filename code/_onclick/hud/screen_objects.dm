@@ -161,7 +161,7 @@
 		update_icon()
 
 /obj/screen/zone_sel/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	overlays += image('icons/hud/common/screen_zone_sel.dmi', "[selecting]")
 
 /obj/screen/intent

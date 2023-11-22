@@ -401,7 +401,7 @@ var/list/global/tank_gauge_cache = list()
 		return
 
 
-	overlays.Cut() // Each time you modify this, the object is redrawn. Cunts.
+	ClearOverlays() // Each time you modify this, the object is redrawn. Cunts.
 
 	if(proxyassembly.assembly || wired)
 		overlays += image(icon,"bomb_assembly")

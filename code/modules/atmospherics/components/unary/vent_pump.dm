@@ -108,7 +108,7 @@
 	if (!node)
 		update_use_power(POWER_USE_OFF)
 
-	overlays.Cut()
+	ClearOverlays()
 
 	var/vent_icon = "vent"
 

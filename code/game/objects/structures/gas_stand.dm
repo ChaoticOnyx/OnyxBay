@@ -28,7 +28,7 @@
 	else
 		icon_state = "gas_stand_idle"
 
-	overlays.Cut()
+	ClearOverlays()
 
 	if (tank)
 		if(istype(tank,/obj/item/tank/anesthetic))

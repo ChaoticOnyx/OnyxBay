@@ -78,7 +78,7 @@
 	update_icon()
 
 /obj/structure/reagent_dispensers/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(filling_overlay_levels)
 		if(reagents?.reagent_list?.len)
 			var/reagents_amt = 0
@@ -137,7 +137,7 @@
 			)
 			rig.forceMove(get_turf(user))
 			rig = null
-			overlays.Cut()
+			ClearOverlays()
 
 /obj/structure/reagent_dispensers/fueltank/attackby(obj/item/W, mob/user)
 	add_fingerprint(user)

@@ -52,7 +52,7 @@
 		time = 10
 
 /obj/item/device/assembly/timer/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	attached_overlays.Cut()
 	if(timing)
 		overlays += "timer_timing"

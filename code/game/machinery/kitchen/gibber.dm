@@ -34,7 +34,7 @@
 	var/list/mob/mobs_to_process
 
 /obj/machinery/gibber/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(panel_open)
 		overlays += "gibber-panel"
 
@@ -346,7 +346,7 @@
 	var/scoops_per_attempt = 1
 
 /obj/machinery/gibber/industrial/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(stat & (NOPOWER|BROKEN))
 		return
 

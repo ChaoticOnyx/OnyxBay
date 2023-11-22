@@ -26,7 +26,7 @@
 	)
 
 /obj/machinery/teleporter_gate/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(console && (get_dir(console, src) == EAST))
 		LAZYADD(overlays, image(icon, src, "tele_gate_wiring"))
 

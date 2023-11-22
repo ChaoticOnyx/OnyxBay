@@ -67,7 +67,7 @@
 /obj/item/reagent_containers/attackby(obj/item/W as obj, mob/user as mob)
 
 /obj/item/reagent_containers/ivbag/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	var/percent = round(reagents.total_volume / volume * 100)
 	if(reagents.total_volume)
 		var/image/filling = image('icons/obj/bloodpack.dmi', "[round(percent,25)]")

@@ -90,7 +90,7 @@ var/list/solars_list = list()
 
 /obj/machinery/power/solar/update_icon()
 	..()
-	overlays.Cut()
+	ClearOverlays()
 	if(stat & BROKEN)
 		overlays += image('icons/obj/power.dmi', icon_state = "solar_panel-b", layer = FLY_LAYER)
 	else
@@ -356,14 +356,14 @@ var/list/solars_list = list()
 /obj/machinery/power/solar_control/update_icon()
 	if(stat & BROKEN)
 		icon_state = "broken"
-		overlays.Cut()
+		ClearOverlays()
 		return
 	if(stat & NOPOWER)
 		icon_state = "c_unpowered"
-		overlays.Cut()
+		ClearOverlays()
 		return
 	icon_state = "solar"
-	overlays.Cut()
+	ClearOverlays()
 	if(cdir > -1)
 		overlays += image('icons/obj/computer.dmi', "solcon-o", FLY_LAYER, angle2dir(cdir))
 	return

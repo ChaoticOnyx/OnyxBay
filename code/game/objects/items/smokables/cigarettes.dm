@@ -24,7 +24,7 @@
 
 /obj/item/clothing/mask/smokable/cigarette/update_icon()
 	..()
-	overlays.Cut()
+	ClearOverlays()
 	if(dynamic_icon)
 		var/ratio = round(smoketime / initial(smoketime), 0.25) * 100
 		icon_state = ever_lit ? "[initial(icon_state)][ratio]" : initial(icon_state)

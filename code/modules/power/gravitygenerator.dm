@@ -410,7 +410,7 @@ GLOBAL_VAR(station_gravity_generator)
 
 /obj/machinery/gravity_generator/main/update_icon()
 	. = ..()
-	overlays.Cut()
+	ClearOverlays()
 	for(var/obj/machinery/gravity_generator/part/P in lights)
 		P.overlays.Cut()
 

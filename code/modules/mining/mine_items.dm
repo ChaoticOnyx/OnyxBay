@@ -297,7 +297,7 @@
 	upright = 0
 	anchored = 0
 	icon_state = initial(icon_state)
-	overlays.Cut()
+	ClearOverlays()
 	set_light(0)
 
 /**********************Mining car (Crate like thing, not the rail car)**************************/

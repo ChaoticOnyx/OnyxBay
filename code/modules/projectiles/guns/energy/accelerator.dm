@@ -38,7 +38,7 @@
 		update_icon()
 
 /obj/item/gun/energy/accelerator/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	overlays += image(icon, "[initial(icon_state)]_over[pumped]")
 	..()
 

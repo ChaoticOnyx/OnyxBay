@@ -59,7 +59,7 @@
 	if(!check_icon_cache())
 		return
 
-	overlays.Cut()
+	ClearOverlays()
 
 	var/vent_icon = "vent"
 

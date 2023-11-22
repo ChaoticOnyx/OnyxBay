@@ -89,7 +89,7 @@ var/list/ai_status_emotions = list(
 
 /obj/machinery/ai_status_display/Destroy()
 	GLOB.ai_status_display_list -= src
-	overlays.Cut()
+	ClearOverlays()
 	QDEL_NULL(picture)
 	QDEL_NULL(picture_overlight)
 	return ..()
@@ -104,12 +104,12 @@ var/list/ai_status_emotions = list(
 
 /obj/machinery/ai_status_display/update_icon()
 	if(stat & (NOPOWER|BROKEN))
-		overlays.Cut()
+		ClearOverlays()
 		return
 
 	switch(mode)
 		if(0) //Blank
-			overlays.Cut()
+			ClearOverlays()
 			picture_state = ""
 		if(1) // AI emoticon
 			var/datum/ai_emotion/ai_emotion = ai_status_emotions[emotion]
@@ -127,7 +127,7 @@ var/list/ai_status_emotions = list(
 		return
 
 	picture_state = state
-	overlays.Cut()
+	ClearOverlays()
 
 	picture.icon_state = picture_state
 	picture_overlight.icon_state = picture_state

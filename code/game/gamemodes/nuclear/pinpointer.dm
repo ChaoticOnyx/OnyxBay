@@ -76,7 +76,7 @@
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/pinpointer/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(!active)
 		return
 	if(!target || !target.resolve())

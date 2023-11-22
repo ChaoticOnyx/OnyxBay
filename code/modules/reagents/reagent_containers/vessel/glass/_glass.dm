@@ -86,7 +86,7 @@
 
 /obj/item/reagent_containers/vessel/glass/update_icon()
 	underlays.Cut()
-	overlays.Cut()
+	ClearOverlays()
 	icon = DRINK_ICON_FILE
 	icon_state = base_icon
 

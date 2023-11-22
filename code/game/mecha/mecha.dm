@@ -118,7 +118,7 @@
 	return
 
 /obj/mecha/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	var/hand = 0
 	var/back = 0
 	for(var/obj/item/mecha_parts/mecha_equipment/i in equipment)

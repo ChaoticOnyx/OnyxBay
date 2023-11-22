@@ -7,7 +7,7 @@ var/list/limb_icon_cache = list()
 	return
 
 /obj/item/organ/external/proc/compile_icon()
-	overlays.Cut()
+	ClearOverlays()
 	update_icon()
 
 /obj/item/organ/external/proc/sync_colour_to_human(mob/living/carbon/human/human)
@@ -125,7 +125,7 @@ var/list/limb_icon_cache = list()
 
 
 /obj/item/organ/external/update_icon(regenerate = 0)
-	overlays.Cut()
+	ClearOverlays()
 	mob_overlays = list()
 	var/husk_color_mod = rgb(96,88,80)
 	var/hulk_color_mod = rgb(48,224,40)

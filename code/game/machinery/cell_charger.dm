@@ -18,7 +18,7 @@
 /obj/machinery/cell_charger/update_icon()
 	icon_state = "ccharger[charging ? 1 : 0]"
 	if(charging)
-		overlays.Cut()
+		ClearOverlays()
 		if(charging.icon == icon)
 			overlays += charging.icon_state
 		else
@@ -28,7 +28,7 @@
 			chargelevel = round(CELL_PERCENT(charging) * 4.0 / 99)
 			overlays += "ccharger-o[chargelevel]"
 	else
-		overlays.Cut()
+		ClearOverlays()
 
 /obj/machinery/cell_charger/_examine_text(mob/user)
 	. = ..()

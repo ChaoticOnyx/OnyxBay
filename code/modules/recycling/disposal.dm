@@ -351,7 +351,7 @@
 
 // update the icon & overlays to reflect mode & status
 /obj/machinery/disposal/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(stat & BROKEN)
 		mode = 0
 		flush = 0

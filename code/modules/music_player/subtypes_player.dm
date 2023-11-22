@@ -21,7 +21,7 @@
 	mod_weight = 1.4
 
 /obj/item/music_player/boombox/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 
 	if(mode == PLAYER_STATE_PLAY)
 		overlays.Add(overlay_image(icon, "[icon_state]_playing", flags = RESET_COLOR))

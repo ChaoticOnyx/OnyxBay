@@ -250,7 +250,7 @@
 		process_med_hud(M, 1)
 
 /obj/item/clothing/glasses/hud/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(active && matrix)
 		overlays += image_repository.overlay_image(icon, "[hud_icon]_[matrix.matrix_icon]", alpha, 0, null, SOUTH)
 	if(lenses)

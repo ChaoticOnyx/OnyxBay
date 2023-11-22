@@ -133,7 +133,7 @@
 
 /obj/item/backwear/powered/update_icon()
 	..()
-	overlays.Cut()
+	ClearOverlays()
 	if(!bcell)
 		overlays += image(icon = 'icons/obj/backwear.dmi', icon_state = "[base_icon]_nocell")
 

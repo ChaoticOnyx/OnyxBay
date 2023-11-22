@@ -34,7 +34,7 @@
 	update_icon()
 
 /obj/item/storage/pill_bottle/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(label_color)
 		overlays += image_repository.overlay_image(icon, "[icon_state]-overlay", alpha, RESET_COLOR, label_color, SOUTH)
 

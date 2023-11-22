@@ -127,7 +127,7 @@
 	if(alarm_area && alarm_area.master_air_alarm == src)
 		alarm_area.master_air_alarm = null
 		elect_master(exclude_self = TRUE)
-	overlays.Cut()
+	ClearOverlays()
 	return ..()
 
 /obj/machinery/alarm/New(loc, dir, atom/frame)
@@ -304,7 +304,7 @@
 		status_overlays = TRUE
 		generate_overlays()
 
-	overlays.Cut()
+	ClearOverlays()
 
 	if(wiresexposed)
 		icon_state = "alarmx"

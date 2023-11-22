@@ -93,7 +93,7 @@
 // Greet the neighbors
 /obj/structure/railing/update_icon(UpdateNeighgors = 1)
 	NeighborsCheck(UpdateNeighgors)
-	overlays.Cut()
+	ClearOverlays()
 	if (!check || !anchored)
 		icon_state = "[material]railing"
 	else

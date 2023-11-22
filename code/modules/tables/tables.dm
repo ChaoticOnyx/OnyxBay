@@ -323,7 +323,7 @@
 /obj/structure/table/update_icon()
 	if(flipped != 1)
 		icon_state = "blank"
-		overlays.Cut()
+		ClearOverlays()
 
 		var/image/I
 
@@ -353,7 +353,7 @@
 				I = image(icon, "carpet_[connections[i]]", dir = 1<<(i-1))
 				overlays += I
 	else
-		overlays.Cut()
+		ClearOverlays()
 		var/type = 0
 		var/tabledirs = 0
 		for(var/direction in list(turn(dir,90), turn(dir,-90)) )

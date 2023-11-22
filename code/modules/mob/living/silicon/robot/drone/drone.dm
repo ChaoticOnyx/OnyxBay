@@ -171,7 +171,7 @@ var/list/mob_hat_cache = list()
 
 /mob/living/silicon/robot/drone/update_icon()
 
-	overlays.Cut()
+	ClearOverlays()
 	if(stat == 0)
 		if(controlling_ai)
 			overlays += "eyes-[icon_state]-ai"

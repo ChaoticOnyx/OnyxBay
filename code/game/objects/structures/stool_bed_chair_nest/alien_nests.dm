@@ -27,7 +27,7 @@
 	if(M == buckled_mob)
 		overlays.Add(over)
 	else
-		overlays.Cut()
+		ClearOverlays()
 
 /obj/structure/bed/nest/user_unbuckle_mob(mob/living/user)
 	if(buckled_mob)

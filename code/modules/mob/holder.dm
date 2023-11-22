@@ -92,7 +92,7 @@ var/list/holder_mob_icon_cache = list()
 
 /obj/item/holder/proc/sync()
 	dir = 2
-	overlays.Cut()
+	ClearOverlays()
 	icon = held_mob.icon
 	icon_state = held_mob.icon_state
 	item_state = held_mob.item_state

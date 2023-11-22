@@ -242,7 +242,7 @@
 	. = ..()
 
 /obj/machinery/light/update_icon(trigger = 1)
-	overlays.Cut()
+	ClearOverlays()
 	if(pixel_shift)
 		switch(dir)
 			if(NORTH)
@@ -823,7 +823,7 @@
 
 // update the icon state and description of the light
 /obj/item/light/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	switch(status)
 		if(LIGHT_OK)
 			icon_state = base_state

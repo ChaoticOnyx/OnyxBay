@@ -156,7 +156,7 @@ SUBSYSTEM_DEF(overlays)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	atom_flags &= ~ATOM_AWAITING_OVERLAY_UPDATE
 	if(QDELING(src))
-		overlays.Cut()
+		ClearOverlays()
 		return
 	if(length(atom_protected_overlay_cache))
 		if(length(atom_overlay_cache))
@@ -166,7 +166,7 @@ SUBSYSTEM_DEF(overlays)
 	else if(length(atom_overlay_cache))
 		overlays = atom_overlay_cache
 	else
-		overlays.Cut()
+		ClearOverlays()
 
 
 /// Clears the atom's overlay cache(s) and queues an update if needed. Use CLEAR_TARGET_* flags.
@@ -290,14 +290,14 @@ SUBSYSTEM_DEF(overlays)
 /// Removes all of the image's overlays.
 /image/proc/ClearOverlays()
 	SHOULD_NOT_OVERRIDE(TRUE)
-	overlays.Cut()
+	ClearOverlays()
 
 
 /// Copies the overlays from the atom other, clearing first if set, and using the caches indicated.
 /image/proc/CopyOverlays(atom/other, clear, cache_target = ATOM_ICON_CACHE_ALL)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(clear)
-		overlays.Cut()
+		ClearOverlays()
 	if(!istype(other))
 		return
 	if(cache_target & ATOM_ICON_CACHE_PROTECTED)

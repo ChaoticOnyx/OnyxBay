@@ -66,7 +66,7 @@
 /obj/machinery/compressor/Process()
 	if(!starter)
 		return
-	overlays.Cut()
+	ClearOverlays()
 	if(stat & BROKEN)
 		return
 	rpm = 0.9* rpm + 0.1 * rpmtarget
@@ -127,7 +127,7 @@
 /obj/machinery/power/turbine/Process()
 	if(!compressor.starter)
 		return
-	overlays.Cut()
+	ClearOverlays()
 	if(stat & BROKEN)
 		return
 	lastgen = ((compressor.rpm / TURBGENQ)**TURBGENG) *TURBGENQ

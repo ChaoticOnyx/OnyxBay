@@ -30,11 +30,11 @@
 /obj/item/device/flashlight/Destroy()
 	activation_sound = null
 	switch_light(FALSE)
-	overlays.Cut()
+	ClearOverlays()
 	return ..()
 
 /obj/item/device/flashlight/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
 		if(light_overlay)
@@ -305,7 +305,7 @@
 	..()
 
 /obj/item/device/flashlight/flare/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
 		var/mutable_appearance/MA = emissive_appearance(icon, "[initial(icon_state)]-overlay")
@@ -385,7 +385,7 @@
 
 /obj/item/device/flashlight/glowstick/update_icon()
 	item_state = "glowstick"
-	overlays.Cut()
+	ClearOverlays()
 	if(!fuel)
 		icon_state = "glowstick-empty"
 		set_light(0)

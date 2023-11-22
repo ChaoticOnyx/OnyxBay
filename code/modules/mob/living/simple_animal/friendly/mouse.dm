@@ -196,7 +196,7 @@
 		return ..()
 
 /mob/living/simple_animal/mouse/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(holding_item)
 		overlays += "holding_item[stat ? is_ic_dead() ? "_dead" : "_lay" : ""]"
 

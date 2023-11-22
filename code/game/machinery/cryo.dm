@@ -262,7 +262,7 @@
 	return
 
 /obj/machinery/atmospherics/unary/cryo_cell/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	var/overlays_state = 0
 	if(stat & (BROKEN|NOPOWER))
 		overlays_state = 0

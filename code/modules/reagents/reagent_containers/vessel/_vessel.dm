@@ -125,7 +125,7 @@
 // 4. label_icon (if present)
 // 5. lid.icon_state (if present)
 /obj/item/reagent_containers/vessel/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(reagents?.reagent_list.len > 0)
 		if(dynamic_name)
 			var/datum/reagent/R = reagents.get_master_reagent()

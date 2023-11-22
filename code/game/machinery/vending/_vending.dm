@@ -72,7 +72,7 @@
 	var/gen_rand_amount = FALSE // If we want to generate random amount of items in our cartridge.
 
 /obj/machinery/vending/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(stat & BROKEN)
 		icon_state = "[base_icon]-broken"
 	else if(!(stat & (NOPOWER | POWEROFF)))

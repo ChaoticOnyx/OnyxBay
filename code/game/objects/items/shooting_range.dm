@@ -36,7 +36,7 @@
 		if(isWelder(W))
 			var/obj/item/weldingtool/WT = W
 			if(WT.remove_fuel(0, user))
-				overlays.Cut()
+				ClearOverlays()
 				to_chat(usr, "You slice off [src]'s uneven chunks of aluminum and scorch marks.")
 				return
 

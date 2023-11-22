@@ -351,7 +351,7 @@
 				l_set = 1
 			else if((code == l_code) && !emagged && (l_set == 1))
 				locked = 0
-				overlays.Cut()
+				ClearOverlays()
 				overlays += image(icon, icon_opened)
 				code = null
 				if(!gunspawned)
@@ -445,7 +445,7 @@
 					gun.owner = I.registered_name
 		to_chat(user, SPAN("notice", "You [locked ? "un" : ""]lock \the [src]."))
 		locked = !locked
-		overlays.Cut()
+		ClearOverlays()
 		if(!locked)
 			overlays += image(icon, icon_opened)
 		return
@@ -559,7 +559,7 @@
 			lock_menu.close(user)
 		to_chat(user, SPAN("notice", "You [locked ? "un" : ""]lock \the [src]."))
 		locked = !locked
-		overlays.Cut()
+		ClearOverlays()
 		if(!locked)
 			overlays += image(icon, icon_opened)
 		return

@@ -54,7 +54,7 @@
 		CC.amount = 1
 		CC.color = string_color
 		CC.update_icon()
-		overlays.Cut()
+		ClearOverlays()
 		string_attached = null
 		to_chat(user, SPAN("notice", "You detach the string from the coin."))
 	else ..()

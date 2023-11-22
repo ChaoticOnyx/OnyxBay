@@ -45,7 +45,7 @@
 	var/fullname = "" //We need to build this from the contents of the var.
 	var/i = 0
 
-	overlays.Cut()
+	ClearOverlays()
 
 	for(var/obj/item/reagent_containers/food/O in ingredients)
 

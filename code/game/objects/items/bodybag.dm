@@ -69,7 +69,7 @@
 		return
 	else if(isWirecutter(W))
 		SetName("body bag")
-		overlays.Cut()
+		ClearOverlays()
 		to_chat(user, "You cut the tag off \the [src].")
 		return
 	else if(istype(W, /obj/item/device/healthanalyzer/) && !opened)

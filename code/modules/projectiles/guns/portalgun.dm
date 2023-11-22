@@ -44,7 +44,7 @@
 	update_icon()
 
 /obj/item/gun/portalgun/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	var/icon/portal_icon = icon(icon, "pg[setting]")
 	overlays.Add(portal_icon)
 	if(blood_overlay)

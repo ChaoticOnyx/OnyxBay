@@ -274,7 +274,7 @@ BLIND     // can't see anything
 	if(!needs_updating)
 		return ..()
 
-	overlays.Cut()
+	ClearOverlays()
 
 	if(wired)
 		overlays += image(icon, "gloves_wire")
@@ -464,7 +464,7 @@ BLIND     // can't see anything
 
 /obj/item/clothing/head/update_icon(mob/user)
 
-	overlays.Cut()
+	ClearOverlays()
 	var/mob/living/carbon/human/H
 	if(istype(user,/mob/living/carbon/human))
 		H = user
@@ -639,7 +639,7 @@ BLIND     // can't see anything
 		return ..()
 
 /obj/item/clothing/shoes/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(holding)
 		overlays += image(icon, "[icon_state]_knife")
 	return ..()

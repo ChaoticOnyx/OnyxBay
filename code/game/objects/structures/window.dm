@@ -90,7 +90,7 @@
 
 /obj/structure/window/proc/updateSilicate()
 	if (overlays)
-		overlays.Cut()
+		ClearOverlays()
 
 	var/image/img = image(src.icon, src.icon_state)
 	img.color = "#ffffff"
@@ -421,7 +421,7 @@
 /obj/structure/window/update_icon()
 	//A little cludge here, since I don't know how it will work with slim windows. Most likely VERY wrong.
 	//this way it will only update full-tile ones
-	overlays.Cut()
+	ClearOverlays()
 	layer = FULL_WINDOW_LAYER
 	if(!is_fulltile())
 		layer = SIDE_WINDOW_LAYER

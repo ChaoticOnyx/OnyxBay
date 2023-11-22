@@ -119,7 +119,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 	else
 		set_next_think(0)
 		layer = initial(layer)
-		overlays.Cut()
+		ClearOverlays()
 		pixel_x = initial(pixel_x)
 		M.pixel_x = initial(M.pixel_x)
 		M.pixel_y = initial(M.pixel_y)

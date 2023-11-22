@@ -40,7 +40,7 @@
 	startswith = list(/obj/item/reagent_containers/food/donut/normal = 6)
 
 /obj/item/storage/box/donut/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	var/i = 0
 	for(var/obj/item/reagent_containers/food/donut/D in contents)
 		var/image/lying_donut = image('icons/obj/food.dmi', "[i][D.overlay_state]")

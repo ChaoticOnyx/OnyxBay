@@ -112,7 +112,7 @@
 	handleTarget(target, user)
 
 /obj/item/reagent_containers/syringe/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	SetTransform(rotation = istype(loc, /obj/item/storage) ? 90 : 0)
 
 	if(mode == SYRINGE_BROKEN)

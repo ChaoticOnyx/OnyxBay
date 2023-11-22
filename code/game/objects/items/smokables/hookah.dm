@@ -327,7 +327,7 @@
 	create_reagents(chem_volume) // making the cigarrete a chemical holder with a maximum volume of [chem_volume]
 
 /obj/item/hookah_coal/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(pulls_left)
 		overlays += image_repository.overlay_image(icon, "[icon_state]_fill", alpha, RESET_COLOR, null, SOUTH)
 

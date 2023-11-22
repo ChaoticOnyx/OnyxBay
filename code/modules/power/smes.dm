@@ -104,7 +104,7 @@
 
 /obj/machinery/power/smes/Destroy()
 	GLOB.smes_list -= src
-	overlays.Cut()
+	ClearOverlays()
 	return ..()
 
 /obj/machinery/power/smes/add_avail(amount)
@@ -123,7 +123,7 @@
 		status_overlays = TRUE
 		generate_overlays()
 
-	overlays.Cut()
+	ClearOverlays()
 	if(stat & BROKEN)
 		set_light(0)
 		return

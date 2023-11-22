@@ -62,9 +62,9 @@
 
 /obj/machinery/power/generator/update_icon()
 	if(stat & (NOPOWER|BROKEN))
-		overlays.Cut()
+		ClearOverlays()
 	else
-		overlays.Cut()
+		ClearOverlays()
 
 		if(lastgenlev != 0)
 			overlays += image('icons/obj/power.dmi', "teg-op[lastgenlev]")

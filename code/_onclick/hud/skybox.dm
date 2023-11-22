@@ -56,7 +56,7 @@
 	appearance = rotation
 
 /obj/skybox/Destroy()
-	overlays.Cut()
+	ClearOverlays()
 	if(owner)
 		if(owner.skybox == src)
 			owner.skybox = null

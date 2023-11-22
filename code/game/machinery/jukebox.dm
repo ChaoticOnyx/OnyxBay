@@ -66,7 +66,7 @@
 		StopPlaying()
 
 /obj/machinery/media/jukebox/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(stat & (NOPOWER|BROKEN) || !anchored)
 		if(stat & BROKEN)
 			icon_state = "[state_base]-broken"

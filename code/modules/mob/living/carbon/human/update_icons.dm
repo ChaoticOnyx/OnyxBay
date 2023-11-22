@@ -163,7 +163,7 @@ Please contact me on #coderbus IRC. ~Carn x
 
 	var/list/overlays_to_apply = list()
 	if(icon_update)
-		overlays.Cut()
+		ClearOverlays()
 		var/list/visible_overlays
 		if(is_cloaked())
 			icon = 'icons/mob/human.dmi'

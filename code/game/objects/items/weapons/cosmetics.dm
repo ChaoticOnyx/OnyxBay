@@ -36,7 +36,7 @@
 	colour = possible_colours[key]
 
 /obj/item/lipstick/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(open)
 		icon_state = "lipstick_open"
 		var/icon/lipstick_icon = icon(icon, "lipstick_mask")

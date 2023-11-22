@@ -53,7 +53,7 @@
 	return secured
 
 /obj/item/device/assembly/infra/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(on)
 		overlays += "infrared_on"
 	if(holder)

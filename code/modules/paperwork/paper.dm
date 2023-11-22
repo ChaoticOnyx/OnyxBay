@@ -527,7 +527,7 @@
 	stamps = null
 	free_space = MAX_PAPER_MESSAGE_LEN
 	stamped = list()
-	overlays.Cut()
+	ClearOverlays()
 	generateinfolinks()
 	update_icon()
 

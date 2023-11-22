@@ -31,7 +31,7 @@
 /obj/machinery/light_switch/Destroy()
 	connected_area = null
 	other_area = null
-	overlays.Cut()
+	ClearOverlays()
 	return ..()
 
 /obj/machinery/light_switch/update_icon()
@@ -41,7 +41,7 @@
 	if(!off_overlay)
 		off_overlay = emissive_appearance(icon, "light0-overlay", alpha = 128)
 
-	overlays.Cut()
+	ClearOverlays()
 	if(stat & (NOPOWER|BROKEN))
 		icon_state = "light-p"
 		set_light(0)

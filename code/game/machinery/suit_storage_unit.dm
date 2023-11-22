@@ -163,7 +163,7 @@
 	update_icon()
 
 /obj/machinery/suit_storage_unit/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(panelopen)
 		overlays += ("panel")
 	if(isUV)

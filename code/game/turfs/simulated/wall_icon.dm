@@ -41,7 +41,7 @@
 	if(!damage_overlays[1]) //list hasn't been populated
 		generate_overlays()
 
-	overlays.Cut()
+	ClearOverlays()
 	var/image/I
 
 	if(!density)

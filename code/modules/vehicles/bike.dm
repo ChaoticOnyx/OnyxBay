@@ -192,7 +192,7 @@
 	..()
 
 /obj/vehicle/bike/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 
 	if(on)
 		icon_state = "[bike_icon]_on"

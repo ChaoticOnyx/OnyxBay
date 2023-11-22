@@ -176,7 +176,7 @@
 		update_icon()
 
 /obj/machinery/smartfridge/drying_rack/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(inoperable())
 		icon_state = icon_off
 	else
@@ -215,7 +215,7 @@
 	else
 		icon_state = icon_on
 	if(shows_number_of_items)
-		overlays.Cut()
+		ClearOverlays()
 		if(stat & (BROKEN|NOPOWER))
 			overlays += icon_off // The use of overlays allows us to see how much is stored inside, even if the machine happens to be unpowered
 		switch(contents.len)
@@ -236,7 +236,7 @@
 	if(isScrewdriver(O))
 		panel_open = !panel_open
 		user.visible_message("[user] [panel_open ? "opens" : "closes"] the maintenance panel of \the [src].", "You [panel_open ? "open" : "close"] the maintenance panel of \the [src].")
-		overlays.Cut()
+		ClearOverlays()
 		if(panel_open)
 			overlays += image(icon, icon_panel)
 		SSnano.update_uis(src)

@@ -34,7 +34,7 @@
 		buildstage = FIREALARM_NOCIRCUIT
 		wiresexposed = TRUE
 		icon_state = "fire_b0"
-		overlays.Cut()
+		ClearOverlays()
 		pixel_x = (dir & 3)? 0 : (dir == 4 ? -24 : 24)
 		pixel_y = (dir & 3)? (dir ==1 ? -24 : 24) : 0
 		frame.transfer_fingerprints_to(src)
@@ -47,7 +47,7 @@
 
 /obj/machinery/firealarm/Destroy()
 	GLOB.firealarm_list -= src
-	overlays.Cut()
+	ClearOverlays()
 	QDEL_NULL(seclevel_overlay)
 	return ..()
 
@@ -66,7 +66,7 @@
 		seclevel_overlay = emissive_appearance(icon, "seclevel-null")
 		seclevel_overlay.alpha = 200
 
-	overlays.Cut()
+	ClearOverlays()
 
 	if(wiresexposed)
 		switch(buildstage)

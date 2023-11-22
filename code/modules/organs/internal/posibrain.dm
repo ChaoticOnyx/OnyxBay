@@ -129,7 +129,7 @@
 		desc += SPAN("deadsay", "\nIt appears to be in stand-by mode.")
 
 /obj/item/organ/internal/cerebrum/posibrain/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 
 	if(brainmob?.key)
 		icon_state = "posibrain-occupied"

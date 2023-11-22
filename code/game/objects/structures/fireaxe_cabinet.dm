@@ -27,7 +27,7 @@
 	update_icon()
 
 /obj/structure/fireaxecabinet/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(fireaxe)
 		overlays += image(icon, "fireaxe_item")
 	if(shattered)

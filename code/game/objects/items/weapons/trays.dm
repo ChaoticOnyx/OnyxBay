@@ -23,7 +23,7 @@
 /obj/item/tray/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	// Drop all the things. All of them.
-	overlays.Cut()
+	ClearOverlays()
 	for(var/obj/item/I in carrying)
 		I.loc = M.loc
 		carrying.Remove(I)
@@ -188,7 +188,7 @@
 			foundtable = 1
 			break
 
-		overlays.Cut()
+		ClearOverlays()
 
 		for(var/obj/item/I in carrying)
 			I.loc = loc

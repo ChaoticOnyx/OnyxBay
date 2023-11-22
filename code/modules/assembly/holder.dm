@@ -62,7 +62,7 @@
 
 
 /obj/item/device/assembly_holder/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(a_left)
 		overlays += "[a_left.icon_state]_left"
 		for(var/O in a_left.attached_overlays)

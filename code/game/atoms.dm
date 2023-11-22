@@ -119,7 +119,7 @@
 /atom/Destroy()
 	QDEL_NULL(reagents)
 	QDEL_NULL(proximity_monitor)
-	overlays.Cut()
+	ClearOverlays()
 	underlays.Cut()
 	return ..()
 

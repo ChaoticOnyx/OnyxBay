@@ -71,7 +71,7 @@
 	..()
 
 /obj/machinery/computer/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(stat & NOPOWER)
 		if(icon_keyboard)
 			overlays += image(icon,"[icon_keyboard]_off", overlay_layer)

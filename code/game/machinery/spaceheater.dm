@@ -31,7 +31,7 @@
 		icon_state = "sheater-standby"
 
 	if(rebuild_overlay)
-		overlays.Cut()
+		ClearOverlays()
 		if(panel_open)
 			overlays  += "sheater-open"
 

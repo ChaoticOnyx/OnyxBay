@@ -826,7 +826,7 @@
 	return 0
 
 /mob/living/silicon/robot/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(stat == CONSCIOUS)
 		var/eye_icon_state = "eyes-[module_hulls[icontype].icon_state]"
 		if(eye_icon_state in icon_states(icon))

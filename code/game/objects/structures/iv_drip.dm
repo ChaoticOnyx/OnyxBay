@@ -27,7 +27,7 @@
 	else
 		icon_state = ""
 
-	overlays.Cut()
+	ClearOverlays()
 
 	if(beaker)
 		var/datum/reagents/reagents = beaker.reagents

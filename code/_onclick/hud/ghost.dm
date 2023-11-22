@@ -45,7 +45,7 @@
 	return ..()
 
 /obj/screen/ghost/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	LAZYADD(overlays, image('icons/hud/screen_ghost.dmi', icon_state = ghost_icon_state))
 
 /obj/screen/ghost/spawners_menu

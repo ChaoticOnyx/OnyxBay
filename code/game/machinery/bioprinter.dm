@@ -49,7 +49,7 @@
 	return ..()
 
 /obj/machinery/organ_printer/update_icon()
-	overlays.Cut()
+	ClearOverlays()
 	if(panel_open)
 		overlays += "bioprinter_panel_open"
 	if(printing)
