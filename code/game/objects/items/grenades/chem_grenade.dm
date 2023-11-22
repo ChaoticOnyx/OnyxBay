@@ -179,7 +179,7 @@
 	spawn(50)		   //To make sure all reagents can work
 		qdel(src)	   //correctly before deleting the grenade.
 
-/obj/item/grenade/chem_grenade/update_icon()
+/obj/item/grenade/chem_grenade/on_update_icon()
 	if(active)
 		icon_state = initial(icon_state) + "_active"
 		return

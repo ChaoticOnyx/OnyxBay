@@ -26,7 +26,7 @@
 	playsound(user, GET_SFX(SFX_BREAK_WINDOW), 100, 1)
 	update_icon()
 
-/obj/structure/fireaxecabinet/update_icon()
+/obj/structure/fireaxecabinet/on_update_icon()
 	ClearOverlays()
 	if(fireaxe)
 		AddOverlays(image(icon, "fireaxe_item"))

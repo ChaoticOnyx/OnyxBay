@@ -69,7 +69,7 @@
 	update_icon()
 	return ..()
 
-/obj/structure/bed/couch/update_icon()
+/obj/structure/bed/couch/on_update_icon()
 	..()
 
 	var/cache_key = "[base_icon]-[material.name]-over"

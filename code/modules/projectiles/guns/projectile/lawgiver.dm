@@ -71,7 +71,7 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	update_icon()
 	return ..()
 
-/obj/item/gun/projectile/lawgiver/update_icon()
+/obj/item/gun/projectile/lawgiver/on_update_icon()
 	ClearOverlays()
 	var/obj/item/ammo_magazine/lawgiver/M = ammo_magazine
 	var/datum/firemode/F = firemodes[sel_mode]

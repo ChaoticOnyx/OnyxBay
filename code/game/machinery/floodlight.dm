@@ -22,7 +22,7 @@
 	QDEL_NULL(cell)
 	return ..()
 
-/obj/machinery/floodlight/update_icon()
+/obj/machinery/floodlight/on_update_icon()
 	ClearOverlays()
 	icon_state = "flood[open ? "o" : ""][open && cell ? "b" : ""]0[on]"
 

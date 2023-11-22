@@ -104,7 +104,7 @@ var/list/floor_light_cache = list()
 	change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_ACTIVE)
 	update_icon()
 
-/obj/machinery/floor_light/update_icon()
+/obj/machinery/floor_light/on_update_icon()
 	ClearOverlays()
 	if(use_power && !broken())
 		if(isnull(damaged))

@@ -17,7 +17,7 @@
 	update_icon()
 	. = ..()
 
-/obj/item/storage/lockbox/update_icon()
+/obj/item/storage/lockbox/on_update_icon()
 	if(locked)
 		icon_state = icon_locked
 		return

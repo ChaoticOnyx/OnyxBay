@@ -104,7 +104,7 @@
 	return 0
 
 
-/obj/machinery/am_shielding/update_icon()
+/obj/machinery/am_shielding/on_update_icon()
 	ClearOverlays()
 	for(var/direction in GLOB.alldirs)
 		var/machine = locate(/obj/machinery, get_step(loc, direction))

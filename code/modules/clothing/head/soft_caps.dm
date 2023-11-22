@@ -14,7 +14,7 @@
 	..()
 	update_icon()
 
-/obj/item/clothing/head/soft/update_icon()
+/obj/item/clothing/head/soft/on_update_icon()
 	if(flipped)
 		icon_state = "[initial(icon_state)]_flipped"
 	else

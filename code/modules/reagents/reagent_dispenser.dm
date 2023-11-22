@@ -77,7 +77,7 @@
 	..()
 	update_icon()
 
-/obj/structure/reagent_dispensers/update_icon()
+/obj/structure/reagent_dispensers/on_update_icon()
 	ClearOverlays()
 	if(filling_overlay_levels)
 		if(reagents?.reagent_list?.len)
@@ -186,7 +186,7 @@
 		return
 	return ..()
 
-/obj/structure/reagent_dispensers/fueltank/update_icon()
+/obj/structure/reagent_dispensers/fueltank/on_update_icon()
 	..()
 	if(rig)
 		var/icon/rig_icon = getFlatIcon(rig)

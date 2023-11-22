@@ -85,7 +85,7 @@
 	scanning = !scanning
 	update_icon()
 
-/obj/item/device/assembly/prox_sensor/update_icon()
+/obj/item/device/assembly/prox_sensor/on_update_icon()
 	ClearOverlays()
 	attached_overlays = list()
 	if(timing)

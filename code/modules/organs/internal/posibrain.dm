@@ -128,7 +128,7 @@
 	else if(brainmob?.ssd_check())
 		desc += SPAN("deadsay", "\nIt appears to be in stand-by mode.")
 
-/obj/item/organ/internal/cerebrum/posibrain/update_icon()
+/obj/item/organ/internal/cerebrum/posibrain/on_update_icon()
 	ClearOverlays()
 
 	if(brainmob?.key)

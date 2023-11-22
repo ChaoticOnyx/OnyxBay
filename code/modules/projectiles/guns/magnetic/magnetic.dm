@@ -53,7 +53,7 @@
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/gun/magnetic/update_icon()
+/obj/item/gun/magnetic/on_update_icon()
 	var/list/overlays_to_add = list()
 	if(removable_components)
 		if(cell)

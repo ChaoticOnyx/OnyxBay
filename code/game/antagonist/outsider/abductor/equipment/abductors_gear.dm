@@ -454,7 +454,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	toggle(user)
 	add_fingerprint(user)
 
-/obj/item/melee/baton/abductor/update_icon()
+/obj/item/melee/baton/abductor/on_update_icon()
 	. = ..()
 	switch(mode)
 		if(BATON_STUN)

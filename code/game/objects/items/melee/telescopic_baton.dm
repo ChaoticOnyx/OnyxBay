@@ -41,7 +41,7 @@
 	update_icon()
 	update_held_icon()
 
-/obj/item/melee/telebaton/update_icon()
+/obj/item/melee/telebaton/on_update_icon()
 	if(on)
 		icon_state = "telebaton_1"
 		item_state = "telebaton_1"

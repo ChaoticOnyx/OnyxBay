@@ -27,7 +27,7 @@
 		set_active(FALSE)
 	return ..()
 
-/obj/item/device/t_scanner/update_icon()
+/obj/item/device/t_scanner/on_update_icon()
 	icon_state = "[base_state][on]"
 
 /obj/item/device/t_scanner/emp_act()

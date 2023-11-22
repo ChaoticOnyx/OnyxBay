@@ -112,7 +112,7 @@
 		ability.maptext = "[i]" // Slot number
 		i++
 
-/obj/screen/movable/ability_master/update_icon()
+/obj/screen/movable/ability_master/on_update_icon()
 	if(ability_objects.len)
 		set_invisibility(0)
 	else
@@ -231,7 +231,7 @@
 	ability_master = null
 	return ..()
 
-/obj/screen/ability/update_icon()
+/obj/screen/ability/on_update_icon()
 	ClearOverlays()
 	icon_state = "[background_base_state]_spell_base"
 
@@ -398,7 +398,7 @@
 	if(spell.silenced)
 		AddOverlays("silence")
 
-/obj/screen/ability/spell/update_icon(forced = 0)
+/obj/screen/ability/spell/on_update_icon(forced = 0)
 	update_charge(forced)
 	return
 
@@ -461,7 +461,7 @@
 	for(var/obj/screen/ability/changeling_power/P in changeling_power_objects)
 		P.update_icon()
 
-/obj/screen/ability/changeling_power/update_icon()
+/obj/screen/ability/changeling_power/on_update_icon()
 	if(!power)
 		qdel(src)
 		return
@@ -529,7 +529,7 @@
 	for(var/obj/screen/ability/vampire_power/P in vampire_power_objects)
 		P.update_icon()
 
-/obj/screen/ability/vampire_power/update_icon()
+/obj/screen/ability/vampire_power/on_update_icon()
 	if(!power)
 		qdel(src)
 		return

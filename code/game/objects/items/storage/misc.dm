@@ -39,7 +39,7 @@
 
 	startswith = list(/obj/item/reagent_containers/food/donut/normal = 6)
 
-/obj/item/storage/box/donut/update_icon()
+/obj/item/storage/box/donut/on_update_icon()
 	ClearOverlays()
 	var/i = 0
 	for(var/obj/item/reagent_containers/food/donut/D in contents)

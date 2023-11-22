@@ -124,7 +124,7 @@
 // 3. overlay_icon (if present)
 // 4. label_icon (if present)
 // 5. lid.icon_state (if present)
-/obj/item/reagent_containers/vessel/update_icon()
+/obj/item/reagent_containers/vessel/on_update_icon()
 	ClearOverlays()
 	if(reagents?.reagent_list.len > 0)
 		if(dynamic_name)

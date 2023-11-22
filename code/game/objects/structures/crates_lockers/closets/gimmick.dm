@@ -6,7 +6,7 @@
 	icon_opened = "cabinet_open"
 	dremovable = FALSE
 
-/obj/structure/closet/cabinet/update_icon()
+/obj/structure/closet/cabinet/on_update_icon()
 	if(!opened)
 		icon_state = icon_closed
 	else

@@ -394,7 +394,7 @@
 		beaker = new /obj/item/reagent_containers/vessel/beaker/large(src)
 	update_icon()
 
-/obj/machinery/reagentgrinder/update_icon()
+/obj/machinery/reagentgrinder/on_update_icon()
 	icon_state = "juicer"+num2text(!isnull(beaker))
 	return
 

@@ -195,7 +195,7 @@
 	else
 		return ..()
 
-/mob/living/simple_animal/mouse/update_icon()
+/mob/living/simple_animal/mouse/on_update_icon()
 	ClearOverlays()
 	if(holding_item)
 		AddOverlays("holding_item[stat ? is_ic_dead() ? "_dead" : "_lay" : ""]")

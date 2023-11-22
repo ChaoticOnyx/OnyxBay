@@ -215,7 +215,7 @@
 	return
 
 
-/obj/item/paper_bundle/update_icon()
+/obj/item/paper_bundle/on_update_icon()
 	var/obj/item/paper/P = pages[1]
 	icon_state = P.icon_state
 	SetOverlays(P.overlays)

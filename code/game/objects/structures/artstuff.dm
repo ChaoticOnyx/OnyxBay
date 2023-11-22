@@ -223,7 +223,7 @@
 				pixel_y = 0
 		update_icon()
 
-/obj/item/canvas/update_icon()
+/obj/item/canvas/on_update_icon()
 	. = ..()
 	if(icon_generated)
 		SetOverlays(canvas_overlay)

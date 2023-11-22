@@ -309,7 +309,7 @@
 				)
 	return em_block
 
-/atom/movable/update_icon()
+/atom/movable/on_update_icon()
 	..()
 	if(em_block)
 		CutOverlays(em_block)

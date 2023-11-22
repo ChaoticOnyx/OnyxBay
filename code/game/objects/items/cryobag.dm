@@ -58,7 +58,7 @@
 		set_next_think(0)
 	. = ..()
 
-/obj/structure/closet/body_bag/cryobag/update_icon()
+/obj/structure/closet/body_bag/cryobag/on_update_icon()
 	..()
 	ClearOverlays()
 	var/image/I = image(icon, "indicator[opened]")

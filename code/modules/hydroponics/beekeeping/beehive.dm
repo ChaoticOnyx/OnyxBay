@@ -16,7 +16,7 @@
 	var/maxFrames = 5
 	var/list/owned_bee_swarms = list()//all bees that spawned from the hive
 
-/obj/machinery/beehive/update_icon()
+/obj/machinery/beehive/on_update_icon()
 	ClearOverlays()
 	icon_state = "beehive"
 	if(closed)

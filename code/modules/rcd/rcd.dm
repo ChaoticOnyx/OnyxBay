@@ -124,7 +124,7 @@
 
 	return TRUE
 
-/obj/item/rcd/update_icon()
+/obj/item/rcd/on_update_icon()
 	..()
 
 	if(stored_matter > 0)

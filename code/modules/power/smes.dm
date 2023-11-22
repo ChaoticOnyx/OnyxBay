@@ -118,7 +118,7 @@
 	terminals -= term
 	term.master = null
 
-/obj/machinery/power/smes/update_icon()
+/obj/machinery/power/smes/on_update_icon()
 	if(!status_overlays)
 		status_overlays = TRUE
 		generate_overlays()

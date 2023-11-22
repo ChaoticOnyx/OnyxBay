@@ -52,7 +52,7 @@
 	set_active(secured ? on : FALSE)
 	return secured
 
-/obj/item/device/assembly/infra/update_icon()
+/obj/item/device/assembly/infra/on_update_icon()
 	ClearOverlays()
 	if(on)
 		AddOverlays("infrared_on")

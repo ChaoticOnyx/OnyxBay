@@ -174,7 +174,7 @@
 		if("lethal")
 			return "nucgun-kill"
 
-/obj/item/gun/energy/gun/nuclear/update_icon()
+/obj/item/gun/energy/gun/nuclear/on_update_icon()
 	var/list/new_overlays = list()
 
 	new_overlays += get_charge_overlay()
@@ -252,7 +252,7 @@
 		list(mode_name = "bolt", modifystate = "eriflekill", projectile_type = /obj/item/projectile/energy/laser/mid, fire_delay = 8,    charge_cost = 20, burst = 1)
 	)
 
-/obj/item/gun/energy/rifle/update_icon()
+/obj/item/gun/energy/rifle/on_update_icon()
 	var/ratio = 0
 	if(power_supply && power_supply.charge >= charge_cost)
 		ratio = max(round(CELL_PERCENT(power_supply), icon_rounder), icon_rounder)

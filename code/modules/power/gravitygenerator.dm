@@ -31,7 +31,7 @@
 	var/sprite_number = 0
 	var/broken_state = 0
 
-/obj/machinery/gravity_generator/update_icon()
+/obj/machinery/gravity_generator/on_update_icon()
 	icon_state = "[broken_state]_[sprite_number]"
 
 /obj/machinery/gravity_generator/proc/show_broken_info()
@@ -408,7 +408,7 @@ GLOBAL_VAR(station_gravity_generator)
 	playsound(loc, 'sound/effects/EMPulse.ogg', 100, 1)
 	empulse(loc, 7 * (charge * 0.01), 14 * (charge * 0.01))
 
-/obj/machinery/gravity_generator/main/update_icon()
+/obj/machinery/gravity_generator/main/on_update_icon()
 	. = ..()
 	ClearOverlays()
 	for(var/obj/machinery/gravity_generator/part/P in lights)

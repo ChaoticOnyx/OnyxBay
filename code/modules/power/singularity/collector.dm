@@ -201,7 +201,7 @@ var/global/list/rad_collectors = list()
 
 	return
 
-/obj/machinery/power/rad_collector/update_icon()
+/obj/machinery/power/rad_collector/on_update_icon()
 	if(melted)
 		icon_state = "ca_melt"
 	else if(active)

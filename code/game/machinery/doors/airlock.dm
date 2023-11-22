@@ -256,7 +256,7 @@ About the new airlock wires panel:
 		sleep(10)
 		hasShocked = 0
 
-/obj/machinery/door/airlock/update_icon(keep_light = 0)
+/obj/machinery/door/airlock/on_update_icon(keep_light = 0)
 	if(!keep_light)
 		set_light(0)
 	overlays?.Cut()

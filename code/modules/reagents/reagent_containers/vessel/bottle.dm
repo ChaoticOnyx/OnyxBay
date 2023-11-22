@@ -37,7 +37,7 @@
 	pourer = null
 	return ..()
 
-/obj/item/reagent_containers/vessel/bottle/update_icon()
+/obj/item/reagent_containers/vessel/bottle/on_update_icon()
 	..()
 	underlays.Cut()
 	if(rag)

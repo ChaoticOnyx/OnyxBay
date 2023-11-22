@@ -80,7 +80,7 @@
 		return
 	..()
 
-/obj/item/soap/update_icon()
+/obj/item/soap/on_update_icon()
 	ClearOverlays()
 	if(key_data)
 		AddOverlays(image('icons/obj/items.dmi', icon_state = "soap_key_overlay"))

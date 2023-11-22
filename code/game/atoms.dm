@@ -343,7 +343,12 @@ its easier to just keep the beam vertical.
 	update_icon()
 
 /atom/proc/update_icon()
-	CAN_BE_REDEFINED(TRUE)
+	if(QDELETED(src))
+		return
+	on_update_icon(arglist(args))
+	return
+
+/atom/proc/on_update_icon()
 	return
 
 /atom/proc/blob_act(damage)

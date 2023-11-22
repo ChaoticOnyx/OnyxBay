@@ -50,7 +50,7 @@
 	ghostize()
 	qdel(src)
 
-/mob/living/simple_animal/construct/update_icon()
+/mob/living/simple_animal/construct/on_update_icon()
 	ClearOverlays()
 	..()
 	add_glow()

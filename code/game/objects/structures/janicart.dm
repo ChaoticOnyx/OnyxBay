@@ -155,7 +155,7 @@
 	updateUsrDialog()
 
 
-/obj/structure/janitorialcart/update_icon()
+/obj/structure/janitorialcart/on_update_icon()
 	ClearOverlays()
 	if(mybag)
 		AddOverlays("cart_garbage")

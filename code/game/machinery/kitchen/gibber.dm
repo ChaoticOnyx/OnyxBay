@@ -33,7 +33,7 @@
 	/// List of mobs to be gibbed.
 	var/list/mob/mobs_to_process
 
-/obj/machinery/gibber/update_icon()
+/obj/machinery/gibber/on_update_icon()
 	ClearOverlays()
 	if(panel_open)
 		AddOverlays("gibber-panel")
@@ -345,7 +345,7 @@
 
 	var/scoops_per_attempt = 1
 
-/obj/machinery/gibber/industrial/update_icon()
+/obj/machinery/gibber/industrial/on_update_icon()
 	ClearOverlays()
 	if(stat & (NOPOWER|BROKEN))
 		return

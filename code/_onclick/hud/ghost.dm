@@ -44,7 +44,7 @@
 	update_icon()
 	return ..()
 
-/obj/screen/ghost/update_icon()
+/obj/screen/ghost/on_update_icon()
 	ClearOverlays()
 	LAZYADD(overlays, image('icons/hud/screen_ghost.dmi', icon_state = ghost_icon_state))
 

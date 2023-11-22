@@ -162,7 +162,7 @@ var/const/tk_maxrange = 15
 		qdel(O)
 	return
 
-/obj/item/tk_grab/update_icon()
+/obj/item/tk_grab/on_update_icon()
 	ClearOverlays()
 	if(focus && focus.icon && focus.icon_state)
 		AddOverlays(icon(focus.icon,focus.icon_state))

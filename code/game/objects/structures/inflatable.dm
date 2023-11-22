@@ -319,7 +319,7 @@
 	atom_flags |= ATOM_FLAG_FULLTILE_OBJECT
 	layer = CLOSED_DOOR_LAYER
 
-/obj/structure/inflatable/door/update_icon()
+/obj/structure/inflatable/door/on_update_icon()
 	if(state)
 		icon_state = "[icon_key]_open"
 	else

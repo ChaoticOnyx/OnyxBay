@@ -71,7 +71,7 @@
 	update_icon()
 	return ..()
 
-/obj/structure/bed/pew/update_icon()
+/obj/structure/bed/pew/on_update_icon()
 	..()
 
 	var/cache_key = "[base_icon]-over"

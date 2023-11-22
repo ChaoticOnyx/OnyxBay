@@ -75,7 +75,7 @@
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/pinpointer/update_icon()
+/obj/item/pinpointer/on_update_icon()
 	ClearOverlays()
 	if(!active)
 		return

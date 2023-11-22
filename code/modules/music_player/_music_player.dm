@@ -85,7 +85,7 @@ GLOBAL_LIST_EMPTY(music_players)
 	if(broken)
 		. += "\n[SPAN_WARNING("It's broken.")]"
 
-/obj/item/music_player/update_icon()
+/obj/item/music_player/on_update_icon()
 	ClearOverlays()
 
 	if(mode == PLAYER_STATE_PLAY)

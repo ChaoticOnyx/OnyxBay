@@ -42,7 +42,7 @@ var/global/photo_count = 0
 /obj/item/photo/attack_self(mob/user as mob)
 	user.examinate(src)
 
-/obj/item/photo/update_icon()
+/obj/item/photo/on_update_icon()
 	ClearOverlays()
 	var/scale = 8/(photo_size*32)
 	var/image/small_img = image(img)
@@ -153,7 +153,7 @@ var/global/photo_count = 0
 	var/size = 3
 	var/see_ghosts = FALSE
 
-/obj/item/device/camera/update_icon()
+/obj/item/device/camera/on_update_icon()
 	if(is_on)
 		icon_state = "[initial(icon_state)]"
 	else

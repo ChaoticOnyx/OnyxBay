@@ -34,7 +34,7 @@
 	ClearOverlays()
 	return ..()
 
-/obj/machinery/light_switch/update_icon()
+/obj/machinery/light_switch/on_update_icon()
 	if(!on_overlay)
 		on_overlay = emissive_appearance(icon, "light1-overlay", alpha = 128)
 

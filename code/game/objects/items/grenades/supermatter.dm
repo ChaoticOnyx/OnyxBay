@@ -13,7 +13,7 @@
 	update_icon()
 	playsound(src, 'sound/effects/weapons/energy/wave.ogg', 100)
 
-/obj/item/grenade/supermatter/update_icon()
+/obj/item/grenade/supermatter/on_update_icon()
 	ClearOverlays()
 	if(implode_at)
 		AddOverlays(image(icon) = 'icons/obj/machines/power/fusion.dmi', icon_state = "emfield_s1")

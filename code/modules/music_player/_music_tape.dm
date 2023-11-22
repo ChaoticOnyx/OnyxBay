@@ -24,7 +24,7 @@
 	if(random_color)
 		icon_state = "tape_[pick("white", "blue", "red", "yellow", "purple")]"
 
-/obj/item/music_tape/update_icon()
+/obj/item/music_tape/on_update_icon()
 	ClearOverlays()
 	if(ruined)
 		AddOverlays("ribbonoverlay")

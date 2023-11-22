@@ -66,7 +66,7 @@
 
 /obj/item/reagent_containers/attackby(obj/item/W as obj, mob/user as mob)
 
-/obj/item/reagent_containers/ivbag/update_icon()
+/obj/item/reagent_containers/ivbag/on_update_icon()
 	ClearOverlays()
 	var/percent = round(reagents.total_volume / volume * 100)
 	if(reagents.total_volume)

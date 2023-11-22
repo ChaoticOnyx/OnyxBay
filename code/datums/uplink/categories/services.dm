@@ -101,7 +101,7 @@
 	playsound(loc, SFX_SPARK, 50, 1)
 	visible_message("<span class='warning'>\The [src] shuts down with a spark.</span>")
 
-/obj/item/device/uplink_service/update_icon()
+/obj/item/device/uplink_service/on_update_icon()
 	switch(state)
 		if(AWAITING_ACTIVATION)
 			icon_state = initial(icon_state)
@@ -203,7 +203,7 @@
 			SSannounce.play_announce(/datum/announce/command_report, "New [GLOB.using_map.company_name] Update available at all communication consoles.")
 			deactivate()
 
-/obj/item/device/uplink_service/fake_update_announcement/update_icon()
+/obj/item/device/uplink_service/fake_update_announcement/on_update_icon()
 	switch(state)
 		if(AWAITING_ACTIVATION)
 			icon_state = initial(icon_state)

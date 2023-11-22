@@ -44,7 +44,7 @@ var/list/all_virtual_listeners = list()
 	host = null
 	return ..()
 
-/mob/observer/virtual/update_icon()
+/mob/observer/virtual/on_update_icon()
 	if(!overlay_icons)
 		overlay_icons = list()
 		for(var/i_state in icon_states(icon))

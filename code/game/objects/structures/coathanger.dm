@@ -39,7 +39,7 @@
 		return FALSE
 	return TRUE
 
-/obj/structure/coatrack/update_icon()
+/obj/structure/coatrack/on_update_icon()
 	ClearOverlays()
 	if (istype(coat, /obj/item/clothing/suit/storage/toggle/labcoat))
 		AddOverlays(image(icon, icon_state = "coat_lab"))

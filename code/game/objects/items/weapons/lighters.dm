@@ -155,7 +155,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	spawn(5)
 		spam_flag = 0
 
-/obj/item/flame/lighter/update_icon()
+/obj/item/flame/lighter/on_update_icon()
 	ClearOverlays()
 	if(lit)
 		icon_state = "[base_icon ? base_icon : initial(icon_state)]on"

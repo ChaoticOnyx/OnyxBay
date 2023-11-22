@@ -22,7 +22,7 @@
 	use_alt_layer = !use_alt_layer
 	update_icon()
 
-/obj/item/storage/update_icon()
+/obj/item/storage/on_update_icon()
 	if (ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_belt()

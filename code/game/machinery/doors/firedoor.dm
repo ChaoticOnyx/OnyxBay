@@ -357,7 +357,7 @@
 	return
 
 
-/obj/machinery/door/firedoor/update_icon()
+/obj/machinery/door/firedoor/on_update_icon()
 	ClearOverlays()
 	set_light(0)
 	var/do_set_light = FALSE

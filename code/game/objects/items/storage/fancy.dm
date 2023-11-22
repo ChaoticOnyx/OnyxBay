@@ -25,7 +25,7 @@
 		update_icon()
 
 
-/obj/item/storage/fancy/update_icon()
+/obj/item/storage/fancy/on_update_icon()
 	if(!opened)
 		icon_state = initial(icon_state)
 		return
@@ -119,7 +119,7 @@
 		/obj/item/pen/crayon/purple,
 		)
 
-/obj/item/storage/fancy/crayons/update_icon()
+/obj/item/storage/fancy/crayons/on_update_icon()
 	ClearOverlays() //resets list
 	AddOverlays(image('icons/obj/crayons.dmi',"crayonbox"))
 	for(var/obj/item/pen/crayon/crayon in contents)
@@ -330,7 +330,7 @@
 	key_type = /obj/item/reagent_containers/vessel/beaker/vial
 	startswith = list(/obj/item/reagent_containers/vessel/beaker/vial = 6)
 
-/obj/item/storage/fancy/vials/update_icon()
+/obj/item/storage/fancy/vials/on_update_icon()
 	var/key_count = count_by_type(contents, key_type)
 	icon_state = "[initial(icon_state)][key_count]"
 
@@ -347,7 +347,7 @@
 	req_access = list(access_virology)
 	can_hold = list(/obj/item/reagent_containers/vessel/beaker/vial)
 
-/obj/item/storage/lockbox/vials/update_icon()
+/obj/item/storage/lockbox/vials/on_update_icon()
 	var/total_contents = count_by_type(contents, /obj/item/reagent_containers/vessel/beaker/vial)
 	ClearOverlays()
 	icon_state = "vialbox[Floor(total_contents)]"

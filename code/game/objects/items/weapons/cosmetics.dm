@@ -35,7 +35,7 @@
 	name = "[key] lipstick"
 	colour = possible_colours[key]
 
-/obj/item/lipstick/update_icon()
+/obj/item/lipstick/on_update_icon()
 	ClearOverlays()
 	if(open)
 		icon_state = "lipstick_open"

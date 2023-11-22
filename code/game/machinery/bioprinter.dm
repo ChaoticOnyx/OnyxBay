@@ -48,7 +48,7 @@
 		return
 	return ..()
 
-/obj/machinery/organ_printer/update_icon()
+/obj/machinery/organ_printer/on_update_icon()
 	ClearOverlays()
 	if(panel_open)
 		AddOverlays("bioprinter_panel_open")

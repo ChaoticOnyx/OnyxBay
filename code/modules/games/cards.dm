@@ -236,7 +236,7 @@
 		for(var/datum/playingcard/P in cards)
 			. += "\nThe [P.name]."
 
-/obj/item/hand/update_icon(direction = 0)
+/obj/item/hand/on_update_icon(direction = 0)
 
 	if(!cards.len)
 		qdel(src)

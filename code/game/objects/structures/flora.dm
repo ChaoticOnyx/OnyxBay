@@ -53,7 +53,7 @@
 	..()
 	icon_state = "pine_c"
 
-/obj/structure/flora/tree/pine/xmas/update_icon()
+/obj/structure/flora/tree/pine/xmas/on_update_icon()
 	ClearOverlays()
 	if(light_overlay)
 		AddOverlays(image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER))
@@ -162,7 +162,7 @@
 	var/l_falloff_curve = 1
 	var/l_color = COLOR_BLUE_LIGHT
 
-/obj/structure/flora/tree/green/pink/update_icon()
+/obj/structure/flora/tree/green/pink/on_update_icon()
 	ClearOverlays()
 	if(light_overlay)
 		AddOverlays(image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER))
@@ -634,7 +634,7 @@
 			qdel(src)
 		return
 
-/obj/structure/flora/jungleplants/update_icon()
+/obj/structure/flora/jungleplants/on_update_icon()
 	ClearOverlays()
 	if(light_overlay)
 		AddOverlays(image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER))

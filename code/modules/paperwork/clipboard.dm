@@ -33,7 +33,7 @@
 			add_fingerprint(usr)
 			return
 
-/obj/item/clipboard/update_icon()
+/obj/item/clipboard/on_update_icon()
 	ClearOverlays()
 	if(toppaper)
 		AddOverlays(toppaper.icon_state)

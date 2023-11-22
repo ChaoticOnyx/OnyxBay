@@ -92,7 +92,7 @@
 	. = ..()
 	update_icon()
 
-/obj/item/shield/closet/update_icon()
+/obj/item/shield/closet/on_update_icon()
 	..()
 	if(isturf(loc))
 		SetTransform(rotation = 90)
@@ -601,7 +601,7 @@
 	else
 		to_chat(usr, SPAN_WARNING("This mob type can't use this verb."))
 
-/obj/structure/closet/update_icon()//Putting the welded stuff in update_icon() so it's easy to overwrite for special cases (Fridges, cabinets, and whatnot)
+/obj/structure/closet/on_update_icon()//Putting the welded stuff in update_icon() so it's easy to overwrite for special cases (Fridges, cabinets, and whatnot)
 	ClearOverlays()
 
 	if(dremovable)

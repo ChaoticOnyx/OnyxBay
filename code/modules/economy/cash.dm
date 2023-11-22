@@ -71,7 +71,7 @@
 	if(num == 0) // Less than one credit, let's just make it look like 1 for ease
 		. += "spacecash1"
 
-/obj/item/spacecash/bundle/update_icon()
+/obj/item/spacecash/bundle/on_update_icon()
 	ClearOverlays()
 	var/list/images = src.getMoneyImages()
 

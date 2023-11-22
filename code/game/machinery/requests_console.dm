@@ -56,7 +56,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	var/announce_do_newscast = TRUE
 	var/announce_sender
 
-/obj/machinery/requests_console/update_icon()
+/obj/machinery/requests_console/on_update_icon()
 	if(stat & NOPOWER)
 		if(icon_state != "req_comp_off")
 			icon_state = "req_comp_off"

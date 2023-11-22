@@ -111,7 +111,7 @@
 /obj/item/gun/projectile/revolver/deckard/emp
 	ammo_type = /obj/item/ammo_casing/c38/emp
 
-/obj/item/gun/projectile/revolver/deckard/update_icon()
+/obj/item/gun/projectile/revolver/deckard/on_update_icon()
 	..()
 	if(loaded.len)
 		icon_state = "deckard-loaded"
@@ -277,7 +277,7 @@
 	if(CanPhysicallyInteract(usr))
 		unload_ammo(usr)
 
-/obj/item/gun/projectile/revolver/m2019/detective/update_icon()
+/obj/item/gun/projectile/revolver/m2019/detective/on_update_icon()
 	..()
 	if(loaded.len)
 		icon_state = "[src.base_icon]-loaded"

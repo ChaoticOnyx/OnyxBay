@@ -94,7 +94,7 @@
 /**
 * Update icon and overlays of open space to be that of the turf below, plus any visible objects on that turf.
 */
-/turf/simulated/open/update_icon()
+/turf/simulated/open/on_update_icon()
 	ClearOverlays()
 	underlays.Cut()
 	var/turf/below = GetBelow(src)

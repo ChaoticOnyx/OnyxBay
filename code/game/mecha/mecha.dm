@@ -117,7 +117,7 @@
 	update_icon()
 	return
 
-/obj/mecha/update_icon()
+/obj/mecha/on_update_icon()
 	ClearOverlays()
 	var/hand = 0
 	var/back = 0

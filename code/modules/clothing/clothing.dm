@@ -270,7 +270,7 @@ BLIND     // can't see anything
 		var/mob/M = src.loc
 		M.update_inv_gloves()
 
-/obj/item/clothing/gloves/update_icon(needs_updating=FALSE)
+/obj/item/clothing/gloves/on_update_icon(needs_updating=FALSE)
 	if(!needs_updating)
 		return ..()
 
@@ -462,7 +462,7 @@ BLIND     // can't see anything
 		to_chat(user, "<span class='notice'>You crawl under \the [src].</span>")
 	return 1
 
-/obj/item/clothing/head/update_icon(mob/user)
+/obj/item/clothing/head/on_update_icon(mob/user)
 
 	ClearOverlays()
 	var/mob/living/carbon/human/H
@@ -638,7 +638,7 @@ BLIND     // can't see anything
 	else
 		return ..()
 
-/obj/item/clothing/shoes/update_icon()
+/obj/item/clothing/shoes/on_update_icon()
 	ClearOverlays()
 	if(holding)
 		AddOverlays(image(icon, "[icon_state]_knife"))

@@ -132,7 +132,7 @@ var/global/list/image/fluidtrack_cache = list()
 	dried = TRUE
 	update_icon()
 
-/obj/effect/decal/cleanable/blood/tracks/update_icon()
+/obj/effect/decal/cleanable/blood/tracks/on_update_icon()
 	ClearOverlays()
 	color = "#ffffff"
 	var/truedir = 0

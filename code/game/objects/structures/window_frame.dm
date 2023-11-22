@@ -337,7 +337,7 @@
 		atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 // The scariest thing present. Let's just -=HoPe=- it's not -=ThAt=- performance-heavy.
-/obj/structure/window_frame/update_icon()
+/obj/structure/window_frame/on_update_icon()
 	ClearOverlays()
 	underlays.Cut()
 	icon_state = icon_base
@@ -1003,7 +1003,7 @@
 			spawn()
 				WF.toggle_tint()
 
-/obj/machinery/button/window_frame_tint/update_icon()
+/obj/machinery/button/window_frame_tint/on_update_icon()
 	icon_state = "light0"
 
 

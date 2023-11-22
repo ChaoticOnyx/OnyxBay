@@ -124,7 +124,7 @@
 				. += "eyeless"
 
 
-/obj/item/organ/external/head/update_icon()
+/obj/item/organ/external/head/on_update_icon()
 	..()
 	if(owner)
 		var/datum/species/S = owner.species

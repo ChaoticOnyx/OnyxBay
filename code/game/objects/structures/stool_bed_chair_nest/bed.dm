@@ -40,7 +40,7 @@
 	return material
 
 // Reuse the cache/code from stools, todo maybe unify.
-/obj/structure/bed/update_icon()
+/obj/structure/bed/on_update_icon()
 	// Prep icon.
 	icon_state = ""
 	ClearOverlays()
@@ -230,7 +230,7 @@
 	rollertype = /obj/item/roller/adv
 	pull_slowdown = PULL_SLOWDOWN_NONE
 
-/obj/structure/bed/roller/update_icon()
+/obj/structure/bed/roller/on_update_icon()
 	if(buckled_mob || buckled_bodybag)
 		set_density(1)
 		icon_state = "[initial(icon_state)]_up"

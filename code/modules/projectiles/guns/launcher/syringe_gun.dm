@@ -20,7 +20,7 @@
 	..()
 	throw_spin = TRUE
 
-/obj/item/syringe_cartridge/update_icon()
+/obj/item/syringe_cartridge/on_update_icon()
 	underlays.Cut()
 	if(syringe)
 		underlays += image(syringe.icon, src, syringe.icon_state)

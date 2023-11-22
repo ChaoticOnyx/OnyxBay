@@ -784,7 +784,7 @@
 		)
 	capacity = 1
 
-/obj/item/robot_rack/update_icon()
+/obj/item/robot_rack/on_update_icon()
 	..()
 	if (length(held) < capacity)
 		icon_state = initial(icon_state)

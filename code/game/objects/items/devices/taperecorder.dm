@@ -346,7 +346,7 @@
 		record()
 
 
-/obj/item/device/taperecorder/update_icon()
+/obj/item/device/taperecorder/on_update_icon()
 	if(!mytape)
 		icon_state = "[initial(icon_state)]_empty"
 	else if(recording)
@@ -372,7 +372,7 @@
 	var/ruined = 0
 
 
-/obj/item/device/tape/update_icon()
+/obj/item/device/tape/on_update_icon()
 	ClearOverlays()
 	if(ruined)
 		AddOverlays("ribbonoverlay")

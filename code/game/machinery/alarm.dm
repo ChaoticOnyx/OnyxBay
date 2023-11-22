@@ -299,7 +299,7 @@
 			return 1
 	return 0
 
-/obj/machinery/alarm/update_icon()
+/obj/machinery/alarm/on_update_icon()
 	if(!status_overlays)
 		status_overlays = TRUE
 		generate_overlays()

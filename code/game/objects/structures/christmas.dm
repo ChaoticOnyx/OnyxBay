@@ -40,7 +40,7 @@
 	else
 		return 1
 
-/obj/structure/christmas/snowman/update_icon()
+/obj/structure/christmas/snowman/on_update_icon()
 	ClearOverlays()
 	if(istype(my_hat, /obj/item/clothing/head))
 		AddOverlays(image('icons/inv_slots/hats/mob.dmi', "[my_hat.icon_state]"))

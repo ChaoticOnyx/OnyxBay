@@ -176,7 +176,7 @@
 	update_space()
 	update_icon()
 
-/obj/item/paper/update_icon()
+/obj/item/paper/on_update_icon()
 	if(dynamic_icon)
 		return
 	if(!crumpled)

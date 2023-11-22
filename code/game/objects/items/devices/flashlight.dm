@@ -33,7 +33,7 @@
 	ClearOverlays()
 	return ..()
 
-/obj/item/device/flashlight/update_icon()
+/obj/item/device/flashlight/on_update_icon()
 	ClearOverlays()
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
@@ -304,7 +304,7 @@
 	fuel = rand(800, 1000) // Sorry for changing this so much but I keep under-estimating how long X number of ticks last in seconds.
 	..()
 
-/obj/item/device/flashlight/flare/update_icon()
+/obj/item/device/flashlight/flare/on_update_icon()
 	ClearOverlays()
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
@@ -383,7 +383,7 @@
 	on = 0
 	update_icon()
 
-/obj/item/device/flashlight/glowstick/update_icon()
+/obj/item/device/flashlight/glowstick/on_update_icon()
 	item_state = "glowstick"
 	ClearOverlays()
 	if(!fuel)
@@ -464,7 +464,7 @@
 	. = ..()
 	set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, 2, brightness_color)
 
-/obj/item/device/flashlight/metroid/update_icon()
+/obj/item/device/flashlight/metroid/on_update_icon()
 	return
 
 /obj/item/device/flashlight/metroid/attack_self(mob/user)

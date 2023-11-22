@@ -40,7 +40,7 @@
 	fix_hoses()
 	update_icon()
 
-/obj/item/reagent_containers/vessel/hookah/update_icon()
+/obj/item/reagent_containers/vessel/hookah/on_update_icon()
 	..()
 	icon_state = base_icon
 
@@ -326,7 +326,7 @@
 	. = ..()
 	create_reagents(chem_volume) // making the cigarrete a chemical holder with a maximum volume of [chem_volume]
 
-/obj/item/hookah_coal/update_icon()
+/obj/item/hookah_coal/on_update_icon()
 	ClearOverlays()
 	if(pulls_left)
 		AddOverlays(image_repository.overlay_image(icon, "[icon_state]_fill", alpha, RESET_COLOR, null, SOUTH))
@@ -377,7 +377,7 @@
 	w_class = ITEM_SIZE_LARGE
 	var/stage = 0
 
-/obj/item/hookah_construction/update_icon()
+/obj/item/hookah_construction/on_update_icon()
 	icon_state = "c_makeshift[stage]"
 
 /obj/item/hookah_construction/attackby(obj/item/W, mob/user)

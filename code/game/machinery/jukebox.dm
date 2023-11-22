@@ -65,7 +65,7 @@
 	if(stat & (NOPOWER|BROKEN) && playing)
 		StopPlaying()
 
-/obj/machinery/media/jukebox/update_icon()
+/obj/machinery/media/jukebox/on_update_icon()
 	ClearOverlays()
 	if(stat & (NOPOWER|BROKEN) || !anchored)
 		if(stat & BROKEN)

@@ -45,7 +45,7 @@
 			L.update_icon() //so siding get updated properly
 
 
-/turf/simulated/floor/plating/snowed/smoothed/update_icon()
+/turf/simulated/floor/plating/snowed/smoothed/on_update_icon()
 	var/connectdir = 0
 	for(var/direction in GLOB.cardinal)
 		if(istype(get_step(src, direction),/turf/simulated/floor/plating/snowed/smoothed))

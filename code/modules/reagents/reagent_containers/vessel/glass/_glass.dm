@@ -84,7 +84,7 @@
 		return FALSE
 	return TRUE
 
-/obj/item/reagent_containers/vessel/glass/update_icon()
+/obj/item/reagent_containers/vessel/glass/on_update_icon()
 	underlays.Cut()
 	ClearOverlays()
 	icon = DRINK_ICON_FILE

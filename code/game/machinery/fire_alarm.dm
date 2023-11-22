@@ -57,7 +57,7 @@
 		var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 		. += "\nThe current alert level is <span style='color:[security_state.current_security_level.light_color_alarm];'>[security_state.current_security_level.name]</span>."
 
-/obj/machinery/firealarm/update_icon()
+/obj/machinery/firealarm/on_update_icon()
 	if(!status_overlays)
 		status_overlays = TRUE
 		generate_overlays()

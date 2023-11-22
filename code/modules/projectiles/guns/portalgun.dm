@@ -43,7 +43,7 @@
 	to_chat(user, "Now set to fire <span style='color: [setting ? COLOR_ORANGE : COLOR_BLUE];'>[setting ? "red" : "blue"] portals</span>.")
 	update_icon()
 
-/obj/item/gun/portalgun/update_icon()
+/obj/item/gun/portalgun/on_update_icon()
 	ClearOverlays()
 	var/icon/portal_icon = icon(icon, "pg[setting]")
 	AddOverlays(portal_icon)

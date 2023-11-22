@@ -65,7 +65,7 @@ var/list/mining_floors = list()
 /turf/simulated/mineral/is_plating()
 	return 1
 
-/turf/simulated/mineral/update_icon(update_neighbors)
+/turf/simulated/mineral/on_update_icon(update_neighbors)
 	if(!mineral)
 		SetName(initial(name))
 		icon_state = initial(icon_state)

@@ -57,7 +57,7 @@
 		update_use_power(POWER_USE_IDLE)
 	update_icon()
 
-/obj/machinery/mecha_part_fabricator/update_icon()
+/obj/machinery/mecha_part_fabricator/on_update_icon()
 	ClearOverlays()
 	if(panel_open)
 		icon_state = "fab-o"

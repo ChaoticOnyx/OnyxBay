@@ -22,7 +22,7 @@
 	contained = new mask_type (src)
 	update_icon()
 
-/obj/structure/gas_stand/update_icon()
+/obj/structure/gas_stand/on_update_icon()
 	if (breather)
 		icon_state = "gas_stand_inuse"
 	else

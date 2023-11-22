@@ -619,7 +619,7 @@
 	else
 		SetName("dry [initial(name)]")
 
-/obj/structure/cloth_pile/update_icon()
+/obj/structure/cloth_pile/on_update_icon()
 	if(on_fire)
 		icon_state = "pile_bandages_lit"
 	else

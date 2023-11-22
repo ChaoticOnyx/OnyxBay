@@ -29,7 +29,7 @@
 	else if(contents.len)
 		. += "\nIt has [contents.len] cig butts in it."
 
-/obj/item/material/ashtray/update_icon()
+/obj/item/material/ashtray/on_update_icon()
 	ClearOverlays()
 	if (contents.len == max_butts)
 		AddOverlays(image('icons/obj/objects.dmi', "ashtray_full"))

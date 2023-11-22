@@ -83,7 +83,7 @@
 					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
 					                     "You hear the sound of a small printer.")
 
-/obj/structure/bigDelivery/update_icon()
+/obj/structure/bigDelivery/on_update_icon()
 	ClearOverlays()
 	if(nameset || examtext)
 		var/image/I = new /image(icon, "delivery_label")
@@ -224,7 +224,7 @@
 					                     "You hear the sound of a small printer.")
 	return
 
-/obj/item/smallDelivery/update_icon()
+/obj/item/smallDelivery/on_update_icon()
 	ClearOverlays()
 	if((nameset || examtext) && icon_state != "deliverycrate1")
 		var/image/I
@@ -433,7 +433,7 @@
 /obj/machinery/disposal/deliveryChute/interact()
 	return
 
-/obj/machinery/disposal/deliveryChute/update_icon()
+/obj/machinery/disposal/deliveryChute/on_update_icon()
 	return
 
 /obj/machinery/disposal/deliveryChute/Bumped(atom/movable/AM) //Go straight into the chute

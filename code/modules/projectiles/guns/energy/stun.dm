@@ -202,7 +202,7 @@
 	modifystate = tt.icon_state
 	update_icon()
 
-/obj/item/gun/energy/security/update_icon()
+/obj/item/gun/energy/security/on_update_icon()
 	var/ratio = 0
 	if(power_supply && power_supply.charge >= charge_cost)
 		ratio = max(round(CELL_PERCENT(power_supply), icon_rounder), icon_rounder)

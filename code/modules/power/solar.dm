@@ -88,7 +88,7 @@ var/list/solars_list = list()
 		if(!(stat & BROKEN))
 			set_broken(TRUE)
 
-/obj/machinery/power/solar/update_icon()
+/obj/machinery/power/solar/on_update_icon()
 	..()
 	ClearOverlays()
 	if(stat & BROKEN)
@@ -353,7 +353,7 @@ var/list/solars_list = list()
 	if(!connect_to_network()) return
 	set_panels(cdir)
 
-/obj/machinery/power/solar_control/update_icon()
+/obj/machinery/power/solar_control/on_update_icon()
 	if(stat & BROKEN)
 		icon_state = "broken"
 		ClearOverlays()

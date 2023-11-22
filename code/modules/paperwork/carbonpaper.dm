@@ -5,7 +5,7 @@
 	var/copied = FALSE
 
 
-/obj/item/paper/carbon/update_icon()
+/obj/item/paper/carbon/on_update_icon()
 	if(!crumpled)
 		icon_state = copied ? "cpaper" : "paper_stack"
 		if(!is_clean())

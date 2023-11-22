@@ -70,7 +70,7 @@
 		current.Attach(newSegment)
 		current = newSegment
 
-/mob/living/simple_animal/space_worm/head/update_icon()
+/mob/living/simple_animal/space_worm/head/on_update_icon()
 	if(stat == CONSCIOUS || stat == UNCONSCIOUS)
 		icon_state = "spacewormhead[previous?1:0]"
 		if(previous)
@@ -123,7 +123,7 @@
 
 	return
 
-/mob/living/simple_animal/space_worm/update_icon() //only for the sake of consistency with the other update icon procs
+/mob/living/simple_animal/space_worm/on_update_icon() //only for the sake of consistency with the other update icon procs
 	if(stat == CONSCIOUS || stat == UNCONSCIOUS)
 		if(previous) //midsection
 			icon_state = "spaceworm[get_dir(src, previous) | get_dir(src, next)]" //see 3 lines below

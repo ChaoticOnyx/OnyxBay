@@ -67,7 +67,7 @@
 			SetName("[name] ([front_id])")
 			update_icon()
 
-/obj/item/storage/wallet/update_icon()
+/obj/item/storage/wallet/on_update_icon()
 	ClearOverlays()
 	if(front_id)
 		var/tiny_state = "id-generic"

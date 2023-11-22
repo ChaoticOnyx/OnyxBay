@@ -9,7 +9,7 @@
 	var/capacity = 300
 	var/stored_charge = 0
 
-/obj/item/anobattery/update_icon()
+/obj/item/anobattery/on_update_icon()
 	var/p = (stored_charge/capacity)*100
 	p = min(p, 100)
 	icon_state = "anobattery[round(p,25)]"
@@ -189,7 +189,7 @@
 	if(. == TOPIC_REFRESH)
 		interact(user)
 
-/obj/item/anodevice/update_icon()
+/obj/item/anodevice/on_update_icon()
 	if(!inserted_battery)
 		icon_state = "anodev"
 		return

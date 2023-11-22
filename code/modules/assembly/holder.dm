@@ -61,7 +61,7 @@
 	return
 
 
-/obj/item/device/assembly_holder/update_icon()
+/obj/item/device/assembly_holder/on_update_icon()
 	ClearOverlays()
 	if(a_left)
 		AddOverlays("[a_left.icon_state]_left")

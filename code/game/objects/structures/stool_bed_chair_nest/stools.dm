@@ -68,7 +68,7 @@ var/global/list/stool_cache = list() //haha stool
 /obj/item/stool/bar/padded/New(newloc, new_material)
 	..(newloc, MATERIAL_STEEL, MATERIAL_CARPET)
 
-/obj/item/stool/update_icon()
+/obj/item/stool/on_update_icon()
 	// Base icon.
 	var/list/noverlays = list()
 	var/cache_key = "[base_icon]-[material.name]"

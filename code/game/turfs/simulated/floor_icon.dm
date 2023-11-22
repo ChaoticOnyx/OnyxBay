@@ -1,6 +1,6 @@
 var/list/flooring_cache = list()
 
-/turf/simulated/floor/update_icon(update_neighbors)
+/turf/simulated/floor/on_update_icon(update_neighbors)
 
 	if(lava)
 		return

@@ -32,7 +32,7 @@
 	QDEL_NULL(base_gloves)
 	return ..()
 
-/obj/item/clothing/gloves/stun/update_icon(needs_updating = FALSE)
+/obj/item/clothing/gloves/stun/on_update_icon(needs_updating = FALSE)
 	..()
 	if(bcell)
 		AddOverlays(image(icon, "gloves_cell"))

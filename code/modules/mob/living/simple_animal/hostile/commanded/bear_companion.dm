@@ -203,7 +203,7 @@
 	..()
 	update_icon()
 
-/mob/living/simple_animal/hostile/commanded/bear/update_icon()
+/mob/living/simple_animal/hostile/commanded/bear/on_update_icon()
 	if(stance == COMMANDED_STOP)
 		icon_state = icon_sit
 	else

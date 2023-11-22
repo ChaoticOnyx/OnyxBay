@@ -156,7 +156,7 @@
 	..()
 	update_icon()
 
-/obj/item/screwdriver/update_icon()
+/obj/item/screwdriver/on_update_icon()
 	SetTransform(rotation = istype(loc, /obj/item/storage) ? -90 : 0)
 
 /obj/item/screwdriver/old
@@ -471,7 +471,7 @@
 		return ITEM_SIZE_NO_CONTAINER
 	return ..()
 
-/obj/item/weldingtool/update_icon()
+/obj/item/weldingtool/on_update_icon()
 	..()
 
 	icon_state = welding ? "[initial(icon_state)]1" : "[initial(icon_state)]"

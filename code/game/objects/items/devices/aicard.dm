@@ -76,7 +76,7 @@
 		update_icon()
 	return 1
 
-/obj/item/aicard/update_icon()
+/obj/item/aicard/on_update_icon()
 	ClearOverlays()
 	if(carded_ai)
 		if (!carded_ai.control_disabled)

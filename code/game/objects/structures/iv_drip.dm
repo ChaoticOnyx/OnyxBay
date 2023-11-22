@@ -21,7 +21,7 @@
 	if(N)
 		transfer_amount = N
 
-/obj/structure/iv_drip/update_icon()
+/obj/structure/iv_drip/on_update_icon()
 	if(attached)
 		icon_state = "hooked"
 	else

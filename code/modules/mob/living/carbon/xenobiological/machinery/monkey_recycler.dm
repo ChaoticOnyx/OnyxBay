@@ -54,7 +54,7 @@ GLOBAL_LIST_EMPTY(monkey_recyclers)
 	if(in_range(user, src) || isobserver(user))
 		. += SPAN_NOTICE("The status display reads: Producing <b>[cube_production]</b> cubes for every monkey inserted.")
 
-/obj/machinery/monkey_recycler/update_icon()
+/obj/machinery/monkey_recycler/on_update_icon()
 	ClearOverlays()
 	if(panel_open) AddOverlays("gibber-panel")
 

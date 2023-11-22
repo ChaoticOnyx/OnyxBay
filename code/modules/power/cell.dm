@@ -41,7 +41,7 @@
 /obj/item/cell/proc/add_charge(amount)
 	charge = between(0, charge + amount, maxcharge)
 
-/obj/item/cell/update_icon()
+/obj/item/cell/on_update_icon()
 	var/new_overlay_state = 0
 	if(charge / maxcharge >= 0.95)
 		new_overlay_state = 2

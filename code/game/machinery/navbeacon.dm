@@ -40,7 +40,7 @@ GLOBAL_LIST_EMPTY(wayfindingbeacons)
 	set_invisibility(intact ? 101 : 0)
 	update_icon()
 
-/obj/machinery/navbeacon/update_icon()
+/obj/machinery/navbeacon/on_update_icon()
 	var/state="navbeacon[open]"
 
 	if(invisibility)

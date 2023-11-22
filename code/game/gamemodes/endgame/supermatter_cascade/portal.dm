@@ -18,7 +18,7 @@
 	. = ..()
 	set_next_think(world.time)
 
-/obj/singularity/narsie/exit/update_icon()
+/obj/singularity/narsie/exit/on_update_icon()
 	ClearOverlays()
 
 /obj/singularity/narsie/exit/think()

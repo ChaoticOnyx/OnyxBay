@@ -22,7 +22,7 @@
 
 	return ..()
 
-/obj/mecha/working/ripley/update_icon()
+/obj/mecha/working/ripley/on_update_icon()
 	..()
 	if(hides)
 		ClearOverlays()

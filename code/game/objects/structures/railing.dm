@@ -91,7 +91,7 @@
 				R.update_icon(0)
 
 // Greet the neighbors
-/obj/structure/railing/update_icon(UpdateNeighgors = 1)
+/obj/structure/railing/on_update_icon(UpdateNeighgors = 1)
 	NeighborsCheck(UpdateNeighgors)
 	ClearOverlays()
 	if (!check || !anchored)

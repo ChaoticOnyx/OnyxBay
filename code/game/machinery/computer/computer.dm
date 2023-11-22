@@ -70,7 +70,7 @@
 		set_broken(TRUE)
 	..()
 
-/obj/machinery/computer/update_icon()
+/obj/machinery/computer/on_update_icon()
 	ClearOverlays()
 	if(stat & NOPOWER)
 		if(icon_keyboard)

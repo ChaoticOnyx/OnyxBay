@@ -106,7 +106,7 @@
 
 	return ..()
 
-/obj/item/clothing/mask/smokable/ecig/update_icon()
+/obj/item/clothing/mask/smokable/ecig/on_update_icon()
 	if(active)
 		set_light(0.6, 0.5, brightness_on)
 		icon_state = "[base_icon]_on"
@@ -249,7 +249,7 @@
 	var/list/led_descs = list("blue flames", "blazing embers", "green venom", "royal purple")
 	var/current_color = 2
 
-/obj/item/clothing/mask/smokable/ecig/util/update_icon()
+/obj/item/clothing/mask/smokable/ecig/util/on_update_icon()
 	..()
 	if(active)
 		icon_state = "[base_icon]_on_[led_colors[current_color]]"
@@ -458,7 +458,7 @@
 	color = ec_cartridge.label_color
 	desc += " This one is [ec_cartridge.flavor] flavored."
 
-/obj/item/clothing/mask/smokable/ecig/disposable/update_icon()
+/obj/item/clothing/mask/smokable/ecig/disposable/on_update_icon()
 	icon_state = base_icon
 
 	if(active)

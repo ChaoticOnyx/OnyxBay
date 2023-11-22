@@ -10,7 +10,7 @@
 	var/health = 100
 	var/image/over = null
 
-/obj/structure/bed/nest/update_icon()
+/obj/structure/bed/nest/on_update_icon()
 	return
 
 /obj/structure/bed/nest/Initialize()

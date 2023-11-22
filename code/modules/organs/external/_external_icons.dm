@@ -126,7 +126,7 @@ var/list/limb_icon_cache = list()
 	return .
 
 
-/obj/item/organ/external/update_icon(regenerate = 0)
+/obj/item/organ/external/on_update_icon(regenerate = 0)
 	ClearOverlays()
 	mob_overlays = list()
 

@@ -249,7 +249,7 @@
 	if(med_hud)
 		process_med_hud(M, 1)
 
-/obj/item/clothing/glasses/hud/update_icon()
+/obj/item/clothing/glasses/hud/on_update_icon()
 	ClearOverlays()
 	if(active && matrix)
 		AddOverlays(image_repository.overlay_image(icon, "[hud_icon]_[matrix.matrix_icon]", alpha, 0, null, SOUTH))
@@ -489,7 +489,7 @@
 /obj/item/clothing/glasses/hud/plain/attack_self(mob/user)
 	return
 
-/obj/item/clothing/glasses/hud/plain/update_icon()
+/obj/item/clothing/glasses/hud/plain/on_update_icon()
 	return
 
 /obj/item/clothing/glasses/hud/psychoscope
@@ -505,7 +505,7 @@
 	matrix_removable = FALSE
 	use_alt_layer = TRUE
 
-/obj/item/clothing/glasses/hud/psychoscope/update_icon()
+/obj/item/clothing/glasses/hud/psychoscope/on_update_icon()
 	if(active)
 		icon_state = "psychoscope_on"
 		item_state = "psychoscope_on"

@@ -111,7 +111,7 @@
 
 	handleTarget(target, user)
 
-/obj/item/reagent_containers/syringe/update_icon()
+/obj/item/reagent_containers/syringe/on_update_icon()
 	ClearOverlays()
 	SetTransform(rotation = istype(loc, /obj/item/storage) ? 90 : 0)
 
@@ -352,7 +352,7 @@
 	amount_per_transfer_from_this = 5
 	volume = 5
 
-/obj/item/reagent_containers/dna_sampler/update_icon()
+/obj/item/reagent_containers/dna_sampler/on_update_icon()
 	icon_state = "dna_sampler"
 	if(reagents.total_volume)
 		icon_state = "[icon_state]_full"

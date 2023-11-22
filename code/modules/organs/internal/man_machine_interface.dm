@@ -184,7 +184,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	else if(brainmob?.ssd_check())
 		desc += SPAN_DEADSAY("\nScans indicate that \the [brainmob?.name] seems to be unconscious.")
 
-/obj/item/organ/internal/cerebrum/mmi/update_icon()
+/obj/item/organ/internal/cerebrum/mmi/on_update_icon()
 	ClearOverlays()
 	if(isnull(brainobj))
 		icon_state = "mmi-empty"

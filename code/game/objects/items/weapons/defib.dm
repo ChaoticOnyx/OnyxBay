@@ -40,7 +40,7 @@
 /obj/item/defibrillator/loaded //starts with regular power cell for R&D to replace later in the round.
 	bcell = /obj/item/cell/apc
 
-/obj/item/defibrillator/update_icon()
+/obj/item/defibrillator/on_update_icon()
 	var/list/new_overlays = list()
 
 	if(paddles) //in case paddles got destroyed somehow.
@@ -244,7 +244,7 @@
 	update_icon()
 	..()
 
-/obj/item/shockpaddles/update_icon()
+/obj/item/shockpaddles/on_update_icon()
 	icon_state = "defibpaddles[wielded]"
 	item_state = "defibpaddles[wielded]"
 	if(cooldown)

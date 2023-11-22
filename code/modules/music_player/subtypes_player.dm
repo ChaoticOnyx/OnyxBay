@@ -20,7 +20,7 @@
 	mod_reach = 0.75
 	mod_weight = 1.4
 
-/obj/item/music_player/boombox/update_icon()
+/obj/item/music_player/boombox/on_update_icon()
 	ClearOverlays()
 
 	if(mode == PLAYER_STATE_PLAY)

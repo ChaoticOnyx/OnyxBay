@@ -39,7 +39,7 @@
 		handleInactive()
 	update_icon()
 
-/obj/machinery/power/port_gen/update_icon()
+/obj/machinery/power/port_gen/on_update_icon()
 	if(!active)
 		icon_state = initial(icon_state)
 		return 1
@@ -410,7 +410,7 @@
 		rad_source.schedule_decay(5 SECONDS)
 	..()
 
-/obj/machinery/power/port_gen/pacman/super/update_icon()
+/obj/machinery/power/port_gen/pacman/super/on_update_icon()
 	if(..())
 		set_light(0)
 		return 1
@@ -469,7 +469,7 @@
 		temperature_gain = initial(temperature_gain)
 	..()
 
-/obj/machinery/power/port_gen/pacman/super/potato/update_icon()
+/obj/machinery/power/port_gen/pacman/super/potato/on_update_icon()
 	if(..())
 		return 1
 	if(power_output > max_safe_output)
