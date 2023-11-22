@@ -137,7 +137,7 @@
 	else
 		vent_icon += "[use_power ? "[pump_direction ? "out" : "in"]" : "off"]"
 
-	AddOverlays(icon_manager.get_atmos_icon("device",) , , vent_icon)
+	AddOverlays(icon_manager.get_atmos_icon("device", , , vent_icon))
 
 /obj/machinery/atmospherics/unary/vent_pump/update_underlays()
 	if(..())

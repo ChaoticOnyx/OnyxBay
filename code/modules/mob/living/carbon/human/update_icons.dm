@@ -182,11 +182,13 @@ Please contact me on #coderbus IRC. ~Carn x
 			var/entry = visible_overlays[i]
 			if(istype(entry, /image))
 				var/image/overlay = entry
-				overlay.SetTransform(others = M)
+				if(i != HO_BODY_LAYER)
+					overlay.transform = M
 				overlays_to_apply += overlay
 			else if(istype(entry, /list))
 				for(var/image/overlay in entry)
-					overlay.SetTransform(others = M)
+					if(i != HO_BODY_LAYER)
+						overlay.transform = M
 					overlays_to_apply += overlay
 
 	if(auras)

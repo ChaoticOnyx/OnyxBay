@@ -554,8 +554,8 @@
 		qdel(src)
 	else
 		ClearOverlays()
-		AddOverlays(icon_manager.get_atmos_icon("manifold",) , pipe_color, "core" + icon_connect_type)
-		AddOverlays(icon_manager.get_atmos_icon("manifold",) , , "clamps" + icon_connect_type)
+		AddOverlays(icon_manager.get_atmos_icon("manifold", , pipe_color, "core" + icon_connect_type))
+		AddOverlays(icon_manager.get_atmos_icon("manifold", , , "clamps" + icon_connect_type))
 		underlays.Cut()
 
 		var/turf/T = get_turf(src)
@@ -813,8 +813,8 @@
 		qdel(src)
 	else
 		ClearOverlays()
-		AddOverlays(icon_manager.get_atmos_icon("manifold",) , pipe_color, "4way" + icon_connect_type)
-		AddOverlays(icon_manager.get_atmos_icon("manifold",) , , "clamps_4way" + icon_connect_type)
+		AddOverlays(icon_manager.get_atmos_icon("manifold", , pipe_color, "4way" + icon_connect_type))
+		AddOverlays(icon_manager.get_atmos_icon("manifold", , , "clamps_4way" + icon_connect_type))
 		underlays.Cut()
 
 		/*
@@ -1038,7 +1038,7 @@
 	alpha = 255
 
 	ClearOverlays()
-	AddOverlays(icon_manager.get_atmos_icon("pipe",) , pipe_color, "cap")
+	AddOverlays(icon_manager.get_atmos_icon("pipe", , pipe_color, "cap"))
 
 /obj/machinery/atmospherics/pipe/cap/atmos_init()
 	..()
@@ -1377,7 +1377,7 @@
 	alpha = 255
 
 	ClearOverlays()
-	AddOverlays(icon_manager.get_atmos_icon("pipe",) , pipe_color, "universal")
+	AddOverlays(icon_manager.get_atmos_icon("pipe", , pipe_color, "universal"))
 	underlays.Cut()
 
 	if(node1)
@@ -1414,7 +1414,7 @@
 	alpha = 255
 
 	ClearOverlays()
-	AddOverlays(icon_manager.get_atmos_icon("pipe",) , pipe_color, "universal")
+	AddOverlays(icon_manager.get_atmos_icon("pipe", , pipe_color, "universal"))
 	underlays.Cut()
 
 	if(node1)
