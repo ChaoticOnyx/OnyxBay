@@ -8,7 +8,7 @@
 	if(graphic_add && graphic_add.len)
 		overlays += graphic_add
 	if(graphic_remove && graphic_remove.len)
-		overlays -= graphic_remove
+		CutOverlays(graphic_remove)
 
 /turf/proc/update_air_properties()
 	var/block

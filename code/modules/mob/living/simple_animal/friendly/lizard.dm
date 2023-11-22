@@ -172,7 +172,7 @@
 
 /mob/living/simple_animal/lizard/death(gibbed, deathmessage, show_dead_message)
 	. = ..()
-	overlays -= face
+	CutOverlays(face)
 	overlays += blood
 
 /mob/living/simple_animal/lizard/Initialize()

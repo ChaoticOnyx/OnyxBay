@@ -284,7 +284,7 @@ SUBSYSTEM_DEF(overlays)
 /// Removes sources from the image's overlays.
 /image/proc/CutOverlays(sources)
 	SHOULD_NOT_OVERRIDE(TRUE)
-	overlays -= sources
+	CutOverlays(sources)
 
 
 /// Removes all of the image's overlays.

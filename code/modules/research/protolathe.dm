@@ -123,7 +123,7 @@
 	var/t = stack.material.name
 	overlays += "protolathe_[t]"
 	spawn(10)
-		overlays -= "protolathe_[t]"
+		CutOverlays("protolathe_[t]")
 
 	busy = 1
 	use_power_oneoff(max(1000, (SHEET_MATERIAL_AMOUNT * amount / 10)))
