@@ -35,4 +35,4 @@
 /obj/machinery/computer/rcon/update_icon()
 	..()
 	if(is_operable())
-		AddOverlays(image('icons/obj/computer.dmi',) "ai-fixer-empty", overlay_layer)
+		AddOverlays(image('icons/obj/computer.dmi', "ai-fixer-empty", overlay_layer))

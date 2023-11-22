@@ -238,7 +238,7 @@
 		user.visible_message("[user] [panel_open ? "opens" : "closes"] the maintenance panel of \the [src].", "You [panel_open ? "open" : "close"] the maintenance panel of \the [src].")
 		ClearOverlays()
 		if(panel_open)
-			AddOverlays(image(icon,) icon_panel)
+			AddOverlays(image(icon, icon_panel))
 		SSnano.update_uis(src)
 		return
 

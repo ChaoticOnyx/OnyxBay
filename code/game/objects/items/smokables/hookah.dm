@@ -49,7 +49,7 @@
 		temp.color = HC.color
 		AddOverlays(temp)
 		if(lit)
-			AddOverlays(image_repository.overlay_image(icon,) "[HC.icon_state]_over_lit", alpha, RESET_COLOR, null, SOUTH)
+			AddOverlays(image_repository.overlay_image(icon, "[HC.icon_state]_over_lit", alpha, RESET_COLOR, null, SOUTH))
 
 	if(H1?.loc == src)
 		var/image/temp = image(icon, "[base_icon]_left_0")
@@ -329,7 +329,7 @@
 /obj/item/hookah_coal/update_icon()
 	ClearOverlays()
 	if(pulls_left)
-		AddOverlays(image_repository.overlay_image(icon,) "[icon_state]_fill", alpha, RESET_COLOR, null, SOUTH)
+		AddOverlays(image_repository.overlay_image(icon, "[icon_state]_fill", alpha, RESET_COLOR, null, SOUTH))
 
 /obj/item/hookah_coal/attack_self(mob/user)
 	if(smoke_amount)

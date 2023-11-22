@@ -24,7 +24,7 @@
 	if(GLOB.cult.rune_strokes[type])
 		var/list/f = GLOB.cult.rune_strokes[type]
 		for(var/i in f)
-			AddOverlays(image(make_uristword(i,) animated))
+			AddOverlays(image(make_uristword(i, animated)))
 	else
 		var/list/q = list(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 		var/list/f = list()
@@ -32,7 +32,7 @@
 			var/j = pick(q)
 			f += j
 			q -= f
-			AddOverlays(image(make_uristword(j,) animated))
+			AddOverlays(image(make_uristword(j, animated)))
 		GLOB.cult.rune_strokes[type] = f.Copy()
 
 	if(animated)

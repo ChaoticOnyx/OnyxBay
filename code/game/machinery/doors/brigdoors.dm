@@ -250,7 +250,7 @@
 /obj/machinery/door_timer/proc/set_picture(state)
 	picture_state = state
 	ClearOverlays()
-	AddOverlays(image('icons/obj/status_display.dmi',) icon_state=picture_state)
+	AddOverlays(image('icons/obj/status_display.dmi', icon_state=picture_state))
 
 
 // Checks to see if there's 1 line or 2, adds text-icons-numbers/letters over display

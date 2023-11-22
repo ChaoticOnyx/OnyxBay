@@ -162,7 +162,7 @@
 
 /obj/screen/zone_sel/update_icon()
 	ClearOverlays()
-	AddOverlays(image('icons/hud/common/screen_zone_sel.dmi',) "[selecting]")
+	AddOverlays(image('icons/hud/common/screen_zone_sel.dmi', "[selecting]"))
 
 /obj/screen/intent
 	name = "intent"

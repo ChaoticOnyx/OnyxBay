@@ -352,11 +352,11 @@
 	ClearOverlays()
 	icon_state = "vialbox[Floor(total_contents)]"
 	if (!broken)
-		AddOverlays(image(icon,) src, "led[locked]")
+		AddOverlays(image(icon, src, "led[locked]"))
 		if(locked)
-			AddOverlays(image(icon,) src, "cover")
+			AddOverlays(image(icon, src, "cover"))
 	else
-		AddOverlays(image(icon,) src, "ledb")
+		AddOverlays(image(icon, src, "ledb"))
 	return
 
 /*

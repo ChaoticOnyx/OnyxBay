@@ -62,7 +62,7 @@
 		if(t)
 			SetName("body bag - ")
 			name += t
-			AddOverlays(image(icon,) "bodybag_label")
+			AddOverlays(image(icon, "bodybag_label"))
 		else
 			SetName("body bag")
 	//..() //Doesn't need to run the parent. Since when can fucking bodybags be welded shut? -Agouri

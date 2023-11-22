@@ -121,7 +121,7 @@
 			overlay_state = new_overlay_state
 			ClearOverlays()
 			if(overlay_state)
-				AddOverlays(image('icons/obj/ecig.dmi',) overlay_state)
+				AddOverlays(image('icons/obj/ecig.dmi', overlay_state))
 	else
 		set_light(0)
 		if(opened)
@@ -471,7 +471,7 @@
 		if(new_overlay_state != overlay_state)
 			overlay_state = new_overlay_state
 			if(overlay_state)
-				AddOverlays(image_repository.overlay_image('icons/obj/ecig.dmi',) overlay_state, alpha, RESET_COLOR, null, SOUTH)
+				AddOverlays(image_repository.overlay_image('icons/obj/ecig.dmi', overlay_state, alpha, RESET_COLOR, null, SOUTH))
 	else
 		overlay_state = ""
 		ClearOverlays()

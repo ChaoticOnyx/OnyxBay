@@ -269,26 +269,26 @@ About the new airlock wires panel:
 		if(p_open || welded)
 			ClearOverlays()
 			if(p_open)
-				AddOverlays(image(icon,) "panel_open")
+				AddOverlays(image(icon, "panel_open"))
 			if(!(stat & NOPOWER))
 				if(stat & BROKEN)
-					AddOverlays(image(icon,) "sparks_broken")
+					AddOverlays(image(icon, "sparks_broken"))
 				else if(health < maxhealth * 0.75)
-					AddOverlays(image(icon,) "sparks_damaged")
+					AddOverlays(image(icon, "sparks_damaged"))
 			if(welded)
-				AddOverlays(image(icon,) "welded")
+				AddOverlays(image(icon, "welded"))
 		else if(health < maxhealth * 0.75 && !(stat & NOPOWER))
-			AddOverlays(image(icon,) "sparks_damaged")
+			AddOverlays(image(icon, "sparks_damaged"))
 	else
 		icon_state = "door_open"
 		if(arePowerSystemsOn() && !p_open) // Doors with opened panels have no green lights on their icons
 			set_light(0.30, 0.9, 1.5, 3, COLOR_LIME)
 		if((stat & BROKEN) && !(stat & NOPOWER))
-			AddOverlays(image(icon,) "sparks_open")
+			AddOverlays(image(icon, "sparks_open"))
 
 	if(brace)
 		brace.update_icon()
-		AddOverlays(image(brace.icon,) brace.icon_state)
+		AddOverlays(image(brace.icon, brace.icon_state))
 
 /obj/machinery/door/airlock/do_animate(animation)
 	switch(animation)

@@ -32,9 +32,9 @@
 /obj/item/material/ashtray/update_icon()
 	ClearOverlays()
 	if (contents.len == max_butts)
-		AddOverlays(image('icons/obj/objects.dmi',) "ashtray_full")
+		AddOverlays(image('icons/obj/objects.dmi', "ashtray_full"))
 	else if (contents.len >= max_butts/2)
-		AddOverlays(image('icons/obj/objects.dmi',) "ashtray_half")
+		AddOverlays(image('icons/obj/objects.dmi', "ashtray_half"))
 
 /obj/item/material/ashtray/proc/store(obj/item/W, mob/user)
 	if(!(istype(W, /obj/item/cigbutt) || istype(W, /obj/item/clothing/mask/smokable/cigarette) || istype(W, /obj/item/flame/match)))
