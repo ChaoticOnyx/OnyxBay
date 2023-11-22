@@ -155,7 +155,7 @@
 			var/mutable_appearance/lip_appearance = mutable_appearance(S.icobase, "lips[BB.index]",flags = DEFAULT_APPEARANCE_FLAGS)
 			mob_overlays |= lip_appearance
 
-	overlays = mob_overlays
+	SetOverlays(mob_overlays)
 
 	AddOverlays(get_hair_icon()) // Hair is handled separately for mob icon so we do not add it to mob_overlays Maybe this should change sometime
 

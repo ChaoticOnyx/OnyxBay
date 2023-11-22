@@ -69,7 +69,7 @@
 	if(loaded)
 		overlays_to_add += image(icon, "[icon_state]_loaded")
 
-	overlays = overlays_to_add
+	SetOverlays(overlays_to_add)
 	..()
 
 /obj/item/gun/magnetic/proc/show_ammo()

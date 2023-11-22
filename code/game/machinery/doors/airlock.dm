@@ -267,7 +267,7 @@ About the new airlock wires panel:
 		else
 			icon_state = "door_closed"
 		if(p_open || welded)
-			overlays = list()
+			ClearOverlays()
 			if(p_open)
 				AddOverlays(image(icon,) "panel_open")
 			if(!(stat & NOPOWER))

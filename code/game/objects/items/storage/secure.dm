@@ -161,7 +161,7 @@
 		emagged = TRUE
 		AddOverlays(image(icon,) icon_sparking)
 		sleep(6)
-		overlays = null
+		SetOverlays(null)
 		AddOverlays(image(icon,) icon_locking)
 		locked = FALSE
 
@@ -361,7 +361,7 @@
 		else
 			if((href_list["type"] == "R") && !emagged && (!l_setshort))
 				locked = 1
-				overlays = null
+				SetOverlays(null)
 				code = null
 				close(usr)
 			else

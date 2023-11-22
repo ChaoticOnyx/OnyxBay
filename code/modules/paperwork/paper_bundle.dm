@@ -218,7 +218,7 @@
 /obj/item/paper_bundle/update_icon()
 	var/obj/item/paper/P = pages[1]
 	icon_state = P.icon_state
-	overlays = P.overlays
+	SetOverlays(P.overlays)
 	underlays = 0
 	var/i = 0
 	var/photo

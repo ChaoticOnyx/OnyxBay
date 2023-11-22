@@ -25,7 +25,7 @@
 /obj/mecha/working/ripley/update_icon()
 	..()
 	if(hides)
-		overlays = null
+		ClearOverlays()
 		if(hides < 3)
 			AddOverlays(image("icon") = "mecha.dmi", "icon_state" = occupant ? "ripley-g" : "ripley-g-open")
 		else

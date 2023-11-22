@@ -312,7 +312,7 @@
 
 	if(!(update_state & UPDATE_ALLGOOD))
 		if(overlays.len)
-			overlays = 0
+			SetOverlays(0)
 			return
 
 	if(update & 2)

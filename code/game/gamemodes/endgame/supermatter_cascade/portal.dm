@@ -19,7 +19,7 @@
 	set_next_think(world.time)
 
 /obj/singularity/narsie/exit/update_icon()
-	overlays = 0
+	ClearOverlays()
 
 /obj/singularity/narsie/exit/think()
 	for(var/mob/M in GLOB.player_list)

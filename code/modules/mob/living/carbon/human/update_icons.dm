@@ -198,7 +198,7 @@ Please contact me on #coderbus IRC. ~Carn x
 	if(active_thinking_indicator)
 		overlays_to_apply |= active_thinking_indicator
 
-	overlays = overlays_to_apply
+	SetOverlays(overlays_to_apply)
 
 	update_transform()
 

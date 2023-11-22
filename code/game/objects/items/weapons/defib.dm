@@ -58,7 +58,7 @@
 	else
 		new_overlays += "[initial(icon_state)]-nocell"
 
-	overlays = new_overlays
+	SetOverlays(new_overlays)
 
 /obj/item/defibrillator/ui_action_click()
 	toggle_paddles()

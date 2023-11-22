@@ -156,7 +156,7 @@
 
 
 /obj/structure/janitorialcart/update_icon()
-	overlays = null
+	SetOverlays(null)
 	if(mybag)
 		AddOverlays("cart_garbage")
 	if(mymop)

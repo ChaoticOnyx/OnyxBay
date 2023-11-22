@@ -87,7 +87,7 @@
 		M.icon = disguise.icon
 		M.stand_icon = disguise.stand_icon
 		M.icon_state = disguise.icon_state
-		M.ClearOverlays()()
+		M.ClearOverlays()
 		M.overlays = disguise.overlays.Copy()
 		M.overlays_standing = disguise.overlays_standing.Copy()
 		M.update_inv_l_hand()
@@ -103,7 +103,7 @@
 		anim(get_turf(M), M,'icons/mob/mob.dmi',,"phaseout",,M.dir)
 		M.real_name = "[M.mind.abductor.team.name] [M.mind.special_role]"
 		M.name = M.real_name
-		M.ClearOverlays()()
+		M.ClearOverlays()
 		M.regenerate_icons()
 
 /obj/item/clothing/suit/armor/abductor/vest/handle_shield(mob/user, damage, atom/damage_source, mob/attacker, def_zone, attack_text)
@@ -783,7 +783,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 
 /obj/structure/table/abductor/proc/updateOverlays()
 	spawn(1)
-		overlays = list()
+		ClearOverlays()
 
 		var/dir_sum = 0
 

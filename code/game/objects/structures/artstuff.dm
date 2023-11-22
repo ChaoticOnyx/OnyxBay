@@ -226,7 +226,7 @@
 /obj/item/canvas/update_icon()
 	. = ..()
 	if(icon_generated)
-		overlays = canvas_overlay
+		SetOverlays(canvas_overlay)
 		if(blood_overlay)
 			AddOverlays(blood_overlay)
 	if(is_propaganda)

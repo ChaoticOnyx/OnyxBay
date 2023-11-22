@@ -41,7 +41,7 @@
 		I.pixel_y = rand(-16,16)
 		I.SetTransform(rotation = rand(0, 360))
 		parts += I
-	overlays = parts
+	SetOverlays(parts)
 
 /obj/structure/rubble/attack_hand(mob/user)
 	if(!is_rummaging)

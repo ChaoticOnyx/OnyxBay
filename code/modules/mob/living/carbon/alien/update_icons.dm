@@ -1,5 +1,5 @@
 /mob/living/carbon/alien/regenerate_icons()
-	overlays = list()
+	SetOverlays(list())
 	update_icons()
 
 /mob/living/carbon/alien/update_icons()
