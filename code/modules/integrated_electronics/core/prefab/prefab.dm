@@ -20,7 +20,7 @@
 			var/obj/item/device/electronic_assembly/assembly = SScircuit.load_electronic_assembly(location, result)
 			assembly.opened = FALSE
 			if(assembly_icon)
-				assembly.ClearOverlays()()
+				assembly.ClearOverlays()
 				assembly.icon = assembly_icon
 				assembly.icon_state = assembly_icon_state
 			else

@@ -117,7 +117,7 @@
 		if(!islist(preview_override) || length(preview_override) != 2)
 			util_crash_with("Job [title] uses preview_override and it's broken. Someone's fucked things up.")
 			return FALSE
-		H.ClearOverlays()()
+		H.ClearOverlays()
 		H.update_icon = FALSE
 		H.icon = preview_override[2]
 		H.icon_state = preview_override[1]

@@ -69,7 +69,7 @@
 
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(C)
 	C.icon = null
-	C.ClearOverlays()()
+	C.ClearOverlays()
 	C.set_invisibility(101)
 	var/atom/movable/fake_overlay/animation = new /atom/movable/fake_overlay( C.loc )
 	animation.icon_state = "blank"

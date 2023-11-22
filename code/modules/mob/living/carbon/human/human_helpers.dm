@@ -75,7 +75,7 @@
 	equipment_prescription = 0
 	equipment_light_protection = 0
 	equipment_darkness_modifier = 0
-	equipment.ClearOverlays()()
+	equipment.ClearOverlays()
 
 	if(istype(src.head, /obj/item/clothing/head))
 		add_clothing_protection(head)
