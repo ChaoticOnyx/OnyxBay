@@ -278,7 +278,7 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 	// Species-standardized old-school health icon
 	// Probably works faster than the new fancy bodyshape-reflective system
 	if(!hud_damage_image)
-		var/image/temp = image('icons/hud/common/screen_health.dmi',"[icon_name]")
+		var/image/temp = image('icons/hud/common/screen_health.dmi', "[icon_name]")
 		if(species)
 			// Calculate the required colour matrix.
 			var/r = 0.30 * species.health_hud_intensity

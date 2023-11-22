@@ -867,16 +867,18 @@
 		return
 
 	healths.ClearOverlays()
+	healths.icon = 'icons/hud/common/screen_health.dmi'
 
 	if(is_ic_dead())
-		LAZYADD(healths.overlays, image('icons/hud/common/screen_health.dmi', "dead"))
+		healths.icon_state = "dead"
 		return
 
 	var/painkiller_mult = chem_effects[CE_PAINKILLER] / 100
 	if(painkiller_mult > 1)
-		LAZYADD(healths.overlays, image('icons/hud/common/screen_health.dmi', "numb"))
+		healths.icon_state = "numb"
 		return
 
+	healths.icon_state = "blank"
 
 	var/trauma_val = 0
 	var/canfeelpain = can_feel_pain()
@@ -893,21 +895,21 @@
 
 	// Apply a fire overlay if we're burning.
 	if(on_fire)
-		health_images += image('icons/hud/common/screen_health.dmi', "burning")
+		health_images += image(healths.icon, "burning")
 
 	// Show a general pain/crit indicator if needed.
 	if(is_asystole() && !isundead(src))
-		health_images += image('icons/hud/common/screen_health.dmi', "hardcrit")
+		health_images += image(healths.icon, "hardcrit")
 	else if(trauma_val)
 		if(canfeelpain)
 			if(trauma_val > 0.7)
-				health_images += image('icons/hud/common/screen_health.dmi', "softcrit")
+				health_images += image(healths.icon, "softcrit")
 			if(trauma_val >= 1)
-				health_images += image('icons/hud/common/screen_health.dmi', "hardcrit")
+				health_images += image(healths.icon, "hardcrit")
 	else if(no_damage)
-		health_images += image('icons/hud/common/screen_health.dmi', "fullhealth")
+		health_images += image(healths.icon, "fullhealth")
 
-	healths.overlays += health_images
+	healths.AddOverlays(health_images)
 	return
 
 /mob/living/carbon/human/handle_random_events()

@@ -197,7 +197,7 @@
 	var/list/obj/item/tool_images = list()
 	for(var/obj/item/tool in surgery_items)
 		var/image/img = image(icon = tool.icon, icon_state = tool.icon_state)
-		img.overlays = tool.overlays
+		img.CopyOverlays(tool)
 		tool_images[tool] = img
 	selected_tool = show_radial_menu(user, src, tool_images, radius = 42, require_near = TRUE, in_screen = TRUE)
 	to_chat(user, SPAN_NOTICE("You select to use [selected_tool ? selected_tool : "nothing"]"))

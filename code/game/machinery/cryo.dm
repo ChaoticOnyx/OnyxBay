@@ -279,7 +279,7 @@
 	if(occupant)
 		occupant.UpdateDamageIcon()
 		var/image/pickle = image(occupant.icon, occupant.icon_state)
-		pickle.overlays = occupant.overlays
+		pickle.CopyOverlays(occupant)
 		pickle.pixel_z = 18
 		AddOverlays(pickle)
 

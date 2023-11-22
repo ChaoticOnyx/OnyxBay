@@ -200,7 +200,7 @@
 	for(var/name in disguises)
 		var/datum/icon_snapshot/snap = disguises[name]
 		var/image/dummy = image(snap.icon, src, snap.icon_state)
-		dummy.overlays = snap.overlays
+		dummy.CopyOverlays(snap)
 		disguises2[name] = dummy
 
 	var/entry_name

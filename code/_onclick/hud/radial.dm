@@ -326,7 +326,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 */
 /proc/make_item_radial_menu_button(atom/movable/AM, name_prefix = "", name_suffix = "")
 	var/image/radial_button = image(icon = AM.icon, icon_state = AM.icon_state)
-	radial_button.overlays = AM.overlays
+	radial_button.CopyOverlays(AM)
 	radial_button.name = "[name_prefix][AM.name][name_suffix]"
 	return radial_button
 

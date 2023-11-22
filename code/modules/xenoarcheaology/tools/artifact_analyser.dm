@@ -78,7 +78,7 @@
 
 		var/obj/item/paper/P = new(src.loc, out, "[src] report #[report_num]")
 		P.stamped = list(/obj/item/stamp)
-		P.overlays = list("paper_stamped")
+		P.AddOverlays("paper_stamped")
 
 		if(scanned_object && istype(scanned_object, /obj/machinery/artifact))
 			var/obj/machinery/artifact/A = scanned_object

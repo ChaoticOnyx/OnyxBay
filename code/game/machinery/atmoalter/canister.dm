@@ -145,9 +145,9 @@ update_flag
 32 = tank_pressure go boom.
 */
 
-	if (src.destroyed)
-		src.overlays = 0
-		src.icon_state = text("[]-1", src.canister_color)
+	if(destroyed)
+		ClearOverlays()
+		icon_state = text("[]-1", src.canister_color)
 		return
 
 	if(icon_state != "[canister_color]")
@@ -156,7 +156,7 @@ update_flag
 	if(check_change()) //Returns 1 if no change needed to icons.
 		return
 
-	src.overlays = 0
+	ClearOverlays()
 
 	if(update_flag & 1)
 		AddOverlays("can-open")

@@ -14,7 +14,7 @@
 	if(!AI) return
 
 	var/image/I = image(appear.icon, appear.icon_state)
-	I.overlays = appear.overlays
+	I.CopyOverlays(appear)
 	I.underlays = appear.underlays
 	I.color = list(
 			0.30, 0.30, 0.30, 0.0, // Greyscale and reduce the alpha of the icon
