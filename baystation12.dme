@@ -8,7 +8,6 @@
 // END_FILE_DIR
 // BEGIN_PREFERENCES
 #define DEBUG
-// #define TRACY_PROFILER
 // END_PREFERENCES
 // BEGIN_INCLUDE
 #include "code\__spaceman_dmm.dm"
@@ -45,6 +44,7 @@
 #include "code\__defines\deity.dm"
 #include "code\__defines\dna.dm"
 #include "code\__defines\donations_defines.dm"
+#include "code\__defines\emissives.dm"
 #include "code\__defines\explosion.dm"
 #include "code\__defines\feedback.dm"
 #include "code\__defines\filters.dm"
@@ -135,6 +135,7 @@
 #include "code\_helpers\auxtools.dm"
 #include "code\_helpers\builtin_proc_callers.dm"
 #include "code\_helpers\cmp.dm"
+#include "code\_helpers\emissives.dm"
 #include "code\_helpers\files.dm"
 #include "code\_helpers\functional.dm"
 #include "code\_helpers\game.dm"
@@ -278,6 +279,7 @@
 #include "code\datums\datum.dm"
 #include "code\datums\hierarchy.dm"
 #include "code\datums\mind.dm"
+#include "code\datums\mutable_appearance.dm"
 #include "code\datums\position_point_vector.dm"
 #include "code\datums\progressbar.dm"
 #include "code\datums\recipe.dm"
