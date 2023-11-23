@@ -69,7 +69,7 @@
 /obj/item/clothing/accessory/proc/on_removed(mob/user)
 	if(!has_suit)
 		return
-	has_suit.overlays -= get_inv_overlay()
+	has_suit.CutOverlays(get_inv_overlay())
 	has_suit = null
 	if(user)
 		usr.pick_or_drop(src)

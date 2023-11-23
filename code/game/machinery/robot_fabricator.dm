@@ -129,7 +129,7 @@ Please wait until completion...</TT><BR>
 							src.being_built = null
 						src.update_use_power(POWER_USE_IDLE)
 						src.operating = 0
-						src.overlays -= "fab-active"
+						CutOverlays("fab-active")
 		return
 
 	for (var/mob/M in viewers(1, src))

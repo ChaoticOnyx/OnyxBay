@@ -94,7 +94,7 @@
 
 /datum/modifier/status_effect/metroidrecall/on_expire()
 	unregister_signal(holder, SIGNAL_MOB_RESIST)
-	holder.overlays -= bluespace
+	holder.CutOverlays(bluespace)
 	if(interrupted || !ismob(target))
 		to_chat(holder, SPAN_WARNING("The bluespace tug fades away, and you feel that the force has passed you by."))
 		return

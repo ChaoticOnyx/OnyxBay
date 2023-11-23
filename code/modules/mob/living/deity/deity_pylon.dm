@@ -17,5 +17,5 @@
 /mob/living/deity/proc/leave_pylon()
 	if(!pylon)
 		return
-	pylon.overlays -= pylon_image
+	pylon.CutOverlays(pylon_image)
 	pylon = null
