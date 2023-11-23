@@ -168,6 +168,8 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 	var/c_locked=0;        //Will our new channel be locked to public submissions?
 	var/hitstaken = 0      //Death at 3 hits from an item with force>=15
 	var/datum/feed_channel/viewing_channel = null
+	var/mutable_appearance/ea_overlay
+	var/last_state = -1
 	light_outer_range = 0
 	anchored = 1
 	layer = ABOVE_WINDOW_LAYER
@@ -189,15 +191,27 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 	return ..()
 
 /obj/machinery/newscaster/on_update_icon()
-	if(inoperable())
-		icon_state = "newscaster_off"
-		if(stat & BROKEN) //If the thing is smashed, add crack overlay on top of the unpowered sprite.
-			ClearOverlays()
-			AddOverlays(image(icon, "crack3"))
+	if(!ea_overlay)
+		ea_overlay = emissive_appearance(icon, "newscaster_ea")
+
+	var/new_state = !inoperable()
+	if(new_state)
+		new_state += !!news_network.wanted_issue // results in 0 for unoperable, 1 for normal, 2 for wanted
+	if(new_state == last_state)
 		return
+	last_state = new_state
 
 	ClearOverlays() //reset overlays
 
+	if(!new_state)
+		set_light(0)
+		icon_state = "newscaster_off"
+		if(stat & BROKEN) //If the thing is smashed, add crack overlay on top of the unpowered sprite.
+			AddOverlays(image(icon, "crack3"))
+		return
+
+	set_light(0.35, 0.5, 1, 2, "#008000")
+	AddOverlays(ea_overlay)
 	if(news_network.wanted_issue) //wanted icon state, there can be no overlays on it as it's a priority message
 		icon_state = "newscaster_wanted"
 		return

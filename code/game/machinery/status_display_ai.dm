@@ -70,28 +70,28 @@ var/list/ai_status_emotions = list(
 
 	var/emotion = "Neutral"
 	var/image/picture = null
-	var/mutable_appearance/picture_overlight = null
-	var/global/mutable_appearance/static_overlay = null
+	var/static/icon/static_overlay = null
+	var/static/mutable_appearance/ea_overlay = null
 
 /obj/machinery/ai_status_display/Initialize()
 	. = ..()
 	GLOB.ai_status_display_list += src
 
 	if(!picture)
-		picture = image('icons/obj/status_display.dmi', icon_state = "blank")
-
-	if(!picture_overlight)
-		picture_overlight = emissive_appearance('icons/obj/status_display.dmi', "blank")
-		picture_overlight.alpha = 96
+		picture = image(icon, icon_state = "blank")
 
 	if(!static_overlay)
-		static_overlay = emissive_appearance('icons/obj/status_display.dmi', icon_state = "static")
+		var/image/SO = image(icon, "static")
+		SO.alpha = 64
+		static_overlay = SO
+
+	if(!ea_overlay)
+		ea_overlay = emissive_appearance(icon, "outline")
 
 /obj/machinery/ai_status_display/Destroy()
 	GLOB.ai_status_display_list -= src
 	ClearOverlays()
 	QDEL_NULL(picture)
-	QDEL_NULL(picture_overlight)
 	return ..()
 
 /obj/machinery/ai_status_display/attack_ai/(mob/user)
@@ -130,8 +130,7 @@ var/list/ai_status_emotions = list(
 	ClearOverlays()
 
 	picture.icon_state = picture_state
-	picture_overlight.icon_state = picture_state
 
 	AddOverlays(picture)
-	AddOverlays(picture_overlight)
 	AddOverlays(static_overlay)
+	AddOverlays(ea_overlay)

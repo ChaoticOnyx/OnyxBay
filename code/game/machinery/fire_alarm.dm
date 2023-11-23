@@ -103,7 +103,7 @@
 		seclevel_overlay.icon = sl.icon
 		seclevel_overlay.icon_state = sl.overlay_alarm
 		AddOverlays(seclevel_overlay)
-		AddOverlays(emissive_appearance(icon, seclevel_overlay.icon_state, alpha = 200))
+		AddOverlays(emissive_appearance(sl.icon, "[sl.overlay_alarm]_ea", alpha = 200))
 
 /obj/machinery/firealarm/proc/generate_overlays()
 	alarm_overlays = new

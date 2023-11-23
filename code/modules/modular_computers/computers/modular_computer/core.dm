@@ -98,13 +98,19 @@
 			AddOverlays(icon_state_screensaver)
 		set_light(0)
 		return
-	set_light(0.2, 0.1, light_strength)
+	var/light_color = "#ffffff"
 	if(active_program)
-		AddOverlays(emissive_appearance(icon, active_program.program_icon_state ? "active_program.program_icon_state" : "icon_state_menu"))
+		var/screen_state = active_program.program_icon_state ? active_program.program_icon_state : icon_state_menu
+		AddOverlays(screen_state)
+		AddOverlays(emissive_appearance(icon, screen_state))
 		if(active_program.program_key_state)
+			AddOverlays(active_program.program_key_state)
 			AddOverlays(emissive_appearance(icon, active_program.program_key_state))
+		light_color = active_program.program_light_color
 	else
-		AddOverlays(emissive_appearance(icon_state_menu))
+		AddOverlays(icon_state_menu)
+		AddOverlays(emissive_appearance(icon, icon_state_menu))
+	set_light(0.2, 0.1, light_strength, l_color = light_color)
 
 /obj/item/modular_computer/proc/turn_on(mob/user)
 	if(bsod)

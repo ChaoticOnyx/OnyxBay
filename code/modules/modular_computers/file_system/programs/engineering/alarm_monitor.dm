@@ -6,6 +6,7 @@
 	program_icon_state = "alert-green"
 	program_key_state = "atmos_key"
 	program_menu_icon = "alert"
+	program_light_color = "#0099FF"
 	extended_desc = "This program provides visual interface for the alarm system."
 	requires_ntnet = 1
 	network_destination = "alarm monitoring network"

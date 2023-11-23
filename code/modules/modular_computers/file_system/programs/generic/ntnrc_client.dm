@@ -1,7 +1,7 @@
 /datum/computer_file/program/chatclient
 	filename = "ntnrc_client"
 	filedesc = "NTNet Relay Chat Client"
-	program_icon_state = "command"
+	program_icon_state = "discord"
 	program_key_state = "med_key"
 	program_menu_icon = "comment"
 	extended_desc = "This program allows communication over NTNRC network"
