@@ -11,12 +11,13 @@
 	layer = ABOVE_WINDOW_LAYER
 	var/number = 0
 	var/last_tick //used to delay the powercheck
+	var/mutable_appearance/radio_overlay
 
 /obj/item/device/radio/intercom/get_storage_cost()
 	return ITEM_SIZE_NO_CONTAINER
 
 /obj/item/device/radio/intercom/receive()
-	flick("intercom-r", src)
+	flick("intercom-r", radio_overlay)
 
 /obj/item/device/radio/intercom/custom
 	name = "intercom (Custom)"
@@ -127,11 +128,15 @@
 			on = 0
 		else
 			on = A.powered(STATIC_EQUIP) // set "on" to the power status
+	update_icon()
 
-	if(!on)
-		icon_state = "intercom-p"
-	else
-		icon_state = "intercom"
+/obj/item/device/radio/intercom/on_update_icon()
+	if(!radio_overlay)
+		radio_overlay = image(icon, "intercom-over")
+	ClearOverlays()
+	if(on)
+		AddOverlays(radio_overlay)
+		AddOverlays(emissive_appearance(icon, "intercom-over"))
 
 /obj/item/device/radio/intercom/broadcasting
 	broadcasting = 1

@@ -96,7 +96,7 @@
 		const_holder.icon = 'icons/mecha/mech_construction.dmi'
 		const_holder.icon_state = "ripley0"
 		const_holder.set_density(1)
-		const_holder.overlays.len = 0
+		const_holder.ClearOverlays()
 		spawn()
 			qdel(src)
 		return
@@ -1325,7 +1325,7 @@
 		const_holder.icon = 'icons/mecha/mech_construction.dmi'
 		const_holder.icon_state = "honker0"
 		const_holder.set_density(1)
-		const_holder.overlays.len = 0
+		const_holder.ClearOverlays()
 		spawn()
 			qdel(src)
 		return

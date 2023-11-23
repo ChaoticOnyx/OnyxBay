@@ -316,12 +316,12 @@
 			return
 
 	if(update & 2)
-		if(overlays.len)
-			overlays.len = 0
+		if(length(overlays))
+			ClearOverlays()
 		if(!(stat & (BROKEN|MAINT)) && update_state & UPDATE_ALLGOOD)
 			AddOverlays(status_overlays_lock[locked+1])
-			AddOverlays(status_overlays_charging[charging+1])
 			if(operating)
+				AddOverlays(status_overlays_charging[charging+1])
 				AddOverlays(status_overlays_equipment[equipment+1])
 				AddOverlays(status_overlays_lighting[lighting+1])
 				AddOverlays(status_overlays_environ[environ+1])

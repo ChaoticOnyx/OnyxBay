@@ -63,8 +63,7 @@
 		generate_overlays()
 
 	if(!seclevel_overlay)
-		seclevel_overlay = emissive_appearance(icon, "seclevel-null")
-		seclevel_overlay.alpha = 200
+		seclevel_overlay = image(icon, "seclevel-null")
 
 	ClearOverlays()
 
@@ -104,6 +103,7 @@
 		seclevel_overlay.icon = sl.icon
 		seclevel_overlay.icon_state = sl.overlay_alarm
 		AddOverlays(seclevel_overlay)
+		AddOverlays(emissive_appearance(icon, seclevel_overlay.icon_state, alpha = 200))
 
 /obj/machinery/firealarm/proc/generate_overlays()
 	alarm_overlays = new

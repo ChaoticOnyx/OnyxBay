@@ -236,7 +236,9 @@
 /obj/item/clothing/mask/smokable/cigarette/get_mob_overlay(mob/user_mob, slot)
 	var/image/res = ..()
 	if(lit == 1)
-		var/image/ember = emissive_appearance(res.icon, "cigember")
+		var/image/ember = overlay_image(res.icon, "cigember", flags=RESET_COLOR)
+		ember.layer = ABOVE_LIGHTING_LAYER
+		ember.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 		res.AddOverlays(ember)
 	return res
 

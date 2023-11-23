@@ -100,11 +100,11 @@
 		return
 	set_light(0.2, 0.1, light_strength)
 	if(active_program)
-		AddOverlays(active_program.program_icon_state ? active_program.program_icon_state : icon_state_menu)
+		AddOverlays(emissive_appearance(icon, active_program.program_icon_state ? "active_program.program_icon_state" : "icon_state_menu"))
 		if(active_program.program_key_state)
-			AddOverlays(active_program.program_key_state)
+			AddOverlays(emissive_appearance(icon, active_program.program_key_state))
 	else
-		AddOverlays(icon_state_menu)
+		AddOverlays(emissive_appearance(icon_state_menu))
 
 /obj/item/modular_computer/proc/turn_on(mob/user)
 	if(bsod)

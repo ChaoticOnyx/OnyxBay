@@ -65,13 +65,13 @@
 				my_mob.client.screen -= O
 //			O.handle_icon_updates = 0
 		showing = 0
-		overlays.len = 0
+		ClearOverlays()
 		AddOverlays(closed_state)
 	else if(forced_state != 1) // We're opening it, show the icons.
 		open_ability_master()
 		update_abilities(1)
 		showing = 1
-		overlays.len = 0
+		ClearOverlays()
 		AddOverlays(open_state)
 	update_icon()
 
@@ -424,7 +424,7 @@
 	icon_state = "changeling_spell_base"
 	open_state = "ling_open"
 	closed_state = "ling_closed"
-	overlays.len = 0
+	ClearOverlays()
 	AddOverlays(open_state)
 
 /obj/screen/ability/changeling_power
@@ -495,7 +495,7 @@
 	icon_state = "vampire_spell_base"
 	open_state = "vamp_open"
 	closed_state = "vamp_closed"
-	overlays.len = 0
+	ClearOverlays()
 	AddOverlays(open_state)
 
 /obj/screen/ability/vampire_power
