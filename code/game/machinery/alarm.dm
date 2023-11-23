@@ -340,6 +340,9 @@
 	alarm_overlays[1] = image(icon, "alarm_over0")
 	alarm_overlays[2] = image(icon, "alarm_over1")
 	alarm_overlays[3] = image(icon, "alarm_over2")
+	alarm_overlays[1].alpha = 200
+	alarm_overlays[2].alpha = 200
+	alarm_overlays[3].alpha = 200
 #define OVERLIGHT_IMAGE(a, b) a=emissive_appearance(icon, b, alpha = 128)
 	OVERLIGHT_IMAGE(alarm_overlays[4], "alarm_ea")
 #undef OVERLIGHT_IMAGE

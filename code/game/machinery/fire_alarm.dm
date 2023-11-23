@@ -63,7 +63,8 @@
 		generate_overlays()
 
 	if(!seclevel_overlay)
-		seclevel_overlay = image(icon, "seclevel-null")
+		var/image/SO = image(icon, "seclevel-null")
+		SO.alpha = 200
 
 	ClearOverlays()
 
@@ -110,6 +111,7 @@
 	alarm_overlays.len = 4
 	alarm_overlays[1] = image(icon, "fire0")
 	alarm_overlays[2] = image(icon, "fire1")
+	alarm_overlays[1].alpha = 200
 #define OVERLIGHT_IMAGE(a, b) a=emissive_appearance(icon, b, alpha = 128);
 	OVERLIGHT_IMAGE(alarm_overlays[3], "fire_ea0")
 	OVERLIGHT_IMAGE(alarm_overlays[4], "fire_ea1")

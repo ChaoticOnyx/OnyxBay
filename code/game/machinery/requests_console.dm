@@ -55,8 +55,12 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	var/announce_title
 	var/announce_do_newscast = TRUE
 	var/announce_sender
+	var/static/mutable_appearance/ea_overlay
 
 /obj/machinery/requests_console/on_update_icon()
+	if(!ea_overlay)
+		ea_overlay = emissive_appearance(icon, "req_comp_ea")
+
 	if(stat & NOPOWER)
 		if(icon_state != "req_comp_off")
 			icon_state = "req_comp_off"
@@ -66,7 +70,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 		if(icon_state == "req_comp_off")
 			icon_state = "req_comp[newmessagepriority]"
 			set_light(0.35, 0.1, 1, 2, COLOR_LIME)
-			AddOverlays(emissive_appearance(icon, "req_comp_ea"))
+			AddOverlays(ea_overlay)
 
 /obj/machinery/requests_console/Initialize()
 	. = ..()
