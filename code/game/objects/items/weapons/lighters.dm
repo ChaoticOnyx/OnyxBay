@@ -161,6 +161,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 		icon_state = "[base_icon ? base_icon : initial(icon_state)]on"
 		item_state = "[initial(item_state)]on"
 		AddOverlays(image(icon, src, flame_overlay))
+		AddOverlays(emissive_appearance(icon, "[flame_overlay]-ea"))
 	else
 		icon_state = "[base_icon ? base_icon : initial(icon_state)]"
 		item_state = initial(item_state)

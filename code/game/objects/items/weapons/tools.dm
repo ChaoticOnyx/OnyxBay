@@ -473,13 +473,16 @@
 
 /obj/item/weldingtool/on_update_icon()
 	..()
-
-	icon_state = welding ? "[initial(icon_state)]1" : "[initial(icon_state)]"
+	ClearOverlays()
 	item_state = welding ? "welder1" : "welder"
+
+	if(welding)
+		AddOverlays(image(icon, "[initial(icon_state)]-over"))
+		AddOverlays(emissive_appearance(icon, "[initial(icon_state)]-over"))
 
 	underlays.Cut()
 	if(tank)
-		var/image/tank_image = image(tank.icon, icon_state = tank.icon_state)
+		var/image/tank_image = image(tank.icon, tank.icon_state)
 		tank_image.pixel_z = 0
 		underlays += tank_image
 
