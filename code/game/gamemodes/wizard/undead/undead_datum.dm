@@ -14,19 +14,10 @@
 	my_mob = M
 	master = necromancer
 	set_next_think(world.time + 5 SECONDS)
-	///M.verbs += /datum/wizard/undead/proc/undead_evoluton
 	M.add_spell(new /datum/spell/undead/undead_evolution)
 
-	//M.add_spell(new /datum/spell/undead/undead_evolution/damage)
-
-	//M.add_spell(new /datum/spell/undead/undead_evolution/hunter)
-
-	//M.add_spell(new /datum/spell/undead/undead_evolution/protector)
 	undead_powerinstances += new /datum/power/undead/armblade
 	undead_powerinstances += new /datum/power/undead/heal
-	undead_powerinstances += new /datum/power/undead/damage
-	undead_powerinstances += new /datum/power/undead/hunter
-	undead_powerinstances += new /datum/power/undead/protector
 
 /datum/wizard/undead/think()
 	growth += 1

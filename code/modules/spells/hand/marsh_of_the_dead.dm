@@ -3,7 +3,6 @@
 #define MARSH_MAX_UNBUCKLE_TIME 45 SECONDS
 #define MARSH_DAMAGE_PER_UPGRADE 10
 
-
 /datum/spell/hand/marsh_of_the_dead
 	name = "Marsh of the dead"
 	desc = "THINK MORON THINK"//// TODO THINK ABOUT DESCRIPTION YEEE
@@ -17,6 +16,7 @@
 	icon_state = "wiz_marsh"
 	level_max = list(SP_TOTAL = 3, SP_SPEED = 1, SP_POWER = 2)
 	var/damage = 0
+	override_base = "const"
 
 /datum/spell/hand/marsh_of_the_dead/cast_hand(atom/a, mob/user)
 	for(var/turf/simulated/T in view(1,a))

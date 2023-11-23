@@ -6,20 +6,19 @@
 	can_make_contracts = TRUE
 
 	spells = list(
-		SPELL_DATA(/datum/spell/targeted/raiseundead,                1),
-		SPELL_DATA(/datum/spell/targeted/heal_target,                 1),
+		SPELL_DATA(/datum/spell/targeted/raiseundead,                 1),
+		SPELL_DATA(/datum/spell/targeted/raiseundead/lichify,         3),
 		SPELL_DATA(/datum/spell/hand/marsh_of_the_dead,               1),
 		SPELL_DATA(/datum/spell/immaterial_form,                      1),
-		SPELL_DATA(/datum/spell/targeted/raiseundead/lichify,                   1),
 		SPELL_DATA(/datum/spell/targeted/noremorse,                   1),
-		SPELL_DATA(/datum/spell/noclothes,                            3),
-		SPELL_DATA(/datum/spell/undead/undead_evolution,              1)
+		SPELL_DATA(/datum/spell/aoe_turf/conjure/summon/skull,        1),
+		SPELL_DATA(/datum/spell/noclothes,                            3)
 	)
 
 	artifacts = list(
-		ARTIFACT_DATA(/obj/item/gun/whip_of_torment,       1),
-		ARTIFACT_DATA(/obj/item/staff/plague_bell,                 1),
-		ARTIFACT_DATA(/obj/item/device/ghost_gramophone,           1)
+		ARTIFACT_DATA(/obj/item/gun/whip_of_torment,                  1),
+		ARTIFACT_DATA(/obj/item/staff/plague_bell,                    1),
+		ARTIFACT_DATA(/obj/item/device/ghost_gramophone,              0)
 	)
 
 /datum/wizard_class/lich

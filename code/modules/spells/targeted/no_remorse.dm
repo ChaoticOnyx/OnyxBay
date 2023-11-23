@@ -21,6 +21,8 @@
 
 	cast_sound = 'sound/effects/squelch2.ogg'
 
+	override_base = "const"
+
 /datum/spell/targeted/noremorse/cast(list/targets, mob/user)
 	var/mob/living/victim = targets[1]
 

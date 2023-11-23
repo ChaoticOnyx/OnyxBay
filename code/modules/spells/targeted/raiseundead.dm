@@ -20,6 +20,8 @@
 
 	icon_state = "wiz_raiseundead"
 
+	override_base = "const"
+
 /datum/spell/targeted/raiseundead/choose_targets(mob/user = usr)
 	var/list/possible_targets = list()
 
