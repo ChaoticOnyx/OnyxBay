@@ -138,15 +138,15 @@
 	preview_icon = icon('icons/effects/128x48.dmi', bgstate)
 	preview_icon.Scale(48+32, 16+32)
 
-	var/icon/stamp = getFlatIcon(mannequin, NORTH, always_use_defdir = TRUE)
+	var/icon/stamp = getFlatIconBay12(mannequin, NORTH, always_use_defdir = TRUE)
 	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
 	preview_icon.Blend(stamp, ICON_OVERLAY, 25, 17)
 
-	stamp = getFlatIcon(mannequin, WEST, always_use_defdir = TRUE)
+	stamp = getFlatIconBay12(mannequin, WEST, always_use_defdir = TRUE)
 	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
 	preview_icon.Blend(stamp, ICON_OVERLAY, 1, 9)
 
-	stamp = getFlatIcon(mannequin, SOUTH, always_use_defdir = TRUE)
+	stamp = getFlatIconBay12(mannequin, SOUTH, always_use_defdir = TRUE)
 	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
 	preview_icon.Blend(stamp, ICON_OVERLAY, 49, 1)
 

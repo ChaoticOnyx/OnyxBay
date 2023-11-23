@@ -449,6 +449,157 @@
 	if(gray <= tone_gray) return BlendRGB("#000000", tone, gray / (tone_gray || 1))
 	else return BlendRGB(tone, "#ffffff", (gray - tone_gray) / ((255 - tone_gray) || 1))
 
+// Currently used for preferences. Try not to use anywhere else till we figure out what to do with all this crap.
+/proc/getFlatIconBay12(image/A, defdir=2, deficon=null, defstate="", defblend=BLEND_DEFAULT, always_use_defdir = 0)
+	RETURN_TYPE(/icon)
+	// We start with a blank canvas, otherwise some icon procs crash silently
+	var/icon/flat = icon('icons/effects/effects.dmi', "icon_state"="nothing") // Final flattened icon
+	if(!A)
+		return flat
+	if(A.alpha <= 0)
+		return flat
+	var/noIcon = FALSE
+
+	var/curicon
+	if(A.icon)
+		curicon = A.icon
+	else
+		curicon = deficon
+
+	if(!curicon)
+		noIcon = TRUE // Do not render this object.
+
+	var/curstate
+	if(A.icon_state)
+		curstate = A.icon_state
+	else
+		curstate = defstate
+
+	if(!noIcon && !(curstate in icon_states(curicon)))
+		if("" in icon_states(curicon))
+			curstate = ""
+		else
+			noIcon = TRUE // Do not render this object.
+
+	var/curdir
+	if(A.dir != 2 && !always_use_defdir)
+		curdir = A.dir
+	else
+		curdir = defdir
+
+	var/curblend
+	if(A.blend_mode == BLEND_DEFAULT)
+		curblend = defblend
+	else
+		curblend = A.blend_mode
+
+	// Layers will be a sorted list of icons/overlays, based on the order in which they are displayed
+	var/list/layers = list()
+	var/image/copy
+	// Add the atom's icon itself, without pixel_x/y offsets.
+	if(!noIcon)
+		copy = image(icon=curicon, icon_state=curstate, layer=A.layer, dir=curdir)
+		copy.color = A.color
+		copy.alpha = A.alpha
+		copy.blend_mode = curblend
+		layers[copy] = A.layer
+
+	// Loop through the underlays, then overlays, sorting them into the layers list
+	var/list/process = A.underlays // Current list being processed
+	var/pSet=0 // Which list is being processed: 0 = underlays, 1 = overlays
+	var/curIndex=1 // index of 'current' in list being processed
+	var/current // Current overlay being sorted
+	var/currentLayer // Calculated layer that overlay appears on (special case for FLOAT_LAYER)
+	var/compare // The overlay 'add' is being compared against
+	var/cmpIndex // The index in the layers list of 'compare'
+	while(TRUE)
+		if(curIndex<=length(process))
+			current = process[curIndex]
+			if(current)
+				currentLayer = current:layer
+				if(currentLayer<0) // Special case for FLY_LAYER
+					if(currentLayer <= -1000) return flat
+					if(pSet == 0) // Underlay
+						currentLayer = A.layer+currentLayer/1000
+					else // Overlay
+						currentLayer = A.layer+(1000+currentLayer)/1000
+
+				// Sort add into layers list
+				for(cmpIndex=1,cmpIndex<=length(layers),cmpIndex++)
+					compare = layers[cmpIndex]
+					if(currentLayer < layers[compare]) // Associated value is the calculated layer
+						layers.Insert(cmpIndex,current)
+						layers[current] = currentLayer
+						break
+				if(cmpIndex>length(layers)) // Reached end of list without inserting
+					layers[current]=currentLayer // Place at end
+
+			curIndex++
+		else if(pSet == 0) // Switch to overlays
+			curIndex = 1
+			pSet = 1
+			process = A.overlays
+		else // All done
+			break
+
+	var/icon/add // Icon of overlay being added
+
+		// Current dimensions of flattened icon
+	var/flatX1=1
+	var/flatX2=flat.Width()
+	var/flatY1=1
+	var/flatY2=flat.Height()
+		// Dimensions of overlay being added
+	var/addX1
+	var/addX2
+	var/addY1
+	var/addY2
+
+	for(var/I in layers)
+
+		if(I:plane == EMISSIVE_PLANE) //Just replace this with whatever it is TG is doing these days sometime. Getflaticon breaks emissives
+			continue
+
+		if(I:alpha == 0)
+			continue
+
+		if(I == copy) // 'I' is an /image based on the object being flattened.
+			curblend = BLEND_OVERLAY
+			add = icon(I:icon, I:icon_state, I:dir)
+		else // 'I' is an appearance object.
+			if(istype(A,/obj/machinery/atmospherics) && (I in A.underlays))
+				var/image/Im = I
+				add = getFlatIconBay12(new/image(I), Im.dir, curicon, curstate, curblend, 1)
+			else
+				add = getFlatIconBay12(new/image(I), curdir, curicon, curstate, curblend, always_use_defdir)
+
+		// Find the new dimensions of the flat icon to fit the added overlay
+		addX1 = min(flatX1, I:pixel_x+1)
+		addX2 = max(flatX2, I:pixel_x+add.Width())
+		addY1 = min(flatY1, I:pixel_y+1)
+		addY2 = max(flatY2, I:pixel_y+add.Height())
+
+		if(addX1!=flatX1 || addX2!=flatX2 || addY1!=flatY1 || addY2!=flatY2)
+			// Resize the flattened icon so the new icon fits
+			flat.Crop(addX1-flatX1+1, addY1-flatY1+1, addX2-flatX1+1, addY2-flatY1+1)
+			flatX1=addX1;flatX2=addX2
+			flatY1=addY1;flatY2=addY2
+		var/iconmode
+		if(I in A.overlays)
+			iconmode = ICON_OVERLAY
+		else if(I in A.underlays)
+			iconmode = ICON_UNDERLAY
+		else
+			iconmode = blendMode2iconMode(curblend)
+		// Blend the overlay into the flattened icon
+		flat.Blend(add, iconmode, I:pixel_x + 2 - flatX1, I:pixel_y + 2 - flatY1)
+
+	if(A.color)
+		flat.Blend(A.color, ICON_MULTIPLY)
+	if(A.alpha < 255)
+		flat.Blend(rgb(255, 255, 255, A.alpha), ICON_MULTIPLY)
+
+	return icon(flat, "", SOUTH)
 
 /*
 	Get flat icon by DarkCampainger. As it says on the tin, will return an icon with all the overlays
