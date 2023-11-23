@@ -79,13 +79,13 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 
 	name = "[department] Requests Console"
 	allConsoles += src
-	if (departmentType & RC_ASSIST)
+	if(departmentType & RC_ASSIST)
 		req_console_assistance |= department
-	if (departmentType & RC_SUPPLY)
+	if(departmentType & RC_SUPPLY)
 		req_console_supplies |= department
-	if (departmentType & RC_INFO)
+	if(departmentType & RC_INFO)
 		req_console_information |= department
-	icon_state == "" // So icons update correctly
+	icon_state = "" // So icons update correctly
 	update_icon()
 
 /obj/machinery/requests_console/Destroy()

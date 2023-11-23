@@ -65,6 +65,7 @@
 	if(!seclevel_overlay)
 		var/image/SO = image(icon, "seclevel-null")
 		SO.alpha = 200
+		seclevel_overlay = SO
 
 	ClearOverlays()
 

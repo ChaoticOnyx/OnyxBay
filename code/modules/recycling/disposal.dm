@@ -368,12 +368,15 @@
 	// 	check for items in disposal - occupied light
 	if(contents.len > 0)
 		AddOverlays(image('icons/obj/pipes/disposal.dmi', "dispover-full"))
+		AddOverlays(emissive_appearance('icons/obj/pipes/disposal.dmi', "dispover-full-ea"))
 
 	// charging and ready light
 	if(mode == 1)
 		AddOverlays(image('icons/obj/pipes/disposal.dmi', "dispover-charge"))
+		AddOverlays(emissive_appearance('icons/obj/pipes/disposal.dmi', "dispover-charge-ea"))
 	else if(mode == 2)
 		AddOverlays(image('icons/obj/pipes/disposal.dmi', "dispover-ready"))
+		AddOverlays(emissive_appearance('icons/obj/pipes/disposal.dmi', "dispover-ready-ea"))
 
 // timed process
 // charge the gas reservoir and perform flush if ready
