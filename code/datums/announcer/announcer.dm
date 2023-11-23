@@ -73,7 +73,7 @@
 	)
 
 /datum/announcer/vgstation
-	required_tier = PATREON_CARGO
+	required_tier = PATREON_NONE
 
 	sounds = list(
 		/datum/announce/command_report 			= 'sound/announcer/vgstation/command_report.ogg',
@@ -86,7 +86,7 @@
 	)
 
 /datum/announcer/baystation12
-	required_tier = PATREON_CARGO
+	required_tier = PATREON_NONE
 
 	sounds = list(
 		/datum/announce/command_report 				= 'sound/announcer/baystation12/command_report.ogg',
@@ -106,7 +106,7 @@
 
 
 /datum/announcer/baystation12_torch
-	required_tier = PATREON_CARGO
+	required_tier = PATREON_NONE
 
 	sounds = list(
 		/datum/announce/command_report 			= 'sound/announcer/baystation12-torch/command_report.ogg',
@@ -120,7 +120,7 @@
 	)
 
 /datum/announcer/tgstation
-	required_tier = PATREON_CARGO
+	required_tier = PATREON_NONE
 
 	sounds = list(
 		/datum/announce/command_report 				= 'sound/announcer/tgstation/command_report.ogg',

@@ -28,6 +28,13 @@
 	holster_action = new /datum/action/item_action/holster
 	holster_action.target = src
 
+/obj/item/clothing/accessory/holster/Destroy()
+	if(has_suit)
+		has_suit.verbs -= /obj/item/clothing/accessory/holster/verb/holster_verb
+	QDEL_NULL(holstered)
+	QDEL_NULL(holster_action)
+	return ..()
+
 /obj/item/clothing/accessory/holster/equipped(mob/user)
 	. = ..()
 	holster_action.Grant(user)

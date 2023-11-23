@@ -42,14 +42,13 @@
 		'sound/effects/machinery/medical/beep6.ogg'
 	)
 
-/obj/machinery/atmospherics/unary/cryo_cell/New()
-	..()
+/obj/machinery/atmospherics/unary/cryo_cell/Initialize()
+	. = ..()
 	icon = 'icons/obj/cryogenics_split.dmi'
 	update_icon()
-	initialize_directions = dir
 
 	RefreshParts()
-	update_icon()
+	atmos_init()
 
 /obj/machinery/atmospherics/unary/cryo_cell/Destroy()
 	var/turf/T = loc

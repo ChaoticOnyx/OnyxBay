@@ -456,8 +456,8 @@
 	light_overlay = FALSE
 	on = 1 //Bio-luminesence has one setting, on.
 
-/obj/item/device/flashlight/metroid/New()
-	..()
+/obj/item/device/flashlight/metroid/Initialize()
+	. = ..()
 	set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, 2, brightness_color)
 
 /obj/item/device/flashlight/metroid/update_icon()

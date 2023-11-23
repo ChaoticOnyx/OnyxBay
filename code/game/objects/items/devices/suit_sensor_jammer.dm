@@ -61,7 +61,7 @@
 /obj/item/device/suit_sensor_jammer/update_icon()
 	overlays.Cut()
 	if(bcell)
-		var/percent = bcell.percent()
+		var/percent = CELL_PERCENT(bcell)
 		switch(percent)
 			if(0 to 25)
 				overlays += "forth_quarter"
@@ -104,7 +104,7 @@
 		var/list/message = list()
 		message += "This device appears to be [active ? "" : "in"]active and "
 		if(bcell)
-			message += "displays a charge level of [bcell.percent()]%."
+			message += "displays a charge level of [CELL_PERCENT(bcell)]%."
 		else
 			message += "is lacking a cell."
 		. += "\n[jointext(message, " ")]"

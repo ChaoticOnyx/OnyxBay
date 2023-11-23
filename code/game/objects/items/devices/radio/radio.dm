@@ -1,6 +1,7 @@
 /obj/item/device/radio
 	icon = 'icons/obj/radio.dmi'
 	name = "shortwave radio"
+	desc = "A radio. Transmits whatever you say in the shortwave bands."
 	suffix = "\[3\]"
 	icon_state = "walkietalkie"
 	item_state = "walkietalkie"
@@ -766,12 +767,13 @@
 	subspace_transmission = 1
 
 /obj/item/device/radio/phone
+	name = "phone"
+	desc = "Unfortunately, it's not affiliated with bananas."
 	broadcasting = 0
 	icon = 'icons/obj/items.dmi'
 	icon_state = "red_phone"
 	randpixel = 0
 	listening = 1
-	name = "phone"
 
 /obj/item/device/radio/phone/medbay
 	frequency = MED_I_FREQ

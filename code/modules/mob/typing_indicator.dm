@@ -43,7 +43,14 @@
 	set name = ".add_speech_bubble"
 	set hidden = TRUE
 
-	ASSERT(client && src == usr)
+	_add_speech_bubble(is_sayinput)
+
+/mob/proc/_add_speech_bubble(is_sayinput)
+	return
+
+/mob/living/_add_speech_bubble(is_sayinput)
+	if(!client)
+		return
 
 	thinking_silent = should_show_typing_indicator()
 
@@ -52,7 +59,7 @@
 		start_typing()
 		return
 
-	var/text = winget(usr, ":input", "text")
+	var/text = winget(src, ":input", "text")
 	if(findtext(text, "Say ", 1, 5))
 		thinking_IC = TRUE
 		start_typing()
@@ -62,19 +69,24 @@
 	set name = ".remove_speech_bubble"
 	set hidden = TRUE
 
-	ASSERT(client && src == usr)
+	_remove_speech_bubble()
 
-	var/visible = winget(usr, "saywindow", "is-visible")
-	if(cmptext(visible, "true"))
-		stop_typing()
-		return
+/mob/proc/_remove_speech_bubble()
+	return
 
-	var/focus = winget(usr, ":input", "focus")
-	if(cmptext(focus, "false"))
-		var/text = winget(usr, ":input", "text")
-		if(findtext(text, "Say ", 1, 5) && length(text) > 5)
+/mob/living/_remove_speech_bubble()
+	if(client)
+		var/visible = winget(src, "saywindow", "is-visible")
+		if(cmptext(visible, "true"))
 			stop_typing()
 			return
+
+		var/focus = winget(src, ":input", "focus")
+		if(cmptext(focus, "false"))
+			var/text = winget(src, ":input", "text")
+			if(findtext(text, "Say ", 1, 5) && length(text) > 5)
+				stop_typing()
+				return
 
 	remove_all_indicators()
 

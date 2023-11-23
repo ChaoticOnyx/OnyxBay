@@ -30,7 +30,8 @@ GLOBAL_LIST_EMPTY(world_awaygateways)
 	for(var/obj/machinery/gateway/G in linked)
 		G.toggleoff()
 		G.linked.Remove(src)
-	. = ..()
+	linked.Cut()
+	return ..()
 
 /obj/machinery/gateway/update_icon()
 	if(main_part)
@@ -98,6 +99,8 @@ GLOBAL_LIST_EMPTY(world_awaygateways)
 
 /obj/machinery/gateway/centerstation/Destroy()
 	GLOB.station_gateways.Remove(src)
+	awaygate = null
+	QDEL_NULL(gateway_menu)
 	. = ..()
 
 /obj/machinery/gateway/centerstation/Process()

@@ -877,6 +877,7 @@ About the new airlock wires panel:
 
 		electronics = assembly.electronics
 		electronics.forceMove(src)
+		assembly.electronics = null
 
 		//update the door's access to match the electronics'
 		secured_wires = electronics.secure

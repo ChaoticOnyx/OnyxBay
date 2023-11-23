@@ -13,6 +13,8 @@
 		amputation_point = limb.amputation_point
 		joint = limb.joint
 		parent_organ = limb.parent_organ
+		if(limb.limb_flags & ORGAN_FLAG_GENDERED_ICON)
+			limb_flags |= ORGAN_FLAG_GENDERED_ICON
 	..(holder)
 	if(istype(limb))
 		max_damage = limb.max_damage

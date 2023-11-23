@@ -3,24 +3,25 @@
 	name_language = TRADER_DEFAULT_NAME
 	origin = "Spacesuit Shop"
 	possible_origins = list("Firestarters", "Everyday Life in Vacuum", "Void Tourism", "Lost In Space", "Space Safety Store", "Star Runners")
-	speech = list("hail_generic"    = "Hello, sir or ma'am! Welcome to ORIGIN, I hope you find what you are looking for.",
-				"hail_deny"         = "Go bother someone else",
 
-				"trade_complete"    = "Thanks for buying our sturdy suits from ORIGIN!",
-				"trade_blacklist"   = "No-no-no. No deal",
-				"trade_no_goods"    = "I'm sorry, but we deal in cash only.",
-				"trade_not_enough"  = "These are goods of highest quality and they cost more than that, trust me.",
-				"how_much"          = "Our EVA suits are hard to find elsewhere, so I'd sell that to you for VALUE.",
-				"compliment_deny"   = "I think you need to think your jokes twice.",
-				"compliment_accept" = "Thank you for your appreciation.",
-				"insult_good"       = "Woah, man, easy, it's not good for business.",
-				"insult_bad"        = "Go breath some fresh vacuum, maybe that will put your mind in place, retard.",
+	speech = list(
+		TRADER_HAIL_GENERIC       = "Hello, sir or ma'am! Welcome to ORIGIN, I hope you find what you are looking for.",
+		TRADER_HAIL_DENY          = "Go bother someone else",
 
-				"bribe_refusal"     = "I have other customers to trade with.",
-				"bribe_accept"      = "Yeah, maybe I'll stay for TIME more minutes."
-				)
+		TRADER_TRADE_COMPLETE     = "Thanks for buying our sturdy suits from ORIGIN!",
+		TRADER_NO_BLACKLISTED     = "No-no-no. No deal",
+		TRADER_NO_GOODS           = "I'm sorry, but we deal in cash only.",
+		TRADER_NOT_ENOUGH         = "These are goods of highest quality and they cost more than that, trust me.",
+		TRADER_HOW_MUCH           = "Our EVA suits are hard to find elsewhere, so I'd sell that to you for VALUE.",
 
+		TRADER_COMPLEMENT_FAILURE = "I think you need to think your jokes twice.",
+		TRADER_COMPLEMENT_SUCCESS = "Thank you for your appreciation.",
+		TRADER_INSULT_GOOD        = "Woah, man, easy, it's not good for business.",
+		TRADER_INSULT_BAD         = "Go breath some fresh vacuum, maybe that will put your mind in place, retard.",
 
+		TRADER_BRIBE_FAILURE      = "I have other customers to trade with.",
+		TRADER_BRIBE_SUCCESS      = "Yeah, maybe I'll stay for TIME more minutes."
+	)
 
 	possible_trading_items = list(
 								/obj/item/tank/oxygen											= TRADER_THIS_TYPE,

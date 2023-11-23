@@ -894,10 +894,6 @@ Note that amputating the affected organ does in fact remove the infection from t
 			stump.artery_name = "mangled [artery_name]"
 			stump.arterial_bleed_severity = arterial_bleed_severity
 			stump.adjust_pain(max_damage)
-			if(limb_flags & ORGAN_FLAG_GENDERED_ICON)
-				stump.limb_flags |= ORGAN_FLAG_GENDERED_ICON
-			if(BP_IS_ROBOTIC(src))
-				stump.robotize()
 			stump.wounds |= W
 			victim.organs |= stump
 			stump.movement_tally = stumped_tally * damage_multiplier

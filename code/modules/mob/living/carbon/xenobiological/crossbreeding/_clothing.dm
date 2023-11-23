@@ -31,15 +31,21 @@
 	actions += new /datum/action/item_action/prism_glasses/change_prism_colour(src)
 	actions += new /datum/action/item_action/prism_glasses/place_light_prism(src)
 
+/obj/item/clothing/glasses/prism_glasses/Destroy()
+	QDEL_NULL_LIST(actions)
+	return ..()
+
 /obj/item/clothing/glasses/prism_glasses/equipped(mob/user)
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
-		if(H.get_equipped_item(slot_glasses)==src)
+		if(H.get_equipped_item(slot_glasses) == src)
 			for(var/datum/action/action in actions)
 				action.Grant(H)
 
 /obj/item/clothing/glasses/prism_glasses/dropped()
 	for(var/datum/action/action in actions)
+		if(!action.owner)
+			continue
 		action.Remove(action.owner)
 
 /obj/structure/light_prism
@@ -68,7 +74,7 @@
 
 	if(ishuman(owner))
 		var/mob/living/carbon/human/H = owner
-		if(!istype(H.get_equipped_item(slot_glasses),/obj/item/clothing/glasses/prism_glasses))
+		if(!istype(H.get_equipped_item(slot_glasses), /obj/item/clothing/glasses/prism_glasses))
 			return TRUE
 
 	return FALSE

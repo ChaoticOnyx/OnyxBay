@@ -28,7 +28,7 @@
 
 		if(!home)
 			var/list/consoles = list()
-			for(var/obj/machinery/abductor/console/C in GLOB.machines)
+			for(var/obj/machinery/abductor/console/C in SSmachines.machinery)
 				consoles += C
 			console = pick(consoles)
 			home = console.pad

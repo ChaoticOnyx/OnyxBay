@@ -407,14 +407,15 @@
 		update_icon()
 
 /obj/structure/bed/roller/proc/manual_unbuckle(mob/user)
-	if(isanimal(user))
-		return 0
-	if(!user.Adjacent(buckled_bodybag) || user.incapacitated(INCAPACITATION_ALL) || istype(user, /mob/living/silicon/pai))
-		return 0
-	if(buckled_bodybag)
-		unbuckle()
-		add_fingerprint(user)
-		return 1
+	if(isanimal(user) || istype(user, /mob/living/silicon/pai))
+		return FALSE
+	if(user.incapacitated(INCAPACITATION_ALL))
+		return FALSE
+	if(buckled_bodybag && !user.Adjacent(buckled_bodybag))
+		return FALSE
+	unbuckle()
+	add_fingerprint(user)
+	return TRUE
 
 /obj/structure/bed/roller/buckle_mob(mob/living/M)
 	if(buckled_bodybag)

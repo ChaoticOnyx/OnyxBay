@@ -151,7 +151,7 @@
 	. = ..()
 	if(bcell)
 		. += "\nIt has \the [bcell] installed."
-		. += "\nThe charge meter reads [round(bcell.percent(), 0.1)]%"
+		. += "\nThe charge meter reads [round(CELL_PERCENT(bcell), 0.1)]%"
 	else
 		. += "\nIt has no power cell installed!"
 

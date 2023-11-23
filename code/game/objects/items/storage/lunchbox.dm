@@ -1,6 +1,7 @@
 /obj/item/storage/lunchbox
 	max_storage_space = 8 //slightly smaller than a toolbox
 	name = "rainbow lunchbox"
+	icon = 'icons/obj/storage/lunch.dmi'
 	icon_state = "lunchbox_rainbow"
 	item_state = "toolbox_pink"
 	desc = "A little lunchbox. This one is the colors of the rainbow!"

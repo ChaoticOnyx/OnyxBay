@@ -186,7 +186,7 @@
 
 	sleep(20)
 
-	for(var/obj/machinery/mass_driver/M in GLOB.machines)
+	for(var/obj/machinery/mass_driver/M in SSmachines.machinery)
 		if(M.id == src.id)
 			M.drive()
 

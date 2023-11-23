@@ -53,6 +53,12 @@
 			ammo_magazine = new magazine_type(src)
 	update_icon()
 
+/obj/item/gun/projectile/Destroy()
+	QDEL_NULL_LIST(ammo_magazine)
+	QDEL_NULL_LIST(loaded)
+	QDEL_NULL(chambered)
+	return ..()
+
 /obj/item/gun/projectile/consume_next_projectile()
 	if(!is_jammed && prob(jam_chance))
 		src.visible_message("<span class='danger'>\The [src] jams!</span>")

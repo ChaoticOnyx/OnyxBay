@@ -21,7 +21,7 @@
 		return TRUE
 
 	if(winning_option == "Random")
-		SSstoryteller.character = pick(choices - "Random")
+		SSstoryteller.character = GLOB.all_storytellers[pick(default_choices - "Random")]
 		log_and_message_admins("Storyteller's character was changed to [SSstoryteller.character.name].")
 		return
 	SSstoryteller.character = GLOB.all_storytellers[winning_option]

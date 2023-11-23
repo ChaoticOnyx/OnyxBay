@@ -25,11 +25,11 @@
 	..()
 
 /obj/machinery/computer/camera_advanced/abductor/Initialize()
-	..()
+	. = ..()
 	var/datum/spawnpoint/arrivals/spawnpoint = new()
 	var/turf/T = pick(spawnpoint.turfs)
 	vision = new eye_type(T)
-	initial_coordinates=list(T.x,T.y,T.z)
+	initial_coordinates = list(T.x, T.y, T.z)
 
 /obj/machinery/computer/camera_advanced/abductor/attack_hand(obj/item/I, user)
 	if(isabductor(I))

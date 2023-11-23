@@ -143,6 +143,10 @@
 			stored_ammo += new ammo_type(src)
 	update_icon()
 
+/obj/item/ammo_magazine/Destroy()
+	QDEL_NULL_LIST(stored_ammo)
+	return ..()
+
 /obj/item/ammo_magazine/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/ammo_casing) && max_ammo)
 		var/obj/item/ammo_casing/C = W

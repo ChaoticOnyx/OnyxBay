@@ -158,7 +158,7 @@
 /obj/item/device/bot_kit
 	name = "Remote-Bot Kit"
 	desc = "The cover says 'control your own cardboard nuclear powered robot. Comes with real plutonium!"
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/boxes.dmi'
 	icon_state = "remotebot"
 
 /obj/item/device/bot_kit/attack_self(mob/living/user)

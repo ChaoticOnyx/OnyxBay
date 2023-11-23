@@ -186,7 +186,7 @@
 	var/icon_closed
 
 /obj/item/music_tape_box/Initialize()
-	..()
+	. = ..()
 	music_tape = new music_tape()
 	icon_state = icon_closed
 

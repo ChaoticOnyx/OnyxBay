@@ -15,9 +15,9 @@
 	var/list/initial_coordinates
 
 /obj/machinery/computer/camera_advanced/Initialize()
-	..()
+	. = ..()
 	vision = new eye_type(src)
-	initial_coordinates=list(src.x,src.y,src.z)
+	initial_coordinates = list(x, y, z)
 	if(off_action)
 		actions += new off_action(src)
 	if(reset_action)

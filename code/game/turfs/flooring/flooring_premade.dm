@@ -661,5 +661,5 @@
 	var/previous_type = /turf/simulated/floor
 
 /turf/simulated/floor/misc/abductor/Initialize()
+	. = ..()
 	icon_state = "alienpod[rand(1,9)]"
-	..()
