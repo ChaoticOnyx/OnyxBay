@@ -110,7 +110,7 @@
 	else
 		AddOverlays(icon_state_menu)
 		AddOverlays(emissive_appearance(icon, icon_state_menu))
-	set_light(0.2, 0.1, light_strength, l_color = light_color)
+	set_light(light_strength * 0.25, 0.5, active_program ? light_strength : light_strength * 0.5, 3.5, l_color = light_color)
 
 /obj/item/modular_computer/proc/turn_on(mob/user)
 	if(bsod)

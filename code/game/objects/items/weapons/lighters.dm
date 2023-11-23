@@ -70,7 +70,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 		src.lit = 1
 		src.damtype = "burn"
 		src.icon_state = "match_lit"
-		src.set_light(0.2, 0.5, 2, 3.5, "#e38f46")
+		src.set_light(0.75, 0.35, 2, 4.5, "#E28436")
 		set_next_think(world.time)
 		playsound(src.loc, 'sound/items/match.ogg', 60, 1, -4)
 		user.visible_message(SPAN_NOTICE("[user] strikes the match on a shoe."))
@@ -106,7 +106,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	lit = 1
 	update_icon()
 	light_effects(user)
-	set_light(0.2, 0.5, 2, 3.5, "#e38f46")
+	set_light(0.75, 0.35, 2, 4.5, "#E28436")
 	set_next_think(world.time)
 
 /obj/item/flame/lighter/proc/light_effects(mob/living/carbon/user)

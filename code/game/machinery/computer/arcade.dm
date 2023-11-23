@@ -4,6 +4,8 @@
 	icon_state = "arcade"
 	icon_keyboard = null
 	icon_screen = "invaders"
+	light_color = "#A6E5A0"
+	light_outer_range_on = 2
 	var/list/prizes = list(	/obj/item/storage/box/snappops										= 2,
 							/obj/item/toy/blink															= 2,
 							/obj/item/clothing/under/syndicate/tacticool								= 2,

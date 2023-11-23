@@ -508,7 +508,7 @@
 			damtype = "fire"
 			hitsound = 'sound/effects/flare.ogg' // Surprisingly it sounds just perfect
 			welding = 1
-			set_light(0.3, 0.5, 2, 2, "#e38f46")
+			set_light(1.0, 0.5, 2, 4.0, "#e38f46")
 			update_icon()
 			set_next_think(world.time)
 		else

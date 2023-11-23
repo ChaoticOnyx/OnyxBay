@@ -11,9 +11,9 @@
 
 	var/icon_keyboard = "generic_key"
 	var/icon_screen = "generic"
-	var/light_max_bright_on = 0.4
+	var/light_max_bright_on = 1.0
 	var/light_inner_range_on = 0.5
-	var/light_outer_range_on = 1
+	var/light_outer_range_on = 4
 	var/overlay_layer
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	clicksound = 'sound/effects/using/console/press10.ogg'

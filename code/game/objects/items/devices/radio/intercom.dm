@@ -137,7 +137,7 @@
 	if(on)
 		icon_state = "intercom"
 		AddOverlays(ea_overlay)
-		set_light(0.35, 0.5, 1, 2, "#008000")
+		set_light(0.75, 0.5, 1, 2, "#008000")
 	else
 		icon_state = "intercom-p"
 		set_light(0)

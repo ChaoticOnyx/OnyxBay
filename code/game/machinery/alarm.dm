@@ -332,7 +332,7 @@
 	AddOverlays(alarm_overlays[icon_level+1])
 	AddOverlays(alarm_overlays[4])
 
-	set_light(0.25, 0.1, 1, 2, new_color)
+	set_light(0.65, 0.1, 1, 2, new_color)
 
 /obj/machinery/alarm/proc/generate_overlays()
 	alarm_overlays = new
