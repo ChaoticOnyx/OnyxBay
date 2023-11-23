@@ -47,8 +47,9 @@
 /datum/power/undead/heal
 	name = "Heal"
 	desc = "Placeholder"
+	price = 228
 
-	power_path = /datum/spell/targeted/heal_target/area/undead_heal
+	power_item_type = /datum/spell/targeted/heal_target/area/undead_heal
 
 /datum/power/undead/damage
 	name = "Damage"

@@ -13,8 +13,8 @@
 	need_target = FALSE
 	var/enabled = FALSE
 	var/obj/effect/dummy/immaterial_form/jaunt_holder = null
-	icon_state = "wiz_jaunt"
-
+	icon_state = "wiz_immaterial_fast"
+	override_base = "const"
 
 /datum/spell/immaterial_form/cast(list/targets, mob/user) //magnets, so mostly hardcoded
 	enabled = !enabled
@@ -28,7 +28,6 @@
 			if(T && usr.forceMove(T))
 				break
 
-
 /obj/effect/dummy/immaterial_form
 	name = "water"
 	icon = 'icons/effects/effects.dmi'
@@ -40,17 +39,14 @@
 	var/turf/last_valid_turf
 	var/mob/living/immaterial_user = null
 
-
 /obj/effect/dummy/immaterial_form/New(location, mob/living/user)
 	..()
 	last_valid_turf = get_turf(location)
 	immaterial_user = user
 
-
 /obj/effect/dummy/immaterial_form/relaymove(mob/user, direction)
 	if(!canmove || reappearing)
 		return
-
 
 	var/turf/newLoc = get_step(src, direction)
 	if(!newLoc)
@@ -72,10 +68,8 @@
 	canmove = FALSE
 	addtimer(CALLBACK(src, .proc/allow_move), 2)
 
-
 /obj/effect/dummy/immaterial_form/proc/allow_move()
 	canmove = TRUE
-
 
 /obj/effect/dummy/immaterial_form/bullet_act(obj/item/projectile/Proj, def_zone)
 	for(var/mob/living/M in contents)

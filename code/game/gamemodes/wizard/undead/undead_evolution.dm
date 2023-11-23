@@ -7,13 +7,12 @@ var/list/undead_powers = typesof(/datum/power/undead) - /datum/power/undead
 	school = "necromancy"
 	var/spell_type = null
 	spell_flags = INCLUDEUSER
+	icon_state = "undead_evolution"
 
 /datum/spell/undead/choose_targets(mob/user)
 	return user
 
 /datum/spell/undead/undead_evolution/cast(mob/target, mob/user)
-	//target.add_spell(new spell_type)
-	//target.remove_spell(src)
 	var/datum/wizard/undead = user.mind.wizard
 	undead.tgui_interact(usr)
 
@@ -26,22 +25,42 @@ var/list/undead_powers = typesof(/datum/power/undead) - /datum/power/undead
 		ui = new(user, src, "Undead", "Undead Evolution")
 		ui.open()
 
-/datum/wizard/undead/tgui_static_data(mob/user)
-	if(!undead_powerinstances.len)
-		for(var/datum/power/undead/power in undead_powers)
-			undead_powerinstances += new power
+/datum/wizard/tgui_static_data(mob/user)
+	var/static/icon/spell_background = new /icon('icons/hud/screen_spells.dmi', "const_spell_base")
+	var/static/icon/spell_unlocked_background = new /icon('icons/hud/screen_spells.dmi', "const_spell_ready")
 
-	var/list/data = list()
-	data["powers"] = list()
-	for(var/datum/power/undead/power in undead_powerinstances)
-		var/list/obj_data = list()
-		obj_data["name"] = power.name
-		obj_data["icon"] = power.icon
-		obj_data["description"] = power.desc
-		obj_data["price"] = power.price
-		obj_data["owned"] = power.owned
+	return list(
+		"icons" = list(
+			"spell_background" = icon2base64html(spell_background),
+			"spell_unlocked_background" = icon2base64html(spell_unlocked_background)
+		)
+	)
 
-		data["powers"] += list(obj_data)
+/datum/wizard/tgui_data(mob/user)
+	var/datum/wizard/undead/undead = user.mind.wizard
+
+	if(!undead.undead_powerinstances.len)
+		return
+
+	var/list/data = list(
+		"powers" = list(),
+		"points" = undead.growth
+	)
+
+	for(var/datum/power/undead/power in undead.undead_powerinstances)
+		var/list/power_data = list(
+			"name" = power.name,
+			"icon" = icon2base64html(power.power_item_type),
+			"description" = power.desc,
+			"cost" = power.price
+		)
+
+		if(power in undead.purchased_powers)
+			power_data["owned"] = TRUE
+		else
+			power_data["owned"] = FALSE
+
+		data["powers"] += list(power_data)
 
 	return data
 

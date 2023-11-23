@@ -19,6 +19,8 @@
 
 	should_lichify = TRUE
 
+	override_base = "const"
+
 /datum/spell/targeted/raiseundead/lichify/perform(mob/user = usr, skipcharge = TRUE)
 	if(user.mind.wizard.lich)
 		to_chat(user, SPAN_WARNING("You can only have one lich!"))
