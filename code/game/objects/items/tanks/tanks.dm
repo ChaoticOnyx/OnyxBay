@@ -404,10 +404,10 @@ var/list/global/tank_gauge_cache = list()
 	ClearOverlays() // Each time you modify this, the object is redrawn. Cunts.
 
 	if(proxyassembly.assembly || wired)
-		AddOverlays(image(icon,"bomb_assembly"))
+		AddOverlays(image(icon, "bomb_assembly"))
 		if(proxyassembly.assembly)
 			var/image/bombthing = image(proxyassembly.assembly.icon, proxyassembly.assembly.icon_state)
-			bombthing.overlays |= proxyassembly.assembly.overlays
+			bombthing.CopyOverlays(proxyassembly.assembly)
 			bombthing.pixel_y = -1
 			bombthing.pixel_x = -3
 			AddOverlays(bombthing)

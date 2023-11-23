@@ -55,11 +55,11 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 				bloodover.color = blood_color
 				bloodover.filters += filter(type = "alpha", icon = icon(mob_icon, mob_state))
 				GLOB.clothing_blood_icons[cache_index] = bloodover
-			ret.overlays |= GLOB.clothing_blood_icons[cache_index]
+			ret.AddOverlays(GLOB.clothing_blood_icons[cache_index])
 
 	if(length(accessories))
 		for(var/obj/item/clothing/accessory/A in accessories)
-			ret.overlays |= A.get_mob_overlay(user_mob, slot_tie_str)
+			ret.AddOverlays(A.get_mob_overlay(user_mob, slot_tie_str))
 	return ret
 
 // Aurora forensics port.
@@ -403,7 +403,7 @@ BLIND     // can't see anything
 		species_name = user_human.species.name
 	var/cache_key = "[light_overlay]_[species_name]"
 	if(on && light_overlay_cache[cache_key] && slot == slot_head_str)
-		ret.overlays |= light_overlay_cache[cache_key]
+		ret.AddOverlays(light_overlay_cache[cache_key])
 	return ret
 
 /obj/item/clothing/head/attack_self(mob/user)

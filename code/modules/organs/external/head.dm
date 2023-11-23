@@ -174,7 +174,7 @@
 				FHI = icon(GLOB.facial_hair_icons["default"][species.hair_key], FH.icon_state)
 			if(FH.do_coloration)
 				FHI.Blend(rgb(owner.r_facial, owner.g_facial, owner.b_facial), FH.blend)
-			res.overlays |= FHI
+			res.AddOverlays(FHI)
 
 	if(owner.h_style)
 		var/icon/HI
@@ -220,10 +220,10 @@
 			for(var/entry in sorted_hair_markings)
 				HI.Blend(entry[2], ICON_OVERLAY)
 			//TODO : Add emissive blocker here if hair should block it. Else, leave as is
-			res.overlays |= HI
+			res.AddOverlays(HI)
 
 		if(HSI)
-			res.overlays |= HSI
+			res.AddOverlays(HSI)
 
 	var/list/sorted_head_markings = list()
 	for(var/E in markings)
@@ -241,7 +241,7 @@
 				I.Blend(color, ICON_ADD)
 			ADD_SORTED(sorted_head_markings, list(list(M.draw_order, I)), /proc/cmp_marking_order)
 	for(var/entry in sorted_head_markings)
-		res.overlays |= entry[2]
+		res.AddOverlays(entry[2])
 	return res
 
 /obj/item/organ/external/head/update_icon_drop(mob/living/carbon/human/powner)
