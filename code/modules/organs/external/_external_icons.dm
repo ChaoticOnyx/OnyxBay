@@ -7,12 +7,8 @@ var/list/limb_icon_cache = list()
 	return
 
 /obj/item/organ/external/proc/compile_icon()
+	ClearOverlays()
 	update_icon()
-	for(var/obj/item/organ/external/organ in contents)
-		if(organ.children && length(organ.children))
-			for(var/obj/item/organ/external/child in organ.children)
-				AddOverlays(child.mob_overlays)
-			AddOverlays(organ.mob_overlays)
 
 /obj/item/organ/external/proc/sync_colour_to_human(mob/living/carbon/human/human)
 	s_tone = null

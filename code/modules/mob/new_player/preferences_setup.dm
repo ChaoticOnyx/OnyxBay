@@ -128,37 +128,29 @@
 		mannequin.update_icons()
 
 /datum/preferences/proc/update_preview_icon()
-	to_world_log("Called update_preview_icon()")
 	var/mob/living/carbon/human/dummy/mannequin/mannequin = get_mannequin(client_ckey)
 	if(!mannequin)
-		to_world_log("--- No mannequin! ---")
 		return
-	var/static/icon/last_built_icon
-	if(!last_built_icon)
-		to_world_log("--- No last_built_icon, generating... ---")
-		mannequin.delete_inventory(TRUE)
-		dress_preview_mob(mannequin)
-		mannequin.ImmediateOverlayUpdate()
+	mannequin.delete_inventory(TRUE)
+	dress_preview_mob(mannequin)
+	mannequin.ImmediateOverlayUpdate()
 
-		last_built_icon = icon('icons/effects/128x48.dmi', bgstate)
-		last_built_icon.Scale(48+32, 16+32)
+	preview_icon = icon('icons/effects/128x48.dmi', bgstate)
+	preview_icon.Scale(48+32, 16+32)
 
-		mannequin.dir = NORTH
-		var/icon/stamp = mannequin.generate_preview()
-		stamp.Scale(stamp.Width(), stamp.Height() * body_height)
-		last_built_icon.Blend(stamp, ICON_OVERLAY, 25, 17)
+	mannequin.dir = NORTH
+	var/icon/stamp = mannequin.generate_preview()
+	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
+	preview_icon.Blend(stamp, ICON_OVERLAY, 25, 17)
 
-		mannequin.dir = WEST
-		stamp = mannequin.generate_preview()
-		stamp.Scale(stamp.Width(), stamp.Height() * body_height)
-		last_built_icon.Blend(stamp, ICON_OVERLAY, 1, 9)
+	mannequin.dir = WEST
+	stamp = mannequin.generate_preview()
+	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
+	preview_icon.Blend(stamp, ICON_OVERLAY, 1, 9)
 
-		mannequin.dir = SOUTH
-		stamp = mannequin.generate_preview()
-		stamp.Scale(stamp.Width(), stamp.Height() * body_height)
-		last_built_icon.Blend(stamp, ICON_OVERLAY, 49, 1)
-	else
-		to_world_log("--- Found last_built_icon! ---")
+	mannequin.dir = SOUTH
+	stamp = mannequin.generate_preview()
+	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
+	preview_icon.Blend(stamp, ICON_OVERLAY, 49, 1)
 
-	preview_icon = new (last_built_icon)
 	preview_icon.Scale(preview_icon.Width() * 2, preview_icon.Height() * 2) // Scaling here to prevent blurring in the browser.

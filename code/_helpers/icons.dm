@@ -919,12 +919,19 @@
 	var/icon/add // Icon of overlay being added
 
 	for(var/I in layers)
-		if(I:plane == EMISSIVE_PLANE)
+		if(isnull(I))
+			continue
+		var/image/layer_image = I
+		if(layer_image.plane != FLOAT_PLANE)
 			continue
 
-		if(I:alpha == 0)
+		if(!layer_image.icon)
 			continue
 
+		if(layer_image.alpha == 0)
+			continue
+
+		//add = icon(layer_image.icon, layer_image.icon_state, dir)
 		add = getFlatIcon(image(I), dir, null, null, null, FALSE, TRUE, TRUE)
 		flat.Blend(add, ICON_OVERLAY)
 
