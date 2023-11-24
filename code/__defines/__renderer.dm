@@ -173,6 +173,10 @@
 	/// The layer you should use when you -really- don't want an emissive overlay to be blocked.
 	#define EMISSIVE_LAYER_UNBLOCKABLE 9999
 
+/// For previews in Character setup. I have no fucking idea why it's like that, and at this point I'm not sure
+/// I'd ever want to. It DOES work somehow and I'm more than willing to just keep things the way they are. ~ToTh
+#define PREVIEW_PLANE 20
+
 //-------------------- Rendering ---------------------
 
 #define LETTERBOX_RENDERER 			"LETTERBOX"

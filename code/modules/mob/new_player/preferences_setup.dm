@@ -54,10 +54,12 @@
 #undef ASSIGN_LIST_TO_COLORS
 
 /datum/preferences/proc/dress_preview_mob(mob/living/carbon/human/mannequin)
-	if(!mannequin)
-		return
-	var/update_icon = FALSE
 	copy_to(mannequin, TRUE)
+
+	if(!equip_preview_mob)
+		return
+
+	var/update_icon = FALSE
 	mannequin.update_icon = TRUE
 
 	var/datum/job/previewJob
@@ -135,22 +137,6 @@
 	dress_preview_mob(mannequin)
 	mannequin.ImmediateOverlayUpdate()
 
-	preview_icon = icon('icons/effects/128x48.dmi', bgstate)
-	preview_icon.Scale(48+32, 16+32)
-
-	mannequin.dir = NORTH
-	var/icon/stamp = mannequin.generate_preview()
-	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
-	preview_icon.Blend(stamp, ICON_OVERLAY, 25, 17)
-
-	mannequin.dir = WEST
-	stamp = mannequin.generate_preview()
-	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
-	preview_icon.Blend(stamp, ICON_OVERLAY, 1, 9)
-
-	mannequin.dir = SOUTH
-	stamp = mannequin.generate_preview()
-	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
-	preview_icon.Blend(stamp, ICON_OVERLAY, 49, 1)
-
-	preview_icon.Scale(preview_icon.Width() * 2, preview_icon.Height() * 2) // Scaling here to prevent blurring in the browser.
+	var/mutable_appearance/MA = new /mutable_appearance(mannequin)
+	MA.appearance_flags = PIXEL_SCALE
+	update_character_previews(MA)
