@@ -61,7 +61,7 @@
 		_register_mob_signals()
 
 	if(old_self.mind?.wizard?.lich)
-		old_self.mind.wizard.escape_to_lich()
+		old_self.mind.wizard.escape_to_lich(old_self.mind)
 	else
 		old_self.mind.transfer_to(brainmob)
 
