@@ -119,7 +119,9 @@
 
 /mob/living/carbon/proc/resolve_ghost_attack(mob/observer/ghost/user)
 	adjustFireLoss(DAMAGE_PER_GHOST)
-	admin_attack_log(user, src, "You burn [src] with all the fury you can muster!", "You are being burned by something!", "[user] has used nercomancy to attack [src]")
+	to_chat(user, SPAN_DANGER("You burn [src] with all the fury you can muster!"))
+	to_chat(src, SPAN_DANGER("You are being burned by something!"))
+	admin_attack_log(user, src, "Attacked [src] with ghostattack.", "Was ghostattacked by [user]!", "[user] has used nercomancy to attack [src]")
 
 /mob/living/carbon/electrocute_act(shock_damage, obj/source, siemens_coeff = 1.0, def_zone = null)
 	if(status_flags & GODMODE)
