@@ -97,14 +97,13 @@
 
 	return "You've increased the max mana pool of [src]."
 
-
 /obj/effect/dummy/immaterial_form
 	name = "you should not see this xd"
 	invisibility = INVISIBILITY_SYSTEM
 	var/canmove = TRUE
 	var/reappearing = FALSE
 	buckle_relaymove = TRUE
-	density = FALSE
+	density = TRUE
 	anchored = TRUE
 	var/turf/last_valid_turf
 	var/mob/living/immaterial_user = null
