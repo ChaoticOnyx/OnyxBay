@@ -238,9 +238,6 @@ var/list/ghost_traps
 	necromancer = null
 	return ..()
 
-/datum/ghosttrap/familiar/welcome_candidate(mob/target)
-	return 0
-
 /datum/ghosttrap/cult
 	object = "cultist"
 	ban_checks = list("cultist")
