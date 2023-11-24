@@ -1,11 +1,11 @@
 /datum/spell/aoe_turf/conjure/summon/skull
 	name = "Summon skull-protector"
-	desc = "This spell summons a flock of spooky space bats."
-	feedback = "" // TODO THINK MORON THINK
+	desc = "This spell summons an undead creature that will guard you."
+	feedback = "SS"
 
 	charge_max = 4 MINUTES
 	spell_flags = NEEDSCLOTHES
-	invocation = "Bla'yo daya!"
+	invocation = "Capita veniunt!"
 	invocation_type = SPI_SHOUT
 	level_max = list(SP_TOTAL = 0, SP_SPEED = 0, SP_POWER = 0)
 

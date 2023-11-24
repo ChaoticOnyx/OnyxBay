@@ -6,7 +6,7 @@
 
 /obj/item/staff/plague_bell
 	name = "Cursed Plague Bell"
-	desc = "" //TODO THINK MORON THINK
+	desc = "A staff made of bones with an attached bell."
 	icon_state = "plague_bell"
 
 	var/siphon = FALSE //Used to toggle life siphoning from surrounding mobs
@@ -17,7 +17,7 @@
 	var/invocation_heal = "Ut curatio!"
 	var/heal_notification = "A strange unnatural energy spreads through your body, mending tissues and sealing wounds!"
 	var/invocation_damage = "Adepto eam!"
-	var/damage_notification = "You are hit with a blast of something vile and abhorrent!"
+	var/damage_notification = "You are hit with a blast of vile and abhorrent energy!"
 	action_button_name = "Toggle Siphon"
 	clumsy_unaffected = TRUE
 	var/minor_heal

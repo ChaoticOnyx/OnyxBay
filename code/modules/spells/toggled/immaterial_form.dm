@@ -2,8 +2,8 @@
 
 /datum/spell/toggled/immaterial_form
 	name = "Immaterial form"
-	desc = "" // TODO think
-	feedback = "" // TODO think
+	desc = "This spell allows you to temporarily pass thorugh walls and solid objects, yet it won't protect you from all damage"
+	feedback = "IF"
 	school = "necromancy"
 	spell_flags = Z2NOCAST | NEEDSCLOTHES | INCLUDEUSER
 	invocation = "none"

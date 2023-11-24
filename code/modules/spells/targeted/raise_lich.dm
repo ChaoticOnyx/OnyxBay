@@ -1,7 +1,7 @@
 /datum/spell/targeted/raiseundead/lichify
 	name = "Raise Lich"
 	desc = "This spell turns your undead to a powerful lich that can learn spells and will serve you as a reserve vessel for your soul should your original body decease."
-	feedback = "" /// IDK WHAT IT DOES, TODO: understand var/feedback
+	feedback = "RL"
 	school = "necromancy"
 	spell_flags = SELECTABLE | NEEDSCLOTHES
 	invocation = "De sepulchro suscitate et servite mihi!"

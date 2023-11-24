@@ -1,10 +1,10 @@
 GLOBAL_LIST_EMPTY(ghost_gramophones)
 #define GRAMOPHONE_COOLDOWN 3 MINUTES
-#define GRAMOPHONE_ACTIVE_TIME 30 SECONDS
+#define GRAMOPHONE_ACTIVE_TIME 50 SECONDS
 
 /obj/item/device/ghost_gramophone
 	name = "Strange gramophone"
-	desc = "" //TODO think
+	desc = "Artifact that allows you to temporarily hear spirits from a parallel dimension."
 	var/active = FALSE
 	var/last_activated = 0
 	icon_state = "ghostgramophone0"
