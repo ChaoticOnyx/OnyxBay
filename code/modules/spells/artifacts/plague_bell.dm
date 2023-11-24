@@ -162,6 +162,7 @@
 	heals_external_bleeding = TRUE
 	heal_bones = TRUE
 	amt_organ = 20
+	amt_radiation = 1
 
 #undef VALUE_REDUCTION
 #undef HEALING_THRESHOLD_MINOR
