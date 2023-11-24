@@ -11,6 +11,7 @@
 	var/projectile_type = /obj/item/projectile/whip_of_torment
 
 /obj/item/gun/whip_of_torment/consume_next_projectile()
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	var/obj/item/projectile/whip_of_torment/P = new projectile_type(src)
 	switch(usr.a_intent)
 		if(I_GRAB)
