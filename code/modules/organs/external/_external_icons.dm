@@ -177,7 +177,7 @@ var/list/limb_icon_cache = list()
 			CRASH("Can't find proper icon_state for \the [src].")
 
 	/////
-	var/icon/mob_icon = apply_colouration(new/icon(chosen_icon, chosen_icon_state))
+	var/icon/mob_icon = apply_colouration(icon(chosen_icon, chosen_icon_state))
 	if(husk)
 		mob_icon.ColorTone(husk_color_mod)
 	if(hulk)
@@ -186,7 +186,7 @@ var/list/limb_icon_cache = list()
 
 	//	Handle husk overlay.
 	if(husk && ("overlay_husk" in icon_states(chosen_icon)))
-		var/icon/mask = new/icon(chosen_icon)
+		var/icon/mask = new(chosen_icon)
 		var/icon/husk_over = new(species.get_icobase(src), "overlay_husk")
 		mask.MapColors(0,0,0,1, 0,0,0,1, 0,0,0,1, 0,0,0,1, 0,0,0,0)
 		husk_over.Blend(mask, ICON_ADD)
@@ -220,21 +220,21 @@ var/list/limb_icon_cache = list()
 	// If we ever move to pure overlays for body hair / modifiers / cosmetic changes to a limb, look up daedalusdock's implementation
 	if(icon_position & (LEFT | RIGHT))
 		var/icon/under_icon = new('icons/mob/human_races/r_human.dmi', "blank")
-		under_icon.Insert(new/icon(mob_icon, dir = NORTH), dir = NORTH)
-		under_icon.Insert(new/icon(mob_icon, dir = SOUTH), dir = SOUTH)
+		under_icon.Insert(icon(mob_icon, dir = NORTH), dir = NORTH)
+		under_icon.Insert(icon(mob_icon, dir = SOUTH), dir = SOUTH)
 		if(!(icon_position & LEFT))
-			under_icon.Insert(new/icon(mob_icon, dir = EAST), dir = EAST)
+			under_icon.Insert(icon(mob_icon, dir = EAST), dir = EAST)
 		if(!(icon_position & RIGHT))
-			under_icon.Insert(new/icon(mob_icon, dir = WEST), dir = WEST)
+			under_icon.Insert(icon(mob_icon, dir = WEST), dir = WEST)
 		// At this point, the icon has all the valid states for both left and right leg overlays
 		var/mutable_appearance/upper_appearance = mutable_appearance(under_icon, chosen_icon_state, flags = DEFAULT_APPEARANCE_FLAGS)
 		upper_appearance.layer = FLOAT_LAYER
 		mob_overlays += upper_appearance
 
 		if(icon_position & LEFT)
-			under_icon.Insert(new/icon(mob_icon, dir = EAST), dir = EAST)
+			under_icon.Insert(icon(mob_icon, dir = EAST), dir = EAST)
 		if(icon_position & RIGHT)
-			under_icon.Insert(new/icon(mob_icon, dir = WEST),dir = WEST)
+			under_icon.Insert(icon(mob_icon, dir = WEST),dir = WEST)
 
 		var/mutable_appearance/under_appearance = mutable_appearance(under_icon, chosen_icon_state, flags = DEFAULT_APPEARANCE_FLAGS)
 		upper_appearance.layer = BODYPARTS_LOW_LAYER
