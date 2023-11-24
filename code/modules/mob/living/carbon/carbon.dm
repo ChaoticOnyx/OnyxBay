@@ -112,7 +112,7 @@
 
 /mob/living/carbon/attack_ghost(mob/observer/ghost/user)
 	if(HAS_TRAIT(src, TRAIT_GHOSTATTACKABLE)) //Used for wizard's spell "No remorse" which allows ghosts to attack target
-		resolve_ghost_attack(src)
+		resolve_ghost_attack(user)
 		return
 
 	return ..()
