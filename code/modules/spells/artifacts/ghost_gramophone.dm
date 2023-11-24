@@ -1,6 +1,6 @@
 GLOBAL_LIST_EMPTY(ghost_gramophones)
 #define GRAMOPHONE_COOLDOWN 3 MINUTES
-#define GRAMOPHONE_ACTIVE_TIME 50 SECONDS
+#define GRAMOPHONE_ACTIVE_TIME 40 SECONDS
 
 /obj/item/device/ghost_gramophone
 	name = "Strange gramophone"

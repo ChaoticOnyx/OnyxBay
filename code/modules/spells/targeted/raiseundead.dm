@@ -71,6 +71,7 @@
 
 /datum/spell/targeted/raiseundead/proc/draft_failure()
 	to_chat(holder, SPAN_WARNING("Your spell has failed. Perhaps you should try again later?"))
+	charge_counter = charge_max
 
 /mob/living/carbon/human/proc/make_undead(mob/necromancer, should_lichify = FALSE)
 	if(!mind)
