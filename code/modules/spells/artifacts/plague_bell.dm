@@ -20,6 +20,13 @@
 	var/damage_notification = "You are hit with a blast of something vile and abhorrent!"
 	action_button_name = "Toggle Siphon"
 	clumsy_unaffected = TRUE
+	var/minor_heal
+	var/major_heal
+
+/obj/item/staff/plague_bell/Initialize()
+	. = ..()
+	minor_heal = new /datum/spell/targeted/siphon_heal(src)
+	major_heal = new /datum/spell/targeted/siphon_heal/major(src)
 
 /obj/item/staff/plague_bell/attack_self(mob/user)
 	if(!master)
@@ -43,8 +50,14 @@
 	else
 		set_next_think(0)
 
+/obj/item/staff/plague_bell/dropped()
+	siphon = FALSE
+	set_next_think(0)
+	return ..()
+
 /obj/item/staff/plague_bell/think()
 	if(!isliving(src.loc) || !ishuman(src.loc))
+		siphon = FALSE
 		set_next_think(0)
 		return
 
@@ -52,6 +65,7 @@
 	if(holder != master)
 		holder.adjustBruteLoss(10)
 		to_chat(holder, SPAN_DANGER("The staff resists your will!"))
+		siphon = FALSE
 		set_next_think(0)
 		return
 
@@ -95,7 +109,7 @@
 		holder.radiation -= damage_delivered
 		holder.regenerate_blood(damage_delivered*2)
 		holder.adjustBrainLoss(-damage_delivered)
-		holder.wizard_heal(/datum/spell/targeted/siphon_heal)
+		holder.wizard_heal(minor_heal)
 
 	if(accumulated_damage >= DAMAGE_THRESHOLD && !can_damage)
 		to_chat(holder, SPAN_DANGER("The [src] feels hot to the touch. It is now ready for an amplified attack!"))
@@ -122,7 +136,7 @@
 
 	..()
 
-/obj/item/staff/plague_bell/apply_hit_effect(mob/living/target, mob/user, proximity)
+/obj/item/staff/plague_bell/attack(mob/living/target, mob/living/user, target_zone)
 	if(!istype(user,/mob/living/carbon/human)) //Something went wrong, master of this staff should be human
 		return FALSE
 
@@ -133,7 +147,7 @@
 	if(attacker.a_intent == I_HELP && ishuman(target) && accumulated_heal >= HEALING_THRESHOLD_MAJOR)
 		invocation(user, target, invocation_heal, heal_notification)
 		var/mob/living/carbon/human/human = target
-		human.wizard_heal(/datum/spell/targeted/siphon_heal/major)
+		human.wizard_heal(major_heal)
 		return TRUE
 
 	if(attacker.a_intent == I_HURT && accumulated_damage >= DAMAGE_THRESHOLD)
@@ -141,10 +155,9 @@
 		target.adjustBruteLoss(accumulated_damage/VALUE_REDUCTION)
 		return TRUE
 
-
 /obj/item/staff/plague_bell/proc/invocation(mob/living/user, mob/living/target, invocation, notification)
 	if(!user.is_muzzled() && !user.silent)
-		user.say(text)
+		user.say(invocation)
 
 	to_chat(target, SPAN_DANGER(notification))
 	accumulated_damage = 0
@@ -157,12 +170,12 @@
 	desc = "A spell to reduce copypasta. You should not see this at all."
 
 	heals_internal_bleeding = TRUE
+	amt_radiation = -(1 SIEVERT)
 
 /datum/spell/targeted/siphon_heal/major
 	heals_external_bleeding = TRUE
 	heal_bones = TRUE
 	amt_organ = 20
-	amt_radiation = 1
 
 #undef VALUE_REDUCTION
 #undef HEALING_THRESHOLD_MINOR

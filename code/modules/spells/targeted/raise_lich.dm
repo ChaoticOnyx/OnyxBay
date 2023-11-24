@@ -32,7 +32,7 @@
 	var/list/possible_targets = list()
 
 	for(var/mob/living/target in view(world.view, user))
-		if(target.mind?.wizard? && (target.mind?.wizard? in user.mind.wizard.thralls))
+		if(target.mind?.wizard && (target.mind?.wizard in user.mind.wizard.thralls))
 			possible_targets += target
 			continue
 
