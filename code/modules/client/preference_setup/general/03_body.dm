@@ -662,14 +662,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		pref.disabilities ^= disability_flag
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 
-	else if(href_list["toggle_preview_value"])
-		pref.equip_preview_mob ^= text2num(href_list["toggle_preview_value"])
-		return TOPIC_REFRESH_UPDATE_PREVIEW
-
-	else if(href_list["cycle_bg"])
-		pref.bgstate = next_in_list(pref.bgstate, pref.bgstate_options)
-		return TOPIC_REFRESH_UPDATE_PREVIEW
-
 	else if(href_list["body_height"])
 		var/new_state = input(user, "How tall do you want to be?") as null|anything in list("Dwarfish", "Short", "Average", "Tall", "Towering")
 		if(!new_state)
