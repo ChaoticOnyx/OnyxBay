@@ -120,6 +120,10 @@
 	name = "\improper SkrellSnax"
 	icon_state = "skrellsnacks"
 
+/obj/item/trash/surstromming
+	name = "\improper old canned food"
+	icon_state = "surstromming"
+
 /obj/item/trash/cans
 	matter = list(MATERIAL_STEEL = 500)
 	var/base_state = ""
