@@ -40,7 +40,7 @@
 	if(is_ic_dead())
 		return
 
-	if(mind && mind.wizard && mind.wizard.lich)
+	if(mind?.wizard?.lich)
 		mind.wizard.escape_to_lich(mind)
 
 	BITSET(hud_updateflag, HEALTH_HUD)

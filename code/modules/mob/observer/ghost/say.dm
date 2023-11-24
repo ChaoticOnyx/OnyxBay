@@ -6,7 +6,7 @@
 		if(get_dist(gg, src) > world.view)
 			continue
 
-		var/message_to_send = stars(message)
+		var/message_to_send = stars(message, 75)
 		gg.audible_message(SPAN_DEADSAY("<B>[gg]</B>: [message_to_send]"))
 
 	sanitize_and_communicate(/decl/communication_channel/dsay, client, message)
