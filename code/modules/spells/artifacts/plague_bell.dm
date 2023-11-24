@@ -148,12 +148,13 @@
 		invocation(user, target, invocation_heal, heal_notification)
 		var/mob/living/carbon/human/human = target
 		human.wizard_heal(major_heal)
-		return TRUE
-
-	if(attacker.a_intent == I_HURT && accumulated_damage >= DAMAGE_THRESHOLD)
+	else if(attacker.a_intent == I_HURT && accumulated_damage >= DAMAGE_THRESHOLD)
 		invocation(user, target, invocation_damage, damage_notification)
 		target.adjustBruteLoss(accumulated_damage/VALUE_REDUCTION)
-		return TRUE
+	else
+		return
+
+	playsound(src, "sound/effects/weapons/misc/plague_bell.ogg", 50, FALSE)
 
 /obj/item/staff/plague_bell/proc/invocation(mob/living/user, mob/living/target, invocation, notification)
 	if(!user.is_muzzled() && !user.silent)
