@@ -75,6 +75,7 @@
 	if(stat & NOPOWER)
 		if(icon_keyboard)
 			AddOverlays(image(icon,"[icon_keyboard]_off", overlay_layer))
+		set_light(0)
 		return
 
 	if(stat & BROKEN)
