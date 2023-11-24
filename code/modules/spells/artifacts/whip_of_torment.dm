@@ -1,6 +1,6 @@
 /obj/item/gun/whip_of_torment // Yes, it is a gun but a whip. Nuff said.
 	name = "Whip of torment"
-	desc = "" //TODO THINK THINK
+	desc = "A whip made of bones."
 	icon = 'icons/obj/wizard.dmi'
 	icon_state = "whip_of_torment"
 	item_state = "whip_of_torment"

@@ -3,7 +3,7 @@
 /datum/spell/targeted/raiseundead
 	name = "Raise the dead"
 	desc = "This spell raises the dead by turning them into your un-dead servants with no free will."
-	feedback = "" /// IDK WHAT IT DOES, TODO: understand var/feedback
+	feedback = "RU"
 	school = "necromancy"
 	spell_flags = SELECTABLE | NEEDSCLOTHES
 	invocation = "De sepulchro suscitate et servite mihi!"

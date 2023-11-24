@@ -3,7 +3,7 @@ var/list/undead_powers = typesof(/datum/power/undead) - /datum/power/undead
 /datum/spell/undead/undead_evolution
 	name = "Undead Evolution"
 	desc = "Undead Evolution"
-	feedback = "" /// IDK WHAT IT DOES, TODO: understand var/feedback
+	feedback = "UE"
 	school = "necromancy"
 	var/spell_type = null
 	spell_flags = INCLUDEUSER

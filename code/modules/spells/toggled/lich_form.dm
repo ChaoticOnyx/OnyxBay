@@ -1,7 +1,7 @@
 /datum/spell/toggled/lich_form
 	name = "Lich form"
 	desc = "Reveal your true form"
-	feedback = "" // TODO think
+	feedback = "LF"
 	school = "necromancy"
 	spell_flags = INCLUDEUSER
 	invocation = "none"

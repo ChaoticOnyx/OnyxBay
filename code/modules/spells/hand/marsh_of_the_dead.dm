@@ -5,9 +5,9 @@
 
 /datum/spell/hand/marsh_of_the_dead
 	name = "Marsh of the dead"
-	desc = "THINK MORON THINK"//// TODO THINK ABOUT DESCRIPTION YEEE
+	desc = "This spell creates a puddle of vile pus, staggering any mortal."
 	school = "necromancy"
-	feedback = "IDK"/// TODO IDK WHAT IS THAT XDDDD
+	feedback = "MD"
 	range = 5
 	spell_flags = 0
 	invocation_type = SPI_NONE
@@ -35,11 +35,8 @@
 
 	return "[src] now lasts longer."
 
-///////////////////////////////////
-/// Hands effect TODO change file loc
-//////////////////////////////////
 /obj/effect/deadhands
-	name = "Hands of the dead" //TODO change this shit
+	name = "Vile pus"
 	icon = 'icons/obj/flora/junglevines.dmi'
 	icon_state = "heavy0"
 	layer = OBJ_LAYER
