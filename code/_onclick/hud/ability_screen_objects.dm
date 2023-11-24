@@ -65,14 +65,14 @@
 				my_mob.client.screen -= O
 //			O.handle_icon_updates = 0
 		showing = 0
-		overlays.len = 0
-		overlays.Add(closed_state)
+		ClearOverlays()
+		AddOverlays(closed_state)
 	else if(forced_state != 1) // We're opening it, show the icons.
 		open_ability_master()
 		update_abilities(1)
 		showing = 1
-		overlays.len = 0
-		overlays.Add(open_state)
+		ClearOverlays()
+		AddOverlays(open_state)
 	update_icon()
 
 /obj/screen/movable/ability_master/proc/open_ability_master()
@@ -112,7 +112,7 @@
 		ability.maptext = "[i]" // Slot number
 		i++
 
-/obj/screen/movable/ability_master/update_icon()
+/obj/screen/movable/ability_master/on_update_icon()
 	if(ability_objects.len)
 		set_invisibility(0)
 	else
@@ -231,11 +231,11 @@
 	ability_master = null
 	return ..()
 
-/obj/screen/ability/update_icon()
-	overlays.Cut()
+/obj/screen/ability/on_update_icon()
+	ClearOverlays()
 	icon_state = "[background_base_state]_spell_base"
 
-	overlays += ability_icon_state
+	AddOverlays(ability_icon_state)
 
 /obj/screen/ability/Click()
 	if(!usr)
@@ -368,7 +368,7 @@
 	if(last_charge == spell.charge_counter && !forced_update)
 		return //nothing to see here
 
-	overlays -= spell.icon_state
+	CutOverlays(spell.icon_state)
 
 	if(spell.charge_type == SP_RECHARGE || spell.charge_type == SP_CHARGES)
 		if(spell.charge_counter < spell.charge_max)
@@ -376,29 +376,29 @@
 			if(spell.charge_counter > 0)
 				var/icon/partial_charge = icon(src.icon, "[spell_base]_spell_ready")
 				partial_charge.Crop(1, 1, partial_charge.Width(), round(partial_charge.Height() * spell.charge_counter / spell.charge_max))
-				overlays += partial_charge
+				AddOverlays(partial_charge)
 				if(last_charged_icon)
-					overlays -= last_charged_icon
+					CutOverlays(last_charged_icon)
 				last_charged_icon = partial_charge
 			else if(last_charged_icon)
-				overlays -= last_charged_icon
+				CutOverlays(last_charged_icon)
 				last_charged_icon = null
 		else
 			icon_state = "[spell_base]_spell_ready"
 			if(last_charged_icon)
-				overlays -= last_charged_icon
+				CutOverlays(last_charged_icon)
 	else
 		icon_state = "[spell_base]_spell_ready"
 
-	overlays += spell.icon_state
+	AddOverlays(spell.icon_state)
 
 	last_charge = spell.charge_counter
 
-	overlays -= "silence"
+	CutOverlays("silence")
 	if(spell.silenced)
-		overlays += "silence"
+		AddOverlays("silence")
 
-/obj/screen/ability/spell/update_icon(forced = 0)
+/obj/screen/ability/spell/on_update_icon(forced = 0)
 	update_charge(forced)
 	return
 
@@ -424,8 +424,8 @@
 	icon_state = "changeling_spell_base"
 	open_state = "ling_open"
 	closed_state = "ling_closed"
-	overlays.len = 0
-	overlays.Add(open_state)
+	ClearOverlays()
+	AddOverlays(open_state)
 
 /obj/screen/ability/changeling_power
 	background_base_state = "changeling"
@@ -461,19 +461,19 @@
 	for(var/obj/screen/ability/changeling_power/P in changeling_power_objects)
 		P.update_icon()
 
-/obj/screen/ability/changeling_power/update_icon()
+/obj/screen/ability/changeling_power/on_update_icon()
 	if(!power)
 		qdel(src)
 		return
 
-	overlays.Cut()
+	ClearOverlays()
 
 	icon_state = "[background_base_state]_spell_[power.is_usable(TRUE) ? "ready" : "base"]"
-	overlays.Add(power.icon_state)
+	AddOverlays(power.icon_state)
 
 	if(istype(power, /datum/changeling_power/toggled))
 		if(power.active)
-			overlays.Add("changeling_spell_active")
+			AddOverlays("changeling_spell_active")
 
 	var/image/T = image(icon, "blank")
 	if(!power.chems_drain)
@@ -484,7 +484,7 @@
 	else
 		T.maptext = "[power.required_chems] ([power.chems_drain])"
 
-	overlays.Add(T)
+	AddOverlays(T)
 
 /obj/screen/ability/changeling_power/activate()
 	power.use(usr)
@@ -495,8 +495,8 @@
 	icon_state = "vampire_spell_base"
 	open_state = "vamp_open"
 	closed_state = "vamp_closed"
-	overlays.len = 0
-	overlays.Add(open_state)
+	ClearOverlays()
+	AddOverlays(open_state)
 
 /obj/screen/ability/vampire_power
 	background_base_state = "vampire"
@@ -529,22 +529,22 @@
 	for(var/obj/screen/ability/vampire_power/P in vampire_power_objects)
 		P.update_icon()
 
-/obj/screen/ability/vampire_power/update_icon()
+/obj/screen/ability/vampire_power/on_update_icon()
 	if(!power)
 		qdel(src)
 		return
 
-	overlays.Cut()
+	ClearOverlays()
 
 	icon_state = "[background_base_state]_spell_[power.is_usable(TRUE) ? "ready" : "base"]"
-	overlays.Add(power.icon_state)
+	AddOverlays(power.icon_state)
 
 	if(power.cooldown > 0)
-		overlays.Add("vampire_cooldown")
+		AddOverlays("vampire_cooldown")
 
 	if(istype(power, /datum/vampire_power/toggled))
 		if(power.active)
-			overlays.Add("vampire_spell_active")
+			AddOverlays("vampire_spell_active")
 
 	var/image/T = image(icon, "blank")
 	if(!power.blood_drain)
@@ -555,7 +555,7 @@
 	else
 		T.maptext = " [power.blood_cost] ([power.blood_drain])"
 
-	overlays.Add(T)
+	AddOverlays(T)
 
 /obj/screen/ability/vampire_power/activate()
 	power.use(usr)

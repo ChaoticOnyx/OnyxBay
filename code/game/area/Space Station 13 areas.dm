@@ -81,7 +81,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	ambience_off = list(SFX_AMBIENT_SPACE)
 	ambience_powered = list(SFX_AMBIENT_SPACE)
 
-/area/space/update_icon()
+/area/space/on_update_icon()
 	return
 
 /area/space/atmosalert()

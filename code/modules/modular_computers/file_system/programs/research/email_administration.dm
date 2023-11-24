@@ -5,6 +5,7 @@
 	program_icon_state = "comm_monitor"
 	program_key_state = "generic_key"
 	program_menu_icon = "mail-open"
+	program_light_color = "#00CC00"
 	size = 12
 	category = PROG_ADMIN
 	requires_ntnet = 1

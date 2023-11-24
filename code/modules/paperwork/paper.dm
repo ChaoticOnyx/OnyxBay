@@ -162,7 +162,7 @@
 		if (grayscale)
 			img.color = list(0.3,0.3,0.3, 59,59,59, 11,11,11)
 		img.alpha = saturation * 255
-		overlays += img
+		AddOverlays(img)
 	update_icon()
 
 /obj/item/paper/proc/set_content(text, title, rawhtml = FALSE)
@@ -176,7 +176,7 @@
 	update_space()
 	update_icon()
 
-/obj/item/paper/update_icon()
+/obj/item/paper/on_update_icon()
 	if(dynamic_icon)
 		return
 	if(!crumpled)
@@ -454,7 +454,7 @@
 		if(!stamped)
 			stamped = new
 		stamped += P.type
-		overlays += stampoverlay
+		AddOverlays(stampoverlay)
 
 		to_chat(user, SPAN_NOTICE("You stamp the paper with your [P.name]."))
 
@@ -527,7 +527,7 @@
 	stamps = null
 	free_space = MAX_PAPER_MESSAGE_LEN
 	stamped = list()
-	overlays.Cut()
+	ClearOverlays()
 	generateinfolinks()
 	update_icon()
 

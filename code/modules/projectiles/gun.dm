@@ -153,7 +153,7 @@
 		update_icon() // In case item_state is set somewhere else.
 	..()
 
-/obj/item/gun/update_icon()
+/obj/item/gun/on_update_icon()
 	if(wielded_item_state)
 		var/mob/living/M = loc
 		if(istype(M))
@@ -171,7 +171,7 @@
 
 /obj/item/gun/dropped(mob/living/user)
 	. = ..()
-	overlays.Cut()
+	ClearOverlays()
 	update_icon()
 	clear_autofire()
 
@@ -664,11 +664,11 @@
 	if(!config.misc.toogle_gun_safety)
 		return
 
-	overlays.Cut()
+	ClearOverlays()
 	update_icon()
-	overlays += (image('icons/obj/guns/gui.dmi',"safety[safety()]"))
+	AddOverlays((image('icons/obj/guns/gui.dmi',"safety[safety()]")))
 	if(safety_icon)
-		overlays += (image(icon,"[safety_icon][safety()]"))
+		AddOverlays((image(icon,"[safety_icon][safety()]")))
 
 /obj/item/gun/verb/toggle_safety_verb()
 	set src in usr

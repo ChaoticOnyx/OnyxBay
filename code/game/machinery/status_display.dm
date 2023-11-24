@@ -29,8 +29,8 @@
 	var/index1                  // display index for scrolling messages or 0 if non-scrolling
 	var/index2
 	var/image/picture = null
-	var/image/picture_overlight = null
-	var/global/image/static_overlay = null
+	var/static/icon/static_overlay = null
+	var/static/mutable_appearance/ea_overlay = null
 
 	var/frequency = 1435		// radio frequency
 
@@ -56,9 +56,8 @@
 	GLOB.ai_status_display_list -= src
 	if(radio_controller)
 		radio_controller.remove_object(src, frequency)
-	overlays.Cut()
+	ClearOverlays()
 	QDEL_NULL(picture)
-	QDEL_NULL(picture_overlight)
 	return ..()
 
 // register for radio system
@@ -70,29 +69,26 @@
 
 	if(!picture)
 		picture = image('icons/obj/status_display.dmi', icon_state = "blank")
-
-	if(!picture_overlight)
-		picture_overlight = image('icons/obj/status_display.dmi', icon_state = "blank")
-		picture_overlight.alpha = 96
-		picture_overlight.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		picture_overlight.layer = ABOVE_LIGHTING_LAYER
-		picture_overlight.maptext_height = maptext_height
-		picture_overlight.maptext_width = maptext_width
-		picture_overlight.maptext_y = maptext_y
+		picture.maptext_height = maptext_height
+		picture.maptext_width = maptext_width
+		picture.maptext_y = maptext_y
 
 	if(!static_overlay)
-		static_overlay = image('icons/obj/status_display.dmi', icon_state = "static")
-		static_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		static_overlay.layer = ABOVE_LIGHTING_LAYER
+		var/image/SO = image(icon, "static")
+		SO.alpha = 64
+		static_overlay = SO
+
+	if(!ea_overlay)
+		ea_overlay = emissive_appearance(icon, "outline")
 
 // timed process
 /obj/machinery/status_display/Process()
 	if(stat & NOPOWER)
 		last_stat = stat
 		if(overlays.len)
-			overlays.Cut()
-		if(picture_overlight.maptext)
-			picture_overlight.maptext = ""
+			ClearOverlays()
+		if(picture.maptext)
+			picture.maptext = ""
 		set_light(0)
 		return
 	if(stat == last_stat)
@@ -217,22 +213,22 @@
 		remove_display(force_update)
 		picture_state = state
 		picture.icon_state = "[picture_state]"
-		picture_overlight.icon_state = "[picture_state]"
 
-		overlays += picture
-		overlays += picture_overlight
-		overlays += static_overlay
+		AddOverlays(picture)
+		AddOverlays(static_overlay)
+		AddOverlays(ea_overlay)
 
 		set_light(0.5, 0.1, 1, 2, COLOR_WHITE)
 
 /obj/machinery/status_display/proc/update_display(line1, line2, force_update = FALSE)
 	var/new_text = {"<div style="font-size:[FONT_SIZE];color:[FONT_COLOR];font:'[FONT_STYLE]';text-align:center;" valign="top">[line1]<br>[line2]</div>"}
-	if(picture_overlight.maptext != new_text || force_update)
+	if(picture.maptext != new_text || force_update)
 		remove_display(force_update)
-		picture_overlight.icon_state = "blank"
-		picture_overlight.maptext = new_text
-		overlays += picture_overlight
-		overlays += static_overlay
+		picture.icon_state = "blank"
+		picture.maptext = new_text
+		AddOverlays(picture)
+		AddOverlays(static_overlay)
+		AddOverlays(ea_overlay)
 		set_light(0.5, 0.1, 1, 2, COLOR_WHITE)
 
 /obj/machinery/status_display/proc/get_evac_shuttle_timer()
@@ -254,10 +250,9 @@
 
 /obj/machinery/status_display/proc/remove_display(update_light = TRUE)
 	picture_state = ""
-	if(overlays.len)
-		overlays.Cut()
-	if(picture_overlight.maptext)
-		picture_overlight.maptext = ""
+	ClearOverlays()
+	if(picture.maptext)
+		picture.maptext = ""
 	if(update_light)
 		set_light(0)
 

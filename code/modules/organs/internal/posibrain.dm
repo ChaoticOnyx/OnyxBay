@@ -128,8 +128,8 @@
 	else if(brainmob?.ssd_check())
 		desc += SPAN("deadsay", "\nIt appears to be in stand-by mode.")
 
-/obj/item/organ/internal/cerebrum/posibrain/update_icon()
-	overlays.Cut()
+/obj/item/organ/internal/cerebrum/posibrain/on_update_icon()
+	ClearOverlays()
 
 	if(brainmob?.key)
 		icon_state = "posibrain-occupied"
@@ -139,7 +139,7 @@
 		icon_state = "posibrain-idle"
 
 	if(shackled)
-		overlays += "posibrain-shackles"
+		AddOverlays("posibrain-shackles")
 
 /obj/item/organ/internal/cerebrum/posibrain/proc/show_laws_brain()
 	set category = "Shackle"

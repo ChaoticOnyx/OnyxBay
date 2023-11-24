@@ -52,7 +52,7 @@
 	update_icon()
 	operating = 0
 
-/obj/machinery/button/update_icon()
+/obj/machinery/button/on_update_icon()
 	if(active)
 		icon_state = "launcheract"
 	else
@@ -63,7 +63,7 @@
 	icon = 'icons/obj/power.dmi'
 	icon_state = "light0"
 
-/obj/machinery/button/switch/update_icon()
+/obj/machinery/button/switch/on_update_icon()
 	icon_state = "light[active]"
 
 //alternate button with the same functionality, except has a door control sprite instead
@@ -71,7 +71,7 @@
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "doorctrl0"
 
-/obj/machinery/button/alternate/update_icon()
+/obj/machinery/button/alternate/on_update_icon()
 	if(active)
 		icon_state = "doorctrl0"
 	else
@@ -97,7 +97,7 @@
 	icon = 'icons/obj/power.dmi'
 	icon_state = "light0"
 
-/obj/machinery/button/toggle/switch/update_icon()
+/obj/machinery/button/toggle/switch/on_update_icon()
 	icon_state = "light[active]"
 
 
@@ -107,7 +107,7 @@
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "doorctrl0"
 
-/obj/machinery/button/toggle/alternate/update_icon()
+/obj/machinery/button/toggle/alternate/on_update_icon()
 	if(active)
 		icon_state = "doorctrl0"
 	else
@@ -159,7 +159,7 @@
 				8 = shock
 				16 = door safties  */
 
-/obj/machinery/button/toggle/door/update_icon()
+/obj/machinery/button/toggle/door/on_update_icon()
 	if(active)
 		icon_state = "[initial(icon_state)]"
 	else
@@ -217,7 +217,7 @@
 	. = ..()
 	radio_connection = radio_controller.add_object(src, frequency, RADIO_ATMOSIA)
 
-/obj/machinery/button/toggle/valve/update_icon()
+/obj/machinery/button/toggle/valve/on_update_icon()
 	if(!active)
 		icon_state = "launcherbtt"
 	else

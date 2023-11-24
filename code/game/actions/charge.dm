@@ -59,7 +59,7 @@
 		var/image/img = image(button_icon,button,"bg_active")
 		img.pixel_x = 0
 		img.pixel_y = 0
-		button.overlays+=img
+		button.AddOverlays(img)
 		active = TRUE
 		return TRUE
 

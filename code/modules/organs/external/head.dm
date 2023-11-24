@@ -99,12 +99,33 @@
 	if (burn_dam > 40)
 		disfigure("burn")
 
-/obj/item/organ/external/head/update_icon()
-	overlays.Cut()
+/obj/item/organ/external/head/get_icon_key()
 	. = ..()
-	if(!.)
-		return
+	if(owner?.lip_style && !BP_IS_ROBOTIC(src) && (species && (species.appearance_flags & HAS_LIPS)))
+		. += "[owner.lip_style]"
+	else
+		. += "nolips"
 
+	if(owner)
+		var/datum/species/S = owner.species
+		var/has_eyes_overlay = S.has_eyes_icon
+		if(BP_IS_ROBOTIC(src)) // Robolimbs don't always have eye icon.
+			var/datum/robolimb/R = GLOB.all_robolimbs[model]
+			has_eyes_overlay = R.has_eyes_icon
+		if(has_eyes_overlay)
+			var/obj/item/organ/internal/eyes/eyes = owner.internal_organs_by_name[S.vision_organ ? S.vision_organ : BP_EYES]
+			if(!ishuman(loc))
+				for(var/thing in contents)
+					if(istype(thing, /obj/item/organ/internal/eyes))
+						eyes = thing
+			if(eyes)
+				. += "[rgb(eyes.eye_colour[1], eyes.eye_colour[2], eyes.eye_colour[3])]"
+			else if(owner.should_have_organ(BP_EYES))
+				. += "eyeless"
+
+
+/obj/item/organ/external/head/on_update_icon()
+	..()
 	if(owner)
 		var/datum/species/S = owner.species
 		var/has_eyes_overlay = S.has_eyes_icon
@@ -123,26 +144,26 @@
 						eyes = thing
 			if(eyes)
 				eyes_icon.Blend(rgb(eyes.eye_colour[1], eyes.eye_colour[2], eyes.eye_colour[3]), ICON_ADD)
+				var/mutable_appearance/eye_appearance = mutable_appearance(eyes_icon, flags = DEFAULT_APPEARANCE_FLAGS)
+				mob_overlays |= eye_appearance
 			else if(owner.should_have_organ(BP_EYES))
 				eyes_icon = new /icon(eye_icon_location, "eyeless[BB.index]")
-				eyes_icon.Blend(rgb(128,0,0), ICON_ADD)
-			else
-				eyes_icon.Blend(rgb(128,0,0), ICON_ADD)
-			mob_icon.Blend(eyes_icon, ICON_OVERLAY)
-			overlays |= eyes_icon
+				var/mutable_appearance/eye_appearance = mutable_appearance(eyes_icon, flags = DEFAULT_APPEARANCE_FLAGS)
+				mob_overlays |= eye_appearance
 
 		if(owner.lip_style && !BP_IS_ROBOTIC(src) && (species && (species.appearance_flags & HAS_LIPS)))
-			var/icon/lip_icon = new /icon(S.icobase, "lips[BB.index]")
-			lip_icon.Blend(owner.lip_style, ICON_ADD)
-			mob_icon.Blend(lip_icon, ICON_OVERLAY)
-			overlays |= lip_icon
+			var/mutable_appearance/lip_appearance = mutable_appearance(S.icobase, "lips[BB.index]",flags = DEFAULT_APPEARANCE_FLAGS)
+			mob_overlays |= lip_appearance
 
-		overlays |= get_hair_icon()
+	SetOverlays(mob_overlays)
 
-	return mob_icon
+	AddOverlays(get_hair_icon()) // Hair is handled separately for mob icon so we do not add it to mob_overlays Maybe this should change sometime
 
 /obj/item/organ/external/head/proc/get_hair_icon()
 	var/image/res = image(species.icon_template,"")
+	if(!owner)
+		return res
+
 	if(owner.f_style)
 		var/datum/sprite_accessory/FH = GLOB.facial_hair_styles_list[owner.f_style]
 		if(FH?.species_allowed && species.facial_hair_key && (species.name in FH.species_allowed))
@@ -153,7 +174,7 @@
 				FHI = icon(GLOB.facial_hair_icons["default"][species.hair_key], FH.icon_state)
 			if(FH.do_coloration)
 				FHI.Blend(rgb(owner.r_facial, owner.g_facial, owner.b_facial), FH.blend)
-			res.overlays |= FHI
+			res.AddOverlays(FHI)
 
 	if(owner.h_style)
 		var/icon/HI
@@ -198,10 +219,11 @@
 					ADD_SORTED(sorted_hair_markings, list(list(M.draw_order, I)), /proc/cmp_marking_order)
 			for(var/entry in sorted_hair_markings)
 				HI.Blend(entry[2], ICON_OVERLAY)
-			res.overlays |= HI
+			//TODO : Add emissive blocker here if hair should block it. Else, leave as is
+			res.AddOverlays(HI)
 
 		if(HSI)
-			res.overlays |= HSI
+			res.AddOverlays(HSI)
 
 	var/list/sorted_head_markings = list()
 	for(var/E in markings)
@@ -219,7 +241,7 @@
 				I.Blend(color, ICON_ADD)
 			ADD_SORTED(sorted_head_markings, list(list(M.draw_order, I)), /proc/cmp_marking_order)
 	for(var/entry in sorted_head_markings)
-		res.overlays |= entry[2]
+		res.AddOverlays(entry[2])
 	return res
 
 /obj/item/organ/external/head/update_icon_drop(mob/living/carbon/human/powner)

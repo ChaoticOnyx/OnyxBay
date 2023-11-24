@@ -215,10 +215,10 @@
 	return
 
 
-/obj/item/paper_bundle/update_icon()
+/obj/item/paper_bundle/on_update_icon()
 	var/obj/item/paper/P = pages[1]
 	icon_state = P.icon_state
-	overlays = P.overlays
+	SetOverlays(P.overlays)
 	underlays = 0
 	var/i = 0
 	var/photo
@@ -236,12 +236,12 @@
 			var/obj/item/photo/Ph = O
 			img = Ph.tiny
 			photo = 1
-			overlays += img
+			AddOverlays(img)
 	if(i>1)
 		desc =  "[i] papers clipped to each other."
 	else
 		desc = "A single sheet of paper."
 	if(photo)
 		desc += "\nThere is a photo attached to it."
-	overlays += image('icons/obj/bureaucracy.dmi', "clip")
+	AddOverlays(image('icons/obj/bureaucracy.dmi', "clip"))
 	return

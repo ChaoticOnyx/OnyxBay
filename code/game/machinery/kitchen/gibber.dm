@@ -33,20 +33,20 @@
 	/// List of mobs to be gibbed.
 	var/list/mob/mobs_to_process
 
-/obj/machinery/gibber/update_icon()
-	overlays.Cut()
+/obj/machinery/gibber/on_update_icon()
+	ClearOverlays()
 	if(panel_open)
-		overlays += "gibber-panel"
+		AddOverlays("gibber-panel")
 
 	if(stat & (NOPOWER|BROKEN))
 		return
 
 	if(operating)
-		overlays += "gibber-use"
+		AddOverlays("gibber-use")
 	else if(length(mobs_to_process))
-		overlays += "gibber-jam"
+		AddOverlays("gibber-jam")
 	else
-		overlays += "gibber-idle"
+		AddOverlays("gibber-idle")
 
 /obj/machinery/gibber/RefreshParts()
 	var/time_modifier = 0
@@ -345,15 +345,15 @@
 
 	var/scoops_per_attempt = 1
 
-/obj/machinery/gibber/industrial/update_icon()
-	overlays.Cut()
+/obj/machinery/gibber/industrial/on_update_icon()
+	ClearOverlays()
 	if(stat & (NOPOWER|BROKEN))
 		return
 
 	if(operating)
-		overlays += "ind_gibber-use"
+		AddOverlays("ind_gibber-use")
 	else if(length(mobs_to_process))
-		overlays += "ind_gibber-jam"
+		AddOverlays("ind_gibber-jam")
 
 	return
 

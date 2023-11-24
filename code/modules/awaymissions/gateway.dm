@@ -33,7 +33,7 @@ GLOBAL_LIST_EMPTY(world_awaygateways)
 	linked.Cut()
 	return ..()
 
-/obj/machinery/gateway/update_icon()
+/obj/machinery/gateway/on_update_icon()
 	if(main_part)
 		icon_state = active ? "oncenter" : "offcenter"
 	else

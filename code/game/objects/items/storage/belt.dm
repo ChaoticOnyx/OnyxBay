@@ -22,7 +22,7 @@
 	use_alt_layer = !use_alt_layer
 	update_icon()
 
-/obj/item/storage/update_icon()
+/obj/item/storage/on_update_icon()
 	if (ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_belt()
@@ -32,7 +32,7 @@
 	var/image/ret = ..()
 	if(slot == slot_belt_str && contents.len)
 		for(var/obj/item/I in contents)
-			ret.overlays += image("icon" = 'icons/inv_slots/belts/mob.dmi', "icon_state" = "[I.item_state ? I.item_state : I.icon_state]")
+			ret.AddOverlays(image("icon" = 'icons/inv_slots/belts/mob.dmi', "icon_state" = "[I.item_state ? I.item_state : I.icon_state]"))
 	return ret
 
 /obj/item/storage/belt/utility

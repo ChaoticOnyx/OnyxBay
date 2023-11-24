@@ -53,7 +53,7 @@
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/gun/magnetic/update_icon()
+/obj/item/gun/magnetic/on_update_icon()
 	var/list/overlays_to_add = list()
 	if(removable_components)
 		if(cell)
@@ -69,7 +69,7 @@
 	if(loaded)
 		overlays_to_add += image(icon, "[icon_state]_loaded")
 
-	overlays = overlays_to_add
+	SetOverlays(overlays_to_add)
 	..()
 
 /obj/item/gun/magnetic/proc/show_ammo()

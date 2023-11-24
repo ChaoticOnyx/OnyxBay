@@ -84,7 +84,7 @@
 	to_chat(holder, SPAN_DANGER("You feel a sudden tug from an unknown force, and feel a pull to bluespace!"))
 	to_chat(holder, SPAN_NOTICE("Resist if you wish avoid the force!"))
 	bluespace = icon('icons/effects/effects.dmi',"chronofield")
-	holder.overlays += bluespace
+	holder.AddOverlays(bluespace)
 	return ..()
 
 /datum/modifier/status_effect/metroidrecall/proc/resistField()
@@ -94,7 +94,7 @@
 
 /datum/modifier/status_effect/metroidrecall/on_expire()
 	unregister_signal(holder, SIGNAL_MOB_RESIST)
-	holder.overlays -= bluespace
+	holder.CutOverlays(bluespace)
 	if(interrupted || !ismob(target))
 		to_chat(holder, SPAN_WARNING("The bluespace tug fades away, and you feel that the force has passed you by."))
 		return

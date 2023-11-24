@@ -30,15 +30,18 @@
 /obj/item/device/flashlight/Destroy()
 	activation_sound = null
 	switch_light(FALSE)
-	overlays.Cut()
+	ClearOverlays()
 	return ..()
 
-/obj/item/device/flashlight/update_icon()
-	overlays.Cut()
+/obj/item/device/flashlight/on_update_icon()
+	ClearOverlays()
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
 		if(light_overlay)
-			overlays += image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, brightness_color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
+			var/image/I = image(icon, "[initial(icon_state)]-overlay")
+			I.color = brightness_color
+			AddOverlays(I)
+			AddOverlays(emissive_appearance(icon, "[initial(icon_state)]-ea"))
 	else
 		icon_state = "[initial(icon_state)]"
 
@@ -303,11 +306,12 @@
 	fuel = rand(800, 1000) // Sorry for changing this so much but I keep under-estimating how long X number of ticks last in seconds.
 	..()
 
-/obj/item/device/flashlight/flare/update_icon()
-	overlays.Cut()
+/obj/item/device/flashlight/flare/on_update_icon()
+	ClearOverlays()
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
-		overlays += image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, brightness_color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
+		AddOverlays(image(icon, "[initial(icon_state)]-overlay"))
+		AddOverlays(emissive_appearance(icon, "[initial(icon_state)]-ea"))
 	else
 		icon_state = "[initial(icon_state)][fuel ? "" : "-empty"]"
 
@@ -380,16 +384,18 @@
 	on = 0
 	update_icon()
 
-/obj/item/device/flashlight/glowstick/update_icon()
+/obj/item/device/flashlight/glowstick/on_update_icon()
 	item_state = "glowstick"
-	overlays.Cut()
+	ClearOverlays()
 	if(!fuel)
 		icon_state = "glowstick-empty"
 		set_light(0)
 	else if(on)
-		var/image/I = image_repository.overlay_image(icon, "glowstick-on", alpha, RESET_COLOR, brightness_color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
-		I.blend_mode = BLEND_ADD
-		overlays += I
+		icon_state = "[initial(icon_state)]-on"
+		var/image/I = image(icon, "[initial(icon_state)]-overlay")
+		I.color = brightness_color
+		AddOverlays(I)
+		AddOverlays(emissive_appearance(icon, "[initial(icon_state)]-ea"))
 		item_state = "glowstick-on"
 		set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, 2, brightness_color)
 	else
@@ -460,7 +466,7 @@
 	. = ..()
 	set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, 2, brightness_color)
 
-/obj/item/device/flashlight/metroid/update_icon()
+/obj/item/device/flashlight/metroid/on_update_icon()
 	return
 
 /obj/item/device/flashlight/metroid/attack_self(mob/user)

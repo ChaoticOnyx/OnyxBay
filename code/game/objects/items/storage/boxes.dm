@@ -167,10 +167,10 @@
 	storage_slots = 20
 	max_storage_space = 20
 
-/obj/item/storage/box/shotgun/update_icon()
+/obj/item/storage/box/shotgun/on_update_icon()
 	. = ..()
 
-	overlays = list()
+	ClearOverlays()
 
 	for (var/i = 1, i < contents.len, i++)
 		if (i == 1 || i % 3 == 0)
@@ -179,7 +179,7 @@
 			if (i != 1)
 				I.Shift(WEST, i)
 
-			overlays |= I
+			AddOverlays(I)
 
 /obj/item/storage/box/shotgun/shells
 	icon_state = "shotgunshells"

@@ -97,7 +97,7 @@ var/global/list/minevendor_list = list( //keep in order of price
 	..()
 	update_icon()
 
-/obj/machinery/mineral/equipment_vendor/update_icon()
+/obj/machinery/mineral/equipment_vendor/on_update_icon()
 	if(powered())
 		icon_state = initial(icon_state)
 	else

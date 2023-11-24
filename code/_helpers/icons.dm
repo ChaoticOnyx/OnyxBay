@@ -449,7 +449,6 @@
 	if(gray <= tone_gray) return BlendRGB("#000000", tone, gray / (tone_gray || 1))
 	else return BlendRGB(tone, "#ffffff", (gray - tone_gray) / ((255 - tone_gray) || 1))
 
-
 /*
 	Get flat icon by DarkCampainger. As it says on the tin, will return an icon with all the overlays
 	as a single icon. Useful for when you want to manipulate an icon via the above as overlays are not normally included.
@@ -506,7 +505,7 @@
 
 	var/render_icon = curicon
 
-	if (render_icon)
+	if(render_icon)
 		var/curstates = icon_states(curicon)
 		if(!(curstate in curstates))
 			if ("" in curstates)
@@ -559,7 +558,11 @@
 		var/addY1 = 0
 		var/addY2 = 0
 
-		for(var/image/layer_image as anything in layers)
+		for(var/I in layers)
+			var/image/layer_image = I
+			if(layer_image.plane == EMISSIVE_PLANE) // Just replace this with whatever it is TG is doing these days sometime. Getflaticon breaks emissives
+				continue
+
 			if(layer_image.alpha == 0)
 				continue
 
@@ -664,7 +667,7 @@
 			if(2)	I.pixel_x++
 			if(3)	I.pixel_y--
 			if(4)	I.pixel_y++
-		overlays += I // And finally add the overlay.
+		AddOverlays(I) // And finally add the overlay.
 
 // For determining the color of holopads based on whether they're short or long range.
 #define HOLOPAD_SHORT_RANGE 1
@@ -907,3 +910,34 @@
 		return "<img class='game-icon' src='data:image/png;base64,[cached]'>"
 
 	CRASH("[thing] is must be a path or an icon")
+
+/mob/living/carbon/human/proc/generate_preview()
+	var/icon/flat = icon('icons/effects/blank.dmi') // Final flattened icon
+
+	// Layers will be a sorted list of icons/overlays, based on the order in which they are displayed
+	var/list/layers = overlays.Copy()
+	var/icon/add // Icon of overlay being added
+
+	for(var/I in layers)
+		if(isnull(I))
+			continue
+		var/image/layer_image = I
+		if(layer_image.plane != FLOAT_PLANE)
+			continue
+
+		if(!layer_image.icon)
+			continue
+
+		if(layer_image.alpha == 0)
+			continue
+
+		//add = icon(layer_image.icon, layer_image.icon_state, dir)
+		add = getFlatIcon(image(I), dir, null, null, null, FALSE, TRUE, TRUE)
+		flat.Blend(add, ICON_OVERLAY)
+
+	if(color)
+		flat.Blend(color, ICON_MULTIPLY)
+	if(alpha < 255)
+		flat.Blend(rgb(255, 255, 255, alpha), ICON_MULTIPLY)
+
+	return icon(flat, "", SOUTH)

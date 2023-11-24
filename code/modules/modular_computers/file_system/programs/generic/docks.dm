@@ -6,6 +6,7 @@
 	program_icon_state = "supply"
 	program_key_state = "rd_key"
 	program_menu_icon = "triangle-2-e-w"
+	program_light_color = "#B88B2E"
 	extended_desc = "A management tool that lets you see the status of the docking ports."
 	size = 10
 	category = PROG_SUPPLY

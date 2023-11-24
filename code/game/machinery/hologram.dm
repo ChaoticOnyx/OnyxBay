@@ -240,15 +240,15 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 		var/datum/computer_file/crew_record/R = get_crewmember_record(caller_id.name)
 		if(R)
 			tempicon = R.photo_front
-		hologram.overlays += getHologramIcon(icon(tempicon), hologram_color = holopadType) // Add the callers image as an overlay to keep coloration!
+		hologram.AddOverlays(getHologramIcon(icon(tempicon), hologram_color = holopadType)) // Add the callers image as an overlay to keep coloration!
 	else
 		if(holopadType == HOLOPAD_LONG_RANGE)
-			hologram.overlays += A.holo_icon_longrange
+			hologram.AddOverlays(A.holo_icon_longrange)
 		else
-			hologram.overlays += A.holo_icon // Add the AI's configured holo Icon
+			hologram.AddOverlays(A.holo_icon) // Add the AI's configured holo Icon
 	if(A)
 		if(A.holo_icon_malf == TRUE)
-			hologram.overlays += icon("icons/effects/effects.dmi", "malf-scanline")
+			hologram.AddOverlays(image("icons/effects/effects.dmi", "malf-scanline"))
 	hologram.mouse_opacity = 0//So you can't click on it.
 	hologram.layer = ABOVE_HUMAN_LAYER //Above all the other objects/mobs. Or the vast majority of them.
 	hologram.anchored = 1//So space wind cannot drag it.

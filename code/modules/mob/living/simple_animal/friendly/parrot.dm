@@ -51,6 +51,8 @@
 	stop_automated_movement = 1
 	universal_speak = 1
 
+	blocks_emissive = EMISSIVE_BLOCK_UNIQUE
+
 	var/phrase_chance = 15 // 15% chance every tick to add phrase from buffer to speaklist
 
 	var/parrot_state = PARROT_WANDER //Hunt for a perch when created

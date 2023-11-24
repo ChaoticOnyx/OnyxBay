@@ -175,16 +175,16 @@
 		dry()
 		update_icon()
 
-/obj/machinery/smartfridge/drying_rack/update_icon()
-	overlays.Cut()
+/obj/machinery/smartfridge/drying_rack/on_update_icon()
+	ClearOverlays()
 	if(inoperable())
 		icon_state = icon_off
 	else
 		icon_state = icon_on
 	if(contents.len)
-		overlays += "drying_rack_filled"
+		AddOverlays("drying_rack_filled")
 		if(!inoperable())
-			overlays += "drying_rack_drying"
+			AddOverlays("drying_rack_drying")
 
 /obj/machinery/smartfridge/drying_rack/proc/dry()
 	for(var/datum/stored_items/I in item_records)
@@ -209,15 +209,15 @@
 	if(src.shoot_inventory && prob(2))
 		src.throw_item()
 
-/obj/machinery/smartfridge/update_icon()
+/obj/machinery/smartfridge/on_update_icon()
 	if(stat & (BROKEN|NOPOWER))
 		icon_state = icon_off // Some of them don't have any display cases thus not requiring an overlay
 	else
 		icon_state = icon_on
 	if(shows_number_of_items)
-		overlays.Cut()
+		ClearOverlays()
 		if(stat & (BROKEN|NOPOWER))
-			overlays += icon_off // The use of overlays allows us to see how much is stored inside, even if the machine happens to be unpowered
+			AddOverlays(icon_off) // The use of overlays allows us to see how much is stored inside, even if the machine happens to be unpowered
 		switch(contents.len)
 			if(0)
 				icon_state = icon_on
@@ -236,9 +236,9 @@
 	if(isScrewdriver(O))
 		panel_open = !panel_open
 		user.visible_message("[user] [panel_open ? "opens" : "closes"] the maintenance panel of \the [src].", "You [panel_open ? "open" : "close"] the maintenance panel of \the [src].")
-		overlays.Cut()
+		ClearOverlays()
 		if(panel_open)
-			overlays += image(icon, icon_panel)
+			AddOverlays(image(icon, icon_panel))
 		SSnano.update_uis(src)
 		return
 

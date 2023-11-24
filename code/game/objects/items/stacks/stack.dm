@@ -282,7 +282,7 @@
 			FT.stored_decals = null
 		if (F.stored_decals)
 			F.stored_decals = null
-		S.overlays.Cut()	//cuts off decal status icon applied in /turf/simulated/floor/proc/make_plating()
+		S.ClearOverlays()	//cuts off decal status icon applied in /turf/simulated/floor/proc/make_plating()
 
 	var/transfer = max(min(tamount, src.get_amount(), (S.get_max_amount() - S.get_amount())), 0)
 

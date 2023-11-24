@@ -992,7 +992,7 @@
 
 	return 0
 
-/mob/update_icon()
+/mob/on_update_icon()
 	return update_icons()
 
 // /mob/verb/face_direction()

@@ -37,9 +37,9 @@
 		playsound(user, 'sound/effects/weapons/energy/kinetic_reload.ogg', 60, FALSE)
 		update_icon()
 
-/obj/item/gun/energy/accelerator/update_icon()
-	overlays.Cut()
-	overlays += image(icon, "[initial(icon_state)]_over[pumped]")
+/obj/item/gun/energy/accelerator/on_update_icon()
+	ClearOverlays()
+	AddOverlays(image(icon, "[initial(icon_state)]_over[pumped]"))
 	..()
 
 /obj/item/gun/energy/accelerator/pistol

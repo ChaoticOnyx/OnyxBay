@@ -129,7 +129,7 @@ LINEN BINS
 	. += "\nThere are [amount] bed sheets in the bin."
 
 
-/obj/structure/bedsheetbin/update_icon()
+/obj/structure/bedsheetbin/on_update_icon()
 	if(!amount)
 		icon_state = "linenbin-empty"
 	else if (amount <= amount / 2)

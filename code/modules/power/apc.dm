@@ -280,7 +280,7 @@
 
 // update the APC icon to show the three base states
 // also add overlays for indicator lights
-/obj/machinery/power/apc/update_icon()
+/obj/machinery/power/apc/on_update_icon()
 	if(!status_overlays)
 		status_overlays = TRUE
 		generate_overlays()
@@ -312,32 +312,32 @@
 
 	if(!(update_state & UPDATE_ALLGOOD))
 		if(overlays.len)
-			overlays = 0
+			ClearOverlays()
 			return
 
 	if(update & 2)
-		if(overlays.len)
-			overlays.len = 0
+		if(length(overlays))
+			ClearOverlays()
 		if(!(stat & (BROKEN|MAINT)) && update_state & UPDATE_ALLGOOD)
-			overlays += status_overlays_lock[locked+1]
-			overlays += status_overlays_charging[charging+1]
+			AddOverlays(status_overlays_lock[locked+1])
 			if(operating)
-				overlays += status_overlays_equipment[equipment+1]
-				overlays += status_overlays_lighting[lighting+1]
-				overlays += status_overlays_environ[environ+1]
+				AddOverlays(status_overlays_charging[charging+1])
+				AddOverlays(status_overlays_equipment[equipment+1])
+				AddOverlays(status_overlays_lighting[lighting+1])
+				AddOverlays(status_overlays_environ[environ+1])
 
 				// Lock and Charging only "glow" if operating, on purpose
-				overlays += overlight_overlays_lock[locked+1]
-				overlays += overlight_overlays_charging[charging+1]
-				overlays += overlight_overlays_equipment[equipment+1]
-				overlays += overlight_overlays_lighting[lighting+1]
-				overlays += overlight_overlays_environ[environ+1]
+				AddOverlays(overlight_overlays_lock[locked+1])
+				AddOverlays(overlight_overlays_charging[charging+1])
+				AddOverlays(overlight_overlays_equipment[equipment+1])
+				AddOverlays(overlight_overlays_lighting[lighting+1])
+				AddOverlays(overlight_overlays_environ[environ+1])
 
 	if(update & 3)
 		if(update_state & (UPDATE_OPENED1|UPDATE_OPENED2|UPDATE_BROKE))
 			set_light(0)
 		else if(update_state & UPDATE_BLUESCREEN)
-			set_light(0.25, 0.5, 1, 2, "0000ff")
+			set_light(1.0, 0.5, 1, 2, "#0000ff")
 		else if(!(stat & (BROKEN|MAINT)) && update_state & UPDATE_ALLGOOD)
 			var/color
 			switch(charging)
@@ -347,7 +347,7 @@
 					color = "#4958dd"
 				if(2)
 					color = "#008000"
-			set_light(0.35, 0.5, 1, 2, color)
+			set_light(1.0, 0.5, 1, 2, color)
 		else
 			set_light(0)
 
@@ -1266,7 +1266,7 @@
 	update_icon()
 	return 1
 
-#define OVERLIGHT_IMAGE(a, b) a=image(icon, b); a.alpha=96; a.plane = EFFECTS_ABOVE_LIGHTING_PLANE; a.layer = ABOVE_LIGHTING_LAYER;
+#define OVERLIGHT_IMAGE(a, b) a=emissive_appearance(icon, b, alpha = 192);
 /obj/machinery/power/apc/proc/generate_overlays()
 	status_overlays_lock = new
 	status_overlays_charging = new

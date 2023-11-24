@@ -128,7 +128,7 @@
 	update_icon()
 	return
 
-/obj/item/reagent_containers/hypospray/autoinjector/update_icon()
+/obj/item/reagent_containers/hypospray/autoinjector/on_update_icon()
 	if(reagents.total_volume > 0)
 		icon_state = "[base_state]1"
 	else

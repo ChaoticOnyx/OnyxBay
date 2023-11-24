@@ -5,6 +5,23 @@
 	var/decl/backpack_outfit/backpack
 	var/list/backpack_metadata
 
+	var/equip_preview_mob = EQUIP_PREVIEW_ALL
+
+	var/icon/bgstate = "steel"
+	var/list/bgstate_options = list(
+		"steel",
+		"white",
+		"rough",
+		"dark",
+		"wood",
+		"FFF",
+		"888",
+		"000",
+		"asteroid",
+		"grass",
+		"plating",
+		"reinforced")
+
 /datum/category_item/player_setup_item/general/equipment
 	name = "Clothing"
 	sort_order = 4
@@ -27,12 +44,14 @@
 
 	var/load_backbag = R.read("backpack")
 	pref.backpack = backpacks_by_name[load_backbag] || get_default_outfit_backpack()
+	pref.bgstate = R.read("bgstate")
 
 /datum/category_item/player_setup_item/general/equipment/save_character(datum/pref_record_writer/W)
 	W.write("all_underwear", pref.all_underwear)
 	W.write("all_underwear_metadata", pref.all_underwear_metadata)
 	W.write("backpack", pref.backpack.name)
 	W.write("backpack_metadata", pref.backpack_metadata)
+	W.write("bgstate", pref.bgstate)
 
 /datum/category_item/player_setup_item/general/equipment/sanitize_character()
 	if(!istype(pref.all_underwear))
@@ -82,6 +101,11 @@
 
 /datum/category_item/player_setup_item/general/equipment/content()
 	. = list()
+	. += "<b>Preview:</b>"
+	. += "<br><a href='?src=\ref[src];cycle_bg=1'>Cycle preview background</a>"
+	. += "<br><a href='?src=\ref[src];toggle_preview_value=[EQUIP_PREVIEW_LOADOUT]'>[pref.equip_preview_mob & EQUIP_PREVIEW_LOADOUT ? "Hide loadout gear" : "Show loadout gear"]</a>"
+	. += "<br><a href='?src=\ref[src];toggle_preview_value=[EQUIP_PREVIEW_JOB]'>[pref.equip_preview_mob & EQUIP_PREVIEW_JOB ? "Hide job gear" : "Show job gear"]</a><br><br>"
+
 	. += "<b>Equipment:</b><br>"
 	for(var/datum/category_group/underwear/UWC in GLOB.underwear.categories)
 		var/item_name = (pref.all_underwear && pref.all_underwear[UWC.name]) ? pref.all_underwear[UWC.name] : "None"
@@ -140,6 +164,7 @@
 		if(selected_underwear && CanUseTopic(user))
 			pref.all_underwear[UWC.name] = selected_underwear.name
 		return TOPIC_REFRESH_UPDATE_PREVIEW
+
 	else if(href_list["underwear"] && href_list["tweak"])
 		var/underwear = href_list["underwear"]
 		if(!(underwear in pref.all_underwear))
@@ -151,11 +176,13 @@
 		if(new_metadata)
 			set_underwear_metadata(underwear, gt, new_metadata)
 			return TOPIC_REFRESH_UPDATE_PREVIEW
+
 	else if(href_list["change_backpack"])
 		var/new_backpack = input(user, "Choose backpack style:", CHARACTER_PREFERENCE_INPUT_TITLE, pref.backpack) as null|anything in backpacks_by_name
 		if(!isnull(new_backpack) && CanUseTopic(user))
 			pref.backpack = backpacks_by_name[new_backpack]
 			return TOPIC_REFRESH_UPDATE_PREVIEW
+
 	else if(href_list["backpack"] && href_list["tweak"])
 		var/backpack_name = href_list["backpack"]
 		if(!(backpack_name in backpacks_by_name))
@@ -168,5 +195,13 @@
 		if(new_metadata)
 			set_backpack_metadata(bo, bt, new_metadata)
 			return TOPIC_REFRESH_UPDATE_PREVIEW
+
+	else if(href_list["toggle_preview_value"])
+		pref.equip_preview_mob ^= text2num(href_list["toggle_preview_value"])
+		return TOPIC_REFRESH_UPDATE_PREVIEW
+
+	else if(href_list["cycle_bg"])
+		pref.bgstate = next_in_list(pref.bgstate, pref.bgstate_options)
+		return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	return ..()

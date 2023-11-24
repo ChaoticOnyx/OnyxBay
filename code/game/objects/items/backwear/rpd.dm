@@ -58,7 +58,7 @@
 	base_unit = base
 	..(newloc)
 
-/obj/item/rpd/update_icon()
+/obj/item/rpd/on_update_icon()
 	icon_state = "rpd_[interaction_mode]"
 
 /obj/item/rpd/Destroy() //it shouldn't happen unless the base unit is destroyed but still

@@ -92,7 +92,7 @@
 	. = ..()
 	update_icon()
 
-/obj/item/shield/closet/update_icon()
+/obj/item/shield/closet/on_update_icon()
 	..()
 	if(isturf(loc))
 		SetTransform(rotation = 90)
@@ -601,8 +601,8 @@
 	else
 		to_chat(usr, SPAN_WARNING("This mob type can't use this verb."))
 
-/obj/structure/closet/update_icon()//Putting the welded stuff in update_icon() so it's easy to overwrite for special cases (Fridges, cabinets, and whatnot)
-	overlays.Cut()
+/obj/structure/closet/on_update_icon()//Putting the welded stuff in update_icon() so it's easy to overwrite for special cases (Fridges, cabinets, and whatnot)
+	ClearOverlays()
 
 	if(dremovable)
 		icon_state = "[icon_closed]nodoor"
@@ -610,30 +610,30 @@
 			if(!opened)
 				if(broken && icon_off)
 					var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_off]")
-					src.overlays += cdoor_icon
-					src.overlays += icon_broken
+					AddOverlays(cdoor_icon)
+					AddOverlays(icon_broken)
 				else if((setup & CLOSET_HAS_LOCK) && locked && cdoor.icon_locked)
 					var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_locked]")
-					src.overlays += cdoor_icon
+					AddOverlays(cdoor_icon)
 				else
 					var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_closed]")
-					src.overlays += cdoor_icon
+					AddOverlays(cdoor_icon)
 				if(welded)
-					overlays += "welded"
+					AddOverlays("welded")
 			else
 				var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_opened]")
-				src.overlays += cdoor_icon
+				AddOverlays(cdoor_icon)
 	else
 		if(!opened)
 			if(broken && icon_off)
 				icon_state = icon_off
-				overlays += icon_broken
+				AddOverlays(icon_broken)
 			else if((setup & CLOSET_HAS_LOCK) && locked && icon_locked)
 				icon_state = icon_locked
 			else
 				icon_state = icon_closed
 			if(welded)
-				overlays += "welded"
+				AddOverlays("welded")
 		else
 			icon_state = icon_opened
 

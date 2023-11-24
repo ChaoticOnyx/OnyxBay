@@ -37,7 +37,7 @@
 	pourer = null
 	return ..()
 
-/obj/item/reagent_containers/vessel/bottle/update_icon()
+/obj/item/reagent_containers/vessel/bottle/on_update_icon()
 	..()
 	underlays.Cut()
 	if(rag)
@@ -45,7 +45,7 @@
 		underlays += underlay_image
 		set_light(rag.light_max_bright, 0.1, rag.light_outer_range, 2, rag.light_color)
 	else if(pourer)
-		overlays += pourer_overlay
+		AddOverlays(pourer_overlay)
 		set_light(0)
 	else
 		set_light(0)

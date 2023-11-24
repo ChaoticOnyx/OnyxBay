@@ -197,7 +197,7 @@
 	var/list/obj/item/tool_images = list()
 	for(var/obj/item/tool in surgery_items)
 		var/image/img = image(icon = tool.icon, icon_state = tool.icon_state)
-		img.overlays = tool.overlays
+		img.CopyOverlays(tool)
 		tool_images[tool] = img
 	selected_tool = show_radial_menu(user, src, tool_images, radius = 42, require_near = TRUE, in_screen = TRUE)
 	to_chat(user, SPAN_NOTICE("You select to use [selected_tool ? selected_tool : "nothing"]"))
@@ -252,7 +252,7 @@
 
 				I.loc = src
 				carrying.Add(I)
-				overlays += image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer)
+				AddOverlays(image("icon") = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer)
 				addedSomething = 1
 		if (addedSomething)
 			user.visible_message(SPAN("notice", "'\The [user] load some items onto their service tray."))
@@ -278,7 +278,7 @@
 			dropspot = target.loc
 
 
-		overlays = null
+		ClearOverlays()
 
 		var droppedSomething = 0
 
@@ -784,7 +784,7 @@
 		)
 	capacity = 1
 
-/obj/item/robot_rack/update_icon()
+/obj/item/robot_rack/on_update_icon()
 	..()
 	if (length(held) < capacity)
 		icon_state = initial(icon_state)

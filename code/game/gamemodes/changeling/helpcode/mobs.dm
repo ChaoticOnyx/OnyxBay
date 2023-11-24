@@ -387,7 +387,7 @@
 	icon_dead = "headcrab_dead"
 
 
-/mob/living/simple_animal/hostile/little_changeling/headcrab/update_icon()
+/mob/living/simple_animal/hostile/little_changeling/headcrab/on_update_icon()
 	if(cloaked)
 		alpha = 25
 		set_light(0)

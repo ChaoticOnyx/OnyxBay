@@ -62,7 +62,7 @@
 	..()
 	update_icon()
 
-/obj/item/storage/bag/trash/update_icon()
+/obj/item/storage/bag/trash/on_update_icon()
 	switch(w_class)
 		if(2) icon_state = "trashbag0"
 		if(3) icon_state = "trashbag1"

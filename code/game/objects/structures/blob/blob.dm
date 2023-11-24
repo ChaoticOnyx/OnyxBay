@@ -159,7 +159,7 @@
 
 	set_next_think_ctx("upgrade", world.time + BLOB_UPGRADE_COOLDOWN)
 
-/obj/structure/blob/update_icon()
+/obj/structure/blob/on_update_icon()
 	var/hurt_percentage = round(health / max_health * 100)
 
 	if(hurt_percentage <= 50)

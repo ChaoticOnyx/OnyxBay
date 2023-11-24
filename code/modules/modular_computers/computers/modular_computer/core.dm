@@ -86,25 +86,31 @@
 		to_chat(user, "You emag \the [src]. It's screen briefly shows a \"OVERRIDE ACCEPTED: New software downloads available.\" message.")
 		return 1
 
-/obj/item/modular_computer/update_icon()
+/obj/item/modular_computer/on_update_icon()
 	icon_state = icon_state_unpowered
 
-	overlays.Cut()
+	ClearOverlays()
 	if(bsod)
-		overlays.Add("bsod")
+		AddOverlays("bsod")
 		return
 	if(!enabled)
 		if(icon_state_screensaver)
-			overlays.Add(icon_state_screensaver)
+			AddOverlays(icon_state_screensaver)
 		set_light(0)
 		return
-	set_light(0.2, 0.1, light_strength)
+	var/light_color = "#ffffff"
 	if(active_program)
-		overlays.Add(active_program.program_icon_state ? active_program.program_icon_state : icon_state_menu)
+		var/screen_state = active_program.program_icon_state ? active_program.program_icon_state : icon_state_menu
+		AddOverlays(screen_state)
+		AddOverlays(emissive_appearance(icon, screen_state))
 		if(active_program.program_key_state)
-			overlays.Add(active_program.program_key_state)
+			AddOverlays(active_program.program_key_state)
+			AddOverlays(emissive_appearance(icon, active_program.program_key_state))
+		light_color = active_program.program_light_color
 	else
-		overlays.Add(icon_state_menu)
+		AddOverlays(icon_state_menu)
+		AddOverlays(emissive_appearance(icon, icon_state_menu))
+	set_light(light_strength * 0.25, 0.5, active_program ? light_strength : light_strength * 0.5, 3.5, l_color = light_color)
 
 /obj/item/modular_computer/proc/turn_on(mob/user)
 	if(bsod)

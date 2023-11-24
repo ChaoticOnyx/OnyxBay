@@ -14,7 +14,7 @@
 	..()
 	update_icon()
 
-/obj/item/implanter/update_icon()
+/obj/item/implanter/on_update_icon()
 	if (imp)
 		icon_state = "implanter1"
 	else

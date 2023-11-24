@@ -38,7 +38,7 @@
 
 /mob/living/simple_animal/adultmetroid/New()
 	..()
-	overlays += "ametroid-:33"
+	AddOverlays("ametroid-:33")
 
 
 /mob/living/simple_animal/metroid/adult/death()

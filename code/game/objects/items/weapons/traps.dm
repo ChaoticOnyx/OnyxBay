@@ -106,7 +106,7 @@
 			update_icon()
 	..()
 
-/obj/item/beartrap/update_icon()
+/obj/item/beartrap/on_update_icon()
 	..()
 
 	if(!deployed)

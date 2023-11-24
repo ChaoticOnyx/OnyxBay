@@ -45,7 +45,7 @@
 			return "\The [src] is in excellent condition."
 
 
-/obj/item/airlock_brace/update_icon()
+/obj/item/airlock_brace/on_update_icon()
 	if(airlock)
 		icon_state = "brace_closed"
 	else

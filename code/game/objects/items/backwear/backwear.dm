@@ -33,7 +33,7 @@
 		else
 			QDEL_NULL(gear)
 
-/obj/item/backwear/reagent/update_icon()
+/obj/item/backwear/reagent/on_update_icon()
 	..()
 	if(!gear_detachable)
 		if(gear && gear.loc == src)
@@ -131,11 +131,11 @@
 /obj/item/backwear/powered
 	var/obj/item/cell/bcell = null
 
-/obj/item/backwear/powered/update_icon()
+/obj/item/backwear/powered/on_update_icon()
 	..()
-	overlays.Cut()
+	ClearOverlays()
 	if(!bcell)
-		overlays += image(icon = 'icons/obj/backwear.dmi', icon_state = "[base_icon]_nocell")
+		AddOverlays(image(icon) = 'icons/obj/backwear.dmi', icon_state = "[base_icon]_nocell")
 
 /obj/item/backwear/powered/Initialize()
 	. = ..()

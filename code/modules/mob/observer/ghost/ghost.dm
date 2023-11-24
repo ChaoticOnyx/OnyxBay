@@ -691,24 +691,12 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	return TRUE
 
 /mob/observer/ghost/proc/set_appearance(mob/target)
-	var/pre_alpha = alpha
-	var/pre_plane = plane
-	var/pre_layer = layer
-	var/pre_invis = invisibility
-	var/pre_opacity = opacity
-
-	appearance = target
-	appearance_flags |= initial(appearance_flags)
-	alpha = pre_alpha
-	plane = pre_plane
-	layer = pre_layer
-	opacity = pre_opacity
-
-	overlays -= target.active_typing_indicator
-	overlays -= target.active_thinking_indicator
-
-	set_invisibility(pre_invis)
 	ClearTransform()	//make goast stand up
+	ClearOverlays()
+	if(!target)
+		icon = initial(icon)
+	icon = null
+	CopyOverlays(target)
 
 /mob/observer/ghost/verb/respawn()
 	set name = "Respawn"

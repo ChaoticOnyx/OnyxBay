@@ -91,29 +91,29 @@
 				R.update_icon(0)
 
 // Greet the neighbors
-/obj/structure/railing/update_icon(UpdateNeighgors = 1)
+/obj/structure/railing/on_update_icon(UpdateNeighgors = 1)
 	NeighborsCheck(UpdateNeighgors)
-	overlays.Cut()
+	ClearOverlays()
 	if (!check || !anchored)
 		icon_state = "[material]railing"
 	else
 		icon_state = "[material]railing_full"
 		if (check & 32)
-			overlays += image ('icons/obj/railing.dmi', src, "[material]corneroverlay")
+			AddOverlays(image('icons/obj/railing.dmi', "[material]corneroverlay"))
 		if ((check & 16) || !(check & 32) || (check & 64))
-			overlays += image ('icons/obj/railing.dmi', src, "[material]frontoverlay_l")
+			AddOverlays(image('icons/obj/railing.dmi', "[material]frontoverlay_l"))
 		if (!(check & 2) || (check & 1) || (check & 4))
-			overlays += image ('icons/obj/railing.dmi', src, "[material]frontoverlay_r")
+			AddOverlays(image('icons/obj/railing.dmi', "[material]frontoverlay_r"))
 			if(check & 4)
 				switch (src.dir)
 					if (NORTH)
-						overlays += image ('icons/obj/railing.dmi', src, "[material]mcorneroverlay", pixel_x = 32)
+						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_x = 32))
 					if (SOUTH)
-						overlays += image ('icons/obj/railing.dmi', src, "[material]mcorneroverlay", pixel_x = -32)
+						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_x = -32))
 					if (EAST)
-						overlays += image ('icons/obj/railing.dmi', src, "[material]mcorneroverlay", pixel_y = -32)
+						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_y = -32))
 					if (WEST)
-						overlays += image ('icons/obj/railing.dmi', src, "[material]mcorneroverlay", pixel_y = 32)
+						AddOverlays(image('icons/obj/railing.dmi', "[material]mcorneroverlay", pixel_y = 32))
 
 /obj/structure/railing/verb/rotate()
 	set name = "Rotate Counter-Clockwise"

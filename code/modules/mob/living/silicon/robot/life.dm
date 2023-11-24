@@ -308,9 +308,9 @@
 			weaponlock_time = 120
 
 /mob/living/silicon/robot/update_fire()
-	overlays -= image("icon"='icons/mob/onfire.dmi', "icon_state" = "Standing")
+	CutOverlays(image("icon"='icons/mob/onfire.dmi', "icon_state" = "Standing"))
 	if(on_fire)
-		overlays += image("icon"='icons/mob/onfire.dmi', "icon_state" = "Standing")
+		AddOverlays(image("icon"='icons/mob/onfire.dmi', "icon_state" = "Standing"))
 
 /mob/living/silicon/robot/fire_act()
 	if(!on_fire) //Silicons don't gain stacks from hotspots, but hotspots can ignite them

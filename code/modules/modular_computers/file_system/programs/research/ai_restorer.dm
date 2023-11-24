@@ -4,6 +4,7 @@
 	program_icon_state = "generic"
 	program_key_state = "mining_key"
 	program_menu_icon = "person"
+	program_light_color = "#00B000"
 	extended_desc = "This program is capable of reconstructing damaged AI systems. It can also be used to upload basic laws to the AI. Requires direct AI connection via inteliCard slot."
 	size = 12
 	category = PROG_COMMAND

@@ -36,14 +36,14 @@ SUBSYSTEM_DEF(skybox)
 
 	for(var/obj/skybox/P in skyboxes)
 		P.color = null //We don't want the skybox to be colored.
-		P.overlays.Cut(0)
+		P.ClearOverlays()
 
 		var/image/BG = image(BGpath, src, "background_[BGstate]")
 		BG.plane = SKYBOX_PLANE
 		BG.layer = SKYBOX_LAYER
 		if(BGstate == initial(BGstate)) //Ew.
 			new_color_and_rotation(1.1) //This only allows dyable states anyways. It won't look bad or anything.
-		P.overlays += BG
+		P.AddOverlays(BG)
 
 		//Checking the subsystem deliberately, just to be safe. Allows the use of stars in universe
 		//states. You'll need to VV the subsystem for this to check custom files.
@@ -51,7 +51,7 @@ SUBSYSTEM_DEF(skybox)
 		if(use_stars)
 			var/image/stars = image(star_path, src, star_state)
 			stars.appearance_flags = RESET_COLOR
-			P.overlays += stars
+			P.AddOverlays(stars)
 
 //new_color_and_rotation(bool, bool, string) Where the string is to be a color in hexadecimal form. Accepts input as color.
 /datum/controller/subsystem/skybox/proc/new_color_and_rotation(do_rotate, do_recolor, forced_color)

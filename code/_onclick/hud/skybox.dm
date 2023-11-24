@@ -17,14 +17,14 @@
 	image = image('icons/turf/skybox.dmi', src, "background_[SSskybox.BGstate]")
 	image.plane = SKYBOX_PLANE
 	image.layer = SKYBOX_LAYER
-	overlays += image
+	AddOverlays(image)
 
 	if(SSskybox.use_stars)
 		stars = image('icons/turf/skybox.dmi', src, SSskybox.star_state)
 		stars.plane = DUST_PLANE
 		stars.layer = DUST_LAYER
 		stars.appearance_flags = RESET_COLOR
-		overlays += stars
+		AddOverlays(stars)
 	DoRotate()
 	update()
 
@@ -56,7 +56,7 @@
 	appearance = rotation
 
 /obj/skybox/Destroy()
-	overlays.Cut()
+	ClearOverlays()
 	if(owner)
 		if(owner.skybox == src)
 			owner.skybox = null

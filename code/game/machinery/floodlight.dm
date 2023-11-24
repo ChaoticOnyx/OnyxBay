@@ -22,8 +22,8 @@
 	QDEL_NULL(cell)
 	return ..()
 
-/obj/machinery/floodlight/update_icon()
-	overlays.Cut()
+/obj/machinery/floodlight/on_update_icon()
+	ClearOverlays()
 	icon_state = "flood[open ? "o" : ""][open && cell ? "b" : ""]0[on]"
 
 /obj/machinery/floodlight/Process()
@@ -116,7 +116,6 @@
 		if(unlocked)
 			if(open)
 				open = 0
-				overlays = null
 				to_chat(user, "You crowbar the battery panel in place.")
 			else
 				if(unlocked)

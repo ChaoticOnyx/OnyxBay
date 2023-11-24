@@ -79,7 +79,7 @@
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/clothing/mask/smokable/update_icon()
+/obj/item/clothing/mask/smokable/on_update_icon()
 	if(lit && icon_on)
 		icon_state = icon_on
 		item_state = icon_on

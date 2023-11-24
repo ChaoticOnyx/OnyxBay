@@ -76,9 +76,9 @@
 		user.visible_message("<span class='notice'>[user] puts [S.worth] [S.worth > 1 ? "credits" : "credit"] into \the [src].</span>")
 		update_icon()
 
-/obj/item/glass_jar/update_icon() // Also updates name and desc
+/obj/item/glass_jar/on_update_icon() // Also updates name and desc
 	underlays.Cut()
-	overlays.Cut()
+	ClearOverlays()
 	switch(contains)
 		if(0)
 			SetName(initial(name))

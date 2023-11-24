@@ -23,7 +23,7 @@
 /obj/item/tray/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	// Drop all the things. All of them.
-	overlays.Cut()
+	ClearOverlays()
 	for(var/obj/item/I in carrying)
 		I.loc = M.loc
 		carrying.Remove(I)
@@ -175,7 +175,7 @@
 
 			I.loc = src
 			carrying.Add(I)
-			overlays += image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer, "pixel_x" = I.pixel_x, "pixel_y" = I.pixel_y)
+			AddOverlays(image("icon") = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer, "pixel_x" = I.pixel_x, "pixel_y" = I.pixel_y)
 
 /obj/item/tray/dropped(mob/user)
 	..()
@@ -188,7 +188,7 @@
 			foundtable = 1
 			break
 
-		overlays.Cut()
+		ClearOverlays()
 
 		for(var/obj/item/I in carrying)
 			I.loc = loc

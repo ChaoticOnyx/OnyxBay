@@ -156,7 +156,7 @@
 	..()
 	update_icon()
 
-/obj/item/screwdriver/update_icon()
+/obj/item/screwdriver/on_update_icon()
 	SetTransform(rotation = istype(loc, /obj/item/storage) ? -90 : 0)
 
 /obj/item/screwdriver/old
@@ -471,15 +471,18 @@
 		return ITEM_SIZE_NO_CONTAINER
 	return ..()
 
-/obj/item/weldingtool/update_icon()
+/obj/item/weldingtool/on_update_icon()
 	..()
-
-	icon_state = welding ? "[initial(icon_state)]1" : "[initial(icon_state)]"
+	ClearOverlays()
 	item_state = welding ? "welder1" : "welder"
+
+	if(welding)
+		AddOverlays(image(icon, "[initial(icon_state)]-over"))
+		AddOverlays(emissive_appearance(icon, "[initial(icon_state)]-over"))
 
 	underlays.Cut()
 	if(tank)
-		var/image/tank_image = image(tank.icon, icon_state = tank.icon_state)
+		var/image/tank_image = image(tank.icon, tank.icon_state)
 		tank_image.pixel_z = 0
 		underlays += tank_image
 
@@ -505,7 +508,7 @@
 			damtype = "fire"
 			hitsound = 'sound/effects/flare.ogg' // Surprisingly it sounds just perfect
 			welding = 1
-			set_light(0.3, 0.5, 2, 2, "#e38f46")
+			set_light(1.0, 0.5, 2, 4.0, "#e38f46")
 			update_icon()
 			set_next_think(world.time)
 		else

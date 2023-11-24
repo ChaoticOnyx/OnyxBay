@@ -42,7 +42,7 @@
 		stored_alpha.Cut()
 	if(reset_objects.len)
 		for(var/obj/item/I in reset_objects)
-			I.overlays -= I.blood_overlay
+			I.CutOverlays(I.blood_overlay)
 			if(I.fluorescent == 2) I.fluorescent = 1
 		reset_objects.Cut()
 
@@ -65,7 +65,7 @@
 				if(istype(A, /obj/item))
 					var/obj/item/O = A
 					if(O.was_bloodied && !(O.blood_overlay in O.overlays))
-						O.overlays |= O.blood_overlay
+						O.AddOverlays(O.blood_overlay)
 						reset_objects |= O
 
 	set_next_think(world.time + 1 SECOND)
