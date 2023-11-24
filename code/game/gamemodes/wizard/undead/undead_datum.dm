@@ -28,7 +28,7 @@
 /datum/wizard/undead/proc/lichify()
 	lichified = TRUE
 	set_next_think(0)
-	my_mob.remove_spell(/datum/spell/undead/undead_evolution)
+	my_mob.spellremove()
 	my_mob.add_spell(new /datum/spell/toggled/lich_form)
 	my_mob.add_spell(new /datum/spell/aoe_turf/knock)
 	my_mob.add_spell(new /datum/spell/targeted/projectile/magic_missile)
