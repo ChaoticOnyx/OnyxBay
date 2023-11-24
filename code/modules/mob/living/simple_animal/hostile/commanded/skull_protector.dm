@@ -97,6 +97,21 @@
 		if(target_mob != master)
 			stance = HOSTILE_STANCE_ATTACK
 
+/mob/living/simple_animal/hostile/commanded/skull_protector/AttackTarget()
+	stop_automated_movement = TRUE
+	if(!target_mob)
+		LoseTarget()
+		return FALSE
+
+	if(next_move >= world.time)
+		return FALSE
+
+	say("I'm coming for you [target_mob]!")
+
+	if(get_dist(src, target_mob) <= 1)
+		AttackingTarget()
+		return TRUE
+
 /mob/living/simple_animal/hostile/commanded/skull_protector/AttackingTarget()
 	if(!Adjacent(target_mob))
 		return

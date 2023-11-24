@@ -35,6 +35,7 @@
 	impact_type = /obj/effect/projectile/impact/wizardwhip
 	kill_count = 1000
 	var/grabber = FALSE
+	projectile_light = FALSE
 
 /obj/item/projectile/whip_of_torment/on_hit(atom/target, blocked, def_zone)
 	if(isturf(target))
@@ -52,18 +53,16 @@
 			T.throw_at(firer, get_dist(firer, T) - 1, 1)
 	return ..()
 
-/obj/item/projectile/changeling_whip/on_impact(atom/A, use_impact = TRUE)
-	if(damage && damage_type == BURN)
-		var/turf/T = get_turf(A)
-		if(T)
-			T.hotspot_expose(700, 5)
-
 /obj/effect/projectile/muzzle/wizardwhip
 	icon_state = "muzzle_whip"
+	light_max_bright = 0
 
 /obj/effect/projectile/tracer/wizardwhip
 	icon_state = "tracer_whip"
+	light_max_bright = 0
+
 
 /obj/effect/projectile/impact/wizardwhip
 	var/time_to_live = 2
 	icon_state = "impact_whip"
+	light_max_bright = 0

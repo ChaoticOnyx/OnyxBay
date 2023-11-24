@@ -90,7 +90,7 @@
 		if(M.is_ic_dead() || M.isSynthetic() || isundead(M))
 			continue
 
-		M.adjustBruteLoss(2)
+		M.adjustBruteLoss(DAMAGE_PER_TICK)
 		damage_delivered += DAMAGE_PER_TICK
 		if(M.client || M.teleop) //If no client/SSD - we do not count their for damage so users wont supercharge this staff on monkeys
 			accumulated_damage += DAMAGE_PER_TICK
