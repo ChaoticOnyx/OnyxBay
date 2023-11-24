@@ -150,13 +150,7 @@
 	if(!immaterial_user)
 		return ..()
 
-	immaterial_user.buckled = null
-	var/turf/current_turf = get_turf(loc)
-	if(!immaterial_user.forceMove(current_turf))
-		for(var/direction in list(1,2,4,8,5,6,9,10))
-			var/turf/T = get_step(last_valid_turf, direction)
-			if(T && immaterial_user.forceMove(T))
-				break
+	immaterial_user.forceMove(last_valid_turf, TRUE)
 	return ..()
 
 #undef MANA_PER_EMPOWER
