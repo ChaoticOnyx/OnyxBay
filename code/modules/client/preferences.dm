@@ -34,8 +34,6 @@
 	var/client/client = null
 	var/client_ckey = null
 
-	var/datum/browser/popup
-
 	var/datum/category_collection/player_setup_collection/player_setup
 	var/datum/browser/panel
 
@@ -150,7 +148,7 @@
 	if(!SScharacter_setup.initialized || SSatoms.init_state < INITIALIZATION_INNEW_REGULAR)
 		to_chat(user, SPAN("notice", "Please, wait for the game to initialize!"))
 		return
-	popup = new(user, "preferences_browser","Character Setup", 1200, 800, src)
+	var/datum/browser/popup = new(user, "preferences_browser","Character Setup", 1200, 800, src)
 	var/content = {"
 	<script type='text/javascript'>
 		function update_content(data){
@@ -183,9 +181,8 @@
 /datum/preferences/Topic(href, list/href_list)
 	if(..())
 		return 1
-	if(href_list["close"])
-		popup = null
-	else if(href_list["save"])
+
+	if(href_list["save"])
 		save_preferences()
 		save_character()
 	else if(href_list["reload"])
