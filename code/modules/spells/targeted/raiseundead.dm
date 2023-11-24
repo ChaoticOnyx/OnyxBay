@@ -96,13 +96,17 @@
 		//var/datum/mind/wizard/necromind = necromancer.mind.wizard
 		necromancer.mind.wizard.thralls |= mind.wizard
 
+	to_chat(src, SPAN_DANGER("<font size=6>Your consciousness awakens in a cold body. You are alive, but at what cost?</font>"))
+
 	if(should_lichify)
 		var/datum/wizard/undead/undead = mind.wizard
+		necromancer.mind?.wizard?.lich = src
 		undead.lichify()
-
-	to_chat(necromancer, SPAN_WARNING("You feel a soul answering your call. You now have a new thrall."))
-
-	to_chat(src, SPAN_DANGER("<font size=6>Your consciousness awakens in a cold body. You are alive, but at what cost?</font>"))
-	to_chat(src, SPAN_DANGER("<font size=6>Raised as undead, stripped of free will you now have one task - obey your master, \the [necromancer].</font>"))
+		to_chat(necromancer, SPAN_WARNING("You feel a new connection forming... Now, you have a lich under your control!"))
+		to_chat(src, SPAN_DANGER("<font size=6>You are now a lich serving as an apprentice to your master, \the [necromancer].</font>"))
+	else
+		to_chat(necromancer, SPAN_WARNING("You feel a soul answering your call. You now have a new thrall."))
+		to_chat(src, SPAN_DANGER("<font size=6>Your consciousness awakens in a cold body. You are alive, but at what cost?</font>"))
+		to_chat(src, SPAN_DANGER("<font size=6>Raised as undead, stripped of free will you now have one task - obey your master, \the [necromancer].</font>"))
 
 #undef RAISE_UNDEAD_TIMEOUT
