@@ -105,6 +105,7 @@
 #define SP_RECHARGE	"recharge"
 #define SP_CHARGES	"charges"
 #define SP_HOLDVAR	"holdervar"
+#define SP_TOGGLED  "toggled"
 
 //Voting-related
 #define VOTE_PROCESS_ABORT    1

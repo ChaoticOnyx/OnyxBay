@@ -75,8 +75,6 @@ var/list/artefact_feedback = list(
 
 	for(var/T in GLOB.wizard_classes)
 		var/datum/wizard_class/C = GLOB.wizard_classes[T]
-		if(istype(C, /datum/wizard_class/lich))
-			continue
 		data["classes"] += list(C.to_list())
 
 	return data
@@ -245,20 +243,3 @@ var/list/artefact_feedback = list(
 		return
 
 	tgui_interact(user, null)
-
-/obj/item/spellbook/lich
-	name = "spell book"
-	desc = "The legendary book of spells of the wizard."
-
-/obj/item/spellbook/lich/tgui_static_data(mob/user)
-	var/list/data = list(
-		"classes" = list()
-	)
-
-	for(var/T in GLOB.wizard_classes)
-		if(!istype(T, /datum/wizard_class/lich))
-			continue
-		var/datum/wizard_class/C = GLOB.wizard_classes[T]
-		data["classes"] += list(C.to_list())
-
-	return data

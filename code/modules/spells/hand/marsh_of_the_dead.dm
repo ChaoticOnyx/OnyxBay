@@ -11,12 +11,15 @@
 	range = 5
 	spell_flags = 0
 	invocation_type = SPI_NONE
-	show_message = " snaps their fingers."
+	show_message = "snaps their fingers."
 	spell_delay = 50
 	icon_state = "wiz_marsh"
 	level_max = list(SP_TOTAL = 3, SP_SPEED = 1, SP_POWER = 2)
 	var/damage = 0
 	override_base = "const"
+	charge_max = 600
+	cooldown_min = 300
+
 
 /datum/spell/hand/marsh_of_the_dead/cast_hand(atom/a, mob/user)
 	for(var/turf/simulated/T in view(1,a))
@@ -27,6 +30,7 @@
 	. = ..()
 	if(!.)
 		return FALSE
+
 	damage += MARSH_DAMAGE_PER_UPGRADE
 
 	return "[src] now lasts longer."
@@ -36,8 +40,8 @@
 //////////////////////////////////
 /obj/effect/deadhands
 	name = "Hands of the dead" //TODO change this shit
-	icon = ""///
-	icon_state = ""////
+	icon = 'icons/obj/flora/junglevines.dmi'
+	icon_state = "heavy0"
 	layer = OBJ_LAYER
 	pass_flags = PASS_FLAG_TABLE
 	anchored = 1.0

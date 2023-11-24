@@ -6,6 +6,7 @@
 	item_state = "whip_of_torment"
 	fire_sound = null
 	fire_sound_text = null
+	clumsy_unaffected = TRUE
 
 	var/projectile_type = /obj/item/projectile/whip_of_torment
 

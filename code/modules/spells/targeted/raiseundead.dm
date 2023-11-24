@@ -1,4 +1,4 @@
-#define RAISE_UNDEAD_TIMEOUT 1.5 MINUTES
+#define RAISE_UNDEAD_TIMEOUT 30 SECONDS
 
 /datum/spell/targeted/raiseundead
 	name = "Raise the dead"
@@ -10,11 +10,14 @@
 	invocation_type = SPI_SHOUT
 
 	max_targets = 1
-	charge_max = 2
-	cooldown_min = 1
-	cast_delay = 0
+
+	charge_max = 6000
+	cooldown_min = 3000
+	cooldown_reduc = 1000
 
 	var/should_lichify = FALSE
+
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 3, SP_POWER = 0)
 
 	compatible_mobs = list(/mob/living/carbon/human)
 
@@ -64,6 +67,10 @@
 	var/mob/living/carbon/human/H = target
 	var/datum/ghosttrap/undead/trap = get_ghost_trap("undead")
 	trap.request_player(H, "A necromancer is requesting a soul to animate an undead body.", RAISE_UNDEAD_TIMEOUT, user, should_lichify)
+	addtimer(CALLBACK(src, .proc/draft_failure), RAISE_UNDEAD_TIMEOUT)
+
+/datum/spell/targeted/raiseundead/proc/draft_failure()
+	to_chat(holder, SPAN_WARNING("Your spell has failed. Perhaps you should try again later?"))
 
 /mob/living/carbon/human/proc/make_undead(mob/necromancer, should_lichify = FALSE)
 	if(!mind)
@@ -92,6 +99,8 @@
 	if(should_lichify)
 		var/datum/wizard/undead/undead = mind.wizard
 		undead.lichify()
+
+	to_chat(necromancer, SPAN_WARNING("You feel a soul answering your call. You now have a new thrall."))
 
 	to_chat(src, SPAN_DANGER("<font size=6>Your consciousness awakens in a cold body. You are alive, but at what cost?</font>"))
 	to_chat(src, SPAN_DANGER("<font size=6>Raised as undead, stripped of free will you now have one task - obey your master, \the [necromancer].</font>"))

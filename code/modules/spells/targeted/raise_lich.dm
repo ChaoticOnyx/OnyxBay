@@ -11,7 +11,7 @@
 	charge_max = 2
 	cooldown_min = 1
 
-	//level_max = list(SP_TOTAL = 3, SP_SPEED = 0, SP_POWER = 3)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 0, SP_POWER = 0)
 
 	compatible_mobs = list(/mob/living/carbon/human)
 
