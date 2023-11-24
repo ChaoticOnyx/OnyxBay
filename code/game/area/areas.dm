@@ -314,8 +314,13 @@ var/list/mob/living/forced_ambiance_list = new
 		var/mob/living/carbon/human/H = mob
 		if(istype(H.shoes, /obj/item/clothing/shoes/magboots) && (H.shoes.item_flags & ITEM_FLAG_NOSLIP))
 			return
+
+		if(H.buckled && istype(H.buckled, /obj/effect/dummy/immaterial_form))
+			return
+
 		if(H.species?.can_overcome_gravity(H))
 			return
+
 		H.AdjustStunned(1)
 		H.AdjustWeakened(1)
 		to_chat(mob, SPAN_WARNING("The sudden appearance of gravity makes you fall to the floor!"))

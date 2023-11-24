@@ -8,7 +8,6 @@
 	range = 2
 	max_targets = 0
 	level_max = list(SP_TOTAL = 0, SP_SPEED = 0, SP_POWER = 0)
-	cooldown_reduc = 300
 	icon_state = "undead_heal"
 
 	amt_dam_brute = -25

@@ -96,3 +96,14 @@
 		Aggro()
 		if(target_mob != master)
 			stance = HOSTILE_STANCE_ATTACK
+
+/mob/living/simple_animal/hostile/commanded/skull_protector/AttackingTarget()
+	if(!Adjacent(target_mob))
+		return
+
+	var/hit_zone = ran_zone()
+	target_mob.stun_effect_act(rand(2,5), rand(10, 90), hit_zone, src)
+	var/turf/location = get_turf(loc)
+	ASSERT(location)
+	explosion(location, -1, -1, 0, 4)
+	qdel_self()

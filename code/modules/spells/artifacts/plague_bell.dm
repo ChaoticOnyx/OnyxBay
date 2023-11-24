@@ -19,6 +19,7 @@
 	var/invocation_damage = "Adepto eam!"
 	var/damage_notification = "You are hit with a blast of something vile and abhorrent!"
 	action_button_name = "Toggle Siphon"
+	clumsy_unaffected = TRUE
 
 /obj/item/staff/plague_bell/attack_self(mob/user)
 	if(!master)

@@ -31,6 +31,8 @@
 	if(!isliving(lich))
 		return
 
+	if(MUTATION_SKELETON in lich.mutations)
+		lich.mutations.Remove(MUTATION_SKELETON)
 	necromancer.transfer_to(lich)
 
 /datum/wizard/Destroy()

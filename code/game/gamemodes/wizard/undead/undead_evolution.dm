@@ -71,12 +71,12 @@ var/list/undead_powers = typesof(/datum/power/undead) - /datum/power/undead
 
 	switch(action)
 		if("mutate")
-			mutate(params["name"])
+			mutate(params["power_name"])
 			return TRUE
 
 /datum/wizard/undead/proc/mutate(power_name)
-	var/datum/power/undead/PC
-	for(var/datum/power/undead/P in powerinstances)
+	var/datum/power/undead/PC = null
+	for(var/datum/power/undead/P in undead_powerinstances)
 		if(P.name == power_name)
 			PC = P
 			break
@@ -88,4 +88,7 @@ var/list/undead_powers = typesof(/datum/power/undead) - /datum/power/undead
 		to_chat(my_mob, SPAN("changeling", "We have already evolved this ability!"))
 		return
 
+	growth -= PC.price
+
 	purchased_powers += PC
+	PC.activate(my_mob)
