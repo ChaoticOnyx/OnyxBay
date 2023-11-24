@@ -19,9 +19,9 @@
 		if(I_DISARM)
 			P.weaken = 1
 		if(I_HURT)
-			P.damage = 15
+			P.damage = 10
 		else
-			P.agony = 15
+			P.agony = 8
 	return(P)
 
 /obj/item/projectile/whip_of_torment
