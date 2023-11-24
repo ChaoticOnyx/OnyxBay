@@ -834,13 +834,10 @@
 				eye_overlays = list()
 			var/image/eye_overlay = eye_overlays[eye_icon_state]
 			if(!eye_overlay)
-				eye_overlay = image(icon, eye_icon_state)
-				var/mutable_appearance/A = emissive_appearance(icon, eye_icon_state)
-				A.render_target = "*I am testing stuff ok"
-				eye_overlay.filters += filter(type = "layer", render_source = "*I am testing stuff ok")
-				eye_overlay.AddOverlays(A)
-				eye_overlays[eye_icon_state] = eye_overlay
+				eye_overlays[eye_icon_state] = image(icon, eye_icon_state)
+				eye_overlays["[eye_icon_state]+ea"] = emissive_appearance(icon, eye_icon_state)
 			AddOverlays(eye_overlay)
+			AddOverlays("[eye_icon_state]+ea")
 
 	if(opened)
 		var/panelprefix = custom_sprite ? module_hulls[icontype] : "ov"

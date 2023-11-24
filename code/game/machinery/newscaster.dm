@@ -210,7 +210,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 			AddOverlays(image(icon, "crack3"))
 		return
 
-	set_light(1.0, 0.5, 1, 1.5, "#4D9D73")
+	set_light(1.0, 0.5, 1, 1.5, "#33A568")
 	AddOverlays(ea_overlay)
 	if(news_network.wanted_issue) //wanted icon state, there can be no overlays on it as it's a priority message
 		icon_state = "newscaster_wanted"

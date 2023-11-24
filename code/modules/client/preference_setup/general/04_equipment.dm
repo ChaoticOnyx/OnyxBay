@@ -5,6 +5,23 @@
 	var/decl/backpack_outfit/backpack
 	var/list/backpack_metadata
 
+	var/equip_preview_mob = EQUIP_PREVIEW_ALL
+
+	var/icon/bgstate = "steel"
+	var/list/bgstate_options = list(
+		"steel",
+		"white",
+		"rough",
+		"dark",
+		"wood",
+		"FFF",
+		"888",
+		"000",
+		"asteroid",
+		"grass",
+		"plating",
+		"reinforced")
+
 /datum/category_item/player_setup_item/general/equipment
 	name = "Clothing"
 	sort_order = 4
@@ -27,12 +44,14 @@
 
 	var/load_backbag = R.read("backpack")
 	pref.backpack = backpacks_by_name[load_backbag] || get_default_outfit_backpack()
+	pref.bgstate = R.read("bgstate")
 
 /datum/category_item/player_setup_item/general/equipment/save_character(datum/pref_record_writer/W)
 	W.write("all_underwear", pref.all_underwear)
 	W.write("all_underwear_metadata", pref.all_underwear_metadata)
 	W.write("backpack", pref.backpack.name)
 	W.write("backpack_metadata", pref.backpack_metadata)
+	W.write("bgstate", pref.bgstate)
 
 /datum/category_item/player_setup_item/general/equipment/sanitize_character()
 	if(!istype(pref.all_underwear))
@@ -82,6 +101,11 @@
 
 /datum/category_item/player_setup_item/general/equipment/content()
 	. = list()
+	. += "<b>Preview:</b>"
+	. += "<br><a href='?src=\ref[src];cycle_bg=1'>Cycle preview background</a>"
+	. += "<br><a href='?src=\ref[src];toggle_preview_value=[EQUIP_PREVIEW_LOADOUT]'>[pref.equip_preview_mob & EQUIP_PREVIEW_LOADOUT ? "Hide loadout gear" : "Show loadout gear"]</a>"
+	. += "<br><a href='?src=\ref[src];toggle_preview_value=[EQUIP_PREVIEW_JOB]'>[pref.equip_preview_mob & EQUIP_PREVIEW_JOB ? "Hide job gear" : "Show job gear"]</a><br><br>"
+
 	. += "<b>Equipment:</b><br>"
 	for(var/datum/category_group/underwear/UWC in GLOB.underwear.categories)
 		var/item_name = (pref.all_underwear && pref.all_underwear[UWC.name]) ? pref.all_underwear[UWC.name] : "None"

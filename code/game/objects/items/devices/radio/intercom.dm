@@ -11,7 +11,7 @@
 	layer = ABOVE_WINDOW_LAYER
 	var/number = 0
 	var/last_tick //used to delay the powercheck
-	var/mutable_appearance/ea_overlay
+	var/static/mutable_appearance/ea_overlay
 
 /obj/item/device/radio/intercom/get_storage_cost()
 	return ITEM_SIZE_NO_CONTAINER

@@ -31,22 +31,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	var/disabilities = 0
 
 	var/has_cortical_stack = FALSE
-	var/equip_preview_mob = EQUIP_PREVIEW_ALL
-
-	var/icon/bgstate = "steel"
-	var/list/bgstate_options = list(
-		"steel",
-		"white",
-		"rough",
-		"dark",
-		"wood",
-		"FFF",
-		"888",
-		"000",
-		"asteroid",
-		"grass",
-		"plating",
-		"reinforced")
 
 /datum/category_item/player_setup_item/general/body
 	name = "Body"
@@ -79,7 +63,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	pref.rlimb_data = R.read("rlimb_data")
 	pref.has_cortical_stack = R.read("has_cortical_stack")
 	pref.body_markings = R.read("body_markings")
-	pref.bgstate = R.read("bgstate")
 
 /datum/category_item/player_setup_item/general/body/save_character(datum/pref_record_writer/W)
 	W.write("species", pref.species)
@@ -108,7 +91,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	W.write("rlimb_data", pref.rlimb_data)
 	W.write("has_cortical_stack", pref.has_cortical_stack)
 	W.write("body_markings", pref.body_markings)
-	W.write("bgstate", pref.bgstate)
 
 /datum/category_item/player_setup_item/general/body/sanitize_character()
 	if(!pref.species || !(pref.species in playable_species))
@@ -159,7 +141,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	. = list()
 
 	var/datum/species/mob_species = all_species[pref.species]
-	. += "<table><tr style='vertical-align:top'><td><b>Body</b> "
+	. += "<b>Body</b> "
 	. += "(<a href='?src=\ref[src];random=1'>&reg;</A>)"
 	. += "<br>"
 
@@ -269,12 +251,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		. += "\[...\]<br><br>"
 	else
 		. += "<br><br>"
-
-	. += "</td><td><b>Preview</b><br>"
-	. += "<br><a href='?src=\ref[src];cycle_bg=1'>Cycle preview background</a>"
-	. += "<br><a href='?src=\ref[src];toggle_preview_value=[EQUIP_PREVIEW_LOADOUT]'>[pref.equip_preview_mob & EQUIP_PREVIEW_LOADOUT ? "Hide loadout" : "Show loadout"]</a>"
-	. += "<br><a href='?src=\ref[src];toggle_preview_value=[EQUIP_PREVIEW_JOB]'>[pref.equip_preview_mob & EQUIP_PREVIEW_JOB ? "Hide job gear" : "Show job gear"]</a>"
-	. += "</td></tr></table>"
 
 	. += "<b>Hair</b><br>"
 	if(has_flag(mob_species, HAS_HAIR_COLOR))

@@ -156,6 +156,8 @@
 
 	var/current_mode = null
 
+	var/static/list/light_eas = list()
+
 /obj/machinery/light/vox
 	name = "alien light"
 	icon_state = "voxlight"
@@ -291,6 +293,11 @@
 
 		if(trigger && changed && get_status() == LIGHT_OK)
 			switch_check()
+
+		if(on)
+			if(!light_eas[icon_state])
+				light_eas[icon_state] = emissive_appearance(icon, "[icon_state]_ea")
+			AddOverlays(light_eas[icon_state])
 	else
 		if(lightbulb?.tone_overlay)
 			TO = image_repository.overlay_image(icon, "[icon_state]-over", TO_alpha, RESET_COLOR, TO_color, dir)
@@ -678,15 +685,15 @@
 	item_state = "c_tube"
 	matter = list(MATERIAL_GLASS = 100)
 
-	b_max_bright = 0.85
+	b_max_bright = 1.0
 	b_outer_range = 7
-	b_curve = 2.5
+	b_curve = 3.5
 	b_color = "#fffee0"
 	lighting_modes = list(
-		LIGHTMODE_EMERGENCY  = list(l_max_bright = 0.4,  l_inner_range = 1, l_outer_range = 5, l_falloff_curve = 2.5, l_color = "#da0205"),
-		LIGHTMODE_EVACUATION = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 2.5, l_color = "#bf0000"),
-		LIGHTMODE_ALARM      = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 2.5, l_color = "#ff3333"),
-		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.55, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 2.5, l_color = "#8A9929")
+		LIGHTMODE_EMERGENCY  = list(l_max_bright = 0.7,  l_inner_range = 1, l_outer_range = 5, l_falloff_curve = 3.5, l_color = "#da0205"),
+		LIGHTMODE_EVACUATION = list(l_max_bright = 1.0, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3.5, l_color = "#bf0000"),
+		LIGHTMODE_ALARM      = list(l_max_bright = 1.0, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3.5, l_color = "#ff3333"),
+		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3.5, l_color = "#8A9929")
 		)
 	sound_on = 'sound/machines/lightson.ogg'
 	random_tone = TRUE
@@ -726,16 +733,16 @@
 	broken_chance = 5
 	matter = list(MATERIAL_GLASS = 100)
 
-	b_max_bright = 0.4
-	b_inner_range = 0.75
+	b_max_bright = 0.85
+	b_inner_range = 0.6
 	b_outer_range = 4
-	b_curve = 4.0
+	b_curve = 4.5
 	b_color = "#a0a080"
 	lighting_modes = list(
-		LIGHTMODE_EMERGENCY  = list(l_max_bright = 0.3, l_inner_range = 0.5,  l_outer_range = 3, l_falloff_curve = 4.0, l_color = "#da0205"),
-		LIGHTMODE_EVACUATION = list(l_max_bright = 0.4, l_inner_range = 0.75, l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#bf0000"),
-		LIGHTMODE_ALARM      = list(l_max_bright = 0.4, l_inner_range = 0.75, l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#ff3333"),
-		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.3, l_inner_range = 0.5,  l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#8A9929")
+		LIGHTMODE_EMERGENCY  = list(l_max_bright = 0.7, l_inner_range = 0.5,  l_outer_range = 3, l_falloff_curve = 4.5, l_color = "#da0205"),
+		LIGHTMODE_EVACUATION = list(l_max_bright = 0.85, l_inner_range = 0.6, l_outer_range = 4, l_falloff_curve = 4.5, l_color = "#bf0000"),
+		LIGHTMODE_ALARM      = list(l_max_bright = 0.85, l_inner_range = 0.6, l_outer_range = 4, l_falloff_curve = 4.5, l_color = "#ff3333"),
+		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.7, l_inner_range = 0.5,  l_outer_range = 4, l_falloff_curve = 4.5, l_color = "#8A9929")
 		)
 	random_tone = TRUE
 
@@ -765,7 +772,7 @@
 	desc = "Old type of light bulbs, almost not being used at the station."
 	base_state = "lold_bulb"
 	broken_chance = 1
-	b_max_bright = 0.8
+	b_max_bright = 0.85
 	b_outer_range = 6
 	b_color = "#ec8b2f"
 	random_tone = FALSE
@@ -780,7 +787,7 @@
 
 /obj/item/light/bulb/red/readylight
 	lighting_modes = list(
-		LIGHTMODE_READY = list(l_max_bright = 0.4, l_inner_range = 0.5,  l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#00ff00")
+		LIGHTMODE_READY = list(l_max_bright = 0.85, l_inner_range = 0.5,  l_outer_range = 4, l_falloff_curve = 4.5, l_color = "#00ff00")
 		)
 
 /obj/item/light/throw_impact(atom/hit_atom)
