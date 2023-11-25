@@ -41,6 +41,10 @@
 	create_reagents(capacity)
 	..()
 
+/obj/machinery/chem_master/Initialize()
+	. = ..()
+	update_icons()
+
 /obj/machinery/chem_master/Destroy()
 	if(loaded_pill_bottle)
 		loaded_pill_bottle.forceMove(get_turf(src))
