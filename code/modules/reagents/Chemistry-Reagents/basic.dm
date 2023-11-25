@@ -64,7 +64,7 @@
 	else if(istype(O, /obj/item/flame/candle))
 		var/obj/item/flame/candle/candle = O
 		candle.lit = FALSE
-		candle.on_update_icon()
+		candle.update_icon()
 	else if(istype(O, /obj/item/flame/match))
 		var/obj/item/flame/match/match = O
 		match.burn_out()

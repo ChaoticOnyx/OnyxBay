@@ -99,7 +99,8 @@
 		return
 
 	if(reagents.has_reagent_or_subtypes(/datum/reagent/water))
-		to_chat(holder, SPAN_WARNING("\the [src] is wet and it won't light!"))
+		if(holder)
+			to_chat(holder, SPAN_WARNING("\the [src] is wet and it won't light!"))
 		return
 
 	lit = TRUE
