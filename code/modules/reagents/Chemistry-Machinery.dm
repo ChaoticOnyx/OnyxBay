@@ -43,7 +43,7 @@
 
 /obj/machinery/chem_master/Initialize()
 	. = ..()
-	update_icons()
+	update_icon()
 
 /obj/machinery/chem_master/Destroy()
 	if(loaded_pill_bottle)
