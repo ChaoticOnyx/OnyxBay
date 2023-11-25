@@ -14,10 +14,11 @@
 
 /obj/structure/flora/tree/attackby(obj/item/W, mob/living/user)
 	if(istype(get_turf(loc), /turf/simulated/floor/holofloor/))
-		playsound(user, 'sound/weapons/chainsaw_attack1.ogg', 25, 1)
-		to_chat(user, SPAN_WARNING("You cut down \the [src] with \the [W]."))
-		qdel(src)
-		return
+		if(do_after(usr, TIME_CUT))
+			playsound(user, 'sound/weapons/chainsaw_attack1.ogg', 25, 1)
+			to_chat(user, SPAN_WARNING("You cut down \the [src] with \the [W]."))
+			qdel(src)
+			return
 
 	if(istype(W, /obj/item/material/twohanded/chainsaw))
 		if(do_after(usr, TIME_CUT))
