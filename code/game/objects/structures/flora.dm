@@ -13,6 +13,9 @@
 	var/cut_hits = 20
 
 /obj/structure/flora/tree/attackby(obj/item/W, mob/living/user)
+	if(istype(get_turf(loc), /turf/simulated/floor/holofloor/))
+		return
+
 	if(istype(W, /obj/item/material/twohanded/chainsaw))
 		if(do_after(usr, TIME_CUT))
 			playsound(user, 'sound/weapons/chainsaw_attack1.ogg', 25, 1)
