@@ -90,7 +90,7 @@
 			AddOverlays(emissive_appearance(icon, icon_keyboard))
 
 /obj/machinery/computer/proc/update_glow()
-	if(stat & NOPOWER|BROKEN)
+	if(stat & (NOPOWER | BROKEN))
 		set_light(0)
 		return FALSE
 	else

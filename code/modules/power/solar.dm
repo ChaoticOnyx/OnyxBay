@@ -373,7 +373,7 @@ var/list/solars_list = list()
 		AddOverlays(emissive_appearance(icon, "rd_key"))
 
 /obj/machinery/power/solar_control/proc/update_glow()
-	if(stat & NOPOWER|BROKEN)
+	if(stat & (NOPOWER | BROKEN))
 		set_light(0)
 		return FALSE
 	else

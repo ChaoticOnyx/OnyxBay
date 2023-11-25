@@ -54,7 +54,7 @@
 
 /obj/machinery/chem_master/on_update_icon()
 	ClearOverlays()
-	if(stat & NOPOWER|BROKEN)
+	if(stat & (NOPOWER | BROKEN))
 		set_light(0)
 		if(stat & BROKEN)
 			AddOverlays(image(icon, "[icon_state]_b"))
