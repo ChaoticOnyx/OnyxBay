@@ -74,7 +74,7 @@
 	ClearOverlays()
 	if(stat & NOPOWER)
 		if(icon_keyboard)
-			AddOverlays(image(icon,"[icon_keyboard]_off", overlay_layer))
+			AddOverlays(image(icon, "[icon_keyboard]_off", overlay_layer))
 		set_light(0)
 		return
 
@@ -82,6 +82,8 @@
 		AddOverlays(image(icon, "[icon_state]_broken", overlay_layer))
 	else
 		AddOverlays(image(icon, icon_screen, overlay_layer))
+		if(icon_keyboard)
+			AddOverlays(image(icon, icon_keyboard, overlay_layer))
 
 	var/should_glow = update_glow()
 	if(should_glow)
@@ -90,12 +92,12 @@
 			AddOverlays(emissive_appearance(icon, icon_keyboard))
 
 /obj/machinery/computer/proc/update_glow()
-	if(stat & NOPOWER|BROKEN)
-		set_light(light_max_bright_on, light_inner_range_on, light_outer_range_on, 3.5, light_color)
-		return TRUE
-	else
+	if(stat & (NOPOWER | BROKEN))
 		set_light(0)
 		return FALSE
+	else
+		set_light(light_max_bright_on, light_inner_range_on, light_outer_range_on, 3.5, light_color)
+		return TRUE
 
 /obj/machinery/computer/proc/decode(text)
 	// Adds line breaks

@@ -11,6 +11,7 @@
 	anchored = 1
 	icon = 'icons/obj/abductor.dmi'
 	icon_state = "camera"
+	light_color = "#FA7899"
 	icon_keyboard = null
 
 /obj/machinery/computer/camera_advanced/abductor/GrantActions(mob/living/carbon/user)

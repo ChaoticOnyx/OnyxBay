@@ -31,6 +31,7 @@
 	icon = 'icons/obj/computer.dmi'
 	icon_keyboard = "tech_key"
 	icon_screen = "turbinecomp"
+	light_color = "#0099FF"
 	circuit = /obj/item/circuitboard/turbine_control
 	anchored = 1
 	density = 1

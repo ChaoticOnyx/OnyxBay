@@ -361,7 +361,7 @@
 /obj/structure/flora/ausbushes/glowshroom/New()
 	..()
 	icon_state = "glowshroom_[rand(1, 4)]"
-	set_light(1, 0.6, 1, "#99FF66")
+	set_light(1, 0.6, 1, 2, "#99FF66")
 
 /obj/structure/flora/ausbushes/reedbush
 	icon_state = "reedbush_1"
@@ -637,7 +637,9 @@
 /obj/structure/flora/jungleplants/on_update_icon()
 	ClearOverlays()
 	if(light_overlay)
-		AddOverlays(image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER))
+		var/image/emissive_overlay = image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH)
+		AddOverlays(emissive_overlay)
+		AddOverlays(emissive_appearance(emissive_overlay.icon, emissive_overlay.icon_state))
 		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
 	..()
 
