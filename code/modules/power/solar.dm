@@ -278,7 +278,7 @@ var/list/solars_list = list()
 	name = "solar panel control"
 	desc = "A controller for solar panel arrays."
 	icon = 'icons/obj/computer.dmi'
-	icon_state = "solar"
+	icon_state = "computer"
 	anchored = 1
 	density = 1
 	use_power = POWER_USE_IDLE
@@ -354,19 +354,31 @@ var/list/solars_list = list()
 	set_panels(cdir)
 
 /obj/machinery/power/solar_control/on_update_icon()
-	if(stat & BROKEN)
-		icon_state = "broken"
-		ClearOverlays()
-		return
-	if(stat & NOPOWER)
-		icon_state = "c_unpowered"
-		ClearOverlays()
-		return
-	icon_state = "solar"
 	ClearOverlays()
-	if(cdir > -1)
-		AddOverlays(image('icons/obj/computer.dmi', "solcon-o", FLY_LAYER, angle2dir(cdir)))
-	return
+	if(stat & NOPOWER)
+		AddOverlays(image(icon,"rd_key_off"))
+		set_light(0)
+		return
+
+	if(stat & BROKEN)
+		AddOverlays(image(icon, "computer_broken"))
+	else
+		AddOverlays(image(icon, "solar_screen"))
+		if(cdir > -1)
+			AddOverlays(image(icon, "solcon-o", FLY_LAYER, angle2dir(cdir)))
+
+	var/should_glow = update_glow()
+	if(should_glow)
+		AddOverlays(emissive_appearance(icon, "solar_screen"))
+		AddOverlays(emissive_appearance(icon, "rd_key"))
+
+/obj/machinery/power/solar_control/proc/update_glow()
+	if(stat & NOPOWER|BROKEN)
+		set_light(0)
+		return FALSE
+	else
+		set_light(1.0, 0.5, 3.0, 3.5, "#FFCC33")
+		return TRUE
 
 /obj/machinery/power/solar_control/attack_hand(mob/user)
 	if(!..())

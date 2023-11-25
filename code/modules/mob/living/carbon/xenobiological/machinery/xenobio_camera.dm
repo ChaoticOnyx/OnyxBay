@@ -28,6 +28,7 @@
 
 	icon_screen = "rdcomp"
 	icon_keyboard = "rd_key"
+	light_color = "#CC99CC"
 
 /obj/machinery/computer/camera_advanced/xenobio/Initialize()
 	. = ..()

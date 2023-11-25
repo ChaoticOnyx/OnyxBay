@@ -36,7 +36,7 @@
 			return
 		var/new_string_color = CC.color
 		if(CC.use(1))
-			var/image/string_overlay = image(icon,"coin_string_overlay")
+			var/image/string_overlay = image(icon, "coin_string_overlay")
 			string_overlay.color = new_string_color
 			AddOverlays(string_overlay)
 			string_attached = TRUE

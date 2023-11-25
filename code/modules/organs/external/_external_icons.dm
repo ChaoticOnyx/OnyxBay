@@ -56,7 +56,7 @@ var/list/limb_icon_cache = list()
 	if(eyes) eyes.update_colour()
 
 /obj/item/organ/external/head/removed()
-	update_icon(1)
+	update_icon()
 	if(!owner)
 		return
 
@@ -122,7 +122,7 @@ var/list/limb_icon_cache = list()
 	return .
 
 
-/obj/item/organ/external/on_update_icon(regenerate = 0)
+/obj/item/organ/external/on_update_icon()
 	ClearOverlays()
 	mob_overlays = list()
 
@@ -174,7 +174,7 @@ var/list/limb_icon_cache = list()
 		else if(icon_states.Find("[icon_name]"))
 			chosen_icon_state = "[icon_name]"
 		else
-			CRASH("Can't find proper icon_state for \the [src].")
+			CRASH("Can't find proper icon_state for \the [src] (key: [chosen_icon_state]).")
 
 	/////
 	var/icon/mob_icon = apply_colouration(icon(chosen_icon, chosen_icon_state))

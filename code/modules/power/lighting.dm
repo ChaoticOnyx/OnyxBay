@@ -156,7 +156,7 @@
 
 	var/current_mode = null
 
-	var/static/list/light_eas = list()
+	var/static/list/light_eas
 
 /obj/machinery/light/vox
 	name = "alien light"
@@ -223,6 +223,9 @@
 // create a new lighting fixture
 /obj/machinery/light/Initialize(mapload, obj/machinery/light_construct/construct = null)
 	. = ..(mapload)
+
+	if(!light_eas)
+		light_eas = list()
 
 	s.set_up(1, 1, src)
 
@@ -294,10 +297,9 @@
 		if(trigger && changed && get_status() == LIGHT_OK)
 			switch_check()
 
-		if(on)
-			if(!light_eas[icon_state])
-				light_eas[icon_state] = emissive_appearance(icon, "[icon_state]_ea")
-			AddOverlays(light_eas[icon_state])
+		if(!light_eas[icon_state])
+			light_eas[icon_state] = emissive_appearance(icon, "[icon_state]_ea")
+		AddOverlays(light_eas[icon_state])
 	else
 		if(lightbulb?.tone_overlay)
 			TO = image_repository.overlay_image(icon, "[icon_state]-over", TO_alpha, RESET_COLOR, TO_color, dir)
@@ -779,7 +781,7 @@
 	tone_overlay = FALSE
 
 /obj/item/light/bulb/red
-	b_outer_range = 6
+	b_outer_range = 4
 	color = "#da0205"
 	b_color = "#da0205"
 	random_tone = FALSE

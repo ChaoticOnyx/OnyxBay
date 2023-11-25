@@ -87,8 +87,6 @@ var/list/organ_cache = list()
 	create_reagents(5 * (w_class-1)**2)
 	reagents.add_reagent(/datum/reagent/nutriment/protein, reagents.maximum_volume)
 
-	update_icon()
-
 /obj/item/organ/proc/set_dna(datum/dna/new_dna)
 	if(new_dna)
 		dna = new_dna.Clone()

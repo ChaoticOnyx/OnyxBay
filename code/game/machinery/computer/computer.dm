@@ -91,11 +91,11 @@
 
 /obj/machinery/computer/proc/update_glow()
 	if(stat & NOPOWER|BROKEN)
-		set_light(light_max_bright_on, light_inner_range_on, light_outer_range_on, 3.5, light_color)
-		return TRUE
-	else
 		set_light(0)
 		return FALSE
+	else
+		set_light(light_max_bright_on, light_inner_range_on, light_outer_range_on, 3.5, light_color)
+		return TRUE
 
 /obj/machinery/computer/proc/decode(text)
 	// Adds line breaks
