@@ -74,7 +74,7 @@
 	ClearOverlays()
 	if(stat & NOPOWER)
 		if(icon_keyboard)
-			AddOverlays(image(icon,"[icon_keyboard]_off", overlay_layer))
+			AddOverlays(image(icon, "[icon_keyboard]_off", overlay_layer))
 		set_light(0)
 		return
 
@@ -82,6 +82,8 @@
 		AddOverlays(image(icon, "[icon_state]_broken", overlay_layer))
 	else
 		AddOverlays(image(icon, icon_screen, overlay_layer))
+		if(icon_keyboard)
+			AddOverlays(image(icon, icon_keyboard, overlay_layer))
 
 	var/should_glow = update_glow()
 	if(should_glow)
