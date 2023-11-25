@@ -134,6 +134,36 @@
 	name = "\improper Smart Virus Storage"
 	desc = "A refrigerated storage unit for volatile sample storage."
 
+/obj/machinery/smartfridge/secure/blood
+	name = "\improper Smart Blood Storage"
+	desc = "A refrigerated storage unit for IV bags, usualy with blood."
+	icon_state = "smartfridge_blood"
+	icon_on = "smartfridge_blood"
+	icon_off = "smartfridge_blood-off"
+	req_one_access = list(access_medical,access_chemistry)
+	shows_number_of_items = FALSE
+
+/obj/machinery/smartfridge/secure/blood/filled/Initialize()
+	. = ..()
+	for(var/item_path in starts_with)
+		var/quantity = starts_with[item_path]
+		for(var/i = 1 to quantity)
+			stock_item(new item_path(src))
+
+/obj/machinery/smartfridge/secure/blood/filled
+	var/list/starts_with = list(/obj/item/reagent_containers/ivbag/blood/OPlus = 1,
+		/obj/item/reagent_containers/ivbag/blood/OMinus = 1,
+		/obj/item/reagent_containers/ivbag/blood/APlus = 2,
+		/obj/item/reagent_containers/ivbag/blood/AMinus = 2,
+		/obj/item/reagent_containers/ivbag/blood/BPlus = 2,
+		/obj/item/reagent_containers/ivbag/blood/BMinus = 2,
+		/obj/item/reagent_containers/ivbag = 2
+		)
+
+/obj/machinery/smartfridge/secure/blood/accept_check(obj/item/O as obj)
+	if(istype(O,/obj/item/reagent_containers/ivbag))
+		return 1
+	return 0
 
 /obj/machinery/smartfridge/drinks
 	name = "\improper Drink Showcase"
