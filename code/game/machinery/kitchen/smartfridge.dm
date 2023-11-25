@@ -69,27 +69,12 @@
 
 /obj/machinery/smartfridge/secure/extract/accept_check(obj/item/O as obj)
 	if(istype(O,/obj/item/metroid_extract))
-		return 1
-	if(istype(O,/obj/item/metroidcross))
-		return 1
-	return 0
+		return TRUE
 
-/obj/machinery/smartfridge/secure/extract/attackby(obj/item/O, mob/user)
-	. = ..()
-	if (istype(O, /obj/item/storage/xenobag))
-		var/obj/item/storage/P = O
-		var/loaded = 0
-		for(var/obj/item/metroid_extract/G in P.contents)
-			++loaded
-			stock_item(G)
-		for(var/obj/item/metroidcross/G in P.contents)
-			++loaded
-			stock_item(G)
-		if (loaded)
-			user.visible_message("[user] puts the extracts from \the [O.name] into \the [src].", "You put the extracts from \the [O.name] into \the [src].")
-		else
-			to_chat(user, "<span class='notice'>There are no extracts in \the [O.name].</span>")
-		return
+	if(istype(O,/obj/item/metroidcross))
+		return TRUE
+
+	return FALSE
 
 /obj/machinery/smartfridge/secure/medbay
 	name = "\improper Refrigerated Medicine Storage"
