@@ -13,27 +13,23 @@
 	var/cut_hits = 20
 
 /obj/structure/flora/tree/attackby(obj/item/W, mob/living/user)
-	if(istype(get_turf(loc), /turf/simulated/floor/holofloor/))
-		if(do_after(usr, TIME_CUT))
-			playsound(user, 'sound/weapons/chainsaw_attack1.ogg', 25, 1)
-			to_chat(user, SPAN_WARNING("You cut down \the [src] with \the [W]."))
-			qdel(src)
-			return
-
 	if(istype(W, /obj/item/material/twohanded/chainsaw))
 		if(do_after(usr, TIME_CUT))
 			playsound(user, 'sound/weapons/chainsaw_attack1.ogg', 25, 1)
 			to_chat(user, SPAN_WARNING("You cut down \the [src] with \the [W]."))
-			new /obj/item/stack/material/wood/ten(loc)
+			if(!istype(get_turf(loc), /turf/simulated/floor/holofloor))
+				new /obj/item/stack/material/wood/ten(loc)
 			qdel(src)
 			return
+
 	if(cut_level !=PLANT_NO_CUT && (istype(W, /obj/item/material/hatchet) || istype(W, /obj/item/material/twohanded/fireaxe)))
 		cut_hits--
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		to_chat(user, SPAN_WARNING("You chop \the [src] with \the [W]."))
 		playsound(src, 'sound/effects/fighting/chop3.ogg', 25, 1)
 		if(cut_hits <= 0)
-			new /obj/item/stack/material/wood/ten(loc)
+			if(!istype(get_turf(loc), /turf/simulated/floor/holofloor))
+				new /obj/item/stack/material/wood/ten(loc)
 			qdel(src)
 		return
 
