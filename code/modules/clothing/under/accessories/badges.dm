@@ -153,3 +153,18 @@
 	desc = "A leather-backed plastic badge displaying that the owner is certified press personnel."
 	icon_state = "pressbadge"
 	badge_string = "Journalist"
+
+/obj/item/clothing/accessory/badge/dogtag
+	name = "dog tag"
+	desc = "A simple badge that demonstrates military its owner's military background."
+	icon_state = "dogtag"
+	slot_flags = SLOT_MASK | SLOT_TIE
+	var/stored_blood_type
+	var/religion
+
+/obj/item/clothing/accessory/badge/dogtag/attack_self(mob/user)
+	to_chat(user, "You inspect your [name]. Everything seems to be in order and you give it a quick cleaning with your hand.")
+
+	if(isliving(user))
+		var/to_display = "It reads: [stored_name], blood type: [stored_blood_type], religious affiliation: [religion]"
+		user.visible_message(SPAN_NOTICE("[user] displays their [name].\n[to_display]"), SPAN_NOTICE("You display your [name].\n[to_display]"))
