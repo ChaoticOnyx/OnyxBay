@@ -98,10 +98,16 @@
 	if(src.lit)
 		return
 
-	src.lit = TRUE
+	if(reagents.has_reagent_or_subtypes(/datum/reagent/water))
+		to_chat(holder, SPAN_WARNING("\the [src] is wet and it won't light!"))
+		return
+
+	lit = TRUE
 	ever_lit = TRUE
-	if(src.atom_flags & ATOM_FLAG_NO_REACT)
-		src.atom_flags &= ~ATOM_FLAG_NO_REACT
+	if(atom_flags & ATOM_FLAG_NO_REACT)
+		atom_flags &= ~ATOM_FLAG_NO_REACT
+
+	atom_flags &= ~ATOM_FLAG_OPEN_CONTAINER
 
 	damtype = BURN
 	force = initial(force) + 2
@@ -126,6 +132,10 @@
 	set_light(0.3, 0.2, 1, 1, "#e38f46")
 	smokeamount = reagents.total_volume / smoketime
 	set_next_think(world.time)
+
+/obj/item/clothing/mask/smokable/clean_blood()
+	die(FALSE, TRUE)
+	return ..()
 
 /obj/item/clothing/mask/smokable/proc/die(nomessage = FALSE, nodestroy = FALSE)
 	set_light(0)

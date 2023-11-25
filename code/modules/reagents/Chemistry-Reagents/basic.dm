@@ -55,6 +55,19 @@
 		var/obj/item/reagent_containers/food/monkeycube/cube = O
 		if(!cube.wrapped)
 			cube.Expand()
+	else if(istype(O, /obj/item/clothing/mask/smokable))
+		var/obj/item/clothing/mask/smokable/smokable = O
+		smokable.die(FALSE, TRUE)
+	else if(istype(O, /obj/item/flame/lighter))
+		var/obj/item/flame/lighter/lighter = O
+		lighter.shutoff(silent = TRUE)
+	else if(istype(O, /obj/item/flame/candle))
+		var/obj/item/flame/candle/candle = O
+		candle.lit = FALSE
+		candle.on_update_icon()
+	else if(istype(O, /obj/item/flame/match))
+		var/obj/item/flame/match/match = O
+		match.burn_out()
 
 /datum/reagent/water/touch_mob(mob/living/L, amount)
 	if(istype(L))
