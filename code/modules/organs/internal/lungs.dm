@@ -117,7 +117,7 @@
 	//exposure to extreme pressures can rupture lungs
 	if(breath_pressure < species.hazard_low_pressure || breath_pressure > species.hazard_high_pressure)
 		var/datum/gas_mixture/environment = loc.return_air_for_internal_lifeform()
-		var/env_pressure = environment.return_pressure()
+		var/env_pressure = envienvironment? environment.return_pressure() : 0
 		var/lung_damage_prob = BP_IS_ROBOTIC(src) ? prob(2.5) : prob(5) //Robotic lungs are less likely to rupture.
 		if(env_pressure < species.hazard_low_pressure || env_pressure > species.hazard_high_pressure)
 			if(lung_damage_prob)
