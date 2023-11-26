@@ -247,10 +247,10 @@
 	force = 5.0
 	attack_verb = list ("smacked", "bashed", "enlightened")
 
-	flashlight_max_bright = 0.3
+	flashlight_max_bright = 0.55
 	flashlight_inner_range = 2
 	flashlight_outer_range = 4
-	flashlight_falloff_curve = 4.0
+	flashlight_falloff_curve = 4.5
 	on = 1
 
 // green-shaded desk lamp

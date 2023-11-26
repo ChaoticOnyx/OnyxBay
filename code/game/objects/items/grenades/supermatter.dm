@@ -16,7 +16,7 @@
 /obj/item/grenade/supermatter/on_update_icon()
 	ClearOverlays()
 	if(implode_at)
-		AddOverlays(image(icon) = 'icons/obj/machines/power/fusion.dmi', icon_state = "emfield_s1")
+		AddOverlays(OVERLAY('icons/obj/machines/power/fusion.dmi', "emfield_s1"))
 
 /obj/item/grenade/supermatter/think()
 	if(!isturf(loc))

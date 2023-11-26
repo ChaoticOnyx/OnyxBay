@@ -292,7 +292,7 @@
 			changed = set_light(lightbulb.b_max_bright, lightbulb.b_inner_range, lightbulb.b_outer_range, lightbulb.b_curve, lightbulb.b_color)
 
 		if(lightbulb?.tone_overlay)
-			TO = image_repository.overlay_image(icon, "[icon_state]-over", TO_alpha, RESET_COLOR, TO_color, dir, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
+			TO = OVERLAY(icon, "[icon_state]-over", TO_alpha, RESET_COLOR, TO_color, dir, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
 
 		if(trigger && changed && get_status() == LIGHT_OK)
 			switch_check()
@@ -302,7 +302,7 @@
 		AddOverlays(light_eas[icon_state])
 	else
 		if(lightbulb?.tone_overlay)
-			TO = image_repository.overlay_image(icon, "[icon_state]-over", TO_alpha, RESET_COLOR, TO_color, dir)
+			TO = OVERLAY(icon, "[icon_state]-over", TO_alpha, RESET_COLOR, TO_color, dir)
 		update_use_power(POWER_USE_OFF)
 		set_light(0)
 

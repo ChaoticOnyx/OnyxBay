@@ -9,11 +9,33 @@
 	var/frequency = 0
 	var/id
 	idle_power_usage = 15 WATTS
+	var/static/list/meter_ea_overlays
+	var/last_level = "INIT"
+	var/last_val = -666
+	var/last_light = -666
 
 /obj/machinery/meter/Initialize()
 	. = ..()
-	if (!target)
+	if(!target)
 		set_target(locate(/obj/machinery/atmospherics/pipe) in loc)
+	if(!meter_ea_overlays)
+		generate_overlays()
+
+/obj/machinery/meter/proc/generate_overlays()
+	meter_ea_overlays = new
+	meter_ea_overlays.len = 10
+
+	meter_ea_overlays[1] = emissive_appearance(icon, "level_1", cache = FALSE)
+	meter_ea_overlays[2] = emissive_appearance(icon, "level_2", cache = FALSE)
+	meter_ea_overlays[3] = emissive_appearance(icon, "level_3", cache = FALSE)
+	meter_ea_overlays[4] = emissive_appearance(icon, "level_4", cache = FALSE)
+
+	meter_ea_overlays[5] = emissive_appearance(icon, "val_1", cache = FALSE)
+	meter_ea_overlays[6] = emissive_appearance(icon, "val_2", cache = FALSE)
+	meter_ea_overlays[7] = emissive_appearance(icon, "val_3", cache = FALSE)
+	meter_ea_overlays[8] = emissive_appearance(icon, "val_4", cache = FALSE)
+	meter_ea_overlays[9] = emissive_appearance(icon, "val_5", cache = FALSE)
+	meter_ea_overlays[10] = emissive_appearance(icon, "val_6", cache = FALSE)
 
 /obj/machinery/meter/proc/set_target(atom/new_target)
 	clear_target()
@@ -30,49 +52,79 @@
 	. = ..()
 
 /obj/machinery/meter/Process()
+	var/meter_level = ""
+	var/meter_val = -1
+	var/meter_light = 0
+
 	if(!target)
-		icon_state = "meterX"
-		return 0
+		meter_level = -1
 
-	if(stat & (BROKEN|NOPOWER))
-		icon_state = "meter0"
-		return 0
+	else if(stat & (BROKEN|NOPOWER))
+		meter_level = 0
 
-	var/datum/gas_mixture/environment = target.return_air()
-	if(!environment)
-		icon_state = "meterX"
-		return 0
-
-	var/env_pressure = environment.return_pressure()
-	if(env_pressure <= 0.15*ONE_ATMOSPHERE)
-		icon_state = "meter0"
-	else if(env_pressure <= 1.8*ONE_ATMOSPHERE)
-		var/val = round(env_pressure/(ONE_ATMOSPHERE*0.3) + 0.5)
-		icon_state = "meter1_[val]"
-	else if(env_pressure <= 30*ONE_ATMOSPHERE)
-		var/val = round(env_pressure/(ONE_ATMOSPHERE*5)-0.35) + 1
-		icon_state = "meter2_[val]"
-	else if(env_pressure <= 59*ONE_ATMOSPHERE)
-		var/val = round(env_pressure/(ONE_ATMOSPHERE*5) - 6) + 1
-		icon_state = "meter3_[val]"
 	else
-		icon_state = "meter4"
+		var/datum/gas_mixture/environment = target.return_air()
+		if(environment)
+			var/env_pressure = environment.return_pressure()
+			if(env_pressure <= 0.15 * ONE_ATMOSPHERE)
+				meter_level = 0
+			else if(env_pressure <= 1.8 * ONE_ATMOSPHERE)
+				meter_level = 1
+				meter_val = round(env_pressure / (ONE_ATMOSPHERE * 0.3) + 0.5)
+				meter_light = 0.35
+			else if(env_pressure <= 30 * ONE_ATMOSPHERE)
+				meter_level = 2
+				meter_val = round(env_pressure / (ONE_ATMOSPHERE * 5) - 0.35) + 1
+				meter_light = 0.3
+			else if(env_pressure <= 59 * ONE_ATMOSPHERE)
+				meter_level = 3
+				meter_val = round(env_pressure / (ONE_ATMOSPHERE * 5) - 6) + 1
+				meter_light = 0.4
+			else
+				meter_level = 4
+				meter_light = 0.45
 
-	if(frequency)
-		var/datum/radio_frequency/radio_connection = radio_controller.return_frequency(frequency)
+			if(frequency)
+				var/datum/radio_frequency/radio_connection = radio_controller.return_frequency(frequency)
 
-		if(!radio_connection) return
+				if(!radio_connection)
+					return
 
-		var/datum/signal/signal = new
-		signal.source = src
-		signal.transmission_method = 1
-		signal.data = list(
-			"tag" = id,
-			"device" = "AM",
-			"pressure" = round(env_pressure),
-			"sigtype" = "status"
-		)
-		radio_connection.post_signal(src, signal)
+				var/datum/signal/signal = new
+				signal.source = src
+				signal.transmission_method = 1
+				signal.data = list(
+					"tag" = id,
+					"device" = "AM",
+					"pressure" = round(env_pressure),
+					"sigtype" = "status"
+				)
+				radio_connection.post_signal(src, signal)
+
+	if(meter_light != last_light)
+		if(meter_light)
+			set_light(meter_light, 0.35, 1.0, 2, "#99FF33")
+		else
+			set_light(0)
+
+	if(meter_val != last_val || meter_level != last_level)
+		ClearOverlays()
+		switch(meter_level)
+			if(-1, 0)
+				icon_state = "meter[meter_level]"
+			if(4)
+				icon_state = "meter4"
+				AddOverlays(meter_ea_overlays[4])
+				AddOverlays(meter_ea_overlays[10])
+			else
+				icon_state = "meter[meter_level]_[meter_val]"
+				AddOverlays(meter_ea_overlays[meter_level])
+				AddOverlays(meter_ea_overlays[meter_val + 4])
+
+	last_level = meter_level
+	last_val = meter_val
+	last_light = meter_light
+
 
 /obj/machinery/meter/_examine_text(mob/user)
 	. = ..()

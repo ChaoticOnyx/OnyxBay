@@ -314,3 +314,6 @@
 #define MAGIC_RESISTANCE_MIND (1<<1)
 /// Holy magic resistance that blocks unholy magic (vampire)
 #define MAGIC_RESISTANCE_HOLY (1<<2)
+
+// Shortcut for image_repository.overlay_image(...)
+#define OVERLAY(args...) image_repository.overlay_image(args)

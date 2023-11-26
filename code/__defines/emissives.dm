@@ -23,3 +23,6 @@ GLOBAL_LIST_INIT(em_mask_matrix, EM_MASK_MATRIX)
 
 /// A set of appearance flags applied to all emissive and emissive blocker overlays.
 #define EMISSIVE_APPEARANCE_FLAGS (KEEP_APART|KEEP_TOGETHER|RESET_COLOR|NO_CLIENT_COLOR)
+
+/// Global cache of emissive overlays. Having thousands of unique mutable_appearance instancs ain't cool.
+GLOBAL_LIST_EMPTY(em_overlays_cache)

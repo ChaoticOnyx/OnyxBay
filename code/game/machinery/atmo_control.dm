@@ -81,7 +81,7 @@
 	icon = 'icons/obj/computer.dmi'
 	icon_keyboard = "atmos_key"
 	icon_screen = "tank"
-
+	light_color = "#E6FFFF"
 	name = "Computer"
 
 	var/frequency = 1439

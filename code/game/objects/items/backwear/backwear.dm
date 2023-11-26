@@ -135,7 +135,7 @@
 	..()
 	ClearOverlays()
 	if(!bcell)
-		AddOverlays(image(icon) = 'icons/obj/backwear.dmi', icon_state = "[base_icon]_nocell")
+		AddOverlays(OVERLAY(icon, "[base_icon]_nocell"))
 
 /obj/item/backwear/powered/Initialize()
 	. = ..()

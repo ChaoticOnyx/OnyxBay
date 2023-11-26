@@ -356,16 +356,17 @@ var/list/solars_list = list()
 /obj/machinery/power/solar_control/on_update_icon()
 	ClearOverlays()
 	if(stat & NOPOWER)
-		AddOverlays(image(icon,"rd_key_off"))
+		AddOverlays(OVERLAY(icon,"rd_key_off"))
 		set_light(0)
 		return
 
 	if(stat & BROKEN)
-		AddOverlays(image(icon, "computer_broken"))
+		AddOverlays(OVERLAY(icon, "computer_broken"))
 	else
-		AddOverlays(image(icon, "solar_screen"))
+		AddOverlays(OVERLAY(icon, "solar_screen"))
 		if(cdir > -1)
-			AddOverlays(image(icon, "solcon-o", FLY_LAYER, angle2dir(cdir)))
+			AddOverlays(OVERLAY(icon, "solcon-o", FLY_LAYER, angle2dir(cdir)))
+		AddOverlays(OVERLAY(icon, "rd_key"))
 
 	var/should_glow = update_glow()
 	if(should_glow)

@@ -118,19 +118,19 @@
 	var/force_update = 0
 	var/emp_hardened = 0
 
-	var/global/status_overlays = FALSE
+	var/static/status_overlays = FALSE
 
-	var/global/list/status_overlays_lock
-	var/global/list/status_overlays_charging
-	var/global/list/status_overlays_equipment
-	var/global/list/status_overlays_lighting
-	var/global/list/status_overlays_environ
+	var/static/list/status_overlays_lock
+	var/static/list/status_overlays_charging
+	var/static/list/status_overlays_equipment
+	var/static/list/status_overlays_lighting
+	var/static/list/status_overlays_environ
 
-	var/global/list/overlight_overlays_lock
-	var/global/list/overlight_overlays_charging
-	var/global/list/overlight_overlays_equipment
-	var/global/list/overlight_overlays_lighting
-	var/global/list/overlight_overlays_environ
+	var/static/list/overlight_overlays_lock
+	var/static/list/overlight_overlays_charging
+	var/static/list/overlight_overlays_equipment
+	var/static/list/overlight_overlays_lighting
+	var/static/list/overlight_overlays_environ
 
 
 /obj/machinery/power/apc/updateDialog()
@@ -337,14 +337,14 @@
 		if(update_state & (UPDATE_OPENED1|UPDATE_OPENED2|UPDATE_BROKE))
 			set_light(0)
 		else if(update_state & UPDATE_BLUESCREEN)
-			set_light(1.0, 0.5, 1, 2, "#0000ff")
+			set_light(1.0, 0.5, 1, 2, "#0000FF")
 		else if(!(stat & (BROKEN|MAINT)) && update_state & UPDATE_ALLGOOD)
 			var/color
 			switch(charging)
 				if(0)
-					color = "#b73737"
+					color = "#B51515"
 				if(1)
-					color = "#4958dd"
+					color = "#4958DD"
 				if(2)
 					color = "#008000"
 			set_light(1.0, 0.5, 1, 2, color)
@@ -1266,7 +1266,7 @@
 	update_icon()
 	return 1
 
-#define OVERLIGHT_IMAGE(a, b) a=emissive_appearance(icon, b, alpha = 192);
+#define OVERLIGHT_IMAGE(a, b) a=emissive_appearance(icon, b, cache = FALSE);
 /obj/machinery/power/apc/proc/generate_overlays()
 	status_overlays_lock = new
 	status_overlays_charging = new

@@ -14,13 +14,10 @@
 	var/light_max_bright_on = 1.0
 	var/light_inner_range_on = 0.5
 	var/light_outer_range_on = 4
-	var/overlay_layer
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	clicksound = 'sound/effects/using/console/press10.ogg'
 
-/obj/machinery/computer/New()
-	overlay_layer = layer
-	..()
+	var/static/list/computer_overlays = list()
 
 /obj/machinery/computer/Initialize()
 	. = ..()
@@ -74,16 +71,16 @@
 	ClearOverlays()
 	if(stat & NOPOWER)
 		if(icon_keyboard)
-			AddOverlays(image(icon, "[icon_keyboard]_off", overlay_layer))
+			AddOverlays(OVERLAY(icon, "[icon_keyboard]_off"))
 		set_light(0)
 		return
 
 	if(stat & BROKEN)
-		AddOverlays(image(icon, "[icon_state]_broken", overlay_layer))
+		AddOverlays(OVERLAY(icon, "[icon_state]_broken"))
 	else
-		AddOverlays(image(icon, icon_screen, overlay_layer))
+		AddOverlays(OVERLAY(icon, icon_screen))
 		if(icon_keyboard)
-			AddOverlays(image(icon, icon_keyboard, overlay_layer))
+			AddOverlays(OVERLAY(icon, icon_keyboard))
 
 	var/should_glow = update_glow()
 	if(should_glow)

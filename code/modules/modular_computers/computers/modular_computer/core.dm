@@ -91,24 +91,24 @@
 
 	ClearOverlays()
 	if(bsod)
-		AddOverlays("bsod")
+		AddOverlays(OVERLAY(icon, "bsod"))
 		return
 	if(!enabled)
 		if(icon_state_screensaver)
-			AddOverlays(icon_state_screensaver)
+			AddOverlays(OVERLAY(icon, icon_state_screensaver))
 		set_light(0)
 		return
 	var/light_color = "#ffffff"
 	if(active_program)
 		var/screen_state = active_program.program_icon_state ? active_program.program_icon_state : icon_state_menu
-		AddOverlays(screen_state)
+		AddOverlays(OVERLAY(icon, screen_state))
 		AddOverlays(emissive_appearance(icon, screen_state))
 		if(active_program.program_key_state)
-			AddOverlays(active_program.program_key_state)
+			AddOverlays(OVERLAY(icon, active_program.program_key_state))
 			AddOverlays(emissive_appearance(icon, active_program.program_key_state))
 		light_color = active_program.program_light_color
 	else
-		AddOverlays(icon_state_menu)
+		AddOverlays(OVERLAY(icon, icon_state_menu))
 		AddOverlays(emissive_appearance(icon, icon_state_menu))
 	set_light(light_strength * 0.25, 0.5, active_program ? light_strength : light_strength * 0.5, 3.5, l_color = light_color)
 

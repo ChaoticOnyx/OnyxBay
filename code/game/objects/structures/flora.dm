@@ -59,7 +59,7 @@
 /obj/structure/flora/tree/pine/xmas/on_update_icon()
 	ClearOverlays()
 	if(light_overlay)
-		AddOverlays(image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER))
+		AddOverlays(OVERLAY(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER))
 		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
 	..()
 
@@ -168,7 +168,7 @@
 /obj/structure/flora/tree/green/pink/on_update_icon()
 	ClearOverlays()
 	if(light_overlay)
-		AddOverlays(image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER))
+		AddOverlays(OVERLAY(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER))
 		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
 	..()
 
@@ -640,7 +640,7 @@
 /obj/structure/flora/jungleplants/on_update_icon()
 	ClearOverlays()
 	if(light_overlay)
-		var/image/emissive_overlay = image_repository.overlay_image(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH)
+		var/image/emissive_overlay = OVERLAY(icon, "[initial(icon_state)]-overlay", alpha, RESET_COLOR, color, SOUTH)
 		AddOverlays(emissive_overlay)
 		AddOverlays(emissive_appearance(emissive_overlay.icon, emissive_overlay.icon_state))
 		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
@@ -888,6 +888,10 @@
 /obj/structure/flora/pottedplant/unusual/Initialize()
 	. = ..()
 	set_light(0.4, 0.1, 2, 2, "#007fff")
+	var/image/I = image(icon, "[icon_state]_over")
+	I.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	I.layer = ABOVE_LIGHTING_LAYER
+	AddOverlays(I)
 
 /obj/structure/flora/pottedplant/orientaltree
 	name = "potted oriental tree"
@@ -947,6 +951,10 @@
 /obj/structure/flora/pottedplant/subterranean/Initialize()
 	. = ..()
 	set_light(0.4, 0.1, 2, 2, "#ff6633")
+	var/image/I = image(icon, "[icon_state]_over")
+	I.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	I.layer = ABOVE_LIGHTING_LAYER
+	AddOverlays(I)
 
 /obj/structure/flora/pottedplant/minitree
 	name = "potted tree"
@@ -1057,3 +1065,8 @@
 /obj/effect/firefly/Initialize()
 	. = ..()
 	set_light(0.4, 0.1, 2, 2, "#ffc233")
+	var/image/I = image(icon, icon_state)
+	I.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	I.layer = ABOVE_LIGHTING_LAYER
+	AddOverlays(I)
+	icon_state = null

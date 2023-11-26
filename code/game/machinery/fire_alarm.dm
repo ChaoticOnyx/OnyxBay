@@ -20,8 +20,8 @@
 	var/wiresexposed = FALSE
 	var/buildstage = FIREALARM_COMPLETE
 
-	var/global/status_overlays = FALSE
-	var/global/list/alarm_overlays
+	var/static/status_overlays = FALSE
+	var/static/list/alarm_overlays
 	var/mutable_appearance/seclevel_overlay // There's a whole system for different seclevels across different maps so let's just leave it like this until I figure out what the fuck
 
 /obj/machinery/firealarm/New(loc, dir, atom/frame)
@@ -105,7 +105,7 @@
 		seclevel_overlay.icon = sl.icon
 		seclevel_overlay.icon_state = sl.overlay_alarm
 		AddOverlays(seclevel_overlay)
-		AddOverlays(emissive_appearance(sl.icon, "[sl.overlay_alarm]_ea", alpha = 200))
+		AddOverlays(emissive_appearance(sl.icon, "[sl.overlay_alarm]_ea"))
 
 /obj/machinery/firealarm/proc/generate_overlays()
 	alarm_overlays = new
@@ -113,7 +113,7 @@
 	alarm_overlays[1] = image(icon, "fire0")
 	alarm_overlays[2] = image(icon, "fire1")
 	alarm_overlays[1].alpha = 200
-#define OVERLIGHT_IMAGE(a, b) a=emissive_appearance(icon, b, alpha = 128);
+#define OVERLIGHT_IMAGE(a, b) a=emissive_appearance(icon, b, cache = FALSE);
 	OVERLIGHT_IMAGE(alarm_overlays[3], "fire_ea0")
 	OVERLIGHT_IMAGE(alarm_overlays[4], "fire_ea1")
 #undef OVERLIGHT_IMAGE
