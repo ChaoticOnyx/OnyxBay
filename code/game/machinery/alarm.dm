@@ -101,8 +101,8 @@
 
 	var/report_danger_level = 1
 
-	var/global/status_overlays = FALSE
-	var/global/list/alarm_overlays
+	var/static/status_overlays = FALSE
+	var/static/list/alarm_overlays
 
 /obj/machinery/alarm/cold
 	target_temperature = 4 CELSIUS
@@ -330,22 +330,21 @@
 			new_color = COLOR_RED_LIGHT
 
 	AddOverlays(alarm_overlays[icon_level+1])
-	AddOverlays(alarm_overlays[4])
+	AddOverlays(emissive_appearance(icon, "alarm_ea"))
 
 	set_light(0.65, 0.1, 1, 2, new_color)
 
 /obj/machinery/alarm/proc/generate_overlays()
 	alarm_overlays = new
-	alarm_overlays.len = 6
+	alarm_overlays.len = 4
 	alarm_overlays[1] = image(icon, "alarm_over0")
 	alarm_overlays[2] = image(icon, "alarm_over1")
 	alarm_overlays[3] = image(icon, "alarm_over2")
 	alarm_overlays[1].alpha = 200
 	alarm_overlays[2].alpha = 200
 	alarm_overlays[3].alpha = 200
-#define OVERLIGHT_IMAGE(a, b) a=emissive_appearance(icon, b, alpha = 128)
-	OVERLIGHT_IMAGE(alarm_overlays[4], "alarm_ea")
-#undef OVERLIGHT_IMAGE
+
+	alarm_overlays[4] = emissive_appearance(icon, "alarm_ea", cache = FALSE)
 
 /obj/machinery/alarm/receive_signal(datum/signal/signal)
 	if(stat & (NOPOWER|BROKEN))

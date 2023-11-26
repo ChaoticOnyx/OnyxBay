@@ -40,7 +40,7 @@
 	unregister_signal(destroyed, SIGNAL_QDELETING)
 
 // Returns an image not bound to anything and which is typically applied as an overlay/underlay.
-/repository/images/proc/overlay_image(icon, icon_state, alpha, appearance_flags, color, dir, plane = FLOAT_PLANE, layer = FLOAT_LAYER)
+/repository/images/proc/overlay_image(icon, icon_state, alpha = 255, appearance_flags = 0, color = null, dir = SOUTH, plane = FLOAT_PLANE, layer = FLOAT_LAYER)
 	var/cache_key = "[icon]-[icon_state]-[alpha]-[appearance_flags]-[color]-[dir]-[plane]-[layer]"
 	. = image_cache_for_overlays[cache_key]
 	if(!.)

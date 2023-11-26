@@ -175,7 +175,7 @@
 
 			I.loc = src
 			carrying.Add(I)
-			AddOverlays(image("icon") = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer, "pixel_x" = I.pixel_x, "pixel_y" = I.pixel_y)
+			AddOverlays(image(I.icon, I.icon_state, layer = (30 + I.layer)))
 
 /obj/item/tray/dropped(mob/user)
 	..()

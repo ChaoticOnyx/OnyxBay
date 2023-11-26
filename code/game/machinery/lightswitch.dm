@@ -12,7 +12,6 @@
 	var/on = 0
 	var/area/connected_area = null
 	var/other_area = null
-	var/static/mutable_appearance/ea_overlay
 
 /obj/machinery/light_switch/Initialize()
 	. = ..()
@@ -34,16 +33,13 @@
 	return ..()
 
 /obj/machinery/light_switch/on_update_icon()
-	if(!ea_overlay)
-		ea_overlay = emissive_appearance(icon, "light-ea")
-
 	ClearOverlays()
 	if(stat & (NOPOWER|BROKEN))
 		icon_state = "light-p"
 		set_light(0)
 	else
 		icon_state = "light[on]"
-		AddOverlays(ea_overlay)
+		AddOverlays(emissive_appearance(icon, "light-ea"))
 		set_light(0.15, 0.1, 1, 2, (on ? "#82ff4c" : "#f86060"))
 
 /obj/machinery/light_switch/_examine_text(mob/user)

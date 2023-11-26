@@ -471,7 +471,7 @@
 		if(new_overlay_state != overlay_state)
 			overlay_state = new_overlay_state
 			if(overlay_state)
-				AddOverlays(image_repository.overlay_image('icons/obj/ecig.dmi', overlay_state, alpha, RESET_COLOR, null, SOUTH))
+				AddOverlays(OVERLAY('icons/obj/ecig.dmi', overlay_state, alpha, RESET_COLOR))
 	else
 		overlay_state = ""
 		ClearOverlays()

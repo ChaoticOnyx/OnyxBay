@@ -252,7 +252,7 @@
 
 				I.loc = src
 				carrying.Add(I)
-				AddOverlays(image("icon") = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer)
+				AddOverlays(image(I.icon, I.icon_state, layer = (30 + I.layer)))
 				addedSomething = 1
 		if (addedSomething)
 			user.visible_message(SPAN("notice", "'\The [user] load some items onto their service tray."))
