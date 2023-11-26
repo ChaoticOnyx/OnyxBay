@@ -185,7 +185,7 @@
 	return fire(Angle_override, direct_target)
 
 //called to launch a projectile from a gun
-/obj/item/projectile/proc/launch_from_gun(atom/target, target_zone, mob/user, params, Angle_override, forced_spread, obj/item/gun/launcher)
+/obj/item/projectile/proc/launch_from_gun(atom/target, target_zone, mob/user, params, obj/item/gun/launcher)
 	return launch(target, target_zone, user, params)
 
 //sets the click point of the projectile using mouse input params

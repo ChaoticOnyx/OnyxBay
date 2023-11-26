@@ -443,7 +443,7 @@
 			shock_dispersion = rand(-2,2)
 	P.dispersion += shock_dispersion
 
-	var/launched = !P.launch_from_gun(target, target_zone, user, params)
+	var/launched = !P.launch_from_gun(target, target_zone, user, params, src)
 	if(launched)
 		play_fire_sound(user,P)
 
