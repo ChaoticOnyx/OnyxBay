@@ -1,3 +1,7 @@
+#define FLIPPING_DURATION	7
+#define FLIPPING_ROTATION	360
+#define FLIPPING_INCREMENT	FLIPPING_ROTATION / 8
+
 // -= Vessels =-
 // A very basic, default type for *vesselous* types of reagent containers - drinking glasses, bottles, buckets, beakers etc.
 
@@ -7,6 +11,10 @@
 	icon = 'icons/obj/reagent_containers/vessels.dmi'
 	icon_state = ""
 	item_state = "null"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/onmob/items/lefthand_vessels.dmi',
+		slot_r_hand_str = 'icons/mob/onmob/items/righthand_vessels.dmi',
+		)
 
 	volume = 60
 	amount_per_transfer_from_this = 10
@@ -37,6 +45,11 @@
 	var/start_label = null
 	var/has_label = FALSE
 	var/label_icon = FALSE
+
+	//bottle flipping
+	var/can_flip = TRUE
+	var/last_flipping = 0
+	var/atom/movable/fake_overlay/flipping = null
 
 	var/list/can_be_placed_into = list(
 		/obj/machinery/chem_master/,
@@ -384,6 +397,86 @@
 			throw_at(get_step(src, pick(GLOB.alldirs)), rand(2, 3), 1)
 		return
 	return PROJECTILE_CONTINUE
+
+/obj/item/reagent_containers/vessel/equipped(mob/user)
+	. = ..()
+	if(can_flip && (user.a_intent == I_GRAB))
+		//if(flipping && (M_CLUMSY in user.mutations) && prob(20))
+		//	to_chat(user, "<span class='warning'>Your clumsy fingers fail to catch back \the [src].</span>")
+		//	user.drop_item(src, user.loc, 1)
+		//	throw_impact(user.loc,1,user)
+		//else
+		bottleflip(user)
+
+/obj/item/reagent_containers/vessel/dropped(mob/user)
+	. = ..()
+	if(flipping)
+		QDEL_NULL(flipping)
+		last_flipping = world.time
+		item_state = initial(item_state)
+		playsound(loc,'sound/effects/slap.ogg', 5, 1, -2)
+
+/obj/item/reagent_containers/vessel/proc/bottleflip(mob/user)
+	playsound(loc,'sound/effects/woosh.ogg', 10, 1, -2)
+	last_flipping = world.time
+	var/this_flipping = last_flipping
+	item_state = "invisible"
+	user.update_inv_l_hand()
+	user.update_inv_r_hand()
+	if(flipping)
+		qdel(flipping)
+	var/pixOffX = 0
+	//var/list/offsets = user.get_item_offset_by_index(user.active_hand)
+	var/pixOffY = 0
+	var/fliplay = user.layer + 1
+	var/rotate = 1
+	var/anim_icon_state = initial(item_state)
+	if (!anim_icon_state)
+		anim_icon_state = initial(icon_state)
+	if(!user.hand)
+		switch(user.dir)
+			if (NORTH)
+				pixOffX = 3
+				fliplay = user.layer - 1
+				rotate = -1
+			if (SOUTH)
+				pixOffX = -4
+			if (WEST)
+				pixOffX = -7
+			if (EAST)
+				pixOffX = 2
+				rotate = -1
+	else
+		switch(user.dir)
+			if (NORTH)
+				pixOffX = -4
+				fliplay = user.layer - 1
+			if (SOUTH)
+				pixOffX = 3
+				rotate = -1
+			if (WEST)
+				pixOffX = -2
+			if (EAST)
+				pixOffX = 7
+				rotate = -1
+	flipping = anim(target = user, a_icon = 'icons/obj/bottleflip.dmi', a_icon_state = anim_icon_state, sleeptime = FLIPPING_DURATION, offX = pixOffX, lay = fliplay, offY = pixOffY)
+	animate(flipping, pixel_y = pixOffY + 12, transform = turn(matrix(), rotate*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
+	animate(pixel_y = pixOffY + 18, transform = turn(matrix(), rotate*2*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
+	animate(pixel_y = pixOffY + 21, transform = turn(matrix(), rotate*3*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
+	animate(pixel_y = pixOffY + 24, transform = turn(matrix(), rotate*4*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
+	animate(pixel_y = pixOffY + 21, transform = turn(matrix(), rotate*5*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
+	animate(pixel_y = pixOffY + 18, transform = turn(matrix(), rotate*6*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
+	animate(pixel_y = pixOffY + 12, transform = turn(matrix(), rotate*7*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
+	animate(pixel_y = pixOffY + 0, transform = turn(matrix(), rotate*8*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
+	spawn(FLIPPING_DURATION-2)
+		item_state = initial(item_state)
+		user.update_inv_l_hand()
+		user.update_inv_r_hand()
+	spawn (FLIPPING_DURATION)
+		if(loc == user && this_flipping == last_flipping)//only the last flipping action will reset the bottle's vars
+			QDEL_NULL(flipping)
+			last_flipping = world.time
+			playsound(loc,'sound/effects/slap.ogg', 10, 1, -2)
 
 //Keeping this here for now, I'll ask if I should keep it here.
 /obj/item/broken_bottle
