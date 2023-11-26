@@ -45,30 +45,32 @@
 	var/image/I
 
 	if(!density)
-		I = image(masks_icon, "[material.icon_base]fwall_open")
+		I = OVERLAY(masks_icon, "[material.icon_base]fwall_open")
 		I.color = material.icon_colour
 		AddOverlays(I)
 		return
 
 	for(var/i = 1 to 4)
-		I = image(masks_icon, "[material.icon_base][wall_connections[i]]", dir = 1<<(i-1))
+		I = OVERLAY(masks_icon, "[material.icon_base][wall_connections[i]]", dir = 1<<(i-1))
 		I.color = material.icon_colour
 		AddOverlays(I)
 
 	if(reinf_material)
 		if(construction_stage != null && construction_stage < 6)
-			I = image(masks_icon, "reinf_construct-[construction_stage]")
+			I = OVERLAY(masks_icon, "reinf_construct-[construction_stage]")
 			I.color = reinf_material.icon_colour
 			AddOverlays(I)
 		else
-			if("[reinf_material.icon_reinf]0" in icon_states(masks_icon))
+			if(!mask_overlay_states[masks_icon]) // Lets just cache them instead of calling icon_states() every damn time.
+				mask_overlay_states[masks_icon] = icon_states(masks_icon)
+			if("[reinf_material.icon_reinf]0" in mask_overlay_states[masks_icon])
 				// Directional icon
 				for(var/i = 1 to 4)
-					I = image(masks_icon, "[reinf_material.icon_reinf][wall_connections[i]]", dir = 1<<(i-1))
+					I = OVERLAY(masks_icon, "[reinf_material.icon_reinf][wall_connections[i]]", dir = 1<<(i-1))
 					I.color = reinf_material.icon_colour
 					AddOverlays(I)
 			else
-				I = image(masks_icon, reinf_material.icon_reinf)
+				I = OVERLAY(masks_icon, reinf_material.icon_reinf)
 				I.color = reinf_material.icon_colour
 				AddOverlays(I)
 
@@ -88,7 +90,7 @@
 	var/alpha_inc = 256 / damage_overlays.len
 
 	for(var/i = 1; i <= damage_overlays.len; i++)
-		var/image/img = image(icon = 'icons/turf/walls.dmi', icon_state = "overlay_damage")
+		var/image/img = image('icons/turf/walls.dmi', "overlay_damage") // Don't use OVERLAY here, we don't need all this garbage in the global cache
 		img.blend_mode = BLEND_MULTIPLY
 		img.alpha = (i * alpha_inc) - 1
 		damage_overlays[i] = img

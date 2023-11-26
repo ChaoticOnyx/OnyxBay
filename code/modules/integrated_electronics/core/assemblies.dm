@@ -574,14 +574,15 @@
 		to_chat(user, SPAN_WARNING("You can't seem to add the '[IC]', since the case doesn't support the circuit type."))
 		return FALSE
 
-	if(!IC.forceMove(src))
+	if(IC.loc == user && !user.drop(IC, src))
+		return FALSE
+	else if(!IC.forceMove(src))
 		return FALSE
 
 	to_chat(user, SPAN_NOTICE("You slide [IC] inside [src]."))
 	playsound(src, 'sound/items/Deconstruct.ogg', 50, 1)
 	add_allowed_scanner(user.ckey)
 	investigate_log("had [IC]([IC.type]) inserted by [key_name(user)].", INVESTIGATE_CIRCUIT)
-	user.drop(IC)
 	add_component(IC)
 	IC.create_moved_event()
 	return TRUE

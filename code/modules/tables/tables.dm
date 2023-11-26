@@ -329,28 +329,29 @@
 
 		// Base frame shape. Mostly done for glass/diamond tables, where this is visible.
 		for(var/i = 1 to 4)
-			I = image(icon, dir = 1<<(i-1), icon_state = connections[i])
+			I = OVERLAY(icon, connections[i], dir = 1<<(i-1))
 			AddOverlays(I)
 
 		// Standard table image
 		if(material)
 			for(var/i = 1 to 4)
-				I = image(icon, "[material.table_icon_base]_[connections[i]]", dir = 1<<(i-1))
-				if(material.icon_colour) I.color = material.icon_colour
+				I = OVERLAY(icon, "[material.table_icon_base]_[connections[i]]", dir = 1<<(i-1))
+				if(material.icon_colour)
+					I.color = material.icon_colour
 				I.alpha = 255 * material.opacity
 				AddOverlays(I)
 
 		// Reinforcements
 		if(reinforced)
 			for(var/i = 1 to 4)
-				I = image(icon, "[reinforced.table_reinf]_[connections[i]]", dir = 1<<(i-1))
+				I = OVERLAY(icon, "[reinforced.table_reinf]_[connections[i]]", dir = 1<<(i-1))
 				I.color = reinforced.icon_colour
 				I.alpha = 255 * reinforced.opacity
 				AddOverlays(I)
 
 		if(carpeted)
 			for(var/i = 1 to 4)
-				I = image(icon, "carpet_[connections[i]]", dir = 1<<(i-1))
+				I = OVERLAY(icon, "carpet_[connections[i]]", dir = 1<<(i-1))
 				AddOverlays(I)
 	else
 		ClearOverlays()
@@ -371,7 +372,7 @@
 
 		icon_state = "flip[type]"
 		if(material)
-			var/image/I = image(icon, "[material.table_icon_base]_flip[type]")
+			var/image/I = OVERLAY(icon, "[material.table_icon_base]_flip[type]")
 			I.color = material.icon_colour
 			I.alpha = 255 * material.opacity
 			AddOverlays(I)
@@ -380,13 +381,13 @@
 			name = "table frame"
 
 		if(reinforced)
-			var/image/I = image(icon, "[reinforced.table_reinf]_flip[type]")
+			var/image/I = OVERLAY(icon, "[reinforced.table_reinf]_flip[type]")
 			I.color = reinforced.icon_colour
 			I.alpha = 255 * reinforced.opacity
 			AddOverlays(I)
 
 		if(carpeted)
-			AddOverlays("carpet_flip[type]")
+			AddOverlays(OVERLAY(icon, "carpet_flip[type]"))
 
 /obj/structure/table/proc/can_connect()
 	return TRUE

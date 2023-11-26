@@ -259,7 +259,7 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/on_update_icon(keep_light = 0)
 	if(!keep_light)
 		set_light(0)
-	overlays?.Cut()
+	ClearOverlays()
 	if(density)
 		if(locked && lights && arePowerSystemsOn())
 			icon_state = "door_locked"
@@ -267,18 +267,17 @@ About the new airlock wires panel:
 		else
 			icon_state = "door_closed"
 		if(p_open || welded)
-			ClearOverlays()
 			if(p_open)
-				AddOverlays(image(icon, "panel_open"))
+				AddOverlays(OVERLAY(icon, "panel_open"))
 			if(!(stat & NOPOWER))
 				if(stat & BROKEN)
-					AddOverlays(image(icon, "sparks_broken"))
+					AddOverlays(OVERLAY(icon, "sparks_broken"))
 				else if(health < maxhealth * 0.75)
-					AddOverlays(image(icon, "sparks_damaged"))
+					AddOverlays(OVERLAY(icon, "sparks_damaged"))
 			if(welded)
-				AddOverlays(image(icon, "welded"))
+				AddOverlays(OVERLAY(icon, "welded"))
 		else if(health < maxhealth * 0.75 && !(stat & NOPOWER))
-			AddOverlays(image(icon, "sparks_damaged"))
+			AddOverlays(OVERLAY(icon, "sparks_damaged"))
 	else
 		icon_state = "door_open"
 		if(arePowerSystemsOn() && !p_open) // Doors with opened panels have no green lights on their icons

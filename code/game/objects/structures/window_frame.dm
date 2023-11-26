@@ -349,12 +349,12 @@
 	layer = WINDOW_FRAME_LAYER
 
 	if(frame_state == FRAME_ELECTRIC || frame_state == FRAME_RELECTRIC)
-		var/image/I = image(icon, "[icon_base]_cable")
+		var/image/I = OVERLAY(icon, "[icon_base]_cable")
 		I.color = cable_color
 		AddOverlays(I)
 
 	if(signaler)
-		AddOverlays(image(icon, "winframe_signaler"))
+		AddOverlays(OVERLAY(icon, "winframe_signaler"))
 
 	if(inner_pane)
 		var/list/dirs = list()
@@ -366,18 +366,18 @@
 		var/list/connections = dirs_to_corner_states(dirs)
 
 		for(var/i = 1 to 4)
-			var/image/I = image(icon, "[inner_pane.icon_base][connections[i]]", dir = 1<<(i-1))
+			var/image/I = OVERLAY(icon, "[inner_pane.icon_base][connections[i]]", dir = 1<<(i-1))
 			I.layer = WINDOW_INNER_LAYER
 			AddOverlays(I)
 
 		if(inner_pane.tinted)
 			new_opacity = TRUE
-			var/image/I = image(icon, "winframe_tint")
+			var/image/I = OVERLAY(icon, "winframe_tint")
 			I.layer = WINDOW_INNER_LAYER
 			AddOverlays(I)
 
 		if(inner_pane.damage_state)
-			var/image/I = image(icon, "winframe_damage[inner_pane.damage_state]")
+			var/image/I = OVERLAY(icon, "winframe_damage[inner_pane.damage_state]")
 			I.layer = WINDOW_INNER_LAYER
 			AddOverlays(I)
 
@@ -386,7 +386,7 @@
 
 	if(outer_pane)
 		if(outer_pane.reinforced)
-			underlays += image(icon, "winframe_shadow")
+			underlays += OVERLAY(icon, "winframe_shadow")
 
 		var/list/dirs = list()
 		if(outer_pane.state >= 2)
@@ -397,18 +397,18 @@
 		var/list/connections = dirs_to_corner_states(dirs)
 
 		for(var/i = 1 to 4)
-			var/image/I = image(icon, "[outer_pane.icon_base][connections[i]]", dir = 1<<(i-1))
+			var/image/I = OVERLAY(icon, "[outer_pane.icon_base][connections[i]]", dir = 1<<(i-1))
 			I.layer = WINDOW_OUTER_LAYER
 			AddOverlays(I)
 
 		if(outer_pane.tinted)
 			new_opacity = TRUE
-			var/image/I = image(icon, "winframe_tint")
+			var/image/I = OVERLAY(icon, "winframe_tint")
 			I.layer = WINDOW_OUTER_LAYER
 			AddOverlays(I)
 
 		if(outer_pane.damage_state)
-			var/image/I = image(icon, "winframe_damage[outer_pane.damage_state]")
+			var/image/I = OVERLAY(icon, "winframe_damage[outer_pane.damage_state]")
 			I.layer = WINDOW_OUTER_LAYER
 			AddOverlays(I)
 
@@ -424,7 +424,7 @@
 		var/list/connections = dirs_to_corner_states(dirs)
 
 		for(var/i = 1 to 4)
-			var/image/I = image(icon, "[icon_border][connections[i]]", dir = 1<<(i-1))
+			var/image/I = OVERLAY(icon, "[icon_border][connections[i]]", dir = 1<<(i-1))
 			I.layer = WINDOW_BORDER_LAYER
 			AddOverlays(I)
 
