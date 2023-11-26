@@ -151,7 +151,8 @@
 			stock_item(new item_path(src))
 
 /obj/machinery/smartfridge/secure/blood/filled
-	var/list/starts_with = list(/obj/item/reagent_containers/ivbag/blood/OPlus = 1,
+	var/list/starts_with = list(
+		/obj/item/reagent_containers/ivbag/blood/OPlus = 1,
 		/obj/item/reagent_containers/ivbag/blood/OMinus = 1,
 		/obj/item/reagent_containers/ivbag/blood/APlus = 2,
 		/obj/item/reagent_containers/ivbag/blood/AMinus = 2,
