@@ -885,6 +885,10 @@
 /obj/structure/flora/pottedplant/unusual/Initialize()
 	. = ..()
 	set_light(0.4, 0.1, 2, 2, "#007fff")
+	var/image/I = image(icon, "[icon_state]_over")
+	I.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	I.layer = ABOVE_LIGHTING_LAYER
+	AddOverlays(I)
 
 /obj/structure/flora/pottedplant/orientaltree
 	name = "potted oriental tree"
@@ -944,6 +948,10 @@
 /obj/structure/flora/pottedplant/subterranean/Initialize()
 	. = ..()
 	set_light(0.4, 0.1, 2, 2, "#ff6633")
+	var/image/I = image(icon, "[icon_state]_over")
+	I.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	I.layer = ABOVE_LIGHTING_LAYER
+	AddOverlays(I)
 
 /obj/structure/flora/pottedplant/minitree
 	name = "potted tree"
@@ -1054,3 +1062,8 @@
 /obj/effect/firefly/Initialize()
 	. = ..()
 	set_light(0.4, 0.1, 2, 2, "#ffc233")
+	var/image/I = image(icon, "[icon_state]_over")
+	I.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+	I.layer = ABOVE_LIGHTING_LAYER
+	AddOverlays(I)
+	icon_state = null
