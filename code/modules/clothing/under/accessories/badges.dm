@@ -156,7 +156,7 @@
 
 /obj/item/clothing/accessory/badge/dogtag
 	name = "dog tag"
-	desc = "A simple badge that demonstrates military its owner's military background."
+	desc = "A simple badge that demonstrates its owner's military background."
 	icon_state = "dogtag"
 	slot_flags = SLOT_MASK | SLOT_TIE
 	var/stored_blood_type
