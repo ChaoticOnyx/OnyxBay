@@ -260,11 +260,12 @@
 	onclose(user, "suit_storage_unit")
 	return
 
-
 /obj/machinery/suit_storage_unit/Topic(href, href_list) //I fucking HATE this proc
-	if(..())
-		return
-	usr.set_machine(src)
+	. = ..()
+	if(.)
+		usr.set_machine(src)
+
+/obj/machinery/suit_storage_unit/OnTopic(href, href_list) //I fucking HATE this proc
 	if (href_list["toggleUV"])
 		toggleUV(usr)
 		updateUsrDialog()
@@ -931,7 +932,7 @@
 	onclose(user, "suit_cycler")
 	return
 
-/obj/machinery/suit_cycler/Topic(href, href_list)
+/obj/machinery/suit_cycler/OnTopic(href, href_list)
 	if(href_list["eject_suit"])
 		if(!suit) return
 		suit.loc = get_turf(src)

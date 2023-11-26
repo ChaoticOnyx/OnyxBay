@@ -228,7 +228,8 @@
 		if(is_cooking)
 			stop()
 		return
-	if(receiver)
+
+	if(receiver && Adjacent(receiver))
 		if(isliving(thing_inside))
 			var/mob/living/L = thing_inside
 			L.get_scooped(receiver, self_grab = FALSE)

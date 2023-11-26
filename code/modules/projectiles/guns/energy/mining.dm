@@ -168,7 +168,10 @@
 		if(.)
 			to_chat(user, "<span class='notice'>You install the modkit.</span>")
 			playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
-			user.drop(src, KA)
+			if(loc == user)
+				user.drop(src, KA)
+			else
+				forceMove(KA)
 			KA.modkits += src
 		else
 			to_chat(user, "<span class='notice'>The modkit you're trying to install would conflict with an already installed modkit. Use a crowbar to remove existing modkits.</span>")

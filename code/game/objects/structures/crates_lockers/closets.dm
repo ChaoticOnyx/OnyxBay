@@ -220,7 +220,7 @@
 			M.client.perspective = MOB_PERSPECTIVE
 
 	for(var/atom/movable/AM in src)
-		if(!istype(AM, /obj/item/shield/closet))
+		if(AM != cdoor)
 			AM.forceMove(L)
 
 /obj/structure/closet/proc/store_contents()

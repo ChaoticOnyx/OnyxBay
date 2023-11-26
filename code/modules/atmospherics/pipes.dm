@@ -1185,100 +1185,94 @@
 	name = "Pressure Tank (Air)"
 	icon_state = "air_map"
 
-/obj/machinery/atmospherics/pipe/tank/air/New()
+/obj/machinery/atmospherics/pipe/tank/air/Initialize()
+	. = ..()
+
 	air_temporary = new
 	air_temporary.volume = volume
 	air_temporary.temperature = 20 CELSIUS
-
 	air_temporary.adjust_multi("oxygen",  (start_pressure*O2STANDARD)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature), \
 	                           "nitrogen",(start_pressure*N2STANDARD)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
-
-
-	..()
 	icon_state = "air"
 
 /obj/machinery/atmospherics/pipe/tank/oxygen
 	name = "Pressure Tank (Oxygen)"
 	icon_state = "o2_map"
 
-/obj/machinery/atmospherics/pipe/tank/oxygen/New()
+/obj/machinery/atmospherics/pipe/tank/oxygen/Initialize()
+	. = ..()
+
 	air_temporary = new
 	air_temporary.volume = volume
 	air_temporary.temperature = 20 CELSIUS
-
 	air_temporary.adjust_gas("oxygen", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
-
-	..()
 	icon_state = "o2"
 
 /obj/machinery/atmospherics/pipe/tank/nitrogen
 	name = "Pressure Tank (Nitrogen)"
 	icon_state = "n2_map"
 
-/obj/machinery/atmospherics/pipe/tank/nitrogen/New()
+/obj/machinery/atmospherics/pipe/tank/nitrogen/Initialize()
+	. = ..()
+
 	air_temporary = new
 	air_temporary.volume = volume
 	air_temporary.temperature = 20 CELSIUS
-
 	air_temporary.adjust_gas("nitrogen", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
-
-	..()
 	icon_state = "n2"
 
 /obj/machinery/atmospherics/pipe/tank/carbon_dioxide
 	name = "Pressure Tank (Carbon Dioxide)"
 	icon_state = "co2_map"
 
-/obj/machinery/atmospherics/pipe/tank/carbon_dioxide/New()
+/obj/machinery/atmospherics/pipe/tank/carbon_dioxide/Initialize()
+	. = ..()
+
 	air_temporary = new
 	air_temporary.volume = volume
 	air_temporary.temperature = 20 CELSIUS
 
 	air_temporary.adjust_gas("carbon_dioxide", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
 
-	..()
 	icon_state = "co2"
 
 /obj/machinery/atmospherics/pipe/tank/plasma
 	name = "Pressure Tank (Plasma)"
 	icon_state = "plasma_map"
 
-/obj/machinery/atmospherics/pipe/tank/plasma/New()
+/obj/machinery/atmospherics/pipe/tank/plasma/Initialize()
+	. = ..()
+
 	air_temporary = new
 	air_temporary.volume = volume
 	air_temporary.temperature = 20 CELSIUS
-
 	air_temporary.adjust_gas("plasma", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
-
-	..()
 	icon_state = "plasma"
 
 /obj/machinery/atmospherics/pipe/tank/nitrous_oxide
 	name = "Pressure Tank (Nitrous Oxide)"
 	icon_state = "n2o_map"
 
-/obj/machinery/atmospherics/pipe/tank/nitrous_oxide/New()
+/obj/machinery/atmospherics/pipe/tank/nitrous_oxide/Initialize()
+	. = ..()
+
 	air_temporary = new
 	air_temporary.volume = volume
 	air_temporary.temperature = 0 CELSIUS
-
 	air_temporary.adjust_gas("sleeping_agent", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
-
-	..()
 	icon_state = "n2o"
 
 /obj/machinery/atmospherics/pipe/tank/hydrogen
 	name = "Pressure Tank (Hydrogen)"
 	icon_state = "h2_map"
 
-/obj/machinery/atmospherics/pipe/tank/hydrogen/New()
+/obj/machinery/atmospherics/pipe/tank/hydrogen/Initialize()
+	. = ..()
+
 	air_temporary = new
 	air_temporary.volume = volume
 	air_temporary.temperature = 20 CELSIUS
-
 	air_temporary.adjust_gas("hydrogen", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
-
-	..()
 	icon_state = "h2"
 
 /obj/machinery/atmospherics/pipe/vent
