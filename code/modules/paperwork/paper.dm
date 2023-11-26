@@ -463,7 +463,7 @@
 
 	else if(istype(P, /obj/item/paper_bundle))
 		var/obj/item/paper_bundle/attacking_bundle = P
-		attacking_bundle.insert_sheet_at(user, (attacking_bundle.pages.len)+1, src)
+		attacking_bundle.insert_sheet_at(user, length(attacking_bundle.pages) + 1, src)
 		attacking_bundle.update_icon()
 
 	else if(istype(P, /obj/item/reagent_containers/food/grown))
