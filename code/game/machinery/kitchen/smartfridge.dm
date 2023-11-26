@@ -161,10 +161,10 @@
 		/obj/item/reagent_containers/ivbag = 2
 		)
 
-/obj/machinery/smartfridge/secure/blood/accept_check(obj/item/O as obj)
-	if(istype(O,/obj/item/reagent_containers/ivbag))
-		return 1
-	return 0
+/obj/machinery/smartfridge/secure/blood/accept_check(obj/item/O)
+	if(istype(O, /obj/item/reagent_containers/ivbag))
+		return TRUE
+	return FALSE
 
 /obj/machinery/smartfridge/drinks
 	name = "\improper Drink Showcase"
