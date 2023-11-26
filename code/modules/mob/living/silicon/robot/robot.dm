@@ -835,7 +835,7 @@
 			var/image/eye_overlay = eye_overlays[eye_icon_state]
 			if(!eye_overlay)
 				eye_overlays[eye_icon_state] = image(icon, eye_icon_state)
-				eye_overlays["[eye_icon_state]+ea"] = emissive_appearance(icon, eye_icon_state)
+				eye_overlays["[eye_icon_state]+ea"] = emissive_appearance(icon, eye_icon_state, cache = FALSE)
 			AddOverlays(eye_overlay)
 			AddOverlays("[eye_icon_state]+ea")
 
