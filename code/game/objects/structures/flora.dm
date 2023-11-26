@@ -1062,7 +1062,7 @@
 /obj/effect/firefly/Initialize()
 	. = ..()
 	set_light(0.4, 0.1, 2, 2, "#ffc233")
-	var/image/I = image(icon, "[icon_state]_over")
+	var/image/I = image(icon, icon_state)
 	I.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 	I.layer = ABOVE_LIGHTING_LAYER
 	AddOverlays(I)
