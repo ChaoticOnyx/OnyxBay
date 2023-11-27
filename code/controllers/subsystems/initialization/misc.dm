@@ -2,7 +2,6 @@ SUBSYSTEM_DEF(misc)
 	name = "Early Initialization"
 	init_order = SS_INIT_MISC
 	flags = SS_NO_FIRE
-	var/list/bitmask_anchors = list()
 
 /datum/controller/subsystem/misc/Initialize()
 	BakeBitmaskOverlays()
@@ -83,8 +82,4 @@ SUBSYSTEM_DEF(misc)
 
 		baked_sprite_sheet.Insert(baked_overlay, "[overlay_state]")
 
-	var/obj/O = new
-	O.icon = baked_sprite_sheet
-	O.icon_state = "0"
-	bitmask_anchors.Add(O)
 	return baked_sprite_sheet
