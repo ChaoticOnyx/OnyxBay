@@ -94,8 +94,7 @@
 		to_chat(user, SPAN("warning", "You aren't sure you'll fit in this men's cloth..."))
 		return 0
 
-// Item below belong to i-dont-fucking-know-who
-// Please, sign it ASAP
+// HentaiStorm
 
 /obj/item/clothing/suit/storage/toggle/forensics/customred
 	name = "red jacket"
@@ -232,10 +231,13 @@
 	original[2] = /obj/item/clothing/suit/fire/firefighter
 	finished[2] = /obj/item/clothing/suit/fire/firefighter/atmos
 
-/obj/item/clothing/head/richard/raven
+/obj/item/clothing/head/raven_hood
 	name = "raven hood"
 	desc = "A hood with raven skull. Kinda stylish."
-	icon_state = "raven"
+	icon_state = "raven_hood"
+	body_parts_covered = HEAD|FACE
+	flags_inv = BLOCKHAIR
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 // Animusin
 /obj/item/clothing/suit/storage/toggle/heart_jacket
