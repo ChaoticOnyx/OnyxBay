@@ -30,9 +30,9 @@
 
 /obj/item/storage/belt/get_mob_overlay(mob/user_mob, slot)
 	var/image/ret = ..()
-	if(slot == slot_belt_str && contents.len)
+	if(slot == slot_belt_str && length(contents))
 		for(var/obj/item/I in contents)
-			ret.AddOverlays(image("icon" = 'icons/inv_slots/belts/mob.dmi', "icon_state" = "[I.item_state ? I.item_state : I.icon_state]"))
+			ret.AddOverlays(image('icons/inv_slots/belts/mob.dmi', "[I.item_state ? I.item_state : I.icon_state]"))
 	return ret
 
 /obj/item/storage/belt/utility
