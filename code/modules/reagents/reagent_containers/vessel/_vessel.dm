@@ -49,7 +49,7 @@
 	//bottle flipping
 	var/can_flip = FALSE
 	var/last_flipping = 0
-	var/atom/movable/fake_overlay/flipping = null
+	var/image/flipping = null
 
 	var/list/can_be_placed_into = list(
 		/obj/machinery/chem_master/,
@@ -401,11 +401,6 @@
 /obj/item/reagent_containers/vessel/equipped(mob/user)
 	. = ..()
 	if(can_flip && (user.a_intent == I_GRAB))
-		//if(flipping && (M_CLUMSY in user.mutations) && prob(20))
-		//	to_chat(user, "<span class='warning'>Your clumsy fingers fail to catch back \the [src].</span>")
-		//	user.drop_item(src, user.loc, 1)
-		//	throw_impact(user.loc,1,user)
-		//else
 		bottleflip(user)
 
 /obj/item/reagent_containers/vessel/dropped(mob/user)
@@ -457,7 +452,14 @@
 			if (EAST)
 				pixOffX = 7
 				rotate = -1
-	flipping = anim(target = user, a_icon = 'icons/obj/bottleflip.dmi', a_icon_state = anim_icon_state, sleeptime = FLIPPING_DURATION, offX = pixOffX, lay = fliplay, should_follow = TRUE)
+	flipping = image('icons/obj/bottleflip.dmi', user, anim_icon_state, fliplay, user.dir, pixOffX)
+	var/list/clients_to_show = list()
+	for(var/mob/M in dview(world.view, user))
+		if(!M.client)
+			continue
+
+		clients_to_show.Add(M.client)
+	flick_overlay_global(flipping, clients_to_show, FLIPPING_DURATION)
 	animate(flipping, pixel_y = 12, transform = turn(matrix(), rotate*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
 	animate(pixel_y = 18, transform = turn(matrix(), rotate*2*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
 	animate(pixel_y = 21, transform = turn(matrix(), rotate*3*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
@@ -466,12 +468,13 @@
 	animate(pixel_y = 18, transform = turn(matrix(), rotate*6*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
 	animate(pixel_y = 12, transform = turn(matrix(), rotate*7*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
 	animate(pixel_y = 0, transform = turn(matrix(), rotate*8*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
-	spawn(FLIPPING_DURATION - 2)
-		item_state = initial(item_state)
-		user.update_inv_l_hand()
-		user.update_inv_r_hand()
-	spawn (FLIPPING_DURATION)
+	spawn(FLIPPING_DURATION - 1)
 		if(loc == user && this_flipping == last_flipping) // Only the last flipping action will reset the bottle's vars
+			item_state = initial(item_state)
+			user.update_inv_l_hand()
+			user.update_inv_r_hand()
+	spawn(FLIPPING_DURATION)
+		if(loc == user && this_flipping == last_flipping)
 			QDEL_NULL(flipping)
 			last_flipping = world.time
 			playsound(src, 'sound/effects/slap.ogg', 50, 1, -2)
