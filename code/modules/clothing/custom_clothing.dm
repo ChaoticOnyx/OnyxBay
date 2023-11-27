@@ -232,6 +232,12 @@
 	original[2] = /obj/item/clothing/suit/fire/firefighter
 	finished[2] = /obj/item/clothing/suit/fire/firefighter/atmos
 
+/obj/item/clothing/head/richard/raven
+	name = "raven hood"
+	desc = "A hood with raven skull. Kinda stylish."
+	icon_state = "raven"
+	item_state = "raven"
+
 // Animusin
 /obj/item/clothing/suit/storage/toggle/heart_jacket
 	name = "heart jacket"
@@ -271,4 +277,3 @@
 	parts[1] =	1
 	original[1] =  /obj/item/clothing/head/helmet
 	finished[1] = /obj/item/clothing/head/helmet/tcc
-
