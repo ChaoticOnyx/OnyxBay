@@ -77,7 +77,10 @@
 //called after processing reactions, if they occurred
 /datum/chemical_reaction/proc/post_reaction(datum/reagents/holder)
 	var/atom/container = holder.my_atom
-	if(mix_message && container && !ismob(container))
+	if(container?.atom_flags & ATOM_FLAG_SILENTCONTAINER)
+		return
+
+	if(mix_message && !ismob(container))
 		var/turf/T = get_turf(container)
 		var/list/seen = viewers(4, T)
 		for(var/mob/M in seen)

@@ -4,7 +4,6 @@
 	desc = "A regular glass bottle."
 	icon = 'icons/obj/reagent_containers/bottles.dmi'
 	icon_state = "bottle_medium"
-	item_state = "atoxinbottle"
 	center_of_mass = "x=16;y=11"
 	randpixel = 7
 	amount_per_transfer_from_this = 10
@@ -21,6 +20,7 @@
 	matter = list(MATERIAL_GLASS = 2000)
 	brittle = TRUE
 	lid_type = /datum/vessel_lid/cap
+	can_flip = TRUE
 
 	var/obj/item/reagent_containers/rag/rag = null
 	var/rag_underlay = "rag"

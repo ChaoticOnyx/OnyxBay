@@ -21,6 +21,7 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define ATOM_FLAG_ADJACENT_EXCEPTION     0x0080 // Skips adjacent checks for atoms that should always be reachable in window tiles
 #define ATOM_FLAG_IGNORE_RADIATION       0x0100 // It will not produce any radiation when it will be a radiation source.
 #define ATOM_AWAITING_OVERLAY_UPDATE     0x0400 // SSoverlays must update this atom's overlays.
+#define ATOM_FLAG_SILENTCONTAINER        0x0800 // Chemical reaction won't trigger bubbling sound
 
 #define OBJ_FLAG_ANCHORABLE              0x0001 // This object can be stuck in place with a tool
 #define OBJ_FLAG_CONDUCTIBLE             0x0002 // Conducts electricity. (metal etc.)
