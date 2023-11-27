@@ -236,7 +236,6 @@
 	name = "raven hood"
 	desc = "A hood with raven skull. Kinda stylish."
 	icon_state = "raven"
-	item_state = "raven"
 
 // Animusin
 /obj/item/clothing/suit/storage/toggle/heart_jacket
