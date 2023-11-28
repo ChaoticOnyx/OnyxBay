@@ -42,5 +42,5 @@
 		animation.master = target
 		flick(flick_anim, animation)
 
-	QDEL_IN(max(sleeptime, 15))
+	QDEL_IN(src, max(sleeptime, 15))
 	return animation
