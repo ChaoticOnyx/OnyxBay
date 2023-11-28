@@ -453,13 +453,15 @@
 				pixOffX = 7
 				rotate = -1
 	flipping = image('icons/obj/bottleflip.dmi', user, anim_icon_state, fliplay, user.dir, pixOffX)
+	var/list/observers = list()
+	var/list/objects = list()
+	get_mobs_and_objs_in_view_fast(get_turf(user), world.view, observers, objects, TRUE)
 	var/list/clients_to_show = list()
-	for(var/mob/M in dview(world.view, user))
-		if(!M.client)
-			continue
-
-		clients_to_show.Add(M.client)
-	flick_overlay_global(flipping, clients_to_show, FLIPPING_DURATION)
+	for(var/mob/M in observers)
+		if(M.client)
+			clients_to_show.Add(M.client)
+	add_image_to_clients(flipping, clients_to_show)
+	//user.flick_overlay_in_view(flipping, FLIPPING_DURATION)
 	animate(flipping, pixel_y = 12, transform = turn(matrix(), rotate*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
 	animate(pixel_y = 18, transform = turn(matrix(), rotate*2*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
 	animate(pixel_y = 21, transform = turn(matrix(), rotate*3*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
@@ -474,6 +476,7 @@
 			user.update_inv_l_hand()
 			user.update_inv_r_hand()
 	spawn(FLIPPING_DURATION)
+		remove_image_from_clients(flipping, clients_to_show)
 		if(loc == user && this_flipping == last_flipping)
 			QDEL_NULL(flipping)
 			last_flipping = world.time
