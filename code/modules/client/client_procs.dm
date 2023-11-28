@@ -72,7 +72,7 @@
 			to_chat(src, SPAN("danger", "[msg]"))
 			return
 
-	if(config.general.second_topic_limit)
+	if(config.general.second_topic_limit && href_list["window_id"] != "statbrowser")
 		var/second = round(world.time, 10)
 		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -142,6 +142,9 @@
 		if("openLink")
 			send_link(src, href_list["link"])
 
+	if(href_list["reload_statbrowser"])
+		stat_panel.reinitialize()
+
 	..()	// redirect to hsrc.Topic()
 
 // This stops files larger than UPLOAD_LIMIT being sent from client to server via input(), client.Import() etc.
@@ -177,10 +180,10 @@
 	GLOB.clients += src
 	GLOB.ckey_directory[ckey] = src
 
-	// Instantiate tgui panel
-	tgui_panel = new(src, "browseroutput")
 	// Instantiate stat panel
 	stat_panel = new(src, "statbrowser")
+	// Instantiate tgui panel
+	tgui_panel = new(src, "browseroutput")
 
 	stat_panel.subscribe(src, PROC_REF(on_stat_panel_message))
 
@@ -669,6 +672,7 @@
 	stat_panel.send_message("init_verbs", list(panel_tabs = panel_tabs, verblist = verblist))
 
 /client/proc/check_panel_loaded()
-	if(stat_panel.is_ready())
+	if(stat_panel.is_ready() && stat_panel.is_browser)
+		stat_panel.is_browser = TRUE
 		return
-	to_chat(src, SPAN_DANGER("Statpanel failed to load, click <a href='?src=[ref(src)];reload_statbrowser=1'>here</a> to reload the panel "))
+	to_chat(src, SPAN_DANGER("Statpanel [stat_panel.is_ready()] failed to load, click <a href='?src=[ref(src)];reload_statbrowser=1'>here</a> to reload the panel "))

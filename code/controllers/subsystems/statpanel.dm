@@ -84,7 +84,14 @@ SUBSYSTEM_DEF(statpanels)
 
 /datum/controller/subsystem/statpanels/proc/set_status_tab(client/target)
 	if(!global_data)//statbrowser hasnt fired yet and we were called from immediate_send_stat_data()
-		return
+		var/list/preliminary_stats = list("The server is initializing...")
+		if(GLOB.using_map?.name)
+			preliminary_stats.Add("Map: [GLOB.using_map.name]")
+		if(game_id)
+			preliminary_stats.Add("Round ID: [game_id]")
+		if(world?.timeofday)
+			preliminary_stats.Add("Server Time: [time2text(world.timeofday, "YYYY-MM-DD hh:mm:ss")]")
+		target.stat_panel.send_message("update_stat", list(global_data = preliminary_stats, other_str = target.mob?.get_status_tab_items()))
 
 	target.stat_panel.send_message("update_stat", list(
 		global_data = global_data,

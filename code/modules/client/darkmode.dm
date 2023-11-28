@@ -167,12 +167,12 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 	outputwindow.text-color = [COLOR_MARINEMODE_TEXT];
 	statwindow.background-color = [COLOR_MARINEMODE_BACKGROUND];
 	statwindow.text-color = [COLOR_MARINEMODE_TEXT];
-	stat.background-color = [COLOR_MARINEMODE_BACKGROUND];
-	stat.tab-background-color = [COLOR_MARINEMODE_BACKGROUND];
-	stat.text-color = [COLOR_MARINEMODE_TEXT];
-	stat.tab-text-color = [COLOR_MARINEMODE_TEXT];
-	stat.prefix-color = [COLOR_MARINEMODE_TEXT];
-	stat.suffix-color = [COLOR_MARINEMODE_TEXT];
+	statbrowser.background-color = [COLOR_MARINEMODE_BACKGROUND];
+	statbrowser.tab-background-color = [COLOR_MARINEMODE_BACKGROUND];
+	statbrowser.text-color = [COLOR_MARINEMODE_TEXT];
+	statbrowser.tab-text-color = [COLOR_MARINEMODE_TEXT];
+	statbrowser.prefix-color = [COLOR_MARINEMODE_TEXT];
+	statbrowser.suffix-color = [COLOR_MARINEMODE_TEXT];
 
 	saybutton.background-color = [COLOR_MARINEMODE_GRAYBUTTON];
 	saybutton.text-color = [COLOR_MARINEMODE_TEXT];
