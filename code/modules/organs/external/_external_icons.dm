@@ -117,8 +117,6 @@ var/list/limb_icon_cache = list()
 		if (M.draw_target == MARKING_TARGET_SKIN)
 			. += "-[M.name][markings[E]]]"
 
-	if(body_hair && islist(h_col) && length(h_col) >= 3)
-		. += "[body_hair]-[icon_name]-[h_col[1]][h_col[2]][h_col[3]]"
 	return .
 
 
@@ -205,14 +203,6 @@ var/list/limb_icon_cache = list()
 	for(var/entry in sorted) // Revisit this with blendmodes
 		mob_icon.Blend(entry[2], entry[3]["layer_blend"])
 
-
-	if(body_hair && islist(h_col) && h_col.len >= 3)
-		var/cache_key = "[body_hair]-[icon_name]-[h_col[1]][h_col[2]][h_col[3]]"
-		if(!limb_icon_cache[cache_key])
-			var/icon/I = icon(species.get_icobase(owner), "[icon_name]_[body_hair]")
-			I.Blend(rgb(h_col[1],h_col[2],h_col[3]), ICON_ADD)
-			limb_icon_cache[cache_key] = I
-		mob_icon.Blend(limb_icon_cache[cache_key], ICON_OVERLAY)
 
 	// Fix leg layering here
 	// Alternatively you could use masks but it's about same amount of work
