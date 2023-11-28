@@ -453,15 +453,7 @@
 				pixOffX = 7
 				rotate = -1
 	flipping = image('icons/obj/bottleflip.dmi', user, anim_icon_state, fliplay, user.dir, pixOffX)
-	var/list/observers = list()
-	var/list/objects = list()
-	get_mobs_and_objs_in_view_fast(get_turf(user), world.view, observers, objects, TRUE)
-	var/list/clients_to_show = list()
-	for(var/mob/M in observers)
-		if(M.client)
-			clients_to_show.Add(M.client)
-	add_image_to_clients(flipping, clients_to_show)
-	//user.flick_overlay_in_view(flipping, FLIPPING_DURATION)
+	flipping = anim(target = user, a_icon = 'icons/obj/bottleflip.dmi', a_icon_state = anim_icon_state, sleeptime = FLIPPING_DURATION, offX = pixOffX, lay = fliplay)
 	animate(flipping, pixel_y = 12, transform = turn(matrix(), rotate*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
 	animate(pixel_y = 18, transform = turn(matrix(), rotate*2*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
 	animate(pixel_y = 21, transform = turn(matrix(), rotate*3*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
@@ -470,14 +462,23 @@
 	animate(pixel_y = 18, transform = turn(matrix(), rotate*6*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
 	animate(pixel_y = 12, transform = turn(matrix(), rotate*7*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
 	animate(pixel_y = 0, transform = turn(matrix(), rotate*8*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
-	spawn(FLIPPING_DURATION - 1)
+	spawn(FLIPPING_DURATION)
+		var/turf/flip_turf = get_turf(flipping)
+		if(flip_turf != get_turf(user))
+			to_chat(user, SPAN_WARNING("Your fail to catch back \the [src]."))
+			user.drop(src, flipping.loc, force = TRUE)
+			if(prob(50))
+				smash(flip_turf, flip_turf)
+			else
+				throw_impact(flip_turf, 1)
+			QDEL_NULL(flipping)
+			return
+
 		if(loc == user && this_flipping == last_flipping) // Only the last flipping action will reset the bottle's vars
 			item_state = initial(item_state)
+			user.ImmediateOverlayUpdate()
 			user.update_inv_l_hand()
 			user.update_inv_r_hand()
-	spawn(FLIPPING_DURATION)
-		remove_image_from_clients(flipping, clients_to_show)
-		if(loc == user && this_flipping == last_flipping)
 			QDEL_NULL(flipping)
 			last_flipping = world.time
 			playsound(src, 'sound/effects/slap.ogg', 50, 1, -2)

@@ -191,8 +191,7 @@
 			"with determination",
 			"like a devil",
 			"with care and love",
-			"like there is no tomorrow"
-		)
+			"like there is no tomorrow")
 		user.visible_message(SPAN_NOTICE("\The [user] shakes \the [src] [adjective]!"), SPAN_NOTICE("You shake \the [src] [adjective]!"))
 		ClearOverlays()
 		icon_state = "shaker_shaking"
