@@ -6,7 +6,7 @@
 	name = "Orange Juice"
 	desc = "Full of vitamins and deliciousness!"
 	icon_state = "orangejuice"
-	item_state = "orangejui"
+	item_state = "orangejuice"
 	startswith = list(/datum/reagent/drink/juice/orange)
 
 /obj/item/reagent_containers/vessel/carton/cream

@@ -77,7 +77,7 @@
 //called after processing reactions, if they occurred
 /datum/chemical_reaction/proc/post_reaction(datum/reagents/holder)
 	var/atom/container = holder.my_atom
-	if(container?.atom_flags & ATOM_FLAG_SILENTCONTAINER)
+	if(container && (container.atom_flags & ATOM_FLAG_SILENTCONTAINER))
 		return
 
 	if(mix_message && !ismob(container))

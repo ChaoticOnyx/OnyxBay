@@ -22,7 +22,7 @@
 		animation.layer = target.layer + 0.1
 	else
 		animation.layer = lay
-	if(target && istype(target,/atom))
+	if(target && istype(target, /atom))
 		if(!plane)
 			animation.plane = target.plane
 		else
@@ -35,9 +35,6 @@
 		animation.color = col
 	if(trans)
 		animation.transform = trans
-	//if(target && ismovable(target))
-	//	var/atom/movable/AM = target
-	//	//AM.lock_atom(animation, /datum/locking_category/buckle)
 	if(a_icon_state)
 		animation.icon_state = a_icon_state
 	else
@@ -45,7 +42,5 @@
 		animation.master = target
 		flick(flick_anim, animation)
 
-	spawn(max(sleeptime, 5))
-		qdel(animation)
-
+	QDEL_IN(max(sleeptime, 15))
 	return animation
