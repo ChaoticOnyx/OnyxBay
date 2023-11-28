@@ -148,8 +148,7 @@ var/list/limb_icon_cache = list()
 	var/chosen_icon = ""
 	var/chosen_icon_state = ""
 
-	var/stump_icon = is_stump() ? "_s" : ""
-	chosen_icon_state = "[icon_name][gender][body_build][stump_icon]"
+	chosen_icon_state = "[icon_name][gender][body_build]"
 
 	/////
 	if(force_icon)
