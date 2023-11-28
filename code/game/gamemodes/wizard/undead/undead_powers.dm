@@ -9,7 +9,7 @@
 
 /datum/power/undead/armblade
 	name = "Arm Blade"
-	desc = "Mutate your hand into a deadly armblade."
+	desc = "Mutate your hand into a deadly armblade. Warning, it's a permanent mutation!"
 	price = 10
 
 	power_item_type = /obj/item/melee/prosthetic/bio/fake_arm_blade/undead_armblade
@@ -47,7 +47,7 @@
 
 /datum/power/undead/armblade/armshield
 	name = "Bone Shield"
-	desc = "Mutate your hand into a bone shield."
+	desc = "Mutate your hand into a bone shield. Warning, it's a permanent mutation!"
 	price = 10
 
 	power_item_type = /obj/item/melee/prosthetic/bio/fake_arm_blade/undead_shield
