@@ -27,3 +27,4 @@ __pycache__
 .idea
 
 sql/test_db
+.timetracker

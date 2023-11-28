@@ -48,40 +48,56 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 		return "<br>The traitor has completed <b>[contracts_num] contracts: [contracts_text]."
 
 /datum/antagonist/traitor/create_objectives(datum/mind/traitor)
+	// Тут проверки на допустимость роль конфигом
 	if(!..())
 		return
 
 	if(istype(traitor.current, /mob/living/silicon))
-		var/datum/objective/assassinate/kill_objective = new
-		kill_objective.owner = traitor
-		kill_objective.find_target()
-		traitor.objectives += kill_objective
-
-		var/datum/objective/survive/survive_objective = new
-		survive_objective.owner = traitor
-		traitor.objectives += survive_objective
+		// Генерим боргам два случайных задания: убийство или защита, возможно оба сразу и на одних и тех же людей
+		for(var/i=1, i < 2, i++)
+			// В половине случаев убить или защитить
+			if(prob(50))
+				var/datum/objective/assassinate/kill_objective = new
+				kill_objective.owner = traitor
+				kill_objective.find_target()
+				traitor.objectives += kill_objective
+			else
+				var/datum/objective/protect/protect_objective = new
+				protect_objective.owner = traitor
+				protect_objective.find_target()
+				traitor.objectives += protect_objective
 
 		if(prob(10))
+			// С определенным шансом задача по недопущению органики на шаттл
 			var/datum/objective/block/block_objective = new
 			block_objective.owner = traitor
 			traitor.objectives += block_objective
-	else
-		var/datum/objective/contracts/C = new
-		C.owner = traitor
-		traitor.objectives += C
-		switch(rand(1,100))
-			if(1 to 100)
-				if (!(locate(/datum/objective/escape) in traitor.objectives))
-					var/datum/objective/escape/escape_objective = new
-					escape_objective.owner = traitor
-					traitor.objectives += escape_objective
+		else
+			// В остальном случае выживание силикона
+			var/datum/objective/survive/survive_objective = new
+			survive_objective.owner = traitor
+			traitor.objectives += survive_objective
 
-			else
-				if (!(locate(/datum/objective/hijack) in traitor.objectives))
-					var/datum/objective/hijack/hijack_objective = new
-					hijack_objective.owner = traitor
-					traitor.objectives += hijack_objective
-	return
+
+	// Для хуманов
+	else
+		// Обжектив из для системы контрактов
+		var/datum/objective/contracts/contract_objective = new
+		contract_objective.owner = traitor
+		traitor.objectives += contract_objective
+
+		// Пробник по аналогии с синтетиком, но реже
+		if(prob(1))
+			// Насколько я понимаю, на шаттле должен остаться только владелец задания
+			var/datum/objective/hijack/hijack_objective = new
+			hijack_objective.owner = traitor
+			traitor.objectives += hijack_objective
+		else
+			// В остальном случае покинуть станцию на шаттле или подах
+			var/datum/objective/escape/escape_objective = new
+			escape_objective.owner = traitor
+			traitor.objectives += escape_objective
+
 
 /datum/antagonist/traitor/equip(mob/living/carbon/human/traitor_mob)
 	if(istype(traitor_mob, /mob/living/silicon)) // this needs to be here because ..() returns false if the mob isn't human
