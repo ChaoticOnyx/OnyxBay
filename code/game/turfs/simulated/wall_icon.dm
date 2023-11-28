@@ -50,10 +50,9 @@
 		AddOverlays(I)
 		return
 
-	for(var/i = 1 to 4)
-		I = OVERLAY(masks_icon, "[material.icon_base][wall_connections[i]]", dir = 1<<(i-1))
-		I.color = material.icon_colour
-		AddOverlays(I)
+	I = image(GLOB.bitmask_icon_sheets["wall_[material.icon_base]"], "[wall_connections]")
+	I.color = material.icon_colour
+	AddOverlays(I)
 
 	if(reinf_material)
 		if(construction_stage != null && construction_stage < 6)
@@ -64,11 +63,9 @@
 			if(!mask_overlay_states[masks_icon]) // Lets just cache them instead of calling icon_states() every damn time.
 				mask_overlay_states[masks_icon] = icon_states(masks_icon)
 			if("[reinf_material.icon_reinf]0" in mask_overlay_states[masks_icon])
-				// Directional icon
-				for(var/i = 1 to 4)
-					I = OVERLAY(masks_icon, "[reinf_material.icon_reinf][wall_connections[i]]", dir = 1<<(i-1))
-					I.color = reinf_material.icon_colour
-					AddOverlays(I)
+				I = image(GLOB.bitmask_icon_sheets["wall_[reinf_material.icon_reinf]"], "[wall_connections]")
+				I.color = reinf_material.icon_colour
+				AddOverlays(I)
 			else
 				I = OVERLAY(masks_icon, reinf_material.icon_reinf)
 				I.color = reinf_material.icon_colour
@@ -99,17 +96,19 @@
 /turf/simulated/wall/proc/update_connections(propagate = 0)
 	if(!material)
 		return
-	var/list/dirs = list()
-	for(var/turf/simulated/wall/W in orange(src, 1))
+	wall_connections = 0
+
+	for(var/I in GLOB.cardinal)
+		var/turf/simulated/wall/W = get_step(src, I)
+		if(!istype(W))
+			continue
 		if(!W.material)
 			continue
 		if(propagate)
 			W.update_connections()
 			W.update_icon()
 		if(can_join_with(W))
-			dirs += get_dir(src, W)
-
-	wall_connections = dirs_to_corner_states(dirs)
+			wall_connections += get_dir(src, W)
 
 /turf/simulated/wall/proc/can_join_with(turf/simulated/wall/W)
 	if(material && W.material && material.icon_base == W.material.icon_base)

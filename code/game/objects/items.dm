@@ -894,11 +894,14 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	else
 		if(item_icons && item_icons[slot])
 			mob_icon = item_icons[slot]
-		else if (user_human && user_human.body_build)
+		else if(user_human?.body_build)
 			mob_icon = user_human.body_build.get_mob_icon(slot, mob_state)
+		else
+			return
 
-	var/image/ret_overlay = overlay_image(mob_icon,mob_state,color,RESET_COLOR)
-	if(user_human && user_human.species && user_human.species.equip_adjust.len)
+	var/image/ret_overlay = overlay_image(mob_icon, mob_state, color, RESET_COLOR)
+
+	if(length(user_human?.species?.equip_adjust))
 		var/list/equip_adjusts = user_human.species.equip_adjust
 		if(equip_adjusts[slot])
 			var/image_key = "[user_human.species] [user_human.body_build.name] [mob_icon] [mob_state] [color]"
@@ -906,7 +909,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 			if(!ret_overlay)
 				var/icon/final_I = new(mob_icon, icon_state = mob_state)
 				var/list/shifts = equip_adjusts[slot]
-				if(shifts && shifts.len)
+				if(length(shifts))
 					var/shift_facing
 					for(shift_facing in shifts)
 						var/list/facing_list = shifts[shift_facing]

@@ -591,7 +591,7 @@
 
 	for(var/obj/item/rig_module/module in installed_modules)
 		if(module.suit_overlay)
-			ret.AddOverlays(image("icon" = 'icons/mob/onmob/rig_modules.dmi', "icon_state" = "[module.suit_overlay]"))
+			ret.AddOverlays(image('icons/mob/onmob/rig_modules.dmi', module.suit_overlay))
 	return ret
 
 /obj/item/rig/proc/check_suit_access(mob/living/carbon/human/user)
