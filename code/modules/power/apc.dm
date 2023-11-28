@@ -126,11 +126,7 @@
 	var/static/list/status_overlays_lighting
 	var/static/list/status_overlays_environ
 
-	var/static/list/overlight_overlays_lock
-	var/static/list/overlight_overlays_charging
-	var/static/list/overlight_overlays_equipment
-	var/static/list/overlight_overlays_lighting
-	var/static/list/overlight_overlays_environ
+	var/static/mutable_appearance/status_overlay_ea
 
 
 /obj/machinery/power/apc/updateDialog()
@@ -326,12 +322,7 @@
 				AddOverlays(status_overlays_lighting[lighting+1])
 				AddOverlays(status_overlays_environ[environ+1])
 
-				// Lock and Charging only "glow" if operating, on purpose
-				AddOverlays(overlight_overlays_lock[locked+1])
-				AddOverlays(overlight_overlays_charging[charging+1])
-				AddOverlays(overlight_overlays_equipment[equipment+1])
-				AddOverlays(overlight_overlays_lighting[lighting+1])
-				AddOverlays(overlight_overlays_environ[environ+1])
+				AddOverlays(status_overlay_ea)
 
 	if(update & 3)
 		if(update_state & (UPDATE_OPENED1|UPDATE_OPENED2|UPDATE_BROKE))
@@ -1266,7 +1257,7 @@
 	update_icon()
 	return 1
 
-#define OVERLIGHT_IMAGE(a, b) a=emissive_appearance(icon, b, cache = FALSE);
+
 /obj/machinery/power/apc/proc/generate_overlays()
 	status_overlays_lock = new
 	status_overlays_charging = new
@@ -1305,43 +1296,7 @@
 	status_overlays_environ[POWERCHAN_ON + 1] = image(icon, "apco2-2")
 	status_overlays_environ[POWERCHAN_ON_AUTO + 1] = image(icon, "apco2-3")
 
-	overlight_overlays_lock = new
-	overlight_overlays_charging = new
-	overlight_overlays_equipment = new
-	overlight_overlays_lighting = new
-	overlight_overlays_environ = new
-
-	overlight_overlays_lock.len = 2
-	overlight_overlays_charging.len = 3
-	overlight_overlays_equipment.len = 5
-	overlight_overlays_lighting.len = 5
-	overlight_overlays_environ.len = 5
-
-	OVERLIGHT_IMAGE(overlight_overlays_lock[1], "apcox-0")    // 0=blue 1=red
-	OVERLIGHT_IMAGE(overlight_overlays_lock[2], "apcox-1")
-
-	OVERLIGHT_IMAGE(overlight_overlays_charging[1], "apco3-0")
-	OVERLIGHT_IMAGE(overlight_overlays_charging[2], "apco3-1")
-	OVERLIGHT_IMAGE(overlight_overlays_charging[3], "apco3-2")
-
-	OVERLIGHT_IMAGE(overlight_overlays_equipment[POWERCHAN_OFF + 1], "apco0-0")
-	OVERLIGHT_IMAGE(overlight_overlays_equipment[POWERCHAN_OFF_TEMP + 1], "apco0-1")
-	OVERLIGHT_IMAGE(overlight_overlays_equipment[POWERCHAN_OFF_AUTO + 1], "apco0-1")
-	OVERLIGHT_IMAGE(overlight_overlays_equipment[POWERCHAN_ON + 1], "apco0-2")
-	OVERLIGHT_IMAGE(overlight_overlays_equipment[POWERCHAN_ON_AUTO + 1], "apco0-3")
-
-	OVERLIGHT_IMAGE(overlight_overlays_lighting[POWERCHAN_OFF + 1], "apco1-0")
-	OVERLIGHT_IMAGE(overlight_overlays_lighting[POWERCHAN_OFF_TEMP + 1], "apco1-1")
-	OVERLIGHT_IMAGE(overlight_overlays_lighting[POWERCHAN_OFF_AUTO + 1], "apco1-1")
-	OVERLIGHT_IMAGE(overlight_overlays_lighting[POWERCHAN_ON + 1], "apco1-2")
-	OVERLIGHT_IMAGE(overlight_overlays_lighting[POWERCHAN_ON_AUTO + 1], "apco1-3")
-
-	OVERLIGHT_IMAGE(overlight_overlays_environ[POWERCHAN_OFF + 1], "apco2-0")
-	OVERLIGHT_IMAGE(overlight_overlays_environ[POWERCHAN_OFF_TEMP + 1], "apco2-1")
-	OVERLIGHT_IMAGE(overlight_overlays_environ[POWERCHAN_OFF_AUTO + 1], "apco2-1")
-	OVERLIGHT_IMAGE(overlight_overlays_environ[POWERCHAN_ON + 1], "apco2-2")
-	OVERLIGHT_IMAGE(overlight_overlays_environ[POWERCHAN_ON_AUTO + 1], "apco2-3")
-#undef OVERLIGHT_IMAGE
+	status_overlay_ea = emissive_appearance(icon, "apcea", cache = FALSE)
 
 
 /obj/item/module/power_control

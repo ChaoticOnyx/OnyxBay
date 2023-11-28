@@ -113,7 +113,7 @@ SUBSYSTEM_DEF(overlays)
 				result += entry.appearance
 			else
 				var/image/image = entry
-				result += image.appearance
+				result += image
 	return result
 
 
