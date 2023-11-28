@@ -118,7 +118,7 @@
 	return ..()
 
 /mob/living/carbon/proc/resolve_ghost_attack(mob/observer/ghost/user)
-	adjustFireLoss(DAMAGE_PER_GHOST)
+	adjustFireLoss(SPELL_NOREMORSE_GHOST_DAMAGE)
 	to_chat(user, SPAN_DANGER("You burn [src] with all the fury you can muster!"))
 	to_chat(src, SPAN_DANGER("You are being burned by something!"))
 	admin_attack_log(user, src, "Attacked [src] with ghostattack.", "Was ghostattacked by [user]!", "[user] has used nercomancy to attack [src]")

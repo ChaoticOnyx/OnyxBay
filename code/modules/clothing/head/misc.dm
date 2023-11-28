@@ -414,3 +414,12 @@
 	icon_state = "vpp_cap"
 	item_state = "vpp_cap"
 	desc = "Green cap of unknown design. The emblem proudly bears the abbreviation V.P.P."
+
+/obj/item/clothing/head/necro_hood
+	name = "Necromancer hood"
+	icon_state = "necro_hood"
+	item_state = ""
+	desc = "A strange hood that reeks of dread."
+	armor = list(melee = 30, bullet = 30, laser = 30, energy = 30, bomb = 15, bio = 40)
+	siemens_coefficient = 0.8
+	wizard_garb = TRUE

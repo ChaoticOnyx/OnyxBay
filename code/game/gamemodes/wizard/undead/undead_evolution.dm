@@ -1,5 +1,3 @@
-var/list/undead_powers = typesof(/datum/power/undead) - /datum/power/undead
-
 /datum/spell/undead/undead_evolution
 	name = "Undead Evolution"
 	desc = "Undead Evolution"
@@ -85,7 +83,7 @@ var/list/undead_powers = typesof(/datum/power/undead) - /datum/power/undead
 		CRASH("Invalid power name [power_name]")
 
 	if(PC in purchased_powers)
-		to_chat(my_mob, SPAN("changeling", "We have already evolved this ability!"))
+		to_chat(my_mob, SPAN_WARNING("You have already evolved this ability!"))
 		return
 
 	growth -= PC.price

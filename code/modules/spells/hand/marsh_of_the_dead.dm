@@ -37,8 +37,9 @@
 
 /obj/effect/deadhands
 	name = "Vile pus"
-	icon = 'icons/obj/flora/junglevines.dmi'
-	icon_state = "heavy0"
+	icon = 'icons/effects/effects.dmi'
+	var/random_icon_states = list("liquid", "liquid_medium")
+	icon_state = "gibbearcore"
 	layer = OBJ_LAYER
 	pass_flags = PASS_FLAG_TABLE
 	anchored = 1.0
@@ -47,8 +48,11 @@
 	unacidable = 1
 	var/damage = 0
 
-/obj/effect/deadhands/New(turf/t, damage_amount)
+/obj/effect/deadhands/Initialize(turf/t, damage_amount)
 	. = ..()
+	icon_state = pick(random_icon_states)
+	color = "#0A5F38"
+	update_icon()
 	set_next_think(world.time + MARSH_ACTIVE_TIME)
 	damage = damage_amount
 
@@ -70,10 +74,10 @@
 	return TRUE
 
 /obj/effect/deadhands/proc/grab(mob/living/victim)
-	if(victim.anchored) //Already got em
+	if(victim.anchored) // Already got em
 		return
 
-	if(!Adjacent(victim)) //Smth went wrong, our target is not on the tile anymore
+	if(!Adjacent(victim)) // Smth went wrong, our target is not on the tile anymore
 		return
 
 	if(ishuman(victim))
@@ -81,7 +85,7 @@
 		if(H.species.species_flags & SPECIES_FLAG_NO_TANGLE)
 			return
 
-	victim.visible_message(SPAN_DANGER("Hands lash out from \the [src.loc] and grab you!"))
+	victim.visible_message(SPAN_DANGER("You're stuck in \the [src]!"))
 
 	victim.forceMove(loc)
 
@@ -89,7 +93,7 @@
 
 	if(buckle_mob(victim))
 		victim.set_dir(pick(GLOB.cardinal))
-		to_chat(victim, SPAN_DANGER("The hands clench around your ankles!"))
+		to_chat(victim, SPAN_DANGER("You're stuck in \the [src]!"))
 
 /obj/effect/deadhands/attack_hand(mob/user)
 	if(buckled_mob)

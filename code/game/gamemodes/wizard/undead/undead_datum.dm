@@ -17,10 +17,11 @@
 
 	undead_powerinstances += new /datum/power/undead/armblade
 	undead_powerinstances += new /datum/power/undead/heal
+	undead_powerinstances += new /datum/power/undead/armblade/armshield
 
 /datum/wizard/undead/think()
 	growth += 1
-	set_next_think(world.time + 5 SECONDS)
+	set_next_think(world.time + 1 MINUTE)
 
 /datum/wizard/undead/set_class()
 	return

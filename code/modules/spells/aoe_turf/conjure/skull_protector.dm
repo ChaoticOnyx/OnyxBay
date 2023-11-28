@@ -18,5 +18,5 @@
 	override_base = "const"
 
 /datum/spell/aoe_turf/conjure/summon/skull/before_cast()
-	newVars["master"] = holder //why not do this in the beginning? MIND SWITCHING.
+	newVars["master"] = holder
 	return ..()

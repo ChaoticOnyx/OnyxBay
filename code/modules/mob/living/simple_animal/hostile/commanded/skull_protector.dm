@@ -9,16 +9,16 @@
 	health = 300
 	maxHealth = 300
 
-	density = 1
+	density = FALSE
 
-	attacktext = "swatted"
+	attacktext = "headbutted"
 	melee_damage_lower = 10
 	melee_damage_upper = 10
 	can_escape = 1
 
-	max_gas = list("plasma" = 2, "carbon_dioxide" = 5)
+	max_gas = list("plasma" = 5, "carbon_dioxide" = 8)
 
-	response_help = "pets"
+	response_help = "touches"
 	response_harm = "hits"
 	response_disarm = "pushes"
 	bodyparts = /decl/simple_animal_bodyparts/skull_protector
@@ -26,7 +26,7 @@
 	known_commands = list("stay", "stop", "attack", "follow", "guard")
 
 /decl/simple_animal_bodyparts/skull_protector
-	hit_zones = list("body", "carapace", "right manipulator", "left manipulator", "upper left appendage", "upper right appendage", "eye")
+	hit_zones = list("body", "carapace", "righ skull", "left skull", "central skull")
 
 /mob/living/simple_animal/hostile/commanded/skull_protector/_examine_text(mob/user)
 	. = ..()
@@ -82,7 +82,7 @@
 		if(attacker.name != master_attacker.name)
 			continue
 
-		src.ReplaceMovementHandler(/datum/movement_handler/mob/incorporeal) // COMING FOR YA NIGGER
+		density = FALSE
 		set_target_mob(attacker)
 
 /mob/living/simple_animal/hostile/commanded/skull_protector/set_target_mob(mob/living/L)
@@ -106,11 +106,11 @@
 	if(next_move >= world.time)
 		return FALSE
 
-	say("I'm coming for you [target_mob]!")
-
 	if(get_dist(src, target_mob) <= 1)
 		AttackingTarget()
 		return TRUE
+	else
+		return FALSE
 
 /mob/living/simple_animal/hostile/commanded/skull_protector/AttackingTarget()
 	if(!Adjacent(target_mob))
@@ -120,5 +120,5 @@
 	target_mob.stun_effect_act(rand(2,5), rand(10, 90), hit_zone, src)
 	var/turf/location = get_turf(loc)
 	ASSERT(location)
-	explosion(location, -1, -1, 0, 4)
+	explosion(location, -1, -1, 0, 1)
 	qdel_self()

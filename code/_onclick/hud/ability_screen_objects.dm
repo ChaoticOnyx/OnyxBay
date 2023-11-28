@@ -403,15 +403,15 @@
 	update_charge(forced)
 
 	if(istype(spell, /datum/spell/toggled))
-		overlays.Cut()
+		ClearOverlays()
 		var/datum/spell/toggled/attached_spell = spell
-		overlays.Add(spell.icon_state)
+		AddOverlays(spell.icon_state)
 		if(attached_spell.toggled)
 			overlays.Add("vampire_spell_active")
 		if(attached_spell.mana_drain_per_tick)
 			var/image/T = image(icon, "blank")
 			T.maptext = MAPTEXT("[attached_spell.mana_current]/[attached_spell.mana_max]")
-			overlays.Add(T)
+			AddOverlays(T)
 	return
 
 /obj/screen/ability/spell/activate()
