@@ -54,7 +54,7 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 
 	if(istype(traitor.current, /mob/living/silicon))
 		// Генерим боргам два случайных задания: убийство или защита, возможно оба сразу и на одних и тех же людей
-		for(var/i=1, i < 2, i++)
+		for(var/i=1, i <= 2, i++)
 			// В половине случаев убить или защитить
 			if(prob(50))
 				var/datum/objective/assassinate/kill_objective = new
