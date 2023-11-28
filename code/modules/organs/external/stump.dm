@@ -13,6 +13,7 @@
 		amputation_point = limb.amputation_point
 		joint = limb.joint
 		parent_organ = limb.parent_organ
+		icon_position = limb.icon_position
 		if(limb.limb_flags & ORGAN_FLAG_GENDERED_ICON)
 			limb_flags |= ORGAN_FLAG_GENDERED_ICON
 	..(holder)

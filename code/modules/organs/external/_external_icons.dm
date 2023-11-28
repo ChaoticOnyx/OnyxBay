@@ -215,19 +215,16 @@ var/list/limb_icon_cache = list()
 			under_icon.Insert(icon(mob_icon, dir = EAST), dir = EAST)
 		if(!(icon_position & RIGHT))
 			under_icon.Insert(icon(mob_icon, dir = WEST), dir = WEST)
+
 		// At this point, the icon has all the valid states for both left and right leg overlays
-		var/mutable_appearance/upper_appearance = mutable_appearance(under_icon, chosen_icon_state, flags = DEFAULT_APPEARANCE_FLAGS)
-		upper_appearance.layer = FLOAT_LAYER
-		mob_overlays += upper_appearance
+		mob_overlays += mutable_appearance(under_icon, chosen_icon_state, flags = DEFAULT_APPEARANCE_FLAGS, layer = FLOAT_LAYER)
 
 		if(icon_position & LEFT)
 			under_icon.Insert(icon(mob_icon, dir = EAST), dir = EAST)
 		if(icon_position & RIGHT)
 			under_icon.Insert(icon(mob_icon, dir = WEST),dir = WEST)
 
-		var/mutable_appearance/under_appearance = mutable_appearance(under_icon, chosen_icon_state, flags = DEFAULT_APPEARANCE_FLAGS)
-		upper_appearance.layer = BODYPARTS_LOW_LAYER
-		mob_overlays += under_appearance
+		mob_overlays += mutable_appearance(under_icon, chosen_icon_state, flags = DEFAULT_APPEARANCE_FLAGS, layer = FLOAT_LAYER + BODYPARTS_LOW_LAYER)
 	else
 		var/mutable_appearance/limb_appearance = mutable_appearance(mob_icon, chosen_icon_state, flags = DEFAULT_APPEARANCE_FLAGS)
 		if(icon_position & UNDER)
