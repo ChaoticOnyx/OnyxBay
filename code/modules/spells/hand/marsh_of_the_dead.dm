@@ -39,7 +39,7 @@
 	name = "Vile pus"
 	icon = 'icons/effects/effects.dmi'
 	var/random_icon_states = list("liquid", "liquid_medium")
-	icon_state = "gibbearcore"
+	icon_state = "liquid"
 	layer = OBJ_LAYER
 	pass_flags = PASS_FLAG_TABLE
 	anchored = 1.0

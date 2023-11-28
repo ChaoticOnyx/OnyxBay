@@ -43,6 +43,9 @@
 	if(target.client)
 		target_player = target.client
 
+	if(should_lichify && (target.mind?.wizard in user.mind.wizard.thralls)) // Lichifying him without further ado
+		target.make_undead(user, should_lichify)
+
 	if(!target.client || target.mind)
 		for(var/mob/observer/ghost/ghost in GLOB.ghost_mob_list)
 			if(ghost.mind.key != target.mind.key)
