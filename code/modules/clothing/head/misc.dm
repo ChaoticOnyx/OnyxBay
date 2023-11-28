@@ -423,3 +423,5 @@
 	armor = list(melee = 30, bullet = 30, laser = 30, energy = 30, bomb = 15, bio = 40)
 	siemens_coefficient = 0.8
 	wizard_garb = TRUE
+	flags_inv = HIDEEARS|BLOCKHEADHAIR
+	body_parts_covered = HEAD|EYES

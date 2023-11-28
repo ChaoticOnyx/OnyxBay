@@ -19,5 +19,5 @@
 		ARTIFACT_DATA(/obj/item/gun/whip_of_torment,                  1),
 		ARTIFACT_DATA(/obj/item/staff/plague_bell,                    1),
 		ARTIFACT_DATA(/obj/item/device/ghost_gramophone,              1),
-		ARTIFACT_DATA(/obj/item/clothing/suit/necrorobe,              1)
+		ARTIFACT_DATA(/obj/structure/closet/wizard/necrorobe,         1)
 	)
