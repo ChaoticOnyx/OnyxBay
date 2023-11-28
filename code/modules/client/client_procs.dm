@@ -182,17 +182,20 @@
 
 	// Instantiate stat panel
 	stat_panel = new(src, "statbrowser")
+	stat_panel.subscribe(src, PROC_REF(on_stat_panel_message))
 	// Instantiate tgui panel
 	tgui_panel = new(src, "browseroutput")
 
-	stat_panel.subscribe(src, PROC_REF(on_stat_panel_message))
 
 	// Initialize stat panel
 	stat_panel.initialize(
+		fancy = TRUE,
 		inline_html = file("html/statbrowser.html"),
 		inline_js = file("html/statbrowser.js"),
 		inline_css = file("html/statbrowser.css"),
 	)
+
+	addtimer(CALLBACK(src, TYPE_PROC_REF(/client, check_panel_loaded)), 20 SECONDS)
 
 	// Admin Authorisation
 	var/datum/admins/admin_datum = admin_datums[ckey]
@@ -672,7 +675,7 @@
 	stat_panel.send_message("init_verbs", list(panel_tabs = panel_tabs, verblist = verblist))
 
 /client/proc/check_panel_loaded()
-	if(stat_panel.is_ready() && stat_panel.is_browser)
+	if(!stat_panel.is_ready())
+		to_chat(src, SPAN_DANGER("Statpanel failed to load, click <a href='?src=[ref(src)];reload_statbrowser=1'>here</a> to reload the panel "))
+	else
 		stat_panel.is_browser = TRUE
-		return
-	to_chat(src, SPAN_DANGER("Statpanel [stat_panel.is_ready()] failed to load, click <a href='?src=[ref(src)];reload_statbrowser=1'>here</a> to reload the panel "))

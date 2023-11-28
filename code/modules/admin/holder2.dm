@@ -117,7 +117,7 @@ NOTE: It checks usr by default. Supply the "user" argument if you wish to check 
 		return
 
 	var/stealth_status = client.is_stealthed()
-	if(stealth_status && statpanel("Status"))
+	if(stealth_status)
 		. += "Stealth Engaged [client.holder.stealthy_ == STEALTH_AUTO ? "(Auto)" : "(Manual)"]"
 
 /client/proc/is_stealthed()

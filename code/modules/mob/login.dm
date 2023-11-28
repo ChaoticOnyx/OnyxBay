@@ -105,5 +105,3 @@
 
 	SEND_GLOBAL_SIGNAL(SIGNAL_LOGGED_IN, src)
 	SEND_SIGNAL(src, SIGNAL_LOGGED_IN, src)
-
-	addtimer(CALLBACK(client, TYPE_PROC_REF(/client, check_panel_loaded)), 10 SECONDS)
