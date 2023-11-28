@@ -236,7 +236,6 @@
 	name = "dragon skull"
 	desc = "A skull of a fallen one. It's a bit heavy. And plasticy."
 	icon_state = "dragon_skull"
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 // Animusin
 /obj/item/clothing/suit/storage/toggle/heart_jacket
