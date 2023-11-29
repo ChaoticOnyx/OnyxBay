@@ -261,9 +261,9 @@ SUBSYSTEM_DEF(eams)
 
 	if (C.eams_info.loaded)
 		if ((C.eams_info.ip_countryCode in __allowed_countries) && !C.eams_info.ip_proxy)
-			if(__panic)
+			if(__panic && get_player_age(C.ckey) > 0)
 				to_chat(C, SPAN_WARNING("You were blocked by EAMS! Please, contact Administrators."))
-				log_and_message_admins("Blocked by panic EAMS: [C.key] ([C.address]) connected from [C.eams_info.ip_country] ([C.eams_info.ip_countryCode])", 0)
+				log_and_message_admins("Blocked by panic EAMS: [C.key], age [get_player_age(C.ckey)], ([C.address]) connected from [C.eams_info.ip_country] ([C.eams_info.ip_countryCode])", 0)
 				return FALSE
 			return TRUE
 
@@ -292,6 +292,6 @@ SUBSYSTEM_DEF(eams)
 		return
 
 	var/eams_status = SSeams.Toggle()
-	if(eams_status && tgui_alert("Enable panic mode?",,"Yes","No") == "Yes")
+	if(eams_status && tgui_alert(src,"Enable panic mode?","Panic mode",list("Yes","No")) == "Yes")
 		SSeams.__panic = TRUE
 	log_and_message_admins("has [eams_status ? "enabled" : "disabled"] the Epic Anti-Multiaccount System [SSeams.__panic ? "with panic mode" : ""]!")
