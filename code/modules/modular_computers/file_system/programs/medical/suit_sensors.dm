@@ -5,6 +5,7 @@
 	program_icon_state = "crew"
 	program_key_state = "med_key"
 	program_menu_icon = "heart"
+	program_light_color = "#4273E7"
 	extended_desc = "This program connects to life signs monitoring system to provide basic information on crew health."
 	required_access = access_medical
 	requires_ntnet = 1

@@ -8,7 +8,7 @@
 	density = 1
 	anchored = 1
 	icon = 'icons/obj/chemical.dmi'
-	icon_state = "mixer0"
+	icon_state = "mixer"
 	layer = BELOW_OBJ_LAYER
 	idle_power_usage = 20 WATTS
 	clicksound = SFX_USE_BUTTON
@@ -41,6 +41,10 @@
 	create_reagents(capacity)
 	..()
 
+/obj/machinery/chem_master/Initialize()
+	. = ..()
+	update_icon()
+
 /obj/machinery/chem_master/Destroy()
 	if(loaded_pill_bottle)
 		loaded_pill_bottle.forceMove(get_turf(src))
@@ -50,7 +54,22 @@
 		beaker = null
 	if(matter_storage >= matter_amount_per_sheet)
 		new /obj/item/stack/material/glass(get_turf(src), Floor(matter_storage / matter_amount_per_sheet))
-	..()
+	return ..()
+
+/obj/machinery/chem_master/on_update_icon()
+	ClearOverlays()
+	if(stat & (NOPOWER | BROKEN))
+		set_light(0)
+		if(stat & BROKEN)
+			AddOverlays(OVERLAY(icon, "[icon_state]_b"))
+	else
+		var/overlay_icon_state = "[icon_state]_over[!!beaker]"
+		AddOverlays(OVERLAY(icon, overlay_icon_state))
+		AddOverlays(emissive_appearance(icon, overlay_icon_state))
+		set_light(0.8, 0.5, 2, 3, "#0099FF")
+
+	if(beaker)
+		AddOverlays(OVERLAY(icon, "[icon_state]_vessel"))
 
 /obj/machinery/chem_master/ex_act(severity)
 	switch(severity)
@@ -79,7 +98,7 @@
 		beaker = W
 		to_chat(user, "You add \the [W] to the machine!")
 		updateUsrDialog()
-		icon_state = "mixer1"
+		update_icon()
 
 	else if(istype(W, /obj/item/storage/pill_bottle))
 		if(loaded_pill_bottle)
@@ -187,7 +206,7 @@
 				beaker:loc = src.loc
 				beaker = null
 				reagents.clear_reagents()
-				icon_state = "mixer0"
+				update_icon()
 		else if (href_list["createpill"] || href_list["createpill_multiple"])
 			var/count = 1
 
@@ -394,7 +413,7 @@
 		beaker = new /obj/item/reagent_containers/vessel/beaker/large(src)
 	update_icon()
 
-/obj/machinery/reagentgrinder/update_icon()
+/obj/machinery/reagentgrinder/on_update_icon()
 	icon_state = "juicer"+num2text(!isnull(beaker))
 	return
 
@@ -402,7 +421,7 @@
 	if(beaker)
 		beaker.forceMove(get_turf(src))
 		beaker = null
-	..()
+	return ..()
 
 /obj/machinery/reagentgrinder/attackby(obj/item/O as obj, mob/user as mob)
 	if(default_deconstruction_screwdriver(user, O))

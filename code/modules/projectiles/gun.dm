@@ -153,11 +153,11 @@
 		update_icon() // In case item_state is set somewhere else.
 	..()
 
-/obj/item/gun/update_icon()
+/obj/item/gun/on_update_icon()
 	if(wielded_item_state)
 		var/mob/living/M = loc
 		if(istype(M))
-			if(M.can_wield_item(src) && src.is_held_twohanded(M))
+			if(M.can_wield_item(src) && is_held_twohanded(M))
 				item_state_slots[slot_l_hand_str] = wielded_item_state
 				item_state_slots[slot_r_hand_str] = wielded_item_state
 			else
@@ -166,14 +166,15 @@
 	update_held_icon()
 
 /obj/item/gun/equipped(mob/living/user, slot)
+	..()
 	update_safety_icon()
 	clear_autofire()
 
 /obj/item/gun/dropped(mob/living/user)
-	. = ..()
-	overlays.Cut()
-	update_icon()
+	ClearOverlays()
 	clear_autofire()
+	..()
+	update_icon()
 
 //Checks whether a given mob can use the gun
 //Any checks that shouldn't result in handle_click_empty() being called if they fail should go here.
@@ -443,7 +444,7 @@
 			shock_dispersion = rand(-2,2)
 	P.dispersion += shock_dispersion
 
-	var/launched = !P.launch_from_gun(target, target_zone, user, params)
+	var/launched = !P.launch(target, target_zone, user, params, src)
 	if(launched)
 		play_fire_sound(user,P)
 
@@ -664,11 +665,11 @@
 	if(!config.misc.toogle_gun_safety)
 		return
 
-	overlays.Cut()
+	ClearOverlays()
 	update_icon()
-	overlays += (image('icons/obj/guns/gui.dmi',"safety[safety()]"))
+	AddOverlays((image('icons/obj/guns/gui.dmi',"safety[safety()]")))
 	if(safety_icon)
-		overlays += (image(icon,"[safety_icon][safety()]"))
+		AddOverlays((image(icon,"[safety_icon][safety()]")))
 
 /obj/item/gun/verb/toggle_safety_verb()
 	set src in usr

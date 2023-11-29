@@ -12,6 +12,9 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 			M.setup_map()
 		else
 			M = new type
+		if(M.name in config.mapping.allowed_maps)
+			M.can_be_voted = config.mapping.allowed_maps[M.name]
+
 		if(!M.path)
 			log_error("Map '[M]' does not have a defined path, not adding to map list!")
 		else

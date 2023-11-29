@@ -2,6 +2,10 @@
 	set category = "IC"
 	set name = "Pray"
 
+	if(isnewplayer(src))
+		to_chat(src, SPAN_WARNING("This verb may only be used by living mobs, sorry."))
+		return
+
 	sanitize_and_communicate(/decl/communication_channel/pray, src, msg)
 	feedback_add_details("admin_verb","PR") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 

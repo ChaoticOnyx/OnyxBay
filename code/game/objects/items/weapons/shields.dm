@@ -174,7 +174,7 @@
 	add_fingerprint(user)
 	return
 
-/obj/item/shield/energy/update_icon()
+/obj/item/shield/energy/on_update_icon()
 	icon_state = "eshield[active]"
 	if(active)
 		set_light(0.4, 0.1, 1, 2, "#006aff")
@@ -210,7 +210,7 @@
 	. = ..()
 	cell = new /obj/item/cell/device/high(src)
 
-/obj/item/shield/barrier/update_icon()
+/obj/item/shield/barrier/on_update_icon()
 	if(!cell)
 		icon_state = "secshield_nocell"
 	else

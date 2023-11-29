@@ -400,7 +400,7 @@ var/world_topic_spam_protect_time = world.timeofday
 		if(!config.misc.ooc_allowed)
 			return "globally muted"
 
-		GLOB.indigo_bot.chat_webhook(config.indigo_bot.ooc_webhook, "**[username]:** [message]")
+		GLOB.indigo_bot.chat_webhook(config.indigo_bot.ooc_webhook, "DOOC: **[username]:** [message]")
 
 		var/sent_message = "[create_text_tag("dooc", "Discord")] <EM>[username]:</EM> <span class='message linkify'>[message]</span>"
 		for(var/client/target in GLOB.clients)

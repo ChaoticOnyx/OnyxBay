@@ -78,7 +78,7 @@
 	//if(!(istype(src.loc, /turf/space)))
 	//	qdel(src)
 	spawn(1)
-		overlays = list()
+		ClearOverlays()
 
 		var/dir_sum = 0
 

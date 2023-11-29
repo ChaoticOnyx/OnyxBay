@@ -162,7 +162,7 @@
 		if (grayscale)
 			img.color = list(0.3,0.3,0.3, 59,59,59, 11,11,11)
 		img.alpha = saturation * 255
-		overlays += img
+		AddOverlays(img)
 	update_icon()
 
 /obj/item/paper/proc/set_content(text, title, rawhtml = FALSE)
@@ -176,7 +176,7 @@
 	update_space()
 	update_icon()
 
-/obj/item/paper/update_icon()
+/obj/item/paper/on_update_icon()
 	if(dynamic_icon)
 		return
 	if(!crumpled)
@@ -454,7 +454,7 @@
 		if(!stamped)
 			stamped = new
 		stamped += P.type
-		overlays += stampoverlay
+		AddOverlays(stampoverlay)
 
 		to_chat(user, SPAN_NOTICE("You stamp the paper with your [P.name]."))
 
@@ -463,7 +463,7 @@
 
 	else if(istype(P, /obj/item/paper_bundle))
 		var/obj/item/paper_bundle/attacking_bundle = P
-		attacking_bundle.insert_sheet_at(user, (attacking_bundle.pages.len)+1, src)
+		attacking_bundle.insert_sheet_at(user, length(attacking_bundle.pages) + 1, src)
 		attacking_bundle.update_icon()
 
 	else if(istype(P, /obj/item/reagent_containers/food/grown))
@@ -527,7 +527,7 @@
 	stamps = null
 	free_space = MAX_PAPER_MESSAGE_LEN
 	stamped = list()
-	overlays.Cut()
+	ClearOverlays()
 	generateinfolinks()
 	update_icon()
 

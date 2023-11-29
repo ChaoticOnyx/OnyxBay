@@ -124,15 +124,15 @@
 				src.l_set = 1
 			else if((src.code == src.l_code) && (src.emagged == 0) && (src.l_set == 1))
 				src.locked = 0
-				src.overlays = null
-				overlays += image('icons/obj/storage.dmi', icon_opened)
+				ClearOverlays()
+				AddOverlays(image(icon, icon_opened))
 				src.code = null
 			else
 				src.code = "ERROR"
 		else
 			if((href_list["type"] == "R") && (src.emagged == 0) && (!src.l_setshort))
 				src.locked = 1
-				src.overlays = null
+				ClearOverlays()
 				src.code = null
 				src.close(usr)
 			else
@@ -159,10 +159,10 @@
 	playsound(src.loc, "spark", 50, 1)
 	if(!emagged)
 		emagged = TRUE
-		overlays += image('icons/obj/storage.dmi', icon_sparking)
+		AddOverlays(image(icon, icon_sparking))
 		sleep(6)
-		overlays = null
-		overlays += image('icons/obj/storage.dmi', icon_locking)
+		ClearOverlays()
+		AddOverlays(image(icon, icon_locking))
 		locked = FALSE
 
 // -----------------------------
@@ -170,7 +170,6 @@
 // -----------------------------
 /obj/item/storage/secure/briefcase
 	name = "secure briefcase"
-	icon = 'icons/obj/storage.dmi'
 	icon_state = "secure"
 	item_state = "sec-case"
 	desc = "A large briefcase with a digital locking system."
@@ -202,7 +201,6 @@
 
 /obj/item/storage/secure/safe
 	name = "secure safe"
-	icon = 'icons/obj/storage.dmi'
 	icon_state = "safe"
 	icon_opened = "safe0"
 	icon_locking = "safeb"
@@ -234,7 +232,6 @@
 /obj/item/storage/secure/guncase
 	name = "guncase"
 	desc = "A heavy-duty container with a digital locking system. Has a thick layer of foam inside."
-	icon = 'icons/obj/storage.dmi'
 	icon_state = "guncase"
 	item_state = "guncase"
 	icon_opened = "guncase0"
@@ -354,8 +351,8 @@
 				l_set = 1
 			else if((code == l_code) && !emagged && (l_set == 1))
 				locked = 0
-				overlays.Cut()
-				overlays += image(icon, icon_opened)
+				ClearOverlays()
+				AddOverlays(image(icon, icon_opened))
 				code = null
 				if(!gunspawned)
 					spawn_set(guntype)
@@ -364,7 +361,7 @@
 		else
 			if((href_list["type"] == "R") && !emagged && (!l_setshort))
 				locked = 1
-				overlays = null
+				ClearOverlays()
 				code = null
 				close(usr)
 			else
@@ -448,9 +445,9 @@
 					gun.owner = I.registered_name
 		to_chat(user, SPAN("notice", "You [locked ? "un" : ""]lock \the [src]."))
 		locked = !locked
-		overlays.Cut()
+		ClearOverlays()
 		if(!locked)
-			overlays += image(icon, icon_opened)
+			AddOverlays(image(icon, icon_opened))
 		return
 	return ..()
 
@@ -562,9 +559,9 @@
 			lock_menu.close(user)
 		to_chat(user, SPAN("notice", "You [locked ? "un" : ""]lock \the [src]."))
 		locked = !locked
-		overlays.Cut()
+		ClearOverlays()
 		if(!locked)
-			overlays += image(icon, icon_opened)
+			AddOverlays(image(icon, icon_opened))
 		return
 	return ..()
 

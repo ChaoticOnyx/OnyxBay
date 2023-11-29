@@ -20,7 +20,7 @@
 	cell = new /obj/item/cell/high(src)
 	update_icon()
 
-/obj/machinery/space_heater/update_icon(rebuild_overlay = 0)
+/obj/machinery/space_heater/on_update_icon(rebuild_overlay = 0)
 	if(!on)
 		icon_state = "sheater-off"
 	else if(active > 0)
@@ -31,9 +31,9 @@
 		icon_state = "sheater-standby"
 
 	if(rebuild_overlay)
-		overlays.Cut()
+		ClearOverlays()
 		if(panel_open)
-			overlays  += "sheater-open"
+			AddOverlays("sheater-open")
 
 /obj/machinery/space_heater/_examine_text(mob/user)
 	. = ..()

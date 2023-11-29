@@ -255,7 +255,7 @@
 	. = ..()
 	register_signal(src, SIGNAL_MOVED, /atom/proc/update_icon)
 
-/obj/item/ammo_casing/shotgun/update_icon()
+/obj/item/ammo_casing/shotgun/on_update_icon()
 	if(spent_icon && is_spent)
 		icon_state = spent_icon
 	else

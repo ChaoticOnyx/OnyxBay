@@ -204,7 +204,7 @@
 	lid_color = pick("black", "red", "blue")
 	update_icon()
 
-/obj/item/reagent_containers/vessel/fitnessflask/update_icon()
+/obj/item/reagent_containers/vessel/fitnessflask/on_update_icon()
 	..()
 	icon_state = "[base_icon]_[lid_color]"
 

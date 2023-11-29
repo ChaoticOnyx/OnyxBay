@@ -626,7 +626,7 @@
 	to_chat(M, "<span class='danger'>Your flesh rapidly mutates!</span>")
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(M)
 	M.icon = null
-	M.overlays.Cut()
+	M.ClearOverlays()
 	M.set_invisibility(101)
 	for(var/obj/item/I in M)
 		if(istype(I, /obj/item/implant)) //TODO: Carn. give implants a dropped() or something

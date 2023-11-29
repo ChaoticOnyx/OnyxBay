@@ -15,47 +15,45 @@
 	var/is_loosen = TRUE
 	var/valve_opened = FALSE
 
-/obj/structure/gas_stand/New()
-	..()
-	if (spawn_type)
+/obj/structure/gas_stand/Initialize()
+	. = ..()
+	if(spawn_type)
 		tank = new spawn_type (src)
 	contained = new mask_type (src)
 	update_icon()
 
-/obj/structure/gas_stand/update_icon()
+/obj/structure/gas_stand/on_update_icon()
 	if (breather)
 		icon_state = "gas_stand_inuse"
 	else
 		icon_state = "gas_stand_idle"
 
-	overlays.Cut()
+	ClearOverlays()
 
 	if (tank)
 		if(istype(tank,/obj/item/tank/anesthetic))
-			overlays += "tank_anest"
+			AddOverlays("tank_anest")
 		else if(istype(tank,/obj/item/tank/nitrogen))
-			overlays += "tank_nitro"
+			AddOverlays("tank_nitro")
 		else if(istype(tank,/obj/item/tank/oxygen))
-			overlays += "tank_oxyg"
+			AddOverlays("tank_oxyg")
 		else if(istype(tank,/obj/item/tank/plasma))
-			overlays += "tank_plasma"
+			AddOverlays("tank_plasma")
 		else if(istype(tank,/obj/item/tank/hydrogen))
-			overlays += "tank_hydro"
+			AddOverlays("tank_hydro")
 		else
-			overlays += "tank_other"
+			AddOverlays("tank_other")
 
 /obj/structure/gas_stand/Destroy()
 	if(breather)
 		breather.internal = null
 		if(breather.internals)
 			breather.internals.icon_state = "internal0"
-	if(tank)
-		qdel(tank)
-	if(breather)
-		breather.drop(contained)
-		visible_message("<span class='notice'>The mask rapidly retracts just before \the [src] is destroyed!</span>")
-	qdel(contained)
-	contained = null
+		if(contained)
+			breather.drop(contained)
+			visible_message(SPAN("notice", "The mask rapidly retracts just before \the [src] is destroyed!"))
+	QDEL_NULL(tank)
+	QDEL_NULL(contained)
 	breather = null
 	return ..()
 

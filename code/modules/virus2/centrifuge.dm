@@ -3,6 +3,9 @@
 	desc = "Used to separate things with different weights. Spin 'em round, round, right round."
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "centrifuge"
+	light_max_bright_on = 0.8
+	light_outer_range_on = 2
+	light_color = "#39B3FF"
 
 	component_types = list(
 		/obj/item/stock_parts/manipulator = 3,
@@ -47,10 +50,12 @@
 
 	src.attack_hand(user)
 
-/obj/machinery/computer/centrifuge/update_icon()
+/obj/machinery/computer/centrifuge/on_update_icon()
 	..()
-	if(! (stat & (BROKEN|NOPOWER)))
-		icon_state = (isolating || curing) ? "centrifuge_moving" : "centrifuge"
+	if(!(stat & (BROKEN|NOPOWER)))
+		var/lights_key = (isolating || curing) ? "centrifuge_moving" : "centrifuge"
+		icon_state = lights_key
+		AddOverlays(emissive_appearance(icon, "[lights_key]_ea"))
 
 /obj/machinery/computer/centrifuge/attack_hand(mob/user)
 	if(..()) return

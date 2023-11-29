@@ -58,7 +58,7 @@
 	air3.volume = ATMOS_DEFAULT_VOLUME_FILTER
 	set_frequency(frequency)
 
-/obj/machinery/atmospherics/trinary/filter/update_icon()
+/obj/machinery/atmospherics/trinary/filter/on_update_icon()
 	if(istype(src, /obj/machinery/atmospherics/trinary/filter/m_filter))
 		icon_state = "m"
 	else

@@ -337,8 +337,8 @@
 		atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 // The scariest thing present. Let's just -=HoPe=- it's not -=ThAt=- performance-heavy.
-/obj/structure/window_frame/update_icon()
-	overlays.Cut()
+/obj/structure/window_frame/on_update_icon()
+	ClearOverlays()
 	underlays.Cut()
 	icon_state = icon_base
 	var/new_opacity = FALSE
@@ -349,12 +349,12 @@
 	layer = WINDOW_FRAME_LAYER
 
 	if(frame_state == FRAME_ELECTRIC || frame_state == FRAME_RELECTRIC)
-		var/image/I = image(icon, "[icon_base]_cable")
+		var/image/I = OVERLAY(icon, "[icon_base]_cable")
 		I.color = cable_color
-		overlays += I
+		AddOverlays(I)
 
 	if(signaler)
-		overlays += image(icon, "winframe_signaler")
+		AddOverlays(OVERLAY(icon, "winframe_signaler"))
 
 	if(inner_pane)
 		var/list/dirs = list()
@@ -366,27 +366,27 @@
 		var/list/connections = dirs_to_corner_states(dirs)
 
 		for(var/i = 1 to 4)
-			var/image/I = image(icon, "[inner_pane.icon_base][connections[i]]", dir = 1<<(i-1))
+			var/image/I = OVERLAY(icon, "[inner_pane.icon_base][connections[i]]", dir = 1<<(i-1))
 			I.layer = WINDOW_INNER_LAYER
-			overlays += I
+			AddOverlays(I)
 
 		if(inner_pane.tinted)
 			new_opacity = TRUE
-			var/image/I = image(icon, "winframe_tint")
+			var/image/I = OVERLAY(icon, "winframe_tint")
 			I.layer = WINDOW_INNER_LAYER
-			overlays += I
+			AddOverlays(I)
 
 		if(inner_pane.damage_state)
-			var/image/I = image(icon, "winframe_damage[inner_pane.damage_state]")
+			var/image/I = OVERLAY(icon, "winframe_damage[inner_pane.damage_state]")
 			I.layer = WINDOW_INNER_LAYER
-			overlays += I
+			AddOverlays(I)
 
 		if(inner_pane.opacity)
 			new_opacity = TRUE
 
 	if(outer_pane)
 		if(outer_pane.reinforced)
-			underlays += image(icon, "winframe_shadow")
+			underlays += OVERLAY(icon, "winframe_shadow")
 
 		var/list/dirs = list()
 		if(outer_pane.state >= 2)
@@ -397,20 +397,20 @@
 		var/list/connections = dirs_to_corner_states(dirs)
 
 		for(var/i = 1 to 4)
-			var/image/I = image(icon, "[outer_pane.icon_base][connections[i]]", dir = 1<<(i-1))
+			var/image/I = OVERLAY(icon, "[outer_pane.icon_base][connections[i]]", dir = 1<<(i-1))
 			I.layer = WINDOW_OUTER_LAYER
-			overlays += I
+			AddOverlays(I)
 
 		if(outer_pane.tinted)
 			new_opacity = TRUE
-			var/image/I = image(icon, "winframe_tint")
+			var/image/I = OVERLAY(icon, "winframe_tint")
 			I.layer = WINDOW_OUTER_LAYER
-			overlays += I
+			AddOverlays(I)
 
 		if(outer_pane.damage_state)
-			var/image/I = image(icon, "winframe_damage[outer_pane.damage_state]")
+			var/image/I = OVERLAY(icon, "winframe_damage[outer_pane.damage_state]")
 			I.layer = WINDOW_OUTER_LAYER
-			overlays += I
+			AddOverlays(I)
 
 		if(outer_pane.opacity)
 			new_opacity = TRUE
@@ -424,9 +424,9 @@
 		var/list/connections = dirs_to_corner_states(dirs)
 
 		for(var/i = 1 to 4)
-			var/image/I = image(icon, "[icon_border][connections[i]]", dir = 1<<(i-1))
+			var/image/I = OVERLAY(icon, "[icon_border][connections[i]]", dir = 1<<(i-1))
 			I.layer = WINDOW_BORDER_LAYER
-			overlays += I
+			AddOverlays(I)
 
 	if(opacity != new_opacity)
 		set_opacity(new_opacity)
@@ -1003,7 +1003,7 @@
 			spawn()
 				WF.toggle_tint()
 
-/obj/machinery/button/window_frame_tint/update_icon()
+/obj/machinery/button/window_frame_tint/on_update_icon()
 	icon_state = "light0"
 
 

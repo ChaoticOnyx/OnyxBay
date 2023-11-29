@@ -22,14 +22,14 @@
 
 	return ..()
 
-/obj/mecha/working/ripley/update_icon()
+/obj/mecha/working/ripley/on_update_icon()
 	..()
 	if(hides)
-		overlays = null
+		ClearOverlays()
 		if(hides < 3)
-			overlays += image("icon" = "mecha.dmi", "icon_state" = occupant ? "ripley-g" : "ripley-g-open")
+			AddOverlays(OVERLAY("mecha.dmi", occupant ? "ripley-g" : "ripley-g-open"))
 		else
-			overlays += image("icon" = "mecha.dmi", "icon_state" = occupant ? "ripley-g-full" : "ripley-g-full-open")
+			AddOverlays(OVERLAY("mecha.dmi", occupant ? "ripley-g-full" : "ripley-g-full-open"))
 
 /obj/mecha/working/ripley/firefighter
 	desc = "Standart APLU chassis was refitted with additional thermal protection and cistern."

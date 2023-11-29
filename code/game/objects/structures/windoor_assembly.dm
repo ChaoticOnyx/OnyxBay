@@ -44,7 +44,7 @@
 
 	return ..()
 
-/obj/structure/windoor_assembly/update_icon()
+/obj/structure/windoor_assembly/on_update_icon()
 	icon_state = "[facing]_[secure]windoor_assembly[state]"
 
 /obj/structure/windoor_assembly/CanPass(atom/movable/mover, turf/target)

@@ -55,7 +55,7 @@ var/global/list/image/splatter_cache=list()
 	var/drytime = DRYING_TIME * (max(1, amount))
 	addtimer(CALLBACK(src, .proc/dry), drytime)
 
-/obj/effect/decal/cleanable/blood/update_icon()
+/obj/effect/decal/cleanable/blood/on_update_icon()
 	if(basecolor == "rainbow") basecolor = get_random_colour(1)
 	color = basecolor
 	if(basecolor == SYNTH_BLOOD_COLOUR)
@@ -86,11 +86,11 @@ var/global/list/image/splatter_cache=list()
 			if(!S.blood_DNA)
 				S.blood_DNA = list()
 				S.blood_overlay.color = basecolor
-				S.overlays += S.blood_overlay
+				S.AddOverlays(S.blood_overlay)
 			if(S.blood_overlay && S.blood_overlay.color != basecolor)
 				S.blood_overlay.color = basecolor
-				S.overlays.Cut()
-				S.overlays += S.blood_overlay
+				S.ClearOverlays()
+				S.AddOverlays(S.blood_overlay)
 			S.blood_DNA |= blood_DNA.Copy()
 
 	else if (hasfeet)//Or feet
@@ -184,7 +184,7 @@ var/global/list/image/splatter_cache=list()
 	random_icon_states = list("gib1", "gib2", "gib3", "gib5", "gib6")
 	var/fleshcolor = "#ffffff"
 
-/obj/effect/decal/cleanable/blood/gibs/update_icon()
+/obj/effect/decal/cleanable/blood/gibs/on_update_icon()
 
 	var/image/giblets = new(base_icon, "[icon_state]_flesh", dir)
 	if(!fleshcolor || fleshcolor == "rainbow")
@@ -196,8 +196,8 @@ var/global/list/image/splatter_cache=list()
 	blood.Blend(basecolor,ICON_MULTIPLY)
 
 	icon = blood
-	overlays.Cut()
-	overlays += giblets
+	ClearOverlays()
+	AddOverlays(giblets)
 
 /obj/effect/decal/cleanable/blood/gibs/up
 	random_icon_states = list("gib1", "gib2", "gib3", "gib4", "gib5", "gib6","gibup1","gibup1","gibup1")
@@ -262,6 +262,6 @@ var/global/list/image/splatter_cache=list()
 		var/image/mucus_overlay = image(icon = 'icons/effects/blood.dmi', icon_state = "mucus", pixel_x = rand(-8, 8), pixel_y = rand(-8, 8))
 		mucus_overlay.layer = FLOAT_LAYER
 		mucus_overlay.transform = turn(src.transform, rand(0, 359))
-		overlays += mucus_overlay
+		AddOverlays(mucus_overlay)
 	dry_timer_id = addtimer(CALLBACK(src, .proc/dry), drytime, TIMER_STOPPABLE)
 	virus2 |= viruses

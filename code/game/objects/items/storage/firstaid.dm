@@ -10,6 +10,7 @@
 /obj/item/storage/firstaid
 	name = "first-aid kit"
 	desc = "It's an emergency medical kit for those serious boo-boos."
+	icon = 'icons/obj/storage/firstaid.dmi'
 	icon_state = "firstaid"
 	throw_range = 8
 	force = 7.0
@@ -114,6 +115,29 @@
 		/obj/item/storage/pill_bottle/tramadol,
 		/obj/item/storage/pill_bottle/spaceacillin,
 		/obj/item/stack/medical/splint
+		)
+
+/obj/item/storage/firstaid/antirad
+	name = "radiation first-aid kit"
+	desc = "Individual medkit for treating radiation exposure."
+	icon_state = "firstaid_indiv"
+	throw_range = 8
+	force = 1.0
+	mod_weight = 0.3
+	mod_reach = 0.3
+	mod_handy = 0.3
+	w_class = ITEM_SIZE_SMALL
+	max_storage_space = 6
+	startswith = list(
+		/obj/item/reagent_containers/hypospray/autoinjector/antirad,
+		/obj/item/reagent_containers/hypospray/autoinjector/pain,
+		/obj/item/reagent_containers/syringe/antitoxin/packaged,
+		/obj/item/reagent_containers/pill/dylovene
+		)
+	can_hold = list(
+		/obj/item/reagent_containers/pill/,
+		/obj/item/reagent_containers/hypospray/autoinjector/,
+		/obj/item/reagent_containers/syringe/
 		)
 
 /obj/item/storage/firstaid/surgery

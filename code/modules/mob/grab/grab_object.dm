@@ -200,7 +200,7 @@
 		return
 
 	var/datum/grab/upgrab = current_grab.upgrade(src)
-	if(QDELETED(upgrab))
+	if(QDELETED(upgrab) || !assailant)
 		delete_self()
 		return
 
@@ -213,7 +213,7 @@
 
 /obj/item/grab/proc/downgrade()
 	var/datum/grab/downgrab = current_grab.downgrade()
-	if(QDELETED(downgrab))
+	if(QDELETED(downgrab) || !assailant)
 		delete_self()
 		return
 

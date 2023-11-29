@@ -35,14 +35,14 @@
 	name = "[key] lipstick"
 	colour = possible_colours[key]
 
-/obj/item/lipstick/update_icon()
-	overlays.Cut()
+/obj/item/lipstick/on_update_icon()
+	ClearOverlays()
 	if(open)
 		icon_state = "lipstick_open"
 		var/icon/lipstick_icon = icon(icon, "lipstick_mask")
 		if(colour)
 			lipstick_icon.Blend(colour, ICON_ADD)
-		overlays += lipstick_icon
+		AddOverlays(lipstick_icon)
 	else
 		icon_state = initial(icon_state)
 

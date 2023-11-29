@@ -117,8 +117,8 @@
 	update_icon()
 	return
 
-/obj/mecha/update_icon()
-	overlays.Cut()
+/obj/mecha/on_update_icon()
+	ClearOverlays()
 	var/hand = 0
 	var/back = 0
 	for(var/obj/item/mecha_parts/mecha_equipment/i in equipment)
@@ -133,11 +133,11 @@
 /obj/mecha/proc/draw_layer(obj/item/mecha_parts/mecha_equipment/equip, entry)
 	var/icon_name = "[equip.icon_state][entry ? "_r" : "_l"]"
 	var/icon/weapon = icon("icons/mecha/mecha_overlay.dmi", icon_name)
-	overlays += weapon
+	AddOverlays(weapon)
 	if(equip.need_colorize)
 		var/icon/padding = icon("icons/mecha/mecha_overlay.dmi", "[icon_name]_padding")
 		padding.Blend(base_color, ICON_MULTIPLY)
-		overlays += padding
+		AddOverlays(padding)
 
 /obj/mecha/Destroy()
 	src.go_out()

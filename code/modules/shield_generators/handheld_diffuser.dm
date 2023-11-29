@@ -8,15 +8,15 @@
 	var/obj/item/cell/device/cell
 	var/enabled = 0
 
-/obj/item/shield_diffuser/update_icon()
+/obj/item/shield_diffuser/on_update_icon()
 	if(enabled)
 		icon_state = "hdiffuser_on"
 	else
 		icon_state = "hdiffuser_off"
 
-/obj/item/shield_diffuser/New()
+/obj/item/shield_diffuser/Initialize()
+	. = ..()
 	cell = new(src)
-	..()
 
 /obj/item/shield_diffuser/Destroy()
 	QDEL_NULL(cell)

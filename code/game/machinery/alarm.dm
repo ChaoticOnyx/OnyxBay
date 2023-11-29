@@ -11,9 +11,7 @@
 	ret = 0; \
 	var/partial_pressure = R_IDEAL_GAS_EQUATION * environment.temperature / environment.volume; \
 	var/environment_pressure = environment.return_pressure(); \
-	var/other_moles = 0; \
-	for(var/g in trace_gas) { \
-		other_moles += environment.gas[g]; } \
+	var/other_moles = environment.total_moles - (environment.gas["oxygen"] + environment.gas["nitrogen"] + environment.gas["carbon_dioxide"]); \
 	GET_DANGER_LEVEL(pressure_dangerlevel, environment_pressure, TLV["pressure"]) \
 	GET_DANGER_LEVEL(oxygen_dangerlevel, (environment.gas["oxygen"] * partial_pressure), TLV["oxygen"]) \
 	GET_DANGER_LEVEL(co2_dangerlevel, (environment.gas["carbon_dioxide"] * partial_pressure), TLV["carbon dioxide"]) \
@@ -93,7 +91,6 @@
 	var/datum/radio_frequency/radio_connection
 
 	var/list/TLV = list()
-	var/list/trace_gas = list() //list of other gases that this air alarm is able to detect
 
 	var/danger_level = 0
 	var/pressure_dangerlevel = 0
@@ -104,8 +101,8 @@
 
 	var/report_danger_level = 1
 
-	var/global/status_overlays = FALSE
-	var/global/list/alarm_overlays
+	var/static/status_overlays = FALSE
+	var/static/list/alarm_overlays
 
 /obj/machinery/alarm/cold
 	target_temperature = 4 CELSIUS
@@ -130,7 +127,7 @@
 	if(alarm_area && alarm_area.master_air_alarm == src)
 		alarm_area.master_air_alarm = null
 		elect_master(exclude_self = TRUE)
-	overlays.Cut()
+	ClearOverlays()
 	return ..()
 
 /obj/machinery/alarm/New(loc, dir, atom/frame)
@@ -165,10 +162,6 @@
 	TLV["other"] =			list(-1.0, -1.0, 0.2, 0.5) // Partial pressure, kpa
 	TLV["pressure"] =		list(ONE_ATMOSPHERE*0.80,ONE_ATMOSPHERE*0.90,ONE_ATMOSPHERE*1.10,ONE_ATMOSPHERE*1.20) /* kpa */
 	TLV["temperature"] =	list(-26 CELSIUS, 0 CELSIUS, 40 CELSIUS, 66 CELSIUS)
-
-	for(var/g in gas_data.gases)
-		if(!(g in list("oxygen","nitrogen","carbon_dioxide")))
-			trace_gas += g
 
 	set_frequency(frequency)
 	if (!master_is_operating())
@@ -221,23 +214,30 @@
 
 /obj/machinery/alarm/proc/handle_heating_cooling(datum/gas_mixture/environment)
 	if(!regulating_temperature)
-		var/danger_check
-		GET_DANGER_LEVEL(danger_check, target_temperature, TLV["temperature"])
-		//check for when we should start adjusting temperature
-		if(!danger_check && abs(environment.temperature - target_temperature) > 2.0)
-			update_use_power(POWER_USE_ACTIVE)
-			regulating_temperature = 1
-			visible_message("\The [src] clicks as it starts [environment.temperature > target_temperature ? "cooling" : "heating"] the room.",\
-			"You hear a click and a faint electronic hum.")
+		if(abs(environment.temperature - target_temperature) > 2.0)
+			var/danger_check
+			GET_DANGER_LEVEL(danger_check, target_temperature, TLV["temperature"])
+			if(!danger_check)
+				update_use_power(POWER_USE_ACTIVE)
+				regulating_temperature = 1
+				visible_message("\The [src] clicks as it starts [environment.temperature > target_temperature ? "cooling" : "heating"] the room.",\
+								"You hear a click and a faint electronic hum.")
 	else
+		var/should_disable_regulating = FALSE
+		if(abs(environment.temperature - target_temperature) <= 0.5)
+			should_disable_regulating = TRUE
+			goto nodeDisableRegulating
 		var/danger_check
 		GET_DANGER_LEVEL(danger_check, target_temperature, TLV["temperature"])
-		//check for when we should stop adjusting temperature
-		if(danger_check || abs(environment.temperature - target_temperature) <= 0.5)
+		if(danger_check)
+			should_disable_regulating = TRUE
+
+		nodeDisableRegulating
+		if(should_disable_regulating)
 			update_use_power(POWER_USE_IDLE)
 			regulating_temperature = 0
 			visible_message("\The [src] clicks quietly as it stops [environment.temperature > target_temperature ? "cooling" : "heating"] the room.",\
-			"You hear a click as a faint electronic humming stops.")
+							"You hear a click as a faint electronic humming stops.")
 
 	if (regulating_temperature)
 		target_temperature = Clamp(target_temperature, CONV_CELSIUS_KELVIN(MIN_TEMPERATURE), CONV_CELSIUS_KELVIN(MAX_TEMPERATURE))
@@ -299,12 +299,12 @@
 			return 1
 	return 0
 
-/obj/machinery/alarm/update_icon()
+/obj/machinery/alarm/on_update_icon()
 	if(!status_overlays)
 		status_overlays = TRUE
 		generate_overlays()
 
-	overlays.Cut()
+	ClearOverlays()
 
 	if(wiresexposed)
 		icon_state = "alarmx"
@@ -329,18 +329,22 @@
 		if(2)
 			new_color = COLOR_RED_LIGHT
 
-	overlays += alarm_overlays[icon_level+1]
+	AddOverlays(alarm_overlays[icon_level+1])
+	AddOverlays(emissive_appearance(icon, "alarm_ea"))
 
-	set_light(0.25, 0.1, 1, 2, new_color)
+	set_light(0.65, 0.1, 1, 2, new_color)
 
 /obj/machinery/alarm/proc/generate_overlays()
 	alarm_overlays = new
-	alarm_overlays.len = 3
-#define OVERLIGHT_IMAGE(a, b) a=image(icon, b); a.alpha=192; a.plane = EFFECTS_ABOVE_LIGHTING_PLANE; a.layer = ABOVE_LIGHTING_LAYER;
-	OVERLIGHT_IMAGE(alarm_overlays[1], "alarm_over0")
-	OVERLIGHT_IMAGE(alarm_overlays[2], "alarm_over1")
-	OVERLIGHT_IMAGE(alarm_overlays[3], "alarm_over2")
-#undef OVERLIGHT_IMAGE
+	alarm_overlays.len = 4
+	alarm_overlays[1] = image(icon, "alarm_over0")
+	alarm_overlays[2] = image(icon, "alarm_over1")
+	alarm_overlays[3] = image(icon, "alarm_over2")
+	alarm_overlays[1].alpha = 200
+	alarm_overlays[2].alpha = 200
+	alarm_overlays[3].alpha = 200
+
+	alarm_overlays[4] = emissive_appearance(icon, "alarm_ea", cache = FALSE)
 
 /obj/machinery/alarm/receive_signal(datum/signal/signal)
 	if(stat & (NOPOWER|BROKEN))
@@ -534,9 +538,7 @@
 		environment_data[++environment_data.len] = list("name" = "Nitrogen", "value" = environment.gas["nitrogen"] / total * 100, "unit" = "%", "danger_level" = oxygen_dangerlevel)
 		environment_data[++environment_data.len] = list("name" = "Carbon dioxide", "value" = environment.gas["carbon_dioxide"] / total * 100, "unit" = "%", "danger_level" = co2_dangerlevel)
 
-		var/other_moles = 0
-		for(var/g in trace_gas)
-			other_moles += environment.gas[g]
+		var/other_moles = total - (environment.gas["oxygen"] + environment.gas["nitrogen"] + environment.gas["carbon_dioxide"])
 		environment_data[++environment_data.len] = list("name" = "Other Gases", "value" = other_moles / total * 100, "unit" = "%", "danger_level" = other_dangerlevel)
 
 		environment_data[++environment_data.len] = list("name" = "Temperature", "value" = environment.temperature, "unit" = "K ([round(CONV_KELVIN_CELSIUS(environment.temperature), 0.1)]C)", "danger_level" = temperature_dangerlevel)

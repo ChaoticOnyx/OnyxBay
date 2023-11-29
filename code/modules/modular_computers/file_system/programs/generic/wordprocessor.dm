@@ -4,6 +4,7 @@
 	extended_desc = "This program allows the editing and preview of text documents."
 	program_icon_state = "word"
 	program_key_state = "atmos_key"
+	program_light_color = "#4273E7"
 	size = 4
 	category = PROG_OFFICE
 	requires_ntnet = 0

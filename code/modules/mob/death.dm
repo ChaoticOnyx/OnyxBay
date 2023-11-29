@@ -10,7 +10,7 @@
 	update_canmove()
 	remove_from_dead_mob_list()
 
-	var/atom/movable/overlay/animation = null
+	var/atom/movable/fake_overlay/animation = null
 	animation = new(loc)
 	animation.icon_state = "blank"
 	animation.icon = 'icons/mob/mob.dmi'
@@ -23,7 +23,7 @@
 
 	addtimer(CALLBACK(src, .proc/check_delete, animation), 15)
 
-/mob/proc/check_delete(atom/movable/overlay/animation)
+/mob/proc/check_delete(atom/movable/fake_overlay/animation)
 	if(animation)
 		qdel(animation)
 	if(src)
@@ -36,7 +36,7 @@
 	if(status_flags & GODMODE)
 		return
 	death(1)
-	var/atom/movable/overlay/animation = null
+	var/atom/movable/fake_overlay/animation = null
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
 	set_invisibility(101)

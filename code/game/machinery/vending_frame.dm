@@ -23,7 +23,7 @@
 		D = "It is [name]. It has no vending cartridge inside."
 	desc = D
 
-/obj/machinery/vending_frame/update_icon()
+/obj/machinery/vending_frame/on_update_icon()
 	switch(state)
 		if(STAGE_CABLE)
 			icon_state = "vbox_0"

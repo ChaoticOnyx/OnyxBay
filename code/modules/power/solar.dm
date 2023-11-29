@@ -88,13 +88,13 @@ var/list/solars_list = list()
 		if(!(stat & BROKEN))
 			set_broken(TRUE)
 
-/obj/machinery/power/solar/update_icon()
+/obj/machinery/power/solar/on_update_icon()
 	..()
-	overlays.Cut()
+	ClearOverlays()
 	if(stat & BROKEN)
-		overlays += image('icons/obj/power.dmi', icon_state = "solar_panel-b", layer = FLY_LAYER)
+		AddOverlays(image('icons/obj/power.dmi', icon_state = "solar_panel-b", layer = FLY_LAYER))
 	else
-		overlays += image('icons/obj/power.dmi', icon_state = "solar_panel", layer = FLY_LAYER)
+		AddOverlays(image('icons/obj/power.dmi', icon_state = "solar_panel", layer = FLY_LAYER))
 		src.set_dir(angle2dir(adir))
 	return
 
@@ -278,7 +278,7 @@ var/list/solars_list = list()
 	name = "solar panel control"
 	desc = "A controller for solar panel arrays."
 	icon = 'icons/obj/computer.dmi'
-	icon_state = "solar"
+	icon_state = "computer"
 	anchored = 1
 	density = 1
 	use_power = POWER_USE_IDLE
@@ -353,20 +353,33 @@ var/list/solars_list = list()
 	if(!connect_to_network()) return
 	set_panels(cdir)
 
-/obj/machinery/power/solar_control/update_icon()
-	if(stat & BROKEN)
-		icon_state = "broken"
-		overlays.Cut()
-		return
+/obj/machinery/power/solar_control/on_update_icon()
+	ClearOverlays()
 	if(stat & NOPOWER)
-		icon_state = "c_unpowered"
-		overlays.Cut()
+		AddOverlays(OVERLAY(icon,"rd_key_off"))
+		set_light(0)
 		return
-	icon_state = "solar"
-	overlays.Cut()
-	if(cdir > -1)
-		overlays += image('icons/obj/computer.dmi', "solcon-o", FLY_LAYER, angle2dir(cdir))
-	return
+
+	if(stat & BROKEN)
+		AddOverlays(OVERLAY(icon, "computer_broken"))
+	else
+		AddOverlays(OVERLAY(icon, "solar_screen"))
+		if(cdir > -1)
+			AddOverlays(OVERLAY(icon, "solcon-o", FLY_LAYER, angle2dir(cdir)))
+		AddOverlays(OVERLAY(icon, "rd_key"))
+
+	var/should_glow = update_glow()
+	if(should_glow)
+		AddOverlays(emissive_appearance(icon, "solar_screen"))
+		AddOverlays(emissive_appearance(icon, "rd_key"))
+
+/obj/machinery/power/solar_control/proc/update_glow()
+	if(stat & (NOPOWER | BROKEN))
+		set_light(0)
+		return FALSE
+	else
+		set_light(1.0, 0.5, 3.0, 3.5, "#FFCC33")
+		return TRUE
 
 /obj/machinery/power/solar_control/attack_hand(mob/user)
 	if(!..())

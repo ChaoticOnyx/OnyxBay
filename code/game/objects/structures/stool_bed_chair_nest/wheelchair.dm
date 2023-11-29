@@ -18,15 +18,15 @@
 	var/mob/living/pulling = null
 	var/bloodiness
 
-/obj/structure/bed/chair/wheelchair/update_icon()
+/obj/structure/bed/chair/wheelchair/on_update_icon()
 	return
 
 /obj/structure/bed/chair/wheelchair/set_dir()
 	..()
-	overlays = null
+	ClearOverlays()
 	var/image/O = image(icon = 'icons/obj/furniture.dmi', icon_state = "w_overlay", dir = src.dir)
 	O.layer = ABOVE_HUMAN_LAYER
-	overlays += O
+	AddOverlays(O)
 	if(buckled_mob)
 		buckled_mob.set_dir(dir)
 

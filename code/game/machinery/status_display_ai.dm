@@ -70,32 +70,28 @@ var/list/ai_status_emotions = list(
 
 	var/emotion = "Neutral"
 	var/image/picture = null
-	var/image/picture_overlight = null
-	var/global/image/static_overlay = null
+	var/static/icon/static_overlay = null
+	var/static/mutable_appearance/ea_overlay = null
 
 /obj/machinery/ai_status_display/Initialize()
 	. = ..()
 	GLOB.ai_status_display_list += src
 
 	if(!picture)
-		picture = image('icons/obj/status_display.dmi', icon_state = "blank")
-
-	if(!picture_overlight)
-		picture_overlight = image('icons/obj/status_display.dmi', icon_state = "blank")
-		picture_overlight.alpha = 96
-		picture_overlight.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		picture_overlight.layer = ABOVE_LIGHTING_LAYER
+		picture = image(icon, icon_state = "blank")
 
 	if(!static_overlay)
-		static_overlay = image('icons/obj/status_display.dmi', icon_state = "static")
-		static_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		static_overlay.layer = ABOVE_LIGHTING_LAYER
+		var/image/SO = image(icon, "static")
+		SO.alpha = 64
+		static_overlay = SO
+
+	if(!ea_overlay)
+		ea_overlay = emissive_appearance(icon, "outline")
 
 /obj/machinery/ai_status_display/Destroy()
 	GLOB.ai_status_display_list -= src
-	overlays.Cut()
+	ClearOverlays()
 	QDEL_NULL(picture)
-	QDEL_NULL(picture_overlight)
 	return ..()
 
 /obj/machinery/ai_status_display/attack_ai/(mob/user)
@@ -106,14 +102,14 @@ var/list/ai_status_emotions = list(
 /obj/machinery/ai_status_display/Process()
 	return
 
-/obj/machinery/ai_status_display/update_icon()
+/obj/machinery/ai_status_display/on_update_icon()
 	if(stat & (NOPOWER|BROKEN))
-		overlays.Cut()
+		ClearOverlays()
 		return
 
 	switch(mode)
 		if(0) //Blank
-			overlays.Cut()
+			ClearOverlays()
 			picture_state = ""
 		if(1) // AI emoticon
 			var/datum/ai_emotion/ai_emotion = ai_status_emotions[emotion]
@@ -131,11 +127,10 @@ var/list/ai_status_emotions = list(
 		return
 
 	picture_state = state
-	overlays.Cut()
+	ClearOverlays()
 
 	picture.icon_state = picture_state
-	picture_overlight.icon_state = picture_state
 
-	overlays += picture
-	overlays += picture_overlight
-	overlays += static_overlay
+	AddOverlays(picture)
+	AddOverlays(static_overlay)
+	AddOverlays(ea_overlay)

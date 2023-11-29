@@ -63,18 +63,18 @@
 	else
 		. += "\n[SPAN_WARNING("Gauge not installed, you have no idea how much fuel left in [src]!")]"
 
-/obj/item/gun/flamer/update_icon()
-	overlays.Cut()
+/obj/item/gun/flamer/on_update_icon()
+	ClearOverlays()
 	if(igniter)
-		overlays += "+igniter"
+		AddOverlays("+igniter")
 	if(fuel_tank)
-		overlays += "+fuel_tank"
+		AddOverlays("+fuel_tank")
 	if(pressure_tank)
-		overlays += "+pressure_tank"
+		AddOverlays("+pressure_tank")
 	if(gauge)
-		overlays += "+gauge"
+		AddOverlays("+gauge")
 	if (lit && fuel_tank)
-		overlays += "+lit"
+		AddOverlays("+lit")
 	. = ..()
 
 /obj/item/gun/flamer/proc/remove_fuel_tank(mob/user)

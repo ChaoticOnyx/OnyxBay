@@ -125,6 +125,7 @@ GLOBAL_LIST_INIT(department_flags_to_text, list(
 
 /datum/computer_file/crew_record/proc/take_mob_photo(mob/living/carbon/human/H)
 	if(istype(H))
+		H.ImmediateOverlayUpdate()
 		photo_front = getFlatIcon(H, SOUTH, always_use_defdir = TRUE)
 		photo_side = getFlatIcon(H, WEST, always_use_defdir = TRUE)
 	else

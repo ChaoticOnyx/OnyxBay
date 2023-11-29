@@ -46,7 +46,7 @@
 	var/icon_position = 0              // Used in mob overlay layering calculations.
 	var/model                          // Used when caching robolimb icons.
 	var/force_icon                     // Used to force override of species-specific limb icons (for prosthetics).
-	var/icon/mob_icon                  // Cached icon for use in mob overlays.
+	var/list/mob_overlays              // Cached limb overlays
 	var/gendered_icon = 0              // Whether or not the icon state appends a gender.
 	var/body_build = ""
 	var/s_tone                         // Skin tone.
@@ -55,7 +55,6 @@
 	var/s_col_blend = ICON_ADD         // How the skin colour is applied.
 	var/list/h_col                     // hair colour
 	var/list/h_s_col                   // Secondary hair color
-	var/body_hair                      // Icon blend for body hair if any.
 	var/list/markings = list()         // Markings (body_markings) to apply to the icon
 
 	// Wound and structural data.
@@ -126,7 +125,7 @@
 			max_pain = min(max_damage * 2.5, owner.species.total_health * 1.5)
 	else if(isnull(max_pain))
 		max_pain = max_damage * 1.5 // Should not ~probably~ happen
-	get_icon()
+	get_overlays()
 
 	if(food_organ in implants)
 		implants -= food_organ
@@ -520,7 +519,7 @@ This function completely restores a damaged organ to perfect condition.
 			owner.custom_pain("You feel something rip in your [name]!", 50, affecting = src)
 
 	//Burn damage can cause fluid loss due to blistering and cook-off
-	if((type in list(BURN, LASER)) && (damage > 5 || damage + burn_dam >= 15) && !BP_IS_ROBOTIC(src))
+	if(owner && (type in list(BURN, LASER)) && (damage > 5 || damage + burn_dam >= 15) && !BP_IS_ROBOTIC(src))
 		var/fluid_loss_severity
 		switch(type)
 			if(BURN)  fluid_loss_severity = FLUIDLOSS_WIDE_BURN

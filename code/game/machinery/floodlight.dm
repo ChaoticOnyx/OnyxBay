@@ -22,8 +22,8 @@
 	QDEL_NULL(cell)
 	return ..()
 
-/obj/machinery/floodlight/update_icon()
-	overlays.Cut()
+/obj/machinery/floodlight/on_update_icon()
+	ClearOverlays()
 	icon_state = "flood[open ? "o" : ""][open && cell ? "b" : ""]0[on]"
 
 /obj/machinery/floodlight/Process()
@@ -116,7 +116,6 @@
 		if(unlocked)
 			if(open)
 				open = 0
-				overlays = null
 				to_chat(user, "You crowbar the battery panel in place.")
 			else
 				if(unlocked)
@@ -135,9 +134,9 @@
 /obj/item/floodlight_diy
 	name = "Emergency Floodlight Kit"
 	desc = "A do-it-yourself kit for constructing the finest of emergency floodlights."
-	icon = 'icons/obj/storage.dmi'
-	icon_state = "inf_box"
-	item_state = "syringe_kit"
+	icon = 'icons/obj/storage/misc.dmi'
+	icon_state = "flood_box"
+	item_state = "lockbox"
 
 /obj/item/floodlight_diy/attack_self(mob/user)
 	to_chat(usr, "<span class='notice'>You start piecing together the kit...</span>")

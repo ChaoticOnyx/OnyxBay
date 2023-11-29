@@ -150,7 +150,7 @@
 	add_fingerprint(user)
 	..()
 
-/obj/item/grenade/update_icon()
+/obj/item/grenade/on_update_icon()
 	if(active)
 		icon_state = initial(icon_state) + "_active"
 		return

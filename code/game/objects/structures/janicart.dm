@@ -17,6 +17,7 @@
 
 
 /obj/structure/janitorialcart/New()
+	..()
 	create_reagents(180)
 
 
@@ -154,18 +155,18 @@
 	updateUsrDialog()
 
 
-/obj/structure/janitorialcart/update_icon()
-	overlays = null
+/obj/structure/janitorialcart/on_update_icon()
+	ClearOverlays()
 	if(mybag)
-		overlays += "cart_garbage"
+		AddOverlays("cart_garbage")
 	if(mymop)
-		overlays += "cart_mop"
+		AddOverlays("cart_mop")
 	if(myspray)
-		overlays += "cart_spray"
+		AddOverlays("cart_spray")
 	if(myreplacer)
-		overlays += "cart_replacer"
+		AddOverlays("cart_replacer")
 	if(signs)
-		overlays += "cart_sign[signs]"
+		AddOverlays("cart_sign[signs]")
 
 
 //old style retardo-cart
@@ -184,6 +185,7 @@
 
 
 /obj/structure/bed/chair/janicart/New()
+	..()
 	create_reagents(100)
 
 

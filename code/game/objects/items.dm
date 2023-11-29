@@ -3,6 +3,7 @@
 	icon = 'icons/obj/items.dmi'
 	w_class = ITEM_SIZE_NORMAL
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
+	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 35 MEGA ELECTRONVOLT,
@@ -697,7 +698,7 @@ var/list/global/slot_flags_enumeration = list(
 /obj/item/clean_blood()
 	. = ..()
 	if(blood_overlay)
-		overlays.Remove(blood_overlay)
+		CutOverlays(blood_overlay)
 	if(istype(src, /obj/item/clothing/gloves))
 		var/obj/item/clothing/gloves/G = src
 		G.transfer_blood = 0
@@ -723,7 +724,7 @@ var/list/global/slot_flags_enumeration = list(
 	//apply the blood-splatter overlay if it isn't already in there
 	if(!blood_DNA.len)
 		blood_overlay.color = blood_color
-		overlays += blood_overlay
+		AddOverlays(blood_overlay)
 
 	//if this blood isn't already in the list, add it
 	if(istype(M))
@@ -893,11 +894,14 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	else
 		if(item_icons && item_icons[slot])
 			mob_icon = item_icons[slot]
-		else if (user_human && user_human.body_build)
+		else if(user_human?.body_build)
 			mob_icon = user_human.body_build.get_mob_icon(slot, mob_state)
+		else
+			return
 
-	var/image/ret_overlay = overlay_image(mob_icon,mob_state,color,RESET_COLOR)
-	if(user_human && user_human.species && user_human.species.equip_adjust.len)
+	var/image/ret_overlay = overlay_image(mob_icon, mob_state, color, RESET_COLOR)
+
+	if(length(user_human?.species?.equip_adjust))
 		var/list/equip_adjusts = user_human.species.equip_adjust
 		if(equip_adjusts[slot])
 			var/image_key = "[user_human.species] [user_human.body_build.name] [mob_icon] [mob_state] [color]"
@@ -905,7 +909,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 			if(!ret_overlay)
 				var/icon/final_I = new(mob_icon, icon_state = mob_state)
 				var/list/shifts = equip_adjusts[slot]
-				if(shifts && shifts.len)
+				if(length(shifts))
 					var/shift_facing
 					for(shift_facing in shifts)
 						var/list/facing_list = shifts[shift_facing]

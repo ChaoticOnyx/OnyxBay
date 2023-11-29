@@ -71,7 +71,7 @@
 	if(!href_list["close"])
 		attack_self(usr)
 
-/obj/item/device/tvcamera/update_icon()
+/obj/item/device/tvcamera/on_update_icon()
 	..()
 	if(camera.status)
 		icon_state = "camcorder_on"

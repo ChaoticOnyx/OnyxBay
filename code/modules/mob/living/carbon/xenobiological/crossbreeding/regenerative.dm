@@ -260,7 +260,7 @@ Regenerative extracts:
 		D.dna.UpdateSE()
 		D.real_name = T.real_name
 		D.name = T.name
-		D.overlays.Cut()
+		D.ClearOverlays()
 		D.overlays_standing = T.overlays_standing.Copy()
 		D.UpdateAppearance(newUI.Copy())
 		D.icon = getFlatIcon(T)

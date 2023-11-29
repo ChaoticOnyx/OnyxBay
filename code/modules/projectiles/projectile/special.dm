@@ -293,6 +293,17 @@
 					W.take_damage(10)
 				else
 					continue
+			if(istype(O, /obj/structure/inflatable/door/panel)) // Those fuckers require different processing as well
+				var/obj/structure/inflatable/door/panel/P = O
+				if(get_turf(P) == starting)
+					if(!P.CheckDiagonalExit(src, get_turf(original)))
+						P.take_damage(5)
+					else
+						continue
+				else if(!P.CanDiagonalPass(src, previous_loc))
+					P.take_damage(5)
+				else
+					continue
 			else if(O.CanZASPass(previous_loc)) // If it doesn't block gases, it also doesn't prevent us from getting through
 				continue
 			holder.forceMove(previous_loc) // Otherwise we failed to pass

@@ -33,7 +33,7 @@
 		to_chat(user, SPAN_NOTICE("You [anchored ? "unwrench" : "wrench"] \the [src] [anchored ? "from" : "into"] place."))
 		anchored = !anchored
 
-/obj/machinery/constructable_frame/machine_frame/update_icon()
+/obj/machinery/constructable_frame/machine_frame/on_update_icon()
 	switch(state)
 		if(STAGE_CABLE)
 			icon_state = "box_0"

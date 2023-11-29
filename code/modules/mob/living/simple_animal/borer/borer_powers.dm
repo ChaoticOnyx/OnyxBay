@@ -59,6 +59,7 @@ BORER_STATUS_HUSK = list(\
 				to_chat(host, SPAN("danger", "Something slimy wiggles out of your ear and plops to the ground!"))
 			else
 				to_chat(host, SPAN("danger", "As though waking from a dream, you shake off the insidious mind control of the brain worm. Your thoughts are your own again."))
+		log_and_message_admins("released host([host]).")
 		detatch()
 		leave_host()
 		update_abilities()
@@ -125,6 +126,7 @@ BORER_STATUS_HUSK = list(\
 
 	if(H in view(1, src))
 		to_chat(src, "You wiggle into [H]'s ear.")
+		log_and_message_admins("infested ([H]).")
 		if(!H.stat)
 			to_chat(H, "Something disgusting and slimy wiggles into your ear!")
 
@@ -181,6 +183,7 @@ BORER_STATUS_HUSK = list(\
 		return
 
 	to_chat(src, SPAN("danger", "It only takes a few moments to render the dead host brain down into a nutrient-rich slurry..."))
+	log_and_message_admins("assumed dirrect control of a dead host([host]).")
 	replace_brain()
 
 /mob/living/simple_animal/borer/proc/replace_brain()
@@ -313,6 +316,7 @@ BORER_STATUS_HUSK = list(\
 
 		to_chat(src, SPAN("danger", "You plunge your probosci deep into the cortex of the host brain, interfacing directly with their nervous system."))
 		to_chat(host, SPAN("danger", "You feel a strange shifting sensation behind your eyes as an alien consciousness displaces yours."))
+		log_and_message_admins("assumed dirrect control of host([host]).")
 		host.add_language("Cortical Link")
 
 		// host -> brain
@@ -432,7 +436,7 @@ BORER_STATUS_HUSK = list(\
 		return
 
 	visible_message(SPAN("warning", "With a hideous, rattling moan, [src] shudders back to life!"))
-
+	log_and_message_admins("revived host([host]).")
 	revive()
 	update_canmove()
 

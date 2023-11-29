@@ -16,7 +16,7 @@
 	icon_state = "wiz_jaunt"
 	var/reappear_duration = 5 //equal to number of animation frames
 	var/obj/effect/dummy/spell_jaunt/jaunt_holder
-	var/atom/movable/overlay/animation
+	var/atom/movable/fake_overlay/animation
 	var/start_reappear_timer
 
 /datum/spell/targeted/ethereal_jaunt/cast(list/targets, mob/user) //magnets, so mostly hardcoded
@@ -36,7 +36,7 @@
 		spawn(0)
 			var/mobloc = get_turf(target.loc)
 			jaunt_holder = new /obj/effect/dummy/spell_jaunt(mobloc)
-			animation = new /atom/movable/overlay(mobloc)
+			animation = new /atom/movable/fake_overlay(mobloc)
 			animation.SetName("water")
 			animation.set_density(FALSE)
 			animation.anchored = TRUE
@@ -77,11 +77,11 @@
 
 	return "[src] now lasts longer."
 
-/datum/spell/targeted/ethereal_jaunt/proc/jaunt_disappear(atom/movable/overlay/animation, mob/living/target)
+/datum/spell/targeted/ethereal_jaunt/proc/jaunt_disappear(atom/movable/fake_overlay/animation, mob/living/target)
 	animation.icon_state = "liquify"
 	flick("liquify", animation)
 
-/datum/spell/targeted/ethereal_jaunt/proc/jaunt_reappear(atom/movable/overlay/animation, mob/living/target)
+/datum/spell/targeted/ethereal_jaunt/proc/jaunt_reappear(atom/movable/fake_overlay/animation, mob/living/target)
 	flick("reappear", animation)
 
 /datum/spell/targeted/ethereal_jaunt/proc/jaunt_steam(mobloc)

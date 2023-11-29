@@ -137,8 +137,8 @@ var/obj/screen/robot_inventory
 
 	R.zone_sel = new /obj/screen/zone_sel()
 	R.zone_sel.icon = 'icons/hud/mob/screen_robot.dmi'
-	R.zone_sel.overlays.Cut()
-	R.zone_sel.overlays += image('icons/hud/common/screen_zone_sel.dmi', "[R.zone_sel.selecting]")
+	R.zone_sel.ClearOverlays()
+	R.zone_sel.AddOverlays(image('icons/hud/common/screen_zone_sel.dmi', "[R.zone_sel.selecting]"))
 	static_inventory += R.zone_sel
 
 	//Handle the gun settings buttons

@@ -3,7 +3,8 @@
 	desc = "Used to monitor the drone population and the assembler that services them."
 	icon = 'icons/obj/computer.dmi'
 	icon_keyboard = "power_key"
-	icon_screen = "power"
+	icon_screen = "power_screen"
+	light_color = "#FFCC33"
 	req_access = list(access_engine_equip)
 	circuit = /obj/item/circuitboard/drone_control
 

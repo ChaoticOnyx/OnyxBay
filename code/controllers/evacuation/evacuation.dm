@@ -145,6 +145,7 @@ var/datum/evacuation_controller/evacuation_controller
 	else
 		SSannounce.play_announce(/datum/announce/shuttle_leaving_dock, "The Crew Transfer Shuttle has left the station. Estimate [round(get_eta()/60,1)] minute\s until the shuttle docks at [GLOB.using_map.dock_name].")
 
+	launch_map_vote()
 	return 1
 
 /datum/evacuation_controller/proc/finish_evacuation()
@@ -186,3 +187,19 @@ var/datum/evacuation_controller/evacuation_controller
 /datum/evacuation_controller/proc/toggle_emergency_light(state)
 	for(var/area/A in GLOB.hallway)
 		A.set_lighting_mode(LIGHTMODE_EVACUATION, state)
+
+/datum/evacuation_controller/proc/launch_map_vote()
+	if(config.game.map_switching && GLOB.all_maps.len > 1)
+		if (config.game.auto_map_vote)
+			SSvote.initiate_vote(new /datum/vote/map/end_game, forced = TRUE)
+		else if (config.game.auto_map_switching)
+			// Select random map exclude the current
+			var/datum/map/current_map = GLOB.using_map
+			var/datum/map/next_map = current_map
+
+			while (next_map.type == current_map.type)
+				next_map = GLOB.all_maps[pick(GLOB.all_maps)]
+
+			to_world("<span class='notice'>Map has been changed to: <b>[next_map.name]</b></span>")
+			fdel("data/use_map")
+			text2file("[next_map.type]", "data/use_map")

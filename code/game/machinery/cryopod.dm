@@ -14,8 +14,16 @@
 /obj/machinery/computer/cryopod
 	name = "cryogenic oversight console"
 	desc = "An interface between crew and the cryogenic storage oversight systems."
+
 	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "cellconsole"
+	icon_screen = "cellconsole_on"
+	icon_keyboard = "cellconsole_key"
+	light_color = "#00FF25"
+	light_max_bright_on = 1.0
+	light_inner_range_on = 0.5
+	light_outer_range_on = 3
+
 	circuit = /obj/item/circuitboard/cryopodcontrol
 	density = 0
 	interact_offline = 1
@@ -36,6 +44,9 @@
 	desc = "An interface between crew and the robotic storage systems."
 	icon = 'icons/obj/robot_storage.dmi'
 	icon_state = "console"
+	icon_screen = "console_on"
+	icon_keyboard = "console_key"
+	light_color = "#0099FF"
 	circuit = /obj/item/circuitboard/robotstoragecontrol
 
 	storage_type = "cyborgs"

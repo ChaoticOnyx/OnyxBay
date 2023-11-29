@@ -53,7 +53,7 @@
 	H.Stun(1)
 	H.emote("scream")
 	playsound(H, 'sound/effects/squelch1.ogg', 100, 1)
-	var/atom/movable/overlay/animation = new(T)
+	var/atom/movable/fake_overlay/animation = new(T)
 	animation.plane = H.plane
 	animation.layer = H.layer + 0.01
 	animation.icon = 'icons/mob/mob.dmi'

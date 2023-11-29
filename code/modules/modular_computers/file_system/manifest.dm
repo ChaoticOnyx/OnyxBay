@@ -154,7 +154,7 @@ GLOBAL_LIST_EMPTY(dept_data)
 		for(var/list/department in GLOB.dept_data)
 			var/flag = job_master.occupations_by_title[command_position].department_flag
 			if(department["flag"]&flag)
-				department["all_jobs_in_dept"][command_position] += list("[player_name]" = command_position)
+				department["all_jobs_in_dept"][command_position] += list("[player_name]" = list ("job_title" = command_position))
 				break
 
 	//searching for rest non-heads positions
@@ -193,7 +193,7 @@ GLOBAL_LIST_EMPTY(dept_data)
 				var/flag = job_master.occupations_by_title[job].department_flag
 
 				if(!silicon ? department["flag"]&flag : department["header"] == "Silicon")
-					department["all_jobs_in_dept"][job] += list(!silicon ? "[player_name]" : "\[Unknown\]" = player_prefs.player_alt_titles[job] ? player_prefs.player_alt_titles[job] : job)
+					department["all_jobs_in_dept"][job] += list(!silicon ? "[player_name]" : "\[Unknown\]" = list("job_title" = job, "job_alt_title" = player_prefs.player_alt_titles[job]))
 					break
 			break
 
@@ -207,9 +207,10 @@ GLOBAL_LIST_EMPTY(dept_data)
 		for(var/J in all_jobs)
 			var/list/job = all_jobs[J]
 			for(var/name in job)
-				var/job_slots = job_master.occupations_by_title[job[name]].spawn_positions
+				var/job_slots = job_master.occupations_by_title[job[name]["job_title"]].spawn_positions
 				var/chance = job_slots == -1 ? 100 : clamp(job_slots/length(job)*100, 0, 100)
-				dat += "<tr class='candystripe'><td>[name]</td><td>[job[name]]</td><td>[chance]%</td></tr>"
+				var/job_title = job[name]["job_alt_title"] ? job[name]["job_alt_title"] : job[name]["job_title"]
+				dat += "<tr class='candystripe'><td>[name]</td><td>[job_title]</td><td>[chance]%</td></tr>"
 
 	dat += "</table>"
 	dat = replacetext(dat, "\n", "") // so it can be placed on paper correctly

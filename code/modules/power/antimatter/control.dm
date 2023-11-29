@@ -126,7 +126,7 @@
 	return
 
 
-/obj/machinery/power/am_control_unit/update_icon()
+/obj/machinery/power/am_control_unit/on_update_icon()
 	if(active) icon_state = "control_on"
 	else icon_state = "control"
 	//No other icons for it atm
@@ -307,7 +307,7 @@
 			fueljar.loc = src.loc
 			fueljar = null
 			//fueljar.control_unit = null currently it does not care where it is
-			//update_icon() when we have the icon for it
+			//on_update_icon() when we have the icon for it
 
 	if(href_list["strengthup"])
 		fuel_injection++

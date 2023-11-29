@@ -56,29 +56,30 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	var/announce_do_newscast = TRUE
 	var/announce_sender
 
-/obj/machinery/requests_console/update_icon()
+/obj/machinery/requests_console/on_update_icon()
+	ClearOverlays()
 	if(stat & NOPOWER)
-		if(icon_state != "req_comp_off")
-			icon_state = "req_comp_off"
+		icon_state = "req_comp_off"
 		set_light(0)
-	else
-		if(icon_state == "req_comp_off")
-			icon_state = "req_comp[newmessagepriority]"
-		set_light(0.35, 0.1, 1, 2, COLOR_LIME)
+		return
+	icon_state = "req_comp[newmessagepriority]"
+	set_light(1.0, 0.5, 1, 1.5, "#16974D")
+	AddOverlays(emissive_appearance(icon, "req_comp_ea"))
 
-/obj/machinery/requests_console/New()
-	..()
+/obj/machinery/requests_console/Initialize()
+	. = ..()
 
 	announce_title = "[department] announcement"
 
 	name = "[department] Requests Console"
 	allConsoles += src
-	if (departmentType & RC_ASSIST)
+	if(departmentType & RC_ASSIST)
 		req_console_assistance |= department
-	if (departmentType & RC_SUPPLY)
+	if(departmentType & RC_SUPPLY)
 		req_console_supplies |= department
-	if (departmentType & RC_INFO)
+	if(departmentType & RC_INFO)
 		req_console_information |= department
+	icon_state = "" // So icons update correctly
 	update_icon()
 
 /obj/machinery/requests_console/Destroy()

@@ -161,7 +161,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 			SetElement(E,page_choices[i],angle,anim = anim,anim_order = i)
 
 /datum/radial_menu/proc/HideElement(obj/screen/radial/slice/E)
-	E.overlays.Cut()
+	E.ClearOverlays()
 	E.alpha = 0
 	E.name = "None"
 	E.maptext = null
@@ -187,12 +187,12 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	//Visuals
 	E.alpha = 255
 	E.mouse_opacity = MOUSE_OPACITY_ICON
-	E.overlays.Cut()
+	E.ClearOverlays()
 	if(choice_id == NEXT_PAGE_ID)
 		E.name = "Next Page"
 		E.next_page = TRUE
 		var/image/I = image('icons/hud/radial.dmi', "radial_next")
-		E.overlays += I
+		E.AddOverlays(I)
 	else
 		if(istext(choices_values[choice_id]))
 			E.name = choices_values[choice_id]
@@ -203,7 +203,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 		E.maptext = null
 		E.next_page = FALSE
 		if(choices_icons[choice_id])
-			E.overlays += choices_icons[choice_id]
+			E.AddOverlays(choices_icons[choice_id])
 
 /datum/radial_menu/New()
 	close_button = new
@@ -326,7 +326,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 */
 /proc/make_item_radial_menu_button(atom/movable/AM, name_prefix = "", name_suffix = "")
 	var/image/radial_button = image(icon = AM.icon, icon_state = AM.icon_state)
-	radial_button.overlays = AM.overlays
+	radial_button.CopyOverlays(AM)
 	radial_button.name = "[name_prefix][AM.name][name_suffix]"
 	return radial_button
 

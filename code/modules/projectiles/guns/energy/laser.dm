@@ -226,7 +226,7 @@
 	scoped_accuracy = 0
 	wielded_item_state = "gun_wielded"
 
-/obj/item/gun/energy/sniperrifle/update_icon()
+/obj/item/gun/energy/sniperrifle/on_update_icon()
 	..()
 	item_state_slots[slot_back_str] = icon_state //so that the on-back overlay uses the different charged states
 

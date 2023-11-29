@@ -26,4 +26,4 @@
 
 /datum/nano_module/usage_info/Destroy()
 	player = null
-	..()
+	return ..()
