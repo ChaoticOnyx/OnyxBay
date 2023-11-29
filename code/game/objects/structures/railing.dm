@@ -322,16 +322,16 @@
 	icon_state = "steel_railing"
 	material = "steel_"
 	desc = "A steel railing. Prevents human stupidity."
-	material_path = "/obj/item/stack/steel"
+	material_path = "/obj/item/stack/material/steel"
 
 /obj/structure/railing/wood
 	icon_state = "wood_railing"
 	material = "wood_"
 	desc = "A wooden railing. Prevents human stupidity."
-	material_path = "/obj/item/stack/wood"
+	material_path = "/obj/item/stack/material/wood"
 
 /obj/structure/railing/darkwood
 	icon_state = "darkwood_railing"
 	material = "darkwood_"
 	desc = "A darkwood railing. Prevents human stupidity."
-	material_path = "/obj/item/stack/darkwood"
+	material_path = "/obj/item/stack/material/darkwood"
