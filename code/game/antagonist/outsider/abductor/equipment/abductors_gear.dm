@@ -88,7 +88,7 @@
 		M.stand_icon = disguise.stand_icon
 		M.icon_state = disguise.icon_state
 		M.ClearOverlays()
-		M.CopyOverlays(disguise)
+		M.SetOverlays(disguise.overlays)
 		M.overlays_standing = disguise.overlays_standing.Copy()
 		M.update_inv_l_hand()
 		M.update_inv_r_hand()
