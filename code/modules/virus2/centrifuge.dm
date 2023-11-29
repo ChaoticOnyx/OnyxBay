@@ -106,13 +106,15 @@
 	..()
 	if (stat & (NOPOWER|BROKEN)) return
 
-	if (curing)
+	if(curing)
 		curing -= speed
-		if (curing <= 0)
+		curing = max(curing, 0)
+		if(curing <= 0)
 			cure()
 
-	if (isolating)
+	if(isolating)
 		isolating -= speed
+		isolating = max(isolating, 0)
 		if(isolating <= 0)
 			isolate()
 
@@ -136,6 +138,9 @@
 		if (B)
 			var/datum/disease2/disease/virus = locate(href_list["isolate"])
 			virus2 = virus.getcopy()
+			if(!virus2)
+				return TOPIC_HANDLED
+
 			isolating = 40
 			update_icon()
 		return TOPIC_REFRESH
