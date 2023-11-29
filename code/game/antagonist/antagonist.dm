@@ -143,7 +143,7 @@
 		log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [min_player_age] day\s!")
 		return FALSE
 	if(player.current.client.get_preference_value(/datum/client_preference/become_midround_antag) != GLOB.PREF_YES && GAME_STATE >= RUNLEVEL_GAME)
-		log_debug("[key_name(player)] set their preference to disable becoming midround antag!")
+		log_debug_verbose("[key_name(player)] set their preference to disable becoming midround antag!")
 		switch(player.current.client.get_preference_value(/datum/client_preference/become_midround_antag))
 			if(GLOB.PREF_NO)
 				return FALSE
