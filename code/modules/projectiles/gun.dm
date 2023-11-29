@@ -157,7 +157,7 @@
 	if(wielded_item_state)
 		var/mob/living/M = loc
 		if(istype(M))
-			if(M.can_wield_item(src) && src.is_held_twohanded(M))
+			if(M.can_wield_item(src) && is_held_twohanded(M))
 				item_state_slots[slot_l_hand_str] = wielded_item_state
 				item_state_slots[slot_r_hand_str] = wielded_item_state
 			else
@@ -166,14 +166,15 @@
 	update_held_icon()
 
 /obj/item/gun/equipped(mob/living/user, slot)
+	..()
 	update_safety_icon()
 	clear_autofire()
 
 /obj/item/gun/dropped(mob/living/user)
-	. = ..()
 	ClearOverlays()
-	update_icon()
 	clear_autofire()
+	..()
+	update_icon()
 
 //Checks whether a given mob can use the gun
 //Any checks that shouldn't result in handle_click_empty() being called if they fail should go here.

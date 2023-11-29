@@ -117,8 +117,6 @@ var/list/limb_icon_cache = list()
 		if (M.draw_target == MARKING_TARGET_SKIN)
 			. += "-[M.name][markings[E]]]"
 
-	if(body_hair && islist(h_col) && length(h_col) >= 3)
-		. += "[body_hair]-[icon_name]-[h_col[1]][h_col[2]][h_col[3]]"
 	return .
 
 
@@ -150,8 +148,7 @@ var/list/limb_icon_cache = list()
 	var/chosen_icon = ""
 	var/chosen_icon_state = ""
 
-	var/stump_icon = is_stump() ? "_s" : ""
-	chosen_icon_state = "[icon_name][gender][body_build][stump_icon]"
+	chosen_icon_state = "[icon_name][gender][body_build]"
 
 	/////
 	if(force_icon)
@@ -206,14 +203,6 @@ var/list/limb_icon_cache = list()
 		mob_icon.Blend(entry[2], entry[3]["layer_blend"])
 
 
-	if(body_hair && islist(h_col) && h_col.len >= 3)
-		var/cache_key = "[body_hair]-[icon_name]-[h_col[1]][h_col[2]][h_col[3]]"
-		if(!limb_icon_cache[cache_key])
-			var/icon/I = icon(species.get_icobase(owner), "[icon_name]_[body_hair]")
-			I.Blend(rgb(h_col[1],h_col[2],h_col[3]), ICON_ADD)
-			limb_icon_cache[cache_key] = I
-		mob_icon.Blend(limb_icon_cache[cache_key], ICON_OVERLAY)
-
 	// Fix leg layering here
 	// Alternatively you could use masks but it's about same amount of work
 	// Note: This really only works because everything up until now was icon ops to build an icon we can work with
@@ -226,19 +215,16 @@ var/list/limb_icon_cache = list()
 			under_icon.Insert(icon(mob_icon, dir = EAST), dir = EAST)
 		if(!(icon_position & RIGHT))
 			under_icon.Insert(icon(mob_icon, dir = WEST), dir = WEST)
+
 		// At this point, the icon has all the valid states for both left and right leg overlays
-		var/mutable_appearance/upper_appearance = mutable_appearance(under_icon, chosen_icon_state, flags = DEFAULT_APPEARANCE_FLAGS)
-		upper_appearance.layer = FLOAT_LAYER
-		mob_overlays += upper_appearance
+		mob_overlays += mutable_appearance(under_icon, chosen_icon_state, flags = DEFAULT_APPEARANCE_FLAGS, layer = FLOAT_LAYER)
 
 		if(icon_position & LEFT)
 			under_icon.Insert(icon(mob_icon, dir = EAST), dir = EAST)
 		if(icon_position & RIGHT)
 			under_icon.Insert(icon(mob_icon, dir = WEST),dir = WEST)
 
-		var/mutable_appearance/under_appearance = mutable_appearance(under_icon, chosen_icon_state, flags = DEFAULT_APPEARANCE_FLAGS)
-		upper_appearance.layer = BODYPARTS_LOW_LAYER
-		mob_overlays += under_appearance
+		mob_overlays += mutable_appearance(under_icon, chosen_icon_state, flags = DEFAULT_APPEARANCE_FLAGS, layer = FLOAT_LAYER + BODYPARTS_LOW_LAYER)
 	else
 		var/mutable_appearance/limb_appearance = mutable_appearance(mob_icon, chosen_icon_state, flags = DEFAULT_APPEARANCE_FLAGS)
 		if(icon_position & UNDER)

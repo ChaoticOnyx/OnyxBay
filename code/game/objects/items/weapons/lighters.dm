@@ -208,6 +208,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 /obj/item/flame/lighter/dropped()
 	if(requires_hold)
 		shutoff(silent = TRUE)
+	..()
 
 
 /obj/item/flame/lighter/random/Initialize()

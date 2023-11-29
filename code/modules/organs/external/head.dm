@@ -136,24 +136,18 @@
 		var/datum/body_build/BB = owner.body_build
 		if(has_eyes_overlay)
 			var/eye_icon_location = S.icobase
-			var/icon/eyes_icon = new /icon(eye_icon_location, "eyes[BB.index]")
 			var/obj/item/organ/internal/eyes/eyes = owner.internal_organs_by_name[S.vision_organ ? S.vision_organ : BP_EYES]
 			if(!ishuman(loc))
 				for(var/thing in contents)
 					if(istype(thing, /obj/item/organ/internal/eyes))
 						eyes = thing
 			if(eyes)
-				eyes_icon.Blend(rgb(eyes.eye_colour[1], eyes.eye_colour[2], eyes.eye_colour[3]), ICON_ADD)
-				var/mutable_appearance/eye_appearance = mutable_appearance(eyes_icon, flags = DEFAULT_APPEARANCE_FLAGS)
-				mob_overlays |= eye_appearance
+				mob_overlays |= mutable_appearance(eye_icon_location, "eyes[BB.index]", color = rgb(eyes.eye_colour[1], eyes.eye_colour[2], eyes.eye_colour[3]), flags = DEFAULT_APPEARANCE_FLAGS|RESET_COLOR)
 			else if(owner.should_have_organ(BP_EYES))
-				eyes_icon = new /icon(eye_icon_location, "eyeless[BB.index]")
-				var/mutable_appearance/eye_appearance = mutable_appearance(eyes_icon, flags = DEFAULT_APPEARANCE_FLAGS)
-				mob_overlays |= eye_appearance
+				mob_overlays |= mutable_appearance(eye_icon_location, "eyeless[BB.index]", flags = DEFAULT_APPEARANCE_FLAGS)
 
-		if(owner.lip_style && !BP_IS_ROBOTIC(src) && (species && (species.appearance_flags & HAS_LIPS)))
-			var/mutable_appearance/lip_appearance = mutable_appearance(S.icobase, "lips[BB.index]",flags = DEFAULT_APPEARANCE_FLAGS)
-			mob_overlays |= lip_appearance
+		if(owner.lip_style && !BP_IS_ROBOTIC(src) && species && (species.appearance_flags & HAS_LIPS))
+			mob_overlays |= mutable_appearance(S.icobase, "lips[BB.index]", color = owner.lip_style, flags = DEFAULT_APPEARANCE_FLAGS|RESET_COLOR|RESET_ALPHA)
 
 	SetOverlays(mob_overlays)
 
