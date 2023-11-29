@@ -35,6 +35,7 @@
 		return FALSE
 
 	toggle_siphon(!siphon, user)
+	to_chat(user, SPAN_WARNING("You toggle life siphoning [siphon ? "on" : "off"]"))
 	user.update_action_buttons()
 	return TRUE
 
@@ -71,7 +72,7 @@
 
 	var/damage_delivered = 0 //The necromancer will be healed by a percentage of the total damage delivered this tick.
 
-	for(var/atom/A in hearers(7, get_turf(src.loc)))//Here we will actually damage mobs in range
+	for(var/atom/A in hearers(6, get_turf(src.loc))) // Here we will actually damage mobs in range
 		var/mob/living/M = null
 		if(A == master)
 			continue
@@ -128,16 +129,10 @@
 	. += SPAN_NOTICE("It has [accumulated_heal >= HEALING_THRESHOLD_MAJOR ? "" : "not"] enough charge for a major healing!\n")
 	. += SPAN_NOTICE("It has [accumulated_damage >= DAMAGE_THRESHOLD ? "" : "not"] enough charge for an amplified attack!\n")
 
-/obj/item/staff/plague_bell/attack(mob/living/M, mob/living/user, target_zone)
+/obj/item/staff/plague_bell/attack(mob/living/target, mob/living/user, target_zone)
 	if(user != master)
 		user.adjustBruteLoss(10)
 		to_chat(user, SPAN_DANGER("The staff resists your will!"))
-		return FALSE
-
-	..()
-
-/obj/item/staff/plague_bell/attack(mob/living/target, mob/living/user, target_zone)
-	if(!istype(user,/mob/living/carbon/human)) //Something went wrong, master of this staff should be human
 		return FALSE
 
 	if(!isliving(target))
@@ -149,10 +144,10 @@
 		var/mob/living/carbon/human/human = target
 		human.wizard_heal(major_heal)
 	else if(attacker.a_intent == I_HURT && accumulated_damage >= DAMAGE_THRESHOLD)
-		invocation(user, target, invocation_damage, damage_notification)
 		target.adjustBruteLoss(accumulated_damage/VALUE_REDUCTION)
+		invocation(user, target, invocation_damage, damage_notification)
 	else
-		return
+		return ..()
 
 	playsound(src, "sound/effects/weapons/misc/plague_bell.ogg", 50, FALSE)
 
