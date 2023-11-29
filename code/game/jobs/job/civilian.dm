@@ -14,7 +14,7 @@
 /datum/job/bartender/equip(mob/living/carbon/human/H)
 	. = ..()
 	if(.)
-		ADD_TRAIT(H, TRAIT_BARTENDER)
+		H.mutations.Add(MUTATION_BARTENDER)
 
 /datum/job/chef
 	title = "Chef"
