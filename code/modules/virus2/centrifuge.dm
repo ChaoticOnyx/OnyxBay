@@ -169,12 +169,15 @@
 			return TOPIC_REFRESH
 
 /obj/machinery/computer/centrifuge/proc/cure()
-	if (!sample) return
+	if(!sample)
+		return
+
 	var/datum/reagent/blood/B = locate(/datum/reagent/blood) in sample.reagents.reagent_list
-	if (!B) return
+	if(!B)
+		return
 
 	var/list/data = list("antibodies" = B.data["antibodies"])
-	var/amt= sample.reagents.get_reagent_amount(/datum/reagent/blood)
+	var/amt = sample.reagents.get_reagent_amount(/datum/reagent/blood)
 	sample.reagents.remove_reagent(/datum/reagent/blood, amt)
 	sample.reagents.add_reagent(/datum/reagent/antibodies, amt, data)
 
@@ -183,11 +186,13 @@
 	ping("\The [src] pings, \"Antibody isolated.\"")
 
 /obj/machinery/computer/centrifuge/proc/isolate()
-	if (!sample) return
+	if(!sample || !virus2)
+		return
+
 	var/obj/item/virusdish/dish = new /obj/item/virusdish(loc)
 	dish.virus2 = virus2
 	dish.virus2.infected = null
-	virus2 = null
+	QDEL_NULL(virus2)
 
 	SSnano.update_uis(src)
 	update_icon()
