@@ -406,10 +406,16 @@
 /obj/item/reagent_containers/vessel/dropped(mob/user)
 	. = ..()
 	if(flipping)
-		QDEL_NULL(flipping)
-		last_flipping = world.time
+		var/mob/living/flipper = user
 		item_state = initial(item_state)
-		playsound(src, 'sound/effects/slap.ogg', 100, 1, -2)
+		last_flipping = world.time
+		if(!HAS_TRAIT(flipper, TRAIT_BARTENDER) && prob(50))
+			var/turf/flip_turf = get_turf(flipping)
+			to_chat(user, SPAN_WARNING("Your fail to catch back \the [src]."))
+			smash(flip_turf, flip_turf)
+		else
+			playsound(src, 'sound/effects/slap.ogg', 100, 1, -2)
+		QDEL_NULL(flipping)
 
 /obj/item/reagent_containers/vessel/proc/bottleflip(mob/user)
 	playsound(src, 'sound/effects/woosh.ogg', 50, 1, -2)
@@ -475,13 +481,19 @@
 			return
 
 		if(loc == user && this_flipping == last_flipping) // Only the last flipping action will reset the bottle's vars
-			item_state = initial(item_state)
-			user.ImmediateOverlayUpdate()
-			user.update_inv_l_hand()
-			user.update_inv_r_hand()
+			var/mob/living/flipper = user
+			if(!HAS_TRAIT(flipper, TRAIT_BARTENDER) && prob(50))
+				to_chat(flipper, SPAN_WARNING("Your fail to catch back \the [src]."))
+				flipper.drop(src, flipping.loc, force = TRUE)
+				smash(flip_turf, flip_turf)
+			else
+				item_state = initial(item_state)
+				flipper.ImmediateOverlayUpdate()
+				flipper.update_inv_l_hand()
+				flipper.update_inv_r_hand()
+				playsound(src, 'sound/effects/slap.ogg', 50, 1, -2)
 			QDEL_NULL(flipping)
 			last_flipping = world.time
-			playsound(src, 'sound/effects/slap.ogg', 50, 1, -2)
 
 //Keeping this here for now, I'll ask if I should keep it here.
 /obj/item/broken_bottle

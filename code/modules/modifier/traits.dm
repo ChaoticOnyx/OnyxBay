@@ -213,3 +213,7 @@
 /datum/modifier/trait/magicimmune
 	name = "Magic Immunity"
 	desc = "You're immune to magic"
+
+/datum/modifier/trait/professional_bartender
+	name = "Professional Bartender"
+	desc = "You can do miracles with bottles!"

@@ -11,6 +11,11 @@
 	minimal_access = list(access_bar)
 	outfit_type = /decl/hierarchy/outfit/job/service/bartender
 
+/datum/job/bartender/equip(mob/living/carbon/human/H)
+	. = ..()
+	if(.)
+		ADD_TRAIT(H, TRAIT_BARTENDER)
+
 /datum/job/chef
 	title = "Chef"
 	department = "Service"
