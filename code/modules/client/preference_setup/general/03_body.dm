@@ -112,7 +112,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		pref.h_style	= sanitize_inlist(pref.h_style, GLOB.hair_styles_list, S.default_h_style)
 		pref.f_style	= sanitize_inlist(pref.f_style, GLOB.facial_hair_styles_list, S.default_f_style)
 
-	if(S &&!(S.appearance_flags & HAS_EYE_COLOR))
+	if(S && !(S.appearance_flags & HAS_EYE_COLOR))
 		pref.r_eyes		= hex2num(copytext(S.default_eye_color, 2, 4))
 		pref.g_eyes		= hex2num(copytext(S.default_eye_color, 4, 6))
 		pref.b_eyes		= hex2num(copytext(S.default_eye_color, 6, 8))
