@@ -29,13 +29,7 @@ Regenerative extracts:
 		user.visible_message(SPAN_NOTICE("[user] crushes [src] over [user]self, the milky goo quickly regenerating all of [user] injuries!"),
 			SPAN_NOTICE("You squeeze [src], and it bursts in your hand, splashing you with milky goo which quickly regenerates your injuries!"))
 	core_effect_before(H, user)
-	H.setToxLoss(0)
-	H.setOxyLoss(0)
-	H.setCloneLoss(0)
-	H.setBrainLoss(0)
-	H.SetParalysis(0)
-	H.SetStunned(0)
-	H.SetWeakened(0)
+	H.rejuvenate()
 	core_effect(H, user)
 	playsound(target, 'sound/effects/splat.ogg', 40, TRUE)
 	qdel(src)
@@ -46,11 +40,12 @@ Regenerative extracts:
 
 /obj/item/metroidcross/regenerative/orange
 	colour = "orange"
+	effect_desc = "Fully heals the target and create ring of fire!"
 
 /obj/item/metroidcross/regenerative/orange/core_effect_before(mob/living/target, mob/user)
 	target.visible_message(SPAN_WARNING("The [src] boils over!"))
-	for(var/turf/targetturf in RANGE_TURFS(1,target))
-		targetturf.hotspot_expose(700, 125)
+	for(var/turf/targetturf in orange(2,target))
+		targetturf.create_fire()
 
 /obj/item/metroidcross/regenerative/purple
 	colour = "purple"
@@ -99,13 +94,11 @@ Regenerative extracts:
 	effect_desc = "Fully heals the target and gives them purple clothing if they are naked."
 
 /obj/item/metroidcross/regenerative/darkpurple/core_effect(mob/living/target, mob/user)
-	var/equipped = 0
-	equipped += target.equip_to_slot_or_del(new /obj/item/clothing/shoes/purple(null), SLOT_FEET)
-	equipped += target.equip_to_slot_or_del(new /obj/item/clothing/under/color/lightpurple(null), SLOT_ICLOTHING)
-	equipped += target.equip_to_slot_or_del(new /obj/item/clothing/gloves/color/purple(null), SLOT_GLOVES)
-	equipped += target.equip_to_slot_or_del(new /obj/item/clothing/head/soft/purple(null), SLOT_HEAD)
-	if(equipped > 0)
-		target.visible_message(SPAN_NOTICE("The milky goo congeals into clothing!"))
+	target.equip_to_slot_or_store_or_drop(new /obj/item/clothing/shoes/purple(null), slot_shoes)
+	target.equip_to_slot_or_store_or_drop(new /obj/item/clothing/under/color/lightpurple(null), slot_w_uniform)
+	target.equip_to_slot_or_store_or_drop(new /obj/item/clothing/gloves/color/purple(null), slot_gloves)
+	target.equip_to_slot_or_store_or_drop(new /obj/item/clothing/head/soft/purple(null), slot_head)
+	target.visible_message(SPAN_NOTICE("The milky goo congeals into clothing!"))
 
 /obj/item/metroidcross/regenerative/darkblue
 	colour = "dark blue"
@@ -165,17 +158,14 @@ Regenerative extracts:
 
 /obj/item/metroidcross/regenerative/sepia/core_effect_before(mob/living/target, mob/user)
 	to_chat(target, SPAN_NOTICE("You try to forget how you feel."))
-	ADD_TRAIT(target, /datum/trait/modifier/physical/colorblind_monochrome)
+	ADD_TRAIT(target, /datum/modifier/trait/colorblind_monochrome)
 
 /obj/item/metroidcross/regenerative/cerulean
 	colour = "cerulean"
 	effect_desc = "Fully heals the target and makes a second regenerative core with no special effects."
 
 /obj/item/metroidcross/regenerative/cerulean/core_effect(mob/living/target, mob/user)
-	src.forceMove(user.loc)
 	var/obj/item/metroidcross/X = new /obj/item/metroidcross/regenerative(user.loc)
-	X.name = name
-	X.desc = desc
 	user.put_in_active_hand(X)
 	to_chat(user, SPAN_NOTICE("Some of the milky goo congeals in your hand!"))
 
@@ -270,7 +260,7 @@ Regenerative extracts:
 		D.dna.UpdateSE()
 		D.real_name = T.real_name
 		D.name = T.name
-		D.overlays.Cut()
+		D.ClearOverlays()
 		D.overlays_standing = T.overlays_standing.Copy()
 		D.UpdateAppearance(newUI.Copy())
 		D.icon = getFlatIcon(T)
@@ -299,14 +289,11 @@ Regenerative extracts:
 		return
 	if(target == user)
 		return
+	if(target.stat == DEAD)
+		to_chat(user, SPAN_WARNING("[src] will not work on the dead!"))
+		return
 	var/mob/living/U = user
-	U.setToxLoss(0)
-	U.setOxyLoss(0)
-	U.setCloneLoss(0)
-	U.setBrainLoss(0)
-	U.SetParalysis(0)
-	U.SetStunned(0)
-	U.SetWeakened(0)
+	U.rejuvenate()
 	to_chat(U, SPAN_NOTICE("Some of the milky goo sprays onto you, as well!"))
 
 /obj/item/metroidcross/regenerative/adamantine

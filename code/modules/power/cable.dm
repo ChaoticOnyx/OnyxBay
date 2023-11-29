@@ -36,7 +36,7 @@ var/list/possible_cable_coil_colours
 	var/d2 = 1
 
 	layer = TURF_DETAIL_LAYER
-	plane = FLOOR_PLANE
+	plane = TURF_PLANE
 
 	color = COLOR_RED
 	var/obj/machinery/power/breakerbox/breaker_box
@@ -77,7 +77,7 @@ var/list/possible_cable_coil_colours
 	..()
 
 	layer = EXPOSED_WIRE_LAYER
-	plane = FLOOR_PLANE
+
 
 	// ensure d1 & d2 reflect the icon_state for entering and exiting cable
 
@@ -128,7 +128,7 @@ var/list/possible_cable_coil_colours
 /obj/structure/cable/hides_under_flooring()
 	return 1
 
-/obj/structure/cable/update_icon()
+/obj/structure/cable/on_update_icon()
 	icon_state = "[d1]-[d2]"
 	alpha = invisibility ? 127 : 255
 
@@ -533,7 +533,7 @@ var/list/possible_cable_coil_colours
 	return ..()
 
 
-/obj/item/stack/cable_coil/update_icon()
+/obj/item/stack/cable_coil/on_update_icon()
 	if (!color)
 		color = possible_cable_coil_colours[pick(possible_cable_coil_colours)]
 	if(amount == 1)

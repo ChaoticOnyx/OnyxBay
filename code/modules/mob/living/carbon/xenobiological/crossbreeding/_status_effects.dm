@@ -84,7 +84,7 @@
 	to_chat(holder, SPAN_DANGER("You feel a sudden tug from an unknown force, and feel a pull to bluespace!"))
 	to_chat(holder, SPAN_NOTICE("Resist if you wish avoid the force!"))
 	bluespace = icon('icons/effects/effects.dmi',"chronofield")
-	holder.overlays += bluespace
+	holder.AddOverlays(bluespace)
 	return ..()
 
 /datum/modifier/status_effect/metroidrecall/proc/resistField()
@@ -94,7 +94,7 @@
 
 /datum/modifier/status_effect/metroidrecall/on_expire()
 	unregister_signal(holder, SIGNAL_MOB_RESIST)
-	holder.overlays -= bluespace
+	holder.CutOverlays(bluespace)
 	if(interrupted || !ismob(target))
 		to_chat(holder, SPAN_WARNING("The bluespace tug fades away, and you feel that the force has passed you by."))
 		return
@@ -543,6 +543,10 @@
 			if(S.amount < S.max_amount)
 				sheets += S
 
+		for(var/obj/item/stack/material/S in holder.back.contents)
+			if(S.amount < S.max_amount)
+				sheets += S
+
 		if(sheets.len > 0)
 			var/obj/item/stack/material/S = pick(sheets)
 			S.amount++
@@ -725,6 +729,10 @@
 	var/mob/living/clone
 
 /datum/modifier/status_effect/stabilized/cerulean/on_applied()
+	if(holder.stat==DEAD)
+		holder.dust()
+		holder.drop(src)
+		return
 	var/typepath = holder.type
 	clone = new typepath(holder.loc)
 	var/mob/living/carbon/human/O = holder
@@ -1018,8 +1026,19 @@
 /datum/modifier/status_effect/stabilized/rainbow/on_expire()
 	set_next_think(0)
 
+/datum/modifier/status_effect/stabilized/rainbow/proc/check_mob_crit(mob/M)
+	if(!ishuman(M))
+		M.gib()
+		return FALSE
+	var/mob/living/carbon/human/H = M
+	if(H.is_asystole() && !isundead(H))
+		return TRUE
+	var/trauma_val = max(H.shock_stage, H.get_shock()) / H.species.total_health
+	if(trauma_val > 0.7)
+		return TRUE
+
 /datum/modifier/status_effect/stabilized/rainbow/think()
-	if(holder.stat == UNCONSCIOUS)
+	if(check_mob_crit(holder))
 		var/obj/item/metroidcross/stabilized/rainbow/X = linked_extract
 		if(istype(X))
 			if(X.regencore)
@@ -1032,7 +1051,7 @@
 
 /datum/modifier/status_effect/adamantine
 	name = "adamantine"
-	incoming_brute_damage_percent = 0.75
+	incoming_damage_percent = 0.75
 	duration = 1200
 
 /datum/modifier/status_effect/burningpurple

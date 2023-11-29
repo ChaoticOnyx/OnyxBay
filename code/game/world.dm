@@ -97,8 +97,26 @@ var/server_name = "OnyxBay"
 
 	return match
 
+/world/proc/__init_tracy()
+#ifdef TRACY_PROFILER
+	var/tracy_lib
+
+	if(world.system_type == MS_WINDOWS)
+		tracy_lib = "prof.dll"
+	else
+		tracy_lib = "./libprof.so"
+
+	var/tracy_init = call(tracy_lib, "init")()
+
+	if(tracy_init != "0")
+		CRASH("[tracy_lib] init error: [tracy_init]")
+#else
+	return
+#endif
+
 #define RECOMMENDED_VERSION 514
 /world/New()
+	__init_tracy()
 	SetupLogs()
 
 	if(world.system_type == UNIX)
@@ -382,7 +400,7 @@ var/world_topic_spam_protect_time = world.timeofday
 		if(!config.misc.ooc_allowed)
 			return "globally muted"
 
-		GLOB.indigo_bot.chat_webhook(config.indigo_bot.ooc_webhook, "**[username]:** [message]")
+		GLOB.indigo_bot.chat_webhook(config.indigo_bot.ooc_webhook, "DOOC: **[username]:** [message]")
 
 		var/sent_message = "[create_text_tag("dooc", "Discord")] <EM>[username]:</EM> <span class='message linkify'>[message]</span>"
 		for(var/client/target in GLOB.clients)

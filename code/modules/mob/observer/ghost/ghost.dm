@@ -146,6 +146,8 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 	L.teleop = null
 	L.reload_fullscreen()
 	L.on_ghost_possess()
+	if("\ref[L]" in GLOB.available_mobs_for_possess)
+		GLOB.available_mobs_for_possess -= "\ref[L]"
 
 /mob/observer/ghost/verb/ghost_possess(mob/living/M in GLOB.available_mobs_for_possess)
 	set name = "Ghost Possess"
@@ -689,24 +691,12 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	return TRUE
 
 /mob/observer/ghost/proc/set_appearance(mob/target)
-	var/pre_alpha = alpha
-	var/pre_plane = plane
-	var/pre_layer = layer
-	var/pre_invis = invisibility
-	var/pre_opacity = opacity
-
-	appearance = target
-	appearance_flags |= initial(appearance_flags)
-	alpha = pre_alpha
-	plane = pre_plane
-	layer = pre_layer
-	opacity = pre_opacity
-
-	overlays -= target.active_typing_indicator
-	overlays -= target.active_thinking_indicator
-
-	set_invisibility(pre_invis)
 	ClearTransform()	//make goast stand up
+	ClearOverlays()
+	if(!target)
+		icon = initial(icon)
+	icon = null
+	CopyOverlays(target)
 
 /mob/observer/ghost/verb/respawn()
 	set name = "Respawn"
@@ -715,19 +705,23 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(!(config.misc.abandon_allowed))
 		to_chat(src, SPAN_NOTICE("Respawn is disabled."))
 		return
+
 	if(!SSticker.mode)
 		to_chat(src, SPAN_NOTICE("<B>You may not attempt to respawn yet.</B>"))
 		return
+
 	if(SSticker.mode.deny_respawn)
 		to_chat(src, SPAN_NOTICE("Respawn is disabled for this roundtype."))
 		return
-	else if(!MayRespawn(1, config.misc.respawn_delay))
+
+	if(!MayRespawn(1, config.misc.respawn_delay))
 		return
 
 	to_chat(src, "You can respawn now, enjoy your new life!")
 	to_chat(src, SPAN_NOTICE("<B>Make sure to play a different character, and please roleplay correctly!</B>"))
 	announce_ghost_joinleave(client, 0)
 
+	client.screen.Cut()
 	var/mob/new_player/M = new /mob/new_player()
 	M.key = key
 	log_and_message_admins("has respawned.", M)

@@ -5,6 +5,7 @@
 	program_icon_state = "power_monitor"
 	program_key_state = "power_key"
 	program_menu_icon = "battery-3"
+	program_light_color = "#FFCC33"
 	extended_desc = "This program connects to sensors to provide information about electrical systems"
 	ui_header = "power_norm.gif"
 	required_access = access_engine
@@ -90,7 +91,7 @@
 	if(!T) // Safety check
 		return
 	var/connected_z_levels = GetConnectedZlevels(T.z)
-	for(var/obj/machinery/power/sensor/S in GLOB.machines)
+	for(var/obj/machinery/power/sensor/S in SSmachines.machinery)
 		if((S.long_range) || (S.loc.z in connected_z_levels)) // Consoles have range on their Z-Level. Sensors with long_range var will work between Z levels.
 			if(S.name_tag == "#UNKN#") // Default name. Shouldn't happen!
 				warning("Powernet sensor with unset ID Tag! [S.x]X [S.y]Y [S.z]Z")

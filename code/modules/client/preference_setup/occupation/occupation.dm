@@ -243,7 +243,6 @@
 		if(JOB_PRIORITY_HIGH)
 			pref.job_high = null
 		if(JOB_PRIORITY_MIDDLE)
-			pref.job_medium |= pref.job_high
 			pref.job_high = switched_job.title
 			pref.job_medium -= switched_job.title
 		if(JOB_PRIORITY_LOW)

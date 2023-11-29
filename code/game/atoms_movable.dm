@@ -23,13 +23,26 @@
 	var/item_state = null // Used to specify the item state for the on-mob overlays.
 	var/pull_sound = null
 
+	/// Either [EMISSIVE_BLOCK_NONE], [EMISSIVE_BLOCK_GENERIC], or [EMISSIVE_BLOCK_UNIQUE]
+	var/blocks_emissive = EMISSIVE_BLOCK_NONE
+	///Internal holder for emissive blocker object, DO NOT USE DIRECTLY. Use blocks_emissive
+	var/mutable_appearance/em_block
+
+/atom/movable/Initialize()
+	. = ..()
+	update_emissive_blocker()
+	if(em_block)
+		AddOverlays(em_block)
+
 /atom/movable/Destroy()
 	if(!(atom_flags & ATOM_FLAG_INITIALIZED))
 		util_crash_with("GC: -- [name] | [type] was deleted before initalization --")
 
 	walk(src, 0) // Because we might have called walk_to, we must stop the walk loop or BYOND keeps an internal reference to us forever.
 
-	for(var/A in src)
+	for(var/atom/A in src)
+		if(QDELING(A))
+			continue
 		qdel(A)
 
 	forceMove(null)
@@ -43,6 +56,9 @@
 
 	if(virtual_mob && !ispath(virtual_mob))
 		QDEL_NULL(virtual_mob)
+
+	if(em_block)
+		QDEL_NULL(em_block)
 
 	thrown_to = null
 	throwed_dist = 0
@@ -238,6 +254,10 @@
 		src.loc = null
 		if (Move(previous))
 			Move(step)
+		if(!loc)
+			// we got into nullspace! abort!
+			loc = previous
+			break
 		hit_check(impact_speed)
 		dist_travelled++
 		dist_since_sleep += tiles_per_tick
@@ -274,25 +294,48 @@
 /atom/movable/proc/post_launched()
 	return
 
+/atom/movable/proc/update_emissive_blocker()
+	switch(blocks_emissive)
+		if(EMISSIVE_BLOCK_GENERIC)
+			em_block = fast_emissive_blocker(src)
+		if(EMISSIVE_BLOCK_UNIQUE)
+			if(!em_block && !QDELING(src))
+				appearance_flags |= KEEP_TOGETHER
+				render_target = ref(src)
+				em_block = emissive_blocker(
+					icon = icon,
+					appearance_flags = appearance_flags,
+					source = render_target
+				)
+	return em_block
+
+/atom/movable/on_update_icon()
+	..()
+	if(em_block)
+		CutOverlays(em_block)
+	update_emissive_blocker()
+	if(em_block)
+		AddOverlays(em_block)
+
 //Overlays
-/atom/movable/overlay
+/atom/movable/fake_overlay
 	var/atom/master = null
 	anchored = 1
 
-/atom/movable/overlay/New()
+/atom/movable/fake_overlay/New()
 	src.verbs.Cut()
 	..()
 
-/atom/movable/overlay/Destroy()
+/atom/movable/fake_overlay/Destroy()
 	master = null
 	. = ..()
 
-/atom/movable/overlay/attackby(a, b)
+/atom/movable/fake_overlay/attackby(a, b)
 	if (src.master)
 		return src.master.attackby(a, b)
 	return
 
-/atom/movable/overlay/attack_hand(a, b, c)
+/atom/movable/fake_overlay/attack_hand(a, b, c)
 	if (src.master)
 		return src.master.attack_hand(a, b, c)
 	return

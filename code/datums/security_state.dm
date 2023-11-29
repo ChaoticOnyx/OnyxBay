@@ -182,8 +182,8 @@
 /decl/security_level/default/code_green
 	name = "code green"
 
-	light_max_bright = 0.25
-	light_inner_range = 0.1
+	light_max_bright = 0.6
+	light_inner_range = 0.5
 	light_outer_range = 1
 
 	light_color_alarm = COLOR_GREEN
@@ -197,8 +197,8 @@
 /decl/security_level/default/code_blue
 	name = "code blue"
 
-	light_max_bright = 0.5
-	light_inner_range = 0.1
+	light_max_bright = 0.8
+	light_inner_range = 0.5
 	light_outer_range = 2
 
 	light_color_alarm = COLOR_BLUE
@@ -213,8 +213,8 @@
 /decl/security_level/default/code_red
 	name = "code red"
 
-	light_max_bright = 0.5
-	light_inner_range = 0.1
+	light_max_bright = 1.0
+	light_inner_range = 0.5
 	light_outer_range = 2
 
 	light_color_alarm = COLOR_RED
@@ -229,8 +229,8 @@
 /decl/security_level/default/code_delta
 	name = "code delta"
 
-	light_max_bright = 0.75
-	light_inner_range = 0.1
+	light_max_bright = 1.0
+	light_inner_range = 0.5
 	light_outer_range = 3
 
 	light_color_alarm = COLOR_RED

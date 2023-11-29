@@ -289,6 +289,8 @@
 #define NOTIFY_JUMP "jump"
 #define NOTIFY_ATTACK "attack"
 #define NOTIFY_FOLLOW "follow"
+#define NOTIFY_POSSES "posses"
+#define NOTIFY_VOTE "vote"
 
 // Atmospherics vents
 #define VENT_UNDAMAGED 0
@@ -312,3 +314,6 @@
 #define MAGIC_RESISTANCE_MIND (1<<1)
 /// Holy magic resistance that blocks unholy magic (vampire)
 #define MAGIC_RESISTANCE_HOLY (1<<2)
+
+// Shortcut for image_repository.overlay_image(...)
+#define OVERLAY(args...) image_repository.overlay_image(args)

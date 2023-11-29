@@ -3,6 +3,7 @@
 	icon = 'icons/obj/computer.dmi'
 	icon_keyboard = "atmos_key"
 	icon_screen = "shuttle"
+	light_color = "#00FFFF"
 	circuit = null
 
 	var/shuttle_tag  // Used to coordinate data in shuttle controller.

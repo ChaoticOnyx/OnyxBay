@@ -14,8 +14,16 @@
 /obj/machinery/computer/cryopod
 	name = "cryogenic oversight console"
 	desc = "An interface between crew and the cryogenic storage oversight systems."
+
 	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "cellconsole"
+	icon_screen = "cellconsole_on"
+	icon_keyboard = "cellconsole_key"
+	light_color = "#00FF25"
+	light_max_bright_on = 1.0
+	light_inner_range_on = 0.5
+	light_outer_range_on = 3
+
 	circuit = /obj/item/circuitboard/cryopodcontrol
 	density = 0
 	interact_offline = 1
@@ -36,6 +44,9 @@
 	desc = "An interface between crew and the robotic storage systems."
 	icon = 'icons/obj/robot_storage.dmi'
 	icon_state = "console"
+	icon_screen = "console_on"
+	icon_keyboard = "console_key"
+	light_color = "#0099FF"
 	circuit = /obj/item/circuitboard/robotstoragecontrol
 
 	storage_type = "cyborgs"
@@ -380,16 +391,21 @@
 		return
 	despawning_now = TRUE
 	//Drop all items into the pod.
-	for(var/obj/item/I in occupant)
-		occupant.drop(I, src)
-		if(I.contents.len) //Make sure we catch anything not handled by qdel() on the items.
+	for(var/obj/item/I in occupant.contents)
+		if(QDELETED(I))
+			continue
+		if(I in occupant.contents) // Since things may actually be dropped upon removing other things (i.e. removing uniform first causes belts to drop)
+			occupant.drop(I, src)
+		else
+			I.forceMove(src)
+		if(length(I.contents)) // Make sure we catch anything not handled by qdel() on the items.
 			for(var/obj/item/O in I.contents)
-				if(istype(O, /obj/item/storage/internal)) //Stop eating pockets, you fuck!
+				if(istype(O, /obj/item/storage/internal)) // Stop eating pockets, you fuck!
 					continue
 				O.forceMove(src)
 
 	//Delete all items not on the preservation list.
-	var/list/items = src.contents.Copy()
+	var/list/items = contents.Copy()
 	items -= occupant // Don't delete the occupant
 	items -= announce // or the autosay radio.
 

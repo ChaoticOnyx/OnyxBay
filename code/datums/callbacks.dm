@@ -13,6 +13,10 @@
 	if (length(args) > 2)
 		arguments = args.Copy(3)
 
+/datum/callback/Destroy()
+	object = null
+	return ..()
+
 /proc/ImmediateInvokeAsync(thingtocall, proctocall, ...)
 	set waitfor = FALSE
 

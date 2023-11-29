@@ -44,6 +44,7 @@
 /obj/item/device/megaphone/proc/speak(mob/living/user, message, emagged = FALSE)
 	for(var/mob/O in (viewers(user)))
 		O.show_message("<B>[user]</B> broadcasts, [FONT_GIANT("\"[emagged ? pick(insultmsg) : message]\"")]", AUDIBLE_MESSAGE)
+		playsound(src, 'sound/items/megaphone.ogg', 20, 0, 1)
 		if(O.get_preference_value(/datum/client_preference/runechat) == GLOB.PREF_YES && !O.is_deaf())
 			O.create_chat_message(O, message, FALSE, "big")
 	for(var/obj/item/device/radio/intercom/I in view(3, user))

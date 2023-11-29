@@ -62,7 +62,7 @@
 				cell.give(transfer_amount * CELLRATE)
 				set_pin_data(IC_OUTPUT, 1, cell.charge)
 				set_pin_data(IC_OUTPUT, 2, cell.maxcharge)
-				set_pin_data(IC_OUTPUT, 3, cell.percent())
+				set_pin_data(IC_OUTPUT, 3, CELL_PERCENT(cell))
 				activate_pin(2)
 				push_data()
 				if(istype(AM, /obj/item))

@@ -16,7 +16,7 @@
 /obj/machinery/computer/pod/New()
 	..()
 	spawn( 5 )
-		for(var/obj/machinery/mass_driver/M in GLOB.machines)
+		for(var/obj/machinery/mass_driver/M in SSmachines.machinery)
 			if(M.id == id)
 				connected = M
 		return
@@ -37,7 +37,7 @@
 
 	sleep(20)
 
-	for(var/obj/machinery/mass_driver/M in GLOB.machines)
+	for(var/obj/machinery/mass_driver/M in SSmachines.machinery)
 		if(M.id == id)
 			M.power = connected.power
 			M.drive()
@@ -164,7 +164,7 @@
 		alarm()
 		. = TOPIC_REFRESH
 	else if(href_list["drive"])
-		for(var/obj/machinery/mass_driver/M in GLOB.machines)
+		for(var/obj/machinery/mass_driver/M in SSmachines.machinery)
 			if(M.id == id)
 				M.power = connected.power
 				M.drive()

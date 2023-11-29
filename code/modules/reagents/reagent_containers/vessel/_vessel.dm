@@ -124,8 +124,8 @@
 // 3. overlay_icon (if present)
 // 4. label_icon (if present)
 // 5. lid.icon_state (if present)
-/obj/item/reagent_containers/vessel/update_icon()
-	overlays.Cut()
+/obj/item/reagent_containers/vessel/on_update_icon()
+	ClearOverlays()
 	if(reagents?.reagent_list.len > 0)
 		if(dynamic_name)
 			var/datum/reagent/R = reagents.get_master_reagent()
@@ -135,19 +135,19 @@
 		if(filling_states)
 			var/image/filling = image(icon, src, "[base_icon][get_filling_state()]")
 			filling.color = reagents.get_color()
-			overlays += filling
+			AddOverlays(filling)
 	else
 		update_name_label()
 		desc = base_desc
 
 	if(overlay_icon)
-		overlays += image(icon, src, overlay_icon)
+		AddOverlays(image(icon, src, overlay_icon))
 
 	if(has_label && label_icon)
-		overlays += image(icon, src, label_icon)
+		AddOverlays(image(icon, src, label_icon))
 
 	if(lid)
-		overlays += image(lid.icon, src, lid.get_icon_state())
+		AddOverlays(image(lid.icon, src, lid.get_icon_state()))
 
 /obj/item/reagent_containers/vessel/proc/get_filling_state()
 	var/percent = round((reagents.total_volume / volume) * 100)

@@ -346,7 +346,7 @@
 	..()
 	update_icon()
 
-/obj/item/organfixer/update_icon()
+/obj/item/organfixer/on_update_icon()
 	if(gel_amt == 0)
 		icon_state = "[initial(icon_state)]-empty"
 	else

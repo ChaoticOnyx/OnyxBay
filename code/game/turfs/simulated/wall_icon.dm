@@ -34,43 +34,42 @@
 	reinf_material = newrmaterial
 	update_material()
 
-/turf/simulated/wall/update_icon()
+/turf/simulated/wall/on_update_icon()
 	if(!material)
 		return
 
 	if(!damage_overlays[1]) //list hasn't been populated
 		generate_overlays()
 
-	overlays.Cut()
+	ClearOverlays()
 	var/image/I
 
 	if(!density)
-		I = image(masks_icon, "[material.icon_base]fwall_open")
+		I = OVERLAY(masks_icon, "[material.icon_base]fwall_open")
 		I.color = material.icon_colour
-		overlays += I
+		AddOverlays(I)
 		return
 
-	for(var/i = 1 to 4)
-		I = image(masks_icon, "[material.icon_base][wall_connections[i]]", dir = 1<<(i-1))
-		I.color = material.icon_colour
-		overlays += I
+	I = image(GLOB.bitmask_icon_sheets["wall_[material.icon_base]"], "[wall_connections]")
+	I.color = material.icon_colour
+	AddOverlays(I)
 
 	if(reinf_material)
 		if(construction_stage != null && construction_stage < 6)
-			I = image(masks_icon, "reinf_construct-[construction_stage]")
+			I = OVERLAY(masks_icon, "reinf_construct-[construction_stage]")
 			I.color = reinf_material.icon_colour
-			overlays += I
+			AddOverlays(I)
 		else
-			if("[reinf_material.icon_reinf]0" in icon_states(masks_icon))
-				// Directional icon
-				for(var/i = 1 to 4)
-					I = image(masks_icon, "[reinf_material.icon_reinf][wall_connections[i]]", dir = 1<<(i-1))
-					I.color = reinf_material.icon_colour
-					overlays += I
-			else
-				I = image(masks_icon, reinf_material.icon_reinf)
+			if(!mask_overlay_states[masks_icon]) // Lets just cache them instead of calling icon_states() every damn time.
+				mask_overlay_states[masks_icon] = icon_states(masks_icon)
+			if("[reinf_material.icon_reinf]0" in mask_overlay_states[masks_icon])
+				I = image(GLOB.bitmask_icon_sheets["wall_[reinf_material.icon_reinf]"], "[wall_connections]")
 				I.color = reinf_material.icon_colour
-				overlays += I
+				AddOverlays(I)
+			else
+				I = OVERLAY(masks_icon, reinf_material.icon_reinf)
+				I.color = reinf_material.icon_colour
+				AddOverlays(I)
 
 	if(damage != 0)
 		var/integrity = material.integrity
@@ -81,14 +80,14 @@
 		if(overlay > damage_overlays.len)
 			overlay = damage_overlays.len
 
-		overlays += damage_overlays[overlay]
+		AddOverlays(damage_overlays[overlay])
 	return
 
 /turf/simulated/wall/proc/generate_overlays()
 	var/alpha_inc = 256 / damage_overlays.len
 
 	for(var/i = 1; i <= damage_overlays.len; i++)
-		var/image/img = image(icon = 'icons/turf/walls.dmi', icon_state = "overlay_damage")
+		var/image/img = image('icons/turf/walls.dmi', "overlay_damage") // Don't use OVERLAY here, we don't need all this garbage in the global cache
 		img.blend_mode = BLEND_MULTIPLY
 		img.alpha = (i * alpha_inc) - 1
 		damage_overlays[i] = img
@@ -97,17 +96,19 @@
 /turf/simulated/wall/proc/update_connections(propagate = 0)
 	if(!material)
 		return
-	var/list/dirs = list()
-	for(var/turf/simulated/wall/W in orange(src, 1))
+	wall_connections = 0
+
+	for(var/I in GLOB.cardinal)
+		var/turf/simulated/wall/W = get_step(src, I)
+		if(!istype(W))
+			continue
 		if(!W.material)
 			continue
 		if(propagate)
 			W.update_connections()
 			W.update_icon()
 		if(can_join_with(W))
-			dirs += get_dir(src, W)
-
-	wall_connections = dirs_to_corner_states(dirs)
+			wall_connections += get_dir(src, W)
 
 /turf/simulated/wall/proc/can_join_with(turf/simulated/wall/W)
 	if(material && W.material && material.icon_base == W.material.icon_base)

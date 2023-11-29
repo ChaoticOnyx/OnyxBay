@@ -5,6 +5,15 @@
 /mob/proc/set_fullscreen(condition, screen_name, screen_type, arg)
 	condition ? overlay_fullscreen(screen_name, screen_type, arg) : clear_fullscreen(screen_name)
 
+/mob/proc/set_renderer_filter(condition, renderer_name = SCENE_GROUP_RENDERER, filter_name, priority, list/params)
+	if(isnull(renderers))
+		return FALSE
+
+	if(!(renderer_name in renderers))
+		return FALSE
+
+	condition?renderers[renderer_name].add_filter(filter_name, priority, params) : renderers[renderer_name].remove_filter(filter_name)
+
 /mob/proc/overlay_fullscreen(category, type, severity)
 	var/obj/screen/fullscreen/screen = screens[category]
 
@@ -72,6 +81,7 @@
 	icon_state = "default"
 	screen_loc = "CENTER-7,CENTER-7"
 	plane = FULLSCREEN_PLANE
+	layer = FULLSCREEN_LAYER
 	mouse_opacity = 0
 	var/severity = 0
 	var/allstate = 0 //shows if it should show up for dead people too
@@ -136,14 +146,12 @@
 	icon = 'icons/effects/static.dmi'
 	icon_state = "1 light"
 	screen_loc = ui_entire_screen
-	layer = FULLSCREEN_LAYER
 	alpha = 127
 
 /obj/screen/fullscreen/fadeout
 	icon = 'icons/hud/screen.dmi'
 	icon_state = "black"
 	screen_loc = ui_entire_screen
-	layer = FULLSCREEN_LAYER
 	alpha = 0
 	allstate = 1
 
@@ -156,14 +164,12 @@
 	icon_state = "scanlines"
 	screen_loc = ui_entire_screen
 	alpha = 50
-	layer = FULLSCREEN_LAYER
 	blend_mode = BLEND_DEFAULT
 
 /obj/screen/fullscreen/cam_corners
 	icon = 'icons/hud/screen_full.dmi'
 	icon_state = "cam_corners"
 	allstate = 1
-	layer = FULLSCREEN_LAYER
 	blend_mode = BLEND_OVERLAY
 
 /obj/screen/fullscreen/fishbed

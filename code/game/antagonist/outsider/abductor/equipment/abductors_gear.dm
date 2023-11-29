@@ -87,8 +87,8 @@
 		M.icon = disguise.icon
 		M.stand_icon = disguise.stand_icon
 		M.icon_state = disguise.icon_state
-		M.overlays.Cut()
-		M.overlays = disguise.overlays.Copy()
+		M.ClearOverlays()
+		M.CopyOverlays(disguise)
 		M.overlays_standing = disguise.overlays_standing.Copy()
 		M.update_inv_l_hand()
 		M.update_inv_r_hand()
@@ -103,7 +103,7 @@
 		anim(get_turf(M), M,'icons/mob/mob.dmi',,"phaseout",,M.dir)
 		M.real_name = "[M.mind.abductor.team.name] [M.mind.special_role]"
 		M.name = M.real_name
-		M.overlays.Cut()
+		M.ClearOverlays()
 		M.regenerate_icons()
 
 /obj/item/clothing/suit/armor/abductor/vest/handle_shield(mob/user, damage, atom/damage_source, mob/attacker, def_zone, attack_text)
@@ -122,7 +122,7 @@
 		cooldown = world.time + combat_cooldown
 
 /obj/item/clothing/suit/armor/abductor/Destroy()
-	for(var/obj/machinery/abductor/console/C in GLOB.machines)
+	for(var/obj/machinery/abductor/console/C in SSmachines.machinery)
 		if(C.vest == src)
 			C.vest = null
 			break
@@ -454,7 +454,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	toggle(user)
 	add_fingerprint(user)
 
-/obj/item/melee/baton/abductor/update_icon()
+/obj/item/melee/baton/abductor/on_update_icon()
 	. = ..()
 	switch(mode)
 		if(BATON_STUN)
@@ -783,7 +783,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 
 /obj/structure/table/abductor/proc/updateOverlays()
 	spawn(1)
-		overlays = list()
+		ClearOverlays()
 
 		var/dir_sum = 0
 

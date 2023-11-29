@@ -63,7 +63,7 @@
 			M.visible_message("<span class='notice'>\The [user] feeds some [loaded] to \the [M] with \the [src].</span>")
 		reagents.trans_to_mob(M, reagents.total_volume, CHEM_INGEST)
 		playsound(M.loc, 'sound/items/eatfood.ogg', rand(10, 40), 1)
-		overlays.Cut()
+		ClearOverlays()
 		return
 	else
 		to_chat(user, "<span class='warning'>You don't have anything on \the [src].</span>")//if we have help intent and no food scooped up DON'T STAB OURSELVES WITH THE FORK

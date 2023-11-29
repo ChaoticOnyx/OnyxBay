@@ -36,9 +36,9 @@
 			return
 		var/new_string_color = CC.color
 		if(CC.use(1))
-			var/image/string_overlay = image(icon,"coin_string_overlay")
+			var/image/string_overlay = image(icon, "coin_string_overlay")
 			string_overlay.color = new_string_color
-			overlays += string_overlay
+			AddOverlays(string_overlay)
 			string_attached = TRUE
 			string_color = new_string_color
 			to_chat(user, SPAN("notice", "You attach a string to the coin."))
@@ -54,7 +54,7 @@
 		CC.amount = 1
 		CC.color = string_color
 		CC.update_icon()
-		overlays.Cut()
+		ClearOverlays()
 		string_attached = null
 		to_chat(user, SPAN("notice", "You detach the string from the coin."))
 	else ..()

@@ -25,6 +25,9 @@ GLOBAL_VAR_CONST(PREF_SILENT, "Silent")
 GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 GLOBAL_VAR_CONST(PREF_WHITE, "White")
 GLOBAL_VAR_CONST(PREF_DARK, "Dark")
+GLOBAL_VAR_CONST(PREF_LOW, "Low")
+GLOBAL_VAR_CONST(PREF_MED, "Medium")
+GLOBAL_VAR_CONST(PREF_HIGH, "High")
 
 var/global/list/_client_preferences
 var/global/list/_client_preferences_by_key
@@ -285,8 +288,9 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 
 /datum/client_preference/ambient_occlusion/changed(mob/preference_mob, new_value)
-	if (preference_mob.client)
-		preference_mob.UpdatePlanes()
+	if(preference_mob?.client)
+		var/atom/movable/renderer/R = preference_mob.renderers[GAME_RENDERER]
+		R.GraphicsUpdate()
 
 /datum/client_preference/fullscreen_mode
 	description = "Fullscreen Mode"

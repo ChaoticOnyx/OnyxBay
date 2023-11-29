@@ -5,6 +5,7 @@
 	program_icon_state = "generic"
 	program_key_state = "generic_key"
 	program_menu_icon = "folder-collapsed"
+	program_light_color = "#00B000"
 	size = 8
 	category = PROG_UTIL
 	requires_ntnet = 0

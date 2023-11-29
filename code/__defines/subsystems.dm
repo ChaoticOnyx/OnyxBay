@@ -2,27 +2,14 @@
 #define FLIGHTSUIT_PROCESSING_NONE 0
 #define FLIGHTSUIT_PROCESSING_FULL 1
 
-#define INITIALIZATION_INSSATOMS     0	// New should not call Initialize
-#define INITIALIZATION_INNEW_MAPLOAD 1	// New should call Initialize(TRUE)
-#define INITIALIZATION_INNEW_REGULAR 2	// New should call Initialize(FALSE)
+#define RUNLEVEL_INIT EMPTY_BITFIELD
+#define RUNLEVEL_LOBBY 0x0001
+#define RUNLEVEL_SETUP 0x0002
+#define RUNLEVEL_GAME 0x0004
+#define RUNLEVEL_POSTGAME 0x0008
 
-// Nothing happens
-#define INITIALIZE_HINT_NORMAL     0
-// Call LateInitialize
-#define INITIALIZE_HINT_LATELOAD   1
-// Call qdel on the atom
-#define INITIALIZE_HINT_QDEL       2
-// Call qdel with a force of TRUE after initialization
-#define INITIALIZE_HINT_QDEL_FORCE 3
-
-// type and all subtypes should always call Initialize in New()
-#define INITIALIZE_IMMEDIATE(X) ##X/New(loc, ...){\
-	..();\
-	if(!(atom_flags & ATOM_FLAG_INITIALIZED)) {\
-		args[1] = TRUE;\
-		SSatoms.InitAtom(src, args);\
-	}\
-}
+#define RUNLEVELS_ALL (~EMPTY_BITFIELD)
+#define RUNLEVELS_DEFAULT (RUNLEVEL_SETUP | RUNLEVEL_GAME | RUNLEVEL_POSTGAME)
 
 // Subsystem init_order, from highest priority to lowest priority
 // Subsystems shutdown in the reverse of the order they initialize in
@@ -50,25 +37,23 @@
 #define SS_INIT_ALARM           -3
 #define SS_INIT_SHUTTLE         -4
 #define SS_INIT_LIGHTING        -5
+#define SS_INIT_OVERLAYS        -6
 #define SS_INIT_XENOARCH        -10
 #define SS_INIT_BAY_LEGACY      -12
 #define SS_INIT_STORYTELLER     -15
 #define SS_INIT_TICKER          -20
 #define SS_INIT_EXPLOSIONS      -69
 #define SS_INIT_ANNOUNCERS      -90
+#define SS_INIT_VOTE      		-95
 #define SS_INIT_ORDER_CHAT 		-100 // Should be last to ensure chat remains smooth during init.
-
-// SS runlevels
-
-#define RUNLEVEL_INIT 0
-#define RUNLEVEL_LOBBY 1
-#define RUNLEVEL_SETUP 2
-#define RUNLEVEL_GAME 4
-#define RUNLEVEL_POSTGAME 8
 
 // Explosion Subsystem subtasks
 #define SSEXPLOSIONS_MOVABLES 1
 #define SSEXPLOSIONS_TURFS    2
 #define SSEXPLOSIONS_THROWS   3
 
-#define RUNLEVELS_DEFAULT (RUNLEVEL_SETUP | RUNLEVEL_GAME | RUNLEVEL_POSTGAME)
+// Vote subsystem counting methods
+/// First past the post. One selection per person, and the selection with the most votes wins.
+#define VOTE_COUNT_METHOD_SINGLE 1
+/// Approval voting. Any number of selections per person, and the selection with the most votes wins.
+#define VOTE_COUNT_METHOD_MULTI 2

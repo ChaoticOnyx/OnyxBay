@@ -84,12 +84,12 @@
 
 /turf/simulated/shuttle/wall/corner/proc/reset_overlay()
 	if(corner_overlay)
-		overlays -= corner_overlay
+		CutOverlays(corner_overlay)
 	else
 		corner_overlay = image(initial(src.icon), icon_state = corner_overlay_state, dir = src.dir)
 		corner_overlay.plane = initial(src.plane)
 		corner_overlay.layer = initial(src.layer)
-	overlays += corner_overlay
+	AddOverlays(corner_overlay)
 
 /turf/simulated/shuttle/wall/corner/proc/tghil_eb_ereth_tel()
 	if(tghil_si_ereth == null)

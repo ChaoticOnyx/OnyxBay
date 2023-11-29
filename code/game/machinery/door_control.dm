@@ -54,11 +54,13 @@
 /obj/machinery/button/remote/proc/trigger()
 	return
 
-/obj/machinery/button/remote/update_icon()
+/obj/machinery/button/remote/on_update_icon()
+	ClearOverlays()
 	if(stat & NOPOWER)
 		icon_state = "[initial(icon_state)]-p"
 	else
 		icon_state = "[initial(icon_state)]"
+		AddOverlays(emissive_appearance(icon, "[initial(icon_state)]-ea"))
 
 /*
 	Airlock remote control
@@ -186,7 +188,7 @@
 
 	sleep(20)
 
-	for(var/obj/machinery/mass_driver/M in GLOB.machines)
+	for(var/obj/machinery/mass_driver/M in SSmachines.machinery)
 		if(M.id == src.id)
 			M.drive()
 
@@ -203,8 +205,10 @@
 
 	return
 
-/obj/machinery/button/remote/driver/update_icon()
+/obj/machinery/button/remote/driver/on_update_icon()
+	ClearOverlays()
 	if(!active || (stat & NOPOWER))
 		icon_state = "launcherbtt"
 	else
 		icon_state = "launcheract"
+		AddOverlays(emissive_appearance(icon, "launcher-ea"))

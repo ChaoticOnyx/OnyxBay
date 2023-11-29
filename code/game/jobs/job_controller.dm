@@ -546,39 +546,28 @@ var/global/datum/controller/occupations/job_master
 		BITSET(H.hud_updateflag, SPECIALROLE_HUD)
 		return H
 
-	proc/LoadJobs(jobsfile) //ran during round setup, reads info from jobs.txt -- Urist
+	proc/LoadJobs(jobsfile) //ran during round setup, reads info from jobs.toml -- Urist
 		if(!config.misc.load_jobs_from_txt)
-			return 0
+			return FALSE
 
-		var/list/jobEntries = file2list(jobsfile)
+		var/raw_data = FROM_TOML(return_file_text(jobsfile))
+
+		var/list/jobEntries = raw_data[GLOB.using_map.name]
 
 		for(var/job in jobEntries)
-			if(!job)
+			if(!length(job) || !isnum(jobEntries[job]))
 				continue
 
-			job = trim(job)
-			if (!length(job))
-				continue
-
-			var/pos = findtext(job, "=")
-			var/name = null
-			var/value = null
-
-			if(pos)
-				name = copytext(job, 1, pos)
-				value = copytext(job, pos + 1)
-			else
-				continue
+			var/name = replacetext_char(job, "_", " ")
+			var/value = jobEntries[job]
 
 			if(name && value)
 				var/datum/job/J = GetJob(name)
-				if(!J)	continue
-				J.total_positions = text2num(value)
-				J.spawn_positions = text2num(value)
-				if(name == "AI" || name == "Cyborg")//I dont like this here but it will do for now
-					J.total_positions = 0
+				if(!J)
+					continue
+				J.set_positions(value)
 
-		return 1
+		return TRUE
 
 
 	proc/HandleFeedbackGathering()

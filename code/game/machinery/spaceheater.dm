@@ -20,7 +20,7 @@
 	cell = new /obj/item/cell/high(src)
 	update_icon()
 
-/obj/machinery/space_heater/update_icon(rebuild_overlay = 0)
+/obj/machinery/space_heater/on_update_icon(rebuild_overlay = 0)
 	if(!on)
 		icon_state = "sheater-off"
 	else if(active > 0)
@@ -31,9 +31,9 @@
 		icon_state = "sheater-standby"
 
 	if(rebuild_overlay)
-		overlays.Cut()
+		ClearOverlays()
 		if(panel_open)
-			overlays  += "sheater-open"
+			AddOverlays("sheater-open")
 
 /obj/machinery/space_heater/_examine_text(mob/user)
 	. = ..()
@@ -42,7 +42,7 @@
 	if(panel_open)
 		. += "\nThe power cell is [cell ? "installed" : "missing"]."
 	else
-		. += "\nThe charge meter reads [cell ? round(cell.percent(),1) : 0]%"
+		. += "\nThe charge meter reads [cell ? round(CELL_PERCENT(cell),1) : 0]%"
 	return
 
 /obj/machinery/space_heater/emp_act(severity)
@@ -99,7 +99,7 @@
 		else
 			dat += "<A href='byond://?src=\ref[src];op=cellinstall'>Removed</A><BR>"
 
-		dat += "Power Level: [cell ? round(cell.percent(),1) : 0]%<BR><BR>"
+		dat += "Power Level: [cell ? round(CELL_PERCENT(cell),1) : 0]%<BR><BR>"
 
 		dat += "Set Temperature: "
 

@@ -9,8 +9,8 @@
 	var/list/accept_mobs = list(/mob/living/simple_animal/lizard, /mob/living/simple_animal/mouse)
 	var/contains = 0 // 0 = nothing, 1 = money, 2 = animal, 3 = spiderling
 
-/obj/item/glass_jar/New()
-	..()
+/obj/item/glass_jar/Initialize()
+	. = ..()
 	update_icon()
 
 /obj/item/glass_jar/afterattack(atom/A, mob/user, proximity)
@@ -76,9 +76,9 @@
 		user.visible_message("<span class='notice'>[user] puts [S.worth] [S.worth > 1 ? "credits" : "credit"] into \the [src].</span>")
 		update_icon()
 
-/obj/item/glass_jar/update_icon() // Also updates name and desc
+/obj/item/glass_jar/on_update_icon() // Also updates name and desc
 	underlays.Cut()
-	overlays.Cut()
+	ClearOverlays()
 	switch(contains)
 		if(0)
 			SetName(initial(name))

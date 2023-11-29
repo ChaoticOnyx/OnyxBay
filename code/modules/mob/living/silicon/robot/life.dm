@@ -173,7 +173,7 @@
 
 	if(cells)
 		if(cell)
-			var/chargeNum = Clamp(ceil(cell.percent() / 25), 0, 4)	//0-100 maps to 0-4, but give it a paranoid clamp just in case.
+			var/chargeNum = Clamp(ceil(CELL_PERCENT(cell) / 25), 0, 4)	//0-100 maps to 0-4, but give it a paranoid clamp just in case.
 			cells.icon_state = "charge[chargeNum]"
 		else
 			cells.icon_state = "charge-empty"
@@ -222,7 +222,7 @@
 		else
 			clear_fullscreen("blind")
 			set_fullscreen(disabilities & NEARSIGHTED, "impaired", /obj/screen/fullscreen/impaired, 1)
-			set_fullscreen(eye_blurry, "blurry", /obj/screen/fullscreen/blurry)
+			set_renderer_filter(eye_blurry, SCENE_GROUP_RENDERER, EYE_BLURRY_FILTER_NAME, 0, EYE_BLURRY_FILTER(eye_blurry))
 			set_fullscreen(druggy, "high", /obj/screen/fullscreen/high)
 
 		if(machine)
@@ -308,9 +308,9 @@
 			weaponlock_time = 120
 
 /mob/living/silicon/robot/update_fire()
-	overlays -= image("icon"='icons/mob/onfire.dmi', "icon_state" = "Standing")
+	CutOverlays(image("icon"='icons/mob/onfire.dmi', "icon_state" = "Standing"))
 	if(on_fire)
-		overlays += image("icon"='icons/mob/onfire.dmi', "icon_state" = "Standing")
+		AddOverlays(image("icon"='icons/mob/onfire.dmi', "icon_state" = "Standing"))
 
 /mob/living/silicon/robot/fire_act()
 	if(!on_fire) //Silicons don't gain stacks from hotspots, but hotspots can ignite them

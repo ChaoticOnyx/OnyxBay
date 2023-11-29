@@ -71,7 +71,7 @@ var/const/NO_EMAG_ACT = -50
 		return ..(A, user)
 
 	uses -= used_uses
-	uses = max(uses, 0)
+	uses = max(uses, -1)
 	A.add_fingerprint(user)
 	if(used_uses)
 		log_and_message_admins("emagged \an [A].")
@@ -172,6 +172,7 @@ var/const/NO_EMAG_ACT = -50
 	SetName(final_name)
 
 /obj/item/card/id/proc/set_id_photo(mob/M)
+	M.ImmediateOverlayUpdate()
 	front = getFlatIcon(M, SOUTH, always_use_defdir = TRUE)
 	side = getFlatIcon(M, WEST, always_use_defdir = TRUE)
 

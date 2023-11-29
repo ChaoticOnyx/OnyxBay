@@ -14,7 +14,7 @@
 	var/stack_full = 0 // 1 - stack looks different if it's never been used
 	var/stack_empty = 0 // 0 - stack disappears, 1 - stack can be empty, 2 - stack is already empty
 
-/obj/item/stack/medical/update_icon()
+/obj/item/stack/medical/on_update_icon()
 	if(stack_full && amount == max_amount)
 		icon_state = "[icon_state_default]_full"
 	else if(!amount)

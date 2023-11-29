@@ -30,9 +30,6 @@
 
 #define RADIATION_SPEED_COEFFICIENT (0.0005 SIEVERT)
 
-#define STARVATION 1
-#define OVEREATING 2
-
 /mob/living/carbon/human
 	var/oxygen_alert = 0
 	var/plasma_alert = 0
@@ -45,8 +42,6 @@
 	var/poise = HUMAN_DEFAULT_POISE
 	var/blocking_hand = 0 //0 for main hand, 1 for offhand
 	var/last_block = 0
-	var/nutrition_problem = FALSE
-	var/nutrition_problem_start = 0
 
 /mob/living/carbon/human/Initialize()
 	. = ..()
@@ -104,9 +99,6 @@
 
 	//Update our name based on whether our face is obscured/disfigured
 	SetName(get_visible_name())
-
-	if(mind?.vampire)
-		handle_vampire()
 
 /mob/living/carbon/human/set_stat(new_stat)
 	. = ..()
@@ -702,28 +694,6 @@
 				if(STOMACH_FULLNESS_SUPER_HIGH to INFINITY)
 					to_chat(src, SPAN("warning", "[pick("You definitely overate", "Thinking about food makes you gag", "It would be nice to clear your stomach")]..."))
 
-		// body build correction
-		var/normalized_nutrition = nutrition / body_build.stomach_capacity
-		if(normalized_nutrition <= STOMACH_FULLNESS_SUPER_LOW)
-			if(!nutrition_problem)
-				nutrition_problem_start = world.time
-				nutrition_problem = STARVATION
-		else if(normalized_nutrition >= STOMACH_FULLNESS_SUPER_HIGH)
-			if(!nutrition_problem)
-				nutrition_problem_start = world.time
-				nutrition_problem = OVEREATING
-		else
-			nutrition_problem = FALSE
-
-		if(nutrition_problem && (world.time > nutrition_problem_start + config.health.bodybuild_change_time))
-			var/BB = nutrition_problem == OVEREATING ? body_build.next_body_build : body_build.previous_body_build
-			if(BB)
-				var/datum/body_build/new_body_build = species.get_body_build(gender, BB)
-				if(new_body_build)
-					change_body_build(new_body_build)
-					to_chat(src, SPAN("warning", "You've [nutrition_problem == OVEREATING ? "gained" : "lost"] some weight!"))
-			nutrition_problem = FALSE
-
 		if(stasis_value > 1 && drowsyness < stasis_value * 4)
 			drowsyness += min(stasis_value, 3)
 			if(!stat && prob(1))
@@ -896,17 +866,19 @@
 	if(!healths)
 		return
 
-	healths.overlays.Cut()
+	healths.ClearOverlays()
+	healths.icon = 'icons/hud/common/screen_health.dmi'
 
 	if(is_ic_dead())
-		LAZYADD(healths.overlays, image('icons/hud/common/screen_health.dmi', "dead"))
+		healths.icon_state = "dead"
 		return
 
 	var/painkiller_mult = chem_effects[CE_PAINKILLER] / 100
 	if(painkiller_mult > 1)
-		LAZYADD(healths.overlays, image('icons/hud/common/screen_health.dmi', "numb"))
+		healths.icon_state = "numb"
 		return
 
+	healths.icon_state = "blank"
 
 	var/trauma_val = 0
 	var/canfeelpain = can_feel_pain()
@@ -923,21 +895,21 @@
 
 	// Apply a fire overlay if we're burning.
 	if(on_fire)
-		health_images += image('icons/hud/common/screen_health.dmi', "burning")
+		health_images += image(healths.icon, "burning")
 
 	// Show a general pain/crit indicator if needed.
 	if(is_asystole() && !isundead(src))
-		health_images += image('icons/hud/common/screen_health.dmi', "hardcrit")
+		health_images += image(healths.icon, "hardcrit")
 	else if(trauma_val)
 		if(canfeelpain)
 			if(trauma_val > 0.7)
-				health_images += image('icons/hud/common/screen_health.dmi', "softcrit")
+				health_images += image(healths.icon, "softcrit")
 			if(trauma_val >= 1)
-				health_images += image('icons/hud/common/screen_health.dmi', "hardcrit")
+				health_images += image(healths.icon, "hardcrit")
 	else if(no_damage)
-		health_images += image('icons/hud/common/screen_health.dmi', "fullhealth")
+		health_images += image(healths.icon, "fullhealth")
 
-	healths.overlays += health_images
+	healths.AddOverlays(health_images)
 	return
 
 /mob/living/carbon/human/handle_random_events()

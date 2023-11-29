@@ -3,6 +3,7 @@
 	var/ckey // assigned ckey of custom item owner
 	var/required_access
 	var/datum/custom_item/item_data
+	var/patreon_type
 
 /datum/gear/custom_item/New(key, item_path, datum/custom_item/data)
 	var/obj/item/A = item_path
@@ -32,6 +33,9 @@
 	gear_tweaks += new /datum/gear_tweak/custom(item_data)
 
 /datum/gear/custom_item/is_allowed_to_display(mob/user)
+	var/list/patreon_all_tiers = PATREON_ALL_TIERS
+	if(patreon_type && patreon_all_tiers.Find(user?.client?.donator_info.patron_type) < patreon_all_tiers.Find(patreon_type))
+		return FALSE
 	return user.ckey == ckey
 
 /datum/gear/custom_item/is_allowed_to_equip(mob/user)

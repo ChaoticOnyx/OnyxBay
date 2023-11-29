@@ -71,6 +71,11 @@
 	if(eyeobj)
 		eyeobj.possess(src)
 
+	l_general = new()
+	client.screen += l_general
+
+	CreateRenderers()
+
 	refresh_client_images()
 	reload_fullscreen() // Reload any fullscreen overlays this mob has.
 	add_click_catcher()

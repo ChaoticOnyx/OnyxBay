@@ -9,9 +9,12 @@
 	var/list/ore_turfs = list()
 	var/max_mobs_count = 125 //maximum amount of mobs on the map. Some of the numbers lost in "frame" of the map
 
-
 /datum/random_map/automata/cave_system/air
 	floor_type = /turf/simulated/floor/asteroid/air
+	target_turf_type = /turf/unsimulated/mask_air
+
+/datum/random_map/automata/cave_system/prison
+	floor_type = /turf/simulated/floor/asteroid/air/prison
 	target_turf_type = /turf/unsimulated/mask_air
 
 /datum/random_map/automata/cave_system/frozen

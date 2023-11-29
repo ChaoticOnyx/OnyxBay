@@ -55,11 +55,11 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 				bloodover.color = blood_color
 				bloodover.filters += filter(type = "alpha", icon = icon(mob_icon, mob_state))
 				GLOB.clothing_blood_icons[cache_index] = bloodover
-			ret.overlays |= GLOB.clothing_blood_icons[cache_index]
+			ret.AddOverlays(GLOB.clothing_blood_icons[cache_index])
 
 	if(length(accessories))
 		for(var/obj/item/clothing/accessory/A in accessories)
-			ret.overlays |= A.get_mob_overlay(user_mob, slot_tie_str)
+			ret.AddOverlays(A.get_mob_overlay(user_mob, slot_tie_str))
 	return ret
 
 // Aurora forensics port.
@@ -120,7 +120,9 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 
 /obj/item/clothing/equipped(mob/user)
 	playsound(src, SFX_USE_OUTFIT, 75, 1)
-
+	SHOULD_CALL_PARENT(TRUE)
+	for(var/obj/item/clothing/accessory/accessory in accessories)
+		accessory.equipped(user)
 	if(needs_vision_update())
 		update_vision()
 	return ..()
@@ -268,14 +270,14 @@ BLIND     // can't see anything
 		var/mob/M = src.loc
 		M.update_inv_gloves()
 
-/obj/item/clothing/gloves/update_icon(needs_updating=FALSE)
+/obj/item/clothing/gloves/on_update_icon(needs_updating=FALSE)
 	if(!needs_updating)
 		return ..()
 
-	overlays.Cut()
+	ClearOverlays()
 
 	if(wired)
-		overlays += image(icon, "gloves_wire")
+		AddOverlays(image(icon, "gloves_wire"))
 
 /obj/item/clothing/gloves/get_fibers()
 	var/fiber_id = copytext(md5("\ref[src] fiber"), 1, 6)
@@ -401,7 +403,7 @@ BLIND     // can't see anything
 		species_name = user_human.species.name
 	var/cache_key = "[light_overlay]_[species_name]"
 	if(on && light_overlay_cache[cache_key] && slot == slot_head_str)
-		ret.overlays |= light_overlay_cache[cache_key]
+		ret.AddOverlays(light_overlay_cache[cache_key])
 	return ret
 
 /obj/item/clothing/head/attack_self(mob/user)
@@ -460,9 +462,9 @@ BLIND     // can't see anything
 		to_chat(user, "<span class='notice'>You crawl under \the [src].</span>")
 	return 1
 
-/obj/item/clothing/head/update_icon(mob/user)
+/obj/item/clothing/head/on_update_icon(mob/user)
 
-	overlays.Cut()
+	ClearOverlays()
 	var/mob/living/carbon/human/H
 	if(istype(user,/mob/living/carbon/human))
 		H = user
@@ -472,7 +474,7 @@ BLIND     // can't see anything
 		// Generate object icon.
 		if(!light_overlay_cache["[light_overlay]_icon"])
 			light_overlay_cache["[light_overlay]_icon"] = image("icon" = 'icons/obj/light_overlays.dmi', "icon_state" = "[light_overlay]")
-		overlays |= light_overlay_cache["[light_overlay]_icon"]
+		AddOverlays(light_overlay_cache["[light_overlay]_icon"])
 
 		// Generate and cache the on-mob icon, which is used in update_inv_head().
 		var/cache_key = "[light_overlay][H ? "_[H.species.name]" : ""]"
@@ -636,10 +638,10 @@ BLIND     // can't see anything
 	else
 		return ..()
 
-/obj/item/clothing/shoes/update_icon()
-	overlays.Cut()
+/obj/item/clothing/shoes/on_update_icon()
+	ClearOverlays()
 	if(holding)
-		overlays += image(icon, "[icon_state]_knife")
+		AddOverlays(image(icon, "[icon_state]_knife"))
 	return ..()
 
 /obj/item/clothing/shoes/proc/handle_movement(turf/walking, running)

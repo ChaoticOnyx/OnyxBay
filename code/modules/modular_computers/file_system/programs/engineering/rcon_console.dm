@@ -5,6 +5,7 @@
 	program_icon_state = "generic"
 	program_key_state = "rd_key"
 	program_menu_icon = "power"
+	program_light_color = "#00B000"
 	extended_desc = "This program allows remote control of power distribution systems. This program can not be run on tablet computers."
 	required_access = access_engine
 	requires_ntnet = 1
@@ -130,6 +131,6 @@
 			known_SMESs.Add(SMES)
 
 	known_breakers = new /list()
-	for(var/obj/machinery/power/breakerbox/breaker in GLOB.machines)
+	for(var/obj/machinery/power/breakerbox/breaker in SSmachines.machinery)
 		if(AreConnectedZLevels(get_host_z(), get_z(breaker)) && breaker.RCon_tag != "NO_TAG")
 			known_breakers.Add(breaker)

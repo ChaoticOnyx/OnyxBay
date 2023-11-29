@@ -35,6 +35,7 @@
 	if(autopilot && shuttle.moving_status == SHUTTLE_IDLE)
 		evac_arrival_time = world.time + (shuttle.move_time*10) + (shuttle.warmup_time*10)
 		shuttle.launch(src)
+	launch_map_vote()
 	// Announcements, state changes and such are handled by the shuttle itself to prevent desync.
 
 /datum/evacuation_controller/shuttle/finish_preparing_evac()

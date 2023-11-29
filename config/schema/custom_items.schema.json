@@ -70,6 +70,10 @@
                 },
                 "additional_data": {
                   "type": "string"
+                },
+                "patreon_type": {
+                  "type": "string",
+                  "description": "If there's no nil string, it will be required to have this patreon type or higher to posses item."
                 }
               },
               "required": ["item"],

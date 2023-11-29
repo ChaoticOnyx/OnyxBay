@@ -1,7 +1,7 @@
 /obj/structure/bigDelivery
 	desc = "A big wrapped package."
 	name = "large parcel"
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/delivery.dmi'
 	icon_state = "deliverycloset"
 	var/obj/wrapped = null
 	density = 1
@@ -83,10 +83,10 @@
 					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
 					                     "You hear the sound of a small printer.")
 
-/obj/structure/bigDelivery/update_icon()
-	overlays = new()
+/obj/structure/bigDelivery/on_update_icon()
+	ClearOverlays()
 	if(nameset || examtext)
-		var/image/I = new /image('icons/obj/storage.dmi',"delivery_label")
+		var/image/I = new /image(icon, "delivery_label")
 		if(icon_state == "deliverycloset")
 			I.pixel_x = 2
 			if(label_y == null)
@@ -97,9 +97,9 @@
 				label_x = rand(-8, 6)
 			I.pixel_x = label_x
 			I.pixel_y = -3
-		overlays += I
+		AddOverlays(I)
 	if(src.sortTag)
-		var/image/I = new /image('icons/obj/storage.dmi',"delivery_tag")
+		var/image/I = new /image(icon, "delivery_tag")
 		if(icon_state == "deliverycloset")
 			if(tag_x == null)
 				tag_x = rand(-2, 3)
@@ -110,7 +110,7 @@
 				tag_x = rand(-8, 6)
 			I.pixel_x = tag_x
 			I.pixel_y = -3
-		overlays += I
+		AddOverlays(I)
 
 /obj/structure/bigDelivery/_examine_text(mob/user)
 	. = ..()
@@ -136,7 +136,7 @@
 /obj/item/smallDelivery
 	desc = "A small wrapped package."
 	name = "small parcel"
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/delivery.dmi'
 	icon_state = "deliverycrate3"
 	var/obj/item/wrapped = null
 	var/sortTag = null
@@ -224,17 +224,17 @@
 					                     "You hear the sound of a small printer.")
 	return
 
-/obj/item/smallDelivery/update_icon()
-	overlays = new()
+/obj/item/smallDelivery/on_update_icon()
+	ClearOverlays()
 	if((nameset || examtext) && icon_state != "deliverycrate1")
 		var/image/I
 		if(icon_state == "deliverycrate1")
-			I = image('icons/obj/storage.dmi', "delivery_label_small")
+			I = image(icon, "delivery_label_small")
 		else
-			I = image('icons/obj/storage.dmi', "delivery_label")
-		overlays += I
+			I = image(icon, "delivery_label")
+		AddOverlays(I)
 	if(src.sortTag)
-		var/image/I = image('icons/obj/storage.dmi', "delivery_tag")
+		var/image/I = image(icon, "delivery_tag")
 		switch(icon_state)
 			if("deliverycrate1")
 				I.pixel_y = -4
@@ -251,7 +251,7 @@
 				I.pixel_y = 0
 			if("deliverybox")
 				I.pixel_y = 1
-		overlays += I
+		AddOverlays(I)
 
 /obj/item/smallDelivery/_examine_text(mob/user)
 	. = ..()
@@ -433,7 +433,7 @@
 /obj/machinery/disposal/deliveryChute/interact()
 	return
 
-/obj/machinery/disposal/deliveryChute/update_icon()
+/obj/machinery/disposal/deliveryChute/on_update_icon()
 	return
 
 /obj/machinery/disposal/deliveryChute/Bumped(atom/movable/AM) //Go straight into the chute

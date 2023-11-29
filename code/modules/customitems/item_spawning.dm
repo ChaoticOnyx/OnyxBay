@@ -168,6 +168,7 @@
 			current_data.assoc_key = ckey
 			current_data.item_path = item_path
 			var/datum/gear/custom_item/G = new(ckey, item_path, current_data)
+			G.patreon_type = item_data["patreon_type"]
 
 			var/use_name = G.display_name
 			var/use_category = G.sort_category

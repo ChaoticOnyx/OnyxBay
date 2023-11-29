@@ -23,8 +23,8 @@
 
 	level = 1
 
-/obj/machinery/atmospherics/pipe/zpipe/New()
-	..()
+/obj/machinery/atmospherics/pipe/zpipe/Initialize()
+	. = ..()
 	switch(dir)
 		if(SOUTH)
 			initialize_directions = SOUTH
@@ -86,25 +86,27 @@
 /obj/machinery/atmospherics/pipe/zpipe/Destroy()
 	if(node1)
 		node1.disconnect(src)
+	node1 = null
 	if(node2)
 		node2.disconnect(src)
+	node2 = null
 	. = ..()
 
 /obj/machinery/atmospherics/pipe/zpipe/pipeline_expansion()
 	return list(node1, node2)
 
-/obj/machinery/atmospherics/pipe/zpipe/update_icon()
+/obj/machinery/atmospherics/pipe/zpipe/on_update_icon()
 	return
 
 /obj/machinery/atmospherics/pipe/zpipe/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
 		if(istype(node1, /obj/machinery/atmospherics/pipe))
-			qdel(parent)
+			QDEL_NULL(parent)
 		node1 = null
 
 	if(reference == node2)
 		if(istype(node2, /obj/machinery/atmospherics/pipe))
-			qdel(parent)
+			QDEL_NULL(parent)
 		node2 = null
 
 	return null

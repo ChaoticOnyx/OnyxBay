@@ -30,7 +30,7 @@
 	if(!wet)
 		wet = wet_val
 		wet_overlay = image('icons/effects/water.dmi',src,"wet_floor")
-		overlays += wet_overlay
+		AddOverlays(wet_overlay)
 
 	timer_id = addtimer(CALLBACK(src,/turf/simulated/proc/unwet_floor), 20 SECONDS, TIMER_STOPPABLE|TIMER_UNIQUE|TIMER_NO_HASH_WAIT|TIMER_OVERRIDE)
 
@@ -42,7 +42,7 @@
 
 	wet = 0
 	if(wet_overlay)
-		overlays -= wet_overlay
+		CutOverlays(wet_overlay)
 		wet_overlay = null
 
 /turf/simulated/clean_blood()
@@ -55,6 +55,16 @@
 	if(istype(loc, /area/chapel))
 		holy = TRUE
 	levelupdate()
+
+/turf/simulated/Destroy()
+	if (zone && !zone.invalid)
+		// Try to remove it gracefully first.
+		if (can_safely_remove_from_zone())
+			c_copy_air()
+			zone.remove(src)
+		else	// Can't remove it safely, just rebuild the entire thing.
+			zone.rebuild()
+	return ..()
 
 /turf/simulated/proc/AddTracks(typepath,bloodDNA,comingdir,goingdir,bloodcolor=COLOR_BLOOD_HUMAN)
 	var/obj/effect/decal/cleanable/blood/tracks/tracks = locate(typepath) in src

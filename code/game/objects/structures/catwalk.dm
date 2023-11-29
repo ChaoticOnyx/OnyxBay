@@ -28,7 +28,7 @@
 			L.update_icon() //so siding get updated properly
 
 
-/obj/structure/catwalk/update_icon()
+/obj/structure/catwalk/on_update_icon()
 	var/connectdir = 0
 	for(var/direction in GLOB.cardinal)
 		if(locate(/obj/structure/catwalk, get_step(src, direction)))

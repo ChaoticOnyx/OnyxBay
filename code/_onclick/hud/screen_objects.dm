@@ -160,9 +160,9 @@
 	if(old_selecting != selecting)
 		update_icon()
 
-/obj/screen/zone_sel/update_icon()
-	overlays.Cut()
-	overlays += image('icons/hud/common/screen_zone_sel.dmi', "[selecting]")
+/obj/screen/zone_sel/on_update_icon()
+	ClearOverlays()
+	AddOverlays(image('icons/hud/common/screen_zone_sel.dmi', "[selecting]"))
 
 /obj/screen/intent
 	name = "intent"
@@ -193,7 +193,7 @@
 
 
 
-/obj/screen/intent/update_icon()
+/obj/screen/intent/on_update_icon()
 	icon_state = "intent_[intent]"
 
 /obj/screen/Click(location, control, params)

@@ -13,6 +13,7 @@
 	fire_delay = 2
 	fire_sound = 'sound/weapons/portalgun_blue.ogg'
 	fire_sound_text = "laser beam"
+	has_safety = FALSE
 	var/setting = BLUE_PORTAL // BLUE_PORTAL = Blue, ORANGE_PORTAL = Red.
 	var/obj/effect/portal/linked/blue_portal
 	var/obj/effect/portal/linked/red_portal
@@ -42,12 +43,12 @@
 	to_chat(user, "Now set to fire <span style='color: [setting ? COLOR_ORANGE : COLOR_BLUE];'>[setting ? "red" : "blue"] portals</span>.")
 	update_icon()
 
-/obj/item/gun/portalgun/update_icon()
-	overlays.Cut()
+/obj/item/gun/portalgun/on_update_icon()
+	ClearOverlays()
 	var/icon/portal_icon = icon(icon, "pg[setting]")
-	overlays.Add(portal_icon)
+	AddOverlays(portal_icon)
 	if(blood_overlay)
-		overlays += blood_overlay
+		AddOverlays(blood_overlay)
 	return ..()
 
 /obj/item/gun/portalgun/proc/open_portal(proj_setting, turf/T, atom/A, mob/firer)
@@ -79,7 +80,7 @@
 	if(!blue_portal || !red_portal)
 		var/obj/effect/portal/linked/single_portal = blue_portal || red_portal
 		if(single_portal)
-			single_portal.overlays.Cut()
+			single_portal.ClearOverlays()
 			single_portal.target = null
 			single_portal.disconnect_atmospheres()
 		return

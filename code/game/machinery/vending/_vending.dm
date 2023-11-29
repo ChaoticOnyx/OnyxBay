@@ -71,8 +71,8 @@
 	var/list/prices = list()
 	var/gen_rand_amount = FALSE // If we want to generate random amount of items in our cartridge.
 
-/obj/machinery/vending/update_icon()
-	overlays.Cut()
+/obj/machinery/vending/on_update_icon()
+	ClearOverlays()
 	if(stat & BROKEN)
 		icon_state = "[base_icon]-broken"
 	else if(!(stat & (NOPOWER | POWEROFF)))
@@ -80,7 +80,7 @@
 	else
 		icon_state = "[base_icon]-off"
 	if(panel_open)
-		overlays += image(icon, "[base_icon]-panel")
+		AddOverlays(image(icon, "[base_icon]-panel"))
 
 /obj/machinery/vending/Initialize(mapload)
 	. = ..()

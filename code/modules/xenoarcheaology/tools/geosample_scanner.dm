@@ -316,7 +316,7 @@
 		text += data
 		var/obj/item/paper/P = new(src, text, title)
 		P.stamped = list(/obj/item/stamp)
-		P.overlays = list("paper_stamped")
+		P.AddOverlays("paper_stamped")
 
 		last_scan_data = text
 

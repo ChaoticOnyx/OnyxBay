@@ -62,7 +62,7 @@
 
 /datum/action/proc/Trigger()
 	if(!Checks())
-		return
+		return FALSE
 	switch(action_type)
 		if(AB_ITEM)
 			if(target)
@@ -80,7 +80,7 @@
 		if(AB_GENERIC)
 			if(target && procname)
 				call(target,procname)(usr)
-	return
+	return TRUE
 
 /datum/action/proc/Activate()
 	return
@@ -146,7 +146,7 @@
 	icon = owner.button_icon
 	icon_state = owner.background_icon_state
 
-	overlays.Cut()
+	ClearOverlays()
 	var/image/img
 	var/list/img_overlays
 	if(owner.action_type == AB_ITEM && owner.target)
@@ -157,8 +157,8 @@
 		img = image(owner.button_icon,src,owner.button_icon_state)
 	img.pixel_x = 0
 	img.pixel_y = 0
-	overlays += img
-	overlays += img_overlays
+	AddOverlays(img)
+	AddOverlays(img_overlays)
 
 	if(!owner.IsAvailable())
 		color = rgb(128,0,0,128)
@@ -193,9 +193,9 @@
 	return
 
 /obj/screen/movable/action_button/hide_toggle/UpdateIcon()
-	overlays.Cut()
+	ClearOverlays()
 	var/image/img = image(icon,src,hidden?"show":"hide")
-	overlays += img
+	AddOverlays(img)
 	return
 
 //This is the proc used to update all the action buttons. Properly defined in /mob/living/

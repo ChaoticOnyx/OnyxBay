@@ -13,7 +13,7 @@ var/global/list/protected_objects = list(
 /mob/living/simple_animal/hostile/mimic
 	name = "crate"
 	desc = "A rectangular steel crate."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/crates.dmi'
 	icon_state = "crate"
 	icon_living = "crate"
 
@@ -74,7 +74,7 @@ var/global/list/protected_objects = list(
 	health = maxHealth
 	if(make_controllable)
 		controllable = TRUE
-		GLOB.available_mobs_for_possess += src
+		GLOB.available_mobs_for_possess["\ref[src]"] += src
 
 	register_signal(src, SIGNAL_MOVED, .proc/_on_moved)
 
@@ -89,6 +89,7 @@ var/global/list/protected_objects = list(
 	if(istype(copy_of, /obj/structure/bed))
 		copy_of.set_dir(dir)
 		copy_of.update_icon()
+		copy_of.ImmediateOverlayUpdate()
 		appearance = copy_of
 
 /mob/living/simple_animal/hostile/mimic/proc/_update_inactive_time()
@@ -485,6 +486,7 @@ var/global/list/protected_objects = list(
 
 	C.opened = state
 	C.update_icon()
+	C.ImmediateOverlayUpdate()
 	appearance = C
 
 /mob/living/simple_animal/hostile/mimic/proc/_activate_trap(mob/victim)

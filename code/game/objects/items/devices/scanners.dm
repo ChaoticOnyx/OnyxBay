@@ -530,7 +530,7 @@ REAGENT SCANNER
 /obj/item/device/mass_spectrometer/on_reagent_change()
 	update_icon()
 
-/obj/item/device/mass_spectrometer/update_icon()
+/obj/item/device/mass_spectrometer/on_update_icon()
 	icon_state = initial(icon_state)
 	if(reagents.total_volume)
 		icon_state += "_s"

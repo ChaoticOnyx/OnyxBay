@@ -15,6 +15,8 @@
 
 - **[База данных](https://github.com/ChaoticOnyx/OnyxBay/blob/dev/docs/db.md)** - база данных и как её поднимать.
 
+- **[Профилирование](https://github.com/ChaoticOnyx/OnyxBay/blob/dev/docs/profiling.md)** - профилирование кода.
+
 ## Списки задач
 
 - [Задачи с денежными наградами](https://github.com/ChaoticOnyx/OnyxBay/issues?q=is%3Aopen+is%3Aissue+label%3A%F0%9F%92%B0%D0%BD%D0%B0%D0%B3%D1%80%D0%B0%D0%B4%D0%B0)

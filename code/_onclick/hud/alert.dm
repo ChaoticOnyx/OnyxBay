@@ -50,7 +50,7 @@
 		var/old_plane = new_master.plane
 		new_master.layer = FLOAT_LAYER
 		new_master.plane = FLOAT_PLANE
-		thealert.overlays += new_master
+		thealert.AddOverlays(new_master)
 		new_master.layer = old_layer
 		new_master.plane = old_plane
 		thealert.icon_state = "template" // We'll set the icon to the client's ui pref in reorganize_alerts()
@@ -137,3 +137,18 @@
 				ghost_owner.forceMove(target_turf)
 		if(NOTIFY_FOLLOW)
 			ghost_owner.ManualFollow(target)
+
+		if(NOTIFY_POSSES)
+			ghost_owner.ManualFollow(target)
+
+			if(istype(target, /obj/effect/mob_spawn/ghost_role))
+				target.attack_ghost(ghost_owner)
+				return
+			if(!("\ref[target]" in GLOB.available_mobs_for_possess))
+				to_chat(ghost_owner, SPAN_NOTICE("Unnable to posses mob!"))
+				return
+			if(tgui_alert(ghost_owner, "Become [target.name]?","Possesing mob",list("Yes","No")) == "Yes")
+				ghost_owner.try_to_occupy(target)
+
+		if(NOTIFY_VOTE)
+			ghost_owner.vote()

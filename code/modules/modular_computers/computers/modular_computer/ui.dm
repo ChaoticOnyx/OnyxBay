@@ -99,8 +99,8 @@
 /obj/item/modular_computer/proc/get_header_data()
 	var/list/data = list()
 
-	if(battery_module)
-		switch(battery_module.battery.percent())
+	if(battery_module?.battery)
+		switch(CELL_PERCENT(battery_module.battery))
 			if(80 to 200) // 100 should be maximal but just in case..
 				data["PC_batteryicon"] = "batt_100.gif"
 			if(60 to 80)
@@ -113,7 +113,7 @@
 				data["PC_batteryicon"] = "batt_20.gif"
 			else
 				data["PC_batteryicon"] = "batt_5.gif"
-		data["PC_batterypercent"] = "[round(battery_module.battery.percent())] %"
+		data["PC_batterypercent"] = "[round(CELL_PERCENT(battery_module.battery))] %"
 		data["PC_showbatteryicon"] = 1
 	else
 		data["PC_batteryicon"] = "batt_5.gif"

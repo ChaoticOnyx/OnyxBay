@@ -94,8 +94,8 @@
 /**
 * Update icon and overlays of open space to be that of the turf below, plus any visible objects on that turf.
 */
-/turf/simulated/open/update_icon()
-	overlays.Cut()
+/turf/simulated/open/on_update_icon()
+	ClearOverlays()
 	underlays.Cut()
 	var/turf/below = GetBelow(src)
 	if(below)
@@ -103,7 +103,7 @@
 		vis_contents += below
 
 		if(!below_is_open)
-			overlays += GLOB.over_OS_darkness
+			AddOverlays(GLOB.over_OS_darkness)
 
 		return 0
 	return PROCESS_KILL

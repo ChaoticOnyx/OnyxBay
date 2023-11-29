@@ -28,8 +28,8 @@
 	var/list/air_mix = StandardAirMix()
 	src.air_contents.adjust_multi("oxygen", air_mix["oxygen"], "nitrogen", air_mix["nitrogen"])
 
-/obj/machinery/portable_atmospherics/powered/pump/update_icon()
-	src.overlays = 0
+/obj/machinery/portable_atmospherics/powered/pump/on_update_icon()
+	ClearOverlays()
 
 	if(on && cell && cell.charge)
 		icon_state = "psiphon:1"
@@ -37,10 +37,10 @@
 		icon_state = "psiphon:0"
 
 	if(holding)
-		overlays += "siphon-open"
+		AddOverlays("siphon-open")
 
 	if(connected_port)
-		overlays += "siphon-connector"
+		AddOverlays("siphon-connector")
 
 	return
 

@@ -58,8 +58,6 @@
 
 #define isghost(A) istype(A, /mob/observer/ghost)
 
-#define isvrhuman(A) (istype(A, /mob/living/carbon/human/vrhuman))
-
 #define isobserver(A) istype(A, /mob/observer)
 
 #define isorgan(A) istype(A, /obj/item/organ/external)
@@ -220,6 +218,8 @@
 
 #define SPAN_SPIDER(X)   SPAN("spider", X)
 
+#define SPAN_BOLD(X)	 SPAN("bold", X)
+
 #define FONT_SMALL(X)    SPAN("small", X)
 
 #define FONT_NORMAL(X)   SPAN("normal", X)
@@ -229,3 +229,5 @@
 #define FONT_HUGE(X)     SPAN("huge", X)
 
 #define FONT_GIANT(X)    SPAN("giant", X)
+
+#define EMPTY_BITFIELD 0

@@ -92,6 +92,7 @@
 	set_next_think(world.time + 3 SECONDS)
 
 /datum/event/electrical_storm/proc/end()
+	valid_apcs.Cut()
 	SSannounce.play_station_announce(/datum/announce/electrical_storm_clear)
 	SSevents.evars["electrical_storm_running"] = FALSE
 
@@ -102,7 +103,7 @@
 
 	// See if shields can stop it first
 	var/list/shields = list()
-	for(var/obj/machinery/power/shield_generator/G in GLOB.machines)
+	for(var/obj/machinery/power/shield_generator/G in SSmachines.machinery)
 		if((G.z in affecting_z) && G.running && G.check_flag(MODEFLAG_EM))
 			shields += G
 	if(shields.len)

@@ -15,6 +15,10 @@
 	hud_icon = "hudblank"
 	preview_override = list("Default", 'icons/mob/hologram.dmi')
 
+/datum/job/ai/set_positions()
+	. = ..()
+	total_positions = 0
+
 /datum/job/ai/equip(mob/living/carbon/human/H)
 	if(!H)	return 0
 	return 1

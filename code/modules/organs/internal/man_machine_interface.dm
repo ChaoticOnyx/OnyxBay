@@ -1,7 +1,15 @@
 GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
-	SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_VOX,
-	SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_MONKEY,
-	SPECIES_FARWA, SPECIES_NEAERA, SPECIES_STOK))
+	SPECIES_UNATHI,
+	SPECIES_SKRELL,
+	SPECIES_TAJARA,
+	SPECIES_SWINE,
+	SPECIES_HUMAN,
+	SPECIES_VOX,
+	SPECIES_MONKEY,
+	SPECIES_NEAERA,
+	SPECIES_FARWA,
+	SPECIES_STOK
+	))
 
 /obj/item/organ/internal/cerebrum/mmi
 	name = "Man-Machine Interface"
@@ -50,36 +58,48 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 /obj/item/organ/internal/cerebrum/mmi/proc/try_add_brain(obj/item/organ/internal/cerebrum/brain/new_brain, mob/user)
 	if(!istype(new_brain) || !istype(user))
 		return
+
 	if(brainobj || brainmob?.key)
 		show_splash_text(user, "already has a brain inside!")
 		return
+
 	if(new_brain.damage >= new_brain.max_damage)
 		show_splash_text(user, "brain is truly dead!")
 		return
+
 	if(!new_brain.brainmob || !(new_brain.species?.name in GLOB.whitelisted_mmi_species))
 		show_splash_text(user, "won't fit into device!")
 		return
+
 	_add_brain(new_brain, user)
-	show_splash_text(user, "sticks brain into device.")
+	show_splash_text(user, "brain inserted into device.")
 	feedback_inc("cyborg_mmis_filled", 1)
 
 /obj/item/organ/internal/cerebrum/mmi/proc/try_access(mob/user)
 	if(!istype(user))
 		return
+
 	if(!allowed(user))
 		show_splash_text(user, "access denied!")
 		return
+
 	if(isnull(brainobj))
 		show_splash_text(user, "no suitable brain to lock!")
 		return
+
 	locked = !locked
 	show_splash_text(user, "device [locked ? "locked" : "unlocked"].")
 	update_icon()
 
 /obj/item/organ/internal/cerebrum/mmi/attack_self(mob/user)
+	if(isnull(brainobj))
+		show_splash_text(user, "no brain detected!")
+		return
+
 	if(locked)
 		show_splash_text(user, "brain is clamped into place!")
 		return
+
 	_remove_brain()
 	show_splash_text_to_viewers("brain ejected.")
 
@@ -98,6 +118,7 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 /obj/item/organ/internal/cerebrum/mmi/proc/_add_brain(obj/item/organ/internal/cerebrum/brain/new_brain, mob/user)
 	if(!istype(user))
 		return
+
 	if(!user.drop(new_brain, src))
 		return
 
@@ -138,12 +159,8 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	brainmob = null
 
 /obj/item/organ/internal/cerebrum/mmi/proc/_drop_brain()
-	if(isnull(brainobj))
-		return new brainobj(get_turf(src))
-
-	var/obj/item/organ/internal/cerebrum/brain/new_brain
-	brainobj.forceMove(get_turf(src))
-	new_brain = brainobj
+	var/obj/item/organ/internal/cerebrum/brain/new_brain = brainobj
+	new_brain?.forceMove(get_turf(src))
 	brainobj = null
 
 	return new_brain
@@ -167,8 +184,8 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	else if(brainmob?.ssd_check())
 		desc += SPAN_DEADSAY("\nScans indicate that \the [brainmob?.name] seems to be unconscious.")
 
-/obj/item/organ/internal/cerebrum/mmi/update_icon()
-	overlays.Cut()
+/obj/item/organ/internal/cerebrum/mmi/on_update_icon()
+	ClearOverlays()
 	if(isnull(brainobj))
 		icon_state = "mmi-empty"
 		return
@@ -176,18 +193,18 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 	icon_state = "mmi-inner"
 
 	var/brain_overlay = "mmi-[lowertext(brainobj?.species)]"
-	overlays += (brain_overlay in icon_states(icon)) ? brain_overlay : "mmi-error"
+	AddOverlays((brain_overlay in icon_states(icon)) ? brain_overlay : "mmi-error")
 
 	if(locked)
-		overlays += "mmi-lid"
+		AddOverlays("mmi-lid")
 
-	overlays += "mmi-outer"
+	AddOverlays("mmi-outer")
 
 	if(brainmob?.is_ic_dead())
-		overlays += "mmi-dead"
+		AddOverlays("mmi-dead")
 	else if(brainmob?.ssd_check())
-		overlays += "mmi-ssd"
+		AddOverlays("mmi-ssd")
 	else
-		overlays += "mmi-stable"
+		AddOverlays("mmi-stable")
 
 	return

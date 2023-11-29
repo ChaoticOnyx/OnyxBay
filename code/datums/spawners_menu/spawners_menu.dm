@@ -22,30 +22,31 @@
 /datum/spawners_menu/tgui_static_data(mob/user)
 	var/list/data = list()
 	data["spawners"] = list()
-	for(var/spawner in GLOB.mob_spawners)
+	for(var/spawner_ref in GLOB.mob_spawners)
+		var/obj/effect/mob_spawn/ghost_role/spawner_atom = GLOB.mob_spawners[spawner_ref]
+		if(!spawner_atom.allow_spawn(user, TRUE))
+			continue
 		var/list/obj_data = list()
-		obj_data["name"] = spawner
-		obj_data["origin"] = ""
-		obj_data["directives"] = ""
-		obj_data["conditions"] = ""
-		obj_data["amount_left"] = 0
-		for(var/spawner_atom as anything in GLOB.mob_spawners[spawner])
-			if(!obj_data["origin"])
-				if(istype(spawner_atom, /obj/effect/mob_spawn/ghost_role))
-					var/obj/effect/mob_spawn/ghost_role/mob_spawner = spawner_atom
-					if(!mob_spawner.allow_spawn(user, TRUE))
-						continue
-					obj_data["origin"] = mob_spawner.you_are_text
-					obj_data["directives"] = mob_spawner.flavour_text
-					obj_data["conditions"] = mob_spawner.important_text
-				else
-					var/atom/atom_spawner = spawner_atom
-					obj_data["origin"] = atom_spawner.desc
-			obj_data["amount_left"] += 1
+		obj_data["spawner_ref"] = spawner_ref
+		obj_data["name"] = spawner_atom
+		obj_data["origin"] = spawner_atom.you_are_text
+		obj_data["directives"] = spawner_atom.flavour_text
+		obj_data["conditions"] = spawner_atom.important_text
+		obj_data["amount_left"] = spawner_atom.uses
 
 		if(obj_data["amount_left"] > 0)
 			data["spawners"] += list(obj_data)
 
+	for(var/possessable_ref in GLOB.available_mobs_for_possess)
+		var/list/obj_data = list()
+		var/mob/possessable = GLOB.available_mobs_for_possess[possessable_ref]
+		obj_data["spawner_ref"] = possessable_ref
+		obj_data["name"] = possessable.name
+		obj_data["origin"] = ""
+		obj_data["directives"] = ""
+		obj_data["conditions"] = ""
+		obj_data["amount_left"] = 1
+		data["spawners"] += list(obj_data)
 	return data
 
 /datum/spawners_menu/tgui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
@@ -53,31 +54,48 @@
 	if(.)
 		return
 
-	var/group_name = params["name"]
-	if(!group_name || !(group_name in GLOB.mob_spawners))
+	var/spawner_ref = params["spawner_ref"]
+	if(!spawner_ref)
 		return
-	if(!length(GLOB.mob_spawners[group_name]))
-		return
+	var/is_spawner_ghost_role = FALSE
+	var/chosen_spawner
+	if(spawner_ref in GLOB.mob_spawners)
+		var/obj/effect/mob_spawn/ghost_role/spawner = GLOB.mob_spawners[spawner_ref]
+		if(!istype(spawner))
+			return
+		if(!spawner.allow_spawn(owner, TRUE))
+			return
+		is_spawner_ghost_role = TRUE
+		chosen_spawner = spawner
+	else
+		if(!(spawner_ref in GLOB.available_mobs_for_possess))
+			return
+		chosen_spawner = GLOB.available_mobs_for_possess[spawner_ref]
 
-	var/list/chosen_spawners = GLOB.mob_spawners[group_name]
-	for(var/mob_spawner in chosen_spawners)
-		var/obj/effect/mob_spawn/ghost_role/role_spawner = mob_spawner
-		if(!istype(role_spawner))
-			break
-		if(role_spawner.allow_spawn(owner, TRUE))
-			continue
-		chosen_spawners -= role_spawner
-
-	if(!length(chosen_spawners))
-		return
-
-	var/atom/chosen_spawner = pick(chosen_spawners)
 	switch(action)
 		if("jump")
 			owner.ManualFollow(chosen_spawner)
-			return TRUE
+			return
 		if("spawn")
-			owner.ManualFollow(chosen_spawner)
 			ui.close()
-			chosen_spawner.attack_ghost(owner)
-			return TRUE
+			if(is_spawner_ghost_role)
+				handle_ghost_role(chosen_spawner)
+			else
+				handle_possesion(chosen_spawner)
+			return
+
+/datum/spawners_menu/proc/handle_ghost_role(_spawner)
+	var/obj/effect/mob_spawn/ghost_role/spawner = _spawner
+	owner.ManualFollow(spawner)
+	spawner.attack_ghost(owner)
+	return
+
+/datum/spawners_menu/proc/handle_possesion(_possessable)
+	var/mob/possessable = _possessable
+	owner.ManualFollow(possessable)
+	if(!("\ref[possessable]" in GLOB.available_mobs_for_possess))
+		to_chat(owner, SPAN_NOTICE("Unnable to posses mob!"))
+		return
+	if(tgui_alert(owner, "Become [possessable.name]?","Possesing mob",list("Yes","No")) == "Yes")
+		owner.try_to_occupy(possessable)
+	return

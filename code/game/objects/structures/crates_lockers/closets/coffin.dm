@@ -8,7 +8,7 @@
 	setup = CLOSET_CAN_BE_WELDED
 	dremovable = 0
 
-/obj/structure/closet/coffin/update_icon()
+/obj/structure/closet/coffin/on_update_icon()
 	if (welded)
 		icon_state = icon_screwed
 	else if(!opened)

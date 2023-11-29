@@ -12,7 +12,7 @@
 	set_invisibility(101)
 	for(var/t in organs)
 		qdel(t)
-	var/atom/movable/overlay/animation = new /atom/movable/overlay( loc )
+	var/atom/movable/fake_overlay/animation = new /atom/movable/fake_overlay(loc)
 	animation.icon_state = "blank"
 	animation.icon = 'icons/mob/mob.dmi'
 	animation.master = src
@@ -40,19 +40,19 @@
 
 	return src
 
-/mob/new_player/AIize()
+/mob/new_player/AIize(move, rename)
 	spawning = 1
-	return ..()
+	return ..(move, rename)
 
-/mob/living/carbon/human/AIize(move=1) // 'move' argument needs defining here too because BYOND is dumb
+/mob/living/carbon/human/AIize(move, rename) // 'move' argument needs defining here too because BYOND is dumb
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
 	for(var/t in organs)
 		qdel(t)
 	QDEL_NULL_LIST(worn_underwear)
-	return ..(move)
+	return ..(move, rename)
 
-/mob/living/carbon/AIize()
+/mob/living/carbon/AIize(move, rename)
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
 	for(var/obj/item/I in src)
@@ -60,9 +60,9 @@
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
 	set_invisibility(101)
-	return ..()
+	return ..(move, rename)
 
-/mob/proc/AIize(move=1)
+/mob/proc/AIize(move = TRUE, rename = TRUE)
 	if(client)
 		sound_to(src, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))// stop the jams for AIs
 
@@ -99,7 +99,9 @@
 
 	O.add_ai_verbs()
 
-	O.rename_self("ai",1)
+	if(rename)
+		O.rename_self("ai", TRUE)
+
 	spawn(0)	// Mobs still instantly del themselves, thus we need to spawn or O will never be returned
 		qdel(src)
 	return O

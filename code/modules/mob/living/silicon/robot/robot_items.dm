@@ -54,7 +54,7 @@
 			to_chat(user, "The [src] is empty.  Put something inside it first.")
 	if(response == "Sync")
 		var/success = 0
-		for(var/obj/machinery/r_n_d/server/S in GLOB.machines)
+		for(var/obj/machinery/r_n_d/server/S in SSmachines.machinery)
 			for(var/datum/tech/T in files.known_tech) //Uploading
 				S.files.AddTech2Known(T)
 			for(var/datum/tech/T in S.files.known_tech) //Downloading
@@ -197,7 +197,7 @@
 	var/list/obj/item/tool_images = list()
 	for(var/obj/item/tool in surgery_items)
 		var/image/img = image(icon = tool.icon, icon_state = tool.icon_state)
-		img.overlays = tool.overlays
+		img.CopyOverlays(tool)
 		tool_images[tool] = img
 	selected_tool = show_radial_menu(user, src, tool_images, radius = 42, require_near = TRUE, in_screen = TRUE)
 	to_chat(user, SPAN_NOTICE("You select to use [selected_tool ? selected_tool : "nothing"]"))
@@ -252,7 +252,7 @@
 
 				I.loc = src
 				carrying.Add(I)
-				overlays += image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer)
+				AddOverlays(image(I.icon, I.icon_state, layer = (30 + I.layer)))
 				addedSomething = 1
 		if (addedSomething)
 			user.visible_message(SPAN("notice", "'\The [user] load some items onto their service tray."))
@@ -278,7 +278,7 @@
 			dropspot = target.loc
 
 
-		overlays = null
+		ClearOverlays()
 
 		var droppedSomething = 0
 
@@ -400,36 +400,48 @@
 	icon = 'icons/obj/decals.dmi'
 	icon_state = "shock"
 
+#define INFLATABLE_MODES list("walls", "doors", "panels")
+#define INFLATABLE_MODE_WALLS 1
+#define INFLATABLE_MODE_DOORS 2
+#define INFLATABLE_MODE_PANELS 3
 /obj/item/inflatable_dispenser
 	name = "inflatables dispenser"
-	desc = "Hand-held device which allows rapid deployment and removal of inflatables."
-	icon = 'icons/obj/storage.dmi'
+	desc = "A hand-held device which allows rapid deployment and removal of inflatables."
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "inf_deployer"
 	w_class = ITEM_SIZE_LARGE
 
 	var/stored_walls = 5
 	var/stored_doors = 2
+	var/stored_panels = 2
 	var/max_walls = 5
 	var/max_doors = 2
-	var/mode = 0 // 0 - Walls   1 - Doors
+	var/max_panels = 2
+	var/mode = INFLATABLE_MODE_WALLS
 
 /obj/item/inflatable_dispenser/robot
+	desc = "A machinery-mounted device which allows rapid deployment and removal of inflatables. Has a higher storage capacity than the hand-held variation."
+	icon_state = "inf_deployer_borg"
 	w_class = ITEM_SIZE_HUGE
 	stored_walls = 10
 	stored_doors = 5
+	stored_panels = 4
 	max_walls = 10
 	max_doors = 5
+	max_panels = 4
 
 /obj/item/inflatable_dispenser/_examine_text(mob/user)
 	. = ..()
 	if(!.)
 		return
-	. += "\nIt has [stored_walls] wall segment\s and [stored_doors] door segment\s stored."
-	. += "\nIt is set to deploy [mode ? "doors" : "walls"]"
+	. += "\nIt has [stored_walls] wall segment\s, [stored_doors] door segment\s and [stored_panels] panel segment\s stored."
+	. += "\nIt is set to deploy [INFLATABLE_MODES[mode]]."
 
 /obj/item/inflatable_dispenser/attack_self()
-	mode = !mode
-	to_chat(usr, "You set \the [src] to deploy [mode ? "doors" : "walls"].")
+	mode++
+	if(mode > INFLATABLE_MODE_PANELS)
+		mode = INFLATABLE_MODE_WALLS
+	to_chat(usr, "You set \the [src] to deploy [INFLATABLE_MODES[mode]].")
 
 /obj/item/inflatable_dispenser/afterattack(atom/A, mob/user)
 	..(A, user)
@@ -444,62 +456,95 @@
 		pick_up(A, user)
 
 /obj/item/inflatable_dispenser/proc/try_deploy_inflatable(turf/T, mob/living/user)
-	if(mode) // Door deployment
-		if(!stored_doors)
-			to_chat(user, "\The [src] is out of doors!")
-			return
+	var/result_name = ""
+	switch(mode)
+		if(INFLATABLE_MODE_PANELS) // Panel deployment
+			if(!stored_panels)
+				to_chat(user, "\The [src] is out of panels!")
+				return
 
-		if(T && istype(T))
-			new /obj/structure/inflatable/door(T)
-			stored_doors--
+			result_name = "panel"
+			if(T && istype(T))
+				var/obj/structure/inflatable/door/panel/P = new /obj/structure/inflatable/door/panel(T)
+				if(user.loc == T)
+					P.dir = user.dir
+				else
+					P.dir = turn(user.dir, 180)
+				stored_panels--
+		if(INFLATABLE_MODE_DOORS) // Door deployment
+			if(!stored_doors)
+				to_chat(user, "\The [src] is out of doors!")
+				return
 
-	else // Wall deployment
-		if(!stored_walls)
-			to_chat(user, "\The [src] is out of walls!")
-			return
+			result_name = "door"
+			if(T && istype(T))
+				new /obj/structure/inflatable/door(T)
+				stored_doors--
 
-		if(T && istype(T))
-			new /obj/structure/inflatable/wall(T)
-			stored_walls--
+		if(INFLATABLE_MODE_WALLS) // Wall deployment
+			if(!stored_walls)
+				to_chat(user, "\The [src] is out of walls!")
+				return
+
+			result_name = "wall"
+			if(T && istype(T))
+				new /obj/structure/inflatable/wall(T)
+				stored_walls--
 
 	playsound(T, 'sound/items/zip.ogg', 75, 1)
-	to_chat(user, "You deploy the inflatable [mode ? "door" : "wall"]!")
+	to_chat(user, "You deploy the inflatable [result_name]!")
 
 /obj/item/inflatable_dispenser/proc/pick_up(obj/A, mob/living/user)
 	if(istype(A, /obj/structure/inflatable))
-		if(istype(A, /obj/structure/inflatable/wall))
-			if(stored_walls >= max_walls)
+		if(istype(A, /obj/structure/inflatable/door/panel))
+			if(stored_panels >= max_panels)
 				to_chat(user, "\The [src] is full.")
 				return
-			stored_walls++
+			stored_panels++
 			qdel(A)
-		else
+		else if(istype(A, /obj/structure/inflatable/door))
 			if(stored_doors >= max_doors)
 				to_chat(user, "\The [src] is full.")
 				return
 			stored_doors++
+			qdel(A)
+		else
+			if(stored_walls >= max_walls)
+				to_chat(user, "\The [src] is full.")
+				return
+			stored_walls++
 			qdel(A)
 		playsound(loc, 'sound/machines/hiss.ogg', 75, 1)
 		visible_message("\The [user] deflates \the [A] with \the [src]!")
 		return
 	if(istype(A, /obj/item/inflatable))
-		if(istype(A, /obj/item/inflatable/wall))
-			if(stored_walls >= max_walls)
+		if(istype(A, /obj/item/inflatable/panel))
+			if(stored_panels >= max_panels)
 				to_chat(user, "\The [src] is full.")
 				return
-			stored_walls++
+			stored_panels++
 			qdel(A)
-		else
+		else if(istype(A, /obj/item/inflatable/door))
 			if(stored_doors >= max_doors)
 				to_chat(usr, "\The [src] is full!")
 				return
 			stored_doors++
+			qdel(A)
+		else
+			if(stored_walls >= max_walls)
+				to_chat(user, "\The [src] is full.")
+				return
+			stored_walls++
 			qdel(A)
 		visible_message("\The [user] picks up \the [A] with \the [src]!")
 		return
 
 	to_chat(user, "You fail to pick up \the [A] with \the [src]")
 	return
+#undef INFLATABLE_MODES
+#undef INFLATABLE_MODE_WALLS
+#undef INFLATABLE_MODE_DOORS
+#undef INFLATABLE_MODE_PANELS
 
 /obj/item/reagent_containers/spray/cleaner/drone
 	name = "space cleaner"
@@ -620,7 +665,7 @@
 /obj/item/robot_rack/medical
 	name = "medical rack"
 	desc = "A rack for carrying folded stasis bags, body bags, blood packs and medical utensils."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "med_borg_box"
 	object_type = list(
 		/obj/item/bodybag,
@@ -643,7 +688,7 @@
 /obj/item/robot_rack/general
 	name = "item rack"
 	desc = "A rack for carrying various items."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "gen_borg_box"
 	object_type = list(
 		/obj/item
@@ -653,7 +698,7 @@
 /obj/item/robot_rack/weapon
 	name = "weapon rack"
 	desc = "A rack for carrying melee weapons, energy weapons and firearms."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "weaponcrate"
 	object_type = list(
 		/obj/item/melee,
@@ -664,7 +709,7 @@
 /obj/item/robot_rack/cargo
 	name = "small cargo rack"
 	desc = "A rack for carrying small and medium cargo parcels."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "cargo_borg_box"
 	object_type = list(
 		/obj/item/smallDelivery
@@ -687,7 +732,7 @@
 /obj/item/robot_rack/archeologist
 	name = "archeologist rack"
 	desc = "A rack for carrying artifacts and science samples."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "arch_borg_box"
 	object_type = list(
 		/obj/item/evidencebag,
@@ -701,7 +746,7 @@
 /obj/item/robot_rack/engineer
 	name = "engineer rack"
 	desc = "A rack for construction components."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "eng_borg_box"
 	object_type = list(
 		/obj/item/tank,
@@ -727,7 +772,7 @@
 /obj/item/robot_rack/miner
 	name = "miner rack"
 	desc = "A rack for carrying ore box."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "miner_borg_box_empty"
 	icon_state_active = "miner_borg_box_full"
 	pickup_sound = 'sound/effects/lift_heavy_start.ogg'
@@ -739,7 +784,7 @@
 		)
 	capacity = 1
 
-/obj/item/robot_rack/update_icon()
+/obj/item/robot_rack/on_update_icon()
 	..()
 	if (length(held) < capacity)
 		icon_state = initial(icon_state)

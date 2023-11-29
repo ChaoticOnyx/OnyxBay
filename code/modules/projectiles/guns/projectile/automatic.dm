@@ -37,7 +37,7 @@
 		list(mode_name = "full auto",      	burst = 1, fire_delay = 0, one_hand_penalty = 5, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(1.0, 1.0, 1.2, 1.4, 1.6), burst_delay=1.5, autofire_enabled = 1)
 		)
 
-/obj/item/gun/projectile/automatic/machine_pistol/update_icon()
+/obj/item/gun/projectile/automatic/machine_pistol/on_update_icon()
 	if(ammo_magazine)
 		icon_state = "mpistolen"
 	else
@@ -50,7 +50,7 @@
 	icon_state = "saber"
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 2, TECH_ILLEGAL = 3)
 
-/obj/item/gun/projectile/automatic/machine_pistol/mini_uzi/update_icon()
+/obj/item/gun/projectile/automatic/machine_pistol/mini_uzi/on_update_icon()
 	if(ammo_magazine)
 		icon_state = "saber"
 	else
@@ -99,7 +99,7 @@
 		list(mode_name = "full auto",      burst = 1, fire_delay = 0, one_hand_penalty = 6, burst_accuracy = list(0,-1,-2),				dispersion=list(0.4, 0.8, 1.2), burst_delay = 2, autofire_enabled = 1),
 		)
 
-/obj/item/gun/projectile/automatic/wt550/update_icon()
+/obj/item/gun/projectile/automatic/wt550/on_update_icon()
 	icon_state = (ammo_magazine)? "wt550-[round(ammo_magazine.stored_ammo.len, 4)]" : "wt550"
 	item_state = (ammo_magazine?.stored_ammo?.len) ? "wt550" : "wt550-empty"
 	wielded_item_state = (ammo_magazine)? "wt550-wielded" : "wt550-wielded-empty"
@@ -133,7 +133,7 @@
 		list(mode_name = "full auto",      burst = 1, fire_delay = 0, one_hand_penalty = 6, burst_accuracy = list(0,-1,-2),				dispersion=list(0.4, 0.8, 1.2), burst_delay = 2, autofire_enabled = 1),
 		)
 
-/obj/item/gun/projectile/automatic/c20r/update_icon()
+/obj/item/gun/projectile/automatic/c20r/on_update_icon()
 	if(ammo_magazine)
 		icon_state = "c20r-[round(ammo_magazine.stored_ammo.len, 4)]"
 	else
@@ -169,7 +169,7 @@
 		list(mode_name = "full auto",      burst = 1, fire_delay = 0, one_hand_penalty = 7, burst_accuracy=list(0,-1,-1),				dispersion=list(0.2, 0.6, 1.0), burst_delay=1.5, autofire_enabled = 1)
 		)
 
-/obj/item/gun/projectile/automatic/as75/update_icon()
+/obj/item/gun/projectile/automatic/as75/on_update_icon()
 	if(ammo_magazine)
 		if(ammo_magazine?.stored_ammo.len)
 			icon_state = "arifle-loaded"
@@ -241,7 +241,7 @@
 	else
 		..()
 
-/obj/item/gun/projectile/automatic/z8/update_icon()
+/obj/item/gun/projectile/automatic/z8/on_update_icon()
 	if(ammo_magazine)
 		if(ammo_magazine.stored_ammo.len)
 			icon_state = "carbine-loaded"
@@ -330,7 +330,7 @@
 	else
 		return ..() //once open, behave like normal
 
-/obj/item/gun/projectile/automatic/l6_saw/update_icon()
+/obj/item/gun/projectile/automatic/l6_saw/on_update_icon()
 	if(istype(ammo_magazine, /obj/item/ammo_magazine/box))
 		icon_state = "l6[cover_open ? "open" : "closed"][Ceiling(ammo_magazine.stored_ammo.len / 12)]"
 		item_state = "l6[cover_open ? "open" : "closed"]"

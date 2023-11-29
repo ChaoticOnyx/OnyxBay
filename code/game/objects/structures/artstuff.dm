@@ -223,15 +223,15 @@
 				pixel_y = 0
 		update_icon()
 
-/obj/item/canvas/update_icon()
+/obj/item/canvas/on_update_icon()
 	. = ..()
 	if(icon_generated)
-		overlays = canvas_overlay
+		SetOverlays(canvas_overlay)
 		if(blood_overlay)
-			overlays += blood_overlay
+			AddOverlays(blood_overlay)
 	if(is_propaganda)
 		var/image/detail_overlay = image(icon, src, "[icon_state]frame_[is_revolutionary]")
-		overlays.Add(detail_overlay)
+		AddOverlays(detail_overlay)
 	if(icon_generated)
 		return
 	if(!wip_detail_added && used)
@@ -239,7 +239,7 @@
 		detail.pixel_x = framed_offset_x
 		detail.pixel_y = framed_offset_y
 		wip_detail_added = TRUE
-		overlays += detail
+		AddOverlays(detail)
 
 /obj/item/canvas/proc/paint_image(x_offset = framed_offset_x, y_offset = framed_offset_y) // y_offset = 1
 	if(icon_generated)

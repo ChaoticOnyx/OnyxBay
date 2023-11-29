@@ -28,12 +28,17 @@
 	screen_on = anchored
 	update_icon()
 
-/obj/item/modular_computer/laptop/update_icon()
+/obj/item/modular_computer/laptop/on_update_icon()
 	if(anchored)
 		..()
 	else
-		overlays.Cut()
+		ClearOverlays()
 		icon_state = icon_state_closed
 
 /obj/item/modular_computer/laptop/preset
 	anchored = FALSE
+
+/obj/item/modular_computer/laptop/CouldUseTopic(mob/user)
+	..()
+	if(istype(user, /mob/living/carbon))
+		playsound(src, SFX_KEYBOARD, 50, 1)

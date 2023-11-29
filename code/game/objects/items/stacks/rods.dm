@@ -143,7 +143,7 @@
 		use(2)
 	return
 
-/obj/item/stack/rods/update_icon()
+/obj/item/stack/rods/on_update_icon()
 	icon_state = "rods[(amount < 5) ? amount : ""]"
 
 /obj/item/stack/rods/use()

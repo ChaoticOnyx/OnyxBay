@@ -1,7 +1,7 @@
 /obj/structure/stasis_cage
 	name = "stasis cage"
 	desc = "A high-tech animal cage, designed to keep contained fauna docile and safe."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/crates.dmi'
 	icon_state = "critter"
 	density = 1
 	pull_slowdown = PULL_SLOWDOWN_HEAVY

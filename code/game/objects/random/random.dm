@@ -24,6 +24,10 @@
 
 	var/build_path = util_pick_weight(spawn_choices())
 
+	if(isnull(build_path))
+		util_crash_with("Improper random object spawner found on the map! (at [loc.x], [loc.y], [loc.z], of type [type])")
+		return
+
 	var/atom/A = new build_path(src.loc)
 	if(pixel_x || pixel_y)
 		A.pixel_x = pixel_x

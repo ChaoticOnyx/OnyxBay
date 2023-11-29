@@ -36,6 +36,8 @@
 
 		handle_foreign()
 
+	update_icon()
+
 /obj/item/organ/internal/Destroy()
 	if(owner)
 		owner.internal_organs.Remove(src)

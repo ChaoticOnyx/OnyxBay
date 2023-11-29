@@ -33,12 +33,10 @@
 	label_color = null
 	update_icon()
 
-/obj/item/storage/pill_bottle/update_icon()
-	overlays.Cut()
+/obj/item/storage/pill_bottle/on_update_icon()
+	ClearOverlays()
 	if(label_color)
-		var/image/label_over = overlay_image(icon, "[icon_state]-overlay")
-		label_over.color = label_color
-		overlays += label_over
+		AddOverlays(OVERLAY(icon, "[icon_state]-overlay", alpha, RESET_COLOR, label_color))
 
 /obj/item/storage/pill_bottle/attack_self(mob/user)
 	if(user.get_inactive_hand())

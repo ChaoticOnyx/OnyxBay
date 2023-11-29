@@ -228,7 +228,8 @@
 		if(is_cooking)
 			stop()
 		return
-	if(receiver)
+
+	if(receiver && Adjacent(receiver))
 		if(isliving(thing_inside))
 			var/mob/living/L = thing_inside
 			L.get_scooped(receiver, self_grab = FALSE)
@@ -299,7 +300,7 @@
 			I.color = S.filling_color
 		if(!I.color)
 			I.color = food_color
-		product.overlays += I
+		product.AddOverlays(I)
 	return product
 
 #undef NO_PRODUCT

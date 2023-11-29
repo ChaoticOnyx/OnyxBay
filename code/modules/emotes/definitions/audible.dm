@@ -54,11 +54,6 @@
 	emote_message_1p = "You play a loud tone."
 	emote_message_3p = "USER plays a loud tone."
 
-/decl/emote/audible/whistle
-	key = "whistle"
-	emote_message_1p = "You whistle."
-	emote_message_3p = "USER whistles."
-
 /decl/emote/audible/boop
 	key = "boop"
 	emote_message_1p = "You boop."
@@ -67,6 +62,10 @@
 /decl/emote/audible/sneeze
 	key = "sneeze"
 	emote_message_3p = "USER sneezes."
+
+/decl/emote/audible/whistle
+	key = "whistle"
+	emote_message_3p = "USER whistles."
 
 /decl/emote/audible/sniff
 	key = "sniff"

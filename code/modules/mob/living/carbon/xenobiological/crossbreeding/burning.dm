@@ -334,8 +334,8 @@ Burning extracts:
 	for(var/i in 1 to 3) //Less than gold normally does, since it's safer and faster.
 		var/mob/living/path = pick(possible_mobs)
 		var/mob/living/spawned_mob = new path(get_turf(user))
-		spawned_mob.faction |= "\ref[user.name]"
-		user.faction |= "\ref[user.name]"
+		spawned_mob.faction = "\ref[user.name]"
+		user.faction = "\ref[user.name]"
 		if(prob(50))
 			for(var/j in 1 to rand(1, 3))
 				step(spawned_mob, pick(NORTH,SOUTH,EAST,WEST))
@@ -396,5 +396,5 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/rainbow/do_effect(mob/user)
 	user.visible_message(SPAN_NOTICE("[src] flattens into a glowing rainbow blade."))
-	new /obj/item/knife/rainbowknife(get_turf(user))
+	new /obj/item/material/hatchet/tacknife/rainbowknife(get_turf(user))
 	..()

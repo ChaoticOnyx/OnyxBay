@@ -22,6 +22,7 @@
 /obj/item/storage/box
 	name = "box"
 	desc = "It's just an ordinary box."
+	icon = 'icons/obj/storage/boxes.dmi'
 	icon_state = "box"
 	item_state = "syringe_kit"
 	max_storage_space = DEFAULT_BOX_STORAGE
@@ -166,10 +167,10 @@
 	storage_slots = 20
 	max_storage_space = 20
 
-/obj/item/storage/box/shotgun/update_icon()
+/obj/item/storage/box/shotgun/on_update_icon()
 	. = ..()
 
-	overlays = list()
+	ClearOverlays()
 
 	for (var/i = 1, i < contents.len, i++)
 		if (i == 1 || i % 3 == 0)
@@ -178,7 +179,7 @@
 			if (i != 1)
 				I.Shift(WEST, i)
 
-			overlays |= I
+			AddOverlays(I)
 
 /obj/item/storage/box/shotgun/shells
 	icon_state = "shotgunshells"
@@ -422,7 +423,6 @@
 
 /obj/item/storage/box/lights
 	name = "box of replacement bulbs"
-	icon = 'icons/obj/storage.dmi'
 	icon_state = "light"
 	desc = "This box is shaped on the inside so that only light tubes and bulbs fit."
 	item_state = "syringe_kit"
@@ -530,7 +530,7 @@
 /obj/item/storage/box/freezer
 	name = "portable freezer"
 	desc = "This nifty shock-resistant device will keep your 'groceries' nice and non-spoiled."
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	icon_state = "portafreezer"
 	item_state = "portafreezer"
 	foldable = null

@@ -52,8 +52,8 @@
 
 	current_range = range
 
-	var/list/checkers_local = checkers
-	var/old_checkers_len = checkers_local.len
+	var/list/checkers_local = length(checkers) ? checkers : list()
+	var/old_checkers_len = length(checkers_local)
 
 	var/atom/_host = host
 
@@ -74,7 +74,7 @@
 		return
 
 	var/list/turfs = RANGE_TURFS(range, loc_to_use)
-	var/turfs_len = turfs.len
+	var/turfs_len = length(turfs)
 	var/old_checkers_used = min(turfs_len, old_checkers_len)
 
 	//reuse what we can

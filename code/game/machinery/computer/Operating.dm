@@ -6,6 +6,7 @@
 	anchored = 1.0
 	icon_keyboard = "med_key"
 	icon_screen = "crew"
+	light_color = "#5284E7"
 	circuit = /obj/item/circuitboard/operating
 	var/mob/living/carbon/human/victim = null
 	var/obj/machinery/optable/table = null

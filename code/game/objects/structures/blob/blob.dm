@@ -3,7 +3,7 @@
 	icon_state = "blob"
 	anchored = TRUE
 
-	layer = BLOB_BASE_LAYER
+	layer = BLOB_SHIELD_LAYER
 
 	var/health = BLOB_HEALTH
 	var/max_health = BLOB_HEALTH
@@ -22,7 +22,7 @@
 	var/_health_cooldown
 
 /obj/structure/blob/New(loc, obj/structure/blob/core)
-	. = ..()
+	..()
 
 	src.core = core
 	health = max_health
@@ -159,7 +159,7 @@
 
 	set_next_think_ctx("upgrade", world.time + BLOB_UPGRADE_COOLDOWN)
 
-/obj/structure/blob/update_icon()
+/obj/structure/blob/on_update_icon()
 	var/hurt_percentage = round(health / max_health * 100)
 
 	if(hurt_percentage <= 50)

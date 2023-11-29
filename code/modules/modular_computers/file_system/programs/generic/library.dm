@@ -13,6 +13,7 @@ The answer was five and a half years -ZeroBits
 	program_icon_state = "word"
 	program_key_state = "atmos_key"
 	program_menu_icon = "note"
+	program_light_color = "#4273E7"
 	size = 6
 	category = PROG_OFFICE
 	requires_ntnet = 1

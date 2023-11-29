@@ -65,7 +65,7 @@
 		GLOB.xenomorphs.add_antagonist(mind, 1)
 
 /mob/living/carbon/alien/larva/proc/larva_announce_to_ghosts()
-	notify_ghosts("A new alien larva has been born!(<a href='byond://?src=\ref[src];occupy=1'>Occupy</a>)", source = src, action = NOTIFY_FOLLOW)
+	notify_ghosts("A new alien larva has been born!", null, source = src, action = NOTIFY_POSSES, posses_mob = TRUE)
 
 /mob/living/carbon/alien/larva/update_living_sight()
 	..()

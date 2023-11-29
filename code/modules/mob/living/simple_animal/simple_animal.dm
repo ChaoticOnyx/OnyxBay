@@ -180,16 +180,16 @@
 	if(purge)
 		purge -= 1
 
-/mob/living/simple_animal/gib()
-	..(icon_gib,1)
+/mob/living/simple_animal/gib(anim, do_gibs = TRUE)
+	..(icon_gib, do_gibs)
 
 /mob/living/simple_animal/bullet_act(obj/item/projectile/Proj)
-	if(!Proj || Proj.nodamage)
+	if(!Proj)
 		return
 
 	var/damage = Proj.damage * ((100 - armor_projectile) / 100)
-	if(Proj.damtype == STUN)
-		damage = (Proj.damage / 8)
+	if(Proj.damtype == STUN || Proj.damtype == PAIN)
+		damage = (Proj.damage / 8) + (Proj.agony / 8)
 
 	adjustBruteLoss(damage)
 	return 0

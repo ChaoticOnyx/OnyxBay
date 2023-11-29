@@ -36,7 +36,7 @@
 	var/turf/filler
 	var/tryingToLock = FALSE // for autoclosing
 	// turf animation
-	var/atom/movable/overlay/c_animation = null
+	var/atom/movable/fake_overlay/c_animation = null
 
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 350 MEGA ELECTRONVOLT,
@@ -353,7 +353,7 @@
 	return
 
 
-/obj/machinery/door/update_icon()
+/obj/machinery/door/on_update_icon()
 	if(density)
 		icon_state = "door1"
 	else

@@ -32,7 +32,7 @@
 	return inv_overlay
 
 /obj/item/clothing/accessory/get_mob_overlay(mob/user_mob, slot)
-	if(!istype(loc,/obj/item/clothing/))	//don't need special handling if it's worn as normal item.
+	if(!istype(loc, /obj/item/clothing/))	//don't need special handling if it's worn as normal item.
 		return ..()
 
 	if(ishuman(user_mob))
@@ -60,7 +60,7 @@
 		return
 	has_suit = S
 	forceMove(has_suit)
-	has_suit.overlays += get_inv_overlay()
+	has_suit.AddOverlays(get_inv_overlay())
 
 	if(user)
 		to_chat(user, "<span class='notice'>You attach \the [src] to \the [has_suit].</span>")
@@ -69,7 +69,7 @@
 /obj/item/clothing/accessory/proc/on_removed(mob/user)
 	if(!has_suit)
 		return
-	has_suit.overlays -= get_inv_overlay()
+	has_suit.CutOverlays(get_inv_overlay())
 	has_suit = null
 	if(user)
 		usr.pick_or_drop(src)

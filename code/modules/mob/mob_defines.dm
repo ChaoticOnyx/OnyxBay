@@ -1,11 +1,13 @@
 /mob
 	density = 1
 
-	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
-	vis_flags = VIS_INHERIT_PLANE
+	plane = DEFAULT_PLANE
+	layer = MOB_LAYER
+	appearance_flags = PIXEL_SCALE | LONG_GLIDE
 	animate_movement = 2
-
 	virtual_mob = /mob/observer/virtual/mob
+
+	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 
 	movement_handlers = list(
 		/datum/movement_handler/mob/relayed_movement,

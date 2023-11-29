@@ -114,7 +114,7 @@
 			else
 				. += "\nIt's ready to hatch!"
 
-/obj/structure/alien/egg/update_icon()
+/obj/structure/alien/egg/on_update_icon()
 	if(progress == -1)
 		icon_state = "egg_opened"
 	else if(progress < progress_max)
@@ -144,7 +144,7 @@
 
 	anchored = 1
 	density = 0
-	plane = FLOOR_PLANE
+
 	layer = ABOVE_TILE_LAYER
 	var/obj/effect/alien/weeds/node/linked_node = null
 

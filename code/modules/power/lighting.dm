@@ -38,7 +38,7 @@
 
 	update_icon()
 
-/obj/machinery/light_construct/update_icon()
+/obj/machinery/light_construct/on_update_icon()
 	switch(stage)
 		if(1) icon_state = "tube-construct-stage1"
 		if(2) icon_state = "tube-construct-stage2"
@@ -123,7 +123,7 @@
 	fixture_type = /obj/machinery/light/small
 	sheets_refunded = 1
 
-/obj/machinery/light_construct/small/update_icon()
+/obj/machinery/light_construct/small/on_update_icon()
 	switch(stage)
 		if(1) icon_state = "bulb-construct-stage1"
 		if(2) icon_state = "bulb-construct-stage2"
@@ -155,6 +155,8 @@
 	var/obj/item/light/lightbulb
 
 	var/current_mode = null
+
+	var/static/list/light_eas
 
 /obj/machinery/light/vox
 	name = "alien light"
@@ -222,6 +224,9 @@
 /obj/machinery/light/Initialize(mapload, obj/machinery/light_construct/construct = null)
 	. = ..(mapload)
 
+	if(!light_eas)
+		light_eas = list()
+
 	s.set_up(1, 1, src)
 
 	if(construct)
@@ -241,8 +246,8 @@
 	QDEL_NULL(s)
 	. = ..()
 
-/obj/machinery/light/update_icon(trigger = 1)
-	overlays.Cut()
+/obj/machinery/light/on_update_icon(trigger = 1)
+	ClearOverlays()
 	if(pixel_shift)
 		switch(dir)
 			if(NORTH)
@@ -260,6 +265,9 @@
 		if(LIGHT_EMPTY)
 			icon_state = "[base_state]-empty"
 			on = 0
+			update_use_power(POWER_USE_OFF)
+			set_light(0)
+			return
 		if(LIGHT_BURNED)
 			icon_state = "[base_state]-burned"
 			on = 0
@@ -268,12 +276,8 @@
 			on = 0
 
 	var/image/TO
-	if(lightbulb?.tone_overlay)
-		TO = overlay_image(icon, "[icon_state]-over", flags=RESET_COLOR)
-		TO.color = lightbulb.b_color
-		TO.layer = ABOVE_LIGHTING_LAYER
-		TO.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
-		TO.alpha = between(128, (lightbulb.b_max_bright * 1.25 * 255), 255)
+	var/TO_alpha = between(128, (lightbulb.b_max_bright * 1.25 * 255), 255)
+	var/TO_color = lightbulb.b_color
 
 	if(on)
 		update_use_power(POWER_USE_ACTIVE)
@@ -281,28 +285,34 @@
 		var/changed = 0
 		if(current_mode && (current_mode in lightbulb.lighting_modes))
 			changed = set_light(arglist(lightbulb.lighting_modes[current_mode]))
-			if(TO)
-				TO.color = lightbulb.lighting_modes[current_mode]["l_color"]
-				TO.alpha = between(128, (lightbulb.lighting_modes[current_mode]["l_max_bright"] * 1.5 * 255), 255) // Some fine tuning here
+			if(lightbulb?.tone_overlay)
+				TO_color = lightbulb.lighting_modes[current_mode]["l_color"]
+				TO_alpha = between(128, (lightbulb.lighting_modes[current_mode]["l_max_bright"] * 1.5 * 255), 255) // Some fine tuning here
 		else
 			changed = set_light(lightbulb.b_max_bright, lightbulb.b_inner_range, lightbulb.b_outer_range, lightbulb.b_curve, lightbulb.b_color)
 
+		if(lightbulb?.tone_overlay)
+			TO = OVERLAY(icon, "[icon_state]-over", TO_alpha, RESET_COLOR, TO_color, dir, EFFECTS_ABOVE_LIGHTING_PLANE, ABOVE_LIGHTING_LAYER)
+
 		if(trigger && changed && get_status() == LIGHT_OK)
 			switch_check()
+
+		if(!light_eas[icon_state])
+			light_eas[icon_state] = emissive_appearance(icon, "[icon_state]_ea")
+		AddOverlays(light_eas[icon_state])
 	else
+		if(lightbulb?.tone_overlay)
+			TO = OVERLAY(icon, "[icon_state]-over", TO_alpha, RESET_COLOR, TO_color, dir)
 		update_use_power(POWER_USE_OFF)
 		set_light(0)
-		if(TO)
-			TO.layer = layer + 0.001
-			TO.set_float_plane(src, plane)
 
 	if(TO)
-		overlays += TO
+		AddOverlays(TO)
 
 	change_power_consumption((light_outer_range * light_max_bright) * LIGHTING_POWER_FACTOR, POWER_USE_ACTIVE)
 
 /obj/machinery/light/proc/get_status()
-	if(!lightbulb)
+	if(QDELETED(lightbulb))
 		return LIGHT_EMPTY
 	else
 		return lightbulb.status
@@ -669,12 +679,6 @@
 		"#fef6ea"
 	)
 
-/obj/item/light/Initialize()
-	. = ..()
-	if(random_tone)
-		b_color = pick(random_tone_options)
-		update_icon()
-
 /obj/item/light/tube
 	name = "light tube"
 	desc = "A replacement light tube."
@@ -683,15 +687,15 @@
 	item_state = "c_tube"
 	matter = list(MATERIAL_GLASS = 100)
 
-	b_max_bright = 0.85
+	b_max_bright = 1.0
 	b_outer_range = 7
-	b_curve = 2.5
+	b_curve = 3.5
 	b_color = "#fffee0"
 	lighting_modes = list(
-		LIGHTMODE_EMERGENCY  = list(l_max_bright = 0.4,  l_inner_range = 1, l_outer_range = 5, l_falloff_curve = 2.5, l_color = "#da0205"),
-		LIGHTMODE_EVACUATION = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 2.5, l_color = "#bf0000"),
-		LIGHTMODE_ALARM      = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 2.5, l_color = "#ff3333"),
-		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.55, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 2.5, l_color = "#8A9929")
+		LIGHTMODE_EMERGENCY  = list(l_max_bright = 0.7,  l_inner_range = 1, l_outer_range = 5, l_falloff_curve = 3.5, l_color = "#da0205"),
+		LIGHTMODE_EVACUATION = list(l_max_bright = 1.0, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3.5, l_color = "#bf0000"),
+		LIGHTMODE_ALARM      = list(l_max_bright = 1.0, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3.5, l_color = "#ff3333"),
+		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3.5, l_color = "#8A9929")
 		)
 	sound_on = 'sound/machines/lightson.ogg'
 	random_tone = TRUE
@@ -731,16 +735,16 @@
 	broken_chance = 5
 	matter = list(MATERIAL_GLASS = 100)
 
-	b_max_bright = 0.4
-	b_inner_range = 0.75
+	b_max_bright = 0.85
+	b_inner_range = 0.6
 	b_outer_range = 4
-	b_curve = 4.0
+	b_curve = 4.5
 	b_color = "#a0a080"
 	lighting_modes = list(
-		LIGHTMODE_EMERGENCY  = list(l_max_bright = 0.3, l_inner_range = 0.5,  l_outer_range = 3, l_falloff_curve = 4.0, l_color = "#da0205"),
-		LIGHTMODE_EVACUATION = list(l_max_bright = 0.4, l_inner_range = 0.75, l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#bf0000"),
-		LIGHTMODE_ALARM      = list(l_max_bright = 0.4, l_inner_range = 0.75, l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#ff3333"),
-		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.3, l_inner_range = 0.5,  l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#8A9929")
+		LIGHTMODE_EMERGENCY  = list(l_max_bright = 0.7, l_inner_range = 0.5,  l_outer_range = 3, l_falloff_curve = 4.5, l_color = "#da0205"),
+		LIGHTMODE_EVACUATION = list(l_max_bright = 0.85, l_inner_range = 0.6, l_outer_range = 4, l_falloff_curve = 4.5, l_color = "#bf0000"),
+		LIGHTMODE_ALARM      = list(l_max_bright = 0.85, l_inner_range = 0.6, l_outer_range = 4, l_falloff_curve = 4.5, l_color = "#ff3333"),
+		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.7, l_inner_range = 0.5,  l_outer_range = 4, l_falloff_curve = 4.5, l_color = "#8A9929")
 		)
 	random_tone = TRUE
 
@@ -770,14 +774,14 @@
 	desc = "Old type of light bulbs, almost not being used at the station."
 	base_state = "lold_bulb"
 	broken_chance = 1
-	b_max_bright = 0.8
+	b_max_bright = 0.85
 	b_outer_range = 6
 	b_color = "#ec8b2f"
 	random_tone = FALSE
 	tone_overlay = FALSE
 
 /obj/item/light/bulb/red
-	b_outer_range = 6
+	b_outer_range = 4
 	color = "#da0205"
 	b_color = "#da0205"
 	random_tone = FALSE
@@ -785,7 +789,7 @@
 
 /obj/item/light/bulb/red/readylight
 	lighting_modes = list(
-		LIGHTMODE_READY = list(l_max_bright = 0.4, l_inner_range = 0.5,  l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#00ff00")
+		LIGHTMODE_READY = list(l_max_bright = 0.85, l_inner_range = 0.5,  l_outer_range = 4, l_falloff_curve = 4.5, l_color = "#00ff00")
 		)
 
 /obj/item/light/throw_impact(atom/hit_atom)
@@ -802,23 +806,44 @@
 	random_tone = FALSE
 	tone_overlay = FALSE
 
+
+/obj/item/light/Initialize()
+	. = ..()
+	if(random_tone)
+		b_color = pick(random_tone_options)
+	update_icon()
+
+/obj/item/light/Destroy()
+	if(istype(loc, /obj/machinery/light))
+		var/obj/machinery/light/L = loc
+		L.lightbulb = null
+		L.current_mode = null
+		if(!QDELETED(L))
+			L.update_icon()
+	return ..()
+
+/obj/item/light/_examine_text(mob/user)
+	. = ..()
+	switch(status)
+		if(LIGHT_BURNED)
+			. += "\nIt appears to be burnt-out."
+		if(LIGHT_BROKEN)
+			. += "\nIt's broken."
+
 // update the icon state and description of the light
-/obj/item/light/update_icon()
-	overlays.Cut()
+/obj/item/light/on_update_icon()
+	ClearOverlays()
 	switch(status)
 		if(LIGHT_OK)
 			icon_state = base_state
-			desc = "A replacement [name]."
 		if(LIGHT_BURNED)
 			icon_state = "[base_state]-burned"
-			desc = "A burnt-out [name]."
 		if(LIGHT_BROKEN)
 			icon_state = "[base_state]-broken"
-			desc = "A broken [name]."
 	if(tone_overlay)
 		var/image/TO = overlay_image(icon, "[icon_state]-over", flags=RESET_COLOR)
 		TO.color = b_color
-		overlays += TO
+		AddOverlays(TO)
 
 // attack bulb/tube with object
 // if a syringe, can inject plasma to make it explode

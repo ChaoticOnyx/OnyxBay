@@ -42,17 +42,17 @@ var/global/photo_count = 0
 /obj/item/photo/attack_self(mob/user as mob)
 	user.examinate(src)
 
-/obj/item/photo/update_icon()
-	overlays.Cut()
+/obj/item/photo/on_update_icon()
+	ClearOverlays()
 	var/scale = 8/(photo_size*32)
 	var/image/small_img = image(img)
 	small_img.SetTransform(scale = scale)
 	small_img.pixel_x = -32*(photo_size-1)/2 - 3
 	small_img.pixel_y = -32*(photo_size-1)/2
-	overlays |= small_img
+	AddOverlays(small_img)
 
 	tiny = image(img)
-	small_img.SetTransform(scale = 0.5 * scale)
+	tiny.SetTransform(scale = 0.5 * scale)
 	tiny.underlays += image('icons/obj/bureaucracy.dmi',"photo")
 	tiny.pixel_x = -32*(photo_size-1)/2 - 3
 	tiny.pixel_y = -32*(photo_size-1)/2 + 3
@@ -153,7 +153,7 @@ var/global/photo_count = 0
 	var/size = 3
 	var/see_ghosts = FALSE
 
-/obj/item/device/camera/update_icon()
+/obj/item/device/camera/on_update_icon()
 	if(is_on)
 		icon_state = "[initial(icon_state)]"
 	else

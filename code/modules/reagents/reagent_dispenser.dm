@@ -77,16 +77,16 @@
 	..()
 	update_icon()
 
-/obj/structure/reagent_dispensers/update_icon()
-	overlays.Cut()
+/obj/structure/reagent_dispensers/on_update_icon()
+	ClearOverlays()
 	if(filling_overlay_levels)
 		if(reagents?.reagent_list?.len)
 			var/reagents_amt = 0
 			for(var/datum/reagent/R in reagents.reagent_list)
 				reagents_amt += R.volume
-			overlays += image(icon, src, "[icon_state]-[ceil(reagents_amt / (initial_capacity / filling_overlay_levels))]")
+			AddOverlays(image(icon, src, "[icon_state]-[ceil(reagents_amt / (initial_capacity / filling_overlay_levels))]"))
 		else
-			overlays += image(icon, src, "[icon_state]-0")
+			AddOverlays(image(icon, src, "[icon_state]-0"))
 
 //Dispensers
 /obj/structure/reagent_dispensers/watertank
@@ -111,6 +111,10 @@
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	filling_overlay_levels = 6
 
+/obj/structure/reagent_dispensers/fueltank/Destroy()
+	QDEL_NULL(rig)
+	return ..()
+
 /obj/structure/reagent_dispensers/fueltank/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
@@ -133,7 +137,7 @@
 			)
 			rig.forceMove(get_turf(user))
 			rig = null
-			overlays.Cut()
+			ClearOverlays()
 
 /obj/structure/reagent_dispensers/fueltank/attackby(obj/item/W, mob/user)
 	add_fingerprint(user)
@@ -182,13 +186,13 @@
 		return
 	return ..()
 
-/obj/structure/reagent_dispensers/fueltank/update_icon()
+/obj/structure/reagent_dispensers/fueltank/on_update_icon()
 	..()
 	if(rig)
 		var/icon/rig_icon = getFlatIcon(rig)
 		rig_icon.Shift(NORTH,1)
 		rig_icon.Shift(EAST,6)
-		overlays += rig_icon
+		AddOverlays(rig_icon)
 
 /obj/structure/reagent_dispensers/fueltank/bullet_act(obj/item/projectile/Proj)
 	if(Proj.get_structure_damage())

@@ -186,7 +186,7 @@
 	var/icon_closed
 
 /obj/item/music_tape_box/Initialize()
-	..()
+	. = ..()
 	music_tape = new music_tape()
 	icon_state = icon_closed
 
@@ -209,7 +209,7 @@
 		to_chat(user, SPAN("warning", "[A] does not fit in [src]."))
 	update_icon()
 
-/obj/item/music_tape_box/update_icon()
+/obj/item/music_tape_box/on_update_icon()
 	..()
 	if(!music_tape)
 		icon_state = icon_closed + "_open"

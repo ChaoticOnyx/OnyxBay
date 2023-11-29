@@ -58,27 +58,27 @@
 		else
 			to_chat(user, "<span class='warning'>You're unable to insert the battery.</span>")
 
-/obj/item/device/suit_sensor_jammer/update_icon()
-	overlays.Cut()
+/obj/item/device/suit_sensor_jammer/on_update_icon()
+	ClearOverlays()
 	if(bcell)
-		var/percent = bcell.percent()
+		var/percent = CELL_PERCENT(bcell)
 		switch(percent)
 			if(0 to 25)
-				overlays += "forth_quarter"
+				AddOverlays("forth_quarter")
 			if(25 to 50)
-				overlays += "one_quarter"
-				overlays += "third_quarter"
+				AddOverlays("one_quarter")
+				AddOverlays("third_quarter")
 			if(50 to 75)
-				overlays += "two_quarters"
-				overlays += "second_quarter"
+				AddOverlays("two_quarters")
+				AddOverlays("second_quarter")
 			if(75 to 99)
-				overlays += "three_quarters"
-				overlays += "first_quarter"
+				AddOverlays("three_quarters")
+				AddOverlays("first_quarter")
 			else
-				overlays += "four_quarters"
+				AddOverlays("four_quarters")
 
 		if(active)
-			overlays += "active"
+			AddOverlays("active")
 
 /obj/item/device/suit_sensor_jammer/emp_act(severity)
 	..()
@@ -104,7 +104,7 @@
 		var/list/message = list()
 		message += "This device appears to be [active ? "" : "in"]active and "
 		if(bcell)
-			message += "displays a charge level of [bcell.percent()]%."
+			message += "displays a charge level of [CELL_PERCENT(bcell)]%."
 		else
 			message += "is lacking a cell."
 		. += "\n[jointext(message, " ")]"

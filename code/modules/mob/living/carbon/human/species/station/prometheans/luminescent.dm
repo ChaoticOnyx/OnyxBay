@@ -91,7 +91,7 @@
 	else
 		name = "Eject Extract"
 		button_icon_state = "metroideject"
-		button.overlays += image(extract_eater_comp.current_extract.icon, icon_state = extract_eater_comp.current_extract.icon_state)
+		button.AddOverlays(image(extract_eater_comp.current_extract.icon, icon_state = extract_eater_comp.current_extract.icon_state))
 		//desc = "Eject your current metroid extract."
 
 

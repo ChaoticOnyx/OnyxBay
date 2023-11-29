@@ -33,6 +33,9 @@
 		if(M != src && C.incapacitated())
 			return 0
 
+	if(M.throwing)
+		// can't throwing mob if it's buckled
+		M.throwing = 0
 	M.buckled = src
 	M.facing_dir = null
 	M.set_dir(buckle_dir ? buckle_dir : dir)

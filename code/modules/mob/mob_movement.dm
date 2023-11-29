@@ -124,8 +124,6 @@
 	else
 		glide_size = max(min, glide_size_override)
 
-	for (var/atom/movable/AM in contents)
-		AM.set_glide_size(glide_size, min, max)
 	if(istype(src, /obj))
 		var/obj/O = src
 		if(O.buckled_mob)

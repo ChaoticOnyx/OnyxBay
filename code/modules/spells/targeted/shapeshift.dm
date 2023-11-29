@@ -44,7 +44,7 @@
 			M.mind.transfer_to(trans)
 		else
 			trans.key = M.key
-		var/atom/movable/overlay/effect = new /atom/movable/overlay(get_turf(M))
+		var/atom/movable/fake_overlay/effect = new /atom/movable/fake_overlay(get_turf(M))
 		effect.set_density(0)
 		effect.anchored = 1
 		effect.icon = 'icons/effects/effects.dmi'
@@ -215,7 +215,7 @@
 	else
 		trans.key = M.key
 
-	var/atom/movable/overlay/effect = new /atom/movable/overlay(get_turf(M))
+	var/atom/movable/fake_overlay/effect = new /atom/movable/fake_overlay(get_turf(M))
 	effect.set_density(0)
 	effect.anchored = 1
 	effect.icon = 'icons/effects/effects.dmi'

@@ -109,14 +109,14 @@ var/list/admin_ranks = list()								//list of all ranks with associated rights
 			return
 
 		var/DBQuery/query = sql_query({"
-			SELECT 
-				ckey, 
-				`rank`, 
-				flags 
-			FROM 
+			SELECT
+				ckey,
+				`rank`,
+				flags
+			FROM
 				erro_admin
 			"}, dbcon)
-			
+
 		while(query.NextRow())
 			var/ckey = query.item[1]
 			var/rank = query.item[2]

@@ -72,6 +72,7 @@
 	nodamage = 1
 	check_armour = "bullet"
 	blockable = FALSE
+	poisedamage = 255 // slammy jammy
 
 /obj/item/projectile/meteor/Bump(atom/A, forced = FALSE)
 	if(A == firer)
@@ -250,15 +251,18 @@
 	var/mob/living/simple_animal/hostile/facehugger/holder = null
 
 /obj/item/projectile/facehugger_proj/Bump(atom/A, forced = FALSE)
+	if(A == src)
+		return FALSE // no idea how this could ever happen but let's ensure
+
 	if(A == firer)
 		loc = A.loc
-		return
+		return FALSE
 
 	if(!holder)
-		return
+		return FALSE
 
 	if(bumped)
-		return
+		return FALSE
 	bumped = TRUE
 
 	if(istype(A, /mob/living/carbon/human))
@@ -289,6 +293,17 @@
 					W.take_damage(10)
 				else
 					continue
+			if(istype(O, /obj/structure/inflatable/door/panel)) // Those fuckers require different processing as well
+				var/obj/structure/inflatable/door/panel/P = O
+				if(get_turf(P) == starting)
+					if(!P.CheckDiagonalExit(src, get_turf(original)))
+						P.take_damage(5)
+					else
+						continue
+				else if(!P.CanDiagonalPass(src, previous_loc))
+					P.take_damage(5)
+				else
+					continue
 			else if(O.CanZASPass(previous_loc)) // If it doesn't block gases, it also doesn't prevent us from getting through
 				continue
 			holder.forceMove(previous_loc) // Otherwise we failed to pass
@@ -308,6 +323,9 @@
 	Bump(A)
 
 /obj/item/projectile/facehugger_proj/Destroy()
+	if(!holder)
+		return ..()
+
 	if(kill_count)
 		QDEL_NULL(holder)
 	else
@@ -315,7 +333,8 @@
 		if(T)
 			holder.forceMove(T)
 			holder = null
-
+		else
+			QDEL_NULL(holder)
 	return ..()
 
 /obj/item/projectile/portal

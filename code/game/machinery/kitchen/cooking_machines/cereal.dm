@@ -15,6 +15,7 @@
 	return product
 
 /obj/machinery/cooker/cereal/change_product_appearance(obj/item/reagent_containers/food/variable/cereal/product, atom/movable/origin)
+	ClearOverlays()
 	var/icon/background = icon(product.icon, "[product.icon_state]_filling")
 	var/origin_color
 	if(istype(origin, /obj/item/reagent_containers/food))
@@ -26,12 +27,12 @@
 		background.Blend(origin_color, ICON_SUBTRACT) // Invert
 		product.filling_color = origin_color
 
-	product.overlays += background
+	product.AddOverlays(background)
 
 	var/image/food_image = image(origin.icon, origin.icon_state)
 	food_image.color = origin.color
-	food_image.overlays += origin.overlays
+	food_image.CopyOverlays(origin)
 	food_image.SetTransform(scale = 0.5)
 	food_image.pixel_y = 2
-	product.overlays += food_image
+	product.AddOverlays(food_image)
 	return product

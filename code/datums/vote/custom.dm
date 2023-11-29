@@ -1,27 +1,59 @@
-/datum/vote/custom
-	name = "custom vote"
-	var/abort = 0 // Lets us exit the vote setup due to bad input, etc.
+/// The max amount of options someone can have in a custom vote.
+#define MAX_CUSTOM_VOTE_OPTIONS 10
 
-/datum/vote/custom/can_run(mob/creator, automatic)
-	if(automatic)
-		return FALSE
-	if(!is_admin(creator))
-		return FALSE
-	if(abort)
-		return FALSE
+/datum/vote/custom_vote/single
+	name = "Custom Standard"
+	message = "Click here to start a custom vote (one selection per voter)"
+
+/datum/vote/custom_vote/multi
+	name = "Custom Multi"
+	message = "Click here to start a custom multi vote (multiple selections per voter)"
+	count_method = VOTE_COUNT_METHOD_MULTI
+
+// Custom votes ares always accessible.
+/datum/vote/custom_vote/is_accessible_vote()
+	return TRUE
+
+/datum/vote/custom_vote/reset()
+	default_choices = null
+	override_question = null
 	return ..()
 
-/datum/vote/custom/setup_vote(mob/creator, automatic)
-	question = sanitizeSafe(input(creator,"What is the vote for?") as text|null)
-	if(!question)
-		abort = 1
-		return
-	for(var/i=1,i<=10,i++)
-		var/option = capitalize(sanitize(input(creator,"Please enter an option or hit cancel to finish") as text|null))
-		if(!option || !creator.client)
+/datum/vote/custom_vote/can_be_initiated(mob/by_who, forced = FALSE)
+	. = ..()
+	if(!.)
+		return FALSE
+
+	// Custom votes can only be created if they're forced to be made.
+	// (Either an admin makes it, or otherwise.)
+	return forced
+
+/datum/vote/custom_vote/create_vote(mob/vote_creator)
+	override_question = tgui_input_text(vote_creator, "What is the vote for?", "Custom Vote")
+	if(!override_question)
+		return FALSE
+
+	default_choices = list()
+	for(var/i in 1 to MAX_CUSTOM_VOTE_OPTIONS)
+		var/option = tgui_input_text(vote_creator, "Please enter an option, or hit cancel to finish. [MAX_CUSTOM_VOTE_OPTIONS] max.", "Options", max_length = MAX_NAME_LEN)
+		if(!vote_creator?.client)
+			return FALSE
+		if(!option)
 			break
-		choices += option
-	if(!length(choices))
-		abort = 1
-		return
-	..()
+
+		default_choices += capitalize(option)
+
+	if(!length(default_choices))
+		return FALSE
+
+	return ..()
+
+/datum/vote/custom_vote/initiate_vote(initiator, duration)
+	. = ..()
+	. += "\n[override_question]"
+
+// There are no winners or losers for custom votes
+/datum/vote/custom_vote/get_winner_text(list/all_winners, real_winner, list/non_voters)
+	return "[SPAN_BOLD("Did not vote:")] [length(non_voters)]"
+
+#undef MAX_CUSTOM_VOTE_OPTIONS

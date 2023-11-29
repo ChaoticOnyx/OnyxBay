@@ -9,7 +9,7 @@
 		if(newName)
 			newVars["name"] = newName
 
-/datum/spell/aoe_turf/conjure/summon/conjure_animation(atom/movable/overlay/animation, turf/target)
+/datum/spell/aoe_turf/conjure/summon/conjure_animation(atom/movable/fake_overlay/animation, turf/target)
 	animation.icon_state = "shield2"
 	flick("shield2",animation)
 	sleep(10)
@@ -67,6 +67,10 @@
 
 	icon_state = "wiz_bear"
 
+/datum/spell/aoe_turf/conjure/summon/bear/New()
+	. = ..()
+	register_signal(src, SIGNAL_MOB_SPELL_LEARNED, /datum/spell/aoe_turf/conjure/summon/bear/proc/spell_learned)
+
 /datum/spell/aoe_turf/conjure/summon/bear/before_cast()
 	..()
 	newVars["master"] = holder //why not do this in the beginning? MIND SWITCHING.
@@ -86,16 +90,14 @@
 			newVars = list("maxHealth" = 200,
 						"health" = 200,
 						"melee_damage_lower" = 30,
-						"melee_damage_upper" = 30,
-						"color" = "#d9d9d9" //basically we want them to look different enough that people can recognize it.
+						"melee_damage_upper" = 30
 						)
 			return "Your bear has been upgraded from a whelp to an adult."
 		if(3)
 			newVars = list("maxHealth" = 250,
 						"health" = 250,
 						"melee_damage_lower" = 45,
-						"melee_damage_upper" = 45,
-						"color" = "#8c8c8c"
+						"melee_damage_upper" = 45
 						)
 			return "Your bear has been upgraded from an adult to an alpha."
 		if(4)
@@ -103,7 +105,29 @@
 						"health" = 300,
 						"melee_damage_lower" = 55,
 						"melee_damage_upper" = 55,
-						"resistance" = 10,
-						"color" = "#0099ff"
+						"resistance" = 10
 						)
 			return "Your bear is now worshiped as a god amongst bears."
+
+/datum/spell/aoe_turf/conjure/summon/bear/proc/spell_learned(mob/user)
+	if(!user || !user.mind)
+		return
+
+	to_chat(user, "A short note regarding the available commands for your bear has been placed in your notes.")
+	var/bear_guide = {"<br/><b>Congratulations, you now can summon a magic, bluespace bear.</b><br/>
+						The bear's mind is dominated, so it should not attack you under any circumstances. You can command your bear through words, but remember that it must hear you.<br/>
+						<b> Your bear knows the following commands:</b><br/>
+						- stay<br/>
+						- stop: your bear will stop following all previous commands.<br/>
+						- attack: designate someone (or everyone!) as a threat. <br/>
+						- follow: your bear will follow anyone designated, for example say 'Bear follow me'.<br/>
+						-  dance: it will literally dance.<br/>
+						- add friend: your bear won't attack those who are designated as a friend.<br/>
+						- remove friend: use to cancel previous command.<br/>
+						Simply pronounce your bear name when issuing a command. Remember to address your bear by name or else it will not heed the command.<br/>"}
+
+	user.mind.store_memory(bear_guide)
+
+/datum/spell/aoe_turf/conjure/summon/bear/Destroy()
+	unregister_signal(src, SIGNAL_MOB_SPELL_LEARNED)
+	return ..()

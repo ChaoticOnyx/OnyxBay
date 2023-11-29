@@ -21,10 +21,10 @@
 	var/overlays_error[2]
 	var/underlays_current[4]
 
-	var/list/ports = new()
+	var/list/ports = list()
 
-/obj/machinery/atmospherics/omni/New()
-	..()
+/obj/machinery/atmospherics/omni/Initialize()
+	. = ..()
 	icon_state = "base"
 
 	ports = new()
@@ -45,13 +45,13 @@
 
 	build_icons()
 
-/obj/machinery/atmospherics/omni/update_icon()
+/obj/machinery/atmospherics/omni/on_update_icon()
 	if(stat & NOPOWER)
-		overlays = overlays_off
+		SetOverlays(overlays_off)
 	else if(error_check())
-		overlays = overlays_error
+		SetOverlays(overlays_error)
 	else
-		overlays = use_power ? (overlays_on) : (overlays_off)
+		SetOverlays(use_power ? (overlays_on) : (overlays_off))
 
 	underlays = underlays_current
 
@@ -224,13 +224,12 @@
 	return null
 
 /obj/machinery/atmospherics/omni/Destroy()
-	loc = null
-
 	for(var/datum/omni_port/P in ports)
 		if(P.node)
 			P.node.disconnect(src)
 			qdel(P.network)
 			P.node = null
+	ports.Cut()
 
 	return ..()
 

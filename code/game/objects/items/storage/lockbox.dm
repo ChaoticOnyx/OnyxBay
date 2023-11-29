@@ -2,7 +2,7 @@
 	name = "lockbox"
 	desc = "A locked box."
 	icon_state = "lockbox+l"
-	item_state = "syringe_kit"
+	item_state = "lockbox"
 	w_class = ITEM_SIZE_HUGE
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = DEFAULT_BACKPACK_STORAGE
@@ -17,7 +17,7 @@
 	update_icon()
 	. = ..()
 
-/obj/item/storage/lockbox/update_icon()
+/obj/item/storage/lockbox/on_update_icon()
 	if(locked)
 		icon_state = icon_locked
 		return

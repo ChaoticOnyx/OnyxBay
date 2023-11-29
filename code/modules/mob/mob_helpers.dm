@@ -683,7 +683,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 	for(var/mob/observer/ghost/O in GLOB.player_list)
 
 		var/follow_link = ""
-		if (source && action == NOTIFY_FOLLOW)
+		if (source && (action == NOTIFY_FOLLOW || action == NOTIFY_POSSES))
 			follow_link = create_ghost_link(O, source, "(F)")
 
 		var/posses_link = posses_mob ? possess_link(O, source) : ""
@@ -730,7 +730,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 
 				alert_overlay.layer = FLOAT_LAYER
 				alert_overlay.plane = FLOAT_PLANE
-				A.overlays += alert_overlay
+				A.AddOverlays(alert_overlay)
 
 /mob/proc/shift_view(new_pixel_x = 0, new_pixel_y = 0, animate = 0)
 	if(!client)

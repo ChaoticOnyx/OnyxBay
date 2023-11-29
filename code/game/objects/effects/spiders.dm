@@ -60,7 +60,7 @@
 	var/sealed = FALSE
 
 /obj/structure/spider/stickyweb/Initialize()
-	..()
+	. = ..()
 	if(prob(50))
 		icon_state = "stickyweb2"
 
@@ -82,10 +82,6 @@
             healthcheck ()
             return
     return ..()
-
-/obj/structure/spider/stickyweb/sealed/Initialize()
-	..()
-	icon_state = "sealedweb"
 
 /obj/structure/spider/stickyweb/CanPass(atom/movable/mover, turf/target)
 	if(sealed)
@@ -126,6 +122,7 @@
 	var/shift_range = 6
 
 /obj/structure/spider/spiderling/Initialize(mapload, atom/parent)
+	. = ..()
 	pixel_x = rand(-shift_range, shift_range)
 	pixel_y = rand(-shift_range, shift_range)
 
@@ -139,7 +136,6 @@
 		set_next_think(world.time)
 
 	get_light_and_color(parent)
-	. = ..()
 
 /obj/structure/spider/spiderling/hunter
 	greater_form = /mob/living/simple_animal/hostile/giant_spider/hunter
@@ -279,7 +275,7 @@
 				else
 					greater_form = pick(/mob/living/simple_animal/hostile/giant_spider, /mob/living/simple_animal/hostile/giant_spider/hunter, /mob/living/simple_animal/hostile/giant_spider/nurse)
 			var/mob/living/simple_animal/hostile/giant_spider/S = new greater_form(src.loc)
-			notify_ghosts("[capitalize(S.name)] is now available to possess!", source = S, action = NOTIFY_FOLLOW, posses_mob = TRUE)
+			notify_ghosts("[capitalize(S.name)] is now available to possess!", source = S, action = NOTIFY_POSSES, posses_mob = TRUE)
 
 			S.faction = faction
 			S.directive = directive
@@ -324,9 +320,9 @@
 	icon_state = "cocoon1"
 	health = 60
 
-/obj/structure/spider/cocoon/Initialize(mapload)
-	icon_state = pick("cocoon1","cocoon2","cocoon3")
+/obj/structure/spider/cocoon/Initialize()
 	. = ..()
+	icon_state = pick("cocoon1", "cocoon2", "cocoon3")
 
 /obj/structure/spider/cocoon/proc/mob_breakout(mob/living/user)// For God's sake, don't make it a closet
 	var/breakout_time = 600

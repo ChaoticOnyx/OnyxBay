@@ -99,6 +99,10 @@
 	name = "Very Long Hair"
 	icon_state = "longest"
 
+/datum/sprite_accessory/hair/longest_stylish
+	name = "Very Long Hair S"
+	icon_state = "longest_stylish"
+
 /datum/sprite_accessory/hair/longfringe
 	name = "Long Fringe"
 	icon_state = "longfringe"
@@ -320,6 +324,10 @@
 	name = "Overeye Short"
 	icon_state = "shortovereye"
 
+/datum/sprite_accessory/hair/shortovereye_stylish
+	name = "Overeye Short Stylish"
+	icon_state = "shortovereye_stylish"
+
 /datum/sprite_accessory/hair/longovereye
 	name = "Overeye Long"
 	icon_state = "longovereye"
@@ -452,6 +460,11 @@
 	icon_state = "drillruru"
 	gender = FEMALE
 
+/datum/sprite_accessory/hair/drillruru_stylish
+	name = "Drillruru Stylish"
+	icon_state = "drillruru_stylish"
+	gender = FEMALE
+
 /datum/sprite_accessory/hair/fringetail
 	name = "Fringetail"
 	icon_state = "fringetail"
@@ -507,6 +520,10 @@
 /datum/sprite_accessory/hair/volaju
 	name = "Volaju"
 	icon_state = "volaju"
+
+/datum/sprite_accessory/hair/volaju_stylish
+	name = "Volaju Stylish"
+	icon_state = "volaju_stylish"
 
 /datum/sprite_accessory/hair/shortbangs
 	name = "Short Bangs"
@@ -821,14 +838,24 @@
 	name = "Kusanagi Hair"
 	icon_state = "kusanagi"
 
+/datum/sprite_accessory/hair/ladylike_stylish
+	name = "Ladylike Stylish"
+	icon_state = "ladylike_stylish"
+	gender = FEMALE
+
 /datum/sprite_accessory/hair/ladylike
 	name = "Ladylike"
 	icon_state = "ladylike"
 	gender = FEMALE
 
-/datum/sprite_accessory/hair/ladylike2
-	name = "Ladylike 2"
-	icon_state = "ladylike2"
+/datum/sprite_accessory/hair/ladylike_alt_stylish
+	name = "Ladylike Alt Stylish"
+	icon_state = "ladylike_alt_stylish"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/ladylike_alt
+	name = "Ladylike Alt"
+	icon_state = "ladylike_alt"
 	gender = FEMALE
 
 /datum/sprite_accessory/hair/ming_dynasty_swtgr
@@ -963,8 +990,13 @@
 	icon_state = "long_sideparts"
 	gender = FEMALE
 
+/datum/sprite_accessory/hair/long_straight_ponytail
+	name = "Long Straight Ponytail"
+	icon_state = "long_straight_ponytail"
+	gender = FEMALE
+
 /datum/sprite_accessory/hair/long_braid
-	name = "Long Braid"
+	name = "Long Braid Stylish"
 	icon_state = "long_braid"
 	gender = FEMALE
 
@@ -1272,17 +1304,200 @@ May God have mercy.
 	icon_state = "fin"
 
 // Skrell Hairstyles
-/datum/sprite_accessory/hair/skr_tentacle_m
-	name = "Skrell Male Tentacles"
-	icon_state = "male"
+/datum/sprite_accessory/hair/skr_hair_m
+	name = "Short Headtails"
+	icon_state = "skrell_hair_m"
 	species_allowed = list(SPECIES_SKRELL)
-	gender = MALE
 
-/datum/sprite_accessory/hair/skr_tentacle_f
-	name = "Skrell Female Tentacles"
-	icon_state = "female"
+/datum/sprite_accessory/hair/skr_hair_f
+	name = "Headtails"
+	icon_state = "skrell_hair_f"
 	species_allowed = list(SPECIES_SKRELL)
-	gender = FEMALE
+
+/datum/sprite_accessory/hair/veryshort_s
+	name = "Very Short Headtails"
+	icon_state = "veryshort_s"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/verylong_s
+	name = "Long Headtails"
+	icon_state = "verylong_s"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_hoop
+	name = "Hoop Ponytail"
+	icon_state = "skrell_hoop"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_backwater
+	name = "Backwater Ponytail"
+	icon_state = "skrell_backwater"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_reef
+	name = "Reef Ponytail"
+	icon_state = "skrell_reef"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_tucked
+	name = "Short Tucked Headtails"
+	icon_state = "skrell_tucked"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_straight_tuux
+	name = "Straight Tuux Headtails"
+	icon_state = "skrell_straight_tuux"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_straight_tuux_long
+	name = "Long Straight Tuux Headtails"
+	icon_state = "skrell_straight_tuux_long"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_long_tuux
+	name = "Wavy Tuux Headtails"
+	icon_state = "skrell_long_tuux"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_short_tuux
+	name = "Short Tuux Headtails"
+	icon_state = "skrell_short_tuux"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_slicked
+	name = "Short Slicked Headtails"
+	icon_state = "skrell_slicked"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_left_emo_long
+	name = "Long Overeye Headtails (left)"
+	icon_state = "skrell_left_emo_long"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_right_emo_long
+	name = "Long Overeye Headtails (right)"
+	icon_state = "skrell_right_emo_long"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_left_emo
+	name = "Short Overeye Headtails (left)"
+	icon_state = "skrell_left_emo"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_right_emo
+	name = "Short Overeye Headtails (right)"
+	icon_state = "skrell_right_emo"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_left_behind
+	name = "Headtail Behind (left)"
+	icon_state = "skrell_left_behind"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_right_behind
+	name = "Headtail Behind (right)"
+	icon_state = "skrell_right_behind"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_right_behind_long
+	name = "Long Headtail Behind (right)"
+	icon_state = "skrell_right_behind_long"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_left_behind_long
+	name = "Long Headtail Behind (left)"
+	icon_state = "skrell_left_behind_long"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_both_behind
+	name = "Headtails Behind (both)"
+	icon_state = "skrell_both_behind"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_both_behind_short
+	name = "Short Headtails Behind (both)"
+	icon_state = "skrell_both_behind_short"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_both_behind_long
+	name = "Long Headtails Behind (both)"
+	icon_state = "skrell_both_behind_long"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_reef_short
+	name = "Short Reef Ponytail"
+	icon_state = "skrell_reef_short"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_short_mid_bun
+	name = "Skrell Short Bun"
+	icon_state = "skrell_short_mid_bun"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_mid_bun
+	name = "Skrell Bun"
+	icon_state = "skrell_mid_bun"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_long_mid_bun
+	name = "Skrell Long Bun"
+	icon_state = "skrell_long_mid_bun"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_mullet
+	name = "Skrell Mullet"
+	icon_state = "skrell_mullet"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_low_bun
+	name = "Skrell Low Bun"
+	icon_state = "skrell_low_bun"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_loose_braid
+	name = "Braided Headtails"
+	icon_state = "skrell_loose_braid"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/verylong_s_dmg_r
+	name = "Damaged Long Headtails (right)"
+	icon_state = "verylong_s_dmg_r"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/verylong_s_dmg_l
+	name = "Damaged Long Headtails (left)"
+	icon_state = "verylong_s_dmg_l"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_hair_f_dmg_r
+	name = "Damaged Headtails (right)"
+	icon_state = "skrell_hair_f_dmg_r"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_hair_f_dmg_l
+	name = "Damaged Headtails (left)"
+	icon_state = "skrell_hair_f_dmg_l"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_both_behind_dmg_r
+	name = "Damaged Headtails Behind (right)"
+	icon_state = "skrell_both_behind_dmg_r"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_both_behind_dmg_l
+	name = "Damaged Headtails Behind (left)"
+	icon_state = "skrell_both_behind_dmg_l"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_both_behind_long_dmg_l
+	name = "Long Damaged Headtails Behind (left)"
+	icon_state = "skrell_both_behind_long_dmg_l"
+	species_allowed = list(SPECIES_SKRELL)
+
+/datum/sprite_accessory/hair/skrell_both_behind_long_dmg_r
+	name = "Long Damaged Headtails Behind (right)"
+	icon_state = "skrell_both_behind_long_dmg_r"
+	species_allowed = list(SPECIES_SKRELL)
 
 // Tajaran Hairstyles
 /datum/sprite_accessory/hair/taj_ears

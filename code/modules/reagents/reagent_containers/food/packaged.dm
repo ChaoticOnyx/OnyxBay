@@ -18,7 +18,7 @@
 		return
 	return ..()
 
-/obj/item/reagent_containers/food/packaged/update_icon()
+/obj/item/reagent_containers/food/packaged/on_update_icon()
 	if(is_open_container())
 		if(bitecount)
 			icon_state = "[initial(icon_state)]2"

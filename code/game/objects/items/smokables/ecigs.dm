@@ -106,22 +106,22 @@
 
 	return ..()
 
-/obj/item/clothing/mask/smokable/ecig/update_icon()
+/obj/item/clothing/mask/smokable/ecig/on_update_icon()
 	if(active)
 		set_light(0.6, 0.5, brightness_on)
 		icon_state = "[base_icon]_on"
 
 		var/new_overlay_state = "[base_icon]_charge1"
-		if(cigcell.percent() >= 50)
+		if(CELL_PERCENT(cigcell) >= 50)
 			new_overlay_state = "[base_icon]_charge3"
-		else if(cigcell.percent() >= 25)
+		else if(CELL_PERCENT(cigcell) >= 25)
 			new_overlay_state = "[base_icon]_charge2"
 
 		if(new_overlay_state != overlay_state)
 			overlay_state = new_overlay_state
-			overlays.Cut()
+			ClearOverlays()
 			if(overlay_state)
-				overlays += image('icons/obj/ecig.dmi', overlay_state)
+				AddOverlays(image('icons/obj/ecig.dmi', overlay_state))
 	else
 		set_light(0)
 		if(opened)
@@ -129,7 +129,7 @@
 		else
 			icon_state = "[base_icon]_off"
 		overlay_state = ""
-		overlays.Cut()
+		ClearOverlays()
 
 	if(ismob(loc))
 		var/mob/living/M = loc
@@ -249,7 +249,7 @@
 	var/list/led_descs = list("blue flames", "blazing embers", "green venom", "royal purple")
 	var/current_color = 2
 
-/obj/item/clothing/mask/smokable/ecig/util/update_icon()
+/obj/item/clothing/mask/smokable/ecig/util/on_update_icon()
 	..()
 	if(active)
 		icon_state = "[base_icon]_on_[led_colors[current_color]]"
@@ -260,7 +260,7 @@
 		. += SPAN("notice", "\nThere are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.")
 	else
 		. += SPAN("notice", "\nThere is no cartridge connected.")
-	. += SPAN("notice", "\nGauge shows about [round(cigcell.percent(), 25)]% energy remaining.")
+	. += SPAN("notice", "\nGauge shows about [round(CELL_PERCENT(cigcell), 25)]% energy remaining.")
 	var/_led = led_descs[current_color]
 	. += SPAN("notice", "\nLEDs are set to \"[_led]\" mode.")
 
@@ -290,7 +290,7 @@
 		. += SPAN("notice", "\nThere are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.")
 	else
 		. += SPAN("notice", "\nThere is no cartridge connected.")
-	. += SPAN("notice", "\nGauge shows [round(cigcell.percent(), 1)]% energy remaining.")
+	. += SPAN("notice", "\nGauge shows [round(CELL_PERCENT(cigcell), 1)]% energy remaining.")
 
 
 /// Cartridges
@@ -314,7 +314,7 @@
 	. = ..()
 	var/image/over = image('icons/obj/ecig.dmi', "[icon_state]_over")
 	over.color = label_color
-	overlays += over
+	AddOverlays(over)
 
 /obj/item/reagent_containers/ecig_cartridge/proc/make_disposable() // Sweet hacks
 	volume *= 4
@@ -458,23 +458,23 @@
 	color = ec_cartridge.label_color
 	desc += " This one is [ec_cartridge.flavor] flavored."
 
-/obj/item/clothing/mask/smokable/ecig/disposable/update_icon()
+/obj/item/clothing/mask/smokable/ecig/disposable/on_update_icon()
 	icon_state = base_icon
 
 	if(active)
 		var/new_overlay_state = "[base_icon]_charge1"
-		if(cigcell.percent() >= 50)
+		if(CELL_PERCENT(cigcell) >= 50)
 			new_overlay_state = "[base_icon]_charge3"
-		else if(cigcell.percent() >= 25)
+		else if(CELL_PERCENT(cigcell) >= 25)
 			new_overlay_state = "[base_icon]_charge2"
 
 		if(new_overlay_state != overlay_state)
 			overlay_state = new_overlay_state
 			if(overlay_state)
-				overlays += overlay_image('icons/obj/ecig.dmi', overlay_state, flags=RESET_COLOR)
+				AddOverlays(OVERLAY('icons/obj/ecig.dmi', overlay_state, alpha, RESET_COLOR))
 	else
 		overlay_state = ""
-		overlays.Cut()
+		ClearOverlays()
 
 	if(ismob(loc))
 		var/mob/living/M = loc

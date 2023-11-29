@@ -118,7 +118,6 @@
 //vampire
 #define VAMP_DRAINING   0x1
 #define VAMP_HEALING    0x2
-#define VAMP_PRESENCE   0x4
-#define VAMP_FRENZIED   0x8
-#define VAMP_ISTHRALL   0x10
-#define VAMP_FULLPOWER  0x20
+#define VAMP_FRENZIED   0x4
+#define VAMP_ISTHRALL   0x8
+#define VAMP_FULLPOWER  0x10

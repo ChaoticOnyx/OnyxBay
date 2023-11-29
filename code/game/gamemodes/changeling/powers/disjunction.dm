@@ -98,7 +98,7 @@
 			continue
 		H.drop(I, force = TRUE)
 
-	var/atom/movable/overlay/effect = new /atom/movable/overlay(get_turf(H))
+	var/atom/movable/fake_overlay/effect = new /atom/movable/fake_overlay(get_turf(H))
 
 	effect.density = FALSE
 	effect.anchored = TRUE

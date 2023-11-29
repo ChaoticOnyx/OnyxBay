@@ -158,6 +158,7 @@
 	charge_meter = 0
 	clumsy_unaffected = 1
 	combustion = FALSE
+	has_safety = FALSE
 
 /obj/item/gun/energy/staff/special_check(mob/user)
 	if((user.mind && !GLOB.wizards.is_antagonist(user.mind)))
@@ -215,8 +216,8 @@
 	origin_tech = list(TECH_MATERIAL = 6, TECH_PLASMA = 5, TECH_ENGINEERING = 6, TECH_COMBAT = 3)
 	matter = list(MATERIAL_STEEL = 4000)
 	projectile_type = /obj/item/projectile/beam/plasmacutter
-	charge_cost = 0
-	fire_delay = 10
+	charge_cost = 20
+	fire_delay = 6
 	max_shots = 10
 	var/danger_attack = FALSE
 
@@ -225,6 +226,10 @@
 		list(mode_name="battle mode", projectile_type = /obj/item/projectile/beam/plasmacutter/danger, charge_cost = 20, fire_delay = 6, danger_attack = TRUE),
 	)
 	has_safety = FALSE
+
+/obj/item/gun/energy/plasmacutter/Initialize()
+	. = ..()
+	switch_firemodes()
 
 /obj/item/gun/energy/plasmacutter/_examine_text(mob/user)
 	. = ..()

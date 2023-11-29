@@ -202,7 +202,7 @@
 /obj/item/trash/attack(mob/M as mob, mob/living/user as mob)
 	return
 
-/obj/item/trash/dish/update_icon()
+/obj/item/trash/dish/on_update_icon()
 	icon_state = "[initial(icon_state)][length(stack) || ""]"
 
 /obj/item/trash/dish/attackby(obj/item/I, mob/user)

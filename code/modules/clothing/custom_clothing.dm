@@ -165,6 +165,45 @@
 		/obj/item/grenade
 		)
 
+// AnimeshkaTvar
+/obj/item/clothing/head/helmet/space/void/syndi/clown_syndie
+	name = "strange clown helmet"
+	desc = "A strange helmet with a clown face on it. It looks like it was made by an unknown party."
+	icon_state = "clown_syndie"
+	item_state = "clown_syndie"
+	item_state_slots = list(
+		slot_l_hand_str = "syndie_clown",
+		slot_r_hand_str = "syndie_clown",
+	)
+
+/obj/item/clothing/suit/space/void/syndi/clown_syndie
+	name = "Syndicate “Honk” voidsuit"
+	desc = "A suit that protects you against the void. It has a clown face on it."
+	icon_state = "rig-syndie-clown"
+	item_state = "rig-syndie-clown"
+	item_state_slots = list(
+		slot_l_hand_str = "syndie_clown",
+		slot_r_hand_str = "syndie_clown",
+	)
+
+/obj/item/device/modkit/clown_syndie
+	name = "clown syndie voidsuit modkit"
+	desc = "A kit containing all the needed tools and parts to modify a voidsuit into a clown syndie voidsuit."
+	icon_state = "modkit"
+
+/obj/item/device/modkit/clown_syndie/New()
+	..()
+	parts = new /list(2)
+	original = new /list(2)
+	finished = new /list(2)
+
+	parts[1] =	1
+	original[1] =  /obj/item/clothing/head/helmet/space/void/syndi
+	finished[1] = /obj/item/clothing/head/helmet/space/void/syndi/clown_syndie
+	parts[2] =	1
+	original[2] = /obj/item/clothing/suit/space/void/syndi
+	finished[2] = /obj/item/clothing/suit/space/void/syndi/clown_syndie
+
 // NoTips
 /obj/item/clothing/suit/fire/firefighter/atmos
 	name = "atmospherics firesuit"
@@ -203,3 +242,33 @@
 	icon_closed = "heart_jacket"
 	body_parts_covered = UPPER_TORSO|ARMS
 	initial_closed = TRUE
+
+// Popky_dau
+/obj/item/clothing/under/soviet/tcc
+	name = "TCC uniform"
+	desc = "For Magnitka!"
+	icon_state = "soviet_tcc"
+
+/obj/item/clothing/head/helmet/tcc
+	name = "TCC army helmet"
+	desc = "For Magnitka! Protects the head from Gaian sentiments."
+	icon_state = "tcchelm"
+	valid_accessory_slots = null
+	body_parts_covered = HEAD
+	visor_body_parts_covered = NO_BODYPARTS
+
+/obj/item/device/modkit/helmet_tcc
+	name = "TCC army helmet modkit"
+	desc = "A kit containing all the needed tools and parts to modify a helmet into a TCC army helmet."
+	icon_state = "modkit"
+
+/obj/item/device/modkit/helmet_tcc/New()
+	..()
+	parts = new /list(1)
+	original = new /list(1)
+	finished = new /list(1)
+
+	parts[1] =	1
+	original[1] =  /obj/item/clothing/head/helmet
+	finished[1] = /obj/item/clothing/head/helmet/tcc
+

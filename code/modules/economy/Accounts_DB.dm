@@ -3,6 +3,9 @@
 	name = "accounts uplink terminal"
 	desc = "Access transaction logs, account data and all kinds of other financial records."
 
+	icon_screen = "accounts"
+	light_color = "#0099FF"
+
 	req_one_access = list(access_hop, access_captain, access_cent_captain)
 	var/receipt_num
 	var/machine_id = ""

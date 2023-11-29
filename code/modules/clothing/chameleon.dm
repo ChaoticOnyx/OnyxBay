@@ -410,7 +410,7 @@
 	charge_meter = 0
 	charge_cost = 20 //uses next to no power, since it's just holograms
 	max_shots = 50
-
+	has_safety = FALSE
 	var/obj/item/projectile/copy_projectile
 	var/global/list/gun_choices
 

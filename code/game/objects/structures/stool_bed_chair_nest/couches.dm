@@ -69,7 +69,7 @@
 	update_icon()
 	return ..()
 
-/obj/structure/bed/couch/update_icon()
+/obj/structure/bed/couch/on_update_icon()
 	..()
 
 	var/cache_key = "[base_icon]-[material.name]-over"
@@ -79,7 +79,7 @@
 			I.color = material.icon_colour
 		I.layer = ABOVE_HUMAN_LAYER
 		stool_cache[cache_key] = I
-	overlays |= stool_cache[cache_key]
+	AddOverlays(stool_cache[cache_key])
 	if(buckled_mob)
 		cache_key = "[base_icon]_armrest"
 		var/image/I = image('icons/obj/furniture.dmi', "[base_icon]_armrest")
@@ -87,12 +87,12 @@
 		if(material_alteration & MATERIAL_ALTERATION_COLOR)
 			I.color = padding_material.icon_colour
 		stool_cache[cache_key] = I
-		overlays |= stool_cache[cache_key]
+		AddOverlays(stool_cache[cache_key])
 
 	if(health <= max_health*0.33)
-		overlays += icon('icons/obj/furniture.dmi', "couch-tear")
+		AddOverlays(image('icons/obj/furniture.dmi', "couch-tear"))
 	else if (health <= max_health*0.67)
-		overlays += icon('icons/obj/furniture.dmi', "couch-rip")
+		AddOverlays(image('icons/obj/furniture.dmi', "couch-rip"))
 
 /obj/structure/bed/couch/set_dir()
 	..()

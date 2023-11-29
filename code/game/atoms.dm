@@ -41,6 +41,12 @@
 	var/chat_color
 	var/chat_color_darkened
 
+	/// This atom's cache of non-protected overlays, used for normal icon additions. Do not manipulate directly- See SSoverlays.
+	var/list/atom_overlay_cache
+
+	/// This atom's cache of overlays that can only be removed explicitly, like C4. Do not manipulate directly- See SSoverlays.
+	var/list/atom_protected_overlay_cache
+
 /atom/New(loc, ...)
 	CAN_BE_REDEFINED(TRUE)
 	//atom creation method that preloads variables at creation
@@ -113,7 +119,8 @@
 /atom/Destroy()
 	QDEL_NULL(reagents)
 	QDEL_NULL(proximity_monitor)
-
+	ClearOverlays()
+	underlays.Cut()
 	return ..()
 
 /atom/proc/reveal_blood()
@@ -336,7 +343,12 @@ its easier to just keep the beam vertical.
 	update_icon()
 
 /atom/proc/update_icon()
-	CAN_BE_REDEFINED(TRUE)
+	if(QDELETED(src))
+		return
+	on_update_icon(arglist(args))
+	return
+
+/atom/proc/on_update_icon()
 	return
 
 /atom/proc/blob_act(damage)
