@@ -173,7 +173,7 @@
 /obj/item/projectile/proc/check_penetrate(atom/A)
 	return 1
 
-/obj/item/projectile/proc/launch(atom/target, target_zone, mob/user, params, Angle_override, forced_spread = 0)
+/obj/item/projectile/proc/launch(atom/target, target_zone, mob/user, params, obj/item/gun/launcher, Angle_override, forced_spread = 0)
 	original = target
 	previous = get_turf(loc)
 	def_zone = check_zone(target_zone)
@@ -183,10 +183,6 @@
 		direct_target = target
 	preparePixelProjectile(target, user? user : get_turf(src), params, forced_spread)
 	return fire(Angle_override, direct_target)
-
-//called to launch a projectile from a gun
-/obj/item/projectile/proc/launch_from_gun(atom/target, target_zone, mob/user, params, Angle_override, forced_spread, obj/item/gun/launcher)
-	return launch(target, target_zone, user, params)
 
 //sets the click point of the projectile using mouse input params
 /obj/item/projectile/proc/set_clickpoint(params)
