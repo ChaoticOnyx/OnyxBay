@@ -48,6 +48,7 @@
 	appearance_flags = HAS_HAIR_COLOR | HAS_LIPS | HAS_UNDERWEAR | HAS_SKIN_COLOR | HAS_EYE_COLOR
 
 	flesh_color = "#333300"
+	default_eye_color = "#FFCB00"
 
 	reagent_tag = IS_UNATHI
 	base_color = "#066000"

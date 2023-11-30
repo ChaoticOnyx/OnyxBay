@@ -214,7 +214,7 @@
 			src.loc = null
 	else
 		return
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/effect/shadow_wight/Bump(atom/obstacle)

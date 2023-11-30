@@ -39,10 +39,11 @@
 
 	species_flags = SPECIES_FLAG_NO_SCAN
 	spawn_flags = SPECIES_IS_RESTRICTED
-	appearance_flags = HAS_EYE_COLOR | HAS_HAIR_COLOR
+	appearance_flags = HAS_HAIR_COLOR
 
 	blood_color = "#2299fc"
 	flesh_color = "#808d11"
+	default_eye_color = "#ffffff"
 	organs_icon = 'icons/mob/human_races/organs/vox.dmi'
 
 	reagent_tag = IS_VOX

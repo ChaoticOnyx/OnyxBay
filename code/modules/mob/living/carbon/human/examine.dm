@@ -94,7 +94,7 @@
 	// gloves
 	if(gloves && !skipgloves)
 		msg += "[T.He] [T.has] [gloves.get_examine_line()] on [T.his] hands.\n"
-	else if(blood_DNA)
+	else if(is_bloodied)
 		msg += SPAN("warning", "[T.He] [T.has] [(hand_blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained hands!\n")
 
 	// belt
@@ -113,7 +113,7 @@
 		if(istype(wear_mask, /obj/item/grenade))
 			descriptor = "in [T.his] mouth"
 
-		if(wear_mask.blood_DNA)
+		if(wear_mask.is_bloodied)
 			msg += SPAN("warning", "[T.He] [T.has] \icon[wear_mask] [wear_mask.gender==PLURAL?"some":"a"] [(wear_mask.blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [wear_mask.name] [descriptor]!\n")
 		else
 			msg += "[T.He] [T.has] \icon[wear_mask] \a [wear_mask] [descriptor].\n"

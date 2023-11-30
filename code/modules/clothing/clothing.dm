@@ -46,15 +46,15 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 
 	if(ishuman(user_mob))
 		var/mob/living/carbon/human/user_human = user_mob
-		if(blood_overlay_type && blood_DNA && user_human.body_build.blood_icon)
+		if(blood_overlay_type && is_bloodied && user_human.body_build.blood_icon)
 			var/mob_state = get_icon_state(slot)
 			var/mob_icon = user_human.body_build.get_mob_icon(slot, mob_state)
 			var/cache_index = "[mob_icon]/[mob_state]/[blood_color]"
 			if(!GLOB.clothing_blood_icons[cache_index])
-				var/image/bloodover = image(icon = user_human.body_build.blood_icon, icon_state = blood_overlay_type)
-				bloodover.color = blood_color
+				var/mutable_appearance/bloodover = mutable_appearance(user_human.body_build.blood_icon, blood_overlay_type, color = blood_color, flags = DEFAULT_APPEARANCE_FLAGS|RESET_COLOR)
 				bloodover.filters += filter(type = "alpha", icon = icon(mob_icon, mob_state))
 				GLOB.clothing_blood_icons[cache_index] = bloodover
+
 			ret.AddOverlays(GLOB.clothing_blood_icons[cache_index])
 
 	if(length(accessories))
@@ -65,7 +65,8 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 // Aurora forensics port.
 /obj/item/clothing/clean_blood()
 	. = ..()
-	gunshot_residue = null
+	if(.)
+		gunshot_residue = null
 
 /obj/item/clothing/proc/get_fibers()
 	var/fiber_id = copytext(md5("\ref[src] fiber"), 1, 6)
@@ -249,6 +250,8 @@ BLIND     // can't see anything
 	attack_verb = list("challenged")
 	species_restricted = list("exclude", SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "bloodyhands"
+	var/transfer_blood = 0
+	var/mob/living/carbon/human/bloody_hands_mob
 
 /obj/item/clothing/gloves/Initialize()
 	if(item_flags & ITEM_FLAG_PREMODIFIED)
@@ -374,6 +377,11 @@ BLIND     // can't see anything
 			R.forceMove(get_turf(src))
 	ring = null
 	wearer = null
+
+/obj/item/clothing/gloves/clean_blood()
+	. = ..()
+	if(.)
+		transfer_blood = 0
 
 ///////////////////////////////////////////////////////////////////////
 //Head
@@ -575,6 +583,7 @@ BLIND     // can't see anything
 
 	var/can_hold_knife
 	var/obj/item/holding
+	var/track_blood = 0
 
 	permeability_coefficient = 0.50
 	force = 2
@@ -651,6 +660,17 @@ BLIND     // can't see anything
 	if (ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_shoes()
+
+/obj/item/clothing/shoes/add_blood(source, new_track_blood = 0)
+	. = ..(source)
+	if(.)
+		track_blood = max(new_track_blood, track_blood)
+
+/obj/item/clothing/shoes/clean_blood()
+	. = ..()
+	if(.)
+		track_blood = 0
+
 
 ///////////////////////////////////////////////////////////////////////
 //Suit

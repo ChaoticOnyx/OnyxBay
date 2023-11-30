@@ -48,10 +48,7 @@
 	else
 		icon_state = "telebaton_0"
 		item_state = "telebaton_0"
-	if(length(blood_DNA))
-		generate_blood_overlay(TRUE) // Force recheck.
-		ClearOverlays()
-		AddOverlays(blood_overlay)
+	update_blood_overlay()
 
 /obj/item/melee/telebaton/attack(mob/target as mob, mob/living/user as mob)
 	if(on)
