@@ -433,7 +433,7 @@ its easier to just keep the beam vertical.
 	if(!simulated)
 		return FALSE
 	is_bloodied = FALSE
-	fluorescent = FALSE
+	fluorescent = 0
 	germ_level = 0
 	if(islist(blood_DNA))
 		blood_DNA.Cut()
