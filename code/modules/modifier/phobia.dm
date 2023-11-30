@@ -135,7 +135,7 @@
 				clothing_slots += list(H.l_store, H.r_store)
 
 			for(var/obj/item/clothing/C in clothing_slots)
-				if(C.blood_DNA && C.blood_color && C.blood_color != SYNTH_BLOOD_COLOUR)
+				if(C.is_bloodied && C.blood_color && C.blood_color != SYNTH_BLOOD_COLOUR)
 					human_blood_fear_amount += 1
 
 			// This is divided, since humans can wear so many items at once.
@@ -145,7 +145,7 @@
 		// Bloody objects are also bad.
 		if(istype(thing, /obj))
 			var/obj/O = thing
-			if(O.blood_DNA && O.blood_color && O.blood_color != SYNTH_BLOOD_COLOUR)
+			if(O.is_bloodied && O.blood_color && O.blood_color != SYNTH_BLOOD_COLOUR)
 				fear_amount++
 
 	return fear_amount

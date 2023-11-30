@@ -200,7 +200,7 @@
 	for(var/name in disguises)
 		var/datum/icon_snapshot/snap = disguises[name]
 		var/image/dummy = image(snap.icon, src, snap.icon_state)
-		dummy.CopyOverlays(snap)
+		dummy.overlays = snap.overlays.Copy()
 		disguises2[name] = dummy
 
 	var/entry_name
@@ -227,6 +227,7 @@
 	if(istype(target.head, /obj/item/clothing/head/tinfoil))
 		state("Subject wearing specialized protective tinfoil gear, unable to get a proper scan!")
 		return
+	target.ImmediateOverlayUpdate()
 
 	var/datum/icon_snapshot/entry = new
 	entry.real_name = target.real_name

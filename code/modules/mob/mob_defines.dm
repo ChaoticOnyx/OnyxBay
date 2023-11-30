@@ -218,3 +218,10 @@
 	var/thinking_IC = FALSE
 	/// Whether typing indicator sould be shown
 	var/thinking_silent = FALSE
+
+	var/bloody_hands = null
+	var/mob/living/carbon/human/bloody_hands_mob
+	var/track_blood = 0
+	var/list/feet_blood_DNA
+	var/track_blood_type
+	var/feet_blood_color
