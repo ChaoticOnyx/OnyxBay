@@ -977,26 +977,42 @@
 	var/obj/item/organ/internal/lungs/L = internal_organs_by_name[BP_LUNGS]
 	return L && L.is_bruised()
 
-/mob/living/carbon/human/add_blood(mob/living/carbon/human/M as mob)
-	if (!..())
-		return 0
+/mob/living/carbon/human/add_blood(source)
+	. = ..()
+	if(!.)
+		return
+
 	//if this blood isn't already in the list, add it
-	if(istype(M))
+	if(ishuman(source))
+		var/mob/living/carbon/human/M = source
 		if(!blood_DNA[M.dna.unique_enzymes])
 			blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
 	hand_blood_color = blood_color
-	src.update_inv_gloves()	//handles bloody hands overlays and updating
+	update_inv_gloves(1) // handles bloody hands overlays and updating
 	verbs += /mob/living/carbon/human/proc/bloody_doodle
-	return 1 //we applied blood to the item
 
 /mob/living/carbon/human/clean_blood(clean_feet)
-	.=..()
+	. =..()
+	if(!.)
+		return
+
 	gunshot_residue = null
+
 	if(clean_feet && !shoes)
 		feet_blood_color = null
 		feet_blood_DNA = null
 		update_inv_shoes(1)
-		return 1
+
+	if(gloves)
+		if(gloves.clean_blood())
+			update_inv_gloves(0)
+		gloves.germ_level = 0
+	else
+		if(!isnull(bloody_hands))
+			bloody_hands = null
+			update_inv_gloves(0)
+		germ_level = 0
+	update_icons()	//apply the now updated overlays to the mob
 
 /mob/living/carbon/human/get_visible_implants(class = 0)
 	var/list/visible_implants = ..()
