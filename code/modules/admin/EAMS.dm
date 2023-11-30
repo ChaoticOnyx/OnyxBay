@@ -261,7 +261,7 @@ SUBSYSTEM_DEF(eams)
 
 	if (C.eams_info.loaded)
 		if ((C.eams_info.ip_countryCode in __allowed_countries) && !C.eams_info.ip_proxy)
-			if(__panic && get_player_age(C.ckey) > 0)
+			if(__panic && get_player_age(C.ckey) == 0)
 				to_chat(C, SPAN_WARNING("You were blocked by EAMS! Please, contact Administrators."))
 				log_and_message_admins("Blocked by panic EAMS: [C.key], age [get_player_age(C.ckey)], ([C.address]) connected from [C.eams_info.ip_country] ([C.eams_info.ip_countryCode])", 0)
 				return FALSE
