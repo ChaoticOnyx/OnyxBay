@@ -135,6 +135,7 @@
 
 	flesh_color = "#663300"
 	base_color = "#333333"
+	default_eye_color = "#339900"
 	blood_color = COLOR_BLOOD_TAJARAN
 	organs_icon = 'icons/mob/human_races/organs/tajaran.dmi'
 	reagent_tag = IS_TAJARA
@@ -204,6 +205,7 @@
 	flesh_color = "#339966"
 	blood_color = COLOR_BLOOD_SKRELL
 	base_color = "#006666"
+	default_eye_color = "#ffffff"
 	organs_icon = 'icons/mob/human_races/organs/skrell.dmi'
 
 	cold_level_1 = 280 //Default 260 - Lower is better

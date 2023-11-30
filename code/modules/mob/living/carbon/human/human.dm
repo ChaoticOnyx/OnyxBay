@@ -1160,9 +1160,13 @@
 		g_skin = 0
 		b_skin = 0
 
+	if(default_colour || !(species.appearance_flags & HAS_EYE_COLOR))
+		r_eyes = hex2num(copytext(species.default_eye_color, 2, 4))
+		g_eyes = hex2num(copytext(species.default_eye_color, 4, 6))
+		b_eyes = hex2num(copytext(species.default_eye_color, 6, 8))
+
 	if(species.holder_type)
 		holder_type = species.holder_type
-
 
 	if(!(gender in species.genders))
 		gender = species.genders[1]
