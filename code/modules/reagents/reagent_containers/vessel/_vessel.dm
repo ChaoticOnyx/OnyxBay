@@ -486,9 +486,9 @@
 				smash(flip_turf, flip_turf)
 			else
 				item_state = initial(item_state)
-				user.ImmediateOverlayUpdate()
 				user.update_inv_l_hand()
 				user.update_inv_r_hand()
+				user.ImmediateOverlayUpdate()
 				playsound(src, 'sound/effects/slap.ogg', 50, 1, -2)
 			QDEL_NULL(flipping)
 			last_flipping = world.time
