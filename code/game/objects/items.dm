@@ -697,11 +697,10 @@ var/list/global/slot_flags_enumeration = list(
 
 /obj/item/clean_blood()
 	. = ..()
+	if(!.)
+		return
 	if(blood_overlay)
 		CutOverlays(blood_overlay, ATOM_ICON_CACHE_PROTECTED)
-	if(istype(src, /obj/item/clothing/gloves))
-		var/obj/item/clothing/gloves/G = src
-		G.transfer_blood = 0
 
 /obj/item/reveal_blood()
 	if(was_bloodied && !fluorescent)
@@ -710,27 +709,28 @@ var/list/global/slot_flags_enumeration = list(
 		blood_overlay.color = COLOR_LUMINOL
 		update_icon()
 
-/obj/item/add_blood(mob/living/carbon/human/M)
-	if (!..())
-		return 0
-
-	if(istype(src, /obj/item/melee/energy))
+/obj/item/add_blood(source)
+	var/bloodied_check = is_bloodied
+	var/old_blood_color = blood_color
+	. = ..()
+	if(!.)
 		return
 
-	//if we haven't made our blood_overlay already
+	// if we haven't made our blood_overlay already
 	if(!blood_overlay)
 		generate_blood_overlay()
 
-	//apply the blood-splatter overlay if it isn't already in there
-	if(!blood_DNA.len)
+	// apply the blood-splatter overlay if it wasn't there
+	if(!bloodied_check)
 		AddOverlays(blood_overlay, ATOM_ICON_CACHE_PROTECTED)
+	else if(blood_color != old_blood_color)
+		update_blood_overlay()
 
-	//if this blood isn't already in the list, add it
-	if(istype(M))
-		if(blood_DNA[M.dna.unique_enzymes])
-			return 0 //already bloodied with this blood. Cannot add more.
-		blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
-	return 1 //we applied blood to the item
+	// if this blood isn't already in the list, add it
+	if(ishuman(source))
+		var/mob/living/carbon/human/M = source
+		if(!blood_DNA[M.dna.unique_enzymes])
+			blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
 
 GLOBAL_LIST_EMPTY(blood_overlay_cache)
 
@@ -744,6 +744,17 @@ GLOBAL_LIST_EMPTY(blood_overlay_cache)
 	blood.filters += filter(type = "alpha", icon = icon(icon, icon_state))
 	GLOB.blood_overlay_cache["[icon]/[icon_state]/[blood_color]"] = blood
 	blood_overlay = blood
+
+// Regenerates the bloodiness, to be used when the item's icon_state get changed to something of another shape.
+/obj/item/proc/update_blood_overlay()
+	if(!blood_overlay)
+		return // nah
+	if(is_bloodied)
+		CutOverlays(blood_overlay, ATOM_ICON_CACHE_PROTECTED)
+		generate_blood_overlay(TRUE) // Force recheck.
+		AddOverlays(blood_overlay, ATOM_ICON_CACHE_PROTECTED)
+	else
+		generate_blood_overlay(TRUE) // Just updating it, no need in actual overlaying.
 
 /obj/item/proc/showoff(mob/user)
 	for (var/mob/M in view(user))
@@ -920,7 +931,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	return ret_overlay
 
 /obj/item/proc/get_examine_line()
-	if(blood_DNA)
+	if(is_bloodied)
 		. = SPAN("warning", "\icon[src] [gender==PLURAL?"some":"a"] [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [SPAN("info", "<em>[src]</em>")]")
 	else
 		. = "\icon[src] \a [SPAN("info", "<em>[src]</em>")]"

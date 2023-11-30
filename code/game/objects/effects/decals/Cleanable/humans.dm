@@ -31,7 +31,7 @@ var/global/list/image/splatter_cache=list()
 	if(invisibility != 100)
 		set_invisibility(100)
 		amount = 0
-	..(ignore = 1)
+	..(ignore = TRUE)
 
 /obj/effect/decal/cleanable/blood/hide()
 	return
@@ -73,32 +73,22 @@ var/global/list/image/splatter_cache=list()
 
 	var/obj/item/organ/external/l_foot = perp.get_organ(BP_L_FOOT)
 	var/obj/item/organ/external/r_foot = perp.get_organ(BP_R_FOOT)
-	var/hasfeet = 1
+	var/hasfeet = TRUE
 	if((!l_foot || l_foot.is_stump()) && (!r_foot || r_foot.is_stump()))
-		hasfeet = 0
+		hasfeet = FALSE
 	if(perp.shoes && !perp.buckled)//Adding blood to shoes
 		var/obj/item/clothing/shoes/S = perp.shoes
 		if(istype(S))
-			S.blood_color = basecolor
-			S.track_blood = max(amount,S.track_blood)
-			if(!S.blood_overlay)
-				S.generate_blood_overlay()
-			if(!S.blood_DNA)
-				S.blood_DNA = list()
-				S.blood_overlay.color = basecolor
-				S.AddOverlays(S.blood_overlay)
-			if(S.blood_overlay && S.blood_overlay.color != basecolor)
-				S.blood_overlay.color = basecolor
-				S.ClearOverlays()
-				S.AddOverlays(S.blood_overlay)
-			S.blood_DNA |= blood_DNA.Copy()
+			S.add_blood(basecolor, amount)
+			S.blood_DNA |= blood_DNA
 
-	else if (hasfeet)//Or feet
+	else if(hasfeet)//Or feet
 		perp.feet_blood_color = basecolor
 		perp.track_blood = max(amount,perp.track_blood)
 		if(!perp.feet_blood_DNA)
 			perp.feet_blood_DNA = list()
 		perp.feet_blood_DNA |= blood_DNA.Copy()
+
 	else if (perp.buckled && istype(perp.buckled, /obj/structure/bed/chair/wheelchair))
 		var/obj/structure/bed/chair/wheelchair/W = perp.buckled
 		W.bloodiness = 4
@@ -115,19 +105,17 @@ var/global/list/image/splatter_cache=list()
 
 /obj/effect/decal/cleanable/blood/attack_hand(mob/living/carbon/human/user)
 	..()
-	if(amount && istype(user))
-		if(user.gloves)
-			return
-		var/taken = rand(1, amount)
-		amount -= taken
-		to_chat(user, "<span class='notice'>You get some of \the [src] on your hands.</span>")
-		if(!user.blood_DNA)
-			user.blood_DNA = list()
-		user.blood_DNA |= blood_DNA.Copy()
-		user.bloody_hands = taken
-		user.hand_blood_color = basecolor
-		user.update_inv_gloves(1)
-		user.verbs += /mob/living/carbon/human/proc/bloody_doodle
+
+	if(!amount || !istype(user) || !user.gloves)
+		return
+
+	var/taken = rand(1, amount)
+	amount -= taken
+	to_chat(user, SPAN("notice", "You get some of \the [src] on your hands."))
+	user.add_blood(basecolor)
+	user.blood_DNA |= blood_DNA.Copy()
+	user.bloody_hands = taken
+	user.verbs += /mob/living/carbon/human/proc/bloody_doodle
 
 /obj/effect/decal/cleanable/blood/splatter
 	random_icon_states = list("mfloor3", "mfloor7", "mgibbl1", "mgibbl2", "mgibbl3", "mgibbl4", "mgibbl5")

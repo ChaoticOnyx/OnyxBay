@@ -291,6 +291,8 @@
 		S.add(transfer)
 		if (prob(transfer/orig_amount * 100))
 			transfer_fingerprints_to(S)
+			if(is_bloodied)
+				S.add_blood(blood_color)
 			if(blood_DNA)
 				S.blood_DNA |= blood_DNA
 		return transfer
@@ -311,6 +313,8 @@
 		newstack.color = color
 		if (prob(transfer/orig_amount * 100))
 			transfer_fingerprints_to(newstack)
+			if(is_bloodied)
+				newstack.add_blood(blood_color)
 			if(blood_DNA)
 				newstack.blood_DNA |= blood_DNA
 		return newstack

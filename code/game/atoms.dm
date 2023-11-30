@@ -3,6 +3,7 @@
 	var/atom_flags
 	var/effect_flags
 	var/list/blood_DNA
+	var/is_bloodied
 	var/was_bloodied
 	var/blood_color
 	var/last_bumped = 0
@@ -296,7 +297,7 @@ its easier to just keep the beam vertical.
 /atom/proc/_examine_text(mob/user, infix = "", suffix = "")
 	// This reformat names to get a/an properly working on item descriptions when they are bloody
 	var/f_name = "\a [SPAN("info", "<em>[src][infix]</em>")]."
-	if(src.blood_DNA && !istype(src, /obj/effect/decal))
+	if(is_bloodied && !istype(src, /obj/effect/decal))
 		if(gender == PLURAL)
 			f_name = "some "
 		else
@@ -393,24 +394,30 @@ its easier to just keep the beam vertical.
 	playsound(src, hitby_sound, sound_loudness, 1)
 
 
-//returns 1 if made bloody, returns 0 otherwise
-/atom/proc/add_blood(mob/living/carbon/human/M as mob)
+// returns TRUE if made bloody, returns FALSE otherwise
+// accepts either a human or a hex color
+/atom/proc/add_blood(source)
 	if(atom_flags & ATOM_FLAG_NO_BLOOD)
-		return 0
+		return FALSE
 
-	if(!blood_DNA || !istype(blood_DNA, /list))	//if our list of DNA doesn't exist yet (or isn't a list) initialise it.
+	if(!islist(blood_DNA)) // if our list of DNA doesn't exist yet (or isn't a list) initialise it.
 		blood_DNA = list()
 
-	was_bloodied = 1
-	blood_color = COLOR_BLOOD_HUMAN
-	if(istype(M))
-		if (!istype(M.dna, /datum/dna))
+	is_bloodied = TRUE
+	was_bloodied = TRUE
+
+	if(ishuman(source))
+		var/mob/living/carbon/human/M = source
+		if(!istype(M.dna, /datum/dna))
 			M.dna = new /datum/dna(null)
 			M.dna.real_name = M.real_name
 		M.check_dna()
 		blood_color = M.species.get_blood_colour(M)
-	. = 1
-	return 1
+	else if(istext(source))
+		blood_color = source
+	else
+		blood_color = COLOR_BLOOD_HUMAN
+	return TRUE
 
 /atom/proc/add_vomit_floor(mob/living/carbon/M, toxvomit = 0, datum/reagents/inject_reagents)
 	if(istype(src, /turf/simulated))
@@ -424,12 +431,14 @@ its easier to just keep the beam vertical.
 
 /atom/proc/clean_blood()
 	if(!simulated)
-		return
-	fluorescent = 0
-	src.germ_level = 0
-	if(istype(blood_DNA, /list))
-		blood_DNA = null
-		return 1
+		return FALSE
+	is_bloodied = FALSE
+	fluorescent = FALSE
+	germ_level = 0
+	if(islist(blood_DNA))
+		blood_DNA.Cut()
+	blood_color = null
+	return TRUE
 
 /atom/proc/get_global_map_pos()
 	if(!islist(GLOB.global_map) || isemptylist(GLOB.global_map)) return
