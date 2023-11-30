@@ -698,7 +698,7 @@ var/list/global/slot_flags_enumeration = list(
 /obj/item/clean_blood()
 	. = ..()
 	if(blood_overlay)
-		CutOverlays(blood_overlay)
+		CutOverlays(blood_overlay, ATOM_ICON_CACHE_PROTECTED)
 	if(istype(src, /obj/item/clothing/gloves))
 		var/obj/item/clothing/gloves/G = src
 		G.transfer_blood = 0
@@ -718,13 +718,12 @@ var/list/global/slot_flags_enumeration = list(
 		return
 
 	//if we haven't made our blood_overlay already
-	if( !blood_overlay )
+	if(!blood_overlay)
 		generate_blood_overlay()
 
 	//apply the blood-splatter overlay if it isn't already in there
 	if(!blood_DNA.len)
-		blood_overlay.color = blood_color
-		AddOverlays(blood_overlay)
+		AddOverlays(blood_overlay, ATOM_ICON_CACHE_PROTECTED)
 
 	//if this blood isn't already in the list, add it
 	if(istype(M))
@@ -738,12 +737,12 @@ GLOBAL_LIST_EMPTY(blood_overlay_cache)
 /obj/item/proc/generate_blood_overlay(force = FALSE)
 	if(blood_overlay && !force)
 		return
-	if(GLOB.blood_overlay_cache["[icon]" + icon_state])
-		blood_overlay = GLOB.blood_overlay_cache["[icon]" + icon_state]
+	if(GLOB.blood_overlay_cache["[icon]/[icon_state]/[blood_color]"])
+		blood_overlay = GLOB.blood_overlay_cache["[icon]/[icon_state]/[blood_color]"]
 		return
-	var/image/blood = image(icon = 'icons/effects/blood.dmi', icon_state = "itemblood")
+	var/image/blood = overlay_image('icons/effects/blood.dmi', "itemblood", color = blood_color, flags = DEFAULT_APPEARANCE_FLAGS|RESET_COLOR)
 	blood.filters += filter(type = "alpha", icon = icon(icon, icon_state))
-	GLOB.blood_overlay_cache["[icon]" + icon_state] = blood
+	GLOB.blood_overlay_cache["[icon]/[icon_state]/[blood_color]"] = blood
 	blood_overlay = blood
 
 /obj/item/proc/showoff(mob/user)

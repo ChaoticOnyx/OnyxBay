@@ -51,10 +51,10 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 			var/mob_icon = user_human.body_build.get_mob_icon(slot, mob_state)
 			var/cache_index = "[mob_icon]/[mob_state]/[blood_color]"
 			if(!GLOB.clothing_blood_icons[cache_index])
-				var/image/bloodover = image(icon = user_human.body_build.blood_icon, icon_state = blood_overlay_type)
-				bloodover.color = blood_color
+				var/mutable_appearance/bloodover = mutable_appearance(user_human.body_build.blood_icon, blood_overlay_type, color = blood_color, flags = DEFAULT_APPEARANCE_FLAGS|RESET_COLOR)
 				bloodover.filters += filter(type = "alpha", icon = icon(mob_icon, mob_state))
 				GLOB.clothing_blood_icons[cache_index] = bloodover
+
 			ret.AddOverlays(GLOB.clothing_blood_icons[cache_index])
 
 	if(length(accessories))
