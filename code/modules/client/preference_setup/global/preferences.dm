@@ -28,6 +28,8 @@ GLOBAL_VAR_CONST(PREF_DARK, "Dark")
 GLOBAL_VAR_CONST(PREF_LOW, "Low")
 GLOBAL_VAR_CONST(PREF_MED, "Medium")
 GLOBAL_VAR_CONST(PREF_HIGH, "High")
+GLOBAL_VAR_CONST(PREF_AS_GHOST, "Only as ghost")
+GLOBAL_VAR_CONST(PREF_AS_LIVING, "Only when alive")
 
 var/global/list/_client_preferences
 var/global/list/_client_preferences_by_key
@@ -93,6 +95,13 @@ var/global/list/_client_preferences_by_type
 /*********************
 * Player Preferences *
 *********************/
+
+/datum/client_preference/become_midround_antag
+	description = "Become Midround Antag"
+	key = "GAME_MIDROUND_ANTAG"
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO, GLOB.PREF_AS_GHOST, GLOB.PREF_AS_LIVING)
+	default_value = GLOB.PREF_YES
+
 /datum/client_preference/runechat
 	description = "Show Runechat (Above-Head-Speech)"
 	key = "CHAT_RUNECHAT"
