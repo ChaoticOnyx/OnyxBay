@@ -218,9 +218,7 @@ meteor_act
 	var/shield_mod_shield = 0
 	if(buckled && istype(buckled, /obj/effect/dummy/immaterial_form))
 		switch(rand(1, 100))
-			if(1 to 30)
-				return PROJECTILE_FORCE_MISS
-			if(31 to 70)
+			if(1 to 80)
 				return PROJECTILE_CONTINUE
 			else
 

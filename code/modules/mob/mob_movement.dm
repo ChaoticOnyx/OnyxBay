@@ -191,9 +191,6 @@
 // Return 1 for movement, 0 for none,
 // -1 to allow movement but with a chance of slipping
 /mob/proc/Allow_Spacemove(check_drift = 0)
-	if(buckled && istype(buckled, /obj/effect/dummy/immaterial_form))
-		return TRUE
-
 	if(!Check_Dense_Object()) //Nothing to push off of so end here
 		return 0
 

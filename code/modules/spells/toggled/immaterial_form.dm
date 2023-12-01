@@ -52,15 +52,14 @@
 		if(!jaunt_holder)
 			toggled = FALSE
 			deactivate()
-			return
+			return ..()
 
 		if(!jaunt_holder.buckled_mob)
 			toggled = FALSE
 			deactivate()
-			return
+			return ..()
 
 	return ..()
-
 
 /datum/spell/toggled/immaterial_form/quicken_spell()
 	if(!can_improve(SP_SPEED))
@@ -100,8 +99,7 @@
 /obj/effect/dummy/immaterial_form
 	name = "you should not see this xd"
 	invisibility = INVISIBILITY_SYSTEM
-	var/canmove = TRUE
-	var/reappearing = FALSE
+	var/nextmove
 	buckle_relaymove = TRUE
 	density = TRUE
 	anchored = TRUE
@@ -115,7 +113,10 @@
 	immaterial_user = user
 
 /obj/effect/dummy/immaterial_form/relaymove(mob/user, direction)
-	if(!canmove)
+	if(world.time < nextmove)
+		return
+
+	if(direction == UP || direction == DOWN) // Otherwise we will have necromancers flying to C
 		return
 
 	var/turf/newLoc = get_step(src, direction)
@@ -126,20 +127,14 @@
 		if(!T.contains_dense_objects())
 			last_valid_turf = T
 		forceMove(newLoc)
-		immaterial_user.buckled = null
-		immaterial_user.forceMove(newLoc)
-		immaterial_user.buckled = src
+		immaterial_user.forceMove(newLoc, FALSE)
 		set_dir(direction)
 		if(buckled_mob)
 			immaterial_user.set_dir(dir)
 	else
 		to_chat(user, SPAN_WARNING("Some strange aura is blocking the way!"))
 
-	canmove = FALSE
-	addtimer(CALLBACK(src, .proc/allow_move), 2)
-
-/obj/effect/dummy/immaterial_form/proc/allow_move()
-	canmove = TRUE
+	nextmove = world.time + 1 // Better than timers.
 
 /obj/effect/dummy/immaterial_form/bullet_act(obj/item/projectile/Proj, def_zone)
 	if(buckled_mob)
