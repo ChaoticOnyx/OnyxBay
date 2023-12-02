@@ -139,3 +139,6 @@
 	AddOverlays(mob_overlays)
 	dir = EAST
 	icon = null
+
+/obj/item/organ/external/stump/jostle_bone()
+	return // fuck you little stump

@@ -20,6 +20,7 @@
 
 	var/list/stance_limbs
 	var/list/grasp_limbs
+	var/last_body_response_to_pain = 0
 
 /mob/living/carbon/human/New(new_loc, new_species = null)
 
