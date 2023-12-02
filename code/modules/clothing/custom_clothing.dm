@@ -307,6 +307,7 @@
 /obj/item/gun/projectile/revolver/remington
 	name = "sweet revenge"
 	desc = "A very old revolver, based on the remington 1858. Uses .44 magnum rounds. There are 7 notches on this revolver."
+	icon = 'icons/obj/guns/sr.dmi'
 	icon_state = "remington"
 	item_state = "webley"
 	max_shells = 6
