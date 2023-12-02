@@ -225,8 +225,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 
 //This is an UNSAFE proc. Use mob_can_equip() before calling this one! Or rather use equip_to_slot_if_possible() or advanced_equip_to_slot_if_possible()
 //set redraw_mob to 0 if you don't wish the hud to be updated - if you're doing it manually in your own proc.
-/mob/living/carbon/human/equip_to_slot(obj/item/W as obj, slot, redraw_mob = 1)
-
+/mob/living/carbon/human/equip_to_slot(obj/item/W, slot, redraw_mob = TRUE)
 	if(!slot)
 		return
 	if(!istype(W))
@@ -238,6 +237,12 @@ This saves us from having to call add_fingerprint() any time something is put in
 	W.forceMove(src)
 
 	var/obj/item/old_item = get_equipped_item(slot)
+	var/update_hands = (l_hand == W) || (r_hand == W)
+
+	if((W == l_hand) && (slot != slot_l_hand))
+		l_hand = null
+	else if((W == r_hand) && (slot != slot_r_hand))
+		r_hand = null
 
 	switch(slot)
 		if(slot_back)
@@ -261,12 +266,12 @@ This saves us from having to call add_fingerprint() any time something is put in
 			src.l_hand = W
 			W.equipped(src, slot)
 			W.screen_loc = ui_lhand
-			update_inv_l_hand(redraw_mob)
+			update_hands = TRUE
 		if(slot_r_hand)
 			src.r_hand = W
 			W.equipped(src, slot)
 			W.screen_loc = ui_rhand
-			update_inv_r_hand(redraw_mob)
+			update_hands = TRUE
 		if(slot_belt)
 			src.belt = W
 			W.equipped(src, slot)
@@ -344,17 +349,14 @@ This saves us from having to call add_fingerprint() any time something is put in
 		if(slot_tie)
 			var/obj/item/clothing/under/uniform = src.w_uniform
 			if(uniform)
-				uniform.attackby(W,src)
+				uniform.attackby(W, src)
 		else
 			to_chat(src, "<span class='danger'>You are trying to eqip this item to an unsupported inventory slot. If possible, please write a ticket with steps to reproduce. Slot was: [slot]</span>")
 			return
 
-	if((W == src.l_hand) && (slot != slot_l_hand))
-		src.l_hand = null
-		update_inv_l_hand() //So items actually disappear from hands.
-	else if((W == src.r_hand) && (slot != slot_r_hand))
-		src.r_hand = null
-		update_inv_r_hand()
+	if(update_hands)
+		update_inv_l_hand() // So items actually disappear from hands.
+		update_inv_r_hand() // We update both because of some items' wielded stuff
 
 	W.hud_layerise()
 	for(var/s in species.hud.gear)

@@ -24,8 +24,9 @@
 
 	var/prone_icon                            // If set, draws this from icobase when mob is prone.
 
-	var/blood_color = COLOR_BLOOD_HUMAN               // Red.
+	var/blood_color = COLOR_BLOOD_HUMAN       // Red.
 	var/flesh_color = "#ffc896"               // Pink.
+	var/default_eye_color = "#000000"         // Black
 	var/fixed_mut_color
 	var/fixed_skin_tone
 	var/blood_oxy = 1

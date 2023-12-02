@@ -105,6 +105,8 @@
 	if((spawn_flags & CORPSE_SPAWNER_RANDOM_EYE_COLOR))
 		if(M.species.type in eye_colors_per_species)
 			M.change_eye_color(HEX_COLOR_TO_RGB_ARGS(util_pick_weight(eye_colors_per_species[M.species.type])))
+		else if(!(M.species.appearance_flags & HAS_EYE_COLOR))
+			M.change_eye_color(HEX_COLOR_TO_RGB_ARGS(M.species.default_eye_color))
 		else
 			M.randomize_eye_color()
 

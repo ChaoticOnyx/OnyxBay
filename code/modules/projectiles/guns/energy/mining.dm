@@ -85,13 +85,11 @@
 	var/mob_aoe = 0
 	var/list/hit_overlays = list()
 
-/obj/item/projectile/kinetic/launch_from_gun(atom/target, mob/user, obj/item/gun/launcher, target_zone, x_offset=0, y_offset=0)
-	if(istype(launcher, /obj/item/gun/energy/kinetic_accelerator))
-		var/obj/item/gun/energy/kinetic_accelerator/KA = launcher
-		for(var/obj/item/borg/upgrade/modkit/M in KA.get_modkits())
-			M.modify_projectile(src)
-	..()
-
+/obj/item/projectile/kinetic/launch(atom/target, target_zone, mob/user, params, obj/item/gun/launcher)
+	var/obj/item/gun/energy/kinetic_accelerator/KA = launcher
+	for(var/obj/item/borg/upgrade/modkit/M in KA.get_modkits())
+		M.modify_projectile(src)
+	return ..()
 
 /obj/item/projectile/kinetic/on_impact(atom/A)
 	strike_thing(A)

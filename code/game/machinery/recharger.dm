@@ -70,7 +70,7 @@
 
 		if(user.drop(G, src))
 			charging = G
-			update_icon()
+			update_icon(icon_state_charging)
 	else if((isScrewdriver(G) || isCrowbar(G) || isWrench(G)) && portable)
 		if(charging)
 			to_chat(user, "<span class='warning'>Remove [charging] first!</span>")
@@ -83,7 +83,7 @@
 			anchored = !anchored
 			to_chat(user, "You [anchored ? "attached" : "detached"] the recharger.")
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
-			update_icon()
+			update_icon(icon_state_idle)
 	if(default_part_replacement(user, G))
 		return
 
@@ -97,7 +97,7 @@
 		charging.update_icon()
 		user.pick_or_drop(charging, loc)
 		charging = null
-		update_icon()
+		update_icon(icon_state_idle)
 
 /obj/machinery/recharger/Process()
 	if(stat & (NOPOWER|BROKEN) || !anchored)
@@ -164,7 +164,6 @@
 				C.give(active_power_usage*CELLRATE)
 				update_use_power(POWER_USE_ACTIVE)
 			else
-				icon_state = icon_state_charged
 				update_icon(icon_state_charged)
 				update_use_power(POWER_USE_IDLE)
 
