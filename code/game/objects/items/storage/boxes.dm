@@ -598,3 +598,9 @@
 		/obj/item/implantpad,
 		/obj/item/implantcase/imprinting = 3
 		)
+
+/obj/item/storage/box/balloons
+	name = "box of balloons"
+	desc = "A box full of balloons."
+	icon_state = "balloons"
+	startswith = list(/obj/item/balloon_flat = 7)

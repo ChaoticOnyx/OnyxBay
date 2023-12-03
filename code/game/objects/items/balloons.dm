@@ -25,22 +25,22 @@
 	var/obj/item/balloon_flat/new_balloon = new
 	user.pick_or_drop(new_balloon)
 	to_chat(user, SPAN("notice", "You take a new [new_balloon] outta \the [src]!"))
-	set_next_think(world.time + 30 SECONDS)
+	set_next_think(world.time + 1 MINUTE)
 
 /obj/item/balloon_box/think()
 	if(charges >= max_charges)
 		return
 
 	charges++
-	set_next_think(world.time + 30 SECONDS)
+	set_next_think(world.time + 1 MINUTE)
 
 
 /obj/item/balloon_flat
 	name = "balloon"
 	desc = "Still flat-n-sad."
 	icon = 'icons/obj/balloons.dmi'
-	icon_state = "balloon_deflat"
-	item_state = null
+	icon_state = "deflat"
+	item_state = "balloon_deflat"
 	force = 0.0
 	throwforce = 0.0
 	w_class = ITEM_SIZE_TINY
@@ -68,7 +68,7 @@
 #define PICK_RANDOM_BALLOON(a) \
 	var/list/sanitized_balloons = balloon_choices.Copy();\
 	sanitized_balloons.Remove("Random", "Cancel");\
-	a = pick(sanitized_balloons)[1];
+	a = sanitized_balloons[pick(sanitized_balloons)][1];
 
 /obj/item/balloon_flat/attack_self(mob/living/user)
 	if(!user.client)
@@ -91,13 +91,13 @@
 		else if(choice == "Cancel")
 			return
 		else
-			choice = balloon_choice
+			choice = balloon_choices[balloon_choice][1]
 	else
 		var/list/boring_balloons = balloon_choices.Copy()
 		for(var/entry in balloon_choices)
-			if(islist(balloon_choices[entry]) && balloon_choices[entry][2] != BALLOON_NORMAL)
+			if(islist(balloon_choices[entry]) && balloon_choices[entry][2] == BALLOON_NORMAL)
 				boring_balloons[entry] = balloon_choices[entry]
-		choice = pick(boring_balloons)[1]
+		choice = boring_balloons[pick(boring_balloons)][1]
 
 	to_chat(user, SPAN("notice", "You inflate a balloon!"))
 
@@ -117,32 +117,43 @@
 	icon = 'icons/obj/balloons.dmi'
 	icon_state = "balloon_deflat"
 	item_state = null
-	force = 0.0
+	layer = BASE_HUMAN_LAYER
+	force = 0.00001
 	throwforce = 0.0
+	throw_range = 2
 	w_class = ITEM_SIZE_HUGE
 	var/type_desc = ""
 	var/wielded = FALSE
 	var/wieldable = FALSE
-	var/wielded_item_state = ""
+	var/wielded_item_state
+	var/base_item_state
 	var/balloon_type = BALLOON_FORBIDDEN
 
 /obj/item/balloon/Initialize()
 	. = ..()
+	base_item_state = item_state
 	item_state = item_state ? item_state : "balloon_[icon_state]"
 	update_icon()
 
 /obj/item/balloon/on_update_icon()
+	if(!wieldable)
+		return
 	var/new_item_state
 	if(wielded_item_state)
 		new_item_state = wielded ? wielded_item_state : initial(item_state)
 	else
-		new_item_state = "[initial(item_state)][wielded]"
+		new_item_state = "[base_item_state][wielded]"
 	item_state_slots[slot_l_hand_str] = new_item_state
 	item_state_slots[slot_r_hand_str] = new_item_state
 
 /obj/item/balloon/update_twohanding()
 	if(!wieldable)
-		return
+		return ..()
+	var/mob/living/M = loc
+	if(istype(M) && M.can_wield_item(src) && is_held_twohanded(M))
+		wielded = TRUE
+	else
+		wielded = FALSE
 	update_icon()
 	..()
 
@@ -167,6 +178,8 @@
 	name = "burst balloon"
 	desc = "Ow... Not much can be done with this now."
 	icon_state = "burst"
+	layer = BELOW_TABLE_LAYER
+	throw_range = 7
 	playsound(get_turf(src), 'sound/effects/snap.ogg', 100, 1)
 
 /obj/item/balloon/verb/deflate()
@@ -218,7 +231,7 @@
 
 /obj/item/balloon/normal/Square
 	desc = "It's a square balloon. How's that even possible?"
-	icon_state = "normal"
+	icon_state = "square"
 	type_desc = "Normal (Square)"
 	balloon_type = BALLOON_ADVANCED
 
@@ -260,8 +273,10 @@
 /obj/item/balloon/item
 	name = "inflatable item"
 	desc = "It's an... Item-shaped balloon?"
+	layer = ABOVE_STRUCTURE_LAYER
 	w_class = ITEM_SIZE_NORMAL
 	balloon_type = BALLOON_FORBIDDEN
+	throw_range = 5
 
 /obj/item/balloon/item/stunbaton
 	name = "stunbaton"
@@ -326,6 +341,8 @@
 	name = "burst balloon"
 	desc = "Ow... Not much can be done with this now."
 	icon_state = "burst"
+	layer = BELOW_TABLE_LAYER
+	throw_range = 7
 	balloon_type = BALLOON_BURST
 
 #undef BALLOON_FORBIDDEN
