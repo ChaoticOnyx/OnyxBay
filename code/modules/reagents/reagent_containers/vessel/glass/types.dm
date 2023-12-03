@@ -1,6 +1,7 @@
 /obj/item/reagent_containers/vessel/glass/square
 	name = "half-pint glass"
 	icon_state = "square_preview"
+	item_state = "glass_clear"
 	base_name = "glass"
 	base_icon = "square"
 	desc = "Your standard drinking glass."
