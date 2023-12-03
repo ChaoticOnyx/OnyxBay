@@ -603,4 +603,4 @@
 	name = "box of balloons"
 	desc = "A box full of balloons."
 	icon_state = "balloons"
-	startswith = list(/obj/item/balloon_flat = 7)
+	startswith = list(/obj/item/balloon_flat = 14)

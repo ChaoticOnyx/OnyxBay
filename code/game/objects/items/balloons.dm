@@ -93,7 +93,7 @@
 		else
 			choice = balloon_choices[balloon_choice][1]
 	else
-		var/list/boring_balloons = balloon_choices.Copy()
+		var/list/boring_balloons = list()
 		for(var/entry in balloon_choices)
 			if(islist(balloon_choices[entry]) && balloon_choices[entry][2] == BALLOON_NORMAL)
 				boring_balloons[entry] = balloon_choices[entry]
