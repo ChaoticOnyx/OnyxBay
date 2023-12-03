@@ -115,7 +115,7 @@
 	name = "balloon"
 	desc = "It's a... Balloon, right?"
 	icon = 'icons/obj/balloons.dmi'
-	icon_state = "balloon_deflat"
+	icon_state = ""
 	item_state = null
 	layer = BASE_HUMAN_LAYER
 	force = 0.00001
