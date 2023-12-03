@@ -192,7 +192,8 @@
 
 	verbs -= /obj/item/balloon/verb/deflate
 	playsound(loc, 'sound/machines/hiss.ogg', 50, 1)
-	new /obj/item/balloon_flat(loc)
+	var/obj/item/balloon_flat/BF = new /obj/item/balloon_flat(loc)
+	BF.color = color
 	qdel_self()
 	return TRUE
 
