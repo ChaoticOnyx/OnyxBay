@@ -391,6 +391,9 @@
 	body_parts_covered = HEAD|FACE|EYES
 	tint = TINT_BLIND
 
+/obj/item/clothing/mask/plasticbag/attack_self(mob/user)
+	user.replace_item(src, new /obj/item/storage/bag/plasticbag, TRUE, TRUE)
+
 /obj/item/clothing/mask/plasticbag/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/tape_roll))
 		to_chat(user, "You attach a piece of [W] to [src]!")
