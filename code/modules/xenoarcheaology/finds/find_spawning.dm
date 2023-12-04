@@ -73,11 +73,6 @@
 			desc += " "
 		desc += engravings
 
-	if(apply_prefix)
-		name = "[pick("strange ","ancient ","alien ")][item_type]"
-	else
-		name = item_type
-
 	if(desc)
 		desc += " "
 	desc += additional_desc
@@ -85,7 +80,7 @@
 		desc = "This item is completely [pick("alien","bizarre")]."
 
 	//icon and icon_state should have already been set
-	I.SetName(name)
+	assign_name(I)
 	I.desc = desc
 
 	if(prob(5))
@@ -109,6 +104,11 @@
 	F.icon_state = "unknown[rand(1,4)]"
 	return F
 
+/obj/item/archaeological_find/proc/assign_name(atom/A)
+	name = apply_prefix ? "[pick("strange ","ancient ","alien ")][item_type]" : item_type
+	A.SetName(name)
+
+
 /obj/item/archaeological_find/bowl
 	find_type = ARCHAEO_BOWL
 	item_type = "bowl"
@@ -116,21 +116,27 @@
 	apply_image_decorations = 1
 
 /obj/item/archaeological_find/bowl/spawn_item()
-	var/obj/item/reagent_containers/R
+	var/obj/item/reagent_containers/vessel/V
 	if(prob(33))
-		R = new /obj/item/reagent_containers/vessel/replenishing(loc)
+		V = new /obj/item/reagent_containers/vessel/replenishing(loc)
 	else
-		R = new /obj/item/reagent_containers/vessel/beaker(loc)
-	R.icon = 'icons/obj/xenoarchaeology.dmi'
-	R.icon_state = "bowl"
+		V = new /obj/item/reagent_containers/vessel/beaker(loc)
+	V.icon = 'icons/obj/xenoarchaeology.dmi'
+	V.icon_state = "bowl"
 
-	if(R.lid)
-		QDEL_NULL(R.lid)
-		R.lid_type = null // No lids for bowls
+	if(V.lid)
+		QDEL_NULL(V.lid)
+		V.lid_type = null // No lids for bowls
 
 	if(prob(20))
 		additional_desc = "There appear to be [pick("dark","faintly glowing","pungent","bright")] [pick("red","purple","green","blue")] stains inside."
-	return R
+	return V
+
+/obj/item/archaeological_find/bowl/assign_name(atom/A)
+	var/obj/item/reagent_containers/vessel/V = A
+	name = apply_prefix ? "[pick("strange ","ancient ","alien ")][item_type]" : item_type
+	V.base_name = name
+	V.update_name_label()
 
 /obj/item/archaeological_find/bowl/urn
 	find_type = ARCHAEO_URN
