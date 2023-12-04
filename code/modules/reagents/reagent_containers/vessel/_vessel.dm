@@ -410,7 +410,6 @@
 		last_flipping = world.time
 		if(!(MUTATION_BARTENDER in user.mutations) && prob(50))
 			var/turf/flip_turf = get_turf(flipping)
-			to_chat(user, SPAN_WARNING("Your fail to catch back \the [src]."))
 			if(brittle)
 				smash(flip_turf, flip_turf)
 			else
@@ -475,10 +474,6 @@
 		if(flip_turf != get_turf(user))
 			to_chat(user, SPAN_WARNING("Your fail to catch back \the [src]."))
 			user.drop(src, flipping.loc, force = TRUE)
-			if(brittle && prob(50))
-				smash(flip_turf, flip_turf)
-			else
-				throw_impact(flip_turf, 1)
 			QDEL_NULL(flipping)
 			return
 
@@ -486,10 +481,6 @@
 			if(!(MUTATION_BARTENDER in user.mutations) && prob(50))
 				to_chat(user, SPAN_WARNING("Your fail to catch back \the [src]."))
 				user.drop(src, flipping.loc, force = TRUE)
-				if(brittle)
-					smash(flip_turf, flip_turf)
-				else
-					throw_impact(flip_turf, 1)
 			else
 				item_state = initial(item_state)
 				user.update_inv_l_hand()
