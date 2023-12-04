@@ -574,10 +574,9 @@
 		to_chat(user, SPAN_WARNING("You can't seem to add the '[IC]', since the case doesn't support the circuit type."))
 		return FALSE
 
-	if(IC.loc == user)
-		if(!user.drop(IC, src))
-			return FALSE
-	else if(!IC.forceMove(src))
+	if(IC.loc != user && !IC.forceMove(src))
+		return FALSE
+	else if(!user.drop(IC, src))
 		return FALSE
 
 	to_chat(user, SPAN_NOTICE("You slide [IC] inside [src]."))
