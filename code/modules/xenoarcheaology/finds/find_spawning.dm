@@ -125,10 +125,12 @@
 		V = new /obj/item/reagent_containers/vessel/beaker(loc)
 	V.icon = 'icons/obj/xenoarchaeology.dmi'
 	V.icon_state = "bowl"
+	V.base_icon = "bowl"
 
 	if(V.lid)
 		QDEL_NULL(V.lid)
 		V.lid_type = null // No lids for bowls
+		V.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 
 	if(prob(20))
 		additional_desc = "There appear to be [pick("dark","faintly glowing","pungent","bright")] [pick("red","purple","green","blue")] stains inside."
@@ -148,6 +150,7 @@
 /obj/item/archaeological_find/bowl/urn/spawn_item()
 	var/obj/item/reagent_containers/vessel/V = ..()
 	V.icon_state = "urn"
+	V.base_icon = "urn"
 
 	V.lid_type = /datum/vessel_lid/cork
 	V.lid = new V.lid_type
