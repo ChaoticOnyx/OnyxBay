@@ -96,6 +96,8 @@
 	if(prob(5))
 		I.origin_tech[TECH_PLASMA] = pick(1, 2, 3, 4, 5, 6)
 
+	I.update_icon()
+
 	return INITIALIZE_HINT_QDEL
 
 /obj/item/archaeological_find/proc/spawn_item()
@@ -148,7 +150,7 @@
 	V.icon_state = "urn"
 
 	V.lid_type = /datum/vessel_lid/cork
-	V.lid = new lid_type()
+	V.lid = new V.lid_type
 	V.lid.setup(V, V.override_lid_state, V.override_lid_icon)
 
 	if(prob(20))
