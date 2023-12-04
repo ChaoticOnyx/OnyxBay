@@ -54,6 +54,8 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 	/// Holder for a spawners menu.
 	var/datum/spawners_menu/spawners_menu = null
 
+	var/icon/original_mob_icon
+
 /mob/observer/ghost/New(mob/body)
 	see_in_dark = 100
 	verbs += /mob/proc/toggle_antag_pool
@@ -65,6 +67,7 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 		T = get_turf(body)               //Where is the body located?
 		attack_logs_ = body.attack_logs_ //preserve our attack logs by copying them to our ghost
 
+		original_mob_icon = body.icon
 		set_appearance(body)
 
 		name = body.mind?.name
@@ -693,10 +696,29 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/proc/set_appearance(mob/target)
 	ClearTransform()	//make goast stand up
 	ClearOverlays()
-	if(!target)
+	if(!target || (!original_mob_icon && !ishuman(target)))
 		icon = initial(icon)
-	icon = null
+		return
+	icon = original_mob_icon
+	icon_state = target.icon_state
 	CopyOverlays(target)
+	if(ishuman(target))
+		var/mob/living/carbon/human/H = target
+		var/translate_y = 16 * ((tf_scale_y || 1) * H.body_height - 1) + H.species.y_shift
+		animate(
+			src,
+			transform = matrix().Update(
+				scale_x = (tf_scale_x || 1),
+				scale_y = (tf_scale_y || 1) * H.body_height,
+				rotation = (tf_rotation || 0),
+				offset_x = (tf_offset_x || 0),
+				offset_y = (tf_offset_y || 0) + translate_y
+			),
+			time = 1
+		)
+	else if(istype(target, /mob/living/simple_animal))
+		var/mob/living/simple_animal/SA = target
+		icon_state = SA.icon_living
 
 /mob/observer/ghost/verb/respawn()
 	set name = "Respawn"
