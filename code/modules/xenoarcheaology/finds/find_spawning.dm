@@ -123,6 +123,11 @@
 		R = new /obj/item/reagent_containers/vessel/beaker(loc)
 	R.icon = 'icons/obj/xenoarchaeology.dmi'
 	R.icon_state = "bowl"
+
+	if(R.lid)
+		QDEL_NULL(R.lid)
+		R.lid_type = null // No lids for bowls
+
 	if(prob(20))
 		additional_desc = "There appear to be [pick("dark","faintly glowing","pungent","bright")] [pick("red","purple","green","blue")] stains inside."
 	return R
@@ -133,13 +138,18 @@
 	icon_state = "urn"
 
 /obj/item/archaeological_find/bowl/urn/spawn_item()
-	var/obj/item/I = ..()
-	I.icon_state = "urn"
+	var/obj/item/reagent_containers/vessel/V = ..()
+	V.icon_state = "urn"
+
+	V.lid_type = /datum/vessel_lid/cork
+	V.lid = new lid_type()
+	V.lid.setup(V, V.override_lid_state, V.override_lid_icon)
+
 	if(prob(20))
 		additional_desc = "It [pick("whispers faintly","makes a quiet roaring sound","whistles softly","thrums quietly","throbs")] if you put it to your ear."
 	else
 		additional_desc = null
-	return I
+	return V
 
 /obj/item/archaeological_find/cutlery
 	item_type = "cutlery"
