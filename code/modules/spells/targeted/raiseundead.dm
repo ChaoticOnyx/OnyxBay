@@ -1,5 +1,5 @@
 #define RAISE_UNDEAD_TIMEOUT 30 SECONDS
-#define CASHBACK_THRESHOLD 3
+#define CASHBACK_THRESHOLD 3 // How often the spell must fail before cashback
 
 /datum/spell/targeted/raiseundead
 	name = "Raise the dead"
@@ -84,7 +84,7 @@
 		return
 
 	times_failed = 0
-	var/player_choice = tgui_alert(user, "It seems that the veil is too thick...", "Would you like to refund your spell?", list("Yes", "No"))
+	var/player_choice = tgui_alert(user, "Would you like to refund your spell?", "It seems that the veil is too thick...", list("Yes", "No"))
 	if(player_choice == "No")
 		return
 
@@ -93,7 +93,7 @@
 
 	var/price_with_upgrades
 	for(var/price in spell_levels)
-		price_with_upgrades++
+		price_with_upgrades += spell_levels[price]
 
 	var/datum/wizard/wizard_datum = user.mind?.wizard
 	price_with_upgrades += spell_price

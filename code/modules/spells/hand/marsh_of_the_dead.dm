@@ -20,7 +20,6 @@
 	charge_max = 600
 	cooldown_min = 300
 
-
 /datum/spell/hand/marsh_of_the_dead/cast_hand(atom/a, mob/user)
 	for(var/turf/simulated/T in view(1,a))
 		new /obj/effect/deadhands(T, damage)
@@ -38,8 +37,7 @@
 /obj/effect/deadhands
 	name = "Vile pus"
 	icon = 'icons/effects/effects.dmi'
-	var/random_icon_states = list("liquid", "liquid_medium")
-	icon_state = "liquid"
+	icon_state = "greenglow"
 	layer = OBJ_LAYER
 	pass_flags = PASS_FLAG_TABLE
 	anchored = 1.0
@@ -50,9 +48,6 @@
 
 /obj/effect/deadhands/Initialize(turf/t, damage_amount)
 	. = ..()
-	icon_state = pick(random_icon_states)
-	color = "#0A5F38"
-	update_icon()
 	set_next_think(world.time + MARSH_ACTIVE_TIME)
 	damage = damage_amount
 
