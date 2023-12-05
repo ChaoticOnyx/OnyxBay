@@ -15,6 +15,7 @@
 	var/light_inner_range_on = 0.5
 	var/light_outer_range_on = 4
 	atom_flags = ATOM_FLAG_CLIMBABLE
+	turf_height_offset = 12
 	clicksound = 'sound/effects/using/console/press10.ogg'
 
 	var/static/list/computer_overlays = list()

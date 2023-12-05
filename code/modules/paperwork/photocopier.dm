@@ -10,6 +10,7 @@
 	power_channel = STATIC_EQUIP
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	obj_flags = OBJ_FLAG_ANCHORABLE
+	turf_height_offset = 15
 	var/obj/item/copyitem = null	//what's in the copier!
 	var/copies = 1	//how many copies to print!
 	var/toner = 30 //how much toner is left! woooooo~

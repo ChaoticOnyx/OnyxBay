@@ -7,21 +7,10 @@
 	var/breakable
 	var/parts
 
-	var/height_offset = 0 //used for on_structure_offset mob animation
-
-/obj/structure/Initialize()
-	. = ..()
-	if(height_offset && isturf(loc))
-		var/turf/T = loc
-		T.update_turf_height()
-
 /obj/structure/Destroy()
 	var/turf/T = get_turf(src)
-	if(T)
-		if(parts)
-			new parts(loc)
-		if(height_offset)
-			set_height_offset(0)
+	if(T && parts)
+		new parts(loc)
 	return ..()
 
 /obj/structure/attack_hand(mob/user)
@@ -62,11 +51,3 @@
 	attack_animation(user)
 	spawn(1) qdel(src)
 	return 1
-
-/obj/structure/proc/set_height_offset(new_val)
-	if(height_offset == new_val)
-		return
-	height_offset = new_val
-	var/turf/T = get_turf(src)
-	if(T)
-		T.update_turf_height()

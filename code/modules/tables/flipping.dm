@@ -92,7 +92,7 @@
 	take_damage(rand(5, 10))
 	update_connections(1)
 	update_icon()
-	set_height_offset(0)
+	set_turf_height_offset(0)
 
 	return TRUE
 
@@ -113,7 +113,7 @@
 
 	update_connections(1)
 	update_icon()
-	set_height_offset(initial(height_offset))
+	set_turf_height_offset(initial(turf_height_offset))
 
 	return TRUE
 

@@ -8,7 +8,7 @@
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	layer = TABLE_LAYER
 	throwpass = 1
-	height_offset = 12
+	turf_height_offset = 12
 
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 0,

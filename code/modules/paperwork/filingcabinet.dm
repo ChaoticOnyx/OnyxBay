@@ -18,6 +18,7 @@
 	anchored = 1
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	obj_flags = OBJ_FLAG_ANCHORABLE
+	turf_height_offset = 12
 	var/list/can_hold = list(
 		/obj/item/paper,
 		/obj/item/folder,
@@ -28,6 +29,7 @@
 /obj/structure/filingcabinet/chestdrawer
 	name = "chest drawer"
 	icon_state = "chestdrawer"
+	turf_height_offset = 22
 
 /obj/structure/filingcabinet/wallcabinet
 	name = "wall-mounted filing cabinet"
@@ -35,6 +37,7 @@
 	icon_state = "wallcabinet"
 	density = 0
 	obj_flags = 0
+	atom_flags = 0
 
 
 /obj/structure/filingcabinet/filingcabinet	//not changing the path to avoid unecessary map issues, but please don't name stuff like this in the future -Pete

@@ -5,6 +5,7 @@
 	icon_state = "psiphon:0"
 	density = 1
 	w_class = ITEM_SIZE_NORMAL
+	turf_height_offset = 18
 
 	var/on = 0
 	var/direction_out = 0 //0 = siphoning, 1 = releasing
