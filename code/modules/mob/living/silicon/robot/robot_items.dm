@@ -698,7 +698,7 @@
 /obj/item/robot_rack/weapon
 	name = "weapon rack"
 	desc = "A rack for carrying melee weapons, energy weapons and firearms."
-	icon = 'icons/obj/storage/misc.dmi'
+	icon = 'icons/obj/crates.dmi'
 	icon_state = "weaponcrate"
 	object_type = list(
 		/obj/item/melee,
