@@ -38,6 +38,7 @@
 	GLOB.FIREBLOCK          = getAssignedBlock("FIRE",          numsToAssign, DNA_HARDER_BOUNDS)
 	GLOB.XRAYBLOCK          = getAssignedBlock("XRAY",          numsToAssign, DNA_HARDER_BOUNDS)
 	GLOB.CLUMSYBLOCK        = getAssignedBlock("CLUMSY",        numsToAssign)
+	GLOB.BARTENDERBLOCK     = getAssignedBlock("BAR",           numsToAssign)
 	GLOB.FAKEBLOCK          = getAssignedBlock("FAKE",          numsToAssign)
 
 	// UNUSED!

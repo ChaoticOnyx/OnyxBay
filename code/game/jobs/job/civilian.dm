@@ -11,6 +11,11 @@
 	minimal_access = list(access_bar)
 	outfit_type = /decl/hierarchy/outfit/job/service/bartender
 
+/datum/job/bartender/equip(mob/living/carbon/human/H)
+	. = ..()
+	if(.)
+		H.mutations.Add(MUTATION_BARTENDER)
+
 /datum/job/chef
 	title = "Chef"
 	department = "Service"
@@ -46,6 +51,7 @@
 		H.dna.real_name = new_name
 		H.mind?.name = new_name
 		H.flavor_text = ""
+		H.mutations.Add(MUTATION_BARTENDER)
 		for(var/thing in H.flavor_texts)
 			H.flavor_texts[thing] = null
 
