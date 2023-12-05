@@ -245,31 +245,37 @@
 	desc = "It's an inflatable crab!"
 	icon_state = "crab"
 	type_desc = "Animal (Crab)"
+	balloon_type = BALLOON_ADVANCED
 
 /obj/item/balloon/animal/corgi
 	desc = "It's an inflatable corgi! HoP's favourite!"
 	icon_state = "corgi"
 	type_desc = "Animal (Corgi)"
+	balloon_type = BALLOON_ADVANCED
 
 /obj/item/balloon/animal/cat
 	desc = "It's an inflatable cat! CMO's favourite!"
 	icon_state = "cat"
 	type_desc = "Animal (Cat)"
+	balloon_type = BALLOON_ADVANCED
 
 /obj/item/balloon/animal/mouse
 	desc = "It's an inflatable mouse! Hope it doesn't bite your foot."
 	icon_state = "mouse"
 	type_desc = "Animal (Mouse)"
+	balloon_type = BALLOON_ADVANCED
 
 /obj/item/balloon/animal/carp
 	desc = "It's an inflatable carp! Hope it doesn't knock you down."
 	icon_state = "carp"
 	type_desc = "Animal (Carp)"
+	balloon_type = BALLOON_ADVANCED
 
 /obj/item/balloon/animal/pig
 	desc = "It's an inflatable pig! Does it even oink?.."
 	icon_state = "pig"
 	type_desc = "Animal (Pig)"
+	balloon_type = BALLOON_ADVANCED
 
 /obj/item/balloon/item
 	name = "inflatable item"
