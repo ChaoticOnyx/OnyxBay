@@ -6,6 +6,7 @@
 	name = "computer frame"
 	icon = 'icons/obj/stock_parts.dmi'
 	icon_state = "0"
+	turf_height_offset = 12
 	var/state = 0
 	var/obj/item/circuitboard/circuit = null
 	atom_flags = ATOM_FLAG_CLIMBABLE

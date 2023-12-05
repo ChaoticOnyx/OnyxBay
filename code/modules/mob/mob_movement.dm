@@ -27,8 +27,13 @@
 
 /mob/forceMove(atom/destination, unbuckle_mob = TRUE)
 	. = ..()
-	if(. && unbuckle_mob)
+	if(!.)
+		return
+	if(unbuckle_mob)
 		buckled?.unbuckle_mob()
+	if(isturf(destination))
+		var/turf/T = destination
+		update_height_offset(T.turf_height)
 
 /client/Northeast()
 	diagonal_action(NORTHEAST)

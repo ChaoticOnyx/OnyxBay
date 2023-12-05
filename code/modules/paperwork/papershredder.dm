@@ -7,6 +7,7 @@
 	anchored = 1
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	obj_flags = OBJ_FLAG_ANCHORABLE
+	turf_height_offset = 22
 	var/max_paper = 10
 	var/paperamount = 0
 	var/list/shred_amounts = list(

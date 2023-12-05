@@ -13,6 +13,7 @@
 	var/heating_power = 40 KILO WATTS
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	clicksound = SFX_USE_LARGE_SWITCH
+	turf_height_offset = 16
 
 
 /obj/machinery/space_heater/New()

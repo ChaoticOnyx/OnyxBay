@@ -23,15 +23,41 @@
 		RADIATION_HAWKING = 0
 	)
 	hitby_sound = 'sound/effects/metalhit2.ogg'
+	var/turf_height_offset = 0
+
+/obj/Initialize()
+	. = ..()
+	if(turf_height_offset && isturf(loc))
+		var/turf/T = loc
+		T.update_turf_height()
 
 /obj/Destroy()
 	CAN_BE_REDEFINED(TRUE)
 	var/obj/item/smallDelivery/delivery = loc
-
-	if (istype(delivery))
+	if(istype(delivery))
 		delivery.wrapped = null
 
+	var/turf/T = get_turf(src)
+	if(T && turf_height_offset)
+		set_turf_height_offset(0)
 	return ..()
+
+/obj/forceMove(atom/destination)
+	if(!turf_height_offset)
+		return ..() // Just act normally
+
+	var/atom/origin = loc
+	. = ..()
+	if(!.)
+		return
+
+	if(isturf(origin))
+		var/turf/T = origin
+		T.update_turf_height()
+
+	if(isturf(destination))
+		var/turf/T = destination
+		T.update_turf_height()
 
 /obj/item/proc/is_used_on(obj/O, mob/user)
 
@@ -199,3 +225,11 @@
 ///returns how much the object blocks an explosion. Used by subtypes.
 /obj/proc/GetExplosionBlock()
 	CRASH("Unimplemented GetExplosionBlock()")
+
+/obj/proc/set_turf_height_offset(new_val)
+	if(turf_height_offset == new_val)
+		return
+	turf_height_offset = new_val
+	var/turf/T = get_turf(src)
+	if(T)
+		T.update_turf_height()
