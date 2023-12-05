@@ -52,6 +52,7 @@
 
 	if(!target_player)
 		draft_ghosts(target, user)
+		return
 
 	var/player_choice = tgui_alert(target_player, "A necromancer is attempting to raise your body as an undead", "Would you like to return to your body?", list("Yes", "No"), RAISE_UNDEAD_TIMEOUT)
 	if(player_choice == "Yes")
@@ -94,7 +95,7 @@
 	for(var/price in spell_levels)
 		price_with_upgrades++
 
-	var/datum/wizard/wizard_datum = user.mind
+	var/datum/wizard/wizard_datum = user.mind?.wizard
 	price_with_upgrades += spell_price
 	wizard_datum.points += price_with_upgrades
 
