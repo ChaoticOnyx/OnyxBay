@@ -6,20 +6,15 @@
 	spell_flags = SELECTABLE | NEEDSCLOTHES
 	invocation = "De sepulchro suscitate et servite mihi!"
 	invocation_type = SPI_SHOUT
-
 	max_targets = 1
 	charge_max = 2
 	cooldown_min = 1
-
 	level_max = list(SP_TOTAL = 3, SP_SPEED = 0, SP_POWER = 0)
-
 	compatible_mobs = list(/mob/living/carbon/human)
-
 	icon_state = "wiz_lichify"
-
-	should_lichify = TRUE
-
 	override_base = "const"
+	spell_price = 3
+	should_lichify = TRUE
 
 /datum/spell/targeted/raiseundead/lichify/perform(mob/user = usr, skipcharge = TRUE)
 	if(user.mind.wizard.lich)

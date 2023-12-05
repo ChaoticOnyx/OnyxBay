@@ -1,4 +1,5 @@
 #define RAISE_UNDEAD_TIMEOUT 30 SECONDS
+#define CASHBACK_THRESHOLD 3
 
 /datum/spell/targeted/raiseundead
 	name = "Raise the dead"
@@ -8,22 +9,17 @@
 	spell_flags = SELECTABLE | NEEDSCLOTHES
 	invocation = "De sepulchro suscitate et servite mihi!"
 	invocation_type = SPI_SHOUT
-
 	max_targets = 1
-
 	charge_max = 6000
 	cooldown_min = 3000
 	cooldown_reduc = 1000
-
-	var/should_lichify = FALSE
-
 	level_max = list(SP_TOTAL = 3, SP_SPEED = 3, SP_POWER = 0)
-
 	compatible_mobs = list(/mob/living/carbon/human)
-
 	icon_state = "wiz_raiseundead"
-
 	override_base = "const"
+	var/should_lichify = FALSE
+	var/times_failed = 0
+	var/spell_price = 1
 
 /datum/spell/targeted/raiseundead/choose_targets(mob/user = usr)
 	var/list/possible_targets = list()
@@ -70,17 +66,43 @@
 	var/mob/living/carbon/human/H = target
 	var/datum/ghosttrap/undead/trap = get_ghost_trap("undead")
 	trap.request_player(H, "A necromancer is requesting a soul to animate an undead body.", RAISE_UNDEAD_TIMEOUT, user, should_lichify)
-	addtimer(CALLBACK(src, .proc/draft_failure), RAISE_UNDEAD_TIMEOUT)
+	addtimer(CALLBACK(src, .proc/draft_failure, target, user), RAISE_UNDEAD_TIMEOUT)
 
-/datum/spell/targeted/raiseundead/proc/draft_failure()
+/datum/spell/targeted/raiseundead/proc/draft_failure(mob/living/carbon/human/target, mob/user)
+	if(target.mind?.wizard && (target.mind?.wizard in user.mind.wizard.thralls))
+		return
+
 	to_chat(holder, SPAN_WARNING("Your spell has failed. Perhaps you should try again later?"))
 	charge_counter = charge_max
+	times_failed++
+	if(times_failed > CASHBACK_THRESHOLD)
+		cashback(user)
+
+/datum/spell/targeted/raiseundead/proc/cashback(mob/user)
+	if(!user) // Probably this proc will fuck up if the user logs out before this proc is triggered, gotta be safe
+		return
+
+	times_failed = 0
+	var/player_choice = tgui_alert(user, "It seems that the veil is too thick...", "Would you like to refund your spell?", list("Yes", "No"))
+	if(player_choice == "No")
+		return
+
+	for(var/datum/spell/targeted/raiseundead/raiseundead in user.mind?.learned_spells)
+		user.remove_spell(raiseundead)
+
+	var/price_with_upgrades
+	for(var/price in spell_levels)
+		price_with_upgrades++
+
+	var/datum/wizard/wizard_datum = user.mind
+	price_with_upgrades += spell_price
+	wizard_datum.points += price_with_upgrades
 
 /mob/living/carbon/human/proc/make_undead(mob/necromancer, should_lichify = FALSE)
 	if(!mind)
 		return
 
-	if(!istype(mind.wizard, /datum/wizard/undead))
+	if(mind.wizard && !istype(mind.wizard, /datum/wizard/undead))
 		GLOB.wizards.add_antagonist_mind(mind, TRUE, "undead", "<b>You are undead! Your job is to serve your master!</b>")
 		mind.wizard = new /datum/wizard/undead(src, necromancer)
 
@@ -97,7 +119,6 @@
 	revive(ignore_prosthetic_prefs = TRUE) // Complete regeneration
 
 	if(necromancer.mind && necromancer.mind.wizard)
-		//var/datum/mind/wizard/necromind = necromancer.mind.wizard
 		necromancer.mind.wizard.thralls |= mind.wizard
 
 	to_chat(src, SPAN_DANGER("<font size=6>Your consciousness awakens in a cold body. You are alive, but at what cost?</font>"))
@@ -106,10 +127,10 @@
 		var/datum/wizard/undead/undead = mind.wizard
 		necromancer.mind?.wizard?.lich = src
 		undead.lichify()
-		to_chat(necromancer, SPAN_WARNING("You feel a new connection forming... Now, you have a lich under your control!"))
+		to_chat(necromancer, SPAN_DANGER("You feel a new connection forming... Now, you have a lich under your control!"))
 		to_chat(src, SPAN_DANGER("<font size=6>You are now a lich serving as an apprentice to your master, \the [necromancer].</font>"))
 	else
-		to_chat(necromancer, SPAN_WARNING("You feel a soul answering your call. You now have a new thrall."))
+		to_chat(necromancer, SPAN_DANGER("You feel a soul answering your call. You now have a new thrall."))
 		to_chat(src, SPAN_DANGER("<font size=6>Your consciousness awakens in a cold body. You are alive, but at what cost?</font>"))
 		to_chat(src, SPAN_DANGER("<font size=6>Raised as undead, stripped of free will you now have one task - obey your master, \the [necromancer].</font>"))
 

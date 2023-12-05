@@ -31,4 +31,4 @@
 	notify_ghosts("A powerful necromancer has allowed you to exact revenge on [victim]! Click on him to unleash your fury!", null, victim, action = NOTIFY_JUMP, posses_mob = FALSE)
 
 /datum/modifier/status_effect/ghostattackable
-	duration = 10 SECONDS
+	duration = 15 SECONDS
