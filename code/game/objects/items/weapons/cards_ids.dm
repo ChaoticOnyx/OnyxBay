@@ -172,9 +172,12 @@ var/const/NO_EMAG_ACT = -50
 	SetName(final_name)
 
 /obj/item/card/id/proc/set_id_photo(mob/M)
-	M.ImmediateOverlayUpdate()
-	front = getFlatIcon(M, SOUTH, always_use_defdir = TRUE)
-	side = getFlatIcon(M, WEST, always_use_defdir = TRUE)
+	front = icon('icons/top_secret.dmi')
+	side = icon('icons/top_secret.dmi')
+//	 !!! REMOVED TILL WE MOVE TO 515 !!!
+//	M.ImmediateOverlayUpdate()
+//	front = getFlatIcon(M, SOUTH, always_use_defdir = TRUE)
+//	side = getFlatIcon(M, WEST, always_use_defdir = TRUE)
 
 /mob/proc/set_id_info(obj/item/card/id/id_card)
 	id_card.age = 0
