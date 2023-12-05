@@ -41,6 +41,8 @@
 
 	var/footstep_sound = SFX_FOOTSTEP_PLATING
 
+	var/turf_height = 0 // "Vertical" offset. Mostly used for mobs and dropped items.
+
 /turf/Initialize(mapload, ...)
 	. = ..()
 	if(dynamic_lighting)
@@ -185,6 +187,7 @@ var/const/enterloopsanity = 100
 		else
 			M.inertia_dir = 0
 			M.make_floating(0) //we know we're not on solid ground so skip the checks to save a bit of processing
+			M.update_height_offset(turf_height)
 
 /turf/proc/adjacent_fire_act(turf/simulated/floor/source, temperature, volume)
 	return
@@ -304,3 +307,11 @@ var/const/enterloopsanity = 100
 /turf/proc/get_footstep_sound()
 	if(footstep_sound)
 		return pick(GLOB.sfx_list[footstep_sound])
+
+/turf/proc/update_turf_height()
+	var/max_height = initial(turf_height)
+	for(var/obj/structure/S in contents)
+		max_height = max(max_height, S.height_offset)
+	turf_height = max_height
+	for(var/mob/M in contents)
+		M.update_height_offset(turf_height)

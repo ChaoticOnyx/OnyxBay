@@ -92,6 +92,7 @@
 	take_damage(rand(5, 10))
 	update_connections(1)
 	update_icon()
+	set_height_offset(0)
 
 	return TRUE
 
@@ -112,6 +113,7 @@
 
 	update_connections(1)
 	update_icon()
+	set_height_offset(initial(height_offset))
 
 	return TRUE
 
