@@ -178,8 +178,16 @@
 	name = "burst balloon"
 	desc = "Ow... Not much can be done with this now."
 	icon_state = "burst"
-	layer = BELOW_TABLE_LAYER
+	item_state = null
+	force = 0.0
+	throwforce = 0.0
 	throw_range = 7
+	w_class = ITEM_SIZE_TINY
+	layer = BELOW_TABLE_LAYER
+
+	item_icons = list()
+	update_held_icon()
+
 	playsound(get_turf(src), 'sound/effects/snap.ogg', 100, 1)
 
 /obj/item/balloon/verb/deflate()
@@ -348,8 +356,11 @@
 	name = "burst balloon"
 	desc = "Ow... Not much can be done with this now."
 	icon_state = "burst"
-	layer = BELOW_TABLE_LAYER
+	force = 0.0
+	throwforce = 0.0
 	throw_range = 7
+	w_class = ITEM_SIZE_TINY
+	layer = BELOW_TABLE_LAYER
 	balloon_type = BALLOON_BURST
 
 #undef BALLOON_FORBIDDEN
