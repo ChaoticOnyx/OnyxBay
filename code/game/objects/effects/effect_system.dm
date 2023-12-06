@@ -81,7 +81,7 @@ steam.start() -- spawns the effect
 
 /datum/effect/effect/system/steam_spread/start()
 	for(var/i = 0, i < src.number, i++)
-		addtimer(CALLBACK(src, /datum/effect/effect/system/proc/spread, i), 0)
+		addtimer(CALLBACK(src, nameof(.proc/spread), i), 0)
 
 /datum/effect/effect/system/steam_spread/spread(i)
 	set waitfor = 0
@@ -150,7 +150,7 @@ steam.start() -- spawns the effect
 
 /datum/effect/effect/system/spark_spread/start()
 	for(var/i = 0, i < src.number, i++)
-		addtimer(CALLBACK(src, /datum/effect/effect/system/proc/spread, i), 0)
+		addtimer(CALLBACK(src, nameof(.proc/spread), i), 0)
 
 /datum/effect/effect/system/spark_spread/spread(i)
 	set waitfor = 0
@@ -189,7 +189,7 @@ steam.start() -- spawns the effect
 
 /obj/effect/effect/smoke/Initialize()
 	. = ..()
-	addtimer(CALLBACK(src, /obj/effect/effect/smoke/proc/fade_out), time_to_live)
+	addtimer(CALLBACK(src, nameof(.proc/fade_out)), time_to_live)
 
 /obj/effect/effect/smoke/Crossed(mob/living/carbon/M as mob)
 	..()
@@ -343,7 +343,7 @@ steam.start() -- spawns the effect
 	for(var/i in 0 to src.number - 1)
 		if(src.total_smoke > 20)
 			return
-		addtimer(CALLBACK(src, /datum/effect/effect/system/proc/spread, i), 0)
+		addtimer(CALLBACK(src, nameof(.proc/spread), i), 0)
 
 /datum/effect/effect/system/smoke_spread/spread(i)
 	if(holder)

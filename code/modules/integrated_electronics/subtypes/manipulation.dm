@@ -99,7 +99,7 @@
 			dt = Clamp(detonation_time.data, 1, 12)*10
 		else
 			dt = 15
-		addtimer(CALLBACK(attached_grenade, nameof(/obj/item/grenade/.proc/activate)), dt)
+		addtimer(CALLBACK(attached_grenade, nameof(/obj/item/grenade.proc/activate)), dt)
 		addtimer(CALLBACK(src, nameof(.proc/before_activation_action)), dt - 1)
 		grenade_activated = TRUE
 		var/atom/holder = loc
