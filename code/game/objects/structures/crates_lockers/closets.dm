@@ -23,7 +23,6 @@
 	var/icon_off
 
 	var/welded = FALSE
-	var/large = TRUE
 	var/wall_mounted = FALSE //never solid (You can always pass over it)
 	var/health = 100
 	var/breakout = 0 //if someone is currently breaking out. mutex
@@ -536,11 +535,11 @@
 	qdel(src)
 
 /obj/structure/closet/MouseDrop_T(atom/movable/O, mob/user)
+	if(QDELETED(O))
+		return
 	if(istype(O, /obj/screen))	//fix for HUD elements making their way into the world	-Pete
 		return
 	if(O.loc == user)
-		return
-	if(ismob(O) && src.large)
 		return
 	if(user.restrained() || user.stat || user.weakened || user.stunned || user.paralysis)
 		return
@@ -548,8 +547,8 @@
 		return
 	if(!isturf(user.loc)) // are you in a container/closet/pod/etc?
 		return
-	if(!src.opened)
-		return
+	if(!opened)
+		return ..()
 	if(istype(O, /obj/structure/closet))
 		return
 	step_towards(O, src.loc)
