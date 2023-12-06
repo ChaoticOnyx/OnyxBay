@@ -533,7 +533,7 @@ var/list/solars_list = list()
 
 /obj/machinery/power/solar_control/autostart/Initialize()
 	. = ..()
-	addtimer(CALLBACK(src, .proc/autoconnect), 0)
+	addtimer(CALLBACK(src, nameof(.proc/autoconnect)), 0)
 
 /obj/machinery/power/solar_control/autostart/proc/autoconnect()
 	search_for_connected()

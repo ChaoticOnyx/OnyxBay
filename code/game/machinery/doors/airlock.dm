@@ -865,10 +865,10 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/New(newloc, obj/structure/door_assembly/assembly = null)
 	..()
 
-	add_think_ctx("regain_main_power", CALLBACK(src, .proc/regainMainPower), 0)
-	add_think_ctx("regain_backup_power", CALLBACK(src, .proc/regainBackupPower), 0)
-	add_think_ctx("electrify", CALLBACK(src, .proc/electrify), 0)
-	add_think_ctx("close", CALLBACK(src, .proc/close), 0)
+	add_think_ctx("regain_main_power", CALLBACK(src, nameof(.proc/regainMainPower)), 0)
+	add_think_ctx("regain_backup_power", CALLBACK(src, nameof(.proc/regainBackupPower)), 0)
+	add_think_ctx("electrify", CALLBACK(src, nameof(.proc/electrify)), 0)
+	add_think_ctx("close", CALLBACK(src, nameof(.proc/close)), 0)
 
 	//if assembly is given, create the new door from the assembly
 	if (assembly && istype(assembly))

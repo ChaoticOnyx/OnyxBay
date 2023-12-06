@@ -134,7 +134,7 @@
 		unregister_signal(parrot_interest, SIGNAL_QDELETING)
 	parrot_interest = AM
 	if(!QDELETED(parrot_interest) && !client)
-		register_signal(parrot_interest, SIGNAL_QDELETING, .proc/_interest_deleted)
+		register_signal(parrot_interest, SIGNAL_QDELETING, nameof(.proc/_interest_deleted))
 
 /mob/living/simple_animal/parrot/proc/_interest_deleted()
 	set_interest(null)
@@ -144,7 +144,7 @@
 		unregister_signal(parrot_perch, SIGNAL_QDELETING)
 	parrot_perch = O
 	if(!QDELETED(parrot_perch) && !client)
-		register_signal(parrot_perch, SIGNAL_QDELETING, .proc/_perch_deleted)
+		register_signal(parrot_perch, SIGNAL_QDELETING, nameof(.proc/_perch_deleted))
 
 /mob/living/simple_animal/parrot/proc/_perch_deleted()
 	set_perch(null)

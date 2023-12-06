@@ -83,7 +83,7 @@
 /datum/mob_ai/pet/proc/create_wandering_timer(duration)
 	if(timer_to_forget_target)
 		return
-	timer_to_forget_target = addtimer(CALLBACK(src, .proc/toggle_to_wandering), duration, TIMER_STOPPABLE)
+	timer_to_forget_target = addtimer(CALLBACK(src, nameof(.proc/toggle_to_wandering)), duration, TIMER_STOPPABLE)
 
 /datum/mob_ai/pet/listen(mob/speaker, text)
 	if(speaker != master)

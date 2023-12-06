@@ -58,7 +58,7 @@
 /datum/event/space_dust/New()
 	. = ..()
 
-	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+	add_think_ctx("end", CALLBACK(src, nameof(.proc/end)), 0)
 
 /datum/event/space_dust/on_fire()
 	severity = SSevents.evars["space_dust_severity"]

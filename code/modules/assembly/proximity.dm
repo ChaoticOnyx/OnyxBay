@@ -59,7 +59,7 @@
 		mainloc.visible_message(SPAN("danger" ,"\icon[src] *beep* *beep*"), SPAN("danger" ,"*beep* *beep*"))
 	playsound(mainloc, 'sound/signals/warning8.ogg', 35)
 	cooldown = 2
-	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
+	addtimer(CALLBACK(src, nameof(.proc/process_cooldown)), 1 SECOND)
 
 /obj/item/device/assembly/prox_sensor/think()
 	if(!timing)

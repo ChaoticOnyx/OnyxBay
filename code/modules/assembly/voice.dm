@@ -27,7 +27,7 @@
 		if(findtext(msg, recorded))
 			pulse(0)
 			cooldown = 2
-			addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
+			addtimer(CALLBACK(src, nameof(.proc/process_cooldown)), 1 SECOND)
 
 
 /obj/item/device/assembly/voice/activate()

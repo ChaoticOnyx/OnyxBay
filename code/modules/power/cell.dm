@@ -293,7 +293,7 @@
 	. = ..()
 
 	set_next_think(world.time)
-	add_think_ctx("selfcharge", CALLBACK(src, .proc/selfcharge_think), world.time)
+	add_think_ctx("selfcharge", CALLBACK(src, nameof(.proc/selfcharge_think)), world.time)
 
 
 /obj/item/cell/quantum

@@ -29,7 +29,7 @@
 		without intervention this attack will succeed in approximately 10 minutes. Possible solutions: suspension of accounts, disabling NTnet server, \
 		increase account security level. Notifications will be sent as updates occur.")
 
-	addtimer(CALLBACK(src, .proc/end), 10 MINUTES)
+	addtimer(CALLBACK(src, nameof(.proc/end)), 10 MINUTES)
 
 /datum/event/money_hacker/proc/end()
 	SSevents.evars["money_hacker_running"] = FALSE

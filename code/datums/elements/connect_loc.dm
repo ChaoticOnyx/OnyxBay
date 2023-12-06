@@ -14,7 +14,7 @@
 
 	src.connections = connections
 
-	register_signal(listener, SIGNAL_MOVED, .proc/on_moved, override = TRUE)
+	register_signal(listener, SIGNAL_MOVED, nameof(.proc/on_moved), override = TRUE)
 	update_signals(listener)
 
 /datum/element/connect_loc/detach(atom/movable/listener)

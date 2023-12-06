@@ -37,7 +37,7 @@
 			unregister_signal(target_mob, SIGNAL_QDELETING)
 		target_mob = L
 		if(!QDELETED(target_mob) && !client)
-			register_signal(target_mob, SIGNAL_QDELETING, .proc/_target_deleted)
+			register_signal(target_mob, SIGNAL_QDELETING, nameof(.proc/_target_deleted))
 
 /mob/living/simple_animal/bee/proc/_target_deleted()
 	set_target_mob(null)
