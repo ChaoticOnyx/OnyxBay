@@ -217,7 +217,7 @@
 		target_turf = get_step(target_turf, thrown_dir)
 		if(target_dist <= 0)
 			break
-	INVOKE_ASYNC(hit_atom, /atom/movable/proc/throw_at, target_turf, throw_range-dist_travelled, speed, thrower)
+	INVOKE_ASYNC(hit_atom, nameof(/atom/movable.proc/throw_at), target_turf, throw_range-dist_travelled, speed, thrower)
 
 /obj/effect/portal/linked/teleport(atom/movable/M, ignore_checks = FALSE)
 	if(!target)

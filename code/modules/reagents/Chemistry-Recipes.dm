@@ -1434,7 +1434,7 @@
 	S.visible_message(SPAN_DANGER("Infused with slime jelly, the core begins to expand uncontrollably!"))
 	S.icon_state = "metroidbang_active"
 	S.active = TRUE
-	addtimer(CALLBACK(S, /obj/item/grenade/proc/detonate), rand(15,60))
+	addtimer(CALLBACK(S, nameof(/obj/item/grenade.proc/detonate)), rand(15,60))
 	var/lastkey = holder.my_atom.fingerprintslast
 	message_admins("[key_name_admin(lastkey)] primed an explosive Brorble Brorble for detonation.")
 	log_game("[key_name(lastkey)] primed an explosive Brorble Brorble for detonation.")

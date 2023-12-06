@@ -140,7 +140,7 @@
 			if(do_after(user, 30, src))
 				if(density)
 					visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
-					INVOKE_ASYNC(src, /obj/machinery/door/proc/open)
+					INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/open))
 					shake_animation(2, 2)
 			return
 
@@ -174,24 +174,24 @@
 			// Accountability!
 			users_to_open |= user.name
 			needs_to_close = !issilicon(user)
-		INVOKE_ASYNC(src, /obj/machinery/door/proc/open)
+		INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/open))
 	else
-		INVOKE_ASYNC(src, /obj/machinery/door/proc/close)
+		INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/close))
 
 	if(needs_to_close)
-		addtimer(CALLBACK(src, /obj/machinery/door/proc/close), 50, TIMER_UNIQUE|TIMER_OVERRIDE)
+		addtimer(CALLBACK(src, nameof(/obj/machinery/door.proc/close)), 50, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 /obj/machinery/door/firedoor/attack_generic(mob/user, damage)
 	if(stat & (BROKEN|NOPOWER))
 		if(damage >= 10)
 			if(density)
 				visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
-				INVOKE_ASYNC(src, /obj/machinery/door/proc/open, TRUE)
+				INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/open), TRUE)
 				if(!(stat & (BROKEN|NOPOWER)))
-					addtimer(CALLBACK(src, /obj/machinery/door/proc/close), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
+					addtimer(CALLBACK(src, nameof(/obj/machinery/door.proc/close)), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
 			else
 				visible_message(SPAN("danger","\The [user] forces \the [src] closed!"))
-				INVOKE_ASYNC(src, /obj/machinery/door/proc/close)
+				INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/close))
 		else
 			visible_message(SPAN("notice","\The [user] strains fruitlessly to force \the [src] [density ? "open" : "closed"]."))
 		return
@@ -271,11 +271,11 @@
 								 "You force \the [ blocked ? "welded" : "" ] [src] [density ? "open" : "closed"] with \the [C]!",\
 								 "You hear metal strain and groan, and a door [density ? "opening" : "closing"].")
 		if(density)
-			INVOKE_ASYNC(src, /obj/machinery/door/proc/open, TRUE)
+			INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/open), TRUE)
 			if(!(stat & (BROKEN|NOPOWER)))
-				addtimer(CALLBACK(src, /obj/machinery/door/proc/close), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
+				addtimer(CALLBACK(src, nameof(/obj/machinery/door.proc/close)), 150, TIMER_UNIQUE|TIMER_OVERRIDE)
 		else
-			INVOKE_ASYNC(src, /obj/machinery/door/proc/close)
+			INVOKE_ASYNC(src, nameof(/obj/machinery/door.proc/close))
 		return
 
 	return ..()
