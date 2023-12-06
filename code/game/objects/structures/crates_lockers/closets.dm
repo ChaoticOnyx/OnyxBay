@@ -152,7 +152,7 @@
 		if((setup & CLOSET_HAS_LOCK))
 			ndoor.lockable = TRUE
 
-		ndoor.loc = src
+		ndoor.forceMove(src)
 		cdoor = ndoor
 
 	update_icon()
@@ -826,7 +826,7 @@
 		return FALSE
 	broken = FALSE
 	locked = FALSE
-	C.loc = src
+	C.forceMove(src)
 	cdoor = C
 
 	req_access = cdoor.req_access

@@ -117,11 +117,11 @@
 				var/obj/item/stack/material/S = O
 				if(!isnull(stack_storage[initial(S.name)]))
 					stack_storage[initial(S.name)] += S.amount
-					O.loc = null
+					O.forceMove(null)
 				else
-					O.loc = output.loc
+					O.dropInto(output.loc)
 			else
-				O.loc = output.loc
+				O.dropInto(output.loc)
 
 	//Output amounts that are past stack_amt.
 	for(var/sheet in stack_storage)

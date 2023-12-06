@@ -74,7 +74,7 @@
 			var/stored_loc = loc //leave_host() will try to get host's turf but it is bad
 			detatch()
 			leave_host()
-			loc = stored_loc
+			forceMove(stored_loc)
 			return
 		health = min(health + 1, maxHealth)
 		if(!stat && !host.is_ic_dead())

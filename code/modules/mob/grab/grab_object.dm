@@ -82,7 +82,6 @@
 		assailant.__unequip(src)
 		assailant.client?.screen -= src
 		assailant = null
-		loc = null
 	return ..()
 
 /*
