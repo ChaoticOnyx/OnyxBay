@@ -284,9 +284,6 @@
 	icon_off = "wall-lockeroff"
 	dremovable = 0
 
-	//too small to put a man in
-	large = 0
-
 /obj/structure/closet/secure_closet/iaa
 	name = "internal affairs secure closet"
 	req_access = list(access_iaa)
