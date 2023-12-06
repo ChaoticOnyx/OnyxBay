@@ -164,7 +164,7 @@
 				O.update()
 
 			user.visible_message(SPAN("notice", "[user]'s [src] spits out \the [selected.name]."))
-			product.loc = get_turf(A)
+			product.dropInto(get_turf(A))
 			BC.use(selected.energy)
 		else
 			inuse = 0

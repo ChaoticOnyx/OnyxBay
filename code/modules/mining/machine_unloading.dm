@@ -30,7 +30,7 @@
 			var/i = 0
 			for (var/obj/item/ore/O in BOX.contents)
 				BOX.contents -= O
-				O.loc = output.loc
+				O.dropInto(output.loc)
 				i++
 				if (i>=10)
 					return
@@ -40,7 +40,7 @@
 			for (i = 0; i<10; i++)
 				O = locate(/obj/item, input.loc)
 				if (O)
-					O.loc = src.output.loc
+					O.dropInto(output.loc)
 				else
 					return
 	return

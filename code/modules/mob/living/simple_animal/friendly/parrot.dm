@@ -191,7 +191,7 @@
 							src.say("[pick(available_channels)] РРРЯЯЯЯ ОСТАВЬ НАУШНИК РРЯЯЯЯЯЯ!")
 						else
 							src.say("РРЯЯЯЯЯ ОСТАВЬ НАУШНИК РРРЯЯЯЯЯ!")
-						ears.loc = src.loc
+						ears.dropInto(loc)
 						ears = null
 						for(var/possible_phrase in speak)
 							if(copytext(possible_phrase,1,3) in department_radio_keys)
@@ -207,7 +207,7 @@
 						src.say("[pick(available_channels)] РРРЯЯЯЯЯ ПОЛОЖИ НА МЕСТО РРЯЯЯЯЯЯ!")
 					else
 						src.say("РРРЯЯЯЯ ПОЛОЖИ НА МЕСТО РРРЯЯЯЯЯЯ!")
-					held_item.loc = src.loc
+					held_item.dropInto(loc)
 					held_item = null
 
 		//Adding things to inventory
@@ -474,7 +474,7 @@
 			else //This should ensure that we only grab the item we want, and make sure it's not already collected on our perch
 				if(!parrot_perch || parrot_interest.loc != parrot_perch.loc)
 					held_item = parrot_interest
-					parrot_interest.loc = src
+					parrot_interest.forceMove(src)
 					visible_message("[src] grabs the [held_item]!", "<span class='notice'>You grab the [held_item]!</span>", "You hear the sounds of wings flapping furiously.")
 
 			set_interest(null)
@@ -493,7 +493,7 @@
 			return
 
 		if(in_range(src, parrot_perch))
-			src.loc = parrot_perch.loc
+			forceMove(parrot_perch.loc)
 			drop_held_item()
 			parrot_state = PARROT_PERCH
 			icon_state = "parrot_sit"
@@ -647,7 +647,7 @@
 				continue
 
 			held_item = I
-			I.loc = src
+			I.forceMove(src)
 			visible_message("[src] grabs the [held_item]!", "<span class='notice'>You grab the [held_item]!</span>", "You hear the sounds of wings flapping furiously.")
 			return held_item
 
@@ -712,7 +712,7 @@
 	if(!drop_gently)
 		if(istype(held_item, /obj/item/grenade))
 			var/obj/item/grenade/G = held_item
-			G.loc = src.loc
+			G.dropInto(loc)
 			G.detonate()
 			to_chat(src, "You let go of the [held_item]!")
 			held_item = null
@@ -720,7 +720,7 @@
 
 	to_chat(src, "You drop the [held_item].")
 
-	held_item.loc = src.loc
+	held_item.dropInto(loc)
 	held_item = null
 	return 1
 
@@ -736,7 +736,7 @@
 		for(var/atom/movable/AM in view(src,1))
 			for(var/perch_path in desired_perches)
 				if(istype(AM, perch_path))
-					src.loc = AM.loc
+					forceMove(AM.loc)
 					icon_state = "parrot_sit"
 					return
 	to_chat(src, "<span class='warning'>There is no perch nearby to sit on.</span>")

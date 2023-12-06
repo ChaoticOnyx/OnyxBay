@@ -73,7 +73,7 @@
 			to_chat(user, SPAN("notice", "The pages of [title] have been cut out!"))
 			return
 		to_chat(user, SPAN("notice", "[store] falls out of [title]!"))
-		store.loc = get_turf(loc)
+		store.dropInto(get_turf(loc))
 		store = null
 		return
 

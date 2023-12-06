@@ -242,7 +242,7 @@
 		new /obj/item/robot_parts/l_arm(Tsec)
 
 	if(reagent_glass)
-		reagent_glass.loc = Tsec
+		reagent_glass.dropInto(Tsec)
 		reagent_glass = null
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread

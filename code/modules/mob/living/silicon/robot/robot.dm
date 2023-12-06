@@ -1311,7 +1311,7 @@
 			if(istype(U,/obj/item/borg/upgrade/floodlight))
 				continue
 			contents.Remove(U)
-			U.loc = get_turf(src)
+			U.forceMove(get_turf(src))
 			U.installed = 0
 	sensor_mode = 0
 	if (ion_trail)

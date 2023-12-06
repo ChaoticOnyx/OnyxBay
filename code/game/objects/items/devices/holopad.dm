@@ -147,12 +147,12 @@
 	if(isliving(loc))
 		var/mob/living/L = loc
 		hologram.dir = turn(L.dir,180)
-		hologram.loc = L.loc
+		hologram.forceMove(L.loc)
 		hologram.pixel_x = ((L.dir&4)?32:((L.dir&8)?-32:0))
 		hologram.pixel_y = ((L.dir&1)?32:((L.dir&2)?-32:0))
 	else if(isturf(loc))
 		hologram.dir = 2
-		hologram.loc = loc
+		hologram.forceMove(loc)
 		hologram.pixel_x = 0
 		hologram.pixel_y = 0
 	else

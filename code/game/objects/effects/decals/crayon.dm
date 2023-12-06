@@ -4,15 +4,11 @@
 	icon = 'icons/obj/rune.dmi'
 	anchored = 1
 
-	New(location,main = "#ffffff",shade = "#000000", drawing = "rune1", visible_name = "drawing")
-		..()
-		loc = location
-
-		name = visible_name
-		desc = "A [visible_name] drawn in crayon."
-		AddOverlays(get_crayon_preview(main, shade, drawing))
-
-		add_hiddenprint(usr)
+/obj/effect/decal/cleanable/crayon/Initialize(mapload, main = "#ffffff", shade = "#000000", drawing = "rune1", visible_name = "drawing")
+	. = ..(mapload)
+	name = visible_name
+	desc = "A [visible_name] drawn in crayon."
+	AddOverlays(get_crayon_preview(main, shade, drawing))
 
 // Returns icon if receiver is not specified, or name of created .png file otherwise
 /proc/get_crayon_preview(main = "#ffffff",shade = "#000000", drawing = "rune1", mob/receiver)

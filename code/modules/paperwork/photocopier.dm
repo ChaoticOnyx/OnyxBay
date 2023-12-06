@@ -247,10 +247,10 @@
 			I = copy(I)
 		else if(istype(I, /obj/item/photo))
 			I = photocopy(I)
-		I.loc = p
+		I.forceMove(p)
 		p.pages += I
 
-	p.loc = src.loc
+	p.dropInto(loc)
 	p.update_icon()
 	p.icon_state = "paper_words"
 	p.SetName(bundle.name)

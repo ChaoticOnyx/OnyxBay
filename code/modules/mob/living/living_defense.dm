@@ -243,7 +243,7 @@
 				var/turf/T = near_wall(dir, 2)
 
 				if(T)
-					src.loc = T
+					forceMove(T)
 					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"), SPAN("warning", "You are pinned to the wall by [O]!"))
 					anchored = 1
 					pinned += O
@@ -267,7 +267,7 @@
 	playsound(src, sound_to_play, sound_loudness, 1)
 
 /mob/living/proc/embed(obj/O, def_zone=null, datum/wound/supplied_wound)
-	O.loc = src
+	O.forceMove(src)
 	src.embedded += O
 	src.verbs += /mob/proc/yank_out_object
 

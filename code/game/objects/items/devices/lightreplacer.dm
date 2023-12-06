@@ -130,7 +130,6 @@
 		uses++
 		to_chat(user, SPAN("notice", "Light loaded: [uses]/[max_uses]"))
 		playsound(loc, 'sound/machines/click.ogg', 20, 1)
-		L.loc = null
 		qdel(L)
 
 /obj/item/device/lightreplacer/proc/box_contains_lights(obj/item/storage/box/box)

@@ -862,7 +862,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 						if("2")		// Eject pAI device
 							var/turf/T = get_turf_or_move(src.loc)
 							if(T)
-								pai.loc = T
+								pai.dropInto(T)
 								pai = null
 
 		else

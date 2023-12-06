@@ -82,7 +82,7 @@
 		if(I <= old_checkers_used)
 			var/obj/effect/abstract/proximity_checker/pc = checkers_local[I]
 			if(pc)
-				pc.loc = turfs[I]
+				pc.forceMove(turfs[I])
 			else
 				checkers += new /obj/effect/abstract/proximity_checker(turfs[I], src)
 		else
