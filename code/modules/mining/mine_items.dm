@@ -311,6 +311,9 @@
 	icon_closed = "miningcar"
 	pull_slowdown = PULL_SLOWDOWN_LIGHT
 
+	turf_height_offset = 15
+	opened_turf_height_offset = 3
+
 /**********************Pinpointer**********************/
 
 /obj/item/ore_radar

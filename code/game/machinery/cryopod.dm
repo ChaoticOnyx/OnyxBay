@@ -27,6 +27,7 @@
 	circuit = /obj/item/circuitboard/cryopodcontrol
 	density = 0
 	interact_offline = 1
+	turf_height_offset = 0
 	var/datum/browser/browser = null
 	var/menu = MAIN
 
