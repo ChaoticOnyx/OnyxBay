@@ -205,11 +205,15 @@
 		if(!undeploy_path)
 			return
 		visible_message("\The [src] slowly deflates.")
-		spawn(50)
-			var/obj/item/inflatable/R = new undeploy_path(loc)
-			transfer_fingerprints_to(R)
-			R.inflatable_health = health
-			qdel(src)
+		addtimer(CALLBACK(src, nameof(.proc/_deflate)), 5 SECONDS)
+
+/obj/structure/inflatable/proc/_deflate()
+	if(isnull(loc))
+		return
+	var/obj/item/inflatable/R = new undeploy_path(loc)
+	transfer_fingerprints_to(R)
+	R.inflatable_health = health
+	qdel(src)
 
 /obj/structure/inflatable/verb/hand_deflate()
 	set name = "Deflate"
@@ -228,8 +232,7 @@
 	attack_animation(user)
 	if(health <= 0)
 		user.visible_message(SPAN("danger", "[user] [attack_verb] open the [src]!"))
-		spawn(1)
-			deflate(TRUE)
+		INVOKE_ASYNC(src, nameof(.proc/deflate), TRUE)
 	else
 		user.visible_message(SPAN("danger", "[user] [attack_verb] at [src]!"))
 	return 1
@@ -298,7 +301,11 @@
 /obj/structure/inflatable/door/proc/Open()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_opening", src)
-	sleep(10)
+	addtimer(CALLBACK(src, nameof(.proc/_Open)), 1 SECOND)
+
+/obj/structure/inflatable/door/proc/_Open()
+	if(QDELETED(src))
+		return
 	set_density(FALSE)
 	set_opacity(FALSE)
 	state = 1
@@ -310,7 +317,11 @@
 /obj/structure/inflatable/door/proc/Close()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_closing", src)
-	sleep(10)
+	addtimer(CALLBACK(src, nameof(.proc/_Close)), 1 SECOND)
+
+/obj/structure/inflatable/door/proc/_Close()
+	if(QDELETED(src))
+		return
 	set_density(TRUE)
 	set_opacity(FALSE)
 	state = 0
@@ -343,7 +354,11 @@
 /obj/structure/inflatable/door/panel/Open()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_opening", src)
-	sleep(6)
+	addtimer(CALLBACK(src, nameof(.proc/_Open)), 0.6 SECONDS)
+
+/obj/structure/inflatable/door/panel/_Open()
+	if(QDELETED(src))
+		return
 	set_density(FALSE)
 	set_opacity(FALSE)
 	state = 1
@@ -354,7 +369,11 @@
 /obj/structure/inflatable/door/panel/Close()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_closing", src)
-	sleep(6)
+	addtimer(CALLBACK(src, nameof(.proc/_Close)), 0.6 SECONDS)
+
+/obj/structure/inflatable/door/panel/_Close()
+	if(QDELETED(src))
+		return
 	set_density(TRUE)
 	set_opacity(FALSE)
 	state = 0
@@ -380,6 +399,13 @@
 	var/mover_dir = get_dir(loc, target)
 	if((mover_dir & dir) || (mover_dir & turn(dir, -45)) || (mover_dir & turn(dir, 45)))
 		return !density
+	return TRUE
+
+/obj/structure/inflatable/door/panel/CheckExit(atom/movable/O, turf/target)
+	if(istype(O) && O.pass_flags & PASS_FLAG_GLASS)
+		return TRUE
+	if(get_dir(O.loc, target) == dir)
+		return state
 	return TRUE
 
 /obj/structure/inflatable/door/panel/proc/CheckDiagonalExit(atom/movable/mover, turf/target)
