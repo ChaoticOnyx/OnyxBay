@@ -647,6 +647,7 @@
 				continue
 
 			held_item = I
+			I.ForceMove(src)
 			visible_message("[src] grabs the [held_item]!", SPAN_NOTICE("You grab the [held_item]!"), "You hear the sounds of wings flapping furiously.")
 			return held_item
 
