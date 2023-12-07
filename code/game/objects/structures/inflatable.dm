@@ -97,6 +97,7 @@
 
 /obj/structure/inflatable/Initialize()
 	. = ..()
+	add_think_ctx("post_deflate", CALLBACK(src, nameof(.proc/post_deflate)), 0)
 	set_next_think(world.time)
 
 /obj/structure/inflatable/Destroy()
@@ -205,10 +206,10 @@
 		if(!undeploy_path)
 			return
 		visible_message("\The [src] slowly deflates.")
-		addtimer(CALLBACK(src, nameof(.proc/_deflate)), 5 SECONDS)
+		set_next_think_ctx("post_deflate", world.time + (5 SECONDS))
 
-/obj/structure/inflatable/proc/_deflate()
-	if(isnull(loc))
+/obj/structure/inflatable/proc/post_deflate()
+	if(QDELETED(src))
 		return
 	var/obj/item/inflatable/R = new undeploy_path(loc)
 	transfer_fingerprints_to(R)
@@ -293,17 +294,17 @@
 
 /obj/structure/inflatable/door/proc/SwitchState()
 	if(state)
-		Close()
+		close()
 	else
-		Open()
+		open()
 	update_nearby_tiles()
 
-/obj/structure/inflatable/door/proc/Open()
+/obj/structure/inflatable/door/proc/open()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_opening", src)
-	addtimer(CALLBACK(src, nameof(.proc/_Open)), 1 SECOND)
+	addtimer(CALLBACK(src, nameof(.proc/post_open)), 1 SECOND)
 
-/obj/structure/inflatable/door/proc/_Open()
+/obj/structure/inflatable/door/proc/post_open()
 	if(QDELETED(src))
 		return
 	set_density(FALSE)
@@ -314,12 +315,12 @@
 	atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 	layer = ABOVE_HUMAN_LAYER
 
-/obj/structure/inflatable/door/proc/Close()
+/obj/structure/inflatable/door/proc/close()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_closing", src)
-	addtimer(CALLBACK(src, nameof(.proc/_Close)), 1 SECOND)
+	addtimer(CALLBACK(src, nameof(.proc/post_close)), 1 SECOND)
 
-/obj/structure/inflatable/door/proc/_Close()
+/obj/structure/inflatable/door/proc/post_close()
 	if(QDELETED(src))
 		return
 	set_density(TRUE)
@@ -351,12 +352,12 @@
 	undeploy_path = /obj/item/inflatable/panel
 	torn_path = /obj/item/inflatable/panel/torn
 
-/obj/structure/inflatable/door/panel/Open()
+/obj/structure/inflatable/door/panel/open()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_opening", src)
-	addtimer(CALLBACK(src, nameof(.proc/_Open)), 0.6 SECONDS)
+	addtimer(CALLBACK(src, nameof(.proc/post_open)), 0.6 SECONDS)
 
-/obj/structure/inflatable/door/panel/_Open()
+/obj/structure/inflatable/door/panel/post_open()
 	if(QDELETED(src))
 		return
 	set_density(FALSE)
@@ -366,12 +367,12 @@
 	isSwitchingStates = FALSE
 	layer = ABOVE_HUMAN_LAYER
 
-/obj/structure/inflatable/door/panel/Close()
+/obj/structure/inflatable/door/panel/close()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_closing", src)
-	addtimer(CALLBACK(src, nameof(.proc/_Close)), 0.6 SECONDS)
+	addtimer(CALLBACK(src, nameof(.proc/post_close)), 0.6 SECONDS)
 
-/obj/structure/inflatable/door/panel/_Close()
+/obj/structure/inflatable/door/panel/post_close()
 	if(QDELETED(src))
 		return
 	set_density(TRUE)
