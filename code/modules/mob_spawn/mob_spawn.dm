@@ -216,7 +216,7 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 	. = ..()
 	switch(spawn_when)
 		if(CORPSE_INSTANT)
-			INVOKE_ASYNC(src, .proc/create)
+			INVOKE_ASYNC(src, nameof(.proc/create))
 
 /obj/effect/mob_spawn/corpse/special(mob/living/spawned_mob)
 	. = ..()

@@ -124,13 +124,16 @@ GLOBAL_LIST_INIT(department_flags_to_text, list(
 	set_antagRecord((H && H.exploit_record && !jobban_isbanned(H, "Records") ? H.exploit_record : ""))
 
 /datum/computer_file/crew_record/proc/take_mob_photo(mob/living/carbon/human/H)
-	if(istype(H))
-		H.ImmediateOverlayUpdate()
-		photo_front = getFlatIcon(H, SOUTH, always_use_defdir = TRUE)
-		photo_side = getFlatIcon(H, WEST, always_use_defdir = TRUE)
-	else
-		photo_front = icon('icons/mob/human_races/r_human.dmi', "preview_m", SOUTH)
-		photo_side = icon('icons/mob/human_races/r_human.dmi', "preview_m", WEST)
+	photo_front = icon('icons/top_secret.dmi')
+	photo_side = icon('icons/top_secret.dmi')
+//	 !!! REMOVED TILL WE MOVE TO 515 !!!
+//	if(istype(H))
+//		H.ImmediateOverlayUpdate()
+//		photo_front = getFlatIcon(H, SOUTH, always_use_defdir = TRUE)
+//		photo_side = getFlatIcon(H, WEST, always_use_defdir = TRUE)
+//	else
+//		photo_front = icon('icons/mob/human_races/r_human.dmi', "preview_m", SOUTH)
+//		photo_side = icon('icons/mob/human_races/r_human.dmi', "preview_m", WEST)
 
 // Returns independent copy of this file.
 /datum/computer_file/crew_record/clone(rename = 0)

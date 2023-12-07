@@ -132,7 +132,7 @@ BORER_STATUS_HUSK = list(\
 
 		src.host = H
 		src.host.status_flags |= PASSEMOTES
-		src.loc = H
+		forceMove(H)
 
 		//Update their traitor status.
 		if(host.mind)
@@ -239,7 +239,7 @@ BORER_STATUS_HUSK = list(\
 
 	chemicals -= 100
 
-	addtimer(CALLBACK(host, /mob/living/carbon/human/proc/host_pain_enable), 30 SECONDS)
+	addtimer(CALLBACK(host, nameof(/mob/living/carbon/human.proc/host_pain_enable)), 30 SECONDS)
 
 /mob/living/simple_animal/borer/verb/secrete_chemicals()
 	set category = "Abilities"
@@ -412,7 +412,7 @@ BORER_STATUS_HUSK = list(\
 	var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
 	head?.implants -= src
 
-	src.loc = get_turf(host)
+	dropInto(host.loc)
 
 	reset_view(null)
 	unset_machine()

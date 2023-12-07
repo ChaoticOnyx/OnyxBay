@@ -147,7 +147,7 @@
 		KA.receive_request(src, initial_card)
 
 	if(confirm_delay)
-		addtimer(CALLBACK(src, .proc/broadcast_check), confirm_delay)
+		addtimer(CALLBACK(src, nameof(.proc/broadcast_check)), confirm_delay)
 
 /obj/machinery/keycard_auth/proc/broadcast_check()
 	if(confirmed)
@@ -191,7 +191,7 @@
 				return
 			if(!ert_timer)
 				visible_message(SPAN_NOTICE("\The [src] displays the message: The request has been created and the process of transferring the request to the emergency response service has been started, the approximate waiting time for processing is 2 minutes."), range=2)
-				ert_timer = addtimer(CALLBACK(src, .proc/call_ert), 2 MINUTES, TIMER_STOPPABLE)
+				ert_timer = addtimer(CALLBACK(src, nameof(.proc/call_ert)), 2 MINUTES, TIMER_STOPPABLE)
 				message_admins("An ERT call request was created with the reason:\n[event_additional_info].\nThis call will automatically be approved after 2 minutes. <A href='?src=\ref[src];approve_ert=1'>Approve</a>. <A href='?src=\ref[src];prohibit_ert=1'>Reject</a>.")
 		if("Grant Nuclear Authorization Code")
 			var/obj/machinery/nuclearbomb/nuke = locate(/obj/machinery/nuclearbomb/station) in world

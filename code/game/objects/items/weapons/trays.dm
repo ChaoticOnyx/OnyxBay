@@ -25,7 +25,7 @@
 	// Drop all the things. All of them.
 	ClearOverlays()
 	for(var/obj/item/I in carrying)
-		I.loc = M.loc
+		I.dropInto(M.loc)
 		carrying.Remove(I)
 		if(isturf(I.loc))
 			spawn()
@@ -173,7 +173,7 @@
 			if(calc_carry() + add >= max_carry)
 				break
 
-			I.loc = src
+			I.forceMove(src)
 			carrying.Add(I)
 			AddOverlays(image(I.icon, I.icon_state, layer = (30 + I.layer)))
 
@@ -191,7 +191,7 @@
 		ClearOverlays()
 
 		for(var/obj/item/I in carrying)
-			I.loc = loc
+			I.dropInto(loc)
 			carrying.Remove(I)
 			if(!foundtable && isturf(loc))
 			// if no table, presume that the person just shittily dropped the tray on the ground and made a mess everywhere!

@@ -127,3 +127,11 @@
 
 /datum/dna/gene/disability/nearsighted/New()
 	block=GLOB.GLASSESBLOCK
+
+/datum/dna/gene/disability/bartender
+	name = "Fine motor skills"
+	activation_message = "You fingers feel weird..."
+	mutation = MUTATION_BARTENDER
+
+/datum/dna/gene/disability/bartender/New()
+	block = GLOB.BARTENDERBLOCK

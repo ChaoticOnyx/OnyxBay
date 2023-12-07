@@ -10,7 +10,7 @@
 /datum/event/biohazard_outbreak/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(null, .proc/announce), 0)
+	add_think_ctx("announce", CALLBACK(null, nameof(.proc/announce)), 0)
 
 /datum/event/biohazard_outbreak/get_mtth()
 	. = ..()

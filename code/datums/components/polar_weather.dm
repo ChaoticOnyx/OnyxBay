@@ -23,7 +23,7 @@
 
 	_update_state()
 	set_next_think(world.time)
-	add_think_ctx("sound", CALLBACK(src, .proc/sound_think), world.time)
+	add_think_ctx("sound", CALLBACK(src, nameof(.proc/sound_think)), world.time)
 
 /datum/component/polar_weather/proc/_play_sounds()
 	for(var/client/C in GLOB.clients)

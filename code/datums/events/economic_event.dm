@@ -14,8 +14,8 @@
 /datum/event/economic_event/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
-	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+	add_think_ctx("announce", CALLBACK(src, nameof(.proc/announce)), 0)
+	add_think_ctx("end", CALLBACK(src, nameof(.proc/end)), 0)
 
 /datum/event/economic_event/check_conditions()
 	. = SSevents.evars["economic_events_running"] != TRUE

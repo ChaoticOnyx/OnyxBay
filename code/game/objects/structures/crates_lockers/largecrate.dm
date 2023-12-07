@@ -6,6 +6,7 @@
 	density = 1
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	pull_slowdown = PULL_SLOWDOWN_HEAVY
+	turf_height_offset = 22
 
 /obj/structure/largecrate/Initialize()
 	. = ..()

@@ -7,14 +7,14 @@
 		return COMPONENT_INCOMPATIBLE
 
 	train = weakref(parent)
-	register_signal(parent, SIGNAL_SHUTTLE_ARRIVED, .proc/arrived)
+	register_signal(parent, SIGNAL_SHUTTLE_ARRIVED, nameof(.proc/arrived))
 	set_next_think(world.time)
 
 /datum/component/train_auto/think()
 	if(QDELETED(train))
 		qdel(src)
 		return
-	
+
 	var/datum/shuttle/autodock/ferry/train/T = train.resolve()
 
 	if(QDELETED(T))
@@ -23,7 +23,7 @@
 
 	if(T.process_state == IDLE_STATE || T.process_state == WAIT_LAUNCH)
 		T.launch()
-	
+
 	set_next_think(world.time + 30 SECONDS)
 
 /datum/component/train_auto/proc/arrived()

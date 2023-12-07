@@ -90,10 +90,10 @@
 
 /obj/machinery/cell_charger/attack_ai(mob/user)
 	if(istype(user, /mob/living/silicon/robot) && Adjacent(user)) // Borgs can remove the cell if they are near enough
-		if(!src.charging)
+		if(!charging)
 			return
 
-		charging.loc = src.loc
+		charging.forceMove(loc)
 		charging.update_icon()
 		charging = null
 		user.visible_message("[user] removes the cell from the charger.", "You remove the cell from the charger.")

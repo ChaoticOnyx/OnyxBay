@@ -59,7 +59,7 @@
 
 	my_mob.death(0) // So our body ~actually~ dies until revived
 
-	addtimer(CALLBACK(src, .proc/revive_ready), revive_time)
+	addtimer(CALLBACK(src, nameof(.proc/revive_ready)), revive_time)
 
 	update_screen_button()
 

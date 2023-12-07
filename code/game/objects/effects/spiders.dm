@@ -187,7 +187,7 @@
 
 /obj/structure/spider/spiderling/Bump(atom/user)
 	if(istype(user, /obj/structure/table))
-		src.loc = user.loc
+		forceMove(user.loc)
 	else
 		..()
 
@@ -222,12 +222,12 @@
 					src.visible_message("<B>[src] scrambles into the ventillation ducts!</B>")*/
 
 				spawn(rand(20,60))
-					loc = exit_vent
+					forceMove(exit_vent)
 					var/travel_time = round(get_dist(loc, exit_vent.loc) / 2)
 					spawn(travel_time)
 
 						if(!exit_vent || exit_vent.welded)
-							loc = entry_vent
+							forceMove(entry_vent)
 							entry_vent = null
 							set_next_think(world.time + 1 SECOND)
 							return
@@ -238,11 +238,11 @@
 						sleep(travel_time)
 
 						if(!exit_vent || exit_vent.welded)
-							loc = entry_vent
+							forceMove(entry_vent)
 							entry_vent = null
 							set_next_think(world.time + 1 SECOND)
 							return
-						loc = exit_vent.loc
+						forceMove(exit_vent.loc)
 						entry_vent = null
 						var/area/new_area = get_area(loc)
 						if(new_area)
@@ -289,8 +289,8 @@
 		if(!O.owner || O.owner.is_ic_dead() || amount_grown > 80)
 			amount_grown = 20 //reset amount_grown so that people have some time to react to spiderlings before they grow big
 			O.implants -= src
-			src.loc = O.owner ? O.owner.loc : O.loc
-			src.visible_message("<span class='warning'>\A [src] emerges from inside [O.owner ? "[O.owner]'s [O.name]" : "\the [O]"]!</span>")
+			forceMove(O.owner ? O.owner.loc : O.loc)
+			visible_message("<span class='warning'>\A [src] emerges from inside [O.owner ? "[O.owner]'s [O.name]" : "\the [O]"]!</span>")
 			if(O.owner)
 				O.owner.apply_damage(1, BRUTE, O.organ_tag)
 		else if(prob(1))

@@ -172,7 +172,7 @@
 		to_chat(usr, "You can't flip the [src] because something blocking it.")
 		return 0
 
-	src.loc = get_step(src, src.dir)
+	forceMove(get_step(src, dir))
 	set_dir(turn(dir, 180))
 	update_icon()
 	return

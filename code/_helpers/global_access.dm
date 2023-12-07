@@ -691,8 +691,6 @@
 			return global.solar_gen_rate;
 		if("solars_list")
 			return global.solars_list;
-		if("sortInstance")
-			return global.sortInstance;
 		if("sounds_cache")
 			return global.sounds_cache;
 		if("sparring_attack_cache")
@@ -1540,8 +1538,6 @@
 			global.solar_gen_rate=newval;
 		if("solars_list")
 			global.solars_list=newval;
-		if("sortInstance")
-			global.sortInstance=newval;
 		if("sounds_cache")
 			global.sounds_cache=newval;
 		if("sparring_attack_cache")

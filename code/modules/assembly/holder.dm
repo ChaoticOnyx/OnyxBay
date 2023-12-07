@@ -178,12 +178,12 @@
 		if(!T)	return 0
 		if(a_left)
 			a_left.holder = null
-			a_left.loc = T
+			a_left.forceMove(T)
 			if(a_left.proximity_monitor)
 				a_left.proximity_monitor.SetHost(a_left, a_left)
 		if(a_right)
 			a_right.holder = null
-			a_right.loc = T
+			a_right.forceMove(T)
 			if(a_right.proximity_monitor)
 				a_right.proximity_monitor.SetHost(a_right, a_right)
 		spawn(0)

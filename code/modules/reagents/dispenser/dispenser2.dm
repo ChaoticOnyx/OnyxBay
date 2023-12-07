@@ -92,7 +92,7 @@
 		var/obj/item/reagent_containers/chem_disp_cartridge/C = remove_cartridge(label)
 		if(C)
 			to_chat(user, "<span class='notice'>You remove \the [C] from \the [src].</span>")
-			C.loc = loc
+			C.dropInto(loc)
 
 	else if(istype(W, /obj/item/reagent_containers/vessel) || istype(W, /obj/item/reagent_containers/food))
 		if(container)

@@ -27,7 +27,9 @@
 
 /mob/forceMove(atom/destination, unbuckle_mob = TRUE)
 	. = ..()
-	if(. && unbuckle_mob)
+	if(!.)
+		return
+	if(unbuckle_mob)
 		buckled?.unbuckle_mob()
 
 /client/Northeast()

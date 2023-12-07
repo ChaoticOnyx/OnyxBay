@@ -1203,7 +1203,7 @@
 	user.drop(I, src)
 	brainmob.reset_view(src)
 	occupant = brainmob
-	brainmob.loc = src // should allow relaymove
+	brainmob.forceMove(src) // should allow relaymove
 	//brainmob.canmove = TRUE
 	//mmi_as_oc.mecha = src
 	verbs -= /obj/mecha/verb/eject
@@ -1282,12 +1282,12 @@
 		if(istype(mob_container, /obj/item/organ/internal/cerebrum/mmi))
 			var/obj/item/organ/internal/cerebrum/mmi/mmi = mob_container
 			if(mmi.brainmob)
-				occupant.loc = mmi
+				occupant.forceMove(mmi)
 			verbs += /obj/mecha/verb/eject
 		if(istype(mob_container, /obj/item/organ/internal/cerebrum/posibrain))
 			var/obj/item/organ/internal/cerebrum/posibrain/pb = mob_container
 			if(pb.brainmob)
-				occupant.loc = pb
+				occupant.forceMove(pb)
 			verbs += /obj/mecha/verb/eject
 
 		occupant = null

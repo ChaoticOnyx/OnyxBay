@@ -304,7 +304,7 @@
 
 	if(href_list["ejectjar"])
 		if(fueljar)
-			fueljar.loc = src.loc
+			fueljar.dropInto(loc)
 			fueljar = null
 			//fueljar.control_unit = null currently it does not care where it is
 			//on_update_icon() when we have the icon for it

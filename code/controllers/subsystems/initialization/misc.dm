@@ -34,7 +34,7 @@ SUBSYSTEM_DEF(misc)
 	transfer_controller = new
 	. = ..()
 
-// I have no other ideas how to do this. Moreover, it won't work for anything but walls, since things like windows and tables would need 256 baked states instead of 16, due to diagonals. Fuck my life. ~ToTh
+// I have no other ideas how to do this. Moreover, it won't work for anything but walls and windows, since things like tables would need 256 baked states instead of 16, due to diagonals. Fuck my life. ~ToTh
 /datum/controller/subsystem/misc/proc/BakeBitmaskOverlays()
 	var/icon/masks_icon = GLOB.using_map.legacy_mode ? 'icons/turf/wall_masks_legacy.dmi' : 'icons/turf/wall_masks.dmi'
 	GLOB.bitmask_icon_sheets["wall_solid"] = _bake_overlays(masks_icon, "solid")
@@ -47,6 +47,18 @@ SUBSYSTEM_DEF(misc)
 
 	GLOB.bitmask_icon_sheets["wall_reinf_over"]  = _bake_overlays(masks_icon, "reinf_over")
 	GLOB.bitmask_icon_sheets["wall_reinf_stone"] = _bake_overlays(masks_icon, "reinf_stone")
+
+	masks_icon = 'icons/obj/structures.dmi'
+	GLOB.bitmask_icon_sheets["winborder"]   = _bake_overlays(masks_icon, "winborder")
+	GLOB.bitmask_icon_sheets["winborder_r"] = _bake_overlays(masks_icon, "winborder_r")
+
+	GLOB.bitmask_icon_sheets["window"]        = _bake_overlays(masks_icon, "window")
+	GLOB.bitmask_icon_sheets["rwindow"]       = _bake_overlays(masks_icon, "rwindow")
+	GLOB.bitmask_icon_sheets["twindow"]       = _bake_overlays(masks_icon, "twindow")
+	GLOB.bitmask_icon_sheets["plasmawindow"]  = _bake_overlays(masks_icon, "plasmawindow")
+	GLOB.bitmask_icon_sheets["plasmarwindow"] = _bake_overlays(masks_icon, "plasmarwindow")
+	GLOB.bitmask_icon_sheets["blackwindow"]   = _bake_overlays(masks_icon, "blackwindow")
+	GLOB.bitmask_icon_sheets["rblackwindow"]  = _bake_overlays(masks_icon, "rblackwindow")
 	return
 
 /datum/controller/subsystem/misc/proc/_bake_overlays(icon_base, icon_state_base = "")

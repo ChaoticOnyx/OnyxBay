@@ -73,6 +73,15 @@ note dizziness decrements automatically in the mob's Life() proc.
 	pixel_y = default_pixel_y
 
 
+/mob/var/height_offset = 0
+
+/mob/proc/update_height_offset(new_val)
+	if(height_offset == new_val)
+		return FALSE
+	height_offset = new_val
+	animate(src, pixel_z = height_offset, time = 2, easing = SINE_EASING)
+	return TRUE
+
 //handles up-down floaty effect in space and zero-gravity
 /mob/var/is_floating = 0
 /mob/var/floatiness = 0

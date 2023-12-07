@@ -16,7 +16,7 @@
 	if(ev_wait <= 0)
 		util_crash_with("ev_wait should be greather than zero")
 
-	addtimer(CALLBACK(src, .proc/_timer_callback), ev_wait, TIMER_OVERRIDE | TIMER_UNIQUE)
+	addtimer(CALLBACK(src, nameof(.proc/_timer_callback)), ev_wait, TIMER_OVERRIDE | TIMER_UNIQUE)
 
 	if(ev_once)
 		ev_enabled = FALSE

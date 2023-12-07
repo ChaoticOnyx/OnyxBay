@@ -49,7 +49,7 @@
 	if(cooldown())
 		new /obj/effect/temporary/teleport_abductor(place)
 		playsound(get_turf(target), 'sound/effects/phasein.ogg', 20, 1)
-		addtimer(CALLBACK(src, .proc/doMobToLoc, place, target), 30)
+		addtimer(CALLBACK(src, nameof(.proc/doMobToLoc), place, target), 30)
 
 
 /obj/machinery/abductor/pad/proc/doPadToLoc(place)
@@ -63,7 +63,7 @@
 	if(cooldown())
 		new /obj/effect/temporary/teleport_abductor(place)
 		playsound(place, 'sound/effects/phasein.ogg', 20, 1)
-		addtimer(CALLBACK(src, .proc/doPadToLoc, place), 30)
+		addtimer(CALLBACK(src, nameof(.proc/doPadToLoc), place), 30)
 
 /obj/effect/temporary/teleport_abductor
 	name = "Huh"

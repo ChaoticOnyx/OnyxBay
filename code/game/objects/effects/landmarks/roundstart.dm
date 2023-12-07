@@ -4,7 +4,7 @@
 
 /obj/effect/landmark/roundstart/Initialize()
 	. = ..()
-	register_global_signal(SIGNAL_ROUNDSTART, .proc/activate)
+	register_global_signal(SIGNAL_ROUNDSTART, nameof(.proc/activate))
 
 /obj/effect/landmark/proc/activate()
 	qdel_self()
