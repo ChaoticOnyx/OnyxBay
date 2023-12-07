@@ -264,6 +264,11 @@
 	var/state = 0 //closed, 1 == open
 	var/isSwitchingStates = FALSE
 
+/obj/structure/inflatable/door/Initialize()
+	. = ..()
+	add_think_ctx("post_open", CALLBACK(src, nameof(.proc/post_open)), 0)
+	add_think_ctx("post_close", CALLBACK(src, nameof(.proc/post_close)), 0)
+
 /obj/structure/inflatable/door/attack_ai(mob/user) //those aren't machinery, they're just big fucking balloons
 	if(isAI(user)) //so the AI can't open it
 		return
@@ -302,7 +307,7 @@
 /obj/structure/inflatable/door/proc/open()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_opening", src)
-	addtimer(CALLBACK(src, nameof(.proc/post_open)), 1 SECOND)
+	set_next_think_ctx("post_open", world.time + (1 SECOND))
 
 /obj/structure/inflatable/door/proc/post_open()
 	if(QDELETED(src))
@@ -318,7 +323,7 @@
 /obj/structure/inflatable/door/proc/close()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_closing", src)
-	addtimer(CALLBACK(src, nameof(.proc/post_close)), 1 SECOND)
+	set_next_think_ctx("post_close", world.time + (1 SECOND))
 
 /obj/structure/inflatable/door/proc/post_close()
 	if(QDELETED(src))
@@ -355,7 +360,7 @@
 /obj/structure/inflatable/door/panel/open()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_opening", src)
-	addtimer(CALLBACK(src, nameof(.proc/post_open)), 0.6 SECONDS)
+	set_next_think_ctx("post_open", world.time + (0.6 SECONDS))
 
 /obj/structure/inflatable/door/panel/post_open()
 	if(QDELETED(src))
@@ -370,7 +375,7 @@
 /obj/structure/inflatable/door/panel/close()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_closing", src)
-	addtimer(CALLBACK(src, nameof(.proc/post_close)), 0.6 SECONDS)
+	set_next_think_ctx("post_close", world.time + (0.6 SECONDS))
 
 /obj/structure/inflatable/door/panel/post_close()
 	if(QDELETED(src))
