@@ -1,6 +1,8 @@
 #define THINKER_GROUPS 5
 #define ASSIGN_THINK_GROUP(group, time)          \
-	if(time <= world.time + 1 SECONDS) {         \
+    if(time <= world.time) {                     \
+        group = 0;                               \
+    } else if(time <= world.time + 1 SECONDS) {  \
 		group = 1;                               \
 	} else if(time <= world.time + 3 SECONDS) {  \
 		group = 2;                               \
