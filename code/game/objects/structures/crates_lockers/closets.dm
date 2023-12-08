@@ -274,6 +274,8 @@
 		AD.forceMove(src)
 
 	for(var/obj/item/I in loc)
+		if(QDELETED(I))
+			continue
 		if(istype(I,/obj/item/shield/closet))
 			break
 		if(I.anchored)
