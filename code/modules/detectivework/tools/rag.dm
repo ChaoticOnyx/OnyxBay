@@ -22,8 +22,8 @@
 	BP = new()
 
 /obj/item/reagent_containers/rag/Destroy()
-	. = ..()
 	QDEL_NULL(BP)
+	return ..()
 
 /obj/item/reagent_containers/rag/attack_self(mob/user as mob)
 	if(on_fire)

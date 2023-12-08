@@ -16,7 +16,9 @@
 	var/slowdown //used when an accessory is meant to slow the wearer down when attached to clothing
 
 /obj/item/clothing/accessory/Destroy()
-	on_removed()
+	if(has_suit)
+		has_suit.remove_accessory(null, src)
+	has_suit = null
 	return ..()
 
 /obj/item/clothing/accessory/proc/get_inv_overlay()

@@ -266,6 +266,7 @@ BLIND     // can't see anything
 		ring = null
 	QDEL_NULL(ring)
 	wearer = null
+	bloody_hands_mob = null
 	return ..()
 
 /obj/item/clothing/gloves/update_clothing_icon()
@@ -524,6 +525,10 @@ BLIND     // can't see anything
 		action_button_name = "Adjust Mask"
 		verbs += /obj/item/clothing/mask/proc/adjust_mask
 	..()
+
+/obj/item/clothing/mask/Destroy()
+	overlay = null
+	return ..()
 
 /obj/item/clothing/mask/needs_vision_update()
 	return ..() || overlay

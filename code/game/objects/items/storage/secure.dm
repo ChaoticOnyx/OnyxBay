@@ -28,6 +28,10 @@
 	max_w_class = ITEM_SIZE_SMALL
 	max_storage_space = DEFAULT_BOX_STORAGE
 
+/obj/item/storage/secure/Destroy()
+	QDEL_NULL(lock_menu)
+	return ..()
+
 /obj/item/storage/secure/_examine_text(mob/user)
 	. = ..()
 	. += "The service panel is [open ? "open" : "closed"]."

@@ -13,7 +13,7 @@
 	var/damage_failure = 50			// "Failure" threshold. When damage exceeds this value the hardware piece will not work at all.
 	var/malfunction_probability = 10// Chance of malfunction when the component is damaged
 
-/obj/item/computer_hardware/attackby(obj/item/W as obj, mob/living/user as mob)
+/obj/item/computer_hardware/attackby(obj/item/W, mob/living/user)
 	// Multitool. Runs diagnostics
 	if(isMultitool(W))
 		to_chat(user, "***** DIAGNOSTICS REPORT *****")
@@ -47,6 +47,7 @@
 	to_chat(user, "Hardware Integrity Test... (Corruption: [damage]/[max_damage]) [damage > damage_failure ? "FAIL" : damage > damage_malfunction ? "WARN" : "PASS"]")
 
 /obj/item/computer_hardware/New(obj/L)
+	..()
 	w_class = hardware_size
 	if(istype(L, /obj/item/modular_computer))
 		holder2 = L

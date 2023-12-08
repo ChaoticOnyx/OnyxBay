@@ -67,6 +67,7 @@
 
 /datum/storage_ui/default/Destroy()
 	close_all()
+	is_seeing.Cut() // One can never be sure
 	QDEL_NULL(boxes)
 	QDEL_NULL(storage_start)
 	QDEL_NULL(storage_continue)

@@ -113,28 +113,25 @@ steam.start() -- spawns the effect
 	anchored = 1.0
 	mouse_opacity = 0
 
-/obj/effect/sparks/New()
-	..()
-	playsound(src.loc, SFX_SPARK, 100, 1)
-	var/turf/T = src.loc
-	if (istype(T, /turf))
-		T.hotspot_expose(1000,100)
-
 /obj/effect/sparks/Initialize()
 	. = ..()
+	playsound(src.loc, SFX_SPARK, 100, 1)
+	var/turf/T = loc
+	if(istype(T, /turf))
+		T.hotspot_expose(1000, 100)
 	QDEL_IN(src, 5 SECONDS)
 
 /obj/effect/sparks/Destroy()
-	var/turf/T = src.loc
+	var/turf/T = loc
 	if (istype(T, /turf))
-		T.hotspot_expose(1000,100)
+		T.hotspot_expose(1000, 100)
 	return ..()
 
 /obj/effect/sparks/Move()
 	. = ..()
-	var/turf/T = src.loc
+	var/turf/T = loc
 	if (istype(T, /turf))
-		T.hotspot_expose(1000,100)
+		T.hotspot_expose(1000, 100)
 
 /datum/effect/effect/system/spark_spread
 

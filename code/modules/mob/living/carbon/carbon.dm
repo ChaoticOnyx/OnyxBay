@@ -15,7 +15,9 @@
 	QDEL_NULL(touching)
 	QDEL_NULL(bloodstr)
 	QDEL_NULL(surgery_status)
+	QDEL_NULL(handcuffed)
 
+	internal = null
 	reagents = null //We assume reagents is a reference to bloodstr here
 
 	// We assume that, in case of gib, organs and whatever have already done their business escaping the body,

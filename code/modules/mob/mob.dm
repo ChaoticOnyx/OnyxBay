@@ -16,6 +16,7 @@
 	LAssailant = null
 	for(var/obj/item/grab/G in grabbed_by)
 		qdel(G)
+	grabbed_by.Cut()
 
 	clear_fullscreen()
 	if(ability_master)
