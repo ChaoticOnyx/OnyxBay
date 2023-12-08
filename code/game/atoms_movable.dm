@@ -328,7 +328,7 @@
 
 /atom/movable/fake_overlay/Destroy()
 	master = null
-	. = ..()
+	return ..()
 
 /atom/movable/fake_overlay/attackby(a, b)
 	if (src.master)

@@ -669,7 +669,7 @@
 	return
 
 /obj/structure/disposalholder/Destroy()
-	qdel(gas)
+	QDEL_NULL(gas)
 	active = 0
 	return ..()
 

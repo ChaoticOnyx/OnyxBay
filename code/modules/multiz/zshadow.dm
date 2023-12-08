@@ -29,7 +29,7 @@
 
 /mob/Destroy()
 	if(shadow)
-		qdel(shadow)
+		QDEL_NULL(shadow)
 		shadow = null
 	. = ..()
 
