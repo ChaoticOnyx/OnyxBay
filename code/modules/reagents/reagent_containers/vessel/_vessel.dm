@@ -470,10 +470,13 @@
 	animate(pixel_y = 12, transform = turn(matrix(), rotate*7*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
 	animate(pixel_y = 0, transform = turn(matrix(), rotate*8*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
 	spawn(FLIPPING_DURATION)
+		if(!flipping)
+			return
+
 		var/turf/flip_turf = get_turf(flipping)
 		if(flip_turf != get_turf(user))
 			to_chat(user, SPAN_WARNING("Your fail to catch back \the [src]."))
-			user.drop(src, flipping.loc, force = TRUE)
+			user.drop(src, flip_turf, force = TRUE)
 			QDEL_NULL(flipping)
 			return
 
