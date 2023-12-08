@@ -964,6 +964,7 @@
 		dir = src.dir
 
 	var/obj/dummy = new
+	dummy.appearance_flags = DEFAULT_APPEARANCE_FLAGS | NO_CLIENT_COLOR
 	dummy.icon = icon
 	dummy.icon_state = icon_state
 	dummy.alpha = alpha
@@ -1010,6 +1011,7 @@
 	var/list/ret = list()
 
 	var/obj/dummy = new
+	dummy.appearance_flags = DEFAULT_APPEARANCE_FLAGS | NO_CLIENT_COLOR
 	dummy.icon = icon
 	dummy.icon_state = icon_state
 	dummy.alpha = alpha
