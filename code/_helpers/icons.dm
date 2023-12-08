@@ -769,7 +769,7 @@
 	cap.Blend("#000", ICON_OVERLAY)
 	for(var/atom/A in atoms)
 		if(A)
-			var/icon/img = getFlatIcon(A, no_anim = TRUE)
+			var/icon/img = ishuman(A) ? A.get_flat_icon(user) : getFlatIcon(A, no_anim = TRUE)
 			if(istype(img, /icon))
 				if(istype(A, /mob/living) && A:lying)
 					img.BecomeLying()
