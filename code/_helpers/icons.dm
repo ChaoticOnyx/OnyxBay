@@ -941,3 +941,103 @@
 		flat.Blend(rgb(255, 255, 255, alpha), ICON_MULTIPLY)
 
 	return icon(flat, "", SOUTH)
+
+// Returns a flattened icon of an atom with emissive blockers stripped.
+// The icon gets rendered on 'caller's side. If there's no 'caller' provided or the 'caller' has no client,
+// the icon will be rendered on a random client's side (unless 'allow_ratty_rendering = FALSE', in this case we give up).
+// 'dir' accepts either a single dir, uses 'src.dir' if not provided.
+// I'm not completely sure how ethical the 'allow_ratty_rendering' usage is, since it's basically lowkey cryptomining, but who fucking cares?
+/atom/proc/get_flat_icon(mob/caller, dir, allow_ratty_rendering = TRUE)
+	var/client/rendering_client
+	if(caller?.client)
+		rendering_client = caller.client // We are good, let the caller deal with their own stuff.
+	else if(allow_ratty_rendering)
+		for(var/mob/prey in shuffle(GLOB.player_list)) // We are not that good, randomly choosing a poor being to deal with rendering.
+			if(prey?.client)
+				rendering_client = prey.client
+				break
+
+	if(!rendering_client)
+		return null // Everything's broken somehow, giving up.
+
+	if(!dir)
+		dir = src.dir
+
+	var/obj/dummy = new
+	dummy.appearance_flags = DEFAULT_APPEARANCE_FLAGS | NO_CLIENT_COLOR
+	dummy.icon = icon
+	dummy.icon_state = icon_state
+	dummy.alpha = alpha
+	dummy.color = color
+	dummy.transform = transform
+	dummy.set_dir(dir)
+
+	for(var/I in underlays)
+		var/image/image = image(I)
+		if(image.plane == EMISSIVE_PLANE)
+			continue
+		image.dir = dir
+		dummy.underlays += image
+
+	for(var/I in overlays)
+		var/image/image = image(I)
+		if(image.plane == EMISSIVE_PLANE)
+			continue
+		image.dir = dir
+		dummy.overlays += image
+
+	qdel(dummy)
+	return icon(rendering_client.RenderIcon(dummy))
+
+// Extended version of the above. It can accept 'dirs' as a list, and returns a list populated with rendered icons.
+// It's cheaper than calling 'get_flat_icon' multiple times, but for some reason beyond my understanding, it sometimes just gives
+// up and returns a list of same-directioned icons. Still may come in handy.
+/atom/proc/get_flat_icons_list(mob/caller, dirs = SOUTH, allow_ratty_rendering = TRUE)
+	var/client/rendering_client
+	if(caller?.client)
+		rendering_client = caller.client // We are good, let the caller deal with their own stuff.
+	else if(allow_ratty_rendering)
+		for(var/mob/prey in shuffle(GLOB.player_list)) // We are not that good, randomly choosing a poor being to deal with rendering.
+			if(prey?.client)
+				rendering_client = prey.client
+				break
+
+	if(!rendering_client)
+		return list() // Everything's broken somehow, giving up.
+
+	var/dirs_list = list()
+	dirs_list |= dirs
+
+	var/list/ret = list()
+
+	var/obj/dummy = new
+	dummy.appearance_flags = DEFAULT_APPEARANCE_FLAGS | NO_CLIENT_COLOR
+	dummy.icon = icon
+	dummy.icon_state = icon_state
+	dummy.alpha = alpha
+	dummy.color = color
+	dummy.transform = transform
+
+	for(var/current_dir in dirs_list)
+		dummy.underlays.Cut()
+		dummy.overlays.Cut()
+		dummy.set_dir(current_dir)
+
+		for(var/I in underlays)
+			var/image/image = image(I)
+			if(image.plane == EMISSIVE_PLANE)
+				continue
+			image.dir = current_dir
+			dummy.underlays += image
+
+		for(var/I in overlays)
+			var/image/image = image(I)
+			if(image.plane == EMISSIVE_PLANE)
+				continue
+			image.dir = current_dir
+			dummy.overlays += image
+
+		ret += icon(rendering_client.RenderIcon(dummy))
+
+	qdel(dummy)
+	return ret
