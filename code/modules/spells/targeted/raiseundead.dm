@@ -67,7 +67,7 @@
 	var/mob/living/carbon/human/H = target
 	var/datum/ghosttrap/undead/trap = get_ghost_trap("undead")
 	trap.request_player(H, "A necromancer is requesting a soul to animate an undead body.", RAISE_UNDEAD_TIMEOUT, user, should_lichify)
-	addtimer(CALLBACK(src, .proc/draft_failure, target, user), RAISE_UNDEAD_TIMEOUT)
+	addtimer(CALLBACK(src, nameof(.proc/draft_failure), target, user), RAISE_UNDEAD_TIMEOUT)
 
 /datum/spell/targeted/raiseundead/proc/draft_failure(mob/living/carbon/human/target, mob/user)
 	if(target.mind?.wizard && (target.mind?.wizard in user.mind.wizard.thralls))
