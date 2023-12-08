@@ -13,6 +13,11 @@
 	max_damage = 45
 	var/isRobotize = 0
 
+/obj/item/organ/internal/eyes/New()
+	..()
+	if(owner)
+		update_colour()
+
 /obj/item/organ/internal/eyes/optics
 	status = ORGAN_ROBOTIC
 	organ_tag = BP_OPTICS

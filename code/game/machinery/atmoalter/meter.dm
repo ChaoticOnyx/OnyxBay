@@ -40,7 +40,7 @@
 /obj/machinery/meter/proc/set_target(atom/new_target)
 	clear_target()
 	target = new_target
-	register_signal(target, SIGNAL_QDELETING, .proc/clear_target)
+	register_signal(target, SIGNAL_QDELETING, nameof(.proc/clear_target))
 
 /obj/machinery/meter/proc/clear_target()
 	if(target)

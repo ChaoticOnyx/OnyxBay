@@ -11,6 +11,7 @@
 	light_outer_range_on = 1.5
 
 	density = 0
+	turf_height_offset = 0
 	var/datum/lift_master/elevator_master
 	var/ui_template = "elevator_control_console.tmpl"
 

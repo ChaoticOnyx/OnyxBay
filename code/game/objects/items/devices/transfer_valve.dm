@@ -132,7 +132,7 @@
 			if(istype(attached_device, /obj/item/device/assembly))
 				var/obj/item/device/assembly/A = attached_device
 				A.holder = null
-			attached_device.loc = get_turf(src)
+			attached_device.dropInto(get_turf(src))
 			attached_device = null
 			update_icon()
 		if(href_list["device"])

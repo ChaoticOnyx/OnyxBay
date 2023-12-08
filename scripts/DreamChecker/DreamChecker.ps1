@@ -37,7 +37,7 @@ function Install-DreamChecker
         }
 
         $TargetPath = Join-Path $Path $TargetBin
-        $Repository = Get-GithubRepository -Name 'SpacemanDMM' -Owner 'igorsaux'
+        $Repository = Get-GithubRepository -Name 'SpacemanDMM' -Owner 'SpaceManiac'
         $Release = $Repository | Get-GithubLastRelease
 
         $DownloadLink = $Release.Assets | Where-Object -Property Name -EQ $TargetBin | Select-Object -ExpandProperty Url

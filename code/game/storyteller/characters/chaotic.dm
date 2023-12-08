@@ -12,7 +12,7 @@
 /datum/storyteller_character/chaotic/New()
 	..()
 
-	add_think_ctx("roll_ratio", CALLBACK(src, .proc/roll_ratio), world.time + rand(1, 5) MINUTES)
+	add_think_ctx("roll_ratio", CALLBACK(src, nameof(.proc/roll_ratio)), world.time + rand(1, 5) MINUTES)
 
 /datum/storyteller_character/chaotic/proc/roll_ratio()
 	if(prob(50))

@@ -93,7 +93,7 @@
 		unregister_signal(src, SIGNAL_QDELETING)
 	current = new_current
 	if(current)
-		register_signal(src, SIGNAL_QDELETING, .proc/clear_current)
+		register_signal(src, SIGNAL_QDELETING, nameof(.proc/clear_current))
 
 /datum/mind/proc/clear_current(datum/source)
 	set_current(null)

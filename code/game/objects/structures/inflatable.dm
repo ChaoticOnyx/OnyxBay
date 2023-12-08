@@ -97,6 +97,7 @@
 
 /obj/structure/inflatable/Initialize()
 	. = ..()
+	add_think_ctx("post_deflate", CALLBACK(src, nameof(.proc/post_deflate)), 0)
 	set_next_think(world.time)
 
 /obj/structure/inflatable/Destroy()
@@ -205,11 +206,15 @@
 		if(!undeploy_path)
 			return
 		visible_message("\The [src] slowly deflates.")
-		spawn(50)
-			var/obj/item/inflatable/R = new undeploy_path(loc)
-			transfer_fingerprints_to(R)
-			R.inflatable_health = health
-			qdel(src)
+		set_next_think_ctx("post_deflate", world.time + (5 SECONDS))
+
+/obj/structure/inflatable/proc/post_deflate()
+	if(QDELETED(src))
+		return
+	var/obj/item/inflatable/R = new undeploy_path(loc)
+	transfer_fingerprints_to(R)
+	R.inflatable_health = health
+	qdel(src)
 
 /obj/structure/inflatable/verb/hand_deflate()
 	set name = "Deflate"
@@ -228,8 +233,7 @@
 	attack_animation(user)
 	if(health <= 0)
 		user.visible_message(SPAN("danger", "[user] [attack_verb] open the [src]!"))
-		spawn(1)
-			deflate(TRUE)
+		INVOKE_ASYNC(src, nameof(.proc/deflate), TRUE)
 	else
 		user.visible_message(SPAN("danger", "[user] [attack_verb] at [src]!"))
 	return 1
@@ -259,6 +263,11 @@
 
 	var/state = 0 //closed, 1 == open
 	var/isSwitchingStates = FALSE
+
+/obj/structure/inflatable/door/Initialize()
+	. = ..()
+	add_think_ctx("post_open", CALLBACK(src, nameof(.proc/post_open)), 0)
+	add_think_ctx("post_close", CALLBACK(src, nameof(.proc/post_close)), 0)
 
 /obj/structure/inflatable/door/attack_ai(mob/user) //those aren't machinery, they're just big fucking balloons
 	if(isAI(user)) //so the AI can't open it
@@ -290,15 +299,19 @@
 
 /obj/structure/inflatable/door/proc/SwitchState()
 	if(state)
-		Close()
+		close()
 	else
-		Open()
+		open()
 	update_nearby_tiles()
 
-/obj/structure/inflatable/door/proc/Open()
+/obj/structure/inflatable/door/proc/open()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_opening", src)
-	sleep(10)
+	set_next_think_ctx("post_open", world.time + (1 SECOND))
+
+/obj/structure/inflatable/door/proc/post_open()
+	if(QDELETED(src))
+		return
 	set_density(FALSE)
 	set_opacity(FALSE)
 	state = 1
@@ -307,10 +320,14 @@
 	atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 	layer = ABOVE_HUMAN_LAYER
 
-/obj/structure/inflatable/door/proc/Close()
+/obj/structure/inflatable/door/proc/close()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_closing", src)
-	sleep(10)
+	set_next_think_ctx("post_close", world.time + (1 SECOND))
+
+/obj/structure/inflatable/door/proc/post_close()
+	if(QDELETED(src))
+		return
 	set_density(TRUE)
 	set_opacity(FALSE)
 	state = 0
@@ -340,10 +357,14 @@
 	undeploy_path = /obj/item/inflatable/panel
 	torn_path = /obj/item/inflatable/panel/torn
 
-/obj/structure/inflatable/door/panel/Open()
+/obj/structure/inflatable/door/panel/open()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_opening", src)
-	sleep(6)
+	set_next_think_ctx("post_open", world.time + (0.6 SECONDS))
+
+/obj/structure/inflatable/door/panel/post_open()
+	if(QDELETED(src))
+		return
 	set_density(FALSE)
 	set_opacity(FALSE)
 	state = 1
@@ -351,10 +372,14 @@
 	isSwitchingStates = FALSE
 	layer = ABOVE_HUMAN_LAYER
 
-/obj/structure/inflatable/door/panel/Close()
+/obj/structure/inflatable/door/panel/close()
 	isSwitchingStates = TRUE
 	flick("[icon_key]_closing", src)
-	sleep(6)
+	set_next_think_ctx("post_close", world.time + (0.6 SECONDS))
+
+/obj/structure/inflatable/door/panel/post_close()
+	if(QDELETED(src))
+		return
 	set_density(TRUE)
 	set_opacity(FALSE)
 	state = 0
@@ -380,6 +405,13 @@
 	var/mover_dir = get_dir(loc, target)
 	if((mover_dir & dir) || (mover_dir & turn(dir, -45)) || (mover_dir & turn(dir, 45)))
 		return !density
+	return TRUE
+
+/obj/structure/inflatable/door/panel/CheckExit(atom/movable/O, turf/target)
+	if(istype(O) && O.pass_flags & PASS_FLAG_GLASS)
+		return TRUE
+	if(get_dir(O.loc, target) == dir)
+		return state
 	return TRUE
 
 /obj/structure/inflatable/door/panel/proc/CheckDiagonalExit(atom/movable/mover, turf/target)

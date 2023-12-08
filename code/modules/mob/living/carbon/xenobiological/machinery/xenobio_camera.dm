@@ -57,8 +57,8 @@
 
 /obj/machinery/computer/camera_advanced/xenobio/GrantActions(mob/living/user)
 	..()
-	register_signal(user, SIGNAL_MOB_SHIFT_CLICK, .proc/ShiftClickHandler)
-	register_signal(user, SIGNAL_MOB_CTRL_CLICK, .proc/CtrlClickHandler)
+	register_signal(user, SIGNAL_MOB_SHIFT_CLICK, nameof(.proc/ShiftClickHandler))
+	register_signal(user, SIGNAL_MOB_CTRL_CLICK, nameof(.proc/CtrlClickHandler))
 
 	//Checks for recycler on every interact, prevents issues with load order on certain maps.
 	if(!connected_recycler)

@@ -8,9 +8,9 @@
 	//When we get into galloping mode, we stay there until both runs win less often than MIN_GALLOP consecutive times.
 #define MIN_GALLOP 7
 
-	//This is a global instance to allow much of this code to be reused. The interfaces are kept separately
-var/datum/sortInstance/sortInstance = new()
-/datum/sortInstance
+//This is a global instance to allow much of this code to be reused. The interfaces are kept separately
+GLOBAL_DATUM_INIT(sortInstance, /datum/sort_instance, new())
+/datum/sort_instance
 	//The array being sorted.
 	var/list/L
 
@@ -20,19 +20,18 @@ var/datum/sortInstance/sortInstance = new()
 	//whether we are sorting list keys (0: L[i]) or associated values (1: L[L[i]])
 	var/associative = 0
 
-	//This controls when we get *into* galloping mode.  It is initialized	to MIN_GALLOP.
+	//This controls when we get *into* galloping mode.  It is initialized to MIN_GALLOP.
 	//The mergeLo and mergeHi methods nudge it higher for random data, and lower for highly structured data.
 	var/minGallop = MIN_GALLOP
 
 	//Stores information regarding runs yet to be merged.
 	//Run i starts at runBase[i] and extends for runLen[i] elements.
 	//runBase[i] + runLen[i] == runBase[i+1]
-	//var/stackSize
 	var/list/runBases = list()
 	var/list/runLens = list()
 
 
-/datum/sortInstance/proc/timSort(start, end)
+/datum/sort_instance/proc/timSort(start, end)
 	runBases.Cut()
 	runLens.Cut()
 
@@ -83,26 +82,26 @@ var/datum/sortInstance/sortInstance = new()
 
 	return L
 
-/*
-Sorts the specified portion of the specified array using a binary
-insertion sort.  This is the best method for sorting small numbers
-of elements.  It requires O(n log n) compares, but O(n^2) data
-movement (worst case).
+	/*
+	Sorts the specified portion of the specified array using a binary
+	insertion sort.  This is the best method for sorting small numbers
+	of elements.  It requires O(n log n) compares, but O(n^2) data
+	movement (worst case).
 
-If the initial part of the specified range is already sorted,
-this method can take advantage of it: the method assumes that the
-elements in range [lo,start) are already sorted
+	If the initial part of the specified range is already sorted,
+	this method can take advantage of it: the method assumes that the
+	elements in range [lo,start) are already sorted
 
-lo		the index of the first element in the range to be sorted
-hi		the index after the last element in the range to be sorted
-start	the index of the first element in the range that is	not already known to be sorted
-*/
-/datum/sortInstance/proc/binarySort(lo, hi, start)
+	lo the index of the first element in the range to be sorted
+	hi the index after the last element in the range to be sorted
+	start the index of the first element in the range that is not already known to be sorted
+	*/
+/datum/sort_instance/proc/binarySort(lo, hi, start)
 	//ASSERT(lo <= start && start <= hi)
 	if(start <= lo)
 		start = lo + 1
 
-	for(,start < hi, ++start)
+	for(start in start to hi - 1)
 		var/pivot = fetchElement(L,start)
 
 		//set left and right to the index where pivot belongs
@@ -113,28 +112,28 @@ start	the index of the first element in the range that is	not already known to b
 		//[lo, left) elements <= pivot < [right, start) elements
 		//in other words, find where the pivot element should go using bisection search
 		while(left < right)
-			var/mid = (left + right) >> 1	//round((left+right)/2)
+			var/mid = (left + right) >> 1 //round((left+right)/2)
 			if(call(cmp)(fetchElement(L,mid), pivot) > 0)
 				right = mid
 			else
 				left = mid+1
 
 		//ASSERT(left == right)
-		moveElement(L, start, left)	//move pivot element to correct location in the sorted range
+		moveElement(L, start, left) //move pivot element to correct location in the sorted range
 
-/*
-Returns the length of the run beginning at the specified position and reverses the run if it is back-to-front
+	/*
+	Returns the length of the run beginning at the specified position and reverses the run if it is back-to-front
 
-A run is the longest ascending sequence with:
-	a[lo] <= a[lo + 1] <= a[lo + 2] <= ...
-or the longest descending sequence with:
-	a[lo] >  a[lo + 1] >  a[lo + 2] >  ...
+	A run is the longest ascending sequence with:
+		a[lo] <= a[lo + 1] <= a[lo + 2] <= ...
+	or the longest descending sequence with:
+		a[lo] >  a[lo + 1] >  a[lo + 2] >  ...
 
-For its intended use in a stable mergesort, the strictness of the
-definition of "descending" is needed so that the call can safely
-reverse a descending sequence without violating stability.
-*/
-/datum/sortInstance/proc/countRunAndMakeAscending(lo, hi)
+	For its intended use in a stable mergesort, the strictness of the
+	definition of "descending" is needed so that the call can safely
+	reverse a descending sequence without violating stability.
+	*/
+/datum/sort_instance/proc/countRunAndMakeAscending(lo, hi)
 	//ASSERT(lo < hi)
 
 	var/runHi = lo + 1
@@ -162,22 +161,22 @@ reverse a descending sequence without violating stability.
 
 	return runHi - lo
 
-//Returns the minimum acceptable run length for an array of the specified length.
-//Natural runs shorter than this will be extended with binarySort
-/datum/sortInstance/proc/minRunLength(n)
+	//Returns the minimum acceptable run length for an array of the specified length.
+	//Natural runs shorter than this will be extended with binarySort
+/datum/sort_instance/proc/minRunLength(n)
 	//ASSERT(n >= 0)
-	var/r = 0	//becomes 1 if any bits are shifted off
+	var/r = 0 //becomes 1 if any bits are shifted off
 	while(n >= MIN_MERGE)
 		r |= (n & 1)
 		n >>= 1
 	return n + r
 
-//Examines the stack of runs waiting to be merged and merges adjacent runs until the stack invariants are reestablished:
-//	runLen[i-3] > runLen[i-2] + runLen[i-1]
-//	runLen[i-2] > runLen[i-1]
-//This method is called each time a new run is pushed onto the stack.
-//So the invariants are guaranteed to hold for i<stackSize upon entry to the method
-/datum/sortInstance/proc/mergeCollapse()
+	//Examines the stack of runs waiting to be merged and merges adjacent runs until the stack invariants are reestablished:
+	// runLen[i-3] > runLen[i-2] + runLen[i-1]
+	// runLen[i-2] > runLen[i-1]
+	//This method is called each time a new run is pushed onto the stack.
+	//So the invariants are guaranteed to hold for i<stackSize upon entry to the method
+/datum/sort_instance/proc/mergeCollapse()
 	while(runBases.len >= 2)
 		var/n = runBases.len - 1
 		if(n > 1 && runLens[n-1] <= runLens[n] + runLens[n+1])
@@ -187,12 +186,12 @@ reverse a descending sequence without violating stability.
 		else if(runLens[n] <= runLens[n+1])
 			mergeAt(n)
 		else
-			break	//Invariant is established
+			break //Invariant is established
 
 
-//Merges all runs on the stack until only one remains.
-//Called only once, to finalise the sort
-/datum/sortInstance/proc/mergeForceCollapse()
+	//Merges all runs on the stack until only one remains.
+	//Called only once, to finalise the sort
+/datum/sort_instance/proc/mergeForceCollapse()
 	while(runBases.len >= 2)
 		var/n = runBases.len - 1
 		if(n > 1 && runLens[n-1] < runLens[n+1])
@@ -200,10 +199,10 @@ reverse a descending sequence without violating stability.
 		mergeAt(n)
 
 
-//Merges the two consecutive runs at stack indices i and i+1
-//Run i must be the penultimate or antepenultimate run on the stack
-//In other words, i must be equal to stackSize-2 or stackSize-3
-/datum/sortInstance/proc/mergeAt(i)
+	//Merges the two consecutive runs at stack indices i and i+1
+	//Run i must be the penultimate or antepenultimate run on the stack
+	//In other words, i must be equal to stackSize-2 or stackSize-3
+/datum/sort_instance/proc/mergeAt(i)
 	//ASSERT(runBases.len >= 2)
 	//ASSERT(i >= 1)
 	//ASSERT(i == runBases.len - 1 || i == runBases.len - 2)
@@ -221,7 +220,6 @@ reverse a descending sequence without violating stability.
 	runLens[i] += runLens[i+1]
 	runLens.Cut(i+1, i+2)
 	runBases.Cut(i+1, i+2)
-
 
 	//Find where the first element of run2 goes in run1.
 	//Prior elements in run1 can be ignored (because they're already in place)
@@ -246,18 +244,18 @@ reverse a descending sequence without violating stability.
 		mergeHi(base1, len1, base2, len2)
 
 
-/*
-	Locates the position to insert key within the specified sorted range
-	If the range contains elements equal to key, this will return the index of the LEFTMOST of those elements
+	/*
+		Locates the position to insert key within the specified sorted range
+		If the range contains elements equal to key, this will return the index of the LEFTMOST of those elements
 
-	key		the element to be inserted into the sorted range
-	base	the index of the first element of the sorted range
-	len		the length of the sorted range, must be greater than 0
-	hint	the offset from base at which to begin the search, such that 0 <= hint < len; i.e. base <= hint < base+hint
+		key the element to be inserted into the sorted range
+		base the index of the first element of the sorted range
+		len the length of the sorted range, must be greater than 0
+		hint the offset from base at which to begin the search, such that 0 <= hint < len; i.e. base <= hint < base+hint
 
-	Returns the index at which to insert element 'key'
-*/
-/datum/sortInstance/proc/gallopLeft(key, base, len, hint)
+		Returns the index at which to insert element 'key'
+	*/
+/datum/sort_instance/proc/gallopLeft(key, base, len, hint)
 	//ASSERT(len > 0 && hint >= 0 && hint < len)
 
 	var/lastOffset = 0
@@ -303,31 +301,29 @@ reverse a descending sequence without violating stability.
 	//ASSERT(lastOffset == offset)
 	return offset
 
-/**
- * Like gallopLeft, except that if the range contains an element equal to
- * key, gallopRight returns the index after the rightmost equal element.
- *
- * @param key the key whose insertion point to search for
- * @param a the array in which to search
- * @param base the index of the first element in the range
- * @param len the length of the range; must be > 0
- * @param hint the index at which to begin the search, 0 <= hint < n.
- *	 The closer hint is to the result, the faster this method will run.
- * @param c the comparator used to order the range, and to search
- * @return the int k,  0 <= k <= n such that a[b + k - 1] <= key < a[b + k]
- */
-/datum/sortInstance/proc/gallopRight(key, base, len, hint)
+	/**
+	 * Like gallopLeft, except that if the range contains an element equal to
+	 * key, gallopRight returns the index after the rightmost equal element.
+	 *
+	 * @param key the key whose insertion point to search for
+	 * @param a the array in which to search
+	 * @param base the index of the first element in the range
+	 * @param len the length of the range; must be > 0
+	 * @param hint the index at which to begin the search, 0 <= hint < n.
+	 *  The closer hint is to the result, the faster this method will run.
+	 * @param c the comparator used to order the range, and to search
+	 * @return the int k,  0 <= k <= n such that `a[b + k - 1] <= key < a[b + k]`
+	 */
+/datum/sort_instance/proc/gallopRight(key, base, len, hint)
 	//ASSERT(len > 0 && hint >= 0 && hint < len)
 
 	var/offset = 1
 	var/lastOffset = 0
-	if(call(cmp)(key, fetchElement(L,base+hint)) < 0)	//key <= L[base+hint]
-		var/maxOffset = hint + 1	//therefore we want to insert somewhere in the range [base,base+hint] = [base+,base+(hint+1))
-		while(offset < maxOffset && call(cmp)(key, fetchElement(L,base+hint-offset)) < 0)	//we are iterating backwards
+	if(call(cmp)(key, fetchElement(L,base+hint)) < 0) //key <= L[base+hint]
+		var/maxOffset = hint + 1 //therefore we want to insert somewhere in the range [base,base+hint] = [base+,base+(hint+1))
+		while(offset < maxOffset && call(cmp)(key, fetchElement(L,base+hint-offset)) < 0) //we are iterating backwards
 			lastOffset = offset
-			offset = (offset << 1) + 1	//1 3 7 15
-			//if(offset <= 0)	//int overflow, not an issue here since we are using floats
-			//	offset = maxOffset
+			offset = (offset << 1) + 1 //1 3 7 15
 
 		if(offset > maxOffset)
 			offset = maxOffset
@@ -336,13 +332,11 @@ reverse a descending sequence without violating stability.
 		lastOffset = hint - offset
 		offset = hint - temp
 
-	else	//key > L[base+hint]
-		var/maxOffset = len - hint	//therefore we want to insert somewhere in the range (base+hint,base+len) = [base+hint+1, base+hint+(len-hint))
+	else //key > L[base+hint]
+		var/maxOffset = len - hint //therefore we want to insert somewhere in the range (base+hint,base+len) = [base+hint+1, base+hint+(len-hint))
 		while(offset < maxOffset && call(cmp)(key, fetchElement(L,base+hint+offset)) >= 0)
 			lastOffset = offset
 			offset = (offset << 1) + 1
-			//if(offset <= 0)	//int overflow, not an issue here since we are using floats
-			//	offset = maxOffset
 
 		if(offset > maxOffset)
 			offset = maxOffset
@@ -356,9 +350,9 @@ reverse a descending sequence without violating stability.
 	while(lastOffset < offset)
 		var/m = lastOffset + ((offset - lastOffset) >> 1)
 
-		if(call(cmp)(key, fetchElement(L,base+m)) < 0)	//key <= L[base+m]
+		if(call(cmp)(key, fetchElement(L,base+m)) < 0) //key <= L[base+m]
 			offset = m
-		else							//key > L[base+m]
+		else //key > L[base+m]
 			lastOffset = m + 1
 
 	//ASSERT(lastOffset == offset)
@@ -366,9 +360,9 @@ reverse a descending sequence without violating stability.
 	return offset
 
 
-//Merges two adjacent runs in-place in a stable fashion.
-//For performance this method should only be called when len1 <= len2!
-/datum/sortInstance/proc/mergeLo(base1, len1, base2, len2)
+	//Merges two adjacent runs in-place in a stable fashion.
+	//For performance this method should only be called when len1 <= len2!
+/datum/sort_instance/proc/mergeLo(base1, len1, base2, len2)
 	//ASSERT(len1 > 0 && len2 > 0 && base1 + len1 == base2)
 
 	var/cursor1 = base1
@@ -390,8 +384,8 @@ reverse a descending sequence without violating stability.
 
 	outer:
 		while(1)
-			var/count1 = 0	//# of times in a row that first run won
-			var/count2 = 0	//	"	"	"	"	"	"  second run won
+			var/count1 = 0 //# of times in a row that first run won
+			var/count2 = 0 // " " " " " "  second run won
 
 			//do the straightfoward thin until one run starts winning consistently
 
@@ -470,10 +464,10 @@ reverse a descending sequence without violating stability.
 		//ASSERT(len1 > 1)
 
 
-/datum/sortInstance/proc/mergeHi(base1, len1, base2, len2)
+/datum/sort_instance/proc/mergeHi(base1, len1, base2, len2)
 	//ASSERT(len1 > 0 && len2 > 0 && base1 + len1 == base2)
 
-	var/cursor1 = base1 + len1 - 1	//start at end of sublists
+	var/cursor1 = base1 + len1 - 1 //start at end of sublists
 	var/cursor2 = base2 + len2 - 1
 
 	//degenerate cases
@@ -490,8 +484,8 @@ reverse a descending sequence without violating stability.
 
 	outer:
 		while(1)
-			var/count1 = 0	//# of times in a row that first run won
-			var/count2 = 0	//	"	"	"	"	"	"  second run won
+			var/count1 = 0 //# of times in a row that first run won
+			var/count2 = 0 // " " " " " "  second run won
 
 			//do the straightfoward thing until one run starts winning consistently
 			do
@@ -521,11 +515,11 @@ reverse a descending sequence without violating stability.
 			do
 				//ASSERT(len1 > 0 && len2 > 1)
 
-				count1 = len1 - gallopRight(fetchElement(L,cursor2), base1, len1, len1-1)	//should cursor1 be base1?
+				count1 = len1 - gallopRight(fetchElement(L,cursor2), base1, len1, len1-1) //should cursor1 be base1?
 				if(count1)
 					cursor1 -= count1
 
-					moveRange(L, cursor1+1, cursor2+1, count1)	//cursor1+1 == cursor2 by definition
+					moveRange(L, cursor1+1, cursor2+1, count1) //cursor1+1 == cursor2 by definition
 
 					cursor2 -= count1
 					len1 -= count1
@@ -557,7 +551,7 @@ reverse a descending sequence without violating stability.
 
 			if(minGallop < 0)
 				minGallop = 0
-			minGallop += 2	// Penalize for leaving gallop mode
+			minGallop += 2 // Penalize for leaving gallop mode
 
 	if(len2 == 1)
 		//ASSERT(len1 > 0)
@@ -570,12 +564,11 @@ reverse a descending sequence without violating stability.
 		//ASSERT(len2 > 0)
 
 
-/datum/sortInstance/proc/mergeSort(start, end)
+/datum/sort_instance/proc/mergeSort(start, end)
 	var/remaining = end - start
 
 	//If array is small, do an insertion sort
 	if(remaining < MIN_MERGE)
-		//var/initRunLen = countRunAndMakeAscending(start, end)
 		binarySort(start, end, start/*+initRunLen*/)
 		return
 
@@ -605,7 +598,7 @@ reverse a descending sequence without violating stability.
 		else if(runLens[n] <= runLens[n+1])
 			mergeAt2(n)
 		else
-			break	//Invariant is established
+			break //Invariant is established
 
 	while(runBases.len >= 2)
 		var/n = runBases.len - 1
@@ -615,7 +608,7 @@ reverse a descending sequence without violating stability.
 
 	return L
 
-/datum/sortInstance/proc/mergeAt2(i)
+/datum/sort_instance/proc/mergeAt2(i)
 	var/cursor1 = runBases[i]
 	var/cursor2 = runBases[i+1]
 
@@ -626,20 +619,17 @@ reverse a descending sequence without violating stability.
 	var/val2 = fetchElement(L,cursor2)
 
 	while(1)
-		if(call(cmp)(val1,val2) < 0)
+		if(call(cmp)(val1,val2) <= 0)
 			if(++cursor1 >= end1)
 				break
 			val1 = fetchElement(L,cursor1)
 		else
 			moveElement(L,cursor2,cursor1)
 
-			++cursor2
 			if(++cursor2 >= end2)
 				break
 			++end1
 			++cursor1
-			//if(++cursor1 >= end1)
-			//	break
 
 			val2 = fetchElement(L,cursor2)
 

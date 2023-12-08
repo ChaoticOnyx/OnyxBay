@@ -338,6 +338,13 @@
 	cost = 40
 	containername = "\improper Music tapes crate"
 
+/decl/hierarchy/supply_pack/miscellaneous/balloons
+	name = "Box of balloons"
+	num_contained = 3
+	contains = list(/obj/item/storage/box/balloons)
+	cost = 10
+	containername = "\improper crate"
+
 /decl/hierarchy/supply_pack/miscellaneous/bouquet
 	name = "Box of bouquets"
 	contains = list(/obj/item/storage/bouquet/shotgun = 3)

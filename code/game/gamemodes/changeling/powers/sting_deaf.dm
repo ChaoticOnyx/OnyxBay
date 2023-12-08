@@ -12,6 +12,6 @@
 	to_chat(target, SPAN("danger", "Your ears pop and begin ringing loudly!"))
 
 	target.sdisabilities |= DEAF
-	addtimer(CALLBACK(target, /mob/living/carbon/human/proc/remove_deaf), 30 SECONDS)
+	addtimer(CALLBACK(target, nameof(/mob/living/carbon/human.proc/remove_deaf)), 30 SECONDS)
 
 	feedback_add_details("changeling_powers", "DS")

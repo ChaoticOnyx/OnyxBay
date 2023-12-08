@@ -7,6 +7,7 @@
 	anchored = 0
 	pull_sound = SFX_PULL_MACHINE
 	pull_slowdown = PULL_SLOWDOWN_LIGHT
+	turf_height_offset = 25
 	var/capacity_max = 300
 	var/capacity = 300
 	var/gel_type = "unknown"

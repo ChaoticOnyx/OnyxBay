@@ -278,7 +278,7 @@
 
 	for(var/obj/item/device/radio/radio in all_items)
 		radio.on = 0
-		addtimer(CALLBACK(src, .proc/radio_on_mob, radio),300)
+		addtimer(CALLBACK(src, nameof(.proc/radio_on_mob), radio),300)
 
 /obj/item/abductor/mind_device
 	name = "mental interface device"
@@ -605,7 +605,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	..()
 	user.visible_message(SPAN_NOTICE("[user] push button on [src] and activates it."), SPAN_NOTICE("You push button on [src] and activate it."))
 	playsound(src, 'sound/machines/terminal_alert.ogg', 50)
-	addtimer(CALLBACK(src, .proc/try_spawn_machine), 30)
+	addtimer(CALLBACK(src, nameof(.proc/try_spawn_machine)), 30)
 
 /obj/item/abductor_machine_beacon/proc/try_spawn_machine()
 	var/viable = FALSE

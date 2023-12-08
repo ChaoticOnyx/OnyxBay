@@ -6,7 +6,7 @@
 		if(config.admin.forbid_singulo_possession)
 			to_chat(usr, "It is forbidden to possess singularities.")
 			return
-		
+
 		if(istype(O, /obj/singularity/child))
 			var/obj/singularity/child/S = O
 			O = S.parent

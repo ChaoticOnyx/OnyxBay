@@ -34,7 +34,7 @@
 	if (can_hang && !my_hat)
 		src.visible_message("[mover] lands on \the [src].")
 		my_hat = mover
-		my_hat.loc = src
+		my_hat.forceMove(src)
 		update_icon()
 		return 0
 	else

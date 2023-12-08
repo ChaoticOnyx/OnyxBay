@@ -212,7 +212,7 @@ SUBSYSTEM_DEF(vote)
 		You have [duration] seconds to vote."))))
 
 	// And now that it's going, give everyone a voter action
-	notify_ghosts("Vote: [current_vote.override_question || current_vote.name]", src, image('icons/hud/actions.dmi',"vote"), NOTIFY_VOTE, header = "Vote: [current_vote.override_question || current_vote.name]", flashwindow=FALSE)
+	notify_ghosts("Vote: [current_vote.override_question || current_vote.name]", null, src, mutable_appearance('icons/hud/actions.dmi', "vote"), NOTIFY_VOTE, header = "Vote: [current_vote.override_question || current_vote.name]", flashwindow=FALSE)
 
 	for(var/mob/new_voter in GLOB.player_list)
 		sound_to(new_voter, sound(current_vote.vote_sound))

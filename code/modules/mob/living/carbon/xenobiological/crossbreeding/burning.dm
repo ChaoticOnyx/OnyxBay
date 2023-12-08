@@ -347,7 +347,7 @@ Burning extracts:
 
 /obj/item/metroidcross/burning/oil/do_effect(mob/user)
 	user.visible_message(SPAN_WARNING("[user] activates [src]. It's going to explode!"), SPAN_DANGER("You activate [src]. It crackles in anticipation"))
-	addtimer(CALLBACK(src, .proc/boom), 50)
+	addtimer(CALLBACK(src, nameof(.proc/boom)), 50)
 
 /// Inflicts a blastwave upon every mob within a small radius.
 /obj/item/metroidcross/burning/oil/proc/boom()

@@ -12,12 +12,12 @@
 	. = ..()
 
 	var/turf/T = get_turf(src)
-	register_signal(T, SIGNAL_ENTERED, .proc/_on_enter)
+	register_signal(T, SIGNAL_ENTERED, nameof(.proc/_on_enter))
 
 /obj/map_ent/trigger_mob/Destroy()
 	var/turf/T = get_turf(src)
 	unregister_signal(T, SIGNAL_ENTERED)
-	
+
 	. = ..()
 
 /obj/map_ent/trigger_mob/proc/_on_enter(turf/T, mob/M)
@@ -29,14 +29,14 @@
 
 	if(isghost(M) && ev_ignore_ghosts)
 		return
-	
+
 	if(ev_with_client && !M.client)
 		return
 
 	ev_triggered = "\ref[M]"
 
 	var/obj/map_ent/E = locate(ev_tag)
-	
+
 	if(!istype(E))
 		util_crash_with("ev_tag is invalid")
 		return

@@ -65,6 +65,7 @@
 	name = "\improper Robust Coffee"
 	desc = "Careful, the beverage you're about to enjoy is extremely hot."
 	icon_state = "coffee"
+	item_state = "coffee"
 	center_of_mass = "x=15;y=10"
 	startswith = list(/datum/reagent/drink/coffee = 30)
 	lid_type = null
@@ -87,6 +88,7 @@
 	name = "cup of ice"
 	desc = "Careful, cold ice, do not chew."
 	icon_state = "coffee"
+	item_state = "coffee"
 	center_of_mass = "x=15;y=10"
 	startswith = list(/datum/reagent/drink/ice = 30)
 	lid_type = null
@@ -107,6 +109,7 @@
 	gender = PLURAL
 	desc = "Just add 10u water, self heats! A taste that reminds you of your school years."
 	icon_state = "ramen"
+	item_state = "ramen"
 	center_of_mass = "x=16;y=11"
 	startswith = list(/datum/reagent/drink/dry_ramen = 30)
 	lid_type = /datum/vessel_lid/paper
@@ -126,6 +129,7 @@
 	name = "paper cup"
 	desc = "A paper water cup."
 	icon_state = "water_cup"
+	item_state = "water_cup"
 	possible_transfer_amounts = null
 	volume = 10
 	matter = list(MATERIAL_CARDBOARD = 100)
@@ -138,6 +142,7 @@
 	name = "shaker"
 	desc = "A metal shaker to mix drinks in."
 	icon_state = "shaker"
+	item_state = "shaker"
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = "5;10;15;25;30;60" //Professional bartender should be able to transfer as much as needed
 	volume = 120
@@ -145,6 +150,87 @@
 	lid_type = /datum/vessel_lid/cap
 	override_lid_state = LID_CLOSED
 	precise_measurement = TRUE
+	can_flip = TRUE
+	atom_flags = ATOM_FLAG_NO_REACT
+	var/shaking = FALSE
+
+/obj/item/reagent_containers/vessel/shaker/attack_hand(mob/user)
+	if(!iscarbon(user))
+		return ..()
+
+	var/mob/living/carbon/C = user
+	if(C.a_intent == I_GRAB)
+		return ..()
+
+	if(C.l_hand == src && !C.get_active_hand())
+		shake(user)
+		return
+
+	else if(C.r_hand == src && !C.get_active_hand())
+		shake(user)
+		return
+
+	else
+		return ..()
+
+/obj/item/reagent_containers/vessel/shaker/proc/shake(mob/user)
+	if(!reagents?.total_volume)
+		to_chat(user, SPAN_WARNING("You won't shake an empty shaker now, will you?"))
+		return
+
+	if(lid?.state != LID_CLOSED)
+		to_chat(user, SPAN_WARNING("On second thought shaking it with an open lid is not a good idea..."))
+		return
+
+	if(!shaking)
+		shaking = TRUE
+		var/adjective = pick(
+			"furiously",
+			"passionately",
+			"with vigor",
+			"with determination",
+			"like a devil",
+			"with care and love",
+			"like there is no tomorrow")
+		user.visible_message(SPAN_NOTICE("\The [user] shakes \the [src] [adjective]!"), SPAN_NOTICE("You shake \the [src] [adjective]!"))
+		ClearOverlays()
+		icon_state = "shaker_shaking"
+		if(iscarbon(loc))
+			var/mob/living/carbon/M = loc
+			M.update_inv_l_hand()
+			M.update_inv_r_hand()
+		playsound(loc, 'sound/effects/shaker.ogg', 50, 1)
+		if(do_after(user, 30, src))
+			atom_flags ^= ATOM_FLAG_NO_REACT
+			reagents?.process_reactions()
+			atom_flags |= ATOM_FLAG_NO_REACT
+			shaking = FALSE
+		icon_state = base_icon
+		update_icon()
+		if(iscarbon(loc))
+			var/mob/living/carbon/M = loc
+			M.update_inv_l_hand()
+			M.update_inv_r_hand()
+
+/obj/item/reagent_containers/vessel/shaker/MouseDrop(obj/over_object, mob/user = usr) // Braindead copypasta from obj/item/storage
+	if(!canremove)
+		return
+
+	if(iscarbon(user) || isrobot(user))
+		if(!(istype(over_object, /obj/screen)))
+			return ..()
+
+		if(loc != user)
+			return
+
+		add_fingerprint(user)
+		switch(over_object.name)
+			if(BP_R_HAND)
+				if(user.drop(src))
+					user.put_in_r_hand(src)
+			if(BP_L_HAND)
+				if(user.drop(src))
+					user.put_in_l_hand(src)
 
 /obj/item/reagent_containers/vessel/teapot
 	name = "teapot"

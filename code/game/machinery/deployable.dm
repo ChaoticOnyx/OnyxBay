@@ -65,6 +65,7 @@ for reference:
 	var/maxhealth = 100
 	var/material/material
 	atom_flags = ATOM_FLAG_CLIMBABLE
+	turf_height_offset = 3 // It looks so shitty I dunno what offset to use. 3 will go for now I guess.
 
 /obj/structure/barricade/New(newloc, material_name)
 	..(newloc)

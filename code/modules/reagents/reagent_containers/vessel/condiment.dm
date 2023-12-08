@@ -11,11 +11,13 @@
 	desc = "Just your average condiment container."
 	icon = 'icons/obj/reagent_containers/condiments.dmi'
 	icon_state = "emptycondiment"
+	item_state = "emptycondiment"
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	possible_transfer_amounts = "1;5;10"
 	center_of_mass = "x=16;y=6"
 	volume = 50
 	lid_type = null
+	can_flip = TRUE
 
 /obj/item/reagent_containers/vessel/condiment/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/pen) || istype(W, /obj/item/device/flashlight/pen))
@@ -77,46 +79,55 @@
 				name = "Ketchup"
 				desc = "You feel more American already."
 				icon_state = "ketchup"
+				item_state = "ketchup"
 				center_of_mass = "x=16;y=6"
 			if(/datum/reagent/nutriment/barbecue)
 				name = "Barbecue Sauce"
 				desc = "Barbecue sauce, it's labeled 'sweet and spicy'"
 				icon_state = "barbecue"
+				item_state = "ketchup"
 				center_of_mass = "x=16;y=6"
 			if(/datum/reagent/capsaicin)
 				name = "Hotsauce"
 				desc = "You can almost TASTE the stomach ulcers now!"
 				icon_state = "hotsauce"
+				item_state = "hotsuace"
 				center_of_mass = "x=16;y=6"
 			if(/datum/reagent/enzyme)
 				name = "Universal Enzyme"
 				desc = "Used in cooking various dishes."
 				icon_state = "enzyme"
+				item_state = "enzyme"
 				center_of_mass = "x=16;y=6"
 			if(/datum/reagent/nutriment/soysauce)
 				name = "Soy Sauce"
 				desc = "A salty soy-based flavoring."
 				icon_state = "soysauce"
+				item_state = "soysauce"
 				center_of_mass = "x=16;y=6"
 			if(/datum/reagent/frostoil)
 				name = "Coldsauce"
 				desc = "Leaves the tongue numb in its passage."
 				icon_state = "coldsauce"
+				item_state = "coldsauce"
 				center_of_mass = "x=16;y=6"
 			if(/datum/reagent/sodiumchloride)
 				name = "Salt Shaker"
 				desc = "Salt. From space oceans, presumably."
 				icon_state = "saltshaker"
+				item_state = "saltshakersmall"
 				center_of_mass = "x=16;y=10"
 			if(/datum/reagent/blackpepper)
 				name = "Pepper Mill"
 				desc = "Often used to flavor food or make people sneeze."
 				icon_state = "peppermillsmall"
+				item_state = "peppermillsmall"
 				center_of_mass = "x=16;y=10"
 			if(/datum/reagent/nutriment/cornoil)
 				name = "Corn Oil"
 				desc = "A delicious oil used in cooking. Made from corn."
 				icon_state = "oliveoil"
+				item_state = "oliveoil"
 				center_of_mass = "x=16;y=6"
 			if(/datum/reagent/sugar)
 				name = "Sugar"
@@ -129,6 +140,7 @@
 				else
 					desc = "A mixture of various condiments. [reagents.get_master_reagent_name()] is one of them."
 				icon_state = "mixedcondiments"
+				item_state = "mixedcondiments"
 				center_of_mass = "x=16;y=6"
 	else
 		icon_state = "emptycondiment"

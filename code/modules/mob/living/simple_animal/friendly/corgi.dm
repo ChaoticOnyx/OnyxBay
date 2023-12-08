@@ -155,7 +155,7 @@
 			switch(remove_from)
 				if("hat")
 					if(hat)
-						hat.loc = loc
+						hat.dropInto(loc)
 						hat = null
 						ClearOverlays()
 					else

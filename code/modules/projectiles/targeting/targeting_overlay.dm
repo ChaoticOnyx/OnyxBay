@@ -23,7 +23,7 @@
 /obj/aiming_overlay/New(newowner)
 	..()
 	owner = newowner
-	loc = null
+	forceMove(null)
 	verbs.Cut()
 
 /obj/aiming_overlay/proc/toggle_permission(perm)
@@ -184,7 +184,7 @@
 		register_signal(aiming_at, SIGNAL_MOVED, /obj/aiming_overlay/proc/target_moved)
 		register_signal(aiming_at, SIGNAL_QDELETING, /obj/aiming_overlay/proc/cancel_aiming)
 	else
-		loc = null
+		forceMove(null)
 		set_next_think(0)
 		return
 
@@ -235,7 +235,7 @@
 		movement_tally = 0
 
 	aiming_with = null
-	loc = null
+	forceMove(null)
 	set_next_think(0)
 
 /obj/aiming_overlay/proc/target_moved()

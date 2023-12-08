@@ -474,11 +474,16 @@ This function restores all organs.
 	if(blocked >= 100)	return 0
 	if(blocked) damage *= blocked_mult(blocked)
 
-	if(damage > 15 && prob(damage*4))
-		make_adrenaline(round(damage/10))
-
 	var/datum/wound/created_wound
 	damageoverlaytemp = 20
+	if(getHalLoss() < last_body_response_to_pain)
+		last_body_response_to_pain = getHalLoss()
+	if(can_feel_pain() && damage > 5)
+		make_adrenaline(round(damage)/10)
+		last_body_response_to_pain = getHalLoss()
+	else if(can_feel_pain() && getHalLoss() - last_body_response_to_pain > 5)
+		make_adrenaline(round(getHalLoss() - last_body_response_to_pain)/10)
+		last_body_response_to_pain = getHalLoss()
 
 	switch(damagetype)
 		if(BRUTE)

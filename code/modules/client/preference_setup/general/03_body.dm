@@ -111,9 +111,16 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	if(istype(S))
 		pref.h_style	= sanitize_inlist(pref.h_style, GLOB.hair_styles_list, S.default_h_style)
 		pref.f_style	= sanitize_inlist(pref.f_style, GLOB.facial_hair_styles_list, S.default_f_style)
-	pref.r_eyes			= sanitize_integer(pref.r_eyes, 0, 255, initial(pref.r_eyes))
-	pref.g_eyes			= sanitize_integer(pref.g_eyes, 0, 255, initial(pref.g_eyes))
-	pref.b_eyes			= sanitize_integer(pref.b_eyes, 0, 255, initial(pref.b_eyes))
+
+	if(S && !(S.appearance_flags & HAS_EYE_COLOR))
+		pref.r_eyes		= hex2num(copytext(S.default_eye_color, 2, 4))
+		pref.g_eyes		= hex2num(copytext(S.default_eye_color, 4, 6))
+		pref.b_eyes		= hex2num(copytext(S.default_eye_color, 6, 8))
+	else
+		pref.r_eyes		= sanitize_integer(pref.r_eyes, 0, 255, initial(pref.r_eyes))
+		pref.g_eyes		= sanitize_integer(pref.g_eyes, 0, 255, initial(pref.g_eyes))
+		pref.b_eyes		= sanitize_integer(pref.b_eyes, 0, 255, initial(pref.b_eyes))
+
 	pref.b_type			= sanitize_text(pref.b_type, initial(pref.b_type))
 	pref.has_cortical_stack = sanitize_bool(pref.has_cortical_stack, initial(pref.has_cortical_stack))
 
@@ -335,9 +342,9 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			pref.r_skin = hex2num(copytext(mob_species.flesh_color, 2, 4))
 			pref.g_skin = hex2num(copytext(mob_species.flesh_color, 4, 6))
 			pref.b_skin = hex2num(copytext(mob_species.flesh_color, 6, 8))
-			pref.r_eyes = 0
-			pref.g_eyes = 0
-			pref.b_eyes = 0
+			pref.r_eyes = hex2num(copytext(mob_species.default_eye_color, 2, 4))
+			pref.g_eyes = hex2num(copytext(mob_species.default_eye_color, 4, 6))
+			pref.b_eyes = hex2num(copytext(mob_species.default_eye_color, 6, 8))
 			pref.age = max(min(pref.age, mob_species.max_age), mob_species.min_age)
 
 			if(!has_flag(mob_species, SECONDARY_HAIR_IS_SKIN))

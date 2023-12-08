@@ -84,7 +84,7 @@
 
 	sleep(20)
 	if(state in list(1,3,6) )
-		usr.loc = src.loc
+		usr.forceMove(src.loc)
 
 
 /obj/machinery/washing_machine/on_update_icon()
@@ -104,7 +104,7 @@
 		if( (state == 1) && hacked)
 			var/obj/item/grab/G = W
 			if(ishuman(G.assailant) && iscorgi(G.affecting))
-				G.affecting.loc = src
+				G.affecting.forceMove(src)
 				qdel(G)
 				state = 3
 		else

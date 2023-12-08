@@ -27,6 +27,7 @@
 	circuit = /obj/item/circuitboard/cryopodcontrol
 	density = 0
 	interact_offline = 1
+	turf_height_offset = 0
 	var/datum/browser/browser = null
 	var/menu = MAIN
 
@@ -430,9 +431,9 @@
 		else
 			if(control_computer && control_computer.allow_items)
 				control_computer.frozen_items += I
-				I.loc = null
+				I.forceMove(null)
 			else
-				I.forceMove(src.loc)
+				I.dropInto(loc)
 
 	//Update any existing objectives involving this mob.
 	for(var/datum/antag_contract/AC in GLOB.all_contracts)

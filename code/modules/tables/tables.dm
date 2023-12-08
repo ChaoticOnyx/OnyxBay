@@ -8,6 +8,7 @@
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	layer = TABLE_LAYER
 	throwpass = 1
+	turf_height_offset = 12
 
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 0,
@@ -372,7 +373,7 @@
 
 		icon_state = "flip[type]"
 		if(material)
-			var/image/I = OVERLAY(icon, "[material.table_icon_base]_flip[type]")
+			var/image/I = OVERLAY(icon, "[material.table_icon_base]_flip[type]", dir = dir)
 			I.color = material.icon_colour
 			I.alpha = 255 * material.opacity
 			AddOverlays(I)
@@ -381,13 +382,13 @@
 			name = "table frame"
 
 		if(reinforced)
-			var/image/I = OVERLAY(icon, "[reinforced.table_reinf]_flip[type]")
+			var/image/I = OVERLAY(icon, "[reinforced.table_reinf]_flip[type]", dir = dir)
 			I.color = reinforced.icon_colour
 			I.alpha = 255 * reinforced.opacity
 			AddOverlays(I)
 
 		if(carpeted)
-			AddOverlays(OVERLAY(icon, "carpet_flip[type]"))
+			AddOverlays(OVERLAY(icon, "carpet_flip[type]", dir = dir))
 
 /obj/structure/table/proc/can_connect()
 	return TRUE

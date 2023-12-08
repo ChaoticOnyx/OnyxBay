@@ -8,9 +8,10 @@
 	var/parts
 
 /obj/structure/Destroy()
-	if(parts)
+	var/turf/T = get_turf(src)
+	if(T && parts)
 		new parts(loc)
-	. = ..()
+	return ..()
 
 /obj/structure/attack_hand(mob/user)
 	..()

@@ -33,17 +33,22 @@
 	if(scanned.len)
 		for(var/atom/O in scanned)
 			O.set_invisibility(scanned[O])
-			if(O.fluorescent == 2) O.fluorescent = 1
+			if(O.fluorescent == 2)
+				O.fluorescent = 1
 		scanned.Cut()
 	if(stored_alpha.len)
 		for(var/atom/O in stored_alpha)
 			O.alpha = stored_alpha[O]
-			if(O.fluorescent == 2) O.fluorescent = 1
+			if(O.fluorescent == 2)
+				O.fluorescent = 1
 		stored_alpha.Cut()
 	if(reset_objects.len)
 		for(var/obj/item/I in reset_objects)
-			I.CutOverlays(I.blood_overlay)
-			if(I.fluorescent == 2) I.fluorescent = 1
+			var/saved_fluorescent = I.fluorescent
+			if(I.blood_color == COLOR_LUMINOL)
+				I.clean_blood()
+			if(saved_fluorescent == 2)
+				I.fluorescent = 1
 		reset_objects.Cut()
 
 /obj/item/device/uv_light/think()
@@ -64,8 +69,8 @@
 					A.alpha = use_alpha
 				if(istype(A, /obj/item))
 					var/obj/item/O = A
-					if(O.was_bloodied && !(O.blood_overlay in O.overlays))
-						O.AddOverlays(O.blood_overlay)
+					if(O.was_bloodied && !O.is_bloodied)
+						O.add_blood(COLOR_LUMINOL)
 						reset_objects |= O
 
 	set_next_think(world.time + 1 SECOND)

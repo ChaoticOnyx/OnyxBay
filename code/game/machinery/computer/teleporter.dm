@@ -167,7 +167,7 @@
 		return
 	calibrating = TRUE
 	audible_message("Processing hub calibration to target...")
-	addtimer(CALLBACK(src, .proc/finish_calibrating), 2 SECONDS * (4 - gate.calc_acceleration))
+	addtimer(CALLBACK(src, nameof(.proc/finish_calibrating)), 2 SECONDS * (4 - gate.calc_acceleration))
 
 /obj/machinery/computer/teleporter/tgui_act(action, params)
 	. = ..()

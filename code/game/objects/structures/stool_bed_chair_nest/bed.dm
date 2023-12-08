@@ -384,7 +384,7 @@
 	if(buckling_y)
 		buckled_bodybag.pixel_y = buckled_bodybag.buckle_offset + buckling_y
 	add_fingerprint(user)
-	register_signal(B, SIGNAL_MOVED, .proc/on_move)
+	register_signal(B, SIGNAL_MOVED, nameof(.proc/on_move))
 
 /obj/structure/bed/roller/proc/on_move()
 	if(buckled_bodybag)
