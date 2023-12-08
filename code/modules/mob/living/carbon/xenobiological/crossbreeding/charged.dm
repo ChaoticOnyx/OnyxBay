@@ -228,7 +228,7 @@ Charged extracts:
 
 /obj/item/metroidcross/charged/gold/do_effect(mob/user)
 	user.visible_message(SPAN_WARNING("[src] starts shuddering violently!"))
-	addtimer(CALLBACK(src, .proc/startTimer), 50)
+	addtimer(CALLBACK(src, nameof(.proc/startTimer)), 50)
 
 /obj/item/metroidcross/charged/gold/proc/startTimer()
 	set_next_think(world.time + 1 SECONDS)
@@ -255,7 +255,7 @@ Charged extracts:
 
 /obj/item/metroidcross/charged/oil/do_effect(mob/user)
 	user.visible_message(SPAN_DANGER("[src] begins to shake with rapidly increasing force!"))
-	addtimer(CALLBACK(src, .proc/boom), 50)
+	addtimer(CALLBACK(src, nameof(.proc/boom)), 50)
 
 /obj/item/metroidcross/charged/oil/proc/boom()
 	explosion(src, devastation_range = 2, heavy_impact_range = 3, light_impact_range = 4) //Much smaller effect than normal oils, but devastatingly strong where it does hit.

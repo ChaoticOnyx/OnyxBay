@@ -36,10 +36,10 @@
 	. = ..()
 
 	set_next_think(world.time)
-	add_think_ctx("heal", CALLBACK(src, .proc/heal_think), world.time)
-	add_think_ctx("attack", CALLBACK(src, .proc/attack_think), world.time)
-	add_think_ctx("expand", CALLBACK(src, .proc/expand_think), world.time)
-	add_think_ctx("upgrade", CALLBACK(src, .proc/upgrade_think), world.time)
+	add_think_ctx("heal", CALLBACK(src, nameof(.proc/heal_think)), world.time)
+	add_think_ctx("attack", CALLBACK(src, nameof(.proc/attack_think)), world.time)
+	add_think_ctx("expand", CALLBACK(src, nameof(.proc/expand_think)), world.time)
+	add_think_ctx("upgrade", CALLBACK(src, nameof(.proc/upgrade_think)), world.time)
 
 /obj/structure/blob/proc/can_expand()
 	if(QDELETED(core))

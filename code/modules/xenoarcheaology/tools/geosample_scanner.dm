@@ -320,8 +320,8 @@
 
 		last_scan_data = text
 
-		P.loc = src.loc
-		scanned_item.loc = src.loc
+		P.dropInto(loc)
+		scanned_item.dropInto(loc)
 		scanned_item = null
 
 /obj/machinery/radiocarbon_spectrometer/OnTopic(user, href_list)
@@ -358,6 +358,6 @@
 
 	else if(href_list["ejectItem"])
 		if(scanned_item)
-			scanned_item.loc = src.loc
+			scanned_item.dropInto(loc)
 			scanned_item = null
 		. = TOPIC_REFRESH

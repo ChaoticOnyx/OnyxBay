@@ -6,6 +6,7 @@
 	name = "computer frame"
 	icon = 'icons/obj/stock_parts.dmi'
 	icon_state = "0"
+	turf_height_offset = 12
 	var/state = 0
 	var/obj/item/circuitboard/circuit = null
 	atom_flags = ATOM_FLAG_CLIMBABLE
@@ -60,7 +61,7 @@
 				to_chat(user, "<span class='notice'>You remove the circuit board.</span>")
 				src.state = 1
 				src.icon_state = "0"
-				circuit.loc = src.loc
+				circuit.dropInto(loc)
 				src.circuit = null
 		if(2)
 			if(isScrewdriver(P) && circuit)

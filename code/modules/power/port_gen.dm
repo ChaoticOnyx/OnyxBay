@@ -6,6 +6,7 @@
 	icon_state = "portgen0"
 	density = 1
 	anchored = 0
+	turf_height_offset = 19
 
 	var/active = 0
 	var/power_gen = 5000

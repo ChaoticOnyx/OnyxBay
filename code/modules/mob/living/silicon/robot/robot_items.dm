@@ -69,7 +69,7 @@
 			playsound(src.loc, 'sound/signals/error30.ogg', 50, 0)
 	if(response == "Eject")
 		if(loaded_item)
-			loaded_item.loc = get_turf(src)
+			loaded_item.forceMove(get_turf(src))
 			desc = initial(desc)
 			icon_state = initial(icon_state)
 			loaded_item = null
@@ -92,7 +92,7 @@
 		if(loaded_item)
 			to_chat(user, "Your [src] already has something inside.  Analyze or eject it first.")
 			return
-		I.loc = src
+		I.forceMove(src)
 		loaded_item = I
 		for(var/mob/M in viewers())
 			M.show_message(text("<span class='notice'>[user] adds the [I] to the [src].</span>"), 1)
@@ -250,7 +250,7 @@
 				if(calc_carry() + add >= max_carry)
 					break
 
-				I.loc = src
+				I.forceMove(src)
 				carrying.Add(I)
 				AddOverlays(image(I.icon, I.icon_state, layer = (30 + I.layer)))
 				addedSomething = 1
@@ -283,7 +283,7 @@
 		var droppedSomething = 0
 
 		for(var/obj/item/I in carrying)
-			I.loc = dropspot
+			I.dropInto(dropspot)
 			carrying.Remove(I)
 			droppedSomething = 1
 			if(!foundtable && isturf(dropspot))
@@ -698,7 +698,7 @@
 /obj/item/robot_rack/weapon
 	name = "weapon rack"
 	desc = "A rack for carrying melee weapons, energy weapons and firearms."
-	icon = 'icons/obj/storage/misc.dmi'
+	icon = 'icons/obj/crates.dmi'
 	icon_state = "weaponcrate"
 	object_type = list(
 		/obj/item/melee,
@@ -917,7 +917,7 @@
 					product.name = "synthesised blood pack"
 
 			user.visible_message("<span class='notice'>\The [user]'s \the [src] spits out \the [selected.name].</span>")
-			product.loc = get_turf(A)
+			product.dropInto(get_turf(A))
 			if(isrobot(user))
 				var/mob/living/silicon/robot/R = user
 				if(R.cell)

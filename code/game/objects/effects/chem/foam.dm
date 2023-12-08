@@ -23,7 +23,7 @@
 	spawn(3 + metal * 3)
 		set_next_think(world.time)
 		checkReagents()
-	addtimer(CALLBACK(src, .proc/remove_foam), 12 SECONDS)
+	addtimer(CALLBACK(src, nameof(.proc/remove_foam)), 12 SECONDS)
 
 /obj/effect/effect/foam/proc/remove_foam()
 	set_next_think(0)
@@ -168,7 +168,7 @@
 /obj/structure/foamedmetal/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/grab))
 		var/obj/item/grab/G = I
-		G.affecting.loc = src.loc
+		G.affecting.forceMove(loc)
 		visible_message("<span class='warning'>[G.assailant] smashes [G.affecting] through the foamed metal wall.</span>")
 		qdel(I)
 		qdel(src)

@@ -893,7 +893,7 @@
 /datum/chemical_reaction/metroid/create/on_reaction(datum/reagents/holder)
 	holder.my_atom.visible_message("<span class='warning'>Infused with plasma, the core begins to quiver and grow, and soon a new baby metroid emerges from it!</span>")
 	var/mob/living/carbon/metroid/S = new /mob/living/carbon/metroid
-	S.loc = get_turf(holder.my_atom)
+	S.forceMove(get_turf(holder.my_atom))
 	..()
 
 /datum/chemical_reaction/metroid/monkey
@@ -906,7 +906,7 @@
 /datum/chemical_reaction/metroid/monkey/on_reaction(datum/reagents/holder)
 	for(var/i = 1, i <= 3, i++)
 		var /obj/item/reagent_containers/food/monkeycube/M = new /obj/item/reagent_containers/food/monkeycube
-		M.loc = get_turf(holder.my_atom)
+		M.forceMove(get_turf(holder.my_atom))
 	..()
 
 /datum/chemical_reaction/metroid/heal
@@ -935,10 +935,10 @@
 /datum/chemical_reaction/metroid/metal/on_reaction(datum/reagents/holder)
 	var/obj/item/stack/material/steel/M = new /obj/item/stack/material/steel
 	M.amount = 15
-	M.loc = get_turf(holder.my_atom)
+	M.forceMove(get_turf(holder.my_atom))
 	var/obj/item/stack/material/plasteel/P = new /obj/item/stack/material/plasteel
 	P.amount = 5
-	P.loc = get_turf(holder.my_atom)
+	P.forceMove(get_turf(holder.my_atom))
 	..()
 
 /datum/chemical_reaction/metroid/glass
@@ -951,10 +951,10 @@
 /datum/chemical_reaction/metroid/glass/on_reaction(datum/reagents/holder)
 	var/obj/item/stack/material/glass/M = new /obj/item/stack/material/glass
 	M.amount = 15
-	M.loc = get_turf(holder.my_atom)
+	M.forceMove(get_turf(holder.my_atom))
 	var/obj/item/stack/material/glass/reinforced/P = new /obj/item/stack/material/glass/reinforced
 	P.amount = 5
-	P.loc = get_turf(holder.my_atom)
+	P.forceMove(get_turf(holder.my_atom))
 	..()
 
 /datum/chemical_reaction/metroid/marble
@@ -967,7 +967,7 @@
 /datum/chemical_reaction/metroid/marble/on_reaction(datum/reagents/holder)
 	var/obj/item/stack/material/marble/M = new /obj/item/stack/material/marble
 	M.amount = 30
-	M.loc = get_turf(holder.my_atom)
+	M.forceMove(get_turf(holder.my_atom))
 	..()
 
 //Gold
@@ -1055,7 +1055,7 @@
 		var/chosen = pick(borks)
 		var/obj/B = new chosen
 		if(B)
-			B.loc = get_turf(holder.my_atom)
+			B.forceMove(get_turf(holder.my_atom))
 			if(prob(50))
 				for(var/j = 1, j <= rand(1, 3), j++)
 					step(B, pick(NORTH, SOUTH, EAST, WEST))
@@ -1187,7 +1187,7 @@
 /datum/chemical_reaction/metroid/psteroid/on_reaction(datum/reagents/holder, created_volume)
 	..()
 	var/obj/item/metroidsteroid/P = new /obj/item/metroidsteroid
-	P.loc = get_turf(holder.my_atom)
+	P.forceMove(get_turf(holder.my_atom))
 
 /datum/chemical_reaction/metroid/jam
 	name = "Metroid Jam"
@@ -1208,7 +1208,7 @@
 	..()
 	var/obj/item/stack/material/plasma/P = new /obj/item/stack/material/plasma
 	P.amount = 3
-	P.loc = get_turf(holder.my_atom)
+	P.forceMove(get_turf(holder.my_atom))
 
 //Red
 /datum/chemical_reaction/metroid/mutation
@@ -1434,7 +1434,7 @@
 	S.visible_message(SPAN_DANGER("Infused with slime jelly, the core begins to expand uncontrollably!"))
 	S.icon_state = "metroidbang_active"
 	S.active = TRUE
-	addtimer(CALLBACK(S, /obj/item/grenade/proc/detonate), rand(15,60))
+	addtimer(CALLBACK(S, nameof(/obj/item/grenade.proc/detonate)), rand(15,60))
 	var/lastkey = holder.my_atom.fingerprintslast
 	message_admins("[key_name_admin(lastkey)] primed an explosive Brorble Brorble for detonation.")
 	log_game("[key_name(lastkey)] primed an explosive Brorble Brorble for detonation.")

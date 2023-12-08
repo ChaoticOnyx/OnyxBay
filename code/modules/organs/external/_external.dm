@@ -209,7 +209,7 @@
 			removable_objects |= I
 	if(removable_objects.len)
 		var/obj/item/I = pick(removable_objects)
-		I.loc = get_turf(user) //just in case something was embedded that is not an item
+		I.dropInto(user.loc) //just in case something was embedded that is not an item
 		if(istype(I))
 			if(!(user.l_hand && user.r_hand))
 				user.pick_or_drop(I)
@@ -473,7 +473,7 @@ This function completely restores a damaged organ to perfect condition.
 	// remove embedded objects and drop them on the floor
 	for(var/obj/implanted_object in implants)
 		if(!istype(implanted_object,/obj/item/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
-			implanted_object.loc = get_turf(src)
+			implanted_object.dropInto(get_turf(src))
 			implants -= implanted_object
 
 	if(owner && !ignore_prosthetic_prefs)

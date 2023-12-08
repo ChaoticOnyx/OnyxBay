@@ -230,7 +230,7 @@
 		else
 			repairing = stack.split(amount_needed, force=TRUE)
 			if(repairing)
-				repairing.loc = src
+				repairing.forceMove(src)
 				transfer = repairing.amount
 				repairing.uses_charge = FALSE //for clean robot door repair - stacks hint immortal if true
 
@@ -259,7 +259,7 @@
 	if(repairing && isCrowbar(I))
 		to_chat(user, "<span class='notice'>You remove \the [repairing].</span>")
 		playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
-		repairing.loc = user.loc
+		repairing.dropInto(user.loc)
 		repairing = null
 		return
 
@@ -408,7 +408,7 @@
 	operating = FALSE
 
 	if(autoclose)
-		addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
+		addtimer(CALLBACK(src, nameof(.proc/close)), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 	return TRUE
 
@@ -417,7 +417,7 @@
 	if(!can_close(forced))
 		if(autoclose)
 			tryingToLock = TRUE
-			addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
+			addtimer(CALLBACK(src, nameof(.proc/close)), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
 		return FALSE
 	operating = TRUE
 

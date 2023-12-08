@@ -57,7 +57,7 @@
 	icon_state = "metroidbarrier_thick"
 
 /obj/effect/forcefield/metroidwall/New()
-	addtimer(CALLBACK(src, .proc/finish_existance), 300)
+	addtimer(CALLBACK(src, nameof(.proc/finish_existance)), 300)
 
 /obj/effect/forcefield/metroidwall/proc/finish_existance()
 	qdel(src)
@@ -212,7 +212,7 @@
 
 /obj/item/capturedevice/proc/store(mob/living/M)
 	M.forceMove(src)
-	register_signal(M, SIGNAL_MOB_RESIST, .proc/resist_act)
+	register_signal(M, SIGNAL_MOB_RESIST, nameof(.proc/resist_act))
 
 /obj/item/capturedevice/proc/resist_act(mob/living/M)
 	to_chat(M, SPAN_NOTICE("You trying to release yourself."))

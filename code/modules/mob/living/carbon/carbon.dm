@@ -15,7 +15,9 @@
 	QDEL_NULL(touching)
 	QDEL_NULL(bloodstr)
 	QDEL_NULL(surgery_status)
+	QDEL_NULL(handcuffed)
 
+	internal = null
 	reagents = null //We assume reagents is a reference to bloodstr here
 
 	// We assume that, in case of gib, organs and whatever have already done their business escaping the body,
@@ -83,7 +85,7 @@
 
 		if(prob(getBruteLoss() - 50))
 			for(var/atom/movable/A in stomach_contents)
-				A.loc = loc
+				A.dropInto(loc)
 				stomach_contents.Remove(A)
 			gib()
 
@@ -91,7 +93,7 @@
 	for(var/mob/M in src)
 		if(M in src.stomach_contents)
 			src.stomach_contents.Remove(M)
-		M.loc = src.loc
+		M.dropInto(loc)
 		for(var/mob/N in viewers(src, null))
 			if(N.client)
 				N.show_message(text("<span class='danger'>[M] bursts out of [src]!</span>"), 2)

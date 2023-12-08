@@ -362,7 +362,7 @@
 	return verb
 
 /mob/living/simple_animal/put_in_hands(obj/item/W) // No hands.
-	W.loc = get_turf(src)
+	W.forceMove(get_turf(src))
 	return 1
 
 // Harvest an animal's delicious byproducts

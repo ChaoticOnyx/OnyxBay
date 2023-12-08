@@ -121,7 +121,7 @@
 		var/turf/T = get_turf(src)
 		to_chat(user, "You twist the valve and pop the pressure tank out of [src].")
 		playsound(loc, 'sound/effects/refill.ogg', 25, 1, 3)
-		pressure_tank.loc = T
+		pressure_tank.dropInto(T)
 		pressure_tank = null
 		update_icon()
 		return

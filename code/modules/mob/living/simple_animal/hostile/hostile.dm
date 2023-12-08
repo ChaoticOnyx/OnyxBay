@@ -98,7 +98,7 @@
 			unregister_signal(target_mob, SIGNAL_QDELETING)
 		target_mob = L
 		if(!QDELETED(target_mob) && !client)
-			register_signal(target_mob, SIGNAL_QDELETING, .proc/_target_deleted)
+			register_signal(target_mob, SIGNAL_QDELETING, nameof(.proc/_target_deleted))
 	if(target_mob)
 		Aggro()
 		stance = HOSTILE_STANCE_ATTACK

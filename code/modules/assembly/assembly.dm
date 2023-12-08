@@ -31,7 +31,7 @@
 	if(!secured || cooldown > 0)
 		return FALSE
 	cooldown = 2
-	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
+	addtimer(CALLBACK(src, nameof(.proc/process_cooldown)), 1 SECOND)
 	return TRUE
 
 //Called when another assembly acts on this one, var/radio will determine where it came from for wire calcs
@@ -71,7 +71,7 @@
 	cooldown--
 	if(cooldown <= 0)
 		return 0
-	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
+	addtimer(CALLBACK(src, nameof(.proc/process_cooldown)), 1 SECOND)
 	return 1
 
 //Called when the holder is moved

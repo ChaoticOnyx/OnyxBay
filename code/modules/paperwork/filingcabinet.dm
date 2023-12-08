@@ -18,6 +18,7 @@
 	anchored = 1
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	obj_flags = OBJ_FLAG_ANCHORABLE
+	turf_height_offset = 12
 	var/list/can_hold = list(
 		/obj/item/paper,
 		/obj/item/folder,
@@ -28,6 +29,7 @@
 /obj/structure/filingcabinet/chestdrawer
 	name = "chest drawer"
 	icon_state = "chestdrawer"
+	turf_height_offset = 22
 
 /obj/structure/filingcabinet/wallcabinet
 	name = "wall-mounted filing cabinet"
@@ -35,6 +37,7 @@
 	icon_state = "wallcabinet"
 	density = 0
 	obj_flags = 0
+	atom_flags = 0
 
 
 /obj/structure/filingcabinet/filingcabinet	//not changing the path to avoid unecessary map issues, but please don't name stuff like this in the future -Pete
@@ -44,7 +47,7 @@
 /obj/structure/filingcabinet/Initialize()
 	for(var/obj/item/I in loc)
 		if(istype(I, /obj/item/paper) || istype(I, /obj/item/folder) || istype(I, /obj/item/photo) || istype(I, /obj/item/paper_bundle))
-			I.loc = src
+			I.forceMove(src)
 	. = ..()
 
 /obj/structure/filingcabinet/attackby(obj/item/P as obj, mob/user as mob)
@@ -91,7 +94,7 @@
 	if(contents.len)
 		if(prob(40 + contents.len * 5))
 			var/obj/item/I = pick(contents)
-			I.loc = loc
+			I.dropInto(loc)
 			if(prob(25))
 				step_rand(I)
 			to_chat(user, "<span class='notice'>You pull \a [I] out of [src] at random.</span>")

@@ -41,6 +41,8 @@
 
 	var/footstep_sound = SFX_FOOTSTEP_PLATING
 
+	var/turf_height = 0 // "Vertical" offset. Mostly used for mobs and dropped items.
+
 /turf/Initialize(mapload, ...)
 	. = ..()
 	if(dynamic_lighting)
@@ -166,17 +168,14 @@
 	return 1 //Nothing found to block so return success!
 
 var/const/enterloopsanity = 100
-/turf/Entered(atom/atom as mob|obj)
+/turf/Entered(atom/movable/AM, atom/OldLoc)
+	. = ..()
 
-	..()
-
-	if(!istype(atom, /atom/movable))
+	if(!istype(AM))
 		return
 
-	var/atom/movable/A = atom
-
-	if(ismob(A))
-		var/mob/M = A
+	if(ismob(AM))
+		var/mob/M = AM
 		if(!M.check_solid_ground())
 			inertial_drift(M)
 			//we'll end up checking solid ground again but we still need to check the other things.
@@ -185,6 +184,15 @@ var/const/enterloopsanity = 100
 		else
 			M.inertia_dir = 0
 			M.make_floating(0) //we know we're not on solid ground so skip the checks to save a bit of processing
+			M.update_height_offset(turf_height)
+
+	else if(isobj(AM))
+		var/obj/O = AM
+		if(O.turf_height_offset)
+			if(isturf(OldLoc))
+				var/turf/old_turf = OldLoc
+				old_turf.update_turf_height()
+			update_turf_height()
 
 /turf/proc/adjacent_fire_act(turf/simulated/floor/source, temperature, volume)
 	return
@@ -304,3 +312,12 @@ var/const/enterloopsanity = 100
 /turf/proc/get_footstep_sound()
 	if(footstep_sound)
 		return pick(GLOB.sfx_list[footstep_sound])
+
+/turf/proc/update_turf_height()
+	var/max_height = initial(turf_height)
+	for(var/obj/O in contents)
+		if(O.turf_height_offset)
+			max_height = max(max_height, O.turf_height_offset)
+	turf_height = max_height
+	for(var/mob/M in contents)
+		M.update_height_offset(turf_height)

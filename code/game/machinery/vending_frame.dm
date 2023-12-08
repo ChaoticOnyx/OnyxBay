@@ -12,6 +12,7 @@
 	use_power = POWER_USE_OFF
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	pull_sound = SFX_PULL_MACHINE
+	turf_height_offset = 12
 	var/state = STAGE_CABLE
 	var/obj/item/vending_cartridge/cartridge
 

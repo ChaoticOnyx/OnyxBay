@@ -311,6 +311,9 @@
 	icon_closed = "miningcar"
 	pull_slowdown = PULL_SLOWDOWN_LIGHT
 
+	turf_height_offset = 15
+	opened_turf_height_offset = 3
+
 /**********************Pinpointer**********************/
 
 /obj/item/ore_radar
@@ -548,7 +551,7 @@
 		name = "strong resonance field"
 		resonance_damage = 30
 
-	addtimer(CALLBACK(src, .proc/burst, loc), timetoburst)
+	addtimer(CALLBACK(src, nameof(.proc/burst), loc), timetoburst)
 
 /obj/effect/resonance/Destroy()
 	if(res)

@@ -349,7 +349,7 @@
 	to_chat(wearer, "<span class='info'><b>Your entire suit [canremove ? "loosens as the components relax" : "tightens around you as the components lock into place"].</b></span>")
 	if(wearer.client)
 		wearer.client.screen -= booting_L
-		addtimer(CALLBACK(src, .proc/r_booting_done, wearer.client, booting_R), 80)
+		addtimer(CALLBACK(src, nameof(.proc/r_booting_done), wearer.client, booting_R), 80)
 	qdel(booting_L)
 	booting_R.icon_state = "boot_done"
 

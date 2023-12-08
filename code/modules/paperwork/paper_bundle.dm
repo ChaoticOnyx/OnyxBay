@@ -36,7 +36,7 @@
 	else if(istype(W, /obj/item/paper_bundle))
 		user.drop(W)
 		for(var/obj/O in W)
-			O.loc = src
+			O.forceMove(src)
 			O.add_fingerprint(usr)
 			pages.Add(O)
 

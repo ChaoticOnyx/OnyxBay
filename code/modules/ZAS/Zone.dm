@@ -74,8 +74,8 @@ Class Procs:
 	air.volume = CELL_VOLUME
 
 	for(var/turf/T in contents)
-		register_signal(T, SIGNAL_ENTERED, .proc/on_entered)
-		register_signal(T, SIGNAL_EXITED, .proc/on_exited)
+		register_signal(T, SIGNAL_ENTERED, nameof(.proc/on_entered))
+		register_signal(T, SIGNAL_EXITED, nameof(.proc/on_exited))
 
 /zone/proc/add(turf/simulated/T)
 #ifdef ZASDBG

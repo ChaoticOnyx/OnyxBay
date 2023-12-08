@@ -228,7 +228,7 @@
 			to_chat(user, "<span class='warning'>\The [src] has a beaker already.</span>")
 			return
 	if(occupant && panel_open && isCrowbar(I))
-		occupant.loc = get_turf(src)
+		occupant.forceMove(get_turf(src))
 		occupant = null
 		update_use_power(1)
 		update_icon()

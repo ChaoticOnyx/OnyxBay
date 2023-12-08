@@ -62,8 +62,8 @@
 		qdel(src)
 		return
 
-	add_think_ctx("next_state", CALLBACK(src, .proc/next_state), 0)
-	INVOKE_ASYNC(src, .proc/generate_image, text, target, owner, lifespan, italics, size)
+	add_think_ctx("next_state", CALLBACK(src, nameof(.proc/next_state)), 0)
+	INVOKE_ASYNC(src, nameof(.proc/generate_image), text, target, owner, lifespan, italics, size)
 
 /datum/chatmessage/proc/next_state()
 	if(state == CHAT_MESSAGE_APPEAR_STATE)

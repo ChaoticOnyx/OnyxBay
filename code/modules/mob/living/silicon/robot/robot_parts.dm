@@ -142,7 +142,7 @@
 		var/obj/item/stack/material/M = W
 		if (M.use(1))
 			var/obj/item/secbot_assembly/ed209_assembly/B = new /obj/item/secbot_assembly/ed209_assembly
-			B.loc = get_turf(src)
+			B.forceMove(get_turf(src))
 			to_chat(user, "<span class='notice'>You armed the robot frame.</span>")
 			if (user.get_inactive_hand()==src)
 				user.drop(src)
@@ -213,7 +213,7 @@
 
 			var/obj/item/robot_parts/chest/chest = parts[BP_CHEST]
 			O.cell = chest.cell
-			O.cell.loc = O
+			O.cell.forceMove(O)
 			W.forceMove(O) // Should fix cybros run time erroring when blown up. It got deleted before, along with the frame.
 
 			// Since we "magically" installed a cell, we also have to update the correct component.

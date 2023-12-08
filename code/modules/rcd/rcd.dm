@@ -49,6 +49,10 @@
 		if(!selected_work)
 			selected_work = M.name
 
+/obj/item/rcd/Destroy()
+	QDEL_NULL(spark_system)
+	return ..()
+
 /obj/item/rcd/proc/_collect_radial_choices()
 	var/list/choices = list()
 

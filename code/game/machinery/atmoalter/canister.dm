@@ -6,6 +6,7 @@
 	var/health = 100.0
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	w_class = ITEM_SIZE_GARGANTUAN
+	turf_height_offset = 16
 
 	var/valve_open = 0
 	var/release_pressure = ONE_ATMOSPHERE
@@ -188,6 +189,7 @@ update_flag
 		src.destroyed = 1
 		playsound(src.loc, 'sound/effects/spray.ogg', 10, 1, -3)
 		src.set_density(0)
+		set_turf_height_offset(12)
 		update_icon()
 
 		if (src.holding)
