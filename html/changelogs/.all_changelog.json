@@ -1,5 +1,27 @@
 [
   {
+    "author": "Code by FIlatelele, sprites by Medjic & Crowford",
+    "date": "2023-12-09T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "RscAdd",
+        "message": "Добавлен новый класс мага - некромант.",
+        "pr": 11098
+      }
+    ]
+  },
+  {
+    "author": "TobyThorne",
+    "date": "2023-12-09T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Admin",
+        "message": "Ошибки GC больше не отображаются в View Runtimes.",
+        "pr": 11193
+      }
+    ]
+  },
+  {
     "author": "TobyThorne",
     "date": "2023-12-08T00:00:00+03:00",
     "changes": [
