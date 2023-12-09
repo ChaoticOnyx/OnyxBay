@@ -51,11 +51,10 @@
 		mind.set_current(src)
 
 	loc = null
-	new /obj/screen/splash(client, TRUE)
 	my_client = client
-	set_sight(sight|SEE_TURFS)
+	set_sight(sight|SEE_OBJS|SEE_TURFS)
 	GLOB.player_list |= src
-	CreateRenderers()
+	new /obj/screen/splash(client, TRUE)
 
 	if(!SScharacter_setup.initialized)
 		SScharacter_setup.newplayers_requiring_init += src

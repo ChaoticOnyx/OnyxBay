@@ -8,5 +8,6 @@
 	..()
 	if(!spawning)//Here so that if they are spawning and log out, the other procs can play out and they will have a mob to come back to.
 		key = null//We null their key before deleting the mob, so they are properly kicked out.
+		QDEL_NULL(mind) // We transfer mind during create_character(), so this should only happen if the new_player actually logs out w/out actually entering the round.
 		qdel(src)
 	return
