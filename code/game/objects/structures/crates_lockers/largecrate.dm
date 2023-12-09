@@ -15,12 +15,15 @@
 /obj/structure/largecrate/LateInitialize(mapload, ...)
 	. = ..()
 	if(mapload) // if it's the map loading phase, relevant items at the crate's loc are put in the contents
-		for(var/obj/I in loc)
-			if(I.density || I.anchored || I == src || !I.simulated || QDELETED(I))
-				continue
-			if(istype(I, /obj/effect) || istype(I, /obj/random))
-				continue
-			I.forceMove(src)
+		addtimer(CALLBACK(src, nameof(.proc/store_contents)), 10, TIMER_UNIQUE|TIMER_OVERRIDE) // It's here for a raisin, trust me
+
+/obj/structure/largecrate/proc/store_contents()
+	for(var/obj/I in loc)
+		if(I.density || I.anchored || I == src || !I.simulated || QDELETED(I))
+			continue
+		if(istype(I, /obj/effect) || istype(I, /obj/random))
+			continue
+		I.forceMove(src)
 
 /obj/structure/largecrate/attack_hand(mob/user)
 	to_chat(user, "<span class='notice'>You need a crowbar to pry this open!</span>")

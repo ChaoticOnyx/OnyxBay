@@ -37,6 +37,8 @@
 		AddOverlays(image('icons/obj/objects.dmi', "ashtray_half"))
 
 /obj/item/material/ashtray/proc/store(obj/item/W, mob/user)
+	if(QDELETED(W))
+		return FALSE
 	if(!(istype(W, /obj/item/cigbutt) || istype(W, /obj/item/clothing/mask/smokable/cigarette) || istype(W, /obj/item/flame/match)))
 		return FALSE
 	if(length(contents) >= max_butts)
@@ -47,6 +49,8 @@
 		if(C.lit)
 			visible_message("[user] crushes [C] in [src], putting it out.")
 			W = C.die(nomessage = TRUE, nodestroy = TRUE)
+			if(QDELETED(W))
+				return // things without after-die remnants
 		else
 			to_chat(user, SPAN_NOTICE("You place [C] in [src] without even smoking it. Why would you do that?"))
 

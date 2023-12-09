@@ -76,7 +76,7 @@
 	var/do_slide = FALSE
 	if(O.loc == loc)
 		do_slide = TRUE // Sliding on the same time
-	else if(ishuman(user) && O.loc == user && user.drop(O))
+	else if(ishuman(user) && O.loc == user.get_active_hand() && user.drop(O))
 		do_slide = TRUE // Dropping from the inventory
 	else if(table_found && T.Adjacent(src, user))
 		do_slide = TRUE // Sliding across tables
