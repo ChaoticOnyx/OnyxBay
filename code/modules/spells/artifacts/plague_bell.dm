@@ -73,12 +73,12 @@
 	var/damage_delivered = 0 //The necromancer will be healed by a percentage of the total damage delivered this tick.
 
 	for(var/atom/A in hearers(6, get_turf(loc))) // Here we will actually damage mobs in range
-		var/mob/living/M = null
 		if(A == master)
 			continue
-
-		if(isliving(A))
-			M = A
+		
+		var/mob/living/M = A
+		if(!istype(M))
+			continue
 		else if(istype(A,/obj/mecha))
 			var/obj/mecha/mecha = A
 			if(!mecha.occupant)
