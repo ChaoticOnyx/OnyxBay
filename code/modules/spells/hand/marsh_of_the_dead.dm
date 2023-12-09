@@ -98,8 +98,8 @@
 
 /obj/effect/deadhands/user_unbuckle_mob(mob/user)
 	visible_message(
-		"<span class='warning'>\The [user] attempts to free themselves from \the [src]!</span>",
-		"<span class='warning'>You attempt to free yourself from \the [src]!</span>"
+		SPAN_WARNING("\The [user] attempts to free themselves from \the [src]!"),
+		SPAN_WARNING("You attempt to free yourself from \the [src]!</span>")
 		)
 	if(do_after(user, rand(MARSH_MIN_UNBUCKLE_TIME, MARSH_MAX_UNBUCKLE_TIME), src, incapacitation_flags = INCAPACITATION_DISABLED))
 		unbuckle_mob()

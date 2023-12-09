@@ -93,6 +93,7 @@
 
 		M.adjustBruteLoss(DAMAGE_PER_TICK)
 		damage_delivered += DAMAGE_PER_TICK
+
 		if(M.client || M.teleop) //If no client/SSD - we do not count their for damage so users wont supercharge this staff on monkeys
 			accumulated_damage += DAMAGE_PER_TICK
 			to_chat(M, SPAN_DANGER("You feel a sudden pain, as if something is sucking the life out of you!"))
@@ -106,6 +107,7 @@
 		holder.adjustFireLoss(-damage_delivered)
 		holder.adjustToxLoss(-damage_delivered)
 		holder.adjustOxyLoss(-damage_delivered)
+
 	if(damage_delivered >= HEALING_THRESHOLD_MINOR) //Regenerate blood, brain and remove rad after a certain threshold
 		holder.radiation -= damage_delivered
 		holder.regenerate_blood(damage_delivered*2)
@@ -119,12 +121,13 @@
 		to_chat(holder, SPAN_DANGER("The [src] vibrates softly. It is now ready for a major healing!"))
 		can_heal = TRUE
 
-	set_next_think(world.time +1 SECONDS)
+	set_next_think(world.time + 1 SECONDS)
 
 /obj/item/staff/plague_bell/_examine_text(mob/user)
 	. = ..()
 	if(user != master)
 		return
+
 	. += SPAN_NOTICE("The [src] [siphon ? "actively siphons off life energy" : "is silent"].\n")
 	. += SPAN_NOTICE("It has [accumulated_heal >= HEALING_THRESHOLD_MAJOR ? "" : "not"] enough charge for a major healing!\n")
 	. += SPAN_NOTICE("It has [accumulated_damage >= DAMAGE_THRESHOLD ? "" : "not"] enough charge for an amplified attack!\n")
@@ -144,7 +147,7 @@
 		var/mob/living/carbon/human/human = target
 		human.wizard_heal(major_heal)
 	else if(attacker.a_intent == I_HURT && accumulated_damage >= DAMAGE_THRESHOLD)
-		target.adjustBruteLoss(accumulated_damage/VALUE_REDUCTION)
+		target.adjustBruteLoss(accumulated_damage / VALUE_REDUCTION)
 		invocation(user, target, invocation_damage, damage_notification)
 	else
 		return ..()
