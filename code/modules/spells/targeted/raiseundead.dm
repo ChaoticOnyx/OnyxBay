@@ -56,7 +56,7 @@
 
 	var/player_choice = tgui_alert(target_player, "A necromancer is attempting to raise your body as an undead", "Would you like to return to your body?", list("Yes", "No"), RAISE_UNDEAD_TIMEOUT)
 	if(player_choice == "Yes")
-		if(istype(target_player, /mob/observer/ghost))
+		if(isghost(target_player))
 			var/mob/observer/ghost/player = target_player
 			player.reenter_corpse()
 		target.make_undead(user, should_lichify)
