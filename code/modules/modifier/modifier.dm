@@ -1,5 +1,3 @@
-#define MODIFIER_GENETIC	1	// Modifiers with this flag will be copied to mobs who get cloned.
-
 
 // This is a datum that tells the mob that something is affecting them.
 // The advantage of using this datum verses just setting a variable on the mob directly, is that there is no risk of two different procs overwriting

@@ -32,6 +32,10 @@
 
 	return INITIALIZE_HINT_NORMAL
 
+/mob/new_player/Destroy()
+	QDEL_NULL(panel)
+	return ..()
+
 /mob/new_player/proc/new_player_panel(forced = FALSE)
 	if(!SScharacter_setup.initialized && !forced)
 		return // Not ready yet.
@@ -552,6 +556,7 @@
 			mind.gen_relations_info = client.prefs.relations_info["general"]
 		mind.traits = client.prefs.traits.Copy()
 		mind.transfer_to(new_character)					//won't transfer key since the mind is not active
+		mind = null
 
 	new_character.apply_traits()
 	new_character.SetName(real_name)

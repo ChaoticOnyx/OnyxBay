@@ -27,12 +27,6 @@
 	. = ..() // I'm cautious about this, but its the right thing to do.
 	owner = L
 
-/mob/Destroy()
-	if(shadow)
-		qdel(shadow)
-		shadow = null
-	. = ..()
-
 /mob/zshadow/Destroy()
 	owner = null
 	. = ..()

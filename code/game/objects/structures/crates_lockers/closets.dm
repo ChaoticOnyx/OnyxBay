@@ -156,6 +156,10 @@
 
 	update_icon()
 
+/obj/structure/closet/Destroy()
+	QDEL_NULL(cdoor)
+	return ..()
+
 /obj/structure/closet/proc/WillContain()
 	return null
 
