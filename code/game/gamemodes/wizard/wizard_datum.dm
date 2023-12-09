@@ -43,5 +43,5 @@
 
 /datum/wizard/Destroy()
 	lich = null
-	QDEL_NULL(thralls)
+	thralls.Cut()
 	return ..()

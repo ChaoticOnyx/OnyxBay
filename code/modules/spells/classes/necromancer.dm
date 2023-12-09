@@ -11,7 +11,7 @@
 		SPELL_DATA(/datum/spell/hand/marsh_of_the_dead,               1),
 		SPELL_DATA(/datum/spell/toggled/immaterial_form,              1),
 		SPELL_DATA(/datum/spell/targeted/noremorse,                   1),
-		SPELL_DATA(/datum/spell/aoe_turf/conjure/summon/skull,        1),
+		SPELL_DATA(/datum/spell/aoe_turf/conjure/tombstone,           1),
 		SPELL_DATA(/datum/spell/targeted/shapeshift/ghoul_form,       1),
 		SPELL_DATA(/datum/spell/noclothes,                            3)
 	)
