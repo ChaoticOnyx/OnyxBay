@@ -57,12 +57,12 @@
 	return ..()
 
 /obj/item/staff/plague_bell/think()
-	if(!isliving(src.loc) || !ishuman(src.loc))
+	if(!isliving(loc) || !ishuman(loc))
 		siphon = FALSE
 		set_next_think(0)
 		return
 
-	var/mob/living/carbon/human/holder = src.loc
+	var/mob/living/carbon/human/holder = loc
 	if(holder != master)
 		holder.adjustBruteLoss(10)
 		to_chat(holder, SPAN_DANGER("The staff resists your will!"))
@@ -72,7 +72,7 @@
 
 	var/damage_delivered = 0 //The necromancer will be healed by a percentage of the total damage delivered this tick.
 
-	for(var/atom/A in hearers(6, get_turf(src.loc))) // Here we will actually damage mobs in range
+	for(var/atom/A in hearers(6, get_turf(loc))) // Here we will actually damage mobs in range
 		var/mob/living/M = null
 		if(A == master)
 			continue

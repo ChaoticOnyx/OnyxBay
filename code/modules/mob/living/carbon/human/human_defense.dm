@@ -216,11 +216,10 @@ meteor_act
 /mob/living/carbon/human/proc/check_shields(damage = 0, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 	var/obj/item/shield = null
 	var/shield_mod_shield = 0
-	if(buckled && istype(buckled, /obj/effect/dummy/immaterial_form))
-		switch(rand(1, 100))
-			if(1 to 80)
-				return PROJECTILE_CONTINUE
-			else
+	if(istype(buckled, /obj/effect/dummy/immaterial_form))
+		if(1 to 80)
+			return PROJECTILE_CONTINUE
+
 
 	for(var/obj/item/I in list(l_hand, r_hand, wear_suit))
 		if(!I) continue
