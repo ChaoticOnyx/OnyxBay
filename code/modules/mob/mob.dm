@@ -8,10 +8,16 @@
 	remove_from_dead_mob_list()
 	remove_from_living_mob_list()
 	GLOB.player_list.Remove(src)
+	SSmobs.mob_list.Remove(src)
 
 	unset_machine()
+	//SStgui.force_close_all_windows(src) Needs further investigating
+
 	QDEL_NULL(hud_used)
 	QDEL_NULL(show_inventory)
+	QDEL_NULL(skybox)
+	QDEL_NULL(ability_master)
+	QDEL_NULL(shadow)
 
 	LAssailant = null
 	for(var/obj/item/grab/G in grabbed_by)
@@ -21,6 +27,10 @@
 	clear_fullscreen()
 	if(ability_master)
 		QDEL_NULL(ability_master)
+
+	if(click_handlers)
+		click_handlers.QdelClear()
+		QDEL_NULL(click_handlers)
 
 	remove_screen_obj_references()
 	if(client)

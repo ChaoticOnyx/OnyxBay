@@ -199,12 +199,6 @@
 			return VP
 	return null
 
-/mob/Login()
-	..()
-	if(ability_master)
-		ability_master.update_abilities(1, src)
-		ability_master.toggle_open(1)
-
 /mob/Initialize()
 	. = ..()
 	ability_master = new /obj/screen/movable/ability_master(null,src)

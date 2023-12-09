@@ -95,7 +95,7 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 
 	ghost_multitool = new(src)
 
-	GLOB.ghost_mob_list += src
+	GLOB.ghost_mob_list |= src
 
 	..()
 

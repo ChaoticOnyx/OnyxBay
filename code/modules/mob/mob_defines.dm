@@ -33,6 +33,8 @@
 	var/lastKnownIP = null
 	var/computer_id = null
 
+	var/client/my_client // Need to keep track of this ourselves, since by the time Logout() is called the client has already been nulled
+
 	var/stat = 0 //Whether a mob is alive or dead. TODO: Move this to living - Nodrak
 
 	var/obj/screen/hands = null
@@ -88,6 +90,9 @@
 	var/real_name = null
 
 	var/bhunger = 0			//Carbon
+
+	var/last_pain_message
+	var/next_pain_time = 0
 
 	var/druggy = 0			//Carbon
 	var/confused = 0		//Carbon

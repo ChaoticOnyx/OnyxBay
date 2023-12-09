@@ -30,6 +30,9 @@
 /mob/living/carbon/human/dummy/mannequin/Life()
 	return // Because we never know
 
+/mob/living/carbon/human/dummy/mannequin/check_shadow()
+	return
+
 /mob/living/carbon/human/skrell/New(new_loc)
 	h_style = "Skrell Male Tentacles"
 	..(new_loc, SPECIES_SKRELL)
