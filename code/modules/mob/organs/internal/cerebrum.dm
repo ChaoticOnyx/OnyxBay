@@ -60,7 +60,10 @@
 		_setup_brainmob(brainmob, old_self)
 		_register_mob_signals()
 
-	old_self.mind?.transfer_to(brainmob)
+	if(old_self.mind?.wizard?.lich)
+		old_self.mind.wizard.escape_to_lich(old_self.mind)
+	else
+		old_self.mind.transfer_to(brainmob)
 
 	to_chat(brainmob, SPAN("notice", "You feel slightly disoriented. That's normal when you're just \a [initial(name)]."))
 	callHook("debrain", list(brainmob))

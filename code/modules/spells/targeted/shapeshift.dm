@@ -242,3 +242,25 @@
 
 /datum/action/innate/unshapeshift/Activate()
 	shapeshift_spell.stop_transformation(owner)
+
+/datum/spell/targeted/shapeshift/ghoul_form
+	name = "Ghoul Form"
+	desc = "This spell transforms you into a flesh golem."
+	feedback = "GF"
+	possible_transformations = list(/mob/living/simple_animal/hostile/ghoul)
+
+	invocation = "mutters something dark and twisted as their form begins to twist..."
+	invocation_type = SPI_SHOUT
+	spell_flags = INCLUDEUSER
+	range = 0
+	duration = 15 SECONDS
+	charge_max = 1200
+	cooldown_min = 600
+	override_base = "const"
+	drop_items = FALSE
+	share_damage = FALSE
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 1, SP_POWER = 2)
+
+	newVars = list("name" = "flesh golem")
+
+	icon_state = "wiz_ghoul"
