@@ -17,7 +17,7 @@
 	for (var/T in allowed)
 		if(istype(W,T))
 			can_hang = 1
-	if(can_hang && !coat && user.drop(coat, src))
+	if(can_hang && !coat && user.drop(W, src))
 		user.visible_message("[user] hangs [W] on \the [src].", "You hang [W] on the \the [src]")
 		coat = W
 		update_icon()

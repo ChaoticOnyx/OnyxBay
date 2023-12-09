@@ -119,6 +119,9 @@
 	update_icon()
 	set_next_think(world.time + 1 SECOND)
 
+/obj/item/reagent_containers/ivbag/nanoblood
+	name = "nanoblood pack"
+
 /obj/item/reagent_containers/ivbag/nanoblood/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/nanoblood, volume)

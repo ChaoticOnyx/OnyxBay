@@ -65,25 +65,28 @@
 /obj/structure/table/MouseDrop_T(obj/O, mob/user, params)
 	if(!istype(O, /obj/item))
 		return ..()
+
 	var/turf/T = get_turf(O)
 	var/table_found = FALSE
 	for(var/obj/item in T.contents)
 		if(istype(item, /obj/structure/table))
 			table_found = TRUE
 			break
+
+	var/do_slide = FALSE
 	if(O.loc == loc)
-		auto_align(O, params)
+		do_slide = TRUE // Sliding on the same time
+	else if(ishuman(user) && O == user.get_active_hand() && user.drop(O))
+		do_slide = TRUE // Dropping from the inventory
+	else if(table_found && T.Adjacent(src, user))
+		do_slide = TRUE // Sliding across tables
+
+	if(do_slide)
 		O.forceMove(loc)
+		auto_align(O, params)
 		return
-	else if(user.get_active_hand() != O && !(T.Adjacent(src, user) && table_found))
-		return ..()
-	if(isrobot(user))
-		return
-	if(!user.drop(O) && (!T && !T.Adjacent(src, user)))
-		return
-	O.forceMove(loc)
-	auto_align(O, params)
-	return
+
+	return ..()
 
 /obj/structure/table/attack_hand(mob/user as mob)
 	if(ishuman(user))

@@ -383,10 +383,12 @@
 			B.SetName(P.name)
 
 		if(loc == user)
-			user.replace_item(src, B)
-			forceMove(B)
-		else
-			user.drop(P, B)
+			user.drop(src)
+		forceMove(B)
+
+		if(P.loc == user)
+			user.replace_item(P, B)
+		P.forceMove(B)
 
 		to_chat(user, SPAN("notice", "You clip the [P.name] to \the [name]."))
 

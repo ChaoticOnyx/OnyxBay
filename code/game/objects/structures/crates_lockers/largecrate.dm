@@ -10,6 +10,14 @@
 
 /obj/structure/largecrate/Initialize()
 	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/largecrate/LateInitialize(mapload, ...)
+	. = ..()
+	if(mapload) // if it's the map loading phase, relevant items at the crate's loc are put in the contents
+		addtimer(CALLBACK(src, nameof(.proc/store_contents)), 10, TIMER_UNIQUE|TIMER_OVERRIDE) // It's here for a raisin, trust me
+
+/obj/structure/largecrate/proc/store_contents()
 	for(var/obj/I in loc)
 		if(I.density || I.anchored || I == src || !I.simulated || QDELETED(I))
 			continue
@@ -40,6 +48,7 @@
 	icon_state = "mulecrate"
 
 /obj/structure/largecrate/hoverpod/Initialize()
+	. = ..()
 	var/obj/item/mecha_parts/mecha_equipment/ME
 	var/obj/mecha/working/hoverpod/H = new (src)
 
@@ -47,7 +56,6 @@
 	ME.attach(H)
 	ME = new /obj/item/mecha_parts/mecha_equipment/tool/passenger
 	ME.attach(H)
-	. = ..()
 
 /obj/structure/largecrate/animal
 	icon_state = "mulecrate"
@@ -56,7 +64,6 @@
 
 /obj/structure/largecrate/animal/Initialize()
 	. = ..()
-
 	if(held_type)
 		for(var/i = 1;i<=held_count;i++)
 			new held_type(src)

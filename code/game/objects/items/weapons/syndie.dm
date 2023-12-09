@@ -24,6 +24,7 @@
 	size = "large"
 
 /obj/item/syndie/c4explosive/New()
+	..()
 	var/K = rand(1,2000)
 	K = md5(num2text(K)+name)
 	K = copytext(K,1,7)
