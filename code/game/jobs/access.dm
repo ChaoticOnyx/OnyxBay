@@ -34,7 +34,7 @@
 	for(var/req in req_access)
 		if(!(req in accesses)) //doesn't have this access
 			return 0
-	if(req_one_access.len)
+	if(islist(req_one_access) && length(req_one_access))
 		for(var/req in req_one_access)
 			if(req in accesses) //has an access from the single access list
 				return 1
