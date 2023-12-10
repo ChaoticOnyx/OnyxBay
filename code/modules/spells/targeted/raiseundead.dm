@@ -44,7 +44,7 @@
 
 	if(!target.client || target.mind)
 		for(var/mob/observer/ghost/ghost in GLOB.ghost_mob_list)
-			if(ghost.mind.key != target.mind.key)
+			if(ghost.mind?.key != target.mind.key)
 				continue
 
 			ghost.can_reenter_corpse = TRUE
