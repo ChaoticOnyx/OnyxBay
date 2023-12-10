@@ -212,17 +212,32 @@ var/list/ghost_traps
 /datum/ghosttrap/undead/request_player(mob/target, request_string, request_timeout, mob/living/caster, should_lichify = FALSE)
 	necromancer = caster
 	lichify = should_lichify
-	return ..()
+
+	if(request_timeout)
+		request_timeouts[target] = world.time + request_timeout
+		register_signal(target, SIGNAL_QDELETING, /datum/ghosttrap/proc/unregister_target, override = TRUE)
+	else
+		unregister_target(target)
+
+	for(var/mob/observer/ghost/O in GLOB.player_list)
+		if(!O.client)
+			continue
+
+		if(pref_check && !O.client.wishes_to_be_role(pref_check))
+			continue
+
+		spawn(0)
+			var/player_choice = tgui_alert(O, "A necromancer is requesting a soul to animate an undead body.", "Would you like to become undead?", list("Yes", "No"), request_timeout)
+			if(player_choice == "Yes" && !target.key)
+				transfer_personality(O, target)
 
 /datum/ghosttrap/undead/transfer_personality(mob/candidate, mob/target)
-	report_progress("Transfering personality")
 	target.ckey = candidate.ckey
 	if(target.mind)
 		target.mind.assigned_role = "[ghost_trap_role]"
 	announce_ghost_joinleave(candidate, 0, "[ghost_trap_message]")
 
 	target.mind = candidate.mind
-	target.mind.current.reload_fullscreen()
 
 	welcome_candidate(target)
 
