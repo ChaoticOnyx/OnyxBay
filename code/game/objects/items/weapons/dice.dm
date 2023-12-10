@@ -11,9 +11,11 @@
 	attack_verb = list("diced")
 
 /obj/item/dice/New()
+	..()
 	icon_state = "[name][rand(1,sides)]"
 
 /obj/item/dice/dp/New()
+	..()
 	icon_state = "[name][10*rand(0,sides-1)]"//Because dp starts from 00 and ends on 90
 
 /obj/item/dice/d4
