@@ -9,7 +9,8 @@
 	if(!can_unequip(I))
 		return FALSE
 	var/obj/item/gripper/G = module_active
-	G.drop_item()
+	if(istype(G))
+		G.drop_item()
 	if(target)
 		I.forceMove(target)
 	return TRUE

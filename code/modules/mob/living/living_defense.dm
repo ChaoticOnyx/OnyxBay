@@ -81,7 +81,7 @@
 		flags &= ~(DAM_SHARP|DAM_EDGE)
 	if(iscarbon(src))
 		var/mob/living/carbon/C = src
-		if(!C.species.bullet_act(P, C))
+		if(!C.species?.bullet_act(P, C))
 			return
 
 	if(!P.nodamage)
