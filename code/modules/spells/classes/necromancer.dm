@@ -8,7 +8,7 @@
 	spells = list(
 		SPELL_DATA(/datum/spell/targeted/raiseundead,                 1),
 		SPELL_DATA(/datum/spell/targeted/raiseundead/lichify,         3),
-		SPELL_DATA(/datum/spell/hand/marsh_of_the_dead,               1),
+		SPELL_DATA(/datum/spell/hand/charges/marsh_of_the_dead,       1),
 		SPELL_DATA(/datum/spell/toggled/immaterial_form,              1),
 		SPELL_DATA(/datum/spell/targeted/noremorse,                   1),
 		SPELL_DATA(/datum/spell/aoe_turf/conjure/tombstone,           1),

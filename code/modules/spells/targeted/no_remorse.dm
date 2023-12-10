@@ -1,7 +1,7 @@
 /datum/spell/targeted/noremorse
 	name = "No remorse"
-	desc = ""
-	feedback = ""
+	desc = "Designate a mortal who will be attacked by beings from the Realm Of The Dead. Those beings however may choose not to obey your will."
+	feedback = "NR"
 	school = "necromancy"
 
 	invocation = "Facite vindictam!"
