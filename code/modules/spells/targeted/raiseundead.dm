@@ -10,9 +10,9 @@
 	invocation = "De sepulchro suscitate et servite mihi!"
 	invocation_type = SPI_SHOUT
 	max_targets = 1
-	charge_max = 6000
-	cooldown_min = 3000
-	cooldown_reduc = 1000
+	charge_max = 3600
+	cooldown_min = 1800
+	cooldown_reduc = 600
 	level_max = list(SP_TOTAL = 3, SP_SPEED = 3, SP_POWER = 0)
 	compatible_mobs = list(/mob/living/carbon/human)
 	icon_state = "wiz_raiseundead"
