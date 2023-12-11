@@ -72,21 +72,11 @@
 
 	var/damage_delivered = 0 //The necromancer will be healed by a percentage of the total damage delivered this tick.
 
-	for(var/atom/A in hearers(6, get_turf(loc))) // Here we will actually damage mobs in range
-		if(A == master)
+	for(var/mob/living/M in GLOB.living_mob_list_) // Here we will actually damage mobs in range
+		if(get_dist(master, M) > world.view)
 			continue
 
-		var/mob/living/M = null
-
-		if(isliving(A))
-			M = A
-		else if(istype(A,/obj/mecha))
-			var/obj/mecha/mecha = A
-			if(!mecha.occupant)
-				continue
-
-			M = mecha.occupant
-		else
+		if(M == master)
 			continue
 
 		if(M.is_ic_dead() || M.isSynthetic() || isundead(M))
