@@ -58,6 +58,36 @@
 			visible_message(SPAN("alium", "The acid melts \the [src] away into nothing!"))
 			. = TRUE
 			qdel(src)
+			return
+	acid_melted++
+
+/turf/simulated/wall/acid_melt()
+	. = FALSE
+	switch(acid_melted)
+		if(0)
+			visible_message(SPAN("alium", "Acid splats all over \the [src] with a sizzle!"))
+		if(1 to 3)
+			visible_message(SPAN("alium", "The acid eats through \the [src]!"))
+		if(4)
+			visible_message(SPAN("alium", "The acid melts \the [src] away into nothing!"))
+			. = TRUE
+			dismantle_wall()
+			return
+	acid_melted++
+	return
+
+/turf/simulated/floor/acid_melt()
+	. = FALSE
+	switch(acid_melted)
+		if(0)
+			visible_message(SPAN("alium", "Acid splats all over \the [src] with a sizzle!"))
+		if(1 to 3)
+			visible_message(SPAN("alium", "The acid eats through \the [src]!"))
+		if(4)
+			visible_message(SPAN("alium", "The acid melts \the [src] away into nothing!"))
+			. = TRUE
+			dismantle_floor()
+			return
 	acid_melted++
 
 /*
