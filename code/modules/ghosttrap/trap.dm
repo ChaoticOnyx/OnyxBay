@@ -226,10 +226,16 @@ var/list/ghost_traps
 		if(pref_check && !O.client.wishes_to_be_role(pref_check))
 			continue
 
-		spawn(0)
-			var/player_choice = tgui_alert(O, "A necromancer is requesting a soul to animate an undead body.", "Would you like to become undead?", list("Yes", "No"), request_timeout)
-			if(player_choice == "Yes" && !target.key)
-				transfer_personality(O, target)
+		INVOKE_ASYNC(src, nameof(.proc/send_request), target, O, request_timeout)
+
+/datum/ghosttrap/undead/proc/send_request(mob/target, mob/observer/ghost, request_timeout)
+	var/player_choice = tgui_alert(ghost, "A necromancer is requesting a soul to animate an undead body.", "Would you like to become undead?", list("Yes", "No"), request_timeout)
+	if(player_choice == "Yes")
+		if(target.key)
+			to_chat(ghost, SPAN_WARNING("Target is already occupied!"))
+			return
+
+		transfer_personality(ghost, target)
 
 /datum/ghosttrap/undead/transfer_personality(mob/candidate, mob/target)
 	target.ckey = candidate.ckey
