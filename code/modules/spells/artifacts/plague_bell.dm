@@ -73,7 +73,7 @@
 	var/damage_delivered = 0 //The necromancer will be healed by a percentage of the total damage delivered this tick.
 
 	for(var/mob/living/M in GLOB.living_mob_list_) // Here we will actually damage mobs in range
-		if(get_dist(master, M) > world.view)
+		if(get_dist(master, get_turf(M)) > world.view)
 			continue
 
 		if(M == master)
