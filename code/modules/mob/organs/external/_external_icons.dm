@@ -171,7 +171,7 @@ var/list/limb_icon_cache = list()
 		else if(icon_states.Find("[icon_name]"))
 			chosen_icon_state = "[icon_name]"
 		else
-			CRASH("Can't find proper icon_state for \the [src] (key: [chosen_icon_state]).")
+			CRASH("Can't find proper icon_state for \the [src] (key: [chosen_icon_state], icon: [chosen_icon]).")
 
 	/////
 	var/icon/mob_icon = apply_colouration(icon(chosen_icon, chosen_icon_state))

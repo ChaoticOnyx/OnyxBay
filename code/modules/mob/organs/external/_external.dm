@@ -47,7 +47,6 @@
 	var/model                          // Used when caching robolimb icons.
 	var/force_icon                     // Used to force override of species-specific limb icons (for prosthetics).
 	var/list/mob_overlays              // Cached limb overlays
-	var/gendered_icon = 0              // Whether or not the icon state appends a gender.
 	var/body_build = ""
 	var/s_tone                         // Skin tone.
 	var/s_base = ""                    // Skin base.
