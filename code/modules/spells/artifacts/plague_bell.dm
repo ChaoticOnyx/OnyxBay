@@ -79,7 +79,7 @@
 		if(M == master)
 			continue
 
-		if(M.is_ic_dead() || M.isSynthetic() || isundead(M))
+		if(M.isSynthetic() || isundead(M))
 			continue
 
 		M.adjustBruteLoss(DAMAGE_PER_TICK)
