@@ -75,10 +75,11 @@
 	for(var/atom/A in hearers(6, get_turf(loc))) // Here we will actually damage mobs in range
 		if(A == master)
 			continue
-		
-		var/mob/living/M = A
-		if(!istype(M))
-			continue
+
+		var/mob/living/M = null
+
+		if(isliving(A))
+			M = A
 		else if(istype(A,/obj/mecha))
 			var/obj/mecha/mecha = A
 			if(!mecha.occupant)
