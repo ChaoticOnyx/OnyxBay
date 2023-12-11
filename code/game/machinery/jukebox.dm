@@ -17,9 +17,10 @@
 
 /obj/machinery/media/jukebox
 	name = "space jukebox"
+	desc = "Touch the goddamn thing, and even a space marine's powersuit won't save you from the captain's rage."
 	icon = 'icons/obj/jukebox.dmi'
 	icon_state = "jukebox-nopower"
-	var/state_base = "jukebox"
+	var/state_base = "jukebox3"
 	anchored = 1
 	density = 1
 	power_channel = STATIC_EQUIP
@@ -72,8 +73,11 @@
 			icon_state = "[state_base]-broken"
 		else
 			icon_state = "[state_base]-nopower"
+		set_light(0)
 		return
 	icon_state = state_base
+	set_light(0.75, 0.5, 1, 2, "#FCED7E")
+	AddOverlays(emissive_appearance(icon, "[state_base]-ea"))
 	if(playing)
 		if(emagged)
 			AddOverlays("[state_base]-emagged")
