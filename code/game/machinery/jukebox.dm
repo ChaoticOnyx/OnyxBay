@@ -76,7 +76,7 @@
 		set_light(0)
 		return
 	icon_state = state_base
-	set_light(0.75, 0.5, 1, 2, "#FCED7E")
+	set_light(0.95, 0.5, 1, 2, "#FCED7E")
 	AddOverlays(emissive_appearance(icon, "[state_base]-ea"))
 	if(playing)
 		if(emagged)
