@@ -33,7 +33,7 @@
 	my_mob.add_spell(new /datum/spell/toggled/lich_form)
 	my_mob.add_spell(new /datum/spell/aoe_turf/knock)
 	my_mob.add_spell(new /datum/spell/targeted/projectile/magic_missile)
-	my_mob.add_spell(new /datum/spell/hand/marsh_of_the_dead)
+	my_mob.add_spell(new /datum/spell/hand/charges/marsh_of_the_dead)
 	my_mob.add_spell(new /datum/spell/toggled/immaterial_form)
 
 /datum/wizard/undead/Destroy()

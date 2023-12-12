@@ -3,7 +3,7 @@
 #define MARSH_MAX_UNBUCKLE_TIME 40 SECONDS
 #define MARSH_DAMAGE_PER_UPGRADE 10
 
-/datum/spell/hand/marsh_of_the_dead
+/datum/spell/hand/charges/marsh_of_the_dead
 	name = "Marsh of the dead"
 	desc = "This spell creates a puddle of vile pus, staggering any mortal."
 	school = "necromancy"
@@ -12,20 +12,21 @@
 	spell_flags = 0
 	invocation_type = SPI_NONE
 	show_message = "snaps their fingers."
-	spell_delay = 50
+	spell_delay = 2 SECONDS
 	icon_state = "wiz_marsh"
 	level_max = list(SP_TOTAL = 3, SP_SPEED = 1, SP_POWER = 2)
 	var/damage = 0
 	override_base = "const"
 	charge_max = 600
 	cooldown_min = 300
+	max_casts = 3
 
-/datum/spell/hand/marsh_of_the_dead/cast_hand(atom/a, mob/user)
+/datum/spell/hand/charges/marsh_of_the_dead/cast_hand(atom/a, mob/user)
 	for(var/turf/simulated/T in view(1,a))
 		new /obj/effect/deadhands(T, damage)
 	return ..()
 
-/datum/spell/hand/marsh_of_the_dead/empower_spell()
+/datum/spell/hand/charges/marsh_of_the_dead/empower_spell()
 	. = ..()
 	if(!.)
 		return FALSE
@@ -80,7 +81,7 @@
 		if(H.species.species_flags & SPECIES_FLAG_NO_TANGLE)
 			return
 
-	victim.visible_message(SPAN_DANGER("You're stuck in \the [src]!"))
+	to_chat(victim, SPAN_DANGER("You're stuck in \the [src]!"))
 
 	victim.forceMove(loc)
 

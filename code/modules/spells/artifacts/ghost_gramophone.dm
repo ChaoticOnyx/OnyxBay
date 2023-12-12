@@ -23,6 +23,7 @@ GLOBAL_LIST_EMPTY(ghost_gramophones)
 		active = TRUE
 		last_activated = world.time
 		visible_message(SPAN_NOTICE("The gramophone starts spinning its record with a squeak."))
+		notify_ghosts("A ghost gramophone is channeling words said nearby it!", null, src, action = NOTIFY_JUMP, posses_mob = FALSE)
 		set_next_think(world.time + GRAMOPHONE_ACTIVE_TIME)
 	else
 		to_chat(user, SPAN_NOTICE("You try to turn on the [src], but to no avail! Maybe you should try again later?"))

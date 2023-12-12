@@ -1,7 +1,7 @@
 /datum/spell/targeted/noremorse
 	name = "No remorse"
-	desc = ""
-	feedback = ""
+	desc = "Designate a mortal who will be attacked by beings from the Realm Of The Dead. Those beings however may choose not to obey your will."
+	feedback = "NR"
 	school = "necromancy"
 
 	invocation = "Facite vindictam!"
@@ -28,7 +28,7 @@
 
 	ADD_TRAIT(victim, TRAIT_GHOSTATTACKABLE)
 
-	notify_ghosts("A powerful necromancer has allowed you to exact revenge on [victim]! Click on him to unleash your fury!", null, victim, action = NOTIFY_JUMP, posses_mob = FALSE)
+	notify_ghosts("A powerful necromancer has allowed you to exact revenge on [victim]! Click on him to unleash your fury!", null, victim, action = NOTIFY_ATTACK, posses_mob = FALSE)
 
 /datum/modifier/status_effect/ghostattackable
-	duration = 15 SECONDS
+	duration = 10 SECONDS

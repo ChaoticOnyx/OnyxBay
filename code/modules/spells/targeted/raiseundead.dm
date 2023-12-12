@@ -10,9 +10,9 @@
 	invocation = "De sepulchro suscitate et servite mihi!"
 	invocation_type = SPI_SHOUT
 	max_targets = 1
-	charge_max = 6000
-	cooldown_min = 3000
-	cooldown_reduc = 1000
+	charge_max = 3600
+	cooldown_min = 1800
+	cooldown_reduc = 600
 	level_max = list(SP_TOTAL = 3, SP_SPEED = 3, SP_POWER = 0)
 	compatible_mobs = list(/mob/living/carbon/human)
 	icon_state = "wiz_raiseundead"
@@ -42,9 +42,9 @@
 	if(should_lichify && (target.mind?.wizard in user.mind.wizard.thralls)) // Lichifying him without further ado
 		target.make_undead(user, should_lichify)
 
-	if(!target.client || target.mind)
+	if(!target.client && target.mind)
 		for(var/mob/observer/ghost/ghost in GLOB.ghost_mob_list)
-			if(ghost.mind?.key != target.mind.key)
+			if(ghost.mind?.key != target.mind?.key)
 				continue
 
 			ghost.can_reenter_corpse = TRUE
@@ -103,7 +103,7 @@
 	if(!mind)
 		return
 
-	if(mind.wizard && !istype(mind.wizard, /datum/wizard/undead))
+	if(!istype(mind.wizard, /datum/wizard/undead))
 		GLOB.wizards.add_antagonist_mind(mind, TRUE, "undead", "<b>You are undead! Your job is to serve your master!</b>")
 		mind.wizard = new /datum/wizard/undead(src, necromancer)
 
@@ -132,7 +132,6 @@
 		to_chat(src, SPAN_DANGER("<font size=6>You are now a lich serving as an apprentice to your master, \the [necromancer].</font>"))
 	else
 		to_chat(necromancer, SPAN_DANGER("You feel a soul answering your call. You now have a new thrall."))
-		to_chat(src, SPAN_DANGER("<font size=6>Your consciousness awakens in a cold body. You are alive, but at what cost?</font>"))
 		to_chat(src, SPAN_DANGER("<font size=6>Raised as undead, stripped of free will you now have one task - obey your master, \the [necromancer].</font>"))
 
 #undef RAISE_UNDEAD_TIMEOUT
