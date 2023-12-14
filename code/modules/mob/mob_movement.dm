@@ -185,8 +185,9 @@
 			var/datum/orbit/O = thing
 			O.Check()
 
-	if(orbiting)
-		orbiting.Check()
+	var/datum/orbit/orbit = orbiting?.resolve()
+	if(istype(orbit))
+		orbit.Check()
 
 	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, loc)
 
