@@ -394,7 +394,7 @@
 		if("animal")
 			fake_candidates = get_living_sublist(list(/mob/living/simple_animal), list(/mob/living/simple_animal/mouse))
 		if("xenomorph")
-			fake_candidates = get_living_sublist(list(/mob/living/carbon/alien, /mob/living/carbon/metroid, /mob/living/deity))
+			fake_candidates = get_living_sublist(list(/mob/living/carbon/alien, /mob/living/carbon/metroid))
 		if("bot")
 			fake_candidates = get_living_sublist(list(/mob/living/bot))
 		if("mouse")
