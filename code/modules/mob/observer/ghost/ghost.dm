@@ -459,7 +459,8 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		orbitsize = world.icon_size
 	orbitsize -= (orbitsize / world.icon_size) * (world.icon_size * 0.25)
 
-	if(weakref(orbiting) && weakref(orbiting).orbiting != target)
+	var/datum/orbit/orbit = orbiting?.resolve()
+	if(istype(orbit) && orbit.orbiting != target)
 		to_chat(src, "<span class='notice'>Now following \the [target].</span>")
 
 	forceMove(target)
