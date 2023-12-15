@@ -70,7 +70,7 @@
 	unset_registered_user()
 	registered_user = user
 	user.set_id_info(src)
-	register_signal(user, SIGNAL_QDELETING, /obj/item/card/id/syndicate/proc/unset_registered_user)
+	register_signal(user, SIGNAL_QDELETING, nameof(.proc/unset_registered_user))
 	return TRUE
 
 /obj/item/card/id/syndicate/proc/unset_registered_user(mob/user)

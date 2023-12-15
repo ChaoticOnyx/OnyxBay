@@ -171,8 +171,8 @@
 
 /obj/effect/reflection/proc/setup_visuals(target)
 	mirror = target
-	register_signal(mirror.loc, SIGNAL_ENTERED, /obj/effect/reflection/proc/check_vampire_enter)
-	register_signal(mirror.loc, SIGNAL_EXITED, /obj/effect/reflection/proc/check_vampire_exit)
+	register_signal(mirror.loc, SIGNAL_ENTERED, nameof(.proc/check_vampire_enter))
+	register_signal(mirror.loc, SIGNAL_EXITED, nameof(.proc/check_vampire_exit))
 
 	if(mirror.pixel_x > 0)
 		dir = WEST

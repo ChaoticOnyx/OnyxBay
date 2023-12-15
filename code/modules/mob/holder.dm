@@ -23,7 +23,7 @@ var/list/holder_mob_icon_cache = list()
 	..(loc)
 	ASSERT(mob_to_hold)
 	held_mob = mob_to_hold
-	register_signal(mob_to_hold, SIGNAL_QDELETING, /obj/item/holder/proc/onMobQdeleting)
+	register_signal(mob_to_hold, SIGNAL_QDELETING, nameof(.proc/onMobQdeleting))
 	set_next_think(world.time)
 
 /obj/item/holder/proc/destroy_all()

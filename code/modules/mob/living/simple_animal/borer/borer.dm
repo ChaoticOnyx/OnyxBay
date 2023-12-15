@@ -62,7 +62,7 @@
 
 /mob/living/simple_animal/borer/Initialize()
 	. = ..()
-	register_signal(src, SIGNAL_MOB_DEATH, CALLBACK(src, nameof(/mob/living/simple_animal/borer.proc/on_mob_death)))
+	register_signal(src, SIGNAL_MOB_DEATH, CALLBACK(src, nameof(.proc/on_mob_death)))
 
 
 /mob/living/simple_animal/borer/Life()

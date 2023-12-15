@@ -34,7 +34,7 @@
 	ClearRelocator()
 
 	to_relocate = new_relocator
-	register_signal(to_relocate, SIGNAL_QDELETING, /datum/build_mode/relocate_to/proc/ClearRelocator)
+	register_signal(to_relocate, SIGNAL_QDELETING, nameof(.proc/ClearRelocator))
 	to_chat(user, "<span class='notice'>Will now be relocating \the [to_relocate].</span>")
 
 /datum/build_mode/relocate_to/proc/ClearRelocator(feedback)

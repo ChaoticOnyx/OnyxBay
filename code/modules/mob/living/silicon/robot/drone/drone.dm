@@ -67,7 +67,7 @@ var/list/mob_hat_cache = list()
 /mob/living/silicon/robot/drone/New()
 	..()
 
-	register_signal(src, SIGNAL_MOVED, /mob/living/silicon/robot/drone/proc/on_moved)
+	register_signal(src, SIGNAL_MOVED, nameof(.proc/on_moved))
 
 /mob/living/silicon/robot/drone/Destroy()
 	if(hat)

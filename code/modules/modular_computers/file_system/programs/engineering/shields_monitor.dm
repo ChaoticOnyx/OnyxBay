@@ -99,7 +99,7 @@
 		var/obj/machinery/power/shield_generator/S = locate(href_list["ref"]) in shields
 		if(S)
 			deselect_shield()
-			register_signal(S, SIGNAL_QDELETING, /datum/nano_module/shields_monitor/proc/deselect_shield)
+			register_signal(S, SIGNAL_QDELETING, nameof(.proc/deselect_shield))
 			active = S
 		return 1
 

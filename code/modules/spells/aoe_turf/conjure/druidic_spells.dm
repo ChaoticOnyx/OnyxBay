@@ -69,7 +69,7 @@
 
 /datum/spell/aoe_turf/conjure/summon/bear/New()
 	. = ..()
-	register_signal(src, SIGNAL_MOB_SPELL_LEARNED, /datum/spell/aoe_turf/conjure/summon/bear/proc/spell_learned)
+	register_signal(src, SIGNAL_MOB_SPELL_LEARNED, nameof(.proc/spell_learned))
 
 /datum/spell/aoe_turf/conjure/summon/bear/before_cast()
 	..()

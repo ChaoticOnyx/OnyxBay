@@ -19,8 +19,8 @@ var/decl/appearance_manager/appearance_manager = new()
 	if(!pq)
 		pq = new /datum/priority_queue(/proc/cmp_appearance_data)
 		appearances_[viewer] = pq
-		register_signal(viewer, SIGNAL_LOGGED_IN, /decl/appearance_manager/proc/apply_appearance_images)
-		register_signal(viewer, SIGNAL_QDELETING, /decl/appearance_manager/proc/remove_appearances)
+		register_signal(viewer, SIGNAL_LOGGED_IN, nameof(.proc/apply_appearance_images))
+		register_signal(viewer, SIGNAL_QDELETING, nameof(.proc/remove_appearances))
 	pq.Enqueue(ad)
 	reset_appearance_images(viewer)
 

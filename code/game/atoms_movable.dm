@@ -377,7 +377,7 @@
 /atom/movable/Entered(atom/movable/am, atom/old_loc)
 	. = ..()
 
-	am.register_signal(src, SIGNAL_DIR_SET, /atom/proc/recursive_dir_set, TRUE)
+	am.register_signal(src, SIGNAL_DIR_SET, nameof(.proc/recursive_dir_set), TRUE)
 
 /atom/movable/Exited(atom/movable/am, atom/old_loc)
 	. = ..()

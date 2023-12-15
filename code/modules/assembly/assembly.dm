@@ -137,9 +137,9 @@
 			unregister_signal(loc, SIGNAL_MOVED)
 	if(istype(new_loc, /atom/movable))
 		if(istype(new_loc, /obj/item/gripper) && isrobot(new_loc.loc))
-			register_signal(new_loc.loc, SIGNAL_MOVED, /obj/item/device/assembly/proc/retransmit_moved)
+			register_signal(new_loc.loc, SIGNAL_MOVED, nameof(.proc/retransmit_moved))
 		else
-			register_signal(new_loc, SIGNAL_MOVED, /obj/item/device/assembly/proc/retransmit_moved)
+			register_signal(new_loc, SIGNAL_MOVED, nameof(.proc/retransmit_moved))
 	..()
 
 /obj/item/device/assembly/proc/retransmit_moved(mover, old_loc, new_loc)

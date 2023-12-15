@@ -814,12 +814,12 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 	user.visible_message("\The [user] peers through [zoomdevicename ? "the [zoomdevicename] of [src]" : "[src]"].")
 
-	register_signal(src, SIGNAL_QDELETING, /obj/item/proc/unzoom)
-	register_signal(src, SIGNAL_MOVED, /obj/item/proc/zoom_move)
-	register_signal(src, SIGNAL_DIR_SET, /obj/item/proc/unzoom)
-	register_signal(src, SIGNAL_ITEM_UNEQUIPPED, /obj/item/proc/zoom_drop)
-	register_signal(user, SIGNAL_STAT_SET, /obj/item/proc/unzoom)
-	register_signal(user, SIGNAL_VIEW_SHIFTED_SET, /obj/item/proc/unzoom)
+	register_signal(src, SIGNAL_QDELETING, nameof(.proc/unzoom))
+	register_signal(src, SIGNAL_MOVED, nameof(.proc/zoom_move))
+	register_signal(src, SIGNAL_DIR_SET, nameof(.proc/unzoom))
+	register_signal(src, SIGNAL_ITEM_UNEQUIPPED, nameof(.proc/zoom_drop))
+	register_signal(user, SIGNAL_STAT_SET, nameof(.proc.unzoom))
+	register_signal(user, SIGNAL_VIEW_SHIFTED_SET, nameof(.proc/unzoom))
 
 /obj/item/proc/zoom_drop(obj/item/I, mob/user)
 	unzoom(user)
@@ -835,10 +835,10 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	zoom = 0
 
 	unregister_signal(src, SIGNAL_QDELETING)
-	unregister_signal(src, SIGNAL_MOVED, /obj/item/proc/zoom_move)
+	unregister_signal(src, SIGNAL_MOVED, nameof(.proc/zoom_move))
 	unregister_signal(src, SIGNAL_DIR_SET)
 	unregister_signal(src, SIGNAL_ITEM_UNEQUIPPED)
-	unregister_signal(user, SIGNAL_VIEW_SHIFTED_SET, /obj/item/proc/unzoom)
+	unregister_signal(user, SIGNAL_VIEW_SHIFTED_SET, nameof(.proc/unzoom))
 
 	user = user == src ? loc : (user || loc)
 	if(!istype(user))

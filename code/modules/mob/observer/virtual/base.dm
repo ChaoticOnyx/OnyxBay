@@ -23,7 +23,7 @@ var/list/all_virtual_listeners = list()
 	if(!istype(host, host_type))
 		CRASH("Received an unexpected host type. Expected [host_type], was [log_info_line(host)].")
 	src.host = host
-	register_signal(host, SIGNAL_MOVED, /atom/movable/proc/move_to_turf_or_null)
+	register_signal(host, SIGNAL_MOVED, nameof(/atom/movable.proc/move_to_turf_or_null))
 	register_signal(host, SIGNAL_QDELETING, nameof(.proc/_host_deleted))
 
 	all_virtual_listeners += src

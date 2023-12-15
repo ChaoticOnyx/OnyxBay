@@ -131,7 +131,7 @@
 		dormant = FALSE
 
 	if(dormant)
-		register_signal(src, SIGNAL_MOVED, /obj/structure/spider/spiderling/proc/disturbed)
+		register_signal(src, SIGNAL_MOVED, nameof(.proc/disturbed))
 	else
 		set_next_think(world.time)
 

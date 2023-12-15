@@ -381,7 +381,7 @@ var/bomb_set
 	. = ..()
 	// Can never be quite sure that a game mode has been properly initiated or not at this point, so always register
 	nuke_disks += src
-	register_signal(src, SIGNAL_MOVED, /obj/item/disk/nuclear/proc/check_z_level)
+	register_signal(src, SIGNAL_MOVED, nameof(.proc/check_z_level))
 
 /obj/item/disk/nuclear/proc/check_z_level()
 	var/turf/T = get_turf(src)

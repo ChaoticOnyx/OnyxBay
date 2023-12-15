@@ -51,7 +51,7 @@ var/list/ghost_traps
 /datum/ghosttrap/proc/request_player(mob/target, request_string, request_timeout)
 	if(request_timeout)
 		request_timeouts[target] = world.time + request_timeout
-		register_signal(target, SIGNAL_QDELETING, /datum/ghosttrap/proc/unregister_target, override = TRUE)
+		register_signal(target, SIGNAL_QDELETING, nameof(.proc/unregister_target), override = TRUE)
 	else
 		unregister_target(target)
 
@@ -215,7 +215,7 @@ var/list/ghost_traps
 
 	if(request_timeout)
 		request_timeouts[target] = world.time + request_timeout
-		register_signal(target, SIGNAL_QDELETING, /datum/ghosttrap/proc/unregister_target, override = TRUE)
+		register_signal(target, SIGNAL_QDELETING, nameof(.proc/unregister_target), override = TRUE)
 	else
 		unregister_target(target)
 

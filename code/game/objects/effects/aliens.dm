@@ -28,7 +28,7 @@
 	pixel_x = target.pixel_x
 	pixel_y = target.pixel_y
 	set_next_think(world.time)
-	register_signal(target, SIGNAL_QDELETING, /obj/effect/acid/proc/onTargetDeleted)
+	register_signal(target, SIGNAL_QDELETING, nameof(.proc/onTargetDeleted))
 
 /obj/effect/acid/Destroy()
 	target = null
