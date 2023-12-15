@@ -12,7 +12,7 @@ var/bomb_set
 	var/deployable = 0
 	var/extended = 0
 	var/lighthack = 0
-	var/timeleft = 120
+	var/timeleft = 120 SECONDS
 	var/timing = 0
 	var/r_code = "ADMIN"
 	var/code = ""
@@ -31,17 +31,15 @@ var/bomb_set
 	wires = new /datum/wires/nuclearbomb(src)
 
 /obj/machinery/nuclearbomb/Destroy()
-	qdel(wires)
-	wires = null
-	qdel(auth)
-	auth = null
+	QDEL_NULL(wires)
+	QDEL_NULL(auth)
 	return ..()
 
 /obj/machinery/nuclearbomb/Process(wait)
 	if(timing)
 		timeleft = max(timeleft - wait, 0)
 		if(timeleft <= 0)
-			addtimer(CALLBACK(src, nameof(.proc/explode)), 0)
+			explode()
 		SSnano.update_uis(src)
 
 /obj/machinery/nuclearbomb/attackby(obj/item/O as obj, mob/user as mob, params)
@@ -193,7 +191,7 @@ var/bomb_set
 		else
 			data["authstatus"] = "Auth. S1"
 	data["safe"] = safety ? "Safe" : "Engaged"
-	data["time"] = timeleft
+	data["time"] = timeleft / 10
 	data["timer"] = timing
 	data["safety"] = safety
 	data["anchored"] = anchored
@@ -275,8 +273,8 @@ var/bomb_set
 					return
 
 				var/time = text2num(href_list["time"])
-				timeleft += time
-				timeleft = Clamp(timeleft, 120, 600)
+				timeleft += time SECONDS
+				timeleft = Clamp(timeleft, 120 SECONDS, 600 SECONDS)
 			if(href_list["timer"])
 				if(timing == -1)
 					return 1
@@ -338,7 +336,7 @@ var/bomb_set
 	bomb_set--
 	safety = TRUE
 	timing = 0
-	timeleft = Clamp(timeleft, 120, 600)
+	timeleft = Clamp(timeleft, 120 SECONDS, 600 SECONDS)
 	update_icon()
 
 /obj/machinery/nuclearbomb/ex_act(severity)
@@ -512,8 +510,8 @@ var/bomb_set
 			to_chat(usr, "<span class='warning'>Cannot alter the timing during countdown.</span>")
 			return
 		var/time = text2num(href_list["time"])
-		timeleft += time
-		timeleft = Clamp(timeleft, 300, 900)
+		timeleft += time SECONDS
+		timeleft = Clamp(timeleft, 300 SECONDS, 900 SECONDS)
 		return 1
 
 /obj/machinery/nuclearbomb/station/start_bomb()
