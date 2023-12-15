@@ -39,7 +39,7 @@ var/bomb_set
 	if(timing)
 		timeleft = max(timeleft - wait, 0)
 		if(timeleft <= 0)
-			explode()
+			INVOKE_ASYNC(src, nameof(.proc/explode))
 		SSnano.update_uis(src)
 
 /obj/machinery/nuclearbomb/attackby(obj/item/O as obj, mob/user as mob, params)
