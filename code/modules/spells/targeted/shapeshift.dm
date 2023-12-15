@@ -55,9 +55,9 @@
 		M.forceMove(trans) //move inside the new dude to hide him.
 		M.status_flags |= GODMODE //dont want him to die or breathe or do ANYTHING
 		transformed_dudes[trans] = M
-		register_signal(trans, SIGNAL_MOB_DEATH, /datum/spell/targeted/shapeshift/proc/stop_transformation)
-		register_signal(trans, SIGNAL_QDELETING, /datum/spell/targeted/shapeshift/proc/stop_transformation)
-		register_signal(M, SIGNAL_QDELETING, /datum/spell/targeted/shapeshift/proc/destroyed_transformer)
+		register_signal(trans, SIGNAL_MOB_DEATH, nameof(.proc/stop_transformation))
+		register_signal(trans, SIGNAL_QDELETING, nameof(.proc/stop_transformation))
+		register_signal(M, SIGNAL_QDELETING, nameof(.proc/destroyed_transformer))
 		if(duration)
 			spawn(duration)
 				stop_transformation(trans)
@@ -226,9 +226,9 @@
 	M.forceMove(trans) //move inside the new dude to hide him.
 	M.status_flags |= GODMODE //dont want him to die or breathe or do ANYTHING
 	transformed_dudes[trans] = M
-	register_signal(trans, SIGNAL_MOB_DEATH, /datum/spell/targeted/shapeshift/proc/stop_transformation)
-	register_signal(trans, SIGNAL_QDELETING, /datum/spell/targeted/shapeshift/proc/stop_transformation)
-	register_signal(M, SIGNAL_QDELETING, /datum/spell/targeted/shapeshift/proc/destroyed_transformer)
+	register_signal(trans, SIGNAL_MOB_DEATH, nameof(.proc/stop_transformation))
+	register_signal(trans, SIGNAL_QDELETING, nameof(.proc/stop_transformation))
+	register_signal(M, SIGNAL_QDELETING, nameof(.proc/destroyed_transformer))
 	var/datum/action/unshapeshift = new /datum/action/innate/unshapeshift(src)
 	unshapeshift.Grant(trans)
 

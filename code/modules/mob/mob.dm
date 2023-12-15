@@ -80,9 +80,9 @@
 	. = ..()
 	if(species_language)
 		add_language(species_language)
-	register_signal(src, SIGNAL_SEE_IN_DARK_SET,	/mob/proc/set_blackness)
-	register_signal(src, SIGNAL_SEE_INVISIBLE_SET,	/mob/proc/set_blackness)
-	register_signal(src, SIGNAL_SIGHT_SET,			/mob/proc/set_blackness)
+	register_signal(src, SIGNAL_SEE_IN_DARK_SET,	nameof(.proc/set_blackness))
+	register_signal(src, SIGNAL_SEE_INVISIBLE_SET,	nameof(.proc/set_blackness))
+	register_signal(src, SIGNAL_SIGHT_SET,			nameof(.proc/set_blackness))
 	START_PROCESSING(SSmobs, src)
 
 /mob/proc/show_message(msg, type, alt, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)

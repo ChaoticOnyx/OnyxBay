@@ -180,9 +180,9 @@
 		toggle_active(1)
 		update_icon()
 		lock_time = world.time + 35
-		register_signal(owner, SIGNAL_MOVED, /obj/aiming_overlay/proc/update_aiming)
-		register_signal(aiming_at, SIGNAL_MOVED, /obj/aiming_overlay/proc/target_moved)
-		register_signal(aiming_at, SIGNAL_QDELETING, /obj/aiming_overlay/proc/cancel_aiming)
+		register_signal(owner, SIGNAL_MOVED, nameof(.proc/update_aiming))
+		register_signal(aiming_at, SIGNAL_MOVED, nameof(.proc/target_moved))
+		register_signal(aiming_at, SIGNAL_QDELETING, nameof(.proc/cancel_aiming))
 	else
 		forceMove(null)
 		set_next_think(0)

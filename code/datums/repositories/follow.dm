@@ -31,7 +31,7 @@
 	followed_objects_assoc[AM] = follow_holder
 	followed_objects.Add(follow_holder)
 
-	register_signal(AM, SIGNAL_QDELETING, /repository/follow/proc/remove_subject)
+	register_signal(AM, SIGNAL_QDELETING, nameof(.proc/remove_subject))
 
 /repository/follow/proc/remove_subject(atom/movable/AM)
 	cache = null

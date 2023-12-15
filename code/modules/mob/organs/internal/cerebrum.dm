@@ -70,9 +70,9 @@
 	callHook("debrain", list(brainmob))
 
 /obj/item/organ/internal/cerebrum/proc/_register_mob_signals()
-	register_signal(brainmob, SIGNAL_LOGGED_IN, /obj/item/organ/internal/cerebrum/proc/update_info)
-	register_signal(brainmob, SIGNAL_LOGGED_OUT, /obj/item/organ/internal/cerebrum/proc/update_info)
-	register_signal(brainmob, SIGNAL_MOB_DEATH, /obj/item/organ/internal/cerebrum/proc/update_info)
+	register_signal(brainmob, SIGNAL_LOGGED_IN, nameof(.proc/update_info))
+	register_signal(brainmob, SIGNAL_LOGGED_OUT, nameof(.proc/update_info))
+	register_signal(brainmob, SIGNAL_MOB_DEATH, nameof(.proc/update_info))
 
 /obj/item/organ/internal/cerebrum/proc/_unregister_mob_signals()
 	unregister_signal(brainmob, SIGNAL_LOGGED_IN)

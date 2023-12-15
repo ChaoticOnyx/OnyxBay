@@ -97,7 +97,7 @@
 				warning("Powernet sensor with unset ID Tag! [S.x]X [S.y]Y [S.z]Z")
 			else
 				grid_sensors += S
-				register_signal(S, SIGNAL_QDELETING, /datum/nano_module/power_monitor/proc/remove_sensor)
+				register_signal(S, SIGNAL_QDELETING, nameof(.proc/remove_sensor))
 
 /datum/nano_module/power_monitor/proc/remove_sensor(removed_sensor, update_ui = TRUE)
 	if(active_sensor == removed_sensor)

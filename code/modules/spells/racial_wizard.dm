@@ -245,8 +245,8 @@
 	var/mob/living/L = targets[1]
 
 	vision.possess(L)
-	register_signal(L, SIGNAL_QDELETING, /datum/spell/camera_connection/proc/release)
-	register_signal(L, SIGNAL_LOGGED_OUT, /datum/spell/camera_connection/proc/release)
+	register_signal(L, SIGNAL_QDELETING, nameof(.proc/release))
+	register_signal(L, SIGNAL_LOGGED_OUT, nameof(.proc/release))
 	L.verbs += /mob/living/proc/release_eye
 
 /datum/spell/camera_connection/proc/release(mob/living/L)

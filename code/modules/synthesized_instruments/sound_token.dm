@@ -34,7 +34,7 @@
 	listeners = list()
 	listener_status = list()
 
-	register_signal(source, SIGNAL_QDELETING, /datum/proc/qdel_self)
+	register_signal(source, SIGNAL_QDELETING, nameof(.proc/qdel_self))
 
 	player.subscribe(src)
 
