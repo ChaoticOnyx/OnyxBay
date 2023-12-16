@@ -38,6 +38,7 @@
 #define SS_INIT_SHUTTLE         -4
 #define SS_INIT_LIGHTING        -5
 #define SS_INIT_OVERLAYS        -6
+#define SS_INIT_HOLOMAPS      	-7
 #define SS_INIT_XENOARCH        -10
 #define SS_INIT_BAY_LEGACY      -12
 #define SS_INIT_STORYTELLER     -15

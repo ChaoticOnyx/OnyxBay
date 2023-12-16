@@ -46,3 +46,7 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define PASS_FLAG_GRILLE 0x4
 #define PASS_FLAG_MOB    0x8
 
+// Holomap flags
+#define HOLOMAP_DEATHSQUAD_COLOR "#800000"
+#define HOLOMAP_NUCLEAR_COLOR "#e30000"
+#define HOLOMAP_ERT_COLOR "#0b74b4"
