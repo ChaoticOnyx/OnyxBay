@@ -25,11 +25,11 @@
 	var/autoheal_cutoff = 15   // the maximum amount of damage that this wound can have and still autoheal
 
 	// helper lists
-	var/tmp/list/embedded_objects = list()
+	var/tmp/list/embedded_objects
 	var/tmp/list/desc_list = list()
 	var/tmp/list/damage_list = list()
 
-/datum/wound/New(damage)
+/datum/wound/New(damage, obj/item/organ/external/organ)
 
 	created = world.time
 
@@ -46,6 +46,16 @@
 
 	bleed_timer += damage
 
+	if(istype(organ))
+		parent_organ = organ
+
+/datum/wound/Destroy()
+	if(parent_organ)
+		LAZYREMOVE(parent_organ.wounds, src)
+		parent_organ = null
+	LAZYCLEARLIST(embedded_objects)
+	return ..()
+
 // returns 1 if there's a next stage, 0 otherwise
 /datum/wound/proc/init_stage(initial_damage)
 	current_stage = stages.len
@@ -61,39 +71,43 @@
 	return src.damage / src.amount
 
 /datum/wound/proc/can_autoheal()
-	if(embedded_objects.len)
-		return 0
-	return (wound_damage() <= autoheal_cutoff) ? 1 : is_treated()
+	if(LAZYLEN(embedded_objects))
+		return FALSE
+	return (wound_damage() <= autoheal_cutoff) ? TRUE : is_treated()
 
 // checks whether the wound has been appropriately treated
 /datum/wound/proc/is_treated()
-	if(!embedded_objects.len)
-		switch(damage_type)
-			if(BRUISE, CUT, PIERCE)
-				return bandaged
-			if(BURN)
-				return salved
+	if(LAZYLEN(embedded_objects))
+		return FALSE
+	switch(damage_type)
+		if(BRUISE, CUT, PIERCE)
+			return bandaged
+		if(BURN)
+			return salved
 
 	// Checks whether other other can be merged into src.
 /datum/wound/proc/can_merge(datum/wound/other)
-	if (other.type != src.type) return 0
-	if (other.current_stage != src.current_stage) return 0
-	if (other.damage_type != src.damage_type) return 0
-	if (!(other.can_autoheal()) != !(src.can_autoheal())) return 0
-	if (other.is_surgical() != src.is_surgical()) return 0
-	if (!(other.bandaged) != !(src.bandaged)) return 0
-	if (!(other.clamped) != !(src.clamped)) return 0
-	if (!(other.salved) != !(src.salved)) return 0
-	if (!(other.disinfected) != !(src.disinfected)) return 0
-	return 1
+	if(other.type != src.type)                     return FALSE
+	if(other.current_stage != src.current_stage)   return FALSE
+	if(other.damage_type != src.damage_type)       return FALSE
+	if(other.bandaged != src.bandaged)             return FALSE
+	if(other.clamped != src.clamped)               return FALSE
+	if(other.salved != src.salved)                 return FALSE
+	if(other.disinfected != src.disinfected)       return FALSE
+	if(other.parent_organ != parent_organ)         return FALSE
+	if(other.can_autoheal() != src.can_autoheal()) return FALSE
+	if(other.is_surgical() != src.is_surgical())   return FALSE
+	return TRUE
 
 /datum/wound/proc/merge_wound(datum/wound/other)
-	src.embedded_objects |= other.embedded_objects
+	if(LAZYLEN(other.embedded_objects))
+		LAZYDISTINCTADD(src.embedded_objects, other.embedded_objects)
 	src.damage += other.damage
 	src.amount += other.amount
 	src.bleed_timer += other.bleed_timer
 	src.germ_level = max(src.germ_level, other.germ_level)
 	src.created = max(src.created, other.created)	//take the newer created time
+	qdel(other)
 
 // checks if wound is considered open for external infections
 // untreated cuts (and bleeding bruises) and burns are possibly infectable, chance higher if wound is bigger

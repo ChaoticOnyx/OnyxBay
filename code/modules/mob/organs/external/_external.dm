@@ -58,7 +58,7 @@
 
 	// Wound and structural data.
 	var/wound_update_accuracy = 2      // how often wounds should be updated, a higher number means less often
-	var/list/wounds = list()           // wound datum list.
+	var/list/wounds                    // wound datum list.
 	var/number_wounds = 0              // number of wounds, which is NOT wounds.len!
 	var/obj/item/organ/external/parent // Master-limb.
 	var/list/children                  // Sub-limbs.
@@ -133,8 +133,7 @@
 
 	if(wounds)
 		for(var/datum/wound/wound in wounds)
-			wound.embedded_objects.Cut()
-	QDEL_NULL_LIST(wounds)
+			qdel(wound)
 
 	if(parent?.children)
 		parent.children -= src
@@ -395,7 +394,6 @@
 			parent.children.Add(src)
 			//Remove all stump wounds since limb is not missing anymore
 			for(var/datum/wound/lost_limb/W in parent.wounds)
-				parent.wounds -= W
 				qdel(W)
 				break
 			parent.update_damages()
@@ -461,8 +459,7 @@ This function completely restores a damaged organ to perfect condition.
 	remove_all_pain()
 	genetic_degradation = 0
 	for(var/datum/wound/wound in wounds)
-		wound.embedded_objects.Cut()
-	wounds.Cut()
+		qdel(wound)
 	number_wounds = 0
 
 	// handle internal organs
@@ -527,7 +524,7 @@ This function completely restores a damaged organ to perfect condition.
 		owner.remove_blood(fluid_loss)
 
 	// first check whether we can widen an existing wound
-	if(!surgical && wounds && wounds.len > 0 && prob(max(50+(number_wounds-1)*10,90)))
+	if(!surgical && LAZYLEN(wounds) && prob(max(50+(number_wounds-1)*10,90)))
 		if((type == CUT || type == BRUISE) && damage >= 5)
 			//we need to make sure that the wound we are going to worsen is compatible with the type of damage...
 			var/list/compatible_wounds = list()
@@ -553,7 +550,7 @@ This function completely restores a damaged organ to perfect condition.
 	var/wound_type = get_wound_type(type, damage)
 
 	if(wound_type)
-		var/datum/wound/W = new wound_type(damage)
+		var/datum/wound/W = new wound_type(damage, src)
 
 		//Check whether we can add the wound to an existing wound
 		if(surgical)
@@ -563,7 +560,7 @@ This function completely restores a damaged organ to perfect condition.
 				if(other.can_merge(W))
 					other.merge_wound(W)
 					return
-		wounds += W
+		LAZYADD(wounds, W)
 		return W
 
 /****************************************************
@@ -715,13 +712,13 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(BP_IS_ROBOTIC(src)) //Robotic limbs don't heal or get worse.
 		for(var/datum/wound/W in wounds) //Repaired wounds disappear though
 			if(W.damage <= 0)  //and they disappear right away
-				wounds -= W    //TODO: robot wounds for robot limbs
+				qdel(W)        //TODO: robot wounds for robot limbs
 		return
 
 	for(var/datum/wound/W in wounds)
 		// wounds can disappear after 10 minutes at the earliest
 		if(W.damage <= 0 && W.created + (10 MINUTES) <= world.time)
-			wounds -= W
+			qdel(W)
 			continue
 			// let the GC handle the deletion of the wound
 
@@ -736,7 +733,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		//configurable regen speed woo, no-regen hardcore or instaheal hugbox, choose your destiny
 		heal_amt = heal_amt * config.health.organ_regeneration_multiplier
 		// amount of healing is spread over all the wounds
-		heal_amt = heal_amt / (wounds.len + 1)
+		heal_amt = heal_amt / (LAZYLEN(wounds) + 1)
 		// making it look prettier on scanners
 		heal_amt = round(heal_amt,0.1)
 		var/dam_type = BRUTE
@@ -884,7 +881,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		var/datum/wound/lost_limb/W = new (src, disintegrate, clean)
 		if(clean)
 			W.parent_organ = parent_organ
-			parent_organ.wounds |= W
+			LAZYADD(parent_organ.wounds, W)
 			parent_organ.update_damages()
 		else
 			var/obj/item/organ/external/stump/stump = new (victim, src)
@@ -892,7 +889,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 			stump.artery_name = "mangled [artery_name]"
 			stump.arterial_bleed_severity = arterial_bleed_severity
 			stump.adjust_pain(max_damage)
-			stump.wounds |= W
+			W.parent_organ = stump
+			LAZYADD(stump.wounds, W)
 			victim.organs |= stump
 			stump.movement_tally = stumped_tally * damage_multiplier
 			if(disintegrate != DROPLIMB_BURN)
@@ -1208,7 +1206,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(!supplied_wound || (W in supplied_wound.embedded_objects)) // Just in case.
 		return
 
-	supplied_wound.embedded_objects += W
+	LAZYADD(supplied_wound.embedded_objects, W)
 	implants += W
 	owner.embedded_flag = 1
 	owner.verbs += /mob/proc/yank_out_object
@@ -1479,12 +1477,12 @@ Note that amputating the affected organ does in fact remove the infection from t
 		return
 
 	user.visible_message("<span class='notice'>[user] starts inspecting [owner]'s [name] carefully.</span>")
-	if(wounds.len)
+	if(LAZYLEN(wounds))
 		to_chat(user, "<span class='warning'>You find [get_wounds_desc()]</span>")
 		var/list/stuff = list()
 		for(var/datum/wound/wound in wounds)
-			if(wound.embedded_objects)
-				stuff += wound.embedded_objects
+			if(LAZYLEN(wound.embedded_objects))
+				stuff |= wound.embedded_objects
 		if(stuff.len)
 			to_chat(user, "<span class='warning'>There's [english_list(stuff)] sticking out of [owner]'s [name].</span>")
 	else

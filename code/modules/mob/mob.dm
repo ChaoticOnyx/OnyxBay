@@ -960,7 +960,7 @@
 
 		affected.implants -= selection
 		for(var/datum/wound/wound in affected.wounds)
-			wound.embedded_objects -= selection
+			LAZYREMOVE(wound.embedded_objects, selection)
 
 		H.shock_stage+=20
 		affected.take_external_damage((selection.w_class * 3), 0, DAM_EDGE, "Embedded object extraction")

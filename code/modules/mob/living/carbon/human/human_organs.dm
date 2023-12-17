@@ -121,7 +121,7 @@
 					Stun(2)
 
 				//Moving makes open wounds get infected much faster
-				if(E.wounds.len)
+				if(LAZYLEN(E.wounds))
 					for(var/datum/wound/W in E.wounds)
 						if(W.infection_check())
 							W.germ_level += 1

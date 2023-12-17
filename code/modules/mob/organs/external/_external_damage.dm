@@ -37,11 +37,11 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	if(!is_damageable(brute + burn))
 		spillover =  brute_dam + burn_dam + brute - max_damage
 		if(spillover > 0)
-			brute -= spillover
+			brute = max(brute - spillover, 0)
 		else
 			spillover = brute_dam + burn_dam + brute + burn - max_damage
 			if(spillover > 0)
-				burn -= spillover
+				burn = max(burn - spillover, 0)
 
 	if(owner && loc == owner)
 		owner.updatehealth() //droplimb will call updatehealth() again if it does end up being called
@@ -165,6 +165,9 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	update_damages()
 	if(owner)
 		owner.updatehealth()
+		if(status & ORGAN_BLEEDING)
+			owner.update_bandages()
+
 		if(update_damstate())
 			owner.UpdateDamageIcon()
 
