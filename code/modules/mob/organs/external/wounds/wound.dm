@@ -170,6 +170,7 @@
 /datum/wound/proc/open_wound(damage)
 	src.damage += damage
 	bleed_timer += damage
+	bandaged = FALSE
 
 	while(src.current_stage > 1 && src.damage_list[current_stage-1] <= src.damage / src.amount)
 		src.current_stage--

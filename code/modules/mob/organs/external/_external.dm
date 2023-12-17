@@ -588,11 +588,13 @@ This function completely restores a damaged organ to perfect condition.
 		return 1
 	return 0
 
+/obj/item/organ/external/var/should_update_damage_icons_this_tick = FALSE
+
 /obj/item/organ/external/think()
 	if(owner)
 		// Process wounds, doing healing etc. Only do this every few ticks to save processing power
 		if(owner.life_tick % wound_update_accuracy == 0)
-			update_wounds()
+			should_update_damage_icons_this_tick = update_wounds()
 
 		//Infections
 		update_germs()
@@ -719,13 +721,20 @@ Note that amputating the affected organ does in fact remove the infection from t
 		// wounds can disappear after 10 minutes at the earliest
 		if(W.damage <= 0 && W.created + (10 MINUTES) <= world.time)
 			qdel(W)
+			. = TRUE
 			continue
 			// let the GC handle the deletion of the wound
+
+		var/dam_type = BRUTE
+		if(W.damage_type == BURN)
+			dam_type = BURN
+		if(!owner.can_autoheal(dam_type))
+			continue
 
 		// slow healing
 		var/heal_amt = 0
 		// if damage >= 50 AFTER treatment then it's probably too severe to heal within the timeframe of a round.
-		if (!owner.chem_effects[CE_TOXIN] && W.can_autoheal() && W.wound_damage() && brute_ratio < 0.5 && burn_ratio < 0.5)
+		if (!owner.chem_effects[CE_TOXIN] && W.wound_damage() && brute_ratio < 0.5 && burn_ratio < 0.5)
 			heal_amt += 0.5
 
 		//we only update wounds once in [wound_update_accuracy] ticks so have to emulate realtime
@@ -736,16 +745,12 @@ Note that amputating the affected organ does in fact remove the infection from t
 		heal_amt = heal_amt / (LAZYLEN(wounds) + 1)
 		// making it look prettier on scanners
 		heal_amt = round(heal_amt,0.1)
-		var/dam_type = BRUTE
-		if(W.damage_type == BURN)
-			dam_type = BURN
-		if(owner.can_autoheal(dam_type))
-			W.heal_damage(heal_amt)
+
+		W.heal_damage(heal_amt)
 
 	// sync the organ's damage with its wounds
-	src.update_damages()
-	if (update_damstate())
-		owner.UpdateDamageIcon(1)
+	update_damages()
+	. = update_damstate()
 
 //Updates brute_damn and burn_damn from wound damages. Updates BLEEDING status.
 /obj/item/organ/external/proc/update_damages()

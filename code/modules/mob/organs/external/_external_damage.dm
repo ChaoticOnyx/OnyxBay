@@ -165,15 +165,14 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	update_damages()
 	if(owner)
 		owner.updatehealth()
-		if(status & ORGAN_BLEEDING)
-			owner.update_bandages()
-
 		if(update_damstate())
 			owner.UpdateDamageIcon()
+		else if(status & ORGAN_BLEEDING)
+			owner.update_bandages()
 
 	return created_wound
 
-/obj/item/organ/external/heal_damage(brute, burn, internal = 0, robo_repair = 0)
+/obj/item/organ/external/heal_damage(brute, burn, internal = 0, robo_repair = 0, update_damage_icon = TRUE)
 	if(BP_IS_ROBOTIC(src) && !robo_repair)
 		return
 
@@ -195,7 +194,11 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	src.update_damages()
 	owner.updatehealth()
 
-	return update_damstate()
+	var/should_update_damstate = update_damstate()
+	if(owner && update_damage_icon && should_update_damstate)
+		owner.UpdateDamageIcon()
+
+	return should_update_damstate
 
 // Brute/burn
 /obj/item/organ/external/proc/get_brute_damage()

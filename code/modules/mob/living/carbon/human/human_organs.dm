@@ -98,17 +98,22 @@
 	handle_stance()
 	handle_grasp()
 
-	if(!force_process && !bad_external_organs.len)
+	if(!force_process && !LAZYLEN(bad_external_organs))
 		return
+
+	var/should_update_damage_icon = FALSE
 
 	for(var/obj/item/organ/external/E in bad_external_organs)
 		if(!E)
 			continue
 		if(!E.need_process())
 			bad_external_organs -= E
+			should_update_damage_icon = TRUE
 			continue
 		else
 			E.think()
+			if(E.should_update_damage_icons_this_tick)
+				should_update_damage_icon = TRUE
 
 			if(!lying && !buckled && world.time - l_move_time < 15)
 			//Moving around with fractured ribs won't do you any good
@@ -125,6 +130,9 @@
 					for(var/datum/wound/W in E.wounds)
 						if(W.infection_check())
 							W.germ_level += 1
+
+	if(should_update_damage_icon)
+		UpdateDamageIcon()
 
 /mob/living/carbon/human/proc/handle_stance()
 	// Don't need to process any of this if they aren't standing anyways
