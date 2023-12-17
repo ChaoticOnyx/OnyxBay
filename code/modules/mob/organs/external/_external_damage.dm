@@ -158,7 +158,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 	adjust_pain(0.6*burn + 0.4*brute)
 	//If there are still hurties to dispense
-	if (spillover)
+	if(owner && spillover)
 		owner.shock_stage += spillover * config.health.organ_damage_spillover_multiplier
 
 	// sync the organ's damage with its wounds
