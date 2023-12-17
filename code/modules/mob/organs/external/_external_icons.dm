@@ -169,7 +169,9 @@ var/list/limb_icon_cache = list()
 	var/icon/temp_icon = icon(chosen_icon)
 	var/list/icon_states = temp_icon.IconStates()
 	if(!icon_states.Find(chosen_icon_state))
-		if(icon_states.Find("[icon_name][gender]"))
+		if(icon_states.Find("[icon_name][gender][body_build]"))
+			chosen_icon_state = "[icon_name][gender][body_build]"
+		else if(icon_states.Find("[icon_name][gender]"))
 			chosen_icon_state = "[icon_name][gender]"
 		else if(icon_states.Find("[icon_name]"))
 			chosen_icon_state = "[icon_name]"
