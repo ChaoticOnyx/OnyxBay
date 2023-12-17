@@ -89,6 +89,8 @@ var/list/limb_icon_cache = list()
 	. += "[species.get_race_key(owner)]"
 	. += "[bb]"
 	. += is_stump() ? "_s" : ""
+	if(owner.mind.special_role == "Zombie")
+		. += "_z"
 
 	if(force_icon)
 		. += "[force_icon]"
@@ -129,6 +131,7 @@ var/list/limb_icon_cache = list()
 	var/hulk_color_mod = rgb(48,224,40)
 	var/husk = owner && (MUTATION_HUSK in owner.mutations)
 	var/hulk = owner && (MUTATION_HULK in owner.mutations)
+	var/zombie = owner?.mind?.special_role == "Zombie"
 
 	/////
 	var/gender = "_m"
@@ -148,7 +151,7 @@ var/list/limb_icon_cache = list()
 	var/chosen_icon = ""
 	var/chosen_icon_state = ""
 
-	chosen_icon_state = "[icon_name][gender][body_build]"
+	chosen_icon_state = "[icon_name][gender][body_build][zombie ? "_z" : ""]"
 
 	/////
 	if(force_icon)
