@@ -69,7 +69,7 @@
 	return TRUE
 
 /atom/movable
-	var/weakref/orbiting = null
+	var/datum/orbit/orbiting = null
 	var/cached_transform = null
 
 /atom
@@ -104,7 +104,7 @@
 
 /atom/movable/proc/stop_orbit()
 	SpinAnimation(0, 0)
-	qdel(orbiting)
+	QDEL_NULL(orbiting)
 	transform = cached_transform
 
 /atom/Destroy()
