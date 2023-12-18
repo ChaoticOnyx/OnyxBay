@@ -307,3 +307,17 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 			applying.Blend(rgb(s_col[1], s_col[2], s_col[3]), s_col_blend)
 
 	return applying
+
+/obj/item/organ/external/proc/bandage_level()
+	if(damage_state_text() == "00")
+		return 0
+	if(!is_bandaged())
+		return 0
+	if(burn_dam + brute_dam == 0)
+		. = 0
+	else if (burn_dam + brute_dam < (max_damage * 0.25 / 2))
+		. = 1
+	else if (burn_dam + brute_dam < (max_damage * 0.75 / 2))
+		. = 2
+	else
+		. = 3

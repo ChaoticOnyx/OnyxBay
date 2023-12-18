@@ -379,6 +379,7 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 //Heal MANY external organs, in random order
 /mob/living/carbon/human/heal_overall_damage(brute, burn)
 	var/list/obj/item/organ/external/parts = get_damaged_organs(brute,burn)
+	var/should_update_damage_icon = FALSE
 
 	while(parts.len && (brute>0 || burn>0) )
 		var/obj/item/organ/external/picked = pick(parts)
@@ -386,13 +387,17 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 		var/brute_was = picked.brute_dam
 		var/burn_was = picked.burn_dam
 
-		picked.heal_damage(brute,burn)
+		if(picked.heal_damage(brute,burn, update_damage_icon = FALSE))
+			should_update_damage_icon = TRUE
 
 		brute -= (brute_was-picked.brute_dam)
 		burn -= (burn_was-picked.burn_dam)
 
 		parts -= picked
 	updatehealth()
+	if(should_update_damage_icon)
+		UpdateDamageIcon()
+
 	BITSET(hud_updateflag, HEALTH_HUD)
 
 // damage MANY external organs, in random order

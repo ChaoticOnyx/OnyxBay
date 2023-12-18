@@ -151,12 +151,15 @@
 				W.heal_damage(heal_brute)
 				used++
 			affecting.update_damages()
+			if(affecting.update_damstate())
+				H.UpdateDamageIcon()
 			if(used == get_amount())
 				if(affecting.is_bandaged())
 					to_chat(user, SPAN("warning", "\The [src] is used up."))
 				else
 					to_chat(user, SPAN("warning", "\The [src] is used up, but there are more wounds to treat on \the [affecting.name]."))
 			use(used)
+			H.update_bandages(1)
 
 /obj/item/stack/medical/ointment
 	name = "ointment"
@@ -270,12 +273,15 @@
 				W.heal_damage(heal_brute)
 				used++
 			affecting.update_damages()
+			if(affecting.update_damstate())
+				H.UpdateDamageIcon()
 			if(used == get_amount())
 				if(affecting.is_bandaged())
 					to_chat(user, SPAN("warning", "\The [src] is used up."))
 				else
 					to_chat(user, SPAN("warning", "\The [src] is used up, but there are more wounds to treat on \the [affecting.name]."))
 			use(used)
+			H.update_bandages(1)
 
 /obj/item/stack/medical/advanced/ointment
 	name = "burn gel"
@@ -429,6 +435,8 @@
 				W.bandage()
 				used++
 			affecting.update_damages()
+			if(affecting.update_damstate())
+				H.UpdateDamageIcon()
 			if(used == get_amount())
 				if(affecting.is_bandaged())
 					to_chat(user, SPAN("warning", "\The [src] is used up."))

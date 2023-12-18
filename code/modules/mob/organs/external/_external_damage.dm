@@ -37,11 +37,11 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	if(!is_damageable(brute + burn))
 		spillover =  brute_dam + burn_dam + brute - max_damage
 		if(spillover > 0)
-			brute -= spillover
+			brute = max(brute - spillover, 0)
 		else
 			spillover = brute_dam + burn_dam + brute + burn - max_damage
 			if(spillover > 0)
-				burn -= spillover
+				burn = max(burn - spillover, 0)
 
 	if(owner && loc == owner)
 		owner.updatehealth() //droplimb will call updatehealth() again if it does end up being called
@@ -158,7 +158,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 	adjust_pain(0.6*burn + 0.4*brute)
 	//If there are still hurties to dispense
-	if (spillover)
+	if(owner && spillover)
 		owner.shock_stage += spillover * config.health.organ_damage_spillover_multiplier
 
 	// sync the organ's damage with its wounds
@@ -167,10 +167,12 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		owner.updatehealth()
 		if(update_damstate())
 			owner.UpdateDamageIcon()
+		else if(status & ORGAN_BLEEDING)
+			owner.update_bandages()
 
 	return created_wound
 
-/obj/item/organ/external/heal_damage(brute, burn, internal = 0, robo_repair = 0)
+/obj/item/organ/external/heal_damage(brute, burn, internal = 0, robo_repair = 0, update_damage_icon = TRUE)
 	if(BP_IS_ROBOTIC(src) && !robo_repair)
 		return
 
@@ -192,7 +194,11 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	src.update_damages()
 	owner.updatehealth()
 
-	return update_damstate()
+	var/should_update_damstate = update_damstate()
+	if(owner && update_damage_icon && should_update_damstate)
+		owner.UpdateDamageIcon()
+
+	return should_update_damstate
 
 // Brute/burn
 /obj/item/organ/external/proc/get_brute_damage()

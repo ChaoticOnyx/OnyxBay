@@ -126,30 +126,31 @@ Please contact me on #coderbus IRC. ~Carn x
 #define HO_SURGERY_LAYER           5
 #define HO_UNDERWEAR_LAYER         6
 #define HO_UNIFORM_LAYER           7
-#define HO_ID_LAYER                8
-#define HO_SHOES_LAYER             9
-#define HO_GLOVES_LAYER           10
-#define HO_BELT_LAYER             11
-#define HO_SUIT_LAYER             12
-#define HO_TAIL_LAYER             13		//bs12 specific. this hack is probably gonna come back to haunt me
-#define HO_GLASSES_LAYER          14
-#define HO_BELT_LAYER_ALT         15
-#define HO_SUIT_STORE_LAYER       16
-#define HO_BACK_LAYER             17
-#define HO_DEFORM_LAYER           18
-#define HO_HAIR_LAYER             19
-#define HO_GOGGLES_LAYER          20
-#define HO_EARS_LAYER             21
-#define HO_FACEMASK_LAYER         22
-#define HO_HEAD_LAYER             23
-#define HO_COLLAR_LAYER           24
-#define HO_HANDCUFF_LAYER         25
-#define HO_L_HAND_LAYER           26
-#define HO_R_HAND_LAYER           27
-#define HO_FIRE_LAYER             28		//If you're on fire
-#define HO_MODIFIER_EFFECTS_LAYER 29
-#define HO_TARGETED_LAYER         30		//BS12: Layer for the target overlay from weapon targeting system
-#define HO_TOTAL_LAYERS           30
+#define HO_BANDAGE_LAYER           8
+#define HO_ID_LAYER                9
+#define HO_SHOES_LAYER            10
+#define HO_GLOVES_LAYER           11
+#define HO_BELT_LAYER             12
+#define HO_SUIT_LAYER             13
+#define HO_TAIL_LAYER             14		//bs12 specific. this hack is probably gonna come back to haunt me
+#define HO_GLASSES_LAYER          15
+#define HO_BELT_LAYER_ALT         16
+#define HO_SUIT_STORE_LAYER       17
+#define HO_BACK_LAYER             18
+#define HO_DEFORM_LAYER           19
+#define HO_HAIR_LAYER             20
+#define HO_GOGGLES_LAYER          21
+#define HO_EARS_LAYER             22
+#define HO_FACEMASK_LAYER         23
+#define HO_HEAD_LAYER             24
+#define HO_COLLAR_LAYER           25
+#define HO_HANDCUFF_LAYER         26
+#define HO_L_HAND_LAYER           27
+#define HO_R_HAND_LAYER           28
+#define HO_FIRE_LAYER             29		//If you're on fire
+#define HO_MODIFIER_EFFECTS_LAYER 30
+#define HO_TARGETED_LAYER         31		//BS12: Layer for the target overlay from weapon targeting system
+#define HO_TOTAL_LAYERS           31
 //////////////////////////////////
 
 /mob/living/carbon/human
@@ -249,7 +250,25 @@ var/global/list/damage_icon_parts = list()
 		standing_image.AddOverlays(DI)
 
 	overlays_standing[HO_DAMAGE_LAYER]	= standing_image
+	update_bandages(update_icons)
 
+	if(update_icons)
+		queue_icon_update()
+
+/mob/living/carbon/human/proc/update_bandages(update_icons = TRUE)
+	var/bandage_icon = body_build.bandages_icon
+	if(!bandage_icon)
+		return
+	var/image/standing_image = image(bandage_icon, icon_state = "0")
+	if(overlays_standing[HO_DAMAGE_LAYER])
+		for(var/obj/item/organ/external/O in organs)
+			if(O.is_stump())
+				continue
+			var/bandage_level = O.bandage_level()
+			if(bandage_level)
+				standing_image.AddOverlays(image(bandage_icon, "[O.icon_name][bandage_level]"))
+
+		overlays_standing[HO_BANDAGE_LAYER] = standing_image
 	if(update_icons)
 		queue_icon_update()
 
