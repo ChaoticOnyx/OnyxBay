@@ -457,7 +457,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	glide_before_follow = src.glide_size
 	src.glide_size = target.glide_size
 
-	forceMove(target)
+	move_to_turf(target, loc, target.loc)
 	orbit(target, orbitsize, FALSE, 20, 36)
 
 	if(orbiting)
