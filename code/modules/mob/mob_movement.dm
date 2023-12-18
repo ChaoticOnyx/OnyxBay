@@ -180,6 +180,15 @@
 		if ((A != src.loc && A && A.z == src.z))
 			src.last_move = get_dir(A, src.loc)
 
+	if(orbiters)
+		for(var/thing in orbiters)
+			var/datum/orbit/O = thing
+			O.Check()
+
+	var/datum/orbit/orbit = orbiting?.resolve()
+	if(istype(orbit))
+		orbit.Check()
+
 	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, loc)
 
 /proc/step_glide(atom/movable/am, dir, glide_size_override)

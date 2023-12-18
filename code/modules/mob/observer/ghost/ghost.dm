@@ -451,20 +451,33 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	register_signal(following, SIGNAL_DIR_SET, nameof(/atom/proc.recursive_dir_set))
 	register_signal(following, SIGNAL_QDELETING, nameof(.proc/stop_following))
 
-	to_chat(src, SPAN_NOTICE("Now following \the [following]."))
-	move_to_turf(following, loc, following.loc)
-	glide_before_follow = src.glide_size
-	src.glide_size = target.glide_size
+	var/orbitsize
+	if(target.icon)
+		var/icon/I = icon(target.icon, target.icon_state, target.dir)
+		orbitsize = (I.Width() + I.Height()) * 0.5
+	else
+		orbitsize = world.icon_size
+	orbitsize -= (orbitsize / world.icon_size) * (world.icon_size * 0.25)
+
+	var/datum/orbit/orbit = orbiting?.resolve()
+	if(istype(orbit) && orbit.orbiting != target)
+		to_chat(src, "<span class='notice'>Now following \the [target].</span>")
+
+	forceMove(target)
+	orbit(target, orbitsize, FALSE, 20, 36)
+
+/mob/dead/observer/orbit()
+	set_dir(WEST) // Reset dir so the right directional sprites show up
+	..()
 
 /mob/observer/ghost/proc/stop_following()
-	if(following)
+	if(orbiting)
+		stop_orbit()
 		to_chat(src, SPAN_NOTICE("No longer following \the [following]."))
 		unregister_signal(following, SIGNAL_MOVED)
 		unregister_signal(following, SIGNAL_DIR_SET)
 		unregister_signal(following, SIGNAL_QDELETING)
 		following = null
-		glide_size = glide_before_follow
-		glide_before_follow = 0
 
 /mob/observer/ghost/move_to_turf(atom/movable/am, old_loc, new_loc)
 	var/turf/T = get_turf(new_loc)

@@ -29,16 +29,28 @@
 		Multiply(others)
 	return src
 
-/atom/proc/SpinAnimation(speed = 10, loops = -1)
-	var/matrix/m120 = matrix(transform).Update(rotation = 120)
-	var/matrix/m240 = matrix(transform).Update(rotation = 240)
-	var/matrix/m360 = matrix(transform).Update(rotation = 360)
-	speed /= 3      //Gives us 3 equal time segments for our three turns.
-	                //Why not one turn? Because byond will see that the start and finish are the same place and do nothing
-	                //Why not two turns? Because byond will do a flip instead of a turn
-	animate(src, transform = m120, time = speed, loops)
-	animate(transform = m240, time = speed)
-	animate(transform = m360, time = speed)
+/atom/proc/SpinAnimation(speed = 10, loops = -1, clockwise = TRUE, segments = 3)
+	if(!segments)
+		return
+
+	var/segment = 360/segments
+	if(!clockwise)
+		segment = -segment
+
+	var/list/matrices = list()
+	for(var/i in 1 to segments-1)
+		var/matrix/M = matrix(transform)
+		M.Turn(segment*i)
+		matrices += M
+
+	var/matrix/last = matrix(transform)
+	matrices += last
+
+	speed /= segments
+
+	animate(src, transform = matrices[1], time = speed, loops)
+	for(var/i in 2 to segments)
+		animate(transform = matrices[i], time = speed)
 
 /atom/proc/shake_animation(intensity = 8, stime = 6)
 	var/init_px = pixel_x
