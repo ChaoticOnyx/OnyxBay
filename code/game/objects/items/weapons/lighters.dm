@@ -206,6 +206,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/flame/lighter/dropped()
+	. = ..()
 	if(requires_hold)
 		shutoff(silent = TRUE)
 	..()

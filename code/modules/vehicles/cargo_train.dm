@@ -92,7 +92,7 @@
 	if(istype(W, /obj/item/key/cargo_train))
 		if(!key && user.drop(W, src))
 			key = W
-			verbs += /obj/vehicle/train/cargo/engine/verb/remove_key
+			add_verb(src, /obj/vehicle/train/cargo/engine/verb/remove_key)
 		return
 	..()
 
@@ -268,7 +268,7 @@
 	usr.pick_or_drop(key, loc)
 	key = null
 
-	verbs -= /obj/vehicle/train/cargo/engine/verb/remove_key
+	remove_verb(src, /obj/vehicle/train/cargo/engine/verb/remove_key)
 
 //-------------------------------------------
 // Loading/unloading procs

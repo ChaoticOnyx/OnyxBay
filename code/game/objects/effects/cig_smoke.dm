@@ -4,7 +4,7 @@
 	icon = 'icons/effects/effects.dmi'
 	opacity = 0
 	anchored = 1
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	layer = ABOVE_HUMAN_LAYER
 	var/time_to_live = 100
 
@@ -22,4 +22,3 @@
 	name = "vapor"
 	icon_state = "smallsmoke2"
 	time_to_live = 150
-

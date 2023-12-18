@@ -42,3 +42,6 @@
 #define TICKET_CLOSED 0   // Ticket has been resolved or declined
 #define TICKET_OPEN     1 // Ticket has been created, but not responded to
 #define TICKET_ASSIGNED 2 // An admin has assigned themself to the ticket and will respond
+
+#define ADMIN_JMP(src) "(<a href='?_src_=holder;adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>JMP</a>)"
+#define COORD(src) "[src ? src.Admin_Coordinates_Readable() : "nonexistent location"]"

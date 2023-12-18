@@ -327,6 +327,9 @@
 
 // apparently called whenever an item is removed from a slot, container, or anything else.
 /obj/item/proc/dropped(mob/user)
+	SHOULD_CALL_PARENT(TRUE)
+	remove_item_verbs(user)
+
 	if(randpixel)
 		pixel_z = randpixel //an idea borrowed from some of the older pixel_y randomizations. Intended to make items appear to drop at a character
 
@@ -338,6 +341,20 @@
 			user.r_hand.update_twohanding()
 
 	SEND_SIGNAL(src, SIGNAL_ITEM_UNEQUIPPED, src, user)
+
+/obj/item/proc/remove_item_verbs(mob/user)
+	if(ismech(user)) //very snowflake, but necessary due to how mechs work
+		return
+	if(QDELING(user))
+		return
+	var/list/verbs_to_remove = list()
+	for(var/v in verbs)
+		var/verbstring = "[v]"
+		if(length(user.item_verbs[verbstring]) == 1)
+			if(user.item_verbs[verbstring][1] == src)
+				verbs_to_remove += v
+		LAZYREMOVE(user.item_verbs[verbstring], src)
+	remove_verb(user, verbs_to_remove)
 
 // called just as an item is picked up (loc is not yet changed)
 /obj/item/proc/pickup(mob/user)
@@ -361,6 +378,7 @@
 // for items that can be placed in multiple slots
 // note this isn't called during the initial dressing of a player
 /obj/item/proc/equipped(mob/user, slot)
+	SHOULD_CALL_PARENT(TRUE)
 	hud_layerise()
 	if(user.client)	user.client.screen |= src
 	if(user.pulling == src) user.stop_pulling()
@@ -373,8 +391,19 @@
 		M.l_hand.update_twohanding()
 	if(M.r_hand)
 		M.r_hand.update_twohanding()
+	
+	if(item_action_slot_check(user, slot))
+		add_verb(user, verbs)
+		for(var/v in verbs)
+			LAZYDISTINCTADD(user.item_verbs["[v]"], src)
+	else
+		remove_item_verbs(user)
 
 	SEND_SIGNAL(src, SIGNAL_ITEM_EQUIPPED, src, user, slot)
+
+//sometimes we only want to grant the item's action if it's equipped in a specific slot.
+/obj/item/proc/item_action_slot_check(mob/user, slot)
+	return TRUE
 
 //Defines which slots correspond to which slot flags
 var/list/global/slot_flags_enumeration = list(

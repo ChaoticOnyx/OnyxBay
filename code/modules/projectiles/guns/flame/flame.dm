@@ -9,7 +9,7 @@
 	name = "fire"
 	desc = "Damn it, Hot!"
 	anchored = TRUE
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	icon = 'icons/effects/fire.dmi'
 	icon_state = "real_fire"
 	var/ligth_color = "#ed9200"

@@ -267,7 +267,7 @@
 	set_light(0)
 
 /obj/item/pen/energy_dagger/dropped()
-	..()
+	. = ..()
 	spawn(9)
 		if(isturf(loc))
 			deactivate()

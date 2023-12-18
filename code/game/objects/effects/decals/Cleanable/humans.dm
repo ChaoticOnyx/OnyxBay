@@ -115,7 +115,7 @@ var/global/list/image/splatter_cache=list()
 	user.add_blood(basecolor)
 	user.blood_DNA |= blood_DNA.Copy()
 	user.bloody_hands = taken
-	user.verbs += /mob/living/carbon/human/proc/bloody_doodle
+	add_verb(user, /mob/living/carbon/human/proc/bloody_doodle)
 
 /obj/effect/decal/cleanable/blood/splatter
 	random_icon_states = list("mfloor3", "mfloor7", "mgibbl1", "mgibbl2", "mgibbl3", "mgibbl4", "mgibbl5")

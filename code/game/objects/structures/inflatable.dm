@@ -226,7 +226,7 @@
 	if(isobserver(usr) || usr.restrained() || !usr.Adjacent(src))
 		return FALSE
 
-	verbs -= /obj/structure/inflatable/verb/hand_deflate
+	remove_verb(src, /obj/structure/inflatable/verb/hand_deflate)
 	deflate()
 	return TRUE
 
