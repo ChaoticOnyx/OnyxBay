@@ -447,9 +447,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	stop_following()
 	following = target
-	register_signal(following, SIGNAL_MOVED, nameof(/atom/movable.proc/move_to_turf))
-	register_signal(following, SIGNAL_DIR_SET, nameof(/atom/proc.recursive_dir_set))
-	register_signal(following, SIGNAL_QDELETING, nameof(.proc/stop_following))
 
 	var/orbitsize
 	if(target.icon)
@@ -474,9 +471,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(orbiting)
 		stop_orbit()
 		to_chat(src, SPAN_NOTICE("No longer following \the [following]."))
-		unregister_signal(following, SIGNAL_MOVED)
-		unregister_signal(following, SIGNAL_DIR_SET)
-		unregister_signal(following, SIGNAL_QDELETING)
 		following = null
 
 /mob/observer/ghost/move_to_turf(atom/movable/am, old_loc, new_loc)
