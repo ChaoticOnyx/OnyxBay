@@ -151,6 +151,8 @@
 				W.heal_damage(heal_brute)
 				used++
 			affecting.update_damages()
+			if(affecting.update_damstate())
+				H.UpdateDamageIcon()
 			if(used == get_amount())
 				if(affecting.is_bandaged())
 					to_chat(user, SPAN("warning", "\The [src] is used up."))
@@ -271,6 +273,8 @@
 				W.heal_damage(heal_brute)
 				used++
 			affecting.update_damages()
+			if(affecting.update_damstate())
+				H.UpdateDamageIcon()
 			if(used == get_amount())
 				if(affecting.is_bandaged())
 					to_chat(user, SPAN("warning", "\The [src] is used up."))
@@ -431,6 +435,8 @@
 				W.bandage()
 				used++
 			affecting.update_damages()
+			if(affecting.update_damstate())
+				H.UpdateDamageIcon()
 			if(used == get_amount())
 				if(affecting.is_bandaged())
 					to_chat(user, SPAN("warning", "\The [src] is used up."))
