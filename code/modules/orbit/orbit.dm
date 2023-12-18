@@ -79,7 +79,7 @@
 	if(!istype(A))
 		return
 
-	new/datum/orbit(src, A, lockinorbit)
+	new /datum/orbit(src, A, lockinorbit)
 
 	if(!orbiting) //something failed, and our orbit datum deleted itself
 		return
