@@ -24,7 +24,6 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 	var/started_as_observer //This variable is set to 1 when you enter the game as an observer.
 							//If you died in the game and are a ghost - this will remain as null.
 							//Note that this is not a reliable way to determine if admins started as observers, since they change mobs a lot.
-	var/atom/movable/following = null
 	var/glide_before_follow = 0
 
 	var/admin_ghosted = FALSE
@@ -442,14 +441,10 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 // This is the ghost's follow verb with an argument
 /mob/observer/ghost/proc/ManualFollow(atom/movable/target)
-	if(!target || target == following || target == src)
+	if(!istype(target) || target == src)
 		return
 
 	stop_following()
-	following = target
-	register_signal(following, SIGNAL_MOVED, nameof(/atom/movable.proc/move_to_turf))
-	register_signal(following, SIGNAL_DIR_SET, nameof(/atom/proc.recursive_dir_set))
-	register_signal(following, SIGNAL_QDELETING, nameof(.proc/stop_following))
 
 	var/orbitsize
 	if(target.icon)
@@ -459,12 +454,14 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		orbitsize = world.icon_size
 	orbitsize -= (orbitsize / world.icon_size) * (world.icon_size * 0.25)
 
-	var/datum/orbit/orbit = orbiting?.resolve()
-	if(istype(orbit) && orbit.orbiting != target)
-		to_chat(src, "<span class='notice'>Now following \the [target].</span>")
+	glide_before_follow = src.glide_size
+	src.glide_size = target.glide_size
 
 	forceMove(target)
 	orbit(target, orbitsize, FALSE, 20, 36)
+
+	if(orbiting)
+		to_chat(src, SPAN_NOTICE("Now following \the [target]."))
 
 /mob/dead/observer/orbit()
 	set_dir(WEST) // Reset dir so the right directional sprites show up
@@ -472,12 +469,10 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 /mob/observer/ghost/proc/stop_following()
 	if(orbiting)
+		to_chat(src, SPAN_NOTICE("No longer following \the [orbiting.orbiting]."))
 		stop_orbit()
-		to_chat(src, SPAN_NOTICE("No longer following \the [following]."))
-		unregister_signal(following, SIGNAL_MOVED)
-		unregister_signal(following, SIGNAL_DIR_SET)
-		unregister_signal(following, SIGNAL_QDELETING)
-		following = null
+		glide_size = glide_before_follow
+		glide_before_follow = 0
 
 /mob/observer/ghost/move_to_turf(atom/movable/am, old_loc, new_loc)
 	var/turf/T = get_turf(new_loc)
