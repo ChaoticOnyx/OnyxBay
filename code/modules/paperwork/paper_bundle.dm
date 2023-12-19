@@ -15,18 +15,18 @@
 	var/list/pages = list()  // Ordered list of pages as they are to be displayed. Can be different order than src.contents.
 
 
-/obj/item/paper_bundle/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/paper_bundle/attackby(obj/item/W, mob/user)
 	..()
 
 	if (istype(W, /obj/item/paper/carbon))
 		var/obj/item/paper/carbon/C = W
-		if (!C.copied)
-			to_chat(user, SPAN_NOTICE("Take off the carbon copy first."))
+		if(!C.copied)
+			to_chat(user, SPAN("notice", "Take off the carbon copy first."))
 			add_fingerprint(user)
 			return
 	// adding sheets
 	if(istype(W, /obj/item/paper) || istype(W, /obj/item/photo))
-		insert_sheet_at(user, pages.len+1, W)
+		insert_sheet_at(user, pages.len + 1, W)
 
 	// burning
 	else if(istype(W, /obj/item/flame))
@@ -36,11 +36,11 @@
 	else if(istype(W, /obj/item/paper_bundle))
 		user.drop(W)
 		for(var/obj/O in W)
-			O.loc = src
+			O.forceMove(src)
 			O.add_fingerprint(usr)
 			pages.Add(O)
 
-		to_chat(user, SPAN_NOTICE("You add \the [W.name] to [(src.name == "paper bundle") ? "the paper bundle" : src.name]."))
+		to_chat(user, SPAN("notice", "You add \the [W.name] to [(name == "paper bundle") ? "the paper bundle" : name]."))
 		qdel(W)
 	else
 		if(istype(W, /obj/item/tape_roll))
@@ -57,11 +57,14 @@
 
 /obj/item/paper_bundle/proc/insert_sheet_at(mob/user, index, obj/item/sheet)
 	if(istype(sheet, /obj/item/paper))
-		to_chat(user, SPAN_NOTICE("You add [(sheet.name == "paper") ? "the paper" : sheet.name] to [(src.name == "paper bundle") ? "the paper bundle" : src.name]."))
+		to_chat(user, SPAN_NOTICE("You add [(sheet.name == "paper") ? "the paper" : sheet.name] to [(name == "paper bundle") ? "the paper bundle" : name]."))
 	else if(istype(sheet, /obj/item/photo))
-		to_chat(user, SPAN_NOTICE("You add [(sheet.name == "photo") ? "the photo" : sheet.name] to [(src.name == "paper bundle") ? "the paper bundle" : src.name]."))
+		to_chat(user, SPAN_NOTICE("You add [(sheet.name == "photo") ? "the photo" : sheet.name] to [(name == "paper bundle") ? "the paper bundle" : name]."))
 
-	user.drop(sheet, src)
+	if(sheet.loc == user)
+		user.drop(sheet, src)
+	else
+		sheet.forceMove(src)
 
 	pages.Insert(index, sheet)
 
@@ -215,33 +218,33 @@
 	return
 
 
-/obj/item/paper_bundle/update_icon()
+/obj/item/paper_bundle/on_update_icon()
 	var/obj/item/paper/P = pages[1]
 	icon_state = P.icon_state
-	overlays = P.overlays
-	underlays = 0
+	CopyOverlays(P.overlays)
+	underlays.Cut()
 	var/i = 0
 	var/photo
 	for(var/obj/O in src)
 		var/image/img = image('icons/obj/bureaucracy.dmi')
 		if(istype(O, /obj/item/paper))
 			img.icon_state = O.icon_state
-			img.pixel_x -= min(1*i, 2)
-			img.pixel_y -= min(1*i, 2)
-			pixel_x = min(0.5*i, 1)
-			pixel_y = min(  1*i, 2)
+			img.pixel_x -= min(1 * i, 2)
+			img.pixel_y -= min(1 * i, 2)
+			pixel_x = min(0.5 * i, 1)
+			pixel_y = min(1 * i, 2)
 			underlays += img
 			i++
 		else if(istype(O, /obj/item/photo))
 			var/obj/item/photo/Ph = O
 			img = Ph.tiny
 			photo = 1
-			overlays += img
+			AddOverlays(img)
 	if(i>1)
 		desc =  "[i] papers clipped to each other."
 	else
 		desc = "A single sheet of paper."
 	if(photo)
 		desc += "\nThere is a photo attached to it."
-	overlays += image('icons/obj/bureaucracy.dmi', "clip")
+	AddOverlays(image('icons/obj/bureaucracy.dmi', "clip"))
 	return

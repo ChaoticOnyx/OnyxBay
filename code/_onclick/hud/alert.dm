@@ -50,7 +50,7 @@
 		var/old_plane = new_master.plane
 		new_master.layer = FLOAT_LAYER
 		new_master.plane = FLOAT_PLANE
-		thealert.overlays += new_master
+		thealert.AddOverlays(new_master)
 		new_master.layer = old_layer
 		new_master.plane = old_plane
 		thealert.icon_state = "template" // We'll set the icon to the client's ui pref in reorganize_alerts()
@@ -66,7 +66,7 @@
 	animate(thealert, transform = matrix(), time = 2.5, easing = CUBIC_EASING)
 
 	if(thealert.timeout)
-		addtimer(CALLBACK(src, .proc/alert_timeout, thealert, category), thealert.timeout)
+		addtimer(CALLBACK(src, nameof(.proc/alert_timeout), thealert, category), thealert.timeout)
 		thealert.timeout = world.time + thealert.timeout - world.tick_lag
 	return thealert
 

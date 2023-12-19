@@ -27,7 +27,9 @@
 
 /mob/forceMove(atom/destination, unbuckle_mob = TRUE)
 	. = ..()
-	if(. && unbuckle_mob)
+	if(!.)
+		return
+	if(unbuckle_mob)
 		buckled?.unbuckle_mob()
 
 /client/Northeast()
@@ -177,6 +179,14 @@
 		src.m_flag = 1
 		if ((A != src.loc && A && A.z == src.z))
 			src.last_move = get_dir(A, src.loc)
+
+	if(orbiters)
+		for(var/thing in orbiters)
+			var/datum/orbit/O = thing
+			O.Check()
+
+	if(istype(orbiting))
+		orbiting.Check()
 
 	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, loc)
 

@@ -380,7 +380,7 @@ var/list/global/tank_gauge_cache = list()
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/tank/update_icon(override)
+/obj/item/tank/on_update_icon(override)
 	var/needs_updating = override
 
 	if((atom_flags & ATOM_FLAG_INITIALIZED) && istype(loc, /obj/) && !istype(loc, /obj/item/clothing/suit/) && !override) //So we don't eat up our tick. Every tick, when we're not actually in play.
@@ -401,16 +401,16 @@ var/list/global/tank_gauge_cache = list()
 		return
 
 
-	overlays.Cut() // Each time you modify this, the object is redrawn. Cunts.
+	ClearOverlays() // Each time you modify this, the object is redrawn. Cunts.
 
 	if(proxyassembly.assembly || wired)
-		overlays += image(icon,"bomb_assembly")
+		AddOverlays(image(icon, "bomb_assembly"))
 		if(proxyassembly.assembly)
 			var/image/bombthing = image(proxyassembly.assembly.icon, proxyassembly.assembly.icon_state)
-			bombthing.overlays |= proxyassembly.assembly.overlays
+			bombthing.CopyOverlays(proxyassembly.assembly)
 			bombthing.pixel_y = -1
 			bombthing.pixel_x = -3
-			overlays += bombthing
+			AddOverlays(bombthing)
 
 	if(!gauge_icon)
 		return
@@ -418,7 +418,7 @@ var/list/global/tank_gauge_cache = list()
 	var/indicator = "[gauge_icon][(gauge_pressure == -1) ? "overload" : gauge_pressure]"
 	if(!tank_gauge_cache[indicator])
 		tank_gauge_cache[indicator] = image(icon, indicator)
-	overlays += tank_gauge_cache[indicator]
+	AddOverlays(tank_gauge_cache[indicator])
 
 /// Handle exploding, leaking, and rupturing of the tank.
 /// Returns `TRUE` if it should continue thinking.
@@ -617,7 +617,7 @@ var/list/global/tank_gauge_cache = list()
 	air_contents.temperature = new_temperature
 	set_next_think(world.time)
 
-/obj/item/device/tankassemblyproxy/update_icon()
+/obj/item/device/tankassemblyproxy/on_update_icon()
 	tank.update_icon()
 
 /obj/item/device/tankassemblyproxy/HasProximity(atom/movable/AM as mob|obj)

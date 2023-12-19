@@ -59,7 +59,7 @@
 		mainloc.visible_message(SPAN("danger" ,"\icon[src] *beep* *beep*"), SPAN("danger" ,"*beep* *beep*"))
 	playsound(mainloc, 'sound/signals/warning8.ogg', 35)
 	cooldown = 2
-	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
+	addtimer(CALLBACK(src, nameof(.proc/process_cooldown)), 1 SECOND)
 
 /obj/item/device/assembly/prox_sensor/think()
 	if(!timing)
@@ -73,6 +73,7 @@
 		time = 10
 
 /obj/item/device/assembly/prox_sensor/dropped()
+	. = ..()
 	sense()
 
 /obj/item/device/assembly/prox_sensor/retransmit_moved(mover, old_loc, new_loc)
@@ -85,14 +86,14 @@
 	scanning = !scanning
 	update_icon()
 
-/obj/item/device/assembly/prox_sensor/update_icon()
-	overlays.Cut()
+/obj/item/device/assembly/prox_sensor/on_update_icon()
+	ClearOverlays()
 	attached_overlays = list()
 	if(timing)
-		overlays += "prox_timing"
+		AddOverlays("prox_timing")
 		attached_overlays += "prox_timing"
 	if(scanning)
-		overlays += "prox_scanning"
+		AddOverlays("prox_scanning")
 		attached_overlays += "prox_scanning"
 	if(holder)
 		holder.update_icon()

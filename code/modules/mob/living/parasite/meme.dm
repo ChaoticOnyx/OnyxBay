@@ -32,7 +32,7 @@ be able to influence the host through various commands.
 
 	if(src.host) exit_host()
 	src.host = host
-	src.loc = host
+	forceMove(host)
 	host.parasites.Add(src)
 	host.status_flags |= PASSEMOTES
 
@@ -41,7 +41,7 @@ be able to influence the host through various commands.
 	return 1
 
 /mob/living/parasite/proc/exit_host()
-	src.loc = get_turf(host)
+	dropInto(host.loc)
 	src.host.parasites.Remove(src)
 	src.host = null
 
@@ -129,7 +129,8 @@ be able to influence the host through various commands.
 
 /mob/living/parasite/meme/death()
 	// make sure the mob is on the actual map before gibbing
-	if(host) src.loc = host.loc
+	if(host)
+		dropInto(host.loc)
 	host.parasites -= src
 	src.ghostize()
 	src.stat = DEAD
@@ -584,19 +585,19 @@ be able to influence the host through various commands.
 	to_chat(usr, "<b>Meme Points: [src.meme_points]/[maximum_points]</b>")
 
 // Stat panel to show meme points, copypasted from alien
-/mob/living/parasite/meme/Stat()
-	..()
+/mob/living/parasite/meme/get_status_tab_items()
+	. = ..()
 
-	statpanel("Status")
-	if (client && client.holder)
-		stat(null, "([x], [y], [z])")
+	if(client && client.holder)
+		. += "([x], [y], [z])"
 
-	if (client && client.statpanel == "Status")
-		stat(null, "Meme Points: [src.meme_points]")
+	if(client)
+		. += "Meme Points: [src.meme_points]"
 
 // Game mode helpers, used for theft objectives
 // --------------------------------------------
 /mob/living/parasite/check_contents_for(t)
-	if(!host) return 0
+	if(!host)
+		return 0
 
 	return host.check_contents_for(t)

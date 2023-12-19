@@ -23,7 +23,6 @@
 	var/icon_off
 
 	var/welded = FALSE
-	var/large = TRUE
 	var/wall_mounted = FALSE //never solid (You can always pass over it)
 	var/health = 100
 	var/breakout = 0 //if someone is currently breaking out. mutex
@@ -92,7 +91,7 @@
 	. = ..()
 	update_icon()
 
-/obj/item/shield/closet/update_icon()
+/obj/item/shield/closet/on_update_icon()
 	..()
 	if(isturf(loc))
 		SetTransform(rotation = 90)
@@ -152,10 +151,14 @@
 		if((setup & CLOSET_HAS_LOCK))
 			ndoor.lockable = TRUE
 
-		ndoor.loc = src
+		ndoor.forceMove(src)
 		cdoor = ndoor
 
 	update_icon()
+
+/obj/structure/closet/Destroy()
+	QDEL_NULL(cdoor)
+	return ..()
 
 /obj/structure/closet/proc/WillContain()
 	return null
@@ -220,7 +223,7 @@
 			M.client.perspective = MOB_PERSPECTIVE
 
 	for(var/atom/movable/AM in src)
-		if(!istype(AM, /obj/item/shield/closet))
+		if(AM != cdoor)
 			AM.forceMove(L)
 
 /obj/structure/closet/proc/store_contents()
@@ -275,6 +278,8 @@
 		AD.forceMove(src)
 
 	for(var/obj/item/I in loc)
+		if(QDELETED(I))
+			continue
 		if(istype(I,/obj/item/shield/closet))
 			break
 		if(I.anchored)
@@ -536,11 +541,11 @@
 	qdel(src)
 
 /obj/structure/closet/MouseDrop_T(atom/movable/O, mob/user)
+	if(QDELETED(O))
+		return
 	if(istype(O, /obj/screen))	//fix for HUD elements making their way into the world	-Pete
 		return
 	if(O.loc == user)
-		return
-	if(ismob(O) && src.large)
 		return
 	if(user.restrained() || user.stat || user.weakened || user.stunned || user.paralysis)
 		return
@@ -548,8 +553,8 @@
 		return
 	if(!isturf(user.loc)) // are you in a container/closet/pod/etc?
 		return
-	if(!src.opened)
-		return
+	if(!opened)
+		return ..()
 	if(istype(O, /obj/structure/closet))
 		return
 	step_towards(O, src.loc)
@@ -601,8 +606,8 @@
 	else
 		to_chat(usr, SPAN_WARNING("This mob type can't use this verb."))
 
-/obj/structure/closet/update_icon()//Putting the welded stuff in update_icon() so it's easy to overwrite for special cases (Fridges, cabinets, and whatnot)
-	overlays.Cut()
+/obj/structure/closet/on_update_icon()//Putting the welded stuff in update_icon() so it's easy to overwrite for special cases (Fridges, cabinets, and whatnot)
+	ClearOverlays()
 
 	if(dremovable)
 		icon_state = "[icon_closed]nodoor"
@@ -610,30 +615,30 @@
 			if(!opened)
 				if(broken && icon_off)
 					var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_off]")
-					src.overlays += cdoor_icon
-					src.overlays += icon_broken
+					AddOverlays(cdoor_icon)
+					AddOverlays(icon_broken)
 				else if((setup & CLOSET_HAS_LOCK) && locked && cdoor.icon_locked)
 					var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_locked]")
-					src.overlays += cdoor_icon
+					AddOverlays(cdoor_icon)
 				else
 					var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_closed]")
-					src.overlays += cdoor_icon
+					AddOverlays(cdoor_icon)
 				if(welded)
-					overlays += "welded"
+					AddOverlays("welded")
 			else
 				var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_opened]")
-				src.overlays += cdoor_icon
+				AddOverlays(cdoor_icon)
 	else
 		if(!opened)
 			if(broken && icon_off)
 				icon_state = icon_off
-				overlays += icon_broken
+				AddOverlays(icon_broken)
 			else if((setup & CLOSET_HAS_LOCK) && locked && icon_locked)
 				icon_state = icon_locked
 			else
 				icon_state = icon_closed
 			if(welded)
-				overlays += "welded"
+				AddOverlays("welded")
 		else
 			icon_state = icon_opened
 
@@ -826,7 +831,7 @@
 		return FALSE
 	broken = FALSE
 	locked = FALSE
-	C.loc = src
+	C.forceMove(src)
 	cdoor = C
 
 	req_access = cdoor.req_access

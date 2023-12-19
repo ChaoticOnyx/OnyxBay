@@ -83,7 +83,7 @@
 
 /datum/component/mind_linker/register_with_parent()
 	if(signals_which_destroy_us)
-		register_signal(parent, signals_which_destroy_us, /datum/component/mind_linker/proc/destroy_link)
+		register_signal(parent, signals_which_destroy_us, nameof(.proc/destroy_link))
 
 /datum/component/mind_linker/unregister_from_parent()
 	if(signals_which_destroy_us)
@@ -118,7 +118,7 @@
 	new_link.Grant(to_link)
 	new_link.name = "[new_link.name]([network_name])"
 	linked_mobs[to_link] = new_link
-	register_signal(to_link, list(SIGNAL_MOB_DEATH, SIGNAL_QDELETING), /datum/component/mind_linker/proc/unlink_mob)
+	register_signal(to_link, list(SIGNAL_MOB_DEATH, SIGNAL_QDELETING), nameof(.proc/unlink_mob))
 
 	return TRUE
 

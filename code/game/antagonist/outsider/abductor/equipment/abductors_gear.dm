@@ -87,8 +87,8 @@
 		M.icon = disguise.icon
 		M.stand_icon = disguise.stand_icon
 		M.icon_state = disguise.icon_state
-		M.overlays.Cut()
-		M.overlays = disguise.overlays.Copy()
+		M.ClearOverlays()
+		M.SetOverlays(disguise.overlays)
 		M.overlays_standing = disguise.overlays_standing.Copy()
 		M.update_inv_l_hand()
 		M.update_inv_r_hand()
@@ -103,7 +103,7 @@
 		anim(get_turf(M), M,'icons/mob/mob.dmi',,"phaseout",,M.dir)
 		M.real_name = "[M.mind.abductor.team.name] [M.mind.special_role]"
 		M.name = M.real_name
-		M.overlays.Cut()
+		M.ClearOverlays()
 		M.regenerate_icons()
 
 /obj/item/clothing/suit/armor/abductor/vest/handle_shield(mob/user, damage, atom/damage_source, mob/attacker, def_zone, attack_text)
@@ -278,7 +278,7 @@
 
 	for(var/obj/item/device/radio/radio in all_items)
 		radio.on = 0
-		addtimer(CALLBACK(src, .proc/radio_on_mob, radio),300)
+		addtimer(CALLBACK(src, nameof(.proc/radio_on_mob), radio),300)
 
 /obj/item/abductor/mind_device
 	name = "mental interface device"
@@ -454,7 +454,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	toggle(user)
 	add_fingerprint(user)
 
-/obj/item/melee/baton/abductor/update_icon()
+/obj/item/melee/baton/abductor/on_update_icon()
 	. = ..()
 	switch(mode)
 		if(BATON_STUN)
@@ -605,7 +605,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	..()
 	user.visible_message(SPAN_NOTICE("[user] push button on [src] and activates it."), SPAN_NOTICE("You push button on [src] and activate it."))
 	playsound(src, 'sound/machines/terminal_alert.ogg', 50)
-	addtimer(CALLBACK(src, .proc/try_spawn_machine), 30)
+	addtimer(CALLBACK(src, nameof(.proc/try_spawn_machine)), 30)
 
 /obj/item/abductor_machine_beacon/proc/try_spawn_machine()
 	var/viable = FALSE
@@ -783,7 +783,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 
 /obj/structure/table/abductor/proc/updateOverlays()
 	spawn(1)
-		overlays = list()
+		ClearOverlays()
 
 		var/dir_sum = 0
 

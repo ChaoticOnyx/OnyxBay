@@ -3,6 +3,7 @@
 	desc = "A computer used to control a nearby holodeck."
 	icon_keyboard = "tech_key"
 	icon_screen = "holocontrol"
+	light_color = "#41E0FC"
 	req_access = list(access_heads)
 	var/islocked = 0
 

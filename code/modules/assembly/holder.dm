@@ -61,16 +61,16 @@
 	return
 
 
-/obj/item/device/assembly_holder/update_icon()
-	overlays.Cut()
+/obj/item/device/assembly_holder/on_update_icon()
+	ClearOverlays()
 	if(a_left)
-		overlays += "[a_left.icon_state]_left"
+		AddOverlays("[a_left.icon_state]_left")
 		for(var/O in a_left.attached_overlays)
-			overlays += "[O]_l"
+			AddOverlays("[O]_l")
 	if(a_right)
-		src.overlays += "[a_right.icon_state]_right"
+		AddOverlays("[a_right.icon_state]_right")
 		for(var/O in a_right.attached_overlays)
-			overlays += "[O]_r"
+			AddOverlays("[O]_r")
 	if(master)
 		master.update_icon()
 
@@ -120,9 +120,9 @@
 			unregister_signal(loc, SIGNAL_MOVED)
 	if(istype(new_loc, /atom/movable))
 		if(istype(new_loc, /obj/item/gripper) && isrobot(new_loc.loc))
-			register_signal(new_loc.loc, SIGNAL_MOVED, /obj/item/device/assembly_holder/proc/retransmit_moved)
+			register_signal(new_loc.loc, SIGNAL_MOVED, nameof(.proc/retransmit_moved))
 		else
-			register_signal(new_loc, SIGNAL_MOVED, /obj/item/device/assembly_holder/proc/retransmit_moved)
+			register_signal(new_loc, SIGNAL_MOVED, nameof(.proc/retransmit_moved))
 	..()
 
 /obj/item/device/assembly_holder/proc/retransmit_moved(mover, old_loc, new_loc)
@@ -178,12 +178,12 @@
 		if(!T)	return 0
 		if(a_left)
 			a_left.holder = null
-			a_left.loc = T
+			a_left.forceMove(T)
 			if(a_left.proximity_monitor)
 				a_left.proximity_monitor.SetHost(a_left, a_left)
 		if(a_right)
 			a_right.holder = null
-			a_right.loc = T
+			a_right.forceMove(T)
 			if(a_right.proximity_monitor)
 				a_right.proximity_monitor.SetHost(a_right, a_right)
 		spawn(0)

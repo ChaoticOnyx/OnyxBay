@@ -414,6 +414,8 @@
 									/datum/reagent/mindbreaker,\
 									/datum/reagent/psilocybin)
 
+#define SPELL_NOREMORSE_GHOST_DAMAGE 1 ///How much damage the ghosts do when attacking mobs during no remorse spell
+
 /proc/human_height_text(x)
 	switch(x)
 		if(HUMAN_HEIGHT_TINY) return "Dwarfish"

@@ -43,7 +43,7 @@
 			to_chat(user, SPAN("notice", "You dismantle \the [src]."))
 			new /obj/item/stack/material/wood(get_turf(src), 5)
 			for(var/obj/item/book/b in contents)
-				b.loc = (get_turf(src))
+				b.dropInto(get_turf(src))
 			qdel(src)
 
 	else
@@ -80,19 +80,21 @@
 			return
 		if(2.0)
 			for(var/obj/item/book/b in contents)
-				if (prob(50)) b.loc = (get_turf(src))
-				else qdel(b)
+				if(prob(50))
+					b.dropInto(get_turf(src))
+				else
+					qdel(b)
 			qdel(src)
 			return
 		if(3.0)
-			if (prob(50))
+			if(prob(50))
 				for(var/obj/item/book/b in contents)
-					b.loc = (get_turf(src))
+					b.dropInto(get_turf(src))
 				qdel(src)
 			return
 	return
 
-/obj/structure/bookcase/update_icon()
+/obj/structure/bookcase/on_update_icon()
 	if(contents.len < 5)
 		icon_state = "book-[contents.len]"
 	else
@@ -205,11 +207,11 @@
 	var/window_width = 650
 	var/window_height = 650
 
-/obj/item/book/attack_self(mob/user as mob)
+/obj/item/book/attack_self(mob/user)
 	if(carved)
 		if(store)
 			to_chat(user, SPAN("notice", "[store] falls out of [title]!"))
-			store.loc = get_turf(src.loc)
+			store.dropInto(user.loc)
 			store = null
 			return
 		else

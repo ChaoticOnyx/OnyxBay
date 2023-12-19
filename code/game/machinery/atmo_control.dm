@@ -23,7 +23,7 @@
 
 	var/datum/radio_frequency/radio_connection
 
-/obj/machinery/air_sensor/update_icon()
+/obj/machinery/air_sensor/on_update_icon()
 	icon_state = "gsensor[on]"
 
 /obj/machinery/air_sensor/Process()
@@ -81,7 +81,7 @@
 	icon = 'icons/obj/computer.dmi'
 	icon_keyboard = "atmos_key"
 	icon_screen = "tank"
-
+	light_color = "#E6FFFF"
 	name = "Computer"
 
 	var/frequency = 1439

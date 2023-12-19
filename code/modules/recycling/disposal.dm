@@ -350,8 +350,8 @@
 	update_icon()
 
 // update the icon & overlays to reflect mode & status
-/obj/machinery/disposal/update_icon()
-	overlays.Cut()
+/obj/machinery/disposal/on_update_icon()
+	ClearOverlays()
 	if(stat & BROKEN)
 		mode = 0
 		flush = 0
@@ -359,7 +359,7 @@
 
 	// flush handle
 	if(flush)
-		overlays += image('icons/obj/pipes/disposal.dmi', "dispover-handle")
+		AddOverlays(image('icons/obj/pipes/disposal.dmi', "dispover-handle"))
 
 	// only handle is shown if no power
 	if(stat & NOPOWER || mode == -1)
@@ -367,13 +367,16 @@
 
 	// 	check for items in disposal - occupied light
 	if(contents.len > 0)
-		overlays += image('icons/obj/pipes/disposal.dmi', "dispover-full")
+		AddOverlays(image('icons/obj/pipes/disposal.dmi', "dispover-full"))
+		AddOverlays(emissive_appearance('icons/obj/pipes/disposal.dmi', "dispover-full-ea"))
 
 	// charging and ready light
 	if(mode == 1)
-		overlays += image('icons/obj/pipes/disposal.dmi', "dispover-charge")
+		AddOverlays(image('icons/obj/pipes/disposal.dmi', "dispover-charge"))
+		AddOverlays(emissive_appearance('icons/obj/pipes/disposal.dmi', "dispover-charge-ea"))
 	else if(mode == 2)
-		overlays += image('icons/obj/pipes/disposal.dmi', "dispover-ready")
+		AddOverlays(image('icons/obj/pipes/disposal.dmi', "dispover-ready"))
+		AddOverlays(emissive_appearance('icons/obj/pipes/disposal.dmi', "dispover-ready-ea"))
 
 // timed process
 // charge the gas reservoir and perform flush if ready
@@ -666,7 +669,7 @@
 	return
 
 /obj/structure/disposalholder/Destroy()
-	qdel(gas)
+	QDEL_NULL(gas)
 	active = 0
 	return ..()
 
@@ -783,7 +786,7 @@
 		// Leaving it intact and sitting in a wall is stupid.
 		if(T.density)
 			for(var/atom/movable/AM in H)
-				AM.loc = T
+				AM.forceMove(T)
 				AM.pipe_eject(0)
 			qdel(H)
 			return

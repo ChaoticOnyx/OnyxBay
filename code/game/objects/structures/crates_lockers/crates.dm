@@ -18,17 +18,44 @@
 	var/points_per_crate = 5
 	var/rigged = 0
 
+	var/has_overlay = TRUE
+	var/image/crate_overlay
+
+	turf_height_offset = 14
+	var/opened_turf_height_offset = 3
+	var/closed_turf_height_offset = 0
+
+/obj/structure/closet/crate/Initialize()
+	. = ..()
+	if(!closed_turf_height_offset)
+		closed_turf_height_offset = turf_height_offset
+	if(has_overlay)
+		crate_overlay = OVERLAY(icon, "[icon_closed]over", layer = ABOVE_HUMAN_LAYER)
+	update_icon()
+
+/obj/structure/closet/crate/on_update_icon()
+	..()
+	if(opened && crate_overlay)
+		AddOverlays(crate_overlay)
+
 /obj/structure/closet/crate/open()
 	if((atom_flags & ATOM_FLAG_OPEN_CONTAINER) && !opened && can_open())
 		object_shaken()
 	. = ..()
 	if(.)
+		if(opened_turf_height_offset)
+			set_turf_height_offset(opened_turf_height_offset)
 		if(rigged)
 			visible_message(SPAN_DANGER("There are wires attached to the lid of [src]..."))
 			for(var/obj/item/device/assembly_holder/H in src)
 				H.process_activation(usr)
 			for(var/obj/item/device/assembly/A in src)
 				A.activate()
+
+/obj/structure/closet/crate/close()
+	. = ..()
+	if(. && closed_turf_height_offset)
+		set_turf_height_offset(closed_turf_height_offset)
 
 /obj/structure/closet/crate/_examine_text(mob/user)
 	. = ..()
@@ -88,18 +115,14 @@
 	setup = CLOSET_HAS_LOCK
 	locked = TRUE
 
-/obj/structure/closet/crate/secure/Initialize()
-	. = ..()
-	update_icon()
-
-/obj/structure/closet/crate/secure/update_icon()
+/obj/structure/closet/crate/secure/on_update_icon()
 	..()
 	if(broken)
-		overlays += emag
+		AddOverlays(emag)
 	else if(locked)
-		overlays += redlight
+		AddOverlays(redlight)
 	else
-		overlays += greenlight
+		AddOverlays(greenlight)
 
 /obj/structure/closet/crate/plastic
 	name = "plastic crate"
@@ -138,6 +161,9 @@
 	icon_opened = "trashcartopen"
 	icon_closed = "trashcart"
 	pull_slowdown = PULL_SLOWDOWN_LIGHT
+
+	turf_height_offset = 15
+	opened_turf_height_offset = 4
 
 /obj/structure/closet/crate/medical
 	name = "medical crate"
@@ -182,6 +208,7 @@
 	icon_state = "freezer"
 	icon_opened = "freezeropen"
 	icon_closed = "freezer"
+	turf_height_offset = 15
 	var/target_temp = -40 CELSIUS
 	var/cooling_power = 40
 
@@ -212,6 +239,9 @@
 	icon_state = "largebin"
 	icon_opened = "largebinopen"
 	icon_closed = "largebin"
+
+	turf_height_offset = 16
+	opened_turf_height_offset = 2
 
 /obj/structure/closet/crate/radiation
 	name = "radioactive crate"
@@ -309,14 +339,22 @@
 	sparks = "largebinsparks"
 	emag = "largebinemag"
 
+	turf_height_offset = 16
+	opened_turf_height_offset = 2
+
 /obj/structure/closet/crate/large
 	name = "large crate"
 	desc = "A hefty metal crate."
 	icon_state = "largemetal"
 	icon_opened = "largemetalopen"
 	icon_closed = "largemetal"
+
 	storage_capacity = 2 * MOB_LARGE
 	storage_types = CLOSET_STORAGE_ITEMS|CLOSET_STORAGE_STRUCTURES
+
+	has_overlay = FALSE
+	turf_height_offset = 0
+	opened_turf_height_offset = 0
 
 /obj/structure/closet/crate/large/hydroponics
 	icon_state = "hydro_crate_large"
@@ -334,6 +372,10 @@
 
 	storage_capacity = 2 * MOB_LARGE
 	storage_types = CLOSET_STORAGE_ITEMS|CLOSET_STORAGE_STRUCTURES
+
+	has_overlay = FALSE
+	turf_height_offset = 0
+	opened_turf_height_offset = 0
 
 /obj/structure/closet/crate/secure/large/plasma
 	icon_state = "plasma_crate_large"
@@ -382,6 +424,9 @@
 	req_access = list(access_mailsorting, access_xenobiology ,access_virology)
 	storage_types = CLOSET_STORAGE_ITEMS|CLOSET_STORAGE_MOBS
 	pull_slowdown = PULL_SLOWDOWN_LIGHT
+
+	turf_height_offset = 15
+	opened_turf_height_offset = 4
 
 /obj/structure/closet/crate/secure/biohazard/blanks/WillContain()
 	return list(/mob/living/carbon/human/blank, /obj/item/usedcryobag)

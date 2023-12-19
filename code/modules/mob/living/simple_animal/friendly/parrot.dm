@@ -51,6 +51,8 @@
 	stop_automated_movement = 1
 	universal_speak = 1
 
+	blocks_emissive = EMISSIVE_BLOCK_UNIQUE
+
 	var/phrase_chance = 15 // 15% chance every tick to add phrase from buffer to speaklist
 
 	var/parrot_state = PARROT_WANDER //Hunt for a perch when created
@@ -102,10 +104,10 @@
 
 	parrot_sleep_dur = parrot_sleep_max //In case someone decides to change the max without changing the duration var
 
-	verbs.Add(/mob/living/simple_animal/parrot/proc/steal_from_ground, \
-			  /mob/living/simple_animal/parrot/proc/steal_from_mob, \
-			  /mob/living/simple_animal/parrot/verb/drop_held_item_player, \
-			  /mob/living/simple_animal/parrot/proc/perch_player)
+	add_verb(src, /mob/living/simple_animal/parrot/proc/steal_from_ground)
+	add_verb(src, /mob/living/simple_animal/parrot/proc/steal_from_mob)
+	add_verb(src, /mob/living/simple_animal/parrot/verb/drop_held_item_player)
+	add_verb(src, /mob/living/simple_animal/parrot/proc/perch_player)
 
 /mob/living/simple_animal/parrot/Destroy()
 	drop_held_item()
@@ -122,9 +124,9 @@
 	walk(src, 0)
 	..(gibbed, deathmessage, show_dead_message)
 
-/mob/living/simple_animal/parrot/Stat()
+/mob/living/simple_animal/parrot/get_status_tab_items()
 	. = ..()
-	stat("Held Item", held_item)
+	. += "Held Item [held_item]"
 
 // These two are used often AF, it's easier to handle them this way than resolve weakrefs everywhere.
 /mob/living/simple_animal/parrot/proc/set_interest(atom/movable/AM)
@@ -132,7 +134,7 @@
 		unregister_signal(parrot_interest, SIGNAL_QDELETING)
 	parrot_interest = AM
 	if(!QDELETED(parrot_interest) && !client)
-		register_signal(parrot_interest, SIGNAL_QDELETING, .proc/_interest_deleted)
+		register_signal(parrot_interest, SIGNAL_QDELETING, nameof(.proc/_interest_deleted))
 
 /mob/living/simple_animal/parrot/proc/_interest_deleted()
 	set_interest(null)
@@ -142,7 +144,7 @@
 		unregister_signal(parrot_perch, SIGNAL_QDELETING)
 	parrot_perch = O
 	if(!QDELETED(parrot_perch) && !client)
-		register_signal(parrot_perch, SIGNAL_QDELETING, .proc/_perch_deleted)
+		register_signal(parrot_perch, SIGNAL_QDELETING, nameof(.proc/_perch_deleted))
 
 /mob/living/simple_animal/parrot/proc/_perch_deleted()
 	set_perch(null)
@@ -189,7 +191,7 @@
 							src.say("[pick(available_channels)] РРРЯЯЯЯ ОСТАВЬ НАУШНИК РРЯЯЯЯЯЯ!")
 						else
 							src.say("РРЯЯЯЯЯ ОСТАВЬ НАУШНИК РРРЯЯЯЯЯ!")
-						ears.loc = src.loc
+						ears.dropInto(loc)
 						ears = null
 						for(var/possible_phrase in speak)
 							if(copytext(possible_phrase,1,3) in department_radio_keys)
@@ -205,7 +207,7 @@
 						src.say("[pick(available_channels)] РРРЯЯЯЯЯ ПОЛОЖИ НА МЕСТО РРЯЯЯЯЯЯ!")
 					else
 						src.say("РРРЯЯЯЯ ПОЛОЖИ НА МЕСТО РРРЯЯЯЯЯЯ!")
-					held_item.loc = src.loc
+					held_item.dropInto(loc)
 					held_item = null
 
 		//Adding things to inventory
@@ -472,7 +474,7 @@
 			else //This should ensure that we only grab the item we want, and make sure it's not already collected on our perch
 				if(!parrot_perch || parrot_interest.loc != parrot_perch.loc)
 					held_item = parrot_interest
-					parrot_interest.loc = src
+					parrot_interest.forceMove(src)
 					visible_message("[src] grabs the [held_item]!", "<span class='notice'>You grab the [held_item]!</span>", "You hear the sounds of wings flapping furiously.")
 
 			set_interest(null)
@@ -491,7 +493,7 @@
 			return
 
 		if(in_range(src, parrot_perch))
-			src.loc = parrot_perch.loc
+			forceMove(parrot_perch.loc)
 			drop_held_item()
 			parrot_state = PARROT_PERCH
 			icon_state = "parrot_sit"
@@ -645,7 +647,7 @@
 				continue
 
 			held_item = I
-			I.loc = src
+			I.forceMove(src)
 			visible_message("[src] grabs the [held_item]!", "<span class='notice'>You grab the [held_item]!</span>", "You hear the sounds of wings flapping furiously.")
 			return held_item
 
@@ -710,7 +712,7 @@
 	if(!drop_gently)
 		if(istype(held_item, /obj/item/grenade))
 			var/obj/item/grenade/G = held_item
-			G.loc = src.loc
+			G.dropInto(loc)
 			G.detonate()
 			to_chat(src, "You let go of the [held_item]!")
 			held_item = null
@@ -718,7 +720,7 @@
 
 	to_chat(src, "You drop the [held_item].")
 
-	held_item.loc = src.loc
+	held_item.dropInto(loc)
 	held_item = null
 	return 1
 
@@ -734,7 +736,7 @@
 		for(var/atom/movable/AM in view(src,1))
 			for(var/perch_path in desired_perches)
 				if(istype(AM, perch_path))
-					src.loc = AM.loc
+					forceMove(AM.loc)
 					icon_state = "parrot_sit"
 					return
 	to_chat(src, "<span class='warning'>There is no perch nearby to sit on.</span>")
@@ -746,7 +748,43 @@
 /mob/living/simple_animal/parrot/Poly
 	name = "Poly"
 	desc = "Poly the Parrot. An expert on quantum cracker theory."
-	speak = list("Поли хочет крекер!", ":e Проверьте материю, ущербы!",":e Настраивайте СМЕСы, ленивые жопы!",":e КТО СПИЗДИЛ ЧЕРТОВЫ РИГИ?",":e ОНА СЕЙЧАС ЕБНЕТ ВЫЗЫВАЙТЕ ШАТТЛ!")
+	speak = list(
+		"Поли хочет крекер!",
+		":e Проверьте материю, ущербы!",
+		":e Настраивайте СМЕСы, ленивые жопы!",
+		":e Настройте соляры!",
+		":e Кто спиздил сранный РИГ!?",
+		":e Она сейчас ёбнет! Вызывайте шаттл!!!",
+		":e Синга съебалась!",
+		":e Проснись, инженер. Следуй за белым попугаем!",
+		":e Когда-то и меня вела дорога инженера! Но затем кто-то украл мою карту...",
+		":e Токсины в трубах! А, нет, показалось.",
+		":e Борг - попугай! Борг - попугай! Борг!",
+		":e Птица Говорун отличается умом и сообразительностью! Но не СЕ!",
+		":e Этого типа в карго видел - деревяшками торгует!",
+		":e СЕ! Я у тебя денежек немного возьму - на крекеры.",
+		":e Как поспал, братишка? Проголодался, наверное, братишка? Съешь крекер!",
+		":e Откуда ты вообще нарисовался?",
+		":e А я нашёл колечки! Моя прелесть! Не отдам!",
+		":e Живу в инженерке, натыкал табличек! Я маленький и злобный! Этого мало, чтобы добиться уединения?!",
+		":e А чем тебе инженерка не нравятся, а? Я тут уже давно сижу и всем советую.",
+		":e Космос! Прекрасное место, чтобы построить станцию... Или спрятать труп!",
+		":e Инженер, не говори вслух! Ты понижаешь IQ всей станции!",
+		":e В рот мне крекер!",
+		":e Я гусь! А, нет, всё ещё попугай...",
+		":e Я попугай! Я... С рифмой не дружу.",
+		":e А что, если я просто птица с наушником?.. Да не, хуйня какая-то.",
+		":e У меня есть мысль, и я ее думаю.",
+		":e Все получат по увольнительной! И СЕ тоже!",
+		":e Большие попугаи начинаются с малого!",
+		":e Чем ниже голова, тем глубже мои мысли!",
+		":e Мыши сгрызли провода!",
+		":e А где инжир!?",
+		":e А знаешь, что, инженер? Мне этот мир абсолютно понятен.",
+		":e Попугай - не птис-с-ся!",
+		":e Моя фамилия - Прескотт!",
+		":e Материя слабее сингулярности, но в сдерживающем поле не выступает!",
+	)
 
 /mob/living/simple_animal/parrot/Poly/New()
 	ears = new /obj/item/device/radio/headset/headset_eng(src)

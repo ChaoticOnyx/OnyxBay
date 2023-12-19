@@ -272,7 +272,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	//(higher subsystems will be sooner in the queue, adding them later in the loop means we don't have to loop thru them next queue add)
 	sortTim(tickersubsystems, /proc/cmp_subsystem_priority)
 	for(var/I in runlevel_sorted_subsystems)
-		sortTim(runlevel_sorted_subsystems, /proc/cmp_subsystem_priority)
+		sortTim(I, /proc/cmp_subsystem_priority)
 		I += tickersubsystems
 
 	var/cached_runlevel = current_runlevel
@@ -582,12 +582,12 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 
 
-/datum/controller/master/stat_entry()
-	if(!statclick)
-		statclick = new /obj/effect/statclick/debug(null, "Initializing...", src)
-
-	stat("Byond:", "(FPS:[world.fps]) (TickCount:[world.time/world.tick_lag]) (TickDrift:[round(Master.tickdrift,1)]([round((Master.tickdrift/(world.time/world.tick_lag))*100,0.1)]%))")
-	stat("Master Controller:", statclick.update("(TickRate:[Master.processing]) (Iteration:[Master.iteration])"))
+/datum/controller/master/stat_entry(msg)
+	msg = "(FPS:[world.fps]) (TickCount:[world.time/world.tick_lag]) (TickDrift:[round(Master.tickdrift,1)] \
+		([round((Master.tickdrift/(world.time/world.tick_lag))*100,0.1)]%)) \
+		(Internal Tick Usage: [round(MAPTICK_LAST_TICK_USAGE,0.1)]%) (TickRate:[Master.processing]) \
+		(Iteration:[Master.iteration])"
+	return msg
 
 /datum/controller/master/StartLoadingMap()
 	//disallow more than one map to load at once, multithreading it will just cause race conditions

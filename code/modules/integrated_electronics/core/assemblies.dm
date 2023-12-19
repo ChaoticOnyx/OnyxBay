@@ -518,17 +518,17 @@
 /obj/item/device/electronic_assembly/proc/can_move()
 	return FALSE
 
-/obj/item/device/electronic_assembly/update_icon()
+/obj/item/device/electronic_assembly/on_update_icon()
 	if(opened)
 		icon_state = initial(icon_state) + "-open"
 	else
 		icon_state = initial(icon_state)
-	overlays.Cut()
+	ClearOverlays()
 	if(detail_color == COLOR_ASSEMBLY_BLACK) //Black colored overlay looks almost but not exactly like the base sprite, so just cut the overlay and avoid it looking kinda off.
 		return
 	var/image/detail_overlay = image('icons/obj/assemblies/electronic_setups.dmi', src,"[icon_state]-color")
 	detail_overlay.color = detail_color
-	overlays.Add(detail_overlay)
+	AddOverlays(detail_overlay)
 
 /obj/item/device/electronic_assembly/proc/return_total_complexity()
 	var/returnvalue = 0
@@ -574,14 +574,17 @@
 		to_chat(user, SPAN_WARNING("You can't seem to add the '[IC]', since the case doesn't support the circuit type."))
 		return FALSE
 
-	if(!IC.forceMove(src))
+	if(IC.loc == user && !user.drop(IC))
+		return FALSE
+	IC.forceMove(src)
+
+	if(IC.loc != src)
 		return FALSE
 
 	to_chat(user, SPAN_NOTICE("You slide [IC] inside [src]."))
 	playsound(src, 'sound/items/Deconstruct.ogg', 50, 1)
 	add_allowed_scanner(user.ckey)
 	investigate_log("had [IC]([IC.type]) inserted by [key_name(user)].", INVESTIGATE_CIRCUIT)
-	user.drop(IC)
 	add_component(IC)
 	IC.create_moved_event()
 	return TRUE

@@ -88,7 +88,7 @@
 			M.adjustHalLoss(30)
 		return TOPIC_REFRESH
 
-/obj/structure/deity/altar/update_icon()
-	overlays.Cut()
+/obj/structure/deity/altar/on_update_icon()
+	ClearOverlays()
 	if(target)
-		overlays += image('icons/effects/effects.dmi', icon_state =  "summoning")
+		AddOverlays(image('icons/effects/effects.dmi', icon_state =  "summoning"))

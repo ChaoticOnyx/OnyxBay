@@ -8,6 +8,7 @@
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	layer = TABLE_LAYER
 	throwpass = 1
+	turf_height_offset = 12
 
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 0,
@@ -320,40 +321,41 @@
 	qdel(src)
 	return shards
 
-/obj/structure/table/update_icon()
+/obj/structure/table/on_update_icon()
 	if(flipped != 1)
 		icon_state = "blank"
-		overlays.Cut()
+		ClearOverlays()
 
 		var/image/I
 
 		// Base frame shape. Mostly done for glass/diamond tables, where this is visible.
 		for(var/i = 1 to 4)
-			I = image(icon, dir = 1<<(i-1), icon_state = connections[i])
-			overlays += I
+			I = OVERLAY(icon, connections[i], dir = 1<<(i-1))
+			AddOverlays(I)
 
 		// Standard table image
 		if(material)
 			for(var/i = 1 to 4)
-				I = image(icon, "[material.table_icon_base]_[connections[i]]", dir = 1<<(i-1))
-				if(material.icon_colour) I.color = material.icon_colour
+				I = OVERLAY(icon, "[material.table_icon_base]_[connections[i]]", dir = 1<<(i-1))
+				if(material.icon_colour)
+					I.color = material.icon_colour
 				I.alpha = 255 * material.opacity
-				overlays += I
+				AddOverlays(I)
 
 		// Reinforcements
 		if(reinforced)
 			for(var/i = 1 to 4)
-				I = image(icon, "[reinforced.table_reinf]_[connections[i]]", dir = 1<<(i-1))
+				I = OVERLAY(icon, "[reinforced.table_reinf]_[connections[i]]", dir = 1<<(i-1))
 				I.color = reinforced.icon_colour
 				I.alpha = 255 * reinforced.opacity
-				overlays += I
+				AddOverlays(I)
 
 		if(carpeted)
 			for(var/i = 1 to 4)
-				I = image(icon, "carpet_[connections[i]]", dir = 1<<(i-1))
-				overlays += I
+				I = OVERLAY(icon, "carpet_[connections[i]]", dir = 1<<(i-1))
+				AddOverlays(I)
 	else
-		overlays.Cut()
+		ClearOverlays()
 		var/type = 0
 		var/tabledirs = 0
 		for(var/direction in list(turn(dir,90), turn(dir,-90)) )
@@ -371,22 +373,22 @@
 
 		icon_state = "flip[type]"
 		if(material)
-			var/image/I = image(icon, "[material.table_icon_base]_flip[type]")
+			var/image/I = OVERLAY(icon, "[material.table_icon_base]_flip[type]", dir = dir)
 			I.color = material.icon_colour
 			I.alpha = 255 * material.opacity
-			overlays += I
+			AddOverlays(I)
 			name = "[material.display_name] table"
 		else
 			name = "table frame"
 
 		if(reinforced)
-			var/image/I = image(icon, "[reinforced.table_reinf]_flip[type]")
+			var/image/I = OVERLAY(icon, "[reinforced.table_reinf]_flip[type]", dir = dir)
 			I.color = reinforced.icon_colour
 			I.alpha = 255 * reinforced.opacity
-			overlays += I
+			AddOverlays(I)
 
 		if(carpeted)
-			overlays += "carpet_flip[type]"
+			AddOverlays(OVERLAY(icon, "carpet_flip[type]", dir = dir))
 
 /obj/structure/table/proc/can_connect()
 	return TRUE

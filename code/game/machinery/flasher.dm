@@ -36,7 +36,7 @@
 	wifi_receiver = null
 	return ..()
 
-/obj/machinery/flasher/update_icon()
+/obj/machinery/flasher/on_update_icon()
 	if ( !(stat & (BROKEN|NOPOWER)) )
 		icon_state = "[base_state]1"
 //		src.sd_SetLuminosity(2)
@@ -128,12 +128,12 @@
 
 		if (!anchored)
 			user.show_message(text("<span class='warning'>[src] can now be moved.</span>"))
-			overlays.Cut()
+			ClearOverlays()
 			proximity_monitor.SetRange(0)
 
 		else if (src.anchored)
 			user.show_message(text("<span class='warning'>[src] is now secured.</span>"))
-			overlays += "[base_state]-s"
+			AddOverlays("[base_state]-s")
 			proximity_monitor.SetRange(range)
 
 /obj/machinery/button/flasher

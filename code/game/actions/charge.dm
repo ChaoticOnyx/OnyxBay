@@ -59,7 +59,7 @@
 		var/image/img = image(button_icon,button,"bg_active")
 		img.pixel_x = 0
 		img.pixel_y = 0
-		button.overlays+=img
+		button.AddOverlays(img)
 		active = TRUE
 		return TRUE
 
@@ -89,8 +89,8 @@
 
 	charging += charger
 	SEND_SIGNAL(owner, SIGNAL_STARTED_CHARGE)
-	register_signal(charger, SIGNAL_MOVABLE_BUMP, .proc/on_bump)
-	register_signal(charger, SIGNAL_MOVED, .proc/on_moved)
+	register_signal(charger, SIGNAL_MOVABLE_BUMP, nameof(.proc/on_bump))
+	register_signal(charger, SIGNAL_MOVED, nameof(.proc/on_moved))
 	DestroySurroundings(charger)
 	charger.set_dir(dir)
 	do_charge_indicator(charger, target)
@@ -129,7 +129,7 @@
 
 /datum/action/cooldown/charge/proc/on_moved(atom/source)
 	playsound(source, 'sound/effects/meteorimpact.ogg', 200, TRUE, 2, TRUE)
-	INVOKE_ASYNC(src, .proc/DestroySurroundings, source)
+	INVOKE_ASYNC(src, nameof(.proc/DestroySurroundings), source)
 
 /datum/action/cooldown/charge/proc/DestroySurroundings(atom/movable/charger)
 	if(!destroy_objects)
@@ -168,7 +168,7 @@
 	if(isobj(target) && target.density)
 		SSexplosions.med_mov_atom += target
 
-	INVOKE_ASYNC(src, .proc/DestroySurroundings, usr)
+	INVOKE_ASYNC(src, nameof(.proc/DestroySurroundings), usr)
 	hit_target(target, charge_damage)
 
 /datum/action/cooldown/charge/proc/hit_target(atom/target, damage_dealt)

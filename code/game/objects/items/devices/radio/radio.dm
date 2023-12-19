@@ -616,7 +616,7 @@
 			if(keyslot)
 				var/turf/T = get_turf(user)
 				if(T)
-					keyslot.loc = T
+					keyslot.dropInto(T)
 					keyslot = null
 
 			recalculateChannels()

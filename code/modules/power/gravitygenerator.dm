@@ -31,7 +31,7 @@
 	var/sprite_number = 0
 	var/broken_state = 0
 
-/obj/machinery/gravity_generator/update_icon()
+/obj/machinery/gravity_generator/on_update_icon()
 	icon_state = "[broken_state]_[sprite_number]"
 
 /obj/machinery/gravity_generator/proc/show_broken_info()
@@ -408,11 +408,11 @@ GLOBAL_VAR(station_gravity_generator)
 	playsound(loc, 'sound/effects/EMPulse.ogg', 100, 1)
 	empulse(loc, 7 * (charge * 0.01), 14 * (charge * 0.01))
 
-/obj/machinery/gravity_generator/main/update_icon()
+/obj/machinery/gravity_generator/main/on_update_icon()
 	. = ..()
-	overlays.Cut()
+	ClearOverlays()
 	for(var/obj/machinery/gravity_generator/part/P in lights)
-		P.overlays.Cut()
+		P.ClearOverlays()
 
 	var/console
 	if(power_supply && !(stat & (BROKEN|NOPOWER)))
@@ -420,16 +420,16 @@ GLOBAL_VAR(station_gravity_generator)
 			console = charge_count ? "console_charged" : "console_discharged"
 		else
 			console = "console_charging"
-		overlays += console
+		AddOverlays(console)
 		if(breaker)
 			for(var/obj/machinery/gravity_generator/part/P in lights)
-				P.overlays += "[P.sprite_number]_light"
+				P.AddOverlays("[P.sprite_number]_light")
 
 	if(!panel_open)
 		if(power_supply && !(stat & BROKEN|NOPOWER))
-			overlays += "keyboard_on"
+			AddOverlays("keyboard_on")
 		else
-			overlays += "keyboard_off"
+			AddOverlays("keyboard_off")
 
 	var/overlay_state
 	switch(charge_count)
@@ -450,9 +450,9 @@ GLOBAL_VAR(station_gravity_generator)
 			set_light(1, 1, 8, 2, "#7de1e1")
 
 	if(middle)
-		middle.overlays.Cut()
+		middle.ClearOverlays()
 		if(overlay_state)
-			middle.overlays += overlay_state
+			middle.AddOverlays(overlay_state)
 
 	for(var/obj/machinery/gravity_generator/part/P in parts)
 		P.update_icon()

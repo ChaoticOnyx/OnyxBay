@@ -23,8 +23,8 @@ var/list/all_virtual_listeners = list()
 	if(!istype(host, host_type))
 		CRASH("Received an unexpected host type. Expected [host_type], was [log_info_line(host)].")
 	src.host = host
-	register_signal(host, SIGNAL_MOVED, /atom/movable/proc/move_to_turf_or_null)
-	register_signal(host, SIGNAL_QDELETING, .proc/_host_deleted)
+	register_signal(host, SIGNAL_MOVED, nameof(/atom/movable.proc/move_to_turf_or_null))
+	register_signal(host, SIGNAL_QDELETING, nameof(.proc/_host_deleted))
 
 	all_virtual_listeners += src
 
@@ -44,17 +44,17 @@ var/list/all_virtual_listeners = list()
 	host = null
 	return ..()
 
-/mob/observer/virtual/update_icon()
+/mob/observer/virtual/on_update_icon()
 	if(!overlay_icons)
 		overlay_icons = list()
 		for(var/i_state in icon_states(icon))
 			overlay_icons[i_state] = image(icon = icon, icon_state = i_state)
-	overlays.Cut()
+	ClearOverlays()
 
 	if(abilities & VIRTUAL_ABILITY_HEAR)
-		overlays += overlay_icons["hear"]
+		AddOverlays(overlay_icons["hear"])
 	if(abilities & VIRTUAL_ABILITY_SEE)
-		overlays += overlay_icons["see"]
+		AddOverlays(overlay_icons["see"])
 
 /***********************
 * Virtual Mob Creation *

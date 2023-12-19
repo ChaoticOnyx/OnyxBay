@@ -23,7 +23,7 @@
 	wielded_item_state = "heavysniper-wielded" //sort of placeholder
 	fire_sound = 'sound/effects/weapons/gun/fire_sniper2.ogg'
 
-/obj/item/gun/projectile/heavysniper/update_icon()
+/obj/item/gun/projectile/heavysniper/on_update_icon()
 	..()
 	if(bolt_open)
 		icon_state = "heavysniper-open"

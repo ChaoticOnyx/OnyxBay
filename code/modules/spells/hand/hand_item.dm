@@ -14,6 +14,7 @@ Basically: I can use it to target things where I click. I can then pass these ta
 	var/datum/spell/hand/hand_spell
 
 /obj/item/magic_hand/New(datum/spell/hand/S)
+	..(null)
 	hand_spell = S
 	name = "[name] ([S.name])"
 	icon_state = S.hand_state
@@ -81,6 +82,7 @@ Basically: I can use it to target things where I click. I can then pass these ta
 	mind_spell.interact(user)
 
 /obj/item/magic_hand/control_hand/New(datum/spell/hand/S)
+	..(null)
 	hand_spell = S
 	mind_spell = S
 	name = "[name] ([S.name])"

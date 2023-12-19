@@ -24,8 +24,8 @@
 	var/weakref/target_ref
 	var/obj/machinery/teleporter_gate/gate
 
-/obj/machinery/computer/teleporter/update_icon()
-	overlays.Cut()
+/obj/machinery/computer/teleporter/on_update_icon()
+	ClearOverlays()
 	if(gate && (get_dir(gate, src) == WEST))
 		LAZYADD(overlays, image(icon, src, "tele_console_wiring"))
 
@@ -167,7 +167,7 @@
 		return
 	calibrating = TRUE
 	audible_message("Processing hub calibration to target...")
-	addtimer(CALLBACK(src, .proc/finish_calibrating), 2 SECONDS * (4 - gate.calc_acceleration))
+	addtimer(CALLBACK(src, nameof(.proc/finish_calibrating)), 2 SECONDS * (4 - gate.calc_acceleration))
 
 /obj/machinery/computer/teleporter/tgui_act(action, params)
 	. = ..()

@@ -18,7 +18,7 @@
 
 /datum/browser/New(nuser, nwindow_id, ntitle = 0, nwidth = 0, nheight = 0, atom/nref = null)
 	user = nuser
-	register_signal(user, SIGNAL_QDELETING, /datum/browser/proc/user_deleted)
+	register_signal(user, SIGNAL_QDELETING, nameof(.proc/user_deleted))
 	window_id = nwindow_id
 	if(ntitle)
 		title = format_text(ntitle)

@@ -282,7 +282,7 @@
 			FT.stored_decals = null
 		if (F.stored_decals)
 			F.stored_decals = null
-		S.overlays.Cut()	//cuts off decal status icon applied in /turf/simulated/floor/proc/make_plating()
+		S.ClearOverlays()	//cuts off decal status icon applied in /turf/simulated/floor/proc/make_plating()
 
 	var/transfer = max(min(tamount, src.get_amount(), (S.get_max_amount() - S.get_amount())), 0)
 
@@ -291,6 +291,8 @@
 		S.add(transfer)
 		if (prob(transfer/orig_amount * 100))
 			transfer_fingerprints_to(S)
+			if(is_bloodied)
+				S.add_blood(blood_color)
 			if(blood_DNA)
 				S.blood_DNA |= blood_DNA
 		return transfer
@@ -311,6 +313,8 @@
 		newstack.color = color
 		if (prob(transfer/orig_amount * 100))
 			transfer_fingerprints_to(newstack)
+			if(is_bloodied)
+				newstack.add_blood(blood_color)
 			if(blood_DNA)
 				newstack.blood_DNA |= blood_DNA
 		return newstack

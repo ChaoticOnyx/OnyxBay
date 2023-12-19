@@ -107,7 +107,7 @@
 /turf/simulated/floor/holofloor/desert/New()
 	..()
 	if(prob(10))
-		overlays += "asteroid[rand(0,9)]"
+		AddOverlays("asteroid[rand(0,9)]")
 
 /obj/structure/holostool
 	name = "stool"
@@ -383,7 +383,7 @@
 	if(numbuttons == numready)
 		begin_event()
 
-/obj/machinery/readybutton/update_icon()
+/obj/machinery/readybutton/on_update_icon()
 	if(ready)
 		icon_state = "auth_on"
 	else

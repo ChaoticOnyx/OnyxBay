@@ -59,7 +59,7 @@
 
 /obj/item/reagent_containers/spray/chemsprayer/crowdbuster/New(newloc, obj/item/backwear/base)
 	base_unit = base
-	src.verbs -= /obj/item/reagent_containers/spray/verb/empty
+	remove_verb(src, /obj/item/reagent_containers/spray/verb/empty)
 	..(newloc)
 
 /obj/item/reagent_containers/spray/chemsprayer/crowdbuster/Destroy() //it shouldn't happen unless the base unit is destroyed but still

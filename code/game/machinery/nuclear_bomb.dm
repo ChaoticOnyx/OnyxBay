@@ -41,7 +41,7 @@ var/bomb_set
 	if(timing)
 		timeleft = max(timeleft - wait, 0)
 		if(timeleft <= 0)
-			addtimer(CALLBACK(src, .proc/explode), 0)
+			addtimer(CALLBACK(src, nameof(.proc/explode)), 0)
 		SSnano.update_uis(src)
 
 /obj/machinery/nuclearbomb/attackby(obj/item/O as obj, mob/user as mob, params)
@@ -50,12 +50,12 @@ var/bomb_set
 		if(auth)
 			if(panel_open == 0)
 				panel_open = 1
-				overlays |= "panel_open"
+				AddOverlays("panel_open")
 				to_chat(user, "You unscrew the control panel of [src].")
 				playsound(src, 'sound/items/Screwdriver.ogg', 50, 1)
 			else
 				panel_open = 0
-				overlays -= "panel_open"
+				CutOverlays("panel_open")
 				to_chat(user, "You screw the control panel of [src] back on.")
 				playsound(src, 'sound/items/Screwdriver.ogg', 50, 1)
 		else
@@ -63,7 +63,7 @@ var/bomb_set
 				to_chat(user, "\The [src] emits a buzzing noise, the panel staying locked in.")
 			if(panel_open == 1)
 				panel_open = 0
-				overlays -= "panel_open"
+				CutOverlays("panel_open")
 				to_chat(user, "You screw the control panel of \the [src] back on.")
 				playsound(src, 'sound/items/Screwdriver.ogg', 50, 1)
 			flick("lock", src)
@@ -356,7 +356,7 @@ var/bomb_set
 
 	SetUniversalState(/datum/universal_state/nuclear_explosion, arguments=list(src))
 
-/obj/machinery/nuclearbomb/update_icon()
+/obj/machinery/nuclearbomb/on_update_icon()
 	if(lighthack)
 		icon_state = "idle"
 	else if(timing == -1)
@@ -381,7 +381,7 @@ var/bomb_set
 	. = ..()
 	// Can never be quite sure that a game mode has been properly initiated or not at this point, so always register
 	nuke_disks += src
-	register_signal(src, SIGNAL_MOVED, /obj/item/disk/nuclear/proc/check_z_level)
+	register_signal(src, SIGNAL_MOVED, nameof(.proc/check_z_level))
 
 /obj/item/disk/nuclear/proc/check_z_level()
 	var/turf/T = get_turf(src)
@@ -456,7 +456,7 @@ var/bomb_set
 	var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')
 	stampoverlay.icon_state = "paper_stamp-hos"
 	R.stamped += /obj/item/stamp
-	R.overlays += stampoverlay
+	R.AddOverlays(stampoverlay)
 	R.stamps += "<HR><i>This paper has been stamped as 'Top Secret'.</i>"
 
 //====vessel self-destruct system====
@@ -563,7 +563,7 @@ var/bomb_set
 	..()
 	announced = 0
 
-/obj/machinery/nuclearbomb/station/update_icon()
+/obj/machinery/nuclearbomb/station/on_update_icon()
 	var/target_icon_state
 	if(lighthack)
 		target_icon_state = "rcircuit_off"

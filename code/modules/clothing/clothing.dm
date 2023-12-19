@@ -46,26 +46,27 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 
 	if(ishuman(user_mob))
 		var/mob/living/carbon/human/user_human = user_mob
-		if(blood_overlay_type && blood_DNA && user_human.body_build.blood_icon)
+		if(blood_overlay_type && is_bloodied && user_human.body_build.blood_icon)
 			var/mob_state = get_icon_state(slot)
 			var/mob_icon = user_human.body_build.get_mob_icon(slot, mob_state)
 			var/cache_index = "[mob_icon]/[mob_state]/[blood_color]"
 			if(!GLOB.clothing_blood_icons[cache_index])
-				var/image/bloodover = image(icon = user_human.body_build.blood_icon, icon_state = blood_overlay_type)
-				bloodover.color = blood_color
+				var/mutable_appearance/bloodover = mutable_appearance(user_human.body_build.blood_icon, blood_overlay_type, color = blood_color, flags = DEFAULT_APPEARANCE_FLAGS|RESET_COLOR)
 				bloodover.filters += filter(type = "alpha", icon = icon(mob_icon, mob_state))
 				GLOB.clothing_blood_icons[cache_index] = bloodover
-			ret.overlays |= GLOB.clothing_blood_icons[cache_index]
+
+			ret.AddOverlays(GLOB.clothing_blood_icons[cache_index])
 
 	if(length(accessories))
 		for(var/obj/item/clothing/accessory/A in accessories)
-			ret.overlays |= A.get_mob_overlay(user_mob, slot_tie_str)
+			ret.AddOverlays(A.get_mob_overlay(user_mob, slot_tie_str))
 	return ret
 
 // Aurora forensics port.
 /obj/item/clothing/clean_blood()
 	. = ..()
-	gunshot_residue = null
+	if(.)
+		gunshot_residue = null
 
 /obj/item/clothing/proc/get_fibers()
 	var/fiber_id = copytext(md5("\ref[src] fiber"), 1, 6)
@@ -249,6 +250,8 @@ BLIND     // can't see anything
 	attack_verb = list("challenged")
 	species_restricted = list("exclude", SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "bloodyhands"
+	var/transfer_blood = 0
+	var/mob/living/carbon/human/bloody_hands_mob
 
 /obj/item/clothing/gloves/Initialize()
 	if(item_flags & ITEM_FLAG_PREMODIFIED)
@@ -263,6 +266,7 @@ BLIND     // can't see anything
 		ring = null
 	QDEL_NULL(ring)
 	wearer = null
+	bloody_hands_mob = null
 	return ..()
 
 /obj/item/clothing/gloves/update_clothing_icon()
@@ -270,14 +274,14 @@ BLIND     // can't see anything
 		var/mob/M = src.loc
 		M.update_inv_gloves()
 
-/obj/item/clothing/gloves/update_icon(needs_updating=FALSE)
+/obj/item/clothing/gloves/on_update_icon(needs_updating=FALSE)
 	if(!needs_updating)
 		return ..()
 
-	overlays.Cut()
+	ClearOverlays()
 
 	if(wired)
-		overlays += image(icon, "gloves_wire")
+		AddOverlays(image(icon, "gloves_wire"))
 
 /obj/item/clothing/gloves/get_fibers()
 	var/fiber_id = copytext(md5("\ref[src] fiber"), 1, 6)
@@ -375,6 +379,11 @@ BLIND     // can't see anything
 	ring = null
 	wearer = null
 
+/obj/item/clothing/gloves/clean_blood()
+	. = ..()
+	if(.)
+		transfer_blood = 0
+
 ///////////////////////////////////////////////////////////////////////
 //Head
 /obj/item/clothing/head
@@ -403,7 +412,7 @@ BLIND     // can't see anything
 		species_name = user_human.species.name
 	var/cache_key = "[light_overlay]_[species_name]"
 	if(on && light_overlay_cache[cache_key] && slot == slot_head_str)
-		ret.overlays |= light_overlay_cache[cache_key]
+		ret.AddOverlays(light_overlay_cache[cache_key])
 	return ret
 
 /obj/item/clothing/head/attack_self(mob/user)
@@ -462,9 +471,9 @@ BLIND     // can't see anything
 		to_chat(user, "<span class='notice'>You crawl under \the [src].</span>")
 	return 1
 
-/obj/item/clothing/head/update_icon(mob/user)
+/obj/item/clothing/head/on_update_icon(mob/user)
 
-	overlays.Cut()
+	ClearOverlays()
 	var/mob/living/carbon/human/H
 	if(istype(user,/mob/living/carbon/human))
 		H = user
@@ -474,7 +483,7 @@ BLIND     // can't see anything
 		// Generate object icon.
 		if(!light_overlay_cache["[light_overlay]_icon"])
 			light_overlay_cache["[light_overlay]_icon"] = image("icon" = 'icons/obj/light_overlays.dmi', "icon_state" = "[light_overlay]")
-		overlays |= light_overlay_cache["[light_overlay]_icon"]
+		AddOverlays(light_overlay_cache["[light_overlay]_icon"])
 
 		// Generate and cache the on-mob icon, which is used in update_inv_head().
 		var/cache_key = "[light_overlay][H ? "_[H.species.name]" : ""]"
@@ -516,6 +525,10 @@ BLIND     // can't see anything
 		action_button_name = "Adjust Mask"
 		verbs += /obj/item/clothing/mask/proc/adjust_mask
 	..()
+
+/obj/item/clothing/mask/Destroy()
+	overlay = null
+	return ..()
 
 /obj/item/clothing/mask/needs_vision_update()
 	return ..() || overlay
@@ -575,6 +588,7 @@ BLIND     // can't see anything
 
 	var/can_hold_knife
 	var/obj/item/holding
+	var/track_blood = 0
 
 	permeability_coefficient = 0.50
 	force = 2
@@ -610,7 +624,7 @@ BLIND     // can't see anything
 		holding.forceMove(src)
 
 	if(!holding)
-		verbs -= /obj/item/clothing/shoes/proc/draw_knife
+		remove_verb(src, /obj/item/clothing/shoes/proc/draw_knife)
 
 	update_icon()
 	return
@@ -630,7 +644,7 @@ BLIND     // can't see anything
 			return
 		holding = I
 		user.visible_message("<span class='notice'>\The [user] shoves \the [I] into \the [src].</span>", range = 1)
-		verbs |= /obj/item/clothing/shoes/proc/draw_knife
+		add_verb(src, /obj/item/clothing/shoes/proc/draw_knife)
 		update_icon()
 	else if(istype(I, /obj/item/flame/match))
 		var/obj/item/flame/match/M = I
@@ -638,10 +652,10 @@ BLIND     // can't see anything
 	else
 		return ..()
 
-/obj/item/clothing/shoes/update_icon()
-	overlays.Cut()
+/obj/item/clothing/shoes/on_update_icon()
+	ClearOverlays()
 	if(holding)
-		overlays += image(icon, "[icon_state]_knife")
+		AddOverlays(image(icon, "[icon_state]_knife"))
 	return ..()
 
 /obj/item/clothing/shoes/proc/handle_movement(turf/walking, running)
@@ -651,6 +665,17 @@ BLIND     // can't see anything
 	if (ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_shoes()
+
+/obj/item/clothing/shoes/add_blood(source, new_track_blood = 0)
+	. = ..(source)
+	if(.)
+		track_blood = max(new_track_blood, track_blood)
+
+/obj/item/clothing/shoes/clean_blood()
+	. = ..()
+	if(.)
+		track_blood = 0
+
 
 ///////////////////////////////////////////////////////////////////////
 //Suit

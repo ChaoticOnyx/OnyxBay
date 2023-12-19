@@ -90,11 +90,12 @@ SUBSYSTEM_DEF(machines)
 		CHECK_TICK
 
 
-/datum/controller/subsystem/machines/stat_entry()
-	var/msg = list()
+/datum/controller/subsystem/machines/stat_entry(msg)
+	msg = list()
 	msg += "M:[processing.len]|"
 	msg += "PN:[powernets.len]"
-	..(jointext(msg, null))
+	msg = jointext(msg, null)
+	return ..()
 
 
 /datum/controller/subsystem/machines/fire(resumed, no_mc_tick)

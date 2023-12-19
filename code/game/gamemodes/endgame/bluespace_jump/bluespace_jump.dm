@@ -20,7 +20,7 @@
 			else
 				apply_bluespaced(M)
 	for(var/mob/goast in GLOB.ghost_mob_list)
-		goast.mouse_opacity = 0	//can't let you click that Dave
+		goast.mouse_opacity = MOUSE_OPACITY_TRANSPARENT	//can't let you click that Dave
 		goast.set_invisibility(SEE_INVISIBLE_LIVING)
 		goast.alpha = 255
 	old_accessible_z_levels = GLOB.using_map.get_levels_without_trait(ZTRAIT_SEALED)
@@ -81,9 +81,9 @@
 	daddy = ndaddy
 	set_dir(daddy.dir)
 	appearance = daddy.appearance
-	register_signal(daddy, SIGNAL_MOVED, /obj/effect/bluegoast/proc/mirror)
-	register_signal(daddy, SIGNAL_DIR_SET, /obj/effect/bluegoast/proc/mirror_dir)
-	register_signal(daddy, SIGNAL_QDELETING, /datum/proc/qdel_self)
+	register_signal(daddy, SIGNAL_MOVED, nameof(.proc/mirror))
+	register_signal(daddy, SIGNAL_DIR_SET, nameof(.proc/mirror_dir))
+	register_signal(daddy, SIGNAL_QDELETING, nameof(/datum.proc/qdel_self))
 
 /obj/effect/bluegoast/Destroy()
 	unregister_signal(daddy, SIGNAL_QDELETING)

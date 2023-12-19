@@ -6,19 +6,30 @@
 	density = 1
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	pull_slowdown = PULL_SLOWDOWN_HEAVY
+	turf_height_offset = 22
 
 /obj/structure/largecrate/Initialize()
 	. = ..()
-	for(var/obj/I in src.loc)
-		if(I.density || I.anchored || I == src || !I.simulated)
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/largecrate/LateInitialize(mapload, ...)
+	. = ..()
+	if(mapload) // if it's the map loading phase, relevant items at the crate's loc are put in the contents
+		addtimer(CALLBACK(src, nameof(.proc/store_contents)), 10, TIMER_UNIQUE|TIMER_OVERRIDE) // It's here for a raisin, trust me
+
+/obj/structure/largecrate/proc/store_contents()
+	for(var/obj/I in loc)
+		if(I.density || I.anchored || I == src || !I.simulated || QDELETED(I))
+			continue
+		if(istype(I, /obj/effect) || istype(I, /obj/random))
 			continue
 		I.forceMove(src)
 
-/obj/structure/largecrate/attack_hand(mob/user as mob)
+/obj/structure/largecrate/attack_hand(mob/user)
 	to_chat(user, "<span class='notice'>You need a crowbar to pry this open!</span>")
 	return
 
-/obj/structure/largecrate/attackby(obj/item/W as obj, mob/user as mob)
+/obj/structure/largecrate/attackby(obj/item/W, mob/user)
 	if(isCrowbar(W))
 		new /obj/item/stack/material/wood(src)
 		var/turf/T = get_turf(src)
@@ -37,6 +48,7 @@
 	icon_state = "mulecrate"
 
 /obj/structure/largecrate/hoverpod/Initialize()
+	. = ..()
 	var/obj/item/mecha_parts/mecha_equipment/ME
 	var/obj/mecha/working/hoverpod/H = new (src)
 
@@ -44,7 +56,6 @@
 	ME.attach(H)
 	ME = new /obj/item/mecha_parts/mecha_equipment/tool/passenger
 	ME.attach(H)
-	. = ..()
 
 /obj/structure/largecrate/animal
 	icon_state = "mulecrate"
@@ -53,7 +64,6 @@
 
 /obj/structure/largecrate/animal/Initialize()
 	. = ..()
-
 	if(held_type)
 		for(var/i = 1;i<=held_count;i++)
 			new held_type(src)

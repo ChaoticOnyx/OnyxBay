@@ -235,7 +235,8 @@
 		/obj/item/reagent_containers/vessel/flask/detflask,
 		/obj/item/storage/briefcase/crimekit,
 		/obj/item/device/holowarrant,
-		/obj/item/storage/secure/guncase/detective
+		/obj/item/storage/secure/guncase/detective,
+		/obj/item/storage/csmarkers
 	)
 
 /obj/structure/closet/secure_closet/injection
@@ -282,9 +283,6 @@
 	icon_broken = "wall-lockerbroken"
 	icon_off = "wall-lockeroff"
 	dremovable = 0
-
-	//too small to put a man in
-	large = 0
 
 /obj/structure/closet/secure_closet/iaa
 	name = "internal affairs secure closet"

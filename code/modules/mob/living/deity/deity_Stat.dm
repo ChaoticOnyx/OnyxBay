@@ -1,17 +1,16 @@
-/mob/living/deity/Stat()
+/mob/living/deity/observer/get_status_tab_items()
 	. = ..()
-	if(statpanel("Status"))
-		stat("Health", "[health]/[maxHealth]")
-		stat("Power", mob_uplink.uses)
-		stat("Power Minimum", power_min)
-		stat("Structure Num", structures.len)
-		stat("Minion Num", minions.len)
-		var/boon_name = "None"
-		if(current_boon)
-			if(istype(current_boon, /datum/spell))
-				var/datum/spell/S = current_boon
-				boon_name = S.name
-			else
-				var/obj/O = current_boon
-				boon_name = O.name
-		stat("Current Boon",boon_name)
+	. += "Health [health]/[maxHealth]"
+	. += "Power [mob_uplink.uses]"
+	. += "Power Minimum [power_min]"
+	. += "Structure Num [structures.len]"
+	. += "Minion Num [minions.len]"
+	var/boon_name = "None"
+	if(current_boon)
+		if(istype(current_boon, /datum/spell))
+			var/datum/spell/S = current_boon
+			boon_name = S.name
+		else
+			var/obj/O = current_boon
+			boon_name = O.name
+	. += "Current Boon [boon_name]"

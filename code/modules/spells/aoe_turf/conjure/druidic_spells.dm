@@ -9,7 +9,7 @@
 		if(newName)
 			newVars["name"] = newName
 
-/datum/spell/aoe_turf/conjure/summon/conjure_animation(atom/movable/overlay/animation, turf/target)
+/datum/spell/aoe_turf/conjure/summon/conjure_animation(atom/movable/fake_overlay/animation, turf/target)
 	animation.icon_state = "shield2"
 	flick("shield2",animation)
 	sleep(10)
@@ -69,7 +69,7 @@
 
 /datum/spell/aoe_turf/conjure/summon/bear/New()
 	. = ..()
-	register_signal(src, SIGNAL_MOB_SPELL_LEARNED, /datum/spell/aoe_turf/conjure/summon/bear/proc/spell_learned)
+	register_signal(src, SIGNAL_MOB_SPELL_LEARNED, nameof(.proc/spell_learned))
 
 /datum/spell/aoe_turf/conjure/summon/bear/before_cast()
 	..()

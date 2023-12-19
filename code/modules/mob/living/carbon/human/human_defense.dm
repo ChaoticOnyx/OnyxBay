@@ -73,7 +73,7 @@ meteor_act
 				var/obj/item/material/shard/shrapnel/SP = new()
 				SP.SetName((P.name != "shrapnel")? "[P.name] shrapnel" : "shrapnel")
 				SP.desc = "[SP.desc] It looks like it was fired from [P.shot_from]."
-				SP.loc = organ
+				SP.forceMove(organ)
 				organ.embed(SP)
 
 	projectile_affect_poise(P, P.poisedamage * blocked_mult(blocked), def_zone)
@@ -216,6 +216,10 @@ meteor_act
 /mob/living/carbon/human/proc/check_shields(damage = 0, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 	var/obj/item/shield = null
 	var/shield_mod_shield = 0
+	if(istype(buckled, /obj/effect/dummy/immaterial_form))
+		if(prob(80))
+			return PROJECTILE_CONTINUE
+
 	for(var/obj/item/I in list(l_hand, r_hand, wear_suit))
 		if(!I) continue
 		if(I.mod_shield > shield_mod_shield)
@@ -935,7 +939,7 @@ meteor_act
 				var/turf/T = near_wall(dir, 2)
 
 				if(T)
-					loc = T
+					forceMove(T)
 					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"), SPAN("warning", "You are pinned to the wall by [O]!"))
 					anchored = 1
 					pinned += O

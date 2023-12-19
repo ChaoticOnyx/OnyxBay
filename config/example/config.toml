@@ -553,6 +553,9 @@ preferable_bar = "classic"
 ## Pick one from: "random", "forest", "winter", "beach", "concert"
 preferable_biodome = "forest"
 
+[mapping.allowed_maps]
+Example = false
+
 [vote]
 ## Allow players to initiate a restart vote.
 allow_vote_restart = true

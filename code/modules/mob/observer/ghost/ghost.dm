@@ -24,7 +24,6 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 	var/started_as_observer //This variable is set to 1 when you enter the game as an observer.
 							//If you died in the game and are a ghost - this will remain as null.
 							//Note that this is not a reliable way to determine if admins started as observers, since they change mobs a lot.
-	var/atom/movable/following = null
 	var/glide_before_follow = 0
 
 	var/admin_ghosted = FALSE
@@ -54,17 +53,20 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 	/// Holder for a spawners menu.
 	var/datum/spawners_menu/spawners_menu = null
 
+	var/icon/original_mob_icon
+
 /mob/observer/ghost/New(mob/body)
 	see_in_dark = 100
-	verbs += /mob/proc/toggle_antag_pool
-	verbs += /mob/proc/join_as_actor
-	verbs += /mob/proc/join_response_team
+	add_verb(src, /mob/proc/toggle_antag_pool)
+	add_verb(src, /mob/proc/join_as_actor)
+	add_verb(src, /mob/proc/join_response_team)
 
 	var/turf/T
 	if(ismob(body))
 		T = get_turf(body)               //Where is the body located?
 		attack_logs_ = body.attack_logs_ //preserve our attack logs by copying them to our ghost
 
+		original_mob_icon = body.icon
 		set_appearance(body)
 
 		name = body.mind?.name
@@ -92,7 +94,7 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 
 	ghost_multitool = new(src)
 
-	GLOB.ghost_mob_list += src
+	GLOB.ghost_mob_list |= src
 
 	..()
 
@@ -211,7 +213,7 @@ Works together with spawning an observer, noted above.
 	ghost.timeofdeath = is_ooc_dead() ? src.timeofdeath : world.time
 
 	if(!ghost.client?.holder && !config.ghost.allow_antag_hud)
-		ghost.verbs -= /mob/observer/ghost/verb/toggle_antagHUD
+		remove_verb(ghost, /mob/observer/ghost/verb/toggle_antagHUD)
 
 	if(ghost.client)
 		ghost.updateghostprefs()
@@ -279,13 +281,12 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/is_active()
 	return 0
 
-/mob/observer/ghost/Stat()
+/mob/observer/ghost/get_status_tab_items()
 	. = ..()
-	if(statpanel("Status"))
-		if(evacuation_controller)
-			var/eta_status = evacuation_controller.get_status_panel_eta()
-			if(eta_status)
-				stat(null, eta_status)
+	if(evacuation_controller)
+		var/eta_status = evacuation_controller.get_status_panel_eta()
+		if(eta_status)
+			. += "[eta_status]"
 
 /mob/observer/ghost/verb/reenter_corpse()
 	set category = "Ghost"
@@ -439,27 +440,36 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 // This is the ghost's follow verb with an argument
 /mob/observer/ghost/proc/ManualFollow(atom/movable/target)
-	if(!target || target == following || target == src)
+	if(!istype(target) || target == src)
 		return
 
 	stop_following()
-	following = target
-	register_signal(following, SIGNAL_MOVED, /atom/movable/proc/move_to_turf)
-	register_signal(following, SIGNAL_DIR_SET, /atom/proc/recursive_dir_set)
-	register_signal(following, SIGNAL_QDELETING, /mob/observer/ghost/proc/stop_following)
 
-	to_chat(src, SPAN_NOTICE("Now following \the [following]."))
-	move_to_turf(following, loc, following.loc)
+	var/orbitsize
+	if(target.icon)
+		var/icon/I = icon(target.icon, target.icon_state, target.dir)
+		orbitsize = (I.Width() + I.Height()) * 0.5
+	else
+		orbitsize = world.icon_size
+	orbitsize -= (orbitsize / world.icon_size) * (world.icon_size * 0.25)
+
 	glide_before_follow = src.glide_size
 	src.glide_size = target.glide_size
 
+	move_to_turf(target, loc, target.loc)
+	orbit(target, orbitsize, FALSE, 20, 36)
+
+	if(orbiting)
+		to_chat(src, SPAN_NOTICE("Now following \the [target]."))
+
+/mob/dead/observer/orbit()
+	set_dir(WEST) // Reset dir so the right directional sprites show up
+	..()
+
 /mob/observer/ghost/proc/stop_following()
-	if(following)
-		to_chat(src, SPAN_NOTICE("No longer following \the [following]."))
-		unregister_signal(following, SIGNAL_MOVED)
-		unregister_signal(following, SIGNAL_DIR_SET)
-		unregister_signal(following, SIGNAL_QDELETING)
-		following = null
+	if(orbiting)
+		to_chat(src, SPAN_NOTICE("No longer following \the [orbiting.orbiting]."))
+		stop_orbit()
 		glide_size = glide_before_follow
 		glide_before_follow = 0
 
@@ -691,24 +701,31 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	return TRUE
 
 /mob/observer/ghost/proc/set_appearance(mob/target)
-	var/pre_alpha = alpha
-	var/pre_plane = plane
-	var/pre_layer = layer
-	var/pre_invis = invisibility
-	var/pre_opacity = opacity
-
-	appearance = target
-	appearance_flags |= initial(appearance_flags)
-	alpha = pre_alpha
-	plane = pre_plane
-	layer = pre_layer
-	opacity = pre_opacity
-
-	overlays -= target.active_typing_indicator
-	overlays -= target.active_thinking_indicator
-
-	set_invisibility(pre_invis)
 	ClearTransform()	//make goast stand up
+	ClearOverlays()
+	if(!target || (!original_mob_icon && !ishuman(target)))
+		icon = initial(icon)
+		return
+	icon = original_mob_icon
+	icon_state = target.icon_state
+	CopyOverlays(target)
+	if(ishuman(target))
+		var/mob/living/carbon/human/H = target
+		var/translate_y = 16 * ((tf_scale_y || 1) * H.body_height - 1) + H.species.y_shift
+		animate(
+			src,
+			transform = matrix().Update(
+				scale_x = (tf_scale_x || 1),
+				scale_y = (tf_scale_y || 1) * H.body_height,
+				rotation = (tf_rotation || 0),
+				offset_x = (tf_offset_x || 0),
+				offset_y = (tf_offset_y || 0) + translate_y
+			),
+			time = 1
+		)
+	else if(istype(target, /mob/living/simple_animal))
+		var/mob/living/simple_animal/SA = target
+		icon_state = SA.icon_living
 
 /mob/observer/ghost/verb/respawn()
 	set name = "Respawn"

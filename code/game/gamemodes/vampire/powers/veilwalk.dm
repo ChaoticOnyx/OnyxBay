@@ -71,13 +71,13 @@
 		last_valid_turf = T
 
 	can_move = FALSE
-	addtimer(CALLBACK(src, .proc/_unlock_move), 2, TIMER_UNIQUE)
+	addtimer(CALLBACK(src, nameof(.proc/_unlock_move)), 2, TIMER_UNIQUE)
 
 /obj/effect/dummy/veil_walk/think()
 	if(vampire.my_mob.stat)
 		if(vampire.my_mob.stat == 1)
 			to_chat(vampire.my_mob, SPAN("warning", "You cannot maintain this form while unconcious."))
-			addtimer(CALLBACK(src, .proc/_kick_unconscious), 1 SECOND, TIMER_UNIQUE)
+			addtimer(CALLBACK(src, nameof(.proc/_kick_unconscious)), 1 SECOND, TIMER_UNIQUE)
 		else
 			deactivate()
 			return

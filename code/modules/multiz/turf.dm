@@ -51,9 +51,9 @@
 		unregister_signal(below, SIGNAL_EXITED)
 		unregister_signal(below, SIGNAL_ENTERED)
 	below = GetBelow(src)
-	register_signal(below, SIGNAL_TURF_CHANGED, /turf/simulated/open/proc/turf_change)
-	register_signal(below, SIGNAL_EXITED, /turf/simulated/open/proc/handle_move)
-	register_signal(below, SIGNAL_ENTERED, /turf/simulated/open/proc/handle_move)
+	register_signal(below, SIGNAL_TURF_CHANGED, nameof(.proc/turf_change))
+	register_signal(below, SIGNAL_EXITED, nameof(.proc/handle_move))
+	register_signal(below, SIGNAL_ENTERED, nameof(.proc/handle_move))
 	levelupdate()
 	for(var/atom/movable/A in src)
 		A.fall()
@@ -94,8 +94,8 @@
 /**
 * Update icon and overlays of open space to be that of the turf below, plus any visible objects on that turf.
 */
-/turf/simulated/open/update_icon()
-	overlays.Cut()
+/turf/simulated/open/on_update_icon()
+	ClearOverlays()
 	underlays.Cut()
 	var/turf/below = GetBelow(src)
 	if(below)
@@ -103,7 +103,7 @@
 		vis_contents += below
 
 		if(!below_is_open)
-			overlays += GLOB.over_OS_darkness
+			AddOverlays(GLOB.over_OS_darkness)
 
 		return 0
 	return PROCESS_KILL
@@ -164,7 +164,7 @@
 /turf/simulated/open/proc/clean_up()
 	//Unregister
 	unregister_signal(below, SIGNAL_TURF_CHANGED)
-	unregister_signal(below, SIGNAL_EXITED, /turf/simulated/open/proc/handle_move)
+	unregister_signal(below, SIGNAL_EXITED, nameof(.proc/handle_move))
 	unregister_signal(below, SIGNAL_ENTERED)
 	//Take care of shadow
 	for(var/mob/zshadow/M in src)

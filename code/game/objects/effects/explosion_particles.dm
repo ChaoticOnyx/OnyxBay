@@ -4,7 +4,7 @@
 	icon_state = "explosion_particle"
 	opacity = 1
 	anchored = 1
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /obj/effect/expl_particles/New()
 	..()
@@ -36,7 +36,7 @@
 	icon_state = "explosion"
 	opacity = 1
 	anchored = 1
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	pixel_x = -32
 	pixel_y = -32
 
@@ -56,7 +56,7 @@
 	var/datum/effect/system/expl_particles/P = new /datum/effect/system/expl_particles()
 	P.set_up(10,location)
 	P.start()
-	addtimer(CALLBACK(src, .proc/make_smoke), 5)
+	addtimer(CALLBACK(src, nameof(.proc/make_smoke)), 5)
 
 /datum/effect/system/explosion/proc/make_smoke()
 	var/datum/effect/effect/system/smoke_spread/S = new /datum/effect/effect/system/smoke_spread()

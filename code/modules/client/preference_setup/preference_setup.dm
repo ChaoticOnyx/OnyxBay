@@ -229,7 +229,7 @@ var/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
 	if(!pref_mob || !pref_mob.client)
 		return 1
 	if(. & TOPIC_UPDATE_PREVIEW)
-		pref_mob.client.prefs.preview_icon = null
+		pref_mob.client.prefs.update_preview_icon()
 	if(. & TOPIC_HARD_REFRESH)
 		pref_mob.client.prefs.open_setup_window(usr)
 	else if(. & TOPIC_REFRESH)

@@ -50,7 +50,7 @@
 //This proc auto corrects the grass tiles' siding.
 /turf/simulated/floor/proc/make_plating(place_product, defer_icon_update)
 
-	overlays.Cut()
+	ClearOverlays()
 
 	SetName(base_name)
 	desc = base_desc
@@ -70,7 +70,7 @@
 				T.stored_decals = src.decals
 				src.decals = null
 				if(T.stored_decals)
-					F.overlays += icon("icons/obj/tiles.dmi", "decal_state")
+					F.AddOverlays(image("icons/obj/tiles.dmi", "decal_state"))
 		flooring = null
 
 	if (base_color)

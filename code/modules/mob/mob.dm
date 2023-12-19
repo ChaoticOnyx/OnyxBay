@@ -8,18 +8,29 @@
 	remove_from_dead_mob_list()
 	remove_from_living_mob_list()
 	GLOB.player_list.Remove(src)
+	SSmobs.mob_list.Remove(src)
 
 	unset_machine()
+	//SStgui.force_close_all_windows(src) Needs further investigating
+
 	QDEL_NULL(hud_used)
 	QDEL_NULL(show_inventory)
+	QDEL_NULL(skybox)
+	QDEL_NULL(ability_master)
+	QDEL_NULL(shadow)
 
 	LAssailant = null
 	for(var/obj/item/grab/G in grabbed_by)
 		qdel(G)
+	grabbed_by.Cut()
 
 	clear_fullscreen()
 	if(ability_master)
 		QDEL_NULL(ability_master)
+
+	if(click_handlers)
+		click_handlers.QdelClear()
+		QDEL_NULL(click_handlers)
 
 	remove_screen_obj_references()
 	if(client)
@@ -28,6 +39,8 @@
 			if(!istype(screenobj) || !screenobj.globalscreen)
 				qdel(screenobj)
 		client.screen = list()
+
+	item_verbs = null
 
 	ghostize()
 	if(mind?.current == src)
@@ -69,9 +82,9 @@
 	. = ..()
 	if(species_language)
 		add_language(species_language)
-	register_signal(src, SIGNAL_SEE_IN_DARK_SET,	/mob/proc/set_blackness)
-	register_signal(src, SIGNAL_SEE_INVISIBLE_SET,	/mob/proc/set_blackness)
-	register_signal(src, SIGNAL_SIGHT_SET,			/mob/proc/set_blackness)
+	register_signal(src, SIGNAL_SEE_IN_DARK_SET,	nameof(.proc/set_blackness))
+	register_signal(src, SIGNAL_SEE_INVISIBLE_SET,	nameof(.proc/set_blackness))
+	register_signal(src, SIGNAL_SIGHT_SET,			nameof(.proc/set_blackness))
 	START_PROCESSING(SSmobs, src)
 
 /mob/proc/show_message(msg, type, alt, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
@@ -666,54 +679,6 @@
 	for(var/mob/M in viewers())
 		M.see(message)
 
-/mob/Stat()
-	..()
-	. = (is_client_active(10 MINUTES))
-	if(!.)
-		return
-
-	if(statpanel("Status"))
-		if(GAME_STATE >= RUNLEVEL_LOBBY)
-			stat("Local Time", stationtime2text())
-			stat("Local Date", stationdate2text())
-			stat("Round Duration", roundduration2text())
-		if(client.holder || isghost(client.mob))
-			stat("Location:", "([x], [y], [z]) [loc]")
-
-	if(client.holder)
-		if(statpanel("MC"))
-			stat("CPU:","[world.cpu]")
-			stat("Instances:","[world.contents.len]")
-			stat(null)
-			if(Master)
-				Master.stat_entry()
-			else
-				stat("Master Controller:", "ERROR")
-			if(Failsafe)
-				Failsafe.stat_entry()
-			else
-				stat("Failsafe Controller:", "ERROR")
-			if(Master)
-				stat(null)
-				for(var/datum/controller/subsystem/SS in Master.subsystems)
-					SS.stat_entry()
-
-	if(listed_turf && client)
-		if(!TurfAdjacent(listed_turf))
-			listed_turf = null
-		else
-			if(statpanel("Turf"))
-				stat(listed_turf)
-				for(var/atom/A in listed_turf)
-					if(!A.mouse_opacity)
-						continue
-					if(A.invisibility > see_invisible)
-						continue
-					if(is_type_in_list(A, shouldnt_see))
-						continue
-					stat(A)
-
-
 // facing verbs
 /mob/proc/canface()
 	return !incapacitated()
@@ -919,7 +884,7 @@
 			to_chat(src, "You have nothing stuck in your body that is large enough to remove.")
 		else
 			to_chat(U, "[src] has nothing stuck in their wounds that is large enough to remove.")
-		src.verbs -= /mob/proc/yank_out_object
+		remove_verb(src, /mob/proc/yank_out_object)
 		return
 
 	var/obj/item/selection = input("What do you want to yank out?", "Embedded objects") in valid_objects
@@ -949,7 +914,7 @@
 
 		affected.implants -= selection
 		for(var/datum/wound/wound in affected.wounds)
-			wound.embedded_objects -= selection
+			LAZYREMOVE(wound.embedded_objects, selection)
 
 		H.shock_stage+=20
 		affected.take_external_damage((selection.w_class * 3), 0, DAM_EDGE, "Embedded object extraction")
@@ -979,7 +944,7 @@
 
 	valid_objects = get_visible_implants(0)
 	if(!valid_objects.len)
-		src.verbs -= /mob/proc/yank_out_object
+		remove_verb(src, /mob/proc/yank_out_object)
 
 	return 1
 
@@ -992,7 +957,7 @@
 
 	return 0
 
-/mob/update_icon()
+/mob/on_update_icon()
 	return update_icons()
 
 // /mob/verb/face_direction()
@@ -1177,3 +1142,14 @@
 		set_sight(sight&(~SEE_BLACKNESS))
 	else
 		set_sight(sight|SEE_BLACKNESS)
+
+/// Adds this list to the output to the stat browser
+/mob/proc/get_status_tab_items()
+	. = list("") //we want to offset unique stuff from standard stuff
+	SEND_SIGNAL(src, SIGNAL_MOB_GET_STATUS_TAB_ITEMS, .)
+
+/// This proc differs slightly from normal TG usage with actions due to how it is repurposed here for hardsuit modules.
+/// Take a look at /mob/living/carbon/human/get_actions_for_statpanel().
+/mob/proc/get_actions_for_statpanel()
+	var/list/data = list()
+	return data

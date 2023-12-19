@@ -27,7 +27,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	plane = DEFAULT_PLANE
 	layer = BASE_AREA_LAYER
 	luminosity = 0
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	var/lightswitch = 1
 	var/lighting_mode = ""
 	var/list/enabled_lighting_modes = list()
@@ -81,7 +81,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	ambience_off = list(SFX_AMBIENT_SPACE)
 	ambience_powered = list(SFX_AMBIENT_SPACE)
 
-/area/space/update_icon()
+/area/space/on_update_icon()
 	return
 
 /area/space/atmosalert()

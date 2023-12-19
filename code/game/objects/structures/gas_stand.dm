@@ -22,27 +22,27 @@
 	contained = new mask_type (src)
 	update_icon()
 
-/obj/structure/gas_stand/update_icon()
+/obj/structure/gas_stand/on_update_icon()
 	if (breather)
 		icon_state = "gas_stand_inuse"
 	else
 		icon_state = "gas_stand_idle"
 
-	overlays.Cut()
+	ClearOverlays()
 
 	if (tank)
 		if(istype(tank,/obj/item/tank/anesthetic))
-			overlays += "tank_anest"
+			AddOverlays("tank_anest")
 		else if(istype(tank,/obj/item/tank/nitrogen))
-			overlays += "tank_nitro"
+			AddOverlays("tank_nitro")
 		else if(istype(tank,/obj/item/tank/oxygen))
-			overlays += "tank_oxyg"
+			AddOverlays("tank_oxyg")
 		else if(istype(tank,/obj/item/tank/plasma))
-			overlays += "tank_plasma"
+			AddOverlays("tank_plasma")
 		else if(istype(tank,/obj/item/tank/hydrogen))
-			overlays += "tank_hydro"
+			AddOverlays("tank_hydro")
 		else
-			overlays += "tank_other"
+			AddOverlays("tank_other")
 
 /obj/structure/gas_stand/Destroy()
 	if(breather)

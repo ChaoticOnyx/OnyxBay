@@ -52,7 +52,7 @@
 	var/image/I = new(icon = 'icons/obj/vehicles.dmi', icon_state = "cargo_engine_overlay")
 	I.plane = FLOAT_PLANE
 	I.layer = layer
-	overlays += I
+	AddOverlays(I)
 	turn_off()	//so engine verbs are correctly set
 
 /obj/vehicle/train/cargo/engine/asteroid/New()
@@ -62,7 +62,7 @@
 	var/image/I = new(icon = 'icons/obj/vehicles.dmi', icon_state = "asteroid_engine_overlay")
 	I.plane = FLOAT_PLANE
 	I.layer = layer
-	overlays += I
+	AddOverlays(I)
 	turn_off()	//so engine verbs are correctly set
 
 /obj/vehicle/train/cargo/engine/Move(turf/destination)
@@ -92,7 +92,7 @@
 	if(istype(W, /obj/item/key/cargo_train))
 		if(!key && user.drop(W, src))
 			key = W
-			verbs += /obj/vehicle/train/cargo/engine/verb/remove_key
+			add_verb(src, /obj/vehicle/train/cargo/engine/verb/remove_key)
 		return
 	..()
 
@@ -103,7 +103,7 @@
 		return
 	..()
 
-/obj/vehicle/train/cargo/update_icon()
+/obj/vehicle/train/cargo/on_update_icon()
 	if(open)
 		icon_state = initial(icon_state) + "_open"
 	else
@@ -268,7 +268,7 @@
 	usr.pick_or_drop(key, loc)
 	key = null
 
-	verbs -= /obj/vehicle/train/cargo/engine/verb/remove_key
+	remove_verb(src, /obj/vehicle/train/cargo/engine/verb/remove_key)
 
 //-------------------------------------------
 // Loading/unloading procs
@@ -319,7 +319,7 @@
 		C.plane = plane
 		C.layer = VEHICLE_LOAD_LAYER
 
-		overlays += C
+		AddOverlays(C)
 
 		//we can set these back now since we have already cloned the icon into the overlay
 		C.pixel_x = initial(C.pixel_x)
@@ -332,7 +332,7 @@
 		load = dummy_load.actual_load
 		dummy_load.actual_load = null
 		qdel(dummy_load)
-		overlays.Cut()
+		ClearOverlays()
 	..()
 
 //-------------------------------------------

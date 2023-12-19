@@ -3,6 +3,9 @@
 	desc = "Used to separate things with different weights. Spin 'em round, round, right round."
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "centrifuge"
+	light_max_bright_on = 0.8
+	light_outer_range_on = 2
+	light_color = "#39B3FF"
 
 	component_types = list(
 		/obj/item/stock_parts/manipulator = 3,
@@ -47,10 +50,12 @@
 
 	src.attack_hand(user)
 
-/obj/machinery/computer/centrifuge/update_icon()
+/obj/machinery/computer/centrifuge/on_update_icon()
 	..()
-	if(! (stat & (BROKEN|NOPOWER)))
-		icon_state = (isolating || curing) ? "centrifuge_moving" : "centrifuge"
+	if(!(stat & (BROKEN|NOPOWER)))
+		var/lights_key = (isolating || curing) ? "centrifuge_moving" : "centrifuge"
+		icon_state = lights_key
+		AddOverlays(emissive_appearance(icon, "[lights_key]_ea"))
 
 /obj/machinery/computer/centrifuge/attack_hand(mob/user)
 	if(..()) return
@@ -101,13 +106,15 @@
 	..()
 	if (stat & (NOPOWER|BROKEN)) return
 
-	if (curing)
+	if(curing)
 		curing -= speed
-		if (curing <= 0)
+		curing = max(curing, 0)
+		if(curing <= 0)
 			cure()
 
-	if (isolating)
+	if(isolating)
 		isolating -= speed
+		isolating = max(isolating, 0)
 		if(isolating <= 0)
 			isolate()
 
@@ -131,6 +138,9 @@
 		if (B)
 			var/datum/disease2/disease/virus = locate(href_list["isolate"])
 			virus2 = virus.getcopy()
+			if(!virus2)
+				return TOPIC_HANDLED
+
 			isolating = 40
 			update_icon()
 		return TOPIC_REFRESH
@@ -164,12 +174,15 @@
 			return TOPIC_REFRESH
 
 /obj/machinery/computer/centrifuge/proc/cure()
-	if (!sample) return
+	if(!sample)
+		return
+
 	var/datum/reagent/blood/B = locate(/datum/reagent/blood) in sample.reagents.reagent_list
-	if (!B) return
+	if(!B)
+		return
 
 	var/list/data = list("antibodies" = B.data["antibodies"])
-	var/amt= sample.reagents.get_reagent_amount(/datum/reagent/blood)
+	var/amt = sample.reagents.get_reagent_amount(/datum/reagent/blood)
 	sample.reagents.remove_reagent(/datum/reagent/blood, amt)
 	sample.reagents.add_reagent(/datum/reagent/antibodies, amt, data)
 
@@ -178,11 +191,13 @@
 	ping("\The [src] pings, \"Antibody isolated.\"")
 
 /obj/machinery/computer/centrifuge/proc/isolate()
-	if (!sample) return
+	if(!sample || !virus2)
+		return
+
 	var/obj/item/virusdish/dish = new /obj/item/virusdish(loc)
 	dish.virus2 = virus2
 	dish.virus2.infected = null
-	virus2 = null
+	QDEL_NULL(virus2)
 
 	SSnano.update_uis(src)
 	update_icon()

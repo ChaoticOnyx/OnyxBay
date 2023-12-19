@@ -589,7 +589,7 @@
 			to_chat(H, "<span class='danger'>Your flesh rapidly mutates!</span>")
 			H.set_species(SPECIES_PROMETHEAN)
 			H.shapeshifter_set_colour("#05ff9b")
-			H.verbs -= /mob/living/carbon/human/proc/shapeshifter_select_colour
+			remove_verb(H, /mob/living/carbon/human/proc/shapeshifter_select_colour)
 		return
 	var/obj/item/organ/external/O = pick(meatchunks)
 	to_chat(H, "<span class='danger'>Your [O.name]'s flesh mutates rapidly!</span>")
@@ -626,7 +626,7 @@
 	to_chat(M, "<span class='danger'>Your flesh rapidly mutates!</span>")
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(M)
 	M.icon = null
-	M.overlays.Cut()
+	M.ClearOverlays()
 	M.set_invisibility(101)
 	for(var/obj/item/I in M)
 		if(istype(I, /obj/item/implant)) //TODO: Carn. give implants a dropped() or something

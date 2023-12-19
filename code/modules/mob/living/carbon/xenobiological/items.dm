@@ -360,7 +360,7 @@
 		if(reagentselect == "Metroid Jelly")
 			reagentselect = /datum/reagent/metroidjelly
 
-		addtimer(CALLBACK(metroid_extract.reagents, /datum/reagents/proc/add_reagent, reagentselect, 5), rand(1.5 SECONDS, 6 SECONDS))
+		addtimer(CALLBACK(metroid_extract.reagents, nameof(/datum/reagents.proc/add_reagent), reagentselect, 5), rand(1.5 SECONDS, 6 SECONDS))
 		var/steps = rand(1, 4)
 		for(var/step in 1 to steps)
 			step_away(src, loc)

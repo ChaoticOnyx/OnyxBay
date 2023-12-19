@@ -40,10 +40,10 @@
 	return material
 
 // Reuse the cache/code from stools, todo maybe unify.
-/obj/structure/bed/update_icon()
+/obj/structure/bed/on_update_icon()
 	// Prep icon.
 	icon_state = ""
-	overlays.Cut()
+	ClearOverlays()
 	// Base icon.
 	var/cache_key = "[base_icon]-[material.name]"
 	if(isnull(stool_cache[cache_key]))
@@ -51,7 +51,7 @@
 		if(material_alteration & MATERIAL_ALTERATION_COLOR)
 			I.color = material.icon_colour
 		stool_cache[cache_key] = I
-	overlays |= stool_cache[cache_key]
+	AddOverlays(stool_cache[cache_key])
 	// Padding overlay.
 	if(padding_material)
 		var/padding_cache_key = "[base_icon]-padding-[padding_material.name]"
@@ -60,7 +60,7 @@
 			if(material_alteration & MATERIAL_ALTERATION_COLOR)
 				I.color = padding_material.icon_colour
 			stool_cache[padding_cache_key] = I
-		overlays |= stool_cache[padding_cache_key]
+		AddOverlays(stool_cache[padding_cache_key])
 
 	// Strings.
 	if(material_alteration & MATERIAL_ALTERATION_NAME)
@@ -230,7 +230,7 @@
 	rollertype = /obj/item/roller/adv
 	pull_slowdown = PULL_SLOWDOWN_NONE
 
-/obj/structure/bed/roller/update_icon()
+/obj/structure/bed/roller/on_update_icon()
 	if(buckled_mob || buckled_bodybag)
 		set_density(1)
 		icon_state = "[initial(icon_state)]_up"
@@ -384,7 +384,7 @@
 	if(buckling_y)
 		buckled_bodybag.pixel_y = buckled_bodybag.buckle_offset + buckling_y
 	add_fingerprint(user)
-	register_signal(B, SIGNAL_MOVED, .proc/on_move)
+	register_signal(B, SIGNAL_MOVED, nameof(.proc/on_move))
 
 /obj/structure/bed/roller/proc/on_move()
 	if(buckled_bodybag)

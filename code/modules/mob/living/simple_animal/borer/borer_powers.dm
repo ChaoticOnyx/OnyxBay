@@ -132,7 +132,7 @@ BORER_STATUS_HUSK = list(\
 
 		src.host = H
 		src.host.status_flags |= PASSEMOTES
-		src.loc = H
+		forceMove(H)
 
 		//Update their traitor status.
 		if(host.mind)
@@ -199,9 +199,9 @@ BORER_STATUS_HUSK = list(\
 	H.add_language("Cortical Link")
 
 	if(host.is_ooc_dead())
-		H.verbs |= /mob/living/carbon/human/proc/jumpstart
+		add_verb(H, /mob/living/carbon/human/proc/jumpstart)
 
-	H.verbs |= BORER_ALL_ABILITIES[BORER_STATUS_HUSK]
+	add_verb(H, BORER_ALL_ABILITIES[BORER_STATUS_HUSK])
 
 	if(H.client)
 		H.ghostize(0)
@@ -239,7 +239,7 @@ BORER_STATUS_HUSK = list(\
 
 	chemicals -= 100
 
-	addtimer(CALLBACK(host, /mob/living/carbon/human/proc/host_pain_enable), 30 SECONDS)
+	addtimer(CALLBACK(host, nameof(/mob/living/carbon/human.proc/host_pain_enable)), 30 SECONDS)
 
 /mob/living/simple_animal/borer/verb/secrete_chemicals()
 	set category = "Abilities"
@@ -412,7 +412,7 @@ BORER_STATUS_HUSK = list(\
 	var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
 	head?.implants -= src
 
-	src.loc = get_turf(host)
+	dropInto(host.loc)
 
 	reset_view(null)
 	unset_machine()
@@ -429,7 +429,7 @@ BORER_STATUS_HUSK = list(\
 	set name = "Revive Host"
 	set desc = "Send a jolt of electricity through your host, reviving them."
 
-	verbs -= /mob/living/carbon/human/proc/jumpstart
+	remove_verb(src, /mob/living/carbon/human/proc/jumpstart)
 
 	if(!is_ic_dead())
 		to_chat(usr, "Your host is already alive.")
@@ -483,16 +483,16 @@ BORER_STATUS_HUSK = list(\
 	clear_abilities()
 	if(host)
 		if(controlling)
-			host.verbs |= BORER_ALL_ABILITIES[BORER_STATUS_CONTROLLING]
-	verbs |= BORER_ALL_ABILITIES[BORER_STATUS_NOT_CONTROLLING]
-	verbs |= BORER_ALL_ABILITIES[BORER_STATUS_IN_HOST]
-	verbs |= BORER_ALL_ABILITIES[BORER_STATUS_OUT_HOST]
+			add_verb(host, BORER_ALL_ABILITIES[BORER_STATUS_CONTROLLING])
+	add_verb(src, BORER_ALL_ABILITIES[BORER_STATUS_NOT_CONTROLLING])
+	add_verb(src, BORER_ALL_ABILITIES[BORER_STATUS_IN_HOST])
+	add_verb(src, BORER_ALL_ABILITIES[BORER_STATUS_OUT_HOST])
 
 /mob/living/simple_animal/borer/proc/clear_abilities()
 	for(var/abilities_type in BORER_ALL_ABILITIES)
-		verbs -= BORER_ALL_ABILITIES[abilities_type]
+		remove_verb(src, BORER_ALL_ABILITIES[abilities_type])
 		if(host)
-			host.verbs -= BORER_ALL_ABILITIES[abilities_type]
+			remove_verb(host, BORER_ALL_ABILITIES[abilities_type])
 
 /mob/living/simple_animal/borer/proc/on_mob_death()
 	GLOB.borers.remove_antagonist(host.mind)

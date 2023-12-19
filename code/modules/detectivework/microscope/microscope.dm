@@ -38,7 +38,7 @@
 	to_chat(user, "<span class='notice'>Printing findings now...</span>")
 	var/obj/item/paper/report = new(get_turf(src))
 	report.stamped = list(/obj/item/stamp)
-	report.overlays = list("paper_stamped")
+	report.AddOverlays("paper_stamped")
 	report_num++
 
 	if(istype(sample, /obj/item/forensics/swab))
@@ -104,7 +104,7 @@
 	else
 		return ..()
 
-/obj/machinery/microscope/update_icon()
+/obj/machinery/microscope/on_update_icon()
 	icon_state = "microscope"
 	if(sample)
 		icon_state += "slide"

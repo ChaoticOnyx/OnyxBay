@@ -43,7 +43,7 @@
 	icon_state = "empty"
 	layer = OBJ_LAYER
 	pass_flags = PASS_FLAG_TABLE
-	mouse_opacity = 1
+	mouse_opacity = MOUSE_OPACITY_ICON
 
 	var/health = 10
 	var/max_health = 100
@@ -90,7 +90,7 @@
 	name = seed.display_name
 	max_health = round(seed.get_trait(TRAIT_ENDURANCE)/2)
 	if(seed.get_trait(TRAIT_SPREAD) == 2)
-		mouse_opacity = 2
+		mouse_opacity = MOUSE_OPACITY_OPAQUE
 		max_growth = VINE_GROWTH_STAGES
 		growth_threshold = max_health/VINE_GROWTH_STAGES
 		growth_type = seed.get_growth_type()
@@ -120,8 +120,8 @@
 	STOP_PROCESSING(SSvines, src)
 	return ..()
 
-/obj/effect/vine/update_icon()
-	overlays.Cut()
+/obj/effect/vine/on_update_icon()
+	ClearOverlays()
 	var/growth = growth_threshold ? min(max_growth, round(health/growth_threshold)) : 1
 	var/at_fringe = get_dist(src, parent)
 	if(spread_distance > 5)
@@ -135,7 +135,7 @@
 	var/ikey = "\ref[seed]-plant-[growth]"
 	if(!SSplants.plant_icon_cache[ikey])
 		SSplants.plant_icon_cache[ikey] = seed.get_icon(growth)
-	overlays += SSplants.plant_icon_cache[ikey]
+	AddOverlays(SSplants.plant_icon_cache[ikey])
 
 	if(growth > 2 && growth == max_growth)
 		layer = (seed && seed.force_layer) ? seed.force_layer : ABOVE_OBJ_LAYER

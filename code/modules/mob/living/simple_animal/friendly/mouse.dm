@@ -68,8 +68,8 @@
 /mob/living/simple_animal/mouse/Initialize()
 	. = ..()
 
-	verbs += /mob/living/proc/ventcrawl
-	verbs += /mob/living/proc/hide
+	add_verb(src, /mob/living/proc/ventcrawl)
+	add_verb(src, /mob/living/proc/hide)
 
 	if(name == initial(name))
 		name = "[name] ([sequential_id(/mob/living/simple_animal/mouse)])"
@@ -195,10 +195,10 @@
 	else
 		return ..()
 
-/mob/living/simple_animal/mouse/update_icon()
-	overlays.Cut()
+/mob/living/simple_animal/mouse/on_update_icon()
+	ClearOverlays()
 	if(holding_item)
-		overlays += "holding_item[stat ? is_ic_dead() ? "_dead" : "_lay" : ""]"
+		AddOverlays("holding_item[stat ? is_ic_dead() ? "_dead" : "_lay" : ""]")
 
 /*
  * Mouse types

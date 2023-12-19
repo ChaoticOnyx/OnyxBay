@@ -246,19 +246,14 @@
 #define CLIENT_FROM_VAR(I) (ismob(I) ? I:client : (istype(I, /client) ? I : (istype(I, /datum/mind) ? I:current?:client : null)))
 #define GRAYSCALE list(0.3,0.3,0.3,0,0.59,0.59,0.59,0,0.11,0.11,0.11,0,0,0,0,1,0,0,0,0)
 
-#define ADD_VERB_IN(the_atom,time,verb) addtimer(CALLBACK(the_atom, /atom/proc/add_verb, verb), time, TIMER_UNIQUE | TIMER_OVERRIDE | TIMER_NO_HASH_WAIT)
-#define ADD_VERB_IN_IF(the_atom,time,verb,callback) addtimer(CALLBACK(the_atom, /atom/proc/add_verb, verb, callback), time, TIMER_UNIQUE | TIMER_OVERRIDE | TIMER_NO_HASH_WAIT)
+#define ADD_VERB_IN(the_atom,time,verb) addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(add_verb), verb), time, TIMER_UNIQUE | TIMER_OVERRIDE | TIMER_NO_HASH_WAIT)
+#define ADD_VERB_IN_IF(the_atom,time,verb,callback) addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(add_verb), verb, callback), time, TIMER_UNIQUE | TIMER_OVERRIDE | TIMER_NO_HASH_WAIT)
 
 //Wiki book styles
 #define WIKI_FULL   1 // This is a standart web page. Beware, navigaton throw the internet is allowed!
 #define WIKI_MINI   2 // This is a beautiful copy of wiki topic. Beware, font is really small!
 #define WIKI_MOBILE 3 // This is a highly visible variantion. Beware, decoration elements are lost!
 #define WIKI_TEXT	4 // This is a distorted version. Everything is lost except unformatted text!
-
-//https://secure.byond.com/docs/ref/info.html#/atom/var/mouse_opacity
-#define MOUSE_OPACITY_TRANSPARENT 0
-#define MOUSE_OPACITY_ICON 1
-#define MOUSE_OPACITY_OPAQUE 2
 
 //How pulling an object affects mob's movement speed.
 #define PULL_SLOWDOWN_WEIGHT   -1  // Default value, slowdown's handled by an object's w_class.
@@ -314,3 +309,15 @@
 #define MAGIC_RESISTANCE_MIND (1<<1)
 /// Holy magic resistance that blocks unholy magic (vampire)
 #define MAGIC_RESISTANCE_HOLY (1<<2)
+
+// Shortcut for image_repository.overlay_image(...)
+#define OVERLAY(args...) image_repository.overlay_image(args)
+
+// Defines for formatting cooldown actions for the stat panel.
+/// The stat panel the action is displayed in.
+#define PANEL_DISPLAY_PANEL "panel"
+/// The status shown in the stat panel.
+/// Can be stuff like "ready", "on cooldown", "active", "charges", "charge cost", etc.
+#define PANEL_DISPLAY_STATUS "status"
+/// The name shown in the stat panel.
+#define PANEL_DISPLAY_NAME "name"

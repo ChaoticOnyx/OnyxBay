@@ -195,7 +195,7 @@
 
 /obj/item/reagent_containers/food/icecream/proc/add_ice_cream(flavour_name)
 	name = "[flavour_name] icecream"
-	src.overlays += "icecream_[flavour_name]"
+	AddOverlays("icecream_[flavour_name]")
 	desc = "Delicious [cone_type] cone with a dollop of [flavour_name] ice cream."
 	ice_creamed = 1
 

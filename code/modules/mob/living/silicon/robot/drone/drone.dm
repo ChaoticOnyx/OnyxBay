@@ -67,7 +67,7 @@ var/list/mob_hat_cache = list()
 /mob/living/silicon/robot/drone/New()
 	..()
 
-	register_signal(src, SIGNAL_MOVED, /mob/living/silicon/robot/drone/proc/on_moved)
+	register_signal(src, SIGNAL_MOVED, nameof(.proc/on_moved))
 
 /mob/living/silicon/robot/drone/Destroy()
 	if(hat)
@@ -133,7 +133,7 @@ var/list/mob_hat_cache = list()
 
 	..()
 
-	verbs += /mob/living/proc/hide
+	add_verb(src, /mob/living/proc/hide)
 	remove_language(LANGUAGE_ROBOT)
 	add_language(LANGUAGE_ROBOT, FALSE)
 	add_language(LANGUAGE_DRONE, TRUE)
@@ -146,7 +146,7 @@ var/list/mob_hat_cache = list()
 		var/datum/robot_component/C = components[V]
 		C.max_damage = 10
 
-	verbs -= /mob/living/silicon/robot/verb/Namepick
+	remove_verb(src, /mob/living/silicon/robot/verb/Namepick)
 	update_icon()
 
 /mob/living/silicon/robot/drone/init()
@@ -169,21 +169,21 @@ var/list/mob_hat_cache = list()
 		real_name = "[initial(name)] ([random_id(type,100,999)])"
 	SetName(real_name)
 
-/mob/living/silicon/robot/drone/update_icon()
+/mob/living/silicon/robot/drone/on_update_icon()
 
-	overlays.Cut()
+	ClearOverlays()
 	if(stat == 0)
 		if(controlling_ai)
-			overlays += "eyes-[icon_state]-ai"
+			AddOverlays("eyes-[icon_state]-ai")
 		else if(emagged)
-			overlays += "eyes-[icon_state]-emag"
+			AddOverlays("eyes-[icon_state]-emag")
 		else
-			overlays += "eyes-[icon_state]"
+			AddOverlays("eyes-[icon_state]")
 	else
-		overlays -= "eyes"
+		CutOverlays("eyes")
 
 	if(hat) // Let the drones wear hats.
-		overlays |= get_hat_icon(hat, hat_x_offset, hat_y_offset)
+		AddOverlays(get_hat_icon(hat, hat_x_offset, hat_y_offset))
 
 /mob/living/silicon/robot/drone/choose_hull()
 	return

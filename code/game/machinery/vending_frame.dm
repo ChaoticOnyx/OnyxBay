@@ -12,6 +12,7 @@
 	use_power = POWER_USE_OFF
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	pull_sound = SFX_PULL_MACHINE
+	turf_height_offset = 12
 	var/state = STAGE_CABLE
 	var/obj/item/vending_cartridge/cartridge
 
@@ -23,7 +24,7 @@
 		D = "It is [name]. It has no vending cartridge inside."
 	desc = D
 
-/obj/machinery/vending_frame/update_icon()
+/obj/machinery/vending_frame/on_update_icon()
 	switch(state)
 		if(STAGE_CABLE)
 			icon_state = "vbox_0"

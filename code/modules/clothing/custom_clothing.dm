@@ -232,6 +232,11 @@
 	original[2] = /obj/item/clothing/suit/fire/firefighter
 	finished[2] = /obj/item/clothing/suit/fire/firefighter/atmos
 
+/obj/item/clothing/head/dragon_skull
+	name = "dragon skull"
+	desc = "A skull of a fallen one. It's a bit heavy. And plasticy."
+	icon_state = "dragon_skull"
+
 // Animusin
 /obj/item/clothing/suit/storage/toggle/heart_jacket
 	name = "heart jacket"
@@ -271,4 +276,3 @@
 	parts[1] =	1
 	original[1] =  /obj/item/clothing/head/helmet
 	finished[1] = /obj/item/clothing/head/helmet/tcc
-

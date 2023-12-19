@@ -238,7 +238,7 @@
 				return
 			var/datum/species/promethean/luminescent/species = user.species
 			species.update_glow(user, 5)
-			addtimer(CALLBACK(species, /datum/species/promethean/luminescent/proc/update_glow, user, LUMINESCENT_DEFAULT_GLOW), 600)
+			addtimer(CALLBACK(species, nameof(/datum/species/promethean/luminescent.proc/update_glow), user, LUMINESCENT_DEFAULT_GLOW), 600)
 			to_chat(user, SPAN_NOTICE("You start glowing brighter."))
 
 		if(METROID_ACTIVATE_MAJOR)

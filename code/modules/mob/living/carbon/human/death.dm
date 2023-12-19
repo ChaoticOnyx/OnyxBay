@@ -24,8 +24,8 @@
 		if(!QDELETED(I) && isturf(I.loc))
 			I.throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), 1)
 
+	gibs(loc, MobDNA = dna, fleshcolor = species.get_flesh_colour(src), bloodcolor = species.get_blood_colour(src))
 	..(species.gibbed_anim, FALSE)
-	gibs(loc, dna, null, species.get_flesh_colour(src), species.get_blood_colour(src))
 
 /mob/living/carbon/human/dust()
 	if(status_flags & GODMODE)
@@ -39,6 +39,9 @@
 
 	if(is_ic_dead())
 		return
+
+	if(mind?.wizard?.lich)
+		mind.wizard.escape_to_lich(mind)
 
 	BITSET(hud_updateflag, HEALTH_HUD)
 	BITSET(hud_updateflag, STATUS_HUD)

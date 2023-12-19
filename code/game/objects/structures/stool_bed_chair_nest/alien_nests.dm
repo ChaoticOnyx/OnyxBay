@@ -10,7 +10,7 @@
 	var/health = 100
 	var/image/over = null
 
-/obj/structure/bed/nest/update_icon()
+/obj/structure/bed/nest/on_update_icon()
 	return
 
 /obj/structure/bed/nest/Initialize()
@@ -25,9 +25,9 @@
 /obj/structure/bed/nest/post_buckle_mob(mob/living/M)
 	..()
 	if(M == buckled_mob)
-		overlays.Add(over)
+		AddOverlays(over)
 	else
-		overlays.Cut()
+		ClearOverlays()
 
 /obj/structure/bed/nest/user_unbuckle_mob(mob/living/user)
 	if(buckled_mob)

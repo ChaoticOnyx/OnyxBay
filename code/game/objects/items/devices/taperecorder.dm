@@ -346,7 +346,7 @@
 		record()
 
 
-/obj/item/device/taperecorder/update_icon()
+/obj/item/device/taperecorder/on_update_icon()
 	if(!mytape)
 		icon_state = "[initial(icon_state)]_empty"
 	else if(recording)
@@ -372,10 +372,10 @@
 	var/ruined = 0
 
 
-/obj/item/device/tape/update_icon()
-	overlays.Cut()
+/obj/item/device/tape/on_update_icon()
+	ClearOverlays()
 	if(ruined)
-		overlays += "ribbonoverlay"
+		AddOverlays("ribbonoverlay")
 
 
 /obj/item/device/tape/fire_act()
@@ -432,4 +432,5 @@
 
 //Random colour tapes
 /obj/item/device/tape/random/New()
+	..()
 	icon_state = "tape_[pick("white", "blue", "red", "yellow", "purple")]"

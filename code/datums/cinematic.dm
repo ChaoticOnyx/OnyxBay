@@ -26,7 +26,7 @@ GLOBAL_DATUM_INIT(cinematic, /datum/cinematic, new)
 	cinematic_screen.icon_state = "station_intact"
 	cinematic_screen.plane = HUD_PLANE
 	cinematic_screen.layer = HUD_ABOVE_ITEM_LAYER
-	cinematic_screen.mouse_opacity = 0
+	cinematic_screen.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	cinematic_screen.screen_loc = "1,0"
 
 	//Let's not discuss how this worked previously.

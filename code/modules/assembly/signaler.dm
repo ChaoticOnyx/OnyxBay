@@ -17,7 +17,7 @@
 
 /obj/item/device/assembly/signaler/New()
 	..()
-	addtimer(CALLBACK(src, .proc/set_frequency, frequency), 4 SECOND)
+	addtimer(CALLBACK(src, nameof(.proc/set_frequency), frequency), 4 SECOND)
 	return
 
 
@@ -27,7 +27,7 @@
 	signal()
 	return TRUE
 
-/obj/item/device/assembly/signaler/update_icon()
+/obj/item/device/assembly/signaler/on_update_icon()
 	if(holder)
 		holder.update_icon()
 	return

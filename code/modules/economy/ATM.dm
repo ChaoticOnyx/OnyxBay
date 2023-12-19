@@ -53,7 +53,7 @@
 			number_incorrect_tries = 0
 
 	for(var/obj/item/spacecash/S in src)
-		S.loc = src.loc
+		S.dropInto(loc)
 		if(prob(50))
 			playsound(loc, 'sound/items/polaroid1.ogg', 50, 1)
 		else
@@ -370,7 +370,7 @@
 					if(!R.stamped)
 						R.stamped = new
 					R.stamped += /obj/item/stamp
-					R.overlays += stampoverlay
+					R.AddOverlays(stampoverlay)
 					R.stamps += "<HR><i>This paper has been stamped by the Automatic Teller Machine.</i>"
 
 				if(prob(50))
@@ -412,7 +412,7 @@
 					if(!R.stamped)
 						R.stamped = new
 					R.stamped += /obj/item/stamp
-					R.overlays += stampoverlay
+					R.AddOverlays(stampoverlay)
 					R.stamps += "<HR><i>This paper has been stamped by the Automatic Teller Machine.</i>"
 
 				if(prob(50))
@@ -454,7 +454,7 @@
 	if(!held_card)
 		return
 
-	held_card.loc = src.loc
+	held_card.dropInto(loc)
 	authenticated_account = null
 	account_security_level = 0
 

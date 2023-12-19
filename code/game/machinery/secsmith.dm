@@ -15,7 +15,7 @@
 	var/obj/item/gun/energy/security/taser = null
 	var/list/models = list("pistol", "SMG", "rifle")
 
-/obj/machinery/secsmith/update_icon()
+/obj/machinery/secsmith/on_update_icon()
 	if(inoperable())
 		icon_state = "gunsmite_off"
 		return

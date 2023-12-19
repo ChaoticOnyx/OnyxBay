@@ -76,7 +76,7 @@ var/global/list/protected_objects = list(
 		controllable = TRUE
 		GLOB.available_mobs_for_possess["\ref[src]"] += src
 
-	register_signal(src, SIGNAL_MOVED, .proc/_on_moved)
+	register_signal(src, SIGNAL_MOVED, nameof(.proc/_on_moved))
 
 /mob/living/simple_animal/hostile/mimic/proc/_on_moved()
 	_update_inactive_time()
@@ -89,6 +89,7 @@ var/global/list/protected_objects = list(
 	if(istype(copy_of, /obj/structure/bed))
 		copy_of.set_dir(dir)
 		copy_of.update_icon()
+		copy_of.ImmediateOverlayUpdate()
 		appearance = copy_of
 
 /mob/living/simple_animal/hostile/mimic/proc/_update_inactive_time()
@@ -144,16 +145,16 @@ var/global/list/protected_objects = list(
 		return
 
 	if(C.w_class < ITEM_SIZE_NORMAL)
-		verbs |= /mob/living/proc/ventcrawl
-		verbs |= /mob/living/proc/hide
+		add_verb(src, /mob/living/proc/ventcrawl)
+		add_verb(src, /mob/living/proc/hide)
 	else
-		verbs -= /mob/living/proc/ventcrawl
-		verbs -= /mob/living/proc/hide
+		remove_verb(src, /mob/living/proc/ventcrawl)
+		remove_verb(src, /mob/living/proc/hide)
 
 	if(can_setup_trap())
-		verbs |= /mob/living/simple_animal/hostile/mimic/verb/Trap
+		add_verb(src, /mob/living/simple_animal/hostile/mimic/verb/Trap)
 	else
-		verbs -= /mob/living/simple_animal/hostile/mimic/verb/Trap
+		remove_verb(src, /mob/living/simple_animal/hostile/mimic/verb/Trap)
 
 /mob/living/simple_animal/hostile/mimic/proc/_handle_healing()
 	var/healing_check = world.time > inactive_time + WAIT_TO_HEAL
@@ -485,6 +486,7 @@ var/global/list/protected_objects = list(
 
 	C.opened = state
 	C.update_icon()
+	C.ImmediateOverlayUpdate()
 	appearance = C
 
 /mob/living/simple_animal/hostile/mimic/proc/_activate_trap(mob/victim)

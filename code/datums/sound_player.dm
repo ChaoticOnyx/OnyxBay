@@ -117,7 +117,7 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	listeners = list()
 	listener_status = list()
 
-	register_signal(source, SIGNAL_QDELETING, /datum/proc/qdel_self)
+	register_signal(source, SIGNAL_QDELETING, nameof(.proc/qdel_self))
 
 	if(ismovable(source))
 		proxy_listener = new(source, /datum/sound_token/proc/PrivAddListener, /datum/sound_token/proc/PrivLocateListeners, range, proc_owner = src)
@@ -205,8 +205,8 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 
 	listeners += listener
 
-	register_signal(listener, SIGNAL_MOVED, /datum/sound_token/proc/PrivUpdateListenerLoc, override = TRUE)
-	register_signal(listener, SIGNAL_QDELETING, /datum/sound_token/proc/PrivRemoveListener, override = TRUE)
+	register_signal(listener, SIGNAL_MOVED, nameof(.proc/PrivUpdateListenerLoc), override = TRUE)
+	register_signal(listener, SIGNAL_QDELETING, nameof(.proc/PrivRemoveListener), override = TRUE)
 
 	PrivUpdateListenerLoc(listener, FALSE)
 

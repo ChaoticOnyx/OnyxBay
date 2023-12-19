@@ -453,7 +453,7 @@
 
 /obj/item/reagent_containers/food/donkpocket/proc/cooltime()
 	if(warm)
-		addtimer(CALLBACK(src, .proc/cooling, warm), 4200)
+		addtimer(CALLBACK(src, nameof(.proc/cooling), warm), 4200)
 	return
 
 /obj/item/reagent_containers/food/donkpocket/proc/cooling(warm)
@@ -477,7 +477,7 @@
 		return
 	has_been_heated = 1
 	user.visible_message("<span class='notice'>[user] crushes \the [src] package.</span>", "You crush \the [src] package and feel a comfortable heat build up.")
-	addtimer(CALLBACK(src, .proc/heat, user), 200)
+	addtimer(CALLBACK(src, nameof(.proc/heat), user), 200)
 
 /obj/item/reagent_containers/food/donkpocket/sinpocket/heat(user)
 	if(user)

@@ -47,7 +47,7 @@
 	desc = "A translucent balloon. There's nothing in it."
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "waterballoon-e"
-	item_state = "balloon-empty"
+	item_state = "water_balloon-empty"
 	w_class = ITEM_SIZE_TINY
 
 /obj/item/toy/water_balloon/New()
@@ -97,13 +97,13 @@
 				qdel(src)
 	return
 
-/obj/item/toy/water_balloon/update_icon()
+/obj/item/toy/water_balloon/on_update_icon()
 	if(src.reagents.total_volume >= 1)
 		icon_state = "waterballoon"
-		item_state = "balloon"
+		item_state = "water_balloon"
 	else
 		icon_state = "waterballoon-e"
-		item_state = "balloon-empty"
+		item_state = "water_balloon-empty"
 
 /obj/item/toy/balloon
 	name = "\improper 'criminal' balloon"

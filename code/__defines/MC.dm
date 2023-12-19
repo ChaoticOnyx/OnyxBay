@@ -10,6 +10,8 @@
 		Master.current_ticklimit = original_tick_limit;\
 	}
 
+#define MAPTICK_LAST_TICK_USAGE world.map_cpu
+
 // Used to smooth out costs to try and avoid oscillation.
 #define MC_AVERAGE_FAST(average, current) (0.7 * (average) + 0.3 * (current))
 #define MC_AVERAGE(average, current) (0.8 * (average) + 0.2 * (current))

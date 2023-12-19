@@ -473,7 +473,7 @@
 	var/mob/living/carbon/human/H = owner
 	H.visible_message(SPAN_WARNING("[H] starts vibrating!"), SPAN_DANGER("You start charging your bluespace core..."))
 	playsound(get_turf(H), 'sound/weapons/flash.ogg', 25, TRUE)
-	addtimer(CALLBACK(src, .proc/teleport, H), 1.5 SECONDS)
+	addtimer(CALLBACK(src, nameof(.proc/teleport), H), 1.5 SECONDS)
 	return TRUE
 
 /datum/action/cooldown/unstable_teleport/proc/teleport(mob/living/carbon/human/H)
@@ -590,7 +590,7 @@
 		H.forceMove(src)
 		cloth_golem = H
 		to_chat(cloth_golem, SPAN_NOTICE("You start gathering your life energy, preparing to rise again..."))
-		addtimer(CALLBACK(src, .proc/revive), revive_time)
+		addtimer(CALLBACK(src, nameof(.proc/revive)), revive_time)
 	else
 		return INITIALIZE_HINT_QDEL
 
@@ -619,7 +619,7 @@
 	else
 		SetName("dry [initial(name)]")
 
-/obj/structure/cloth_pile/update_icon()
+/obj/structure/cloth_pile/on_update_icon()
 	if(on_fire)
 		icon_state = "pile_bandages_lit"
 	else

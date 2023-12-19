@@ -9,7 +9,7 @@
 
 	layer = ABOVE_HUMAN_LAYER
 	simulated = 0
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 	var/movement_tally = 0     // Movement slow if aiming
 	var/mob/living/aiming_at   // Who are we currently targeting, if anyone?
@@ -23,7 +23,7 @@
 /obj/aiming_overlay/New(newowner)
 	..()
 	owner = newowner
-	loc = null
+	forceMove(null)
 	verbs.Cut()
 
 /obj/aiming_overlay/proc/toggle_permission(perm)
@@ -180,18 +180,18 @@
 		toggle_active(1)
 		update_icon()
 		lock_time = world.time + 35
-		register_signal(owner, SIGNAL_MOVED, /obj/aiming_overlay/proc/update_aiming)
-		register_signal(aiming_at, SIGNAL_MOVED, /obj/aiming_overlay/proc/target_moved)
-		register_signal(aiming_at, SIGNAL_QDELETING, /obj/aiming_overlay/proc/cancel_aiming)
+		register_signal(owner, SIGNAL_MOVED, nameof(.proc/update_aiming))
+		register_signal(aiming_at, SIGNAL_MOVED, nameof(.proc/target_moved))
+		register_signal(aiming_at, SIGNAL_QDELETING, nameof(.proc/cancel_aiming))
 	else
-		loc = null
+		forceMove(null)
 		set_next_think(0)
 		return
 
 
 
 
-/obj/aiming_overlay/update_icon()
+/obj/aiming_overlay/on_update_icon()
 	if(locked)
 		icon_state = "locked"
 	else
@@ -215,7 +215,8 @@
 		else
 			to_chat(owner, "<span class='notice'>You will no longer aim rather than fire.</span>")
 			owner.client.remove_gun_icons()
-		owner.gun_setting_icon.icon_state = "gun[active]"
+		if(owner.gun_setting_icon)
+			owner.gun_setting_icon.icon_state = "gun[active]"
 
 /obj/aiming_overlay/proc/cancel_aiming(no_message = 0)
 	if(!aiming_with || !aiming_at)
@@ -234,7 +235,7 @@
 		movement_tally = 0
 
 	aiming_with = null
-	loc = null
+	forceMove(null)
 	set_next_think(0)
 
 /obj/aiming_overlay/proc/target_moved()

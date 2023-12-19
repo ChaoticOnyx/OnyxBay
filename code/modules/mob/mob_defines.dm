@@ -7,6 +7,8 @@
 	animate_movement = 2
 	virtual_mob = /mob/observer/virtual/mob
 
+	blocks_emissive = EMISSIVE_BLOCK_GENERIC
+
 	movement_handlers = list(
 		/datum/movement_handler/mob/relayed_movement,
 		/datum/movement_handler/mob/death,
@@ -30,6 +32,8 @@
 
 	var/lastKnownIP = null
 	var/computer_id = null
+
+	var/client/my_client // Need to keep track of this ourselves, since by the time Logout() is called the client has already been nulled
 
 	var/stat = 0 //Whether a mob is alive or dead. TODO: Move this to living - Nodrak
 
@@ -86,6 +90,9 @@
 	var/real_name = null
 
 	var/bhunger = 0			//Carbon
+
+	var/last_pain_message
+	var/next_pain_time = 0
 
 	var/druggy = 0			//Carbon
 	var/confused = 0		//Carbon
@@ -183,6 +190,7 @@
 	var/mob/teleop = null
 
 	var/turf/listed_turf = null  	//the current turf being examined in the stat panel
+	var/list/item_verbs = list()
 	var/list/shouldnt_see = list()	//list of objects that this mob shouldn't see in the stat panel. this silliness is needed because of AI alt+click and cult blood runes
 
 	var/mob_size = MOB_MEDIUM
@@ -216,3 +224,10 @@
 	var/thinking_IC = FALSE
 	/// Whether typing indicator sould be shown
 	var/thinking_silent = FALSE
+
+	var/bloody_hands = null
+	var/mob/living/carbon/human/bloody_hands_mob
+	var/track_blood = 0
+	var/list/feet_blood_DNA
+	var/track_blood_type
+	var/feet_blood_color

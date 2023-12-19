@@ -70,7 +70,7 @@
 			R = new /datum/pref_record_reader/null_reader(PREF_SER_VERSION)
 		player_setup.load_character(R)
 
-	update_preview_icon()
+	clear_character_previews() // Recalculate them on next show
 
 /datum/preferences/proc/save_character(override_key = null)
 	var/datum/pref_record_writer/json_list/W = new(PREF_SER_VERSION)

@@ -45,8 +45,8 @@
 	..()
 	add_language(LANGUAGE_GALCOM)
 	default_language = all_languages[LANGUAGE_GALCOM]
-	verbs |= /mob/living/proc/ventcrawl
-	verbs |= /mob/living/proc/hide
+	add_verb(src, /mob/living/proc/ventcrawl)
+	add_verb(src, /mob/living/proc/hide)
 
 /mob/living/simple_animal/spiderbot/attackby(obj/item/O as obj, mob/user as mob)
 
@@ -127,7 +127,7 @@
 			to_chat(user, "<span class='notice'>You swipe your access card and pop the brain out of \the [src].</span>")
 			eject_brain()
 			if(held_item)
-				held_item.loc = src.loc
+				held_item.dropInto(loc)
 				held_item = null
 			return 1
 		else
@@ -160,7 +160,7 @@
 	eject_brain()
 	death()
 
-/mob/living/simple_animal/spiderbot/update_icon()
+/mob/living/simple_animal/spiderbot/on_update_icon()
 	if(mmi)
 		if(positronic)
 			icon_state = "spiderbot-chassis-posi"
@@ -176,7 +176,7 @@
 	if(mmi)
 		var/turf/T = get_turf(loc)
 		if(T)
-			mmi.loc = T
+			mmi.forceMove(T)
 		if(mind)	mind.transfer_to(mmi.brainmob)
 		mmi = null
 		real_name = initial(real_name)
@@ -206,7 +206,7 @@
 		camera.status = 0
 
 	if(held_item)
-		held_item.loc = src.loc
+		held_item.dropInto(loc)
 		held_item = null
 
 	gibs(loc, null, null, /obj/effect/gibspawner/robot) //TODO: use gib() or refactor spiderbots into synthetics.
@@ -231,7 +231,7 @@
 			"<span class='danger'>You launch \the [held_item]!</span>", \
 			"You hear a skittering noise and a thump!")
 		var/obj/item/grenade/G = held_item
-		G.loc = src.loc
+		G.dropInto(loc)
 		G.detonate()
 		held_item = null
 		return 1
@@ -240,7 +240,7 @@
 		"<span class='notice'>You drop \the [held_item].</span>", \
 		"You hear a skittering noise and a soft thump.")
 
-	held_item.loc = src.loc
+	held_item.dropInto(loc)
 	held_item = null
 	return 1
 
@@ -267,7 +267,7 @@
 		for(var/obj/item/I in view(1, src))
 			if(selection == I)
 				held_item = selection
-				selection.loc = src
+				selection.forceMove(src)
 				visible_message("<span class='notice'>\The [src] scoops up \the [held_item].</span>", \
 					"<span class='notice'>You grab \the [held_item].</span>", \
 					"You hear a skittering noise and a clink.")

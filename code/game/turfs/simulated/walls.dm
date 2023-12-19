@@ -28,12 +28,13 @@
 	var/construction_stage
 	var/ricochet_id = 0
 	var/hitsound = 'sound/effects/fighting/Genhit.ogg'
-	var/list/wall_connections = list("0", "0", "0", "0")
+	var/wall_connections = 0 // Sum of connected dirs
 	var/floor_type = /turf/simulated/floor/plating //turf it leaves after destruction
 	var/masks_icon = 'icons/turf/wall_masks.dmi'
+	var/static/list/mask_overlay_states = list()
 
-/turf/simulated/wall/New(newloc, materialtype, rmaterialtype)
-	..(newloc)
+/turf/simulated/wall/Initialize(mapload, materialtype, rmaterialtype)
+	. = ..(mapload)
 	if(GLOB.using_map.legacy_mode)
 		masks_icon = 'icons/turf/wall_masks_legacy.dmi'
 	icon_state = "blank"

@@ -20,6 +20,7 @@
 
 	var/list/stance_limbs
 	var/list/grasp_limbs
+	var/last_body_response_to_pain = 0
 
 /mob/living/carbon/human/New(new_loc, new_species = null)
 
@@ -93,53 +94,52 @@
 		if(stomach)
 			stomach.metabolize()
 
-/mob/living/carbon/human/Stat()
+/mob/living/carbon/human/get_status_tab_items()
 	. = ..()
-	if(statpanel("Status"))
-		stat("Intent:", "[a_intent]")
-		stat("Move Mode:", "[m_intent]")
-		stat("Poise:", "[round(100/poise_pool*poise)]%")
-		stat("Special Ability:", "[active_ability]")
+	. += "Intent: [a_intent]"
+	. += "Move Mode: [m_intent]"
+	. += "Poise: [round(100/poise_pool*poise)]%"
+	. += "Special Ability: [active_ability]"
 
-		if(evacuation_controller)
-			var/eta_status = evacuation_controller.get_status_panel_eta()
-			if(eta_status)
-				stat(null, eta_status)
+	if(evacuation_controller)
+		var/eta_status = evacuation_controller.get_status_panel_eta()
+		if(eta_status)
+			. += "[eta_status]"
 
-		if (istype(internal))
-			if (!internal.air_contents)
-				qdel(internal)
-			else
-				stat("Internal Atmosphere Info: ", internal.name)
-				stat("Tank Pressure: ", internal.air_contents.return_pressure())
-				stat("Distribution Pressure: ", internal.distribute_pressure)
+	if (istype(internal))
+		if (!internal.air_contents)
+			qdel(internal)
+		else
+			. += "Internal Atmosphere Info: [internal.name]"
+			. += "Tank Pressure: [internal.air_contents.return_pressure()]"
+			. += "Distribution Pressure: [internal.distribute_pressure]"
 
-		var/obj/item/organ/internal/xenos/plasmavessel/P = internal_organs_by_name[BP_PLASMA]
-		if(P)
-			stat(null, "Plasma Stored: [P.stored_plasma]/[P.max_plasma]")
+	var/obj/item/organ/internal/xenos/plasmavessel/P = internal_organs_by_name[BP_PLASMA]
+	if(P)
+		. += "Plasma Stored: [P.stored_plasma]/[P.max_plasma]"
 
-		var/obj/item/organ/internal/cell/potato = internal_organs_by_name[BP_CELL]
-		if(potato && potato.cell)
-			stat("Battery charge:", "[potato.get_charge()]/[potato.cell.maxcharge]")
+	var/obj/item/organ/internal/cell/potato = internal_organs_by_name[BP_CELL]
+	if(potato && potato.cell)
+		. += "Battery charge: [potato.get_charge()]/[potato.cell.maxcharge]"
 
-		if(back && istype(back,/obj/item/rig))
-			var/obj/item/rig/suit = back
-			var/cell_status = "ERROR"
-			if(suit.cell) cell_status = "[suit.cell.charge]/[suit.cell.maxcharge]"
-			stat(null, "Suit charge: [cell_status]")
+	if(back && istype(back,/obj/item/rig))
+		var/obj/item/rig/suit = back
+		var/cell_status = "ERROR"
+		if(suit.cell) cell_status = "[suit.cell.charge]/[suit.cell.maxcharge]"
+		. += "Suit charge: [cell_status]"
 
-		if(mind)
-			if(mind.vampire)
-				stat("Usable Blood: ", mind.vampire.blood_usable)
-				stat("Total Blood: ", mind.vampire.blood_total)
+	if(mind)
+		if(mind.vampire)
+			. += "Usable Blood: [mind.vampire.blood_usable]"
+			. += "Total Blood: [mind.vampire.blood_total]"
 
-			if(mind.changeling)
-				stat("Chemical Storage: ", mind.changeling.chem_charges)
-				stat("Genetic Damage Time: ", mind.changeling.genome_damage)
+		if(mind.changeling)
+			. += "Chemical Storage: [mind.changeling.chem_charges]"
+			. += "Genetic Damage Time: [mind.changeling.genome_damage]"
 
-			if(mind.special_role == "Borer Husk")
-				var/mob/living/simple_animal/borer/B = get_organ(BP_BRAIN)
-				stat("Chemicals: ", B?.chemicals)
+		if(mind.special_role == "Borer Husk")
+			var/mob/living/simple_animal/borer/B = get_organ(BP_BRAIN)
+			. += "Chemicals: [B?.chemicals]"
 
 
 /mob/living/carbon/human/ex_act(severity)
@@ -792,7 +792,7 @@
 		return
 
 	if(!(mMorph in mutations))
-		src.verbs -= /mob/living/carbon/human/proc/morph
+		remove_verb(src, /mob/living/carbon/human/proc/morph)
 		return
 
 	var/new_facial = input("Please select facial hair color.", "Character Generation",rgb(r_facial,g_facial,b_facial)) as color
@@ -880,7 +880,7 @@
 		return
 
 	if(!(mRemotetalk in src.mutations))
-		src.verbs -= /mob/living/carbon/human/proc/remotesay
+		remove_verb(src, /mob/living/carbon/human/proc/remotesay)
 		return
 	var/list/creatures = list()
 	for(var/mob/living/carbon/h in world)
@@ -911,7 +911,7 @@
 	if(!(mRemote in src.mutations))
 		remoteview_target = null
 		reset_view(0)
-		src.verbs -= /mob/living/carbon/human/proc/remoteobserve
+		remove_verb(src, /mob/living/carbon/human/proc/remoteobserve)
 		return
 
 	if(client.eye != client.mob)
@@ -977,26 +977,42 @@
 	var/obj/item/organ/internal/lungs/L = internal_organs_by_name[BP_LUNGS]
 	return L && L.is_bruised()
 
-/mob/living/carbon/human/add_blood(mob/living/carbon/human/M as mob)
-	if (!..())
-		return 0
+/mob/living/carbon/human/add_blood(source)
+	. = ..()
+	if(!.)
+		return
+
 	//if this blood isn't already in the list, add it
-	if(istype(M))
+	if(ishuman(source))
+		var/mob/living/carbon/human/M = source
 		if(!blood_DNA[M.dna.unique_enzymes])
 			blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
 	hand_blood_color = blood_color
-	src.update_inv_gloves()	//handles bloody hands overlays and updating
-	verbs += /mob/living/carbon/human/proc/bloody_doodle
-	return 1 //we applied blood to the item
+	update_inv_gloves(1) // handles bloody hands overlays and updating
+	add_verb(src, /mob/living/carbon/human/proc/bloody_doodle)
 
 /mob/living/carbon/human/clean_blood(clean_feet)
-	.=..()
+	. =..()
+	if(!.)
+		return
+
 	gunshot_residue = null
+
 	if(clean_feet && !shoes)
 		feet_blood_color = null
 		feet_blood_DNA = null
 		update_inv_shoes(1)
-		return 1
+
+	if(gloves)
+		if(gloves.clean_blood())
+			update_inv_gloves(0)
+		gloves.germ_level = 0
+	else
+		if(!isnull(bloody_hands))
+			bloody_hands = null
+			update_inv_gloves(0)
+		germ_level = 0
+	update_icons()	//apply the now updated overlays to the mob
 
 /mob/living/carbon/human/get_visible_implants(class = 0)
 	var/list/visible_implants = ..()
@@ -1160,9 +1176,13 @@
 		g_skin = 0
 		b_skin = 0
 
+	if(default_colour || !(species.appearance_flags & HAS_EYE_COLOR))
+		r_eyes = hex2num(copytext(species.default_eye_color, 2, 4))
+		g_eyes = hex2num(copytext(species.default_eye_color, 4, 6))
+		b_eyes = hex2num(copytext(species.default_eye_color, 6, 8))
+
 	if(species.holder_type)
 		holder_type = species.holder_type
-
 
 	if(!(gender in species.genders))
 		gender = species.genders[1]
@@ -1228,7 +1248,7 @@
 		return 0 //something is terribly wrong
 
 	if (!bloody_hands)
-		verbs -= /mob/living/carbon/human/proc/bloody_doodle
+		remove_verb(src, /mob/living/carbon/human/proc/bloody_doodle)
 
 	if (src.gloves)
 		to_chat(src, "<span class='warning'>Your [src.gloves] are getting in the way.</span>")

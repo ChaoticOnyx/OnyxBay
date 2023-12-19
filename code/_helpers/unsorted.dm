@@ -353,11 +353,6 @@ Turf and target are seperate in case you want to teleport some distance from a t
 /proc/ionnum()
 	return "[pick("1","2","3","4","5","6","7","8","9","0")][pick("!","@","#","$","%","^","&","*")][pick("!","@","#","$","%","^","&","*")][pick("!","@","#","$","%","^","&","*")]"
 
-/atom/proc/add_verb(the_verb, datum/callback/callback)
-	if (callback && !callback.Invoke())
-		return
-
-	verbs += the_verb
 //When an AI is activated, it can choose from a list of non-slaved borgs to have as a slave.
 /proc/freeborg()
 	var/select = null
@@ -775,7 +770,6 @@ Turf and target are seperate in case you want to teleport some distance from a t
 					var/old_dir1 = T.dir
 					var/old_icon_state1 = T.icon_state
 					var/old_icon1 = T.icon
-					var/old_overlays = T.overlays.Copy()
 					var/old_underlays = T.underlays.Copy()
 
 					if(platingRequired)
@@ -787,7 +781,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 					X.set_dir(old_dir1)
 					X.icon_state = old_icon_state1
 					X.icon = old_icon1 //Shuttle floors are in shuttle.dmi while the defaults are floors.dmi
-					X.overlays = old_overlays
+					X.CopyOverlays(T)
 					X.underlays = old_underlays
 
 					var/list/objs = new /list()

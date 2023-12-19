@@ -99,7 +99,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	if (print_cooldown)
 		return
 	print_cooldown = 30 SECONDS
-	addtimer(CALLBACK(src, .proc/go_off_print_cooldown), print_cooldown)
+	addtimer(CALLBACK(src, nameof(.proc/go_off_print_cooldown)), print_cooldown)
 	return TRUE
 
 /obj/machinery/photocopier/faxmachine/proc/go_off_print_cooldown()
@@ -233,7 +233,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 		visible_message("[src] beeps, \"Error transmitting message.\"")
 		return
 
-	rcvdcopy.loc = null //hopefully this shouldn't cause trouble
+	rcvdcopy.forceMove(null) //hopefully this shouldn't cause trouble
 	GLOB.adminfaxes += rcvdcopy
 
 	var/mob/intercepted = check_for_interception()

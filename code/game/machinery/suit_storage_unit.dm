@@ -162,30 +162,30 @@
 		mask = new mask_type(src)
 	update_icon()
 
-/obj/machinery/suit_storage_unit/update_icon()
-	overlays.Cut()
+/obj/machinery/suit_storage_unit/on_update_icon()
+	ClearOverlays()
 	if(panelopen)
-		overlays += ("panel")
+		AddOverlays(("panel"))
 	if(isUV)
 		if(issuperUV)
-			overlays += ("super")
+			AddOverlays(("super"))
 		else if(occupant)
-			overlays += ("uvhuman")
+			AddOverlays(("uvhuman"))
 		else
-			overlays += ("uv")
+			AddOverlays(("uv"))
 	else if(isopen)
 		if(stat & BROKEN)
-			overlays += ("broken")
+			AddOverlays(("broken"))
 		else
-			overlays += ("open")
+			AddOverlays(("open"))
 			if(suit)
-				overlays += ("suit")
+				AddOverlays(("suit"))
 			if(helmet)
-				overlays += ("helm")
+				AddOverlays(("helm"))
 			if(boots || tank || mask)
-				overlays += ("storage")
+				AddOverlays(("storage"))
 	else if(occupant)
-		overlays += ("human")
+		AddOverlays(("human"))
 
 /obj/machinery/suit_storage_unit/ex_act(severity)
 	switch(severity)
@@ -260,11 +260,12 @@
 	onclose(user, "suit_storage_unit")
 	return
 
-
 /obj/machinery/suit_storage_unit/Topic(href, href_list) //I fucking HATE this proc
-	if(..())
-		return
-	usr.set_machine(src)
+	. = ..()
+	if(.)
+		usr.set_machine(src)
+
+/obj/machinery/suit_storage_unit/OnTopic(href, href_list) //I fucking HATE this proc
 	if (href_list["toggleUV"])
 		toggleUV(usr)
 		updateUsrDialog()
@@ -526,7 +527,7 @@
 		usr.stop_pulling()
 		usr.client.perspective = EYE_PERSPECTIVE
 		usr.client.eye = src
-		usr.loc = src
+		usr.forceMove(src)
 		occupant = usr
 		isopen = 0 //Close the thing after the guy gets inside
 		update_icon()
@@ -576,7 +577,7 @@
 			if (M.client)
 				M.client.perspective = EYE_PERSPECTIVE
 				M.client.eye = src
-			M.loc = src
+			M.forceMove(src)
 			occupant = M
 			isopen = 0 //close ittt
 			add_fingerprint(user)
@@ -804,7 +805,7 @@
 			if (M.client)
 				M.client.perspective = EYE_PERSPECTIVE
 				M.client.eye = src
-			M.loc = src
+			M.forceMove(src)
 			occupant = M
 
 			add_fingerprint(user)
@@ -931,14 +932,14 @@
 	onclose(user, "suit_cycler")
 	return
 
-/obj/machinery/suit_cycler/Topic(href, href_list)
+/obj/machinery/suit_cycler/OnTopic(href, href_list)
 	if(href_list["eject_suit"])
 		if(!suit) return
-		suit.loc = get_turf(src)
+		suit.dropInto(get_turf(src))
 		suit = null
 	else if(href_list["eject_helmet"])
 		if(!helmet) return
-		helmet.loc = get_turf(src)
+		helmet.dropInto(get_turf(src))
 		helmet = null
 	else if(href_list["select_department"])
 		var/choice = input("Please select the target department paintjob.","Suit cycler",null) as null|anything in departments
@@ -1075,7 +1076,7 @@
 		occupant.client.eye = occupant.client.mob
 		occupant.client.perspective = MOB_PERSPECTIVE
 
-	occupant.loc = get_turf(occupant)
+	occupant.forceMove(get_turf(occupant))
 	occupant = null
 
 	add_fingerprint(user)

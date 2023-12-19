@@ -22,7 +22,7 @@
 	create_reagents(initial_capacity)
 
 	if(!possible_transfer_amounts)
-		src.verbs -= /obj/structure/reagent_dispensers/verb/set_APTFT
+		verbs -= /obj/structure/reagent_dispensers/verb/set_APTFT
 
 	for(var/reagent_type in initial_reagent_types)
 		var/reagent_ratio = initial_reagent_types[reagent_type]
@@ -77,16 +77,16 @@
 	..()
 	update_icon()
 
-/obj/structure/reagent_dispensers/update_icon()
-	overlays.Cut()
+/obj/structure/reagent_dispensers/on_update_icon()
+	ClearOverlays()
 	if(filling_overlay_levels)
 		if(reagents?.reagent_list?.len)
 			var/reagents_amt = 0
 			for(var/datum/reagent/R in reagents.reagent_list)
 				reagents_amt += R.volume
-			overlays += image(icon, src, "[icon_state]-[ceil(reagents_amt / (initial_capacity / filling_overlay_levels))]")
+			AddOverlays(image(icon, src, "[icon_state]-[ceil(reagents_amt / (initial_capacity / filling_overlay_levels))]"))
 		else
-			overlays += image(icon, src, "[icon_state]-0")
+			AddOverlays(image(icon, src, "[icon_state]-0"))
 
 //Dispensers
 /obj/structure/reagent_dispensers/watertank
@@ -99,6 +99,7 @@
 	initial_reagent_types = list(/datum/reagent/water = 1)
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	filling_overlay_levels = 7
+	turf_height_offset = 25
 
 /obj/structure/reagent_dispensers/fueltank
 	name = "fueltank"
@@ -110,6 +111,7 @@
 	initial_reagent_types = list(/datum/reagent/fuel = 1)
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	filling_overlay_levels = 6
+	turf_height_offset = 25
 
 /obj/structure/reagent_dispensers/fueltank/Destroy()
 	QDEL_NULL(rig)
@@ -137,7 +139,7 @@
 			)
 			rig.forceMove(get_turf(user))
 			rig = null
-			overlays.Cut()
+			ClearOverlays()
 
 /obj/structure/reagent_dispensers/fueltank/attackby(obj/item/W, mob/user)
 	add_fingerprint(user)
@@ -186,13 +188,13 @@
 		return
 	return ..()
 
-/obj/structure/reagent_dispensers/fueltank/update_icon()
+/obj/structure/reagent_dispensers/fueltank/on_update_icon()
 	..()
 	if(rig)
 		var/icon/rig_icon = getFlatIcon(rig)
 		rig_icon.Shift(NORTH,1)
 		rig_icon.Shift(EAST,6)
-		overlays += rig_icon
+		AddOverlays(rig_icon)
 
 /obj/structure/reagent_dispensers/fueltank/bullet_act(obj/item/projectile/Proj)
 	if(Proj.get_structure_damage())
@@ -251,6 +253,7 @@
 	initial_capacity = 500
 	initial_reagent_types = list(/datum/reagent/toxin/fertilizer/compost = 1)
 	atom_flags = ATOM_FLAG_CLIMBABLE
+	turf_height_offset = 25
 
 /obj/structure/reagent_dispensers/composttank/attackby(obj/item/W, mob/user)
 	src.add_fingerprint(user)
@@ -306,6 +309,7 @@
 	initial_reagent_types = list(/datum/reagent/ethanol/beer = 1)
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	pull_slowdown = PULL_SLOWDOWN_MEDIUM
+	turf_height_offset = 16
 
 /obj/structure/reagent_dispensers/virusfood
 	name = "Virus Food Dispenser"

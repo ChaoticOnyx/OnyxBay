@@ -165,7 +165,7 @@
 	update_icon()
 	..()
 
-/obj/item/pickaxe/sledgehammer/update_icon()
+/obj/item/pickaxe/sledgehammer/on_update_icon()
 	var/new_state = "[icon_state][wielded]"
 	item_state_slots[slot_l_hand_str] = new_state
 	item_state_slots[slot_r_hand_str] = new_state
@@ -289,7 +289,7 @@
 		set_light(0.2, 0.1, 1) // Very dim so the rest of the flag is barely visible - if the turf is completely dark, you can't see anything on it, no matter what
 		var/image/addon = image(icon = src.icon, icon_state = fringe) // Bright fringe
 		addon.layer = ABOVE_LIGHTING_LAYER
-		overlays += addon
+		AddOverlays(addon)
 
 /obj/item/stack/flag/proc/knock_down()
 	pixel_x = rand(-randpixel, randpixel)
@@ -297,7 +297,7 @@
 	upright = 0
 	anchored = 0
 	icon_state = initial(icon_state)
-	overlays.Cut()
+	ClearOverlays()
 	set_light(0)
 
 /**********************Mining car (Crate like thing, not the rail car)**************************/
@@ -310,6 +310,9 @@
 	icon_opened = "miningcaropen"
 	icon_closed = "miningcar"
 	pull_slowdown = PULL_SLOWDOWN_LIGHT
+
+	turf_height_offset = 15
+	opened_turf_height_offset = 3
 
 /**********************Pinpointer**********************/
 
@@ -530,7 +533,7 @@
 	icon_state = "shield2"
 	layer = 5
 	anchored = TRUE
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	var/resonance_damage = 10
 	var/creator
 	var/obj/item/resonator/res
@@ -548,7 +551,7 @@
 		name = "strong resonance field"
 		resonance_damage = 30
 
-	addtimer(CALLBACK(src, .proc/burst, loc), timetoburst)
+	addtimer(CALLBACK(src, nameof(.proc/burst), loc), timetoburst)
 
 /obj/effect/resonance/Destroy()
 	if(res)

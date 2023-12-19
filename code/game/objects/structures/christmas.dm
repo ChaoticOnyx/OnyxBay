@@ -34,16 +34,16 @@
 	if (can_hang && !my_hat)
 		src.visible_message("[mover] lands on \the [src].")
 		my_hat = mover
-		my_hat.loc = src
+		my_hat.forceMove(src)
 		update_icon()
 		return 0
 	else
 		return 1
 
-/obj/structure/christmas/snowman/update_icon()
-	overlays.Cut()
+/obj/structure/christmas/snowman/on_update_icon()
+	ClearOverlays()
 	if(istype(my_hat, /obj/item/clothing/head))
-		overlays += image('icons/inv_slots/hats/mob.dmi', "[my_hat.icon_state]")
+		AddOverlays(image('icons/inv_slots/hats/mob.dmi', "[my_hat.icon_state]"))
 
 /obj/structure/sign/christmas
 	name = "CHRISTMAS"

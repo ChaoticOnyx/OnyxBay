@@ -29,6 +29,7 @@
 	program_icon_state = "cameras"
 	program_key_state = "generic_key"
 	program_menu_icon = "search"
+	program_light_color = "#00B000"
 	extended_desc = "This program allows remote access to the camera system. Some camera networks may have additional access requirements."
 	size = 12
 	category = PROG_MONITOR

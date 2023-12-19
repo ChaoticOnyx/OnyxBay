@@ -609,7 +609,7 @@
 	playsound(loc, 'sound/signals/processing22.ogg', 50)
 	linked_destroy.busy = 1
 	flick("d_analyzer_process", linked_destroy)
-	addtimer(CALLBACK(src, .proc/finish_deconstruct, weakref(user)), 24)
+	addtimer(CALLBACK(src, nameof(.proc/finish_deconstruct), weakref(user)), 24)
 
 /obj/machinery/computer/rdconsole/proc/eject_from_destructor(mob/user)
 	if(linked_destroy.busy)

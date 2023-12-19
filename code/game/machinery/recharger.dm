@@ -70,7 +70,7 @@
 
 		if(user.drop(G, src))
 			charging = G
-			update_icon()
+			update_icon(icon_state_charging)
 	else if((isScrewdriver(G) || isCrowbar(G) || isWrench(G)) && portable)
 		if(charging)
 			to_chat(user, "<span class='warning'>Remove [charging] first!</span>")
@@ -83,6 +83,7 @@
 			anchored = !anchored
 			to_chat(user, "You [anchored ? "attached" : "detached"] the recharger.")
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+			update_icon(icon_state_idle)
 	if(default_part_replacement(user, G))
 		return
 
@@ -96,17 +97,17 @@
 		charging.update_icon()
 		user.pick_or_drop(charging, loc)
 		charging = null
-		update_icon()
+		update_icon(icon_state_idle)
 
 /obj/machinery/recharger/Process()
 	if(stat & (NOPOWER|BROKEN) || !anchored)
 		update_use_power(POWER_USE_OFF)
-		icon_state = icon_state_idle
+		update_icon(icon_state_idle)
 		return
 
 	if(!charging)
 		update_use_power(POWER_USE_IDLE)
-		icon_state = icon_state_idle
+		update_icon(icon_state_idle)
 	else
 		var/cell = charging
 		if(istype(charging, /obj/item/device/suit_sensor_jammer))
@@ -143,7 +144,7 @@
 			var/obj/item/ammo_magazine/lawgiver/L = charging
 			var/power_used = round(active_power_usage*CELLRATE)
 			if(!L.isFull())
-				icon_state = icon_state_charging
+				update_icon(icon_state_charging)
 				for(var/mode in L.ammo_counters)
 					if(L.ammo_counters[mode] == LAWGIVER_MAX_AMMO)
 						continue
@@ -153,17 +154,17 @@
 						break
 				update_use_power(POWER_USE_ACTIVE)
 			else
-				icon_state = icon_state_charged
+				update_icon(icon_state_charged)
 				update_use_power(POWER_USE_IDLE)
 
 		if(istype(cell, /obj/item/cell))
 			var/obj/item/cell/C = cell
 			if(!C.fully_charged())
-				icon_state = icon_state_charging
+				update_icon(icon_state_charging)
 				C.give(active_power_usage*CELLRATE)
 				update_use_power(POWER_USE_ACTIVE)
 			else
-				icon_state = icon_state_charged
+				update_icon(icon_state_charged)
 				update_use_power(POWER_USE_IDLE)
 
 /obj/machinery/recharger/emp_act(severity)
@@ -187,11 +188,19 @@
 			RG.cell.charge = 0
 	..(severity)
 
-/obj/machinery/recharger/update_icon()	//we have an update_icon() in addition to the stuff in process to make it feel a tiny bit snappier.
-	if(charging)
-		icon_state = icon_state_charging
+/obj/machinery/recharger/on_update_icon(new_icon_state) // we have an update_icon() in addition to the stuff in process to make it feel a tiny bit snappier.
+	if(!new_icon_state || new_icon_state == icon_state)
+		return
+	ClearOverlays()
+	icon_state = new_icon_state
+	if(icon_state == icon_state_charged)
+		AddOverlays(emissive_appearance(icon, "[icon_state]-ea"))
+		set_light(0.2, 0.5, 2, 3.5, "#FFCC00")
+	else if(icon_state == icon_state_charging)
+		AddOverlays(emissive_appearance(icon, "[icon_state]-ea"))
+		set_light(0.2, 0.5, 2, 3.5, "#66FF00")
 	else
-		icon_state = icon_state_idle
+		set_light(0)
 
 
 /obj/machinery/recharger/wallcharger

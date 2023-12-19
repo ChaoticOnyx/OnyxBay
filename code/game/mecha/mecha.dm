@@ -117,8 +117,8 @@
 	update_icon()
 	return
 
-/obj/mecha/update_icon()
-	overlays.Cut()
+/obj/mecha/on_update_icon()
+	ClearOverlays()
 	var/hand = 0
 	var/back = 0
 	for(var/obj/item/mecha_parts/mecha_equipment/i in equipment)
@@ -133,11 +133,11 @@
 /obj/mecha/proc/draw_layer(obj/item/mecha_parts/mecha_equipment/equip, entry)
 	var/icon_name = "[equip.icon_state][entry ? "_r" : "_l"]"
 	var/icon/weapon = icon("icons/mecha/mecha_overlay.dmi", icon_name)
-	overlays += weapon
+	AddOverlays(weapon)
 	if(equip.need_colorize)
 		var/icon/padding = icon("icons/mecha/mecha_overlay.dmi", "[icon_name]_padding")
 		padding.Blend(base_color, ICON_MULTIPLY)
-		overlays += padding
+		AddOverlays(padding)
 
 /obj/mecha/Destroy()
 	src.go_out()
@@ -995,8 +995,8 @@
 	if(possible_port)
 		if(connect(possible_port))
 			src.occupant_message("<span class='notice'>\The [name] connects to the port.</span>")
-			src.verbs += /obj/mecha/verb/disconnect_from_port
-			src.verbs -= /obj/mecha/verb/connect_to_port
+			add_verb(src, /obj/mecha/verb/disconnect_from_port)
+			remove_verb(src, /obj/mecha/verb/connect_to_port)
 			return
 		else
 			src.occupant_message("<span class='danger'>\The [name] failed to connect to the port.</span>")
@@ -1015,8 +1015,8 @@
 		return
 	if(disconnect())
 		src.occupant_message("<span class='notice'>[name] disconnects from the port.</span>")
-		src.verbs -= /obj/mecha/verb/disconnect_from_port
-		src.verbs += /obj/mecha/verb/connect_to_port
+		remove_verb(src, /obj/mecha/verb/disconnect_from_port)
+		add_verb(src, /obj/mecha/verb/connect_to_port)
 	else
 		src.occupant_message("<span class='danger'>[name] is not connected to the port at the moment.</span>")
 
@@ -1203,10 +1203,10 @@
 	user.drop(I, src)
 	brainmob.reset_view(src)
 	occupant = brainmob
-	brainmob.loc = src // should allow relaymove
+	brainmob.forceMove(src) // should allow relaymove
 	//brainmob.canmove = TRUE
 	//mmi_as_oc.mecha = src
-	verbs -= /obj/mecha/verb/eject
+	remove_verb(src, /obj/mecha/verb/eject)
 	Entered(I)
 	forceMove(loc)
 	icon_state = reset_icon()
@@ -1282,12 +1282,12 @@
 		if(istype(mob_container, /obj/item/organ/internal/cerebrum/mmi))
 			var/obj/item/organ/internal/cerebrum/mmi/mmi = mob_container
 			if(mmi.brainmob)
-				occupant.loc = mmi
+				occupant.forceMove(mmi)
 			verbs += /obj/mecha/verb/eject
 		if(istype(mob_container, /obj/item/organ/internal/cerebrum/posibrain))
 			var/obj/item/organ/internal/cerebrum/posibrain/pb = mob_container
 			if(pb.brainmob)
-				occupant.loc = pb
+				occupant.forceMove(pb)
 			verbs += /obj/mecha/verb/eject
 
 		occupant = null

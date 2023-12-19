@@ -46,7 +46,7 @@
 		if(do_after_cooldown(target))
 			if(T == chassis.loc && src == chassis.selected)
 				cargo_holder.cargo += O
-				O.loc = chassis
+				O.forceMove(chassis)
 				O.anchored = 0
 				occupant_message(SPAN("notice", "[target] succesfully loaded."))
 				log_message("Loaded [O]. Cargo compartment capacity: [cargo_holder.cargo_capacity - cargo_holder.cargo.len]")
@@ -629,16 +629,16 @@
 /obj/item/mecha_parts/mecha_equipment/repair_droid/attach(obj/mecha/M as obj)
 	..()
 	droid_overlay = new(src.icon, icon_state = "repair_droid")
-	M.overlays += droid_overlay
+	M.AddOverlays(droid_overlay)
 	return
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/destroy()
-	chassis.overlays -= droid_overlay
+	chassis.CutOverlays(droid_overlay)
 	..()
 	return
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/detach()
-	chassis.overlays -= droid_overlay
+	chassis.CutOverlays(droid_overlay)
 	pr_repair_droid.stop()
 	..()
 	return
@@ -650,7 +650,7 @@
 /obj/item/mecha_parts/mecha_equipment/repair_droid/Topic(href, href_list)
 	..()
 	if(href_list["toggle_repairs"])
-		chassis.overlays -= droid_overlay
+		chassis.CutOverlays(droid_overlay)
 		if(pr_repair_droid.toggle())
 			droid_overlay = new(src.icon, icon_state = "repair_droid_a")
 			log_message("Activated.")
@@ -658,7 +658,7 @@
 			droid_overlay = new(src.icon, icon_state = "repair_droid")
 			log_message("Deactivated.")
 			set_ready_state(1)
-		chassis.overlays += droid_overlay
+		chassis.AddOverlays(droid_overlay)
 		send_byjax(chassis.occupant, "exosuit.browser", "\ref[src]", src.get_equip_info())
 	return
 
@@ -986,7 +986,7 @@
 				if(do_after_cooldown(target))
 					if(T == chassis.loc && src == chassis.selected)
 						cargo_holder.cargo += O
-						O.loc = chassis
+						O.forceMove(chassis)
 						O.anchored = 0
 						chassis.occupant_message(SPAN("notice", "[target] succesfully loaded."))
 						chassis.log_message("Loaded [O]. Cargo compartment capacity: [cargo_holder.cargo_capacity - cargo_holder.cargo.len]")
@@ -1085,7 +1085,7 @@
 /obj/item/mecha_parts/mecha_equipment/tool/passenger/attach()
 	..()
 	if(chassis)
-		chassis.verbs |= /obj/mecha/proc/move_inside_passenger
+		chassis.verbs += /obj/mecha/proc/move_inside_passenger
 
 /obj/item/mecha_parts/mecha_equipment/tool/passenger/detach()
 	if(occupant)

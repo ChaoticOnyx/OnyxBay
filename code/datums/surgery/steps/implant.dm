@@ -208,7 +208,8 @@
 		loot = parent_organ.implants
 	else
 		for(var/datum/wound/W in parent_organ.wounds)
-			loot |= W.embedded_objects
+			if(LAZYLEN(W.embedded_objects))
+				loot |= W.embedded_objects
 			find_prob += 50
 
 	if(!length(loot))

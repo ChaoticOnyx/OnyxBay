@@ -52,10 +52,10 @@
 	set_active(secured ? on : FALSE)
 	return secured
 
-/obj/item/device/assembly/infra/update_icon()
-	overlays.Cut()
+/obj/item/device/assembly/infra/on_update_icon()
+	ClearOverlays()
 	if(on)
-		overlays += "infrared_on"
+		AddOverlays("infrared_on")
 	if(holder)
 		holder.update_icon()
 
@@ -127,7 +127,7 @@
 	if(!holder)
 		visible_message("\icon[src] *beep* *beep*")
 	cooldown = 2
-	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
+	addtimer(CALLBACK(src, nameof(.proc/process_cooldown)), 1 SECOND)
 
 /obj/item/device/assembly/infra/proc/on_visibility_change(list/old_turfs, list/new_turfs)
 	seen_turfs = new_turfs

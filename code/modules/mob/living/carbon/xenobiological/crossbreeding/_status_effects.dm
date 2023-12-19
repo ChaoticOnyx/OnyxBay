@@ -80,11 +80,11 @@
 	var/icon/bluespace
 
 /datum/modifier/status_effect/metroidrecall/on_applied()
-	register_signal(holder, SIGNAL_MOB_RESIST, .proc/resistField)
+	register_signal(holder, SIGNAL_MOB_RESIST, nameof(.proc/resistField))
 	to_chat(holder, SPAN_DANGER("You feel a sudden tug from an unknown force, and feel a pull to bluespace!"))
 	to_chat(holder, SPAN_NOTICE("Resist if you wish avoid the force!"))
 	bluespace = icon('icons/effects/effects.dmi',"chronofield")
-	holder.overlays += bluespace
+	holder.AddOverlays(bluespace)
 	return ..()
 
 /datum/modifier/status_effect/metroidrecall/proc/resistField()
@@ -94,7 +94,7 @@
 
 /datum/modifier/status_effect/metroidrecall/on_expire()
 	unregister_signal(holder, SIGNAL_MOB_RESIST)
-	holder.overlays -= bluespace
+	holder.CutOverlays(bluespace)
 	if(interrupted || !ismob(target))
 		to_chat(holder, SPAN_WARNING("The bluespace tug fades away, and you feel that the force has passed you by."))
 		return
@@ -112,7 +112,7 @@
 	alert_type = /obj/screen/movable/alert/status_effect/freon/stasis
 
 /datum/modifier/status_effect/frozenstasis/on_applied()
-	register_signal(holder, SIGNAL_MOB_RESIST, .proc/breakCube)
+	register_signal(holder, SIGNAL_MOB_RESIST, nameof(.proc/breakCube))
 	cube = new /obj/structure/ice_stasis(get_turf(holder))
 	holder.forceMove(cube)
 	holder.status_flags |= GODMODE
@@ -887,7 +887,7 @@
 	var/weakref/draining_ref
 
 /datum/modifier/status_effect/stabilized/black/on_applied()
-	register_signal(holder, SIGNAL_MOB_GRAB_SET_STATE, .proc/on_grab)
+	register_signal(holder, SIGNAL_MOB_GRAB_SET_STATE, nameof(.proc/on_grab))
 	set_next_think(world.time+1)
 	return ..()
 

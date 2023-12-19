@@ -281,7 +281,7 @@
 	if(node2)
 		node2.update_underlays()
 
-/obj/machinery/atmospherics/pipe/simple/update_icon(safety = 0)
+/obj/machinery/atmospherics/pipe/simple/on_update_icon(safety = 0)
 	if(!atmos_initalized)
 		return
 	if(!check_icon_cache())
@@ -289,7 +289,7 @@
 
 	alpha = 255
 
-	overlays.Cut()
+	ClearOverlays()
 
 	if(!node1 && !node2)
 		var/turf/T = get_turf(src)
@@ -300,10 +300,10 @@
 				qdel(meter)
 		qdel(src)
 	else if(node1 && node2)
-		overlays += icon_manager.get_atmos_icon("pipe", , pipe_color, "[pipe_icon]intact[icon_connect_type]")
+		AddOverlays(icon_manager.get_atmos_icon("pipe", , pipe_color, "[pipe_icon]intact[icon_connect_type]"))
 		set_leaking(FALSE)
 	else
-		overlays += icon_manager.get_atmos_icon("pipe", , pipe_color, "[pipe_icon]exposed[node1?1:0][node2?1:0][icon_connect_type]")
+		AddOverlays(icon_manager.get_atmos_icon("pipe", , pipe_color, "[pipe_icon]exposed[node1?1:0][node2?1:0][icon_connect_type]"))
 		set_leaking(TRUE)
 
 /obj/machinery/atmospherics/pipe/simple/update_underlays()
@@ -535,7 +535,7 @@
 	if(node3)
 		node3.update_underlays()
 
-/obj/machinery/atmospherics/pipe/manifold/update_icon(safety = 0)
+/obj/machinery/atmospherics/pipe/manifold/on_update_icon(safety = 0)
 	if(!atmos_initalized)
 		return
 	if(!check_icon_cache())
@@ -553,9 +553,9 @@
 				qdel(meter)
 		qdel(src)
 	else
-		overlays.Cut()
-		overlays += icon_manager.get_atmos_icon("manifold", , pipe_color, "core" + icon_connect_type)
-		overlays += icon_manager.get_atmos_icon("manifold", , , "clamps" + icon_connect_type)
+		ClearOverlays()
+		AddOverlays(icon_manager.get_atmos_icon("manifold", , pipe_color, "core" + icon_connect_type))
+		AddOverlays(icon_manager.get_atmos_icon("manifold", , , "clamps" + icon_connect_type))
 		underlays.Cut()
 
 		var/turf/T = get_turf(src)
@@ -794,7 +794,7 @@
 	if(node4)
 		node4.update_underlays()
 
-/obj/machinery/atmospherics/pipe/manifold4w/update_icon(safety = 0)
+/obj/machinery/atmospherics/pipe/manifold4w/on_update_icon(safety = 0)
 	if(!atmos_initalized)
 		return
 	if(!check_icon_cache())
@@ -812,9 +812,9 @@
 				qdel(meter)
 		qdel(src)
 	else
-		overlays.Cut()
-		overlays += icon_manager.get_atmos_icon("manifold", , pipe_color, "4way" + icon_connect_type)
-		overlays += icon_manager.get_atmos_icon("manifold", , , "clamps_4way" + icon_connect_type)
+		ClearOverlays()
+		AddOverlays(icon_manager.get_atmos_icon("manifold", , pipe_color, "4way" + icon_connect_type))
+		AddOverlays(icon_manager.get_atmos_icon("manifold", , , "clamps_4way" + icon_connect_type))
 		underlays.Cut()
 
 		/*
@@ -1031,14 +1031,14 @@
 	if(node)
 		node.update_underlays()
 
-/obj/machinery/atmospherics/pipe/cap/update_icon(safety = 0)
+/obj/machinery/atmospherics/pipe/cap/on_update_icon(safety = 0)
 	if(!check_icon_cache())
 		return
 
 	alpha = 255
 
-	overlays.Cut()
-	overlays += icon_manager.get_atmos_icon("pipe", , pipe_color, "cap")
+	ClearOverlays()
+	AddOverlays(icon_manager.get_atmos_icon("pipe", , pipe_color, "cap"))
 
 /obj/machinery/atmospherics/pipe/cap/atmos_init()
 	..()
@@ -1185,100 +1185,94 @@
 	name = "Pressure Tank (Air)"
 	icon_state = "air_map"
 
-/obj/machinery/atmospherics/pipe/tank/air/New()
+/obj/machinery/atmospherics/pipe/tank/air/Initialize()
+	. = ..()
+
 	air_temporary = new
 	air_temporary.volume = volume
 	air_temporary.temperature = 20 CELSIUS
-
 	air_temporary.adjust_multi("oxygen",  (start_pressure*O2STANDARD)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature), \
 	                           "nitrogen",(start_pressure*N2STANDARD)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
-
-
-	..()
 	icon_state = "air"
 
 /obj/machinery/atmospherics/pipe/tank/oxygen
 	name = "Pressure Tank (Oxygen)"
 	icon_state = "o2_map"
 
-/obj/machinery/atmospherics/pipe/tank/oxygen/New()
+/obj/machinery/atmospherics/pipe/tank/oxygen/Initialize()
+	. = ..()
+
 	air_temporary = new
 	air_temporary.volume = volume
 	air_temporary.temperature = 20 CELSIUS
-
 	air_temporary.adjust_gas("oxygen", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
-
-	..()
 	icon_state = "o2"
 
 /obj/machinery/atmospherics/pipe/tank/nitrogen
 	name = "Pressure Tank (Nitrogen)"
 	icon_state = "n2_map"
 
-/obj/machinery/atmospherics/pipe/tank/nitrogen/New()
+/obj/machinery/atmospherics/pipe/tank/nitrogen/Initialize()
+	. = ..()
+
 	air_temporary = new
 	air_temporary.volume = volume
 	air_temporary.temperature = 20 CELSIUS
-
 	air_temporary.adjust_gas("nitrogen", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
-
-	..()
 	icon_state = "n2"
 
 /obj/machinery/atmospherics/pipe/tank/carbon_dioxide
 	name = "Pressure Tank (Carbon Dioxide)"
 	icon_state = "co2_map"
 
-/obj/machinery/atmospherics/pipe/tank/carbon_dioxide/New()
+/obj/machinery/atmospherics/pipe/tank/carbon_dioxide/Initialize()
+	. = ..()
+
 	air_temporary = new
 	air_temporary.volume = volume
 	air_temporary.temperature = 20 CELSIUS
 
 	air_temporary.adjust_gas("carbon_dioxide", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
 
-	..()
 	icon_state = "co2"
 
 /obj/machinery/atmospherics/pipe/tank/plasma
 	name = "Pressure Tank (Plasma)"
 	icon_state = "plasma_map"
 
-/obj/machinery/atmospherics/pipe/tank/plasma/New()
+/obj/machinery/atmospherics/pipe/tank/plasma/Initialize()
+	. = ..()
+
 	air_temporary = new
 	air_temporary.volume = volume
 	air_temporary.temperature = 20 CELSIUS
-
 	air_temporary.adjust_gas("plasma", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
-
-	..()
 	icon_state = "plasma"
 
 /obj/machinery/atmospherics/pipe/tank/nitrous_oxide
 	name = "Pressure Tank (Nitrous Oxide)"
 	icon_state = "n2o_map"
 
-/obj/machinery/atmospherics/pipe/tank/nitrous_oxide/New()
+/obj/machinery/atmospherics/pipe/tank/nitrous_oxide/Initialize()
+	. = ..()
+
 	air_temporary = new
 	air_temporary.volume = volume
 	air_temporary.temperature = 0 CELSIUS
-
 	air_temporary.adjust_gas("sleeping_agent", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
-
-	..()
 	icon_state = "n2o"
 
 /obj/machinery/atmospherics/pipe/tank/hydrogen
 	name = "Pressure Tank (Hydrogen)"
 	icon_state = "h2_map"
 
-/obj/machinery/atmospherics/pipe/tank/hydrogen/New()
+/obj/machinery/atmospherics/pipe/tank/hydrogen/Initialize()
+	. = ..()
+
 	air_temporary = new
 	air_temporary.volume = volume
 	air_temporary.temperature = 20 CELSIUS
-
 	air_temporary.adjust_gas("hydrogen", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
-
-	..()
 	icon_state = "h2"
 
 /obj/machinery/atmospherics/pipe/vent
@@ -1325,7 +1319,7 @@
 /obj/machinery/atmospherics/pipe/vent/pipeline_expansion()
 	return list(node1)
 
-/obj/machinery/atmospherics/pipe/vent/update_icon()
+/obj/machinery/atmospherics/pipe/vent/on_update_icon()
 	if(node1)
 		icon_state = "intact"
 
@@ -1370,14 +1364,14 @@
 	connect_types = CONNECT_TYPE_REGULAR|CONNECT_TYPE_SUPPLY|CONNECT_TYPE_SCRUBBER
 	icon_state = "map_universal"
 
-/obj/machinery/atmospherics/pipe/simple/visible/universal/update_icon(safety = 0)
+/obj/machinery/atmospherics/pipe/simple/visible/universal/on_update_icon(safety = 0)
 	if(!check_icon_cache())
 		return
 
 	alpha = 255
 
-	overlays.Cut()
-	overlays += icon_manager.get_atmos_icon("pipe", , pipe_color, "universal")
+	ClearOverlays()
+	AddOverlays(icon_manager.get_atmos_icon("pipe", , pipe_color, "universal"))
 	underlays.Cut()
 
 	if(node1)
@@ -1407,14 +1401,14 @@
 	connect_types = CONNECT_TYPE_REGULAR|CONNECT_TYPE_SUPPLY|CONNECT_TYPE_SCRUBBER
 	icon_state = "map_universal"
 
-/obj/machinery/atmospherics/pipe/simple/hidden/universal/update_icon(safety = 0)
+/obj/machinery/atmospherics/pipe/simple/hidden/universal/on_update_icon(safety = 0)
 	if(!check_icon_cache())
 		return
 
 	alpha = 255
 
-	overlays.Cut()
-	overlays += icon_manager.get_atmos_icon("pipe", , pipe_color, "universal")
+	ClearOverlays()
+	AddOverlays(icon_manager.get_atmos_icon("pipe", , pipe_color, "universal"))
 	underlays.Cut()
 
 	if(node1)

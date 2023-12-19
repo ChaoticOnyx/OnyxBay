@@ -15,7 +15,9 @@
 	QDEL_NULL(touching)
 	QDEL_NULL(bloodstr)
 	QDEL_NULL(surgery_status)
+	QDEL_NULL(handcuffed)
 
+	internal = null
 	reagents = null //We assume reagents is a reference to bloodstr here
 
 	// We assume that, in case of gib, organs and whatever have already done their business escaping the body,
@@ -83,7 +85,7 @@
 
 		if(prob(getBruteLoss() - 50))
 			for(var/atom/movable/A in stomach_contents)
-				A.loc = loc
+				A.dropInto(loc)
 				stomach_contents.Remove(A)
 			gib()
 
@@ -91,7 +93,7 @@
 	for(var/mob/M in src)
 		if(M in src.stomach_contents)
 			src.stomach_contents.Remove(M)
-		M.loc = src.loc
+		M.dropInto(loc)
 		for(var/mob/N in viewers(src, null))
 			if(N.client)
 				N.show_message(text("<span class='danger'>[M] bursts out of [src]!</span>"), 2)
@@ -109,6 +111,19 @@
 			return
 
 	return
+
+/mob/living/carbon/attack_ghost(mob/observer/ghost/user)
+	if(HAS_TRAIT(src, TRAIT_GHOSTATTACKABLE)) //Used for wizard's spell "No remorse" which allows ghosts to attack target
+		resolve_ghost_attack(user)
+		return
+
+	return ..()
+
+/mob/living/carbon/proc/resolve_ghost_attack(mob/observer/ghost/user)
+	adjustFireLoss(SPELL_NOREMORSE_GHOST_DAMAGE)
+	to_chat(user, SPAN_DANGER("You burn [src] with all the fury you can muster!"))
+	to_chat(src, SPAN_DANGER("You are being burned by something!"))
+	admin_attack_log(user, src, "Attacked [src] with ghostattack.", "Was ghostattacked by [user]!", "[user] has used nercomancy to attack [src]")
 
 /mob/living/carbon/electrocute_act(shock_damage, obj/source, siemens_coeff = 1.0, def_zone = null)
 	if(status_flags & GODMODE)
@@ -275,21 +290,6 @@
 	dna = newDNA
 
 // ++++ROCKDTBEN++++ MOB PROCS //END
-
-/mob/living/carbon/clean_blood()
-	. = ..()
-	if(ishuman(src))
-		var/mob/living/carbon/human/H = src
-		if(H.gloves)
-			if(H.gloves.clean_blood())
-				H.update_inv_gloves(0)
-			H.gloves.germ_level = 0
-		else
-			if(!isnull(H.bloody_hands))
-				H.bloody_hands = null
-				H.update_inv_gloves(0)
-			H.germ_level = 0
-	update_icons()	//apply the now updated overlays to the mob
 
 //Throwing stuff
 /mob/proc/throw_item(atom/target)

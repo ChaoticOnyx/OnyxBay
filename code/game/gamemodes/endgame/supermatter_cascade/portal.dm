@@ -18,8 +18,8 @@
 	. = ..()
 	set_next_think(world.time)
 
-/obj/singularity/narsie/exit/update_icon()
-	overlays = 0
+/obj/singularity/narsie/exit/on_update_icon()
+	ClearOverlays()
 
 /obj/singularity/narsie/exit/think()
 	for(var/mob/M in GLOB.player_list)
@@ -81,7 +81,7 @@
 	if((R.z == T_mob.z) && (get_dist(R,T_mob) <= (R.consume_range+10)) && !(R in view(T_mob)))
 		if(!riftimage)
 			riftimage = image('icons/obj/rift.dmi',T_mob,"rift",LIGHTING_LAYER+2,1)
-			riftimage.mouse_opacity = 0
+			riftimage.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 		var/new_x = 32 * (R.x - T_mob.x) + R.pixel_x
 		var/new_y = 32 * (R.y - T_mob.y) + R.pixel_y

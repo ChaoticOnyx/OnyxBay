@@ -102,8 +102,8 @@
 
 
 /mob/living/simple_animal/hostile/little_changeling/New()
-	verbs += /mob/living/proc/ventcrawl
-	verbs += /mob/living/proc/hide
+	add_verb(src, /mob/living/proc/ventcrawl)
+	add_verb(src, /mob/living/proc/hide)
 	pixel_z = 6
 	..()
 
@@ -387,7 +387,7 @@
 	icon_dead = "headcrab_dead"
 
 
-/mob/living/simple_animal/hostile/little_changeling/headcrab/update_icon()
+/mob/living/simple_animal/hostile/little_changeling/headcrab/on_update_icon()
 	if(cloaked)
 		alpha = 25
 		set_light(0)

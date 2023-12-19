@@ -117,3 +117,17 @@
 /datum/gear/accessory/armband_nt
 	display_name = "NanoTrasen armband"
 	path = /obj/item/clothing/accessory/armband/whitered
+
+/datum/gear/accessory/dogtag
+	display_name = "dogtag"
+	path = /obj/item/clothing/accessory/badge/dogtag
+
+/datum/gear/accessory/dogtag/spawn_item(mob/living/carbon/human/H, metadata)
+	. = .. ()
+	var/obj/item/clothing/accessory/badge/dogtag/dogtag = .
+	if(!istype(dogtag))
+		return
+
+	dogtag.stored_name = H.real_name
+	dogtag.religion = H.religion
+	dogtag.stored_blood_type = H.b_type

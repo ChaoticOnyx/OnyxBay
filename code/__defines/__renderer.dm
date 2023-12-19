@@ -167,6 +167,16 @@
 #define ABOVE_HUD_PLANE              8
 	#define ABOVE_HUD_LAYER              5
 
+/// This plane masks out lighting, to create an "emissive" effect for e.g glowing screens in otherwise dark areas.
+#define EMISSIVE_PLANE 10
+#define EMISSIVE_TARGET "*emissive"
+	/// The layer you should use when you -really- don't want an emissive overlay to be blocked.
+	#define EMISSIVE_LAYER_UNBLOCKABLE 9999
+
+/// For previews in Character setup. I have no fucking idea why it's like that, and at this point I'm not sure
+/// I'd ever want to. It DOES work somehow and I'm more than willing to just keep things the way they are. ~ToTh
+#define PREVIEW_PLANE 20
+
 //-------------------- Rendering ---------------------
 
 #define LETTERBOX_RENDERER 			"LETTERBOX"

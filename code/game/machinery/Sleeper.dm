@@ -96,7 +96,7 @@
 	if(iscarbon(occupant) && stasis > 1)
 		occupant.SetStasis(stasis)
 
-/obj/machinery/sleeper/update_icon()
+/obj/machinery/sleeper/on_update_icon()
 	if(panel_open)
 		icon_state = "sleeper_1"
 		return
@@ -228,7 +228,7 @@
 			to_chat(user, "<span class='warning'>\The [src] has a beaker already.</span>")
 			return
 	if(occupant && panel_open && isCrowbar(I))
-		occupant.loc = get_turf(src)
+		occupant.forceMove(get_turf(src))
 		occupant = null
 		update_use_power(1)
 		update_icon()

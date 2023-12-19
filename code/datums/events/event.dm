@@ -66,7 +66,9 @@
 	var/list/options_weight = list()
 
 	for(var/datum/event_option/O in options)
-		options_weight[O] = O.get_weight()
+		var/o_weight = round(O.get_weight())
+		if(o_weight > 0)
+			options_weight[O] = o_weight
 
 	var/datum/event_option/O = util_pick_weight(options_weight)
 	log_and_message_admins("AI has chosen the option '[O.name]' ([O.id]) for the event '[name]' ([id])")

@@ -4,6 +4,7 @@
 	extended_desc = "This program allows access to the crew's various records."
 	program_icon_state = "generic"
 	program_key_state = "generic_key"
+	program_light_color = "#00B000"
 	size = 14
 	category = PROG_OFFICE
 	requires_ntnet = 1

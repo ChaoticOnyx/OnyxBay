@@ -26,11 +26,15 @@
 		util_crash_with("Warning: [src]([type]) initialized multiple times!")
 	atom_flags |= ATOM_FLAG_INITIALIZED
 
-	verbs += /mob/proc/toggle_antag_pool
-	verbs += /mob/proc/join_as_actor
-	verbs += /mob/proc/join_response_team
+	add_verb(src, /mob/proc/toggle_antag_pool)
+	add_verb(src, /mob/proc/join_as_actor)
+	add_verb(src, /mob/proc/join_response_team)
 
 	return INITIALIZE_HINT_NORMAL
+
+/mob/new_player/Destroy()
+	QDEL_NULL(panel)
+	return ..()
 
 /mob/new_player/proc/new_player_panel(forced = FALSE)
 	if(!SScharacter_setup.initialized && !forced)
@@ -64,29 +68,30 @@
 	panel.open()
 	return
 
-/mob/new_player/Stat()
+/mob/new_player/get_status_tab_items()
 	. = ..()
+	if(!SSticker)
+		return
 
-	if(statpanel("Lobby"))
-		if(check_rights(R_INVESTIGATE, 0, src))
-			stat("Game Mode:", "[SSticker.mode ? SSticker.mode.name : SSticker.master_mode] ([SSticker.master_mode])")
-		else
-			stat("Game Mode:", PUBLIC_GAME_MODE)
-		var/extra_antags = list2params(additional_antag_types)
-		stat("Added Antagonists:", extra_antags ? extra_antags : "None")
+	if(check_rights(R_INVESTIGATE, 0, src))
+		. += "Game Mode: [SSticker.mode ? SSticker.mode.name : SSticker.master_mode] ([SSticker.master_mode])"
+	else
+		. += "Game Mode: [PUBLIC_GAME_MODE]"
+	var/extra_antags = list2params(additional_antag_types)
+	. += "Added Antagonists: [extra_antags ? extra_antags : "None"]"
 
-		if(GAME_STATE <= RUNLEVEL_LOBBY)
-			stat("Time To Start:", "[round(SSticker.pregame_timeleft/10)][SSticker.round_progressing ? "" : " (DELAYED)"]")
-			stat("Players: [totalPlayers]", "Players Ready: [totalPlayersReady]")
-			totalPlayers = 0
-			totalPlayersReady = 0
-			for(var/mob/new_player/player in GLOB.player_list)
-				var/highjob
-				if(player.client?.prefs?.job_high)
-					highjob = " as [player.client.prefs.job_high]"
-				stat("[player.key]", (player.ready)?("(Playing[highjob])"):(null))
-				totalPlayers++
-				if(player.ready)totalPlayersReady++
+	if(GAME_STATE <= RUNLEVEL_LOBBY)
+		. += "Time To Start: [round(SSticker.pregame_timeleft/10)][SSticker.round_progressing ? "" : " (DELAYED)"]"
+		. += "Players: [totalPlayers] Players Ready: [totalPlayersReady]"
+		totalPlayers = 0
+		totalPlayersReady = 0
+		for(var/mob/new_player/player in GLOB.player_list)
+			var/highjob
+			if(player.client?.prefs?.job_high)
+				highjob = " as [player.client.prefs.job_high]"
+			. += "[player.key] [(player.ready)?("(Playing[highjob])"):(null)]"
+			totalPlayers++
+			if(player.ready)totalPlayersReady++
 
 /mob/new_player/Topic(href, href_list[])
 	if(!client)	return 0
@@ -168,7 +173,7 @@
 			observer.real_name = client.prefs.real_name
 			observer.SetName(observer.real_name)
 			if(!client.holder && !config.ghost.allow_antag_hud)           // For new ghosts we remove the verb from even showing up if it's not allowed.
-				observer.verbs -= /mob/observer/ghost/verb/toggle_antagHUD        // Poor guys, don't know what they are missing!
+				remove_verb(observer, /mob/observer/ghost/verb/toggle_antagHUD)        // Poor guys, don't know what they are missing!
 			observer.key = key
 			var/obj/screen/splash/S = new(observer.client, TRUE)
 			S.Fade(TRUE, TRUE)
@@ -552,6 +557,7 @@
 			mind.gen_relations_info = client.prefs.relations_info["general"]
 		mind.traits = client.prefs.traits.Copy()
 		mind.transfer_to(new_character)					//won't transfer key since the mind is not active
+		mind = null
 
 	new_character.apply_traits()
 	new_character.SetName(real_name)

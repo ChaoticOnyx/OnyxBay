@@ -60,7 +60,7 @@
 	set_frequency(frequency)
 	. = ..()
 
-/obj/machinery/embedded_controller/radio/update_icon()
+/obj/machinery/embedded_controller/radio/on_update_icon()
 	if(!on || !program)
 		icon_state = "airlock_control_off"
 	else if(program.memory["processing"])

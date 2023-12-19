@@ -274,11 +274,11 @@
 
 	return tally + config.movement.animal_delay
 
-/mob/living/simple_animal/Stat()
+/mob/living/simple_animal/get_status_tab_items()
 	. = ..()
 
-	if(statpanel("Status") && show_stat_health)
-		stat(null, "Health: [round((health / maxHealth) * 100)]%")
+	if(show_stat_health)
+		. += "Health: [round((health / maxHealth) * 100)]%"
 
 /mob/living/simple_animal/death(gibbed, deathmessage = "dies!", show_dead_message)
 	. = ..()
@@ -362,7 +362,7 @@
 	return verb
 
 /mob/living/simple_animal/put_in_hands(obj/item/W) // No hands.
-	W.loc = get_turf(src)
+	W.forceMove(get_turf(src))
 	return 1
 
 // Harvest an animal's delicious byproducts

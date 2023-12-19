@@ -3,6 +3,7 @@
 	icon = 'icons/obj/items.dmi'
 	w_class = ITEM_SIZE_NORMAL
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
+	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 35 MEGA ELECTRONVOLT,
@@ -276,7 +277,7 @@
 	// Doing some unintended shit that may cause catastrophical events, aborting
 	// If you'll ever want to implement something that intentionally allows direct clicking on an item while it's inside
 	// an atom's contents - just go and smack yourself with a brick, it shall not work like this.
-	else if(!isturf(loc))
+	else if(!isturf(loc) && loc != user.loc)
 		return
 
 	throwing = 0
@@ -326,6 +327,9 @@
 
 // apparently called whenever an item is removed from a slot, container, or anything else.
 /obj/item/proc/dropped(mob/user)
+	SHOULD_CALL_PARENT(TRUE)
+	remove_item_verbs(user)
+
 	if(randpixel)
 		pixel_z = randpixel //an idea borrowed from some of the older pixel_y randomizations. Intended to make items appear to drop at a character
 
@@ -337,6 +341,20 @@
 			user.r_hand.update_twohanding()
 
 	SEND_SIGNAL(src, SIGNAL_ITEM_UNEQUIPPED, src, user)
+
+/obj/item/proc/remove_item_verbs(mob/user)
+	if(ismech(user)) //very snowflake, but necessary due to how mechs work
+		return
+	if(QDELING(user))
+		return
+	var/list/verbs_to_remove = list()
+	for(var/v in verbs)
+		var/verbstring = "[v]"
+		if(length(user.item_verbs[verbstring]) == 1)
+			if(user.item_verbs[verbstring][1] == src)
+				verbs_to_remove += v
+		LAZYREMOVE(user.item_verbs[verbstring], src)
+	remove_verb(user, verbs_to_remove)
 
 // called just as an item is picked up (loc is not yet changed)
 /obj/item/proc/pickup(mob/user)
@@ -360,6 +378,7 @@
 // for items that can be placed in multiple slots
 // note this isn't called during the initial dressing of a player
 /obj/item/proc/equipped(mob/user, slot)
+	SHOULD_CALL_PARENT(TRUE)
 	hud_layerise()
 	if(user.client)	user.client.screen |= src
 	if(user.pulling == src) user.stop_pulling()
@@ -372,8 +391,19 @@
 		M.l_hand.update_twohanding()
 	if(M.r_hand)
 		M.r_hand.update_twohanding()
+	
+	if(item_action_slot_check(user, slot))
+		add_verb(user, verbs)
+		for(var/v in verbs)
+			LAZYDISTINCTADD(user.item_verbs["[v]"], src)
+	else
+		remove_item_verbs(user)
 
 	SEND_SIGNAL(src, SIGNAL_ITEM_EQUIPPED, src, user, slot)
+
+//sometimes we only want to grant the item's action if it's equipped in a specific slot.
+/obj/item/proc/item_action_slot_check(mob/user, slot)
+	return TRUE
 
 //Defines which slots correspond to which slot flags
 var/list/global/slot_flags_enumeration = list(
@@ -696,11 +726,10 @@ var/list/global/slot_flags_enumeration = list(
 
 /obj/item/clean_blood()
 	. = ..()
+	if(!.)
+		return
 	if(blood_overlay)
-		overlays.Remove(blood_overlay)
-	if(istype(src, /obj/item/clothing/gloves))
-		var/obj/item/clothing/gloves/G = src
-		G.transfer_blood = 0
+		CutOverlays(blood_overlay, ATOM_ICON_CACHE_PROTECTED)
 
 /obj/item/reveal_blood()
 	if(was_bloodied && !fluorescent)
@@ -709,41 +738,52 @@ var/list/global/slot_flags_enumeration = list(
 		blood_overlay.color = COLOR_LUMINOL
 		update_icon()
 
-/obj/item/add_blood(mob/living/carbon/human/M)
-	if (!..())
-		return 0
-
-	if(istype(src, /obj/item/melee/energy))
+/obj/item/add_blood(source)
+	var/bloodied_check = is_bloodied
+	var/old_blood_color = blood_color
+	. = ..()
+	if(!.)
 		return
 
-	//if we haven't made our blood_overlay already
-	if( !blood_overlay )
+	// if we haven't made our blood_overlay already
+	if(!blood_overlay)
 		generate_blood_overlay()
 
-	//apply the blood-splatter overlay if it isn't already in there
-	if(!blood_DNA.len)
-		blood_overlay.color = blood_color
-		overlays += blood_overlay
+	// apply the blood-splatter overlay if it wasn't there
+	if(!bloodied_check)
+		AddOverlays(blood_overlay, ATOM_ICON_CACHE_PROTECTED)
+	else if(blood_color != old_blood_color)
+		update_blood_overlay()
 
-	//if this blood isn't already in the list, add it
-	if(istype(M))
-		if(blood_DNA[M.dna.unique_enzymes])
-			return 0 //already bloodied with this blood. Cannot add more.
-		blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
-	return 1 //we applied blood to the item
+	// if this blood isn't already in the list, add it
+	if(ishuman(source))
+		var/mob/living/carbon/human/M = source
+		if(!blood_DNA[M.dna.unique_enzymes])
+			blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
 
 GLOBAL_LIST_EMPTY(blood_overlay_cache)
 
 /obj/item/proc/generate_blood_overlay(force = FALSE)
 	if(blood_overlay && !force)
 		return
-	if(GLOB.blood_overlay_cache["[icon]" + icon_state])
-		blood_overlay = GLOB.blood_overlay_cache["[icon]" + icon_state]
+	if(GLOB.blood_overlay_cache["[icon]/[icon_state]/[blood_color]"])
+		blood_overlay = GLOB.blood_overlay_cache["[icon]/[icon_state]/[blood_color]"]
 		return
-	var/image/blood = image(icon = 'icons/effects/blood.dmi', icon_state = "itemblood")
+	var/image/blood = overlay_image('icons/effects/blood.dmi', "itemblood", color = blood_color, flags = DEFAULT_APPEARANCE_FLAGS|RESET_COLOR)
 	blood.filters += filter(type = "alpha", icon = icon(icon, icon_state))
-	GLOB.blood_overlay_cache["[icon]" + icon_state] = blood
+	GLOB.blood_overlay_cache["[icon]/[icon_state]/[blood_color]"] = blood
 	blood_overlay = blood
+
+// Regenerates the bloodiness, to be used when the item's icon_state get changed to something of another shape.
+/obj/item/proc/update_blood_overlay()
+	if(!blood_overlay)
+		return // nah
+	if(is_bloodied)
+		CutOverlays(blood_overlay, ATOM_ICON_CACHE_PROTECTED)
+		generate_blood_overlay(TRUE) // Force recheck.
+		AddOverlays(blood_overlay, ATOM_ICON_CACHE_PROTECTED)
+	else
+		generate_blood_overlay(TRUE) // Just updating it, no need in actual overlaying.
 
 /obj/item/proc/showoff(mob/user)
 	for (var/mob/M in view(user))
@@ -803,12 +843,12 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 	user.visible_message("\The [user] peers through [zoomdevicename ? "the [zoomdevicename] of [src]" : "[src]"].")
 
-	register_signal(src, SIGNAL_QDELETING, /obj/item/proc/unzoom)
-	register_signal(src, SIGNAL_MOVED, /obj/item/proc/zoom_move)
-	register_signal(src, SIGNAL_DIR_SET, /obj/item/proc/unzoom)
-	register_signal(src, SIGNAL_ITEM_UNEQUIPPED, /obj/item/proc/zoom_drop)
-	register_signal(user, SIGNAL_STAT_SET, /obj/item/proc/unzoom)
-	register_signal(user, SIGNAL_VIEW_SHIFTED_SET, /obj/item/proc/unzoom)
+	register_signal(src, SIGNAL_QDELETING, nameof(.proc/unzoom))
+	register_signal(src, SIGNAL_MOVED, nameof(.proc/zoom_move))
+	register_signal(src, SIGNAL_DIR_SET, nameof(.proc/unzoom))
+	register_signal(src, SIGNAL_ITEM_UNEQUIPPED, nameof(.proc/zoom_drop))
+	register_signal(user, SIGNAL_STAT_SET, nameof(.proc.unzoom))
+	register_signal(user, SIGNAL_VIEW_SHIFTED_SET, nameof(.proc/unzoom))
 
 /obj/item/proc/zoom_drop(obj/item/I, mob/user)
 	unzoom(user)
@@ -824,10 +864,10 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	zoom = 0
 
 	unregister_signal(src, SIGNAL_QDELETING)
-	unregister_signal(src, SIGNAL_MOVED, /obj/item/proc/zoom_move)
+	unregister_signal(src, SIGNAL_MOVED, nameof(.proc/zoom_move))
 	unregister_signal(src, SIGNAL_DIR_SET)
 	unregister_signal(src, SIGNAL_ITEM_UNEQUIPPED)
-	unregister_signal(user, SIGNAL_VIEW_SHIFTED_SET, /obj/item/proc/unzoom)
+	unregister_signal(user, SIGNAL_VIEW_SHIFTED_SET, nameof(.proc/unzoom))
 
 	user = user == src ? loc : (user || loc)
 	if(!istype(user))
@@ -893,11 +933,14 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	else
 		if(item_icons && item_icons[slot])
 			mob_icon = item_icons[slot]
-		else if (user_human && user_human.body_build)
+		else if(user_human?.body_build)
 			mob_icon = user_human.body_build.get_mob_icon(slot, mob_state)
+		else
+			return
 
-	var/image/ret_overlay = overlay_image(mob_icon,mob_state,color,RESET_COLOR)
-	if(user_human && user_human.species && user_human.species.equip_adjust.len)
+	var/image/ret_overlay = overlay_image(mob_icon, mob_state, color, RESET_COLOR)
+
+	if(length(user_human?.species?.equip_adjust))
 		var/list/equip_adjusts = user_human.species.equip_adjust
 		if(equip_adjusts[slot])
 			var/image_key = "[user_human.species] [user_human.body_build.name] [mob_icon] [mob_state] [color]"
@@ -905,7 +948,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 			if(!ret_overlay)
 				var/icon/final_I = new(mob_icon, icon_state = mob_state)
 				var/list/shifts = equip_adjusts[slot]
-				if(shifts && shifts.len)
+				if(length(shifts))
 					var/shift_facing
 					for(shift_facing in shifts)
 						var/list/facing_list = shifts[shift_facing]
@@ -917,7 +960,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	return ret_overlay
 
 /obj/item/proc/get_examine_line()
-	if(blood_DNA)
+	if(is_bloodied)
 		. = SPAN("warning", "\icon[src] [gender==PLURAL?"some":"a"] [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [SPAN("info", "<em>[src]</em>")]")
 	else
 		. = "\icon[src] \a [SPAN("info", "<em>[src]</em>")]"

@@ -20,6 +20,7 @@
 #define BE_FAMILIAR "BE_FAMILIAR"
 #define BE_SHADE "BE_SHADE"
 #define BE_VAMPIRE "BE_VAMPIRE"
+#define BE_UNDEAD "BE_UNDEAD"
 
 // Antagonist datum flags.
 #define ANTAG_OVERRIDE_JOB        0x1 // Assigned job is set to MODE when spawning.
@@ -104,6 +105,7 @@
 #define SP_RECHARGE	"recharge"
 #define SP_CHARGES	"charges"
 #define SP_HOLDVAR	"holdervar"
+#define SP_TOGGLED  "toggled"
 
 //Voting-related
 #define VOTE_PROCESS_ABORT    1

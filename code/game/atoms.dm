@@ -3,6 +3,7 @@
 	var/atom_flags
 	var/effect_flags
 	var/list/blood_DNA
+	var/is_bloodied
 	var/was_bloodied
 	var/blood_color
 	var/last_bumped = 0
@@ -40,6 +41,12 @@
 	/// Last color calculated for the the chatmessage overlays. Used for caching.
 	var/chat_color
 	var/chat_color_darkened
+
+	/// This atom's cache of non-protected overlays, used for normal icon additions. Do not manipulate directly- See SSoverlays.
+	var/list/atom_overlay_cache
+
+	/// This atom's cache of overlays that can only be removed explicitly, like C4. Do not manipulate directly- See SSoverlays.
+	var/list/atom_protected_overlay_cache
 
 /atom/New(loc, ...)
 	CAN_BE_REDEFINED(TRUE)
@@ -113,7 +120,7 @@
 /atom/Destroy()
 	QDEL_NULL(reagents)
 	QDEL_NULL(proximity_monitor)
-	overlays.Cut()
+	ClearOverlays()
 	underlays.Cut()
 	return ..()
 
@@ -290,7 +297,7 @@ its easier to just keep the beam vertical.
 /atom/proc/_examine_text(mob/user, infix = "", suffix = "")
 	// This reformat names to get a/an properly working on item descriptions when they are bloody
 	var/f_name = "\a [SPAN("info", "<em>[src][infix]</em>")]."
-	if(src.blood_DNA && !istype(src, /obj/effect/decal))
+	if(is_bloodied && !istype(src, /obj/effect/decal))
 		if(gender == PLURAL)
 			f_name = "some "
 		else
@@ -315,6 +322,35 @@ its easier to just keep the beam vertical.
 
 	return content
 
+/atom/Topic(href, href_list)
+	. = ..()
+	if (.)
+		return
+
+	var/client/usr_client = usr.client
+	var/list/paramslist = list()
+	if(href_list["statpanel_item_click"])
+		switch(href_list["statpanel_item_click"])
+			if("left")
+				paramslist[LEFT_CLICK] = "1"
+			if("right")
+				paramslist[RIGHT_CLICK] = "1"
+			if("middle")
+				paramslist[MIDDLE_CLICK] = "1"
+			else
+				return
+
+		if(href_list["statpanel_item_shiftclick"])
+			paramslist[SHIFT_CLICK] = "1"
+		if(href_list["statpanel_item_ctrlclick"])
+			paramslist[CTRL_CLICK] = "1"
+		if(href_list["statpanel_item_altclick"])
+			paramslist[ALT_CLICK] = "1"
+
+		var/mouseparams = list2params(paramslist)
+		usr_client.Click(src, loc, null, mouseparams)
+		return TRUE
+
 // called by mobs when e.g. having the atom as their machine, pulledby, loc (AKA mob being inside the atom) or buckled var set.
 // see code/modules/mob/mob_movement.dm for more.
 /atom/proc/relaymove()
@@ -337,7 +373,12 @@ its easier to just keep the beam vertical.
 	update_icon()
 
 /atom/proc/update_icon()
-	CAN_BE_REDEFINED(TRUE)
+	if(QDELETED(src))
+		return
+	on_update_icon(arglist(args))
+	return
+
+/atom/proc/on_update_icon()
 	return
 
 /atom/proc/blob_act(damage)
@@ -382,24 +423,30 @@ its easier to just keep the beam vertical.
 	playsound(src, hitby_sound, sound_loudness, 1)
 
 
-//returns 1 if made bloody, returns 0 otherwise
-/atom/proc/add_blood(mob/living/carbon/human/M as mob)
+// returns TRUE if made bloody, returns FALSE otherwise
+// accepts either a human or a hex color
+/atom/proc/add_blood(source)
 	if(atom_flags & ATOM_FLAG_NO_BLOOD)
-		return 0
+		return FALSE
 
-	if(!blood_DNA || !istype(blood_DNA, /list))	//if our list of DNA doesn't exist yet (or isn't a list) initialise it.
+	if(!islist(blood_DNA)) // if our list of DNA doesn't exist yet (or isn't a list) initialise it.
 		blood_DNA = list()
 
-	was_bloodied = 1
-	blood_color = COLOR_BLOOD_HUMAN
-	if(istype(M))
-		if (!istype(M.dna, /datum/dna))
+	is_bloodied = TRUE
+	was_bloodied = TRUE
+
+	if(ishuman(source))
+		var/mob/living/carbon/human/M = source
+		if(!istype(M.dna, /datum/dna))
 			M.dna = new /datum/dna(null)
 			M.dna.real_name = M.real_name
 		M.check_dna()
 		blood_color = M.species.get_blood_colour(M)
-	. = 1
-	return 1
+	else if(istext(source))
+		blood_color = source
+	else
+		blood_color = COLOR_BLOOD_HUMAN
+	return TRUE
 
 /atom/proc/add_vomit_floor(mob/living/carbon/M, toxvomit = 0, datum/reagents/inject_reagents)
 	if(istype(src, /turf/simulated))
@@ -413,12 +460,14 @@ its easier to just keep the beam vertical.
 
 /atom/proc/clean_blood()
 	if(!simulated)
-		return
+		return FALSE
+	is_bloodied = FALSE
 	fluorescent = 0
-	src.germ_level = 0
-	if(istype(blood_DNA, /list))
-		blood_DNA = null
-		return 1
+	germ_level = 0
+	if(islist(blood_DNA))
+		blood_DNA.Cut()
+	blood_color = null
+	return TRUE
 
 /atom/proc/get_global_map_pos()
 	if(!islist(GLOB.global_map) || isemptylist(GLOB.global_map)) return

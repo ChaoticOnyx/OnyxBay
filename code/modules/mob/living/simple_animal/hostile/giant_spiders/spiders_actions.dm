@@ -69,7 +69,7 @@
 		var/image/img = image(button_icon,button,"bg_active")
 		img.pixel_x = 0
 		img.pixel_y = 0
-		button.overlays+=img
+		button.AddOverlays(img)
 		active = TRUE
 		return TRUE
 
@@ -84,7 +84,7 @@
 		if(target_atom.anchored)
 			return
 		user.cocoon_target = target_atom
-		INVOKE_ASYNC(user, /mob/living/simple_animal/hostile/giant_spider/midwife/.proc/cocoon)
+		INVOKE_ASYNC(user, nameof(/mob/living/simple_animal/hostile/giant_spider/midwife.proc/cocoon))
 		return TRUE
 
 

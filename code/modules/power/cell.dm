@@ -41,7 +41,7 @@
 /obj/item/cell/proc/add_charge(amount)
 	charge = between(0, charge + amount, maxcharge)
 
-/obj/item/cell/update_icon()
+/obj/item/cell/on_update_icon()
 	var/new_overlay_state = 0
 	if(charge / maxcharge >= 0.95)
 		new_overlay_state = 2
@@ -50,9 +50,9 @@
 
 	if(new_overlay_state != overlay_state)
 		overlay_state = new_overlay_state
-		overlays.Cut()
+		ClearOverlays()
 		if(overlay_state)
-			overlays += image('icons/obj/power.dmi', "[overlay_key][overlay_state]")
+			AddOverlays(image('icons/obj/power.dmi', "[overlay_key][overlay_state]"))
 
 // Legacy proc for compatibility, use CELL_PERCENT(cell) instead
 /obj/item/cell/proc/percent()
@@ -293,7 +293,7 @@
 	. = ..()
 
 	set_next_think(world.time)
-	add_think_ctx("selfcharge", CALLBACK(src, .proc/selfcharge_think), world.time)
+	add_think_ctx("selfcharge", CALLBACK(src, nameof(.proc/selfcharge_think)), world.time)
 
 
 /obj/item/cell/quantum

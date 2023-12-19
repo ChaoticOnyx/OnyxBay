@@ -38,11 +38,12 @@ GLOBAL_REAL(GLOB, /datum/controller/global_vars)
 
 	return QDEL_HINT_IWILLGC
 
-/datum/controller/global_vars/stat_entry()
+/datum/controller/global_vars/stat_entry(msg)
 	if(!statclick)
 		statclick = new /obj/effect/statclick/debug(null, "Initializing...", src)
 
-	stat("Globals:", statclick.update("Edit"))
+	msg = "Globals: [statclick.update("Edit")]"
+	return ..()
 
 /datum/controller/global_vars/VV_hidden()
 	return ..() + gvars_datum_protected_varlist

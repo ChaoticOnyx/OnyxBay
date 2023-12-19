@@ -12,7 +12,7 @@
 	set_invisibility(101)
 	for(var/t in organs)
 		qdel(t)
-	var/atom/movable/overlay/animation = new /atom/movable/overlay( loc )
+	var/atom/movable/fake_overlay/animation = new /atom/movable/fake_overlay(loc)
 	animation.icon_state = "blank"
 	animation.icon = 'icons/mob/mob.dmi'
 	animation.master = src
@@ -134,7 +134,7 @@
 	else
 		O.key = key
 
-	O.loc = loc
+	O.forceMove(loc)
 	O.job = "Cyborg"
 	if(O.mind.assigned_role == "Cyborg")
 		if(O.mind.role_alt_title == "Android")
@@ -337,7 +337,7 @@
 			organ.min_broken_damage = Floor(organ.max_damage * 0.75)
 	src.no_pain = TRUE
 	src.does_not_breathe = TRUE
-	verbs += /mob/living/carbon/human/proc/breath_death
-	verbs += /mob/living/carbon/human/proc/consume
+	add_verb(src, /mob/living/carbon/human/proc/breath_death)
+	add_verb(src, /mob/living/carbon/human/proc/consume)
 	remove_language(LANGUAGE_GALCOM)
 	playsound(src, 'sound/hallucinations/wail.ogg', 20, 1)

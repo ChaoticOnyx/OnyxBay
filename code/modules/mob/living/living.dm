@@ -6,7 +6,7 @@
 		add_to_living_mob_list()
 
 	if(give_ghost_proc_at_initialize)
-		verbs |= /mob/living/proc/ghost
+		add_verb(src, /mob/living/proc/ghost)
 
 	if(controllable)
 		GLOB.available_mobs_for_possess["\ref[src]"] += src
@@ -91,7 +91,7 @@
 
 			//Leaping mobs just land on the tile, no pushing, no anything.
 			if(status_flags & LEAPING)
-				loc = tmob.loc
+				forceMove(tmob.loc)
 				status_flags &= ~LEAPING
 				now_pushing = 0
 				return
@@ -838,7 +838,7 @@
 
 /mob/living/update_icons()
 	if(auras)
-		overlays |= auras
+		AddOverlays(auras)
 
 /mob/living/proc/add_aura(obj/aura/aura)
 	LAZYDISTINCTADD(auras,aura)

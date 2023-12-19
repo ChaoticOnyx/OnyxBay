@@ -14,6 +14,8 @@
 	var/list/_think_ctxs = list()
 	var/datum/think_context/_main_think_ctx
 
+	var/cached_ref
+
 #ifdef TESTING
 	var/tmp/running_find_references
 	var/tmp/last_find_references = 0
@@ -109,7 +111,7 @@
 		return
 
 	if(QDELETED(_main_think_ctx))
-		_main_think_ctx = new(time, CALLBACK(src, .proc/think))
+		_main_think_ctx = new(time, CALLBACK(src, nameof(.proc/think)))
 		SSthink.contexts_groups[_main_think_ctx.group] += _main_think_ctx
 		CALC_NEXT_GROUP_RUN(_main_think_ctx)
 

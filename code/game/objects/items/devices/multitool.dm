@@ -52,7 +52,7 @@
 			unregister_buffer(buffer_object)
 			buffer_object = buffer
 			if(buffer_object)
-				register_signal(buffer_object, SIGNAL_QDELETING, /obj/item/device/multitool/proc/unregister_buffer)
+				register_signal(buffer_object, SIGNAL_QDELETING, nameof(.proc/unregister_buffer))
 
 /obj/item/device/multitool/proc/unregister_buffer(atom/buffer_to_unregister)
 	// Only remove the buffered object, don't reset the name

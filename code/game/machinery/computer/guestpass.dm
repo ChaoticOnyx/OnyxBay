@@ -43,9 +43,14 @@
 /obj/machinery/computer/guestpass
 	name = "guest pass terminal"
 	icon_state = "guest"
-	icon_keyboard = null
 	icon_screen = "pass"
+	icon_keyboard = "guest_key"
+	light_color = "#0099FF"
+	light_max_bright_on = 1.0
+	light_inner_range_on = 0.5
+	light_outer_range_on = 2
 	density = 0
+	turf_height_offset = 0
 
 	var/obj/item/card/id/giver
 	var/list/accesses = list()

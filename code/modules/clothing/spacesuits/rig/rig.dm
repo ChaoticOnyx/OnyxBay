@@ -130,18 +130,18 @@
 		air_supply = new air_type(src)
 	if(glove_type)
 		gloves = new glove_type(src)
-		verbs |= /obj/item/rig/proc/toggle_gauntlets
+		verbs += /obj/item/rig/proc/toggle_gauntlets
 	if(helm_type)
 		helmet = new helm_type(src)
-		verbs |= /obj/item/rig/proc/toggle_helmet
+		verbs += /obj/item/rig/proc/toggle_helmet
 	if(boot_type)
 		boots = new boot_type(src)
-		verbs |= /obj/item/rig/proc/toggle_boots
+		verbs += /obj/item/rig/proc/toggle_boots
 	if(chest_type)
 		chest = new chest_type(src)
 		if(allowed)
 			chest.allowed = allowed
-		verbs |= /obj/item/rig/proc/toggle_chest
+		verbs += /obj/item/rig/proc/toggle_chest
 
 	for(var/obj/item/piece in list(gloves,helmet,boots,chest))
 		if(!istype(piece))
@@ -349,7 +349,7 @@
 	to_chat(wearer, "<span class='info'><b>Your entire suit [canremove ? "loosens as the components relax" : "tightens around you as the components lock into place"].</b></span>")
 	if(wearer.client)
 		wearer.client.screen -= booting_L
-		addtimer(CALLBACK(src, .proc/r_booting_done, wearer.client, booting_R), 80)
+		addtimer(CALLBACK(src, nameof(.proc/r_booting_done), wearer.client, booting_R), 80)
 	qdel(booting_L)
 	booting_R.icon_state = "boot_done"
 
@@ -559,10 +559,10 @@
 		ui.open()
 		ui.set_auto_update(1)
 
-/obj/item/rig/update_icon(update_mob_icon)
+/obj/item/rig/on_update_icon(update_mob_icon)
 
 	//TODO: Maybe consider a cache for this (use mob_icon as blank canvas, use suit icon overlay).
-	overlays.Cut()
+	ClearOverlays()
 	if(!mob_icon || update_mob_icon)
 		var/species_icon = 'icons/mob/onmob/rig_back.dmi'
 		// Since setting mob_icon will override the species checks in
@@ -572,7 +572,7 @@
 	if(installed_modules.len)
 		for(var/obj/item/rig_module/module in installed_modules)
 			if(module.suit_overlay)
-				chest.overlays += image("icon" = 'icons/mob/onmob/rig_modules.dmi', "icon_state" = "[module.suit_overlay]", "dir" = SOUTH)
+				chest.AddOverlays(image("icon" = 'icons/mob/onmob/rig_modules.dmi', "icon_state" = "[module.suit_overlay]", "dir" = SOUTH))
 
 	if(wearer)
 		wearer.update_inv_shoes()
@@ -591,7 +591,7 @@
 
 	for(var/obj/item/rig_module/module in installed_modules)
 		if(module.suit_overlay)
-			ret.overlays += image("icon" = 'icons/mob/onmob/rig_modules.dmi', "icon_state" = "[module.suit_overlay]")
+			ret.AddOverlays(image('icons/mob/onmob/rig_modules.dmi', module.suit_overlay))
 	return ret
 
 /obj/item/rig/proc/check_suit_access(mob/living/carbon/human/user)
@@ -942,7 +942,7 @@
 	icon_state = ""
 	layer = HUD_ABOVE_ITEM_LAYER
 
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	alpha = 20 //Animated up when loading
 
 /mob/living/carbon/human/get_rig()

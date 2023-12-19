@@ -6,7 +6,7 @@
 	if(!ignore)
 		qdel(src)
 		return
-	..()
+	. = ..()
 
 /obj/effect/decal/cleanable/Initialize()
 	if (random_icon_states && length(src.random_icon_states) > 0)

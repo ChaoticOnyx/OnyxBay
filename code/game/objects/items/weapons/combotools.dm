@@ -24,7 +24,7 @@
 	update_icon()
 	return
 
-/obj/item/combotool/update_icon()
+/obj/item/combotool/on_update_icon()
 	underlays.Cut()
 	underlays += "adv_[tool_c]"
 	..()

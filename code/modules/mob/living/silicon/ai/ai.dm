@@ -109,10 +109,10 @@ var/list/ai_verbs_default = list(
 	give_ghost_proc_at_initialize = FALSE
 
 /mob/living/silicon/ai/proc/add_ai_verbs()
-	src.verbs |= ai_verbs_default
+	add_verb(src, ai_verbs_default)
 
 /mob/living/silicon/ai/proc/remove_ai_verbs()
-	src.verbs -= ai_verbs_default
+	remove_verb(src, ai_verbs_default)
 
 /mob/living/silicon/ai/New(loc, datum/ai_laws/L,  obj/item/organ/internal/cerebrum/mmi/B, safety = 0)
 	var/list/possibleNames = GLOB.ai_names
@@ -665,7 +665,7 @@ var/list/ai_verbs_default = list(
 	multitool_mode = !multitool_mode
 	to_chat(src, "<span class='notice'>Multitool mode: [multitool_mode ? "E" : "Dise"]ngaged</span>")
 
-/mob/living/silicon/ai/update_icon()
+/mob/living/silicon/ai/on_update_icon()
 	if(!selected_sprite || !(selected_sprite in available_icons()))
 		selected_sprite = decls_repository.get_decl(default_ai_icon)
 

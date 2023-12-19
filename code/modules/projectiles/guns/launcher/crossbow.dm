@@ -69,7 +69,7 @@
 	if(throwforce == 15) // The rod has been superheated - we don't want it to be useable when removed from the bow.
 		to_chat(user, "[src] shatters into a scattering of overstressed metal shards as it leaves the crossbow.")
 		var/obj/item/material/shard/shrapnel/S = new()
-		S.loc = get_turf(src)
+		S.dropInto(user.loc)
 		qdel(src)
 
 /obj/item/gun/launcher/crossbow
@@ -116,7 +116,7 @@
 	if(tension)
 		if(bolt)
 			user.visible_message("[user] relaxes the tension on [src]'s string and removes [bolt].","You relax the tension on [src]'s string and remove [bolt].")
-			bolt.loc = get_turf(src)
+			bolt.dropInto(user.loc)
 			var/obj/item/arrow/A = bolt
 			bolt = null
 			A.removed(user)
@@ -180,7 +180,7 @@
 			if (R.use(1))
 				bolt = new /obj/item/arrow/rod(src)
 				bolt.fingerprintslast = src.fingerprintslast
-				bolt.loc = src
+				bolt.forceMove(src)
 				update_icon()
 				user.visible_message("[user] jams [bolt] into [src].","You jam [bolt] into [src].")
 				superheat_rod(user)
@@ -199,7 +199,7 @@
 	else if(isScrewdriver(W))
 		if(cell)
 			var/obj/item/C = cell
-			C.loc = get_turf(user)
+			C.dropInto(user.loc)
 			to_chat(user, "<span class='notice'>You jimmy [cell] out of [src] with [W].</span>")
 			cell = null
 		else
@@ -219,7 +219,7 @@
 	bolt.icon_state = "metal-rod-superheated"
 	cell.use(500)
 
-/obj/item/gun/launcher/crossbow/update_icon()
+/obj/item/gun/launcher/crossbow/on_update_icon()
 	if(tension > 1)
 		icon_state = "crossbow-drawn"
 	else if(bolt)
@@ -243,7 +243,7 @@
 
 	var/buildstate = 0
 
-/obj/item/crossbowframe/update_icon()
+/obj/item/crossbowframe/on_update_icon()
 	icon_state = "crossbowframe[buildstate]"
 
 /obj/item/crossbowframe/_examine_text(mob/user)

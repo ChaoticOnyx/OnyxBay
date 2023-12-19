@@ -1,5 +1,6 @@
 /mob/living/carbon/human
 	layer = BASE_HUMAN_LAYER
+	blocks_emissive = EMISSIVE_BLOCK_NONE //Humans need to decide per bodypart if they block or not, therefore we ignore baseline functionality
 
 	//Hair color, secondary color and style
 	var/r_hair = 0
@@ -102,6 +103,7 @@
 	var/equipment_prescription				// Eye prescription granted by equipped items
 	var/equipment_light_protection
 	var/list/equipment_overlays = list()	// Extra overlays from equipped items
+	var/list/limb_render_keys = list()
 
 	var/med_record = ""
 	var/sec_record = ""

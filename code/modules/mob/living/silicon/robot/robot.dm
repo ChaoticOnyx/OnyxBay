@@ -13,6 +13,8 @@
 	mob_swap_flags = ROBOT|MONKEY|METROID|SIMPLE_ANIMAL
 	mob_push_flags = ~HEAVY //trundle trundle
 
+	blocks_emissive = EMISSIVE_BLOCK_NONE
+
 	var/lights_on = 0 // Is our integrated light on?
 	var/used_power_this_tick = 0
 	var/sight_mode = 0
@@ -496,8 +498,8 @@
 	// if you have a jetpack, show the internal tank pressure
 	var/obj/item/tank/jetpack/current_jetpack = installed_jetpack()
 	if (current_jetpack)
-		stat("Internal Atmosphere Info", current_jetpack.name)
-		stat("Tank Pressure", current_jetpack.air_contents.return_pressure())
+		. += "Internal Atmosphere Info [current_jetpack.name]"
+		. += "Tank Pressure [current_jetpack.air_contents.return_pressure()]"
 
 
 // this function returns the robots jetpack, if one is installed
@@ -510,30 +512,29 @@
 // this function displays the cyborgs current cell charge in the stat panel
 /mob/living/silicon/robot/proc/show_cell_power()
 	if(cell)
-		stat(null, text("Charge Left: [round(CELL_PERCENT(cell))]%"))
-		stat(null, text("Cell Rating: [round(cell.maxcharge)]")) // Round just in case we somehow get crazy values
-		stat(null, text("Power Cell Load: [round(used_power_this_tick)]W"))
+		. += "Charge Left: [round(CELL_PERCENT(cell))]%"
+		. += "Cell Rating: [round(cell.maxcharge)]" // Round just in case we somehow get crazy values
+		. += "Power Cell Load: [round(used_power_this_tick)]W"
 	else
-		stat(null, text("No Cell Inserted!"))
+		. += "No Cell Inserted!"
 
 /mob/living/silicon/robot/proc/show_gps()
 	var/turf/T = get_turf(src)
 	if (T.z != 1 && T.z != 2)
-		stat(null, text("Current location: Unknown"))
+		. += "Current location: Unknown"
 	else
-		stat(null, text("Current location:[T.x]:[T.y]:[T.z]"))
+		. += "Current location:[T.x]:[T.y]:[T.z]"
 
 // update the status screen display
-/mob/living/silicon/robot/Stat()
+/mob/living/silicon/robot/get_status_tab_items()
 	. = ..()
-	if (statpanel("Status"))
-		show_gps()
-		show_cell_power()
-		show_jetpack_pressure()
-		stat(null, text("Lights: [lights_on ? "ON" : "OFF"]"))
-		if(module)
-			for(var/datum/matter_synth/ms in module.synths)
-				stat("[ms.name]: [ms.energy]/[ms.max_energy_multiplied]")
+	show_gps()
+	show_cell_power()
+	show_jetpack_pressure()
+	. += "Lights: [lights_on ? "ON" : "OFF"]"
+	if(module)
+		for(var/datum/matter_synth/ms in module.synths)
+			. += "[ms.name]: [ms.energy]/[ms.max_energy_multiplied]"
 
 /mob/living/silicon/robot/restrained()
 	return 0
@@ -823,8 +824,8 @@
 			return 1
 	return 0
 
-/mob/living/silicon/robot/update_icon()
-	overlays.Cut()
+/mob/living/silicon/robot/on_update_icon()
+	ClearOverlays()
 	if(stat == CONSCIOUS)
 		var/eye_icon_state = "eyes-[module_hulls[icontype].icon_state]"
 		if(eye_icon_state in icon_states(icon))
@@ -832,23 +833,22 @@
 				eye_overlays = list()
 			var/image/eye_overlay = eye_overlays[eye_icon_state]
 			if(!eye_overlay)
-				eye_overlay = image(icon, eye_icon_state)
-				eye_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-				eye_overlay.layer = EYE_GLOW_LAYER
-				eye_overlays[eye_icon_state] = eye_overlay
-			overlays += eye_overlay
+				eye_overlays[eye_icon_state] = image(icon, eye_icon_state)
+				eye_overlays["[eye_icon_state]+ea"] = emissive_appearance(icon, eye_icon_state, cache = FALSE)
+			AddOverlays(eye_overlay)
+			AddOverlays("[eye_icon_state]+ea")
 
 	if(opened)
 		var/panelprefix = custom_sprite ? module_hulls[icontype] : "ov"
 		if(wiresexposed)
-			overlays += "[panelprefix]-openpanel +w"
+			AddOverlays("[panelprefix]-openpanel +w")
 		else if(cell)
-			overlays += "[panelprefix]-openpanel +c"
+			AddOverlays("[panelprefix]-openpanel +c")
 		else
-			overlays += "[panelprefix]-openpanel -c"
+			AddOverlays("[panelprefix]-openpanel -c")
 
 	if(module_active && istype(module_active,/obj/item/borg/combat/shield))
-		overlays += "[module_hulls[icontype].icon_state]-shield"
+		AddOverlays("[module_hulls[icontype].icon_state]-shield")
 
 	if(modtype == "Combat")
 		if(module_active && istype(module_active,/obj/item/borg/combat/mobility))
@@ -1139,10 +1139,10 @@
 	toggle_sensor_mode()
 
 /mob/living/silicon/robot/proc/add_robot_verbs()
-	src.verbs |= robot_verbs_default
+	add_verb(src, robot_verbs_default)
 
 /mob/living/silicon/robot/proc/remove_robot_verbs()
-	src.verbs -= robot_verbs_default
+	remove_verb(src, robot_verbs_default)
 
 // Uses power from cyborg's cell. Returns 1 on success or 0 on failure.
 // Properly converts using CELLRATE now! Amount is in Joules.
@@ -1310,7 +1310,7 @@
 			if(istype(U,/obj/item/borg/upgrade/floodlight))
 				continue
 			contents.Remove(U)
-			U.loc = get_turf(src)
+			U.forceMove(get_turf(src))
 			U.installed = 0
 	sensor_mode = 0
 	if (ion_trail)

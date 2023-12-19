@@ -11,7 +11,7 @@
 	icon_gib = "syndicate_gib"
 	var/icon_preattack = "Goliath_preattack"
 	attack_sound = 'sound/effects/fighting/punch4.ogg'
-	mouse_opacity = 2
+	mouse_opacity = MOUSE_OPACITY_OPAQUE
 	move_to_delay = 40
 	ranged = 1
 	ranged_cooldown = 2 //By default, start the Goliath with his cooldown off so that people can run away quickly on first sight
@@ -90,7 +90,7 @@
 	if(istype(turftype, /turf/simulated/mineral))
 		var/turf/simulated/mineral/M = turftype
 		M.GetDrilled()
-	addtimer(CALLBACK(src, .proc/Trip), 20)
+	addtimer(CALLBACK(src, nameof(.proc/Trip)), 20)
 
 /obj/effect/goliath_tentacle/original
 

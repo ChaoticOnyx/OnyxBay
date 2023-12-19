@@ -5,6 +5,7 @@
 	program_icon_state = "generic"
 	program_key_state = "generic_key"
 	program_menu_icon = "mail-closed"
+	program_light_color = "#00B000"
 	size = 7
 	category = PROG_OFFICE
 	requires_ntnet = 1

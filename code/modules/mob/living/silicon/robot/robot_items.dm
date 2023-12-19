@@ -69,7 +69,7 @@
 			playsound(src.loc, 'sound/signals/error30.ogg', 50, 0)
 	if(response == "Eject")
 		if(loaded_item)
-			loaded_item.loc = get_turf(src)
+			loaded_item.forceMove(get_turf(src))
 			desc = initial(desc)
 			icon_state = initial(icon_state)
 			loaded_item = null
@@ -92,7 +92,7 @@
 		if(loaded_item)
 			to_chat(user, "Your [src] already has something inside.  Analyze or eject it first.")
 			return
-		I.loc = src
+		I.forceMove(src)
 		loaded_item = I
 		for(var/mob/M in viewers())
 			M.show_message(text("<span class='notice'>[user] adds the [I] to the [src].</span>"), 1)
@@ -197,7 +197,7 @@
 	var/list/obj/item/tool_images = list()
 	for(var/obj/item/tool in surgery_items)
 		var/image/img = image(icon = tool.icon, icon_state = tool.icon_state)
-		img.overlays = tool.overlays
+		img.CopyOverlays(tool)
 		tool_images[tool] = img
 	selected_tool = show_radial_menu(user, src, tool_images, radius = 42, require_near = TRUE, in_screen = TRUE)
 	to_chat(user, SPAN_NOTICE("You select to use [selected_tool ? selected_tool : "nothing"]"))
@@ -250,9 +250,9 @@
 				if(calc_carry() + add >= max_carry)
 					break
 
-				I.loc = src
+				I.forceMove(src)
 				carrying.Add(I)
-				overlays += image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer)
+				AddOverlays(image(I.icon, I.icon_state, layer = (30 + I.layer)))
 				addedSomething = 1
 		if (addedSomething)
 			user.visible_message(SPAN("notice", "'\The [user] load some items onto their service tray."))
@@ -278,12 +278,12 @@
 			dropspot = target.loc
 
 
-		overlays = null
+		ClearOverlays()
 
 		var droppedSomething = 0
 
 		for(var/obj/item/I in carrying)
-			I.loc = dropspot
+			I.dropInto(dropspot)
 			carrying.Remove(I)
 			droppedSomething = 1
 			if(!foundtable && isturf(dropspot))
@@ -698,7 +698,7 @@
 /obj/item/robot_rack/weapon
 	name = "weapon rack"
 	desc = "A rack for carrying melee weapons, energy weapons and firearms."
-	icon = 'icons/obj/storage/misc.dmi'
+	icon = 'icons/obj/crates.dmi'
 	icon_state = "weaponcrate"
 	object_type = list(
 		/obj/item/melee,
@@ -784,7 +784,7 @@
 		)
 	capacity = 1
 
-/obj/item/robot_rack/update_icon()
+/obj/item/robot_rack/on_update_icon()
 	..()
 	if (length(held) < capacity)
 		icon_state = initial(icon_state)
@@ -917,7 +917,7 @@
 					product.name = "synthesised blood pack"
 
 			user.visible_message("<span class='notice'>\The [user]'s \the [src] spits out \the [selected.name].</span>")
-			product.loc = get_turf(A)
+			product.dropInto(get_turf(A))
 			if(isrobot(user))
 				var/mob/living/silicon/robot/R = user
 				if(R.cell)

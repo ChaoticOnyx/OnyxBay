@@ -8,7 +8,7 @@
 	var/obj/item/cell/device/cell
 	var/enabled = 0
 
-/obj/item/shield_diffuser/update_icon()
+/obj/item/shield_diffuser/on_update_icon()
 	if(enabled)
 		icon_state = "hdiffuser_on"
 	else

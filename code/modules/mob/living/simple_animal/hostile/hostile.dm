@@ -3,7 +3,7 @@
 	stop_automated_movement_when_pulled = FALSE
 	a_intent = I_HURT
 	armor_projectile = 25
-	mouse_opacity = 2 //This makes it easier to hit hostile mobs, you only need to click on their tile, and is set back to 1 when they die
+	mouse_opacity = MOUSE_OPACITY_OPAQUE //This makes it easier to hit hostile mobs, you only need to click on their tile, and is set back to 1 when they die
 
 	var/stance = HOSTILE_STANCE_IDLE	//Used to determine behavior
 	var/mob/living/target_mob
@@ -98,7 +98,7 @@
 			unregister_signal(target_mob, SIGNAL_QDELETING)
 		target_mob = L
 		if(!QDELETED(target_mob) && !client)
-			register_signal(target_mob, SIGNAL_QDELETING, .proc/_target_deleted)
+			register_signal(target_mob, SIGNAL_QDELETING, nameof(.proc/_target_deleted))
 	if(target_mob)
 		Aggro()
 		stance = HOSTILE_STANCE_ATTACK
@@ -201,7 +201,7 @@
 	. = ..()
 	if(.)
 		LoseAggro()
-		mouse_opacity = 1
+		mouse_opacity = MOUSE_OPACITY_ICON
 
 /mob/living/simple_animal/hostile/Life()
 	. = ..()

@@ -93,7 +93,7 @@
 		unregister_signal(src, SIGNAL_QDELETING)
 	current = new_current
 	if(current)
-		register_signal(src, SIGNAL_QDELETING, .proc/clear_current)
+		register_signal(src, SIGNAL_QDELETING, nameof(.proc/clear_current))
 
 /datum/mind/proc/clear_current(datum/source)
 	set_current(null)
@@ -536,7 +536,7 @@
 	if(!mind.name)	mind.name = real_name
 	mind.set_current(src)
 	if(player_is_antag(mind))
-		src.client.verbs += /client/proc/aooc
+		add_verb(src.client, /client/proc/aooc)
 
 //HUMAN
 /mob/living/carbon/human/mind_initialize()

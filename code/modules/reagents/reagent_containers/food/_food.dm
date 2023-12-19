@@ -198,11 +198,11 @@
 
 			bitecount++
 			// TODO: Replace with U.update_icon()
-			U.overlays.Cut()
+			U.ClearOverlays()
 			U.loaded = "[src]"
 			var/image/I = new(U.icon, "loadedfood")
 			I.color = src.filling_color
-			U.overlays += I
+			U.AddOverlays(I)
 			// /TODO
 
 			if(!reagents)

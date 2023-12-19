@@ -39,6 +39,9 @@
 		if(target in client.progressbars)
 			if(--client.progressbars[target] <= 0)
 				client.progressbars -= target
+		client = null
+	target = null
+	user = null
 
 	qdel(bar)
 	. = ..()

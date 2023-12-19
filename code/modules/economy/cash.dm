@@ -71,8 +71,8 @@
 	if(num == 0) // Less than one credit, let's just make it look like 1 for ease
 		. += "spacecash1"
 
-/obj/item/spacecash/bundle/update_icon()
-	overlays.Cut()
+/obj/item/spacecash/bundle/on_update_icon()
+	ClearOverlays()
 	var/list/images = src.getMoneyImages()
 
 	for(var/A in images)
@@ -82,7 +82,7 @@
 			offset_x = rand(-6, 6),
 			offset_y = rand(-4, 8)
 		)
-		overlays += banknote
+		AddOverlays(banknote)
 
 	src.desc = "They are worth [worth] Credit."
 	if(worth in denominations)

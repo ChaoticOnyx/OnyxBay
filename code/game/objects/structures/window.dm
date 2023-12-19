@@ -90,12 +90,12 @@
 
 /obj/structure/window/proc/updateSilicate()
 	if (overlays)
-		overlays.Cut()
+		ClearOverlays()
 
 	var/image/img = image(src.icon, src.icon_state)
 	img.color = "#ffffff"
 	img.alpha = silicate * 255 / 100
-	overlays += img
+	AddOverlays(img)
 
 /obj/structure/window/proc/shatter(display_message = 1)
 	playsound(src, SFX_BREAK_WINDOW, 70, 1)
@@ -411,17 +411,17 @@
 //Updates the availabiliy of the rotation verbs
 /obj/structure/window/proc/update_verbs()
 	if(anchored)
-		verbs -= /obj/structure/window/proc/rotate
-		verbs -= /obj/structure/window/proc/revrotate
+		remove_verb(src, /obj/structure/window/proc/rotate)
+		remove_verb(src, /obj/structure/window/proc/revrotate)
 	else
-		verbs += /obj/structure/window/proc/rotate
-		verbs += /obj/structure/window/proc/revrotate
+		add_verb(src, /obj/structure/window/proc/rotate)
+		add_verb(src, /obj/structure/window/proc/revrotate)
 
 //merges adjacent full-tile windows into one (blatant ripoff from game/smoothwall.dm)
-/obj/structure/window/update_icon()
+/obj/structure/window/on_update_icon()
 	//A little cludge here, since I don't know how it will work with slim windows. Most likely VERY wrong.
 	//this way it will only update full-tile ones
-	overlays.Cut()
+	ClearOverlays()
 	layer = FULL_WINDOW_LAYER
 	if(!is_fulltile())
 		layer = SIDE_WINDOW_LAYER
@@ -438,7 +438,7 @@
 	icon_state = ""
 	for(var/i = 1 to 4)
 		var/image/I = image(icon, "[basestate][connections[i]]", dir = 1<<(i-1))
-		overlays += I
+		AddOverlays(I)
 
 	return
 
@@ -663,5 +663,5 @@
 	if(active && !powered(power_channel))
 		toggle_tint()
 
-/obj/machinery/button/windowtint/update_icon()
+/obj/machinery/button/windowtint/on_update_icon()
 	icon_state = "light[active]"

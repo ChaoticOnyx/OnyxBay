@@ -33,20 +33,20 @@
 	/// List of mobs to be gibbed.
 	var/list/mob/mobs_to_process
 
-/obj/machinery/gibber/update_icon()
-	overlays.Cut()
+/obj/machinery/gibber/on_update_icon()
+	ClearOverlays()
 	if(panel_open)
-		overlays += "gibber-panel"
+		AddOverlays("gibber-panel")
 
 	if(stat & (NOPOWER|BROKEN))
 		return
 
 	if(operating)
-		overlays += "gibber-use"
+		AddOverlays("gibber-use")
 	else if(length(mobs_to_process))
-		overlays += "gibber-jam"
+		AddOverlays("gibber-jam")
 	else
-		overlays += "gibber-idle"
+		AddOverlays("gibber-idle")
 
 /obj/machinery/gibber/RefreshParts()
 	var/time_modifier = 0
@@ -227,7 +227,7 @@
 	for(var/mob/pig in mobs_to_process)
 		create_mob_drop(pig)
 
-	timer = addtimer(CALLBACK(src, .proc/finish_processing, user), length(mobs_to_process) * gib_time, TIMER_STOPPABLE)
+	timer = addtimer(CALLBACK(src, nameof(.proc/finish_processing), user), length(mobs_to_process) * gib_time, TIMER_STOPPABLE)
 
 /obj/machinery/gibber/proc/create_mob_drop(mob/victim)
 	if(istype(victim, /mob/living/simple_animal/hostile/faithless))
@@ -345,15 +345,15 @@
 
 	var/scoops_per_attempt = 1
 
-/obj/machinery/gibber/industrial/update_icon()
-	overlays.Cut()
+/obj/machinery/gibber/industrial/on_update_icon()
+	ClearOverlays()
 	if(stat & (NOPOWER|BROKEN))
 		return
 
 	if(operating)
-		overlays += "ind_gibber-use"
+		AddOverlays("ind_gibber-use")
 	else if(length(mobs_to_process))
-		overlays += "ind_gibber-jam"
+		AddOverlays("ind_gibber-jam")
 
 	return
 
@@ -361,7 +361,7 @@
 	. = ..()
 
 	set_next_think(world.time)
-	add_think_ctx("pickup", CALLBACK(src, .proc/perform_pickup), world.time + GIBBER_THINK_DELTA)
+	add_think_ctx("pickup", CALLBACK(src, nameof(.proc/perform_pickup)), world.time + GIBBER_THINK_DELTA)
 
 /obj/machinery/gibber/industrial/RefreshParts()
 	. = ..()

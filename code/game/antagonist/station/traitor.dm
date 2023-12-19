@@ -52,36 +52,41 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 		return
 
 	if(istype(traitor.current, /mob/living/silicon))
-		var/datum/objective/assassinate/kill_objective = new
-		kill_objective.owner = traitor
-		kill_objective.find_target()
-		traitor.objectives += kill_objective
-
-		var/datum/objective/survive/survive_objective = new
-		survive_objective.owner = traitor
-		traitor.objectives += survive_objective
+		for(var/i=1, i <= 2, i++)
+			if(prob(50))
+				var/datum/objective/assassinate/kill_objective = new
+				kill_objective.owner = traitor
+				kill_objective.find_target()
+				traitor.objectives += kill_objective
+			else
+				var/datum/objective/protect/protect_objective = new
+				protect_objective.owner = traitor
+				protect_objective.find_target()
+				traitor.objectives += protect_objective
 
 		if(prob(10))
 			var/datum/objective/block/block_objective = new
 			block_objective.owner = traitor
 			traitor.objectives += block_objective
-	else
-		var/datum/objective/contracts/C = new
-		C.owner = traitor
-		traitor.objectives += C
-		switch(rand(1,100))
-			if(1 to 100)
-				if (!(locate(/datum/objective/escape) in traitor.objectives))
-					var/datum/objective/escape/escape_objective = new
-					escape_objective.owner = traitor
-					traitor.objectives += escape_objective
+		else
+			var/datum/objective/survive/survive_objective = new
+			survive_objective.owner = traitor
+			traitor.objectives += survive_objective
 
-			else
-				if (!(locate(/datum/objective/hijack) in traitor.objectives))
-					var/datum/objective/hijack/hijack_objective = new
-					hijack_objective.owner = traitor
-					traitor.objectives += hijack_objective
-	return
+	else
+		var/datum/objective/contracts/contract_objective = new
+		contract_objective.owner = traitor
+		traitor.objectives += contract_objective
+
+		if(prob(1))
+			var/datum/objective/hijack/hijack_objective = new
+			hijack_objective.owner = traitor
+			traitor.objectives += hijack_objective
+		else
+			var/datum/objective/escape/escape_objective = new
+			escape_objective.owner = traitor
+			traitor.objectives += escape_objective
+
 
 /datum/antagonist/traitor/equip(mob/living/carbon/human/traitor_mob)
 	if(istype(traitor_mob, /mob/living/silicon)) // this needs to be here because ..() returns false if the mob isn't human

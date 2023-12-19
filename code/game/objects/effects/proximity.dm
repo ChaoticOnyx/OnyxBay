@@ -24,7 +24,7 @@
 	else if(hasprox_receiver == host) //Default case
 		hasprox_receiver = H
 	host = H
-	register_signal(host, SIGNAL_MOVED, .proc/HandleMove)
+	register_signal(host, SIGNAL_MOVED, nameof(.proc/HandleMove))
 	last_host_loc = host.loc
 	SetRange(current_range,TRUE)
 
@@ -82,7 +82,7 @@
 		if(I <= old_checkers_used)
 			var/obj/effect/abstract/proximity_checker/pc = checkers_local[I]
 			if(pc)
-				pc.loc = turfs[I]
+				pc.forceMove(turfs[I])
 			else
 				checkers += new /obj/effect/abstract/proximity_checker(turfs[I], src)
 		else

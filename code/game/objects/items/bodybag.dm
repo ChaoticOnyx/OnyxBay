@@ -62,14 +62,14 @@
 		if(t)
 			SetName("body bag - ")
 			name += t
-			overlays += image(icon, "bodybag_label")
+			AddOverlays(image(icon, "bodybag_label"))
 		else
 			SetName("body bag")
 	//..() //Doesn't need to run the parent. Since when can fucking bodybags be welded shut? -Agouri
 		return
 	else if(isWirecutter(W))
 		SetName("body bag")
-		overlays.Cut()
+		ClearOverlays()
 		to_chat(user, "You cut the tag off \the [src].")
 		return
 	else if(istype(W, /obj/item/device/healthanalyzer/) && !opened)
@@ -107,7 +107,7 @@
 	if((over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
 		fold(usr)
 
-/obj/structure/closet/body_bag/update_icon()
+/obj/structure/closet/body_bag/on_update_icon()
 	if(opened)
 		icon_state = icon_opened
 	else

@@ -134,7 +134,7 @@
 					if(loaded.len >= max_shells)
 						break
 					if(C.caliber == caliber)
-						C.loc = src
+						C.forceMove(src)
 						loaded += C
 						AM.stored_ammo -= C //should probably go inside an ammo_magazine proc, but I guess less proc calls this way...
 						count++
@@ -220,7 +220,7 @@
 /obj/item/gun/projectile/afterattack(atom/A, mob/living/user)
 	..()
 	if(auto_eject && ammo_magazine && ammo_magazine.stored_ammo && !ammo_magazine.stored_ammo.len)
-		ammo_magazine.loc = get_turf(src.loc)
+		ammo_magazine.dropInto(user.loc)
 		user.visible_message(
 			"[ammo_magazine] falls out and clatters on the floor!",
 			"<span class='notice'>[ammo_magazine] falls out and clatters on the floor!</span>"

@@ -58,7 +58,7 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	init_voice_activators()
 	firemodes = GLOB.lawgiver_modes.Copy()
 	. = ..()
-	verbs -= /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample
+	remove_verb(src, /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample)
 	update_icon()
 	// for firemode voice-triggers
 	GLOB.listening_objects += src
@@ -71,8 +71,8 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	update_icon()
 	return ..()
 
-/obj/item/gun/projectile/lawgiver/update_icon()
-	overlays.Cut()
+/obj/item/gun/projectile/lawgiver/on_update_icon()
+	ClearOverlays()
 	var/obj/item/ammo_magazine/lawgiver/M = ammo_magazine
 	var/datum/firemode/F = firemodes[sel_mode]
 	if(M)
@@ -80,8 +80,8 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 		var/image/ammo_overlay = null
 		var/icon_state_suffix = round(M.ammo_counters[F.name], 1)
 		ammo_overlay = image('icons/obj/guns/gun.dmi', src, "[initial(icon_state)][icon_state_suffix]")
-		overlays += magazine_overlay
-		overlays += ammo_overlay
+		AddOverlays(magazine_overlay)
+		AddOverlays(ammo_overlay)
 
 	if (istype(loc,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = loc
@@ -92,7 +92,7 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 					DNA_overlay = image('icons/obj/guns/gun.dmi', src, "[initial(icon_state)]DNAgood")
 				else
 					DNA_overlay = image('icons/obj/guns/gun.dmi', src, "[initial(icon_state)]DNAbad")
-				overlays += DNA_overlay
+				AddOverlays(DNA_overlay)
 
 /obj/item/gun/projectile/lawgiver/attack_self(mob/user )
 	unload_ammo(user)
@@ -116,8 +116,8 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	if(!dna_profile)
 		dna_profile = H.dna.unique_enzymes
 		to_chat(usr, SPAN("notice", "You submit a DNA sample to \the [src]."))
-		verbs += /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample
-		verbs -= /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample
+		add_verb(src, /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample)
+		remove_verb(src, /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample)
 		update_icon()
 		return 1
 
@@ -143,8 +143,8 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 /obj/item/gun/projectile/lawgiver/proc/remove_dna()
 	dna_profile = null
 	audible_message("<b>\The [src]</b> reports, \"No DNA profile found.\"")
-	verbs += /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample
-	verbs -= /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample
+	add_verb(src, /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample)
+	remove_verb(src, /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample)
 	update_icon()
 
 /obj/item/gun/projectile/lawgiver/emp_act(severity)

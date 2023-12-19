@@ -113,7 +113,7 @@
 
 /obj/effect/gateway/active/New()
 	..()
-	addtimer(CALLBACK(src, .proc/create_and_delete), rand(30,60) SECONDS)
+	addtimer(CALLBACK(src, nameof(.proc/create_and_delete)), rand(30,60) SECONDS)
 
 
 /obj/effect/gateway/active/proc/create_and_delete()
@@ -139,7 +139,7 @@
 		M.AddMovementHandler(/datum/movement_handler/mob/transformation)
 
 		M.icon = null
-		M.overlays.len = 0
+		M.ClearOverlays()
 		M.set_invisibility(101)
 
 		if(istype(M, /mob/living/silicon/robot))

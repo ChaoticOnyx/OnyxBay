@@ -94,7 +94,7 @@
 	mod_handy = 0.75
 	var/buildstate = 0
 
-/obj/item/boomstickframe/update_icon()
+/obj/item/boomstickframe/on_update_icon()
 	icon_state = "boomstick[buildstate]"
 
 /obj/item/boomstickframe/_examine_text(mob/user)

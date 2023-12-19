@@ -118,19 +118,15 @@
 	var/force_update = 0
 	var/emp_hardened = 0
 
-	var/global/status_overlays = FALSE
+	var/static/status_overlays = FALSE
 
-	var/global/list/status_overlays_lock
-	var/global/list/status_overlays_charging
-	var/global/list/status_overlays_equipment
-	var/global/list/status_overlays_lighting
-	var/global/list/status_overlays_environ
+	var/static/list/status_overlays_lock
+	var/static/list/status_overlays_charging
+	var/static/list/status_overlays_equipment
+	var/static/list/status_overlays_lighting
+	var/static/list/status_overlays_environ
 
-	var/global/list/overlight_overlays_lock
-	var/global/list/overlight_overlays_charging
-	var/global/list/overlight_overlays_equipment
-	var/global/list/overlight_overlays_lighting
-	var/global/list/overlight_overlays_environ
+	var/static/mutable_appearance/status_overlay_ea
 
 
 /obj/machinery/power/apc/updateDialog()
@@ -280,7 +276,7 @@
 
 // update the APC icon to show the three base states
 // also add overlays for indicator lights
-/obj/machinery/power/apc/update_icon()
+/obj/machinery/power/apc/on_update_icon()
 	if(!status_overlays)
 		status_overlays = TRUE
 		generate_overlays()
@@ -312,42 +308,37 @@
 
 	if(!(update_state & UPDATE_ALLGOOD))
 		if(overlays.len)
-			overlays = 0
+			ClearOverlays()
 			return
 
 	if(update & 2)
-		if(overlays.len)
-			overlays.len = 0
+		if(length(overlays))
+			ClearOverlays()
 		if(!(stat & (BROKEN|MAINT)) && update_state & UPDATE_ALLGOOD)
-			overlays += status_overlays_lock[locked+1]
-			overlays += status_overlays_charging[charging+1]
+			AddOverlays(status_overlays_lock[locked+1])
 			if(operating)
-				overlays += status_overlays_equipment[equipment+1]
-				overlays += status_overlays_lighting[lighting+1]
-				overlays += status_overlays_environ[environ+1]
+				AddOverlays(status_overlays_charging[charging+1])
+				AddOverlays(status_overlays_equipment[equipment+1])
+				AddOverlays(status_overlays_lighting[lighting+1])
+				AddOverlays(status_overlays_environ[environ+1])
 
-				// Lock and Charging only "glow" if operating, on purpose
-				overlays += overlight_overlays_lock[locked+1]
-				overlays += overlight_overlays_charging[charging+1]
-				overlays += overlight_overlays_equipment[equipment+1]
-				overlays += overlight_overlays_lighting[lighting+1]
-				overlays += overlight_overlays_environ[environ+1]
+				AddOverlays(status_overlay_ea)
 
 	if(update & 3)
 		if(update_state & (UPDATE_OPENED1|UPDATE_OPENED2|UPDATE_BROKE))
 			set_light(0)
 		else if(update_state & UPDATE_BLUESCREEN)
-			set_light(0.25, 0.5, 1, 2, "0000ff")
+			set_light(1.0, 0.5, 1, 2, "#0000FF")
 		else if(!(stat & (BROKEN|MAINT)) && update_state & UPDATE_ALLGOOD)
 			var/color
 			switch(charging)
 				if(0)
-					color = "#b73737"
+					color = "#B51515"
 				if(1)
-					color = "#4958dd"
+					color = "#4958DD"
 				if(2)
 					color = "#008000"
-			set_light(0.35, 0.5, 1, 2, color)
+			set_light(1.0, 0.5, 1, 2, color)
 		else
 			set_light(0)
 
@@ -1233,7 +1224,7 @@
 		return
 	if (cell && cell.charge>=20)
 		cell.use(20);
-		INVOKE_ASYNC(src, .proc/break_lights)
+		INVOKE_ASYNC(src, nameof(.proc/break_lights))
 
 /obj/machinery/power/apc/proc/break_lights()
 	for(var/obj/machinery/light/L in area)
@@ -1266,7 +1257,7 @@
 	update_icon()
 	return 1
 
-#define OVERLIGHT_IMAGE(a, b) a=image(icon, b); a.alpha=96; a.plane = EFFECTS_ABOVE_LIGHTING_PLANE; a.layer = ABOVE_LIGHTING_LAYER;
+
 /obj/machinery/power/apc/proc/generate_overlays()
 	status_overlays_lock = new
 	status_overlays_charging = new
@@ -1305,43 +1296,7 @@
 	status_overlays_environ[POWERCHAN_ON + 1] = image(icon, "apco2-2")
 	status_overlays_environ[POWERCHAN_ON_AUTO + 1] = image(icon, "apco2-3")
 
-	overlight_overlays_lock = new
-	overlight_overlays_charging = new
-	overlight_overlays_equipment = new
-	overlight_overlays_lighting = new
-	overlight_overlays_environ = new
-
-	overlight_overlays_lock.len = 2
-	overlight_overlays_charging.len = 3
-	overlight_overlays_equipment.len = 5
-	overlight_overlays_lighting.len = 5
-	overlight_overlays_environ.len = 5
-
-	OVERLIGHT_IMAGE(overlight_overlays_lock[1], "apcox-0")    // 0=blue 1=red
-	OVERLIGHT_IMAGE(overlight_overlays_lock[2], "apcox-1")
-
-	OVERLIGHT_IMAGE(overlight_overlays_charging[1], "apco3-0")
-	OVERLIGHT_IMAGE(overlight_overlays_charging[2], "apco3-1")
-	OVERLIGHT_IMAGE(overlight_overlays_charging[3], "apco3-2")
-
-	OVERLIGHT_IMAGE(overlight_overlays_equipment[POWERCHAN_OFF + 1], "apco0-0")
-	OVERLIGHT_IMAGE(overlight_overlays_equipment[POWERCHAN_OFF_TEMP + 1], "apco0-1")
-	OVERLIGHT_IMAGE(overlight_overlays_equipment[POWERCHAN_OFF_AUTO + 1], "apco0-1")
-	OVERLIGHT_IMAGE(overlight_overlays_equipment[POWERCHAN_ON + 1], "apco0-2")
-	OVERLIGHT_IMAGE(overlight_overlays_equipment[POWERCHAN_ON_AUTO + 1], "apco0-3")
-
-	OVERLIGHT_IMAGE(overlight_overlays_lighting[POWERCHAN_OFF + 1], "apco1-0")
-	OVERLIGHT_IMAGE(overlight_overlays_lighting[POWERCHAN_OFF_TEMP + 1], "apco1-1")
-	OVERLIGHT_IMAGE(overlight_overlays_lighting[POWERCHAN_OFF_AUTO + 1], "apco1-1")
-	OVERLIGHT_IMAGE(overlight_overlays_lighting[POWERCHAN_ON + 1], "apco1-2")
-	OVERLIGHT_IMAGE(overlight_overlays_lighting[POWERCHAN_ON_AUTO + 1], "apco1-3")
-
-	OVERLIGHT_IMAGE(overlight_overlays_environ[POWERCHAN_OFF + 1], "apco2-0")
-	OVERLIGHT_IMAGE(overlight_overlays_environ[POWERCHAN_OFF_TEMP + 1], "apco2-1")
-	OVERLIGHT_IMAGE(overlight_overlays_environ[POWERCHAN_OFF_AUTO + 1], "apco2-1")
-	OVERLIGHT_IMAGE(overlight_overlays_environ[POWERCHAN_ON + 1], "apco2-2")
-	OVERLIGHT_IMAGE(overlight_overlays_environ[POWERCHAN_ON_AUTO + 1], "apco2-3")
-#undef OVERLIGHT_IMAGE
+	status_overlay_ea = emissive_appearance(icon, "apcea", cache = FALSE)
 
 
 /obj/item/module/power_control

@@ -24,8 +24,9 @@
 
 	var/prone_icon                            // If set, draws this from icobase when mob is prone.
 
-	var/blood_color = COLOR_BLOOD_HUMAN               // Red.
+	var/blood_color = COLOR_BLOOD_HUMAN       // Red.
 	var/flesh_color = "#ffc896"               // Pink.
+	var/default_eye_color = "#000000"         // Black
 	var/fixed_mut_color
 	var/fixed_skin_tone
 	var/blood_oxy = 1
@@ -433,13 +434,13 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 /datum/species/proc/remove_inherent_verbs(mob/living/carbon/human/H)
 	if(inherent_verbs)
 		for(var/verb_path in inherent_verbs)
-			H.verbs -= verb_path
+			remove_verb(src, verb_path)
 	return
 
 /datum/species/proc/add_inherent_verbs(mob/living/carbon/human/H)
 	if(inherent_verbs)
 		for(var/verb_path in inherent_verbs)
-			H.verbs |= verb_path
+			add_verb(H, verb_path)
 	return
 
 /datum/species/proc/remove_inherent_traits(mob/living/carbon/human/H)

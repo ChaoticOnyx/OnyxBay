@@ -72,7 +72,7 @@
 	if (active)	return 0
 	src.active = 1
 
-	addtimer(CALLBACK(src, .proc/handle_events), 0)
+	addtimer(CALLBACK(src, nameof(.proc/handle_events)), 0)
 
 
 

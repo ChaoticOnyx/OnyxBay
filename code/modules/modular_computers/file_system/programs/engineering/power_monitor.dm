@@ -5,6 +5,7 @@
 	program_icon_state = "power_monitor"
 	program_key_state = "power_key"
 	program_menu_icon = "battery-3"
+	program_light_color = "#FFCC33"
 	extended_desc = "This program connects to sensors to provide information about electrical systems"
 	ui_header = "power_norm.gif"
 	required_access = access_engine
@@ -96,7 +97,7 @@
 				warning("Powernet sensor with unset ID Tag! [S.x]X [S.y]Y [S.z]Z")
 			else
 				grid_sensors += S
-				register_signal(S, SIGNAL_QDELETING, /datum/nano_module/power_monitor/proc/remove_sensor)
+				register_signal(S, SIGNAL_QDELETING, nameof(.proc/remove_sensor))
 
 /datum/nano_module/power_monitor/proc/remove_sensor(removed_sensor, update_ui = TRUE)
 	if(active_sensor == removed_sensor)

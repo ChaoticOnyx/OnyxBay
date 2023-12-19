@@ -23,7 +23,7 @@ var/list/holder_mob_icon_cache = list()
 	..(loc)
 	ASSERT(mob_to_hold)
 	held_mob = mob_to_hold
-	register_signal(mob_to_hold, SIGNAL_QDELETING, /obj/item/holder/proc/onMobQdeleting)
+	register_signal(mob_to_hold, SIGNAL_QDELETING, nameof(.proc/onMobQdeleting))
 	set_next_think(world.time)
 
 /obj/item/holder/proc/destroy_all()
@@ -92,14 +92,14 @@ var/list/holder_mob_icon_cache = list()
 
 /obj/item/holder/proc/sync()
 	dir = 2
-	overlays.Cut()
+	ClearOverlays()
 	icon = held_mob.icon
 	icon_state = held_mob.icon_state
 	item_state = held_mob.item_state
 	color = held_mob.color
 	name = held_mob.name
 	desc = held_mob.desc
-	overlays |= held_mob.overlays
+	AddOverlays(held_mob.overlays)
 
 	update_held_icon()
 

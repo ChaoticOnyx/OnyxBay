@@ -76,6 +76,7 @@ var/const/tk_maxrange = 15
 	layer = HUD_ITEM_LAYER
 
 /obj/item/tk_grab/dropped(mob/user as mob)
+	. = ..()
 	if(focus && user && loc != user && loc != user.loc) // drop_active_hand() gets called when you tk-attack a table/closet with an item
 		if(focus.Adjacent(loc))
 			focus.loc = loc
@@ -162,8 +163,8 @@ var/const/tk_maxrange = 15
 		qdel(O)
 	return
 
-/obj/item/tk_grab/update_icon()
-	overlays.Cut()
+/obj/item/tk_grab/on_update_icon()
+	ClearOverlays()
 	if(focus && focus.icon && focus.icon_state)
-		overlays += icon(focus.icon,focus.icon_state)
+		AddOverlays(icon(focus.icon,focus.icon_state))
 	return

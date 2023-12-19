@@ -27,7 +27,7 @@
 		set_active(FALSE)
 	return ..()
 
-/obj/item/device/t_scanner/update_icon()
+/obj/item/device/t_scanner/on_update_icon()
 	icon_state = "[base_state][on]"
 
 /obj/item/device/t_scanner/emp_act()
@@ -98,7 +98,7 @@
 		if(istype(scanned, /obj/machinery/atmospherics/pipe))
 			var/obj/machinery/atmospherics/pipe/P = scanned
 			I.color = P.pipe_color
-			I.overlays += P.overlays.Copy()
+			I.CopyOverlays(P)
 			I.underlays += P.underlays.Copy()
 
 		if(ismob(scanned))
@@ -108,11 +108,11 @@
 					I.color = rgb(H.r_skin, H.g_skin, H.b_skin)
 			var/mob/M = scanned
 			I.color = M.color
-			I.overlays += M.overlays.Copy()
+			I.CopyOverlays(M)
 			I.underlays += M.underlays.Copy()
 
 		I.alpha = 128
-		I.mouse_opacity = 0
+		I.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 		. = I
 
 	// Add it to cache, cutting old entries if the list is too long

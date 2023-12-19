@@ -40,7 +40,7 @@
 
 /obj/item/organ/internal/heart/gland/proc/Start()
 	active = TRUE
-	addtimer(CALLBACK(src, .proc/do_after_cooldown),rand(cooldown_low, cooldown_high))
+	addtimer(CALLBACK(src, nameof(.proc/do_after_cooldown)),rand(cooldown_low, cooldown_high))
 	BITSET(owner.hud_updateflag, GLAND_HUD)
 
 /obj/item/organ/internal/heart/gland/proc/update_gland_hud()
@@ -66,7 +66,7 @@
 	message_admins("[key_name(user)] sent an abductor mind control message to [key_name(owner)]: [command]")
 	log_game("[key_name(user)] sent an abductor mind control message to [key_name(owner)]: [command]")
 	update_gland_hud()
-	addtimer(CALLBACK(src, .proc/clear_mind_control), mind_control_duration)
+	addtimer(CALLBACK(src, nameof(.proc/clear_mind_control)), mind_control_duration)
 	return TRUE
 
 /obj/item/organ/internal/heart/gland/proc/clear_mind_control()
@@ -103,7 +103,7 @@
 		activate()
 		uses--
 		on_cooldown = TRUE
-		addtimer(CALLBACK(src,.proc/do_after_cooldown), rand(cooldown_low, cooldown_high))
+		addtimer(CALLBACK(src,nameof(.proc/do_after_cooldown)), rand(cooldown_low, cooldown_high))
 	if(!uses)
 		active = FALSE
 	..()

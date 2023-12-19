@@ -111,7 +111,7 @@
 
 	handcuffs = new(src)
 
-	src.verbs |= secbot_verbs_default
+	add_verb(src, secbot_verbs_default)
 
 	hud_list[ID_HUD]          = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
 	hud_list[WANTED_HUD]      = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
@@ -208,7 +208,7 @@
 		broadcast_security_hud_message("[src] is arresting a level [threat] suspect <b>[suspect_name]</b> in <b>[get_area(src)]</b>.", src)
 	say("Down on the floor, [suspect_name]! You have [SECBOT_WAIT_TIME] seconds to comply.")
 	playsound(src.loc, pick(preparing_arrest_sounds), 50)
-	register_signal(target, SIGNAL_MOVED, /mob/living/bot/secbot/proc/target_moved)
+	register_signal(target, SIGNAL_MOVED, nameof(.proc/target_moved))
 
 /mob/living/bot/secbot/proc/target_moved(atom/movable/moving_instance, atom/old_loc, atom/new_loc)
 	if(get_dist(get_turf(src), get_turf(target)) >= 1)
@@ -301,7 +301,7 @@
 
 	var/obj/item/secbot_assembly/Sa = new /obj/item/secbot_assembly(Tsec)
 	Sa.build_step = 1
-	Sa.overlays += image('icons/obj/aibots.dmi', "hs_hole")
+	Sa.AddOverlays(image('icons/obj/aibots.dmi', "hs_hole"))
 	Sa.created_name = name
 	new /obj/item/device/assembly/prox_sensor(Tsec)
 	new /obj/item/melee/baton(Tsec)
@@ -374,7 +374,7 @@
 		var/obj/item/weldingtool/WT = O
 		if(WT.remove_fuel(0, user))
 			build_step = 1
-			overlays += image('icons/obj/aibots.dmi', "hs_hole")
+			AddOverlays(image('icons/obj/aibots.dmi', "hs_hole"))
 			to_chat(user, "You weld a hole in \the [src].")
 
 	else if(isprox(O) && (build_step == 1))
@@ -382,7 +382,7 @@
 			return
 		build_step = 2
 		to_chat(user, "You add \the [O] to [src].")
-		overlays += image('icons/obj/aibots.dmi', "hs_eye")
+		AddOverlays(image('icons/obj/aibots.dmi', "hs_eye"))
 		SetName("helmet/signaler/prox sensor assembly")
 		qdel(O)
 
@@ -392,7 +392,7 @@
 		build_step = 3
 		to_chat(user, "You add \the [O] to [src].")
 		SetName("helmet/signaler/prox sensor/robot arm assembly")
-		overlays += image('icons/obj/aibots.dmi', "hs_arm")
+		AddOverlays(image('icons/obj/aibots.dmi', "hs_arm"))
 		qdel(O)
 
 	else if(istype(O, /obj/item/melee/baton) && build_step == 3)
@@ -468,43 +468,42 @@
 	if(!client && prob(10))
 		to_chat(src, SPAN_NOTICE("...[pick(secbot_dreams)]..."))
 
-/mob/living/bot/secbot/Stat()
-	..()
-	if(statpanel("Status"))
-		stat(null,"-------------")
-		switch(emagged)
-			if(0)
-				stat(null,"Threat identifier status: Normal")
-			if(1)
-				stat(null,"Threat identifier status: Scrambled (DANGER)")
-			if(2)
-				stat(null,"Threat identifier status: ERROROROROROR-----")
-		if(idcheck)
-			stat(null,"Check for weapon authorization: Yes")
-		else
-			stat(null,"Check for weapon authorization: No")
+/mob/living/bot/secbot/get_status_tab_items()
+	. = ..()
+	. += "-------------"
+	switch(emagged)
+		if(0)
+			. += "Threat identifier status: Normal"
+		if(1)
+			. += "Threat identifier status: Scrambled (DANGER)"
+		if(2)
+			. += "Threat identifier status: ERROROROROROR-----"
+	if(idcheck)
+		. += "Check for weapon authorization: Yes"
+	else
+		. += "Check for weapon authorization: No"
 
-		if(check_records)
-			stat(null,"Check security records:: Yes")
-		else
-			stat(null,"Check security records:: No")
+	if(check_records)
+		. += "Check security records:: Yes"
+	else
+		. += "Check security records:: No"
 
-		if(check_arrest)
-			stat(null,"Check arrest status: Yes")
-		else
-			stat(null,"Check arrest status: No")
+	if(check_arrest)
+		. += "Check arrest status: Yes"
+	else
+		. += "Check arrest status: No"
 
-		if(declare_arrests)
-			stat(null,"Report arrests: Yes")
-		else
-			stat(null,"Report arrests: No")
+	if(declare_arrests)
+		. += "Report arrests: Yes"
+	else
+		. += "Report arrests: No"
 
-		if(will_patrol)
-			stat(null,"Auto patrol: On")
-		else
-			stat(null,"Auto patrol: Off")
+	if(will_patrol)
+		. += "Auto patrol: On"
+	else
+		. += "Auto patrol: Off"
 
-		stat(null,"-------------")
+	. += "-------------"
 
 //**///////////////////////////////////////////////////////////**//
 //**///////////////////////////BOOPSKY/////////////////////////**//

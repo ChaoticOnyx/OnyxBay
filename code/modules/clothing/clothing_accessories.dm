@@ -10,17 +10,17 @@
 
 /obj/item/clothing/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/clothing/accessory))
-
 		if(!valid_accessory_slots || !valid_accessory_slots.len)
-			to_chat(usr, "<span class='warning'>You cannot attach accessories of any kind to \the [src].</span>")
+			to_chat(usr, SPAN("warning", "You cannot attach accessories of any kind to \the [src]."))
 			return
 
 		var/obj/item/clothing/accessory/A = I
-		if(can_attach_accessory(A) && user.drop(A))
+		if(can_attach_accessory(A))
+			user.drop(A, force = TRUE)
 			attach_accessory(user, A)
 			return
 		else
-			to_chat(user, "<span class='warning'>You cannot attach more accessories of this type to [src].</span>")
+			to_chat(user, SPAN("warning", "You cannot attach more accessories of this type to [src]."))
 		return
 
 	for(var/obj/item/clothing/accessory/A in accessories)
@@ -75,7 +75,7 @@
 /obj/item/clothing/proc/attach_accessory(mob/user, obj/item/clothing/accessory/A)
 	accessories += A
 	A.on_attached(src, user)
-	src.verbs |= /obj/item/clothing/proc/removetie_verb
+	verbs += /obj/item/clothing/proc/removetie_verb
 	update_accessory_slowdown()
 	update_clothing_icon()
 
@@ -102,7 +102,7 @@
 		A = accessories[1]
 	src.remove_accessory(usr,A)
 	if(!accessories.len)
-		src.verbs -= /obj/item/clothing/proc/removetie_verb
+		remove_verb(src, /obj/item/clothing/proc/removetie_verb)
 
 /obj/item/clothing/emp_act(severity)
 	if(accessories.len)

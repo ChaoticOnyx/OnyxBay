@@ -27,13 +27,14 @@
 /datum/vote/map/end_game
 	name = "Round End Map Vote"
 
+/datum/vote/map/end_game/is_accessible_vote()
+	return FALSE
+
 /datum/vote/map/end_game/can_be_initiated(mob/by_who, forced)
 	. = ..()
 	if(!config.game.map_switching)
 		return FALSE
-	if(GAME_STATE !=  RUNLEVEL_POSTGAME)
-		return FALSE
-	if(!forced)
+	if(!isnull(by_who))
 		return FALSE
 
 /datum/vote/map/end_game/finalize_vote()

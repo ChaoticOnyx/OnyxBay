@@ -9,7 +9,7 @@ would spawn and follow the beaker, even if it is carried or thrown.
 /obj/effect/effect
 	name = "effect"
 	icon = 'icons/effects/effects.dmi'
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	unacidable = 1//So effect are not targeted by alien acid.
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE
 
@@ -24,7 +24,7 @@ would spawn and follow the beaker, even if it is carried or thrown.
 	number = min(n, 10)
 	cardinals = c
 	location = loc
-	register_signal(holder, SIGNAL_QDELETING, /datum/effect/effect/system/proc/onHolderDeleted)
+	register_signal(holder, SIGNAL_QDELETING, nameof(.proc/onHolderDeleted))
 	setup = 1
 
 /datum/effect/effect/system/proc/attach(atom/atom)
@@ -34,7 +34,7 @@ would spawn and follow the beaker, even if it is carried or thrown.
 		qdel(src)
 		return
 	holder = atom
-	register_signal(holder, SIGNAL_QDELETING, /datum/effect/effect/system/proc/onHolderDeleted)
+	register_signal(holder, SIGNAL_QDELETING, nameof(.proc/onHolderDeleted))
 
 /datum/effect/effect/system/proc/start()
 
@@ -81,7 +81,7 @@ steam.start() -- spawns the effect
 
 /datum/effect/effect/system/steam_spread/start()
 	for(var/i = 0, i < src.number, i++)
-		addtimer(CALLBACK(src, /datum/effect/effect/system/proc/spread, i), 0)
+		addtimer(CALLBACK(src, nameof(.proc/spread), i), 0)
 
 /datum/effect/effect/system/steam_spread/spread(i)
 	set waitfor = 0
@@ -111,30 +111,27 @@ steam.start() -- spawns the effect
 	icon = 'icons/effects/effects.dmi'
 	var/amount = 6.0
 	anchored = 1.0
-	mouse_opacity = 0
-
-/obj/effect/sparks/New()
-	..()
-	playsound(src.loc, SFX_SPARK, 100, 1)
-	var/turf/T = src.loc
-	if (istype(T, /turf))
-		T.hotspot_expose(1000,100)
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /obj/effect/sparks/Initialize()
 	. = ..()
+	playsound(src.loc, SFX_SPARK, 100, 1)
+	var/turf/T = loc
+	if(istype(T, /turf))
+		T.hotspot_expose(1000, 100)
 	QDEL_IN(src, 5 SECONDS)
 
 /obj/effect/sparks/Destroy()
-	var/turf/T = src.loc
+	var/turf/T = loc
 	if (istype(T, /turf))
-		T.hotspot_expose(1000,100)
+		T.hotspot_expose(1000, 100)
 	return ..()
 
 /obj/effect/sparks/Move()
 	. = ..()
-	var/turf/T = src.loc
+	var/turf/T = loc
 	if (istype(T, /turf))
-		T.hotspot_expose(1000,100)
+		T.hotspot_expose(1000, 100)
 
 /datum/effect/effect/system/spark_spread
 
@@ -150,7 +147,7 @@ steam.start() -- spawns the effect
 
 /datum/effect/effect/system/spark_spread/start()
 	for(var/i = 0, i < src.number, i++)
-		addtimer(CALLBACK(src, /datum/effect/effect/system/proc/spread, i), 0)
+		addtimer(CALLBACK(src, nameof(.proc/spread), i), 0)
 
 /datum/effect/effect/system/spark_spread/spread(i)
 	set waitfor = 0
@@ -178,7 +175,7 @@ steam.start() -- spawns the effect
 	icon_state = "smoke"
 	opacity = 1
 	anchored = 0.0
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	var/amount = 6.0
 	var/time_to_live = 100
 
@@ -189,7 +186,7 @@ steam.start() -- spawns the effect
 
 /obj/effect/effect/smoke/Initialize()
 	. = ..()
-	addtimer(CALLBACK(src, /obj/effect/effect/smoke/proc/fade_out), time_to_live)
+	addtimer(CALLBACK(src, nameof(.proc/fade_out)), time_to_live)
 
 /obj/effect/effect/smoke/Crossed(mob/living/carbon/M as mob)
 	..()
@@ -343,7 +340,7 @@ steam.start() -- spawns the effect
 	for(var/i in 0 to src.number - 1)
 		if(src.total_smoke > 20)
 			return
-		addtimer(CALLBACK(src, /datum/effect/effect/system/proc/spread, i), 0)
+		addtimer(CALLBACK(src, nameof(.proc/spread), i), 0)
 
 /datum/effect/effect/system/smoke_spread/spread(i)
 	if(holder)

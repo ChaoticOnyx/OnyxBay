@@ -55,11 +55,11 @@
 	air1.volume = ATMOS_DEFAULT_VOLUME_PUMP + 800
 	air2.volume = ATMOS_DEFAULT_VOLUME_PUMP + 800
 
-/obj/machinery/atmospherics/binary/dp_vent_pump/update_icon(safety = 0)
+/obj/machinery/atmospherics/binary/dp_vent_pump/on_update_icon(safety = 0)
 	if(!check_icon_cache())
 		return
 
-	overlays.Cut()
+	ClearOverlays()
 
 	var/vent_icon = "vent"
 
@@ -75,7 +75,7 @@
 	else
 		vent_icon += "[use_power ? "[pump_direction ? "out" : "in"]" : "off"]"
 
-	overlays += icon_manager.get_atmos_icon("device", , , vent_icon)
+	AddOverlays(icon_manager.get_atmos_icon("device", , , vent_icon))
 
 /obj/machinery/atmospherics/binary/dp_vent_pump/update_underlays()
 	if(..())

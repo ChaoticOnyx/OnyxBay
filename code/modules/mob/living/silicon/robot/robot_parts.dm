@@ -115,20 +115,20 @@
 	..()
 	src.update_icon()
 
-/obj/item/robot_parts/robot_suit/update_icon()
-	src.overlays.Cut()
+/obj/item/robot_parts/robot_suit/on_update_icon()
+	src.ClearOverlays()
 	if(src.parts[BP_L_ARM])
-		src.overlays += "l_arm+o"
+		AddOverlays("l_arm+o")
 	if(src.parts[BP_R_ARM])
-		src.overlays += "r_arm+o"
+		AddOverlays("r_arm+o")
 	if(src.parts[BP_CHEST])
-		src.overlays += "chest+o"
+		AddOverlays("chest+o")
 	if(src.parts[BP_L_LEG])
-		src.overlays += "l_leg+o"
+		AddOverlays("l_leg+o")
 	if(src.parts[BP_R_LEG])
-		src.overlays += "r_leg+o"
+		AddOverlays("r_leg+o")
 	if(src.parts[BP_HEAD])
-		src.overlays += "head+o"
+		AddOverlays("head+o")
 
 /obj/item/robot_parts/robot_suit/proc/check_completion()
 	if(src.parts[BP_L_ARM] && src.parts[BP_R_ARM] && src.parts[BP_L_LEG] && src.parts[BP_R_LEG] && src.parts[BP_CHEST] && src.parts[BP_HEAD])
@@ -142,7 +142,7 @@
 		var/obj/item/stack/material/M = W
 		if (M.use(1))
 			var/obj/item/secbot_assembly/ed209_assembly/B = new /obj/item/secbot_assembly/ed209_assembly
-			B.loc = get_turf(src)
+			B.forceMove(get_turf(src))
 			to_chat(user, "<span class='notice'>You armed the robot frame.</span>")
 			if (user.get_inactive_hand()==src)
 				user.drop(src)
@@ -213,7 +213,7 @@
 
 			var/obj/item/robot_parts/chest/chest = parts[BP_CHEST]
 			O.cell = chest.cell
-			O.cell.loc = O
+			O.cell.forceMove(O)
 			W.forceMove(O) // Should fix cybros run time erroring when blown up. It got deleted before, along with the frame.
 
 			// Since we "magically" installed a cell, we also have to update the correct component.

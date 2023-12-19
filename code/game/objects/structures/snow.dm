@@ -29,7 +29,7 @@
 			L.update_icon() //so siding get updated properly
 
 
-/obj/structure/snow/update_icon()
+/obj/structure/snow/on_update_icon()
 	var/connectdir = 0
 	for(var/direction in GLOB.cardinal)
 		if(locate(/obj/structure/snow, get_step(src, direction)))
