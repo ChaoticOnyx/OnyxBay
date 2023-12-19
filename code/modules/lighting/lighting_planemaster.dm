@@ -14,7 +14,7 @@
 			01, 01, 01, 01
 		)
 
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT    // nothing on this plane is mouse-visible
+	mouse_opacity = 0    // nothing on this plane is mouse-visible
 
 /obj/lighting_general
 	plane = LIGHTING_PLANE

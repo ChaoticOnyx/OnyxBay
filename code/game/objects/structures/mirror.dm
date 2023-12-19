@@ -157,7 +157,7 @@
 /obj/effect/reflection
 	name = "reflection"
 	appearance_flags = KEEP_TOGETHER|TILE_BOUND|PIXEL_SCALE
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = 0
 	vis_flags = VIS_HIDE
 	layer = ABOVE_OBJ_LAYER
 	var/alpha_icon = 'icons/obj/watercloset.dmi'

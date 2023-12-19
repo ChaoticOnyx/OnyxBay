@@ -88,8 +88,8 @@
 		amount *= 2
 	changeling.chem_charges -= amount
 	if(!(/mob/proc/changeling_chemical_sting in verbs))
-		add_verb(src, /mob/proc/prepare_changeling_chemical_sting)
-		add_verb(src, /mob/proc/empty_cauldron)
+		src.verbs += /mob/proc/prepare_changeling_chemical_sting
+		src.verbs += /mob/proc/empty_cauldron
 
 /mob/proc/empty_cauldron()
 	set category = "Changeling"
@@ -112,6 +112,6 @@
 	BIO.chem_cauldron.clear_reagents()
 
 	C.adjustToxLoss(10)
-	remove_verb(src, /mob/proc/prepare_changeling_chemical_sting)
-	remove_verb(src, /mob/proc/empty_cauldron)
+	verbs -= /mob/proc/prepare_changeling_chemical_sting
+	verbs -= /mob/proc/empty_cauldron
 */

@@ -300,10 +300,13 @@
 
 /atom/proc/AltClick(mob/user)
 	var/turf/T = get_turf(src)
-	if(!T || !user.TurfAdjacent(T))
-		return FALSE
-	if(T && (isturf(loc) || isturf(src)) && user.TurfAdjacent(T))
-		user.set_listed_turf(T)
+	if(T && user.TurfAdjacent(T))
+		if(user.listed_turf == T)
+			user.listed_turf = null
+		else
+			user.listed_turf = T
+			user.client.statpanel = "Turf"
+	return 1
 
 /mob/proc/TurfAdjacent(turf/T)
 	return T.AdjacentQuick(src)
@@ -447,7 +450,7 @@
 	icon = 'icons/hud/screen_gen.dmi'
 	icon_state = "catcher"
 	plane = CLICKCATCHER_PLANE
-	mouse_opacity = MOUSE_OPACITY_OPAQUE
+	mouse_opacity = 2
 	screen_loc = "CENTER-7,CENTER-7"
 
 /obj/screen/click_catcher/Destroy()

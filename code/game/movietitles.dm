@@ -26,7 +26,7 @@ GLOBAL_LIST(end_titles)
 			sound_to(mob, sound('sound/music/THUNDERDOME.ogg', wait = 0, volume = 40, channel = 1))
 	sleep(50)
 	var/list/_credits = credits
-	add_verb(src, /client/proc/ClearCredits)
+	verbs += /client/proc/ClearCredits
 	for(var/I in GLOB.end_titles)
 		if(!credits)
 			return
@@ -37,12 +37,12 @@ GLOBAL_LIST(end_titles)
 	sleep(CREDIT_ROLL_SPEED - CREDIT_SPAWN_SPEED)
 
 	ClearCredits()
-	remove_verb(src, /client/proc/ClearCredits)
+	verbs -= /client/proc/ClearCredits
 
 /client/proc/ClearCredits()
 	set name = "Stop End Titles"
 	set category = "OOC"
-	remove_verb(src, /client/proc/ClearCredits)
+	verbs -= /client/proc/ClearCredits
 	QDEL_NULL_LIST(credits)
 	mob.clear_fullscreen("fishbed")
 	mob.clear_fullscreen("fadeout")
@@ -51,7 +51,7 @@ GLOBAL_LIST(end_titles)
 /obj/screen/credit
 	icon = 'icons/hud/screen.dmi'
 	icon_state = "blank"
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = 0
 	alpha = 0
 	screen_loc = "1,1"
 	plane = HUD_PLANE

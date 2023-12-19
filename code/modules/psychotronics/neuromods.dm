@@ -54,7 +54,7 @@
 	if (/mob/living/carbon/human/proc/remoteobserve in user.verbs)
 		return
 
-	add_verb(user, /mob/living/carbon/human/proc/remoteobserve)
+	user.verbs += /mob/living/carbon/human/proc/remoteobserve
 	user.mutations.Add(mRemote)
 
 /* -- INCREASE SPEED -- */
@@ -77,7 +77,7 @@
 	if (/mob/living/carbon/human/proc/morph in user.verbs)
 		return
 
-	add_verb(user, /mob/living/carbon/human/proc/morph)
+	user.verbs += /mob/living/carbon/human/proc/morph
 	user.mutations.Add(mMorph)
 
 /* -- TELEPATHY -- */
@@ -90,7 +90,7 @@
 	if (/mob/living/carbon/human/proc/remotesay in user.verbs)
 		return
 
-	add_verb(user, /mob/living/carbon/human/proc/remotesay)
+	user.verbs += /mob/living/carbon/human/proc/remotesay
 	user.mutations.Add(mRemotetalk)
 
 /* - LANGUAGES - */

@@ -2,7 +2,7 @@
 	name = "skybox"
 	plane = SKYBOX_PLANE
 	layer = SKYBOX_LAYER
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = 0
 	anchored = TRUE
 	var/mob/owner
 	var/image/image

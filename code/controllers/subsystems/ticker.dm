@@ -173,40 +173,30 @@ SUBSYSTEM_DEF(ticker)
 			log_error("Ticker arrived at round end in an unexpected endgame state.")
 
 
-/datum/controller/subsystem/ticker/stat_entry(msg)
+/datum/controller/subsystem/ticker/stat_entry()
 	switch(GAME_STATE)
 		if(RUNLEVEL_LOBBY)
-			msg += "[round_progressing ? "START:[round(pregame_timeleft/10)]s" : "(PAUSED)"]"
-			return ..()
+			..("[round_progressing ? "START:[round(pregame_timeleft/10)]s" : "(PAUSED)"]")
 		if(RUNLEVEL_SETUP)
-			msg += "SETUP"
-			return ..()
+			..("SETUP")
 		if(RUNLEVEL_GAME)
-			msg += "GAME"
-			return ..()
+			..("GAME")
 		if(RUNLEVEL_POSTGAME)
 			switch(end_game_state)
 				if(END_GAME_NOT_OVER)
-					msg += "ENDGAME ERROR"
-					return ..()
+					..("ENDGAME ERROR")
 				if(END_GAME_AWAITING_MAP)
-					msg += "MAP VOTE"
-					return ..()
+					..("MAP VOTE")
 				if(END_GAME_MODE_FINISH_DONE)
-					msg += "MODE OVER, WAITING"
-					return ..()
+					..("MODE OVER, WAITING")
 				if(END_GAME_READY_TO_END)
-					msg += "ENDGAME PROCESSING"
-					return ..()
+					..("ENDGAME PROCESSING")
 				if(END_GAME_DELAYED)
-					msg += "PAUSED"
-					return ..()
+					..("PAUSED")
 				if(END_GAME_AWAITING_TICKETS)
-					msg += "AWAITING TICKETS"
-					return ..()
+					..("AWAITING TICKETS")
 				if(END_GAME_ENDING)
-					msg += "END IN [round(restart_timeout/10)]s"
-					return ..()
+					..("END IN [round(restart_timeout/10)]s")
 
 /datum/controller/subsystem/ticker/Recover()
 	pregame_timeleft = SSticker.pregame_timeleft

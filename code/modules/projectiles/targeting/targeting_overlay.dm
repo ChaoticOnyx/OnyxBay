@@ -9,7 +9,7 @@
 
 	layer = ABOVE_HUMAN_LAYER
 	simulated = 0
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = 0
 
 	var/movement_tally = 0     // Movement slow if aiming
 	var/mob/living/aiming_at   // Who are we currently targeting, if anyone?

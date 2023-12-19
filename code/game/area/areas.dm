@@ -125,7 +125,7 @@
 		return
 	fire = TRUE	//used for firedoor checks
 	update_icon()
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = 0
 	set_lighting_mode(LIGHTMODE_ALARM, TRUE)
 	if(!all_doors)
 		return
@@ -137,7 +137,7 @@
 		return
 	fire = FALSE	//used for firedoor checks
 	update_icon()
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = 0
 	set_lighting_mode(LIGHTMODE_ALARM, FALSE)
 	if(!all_doors)
 		return
@@ -161,13 +161,13 @@
 		return
 	party = 1
 	update_icon()
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = 0
 
 /area/proc/partyreset()
 	if (!party)
 		return
 	party = 0
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = 0
 	update_icon()
 	for(var/obj/machinery/door/firedoor/D in src)
 		INVOKE_ASYNC(D, nameof(/obj/machinery/door.proc/open))

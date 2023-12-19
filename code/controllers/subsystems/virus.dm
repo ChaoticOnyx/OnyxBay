@@ -7,9 +7,8 @@ SUBSYSTEM_DEF(virus)
 	var/list/viruses_life = list()              // Queue of viruses to life
 	var/position = 1                            // Helper index to order newly activated viruses properly
 
-/datum/controller/subsystem/virus/stat_entry(msg)
-	msg = "C:[viruses_life.len]"
-	return ..()
+/datum/controller/subsystem/virus/stat_entry()
+	..("C:[viruses_life.len]")
 
 /datum/controller/subsystem/virus/fire(resumed = FALSE)
 	if(paused_ticks >= 10) // The likeliest fail mode, due to the fast tick rate, is that it can never clear the full queue, running resumed every tick and accumulating a backlog.
