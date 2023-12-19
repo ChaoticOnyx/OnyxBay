@@ -1,5 +1,5 @@
 /datum/visualnet/cultnet
-	valid_source_types = list(/mob/living/)
+	valid_source_types = list(/mob/living/, /obj/structure/deity/, /mob/observer/eye/cult)
 	chunk_type = /datum/chunk/cultnet
 
 /datum/chunk/cultnet/acquire_visible_turfs(list/visible)

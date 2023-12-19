@@ -39,3 +39,15 @@
 /datum/movement_handler/move_relay_self/DoMove(direction, mover)
 	host.relaymove(mover, direction)
 	return MOVEMENT_HANDLED
+
+/proc/get_atom_closest_to_atom(atom/a, list/possibilities)
+	if(!possibilities || !possibilities.len)
+		return null
+
+	var/closest_distance = get_dist(a, possibilities[1])
+	. = possibilities[1]
+	for(var/p in (possibilities - possibilities[1]))
+		var/dist = get_dist(a, p)
+		if(dist < closest_distance)
+			closest_distance = dist
+			. = p
