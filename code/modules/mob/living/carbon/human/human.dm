@@ -999,6 +999,7 @@
 	gunshot_residue = null
 
 	if(clean_feet && !shoes)
+		track_blood = 0
 		feet_blood_color = null
 		feet_blood_DNA = null
 		update_inv_shoes(1)
