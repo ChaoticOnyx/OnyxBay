@@ -220,7 +220,7 @@
 		if(H.internals && H.internals.icon_state == "internal1")
 			continue
 		H.vomit(0, 10, 3)
-		to_chat(H, SPAN_WARNING("You feel horrible stench! Every breath you take makes you want to puke!"))
+		to_chat(H, FONT_HUGE(SPAN_WARNING("You feel horrible stench! Every breath you take makes you want to puke!")))
 	set_next_think(world.time + 19 SECONDS)
 
 /obj/item/reagent_containers/food/packaged/surstromming/think()
