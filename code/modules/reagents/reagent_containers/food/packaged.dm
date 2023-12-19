@@ -210,13 +210,13 @@
 	if(!is_open_container())
 		trigger_vomit()
 	return ..()
-	
+
 /obj/item/reagent_containers/food/packaged/surstromming/proc/trigger_vomit()
 	var/list/mobs = list()
 	var/list/objs = list()
 	get_mobs_and_objs_in_view_fast(get_turf(src),3, mobs, objs, 0)
 	for(var/mob/living/carbon/human/H in mobs)
-		if(H.check_mouth_coverage())
+		if(H.internals && H.internals.icon_state == "internal1")
 			continue
 		H.vomit(0, 10, 3)
 		to_chat(H, SPAN_WARNING("You feel horrible stench! Every breath you take makes you want to puke!"))
