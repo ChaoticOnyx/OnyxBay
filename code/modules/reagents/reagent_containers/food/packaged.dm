@@ -209,6 +209,7 @@
 /obj/item/reagent_containers/food/packaged/surstromming/attack_self(mob/user)
 	if(!is_open_container())
 		trigger_vomit()
+		playsound(loc, 'sound/items/cancrush1.ogg', 50, 1)
 	return ..()
 
 /obj/item/reagent_containers/food/packaged/surstromming/proc/trigger_vomit()
