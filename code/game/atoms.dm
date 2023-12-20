@@ -526,7 +526,8 @@ its easier to just keep the beam vertical.
 	for(var/m in hearing_mobs)
 		var/mob/M = m
 		M.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
-		show_splash_text(M, message)
+		if(M.get_preference_value("CHAT_RUNECHAT") == GLOB.PREF_YES)
+			M.create_chat_message(src, message)
 
 /atom/movable/proc/dropInto(atom/destination)
 	while(istype(destination))
