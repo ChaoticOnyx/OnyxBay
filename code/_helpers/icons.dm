@@ -947,7 +947,7 @@
 // the icon will be rendered on a random client's side (unless 'allow_ratty_rendering = FALSE', in this case we give up).
 // 'dir' accepts either a single dir, uses 'src.dir' if not provided.
 // I'm not completely sure how ethical the 'allow_ratty_rendering' usage is, since it's basically lowkey cryptomining, but who fucking cares?
-/atom/proc/get_flat_icon(mob/caller, dir, allow_ratty_rendering = TRUE)
+/atom/proc/get_flat_icon(mob/caller, dir, force_appearance_flags, allow_ratty_rendering = TRUE)
 	var/client/rendering_client
 	if(caller?.client)
 		rendering_client = caller.client // We are good, let the caller deal with their own stuff.
@@ -970,29 +970,32 @@
 	dummy.alpha = alpha
 	dummy.color = color
 	dummy.transform = transform
-	dummy.set_dir(dir)
+	dummy.dir = dir
 
-	for(var/I in underlays)
-		var/image/image = image(I)
-		if(image.plane == EMISSIVE_PLANE)
+	for(var/entry in overlays)
+		var/image/I = entry
+		var/mutable_appearance/MA = new(I)
+		if(MA.plane == EMISSIVE_PLANE)
 			continue
-		image.dir = dir
-		dummy.underlays += image
+		MA.dir = dir
+		MA.appearance_flags = I.appearance_flags | force_appearance_flags
+		dummy.underlays += MA
 
-	for(var/I in overlays)
-		var/image/image = image(I)
-		if(image.plane == EMISSIVE_PLANE)
+	for(var/entry in overlays)
+		var/image/I = entry
+		var/mutable_appearance/MA = new(I)
+		if(MA.plane == EMISSIVE_PLANE)
 			continue
-		image.dir = dir
-		dummy.overlays += image
+		MA.dir = dir
+		MA.appearance_flags = I.appearance_flags | force_appearance_flags
+		dummy.overlays += MA
 
 	qdel(dummy)
 	return icon(rendering_client.RenderIcon(dummy))
 
-// Extended version of the above. It can accept 'dirs' as a list, and returns a list populated with rendered icons.
-// It's cheaper than calling 'get_flat_icon' multiple times, but for some reason beyond my understanding, it sometimes just gives
-// up and returns a list of same-directioned icons. Still may come in handy.
-/atom/proc/get_flat_icons_list(mob/caller, dirs = SOUTH, allow_ratty_rendering = TRUE)
+// Extended version of the above. It can accept 'dirs' as a list, and returns an icon with all the provided directions inserted.
+// It's cheaper than calling 'get_flat_icon' multiple times.
+/atom/proc/get_flat_icon_directional(mob/caller, dirs = null, force_appearance_flags, allow_ratty_rendering = TRUE)
 	var/client/rendering_client
 	if(caller?.client)
 		rendering_client = caller.client // We are good, let the caller deal with their own stuff.
@@ -1005,39 +1008,49 @@
 	if(!rendering_client)
 		return list() // Everything's broken somehow, giving up.
 
-	var/dirs_list = list()
-	dirs_list |= dirs
+	var/dirs_list = list() // Final list of directions we'll use
+	dirs_list |= LAZYLEN(dirs) ? dirs : GLOB.cardinal
 
-	var/list/ret = list()
+	 // Multiple dummies. Apparently, RenderIcon() is a bit slow (it waits for the next tick, I guess), so if we were to use a single dummy object,
+	 // it would return some icons AFTER we've already turned it to match the next direction, resulting in wrong directions in the resulting icon.
+	var/list/dummies = list()
+	for(var/_dir in dirs_list)
+		var/obj/dummy = new
 
-	var/obj/dummy = new
-	dummy.appearance_flags = DEFAULT_APPEARANCE_FLAGS | NO_CLIENT_COLOR
-	dummy.icon = icon
-	dummy.icon_state = icon_state
-	dummy.alpha = alpha
-	dummy.color = color
-	dummy.transform = transform
+		dummy.appearance_flags = DEFAULT_APPEARANCE_FLAGS | NO_CLIENT_COLOR | force_appearance_flags
+		dummy.icon = icon
+		dummy.icon_state = icon_state
+		dummy.alpha = alpha
+		dummy.color = color
+		dummy.transform = transform
+
+		dummies["[_dir]"] = dummy
+
+	var/icon/ret = icon('icons/effects/blank.dmi')
 
 	for(var/current_dir in dirs_list)
-		dummy.underlays.Cut()
-		dummy.overlays.Cut()
-		dummy.set_dir(current_dir)
+		var/obj/dummy = dummies["[current_dir]"]
+		dummy.dir = current_dir
 
-		for(var/I in underlays)
-			var/image/image = image(I)
-			if(image.plane == EMISSIVE_PLANE)
+		for(var/entry in overlays)
+			var/image/I = entry
+			var/mutable_appearance/MA = new(I)
+			if(MA.plane == EMISSIVE_PLANE)
 				continue
-			image.dir = current_dir
-			dummy.underlays += image
+			MA.dir = current_dir
+			MA.appearance_flags = I.appearance_flags | force_appearance_flags
+			dummy.underlays += MA
 
-		for(var/I in overlays)
-			var/image/image = image(I)
-			if(image.plane == EMISSIVE_PLANE)
+		for(var/entry in overlays)
+			var/image/I = entry
+			var/mutable_appearance/MA = new(I)
+			if(MA.plane == EMISSIVE_PLANE)
 				continue
-			image.dir = current_dir
-			dummy.overlays += image
+			MA.dir = current_dir
+			MA.appearance_flags = I.appearance_flags | force_appearance_flags
+			dummy.overlays += MA
 
-		ret += icon(rendering_client.RenderIcon(dummy))
+		ret.Insert(rendering_client.RenderIcon(dummy), dir = current_dir)
 
-	qdel(dummy)
+	QDEL_LIST_ASSOC_VAL(dummies)
 	return ret
