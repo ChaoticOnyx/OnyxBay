@@ -9,4 +9,4 @@
 
 /obj/item/organ/internal/heart/gland/ventcrawling/activate()
 	to_chat(owner, SPAN_NOTICE("You feel very stretchy."))
-	add_verb(owner, /mob/living/proc/ventcrawl)
+	owner.verbs += /mob/living/proc/ventcrawl

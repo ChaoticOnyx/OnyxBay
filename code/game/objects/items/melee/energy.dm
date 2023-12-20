@@ -75,7 +75,7 @@
 	return
 
 /obj/item/melee/energy/dropped()
-	. = ..()
+	..()
 	spawn(9)
 		if(isturf(loc))
 			deactivate()
@@ -364,7 +364,7 @@
 	QDEL_IN(src, 0)
 
 /obj/item/melee/energy/blade/dropped()
-	. = ..()
+	..()
 	QDEL_IN(src, 0)
 
 /obj/item/melee/energy/blade/think()

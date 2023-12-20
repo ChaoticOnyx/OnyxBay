@@ -91,8 +91,8 @@
 	//As a human made device, we'll understand sol common without the need of the translator
 	add_language(LANGUAGE_SOL_COMMON, 1)
 
-	add_verb(src, /mob/living/silicon/pai/proc/choose_chassis)
-	add_verb(src, /mob/living/silicon/pai/proc/choose_verbs)
+	verbs += /mob/living/silicon/pai/proc/choose_chassis
+	verbs += /mob/living/silicon/pai/proc/choose_verbs
 
 	..()
 
@@ -107,12 +107,18 @@
 	silicon_radio = null // Because this radio actually belongs to another instance we simply null
 	. = ..()
 
-
-/mob/living/silicon/pai/get_status_tab_items()
-	. = ..()
+// this function shows the information about being silenced as a pAI in the Status panel
+/mob/living/silicon/pai/proc/show_silenced()
 	if(src.silence_time)
 		var/timeleft = round((silence_time - world.timeofday)/10 ,1)
-		. += "Communications system reboot in -[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]"
+		stat(null, "Communications system reboot in -[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
+
+
+/mob/living/silicon/pai/Stat()
+	. = ..()
+	statpanel("Status")
+	if (src.client.statpanel == "Status")
+		show_silenced()
 
 /mob/living/silicon/pai/check_eye(mob/user as mob)
 	if (!src.current)
@@ -294,8 +300,8 @@
 		finalized = alert("Look at your sprite. Is this what you wish to use?",,"No","Yes")
 
 	chassis = possible_chassis[choice]
-	remove_verb(src, /mob/living/silicon/pai/proc/choose_chassis)
-	add_verb(src, /mob/living/proc/hide)
+	verbs -= /mob/living/silicon/pai/proc/choose_chassis
+	verbs += /mob/living/proc/hide
 
 /mob/living/silicon/pai/proc/choose_verbs()
 	set category = "pAI Commands"
@@ -309,7 +315,7 @@
 	speak_exclamation = sayverbs[(sayverbs.len>1 ? 2 : sayverbs.len)]
 	speak_query = sayverbs[(sayverbs.len>2 ? 3 : sayverbs.len)]
 
-	remove_verb(src, /mob/living/silicon/pai/proc/choose_verbs)
+	verbs -= /mob/living/silicon/pai/proc/choose_verbs
 
 /mob/living/silicon/pai/lay_down()
 	set name = "Rest"
@@ -402,3 +408,4 @@
 	visible_message("<b>[src]</b> fades away from the screen, the pAI device goes silent.")
 	card.removePersonality()
 	clear_client()
+

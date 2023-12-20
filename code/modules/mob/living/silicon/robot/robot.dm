@@ -498,8 +498,8 @@
 	// if you have a jetpack, show the internal tank pressure
 	var/obj/item/tank/jetpack/current_jetpack = installed_jetpack()
 	if (current_jetpack)
-		. += "Internal Atmosphere Info [current_jetpack.name]"
-		. += "Tank Pressure [current_jetpack.air_contents.return_pressure()]"
+		stat("Internal Atmosphere Info", current_jetpack.name)
+		stat("Tank Pressure", current_jetpack.air_contents.return_pressure())
 
 
 // this function returns the robots jetpack, if one is installed
@@ -512,29 +512,30 @@
 // this function displays the cyborgs current cell charge in the stat panel
 /mob/living/silicon/robot/proc/show_cell_power()
 	if(cell)
-		. += "Charge Left: [round(CELL_PERCENT(cell))]%"
-		. += "Cell Rating: [round(cell.maxcharge)]" // Round just in case we somehow get crazy values
-		. += "Power Cell Load: [round(used_power_this_tick)]W"
+		stat(null, text("Charge Left: [round(CELL_PERCENT(cell))]%"))
+		stat(null, text("Cell Rating: [round(cell.maxcharge)]")) // Round just in case we somehow get crazy values
+		stat(null, text("Power Cell Load: [round(used_power_this_tick)]W"))
 	else
-		. += "No Cell Inserted!"
+		stat(null, text("No Cell Inserted!"))
 
 /mob/living/silicon/robot/proc/show_gps()
 	var/turf/T = get_turf(src)
 	if (T.z != 1 && T.z != 2)
-		. += "Current location: Unknown"
+		stat(null, text("Current location: Unknown"))
 	else
-		. += "Current location:[T.x]:[T.y]:[T.z]"
+		stat(null, text("Current location:[T.x]:[T.y]:[T.z]"))
 
 // update the status screen display
-/mob/living/silicon/robot/get_status_tab_items()
+/mob/living/silicon/robot/Stat()
 	. = ..()
-	show_gps()
-	show_cell_power()
-	show_jetpack_pressure()
-	. += "Lights: [lights_on ? "ON" : "OFF"]"
-	if(module)
-		for(var/datum/matter_synth/ms in module.synths)
-			. += "[ms.name]: [ms.energy]/[ms.max_energy_multiplied]"
+	if (statpanel("Status"))
+		show_gps()
+		show_cell_power()
+		show_jetpack_pressure()
+		stat(null, text("Lights: [lights_on ? "ON" : "OFF"]"))
+		if(module)
+			for(var/datum/matter_synth/ms in module.synths)
+				stat("[ms.name]: [ms.energy]/[ms.max_energy_multiplied]")
 
 /mob/living/silicon/robot/restrained()
 	return 0
@@ -1139,10 +1140,10 @@
 	toggle_sensor_mode()
 
 /mob/living/silicon/robot/proc/add_robot_verbs()
-	add_verb(src, robot_verbs_default)
+	src.verbs |= robot_verbs_default
 
 /mob/living/silicon/robot/proc/remove_robot_verbs()
-	remove_verb(src, robot_verbs_default)
+	src.verbs -= robot_verbs_default
 
 // Uses power from cyborg's cell. Returns 1 on success or 0 on failure.
 // Properly converts using CELLRATE now! Amount is in Joules.

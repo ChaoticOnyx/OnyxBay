@@ -104,7 +104,7 @@
 
 	density = 1
 	opacity = 0
-	mouse_opacity = MOUSE_OPACITY_ICON
+	mouse_opacity = 1
 	anchored = 1
 	can_buckle = 0 //no manual buckling or unbuckling
 

@@ -122,11 +122,11 @@
 
 /obj/item/clothing/accessory/holster/on_attached(obj/item/clothing/under/S, mob/user)
 	..()
-	add_verb(has_suit, /obj/item/clothing/accessory/holster/verb/holster_verb)
+	has_suit.verbs += /obj/item/clothing/accessory/holster/verb/holster_verb
 
 /obj/item/clothing/accessory/holster/on_removed(mob/user)
 	if(has_suit)
-		remove_verb(has_suit, /obj/item/clothing/accessory/holster/verb/holster_verb)
+		has_suit.verbs -= /obj/item/clothing/accessory/holster/verb/holster_verb
 	..()
 
 //For the holster hotkey

@@ -536,7 +536,7 @@
 	if(!mind.name)	mind.name = real_name
 	mind.set_current(src)
 	if(player_is_antag(mind))
-		add_verb(src.client, /client/proc/aooc)
+		src.client.verbs += /client/proc/aooc
 
 //HUMAN
 /mob/living/carbon/human/mind_initialize()

@@ -189,13 +189,13 @@
 
 /obj/item/clothing/accessory/toggleable/flannel/on_attached(obj/item/clothing/under/S, mob/user as mob)
 	..()
-	add_verb(has_suit, /obj/item/clothing/accessory/toggleable/flannel/verb/tuck)
-	add_verb(has_suit, /obj/item/clothing/accessory/toggleable/flannel/verb/roll_up_sleeves)
+	has_suit.verbs += /obj/item/clothing/accessory/toggleable/flannel/verb/tuck
+	has_suit.verbs += /obj/item/clothing/accessory/toggleable/flannel/verb/roll_up_sleeves
 
 /obj/item/clothing/accessory/toggleable/flannel/on_removed(mob/user as mob)
 	if(has_suit)
-		remove_verb(has_suit, /obj/item/clothing/accessory/toggleable/flannel/verb/tuck)
-		remove_verb(has_suit, /obj/item/clothing/accessory/toggleable/flannel/verb/roll_up_sleeves)
+		has_suit.verbs -= /obj/item/clothing/accessory/toggleable/flannel/verb/tuck
+		has_suit.verbs -= /obj/item/clothing/accessory/toggleable/flannel/verb/roll_up_sleeves
 	..()
 
 /obj/item/clothing/accessory/toggleable/flannel/do_toggle(user)

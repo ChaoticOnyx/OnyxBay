@@ -585,19 +585,19 @@ be able to influence the host through various commands.
 	to_chat(usr, "<b>Meme Points: [src.meme_points]/[maximum_points]</b>")
 
 // Stat panel to show meme points, copypasted from alien
-/mob/living/parasite/meme/get_status_tab_items()
-	. = ..()
+/mob/living/parasite/meme/Stat()
+	..()
 
-	if(client && client.holder)
-		. += "([x], [y], [z])"
+	statpanel("Status")
+	if (client && client.holder)
+		stat(null, "([x], [y], [z])")
 
-	if(client)
-		. += "Meme Points: [src.meme_points]"
+	if (client && client.statpanel == "Status")
+		stat(null, "Meme Points: [src.meme_points]")
 
 // Game mode helpers, used for theft objectives
 // --------------------------------------------
 /mob/living/parasite/check_contents_for(t)
-	if(!host)
-		return 0
+	if(!host) return 0
 
 	return host.check_contents_for(t)

@@ -130,18 +130,18 @@
 		air_supply = new air_type(src)
 	if(glove_type)
 		gloves = new glove_type(src)
-		verbs += /obj/item/rig/proc/toggle_gauntlets
+		verbs |= /obj/item/rig/proc/toggle_gauntlets
 	if(helm_type)
 		helmet = new helm_type(src)
-		verbs += /obj/item/rig/proc/toggle_helmet
+		verbs |= /obj/item/rig/proc/toggle_helmet
 	if(boot_type)
 		boots = new boot_type(src)
-		verbs += /obj/item/rig/proc/toggle_boots
+		verbs |= /obj/item/rig/proc/toggle_boots
 	if(chest_type)
 		chest = new chest_type(src)
 		if(allowed)
 			chest.allowed = allowed
-		verbs += /obj/item/rig/proc/toggle_chest
+		verbs |= /obj/item/rig/proc/toggle_chest
 
 	for(var/obj/item/piece in list(gloves,helmet,boots,chest))
 		if(!istype(piece))
@@ -942,7 +942,7 @@
 	icon_state = ""
 	layer = HUD_ABOVE_ITEM_LAYER
 
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = 0
 	alpha = 20 //Animated up when loading
 
 /mob/living/carbon/human/get_rig()

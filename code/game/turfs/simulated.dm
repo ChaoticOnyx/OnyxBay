@@ -137,26 +137,15 @@
 				slip_stun = 6
 
 			if(M.slip("the [floor_type] floor", slip_stun))
-				INVOKE_ASYNC(src, PROC_REF(slip_mob), M, slip_dist)
+				for(var/i = 1 to slip_dist)
+					step(M, M.dir)
+					sleep(1)
 			else
 				M.inertia_dir = 0
 		else
 			M.inertia_dir = 0
 
 	..()
-
-/**
- * Slips a mob, moving it for N tiles
- *
- * Should be called asyncronously, as this process sleep
- *
- * * mob_to_slip - The mob that should be slipped
- * * slip_distance - How many tiles to slip the mob for
- */
-/turf/simulated/proc/slip_mob(mob/mob_to_slip, slip_distance)
-	for (var/i in 1 to slip_distance)
-		sleep(1)
-		step(mob_to_slip, mob_to_slip.dir)
 
 //returns 1 if made bloody, returns 0 otherwise
 /turf/simulated/add_blood(source)

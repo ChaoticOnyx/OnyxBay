@@ -220,13 +220,13 @@
       };
 
       Byond.subscribeTo = function (type, listener) {
-        var _listener = function (_type, payload) {
+        listener = function (_type, payload) {
           if (_type === type) {
             listener(payload);
           }
         };
-        window.update.flushQueue(_listener);
-        window.update.listeners.push(_listener);
+        window.update.listeners.push(listener);
+        window.update.flushQueue(listener);
       };
 
       // Asset loaders

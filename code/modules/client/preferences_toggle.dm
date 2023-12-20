@@ -4,7 +4,6 @@ var/list/client_preference_stats_
 	. = list()
 	if(!user)
 		return
-	usr = user // Yes, fuck this shit. It's for the chromosomal (47) line: update_name(usr)
 	if(!SScharacter_setup.initialized)
 		return
 	if(!client_preference_stats_)
@@ -27,6 +26,15 @@ var/list/client_preference_stats_
 	var/stat_client_preference/scp = client_stats[client_pref_name]
 	if(istype(scp))
 		scp.Click()
+
+/mob/Stat()
+	. = ..()
+	if(!client || !statpanel("Preferences"))
+		return
+	var/list/preferences = client_preference_stats_for_usr(src)
+	for(var/client_preference_description in preferences)
+		var/stat_client_preference/scp = client_preference_stats_[client_preference_description]
+		stat(scp.client_preference.description, scp)
 
 /stat_client_preference
 	parent_type = /atom/movable

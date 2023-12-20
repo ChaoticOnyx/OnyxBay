@@ -49,7 +49,7 @@
 	anchored = 1
 	density = 1
 	layer = ABOVE_TILE_LAYER
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = 0
 
 /obj/effect/overlay/wallrot/New()
 	..()
@@ -60,7 +60,7 @@
 	icon_state = "nothing"
 	anchored = 1
 	layer = 5
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = 0
 	var/duration = 10 //in deciseconds
 	var/randomdir = TRUE
 	var/timerid

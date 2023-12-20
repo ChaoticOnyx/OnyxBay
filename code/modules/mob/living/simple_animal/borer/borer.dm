@@ -104,15 +104,17 @@
 		else if((is_ooc_dead() || host.is_ooc_dead()) && controlling)
 			detatch()
 
-/mob/living/simple_animal/borer/get_status_tab_items()
+/mob/living/simple_animal/borer/Stat()
 	. = ..()
+	statpanel("Status")
 
 	if(evacuation_controller)
 		var/eta_status = evacuation_controller.get_status_panel_eta()
 		if(eta_status)
-			. += "[eta_status]"
+			stat(null, eta_status)
 
-	. += "Chemicals [chemicals]"
+	if (client.statpanel == "Status")
+		stat("Chemicals", chemicals)
 
 /mob/living/simple_animal/borer/handle_environment(datum/gas_mixture/environment)
 	if(host)

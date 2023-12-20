@@ -9,7 +9,7 @@
 		return
 
 	if(istype(src.loc,/mob/living/carbon))
-		remove_verb(src, /mob/living/carbon/alien/diona/proc/merge)
+		src.verbs -= /mob/living/carbon/alien/diona/proc/merge
 		return
 
 	var/list/choices = list()
@@ -36,8 +36,8 @@
 	H.status_flags |= PASSEMOTES
 	to_chat(src, "You feel your being twine with that of \the [H] as you merge with its biomass.")
 	forceMove(H)
-	add_verb(src, /mob/living/carbon/alien/diona/proc/split)
-	remove_verb(src, /mob/living/carbon/alien/diona/proc/merge)
+	verbs += /mob/living/carbon/alien/diona/proc/split
+	verbs -= /mob/living/carbon/alien/diona/proc/merge
 	return 1
 
 /mob/living/carbon/alien/diona/proc/split()
@@ -50,7 +50,7 @@
 		return
 
 	if(!(istype(src.loc,/mob/living/carbon)))
-		remove_verb(src, /mob/living/carbon/alien/diona/proc/split)
+		src.verbs -= /mob/living/carbon/alien/diona/proc/split
 		return
 
 	to_chat(src.loc, "You feel a pang of loss as [src] splits away from your biomass.")
@@ -59,8 +59,8 @@
 	var/mob/living/M = src.loc
 
 	dropInto(loc)
-	remove_verb(src, /mob/living/carbon/alien/diona/proc/split)
-	add_verb(src, /mob/living/carbon/alien/diona/proc/merge)
+	src.verbs -= /mob/living/carbon/alien/diona/proc/split
+	src.verbs += /mob/living/carbon/alien/diona/proc/merge
 
 	if(istype(M))
 		for(var/atom/A in M.contents)

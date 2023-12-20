@@ -48,12 +48,12 @@
 				return
 			if (prob(50))
 				for(var/x in verbs)
-					remove_verb(src, x)
+					verbs -= x
 				set_broken(TRUE)
 		if(3.0)
 			if (prob(25))
 				for(var/x in verbs)
-					remove_verb(src, x)
+					verbs -= x
 				set_broken(TRUE)
 
 /obj/machinery/computer/blob_act(damage)
