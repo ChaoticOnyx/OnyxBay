@@ -26,15 +26,13 @@ var/list/all_virtual_listeners = list()
 	register_signal(host, SIGNAL_MOVED, nameof(/atom/movable.proc/move_to_turf_or_null))
 	register_signal(host, SIGNAL_QDELETING, nameof(.proc/_host_deleted))
 
-	all_virtual_listeners += src
-
-	update_icon()
-
 /mob/observer/virtual/proc/_host_deleted()
 	qdel(src)
 
 /mob/observer/virtual/Initialize()
 	. = ..()
+	all_virtual_listeners += src
+	update_icon()
 	STOP_PROCESSING(SSmobs, src)
 
 /mob/observer/virtual/Destroy()
