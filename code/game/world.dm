@@ -106,7 +106,7 @@ var/server_name = "OnyxBay"
 	else
 		tracy_lib = "./libprof.so"
 
-	var/tracy_init = call(tracy_lib, "init")()
+	var/tracy_init = call_ext(tracy_lib, "init")()
 
 	if(tracy_init != "0")
 		CRASH("[tracy_lib] init error: [tracy_init]")
