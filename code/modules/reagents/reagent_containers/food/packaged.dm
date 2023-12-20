@@ -200,10 +200,11 @@
 	filling_color = "#cc8880"
 	trash = /obj/item/trash/surstromming
 	nutriment_desc = list("roting meat" = 3, "salt" = 4)
-	nutriment_amt = 5
+	nutriment_amt = 4
 	startswith = list(
 		/datum/reagent/sodiumchloride = 1,
-		/datum/reagent/nutriment/protein = 2)
+		/datum/reagent/nutriment/protein = 2,
+		/datum/reagent/ethylredoxrazine = 1)
 	bitesize = 0.5
 
 /obj/item/reagent_containers/food/packaged/surstromming/attack_self(mob/user)
@@ -219,9 +220,9 @@
 	for(var/mob/living/carbon/human/H in mobs)
 		if(H.internals && H.internals.icon_state == "internal1")
 			continue
-		H.vomit(0, 10, 3)
+		H.vomit(0, 7, 3)
 		to_chat(H, FONT_HUGE(SPAN_WARNING("You feel horrible stench! Every breath you take makes you want to puke!")))
-	set_next_think(world.time + 19 SECONDS)
+	set_next_think(world.time + 20 SECONDS)
 
 /obj/item/reagent_containers/food/packaged/surstromming/think()
 	if(is_open_container())
