@@ -527,8 +527,8 @@ var/global/list/damage_icon_parts = list()
 	if(shoes && !((wear_suit && wear_suit.flags_inv & HIDESHOES) || (w_uniform && w_uniform.flags_inv & HIDESHOES)))
 		overlays_standing[HO_SHOES_LAYER] = shoes.get_mob_overlay(src,slot_shoes_str)
 	else
-		if(feet_blood_DNA && body_build.blood_icon)
-			var/image/bloodsies = overlay_image(body_build.blood_icon, "shoeblood", hand_blood_color, DEFAULT_APPEARANCE_FLAGS | RESET_COLOR)
+		if(feet_blood_color && body_build.blood_icon)
+			var/image/bloodsies = overlay_image(body_build.blood_icon, "shoeblood", feet_blood_color, DEFAULT_APPEARANCE_FLAGS | RESET_COLOR)
 			overlays_standing[HO_SHOES_LAYER] = bloodsies
 		else
 			overlays_standing[HO_SHOES_LAYER] = null
