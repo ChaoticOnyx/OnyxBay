@@ -201,11 +201,14 @@ Works together with spawning an observer, noted above.
 	return 1
 
 /mob/proc/ghostize(can_reenter_corpse = CORPSE_CAN_REENTER)
+	if(ghostizing)
+		return
 	if(!key)
 		return
 	if(copytext(key, 1, 2) == "@")
 		return
 
+	ghostizing = TRUE // Since ghost spawn is way to far from being instant, we must make sure ghosts won't get duped.
 	var/mob/observer/ghost/ghost = (!QDELETED(teleop) && isghost(teleop)) ? teleop : new(src)
 
 	hide_fullscreens()
@@ -221,6 +224,7 @@ Works together with spawning an observer, noted above.
 		ghost.updateghostsight()
 
 	SEND_SIGNAL(src, SIGNAL_MOB_GHOSTIZED)
+	ghostizing = FALSE
 
 	return ghost
 
