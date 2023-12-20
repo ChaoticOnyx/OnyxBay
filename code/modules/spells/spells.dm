@@ -1,7 +1,7 @@
 /datum/mind
 	var/list/learned_spells = list()
 
-/mob/get_status_tab_items()
+/mob/Stat()
 	. = ..()
 	if(. && ability_master?.spell_objects)
 		for(var/obj/screen/ability/spell/screen in ability_master.spell_objects)
@@ -10,11 +10,11 @@
 				continue //Not showing the noclothes spell
 			switch(S.charge_type)
 				if(SP_RECHARGE)
-					. += "[S.panel] [S.charge_counter/10.0]/[S.charge_max/10] [S.connected_button]"
+					statpanel(S.panel, "[S.charge_counter/10.0]/[S.charge_max/10]", S.connected_button)
 				if(SP_CHARGES)
-					. +="[S.panel] [S.charge_counter]/[S.charge_max] [S.connected_button]"
+					statpanel(S.panel, "[S.charge_counter]/[S.charge_max]", S.connected_button)
 				if(SP_HOLDVAR)
-					. += "[S.panel] [S.holder_var_type] [S.holder_var_amount] [S.connected_button]"
+					statpanel(S.panel, "[S.holder_var_type] [S.holder_var_amount]", S.connected_button)
 
 /proc/restore_spells(mob/H)
 	if(!H.mind?.learned_spells)

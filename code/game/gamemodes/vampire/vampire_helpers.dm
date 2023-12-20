@@ -13,7 +13,7 @@
 	else if(mind.vampire.status & VAMP_ISTHRALL)
 		return
 
-	add_verb(src, /datum/game_mode/vampire/verb/vampire_help)
+	verbs += /datum/game_mode/vampire/verb/vampire_help
 	mind.vampire.set_up_organs()
 	mind.vampire.update_powers(FALSE)
 
@@ -49,7 +49,7 @@
 			O.pulse = PULSE_NORM
 			O.think()
 
-	remove_verb(src, /datum/game_mode/vampire/verb/vampire_help)
+	verbs -= /datum/game_mode/vampire/verb/vampire_help
 
 	return TRUE
 

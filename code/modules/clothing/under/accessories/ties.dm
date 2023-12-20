@@ -55,11 +55,11 @@
 
 /obj/item/clothing/accessory/bowtie/on_attached(obj/item/clothing/under/S, mob/user as mob)
 	..()
-	add_verb(has_suit, /obj/item/clothing/accessory/bowtie/verb/toggle)
+	has_suit.verbs += /obj/item/clothing/accessory/bowtie/verb/toggle
 
 /obj/item/clothing/accessory/bowtie/on_removed(mob/user as mob)
 	if(has_suit)
-		remove_verb(has_suit, /obj/item/clothing/accessory/bowtie/verb/toggle)
+		has_suit.verbs -= /obj/item/clothing/accessory/bowtie/verb/toggle
 	..()
 
 /obj/item/clothing/accessory/bowtie/verb/toggle()

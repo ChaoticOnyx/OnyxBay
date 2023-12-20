@@ -14,8 +14,6 @@
 	var/list/_think_ctxs = list()
 	var/datum/think_context/_main_think_ctx
 
-	var/cached_ref
-
 #ifdef TESTING
 	var/tmp/running_find_references
 	var/tmp/last_find_references = 0

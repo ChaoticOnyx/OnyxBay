@@ -411,11 +411,11 @@
 //Updates the availabiliy of the rotation verbs
 /obj/structure/window/proc/update_verbs()
 	if(anchored)
-		remove_verb(src, /obj/structure/window/proc/rotate)
-		remove_verb(src, /obj/structure/window/proc/revrotate)
+		verbs -= /obj/structure/window/proc/rotate
+		verbs -= /obj/structure/window/proc/revrotate
 	else
-		add_verb(src, /obj/structure/window/proc/rotate)
-		add_verb(src, /obj/structure/window/proc/revrotate)
+		verbs += /obj/structure/window/proc/rotate
+		verbs += /obj/structure/window/proc/revrotate
 
 //merges adjacent full-tile windows into one (blatant ripoff from game/smoothwall.dm)
 /obj/structure/window/on_update_icon()

@@ -24,6 +24,3 @@
 
 // Called on '/mob/proc/add_spell' (/mob, )
 #define SIGNAL_MOB_SPELL_LEARNED "mob_spell_learned"
-
-/// from mob/get_status_tab_items(): (list/items)
-#define SIGNAL_MOB_GET_STATUS_TAB_ITEMS "mob_get_status_tab_items"

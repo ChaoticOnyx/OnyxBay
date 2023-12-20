@@ -156,7 +156,9 @@
 			M.Stun(4)
 			M.Weaken(3)
 			seed.thrown_at(src,M)
-			QDEL_IN(src, 0)
+			sleep(-1)
+			if(src) qdel(src)
+			return
 
 /obj/item/reagent_containers/food/grown/attack(mob/M, mob/user, def_zone)
 	if(seed && seed.get_trait(TRAIT_STINGS) && user.a_intent == I_HURT)

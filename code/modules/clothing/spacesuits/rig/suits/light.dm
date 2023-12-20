@@ -117,7 +117,7 @@
 			input = "\improper [input]"
 		SetName(input)
 		to_chat(M, "Suit naming succesful!")
-		remove_verb(src, /obj/item/rig/light/ninja/verb/rename_suit)
+		verbs -= /obj/item/rig/light/ninja/verb/rename_suit
 		return 1
 
 
@@ -132,7 +132,7 @@
 	if(src && input && !M.incapacitated() && in_range(M,src))
 		desc = input
 		to_chat(M, "Suit description succesful!")
-		remove_verb(src, /obj/item/rig/light/ninja/verb/rename_suit)
+		verbs -= /obj/item/rig/light/ninja/verb/rename_suit
 		return 1
 
 /obj/item/clothing/gloves/rig/light/ninja

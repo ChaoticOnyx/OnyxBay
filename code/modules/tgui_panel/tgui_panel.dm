@@ -13,9 +13,9 @@
 	var/broken = FALSE
 	var/initialized_at
 
-/datum/tgui_panel/New(client/client, id)
+/datum/tgui_panel/New(client/client)
 	src.client = client
-	window = new(client, id)
+	window = new(client, "browseroutput")
 	window.subscribe(src, nameof(.proc/on_message))
 
 /datum/tgui_panel/Del()

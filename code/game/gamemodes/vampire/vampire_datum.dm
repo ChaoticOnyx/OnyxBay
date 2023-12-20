@@ -153,7 +153,7 @@
 	purchased_powers.Add(P)
 
 	if(P.legacy_handling)
-		add_verb(my_mob, P.verbpath)
+		my_mob.verbs += P.verbpath
 	else
 		new P.verbpath(my_mob)
 
@@ -167,7 +167,7 @@
 		return
 
 	if(P.legacy_handling)
-		remove_verb(my_mob, P.verbpath)
+		my_mob.verbs -= P.verbpath
 	else
 		for(var/datum/vampire_power/VP in available_powers)
 			if(VP.type == P.verbpath)
@@ -180,7 +180,7 @@
 /datum/vampire/proc/remove_powers()
 	for(var/datum/power/vampire/P in purchased_powers)
 		if(P.legacy_handling)
-			remove_verb(my_mob, P.verbpath)
+			my_mob.verbs -= P.verbpath
 			continue
 	purchased_powers.Cut()
 	for(var/thing in available_powers)

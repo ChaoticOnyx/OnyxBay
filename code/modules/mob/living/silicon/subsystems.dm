@@ -71,15 +71,17 @@
 	if(istype(SSS))
 		SSS.Click()
 
-/mob/living/silicon/get_status_tab_items()
+/mob/living/silicon/Stat()
 	. = ..()
 	if(!.)
 		return
 	if(!silicon_subsystems.len)
 		return
+	if(!statpanel("Subsystems"))
+		return
 	for(var/subsystem_type in silicon_subsystems)
 		var/stat_silicon_subsystem/SSS = silicon_subsystems[subsystem_type]
-		. += "[SSS]"
+		stat(SSS)
 
 /stat_silicon_subsystem
 	parent_type = /atom/movable

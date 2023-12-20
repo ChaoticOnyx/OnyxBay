@@ -102,8 +102,8 @@
 
 
 /mob/living/simple_animal/hostile/little_changeling/New()
-	add_verb(src, /mob/living/proc/ventcrawl)
-	add_verb(src, /mob/living/proc/hide)
+	verbs += /mob/living/proc/ventcrawl
+	verbs += /mob/living/proc/hide
 	pixel_z = 6
 	..()
 

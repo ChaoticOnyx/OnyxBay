@@ -19,7 +19,7 @@ GLOBAL_DATUM_INIT(global_hud, /datum/global_hud, new())
 	screen.screen_loc = "1,1"
 	screen.icon = 'icons/obj/hud_full.dmi'
 	screen.icon_state = icon_state
-	screen.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	screen.mouse_opacity = 0
 
 	return screen
 
