@@ -2772,7 +2772,6 @@
 #include "code\modules\shuttles\shuttle_specops.dm"
 #include "code\modules\shuttles\shuttle_supply.dm"
 #include "code\modules\shuttles\shuttles_multi.dm"
-#include "code\modules\speech_bubble\speech_bubble.dm"
 #include "code\modules\spells\artifacts.dm"
 #include "code\modules\spells\construct_spells.dm"
 #include "code\modules\spells\contracts.dm"

@@ -124,26 +124,30 @@
 /mob/living/create_thinking_indicator()
 	if(active_thinking_indicator || active_typing_indicator || !thinking_IC || stat != CONSCIOUS)
 		return FALSE
-	active_thinking_indicator = create_speech_bubble_image(bubble_icon, 3, src)
-	LAZYADD(overlays, active_thinking_indicator)
+
+	active_thinking_indicator = mutable_appearance('icons/mob/effects/talk.dmi', "[bubble_icon]3", ABOVE_HUMAN_LAYER)
+	AddOverlays(active_thinking_indicator)
 
 /mob/living/remove_thinking_indicator()
 	if(!active_thinking_indicator)
 		return FALSE
-	LAZYREMOVE(overlays, active_thinking_indicator)
-	active_thinking_indicator = null
+
+	CutOverlays(active_thinking_indicator)
+	QDEL_NULL(active_thinking_indicator)
 
 /mob/living/create_typing_indicator()
 	if(active_typing_indicator || active_thinking_indicator || !thinking_IC || stat != CONSCIOUS)
 		return FALSE
-	active_typing_indicator = create_speech_bubble_image(bubble_icon, 3, src)
-	LAZYADD(overlays, active_typing_indicator)
+
+	active_typing_indicator = mutable_appearance('icons/mob/effects/talk.dmi', "[bubble_icon]0", ABOVE_HUMAN_LAYER)
+	AddOverlays(active_typing_indicator)
 
 /mob/living/remove_typing_indicator()
 	if(!active_typing_indicator)
 		return FALSE
-	LAZYREMOVE(overlays, active_typing_indicator)
-	active_typing_indicator = null
+
+	CutOverlays(active_typing_indicator)
+	QDEL_NULL(active_typing_indicator)
 
 /mob/living/remove_all_indicators()
 	thinking_IC = FALSE
