@@ -2,19 +2,19 @@
 
 /datum/antagonist/cultist/proc/add_ghost_magic(mob/observer/ghost/M)
 	if(max_cult_rating >= CULT_GHOSTS_1)
-		add_verb(M, /mob/observer/ghost/proc/flick_lights)
-		add_verb(M, /mob/observer/ghost/proc/bloody_doodle)
-		add_verb(M, /mob/observer/ghost/proc/shatter_glass)
-		add_verb(M, /mob/observer/ghost/proc/slice)
+		M.verbs += /mob/observer/ghost/proc/flick_lights
+		M.verbs += /mob/observer/ghost/proc/bloody_doodle
+		M.verbs += /mob/observer/ghost/proc/shatter_glass
+		M.verbs += /mob/observer/ghost/proc/slice
 		if(max_cult_rating >= CULT_GHOSTS_2)
-			add_verb(M, /mob/observer/ghost/proc/move_item)
-			add_verb(M, /mob/observer/ghost/proc/whisper_to_cultist)
-			add_verb(M, /mob/observer/ghost/proc/bite_someone)
-			add_verb(M, /mob/observer/ghost/proc/chill_someone)
+			M.verbs += /mob/observer/ghost/proc/move_item
+			M.verbs += /mob/observer/ghost/proc/whisper_to_cultist
+			M.verbs += /mob/observer/ghost/proc/bite_someone
+			M.verbs += /mob/observer/ghost/proc/chill_someone
 			if(max_cult_rating >= CULT_GHOSTS_3)
-				add_verb(M, /mob/observer/ghost/proc/whisper_to_anyone)
-				add_verb(M, /mob/observer/ghost/proc/bloodless_doodle)
-				add_verb(M, /mob/observer/ghost/proc/toggle_visiblity)
+				M.verbs += /mob/observer/ghost/proc/whisper_to_anyone
+				M.verbs += /mob/observer/ghost/proc/bloodless_doodle
+				M.verbs += /mob/observer/ghost/proc/toggle_visiblity
 
 /mob/observer/ghost/proc/ghost_ability_check()
 	var/turf/T = get_turf(src)
@@ -282,9 +282,9 @@
 		to_chat(src, "<span class='info'>You are now invisible.</span>")
 		visible_message("<span class='emote'>It fades from sight...</span>")
 		set_invisibility(INVISIBILITY_OBSERVER)
-		mouse_opacity = MOUSE_OPACITY_ICON
+		mouse_opacity = 1
 	else
 		ghost_magic_cd = world.time + 60 SECONDS
 		to_chat(src, "<span class='info'>You are now visible.</span>")
 		set_invisibility(0)
-		mouse_opacity = MOUSE_OPACITY_TRANSPARENT // This is so they don't make people invincible to melee attacks by hovering over them
+		mouse_opacity = 0 // This is so they don't make people invincible to melee attacks by hovering over them

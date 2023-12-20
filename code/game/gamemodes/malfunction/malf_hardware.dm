@@ -8,7 +8,7 @@
 	if(owner && istype(owner))
 		owner.hardware = src
 		if(driver)
-			add_verb(owner, driver)
+			owner.verbs += driver
 
 /datum/malf_hardware/proc/get_examine_desc()
 	return "It has some sort of hardware attached to its core"

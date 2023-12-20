@@ -24,11 +24,11 @@
 
 /obj/structure/disposalconstruct/proc/update_verbs()
 	if(anchored)
-		remove_verb(src, /obj/structure/disposalconstruct/proc/rotate)
-		remove_verb(src, /obj/structure/disposalconstruct/proc/flip)
+		verbs -= /obj/structure/disposalconstruct/proc/rotate
+		verbs -= /obj/structure/disposalconstruct/proc/flip
 	else
-		add_verb(src, /obj/structure/disposalconstruct/proc/rotate)
-		add_verb(src, /obj/structure/disposalconstruct/proc/flip)
+		verbs += /obj/structure/disposalconstruct/proc/rotate
+		verbs += /obj/structure/disposalconstruct/proc/flip
 
 // update iconstate and dpdir due to dir and type
 /obj/structure/disposalconstruct/proc/update()

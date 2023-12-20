@@ -1085,7 +1085,7 @@
 /obj/item/mecha_parts/mecha_equipment/tool/passenger/attach()
 	..()
 	if(chassis)
-		chassis.verbs += /obj/mecha/proc/move_inside_passenger
+		chassis.verbs |= /obj/mecha/proc/move_inside_passenger
 
 /obj/item/mecha_parts/mecha_equipment/tool/passenger/detach()
 	if(occupant)

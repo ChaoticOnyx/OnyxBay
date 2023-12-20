@@ -55,14 +55,15 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 
 	var/icon/original_mob_icon
 
-/mob/observer/ghost/New(mob/body)
+/mob/observer/ghost/Initialize()
 	see_in_dark = 100
-	add_verb(src, /mob/proc/toggle_antag_pool)
-	add_verb(src, /mob/proc/join_as_actor)
-	add_verb(src, /mob/proc/join_response_team)
+	verbs += /mob/proc/toggle_antag_pool
+	verbs += /mob/proc/join_as_actor
+	verbs += /mob/proc/join_response_team
 
 	var/turf/T
-	if(ismob(body))
+	if(ismob(loc))
+		var/mob/body = loc
 		T = get_turf(body)               //Where is the body located?
 		attack_logs_ = body.attack_logs_ //preserve our attack logs by copying them to our ghost
 
@@ -96,7 +97,7 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 
 	GLOB.ghost_mob_list |= src
 
-	..()
+	. = ..()
 
 /mob/observer/ghost/Destroy()
 	GLOB.ghost_mob_list.Remove(src)
@@ -213,7 +214,7 @@ Works together with spawning an observer, noted above.
 	ghost.timeofdeath = is_ooc_dead() ? src.timeofdeath : world.time
 
 	if(!ghost.client?.holder && !config.ghost.allow_antag_hud)
-		remove_verb(ghost, /mob/observer/ghost/verb/toggle_antagHUD)
+		ghost.verbs -= /mob/observer/ghost/verb/toggle_antagHUD
 
 	if(ghost.client)
 		ghost.updateghostprefs()
@@ -281,12 +282,13 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/is_active()
 	return 0
 
-/mob/observer/ghost/get_status_tab_items()
+/mob/observer/ghost/Stat()
 	. = ..()
-	if(evacuation_controller)
-		var/eta_status = evacuation_controller.get_status_panel_eta()
-		if(eta_status)
-			. += "[eta_status]"
+	if(statpanel("Status"))
+		if(evacuation_controller)
+			var/eta_status = evacuation_controller.get_status_panel_eta()
+			if(eta_status)
+				stat(null, eta_status)
 
 /mob/observer/ghost/verb/reenter_corpse()
 	set category = "Ghost"
@@ -661,7 +663,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(ghostvision)
 		client.images |= GLOB.ghost_darkness_images
 
-	client.images -= ghost_image
+	client.images -= ghost_image // remove ourself
 
 /mob/observer/ghost/MayRespawn(feedback = FALSE, respawn_time = 0)
 	if(!client)
@@ -723,9 +725,21 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			),
 			time = 1
 		)
+
+		var/icon/ghost_icon = icon('icons/effects/blank.dmi')
+		for(var/d in GLOB.cardinal)
+			ghost_icon.Insert(H.get_flat_icon(src, d), dir = d)
+		icon = ghost_icon
+		icon_state = null
+		ClearOverlays()
+
 	else if(istype(target, /mob/living/simple_animal))
 		var/mob/living/simple_animal/SA = target
 		icon_state = SA.icon_living
+
+	if(ghost_image)
+		ghost_image.appearance = src
+		ghost_image.appearance_flags = DEFAULT_APPEARANCE_FLAGS | KEEP_TOGETHER | RESET_ALPHA
 
 /mob/observer/ghost/verb/respawn()
 	set name = "Respawn"

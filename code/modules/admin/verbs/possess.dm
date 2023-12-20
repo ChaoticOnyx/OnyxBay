@@ -47,6 +47,6 @@
 	set desc = "Give this guy possess/release verbs"
 	set category = "Debug"
 	set name = "Give Possessing Verbs"
-	add_verb(M, /proc/possess)
-	add_verb(M, /proc/release)
+	M.verbs += /proc/possess
+	M.verbs += /proc/release
 	feedback_add_details("admin_verb","GPV") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!

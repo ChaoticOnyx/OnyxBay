@@ -166,7 +166,7 @@
 	update_held_icon()
 
 /obj/item/gun/equipped(mob/living/user, slot)
-	. = ..()
+	..()
 	update_safety_icon()
 	clear_autofire()
 

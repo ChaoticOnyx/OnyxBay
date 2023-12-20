@@ -172,7 +172,6 @@
 		return
 
 /obj/item/vox_rcd/dropped(mob/user)
-	. = ..()
 	user.visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
 	"<span class='notice'>You turn off our device.</span>",
 	"<span class='italics'>You hear a faint hiss.</span>")
