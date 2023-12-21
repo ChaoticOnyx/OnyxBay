@@ -9,6 +9,7 @@
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	layer = ABOVE_WINDOW_LAYER
+	unacidable = TRUE
 	var/number = 0
 	var/last_tick //used to delay the powercheck
 	var/static/mutable_appearance/ea_overlay
