@@ -19,7 +19,6 @@
 
 	var/id
 	var/mode = MODE_TELEPORT
-	var/calibrating = FALSE
 	var/list/linked_consoles
 	var/weakref/target_ref
 	var/obj/machinery/teleporter_gate/gate
@@ -61,6 +60,18 @@
 	. = ..()
 	id = "[random_id(/obj/machinery/computer/teleporter, 1000, 9999)]"
 	link_gate()
+
+/obj/machinery/computer/teleporter/verb/set_id(t as text)
+	set category = "Object"
+	set name = "Set teleporter ID"
+	set src in oview(1)
+	set desc = "ID Tag:"
+
+	if(stat & (NOPOWER|BROKEN) || !istype(usr,/mob/living))
+		return
+	if(t)
+		src.id = t
+	return
 
 /obj/machinery/computer/teleporter/Destroy()
 	if(gate)
@@ -125,7 +136,6 @@
 	var/list/data = list()
 	data["gate"] = gate ? TRUE : FALSE
 	data["panel"] = panel_open
-	data["calibrating"] = calibrating
 	data["target"] = !target ? "None" : "[get_area(target)]"
 
 	switch(mode)
@@ -141,33 +151,11 @@
 	else
 		data["engaged"] = FALSE
 
-	if(gate?.calibrated)
-		data["calibrated"] = TRUE
-	else
-		data["calibrated"] = FALSE
-
 	return data
 
 /obj/machinery/computer/teleporter/proc/change_mode()
 	mode = mode + 1 > 2 ? 0 : mode + 1
 	set_teleport_target(null)
-
-/obj/machinery/computer/teleporter/proc/finish_calibrating()
-	calibrating = FALSE
-	if(!gate)
-		audible_message(SPAN_WARNING("Failure: Unable to detect gate."))
-		return
-	audible_message("Calibration complete.")
-	gate.calibrated = TRUE
-	gate.set_state(TRUE)
-	update_icon()
-
-/obj/machinery/computer/teleporter/proc/start_calibrating(auto = FALSE)
-	if(auto && gate?.accuracy + gate?.calc_acceleration < MIN_MAX_GATE_LEVEL)
-		return
-	calibrating = TRUE
-	audible_message("Processing hub calibration to target...")
-	addtimer(CALLBACK(src, nameof(.proc/finish_calibrating)), 2 SECONDS * (4 - gate.calc_acceleration))
 
 /obj/machinery/computer/teleporter/tgui_act(action, params)
 	. = ..()
@@ -185,19 +173,10 @@
 			to_chat(usr, "\The [src]'s maintanence panel is now [panel_open ? "opened" : "closed"].")
 		if("modeset")
 			gate.set_state(FALSE)
-			gate.calibrated = FALSE
 			change_mode()
 		if("targetset")
 			gate.set_state(FALSE)
-			gate.calibrated = FALSE
 			set_target(usr)
-		if("calibrate")
-			if(!target_ref)
-				audible_message("Error: No target set to calibrate to.")
-				return
-			if(gate.calibrated)
-				audible_message("Error: Hub is already calibrated!")
-			start_calibrating()
 
 	return TRUE
 

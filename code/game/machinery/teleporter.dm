@@ -14,7 +14,6 @@
 	light_color = "#7de1e1"
 
 	var/engaged = FALSE
-	var/calibrated = FALSE
 	var/accuracy
 	var/calc_acceleration
 	var/obj/machinery/computer/teleporter/console
@@ -114,11 +113,7 @@
 
 	if(istype(A))
 		use_power_oneoff(5 KILO WATTS)
-		do_teleport(A, target, calibrated ? 0 : clamp(DESTINATION_SPREAD_MIN, 10 - accuracy, DESTINATION_SPREAD_MAX))
-		calibrated = FALSE
-
-		console.start_calibrating(TRUE)
-
+		do_teleport(A, target)
 	return
 
 /obj/machinery/teleporter_gate/Crossed(A)

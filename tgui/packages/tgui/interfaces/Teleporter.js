@@ -15,7 +15,7 @@ export const Teleporter = (props, context) => {
 
 const UiData = (props, context) => {
   const { act, data } = useBackend(context)
-  const { gate, calibrating, target, mode, calibrated, engaged, panel} = data
+  const { gate, target, mode, engaged, panel} = data
 
   if(!gate)
     return <NoticeBox>Error: No Gate connected.</NoticeBox>
@@ -54,27 +54,6 @@ const UiData = (props, context) => {
               icon="edit"
               content={target}
               onClick={() => {act("targetset")}}
-              />
-            </Flex.Item>
-          </Flex>
-        </Flex.Item>
-        <Flex.Item>
-          <Flex direction="row" justify="space-between">
-            <Flex.Item>
-            Calibration:
-            </Flex.Item>
-            <Flex.Item>
-              {
-                (calibrating && <Box color="average">In Progress</Box>) ||
-                (!calibrated && <Box color="bad">Sub-Optimal</Box>) ||
-                (calibrated && <Box color="good">Optimal</Box>)
-              }
-            </Flex.Item>
-            <Flex.Item>
-              <Button
-              icon="dot-circle-o"
-              content="Calibrate!"
-              onClick={() => {act("calibrate")}}
               />
             </Flex.Item>
           </Flex>
