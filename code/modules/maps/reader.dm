@@ -194,6 +194,7 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 		if(!measureOnly)
 			if(clear_contents)
 				for(var/atom/to_delete in atoms_to_delete)
+					to_delete.atom_flags = ATOM_FLAG_INITIALIZED
 					qdel(to_delete)
 		var/datum/map_load_metadata/M = new
 		M.bounds = bounds
