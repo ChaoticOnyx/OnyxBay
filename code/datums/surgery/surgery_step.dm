@@ -214,7 +214,7 @@
 
 	var/success_chance = calc_success_chance(user, target, tool)
 	var/surgery_duration = SURGERY_DURATION_DELTA * duration * tool.surgery_speed
-	if(prob(success_chance) && do_mob(user, target, surgery_duration))
+	if(prob(success_chance) && do_mob(user, target, surgery_duration, can_multitask = TRUE))
 		success(parent_organ, target_organ, target, tool, user)
 	else
 		failure(parent_organ, target_organ, target, tool, user)
