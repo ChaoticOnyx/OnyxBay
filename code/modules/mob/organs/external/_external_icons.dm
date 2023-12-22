@@ -89,7 +89,7 @@ var/list/limb_icon_cache = list()
 	. += "[species.get_race_key(owner)]"
 	. += "[bb]"
 	. += is_stump() ? "_s" : ""
-	if(owner.mind.special_role == "Zombie")
+	if(owner?.mind?.special_role == "Zombie")
 		. += "_z"
 
 	if(force_icon)
