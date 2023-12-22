@@ -1,6 +1,17 @@
 [
   {
     "author": "Filatelele",
+    "date": "2023-12-22T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Experiment",
+        "message": "Возможно, исправлено просвечивание мобов через стены.",
+        "pr": 11273
+      }
+    ]
+  },
+  {
+    "author": "Filatelele",
     "date": "2023-12-21T00:00:00+03:00",
     "changes": [
       {
