@@ -74,7 +74,7 @@
 	Changing this around would probably require a good look-over the pre-existing code.
 	*/
 	var/obj/screen/zone_sel/zone_sel = null
-
+	var/obj/screen/holomap_obj = null
 	var/use_me = 1 //Allows all mobs to use the me verb by default, will have to manually specify they cannot
 	var/damageoverlaytemp = 0
 	var/obj/machinery/machine = null // Old bay code TOTALLY worth refactoring. For now, set and unset it ONLY by using set_machine(obj) and unset_machine() or GC will come and strangle you in your sleep.

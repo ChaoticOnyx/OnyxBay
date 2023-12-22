@@ -57,15 +57,15 @@
 	holomap_base = SSholomaps.default_holomap
 	if(color_filter)
 		holomap_base.color = color_filter
-	activator.AddOverlays(holomap_base)
+	activator.holomap_obj?.AddOverlays(holomap_base)
 	START_PROCESSING(SSholomaps, src)
 
 /obj/item/holochip/proc/deactivate_holomap()
 	freq_remove()
 	STOP_PROCESSING(SSholomaps, src) //No matter what
-	if(!activator) //|| !activator //activator.holomap_obj)
+	if(!activator || activator.holomap_obj)
 		return
-	activator.CutOverlays(holomap_base)
+	activator.holomap_obj?.CutOverlays(holomap_base)
 	if(length(holomap_images) && activator.client)
 		activator.client.images -= holomap_images
 		QDEL_LIST(holomap_images)
@@ -91,7 +91,7 @@
 		if(!SSholomaps.holomap_cache[HC])
 			continue
 		var/image/I = SSholomaps.holomap_cache[HC]
-		I.loc = activator //activator.holomap_obj
+		I.loc = activator.holomap_obj
 		holomap_images += I
 		animate(I, alpha = 255, time = 8, loop = -1, easing = SINE_EASING)
 		animate(I, alpha = 0, time = 5, easing = SINE_EASING)
@@ -107,7 +107,7 @@
 /obj/item/holochip/proc/handle_own_marker()
 	if(!self_marker)   // Dunno why but it happens in runtime
 		instantiate_self_marker()
-	self_marker.loc = activator //activator.holomap_obj
+	self_marker.loc = activator.holomap_obj
 	var/turf/src_turf = get_turf(src)
 	self_marker.pixel_x = (src_turf.x - OFFSET_CORRECTOR) * PIXEL_MULTIPLIER
 	self_marker.pixel_y = (src_turf.y - OFFSET_CORRECTOR) * PIXEL_MULTIPLIER

@@ -296,6 +296,7 @@
 	mymob.zone_sel.AddOverlays(image('icons/hud/common/screen_zone_sel.dmi', "[mymob.zone_sel.selecting]"))
 	static_inventory |= mymob.zone_sel
 
+	mymob.holomap_obj = new /obj/screen/holomap(null)
 	//Handle the gun settings buttons
 	mymob.gun_setting_icon = new /obj/screen/gun/mode(null)
 	mymob.gun_setting_icon.icon = ui_style

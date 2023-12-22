@@ -588,3 +588,13 @@
 	icon_state = "rec"
 	screen_loc = "TOP-2,WEST+2"
 	layer = FULLSCREEN_LAYER
+
+// Holomap
+/obj/screen/holomap
+	name = "holomap"
+	icon = null
+	icon_state = null
+	screen_loc = ui_holomap
+	plane = HUD_PLANE
+	layer = HUD_BASE_LAYER
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
