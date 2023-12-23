@@ -89,7 +89,7 @@
 	if(istype(W, /obj/item/pen))
 		if(writing)
 			return
-		var/t = sanitizeSafe(input(user, "Write something on the cup...", name, writing), MAX_NAME_LEN)
+		var/t = tgui_input_text(user, "Write something on the cup...", name, writing, MAX_NAME_LEN)
 		if(!t)
 			return
 		if(!in_range(src, usr) && loc != usr)
