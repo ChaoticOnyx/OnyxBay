@@ -26,6 +26,7 @@
 					/obj/item/reagent_containers/vessel/glass/bigmug = 10,
 					/obj/item/reagent_containers/vessel/glass/carafe = 2,
 					/obj/item/reagent_containers/vessel/mug/metal = 10,
+					/obj/item/reagent_containers/vessel/takeaway = 10,
 					/obj/item/reagent_containers/vessel/flask/barflask = 5,
 					/obj/item/reagent_containers/vessel/flask/vacuumflask = 5,
 					/obj/item/bottle_extra/pourer = 15,
