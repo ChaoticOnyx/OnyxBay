@@ -25,26 +25,28 @@
 
 /obj/machinery/computer/teleporter/on_update_icon()
 	ClearOverlays()
+
 	if(gate && (get_dir(gate, src) == WEST))
-		LAZYADD(overlays, image(icon, src, "tele_console_wiring"))
+		AddOverlays(OVERLAY(icon, "tele_console_wiring"))
 
 	icon_state = initial(icon_state)
-	if(stat & (BROKEN | NOPOWER))
-		set_light(0)
-		return
-
 	if(target_ref)
-		flick(image(icon, "tele_console_boot"), src)
-		set_light(0.25, 0.1, 2, 3.5, light_color)
-	else
-		set_light(0.1, 0.1, 2, 3.5, light_color)
+		flick("tele_console_boot", src)
+		icon_state = "[icon_state]_on"
 
-	var/image/screen_overlay = image(icon, src, "tele_console_over-[target_ref ? 1 : 0]", EYE_GLOW_LAYER)
-	screen_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-	screen_overlay.alpha = 150
-	LAZYADD(overlays, screen_overlay)
+	var/should_glow = update_glow()
+	if(should_glow)
+		AddOverlays(emissive_appearance(icon, "tele_console_over-[target_ref ? 1 : 0]"))
 
 	return
+
+/obj/machinery/computer/teleporter/update_glow()
+	. = ..()
+
+	if(. && !target_ref)
+		set_light(0.1, 0.1, 2, 3.5, light_color)
+
+	return .
 
 /obj/machinery/computer/teleporter/proc/link_gate()
 	if(gate)
@@ -54,7 +56,7 @@
 		if(gate)
 			gate.link_console()
 			break
-	update_icon()
+	queue_icon_update()
 
 /obj/machinery/computer/teleporter/Initialize()
 	. = ..()
@@ -76,14 +78,14 @@
 /obj/machinery/computer/teleporter/Destroy()
 	if(gate)
 		gate.console = null
-		gate.update_icon()
+		gate.queue_icon_update()
 		gate = null
 	return ..()
 
 /obj/machinery/computer/teleporter/dismantle()
 	if(gate)
 		gate.console = null
-		gate.update_icon()
+		gate.queue_icon_update()
 		gate = null
 	return ..()
 
@@ -134,6 +136,7 @@
 		target_ref = null
 
 	var/list/data = list()
+	data["id"] = id
 	data["gate"] = gate ? TRUE : FALSE
 	data["panel"] = panel_open
 	data["target"] = !target ? "None" : "[get_area(target)]"
@@ -166,7 +169,8 @@
 	switch(action)
 		if("toggle")
 			if(!target_ref)
-				return
+				return TRUE
+
 			gate.set_state(!gate.engaged)
 		if("togglemaint")
 			panel_open = !panel_open
@@ -192,7 +196,7 @@
 	if(target_ref == new_target_ref)
 		return
 	target_ref = new_target_ref
-	update_icon()
+	queue_icon_update()
 
 /obj/machinery/computer/teleporter/proc/get_targets()
 	var/list/targets = list()
