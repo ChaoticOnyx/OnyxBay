@@ -71,6 +71,17 @@
 	lid_type = null
 	unacidable = FALSE
 
+/obj/item/reagent_containers/vessel/takeaway
+	name = "takeaway cup"
+	desc = "A regular takeaway cup with handy lid."
+	icon_state = "takeaway_cup"
+	item_state = "takeaway_cup"
+	volume = 30
+	center_of_mass = "x=15;y=10"
+	pickup_sound = 'sound/effects/using/bottles/papercup.ogg'
+	lid_type = null
+	unacidable = FALSE
+
 /obj/item/reagent_containers/vessel/tea
 	name = "cup of Duke Purple Tea"
 	desc = "An insult to Duke Purple is an insult to the Space Queen! Any proper gentleman will fight you, if you sully this tea."
