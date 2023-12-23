@@ -38,7 +38,7 @@
 		icon_state = "tele_gate_on"
 
 		set_light(0.25, 0.1, 2, 3.5, light_color)
-		AddOverlays(emissive_appearance(icon, "tele_gate_over"))
+		AddOverlays(emissive_appearance(icon, "tele_gate_ea"))
 
 	return
 

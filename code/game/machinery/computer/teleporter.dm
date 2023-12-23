@@ -36,7 +36,7 @@
 
 	var/should_glow = update_glow()
 	if(should_glow)
-		AddOverlays(emissive_appearance(icon, "tele_console_over-[target_ref ? 1 : 0]"))
+		AddOverlays(emissive_appearance(icon, "tele_console_ea-[target_ref ? 1 : 0]"))
 
 	return
 
