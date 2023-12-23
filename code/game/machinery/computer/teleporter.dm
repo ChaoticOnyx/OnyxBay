@@ -63,18 +63,6 @@
 	id = "[random_id(/obj/machinery/computer/teleporter, 1000, 9999)]"
 	link_gate()
 
-/obj/machinery/computer/teleporter/verb/set_id(t as text)
-	set category = "Object"
-	set name = "Set teleporter ID"
-	set src in oview(1)
-	set desc = "ID Tag:"
-
-	if(stat & (NOPOWER|BROKEN) || !istype(usr,/mob/living))
-		return
-	if(t)
-		src.id = t
-	return
-
 /obj/machinery/computer/teleporter/Destroy()
 	if(gate)
 		gate.console = null
@@ -175,6 +163,11 @@
 		if("togglemaint")
 			panel_open = !panel_open
 			to_chat(usr, "\The [src]'s maintanence panel is now [panel_open ? "opened" : "closed"].")
+		if("idset")
+			if(!params["value"])
+				return TRUE
+
+			id = clamp(params["value"], 1000, 9999)
 		if("modeset")
 			gate.set_state(FALSE)
 			change_mode()
