@@ -61,6 +61,7 @@
 	var/plant_spawn_eligible = FALSE
 	var/mature_time //minimum maturation time
 	var/obj/machinery/portable_atmospherics/hydroponics/soil/invisible/plant
+	var/cached_ikey
 
 /obj/effect/vine/single
 	spread_chance = 0
@@ -121,7 +122,6 @@
 	return ..()
 
 /obj/effect/vine/on_update_icon()
-	ClearOverlays()
 	var/growth = growth_threshold ? min(max_growth, round(health/growth_threshold)) : 1
 	var/at_fringe = get_dist(src, parent)
 	if(spread_distance > 5)
@@ -135,7 +135,10 @@
 	var/ikey = "\ref[seed]-plant-[growth]"
 	if(!SSplants.plant_icon_cache[ikey])
 		SSplants.plant_icon_cache[ikey] = seed.get_icon(growth)
-	AddOverlays(SSplants.plant_icon_cache[ikey])
+	if(cached_ikey != ikey)
+		cached_ikey = ikey
+		ClearOverlays()
+		AddOverlays(SSplants.plant_icon_cache[ikey])
 
 	if(growth > 2 && growth == max_growth)
 		layer = (seed && seed.force_layer) ? seed.force_layer : ABOVE_OBJ_LAYER
@@ -160,8 +163,9 @@
 
 	// Apply colour and light from seed datum.
 	if(seed.get_trait(TRAIT_BIOLUM))
-		set_light(0.5, 0.1, (1 + round(seed.get_trait(TRAIT_POTENCY)/20)), l_color = seed.get_trait(TRAIT_BIOLUM_COLOUR))
-	else
+		if(!light)
+			set_light(0.5, 0.1, (1 + round(seed.get_trait(TRAIT_POTENCY)/20)), l_color = seed.get_trait(TRAIT_BIOLUM_COLOUR))
+	else if(light)
 		set_light(0)
 
 /obj/effect/vine/proc/calc_dir()

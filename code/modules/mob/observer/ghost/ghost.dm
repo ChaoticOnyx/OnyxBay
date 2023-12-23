@@ -9,7 +9,7 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 	desc = "It's a g-g-g-g-ghooooost!" //jinkies!
 	icon = 'icons/mob/mob.dmi'
 	icon_state = "ghost"
-	appearance_flags = DEFAULT_APPEARANCE_FLAGS | KEEP_TOGETHER | LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | KEEP_TOGETHER | RESET_ALPHA | LONG_GLIDE
 	blinded = 0
 	anchored = 1	//  don't get pushed around
 	universal_speak = 1
@@ -201,11 +201,14 @@ Works together with spawning an observer, noted above.
 	return 1
 
 /mob/proc/ghostize(can_reenter_corpse = CORPSE_CAN_REENTER)
+	if(ghostizing)
+		return
 	if(!key)
 		return
 	if(copytext(key, 1, 2) == "@")
 		return
 
+	ghostizing = TRUE // Since ghost spawn is way to far from being instant, we must make sure ghosts won't get duped.
 	var/mob/observer/ghost/ghost = (!QDELETED(teleop) && isghost(teleop)) ? teleop : new(src)
 
 	hide_fullscreens()
@@ -221,6 +224,7 @@ Works together with spawning an observer, noted above.
 		ghost.updateghostsight()
 
 	SEND_SIGNAL(src, SIGNAL_MOB_GHOSTIZED)
+	ghostizing = FALSE
 
 	return ghost
 
@@ -712,6 +716,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	icon_state = target.icon_state
 	CopyOverlays(target)
 	if(ishuman(target))
+		ImmediateOverlayUpdate()
 		var/mob/living/carbon/human/H = target
 		var/translate_y = 16 * ((tf_scale_y || 1) * H.body_height - 1) + H.species.y_shift
 		animate(
@@ -726,9 +731,8 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			time = 1
 		)
 
-		var/icon/ghost_icon = icon('icons/effects/blank.dmi')
-		for(var/d in GLOB.cardinal)
-			ghost_icon.Insert(H.get_flat_icon(src, d), dir = d)
+		var/icon/ghost_icon = get_flat_icon_directional(src, null, RESET_ALPHA)
+
 		icon = ghost_icon
 		icon_state = null
 		ClearOverlays()

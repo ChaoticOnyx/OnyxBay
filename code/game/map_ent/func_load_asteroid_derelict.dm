@@ -11,6 +11,8 @@
 
 /obj/map_ent/func_load_map/derelict/Initialize(...)
 	select_map()
+	if(!ev_map_path)
+		return INITIALIZE_HINT_QDEL
 	. = ..()
 
 /obj/map_ent/func_load_map/derelict/proc/select_map()
@@ -32,7 +34,7 @@
 			valid_map_templates += T
 	if(!length(valid_map_templates))
 		return
-		
+
 	var/datum/map_template/picked_map_template = pick(valid_map_templates)
 	var/derelict_name = picked_map_template.name
 	ev_map_path = picked_map_template.mappaths[1]
