@@ -12,7 +12,7 @@
 
 /obj/item/clothing/accessory/holochip/Initialize(obj/item/I)
 	. = ..()
-	var/datum/component/holomap/toggleable/transmitting/hmap_comp = AddComponent(/datum/component/holomap/toggleable/transmitting, marker_id, marker_filter)
+	var/datum/component/holomarker/toggleable/transmitting/hmap_comp = AddComponent(/datum/component/holomarker/toggleable/transmitting, marker_id, marker_filter)
 	hmap_comp.update_holomarker_image(src)
 	toggle_holomap = new /datum/action/item_action/toggle_holomap(src)
 	toggle_holomap.target = src
@@ -25,12 +25,12 @@
 
 /obj/item/clothing/accessory/holochip/on_attached(obj/item/clothing/S, mob/user)
 	. = ..()
-	var/datum/component/holomap/toggleable/transmitting/H = get_component(/datum/component/holomap/toggleable/transmitting)
+	var/datum/component/holomarker/toggleable/transmitting/H = get_component(/datum/component/holomarker/toggleable/transmitting)
 	H.on_attached(S)
 	register_signal(S, SIGNAL_ITEM_UNEQUIPPED, nameof(.proc/deactivate))
 
 /obj/item/clothing/accessory/holochip/on_removed(mob/user)
-	var/datum/component/holomap/toggleable/transmitting/H = get_component(/datum/component/holomap/toggleable/transmitting)
+	var/datum/component/holomarker/toggleable/transmitting/H = get_component(/datum/component/holomarker/toggleable/transmitting)
 	H.on_removed()
 	if(has_suit)
 		unregister_signal(has_suit, SIGNAL_ITEM_UNEQUIPPED)
@@ -38,11 +38,11 @@
 	return ..()
 
 /obj/item/clothing/accessory/holochip/attack_self(mob/user)
-	var/datum/component/holomap/toggleable/transmitting/H = get_component(/datum/component/holomap/toggleable/transmitting)
+	var/datum/component/holomarker/toggleable/transmitting/H = get_component(/datum/component/holomarker/toggleable/transmitting)
 	H.toggle(user)
 
 /obj/item/clothing/accessory/holochip/proc/deactivate()
-	var/datum/component/holomap/toggleable/transmitting/H = get_component(/datum/component/holomap/toggleable/transmitting)
+	var/datum/component/holomarker/toggleable/transmitting/H = get_component(/datum/component/holomarker/toggleable/transmitting)
 	H.deactivate()
 
 /datum/action/item_action/toggle_holomap
@@ -61,7 +61,7 @@
 		return TRUE
 
 /obj/item/clothing/accessory/holochip/attack_self(mob/user)
-	var/datum/component/holomap/toggleable/transmitting/H = get_component(/datum/component/holomap/toggleable/transmitting)
+	var/datum/component/holomarker/toggleable/transmitting/H = get_component(/datum/component/holomarker/toggleable/transmitting)
 	H.tgui_interact(user)
 
 /obj/item/clothing/accessory/holochip/equipped(mob/user)
@@ -82,7 +82,7 @@
 	if(usr.restrained() || usr.stunned || usr.is_ic_dead())
 		return
 
-	var/datum/component/holomap/toggleable/transmitting/holochip_comp = get_component(/datum/component/holomap/toggleable/transmitting)
+	var/datum/component/holomarker/toggleable/transmitting/holochip_comp = get_component(/datum/component/holomarker/toggleable/transmitting)
 	holochip_comp.toggle(usr)
 
 /obj/item/clothing/accessory/holochip/vox

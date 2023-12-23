@@ -5,7 +5,7 @@
 
 /obj/machinery/computer/shuttle_control/specops/Initialize()
 	. = ..()
-	AddComponent(/datum/component/holomap/toggleable/transmitting/shuttle, "syndishuttle", HOLOMAP_FILTER_DEATHSQUAD)
+	AddComponent(/datum/component/holomarker/toggleable/transmitting/shuttle, "syndishuttle", HOLOMAP_FILTER_DEATHSQUAD)
 
 /obj/machinery/computer/shuttle_control/specops/attack_ai(user as mob)
 	to_chat(user, "<span class='warning'>Access Denied.</span>")

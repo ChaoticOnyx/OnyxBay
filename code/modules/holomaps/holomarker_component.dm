@@ -1,5 +1,5 @@
 /// Plainest of them all, simply instantiates its own marker. Used for objects such as SMES or navbeacons.
-/datum/component/holomap
+/datum/component/holomarker
 	dupe_mode = COMPONENT_DUPE_UNIQUE
 	var/marker_filter = HOLOMAP_FILTER_STATIONMAP
 
@@ -9,7 +9,7 @@
 	var/marker_id = "you"
 	var/marker_icon = 'icons/holomap/holomap_markers.dmi'
 
-/datum/component/holomap/Initialize(marker_id_, marker_filter_)
+/datum/component/holomarker/Initialize(marker_id_, marker_filter_)
 	. = ..()
 	GLOB.holomarkers.Add(src)
 
@@ -21,7 +21,7 @@
 
 	instantiate_self_marker()
 
-/datum/component/holomap/proc/instantiate_self_marker()
+/datum/component/holomarker/proc/instantiate_self_marker()
 	if(isatom(parent))
 		var/atom/parent_ = parent
 		marker_z = parent_.z
@@ -33,18 +33,18 @@
 		GLOB.holocache["_\ref[src]"] = marker_image
 
 /// Can be toggled on and off, updates only its own marker. For use with wayfinding pinpointer.
-/datum/component/holomap/toggleable
+/datum/component/holomarker/toggleable
 	var/toggled = FALSE
 	var/should_have_legend = FALSE
 	var/mob/activator
 	var/image/holomap_base
 	var/list/holomap_images = list()
 
-/datum/component/holomap/toggleable/Initialize(marker_id_, marker_filter_)
+/datum/component/holomarker/toggleable/Initialize(marker_id_, marker_filter_)
 	. = ..()
 	set_next_think(world.time + 1 SECOND)
 
-/datum/component/holomap/toggleable/instantiate_self_marker()
+/datum/component/holomarker/toggleable/instantiate_self_marker()
 	..()
 	var/atom/parent_ = parent
 	marker_z = parent_.z
@@ -55,7 +55,7 @@
 	self_image.layer = HUD_HOLOMARKER_SELF_LAYER
 	GLOB.holocache["_\ref[src]_self"] = self_image
 
-/datum/component/holomap/toggleable/proc/toggle(mob/user)
+/datum/component/holomarker/toggleable/proc/toggle(mob/user)
 	if(!user || !user.client)
 		return
 
@@ -66,7 +66,7 @@
 	else
 		deactivate(user)
 
-/datum/component/holomap/toggleable/proc/activate()
+/datum/component/holomarker/toggleable/proc/activate()
 	register_signal(activator, SIGNAL_Z_CHANGED, nameof(.proc/on_z_change))
 	register_signal(parent, SIGNAL_ITEM_UNEQUIPPED, nameof(.proc/deactivate))
 
@@ -86,7 +86,7 @@
 	animate(holomap_base, alpha = 255, time = 5, easing = LINEAR_EASING)
 	activator.client.images |= holomap_base
 
-/datum/component/holomap/toggleable/proc/deactivate()
+/datum/component/holomarker/toggleable/proc/deactivate()
 	toggled = FALSE
 	unregister_signal(activator, SIGNAL_Z_CHANGED)
 	unregister_signal(parent, SIGNAL_ITEM_UNEQUIPPED)
@@ -99,7 +99,7 @@
 
 	activator = null
 
-/datum/component/holomap/toggleable/think()
+/datum/component/holomarker/toggleable/think()
 	handle_own_marker()
 
 	if(!activator || !activator.client)
@@ -120,7 +120,7 @@
 	set_next_think(world.time + 1 SECOND)
 
 /// Handles own marker that will be shown to other users
-/datum/component/holomap/toggleable/proc/handle_own_marker()
+/datum/component/holomarker/toggleable/proc/handle_own_marker()
 	var/image/I = GLOB.holocache["_\ref[src]"]
 	var/turf/parent_loc = get_turf(parent)
 	marker_z = parent_loc.z
@@ -128,7 +128,7 @@
 	I.pixel_y = parent_loc.y + HOLOMAP_OFFSET_Y - offset_y
 
 /// Handles self marker that will be shown to a user
-/datum/component/holomap/toggleable/proc/handle_self_marker()
+/datum/component/holomarker/toggleable/proc/handle_self_marker()
 	if(!activator)
 		return
 
@@ -140,12 +140,12 @@
 	holomap_images += self
 
 /// Handles markers of others
-/datum/component/holomap/toggleable/proc/handle_markers()
-	for(var/datum/component/holomap/H in GLOB.holomarkers)
+/datum/component/holomarker/toggleable/proc/handle_markers()
+	for(var/datum/component/holomarker/H in GLOB.holomarkers)
 		if(H == src)
 			continue
 
-		if(istype(H, /datum/component/holomap/toggleable/transmitting))
+		if(istype(H, /datum/component/holomarker/toggleable/transmitting))
 			continue
 
 		if(!isnull(marker_filter) && H.marker_filter != marker_filter)
@@ -161,7 +161,7 @@
 		animate(I, alpha = 0, time = 5, easing = SINE_EASING)
 		animate(I, alpha = 255, time = 2, easing = SINE_EASING)
 
-/datum/component/holomap/toggleable/proc/on_z_change(atom, old_turf, new_turf)
+/datum/component/holomarker/toggleable/proc/on_z_change(atom, old_turf, new_turf)
 	var/atom/new_loc = new_turf
 	if(!activator || !activator.client)
 		return
@@ -182,12 +182,12 @@
 	activator.client.images |= holomap_base
 
 /// Transmits & receives other holochips on the same frequency
-/datum/component/holomap/toggleable/transmitting
+/datum/component/holomarker/toggleable/transmitting
 	var/list/transmitting = list("frequency" = RADIO_LOW_FREQ, "encryption" = 1)
 	offset_x = HOLOMAP_CORRECTOR_X_BIG
 	offset_y = HOLOMAP_CORRECTOR_Y_BIG
 
-/datum/component/holomap/toggleable/transmitting/Initialize(marker_id_, marker_filter_)
+/datum/component/holomarker/toggleable/transmitting/Initialize(marker_id_, marker_filter_)
 	. = ..()
 	if(marker_filter_)
 		switch(marker_filter_)
@@ -202,8 +202,8 @@
 			if(HOLOMAP_FILTER_VOX)
 				transmitting = GLOB.holomap_frequency_vox
 
-/datum/component/holomap/toggleable/transmitting/handle_markers()
-	for(var/datum/component/holomap/toggleable/transmitting/H in GLOB.holomarkers)
+/datum/component/holomarker/toggleable/transmitting/handle_markers()
+	for(var/datum/component/holomarker/toggleable/transmitting/H in GLOB.holomarkers)
 		if(H == src)
 			continue
 
@@ -216,7 +216,7 @@
 		if(H.marker_z != marker_z)
 			continue
 
-		if(istype(H, /datum/component/holomap/toggleable/transmitting/shuttle) && H.marker_filter != marker_filter)
+		if(istype(H, /datum/component/holomarker/toggleable/transmitting/shuttle) && H.marker_filter != marker_filter)
 			continue
 
 		var/image/I = GLOB.holocache["_\ref[H]"]
@@ -226,7 +226,7 @@
 		animate(I, alpha = 0, time = 5, easing = SINE_EASING)
 		animate(I, alpha = 255, time = 2, easing = SINE_EASING)
 
-/datum/component/holomap/toggleable/transmitting/tgui_act(action, params)
+/datum/component/holomarker/toggleable/transmitting/tgui_act(action, params)
 	. = ..()
 
 	if(.)
@@ -248,7 +248,7 @@
 
 	return TRUE
 
-/datum/component/holomap/toggleable/transmitting/tgui_data(mob/user)
+/datum/component/holomarker/toggleable/transmitting/tgui_data(mob/user)
 	var/list/data = list(
 		"maxFrequency" = RADIO_HIGH_FREQ,
 		"minFrequency" = RADIO_LOW_FREQ,
@@ -258,13 +258,13 @@
 
 	return data
 
-/datum/component/holomap/toggleable/transmitting/tgui_interact(mob/user, datum/tgui/ui)
+/datum/component/holomarker/toggleable/transmitting/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Holochip", "Holochip frequency")
 		ui.open()
 
-/datum/component/holomap/toggleable/transmitting/handle_own_marker()
+/datum/component/holomarker/toggleable/transmitting/handle_own_marker()
 	var/image/I = GLOB.holocache["_\ref[src]"]
 	var/turf/parent_loc = get_turf(parent)
 	marker_z = parent_loc.z
@@ -290,13 +290,13 @@
 	else
 		I.filters += filter(type = "outline", size = 2, color = COLOR_HMAP_DEFAULT)
 
-/datum/component/holomap/toggleable/transmitting/proc/on_attached(obj/item/clothing/S)
+/datum/component/holomarker/toggleable/transmitting/proc/on_attached(obj/item/clothing/S)
 	update_holomarker_image(S)
 
-/datum/component/holomap/toggleable/transmitting/proc/on_removed()
+/datum/component/holomarker/toggleable/transmitting/proc/on_removed()
 	update_holomarker_image()
 
-/datum/component/holomap/toggleable/transmitting/proc/update_holomarker_image(atom/holder)
+/datum/component/holomarker/toggleable/transmitting/proc/update_holomarker_image(atom/holder)
 	var/atom/image_origin
 	if(holder)
 		image_origin = holder
@@ -311,10 +311,10 @@
 	GLOB.holocache["_\ref[src]"] = NI
 
 /// For use with shuttle consoles, do not forget to set up FILTER
-/datum/component/holomap/toggleable/transmitting/shuttle
+/datum/component/holomarker/toggleable/transmitting/shuttle
 	marker_icon = 'icons/holomap/holomap_markers_32x32.dmi'
 	marker_id = "skipjack"
 
-/datum/component/holomap/toggleable/transmitting/shuttle/think()
+/datum/component/holomarker/toggleable/transmitting/shuttle/think()
 	handle_own_marker()
 	set_next_think(world.time + 1 SECOND)

@@ -8,11 +8,11 @@
 
 /obj/item/pinpointer/wayfinding/Initialize()
 	. = ..()
-	var/datum/component/holomap/toggleable/H = AddComponent(/datum/component/holomap/toggleable)
+	var/datum/component/holomarker/toggleable/H = AddComponent(/datum/component/holomarker/toggleable)
 	H.should_have_legend = TRUE
 
 /obj/item/pinpointer/wayfinding/attack_self(mob/living/user)
-	var/datum/component/holomap/toggleable/H = get_component(/datum/component/holomap/toggleable)
+	var/datum/component/holomarker/toggleable/H = get_component(/datum/component/holomarker/toggleable)
 	if(isnull(H))
 		return
 
@@ -29,7 +29,7 @@
 
 /obj/machinery/navbeacon/wayfinding/bridge/Initialize()
 	. = ..()
-	var/datum/component/holomap/holomap = AddComponent(/datum/component/holomap, location)
+	var/datum/component/holomarker/holomap = AddComponent(/datum/component/holomarker, location)
 	holomap.marker_id = location
 
 /obj/machinery/navbeacon/wayfinding/vault
@@ -46,7 +46,7 @@
 
 /obj/machinery/navbeacon/wayfinding/eva/Initialize()
 	. = ..()
-	var/datum/component/holomap/holomap = AddComponent(/datum/component/holomap, location)
+	var/datum/component/holomarker/holomap = AddComponent(/datum/component/holomarker, location)
 	holomap.marker_id = location
 
 /obj/machinery/navbeacon/wayfinding/aiupload
@@ -54,7 +54,7 @@
 
 /obj/machinery/navbeacon/wayfinding/aiupload/Initialize()
 	. = ..()
-	var/datum/component/holomap/holomap = AddComponent(/datum/component/holomap, location)
+	var/datum/component/holomarker/holomap = AddComponent(/datum/component/holomarker, location)
 	holomap.marker_id = location
 
 // head of staff offices
@@ -66,7 +66,7 @@
 
 /obj/machinery/navbeacon/wayfinding/hop/Initialize()
 	. = ..()
-	var/datum/component/holomap/holomap = AddComponent(/datum/component/holomap, location)
+	var/datum/component/holomarker/holomap = AddComponent(/datum/component/holomarker, location)
 	holomap.marker_id = location
 
 /obj/machinery/navbeacon/wayfinding/agent
@@ -84,7 +84,7 @@
 
 /obj/machinery/navbeacon/wayfinding/sec/Initialize()
 	. = ..()
-	var/datum/component/holomap/holomap = AddComponent(/datum/component/holomap, location)
+	var/datum/component/holomarker/holomap = AddComponent(/datum/component/holomarker, location)
 	holomap.marker_id = location
 
 /obj/machinery/navbeacon/wayfinding/det
@@ -98,7 +98,7 @@
 
 /obj/machinery/navbeacon/wayfinding/engineering/Initialize()
 	. = ..()
-	var/datum/component/holomap/holomap = AddComponent(/datum/component/holomap, location)
+	var/datum/component/holomarker/holomap = AddComponent(/datum/component/holomarker, location)
 	holomap.marker_id = location
 
 /obj/machinery/navbeacon/wayfinding/techstorage
@@ -112,7 +112,7 @@
 
 /obj/machinery/navbeacon/wayfinding/med/Initialize()
 	. = ..()
-	var/datum/component/holomap/holomap = AddComponent(/datum/component/holomap, location)
+	var/datum/component/holomarker/holomap = AddComponent(/datum/component/holomarker, location)
 	holomap.marker_id = location
 
 /obj/machinery/navbeacon/wayfinding/cargo
@@ -124,7 +124,7 @@
 
 /obj/machinery/navbeacon/wayfinding/bar/Initialize()
 	. = ..()
-	var/datum/component/holomap/holomap = AddComponent(/datum/component/holomap, location)
+	var/datum/component/holomarker/holomap = AddComponent(/datum/component/holomarker, location)
 	holomap.marker_id = location
 
 /obj/machinery/navbeacon/wayfinding/dorms
@@ -141,7 +141,7 @@
 
 /obj/machinery/navbeacon/wayfinding/library/Initialize()
 	. = ..()
-	var/datum/component/holomap/holomap = AddComponent(/datum/component/holomap, location)
+	var/datum/component/holomarker/holomap = AddComponent(/datum/component/holomarker, location)
 	holomap.marker_id = location
 
 /obj/machinery/navbeacon/wayfinding/chapel
@@ -149,7 +149,7 @@
 
 /obj/machinery/navbeacon/wayfinding/chapel/Initialize()
 	. = ..()
-	var/datum/component/holomap/holomap = AddComponent(/datum/component/holomap, location)
+	var/datum/component/holomarker/holomap = AddComponent(/datum/component/holomarker, location)
 	holomap.marker_id = location
 
 /obj/machinery/navbeacon/wayfinding/cryo
