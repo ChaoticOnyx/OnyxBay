@@ -25,12 +25,15 @@
 	if(isatom(parent))
 		var/atom/parent_ = parent
 		marker_z = parent_.z
-		var/image/marker_image = image(marker_icon, marker_id)
-		marker_image.pixel_x = parent_.x + HOLOMAP_OFFSET_X - offset_x
-		marker_image.pixel_y = parent_.y + HOLOMAP_OFFSET_Y - offset_y
-		marker_image.plane = HUD_PLANE
-		marker_image.layer = HUD_HOLOMARKER_LAYER
-		GLOB.holocache["_\ref[src]"] = marker_image
+		GLOB.holocache["_\ref[src]"] = create_marker_image(parent_.x, parent_.y, marker_id, HUD_HOLOMARKER_LAYER)
+
+/datum/component/holomarker/proc/create_marker_image(X, Y, icon_state, layer)
+	var/image/marker_image = image(marker_icon, icon_state)
+	marker_image.pixel_x = X + HOLOMAP_OFFSET_X - offset_x
+	marker_image.pixel_y = Y + HOLOMAP_OFFSET_Y - offset_y
+	marker_image.plane = HUD_PLANE
+	marker_image.layer = layer
+	return marker_image
 
 /// Can be toggled on and off, updates only its own marker. For use with wayfinding pinpointer.
 /datum/component/holomarker/toggleable
@@ -48,12 +51,7 @@
 	..()
 	var/atom/parent_ = parent
 	marker_z = parent_.z
-	var/image/self_image = image(marker_icon, "you")
-	self_image.pixel_x = parent_.x + HOLOMAP_OFFSET_X - offset_x
-	self_image.pixel_y = parent_.y + HOLOMAP_OFFSET_Y - offset_y
-	self_image.plane = HUD_PLANE
-	self_image.layer = HUD_HOLOMARKER_SELF_LAYER
-	GLOB.holocache["_\ref[src]_self"] = self_image
+	GLOB.holocache["_\ref[src]_self"] = create_marker_image(parent_.x, parent_.y, "you", HUD_HOLOMARKER_SELF_LAYER)
 
 /datum/component/holomarker/toggleable/proc/toggle(mob/user)
 	if(!user || !user.client)
