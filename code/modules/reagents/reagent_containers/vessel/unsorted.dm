@@ -77,6 +77,7 @@
 	icon_state = "takeaway_cup"
 	item_state = "takeaway_cup"
 	volume = 30
+	filling_states = "50;65;80;100"
 	possible_transfer_amounts = "5;10;15;30"
 	center_of_mass = "x=17;y=12"
 	pickup_sound = 'sound/effects/using/bottles/papercup.ogg'
