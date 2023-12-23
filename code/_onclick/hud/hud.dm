@@ -65,10 +65,6 @@
 	always_visible_inventory = null
 	mymob = null
 
-/obj/screen/holomap
-	icon = 'icons/480x480.dmi'
-	icon_state = "blank"
-
 /datum/hud/proc/hidden_inventory_update()
 	if(!mymob) return
 	if(ishuman(mymob))
@@ -162,14 +158,7 @@
 	var/ui_alpha = mymob.client.prefs.UI_style_alpha
 
 	holomap_obj = new /obj/screen/holomap
-	holomap_obj.name = "holomap"
-	holomap_obj.icon = null
-	holomap_obj.icon_state = ""
-	holomap_obj.screen_loc = "SOUTH,WEST"
-	holomap_obj.mouse_opacity = 0
-	holomap_obj.alpha = 255
-
-	mymob.client.screen += src.holomap_obj
+	LAZYADD(always_visible_inventory, holomap_obj)
 
 	FinalizeInstantiation(ui_style, ui_color, ui_alpha)
 
