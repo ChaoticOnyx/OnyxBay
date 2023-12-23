@@ -32,9 +32,9 @@
 /obj/item/clothing/accessory/holochip/on_removed(mob/user)
 	var/datum/component/holomarker/toggleable/transmitting/H = get_component(/datum/component/holomarker/toggleable/transmitting)
 	H.on_removed()
+	H.deactivate()
 	if(has_suit)
 		unregister_signal(has_suit, SIGNAL_ITEM_UNEQUIPPED)
-	deactivate()
 	return ..()
 
 /obj/item/clothing/accessory/holochip/attack_self(mob/user)
