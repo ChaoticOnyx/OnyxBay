@@ -131,3 +131,8 @@
 	dogtag.stored_name = H.real_name
 	dogtag.religion = H.religion
 	dogtag.stored_blood_type = H.b_type
+
+/datum/gear/accessory/pride_pin
+	display_name = "Ukrainian pin"
+	description = "Glory to Ukraine!"
+	path = /obj/item/clothing/accessory/medal/ukraine_pin

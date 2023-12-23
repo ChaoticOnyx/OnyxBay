@@ -55,3 +55,10 @@
 	desc = "An iron medal awarded to NanoTrasen employees for merit."
 	icon_state = "iron_nt"
 	item_state = "iron_nt"
+
+// pin
+/obj/item/clothing/accessory/medal/ukraine_pin
+	name = "\improper Ukraine pin"
+	desc = "Glory to Ukraine!"
+	icon_state = "ukraine_pin"
+	item_state = "ukraine_pin"
