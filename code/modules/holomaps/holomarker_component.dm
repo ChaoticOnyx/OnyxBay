@@ -143,7 +143,7 @@
 		if(H == src)
 			continue
 
-		if(istype(H, /datum/component/holomarker/toggleable/transmitting))
+		if(istype(H, /datum/component/holomarker/toggleable/transmitting) || istype(H, /datum/component/holomarker/toggleable))
 			continue
 
 		if(!isnull(marker_filter) && H.marker_filter != marker_filter)
