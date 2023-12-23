@@ -26,26 +26,19 @@
 
 /obj/machinery/teleporter_gate/on_update_icon()
 	ClearOverlays()
+
 	if(console && (get_dir(console, src) == EAST))
-		LAZYADD(overlays, image(icon, src, "tele_gate_wiring"))
+		AddOverlays(OVERLAY(icon, "tele_gate_wiring"))
 
 	if(!engaged || stat & (BROKEN | NOPOWER))
 		icon_state = "tele_gate_off"
 		set_light(0)
 	else
-		flick(image(icon, "tele_gate_boot"), src)
+		flick("tele_gate_boot", src)
 		icon_state = "tele_gate_on"
 
-		var/image/screen_overlay = image(icon, src, "tele_gate_over", EYE_GLOW_LAYER)
-		screen_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		screen_overlay.alpha = 150
-		LAZYADD(overlays, screen_overlay)
-
-		var/image/galaxy_overlay = image(icon, src, "tele_gate_galaxy", EYE_GLOW_LAYER + 1)
-		galaxy_overlay.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		LAZYADD(overlays, galaxy_overlay)
-
 		set_light(0.25, 0.1, 2, 3.5, light_color)
+		AddOverlays(emissive_appearance(icon, "tele_gate_ea"))
 
 	return
 
@@ -57,7 +50,7 @@
 		if(console)
 			console.link_gate()
 			break
-	update_icon()
+	queue_icon_update()
 
 /obj/machinery/teleporter_gate/RefreshParts()
 	var/acc_modifier
@@ -80,14 +73,14 @@
 /obj/machinery/teleporter_gate/Destroy()
 	if(console)
 		console.gate = null
-		console.update_icon()
+		console.queue_icon_update()
 		console = null
 	return ..()
 
 /obj/machinery/teleporter_gate/dismantle()
 	if(console)
 		console.gate = null
-		console.update_icon()
+		console.queue_icon_update()
 		console = null
 	return ..()
 
@@ -127,7 +120,7 @@
 /obj/machinery/teleporter_gate/proc/set_state(new_state)
 	engaged = new_state
 	update_power()
-	update_icon()
+	queue_icon_update()
 
 /obj/machinery/teleporter_gate/proc/update_power()
 	update_use_power(is_ready() ? POWER_USE_ACTIVE : POWER_USE_IDLE)
