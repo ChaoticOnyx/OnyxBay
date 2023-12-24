@@ -1,22 +1,22 @@
-/*
-(VOX) HEIST ROUNDTYPE
-*/
-
 /datum/game_mode/heist
-	name = "Heist"
+	name = "heist"
 	config_tag = "heist"
-	required_players = 12
-	required_enemies = 3
-	round_description = "An unidentified bluespace signature has slipped into close sensor range and is approaching!"
-	extended_round_description = "The Company's majority control of plasma in Nyx has marked the \
-		station to be a highly valuable target for many competing organizations and individuals. Being a \
-		colony of sizable population and considerable wealth causes it to often be the target of various \
-		attempts of robbery, fraud and other malicious actions."
-	end_on_antag_death = 1
+	required_players = 15
+	required_enemies = 4
 	antag_tags = list(MODE_RAIDER)
 
-/datum/game_mode/heist/check_finished()
-	var/datum/shuttle/autodock/multi/antag/skipjack = SSshuttle.shuttles["Skipjack"]
-	if (skipjack && skipjack.return_warning && skipjack.home_waypoint == skipjack.current_location)
-		return 1
-	return ..()
+/datum/game_mode/heist/pre_setup()
+	round_description = "An unidentified bluespace signature has slipped past the Icarus and is approaching the [current_map.station_type]!"
+	extended_round_description = "The galaxy is a place full of dangers, even the inner colonies are not free of such scourges. \
+	Raiders and pirates are a well-know threat in the inhabited space, and places such as [current_map.station_type]s are easy targets \
+	for their greedy plans."
+	. = ..()
+
+/datum/game_mode/heist/apprentices
+	name = "magistake"
+	config_tag = "magistake"
+	extended_round_description = "The galaxy is a place full of dangers, even the inner colonies are not free of such scourges. \
+	Some say that the best raiders have a touch of magic to their art of plunder, but that's just hearsay."
+	antag_tags = list(MODE_RAIDER_TECHNO)
+	required_players = 12
+	required_enemies = 3

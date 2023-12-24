@@ -1,9 +1,0 @@
-"a" = (/turf/simulated/floor/natural/beach/water/ocean,/area/template_noop)
-"w" = (/obj/structure/flora/ausbushes/stalkybush,/turf/simulated/floor/natural/beach/water/ocean,/area/template_noop)
-"y" = (/obj/structure/plushie/carp,/turf/simulated/floor/natural/beach/water/ocean,/area/template_noop)
-
-(1,1,1) = {"
-waa
-aya
-aaw
-"}

@@ -3,50 +3,54 @@
 	req_access = list(access_armory)
 	icon = 'icons/obj/guncabinet.dmi'
 	icon_state = "base"
-	icon_off = "base"
-	icon_broken = "sparks"
-	icon_locked = "base"
-	icon_closed = "base"
-	icon_opened = "base"
-	dremovable = FALSE
+	anchored = TRUE
+	canbemoved = TRUE
+
+	door_underlay = TRUE
+	door_anim_squish = 0.12
+	door_anim_angle = 119
+	door_hinge = -9.5
 
 /obj/structure/closet/secure_closet/guncabinet/Initialize()
-	. = ..()
+	..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/structure/closet/secure_closet/guncabinet/LateInitialize()
+	..()
 	update_icon()
 
-/obj/structure/closet/secure_closet/guncabinet/on_update_icon()
-	ClearOverlays()
-	if(opened)
-		AddOverlays(image(icon, "door_open"))
-	else
-		var/lazors = 0
-		var/shottas = 0
-		for(var/obj/item/gun/G in contents)
-			if(istype(G, /obj/item/gun/energy))
-				lazors++
-			if(istype(G, /obj/item/gun/projectile))
-				shottas++
-		for(var/i = 0 to 2)
-			if(lazors || shottas) // only make icons if we have one of the two types.
-				var/image/gun = image(icon(src.icon))
-				if(lazors > shottas)
-					lazors--
-					gun.icon_state = "laser"
-				else if(shottas)
-					shottas--
-					gun.icon_state = "projectile"
-				gun.pixel_x = i * 4
-				AddOverlays(gun)
+/obj/structure/closet/secure_closet/guncabinet/toggle()
+	..()
+	update_icon()
 
-		AddOverlays(image(icon, "door"))
+/obj/structure/closet/secure_closet/guncabinet/update_icon()
+	cut_overlays()
+	var/lazors = 0
+	var/shottas = 0
+	for (var/obj/item/gun/G in contents)
+		if (istype(G, /obj/item/gun/energy))
+			lazors++
+		if (istype(G, /obj/item/gun/projectile/))
+			shottas++
+	if (lazors || shottas)
+		for (var/i = 0 to 2)
+			if (lazors > 0 && (shottas <= 0 || prob(50)))
+				lazors--
+				add_overlay("laser[i]")
+			else if (shottas > 0)
+				shottas--
+				add_overlay("projectile[i]")
+	. = ..()
 
-		if(welded)
-			AddOverlays(image(icon, "welded"))
+/obj/structure/closet/secure_closet/guncabinet/sci
+	name = "science gun cabinet"
+	req_access = list(access_tox_storage)
+	icon_state = "sci"
 
-		if(broken)
-			AddOverlays(image(icon, "broken"))
-			AddOverlays(image(icon, icon_broken))
-		else if(locked)
-			AddOverlays(image(icon, "locked"))
-		else
-			AddOverlays(image(icon, "open"))
+/obj/structure/closet/secure_closet/guncabinet/peac
+	name = "anti-materiel weapons platform cabinet"
+
+/obj/structure/closet/secure_closet/guncabinet/peac/fill()
+	new /obj/item/gun/projectile/peac(src)
+	for(var/i = 1 to 3)
+		new /obj/item/ammo_casing/peac(src)

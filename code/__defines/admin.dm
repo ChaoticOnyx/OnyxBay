@@ -1,5 +1,5 @@
 // A set of constants used to determine which type of mute an admin wishes to apply.
-// Please read and understand the muting/automuting stuff before changing these. MUTE_IC_AUTO, etc. = (MUTE_IC << 1)
+// Please read and understand the muting/automuting stuff before changing these. MUTE_IC_AUTO, etc. = (MUTE_Ito_chat(C, 1))
 // Therefore there needs to be a gap between the flags for the automute flags.
 #define MUTE_IC        0x1
 #define MUTE_OOC       0x2
@@ -8,6 +8,10 @@
 #define MUTE_DEADCHAT  0x10
 #define MUTE_AOOC      0x20
 #define MUTE_ALL       0xFFFF
+
+// Number of identical messages required to get the spam-prevention auto-mute thing to trigger warnings and automutes.
+#define SPAM_TRIGGER_WARNING  5
+#define SPAM_TRIGGER_AUTOMUTE 10
 
 // Some constants for DB_Ban
 #define BANTYPE_PERMA       1
@@ -33,12 +37,24 @@
 #define R_SOUNDS        0x800
 #define R_SPAWN         0x1000
 #define R_MOD           0x2000
-#define R_MENTOR        0x4000
-#define R_HOST          0x8000 //higher than this will overflow
-#define R_INVESTIGATE   (R_ADMIN|R_MOD)
+#define R_DEV           0x4000
+#define R_CCIAA         0x8000 //higher than this will overflow
 
 #define R_MAXPERMISSION 0x8000 // This holds the maximum value for a permission. It is used in iteration, so keep it updated.
+#define R_ALL           0x7FFF // All perms forever.
 
-#define TICKET_CLOSED 0   // Ticket has been resolved or declined
-#define TICKET_OPEN     1 // Ticket has been created, but not responded to
-#define TICKET_ASSIGNED 2 // An admin has assigned themself to the ticket and will respond
+// ticket statuses
+#define TICKET_CLOSED   0
+#define TICKET_OPEN     1
+#define TICKET_ASSIGNED 2
+
+// adminhelp status
+#define NOT_ADMINHELPED     0
+#define ADMINHELPED         1
+#define ADMINHELPED_DISCORD 2
+
+#define STICKYBAN_DB_CACHE_TIME (10 SECONDS)
+#define STICKYBAN_ROGUE_CHECK_TIME 5
+
+#define ADMIN_JMP(src) "(<a href='?_src_=holder;adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>JMP</a>)"
+#define COORD(src) "[src ? src.Admin_Coordinates_Readable() : "nonexistent location"]"

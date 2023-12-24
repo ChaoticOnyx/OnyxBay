@@ -1,70 +1,101 @@
 
 /**********************Ore box**************************/
 
-//
-
 /obj/structure/ore_box
-	icon = 'icons/obj/mining.dmi'
-	icon_state = "orebox0"
 	name = "ore box"
 	desc = "A heavy box used for storing ore."
-	density = 1
-	pull_slowdown = PULL_SLOWDOWN_HEAVY
-
+	desc_info = "You can attach a warp extraction beacon signaller to this, then click on it with an ore satchel that has a warp extraction pack attached, to link them."
+	icon = 'icons/obj/mining.dmi'
+	icon_state = "orebox0"
+	density = TRUE
+	build_amt = 10
 	var/last_update = 0
+	var/obj/item/warp_core/warp_core // to set up the bluespace network
 	var/list/stored_ore = list()
 
-/obj/structure/ore_box/attackby(obj/item/W as obj, mob/user as mob)
+/obj/structure/ore_box/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/ore))
-		user.drop(W, src)
-	if (istype(W, /obj/item/storage))
+		user.drop_from_inventory(W, src)
+	else if(istype(W, /obj/item/storage))
+		if(istype(W, /obj/item/storage/bag/ore))
+			var/obj/item/storage/bag/ore/satchel = W
+			if(satchel.linked_beacon)
+				if(!warp_core)
+					to_chat(user, SPAN_WARNING("\The [src] doesn't have a warp beacon!"))
+					return
+				satchel.linked_box = src
+				to_chat(user, SPAN_NOTICE("You link \the [satchel] to \the [src]."))
+				return
 		var/obj/item/storage/S = W
-		S.hide_from(usr)
+		S.hide_from(user)
 		for(var/obj/item/ore/O in S.contents)
-			S.remove_from_storage(O, src, 1)
-		S.finish_bulk_removal() //This will move the item to this item's contents
-		to_chat(user, "<span class='notice'>You empty the satchel into the box.</span>")
+			S.remove_from_storage_deferred(O, src, user) //This will move the item to this item's contents
+			CHECK_TICK
+		S.post_remove_from_storage_deferred(loc, user)
+		to_chat(user, SPAN_NOTICE("You empty the satchel into the box."))
+	else if(istype(W, /obj/item/warp_core))
+		if(warp_core)
+			to_chat(user, SPAN_WARNING("\The [src] already has a warp core attached!"))
+			return
+		user.drop_from_inventory(W, src)
+		warp_core = W
+		to_chat(user, SPAN_NOTICE("You carefully attach \the [W] to \the [src], connecting it to the bluespace network."))
+	else if(istype(W, /obj/item/gripper/miner)) // myazaki's gonna be so mad at me
+		var/obj/item/gripper/miner/GM = W
+		if(!warp_core)
+			to_chat(user, SPAN_WARNING("\The [src] has no warp core to detach."))
+			return
+		// we don't need to check if it has a held item because the gripper code attacks with the held item if it has one, not the gripper itself
+		warp_core.forceMove(get_turf(src))
+		GM.grip_item(warp_core, user, FALSE)
+		to_chat(user, SPAN_NOTICE("You detach \the [warp_core] from \the [src], disconnecting it from the bluespace network."))
+		warp_core = null
 
 	update_ore_count()
-
 	return
 
+/obj/structure/ore_box/attack_hand(mob/user)
+	if(warp_core)
+		warp_core.forceMove(get_turf(user))
+		user.put_in_hands(warp_core)
+		to_chat(user, SPAN_NOTICE("You detach \the [warp_core] from \the [src], disconnecting it from the bluespace network."))
+		warp_core = null
+	else
+		..()
+
 /obj/structure/ore_box/proc/update_ore_count()
-
 	stored_ore = list()
-
 	for(var/obj/item/ore/O in contents)
-
 		if(stored_ore[O.name])
 			stored_ore[O.name]++
 		else
 			stored_ore[O.name] = 1
 
-/obj/structure/ore_box/_examine_text(mob/user)
+/obj/structure/ore_box/examine(mob/user, distance, is_adjacent)
 	. = ..()
-
 	// Borgs can now check contents too.
 	if((!istype(user, /mob/living/carbon/human)) && (!istype(user, /mob/living/silicon/robot)))
 		return
-
-	if(!Adjacent(user)) //Can only check the contents of ore boxes if you can physically reach them.
+	if(!is_adjacent) //Can only check the contents of ore boxes if you can physically reach them.
 		return
 
 	add_fingerprint(user)
 
-	if(!contents.len)
-		. += "\nIt is empty."
+	if(warp_core)
+		to_chat(user, FONT_SMALL(SPAN_NOTICE("It has a <b>warp extraction beacon signaller</b> attached to it.")))
+
+	if(!length(contents))
+		to_chat(user, SPAN_NOTICE("It is empty."))
 		return
 
 	if(world.time > last_update + 10)
 		update_ore_count()
 		last_update = world.time
 
-	. += "\nIt holds:"
+	to_chat(user, SPAN_NOTICE("It holds:"))
 	for(var/ore in stored_ore)
-		. += "\n- [stored_ore[ore]] [ore]"
+		to_chat(user, SPAN_NOTICE("- [stored_ore[ore]] [ore]"))
 	return
-
 
 /obj/structure/ore_box/verb/empty_box()
 	set name = "Empty Ore Box"
@@ -72,33 +103,34 @@
 	set src in view(1)
 
 	if(!istype(usr, /mob/living/carbon/human)) //Only living, intelligent creatures with hands can empty ore boxes.
-		to_chat(usr, "<span class='warning'>You are physically incapable of emptying the ore box.</span>")
+		to_chat(usr, SPAN_WARNING("You are physically incapable of emptying \the [src]."))
 		return
 
-	if( usr.stat || usr.restrained() )
+	if(use_check_and_message(usr))
 		return
 
 	if(!Adjacent(usr)) //You can only empty the box if you can physically reach it
-		to_chat(usr, "You cannot reach the ore box.")
+		to_chat(usr, SPAN_NOTICE("You cannot reach \the [src]."))
 		return
 
 	add_fingerprint(usr)
 
-	if(contents.len < 1)
-		to_chat(usr, "<span class='warning'>The ore box is empty</span>")
+	if(!length(contents))
+		to_chat(usr, SPAN_WARNING("\The [src] is empty."))
 		return
 
-	for (var/obj/item/ore/O in contents)
+	for(var/obj/item/ore/O in contents)
 		contents -= O
-		O.dropInto(loc)
-	to_chat(usr, "<span class='notice'>You empty the ore box</span>")
+		O.forceMove(get_turf(src))
+	to_chat(usr, SPAN_NOTICE("You empty \the [src]."))
 
 	return
 
 /obj/structure/ore_box/ex_act(severity)
 	if(severity == 1.0 || (severity < 3.0 && prob(50)))
-		for (var/obj/item/ore/O in contents)
-			O.dropInto(loc)
+		for(var/obj/item/ore/O in contents)
+			O.forceMove(src.loc)
 			O.ex_act(severity++)
+			CHECK_TICK
 		qdel(src)
 		return

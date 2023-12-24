@@ -1,41 +1,38 @@
 /obj/structure/dispenser
 	name = "tank storage unit"
-	desc = "A simple yet bulky storage device for gas tanks. Has room for up to ten oxygen tanks, and ten plasma tanks."
-	icon = 'icons/obj/objects.dmi'
+	desc = "A simple yet bulky storage device for gas tanks. Has room for up to ten oxygen tanks, and ten phoron tanks."
+	icon = 'icons/obj/tank_dispenser.dmi'
 	icon_state = "dispenser"
-	density = 1
-	anchored = 1.0
-	w_class = ITEM_SIZE_NO_CONTAINER
+	density = TRUE
+	anchored = TRUE
+	w_class = ITEMSIZE_HUGE
 	var/oxygentanks = 10
-	var/plasmatanks = 10
+	var/phorontanks = 10
 	var/list/oxytanks = list()	//sorry for the similar var names
 	var/list/platanks = list()
 
-	var/static/radial_oxygen = image(icon = 'icons/hud/radial.dmi', icon_state = "oxygen")
-	var/static/radial_plasma = image(icon = 'icons/hud/radial.dmi', icon_state = "plasma")
-
-	// we show the button even if the proc will not work
-	var/static/list/radial_options = list("dispence oxygen" = radial_oxygen, "dispence plasma" = radial_plasma)
-	var/static/list/ai_radial_options = list("dispence oxygen" = radial_oxygen, "dispence plasma" = radial_plasma)
-
 /obj/structure/dispenser/oxygen
-	plasmatanks = 0
+	phorontanks = 0
 
-/obj/structure/dispenser/plasma
+/obj/structure/dispenser/phoron
 	oxygentanks = 0
 
 /obj/structure/dispenser/Initialize()
 	. = ..()
 	update_icon()
 
-/obj/structure/dispenser/on_update_icon()
-	ClearOverlays()
+/obj/structure/dispenser/update_icon()
+	cut_overlays()
 	switch(oxygentanks)
-		if(1 to 3)	AddOverlays("oxygen-[oxygentanks]")
-		if(4 to INFINITY) AddOverlays("oxygen-4")
-	switch(plasmatanks)
-		if(1 to 4)	AddOverlays("plasma-[plasmatanks]")
-		if(5 to INFINITY) AddOverlays("plasma-5")
+		if(1 to 4)
+			add_overlay("oxygen-[oxygentanks]")
+		if(5 to INFINITY)
+			add_overlay("oxygen-5")
+	switch(phorontanks)
+		if(1 to 4)
+			add_overlay("phoron-[phorontanks]")
+		if(5 to INFINITY)
+			add_overlay("phoron-5")
 
 /obj/structure/dispenser/attack_ai(mob/user)
 	if(user.Adjacent(src))
@@ -44,88 +41,78 @@
 
 /obj/structure/dispenser/attack_hand(mob/user)
 	user.set_machine(src)
-	add_fingerprint(user)
-	interact(user)
+	var/dat = "<br>"
+	dat += "Oxygen tanks: [oxygentanks] - [oxygentanks ? "<A href='?src=\ref[src];oxygen=1'>Dispense</A>" : "empty"]<br>"
+	dat += "Phoron tanks: [phorontanks] - [phorontanks ? "<A href='?src=\ref[src];phoron=1'>Dispense</A>" : "empty"]"
 
-/obj/structure/dispenser/interact(mob/user)
-	if(user.stat || user.restrained())
-		return
-
-	var/list/complete_options = radial_options.Copy()
-	var/list/ai_complete_options = ai_radial_options.Copy()
-
-	if(!plasmatanks)
-		complete_options.Remove("dispence plasma")
-		ai_complete_options.Remove("dispence plasma")
-
-	if(!oxygentanks)
-		complete_options.Remove("dispence oxygen")
-		ai_complete_options.Remove("dispence oxygen")
-
-	var/choice = show_radial_menu(user, src, isAI(user) ? ai_complete_options : complete_options, require_near = !issilicon(user))
-
-	switch(choice)
-		if("dispence oxygen")
-			dispence_oxygen(user)
-		if("dispence plasma")
-			dispence_plasma(user)
+	var/datum/browser/dispenser_win = new(user, "dispenser", capitalize_first_letters(name), 300, 250)
+	dispenser_win.set_content(dat)
+	dispenser_win.open()
 
 /obj/structure/dispenser/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/tank/oxygen) || istype(I, /obj/item/tank/air) || istype(I, /obj/item/tank/anesthetic))
 		if(oxygentanks < 10)
-			if(!user.drop(I, src))
-				return
+			user.drop_from_inventory(I, src)
 			oxytanks.Add(I)
 			oxygentanks++
-			to_chat(user, "<span class='notice'>You put [I] in [src].</span>")
+			to_chat(user, SPAN_NOTICE("You put \the [I] into \the [src]."))
 			if(oxygentanks < 5)
 				update_icon()
 		else
-			to_chat(user, "<span class='notice'>[src] is full.</span>")
+			to_chat(user, SPAN_WARNING("\The [src] is full."))
+		updateUsrDialog()
 		return
-	if(istype(I, /obj/item/tank/plasma))
-		if(plasmatanks < 10)
-			if(!user.drop(I, src))
-				return
+	if(istype(I, /obj/item/tank/phoron))
+		if(phorontanks < 10)
+			user.drop_from_inventory(I, src)
 			platanks.Add(I)
-			plasmatanks++
-			to_chat(user, "<span class='notice'>You put [I] in [src].</span>")
+			phorontanks++
+			to_chat(user, SPAN_NOTICE("You put \the [I] into \the [src]."))
 			if(oxygentanks < 6)
 				update_icon()
 		else
-			to_chat(user, "<span class='notice'>[src] is full.</span>")
+			to_chat(user, SPAN_WARNING("\The [src] is full."))
+		updateUsrDialog()
 		return
-	if(isWrench(I))
+	if(I.iswrench())
 		if(anchored)
-			to_chat(user, "<span class='notice'>You lean down and unwrench [src].</span>")
-			anchored = 0
+			to_chat(user, SPAN_NOTICE("You lean down and unwrench [src]."))
+			anchored = FALSE
 		else
-			to_chat(user, "<span class='notice'>You wrench [src] into place.</span>")
-			anchored = 1
+			to_chat(user, SPAN_NOTICE("You wrench [src] into place."))
+			anchored = TRUE
 		return
 
-/obj/structure/dispenser/proc/dispence_oxygen(mob/user)
-	if(oxygentanks)
-		var/obj/item/tank/oxygen/O
-		if(oxytanks.len == oxygentanks)
-			O = oxytanks[1]
-			oxytanks.Remove(O)
-		else
-			O = new /obj/item/tank/oxygen(loc)
-		O.dropInto(loc)
-		to_chat(user, "<span class='notice'>You take [O] out of [src].</span>")
-		oxygentanks--
-		update_icon()
-
-/obj/structure/dispenser/proc/dispence_plasma(mob/user)
-	if(plasmatanks)
-		var/obj/item/tank/plasma/P
-		if(platanks.len == plasmatanks)
-			P = platanks[1]
-			platanks.Remove(P)
-		else
-			P = new /obj/item/tank/plasma(loc)
-		P.dropInto(loc)
-		to_chat(user, "<span class='notice'>You take [P] out of [src].</span>")
-		plasmatanks--
-		update_icon()
+/obj/structure/dispenser/Topic(href, href_list)
+	if(usr.stat || usr.restrained())
+		return
+	if(Adjacent(usr))
+		usr.set_machine(src)
+		if(href_list[GAS_OXYGEN])
+			if(oxygentanks > 0)
+				var/obj/item/tank/oxygen/O
+				if(oxytanks.len == oxygentanks)
+					O = oxytanks[1]
+					oxytanks.Remove(O)
+				else
+					O = new /obj/item/tank/oxygen(loc)
+				usr.put_in_hands(O)
+				to_chat(usr, SPAN_NOTICE("You take \the [O] out of \the [src]."))
+				oxygentanks--
+				update_icon()
+		if(href_list[GAS_PHORON])
+			if(phorontanks > 0)
+				var/obj/item/tank/phoron/P
+				if(platanks.len == phorontanks)
+					P = platanks[1]
+					platanks.Remove(P)
+				else
+					P = new /obj/item/tank/phoron(loc)
+				usr.put_in_hands(P)
+				to_chat(usr, SPAN_NOTICE("You take \the [P] out of \the [src]."))
+				phorontanks--
+				update_icon()
+		add_fingerprint(usr)
+		updateUsrDialog()
+	else
+		usr << browse(null, "window=dispenser")

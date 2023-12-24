@@ -13,33 +13,90 @@ In short:
 	name = "Hell Rising"
 	desc = "OH FUCK OH FUCK OH FUCK"
 
-/datum/universal_state/hell/OnShuttleCall(mob/user)
-	return 1
-	/*
-	if(user)
-		to_chat(user, "<span class='sinister'>All you hear on the frequency is static and panicked screaming. There will be no shuttle call today.</span>")
-	return 0
-	*/
+	decay_rate = 5 // 5% chance of a turf decaying on lighting update/airflow (there's no actual tick for turfs)
 
+/datum/universal_state/hell/OnShuttleCall(var/mob/user)
+	return 1
+
+/datum/universal_state/hell/DecayTurf(var/turf/T)
+	if(!T.holy)
+		T.cultify()
+		for(var/obj/machinery/light/L in T.contents)
+			new /obj/structure/cult/pylon(L.loc)
+			qdel(L)
+	return
+
+
+/datum/universal_state/hell/OnTurfChange(var/turf/T)
+	var/turf/space/S = T
+	if(istype(S))
+		S.color = "#FF0000"
+	else
+		S.color = initial(S.color)
 
 // Apply changes when entering state
 /datum/universal_state/hell/OnEnter()
-	set background = 1
+	SSgarbage.disable()	// Yeah, fuck it. No point hard-deleting stuff now.
+
+	escape_list = get_area_turfs(locate(/area/hallway/secondary/exit))
 
 	//Separated into separate procs for profiling
+	AreaSet()
 	MiscSet()
+	APCSet()
 	KillMobs()
-	SSskybox.reinstate_skyboxes("narsie", FALSE)
+	OverlayAndAmbientSet()
+	SSskybox.change_skybox("narsie", new_use_stars = FALSE, new_use_overmap_details = FALSE)
+
+	SScult.rune_boost += 9001	//basically removing the rune cap
+
+/datum/universal_state/hell/proc/AreaSet()
+	for(var/area/A in all_areas)
+		if(!istype(A,/area) || istype(A, /area/space))
+			continue
+
+		A.queue_icon_update()
+		CHECK_TICK
+
+/datum/universal_state/hell/OverlayAndAmbientSet()
+	set waitfor = FALSE
+	for(var/turf/T in world)	// Expensive, but CHECK_TICK should prevent lag.
+		if(istype(T, /turf/space))
+			T.add_overlay("hell01")
+		else
+			var/static/image/I = image('icons/turf/space.dmi', "hell01")
+			T.underlays += I
+
+		if (istype(T, /turf/simulated/floor) && !T.holy && prob(1))
+			new /obj/effect/gateway/active/cult(T)
+
+		CHECK_TICK
+
+	for(var/datum/lighting_corner/C in SSlighting.lighting_corners)
+		if (!C.active)
+			continue
+
+		C.update_lumcount(0.5, 0, 0)
+		CHECK_TICK
 
 /datum/universal_state/hell/proc/MiscSet()
-	var/list/areas = area_repository.get_areas_by_z_level(GLOB.is_player_but_not_space_area)
-	for(var/i in areas)
-		var/area/A = areas[i]
-		for(var/turf/simulated/floor/T in A)
-			if(!T.holy && prob(1))
-				new /obj/effect/gateway/active/cult(T)
+	for (var/obj/machinery/firealarm/alm in SSmachinery.processing)
+		if (!(alm.stat & BROKEN))
+			alm.ex_act(2)
+		CHECK_TICK
+
+/datum/universal_state/hell/proc/APCSet()
+	for (var/obj/machinery/power/apc/APC in SSmachinery.processing)
+		if (!(APC.stat & BROKEN) && !APC.is_critical)
+			APC.chargemode = 0
+			if(APC.cell)
+				APC.cell.charge = 0
+			APC.emagged = 1
+			APC.queue_icon_update()
+		CHECK_TICK
 
 /datum/universal_state/hell/proc/KillMobs()
-	for(var/mob/living/simple_animal/M in SSmobs.mob_list)
+	for(var/mob/living/simple_animal/M in mob_list)
 		if(M && !M.client)
 			M.set_stat(DEAD)
+		CHECK_TICK

@@ -3,14 +3,8 @@
 	if(!C || !user)
 		return 0
 
-	if(isCoil(C) || (flooring && istype(C, /obj/item/stack/rods)))
-		return ..(C, user)
-
-	if(user.a_intent != I_HELP)
-		return 0
-
-	if(flooring)
-		if(isCrowbar(C))
+	if(flooring && (!ismob(user) || user.a_intent != I_HURT))
+		if(C.iscrowbar())
 			if(broken || burnt)
 				to_chat(user, "<span class='notice'>You remove the broken [flooring.descriptor].</span>")
 				make_plating()
@@ -22,54 +16,59 @@
 				make_plating(1)
 			else
 				return
-			playsound(src, 'sound/items/Crowbar.ogg', 80, 1)
-			color = null
+			playsound(src, 'sound/items/crowbar_tile.ogg', 80, 1)
 			return
-		else if(isScrewdriver(C) && (flooring.flags & TURF_REMOVE_SCREWDRIVER))
+		else if(C.isscrewdriver() && (flooring.flags & TURF_REMOVE_SCREWDRIVER))
 			if(broken || burnt)
 				return
 			to_chat(user, "<span class='notice'>You unscrew and remove the [flooring.descriptor].</span>")
 			make_plating(1)
-			color = null
-			playsound(src, 'sound/items/Screwdriver.ogg', 80, 1)
+			playsound(src, C.usesound, 80, 1)
 			return
-		else if(isWrench(C) && (flooring.flags & TURF_REMOVE_WRENCH))
+		else if(C.iswrench() && (flooring.flags & TURF_REMOVE_WRENCH))
 			to_chat(user, "<span class='notice'>You unwrench and remove the [flooring.descriptor].</span>")
 			make_plating(1)
-			color = null
-			playsound(src, 'sound/items/Ratchet.ogg', 80, 1)
+			playsound(src, C.usesound, 80, 1)
 			return
 		else if(istype(C, /obj/item/shovel) && (flooring.flags & TURF_REMOVE_SHOVEL))
 			to_chat(user, "<span class='notice'>You shovel off the [flooring.descriptor].</span>")
 			make_plating(1)
-			color = null
-			playsound(src, 'sound/items/Deconstruct.ogg', 80, 1)
+			playsound(src, C.usesound, 80, 1)
 			return
-		else if(isCoil(C))
+		else if(C.iswelder() && (flooring.flags & TURF_REMOVE_WELDER))
+			var/obj/item/weldingtool/WT = C
+			if(!WT.isOn())
+				to_chat(user, SPAN_WARNING("\The [WT] isn't turned on."))
+				return
+			if(WT.use(0, user))
+				to_chat(user, SPAN_NOTICE("You use \the [WT] to remove \the [src]."))
+				make_plating(1)
+				playsound(src, C.usesound, 80, 1)
+				return
+		else if(C.iscoil())
 			to_chat(user, "<span class='warning'>You must remove the [flooring.descriptor] first.</span>")
 			return
 	else
 
-		if(istype(C, /obj/item/stack))
+		if(C.iscoil())
 			if(broken || burnt)
 				to_chat(user, "<span class='warning'>This section is too damaged to support anything. Use a welder to fix the damage.</span>")
 				return
-			//first check, catwalk? Else let flooring do its thing
-			if(locate(/obj/structure/catwalk, src))
-				return
-			if (istype(C, /obj/item/stack/rods))
-				var/obj/item/stack/rods/R = C
-				if (R.use(2))
-					playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1)
-					new /obj/structure/catwalk(src)
+			var/obj/item/stack/cable_coil/coil = C
+			coil.turf_place(src, user)
+			return
+		else if(istype(C, /obj/item/stack))
+			if(broken || burnt)
+				to_chat(user, "<span class='warning'>This section is too damaged to support anything. Use a welder to fix the damage.</span>")
 				return
 			var/obj/item/stack/S = C
-			var/decl/flooring/use_flooring
-			for(var/flooring_type in flooring_types)
-				var/decl/flooring/F = flooring_types[flooring_type]
+			var/singleton/flooring/use_flooring
+			var/list/decls = GET_SINGLETON_SUBTYPE_MAP(/singleton/flooring)
+			for(var/flooring_type in decls)
+				var/singleton/flooring/F = decls[flooring_type]
 				if(!F.build_type)
 					continue
-				if(ispath(S.type, F.build_type) || ispath(S.build_type, F.build_type))
+				if((ispath(S.type, F.build_type) && (S.type == F.build_type)) || (ispath(S.build_type, F.build_type) && (S.build_type == F.build_type)))
 					use_flooring = F
 					break
 			if(!use_flooring)
@@ -79,124 +78,75 @@
 				to_chat(user, "<span class='warning'>You require at least [use_flooring.build_cost] [S.name] to complete the [use_flooring.descriptor].</span>")
 				return
 			// Stay still and focus...
-			if(use_flooring.build_time && !do_after(user, use_flooring.build_time, src))
+			if(use_flooring.build_time && !do_after(user, use_flooring.build_time, flooring, DO_REPAIR_CONSTRUCT))
 				return
 			if(flooring || !S || !user || !use_flooring)
 				return
-
 			if(S.use(use_flooring.build_cost))
 				set_flooring(use_flooring)
-				if (S.color)
-					src.color = S.color
-				var/obj/item/stack/tile/F = null
-				if (istype(S,/obj/item/stack/tile))
-					F = S
-					if(F.stored_decals)
-						src.decals = F.stored_decals
-				src.update_icon()
+				update_icon(TRUE)
 				playsound(src, 'sound/items/Deconstruct.ogg', 80, 1)
 				return
-
-		// Repairs and Deconstruction.
-		else if(isCrowbar(C))
+		// Repairs and deconstruction
+		else if(C.iscrowbar())
 			if(broken || burnt)
+				playsound(src, 'sound/items/crowbar_tile.ogg', 80, 1)
+				visible_message("<span class='notice'>[user] has begun prying off the damaged plating.</span>")
 				var/turf/T = GetBelow(src)
 				if(T)
-					if(T.density)
-						to_chat(user, SPAN("notice", "It looks like there's a solid wall underneath the plating!"))
-						return
-					T.visible_message(SPAN("warning", "The ceiling above looks as if it's being pried off."))
-				playsound(src, 'sound/items/Crowbar.ogg', 80, 1)
-				visible_message(SPAN("notice", "[user] has begun prying off the damaged plating."))
+					T.visible_message("<span class='warning'>The ceiling above looks as if it's being pried off.</span>")
 				if(do_after(user, 10 SECONDS))
 					if(!istype(src, /turf/simulated/floor))
 						return
-					if(!broken && !burnt || !is_plating())
+					if(broken || burnt && !(is_plating()))
 						return
-					visible_message(SPAN("warning", "[user] has pried off the damaged plating."))
-					if(istype(src, /turf/simulated/floor/plating))
-						var/turf/simulated/floor/plating/P = src
-						new P.tile_type(src)
-					else
-						new /obj/item/stack/tile/floor(src)
-					color = null
-					ReplaceWithLattice()
+					visible_message("<span class='warning'>[user] has pried off the damaged plating.</span>")
+					new /obj/item/stack/tile/floor(src)
+					src.ReplaceWithLattice()
 					playsound(src, 'sound/items/Deconstruct.ogg', 80, 1)
 					if(T)
-						T.visible_message(SPAN("danger", "The ceiling above has been pried off!"))
+						T.visible_message("<span class='danger'>The ceiling above has been pried off!</span>")
+				return
 			return
-
-		else if(isWelder(C))
+		else if(C.iswelder())
 			var/obj/item/weldingtool/welder = C
 			if(welder.isOn() && (is_plating()))
 				if(broken || burnt)
-					if(welder.isOn())
-						to_chat(user, "<span class='notice'>You fix some dents on the broken plating.</span>")
-						playsound(src, 'sound/items/Welder.ogg', 80, 1)
-						icon_state = base_icon_state
-						burnt = null
-						broken = null
-					else
-						to_chat(user, "<span class='warning'>You need more welding fuel to complete this task.</span>")
-					return
+					if(do_after(user, 5 SECONDS))
+						if(welder.use(0, user))
+							to_chat(user, "<span class='notice'>You fix some dents on the broken plating.</span>")
+							playsound(src, 'sound/items/Welder.ogg', 80, 1)
+							icon_state = "plating"
+							burnt = null
+							broken = null
+						else
+							to_chat(user, "<span class='warning'>You need more welding fuel to complete this task.</span>")
+						return
 				else
-					if(welder.isOn())
+					if(welder.use(0, user))
 						playsound(src, 'sound/items/Welder.ogg', 80, 1)
 						visible_message("<span class='notice'>[user] has started melting the plating's reinforcements!</span>")
-						if(do_after(user, 5 SECONDS) && welder.isOn())
+						if(welder.use_tool(src, user, 100, volume = 80) && welder.isOn() && welder_melt())
 							visible_message("<span class='warning'>[user] has melted the plating's reinforcements! It should be possible to pry it off.</span>")
 							playsound(src, 'sound/items/Welder.ogg', 80, 1)
-							burnt = 1
-							remove_decals()
-							update_icon()
-					else
-						to_chat(user, "<span class='warning'>You need more welding fuel to complete this task.</span>")
 					return
+
+	if(istype(C,/obj/item/floor_frame))
+		var/obj/item/floor_frame/F = C
+		F.try_build(src, user)
+		return
 
 	return ..()
 
-/turf/simulated/floor/acid_melt()
-	. = FALSE
-	var/turf/T = GetBelow(src)
-
-	if(flooring)
-		visible_message("<span class='alium'>The acid dissolves the [flooring.descriptor]!</span>")
-		make_plating()
-
-	else if(is_plating() && !(broken || burnt))
-		playsound(src, 'sound/items/Welder.ogg', 80, 1)
-		visible_message("<span class='alium'>The acid has started melting \the [name]'s reinforcements!</span>")
-		if(T)
-			T.audible_message("<span class='warning'>A strange sizzling noise eminates from the ceiling.</span>")
-		burnt = 1
-		remove_decals()
-		update_icon()
-
-	else if(broken || burnt)
-		if(acid_melted == 0)
-			visible_message("<span class='alium'>The acid has melted the plating's reinforcements! It's about to break through!.</span>")
-			playsound(src, 'sound/items/Welder.ogg', 80, 1)
-
-			if(T)
-				T.visible_message("<span class='warning'>A strange substance drips from the ceiling, dropping below with a sizzle.</span>")
-			acid_melted++
-		else
-			visible_message("<span class='danger'>The acid melts the plating away into nothing!</span>")
-			new /obj/item/stack/tile/floor(src)
-			src.ReplaceWithLattice()
-			playsound(src, 'sound/items/Deconstruct.ogg', 80, 1)
-			if(T)
-				T.visible_message("<span class='danger'>The ceiling above melts away!</span>")
-			. = TRUE
-			qdel(src)
-	else
-		return TRUE
-
-/turf/simulated/floor/can_build_cable(mob/user)
-	if(!is_plating() || flooring)
-		to_chat(user, "<span class='warning'>Removing the tiling first.</span>")
+/turf/simulated/floor/proc/welder_melt()
+	if(!(is_plating()) || broken || burnt)
 		return 0
-	if(broken || burnt)
-		to_chat(user, "<span class='warning'>This section is too damaged to support anything. Use a welder to fix the damage.</span>")
-		return 0
+	burnt = 1
+	update_icon()
 	return 1
+
+/turf/simulated/floor/can_lay_cable()
+	return !flooring
+
+/turf/simulated/can_have_cabling()
+	return TRUE

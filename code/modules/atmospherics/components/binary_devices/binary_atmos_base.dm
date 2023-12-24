@@ -40,8 +40,23 @@
 
 	return null
 
+/obj/machinery/atmospherics/binary/Destroy()
+	QDEL_NULL(air1)
+	QDEL_NULL(air2)
+
+	if(node1)
+		node1.disconnect(src)
+		QDEL_NULL(network1)
+	if(node2)
+		node2.disconnect(src)
+		QDEL_NULL(network2)
+
+	node1 = null
+	node2 = null
+
+	return ..()
+
 /obj/machinery/atmospherics/binary/atmos_init()
-	..()
 	if(node1 && node2) return
 
 	var/node2_connect = dir
@@ -117,17 +132,11 @@
 
 	return null
 
-obj/machinery/atmospherics/binary/Destroy()
-	if(node1)
-		node1.disconnect(src)
-		qdel(network1)
-	if(node2)
-		node2.disconnect(src)
-		qdel(network2)
-
-	node1 = null
-	node2 = null
-	network1 = null
-	network2 = null
-
-	return ..()
+/obj/machinery/atmospherics/binary/AltClick(var/mob/user)
+	if(src.anchored)
+		if(!allowed(user))
+			to_chat(user, SPAN_WARNING("Access denied."))
+			return
+		Topic(src, list("power" = "1"))
+	else
+		. = ..()

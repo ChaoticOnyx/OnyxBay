@@ -2,8 +2,9 @@
 // parent class for pipes //
 ////////////////////////////
 /obj/machinery/atmospherics/pipe/zpipe
-	icon = 'icons/obj/structures.dmi'
+	icon = 'icons/atmos/pipes.dmi'
 	icon_state = "up"
+	var/ptype	// What direction of pipe this is. Used for icons.
 
 	name = "upwards pipe"
 	desc = "A pipe segment to connect upwards."
@@ -16,15 +17,20 @@
 	var/minimum_temperature_difference = 300
 	var/thermal_conductivity = 0 //WALL_HEAT_TRANSFER_COEFFICIENT No
 
-	var/maximum_pressure = 70*ONE_ATMOSPHERE
-	var/fatigue_pressure = 55*ONE_ATMOSPHERE
-	alert_pressure = 55*ONE_ATMOSPHERE
+	var/maximum_pressure = ATMOS_DEFAULT_MAX_PRESSURE
+	var/fatigue_pressure = ATMOS_DEFAULT_FATIGUE_PRESSURE
+	alert_pressure = ATMOS_DEFAULT_ALERT_PRESSURE
 
+	var/travel_verbname = "UNDEFINED"
+	var/travel_direction_verb = "UNDEFINED"
+	var/travel_direction_name = "UNDEFINED"
+	var/travel_direction = "UNDEFINED"
 
 	level = 1
 
 /obj/machinery/atmospherics/pipe/zpipe/Initialize()
-	. = ..()
+	icon = null
+
 	switch(dir)
 		if(SOUTH)
 			initialize_directions = SOUTH
@@ -43,18 +49,27 @@
 		if(SOUTHWEST)
 			initialize_directions = SOUTH
 
-/obj/machinery/atmospherics/pipe/zpipe/hide(i)
+	. = ..()
+
+
+/obj/machinery/atmospherics/pipe/zpipe/Entered(mob/living/M)
+	if(istype(M))
+		to_chat(M, SPAN_NOTICE("You are in a vertical pipe section. Use [travel_verbname] from the IC menu to [travel_direction_verb] a level."))
+		. = ..()
+
+/obj/machinery/atmospherics/pipe/zpipe/hide(var/i)
 	if(istype(loc, /turf/simulated))
 		set_invisibility(i ? 101 : 0)
-	update_icon()
+	queue_icon_update()
 
-/obj/machinery/atmospherics/pipe/zpipe/Process()
+/obj/machinery/atmospherics/pipe/zpipe/process()
 	if(!parent) //This should cut back on the overhead calling build_network thousands of times per cycle
 		..()
 	else
 		. = PROCESS_KILL
 
 /obj/machinery/atmospherics/pipe/zpipe/check_pressure(pressure)
+	if(!loc) return FALSE
 	var/datum/gas_mixture/environment = loc.return_air()
 
 	var/pressure_difference = pressure - environment.return_pressure()
@@ -75,38 +90,50 @@
 	var/datum/effect/effect/system/smoke_spread/smoke = new
 	smoke.set_up(1,0, src.loc, 0)
 	smoke.start()
-	qdel(src) // NOT qdel.
+	qdel(src) // Yes QDel.
 
 /obj/machinery/atmospherics/pipe/zpipe/proc/normalize_dir()
-	if(dir == (NORTH|SOUTH))
-		set_dir(NORTH)
-	else if(dir == (EAST|WEST))
-		set_dir(EAST)
+	if(dir==3)
+		set_dir(1)
+	else if(dir==12)
+		set_dir(4)
 
 /obj/machinery/atmospherics/pipe/zpipe/Destroy()
 	if(node1)
 		node1.disconnect(src)
-	node1 = null
 	if(node2)
 		node2.disconnect(src)
-	node2 = null
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/zpipe/pipeline_expansion()
 	return list(node1, node2)
 
-/obj/machinery/atmospherics/pipe/zpipe/on_update_icon()
-	return
+/obj/machinery/atmospherics/pipe/zpipe/update_icon()
+	if (!check_icon_cache())
+		return
+
+	cut_overlays()
+
+	if(!node1 && !node2)
+		var/turf/T = get_turf(src)
+		new /obj/item/pipe(loc, make_from=src)
+		for (var/obj/machinery/meter/meter in T)
+			if (meter.target == src)
+				new /obj/item/pipe_meter(T)
+				qdel(meter)
+		qdel(src)
+	else
+		add_overlay(icon_manager.get_atmos_icon("pipe", , pipe_color, "[ptype][icon_connect_type]"))
 
 /obj/machinery/atmospherics/pipe/zpipe/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
 		if(istype(node1, /obj/machinery/atmospherics/pipe))
-			QDEL_NULL(parent)
+			qdel(parent)
 		node1 = null
 
 	if(reference == node2)
 		if(istype(node2, /obj/machinery/atmospherics/pipe))
-			QDEL_NULL(parent)
+			qdel(parent)
 		node2 = null
 
 	return null
@@ -114,18 +141,22 @@
 // the elusive up pipe //
 /////////////////////////
 /obj/machinery/atmospherics/pipe/zpipe/up
-	icon = 'icons/obj/structures.dmi'
 	icon_state = "up"
+	ptype = "up"
 
 	name = "upwards pipe"
 	desc = "A pipe segment to connect upwards."
 
+	travel_verbname = "Move Upwards"
+	travel_direction_verb = "ascend"
+	travel_direction_name = "up"
+	travel_direction = UP
+
 /obj/machinery/atmospherics/pipe/zpipe/up/atmos_init()
-	..()
 	normalize_dir()
 	var/node1_dir
 
-	for(var/direction in GLOB.cardinal)
+	for(var/direction in cardinal)
 		if(direction&initialize_directions)
 			if (!node1_dir)
 				node1_dir = direction
@@ -153,18 +184,22 @@
 ///////////////////////
 
 /obj/machinery/atmospherics/pipe/zpipe/down
-	icon = 'icons/obj/structures.dmi'
 	icon_state = "down"
+	ptype = "down"
 
 	name = "downwards pipe"
 	desc = "A pipe segment to connect downwards."
 
+	travel_verbname = "Move Downwards"
+	travel_direction_verb = "descend"
+	travel_direction_name = "down"
+	travel_direction = DOWN
+
 /obj/machinery/atmospherics/pipe/zpipe/down/atmos_init()
-	..()
 	normalize_dir()
 	var/node1_dir
 
-	for(var/direction in GLOB.cardinal)
+	for(var/direction in cardinal)
 		if(direction&initialize_directions)
 			if (!node1_dir)
 				node1_dir = direction
@@ -187,9 +222,9 @@
 	var/turf/T = src.loc			// hide if turf is not intact
 	hide(!T.is_plating())
 
-///////////////////////
-// supply/scrubbers  //
-///////////////////////
+////////////////////////////////
+// supply/scrubbers/fuel/aux  //
+////////////////////////////////
 
 /obj/machinery/atmospherics/pipe/zpipe/up/scrubbers
 	icon_state = "up-scrubbers"
@@ -207,6 +242,22 @@
 	icon_connect_type = "-supply"
 	color = PIPE_COLOR_BLUE
 
+/obj/machinery/atmospherics/pipe/zpipe/up/fuel
+	icon_state = "up-fuel"
+	name = "upwards fuel pipe"
+	desc = "A fuel pipe segment to connect upwards."
+	connect_types = CONNECT_TYPE_FUEL
+	icon_connect_type = "-fuel"
+	color = PIPE_COLOR_YELLOW
+
+/obj/machinery/atmospherics/pipe/zpipe/up/aux
+	icon_state = "up-aux"
+	name = "upwards auxiliary pipe"
+	desc = "A auxiliary pipe segment to connect upwards."
+	connect_types = CONNECT_TYPE_AUX
+	icon_connect_type = "-aux"
+	color = PIPE_COLOR_CYAN
+
 /obj/machinery/atmospherics/pipe/zpipe/down/scrubbers
 	icon_state = "down-scrubbers"
 	name = "downwards scrubbers pipe"
@@ -223,27 +274,54 @@
 	icon_connect_type = "-supply"
 	color = PIPE_COLOR_BLUE
 
+/obj/machinery/atmospherics/pipe/zpipe/down/fuel
+	icon_state = "down-fuel"
+	name = "downwards fuel pipe"
+	desc = "A fuel pipe segment to connect downwards."
+	connect_types = CONNECT_TYPE_FUEL
+	icon_connect_type = "-fuel"
+	color = PIPE_COLOR_YELLOW
+
+/obj/machinery/atmospherics/pipe/zpipe/down/aux
+	icon_state = "down-aux"
+	name = "downwards auxiliary pipe"
+	desc = "An auxiliary pipe segment to connect downwards."
+	connect_types = CONNECT_TYPE_AUX
+	icon_connect_type = "-supply"
+	color = PIPE_COLOR_CYAN
+
 // Colored misc. pipes
 /obj/machinery/atmospherics/pipe/zpipe/up/cyan
 	color = PIPE_COLOR_CYAN
 /obj/machinery/atmospherics/pipe/zpipe/down/cyan
 	color = PIPE_COLOR_CYAN
 
+/obj/machinery/atmospherics/pipe/zpipe/up/black
+	color = PIPE_COLOR_BLACK
+/obj/machinery/atmospherics/pipe/zpipe/down/black
+	color = PIPE_COLOR_BLACK
+
+/obj/machinery/atmospherics/pipe/zpipe/up/green
+	color = PIPE_COLOR_GREEN
+/obj/machinery/atmospherics/pipe/zpipe/down/green
+	color = PIPE_COLOR_GREEN
+
 /obj/machinery/atmospherics/pipe/zpipe/up/red
 	color = PIPE_COLOR_RED
 /obj/machinery/atmospherics/pipe/zpipe/down/red
 	color = PIPE_COLOR_RED
 
-/obj/machinery/atmospherics/pipe/zpipe/up/fuel
-	name = "upwards fuel pipe"
-	color = PIPE_COLOR_ORANGE
-	maximum_pressure = 420*ONE_ATMOSPHERE
-	fatigue_pressure = 350*ONE_ATMOSPHERE
-	alert_pressure = 350*ONE_ATMOSPHERE
+/obj/machinery/atmospherics/pipe/zpipe/up/yellow
+	color = PIPE_COLOR_YELLOW
+/obj/machinery/atmospherics/pipe/zpipe/down/yellow
+	color = PIPE_COLOR_YELLOW
 
-/obj/machinery/atmospherics/pipe/zpipe/down/fuel
-	name = "downwards fuel pipe"
-	color = PIPE_COLOR_ORANGE
-	maximum_pressure = 420*ONE_ATMOSPHERE
-	fatigue_pressure = 350*ONE_ATMOSPHERE
-	alert_pressure = 350*ONE_ATMOSPHERE
+/obj/machinery/atmospherics/pipe/zpipe/up/blue
+	color = PIPE_COLOR_BLUE
+/obj/machinery/atmospherics/pipe/zpipe/down/blue
+	color = PIPE_COLOR_BLUE
+
+/obj/machinery/atmospherics/pipe/zpipe/up/purple
+	color = PIPE_COLOR_PURPLE
+/obj/machinery/atmospherics/pipe/zpipe/down/purple
+	color = PIPE_COLOR_PURPLE

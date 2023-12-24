@@ -1,34 +1,71 @@
 //Regular syndicate space suit
 /obj/item/clothing/head/helmet/space/syndicate
 	name = "red space helmet"
+	icon = 'icons/obj/clothing/hats.dmi'
 	icon_state = "syndicate"
 	item_state = "syndicate"
 	desc = "A crimson helmet sporting clean lines and durable plating. Engineered to look menacing."
-	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 30)
-	siemens_coefficient = 0.3
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
+	armor = list(
+		melee = ARMOR_MELEE_MAJOR,
+		bullet = ARMOR_BALLISTIC_MEDIUM,
+		laser = ARMOR_LASER_PISTOL,
+		energy = ARMOR_ENERGY_MINOR,
+		bomb = ARMOR_BOMB_PADDED,
+		bio = ARMOR_BIO_SMALL,
+		rad = ARMOR_RAD_MINOR
 	)
+	siemens_coefficient = 0.5
+	brightness_on = 6
+	contained_sprite = FALSE
 
 /obj/item/clothing/suit/space/syndicate
 	name = "red space suit"
+	icon = 'icons/obj/clothing/suits.dmi'
 	icon_state = "syndicate"
-	item_state_slots = list(
-		slot_l_hand_str = "space_suit_syndicate",
-		slot_r_hand_str = "space_suit_syndicate",
-	)
+	item_state = "space_suit_syndicate"
 	desc = "A crimson spacesuit sporting clean lines and durable plating. Robust, reliable, and slightly suspicious."
-	w_class = ITEM_SIZE_NORMAL
-	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/melee/energy/sword/one_hand,/obj/item/handcuffs,/obj/item/tank/emergency)
-	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 30)
-	siemens_coefficient = 0.3
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
+	w_class = ITEMSIZE_NORMAL
+	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/melee/energy/sword,/obj/item/handcuffs,/obj/item/tank/emergency_oxygen)
+	slowdown = 1
+	armor = list(
+		melee = ARMOR_MELEE_MAJOR,
+		bullet = ARMOR_BALLISTIC_MEDIUM,
+		laser = ARMOR_LASER_PISTOL,
+		energy = ARMOR_ENERGY_MINOR,
+		bomb = ARMOR_BOMB_PADDED,
+		bio = ARMOR_BIO_SMALL,
+		rad = ARMOR_RAD_MINOR
 	)
+	siemens_coefficient = 0.5
+	contained_sprite = FALSE
+
+/obj/item/clothing/head/helmet/space/syndicate/covert
+	name = "softsuit helmet"
+	desc = "A special helmet designed for work in a hazardous, low-pressure environment."
+	desc_antag = "This helmet is specially armored for additional protection, compared to a standard softsuit helmet."
+	icon = 'icons/obj/item/clothing/softsuits/softsuit.dmi'
+	icon_state = "softsuit_helmet"
+	item_state = "softsuit_helmet"
+	contained_sprite = TRUE
+
+/obj/item/clothing/head/helmet/space/syndicate/covert/examine(mob/user, distance)
+	. = ..()
+	if(distance <= 1)
+		to_chat(user, SPAN_NOTICE("This helmet has extra armor compared to a normal softsuit helmet."))
+
+/obj/item/clothing/suit/space/syndicate/covert
+	name = "softsuit"
+	desc = "A suit that protects against low pressure environments."
+	desc_antag = "This suit is specially armored for additional protection, compared to a standard softsuit."
+	icon = 'icons/obj/item/clothing/softsuits/softsuit.dmi'
+	icon_state = "softsuit"
+	item_state = "softsuit"
+	contained_sprite = TRUE
+
+/obj/item/clothing/suit/space/syndicate/covert/examine(mob/user, distance)
+	..()
+	if(distance <= 1)
+		to_chat(user, SPAN_NOTICE("This suit has extra armor compared to a normal softsuit."))
 
 //Green syndicate space suit
 /obj/item/clothing/head/helmet/space/syndicate/green
@@ -39,28 +76,19 @@
 /obj/item/clothing/suit/space/syndicate/green
 	name = "green space suit"
 	icon_state = "syndicate-green"
-	item_state_slots = list(
-		slot_l_hand_str = "syndicate-green",
-		slot_r_hand_str = "syndicate-green",
-	)
+	item_state = "syndicate-green"
 
 
 //Dark green syndicate space suit
 /obj/item/clothing/head/helmet/space/syndicate/green/dark
 	name = "dark green space helmet"
 	icon_state = "syndicate-helm-green-dark"
-	item_state_slots = list(
-		slot_l_hand_str = "syndicate-helm-green-dark",
-		slot_r_hand_str = "syndicate-helm-green-dark",
-	)
+	item_state = "syndicate-helm-green-dark"
 
 /obj/item/clothing/suit/space/syndicate/green/dark
 	name = "dark green space suit"
 	icon_state = "syndicate-green-dark"
-	item_state_slots = list(
-		slot_l_hand_str = "syndicate-green-dark",
-		slot_r_hand_str = "syndicate-green-dark",
-	)
+	item_state = "syndicate-green-dark"
 
 
 //Orange syndicate space suit
@@ -72,10 +100,7 @@
 /obj/item/clothing/suit/space/syndicate/orange
 	name = "orange space suit"
 	icon_state = "syndicate-orange"
-	item_state_slots = list(
-		slot_l_hand_str = "syndicate-orange",
-		slot_r_hand_str = "syndicate-orange",
-	)
+	item_state = "syndicate-orange"
 
 
 //Blue syndicate space suit
@@ -87,10 +112,7 @@
 /obj/item/clothing/suit/space/syndicate/blue
 	name = "blue space suit"
 	icon_state = "syndicate-blue"
-	item_state_slots = list(
-		slot_l_hand_str = "syndicate-blue",
-		slot_r_hand_str = "syndicate-blue",
-	)
+	item_state = "syndicate-blue"
 
 
 //Black syndicate space suit
@@ -102,10 +124,7 @@
 /obj/item/clothing/suit/space/syndicate/black
 	name = "black space suit"
 	icon_state = "syndicate-black"
-	item_state_slots = list(
-		slot_l_hand_str = "syndicate-black",
-		slot_r_hand_str = "syndicate-black",
-	)
+	item_state = "syndicate-black"
 
 
 //Black-green syndicate space suit
@@ -117,10 +136,7 @@
 /obj/item/clothing/suit/space/syndicate/black/green
 	name = "black and green space suit"
 	icon_state = "syndicate-black-green"
-	item_state_slots = list(
-		slot_l_hand_str = "syndicate-black-green",
-		slot_r_hand_str = "syndicate-black-green",
-	)
+	item_state = "syndicate-black-green"
 
 
 //Black-blue syndicate space suit
@@ -132,25 +148,19 @@
 /obj/item/clothing/suit/space/syndicate/black/blue
 	name = "black and blue space suit"
 	icon_state = "syndicate-black-blue"
-	item_state_slots = list(
-		slot_l_hand_str = "syndicate-black-blue",
-		slot_r_hand_str = "syndicate-black-blue",
-	)
+	item_state = "syndicate-black-blue"
 
 
 //Black medical syndicate space suit
 /obj/item/clothing/head/helmet/space/syndicate/black/med
 	name = "black medical space helmet"
 	icon_state = "syndicate-helm-black-med"
-	item_state_slots = list(slot_head_str = "syndicate-helm-black-med")
+	item_state_slots = list(slot_head_str = "syndicate-black-med")
 
 /obj/item/clothing/suit/space/syndicate/black/med
 	name = "black medical space suit"
 	icon_state = "syndicate-black-med"
-	item_state_slots = list(
-		slot_l_hand_str = "syndicate-black",
-		slot_r_hand_str = "syndicate-black",
-	)
+	item_state = "syndicate-black"
 
 
 //Black-orange syndicate space suit
@@ -162,10 +172,7 @@
 /obj/item/clothing/suit/space/syndicate/black/orange
 	name = "black and orange space suit"
 	icon_state = "syndicate-black-orange"
-	item_state_slots = list(
-		slot_l_hand_str = "syndicate-black",
-		slot_r_hand_str = "syndicate-black",
-	)
+	item_state = "syndicate-black"
 
 
 //Black-red syndicate space suit
@@ -177,10 +184,7 @@
 /obj/item/clothing/suit/space/syndicate/black/red
 	name = "black and red space suit"
 	icon_state = "syndicate-black-red"
-	item_state_slots = list(
-		slot_l_hand_str = "syndicate-black-red",
-		slot_r_hand_str = "syndicate-black-red",
-	)
+	item_state = "syndicate-black-red"
 
 //Black with yellow/red engineering syndicate space suit
 /obj/item/clothing/head/helmet/space/syndicate/black/engie
@@ -191,7 +195,4 @@
 /obj/item/clothing/suit/space/syndicate/black/engie
 	name = "black engineering space suit"
 	icon_state = "syndicate-black-engie"
-	item_state_slots = list(
-		slot_l_hand_str = "syndicate-black",
-		slot_r_hand_str = "syndicate-black",
-	)
+	item_state = "syndicate-black"

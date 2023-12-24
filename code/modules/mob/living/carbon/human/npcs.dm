@@ -1,48 +1,38 @@
-/mob/living/carbon/human/monkey/punpun/New()
+/obj/item/clothing/under/punpun
+	name = "fancy uniform"
+	desc = "It looks like it was tailored for a monkey."
+	icon_state = "punpun"
+	worn_state = "punpun"
+	species_restricted = list(BODYTYPE_MONKEY)
+
+/mob/living/carbon/human/monkey/punpun/Initialize()
 	..()
+	return INITIALIZE_HINT_LATELOAD
+
+/mob/living/carbon/human/monkey/punpun/LateInitialize()
 	name = "Pun Pun"
 	real_name = name
-	var/obj/item/clothing/C
-	if(prob(50))
-		C = new /obj/item/clothing/under/monkey/punpun(src)
-		equip_to_appropriate_slot(C)
-	else
-		C = new /obj/item/clothing/under/monkey/pants(src)
-		C.attach_accessory(null, new /obj/item/clothing/accessory/toggleable/hawaii/random(src))
-		equip_to_appropriate_slot(C)
-		mutations.Add(MUTATION_BARTENDER)
-		if(prob(10))
-			C = new /obj/item/clothing/head/collectable/petehat(src)
-			equip_to_appropriate_slot(C)
+	named = TRUE
+	gender = MALE
 
-/decl/hierarchy/outfit/blank_subject
-	name = "Test Subject"
-	uniform = /obj/item/clothing/under/color/white
-	shoes = /obj/item/clothing/shoes/white
-	head = /obj/item/clothing/head/helmet/facecover
-	mask = /obj/item/clothing/mask/muzzle
-	suit = /obj/item/clothing/suit/straight_jacket
-	flags = OUTFIT_NO_SURVIVAL
+	INVOKE_ASYNC(src, PROC_REF(EquipPunpunUniform))
 
-/decl/hierarchy/outfit/blank_subject/post_equip(mob/living/carbon/human/H)
+/mob/living/carbon/human/monkey/punpun/proc/EquipPunpunUniform()
+	equip_to_slot(new /obj/item/clothing/under/punpun(src), slot_w_uniform)
+
+/obj/item/clothing/under/nupnup
+	name = "christmas uniform"
+	desc = "The uniform of Nup Nup, the Christmas monkey."
+	icon_state = "punpun"
+	worn_state = "nupnup"
+	species_restricted = list(BODYTYPE_MONKEY)
+
+/mob/living/carbon/human/monkey/nupnup/Initialize()
 	..()
-	var/obj/item/clothing/under/color/white/C = locate() in H
-	if(C)
-		C.has_sensor  = SUIT_LOCKED_SENSORS
-		C.sensor_mode = SUIT_SENSOR_OFF
+	return INITIALIZE_HINT_LATELOAD
 
-/mob/living/carbon/human/blank/New(new_loc)
-	..(new_loc, SPECIES_VATGROWN)
-
-/mob/living/carbon/human/blank/Initialize()
-	. = ..()
-	var/number = "[pick(possible_changeling_IDs)]-[rand(1,30)]"
-	fully_replace_character_name("Subject [number]")
-	var/decl/hierarchy/outfit/outfit = outfit_by_type(/decl/hierarchy/outfit/blank_subject)
-	outfit.equip(src)
-	var/obj/item/clothing/head/helmet/facecover/F = locate() in src
-	if(F)
-		F.SetName("[F.name] ([number])")
-
-/mob/living/carbon/human/blank/ssd_check()
-	return FALSE
+/mob/living/carbon/human/monkey/nupnup/LateInitialize()
+	name = "Winston, the Christmas Monkey"
+	real_name = name
+	gender = MALE
+	w_uniform = new /obj/item/clothing/under/nupnup(src)

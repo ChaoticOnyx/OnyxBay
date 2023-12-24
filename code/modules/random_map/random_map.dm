@@ -23,15 +23,19 @@ var/global/list/map_count = list()
 	var/wall_type =  /turf/simulated/wall
 	var/floor_type = /turf/simulated/floor
 	var/target_turf_type
+	var/spawn_roof = FALSE //Set to TRUE if a roof should be spawned based.
+
+	var/area/use_area // If set, turfs will be put in this area. If set to type, new instance will be spawned for the map
 
 	// Storage for the final iteration of the map.
 	var/list/map = list()           // Actual map.
+	var/tmp/map_len = 0
 
 	// If set, all sleep(-1) calls will be skipped.
 	// Test to see if rand_seed() can be used reliably.
 	var/priority_process
 
-/datum/random_map/New(seed, tx, ty, tz, tlx, tly, do_not_apply, do_not_announce, never_be_priority = 0)
+/datum/random_map/New(var/seed, var/tx, var/ty, var/tz, var/tlx, var/tly, var/do_not_apply, var/do_not_announce, var/never_be_priority = 0, var/used_area)
 
 	// Store this for debugging.
 	if(!map_count[descriptor])
@@ -45,6 +49,12 @@ var/global/list/map_count = list()
 	set_origins(tx, ty, tz)
 	if(tlx) limit_x = tlx
 	if(tly) limit_y = tly
+
+	if(!use_area && used_area)
+		if(ispath(used_area))
+			use_area = new(used_area)
+		else
+			use_area = used_area
 
 	if(do_not_apply)
 		auto_apply = null
@@ -67,14 +77,16 @@ var/global/list/map_count = list()
 			return
 	if(!do_not_announce) admin_notice("<span class='danger'>[capitalize(name)] failed to generate ([round(0.1*(world.timeofday-start_time),0.1)] seconds): could not produce sane map.</span>", R_DEBUG)
 
-/datum/random_map/proc/get_map_cell(x,y)
-	if(!map)
+/datum/random_map/proc/get_map_cell(var/x,var/y)
+	if(!islist(map))
 		set_map_size()
-	. = ((y-1)*limit_x)+x
-	if((. < 1) || (. > map.len))
+	var/cell = ((y-1)*limit_x)+x
+	if((cell < 1) || (cell > map.len))
 		return null
+	else
+		return cell
 
-/datum/random_map/proc/get_map_char(value)
+/datum/random_map/proc/get_map_char(var/value)
 	switch(value)
 		if(WALL_CHAR)
 			return "#"
@@ -98,23 +110,28 @@ var/global/list/map_count = list()
 	if(!user)
 		user = world
 
-	var/dat = "<code>+------+<br>"
+	map_len = map.len
+
+	var/list/dat = "<code>+------+<br>"
 	for(var/x = 1, x <= limit_x, x++)
 		for(var/y = 1, y <= limit_y, y++)
-			var/current_cell = get_map_cell(x,y)
-			if(current_cell)
-				dat += get_map_char(map[current_cell])
+			var/tmp_cell
+			TRANSLATE_AND_VERIFY_COORD_MLEN(x, y, map_len)
+			if(tmp_cell)
+				dat += get_map_char(map[tmp_cell])
 		dat += "<br>"
-	to_chat(user, "[dat]+------+</code>")
+	dat += "+------+</code>"
+	to_chat(user, dat.Join())
 
 /datum/random_map/proc/set_map_size()
 	map = list()
 	map.len = limit_x * limit_y
 
 /datum/random_map/proc/seed_map()
+	map_len = map.len
 	for(var/x = 1, x <= limit_x, x++)
 		for(var/y = 1, y <= limit_y, y++)
-			var/current_cell = get_map_cell(x,y)
+			var/current_cell = TRANSLATE_COORD(x, y)	// Coordinate cannot be invalid here, so use the faster no-validate one.
 			if(prob(initial_wall_cell))
 				map[current_cell] = WALL_CHAR
 			else
@@ -123,7 +140,7 @@ var/global/list/map_count = list()
 /datum/random_map/proc/clear_map()
 	for(var/x = 1, x <= limit_x, x++)
 		for(var/y = 1, y <= limit_y, y++)
-			map[get_map_cell(x,y)] = 0
+			map[TRANSLATE_COORD(x, y)] = 0
 
 /datum/random_map/proc/generate()
 	seed_map()
@@ -142,7 +159,7 @@ var/global/list/map_count = list()
 /datum/random_map/proc/check_map_sanity()
 	return 1
 
-/datum/random_map/proc/set_origins(tx, ty, tz)
+/datum/random_map/proc/set_origins(var/tx, var/ty, var/tz)
 	origin_x = tx ? tx : 1
 	origin_y = ty ? ty : 1
 	origin_z = tz ? tz : 1
@@ -152,43 +169,50 @@ var/global/list/map_count = list()
 	if(!origin_y) origin_y = 1
 	if(!origin_z) origin_z = 1
 
+	map_len = map.len
+
 	for(var/x = 1, x <= limit_x, x++)
 		for(var/y = 1, y <= limit_y, y++)
 			if(!priority_process)
 				CHECK_TICK
 			apply_to_turf(x,y)
 
-/datum/random_map/proc/apply_to_turf(x,y)
-	var/current_cell = get_map_cell(x,y)
-	if(!current_cell)
+/datum/random_map/proc/apply_to_turf(var/x,var/y)
+	var/tmp_cell
+	TRANSLATE_AND_VERIFY_COORD_MLEN(x, y, map_len)
+	if(!tmp_cell)
 		return 0
 	var/turf/T = locate((origin_x-1)+x,(origin_y-1)+y,origin_z)
 	if(!T || (target_turf_type && !istype(T,target_turf_type)))
 		return 0
-	var/newpath = get_appropriate_path(map[current_cell])
-	if(newpath)
+	var/newpath = get_appropriate_path(map[tmp_cell])
+	if(newpath && !istype(T, newpath))
 		T.ChangeTurf(newpath)
-	get_additional_spawns(map[current_cell],T,get_spawn_dir(x, y))
+	if(spawn_roof)
+		T.spawn_roof()
+	get_additional_spawns(map[tmp_cell],T,get_spawn_dir(x, y))
+	if(use_area)
+		ChangeArea(T, use_area)
 	return T
 
 /datum/random_map/proc/get_spawn_dir()
 	return 0
 
-/datum/random_map/proc/get_appropriate_path(value)
+/datum/random_map/proc/get_appropriate_path(var/value)
 	switch(value)
 		if(FLOOR_CHAR)
 			return floor_type
 		if(WALL_CHAR)
 			return wall_type
 
-/datum/random_map/proc/get_additional_spawns(value, turf/T)
+/datum/random_map/proc/get_additional_spawns(var/value, var/turf/T)
 	if(value == DOOR_CHAR)
 		new /obj/machinery/door/airlock(T)
 
 /datum/random_map/proc/cleanup()
 	return
 
-/datum/random_map/proc/overlay_with(datum/random_map/target_map, tx, ty)
+/datum/random_map/proc/overlay_with(var/datum/random_map/target_map, var/tx, var/ty)
 	if(!map.len || !istype(target_map))
 		return
 	tx-- // Update origin so that x/y index
@@ -206,5 +230,5 @@ var/global/list/map_count = list()
 	handle_post_overlay_on(target_map,tx,ty)
 
 
-/datum/random_map/proc/handle_post_overlay_on(datum/random_map/target_map, tx, ty)
+/datum/random_map/proc/handle_post_overlay_on(var/datum/random_map/target_map, var/tx, var/ty)
 	return

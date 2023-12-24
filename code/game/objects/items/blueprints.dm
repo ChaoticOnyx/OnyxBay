@@ -1,9 +1,12 @@
 /obj/item/blueprints
-	name = "blueprints"
-	desc = "Blueprints..."
+	name = "station blueprints"
+	desc = "Blueprints of the station. There is a \"Classified\" stamp and several coffee stains on it."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "blueprints"
 	attack_verb = list("attacked", "bapped", "hit")
+	var/datum/wires/airlock/blueprint/airlock_wires
+	var/datum/wires/vending/blueprint/vending_wires
+
 	var/const/AREA_ERRNONE = 0
 	var/const/AREA_STATION = 1
 	var/const/AREA_SPACE =   2
@@ -19,117 +22,150 @@
 	var/const/ROOM_ERR_SPACE = -1
 	var/const/ROOM_ERR_TOOLARGE = -2
 
-/obj/item/blueprints/Initialize()
-	. = ..()
-	desc = "Blueprints of the [station_name()]. There is a \"Classified\" stamp and several coffee stains on it."
+	var/list/active_blueprints
 
-/obj/item/blueprints/attack_self(mob/M)
-	if(!ishuman(M))
-		to_chat(M, SPAN_WARNING("This stack of blue paper means nothing to you."))//monkeys cannot into projecting
+/obj/item/blueprints/Initialize(mapload, ...)
+	. = ..()
+	airlock_wires = new(src)
+	vending_wires = new(src)
+
+/obj/item/blueprints/attack_self(mob/user)
+	if(use_check_and_message(user, USE_DISALLOW_SILICONS))
 		return
-	add_fingerprint(M)
-	interact(M)
+	add_fingerprint(user)
+	interact()
+
+/obj/item/blueprints/equipped(var/mob/user, var/slot)
+	. = ..()
+	if(slot == slot_l_hand || slot == slot_r_hand)
+		START_PROCESSING(SSprocessing, src)
+		LAZYINITLIST(active_blueprints)
+
+/obj/item/blueprints/dropped(mob/user)
+	. = ..()
+	STOP_PROCESSING(SSprocessing, src)
+	if(user.client)
+		for(var/thing in active_blueprints)
+			user.client.images -= thing
+	LAZYCLEARLIST(active_blueprints)
+
+/obj/item/blueprints/process()
+	var/mob/user = loc
+	if(!istype(user))
+		return PROCESS_KILL
+
+	var/turf/origin_turf = get_turf(src)
+
+	var/list/new_prints = list()
+	for(var/turf/T as anything in RANGE_TURFS(world.view, origin_turf))
+		for(var/image/I as anything in T.blueprints)
+			new_prints += I
+
+	var/list/update_remove = active_blueprints - new_prints
+	active_blueprints = new_prints - update_remove
+
+	for(var/thing in update_remove)
+		user.client.images -= thing
+
+	for(var/thing in active_blueprints)
+		user.client.images += thing
 
 /obj/item/blueprints/Topic(href, href_list)
-	if((. = ..()))
+	..()
+	if(use_check_and_message(usr, USE_DISALLOW_SILICONS) || usr.get_active_hand() != src)
 		return
-	if((usr.restrained() || usr.stat))
-		return
-	if(!usr.is_item_in_hands(src))
-		to_chat(usr, SPAN_WARNING("You need to hold \the [src] in your hands!"))
+	if(!href_list["action"])
 		return
 	switch(href_list["action"])
-		if("create_area")
+		if ("create_area")
 			if(get_area_type() != AREA_SPACE)
-				interact(usr)
+				interact()
 				return
-			create_area(usr)
-		if("edit_area")
-			if(get_area_type() != AREA_STATION)
-				interact(usr)
+			create_area()
+		if ("edit_area")
+			if (get_area_type()!=AREA_STATION)
+				interact()
 				return
-			edit_area(usr)
-		if("delete_area")
-			//skip the sanity checking, delete_area() does it anyway
-			delete_area(usr)
+			edit_area()
+		if("airlock_wires")
+			airlock_wires.get_wire_diagram(usr)
+		if("vending_wires")
+			vending_wires.get_wire_diagram(usr)
 
-/obj/item/blueprints/interact(mob/user)
-	var/area/A = get_area(src)
-	if(!A)
-		return
-	var/text = {"<HTML><meta charset=\"utf-8\"><head><title>[src]</title></head><BODY>
-<h2>[station_name()] blueprints</h2>
-<small>Property of [GLOB.using_map.company_name]. For heads of staff only. Store in high-secure storage.</small><hr>
-"}
+/obj/item/blueprints/interact()
+	var/area/A = get_area()
+	var/text = {"<HTML><head><title>[src]</title></head><BODY>
+				<h2>[station_name()] blueprints</h2>
+				<small>Property of [current_map.company_name]. For heads of staff only. Store in high-secure storage.</small><hr>
+				"}
 	switch (get_area_type())
-		if(AREA_SPACE)
+		if (AREA_SPACE)
 			text += {"
-<p>According the blueprints, you are now in <b>outer space</b>.  Hold your breath.</p>
-<p><a href='?src=\ref[src];action=create_area'>Mark this place as new area.</a></p>
-"}
-		if(AREA_STATION)
-			if(A.apc)
-				text += {"
-<p>According the blueprints, you are now in <b>\"[A.name]\"</b>.</p>
-<p>You may <a href='?src=\ref[src];action=edit_area'>
-move an amendment</a> to the drawing.</p>
-<p>You can't erase this area, because it has an APC.</p>
-"}
-			else
-				text += {"
-<p>According the blueprints, you are now in <b>\"[A.name]\"</b>.</p>
-<p>You may <a href='?src=\ref[src];action=edit_area'>
-move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_area'>erase part of it</a>.</p>
-"}
-		if(AREA_SPECIAL)
+					<p>According the blueprints, you are now in <b>outer space</b>.  Hold your breath.</p>
+					<p><a href='?src=\ref[src];action=create_area'>Mark this place as new area.</a></p>
+					"}
+		if (AREA_STATION)
 			text += {"
-<p>This place isn't noted on the blueprint.</p>
-"}
-		else
-			return
+					<p>According the blueprints, you are now in <b>\"[A.name]\"</b>.</p>
+					<p>You may <a href='?src=\ref[src];action=edit_area'>
+					move an amendment</a> to the drawing.</p>
+					"}
+		if (AREA_SPECIAL)
+			text += {"
+						<p>This place isn't noted on the blueprint.</p>
+					"}
+
+	text += "<br><a href='?src=\ref[src];action=airlock_wires'>View Airlock Wire Schema</a><br>"
+	text += "<br><a href='?src=\ref[src];action=vending_wires'>View Vending Machine Wire Schema</a><br>"
+
 	text += "</BODY></HTML>"
-	show_browser(user, text, "window=blueprints")
-	onclose(user, "blueprints")
+
+	var/datum/browser/blueprints_win = new(usr, "blueprints", capitalize_first_letters(name))
+	blueprints_win.set_content(text)
+	blueprints_win.open()
 
 
-/obj/item/blueprints/proc/get_area_type(area/A = get_area(src))
-	if(istype(A, /area/space))
+/obj/item/blueprints/proc/get_area()
+	var/turf/T = get_turf(usr)
+	var/area/A = T.loc
+	return A
+
+/obj/item/blueprints/proc/get_area_type(var/area/A = get_area())
+	if(istype(A, /area/space) || istype(A, /area/mine/unexplored))
 		return AREA_SPACE
+	var/list/SPECIALS = list(
+		/area/shuttle,
+		/area/centcom,
+		/area/tdome,
+		/area/antag
+	)
+	for (var/type in SPECIALS)
+		if ( istype(A,type) )
+			return AREA_SPECIAL
+	return AREA_STATION
 
-	var/list/SPECIALS = list(/area/shuttle)
-
-	if(is_type_in_list(A, SPECIALS))
-		return AREA_SPECIAL
-
-	if(A.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
-		return AREA_STATION
-
-	return AREA_SPECIAL
-
-/obj/item/blueprints/proc/create_area(mob/user)
-	if(!user)
-		return
+/obj/item/blueprints/proc/create_area()
 	var/res = detect_room(get_turf(usr))
 	if(!istype(res,/list))
 		switch(res)
 			if(ROOM_ERR_SPACE)
-				to_chat(user, SPAN_WARNING("The new area must be completely airtight!"))
+				to_chat(usr, "<span class='warning'>The new area must be completely airtight!</span>")
 				return
 			if(ROOM_ERR_TOOLARGE)
-				to_chat(user, SPAN_WARNING("The new area too large!"))
+				to_chat(usr, "<span class='warning'>The new area too large!</span>")
 				return
 			else
-				to_chat(user, SPAN_WARNING("Error! Please notify administration!"))
+				to_chat(usr, "<span class='warning'>Error! Please notify administration!</span>")
 				return
 	var/list/turf/turfs = res
-	var/str = sanitizeSafe(input(user, "New area name:","Blueprint Editing", ""), MAX_NAME_LEN)
-	if(!str || !length(str))
+	var/str = sanitizeSafe(input("New area name:","Blueprint Editing", ""), MAX_NAME_LEN)
+	if(!str || !length(str)) //cancel
 		return
 	if(length(str) > 50)
-		to_chat(user, SPAN_WARNING("Name too long."))
+		to_chat(usr, "<span class='warning'>Name too long.</span>")
 		return
 	var/area/A = new
-	A.SetName(str)
+	A.name = str
 	A.power_equip = 0
 	A.power_light = 0
 	A.power_environ = 0
@@ -138,122 +174,108 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 
 	A.always_unpowered = 0
 
-	addtimer(CALLBACK(src, nameof(.proc/interact)), 10)
+	sorted_add_area(A)
 
-/obj/item/blueprints/proc/move_turfs_to_area(list/turf/turfs, area/A)
+	addtimer(CALLBACK(src, PROC_REF(interact)), 5)
+	return
+
+
+/obj/item/blueprints/proc/move_turfs_to_area(var/list/turf/turfs, var/area/A)
 	A.contents.Add(turfs)
 		//oldarea.contents.Remove(usr.loc) // not needed
-		//T.loc = A //error: cannot change constant value
+		//T.forceMove(A) //error: cannot change constant value
 
-/obj/item/blueprints/proc/edit_area(mob/user)
-	if(!user)
-		return
-	var/area/A = get_area(src)
-	if(!A)
-		return
-//	log_debug(edit_area")
 
+/obj/item/blueprints/proc/edit_area()
+	var/area/A = get_area()
 	var/prevname = "[A.name]"
 	var/str = sanitizeSafe(input("New area name:","Blueprint Editing", prevname), MAX_NAME_LEN)
 	if(!str || !length(str) || str==prevname) //cancel
 		return
 	if(length(str) > 50)
-		to_chat(usr, SPAN_WARNING("Text too long."))
+		to_chat(usr, "<span class='warning'>Text too long.</span>")
 		return
-	set_area_machinery_title(A,str,prevname)
-	A.SetName(str)
-	to_chat(usr, SPAN_NOTICE("You set the area '[prevname]' title to '[str]'."))
+	INVOKE_ASYNC(src, PROC_REF(set_area_machinery_title), A, str, prevname)
+	A.name = str
+	sortTim(all_areas, GLOBAL_PROC_REF(cmp_text_asc))
+	to_chat(usr, "<span class='notice'>You set the area '[prevname]' title to '[str]'.</span>")
 	interact()
 	return
 
-/obj/item/blueprints/proc/delete_area(mob/user)
-	if(!user)
-		return
-	var/area/A = get_area(src)
-	if(!A)
-		return
-	if(get_area_type(A) != AREA_STATION || A.apc) //let's just check this one last time, just in case
-		interact()
-		return
-	to_chat(user, SPAN_NOTICE("You instructed nano-machines to remove [A.name] from the blueprint. You just have to wait."))
-	log_and_message_admins("deleted area [A.name] via station blueprints.")
-	qdel(A)
-	interact(user)
 
-/obj/item/blueprints/proc/set_area_machinery_title(area/A,title,oldtitle)
-	if(!oldtitle) // or replacetext goes to infinite loop
+
+/obj/item/blueprints/proc/set_area_machinery_title(var/area/A,var/title,var/oldtitle)
+	if (!oldtitle) // or replacetext goes to infinite loop
 		return
 
-	for(var/obj/machinery/alarm/M in A)
-		M.SetName(replacetext(M.name,oldtitle,title))
-	for(var/obj/machinery/power/apc/M in A)
-		M.SetName(replacetext(M.name,oldtitle,title))
-	for(var/obj/machinery/atmospherics/unary/vent_scrubber/M in A)
-		M.SetName(replacetext(M.name,oldtitle,title))
-	for(var/obj/machinery/atmospherics/unary/vent_pump/M in A)
-		M.SetName(replacetext(M.name,oldtitle,title))
-	for(var/obj/machinery/door/M in A)
-		M.SetName(replacetext(M.name,oldtitle,title))
-	//TODO: much much more. Unnamed airlocks, cameras, etc.
+	var/static/list/types_to_rename = list(
+		/obj/machinery/alarm,
+		/obj/machinery/power/apc,
+		/obj/machinery/atmospherics/unary/vent_scrubber,
+		/obj/machinery/atmospherics/unary/vent_pump,
+		/obj/machinery/door
+	)
 
-/obj/item/blueprints/proc/check_tile_is_border(turf/T2, dir)
-	if(istype(T2, /turf/space))
+	for(var/obj/machinery/M in A)
+		if (is_type_in_list(M, types_to_rename))
+			M.name = replacetext(M.name, oldtitle, title)
+
+		CHECK_TICK
+
+/obj/item/blueprints/proc/check_tile_is_border(var/turf/T2,var/dir)
+	if (istype(T2, /turf/space) || istype(T2, /turf/unsimulated/floor/asteroid))
 		return BORDER_SPACE //omg hull breach we all going to die here
-	if(istype(T2, /turf/simulated/shuttle))
-		return BORDER_SPACE
-	if(get_area_type(T2.loc)!=AREA_SPACE)
+	if (get_area_type(T2.loc)!=AREA_SPACE)
 		return BORDER_BETWEEN
-	if(istype(T2, /turf/simulated/wall))
+	if (istype(T2, /turf/simulated/wall))
 		return BORDER_2NDTILE
-	if(!istype(T2, /turf/simulated))
+	if (!istype(T2, /turf/simulated))
 		return BORDER_BETWEEN
 
 	for (var/obj/structure/window/W in T2)
 		if(turn(dir,180) == W.dir)
 			return BORDER_BETWEEN
-		if(W.dir in list(NORTHEAST,SOUTHEAST,NORTHWEST,SOUTHWEST))
+		if (W.dir in list(NORTHEAST,SOUTHEAST,NORTHWEST,SOUTHWEST))
 			return BORDER_2NDTILE
 	for(var/obj/machinery/door/window/D in T2)
 		if(turn(dir,180) == D.dir)
 			return BORDER_BETWEEN
-	if(locate(/obj/machinery/door) in T2)
+	if (locate(/obj/machinery/door) in T2)
 		return BORDER_2NDTILE
 
 	return BORDER_NONE
 
-/obj/item/blueprints/proc/detect_room(turf/first)
+/obj/item/blueprints/proc/detect_room(var/turf/first)
 	var/list/turf/found = new
 	var/list/turf/pending = list(first)
 	while(pending.len)
-		if(found.len+pending.len > 300)
+		if (found.len+pending.len > 300)
 			return ROOM_ERR_TOOLARGE
 		var/turf/T = pending[1] //why byond havent list::pop()?
 		pending -= T
-		for (var/dir in GLOB.cardinal)
+		for (var/dir in cardinal)
 			var/skip = 0
 			for (var/obj/structure/window/W in T)
 				if(dir == W.dir || (W.dir in list(NORTHEAST,SOUTHEAST,NORTHWEST,SOUTHWEST)))
 					skip = 1; break
-			if(skip)
-				continue
+			if (skip) continue
 			for(var/obj/machinery/door/window/D in T)
 				if(dir == D.dir)
 					skip = 1; break
-			if(skip)
-				continue
+			if (skip) continue
 
 			var/turf/NT = get_step(T,dir)
-			if(!isturf(NT) || (NT in found) || (NT in pending))
+			if (!isturf(NT) || (NT in found) || (NT in pending))
 				continue
 
-			switch(check_tile_is_border(NT,dir))
-				if(BORDER_NONE)
-					pending+=NT
-				if(BORDER_BETWEEN)
-					pass() //do nothing, may be later i'll add 'rejected' list as optimization
-				if(BORDER_2NDTILE)
-					found+=NT //tile included to new area, but we dont seek more
-				if(BORDER_SPACE)
-					return ROOM_ERR_SPACE
+			var/tile_is_border = check_tile_is_border(NT,dir)
+			if(tile_is_border != BORDER_BETWEEN)
+				switch(tile_is_border)
+					if(BORDER_NONE)
+						pending+=NT
+					if(BORDER_2NDTILE)
+						found+=NT //tile included to new area, but we dont seek more
+					if(BORDER_SPACE)
+						return ROOM_ERR_SPACE
 		found+=T
 	return found

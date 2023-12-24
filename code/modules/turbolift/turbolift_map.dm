@@ -3,9 +3,11 @@
 	name = "turbolift map placeholder"
 	icon = 'icons/obj/turbolift_preview_3x3.dmi'
 	dir = SOUTH         // Direction of the holder determines the placement of the lift control panel and doors.
+	var/clear_objects = 1
 	var/depth = 1       // Number of floors to generate, including the initial floor.
 	var/lift_size_x = 2 // Number of turfs on each axis to generate in addition to the first
 	var/lift_size_y = 2 // ie. a 3x3 lift would have a value of 2 in each of these variables.
+	var/no_first_z_level = TRUE
 
 	// Various turf and door types used when generating the turbolift floors.
 	var/wall_type =  /turf/simulated/wall/elevator
@@ -14,16 +16,9 @@
 
 	var/list/areas_to_use = list()
 
-/obj/turbolift_map_holder/Destroy()
-	turbolifts -= src
-	return ..()
-
-/obj/turbolift_map_holder/New()
-	turbolifts += src
+/obj/turbolift_map_holder/Initialize()
 	..()
 
-/obj/turbolift_map_holder/Initialize()
-	. = ..()
 	// Create our system controller.
 	var/datum/turbolift/lift = new()
 
@@ -55,7 +50,9 @@
 	var/ez = (uz+(depth-1))
 
 	switch(dir)
+
 		if(NORTH)
+
 			int_panel_x = ux + Floor(lift_size_x/2)
 			int_panel_y = uy + 1
 			ext_panel_x = ux
@@ -72,6 +69,7 @@
 			light_y2 = uy + 1
 
 		if(SOUTH)
+
 			int_panel_x = ux + Floor(lift_size_x/2)
 			int_panel_y = ey - 1
 			ext_panel_x = ex
@@ -88,6 +86,7 @@
 			light_y2 = uy + lift_size_y - 1
 
 		if(EAST)
+
 			int_panel_x = ux+1
 			int_panel_y = uy + Floor(lift_size_y/2)
 			ext_panel_x = ex+2
@@ -104,6 +103,7 @@
 			light_y2 = uy + lift_size_x - 1
 
 		if(WEST)
+
 			int_panel_x = ex-1
 			int_panel_y = uy + Floor(lift_size_y/2)
 			ext_panel_x = ux-2
@@ -120,7 +120,11 @@
 			light_y2 = uy + lift_size_y - 1
 
 	// Generate each floor and store it in the controller datum.
-	for(var/cz = uz; cz <= ez; cz++)
+	if(no_first_z_level && uz != 1)
+		for(var/i = 1, i < uz, i++)
+			lift.floors += null // This silly hack allows lifts to not start on the first zlevel
+
+	for(var/cz = uz to ez)
 
 		var/datum/turbolift_floor/cfloor = new()
 		lift.floors += cfloor
@@ -129,17 +133,18 @@
 		// Update the appropriate turfs.
 		for(var/tx = ux to ex)
 			for(var/ty = uy to ey)
-				var/turf/checking = locate(tx, ty, cz)
+
+				var/turf/checking = locate(tx,ty,cz)
 
 				if(!istype(checking))
-					log_debug("[name] cannot find a component turf at [tx],[ty] on floor [cz]. Aborting.")
+					LOG_DEBUG("[name] cannot find a component turf at [tx],[ty] on floor [cz]. Aborting.")
 					qdel(src)
 					return
 
 				// Update path appropriately if needed.
-				var/turf/swap_to = /turf/simulated/open
+				var/swap_to = /turf/simulated/open
 				if(cz == uz)                                                                       // Elevator.
-					if(((tx == ux) || (ty == uy) || (tx == ex) || (ty == ey)) && !((tx >= door_x1) && (tx <= door_x2) && (ty >= door_y1) && (ty <= door_y2)))
+					if((tx == ux || ty == uy || tx == ex || ty == ey) && !(tx >= door_x1 && tx <= door_x2 && ty >= door_y1 && ty <= door_y2))
 						swap_to = wall_type
 					else
 						swap_to = floor_type
@@ -147,33 +152,28 @@
 				if(checking.type != swap_to)
 					checking.ChangeTurf(swap_to)
 					// Let's make absolutely sure that we have the right turf.
-					checking = locate(tx, ty, cz)
+					checking = locate(tx,ty,cz)
 
 				// Clear out contents.
-				for(var/atom/movable/thing in checking.contents)
-					if(thing.simulated)
-						qdel(thing)
+				if(clear_objects)
+					for(var/thing in checking.contents)
+						var/atom/movable/AM = thing
+						if(AM.simulated)
+							qdel(AM)
 
-				if((tx >= ux) && (tx <= ex) && (ty >= uy) && (ty <= ey))
+				if(tx >= ux && tx <= ex && ty >= uy && ty <= ey)
 					floor_turfs += checking
-
-		// Do this area stuff before placing machinery or anything else. Otherwise it will potentially change areas without properly updating listeners.
-		var/area_path = areas_to_use[az]
-		for(var/thing in floor_turfs)
-			new area_path(thing)
-		var/area/A = locate(area_path)
-		cfloor.set_area_ref("\ref[A]")
 
 		// Place exterior doors.
 		for(var/tx = door_x1 to door_x2)
 			for(var/ty = door_y1 to door_y2)
-				var/turf/checking = locate(tx, ty, cz)
+				var/turf/checking = locate(tx,ty,cz)
 				var/internal = 1
 				if(!(checking in floor_turfs))
 					internal = 0
 					if(checking.type != floor_type)
 						checking.ChangeTurf(floor_type)
-						checking = locate(tx, ty, cz)
+						checking = locate(tx,ty,cz)
 					for(var/atom/movable/thing in checking.contents)
 						if(thing.simulated)
 							qdel(thing)
@@ -193,31 +193,41 @@
 		panel_ext.set_dir(udir)
 		cfloor.ext_panel = panel_ext
 
-		// Place lights
-		var/turf/placing1 = locate(light_x1, light_y1, cz)
-		var/turf/placing2 = locate(light_x2, light_y2, cz)
-		var/obj/machinery/light/light1 = new(placing1, light)
-		var/obj/machinery/light/light2 = new(placing2, light)
-		if(udir == NORTH || udir == SOUTH)
-			light1.set_dir(WEST)
-			light2.set_dir(EAST)
-		else
-			light1.set_dir(SOUTH)
-			light2.set_dir(NORTH)
+		if (clear_objects)	// If we're clearing objects, we're going to need to place lights since they can't be mapped in.
+			// Place lights
+			var/turf/placing1 = locate(light_x1, light_y1, cz)
+			var/turf/placing2 = locate(light_x2, light_y2, cz)
+			var/obj/machinery/light/light1 = new(placing1, light)
+			var/obj/machinery/light/light2 = new(placing2, light)
+			if(udir == NORTH || udir == SOUTH)
+				light1.set_dir(WEST)
+				light2.set_dir(EAST)
+			else
+				light1.set_dir(SOUTH)
+				light2.set_dir(NORTH)
+
+			light1.no_z_overlay = 1
+			light2.no_z_overlay = 1
 
 		// Update area.
 		if(az > areas_to_use.len)
-			log_debug("Insufficient defined areas in turbolift datum, aborting.")
+			LOG_DEBUG("Insufficient defined areas in turbolift datum, aborting.")
 			qdel(src)
 			return
+
+		var/area_path = areas_to_use[az]
+		for(var/thing in floor_turfs)
+			new area_path(thing)
+		var/area/A = locate(area_path)
+		cfloor.set_area_ref("\ref[A]")
 		az++
 
 	// Place lift panel.
 	var/turf/T = locate(int_panel_x, int_panel_y, uz)
 	lift.control_panel_interior = new(T, lift)
 	lift.control_panel_interior.set_dir(udir)
-	lift.current_floor = lift.floors[1]
+	lift.current_floor = lift.floors[uz]
 
 	lift.open_doors()
 
-	qdel(src) // We're done.
+	return INITIALIZE_HINT_QDEL

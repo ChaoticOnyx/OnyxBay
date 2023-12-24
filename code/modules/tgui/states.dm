@@ -17,14 +17,14 @@
  * return UI_state The state of the UI.
  */
 /datum/proc/ui_status(mob/user, datum/ui_state/state)
-	var/src_object = tgui_host(user)
+	var/src_object = ui_host(user)
 	. = UI_CLOSE
 	if(!state)
 		return
 
 	if(isobserver(user))
 		// If they turn on ghost AI control, admins can always interact.
-		if(check_rights(R_ADMIN, FALSE, user.client))
+		if(user.can_admin_interact())
 			. = max(., UI_INTERACTIVE)
 
 		// Regular ghosts can always at least view if in range.
@@ -61,9 +61,9 @@
  */
 /mob/proc/shared_ui_interaction(src_object)
 	// Close UIs if mindless.
-	if(!client)
+	if(!client && !HAS_TRAIT(src, TRAIT_PRESERVE_UI_WITHOUT_CLIENT))
 		return UI_CLOSE
-	// Disable UIs if unconcious.
+	// Disable UIs if unconscious.
 	else if(stat)
 		return UI_DISABLED
 	// Update UIs if incapicitated but concious.
@@ -71,16 +71,21 @@
 		return UI_UPDATE
 	return UI_INTERACTIVE
 
+// /mob/living/shared_ui_interaction(src_object)
+// 	. = ..()
+// 	if(!(mobility_flags & MOBILITY_UI) && . == UI_INTERACTIVE)
+// 		return UI_UPDATE
+
 /mob/living/silicon/ai/shared_ui_interaction(src_object)
 	// Disable UIs if the AI is unpowered.
-	if(!has_power())
+	if(lacks_power())
 		return UI_DISABLED
 	return ..()
 
 /mob/living/silicon/robot/shared_ui_interaction(src_object)
-	// Disable UIs if the object isn't installed in the borg AND the borg is either locked, has a dead cell, or no cell.
+	// Disable UIs if the object isn't installed in the borg AND the borg has a dead cell, or no cell.
 	var/atom/device = src_object
-	if((istype(device) && device.loc != src) && (!cell || cell.charge <= 0 || lockcharge))
+	if((istype(device) && device.loc != src) && (!cell || cell.charge <= 0))
 		return UI_DISABLED
 	return ..()
 
@@ -93,7 +98,7 @@
  *
  * return UI_state The state of the UI.
  */
-/mob/living/proc/shared_living_ui_distance(atom/movable/src_object, viewcheck = TRUE)
+/mob/living/proc/shared_living_ui_distance(atom/movable/src_object, viewcheck = TRUE, allow_tk = TRUE)
 	// If the object is obscured, close it.
 	if(viewcheck && !(src_object in view(src)))
 		return UI_CLOSE
@@ -110,7 +115,16 @@
 	// Otherwise, we got nothing.
 	return UI_CLOSE
 
-/mob/living/carbon/human/shared_living_ui_distance(atom/movable/src_object, viewcheck = TRUE)
-	if(MUTATION_TK in mutations)
-		return UI_INTERACTIVE
+/mob/living/carbon/human/shared_living_ui_distance(atom/movable/src_object, viewcheck = TRUE, allow_tk = TRUE)
 	return ..()
+
+/// NanoUI compat, remove when done
+/datum/proc/CanUseTopic(mob/user, datum/ui_state/state = default_state)
+	var/datum/src_object = ui_host()
+	return state.can_use_topic(src_object, user)
+
+/datum/ui_state/proc/href_list(mob/user)
+	return list()
+
+/datum/proc/nano_container()
+	return src

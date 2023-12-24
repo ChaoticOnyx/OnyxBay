@@ -1,4 +1,4 @@
-/obj/machinery/portable_atmospherics/hydroponics/Process()
+/obj/machinery/portable_atmospherics/hydroponics/process()
 
 	// Handle nearby smoke if any.
 	for(var/obj/effect/effect/smoke/chem/smoke in view(1, src))
@@ -7,7 +7,6 @@
 
 	//Do this even if we're not ready for a plant cycle.
 	process_reagents()
-	var/needs_icon_update = 0
 
 	// Update values every cycle rather than every process() tick.
 	if(force_update)
@@ -21,30 +20,24 @@
 
 	// Weeds like water and nutrients, there's a chance the weed population will increase.
 	// Bonus chance if the tray is unoccupied.
-	if(waterlevel > 10 && nutrilevel > 2 && prob(QDELETED(seed) ? 5 : 1))
-		weedlevel += 1 * HYDRO_SPEED_MULTIPLIER
+	if(!mechanical) // Changes it so that only soil plots need to worry about weeds.
+		if(waterlevel > 10 && nutrilevel > 2 && prob(isnull(seed) ? 5 : 1))
+			weedlevel += 1 * HYDRO_SPEED_MULTIPLIER
 
 	// There's a chance for a weed explosion to happen if the weeds take over.
 	// Plants that are themselves weeds (weed_tolerance > 10) are unaffected.
 	if (weedlevel >= 10 && prob(10))
 		if(!seed || weedlevel >= seed.get_trait(TRAIT_WEED_TOLERANCE))
 			weed_invasion()
-			if(mechanical)
-				needs_icon_update |= 1
 
 	// If there is no seed data (and hence nothing planted),
 	// or the plant is dead, process nothing further.
 	if(!seed || dead)
-		if(mechanical) 
-			update_icon() //Harvesting would fail to set alert icons properly.
+		if(mechanical) update_icon() //Harvesting would fail to set alert icons properly.
 		return
 
 	// Advance plant age.
-	var/cur_stage = get_overlay_stage()
-	if(prob(30)) 
-		age += 1 * HYDRO_SPEED_MULTIPLIER
-		if(get_overlay_stage() != cur_stage)
-			needs_icon_update |= 1
+	if(prob(30)) age += 1 * HYDRO_SPEED_MULTIPLIER
 
 	//Highly mutable plants have a chance of mutating every tick.
 	if(seed.get_trait(TRAIT_IMMUTABLE) == -1)
@@ -58,9 +51,9 @@
 			mutation_level = 0
 
 	// Maintain tray nutrient and water levels.
-	if(seed.get_trait(TRAIT_REQUIRES_NUTRIENTS) && seed.get_trait(TRAIT_NUTRIENT_CONSUMPTION) > 0 && nutrilevel > 0 && prob(25))
+	if(seed.get_trait(TRAIT_NUTRIENT_CONSUMPTION) > 0 && nutrilevel > 0 && prob(25))
 		nutrilevel -= max(0,seed.get_trait(TRAIT_NUTRIENT_CONSUMPTION) * HYDRO_SPEED_MULTIPLIER)
-	if(seed.get_trait(TRAIT_REQUIRES_WATER) && seed.get_trait(TRAIT_WATER_CONSUMPTION) > 0 && waterlevel > 0 && prob(25))
+	if(seed.get_trait(TRAIT_WATER_CONSUMPTION) > 0 && waterlevel > 0 && prob(25))
 		waterlevel -= max(0,seed.get_trait(TRAIT_WATER_CONSUMPTION) * HYDRO_SPEED_MULTIPLIER)
 
 	// Make sure the plant is not starving or thirsty. Adequate
@@ -119,23 +112,21 @@
 
 	// Handle life and death.
 	// When the plant dies, weeds thrive and pests die off.
-	check_health(0)
+	check_health()
 
 	// If enough time (in cycles, not ticks) has passed since the plant was harvested, we're ready to harvest again.
-	if((age > seed.get_trait(TRAIT_MATURATION)) && \
-	 ((age - lastproduce) > seed.get_trait(TRAIT_PRODUCTION)) && \
-	 (!harvest && !dead))
+	if((age > seed.get_trait(TRAIT_MATURATION)) && ((age - lastproduce) > seed.get_trait(TRAIT_PRODUCTION)) && (!harvest && !dead))
 		harvest = 1
 		lastproduce = age
-		needs_icon_update |= 1
+		if(seed.get_trait(TRAIT_SPOROUS) && !closed_system)
+			seed.create_spores(get_turf(src))
+			visible_message("<span class='danger'>\The [src] releases its spores!</span>")
 
 	// If we're a vine which is not in a closed tray and is at least half mature, and there's no vine currently on our turf: make one (maybe)
-	if(!closed_system && \
-	 seed.get_trait(TRAIT_SPREAD) == 2 && \
-	 2 * age >= seed.get_trait(TRAIT_MATURATION) && \
-	 !(locate(/obj/effect/vine) in get_turf(src)) && \
-	 prob(2 * seed.get_trait(TRAIT_POTENCY)))
-		new /obj/effect/vine(get_turf(src), seed)
+	if(!closed_system && seed.get_trait(TRAIT_SPREAD) == 2 && 2 * age >= seed.get_trait(TRAIT_MATURATION) && !(locate(/obj/effect/plant) in get_turf(src)) && \
+		prob(2 * seed.get_trait(TRAIT_POTENCY)))
+
+		new /obj/effect/plant(get_turf(src), seed)
 
 	if(prob(3))  // On each tick, there's a chance the pest population will increase
 		pestlevel += 0.1 * HYDRO_SPEED_MULTIPLIER
@@ -144,5 +135,5 @@
 	if(seed && seed.can_self_harvest && harvest && !closed_system && prob(5))
 		harvest()
 
-	check_health(needs_icon_update)
+	check_health()
 	return

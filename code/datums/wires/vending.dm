@@ -1,71 +1,85 @@
 /datum/wires/vending
+	proper_name = "Vending Machine"
 	holder_type = /obj/machinery/vending
-	wire_count = 5
 
-var/const/VENDING_WIRE_THROW = 1
-var/const/VENDING_WIRE_CONTRABAND = 2
-var/const/VENDING_WIRE_ELECTRIFY = 4
-var/const/VENDING_WIRE_IDSCAN = 8
-var/const/VENDING_POWER = 16
+/datum/wires/vending/New()
+	wires = list(
+		WIRE_THROW,
+		WIRE_CONTRABAND,
+		WIRE_SHOCK,
+		WIRE_IDSCAN,
+		WIRE_COOLING,
+		WIRE_HEATING
+	)
+	..()
 
-/datum/wires/vending/CanUse(mob/living/L)
+/datum/wires/vending/blueprint
+	cares_about_holder = FALSE
+
+/datum/wires/vending/interactable(mob/user)
+	if(!..())
+		return FALSE
 	var/obj/machinery/vending/V = holder
-	if(!istype(L, /mob/living/silicon))
+	if(!istype(user, /mob/living/silicon))
 		if(V.seconds_electrified)
-			if(V.shock(L, 100))
-				return 0
+			if(V.shock(user, 100))
+				return FALSE
 	if(V.panel_open)
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
-/datum/wires/vending/GetInteractWindow()
+/datum/wires/vending/get_status()
 	var/obj/machinery/vending/V = holder
 	. += ..()
-	. += "<BR>The blue light is [isActive(V)? "off" : "on"].<BR>"
-	. += "The orange light is [isActive(V) && V.seconds_electrified ? "off" : "on"].<BR>"
-	. += "The red light is [isActive(V) && V.shoot_inventory ? "blinking" : "off"].<BR>"
-	. += "The green light is [isActive(V) && (V.categories & CAT_HIDDEN) ? "on" : "off"].<BR>"
-	. += "The [isActive(V) && V.scan_id ? "purple" : "yellow"] light is on.<BR>"
+	. += "The orange light is [V.seconds_electrified ? "off" : "on"]."
+	. += "The red light is [V.shoot_inventory ? "off" : "blinking"]."
+	. += "The green light is [(V.categories & CAT_HIDDEN) ? "on" : "off"]."
+	. += "The [V.scan_id ? "purple" : "yellow"] light is on."
+	. += "The cyan light is [V.temperature_setting == -1 ? "on" : "off"]."
+	. += "The blue light is [V.temperature_setting == 1 ? "on" : "off"]."
 
-/datum/wires/vending/UpdatePulsed(index)
+/datum/wires/vending/on_pulse(wire)
 	var/obj/machinery/vending/V = holder
-	if(V.stat & POWEROFF)
-		return
-	switch(index)
-		if(VENDING_WIRE_THROW)
+	switch(wire)
+		if(WIRE_THROW)
 			V.shoot_inventory = !V.shoot_inventory
-		if(VENDING_WIRE_CONTRABAND)
+		if(WIRE_CONTRABAND)
 			V.categories ^= CAT_HIDDEN
-		if(VENDING_WIRE_ELECTRIFY)
+		if(WIRE_SHOCK)
 			V.seconds_electrified = 30
-		if(VENDING_WIRE_IDSCAN)
+		if(WIRE_IDSCAN)
 			V.scan_id = !V.scan_id
-		if(VENDING_POWER)
-			V.stat |= POWEROFF
-			V.update_icon()
+		if(WIRE_COOLING)
+			V.temperature_setting = V.temperature_setting != -1 ? -1 : 0
+		if(WIRE_HEATING)
+			V.temperature_setting = V.temperature_setting != 1 ? 1 : 0
 
-/datum/wires/vending/UpdateCut(index, mended)
+/datum/wires/vending/on_cut(wire, mend, source)
 	var/obj/machinery/vending/V = holder
-	switch(index)
-		if(VENDING_WIRE_THROW)
-			V.shoot_inventory = !mended
-		if(VENDING_WIRE_CONTRABAND)
+	switch(wire)
+		if(WIRE_THROW)
+			V.shoot_inventory = !mend
+		if(WIRE_CONTRABAND)
 			V.categories &= ~CAT_HIDDEN
-		if(VENDING_WIRE_ELECTRIFY)
-			if(mended)
+		if(WIRE_SHOCK)
+			if(mend)
 				V.seconds_electrified = 0
 			else
 				V.seconds_electrified = -1
-		if(VENDING_WIRE_IDSCAN)
+		if(WIRE_IDSCAN)
 			V.scan_id = 1
-		if(VENDING_POWER)
-			if(mended)
-				V.stat &= ~POWEROFF
-			else
-				V.stat |= POWEROFF
-			V.update_icon()
+		if(WIRE_COOLING)
+			V.temperature_setting = mend && V.temperature_setting != 1 ? -1 : 0
+		if(WIRE_HEATING)
+			V.temperature_setting = mend && V.temperature_setting != -1 ? 1 : 0
 
-/datum/wires/vending/proc/isActive(obj/machinery/vending/V)
-	if(V.stat & POWEROFF)
-		return FALSE
-	return TRUE
+/datum/wires/vending/get_wire_diagram(var/mob/user)
+	var/dat = ""
+	for(var/color in colors)
+		if(is_dud_color(color))
+			continue
+		dat += "<font color='[color]'>[capitalize(color)]</font>: [get_wire(color)]<br>"
+
+	var/datum/browser/wire_win = new(user, "vendingwires", "Vending Wires", 450, 500)
+	wire_win.set_content(dat)
+	wire_win.open()

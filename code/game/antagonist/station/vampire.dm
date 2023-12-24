@@ -1,130 +1,115 @@
-GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
+var/datum/antagonist/vampire/vamp = null
 
 /datum/antagonist/vampire
 	id = MODE_VAMPIRE
 	role_text = "Vampire"
 	role_text_plural = "Vampires"
+	bantype = "vampires"
 	feedback_tag = "vampire_objective"
-	restricted_jobs = list(/datum/job/captain, /datum/job/hos, /datum/job/hop,
-							/datum/job/rd, /datum/job/chief_engineer,/datum/job/merchant,
-							/datum/job/iaa, /datum/job/barmonkey)
-	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
+	restricted_jobs = list("AI", "Cyborg", "Chaplain", "Head of Security", "Captain", "Chief Engineer", "Research Director", "Chief Medical Officer", "Executive Officer", "Operations Manager", "Merchant")
 
-	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/chaplain)
+	protected_jobs = list("Security Officer", "Security Cadet", "Warden", "Investigator")
+	restricted_species = list(
+		SPECIES_IPC,
+		SPECIES_IPC_SHELL,
+		SPECIES_IPC_G1,
+		SPECIES_DIONA,
+		SPECIES_DIONA_COEUS,
+		SPECIES_IPC_G2,
+		SPECIES_IPC_XION,
+		SPECIES_IPC_ZENGHU,
+		SPECIES_IPC_BISHOP
+	)
+	required_age = 10
+
 	welcome_text = "You are a Vampire! Use the \"<b>Vampire Help</b>\" command to learn about the backstory and mechanics! Stay away from the Chaplain, and use the darkness to your advantage."
 	flags = ANTAG_SUSPICIOUS | ANTAG_RANDSPAWN | ANTAG_VOTABLE
 	antaghud_indicator = "hudvampire"
 
-/datum/antagonist/vampire/Initialize()
-	. = ..()
-	if(config.game.vampire_min_age)
-		min_player_age = config.game.vampire_min_age
+	var/vampire_data = ""
 
-	// Building vampire powers list.
-	if(!vampirepowers.len)
-		for(var/P in vampirepower_types)
-			vampirepowers += new P()
+/datum/antagonist/vampire/New()
+	..()
 
-/datum/antagonist/vampire/get_special_objective_text(datum/mind/player)
-	var/total_blood = player.vampire.blood_total
-	var/message = ""
-	switch(total_blood)
-		if(0 to 100)
-			message = pick("What a loser.", "Worse than a mosquito.", "A leech would do better.", "Almost reached a flea's level!", "Comparable to a bed bug.")
-		if(101 to 250)
-			message = pick("Not so impressive.", "Could do better.", "Try harder next time.")
-		if(251 to 450)
-			message = pick("Not so bad.", "Fine job.")
-		if(451 to 800)
-			message = pick("Nice job!", "Great results!", "What a creature of the night!", "A professional bloodfeeder!")
-		else
-			message = pick("Dear God.", "Somebody, stop them!", "The beast of bedtime tales!", "Night-time is their time!", "A bloody feast!")
-	return "<br><b>They drank </b>[player.vampire.blood_total]<br> units of blood. [message]"
+	vamp = src
 
+	for (var/type in vampirepower_types)
+		vampirepowers += new type()
 
-/datum/antagonist/vampire/create_objectives(datum/mind/player)
-	if(!..())
-		return
+	vampire_data = {"
+		<p>This guide contains important OOC information on vampire related mechanics, as well as a short lore introduction.</p>
+		<h2>Backstory Synopsis</h2><br>
+		<p>Vampires are individuals who, after attempting blood magic or being converted by a vampire themselves, have been corrupted by the Veil and given insidious power. As creatures of the night they have lost all need to eat or drink and are instead consumed with an unquenching thirst for blood to sustain themselves and to grow more powerful and grow ever closer to tapping the full power of The Veil.</p>
+		<h2>Mechanics</h2><br>
+		<ol>
+				<li><b>Blood</b> - Blood comes in two forms: <b>usable</b> and <b>total</b>. The usable blood can be considered your mana pool. It gets trained as you use more powers. Total blood can be thought of as experience points. They cannot be removed, and they will move you further up the power tree. You start with 30 units of usable blood. Be careful with your initial pool: if you expend it, you will start slowly frenzying.</li>
+				<li><b>Progression</b> - Vampire's progression is linear. The more total blood you train, the more powers you unlock. As the final step, you will unlock the Veil's full power, which augments the existing powers.</li>
+				<li><b>Frenzy</b> - With the raw corruption of the Veil locked within your body, maintaining your sanity is a constant battle. Should you ever run out of usable blood, or become enraged through other means, you may find yourself frenzied. You are reverted to a snarling creature who only wants to consume blood until you are able to break out of it, and regain control. This is done by draining blood.</li>
+				<li><b>Everything Holy</b> - As a creature of the Veil to some degree, you are vulnurable to holy influence. You will very quickly find the Chaplain resistant to your blood magic, and his artifacts harmful to your sanity.</li>
+		</ol>
+		<h2>Powers</h2><br>
+		<p>Vampire's powers all come from blood magic. In essence, it's similar to the Cult of Nar'sie's magic, but instead of relying on runes and knowledge of the casters, it uses the blood of the vampire's victims as payment for the super natural acts.</p>
+		<hr>
+	"}
 
-	var/kill
-	var/escape
-	var/protect
-	var/enthrall
-	var/vampirize
+	for(var/thing in vampirepowers)
+		var/datum/power/vampire/VP = thing
+		vampire_data += "<div class='rune-block'>"
+		vampire_data += "<b>[capitalize_first_letters(VP.name)]</b>: <i>[VP.desc]</i><br>"
+		if(VP.helptext)
+			vampire_data += "[VP.helptext]<br>"
+		vampire_data += "<hr>"
+		vampire_data += "</div>"
 
-	switch(rand(1, 100))
-		if(1 to 25)
-			kill = TRUE
-			escape = TRUE
-		if(26 to 50)
-			protect = TRUE
-			escape = TRUE
-		if(51 to 75)
-			enthrall = TRUE
-			escape = TRUE
-		if(76 to 98)
-			vampirize = TRUE
-			escape = TRUE
-		else
-			enthrall = TRUE
-			kill = TRUE
-			escape = TRUE
-
-
-	if(kill)
-		var/datum/objective/assassinate/kill_objective = new
-		kill_objective.owner = player
-		kill_objective.find_target()
-		player.objectives += kill_objective
-	if(protect)
-		var/datum/objective/protect/protect_objective = new
-		protect_objective.owner = player
-		protect_objective.find_target()
-		player.objectives += protect_objective
-	if(vampirize)
-		var/datum/objective/vampirize/vampirize_objective = new
-		vampirize_objective.owner = player
-		vampirize_objective.find_target()
-		player.objectives += vampirize_objective
-	if(enthrall)
-		var/datum/objective/enthrall/enthrall_objective = new
-		enthrall_objective.owner = player
-		player.objectives += enthrall_objective
-	if(escape)
-		var/datum/objective/survive/survive_objective = new
-		survive_objective.owner = player
-		player.objectives += survive_objective
-
-/datum/antagonist/vampire/update_antag_mob(datum/mind/player)
+/datum/antagonist/vampire/update_antag_mob(var/datum/mind/player)
 	..()
 	player.current.make_vampire()
 
+/datum/antagonist/vampire/remove_antagonist(var/datum/mind/player, var/show_message = TRUE, var/implanted)
+	var/datum/vampire/vampire = player.antag_datums[MODE_VAMPIRE]
+	if(player.current.client)
+		player.current.client.screen -= vampire.blood_hud
+		player.current.client.screen -= vampire.frenzy_hud
+		player.current.client.screen -= vampire.blood_suck_hud
+	. = ..()
+	if(.)
+		remove_verb(player.current, /datum/antagonist/vampire/proc/vampire_help)
+		for(var/datum/power/vampire/P in vampirepowers)
+			remove_verb(player.current, P.verbpath)
+	else
+		// something went wrong when removing the antag status, readd them
+		player.current.client.screen += vampire.blood_hud
+		player.current.client.screen += vampire.frenzy_hud
+		player.current.client.screen += vampire.blood_suck_hud
 
-/datum/antagonist/vampire/can_become_antag(datum/mind/player, ignore_role, max_stat)
-	if(..())
-		if(player.current)
-			if(ishuman(player.current))
-				var/mob/living/carbon/human/H = player.current
-				if(H.isSynthetic())
-					return 0
-				if(H.species.species_flags & SPECIES_FLAG_NO_SCAN)
-					return 0
-				return 1
-			else if(isnewplayer(player.current))
-				if(player.current.client && player.current.client.prefs)
-					var/datum/species/S = all_species[player.current.client.prefs.species]
-					if(S && (S.species_flags & SPECIES_FLAG_NO_SCAN))
-						return 0
-					if(player.current.client.prefs.organ_data[BP_CHEST] == "cyborg") // Full synthetic.
-						return 0
-					return 1
-	return 0
+/datum/antagonist/vampire/handle_latelogin(var/mob/user)
+	var/datum/mind/M = user.mind
+	if(!M)
+		return
+	var/datum/vampire/vampire = M.antag_datums[MODE_VAMPIRE]
+	if(vampire.master_image)
+		user.client.images += vampire.master_image
+	if(vampire.status & VAMP_ISTHRALL)
+		return
+	vampire.blood_hud = new /obj/screen/vampire/blood()
+	vampire.frenzy_hud = new /obj/screen/vampire/frenzy()
+	vampire.blood_suck_hud = new /obj/screen/vampire/suck()
+	user.client.screen += vampire.blood_hud
+	user.client.screen += vampire.frenzy_hud
+	user.client.screen += vampire.blood_suck_hud
 
-/datum/antagonist/vampire/remove_antagonist(datum/mind/player, show_message, implanted)
-	if(!..())
-		return 0
-	to_chat(player.current, SPAN("danger", "An unfamiliar white light flashes through your mind... You can feel you fangs shrink, reverting to their normal size. Your hands get soft and warm yet again. Eh... What was that \"Veil\" thing, again?.."))
-	player.memory = ""
-	if(show_message)
-		player.current.visible_message(SPAN("notice", "It looks like something veil's just abandoned [player.current]'s body..."))
-	player.current.unmake_vampire()
+	for(var/thrall in vampire.thralls)
+		var/mob/T = thrall
+		var/datum/vampire/T_vampire = T.mind.antag_datums[MODE_VAMPIRE]
+		if(T_vampire.thrall_image)
+			user.client.images += T_vampire.thrall_image
+
+/datum/antagonist/vampire/proc/vampire_help()
+	set category = "Vampire"
+	set name = "Display Help"
+	set desc = "Opens a help window with overview of available powers and other important information."
+
+	var/datum/browser/vampire_win = new(usr, "VampirePowers", "The Veil", 600, 700)
+	vampire_win.set_content(vamp.vampire_data)
+	vampire_win.add_stylesheet("cult", 'html/browser/cult.css')
+	vampire_win.open()

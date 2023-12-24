@@ -1,2 +1,2 @@
-/atom/proc/Value(base)
+/atom/proc/Value(var/base)
 	return base

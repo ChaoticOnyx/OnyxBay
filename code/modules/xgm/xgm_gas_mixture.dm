@@ -1,24 +1,25 @@
 /datum/gas_mixture
-	//Associative list of gas moles.
-	//Gases with 0 moles are not tracked and are pruned by update_values()
-	var/list/gas = list()
-	//Temperature in Kelvin of this gas mix.
+	///Associative list of gas moles.
+	///Gases with 0 moles are not tracked and are pruned by update_values()
+	var/list/gas
+	///Temperature in Kelvin of this gas mix.
 	var/temperature = 0
 
-	//Sum of all the gas moles in this mix.  Updated by update_values()
+	///Sum of all the gas moles in this mix.  Updated by update_values()
 	var/total_moles = 0
-	//Volume of this mix.
+	///Volume of this mix.
 	var/volume = CELL_VOLUME
-	//Size of the group this gas_mixture is representing.  1 for singletons.
+	///Size of the group this gas_mixture is representing.  1 for singletons.
 	var/group_multiplier = 1
 
-	//List of active tile overlays for this gas_mixture.  Updated by check_tile_graphic()
-	var/list/graphic = list()
+	///List of active tile overlays for this gas_mixture.  Updated by check_tile_graphic()
+	var/list/graphic
 
 /datum/gas_mixture/New(_volume = CELL_VOLUME, _temperature = 0, _group_multiplier = 1)
 	volume = _volume
 	temperature = _temperature
 	group_multiplier = _group_multiplier
+	gas = list()
 
 /datum/gas_mixture/proc/get_gas(gasid)
 	if(!gas.len)
@@ -136,29 +137,26 @@
 	. = 0
 	for(var/g in gas)
 		. += gas_data.specific_heat[g] * gas[g]
-	. *= max(1, group_multiplier)
+	. *= group_multiplier
 
 
 //Adds or removes thermal energy. Returns the actual thermal energy change, as in the case of removing energy we can't go below TCMB.
-/datum/gas_mixture/proc/add_thermal_energy(thermal_energy)
+/datum/gas_mixture/proc/add_thermal_energy(var/thermal_energy)
 
-	if(total_moles == 0)
+	if (total_moles == 0)
 		return 0
 
 	var/heat_capacity = heat_capacity()
-	if(heat_capacity <= 0)
-		return 0
-
-	if(thermal_energy < 0)
-		if(temperature < TCMB)
+	if (thermal_energy < 0)
+		if (temperature < TCMB)
 			return 0
 		var/thermal_energy_limit = -(temperature - TCMB)*heat_capacity	//ensure temperature does not go below TCMB
-		thermal_energy = max(thermal_energy, thermal_energy_limit)	//thermal_energy and thermal_energy_limit are negative here.
-	temperature += thermal_energy / heat_capacity
+		thermal_energy = max( thermal_energy, thermal_energy_limit )	//thermal_energy and thermal_energy_limit are negative here.
+	temperature += thermal_energy/heat_capacity
 	return thermal_energy
 
 //Returns the thermal energy change required to get to a new temperature
-/datum/gas_mixture/proc/get_thermal_energy_change(new_temperature)
+/datum/gas_mixture/proc/get_thermal_energy_change(var/new_temperature)
 	return heat_capacity()*(max(new_temperature, 0) - temperature)
 
 
@@ -188,7 +186,7 @@
 	So returning a constant/(partial pressure) would probably do what most players expect. Although the version I have implemented below is a bit more nuanced than simply 1/P in that it scales in a way
 	which is bit more realistic (natural log), and returns a fairly accurate entropy around room temperatures and pressures.
 */
-/datum/gas_mixture/proc/specific_entropy_gas(gasid)
+/datum/gas_mixture/proc/specific_entropy_gas(var/gasid)
 	if (!(gasid in gas) || gas[gasid] == 0)
 		return SPECIFIC_ENTROPY_VACUUM	//that gas isn't here
 
@@ -268,15 +266,15 @@
 
 //Removes moles from the gas mixture, limited by a given flag.  Returns a gax_mixture containing the removed air.
 /datum/gas_mixture/proc/remove_by_flag(flag, amount)
-	var/datum/gas_mixture/removed = new
-
 	if(!flag || amount <= 0)
-		return removed
+		return
 
 	var/sum = 0
 	for(var/g in gas)
 		if(gas_data.flags[g] & flag)
 			sum += gas[g]
+
+	var/datum/gas_mixture/removed = new
 
 	for(var/g in gas)
 		if(gas_data.flags[g] & flag)
@@ -297,17 +295,19 @@
 			. += gas[g]
 
 //Copies gas and temperature from another gas_mixture.
-/datum/gas_mixture/proc/copy_from(const/datum/gas_mixture/sample)
+// If fast is TRUE, use a less accurate method that doesn't involve list iteraton.
+/datum/gas_mixture/proc/copy_from(const/datum/gas_mixture/sample, fast = FALSE)
 	gas = sample.gas.Copy()
 	temperature = sample.temperature
-
-	update_values()
+	if (fast)
+		total_moles = sample.total_moles
+	else
+		update_values()
 
 	return 1
 
-
 //Checks if we are within acceptable range of another gas_mixture to suspend processing or merge.
-/datum/gas_mixture/proc/compare(const/datum/gas_mixture/sample, vacuum_exception = 0)
+/datum/gas_mixture/proc/compare(const/datum/gas_mixture/sample, var/vacuum_exception = 0)
 	if(!sample) return 0
 
 	if(vacuum_exception)
@@ -345,35 +345,35 @@
 
 
 /datum/gas_mixture/proc/react()
-	return zburn(null, force_burn=FALSE, no_check=FALSE) //could probably just call zburn() here with no args but I like being explicit.
+	zburn(null, force_burn=0, no_check=0) //could probably just call zburn() here with no args but I like being explicit.
 
 
 //Rechecks the gas_mixture and adjusts the graphic list if needed.
 //Two lists can be passed by reference if you need know specifically which graphics were added and removed.
 /datum/gas_mixture/proc/check_tile_graphic(list/graphic_add = null, list/graphic_remove = null)
 	for(var/g in gas_data.overlay_limit)
-		if(graphic.Find(gas_data.tile_overlay[g]))
+		if (graphic && graphic[gas_data.tile_overlay[g]])
 			//Overlay is already applied for this gas, check if it's still valid.
 			if(gas[g] <= gas_data.overlay_limit[g])
-				if(!graphic_remove)
-					graphic_remove = list()
-				graphic_remove += gas_data.tile_overlay[g]
+				LAZYADD(graphic_remove, gas_data.tile_overlay[g])
 		else
 			//Overlay isn't applied for this gas, check if it's valid and needs to be added.
 			if(gas[g] > gas_data.overlay_limit[g])
-				if(!graphic_add)
-					graphic_add = list()
-				graphic_add += gas_data.tile_overlay[g]
+				if(!(gas_data.tile_overlay[g] in graphic))
+					LAZYADD(graphic_add, gas_data.tile_overlay[g])
 
 	. = 0
 	//Apply changes
-	if(graphic_add && graphic_add.len)
-		graphic += graphic_add
+	if(graphic_add && LAZYLEN(graphic_add))
+		LAZYINITLIST(graphic)
+		for (var/entry in graphic_add)
+			graphic[entry] = TRUE	// This is an assoc list to make checking it a bit faster.
 		. = 1
-	if(graphic_remove && graphic_remove.len)
+	if(graphic_add && LAZYLEN(graphic_remove))
 		graphic -= graphic_remove
 		. = 1
 
+	UNSETEMPTY(graphic)
 
 //Simpler version of merge(), adjusts gas amounts directly and doesn't account for temperature or group_multiplier.
 /datum/gas_mixture/proc/add(datum/gas_mixture/right_side)
@@ -438,10 +438,10 @@
 	if(full_heat_capacity + s_full_heat_capacity)
 		temp_avg = (temperature * full_heat_capacity + other.temperature * s_full_heat_capacity) / (full_heat_capacity + s_full_heat_capacity)
 
-	//WOOT WOOT TOUCH THIS AND YOU ARE A RETARD.
-	if(sharing_lookup_table.len >= connecting_tiles) //6 or more interconnecting tiles will max at 42% of air moved per tick.
+	if(connecting_tiles && (sharing_lookup_table.len >= connecting_tiles)) //6 or more interconnecting tiles will max at 42% of air moved per tick.
 		ratio = sharing_lookup_table[connecting_tiles]
-	//WOOT WOOT TOUCH THIS AND YOU ARE A RETARD
+	else if(!connecting_tiles)
+		ratio = 1
 
 	for(var/g in avg_gas)
 		gas[g] = max(0, (gas[g] - avg_gas[g]) * (1 - ratio) + avg_gas[g])

@@ -2,59 +2,77 @@ var/list/floor_light_cache = list()
 
 /obj/machinery/floor_light
 	name = "floor light"
-	icon = 'icons/obj/machines/floor_light.dmi'
+	icon = 'icons/obj/machinery/floor_light.dmi'
 	icon_state = "base"
 	desc = "A backlit floor panel."
-	layer = ABOVE_TILE_LAYER
+	layer = TURF_LAYER+0.001
 	anchored = 0
 	use_power = POWER_USE_ACTIVE
-	idle_power_usage = 2 WATTS
-	active_power_usage = 20 WATTS
-	power_channel = STATIC_LIGHT
-	matter = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
+	idle_power_usage = 2
+	active_power_usage = 20
+	power_channel = LIGHT
+	matter = list(DEFAULT_WALL_MATERIAL = 2500, MATERIAL_GLASS = 2750)
+	recyclable = TRUE
 
 	var/on
+	var/on_state = "on"
 	var/damaged
-	var/default_light_max_bright = 0.75
-	var/default_light_inner_range = 1
-	var/default_light_outer_range = 3
-	var/default_light_colour = "#ffffff"
+	var/default_light_range = 4
+	var/default_light_power = 2
+	var/default_light_colour = "#FFFFFF"
 
 /obj/machinery/floor_light/prebuilt
 	anchored = 1
 
-/obj/machinery/floor_light/attackby(obj/item/W, mob/user)
-	if(isScrewdriver(W))
+/obj/machinery/floor_light/attackby(var/obj/item/W, var/mob/user)
+	if(W.isscrewdriver())
 		anchored = !anchored
 		visible_message("<span class='notice'>\The [user] has [anchored ? "attached" : "detached"] \the [src].</span>")
-	else if(isWelder(W) && (damaged || (stat & BROKEN)))
+		playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
+		return TRUE
+	else if(W.iswelder() && (damaged || (stat & BROKEN)))
 		var/obj/item/weldingtool/WT = W
-		if(!WT.remove_fuel(0, user))
+		if(!WT.use(0, user))
 			to_chat(user, "<span class='warning'>\The [src] must be on to complete this task.</span>")
-			return
-		playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-		if(!do_after(user, 20, src))
-			return
+			return TRUE
+		if(!W.use_tool(src, user, 20, volume = 50))
+			return TRUE
 		if(!src || !WT.isOn())
-			return
+			return TRUE
 		visible_message("<span class='notice'>\The [user] has repaired \the [src].</span>")
-		set_broken(FALSE)
+		update_icon()
+		stat &= ~BROKEN
 		damaged = null
 		update_brightness()
+		return TRUE
 	else if(W.force && user.a_intent == "hurt")
-		attack_hand(user)
-	return
+		return attack_hand(user)
+	else if(W.iscrowbar())
+		if(anchored)
+			to_chat(user, "<span class='warning'>\The [src] must be unfastened from the [loc] first!</span>")
+			return TRUE
+		else
+			to_chat(user, "<span class='notice'>You lever off the [name].</span>")
+			playsound(src.loc, 'sound/items/crowbar_tile.ogg', 100, TRUE)
+			if(stat & BROKEN)
+				qdel(src)
+				return TRUE
+			else
+				new /obj/item/stack/tile/light(user.loc)
+				qdel(src)
+		return TRUE
 
-/obj/machinery/floor_light/attack_hand(mob/user)
+/obj/machinery/floor_light/attack_hand(var/mob/user)
 
 	if(user.a_intent == I_HURT && !issmall(user))
 		if(!isnull(damaged) && !(stat & BROKEN))
 			visible_message("<span class='danger'>\The [user] smashes \the [src]!</span>")
-			playsound(src, SFX_BREAK_WINDOW, 70, 1)
-			set_broken(TRUE)
+			playsound(src, /singleton/sound_category/glass_break_sound, 70, 1)
+			update_icon()
+			stat |= BROKEN
 		else
 			visible_message("<span class='danger'>\The [user] attacks \the [src]!</span>")
-			playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
+			playsound(src.loc, 'sound/effects/glass_hit.ogg', 75, 1)
 			if(isnull(damaged)) damaged = 0
 		update_brightness()
 		return
@@ -79,7 +97,7 @@ var/list/floor_light_cache = list()
 		update_brightness()
 		return
 
-/obj/machinery/floor_light/Process()
+/obj/machinery/floor_light/process()
 	..()
 	var/need_update
 	if((!anchored || broken()) && on)
@@ -94,28 +112,28 @@ var/list/floor_light_cache = list()
 
 /obj/machinery/floor_light/proc/update_brightness()
 	if(on && use_power == POWER_USE_ACTIVE)
-		if(light_outer_range != default_light_outer_range || light_max_bright != default_light_max_bright || light_color != default_light_colour)
-			set_light(default_light_max_bright, default_light_inner_range, default_light_outer_range, 2, default_light_colour)
+		if(light_range != default_light_range || light_power != default_light_power || light_color != default_light_colour)
+			set_light(default_light_range, default_light_power, default_light_colour)
 	else
 		update_use_power(POWER_USE_OFF)
-		if(light_outer_range || light_max_bright)
+		if(light_range || light_power)
 			set_light(0)
 
-	change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_ACTIVE)
+	change_power_consumption((light_range + light_power) * 10, POWER_USE_ACTIVE)
 	update_icon()
 
-/obj/machinery/floor_light/on_update_icon()
-	ClearOverlays()
+/obj/machinery/floor_light/update_icon()
+	cut_overlays()
+	var/list/floor_light_cache = SSicon_cache.floor_light_cache
 	if(use_power && !broken())
-		if(isnull(damaged))
+		if(damaged == null)
 			var/cache_key = "floorlight-[default_light_colour]"
 			if(!floor_light_cache[cache_key])
-				var/image/I = image("on")
+				var/image/I = image("[on_state]")
 				I.color = default_light_colour
-				I.plane = FLOAT_PLANE
 				I.layer = layer+0.001
 				floor_light_cache[cache_key] = I
-			AddOverlays(floor_light_cache[cache_key])
+			add_overlay(floor_light_cache[cache_key])
 		else
 			if(damaged == 0) //Needs init.
 				damaged = rand(1,4)
@@ -123,10 +141,13 @@ var/list/floor_light_cache = list()
 			if(!floor_light_cache[cache_key])
 				var/image/I = image("flicker[damaged]")
 				I.color = default_light_colour
-				I.plane = FLOAT_PLANE
 				I.layer = layer+0.001
 				floor_light_cache[cache_key] = I
-			AddOverlays(floor_light_cache[cache_key])
+			add_overlay(floor_light_cache[cache_key])
+	if(stat & BROKEN)
+		icon_state = "broken"
+	else
+		icon_state = "base"
 
 /obj/machinery/floor_light/proc/broken()
 	return (stat & (BROKEN|NOPOWER))
@@ -139,7 +160,7 @@ var/list/floor_light_cache = list()
 			if (prob(50))
 				qdel(src)
 			else if(prob(20))
-				set_broken(TRUE)
+				stat |= BROKEN
 			else
 				if(isnull(damaged))
 					damaged = 0
@@ -154,4 +175,20 @@ var/list/floor_light_cache = list()
 	var/area/A = get_area(src)
 	if(A)
 		on = 0
-	. = ..()
+	return ..()
+
+/obj/machinery/floor_light/cultify()
+	default_light_colour = "#FF0000"
+	update_brightness()
+
+/obj/machinery/floor_light/dance
+	name = "dance floor"
+	on_state = "light_on-dancefloor_A"
+	anchored = 1
+	on = TRUE
+	use_power = POWER_USE_ACTIVE
+
+/obj/machinery/floor_light/dance/alternate
+	name = "dance floor"
+	on_state = "light_on-dancefloor_B"
+	anchored = 1

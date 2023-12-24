@@ -10,11 +10,11 @@
  * * timeout - The timeout of the alert, after which the modal will close and qdel itself. Set to zero for no timeout.
  * * autofocus - The bool that controls if this alert should grab window focus.
  */
-/proc/tgui_alert(mob/user, message = "", title = null, list/buttons = list("Ok"), timeout = 0, autofocus = TRUE)
-	if(!user)
+/proc/tgui_alert(mob/user, message = "", title, list/buttons = list("Ok"), timeout = 0, autofocus = TRUE)
+	if (!user)
 		user = usr
-	if(!istype(user))
-		if(istype(user, /client))
+	if (!istype(user))
+		if (istype(user, /client))
 			var/client/client = user
 			user = client.mob
 		else
@@ -24,15 +24,15 @@
 		log_tgui(user, "Error: TGUI Alert initiated with too many buttons. Use a list.", "TguiAlert")
 		return tgui_input_list(user, message, title, buttons, timeout, autofocus)
 	// Client does NOT have tgui_input on: Returns regular input
-	if(user.get_preference_value(/datum/client_preference/tgui_input) != GLOB.PREF_YES)
+	if(!user.client.prefs.tgui_inputs)
 		if(length(buttons) == 2)
 			return alert(user, message, title, buttons[1], buttons[2])
 		if(length(buttons) == 3)
 			return alert(user, message, title, buttons[1], buttons[2], buttons[3])
-	var/datum/tgui_alert/alert = new(user, message, title, buttons, timeout)
+	var/datum/tgui_alert/alert = new(user, message, title, buttons, timeout, autofocus)
 	alert.ui_interact(user)
 	alert.wait()
-	if(alert)
+	if (alert)
 		. = alert.choice
 		qdel(alert)
 
@@ -61,11 +61,11 @@
 	var/closed
 
 /datum/tgui_alert/New(mob/user, message, title, list/buttons, timeout, autofocus)
-	src.title = title
-	src.message = message
 	src.autofocus = autofocus
 	src.buttons = buttons.Copy()
-	if(timeout)
+	src.message = message
+	src.title = title
+	if (timeout)
 		src.timeout = timeout
 		start_time = world.time
 		QDEL_IN(src, timeout)
@@ -80,7 +80,7 @@
  * the window was closed by the user.
  */
 /datum/tgui_alert/proc/wait()
-	while(!choice && !closed && !QDELETED(src))
+	while (!choice && !closed && !QDELETED(src))
 		stoplag(1)
 
 /datum/tgui_alert/ui_interact(mob/user, datum/tgui/ui)
@@ -93,33 +93,32 @@
 	. = ..()
 	closed = TRUE
 
-/datum/tgui_alert/tgui_state(mob/user)
-	return GLOB.tgui_always_state
+/datum/tgui_alert/ui_state(mob/user)
+	return always_state
 
-/datum/tgui_alert/tgui_static_data(mob/user)
+/datum/tgui_alert/ui_static_data(mob/user)
 	var/list/data = list()
-	data["swapped_buttons"] = user.get_preference_value(/datum/client_preference/tgui_input_swapped) == GLOB.PREF_YES ? TRUE : FALSE
-	data["large_buttons"] = user.get_preference_value(/datum/client_preference/tgui_input_large) == GLOB.PREF_YES ? TRUE : FALSE
 	data["autofocus"] = autofocus
 	data["buttons"] = buttons
 	data["message"] = message
+	data["large_buttons"] = user.client.prefs.tgui_buttons_large
+	data["swapped_buttons"] = user.client.prefs.tgui_inputs_swapped
 	data["title"] = title
 	return data
 
-/datum/tgui_alert/tgui_data(mob/user)
+/datum/tgui_alert/ui_data(mob/user)
 	var/list/data = list()
 	if(timeout)
 		data["timeout"] = CLAMP01((timeout - (world.time - start_time) - 1 SECONDS) / (timeout - 1 SECONDS))
 	return data
 
-/datum/tgui_alert/tgui_act(action, list/params)
+/datum/tgui_alert/ui_act(action, list/params)
 	. = ..()
-	if(.)
+	if (.)
 		return
-
 	switch(action)
 		if("choose")
-			if(!(params["choice"] in buttons))
+			if (!(params["choice"] in buttons))
 				CRASH("[usr] entered a non-existent button choice: [params["choice"]]")
 			set_choice(params["choice"])
 			closed = TRUE
@@ -129,8 +128,6 @@
 			closed = TRUE
 			SStgui.close_uis(src)
 			return TRUE
-
-	return FALSE
 
 /datum/tgui_alert/proc/set_choice(choice)
 	src.choice = choice

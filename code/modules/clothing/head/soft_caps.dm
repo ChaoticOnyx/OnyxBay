@@ -1,112 +1,193 @@
-/obj/item/clothing/head/soft
-	name = "cargo cap"
-	desc = "It's a peaked cap in a tasteless yellow color."
-	icon_state = "cargosoft"
-	item_state_slots = list(
-		slot_l_hand_str = "helmet", //probably a placeholder
-		slot_r_hand_str = "helmet",
-		)
-	var/flipped = 0
+/obj/item/clothing/head/softcap
+	name = "softcap"
+	desc = "It's a softcap in a tasteless color."
+	icon = 'icons/obj/clothing/hats/soft_caps.dmi'
+	icon_state = "softcap"
+	item_state = "softcap"
+	item_flags = ITEM_FLAG_SHOW_FLAVOR_TEXT
+	contained_sprite = TRUE
+	var/flipped = FALSE
 	siemens_coefficient = 0.9
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
-/obj/item/clothing/head/soft/New()
-	..()
-	update_icon()
-
-/obj/item/clothing/head/soft/on_update_icon()
-	if(flipped)
-		icon_state = "[initial(icon_state)]_flipped"
-	else
-		icon_state = initial(icon_state)
-
-/obj/item/clothing/head/soft/dropped()
-	src.flipped=0
-	update_icon()
+/obj/item/clothing/head/softcap/dropped()
+	icon_state = initial(icon_state)
+	item_state = icon_state
+	flipped = FALSE
 	..()
 
-/obj/item/clothing/head/soft/attack_self(mob/user)
-	src.flipped = !src.flipped
-	if(src.flipped)
-		to_chat(user, "You flip the hat backwards.")
-	else
-		to_chat(user, "You flip the hat back in normal position.")
-	update_icon()
-	update_clothing_icon()	//so our mob-overlays update
+/obj/item/clothing/head/softcap/verb/ToggleHat()
+	set name = "Flip Hat"
+	set category = "Object"
+	set src in usr
 
-/obj/item/clothing/head/soft/red
-	name = "red cap"
-	desc = "It's a baseball hat in a tasteless red color."
-	icon_state = "redsoft"
+	if(use_check_and_message(usr))
+		return 0
 
-/obj/item/clothing/head/soft/blue
-	name = "blue cap"
-	desc = "It's a peaked cap in a tasteless blue color."
-	icon_state = "bluesoft"
+	flipped = !flipped
+	icon_state = "[initial(icon_state)][flipped ? "_flipped" : ""]"
+	item_state = icon_state
+	to_chat(usr, "You flip the hat [flipped ? "backwards" : "forwards"].")
+	update_clothing_icon()	// So our mob-overlays update.
 
-/obj/item/clothing/head/soft/green
-	name = "green cap"
-	desc = "It's a peaked cap in a tasteless green color."
-	icon_state = "greensoft"
+/obj/item/clothing/head/softcap/colorable
+	icon_state = "softcap_colorable"
+	item_state = "softcap_colorable"
 
-/obj/item/clothing/head/soft/yellow
-	name = "yellow cap"
-	desc = "It's a peaked cap in a tasteless yellow color."
-	icon_state = "yellowsoft"
+/obj/item/clothing/head/softcap/colorable/random/Initialize()
+	. = ..()
+	color = get_random_colour(TRUE)
 
-/obj/item/clothing/head/soft/grey
-	name = "grey cap"
-	desc = "It's a peaked cap in a tasteful grey color."
-	icon_state = "greysoft"
-
-/obj/item/clothing/head/soft/orange
-	name = "orange cap"
-	desc = "It's a peaked cap in a tasteless orange color."
-	icon_state = "orangesoft"
-
-/obj/item/clothing/head/soft/mime
-	name = "white cap"
-	desc = "It's a peaked cap in a tasteless white color."
-	icon_state = "mimesoft"
-
-/obj/item/clothing/head/soft/purple
-	name = "purple cap"
-	desc = "It's a peaked cap in a tasteless purple color."
-	icon_state = "purplesoft"
-
-/obj/item/clothing/head/soft/rainbow
+/obj/item/clothing/head/softcap/rainbow
 	name = "rainbow cap"
 	desc = "It's a peaked cap in a bright rainbow of colors."
 	icon_state = "rainbowsoft"
+	item_state = "rainbowsoft"
 
-/obj/item/clothing/head/soft/sec
-	name = "security cap"
-	desc = "It's a field cap in tasteful red color. This one seems to be extra durable."
-	icon_state = "secsoft"
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+/obj/item/clothing/head/softcap/red // Antag red.
+	name = "red softcap"
+	desc = "It's a softcap in a menacing crimson red."
+	icon_state = "softcap_red"
+	item_state = "softcap_red"
 
-/obj/item/clothing/head/soft/sec/fieldcap
-	name = "military cap"
-	desc = "It's a military field cap with a silver emblem on it. This one seems to be extra durable."
-	icon_state = "dalek_cap"
-	armor = list(melee = 35, bullet = 25, laser = 25,energy = 0, bomb = 0, bio = 0)
+/obj/item/clothing/head/softcap/tcfl
+	name = "tcfl cap"
+	desc = "A rugged softcap in TCFL colours, go Biesel!"
+	icon_state = "tcfl"
+	item_state = "tcfl"
 
-/obj/item/clothing/head/soft/sec/corp
-	name = "corporate security cap"
-	desc = "It's field cap in corporate colors. This one seems to be extra durable."
-	icon_state = "corpsoft"
+// Departmental Softcaps (By Wowzewow (Wezzy))
+/obj/item/clothing/head/softcap/captain
+	name = "captain's softcap"
+	desc = "It's a peaked cap in a authoritative blue and yellow."
+	icon_state = "softcap_captain"
+	item_state = "softcap_captain"
 
-/obj/item/clothing/head/soft/mbill
-	name = "shipping cap"
-	desc = "It's a ballcap bearing the colors of Major Bill's Shipping."
-	icon_state = "mbillsoft"
+/obj/item/clothing/head/softcap/security
+	name = "security softcap"
+	desc = "It's a peaked cap in a secure blue and grey."
+	icon_state = "softcap_sec"
+	item_state = "softcap_sec"
 
-/obj/item/clothing/head/soft/black
-	name = "black cap"
-	desc = "It's a peaked cap in a tasteful black color."
-	icon_state = "blacksoft"
+/obj/item/clothing/head/softcap/medical
+	name = "medical softcap"
+	desc = "It's a peaked cap in a sterile white and green."
+	icon_state = "softcap_med"
+	item_state = "softcap_med"
 
-/obj/item/clothing/head/soft/sec/corp/guard
-	name = "\improper NanoTrasen security cap"
-	desc = "It's field cap in NanoTrasen colors. This one seems to be extra durable."
-	icon_state = "ntwhitesoft"
+/obj/item/clothing/head/softcap/science
+	name = "science softcap"
+	desc = "It's a peaked cap in a analytical white and purple."
+	icon_state = "softcap_sci"
+	item_state = "softcap_sci"
+
+/obj/item/clothing/head/softcap/engineering
+	name = "engineering softcap"
+	desc = "It's a peaked cap in a reflective yellow and orange."
+	icon_state = "softcap_engi"
+	item_state = "softcap_engi"
+
+/obj/item/clothing/head/softcap/atmos
+	name = "atmospherics softcap"
+	desc = "It's a peaked cap in a refreshing yellow and blue."
+	icon_state = "softcap_atmos"
+	item_state = "softcap_atmos"
+
+/obj/item/clothing/head/softcap/hydro
+	name = "hydroponics softcap"
+	desc = "It's a peaked cap in a fresh green and blue."
+	icon_state = "softcap_hydro"
+	item_state = "softcap_hydro"
+
+/obj/item/clothing/head/softcap/cargo
+	name = "operations softcap"
+	desc = "It's a peaked cap in a dusty yellow and black."
+	icon_state = "softcap_cargo"
+	item_state = "softcap_cargo"
+
+/obj/item/clothing/head/softcap/miner
+	name = "mining softcap"
+	desc = "It's a peaked cap in a chalky purple and brown."
+	icon_state = "softcap_miner"
+	item_state = "softcap_miner"
+
+/obj/item/clothing/head/softcap/custodian
+	name = "custodial softcap"
+	desc = "A peaked cap in a purple colour with a yellow brim."
+	icon_state = "custodian"
+	item_state = "custodian"
+
+// Corporate
+/obj/item/clothing/head/softcap/iac
+	name = "IAC cap"
+	desc = "An IAC cap. Standard issue and utilitarian."
+	icon_state = "iac"
+	item_state = "iac"
+
+/obj/item/clothing/head/softcap/idris
+	name = "idris cap"
+	desc = "A company-issue Idris cap. Comes with flagrant corporate branding. There's a liability waiver written on the inside, somehow."
+	icon_state = "idris"
+	item_state = "idris"
+
+/obj/item/clothing/head/softcap/idris/alt
+	icon_state = "idrisalt"
+	item_state = "idrisalt"
+
+/obj/item/clothing/head/softcap/pmc
+	name = "PMCG cap"
+	desc = "A company-issue PMCG cap. For amoral mercenaries that prefer style over protection."
+	icon_state = "pmc"
+	item_state = "pmc"
+
+/obj/item/clothing/head/softcap/pmc/alt
+	icon_state = "pmcalt"
+	item_state = "pmcalt"
+
+/obj/item/clothing/head/softcap/pmc/epmc
+	name = "epmc cap"
+	desc = "A grey EPMC fatigue cap with the logo of the Eridani Corporate Federation on its front. For amoral mercenaries that prefer style over protection."
+	icon_state = "epmc"
+	item_state = "epmc"
+
+/obj/item/clothing/head/softcap/zavod
+	name = "zavodskoi cap"
+	desc = "A company-issue Zavokdskoi cap with the symbol of the corporation at its front. It seems to be immaculately starched; maybe it's just the material it's made out of."
+	icon_state = "zav"
+	item_state = "zav"
+
+/obj/item/clothing/head/softcap/zavod/alt
+	icon_state = "zavalt"
+	item_state = "zavalt"
+
+/obj/item/clothing/head/softcap/zeng
+	desc = "A company-issue Zeng-Hu cap. It feels synthetic to the touch."
+	icon_state = "zeng"
+	item_state = "zeng"
+
+/obj/item/clothing/head/softcap/zeng/alt
+	icon_state = "zengalt"
+	item_state = "zengalt"
+
+/obj/item/clothing/head/softcap/nt
+	desc = "A company-issue NanoTrasen cap. Smells of phoron."
+	icon_state = "nt"
+	item_state = "nt"
+
+// Departmental Corporate Softcaps
+/obj/item/clothing/head/softcap/nt/custodian
+	name = "nt custodial softcap"
+	desc = "A peaked cap in a blue colour with a purple brim."
+	icon_state = "custodian_nt"
+	item_state = "custodian_nt"
+
+/obj/item/clothing/head/softcap/idris/custodian
+	name = "idris custodial softcap"
+	desc = "A peaked cap in a teal colour with a purple brim."
+	icon_state = "custodian_idris"
+	item_state = "custodian_idris"
+
+/obj/item/clothing/head/softcap/orion_custodian
+	name = "orion custodial softcap"
+	desc = "A peaked cap in a brown colour with a purple brim."
+	icon_state = "custodian_orion"
+	item_state = "custodian_orion"

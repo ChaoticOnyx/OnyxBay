@@ -4,84 +4,88 @@
 //Added by Jack Rost
 /obj/item/trash
 	icon = 'icons/obj/trash.dmi'
-	w_class = ITEM_SIZE_SMALL
-	desc = "This is rubbish."
-	mod_reach = 0.25
-	mod_weight = 0.25
-	mod_handy = 0.25
+	w_class = ITEMSIZE_TINY
+	contained_sprite = TRUE
+	item_state = "candy"
+	desc = "General waste material, refuse or litter. Dispose responsibly."
+	drop_sound = 'sound/items/drop/wrapper.ogg'
+	pickup_sound = 'sound/items/pickup/wrapper.ogg'
 
-/obj/item/trash/dish
-	var/list/stack = list()
-	var/max_stack = 5
+/obj/item/trash/attack(mob/M as mob, mob/living/user as mob)
+	return
 
-/obj/item/trash/dish/baking_sheet
-	name = "baking sheet"
-	icon_state = "baking_sheet"
+/obj/item/trash/koisbar
+	name = "\improper k'ois bar wrapper"
+	icon_state = "koisbar"
 
-/obj/item/trash/dish/plate
-	name = "plate"
-	icon_state = "plate"
-
-/obj/item/trash/dish/bowl
-	name = "bowl"
-	icon_state	= "bowl"
-
-/obj/item/trash/dish/tray
-	name = "tray"
-	icon_state = "tray"
+/obj/item/trash/kokobar
+	name = "\improper koko bar wrapper"
+	icon_state = "kokobar"
 
 /obj/item/trash/raisins
 	name = "\improper 4no raisins"
 	icon_state = "4no_raisins"
 
 /obj/item/trash/candy
-	name = "candy"
+	name = "candy wrapper"
 	icon_state = "candy"
-
-/obj/item/trash/proteinbar
-	name = "protein bar"
-	desc = "Haven't seen these for a while..."
-	icon_state = "proteinbar"
-
-/obj/item/trash/tweakers
-	name = "Tweakers bar"
-	icon_state = "tweakers"
-
-/obj/item/trash/sweetroid
-	name = "Sweetroid bar"
-	icon_state = "sweetroid"
-
-/obj/item/trash/sugarmatter
-	name = "SugarMatter bar"
-	icon_state = "sugarmatter"
-
-/obj/item/trash/jellaws
-	name = "Jellaw's Jellybaton"
-	icon_state = "jellaws"
-
-/obj/item/trash/nutribar
-	name = "nutrition bar"
-	icon_state = "nutribar"
 
 /obj/item/trash/cheesie
 	name = "\improper Cheesie Honkers"
 	icon_state = "cheesie_honkers"
 
 /obj/item/trash/chips
-	name = "chips"
+	name = "empty chip packet"
 	icon_state = "chips"
+	item_state = "chips"
+
+/obj/item/trash/chips/cucumber
+	icon_state = "cucumberchips"
+
+/obj/item/trash/chips/chicken
+	icon_state = "chickenchips"
+
+/obj/item/trash/chips/dirtberry
+	icon_state = "dirtberrychips"
+
+/obj/item/trash/chips/phoron
+	icon_state = "phoronchips"
 
 /obj/item/trash/popcorn
 	name = "popcorn"
 	icon_state = "popcorn"
 
 /obj/item/trash/sosjerky
-	name = "Scaredy's Private Reserve Beef Jerky"
+	name = "\improper Scaredy's Private Reserve Beef Jerky"
 	icon_state = "sosjerky"
 
 /obj/item/trash/syndi_cakes
-	name = "syndi cakes"
+	name = "\improper Nutri-Cakes"
 	icon_state = "syndi_cakes"
+
+/obj/item/trash/waffles
+	name = "square tray"
+	icon_state = "waffles"
+	drop_sound = /singleton/sound_category/tray_hit_sound
+
+/obj/item/trash/plate
+	name = "plate"
+	icon_state = "plate"
+	drop_sound = 'sound/items/drop/gloves.ogg'
+	pickup_sound = 'sound/items/pickup/gloves.ogg'
+
+/obj/item/trash/plate/steak
+	icon_state = "steak"
+
+/obj/item/trash/snack_bowl
+	name = "snack bowl"
+	icon_state	= "snack_bowl"
+	drop_sound = 'sound/items/drop/gloves.ogg'
+	pickup_sound = 'sound/items/pickup/gloves.ogg'
+
+/obj/item/trash/snack_bowl/macandcheese
+	name = "empty mac and cheese"
+	icon_state = "macandcheese"
 
 /obj/item/trash/pistachios
 	name = "pistachios pack"
@@ -91,151 +95,225 @@
 	name = "semki pack"
 	icon_state = "semki_pack"
 
+/obj/item/trash/tray
+	name = "tray"
+	icon_state = "tray"
+	drop_sound = /singleton/sound_category/tray_hit_sound
+
 /obj/item/trash/candle
 	name = "candle"
-	icon = 'icons/obj/candle.dmi'
+	icon = 'icons/obj/storage/fancy/candle.dmi'
 	icon_state = "candle4"
+	drop_sound = 'sound/items/drop/gloves.ogg'
+	pickup_sound = 'sound/items/pickup/gloves.ogg'
 
 /obj/item/trash/liquidfood
-	name = "\improper \"LiquidFood\" MRE"
+	name = "\improper \"LiquidFood\" ration"
 	icon_state = "liquidfood"
 
 /obj/item/trash/tastybread
 	name = "bread tube"
 	icon_state = "tastybread"
 
-/obj/item/trash/hematogen
-	name = "Hema2Gen"
-	icon_state = "hema2gen"
+/obj/item/trash/meatsnack
+	name = "mo'gunz meat pie"
+	icon_state = "meatsnack-used"
+	item_state = "chips"
 
-/obj/item/trash/hemptogen
-	name = "Hemp2Gen"
-	icon_state = "hemp2gen"
+/obj/item/trash/maps
+	name = "maps salty ham"
+	icon_state = "maps-used"
+	drop_sound = 'sound/items/drop/shovel.ogg'
+	pickup_sound = 'sound/items/pickup/shovel.ogg'
 
-/obj/item/trash/pan
-	name = "holey pan"
-	icon_state = "pan"
+/obj/item/trash/nathisnack
+	name = "razi-snack corned beef"
+	icon_state = "cbeef-used"
+	drop_sound = 'sound/items/drop/shovel.ogg'
+	pickup_sound = 'sound/items/pickup/shovel.ogg'
+
+/obj/item/trash/brownies
+	name = "square tray"
+	icon_state = "brownies"
+	drop_sound = /singleton/sound_category/tray_hit_sound
+
+/obj/item/trash/snacktray
+	name = "snacktray"
+	icon_state = "snacktray"
+
+/obj/item/trash/dipbowl
+	name = "dip bowl"
+	icon_state = "dipbowl"
+
+/obj/item/trash/chipbasket
+	name = "empty basket"
+	icon_state = "chipbasket_empty"
+
+/obj/item/trash/uselessplastic
+	name = "useless plastic"
+	icon_state = "useless_plastic"
+
+/obj/item/trash/can
+	name = "used can"
+	icon_state = "cola"
+	drop_sound = 'sound/items/drop/soda.ogg'
+	pickup_sound = 'sound/items/pickup/soda.ogg'
+	randpixel = 4
+
+/obj/item/trash/can/Initialize()
+	. = ..()
+	randpixel_xy()
+
+/obj/item/trash/can/adhomian_can
+	icon_state = "can-used"
+
+/obj/item/trash/tuna
+	name = "\improper Tuna Snax"
+	icon_state = "tuna"
 
 /obj/item/trash/skrellsnacks
 	name = "\improper SkrellSnax"
 	icon_state = "skrellsnacks"
 
-/obj/item/trash/surstromming
-	name = "\improper old canned food"
-	icon_state = "surstromming"
+/obj/item/trash/space_twinkie
+	name = "\improper space twinkie"
+	icon_state = "space_twinkie"
 
-/obj/item/trash/cans
-	matter = list(MATERIAL_STEEL = 500)
-	var/base_state = ""
+/obj/item/trash/grease //used for generic plattered food. example is lasagna.
+	name = "square tray"
+	icon_state = "grease"
+	drop_sound = /singleton/sound_category/tray_hit_sound
 
-/obj/item/trash/cans/Initialize()
-	. = ..()
-	base_state = icon_state
-	if(prob(42))
-		icon_state = "[base_state]2"
-	item_state = base_state
+/obj/item/trash/cookiesnack
+	name = "\improper Carps Ahoy! miniature cookies"
+	icon_state = "cookiesnack"
 
-/obj/item/trash/cans/cola
-	name = "\improper Space Cola"
-	icon_state = "cola"
+/obj/item/trash/admints
+	name = "\improper Ad-mints"
+	icon_state = "admint_pack"
 
-/obj/item/trash/cans/colavanilla
-	name = "\improper Vanilla Space Cola"
-	icon_state = "colavanilla"
+/obj/item/trash/gum
+	name = "\improper Chewy Fruit flavored gum"
+	icon_state = "gum_pack"
 
-/obj/item/trash/cans/colacherry
-	name = "\improper Cherry Space Cola"
-	icon_state = "colacherry"
+/obj/item/trash/stew
+	name = "empty pot"
+	icon = 'icons/obj/kitchen.dmi'
+	icon_state = "stew_empty"
+	drop_sound = 'sound/items/drop/shovel.ogg'
+	pickup_sound = 'sound/items/pickup/shovel.ogg'
 
-/obj/item/trash/cans/dopecola
-	name = "\improper Dope Cola"
-	icon_state = "dopecola"
+/obj/item/trash/coffee
+	name = "empty cup"
+	icon_state = "coffee_vended"
+	drop_sound = 'sound/items/drop/papercup.ogg'
+	pickup_sound = 'sound/items/pickup/papercup.ogg'
 
-/obj/item/trash/cans/space_mountain_wind
-	name = "\improper Space Mountain Wind"
-	icon_state = "space_mountain_wind"
+/obj/item/trash/ramen
+	name = "cup ramen"
+	icon_state = "ramen"
+	drop_sound = 'sound/items/drop/papercup.ogg'
+	pickup_sound = 'sound/items/pickup/papercup.ogg'
 
-/obj/item/trash/cans/thirteenloko
-	name = "\improper Thirteen Loko"
-	icon_state = "thirteen_loko"
+/obj/item/trash/candybowl
+	name = "empty candy bowl"
+	icon_state = "candy_bowl"
+	drop_sound = 'sound/items/drop/bottle.ogg'
+	pickup_sound = 'sound/items/pickup/bottle.ogg'
 
-/obj/item/trash/cans/dr_gibb
-	name = "\improper Dr. Gibb"
-	icon_state = "dr_gibb"
+/obj/item/trash/ricetub
+	name = "empty rice tub"
+	icon_state = "ricetub"
+	var/has_chopsticks = FALSE
 
-/obj/item/trash/cans/starkist
-	name = "\improper Star-kist"
-	icon_state = "starkist"
+/obj/item/trash/ricetub/attackby(obj/item/W, mob/living/user)
+	if(istype(W, /obj/item/material/kitchen/utensil/fork/chopsticks))
+		to_chat(user, SPAN_NOTICE("You reattach the [W] to \the [src]"))
+		qdel(W)
+		has_chopsticks = TRUE
+		update_icon()
+		return TRUE
 
-/obj/item/trash/cans/space_up
-	name = "\improper Space-Up"
-	icon_state = "space-up"
+/obj/item/trash/ricetub/update_icon()
+	if(has_chopsticks)
+		icon_state = "ricetub_s"
+	else
+		icon_state = "ricetub"
 
-/obj/item/trash/cans/lemon_lime
-	name = "\improper Lemon-Lime"
-	icon_state = "lemon-lime"
+/obj/item/trash/ricetub/sticks
+	has_chopsticks = TRUE
 
-/obj/item/trash/cans/iced_tea
-	name = "\improper Vrisk Serket Iced Tea"
-	icon_state = "ice_tea_can"
+/obj/item/trash/seaweed
+	name = "empty moss pack"
+	icon_state = "seaweed"
 
-/obj/item/trash/cans/grape_juice
-	name = "\improper Grapel Juice"
-	icon_state = "purple_can"
+/obj/item/trash/vkrexitaffy
+	name = "V'krexi Snax"
+	icon_state = "vkrexitaffy"
+	item_state = "vkrexi"
 
-/obj/item/trash/cans/tonic
-	name = "\improper T-Borg's Tonic Water"
-	icon_state = "tonic"
+/obj/item/trash/broken_electronics
+	name = "broken electronics"
+	icon_state = "door_electronics_smoked"
 
-/obj/item/trash/cans/sodawater
-	name = "soda water"
-	icon_state = "sodawater"
+/obj/item/trash/phoroncandy
+	name = "\improper phoron rock candy stick"
+	icon_state = "rock_candy"
 
-/obj/item/trash/cans/machpellabeer
-	name = "\improper Machpella Dark Beer"
-	icon_state = "machpellabeer"
+/obj/item/trash/proteinbar
+	name = "protein bar wrapper"
+	icon_state = "proteinbar"
 
-/obj/item/trash/cans/applecider
-	name = "\improper MeadBy Apple Cider"
-	icon_state = "applecider"
+/obj/item/trash/leaf
+	name = "dirty leaf"
+	icon_state = "leaf"
+	desc = "Is... Is that a big old leaf with... are those beans on it? Why?! What kind of situation would lead to this?!"
 
-/obj/item/trash/cans/red_mule
-	name = "\improper Red MULE"
-	icon_state = "red_mule"
+/obj/item/trash/north60squidempty
+	name = "empty platter"
+	icon_state = "north60squidempty"
+	desc = "A deep dish meant to hold a pool of sauce and seafood, but now it only holds delicious memories. Trash it."
+	drop_sound = 'sound/items/drop/bottle.ogg'
+	pickup_sound = 'sound/items/pickup/bottle.ogg'
 
-/obj/item/trash/attack(mob/M as mob, mob/living/user as mob)
-	return
+/obj/item/trash/triolade
+	name = "empty dessert dish"
+	icon_state = "triolade"
 
-/obj/item/trash/dish/on_update_icon()
-	icon_state = "[initial(icon_state)][length(stack) || ""]"
+/obj/item/trash/board
+	name = "dirty board"
+	icon_state = "board"
 
-/obj/item/trash/dish/attackby(obj/item/I, mob/user)
-	var/obj/item/trash/dish/dish = I
-	if(I.type == type)
-		var/list/dishestoadd = list()
-		dishestoadd += dish
+/obj/item/trash/icecreamcup
+	name = "empty ice cream cup"
+	icon_state = "icecreamcup"
+	desc = "Oh look, it's one of those prank fake melted ice cream cu- oh, nope. it's real. eugh. Do... Do you have a napkin?"
 
-		for(var/obj/item/trash/dish/i in dish.stack)
-			dishestoadd += i
+/obj/item/trash/purplebowl
+	name = "empty bowl"
+	icon_state = "purplebowl"
+	drop_sound = 'sound/items/drop/bottle.ogg'
+	pickup_sound = 'sound/items/pickup/bottle.ogg'
 
-		if((length(stack) + length(dishestoadd)) < max_stack)
-			if(!user.drop(dish, src))
-				return
-			dish.stack.Cut()
-			dish.update_icon()
-			stack += dishestoadd
-			update_icon()
-		else
-			to_chat(user, SPAN("warning", "The stack is too high!"))
+/obj/item/trash/deepdive
+	name = "empty deepdive dish"
+	icon_state = "deepdive"
+	drop_sound = 'sound/items/drop/glass.ogg'
+	pickup_sound = 'sound/items/pickup/glass.ogg'
 
-/obj/item/trash/dish/attack_hand(mob/user)
-	if(user.get_inactive_hand() != src)
-		..()
-		return
+/obj/item/trash/bluemoon
+	name = "empty blue moon"
+	icon_state = "bluemoon"
+	drop_sound = 'sound/items/drop/glass.ogg'
+	pickup_sound = 'sound/items/pickup/glass.ogg'
 
-	var/obj/item/trash/dish/dish = stack[length(stack)]
-	stack -= dish
+/obj/item/trash/shakshouka
+	name = "empty shakshouka pan"
+	icon_state = "shakshouka"
+	desc = "It looks like the murder scene... Of a delicious Shakshouka. Trash or recycle."
+	drop_sound = 'sound/items/drop/bottle.ogg'
+	pickup_sound = 'sound/items/pickup/bottle.ogg'
 
-	user.pick_or_drop(dish)
-
-	update_icon()
+/obj/item/trash/stick
+	name = "candy stick"
+	icon_state = "rock_candy"

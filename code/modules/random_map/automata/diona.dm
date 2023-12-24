@@ -1,30 +1,66 @@
-/turf/simulated/wall/diona/New(newloc)
-	..(newloc,"biomass")
+/turf/simulated/wall/diona
+	icon = 'icons/turf/smooth/wall_preview.dmi'
+	icon_state = "diona"
 
-/turf/simulated/wall/diona/attack_generic(mob/user, damage, attack_message)
-	if(istype(user, /mob/living/carbon/alien/diona))
-		if(can_open == WALL_OPENING)
-			return
-		can_open = WALL_CAN_OPEN
-		user.visible_message("<span class='alium'>\The [user] strokes its feelers against \the [src] and the biomass [density ? "moves aside" : "closes up"].</span>")
-		toggle_open(user)
-		sleep(15)
-		if(can_open == WALL_CAN_OPEN) can_open = 0
-	else
-		return ..(user, damage, attack_message)
+/turf/simulated/wall/diona/Initialize(mapload)
+	canSmoothWith = list(src.type)
+	. = ..(mapload, "biomass")
+	canSmoothWith = list(src.type)
 
 /obj/structure/diona
 	icon = 'icons/obj/diona.dmi'
-	anchored = 1
-	density = 1
-	opacity = 0
-	plane = ABOVE_TURF_PLANE
-	layer = PLANT_LAYER
+	anchored = TRUE
+	density = TRUE
+	opacity = FALSE
+	layer = TURF_LAYER + 0.01
+	var/max_health = 50
+	var/health
+	var/destroy_spawntype = /mob/living/carbon/alien/diona
+
+/obj/structure/diona/Initialize(mapload)
+	. = ..()
+	health = max_health
+
+/obj/structure/diona/attackby(obj/item/W, mob/user)
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+	if(W.iswelder())
+		var/obj/item/weldingtool/WT = W
+		if (!WT.welding)
+			to_chat(user, SPAN_WARNING("\The [WT] must be turned on!"))
+			return
+		else if (WT.use(0,user))
+			user.visible_message("<b>[user]</b> begins slicing through the skin of \the [src].", SPAN_NOTICE("You begin slicing through the skin of \the [src]."))
+			if(!W.use_tool(src, user, 20, volume = 50))
+				return
+			if(QDELETED(src) || !WT.isOn())
+				return
+			user.visible_message("<b>[user]</b> slices through the skin of \the [src].", SPAN_NOTICE("You slice through \the [src]."))
+		qdel(src)
+	else
+		user.do_attack_animation(src)
+		if(W.force)
+			user.visible_message(SPAN_DANGER("\The [user] [pick(W.attack_verb)] \the [src] with \the [W]!"), SPAN_NOTICE("You [pick(W.attack_verb)] \the [src] with \the [W]!"))
+			playsound(loc, W.hitsound, W.get_clamped_volume(), TRUE)
+			playsound(loc, /singleton/sound_category/wood_break_sound, 50, TRUE)
+			health -= W.force
+			if(health <= 0)
+				qdel(src)
+
+/obj/structure/diona/Destroy()
+	if(destroy_spawntype)
+		if(ispath(destroy_spawntype, /mob/living/carbon/alien/diona))
+			var/turf/T = get_turf(src)
+			T.spawn_diona_nymph()
+		else
+			new destroy_spawntype(get_turf(src))
+	return ..()
 
 /obj/structure/diona/vines
-	name = "alien vines"
-	desc = "Thick, heavy vines of some sort."
+	name = "biomass vines"
+	desc = "Thick, heavy vines made of some sort of biomass."
 	icon_state = "vines3"
+	density = FALSE
+	destroy_spawntype = null
 	var/growth = 0
 
 /obj/structure/diona/vines/proc/spread()
@@ -39,22 +75,39 @@
 			if(1)
 				new_growth = 2
 		var/obj/structure/diona/vines/existing = locate() in T
-		if(!istype(existing)) existing = PoolOrNew(/obj/structure/diona/vines, T)
+		if(!istype(existing)) existing = new /obj/structure/diona/vines(T)
 		if(existing.growth < new_growth)
 			existing.growth = new_growth
 			existing.update_icon()
 
-/obj/structure/diona/vines/on_update_icon()
+/obj/structure/diona/vines/update_icon()
 	icon_state = "vines[growth]"
 
 /obj/structure/diona/bulb
 	name = "glow bulb"
 	desc = "A glowing bulb of some sort."
 	icon_state = "glowbulb"
+	light_power = 3
+	light_range = 3
+	light_color = "#557733"
+	density = FALSE
+	destroy_spawntype = null
 
-/obj/structure/diona/bulb/New(newloc)
+/obj/structure/diona/bulb/unpowered
+	name = "unpowered glow bulb"
+	desc = "A bulb of some sort. Seems like it needs some power."
+	desc_info = "This bulb requires a power cell to glow. Click on it with a power cell in hand to plug it in."
+	light_power = 0
+	light_range = 0
+
+/obj/structure/diona/bulb/unpowered/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/cell))
+		to_chat(user, SPAN_NOTICE("You jack the power cell into the glow bulb."))
+		new /obj/structure/diona/bulb(get_turf(src))
+		destroy_spawntype = null
+		qdel(W)
+		qdel(src)
 	..()
-	set_light(0.4, 0.1, 3, 2, "#557733")
 
 /datum/random_map/automata/diona
 	iterations = 3
@@ -66,7 +119,7 @@
 	floor_type = /turf/simulated/floor/diona
 
 // This is disgusting.
-/datum/random_map/automata/diona/proc/search_neighbors_for(search_val, x, y)
+/datum/random_map/automata/diona/proc/search_neighbors_for(var/search_val, var/x, var/y)
 	var/current_cell = get_map_cell(x-1,y-1)
 	if(current_cell && map[current_cell] == search_val) return 1
 	current_cell = get_map_cell(x-1,y)
@@ -143,14 +196,14 @@
 				nymph_count--
 	return
 
-/datum/random_map/automata/diona/get_appropriate_path(value)
+/datum/random_map/automata/diona/get_appropriate_path(var/value)
 	switch(value)
 		if(EMPTY_CHAR, DOOR_CHAR, MONSTER_CHAR, ARTIFACT_CHAR)
 			return floor_type
 		if(WALL_CHAR)
 			return wall_type
 
-/datum/random_map/automata/diona/get_additional_spawns(value, turf/T)
+/datum/random_map/automata/diona/get_additional_spawns(var/value, var/turf/T)
 
 	if(value != FLOOR_CHAR)
 		for(var/thing in T)
@@ -162,11 +215,11 @@
 
 	switch(value)
 		if(ARTIFACT_CHAR)
-			PoolOrNew(/obj/structure/diona/bulb,T)
+			new /obj/structure/diona/bulb(T)
 		if(MONSTER_CHAR)
-			spawn_diona_nymph(T)
+			T.spawn_diona_nymph()
 		if(DOOR_CHAR)
-			var/obj/structure/diona/vines/V = PoolOrNew(/obj/structure/diona/vines,T)
+			var/obj/structure/diona/vines/V = new(T)
 			V.growth = 3
 			V.update_icon()
 			spawn(1)

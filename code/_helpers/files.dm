@@ -2,22 +2,34 @@
 //returns text as a string if these conditions are met
 /proc/return_file_text(filename)
 	if(fexists(filename) == 0)
-		error("File not found ([filename])")
+		log_asset("File not found ([filename])")
 		return
 
 	var/text = file2text(filename)
 	if(!text)
-		error("File empty ([filename])")
+		log_asset("File empty ([filename])")
 		return
 
 	return text
+
+/proc/get_subfolders(var/root)
+	var/list/folders = list()
+	var/list/contents = flist(root)
+
+	for(var/file in contents)
+		//Check if the filename ends with / to see if its a folder
+		if(copytext(file,-1,0) != "/")
+			continue
+		folders.Add("[root][file]")
+
+	return folders
 
 //Sends resource files to client cache
 /client/proc/getFiles()
 	for(var/file in args)
 		send_rsc(src, file, null)
 
-/client/proc/browse_files(root="data/logs/", max_iterations=10, list/valid_extensions=list(".txt",".log",".htm"))
+/client/proc/browse_files(root="data/logs/", max_iterations=10, list/valid_extensions=list(".txt",".log",".htm", ".json"))
 	var/path = root
 
 	for(var/i=0, i<max_iterations, i++)
@@ -37,9 +49,13 @@
 		if(copytext(path,-1,0) != "/")		//didn't choose a directory, no need to iterate again
 			break
 
-	var/extension = copytext(path,-4,0)
-	if( !fexists(path) || !(extension in valid_extensions) )
-		to_chat(src, "<font color='red'>Error: browse_files(): File not found/Invalid file([path]).</font>")
+	var/valid_extension = FALSE
+	for(var/e in valid_extensions)
+		if(findtext(path, e, -(length(e))))
+			valid_extension = TRUE
+
+	if( !fexists(path) || !valid_extension )
+		to_chat(src, "<span class='warning'>Error: browse_files(): File not found/Invalid file([path]).</span>")
 		return
 
 	return path
@@ -53,26 +69,23 @@
 /client/proc/file_spam_check()
 	var/time_to_wait = fileaccess_timer - world.time
 	if(time_to_wait > 0)
-		to_chat(src, "<font color='red'>Error: file_spam_check(): Spam. Please wait [round(time_to_wait/10)] seconds.</font>")
+		to_chat(src, "<span class='warning'>Error: file_spam_check(): Spam. Please wait [round(time_to_wait/10)] seconds.</span>")
 		return 1
 	fileaccess_timer = world.time + FTPDELAY
 	return 0
 #undef FTPDELAY
 
-/*   Returns a list of all files (as file objects) in the directory path provided, as well as all files in any subdirectories, recursively!
-    The list returned is flat, so all items can be accessed with a simple loop.
-    This is designed to work with browse_rsc(), which doesn't currently support subdirectories in the browser cache.*/
-/proc/getallfiles(path, remove_folders = TRUE, recursion = TRUE)
-	set background = 1
-	. = list()
-	for(var/f in flist(path))
-		if(copytext("[f]", -1) == "/")
-			if(recursion)
-				. += .("[path][f]")
-		else
-			. += file("[path][f]")
+/// Returns the md5 of a file at a given path.
+/proc/md5filepath(path)
+	. = md5(file(path))
 
-	if(remove_folders)
-		for(var/file in .)
-			if(copytext("[file]", -1) == "/")
-				. -= file
+/// Save file as an external file then md5 it.
+/// Used because md5ing files stored in the rsc sometimes gives incorrect md5 results.
+/proc/md5asfile(file)
+	var/static/notch = 0
+	// its importaint this code can handle md5filepath sleeping instead of hard blocking, if it's converted to use rust_g.
+	var/filename = "tmp/md5asfile.[world.realtime].[world.timeofday].[world.time].[world.tick_usage].[notch]"
+	notch = Wrap(notch+1, 0, 2**15)
+	fcopy(file, filename)
+	. = md5filepath(filename)
+	fdel(filename)

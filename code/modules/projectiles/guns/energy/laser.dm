@@ -1,275 +1,268 @@
 /obj/item/gun/energy/laser
-	name = "laser rifle"
-	desc = "A NanoTrasen G40E rifle, designed to kill with concentrated energy blasts."
-	icon_state = "laser"
-	item_state = "laserrifle"
-	slot_flags = SLOT_BACK
-	w_class = ITEM_SIZE_HUGE
-	force = 12.5
-	mod_weight = 1.0
-	mod_reach = 0.8
-	mod_handy = 1.0
-	one_hand_penalty = 2
-	accuracy = 2
-	max_shots = 12
-	fire_delay = 9
+	name = "laser carbine"
+	desc = "An Hephaestus Industries G40E carbine, designed to kill with concentrated energy blasts."
+	icon = 'icons/obj/guns/laserrifle.dmi'
+	icon_state = "laserrifle100"
+	item_state = "laserrifle100"
+	has_item_ratio = FALSE // the back and suit slots have ratio sprites but the in-hands dont
+	fire_sound = 'sound/weapons/laser1.ogg'
+	slot_flags = SLOT_BELT|SLOT_BACK
+	accuracy = 1
+	w_class = ITEMSIZE_NORMAL
+	force = 10
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
-	matter = list(MATERIAL_STEEL = 2000)
-	projectile_type = /obj/item/projectile/energy/laser/mid
-	wielded_item_state = "laserrifle-wielded"
+	matter = list(DEFAULT_WALL_MATERIAL = 2000)
+	projectile_type = /obj/item/projectile/beam/midlaser
+	can_turret = 1
+	turret_is_lethal = 1
+	turret_sprite_set = "laser"
 
-	firemodes = list(
-		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/mid),
-		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/laser/mid)
-	)
+	modifystate = "laserrifle"
 
 /obj/item/gun/energy/laser/mounted
-	desc = "A modification of NanoTrasen G40E rifle, designed to be mounted on cyborgs and other battle machinery. It's designed to kill with concentrated energy blasts."
-	self_recharge = 1
-	use_external_power = 1
-	one_hand_penalty = 0 //just in case
-	icon_state = "blaser"
+	name = "mounted laser carbine"
 	has_safety = FALSE
+	self_recharge = TRUE
+	use_external_power = TRUE
+	can_turret = FALSE
 
-/obj/item/gun/energy/laser/mounted/cyborg
-	max_shots = 6
-	recharge_time = 10 //Time it takes for shots to recharge (in ticks)
-	var/locked = 1
-
-
-/obj/item/gun/energy/laser/mounted/cyborg/afterattack(atom/A, mob/living/user)
-	if (locked)
-		to_chat(user, "<span class='warning'>Current security protocols are not allowing you to use [src].</span>")
-		return
-	..()
-
-/obj/item/gun/energy/laser/mounted/cyborg/attack(atom/A, mob/living/user)
-	if (locked)
-		to_chat(user, "<span class='warning'>Current security protocols are not allowing you to use [src].</span>")
-		return
-	..()
-
-/obj/item/gun/energy/laser/pistol
-	name = "laser pistol"
-	desc = "A NanoTrasen LP \"Arclight\", a combat laser pistol. Not as powerful as a laser rifle, it is much smaller and capable of shooting much more rapidly."
-	icon_state = "laser_pistol"
-	item_state = "laser"
-	w_class = ITEM_SIZE_NORMAL
-	slot_flags = SLOT_BELT|SLOT_HOLSTER
-	one_hand_penalty = 0
-	accuracy = 1.0
-	max_shots = 12
-	fire_delay = 5.5
-	projectile_type = /obj/item/projectile/energy/laser/small
-	wielded_item_state = null
-	force = 8.5
-	mod_weight = 0.7
-	mod_reach = 0.5
-	mod_handy = 1.0
-
-	firemodes = list(
-		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/small),
-		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/laser/small)
-	)
+/obj/item/gun/energy/laser/mounted/cyborg/overclocked
+	max_shots = 15
+	recharge_time = 1
 
 /obj/item/gun/energy/laser/practice
-	name = "practice laser rifle"
-	desc = "A modified version of the NT G40E, this one fires less concentrated energy bolts designed for target practice."
-	icon_state = "laserp"
+	name = "practice laser carbine"
+	desc = "A modified version of the HI G40E, this one fires less concentrated energy bolts designed for target practice."
 	projectile_type = /obj/item/projectile/beam/practice
-	charge_cost = 10 //How much energy is needed to fire.
-	combustion = FALSE
-
-	firemodes = list()
-
-/obj/item/gun/energy/laser/practice/proc/hacked()
-	return projectile_type != /obj/item/projectile/beam/practice
-
-/obj/item/gun/energy/laser/practice/emag_act(remaining_charges, mob/user, emag_source)
-	if(hacked())
-		return NO_EMAG_ACT
-	to_chat(user, "<span class='warning'>You disable the safeties on [src] and crank the output to the lethal levels.</span>")
-	desc += " Its safeties are disabled and output is set to dangerous levels."
-	projectile_type = /obj/item/projectile/beam/laser/mid
-	charge_cost = 20
-	max_shots = rand(3,6) //will melt down after those
-	return 1
-
-/obj/item/gun/energy/laser/practice/handle_post_fire(mob/user, atom/target, pointblank=0, reflex=0)
-	..()
-	if(hacked())
-		max_shots--
-		if(!max_shots) //uh hoh gig is up
-			to_chat(user, "<span class='danger'>\The [src] sizzles in your hands, acrid smoke rising from the firing end!</span>")
-			desc += " The optical pathway is melted and useless."
-			projectile_type = null
 
 /obj/item/gun/energy/retro
 	name = "retro laser"
+	icon = 'icons/obj/guns/retro.dmi'
 	icon_state = "retro"
 	item_state = "retro"
-	desc = "An older model of the basic lasergun. Nevertheless, it is still quite deadly and easy to maintain, making it a favorite amongst pirates and other outlaws."
-	slot_flags = SLOT_BELT|SLOT_HOLSTER
-	w_class = ITEM_SIZE_NORMAL
-	projectile_type = /obj/item/projectile/energy/laser/lesser // Old but gold
-	fire_delay = 15 //old technology, and a pistol
-	force = 9.0
-	mod_weight = 0.7
-	mod_reach = 0.5
-	mod_handy = 1.0
+	has_item_ratio = FALSE
+	desc = "An older model laser pistol, small enough to be concealed but underpowered, inefficient, and deceptively heavy, especially compared \
+	to modern laser weaponry. However, their overbuilt construction means that many examples have stood the test of time, and advances in rechargeable \
+	power cell technology have now turned them into viable backup weapons for outlaws or anyone unable to acquire newer laser weapons."
+	fire_sound = 'sound/weapons/laser1.ogg'
+	slot_flags = SLOT_BELT
+	w_class = ITEMSIZE_NORMAL
+	offhand_accuracy = 1
+	projectile_type = /obj/item/projectile/beam
+	fire_delay = 5
+	can_turret = 1
+	turret_is_lethal = 1
+	turret_sprite_set = "retro"
+
+	modifystate = "retro"
 
 /obj/item/gun/energy/captain
 	name = "antique laser gun"
+	icon = 'icons/obj/guns/caplaser.dmi'
+	desc = "This is an antique laser gun. All craftsmanship is of the highest quality. The object menaces with spikes of energy."
+	desc_info = "This is an energy weapon.  To fire the weapon, ensure your intent is *not* set to 'help', have your gun mode set to 'fire', \
+	then click where you want to fire.  Most energy weapons can fire through windows harmlessly. Unlike most weapons, this weapon recharges itself."
 	icon_state = "caplaser"
 	item_state = "caplaser"
-	desc = "A rare weapon, handcrafted by a now defunct specialty manufacturer on Luna for a small fortune. It's certainly aged well."
-	force = 10.0
-	mod_weight = 0.8
-	mod_reach = 0.5
-	mod_handy = 1.1
-	slot_flags = SLOT_BELT //too unusually shaped to fit in a holster
-	w_class = ITEM_SIZE_NORMAL
-	projectile_type = /obj/item/projectile/energy/laser/small
-	fire_delay = 6
+	has_item_ratio = FALSE
+	force = 5
+	fire_sound = 'sound/weapons/laser1.ogg'
+	slot_flags = SLOT_BELT
+	w_class = ITEMSIZE_NORMAL
+	offhand_accuracy = 2
+	projectile_type = /obj/item/projectile/beam
 	origin_tech = null
 	max_shots = 5 //to compensate a bit for self-recharging
-	one_hand_penalty = 1 //a little bulky
 	self_recharge = 1
+	can_turret = 1
+	turret_is_lethal = 1
+	turret_sprite_set = "captain"
 
 /obj/item/gun/energy/lasercannon
 	name = "laser cannon"
-	desc = "With the laser cannon, the lasing medium is enclosed in a tube lined with uranium-235 and subjected to high neutron flux in a nuclear reactor core. This incredible technology may help YOU achieve high excitation rates with small laser volumes!"
-	icon_state = "lasercannon"
-	item_state = null
+	desc = "A nanotrasen designed laser cannon capable of acting as a powerful support weapon."
+	desc_extended = "The NT LC-4 is a laser cannon developed and produced by NanoTrasen. Produced and sold to organizations both in need of a highly powerful support weapon and can afford its high unit cost. In spite of the low capacity, it is a highly capable tool, cutting down fortifications and armored targets with ease."
+	icon = 'icons/obj/guns/lasercannon.dmi'
+	icon_state = "lasercannon100"
+	item_state = "lasercannon100"
+	fire_sound = 'sound/weapons/lasercannonfire.ogg'
 	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 3, TECH_POWER = 3)
-	slot_flags = SLOT_BACK
-	one_hand_penalty = 6 //large and heavy
-	w_class = ITEM_SIZE_HUGE
-	projectile_type = /obj/item/projectile/energy/laser/heavy
-	charge_cost = 40
-	max_shots = 8
-	accuracy = 2
+	slot_flags = SLOT_BELT|SLOT_BACK
+	projectile_type = /obj/item/projectile/beam/heavylaser
+	charge_cost = 400
+	max_shots = 5
 	fire_delay = 20
-	wielded_item_state = "lasercannon-wielded"
-	force = 14.0
-	mod_weight = 1.25
-	mod_reach = 1.0
-	mod_handy = 1.0
+	can_turret = 1
+	turret_is_lethal = 1
+	turret_sprite_set = "cannon"
 
-	firemodes = list(
-		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/heavy),
-		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/laser/heavy)
-	)
+	modifystate = "lasercannon"
 
 /obj/item/gun/energy/lasercannon/mounted
 	name = "mounted laser cannon"
 	self_recharge = 1
 	use_external_power = 1
 	recharge_time = 10
-	accuracy = 0 //mounted laser cannons don't need any help, thanks
-	one_hand_penalty = 0
-	has_safety = FALSE
+	can_turret = 0
+
+/obj/item/gun/energy/lasercannon/mounted/cyborg/overclocked
+	recharge_time = 1
+	max_shots = 15
 
 /obj/item/gun/energy/xray
-	name = "x-ray laser carbine"
-	desc = "A high-power laser gun capable of emitting concentrated x-ray blasts, that are able to penetrate laser-resistant armor much more readily than standard photonic beams."
+	name = "xray laser gun"
+	desc = "A NanoTrasen designed high-power laser sidearm capable of expelling concentrated xray blasts."
+	desc_extended = "The NT XG-1 is a laser sidearm developed and produced by NanoTrasen. A recent invention, used for specialist operations, it is presently being produced and sold in limited capacity over the galaxy. Designed for precision strikes, releasing concentrated xray blasts that are capable of hitting targets behind cover. It is compact with relatively high capacity to other sidearms."
+	icon = 'icons/obj/guns/xray.dmi'
 	icon_state = "xray"
 	item_state = "xray"
-	slot_flags = SLOT_BACK
+	has_item_ratio = FALSE
+	fire_sound = 'sound/weapons/laser3.ogg'
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 3, TECH_MAGNET = 2, TECH_ILLEGAL = 2)
-	projectile_type = /obj/item/projectile/beam/xray/midlaser
-	one_hand_penalty = 2
-	w_class = ITEM_SIZE_HUGE
-	charge_cost = 15
-	max_shots = 10
-	wielded_item_state = "gun_wielded"
-	combustion = 0
-	force = 12.5
-	mod_weight = 1.0
-	mod_reach = 0.8
-	mod_handy = 1.0
-
-/obj/item/gun/energy/xray/pistol
-	name = "x-ray laser gun"
-	icon_state = "oldxray"
-	item_state = "oldxray"
-	slot_flags = SLOT_BELT|SLOT_HOLSTER
-	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 3, TECH_MAGNET = 2, TECH_ILLEGAL = 2)
 	projectile_type = /obj/item/projectile/beam/xray
-	one_hand_penalty = 1
-	w_class = ITEM_SIZE_NORMAL
-	fire_delay = 10
-	wielded_item_state = null
-	force = 8.5
-	mod_weight = 0.7
-	mod_reach = 0.5
-	mod_handy = 1.0
+	charge_cost = 100
+	max_shots = 20
+	fire_delay = 4
+	burst_delay = 4
+	can_turret = 1
+	turret_is_lethal = 1
+	turret_sprite_set = "xray"
+
+/obj/item/gun/energy/xray/mounted
+	name = "mounted xray laser gun"
+	charge_cost = 200
+	self_recharge = 1
+	use_external_power = 1
+	recharge_time = 5
+	can_turret = 0
 
 /obj/item/gun/energy/sniperrifle
 	name = "marksman energy rifle"
-	desc = "The HI DMR 9E is an older design of Hephaestus Industries. A designated marksman rifle capable of shooting powerful ionized beams, this is a weapon to kill from a distance."
+	desc = "The HI L.W.A.P. is an older design of Hephaestus Industries. A designated marksman rifle capable of shooting powerful ionized beams, this is a weapon to kill from a distance."
+	desc_info = "This is an energy weapon.  To fire the weapon, ensure your intent is *not* set to 'help', have your gun mode set to 'fire', \
+	then click where you want to fire.  Most energy weapons can fire through windows harmlessly.  To recharge this weapon, use a weapon recharger. \
+	To use the scope, use the appropriate verb in the object tab."
+	icon = 'icons/obj/guns/sniper.dmi'
 	icon_state = "sniper"
-	item_state = "laser"
+	item_state = "sniper"
+	has_item_ratio = FALSE // same as the laserrifle
+	fire_sound = 'sound/weapons/marauder.ogg'
 	origin_tech = list(TECH_COMBAT = 6, TECH_MATERIAL = 5, TECH_POWER = 4)
 	projectile_type = /obj/item/projectile/beam/sniper
-	one_hand_penalty = 5 // The weapon itself is heavy, and the long barrel makes it hard to hold steady with just one hand.
 	slot_flags = SLOT_BACK
-	charge_cost = 40
+	charge_cost = 400
 	max_shots = 4
-	fire_delay = 35
-	force = 13.5
-	mod_weight = 1.1
-	mod_reach = 1.0
-	mod_handy = 1.0
-	w_class = ITEM_SIZE_HUGE
-	accuracy = -2 //shooting at the hip
-	scoped_accuracy = 0
-	wielded_item_state = "gun_wielded"
+	fire_delay = 45
+	force = 10
+	w_class = ITEMSIZE_LARGE
+	accuracy = -3 //shooting at the hip
+	scoped_accuracy = 4
+	can_turret = 1
+	turret_sprite_set = "sniper"
+	turret_is_lethal = 1
 
-/obj/item/gun/energy/sniperrifle/on_update_icon()
-	..()
-	item_state_slots[slot_back_str] = icon_state //so that the on-back overlay uses the different charged states
+	is_wieldable = TRUE
+
+	fire_delay_wielded = 35
+	accuracy_wielded = 0
 
 /obj/item/gun/energy/sniperrifle/verb/scope()
 	set category = "Object"
 	set name = "Use Scope"
-	set popup_menu = 1
+	set src in usr
 
-	toggle_scope(usr, 2.0)
+	if(wielded)
+		toggle_scope(2.0, usr)
+	else
+		to_chat(usr, "<span class='warning'>You can't look through the scope without stabilizing the rifle!</span>")
+
+/obj/item/gun/energy/laser/shotgun
+	name = "laser shotgun"
+	desc = "A NanoTrasen designed laser weapon, designed to split a single amplified beam four times."
+	desc_extended = "The NT QB-2 is a laser weapon developed and produced by NanoTrasen. Designed to fill in the niche that ballistic shotguns do, but in the form of laser weaponry. It is equipped with a special crystal lens that splits a single laser beam into four."
+	icon = 'icons/obj/guns/lasershotgun.dmi'
+	icon_state = "lasershotgun"
+	item_state = "lasershotgun"
+	modifystate = null
+	has_item_ratio = FALSE
+	fire_sound = 'sound/weapons/laser1.ogg'
+	slot_flags = SLOT_BELT|SLOT_BACK
+	w_class = ITEMSIZE_LARGE
+	accuracy = 0
+	force = 10
+	matter = list(DEFAULT_WALL_MATERIAL = 2000)
+	origin_tech = list(TECH_COMBAT = 4, TECH_MAGNET = 2)
+	projectile_type = /obj/item/projectile/beam/shotgun
+	max_shots = 20
+	sel_mode = 1
+	is_wieldable = TRUE
+	burst = 4
+	burst_delay = 0
+	move_delay = 0
+	fire_delay = 2
+	dispersion = list(10)
+	can_turret = TRUE
+	turret_is_lethal = TRUE
+	turret_sprite_set = "laser"
+
+/obj/item/gun/energy/laser/shotgun/research
+	name = "expedition shotgun"
+	desc = "A NanoTrasen designed laser weapon, designed to split a single amplified beam four times. This one is marked for expeditionary use."
+	pin = /obj/item/device/firing_pin/away_site
 
 ////////Laser Tag////////////////////
 
 /obj/item/gun/energy/lasertag
 	name = "laser tag gun"
+	desc = "A simple low-power laser gun, outfitted for use in laser tag arenas."
 	item_state = "laser"
-	desc = "Standard issue weapon of the Imperial Guard."
+	has_item_ratio = FALSE
 	origin_tech = list(TECH_COMBAT = 1, TECH_MAGNET = 2)
-	self_recharge = 1
-	force = 5.0
-	mod_weight = 0.7
-	mod_reach = 0.5
-	mod_handy = 1.0
-	matter = list(MATERIAL_STEEL = 2000)
-	projectile_type = /obj/item/projectile/beam/lasertag/blue
-	var/required_vest
-	combustion = FALSE
-	has_safety = FALSE
+	self_recharge = TRUE
+	recharge_time = 2
+	matter = list(DEFAULT_WALL_MATERIAL = 2000)
+	fire_sound = 'sound/weapons/laser1.ogg'
+	projectile_type = /obj/item/projectile/beam/laser_tag
+	pin = /obj/item/device/firing_pin/tag/red
+	can_turret = TRUE
+	turret_is_lethal = FALSE
+	turret_sprite_set = "red"
 
-/obj/item/gun/energy/lasertag/special_check(mob/living/carbon/human/M)
-	if(ishuman(M))
-		if(!istype(M.wear_suit, required_vest))
-			to_chat(M, "<span class='warning'>You need to be wearing your laser tag vest!</span>")
-			return 0
+/obj/item/gun/energy/lasertag/attackby(obj/item/I, mob/user)
+	if(I.ismultitool())
+		var/chosen_color = input(user, "Which color do you wish your gun to be?", "Color Selection") as null|anything in list("blue", "red")
+		if(!chosen_color)
+			return
+		get_tag_color(chosen_color)
+		to_chat(user, SPAN_NOTICE("\The [src] is now a [chosen_color] laser tag gun."))
+		return
 	return ..()
 
+/obj/item/gun/energy/lasertag/proc/get_tag_color(var/set_color)
+	projectile_type = text2path("/obj/item/projectile/beam/laser_tag/[set_color]")
+	if(pin)
+		QDEL_NULL(pin)
+		var/pin_path = text2path("/obj/item/device/firing_pin/tag/[set_color]")
+		pin = new pin_path(src)
+	switch(set_color)
+		if("red")
+			icon = 'icons/obj/guns/redtag.dmi'
+		if("blue")
+			icon = 'icons/obj/guns/bluetag.dmi'
+	icon_state = "[set_color]tag"
+	item_state = icon_state
+	modifystate = item_state
+	update_held_icon()
+
 /obj/item/gun/energy/lasertag/blue
+	icon = 'icons/obj/guns/bluetag.dmi'
 	icon_state = "bluetag"
 	item_state = "bluetag"
-	projectile_type = /obj/item/projectile/beam/lasertag/blue
-	required_vest = /obj/item/clothing/suit/bluetag
+	projectile_type = /obj/item/projectile/beam/laser_tag/blue
+	pin = /obj/item/device/firing_pin/tag/blue
+	turret_sprite_set = "blue"
 
 /obj/item/gun/energy/lasertag/red
+	icon = 'icons/obj/guns/redtag.dmi'
 	icon_state = "redtag"
 	item_state = "redtag"
-	projectile_type = /obj/item/projectile/beam/lasertag/red
-	required_vest = /obj/item/clothing/suit/redtag

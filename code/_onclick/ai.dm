@@ -9,7 +9,11 @@
 
 	Note that AI have no need for the adjacency proc, and so this proc is a lot cleaner.
 */
-/mob/living/silicon/ai/DblClickOn(atom/A, params)
+/mob/living/silicon/ai/DblClickOn(var/atom/A, params)
+	if(client.buildmode) // comes after object.Click to allow buildmode gui objects to be clicked
+		build_click(src, client.buildmode, params, A)
+		return
+
 	if(control_disabled || stat) return
 
 	if(ismob(A))
@@ -18,26 +22,24 @@
 		A.move_camera_by_click()
 
 
-/mob/living/silicon/ai/ClickOn(atom/A, params)
+/mob/living/silicon/ai/ClickOn(var/atom/A, params)
 	if(world.time <= next_click)
 		return
 	next_click = world.time + 1
 
-	if(incapacitated())
+	if(client.buildmode) // comes after object.Click to allow buildmode gui objects to be clicked
+		build_click(src, client.buildmode, params, A)
+		return
+
+	if(stat)
 		return
 
 	var/list/modifiers = params2list(params)
-	if(modifiers["ctrl"] && modifiers["alt"])
-		CtrlAltClickOn(A)
-		return
 	if(modifiers["shift"] && modifiers["ctrl"])
 		CtrlShiftClickOn(A)
 		return
 	if(modifiers["middle"])
-		if(modifiers["shift"])
-			ShiftMiddleClickOn(A)
-		else
-			MiddleClickOn(A)
+		MiddleClickOn(A)
 		return
 	if(modifiers["shift"])
 		ShiftClickOn(A)
@@ -49,21 +51,19 @@
 		CtrlClickOn(A)
 		return
 
-	face_atom(A) // change direction to face what you clicked on
-
 	if(control_disabled || !canClick())
 		return
 
 	if(multitool_mode && isobj(A))
 		var/obj/O = A
-		var/datum/extension/interactive/multitool/MT = get_extension(O, /datum/extension/interactive/multitool)
+		var/datum/component/multitool/MT = O.GetComponent(/datum/component/multitool)
 		if(MT)
-			MT.interact(aiMulti, src)
+			MT.interact(ai_multi, src)
 			return
 
-	if(silicon_camera.in_camera_mode)
-		silicon_camera.camera_mode_off()
-		silicon_camera.captureimage(A, usr)
+	if(ai_camera.in_camera_mode)
+		ai_camera.camera_mode_off()
+		ai_camera.captureimage(A, usr)
 		return
 
 	/*
@@ -85,8 +85,6 @@
 	A.attack_ai(src)
 /mob/living/silicon/ai/RangedAttack(atom/A)
 	A.attack_ai(src)
-/mob/living/silicon/ai/MouseDrop() //AI cant user crawl
-	return
 
 /atom/proc/attack_ai(mob/user as mob)
 	return
@@ -97,27 +95,21 @@
 	for AI shift, ctrl, and alt clicking.
 */
 
-/mob/living/silicon/ai/CtrlAltClickOn(atom/A)
-	if(!control_disabled && A.AICtrlAltClick(src))
-		return
-	..()
-
-/mob/living/silicon/ai/ShiftClickOn(atom/A)
+/mob/living/silicon/ai/ShiftClickOn(var/atom/A)
 	if(!control_disabled && A.AIShiftClick(src))
 		return
 	..()
 
-/mob/living/silicon/ai/CtrlClickOn(atom/A)
+/mob/living/silicon/ai/CtrlClickOn(var/atom/A)
 	if(!control_disabled && A.AICtrlClick(src))
 		return
 	..()
 
-/mob/living/silicon/ai/AltClickOn(atom/A)
-	if(!control_disabled && A.AIAltClick(src))
+/mob/living/silicon/ai/AltClickOn(var/mob/living/silicon/user)
+	if(!control_disabled && user.AIAltClick(src))
 		return
-	..()
 
-/mob/living/silicon/ai/MiddleClickOn(atom/A)
+/mob/living/silicon/ai/MiddleClickOn(var/atom/A)
 	if(!control_disabled && A.AIMiddleClick(src))
 		return
 	..()
@@ -127,127 +119,61 @@
 	I have no idea why it was in atoms.dm instead of respective files.
 */
 
-/atom/proc/AICtrlAltClick()
-
-/obj/machinery/door/airlock/AICtrlAltClick() // Electrifies doors.
-	if(usr.incapacitated())
-		return
-	if(!electrified_until)
-		// permanent shock
-		Topic(src, list("command"="electrify_permanently", "activate" = "1"))
-	else
-		// disable/6 is not in Topic; disable/5 disables both temporary and permanent shock
-		Topic(src, list("command"="electrify_permanently", "activate" = "0"))
-	return 1
-
 /atom/proc/AICtrlShiftClick()
 	return
 
-/atom/proc/AIShiftClick()
+/atom/proc/AIShiftClick(var/mob/user)
 	return
 
-/obj/machinery/door/airlock/AIShiftClick()  // Opens and closes doors!
-	if(usr.incapacitated())
-		return
-	if(density)
-		Topic(src, list("command"="open", "activate" = "1"))
-	else
-		Topic(src, list("command"="open", "activate" = "0"))
-	return 1
+/obj/machinery/door/airlock/AIShiftClick(var/mob/user)  // Opens and closes doors!
+	open_interact(user, density)
+	return TRUE
 
-/atom/proc/AICtrlClick()
+/atom/proc/AICtrlClick(mob/user)
 	return
 
-/obj/machinery/door/airlock/AICtrlClick() // Bolts doors
-	if(usr.incapacitated())
-		return
-	if(locked)
-		Topic(src, list("command"="bolts", "activate" = "0"))
+/obj/machinery/door/airlock/AICtrlClick(mob/user) // Bolts doors
+	if(player_is_antag(user.mind))
+		bolts_override(user, !locked, FALSE, player_is_antag(user.mind))
 	else
-		Topic(src, list("command"="bolts", "activate" = "1"))
-	return 1
+		bolts_interact(user, !locked, FALSE, player_is_antag(user.mind))
+	return TRUE
 
 /obj/machinery/power/apc/AICtrlClick() // turns off/on APCs.
-	if(usr.incapacitated())
-		return
-	Topic(src, list("breaker"="1"))
-	return 1
+	toggle_breaker()
+	return TRUE
 
 /obj/machinery/turretid/AICtrlClick() //turns off/on Turrets
-	if(usr.incapacitated())
-		return
-	Topic(src, list("command"="enable", "value"="[!enabled]"))
-	return 1
+	enabled = !enabled
+	updateTurrets()
+	return TRUE
 
-/atom/proc/AIAltClick(atom/A)
-	return AltClick(A)
+/atom/proc/AIAltClick(var/mob/living/silicon/user)
+	return AltClick(user)
 
-/obj/machinery/turretid/AIAltClick() //toggles lethal on turrets
-	if(usr.incapacitated())
-		return
-	Topic(src, list("command"="lethal", "value"="[!lethal]"))
-	return 1
-
-/obj/machinery/atmospherics/binary/pump/AIAltClick()
-	return AltClick()
-
-/atom/proc/AIMiddleClick(mob/living/silicon/user)
-	return 0
-
-/obj/machinery/door/airlock/AIMiddleClick() // Toggles door bolt lights.
-	if(usr.incapacitated())
-		return
-	if(..())
-		return
-
-	if(!src.lights)
-		Topic(src, list("command"="lights", "activate" = "1"))
+/obj/machinery/door/airlock/AIAltClick(var/mob/living/silicon/user) // Electrifies doors.
+	var/antag = player_is_antag(user.mind)
+	if(!antag && (electrified_until == 0))
+		to_chat(user, SPAN_WARNING("Your programming prevents you from electrifying the door."))
+		return FALSE
 	else
-		Topic(src, list("command"="lights", "activate" = "0"))
-	return 1
+		if(!electrified_until)
+			// permanent shock
+			electrify(-1, 1)
+		else
+			electrify(0)
+	return TRUE
 
+/obj/machinery/turretid/AIAltClick(var/mob/living/silicon/user) //toggles lethal on turrets
+	lethal = !lethal
+	updateTurrets()
+	return TRUE
+
+/atom/proc/AIMiddleClick(var/mob/living/silicon/user)
+	return FALSE
 //
 // Override AdjacentQuick for AltClicking
 //
 
-/mob/living/silicon/ai/TurfAdjacent(turf/T)
+/mob/living/silicon/ai/TurfAdjacent(var/turf/T)
 	return (cameranet && cameranet.is_turf_visible(T))
-
-/mob/living/silicon/ai/face_atom(atom/A)
-	if(eyeobj)
-		eyeobj.face_atom(A)
-
-
-// QOL feature, clicking on turf can toogle doors
-/turf/attack_ai(mob/user)
-	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
-	// QOL feature, clicking on turf can toogle doors
-	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in contents
-	if(AL)
-		AL.attack_hand(user)
-		return TRUE
-	var/obj/machinery/door/firedoor/FD = locate(/obj/machinery/door/firedoor) in contents
-	if(FD)
-		FD.attack_hand(user)
-		return TRUE
-
-/turf/AICtrlClick(mob/user)
-	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in contents
-	if(AL)
-		AL.AICtrlClick(user)
-		return
-	return ..()
-
-/turf/AIAltClick(mob/user)
-	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in contents
-	if(AL)
-		AL.AIAltClick(user)
-		return
-	return ..()
-
-/turf/AIShiftClick(mob/user)
-	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in contents
-	if(AL)
-		AL.AIShiftClick(user)
-		return
-	return ..()

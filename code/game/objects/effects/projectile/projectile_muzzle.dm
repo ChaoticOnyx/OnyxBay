@@ -3,58 +3,87 @@
 	icon = 'icons/effects/projectiles/muzzle.dmi'
 
 /obj/effect/projectile/muzzle/laser
-	name = "laser"
 	icon_state = "muzzle_laser"
-	light_color = COLOR_RED_LIGHT
+	light_color = LIGHT_COLOR_RED
+
+/obj/effect/projectile/muzzle/laser/scc
+	icon_state = "muzzle_scc"
+	light_color = COLOR_INDIGO
 
 /obj/effect/projectile/muzzle/laser/blue
 	icon_state = "muzzle_blue"
-	light_color = COLOR_BLUE_LIGHT
+	light_color = LIGHT_COLOR_BLUE
 
-/obj/effect/projectile/muzzle/laser/omni
+/obj/effect/projectile/muzzle/disabler
 	icon_state = "muzzle_omni"
-	light_color = COLOR_LUMINOL
-
-/obj/effect/projectile/muzzle/laser/small
-	light_max_bright = 0.7
-	icon_state = "muzzle_beam_small"
-
-/obj/effect/projectile/muzzle/laser/heavy
-	name = "heavy laser"
-	icon_state = "muzzle_beam_heavy"
+	light_color = LIGHT_COLOR_CYAN
 
 /obj/effect/projectile/muzzle/xray
-	name = "xray laser"
 	icon_state = "muzzle_xray"
-	light_color = "#00cc00"
+	light_color = LIGHT_COLOR_GREEN
 
 /obj/effect/projectile/muzzle/pulse
-	name = "pulse laser"
 	icon_state = "muzzle_u_laser"
-	light_color = COLOR_DEEP_SKY_BLUE
+	light_color = LIGHT_COLOR_BLUE
 
-/obj/effect/projectile/muzzle/trilaser
-	name = "plasma blast"
+/obj/effect/projectile/muzzle/plasma_cutter
 	icon_state = "muzzle_plasmacutter"
-	light_color = COLOR_LUMINOL
+	light_color = LIGHT_COLOR_CYAN
 
 /obj/effect/projectile/muzzle/stun
-	name = "stun beam"
 	icon_state = "muzzle_stun"
-	light_color = COLOR_YELLOW
+	light_color = LIGHT_COLOR_YELLOW
+
+/obj/effect/projectile/muzzle/heavy_laser
+	icon_state = "muzzle_beam_heavy"
+	light_power = 3
+	light_color = LIGHT_COLOR_RED
+
+/obj/effect/projectile/muzzle/cult
+	name = "arcane flash"
+	icon_state = "muzzle_cult"
+	light_color = LIGHT_COLOR_VIOLET
+	appearance_flags = NO_CLIENT_COLOR
+
+/obj/effect/projectile/muzzle/cult/heavy
+	icon_state = "muzzle_hcult"
+	light_power = 3
+	appearance_flags = NO_CLIENT_COLOR
+
+/obj/effect/projectile/muzzle/solar
+	icon_state = "muzzle_solar"
+	light_color = LIGHT_COLOR_FIRE
+
+/obj/effect/projectile/muzzle/eyelaser
+	icon_state = "muzzle_eye"
+	light_color = LIGHT_COLOR_RED
 
 /obj/effect/projectile/muzzle/emitter
 	icon_state = "muzzle_emitter"
-	light_color = "#00cc00"
-
-/obj/effect/projectile/muzzle/accel
-	icon_state = "muzzle_accel"
-	light_outer_range = 5
-	light_max_bright = 1
-	light_color = COLOR_OFF_WHITE
+	light_color = LIGHT_COLOR_GREEN
 
 /obj/effect/projectile/muzzle/bullet
 	icon_state = "muzzle_bullet"
-	light_outer_range = 5
-	light_max_bright = 1
-	light_color = COLOR_MUZZLE_FLASH
+
+/obj/effect/projectile/muzzle/tachyon
+	icon_state = "muzzle_pulse"
+	light_color = LIGHT_COLOR_CYAN
+
+/obj/effect/projectile/muzzle/bolt
+	icon_state = "muzzle_bolt"
+	light_color = LIGHT_COLOR_FIRE
+
+/obj/effect/projectile/muzzle/gauss
+	icon_state = "muzzle_gauss"
+
+/obj/effect/projectile/muzzle/bfg
+	icon_state = "muzzle_bfg"
+	light_color = LIGHT_COLOR_GREEN
+
+/obj/effect/projectile/muzzle/hegemony
+	icon_state = "muzzle_hegemony"
+	light_color = LIGHT_COLOR_ORANGE
+
+/obj/effect/projectile/muzzle/tesla
+	icon_state = "muzzle_lightning"
+	light_color = LIGHT_COLOR_CYAN

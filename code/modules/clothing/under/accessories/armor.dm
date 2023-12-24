@@ -1,276 +1,276 @@
-//Pouches
-/obj/item/clothing/accessory/storage/pouches
-	name = "storage pouches"
-	desc = "A collection of black pouches that can be attached to a plate carrier. Carries up to two items."
-	icon = 'icons/obj/clothing/modular_armor.dmi'
-	icon_state = "pouches"
-	gender = PLURAL
-	slot = ACCESSORY_SLOT_ARMOR_S
-	slots = 2
+//Leg guards.
+/obj/item/clothing/accessory/leg_guard
+	name = "corporate leg guards"
+	desc = "These will protect your legs and feet."
+	desc_info = "These items must be hooked onto plate carriers for them to work!"
+	icon = 'icons/clothing/kit/modular_armor.dmi'
+	icon_state = "legguards_sec"
+	item_state = "legguards_sec"
+	contained_sprite = TRUE
+	slot = ACCESSORY_SLOT_LEG_GUARDS
+	w_class = ITEMSIZE_NORMAL
+	armor = list(
+		melee = ARMOR_MELEE_KEVLAR,
+		bullet = ARMOR_BALLISTIC_MEDIUM,
+		laser = ARMOR_LASER_KEVLAR,
+		energy = ARMOR_ENERGY_SMALL,
+		bomb = ARMOR_BOMB_PADDED
+	)
+	body_parts_covered = LEGS|FEET
+	contained_sprite = TRUE
+	drop_sound = 'sound/items/drop/boots.ogg'
+	pickup_sound = 'sound/items/pickup/boots.ogg'
 
-/obj/item/clothing/accessory/storage/pouches/blue
-	desc = "A collection of blue pouches that can be attached to a plate carrier. Carries up to two items."
-	icon_state = "pouches_blue"
+/obj/item/clothing/accessory/leg_guard/generic
+	name = "standard leg guards"
+	icon_state = "legguards_generic"
+	item_state = "legguards_generic"
 
-/obj/item/clothing/accessory/storage/pouches/navy
-	desc = "A collection of navy blue pouches that can be attached to a plate carrier. Carries up to two items."
-	icon_state = "pouches_navy"
+/obj/item/clothing/accessory/leg_guard/scc
+	name = "scc leg guards"
+	icon_state = "legguards_scc"
+	item_state = "legguards_scc"
 
-/obj/item/clothing/accessory/storage/pouches/green
-	desc = "A collection of green pouches that can be attached to a plate carrier. Carries up to two items."
-	icon_state = "pouches_green"
-
-/obj/item/clothing/accessory/storage/pouches/tan
-	desc = "A collection of tan pouches that can be attached to a plate carrier. Carries up to two items."
-	icon_state = "pouches_tan"
-
-/obj/item/clothing/accessory/storage/pouches/large
-	name = "large storage pouches"
-	desc = "A collection of black pouches that can be attached to a plate carrier. Carries up to four items."
-	icon_state = "lpouches"
-	slots = 4
-	slowdown = 1
-
-/obj/item/clothing/accessory/storage/pouches/large/blue
-	desc = "A collection of blue pouches that can be attached to a plate carrier. Carries up to four items."
-	icon_state = "lpouches_blue"
-
-/obj/item/clothing/accessory/storage/pouches/large/navy
-	desc = "A collection of navy blue pouches that can be attached to a plate carrier. Carries up to four items."
-	icon_state = "lpouches_navy"
-
-/obj/item/clothing/accessory/storage/pouches/large/green
-	desc = "A collection of green pouches that can be attached to a plate carrier. Carries up to four items."
-	icon_state = "lpouches_green"
-
-/obj/item/clothing/accessory/storage/pouches/large/tan
-	desc = "A collection of tan pouches that can be attached to a plate carrier. Carries up to four items."
-	icon_state = "lpouches_tan"
-
-//Armor plates
-/obj/item/clothing/accessory/armorplate
-	name = "light armor plate"
-	desc = "A basic armor plate made of steel-reinforced synthetic fibers. Attaches to a plate carrier."
-	icon = 'icons/obj/clothing/modular_armor.dmi'
-	icon_state = "armor_light"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO
-	armor = list(melee = 25, bullet = 25, laser = 25, energy = 10, bomb = 25, bio = 0)
-	slot = ACCESSORY_SLOT_ARMOR_C
-
-/obj/item/clothing/accessory/armorplate/get_fibers()
-	return null	//plates do not shed
-
-/obj/item/clothing/accessory/armorplate/medium
-	name = "medium armor plate"
-	desc = "A plasteel-reinforced synthetic armor plate, providing good protection. Attaches to a plate carrier."
-	icon_state = "armor_medium"
-	armor = list(melee = 35, bullet = 35, laser = 35, energy = 15, bomb = 30, bio = 0)
-
-/obj/item/clothing/accessory/armorplate/syndi
-	name = "heavy armor plate"
-	desc = "A ceramics-reinforced synthetic armor plate, providing state of of the art protection. Attaches to a plate carrier."
-	icon_state = "armor_merc"
-	armor = list(melee = 60, bullet = 60, laser = 60, energy = 35, bomb = 40, bio = 0)
-	slowdown = 1
-
-//Arm guards
-/obj/item/clothing/accessory/armguards
-	name = "arm guards"
-	desc = "A pair of black arm pads reinforced with armor plating. Attaches to a plate carrier."
-	icon = 'icons/obj/clothing/modular_armor.dmi'
-	icon_state = "armguards"
-	gender = PLURAL
-	body_parts_covered = ARMS
-	armor = list(melee = 40, bullet = 40, laser = 40, energy = 15, bomb = 25, bio = 0)
-	slot = ACCESSORY_SLOT_ARMOR_A
-
-/obj/item/clothing/accessory/armguards/blue
-	desc = "A pair of blue arm pads reinforced with armor plating. Attaches to a plate carrier."
-	icon_state = "armguards_blue"
-
-/obj/item/clothing/accessory/armguards/navy
-	desc = "A pair of navy blue arm pads reinforced with armor plating. Attaches to a plate carrier."
-	icon_state = "armguards_navy"
-
-/obj/item/clothing/accessory/armguards/green
-	desc = "A pair of green arm pads reinforced with armor plating. Attaches to a plate carrier."
-	icon_state = "armguards_green"
-
-/obj/item/clothing/accessory/armguards/tan
-	desc = "A pair of tan arm pads reinforced with armor plating. Attaches to a plate carrier."
-	icon_state = "armguards_tan"
-
-/obj/item/clothing/accessory/armguards/syndi
-	name = "heavy arm guards"
-	desc = "A pair of red-trimmed black arm pads reinforced with heavy armor plating. Attaches to a plate carrier."
-	icon_state = "armguards_merc"
-	armor = list(melee = 60, bullet = 60, laser = 60, energy = 40, bomb = 40, bio = 0)
-
-/obj/item/clothing/accessory/armguards/riot
-	name = "riot arm guards"
-	desc = "A pair of armored arm pads with heavy padding to protect against melee attacks."
-	icon_state = "armguards_riot"
-	armor = list(melee = 80, bullet = 35, laser = 35, energy = 15, bomb = 25, bio = 0)
-	siemens_coefficient = 0.5
-
-/obj/item/clothing/accessory/armguards/ballistic
-	name = "ballistic arm guards"
-	desc = "A pair of armored arm pads with heavy plates to protect against ballistic projectiles."
-	icon_state = "armguards_ballistic"
-	armor = list(melee = 35, bullet = 85, laser = 35, energy = 15, bomb = 25, bio = 0)
-	siemens_coefficient = 0.7
-
-/obj/item/clothing/accessory/armguards/ablative
-	name = "ablative arm guards"
-	desc = "A pair of armored arm pads with advanced shielding to protect against energy weapons."
-	icon_state = "armguards_ablative"
-	armor = list(melee = 35, bullet = 35, laser = 85, energy = 60, bomb = 0, bio = 0)
-	siemens_coefficient = 0
-
-//Leg guards
-/obj/item/clothing/accessory/legguards
-	name = "leg guards"
-	desc = "A pair of armored leg pads in black. Attaches to a plate carrier."
-	icon = 'icons/obj/clothing/modular_armor.dmi'
-	icon_state = "legguards"
-	gender = PLURAL
-	body_parts_covered = LEGS
-	armor = list(melee = 35, bullet = 35, laser = 35, energy = 15, bomb = 25, bio = 0)
-	slot = ACCESSORY_SLOT_ARMOR_L
-
-/obj/item/clothing/accessory/legguards/blue
-	desc = "A pair of armored leg pads in blue. Attaches to a plate carrier."
-	icon_state = "legguards_blue"
-
-/obj/item/clothing/accessory/legguards/navy
-	desc = "A pair of armored leg pads in navy blue. Attaches to a plate carrier."
-	icon_state = "legguards_navy"
-
-/obj/item/clothing/accessory/legguards/green
-	desc = "A pair of armored leg pads in green. Attaches to a plate carrier."
-	icon_state = "legguards_green"
-
-/obj/item/clothing/accessory/legguards/tan
-	desc = "A pair of armored leg pads in tan. Attaches to a plate carrier."
-	icon_state = "legguards_tan"
-
-/obj/item/clothing/accessory/legguards/syndi
-	name = "heavy leg guards"
-	desc = "A pair of heavily armored leg pads in red-trimmed black. Attaches to a plate carrier."
-	icon_state = "legguards_merc"
-	armor = list(melee = 60, bullet = 60, laser = 60, energy = 35, bomb = 40, bio = 0)
-
-/obj/item/clothing/accessory/legguards/riot
-	name = "riot leg guards"
-	desc = "A pair of armored leg pads with heavy padding to protect against melee attacks. Looks like they might impair movement."
-	icon_state = "legguards_riot"
-	armor = list(melee = 80, bullet = 35, laser = 35, energy = 15, bomb = 25, bio = 0)
-	siemens_coefficient = 0.5
-	slowdown = 1
-
-/obj/item/clothing/accessory/legguards/ballistic
-	name = "ballistic leg guards"
-	desc = "A pair of armored leg pads with heavy plates to protect against ballistic projectiles. Looks like they might impair movement."
-	icon_state = "legguards_ballistic"
-	armor = list(melee = 35, bullet = 85, laser = 35, energy = 15, bomb = 25, bio = 0)
-	siemens_coefficient = 0.7
-	slowdown = 1
-
-/obj/item/clothing/accessory/legguards/ablative
+/obj/item/clothing/accessory/leg_guard/ablative
 	name = "ablative leg guards"
-	desc = "A pair of armored leg pads with advanced shielding to protect against energy weapons. Looks like they might impair movement."
+	desc = "These will protect your legs and feet from energy weapons."
 	icon_state = "legguards_ablative"
-	armor = list(melee = 35, bullet = 35, laser = 85, energy = 60, bomb = 25, bio = 0)
+	item_state = "legguards_ablative"
+	armor = list(
+		melee = ARMOR_MELEE_MINOR,
+		bullet = ARMOR_BALLISTIC_MINOR,
+		laser = ARMOR_LASER_MAJOR,
+		energy = ARMOR_ENERGY_RESISTANT
+	)
 	siemens_coefficient = 0
-	slowdown = 1
 
-//Decorative attachments
-/obj/item/clothing/accessory/armor/tag
-	name = "master armor tag"
-	desc = "A collection of various tags for placing on the front of a plate carrier."
-	icon = 'icons/obj/clothing/modular_armor.dmi'
-	icon_state = "null"
-	slot = ACCESSORY_SLOT_ARMOR_M
+/obj/item/clothing/accessory/leg_guard/ballistic
+	name = "ballistic leg guards"
+	desc = "These will protect your legs and feet from ballistic weapons."
+	icon_state = "legguards_ballistic"
+	item_state = "legguards_ballistic"
+	armor = list(
+		melee = ARMOR_MELEE_RESISTANT,
+		bullet = ARMOR_BALLISTIC_RIFLE,
+		laser = ARMOR_LASER_MINOR,
+		energy = ARMOR_ENERGY_MINOR,
+		bomb = ARMOR_BOMB_PADDED
+	)
 
-/obj/item/clothing/accessory/armor/tag/nt
-	name = "\improper NT SECURITY tag"
-	desc = "An armor tag with the words NT SECURITY printed in red lettering on it."
-	icon_state = "nanotag"
+/obj/item/clothing/accessory/leg_guard/riot
+	name = "riot leg guards"
+	desc = "These will protect your legs and feet from close combat weapons."
+	icon_state = "legguards_riot"
+	item_state = "legguards_riot"
+	armor = list(
+		melee = ARMOR_MELEE_VERY_HIGH,
+		bullet = ARMOR_BALLISTIC_MINOR,
+		laser = ARMOR_LASER_MINOR,
+		energy = ARMOR_ENERGY_MINOR,
+		bomb = ARMOR_BOMB_PADDED
+	)
 
-/obj/item/clothing/accessory/armor/tag/press
-	name = "\improper PRESS tag"
-	desc = "A tag with the word PRESS printed in white lettering on it."
-	icon_state = "presstag"
-	slot_flags = SLOT_BELT
+/obj/item/clothing/accessory/leg_guard/military
+	name = "sol army leg guards"
+	desc = "These will protect your legs and feet from most things."
+	icon_state = "legguards_military"
+	item_state = "legguards_military"
+	armor = list(
+		melee = ARMOR_MELEE_MAJOR,
+		bullet = ARMOR_BALLISTIC_MAJOR,
+		laser = ARMOR_LASER_MEDIUM,
+		energy = ARMOR_ENERGY_SMALL,
+		bomb = ARMOR_BOMB_PADDED,
+	)
 
-/obj/item/clothing/accessory/armor/tag/opos
-	name = "\improper O+ blood patch"
-	desc = "An embroidered patch indicating the wearer's blood type as O POSITIVE."
-	icon_state = "opostag"
+/obj/item/clothing/accessory/leg_guard/heavy
+	name = "heavy leg guards"
+	desc = "These leg guards will protect your legs and feet from most things."
+	icon_state = "legguards_heavy"
+	item_state = "legguards_heavy"
+	armor = list(
+		melee = ARMOR_MELEE_MAJOR,
+		bullet = ARMOR_BALLISTIC_MAJOR,
+		laser = ARMOR_LASER_MEDIUM,
+		energy = ARMOR_ENERGY_SMALL,
+		bomb = ARMOR_BOMB_PADDED,
+	)
 
-/obj/item/clothing/accessory/armor/tag/oneg
-	name = "\improper O- blood patch"
-	desc = "An embroidered patch indicating the wearer's blood type as O NEGATIVE."
-	icon_state = "onegtag"
+/obj/item/clothing/accessory/leg_guard/heavy/scc
+	name = "heavy SCC leg guards"
+	icon_state = "legguards_blue"
+	item_state = "legguards_blue"
 
-/obj/item/clothing/accessory/armor/tag/apos
-	name = "\improper A+ blood patch"
-	desc = "An embroidered patch indicating the wearer's blood type as A POSITIVE."
-	icon_state = "apostag"
+/obj/item/clothing/accessory/leg_guard/heavy/sec
+	name = "heavy corporate leg guards"
+	icon_state = "legguards_sec_heavy"
+	item_state = "legguards_sec_heavy"
+	armor = list(
+		melee = ARMOR_MELEE_MAJOR,
+		bullet = ARMOR_BALLISTIC_MAJOR,
+		laser = ARMOR_LASER_MEDIUM,
+		energy = ARMOR_ENERGY_SMALL,
+		bomb = ARMOR_BOMB_PADDED,
+	)
 
-/obj/item/clothing/accessory/armor/tag/aneg
-	name = "\improper A- blood patch"
-	desc = "An embroidered patch indicating the wearer's blood type as A NEGATIVE."
-	icon_state = "anegtag"
+/obj/item/clothing/accessory/leg_guard/tcaf
+	name = "\improper TCAF legionnaire leg carapace"
+	desc = "Try to sweep the leg against someone wearing these."
+	icon = 'icons/clothing/kit/modular_armor.dmi'
+	icon_state = "tcaf_boot_armor"
+	item_state = "tcaf_boot_armor"
+	contained_sprite = TRUE
+	armor = list(
+		melee = ARMOR_MELEE_MAJOR,
+		bullet = ARMOR_BALLISTIC_MAJOR,
+		laser = ARMOR_LASER_MEDIUM,
+		energy = ARMOR_ENERGY_SMALL,
+		bomb = ARMOR_BOMB_PADDED,
+	)
 
-/obj/item/clothing/accessory/armor/tag/bpos
-	name = "\improper B+ blood patch"
-	desc = "An embroidered patch indicating the wearer's blood type as B POSITIVE."
-	icon_state = "bpostag"
+//Arm guards.
+/obj/item/clothing/accessory/arm_guard
+	name = "corporate arm guards"
+	desc = "These arm guards will protect your hands and arms."
+	icon = 'icons/clothing/kit/modular_armor.dmi'
+	icon_state = "armguards_sec"
+	item_state = "armguards_sec"
+	contained_sprite = TRUE
+	slot = ACCESSORY_SLOT_ARM_GUARDS
+	body_parts_covered = HANDS|ARMS
+	armor = list(
+		melee = ARMOR_MELEE_KEVLAR,
+		bullet = ARMOR_BALLISTIC_MEDIUM,
+		laser = ARMOR_LASER_KEVLAR,
+		energy = ARMOR_ENERGY_SMALL,
+		bomb = ARMOR_BOMB_PADDED
+	)
+	w_class = ITEMSIZE_NORMAL
+	contained_sprite = TRUE
+	drop_sound = 'sound/items/drop/axe.ogg'
+	pickup_sound = 'sound/items/pickup/axe.ogg'
 
-/obj/item/clothing/accessory/armor/tag/bneg
-	name = "\improper B- blood patch"
-	desc = "An embroidered patch indicating the wearer's blood type as B NEGATIVE."
-	icon_state = "bnegtag"
+/obj/item/clothing/accessory/arm_guard/generic
+	name = "standard arm guards"
+	icon_state = "armguards_generic"
+	item_state = "armguards_generic"
 
-/obj/item/clothing/accessory/armor/tag/abpos
-	name = "\improper AB+ blood patch"
-	desc = "An embroidered patch indicating the wearer's blood type as AB POSITIVE."
-	icon_state = "abpostag"
+/obj/item/clothing/accessory/arm_guard/scc
+	name = "scc arm guards"
+	icon_state = "armguards_scc"
+	item_state = "armguards_scc"
 
-/obj/item/clothing/accessory/armor/tag/abneg
-	name = "\improper AB- blood patch"
-	desc = "An embroidered patch indicating the wearer's blood type as AB NEGATIVE."
-	icon_state = "abnegtag"
+/obj/item/clothing/accessory/arm_guard/ablative
+	name = "ablative arm guards"
+	desc = "These arm guards will protect your hands and arms from energy weapons."
+	icon_state = "armguards_ablative"
+	item_state = "armguards_ablative"
+	armor = list(
+		melee = ARMOR_MELEE_MINOR,
+		bullet = ARMOR_BALLISTIC_MINOR,
+		laser = ARMOR_LASER_MAJOR,
+		energy = ARMOR_ENERGY_RESISTANT
+	)
+	siemens_coefficient = 0
 
-/obj/item/clothing/accessory/armor/helmcover
-	name = "helmet cover"
-	desc = "A fabric cover for armored helmets."
-	icon = 'icons/obj/clothing/modular_armor.dmi'
-	icon_state = "null"
-	slot = ACCESSORY_SLOT_HELM_C
+/obj/item/clothing/accessory/arm_guard/ballistic
+	name = "ballistic arm guards"
+	desc = "These arm guards will protect your hands and arms from ballistic weapons."
+	icon_state = "armguards_ballistic"
+	item_state = "armguards_ballistic"
+	armor = list(
+		melee = ARMOR_MELEE_RESISTANT,
+		bullet = ARMOR_BALLISTIC_RIFLE,
+		laser = ARMOR_LASER_MINOR,
+		energy = ARMOR_ENERGY_MINOR,
+		bomb = ARMOR_BOMB_PADDED
+	)
 
-/obj/item/clothing/accessory/armor/helmcover/blue
-	name = "blue helmet cover"
-	desc = "A fabric cover for armored helmets in a bright blue color."
-	icon_state = "helmcover_blue"
+/obj/item/clothing/accessory/arm_guard/riot
+	name = "riot arm guards"
+	desc = "These arm guards will protect your hands and arms from close combat weapons."
+	icon_state = "armguards_riot"
+	item_state = "armguards_riot"
+	armor = list(
+		melee = ARMOR_MELEE_VERY_HIGH,
+		bullet = ARMOR_BALLISTIC_MINOR,
+		laser = ARMOR_LASER_MINOR,
+		energy = ARMOR_ENERGY_MINOR,
+		bomb = ARMOR_BOMB_PADDED
+	)
 
-/obj/item/clothing/accessory/armor/helmcover/navy
-	name = "navy blue helmet cover"
-	desc = "A fabric cover for armored helmets. This one is colored navy blue."
-	icon_state = "helmcover_navy"
+/obj/item/clothing/accessory/arm_guard/military
+	name = "sol army arm guards"
+	desc = "These arm guards will protect your hands and arms from most things."
+	icon_state = "armguards_military"
+	item_state = "armguards_military"
+	armor = list(
+		melee = ARMOR_MELEE_MAJOR,
+		bullet = ARMOR_BALLISTIC_MAJOR,
+		laser = ARMOR_LASER_MEDIUM,
+		energy = ARMOR_ENERGY_SMALL,
+		bomb = ARMOR_BOMB_PADDED,
+	)
 
-/obj/item/clothing/accessory/armor/helmcover/green
-	name = "green helmet cover"
-	desc = "A fabric cover for armored helmets. This one has a woodland camouflage pattern."
-	icon_state = "helmcover_green"
+/obj/item/clothing/accessory/arm_guard/heavy
+	name = "heavy arm guards"
+	desc = "These arm guards will protect your hands and arms from most things."
+	icon_state = "armguards_heavy"
+	item_state = "armguards_heavy"
+	armor = list(
+		melee = ARMOR_MELEE_MAJOR,
+		bullet = ARMOR_BALLISTIC_MAJOR,
+		laser = ARMOR_LASER_MEDIUM,
+		energy = ARMOR_ENERGY_SMALL,
+		bomb = ARMOR_BOMB_PADDED,
+	)
 
-/obj/item/clothing/accessory/armor/helmcover/tan
-	name = "tan helmet cover"
-	desc = "A fabric cover for armored helmets. This one has a desert camouflage pattern."
-	icon_state = "helmcover_tan"
+/obj/item/clothing/accessory/arm_guard/heavy/scc
+	name = "heavy SCC arm guards"
+	icon_state = "armguards_blue"
+	item_state = "armguards_blue"
 
-/obj/item/clothing/accessory/armor/helmcover/nt
-	name = "\improper NanoTrasen helmet cover"
-	desc = "A fabric cover for armored helmets. This one has NanoTrasen's colors."
-	icon_state = "helmcover_nt"
+/obj/item/clothing/accessory/arm_guard/heavy/sec
+	name = "heavy corporate arm guards"
+	icon_state = "armguards_sec_heavy"
+	item_state = "armguards_sec_heavy"
+	armor = list(
+		melee = ARMOR_MELEE_MAJOR,
+		bullet = ARMOR_BALLISTIC_MAJOR,
+		laser = ARMOR_LASER_MEDIUM,
+		energy = ARMOR_ENERGY_SMALL,
+		bomb = ARMOR_BOMB_PADDED,
+	)
+
+/obj/item/clothing/accessory/arm_guard/kala
+	name = "kala arm guards"
+	desc = "These arm guards are made out of an advanced lightweight alloy."
+	icon_state = "armguards_sec_heavy"
+	item_state = "armguards_sec_heavy"
+	armor = list(
+		melee = ARMOR_MELEE_MAJOR,
+		bullet = ARMOR_BALLISTIC_MAJOR,
+		laser = ARMOR_LASER_MEDIUM,
+		energy = ARMOR_ENERGY_SMALL,
+		bomb = ARMOR_BOMB_PADDED,
+	)
+
+/obj/item/clothing/accessory/arm_guard/tcaf
+	name = "\improper TCAF carapace arm guards"
+	desc = "Blue carapace armguards to protect you in the modern battlefield of 2465."
+	icon = 'icons/clothing/kit/modular_armor.dmi'
+	icon_state = "tcaf_armguards"
+	item_state = "tcaf_armguards"
+	contained_sprite = TRUE
+	armor = list(
+		melee = ARMOR_MELEE_MAJOR,
+		bullet = ARMOR_BALLISTIC_MAJOR,
+		laser = ARMOR_LASER_MEDIUM,
+		energy = ARMOR_ENERGY_SMALL,
+		bomb = ARMOR_BOMB_PADDED,
+	)
+
+/obj/item/clothing/accessory/arm_guard/tcaf/tcaf_stripe
+	name = "striped TCAF carapace arm guards"
+	icon_state = "tcaf_armguards_stripe"
+	item_state = "tcaf_armguards_stripe"

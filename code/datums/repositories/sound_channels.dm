@@ -1,8 +1,11 @@
-GLOBAL_DATUM_INIT(sound_channels, /repository/sound_channels, new)
-GLOBAL_VAR_INIT(lobby_sound_channel, GLOB.sound_channels.RequestChannel("LOBBY"))
-GLOBAL_VAR_INIT(vote_sound_channel, GLOB.sound_channels.RequestChannel("VOTE"))
-GLOBAL_VAR_INIT(ambience_sound_channel, GLOB.sound_channels.RequestChannel("AMBIENCE"))
-GLOBAL_VAR_INIT(admin_sound_channel, GLOB.sound_channels.RequestChannel("ADMIN_FUN"))
+var/repository/sound_channels/sound_channels = new()
+// lobby_sound_channel = sound_channels.RequestChannel("LOBBY")
+// vote_sound_channel = sound_channels.RequestChannel("VOTE")
+// admin_sound_channel = sound_channels.RequestChannel("ADMIN_FUN")
+
+// ambience_channel_vents = sound_channels.RequestChannel("AMBIENCE_VENTS")
+// ambience_channel_forced = sound_channels.RequestChannel("AMBIENCE_FORCED")
+// ambience_channel_common = sound_channels.RequestChannel("AMBIENCE_COMMON")
 
 /repository/sound_channels
 	var/datum/stack/available_channels

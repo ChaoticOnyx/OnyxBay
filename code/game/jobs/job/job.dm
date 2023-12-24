@@ -1,174 +1,256 @@
 /datum/job
-
-	//The name of the job
-	var/title = "NOPE"
-	//Job access. The use of minimal_access or access is determined by a config setting: config.game.jobs_have_minimal_access
+	var/title = "NOPE"                    //The name of the job
+	//Job access. The use of minimal_access or access is determined by a config setting: config.jobs_have_minimal_access
 	var/list/minimal_access = list()      // Useful for servers which prefer to only have access given to the places a job absolutely needs (Larger server population)
 	var/list/access = list()              // Useful for servers which either have fewer players, so each person needs to fill more than one role, or servers which like to give more access, so players can't hide forever in their super secure departments (I'm looking at you, chemistry!)
-	var/list/software_on_spawn = list()   // Defines the software files that spawn on tablets and labtops
-	var/department_flag = 0
+
+	var/flag = 0                          // Bitflags for the job
+	var/department_flag = 0               // Used to tell which set of job bitflags to use to determine the actual job (since there are too many jobs to fit in a single bit flag)
+	var/faction = "None"	              // Players will be allowed to spawn in as jobs that are set to "Station"
+
 	var/total_positions = 0               // How many players can be this job
 	var/spawn_positions = 0               // How many players can spawn in as this job
 	var/current_positions = 0             // How many players have this job
-	var/availablity_chance = 100          // Percentage chance job is available each round
-	var/no_latejoin = FALSE               // Disables late join for this job
 
-	var/open_vacancies   = 0              // How many vacancies were opened by heads
-	var/filled_vacancies = 0              // How many vacancies were filled
-	var/can_be_hired  = TRUE              // Can the Command  open a vacancy for this role?
-
+	var/intro_prefix = "a"
 	var/supervisors = null                // Supervisors, who this person answers to directly
-	var/selection_color = "#ffffff"       // Selection screen color
-	var/list/alt_titles                   // List of alternate titles, if any and any potential alt. outfits as assoc values.
-	var/req_admin_notify                  // If this is set to 1, a text is printed to the player when jobs are assigned, telling him that he should let admins know that he has to disconnect.
+	var/selection_color = "#5d6a67"     // Selection screen color
+	var/list/departments = list()         // List of departments this job is a part of. Keys are departments, values are a bit field that indicate special roles of that job within the department (like whether they are a head/supervisor of that department).
+	var/list/alt_titles                   // List of alternate titles, if any
+	var/list/title_accesses               // A map of title -> list of accesses to add if the person has this title.
 	var/minimal_player_age = 0            // If you have use_age_restriction_for_jobs config option enabled and the database set up, this option will add a requirement for players to be at least minimal_player_age days old. (meaning they first signed in at least that many days before.)
-	var/department = null                 // Does this position have a department tag?
-	var/head_position = FALSE             // Is this position Command?
-	var/minimum_character_age = 0
-	var/ideal_character_age = 30
-	var/faction_restricted = FALSE
-	var/create_record = TRUE              // Do we announce/make records for people who spawn on this job?
+	var/list/minimum_character_age = list(// Age restriction, assoc list of species define -> age; if species isn't found, defaults to SPECIES_HUMAN entry
+		SPECIES_HUMAN = 17,
+		SPECIES_SKRELL = 50,
+		SPECIES_SKRELL_AXIORI = 50
+	)
+	var/list/alt_ages = null              // assoc list of alt titles to minimum character ages assoc lists (see above -- yes this is slightly awful)
+	var/list/ideal_character_age = list(  // Ideal character ages (for heads), assoc list of species define -> age, see above
+		SPECIES_HUMAN = 30,
+		SPECIES_SKRELL = 100,
+		SPECIES_SKRELL_AXIORI = 100
+	)
+
+	var/latejoin_at_spawnpoints = FALSE   //If this job should use roundstart spawnpoints for latejoin (offstation jobs etc)
 
 	var/account_allowed = TRUE            // Does this job type come with a station account?
+	var/public_account = TRUE             // does this account appear on account terminals?
+	var/initial_funds_override = 0        // if set to anything else, the initial account balance will be set to this instead
 	var/economic_modifier = 2             // With how much does this job modify the initial account amount?
+	var/create_record = TRUE              // Do we announce/make records for people who spawn on this job?
 
-	var/outfit_type                       // The outfit the employee will be dressed in, if any
-	var/list/preview_override             // Overrides the preview mannequin w/ given icon. Must be formatted as 'list(icon_state, icon)'.
+	var/datum/outfit/outfit = null
+	var/list/alt_outfits = null           // A list of special outfits for the alt titles list("alttitle" = /datum/outfit)
+	var/list/blacklisted_species = null   // A blacklist of species that can't be this job
+	var/list/blacklisted_citizenship = list() //A blacklist of citizenships that can't be this job
 
-	var/loadout_allowed = TRUE            // Whether or not loadout equipment is allowed and to be created when joining.
+//Only override this proc
+/datum/job/proc/pre_spawn(mob/abstract/new_player/player)
+	return
 
-	var/announced = TRUE                  //If their arrival is announced on radio
-	var/latejoin_at_spawnpoints           //If this job should use roundstart spawnpoints for latejoin (offstation jobs etc)
-	var/off_station = FALSE
+/datum/job/proc/after_spawn(mob/living/carbon/human/H)
 
-	var/hud_icon						  //icon used for Sec HUD overlay
-	var/show_in_setup = TRUE
+/datum/job/proc/on_despawn(mob/living/carbon/human/H)
+	return
 
-/datum/job/New()
-	..()
-	if(prob(100-availablity_chance))	//Close positions, blah blah.
-		total_positions = 0
-		spawn_positions = 0
-	if(!hud_icon)
-		hud_icon = "hud[ckey(title)]"
+/datum/job/proc/announce(mob/living/carbon/human/H)
 
-/datum/job/dd_SortValue()
-	return title
+/datum/job/proc/get_outfit(mob/living/carbon/human/H, alt_title=null)
+	//Check if we have a speical outfit for that alt title
+	alt_title = H?.mind?.role_alt_title || alt_title
 
-/datum/job/proc/equip(mob/living/carbon/human/H, alt_title)
-	var/decl/hierarchy/outfit/outfit = get_outfit(H, alt_title)
-	if(!outfit)
-		return FALSE
-	. = outfit.equip(H, title, alt_title)
+	if (H?.mind?.selected_faction?.titles_to_loadout)
+		if (alt_title && H.mind.selected_faction.titles_to_loadout[alt_title])
+			return H.mind.selected_faction.titles_to_loadout[alt_title]
+		else if (H.mind.selected_faction.titles_to_loadout[H.job])
+			return H.mind.selected_faction.titles_to_loadout[H.job]
 
-/datum/job/proc/get_outfit(mob/living/carbon/human/H, alt_title)
-	if(alt_title && alt_titles)
-		. = alt_titles[alt_title]
-	. = . || outfit_type
-	. = outfit_by_type(.)
+	if (alt_title && LAZYACCESS(alt_outfits, alt_title))
+		return alt_outfits[alt_title]
 
-/datum/job/proc/setup_account(mob/living/carbon/human/H)
+	if (alt_outfits && alt_outfits[H.job])
+		return alt_outfits[H.job]
+	else if (outfit)
+		return outfit
+
+/datum/job/proc/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE, alt_title = null)
+	if(!H)
+		return 0
+
+	H.species.before_equip(H, visualsOnly, src)
+	H.preEquipOutfit(get_outfit(H, alt_title), visualsOnly)
+
+/datum/job/proc/equip(mob/living/carbon/human/H, visualsOnly = FALSE, announce = TRUE, alt_title = null)
+	if(!H)
+		return 0
+	H.equipOutfit(get_outfit(H, alt_title), visualsOnly)
+
+	H.species.after_equip(H, visualsOnly, src)
+
+	if(!visualsOnly && announce)
+		announce(H)
+
+/datum/job/proc/setup_account(var/mob/living/carbon/human/H)
 	if(!account_allowed || (H.mind && H.mind.initial_account))
 		return
 
-	var/loyalty = 1
+	var/econ_status = 1
 	if(H.client)
-		switch(H.client.prefs.nanotrasen_relation)
-			if(COMPANY_LOYAL)		loyalty = 1.30
-			if(COMPANY_SUPPORTATIVE)loyalty = 1.15
-			if(COMPANY_NEUTRAL)		loyalty = 1
-			if(COMPANY_SKEPTICAL)	loyalty = 0.85
-			if(COMPANY_OPPOSED)		loyalty = 0.70
+		switch(H.client.prefs.economic_status)
+			if(ECONOMICALLY_WEALTHY)		econ_status = 1.30
+			if(ECONOMICALLY_WELLOFF)		econ_status = 1.15
+			if(ECONOMICALLY_AVERAGE)		econ_status = 1
+			if(ECONOMICALLY_UNDERPAID)		econ_status = 0.75
+			if(ECONOMICALLY_POOR)			econ_status = 0.50
+			if(ECONOMICALLY_DESTITUTE)		econ_status = 0.25
+			if(ECONOMICALLY_RUINED)			econ_status = 0.01
 
 	//give them an account in the station database
-	if(!(H.species && (H.species.type in economic_species_modifier)))
-		return //some bizarre species like shadow, metroid, or monkey? You don't get an account.
+	var/species_modifier = (H.species ? H.species.economic_modifier : null)
+	if (!species_modifier)
+		var/datum/species/human_species = global.all_species[SPECIES_HUMAN]
+		species_modifier = human_species.economic_modifier
 
-	var/species_modifier = economic_species_modifier[H.species.type]
-
-	var/money_amount = (rand(5,50) + rand(5, 50)) * loyalty * economic_modifier * species_modifier * GLOB.using_map.salary_modifier
-	var/datum/money_account/M = create_account(H.real_name, money_amount, null, off_station)
-	if(H.client)
-		M.security_level = H.client.prefs.bank_security
-		if(H.client.prefs.bank_pin)
-			M.remote_access_pin = H.client.prefs.bank_pin
+	var/money_amount = initial_funds_override ? initial_funds_override : (rand(5,50) + rand(5, 50)) * econ_status * economic_modifier * species_modifier
+	var/datum/money_account/M = SSeconomy.create_account(H.real_name, money_amount, null, public_account)
 	if(H.mind)
 		var/remembered_info = ""
-		remembered_info += "<b>Your account:</b><br>"
-		remembered_info += "<b>Number:</b> #[M.account_number]<br>"
-		remembered_info += "<b>Pin:</b> [M.remote_access_pin]<br>"
-		remembered_info += "<b>Funds:</b> [M.money]cr.<br>"
+		remembered_info += "<b>Your account number is:</b> #[M.account_number]<br>"
+		remembered_info += "<b>Your account pin is:</b> [M.remote_access_pin]<br>"
+		remembered_info += "<b>Your account funds are:</b> [M.money]电<br>"
 
-		if(M.transaction_log.len)
-			var/datum/transaction/T = M.transaction_log[1]
+		if(M.transactions.len)
+			var/datum/transaction/T = M.transactions[1]
 			remembered_info += "<b>Your account was created:</b> [T.time], [T.date] at [T.source_terminal]<br>"
 		H.mind.store_memory(remembered_info)
 
 		H.mind.initial_account = M
 
-	to_chat(H, SPAN("notice", "<b>Your account number is: [M.account_number], your account pin is: [M.remote_access_pin]</b>"))
+	to_chat(H, "<span class='notice'><b>Your account number is: [M.account_number], your account pin is: [M.remote_access_pin]</b></span>")
 
-// overrideable separately so AIs/borgs can have cardborg hats without unneccessary new()/qdel()
-/datum/job/proc/equip_preview(mob/living/carbon/human/H, alt_title)
-	var/decl/hierarchy/outfit/outfit = get_outfit(H, alt_title)
-	if(!outfit)
-		return FALSE
-	if(!isnull(preview_override))
-		if(!islist(preview_override) || length(preview_override) != 2)
-			util_crash_with("Job [title] uses preview_override and it's broken. Someone's fucked things up.")
-			return FALSE
-		H.ClearOverlays()
-		H.update_icon = FALSE
-		H.icon = preview_override[2]
-		H.icon_state = preview_override[1]
-		return TRUE
-	. = outfit.equip(H, title, alt_title, OUTFIT_ADJUSTMENT_SKIP_POST_EQUIP|OUTFIT_ADJUSTMENT_SKIP_ID_PDA)
+// overrideable separately so AIs/borgs can have cardborg hats without unneccessary new()/del()
+/datum/job/proc/equip_preview(mob/living/carbon/human/H, var/alt_title, var/faction_override)
+	if(faction_override)
+		var/faction = SSjobs.name_factions[faction_override]
+		if(faction)
+			var/datum/faction/F = faction
+			if(!F.is_default)
+				var/new_outfit = F.titles_to_loadout[title]
+				if(ispath(new_outfit))
+					var/datum/outfit/O = new new_outfit
+					O.pre_equip(H, TRUE)
+					O.equip(H, TRUE)
+					return
+	pre_equip(H, TRUE)
+	. = equip(H, TRUE, FALSE, alt_title=alt_title)
 
-/datum/job/proc/get_access()
-	if(minimal_access.len && (!config || config.game.jobs_have_minimal_access))
-		return src.minimal_access.Copy()
+/datum/job/proc/get_access(selected_title)
+	if(!config || config.jobs_have_minimal_access)
+		. = minimal_access.Copy()
 	else
-		return src.access.Copy()
+		. = access.Copy()
 
-//If the configuration option is set to require players to be logged as old enough to play certain jobs, then this proc checks that they are, otherwise it just returns 1
-/datum/job/proc/player_old_enough(client/C)
-	return (available_in_days(C) == 0) //Available in 0 days = available right now = player is old enough to play.
+	if (LAZYLEN(title_accesses) && title_accesses[selected_title])
+		. += title_accesses[selected_title]
 
-/datum/job/proc/available_in_days(client/C)
-	if(C && config.game.use_age_restriction_for_jobs && QDELETED(C.holder) && isnum(C.player_age) && isnum(minimal_player_age))
-		return max(0, minimal_player_age - C.player_age)
-	return FALSE
+/datum/job/proc/get_total_positions()
+	return total_positions
 
-/datum/job/proc/apply_fingerprints(mob/living/carbon/human/target)
-	if(!istype(target))
-		return FALSE
-	for(var/obj/item/item in target.contents)
-		apply_fingerprints_to_item(target, item)
-	return TRUE
-
-/datum/job/proc/apply_fingerprints_to_item(mob/living/carbon/human/holder, obj/item/item)
-	item.add_fingerprint(holder, 1)
-	if(item.contents.len)
-		for(var/obj/item/sub_item in item.contents)
-			apply_fingerprints_to_item(holder, sub_item)
+/datum/job/proc/get_spawn_positions()
+	return spawn_positions
 
 /datum/job/proc/is_position_available()
-	return (current_positions < total_positions + open_vacancies) || (total_positions == -1)
+	var/total = get_total_positions()
+	return (current_positions < total) || (total == -1)
 
-/datum/job/proc/has_alt_title(mob/H, supplied_title, desired_title)
+/datum/job/proc/get_minimum_character_age(var/species)
+	if(!species || !(species in minimum_character_age))
+		species = SPECIES_HUMAN
+	return minimum_character_age[species]
+
+/datum/job/proc/get_alt_character_age(var/species, var/title)
+	// call this w/o title to get the most minimum of alt ages, used in occupation.dm:/datum/category_item/player_setup_item/occupation/content
+	if(!species)
+		species = SPECIES_HUMAN
+	var/min_alt_age
+	if(!title)
+		for(var/t in alt_ages)
+			if(species in alt_ages[t])
+				min_alt_age = min(min_alt_age, alt_ages[t][species])
+			else
+				min_alt_age = min(min_alt_age, alt_ages[t][SPECIES_HUMAN])
+		return min_alt_age
+	else if(title in alt_ages)
+		return (species in alt_ages[title]) ? alt_ages[title][species] : alt_ages[title][SPECIES_HUMAN]
+
+/datum/job/proc/get_ideal_character_age(var/species)
+	if(!species)
+		species = SPECIES_HUMAN
+	else if(!(species in ideal_character_age))
+		// try to see if there's a min age set -- ideally this shouldn't happen, but better to take a min age than fall back to human just yet
+		if(species in minimum_character_age) // if there is one, just add 20 and send it
+			return minimum_character_age[species] + 20
+		species = SPECIES_HUMAN // no such luck
+	return ideal_character_age[species]
+
+/datum/job/proc/fetch_age_restriction()
+	if (!config.age_restrictions_from_file)
+		return
+
+	if (config.age_restrictions[lowertext(title)])
+		minimal_player_age = config.age_restrictions[lowertext(title)]
+	else
+		minimal_player_age = 0
+
+/datum/job/proc/has_alt_title(var/mob/H, var/supplied_title, var/desired_title)
 	return (supplied_title == desired_title) || (H.mind && H.mind.role_alt_title == desired_title)
 
-/datum/job/proc/is_restricted(datum/preferences/prefs, feedback)
-	var/datum/species/S = all_species[prefs.species]
-	if(!is_species_allowed(S))
-		to_chat(feedback, SPAN("boldannounce", "Restricted species, [S], for [title]."))
-		return TRUE
+/datum/outfit/job
+	name = "Standard Gear"
+	var/base_name = null
+	collect_not_del = FALSE
 
-	return FALSE
+	var/allow_loadout = TRUE
+	allow_backbag_choice = TRUE
+	allow_pda_choice = TRUE
+	allow_headset_choice = TRUE
+	var/jobtype = null
 
-/datum/job/proc/is_species_allowed(datum/species/S)
-	return !GLOB.using_map.is_species_job_restricted(S, src)
+	uniform = /obj/item/clothing/under/color/grey
+	id = /obj/item/card/id
+	back = /obj/item/storage/backpack
+	shoes = /obj/item/clothing/shoes/sneakers/black
 
-/datum/job/proc/set_positions(value)
-	total_positions = value
-	spawn_positions = value
+	headset = /obj/item/device/radio/headset
+	bowman = /obj/item/device/radio/headset/alt
+	double_headset = /obj/item/device/radio/headset/alt/double
+	wrist_radio = /obj/item/device/radio/headset/wrist
+
+	tab_pda = /obj/item/modular_computer/handheld/pda/civilian
+	wristbound = /obj/item/modular_computer/handheld/wristbound/preset/pda/civilian
+	tablet = /obj/item/modular_computer/handheld/preset/civilian
+
+	var/box = /obj/item/storage/box/survival
+
+/datum/outfit/job/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	back = null //Nulling the backpack here, since we already equipped the backpack in pre_equip
+	if(box)
+		var/spawnbox = box
+		backpack_contents.Insert(1, spawnbox) // Box always takes a first slot in backpack
+		backpack_contents[spawnbox] = 1
+	. = ..()
+
+/datum/outfit/job/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	. = ..()
+
+/datum/outfit/job/get_id_access(mob/living/carbon/human/H)
+	var/datum/job/J = SSjobs.GetJobType(jobtype)
+	if(!J)
+		J = SSjobs.GetJob(H.job)
+	return J.get_access(get_id_assignment(H, TRUE))
+
+/datum/outfit/job/get_id_rank(mob/living/carbon/human/H)
+	var/datum/job/J = SSjobs.GetJobType(jobtype)
+	if(!J)
+		J = SSjobs.GetJob(H.job)
+	return J.title

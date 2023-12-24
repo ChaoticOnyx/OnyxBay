@@ -10,12 +10,6 @@
 	return ..()
 
 //Compute how to fire.....
-//Return 1 if a target was found, 0 otherwise.
+//Return TRUE if a target was found, FALSE otherwise.
 /obj/item/gun/proc/PreFire(atom/A, mob/living/user, params)
-	if(!user.aiming)
-		user.aiming = new(user)
-	user.face_atom(A)
-	if(ismob(A) && user.aiming)
-		user.aiming.aim_at(A, src)
-		return 1
-	return 0
+	return istype(user) && user.aim_at(A, src)

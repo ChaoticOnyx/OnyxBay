@@ -1,58 +1,126 @@
-//Loadout presets
+/obj/item/modular_computer/laptop/preset
+	anchored = FALSE
+	screen_on = FALSE
+	icon_state = "laptop-closed"
 
-/obj/item/modular_computer/laptop/preset/custom_loadout/cheap/install_default_hardware()
-	..()
-	processor_unit = new /obj/item/computer_hardware/processor_unit/small(src)
-	tesla_link = new /obj/item/computer_hardware/tesla_link(src)
-	hard_drive = new /obj/item/computer_hardware/hard_drive/(src)
-	network_card = new /obj/item/computer_hardware/network_card/(src)
-	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
-	card_slot = new /obj/item/computer_hardware/card_slot(src)
-	battery_module = new /obj/item/computer_hardware/battery_module/advanced(src)
-	battery_module.charge_to_full()
-
-/obj/item/modular_computer/laptop/preset/custom_loadout/advanced/install_default_hardware()
+/obj/item/modular_computer/laptop/preset/install_default_hardware()
 	..()
 	processor_unit = new /obj/item/computer_hardware/processor_unit(src)
-	tesla_link = new /obj/item/computer_hardware/tesla_link(src)
-	hard_drive = new /obj/item/computer_hardware/hard_drive/advanced(src)
-	network_card = new /obj/item/computer_hardware/network_card/advanced(src)
+	hard_drive = new /obj/item/computer_hardware/hard_drive(src)
+	network_card = new /obj/item/computer_hardware/network_card(src)
+	battery_module = new /obj/item/computer_hardware/battery_module(src)
+	battery_module.charge_to_full()
 	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
+	nano_printer.max_paper = 10
+	nano_printer.stored_paper = 5
+	tesla_link = new /obj/item/computer_hardware/tesla_link/charging_cable(src)
+
+// the laptop in the modular computer loadout
+/obj/item/modular_computer/laptop/preset/loadout/install_default_hardware()
+	. = ..()
 	card_slot = new /obj/item/computer_hardware/card_slot(src)
-	battery_module = new /obj/item/computer_hardware/battery_module/advanced(src)
-	battery_module.charge_to_full()
 
-/obj/item/modular_computer/laptop/preset/custom_loadout/standard/install_default_hardware()
+// Engineering
+/obj/item/modular_computer/laptop/preset/engineering
+	name = "engineering laptop"
+	desc = "A portable computer belonging to the engineering department. It appears to have been used as a door stop at one point or another."
+	_app_preset_type = /datum/modular_computer_app_presets/engineering
+	enrolled = DEVICE_COMPANY
+
+/obj/item/modular_computer/laptop/preset/engineering/ce
+	name = "chief engineer's laptop"
+	desc = "A portable computer belonging to the chief engineer."
+	_app_preset_type = /datum/modular_computer_app_presets/engineering/ce
+
+// Medical
+/obj/item/modular_computer/laptop/preset/medical
+	name = "medical laptop"
+	desc = "A portable computer belonging to the medical department."
+	_app_preset_type = /datum/modular_computer_app_presets/medical
+	enrolled = DEVICE_COMPANY
+
+/obj/item/modular_computer/laptop/preset/medical/cmo
+	name = "chief medical officer's laptop"
+	desc = "A portable computer belonging to the chief medical officer."
+	_app_preset_type = /datum/modular_computer_app_presets/medical/cmo
+
+// Research
+/obj/item/modular_computer/laptop/preset/research
+	name = "research laptop"
+	desc = "A portable computer belonging to the research department."
+	_app_preset_type = /datum/modular_computer_app_presets/research
+	enrolled = DEVICE_COMPANY
+
+/obj/item/modular_computer/laptop/preset/research/install_default_hardware()
 	..()
-	processor_unit = new /obj/item/computer_hardware/processor_unit(src)
-	tesla_link = new /obj/item/computer_hardware/tesla_link(src)
-	hard_drive = new /obj/item/computer_hardware/hard_drive/(src)
-	network_card = new /obj/item/computer_hardware/network_card/(src)
-	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
+	ai_slot = new /obj/item/computer_hardware/ai_slot(src)
+
+/obj/item/modular_computer/laptop/preset/research/rd
+	name = "research director's laptop"
+	desc = "A portable computer belonging to the research director. The edges are stained and partially melted."
+	_app_preset_type = /datum/modular_computer_app_presets/research/rd
+
+// Command
+/obj/item/modular_computer/laptop/preset/command
+	name = "command laptop"
+	_app_preset_type = /datum/modular_computer_app_presets/command
+	enrolled = DEVICE_COMPANY
+
+/obj/item/modular_computer/laptop/preset/command/teleporter
+	name = "teleporter control laptop"
+	desc = "A portable computer that has a special teleporter control program loaded."
+	_app_preset_type = /datum/modular_computer_app_presets/command/teleporter
+
+/obj/item/modular_computer/laptop/preset/command/xo
+	name = "executive officer's laptop"
+	desc = "A portable computer beloning to the executive officer. The fan is filled with dog hair."
+	_app_preset_type = /datum/modular_computer_app_presets/command/hop
+
+/obj/item/modular_computer/laptop/preset/command/xo/install_default_hardware()
+	..()
 	card_slot = new /obj/item/computer_hardware/card_slot(src)
-	battery_module = new /obj/item/computer_hardware/battery_module/advanced(src)
-	battery_module.charge_to_full()
 
-/obj/item/modular_computer/laptop/preset/custom_loadout/install_default_programs()
+/obj/item/modular_computer/laptop/preset/command/captain
+	name = "captain's laptop"
+	desc = "A portable computer belonging to the captain."
+	_app_preset_type = /datum/modular_computer_app_presets/command/captain
+
+/obj/item/modular_computer/laptop/preset/command/captain/install_default_hardware()
 	..()
-	var/mob/living/carbon/human/H = get_holder_of_type(src, /mob)
-	if(!istype(H)) return
-	install_default_programs_by_job(H)
-	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
+	card_slot = new /obj/item/computer_hardware/card_slot(src)
 
-//Map presets
+// Security
+/obj/item/modular_computer/laptop/preset/security
+	name = "security laptop"
+	desc = "A portable computer belonging to the security department."
+	_app_preset_type = /datum/modular_computer_app_presets/security
+	enrolled = DEVICE_COMPANY
 
-/obj/item/modular_computer/laptop/preset/records/install_default_hardware()
-	..()
-	processor_unit = new /obj/item/computer_hardware/processor_unit/small(src)
-	tesla_link = new /obj/item/computer_hardware/tesla_link(src)
-	hard_drive = new /obj/item/computer_hardware/hard_drive/(src)
-	network_card = new /obj/item/computer_hardware/network_card/(src)
-	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
-	battery_module = new /obj/item/computer_hardware/battery_module/nano(src)
-	battery_module.charge_to_full()
+/obj/item/modular_computer/laptop/preset/security/hos
+	name = "head of security's laptop"
+	desc = "A portable computer belonging to the head of security. It smells faintly of gunpowder."
+	_app_preset_type = /datum/modular_computer_app_presets/security/hos
 
-/obj/item/modular_computer/laptop/preset/records/install_default_programs()
-	..()
-	hard_drive.store_file(new /datum/computer_file/program/records())
-	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
+// Civilian
+/obj/item/modular_computer/laptop/preset/civilian
+	_app_preset_type = /datum/modular_computer_app_presets/civilian
+	enrolled = DEVICE_COMPANY
+
+// Supply
+/obj/item/modular_computer/laptop/preset/supply
+	name = "supply laptop"
+	desc = "A portable computer belonging to cargo."
+	_app_preset_type = /datum/modular_computer_app_presets/supply
+	enrolled = DEVICE_COMPANY
+
+/obj/item/modular_computer/laptop/preset/supply/om
+	name = "operations manager's laptop"
+	desc = "A portable computer belonging to the operation's manager."
+	_app_preset_type = /datum/modular_computer_app_presets/supply/om
+
+// Representative
+/obj/item/modular_computer/laptop/preset/representative
+	name = "representative's laptop"
+	desc = "A portable computer belonging to the representative's office."
+	_app_preset_type = /datum/modular_computer_app_presets/representative
+	enrolled = DEVICE_COMPANY

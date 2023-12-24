@@ -5,47 +5,94 @@
 	. = ..(skip_sort=1)
 	if(species)
 		for(var/emote in species.default_emotes)
-			var/decl/emote/emote_datum = decls_repository.get_decl(emote)
+			var/singleton/emote/emote_datum = GET_SINGLETON(emote)
 			if(emote_datum.check_user(src))
 				usable_emotes[emote_datum.key] = emote_datum
 	usable_emotes = sortAssoc(usable_emotes)
 
 // Specific defines follow.
-/datum/species/metroid
+/datum/species/slime
 	default_emotes = list(
-		/decl/emote/visible/bounce,
-		/decl/emote/visible/jiggle,
-		/decl/emote/visible/lightup,
-		/decl/emote/visible/vibrate
+		/singleton/emote/visible/bounce,
+		/singleton/emote/visible/jiggle,
+		/singleton/emote/visible/lightup,
+		/singleton/emote/visible/vibrate
 		)
 
 /datum/species/unathi
 	default_emotes = list(
-		/decl/emote/human/swish,
-		/decl/emote/human/wag,
-		/decl/emote/human/sway,
-		/decl/emote/human/qwag,
-		/decl/emote/human/fastsway,
-		/decl/emote/human/swag,
-		/decl/emote/human/stopsway
+		/singleton/emote/human/swish,
+		/singleton/emote/human/wag,
+		/singleton/emote/human/sway,
+		/singleton/emote/human/qwag,
+		/singleton/emote/human/fastsway,
+		/singleton/emote/human/swag,
+		/singleton/emote/human/stopsway,
+		/singleton/emote/visible/tflick,
+		/singleton/emote/audible/lizard_bellow,
+		/singleton/emote/audible/hiss,
+		/singleton/emote/audible/hiss/long,
+		/singleton/emote/audible/growl
 		)
+	pain_emotes_with_pain_level = list(
+		list(/singleton/emote/audible/roar, /singleton/emote/audible/whimper, /singleton/emote/audible/moan) = 70,
+		list(/singleton/emote/audible/grunt, /singleton/emote/audible/groan, /singleton/emote/audible/moan) = 40,
+		list(/singleton/emote/audible/grunt, /singleton/emote/audible/groan) = 10,
+	)
+
+/datum/species/diona
+	default_emotes = list(
+		/singleton/emote/audible/chirp,
+		/singleton/emote/audible/multichirp,
+		/singleton/emote/audible/nymphsqueal,
+		/singleton/emote/audible/painrustle,
+		/singleton/emote/audible/paincreak
+	)
+	pain_emotes_with_pain_level = list(
+		list(/singleton/emote/audible/painrustle, /singleton/emote/audible/paincreak, /singleton/emote/audible/nymphsqueal) = 70,
+		list(/singleton/emote/audible/painrustle, /singleton/emote/audible/nymphsqueal) = 40,
+		list(/singleton/emote/audible/paincreak) = 10,
+	)
+
+/datum/species/bug
+	default_emotes = list(
+		/singleton/emote/audible/hiss,
+		/singleton/emote/audible/chitter,
+		/singleton/emote/audible/shriek,
+		/singleton/emote/audible/screech,
+		/singleton/emote/audible/click,
+		/singleton/emote/audible/clack
+	)
+	pain_emotes_with_pain_level = list(
+		list(/singleton/emote/audible/screech, /singleton/emote/audible/shriek) = 70,
+		list(/singleton/emote/audible/shriek, /singleton/emote/audible/hiss) = 40,
+		list(/singleton/emote/audible/hiss) = 10,
+	)
 
 /datum/species/tajaran
 	default_emotes = list(
-		/decl/emote/human/swish,
-		/decl/emote/human/wag,
-		/decl/emote/human/sway,
-		/decl/emote/human/qwag,
-		/decl/emote/human/fastsway,
-		/decl/emote/human/swag,
-		/decl/emote/human/stopsway
-		)
+		/singleton/emote/audible/howl,
+		/singleton/emote/audible/hiss,
+		/singleton/emote/visible/flick,
+		/singleton/emote/visible/tflick,
+		/singleton/emote/human/swish,
+		/singleton/emote/human/wag,
+		/singleton/emote/human/sway,
+		/singleton/emote/human/qwag,
+		/singleton/emote/human/fastsway,
+		/singleton/emote/human/swag,
+		/singleton/emote/human/stopsway
+	)
+	pain_emotes_with_pain_level = list(
+		list(/singleton/emote/audible/scream, /singleton/emote/audible/whimper, /singleton/emote/audible/moan, /singleton/emote/audible/cry, /singleton/emote/audible/howl) = 70,
+		list(/singleton/emote/audible/grunt, /singleton/emote/audible/groan, /singleton/emote/audible/moan, /singleton/emote/audible/hiss) = 40,
+		list(/singleton/emote/audible/grunt, /singleton/emote/audible/groan, /singleton/emote/audible/hiss) = 10,
+	)
 
-/datum/species/swine
+/datum/species/skrell
 	default_emotes = list(
-		/decl/emote/audible/oink
-		)
-
-/mob/living/carbon/human/set_species(new_species, default_colour)
-	. = ..()
-	update_emotes()
+		/singleton/emote/audible/warble,
+		/singleton/emote/audible/croon,
+		/singleton/emote/audible/lowarble,
+		/singleton/emote/audible/croak
+	)

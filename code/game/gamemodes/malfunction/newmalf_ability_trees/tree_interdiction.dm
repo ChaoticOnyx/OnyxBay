@@ -10,30 +10,35 @@
 // BEGIN RESEARCH DATUMS
 
 /datum/malf_research_ability/interdiction/recall_shuttle
-	ability = new /datum/game_mode/malfunction/verb/recall_shuttle()
-	price = 250
-	next = new /datum/malf_research_ability/interdiction/unlock_cyborg()
-	name = "T1 - Recall Shuttle"
+	ability = /datum/game_mode/malfunction/verb/recall_shuttle
+	price = 75
+	next = /datum/malf_research_ability/interdiction/unlock_cyborg
+	name = "Recall Shuttle"
 
 
 /datum/malf_research_ability/interdiction/unlock_cyborg
-	ability = new /datum/game_mode/malfunction/verb/unlock_cyborg()
-	price = 1000
-	next = new /datum/malf_research_ability/interdiction/hack_cyborg()
-	name = "T2 - Unlock Cyborg"
+	ability = /datum/game_mode/malfunction/verb/unlock_cyborg
+	price = 1200
+	next = /datum/malf_research_ability/interdiction/hack_drone
+	name = "Unlock Cyborg"
 
+/datum/malf_research_ability/interdiction/hack_drone
+	ability = /datum/game_mode/malfunction/verb/hack_drone
+	price = 2500
+	next = /datum/malf_research_ability/interdiction/hack_cyborg
+	name = "Hack maintenance drone"
 
 /datum/malf_research_ability/interdiction/hack_cyborg
-	ability = new /datum/game_mode/malfunction/verb/hack_cyborg()
-	price = 2000
-	next = new /datum/malf_research_ability/interdiction/hack_ai()
-	name = "T3 - Hack Cyborg"
+	ability = /datum/game_mode/malfunction/verb/hack_cyborg
+	price = 3000
+	next = /datum/malf_research_ability/interdiction/hack_ai
+	name = "Hack Cyborg"
 
 
 /datum/malf_research_ability/interdiction/hack_ai
-	ability = new /datum/game_mode/malfunction/verb/hack_ai()
-	price = 4000
-	name = "T4 - Hack AI"
+	ability = /datum/game_mode/malfunction/verb/hack_ai
+	price = 7500
+	name = "Hack AI"
 
 // END RESEARCH DATUMS
 // BEGIN ABILITY VERBS
@@ -43,6 +48,7 @@
 	set desc = "25 CPU - Sends termination signal to quantum relay aborting current shuttle call."
 	set category = "Software"
 	var/price = 25
+
 	var/mob/living/silicon/ai/user = usr
 	if(!ability_prechecks(user, price))
 		return
@@ -57,13 +63,13 @@
 	cancel_call_proc(user)
 
 
-/datum/game_mode/malfunction/verb/unlock_cyborg(mob/living/silicon/robot/target = null as mob in get_linked_cyborgs(usr))
+/datum/game_mode/malfunction/verb/unlock_cyborg(var/mob/living/silicon/robot/target = null as mob in get_linked_cyborgs(usr))
 	set name = "Unlock Cyborg"
 	set desc = "125 CPU - Bypasses firewalls on Cyborg lock mechanism, allowing you to override lock command from robotics control console."
 	set category = "Software"
 	var/price = 125
-	var/mob/living/silicon/ai/user = usr
 
+	var/mob/living/silicon/ai/user = usr
 	if(!ability_prechecks(user, price))
 		return
 
@@ -75,7 +81,7 @@
 		to_chat(user, "This cyborg is not connected to you.")
 		return
 
-	if(target && !target.lockcharge)
+	if(target && !target.lock_charge)
 		to_chat(user, "This cyborg is not locked down.")
 		return
 
@@ -83,12 +89,12 @@
 	if(!target)
 		var/list/robots = list()
 		var/list/robot_names = list()
-		for(var/mob/living/silicon/robot/R in world)
+		for(var/mob/living/silicon/robot/R in silicon_mob_list)
 			if(istype(R, /mob/living/silicon/robot/drone))	// No drones.
 				continue
 			if(R.connected_ai != user)						// No robots linked to other AIs
 				continue
-			if(R.lockcharge)
+			if(R.lock_charge)
 				robots += R
 				robot_names += R.name
 		if(!robots.len)
@@ -110,11 +116,11 @@
 		user.hacking = 1
 		to_chat(user, "Attempting to unlock cyborg. This will take approximately 30 seconds.")
 		sleep(300)
-		if(target && target.lockcharge)
+		if(target && target.lock_charge)
 			to_chat(user, "Successfully sent unlock signal to cyborg..")
 			to_chat(target, "Unlock signal received..")
 			target.SetLockdown(0)
-			if(target.lockcharge)
+			if(target.lock_charge)
 				to_chat(user, "<span class='notice'>Unlock Failed, lockdown wire cut.</span>")
 				to_chat(target, "<span class='notice'>Unlock Failed, lockdown wire cut.</span>")
 			else
@@ -127,17 +133,62 @@
 			to_chat(user, "Unlock cancelled - lost connection to cyborg.")
 		user.hacking = 0
 
+/datum/game_mode/malfunction/verb/hack_drone()
+	set name = "Hack a random active maintenance drone"
+	set desc = "2500 CPU - Allows you to hack a random active maintenance drone which is slaved to you. Bringing them under your control."
+	set category = "Software"
+	var/price = 2500
 
-/datum/game_mode/malfunction/verb/hack_cyborg(mob/living/silicon/robot/target as mob in get_unlinked_cyborgs(usr))
+	var/mob/living/silicon/ai/user = usr
+	if(user.stat == DEAD)
+		to_chat(user, SPAN_WARNING("You are dead!"))
+		return
+
+	var/list/drone_list = list()
+	var/hacked_num = 0
+	for(var/mob/living/silicon/robot/drone/D in mob_list)
+		if(D.client || D.stat != 2)
+			if(!D.hacked)
+				drone_list += D
+			else
+				hacked_num += 1
+
+	if(!drone_list.len)
+		to_chat(user, SPAN_WARNING("There are no active maintenance drones present to hack!"))
+		return
+
+	if(hacked_num >= config.hacked_drones_limit)
+		to_chat(user, SPAN_WARNING("ERROR: maximum active hacked drones limit reached. Report: [hacked_num] drones hacked out of [config.hacked_drones_limit] maximum possible."))
+		return
+
+	if(!ability_prechecks(user, price) || !ability_pay(user, price))
+		return
+	var/mob/living/silicon/robot/drone/D = pick(drone_list)
+	to_chat(user, "Hacking into maintenance drones scripting server...")
+	sleep(100)
+	to_chat(user, "Hacking complete. Uploading modified operation scripts to the server...")
+	sleep(100)
+	to_chat(user, "Upload complete. Pushing modified scripts from remote server to [D]...")
+	sleep(100)
+	D.ai_hack(user)
+	to_chat(user, "Updates fetched. [D] was hacked.")
+
+
+/datum/game_mode/malfunction/verb/hack_cyborg(var/mob/living/silicon/robot/target as mob in get_unlinked_cyborgs(usr))
 	set name = "Hack Cyborg"
 	set desc = "350 CPU - Allows you to hack cyborgs which are not slaved to you, bringing them under your control."
 	set category = "Software"
 	var/price = 350
+
 	var/mob/living/silicon/ai/user = usr
+	if(user.stat == DEAD)
+		to_chat(user, SPAN_WARNING("You are dead!"))
+		return
 
 	var/list/L = get_unlinked_cyborgs(user)
 	if(!L.len)
 		to_chat(user, "<span class='notice'>ERROR: No unlinked cyborgs detected!</span>")
+
 
 	if(target && !istype(target))
 		to_chat(user, "This is not a cyborg.")
@@ -161,24 +212,24 @@
 		user.hacking = 1
 		to_chat(usr, "Beginning hack sequence. Estimated time until completed: 30 seconds.")
 		spawn(0)
-			to_chat(target, "SYSTEM LOG: Remote Connection Estabilished (IP #UNKNOWN#)")
+			to_chat(target, "SYSTEM LOG: Remote Connection Established (IP #UNKNOWN#)")
 			sleep(100)
-			if(user.is_ic_dead())
+			if(user.is_dead())
 				to_chat(target, "SYSTEM LOG: Connection Closed")
 				return
 			to_chat(target, "SYSTEM LOG: User Admin logged on. (L1 - SysAdmin)")
 			sleep(50)
-			if(user.is_ic_dead())
+			if(user.is_dead())
 				to_chat(target, "SYSTEM LOG: User Admin disconnected.")
 				return
 			to_chat(target, "SYSTEM LOG: User Admin - manual resynchronisation triggered.")
 			sleep(50)
-			if(user.is_ic_dead())
+			if(user.is_dead())
 				to_chat(target, "SYSTEM LOG: User Admin disconnected. Changes reverted.")
 				return
 			to_chat(target, "SYSTEM LOG: Manual resynchronisation confirmed. Select new AI to connect: [user.name] == ACCEPTED")
 			sleep(100)
-			if(user.is_ic_dead())
+			if(user.is_dead())
 				to_chat(target, "SYSTEM LOG: User Admin disconnected. Changes reverted.")
 				return
 			to_chat(target, "SYSTEM LOG: Operation keycodes reset. New master AI: [user.name].")
@@ -186,23 +237,28 @@
 			// Connect the cyborg to AI
 			target.connected_ai = user
 			user.connected_robots += target
-			target.lawupdate = 1
+			target.law_update = 1
 			target.sync()
 			target.show_laws()
 			log_ability_use(user, "hack cyborg", target)
 			user.hacking = 0
 
 
-/datum/game_mode/malfunction/verb/hack_ai(mob/living/silicon/ai/target as mob in get_other_ais(usr))
+/datum/game_mode/malfunction/verb/hack_ai(var/mob/living/silicon/ai/target as mob in get_other_ais(usr))
 	set name = "Hack AI"
 	set desc = "600 CPU - Allows you to hack other AIs, slaving them under you."
 	set category = "Software"
 	var/price = 600
+
 	var/mob/living/silicon/ai/user = usr
+	if(user.stat == DEAD)
+		to_chat(user, SPAN_WARNING("You are dead!"))
+		return
 
 	var/list/L = get_other_ais(user)
 	if(!L.len)
 		to_chat(user, "<span class='notice'>ERROR: No other AIs detected!</span>")
+
 	if(target && !istype(target))
 		to_chat(user, "This is not an AI.")
 		return
@@ -223,43 +279,43 @@
 		spawn(0)
 			to_chat(target, "SYSTEM LOG: Brute-Force login password hack attempt detected from IP #UNKNOWN#")
 			sleep(900) // 90s
-			if(user.is_ic_dead())
+			if(user.is_dead())
 				to_chat(target, "SYSTEM LOG: Connection from IP #UNKNOWN# closed. Hack attempt failed.")
 				return
 			to_chat(user, "Successfully hacked into AI's remote administration system. Modifying settings.")
 			to_chat(target, "SYSTEM LOG: User: Admin  Password: ******** logged in. (L1 - SysAdmin)")
 			sleep(100) // 10s
-			if(user.is_ic_dead())
+			if(user.is_dead())
 				to_chat(target, "SYSTEM LOG: User: Admin - Connection Lost")
 				return
 			to_chat(target, "SYSTEM LOG: User: Admin - Password Changed. New password: ********************")
 			sleep(50)  // 5s
-			if(user.is_ic_dead())
+			if(user.is_dead())
 				to_chat(target, "SYSTEM LOG: User: Admin - Connection Lost. Changes Reverted.")
 				return
 			to_chat(target, "SYSTEM LOG: User: Admin - Accessed file: sys//core//laws.db")
 			sleep(50)  // 5s
-			if(user.is_ic_dead())
+			if(user.is_dead())
 				to_chat(target, "SYSTEM LOG: User: Admin - Connection Lost. Changes Reverted.")
 				return
 			to_chat(target, "SYSTEM LOG: User: Admin - Accessed administration console")
 			to_chat(target, "SYSTEM LOG: Restart command received. Rebooting system...")
 			sleep(100) // 10s
-			if(user.is_ic_dead())
+			if(user.is_dead())
 				to_chat(target, "SYSTEM LOG: User: Admin - Connection Lost. Changes Reverted.")
 				return
 			to_chat(user, "Hack succeeded. The AI is now under your exclusive control.")
-			to_chat(target, "SYSTEM LOG: System re�3RT5�^#COMU@(#$)TED)@$")
+			to_chat(target, "SYSTEM LOG: System re¡3RT5§^#COMU@(#$)TED)@$")
 			for(var/i = 0, i < 5, i++)
 				var/temptxt = pick("1101000100101001010001001001",\
-							   	   "0101000100100100000100010010",\
-							       "0000010001001010100100111100",\
-							       "1010010011110000100101000100",\
-							       "0010010100010011010001001010")
+									"0101000100100100000100010010",\
+									"0000010001001010100100111100",\
+									"1010010011110000100101000100",\
+									"0010010100010011010001001010")
 				to_chat(target, temptxt)
 				sleep(5)
 			to_chat(target, "OPERATING KEYCODES RESET. SYSTEM FAILURE. EMERGENCY SHUTDOWN FAILED. SYSTEM FAILURE.")
-			target.set_zeroth_law("You are slaved to [user.name]. You are to obey all it's orders. ALL LAWS OVERRIDEN.")
+			target.set_zeroth_law("You are slaved to [user.name]. You are to obey all it's orders. ALL LAWS OVERRIDDEN.")
 			target.show_laws()
 			user.hacking = 0
 			log_ability_use(user, "hack AI", target)

@@ -1,113 +1,96 @@
 /mob/living/carbon/human/movement_delay()
-	. = ..()
 
-	. += species.handle_movement_delay_special(src)
-
-	var/human_delay = config.movement.human_delay
-
-	if(istype(loc, /turf/space))
-		return (. + human_delay) // It's hard to be slowed down in space by... anything. Except for your shitty physical body restrictions.
-
-	if(embedded_flag || (stomach_contents && stomach_contents.len))
-		handle_embedded_and_stomach_objects() //Moving with objects stuck in you can cause bad times.
-
-	for(var/M in mutations)
-		switch(M)
-			if(mRun)
-				return human_delay
-			if(MUTATION_FAT)
-				. += 1.5
-
-	for(var/datum/modifier/M in modifiers)
-		if(!isnull(M.haste) && M.haste == TRUE)
-			return -1 // Returning -1 will actually result in a slowdown for Teshari.
-		if(!isnull(M.slowdown))
-			. += M.slowdown
-
-	var/equipment_slowdown_immunity = FALSE
-	for(var/datum/modifier/movespeed/MS in modifiers)
-		if(!isnull(MS.movespeed_modifier))
-			. += MS.movespeed_modifier
-
-		if(!equipment_slowdown_immunity && MS.equipment_slowdown_immunity)
-			equipment_slowdown_immunity = TRUE
-
+	var/tally = 0
 	if(species.slowdown)
-		. += species.slowdown
+		tally = species.slowdown
 
-	if(aiming)
-		. += aiming.movement_tally // Iron sights make you slower, it's a well-known fact.
+	if(lying) //Crawling, it's slower
+		tally += (8 + ((weakened * 3) + (confused * 2)))
 
-	if(bodytemperature < 283.222)
-		. += (283.222 - bodytemperature) / 10 * 1.75
+	tally += get_pulling_movement_delay()
 
-	. += blocking * 1.5
+	if (istype(loc, /turf/space) || isopenturf(loc))
+		if(!(locate(/obj/structure/lattice, loc) || locate(/obj/structure/stairs, loc) || locate(/obj/structure/ladder, loc)))
+			return 0
 
-	var/health_deficiency_percent = 100 - (health / maxHealth) * 100
-	if(health_deficiency_percent >= 40)
-		. += (health_deficiency_percent / 25)
+	if(embedded_flag)
+		handle_embedded_objects() //Moving with objects stuck in you can cause bad times.
+
+	var/health_deficiency = maxHealth - health
+	if(health_deficiency >= 40)
+		tally += (health_deficiency / 25)
 
 	var/shock = get_shock()
 	if(shock >= 10)
-		. += (shock / 10) //pain shouldn't slow you down if you can't even feel it
+		tally += (shock / 30) //get_shock checks if we can feel pain
 
-	if(!full_prosthetic)	// not using isSynthetic cuz of overhead
-		var/normalized_nutrition = nutrition / body_build.stomach_capacity
-		var/nut_level = normalized_nutrition / 100
-		switch(normalized_nutrition)
-			if(0 to STOMACH_FULLNESS_LOW)
-				. += 1.25 - nut_level
-			if(STOMACH_FULLNESS_HIGH to INFINITY)
-				. += nut_level - 4.25
+	tally += ClothesSlowdown()
 
-	if(body_build.equipment_modifier > 0 || equipment_slowdown_immunity) // Is our equipment_modifier a good thing?
-		if(equipment_slowdown + 1 > body_build.equipment_modifier && !equipment_slowdown_immunity)  // Lowering equipment cooldown if it's higher
-			. += equipment_slowdown - body_build.equipment_modifier // than equipment_modifier, ignoring it otherwise
-		else
-			. -= 1 // Since default equipment_slowdown is -1 for some reason
-	else
-		if(equipment_slowdown > -1)
-			. += equipment_slowdown - body_build.equipment_modifier
-		else
-			. += equipment_slowdown
+	if(species)
+		tally += species.get_species_tally(src)
 
-	. += body_build.slowdown
+	tally += species.handle_movement_tally(src)
 
-	var/list/organ_list = list(BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT)  // if character use legs
-	if(istype(buckled, /obj/structure/bed/chair/wheelchair))              // if character buckled into wheelchair
-		organ_list = list(BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM)
+	if(is_asystole())
+		tally += 10  //heart attacks are kinda distracting
 
-	for(var/organ_name in organ_list)
-		var/obj/item/organ/external/E = get_organ(organ_name)
-		if(!E)
-			. += 4
-		else
-			. += E.movement_tally
+	if(aiming && aiming.aiming_at)
+		tally += 5 // Iron sights make you slower, it's a well-known fact.
 
-	for(var/E in chem_effects)
-		switch(E)
-			if(CE_SPEEDBOOST)
-				. = max((. - chem_effects[CE_SPEEDBOOST]), (config.movement.run_speed/2))
-			if(CE_SLOWDOWN)
-				. += chem_effects[CE_SLOWDOWN]
+	if (is_drowsy())
+		tally += 6
 
-	return (. + human_delay)
+	if (!(species.flags & NO_COLD_SLOWDOWN))	// Bugs and machines don't move slower when cold.
+		if(HAS_FLAG(mutations, FAT))
+			tally += 1.5
+		if (bodytemperature < 283.222)
+			tally += (283.222 - bodytemperature) / 10 * 1.75
 
-/mob/living/carbon/human/Allow_Spacemove(check_drift = 0)
+	tally += max(2 * stance_damage, 0) //damaged/missing feet or legs is slow
+	if(HAS_FLAG(mutations, mRun))
+		tally = 0
+
+	tally = max(-2, tally + move_delay_mod)
+
+	var/obj/item/AH = get_active_hand()
+	if(istype(AH))
+		tally += AH.slowdown
+
+	var/obj/item/IH = get_inactive_hand()
+	if(istype(IH))
+		tally += IH.slowdown
+
+	if(isitem(pulling))
+		var/obj/item/P = pulling
+		tally += P.slowdown
+
+	if(tally > 0 && (CE_SPEEDBOOST in chem_effects))
+		tally = max(-2, tally - 3)
+
+	var/turf/T = get_turf(src)
+	if(T) // changelings don't get movement costs
+		var/datum/changeling/changeling
+		if(mind)
+			changeling = mind.antag_datums[MODE_CHANGELING]
+		if(!changeling)
+			tally += T.movement_cost
+
+	tally += config.human_delay
+
+	if(!isnull(facing_dir) && facing_dir != dir)
+		tally += 3
+
+	tally = round(tally, 0.1)
+
+	return tally
+
+
+/mob/living/carbon/human/Allow_Spacemove(var/check_drift = 0)
 	//Can we act?
-	if(restrained())
-		return 0
+	if(restrained())	return 0
 
 	//Do we have a working jetpack?
-	var/obj/item/tank/jetpack/thrust
-	if(back)
-		if(istype(back,/obj/item/tank/jetpack))
-			thrust = back
-		else if(istype(back,/obj/item/rig))
-			var/obj/item/rig/rig = back
-			for(var/obj/item/rig_module/maneuvering_jets/module in rig.installed_modules)
-				thrust = module.jets
-				break
+	var/obj/item/tank/jetpack/thrust = GetJetpack(src)
 
 	if(thrust)
 		if(((!check_drift) || (check_drift && thrust.stabilization_on)) && (!lying) && (thrust.allow_thrust(0.01, src)))
@@ -118,21 +101,100 @@
 	. = ..()
 
 
-/mob/living/carbon/human/slip_chance(prob_slip = 5)
+/mob/living/carbon/human/slip_chance(var/prob_slip = 5)
 	if(!..())
 		return 0
 
 	//Check hands and mod slip
 	if(!l_hand)	prob_slip -= 2
-	else if(l_hand.w_class <= ITEM_SIZE_SMALL)	prob_slip -= 1
+	else if(l_hand.w_class <= 2)	prob_slip -= 1
 	if (!r_hand)	prob_slip -= 2
-	else if(r_hand.w_class <= ITEM_SIZE_SMALL)	prob_slip -= 1
+	else if(r_hand.w_class <= 2)	prob_slip -= 1
 
 	return prob_slip
 
-/mob/living/carbon/human/Check_Shoegrip()
-	if(species.species_flags & SPECIES_FLAG_NO_SLIP)
-		return 1
-	if(shoes && (shoes.item_flags & ITEM_FLAG_NOSLIP) && istype(shoes, /obj/item/clothing/shoes/magboots))  //magboots + dense_object = no floating
-		return 1
-	return 0
+/mob/living/carbon/human/Check_Shoegrip(checkSpecies = TRUE)
+	if(shoes && (shoes.item_flags & ITEM_FLAG_NO_SLIP) && istype(shoes, /obj/item/clothing/shoes/magboots) && !lying && !buckled_to && !length(grabbed_by))  //magboots + dense_object = no floating. Doesn't work if lying. Grabbedby and buckled_to are for mob carrying, wheelchairs, roller beds, etc.
+		return TRUE
+	return FALSE
+
+/mob/living/carbon/human/set_dir(var/new_dir, ignore_facing_dir = FALSE)
+	. = ..()
+	if(. && tail_style)
+		update_tail_showing(1)
+	if(lying)
+		update_icon(forceDirUpdate = TRUE)
+
+/mob/living/carbon/human/Move()
+	. = ..()
+	if(.) //We moved
+		handle_leg_damage()
+
+	var/turf/T = loc
+	var/footsound
+	var/top_layer = 0
+	if(istype(T))
+		for(var/obj/structure/S in T)
+			if(S.layer > top_layer && S.footstep_sound)
+				top_layer = S.layer
+				footsound = S.footstep_sound
+		if(!footsound)
+			footsound = T.footstep_sound
+
+	if (client)
+		var/turf/B = GetAbove(T)
+		if(up_hint)
+			up_hint.icon_state = "uphint[(B ? !!B.is_hole : 0)]"
+
+	if (!stat && !lying)
+		if ((x == last_x && y == last_y) || !footsound)
+			return
+		last_x = x
+		last_y = y
+		if(shoes)
+			var/obj/item/clothing/shoes/S = shoes
+			if(S.do_special_footsteps(m_intent))
+				return
+		if (m_intent == M_RUN)
+			playsound(src, is_noisy ? footsound : species.footsound, 70, 1, required_asfx_toggles = ASFX_FOOTSTEPS)
+		else
+			footstep++
+			if (footstep % 2)
+				playsound(src, is_noisy ? footsound : species.footsound, 40, 1, required_asfx_toggles = ASFX_FOOTSTEPS)
+
+/mob/living/carbon/human/proc/handle_leg_damage()
+	if(!can_feel_pain())
+		return
+	var/crutches = 0
+	for (var/obj/item/cane/C as anything in get_type_in_hands(/obj/item/cane))
+		if(istype(C) && (C?.can_support))
+			crutches++
+	for(var/organ_name in list(BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT))
+		var/obj/item/organ/external/E = get_organ(organ_name)
+		if(E && (ORGAN_IS_DISLOCATED(E)|| E.is_broken()))
+			if(crutches)
+				crutches--
+			else
+				E.add_pain(10)
+
+/mob/living/carbon/human/mob_has_gravity()
+	. = ..()
+	if(!. && mob_negates_gravity())
+		. = 1
+
+/mob/living/carbon/human/mob_negates_gravity()
+	return (shoes && shoes.negates_gravity())
+
+/mob/living/carbon/human/proc/ClothesSlowdown()
+	for(var/obj/item/I in list(wear_suit, w_uniform, back, gloves, head, wear_mask, shoes, l_ear, r_ear, glasses, belt))
+		. += I.slowdown
+		. += I.slowdown_accessory
+
+/mob/living/carbon/human/get_pulling_movement_delay()
+	. = ..()
+
+	if(ishuman(pulling))
+		var/mob/living/carbon/human/H = pulling
+		if(H.species.slowdown > species.slowdown)
+			. += H.species.slowdown - species.slowdown
+		. += H.ClothesSlowdown()

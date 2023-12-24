@@ -3,15 +3,17 @@
 //When it receives the "inject" signal, it will try to pump it's entire contents into the environment regardless of pressure, using power.
 
 /obj/machinery/atmospherics/unary/outlet_injector
-	icon = 'icons/atmos/injector.dmi'
-	icon_state = "map_injector"
-
 	name = "air injector"
 	desc = "Passively injects air into its surroundings. Has a valve attached to it that can control flow rate."
+	desc_info = "Outputs the pipe's gas into the atmosphere, similar to an airvent.  It can be controlled by a nearby atmospherics computer. \
+	A green light on it means it is on."
+	icon = 'icons/atmos/injector.dmi'
+	icon_state = "map_injector"
+	layer = 3
 
 	use_power = POWER_USE_OFF
-	idle_power_usage = 150 WATTS //internal circuitry, friction losses and stuff
-	power_rating = 15000	//15000 W ~ 20 HP
+	idle_power_usage = 150		//internal circuitry, friction losses and stuff
+	power_rating = 45000	//45000 W ~ 60 HP
 
 	var/injecting = 0
 
@@ -21,13 +23,15 @@
 	var/id = null
 	var/datum/radio_frequency/radio_connection
 
+	var/broadcast_status_next_process = FALSE
+
 	level = 1
 
 /obj/machinery/atmospherics/unary/outlet_injector/Initialize()
 	. = ..()
 	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP + 500	//Give it a small reservoir for injecting. Also allows it to have a higher flow rate limit than vent pumps, to differentiate injectors a bit more.
 
-/obj/machinery/atmospherics/unary/outlet_injector/on_update_icon()
+/obj/machinery/atmospherics/unary/outlet_injector/update_icon()
 	if(!powered())
 		icon_state = "off"
 	else
@@ -41,16 +45,27 @@
 			return
 		add_underlay(T, node, dir)
 
-/obj/machinery/atmospherics/unary/outlet_injector/Process()
+/obj/machinery/atmospherics/unary/outlet_injector/power_change()
+	var/old_stat = stat
+	..()
+	if(old_stat != stat)
+		update_icon()
+
+/obj/machinery/atmospherics/unary/outlet_injector/process()
 	..()
 
 	last_power_draw = 0
 	last_flow_rate = 0
 
+	if (broadcast_status_next_process)
+		broadcast_status()
+		broadcast_status_next_process = FALSE
+
 	if((stat & (NOPOWER|BROKEN)) || !use_power)
 		return
 
 	var/power_draw = -1
+	if(!loc) return FALSE
 	var/datum/gas_mixture/environment = loc.return_air()
 
 	if(environment && air_contents.temperature > 0)
@@ -67,7 +82,7 @@
 	return 1
 
 /obj/machinery/atmospherics/unary/outlet_injector/proc/inject()
-	if(injecting || (stat & NOPOWER))
+	if(injecting || (stat & NOPOWER) || !loc)
 		return 0
 
 	var/datum/gas_mixture/environment = loc.return_air()
@@ -86,17 +101,17 @@
 	flick("inject", src)
 
 /obj/machinery/atmospherics/unary/outlet_injector/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = radio_controller.add_object(src, frequency)
+		radio_connection = SSradio.add_object(src, frequency)
 
 /obj/machinery/atmospherics/unary/outlet_injector/proc/broadcast_status()
 	if(!radio_connection)
 		return 0
 
 	var/datum/signal/signal = new
-	signal.transmission_method = 1 //radio signal
+	signal.transmission_method = TRANSMISSION_RADIO
 	signal.source = src
 
 	signal.data = list(
@@ -105,22 +120,24 @@
 		"power" = use_power,
 		"volume_rate" = volume_rate,
 		"sigtype" = "status"
-	 )
+	)
 
 	radio_connection.post_signal(src, signal)
 
 	return 1
 
-/obj/machinery/atmospherics/unary/outlet_injector/Initialize()
-	. = ..()
+/obj/machinery/atmospherics/unary/outlet_injector/atmos_init()
+	..()
+
 	set_frequency(frequency)
+	broadcast_status()
 
 /obj/machinery/atmospherics/unary/outlet_injector/receive_signal(datum/signal/signal)
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
 		return 0
 
 	if(signal.data["power"])
-		update_use_power(sanitize_integer(text2num(signal.data["power"]), POWER_USE_OFF, POWER_USE_ACTIVE, use_power))
+		update_use_power(text2num(signal.data["power"]))
 
 	if(signal.data["power_toggle"])
 		update_use_power(!use_power)
@@ -134,13 +151,11 @@
 		volume_rate = between(0, number, air_contents.volume)
 
 	if(signal.data["status"])
-		spawn(2)
-			broadcast_status()
+		broadcast_status_next_process = TRUE
 		return //do not update_icon
 
-	spawn(2)
-		broadcast_status()
+	broadcast_status_next_process = TRUE
 	update_icon()
 
-/obj/machinery/atmospherics/unary/outlet_injector/hide(i)
+/obj/machinery/atmospherics/unary/outlet_injector/hide(var/i)
 	update_underlays()

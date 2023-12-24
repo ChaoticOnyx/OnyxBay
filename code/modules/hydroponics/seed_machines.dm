@@ -3,17 +3,22 @@
 	desc = "A small disk used for carrying data on plant genetics."
 	icon = 'icons/obj/hydroponics_machines.dmi'
 	icon_state = "disk"
-	w_class = ITEM_SIZE_TINY
+	w_class = ITEMSIZE_TINY
 
 	var/list/genes = list()
 	var/genesource = "unknown"
 
-/obj/item/disk/botany/attack_self(mob/user as mob)
+/obj/item/disk/botany/New()
+	..()
+	pixel_x = rand(-5,5)
+	pixel_y = rand(-5,5)
+
+/obj/item/disk/botany/attack_self(var/mob/user as mob)
 	if(genes.len)
 		var/choice = alert(user, "Are you sure you want to wipe the disk?", "Xenobotany Data", "No", "Yes")
 		if(src && user && genes && choice && choice == "Yes" && user.Adjacent(get_turf(src)))
 			to_chat(user, "You wipe the disk data.")
-			SetName(initial(name))
+			name = initial(name)
 			desc = initial(name)
 			genes = list()
 			genesource = "unknown"
@@ -21,8 +26,11 @@
 /obj/item/storage/box/botanydisk
 	name = "flora disk box"
 	desc = "A box of flora data disks, apparently."
-	icon_state = "hydrodisks"
-	startswith = list(/obj/item/disk/botany = 14)
+
+/obj/item/storage/box/botanydisk/fill()
+	..()
+	for(var/i = 0;i<7;i++)
+		new /obj/item/disk/botany(src)
 
 /obj/machinery/botany
 	icon = 'icons/obj/hydroponics_machines.dmi'
@@ -41,7 +49,7 @@
 	var/failed_task = 0
 	var/disk_needs_genes = 0
 
-/obj/machinery/botany/Process()
+/obj/machinery/botany/process()
 
 	..()
 	if(!active) return
@@ -50,6 +58,8 @@
 		finished_task()
 
 /obj/machinery/botany/attack_ai(mob/user as mob)
+	if(!ai_can_interact(user))
+		return
 	return attack_hand(user)
 
 /obj/machinery/botany/attack_hand(mob/user as mob)
@@ -59,15 +69,15 @@
 	active = 0
 	if(failed_task)
 		failed_task = 0
-		visible_message("\icon[src] [src] pings unhappily, flashing a red warning light.")
+		visible_message("[icon2html(src, viewers(get_turf(src)))] [src] pings unhappily, flashing a red warning light.")
 	else
-		visible_message("\icon[src] [src] pings happily.")
+		visible_message("[icon2html(src, viewers(get_turf(src)))] [src] pings happily.")
 
 	if(eject_disk)
 		eject_disk = 0
 		if(loaded_disk)
-			loaded_disk.dropInto(get_turf(src))
-			visible_message("\icon[src] [src] beeps and spits out [loaded_disk].")
+			loaded_disk.forceMove(get_turf(src))
+			visible_message("[icon2html(src, viewers(get_turf(src)))] [src] beeps and spits out [loaded_disk].")
 			loaded_disk = null
 
 /obj/machinery/botany/attackby(obj/item/W as obj, mob/user as mob)
@@ -78,18 +88,19 @@
 		var/obj/item/seeds/S =W
 		if(S.seed && S.seed.get_trait(TRAIT_IMMUTABLE) > 0)
 			to_chat(user, "That seed is not compatible with our genetics technology.")
-		else if(user.drop(W, src))
+		else
+			user.drop_from_inventory(W,src)
 			seed = W
 			to_chat(user, "You load [W] into [src].")
 		return
 
-	if(isScrewdriver(W))
+	if(W.isscrewdriver())
 		open = !open
 		to_chat(user, "<span class='notice'>You [open ? "open" : "close"] the maintenance panel.</span>")
 		return
 
 	if(open)
-		if(isCrowbar(W))
+		if(W.iscrowbar())
 			dismantle()
 			return
 
@@ -100,13 +111,16 @@
 		else
 			var/obj/item/disk/botany/B = W
 
-			if(disk_needs_genes)
-				if(!B.genes || !B.genes.len)
+			if(B.genes && B.genes.len)
+				if(!disk_needs_genes)
+					to_chat(user, "That disk already has gene data loaded.")
+					return
+			else
+				if(disk_needs_genes)
 					to_chat(user, "That disk does not have any gene data loaded.")
 					return
-			if(!user.drop(W, src))
-				return
 
+			user.drop_from_inventory(W,src)
 			loaded_disk = W
 			to_chat(user, "You load [W] into [src].")
 
@@ -116,12 +130,12 @@
 // Allows for a trait to be extracted from a seed packet, destroying that seed.
 /obj/machinery/botany/extractor
 	name = "lysis-isolation centrifuge"
-	icon_state = "traitcopier"
+	icon_state = "centrifuge"
 
 	var/datum/seed/genetics // Currently scanned seed genetic structure.
 	var/degradation = 0     // Increments with each scan, stops allowing gene mods after a certain point.
 
-/obj/machinery/botany/extractor/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/botany/extractor/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
 
 	if(!user)
 		return
@@ -153,7 +167,7 @@
 		data["hasGenetics"] = 0
 		data["sourceName"] = 0
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnanoui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "botany_isolator.tmpl", "Lysis-isolation Centrifuge UI", 470, 450)
 		ui.set_initial_data(data)
@@ -167,22 +181,22 @@
 
 	if(href_list["eject_packet"])
 		if(!seed) return
-		seed.dropInto(get_turf(src))
+		seed.forceMove(get_turf(src))
 
 		if(seed.seed.name == "new line" || isnull(SSplants.seeds[seed.seed.name]))
-			seed.seed.uid = sequential_id(/datum/seed/)
+			seed.seed.uid = SSplants.seeds.len + 1
 			seed.seed.name = "[seed.seed.uid]"
 			SSplants.seeds[seed.seed.name] = seed.seed
 
 		seed.update_seed()
-		visible_message("\icon[src] [src] beeps and spits out [seed].")
+		visible_message("[icon2html(src, viewers(get_turf(src)))] [src] beeps and spits out [seed].")
 
 		seed = null
 
 	if(href_list["eject_disk"])
 		if(!loaded_disk) return
-		loaded_disk.dropInto(get_turf(src))
-		visible_message("\icon[src] [src] beeps and spits out [loaded_disk].")
+		loaded_disk.forceMove(get_turf(src))
+		visible_message("[icon2html(src, viewers(get_turf(src)))] [src] beeps and spits out [loaded_disk].")
 		loaded_disk = null
 
 	usr.set_machine(src)
@@ -250,7 +264,7 @@
 	icon_state = "traitgun"
 	disk_needs_genes = 1
 
-/obj/machinery/botany/editor/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/botany/editor/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
 
 	if(!user)
 		return
@@ -283,7 +297,7 @@
 	else
 		data["loaded"] = 0
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnanoui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "botany_editor.tmpl", "Bioballistic Delivery UI", 470, 450)
 		ui.set_initial_data(data)

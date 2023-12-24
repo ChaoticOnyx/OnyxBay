@@ -14,30 +14,8 @@
  * required user mob The mob who opened/is using the UI.
  * optional ui datum/tgui The UI to be updated, if it exists.
  */
-/datum/proc/tgui_interact(mob/user, datum/tgui/ui)
+/datum/proc/ui_interact(mob/user, datum/tgui/ui)
 	return FALSE // Not implemented.
-
-/**
- * public
- *
- * Returns TRUE if a non autoupdating UI needs to update.
- */
-/datum/proc/tgui_requires_update(mob/user, datum/tgui/ui)
-	if(ui.needs_update)
-		ui.needs_update = FALSE
-		return TRUE
-	return FALSE // Not implemented.
-
-/**
- * public
- *
- * Causes the UI to update to viewers on the next process.
- * Better than calling SStgui.update if this is callable by the user,
- * since it calls on process rather than instantly which handles spamming.
- */
-/datum/proc/tgui_update()
-	for(var/datum/tgui/ui as() in SStgui.get_all_open_uis(src))
-		ui.needs_update = TRUE
 
 /**
  * public
@@ -49,7 +27,7 @@
  *
  * return list Data to be sent to the UI.
  */
-/datum/proc/tgui_data(mob/user)
+/datum/proc/ui_data(mob/user)
 	return list() // Not implemented.
 
 /**
@@ -66,7 +44,7 @@
  *
  * return list Statuic Data to be sent to the UI.
  */
-/datum/proc/tgui_static_data(mob/user)
+/datum/proc/ui_static_data(mob/user)
 	return list()
 
 /**
@@ -87,6 +65,17 @@
 /**
  * public
  *
+ * Will force an update on static data for all viewers.
+ * Should be done manually whenever something happens to
+ * change static data.
+ */
+/datum/proc/update_static_data_for_all_viewers()
+	for (var/datum/tgui/window as anything in SStgui.open_uis_by_src[text_ref(src)])
+		window.send_full_update()
+
+/**
+ * public
+ *
  * Called on a UI when the UI receieves a href.
  * Think of this as Topic().
  *
@@ -95,8 +84,9 @@
  *
  * return bool If the user's input has been handled and the UI should update.
  */
-/datum/proc/tgui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/datum/proc/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	SHOULD_CALL_PARENT(TRUE)
+	SEND_SIGNAL(src, COMSIG_UI_ACT, usr, action)
 	// If UI is not interactive or usr calling Topic is not the UI user, bail.
 	if(!ui || ui.status != UI_INTERACTIVE)
 		return TRUE
@@ -109,7 +99,7 @@
  *
  * return list List of asset datums or file paths.
  */
-/datum/proc/tgui_assets(mob/user)
+/datum/proc/ui_assets(mob/user)
 	return list()
 
 /**
@@ -119,7 +109,7 @@
  * This allows modules/datums to have the UI attached to them,
  * and be a part of another object.
  */
-/datum/proc/tgui_host(mob/user)
+/datum/proc/ui_host(mob/user)
 	return src // Default src.
 
 /**
@@ -128,8 +118,8 @@
  * The UI's state controller to be used for created uis
  * This is a proc over a var for memory reasons
  */
-/datum/proc/tgui_state(mob/user)
-	return GLOB.tgui_default_state
+/datum/proc/ui_state(mob/user)
+	return default_state
 
 /**
  * global
@@ -164,9 +154,10 @@
  * public
  *
  * Called on a UI's object when the UI is closed, not to be confused with
- * client/verb/tguiclose(), which closes the ui window
+ * client/verb/uiclose(), which closes the ui window
  */
 /datum/proc/ui_close(mob/user)
+	SIGNAL_HANDLER
 
 /**
  * verb
@@ -176,9 +167,9 @@
  *
  * required uiref ref The UI that was closed.
  */
-/client/verb/tguiclose(window_id as text)
+/client/verb/uiclose(window_id as text)
 	// Name the verb, and hide it from the user panel.
-	set name = "tguiclose"
+	set name = "uiclose"
 	set hidden = TRUE
 	var/mob/user = src?.mob
 	if(!user)
@@ -227,10 +218,18 @@
 				context = window_id)
 			SStgui.force_close_window(usr, window_id)
 			return TRUE
+
 	// Decode payload
 	var/payload
 	if(href_list["payload"])
-		payload = json_decode(href_list["payload"])
+		var/payload_text = href_list["payload"]
+
+		if (!rustg_json_is_valid(payload_text))
+			log_tgui(usr, "Error: Invalid JSON")
+			return TRUE
+
+		payload = json_decode(payload_text)
+
 	// Pass message to window
 	if(window)
 		window.on_message(type, payload, href_list)

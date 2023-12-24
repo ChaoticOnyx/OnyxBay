@@ -1,233 +1,141 @@
-GLOBAL_LIST_EMPTY(station_gateways)
-GLOBAL_LIST_EMPTY(world_gateways_by_tag)
-GLOBAL_LIST_EMPTY(world_awaygateways)
 /obj/machinery/gateway
 	name = "gateway"
 	desc = "A mysterious gateway built by unknown hands, it allows for faster than light travel to far-flung locations."
-	icon = 'icons/obj/machines/gateway.dmi'
+	icon = 'icons/obj/machinery/gateway.dmi'
 	icon_state = "off"
-	density = TRUE
-	anchored = TRUE
-	var/active = FALSE
-	var/ready = FALSE // have we got all the parts for a gateway?
-	var/main_part = FALSE
-	var/gateway_tag
-	var/list/linked = list()
+	density = 1
+	anchored = 1
+	var/active = 0
+
 
 /obj/machinery/gateway/Initialize()
-	update_icon()
-	if(dir == SOUTH)
-		set_density(FALSE)
 	. = ..()
-	if(gateway_tag)
-		GLOB.world_gateways_by_tag[gateway_tag] = src
-	detect()
+	update_icon()
+	if(dir == 2)
+		density = 0
 
-/obj/machinery/gateway/Destroy()
-	if(gateway_tag)
-		GLOB.world_gateways_by_tag[gateway_tag] = null
-	toggleoff(forced_off = TRUE)
-	for(var/obj/machinery/gateway/G in linked)
-		G.toggleoff()
-		G.linked.Remove(src)
-	linked.Cut()
-	return ..()
 
-/obj/machinery/gateway/on_update_icon()
-	if(main_part)
-		icon_state = active ? "oncenter" : "offcenter"
-	else
-		icon_state = active ? "on" : "off"
+/obj/machinery/gateway/update_icon()
+	if(active)
+		icon_state = "on"
+		return
+	icon_state = "off"
 
-/obj/machinery/gateway/proc/toggleoff(mob/user, forced_off = FALSE)
-	for(var/obj/machinery/gateway/G in linked)
-		G.active = FALSE
+
+
+//this is da important part wot makes things go
+/obj/machinery/gateway/centerstation
+	density = 1
+	icon_state = "offcenter"
+
+	//warping vars
+	var/list/linked_gateways = list()
+	var/ready = 0				//have we got all the parts for a gateway?
+	var/wait = 0				//this just grabs world.time at world start
+	var/obj/machinery/gateway/centeraway/awaygate = null
+
+/obj/machinery/gateway/centerstation/Initialize()
+	. = ..()
+	update_icon()
+	wait = world.time + config.gateway_delay	//+ thirty minutes default
+	awaygate = locate(/obj/machinery/gateway/centeraway)
+
+
+/obj/machinery/gateway/centerstation/update_icon()
+	if(active)
+		icon_state = "oncenter"
+		return
+	icon_state = "offcenter"
+
+
+
+/obj/machinery/gateway/centerstation/process()
+	if(stat & (NOPOWER))
+		if(active) toggleoff()
+		return
+
+	if(active)
+		use_power_oneoff(5000)
+
+
+/obj/machinery/gateway/centerstation/proc/detect()
+	linked_gateways = list()	//clear the list
+	var/turf/T = loc
+
+	for(var/i in alldirs)
+		T = get_step(loc, i)
+		var/obj/machinery/gateway/G = locate(/obj/machinery/gateway) in T
+		if(G)
+			linked_gateways.Add(G)
+			continue
+
+		//this is only done if we fail to find a part
+		ready = 0
+		toggleoff()
+		break
+
+	if(linked_gateways.len == 8)
+		ready = 1
+
+
+/obj/machinery/gateway/centerstation/proc/toggleon(mob/user as mob)
+	if(!ready)			return
+	if(linked_gateways.len != 8)	return
+	if(!powered())		return
+	if(!awaygate)
+		to_chat(user, "<span class='notice'>Error: No destination found.</span>")
+		return
+	if(world.time < wait)
+		to_chat(user, "<span class='notice'>Error: Warpspace triangulation in progress. Estimated time to completion: [round(((wait - world.time) / 10) / 60)] minutes.</span>")
+		return
+
+	for(var/obj/machinery/gateway/G in linked_gateways)
+		G.active = 1
 		G.update_icon()
-	active = FALSE
-	if(dir == SOUTH)
-		set_density(FALSE)
+	active = 1
 	update_icon()
 
-/obj/machinery/gateway/attack_hand(mob/user)
-	if(!main_part)
-		return
+
+/obj/machinery/gateway/centerstation/proc/toggleoff()
+	for(var/obj/machinery/gateway/G in linked_gateways)
+		G.active = 0
+		G.update_icon()
+	active = 0
+	update_icon()
+
+
+/obj/machinery/gateway/centerstation/attack_hand(mob/user as mob)
 	if(!ready)
 		detect()
 		return
 	if(!active)
 		toggleon(user)
 		return
-	toggleoff(user)
+	toggleoff()
 
-/obj/machinery/gateway/proc/toggleon(mob/user)
-	return
-
-/obj/machinery/gateway/proc/detect()
-	linked = list()	//clear the list
-	var/turf/T = get_turf(loc)
-
-	for(var/i in GLOB.alldirs)
-		var/obj/machinery/gateway/G = locate(/obj/machinery/gateway) in get_step(T, i)
-		if(G)
-			linked.Add(G)
-			continue
-
-		//this is only done if we fail to find a part
-		ready = FALSE
-		toggleoff()
-		break
-
-	if(length(linked) == 8)
-		ready = TRUE
-
-//this is da important part wot makes things go
-/obj/machinery/gateway/centerstation
-	density = 1
-	icon_state = "offcenter"
-	main_part = TRUE
-	//warping vars
-	var/wait = 0 //this just grabs world.time at world start
-	var/obj/machinery/gateway/centeraway/awaygate
-	var/forced = FALSE
-	var/datum/browser/gateway_menu
-
-/obj/machinery/gateway/centerstation/Initialize()
-	update_icon()
-	wait = world.time + config.misc.gateway_delay	//+ thirty minutes default
-	. = ..()
-	GLOB.station_gateways.Add(src)
-
-/obj/machinery/gateway/centerstation/Destroy()
-	GLOB.station_gateways.Remove(src)
-	awaygate = null
-	QDEL_NULL(gateway_menu)
-	. = ..()
-
-/obj/machinery/gateway/centerstation/Process()
-	if(stat & (NOPOWER))
-		if(active)
-			toggleoff()
-		return
-
-	if(active)
-		use_power_oneoff(5000)
-
-/obj/machinery/gateway/centerstation/toggleon(mob/user, forced_on = FALSE)
-	if(!ready)
-		return
-	if(!powered())
-		return
-	detect()
-	if(length(linked) != 8)
-		return
-	if(!awaygate)
-		to_chat(user, SPAN("notice", "Error: No destination found."))
-		return
-	if(world.time < wait && !forced_on)
-		to_chat(user, SPAN("notice", "Error: Warpspace triangulation in progress. Estimated time to completion: [round(((wait - world.time) / 10) / 60)] minutes."))
-		return
-
-	for(var/obj/machinery/gateway/G in linked)
-		G.active = TRUE
-		G.update_icon()
-	active = TRUE
-	awaygate.stationgate = src
-	awaygate.toggleon()
-	if(dir == SOUTH)
-		set_density(TRUE)
-	update_icon()
-
-/obj/machinery/gateway/centerstation/toggleoff(mob/user, forced_off = FALSE)
-	if(ready && forced && user && !forced_off)
-		to_chat(user, SPAN_DANGER("Error: Detected high priority distress signal, user input is overridden. [active ? "The portal has been opened." : "Warpspace triangulation in progress."]"))
-		return
-	if(awaygate)
-		awaygate.stationgate = null
-		awaygate.toggleoff()
-	for(var/obj/machinery/gateway/G in linked)
-		G.active = FALSE
-		G.update_icon()
-	..()
 
 //okay, here's the good teleporting stuff
-/obj/machinery/gateway/centerstation/Bumped(atom/movable/M)
+/obj/machinery/gateway/centerstation/CollidedWith(atom/movable/M as mob|obj)
 	if(!ready || !active || !awaygate)
 		return
+
 	if(awaygate.calibrated)
-		var/turf/new_T = get_step(get_turf(awaygate), SOUTH)
-		M.forceMove(new_T ? new_T : get_turf(M))
+		M.forceMove(get_step(awaygate.loc, SOUTH))
 		M.set_dir(SOUTH)
 		return
 	else
-		var/obj/effect/landmark/dest = pick(GLOB.awaydestinations)
+		var/obj/effect/landmark/dest = pick(awaydestinations)
 		if(dest)
-			M.forceMove(get_turf(dest))
+			M.forceMove(dest.loc)
 			M.set_dir(SOUTH)
 			use_power_oneoff(5000)
-
-/obj/machinery/gateway/centerstation/attackby(obj/item/device/W, mob/user)
-	if(isMultitool(W))
-		to_chat(user, "The gate is already calibrated, there is no work for you to do here.")
 		return
 
-/obj/machinery/gateway/centerstation/attack_hand(mob/user)
-	show_menu(user)
-	..()
 
-/obj/machinery/gateway/centerstation/attack_ghost(mob/user)
-	show_menu(user)
-	..()
-
-/obj/machinery/gateway/centerstation/proc/show_menu(mob/user)
-	if(is_admin(user))
-		var/dat = "Gateway Admin Actions\
-		<BR><a href='?src=\ref[src];select_awaygateway=1'>[awaygate ? "Selected awaygate location is [awaygate.gateway_area_name]" : "Awaygate not found."]</a>\
-		<BR><a href='?src=\ref[src];toggle_forced=1'>The forced mode is now [forced ? "on" : "off"]</a>\
-		<BR><a href='?src=\ref[src];toggleon=1'>Forced toggle on</a>\
-		<BR><a href='?src=\ref[src];toggleoff=1'>Forced toggle off</a>\
-		<BR><a href='?src=\ref[src];detect=1'>Detect gateways</a>\
-		"
-		if(!gateway_menu || gateway_menu.user != user)
-			gateway_menu = new /datum/browser(user, "gateway", "<B>[src]</B>", 360, 410)
-			gateway_menu.set_content(dat)
-		else
-			gateway_menu.set_content(dat)
-			gateway_menu.update()
-		gateway_menu.open()
-
-/obj/machinery/gateway/centerstation/Topic(href,href_list)
-	var/mob/user = usr
-	if(!is_admin(user) || !ready)
+/obj/machinery/gateway/centerstation/attackby(obj/item/device/W as obj, mob/user as mob)
+	if(W.ismultitool())
+		to_chat(user, "\black The gate is already calibrated, there is no work for you to do here.")
 		return
-
-	if(href_list["select_awaygateway"])
-		switch(alert(user, "Do you want to pick gateway from tag list or from area list?",, "Tag", "Area"))
-			if("Tag")
-				var/obj/machinery/gateway/centeraway/selected = GLOB.world_gateways_by_tag[input(user, "Choose gateway tag", "Gateway") in GLOB.world_gateways_by_tag]
-				if(!istype(selected))
-					return
-				awaygate = selected
-			if("Area")
-				var/obj/machinery/gateway/centeraway/selected = GLOB.world_awaygateways[input(user, "Choose gateway area", "Gateway") in GLOB.world_awaygateways]
-				if(!istype(selected))
-					return
-				awaygate = selected
-
-	if(href_list["toggle_forced"])
-		forced = !forced
-		to_chat(user, "The forced mode is now [forced ? "on" : "off"]")
-
-	if(href_list["toggleon"])
-		toggleon(user, TRUE)
-
-	if(href_list["toggleoff"])
-		toggleoff(user, TRUE)
-
-	if(href_list["detect"])
-		detect()
-
-	show_menu(user)
-	return TRUE
 
 /////////////////////////////////////Away////////////////////////
 
@@ -236,60 +144,96 @@ GLOBAL_LIST_EMPTY(world_awaygateways)
 	density = 1
 	icon_state = "offcenter"
 	use_power = POWER_USE_OFF
-	main_part = TRUE
-	var/calibrated = TRUE
-	var/obj/machinery/gateway/centerstation/stationgate
-	var/gateway_area_name // it's required to delete src from list even if smart CE rename the area
+	var/calibrated = 1
+	var/list/linked_gateways = list()	//a list of the connected gateway chunks
+	var/ready = 0
+	var/obj/machinery/gateway/centeraway/stationgate = null
 
 
 /obj/machinery/gateway/centeraway/Initialize()
+	. = ..()
 	update_icon()
-	. = ..()
-	var/area/A = get_area(src)
-	gateway_area_name = A.name
-	GLOB.world_awaygateways[gateway_area_name] = src
+	stationgate = locate(/obj/machinery/gateway/centerstation)
 
-/obj/machinery/gateway/centeraway/Destroy()
-	GLOB.world_awaygateways[gateway_area_name] = null
-	. = ..()
 
-/obj/machinery/gateway/centeraway/toggleon(mob/user)
-	if(!ready)
+/obj/machinery/gateway/centeraway/update_icon()
+	if(active)
+		icon_state = "oncenter"
 		return
-	detect()
-	if(length(linked) != 8)
-		return
+	icon_state = "offcenter"
+
+
+/obj/machinery/gateway/centeraway/proc/detect()
+	linked_gateways = list()	//clear the list
+	var/turf/T = loc
+
+	for(var/i in alldirs)
+		T = get_step(loc, i)
+		var/obj/machinery/gateway/G = locate(/obj/machinery/gateway) in T
+		if(G)
+			linked_gateways.Add(G)
+			continue
+
+		//this is only done if we fail to find a part
+		ready = 0
+		toggleoff()
+		break
+
+	if(linked_gateways.len == 8)
+		ready = 1
+
+
+/obj/machinery/gateway/centeraway/proc/toggleon(mob/user as mob)
+	if(!ready)			return
+	if(linked_gateways.len != 8)	return
 	if(!stationgate)
-		to_chat(user, SPAN("notice", "Error: No destination found."))
+		to_chat(user, "<span class='notice'>Error: No destination found.</span>")
 		return
 
-	for(var/obj/machinery/gateway/G in linked)
-		G.active = TRUE
+	for(var/obj/machinery/gateway/G in linked_gateways)
+		G.active = 1
 		G.update_icon()
-	active = TRUE
-	if(dir == SOUTH)
-		set_density(TRUE)
+	active = 1
 	update_icon()
 
-/obj/machinery/gateway/centeraway/Bumped(atom/movable/M)
-	if(!ready)	return
-	if(!active)	return
+
+/obj/machinery/gateway/centeraway/proc/toggleoff()
+	for(var/obj/machinery/gateway/G in linked_gateways)
+		G.active = 0
+		G.update_icon()
+	active = 0
+	update_icon()
+
+
+/obj/machinery/gateway/centeraway/attack_hand(mob/user as mob)
+	if(!ready)
+		detect()
+		return
+	if(!active)
+		toggleon(user)
+		return
+	toggleoff()
+
+
+/obj/machinery/gateway/centeraway/CollidedWith(atom/movable/M as mob|obj)
+	if(!ready || !active)
+		return
+
 	if(istype(M, /mob/living/carbon))
 		for(var/obj/item/implant/exile/E in M)//Checking that there is an exile implant in the contents
 			if(E.imp_in == M)//Checking that it's actually implanted vs just in their pocket
-				to_chat(M, "The remote gate has detected your exile implant and is blocking your entry.")
+				to_chat(M, "\black The station gate has detected your exile implant and is blocking your entry.")
 				return
-	var/turf/new_T = get_step(get_turf(stationgate), SOUTH)
-	M.forceMove(new_T ? new_T : get_turf(M))
+	M.forceMove(get_step(stationgate.loc, SOUTH))
 	M.set_dir(SOUTH)
 
 
-/obj/machinery/gateway/centeraway/attackby(obj/item/device/W, mob/user)
-	if(isMultitool(W))
+/obj/machinery/gateway/centeraway/attackby(obj/item/device/W as obj, mob/user as mob)
+	if(W.ismultitool())
 		if(calibrated)
-			to_chat(user, "The gate is already calibrated, there is no work for you to do here.")
+			to_chat(user, "\black The gate is already calibrated, there is no work for you to do here.")
 			return
 		else
-			to_chat(user, SPAN("notice", "<b>Recalibration successful!</b></span>: This gate's systems have been fine tuned.  Travel to this gate will now be on target."))
-			calibrated = TRUE
+			to_chat(user, "<span class='notice'><b>Recalibration successful!</b>: \black This gate's systems have been fine tuned.  Travel to this gate will now be on target.</span>")
+			calibrated = 1
 			return

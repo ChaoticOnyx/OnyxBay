@@ -1,155 +1,193 @@
-// Operates NanoUI
-/obj/item/modular_computer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
-	if(!screen_on || !enabled)
-		if(ui)
-			ui.close()
-		return 0
-	if(!apc_power(0) && !battery_power(0))
-		if(ui)
-			ui.close()
-		return 0
-
-	// If we have an active program switch to it now.
-	if(active_program)
-		if(ui) // This is the main laptop screen. Since we are switching to program's UI close it for now.
-			ui.close()
-		active_program.ui_interact(user)
+/obj/item/modular_computer/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(ui && (!screen_on || !enabled || !computer_use_power()))
+		ui.close()
 		return
 
-	// We are still here, that means there is no program loaded. Load the BIOS/ROM/OS/whatever you want to call it.
-	// This screen simply lists available programs and user may select them.
 	if(!hard_drive || !hard_drive.stored_files || !hard_drive.stored_files.len)
-		visible_message("\The [src] beeps three times, it's screen displaying \"DISK ERROR\" warning.")
+		audible_message(SPAN_WARNING("\The [src] beeps three times, its screen displaying, \"DISK ERROR!\"."))
 		return // No HDD, No HDD files list or no stored files. Something is very broken.
 
-	var/datum/computer_file/data/autorun = hard_drive.find_file_by_name("autorun")
-
-	var/list/data = get_header_data()
-
-	var/list/programs = list()
-	for(var/datum/computer_file/program/P in hard_drive.stored_files)
-		var/list/program = list()
-		program["name"] = P.filename
-		program["desc"] = P.filedesc
-		program["icon"] = P.program_menu_icon
-		program["autorun"] = (istype(autorun) && (autorun.stored_data == P.filename)) ? 1 : 0
-		if(P in idle_threads)
-			program["running"] = 1
-		programs.Add(list(program))
-
-	data["programs"] = programs
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if (!ui)
-		ui = new(user, src, ui_key, "laptop_mainscreen.tmpl", "NTOS Main Menu", 400, 500)
-		ui.auto_update_layout = 1
-		ui.set_initial_data(data)
+	if(!ui)
+		if(active_program)
+			ui = new(user, src, active_program.tgui_id, active_program.filedesc)
+			ui.autoupdate = active_program.ui_auto_update
+		else
+			ui = new(user, src, "NTOSMain")
 		ui.open()
-		ui.set_auto_update(1)
+		return
 
-// Handles user's GUI input
-/obj/item/modular_computer/Topic(href, href_list)
-	if(..())
-		return 1
-	if( href_list["PC_exit"] )
+	var/old_open_ui = ui.interface
+	if(active_program)
+		ui.interface = active_program.tgui_id
+		ui.autoupdate = active_program.ui_auto_update
+		ui.title = active_program.filedesc
+	else
+		ui.interface = "NTOSMain"
+
+	if(old_open_ui != ui.interface)
+		// We've switched UIs!
+		update_static_data(user, ui)
+		ui.send_assets()
+
+/obj/item/modular_computer/ui_assets(mob/user)
+	return list(
+		get_asset_datum(/datum/asset/simple/ntos),
+	)
+
+/obj/item/modular_computer/proc/get_header_data(list/data)
+	LAZYINITLIST(data)
+	data["PC_batteryicon"] = get_battery_icon()
+	data["PC_showbatteryicon"] = !!battery_module
+	data["PC_batterypercent"] = battery_module ? "[round(battery_module.battery.percent())] %" : "N/C"
+	data["PC_apclinkicon"] = (tesla_link?.enabled && apc_powered) ? "charging.gif" : ""
+	data["PC_device_theme"] = active_program ? active_program.tgui_theme : "scc"
+	data["PC_ntneticon"] = get_ntnet_status_icon()
+	data["PC_stationtime"] = worldtime2text()
+	data["PC_stationdate"] = "[time2text(world.realtime, "DDD, Month DD")], [game_year]"
+	data["PC_showexitprogram"] = !!active_program
+	data["PC_haslight"] = !!flashlight
+	data["PC_lighton"] = flashlight?.enabled ? TRUE : FALSE
+	data["PC_programheaders"] = list()
+	if(idle_threads.len)
+		var/list/program_headers = list()
+		for(var/datum/computer_file/program/P as anything in idle_threads)
+			if(!P.ui_header)
+				continue
+			program_headers.Add(list(list("icon" = P.ui_header)))
+		data["PC_programheaders"] = program_headers
+	return data
+
+/obj/item/modular_computer/ui_static_data(mob/user)
+	var/list/data = ..()
+	if(active_program)
+		data += active_program.ui_static_data(user)
+		return data
+
+	return data
+
+/obj/item/modular_computer/ui_data(mob/user)
+	var/list/data = get_header_data()
+	if(active_program)
+		data += active_program.ui_data(user)
+		return data
+
+	var/datum/computer_file/data/autorun = hard_drive.find_file_by_name("autorun")
+	data["programs"] = list()
+	data["services"] = list()
+	for(var/datum/computer_file/program/P in hard_drive.stored_files)
+		if(P.program_hidden())
+			continue
+		if(!istype(P, /datum/computer_file/program/scanner))
+			data["programs"] += list(list(
+				"filename" = P.filename,
+				"desc" = P.filedesc,
+				"autorun" = istype(autorun) && (autorun.stored_data == P.filename),
+				"running" = (P in idle_threads)
+			))
+		if(P.program_type & PROGRAM_SERVICE)
+			data["services"] += list(list(
+				"filename" = P.filename,
+				"desc" = P.filedesc,
+				"running" = (P in enabled_services) && (P.service_state > PROGRAM_STATE_KILLED)
+			))
+
+	return data
+
+/obj/item/modular_computer/proc/get_battery_icon()
+	if(battery_module)
+		switch(battery_module.battery.percent())
+			if(80 to 200)
+				return "batt_100.gif"
+			if(60 to 80)
+				return "batt_80.gif"
+			if(40 to 60)
+				return "batt_60.gif"
+			if(20 to 40)
+				return "batt_40.gif"
+			if(5 to 20)
+				return "batt_20.gif"
+
+	return "batt_5.gif"
+
+/obj/item/modular_computer/proc/get_ntnet_status_icon()
+	switch(get_ntnet_status())
+		if(0)
+			return "sig_none.gif"
+		if(1)
+			return "sig_low.gif"
+		if(2)
+			return "sig_high.gif"
+		if(3)
+			return "sig_lan.gif"
+		else
+			return ""
+
+/obj/item/modular_computer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return
+
+	if(active_program)
+		. = active_program.ui_act(action, params, ui, state)
+
+	if(action == "PC_exit")
 		kill_program()
-		return 1
-	if( href_list["PC_enable_component"] )
-		var/obj/item/computer_hardware/H = find_hardware_by_name(href_list["PC_enable_component"])
-		if(H && istype(H) && !H.enabled)
-			H.enabled = 1
-		. = 1
-	if( href_list["PC_disable_component"] )
-		var/obj/item/computer_hardware/H = find_hardware_by_name(href_list["PC_disable_component"])
-		if(H && istype(H) && H.enabled)
-			H.enabled = 0
-		. = 1
-	if( href_list["PC_shutdown"] )
+		return TRUE
+	if(action == "PC_toggle_component")
+		var/obj/item/computer_hardware/H = find_hardware_by_name(params["component"])
+		if(istype(H))
+			if(H.enabled)
+				H.disable()
+			else
+				H.enable()
+		. = TRUE
+	if(action == "PC_togglelight")
+		if(flashlight)
+			flashlight.toggle()
+		. = TRUE
+	if(action == "PC_shutdown")
 		shutdown_computer()
-		return 1
-	if( href_list["PC_minimize"] )
+		return TRUE
+	if(action == "PC_minimize")
 		var/mob/user = usr
-		minimize_program(user)
-
-	if( href_list["PC_killprogram"] )
-		var/prog = href_list["PC_killprogram"]
-		var/datum/computer_file/program/P = null
+		if(user)
+			minimize_program(user)
+		. = TRUE
+	if(action == "PC_killprogram")
 		var/mob/user = usr
+		var/datum/computer_file/program/P
 		if(hard_drive)
-			P = hard_drive.find_file_by_name(prog)
+			P = hard_drive.find_file_by_name(params["filename"])
 
 		if(!istype(P) || P.program_state == PROGRAM_STATE_KILLED)
-			return
+			return TRUE
 
-		P.kill_program(1)
-		update_uis()
-		to_chat(user, "<span class='notice'>Program [P.filename].[P.filetype] with PID [rand(100,999)] has been killed.</span>")
+		if(P.kill_program())
+			to_chat(user, SPAN_NOTICE("Program [P.filename].[P.filetype] with PID [rand(100,999)] has been killed."))
+		. = TRUE
+	if(action == "PC_runprogram")
+		run_program(params["filename"], usr)
+		. = TRUE
+	if(action == "PC_setautorun")
+		if(hard_drive)
+			set_autorun(params["filename"])
+		. = TRUE
+	if(action == "PC_register")
+		if(registered_id)
+			unregister_account()
+		else if(GetID())
+			register_account()
+		. = TRUE
+	if(action == "PC_toggleservice")
+		toggle_service(params["service_to_toggle"], usr)
+		. = TRUE
 
-	if( href_list["PC_runprogram"] )
-		return run_program(href_list["PC_runprogram"])
+	playsound(src, click_sound)
+	update_icon()
 
-	if( href_list["PC_setautorun"] )
-		if(!hard_drive)
-			return
-		set_autorun(href_list["PC_setautorun"])
-
-	if(.)
-		update_uis()
-
-// Function used by NanoUI's to obtain data for header. All relevant entries begin with "PC_"
-/obj/item/modular_computer/proc/get_header_data()
-	var/list/data = list()
-
-	if(battery_module?.battery)
-		switch(CELL_PERCENT(battery_module.battery))
-			if(80 to 200) // 100 should be maximal but just in case..
-				data["PC_batteryicon"] = "batt_100.gif"
-			if(60 to 80)
-				data["PC_batteryicon"] = "batt_80.gif"
-			if(40 to 60)
-				data["PC_batteryicon"] = "batt_60.gif"
-			if(20 to 40)
-				data["PC_batteryicon"] = "batt_40.gif"
-			if(5 to 20)
-				data["PC_batteryicon"] = "batt_20.gif"
-			else
-				data["PC_batteryicon"] = "batt_5.gif"
-		data["PC_batterypercent"] = "[round(CELL_PERCENT(battery_module.battery))] %"
-		data["PC_showbatteryicon"] = 1
-	else
-		data["PC_batteryicon"] = "batt_5.gif"
-		data["PC_batterypercent"] = "N/C"
-		data["PC_showbatteryicon"] = battery_module ? 1 : 0
-
-	if(tesla_link && tesla_link.enabled && apc_powered)
-		data["PC_apclinkicon"] = "charging.gif"
-
-	if(network_card && network_card.is_banned())
-		data["PC_ntneticon"] = "sig_warning.gif"
-	else
-		switch(get_ntnet_status())
-			if(0)
-				data["PC_ntneticon"] = "sig_none.gif"
-			if(1)
-				data["PC_ntneticon"] = "sig_low.gif"
-			if(2)
-				data["PC_ntneticon"] = "sig_high.gif"
-			if(3)
-				data["PC_ntneticon"] = "sig_lan.gif"
-
-	var/list/program_headers = list()
-	for(var/datum/computer_file/program/P in idle_threads)
-		if(!P.ui_header)
-			continue
-		program_headers.Add(list(list(
-			"icon" = P.ui_header
-		)))
-	if(active_program && active_program.ui_header)
-		program_headers.Add(list(list(
-			"icon" = active_program.ui_header
-		)))
-	data["PC_programheaders"] = program_headers
-
-	data["PC_stationtime"] = stationtime2text()
-	data["PC_hasheader"] = 1
-	data["PC_showexitprogram"] = active_program ? 1 : 0 // Hides "Exit Program" button on mainscreen
-	return data
+/obj/item/modular_computer/ui_status(mob/user, datum/ui_state/state)
+	. = ..()
+	if(. < UI_INTERACTIVE)
+		if(user.machine)
+			user.unset_machine()

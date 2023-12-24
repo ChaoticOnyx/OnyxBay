@@ -3,15 +3,33 @@
 /obj/item/wirecutters/clippers
 	name = "plant clippers"
 	desc = "A tool used to take samples from plants."
+	icon_state = "plantclippers"
+	item_state = "plantclippers"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/items/lefthand_hydro.dmi',
+		slot_r_hand_str = 'icons/mob/items/righthand_hydro.dmi',
+		)
+	toolspeed = 0.7
+	bomb_defusal_chance = 40 // 40% chance to successfully defuse a bomb, higher than standard because plant clippers are smaller
+	build_from_parts = FALSE
+
+/obj/item/wirecutters/clippers/update_icon()
+	var/matrix/tf = matrix()
+	if(istype(loc, /obj/item/storage))
+		tf.Turn(-90) //Vertical for storing compactly
+		tf.Translate(-1,0) //Could do this with pixel_x but let's just update the appearance once.
+	transform = tf
 
 /obj/item/device/analyzer/plant_analyzer
 	name = "plant analyzer"
-	desc = "A hand-held botanical scanner used to analyze plants."
-	icon = 'icons/obj/device.dmi'
+	icon = 'icons/obj/item/tools/plant_analyzer.dmi'
 	icon_state = "hydro"
-	item_state = "analyzer"
+	item_state = "hydro"
+	contained_sprite = TRUE
 	var/form_title
 	var/last_data
+	matter = list(DEFAULT_WALL_MATERIAL = 80, MATERIAL_GLASS = 20)
+	origin_tech = list(TECH_MAGNET = 1, TECH_BIO = 1)
 
 /obj/item/device/analyzer/plant_analyzer/proc/print_report_verb()
 	set name = "Print Plant Report"
@@ -28,18 +46,14 @@
 	if(href_list["print"])
 		print_report(usr)
 
-/obj/item/device/analyzer/plant_analyzer/proc/print_report(mob/living/user)
-	THROTTLE(print_cooldown, 3 SECONDS)
-	if(!print_cooldown)
-		to_chat(user, SPAN("notice", "\The [src]'s internal printer is still recharging."))
-		return
-
+/obj/item/device/analyzer/plant_analyzer/proc/print_report(var/mob/living/user)
 	if(!last_data)
 		to_chat(user, "There is no scan data to print.")
 		return
-	var/obj/item/paper/P = new /obj/item/paper(get_turf(src), "[last_data]", "paper - [form_title]")
+	var/obj/item/paper/P = new /obj/item/paper(get_turf(src))
+	P.set_content_unsafe("paper - [form_title]", "[last_data]")
 	if(istype(user,/mob/living/carbon/human) && !(user.l_hand && user.r_hand))
-		user.pick_or_drop(P, P.loc)
+		user.put_in_hands(P)
 	user.visible_message("\The [src] spits out a piece of paper.")
 	return
 
@@ -54,9 +68,9 @@
 	var/datum/reagents/grown_reagents
 	if(istype(target,/obj/structure/table))
 		return ..()
-	else if(istype(target,/obj/item/reagent_containers/food/grown))
+	else if(istype(target,/obj/item/reagent_containers/food/snacks/grown))
 
-		var/obj/item/reagent_containers/food/grown/G = target
+		var/obj/item/reagent_containers/food/snacks/grown/G = target
 		grown_seed = SSplants.seeds[G.plantname]
 		grown_reagents = G.reagents
 
@@ -77,14 +91,12 @@
 		grown_seed = H.seed
 		grown_reagents = H.reagents
 
-	playsound(src.loc, 'sound/signals/processing21.ogg', 50)
-
 	if(!grown_seed)
 		to_chat(user, "<span class='danger'>[src] can tell you nothing about \the [target].</span>")
 		return
 
 	form_title = "[grown_seed.seed_name] (#[grown_seed.uid])"
-	var/dat = "<meta charset=\"utf-8\"><h3>Plant data for [form_title]</h3>"
+	var/dat = "<h3>Plant data for [form_title]</h3>"
 	user.visible_message("<span class='notice'>[user] runs the scanner over \the [target].</span>")
 
 	dat += "<h2>General Data</h2>"
@@ -97,12 +109,13 @@
 	dat += "<tr><td><b>Potency</b></td><td>[grown_seed.get_trait(TRAIT_POTENCY)]</td></tr>"
 	dat += "</table>"
 
-	if(grown_reagents && grown_reagents.reagent_list && grown_reagents.reagent_list.len)
+	if(LAZYLEN(grown_reagents?.reagent_volumes))
 		dat += "<h2>Reagent Data</h2>"
 
 		dat += "<br>This sample contains: "
-		for(var/datum/reagent/R in grown_reagents.reagent_list)
-			dat += "<br>- [R.name], [grown_reagents.get_reagent_amount(R.type)] unit(s)"
+		for(var/_R in grown_reagents.reagent_volumes)
+			var/singleton/reagent/R = GET_SINGLETON(_R)
+			dat += "<br>- [R.name], [REAGENT_VOLUME(grown_reagents, _R)] unit(s)"
 
 	dat += "<h2>Other Data</h2>"
 
@@ -145,7 +158,7 @@
 	else if(grown_seed.get_trait(TRAIT_HEAT_TOLERANCE) < 10)
 		dat += "<br>It is very sensitive to temperature shifts."
 
-	dat += "<br>It thrives in a light level of [grown_seed.get_trait(TRAIT_IDEAL_LIGHT)] lumen[grown_seed.get_trait(TRAIT_IDEAL_LIGHT) == 1 ? "" : "s"]."
+	dat += "<br>It thrives in a light level of [grown_seed.get_trait(TRAIT_IDEAL_LIGHT)] lumen\s."
 
 	if(grown_seed.get_trait(TRAIT_LIGHT_TOLERANCE) > 10)
 		dat += "<br>It is well adapted to a range of light levels."
@@ -213,6 +226,6 @@
 	if(dat)
 		last_data = dat
 		dat += "<br><br>\[<a href='?src=\ref[src];print=1'>print report</a>\]"
-		show_browser(user, dat,"window=plant_analyzer")
+		user << browse(dat,"window=plant_analyzer")
 
 	return

@@ -1,37 +1,33 @@
 /obj/item/gun/launcher/grenade
 	name = "grenade launcher"
 	desc = "A bulky pump-action grenade launcher. Holds up to 6 grenades in a revolving magazine."
-	icon_state = "riotgun"
-	item_state = "riotgun"
-	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 3)
-	w_class = ITEM_SIZE_HUGE
-	force = 14.5
-	mod_weight = 1.35
-	mod_reach = 0.8
-	mod_handy = 1.0
+	icon = 'icons/obj/guns/grenade_launcher.dmi'
+	icon_state = "grenadelauncher"
+	item_state = "grenadelauncher"
+	w_class = ITEMSIZE_LARGE
+	force = 10
 
-	fire_sound = 'sound/weapons/empty.ogg'
+	fire_sound = 'sound/weapons/grenadelaunch.ogg'
 	fire_sound_text = "a metallic thunk"
-	screen_shake = 0
+	recoil = 0
 	throw_distance = 7
 	release_force = 5
-	combustion = 1
 
-	var/obj/item/grenade/chambered
-	var/list/grenades = new /list()
-	var/max_grenades = 5 //holds this + one in the chamber
-	var/whitelisted_grenades = list(
-		/obj/item/grenade/frag/shell)
+	needspin = FALSE
 
 	var/blacklisted_grenades = list(
 		/obj/item/grenade/flashbang/clusterbang,
-		/obj/item/grenade/frag)
+		/obj/item/grenade/frag
+		)
 
-	matter = list(MATERIAL_STEEL = 2000)
+	var/obj/item/grenade/chambered
+	var/list/grenades = new/list()
+	var/max_grenades = 5 //holds this + one in the chamber
+	matter = list(DEFAULT_WALL_MATERIAL = 2000)
 
 //revolves the magazine, allowing players to choose between multiple grenade types
-/obj/item/gun/launcher/grenade/proc/pump(mob/M)
-	playsound(M, 'sound/effects/weapons/gun/shotgunpump.ogg', 60, 1)
+/obj/item/gun/launcher/grenade/proc/pump(mob/M as mob)
+	playsound(M, 'sound/weapons/reloads/shotgun_pump.ogg', 60, 1)
 
 	var/obj/item/grenade/next
 	if(grenades.len)
@@ -42,40 +38,47 @@
 	if(next)
 		grenades -= next //Remove grenade from loaded list.
 		chambered = next
-		to_chat(M, "<span class='warning'>You pump [src], loading \a [next] into the chamber.</span>")
+		to_chat(M, SPAN_WARNING("You pump [src], loading \a [next] into the chamber."))
 	else
-		to_chat(M, "<span class='warning'>You pump [src], but the magazine is empty.</span>")
+		to_chat(M, SPAN_WARNING("You pump [src], but the magazine is empty."))
 	update_icon()
 
-/obj/item/gun/launcher/grenade/_examine_text(mob/user)
+/obj/item/gun/launcher/grenade/examine(mob/user, distance, is_adjacent)
 	. = ..()
-	if(get_dist(src, user) <= 2)
-		var/grenade_count = grenades.len + (chambered? 1 : 0)
-		. += "\nHas [grenade_count] grenade\s remaining."
+	if(is_adjacent)
+		to_chat(user, SPAN_NOTICE("It has [get_ammo()] grenade\s remaining."))
 		if(chambered)
-			. += "\n\A [chambered] is chambered."
+			to_chat(user, SPAN_NOTICE("\A [chambered] is chambered."))
 
 /obj/item/gun/launcher/grenade/proc/load(obj/item/grenade/G, mob/user)
 	if(!can_load_grenade_type(G, user))
 		return
-
 	if(grenades.len >= max_grenades)
-		to_chat(user, "<span class='warning'>\The [src] is full.</span>")
+		to_chat(user, SPAN_WARNING("[src] is full."))
 		return
-	user.drop(G, src)
+	user.remove_from_mob(G)
+	G.forceMove(src)
 	grenades.Insert(1, G) //add to the head of the list, so that it is loaded on the next pump
-	user.visible_message("\The [user] inserts \a [G] into \the [src].", "<span class='notice'>You insert \a [G] into \the [src].</span>")
+	user.visible_message("[user] inserts \a [G] into [src].", SPAN_NOTICE("You insert \a [G] into [src]."))
+	update_maptext()
 
 /obj/item/gun/launcher/grenade/proc/unload(mob/user)
 	if(grenades.len)
 		var/obj/item/grenade/G = grenades[grenades.len]
 		grenades.len--
-		user.pick_or_drop(G, loc)
-		user.visible_message("\The [user] removes \a [G] from [src].", "<span class='notice'>You remove \a [G] from \the [src].</span>")
+		user.put_in_hands(G)
+		user.visible_message("[user] removes \a [G] from [src].", SPAN_NOTICE("You remove \a [G] from [src]."))
 	else
-		to_chat(user, "<span class='warning'>\The [src] is empty.</span>")
+		to_chat(user, SPAN_WARNING("[src] is empty."))
+	update_maptext()
 
-/obj/item/gun/launcher/grenade/attack_self(mob/user)
+/obj/item/gun/launcher/grenade/proc/can_load_grenade_type(obj/item/grenade/G, mob/user)
+	if(is_type_in_list(G, blacklisted_grenades))
+		to_chat(user, SPAN_WARNING("\The [G] doesn't seem to fit in \the [src]!"))
+		return FALSE
+	return TRUE
+
+/obj/item/gun/launcher/grenade/unique_action(mob/user)
 	pump(user)
 
 /obj/item/gun/launcher/grenade/attackby(obj/item/I, mob/user)
@@ -92,68 +95,41 @@
 
 /obj/item/gun/launcher/grenade/consume_next_projectile()
 	if(chambered)
-		QDEL_NULL(chambered.safety_pin)
+		chambered.det_time = 10
 		chambered.activate(null)
 	return chambered
 
 /obj/item/gun/launcher/grenade/handle_post_fire(mob/user)
 	message_admins("[key_name_admin(user)] fired a grenade ([chambered.name]) from a grenade launcher ([src.name]).")
-	log_game("[key_name_admin(user)] used a grenade ([chambered.name]).")
+	log_game("[key_name_admin(user)] used a grenade ([chambered.name]).",ckey=key_name(user))
 	chambered = null
-	..()
+	update_maptext()
 
-/obj/item/gun/launcher/grenade/proc/can_load_grenade_type(obj/item/grenade/G, mob/user)
-	if(is_type_in_list(G, blacklisted_grenades) && ! is_type_in_list(G, whitelisted_grenades))
-		to_chat(user, "<span class='warning'>\The [G] doesn't seem to fit in \the [src]!</span>")
-		return FALSE
-	return TRUE
-
-// For uplink purchase, comes loaded with a random assortment of grenades
-/obj/item/gun/launcher/grenade/loaded/Initialize()
-	. = ..()
-
-	var/list/grenade_types = list(
-		/obj/item/grenade/anti_photon = 2,
-		/obj/item/grenade/smokebomb = 2,
-		/obj/item/grenade/chem_grenade/teargas = 2,
-		/obj/item/grenade/flashbang = 3,
-		/obj/item/grenade/empgrenade = 3,
-		/obj/item/grenade/frag/shell = 1,
-		)
-
-	var/grenade_type = util_pick_weight(grenade_types)
-	chambered = new grenade_type(src)
-	for(var/i in 1 to max_grenades)
-		grenade_type = util_pick_weight(grenade_types)
-		grenades += new grenade_type(src)
+/obj/item/gun/launcher/grenade/get_ammo()
+	return grenades.len + (chambered? 1 : 0)
 
 //Underslung grenade launcher to be used with the Z8
 /obj/item/gun/launcher/grenade/underslung
 	name = "underslung grenade launcher"
 	desc = "Not much more than a tube and a firing mechanism, this grenade launcher is designed to be fitted to a rifle."
-	w_class = ITEM_SIZE_NORMAL
+	w_class = ITEMSIZE_NORMAL
 	force = 5
 	max_grenades = 0
 
-/obj/item/gun/launcher/grenade/underslung/attack_self()
-	return
-
 //load and unload directly into chambered
 /obj/item/gun/launcher/grenade/underslung/load(obj/item/grenade/G, mob/user)
-	if(!can_load_grenade_type(G, user))
-		return
-
 	if(chambered)
-		to_chat(user, "<span class='warning'>\The [src] is already loaded.</span>")
+		to_chat(user, SPAN_WARNING("[src] is already loaded."))
 		return
-	user.drop(G, src)
+	user.remove_from_mob(G)
+	G.forceMove(src)
 	chambered = G
-	user.visible_message("\The [user] load \a [G] into \the [src].", "<span class='notice'>You load \a [G] into \the [src].</span>")
+	user.visible_message("[user] load \a [G] into [src].", SPAN_NOTICE("You load \a [G] into [src]."))
 
 /obj/item/gun/launcher/grenade/underslung/unload(mob/user)
 	if(chambered)
-		user.pick_or_drop(chambered, loc)
-		user.visible_message("\The [user] removes \a [chambered] from \the[src].", "<span class='notice'>You remove \a [chambered] from \the [src].</span>")
+		user.put_in_hands(chambered)
+		user.visible_message("[user] removes \a [chambered] from [src].", SPAN_NOTICE("You remove \a [chambered] from [src]."))
 		chambered = null
 	else
-		to_chat(user, "<span class='warning'>\The [src] is empty.</span>")
+		to_chat(user, SPAN_WARNING("[src] is empty."))

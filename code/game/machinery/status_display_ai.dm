@@ -2,7 +2,7 @@
 	var/overlay
 	var/ckey
 
-/datum/ai_emotion/New(over, key)
+/datum/ai_emotion/New(var/over, var/key)
 	overlay = over
 	ckey = key
 
@@ -23,12 +23,12 @@ var/list/ai_status_emotions = list(
 	"Dorfy" 					= new /datum/ai_emotion("ai_urist"),
 	"Facepalm" 					= new /datum/ai_emotion("ai_facepalm"),
 	"Friend Computer" 			= new /datum/ai_emotion("ai_friend"),
+	"Diagnostics"				= new /datum/ai_emotion("ai_diagnostics"),
 	"Tribunal" 					= new /datum/ai_emotion("ai_tribunal", "serithi"),
-	"Tribunal Malfunctioning"	= new /datum/ai_emotion("ai_tribunal_malf", "serithi"),
-	"Ship Scan" 				= new /datum/ai_emotion("ai_shipscan")
+	"Tribunal Malfunctioning"	= new /datum/ai_emotion("ai_tribunal_malf", "serithi")
 	)
 
-/proc/get_ai_emotions(ckey)
+/proc/get_ai_emotions(var/ckey)
 	var/list/emotions = new
 	for(var/emotion_name in ai_status_emotions)
 		var/datum/ai_emotion/emotion = ai_status_emotions[emotion_name]
@@ -37,14 +37,13 @@ var/list/ai_status_emotions = list(
 
 	return emotions
 
-/proc/set_ai_status_displays(mob/user)
-	var/list/ai_emotions = get_ai_emotions(user.ckey)
-	var/emote = input("Please, select a status!", "AI Status", null, null) in ai_emotions
-	for (var/obj/machinery/M in GLOB.ai_status_display_list) //change status
+/proc/set_ai_status_displays(mob/user as mob)
+	var/emote = get_ai_emotion(user)
+	for (var/obj/machinery/M in SSmachinery.all_status_displays) //change status
 		if(istype(M, /obj/machinery/ai_status_display))
 			var/obj/machinery/ai_status_display/AISD = M
 			AISD.emotion = emote
-			AISD.update_icon()
+			AISD.update()
 		//if Friend Computer, change ALL displays
 		else if(istype(M, /obj/machinery/status_display))
 
@@ -58,9 +57,8 @@ var/list/ai_status_emotions = list(
 	icon = 'icons/obj/status_display.dmi'
 	icon_state = "frame"
 	name = "AI display"
-	anchored = TRUE
-	density = FALSE
-	layer = ABOVE_WINDOW_LAYER
+	anchored = 1
+	density = 0
 
 	var/mode = 0	// 0 = Blank
 					// 1 = AI emoticon
@@ -69,68 +67,45 @@ var/list/ai_status_emotions = list(
 	var/picture_state	// icon_state of ai picture
 
 	var/emotion = "Neutral"
-	var/image/picture = null
-	var/static/icon/static_overlay = null
-	var/static/mutable_appearance/ea_overlay = null
 
 /obj/machinery/ai_status_display/Initialize()
 	. = ..()
-	GLOB.ai_status_display_list += src
-
-	if(!picture)
-		picture = image(icon, icon_state = "blank")
-
-	if(!static_overlay)
-		var/image/SO = image(icon, "static")
-		SO.alpha = 64
-		static_overlay = SO
-
-	if(!ea_overlay)
-		ea_overlay = emissive_appearance(icon, "outline")
+	SSmachinery.all_status_displays += src
 
 /obj/machinery/ai_status_display/Destroy()
-	GLOB.ai_status_display_list -= src
-	ClearOverlays()
-	QDEL_NULL(picture)
+	SSmachinery.all_status_displays -= src
 	return ..()
 
-/obj/machinery/ai_status_display/attack_ai/(mob/user)
-	var/list/ai_emotions = get_ai_emotions(user.ckey)
-	var/emote = input("Please, select a status!", "AI Status", null, null) in ai_emotions
-	src.emotion = emote
-
-/obj/machinery/ai_status_display/Process()
-	return
-
-/obj/machinery/ai_status_display/on_update_icon()
-	if(stat & (NOPOWER|BROKEN))
-		ClearOverlays()
+/obj/machinery/ai_status_display/attack_ai(mob/user as mob)
+	if(!ai_can_interact(user))
 		return
+	var/emote = get_ai_emotion(user)
+	src.emotion = emote
+	src.update()
 
-	switch(mode)
-		if(0) //Blank
-			ClearOverlays()
-			picture_state = ""
-		if(1) // AI emoticon
+/proc/get_ai_emotion(mob/user as mob)
+	return input(user, "Please, select a status!", "AI Status", null) in get_ai_emotions(user.ckey)
+
+/obj/machinery/ai_status_display/proc/update()
+	switch (mode)
+		if (0)	// Blank
+			cut_overlays()
+
+		if (1)	// AI emoticon
 			var/datum/ai_emotion/ai_emotion = ai_status_emotions[emotion]
 			set_picture(ai_emotion.overlay)
-		if(2) // BSOD
+
+		if (2)	// BSOD
 			set_picture("ai_bsod")
 
-/obj/machinery/ai_status_display/proc/set_picture(state)
-	if(picture_state == state)
-		return
-
-	if(state == "ai_off")
-		mode = 0
-		update_icon()
-		return
-
+/obj/machinery/ai_status_display/proc/set_picture(var/state)
 	picture_state = state
-	ClearOverlays()
+	cut_overlays()
+	add_overlay(picture_state)
 
-	picture.icon_state = picture_state
-
-	AddOverlays(picture)
-	AddOverlays(static_overlay)
-	AddOverlays(ea_overlay)
+/obj/machinery/ai_status_display/power_change()
+	..()
+	if(stat & NOPOWER)
+		cut_overlays()
+	else
+		update()

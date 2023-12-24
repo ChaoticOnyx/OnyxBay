@@ -4,7 +4,6 @@
 	desc = "A high tech machine that is designed to read DNA samples properly."
 	icon = 'icons/obj/forensics.dmi'
 	icon_state = "dnaopen"
-	layer = BELOW_OBJ_LAYER
 	anchored = 1
 	density = 1
 
@@ -16,7 +15,7 @@
 	var/last_process_worldtime = 0
 	var/report_num = 0
 
-/obj/machinery/dnaforensics/attackby(obj/item/W, mob/user as mob)
+/obj/machinery/dnaforensics/attackby(var/obj/item/W, mob/user as mob)
 
 	if(bloodsamp)
 		to_chat(user, "<span class='warning'>There is already a sample in the machine.</span>")
@@ -28,14 +27,15 @@
 
 	var/obj/item/forensics/swab/swab = W
 	if(istype(swab) && swab.is_used())
-		user.drop(swab, src)
-		bloodsamp = swab
+		user.unEquip(W)
+		src.bloodsamp = swab
+		swab.forceMove(src)
 		to_chat(user, "<span class='notice'>You insert \the [W] into \the [src].</span>")
 	else
 		to_chat(user, "<span class='warning'>\The [src] only accepts used swabs.</span>")
 		return
 
-/obj/machinery/dnaforensics/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = TRUE)
+/obj/machinery/dnaforensics/ui_interact(mob/user, ui_key = "main",var/datum/nanoui/ui = null)
 	if(stat & (NOPOWER)) return
 	if(user.stat || user.restrained()) return
 	var/list/data = list()
@@ -45,7 +45,7 @@
 	data["bloodsamp_desc"] = (bloodsamp ? (bloodsamp.desc ? bloodsamp.desc : "No information on record.") : "")
 	data["lidstate"] = closed
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnanoui.try_update_ui(user, src, ui_key, ui, data)
 	if (!ui)
 		ui = new(user, src, ui_key, "dnaforensics.tmpl", "QuikScan DNA Analyzer", 540, 326)
 		ui.set_initial_data(data)
@@ -65,7 +65,6 @@
 		else
 			if(bloodsamp)
 				if(closed == 1)
-					playsound(src.loc, 'sound/signals/processing12.ogg', 25)
 					scanner_progress = 0
 					scanning = 1
 					to_chat(usr, "<span class='notice'>Scan initiated.</span>")
@@ -85,13 +84,12 @@
 
 	return 1
 
-/obj/machinery/dnaforensics/Process()
+/obj/machinery/dnaforensics/process()
 	if(scanning)
 		if(!bloodsamp || bloodsamp.loc != src)
 			bloodsamp = null
 			scanning = 0
 		else if(scanner_progress >= 100)
-			playsound(src.loc, 'sound/signals/warning16.ogg', 25)
 			complete_scan()
 			return
 		else
@@ -101,30 +99,35 @@
 	last_process_worldtime = world.time
 
 /obj/machinery/dnaforensics/proc/complete_scan()
-	src.visible_message("<span class='notice'>\icon[src] makes an insistent chime.</span>")
+	visible_message(SPAN_NOTICE("[icon2html(src, viewers(get_turf(src)))] makes an insistent chime."), range = 2)
 	update_icon()
 	if(bloodsamp)
-		var/obj/item/paper/P = new(src)
-		P.SetName("[src] report #[++report_num]: [bloodsamp.name]")
+		var/obj/item/paper/P = new()
+		var/pname = "[src] report #[++report_num]"
+		var/info
 		P.stamped = list(/obj/item/stamp)
-		P.AddOverlays("paper_stamped")
+		P.overlays = list("paper_stamped")
 		//dna data itself
 		var/data = "No scan information available."
 		if(bloodsamp.dna != null)
-			data = "Spectometric analysis on provided sample has determined the presence of [bloodsamp.dna.len] strings of DNA.<br><br>"
+			data = "Spectometric analysis on provided sample has determined the presence of [length(bloodsamp.dna)] string\s of DNA.<br><br>"
 			for(var/blood in bloodsamp.dna)
-				data += "<span class='notice'>Blood type: [bloodsamp.dna[blood]]<br>\nDNA: [blood]</span><br><br>"
+				if(bloodsamp.dna[blood])
+					data += "<b>Blood type:</b> [bloodsamp.dna[blood]]<br>"
+				data += "<b>DNA:</b> [blood]<br><br>"
 		else
 			data += "No DNA found.<br>"
-		P.info = "<b>[src] analysis report #[report_num]</b><br>"
-		P.info += "<b>Scanned item:</b><br>[bloodsamp.name]<br>[bloodsamp.desc]<br><br>" + data
-		P.forceMove(src.loc)
-		P.update_icon()
+		info = "<b><font size=\"4\">[src] analysis report #[report_num]</font></b><HR>"
+		info += "<b>Scanned item:</b> [bloodsamp.name]<br><br>" + data
+		P.set_content_unsafe(pname, info)
+		print(P, user = usr)
 		scanning = 0
 		update_icon()
 	return
 
 /obj/machinery/dnaforensics/attack_ai(mob/user as mob)
+	if(!ai_can_interact(user))
+		return
 	ui_interact(user)
 
 /obj/machinery/dnaforensics/attack_hand(mob/user as mob)
@@ -145,7 +148,7 @@
 	closed = !closed
 	src.update_icon()
 
-/obj/machinery/dnaforensics/on_update_icon()
+/obj/machinery/dnaforensics/update_icon()
 	..()
 	if(!(stat & NOPOWER) && scanning)
 		icon_state = "dnaworking"

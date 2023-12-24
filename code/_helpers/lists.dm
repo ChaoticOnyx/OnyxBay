@@ -5,127 +5,162 @@
  *			Sorting
  */
 
+// Determiner constants
+#define DET_NONE        0x00
+#define DET_DEFINITE    0x01 // the
+#define DET_INDEFINITE  0x02 // a, an, some
+#define DET_AUTO        0x04
+
 /*
  * Misc
  */
 
-/****
-	* Binary search sorted insert
-	* INPUT: Object to be inserted
-	* LIST: List to insert object into
-	* TYPECONT: The typepath of the contents of the list
-	* COMPARE: The object to compare against, usualy the same as INPUT
-	* COMPARISON: The variable on the objects to compare
-	* COMPTYPE: How should the values be compared? Either COMPARE_KEY or COMPARE_VALUE.
-	*/
-#define BINARY_INSERT(INPUT, LIST, TYPECONT, COMPARE, COMPARISON, COMPTYPE) \
-	do {\
-		var/list/__BIN_LIST = LIST;\
-		var/__BIN_CTTL = length(__BIN_LIST);\
-		if(!__BIN_CTTL) {\
-			__BIN_LIST += INPUT;\
-		} else {\
-			var/__BIN_LEFT = 1;\
-			var/__BIN_RIGHT = __BIN_CTTL;\
-			var/__BIN_MID = (__BIN_LEFT + __BIN_RIGHT) >> 1;\
-			var ##TYPECONT/__BIN_ITEM;\
-			while(__BIN_LEFT < __BIN_RIGHT) {\
-				__BIN_ITEM = COMPTYPE;\
-				if(__BIN_ITEM.##COMPARISON <= COMPARE.##COMPARISON) {\
-					__BIN_LEFT = __BIN_MID + 1;\
-				} else {\
-					__BIN_RIGHT = __BIN_MID;\
-				};\
-				__BIN_MID = (__BIN_LEFT + __BIN_RIGHT) >> 1;\
-			};\
-			__BIN_ITEM = COMPTYPE;\
-			__BIN_MID = __BIN_ITEM.##COMPARISON > COMPARE.##COMPARISON ? __BIN_MID : __BIN_MID + 1;\
-			__BIN_LIST.Insert(__BIN_MID, INPUT);\
-		};\
-	} while(FALSE)
-
-/// Passed into BINARY_INSERT to compare keys
-#define COMPARE_KEY __BIN_LIST[__BIN_MID]
-/// Passed into BINARY_INSERT to compare values
-#define COMPARE_VALUE __BIN_LIST[__BIN_LIST[__BIN_MID]]
+///sort any value in a list
+/proc/sort_list(list/list_to_sort, cmp=/proc/cmp_text_asc)
+	return sortTim(list_to_sort.Copy(), cmp)
 
 //Returns a list in plain english as a string
-/proc/english_list(list/input, nothing_text = "nothing", and_text = " and ", comma_text = ", ", final_comma_text = "")
+/proc/english_list(var/list/input, nothing_text = "nothing", and_text = " and ", comma_text = ", ", final_comma_text = "")
+	// this proc cannot be merged with counting_english_list to maintain compatibility
+	// with shoddy use of this proc for code logic and for cases that require original order
 	switch(input.len)
 		if(0) return nothing_text
 		if(1) return "[input[1]]"
 		if(2) return "[input[1]][and_text][input[2]]"
 		else  return "[jointext(input, comma_text, 1, -1)][final_comma_text][and_text][input[input.len]]"
 
-/proc/items_english_list(list/input, nothing_text = "nothing", and_text = " and ", comma_text = ", ", final_comma_text = "")
-	var/out = list()
+//Returns a newline-separated list that counts equal-ish items, outputting count and item names, optionally with icons and specific determiners
+/proc/counting_english_list(var/list/input, output_icons = TRUE, determiners = DET_NONE, nothing_text = "nothing", line_prefix = "\t", first_item_prefix = "\n", last_item_suffix = "\n", and_text = "\n", comma_text = "\n", final_comma_text = "")
+	var/list/counts = list() // counted input items
+	var/list/items = list() // actual objects for later reference (for icons and formatting)
 
-	for(var/atom/I in input)
-		out += SPAN("info", I.name)
+	// count items
+	for(var/item in input)
+		var/name = "[item]" // index items by name; usually works fairly well for loose equality
+		if(name in counts)
+			counts[name]++
+		else
+			counts[name] = 1
+			items.Add(item)
 
+	// assemble the output list
+	var/list/out = list()
+	var/i = 0
+	for(var/item in items)
+		var/name = "[item]"
+		var/count = counts[name]
+		var/item_str = line_prefix
+
+		if(count > 1)
+			item_str += "[count]x&nbsp;"
+
+		// atoms use special string conversion rules
+		if(isatom(item))
+			// atoms/items/objects can be pretty and whatnot
+			var/atom/A = item
+			if(output_icons && isicon(A.icon) && !ismob(A)) // mobs tend to have unusable icons
+				item_str += "[icon2html(A, viewers(get_turf(A)))]&nbsp;"
+			switch(determiners)
+				if(DET_NONE) item_str += A.name
+				if(DET_DEFINITE) item_str += "\the [A]"
+				if(DET_INDEFINITE) item_str += "\a [A]"
+				else item_str += name
+
+		if(i == 0)
+			item_str = first_item_prefix + item_str
+		if(i == items.len - 1)
+			item_str = item_str + last_item_suffix
+
+		out.Add(item_str)
+		i++
+
+	// finally return the list using regular english_list builder
 	return english_list(out, nothing_text, and_text, comma_text, final_comma_text)
 
-//Returns list element or null. Should prevent "index out of bounds" error.
-/proc/listgetindex(list/list,index)
-	if(istype(list) && list.len)
-		if(isnum(index))
-			if(InRange(index,1,list.len))
-				return list[index]
-		else if(index in list)
-			return list[index]
-	return
+//A "preset" for counting_english_list that displays the list "inline" (comma separated)
+/proc/inline_counting_english_list(var/list/input, output_icons = TRUE, determiners = DET_NONE, nothing_text = "nothing", and_text = " and ", comma_text = ", ", final_comma_text = "", line_prefix = "", first_item_prefix = "", last_item_suffix = "")
+	return counting_english_list(input, output_icons, determiners, nothing_text, and_text, comma_text, final_comma_text)
 
-//Return either pick(list) or null if list is not of type /list or is empty
-/proc/safepick(list/list)
-	if(!islist(list) || !list.len)
-		return
-	return pick(list)
+/proc/ConvertReqString2List(var/list/source_list)
+	var/list/temp_list = params2list(source_list)
+	for(var/O in temp_list)
+		temp_list[O] = text2num(temp_list[O])
+	return temp_list
 
-//Checks if the list is empty
-/proc/isemptylist(list/list)
-	if(!list.len)
-		return 1
-	return 0
+/proc/is_string_in_list(var/given_string, var/list/L, var/match_case = TRUE)
+	for(var/list_string in L)
+		if(match_case)
+			if(given_string == list_string)
+				return TRUE
+		else
+			if(uppertext(given_string) == uppertext(list_string))
+				return TRUE
+	return FALSE
 
-//Checks for specific types in a list
-/proc/is_type_in_list(atom/A, list/L)
-	for(var/type in L)
-		if(istype(A, type))
-			return 1
-	return 0
+// Checks that all of the values are in the given list
+/proc/all_in_list(var/list/values, var/list/L)
+	if(!istype(values) || !istype(L))
+		return FALSE
+	for(var/value in values)
+		if(!(value in L))
+			return FALSE
+	return TRUE
 
-//Checks for specific paths in a list
-/proc/is_path_in_list(path, list/L)
-	for(var/type in L)
-		if(ispath(path, type))
-			return 1
-	return 0
+/proc/is_path_in_list(var/check_path, var/list/L)
+	for(var/path in L)
+		if(ispath(check_path, path))
+			return TRUE
+	return FALSE
 
-/proc/instances_of_type_in_list(atom/A, list/L)
-	var/instances = 0
-	for(var/type in L)
-		if(istype(A, type))
-			instances++
-	return instances
+/**
+ * Checks if an object is of a type that derives from the parent types specified in the list, returns TRUE if so, FALSE otherwise
+ *
+ * * thing - The object to check
+ * * types - A list of types to perform the check against
+ */
+/proc/is_type_in_list(var/datum/thing, var/list/types)
+	SHOULD_NOT_SLEEP(TRUE)
+	SHOULD_BE_PURE(TRUE)
+	for(var/type in types)
+		if(istype(thing, type))
+			return TRUE
+	return FALSE
 
-//Empties the list by .Cut(). Setting lenght = 0 has been confirmed to leak references.
-/proc/clearlist(list/L)
-	if(islist(L))
-		L.Cut()
+/proc/instances_of_type_in_list(var/datum/A, list/L, strict = FALSE)
+	. = 0
+	if (strict)
+		for (var/type in L)
+			if (type == A.type)
+				.++
+	else
+		for(var/type in L)
+			if(istype(A, type))
+				.++
+
+/proc/same_entries(var/list/first, var/list/second)
+	if(!islist(first) || !islist(second))
+		return FALSE
+	if(length(first) != length(second))
+		return FALSE
+	for(var/entry in first)
+		if(!(entry in second) || (first[entry] != second[entry]))
+			return FALSE
+	return TRUE
 
 //Removes any null entries from the list
-/proc/listclearnulls(list/list)
-	if(istype(list))
-		while(null in list)
-			list -= null
-	return
+//Returns TRUE if the list had nulls, FALSE otherwise
+/proc/listclearnulls(list/L)
+	var/start_len = L.len
+	var/list/N = new(start_len)
+	L -= N
+	return L.len < start_len
 
 /*
  * Returns list containing all the entries from first list that are not present in second.
  * If skiprep = 1, repeated elements are treated as one.
  * If either of arguments is not a list, returns null
  */
-/proc/difflist(list/first, list/second, skiprep=0)
+/proc/difflist(var/list/first, var/list/second, var/skiprep=0)
 	if(!islist(first) || !islist(second))
 		return
 	var/list/result = new
@@ -142,7 +177,7 @@
  * If skipref = 1, repeated elements are treated as one.
  * If either of arguments is not a list, returns null
  */
-/proc/uniquemergelist(list/first, list/second, skiprep=0)
+/proc/uniquemergelist(var/list/first, var/list/second, var/skiprep=0)
 	if(!islist(first) || !islist(second))
 		return
 	var/list/result = new
@@ -152,23 +187,71 @@
 		result = first ^ second
 	return result
 
-/proc/assoc_merge_add(value_a, value_b)
-	return value_a + value_b
+/*
+ * Returns a list with the results from both lists
+ * If norepeat = TRUE, it won't include repeat instances.
+ * If unpack = TRUE, it unpacks each list
+ */
+/proc/mergelists(var/list/first, var/list/second, var/norepeat = TRUE, var/unpack = FALSE)
+	if(!islist(first) || !islist(second))
+		return
+	var/list/result = new
+	if(unpack)
+		first = unpacklist(first)
+		second = unpacklist(second)
+	for(var/A in first)
+		result += A
+	if(norepeat)
+		for(var/A in second)
+			if(!(A in result))
+				result += A
+	else
+		for(var/A in second)
+			result += A
+	return result
 
-// This proc merges two associative lists
-/proc/merge_assoc_lists(list/a, list/b, merge_method, default_if_null_value = null)
-	. = list()
-	for(var/key in a)
-		var/a_value = a[key]
-		a_value = isnull(a_value) ? default_if_null_value : a_value
-		.[key] = a_value
-	for(var/key in b)
-		var/b_value = b[key]
-		b_value = isnull(b_value) ? default_if_null_value : b_value
-		if(!(key in .))
-			.[key] = b_value
+/*
+ * Returns a list with the unpacked results from the list.
+ * If repeatunpack = TRUE, it unpacks each found list within it
+ */
+/proc/unpacklist(var/list/packed, repeatunpack = TRUE)
+	if(!islist(packed))
+		return
+	var/list/result = new
+	for(var/A in packed)
+		if(islist(A))
+			for(var/B in A)
+				if(repeatunpack && islist(B))
+					var/list/unpacked = unpacklist(B)
+					for(var/C in unpacked)
+						result += C
+				else
+					result += B
 		else
-			.[key] = call(merge_method)(.[key], b_value)
+			result += A
+	return result
+
+//Picks a random element by weight from a list. The list must be correctly constructed in this format:
+//mylist[myelement1] = myweight1
+//mylist[myelement2] = myweight2
+//The proc will return the element index, and not the weight.
+/proc/pickweight(list/L)
+	var/total = 0
+	var/item
+	for (item in L)
+		if (isnull(L[item]))
+		//Change by nanako, a default weight will no longer overwrite an explicitly set weight of 0
+		//It will only use a default if no weight is defined
+			L[item] = 1
+		total += L[item]
+	total = rand() * total//Fix by nanako, allows it to handle noninteger weights
+	for (item in L)
+		total -= L[item]
+		if (total <= 0)
+			return item
+
+	return null
+
 
 //Pick a random element from the list and remove it from the list.
 /proc/pick_n_take(list/listfrom)
@@ -186,11 +269,11 @@
 		return picked
 	return null
 
-/// Returns the bottom(first) element from the list and removes it from the list (typical stack function)
+//Returns the first element from the list and removes it from the list
 /proc/popleft(list/L)
-	if(L.len)
+	if(length(L))
 		. = L[1]
-		L.Cut(1, 2)
+		L.Cut(1,2)
 
 //Returns the next element in parameter list after first appearance of parameter element. If it is the last element of the list or not present in list, returns first element.
 /proc/next_in_list(element, list/L)
@@ -212,7 +295,7 @@
 	return output
 
 //Randomize: Return the list in a random order
-/proc/shuffle(list/L)
+/proc/shuffle(var/list/L)
 	if(!L)
 		return
 
@@ -223,111 +306,55 @@
 	return L
 
 //Return a list with no duplicate entries
-/proc/uniquelist(list/L)
+/proc/uniquelist(var/list/L)
 	. = list()
 	for(var/i in L)
 		. |= i
 
-// Return a list of the values in an assoc list (including null)
-/proc/list_values(list/L)
-	. = list()
-	for(var/e in L)
-		. += L[e]
-
-// Return a list of the keys in an assoc list
-/proc/list_keys(list/L)
-	. = list()
-	for(var/k in L)
-		. += k
+//Mergesort: divides up the list into halves to begin the sort
+/proc/sortKey(var/list/client/L, var/order = 1)
+	if (!L)
+		return
+	var/list/target = L.Copy()
+	return sortTim(target, order ? GLOBAL_PROC_REF(cmp_ckey_asc) : GLOBAL_PROC_REF(cmp_ckey_dsc), FALSE)
 
 //Mergesort: divides up the list into halves to begin the sort
-/proc/sortKey(list/client/L, order = 1)
-	if(isnull(L) || L.len < 2)
-		return L
-	var/middle = L.len / 2 + 1
-	return mergeKey(sortKey(L.Copy(0,middle)), sortKey(L.Copy(middle)), order)
+/proc/sortAtom(var/list/atom/L, var/order = 1)
+	if (!L)
+		return
+	var/list/target = L.Copy()
+	return sortTim(target, order ? GLOBAL_PROC_REF(cmp_name_asc) : GLOBAL_PROC_REF(cmp_name_dsc), FALSE)
 
-//Mergsort: does the actual sorting and returns the results back to sortAtom
-/proc/mergeKey(list/client/L, list/client/R, order = 1)
-	var/Li=1
-	var/Ri=1
-	var/list/result = new()
-	while(Li <= L.len && Ri <= R.len)
-		var/client/rL = L[Li]
-		var/client/rR = R[Ri]
-		if(sorttext(rL.ckey, rR.ckey) == order)
-			result += L[Li++]
-		else
-			result += R[Ri++]
-
-	if(Li <= L.len)
-		return (result + L.Copy(Li, 0))
-	return (result + R.Copy(Ri, 0))
-
-//Mergesort: divides up the list into halves to begin the sort
-/proc/sortAtom(list/atom/L, order = 1)
-	if(isnull(L) || L.len < 2)
-		return L
-	if(null in L)	// Cannot sort lists containing null entries.
-		return L
-	var/middle = L.len / 2 + 1
-	return mergeAtoms(sortAtom(L.Copy(0,middle)), sortAtom(L.Copy(middle)), order)
-
-//Mergsort: does the actual sorting and returns the results back to sortAtom
-/proc/mergeAtoms(list/atom/L, list/atom/R, order = 1)
-	var/Li=1
-	var/Ri=1
-	var/list/result = new()
-
-	while(Li <= L.len && Ri <= R.len)
-		var/atom/rL = L[Li]
-		var/atom/rR = R[Ri]
-		if(sorttext(rL.name, rR.name) == order)
-			result += L[Li++]
-		else
-			result += R[Ri++]
-
-	if(Li <= L.len)
-		return (result + L.Copy(Li, 0))
-	return (result + R.Copy(Ri, 0))
+//Mergesort: Specifically for record datums in a list.
+/proc/sortRecord(var/list/datum/record/L, var/order = 1)
+	if (!L)
+		return
+	var/list/target = L.Copy()
+	sortTim(target, order ? GLOBAL_PROC_REF(cmp_records_asc) : GLOBAL_PROC_REF(cmp_records_dsc), FALSE)
+	return target
 
 //Mergesort: any value in a list
-/proc/sortList(list/L)
-	if(L.len < 2)
-		return L
-	var/middle = L.len / 2 + 1 // Copy is first,second-1
-	return mergeLists(sortList(L.Copy(0,middle)), sortList(L.Copy(middle))) //second parameter null = to end of list
+/proc/sortList(var/list/L)
+	if (!L)
+		return
+	var/list/target = L.Copy()
+	return sortTim(target, GLOBAL_PROC_REF(cmp_text_asc))
 
 //Mergsorge: uses sortList() but uses the var's name specifically. This should probably be using mergeAtom() instead
-/proc/sortNames(list/L)
-	var/list/Q = new()
-	for(var/atom/x in L)
-		Q[x.name] = x
-	return sortList(Q)
-
-/proc/mergeLists(list/L, list/R)
-	var/Li=1
-	var/Ri=1
-	var/list/result = new()
-	while(Li <= L.len && Ri <= R.len)
-		if(sorttext(L[Li], R[Ri]) < 1)
-			result += R[Ri++]
-		else
-			result += L[Li++]
-
-	if(Li <= L.len)
-		return (result + L.Copy(Li, 0))
-	return (result + R.Copy(Ri, 0))
-
+/proc/sortNames(var/list/L)
+	if (!L)
+		return
+	var/list/target = L.Copy()
+	return sortTim(target, GLOBAL_PROC_REF(cmp_name_asc), FALSE)
 
 // List of lists, sorts by element[key] - for things like crew monitoring computer sorting records by name.
-/proc/sortByKey(list/L, key)
+/proc/sortByKey(var/list/L, var/key)
 	if(L.len < 2)
 		return L
 	var/middle = L.len / 2 + 1
 	return mergeKeyedLists(sortByKey(L.Copy(0, middle), key), sortByKey(L.Copy(middle), key), key)
 
-/proc/mergeKeyedLists(list/L, list/R, key)
+/proc/mergeKeyedLists(var/list/L, var/list/R, var/key)
 	var/Li=1
 	var/Ri=1
 	var/list/result = new()
@@ -346,31 +373,18 @@
 
 
 //Mergesort: any value in a list, preserves key=value structure
-/proc/sortAssoc(list/L)
-	if(L.len < 2)
-		return L
-	var/middle = L.len / 2 + 1 // Copy is first,second-1
-	return mergeAssoc(sortAssoc(L.Copy(0,middle)), sortAssoc(L.Copy(middle))) //second parameter null = to end of list
-
-/proc/mergeAssoc(list/L, list/R)
-	var/Li=1
-	var/Ri=1
-	var/list/result = new()
-	while(Li <= L.len && Ri <= R.len)
-		if(sorttext(L[Li], R[Ri]) < 1)
-			result += R&R[Ri++]
-		else
-			result += L&L[Li++]
-
-	if(Li <= L.len)
-		return (result + L.Copy(Li, 0))
-	return (result + R.Copy(Ri, 0))
+/proc/sortAssoc(var/list/L)
+	var/list/ret = L.Copy()
+	sortTim(ret, GLOBAL_PROC_REF(cmp_text_asc), FALSE)
+	return ret
 
 // Macros to test for bits in a bitfield. Note, that this is for use with indexes, not bit-masks!
 #define BITTEST(bitfield,index)  ((bitfield)  &   (1 << (index)))
 #define BITSET(bitfield,index)   (bitfield)  |=  (1 << (index))
 #define BITRESET(bitfield,index) (bitfield)  &= ~(1 << (index))
 #define BITFLIP(bitfield,index)  (bitfield)  ^=  (1 << (index))
+#define BITFIELDMAX 0xFFFFFF
+#define BITFIELDMAX_16 0xFFFF
 
 //Converts a bitfield to a list of numbers (or words if a wordlist is provided)
 /proc/bitfield2list(bitfield = 0, list/wordlist)
@@ -383,14 +397,14 @@
 				r += wordlist[i]
 			bit = bit << 1
 	else
-		for(var/bit=1, bit<=65535, bit = bit << 1)
+		for(var/bit=1, bit<=BITFIELDMAX, bit = bit << 1)
 			if(bitfield & bit)
 				r += bit
 
 	return r
 
 // Returns the key based on the index
-/proc/get_key_by_index(list/L, index)
+/proc/get_key_by_index(var/list/L, var/index)
 	var/i = 1
 	for(var/key in L)
 		if(index == i)
@@ -399,73 +413,18 @@
 	return null
 
 // Returns the key based on the index
-/proc/get_key_by_value(list/L, value)
+/proc/get_key_by_value(var/list/L, var/value)
 	for(var/key in L)
 		if(L[key] == value)
 			return key
 
-/proc/count_by_type(list/L, type)
-	var/i = 0
-	for(var/T in L)
-		if(istype(T, type))
-			i++
-	return i
-
-//Don't use this on lists larger than half a dozen or so
-/proc/insertion_sort_numeric_list_ascending(list/L)
-	//to_world_log("ascending len input: [L.len]")
-	var/list/out = list(pop(L))
-	for(var/entry in L)
-		if(isnum(entry))
-			var/success = 0
-			for(var/i=1, i<=out.len, i++)
-				if(entry <= out[i])
-					success = 1
-					out.Insert(i, entry)
-					break
-			if(!success)
-				out.Add(entry)
-
-	//to_world_log("	output: [out.len]")
-	return out
-
-/proc/insertion_sort_numeric_list_descending(list/L)
-	//to_world_log("descending len input: [L.len]")
-	var/list/out = insertion_sort_numeric_list_ascending(L)
-	//to_world_log("	output: [out.len]")
-	return reverselist(out)
-
-
-// Insert an object A into a sorted list using cmp_proc (/code/_helpers/cmp.dm) for comparison.
-// Use ADD_SORTED(list, A, cmp_proc)
-
-// Return the index using dichotomic search
-/proc/FindElementIndex(atom/A, list/L, cmp)
-	var/i = 1
-	var/j = L.len
-	var/mid
-
-	while(i < j)
-		mid = round((i+j)/2)
-
-		if(call(cmp)(L[mid],A) < 0)
-			i = mid + 1
-		else
-			j = mid
-
-	if(i == 1 || i ==  L.len) // Edge cases
-		return (call(cmp)(L[i],A) > 0) ? i : i+1
-	else
-		return i
-
-
-/proc/dd_sortedObjectList(list/L, cache=list())
+/proc/dd_sortedObjectList(var/list/L, var/cache=list())
 	if(L.len < 2)
 		return L
 	var/middle = L.len / 2 + 1 // Copy is first,second-1
 	return dd_mergeObjectList(dd_sortedObjectList(L.Copy(0,middle), cache), dd_sortedObjectList(L.Copy(middle), cache), cache) //second parameter null = to end of list
 
-/proc/dd_mergeObjectList(list/L, list/R, list/cache)
+/proc/dd_mergeObjectList(var/list/L, var/list/R, var/list/cache)
 	var/Li=1
 	var/Ri=1
 	var/list/result = new()
@@ -490,9 +449,9 @@
 	return (result + R.Copy(Ri, 0))
 
 // Insert an object into a sorted list, preserving sortedness
-/proc/dd_insertObjectList(list/L, O)
+/proc/dd_insertObjectList(var/list/L, var/O)
 	var/min = 1
-	var/max = L.len + 1
+	var/max = L.len
 	var/Oval = O:dd_SortValue()
 
 	while(1)
@@ -511,65 +470,6 @@
 			max = mid
 		else
 			min = mid+1
-
-/*
-proc/dd_sortedObjectList(list/incoming)
-	/*
-	   Use binary search to order by dd_SortValue().
-	   This works by going to the half-point of the list, seeing if the node in
-	   question is higher or lower cost, then going halfway up or down the list
-	   and checking again. This is a very fast way to sort an item into a list.
-	*/
-	var/list/sorted_list = new()
-	var/low_index
-	var/high_index
-	var/insert_index
-	var/midway_calc
-	var/current_index
-	var/current_item
-	var/current_item_value
-	var/current_sort_object_value
-	var/list/list_bottom
-
-	var/current_sort_object
-	for (current_sort_object in incoming)
-		low_index = 1
-		high_index = sorted_list.len
-		while (low_index <= high_index)
-			// Figure out the midpoint, rounding up for fractions.  (BYOND rounds down, so add 1 if necessary.)
-			midway_calc = (low_index + high_index) / 2
-			current_index = round(midway_calc)
-			if (midway_calc > current_index)
-				current_index++
-			current_item = sorted_list[current_index]
-
-			current_item_value = current_item:dd_SortValue()
-			current_sort_object_value = current_sort_object:dd_SortValue()
-			if (current_sort_object_value < current_item_value)
-				high_index = current_index - 1
-			else if (current_sort_object_value > current_item_value)
-				low_index = current_index + 1
-			else
-				// current_sort_object == current_item
-				low_index = current_index
-				break
-
-		// Insert before low_index.
-		insert_index = low_index
-
-		// Special case adding to end of list.
-		if (insert_index > sorted_list.len)
-			sorted_list += current_sort_object
-			continue
-
-		// Because BYOND lists don't support insert, have to do it by:
-		// 1) taking out bottom of list, 2) adding item, 3) putting back bottom of list.
-		list_bottom = sorted_list.Copy(insert_index)
-		sorted_list.Cut(insert_index)
-		sorted_list += current_sort_object
-		sorted_list += list_bottom
-	return sorted_list
-*/
 
 /proc/dd_sortedtextlist(list/incoming, case_sensitive = 0)
 	// Returns a new list with the text values sorted.
@@ -634,18 +534,18 @@ proc/dd_sortedObjectList(list/incoming)
 	var/case_sensitive = 1
 	return dd_sortedtextlist(incoming, case_sensitive)
 
+/proc/count_by_type(var/list/L, type)
+	var/i = 0
+	for(var/T in L)
+		if(istype(T, type))
+			i++
+	return i
 
-/datum/proc/dd_SortValue()
-	return "[src]"
+/proc/is_list_containing_type(var/list/L, type)
+	return count_by_type(L, type) == L.len
 
-/obj/machinery/dd_SortValue()
-	return "[sanitize_old(name)]"
-
-/obj/machinery/camera/dd_SortValue()
-	return "[c_tag]"
-
-/datum/alarm/dd_SortValue()
-	return "[sanitize_old(last_name)]"
+/proc/subtypesof(prototype)
+	return (typesof(prototype) - prototype)
 
 //creates every subtype of prototype (excluding prototype) and adds it to list L.
 //if no list/L is provided, one is created.
@@ -655,47 +555,79 @@ proc/dd_sortedObjectList(list/incoming)
 		L += new path()
 	return L
 
-//creates every subtype of prototype (excluding prototype) and adds it to list L as a type/instance pair.
-//if no list/L is provided, one is created.
-/proc/init_subtypes_assoc(prototype, list/L)
-	if(!istype(L))	L = list()
-	for(var/path in subtypesof(prototype))
-		L[path] = new path()
-	return L
+//returns a new list with only atoms that are in typecache L
+/proc/typecache_filter_list(list/atoms, list/typecache)
+	. = list()
+	for(var/atom/A as anything in atoms)
+		if (typecache[A.type])
+			. += A
+
+/proc/typecache_filter_list_reverse(list/atoms, list/typecache)
+	. = list()
+	for(var/atom/A as anything in atoms)
+		if(!typecache[A.type])
+			. += A
+
+/proc/typecache_filter_multi_list_exclusion(list/atoms, list/typecache_include, list/typecache_exclude)
+	. = list()
+	for(var/atom/A as anything in atoms)
+		if(typecache_include[A.type] && !typecache_exclude[A.type])
+			. += A
+
+/proc/range_in_typecache(dist, center, list/typecache)
+	for(var/atom/A as anything in range(dist, center))
+		if (typecache[A.type])
+			return TRUE
+
+/proc/typecache_first_match(list/target, list/typecache)
+	for(var/datum/D as anything in target)
+		if(typecache[D.type])
+			return D
+
+//Like typesof() or subtypesof(), but returns a typecache instead of a list
+/proc/typecacheof(path, ignore_root_path, only_root_path = FALSE)
+	if(ispath(path))
+		var/list/types = list()
+		if(only_root_path)
+			types = list(path)
+		else
+			types = ignore_root_path ? subtypesof(path) : typesof(path)
+		var/list/L = list()
+		for(var/T in types)
+			L[T] = TRUE
+		return L
+	else if(islist(path))
+		var/list/pathlist = path
+		var/list/L = list()
+		if(ignore_root_path)
+			for(var/P in pathlist)
+				for(var/T in subtypesof(P))
+					L[T] = TRUE
+		else
+			for(var/P in pathlist)
+				if(only_root_path)
+					L[P] = TRUE
+				else
+					for(var/T in typesof(P))
+						L[T] = TRUE
+		return L
+
+//Checks for specific types in specifically structured (Assoc "type" = TRUE) lists ('typecaches')
+/proc/is_type_in_typecache(atom/A, list/L)
+	if(!L || !L.len || !A)
+
+		return 0
+	return L[A.type]
 
 #define listequal(A, B) (A.len == B.len && !length(A^B))
 
-/proc/filter_list(list/L, type)
-	. = list()
-	for(var/entry in L)
-		if(istype(entry, type))
-			. += entry
+/proc/Sum(var/list/input)
+	var/total = 0
+	for (var/i=1,i<=input.len,i++)
+		total += input[i]
 
-/proc/group_by(list/group_list, key, value)
-	var/values = group_list[key]
-	if(!values)
-		values = list()
-		group_list[key] = values
+	return total
 
-	values += value
-
-/proc/duplicates(list/L)
-	. = list()
-	var/list/checked = list()
-	for(var/value in L)
-		if(value in checked)
-			. |= value
-		else
-			checked += value
-
-/proc/assoc_by_proc(list/plain_list, get_initial_value)
-	. = list()
-	for(var/entry in plain_list)
-		.[call(get_initial_value)(entry)] = entry
-
-/proc/get_initial_name(atom/atom_type)
-	var/atom/A = atom_type
-	return initial(A.name)
 
 //Move a single element from position fromIndex within a list, to position toIndex
 //All elements in the range [1,toIndex) before the move will be before the pivot afterwards
@@ -712,6 +644,7 @@ proc/dd_sortedObjectList(list/incoming)
 	L.Insert(toIndex, null)
 	L.Swap(fromIndex, toIndex)
 	L.Cut(fromIndex, fromIndex+1)
+
 
 //Move elements [fromIndex,fromIndex+len) to [toIndex-len, toIndex)
 //Same as moveElement but for ranges of elements
@@ -737,20 +670,20 @@ proc/dd_sortedObjectList(list/incoming)
 			L.Cut(fromIndex, fromIndex+1)
 
 //replaces reverseList ~Carnie
-/proc/reverse_range(list/inserted_list, start = 1, end = 0)
-	if(inserted_list.len)
-		start = start % inserted_list.len
-		end = end % (inserted_list.len + 1)
+/proc/reverseRange(list/L, start=1, end=0)
+	if(L.len)
+		start = start % L.len
+		end = end % (L.len+1)
 		if(start <= 0)
-			start += inserted_list.len
+			start += L.len
 		if(end <= 0)
-			end += inserted_list.len + 1
+			end += L.len + 1
 
 		--end
 		while(start < end)
-			inserted_list.Swap(start++, end--)
+			L.Swap(start++,end--)
 
-	return inserted_list
+	return L
 
 //Copies a list, and all lists inside it recusively
 //Does not copy any other reference type
@@ -762,10 +695,165 @@ proc/dd_sortedObjectList(list/incoming)
 		if(islist(.[i]))
 			.[i] = .(.[i])
 
-/**
- * Takes an input_key, as text, and the list of keys already used, outputting a replacement key
- * in the format of "[input_key] ([number_of_duplicates])" if it finds a duplicate
- */
+//Sets object value at specified path
+/proc/obj_query_set(query, subject, value, delimiter = "/", list/keys)
+	. = FALSE
+	if(!keys)
+		keys = splittext(query, delimiter)
+	var/datum/subject_d
+	var/list/subject_l
+	for (var/i = 1; i < keys.len; i++)
+		var/key = keys[i]
+		if (isdatum(subject))
+			subject_d = subject
+			if (isnull(subject_d.vars[key]))
+				return
+
+			subject = subject_d.vars[key]
+		else if (islist(subject))
+			subject_l = subject
+			if (isnull(subject_l[key]))
+				return
+
+			subject = subject_l[key]
+		else
+			return
+
+	if (isnull(subject))
+		return
+
+	var/final = keys[keys.len]
+	if (isdatum(subject))
+		subject_d = subject
+		if (isnull(subject_d.vars[final]))
+			return
+
+		subject_d.vars[final] = value
+	else if (islist(subject))
+		subject_l = subject
+		if (isnull(subject_l[final]))
+			return
+
+		subject_l[final] = value
+	else
+		return
+
+	return TRUE
+
+//Gets object value at specified path
+/proc/obj_query_get(query, subject, delimiter = "/", list/keys)
+	. = null
+	if(!keys)
+		keys = splittext(query, delimiter)
+	var/datum/subject_d
+	var/list/subject_l
+	for (var/i = 1; i < keys.len; i++)
+		var/key = keys[i]
+		if (isdatum(subject))
+			subject_d = subject
+			if (isnull(subject_d.vars[key]))
+				return
+
+			subject = subject_d.vars[key]
+		else if (islist(subject))
+			subject_l = subject
+			if (isnull(subject_l[key]))
+				return
+
+			subject = subject_l[key]
+		else
+			return
+
+	if (isnull(subject))
+		return
+
+	var/final = keys[keys.len]
+	if (isdatum(subject))
+		subject_d = subject
+		if (subject_d.vars[final])
+			return subject_d.vars[final]
+	else if (islist(subject))
+		subject_l = subject
+		if (subject_l[final])
+			return subject_l[final]
+
+/datum/proc/dd_SortValue()
+	return "[src]"
+
+/obj/machinery/dd_SortValue()
+	return "[sanitize_old(name)]"
+
+/obj/machinery/camera/dd_SortValue()
+	return "[c_tag]"
+
+/datum/alarm/dd_SortValue()
+	return "[sanitize_old(last_name)]"
+
+// Insertion into a sorted list, preserving sortedness using binary search
+
+/proc/dd_binaryInsertSorted(var/list/L, var/O)
+	var/min = 1
+	var/max = L.len + 1
+	var/Oval = O:dd_SortValue()
+
+	while(1)
+		var/mid = min+round((max-min)/2)
+
+		if(mid == max)
+			L.Insert(mid, O)
+			return
+
+		var/Lmid = L[mid]
+		var/midval = Lmid:dd_SortValue()
+		if(Oval == midval)
+			L.Insert(mid, O)
+			return
+		else if(Oval < midval)
+			max = mid
+		else
+			min = mid+1
+
+/proc/filter_list(var/list/L, var/type)
+	. = list()
+	for(var/entry in L)
+		if(istype(entry, type))
+			. += entry
+
+/proc/group_by(var/list/group_list, var/key, var/value)
+	var/values = group_list[key]
+	if(!values)
+		values = list()
+		group_list[key] = values
+
+	values += value
+
+/proc/list_keys(var/list/L) // Return a list of keys in a list
+	. = list()
+	for(var/e in L)
+		. += e
+
+// Return a list of the values in an assoc list (including null)
+/proc/list_values(var/list/L)
+	. = list()
+	for(var/e in L)
+		. += L[e]
+
+/proc/capitalize_list(var/list/L)
+	. = list()
+	for (var/string in L)
+		. += capitalize(string)
+
+// Transforms a list of lists (of lists) into a single flat list.
+/proc/flatten_list(var/list/L)
+	. = list()
+	for(var/M in L)
+		if(!islist(M))
+			. += M
+		else
+			. += flatten_list(M)
+
+///takes an input_key, as text, and the list of keys already used, outputting a replacement key in the format of "[input_key] ([number_of_duplicates])" if it finds a duplicate
+///use this for lists of things that might have the same name, like mobs or objects, that you plan on giving to a player as input
 /proc/avoid_assoc_duplicate_keys(input_key, list/used_key_list)
 	if(!input_key || !istype(used_key_list))
 		return
@@ -775,9 +863,3 @@ proc/dd_sortedObjectList(list/incoming)
 	else
 		used_key_list[input_key] = 1
 	return input_key
-
-#define IS_VALID_INDEX(list, index) (list.len && index > 0 && index <= list.len)
-
-/// Sort any value in a list.
-/proc/sort_list(list/list_to_sort, cmp=/proc/cmp_text_asc)
-	return sortTim(list_to_sort.Copy(), cmp)

@@ -1,15 +1,26 @@
+#define SHOWER_OPEN_LAYER OBJ_LAYER + 0.4
+#define SHOWER_CLOSED_LAYER MOB_LAYER + 0.1
+
 /obj/structure/curtain
 	name = "curtain"
 	icon = 'icons/obj/curtain.dmi'
 	icon_state = "closed"
-	layer = ABOVE_HUMAN_LAYER
+	layer = SHOWER_OPEN_LAYER
 	opacity = 1
 	density = 0
-	breakable = TRUE
+	anchored = TRUE //curtains start secured in place
+	build_amt = 2
+	var/manipulating = FALSE //prevents queuing up multiple deconstructs and returning a bunch of cloth
+	var/curtain_material = MATERIAL_CLOTH
+
+/obj/structure/curtain/Initialize()
+	. = ..()
+	material = SSmaterials.get_material_by_name(curtain_material)
+	AddComponent(/datum/component/turf_hand)
 
 /obj/structure/curtain/open
 	icon_state = "open"
-
+	layer = SHOWER_CLOSED_LAYER
 	opacity = 0
 
 /obj/structure/curtain/bullet_act(obj/item/projectile/P, def_zone)
@@ -20,42 +31,64 @@
 		..(P, def_zone)
 
 /obj/structure/curtain/attack_hand(mob/user)
-	playsound(loc, SFX_SEARCH_CLOTHES, 15, 1, -5)
+	playsound(get_turf(loc), 'sound/effects/curtain.ogg', 15, 1, -5)
 	toggle()
 	..()
 
+/obj/structure/curtain/attack_ai(mob/user)
+	if(istype(user, /mob/living/silicon/robot) && Adjacent(user)) // Robots can open/close it, but not the AI.
+		attack_hand(user)
+
 /obj/structure/curtain/attackby(obj/item/W, mob/user)
-	if(isWrench(W))
-		user.visible_message("[user] dissassembles [src].", "You start to dissassemble [src].")
-		playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
-		if(do_after(user, 40, src))
-			if(!src)
+
+	if(W.iswirecutter() || W.sharp && !W.noslice)
+		if(manipulating)	return
+		manipulating = TRUE
+		visible_message(SPAN_NOTICE("[user] begins cutting down \the [src]."),
+					SPAN_NOTICE("You begin cutting down \the [src]."))
+		if(!W.use_tool(src, user, 30, volume = 50))
+			manipulating = FALSE
+			return
+		visible_message(SPAN_NOTICE("[user] cuts down \the [src]."),
+					SPAN_NOTICE("You cut down \the [src]."))
+		dismantle()
+
+	if(W.isscrewdriver()) //You can anchor/unanchor curtains
+		anchored = !anchored
+		var/obj/structure/curtain/C
+		for(C in src.loc)
+			if(C != src && C.anchored) //Can't secure more than one curtain in a tile
+				to_chat(user, "There is already a curtain secured here!")
 				return
-			to_chat(user,  SPAN_NOTICE("You dissasembled [src]!"))
-			new /obj/item/stack/material/plastic(src.loc, 4)
-			qdel(src)
-	return ..()
+		playsound(src.loc, W.usesound, 50, 1)
+		visible_message(SPAN_NOTICE("\The [src] has been [anchored ? "secured in place" : "unsecured"] by \the [user]."))
 
 /obj/structure/curtain/proc/toggle()
-	set_opacity(!opacity)
+	src.set_opacity(!src.opacity)
 	if(opacity)
 		icon_state = "closed"
-
+		layer = SHOWER_CLOSED_LAYER
 	else
 		icon_state = "open"
+		layer = SHOWER_OPEN_LAYER
 
 /obj/structure/curtain/black
 	name = "black curtain"
 	color = "#222222"
 
-/obj/structure/curtain/green
-	name = "green curtain"
-	color = "#465735"
-
 /obj/structure/curtain/medical
 	name = "plastic curtain"
-	color = "#b8f5e3"
+	color = "#B8F5E3"
+	anchored = FALSE
 	alpha = 200
+	curtain_material = MATERIAL_PLASTIC
+
+/obj/structure/curtain/open/medical
+	name = "plastic curtain"
+	color = "#B8F5E3"
+	anchored = FALSE
+	alpha = 200
+	curtain_material = MATERIAL_PLASTIC
 
 /obj/structure/curtain/open/bed
 	name = "bed curtain"
@@ -63,15 +96,19 @@
 
 /obj/structure/curtain/open/privacy
 	name = "privacy curtain"
-	color = "#b8f5e3"
+	color = "#B8F5E3"
+	anchored = FALSE
 
 /obj/structure/curtain/open/shower
 	name = "shower curtain"
-	color = "#acd1e9"
+	color = "#ACD1E9"
 	alpha = 200
 
 /obj/structure/curtain/open/shower/engineering
-	color = "#ffa500"
+	color = "#FFA500"
 
 /obj/structure/curtain/open/shower/security
-	color = "#aa0000"
+	color = "#AA0000"
+
+#undef SHOWER_OPEN_LAYER
+#undef SHOWER_CLOSED_LAYER

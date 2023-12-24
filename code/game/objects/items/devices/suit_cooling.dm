@@ -1,86 +1,108 @@
 /obj/item/device/suit_cooling_unit
-	name = "portable cooling unit"
-	desc = "A large portable heat sink with liquid cooled radiator packaged into a modified backpack."
-	description_info = "You may wear this instead of your packpack to cool yourself down. It is commonly used by IPCs, \
-	as it allows them to go into low pressure environments for more than few seconds without overheating. It runs off energy provided by an internal power cell. \
-	Remember to turn it on by clicking it when it's your in your hand before you put it on."
-	description_fluff = "Before the advent of ultra-heat-resistant fibers and flexible alloyed shielding, portable coolers were most commonly used to keep technicians from roasting alive in their suits. Nowadays they have been repurposed to keep IPCs from overheating in vacuum environments."
-
-	w_class = ITEM_SIZE_LARGE
-	icon = 'icons/obj/suitcooler.dmi'
+	name = "portable suit cooling unit"
+	desc = "A portable heat sink and liquid cooled radiator that can be hooked up to a space suit's existing temperature controls to provide industrial levels of cooling."
+	w_class = ITEMSIZE_LARGE
+	icon = 'icons/obj/item/tools/suitcooler.dmi'
 	icon_state = "suitcooler0"
-	item_state = "coolingpack"			// beautiful codersprites until someone makes a prettier one.
-	slot_flags = SLOT_BACK
+	item_state = "coolingpack"
+	action_button_name = "Toggle Cooling Unit"
+	contained_sprite = TRUE
+	slot_flags = SLOT_BACK	//you can carry it on your back if you want, but it won't do anything unless attached to suit storage
 
 	//copied from tank.dm
-	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	obj_flags = OBJ_FLAG_CONDUCTABLE
 	force = 5.0
 	throwforce = 10.0
+	throw_speed = 1
 	throw_range = 4
-	throw_speed = 2
-	action_button_name = "Toggle Heatsink"
 
-	matter = list(MATERIAL_STEEL = 15000, MATERIAL_GLASS = 3500)
 	origin_tech = list(TECH_MAGNET = 2, TECH_MATERIAL = 2)
 
-	var/on = 0								//is it turned on?
-	var/cover_open = 0						//is the cover open?
-	var/obj/item/cell/cell
-	var/max_cooling = 12					// in degrees per second - probably don't need to mess with heat capacity here
-	var/charge_consumption = 2 KILO WATTS	// energy usage at full power
-	var/thermostat = 20 CELSIUS
+	var/celltype = /obj/item/cell/high
 
-/obj/item/device/suit_cooling_unit/ui_action_click()
-	toggle(usr)
+	matter = list(DEFAULT_WALL_MATERIAL = 25000, MATERIAL_GLASS = 3500)
+	var/on = 0				//is it turned on?
+	var/cover_open = 0		//is the cover open?
+	var/obj/item/cell/cell
+	var/max_cooling = 12				//in degrees per second - probably don't need to mess with heat capacity here
+	var/charge_consumption = 8.3		//charge per second at max_cooling
+	var/thermostat = T20C
+
+	//TODO: make it heat up the surroundings when not in space
 
 /obj/item/device/suit_cooling_unit/Initialize()
 	. = ..()
-	cell = new /obj/item/cell/high(src)
-	if(on)
-		set_next_think(world.time)
+	if(celltype)
+		cell = new celltype(src)
 
 /obj/item/device/suit_cooling_unit/Destroy()
+	STOP_PROCESSING(SSmobs, src)
 	QDEL_NULL(cell)
 	return ..()
-
-/obj/item/device/suit_cooling_unit/think()
-	if (!on || !cell)
-		turn_off(1)
-		return
-
-	if (!is_in_slot())
-		turn_off(1)
-		return
-
-	var/mob/living/carbon/human/H = loc
-
-	var/temp_adj = min(H.bodytemperature - thermostat, max_cooling)
-
-	if (temp_adj < 0.5)	//only cools, doesn't heat, also we don't need extreme precision
-		set_next_think(world.time + 1 SECOND)
-		return
-
-	var/charge_usage = (temp_adj/max_cooling)*charge_consumption
-
-	H.bodytemperature -= temp_adj
-
-	cell.use(charge_usage * CELLRATE)
-	update_icon()
-
-	if(cell.charge <= 0)
-		turn_off(1)
-		return
-
-	set_next_think(world.time + 1 SECOND)
 
 // Checks whether the cooling unit is being worn on the back/suit slot.
 // That way you can't carry it in your hands while it's running to cool yourself down.
 /obj/item/device/suit_cooling_unit/proc/is_in_slot()
 	var/mob/living/carbon/human/H = loc
 	if(!istype(H))
-		return 0
+		return FALSE
 
 	return (H.back == src) || (H.s_store == src)
+
+/obj/item/device/suit_cooling_unit/process()
+	if(!on || !cell)
+		return
+
+	if(!is_in_slot())
+		return
+
+	var/mob/living/carbon/human/H = loc
+
+	var/efficiency = !!(H.species.flags & ACCEPTS_COOLER) || 1 - H.get_pressure_weakness()		//you need to have a good seal for effective cooling; some species can directly connect to the cooler, so get a free 100% efficiency here
+	var/env_temp = get_environment_temperature()		//wont save you from a fire
+	var/temp_adj = min(H.bodytemperature - max(thermostat, env_temp), max_cooling)
+
+	if(temp_adj < 0.5)	//only cools, doesn't heat, also we don't need extreme precision
+		return
+
+	var/charge_usage = (temp_adj/max_cooling)*charge_consumption
+
+	H.bodytemperature -= temp_adj*efficiency
+
+	cell.use(charge_usage)
+
+	if(cell.charge <= 0)
+		turn_off()
+
+	update_icon()
+
+/obj/item/device/suit_cooling_unit/proc/get_environment_temperature()
+	if(ishuman(loc))
+		var/mob/living/carbon/human/H = loc
+		if(istype(H.loc, /obj/machinery/atmospherics/unary/cryo_cell))
+			var/obj/machinery/atmospherics/unary/cryo_cell/C = H.loc
+			return C.air_contents.temperature
+
+	var/turf/T = get_turf(src)
+	if(istype(T, /turf/space) || !isturf(T))
+		return FALSE	//space has no temperature, this just makes sure the cooling unit works in space
+
+	var/datum/gas_mixture/environment = T.return_air()
+	if(!environment)
+		return FALSE
+
+	return environment.temperature
+
+/obj/item/device/suit_cooling_unit/proc/attached_to_suit(mob/M)
+	if(!ishuman(M))
+		return FALSE
+
+	var/mob/living/carbon/human/H = M
+
+	if(!H.wear_suit || H.s_store != src)
+		return FALSE
+
+	return TRUE
 
 /obj/item/device/suit_cooling_unit/proc/turn_on()
 	if(!cell)
@@ -88,104 +110,134 @@
 	if(cell.charge <= 0)
 		return
 
-	on = 1
+	on = TRUE
+	START_PROCESSING(SSmobs, src)
 	update_icon()
-	set_next_think(world.time)
 
-/obj/item/device/suit_cooling_unit/proc/turn_off(failed)
-	if(failed) visible_message("\The [src] clicks and whines as it powers down.")
-	on = 0
+/obj/item/device/suit_cooling_unit/proc/turn_off()
+	if(ismob(src.loc))
+		var/mob/M = src.loc
+		to_chat(M, SPAN_WARNING("\The [src] clicks and whines as it powers down."))
+	on = FALSE
+	STOP_PROCESSING(SSmobs, src)
 	update_icon()
-	set_next_think(0)
 
 /obj/item/device/suit_cooling_unit/attack_self(mob/user)
 	if(cover_open && cell)
 		if(ishuman(user))
-			user.pick_or_drop(cell)
+			user.put_in_hands(cell)
 		else
-			cell.forceMove(get_turf(src))
+			cell.forceMove(get_turf(loc))
 
 		cell.add_fingerprint(user)
 		cell.update_icon()
 
-		to_chat(user, "You remove \the [src.cell].")
+		to_chat(user, SPAN_NOTICE("You remove the [src.cell]."))
 		src.cell = null
 		update_icon()
 		return
+	toggle_power(user)
 
-	toggle(user)
+/obj/item/device/suit_cooling_unit/AltClick(mob/user)
+	if(Adjacent(user))
+		toggle_power(user)
 
-/obj/item/device/suit_cooling_unit/proc/toggle(mob/user)
+/obj/item/device/suit_cooling_unit/proc/toggle_power(var/mob/user)
 	if(on)
 		turn_off()
 	else
 		turn_on()
-	to_chat(user, "<span class='notice'>You switch \the [src] [on ? "on" : "off"].</span>")
+		if(on)
+			to_chat(user, SPAN_NOTICE("You switch on \the [src]."))
 
-/obj/item/device/suit_cooling_unit/attackby(obj/item/W as obj, mob/user as mob)
-	if(isScrewdriver(W))
+/obj/item/device/suit_cooling_unit/attackby(obj/item/W, mob/user)
+	if(W.isscrewdriver())
 		if(cover_open)
-			cover_open = 0
-			to_chat(user, "You screw the panel into place.")
+			cover_open = FALSE
+			to_chat(user, SPAN_NOTICE("You screw the panel into place."))
 		else
-			cover_open = 1
-			to_chat(user, "You unscrew the panel.")
+			cover_open = TRUE
+			to_chat(user, SPAN_NOTICE("You unscrew the panel."))
 		update_icon()
 		return
 
-	if (istype(W, /obj/item/cell))
+	if(istype(W, /obj/item/cell))
 		if(cover_open)
 			if(cell)
-				to_chat(user, "There is a [cell] already installed here.")
-			else if(user.drop(W, src))
+				to_chat(user, SPAN_WARNING("There is \a [cell] already installed here."))
+			else
+				user.drop_from_inventory(W,src)
 				cell = W
-				to_chat(user, "You insert the [cell].")
+				to_chat(user, SPAN_NOTICE("You insert \the [cell]."))
 		update_icon()
 		return
 
 	return ..()
 
-/obj/item/device/suit_cooling_unit/on_update_icon()
-	ClearOverlays()
-	if (cover_open)
-		if (cell)
+/obj/item/device/suit_cooling_unit/update_icon()
+	cut_overlays()
+	if(cover_open)
+		if(cell)
 			icon_state = "suitcooler1"
 		else
 			icon_state = "suitcooler2"
 		return
 
 	icon_state = "suitcooler0"
+	item_state = "coolingpack"
 
-	if(!cell || !on)
-		return
+	if(cell && on)
+		var/battery_level = 0
+		switch(round(cell.percent()))
+			if(86 to INFINITY)
+				battery_level = 0
+			if(69 to 85)
+				battery_level = 1
+			if(52 to 68)
+				battery_level = 2
+			if(35 to 51)
+				battery_level = 3
+			if(18 to 34)
+				battery_level = 4
+			if(-INFINITY to 17)
+				battery_level = 5
 
-	switch(round(CELL_PERCENT(cell)))
-		if(86 to INFINITY)
-			AddOverlays("battery-0")
-		if(69 to 85)
-			AddOverlays("battery-1")
-		if(52 to 68)
-			AddOverlays("battery-2")
-		if(35 to 51)
-			AddOverlays("battery-3")
-		if(18 to 34)
-			AddOverlays("battery-4")
-		if(-INFINITY to 17)
-			AddOverlays("battery-5")
+		add_overlay("battery-[battery_level]")
+		item_state = "coolingpack[battery_level]"
 
+	if(ismob(loc))
+		var/mob/M = loc
+		M.update_inv_back()
+		M.update_inv_s_store()
 
-/obj/item/device/suit_cooling_unit/_examine_text(mob/user)
+/obj/item/device/suit_cooling_unit/examine(mob/user, distance)
 	. = ..()
-	if(get_dist(src, user) > 1)
+
+	if(!distance <= 1)
 		return
 
-	if (on)
-		. += "\nIt's switched on and running."
+	if(on)
+		if(attached_to_suit(src.loc))
+			to_chat(user, SPAN_NOTICE("It's switched on and running."))
+		else if(ishuman(loc))
+			var/mob/living/carbon/human/H = loc
+			if(H.species.flags & ACCEPTS_COOLER)
+				to_chat(user, SPAN_NOTICE("It's switched on and running, connected to the cooling systems of [H]."))
+		else
+			to_chat(user, SPAN_NOTICE("It's switched on, but not attached to anything."))
 	else
-		. += "\nIt is switched off."
+		to_chat(user, SPAN_NOTICE("It is switched off."))
 
-	if (cover_open)
-		. += "\nThe panel is open."
+	if(cover_open)
+		if(cell)
+			to_chat(user, SPAN_NOTICE("The panel is open, exposing \the [cell]."))
+		else
+			to_chat(user, SPAN_NOTICE("The panel is open."))
 
-	if (cell)
-		. += "\nThe charge meter reads [round(CELL_PERCENT(cell))]%."
+	if(cell)
+		to_chat(user, SPAN_NOTICE("The charge meter reads [round(cell.percent())]%."))
+	else
+		to_chat(user, SPAN_NOTICE("It doesn't have a power cell installed."))
+
+/obj/item/device/suit_cooling_unit/no_cell
+	celltype = null

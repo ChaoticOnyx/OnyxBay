@@ -1,93 +1,118 @@
 //This is the proc for gibbing a mob. Cannot gib ghosts.
 //added different sort of gibs and animations. N
-/mob/proc/gib(anim = "gibbed-m", do_gibs = FALSE)
-	if(status_flags & GODMODE)
-		return
+/mob/proc/gib(anim="gibbed-m",do_gibs)
 	death(1)
-	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
+	transforming = 1
+	canmove = 0
 	icon = null
 	set_invisibility(101)
 	update_canmove()
-	remove_from_dead_mob_list()
+	dead_mob_list -= src
 
-	var/atom/movable/fake_overlay/animation = null
+	var/atom/movable/overlay/animation = null
 	animation = new(loc)
 	animation.icon_state = "blank"
 	animation.icon = 'icons/mob/mob.dmi'
 	animation.master = src
-	playsound(src, SFX_GIB, 75, 1)
 
 	flick(anim, animation)
+
 	if(do_gibs)
-		gibs(loc, dna)
+		gibs(loc, viruses, dna, get_gibs_type())
 
-	addtimer(CALLBACK(src, nameof(.proc/check_delete), animation), 15)
+	QDEL_IN(animation, 15)
+	QDEL_IN(src, 15)
 
-/mob/proc/check_delete(atom/movable/fake_overlay/animation)
-	if(animation)
-		qdel(animation)
-	if(src)
-		qdel(src)
+/mob/proc/get_gibs_type()
+	return /obj/effect/gibspawner/generic
 
-//This is the proc for turning a mob into ash. Mostly a copy of gib code (above).
-//Originally created for wizard disintegrate. I've removed the virus code since it's irrelevant here.
-//Dusting robots does not eject the MMI, so it's a bit more powerful than gib() /N
-/mob/proc/dust(anim = "dust-m", remains = /obj/effect/decal/cleanable/ash)
-	if(status_flags & GODMODE)
-		return
+/mob/proc/dust_process()
+	var/icon/I = build_disappear_icon(src)
+	var/atom/movable/overlay/animation = null
+	animation = new(loc)
+	animation.master = src
+	flick(I, animation)
+
+	playsound(src, 'sound/weapons/sear.ogg', 50)
+	emote("scream")
 	death(1)
-	var/atom/movable/fake_overlay/animation = null
-	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
+	transforming = TRUE
+	canmove = 0
 	icon = null
 	set_invisibility(101)
 
-	animation = new(loc)
-	animation.icon_state = "blank"
-	animation.icon = 'icons/mob/mob.dmi'
-	animation.master = src
+	QDEL_IN(animation, 20)
+	QDEL_IN(src, 20)
 
-	flick(anim, animation)
-	new remains(loc)
+/mob/proc/dust(remains)
+	dust_process()
+	new /obj/effect/decal/cleanable/ash(loc)
+	if(remains)
+		new remains(loc)
+	dead_mob_list -= src
 
-	remove_from_dead_mob_list()
-	addtimer(CALLBACK(src, nameof(.proc/check_delete), animation), 15)
+/mob/proc/death(gibbed,deathmessage="seizes up and falls limp...", messagerange = world.view)
 
-
-/mob/proc/death(gibbed, deathmessage = "seizes up and falls limp...", show_dead_message = "You have died.")
-
-	if(is_ooc_dead())
+	if(stat == DEAD)
 		return 0
 
 	facing_dir = null
 
 	if(!gibbed && deathmessage != "no message") // This is gross, but reliable. Only brains use it.
-		src.visible_message("<b>\The [src.name]</b> [deathmessage]")
+		src.visible_message("<b>\The [src.name]</b> [deathmessage]", range = messagerange)
+
+	exit_vr()
 
 	set_stat(DEAD)
-	reset_plane_and_layer()
+
 	update_canmove()
 
 	dizziness = 0
 	jitteriness = 0
 
+	layer = MOB_LAYER
+
 	set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
-	set_see_in_dark(8)
 	set_see_invisible(SEE_INVISIBLE_LEVEL_TWO)
 
 	drop_r_hand()
 	drop_l_hand()
 
-	if(isliving(src))
-		var/mob/living/L = src
-		L.handle_hud_icons_health()
+	if(healths)
+		healths.overlays.Cut() // This is specific to humans but the relevant code is here; shouldn't mess with other mobs.
+		if("health7" in icon_states(healths.icon))
+			healths.icon_state = "health7"
 
 	timeofdeath = world.time
-	if(mind) mind.store_memory("Time of death: [stationtime2text()]", 0)
-	switch_from_living_to_dead_mob_list()
+	set_respawn_time()
+	if(mind)
+		mind.store_memory("Time of death: [worldtime2text()]", 0)
+	living_mob_list -= src
+	dead_mob_list |= src
 
 	update_icon()
 
 	if(SSticker.mode)
 		SSticker.mode.check_win()
-	to_chat(src,"<span class='deadsay'>[show_dead_message]</span>")
+
+	//This might seems like an useless computation to the programmer of the future, why would we do this?
+	//Easy! That's because otherwise, the hostile AI will keep us referenced, leading to an harddel
+	for(var/mob/living/simple_animal/hostile/hostile_in_sight in get_targets_in_LOS(world.view))
+		hostile_in_sight.targets.Remove(src)
+
+		if(hostile_in_sight.target_mob == src)
+			hostile_in_sight.target_mob = null
+
 	return 1
+
+/mob/proc/set_respawn_time()
+	return
+
+/mob/proc/exit_vr()
+	if(!bg) // If brainghost exists, let handle_shared_dreaming handle the wake up
+		// If we have a remotely controlled mob, we come back to our body to die properly
+		if(vr_mob)
+			vr_mob.body_return()
+		// Alternatively, if we are the remotely controlled mob, just kick our controller out
+		if(old_mob)
+			body_return()

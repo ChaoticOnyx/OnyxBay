@@ -1,20 +1,20 @@
-/obj/item/metroid_extract/Value(base)
-	return base * Uses
+/obj/item/slime_extract/Value(var/base)
+	return base * uses
 
 /obj/item/ammo_casing/Value()
-	if(is_spent)
+	if(!BB)
 		return 1
 	return ..()
 
 /obj/item/reagent_containers/Value()
 	. = ..()
 	if(reagents)
-		for(var/a in reagents.reagent_list)
-			var/datum/reagent/reg = a
-			. += reg.value * reg.volume
+		for(var/a in reagents.reagent_volumes)
+			var/singleton/reagent/reg = GET_SINGLETON(a)
+			. += reg.value * reagents.reagent_volumes[a]
 	. = round(.)
 
-/obj/item/stack/Value(base)
+/obj/item/stack/Value(var/base)
 	return base * amount
 
 /obj/item/stack/material/Value()
@@ -23,7 +23,7 @@
 	return material.value * amount
 
 /obj/item/ore/Value()
-	var/material/mat = get_material_by_name(ore.material)
+	var/material/mat = SSmaterials.get_material_by_name(material)
 	if(mat)
 		return mat.value
 	return 0

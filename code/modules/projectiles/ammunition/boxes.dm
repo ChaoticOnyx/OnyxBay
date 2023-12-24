@@ -1,230 +1,71 @@
+// Revolvos //
 /obj/item/ammo_magazine/a357
-	//name = "ammo box (.357)"
-	//desc = "A box of .357 ammo"
-	//icon_state = "357"
 	name = "speed loader (.357)"
-	desc = "A speed loader for revolvers."
-	icon_state = "38"
+	icon_state = "T38"
 	caliber = "357"
+	insert_sound = /singleton/sound_category/revolver_reload
 	ammo_type = /obj/item/ammo_casing/a357
-	matter = list(MATERIAL_STEEL = 1260)
-	max_ammo = 6
+	matter = list(DEFAULT_WALL_MATERIAL = 1260)
+	max_ammo = 8
 	multiple_sprites = 1
 
-/obj/item/ammo_magazine/c50
-	name = "speed loader (.50)"
-	desc = "A speed loader for revolvers."
-	icon_state = "38"
-	caliber = ".50"
-	ammo_type = /obj/item/ammo_casing/a50
-	matter = list(MATERIAL_STEEL = 1260)
-	max_ammo = 6
+/obj/item/ammo_magazine/a454
+	name = "speed loader (.454)"
+	icon_state = "a454"
+	caliber = "454"
+	insert_sound = /singleton/sound_category/revolver_reload
+	ammo_type = /obj/item/ammo_casing/a454
+	matter = list(DEFAULT_WALL_MATERIAL = 1260)
+	max_ammo = 7
 	multiple_sprites = 1
 
 /obj/item/ammo_magazine/c38
 	name = "speed loader (.38)"
-	desc = "A speed loader for revolvers."
 	icon_state = "38"
-	caliber = ".38"
-	matter = list(MATERIAL_STEEL = 360)
+	caliber = "38"
+	insert_sound = /singleton/sound_category/revolver_reload
+	matter = list(DEFAULT_WALL_MATERIAL = 360)
 	ammo_type = /obj/item/ammo_casing/c38
 	max_ammo = 6
 	multiple_sprites = 1
 
 /obj/item/ammo_magazine/c38/rubber
-	name = "speed loader (.38, rubber)"
-	icon_state = "R38"
+	name = "speed loader (.38 rubber)"
 	ammo_type = /obj/item/ammo_casing/c38/rubber
 
-/obj/item/ammo_magazine/c38/spec
-	name = "speed loader (.38 SPEC)"
-	desc = "A five-round speed loader for M2019."
-	icon_state = "38spec"
-	ammo_type = /obj/item/ammo_casing/c38/spec
-	matter = list(MATERIAL_STEEL = 1000)
-	max_ammo = 5
+/obj/item/ammo_magazine/c38/emp
+	name = "speed loader (.38 haywire)"
+	ammo_type = /obj/item/ammo_casing/c38/emp
+	matter = list(DEFAULT_WALL_MATERIAL = 360, MATERIAL_URANIUM = 600)
 
-/obj/item/ammo_magazine/c38/chem
-	name = "speed loader (.38 CHEM)"
-	desc = "A five-round speed loader for M2019."
-	icon_state = "38chem"
-	ammo_type = /obj/item/ammo_casing/c38/chem
-	matter = list(MATERIAL_STEEL = 1500)
-	max_ammo = 5
+/obj/item/ammo_magazine/c45/revolver
+	name = "speed loader (.45)"
+	icon_state = "a454"
+	caliber = ".45"
+	ammo_type = /obj/item/ammo_casing/c45/revolver
 
-/obj/item/ammo_magazine/c44
-	name = "speed loader (.44 magnum)"
-	desc = "A speed loader for revolvers."
-	icon_state = "38"
-	ammo_type = /obj/item/ammo_casing/c44
-	matter = list(MATERIAL_STEEL = 450)
-	caliber = ".44"
-	max_ammo = 6
-	multiple_sprites = 1
+// End of Revolvos //
 
-/obj/item/ammo_magazine/c44/rubber
-	name = "speed loader (.44 magnum, rubber)"
-	icon_state = "R38"
-	ammo_type = /obj/item/ammo_casing/c44/rubber
+// Pistols and handguns //
+/obj/item/ammo_magazine/c45
+	name = "ammunition Box (.45)"
+	icon_state = "9mm"
+	origin_tech = list(TECH_COMBAT = 2)
+	caliber = ".45"
+	matter = list(DEFAULT_WALL_MATERIAL = 2250)
+	ammo_type = /obj/item/ammo_casing/c45
+	max_ammo = 30
 
-/obj/item/ammo_magazine/c45m
+/obj/item/ammo_magazine/c45x
 	name = "magazine (.45)"
-	icon_state = "45"
+	icon_state = "45x"
+	origin_tech = list(TECH_COMBAT = 3)
 	mag_type = MAGAZINE
-	ammo_type = /obj/item/ammo_casing/c45
-	matter = list(MATERIAL_STEEL = 525) //metal costs are very roughly based around 1 .45 casing = 75 metal
+	matter = list(DEFAULT_WALL_MATERIAL = 600)
 	caliber = ".45"
-	max_ammo = 7
-	multiple_sprites = 1
-
-/obj/item/ammo_magazine/c45m/empty
-	initial_ammo = 0
-
-/obj/item/ammo_magazine/c45m/rubber
-	name = "magazine (.45, rubber)"
-	icon_state = "45r"
-	ammo_type = /obj/item/ammo_casing/c45/rubber
-
-/obj/item/ammo_magazine/c45m/practice
-	name = "magazine (.45, practice)"
-	ammo_type = /obj/item/ammo_casing/c45/practice
-
-/obj/item/ammo_magazine/c45m/flash
-	name = "magazine (.45, flash)"
-	ammo_type = /obj/item/ammo_casing/c45/flash
-
-/obj/item/ammo_magazine/c45m/stun
-	name = "magazine (.45, stun)"
-	icon_state = "45s"
-	desc = "A magazine for some kind of gun. This one has yellow strips on its sides."
-	ammo_type = /obj/item/ammo_casing/c45/stun
-
-/obj/item/ammo_magazine/c45uzi
-	name = "stick magazine (.45)"
-	icon_state = "uzi45"
-	mag_type = MAGAZINE
 	ammo_type = /obj/item/ammo_casing/c45
-	matter = list(MATERIAL_STEEL = 1200)
-	caliber = ".45"
 	max_ammo = 16
 	multiple_sprites = 1
-
-/obj/item/ammo_magazine/c45uzi/empty
-	initial_ammo = 0
-
-/obj/item/ammo_magazine/mc9mm
-	name = "magazine (9mm)"
-	icon_state = "9x19p"
-	origin_tech = list(TECH_COMBAT = 2)
-	mag_type = MAGAZINE
-	matter = list(MATERIAL_STEEL = 480)
-	caliber = "9mm"
-	ammo_type = /obj/item/ammo_casing/c9mm
-	max_ammo = 10
-	multiple_sprites = 1
-
-/obj/item/ammo_magazine/mc9mm/empty
-	initial_ammo = 0
-
-/obj/item/ammo_magazine/mc9mm/flash
-	name = "magazine (9mm, flash)"
-	ammo_type = /obj/item/ammo_casing/c9mm/flash
-
-/obj/item/ammo_magazine/box/c9mm
-	name = "ammunition box (9mm)"
-	icon_state = "9mm"
-	origin_tech = list(TECH_COMBAT = 2)
-	matter = list(MATERIAL_STEEL = 1800)
-	caliber = "9mm"
-	ammo_type = /obj/item/ammo_casing/c9mm
-	max_ammo = 30
-
-/obj/item/ammo_magazine/box/c9mm/empty
-	initial_ammo = 0
-
-/obj/item/ammo_magazine/box/emp
-	name = "ammunition box (.38, haywire)"
-	icon_state = "empbox"
-	origin_tech = list(TECH_COMBAT = 2)
-	max_ammo = 10
-	ammo_type = /obj/item/ammo_casing/c38/emp
-	caliber = ".38"
-
-/obj/item/ammo_magazine/box/emp/c45
-	name = "ammunition box (.45, haywire)"
-	ammo_type = /obj/item/ammo_casing/c45/emp
-	caliber = ".45"
-
-/obj/item/ammo_magazine/box/emp/a10mm
-	name = "ammunition box (10mm, haywire)"
-	ammo_type = /obj/item/ammo_casing/a10mm/emp
-	caliber = "10mm"
-
-/obj/item/ammo_magazine/mc9mmt
-	name = "top mounted magazine (9mm)"
-	icon_state = "9mmt"
-	mag_type = MAGAZINE
-	ammo_type = /obj/item/ammo_casing/c9mm
-	matter = list(MATERIAL_STEEL = 1200)
-	caliber = "9mm"
-	max_ammo = 20
-	multiple_sprites = 1
-
-/obj/item/ammo_magazine/mc9mmt/empty
-	initial_ammo = 0
-
-/obj/item/ammo_magazine/mc9mmt/rubber
-	name = "top mounted magazine (9mm, rubber)"
-	icon_state = "9mmtr"
-	ammo_type = /obj/item/ammo_casing/c9mm/rubber
-
-/obj/item/ammo_magazine/mc9mmt/practice
-	name = "top mounted magazine (9mm, practice)"
-	ammo_type = /obj/item/ammo_casing/c9mm/practice
-
-/obj/item/ammo_magazine/box/c45
-	name = "ammunition box (.45)"
-	icon_state = "9mm"
-	origin_tech = list(TECH_COMBAT = 2)
-	caliber = ".45"
-	matter = list(MATERIAL_STEEL = 2250)
-	ammo_type = /obj/item/ammo_casing/c45
-	max_ammo = 30
-
-/obj/item/ammo_magazine/box/c45/empty
-	initial_ammo = 0
-
-/obj/item/ammo_magazine/a10mm
-	name = "magazine (10mm)"
-	icon_state = "10mm"
-	origin_tech = list(TECH_COMBAT = 2)
-	mag_type = MAGAZINE
-	caliber = "10mm"
-	matter = list(MATERIAL_STEEL = 1500)
-	ammo_type = /obj/item/ammo_casing/a10mm
-	max_ammo = 20
-	multiple_sprites = 1
-
-/obj/item/ammo_magazine/a10mm/empty
-	initial_ammo = 0
-
-/obj/item/ammo_magazine/a762
-	name = "magazine (7.62mm)"
-	icon_state = "5.56"
-	origin_tech = list(TECH_COMBAT = 2)
-	mag_type = MAGAZINE
-	caliber = "a762"
-	matter = list(MATERIAL_STEEL = 1800)
-	ammo_type = /obj/item/ammo_casing/a762
-	max_ammo = 15 //if we lived in a world where normal mags had 30 rounds, this would be a 20 round mag
-	multiple_sprites = 1
-
-/obj/item/ammo_magazine/a762/empty
-	initial_ammo = 0
-
-/obj/item/ammo_magazine/a762/practice
-	name = "magazine (7.62mm, practice)"
-	ammo_type = /obj/item/ammo_casing/a762/practice
 
 /obj/item/ammo_magazine/a50
 	name = "magazine (.50)"
@@ -232,7 +73,7 @@
 	origin_tech = list(TECH_COMBAT = 2)
 	mag_type = MAGAZINE
 	caliber = ".50"
-	matter = list(MATERIAL_STEEL = 1260)
+	matter = list(DEFAULT_WALL_MATERIAL = 1260)
 	ammo_type = /obj/item/ammo_casing/a50
 	max_ammo = 7
 	multiple_sprites = 1
@@ -240,11 +81,343 @@
 /obj/item/ammo_magazine/a50/empty
 	initial_ammo = 0
 
+/obj/item/ammo_magazine/c45m
+	name = "magazine (.45)"
+	icon_state = "45"
+	mag_type = MAGAZINE
+	ammo_type = /obj/item/ammo_casing/c45
+	matter = list(DEFAULT_WALL_MATERIAL = 525) //metal costs are very roughly based around 1 .45 casing = 75 metal
+	caliber = ".45"
+	max_ammo = 9
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/c45m/stendo
+	name = "extended magazine (.45)"
+	desc = "A custom .45 pistol magazine fitted with an extended baseplate, increasing capacity to eleven rounds."
+	icon_state = "45e"
+	max_ammo = 11
+
+/obj/item/ammo_magazine/c45m/lebman
+	name = "extended magazine (.45)"
+	desc = "A custom .45 pistol magazine made by welding two together. Has double the capacity of a normal magazine at eighteen rounds."
+	icon_state = "45l"
+	max_ammo = 18
+
+/obj/item/ammo_magazine/c45m/empty
+	initial_ammo = 0
+
+/obj/item/ammo_magazine/c45m/rubber
+	name = "magazine (.45 rubber)"
+	icon_state = "r45"
+	ammo_type = /obj/item/ammo_casing/c45/rubber
+
+/obj/item/ammo_magazine/c45m/practice
+	name = "magazine (.45 practice)"
+	icon_state = "45_practice"
+	ammo_type = /obj/item/ammo_casing/c45/practice
+
+/obj/item/ammo_magazine/c45m/flash
+	name = "magazine (.45 flash)"
+	ammo_type = /obj/item/ammo_casing/c45/flash
+
+/obj/item/ammo_magazine/c45m/auto
+	name = "extended magazine (.45)"
+	icon_state = "45a"
+	desc = "A NanoTrasen-produced extended magazine for their Mk58 line of pistols. \
+	The overall construction has been strengthened to withstand the rigors of fully-automatic fire."
+	ammo_type = /obj/item/ammo_casing/c45
+	max_ammo = 16
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/c46m
+	name = "magazine (4.6mm)"
+	icon_state = "4.6x30p"
+	origin_tech = list(TECH_COMBAT = 2)
+	mag_type = MAGAZINE
+	caliber = "4.6mm"
+	desc = "A magazine designed for the dNAC-4.6 pistol."
+	ammo_type = /obj/item/ammo_casing/c46mm
+	max_ammo = 15
+	multiple_sprites = TRUE
+
+/obj/item/ammo_magazine/c46m/extended
+	name = "extended magazine (4.6mm)"
+	icon_state = "4.6x30p_extended"
+	desc = "A magazine designed for the dNAC-4.6 II submachine gun, but can also be used in the dNAC-4.6 pistol."
+	max_ammo = 30
+
+/obj/item/ammo_magazine/super_heavy
+	name = ".599 magazine"
+	desc = "A bulky magazine for the Kumar Arms 2557."
+	icon_state = "k2557"
+	caliber = ".599 Kumar Super"
+	ammo_type = /obj/item/ammo_casing/kumar_super
+	mag_type = MAGAZINE
+	max_ammo = 5
+	multiple_sprites = 1
+	insert_sound = 'sound/weapons/k2557-insert.ogg'
+
+/obj/item/ammo_magazine/mc10mm
+	name = "magazine (10mm)"
+	desc = "A detachable magazine for a modified NanoTrasen Mk1, made from stamped sheet metal."
+	icon_state = "12mm"
+	mag_type = MAGAZINE
+	ammo_type = /obj/item/ammo_casing/c10mm
+	matter = list(DEFAULT_WALL_MATERIAL = 475) //metal costs are very roughly based around 1 .45 casing = 75 metal
+	caliber = "10mm"
+	max_ammo = 12
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/mc10mm/empty
+	initial_ammo = 0
+
+/obj/item/ammo_magazine/mc10mm/rubber
+	name = "magazine (10mm rubber)"
+	ammo_type = /obj/item/ammo_casing/c10mm/rubber
+
+/obj/item/ammo_magazine/mc10mm/leyon
+	name = "ammo clip (10mm)"
+	icon_state = "10mmclip"
+	mag_type = SPEEDLOADER
+	matter = list(DEFAULT_WALL_MATERIAL = 1800)
+	max_ammo = 5
+	multiple_sprites = 1
+	insert_sound = 'sound/weapons/clip_insert.ogg'
+
+/obj/item/ammo_magazine/mc9mm
+	name = "magazine (9mm)"
+	icon_state = "9x19p"
+	origin_tech = list(TECH_COMBAT = 2)
+	mag_type = MAGAZINE
+	matter = list(DEFAULT_WALL_MATERIAL = 600)
+	caliber = "9mm"
+	ammo_type = /obj/item/ammo_casing/c9mm
+	max_ammo = 12
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/mc9mm/empty
+	initial_ammo = 0
+
+/obj/item/ammo_magazine/mc9mm/flash
+	name = "magazine (9mm flash)"
+	ammo_type = /obj/item/ammo_casing/c9mm/flash
+
+// End of pistols //
+
+// Submachine guns and PDWs
+/obj/item/ammo_magazine/c9mm
+	name = "ammunition box (9mm)"
+	icon_state = "9mm"
+	origin_tech = list(TECH_COMBAT = 2)
+	matter = list(DEFAULT_WALL_MATERIAL = 1800)
+	caliber = "9mm"
+	insert_sound = /singleton/sound_category/polymer_slide_reload
+	ammo_type = /obj/item/ammo_casing/c9mm
+	max_ammo = 30
+
+/obj/item/ammo_magazine/c9mm/empty
+	initial_ammo = 0
+
+/obj/item/ammo_magazine/mc9mmt
+	name = "top mounted magazine (9mm)"
+	icon_state = "9mmt"
+	mag_type = MAGAZINE
+	ammo_type = /obj/item/ammo_casing/c9mm
+	matter = list(DEFAULT_WALL_MATERIAL = 1200)
+	caliber = "9mm"
+	insert_sound = /singleton/sound_category/polymer_slide_reload
+	max_ammo = 20
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/mc9mmt/empty
+	initial_ammo = 0
+
+/obj/item/ammo_magazine/mc9mmt/rubber
+	name = "top mounted magazine (9mm rubber)"
+	ammo_type = /obj/item/ammo_casing/c9mm/rubber
+
+/obj/item/ammo_magazine/mc9mmt/practice
+	name = "top mounted magazine (9mm practice)"
+	ammo_type = /obj/item/ammo_casing/c9mm/practice
+
+/obj/item/ammo_magazine/c45
+	name = "ammunition box (.45)"
+	icon_state = "9mm"
+	origin_tech = list(TECH_COMBAT = 2)
+	caliber = ".45"
+	matter = list(DEFAULT_WALL_MATERIAL = 2250)
+	ammo_type = /obj/item/ammo_casing/c45
+	max_ammo = 30
+
+/obj/item/ammo_magazine/c9mm/empty
+	initial_ammo = 0
+
+/obj/item/ammo_magazine/a10mm
+	name = "magazine (10mm)"
+	icon_state = "12mm"
+	origin_tech = list(TECH_COMBAT = 2)
+	mag_type = MAGAZINE
+	caliber = "10mm"
+	insert_sound = /singleton/sound_category/polymer_slide_reload
+	matter = list(DEFAULT_WALL_MATERIAL = 1500)
+	ammo_type = /obj/item/ammo_casing/c10mm
+	max_ammo = 20
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/a10mm/empty
+	initial_ammo = 0
+
+/obj/item/ammo_magazine/c45uzi
+	name = "stick magazine (.45)"
+	icon_state = "uzi45"
+	mag_type = MAGAZINE
+	ammo_type = /obj/item/ammo_casing/c45
+	matter = list(DEFAULT_WALL_MATERIAL = 1200)
+	caliber = ".45"
+	max_ammo = 16
+	insert_sound = /singleton/sound_category/polymer_slide_reload
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/c45uzi/empty
+	initial_ammo = 0
+
+/obj/item/ammo_magazine/submachinemag
+	name = "magazine (.45)"
+	icon_state = "tommy-mag"
+	mag_type = MAGAZINE
+	ammo_type = /obj/item/ammo_casing/c45
+	matter = list(DEFAULT_WALL_MATERIAL = 1500)
+	caliber = ".45"
+	insert_sound = /singleton/sound_category/polymer_slide_reload
+	max_ammo = 20
+
+/obj/item/ammo_magazine/submachinemag/empty
+	initial_ammo = 0
+
+/obj/item/ammo_magazine/submachinedrum
+	name = "drum magazine (.45)"
+	icon_state = "tommy-drum"
+	w_class = ITEMSIZE_NORMAL // Bulky ammo doesn't fit in your pockets!
+	mag_type = MAGAZINE
+	ammo_type = /obj/item/ammo_casing/c45
+	matter = list(DEFAULT_WALL_MATERIAL = 3750)
+	caliber = ".45"
+	insert_sound = /singleton/sound_category/polymer_slide_reload
+	max_ammo = 50
+
+/obj/item/ammo_magazine/smg10mm
+	name = "smg magazine (10mm)"
+	desc = "A detachable magazine for the improvised konyanger pirate SMG, made from scrap metal."
+	icon_state = "10mm"
+	mag_type = MAGAZINE
+	ammo_type = /obj/item/ammo_casing/smg10mm
+	caliber = "10mm"
+	max_ammo = 20
+	multiple_sprites = 1
+
+// End of SMGs and PDWs //
+
+// Rifles and bigger calibers //
+/obj/item/ammo_magazine/a556
+	name = "magazine (5.56mm)"
+	icon_state = "5.56"
+	origin_tech = list(TECH_COMBAT = 2)
+	mag_type = MAGAZINE
+	caliber = "a556"
+	insert_sound = /singleton/sound_category/rifle_slide_reload
+	matter = list(DEFAULT_WALL_MATERIAL = 1800)
+	ammo_type = /obj/item/ammo_casing/a556
+	max_ammo = 30
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/a556/empty
+	initial_ammo = 0
+
+/obj/item/ammo_magazine/a556/practice
+	name = "magazine (5.56mm practice)"
+	ammo_type = /obj/item/ammo_casing/a556/practice
+
+/obj/item/ammo_magazine/a556/ap
+	name = "magazine (5.56mm AP)"
+	icon_state = "5.56AP"
+	origin_tech = list(TECH_COMBAT = 3)
+	ammo_type = /obj/item/ammo_casing/a556/ap
+
+/obj/item/ammo_magazine/a556/polymer
+	name = "magazine (5.56mm lethal polymer)"
+	icon_state = "5.56AP"
+	ammo_type = /obj/item/ammo_casing/a556/polymer
+
+/obj/item/ammo_magazine/a556/k556
+	name = "konyang rifle magazine"
+	icon_state = "k556rifle_mag"
+
+/obj/item/ammo_magazine/a556/carbine
+	name = "carbine magazine (5.56mm)"
+	icon_state = "5.56c"
+	desc = "A 5.56 ammo magazine fit for a carbine, not an assault rifle."
+	matter = list(DEFAULT_WALL_MATERIAL = 1250)
+	max_ammo = 15
+
+/obj/item/ammo_magazine/a556/carbine/empty
+	initial_ammo = 0
+
+/obj/item/ammo_magazine/a556/carbine/practice
+	name = "carbine magazine (5.56mm practice)"
+	icon_state = "5.56c_practice"
+	ammo_type = /obj/item/ammo_casing/a556/practice
+
+/obj/item/ammo_magazine/a556/carbine/ap
+	name = "carbine magazine (5.56mm AP)"
+	icon_state = "5.56APc"
+	origin_tech = list(TECH_COMBAT = 3)
+	ammo_type = /obj/item/ammo_casing/a556/ap
+
+/obj/item/ammo_magazine/a556/carbine/polymer
+	name = "carbine magazine (5.56mm lethal polymer)"
+	icon_state = "5.56APc"
+	ammo_type = /obj/item/ammo_casing/a556/polymer
+
+/obj/item/ammo_magazine/a556/carbine/blank
+	name = "carbine magazine (5.56mm blank)"
+	icon_state = "5.56c_practice"
+	ammo_type = /obj/item/ammo_casing/a556/blank
+
+/obj/item/ammo_magazine/a556/carbine/konyang47
+	name = "konyang carbine magazine"
+	icon_state = "k47_mag"
+
+/obj/item/ammo_magazine/a556/makeshift
+	name = "makeshift magazine (5.56mm)"
+	icon_state = "5.56m"
+	origin_tech = list(TECH_COMBAT = 1)
+	matter = list(DEFAULT_WALL_MATERIAL = 600)
+	max_ammo = 7
+
+/obj/item/ammo_magazine/a556/makeshift/empty
+	initial_ammo = 0
+
+/obj/item/ammo_magazine/a65
+	name = "magazine (6.5mm)"
+	icon_state = "c6.5mm"
+	origin_tech = list(TECH_COMBAT = 3)
+	mag_type = MAGAZINE
+	caliber = "a65"
+	insert_sound = /singleton/sound_category/rifle_slide_reload
+	matter = list(DEFAULT_WALL_MATERIAL = 1800)
+	ammo_type = /obj/item/ammo_casing/a65
+	max_ammo = 20
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/a65/empty
+	initial_ammo = 0
+
 /obj/item/ammo_magazine/a75
 	name = "ammo magazine (20mm)"
 	icon_state = "75"
 	mag_type = MAGAZINE
 	caliber = "75"
+	insert_sound = /singleton/sound_category/rifle_slide_reload
 	ammo_type = /obj/item/ammo_casing/a75
 	multiple_sprites = 1
 	max_ammo = 4
@@ -252,85 +425,263 @@
 /obj/item/ammo_magazine/a75/empty
 	initial_ammo = 0
 
-/obj/item/ammo_magazine/box/a556
-	name = "magazine box (5.56mm)"
-	icon_state = "a556"
-	origin_tech = list(TECH_COMBAT = 2)
+/obj/item/ammo_magazine/trodpack
+	name = "tungsten rod pack"
+	icon_state = "trodpack-2"
 	mag_type = MAGAZINE
-	caliber = "a556"
-	matter = list(MATERIAL_STEEL = 5400)
-	ammo_type = /obj/item/ammo_casing/a556
-	max_ammo = 60
+	caliber = "trod"
+	insert_sound = 'sound/weapons/reloads/rifle_slide3.ogg'
+	ammo_type = /obj/item/ammo_casing/trod
 	multiple_sprites = 1
+	max_ammo = 2
 
-/obj/item/ammo_magazine/box/a556/empty
+/obj/item/ammo_magazine/trodpack/empty
 	initial_ammo = 0
 
-/obj/item/ammo_magazine/c556
-	name = "magazine (5.56mm)"
+/obj/item/ammo_magazine/a762
+	name = "magazine box (7.62mm)"
+	icon_state = "a762"
+	origin_tech = list(TECH_COMBAT = 2)
+	mag_type = MAGAZINE
+	caliber = "a762"
+	insert_sound = /singleton/sound_category/rifle_slide_reload
+	matter = list(DEFAULT_WALL_MATERIAL = 4500)
+	ammo_type = /obj/item/ammo_casing/a762
+	max_ammo = 50
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/a762/empty
+	initial_ammo = 0
+
+/obj/item/ammo_magazine/c762
+	name = "magazine (7.62mm)"
 	icon_state = "c762"
 	mag_type = MAGAZINE
-	caliber = "a556"
-	matter = list(MATERIAL_STEEL = 2250)
-	ammo_type = /obj/item/ammo_casing/a556
-	max_ammo = 25
+	caliber = "a762"
+	insert_sound = /singleton/sound_category/rifle_slide_reload
+	matter = list(DEFAULT_WALL_MATERIAL = 1800)
+	ammo_type = /obj/item/ammo_casing/a762
+	max_ammo = 20
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/c762/sol
+	icon_state = "battlerifle_mag"
+	multiple_sprites = 0
+
+/obj/item/ammo_magazine/c762/dpra
+	icon_state = "mrrazhak_mag"
+
+/obj/item/ammo_magazine/boltaction
+	name = "ammo clip (7.62mm)"
+	icon_state = "762"
+	ammo_type = /obj/item/ammo_casing/a762
+	caliber = "a762"
+	matter = list(DEFAULT_WALL_MATERIAL = 1800)
+	max_ammo = 5
+	multiple_sprites = 1
+	insert_sound = 'sound/weapons/clip_insert.ogg'
+
+/obj/item/ammo_magazine/boltaction/blank
+	ammo_type = /obj/item/ammo_casing/a762/blank
+
+/obj/item/ammo_magazine/boltaction/vintage
+	name = "vintage stripper clip"
+	ammo_type = /obj/item/ammo_casing/vintage
+	caliber = "vintage"
+
+/obj/item/ammo_magazine/d762
+	name = "magazine (7.62mm)"
+	icon_state = "SVD"
+	mag_type = MAGAZINE
+	caliber = "a762"
+	matter = list(DEFAULT_WALL_MATERIAL = 1200)
+	ammo_type = /obj/item/ammo_casing/a762
+	max_ammo = 10
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/d762/empty
+	initial_ammo = 0
+
+// Shotguns and special //
+/obj/item/ammo_magazine/flechette
+	name = "flechette rounds"
+	icon = 'icons/obj/terminator.dmi'
+	icon_state = "flechette"
+	mag_type = MAGAZINE
+	caliber = "flechette"
+	insert_sound = /singleton/sound_category/rifle_slide_reload
+	matter = list(DEFAULT_WALL_MATERIAL = 1200)
+	ammo_type = /obj/item/ammo_casing/flechette
+	max_ammo = 40
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/flechette/empty
+	initial_ammo = 0
+
+/obj/item/ammo_magazine/flechette/explosive
+	name = "explosive flechette rounds"
+	desc = "A box of ten explosive flechettes that can be remotely detonated by a certain signal."
+	icon = 'icons/obj/terminator.dmi'
+	icon_state = "flechette_e"
+	mag_type = MAGAZINE
+	caliber = "flechette"
+	matter = list(DEFAULT_WALL_MATERIAL = 1200)
+	ammo_type = /obj/item/ammo_casing/flechette/explosive
+	max_ammo = 10
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/flechette/explosive/empty
+	initial_ammo = 0
+
+/obj/item/ammo_magazine/assault_shotgun
+	name = "magazine (slug)"
+	icon_state = "csmb"
+	caliber = "shotgun"
+	insert_sound = /singleton/sound_category/rifle_slide_reload
+	mag_type = MAGAZINE
+	ammo_type = /obj/item/ammo_casing/shotgun
+	max_ammo = 8
+	matter = list(MATERIAL_STEEL = 2880)
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/assault_shotgun/shells
+	name = "magazine (shells)"
+	icon_state = "csm"
+	ammo_type = /obj/item/ammo_casing/shotgun/pellet
+
+/obj/item/ammo_magazine/assault_shotgun/incendiary
+	name = "magazine (incendiary shells)"
+	icon_state = "csmi"
+	ammo_type = /obj/item/ammo_casing/shotgun/incendiary
+	matter = list(DEFAULT_WALL_MATERIAL = 3600)
+
+/obj/item/ammo_magazine/assault_shotgun/stun
+	name = "magazine (stun shells)"
+	icon_state = "csms"
+	ammo_type = /obj/item/ammo_casing/shotgun/stunshell
+	matter = list(DEFAULT_WALL_MATERIAL = 2880, MATERIAL_GLASS = 5760)
+
+/obj/item/ammo_magazine/xanan_shotgun
+	name = "magazine"
+	desc = "A magazine for the dNAC-12 combat shotgun."
+	icon = 'icons/obj/guns/xanu_shotgun_mags.dmi'
+	icon_state = "xanu_shell_magazine"
+	caliber = "shotgun"
+	insert_sound = /singleton/sound_category/rifle_slide_reload
+	mag_type = MAGAZINE
+	ammo_type = /obj/item/ammo_casing/shotgun
+	max_ammo = 8
+	matter = list(MATERIAL_STEEL = 2880)
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/xanan_shotgun/shells
+	name = "magazine (buckshot)"
+	icon_state = "xanu_shell_magazine_buckshot"
+	ammo_type = /obj/item/ammo_casing/shotgun/pellet
+
+/obj/item/ammo_magazine/xanan_shotgun/incendiary
+	name = "magazine (incendiary)"
+	icon_state = "xanu_shell_magazine_incendiary"
+	ammo_type = /obj/item/ammo_casing/shotgun/incendiary
+
+/obj/item/ammo_magazine/xanan_shotgun/beanbag
+	name = "magazine (beanbag)"
+	icon_state = "xanu_shell_magazine_beanbag"
+	ammo_type = /obj/item/ammo_casing/shotgun/beanbag
+
+/obj/item/ammo_magazine/xanan_shotgun/slugs
+	name = "magazine (slugs)"
+	icon_state = "xanu_shell_magazine_slug"
+	ammo_type = /obj/item/ammo_casing/shotgun
+
+/obj/item/ammo_magazine/xanan_shotgun/emp
+	name = "magazine (haywire slugs)"
+	icon_state = "xanu_shell_magazine_emp"
+	ammo_type = /obj/item/ammo_casing/shotgun/emp
+
+/obj/item/ammo_magazine/xanan_shotgun/stun
+	name = "magazine (stun)"
+	icon_state = "xanu_shell_magazine_stun"
+	ammo_type = /obj/item/ammo_casing/shotgun/emp
+
+/obj/item/ammo_magazine/xanan_shotgun/tracker
+	name = "magazine (tracking slug)"
+	icon_state = "xanu_shell_magazine_tracker"
+	ammo_type = /obj/item/ammo_casing/shotgun/tracking
+
+/obj/item/ammo_magazine/minigun
+	name = "minigun magazine box (7.62mm)"
+	icon_state = "a762"
+	mag_type = MAGAZINE
+	caliber = "a762"
+	ammo_type = /obj/item/ammo_casing/a762
+	max_ammo = 1000
+
+/obj/item/ammo_magazine/gauss
+	name = "tungsten slug box"
+	icon_state = "slugbox"
+	mag_type = MAGAZINE
+	caliber = "gauss"
+	ammo_type = /obj/item/ammo_casing/gauss
+	max_ammo = 7
+	multiple_sprites = 1
+	insert_sound = 'sound/weapons/railgun_insert.ogg'
+
+
+/obj/item/ammo_magazine/gauss/emp
+	name = "ion slug box"
+	icon_state = "empslugbox"
+	ammo_type = /obj/item/ammo_casing/gauss/emp
+	insert_sound = 'sound/weapons/railgun_insert_emp.ogg'
+
+/obj/item/ammo_magazine/plasma
+	name = "heavy duty plasma cell"
+	icon_state = "heavy_plasma_cell"
+	mag_type = MAGAZINE
+	caliber = "plasma slug"
+	insert_sound = 'sound/weapons/railgun_insert_emp.ogg'
+	ammo_type = /obj/item/ammo_casing/plasma_slug
+	max_ammo = 10
+
+/obj/item/ammo_magazine/plasma/light
+	name = "small plasma cell"
+	icon_state = "light_plasma_cell"
+	caliber = "plasma bolt"
+	ammo_type = /obj/item/ammo_casing/plasma_bolt
+	max_ammo = 30
+
+/obj/item/ammo_magazine/plasma/light/pistol
+	name = "tiny plasma cell"
+	ammo_type = /obj/item/ammo_casing/plasma_bolt
+	max_ammo = 15
+
+/obj/item/ammo_magazine/nuke
+	name = "nuclear launcher cartridge"
+	icon_state = "nukemag"
+	w_class = ITEMSIZE_NORMAL
+	mag_type = MAGAZINE
+	caliber = "nuke"
+	insert_sound = 'sound/weapons/reloads/rifle_slide3.ogg'
+	ammo_type = /obj/item/ammo_casing/nuke
+	max_ammo = 2
 	multiple_sprites = 1
 
 /obj/item/ammo_magazine/caps
 	name = "speed loader (caps)"
-	desc = "A cheap plastic speed loader for some kind of revolver."
 	icon_state = "T38"
 	caliber = "caps"
-	color = "#ff0000"
+	color = "#FF0000"
 	ammo_type = /obj/item/ammo_casing/cap
-	matter = list(MATERIAL_STEEL = 600)
+	matter = list(DEFAULT_WALL_MATERIAL = 600)
 	max_ammo = 7
 	multiple_sprites = 1
 
-/obj/item/ammo_magazine/lawgiver
-	name = "lawgiver magazine"
-	desc = "State-of-the-art bluespace technology allows this magazine to generate new rounds from energy, requiring only a power source to refill the full suite of ammunition types."
-	icon_state = "lawgiver"
+/obj/item/ammo_magazine/konyang_shotgun
+	name = "konyang shotgun magazine"
+	icon_state = "konyang_shotgun"
+	caliber = "shotgun"
+	insert_sound = /singleton/sound_category/rifle_slide_reload
 	mag_type = MAGAZINE
-	ammo_type = null
-	caliber = "lawgiver"
-	max_ammo = 0
-	display_default_ammo_left = FALSE
-	var/list/ammo_counters
-
-/obj/item/ammo_magazine/lawgiver/Initialize()
-	. = ..()
-	var/list/new_ammo_counters = list()
-	for(var/list/mode in GLOB.lawgiver_modes)
-		new_ammo_counters[mode["mode_name"]] = LAWGIVER_MAX_AMMO
-	ammo_counters = new_ammo_counters
-	update_icon()
-
-/obj/item/ammo_magazine/lawgiver/attack_self()
-	return
-
-/obj/item/ammo_magazine/lawgiver/emp_act(severity)
-	if(prob(25))
-		discharge_magazine()
-
-/obj/item/ammo_magazine/lawgiver/proc/discharge_magazine()
-	for(var/mode_name in ammo_counters)
-		if(prob(15))
-			ammo_counters[mode_name] = max(1, ammo_counters[mode_name] - rand(1, LAWGIVER_MAX_AMMO % 3))
-
-/obj/item/ammo_magazine/lawgiver/proc/generate_description()
-    var/dat = "\n"
-    for(var/list/mode in GLOB.lawgiver_modes)
-        var/ammo_left = round(ammo_counters[mode["mode_name"]], 0.1)
-        dat += "It has [ammo_left] [mode["mode_name"]] charge[ammo_left != 1 ? "s" : ""] left.\n"
-    return SPAN("info", dat)
-
-/obj/item/ammo_magazine/lawgiver/_examine_text(mob/user)
-	. = ..()
-	. += generate_description()
-
-/obj/item/ammo_magazine/lawgiver/proc/isFull()
-	for(var/mode in ammo_counters)
-		if(ammo_counters[mode] != LAWGIVER_MAX_AMMO)
-			return FALSE
-	return TRUE
+	ammo_type = /obj/item/ammo_casing/shotgun
+	max_ammo = 9
+	multiple_sprites = 1

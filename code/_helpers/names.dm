@@ -15,22 +15,6 @@ var/church_name = null
 
 	return name
 
-var/command_name = null
-/proc/command_name()
-	if (command_name)
-		return command_name
-
-	var/name = "[GLOB.using_map.boss_name]"
-
-	command_name = name
-	return name
-
-/proc/change_command_name(name)
-
-	command_name = name
-
-	return name
-
 var/religion_name = null
 /proc/religion_name()
 	if (religion_name)
@@ -43,83 +27,11 @@ var/religion_name = null
 
 	return capitalize(name)
 
-/proc/system_name()
-	return GLOB.using_map.system_name ? GLOB.using_map.system_name : generate_system_name()
+/proc/world_name(var/name)
+	current_map.station_name = name
 
-/proc/generate_system_name()
-	return "[pick("Gilese","GSC", "Luyten", "GJ", "HD", "SCGECO")][prob(10) ? " Eridani" : ""] [rand(100,999)]"
-
-/proc/generate_planet_name()
-	return "[capitalize(pick(GLOB.last_names))]-[pick(GLOB.greek_letters)]"
-
-/proc/generate_planet_type()
-	return pick("terrestial planet", "ice planet", "dwarf planet", "desert planet", "ocean planet", "lava planet", "gas giant", "forest planet")
-
-/proc/station_name()
-	if(!GLOB.using_map)
-		return server_name
-	if (GLOB.using_map.station_name)
-		return GLOB.using_map.station_name
-
-	var/random = rand(1,5)
-	var/name = ""
-
-	//Rare: Pre-Prefix
-	if (prob(10))
-		name = pick(GLOB.station_prefixes)
-		GLOB.using_map.station_name = name + " "
-
-	// Prefix
-	switch(Holiday)
-		//get normal name
-		if(null,"",0)
-			name = pick(GLOB.station_names)
-			if(name)
-				GLOB.using_map.station_name += name + " "
-
-		//For special days like christmas, easter, new-years etc ~Carn
-		if("Friday the 13th")
-			name = pick("Mike","Friday","Evil","Myers","Murder","Deathly","Stabby")
-			GLOB.using_map.station_name += name + " "
-			random = 13
-		else
-			//get the first word of the Holiday and use that
-			var/i = findtext(Holiday," ",1,0)
-			name = copytext(Holiday,1,i)
-			GLOB.using_map.station_name += name + " "
-
-	// Suffix
-	name = pick(GLOB.station_suffixes)
-	GLOB.using_map.station_name += name + " "
-
-	// ID Number
-	switch(random)
-		if(1)
-			GLOB.using_map.station_name += "[rand(1, 99)]"
-		if(2)
-			GLOB.using_map.station_name += pick(GLOB.greek_letters)
-		if(3)
-			GLOB.using_map.station_name += "\Roman[rand(1,99)]"
-		if(4)
-			GLOB.using_map.station_name += pick(GLOB.phonetic_alphabet)
-		if(5)
-			GLOB.using_map.station_name += pick(GLOB.numbers_as_words)
-		if(13)
-			GLOB.using_map.station_name += pick("13","XIII","Thirteen")
-
-
-	if (config && config.game.use_age_restriction_for_jobs)
-		world.name = "[config.game.use_age_restriction_for_jobs]: [name]"
-	else
-		world.name = GLOB.using_map.station_name
-
-	return GLOB.using_map.station_name
-
-/proc/world_name(name)
-	GLOB.using_map.station_name = name
-
-	if (config && config.game.use_age_restriction_for_jobs)
-		world.name = "[config.game.use_age_restriction_for_jobs]: [name]"
+	if (config && config.server_name)
+		world.name = "[config.server_name]: [name]"
 	else
 		world.name = name
 
@@ -157,10 +69,8 @@ var/syndicate_name = null
 
 
 //Traitors and traitor silicons will get these. Revs will not.
-GLOBAL_LIST_EMPTY(syndicate_code_phrase) //Code phrase for traitors.
-GLOBAL_LIST_EMPTY(syndicate_code_response) //Code response for traitors.
-GLOBAL_DATUM(code_phrase_highlight_rule, /regex)
-GLOBAL_DATUM(code_response_highlight_rule, /regex)
+var/syndicate_code_phrase //Code phrase for traitors.
+var/syndicate_code_response //Code response for traitors.
 
 	/*
 	Should be expanded.
@@ -176,51 +86,68 @@ GLOBAL_DATUM(code_response_highlight_rule, /regex)
 	-N
 	*/
 
-/proc/generate_code_phrase()//Proc is used for phrase and response in subsystem init.
-	var/words_count = pick(//How many words there will be. Minimum of two. 2, 4 and 5 have a lesser chance of being selected. 3 is the most likely.
+// Helper. Called in misc_late.dm for late misc init.
+/proc/populate_code_phrases(override = FALSE)
+	if (override || !syndicate_code_phrase)
+		syndicate_code_phrase = generate_code_phrase()
+	if (override || !syndicate_code_response)
+		syndicate_code_response = generate_code_phrase()
+
+/proc/generate_code_phrase() //Proc is used for phrase and response in master_controller.dm
+
+	var/code_phrase = "" //What is returned when the proc finishes.
+	var/words = pick( //How many words there will be. Minimum of two. 2, 4 and 5 have a lesser chance of being selected. 3 is the most likely.
 		50; 2,
 		200; 3,
 		50; 4,
 		25; 5
 	)
-	var/code_phrase[words_count]
-	for(var/i = 1, i <= code_phrase.len, i++)
-		var/word = pick(
-			80; pick(GLOB.rus_occupations),
-			70; pick(GLOB.rus_bays),
-			65; pick(GLOB.rus_local_terms),
-			65; pick(GLOB.rus_adjectives),
-			55; pick(GLOB.rus_nouns),
-			40; pick(GLOB.rus_verbs)
-		)
-		if(!word || code_phrase.Find(word,1,i)) // Reroll duplicates and errors
-			i--
-			continue
-		var separator_position = findtext(word, "|")
-		code_phrase[i] = copytext(word, 1, separator_position) // Word's root
-		code_phrase[code_phrase[i]] = separator_position == length(word) ? "" : copytext(word, separator_position + 1) // Associated ending
+
+	var/safety[] = list(1,2,3) //Tells the proc which options to remove later on.
+	var/nouns[] = list("love","hate","anger","peace","pride","sympathy","bravery","loyalty","honesty","integrity","compassion","charity","success","courage","deceit","skill","beauty","brilliance","pain","misery","beliefs","dreams","justice","truth","faith","liberty","knowledge","thought","information","culture","trust","dedication","progress","education","hospitality","leisure","trouble","friendships", "relaxation")
+	var/drinks[] = list("vodka and tonic","gin fizz","bahama mama","manhattan","black Russian","whiskey soda","long island tea","margarita","Irish coffee"," manly dwarf","Irish cream","doctor's delight","Beepksy Smash","tequila sunrise","brave bull","gargle blaster","bloody mary","whiskey cola","white Russian","vodka martini","martini","Cuba libre","kahlua","vodka","wine","moonshine")
+
+	var/maxwords = words //Extra var to check for duplicates.
+
+	for(words, words > 0, words--) //Randomly picks from one of the choices below.
+
+		if(words == 1 && (1 in safety) && (2 in safety)) //If there is only one word remaining and choice 1 or 2 have not been selected.
+			safety = list(pick(1,2)) //Select choice 1 or 2.
+		else if (words == 1 && maxwords == 2) //Else if there is only one word remaining (and there were two originally), and 1 or 2 were chosen,
+			safety = list(3) //Default to list 3
+
+		switch (pick(safety)) //Chance based on the safety list.
+			if (1) //1 and 2 can only be selected once each to prevent more than two specific names/places/etc.
+				switch (rand(1,2)) //Mainly to add more options later.
+					if (1)
+						code_phrase += pick(pick(first_names_male,first_names_female))
+						code_phrase += " "
+						code_phrase += pick(last_names)
+					if (2)
+						code_phrase += pick(joblist) //Returns a job.
+				safety -= 1
+			if (2)
+				switch (rand(1,2)) //Places or things.
+					if (1)
+						code_phrase += pick(drinks)
+					if (2)
+						if(the_station_areas.len)
+							var/area/location = pick(the_station_areas)
+							code_phrase += location.name
+						else
+							code_phrase += pick(drinks)
+				safety -= 2
+			if (3)
+				switch (rand(1,3)) //Nouns, adjectives, verbs. Can be selected more than once.
+					if (1)
+						code_phrase += pick(nouns)
+					if (2)
+						code_phrase += pick(adjectives)
+					if (3)
+						code_phrase += pick(verbs)
+		if (words == 1)
+			code_phrase += "."
+		else
+			code_phrase += ", "
 
 	return code_phrase
-
-/proc/generate_code_regex(list/words, ending_chars)
-	return regex("(^|\[^[ending_chars]])((?:[jointext(words,  "|")])\[[ending_chars]]{0,3})(?:(?!\[[ending_chars]]))", "ig")
-
-/proc/highlight_codewords(t, regex/rule, css_class = "notice")
-	if (!rule)
-		return t
-	return rule.Replace(t, "$1[SPAN(css_class, "$2")]")
-
-/proc/get_name(atom/A)
-	return A.name
-
-/proc/codewords2string(list/codewords)
-	ASSERT(islist(codewords))
-	for(var/i = 1, i <= codewords.len, i++)
-		. += SPAN("danger", "[codewords[i]]")
-		if (codewords[codewords[i]])
-			. += "(-[codewords[codewords[i]]])"
-		. += i != codewords.len ? ", " : "."
-	return
-
-/proc/get_name_and_coordinates(atom/A)
-	return "[A.name] \[[A.x],[A.y],[A.z]\]"

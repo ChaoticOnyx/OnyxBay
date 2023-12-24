@@ -20,14 +20,10 @@
 	set name = "Generate NanoUI Map"
 	set category = "Server"
 
-	if(!check_rights(R_ADMIN|R_DEBUG|R_SERVER))
-		to_chat(usr, "You are not allowed to use this command")
-		return
-
 	if(holder)
 		nanomapgen_DumpTile(1, 1, text2num(input(usr,"Enter the Z level to generate")))
 
-/client/proc/nanomapgen_DumpTile(startX = 1, startY = 1, currentZ = 1, endX = -1, endY = -1)
+/client/proc/nanomapgen_DumpTile(var/startX = 1, var/startY = 1, var/currentZ = 1, var/endX = -1, var/endY = -1)
 
 	if (endX < 0 || endX > world.maxx)
 		endX = world.maxx
@@ -54,11 +50,11 @@
 
 	var/icon/Tile = icon(file("nano/mapbase1024.png"))
 	if (Tile.Width() != NANOMAP_MAX_ICON_DIMENSION || Tile.Height() != NANOMAP_MAX_ICON_DIMENSION)
-		to_world_log("NanoMapGen: <B>ERROR: BASE IMAGE DIMENSIONS ARE NOT [NANOMAP_MAX_ICON_DIMENSION]x[NANOMAP_MAX_ICON_DIMENSION]</B>")
+		log_world("ERROR: NanoMapGen: <B>ERROR: BASE IMAGE DIMENSIONS ARE NOT [NANOMAP_MAX_ICON_DIMENSION]x[NANOMAP_MAX_ICON_DIMENSION]</B>")
 		sleep(3)
 		return NANOMAP_TERMINALERR
 
-	to_world_log("NanoMapGen: <B>GENERATE MAP ([startX],[startY],[currentZ]) to ([endX],[endY],[currentZ])</B>")
+	LOG_DEBUG("NanoMapGen: <B>GENERATE MAP ([startX],[startY],[currentZ]) to ([endX],[endY],[currentZ])</B>")
 	to_chat(usr, "NanoMapGen: <B>GENERATE MAP ([startX],[startY],[currentZ]) to ([endX],[endY],[currentZ])</B>")
 
 	var/count = 0;
@@ -75,16 +71,16 @@
 			count++
 
 			if (count % 8000 == 0)
-				to_world_log("NanoMapGen: <B>[count] tiles done</B>")
+				LOG_DEBUG("NanoMapGen: <B>[count] tiles done</B>")
 				sleep(1)
 
-	var/mapFilename = "new_[map_image_file_name(currentZ)]"
+	var/mapFilename = "new_Aurora[currentZ]"
 
-	to_world_log("NanoMapGen: <B>sending [mapFilename] to client</B>")
+	LOG_DEBUG("NanoMapGen: <B>sending [mapFilename] to client</B>")
 
-	show_browser(usr, Tile, "window=picture;file=[mapFilename];display=0")
+	usr << browse(Tile, "window=picture;file=[mapFilename];display=0")
 
-	to_world_log("NanoMapGen: <B>Done.</B>")
+	LOG_DEBUG("NanoMapGen: <B>Done.</B>")
 
 	to_chat(usr, "NanoMapGen: <B>Done. File [mapFilename] uploaded to your cache.</B>")
 

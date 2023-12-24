@@ -2,231 +2,227 @@
 //################### NEWSCASTERS BE HERE! ####
 //###-Agouri###################################
 
-/datum/feed_message
-	var/author =""
-	var/body =""
-	var/message_type ="Story"
-	var/datum/feed_channel/parent_channel
-	var/is_admin_message = 0
-	var/icon/img = null
-	var/icon/caption = ""
-	var/time_stamp = ""
-	var/backup_body = ""
-	var/backup_author = ""
-	var/icon/backup_img = null
-	var/icon/backup_caption = ""
+#define PRESET_NORTH \
+dir = NORTH; \
+pixel_y = 30;
 
-/datum/feed_channel
-	var/channel_name=""
-	var/list/datum/feed_message/messages = list()
-	var/locked=0
-	var/author=""
-	var/backup_author=""
-	var/views=0
-	var/censored=0
-	var/channel_id=0
-	var/is_admin_channel=0
-	var/updated = 0
-	var/announcement = ""
+#define PRESET_SOUTH \
+dir = SOUTH; \
+pixel_y = -26;
 
-/datum/feed_message/proc/clear()
-	src.author = ""
-	src.body = ""
-	src.caption = ""
-	src.img = null
-	src.time_stamp = ""
-	src.backup_body = ""
-	src.backup_author = ""
-	src.backup_caption = ""
-	src.backup_img = null
-	parent_channel.update()
+#define PRESET_WEST \
+dir = WEST; \
+pixel_x = -8;
 
-/datum/feed_channel/proc/update()
-	updated = world.time
+#define PRESET_EAST \
+dir = EAST; \
+pixel_x = 8;
 
-/datum/feed_channel/proc/clear()
-	src.channel_name = ""
-	src.messages = list()
-	src.locked = 0
-	src.author = ""
-	src.backup_author = ""
-	src.censored = 0
-	src.is_admin_channel = 0
-	src.announcement = ""
-	update()
-
-/datum/feed_network
-	var/list/datum/feed_channel/network_channels = list()
-	var/datum/feed_message/wanted_issue
-
-/datum/feed_network/New()
-	CreateFeedChannel("Announcements", "SS13", 1, 1, "New Announcement Available")
-
-/datum/feed_network/proc/CreateFeedChannel(channel_name, author, locked, adminChannel = 0, announcement_message)
-	var/datum/feed_channel/newChannel = new /datum/feed_channel
-	newChannel.channel_name = channel_name
-	newChannel.author = author
-	newChannel.locked = locked
-	newChannel.is_admin_channel = adminChannel
-	if(announcement_message)
-		newChannel.announcement = announcement_message
-	else
-		newChannel.announcement = "Breaking news from [channel_name]!"
-
-	newChannel.channel_id = length(network_channels) + 1
-	network_channels += newChannel
-
-/datum/feed_network/proc/SubmitArticle(msg, author, channel_name, obj/item/photo/photo, adminMessage = 0, message_type = "")
-	var/datum/feed_message/newMsg = new /datum/feed_message
-	newMsg.author = author
-	newMsg.body = msg
-	newMsg.time_stamp = "[stationtime2text()]"
-	newMsg.is_admin_message = adminMessage
-	if(message_type)
-		newMsg.message_type = message_type
-	if(photo)
-		newMsg.img = photo.img
-		newMsg.caption = photo.scribble
-	for(var/datum/feed_channel/FC in network_channels)
-		if(FC.channel_name == channel_name)
-			insert_message_in_channel(FC, newMsg) //Adding message to the network's appropriate feed_channel
-			break
-
-/datum/feed_network/proc/insert_message_in_channel(datum/feed_channel/FC, datum/feed_message/newMsg)
-	FC.messages += newMsg
-	if(newMsg.img)
-		register_asset("newscaster_photo_[FC.channel_id]_[FC.messages.len].png", newMsg.img)
-	newMsg.parent_channel = FC
-	FC.update()
-	alert_readers(FC.announcement)
-
-/datum/feed_network/proc/alert_readers(annoncement)
-	for(var/obj/machinery/newscaster/NEWSCASTER in allCasters)
-		NEWSCASTER.newsAlert(annoncement)
-		NEWSCASTER.update_icon()
-
-	var/list/receiving_pdas = new
-	for (var/obj/item/device/pda/P in PDAs)
-		if (!P.owner)
-			continue
-		if (P.toff)
-			continue
-		receiving_pdas += P
-
-	spawn(0)	// get_receptions sleeps further down the line, spawn of elsewhere
-		var/datum/receptions/receptions = get_receptions(null, receiving_pdas) // datums are not atoms, thus we have to assume the newscast network always has reception
-
-		for(var/obj/item/device/pda/PDA in receiving_pdas)
-			if(!(receptions.receiver_reception[PDA] & TELECOMMS_RECEPTION_RECEIVER))
-				continue
-
-			PDA.new_news(annoncement)
-
-var/datum/feed_network/news_network = new /datum/feed_network     //The global news-network, which is coincidentally a global list.
-
-var/list/obj/machinery/newscaster/allCasters = list() //Global list that will contain reference to all newscasters in existence.
-
+///Global list that contains reference to all newscasters in existence.
+var/list/obj/machinery/newscaster/allCasters = list()
 
 /obj/machinery/newscaster
 	name = "newscaster"
-	desc = "A standard newsfeed handler. All the news you absolutely have no use for, in one place!"
-	icon = 'icons/obj/terminals.dmi'
-	icon_state = "newscaster_normal"
-	//var/list/datum/feed_channel/channel_list = list() //This list will contain the names of the feed channels. Each name will refer to a data region where the messages of the feed channels are stored.
-	//OBSOLETE: We're now using a global news network
-	var/screen = 0                  //Or maybe I'll make it into a list within a list afterwards... whichever I prefer, go fuck yourselves :3
-		// 0 = welcome screen - main menu
-		// 1 = view feed channels
-		// 2 = create feed channel
-		// 3 = create feed story
-		// 4 = feed story submited sucessfully
-		// 5 = feed channel created successfully
-		// 6 = ERROR: Cannot create feed story
-		// 7 = ERROR: Cannot create feed channel
-		// 8 = print newspaper
-		// 9 = viewing channel feeds
-		// 10 = censor feed story
-		// 11 = censor feed channel
-		//Holy shit this is outdated, made this when I was still starting newscasters :3
-	var/paper_remaining = 0
-	var/securityCaster = 0
-		// 0 = Caster cannot be used to issue wanted posters
-		// 1 = the opposite
-	var/unit_no = 0 //Each newscaster has a unit number
-	//var/datum/feed_message/wanted //We're gonna use a feed_message to store data of the wanted person because fields are similar
-	//var/wanted_issue = 0          //OBSOLETE
-		// 0 = there's no WANTED issued, we don't need a special icon_state
-		// 1 = Guess what.
-	var/alert_delay = 500
-	var/alert = 0
-		// 0 = there hasn't been a news/wanted update in the last alert_delay
-		// 1 = there has
-	var/scanned_user = "Unknown" //Will contain the name of the person who currently uses the newscaster
-	var/msg = "";                //Feed message
-	var/datum/news_photo/photo_data = null
-	var/channel_name = ""; //the feed channel which will be receiving the feed, or being created
-	var/c_locked=0;        //Will our new channel be locked to public submissions?
-	var/hitstaken = 0      //Death at 3 hits from an item with force>=15
-	var/datum/feed_channel/viewing_channel = null
-	var/last_state = -1
-	light_outer_range = 0
-	anchored = 1
-	layer = ABOVE_WINDOW_LAYER
+	desc = "A standard newsfeed handler for use on commercial space stations. All the news you absolutely have no use for, in one place!"
+	icon = 'icons/obj/machinery/wall/terminals.dmi'
+	icon_state = "newscaster"
+	anchored = TRUE
+	appearance_flags = TILE_BOUND // prevents people from viewing the overlay through a wall
+	obj_flags = OBJ_FLAG_MOVES_UNSUPPORTED
 
-/obj/machinery/newscaster/security_unit                   //Security unit
+	///If the newscaster is broken, boolean
+	var/isbroken = FALSE
+
+	///If it starts powered on, boolean
+	var/ispowered = TRUE //starts powered, changes with power_change()
+
+	/**
+	 * What the screen is displaying
+	 *
+	 * 0 = welcome screen - main menu
+	 * 1 = view feed channels
+	 * 2 = create feed channel
+	 * 3 = create feed story
+	 * 4 = feed story submited sucessfully
+	 * 5 = feed channel created successfully
+	 * 6 = ERROR: Cannot create feed story
+	 * 7 = ERROR: Cannot create feed channel
+	 * 8 = print newspaper
+	 * 9 = viewing channel feeds
+	 * 10 = censor feed story
+	 * 11 = censor feed channel
+	 */
+	var/screen = 0
+
+	var/paper_remaining = 0
+
+	///If the caster can be used to issue wanted posters, boolean
+	var/securityCaster = FALSE
+
+	///Unique newscaster unit number
+	var/unit_no = 0 //Each newscaster has a unit number
+
+	var/alert_delay = 500
+
+	///If there hasn't been a news/wanted update in the last alert_delay, boolean
+	var/alert = FALSE
+
+	///Contains the name of the person who currently uses the newscaster
+	var/scanned_user = "Unknown"
+
+	///Feed message
+	var/msg = "";
+
+	var/datum/news_photo/photo_data = null
+	var/paper_data = ""
+	var/paper_name = ""
+
+	///The feed channel which will be receiving the feed, or being created
+	var/channel_name = "";
+
+	///If our new channel will be locked to public submissions, boolean
+	var/c_locked=FALSE
+
+	///How many hits the newscaster has taken
+	var/hitstaken = 0
+
+	var/datum/feed_channel/viewing_channel = null
+	var/datum/feed_message/viewing_message = null
+	var/global/list/screen_overlays
+
+/obj/machinery/newscaster/north
+	PRESET_NORTH
+
+/obj/machinery/newscaster/south
+	PRESET_SOUTH
+
+/obj/machinery/newscaster/west
+	PRESET_WEST
+
+/obj/machinery/newscaster/east
+	PRESET_EAST
+
+/obj/machinery/newscaster/proc/generate_overlays(var/force = 0)
+	if(LAZYLEN(screen_overlays) && !force)
+		return
+	LAZYINITLIST(screen_overlays)
+	screen_overlays["newscaster-screen"] = make_screen_overlay(icon, "newscaster-screen")
+	screen_overlays["newscaster-title"] = make_screen_overlay(icon, "newscaster-title")
+	screen_overlays["newscaster-wanted"] = make_screen_overlay(icon, "newscaster-wanted")
+	screen_overlays["newscaster-scanline"] = make_screen_overlay(icon, "newscaster-scanline")
+	for(var/i in 1 to 3)
+		screen_overlays["crack[i]"] = make_screen_overlay(icon, "crack[i]")
+
+/obj/machinery/newscaster/security_unit
 	name = "Security Newscaster"
 	securityCaster = 1
 
-/obj/machinery/newscaster/New()         //Constructor, ho~
+/obj/machinery/newscaster/security_unit/north
+	PRESET_NORTH
+
+/obj/machinery/newscaster/security_unit/south
+	PRESET_SOUTH
+
+/obj/machinery/newscaster/security_unit/west
+	PRESET_WEST
+
+/obj/machinery/newscaster/security_unit/east
+	PRESET_EAST
+
+/obj/machinery/newscaster/Initialize(mapload)
+	. = ..()                                //I just realised the newscasters weren't in the global machines list. The superconstructor call will tend to that
 	allCasters += src
-	src.paper_remaining = 15            // Will probably change this to something better
-	for(var/obj/machinery/newscaster/NEWSCASTER in allCasters) // Let's give it an appropriate unit number
-		src.unit_no++
-	src.update_icon() //for any custom ones on the map...
-	..()                                //I just realised the newscasters weren't in the global machines list. The superconstructor call will tend to that
+	paper_remaining = 15            // Will probably change this to something better
+	unit_no = allCasters.len + 1
+	if(dir & NORTH)
+		alpha = 127
+	generate_overlays()
+	update_icon() //for any custom ones on the map...
+
+	if(!mapload)
+		set_pixel_offsets()
 
 /obj/machinery/newscaster/Destroy()
 	allCasters -= src
 	return ..()
 
-/obj/machinery/newscaster/on_update_icon()
-	var/new_state = !inoperable()
-	if(new_state)
-		new_state += !!news_network.wanted_issue // results in 0 for unoperable, 1 for normal, 2 for wanted
-	if(new_state == last_state)
-		return
-	last_state = new_state
+/obj/machinery/newscaster/set_pixel_offsets()
+	pixel_x = DIR2PIXEL_X(dir)
+	pixel_y = DIR2PIXEL_Y(dir)
 
-	ClearOverlays() //reset overlays
-
-	if(!new_state)
-		set_light(0)
-		icon_state = "newscaster_off"
-		if(stat & BROKEN) //If the thing is smashed, add crack overlay on top of the unpowered sprite.
-			AddOverlays(OVERLAY(icon, "crack3"))
+/obj/machinery/newscaster/update_icon()
+	if(!ispowered || isbroken)
+		icon_state = initial(icon_state)
+		set_light(FALSE)
+		if(isbroken) //If the thing is smashed, add crack overlay on top of the unpowered sprite.
+			cut_overlays()
+			add_overlay(screen_overlays["crack3"])
 		return
 
-	set_light(1.0, 0.5, 1, 1.5, "#11A05F")
-	AddOverlays(emissive_appearance(icon, "newscaster_ea"))
-	if(news_network.wanted_issue) //wanted icon state, there can be no overlays on it as it's a priority message
-		icon_state = "newscaster_wanted"
+	cut_overlays() //reset overlays
+
+	add_overlay(screen_overlays["newscaster-screen"])
+	set_light(1.4, 1.3, COLOR_CYAN)
+
+	if(!alert || !SSnews.wanted_issue) // since we're transparent I don't want overlay nonsense
+		add_overlay(screen_overlays["newscaster-title"])
+
+	if(SSnews.wanted_issue) //wanted icon state, there can be no overlays on it as it's a priority message
+		add_overlay(screen_overlays["newscaster-wanted"])
 		return
 
 	if(alert) //new message alert overlay
-		AddOverlays(OVERLAY(icon, "newscaster_alert"))
+		add_overlay(screen_overlays["newscaster-alert"])
+
+	if(hitstaken == 0)
+		add_overlay(screen_overlays["newscaster-scanline"])
 
 	if(hitstaken > 0) //Cosmetic damage overlay
-		AddOverlays(OVERLAY(icon, "crack[hitstaken]"))
+		add_overlay(screen_overlays["crack[hitstaken]"])
 
-	icon_state = "newscaster_normal"
+	icon_state = initial(icon_state)
 	return
 
+/obj/machinery/newscaster/power_change()
+	if(isbroken) //Broken shit can't be powered.
+		return
+	..()
+	if( !(stat & NOPOWER) )
+		src.ispowered = 1
+		src.update_icon()
+	else
+		addtimer(CALLBACK(src, PROC_REF(post_power_loss)), rand(1, 15))
+
+/obj/machinery/newscaster/proc/post_power_loss()
+	ispowered = 0
+	update_icon()
+
+/obj/machinery/newscaster/ex_act(severity)
+	switch(severity)
+		if(1.0)
+			qdel(src)
+			return
+		if(2.0)
+			src.isbroken=1
+			if(prob(50))
+				qdel(src)
+			else
+				src.update_icon() //can't place it above the return and outside the if-else. or we might get runtimes of null.update_icon() if(prob(50)) goes in.
+			return
+		else
+			if(prob(50))
+				src.isbroken=1
+			src.update_icon()
+			return
+
 /obj/machinery/newscaster/attack_ai(mob/user as mob)
+	if(!ai_can_interact(user))
+		return
 	return src.attack_hand(user)
 
 /obj/machinery/newscaster/attack_hand(mob/user as mob)            //########### THE MAIN BEEF IS HERE! And in the proc below this...############
 
-	if(inoperable())
+	if(!src.ispowered || src.isbroken)
 		return
 
 	if(!user.IsAdvancedToolUser())
@@ -235,15 +231,18 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 	if(istype(user, /mob/living/carbon/human) || istype(user,/mob/living/silicon) )
 		var/mob/living/human_or_robot_user = user
 		var/dat
-		dat = text("<meta charset=\"utf-8\"><HEAD><TITLE>Newscaster</TITLE></HEAD><H3>Newscaster Unit #[src.unit_no]</H3>")
+		dat = text("<H3>Newscaster Unit #[src.unit_no]</H3>")
 
 		src.scan_user(human_or_robot_user) //Newscaster scans you
 
+		if(isNotStationLevel(z))
+			screen = 24 // No network connectivity
+
 		switch(screen)
 			if(0)
-				dat += "Welcome to Newscasting Unit #[src.unit_no].<BR> Interface & News networks Operational."
-				dat += "<BR><FONT SIZE=1>Property of Nanotransen Inc</FONT>"
-				if(news_network.wanted_issue)
+				dat += "Welcome to Newscasting Unit #[src.unit_no]<BR> Interface & News Networks: Operational"
+				dat += "<BR><FONT SIZE=1>Property of NanoTrasen</font>"
+				if(SSnews.wanted_issue)
 					dat+= "<HR><A href='?src=\ref[src];view_wanted=1'>Read Wanted Issue</A>"
 				dat+= "<HR><BR><A href='?src=\ref[src];create_channel=1'>Create Feed Channel</A>"
 				dat+= "<BR><A href='?src=\ref[src];view=1'>View Feed Channels</A>"
@@ -253,38 +252,40 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				dat+= "<BR><BR><A href='?src=\ref[human_or_robot_user];mach_close=newscaster_main'>Exit</A>"
 				if(src.securityCaster)
 					var/wanted_already = 0
-					if(news_network.wanted_issue)
+					if(SSnews.wanted_issue)
 						wanted_already = 1
 
 					dat+="<HR><B>Feed Security functions:</B><BR>"
 					dat+="<BR><A href='?src=\ref[src];menu_wanted=1'>[(wanted_already) ? ("Manage") : ("Publish")] \"Wanted\" Issue</A>"
 					dat+="<BR><A href='?src=\ref[src];menu_censor_story=1'>Censor Feed Stories</A>"
-					dat+="<BR><A href='?src=\ref[src];menu_censor_channel=1'>Mark Feed Channel with [GLOB.using_map.company_name] D-Notice</A>"
-				dat+="<BR><HR>The newscaster recognises you as: <FONT COLOR='green'>[src.scanned_user]</FONT>"
+					dat+="<BR><A href='?src=\ref[src];menu_censor_channel=1'>Mark Feed Channel with [current_map.company_name] D-Notice</A>"
+				dat+="<BR><HR>The newscaster recognises you as: <span class='good'>[src.scanned_user]</span>"
 			if(1)
-				dat+= "Local Feed Channels<HR>"
-				if( isemptylist(news_network.network_channels) )
+				dat+= "Station Feed Channels<HR>"
+				if( isemptylist(SSnews.network_channels) )
 					dat+="<I>No active channels found...</I>"
 				else
-					for(var/datum/feed_channel/CHANNEL in news_network.network_channels)
-						if(CHANNEL.is_admin_channel)
-							dat+="<B><FONT style='BACKGROUND-COLOR: LightGreen '><A href='?src=\ref[src];show_channel=\ref[CHANNEL]'>[CHANNEL.channel_name]</A></FONT></B><BR>"
+					for(var/channel in SSnews.network_channels)
+						var/datum/feed_channel/FC = SSnews.GetFeedChannel(channel)
+						if(FC.is_admin_channel)
+							dat+="<B><FONT style='BACKGROUND-COLOR: LightGreen '><A href='?src=\ref[src];show_channel=\ref[FC]'>[FC.channel_name]</A></font></B><BR>"
 						else
-							dat+="<B><A href='?src=\ref[src];show_channel=\ref[CHANNEL]'>[CHANNEL.channel_name]</A> [(CHANNEL.censored) ? ("<FONT COLOR='red'>***</FONT>") : null]<BR></B>"
+							dat+="<B><A href='?src=\ref[src];show_channel=\ref[FC]'>[FC.channel_name]</A> [(FC.censored) ? ("<span class='warning'>***</span>") : null]<BR></B>"
 				dat+="<BR><HR><A href='?src=\ref[src];refresh=1'>Refresh</A>"
 				dat+="<BR><A href='?src=\ref[src];setScreen=[0]'>Back</A>"
 			if(2)
 				dat+="Creating new Feed Channel..."
 				dat+="<HR><B><A href='?src=\ref[src];set_channel_name=1'>Channel Name</A>:</B> [src.channel_name]<BR>"
-				dat+="<B>Channel Author:</B> <FONT COLOR='green'>[src.scanned_user]</FONT><BR>"
+				dat+="<B>Channel Author:</B> <span class='good'>[src.scanned_user]</span><BR>"
 				dat+="<B><A href='?src=\ref[src];set_channel_lock=1'>Will Accept Public Feeds</A>:</B> [(src.c_locked) ? ("NO") : ("YES")]<BR><BR>"
 				dat+="<BR><A href='?src=\ref[src];submit_new_channel=1'>Submit</A><BR><BR><A href='?src=\ref[src];setScreen=[0]'>Cancel</A><BR>"
 			if(3)
 				dat+="Creating new Feed Message..."
 				dat+="<HR><B><A href='?src=\ref[src];set_channel_receiving=1'>Receiving Channel</A>:</B> [src.channel_name]<BR>" //MARK
-				dat+="<B>Message Author:</B> <FONT COLOR='green'>[src.scanned_user]</FONT><BR>"
+				dat+="<B>Message Author:</B> <span class='good'>[src.scanned_user]</span><BR>"
 				dat+="<B><A href='?src=\ref[src];set_new_message=1'>Message Body</A>:</B> [src.msg] <BR>"
 				dat+="<B><A href='?src=\ref[src];set_attachment=1'>Attach Photo</A>:</B>  [(src.photo_data ? "Photo Attached" : "No Photo")]</BR>"
+				dat+="<B><A href='?src=\ref[src];set_paper=1'>Scan Paper</A>:</B>  [((src.paper_data || src.paper_name) ? "Paper Scanned" : "No Paper")]</BR>"
 				dat+="<BR><A href='?src=\ref[src];submit_new_message=1'>Submit</A><BR><BR><A href='?src=\ref[src];setScreen=[0]'>Cancel</A><BR>"
 			if(4)
 				dat+="Feed story successfully submitted to [src.channel_name].<BR><BR>"
@@ -293,42 +294,45 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				dat+="Feed Channel [src.channel_name] created successfully.<BR><BR>"
 				dat+="<BR><A href='?src=\ref[src];setScreen=[0]'>Return</A><BR>"
 			if(6)
-				dat+="<B><FONT COLOR='maroon'>ERROR: Could not submit Feed story to Network.</B></FONT><HR><BR>"
+				dat+="<B><span class='boldannounce'>ERROR: Could not submit Feed story to Network.</B></span><HR><BR>"
 				if(src.channel_name=="")
-					dat+="<FONT COLOR='maroon'>Invalid receiving channel name.</FONT><BR>"
+					dat+="<span class='boldannounce'>�Invalid receiving channel name.</span><BR>"
 				if(src.scanned_user=="Unknown")
-					dat+="<FONT COLOR='maroon'>Channel author unverified.</FONT><BR>"
+					dat+="<span class='boldannounce'>�Channel author unverified.</span><BR>"
 				if(src.msg == "" || src.msg == "\[REDACTED\]")
-					dat+="<FONT COLOR='maroon'>Invalid message body.</FONT><BR>"
+					dat+="<span class='boldannounce'>�Invalid message body.</span><BR>"
 
 				dat+="<BR><A href='?src=\ref[src];setScreen=[3]'>Return</A><BR>"
 			if(7)
-				dat+="<B><FONT COLOR='maroon'>ERROR: Could not submit Feed Channel to Network.</B></FONT><HR><BR>"
+				dat+="<B><span class='boldannounce'>ERROR: Could not submit Feed Channel to Network.</B></span><HR><BR>"
 				var/list/existing_authors = list()
-				for(var/datum/feed_channel/FC in news_network.network_channels)
+				for(var/channel in SSnews.network_channels)
+					var/datum/feed_channel/FC = SSnews.GetFeedChannel(channel)
 					if(FC.author == "\[REDACTED\]")
 						existing_authors += FC.backup_author
 					else
 						existing_authors += FC.author
 				if(src.scanned_user in existing_authors)
-					dat+="<FONT COLOR='maroon'>There already exists a Feed channel under your name.</FONT><BR>"
+					dat+="<span class='boldannounce'>�There already exists a Feed channel under your name.</span><BR>"
 				if(src.channel_name=="" || src.channel_name == "\[REDACTED\]")
-					dat+="<FONT COLOR='maroon'>Invalid channel name.</FONT><BR>"
+					dat+="<span class='boldannounce'>�Invalid channel name.</span>BR>"
 				var/check = 0
-				for(var/datum/feed_channel/FC in news_network.network_channels)
+				for(var/channel in SSnews.network_channels)
+					var/datum/feed_channel/FC = SSnews.GetFeedChannel(channel)
 					if(FC.channel_name == src.channel_name)
 						check = 1
 						break
 				if(check)
-					dat+="<FONT COLOR='maroon'>Channel name already in use.</FONT><BR>"
+					dat+="<span class='boldannounce'>�Channel name already in use.</span><BR>"
 				if(src.scanned_user=="Unknown")
-					dat+="<FONT COLOR='maroon'>Channel author unverified.</FONT><BR>"
+					dat+="<span class='boldannounce'>�Channel author unverified.</span><BR>"
 				dat+="<BR><A href='?src=\ref[src];setScreen=[2]'>Return</A><BR>"
 			if(8)
-				var/total_num=length(news_network.network_channels)
+				var/total_num=length(SSnews.network_channels)
 				var/active_num=total_num
 				var/message_num=0
-				for(var/datum/feed_channel/FC in news_network.network_channels)
+				for(var/channel in SSnews.network_channels)
+					var/datum/feed_channel/FC = SSnews.GetFeedChannel(channel)
 					if(!FC.censored)
 						message_num += length(FC.messages)    //Dont forget, datum/feed_channel's var messages is a list of datum/feed_message
 					else
@@ -338,140 +342,162 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				dat+="<BR><BR><A href='?src=\ref[src];print_paper=[0]'>Print Paper</A>"
 				dat+="<BR><A href='?src=\ref[src];setScreen=[0]'>Cancel</A>"
 			if(9)
-				dat+="<B>[src.viewing_channel.channel_name]: </B><FONT SIZE=1>\[created by: <FONT COLOR='maroon'>[src.viewing_channel.author]</FONT>\] \[views: <FONT COLOR='maroon'>[++src.viewing_channel.views]</FONT>\]</FONT><HR>"
+				dat+="<B>[src.viewing_channel.channel_name]: </B><FONT SIZE=1>\[created by: <span class='boldannounce'>[src.viewing_channel.author]</span>\]</font><HR>"
 				if(src.viewing_channel.censored)
-					dat+="<FONT COLOR='red'><B>ATTENTION: </B></FONT>This channel has been deemed as threatening to the welfare of the [station_name()], and marked with a [GLOB.using_map.company_name] D-Notice.<BR>"
-					dat+="No further feed story additions are allowed while the D-Notice is in effect.</FONT><BR><BR>"
+					dat+="<span class='warning'><B>ATTENTION:</B></span> This channel has been deemed as threatening to the welfare of the station, and marked with a [current_map.company_name] D-Notice.<BR>"
+					dat+="No further feed story additions are allowed while the D-Notice is in effect.<BR><BR>"
 				else
 					if( isemptylist(src.viewing_channel.messages) )
 						dat+="<I>No feed messages found in channel...</I><BR>"
 					else
 						var/i = 0
 						for(var/datum/feed_message/MESSAGE in src.viewing_channel.messages)
-							++i
-							dat+="-[MESSAGE.body] <BR>"
+							i++
+							dat+="<BLOCKQUOTE style=\"padding:2px 4px;border-left:4px #797979 solid\">[MESSAGE.body] <FONT SIZE=1>\[Likes: <span class='soghun_alt'>[MESSAGE.likes]</span> Dislikes: <span class='boldannounce'>[MESSAGE.dislikes]</span>\]</font><BR>"
 							if(MESSAGE.img)
-								var/resourc_name = "newscaster_photo_[viewing_channel.channel_id]_[i].png"
-								ASSERT(user.client)
-								send_asset(user.client, resourc_name)
-								dat+="<img src='[resourc_name]' width = '180'><BR>"
+								send_rsc(usr, MESSAGE.img, "tmp_photo[i].png")
+								dat+="<img src='tmp_photo[i].png' width = '180'><BR>"
 								if(MESSAGE.caption)
-									dat+="<FONT SIZE=1><B>[MESSAGE.caption]</B></FONT><BR>"
+									dat+="<FONT SIZE=1><B>[MESSAGE.caption]</B></font><BR>"
 								dat+="<BR>"
-							dat+="<FONT SIZE=1>\[Story by <FONT COLOR='maroon'>[MESSAGE.author] - [MESSAGE.time_stamp]</FONT>\]</FONT><BR>"
+							dat+="<FONT SIZE=1><A href='?src=\ref[src];view_comments=1;story=\ref[MESSAGE]'>View Comments</A> <A href='?src=\ref[src];add_comment=1;story=\ref[MESSAGE]'>Add Comment</A> <A href='?src=\ref[src];like=1;story=\ref[MESSAGE]'>Like Story</A> <A href='?src=\ref[src];dislike=1;story=\ref[MESSAGE]'>Dislike Story</A></font><BR>"
+							dat+="<FONT SIZE=1>\[Story by <span class='boldannounce'>[MESSAGE.author] - [MESSAGE.time_stamp]</span>\]</font></BLOCKQUOTE><BR>"
 				dat+="<BR><HR><A href='?src=\ref[src];refresh=1'>Refresh</A>"
 				dat+="<BR><A href='?src=\ref[src];setScreen=[1]'>Back</A>"
 			if(10)
-				dat+="<B>[GLOB.using_map.company_name] Feed Censorship Tool</B><BR>"
+				dat+="<B>[current_map.company_name] Feed Censorship Tool</B><BR>"
 				dat+="<FONT SIZE=1>NOTE: Due to the nature of news Feeds, total deletion of a Feed Story is not possible.<BR>"
-				dat+="Keep in mind that users attempting to view a censored feed will instead see the \[REDACTED\] tag above it.</FONT>"
+				dat+="Keep in mind that users attempting to view a censored feed will instead see the \[REDACTED\] tag above it.</font>"
 				dat+="<HR>Select Feed channel to get Stories from:<BR>"
-				if(isemptylist(news_network.network_channels))
+				if(isemptylist(SSnews.network_channels))
 					dat+="<I>No feed channels found active...</I><BR>"
 				else
-					for(var/datum/feed_channel/CHANNEL in news_network.network_channels)
-						dat+="<A href='?src=\ref[src];pick_censor_channel=\ref[CHANNEL]'>[CHANNEL.channel_name]</A> [(CHANNEL.censored) ? ("<FONT COLOR='red'>***</FONT>") : null]<BR>"
+					for(var/channel in SSnews.network_channels)
+						var/datum/feed_channel/FC = SSnews.GetFeedChannel(channel)
+						dat+="<A href='?src=\ref[src];pick_censor_channel=\ref[FC]'>[FC.channel_name]</A> [(FC.censored) ? ("<span class='warning'>***</span>") : null]<BR>"
 				dat+="<BR><A href='?src=\ref[src];setScreen=[0]'>Cancel</A>"
 			if(11)
-				dat+="<B>[GLOB.using_map.company_name] D-Notice Handler</B><HR>"
-				dat+="<FONT SIZE=1>A D-Notice is to be bestowed upon the channel if the handling Authority deems it as harmful for the [station_name()]'s"
+				dat+="<B>[current_map.company_name] D-Notice Handler</B><HR>"
+				dat+="<FONT SIZE=1>A D-Notice is to be bestowed upon the channel if the handling Authority deems it as harmful for the station's"
 				dat+="morale, integrity or disciplinary behaviour. A D-Notice will render a channel unable to be updated by anyone, without deleting any feed"
-				dat+="stories it might contain at the time. You can lift a D-Notice if you have the required access at any time.</FONT><HR>"
-				if(isemptylist(news_network.network_channels))
+				dat+="stories it might contain at the time. You can lift a D-Notice if you have the required access at any time.</font><HR>"
+				if(isemptylist(SSnews.network_channels))
 					dat+="<I>No feed channels found active...</I><BR>"
 				else
-					for(var/datum/feed_channel/CHANNEL in news_network.network_channels)
-						dat+="<A href='?src=\ref[src];pick_d_notice=\ref[CHANNEL]'>[CHANNEL.channel_name]</A> [(CHANNEL.censored) ? ("<FONT COLOR='red'>***</FONT>") : null]<BR>"
+					for(var/channel in SSnews.network_channels)
+						var/datum/feed_channel/FC = SSnews.GetFeedChannel(channel)
+						dat+="<A href='?src=\ref[src];pick_d_notice=\ref[FC]'>[FC.channel_name]</A> [(FC.censored) ? ("<span class='warning'>***</span>") : null]<BR>"
 
 				dat+="<BR><A href='?src=\ref[src];setScreen=[0]'>Back</A>"
 			if(12)
-				dat+="<B>[src.viewing_channel.channel_name]: </B><FONT SIZE=1>\[ created by: <FONT COLOR='maroon'>[src.viewing_channel.author]</FONT> \]</FONT><BR>"
-				dat+="<FONT SIZE=2><A href='?src=\ref[src];censor_channel_author=\ref[src.viewing_channel]'>[(src.viewing_channel.author=="\[REDACTED\]") ? ("Undo Author censorship") : ("Censor channel Author")]</A></FONT><HR>"
+				dat+="<B>[src.viewing_channel.channel_name]: </B><FONT SIZE=1>\[ created by: <span class='boldannounce'>[src.viewing_channel.author]</span> \]</font><BR>"
+				dat+="<FONT SIZE=2><A href='?src=\ref[src];censor_channel_author=\ref[src.viewing_channel]'>[(src.viewing_channel.author=="\[REDACTED\]") ? ("Undo Author censorship") : ("Censor channel Author")]</A></font><HR>"
 
 
 				if( isemptylist(src.viewing_channel.messages) )
 					dat+="<I>No feed messages found in channel...</I><BR>"
 				else
 					for(var/datum/feed_message/MESSAGE in src.viewing_channel.messages)
-						dat+="-[MESSAGE.body] <BR><FONT SIZE=1>\[[MESSAGE.message_type] by <FONT COLOR='maroon'>[MESSAGE.author]</FONT>\]</FONT><BR>"
-						dat+="<FONT SIZE=2><A href='?src=\ref[src];censor_channel_story_body=\ref[MESSAGE]'>[(MESSAGE.body == "\[REDACTED\]") ? ("Undo story censorship") : ("Censor story")]</A>  -  <A href='?src=\ref[src];censor_channel_story_author=\ref[MESSAGE]'>[(MESSAGE.author == "\[REDACTED\]") ? ("Undo Author Censorship") : ("Censor message Author")]</A></FONT><BR>"
+						dat+="-[MESSAGE.body] <BR><FONT SIZE=1>\[[MESSAGE.message_type] by <span class='boldannounce'>[MESSAGE.author]</span>\]</font><BR>"
+						dat+="<FONT SIZE=2><A href='?src=\ref[src];censor_channel_story_body=\ref[MESSAGE]'>[(MESSAGE.body == "\[REDACTED\]") ? ("Undo story censorship") : ("Censor story")]</A>  -  <A href='?src=\ref[src];censor_channel_story_author=\ref[MESSAGE]'>[(MESSAGE.author == "\[REDACTED\]") ? ("Undo Author Censorship") : ("Censor message Author")]</A></font><BR>"
 				dat+="<BR><A href='?src=\ref[src];setScreen=[10]'>Back</A>"
 			if(13)
-				dat+="<B>[src.viewing_channel.channel_name]: </B><FONT SIZE=1>\[ created by: <FONT COLOR='maroon'>[src.viewing_channel.author]</FONT> \]</FONT><BR>"
-				dat+="Channel messages listed below. If you deem them dangerous to the [station_name()], you can <A href='?src=\ref[src];toggle_d_notice=\ref[src.viewing_channel]'>Bestow a D-Notice upon the channel</A>.<HR>"
+				dat+="<B>[src.viewing_channel.channel_name]: </B><FONT SIZE=1>\[ created by: <span class='boldannounce'>[src.viewing_channel.author]</span> \]</font><BR>"
+				dat+="Channel messages listed below. If you deem them dangerous to the station, you can <A href='?src=\ref[src];toggle_d_notice=\ref[src.viewing_channel]'>Bestow a D-Notice upon the channel</A>.<HR>"
 				if(src.viewing_channel.censored)
-					dat+="<FONT COLOR='red'><B>ATTENTION: </B></FONT>This channel has been deemed as threatening to the welfare of the [station_name()], and marked with a [GLOB.using_map.company_name] D-Notice.<BR>"
+					dat+="<span class='warning'><B>ATTENTION:</B></span> This channel has been deemed as threatening to the welfare of the station, and marked with a [current_map.company_name] D-Notice.<BR>"
 					dat+="No further feed story additions are allowed while the D-Notice is in effect.<BR><BR>"
 				else
 					if( isemptylist(src.viewing_channel.messages) )
 						dat+="<I>No feed messages found in channel...</I><BR>"
 					else
 						for(var/datum/feed_message/MESSAGE in src.viewing_channel.messages)
-							dat+="-[MESSAGE.body] <BR><FONT SIZE=1>\[[MESSAGE.message_type] by <FONT COLOR='maroon'>[MESSAGE.author]</FONT>\]</FONT><BR>"
+							dat+="<BLOCKQUOTE style=\"padding:2px 4px;border-left:4px #797979 solid\">[MESSAGE.body] <FONT SIZE=1>\[Likes: <span class='soghun_alt'>[MESSAGE.likes]</span> Dislikes: <span class='boldannounce'>[MESSAGE.dislikes]</span>\]</font><BR>"
+							dat+="<FONT SIZE=1><A href='?src=\ref[src];view_comments=1;story=\ref[MESSAGE];privileged=1;'>View Comments</A> <A href='?src=\ref[src];add_comment=1;story=\ref[MESSAGE]'>Add Comment</A> <A href='?src=\ref[src];like=1;story=\ref[MESSAGE]'>Like Story</A> <A href='?src=\ref[src];dislike=1;story=\ref[MESSAGE]'>Dislike Story</A></font><BR>"
+							dat+="<FONT SIZE=1>\[Story by <span class='boldannounce'>[MESSAGE.author] - [MESSAGE.time_stamp]</span>\]</font></BLOCKQUOTE><BR>"
 
 				dat+="<BR><A href='?src=\ref[src];setScreen=[11]'>Back</A>"
 			if(14)
 				dat+="<B>Wanted Issue Handler:</B>"
 				var/wanted_already = 0
 				var/end_param = 1
-				if(news_network.wanted_issue)
+				if(SSnews.wanted_issue)
 					wanted_already = 1
 					end_param = 2
 
 				if(wanted_already)
-					dat+="<FONT SIZE=2><BR><I>A wanted issue is already in Feed Circulation. You can edit or cancel it below.</FONT></I>"
+					dat+="<FONT SIZE=2><BR><I>A wanted issue is already in Feed Circulation. You can edit or cancel it below.</font></I>"
 				dat+="<HR>"
 				dat+="<A href='?src=\ref[src];set_wanted_name=1'>Criminal Name</A>: [src.channel_name] <BR>"
 				dat+="<A href='?src=\ref[src];set_wanted_desc=1'>Description</A>: [src.msg] <BR>"
 				dat+="<A href='?src=\ref[src];set_attachment=1'>Attach Photo</A>: [(src.photo_data ? "Photo Attached" : "No Photo")]</BR>"
+				dat+="<B><A href='?src=\ref[src];set_paper=1'>Scan Paper</A>:</B>  [((src.paper_data || src.paper_name) ? "Paper Scanned" : "No Paper")]</BR>"
 				if(wanted_already)
-					dat+="<B>Wanted Issue created by:</B><FONT COLOR='green'> [news_network.wanted_issue.backup_author]</FONT><BR>"
+					dat+="<B>Wanted Issue created by:</B><span class='good'> [SSnews.wanted_issue.backup_author]</span><BR>"
 				else
-					dat+="<B>Wanted Issue will be created under prosecutor:</B><FONT COLOR='green'> [src.scanned_user]</FONT><BR>"
+					dat+="<B>Wanted Issue will be created under prosecutor:</B><span class='good'> [src.scanned_user]</span><BR>"
 				dat+="<BR><A href='?src=\ref[src];submit_wanted=[end_param]'>[(wanted_already) ? ("Edit Issue") : ("Submit")]</A>"
 				if(wanted_already)
 					dat+="<BR><A href='?src=\ref[src];cancel_wanted=1'>Take down Issue</A>"
 				dat+="<BR><A href='?src=\ref[src];setScreen=[0]'>Cancel</A>"
 			if(15)
-				dat+="<FONT COLOR='green'>Wanted issue for [src.channel_name] is now in Network Circulation.</FONT><BR><BR>"
+				dat+="<span class='good'>Wanted issue for [src.channel_name] is now in Network Circulation.</span><BR><BR>"
 				dat+="<BR><A href='?src=\ref[src];setScreen=[0]'>Return</A><BR>"
 			if(16)
-				dat+="<B><FONT COLOR='maroon'>ERROR: Wanted Issue rejected by Network.</B></FONT><HR><BR>"
+				dat+="<B><span class='boldannounce'>ERROR: Wanted Issue rejected by Network.</B></span><HR><BR>"
 				if(src.channel_name=="" || src.channel_name == "\[REDACTED\]")
-					dat+="<FONT COLOR='maroon'>Invalid name for person wanted.</FONT><BR>"
+					dat+="<span class='boldannounce'>�Invalid name for person wanted.</span><BR>"
 				if(src.scanned_user=="Unknown")
-					dat+="<FONT COLOR='maroon'>Issue author unverified.</FONT><BR>"
+					dat+="<span class='boldannounce'>�Issue author unverified.</span><BR>"
 				if(src.msg == "" || src.msg == "\[REDACTED\]")
-					dat+="<FONT COLOR='maroon'>Invalid description.</FONT><BR>"
+					dat+="<span class='boldannounce'>�Invalid description.</span><BR>"
 				dat+="<BR><A href='?src=\ref[src];setScreen=[0]'>Return</A><BR>"
 			if(17)
 				dat+="<B>Wanted Issue successfully deleted from Circulation</B><BR>"
 				dat+="<BR><A href='?src=\ref[src];setScreen=[0]'>Return</A><BR>"
 			if(18)
-				dat+="<B><FONT COLOR ='maroon'>-- STATIONWIDE WANTED ISSUE --</B></FONT><BR><FONT SIZE=2>\[Submitted by: <FONT COLOR='green'>[news_network.wanted_issue.backup_author]</FONT>\]</FONT><HR>"
-				dat+="<B>Criminal</B>: [news_network.wanted_issue.author]<BR>"
-				dat+="<B>Description</B>: [news_network.wanted_issue.body]<BR>"
+				dat+="<B><span class='boldannounce'>-- STATIONWIDE WANTED ISSUE --</B></span><BR><FONT SIZE=2>\[Submitted by: <span class='good'>[SSnews.wanted_issue.backup_author]</span>\]</font><HR>"
+				dat+="<B>Criminal</B>: [SSnews.wanted_issue.author]<BR>"
+				dat+="<B>Description</B>: [SSnews.wanted_issue.body]<BR>"
 				dat+="<B>Photo:</B>: "
-				if(news_network.wanted_issue.img)
-					send_rsc(usr, news_network.wanted_issue.img, "tmp_photow.png")
+				if(SSnews.wanted_issue.img)
+					send_rsc(usr, SSnews.wanted_issue.img, "tmp_photow.png")
 					dat+="<BR><img src='tmp_photow.png' width = '180'>"
 				else
 					dat+="None"
 				dat+="<BR><BR><A href='?src=\ref[src];setScreen=[0]'>Back</A><BR>"
 			if(19)
-				dat+="<FONT COLOR='green'>Wanted issue for [src.channel_name] successfully edited.</FONT><BR><BR>"
+				dat+="<span class='good'>Wanted issue for [src.channel_name] successfully edited.</span><BR><BR>"
 				dat+="<BR><A href='?src=\ref[src];setScreen=[0]'>Return</A><BR>"
 			if(20)
-				dat+="<FONT COLOR='green'>Printing successful. Please receive your newspaper from the bottom of the machine.</FONT><BR><BR>"
+				dat+="<span class='good'>Printing successful. Please receive your newspaper from the bottom of the machine.</span><BR><BR>"
 				dat+="<A href='?src=\ref[src];setScreen=[0]'>Return</A>"
 			if(21)
-				dat+="<FONT COLOR='maroon'>Unable to print newspaper. Insufficient paper. Please notify maintenance personnel to refill machine storage.</FONT><BR><BR>"
+				dat+="<span class='boldannounce'>Unable to print newspaper. Insufficient paper. Please notify maintenance personnel to refill machine storage.</span><BR><BR>"
 				dat+="<A href='?src=\ref[src];setScreen=[0]'>Return</A>"
-			else
-				dat+="I'm sorry to break your immersion. This shit's bugged. Report this bug to Agouri, polyxenitopalidou@gmail.com"
+			if(22) //comments!
+				dat+="<B>Comments:</B></BR>"
+				if(isemptylist(src.viewing_message.comments))
+					dat+="No comments on this story yet!</BR>"
+				else
+					for(var/datum/feed_comment/COMMENT in src.viewing_message.comments)
+						dat+="<BLOCKQUOTE style=\"padding:2px 4px;border-left:4px #797979 solid;\"><B>\[[world.time]\] [COMMENT.author]:</B>[COMMENT.message]<BR></BLOCKQUOTE>"
+				dat+="<A href='?src=\ref[src];setScreen=[9]'>Return</A>"
+			if(23) //comments but with more censorship!
+				dat+="<B>Comments:</B></BR>"
+				if(isemptylist(src.viewing_message.comments))
+					dat+="No comments on this story yet!</BR>"
+				else
+					for(var/datum/feed_comment/COMMENT in src.viewing_message.comments)
+						dat+="<BLOCKQUOTE style=\"padding:2px 4px;border-left:4px #797979 solid;\"><B>\[[world.time]\] [COMMENT.author]:</B>[COMMENT.message]<BR><A href='?src=\ref[src];censor_comment=1;comment=\ref[COMMENT]>Censor Comment</A></BLOCKQUOTE>"
+				dat+="<A href='?src=\ref[src];setScreen=[9]'>Return</A>"
+			if(24) //newscaster is not connected to the station-z-level
+				dat += "<B>ERROR: Newscaster unit cannot access main news server!</B></BR>"
+				dat += "<BR><A href='?src=\ref[src];setScreen=[0]'>ATTEMPT RESET</A>"
 
-
-		show_browser(human_or_robot_user, dat, "window=newscaster_main;size=400x600")
+		var/datum/browser/newscaster_main = new(user, "newscaster_main", "Newscaster", 450, 500)
+		newscaster_main.set_content(dat)
+		newscaster_main.open()
 		onclose(human_or_robot_user, "newscaster_main")
 
 /obj/machinery/newscaster/Topic(href, href_list)
@@ -492,14 +518,16 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 		else if(href_list["submit_new_channel"])
 			//var/list/existing_channels = list() //OBSOLETE
 			var/list/existing_authors = list()
-			for(var/datum/feed_channel/FC in news_network.network_channels)
+			for(var/channel in SSnews.network_channels)
+				var/datum/feed_channel/FC = SSnews.GetFeedChannel(channel)
 				//existing_channels += FC.channel_name
 				if(FC.author == "\[REDACTED\]")
 					existing_authors += FC.backup_author
 				else
 					existing_authors  +=FC.author
 			var/check = 0
-			for(var/datum/feed_channel/FC in news_network.network_channels)
+			for(var/channel in SSnews.network_channels)
+				var/datum/feed_channel/FC = SSnews.GetFeedChannel(channel)
 				if(FC.channel_name == src.channel_name)
 					check = 1
 					break
@@ -508,7 +536,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 			else
 				var/choice = alert("Please confirm Feed channel creation","Network Channel Handler","Confirm","Cancel")
 				if(choice=="Confirm")
-					news_network.CreateFeedChannel(src.channel_name, src.scanned_user, c_locked)
+					SSnews.CreateFeedChannel(src.channel_name, src.scanned_user, c_locked)
 					src.screen=5
 			src.updateUsrDialog()
 			//src.update_icon()
@@ -516,31 +544,86 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 		else if(href_list["set_channel_receiving"])
 			//var/list/datum/feed_channel/available_channels = list()
 			var/list/available_channels = list()
-			for(var/datum/feed_channel/F in news_network.network_channels)
-				if( (!F.locked || F.author == scanned_user) && !F.censored)
-					available_channels += F.channel_name
+			for(var/channel in SSnews.network_channels)
+				var/datum/feed_channel/FC = SSnews.GetFeedChannel(channel)
+				if( (!FC.locked || FC.author == scanned_user) && !FC.censored)
+					available_channels += FC.channel_name
 			src.channel_name = input(usr, "Choose receiving Feed Channel", "Network Channel Handler") in available_channels
 			src.updateUsrDialog()
 
 		else if(href_list["set_new_message"])
-			src.msg = pencode2html(sanitize(input(usr, "Write your Feed story", "Network Channel Handler", "")as message|null))
+			src.msg = pencode2html(sanitize(input(usr, "Write your Feed story", "Network Channel Handler", "") as message, max_length = MAX_BOOK_MESSAGE_LEN, encode = 0, trim = 0, extra = 0))
 			src.updateUsrDialog()
 
 		else if(href_list["set_attachment"])
 			AttachPhoto(usr)
 			src.updateUsrDialog()
 
+		else if(href_list["set_paper"])
+			AttachPaper(usr)
+			src.updateUsrDialog()
+
 		else if(href_list["submit_new_message"])
 			if(src.msg =="" || src.msg=="\[REDACTED\]" || src.scanned_user == "Unknown" || src.channel_name == "" )
 				src.screen=6
 			else
+				if(paper_data)
+					src.msg += "</BR>Attachment Name: [paper_name]</BR>Attachment:<PRE><BLOCKQUOTE style=\"border: 1px black solid;\">[paper_data]</BLOCKQUOTE></PRE>"
 				var/image = photo_data ? photo_data.photo : null
 				feedback_inc("newscaster_stories",1)
-				news_network.SubmitArticle(src.msg, src.scanned_user, src.channel_name, image, 0)
-				if(photo_data)
-					AttachPhoto(usr)
+				var/datum/feed_channel/ch =  SSnews.GetFeedChannel(src.channel_name)
+				SSnews.SubmitArticle(src.msg, src.scanned_user, ch, image, 0)
 				src.screen=4
 
+			src.updateUsrDialog()
+
+		else if(href_list["add_comment"])
+			var/com_msg = sanitize(input(usr, "Write your Comment", "Network Comment Handler", "") as message, encode = 0, trim = 0, extra = 0)
+			if(com_msg =="" || com_msg=="\[REDACTED\]" || src.scanned_user == "Unknown" )
+				return
+			var/datum/feed_message/viewing_story = locate(href_list["story"])
+			if(!istype(viewing_story))
+				return
+			var/datum/feed_comment/comment = new
+			comment.author = src.scanned_user
+			comment.message = com_msg
+			comment.posted = "[worldtime2text()]"
+			viewing_story.comments += comment
+			to_chat(usr, "Comment successfully added!")
+			src.viewing_message = viewing_story
+			src.screen = 22
+			src.updateUsrDialog()
+
+		else if(href_list["view_comments"])
+			var/datum/feed_message/viewing_story = locate(href_list["story"])
+			if(!istype(viewing_story))
+				return
+			src.screen = href_list["privileged"] ? 23 : 22
+			src.viewing_message = viewing_story
+			src.updateUsrDialog()
+
+		else if(href_list["censor_comment"])
+			var/datum/feed_comment/comment = locate(href_list["comment"])
+			if(!istype(comment))
+				return
+			comment.message = "\[REDACTED\]"
+			src.screen = 22
+			src.updateUsrDialog()
+
+		else if(href_list["like"])
+			var/datum/feed_message/viewing_story = locate(href_list["story"])
+			if(src.scanned_user == "Unknown" || (src.scanned_user in viewing_story.interacted) || !istype(viewing_story))
+				return
+			viewing_story.interacted += src.scanned_user
+			viewing_story.likes += 1
+			src.updateUsrDialog()
+
+		else if(href_list["dislike"])
+			var/datum/feed_message/viewing_story = locate(href_list["story"])
+			if(src.scanned_user == "Unknown" || (src.scanned_user in viewing_story.interacted) || !istype(viewing_story))
+				return
+			viewing_story.interacted += src.scanned_user
+			viewing_story.dislikes += 1
 			src.updateUsrDialog()
 
 		else if(href_list["create_channel"])
@@ -572,12 +655,12 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 
 		else if(href_list["menu_wanted"])
 			var/already_wanted = 0
-			if(news_network.wanted_issue)
+			if(SSnews.wanted_issue)
 				already_wanted = 1
 
 			if(already_wanted)
-				src.channel_name = news_network.wanted_issue.author
-				src.msg = news_network.wanted_issue.body
+				src.channel_name = SSnews.wanted_issue.author
+				src.msg = SSnews.wanted_issue.body
 			src.screen = 14
 			src.updateUsrDialog()
 
@@ -603,29 +686,29 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 						WANTED.backup_author = src.scanned_user //I know, a bit wacky
 						if(photo_data)
 							WANTED.img = photo_data.photo.img
-						news_network.wanted_issue = WANTED
-						news_network.alert_readers()
+						SSnews.wanted_issue = WANTED
+						SSnews.alert_readers()
 						src.screen = 15
 					else
-						if(news_network.wanted_issue.is_admin_message)
-							alert("The wanted issue has been distributed by a [GLOB.using_map.company_name] higherup. You cannot edit it.","Ok")
+						if(SSnews.wanted_issue.is_admin_message)
+							alert("The wanted issue has been distributed by a [current_map.company_name] higherup. You cannot edit it.","Ok")
 							return
-						news_network.wanted_issue.author = src.channel_name
-						news_network.wanted_issue.body = src.msg
-						news_network.wanted_issue.backup_author = src.scanned_user
+						SSnews.wanted_issue.author = src.channel_name
+						SSnews.wanted_issue.body = src.msg
+						SSnews.wanted_issue.backup_author = src.scanned_user
 						if(photo_data)
-							news_network.wanted_issue.img = photo_data.photo.img
+							SSnews.wanted_issue.img = photo_data.photo.img
 						src.screen = 19
 
 			src.updateUsrDialog()
 
 		else if(href_list["cancel_wanted"])
-			if(news_network.wanted_issue.is_admin_message)
-				alert("The wanted issue has been distributed by a [GLOB.using_map.company_name] higherup. You cannot take it down.","Ok")
+			if(SSnews.wanted_issue.is_admin_message)
+				alert("The wanted issue has been distributed by a [current_map.company_name] higherup. You cannot take it down.","Ok")
 				return
 			var/choice = alert("Please confirm Wanted Issue removal","Network Security Handler","Confirm","Cancel")
 			if(choice=="Confirm")
-				news_network.wanted_issue = null
+				SSnews.wanted_issue = null
 				for(var/obj/machinery/newscaster/NEWSCASTER in allCasters)
 					NEWSCASTER.update_icon()
 				src.screen=17
@@ -637,7 +720,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 		else if(href_list["censor_channel_author"])
 			var/datum/feed_channel/FC = locate(href_list["censor_channel_author"])
 			if(FC.is_admin_channel)
-				alert("This channel was created by a [GLOB.using_map.company_name] Officer. You cannot censor it.","Ok")
+				alert("This channel was created by a [current_map.company_name] Officer or a external news agency. You cannot censor it.","Ok")
 				return
 			if(FC.author != "<B>\[REDACTED\]</B>")
 				FC.backup_author = FC.author
@@ -650,7 +733,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 		else if(href_list["censor_channel_story_author"])
 			var/datum/feed_message/MSG = locate(href_list["censor_channel_story_author"])
 			if(MSG.is_admin_message)
-				alert("This message was created by a [GLOB.using_map.company_name] Officer. You cannot censor its author.","Ok")
+				alert("This message was created by a [current_map.company_name] Officer or a external news agency. You cannot censor its author.","Ok")
 				return
 			if(MSG.author != "<B>\[REDACTED\]</B>")
 				MSG.backup_author = MSG.author
@@ -663,7 +746,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 		else if(href_list["censor_channel_story_body"])
 			var/datum/feed_message/MSG = locate(href_list["censor_channel_story_body"])
 			if(MSG.is_admin_message)
-				alert("This channel was created by a [GLOB.using_map.company_name] Officer. You cannot censor it.","Ok")
+				alert("This channel was created by a [current_map.company_name] Officer or a external news agency. You cannot censor it.","Ok")
 				return
 			if(MSG.body != "<B>\[REDACTED\]</B>")
 				MSG.backup_body = MSG.body
@@ -689,7 +772,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 		else if(href_list["toggle_d_notice"])
 			var/datum/feed_channel/FC = locate(href_list["toggle_d_notice"])
 			if(FC.is_admin_channel)
-				alert("This channel was created by a [GLOB.using_map.company_name] Officer. You cannot place a D-Notice upon it.","Ok")
+				alert("This channel was created by a [current_map.company_name] Officer or a external news agency. You cannot place a D-Notice upon it.","Ok")
 				return
 			FC.censored = !FC.censored
 			FC.update()
@@ -707,6 +790,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				src.c_locked=0;
 				channel_name="";
 				src.viewing_channel = null
+				src.viewing_message = null
 			src.updateUsrDialog()
 
 		else if(href_list["show_channel"])
@@ -726,60 +810,54 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 
 
 
-/obj/machinery/newscaster/attackby(obj/item/I, mob/user)
-	if(user.a_intent != I_HURT)
-		return
-
-	if(stat & BROKEN)
-		playsound(loc, 'sound/effects/hit_on_shattered_glass.ogg', 100, 1)
-		for(var/mob/O in hearers(5, loc))
-			O.show_message("<EM>[user.name]</EM> further abuses the shattered [name].")
+/obj/machinery/newscaster/attackby(obj/item/I as obj, mob/user as mob)
+	if (src.isbroken)
+		playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 100, 1)
+		for (var/mob/O in hearers(5, src.loc))
+			O.show_message("<EM>[user.name]</EM> further abuses the shattered [src.name].")
 	else
-		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		if(I.force <15)
-			for (var/mob/O in hearers(5, src.loc))
-				O.show_message("<span class='warning'>[user.name] hits the [src.name] with the [I.name] with no visible effect.</span>" )
-				playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
-		else
-			src.hitstaken++
-			if(hitstaken==3)
+		if(istype(I, /obj/item) )
+			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+			var/obj/item/W = I
+			if(W.force <15)
 				for (var/mob/O in hearers(5, src.loc))
-					O.show_message("<span class='warning'>[user.name] smashes the [src.name]!</span>" )
-				set_broken(TRUE)
-				playsound(src.loc, GET_SFX(SFX_BREAK_WINDOW), 75, 1)
+					O.show_message("[user.name] hits the [src.name] with the [W.name] with no visible effect." )
+					playsound(src.loc, 'sound/effects/glass_hit.ogg', 100, 1)
 			else
-				for (var/mob/O in hearers(5, src.loc))
-					O.show_message("<span class='warning'>[user.name] forcefully slams the [src.name] with the [I.name]!</span>" )
-				playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
-		user.setClickCooldown(I.update_attack_cooldown())
-		user.do_attack_animation(src)
-	queue_icon_update()
-
-/obj/machinery/newscaster/attack_ai(mob/user as mob)
-	return src.attack_hand(user) //or maybe it'll have some special functions? No idea.
+				src.hitstaken++
+				if(src.hitstaken==3)
+					for (var/mob/O in hearers(5, src.loc))
+						O.show_message("[user.name] smashes the [src.name]!" )
+					src.isbroken=1
+					playsound(src.loc, /singleton/sound_category/glass_break_sound, 100, 1)
+				else
+					for (var/mob/O in hearers(5, src.loc))
+						O.show_message("[user.name] forcefully slams the [src.name] with the [I.name]!" )
+					playsound(src.loc, 'sound/effects/glass_hit.ogg', 100, 1)
+		else
+			to_chat(user, "<span class='notice'>This does nothing.</span>")
+	src.update_icon()
 
 /datum/news_photo
 	var/is_synth = 0
 	var/obj/item/photo/photo = null
 
-/datum/news_photo/New(obj/item/photo/p, synth)
+/datum/news_photo/New(var/obj/item/photo/p, var/synth)
 	is_synth = synth
 	photo = p
 
 /obj/machinery/newscaster/proc/AttachPhoto(mob/user as mob)
 	if(photo_data)
 		if(!photo_data.is_synth)
-			photo_data.photo.forceMove(get_turf(src))
+			photo_data.photo.forceMove(src.loc)
 			if(!issilicon(user))
-				user.pick_or_drop(photo_data.photo)
-		qdel(photo_data)
-		photo_data = null
-		return
+				user.put_in_inactive_hand(photo_data.photo)
+		QDEL_NULL(photo_data)
 
 	if(istype(user.get_active_hand(), /obj/item/photo))
 		var/obj/item/photo = user.get_active_hand()
-		if(user.drop(photo, src))
-			photo_data = new(photo, 0)
+		user.drop_from_inventory(photo,src)
+		photo_data = new(photo, 0)
 	else if(istype(user,/mob/living/silicon))
 		var/mob/living/silicon/tempAI = user
 		var/obj/item/photo/selection = tempAI.GetPicture()
@@ -788,6 +866,18 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 
 		photo_data = new(selection, 1)
 
+/obj/machinery/newscaster/proc/AttachPaper(mob/user)
+	if(paper_data || paper_name)
+		paper_name = ""
+		paper_data = ""
+
+	if(istype(user.get_active_hand(), /obj/item/paper))
+		var/obj/item/paper/attached = user.get_active_hand()
+		paper_name = attached.name
+		paper_data = attached.info
+		to_chat(user, "You scan \the [attached] and add it to the news story.")
+	else
+		to_chat(user, "The newscaster refuses to scan [user.get_active_hand()].")
 
 //########################################################################################################################
 //###################################### NEWSPAPER! ######################################################################
@@ -795,11 +885,15 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 
 /obj/item/newspaper
 	name = "newspaper"
-	desc = "An issue of The Griffon, the space newspaper."
+	desc = "An issue of The Griffon, the newspaper circulating aboard most stations."
+	desc_info = "You can alt-click this to roll it up."
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "newspaper"
-	w_class = ITEM_SIZE_SMALL	//Let's make it fit in trashbags!
-	attack_verb = list("bapped")
+	item_state = "newspaper"
+	w_class = ITEMSIZE_SMALL	//Let's make it fit in trashbags!
+	attack_verb = list("bapped", "thwacked", "educated")
+	drop_sound = 'sound/items/drop/wrapper.ogg'
+	pickup_sound = 'sound/items/pickup/wrapper.ogg'
 	var/screen = 0
 	var/pages = 0
 	var/curr_page = 0
@@ -807,19 +901,30 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 	var/datum/feed_message/important_message = null
 	var/scribble=""
 	var/scribble_page = null
+	var/rolled = FALSE // Whether the newspaper is rolled or not, making it a deadly weapon.
 
-/obj/item/newspaper/attack_self(mob/user)
+/obj/item/newspaper/attack_self(mob/user as mob)
+	if(user.a_intent == I_GRAB)
+		if(!rolled)
+			user.visible_message(SPAN_NOTICE("\The [user] rolls up \the [src]."),\
+									SPAN_NOTICE("You roll up \the [src]."))
+			rolled(user)
+		return
+	if(rolled)
+		user.visible_message(SPAN_NOTICE("\The [user] unrolls \the [src] to read it."),\
+								SPAN_NOTICE("You unroll \the [src] to read it."))
+		rolled(user)
 	if(ishuman(user))
 		var/mob/living/carbon/human/human_user = user
-		var/dat = "<meta charset=\"utf-8\">"
+		var/dat
 		src.pages = 0
 		switch(screen)
 			if(0) //Cover
-				dat+="<DIV ALIGN='center'><B><FONT SIZE=6>The Griffon</FONT></B></div>"
-				dat+="<DIV ALIGN='center'><FONT SIZE=2>[GLOB.using_map.company_name]-standard newspaper, for use on [GLOB.using_map.company_name] Space Facilities</FONT></div><HR>"
+				dat+="<DIV ALIGN='center'><B><FONT SIZE=6>The Griffon</font></B></div>"
+				dat+="<DIV ALIGN='center'><FONT SIZE=2>[current_map.company_name]-standard newspaper, for use on [current_map.company_name] Vessels.</font></div><HR>"
 				if(isemptylist(src.news_content))
 					if(src.important_message)
-						dat+="Contents:<BR><ul><B><FONT COLOR='red'>**</FONT>Important Security Announcement<FONT COLOR='red'>**</FONT></B> <FONT SIZE=2>\[page [src.pages+2]\]</FONT><BR></ul>"
+						dat+="Contents:<BR><ul><B><span class='warning'>**</span>Important Security Announcement<span class='warning'>**</span></B> <FONT SIZE=2>\[page [src.pages+2]\]</font><BR></ul>"
 					else
 						dat+="<I>Other than the title, the rest of the newspaper is unprinted...</I>"
 				else
@@ -827,11 +932,11 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 					for(var/datum/feed_channel/NP in src.news_content)
 						src.pages++
 					if(src.important_message)
-						dat+="<B><FONT COLOR='red'>**</FONT>Important Security Announcement<FONT COLOR='red'>**</FONT></B> <FONT SIZE=2>\[page [src.pages+2]\]</FONT><BR>"
+						dat+="<B><span class='warning'>**</span>Important Security Announcement<span class='warning'>**</span></B> <FONT SIZE=2>\[page [src.pages+2]\]</font><BR>"
 					var/temp_page=0
 					for(var/datum/feed_channel/NP in src.news_content)
 						temp_page++
-						dat+="<B>[NP.channel_name]</B> <FONT SIZE=2>\[page [temp_page+1]\]</FONT><BR>"
+						dat+="<B>[NP.channel_name]</B> <FONT SIZE=2>\[page [temp_page+1]\]</font><BR>"
 					dat+="</ul>"
 				if(scribble_page==curr_page)
 					dat+="<BR><I>There is a small scribble near the end of this page... It reads: \"[src.scribble]\"</I>"
@@ -840,9 +945,9 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				for(var/datum/feed_channel/NP in src.news_content)
 					src.pages++ //Let's get it right again.
 				var/datum/feed_channel/C = src.news_content[src.curr_page]
-				dat+="<FONT SIZE=4><B>[C.channel_name]</B></FONT><FONT SIZE=1> \[created by: <FONT COLOR='maroon'>[C.author]</FONT>\]</FONT><BR><BR>"
+				dat+="<FONT SIZE=4><B>[C.channel_name]</B></font><FONT SIZE=1> \[created by: <span class='boldannounce'>[C.author]</span>\]</font><BR><BR>"
 				if(C.censored)
-					dat+="This channel was deemed dangerous to the general welfare of the [station_name()] and therefore marked with a <B><FONT COLOR='red'>D-Notice</B></FONT>. Its contents were not transferred to the newspaper at the time of printing."
+					dat+="This channel was deemed dangerous to the general welfare of the station and therefore marked with a <B><span class='warning'>D-Notice</B></span>. Its contents were not transferred to the newspaper at the time of printing."
 				else
 					if(isemptylist(C.messages))
 						dat+="No Feed stories stem from this channel..."
@@ -850,14 +955,12 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 						dat+="<ul>"
 						var/i = 0
 						for(var/datum/feed_message/MESSAGE in C.messages)
-							++i
+							i++
 							dat+="-[MESSAGE.body] <BR>"
 							if(MESSAGE.img)
-								var/resourc_name = "newscaster_photo_[C.channel_id]_[i].png"
-								ASSERT(user.client)
-								send_asset(user.client, resourc_name)
-								dat+="<img src='[resourc_name]' width = '180'><BR>"
-							dat+="<FONT SIZE=1>\[[MESSAGE.message_type] by <FONT COLOR='maroon'>[MESSAGE.author]</FONT>\]</FONT><BR><BR>"
+								send_rsc(usr, MESSAGE.img, "tmp_photo[i].png")
+								dat+="<img src='tmp_photo[i].png' width = '180'><BR>"
+							dat+="<FONT SIZE=1>\[[MESSAGE.message_type] by <span class='boldannounce'>[MESSAGE.author]</span>\]</font><BR><BR>"
 						dat+="</ul>"
 				if(scribble_page==curr_page)
 					dat+="<BR><I>There is a small scribble near the end of this page... It reads: \"[src.scribble]\"</I>"
@@ -866,8 +969,8 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				for(var/datum/feed_channel/NP in src.news_content)
 					src.pages++
 				if(src.important_message!=null)
-					dat+="<DIV STYLE='float:center;'><FONT SIZE=4><B>Wanted Issue:</B></FONT SIZE></DIV><BR><BR>"
-					dat+="<B>Criminal name</B>: <FONT COLOR='maroon'>[important_message.author]</FONT><BR>"
+					dat+="<DIV STYLE='float:center;'><FONT SIZE=4><B>Wanted Issue:</B></FONT></DIV><BR><BR>"
+					dat+="<B>Criminal name</B>: <span class='boldannounce'>[important_message.author]</span><BR>"
 					dat+="<B>Description</B>: [important_message.body]<BR>"
 					dat+="<B>Photo:</B>: "
 					if(important_message.img)
@@ -884,7 +987,8 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				dat+="I'm sorry to break your immersion. This shit's bugged. Report this bug to Agouri, polyxenitopalidou@gmail.com"
 
 		dat+="<BR><HR><div align='center'>[src.curr_page+1]</div>"
-		show_browser(human_user, dat, "window=newspaper_main;size=300x400")
+
+		human_user << browse(dat, "window=newspaper_main;size=300x400")
 		onclose(human_user, "newspaper_main")
 	else
 		to_chat(user, "The paper is full of intelligible symbols!")
@@ -904,7 +1008,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				if(curr_page == 0) //We're at the start, get to the middle
 					src.screen=1
 			src.curr_page++
-			playsound(src.loc, SFX_USE_PAGE, 50, 1)
+			playsound(src.loc, /singleton/sound_category/page_sound, 50, 1)
 
 		else if(href_list["prev_page"])
 			if(curr_page == 0)
@@ -916,16 +1020,20 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				if(curr_page == src.pages+1) //we're at the end, let's go back to the middle.
 					src.screen = 1
 			src.curr_page--
-			playsound(src.loc, SFX_USE_PAGE, 50, 1)
+			playsound(src.loc, /singleton/sound_category/page_sound, 50, 1)
 
 		if (istype(src.loc, /mob))
 			src.attack_self(src.loc)
 
 
-/obj/item/newspaper/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/pen))
+/obj/item/newspaper/attackby(obj/item/W as obj, mob/user as mob)
+	if(W.ispen())
+		if(rolled)
+			user.visible_message(SPAN_NOTICE("\The [user] unrolls \the [src] to write on it."),\
+									SPAN_NOTICE("You unroll \the [src] to write on it."))
+			rolled()
 		if(src.scribble_page == src.curr_page)
-			to_chat(user, "<span class='info'>There's already a scribble in this page... You wouldn't want to make things too cluttered, would you?</span>")
+			to_chat(user, "<span class='notice'>There's already a scribble in this page... You wouldn't want to make things too cluttered, would you?</span>")
 		else
 			var/s = sanitize(input(user, "Write something", "Newspaper", ""))
 			s = sanitize(s)
@@ -936,53 +1044,75 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 			src.scribble_page = src.curr_page
 			src.scribble = s
 			src.attack_self(user)
-		return
+		return TRUE
 
+/obj/item/newspaper/proc/rolled(mob/user)
+	if(ishuman(user) && Adjacent(user) && !user.incapacitated())
+		if(rolled)
+			playsound(src, pickup_sound, PICKUP_SOUND_VOLUME)
+		else
+			playsound(src, drop_sound, DROP_SOUND_VOLUME)
+		rolled = !rolled
+		icon_state = "newspaper[rolled ? "_rolled" : ""]"
+		item_state = icon_state
+		update_icon()
 
 ////////////////////////////////////helper procs
 
-
+// Newscaster scans you
+// autorecognition, woo!
 /obj/machinery/newscaster/proc/scan_user(mob/living/user)
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
-		var/obj/item/card/id/I = H.get_id_card()
-
-		if(!QDELETED(I))
-			scanned_user = GetNameAndAssignmentFromId(I)
+		var/obj/item/card/id/ID = H.GetIdCard()
+		if(ID)
+			scanned_user = GetNameAndAssignmentFromId(ID)
 		else
 			scanned_user = "Unknown"
 	else
 		var/mob/living/silicon/ai_user = user
-		src.scanned_user = "[ai_user.name] ([ai_user.job])"
+		scanned_user = "[ai_user.name] ([ai_user.job])"
+
 
 /obj/machinery/newscaster/proc/print_paper()
 	feedback_inc("newscaster_newspapers_printed",1)
 	var/obj/item/newspaper/NEWSPAPER = new /obj/item/newspaper
-	for(var/datum/feed_channel/FC in news_network.network_channels)
+	for(var/channel in SSnews.network_channels)
+		var/datum/feed_channel/FC = SSnews.GetFeedChannel(channel)
 		NEWSPAPER.news_content += FC
-	if(news_network.wanted_issue)
-		NEWSPAPER.important_message = news_network.wanted_issue
-	NEWSPAPER.forceMove(get_turf(src))
+	if(SSnews.wanted_issue)
+		NEWSPAPER.important_message = SSnews.wanted_issue
+	playsound(src.loc, 'sound/bureaucracy/print.ogg', 75, 1)
+	usr.put_in_hands(NEWSPAPER)
 	src.paper_remaining--
 	return
 
-//Removed for now so these aren't even checked every tick. Left this here in-case Agouri needs it later.
-///obj/machinery/newscaster/process()       //Was thinking of doing the icon update through process, but multiple iterations per second does not
-//	return                                  //bode well with a newscaster network of 10+ machines. Let's just return it, as it's added in the machines list.
-
-/obj/machinery/newscaster/proc/newsAlert(news_call)   //This isn't Agouri's work, for it is ugly and vile.
-	var/turf/T = get_turf(src)                      //Who the fuck uses spawn(600) anyway, jesus christ
+/obj/machinery/newscaster/proc/newsAlert(var/news_call)
+	if (isNotStationLevel(z))
+		clearAlert()
+		return
+	var/turf/T = get_turf(src)
 	if(news_call)
 		for(var/mob/O in hearers(world.view-1, T))
 			O.show_message("<span class='newscaster'><EM>[src.name]</EM> beeps, \"[news_call]\"</span>",2)
-		src.alert = 1
-		src.update_icon()
-		spawn(300)
-			src.alert = 0
-			src.update_icon()
-		playsound(src.loc, 'sound/signals/ping6.ogg', 75, 0)
+
+		if (!alert)
+			alert = 1
+			update_icon()
+			addtimer(CALLBACK(src, PROC_REF(clearAlert)), 300, TIMER_UNIQUE)
+
+		playsound(src.loc, 'sound/machines/twobeep.ogg', 75, 1)
 	else
 		for(var/mob/O in hearers(world.view-1, T))
 			O.show_message("<span class='newscaster'><EM>[src.name]</EM> beeps, \"Attention! Wanted issue distributed!\"</span>",2)
-		playsound(src.loc, 'sound/signals/warning1.ogg', 75, 0)
+		playsound(loc, 'sound/machines/warning-buzzer.ogg', 75, 1)
 	return
+
+/obj/machinery/newscaster/proc/clearAlert()
+	alert = 0
+	update_icon()
+
+#undef PRESET_NORTH
+#undef PRESET_SOUTH
+#undef PRESET_WEST
+#undef PRESET_EAST

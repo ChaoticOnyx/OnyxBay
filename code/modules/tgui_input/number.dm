@@ -25,7 +25,7 @@
 		else
 			return
 	// Client does NOT have tgui_input on: Returns regular input
-	if(user.get_preference_value(/datum/client_preference/tgui_input) != GLOB.PREF_YES)
+	if(!user.client.prefs.tgui_inputs)
 		var/input_number = input(user, message, title, default) as null|num
 		return clamp(round_value ? round(input_number) : input_number, min_value, max_value)
 	var/datum/tgui_input_number/number_input = new(user, message, title, default, max_value, min_value, timeout, round_value)
@@ -107,28 +107,28 @@
 	. = ..()
 	closed = TRUE
 
-/datum/tgui_input_number/tgui_state(mob/user)
-	return GLOB.tgui_always_state
+/datum/tgui_input_number/ui_state(mob/user)
+	return always_state
 
-/datum/tgui_input_number/tgui_static_data(mob/user)
+/datum/tgui_input_number/ui_static_data(mob/user)
 	var/list/data = list()
-	data["swapped_buttons"] = user.get_preference_value(/datum/client_preference/tgui_input_swapped) == GLOB.PREF_YES ? TRUE : FALSE
-	data["large_buttons"] = user.get_preference_value(/datum/client_preference/tgui_input_large) == GLOB.PREF_YES ? TRUE : FALSE
 	data["init_value"] = default // Default is a reserved keyword
-	data["min_value"] = min_value
+	data["large_buttons"] = user.client.prefs.tgui_buttons_large
+	data["swapped_buttons"] = user.client.prefs.tgui_inputs_swapped
 	data["max_value"] = max_value
-	data["title"] = title
 	data["message"] = message
+	data["min_value"] = min_value
+	data["title"] = title
 	data["round_value"] = round_value
 	return data
 
-/datum/tgui_input_number/tgui_data(mob/user)
+/datum/tgui_input_number/ui_data(mob/user)
 	var/list/data = list()
 	if(timeout)
 		data["timeout"] = CLAMP01((timeout - (world.time - start_time) - 1 SECONDS) / (timeout - 1 SECONDS))
 	return data
 
-/datum/tgui_input_number/tgui_act(action, list/params)
+/datum/tgui_input_number/ui_act(action, list/params)
 	. = ..()
 	if (.)
 		return

@@ -1,20 +1,18 @@
 //TODO: Convert this over for languages.
-/mob/living/carbon/brain/say(message)
+/mob/living/carbon/brain/say(var/message, var/datum/language/speaking = null, var/verb="says", var/alt_name="", var/ghost_hearing = GHOSTS_ALL_HEAR, var/whisper = FALSE)
 	if (silent)
 		return
 
-	message = sanitize(message)
-
-	if(!(container && istype(container, /obj/item/organ/internal/cerebrum/mmi)))
+	if(!(container && istype(container, /obj/item/device/mmi)))
 		return //No MMI, can't speak, bucko./N
 	else
-		var/datum/language/speaking = parse_language(message)
+		speaking = parse_language(message)
 		if(speaking)
 			message = copytext(message, 2+length(speaking.key))
-		var/verb = "says"
 		var/ending = copytext(message, length(message))
+		var/pre_ending = copytext(message, length(message) - 1, length(message))
 		if (speaking)
-			verb = speaking.get_spoken_verb(ending)
+			verb = speaking.get_spoken_verb(ending, pre_ending)
 		else
 			if(ending=="!")
 				verb=pick("exclaims","shouts","yells")
@@ -31,4 +29,8 @@
 			speaking.broadcast(src,trim(message))
 			return
 
+		if(istype(container, /obj/item/device/mmi/radio_enabled))
+			var/obj/item/device/mmi/radio_enabled/R = container
+			if(R.radio)
+				spawn(0) R.radio.hear_talk(src, sanitize(message), verb, speaking)
 		..(trim(message), speaking, verb)

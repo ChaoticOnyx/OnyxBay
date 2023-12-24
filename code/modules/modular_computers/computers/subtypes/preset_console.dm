@@ -1,202 +1,192 @@
+/obj/item/modular_computer/console/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+	if(istype(mover,/obj/item/projectile))
+		if(prob(80))
+	//Holoscreens are non solid, and the frames of the computers are thin. So projectiles will usually
+	//pass through
+			return TRUE
+	else if(istype(mover) && mover.checkpass(PASSTABLE))
+	//Animals can run under them, lots of empty space
+		return TRUE
+	return ..()
+
 /obj/item/modular_computer/console/preset/install_default_hardware()
 	..()
 	processor_unit = new /obj/item/computer_hardware/processor_unit(src)
 	tesla_link = new /obj/item/computer_hardware/tesla_link(src)
 	hard_drive = new /obj/item/computer_hardware/hard_drive/super(src)
 	network_card = new /obj/item/computer_hardware/network_card/wired(src)
+	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
+
+/obj/item/modular_computer/console/preset/install_default_programs()
+	..()
 
 // Engineering
-/obj/item/modular_computer/console/preset/engineering/install_default_hardware()
-	..()
-	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
+/obj/item/modular_computer/console/preset/engineering
+	name = "engineering console"
+	_app_preset_type = /datum/modular_computer_app_presets/engineering
+	enrolled = DEVICE_COMPANY
 
-/obj/item/modular_computer/console/preset/engineering/install_default_programs()
-	..()
-	hard_drive.store_file(new /datum/computer_file/program/power_monitor())
-	hard_drive.store_file(new /datum/computer_file/program/supermatter_monitor())
-	hard_drive.store_file(new /datum/computer_file/program/alarm_monitor())
-	hard_drive.store_file(new /datum/computer_file/program/atmos_control())
-	hard_drive.store_file(new /datum/computer_file/program/rcon_console())
-	hard_drive.store_file(new /datum/computer_file/program/camera_monitor())
-	hard_drive.store_file(new /datum/computer_file/program/shields_monitor())
-	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
+/obj/item/modular_computer/console/preset/engineering/ce
+	name = "engineering console"
+	_app_preset_type = /datum/modular_computer_app_presets/engineering/ce
+	enrolled = DEVICE_COMPANY
 
 // Medical
-/obj/item/modular_computer/console/preset/medical/install_default_hardware()
-	..()
-	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
+/obj/item/modular_computer/console/preset/medical
+	name = "medical console"
+	_app_preset_type = /datum/modular_computer_app_presets/medical
+	enrolled = DEVICE_COMPANY
 
-/obj/item/modular_computer/console/preset/medical/install_default_programs()
-	..()
-	hard_drive.store_file(new /datum/computer_file/program/suit_sensors())
-	hard_drive.store_file(new /datum/computer_file/program/camera_monitor())
-	hard_drive.store_file(new /datum/computer_file/program/records())
-	hard_drive.store_file(new /datum/computer_file/program/records/medical())
-	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
-	set_autorun("sensormonitor")
+/obj/item/modular_computer/console/preset/medical/cmo
+	name = "medical console"
+	_app_preset_type = /datum/modular_computer_app_presets/medical/cmo
+	enrolled = DEVICE_COMPANY
 
 // Research
+/obj/item/modular_computer/console/preset/research
+	name = "research console"
+	_app_preset_type = /datum/modular_computer_app_presets/research
+	enrolled = DEVICE_COMPANY
+
 /obj/item/modular_computer/console/preset/research/install_default_hardware()
 	..()
 	ai_slot = new /obj/item/computer_hardware/ai_slot(src)
-	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
-
-/obj/item/modular_computer/console/preset/research/install_default_programs()
-	..()
-	hard_drive.store_file(new /datum/computer_file/program/ntnetmonitor())
-	hard_drive.store_file(new /datum/computer_file/program/nttransfer())
-	hard_drive.store_file(new /datum/computer_file/program/chatclient())
-	hard_drive.store_file(new /datum/computer_file/program/camera_monitor())
-	hard_drive.store_file(new /datum/computer_file/program/aidiag())
-	hard_drive.store_file(new /datum/computer_file/program/email_client())
-	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
-
-// Administrator
-/obj/item/modular_computer/console/preset/sysadmin/install_default_hardware()
-	..()
-	ai_slot = new /obj/item/computer_hardware/ai_slot(src)
-	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
-
-/obj/item/modular_computer/console/preset/sysadmin/install_default_programs()
-	..()
-	hard_drive.store_file(new /datum/computer_file/program/ntnetmonitor())
-	hard_drive.store_file(new /datum/computer_file/program/nttransfer())
-	hard_drive.store_file(new /datum/computer_file/program/chatclient())
-	hard_drive.store_file(new /datum/computer_file/program/camera_monitor())
-	hard_drive.store_file(new /datum/computer_file/program/aidiag())
-	hard_drive.store_file(new /datum/computer_file/program/email_client())
-	hard_drive.store_file(new /datum/computer_file/program/email_administration())
-	hard_drive.store_file(new /datum/computer_file/program/records())
-	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
 
 // Command
+/obj/item/modular_computer/console/preset/command
+	name = "command console"
+	_app_preset_type = /datum/modular_computer_app_presets/command
+	enrolled = DEVICE_COMPANY
+
 /obj/item/modular_computer/console/preset/command/install_default_hardware()
 	..()
 	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
+	nano_printer.max_paper = 25
+	nano_printer.stored_paper = 20
 	card_slot = new /obj/item/computer_hardware/card_slot(src)
 
-/obj/item/modular_computer/console/preset/command/install_default_programs()
-	..()
-	hard_drive.store_file(new /datum/computer_file/program/chatclient())
-	hard_drive.store_file(new /datum/computer_file/program/card_mod())
-	hard_drive.store_file(new /datum/computer_file/program/hire_tool())
-	hard_drive.store_file(new /datum/computer_file/program/comm())
-	hard_drive.store_file(new /datum/computer_file/program/camera_monitor())
-	hard_drive.store_file(new /datum/computer_file/program/email_client())
-	hard_drive.store_file(new /datum/computer_file/program/records())
-	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
-	hard_drive.store_file(new /datum/computer_file/program/docking())
+/obj/item/modular_computer/console/preset/command/captain
+	name = "captain's console"
+	_app_preset_type = /datum/modular_computer_app_presets/command/captain
+	enrolled = DEVICE_COMPANY
+
+/obj/item/modular_computer/console/preset/command/hop
+	name = "command console"
+	_app_preset_type = /datum/modular_computer_app_presets/command/hop
+	enrolled = DEVICE_COMPANY
+
+/obj/item/modular_computer/console/preset/command/account
+	name = "account console"
+	_app_preset_type = /datum/modular_computer_app_presets/command/account
+	enrolled = DEVICE_COMPANY
+
+/obj/item/modular_computer/console/preset/command/account/centcomm
+	name = "centcomm accounts database"
+	_app_preset_type = /datum/modular_computer_app_presets/command/account/centcomm
 
 // Security
-/obj/item/modular_computer/console/preset/security/install_default_hardware()
-	..()
-	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
+/obj/item/modular_computer/console/preset/security
+	name = "security console"
+	_app_preset_type = /datum/modular_computer_app_presets/security
+	enrolled = DEVICE_COMPANY
 
-/obj/item/modular_computer/console/preset/security/install_default_programs()
-	..()
-	hard_drive.store_file(new /datum/computer_file/program/camera_monitor())
-	hard_drive.store_file(new /datum/computer_file/program/digitalwarrant())
-	hard_drive.store_file(new /datum/computer_file/program/forceauthorization())
-	hard_drive.store_file(new /datum/computer_file/program/records())
-	hard_drive.store_file(new /datum/computer_file/program/records/security())
-	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
+/obj/item/modular_computer/console/preset/security/investigations
+	name = "investigations console"
+	_app_preset_type = /datum/modular_computer_app_presets/security/investigations
+	enrolled = DEVICE_COMPANY
+
+/obj/item/modular_computer/console/preset/security/armory
+	name = "armory console"
+	_app_preset_type = /datum/modular_computer_app_presets/security/armory
+	enrolled = DEVICE_COMPANY
+
+/obj/item/modular_computer/console/preset/security/hos
+	name = "head of security's console"
+	_app_preset_type = /datum/modular_computer_app_presets/security/hos
+	enrolled = DEVICE_COMPANY
+
+/obj/item/modular_computer/console/preset/command/teleporter
+	name = "teleporter control console"
+	desc = "A computer that has a special teleporter control program loaded."
+	_app_preset_type = /datum/modular_computer_app_presets/command/teleporter
+
+/obj/item/modular_computer/console/preset/command/teleporter/ninja
+	name = "teleporter control console"
+	desc = "A computer that has a special teleporter control program loaded."
+	_app_preset_type = /datum/modular_computer_app_presets/command/teleporter/ninja
 
 // Civilian
-/obj/item/modular_computer/console/preset/civilian/install_default_hardware()
-	..()
-	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
+/obj/item/modular_computer/console/preset/civilian
+	name = "civilian console"
+	_app_preset_type = /datum/modular_computer_app_presets/civilian
+	enrolled = DEVICE_COMPANY
 
-/obj/item/modular_computer/console/preset/civilian/install_default_programs()
-	..()
-	hard_drive.store_file(new /datum/computer_file/program/chatclient())
-	hard_drive.store_file(new /datum/computer_file/program/nttransfer())
-	hard_drive.store_file(new /datum/computer_file/program/camera_monitor())
-	hard_drive.store_file(new /datum/computer_file/program/email_client())
-	hard_drive.store_file(new /datum/computer_file/program/supply())
-	hard_drive.store_file(new /datum/computer_file/program/records())
-	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
+// Supply
+/obj/item/modular_computer/console/preset/supply
+	name = "supply console"
+	_app_preset_type = /datum/modular_computer_app_presets/supply
+	enrolled = DEVICE_COMPANY
 
-// Offices
-/obj/item/modular_computer/console/preset/civilian/professional/install_default_hardware()
-	..()
-	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
-
-//Dock control
-/obj/item/modular_computer/console/preset/dock/install_default_hardware()
-	..()
-	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
-
-/obj/item/modular_computer/console/preset/dock/install_default_programs()
-	..()
-	hard_drive.store_file(new /datum/computer_file/program/nttransfer())
-	hard_drive.store_file(new /datum/computer_file/program/email_client())
-	hard_drive.store_file(new /datum/computer_file/program/supply())
-	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
-	hard_drive.store_file(new /datum/computer_file/program/docking())
-
-// Crew-facing supply ordering computer
 /obj/item/modular_computer/console/preset/supply/install_default_hardware()
 	..()
-	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
+	nano_printer.max_paper = 25
+	nano_printer.stored_paper = 20
+	card_slot = new /obj/item/computer_hardware/card_slot(src)
 
-/obj/item/modular_computer/console/preset/supply/install_default_programs()
+/obj/item/modular_computer/console/preset/supply/machinist
+	name = "machinist console"
+	_app_preset_type = /datum/modular_computer_app_presets/supply/machinist
+	enrolled = DEVICE_COMPANY
+
+/obj/item/modular_computer/console/preset/supply/machinist/install_default_hardware()
 	..()
-	hard_drive.store_file(new /datum/computer_file/program/supply())
-	set_autorun("supply")
+	ai_slot = new /obj/item/computer_hardware/ai_slot(src)
 
 // ERT
 /obj/item/modular_computer/console/preset/ert/install_default_hardware()
 	..()
 	ai_slot = new /obj/item/computer_hardware/ai_slot(src)
-	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
+	nano_printer.max_paper = 25
+	nano_printer.stored_paper = 20
 	card_slot = new /obj/item/computer_hardware/card_slot(src)
 
-/obj/item/modular_computer/console/preset/ert/install_default_programs()
-	..()
-	hard_drive.store_file(new /datum/computer_file/program/nttransfer())
-	hard_drive.store_file(new /datum/computer_file/program/camera_monitor/ert())
-	hard_drive.store_file(new /datum/computer_file/program/alarm_monitor())
-	hard_drive.store_file(new /datum/computer_file/program/comm())
-	hard_drive.store_file(new /datum/computer_file/program/aidiag())
-	hard_drive.store_file(new /datum/computer_file/program/records())
-	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
-
-// Syndicate
-/obj/item/modular_computer/console/preset/syndicate/
+/obj/item/modular_computer/console/preset/ert
+	_app_preset_type = /datum/modular_computer_app_presets/ert
+	enrolled = DEVICE_PRIVATE
 	computer_emagged = TRUE
 
-/obj/item/modular_computer/console/preset/syndicate/install_default_hardware()
+// Mercenary
+/obj/item/modular_computer/console/preset/mercenary
+	_app_preset_type = /datum/modular_computer_app_presets/merc
+	computer_emagged = TRUE
+	enrolled = DEVICE_PRIVATE
+
+/obj/item/modular_computer/console/preset/mercenary/install_default_hardware()
 	..()
 	ai_slot = new /obj/item/computer_hardware/ai_slot(src)
-	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
 	card_slot = new /obj/item/computer_hardware/card_slot(src)
 
-/obj/item/modular_computer/console/preset/syndicate/install_default_programs()
-	..()
-	hard_drive.store_file(new /datum/computer_file/program/camera_monitor/hacked())
-	hard_drive.store_file(new /datum/computer_file/program/alarm_monitor())
-	hard_drive.store_file(new /datum/computer_file/program/aidiag())
 
 // Merchant
+/obj/item/modular_computer/console/preset/merchant
+	_app_preset_type = /datum/modular_computer_app_presets/merchant
+	enrolled = DEVICE_PRIVATE
+
 /obj/item/modular_computer/console/preset/merchant/install_default_hardware()
 	..()
-	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
+	ai_slot = new/obj/item/computer_hardware/ai_slot(src)
+	card_slot = new/obj/item/computer_hardware/card_slot(src)
 
-/obj/item/modular_computer/console/preset/merchant/install_default_programs()
-	..()
-	hard_drive.store_file(new /datum/computer_file/program/merchant())
-	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
+/obj/item/modular_computer/console/preset/merchant/nka
+	_app_preset_type = /datum/modular_computer_app_presets/merchant/nka
 
-// Library
-/obj/item/modular_computer/console/preset/library/install_default_hardware()
-	..()
-	nano_printer = new /obj/item/computer_hardware/nano_printer(src)
+/obj/item/modular_computer/console/preset/merchant/guild
+	_app_preset_type = /datum/modular_computer_app_presets/merchant/guild
 
-/obj/item/modular_computer/console/preset/library/install_default_programs()
-	..()
-	hard_drive.store_file(new /datum/computer_file/program/nttransfer())
-	hard_drive.store_file(new /datum/computer_file/program/email_client())
-	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
-	hard_drive.store_file(new /datum/computer_file/program/library())
-	hard_drive.store_file(new /datum/computer_file/program/art_library())
-	hard_drive.store_file(new /datum/computer_file/program/wiki())
+/obj/item/modular_computer/console/preset/merchant/golden_deep
+	_app_preset_type = /datum/modular_computer_app_presets/merchant/golden_deep
+
+// AI
+/obj/item/modular_computer/console/preset/ai
+	_app_preset_type = /datum/modular_computer_app_presets/ai
+	enrolled = DEVICE_PRIVATE

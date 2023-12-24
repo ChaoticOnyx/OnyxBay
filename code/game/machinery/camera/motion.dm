@@ -1,14 +1,11 @@
 /obj/machinery/camera
-	var/list/weakref/motionTargets = list()
+	var/list/motionTargets = list()
 	var/detectTime = 0
+	var/area/ai_monitored/area_motion = null
 	var/alarm_delay = 100 // Don't forget, there's another 10 seconds in queueAlarm()
-
-/obj/machinery/camera/Initialize()
-	. = ..()
-	proximity_monitor = new(src, 2)
+	movable_flags = MOVABLE_FLAG_PROXMOVE
 
 /obj/machinery/camera/internal_process()
-	..()
 	// motion camera event loop
 	if (stat & (EMPED|NOPOWER))
 		return
@@ -20,25 +17,33 @@
 		if (elapsed > alarm_delay)
 			triggerAlarm()
 	else if (detectTime == -1)
-		for (var/weakref/targetref in motionTargets)
-			var/mob/target = targetref?.resolve()
-			if(QDELETED(target) || target.is_ic_dead() || !in_range(src, target))
-				lostTargetRef(targetref)
+		for (var/mob/target in motionTargets)
+			if (target.stat == 2 || QDELING(target)) lostTarget(target)
+			// If not detecting with motion camera...
+			if (!area_motion)
+				// See if the camera is still in range
+				if(!in_range(src, target))
+					// If they aren't in range, lose the target.
+					lostTarget(target)
 
-/obj/machinery/camera/proc/newTarget(mob/target)
-	if(istype(target, /mob/living/silicon/ai))
+/obj/machinery/camera/proc/newTarget(var/mob/target)
+	if(QDELETED(target))
 		return FALSE
-	if(detectTime == 0)
+
+	if (istype(target, /mob/living/silicon/ai))
+		return FALSE
+
+	if (detectTime == 0)
 		detectTime = world.time // start the clock
-	var/targetref = weakref(target)
-	if(!(targetref in motionTargets))
-		motionTargets |= targetref
+	if (!(target in motionTargets) && !QDELING(target))
+		motionTargets += target
+
 	return TRUE
 
-/obj/machinery/camera/proc/lostTargetRef(weakref/R)
-	if(R in motionTargets)
-		motionTargets -= R
-	if(motionTargets.len == 0)
+/obj/machinery/camera/proc/lostTarget(var/mob/target)
+	if (target in motionTargets)
+		motionTargets -= target
+	if (motionTargets.len == 0)
 		cancelAlarm()
 
 /obj/machinery/camera/proc/cancelAlarm()
@@ -58,5 +63,8 @@
 	return 1
 
 /obj/machinery/camera/HasProximity(atom/movable/AM as mob|obj)
-	if(isliving(AM))
-		newTarget(AM)
+	// Motion cameras outside of an "ai monitored" area will use this to detect stuff.
+	if (!area_motion)
+		if(isliving(AM) && !QDELING(AM))
+			newTarget(AM)
+

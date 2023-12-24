@@ -1,166 +1,155 @@
 /obj/machinery/photocopier
 	name = "photocopier"
 	icon = 'icons/obj/library.dmi'
-	icon_state = "bigscanner"
-	var/insert_anim = "bigscanner1"
+	icon_state = "photocopier"
 	anchored = 1
 	density = 1
-	idle_power_usage = 30 WATTS
-	active_power_usage = 200 WATTS
-	power_channel = STATIC_EQUIP
-	atom_flags = ATOM_FLAG_CLIMBABLE
-	obj_flags = OBJ_FLAG_ANCHORABLE
-	turf_height_offset = 15
-	var/obj/item/copyitem = null	//what's in the copier!
-	var/copies = 1	//how many copies to print!
-	var/toner = 30 //how much toner is left! woooooo~
-	var/maxcopies = 10	//how many copies can be copied at once- idea shamelessly stolen from bs12's copier!
-	var/grayscale = TRUE //if FALSE it'll preserve colors at least on paper
-	var/busy = FALSE
+	idle_power_usage = 30
+	active_power_usage = 200
+	power_channel = EQUIP
+	/// Item to copy.
+	var/obj/item/copy_item
+	/// How much toner is left.
+	var/toner = 30
+	/// Maximum amount of toner that can be stored at once.
+	var/max_toner = 30
+	/// How many copies can be copied at once.
+	var/max_copies = 10
+	/// How many copies will be printed with one click of the 'copy' button.
+	var/num_copies = 1
+	/// Item insert animation.
+	var/insert_anim = "photocopier_scan"
+	/// Print animation.
+	var/print_animation = "photocopier_print"
 
-/obj/machinery/photocopier/Destroy()
-	QDEL_NULL(copyitem)
-	return ..()
-
-/obj/machinery/photocopier/attack_ai(mob/user)
+/obj/machinery/photocopier/attack_ai(mob/user as mob)
+	if(!ai_can_interact(user))
+		return
 	return attack_hand(user)
+
+/obj/machinery/photocopier/ui_data(mob/user)
+	var/list/data = list()
+	data["toner"] = toner
+	data["max_toner"] = max_toner
+	data["max_copies"] = max_copies
+	data["gotitem"] = !!copy_item
+	data["is_silicon"] = issilicon(user)
+	data["num_copies"] = num_copies
+	return data
 
 /obj/machinery/photocopier/attack_hand(mob/user)
 	user.set_machine(src)
+	ui_interact(user)
 
-	var/dat = "<meta charset=\"utf-8\">Photocopier<BR><BR>"
-	if(copyitem)
-		dat += "<a href='byond://?src=\ref[src];remove=1'>Remove Item</a><BR>"
-		if(toner)
-			dat += "<a href='byond://?src=\ref[src];copy=1'>Copy</a><BR>"
-			dat += "Printing: [copies] copies."
-			dat += "<a href='byond://?src=\ref[src];min=1'>-</a> "
-			dat += "<a href='byond://?src=\ref[src];add=1'>+</a><BR><BR>"
-	else if(toner)
-		dat += "Please insert something to copy.<BR><BR>"
-	if(istype(user,/mob/living/silicon))
-		dat += "<a href='byond://?src=\ref[src];aipic=1'>Print photo from database</a><BR><BR>"
-	dat += "Current toner level: [toner]"
-	if(!toner)
-		dat +="<BR>Please insert a new toner cartridge!"
-	show_browser(user, dat, "window=copier")
-	onclose(user, "copier")
-	return
+/obj/machinery/photocopier/ui_interact(mob/user, var/datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "Photocopier", "Nanocopier", 300, 300)
+		ui.open()
 
-/obj/machinery/photocopier/proc/busy_check(user)
-	if (busy)
-		to_chat(user, SPAN_WARNING("[src] is busy!"))
-	return busy
-
-/obj/machinery/photocopier/Topic(href, href_list)
+/obj/machinery/photocopier/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
-	if (. != TOPIC_NOACTION)
+	if(.)
 		return
-	if (busy_check(usr))
-		return
-	if(href_list["copy"])
-		if(stat & (BROKEN|NOPOWER))
-			return
 
-		busy = TRUE
-		for(var/i = 0, i < copies, i++)
-			if(toner <= 0)
-				break
+	switch(action)
+		if("copy")
 			if(stat & (BROKEN|NOPOWER))
-				break
-			use_power_oneoff(active_power_usage)
-			if (istype(copyitem, /obj/item/paper))
-				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
-				copy(copyitem)
-				sleep(15)
-			else if(istype(copyitem, /obj/item/canvas))
-				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
-				canvascopy(copyitem)
-				sleep(15)
-			else if (istype(copyitem, /obj/item/photo))
-				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
-				photocopy(copyitem)
-				sleep(15)
-			else if (istype(copyitem, /obj/item/paper_bundle))
-				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
-				var/obj/item/paper_bundle/B = bundlecopy(copyitem)
-				sleep(15*B.pages.len)
-			else if (istype(copyitem, /obj/item/complaint_folder))
-				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
-				var/obj/item/complaint_folder/CF = complaintcopy(copyitem)
-				sleep(15 * CF.contents.len)
-			else
-				to_chat(usr, SPAN("warning", "\The [copyitem] can't be copied by \the [src]."))
-				break
-
-		updateUsrDialog()
-		busy = FALSE
-	else if(href_list["remove"])
-		if(copyitem)
-			if(usr.pick_or_drop(copyitem, loc))
-				to_chat(usr, SPAN("notice", "You take \the [copyitem] out of \the [src]."))
-			else
-				to_chat(usr, SPAN("notice", "You remove \the [copyitem] from \the [src]."))
-			copyitem = null
-			updateUsrDialog()
-	else if(href_list["min"])
-		if(copies > 1)
-			copies--
-			updateUsrDialog()
-	else if(href_list["add"])
-		if(copies < maxcopies)
-			copies++
-			updateUsrDialog()
-	else if(href_list["aipic"])
-		if(!istype(usr,/mob/living/silicon)) return
-		if(stat & (BROKEN|NOPOWER)) return
-
-		if(toner >= 5)
-			var/mob/living/silicon/tempAI = usr
-			var/obj/item/device/camera/siliconcam/camera = tempAI.silicon_camera
-
-			if(!camera)
-				return
-			var/obj/item/photo/selection = camera.selectpicture()
-			if (!selection)
 				return
 
-			var/obj/item/photo/p = photocopy(selection)
-			if (p.desc == "")
-				p.desc += "Copied by [tempAI.name]"
-			else
-				p.desc += " - Copied by [tempAI.name]"
-			toner -= 5
-			sleep(15)
-		updateUsrDialog()
+			for(var/i = 0, i < num_copies, i++)
+				if(toner <= 0)
+					break
+
+				var/c_type = copy_type(src, copy_item, toner)
+
+				if(!c_type) // if there's something that can't be copied
+					break
+
+				use_power_oneoff(active_power_usage)
+			return TRUE
+
+		if("remove")
+			if(copy_item)
+				copy_item.forceMove(usr.loc)
+				usr.put_in_hands(copy_item)
+				to_chat(usr, SPAN_NOTICE("You take \the [copy_item] out of \the [src]."))
+				copy_item = null
+				return TRUE
+
+		if("aipic")
+			if(!istype(usr,/mob/living/silicon)) return
+			if(stat & (BROKEN|NOPOWER)) return
+
+			if(toner >= 5)
+				var/mob/living/silicon/tempAI = usr
+				var/obj/item/device/camera/siliconcam/camera = tempAI.ai_camera
+
+				if(!camera)
+					return
+				var/obj/item/photo/selection = camera.selectpicture()
+				if (!selection)
+					return
+
+				var/obj/item/photo/p = photocopy(src, selection)
+				if (p.desc == "")
+					p.desc += "Copied by [tempAI.name]"
+				else
+					p.desc += " - Copied by [tempAI.name]"
+				sleep(15)
+				return TRUE
+
+		if("set_copies")
+			num_copies = clamp(text2num(params["num_copies"]), 1, max_copies)
+			return TRUE
 
 /obj/machinery/photocopier/attackby(obj/item/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/paper) || istype(O, /obj/item/photo) || istype(O, /obj/item/paper_bundle) || istype(O, /obj/item/complaint_folder) || istype(O, /obj/item/canvas))
-		if(!copyitem)
-			if(!user.drop(O, src))
-				return
-			copyitem = O
-			to_chat(user, SPAN("notice", "You insert \the [O] into \the [src]."))
+	if(istype(O, /obj/item/paper) || istype(O, /obj/item/photo) || istype(O, /obj/item/paper_bundle))
+		if(!copy_item)
+			user.drop_from_inventory(O,src)
+			copy_item = O
+			to_chat(user, SPAN_NOTICE("You insert \the [O] into \the [src]."))
 			flick(insert_anim, src)
-			updateUsrDialog()
+			playsound(loc, 'sound/bureaucracy/scan.ogg', 75, 1)
+			SStgui.update_uis(src)
 		else
-			to_chat(user, SPAN("notice", "There is already something in \the [src]."))
+			to_chat(user, SPAN_NOTICE("There is already something in \the [src]."))
 	else if(istype(O, /obj/item/device/toner))
 		if(toner <= 10) //allow replacing when low toner is affecting the print darkness
-			if(!user.drop(O))
-				return
-			to_chat(user, SPAN("notice", "You insert the toner cartridge into \the [src]."))
+			to_chat(user, SPAN_NOTICE("You insert \the [O] into \the [src]."))
+			flick("photocopier_toner", src)
+			playsound(loc, /singleton/sound_category/switch_sound, 50, 1)
 			var/obj/item/device/toner/T = O
-			toner += T.toner_amount
+			toner = min(toner + T.toner_amount, max_toner)
+			user.drop_from_inventory(O,get_turf(src))
 			qdel(O)
-			updateUsrDialog()
+			SStgui.update_uis(src)
 		else
-			to_chat(user, SPAN("notice", "This cartridge is not yet ready for replacement! Use up the rest of the toner."))
-	else
-		..()
-	if(O.mod_weight >= 0.75)
-		shake_animation(stime = 4)
+			to_chat(user, SPAN_NOTICE("This cartridge is not yet ready for replacement! Use up the rest of the toner."))
+			flick("photocopier_notoner", src)
+			playsound(loc, 'sound/machines/buzz-two.ogg', 75, 1)
+	else if(O.iswrench())
+		playsound(loc, O.usesound, 50, 1)
+		anchored = !anchored
+		to_chat(user, SPAN_NOTICE("You [anchored ? "wrench" : "unwrench"] \the [src]."))
 	return
+
+/proc/copy_type(var/obj/machinery/target, var/c_item, var/toner, var/do_print = TRUE) // helper proc to reduce ctrl+c ctrl+v
+	if (istype(c_item, /obj/item/paper))
+		var/obj/item/paper/C = copy(target, c_item, do_print, do_print, 1 SECOND, toner)
+		sleep(20)
+		return C
+	else if (istype(c_item, /obj/item/photo))
+		var/obj/item/photo/P = photocopy(target, c_item, toner)
+		sleep(20)
+		return P
+	else if (istype(c_item, /obj/item/paper_bundle))
+		var/obj/item/paper_bundle/B = bundlecopy(target, c_item, TRUE, toner)
+		sleep(15*B.pages.len)
+		return B
+	else
+		to_chat(usr, SPAN_WARNING("\The [c_item] can't be copied by \the [target]."))
+		return FALSE
 
 /obj/machinery/photocopier/ex_act(severity)
 	switch(severity)
@@ -180,83 +169,117 @@
 					toner = 0
 	return
 
-/obj/machinery/photocopier/proc/copy(obj/item/paper/copy, need_toner=1)
-	var/obj/item/paper/c = copy.copy(loc, generate_stamps = FALSE)
-	c.recolorize(saturation = Clamp(toner / 30.0, 0.5, 0.94), grayscale = src.grayscale)
-	if(need_toner)
-		toner--
-	if(toner == 0)
-		visible_message(SPAN("notice", "A red light on \the [src] flashes, indicating that it is out of toner."))
-	c.update_icon()
-	c.photocopied = TRUE
+/proc/copy(var/obj/machinery/target, var/obj/item/paper/copy, var/print = TRUE, var/use_sound = TRUE, var/delay = 10, var/toner) // note: var/delay is the delay from copy to print, it should be less than the sleep in copy_type()
+	var/obj/item/paper/c = new copy.type(target)
+	var/info
+	var/pname
+	if (toner > 10)	//lots of toner, make it dark
+		info = "<font color = #101010>"
+	else			//no toner? shitty copies for you!
+		info = "<font color = #808080>"
+	var/copied = html_decode(copy.info)
+	copied = replacetext(copied, "<font face=\"[c.deffont]\" color=", "<font face=\"[c.deffont]\" nocolor=")	//state of the art techniques in action
+	copied = replacetext(copied, "<font face=\"[c.crayonfont]\" color=", "<font face=\"[c.crayonfont]\" nocolor=")	//This basically just breaks the existing color tag, which we need to do because the innermost tag takes priority.
+	info += copied
+	info += "</font>"//</font>
+	pname = copy.name // -- Doohl
+	c.desc = copy.desc
+	if(istype(copy, /obj/item/paper/business_card))
+		c.color = copy.color
+	else
+		c.color = "#f0f0f0"
+	c.fields = copy.fields
+	c.stamps = copy.stamps
+	c.stamped = copy.stamped
+	c.ico = copy.ico
+	c.offset_x = copy.offset_x
+	c.offset_y = copy.offset_y
+	var/list/temp_overlays = copy.overlays       //Iterates through stamps
+	var/image/img                                //and puts a matching
+	for (var/j = 1, j <= min(temp_overlays.len, copy.ico.len), j++) //gray overlay onto the copy
+		if (findtext(copy.ico[j], "cap") || findtext(copy.ico[j], "cent"))
+			img = image('icons/obj/bureaucracy.dmi', "paper_stamp-circle")
+		else if (findtext(copy.ico[j], "deny"))
+			img = image('icons/obj/bureaucracy.dmi', "paper_stamp-x")
+		else
+			img = image('icons/obj/bureaucracy.dmi', "paper_stamp-dots")
+		img.pixel_x = copy.offset_x[j]
+		img.pixel_y = copy.offset_y[j]
+		c.add_overlay(img)
+
+	if(!toner)
+		target.visible_message(SPAN_NOTICE("A red light on \the [target] flashes, indicating that it is out of toner."))
+		if(target.type == /obj/machinery/photocopier)
+			flick("photocopier_notoner", target)
+		playsound(target.loc, 'sound/machines/buzz-two.ogg', 75, 1)
+		return
+
+	c.set_content_unsafe(pname, info)
+	if (print)
+		if(istype(target, /obj/machinery/photocopier))
+			var/obj/machinery/photocopier/T = target
+			flick(T.print_animation, target)
+			--T.toner
+		target.print(c, use_sound, 'sound/bureaucracy/print.ogg', delay, , user = usr)
 	return c
 
-/obj/machinery/photocopier/proc/complaintcopy(obj/item/complaint_folder/copy, need_toner=1)
-	var/obj/item/complaint_folder/CF = copy.copy(loc, generate_stamps = !need_toner)
-	if (need_toner)
-		var/toner_left = toner
-		toner_left = CF.recolorize(saturation = Clamp(toner / 30.0, 0.5, 0.94), grayscale = src.grayscale, amount = toner_left)
-		if (toner_left <= 0)
-			visible_message(SPAN_NOTICE("A red light on \the [src] flashes, indicating that it is out of toner."))
-			toner_left = 0
-		toner = toner_left
-	return CF
-
-/obj/machinery/photocopier/proc/canvascopy(obj/item/canvas/canvas, need_toner = TRUE)
-	if(canvas.no_save)
-		visible_message(SPAN("notice", "A yellow light on \the [src] flashes, indicating that DRM on canvas is active and can't be copied."))
-		return
-	if(need_toner && toner > 0)
-		// photos use a lot of ink!
-		toner -= 5
-		var/obj/item/canvas/canvas_copy = canvas.copy()
-		canvas_copy.forceMove(get_turf(src))
-		return canvas_copy
-	if(toner < 0)
-		toner = 0
-		visible_message(SPAN("notice", "A red light on \the [src] flashes, indicating that it is out of toner."))
-
-/obj/machinery/photocopier/proc/photocopy(obj/item/photo/photocopy, need_toner=1)
+/proc/photocopy(var/obj/machinery/target, var/obj/item/photo/photocopy, var/toner)
 	var/obj/item/photo/p = photocopy.copy()
-	p.forceMove(get_turf(src))
+	p.forceMove(target.loc)
 
+	var/icon/I = icon(photocopy.icon, photocopy.icon_state)
 	if(toner > 10)	//plenty of toner, go straight greyscale
-		p.img.MapColors(rgb(77,77,77), rgb(150,150,150), rgb(28,28,28), rgb(0,0,0))//I'm not sure how expensive this is, but given the many limitations of photocopying, it shouldn't be an issue.
-		p.update_icon()
+		I.MapColors(rgb(77,77,77), rgb(150,150,150), rgb(28,28,28), rgb(0,0,0))		//I'm not sure how expensive this is, but given the many limitations of photocopying, it shouldn't be an issue.
+		p.img.MapColors(rgb(77,77,77), rgb(150,150,150), rgb(28,28,28), rgb(0,0,0))
+		p.tiny.MapColors(rgb(77,77,77), rgb(150,150,150), rgb(28,28,28), rgb(0,0,0))
 	else			//not much toner left, lighten the photo
+		I.MapColors(rgb(77,77,77), rgb(150,150,150), rgb(28,28,28), rgb(100,100,100))
 		p.img.MapColors(rgb(77,77,77), rgb(150,150,150), rgb(28,28,28), rgb(100,100,100))
-		p.update_icon()
-	if(need_toner)
-		toner -= 5	//photos use a lot of ink!
+		p.tiny.MapColors(rgb(77,77,77), rgb(150,150,150), rgb(28,28,28), rgb(100,100,100))
+	p.icon = I
+	toner -= 5	//photos use a lot of ink!
 	if(toner < 0)
 		toner = 0
-		visible_message(SPAN("notice", "A red light on \the [src] flashes, indicating that it is out of toner."))
-
+		target.visible_message(SPAN_NOTICE("A red light on \the [target] flashes, indicating that it is out of toner."))
+		if(target.type == /obj/machinery/photocopier)
+			flick("photocopier_notoner", target)
+		playsound(target.loc, 'sound/machines/buzz-two.ogg', 75, 1)
+	if(target.type == /obj/machinery/photocopier)
+		var/obj/machinery/photocopier/T = target
+		T.toner -= 5
+		flick("photocopier_print", target)
+		playsound(target.loc, 'sound/bureaucracy/print.ogg', 75, 1)
 	return p
 
 //If need_toner is 0, the copies will still be lightened when low on toner, however it will not be prevented from printing. TODO: Implement print queues for fax machines and get rid of need_toner
-/obj/machinery/photocopier/proc/bundlecopy(obj/item/paper_bundle/bundle, need_toner=1)
-	var/obj/item/paper_bundle/p = new /obj/item/paper_bundle (src)
-	for(var/obj/item/I in bundle.pages)
+/proc/bundlecopy(var/obj/machinery/target, var/obj/item/paper_bundle/bundle, var/need_toner = TRUE, var/toner, var/do_print = TRUE)
+	var/obj/item/paper_bundle/p = new /obj/item/paper_bundle(target)
+	for(var/obj/item/W in bundle.pages)
 		if(toner <= 0 && need_toner)
 			toner = 0
-			visible_message(SPAN("notice", "A red light on \the [src] flashes, indicating that it is out of toner."))
+			target.visible_message(SPAN_NOTICE("A red light on \the [target] flashes, indicating that it is out of toner."))
+			if(target.type == /obj/machinery/photocopier)
+				var/obj/machinery/photocopier/T = target
+				flick("photocopier_notoner", target)
+				--T.toner
+			playsound(target.loc, 'sound/machines/buzz-two.ogg', 75, 1)
 			break
 
-		if(istype(I, /obj/item/paper))
-			I = copy(I)
-		else if(istype(I, /obj/item/photo))
-			I = photocopy(I)
-		I.forceMove(p)
-		p.pages += I
 
-	p.dropInto(loc)
+		W = copy_type(target, W, need_toner ? toner : 15, do_print)
+		W.forceMove(p)
+		p.pages += W
+
+	p.forceMove(target.loc)
 	p.update_icon()
 	p.icon_state = "paper_words"
-	p.SetName(bundle.name)
+	p.name = bundle.name
+	p.pixel_y = rand(-8, 8)
+	p.pixel_x = rand(-9, 9)
 	return p
 
 /obj/item/device/toner
 	name = "toner cartridge"
+	desc = "A high-definition toner for colour photocopying and printer machines. Good thing it's a business expense."
 	icon_state = "tonercartridge"
 	var/toner_amount = 30

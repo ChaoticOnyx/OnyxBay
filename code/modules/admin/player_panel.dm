@@ -1,421 +1,267 @@
-
-/datum/admins/proc/player_panel_new()//The new one
-	if (!usr.client.holder)
+/datum/tgui_module/moderator/shared/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
 		return
-	var/dat = "<html><meta charset=\"utf-8\"><head><title>Admin Player Panel</title></head>"
 
-	//javascript, the part that does most of the work~
-	dat += {"
+	var/client/C = usr.client
+	if(!C || !C.holder)
+		return
 
-		<head>
-			<script type='text/javascript'>
+	switch(action)
+		if("private_message")
+			var/client/messagee = locate(params["private_message"])
+			var/datum/ticket/ticket = locate(params["ticket"])
 
-				var locked_tabs = new Array();
+			if (!isnull(ticket) && !istype(ticket))
+				return
 
-				function updateSearch(){
+			if(ismob(messagee)) 		//Old stuff can feed-in mobs instead of clients
+				var/mob/M = messagee
+				messagee = M.client
 
+			C.cmd_admin_pm(messagee, null, ticket)
+			. = TRUE
 
-					var filter_text = document.getElementById('filter');
-					var filter = filter_text.value.toLowerCase();
+		if("traitor_panel")
+			if(!check_rights(R_ADMIN|R_MOD))
+				return
 
-					if(complete_list != null && complete_list != ""){
-						var mtbl = document.getElementById("maintable_data_archive");
-						mtbl.innerHTML = complete_list;
-					}
+			if(!ROUND_IS_STARTED)
+				alert("The game hasn't started yet!")
+				return
 
-					if(filter.value == ""){
-						return;
-					}else{
+			var/mob/M = locate(params["traitor_panel"])
+			if(!ismob(M))
+				to_chat(usr, SPAN_WARNING("This can only be used on mobs."))
+				return
+			C.holder.show_traitor_panel(M)
+			. = TRUE
 
-						var maintable_data = document.getElementById('maintable_data');
-						var ltr = maintable_data.getElementsByTagName("tr");
-						for ( var i = 0; i < ltr.length; ++i )
-						{
-							try{
-								var tr = ltr\[i\];
-								if(tr.getAttribute("id").indexOf("data") != 0){
-									continue;
-								}
-								var ltd = tr.getElementsByTagName("td");
-								var td = ltd\[0\];
-								var lsearch = td.getElementsByTagName("b");
-								var search = lsearch\[0\];
-								//var inner_span = li.getElementsByTagName("span")\[1\] //Should only ever contain one element.
-								//document.write("<p>"+search.innerText+"<br>"+filter+"<br>"+search.innerText.indexOf(filter))
-								if ( search.innerText.toLowerCase().indexOf(filter) == -1 )
-								{
-									//document.write("a");
-									//ltr.removeChild(tr);
-									td.innerHTML = "";
-									i--;
-								}
-							}catch(err) {   }
-						}
-					}
+		if("jump_to")
+			if(!check_rights(R_MOD|R_ADMIN))
+				return
 
-					var count = 0;
-					var index = -1;
-					var debug = document.getElementById("debug");
+			var/mob/M = locate(params["jump_to"])
 
-					locked_tabs = new Array();
+			if(!isobserver(usr))
+				C.admin_ghost()
+			sleep(2)
+			C.jumptomob(M)
+			. = TRUE
 
-				}
+		if("show_player_panel")
+			var/mob/M = locate(params["show_player_panel"])
+			C.holder.show_player_panel(M)
+			. = TRUE
 
-				function expand(id,job,name,real_name,image,key,ip,antagonist,ref){
+/datum/tgui_module/moderator/shared/check_antagonists
 
-					clearAll();
+/datum/tgui_module/moderator/shared/check_antagonists/ui_interact(mob/user, datum/tgui/ui)
+	if (!SSticker || SSticker.current_state < GAME_STATE_PLAYING)
+		alert(user, "The game hasn't started yet!")
+		return
 
-					var span = document.getElementById(id);
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "RoundStatus", "Round Status", 400, 500)
+		ui.open()
 
-					body = "<table><tr><td>";
-
-					body += "</td><td align='center'>";
-
-					body += "<font size='2'><b>"+job+" "+name+"</b><br><b>Real name "+real_name+"</b><br><b>Played by "+key+" ("+ip+")</b></font>"
-
-					body += "</td><td align='center'>";
-
-					body += "<a href='?src=\ref[src];adminplayeropts="+ref+"'>PP</a> - "
-					body += "<a href='?src=\ref[src];notes=show;mob="+ref+"'>N</a> - "
-					body += "<a href='?_src_=vars;Vars="+ref+"'>VV</a> - "
-					body += "<a href='?src=\ref[src];traitor="+ref+"'>TP</a> - "
-					body += "<a href='?src=\ref[usr];priv_msg=\ref"+ref+"'>PM</a> - "
-					body += "<a href='?src=\ref[src];subtlemessage="+ref+"'>SM</a> - "
-					body += "<a href='?src=\ref[src];adminplayerobservejump="+ref+"'>JMP</a><br>"
-					if(antagonist > 0)
-						body += "<font size='2'><a href='?src=\ref[src];check_antagonist=1'><font color='red'><b>Antagonist</b></font></a></font>";
-
-					body += "</td></tr></table>";
-
-
-					span.innerHTML = body
-				}
-
-				function clearAll(){
-					var spans = document.getElementsByTagName('span');
-					for(var i = 0; i < spans.length; i++){
-						var span = spans\[i\];
-
-						var id = span.getAttribute("id");
-
-						if(!(id.indexOf("item")==0))
-							continue;
-
-						var pass = 1;
-
-						for(var j = 0; j < locked_tabs.length; j++){
-							if(locked_tabs\[j\]==id){
-								pass = 0;
-								break;
-							}
-						}
-
-						if(pass != 1)
-							continue;
-
-
-
-
-						span.innerHTML = "";
-					}
-				}
-
-				function addToLocked(id,link_id,notice_span_id){
-					var link = document.getElementById(link_id);
-					var decision = link.getAttribute("name");
-					if(decision == "1"){
-						link.setAttribute("name","2");
-					}else{
-						link.setAttribute("name","1");
-						removeFromLocked(id,link_id,notice_span_id);
-						return;
-					}
-
-					var pass = 1;
-					for(var j = 0; j < locked_tabs.length; j++){
-						if(locked_tabs\[j\]==id){
-							pass = 0;
-							break;
-						}
-					}
-					if(!pass)
-						return;
-					locked_tabs.push(id);
-					var notice_span = document.getElementById(notice_span_id);
-					notice_span.innerHTML = "<font color='red'>Locked</font> ";
-					//link.setAttribute("onClick","attempt('"+id+"','"+link_id+"','"+notice_span_id+"');");
-					//document.write("removeFromLocked('"+id+"','"+link_id+"','"+notice_span_id+"')");
-					//document.write("aa - "+link.getAttribute("onClick"));
-				}
-
-				function attempt(ab){
-					return ab;
-				}
-
-				function removeFromLocked(id,link_id,notice_span_id){
-					//document.write("a");
-					var index = 0;
-					var pass = 0;
-					for(var j = 0; j < locked_tabs.length; j++){
-						if(locked_tabs\[j\]==id){
-							pass = 1;
-							index = j;
-							break;
-						}
-					}
-					if(!pass)
-						return;
-					locked_tabs\[index\] = "";
-					var notice_span = document.getElementById(notice_span_id);
-					notice_span.innerHTML = "";
-					//var link = document.getElementById(link_id);
-					//link.setAttribute("onClick","addToLocked('"+id+"','"+link_id+"','"+notice_span_id+"')");
-				}
-
-				function selectTextField(){
-					var filter_text = document.getElementById('filter');
-					filter_text.focus();
-					filter_text.select();
-				}
-
-			</script>
-		</head>
-
-
-	"}
-
-	//body tag start + onload and onkeypress (onkeyup) javascript event calls
-	dat += "<body onload='selectTextField(); updateSearch();' onkeyup='updateSearch();'>"
-
-	//title + search bar
-	dat += {"
-
-		<table width='560' align='center' cellspacing='0' cellpadding='5' id='maintable'>
-			<tr id='title_tr'>
-				<td align='center'>
-					<font size='5'><b>Player panel</b></font><br>
-					Hover over a line to see more information - <a href='?src=\ref[src];check_antagonist=1'>Check antagonists</a>
-					<p>
-				</td>
-			</tr>
-			<tr id='search_tr'>
-				<td align='center'>
-					<b>Search:</b> <input type='text' id='filter' value='' style='width:300px;'>
-				</td>
-			</tr>
-	</table>
-
-	"}
-
-	//player table header
-	dat += {"
-		<span id='maintable_data_archive'>
-		<table width='560' align='center' cellspacing='0' cellpadding='5' id='maintable_data'>"}
-
-	var/list/mobs = sortmobs()
-	var/i = 1
-	for(var/entry in mobs)
-		var/mob/M = entry
-		if(!istype(M))
-			continue
-		if(M.ckey)
-
-			var/color = "#e6e6e6"
-			if(i%2 == 0)
-				color = "#f2f2f2"
-			var/is_antagonist = is_special_character(M)
-
-			var/M_job = ""
-
-			if(isliving(M))
-
-				if(iscarbon(M)) //Carbon stuff
-					if(ishuman(M))
-						var/mob/living/carbon/human/H = M
-						M_job = H.job
-					else if(ismetroid(M))
-						M_job = "metroid"
-					else if(issmall(M))
-						M_job = "Monkey"
-					else if(isalien(M))
-						M_job = "Alien"
-					else
-						M_job = "Carbon-based"
-
-				else if(issilicon(M)) //silicon
-					if(isAI(M))
-						M_job = "AI"
-					else if(ispAI(M))
-						M_job = "pAI"
-					else if(isrobot(M))
-						M_job = "Cyborg"
-					else
-						M_job = "Silicon-based"
-
-				else if(isanimal(M)) //simple animals
-					if(iscorgi(M))
-						M_job = "Corgi"
-					else
-						M_job = "Animal"
-
+/datum/tgui_module/moderator/shared/check_antagonists/ui_data(mob/user)
+	var/list/data = list()
+	data["gamemode"] = SSticker.mode.name
+	data["round_duration"] = get_round_duration_formatted()
+	data["evacuation_is_idle"] = evacuation_controller.is_idle()
+	data["time_left"] = evacuation_controller.get_eta()
+	data["waiting_to_leave"] = evacuation_controller.waiting_to_leave()
+	data["round_delayed"] = SSticker.delay_end
+	data["antagonists"] = list()
+	data["antagonist_types"] = list()
+	for(var/antag_type in all_antag_types)
+		var/datum/antagonist/A = all_antag_types[antag_type]
+		for(var/datum/mind/mind in A.current_antagonists)
+			var/mob/M = mind.current
+			data["antagonists"] += list(list(
+				"role" = A.role_text_plural,
+				"name" = M ? M.real_name : null,
+				"stat" = M ? M.stat : null,
+				"ref" = ref(M)
+			))
+			data["antagonist_types"] |= A.role_text_plural
+		if(A.flags & ANTAG_HAS_NUKE)
+			data["nuke_disks"] = list()
+			for(var/obj/item/disk/nuclear/N in nuke_disks)
+				var/turf/T = get_turf(N)
+				var/location_name
+				if(ismob(N.loc))
+					var/mob/L = N.loc
+					location_name = L.real_name
 				else
-					M_job = "Living"
+					location_name = N.loc ? N.loc.name : null
+				data["nuke_disks"] += list(list(
+					"location_name" = location_name,
+					"x" = T.x,
+					"y" = T.y,
+					"z" = T.z,
+				))
+	return data
 
-			else if(istype(M,/mob/new_player))
-				M_job = "New player"
-
-			else if(isghost(M))
-				M_job = "Ghost"
-			else
-				M_job = "Unknown ([M.type])"
-
-			M_job = replacetext(M_job, "'", "")
-			M_job = replacetext(M_job, "\"", "")
-			M_job = replacetext(M_job, "\\", "")
-
-			var/M_name = M.name
-			M_name = replacetext(M_name, "'", "")
-			M_name = replacetext(M_name, "\"", "")
-			M_name = replacetext(M_name, "\\", "")
-			var/M_rname = M.real_name
-			M_rname = replacetext(M_rname, "'", "")
-			M_rname = replacetext(M_rname, "\"", "")
-			M_rname = replacetext(M_rname, "\\", "")
-
-			var/M_key = M.key
-			M_key = replacetext(M_key, "'", "")
-			M_key = replacetext(M_key, "\"", "")
-			M_key = replacetext(M_key, "\\", "")
-
-			//output for each mob
-			dat += {"
-
-				<tr id='data[i]' name='[i]' onClick="addToLocked('item[i]','data[i]','notice_span[i]')">
-					<td align='center' bgcolor='[color]'>
-						<span id='notice_span[i]'></span>
-						<a id='link[i]'
-						onmouseover='expand("item[i]","[M_job]","[M_name]","[M_rname]","--unused--","[M_key]","[M.lastKnownIP]",[is_antagonist],"\ref[M]")'
-						>
-						<span id='search[i]'><b>[M_name] - [M_rname] - [M_key] ([M_job])</b></span>
-						</a>
-						<br><span id='item[i]'></span>
-					</td>
-				</tr>
-
-			"}
-
-			i++
-
-
-	//player table ending
-	dat += {"
-		</table>
-		</span>
-
-		<script type='text/javascript'>
-			var maintable = document.getElementById("maintable_data_archive");
-			var complete_list = maintable.innerHTML;
-		</script>
-	</body></html>
-	"}
-
-	show_browser(usr, dat, "window=players;size=600x480")
-
-//The old one
-/datum/admins/proc/player_panel_old()
-	if (!usr.client.holder)
+/datum/tgui_module/moderator/shared/check_antagonists/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
 		return
 
-	var/dat = "<html><meta charset=\"utf-8\"><head><title>Player Menu</title></head>"
-	dat += "<body><table border=1 cellspacing=5><B><tr><th>Name</th><th>Real Name</th><th>Assigned Job</th><th>Key</th><th>Options</th><th>PM</th><th>Traitor?</th></tr></B>"
-	//add <th>IP:</th> to this if wanting to add back in IP checking
-	//add <td>(IP: [M.lastKnownIP])</td> if you want to know their ip to the lists below
+	var/client/C = usr.client
+	if(!C || !C.holder)
+		return
+
+	switch(action)
+		if("call_shuttle")
+			if(!check_rights(R_ADMIN))
+				return
+			switch(params["call_shuttle"])
+				if("1")
+					if (evacuation_controller.call_evacuation(usr, TRUE))
+						log_admin("[key_name(usr)] called an evacuation.")
+						message_admins("[key_name_admin(usr)] called an evacuation.", 1)
+						. = TRUE
+
+				if("2")
+					if (evacuation_controller.call_evacuation(usr, TRUE))
+						log_admin("[key_name(usr)] called an evacuation.")
+						message_admins("[key_name_admin(usr)] called an evacuation.", 1)
+					else if (evacuation_controller.cancel_evacuation())
+						log_admin("[key_name(usr)] cancelled an evacuation.")
+						message_admins("[key_name_admin(usr)] cancelled an evacuation.", 1)
+						. = TRUE
+
+/datum/tgui_module/moderator/shared/player_panel
+
+/datum/tgui_module/moderator/shared/player_panel/ui_interact(mob/user, var/datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "PlayerPanel", "Player Panel", 800, 600)
+		ui.open()
+
+/datum/tgui_module/moderator/shared/player_panel/ui_data(mob/user)
+	var/list/data = list()
+	var/isMod = check_rights(R_MOD|R_ADMIN, 0, user)
+	data["holder_ref"] = "\ref[user.client.holder]"
+	data["is_mod"] = isMod
+
 	var/list/mobs = sortmobs()
+
+	data["players"] = list()
 
 	for(var/mob/M in mobs)
-		if(!M.ckey) continue
+		var/ref = "\ref[M]"
+		var/list/player = list()
+		player["ckey"] = TRUE
+		if(!M.ckey)
+			player["ckey"] = FALSE
+			continue
 
-		dat += "<tr><td>[M.name]</td>"
-		if(isAI(M))
-			dat += "<td>AI</td>"
-		else if(isrobot(M))
-			dat += "<td>Cyborg</td>"
-		else if(ishuman(M))
-			dat += "<td>[M.real_name]</td>"
-		else if(istype(M, /mob/living/silicon/pai))
-			dat += "<td>pAI</td>"
-		else if(istype(M, /mob/new_player))
-			dat += "<td>New Player</td>"
-		else if(isghost(M))
-			dat += "<td>Ghost</td>"
-		else if(issmall(M))
-			dat += "<td>Monkey</td>"
-		else if(isalien(M))
-			dat += "<td>Alien</td>"
-		else
-			dat += "<td>Unknown</td>"
+		player["ref"] = ref
+		player["name"] = M.name
+		var/real_name = GetMobRealName(M)
+		player["real_name"] = real_name
 
-
-		if(istype(M,/mob/living/carbon/human))
+		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
-			if(H.mind && H.mind.assigned_role)
-				dat += "<td>[H.mind.assigned_role]</td>"
+			if(H.mind?.assigned_role)
+				player["assigment"] = H.mind.assigned_role
 		else
-			dat += "<td>NA</td>"
+			player["assigment"] = "NA"
 
+		player["key"] = M.key
 
-		dat += {"<td>[M.key ? (M.client ? M.key : "[M.key] (DC)") : "No key"]</td>
-		<td align=center><A HREF='?src=\ref[src];adminplayeropts=\ref[M]'>X</A></td>
-		<td align=center><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>
-		"}
+		if(isMod)
+			player["ip"] = M.lastKnownIP
+		else
+			player["ip"] = FALSE
 
+		player["connected"] = !!M.client
 
+		if(isMod)
+			var/special_char = is_special_character(M)
+			player["antag"] = special_char
+		else
+			player["antag"] = -1
 
-		if(usr.client)
-			var/client/C = usr.client
-			if(is_mentor(C))
-				dat += {"<td align=center> N/A </td>"}
+		if(isMod && (M.client?.player_age || M.player_age))
+			var/age = "Requires database"
+			if(M.client?.player_age)
+				age = M.client.player_age
+			else if(M.player_age)
+				age = M.player_age
 			else
-				switch(is_special_character(M))
-					if(0)
-						dat += {"<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'>Traitor?</A></td>"}
-					if(1)
-						dat += {"<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'><font color=red>Traitor?</font></A></td>"}
-					if(2)
-						dat += {"<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'><font color=red><b>Traitor?</b></font></A></td>"}
+				age = "NA"
+			if(age == "Requires database")
+				age = "NA"
+			player["age"] = age
 		else
-			dat += {"<td align=center> N/A </td>"}
+			player["age"] = FALSE
 
+		data["players"] += list(player)
+	return data
 
+/datum/tgui_module/moderator/shared/player_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return
 
-	dat += "</table></body></html>"
+	var/client/C = usr.client
+	if(!C || !C.holder)
+		return
 
-	show_browser(usr, dat, "window=players;size=640x480")
+	switch(action)
+		if("subtle_message")
+			if(!check_rights(R_MOD,0) && !check_rights(R_ADMIN))
+				return
 
+			var/mob/M = locate(params["subtle_message"])
+			C.cmd_admin_subtle_message(M)
+			. = TRUE
 
+		if("view_variables")
+			C.debug_variables(locate(params["view_variables"]))
+			. = TRUE
 
-/datum/admins/proc/check_antagonists()
-	if (GAME_STATE >= RUNLEVEL_GAME)
-		var/dat = list()
-		dat += "<html><meta charset=\"utf-8\"><head><title>Round Status</title></head><body><h1><B>Round Status</B></h1>"
-		dat += "Current Game Mode: <B>[SSticker.mode.name]</B><BR>"
-		dat += "Round Duration: <B>[roundduration2text()]</B><BR>"
-		dat += "<B>Evacuation</B><BR>"
-		if (evacuation_controller.is_idle())
-			dat += "<a href='?src=\ref[src];call_shuttle=1'>Call Evacuation</a><br>"
-		else
-			var/timeleft = evacuation_controller.get_eta()
-			if (evacuation_controller.waiting_to_leave())
-				dat += "ETA: [(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]<BR>"
-				dat += "<a href='?src=\ref[src];call_shuttle=2'>Send Back</a><br>"
+		if("notes")
+			var/ckey = params["ckey"]
+			if(!ckey)
+				var/mob/M = locate(params["mob"])
+				if(ismob(M))
+					ckey = M.ckey
 
-		dat += "<a href='?src=\ref[src];delay_round_end=1'>[SSticker.delay_end ? "End Round Normally" : "Delay Round End"]</a><br>"
-		dat += "<hr>"
-		var/list/all_antag_types = GLOB.all_antag_types_
-		for(var/antag_type in all_antag_types)
-			var/datum/antagonist/A = all_antag_types[antag_type]
-			dat += A.get_check_antag_output(src)
-		dat += "</body></html>"
-		show_browser(usr, jointext(dat,null), "window=roundstatus;size=400x500")
-	else
-		alert("The game hasn't started yet!")
+			C.holder.show_player_info(ckey)
+			. = TRUE
+
+		if("wind")
+			var/mob/M = locate(params["wind"])
+			if(!ismob(M))
+				to_chat(usr, SPAN_WARNING("This can only be used on mobs."))
+				return
+
+			C.holder.paralyze_mob(M)
+			. = TRUE
+
+/datum/tgui_module/moderator/shared/player_panel/proc/GetMobRealName(var/mob/M)
+	if(isAI(M))
+		return "AI"
+	if(isrobot(M))
+		return "Cyborg"
+	if(ishuman(M))
+		if(M.real_name)
+			return M.real_name
+		return "Unknown"
+	if(istype(M, /mob/living/silicon/pai))
+		return "pAI"
+	if(istype(M, /mob/abstract/new_player))
+		return "New Player"
+	if(isobserver(M))
+		return "Ghost"
+	if(issmall(M))
+		return "Monkey"
+	if(isalien(M))
+		return "Alien"
+	return "Unknown"

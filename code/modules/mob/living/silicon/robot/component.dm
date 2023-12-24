@@ -1,51 +1,55 @@
 // TODO: remove the robot.mmi and robot.cell variables and completely rely on the robot component system
 
-/datum/robot_component/var/name
-/datum/robot_component/var/installed = 0
-/datum/robot_component/var/powered = 0
-/datum/robot_component/var/toggled = 1
-/datum/robot_component/var/brute_damage = 0
-/datum/robot_component/var/electronics_damage = 0
-/datum/robot_component/var/idle_usage = 0   // Amount of power used every MC tick. In joules.
-/datum/robot_component/var/active_usage = 0 // Amount of power used for every action. Actions are module-specific. Actuator for each tile moved, etc.
-/datum/robot_component/var/max_damage = 30  // HP of this component.
-/datum/robot_component/var/mob/living/silicon/robot/owner
-
-// The actual device object that has to be installed for this.
-/datum/robot_component/var/external_type = null
-
-// The wrapped device(e.g. radio), only set if external_type isn't null
-/datum/robot_component/var/obj/item/wrapped = null
+/datum/robot_component
+	var/name = "robot component"
+	var/installed = 0
+	var/powered = 0
+	var/toggled = 1
+	var/brute_damage = 0
+	var/electronics_damage = 0
+	var/idle_usage = 0			// Amount of power used every MC tick. In joules.
+	var/active_usage = 0		// Amount of power used for every action. Actions are module-specific. Actuator for each tile moved, etc.
+	var/max_damage = 30			// HP of this component.
+	var/mob/living/silicon/robot/owner
+	var/external_type = null	// The actual device object that has to be installed for this.
+	var/obj/item/wrapped = null // The wrapped device(e.g. radio), only set if external_type isn't null
 
 /datum/robot_component/New(mob/living/silicon/robot/R)
 	src.owner = R
 
 /datum/robot_component/proc/install()
+	installed = 1
+
 /datum/robot_component/proc/uninstall()
+	installed = 0
 
 /datum/robot_component/proc/destroy()
-	if (istype(wrapped, /obj/item/robot_parts/robot_component))
+	var/brokenstate = "broken" // Generic icon
+	if(istype(wrapped, /obj/item/robot_parts/robot_component))
 		var/obj/item/robot_parts/robot_component/comp = wrapped
-		wrapped.icon_state = comp.icon_state_broken
+		brokenstate = comp.icon_state_broken
+	if(wrapped)
+		qdel(wrapped)
 
-	installed = -1
+	wrapped = new/obj/item/broken_device
+	wrapped.icon_state = brokenstate // Module-specific broken icons! Yay!
+
+	// The thing itself isn't there anymore, but some fried remains are.
 	uninstall()
+	installed = -1
 
-/datum/robot_component/proc/repair()
-	if (istype(wrapped, /obj/item/robot_parts/robot_component))
-		var/obj/item/robot_parts/robot_component/comp = wrapped
-		wrapped.icon_state = comp.icon_state
+/datum/robot_component/proc/get_damage(var/type)
+	return Clamp(brute_damage + electronics_damage,0,max_damage)
 
-	installed = 1
-	install()
-
-/datum/robot_component/proc/take_damage(brute, electronics, sharp, edge)
-	if(installed != 1) return
+/datum/robot_component/proc/take_damage(brute, electronics, damage_flags)
+	if(installed != 1)
+		return
 
 	brute_damage += brute
 	electronics_damage += electronics
 
-	if(brute_damage + electronics_damage >= max_damage) destroy()
+	if(brute_damage + electronics_damage >= max_damage)
+		destroy()
 
 /datum/robot_component/proc/heal_damage(brute, electronics)
 	if(installed != 1)
@@ -62,7 +66,8 @@
 	if(toggled == 0)
 		powered = 0
 		return
-	if(owner.cell_use_power(idle_usage))
+	if(owner.cell && owner.cell.charge >= idle_usage)
+		owner.cell_use_power(idle_usage)
 		powered = 1
 	else
 		powered = 0
@@ -71,11 +76,47 @@
 // ARMOUR
 // Protects the cyborg from damage. Usually first module to be hit
 // No power usage
-/datum/robot_component/armour
-	name = "armour plating"
-	external_type = /obj/item/robot_parts/robot_component/armour
+/datum/robot_component/armor
+	name = "armor plating"
+	external_type = /obj/item/robot_parts/robot_component/armor
 	max_damage = 60
 
+// JETPACK
+// Allows the cyborg to move in space
+// Uses no power when idle. Uses 50J for each tile the cyborg moves.
+/datum/robot_component/jetpack
+	name = "jetpack"
+	external_type = /obj/item/robot_parts/robot_component/jetpack
+	active_usage = 50
+	max_damage = 60
+	installed = 0
+
+	var/obj/item/tank/jetpack/carbondioxide/synthetic/tank = null
+
+/datum/robot_component/surge
+	name = "surge preventor"
+	external_type = /obj/item/robot_parts/robot_component/surge
+	max_damage = 60
+	installed = 0
+	var/surge_left = 0
+
+/datum/robot_component/surge/install()
+	..()
+	if(!surge_left)
+		surge_left = rand(2, 5)
+
+/datum/robot_component/jetpack/install()
+	..()
+	tank = new/obj/item/tank/jetpack/carbondioxide/synthetic
+	owner.internals = tank
+	tank.forceMove(owner)
+	owner.jetpack = tank
+
+/datum/robot_component/jetpack/uninstall()
+	..()
+	qdel(tank)
+	tank = null
+	owner.jetpack = null
 
 // ACTUATOR
 // Enables movement.
@@ -99,16 +140,11 @@
 /datum/robot_component/cell
 	name = "power cell"
 	max_damage = 50
-	var/obj/item/cell/stored_cell = null
 
 /datum/robot_component/cell/destroy()
 	..()
-	stored_cell = owner.cell
 	owner.cell = null
 
-/datum/robot_component/cell/repair()
-	owner.cell = stored_cell
-	stored_cell = null
 
 // RADIO
 // Enables radio communications
@@ -149,19 +185,26 @@
 /datum/robot_component/camera/update_power_state()
 	..()
 	if (camera)
+		//check if camera component was deactivated
+		if (!powered && camera.status != powered)
+			camera.kick_viewers()
 		camera.status = powered
 
 /datum/robot_component/camera/install()
+	installed = 1
 	if (camera)
 		camera.status = 1
 
 /datum/robot_component/camera/uninstall()
+	installed = 0
 	if (camera)
 		camera.status = 0
+		camera.kick_viewers()
 
 /datum/robot_component/camera/destroy()
 	if (camera)
 		camera.status = 0
+		camera.kick_viewers()
 
 // SELF DIAGNOSIS MODULE
 // Analyses cyborg's modules, providing damage readouts and basic information
@@ -182,64 +225,105 @@
 // Initializes cyborg's components. Technically, adds default set of components to new borgs
 /mob/living/silicon/robot/proc/initialize_components()
 	components["actuator"] = new /datum/robot_component/actuator(src)
+	actuatorComponent = components["actuator"]
 	components["radio"] = new /datum/robot_component/radio(src)
 	components["power cell"] = new /datum/robot_component/cell(src)
 	components["diagnosis unit"] = new /datum/robot_component/diagnosis_unit(src)
 	components["camera"] = new /datum/robot_component/camera(src)
 	components["comms"] = new /datum/robot_component/binary_communication(src)
-	components["armour"] = new /datum/robot_component/armour(src)
+	components["armor"] = new /datum/robot_component/armor(src)
+	components["jetpack"] = new /datum/robot_component/jetpack(src)
+	components["surge"] = new /datum/robot_component/surge(src)
+	jetpackComponent = components["jetpack"]
+	jetpackComponent.installed = FALSE //We start the jetpack as not installed, because its nondefault
 
 // Checks if component is functioning
 /mob/living/silicon/robot/proc/is_component_functioning(module_name)
 	var/datum/robot_component/C = components[module_name]
-	return C && C.installed == 1 && C.toggled && C.is_powered()
+	return C && C.installed == TRUE && C.toggled && C.is_powered()
 
 // Returns component by it's string name
-/mob/living/silicon/robot/proc/get_robot_component(component_name)
+/mob/living/silicon/robot/proc/get_component(var/component_name)
 	var/datum/robot_component/C = components[component_name]
 	return C
 
-
-
 // COMPONENT OBJECTS
-
-
-
-// Component Objects
 // These objects are visual representation of modules
+
+/obj/item/broken_device
+	name = "broken component"
+	icon = 'icons/obj/robot_component.dmi'
+	icon_state = "broken"
+
+/obj/item/robot_parts/robot_component/proc/take_damage(var/brute_amt, var/burn_amt)
+	brute += brute_amt
+	burn += burn_amt
+	total_dam = brute + burn
+	if(total_dam >= max_dam)
+		var/obj/item/trash/broken_electronics/broken_device = new(get_turf(src))
+		if(icon_state_broken != "broken")
+			broken_device.icon = src.icon
+			broken_device.icon_state = icon_state_broken
+		broken_device.name = "broken [name]"
+		return broken_device
+	return FALSE
+
+/obj/item/robot_parts/robot_component/proc/is_functional()
+	return ((brute + burn) < max_dam)
+
 /obj/item/robot_parts/robot_component
 	icon = 'icons/obj/robot_component.dmi'
 	icon_state = "working"
 	var/brute = 0
 	var/burn = 0
 	var/icon_state_broken = "broken"
+	var/total_dam = 0
+	var/max_dam = 60
 
 /obj/item/robot_parts/robot_component/binary_communication_device
 	name = "binary communication device"
+	desc = "A module used for binary communications over encrypted frequencies, commonly used by synthetic robots."
 	icon_state = "binradio"
 	icon_state_broken = "binradio_broken"
 
 /obj/item/robot_parts/robot_component/actuator
 	name = "actuator"
+	desc = "A modular, hydraulic actuator used by exosuits and robots alike for movement and manipulation."
 	icon_state = "motor"
 	icon_state_broken = "motor_broken"
 
-/obj/item/robot_parts/robot_component/armour
-	name = "armour plating"
+/obj/item/robot_parts/robot_component/armor
+	name = "armor plating"
+	desc = "A pair of flexible, adaptable armor plates, used to protect the internals of robots."
 	icon_state = "armor"
 	icon_state_broken = "armor_broken"
 
+/obj/item/robot_parts/robot_component/surge
+	name = "surge preventor"
+	desc = "A high-tech device designed to safeguard the internal battery from electromagnetic pulses."
+	icon_state = "surge"
+	icon_state_broken = "surge_broken"
+
 /obj/item/robot_parts/robot_component/camera
 	name = "camera"
+	desc = "A modified camera module used as a visual receptor for robots and exosuits, also serving as a relay for wireless video feed."
 	icon_state = "camera"
 	icon_state_broken = "camera_broken"
 
 /obj/item/robot_parts/robot_component/diagnosis_unit
-	name = "diagnosis unit"
+	name = "diagnostics unit"
+	desc = "An internal computer and sensors used by robots and exosuits to accurately diagnose any system discrepancies on their components."
 	icon_state = "analyser"
 	icon_state_broken = "analyser_broken"
 
+/obj/item/robot_parts/robot_component/jetpack
+	name = "jetpack"
+	icon = 'icons/obj/tank.dmi'
+	icon_state = "jetpack-black"
+	icon_state_broken = "jetpack-black"
+
 /obj/item/robot_parts/robot_component/radio
 	name = "radio"
+	desc = "A modular, multi-frequency radio used by robots and exosuits to enable communication systems. Comes with built-in subspace receivers."
 	icon_state = "radio"
 	icon_state_broken = "radio_broken"

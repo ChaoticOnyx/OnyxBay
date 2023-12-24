@@ -8,7 +8,7 @@
 	var/start_time	= 0		// When this source began alarming.
 	var/end_time	= 0		// Use to set when this trigger should clear, in case the source is lost.
 
-/datum/alarm_source/New(atom/source)
+/datum/alarm_source/New(var/atom/source)
 	src.source = source
 	start_time = world.time
 	source_name = source.get_source_name()
@@ -22,16 +22,15 @@
 	var/area/last_area				//The last acquired area, used should origin be lost (for example a destroyed borg containing an alarming camera).
 	var/area/last_name				//The last acquired name, used should origin be lost
 	var/area/last_camera_area		//The last area in which cameras where fetched, used to see if the camera list should be updated.
-	var/last_z_level				//The last acquired z-level, used should origin be lost
 	var/end_time					//Used to set when this alarm should clear, in case the origin is lost.
 
-/datum/alarm/New(atom/origin, atom/source, duration, severity)
+/datum/alarm/New(var/atom/origin, var/atom/source, var/duration, var/severity)
 	src.origin = origin
 
 	cameras()	// Sets up both cameras and last alarm area.
 	set_source_data(source, duration, severity)
 
-/datum/alarm/proc/process()
+/datum/alarm/process()
 	// Has origin gone missing?
 	if(!origin && !end_time)
 		end_time = world.time + ALARM_RESET_DELAY
@@ -44,10 +43,10 @@
 			AS.duration = 0
 			AS.end_time = world.time + ALARM_RESET_DELAY
 
-/datum/alarm/proc/set_source_data(atom/source, duration, severity)
+/datum/alarm/proc/set_source_data(var/atom/source, var/duration, var/severity)
 	var/datum/alarm_source/AS = sources_assoc[source]
 	if(!AS)
-		AS = new /datum/alarm_source(source)
+		AS = new/datum/alarm_source(source)
 		sources += AS
 		sources_assoc[source] = AS
 	// Currently only non-0 durations can be altered (normal alarms VS EMP blasts)
@@ -56,15 +55,10 @@
 		AS.duration = duration
 	AS.severity = severity
 
-/datum/alarm/proc/clear(source)
+/datum/alarm/proc/clear(var/source)
 	var/datum/alarm_source/AS = sources_assoc[source]
 	sources -= AS
 	sources_assoc -= source
-
-/datum/alarm/proc/alarm_z()
-	if(origin)
-		last_z_level = origin.get_alarm_z(origin)
-	return last_z_level
 
 /datum/alarm/proc/alarm_area()
 	if(!origin)
@@ -106,12 +100,6 @@
 /******************
 * Assisting procs *
 ******************/
-/atom/proc/get_alarm_z()
-	return get_z(src)
-
-/area/get_alarm_z()
-	return contents.len ? get_z(contents[1]) : 0
-
 /atom/proc/get_alarm_area()
 	return get_area(src)
 
@@ -148,7 +136,7 @@
 
 	return cameras
 
-/mob/living/silicon/robot/syndicate/get_alarm_cameras()
+/mob/living/silicon/robot/combat/get_alarm_cameras()
 	return list()
 
 #undef ALARM_RESET_DELAY

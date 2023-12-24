@@ -1,12 +1,9 @@
 /datum/game_mode/uprising
-	name = "Cult & Revolution"
-	round_description = "Some crewmembers are attempting to start a revolution while a cult plots in the shadows!"
-	extended_round_description = "Cultists and revolutionaries spawn in this round."
+	name = "Uprising (Rev+Traitor)"
 	config_tag = "uprising"
+	round_description = "Some crewmembers are attempting to start a revolution while subversive elements infest the crew!"
+	extended_round_description = "Traitors and revolutionaries spawn in this round."
 	required_players = 20
-	required_enemies = 6
-	end_on_antag_death = 0
-	auto_recall_shuttle = 0
-	shuttle_delay = 2
-	antag_tags = list(MODE_REVOLUTIONARY, MODE_CULTIST)
-	require_all_templates = 1
+	required_enemies = 3
+	antag_tags = list(MODE_REVOLUTIONARY, MODE_LOYALIST, MODE_TRAITOR)
+	require_all_templates = TRUE

@@ -10,7 +10,7 @@ This is /obj/machinery level code to properly manage power usage from the area.
 
 // returns true if the area has power on given channel (or doesn't require power), defaults to power_channel.
 // May also optionally specify an area, otherwise defaults to src.loc.loc
-/obj/machinery/proc/powered(chan = -1, area/check_area = null)
+/obj/machinery/proc/powered(var/chan = -1, var/area/check_area = null)
 
 	if(!src.loc)
 		return 0
@@ -44,6 +44,9 @@ This is /obj/machinery level code to properly manage power usage from the area.
 		queue_icon_update()
 
 /obj/machinery/proc/get_power_usage()
+	if(internal)
+		return 0
+
 	switch(use_power)
 		if(POWER_USE_IDLE)
 			return idle_power_usage
@@ -53,7 +56,7 @@ This is /obj/machinery level code to properly manage power usage from the area.
 			return 0
 
 // This will have this machine have its area eat this much power next tick, and not afterwards. Do not use for continued power draw.
-/obj/machinery/proc/use_power_oneoff(amount, chan = POWER_CHAN)
+/obj/machinery/proc/use_power_oneoff(var/amount, var/chan = POWER_CHAN)
 	var/area/A = get_area(src)		// make sure it's in an area
 	if(!A)
 		return
@@ -62,39 +65,39 @@ This is /obj/machinery level code to properly manage power usage from the area.
 	A.use_power_oneoff(amount, chan)
 
 // Do not do power stuff in New/Initialize until after ..()
-/obj/machinery/Initialize()
+/obj/machinery/Initialize(mapload, d = 0, populate_components = TRUE, is_internal = FALSE)
+	internal = is_internal
 	REPORT_POWER_CONSUMPTION_CHANGE(0, get_power_usage())
+	moved_event.register(src, src, PROC_REF(update_power_on_move))
 	power_init_complete = TRUE
 	. = ..()
 
 // Or in Destroy at all, but especially after the ..().
 /obj/machinery/Destroy()
+	moved_event.unregister(src, src, PROC_REF(update_power_on_move))
 	REPORT_POWER_CONSUMPTION_CHANGE(get_power_usage(), 0)
-
-	return ..()
-
-/obj/machinery/Move(NewLoc)
-	var/atom/OldLoc = loc
 	. = ..()
-	update_power_on_move(OldLoc, loc)
 
-/obj/machinery/proc/update_power_on_move(atom/old_loc, atom/new_loc)
+/obj/machinery/proc/update_power_on_move(atom/movable/mover, atom/old_loc, atom/new_loc)
+	area_changed(get_area(old_loc), get_area(new_loc))
+
+/obj/machinery/proc/area_changed(area/old_area, area/new_area)
+	if(old_area == new_area)
+		return
 	var/power = get_power_usage()
 	if(!power)
 		return // This is the most likely case anyway.
-	var/area/old_area = get_area(old_loc)
-	var/area/new_area = get_area(new_loc)
-	if(old_area != new_area)
-		if(old_area)
-			old_area.power_use_change(power, 0, power_channel)
-		if(new_area)
-			new_area.power_use_change(0, power, power_channel)
+	if(old_area)
+		old_area.power_use_change(power, 0, power_channel)
+	if(new_area)
+		new_area.power_use_change(0, power, power_channel)
+	power_change()
 
 // The three procs below are the only allowed ways of modifying the corresponding variables.
 /obj/machinery/proc/update_use_power(new_use_power)
 	if(!power_init_complete)
 		use_power = new_use_power
-		return // We'll be retallying anyway.
+		return
 	if(use_power == new_use_power)
 		return
 	var/old_power = get_power_usage()

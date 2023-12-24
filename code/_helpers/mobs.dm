@@ -1,43 +1,38 @@
 /atom/movable/proc/get_mob()
 	return
 
-/obj/mecha/get_mob()
-	return occupant
-
 /obj/vehicle/train/get_mob()
-	return buckled_mob
-
-/mob/get_selected_zone()
-	return zone_sel.selecting
-
-/mob/get_active_item()
-	return get_active_hand()
+	return buckled
 
 /mob/get_mob()
 	return src
 
-/mob/living/bot/mulebot/get_mob()
-	if(load && istype(load, /mob/living))
-		return list(src, load)
-	return src
-
-//helper for inverting armor blocked values into a multiplier
-#define blocked_mult(blocked) max(1 - (blocked/100), 0)
-
-/proc/mobs_in_view(range, source)
-	var/list/mobs = list()
+/proc/mobs_in_view(var/range, var/source)
+	. = list()
 	for(var/atom/movable/AM in view(range, source))
-		var/M = AM.get_mob()
-		if(M)
-			mobs += M
+		if (ismob(AM))
+			. += AM
+			continue
 
-	return mobs
+		if (!AM.can_hold_mob)
+			continue
+
+		. += AM.get_mob()
 
 /proc/random_hair_style(gender, species = SPECIES_HUMAN)
 	var/h_style = "Bald"
 
-	var/datum/species/mob_species = all_species[species]
-	var/list/valid_hairstyles = mob_species.get_hair_styles()
+	var/list/valid_hairstyles = list()
+	for(var/hairstyle in hair_styles_list)
+		var/datum/sprite_accessory/S = hair_styles_list[hairstyle]
+		if(gender == MALE && S.gender == FEMALE)
+			continue
+		if(gender == FEMALE && S.gender == MALE)
+			continue
+		if( !(species in S.species_allowed))
+			continue
+		valid_hairstyles[hairstyle] = hair_styles_list[hairstyle]
+
 	if(valid_hairstyles.len)
 		h_style = pick(valid_hairstyles)
 
@@ -46,8 +41,18 @@
 /proc/random_facial_hair_style(gender, species = SPECIES_HUMAN)
 	var/f_style = "Shaved"
 
-	var/datum/species/mob_species = all_species[species]
-	var/list/valid_facialhairstyles = mob_species.get_facial_hair_styles(gender)
+	var/list/valid_facialhairstyles = list()
+	for(var/facialhairstyle in facial_hair_styles_list)
+		var/datum/sprite_accessory/S = facial_hair_styles_list[facialhairstyle]
+		if(gender == MALE && S.gender == FEMALE)
+			continue
+		if(gender == FEMALE && S.gender == MALE)
+			continue
+		if( !(species in S.species_allowed))
+			continue
+
+		valid_facialhairstyles[facialhairstyle] = facial_hair_styles_list[facialhairstyle]
+
 	if(valid_facialhairstyles.len)
 		f_style = pick(valid_facialhairstyles)
 
@@ -61,30 +66,27 @@
 	return current_species ? current_species.sanitize_name(name) : sanitizeName(name)
 
 /proc/random_name(gender, species = SPECIES_HUMAN)
-
 	var/datum/species/current_species
 	if(species)
 		current_species = all_species[species]
 
-	if(!current_species)
+	if(!current_species || current_species.name_language == null)
 		if(gender==FEMALE)
-			return capitalize(pick(GLOB.first_names_female)) + " " + capitalize(pick(GLOB.last_names))
+			return capitalize(pick(first_names_female)) + " " + capitalize(pick(last_names))
 		else
-			return capitalize(pick(GLOB.first_names_male)) + " " + capitalize(pick(GLOB.last_names))
+			return capitalize(pick(first_names_male)) + " " + capitalize(pick(last_names))
 	else
 		return current_species.get_random_name(gender)
 
-/proc/random_skin_tone(datum/species/current_species)
-	var/species_tone = current_species ? 35 - current_species.max_skin_tone() : -185
+/proc/random_skin_tone()
 	switch(pick(60;"caucasian", 15;"afroamerican", 10;"african", 10;"latino", 5;"albino"))
 		if("caucasian")		. = -10
 		if("afroamerican")	. = -115
 		if("african")		. = -165
 		if("latino")		. = -55
 		if("albino")		. = 34
-		else				. = rand(species_tone,34)
-
-	return min(max(. + rand(-25, 25), species_tone), 34)
+		else				. = rand(-185,34)
+	return min(max( .+rand(-25, 25), -185),34)
 
 /proc/skintone2racedescription(tone)
 	switch (tone)
@@ -112,160 +114,63 @@
 		else				return "unknown"
 
 /proc/RoundHealth(health)
-	var/list/icon_states = icon_states('icons/mob/huds/hud.dmi')
-	for(var/icon_state in icon_states)
-		if(health >= text2num(icon_state))
-			return icon_state
-	return icon_states[icon_states.len] // If we had no match, return the last element
+	switch(health)
+		if(100 to INFINITY)
+			return "health100"
+		if(90 to 100)
+			return "health95"
+		if(70 to 90)
+			return "health80"
+		if(50 to 70)
+			return "health60"
+		if(30 to 50)
+			return "health40"
+		if(18 to 30)
+			return "health25"
+		if(5 to 18)
+			return "health10"
+		if(1 to 5)
+			return "health1"
+		if(-99 to 0)
+			return "health0"
+		else
+			return "health-100"
 
-//checks whether this item is a module of the robot it is located in.
-/proc/is_robot_module(obj/item/thing)
-	if (!thing || !istype(thing.loc, /mob/living/silicon/robot))
-		return 0
-	var/mob/living/silicon/robot/R = thing.loc
-	return (thing in R.module.modules)
+/*
+Proc for attack log creation, because really why not
+1 argument is the actor
+2 argument is the target of action
+3 is the description of action(like punched, throwed, or any other verb)
+4 should it make adminlog note or not
+5 is the tool with which the action was made(usually item)					5 and 6 are very similar(5 have "by " before it, that it) and are separated just to keep things in a bit more in order
+6 is additional information, anything that needs to be added
+*/
 
-/proc/get_exposed_defense_zone(atom/movable/target)
-	return pick(BP_HEAD, BP_L_HAND, BP_R_HAND, BP_L_FOOT, BP_R_FOOT, BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG, BP_CHEST, BP_GROIN)
+/proc/add_logs(mob/user, mob/target, what_done, var/admin=1, var/object=null, var/addition=null)
+	if(user && ismob(user))
+		user.attack_log += text("\[[time_stamp()]\] <span class='warning'>Has [what_done] [target ? "[target.name][(ismob(target) && target.ckey) ? "([target.ckey])" : ""]" : "NON-EXISTANT SUBJECT"][object ? " with [object]" : " "][addition]</span>")
+	if(target && ismob(target))
+		target.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been [what_done] by [user ? "[user.name][(ismob(user) && user.ckey) ? "([user.ckey])" : ""]" : "NON-EXISTANT SUBJECT"][object ? " with [object]" : " "][addition]</font>")
+	if(admin)
+		log_attack("<span class='warning'>[user ? "[user.name][(ismob(user) && user.ckey) ? "([user.ckey])" : ""]" : "NON-EXISTANT SUBJECT"] [what_done] [target ? "[target.name][(ismob(target) && target.ckey)? "([target.ckey])" : ""]" : "NON-EXISTANT SUBJECT"][object ? " with [object]" : " "][addition]</span>",ckey=key_name(user),ckey_target=key_name(target))
 
-/proc/do_mob(atom/movable/affecter, mob/target, time = 30, target_zone = 0, uninterruptible = 0, progress = 1, incapacitation_flags = INCAPACITATION_DEFAULT, can_multitask = FALSE)
-	if(!affecter || !target)
+//checks whether this item is a module of the robot or exosuit it is located in. This is mainly to ensure that things do not get embedded or fed into autolathes if attached to a bot or exosuit
+/proc/is_robot_module(var/obj/item/thing)
+	if(!thing)
 		return FALSE
+	if(istype(thing.loc, /mob/living/heavy_vehicle))
+		return TRUE
+	if(istype(thing.loc, /mob/living/silicon/robot))
+		var/mob/living/silicon/robot/R = thing.loc
+		return (thing in R.module.modules)
 
-	var/uniqueid
-	if(!can_multitask)
-		uniqueid = "domob_\ref[affecter]_\ref[target]"
-		if(uniqueid in GLOB.domobs)
-			return FALSE
+/proc/get_exposed_defense_zone(var/atom/movable/target)
+	var/obj/item/grab/G = locate() in target
+	if(G && G.state >= GRAB_NECK) //works because mobs are currently not allowed to upgrade to NECK if they are grabbing two people.
+		return pick(BP_HEAD, BP_L_HAND, BP_R_HAND, BP_L_FOOT, BP_R_FOOT, BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG)
+	else
+		return pick(BP_CHEST, BP_GROIN)
 
-		LAZYADD(GLOB.domobs, uniqueid)
-
-	var/mob/user = affecter
-	var/is_mob_type = istype(user)
-	var/user_loc = affecter.loc
-	var/target_loc = target.loc
-
-	var/holding = affecter.get_active_item()
-
-	if(istype(user,/mob/living))
-		var/mob/living/L = user
-		for(var/datum/modifier/actionspeed/ASM in L.modifiers)
-			time = time * ASM.actionspeed_coefficient
-
-	var/datum/progressbar/progbar
-	if(is_mob_type && progress)
-		progbar = new(user, time, target)
-
-	var/endtime = world.time+time
-	var/starttime = world.time
-	. = 1
-	while (world.time < endtime)
-
-		stoplag(1)
-
-		if(progbar)
-			progbar.update(world.time - starttime)
-
-		if(!affecter || !target)
-			. = 0
-			break
-
-		if(uninterruptible)
-			continue
-
-		if(!affecter || (is_mob_type && user.incapacitated(incapacitation_flags)) || affecter.loc != user_loc)
-			. = 0
-			break
-
-		if(target.loc != target_loc)
-			. = 0
-			break
-
-		if(affecter.get_active_item() != holding)
-			. = 0
-			break
-
-		if(target_zone && affecter.get_selected_zone() != target_zone)
-			. = 0
-			break
-
-	if(progbar)
-		qdel(progbar)
-
-	if(!can_multitask)
-		LAZYREMOVE(GLOB.domobs, uniqueid)
-
-/proc/do_after(mob/user, delay, atom/target = null, needhand = TRUE, progress = TRUE, incapacitation_flags = INCAPACITATION_DEFAULT, same_direction = FALSE, can_move = FALSE)
-	if(!user)
-		return FALSE
-
-	var/uniqueid = "doafter_\ref[user]_\ref[target]"
-	if(uniqueid in GLOB.doafters)
-		return FALSE
-
-	LAZYADD(GLOB.doafters, uniqueid)
-
-	var/atom/target_loc = null
-	var/target_type = null
-
-	var/original_dir = user.dir
-
-	if(target)
-		target_loc = target.loc
-		target_type = target.type
-
-	var/atom/original_loc = user.loc
-
-	var/holding = user.get_active_hand()
-
-	if(istype(user,/mob/living))
-		var/mob/living/L = user
-		for(var/datum/modifier/actionspeed/ASM in L.modifiers)
-			delay = delay * ASM.actionspeed_coefficient
-
-	var/datum/progressbar/progbar
-	if (progress)
-		progbar = new(user, delay, target)
-
-	var/endtime = world.time + delay
-	var/starttime = world.time
-	. = 1
-	while (world.time < endtime)
-		stoplag(1)
-		if (progress)
-			progbar.update(world.time - starttime)
-
-		if(!user || user.incapacitated(incapacitation_flags) || (user.loc != original_loc && !can_move) || (same_direction && user.dir != original_dir))
-			. = 0
-			break
-
-		if(target_loc && (!target || QDELETED(target) || target_loc != target.loc || target_type != target.type))
-			. = 0
-			break
-
-		if(needhand)
-			if(user.get_active_hand() != holding)
-				. = 0
-				break
-
-	if(progbar)
-		qdel(progbar)
-
-	LAZYREMOVE(GLOB.doafters, uniqueid)
-
-/proc/is_species(A, species_datum)
-	. = FALSE
-	if(ishuman(A))
-		var/mob/living/carbon/human/H = A
-		if(istype(H.species, species_datum))
-			. = TRUE
-
-/proc/able_mobs_in_oview(origin)
-	var/list/mobs = list()
-	for(var/mob/living/M in oview(origin)) // Only living mobs are considered able.
-		if(!M.is_physically_disabled())
-			mobs += M
-	return mobs
 
 // Returns true if M was not already in the dead mob list
 /mob/proc/switch_from_living_to_dead_mob_list()
@@ -281,119 +186,103 @@
 /mob/proc/add_to_living_mob_list()
 	return FALSE
 /mob/living/add_to_living_mob_list()
-	if((src in GLOB.living_mob_list_) || (src in GLOB.dead_mob_list_))
+	if((src in living_mob_list) || (src in dead_mob_list))
 		return FALSE
-	GLOB.living_mob_list_ += src
+	living_mob_list += src
 	return TRUE
 
 // Returns true if the mob was removed from the living list
 /mob/proc/remove_from_living_mob_list()
-	return GLOB.living_mob_list_.Remove(src)
+	return living_mob_list.Remove(src)
 
 // Returns true if the mob was in neither the dead or living list
 /mob/proc/add_to_dead_mob_list()
-	CAN_BE_REDEFINED(TRUE)
-
-	SEND_SIGNAL(src, SIGNAL_MOB_DEATH, src)
-	SEND_GLOBAL_SIGNAL(SIGNAL_MOB_DEATH, src)
-
 	return FALSE
 
 /mob/living/add_to_dead_mob_list()
-	if((src in GLOB.living_mob_list_) || (src in GLOB.dead_mob_list_))
+	if((src in living_mob_list) || (src in dead_mob_list))
 		return FALSE
-
-	..()
-	GLOB.dead_mob_list_ += src
-
+	dead_mob_list += src
 	return TRUE
 
 // Returns true if the mob was removed form the dead list
 /mob/proc/remove_from_dead_mob_list()
-	return GLOB.dead_mob_list_.Remove(src)
+	return dead_mob_list.Remove(src)
 
-/mob/proc/can_block_magic()
-	return FALSE
-//Find a dead mob with a brain and client.
-/proc/find_dead_player(find_key, include_observers = 0)
-	if(isnull(find_key))
-		return
+// This will update a mob's name, real_name, mind.name, SSrecords records, pda and id
+// Calling this proc without an oldname will only update the mob and skip updating the pda, id and records
+/mob/proc/fully_replace_character_name(var/oldname,var/newname)
+	if(!newname)	return 0
+	real_name = newname
+	name = newname
+	if(mind)
+		mind.name = newname
+	if(dna)
+		dna.real_name = real_name
 
-	var/mob/selected = null
-
-	if(include_observers)
-		for(var/mob/M in GLOB.player_list)
-			if((!M.is_ooc_dead()) || (!M.client))
-				continue
-			if(M.ckey == find_key)
-				selected = M
+	if(oldname)
+		//update the datacore records! This is goig to be a bit costly.
+		for(var/datum/record/general/R in list(SSrecords.records, SSrecords.records_locked))
+			if(R.name == oldname)
+				R.name = newname
 				break
-	else
-		for(var/mob/living/M in GLOB.player_list)
-			//Dead people only thanks!
-			if((!M.is_ooc_dead()) || (!M.client))
-				continue
-			//They need a brain!
-			if(istype(M, /mob/living/carbon/human))
-				var/mob/living/carbon/human/H = M
-				if(H.should_have_organ(BP_BRAIN) && !H.has_brain())
+
+		//update our pda and id if we have them on our person
+		var/list/searching = GetAllContents()
+		var/search_id = 1
+		var/search_pda = 1
+
+		for(var/A in searching)
+			if( search_id && istype(A,/obj/item/card/id) )
+				var/obj/item/card/id/ID = A
+				if(ID.registered_name == oldname)
+					ID.registered_name = newname
+					ID.name = "[newname]'s ID Card ([ID.assignment])"
+					if(!search_pda)	break
+					search_id = 0
+
+			else if(search_pda && istype(A,/obj/item/modular_computer))
+				var/obj/item/modular_computer/PDA = A
+				if(!PDA.registered_id)
 					continue
-			if(M.ckey == find_key)
-				selected = M
+				if(PDA.registered_id.name == oldname)
+					PDA.name = "PDA-[newname] ([PDA.registered_id.assignment])"
+					if(!search_id)	break
+					search_pda = 0
+	return 1
+
+// Generalised helper proc for letting mobs rename themselves
+/mob/proc/rename_self(var/role, var/allow_numbers=0)
+	set waitfor = FALSE
+	var/oldname = real_name
+
+	var/time_passed = world.time
+	var/newname
+
+	for(var/i=1,i<=3,i++)	//we get 3 attempts to pick a suitable name.
+		newname = input(src,"You are \a [role]. Would you like to change your name to something else?", "Name change",oldname) as text
+		if((world.time-time_passed)>3000)
+			return	//took too long
+		newname = sanitizeName(newname, ,allow_numbers)	//returns null if the name doesn't meet some basic requirements. Tidies up a few other things like bad-characters.
+
+		for(var/mob/living/M in player_list)
+			if(M == src)
+				continue
+			if(!newname || M.real_name == newname)
+				newname = null
 				break
+		if(newname)
+			break	//That's a suitable name!
+		to_chat(src, "Sorry, that [role]-name wasn't appropriate, please try another. It's possibly too long/short, has bad characters or is already taken.")
 
-	return selected
-
-// Returns a worn item in target zone, if any.
-/proc/get_target_clothes(mob/living/carbon/human/target, target_zone)
-	if(!target)
-		return
-	if(!ishuman(target))
-		return
-	if(!target_zone)
+	if(!newname)	//we'll stick with the oldname then
 		return
 
-	. = list()
-	switch(target_zone)
-		if(BP_HEAD)
-			if(target.head)
-				. += target.head
-		if(BP_MOUTH)
-			if(istype(target.head, /obj/item/clothing/head/helmet/space))
-				. += target.head
-			else if(target.wear_mask)
-				. += target.wear_mask
-		if(BP_EYES)
-			if(istype(target.head, /obj/item/clothing/head/helmet/space))
-				. += target.head
-			else if(target.glasses)
-				. += target.glasses
+	if(cmptext("ai",role))
+		if(isAI(src))
+			var/mob/living/silicon/ai/A = src
+			oldname = null//don't bother with the records update crap
+			// Set eyeobj name
+			A.SetName(newname)
 
-		if(BP_CHEST, BP_L_LEG, BP_R_LEG, BP_L_ARM, BP_R_ARM)
-			if(target.wear_suit)
-				. += target.wear_suit
-			if(target.w_uniform)
-				. += target.w_uniform
-		if(BP_GROIN)
-			if(target.wear_suit)
-				. += target.wear_suit
-			if(target.w_uniform)
-				. += target.w_uniform
-			if(istype(target.belt, /obj/item/storage))
-				. += target.belt
-
-		if(BP_L_FOOT, BP_R_FOOT)
-			if(target.shoes)
-				. += target.shoes
-		if(BP_L_HAND, BP_L_HAND)
-			if(target.gloves)
-				. += target.gloves
-
-/proc/organ_name_by_zone(mob/living/carbon/human/target, target_zone)
-	if(!target)
-		return
-	if(!target_zone)
-		return
-
-	var/obj/item/organ/O = target.organs_by_name[target_zone]
-	return O ? O.name : target_zone
+	fully_replace_character_name(oldname,newname)

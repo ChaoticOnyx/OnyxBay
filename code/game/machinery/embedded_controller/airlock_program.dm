@@ -9,7 +9,8 @@
 #define TARGET_INOPEN		-1
 #define TARGET_OUTOPEN		-2
 
-#define SENSOR_TOLERANCE 1
+#define SENSOR_TOLERANCE	1
+
 
 /datum/computer/file/embedded_program/airlock
 	var/tag_exterior_door
@@ -24,11 +25,11 @@
 	var/state = STATE_IDLE
 	var/target_state = TARGET_NONE
 
-	var/cycle_to_external_air = 0
+	var/cycle_to_external_air = FALSE
 	var/tag_pump_out_external
 	var/tag_pump_out_internal
 
-/datum/computer/file/embedded_program/airlock/New(obj/machinery/embedded_controller/M)
+/datum/computer/file/embedded_program/airlock/New(var/obj/machinery/embedded_controller/M)
 	..(M)
 
 	memory["chamber_sensor_pressure"] = ONE_ATMOSPHERE
@@ -170,7 +171,6 @@
 			signalPump(tag_pump_out_external, 0)
 
 
-
 /datum/computer/file/embedded_program/airlock/process()
 	if(!state) //Idle
 		if(target_state)
@@ -198,7 +198,7 @@
 
 	switch(state)
 		if(STATE_PREPARE)
-			if (check_doors_secured())
+			if(check_doors_secured())
 				var/chamber_pressure = memory["chamber_sensor_pressure"]
 				var/target_pressure = memory["target_pressure"]
 
@@ -232,7 +232,7 @@
 		if(STATE_PRESSURIZE)
 			if(memory["chamber_sensor_pressure"] >= memory["target_pressure"] - SENSOR_TOLERANCE)
 				//not done until the pump has reported that it's off
-				if(memory["pump_status"] != "off") //send a signal to stop pumping
+				if(memory["pump_status"] != "off")
 					signalPump(tag_airpump, 0)
 					if(cycle_to_external_air)
 						signalPump(tag_pump_out_internal, 0)
@@ -266,15 +266,18 @@
 
 	return 1
 
-//these are here so that other types don't have to make so many assuptions about our implementation
+//these are here so that other types don't have to make so many assumptions about our implementation
 
 /datum/computer/file/embedded_program/airlock/proc/begin_cycle_in()
 	state = STATE_IDLE
 	target_state = TARGET_INOPEN
 	memory["purge"] = cycle_to_external_air
 
+/datum/computer/file/embedded_program/airlock/proc/begin_dock_cycle()
+	state = STATE_IDLE
+	target_state = TARGET_INOPEN
+
 /datum/computer/file/embedded_program/airlock/proc/begin_cycle_out()
-	playsound(master.loc, 'sound/signals/alarm13.ogg', 50)
 	state = STATE_IDLE
 	target_state = TARGET_OUTOPEN
 	memory["purge"] = cycle_to_external_air
@@ -320,7 +323,7 @@
 	post_signal(signal)
 
 //this is called to set the appropriate door state at the end of a cycling process, or for the exterior buttons
-/datum/computer/file/embedded_program/airlock/proc/cycleDoors(target)
+/datum/computer/file/embedded_program/airlock/proc/cycleDoors(var/target)
 	switch(target)
 		if(TARGET_OUTOPEN)
 			toggleDoor(memory["interior_status"], tag_interior_door, memory["secure"], "close")
@@ -336,7 +339,7 @@
 			signalDoor(tag_exterior_door, command)
 			signalDoor(tag_interior_door, command)
 
-/datum/computer/file/embedded_program/airlock/proc/signal_mech_sensor(command, sensor)
+/datum/computer/file/embedded_program/airlock/proc/signal_mech_sensor(var/command, var/sensor)
 	var/datum/signal/signal = new
 	signal.data["tag"] = sensor
 	signal.data["command"] = command
@@ -362,7 +365,7 @@ Only sends a command if it is needed, i.e. if the door is
 already open, passing an open command to this proc will not
 send an additional command to open the door again.
 ----------------------------------------------------------*/
-/datum/computer/file/embedded_program/airlock/proc/toggleDoor(list/doorStatus, doorTag, secure, command)
+/datum/computer/file/embedded_program/airlock/proc/toggleDoor(var/list/doorStatus, var/doorTag, var/secure, var/command)
 	var/doorCommand = null
 
 	if(command == "toggle")

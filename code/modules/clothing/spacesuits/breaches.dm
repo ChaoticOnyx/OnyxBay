@@ -1,28 +1,12 @@
 //A 'wound' system for space suits.
-//Breaches greatly increase the amount of lost gas and decrease the armour rating of the suit.
+//Breaches greatly increase the amount of lost gas and decrease the armor rating of the suit.
 //They can be healed with plastic or metal sheeting.
 
 /datum/breach
 	var/class = 0                           // Size. Lower is smaller. Uses floating point values!
 	var/descriptor                          // 'gaping hole' etc.
-	var/damtype = BURN                      // Punctured or melted
-	var/patched = FALSE
+	var/damtype = DAMAGE_BURN                      // Punctured or melted
 	var/obj/item/clothing/suit/space/holder // Suit containing the list of breaches holding this instance.
-	var/global/list/breach_brute_descriptors = list(
-		"tiny puncture",
-		"ragged tear",
-		"large split",
-		"huge tear",
-		"gaping wound"
-		)
-
-	var/global/list/breach_burn_descriptors = list(
-		"small burn",
-		"melted patch",
-		"sizable burn",
-		"large scorched area",
-		"huge scorched area"
-		)
 
 /obj/item/clothing/suit/space
 
@@ -30,24 +14,45 @@
 	var/list/breaches = list()              // Breach datum container.
 	var/resilience = 0.2                    // Multiplier that turns damage into breach class. 1 is 100% of damage to breach, 0.1 is 10%. 0.2 -> 50 brute/burn damage to cause 10 breach damage
 	var/breach_threshold = 3                // Min damage before a breach is possible. Damage is subtracted by this amount, it determines the "hardness" of the suit.
-	var/damage = 0                          // Current total damage. Does not count patched breaches.
-	var/brute_damage = 0                    // Specifically brute damage. Includes patched punctures.
-	var/burn_damage = 0                     // Specifically burn damage. Includes patched burns.
+	var/damage = 0                          // Current total damage
+	var/brute_damage = 0                    // Specifically brute damage.
+	var/burn_damage = 0                     // Specifically burn damage.
+	var/base_name                           // Used to keep the original name safe while we apply modifiers.
+
+/obj/item/clothing/suit/space/Initialize()
+	. = ..()
+	base_name = name
+
+//Some simple descriptors for breaches. Global because lazy, TODO: work out a better way to do this.
+
+var/global/list/breach_brute_descriptors = list(
+	"tiny puncture",
+	"ragged tear",
+	"large split",
+	"huge tear",
+	"gaping wound"
+	)
+
+var/global/list/breach_burn_descriptors = list(
+	"small burn",
+	"melted patch",
+	"sizable burn",
+	"large scorched area",
+	"huge scorched area"
+	)
 
 /datum/breach/proc/update_descriptor()
 
 	//Sanity...
 	class = between(1, round(class), 5)
 	//Apply the correct descriptor.
-	if(damtype == BURN)
+	if(damtype == DAMAGE_BURN)
 		descriptor = breach_burn_descriptors[class]
-	else if(damtype == BRUTE)
+	else if(damtype == DAMAGE_BRUTE)
 		descriptor = breach_brute_descriptors[class]
-	if(patched)
-		descriptor = "patched [descriptor]"
 
 //Repair a certain amount of brute or burn damage to the suit.
-/obj/item/clothing/suit/space/proc/repair_breaches(damtype, amount, mob/user)
+/obj/item/clothing/suit/space/proc/repair_breaches(var/damtype, var/amount, var/mob/user)
 
 	if(!can_breach || !breaches || !breaches.len || !damage)
 		to_chat(user, "There are no breaches to repair on \the [src].")
@@ -79,7 +84,7 @@
 	user.visible_message("<b>[user]</b> patches some of the damage on \the [src].")
 	calc_breach_damage()
 
-/obj/item/clothing/suit/space/proc/create_breaches(damtype, amount)
+/obj/item/clothing/suit/space/proc/create_breaches(var/damtype, var/amount)
 
 	amount -= src.breach_threshold
 	amount *= src.resilience
@@ -91,6 +96,10 @@
 		breaches = list()
 
 	if(damage > 25) return //We don't need to keep tracking it when it's at 250% pressure loss, really.
+
+	if(!loc) return
+	var/turf/T = get_turf(src)
+	if(!T) return
 
 	//Increase existing breaches.
 	for(var/datum/breach/existing in breaches)
@@ -109,12 +118,10 @@
 				existing.class = 5
 				amount -= needs
 
-			if(existing.damtype == BRUTE)
-				visible_message("<span class = 'warning'>\The [existing.descriptor] on [src] gapes wider[existing.patched ? ", tearing the patch" : ""]!</span>")
-			else if(existing.damtype == BURN)
-				visible_message("<span class = 'warning'>\The [existing.descriptor] on [src] widens[existing.patched ? ", ruining the patch" : ""]!</span>")
-
-			existing.patched = FALSE
+			if(existing.damtype == DAMAGE_BRUTE)
+				T.visible_message("<span class = 'warning'>\The [existing.descriptor] on [src] gapes wider!</span>")
+			else if(existing.damtype == DAMAGE_BURN)
+				T.visible_message("<span class = 'warning'>\The [existing.descriptor] on [src] widens!</span>")
 
 	if (amount)
 		//Spawn a new breach.
@@ -127,10 +134,10 @@
 		B.update_descriptor()
 		B.holder = src
 
-		if(B.damtype == BRUTE)
-			visible_message("<span class = 'warning'>\A [B.descriptor] opens up on [src]!</span>")
-		else if(B.damtype == BURN)
-			visible_message("<span class = 'warning'>\A [B.descriptor] marks the surface of [src]!</span>")
+		if(B.damtype == DAMAGE_BRUTE)
+			T.visible_message("<span class = 'warning'>\A [B.descriptor] opens up on [src]!</span>")
+		else if(B.damtype == DAMAGE_BURN)
+			T.visible_message("<span class = 'warning'>\A [B.descriptor] marks the surface of [src]!</span>")
 
 	calc_breach_damage()
 
@@ -140,10 +147,9 @@
 	damage = 0
 	brute_damage = 0
 	burn_damage = 0
-	var/all_patched = TRUE
 
 	if(!can_breach || !breaches || !breaches.len)
-		SetName(initial(name))
+		name = base_name
 		return 0
 
 	for(var/datum/breach/B in breaches)
@@ -151,26 +157,21 @@
 			src.breaches -= B
 			qdel(B)
 		else
-			if(!B.patched)
-				all_patched = FALSE
-				damage += B.class
-
-			if(B.damtype == BRUTE)
+			damage += B.class
+			if(B.damtype == DAMAGE_BRUTE)
 				brute_damage += B.class
-			else if(B.damtype == BURN)
+			else if(B.damtype == DAMAGE_BURN)
 				burn_damage += B.class
 
 	if(damage >= 3)
 		if(brute_damage >= 3 && brute_damage > burn_damage)
-			SetName("punctured [initial(name)]")
+			name = "punctured [base_name]"
 		else if(burn_damage >= 3 && burn_damage > brute_damage)
-			SetName("scorched [initial(name)]")
+			name = "scorched [base_name]"
 		else
-			SetName("damaged [initial(name)]")
-	else if(all_patched)
-		SetName("patched [initial(name)]")
+			name = "damaged [base_name]"
 	else
-		SetName(initial(name))
+		name = "[base_name]"
 
 	return damage
 
@@ -180,67 +181,55 @@
 	if(istype(W,/obj/item/stack/material))
 		var/repair_power = 0
 		switch(W.get_material_name())
-			if(MATERIAL_STEEL)
+			if(DEFAULT_WALL_MATERIAL)
 				repair_power = 2
-			if(MATERIAL_PLASTIC)
+			if("plastic")
 				repair_power = 1
 
 		if(!repair_power)
 			return
 
 		if(istype(src.loc,/mob/living))
-			to_chat(user, "<span class='warning'>How do you intend to patch a powersuit while someone is wearing it?</span>")
+			to_chat(user, "<span class='warning'>How do you intend to patch a voidsuit while someone is wearing it?</span>")
 			return
 
-		if(burn_damage <= 0)
+		if(!damage || !burn_damage)
 			to_chat(user, "There is no surface damage on \the [src] to repair.")
 			return
 
 		var/obj/item/stack/P = W
 		var/use_amt = min(P.get_amount(), 3)
 		if(use_amt && P.use(use_amt))
-			repair_breaches(BURN, use_amt * repair_power, user)
+			repair_breaches(DAMAGE_BURN, use_amt * repair_power, user)
 		return
 
-	else if(isWelder(W))
+	else if(W.iswelder())
 
 		if(istype(src.loc,/mob/living))
-			to_chat(user, "<span class='warning'>How do you intend to patch a powersuit while someone is wearing it?</span>")
+			to_chat(user, "<span class='warning'>How do you intend to patch a voidsuit while someone is wearing it?</span>")
 			return
 
-		if (brute_damage <= 0)
+		if (!damage || ! brute_damage)
 			to_chat(user, "There is no structural damage on \the [src] to repair.")
 			return
 
 		var/obj/item/weldingtool/WT = W
-		if(!WT.remove_fuel(5))
+		if(!WT.use(5))
 			to_chat(user, "<span class='warning'>You need more welding fuel to repair this suit.</span>")
 			return
 
-		repair_breaches(BRUTE, 3, user)
-		return
-
-	else if(istype(W, /obj/item/tape_roll))
-		var/datum/breach/target_breach		//Target the largest unpatched breach.
-		for(var/datum/breach/B in breaches)
-			if(B.patched)
-				continue
-			if(!target_breach || (B.class > target_breach.class))
-				target_breach = B
-
-		if(!target_breach)
-			to_chat(user, "There are no open breaches to seal with \the [W].")
-		else if(user != loc || do_after(user, 30, src))		//Doing this in your own inventory is awkward.
-			user.visible_message("<b>[user]</b> uses \the [W] to seal \the [target_breach.descriptor] on \the [src].")
-			target_breach.patched = TRUE
-			target_breach.update_descriptor()
-			calc_breach_damage()
+		repair_breaches(DAMAGE_BRUTE, 3, user)
 		return
 
 	..()
 
-/obj/item/clothing/suit/space/_examine_text(mob/user)
+/obj/item/clothing/suit/space/examine(mob/user)
 	. = ..()
 	if(can_breach && breaches && breaches.len)
 		for(var/datum/breach/B in breaches)
-			. += "\n<span class='danger'>It has \a [B.descriptor].</span>"
+			to_chat(user, "<span class='danger'>It has \a [B.descriptor].</span>")
+
+/obj/item/clothing/suit/space/get_pressure_weakness(pressure)
+	. = ..()
+	if(can_breach && damage)
+		. = min(1, . + damage * 0.1)

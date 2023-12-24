@@ -20,10 +20,11 @@
 	available_abilities = list()
 	unlocked_abilities = list()
 
-	available_abilities += new /datum/malf_research_ability/networking/basic_hack()
-	available_abilities += new /datum/malf_research_ability/interdiction/recall_shuttle()
-	available_abilities += new /datum/malf_research_ability/manipulation/electrical_pulse()
-	available_abilities += new /datum/malf_research_ability/passive/intellicard_interception
+	available_abilities += new/datum/malf_research_ability/networking/basic_hack()
+	available_abilities += new/datum/malf_research_ability/interdiction/recall_shuttle()
+	available_abilities += new/datum/malf_research_ability/manipulation/hack_holopad()
+	available_abilities += new/datum/malf_research_ability/synthetic/reset_module()
+
 
 // Proc:		finish_research()
 // Parameters: 	None
@@ -32,19 +33,18 @@
 	if(!focus)
 		return
 	to_chat(owner, "<b>Research Completed</b>: [focus.name]")
-	if(focus.ability)
-		owner.verbs.Add(focus.ability)
-	focus.research_finished(owner)
+	owner.verbs.Add(focus.ability)
+	available_abilities -= focus
 	if(focus.next)
 		available_abilities += focus.next
 	unlocked_abilities += focus
-	available_abilities -= focus
 	focus = null
+
 
 // Proc:		process()
 // Parameters: 	None
 // Description: Processes CPU gain and research progress based on "realtime" calculation.
-/datum/malf_research/proc/process(idle = 0)
+/datum/malf_research/process(var/idle = 0)
 	if(idle)		// No power or running on APU. Do nothing.
 		last_tick = world.time
 		return
@@ -64,7 +64,7 @@
 		if(focus.unlocked)
 			finish_research()
 
-/datum/malf_research/proc/advance_all()
-	for(var/MRA in available_abilities.Copy())
-		focus = MRA
-		finish_research()
+
+
+
+

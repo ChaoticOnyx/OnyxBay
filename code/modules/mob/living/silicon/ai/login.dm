@@ -1,6 +1,11 @@
-/mob/living/silicon/ai/Login()	//ThisIsDumb(TM) TODO: tidy this up �_� ~Carn
+/mob/living/silicon/ai/LateLogin()
 	..()
-	if(!is_ooc_dead())
-		for(var/obj/machinery/ai_status_display/O in GLOB.ai_status_display_list) //change status
+	regenerate_icons()
+
+	for(var/image/obfuscation_image in SSai_obfuscation.get_obfuscation_images())
+		client.images += obfuscation_image
+
+	if(stat != DEAD)
+		for(var/obj/machinery/ai_status_display/O in SSmachinery.all_status_displays) //change status
 			O.mode = 1
 			O.emotion = "Neutral"

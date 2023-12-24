@@ -1,12 +1,11 @@
 /obj/effect/fusion_particle_catcher
 	icon = 'icons/effects/effects.dmi'
-	density = 1
-	anchored = 1
+	density = TRUE
+	anchored = TRUE
 	invisibility = 101
+	light_color = COLOR_BLUE
 	var/obj/effect/fusion_em_field/parent
 	var/mysize = 0
-
-	light_color = COLOR_BLUE
 
 /obj/effect/fusion_particle_catcher/Destroy()
 	. =..()
@@ -26,18 +25,16 @@
 
 /obj/effect/fusion_particle_catcher/proc/UpdateSize()
 	if(parent.size >= mysize)
-		set_density(1)
-		SetName("collector [mysize] ON")
+		density = TRUE
+		name = "collector [mysize] ON"
 	else
-		set_density(0)
-		SetName("collector [mysize] OFF")
+		density = FALSE
+		name = "collector [mysize] OFF"
 
 /obj/effect/fusion_particle_catcher/bullet_act(obj/item/projectile/Proj)
 	parent.AddEnergy(Proj.damage)
 	update_icon()
-	return 0
+	return FALSE
 
-/obj/effect/fusion_particle_catcher/CanPass(atom/movable/mover, turf/target)
-	if(istype(mover, /obj/effect/accelerated_particle) || istype(mover, /obj/item/projectile/beam))
-		return !density
-	return TRUE
+/obj/effect/fusion_particle_catcher/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+	return ismob(mover)

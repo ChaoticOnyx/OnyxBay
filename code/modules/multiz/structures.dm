@@ -14,15 +14,21 @@
 	var/allowed_directions = DOWN
 	var/obj/structure/ladder/target_up
 	var/obj/structure/ladder/target_down
+	var/base_icon = "ladder"
 
 	var/const/climb_time = 2 SECONDS
-	var/const/drag_time = 15 SECONDS
-	var/static/list/climbsounds = list('sound/effects/ladder.ogg','sound/effects/ladder2.ogg','sound/effects/ladder3.ogg','sound/effects/ladder4.ogg')
+	var/list/climbsounds = list('sound/effects/ladder1.ogg','sound/effects/ladder2.ogg','sound/effects/ladder3.ogg','sound/effects/ladder4.ogg')
+	var/climb_sound_vol = 50
+	var/climb_sound_vary = FALSE
 
-	var/static/radial_ladder_down = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_ladder_down")
-	var/static/radial_ladder_up = image(icon = 'icons/hud/radial.dmi', icon_state = "radial_ladder_up")
+	var/list/destroy_tools
 
-	var/static/list/radial_options = list("up" = radial_ladder_up, "down" = radial_ladder_down)
+/obj/structure/ladder/mining
+	icon = 'icons/obj/mining.dmi'
+	climbsounds = list('sound/effects/stonedoor_openclose.ogg')
+	climb_sound_vol = 30
+	climb_sound_vary = TRUE
+	destroy_tools = list(/obj/item/pickaxe, /obj/item/gun/energy/plasmacutter)
 
 /obj/structure/ladder/Initialize()
 	. = ..()
@@ -32,7 +38,12 @@
 			if(L.allowed_directions & UP)
 				target_down = L
 				L.target_up = src
-				return
+
+				L.update_icon()
+				break
+
+	AddComponent(/datum/component/turf_hand)
+
 	update_icon()
 
 /obj/structure/ladder/Destroy()
@@ -45,185 +56,228 @@
 	return ..()
 
 /obj/structure/ladder/attackby(obj/item/C, mob/user)
-	climb(user)
-
-/obj/structure/ladder/attack_hand(mob/user)
-	climb(user)
+	if(LAZYLEN(destroy_tools))
+		if(is_type_in_list(C, destroy_tools))
+			user.visible_message("<b>[user]</b> starts breaking down \the [src] with \the [C]!", SPAN_NOTICE("You start breaking down \the [src] with \the [C]."))
+			if(do_after(user, 10 SECONDS, src, DO_REPAIR_CONSTRUCT))
+				user.visible_message("<b>[user]</b> breaks down \the [src] with \the [C]!", SPAN_NOTICE("You break down \the [src] with \the [C]."))
+				qdel(src)
+			return
+	attack_hand(user)
 
 /obj/structure/ladder/attack_robot(mob/user)
-	climb(user)
+	attack_hand(user)
 
-/obj/structure/ladder/attack_ai(mob/user)
-	var/mob/living/silicon/ai/ai = user
-	if(!istype(ai))
-		return
-	var/mob/observer/eye/AIeye = ai.eyeobj
-	if(istype(AIeye))
-		instant_climb(AIeye)
-
-/obj/structure/ladder/attack_ghost(mob/user)
-	instant_climb(user)
-
-/obj/structure/ladder/proc/instant_climb(mob/user)
-	var/target_ladder = getTargetLadder(user)
-	user.forceMove(get_turf(target_ladder))
-
-/obj/structure/ladder/proc/climb(mob/user)
-	if(!user.may_climb_ladders(src))
+/obj/structure/ladder/attack_hand(var/mob/M)
+	if(!M.may_climb_ladders(src))
 		return
 
-	var/obj/structure/ladder/target_ladder = getTargetLadder(user)
+	var/obj/structure/ladder/target_ladder = getTargetLadder(M)
 	if(!target_ladder)
 		return
-	if(!user.Move(get_turf(src)))
-		to_chat(user, "<span class='notice'>You fail to reach \the [src].</span>")
+
+	var/obj/item/grab/G = M.l_hand
+	if (!istype(G))
+		G = M.r_hand
+
+	if(!M.Move(get_turf(src)))
+		to_chat(M, "<span class='notice'>You fail to reach \the [src].</span>")
 		return
 
-	var/dragging = FALSE
-
-	for (var/obj/item/grab/G in user)
-		dragging = TRUE
-		G.adjust_position()
+	if (istype(G))
+		G.affecting.forceMove(get_turf(src))
 
 	var/direction = target_ladder == target_up ? "up" : "down"
 
-	user.visible_message("<span class='notice'>\The [user] begins climbing [direction] \the [src]!</span>",
+	M.visible_message("<span class='notice'>\The [M] begins climbing [direction] \the [src]!</span>",
 	"You begin climbing [direction] \the [src]!",
 	"You hear the grunting and clanging of a metal ladder being used.")
 
 	target_ladder.audible_message("<span class='notice'>You hear something coming [direction] \the [src]</span>")
 
-	var/time = dragging ? drag_time : climb_time
+	if(do_after(M, istype(G) ? (climb_time*2) : climb_time))
+		climbLadder(M, target_ladder)
 
-	if(do_after(user, time, src))
-		climbLadder(user, target_ladder)
-		for (var/obj/item/grab/G in user)
-			G.adjust_position(force = 1)
+/obj/structure/ladder/attack_ghost(var/mob/M)
+	var/target_ladder = getTargetLadder(M)
+	if(target_ladder)
+		M.forceMove(get_turf(target_ladder))
 
-/obj/structure/ladder/proc/getTargetLadder(mob/user)
-	if((!target_up && !target_down) || (target_up && !istype(target_up.loc, /turf) || (target_down && !istype(target_down.loc, /turf))))
-		to_chat(user, "<span class='notice'>\The [src] is incomplete and can't be climbed.</span>")
+/obj/structure/ladder/proc/getTargetLadder(var/mob/M)
+	if((!target_up && !target_down) || (target_up && !istype(target_up.loc, /turf) || (target_down && !istype(target_down.loc,/turf))))
+		to_chat(M, "<span class='notice'>\The [src] is incomplete and can't be climbed.</span>")
 		return
 	if(target_down && target_up)
-		var/direction = show_radial_menu(user, src,  radial_options, require_near = !(isEye(user) || isobserver(user)))
+		var/direction = alert(M,"Do you want to go up or down?", "Ladder", "Up", "Down", "Cancel")
 
-		if(!direction)
+		if(direction == "Cancel")
 			return
 
-		if(!user.may_climb_ladders(src))
+		if(!M.may_climb_ladders(src))
 			return
 
 		switch(direction)
-			if("up")
+			if("Up")
 				return target_up
-			if("down")
+			if("Down")
 				return target_down
 	else
 		return target_down || target_up
 
-/mob/proc/may_climb_ladders(ladder)
+/mob/proc/may_climb_ladders(var/ladder)
 	if(!Adjacent(ladder))
 		to_chat(src, "<span class='warning'>You need to be next to \the [ladder] to start climbing.</span>")
 		return FALSE
 	if(incapacitated())
 		to_chat(src, "<span class='warning'>You are physically unable to climb \the [ladder].</span>")
 		return FALSE
+	return TRUE
 
-	var/carry_count = 0
-	for(var/obj/item/grab/G in src)
-		if(!G.ladder_carry())
-			to_chat(src, "<span class='warning'>You can't carry [G.affecting] up \the [ladder].</span>")
-			return FALSE
-		else
-			carry_count++
-	if(carry_count > 1)
-		to_chat(src, "<span class='warning'>You can't carry more than one person up \the [ladder].</span>")
+/mob/living/silicon/may_climb_ladders(ladder)
+	to_chat(src, "<span class='warning'>You're too heavy to climb [ladder]!</span>")
+	return FALSE
+
+/mob/living/silicon/robot/drone/may_climb_ladders(ladder)
+	if(!Adjacent(ladder))
+		to_chat(src, "<span class='warning'>You need to be next to \the [ladder] to start climbing.</span>")
 		return FALSE
-
+	if(incapacitated())
+		to_chat(src, "<span class='warning'>You are physically unable to climb \the [ladder].</span>")
+		return FALSE
 	return TRUE
 
-/mob/observer/ghost/may_climb_ladders(ladder)
+/mob/abstract/observer/may_climb_ladders(var/ladder)
 	return TRUE
 
-/obj/structure/ladder/proc/climbLadder(mob/user, target_ladder)
+/obj/structure/ladder/proc/climbLadder(var/mob/M, var/target_ladder)
+	if(!target_ladder)
+		return
 	var/turf/T = get_turf(target_ladder)
+	var/turf/LAD = get_turf(src)
+	var/direction = UP
+	if(istype(target_ladder, target_down))
+		direction = DOWN
+	if(!LAD.CanZPass(M, direction))
+		to_chat(M, "<span class='notice'>\The [LAD.GetZPassBlocker()] is blocking \the [src].</span>")
+		return FALSE
+	if(!T.CanZPass(M, direction))
+		to_chat(M, "<span class='notice'>\The [T.GetZPassBlocker()] is blocking \the [src].</span>")
+		return FALSE
 	for(var/atom/A in T)
-		if(!A.CanPass(user, user.loc, 1.5, 0))
-			to_chat(user, "<span class='notice'>\The [A] is blocking \the [src].</span>")
-			return FALSE
-	playsound(src, pick(climbsounds), 50)
-	playsound(target_ladder, pick(climbsounds), 50)
-	return user.Move(T)
+		if(!isliving(A))
+			if(!A.CanPass(M, M.loc, 1.5, 0))
+				to_chat(M, "<span class='notice'>\The [A] is blocking \the [src].</span>")
+				return FALSE
+	playsound(src, pick(climbsounds), climb_sound_vol, climb_sound_vary)
+	playsound(target_ladder, pick(climbsounds), climb_sound_vol, climb_sound_vary)
+	var/obj/item/grab/G = M.l_hand
+	if (!istype(G))
+		G = M.r_hand
+	if (istype(G))
+		G.affecting.forceMove(T)
+	return M.forceMove(T)
 
 /obj/structure/ladder/CanPass(obj/mover, turf/source, height, airflow)
 	return airflow || !density
 
-/obj/structure/ladder/on_update_icon()
-	icon_state = "ladder[!!(allowed_directions & UP)][!!(allowed_directions & DOWN)]"
+/obj/structure/ladder/update_icon()
+	icon_state = "[base_icon][!!(allowed_directions & UP)][!!(allowed_directions & DOWN)]"
 
 /obj/structure/ladder/up
 	allowed_directions = UP
 	icon_state = "ladder10"
 
+/obj/structure/ladder/up/mining
+	icon = 'icons/obj/mining.dmi'
+	climbsounds = list('sound/effects/stonedoor_openclose.ogg')
+	climb_sound_vol = 30
+	climb_sound_vary = TRUE
+	destroy_tools = list(/obj/item/pickaxe, /obj/item/gun/energy/plasmacutter)
+
 /obj/structure/ladder/updown
 	allowed_directions = UP|DOWN
 	icon_state = "ladder11"
 
+/obj/structure/ladder/away //a ladder that just looks like it's going down
+	icon_state = "ladderawaydown"
+
+/// Note that stairs facing left/right may need the stairs_lower structure if they're not placed against walls.
 /obj/structure/stairs
 	name = "stairs"
-	desc = "Stairs leading to another deck.  Not too useful if the gravity goes out."
+	desc = "Stairs leading to another floor. Not too useful if the gravity goes out."
 	icon = 'icons/obj/stairs.dmi'
-	icon_state = "stairs"
-	density = 0
-	opacity = 0
-	anchored = 1
-	layer = RUNE_LAYER
+	icon_state = "stairs_3d"
+	layer = TURF_LAYER
+	density = FALSE
+	opacity = FALSE
+	anchored = TRUE
 
 /obj/structure/stairs/Initialize()
+	. = ..()
 	for(var/turf/turf in locs)
 		var/turf/simulated/open/above = GetAbove(turf)
 		if(!above)
-			warning("Stair created without level above: ([loc.x], [loc.y], [loc.z])")
+			log_asset("Stair created without z-level above: ([loc.x], [loc.y], [loc.z])")
 			return INITIALIZE_HINT_QDEL
 		if(!istype(above))
-			above.ChangeTurf(/turf/simulated/open)
-	. = ..()
+			above.ChangeToOpenturf()
 
-/obj/structure/stairs/Destroy()
-	loc = null // Since it's easier than allowing it to get forceMoved and facing even more trouble
-	return ..()
-
-/obj/structure/stairs/CheckExit(atom/movable/mover as mob|obj, turf/target as turf)
+/obj/structure/stairs/CheckExit(atom/movable/mover, turf/target)
 	if(get_dir(loc, target) == dir && upperStep(mover.loc))
 		return FALSE
+
+	var/obj/structure/stairs/staircase = locate() in target
+	var/target_dir = get_dir(mover, target)
+	if(!staircase && (target_dir != dir && target_dir != reverse_dir[dir]))
+		INVOKE_ASYNC(src, PROC_REF(mob_fall), mover)
+
 	return ..()
 
-/obj/structure/stairs/forceMove()
-	return 0
-
-/obj/structure/stairs/Bumped(atom/movable/A)
-	var/turf/above = GetAbove(A)
-	if(above)
-		var/turf/target = get_step(above, dir)
-		var/turf/source = A.loc
-		if(above.CanZPass(source, UP) && target.Enter(A, src))
-			A.forceMove(target)
-			if(isliving(A))
-				var/mob/living/L = A
-				if(L.pulling)
-					L.pulling.forceMove(target)
-			if(ishuman(A))
-				playsound(source, 'sound/effects/stairs_step.ogg', 50)
+/obj/structure/stairs/CollidedWith(atom/movable/moving_atom)
+	// This is hackish but whatever.
+	var/turf/target = get_step(GetAbove(moving_atom), dir)
+	if(!target)
+		return
+	if(target.z > (z + 1)) //Prevents wheelchair fuckery. Basically, you teleport twice because both the wheelchair + your mob collide with the stairs.
+		return
+	if(target.Enter(moving_atom, src) && moving_atom.dir == dir)
+		moving_atom.forceMove(target)
+		if(isliving(moving_atom))
+			var/mob/living/living_mob = moving_atom
+			if(living_mob.pulling)
+				living_mob.pulling.forceMove(target)
+			for(var/obj/item/grab/grab in living_mob)
+				if(grab.affecting)
+					grab.affecting.forceMove(target)
+			if(ishuman(living_mob))
+				playsound(src, 'sound/effects/stairs_step.ogg', 50)
 				playsound(target, 'sound/effects/stairs_step.ogg', 50)
-		else
-			to_chat(A, SPAN("warning", "Something blocks the path."))
-	else
-		to_chat(A, SPAN("notice", "There is nothing of interest in this direction."))
 
-/obj/structure/stairs/proc/upperStep(turf/T)
+/obj/structure/stairs/proc/upperStep(var/turf/T)
 	return (T == loc)
 
-// type paths to make mapping easier.
+/obj/structure/stairs/CanPass(obj/mover, turf/source, height, airflow)
+	if(airflow)
+		return TRUE
+
+	// Disallow stepping onto the elevated part of the stairs.
+	if(isliving(mover) && z == mover.z && mover.loc != loc && get_step(mover, get_dir(mover, src)) == loc)
+		return FALSE
+
+	return !density
+
+/obj/structure/stairs/proc/mob_fall(mob/living/L)
+	if(isopenturf(L.loc) || get_turf(L) == get_turf(src) || !ishuman(L))
+		return
+
+	L.Weaken(2)
+	if(L.lying)
+		L.visible_message(
+			SPAN_ALERT("\The [L] steps off of [src] and faceplants onto [L.loc]."),
+			SPAN_DANGER("You step off [src] and faceplant onto [L.loc]."),
+			SPAN_ALERT("You hear a thump.")
+		)
+
 /obj/structure/stairs/north
 	dir = NORTH
 	bound_height = 64
@@ -244,101 +298,161 @@
 	dir = WEST
 	bound_width = 64
 
-/obj/structure/stairs/short
-	icon_state = "stairs_short"
+/obj/structure/stairs/flat
+	icon_state = "stairs_flat"
 
-/obj/structure/stairs/short/north
-	dir = NORTH
+/// Snowflake railing object for 64x64 stairs.
+/obj/structure/stairs_railing
+	name = "railing"
+	desc = "A railing for stairs."
+	icon = 'icons/obj/stairs.dmi'
+	icon_state = "stairs_railing"
+	anchored = TRUE
+	density = TRUE
 
-/obj/structure/stairs/short/south
-	dir = SOUTH
+/obj/structure/stairs_railing/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+	if(istype(mover,/obj/item/projectile))
+		return TRUE
+	if(!istype(mover) || mover.checkpass(PASSRAILING))
+		return TRUE
+	if(mover.throwing)
+		return TRUE
+	if(get_dir(loc, target) == dir)
+		return !density
+	return TRUE
 
-/obj/structure/stairs/short/east
-	dir = EAST
+/obj/structure/stairs_railing/CheckExit(var/atom/movable/O, var/turf/target)
+	if(istype(O) && CanPass(O, target))
+		return TRUE
+	if(get_dir(O.loc, target) == dir)
+		if(!density)
+			return TRUE
+		return FALSE
+	return TRUE
 
-/obj/structure/stairs/short/west
-	dir = WEST
-
-// mining stairs
-
-/obj/structure/stairs/slope
-	name = "slope"
-	desc = "Not very comfortable, but a completely natural ladder."
-	icon_state = "slope"
-
-/obj/structure/stairs/slope/attackby(obj/item/I, mob/living/carbon/human/user)
-	var/obj/item/autochisel/A = I
-	if(istype(A))
-		user.visible_message(SPAN_NOTICE("[user] begins to carve the steps."), SPAN_NOTICE("You begin to cut out the steps."))
-		if(do_after(user,(20)))
-			switch(dir)
-				if(NORTH)
-					new /obj/structure/stairs/mining/north
-				if(SOUTH)
-					new /obj/structure/stairs/mining/south
-				if(EAST)
-					new /obj/structure/stairs/mining/east
-				if(WEST)
-					new /obj/structure/stairs/mining/west
-			qdel_self()
-	else ..()
-
-/obj/structure/stairs/slope/north
-	dir = NORTH
-	bound_height = 64
-	bound_y = -32
-	pixel_y = -32
-
-/obj/structure/stairs/slope/south
-	dir = SOUTH
-	bound_height = 64
-
-/obj/structure/stairs/slope/east
-	dir = EAST
-	bound_width = 64
-	bound_x = -32
-	pixel_x = -32
-
-/obj/structure/stairs/slope/west
-	dir = WEST
-	bound_width = 64
-
-/obj/structure/stairs/mining
+/obj/structure/stairs_lower
 	name = "stairs"
-	desc = "Somebody went to a lot of trouble to carve these stairs."
-	icon_state = "stairs_mine"
+	desc = "Stairs leading to another floor. Not too useful if the gravity goes out."
+	icon = 'icons/obj/stairs.dmi'
+	icon_state = "stairs_lower"
+	anchored = TRUE
+	density = FALSE
 
-/obj/structure/stairs/mining/north
-	dir = NORTH
-	bound_height = 64
-	bound_y = -32
-	pixel_y = -32
+/obj/structure/stairs_lower/stairs_upper
+	icon_state = "stairs_upper"
 
-/obj/structure/stairs/mining/south
-	dir = SOUTH
-	bound_height = 64
+/// These stairs are used for fake depth. They don't go up z-levels.
+/obj/structure/platform_stairs
+	name = "stairs"
+	desc = "An archaic form of locomotion along the Z-axis."
+	density = FALSE
+	anchored = TRUE
+	icon = 'icons/obj/structure/stairs.dmi'
+	icon_state = "np_stair"
 
-/obj/structure/stairs/mining/east
-	dir = EAST
-	bound_width = 64
-	bound_x = -32
-	pixel_x = -32
+/obj/structure/platform_stairs/south_north_solo
+	icon_state = "p_stair_sn_solo_cap"
 
-/obj/structure/stairs/mining/west
-	dir = WEST
-	bound_width = 64
+/obj/structure/platform_stairs/full
+	icon_state = "p_stair_full"
 
-/obj/structure/stairs/mining/short
-	icon_state = "stairs_short_mine"
+/obj/structure/platform_stairs/full/east_west_cap
+	icon_state = "p_stair_ew_full_cap"
 
-/obj/structure/stairs/mining/short/north
-	dir = NORTH
+/obj/structure/platform_stairs/full/east_west_cap/half
+	icon_state = "p_stair_ew_half_cap"
 
-/obj/structure/stairs/mining/short/south
-	dir = SOUTH
+/obj/structure/platform_stairs/full/south_north_cap
+	icon_state = "p_stair_sn_full_cap"
 
-/obj/structure/stairs/mining/short/east
-	dir = EAST
+/obj/structure/platform_stairs/full/south_north_cap/half
+	icon_state = "p_stair_sn_half_cap"
 
-/obj/structure/stairs/mining/short/west
-	dir = WEST
+/obj/structure/platform
+	name = "platform"
+	desc = "An archaic method of preventing travel along the X and Y axes if you are on a lower point on the Z-axis."
+	density = TRUE
+	anchored = TRUE
+	atom_flags = ATOM_FLAG_CHECKS_BORDER
+	climbable = TRUE
+	icon = 'icons/obj/structure/platforms.dmi'
+	icon_state = "platform"
+	color = COLOR_TILED
+
+/obj/structure/platform/dark
+	icon_state = "platform_dark"
+	color = COLOR_DARK_GUNMETAL
+
+/obj/structure/platform/CanPass(atom/movable/mover, turf/target, height, air_group)
+	if(istype(mover, /obj/item/projectile))
+		return TRUE
+	if(!istype(mover) || mover.checkpass(PASSRAILING))
+		return TRUE
+	if(mover.throwing)
+		return TRUE
+	if(get_dir(mover, target) == reverse_dir[dir])
+		return FALSE
+	if(height && (mover.dir == dir))
+		return FALSE
+	return TRUE
+
+/obj/structure/platform/CheckExit(var/atom/movable/O, var/turf/target)
+	if(istype(O) && CanPass(O, target))
+		return TRUE
+	if(get_dir(O, target) == reverse_dir[dir])
+		return FALSE
+	return TRUE
+
+/obj/structure/platform/do_climb(mob/living/user)
+	if(user.Adjacent(src) && !user.incapacitated())
+		/// Custom climbing code because normal climb code doesn't support the tile-shifting that platforms do.
+		/// If the user is on the same turf as the platform, we're trying to go past it, so we need to use reverse_dir.
+		/// Otherwise, use our own turf.
+		var/same_turf = get_turf(user) == get_turf(src)
+		var/turf/next_turf = get_step(src, same_turf ? reverse_dir[dir] : 0)
+		if(istype(next_turf) && !next_turf.density && can_climb(user))
+			var/climb_text = same_turf ? "over" : "down"
+			LAZYADD(climbers, user)
+			user.visible_message(SPAN_NOTICE("[user] starts climbing [climb_text] \the [src]..."), SPAN_NOTICE("You start climbing [climb_text] \the [src]..."))
+			if(do_after(user, 1 SECOND) && can_climb(user, TRUE))
+				user.visible_message(SPAN_NOTICE("[user] climbs [climb_text] \the [src]."), SPAN_NOTICE("You climb [climb_text] \the [src]."))
+				user.forceMove(next_turf)
+				LAZYREMOVE(climbers, user)
+
+/obj/structure/platform/ledge
+	icon_state = "ledge"
+
+/obj/structure/platform/ledge/dark
+	icon_state = "ledge_dark"
+	color = COLOR_DARK_GUNMETAL
+
+/obj/structure/platform/cutout
+	icon_state = "platform_cutout"
+	density = 0
+
+/obj/structure/platform/cutout/dark
+	icon_state = "platform_cutout_dark"
+	color = COLOR_DARK_GUNMETAL
+
+/obj/structure/platform/cutout/CanPass()
+	return TRUE
+
+/// No special CanPass for this one.
+/obj/structure/platform_deco
+	name = "platform"
+	desc = "This is a platform."
+	anchored = TRUE
+	icon = 'icons/obj/structure/platforms.dmi'
+	icon_state = "platform_deco"
+	color = COLOR_TILED
+
+/obj/structure/platform_deco/dark
+	icon_state = "platform_deco_dark"
+	color = COLOR_DARK_GUNMETAL
+
+/obj/structure/platform_deco/ledge
+	icon_state = "ledge_deco"
+
+/obj/structure/platform_deco/ledge/dark
+	icon_state = "ledge_deco_dark"
+	color = COLOR_DARK_GUNMETAL

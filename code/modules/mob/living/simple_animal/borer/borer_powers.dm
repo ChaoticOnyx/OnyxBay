@@ -1,301 +1,286 @@
-GLOBAL_LIST_INIT(borer_reagent_types_by_name, setup_borer_reagents())
-
-/proc/setup_borer_reagents()
-	. = list()
-	for(var/reagent_type in list(/datum/reagent/alkysine, /datum/reagent/bicaridine, /datum/reagent/hyperzine, /datum/reagent/peridaxon))
-		var/datum/reagent/R = reagent_type
-		.[initial(R.name)] = reagent_type
-
-#define BORER_ALL_ABILITIES \
-list(\
-BORER_STATUS_IN_HOST = list(\
-/mob/living/simple_animal/borer/verb/release_host,\
-/mob/living/simple_animal/borer/verb/secrete_chemicals,\
-/mob/living/simple_animal/borer/verb/no_host_pain,\
-/mob/living/simple_animal/borer/verb/devour_brain,\
-),\
-BORER_STATUS_CONTROLLING = list(\
-/mob/living/carbon/proc/punish_host,\
-/mob/living/carbon/proc/spawn_larvae,\
-/mob/living/carbon/proc/release_control,\
-),\
-BORER_STATUS_NOT_CONTROLLING = list(\
-/mob/living/simple_animal/borer/verb/bond_brain,\
-),\
-BORER_STATUS_OUT_HOST = list(\
-/mob/living/simple_animal/borer/verb/infest,\
-/mob/living/simple_animal/borer/verb/dominate_victim,\
-/mob/living/proc/ventcrawl,\
-/mob/living/proc/hide,\
-),\
-BORER_STATUS_HUSK = list(\
-/mob/living/carbon/human/proc/psychic_whisper,\
-/mob/living/carbon/human/proc/tackle,\
-/mob/living/carbon/human/proc/no_self_pain,\
-/mob/living/carbon/proc/spawn_larvae,\
-)\
-)
-
 /mob/living/simple_animal/borer/verb/release_host()
 	set category = "Abilities"
-	set name = "Release Host"
+	set name = "Exit Host"
 	set desc = "Slither out of your host."
 
-	if(!can_use_abilities(BORER_STATUS_IN_HOST))
+	if(!host)
+		to_chat(src, SPAN_NOTICE("You are not inside a host body."))
+		return
+	if(stat)
+		to_chat(src, SPAN_NOTICE("You cannot leave your host in your current state."))
 		return
 
-	to_chat(src, "You begin disconnecting from [host]'s synapses and prodding at their internal ear canal.")
+	var/exit_time = 10 SECONDS
+	if(!start_ability(host, exit_time))
+		to_chat(src, SPAN_WARNING("You're busy doing something else, complete that task first."))
+		return
 
+	to_chat(src, SPAN_NOTICE("You begin disconnecting from [host]'s synapses and prodding at their internal ear canal."))
 	if(!host.stat)
-		to_chat(host, "An odd, uncomfortable pressure begins to build inside your skull, behind your ear...")
+		to_chat(host, SPAN_WARNING("An odd, uncomfortable pressure begins to build inside your skull, behind your ear..."))
 
-	spawn(100)
-		if(!can_use_abilities(BORER_STATUS_IN_HOST))
-			return
+	addtimer(CALLBACK(src, PROC_REF(exit_host)), exit_time)
 
-		to_chat(src, "You wiggle out of [host]'s ear and plop to the ground.")
-		if(host.mind)
-			if(!host.stat)
-				to_chat(host, SPAN("danger", "Something slimy wiggles out of your ear and plops to the ground!"))
-			else
-				to_chat(host, SPAN("danger", "As though waking from a dream, you shake off the insidious mind control of the brain worm. Your thoughts are your own again."))
-		log_and_message_admins("released host([host]).")
-		detatch()
-		leave_host()
-		update_abilities()
+/mob/living/simple_animal/borer/proc/exit_host()
+	if(!host || !src)
+		return
+
+	if(stat)
+		to_chat(src, SPAN_NOTICE("You cannot release your host in your current state."))
+		return
+
+	to_chat(src, SPAN_NOTICE("You wiggle out of [host]'s ear and plop to the ground."))
+	if(host.mind)
+		if(!host.stat)
+			to_chat(host, SPAN_DANGER("Something slimy wiggles out of your ear and plops to the ground!"))
+		to_chat(host, SPAN_DANGER("As though waking from a dream, you shake off the insidious mind control of the brain worm. Your thoughts are your own again."))
+
+	detach()
+	leave_host()
+
 
 /mob/living/simple_animal/borer/verb/infest()
 	set category = "Abilities"
 	set name = "Infest"
 	set desc = "Infest a suitable humanoid host."
 
-	if(!can_use_abilities(BORER_STATUS_OUT_HOST))
+	if(host)
+		to_chat(src, SPAN_NOTICE("You are already within a host."))
+		return
+	if(stat)
+		to_chat(src, SPAN_NOTICE("You cannot infest a target in your current state."))
 		return
 
 	var/list/choices = list()
-	for(var/mob/living/carbon/human/H in view(1,src))
-		if(src.Adjacent(H))
-			choices += H
+	for(var/mob/living/carbon/C in view(2, src))
+		if(src.Adjacent(C))
+			choices += C
 
-	if(!choices.len)
-		to_chat(src, "There are no viable hosts within range...")
+	if(!length(choices))
+		to_chat(src, SPAN_NOTICE("There are no viable hosts within range."))
 		return
 
-	var/mob/living/carbon/human/H = input(src,"Who do you wish to infest?") in null|choices
+	var/mob/living/carbon/M = tgui_input_list(src,"Who do you wish to infest?", "Infest", choices)
+	if(M)
+		do_infest(M)
 
-	if(!H || !src)
+/mob/living/simple_animal/borer/proc/do_infest(var/mob/living/carbon/M)
+	if(host)
+		to_chat(src, SPAN_NOTICE("You are already within a host."))
+		return
+	if(stat)
+		to_chat(src, SPAN_NOTICE("You cannot infest a target in your current state."))
+		return
+	if(!M || !src)
+		return
+	if(!Adjacent(M))
+		return
+	if(M.has_brain_worms())
+		to_chat(src, SPAN_WARNING("You cannot infest someone who is already infested!"))
 		return
 
-	if(!(src.Adjacent(H)))
+	if(istype(M,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = M
+
+		var/obj/item/organ/external/E = H.organs_by_name[BP_HEAD]
+		if(!E || E.is_stump())
+			to_chat(src, SPAN_WARNING("\The [H] does not have a head!"))
+			return
+		var/obj/item/organ/internal/I = H.species.has_organ[BP_BRAIN]
+		if(!I)
+			to_chat(src, SPAN_WARNING("\The [H] doesn't have a brain!"))
+			return
+		if(istype(I, /obj/item/organ/internal/borer))
+			to_chat(src, SPAN_WARNING("You cannot infest someone who is already infested!"))
+			return
+		if(H.isSynthetic())
+			to_chat(src, SPAN_NOTICE("You can't affect synthetics."))
+			return
+		if(H.check_head_airtight_coverage())
+			to_chat(src, SPAN_WARNING("You cannot get through that host's protective gear."))
+			return
+
+	to_chat(M, SPAN_WARNING("Something slimy begins probing at the opening of your ear canal..."))
+	to_chat(src, SPAN_WARNING("You slither up [M] and begin probing at their ear canal..."))
+
+	if(!do_after(src,30))
+		to_chat(src, SPAN_WARNING("As [M] moves away, you are dislodged and fall to the ground."))
 		return
-
-	if(H.has_brain_worms())
-		to_chat(src, "You cannot infest someone who is already infested!")
+	if(!M || !src)
 		return
-
-	var/obj/item/organ/external/E = H.get_organ(BP_HEAD)
-	if(!E || E.is_stump())
-		to_chat(src, "\The [H] does not have a head!")
-		return
-
-	if(BP_IS_ROBOTIC(E))
-		to_chat(src, "\The [H]'s head is not living!")
-		return
-
-	if(!H.should_have_organ(BP_BRAIN))
-		to_chat(src, "\The [H] does not seem to have an ear canal to breach.")
-		return
-
-	if(H.check_head_coverage())
-		to_chat(src, "You cannot get through that host's protective gear.")
-		return
-
-	to_chat(H, "Something slimy begins probing at the opening of your ear canal...")
-	to_chat(src, "You slither up [H] and begin probing at their ear canal...")
-
-	if(!do_after(src,30, progress = 0))
-		to_chat(src, "As [H] moves away, you are dislodged and fall to the ground.")
-		return
-
-	if(!H || !src)
-		return
-
 	if(src.stat)
-		to_chat(src, "You cannot infest a target in your current state.")
+		to_chat(src, SPAN_NOTICE("You cannot infest a target in your current state."))
 		return
 
-	if(H in view(1, src))
-		to_chat(src, "You wiggle into [H]'s ear.")
-		log_and_message_admins("infested ([H]).")
-		if(!H.stat)
-			to_chat(H, "Something disgusting and slimy wiggles into your ear!")
+	if(M in view(1, src))
+		to_chat(src, SPAN_NOTICE("You wiggle into [M]'s ear."))
+		if(!M.stat)
+			to_chat(M, SPAN_DANGER("Something disgusting and slimy wiggles into your ear!"))
 
-		src.host = H
+		src.host = M
 		src.host.status_flags |= PASSEMOTES
-		forceMove(H)
+		src.forceMove(M)
+
+		if(client)
+			client.screen += host.healths
 
 		//Update their traitor status.
 		if(host.mind)
-			GLOB.borers.add_antagonist_mind(host.mind, 1, GLOB.borers.faction_role_text, GLOB.borers.faction_welcome)
+			borers.add_antagonist_mind(host.mind, 1, borers.faction_role_text, borers.faction_welcome)
 
-		update_abilities()
+		if(istype(M,/mob/living/carbon/human))
+			var/mob/living/carbon/human/H = M
+			var/obj/item/organ/I = H.internal_organs_by_name[BP_BRAIN]
+			if(!I) // No brain organ, so the borer moves in and replaces it permanently.
+				replace_brain()
+			else
+				// If they're in normally, implant removal can get them out.
+				var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
+				head.implants += src
 
-		var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
-		head.implants |= src
-
+		return
 	else
-		to_chat(src, "They are no longer in range!")
+		to_chat(src, SPAN_WARNING("They are no longer in range!"))
+		return
 
 /mob/living/simple_animal/borer/verb/devour_brain()
 	set category = "Abilities"
 	set name = "Devour Brain"
-	set desc = "Take permanent control of a dead host."
+	set desc = "Replace the brain of your host by devouring it, forming a husk."
 
-	var/mob/living/carbon/human/H = host
-
-	if(!istype(H))
-		to_chat(src, "You are not inside a host body.")
+	if(!host)
+		to_chat(src, SPAN_NOTICE("You are not inside a host body."))
+		return
+	if(stat)
+		to_chat(src, SPAN_NOTICE("You cannot do that in your current state."))
+		return
+	if(host.stat != DEAD)
+		to_chat(src, SPAN_WARNING("Your host is still alive."))
 		return
 
-	if(!host.is_ooc_dead())
-		to_chat(src, "Your host is still alive.")
-		return
-
-	if(is_ooc_dead())
-		to_chat(src, "You cannot do that in your current state.")
-		return
-
-	if(docile)
-		to_chat(src, SPAN("notice", "You are feeling far too docile to do that."))
-		return
-
-	var/obj/item/organ/external/E = H.get_organ(BP_HEAD)
-	if(!E || E.is_stump())
-		to_chat(src, "\The [H] does not seem to have an ear canal to breach.")
-		return
-
-	var/obj/item/organ/internal/I = H.get_organ(BP_BRAIN)
-	if(!istype(I))
-		to_chat(src, SPAN("notice", "[H] has no brain to devour."))
-
-	if(BP_IS_ROBOTIC(E))
-		to_chat(src, "\The [H]'s head is not living!")
-		return
-
-	to_chat(src, SPAN("danger", "It only takes a few moments to render the dead host brain down into a nutrient-rich slurry..."))
-	log_and_message_admins("assumed dirrect control of a dead host([host]).")
+	to_chat(src, SPAN_DANGER("It only takes a few moments to render the dead brain down into a nutrient-rich slurry..."))
 	replace_brain()
 
+// BRAIN WORM ZOMBIES AAAAH.
 /mob/living/simple_animal/borer/proc/replace_brain()
-
 	var/mob/living/carbon/human/H = host
 
 	if(!istype(host))
-		to_chat(src, "This host does not have a suitable brain.")
+		to_chat(src, SPAN_WARNING("This host does not have a suitable brain."))
 		return
 
-	to_chat(src, SPAN("danger", "You settle into the empty brainpan and begin to expand, fusing inextricably with the dead flesh of [H]."))
+	to_chat(src, SPAN_WARNING("You settle into the empty brainpan and begin to expand, fusing inextricably with the dead flesh of [H]."))
 
-	H.add_language("Cortical Link")
+	H.add_language(LANGUAGE_BORER)
+	H.add_language(LANGUAGE_BORER_HIVEMIND)
 
-	if(host.is_ooc_dead())
-		H.verbs |= /mob/living/carbon/human/proc/jumpstart
+	if(host.stat == DEAD)
+		add_verb(H, /mob/living/carbon/human/proc/jumpstart)
 
-	H.verbs |= BORER_ALL_ABILITIES[BORER_STATUS_HUSK]
+	add_verb(H, /mob/living/carbon/human/proc/psychic_whisper)
+	add_verb(H, /mob/living/carbon/human/proc/tackle)
+	add_verb(H, /mob/living/carbon/proc/spawn_larvae)
 
 	if(H.client)
-		H.ghostize(0)
+		H.ghostize(FALSE)
 
 	if(src.mind)
 		src.mind.special_role = "Borer Husk"
 		src.mind.transfer_to(host)
 
 	var/obj/item/organ/internal/borer/B = new(H)
-	H.internal_organs_by_name[BP_BRAIN] = B
-	H.internal_organs |= B
-
 	var/obj/item/organ/external/affecting = H.get_organ(BP_HEAD)
+	H.internal_organs_by_name[BP_BRAIN] = B
+	affecting.internal_organs |= B
+
 	affecting.implants -= src
 
-	host.jumpstart()
+	var/s2h_id = src.computer_id
+	var/s2h_ip= src.lastKnownIP
+	src.computer_id = null
+	src.lastKnownIP = null
 
-/mob/living/simple_animal/borer/verb/no_host_pain()
-	set category = "Abilities"
-	set name = "No Host Pain"
-	set desc = "Shut down pain receptors of your host for some time."
+	if(!H.computer_id)
+		H.computer_id = s2h_id
 
-	if(!can_use_abilities(BORER_STATUS_IN_HOST))
-		return
+	if(!H.lastKnownIP)
+		H.lastKnownIP = s2h_ip
 
-	if(chemicals < 100)
-		to_chat(src, SPAN("warning", "You do not have enough chemicals stored!"))
-		return
-
-	if(!host.host_pain_disable())
-		to_chat(src, SPAN("warning", "Your host's pain receptors are already numb!"))
-		return
-
-	to_chat(src, SPAN("danger", "You shut down \the [host]'s pain receptors for a while."))
-
-	chemicals -= 100
-
-	addtimer(CALLBACK(host, nameof(/mob/living/carbon/human.proc/host_pain_enable)), 30 SECONDS)
+	// Since the host is dead, we want to kick it back into action immediately, then redo it to ensure they're good to go
+	H.rejuvenate()
+	addtimer(CALLBACK(H, PROC_REF(rejuvenate)), 30)
 
 /mob/living/simple_animal/borer/verb/secrete_chemicals()
 	set category = "Abilities"
-	set name = "Secrete Chemicals"
-	set desc = "Push some chemicals into your host's bloodstream."
+	set name = "Secrete Chemicals (20)"
+	set desc = "Push 5u of chemicals into your host's bloodstream."
 
-	if(!can_use_abilities(BORER_STATUS_IN_HOST))
+	if(!host)
+		to_chat(src, SPAN_NOTICE("You are not inside a host body."))
+		return
+	if(stat)
+		to_chat(src, SPAN_NOTICE("You cannot secrete chemicals in your current state."))
+		return
+	if(chemicals < 20)
+		to_chat(src, SPAN_WARNING("You don't have enough chemicals!"))
 		return
 
-	if(chemicals < 50)
-		to_chat(src, SPAN("warning", "You do not have enough chemicals stored!"))
+	var/list/choices = list("Inaprovaline" = /singleton/reagent/inaprovaline, "Bicaridine" = /singleton/reagent/bicaridine, "Kelotane" = /singleton/reagent/kelotane, "Dylovene" = /singleton/reagent/dylovene, "Hyperzine" = /singleton/reagent/hyperzine, "Peridaxon" = /singleton/reagent/peridaxon, "Mortaphenyl" = /singleton/reagent/mortaphenyl, "Neurapan" = /singleton/reagent/mental/neurapan)
+	var/chem = tgui_input_list(src, "Select a chemical to secrete.", "Chemicals", choices)
+
+	if(!chem || chemicals < 20 || !host || controlling || !src || stat) //Sanity check.
 		return
 
-	var/chem = input("Select a chemical to secrete.", "Chemicals") as null|anything in GLOB.borer_reagent_types_by_name
-
-	if(!chem || chemicals < 50 || !can_use_abilities(BORER_STATUS_IN_HOST) || controlling) //Sanity check.
-		return
-
-	to_chat(src, SPAN("danger", "You squirt a measure of [chem] from your reservoirs into \the [host]'s bloodstream."))
-	host.reagents.add_reagent(GLOB.borer_reagent_types_by_name[chem], 10)
-	chemicals -= 50
+	to_chat(src, SPAN_NOTICE("You squirt a measure of [chem] from your reservoirs into [host]'s bloodstream."))
+	to_chat(host, SPAN_WARNING("You feel cold fluid enter your bloodstream."))
+	host.reagents.add_reagent(choices[chem], 5)
+	chemicals -= 20
 
 /mob/living/simple_animal/borer/verb/dominate_victim()
 	set category = "Abilities"
 	set name = "Paralyze Victim"
 	set desc = "Freeze the limbs of a potential host with supernatural fear."
 
-	if(!can_use_abilities(BORER_STATUS_OUT_HOST))
-		return
-
 	if(world.time - used_dominate < 150)
-		to_chat(src, "You cannot use that ability again so soon.")
+		to_chat(src, SPAN_NOTICE("You cannot use that ability again so soon."))
+		return
+	if(host)
+		to_chat(src, SPAN_NOTICE("You cannot do that from within a host body."))
+		return
+	if(src.stat)
+		to_chat(src, SPAN_NOTICE("You cannot do that in your current state."))
 		return
 
 	var/list/choices = list()
-	for(var/mob/living/carbon/human/H in view(3,src))
-		if(!H.is_ic_dead())
-			choices += H
+	for(var/mob/living/carbon/C in view(3,src))
+		if(C.stat != 2)
+			choices += C
 
-	var/mob/living/carbon/human/H = input(src,"Who do you wish to dominate?") in null|choices
+	var/mob/living/carbon/M = tgui_input_list(src, "Who do you wish to dominate?", "Paralyze Victim", choices)
+	if(M)
+		do_paralyze(M)
 
+/mob/living/simple_animal/borer/proc/do_paralyze(var/mob/living/carbon/M)
 	if(world.time - used_dominate < 150)
-		to_chat(src, "You cannot use that ability again so soon.")
+		to_chat(src, SPAN_NOTICE("You cannot use that ability again so soon."))
+		return
+	if(!M || !src)
+		return
+	if(M.isSynthetic())
+		to_chat(src, SPAN_WARNING("You can't affect synthetics."))
+		return
+	if(M.has_brain_worms())
+		to_chat(src, SPAN_WARNING("You cannot infest someone who is already infested!"))
 		return
 
-	if(!H || !src)
-		return
+	for (var/obj/item/implant/mindshield/I in M)
+		if (I.implanted)
+			to_chat(src, SPAN_WARNING("\The [host]'s mind is shielded against your powers."))
+			return
 
-	if(H.has_brain_worms())
-		to_chat(src, "You cannot dominate someone who is already infested!")
-		return
-
-	to_chat(src, SPAN("warning", "You focus your psychic lance on [H] and freeze their limbs with a wave of terrible dread."))
-	to_chat(H, SPAN("warning", "You feel a creeping, horrible sense of dread come over you, freezing your limbs and setting your heart racing."))
-	H.Weaken(10)
-	H.Stun(10)
+	to_chat(src, SPAN_WARNING("You focus your psionic lance on [M] and freeze their limbs with a wave of terrible dread."))
+	to_chat(M, SPAN_WARNING("You feel a creeping, horrible sense of dread come over you, freezing your limbs and setting your heart racing."))
+	M.Weaken(10)
 
 	used_dominate = world.time
 
@@ -304,198 +289,255 @@ BORER_STATUS_HUSK = list(\
 	set name = "Assume Control"
 	set desc = "Fully connect to the brain of your host."
 
-	if(!can_use_abilities(BORER_STATUS_NOT_CONTROLLING))
+	if(!host)
+		to_chat(src, SPAN_NOTICE("You are not inside a host body."))
+		return
+	if(src.stat)
+		to_chat(src, SPAN_NOTICE("You cannot do that in your current state."))
 		return
 
-	to_chat(src, "You begin delicately adjusting your connection to the host brain...")
-
-	spawn(100+(host.getBrainLoss()*5))
-
-		if(!can_use_abilities(BORER_STATUS_NOT_CONTROLLING))
+	for (var/obj/item/implant/mindshield/I in host)
+		if (I.implanted)
+			to_chat(src, SPAN_WARNING("\The [host]'s mind is shielded against your powers."))
 			return
 
-		to_chat(src, SPAN("danger", "You plunge your probosci deep into the cortex of the host brain, interfacing directly with their nervous system."))
-		to_chat(host, SPAN("danger", "You feel a strange shifting sensation behind your eyes as an alien consciousness displaces yours."))
-		log_and_message_admins("assumed dirrect control of host([host]).")
-		host.add_language("Cortical Link")
-
-		// host -> brain
-		var/h2b_id = host.computer_id
-		var/h2b_ip = host.lastKnownIP
-		host.computer_id = null
-		host.lastKnownIP = null
-
-		host_brain = new(src)
-
-		host_brain.ckey = host.ckey
-
-		host_brain.SetName(host.name)
-
-		if(!host_brain.computer_id)
-			host_brain.computer_id = h2b_id
-
-		if(!host_brain.lastKnownIP)
-			host_brain.lastKnownIP = h2b_ip
-
-		// self -> host
-
-		var/s2h_id = src.computer_id
-		var/s2h_ip = src.lastKnownIP
-		src.computer_id = null
-		src.lastKnownIP = null
-
-		host.ckey = src.ckey
-
-		if(!host.computer_id)
-			host.computer_id = s2h_id
-
-		if(!host.lastKnownIP)
-			host.lastKnownIP = s2h_ip
-
-		controlling = TRUE
-		teleop = host
-		update_abilities()
-
-/mob/living/simple_animal/borer/proc/detatch()
-
-	if(!host || !controlling)
+	var/takeover_time = 10 SECONDS + (host.getBrainLoss() * 5)
+	if(!start_ability(host, takeover_time))
+		to_chat(src, SPAN_WARNING("You're busy doing something else, complete that task first."))
 		return
 
-	if(host_brain)
+	to_chat(src, SPAN_WARNING("You begin delicately adjusting your connection to the host brain..."))
+	to_chat(host, SPAN_WARNING("You feel a tingling sensation at the back of your head."))
 
-		// these are here so bans and multikey warnings are not triggered on the wrong people when ckey is changed.
-		// computer_id and IP are not updated magically on their own in offline mobs -walter0o
+	addtimer(CALLBACK(src, PROC_REF(host_takeover)), takeover_time)
 
-		// host -> self
-		var/h2s_id = host.computer_id
-		var/h2s_ip = host.lastKnownIP
-		host.computer_id = null
-		host.lastKnownIP = null
-
-		src.ckey = host.ckey
-
-		if(!src.computer_id)
-			src.computer_id = h2s_id
-
-		if(!host_brain.lastKnownIP)
-			src.lastKnownIP = h2s_ip
-
-		// brain -> host
-		var/b2h_id = host_brain.computer_id
-		var/b2h_ip = host_brain.lastKnownIP
-		host_brain.computer_id = null
-		host_brain.lastKnownIP = null
-
-		host.ckey = host_brain.ckey
-
-		if(!host.computer_id)
-			host.computer_id = b2h_id
-
-		if(!host.lastKnownIP)
-			host.lastKnownIP = b2h_ip
-	QDEL_NULL(host_brain)
-
-	controlling = FALSE
-	teleop = null
-	host.remove_language("Cortical Link")
-	update_abilities()
-
-/mob/living/simple_animal/borer/proc/leave_host()
-
-	if(!host)
+/mob/living/simple_animal/borer/proc/host_takeover()
+	if(!host || !src || controlling)
 		return
 
-	if(host.mind)
-		GLOB.borers.remove_antagonist(host.mind)
+	to_chat(src, SPAN_DANGER("You plunge your probosci deep into the cortex of the host brain, interfacing directly with their nervous system."))
+	to_chat(host, SPAN_DANGER("You feel a strange shifting sensation behind your eyes as an alien consciousness displaces yours."))
+	host.add_language(LANGUAGE_BORER)
+	host.add_language(LANGUAGE_BORER_HIVEMIND)
 
-	var/mob/living/carbon/human/H = host
-	var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
-	head?.implants -= src
+	// host -> brain
+	var/h2b_id = host.computer_id
+	var/h2b_ip= host.lastKnownIP
+	host.computer_id = null
+	host.lastKnownIP = null
 
-	dropInto(host.loc)
+	qdel(host_brain)
+	host_brain = new(src)
 
-	reset_view(null)
-	unset_machine()
+	host_brain.ckey = host.ckey
+	host_brain.name = host.real_name
+	host_brain.real_name = "[host_brain.name] (captive host)"
 
-	H.reset_view(null)
-	H.unset_machine()
+	if(!host_brain.computer_id)
+		host_brain.computer_id = h2b_id
 
-	H.status_flags &= ~PASSEMOTES
-	host = null
-	update_abilities()
+	if(!host_brain.lastKnownIP)
+		host_brain.lastKnownIP = h2b_ip
+
+	// self -> host
+	var/s2h_id = src.computer_id
+	var/s2h_ip= src.lastKnownIP
+	src.computer_id = null
+	src.lastKnownIP = null
+
+	host.ckey = src.ckey
+
+	if(!host.computer_id)
+		host.computer_id = s2h_id
+
+	if(!host.lastKnownIP)
+		host.lastKnownIP = s2h_ip
+
+	controlling = TRUE
+
+	add_verb(host, /mob/living/carbon/proc/release_control)
+	add_verb(host, /mob/living/carbon/proc/punish_host)
+	add_verb(host, /mob/living/carbon/proc/spawn_larvae)
 
 /mob/living/carbon/human/proc/jumpstart()
 	set category = "Abilities"
 	set name = "Revive Host"
-	set desc = "Send a jolt of electricity through your host, reviving them."
+	set desc = "Muster all psionic energies to pulse through a dead host, restoring them to a prime state."
 
-	verbs -= /mob/living/carbon/human/proc/jumpstart
-
-	if(!is_ic_dead())
-		to_chat(usr, "Your host is already alive.")
+	if(stat != DEAD)
+		to_chat(usr, SPAN_WARNING("Your host is already alive."))
 		return
 
-	visible_message(SPAN("warning", "With a hideous, rattling moan, [src] shudders back to life!"))
-	log_and_message_admins("revived host([host]).")
-	revive()
+	remove_verb(src, /mob/living/carbon/human/proc/jumpstart)
+	visible_message(SPAN_WARNING("With a hideous, rattling moan, [src] shudders back to life!"))
+
+	rejuvenate()
+	fixblood()
 	update_canmove()
 
-/mob/living/simple_animal/borer/proc/can_use_abilities(needed_location)
-	if(!src)
-		return FALSE
+//Brain slug proc for voluntary removal of control.
+/mob/living/carbon/proc/release_control()
+	set category = "Abilities"
+	set name = "Release Control"
+	set desc = "Release control of your host's body."
 
-	switch(needed_location)
-		if(BORER_STATUS_IN_HOST)
-			if(!host)
-				to_chat(src, "You are not inside a host body.")
-				return FALSE
-		if(BORER_STATUS_OUT_HOST)
-			if(host)
-				to_chat(src, "You cannot do that from within a host body.")
-				return FALSE
-		if(BORER_STATUS_CONTROLLING)
-			if(!host)
-				to_chat(src, "You are not inside a host body.")
-				return FALSE
-			if(!controlling)
-				to_chat(src, "You need control a host body to do it.")
-				return FALSE
-		if(BORER_STATUS_NOT_CONTROLLING)
-			if(!host)
-				to_chat(src, "You are not inside a host body.")
-				return FALSE
-			if(controlling)
-				to_chat(src, "You already have controlled the host body.")
-				return FALSE
+	var/mob/living/simple_animal/borer/B = has_brain_worms()
 
-	if(docile)
-		to_chat(src, SPAN("notice", "You are feeling far too docile to do that."))
-		return FALSE
+	if(B?.host_brain)
+		to_chat(src, SPAN_WARNING("You withdraw your probosci, releasing control of [B.host_brain]."))
 
+		B.detach()
+
+		remove_verb(src, /mob/living/carbon/proc/release_control)
+		remove_verb(src, /mob/living/carbon/proc/punish_host)
+		remove_verb(src,  /mob/living/carbon/proc/spawn_larvae)
+
+	else
+		to_chat(src, SPAN_DANGER("Something has gone terribly wrong, as your host's brain does not seem to contain you. Make a GitHub report and ahelp to get out."))
+
+//Brain slug proc for tormenting the host.
+/mob/living/carbon/proc/punish_host()
+	set category = "Abilities"
+	set name = "Torment host"
+	set desc = "Punish your host with agony."
+
+	var/mob/living/simple_animal/borer/B = has_brain_worms()
+
+	if(!B)
+		return
+
+	if(B.host_brain.ckey)
+		to_chat(src, SPAN_WARNING("You send a punishing spike of psionic agony lancing into your host's brain."))
+
+		if(!can_feel_pain())
+			to_chat(B.host_brain, SPAN_WARNING("You feel a strange sensation as a foreign influence prods your mind."))
+			to_chat(src, SPAN_WARNING("It doesn't seem to be as effective as you hoped."))
+		else
+			to_chat(B.host_brain, SPAN_DANGER("<FONT size=3>Horrific, burning agony lances through you, ripping a soundless scream from your trapped mind!</FONT>"))
+
+/mob/living/carbon/proc/spawn_larvae()
+	set category = "Abilities"
+	set name = "Reproduce (100)"
+	set desc = "Spawn several young."
+
+	var/mob/living/simple_animal/borer/B = has_brain_worms()
+
+	if(!B)
+		return
+
+	if(B.chemicals >= 100)
+		to_chat(src, SPAN_WARNING("Your host twitches and quivers as you rapidly excrete a larva from your sluglike body."))
+		visible_message(SPAN_WARNING("[src] heaves violently, expelling a rush of vomit and a wriggling, sluglike creature!"))
+		B.chemicals -= 100
+		B.has_reproduced = TRUE
+
+		new /obj/effect/decal/cleanable/vomit(get_turf(src))
+		playsound(loc, 'sound/effects/splat.ogg', 50, 1)
+		new /mob/living/simple_animal/borer(get_turf(src))
+
+	else
+		to_chat(src, SPAN_NOTICE("You do not have enough chemicals stored to reproduce."))
+		return
+
+/mob/living/simple_animal/borer/verb/awaken_psionics()
+	set category = "Abilities"
+	set name = "Awaken Host Psionics (150)"
+	set desc = "Probe into your host and unlock their psionic potential. Note, it will give them a seizure as their brain realizes its potential."
+
+	if(!host)
+		to_chat(src, SPAN_WARNING("You are not inside a host body."))
+		return
 	if(stat)
-		to_chat(src, "You cannot do that in your current state.")
-		return FALSE
+		to_chat(src, SPAN_WARNING("You cannot do that in your current state."))
+		return
+	if(chemicals < 150)
+		to_chat(src, SPAN_WARNING("You don't have enough chemicals!"))
+		return
+	if(host.species.psi_deaf)
+		to_chat(src, SPAN_WARNING("\The [host] lacks a zona bovinae to psionically enlighten! How disturbing..."))
+	if(host.psi)
+		to_chat(src, SPAN_WARNING("Your host is already psionically active!"))
+		return
 
-	return TRUE
+	for (var/obj/item/implant/mindshield/I in host)
+		if (I.implanted)
+			to_chat(src, SPAN_WARNING("\The [host]'s mind is shielded against your powers."))
+			return
 
-//TODO: if verbs will update within other objects(BYOND issue), make it to add only needed abilities.
-/mob/living/simple_animal/borer/proc/update_abilities()
-	clear_abilities()
-	if(host)
-		if(controlling)
-			host.verbs |= BORER_ALL_ABILITIES[BORER_STATUS_CONTROLLING]
-	verbs |= BORER_ALL_ABILITIES[BORER_STATUS_NOT_CONTROLLING]
-	verbs |= BORER_ALL_ABILITIES[BORER_STATUS_IN_HOST]
-	verbs |= BORER_ALL_ABILITIES[BORER_STATUS_OUT_HOST]
+	var/jumpstart_time = 15 SECONDS
+	if(!start_ability(host, jumpstart_time))
+		to_chat(src, SPAN_WARNING("You're busy doing something else, complete that task first."))
+		return
 
-/mob/living/simple_animal/borer/proc/clear_abilities()
-	for(var/abilities_type in BORER_ALL_ABILITIES)
-		verbs -= BORER_ALL_ABILITIES[abilities_type]
-		if(host)
-			host.verbs -= BORER_ALL_ABILITIES[abilities_type]
+	chemicals -= 150
+	to_chat(src, SPAN_NOTICE("You probe your tendrils deep within your host's zona bovinae, seeking to unleash their potential."))
+	to_chat(host, SPAN_DANGER("You feel some tendrils probe at the back of your head..."))
+	to_chat(host, FONT_LARGE(SPAN_WARNING("You feel something terrible coming on...")))
 
-/mob/living/simple_animal/borer/proc/on_mob_death()
-	GLOB.borers.remove_antagonist(host.mind)
-	clear_abilities()
+	addtimer(CALLBACK(src, PROC_REF(jumpstart_psi)), jumpstart_time)
 
-#undef BORER_ALL_ABILITIES
+/mob/living/simple_animal/borer/proc/jumpstart_psi()
+	if(!host)
+		return
+
+	to_chat(src, SPAN_NOTICE("You succeed in interfacing with the host's zona bovinae, this will be a painful process for them."))
+	host.awaken_psi_basic("something in your head")
+	host.psi.psi_points = 3 /// You don't get a lot at the start.
+	host.add_language(LANGUAGE_TCB) // if we don't have TCB, give them TCB | this allows monkey borers to RP
+
+/mob/living/simple_animal/borer/verb/advance_psionics()
+	set category = "Abilities"
+	set name = "Advance Psionics (75)"
+	set desc = "Advance your host's psionic capability by one step."
+
+	if(!host)
+		to_chat(src, SPAN_NOTICE("You are not inside a host body."))
+		return
+	if(!host.psi)
+		to_chat(src, SPAN_WARNING("Your host has not been psionically awakened!"))
+		return
+	if(stat)
+		to_chat(src, SPAN_NOTICE("You cannot do that in your current state."))
+		return
+	if(chemicals < 75)
+		to_chat(src, SPAN_WARNING("You don't have enough chemicals!"))
+		return
+
+	for (var/obj/item/implant/mindshield/I in host)
+		if (I.implanted)
+			to_chat(src, SPAN_WARNING("\The [host]'s mind is shielded against your powers."))
+			return
+
+	var/upgrade_time = 10 SECONDS
+	if(!start_ability(host, upgrade_time))
+		to_chat(src, SPAN_WARNING("You're busy doing something else, complete that task first."))
+		return
+
+	chemicals -= 75
+	to_chat(src, SPAN_NOTICE("You probe your tendrils deep within your host's zona bovinae, seeking to upgrade their abilities."))
+	to_chat(host, SPAN_WARNING("You feel a burning, tingling sensation at the back of your head..."))
+
+	addtimer(CALLBACK(src, PROC_REF(upgrade_rank)), upgrade_time)
+
+/mob/living/simple_animal/borer/proc/upgrade_rank()
+	if(!host)
+		return
+
+	host.psi.psi_points++
+	to_chat(src, SPAN_NOTICE("You successfully manage to expand your living host's control over their Zona Bovinae. They know have an extra psionic point to spend."))
+	to_chat(host, SPAN_GOOD("A breeze of fresh air washes over your mind, you feel powerful!"))
+	to_chat(host, SPAN_NOTICE("Your control over the Nlom has expanded. You now have an extra psionic point to spend in the Point Shop."))
+
+/mob/living/simple_animal/borer/verb/host_health_scan()
+	set category = "Abilities"
+	set name = "Inspect Host Health"
+	set desc = "Survey your host for injuries, allowing you to better treat them."
+
+	if(!host)
+		to_chat(src, SPAN_WARNING("You have no host to scan."))
+		return
+	if(stat)
+		to_chat(src, SPAN_WARNING("You cannot do that in your current state."))
+		return
+
+	health_scan_mob(host, src, TRUE, TRUE)

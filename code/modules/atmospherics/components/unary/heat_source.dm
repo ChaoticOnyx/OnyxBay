@@ -4,37 +4,37 @@
 /obj/machinery/atmospherics/unary/heater
 	name = "gas heating system"
 	desc = "Heats gas when connected to a pipe network."
-	icon = 'icons/obj/cryogenic2.dmi'
+	desc_info = "Heats up the gas of the pipe it is connected to.  It uses massive amounts of electricity while on. \
+	It can be upgraded by replacing the capacitors, manipulators, and matter bins.  It can be deconstructed by screwing the maintenance panel open with a \
+	screwdriver, and then using a crowbar."
+	icon = 'icons/obj/sleeper.dmi'
 	icon_state = "heater_0"
 	density = 1
 	anchored = 1
 	use_power = POWER_USE_OFF
-	idle_power_usage = 5 WATTS //5 Watts for thermostat related circuitry
+	idle_power_usage = 5			//5 Watts for thermostat related circuitry
 
-	var/max_temperature = 700 CELSIUS
-	var/internal_volume = 600 //L
+	var/max_temperature = T20C + 680
+	var/internal_volume = 600	//L
 
-	var/max_power_rating = 20000 //power rating when the usage is turned up to 100
+	var/max_power_rating = 20000	//power rating when the usage is turned up to 100
 	var/power_setting = 100
 
-	var/set_temperature = 20 CELSIUS //thermostat
-	var/heating = 0 //mainly for icon updates
+	var/set_temperature = T20C	//thermostat
+	var/heating = 0		//mainly for icon updates
+
+	component_types = list(
+		/obj/item/circuitboard/unary_atmos/heater,
+		/obj/item/stock_parts/matter_bin,
+		/obj/item/stock_parts/capacitor = 2,
+		/obj/item/stack/cable_coil{amount = 5}
+	)
 
 /obj/machinery/atmospherics/unary/heater/Initialize()
-	. = ..()
 	initialize_directions = dir
-
-	component_parts = list()
-	component_parts += new /obj/item/circuitboard/unary_atmos/heater(src)
-	component_parts += new /obj/item/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/stock_parts/capacitor(src)
-	component_parts += new /obj/item/stock_parts/capacitor(src)
-	component_parts += new /obj/item/stack/cable_coil(src, 5)
-
-	RefreshParts()
+	. = ..()
 
 /obj/machinery/atmospherics/unary/heater/atmos_init()
-	..()
 	if(node)
 		return
 
@@ -56,7 +56,7 @@
 	update_icon()
 
 
-/obj/machinery/atmospherics/unary/heater/on_update_icon()
+/obj/machinery/atmospherics/unary/heater/update_icon()
 	if(node)
 		if(use_power && heating)
 			icon_state = "heater_1"
@@ -67,7 +67,7 @@
 	return
 
 
-/obj/machinery/atmospherics/unary/heater/Process()
+/obj/machinery/atmospherics/unary/heater/process()
 	..()
 
 	if(stat & (NOPOWER|BROKEN) || !use_power)
@@ -87,91 +87,89 @@
 	update_icon()
 
 /obj/machinery/atmospherics/unary/heater/attack_ai(mob/user as mob)
+	if(!ai_can_interact(user))
+		return
 	ui_interact(user)
 
 /obj/machinery/atmospherics/unary/heater/attack_hand(mob/user as mob)
 	ui_interact(user)
 
-/obj/machinery/atmospherics/unary/heater/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
-	// this is the data which will be sent to the ui
-	var/data[0]
-	data["on"] = use_power ? 1 : 0
+/obj/machinery/atmospherics/unary/heater/ui_interact(mob/user, var/datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "Freezer", "Gas Heating System", 440, 300)
+		ui.open()
+
+/obj/machinery/atmospherics/unary/heater/ui_data(mob/user)
+	var/list/data = list()
+
+	data["on"] = !!use_power
 	data["gasPressure"] = round(air_contents.return_pressure())
 	data["gasTemperature"] = round(air_contents.temperature)
 	data["minGasTemperature"] = 0
-	data["maxGasTemperature"] = round(max_temperature)
+	data["maxGasTemperature"] = round(T20C + 600)
 	data["targetGasTemperature"] = round(set_temperature)
 	data["powerSetting"] = power_setting
 
-	var/temp_class = "normal"
-	if(air_contents.temperature > (60 CELSIUS))
-		temp_class = "bad"
-	data["gasTemperatureClass"] = temp_class
+	data["gasTemperatureBadTop"] = (T20C + 40)
+	data["gasTemperatureBadBottom"] = null
+	data["gasTemperatureAvgTop"] = null
+	data["gasTemperatureAvgBottom"] = null
 
-	// update the ui if it exists, returns null if no ui is passed/found
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if(!ui)
-		// the ui does not exist, so we'll create a new() one
-		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
-		ui = new(user, src, ui_key, "freezer.tmpl", "Gas Heating System", 440, 300)
-		// when the ui is first opened this is the data it will use
-		ui.set_initial_data(data)
-		// open the new ui window
-		ui.open()
-		// auto update every Master Controller tick
-		ui.set_auto_update(1)
+	return data
 
-/obj/machinery/atmospherics/unary/heater/Topic(href, href_list)
-	if(..())
-		return 1
-	if(href_list["toggleStatus"])
-		update_use_power(!use_power)
-		update_icon()
-	if(href_list["temp"])
-		var/amount = text2num(href_list["temp"])
-		if(amount > 0)
-			set_temperature = min(set_temperature + amount, max_temperature)
-		else
-			set_temperature = max(set_temperature + amount, 0)
-	if(href_list["setPower"]) //setting power to 0 is redundant anyways
-		var/new_setting = between(0, text2num(href_list["setPower"]), 100)
-		set_power_level(new_setting)
+/obj/machinery/atmospherics/unary/heater/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return TRUE
+
+	switch(action)
+		if("power")
+			update_use_power(use_power ? POWER_USE_OFF : POWER_USE_ACTIVE)
+			update_icon()
+			. = TRUE
+		if("temp")
+			var/amount = text2num(params["temp"])
+			set_temperature = between(0, amount, 1000)
+			. = TRUE
+		if("setPower") //setting power to 0 is redundant anyways
+			var/new_setting = between(0, text2num(params["setPower"]), 100)
+			set_power_level(new_setting)
+			. = TRUE
 
 	add_fingerprint(usr)
-	return TOPIC_REFRESH
 
 //upgrading parts
 /obj/machinery/atmospherics/unary/heater/RefreshParts()
 	..()
 	var/cap_rating = 0
 	var/bin_rating = 0
-
 	for(var/obj/item/stock_parts/P in component_parts)
-		if(istype(P, /obj/item/stock_parts/capacitor))
+		if(iscapacitor(P))
 			cap_rating += P.rating
-		if(istype(P, /obj/item/stock_parts/matter_bin))
+		else if(ismatterbin(P))
 			bin_rating += P.rating
 
 	max_power_rating = initial(max_power_rating) * cap_rating / 2
-	max_temperature = max(initial(max_temperature) - (20 CELSIUS), 0) * ((bin_rating * 4 + cap_rating) / 5) + (20 CELSIUS)
+	max_temperature = max(initial(max_temperature) - T20C, 0) * ((bin_rating * 4 + cap_rating) / 5) + T20C
 	air_contents.volume = max(initial(internal_volume) - 200, 0) + 200 * bin_rating
 	set_power_level(power_setting)
 
-/obj/machinery/atmospherics/unary/heater/proc/set_power_level(new_power_setting)
+/obj/machinery/atmospherics/unary/heater/proc/set_power_level(var/new_power_setting)
 	power_setting = new_power_setting
 	power_rating = max_power_rating * (power_setting/100)
 
-/obj/machinery/atmospherics/unary/heater/attackby(obj/item/O as obj, mob/user as mob)
+/obj/machinery/atmospherics/unary/heater/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	if(default_deconstruction_screwdriver(user, O))
-		return
+		return TRUE
 	if(default_deconstruction_crowbar(user, O))
-		return
+		return TRUE
 	if(default_part_replacement(user, O))
-		return
+		return TRUE
 
-	..()
+	return ..()
 
-/obj/machinery/atmospherics/unary/heater/_examine_text(mob/user)
+/obj/machinery/atmospherics/unary/heater/examine(mob/user)
 	. = ..()
 	if(panel_open)
-		. += "\nThe maintenance hatch is open."
+		to_chat(user, "The maintenance hatch is open.")

@@ -1,81 +1,98 @@
-#define CHARS_PER_LINE 8
-#define FONT_SIZE "6pt"
+#define CHARS_PER_LINE 5
+#define FONT_SIZE "5pt"
 #define FONT_COLOR "#09f"
-#define FONT_STYLE "Small Fonts"
+#define FONT_STYLE "Arial Black"
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-// Brig Door control displays.
-//  Description: This is a controls the timer for the brig doors, displays the timer on itself and
-//               has a popup window when used, allowing to set the timer.
-//  Code Notes: Combination of old brigdoor.dm code from rev4407 and the status_display.dm code
-//  Date: 01/September/2010
-//  Programmer: Veryinky
-/////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Brig Door Control Displays
+//
 /obj/machinery/door_timer
-	name = "Door Timer"
+	name = "door timer"
+	desc = "A remote control for a door."
 	icon = 'icons/obj/status_display.dmi'
 	icon_state = "frame"
-	desc = "A remote control for a door."
 	req_access = list(access_brig)
-	anchored = 1.0    		// can't pick it up
-	density = 0       		// can walk through it.
+	layer = OBJ_LAYER
+	anchored = TRUE
+	density = FALSE
 	var/id = null     		// id of door it controls.
 	var/releasetime = 0		// when world.timeofday reaches it - release the prisoner
-	var/timing = 1    		// boolean, true/1 timer is on, false/0 means it's not timing
+	var/timing = TRUE    		// boolean, true/1 timer is on, false/0 means it's not timing
 	var/picture_state		// icon_state of alert picture, if not displaying text/numbers
 	var/list/obj/machinery/targets = list()
 	var/timetoset = 0		// Used to set releasetime upon starting the timer
 
+	var/datum/crime_incident/incident
+
+	var/menu_mode = "menu_timer"
+
 	maptext_height = 26
 	maptext_width = 32
+
+	var/datum/browser/menu = new(null, "brig_timer", "Brig Timer", 400, 300)
 
 /obj/machinery/door_timer/Initialize()
 	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/door_timer/LateInitialize()
-	for(var/obj/machinery/door/window/brigdoor/M in GLOB.all_doors)
-		if (M.id == src.id)
-			targets += M
+	for(var/obj/machinery/door/airlock/glass_security/D in SSmachinery.machinery)
+		if(D.id_tag == src.id) // Airlocks use "id_tag" instead of "id".
+			targets += D
 
-	for(var/obj/machinery/flasher/F in SSmachines.machinery)
+	for(var/obj/machinery/door/window/brigdoor/D2 in SSmachinery.machinery)
+		if(D2.id == src.id)
+			targets += D2
+
+	for(var/obj/machinery/flasher/F in SSmachinery.machinery)
 		if(F.id == src.id)
 			targets += F
 
-	for(var/obj/structure/closet/secure_closet/brig/C in world)
+	for(var/obj/structure/closet/secure_closet/brig/C in brig_closets)
 		if(C.id == src.id)
 			targets += C
 
 	if(targets.len==0)
-		set_broken(TRUE)
-	queue_icon_update()
+		stat |= BROKEN
+	update_icon()
 
-// Main door timer loop, if it's timing and time is >0 reduce time by 1.
+/obj/machinery/door_timer/examine(mob/user)
+	. = ..()
+	if(stat & (NOPOWER|BROKEN))	return
+
+	if(src.timing)
+		var/second = round(timeleft() % 60)
+		var/minute = round((timeleft() - second) / 60)
+		to_chat(user, "Time remaining: [minute]:[second]")
+
+//Main door timer loop, if it's timing and time is >0 reduce time by 1.
 // if it's less than 0, open door, reset timer
 // update the door_timer window and the icon
-/obj/machinery/door_timer/Process()
-
+/obj/machinery/door_timer/process()
 	if(stat & (NOPOWER|BROKEN))	return
-	if(src.timing)
 
+	if(src.timing)
 		// poorly done midnight rollover
 		// (no seriously there's gotta be a better way to do this)
 		var/timeleft = timeleft()
 		if(timeleft > 1e5)
 			src.releasetime = 0
 
-
 		if(world.timeofday > src.releasetime)
-			src.timer_end(TRUE) // open doors, reset timer, clear status screen
-			src.timing = 0
+			if(src.timer_end(broadcast = TRUE)) // Open doors, reset timer, and clear status screen.
+				var/message = "Sentencing complete. The detainee is free to leave."
+				ping("\The <b>[src]</b> pings, \"[message]\"")
 
-		src.update_icon()
-
-	else
-		timer_end()
+		updateUsrDialog()
+		update_icon()
 
 	return
 
+// has the door power situation changed, if so update icon.
+/obj/machinery/door_timer/power_change()
+	..()
+	update_icon()
+	return
 
 // open/closedoor checks if door_timer has power, if so it checks if the
 // linked door is open/closed (by density) then opens it/closes it.
@@ -87,58 +104,98 @@
 	// Set releasetime
 	releasetime = world.timeofday + timetoset
 
-
-	// set timing
-	timing = 1
-
-	for(var/obj/machinery/door/window/brigdoor/door in targets)
-		if(door.density)	continue
+	// Airlocks
+	for(var/obj/machinery/door/airlock/D in targets)
+		if(D.density)
+			continue
 		spawn(0)
-			door.close()
+			D.close()
+
+	// Windoors
+	for(var/obj/machinery/door/window/D2 in targets)
+		if(D2.density)
+			continue
+		spawn(0)
+			D2.close()
 
 	for(var/obj/structure/closet/secure_closet/brig/C in targets)
-		if(C.broken)	continue
-		if(C.opened && !C.close())	continue
-		C.locked = 1
-		C.icon_state = C.icon_locked
-	return 1
+		if(C.broken)
+			continue
+		if(C.opened && !C.close())
+			continue
+		C.locked = TRUE
+		C.update_icon()
 
+	timing = TRUE
+
+	return TRUE
 
 // Opens and unlocks doors, power check
-/obj/machinery/door_timer/proc/timer_end(broadcast_to_huds = 0)
-	if(stat & (NOPOWER|BROKEN))	return 0
+/obj/machinery/door_timer/proc/timer_end(var/early = 0, var/broadcast)
+	if(stat & (NOPOWER|BROKEN))
+		return FALSE
+
+	timing = FALSE
 
 	// Reset releasetime
 	releasetime = 0
+	timeset(0)
 
-	// reset timing
-	timing = 0
-
-	if (broadcast_to_huds)
-		broadcast_security_hud_message("The timer for [id] has expired.", src)
-
-	for(var/obj/machinery/door/window/brigdoor/door in targets)
-		if(!door.density)	continue
+	// Airlocks
+	for(var/obj/machinery/door/airlock/D in targets)
+		if(!D.density)
+			continue
 		spawn(0)
-			door.open()
+			D.open()
+
+	// Windoors
+	for(var/obj/machinery/door/window/D2 in targets)
+		if(!D2.density)
+			continue
+		spawn(0)
+			D2.open()
 
 	for(var/obj/structure/closet/secure_closet/brig/C in targets)
-		if(C.broken)	continue
-		if(C.opened)	continue
-		C.locked = 0
-		C.icon_state = C.icon_closed
+		if(C.broken)
+			continue
+		if(C.opened)
+			continue
+		C.locked = FALSE
+		C.update_icon()
+
+	if(broadcast)
+		broadcast_security_hud_message("The timer for [id] has expired.", src)
+
+	if(istype(incident))
+		var/mob/living/carbon/human/C = incident.criminal.resolve()
+		var/datum/record/general/R = SSrecords.find_record("name", C.name)
+		if(istype(R) && istype(R.security))
+			if(early == 1)
+				R.security.criminal = "Parolled"
+			else
+				R.security.criminal = "Released"
+
+	qdel(incident)
+	incident = null
+
+	src.updateUsrDialog()
 
 	return 1
 
 
 // Check for releasetime timeleft
 /obj/machinery/door_timer/proc/timeleft()
-	. = (releasetime - world.timeofday)/10
+	var/timeleft = timetoset
+
+	if(src.timing)
+		timeleft = releasetime - world.timeofday
+
+	. = round(timeleft/10)
 	if(. < 0)
 		. = 0
 
 // Set timetoset
-/obj/machinery/door_timer/proc/timeset(seconds)
+/obj/machinery/door_timer/proc/timeset(var/seconds)
 	timetoset = seconds * 10
 
 	if(timetoset <= 0)
@@ -147,85 +204,194 @@
 	return
 
 //Allows AIs to use door_timer, see human attack_hand function below
-/obj/machinery/door_timer/attack_ai(mob/user as mob)
+/obj/machinery/door_timer/attack_ai(var/mob/user)
+	if(!ai_can_interact(user))
+		return
 	return src.attack_hand(user)
 
-/obj/machinery/door_timer/attack_hand(mob/user as mob)
-	tgui_interact(user)
+// Allows humans to use door_timer
+// Opens dialog window when someone clicks on door timer
+// Flasher activation limited to 150 seconds
+/obj/machinery/door_timer/attack_hand(var/mob/user)
+	if(..())
+		return
 
-/obj/machinery/door_timer/tgui_data(mob/user)
-	var/list/data = list()
+	user.set_machine(src)
 
-	data["timing"] = timing
-	data["releasetime"] = releasetime
-	data["timetoset"] = timetoset
-	data["timeleft"] = timeleft()
+	. = ""
 
-	var/list/flashes = list()
-
-	for(var/obj/machinery/flasher/flash  in targets)
-		var/list/flashdata = list()
-		if(flash.last_flash && (flash.last_flash + 150) > world.time)
-			flashdata["status"] = 0
+	switch(menu_mode)
+		if("menu_charges")
+			. = menu_charges()
 		else
-			flashdata["status"] = 1
-		flashes[++flashes.len] = flashdata
+			. = menu_timer(user)
 
-	data["flashes"] = flashes
-	return data
+	menu.set_user(user)
+	menu.set_content(.)
+	menu.open()
+
+	onclose(user, "brig_timer")
+
+	return
+
+/obj/machinery/door_timer/proc/menu_timer(var/mob/user)
+	// Used for the 'time left' display
+	var/second = round(timeleft() % 60)
+	var/minute = round((timeleft() - second) / 60)
+	. = "<h2>Timer System</h2>"
+	. += "<b>[src]</b><hr>"
+
+	if(!incident)
+		. += "Insert a encoded SCC security incident report to start sentencing.<br>"
+	else
+		// Time Left display (uses releasetime)
+		var/obj/item/card/id/card = incident.card.resolve()
+		. += "<b>Detainee</b>: [card]\t"
+		. += "<b>Charges:</b> <a href='?src=\ref[src];button=menu_mode;menu_choice=menu_charges'>CHARGES</a><br>"
+		. += "<b>Sentence Length</b>: [add_zero("[minute]", 2)]:[add_zero("[second]", 2)]\t"
+		// Start/Stop timer
+		if(!src.timing)
+			. += "<a href='?src=\ref[src];button=activate'>ACTIVATE</a><br>"
+		else
+			. += "<a href='?src=\ref[src];button=early_release'>(!) EARLY RELEASE</a><br>"
 
 
-/obj/machinery/door_timer/tgui_act(action, params)
-	. = ..()
+	// Mounted Flash Controls
+	for(var/obj/machinery/flasher/F in targets)
+		. += "<br><b>Cell Flash</b>: "
+		if(F.last_flash && (F.last_flash + 150) > world.time)
+			. += "Charging..."
+		else
+			. += "<A href='?src=\ref[src];button=flash'>(!) ACTIVATE</A>"
 
-	if(.)
+	. += "<br><hr>"
+	. += "<center><a href='?src=\ref[user];mach_close=brig_timer'>CLOSE</a></center>"
+
+	return .
+
+/obj/machinery/door_timer/proc/menu_charges()
+	. = ""
+
+	if(!incident)
+		. += "Insert a encoded SCC security incident report to start sentencing.<br>"
+	else
+		// Charges list
+		. += "<table class='border'>"
+		. += "<tr>"
+		. += "<th colspan='3'>Charges</th>"
+		. += "</tr>"
+		for(var/datum/law/L in incident.charges)
+			. += "<tr>"
+			. += "<td><b>[L.name]</b></td>"
+			. += "<td><i>[L.desc]</i></td>"
+			. += "<td>[L.min_brig_time]-[L.max_brig_time] minutes</td>"
+			. += "</tr>"
+		. += "</table>"
+
+	. += "<br><hr>"
+	. += "<center><A href='?src=\ref[src];button=menu_mode;menu_choice=menu_timer'>RETURN</a></center>"
+
+	return .
+
+/obj/machinery/door_timer/attackby(obj/item/O, var/mob/user)
+	if(istype(O, /obj/item/paper/incident))
+		if(!incident)
+			if(import(O, user))
+				ping("\The <b>[src]</b> states, \"Successfully imported incident report!\"")
+				user.drop_from_inventory(O,get_turf(src))
+				qdel(O)
+				src.updateUsrDialog()
+		else
+			to_chat(user, SPAN_ALERT("\The <b>[src]</b> states, \"There's already an active sentence.\""))
+		return TRUE
+	else if(istype(O, /obj/item/paper))
+		to_chat(user, SPAN_ALERT("\The <b>[src]</b> states, \"This console only accepts authentic incident reports. Copies are invalid.\""))
+		return TRUE
+
+	return ..()
+
+/obj/machinery/door_timer/proc/import(var/obj/item/paper/incident/I, var/user)
+	if(!istype(I))
+		to_chat(user, SPAN_ALERT("\The <b>[src]</b> states, \"Could not import the incident report.\""))
+		return FALSE
+
+	if(!istype(I.incident))
+		to_chat(user, SPAN_ALERT("\The <b>[src]</b> states, \"Report has no incident encoded.\""))
+		return FALSE
+
+	if(!I.sentence)
+		to_chat(user, SPAN_ALERT("\The <b>[src]</b> states, \"Report does not contain a guilty sentence.\""))
+		return FALSE
+
+	var/datum/crime_incident/crime = I.incident
+
+	if(!istype(crime.criminal))
+		to_chat(user, SPAN_ALERT("\The <b>[src]</b> states, \"Report has no detainee encoded.\""))
+		return FALSE
+
+	if(!crime.brig_sentence)
+		to_chat(user, SPAN_ALERT("\The <b>[src]</b> states, \"Report has no brig sentence.\""))
+		return FALSE
+
+	if(crime.brig_sentence >= PERMABRIG_SENTENCE)
+		to_chat(user, SPAN_ALERT("\The <b>[src]</b> states, \"The detainee has a HuT sentence and needs to be detained until transfer.\""))
+		return FALSE
+
+	var/addtime = timetoset
+	addtime += crime.brig_sentence MINUTES
+	addtime = min(max(round(addtime), 0), PERMABRIG_SENTENCE MINUTES)
+	addtime = addtime/10
+
+	timeset(addtime)
+	incident = crime
+
+	return timetoset
+
+//Function for using door_timer dialog input, checks if user has permission
+// href_list to
+//  "timing" turns on timer
+//  "tp" value to modify timer
+//  "fc" activates flasher
+// 	"change" resets the timer to the timetoset amount while the timer is counting down
+// Also updates dialog window and timer icon
+/obj/machinery/door_timer/Topic(href, href_list)
+	if(..())
+		return
+	if(!src.allowed(usr))
 		return
 
-	if(!allowed(usr))
-		to_chat(usr, SPAN("warning", "Access denied."))
-		return
+	usr.set_machine(src)
 
-	switch (action)
-		if("start")
-			if(timetoset > 18000)
-				log_and_message_admins("has started a brig timer over 30 minutes in length!")
-			timer_start()
-		if("stop")
-			timer_end()
+	switch(href_list["button"])
+		if("menu_mode")
+			menu_mode = href_list["menu_choice"]
+
+		if("activate")
+			src.timer_start()
+			var/mob/living/carbon/human/C = incident.criminal.resolve()
+			var/datum/record/general/R = SSrecords.find_record("name", C.name)
+			if(R && R.security)
+				R.security.criminal = "Incarcerated"
+
+		if("early_release")
+			src.timer_end(1)
+
 		if("flash")
 			for(var/obj/machinery/flasher/F in targets)
 				F.flash()
-		if("time")
-			if (params["preset"])
-				switch (params["preset"])
-					if ("short")
-						timetoset = 600
-					if ("medium")
-						timetoset = 600 * 5
-					if ("long")
-						timetoset = 600 * 10
-			else if (params["adjust"])
-				timetoset += text2num(params["adjust"])
 
-			timetoset = Clamp(timetoset, 0, 36000)
-
+	src.add_fingerprint(usr)
+	src.updateUsrDialog()
 	src.update_icon()
+
 	return
 
 
-/obj/machinery/door_timer/tgui_interact(mob/user, datum/tgui/ui)
-	ui = SStgui.try_update_ui(user, src, ui)
-
-	if(!ui)
-		ui = new(user, src, "BrigTimer", name)
-		ui.open()
-		ui.set_autoupdate(TRUE)
-
-// icon update function
+//icon update function
 // if NOPOWER, display blank
 // if BROKEN, display blue screen of death icon AI uses
 // if timing=true, run update display function
-/obj/machinery/door_timer/on_update_icon()
+/obj/machinery/door_timer/update_icon()
 	if(stat & (NOPOWER))
 		icon_state = "frame"
 		return
@@ -233,37 +399,34 @@
 		set_picture("ai_bsod")
 		return
 	if(src.timing)
-		var/disp1 = id
+		var/disp1 = src
 		var/timeleft = timeleft()
-		var/disp2 = "[add_zero(num2text((timeleft / 60) % 60),2)]~[add_zero(num2text(timeleft % 60), 2)]"
+		var/disp2 = "[add_zero(num2text((timeleft / 60) % 60),2)]:[add_zero(num2text(timeleft % 60), 2)]"
 		if(length(disp2) > CHARS_PER_LINE)
-			disp2 = "Error"
+			disp2 = "ERROR"
 		update_display(disp1, disp2)
 	else
-		if(maptext)
-			maptext = ""
-		update_display("Set","Time") // would be nice to have some default printed text
+		if(maptext)	maptext = ""
 	return
 
 
 // Adds an icon in case the screen is broken/off, stolen from status_display.dm
-/obj/machinery/door_timer/proc/set_picture(state)
+/obj/machinery/door_timer/proc/set_picture(var/state)
 	picture_state = state
-	ClearOverlays()
-	AddOverlays(image('icons/obj/status_display.dmi', icon_state=picture_state))
+	cut_overlays()
+	add_overlay(picture_state)
 
-
-// Checks to see if there's 1 line or 2, adds text-icons-numbers/letters over display
+//Checks to see if there's 1 line or 2, adds text-icons-numbers/letters over display
 // Stolen from status_display
-/obj/machinery/door_timer/proc/update_display(line1, line2)
+/obj/machinery/door_timer/proc/update_display(var/line1, var/line2)
 	var/new_text = {"<div style="font-size:[FONT_SIZE];color:[FONT_COLOR];font:'[FONT_STYLE]';text-align:center;" valign="top">[line1]<br>[line2]</div>"}
 	if(maptext != new_text)
 		maptext = new_text
 
 
-// Actual string input to icon display for loop, with 5 pixel x offsets for each letter.
-// Stolen from status_display
-/obj/machinery/door_timer/proc/texticon(tn, px = 0, py = 0)
+//Actual string input to icon display for loop, with 5 pixel x offsets for each letter.
+//Stolen from status_display
+/obj/machinery/door_timer/proc/texticon(var/tn, var/px = 0, var/py = 0)
 	var/image/I = image('icons/obj/status_display.dmi', "blank")
 	var/len = length(tn)
 
@@ -274,33 +437,37 @@
 		var/image/ID = image('icons/obj/status_display.dmi', icon_state=char)
 		ID.pixel_x = -(d-1)*5 + px
 		ID.pixel_y = py
-		I.AddOverlays(ID)
+		I.add_overlay(ID)
 	return I
 
-
+// Door Timers
 /obj/machinery/door_timer/cell_1
-	name = "Cell 1"
-	id = "Cell 1"
+	name = "Cell A"
+	id = "cell_1"
 
 /obj/machinery/door_timer/cell_2
-	name = "Cell 2"
-	id = "Cell 2"
+	name = "Cell B"
+	id = "cell_2"
 
 /obj/machinery/door_timer/cell_3
-	name = "Cell 3"
-	id = "Cell 3"
+	name = "Cell C"
+	id = "cell_3"
 
 /obj/machinery/door_timer/cell_4
-	name = "Cell 4"
-	id = "Cell 4"
+	name = "Cell D"
+	id = "cell_4"
 
 /obj/machinery/door_timer/cell_5
-	name = "Cell 5"
-	id = "Cell 5"
+	name = "Cell E"
+	id = "cell_5"
 
 /obj/machinery/door_timer/cell_6
-	name = "Cell 6"
-	id = "Cell 6"
+	name = "Cell F"
+	id = "cell_6"
+
+/obj/machinery/door_timer/isolation_cell
+	name = "Isolation Cell"
+	id = "cell_isolation"
 
 #undef FONT_SIZE
 #undef FONT_COLOR

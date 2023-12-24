@@ -1,11 +1,10 @@
-GLOBAL_VAR_CONST(HIGHEST_CONNECTABLE_ZLEVEL_INDEX, 0)
 
-proc/HasAbove(z)
+/proc/HasAbove(var/z)
 	return 0
-proc/HasBelow(z)
+/proc/HasBelow(var/z)
 	return 0
 // These give either the turf or null.
-proc/GetAbove(turf/turf)
+/proc/GetAbove(var/turf/turf)
 	return null
-proc/GetBelow(turf/turf)
+/proc/GetBelow(var/turf/turf)
 	return null

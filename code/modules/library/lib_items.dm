@@ -3,6 +3,7 @@
  * Contains:
  *		Bookcase
  *		Book
+ *		Barcode Scanner
  */
 
 
@@ -17,58 +18,50 @@
 	anchored = 1
 	density = 1
 	opacity = 1
-	obj_flags = OBJ_FLAG_ANCHORABLE
+	build_amt = 5
 
 /obj/structure/bookcase/Initialize()
+	. = ..()
 	for(var/obj/item/I in loc)
 		if(istype(I, /obj/item/book))
 			I.forceMove(src)
 	update_icon()
-	. = ..()
 
-/obj/structure/bookcase/attackby(obj/item/O, mob/user)
+/obj/structure/bookcase/attackby(obj/item/O as obj, mob/user as mob)
 	if(istype(O, /obj/item/book))
-		if(user.drop(O, src))
-			update_icon()
-	else if(istype(O, /obj/item/pen))
+		user.drop_from_inventory(O,src)
+		update_icon()
+	else if(O.ispen())
 		var/newname = sanitizeSafe(input("What would you like to title this bookshelf?"), MAX_NAME_LEN)
 		if(!newname)
 			return
 		else
-			SetName("bookcase ([newname])")
-	else if(isScrewdriver(O))
-		playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
-		to_chat(user, SPAN("notice", "You begin dismantling \the [src]."))
-		if(do_after(user,25,src))
-			to_chat(user, SPAN("notice", "You dismantle \the [src]."))
-			new /obj/item/stack/material/wood(get_turf(src), 5)
+			name = ("bookcase ([newname])")
+	else if(O.iswrench())
+		playsound(src.loc, O.usesound, 100, 1)
+		to_chat(user, (anchored ? "<span class='notice'>You unfasten \the [src] from the floor.</span>" : "<span class='notice'>You secure \the [src] to the floor.</span>"))
+		anchored = !anchored
+	else if(O.isscrewdriver())
+		to_chat(user, "<span class='notice'>You begin dismantling \the [src].</span>")
+		if(O.use_tool(src, user, 25, volume = 50))
+			to_chat(user, "<span class='notice'>You dismantle \the [src].</span>")
 			for(var/obj/item/book/b in contents)
-				b.dropInto(get_turf(src))
-			qdel(src)
-
+				b.forceMove((get_turf(src)))
+			dismantle()
 	else
 		..()
-	return
 
-/obj/structure/bookcase/attack_hand(mob/user as mob)
+/obj/structure/bookcase/attack_hand(var/mob/user)
 	if(contents.len)
-		var/list/titles = list()
-		for(var/obj/item in contents)
-			var/item_name = item.name
-			if(istype(item, /obj/item/book))
-				var/obj/item/book/B = item
-				item_name = B.title
-			titles[item_name] = item
-		var/title = input("Which book would you like to remove from the shelf?") as null|anything in titles
-		if(title)
-			if(!CanPhysicallyInteract(user))
+		var/obj/item/book/choice = tgui_input_list(user, "Which book would you like to remove from the shelf?", "Bookcase", contents)
+		if(choice)
+			if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
 				return
-			var/obj/choice = titles[title]
-			ASSERT(choice)
 			if(ishuman(user))
-				user.pick_or_drop(choice)
+				if(!user.get_active_hand())
+					user.put_in_hands(choice)
 			else
-				choice.forceMove(loc)
+				choice.forceMove(get_turf(src))
 			update_icon()
 
 /obj/structure/bookcase/ex_act(severity)
@@ -80,109 +73,112 @@
 			return
 		if(2.0)
 			for(var/obj/item/book/b in contents)
-				if(prob(50))
-					b.dropInto(get_turf(src))
-				else
-					qdel(b)
+				if (prob(50)) b.forceMove(get_turf(src))
+				else qdel(b)
 			qdel(src)
 			return
 		if(3.0)
-			if(prob(50))
+			if (prob(50))
 				for(var/obj/item/book/b in contents)
-					b.dropInto(get_turf(src))
+					b.forceMove(get_turf(src))
 				qdel(src)
 			return
+
 	return
 
-/obj/structure/bookcase/on_update_icon()
+/obj/structure/bookcase/update_icon()
 	if(contents.len < 5)
 		icon_state = "book-[contents.len]"
 	else
 		icon_state = "book-5"
 
 
+/obj/structure/bookcase/libraryspawn
+	var/spawn_category
+	var/spawn_amount = 3
+
+/obj/structure/bookcase/libraryspawn/Initialize()
+	. = ..()
+	name = "[initial(name)] ([spawn_category])"
+
+	addtimer(CALLBACK(src, PROC_REF(populate_shelves)), 1)
+
+/obj/structure/bookcase/libraryspawn/proc/populate_shelves()
+	if (!establish_db_connection(dbcon))
+		return
+
+	var/query_str = "SELECT author, title, content FROM ss13_library ORDER BY RAND() LIMIT :amount:"
+	var/list/query_data = list("amount" = spawn_amount)
+
+	if (spawn_category)
+		query_str = "SELECT author, title, content FROM ss13_library WHERE category = :cat: ORDER BY RAND() LIMIT :amount:"
+		query_data["cat"] = spawn_category
+
+	var/DBQuery/query_books = dbcon.NewQuery(query_str)
+	query_books.Execute(query_data)
+
+	while (query_books.NextRow())
+		CHECK_TICK
+		var/author = query_books.item[1]
+		var/title = query_books.item[2]
+		var/content = query_books.item[3]
+		var/obj/item/book/B = new(src)
+		B.name = "Book: [title]"
+		B.title = title
+		B.author = author
+		B.dat = content
+		var/randbook = "book[rand(1,16)]"
+		B.icon_state = randbook
+		B.item_state = randbook
+
+	update_icon()
+
+/obj/structure/bookcase/libraryspawn/fiction
+	spawn_category = "Fiction"
+
+/obj/structure/bookcase/libraryspawn/nonfiction
+	spawn_category = "Non-Fiction"
+
+/obj/structure/bookcase/libraryspawn/reference
+	spawn_category = "Reference"
+
+/obj/structure/bookcase/libraryspawn/religion
+	spawn_category = "Religion"
 
 /obj/structure/bookcase/manuals/medical
 	name = "Medical Manuals bookcase"
 
-	New()
-		..()
-		new /obj/item/book/wiki/medical_chemistry(src)
-		new /obj/item/book/wiki/medical_diagnostics_manual(src)
-		new /obj/item/book/wiki/medical_diagnostics_manual(src)
-		new /obj/item/book/wiki/medical_diagnostics_manual(src)
-		update_icon()
+/obj/structure/bookcase/manuals/medical/New()
+	..()
+	new /obj/item/book/manual/medical_diagnostics_manual(src)
+	new /obj/item/book/manual/medical_diagnostics_manual(src)
+	new /obj/item/book/manual/medical_diagnostics_manual(src)
+	new /obj/item/book/manual/medical_diagnostics_manual(src)
+	update_icon()
 
 
 /obj/structure/bookcase/manuals/engineering
 	name = "Engineering Manuals bookcase"
 
-	New()
-		..()
-		new /obj/item/book/wiki/engineering_construction(src)
-		new /obj/item/book/wiki/engineering_hacking(src)
-		new /obj/item/book/wiki/engineering_guide(src)
-		new /obj/item/book/wiki/atmospipes(src)
-		new /obj/item/book/wiki/engineering_singularity_safety(src)
-		new /obj/item/book/wiki/powersuits(src)
-		update_icon()
+/obj/structure/bookcase/manuals/engineering/New()
+	..()
+	new /obj/item/book/manual/wiki/engineering_construction(src)
+	new /obj/item/book/manual/engineering_particle_accelerator(src)
+	new /obj/item/book/manual/wiki/engineering_hacking(src)
+	new /obj/item/book/manual/wiki/engineering_guide(src)
+	new /obj/item/book/manual/atmospipes(src)
+	new /obj/item/book/manual/engineering_singularity_safety(src)
+	new /obj/item/book/manual/evaguide(src)
+	update_icon()
 
 /obj/structure/bookcase/manuals/research_and_development
 	name = "R&D Manuals bookcase"
 
-	New()
-		..()
-		new /obj/item/book/wiki/research_and_development(src)
-		update_icon()
-
-/obj/structure/bookcase/prefitted
-	var/prefit_category
-
-/obj/structure/bookcase/prefitted/Initialize()
-	. = ..()
-	if(!prefit_category)
-		return
-	if(!establish_old_db_connection())
-		return
-	var/list/potential_books = list()
-	var/DBQuery/query = sql_query("SELECT * FROM library WHERE category = $category", dbcon_old, list(category = prefit_category))
-	while(query.NextRow())
-		potential_books.Add(list(list(
-			"id" = query.item[1],
-			"author" = query.item[2],
-			"title" = query.item[3],
-			"content" = query.item[4]
-		)))
-	var/list/picked_books = list()
-	for(var/i in 1 to rand(3,5))
-		if(potential_books.len)
-			var/r = rand(1, potential_books.len)
-			var/pick = potential_books[r]
-			picked_books += list(pick)
-			potential_books -= list(pick)
-	for(var/i in picked_books)
-		var/obj/item/book/book = new(src)
-		book.dat += "<font face=\"Verdana\"><i>Author: [i["author"]]<br>USBN: [i["id"]]</i><br><h3>[i["title"]]</h3></font><br>[i["content"]]"
-		book.title = i["title"]
-		book.author = i["author"]
-		book.icon_state = "book[rand(1,7)]"
+/obj/structure/bookcase/manuals/research_and_development/New()
+	..()
+	new /obj/item/book/manual/research_and_development(src)
 	update_icon()
 
-/obj/structure/bookcase/prefitted/fiction
-	name = "bookcase (Fiction)"
-	prefit_category = "Fiction"
-
-/obj/structure/bookcase/prefitted/nonfiction
-	name = "bookcase (Non-Fiction)"
-	prefit_category = "Non-Fiction"
-
-/obj/structure/bookcase/prefitted/religious
-	name = "bookcase (Religious)"
-	prefit_category = "Religion"
-
-/obj/structure/bookcase/prefitted/reference
-	name = "bookcase (Reference)"
-	prefit_category = "Reference"
 
 /*
  * Book
@@ -190,76 +186,82 @@
 /obj/item/book
 	name = "book"
 	icon = 'icons/obj/library.dmi'
-	icon_state ="book"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/items/lefthand_books.dmi',
+		slot_r_hand_str = 'icons/mob/items/righthand_books.dmi'
+		)
+	icon_state = "book"
+	desc_antag = "As a Cultist, this item can be reforged to become a cult tome."
+	throw_speed = 1
 	throw_range = 5
-	w_class = ITEM_SIZE_NORMAL		 //upped to three because books are, y'know, pretty big. (and you could hide them inside eachother recursively forever)
-	force = 2.5
-	mod_handy = 0.4
-	mod_reach = 0.5
-	mod_weight = 0.5
+	w_class = ITEMSIZE_NORMAL		 //upped to three because books are, y'know, pretty big. (and you could hide them inside eachother recursively forever)
 	attack_verb = list("bashed", "whacked", "educated")
-	var/dat = "<meta charset=\"utf-8\">" // Actual page content
-	var/author		       // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
-	var/unique = 0         // 0 - Normal book, 1 - Should not be treated as normal book, unable to be copied, unable to be modified
-	var/title = "Untitled" // The real name of the book.
-	var/carved = 0         // Has the book been hollowed out for use as a secret storage item?
-	var/obj/item/store	   // What's in the book?
-	var/window_width = 650
-	var/window_height = 650
+	var/dat			 // Actual page content
+	var/due_date = 0 // Game time in 1/10th seconds
+	var/author		 // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
+	var/unique = 0   // 0 - Normal book, 1 - Should not be treated as normal book, unable to be copied, unable to be modified
+	var/title		 // The real name of the book.
+	var/carved = 0	 // Has the book been hollowed out for use as a secret storage item?
+	var/obj/item/store	//What's in the book?
+	drop_sound = 'sound/items/drop/book.ogg'
+	pickup_sound = 'sound/items/pickup/book.ogg'
 
-/obj/item/book/attack_self(mob/user)
+/obj/item/book/attack_self(var/mob/user as mob)
 	if(carved)
 		if(store)
-			to_chat(user, SPAN("notice", "[store] falls out of [title]!"))
-			store.dropInto(user.loc)
+			to_chat(user, "<span class='notice'>[store] falls out of [title]!</span>")
+			store.forceMove(get_turf(src.loc))
 			store = null
 			return
 		else
-			to_chat(user, SPAN("notice", "The pages of [title] have been cut out!"))
+			to_chat(user, "<span class='notice'>The pages of [title] have been cut out!</span>")
 			return
 	if(src.dat)
-		show_browser(user, dat, "window=book_[title];size=[window_width]x[window_height]")
+		user << browse("<TT><I>Penned by [author].</I></TT> <BR>" + "[dat]", "window=book")
 		user.visible_message("[user] opens a book titled \"[src.title]\" and begins reading intently.")
+		playsound(loc, 'sound/bureaucracy/bookopen.ogg', 50, 1)
 		onclose(user, "book")
+		onclose(playsound(loc, 'sound/bureaucracy/bookclose.ogg', 50, 1))
 	else
 		to_chat(user, "This book is completely blank!")
 
 /obj/item/book/attackby(obj/item/W as obj, mob/user as mob)
-	if(carved == 1)
+	if(carved)
 		if(!store)
-			if(W.w_class < ITEM_SIZE_NORMAL && user.drop(W, src))
+			if(W.w_class < 3)
+				user.drop_from_inventory(W,src)
 				store = W
-				to_chat(user, SPAN("notice", "You put [W] in [title]."))
+				to_chat(user, "<span class='notice'>You put [W] in [title].</span>")
 				return
 			else
-				to_chat(user, SPAN("notice", "[W] won't fit in [title]."))
+				to_chat(user, "<span class='notice'>[W] won't fit in [title].</span>")
 				return
 		else
-			to_chat(user, SPAN("notice", "There's already something in [title]!"))
+			to_chat(user, "<span class='notice'>There's already something in [title]!</span>")
 			return
-	if(istype(W, /obj/item/pen))
+	if(W.ispen())
 		if(unique)
 			to_chat(user, "These pages don't seem to take the ink well. Looks like you can't modify it.")
 			return
-		var/choice = input("What would you like to change?") in list("Title", "Contents", "Author", "Cancel")
+		var/choice = tgui_input_list(user, "What would you like to change?", "Book", list("Title", "Contents", "Author", "Cancel"), "Cancel")
 		switch(choice)
 			if("Title")
-				var/newtitle = reject_bad_text(sanitizeSafe(input("Write a new title:")))
+				var/newtitle = reject_bad_text(strip_html_full(tgui_input_text(user, "Write a new title:", "Title", encode = FALSE)))
 				if(!newtitle)
 					to_chat(usr, "The title is invalid.")
 					return
 				else
-					src.SetName(newtitle)
+					src.name = html_decode(newtitle)
 					src.title = newtitle
 			if("Contents")
-				var/content = sanitize(input("Write your book's contents (HTML NOT allowed):") as message|null, MAX_BOOK_MESSAGE_LEN)
+				var/content = strip_html_readd_newlines(tgui_input_text(user, "Write your book's contents (HTML NOT allowed):", "Content", multiline = TRUE, encode = FALSE), MAX_BOOK_MESSAGE_LEN)
 				if(!content)
 					to_chat(usr, "The content is invalid.")
 					return
 				else
 					src.dat += content
 			if("Author")
-				var/newauthor = sanitize(input(usr, "Write the author's name:"))
+				var/newauthor = strip_html_full(tgui_input_text(user, "Write the author's name:", "Author", encode = FALSE))
 				if(!newauthor)
 					to_chat(usr, "The name is invalid.")
 					return
@@ -267,99 +269,89 @@
 					src.author = newauthor
 			else
 				return
-	else if(istype(W, /obj/item/material/knife) || isWirecutter(W))
+	else if(istype(W, /obj/item/barcodescanner))
+		var/obj/item/barcodescanner/scanner = W
+		if(!scanner.computer)
+			to_chat(user, "[W]'s screen flashes: 'No associated computer found!'")
+		else
+			switch(scanner.mode)
+				if(0)
+					scanner.book = src
+					to_chat(user, "[W]'s screen flashes: 'Book stored in buffer.'")
+				if(1)
+					scanner.book = src
+					scanner.computer.buffer_book = src.name
+					to_chat(user, "[W]'s screen flashes: 'Book stored in buffer. Book title stored in associated computer buffer.'")
+				if(2)
+					scanner.book = src
+					for(var/datum/borrowbook/b in scanner.computer.checkouts)
+						if(b.bookname == src.name)
+							scanner.computer.checkouts.Remove(b)
+							to_chat(user, "[W]'s screen flashes: 'Book stored in buffer. Book has been checked in.'")
+							return
+					to_chat(user, "[W]'s screen flashes: 'Book stored in buffer. No active check-out record found for current title.'")
+				if(3)
+					scanner.book = src
+					for(var/obj/item/book in scanner.computer.inventory)
+						if(book == src)
+							to_chat(user, "[W]'s screen flashes: 'Book stored in buffer. Title already present in inventory, aborting to avoid duplicate entry.'")
+							return
+					scanner.computer.inventory.Add(src)
+					to_chat(user, "[W]'s screen flashes: 'Book stored in buffer. Title added to general inventory.'")
+	else if(istype(W, /obj/item/material/knife) || W.iswirecutter())
 		if(carved)	return
-		to_chat(user, SPAN("notice", "You begin to carve out [title]."))
-		if(do_after(user, 30, src))
-			to_chat(user, SPAN("notice", "You carve out the pages from [title]! You didn't want to read it anyway."))
+		to_chat(user, "<span class='notice'>You begin to carve out [title].</span>")
+		if(W.use_tool(src, user, 30, volume = 50))
+			to_chat(user, "<span class='notice'>You carve out the pages from [title]! You didn't want to read it anyway.</span>")
+			playsound(loc, 'sound/bureaucracy/papercrumple.ogg', 50, 1)
+			new /obj/item/shreddedp(get_turf(src))
 			carved = 1
 			return
 	else
 		..()
 
-/obj/item/book/attack(mob/living/carbon/M, mob/living/carbon/user)
-	if(user.zone_sel.selecting == BP_EYES && user.a_intent == I_HELP)
-		user.visible_message(
-			SPAN("notice", "[user] opens up a book and shows it to [M]."),
-			SPAN("notice", "You open up the book and show it to [M].")
-		)
-		show_browser(M, dat, "window=book_[title];size=[window_width]x[window_height]")
+/obj/item/book/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob, var/target_zone)
+	if(target_zone == BP_EYES)
+		user.visible_message("<span class='notice'>You open up the book and show it to [M]. </span>", \
+			"<span class='notice'> [user] opens up a book and shows it to [M]. </span>")
+		M << browse("<TT><I>Penned by [author].</I></TT> <BR>" + "[dat]", "window=book")
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN) //to prevent spam
+
+
+/*
+ * Barcode Scanner
+ */
+/obj/item/barcodescanner
+	name = "book scanner"
+	icon = 'icons/obj/library.dmi'
+	icon_state ="scanner"
+	throw_speed = 1
+	throw_range = 5
+	w_class = ITEMSIZE_SMALL
+	var/obj/machinery/librarycomp/computer // Associated computer - Modes 1 to 3 use this
+	var/obj/item/book/book //  Currently scanned book
+	var/mode = 0 // 0 - Scan only, 1 - Scan and Set Buffer, 2 - Scan and Attempt to Check In, 3 - Scan and Attempt to Add to Inventory
+
+/obj/item/barcodescanner/attack_self(mob/user as mob)
+	mode += 1
+	if(mode > 3)
+		mode = 0
+	to_chat(user, "[src] Status Display:")
+	var/modedesc
+	switch(mode)
+		if(0)
+			modedesc = "Scan book to local buffer."
+		if(1)
+			modedesc = "Scan book to local buffer and set associated computer buffer to match."
+		if(2)
+			modedesc = "Scan book to local buffer, attempt to check in scanned book."
+		if(3)
+			modedesc = "Scan book to local buffer, attempt to add book to general inventory."
+		else
+			modedesc = "ERROR"
+	to_chat(user, " - Mode [mode] : [modedesc]")
+	if(src.computer)
+		to_chat(user, SPAN_NOTICE("Computer has been associated with this unit."))
 	else
-		..()
-
-/obj/item/book/wiki
-	title = ""
-	unique = 1
-	var/topic
-	var/style = WIKI_MINI
-	var/censored = 1
-
-/obj/item/book/wiki/Initialize(mapload, ntopic, ncensored, nstyle, temporary = FALSE)
-	if(ntopic)
-		topic = ntopic
-	if(!isnull(ncensored))
-		censored = ncensored
-	if(nstyle)
-		style = nstyle
-	if(!title)
-		title = topic
-	if(title)
-		SetName(title)
-	dat = wiki_request(topic, style, censored, src)
-	if(temporary) // I hate myself for doing this
-		atom_flags |= ATOM_FLAG_INITIALIZED
-		return INITIALIZE_HINT_QDEL
-	. = ..(mapload)
-
-/obj/item/book/wiki/Topic(href, href_list[])
-	// No parent call here
-	if(href_list["title"] && initial(title) == "")
-		title = href_list["title"]
-		SetName(href_list["title"]) // Cirillic names are possible!
-	return 1
-
-// Put this into browse() to show a wiki topic
-/proc/wiki_request(topic, style = WIKI_MINI, censorship = 0, obj/source)
-	var/preamble = ""
-	var/add_params = ""
-	var/script = ""
-	var/ref = source ? "var ref = \ref[source];" : "";
-	switch(style)
-		if(WIKI_FULL)
-			script = "window.location='[config.link.wiki]/index.php?title=[topic]&printable=yes'"
-		if(WIKI_MINI)
-			script = file2text('code/js/wiki_html.js')
-			add_params = "&useskin=monobook&disabletoc=true" // TODO: Whenever BYOND bug about anchor links in local files will be fixed, remove '&disabletoc=true' to allow index
-		if(WIKI_MOBILE)
-			script = file2text('code/js/wiki_html.js')
-			add_params = "&useskin=minerva"
-		if(WIKI_TEXT)
-			script = file2text('code/js/wiki_text.js');
-			if(source)
-				show_browser(usr, icon(source.icon, source.icon_state), "file=wiki_paper.png&display=0")
-			else
-				show_browser(usr, icon('icons/obj/bureaucracy.dmi', "paper"), "file=wiki_paper.png&display=0")
-			show_browser(usr, icon('icons/misc/mark.dmi', "rt"), "file=right_arrow.png&display=0")
-			show_browser(usr, icon('icons/obj/library.dmi', "binder"), "file=bookbinder.png&display=0")
-			show_browser(usr, icon('icons/obj/library.dmi', "book1"), "file=book1.png&display=0")
-			preamble = {"<div style='text-align:center;border-style: dashed;'><b>This is a book template. Process it through a bookbinder to get a proper book.</b><br>
-						<img src='wiki_paper.png' style='width: 32px; height: 32px;'/><img src='right_arrow.png' style='width: 32px; height: 32px;'/><img src='bookbinder.png' style='width: 32px; height: 32px;'/><img src='right_arrow.png' style='width: 32px; height: 32px;'/><img src='book1.png' style='width: 32px; height: 32px;'/>
-						</div><br>"}
-
-	return {"<!DOCTYPE html><html>
-		<head><meta http-equiv=\"x-ua-compatible\" content=\"IE=edge\" charset=\"UTF-8\"></head>
-		<body>[preamble]<div id='status'>Turning on...</div></body>
-		<script>
-		var mainPage = '[config.link.wiki]';
-		var topic = '[topic][add_params]';
-		var censorship = [censorship];
-		[ref]
-		[script]
-		</script>
-		</html>"}
-
-/obj/item/book/wiki/template
-	icon_state = "paper_stack"
-	desc = "Bunch of unbound paper pieces."
-	style = WIKI_TEXT
+		to_chat(user, SPAN_WARNING("No associated computer found. Only local scans will function properly."))
+	to_chat(user, "\n")

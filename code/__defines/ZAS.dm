@@ -1,3 +1,4 @@
+
 //#define ZASDBG
 #define MULTIZAS
 
@@ -6,29 +7,19 @@
 #define BLOCKED 3
 
 #define ZONE_MIN_SIZE 14 //zones with less than this many turfs will always merge, even if the connection is not direct
+#define EDGE_KNOCKDOWN_MAX_DISTANCE 16	// Maximum distance between an airflow origin and a movable before knockdown no longer applies.
 
-// Used for quickly making certain things allow airflow or not.
-// More complicated, conditional airflow should override CanZASPass().
-#define ATMOS_PASS_YES      1 // Always blocks air and zones.
-#define ATMOS_PASS_NO       2 // Never blocks air or zones.
-#define ATMOS_PASS_DENSITY  3 // Blocks air and zones if density = 1, allows both if density = 0
-#define ATMOS_PASS_PROC     4 // Call CanZASPass() using c_airblock
-
-#define NORTHUP (NORTH|UP)
-#define EASTUP (EAST|UP)
-#define SOUTHUP (SOUTH|UP)
-#define WESTUP (WEST|UP)
-#define NORTHDOWN (NORTH|DOWN)
-#define EASTDOWN (EAST|DOWN)
-#define SOUTHDOWN (SOUTH|DOWN)
-#define WESTDOWN (WEST|DOWN)
+#define CANPASS_ALWAYS 1
+#define CANPASS_DENSITY 2
+#define CANPASS_PROC 3
+#define CANPASS_NEVER 4
 
 #define TURF_HAS_VALID_ZONE(T) (istype(T, /turf/simulated) && T:zone && !T:zone:invalid)
 
 #ifdef MULTIZAS
 
-GLOBAL_LIST_INIT(gzn_check, list(NORTH, SOUTH, EAST, WEST, UP, DOWN))
-GLOBAL_LIST_INIT(csrfz_check, list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST, NORTHUP, EASTUP, WESTUP, SOUTHUP, NORTHDOWN, EASTDOWN, WESTDOWN, SOUTHDOWN))
+var/list/csrfz_check = list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST, NORTHUP, EASTUP, WESTUP, SOUTHUP, NORTHDOWN, EASTDOWN, WESTDOWN, SOUTHDOWN)
+var/list/gzn_check = list(NORTH, SOUTH, EAST, WEST, UP, DOWN)
 
 #define ATMOS_CANPASS_TURF(ret,A,B) \
 	if (A.blocks_air & AIR_BLOCKED || B.blocks_air & AIR_BLOCKED) { \
@@ -36,40 +27,32 @@ GLOBAL_LIST_INIT(csrfz_check, list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST, N
 	} \
 	else if (B.z != A.z) { \
 		if (B.z < A.z) { \
-			if (!istype(A, /turf/simulated/open)) { \
-				ret = BLOCKED; \
-			} else { \
-				ret = ZONE_BLOCKED; \
-			} \
+			ret = (A.z_flags & ZM_ALLOW_ATMOS) ? ZONE_BLOCKED : BLOCKED; \
 		} \
 		else { \
-			if (!istype(B, /turf/simulated/open)) { \
-				ret = BLOCKED; \
-			} else { \
-				ret = ZONE_BLOCKED; \
-			} \
+			ret = (B.z_flags & ZM_ALLOW_ATMOS) ? ZONE_BLOCKED : BLOCKED; \
 		} \
 	} \
 	else if (A.blocks_air & ZONE_BLOCKED || B.blocks_air & ZONE_BLOCKED) { \
 		ret = (A.z == B.z) ? ZONE_BLOCKED : AIR_BLOCKED; \
 	} \
-	else if (length(A.contents)) { \
+	else if (A.contents.len) { \
 		ret = 0;\
 		for (var/thing in A) { \
 			var/atom/movable/AM = thing; \
-			switch (AM.can_atmos_pass) { \
-				if (ATMOS_PASS_YES) { \
+			switch (AM.atmos_canpass) { \
+				if (CANPASS_ALWAYS) { \
 					continue; \
 				} \
-				if (ATMOS_PASS_DENSITY) { \
+				if (CANPASS_DENSITY) { \
 					if (AM.density) { \
 						ret |= AIR_BLOCKED; \
 					} \
 				} \
-				if (ATMOS_PASS_PROC) { \
+				if (CANPASS_PROC) { \
 					ret |= AM.c_airblock(B); \
 				} \
-				if (ATMOS_PASS_NO) { \
+				if (CANPASS_NEVER) { \
 					ret = BLOCKED; \
 				} \
 			} \
@@ -80,8 +63,8 @@ GLOBAL_LIST_INIT(csrfz_check, list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST, N
 	}
 #else
 
-GLOBAL_LIST_INIT(gzn_check, list(NORTH, SOUTH, EAST, WEST))
-GLOBAL_LIST_INIT(csrfz_check, list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
+var/list/csrfz_check = list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
+var/list/gzn_check = list(NORTH, SOUTH, EAST, WEST)
 
 #define ATMOS_CANPASS_TURF(ret,A,B) \
 	if (A.blocks_air & AIR_BLOCKED || B.blocks_air & AIR_BLOCKED) { \
@@ -94,19 +77,19 @@ GLOBAL_LIST_INIT(csrfz_check, list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
 		ret = 0;\
 		for (var/thing in A) { \
 			var/atom/movable/AM = thing; \
-			switch (AM.can_atmos_pass) { \
-				if (ATMOS_PASS_YES) { \
+			switch (AM.atmos_canpass) { \
+				if (CANPASS_ALWAYS) { \
 					continue; \
 				} \
-				if (ATMOS_PASS_DENSITY) { \
+				if (CANPASS_DENSITY) { \
 					if (AM.density) { \
 						ret |= AIR_BLOCKED; \
 					} \
 				} \
-				if (ATMOS_PASS_PROC) { \
+				if (CANPASS_PROC) { \
 					ret |= AM.c_airblock(B); \
 				} \
-				if (ATMOS_PASS_NO) { \
+				if (CANPASS_NEVER) { \
 					ret = BLOCKED; \
 				} \
 			} \

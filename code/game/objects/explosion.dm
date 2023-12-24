@@ -1,25 +1,51 @@
-//TODO: Flash range does nothing currently
+// explosion logic is in code/controllers/Processes/explosives.dm now
 
-/**
- * Makes a given atom explode.
- *
- * Arguments:
- * - [epicenter][/turf]: The turf that's exploding.
- * - devastation_range: The range at which the effects of the explosion are at their strongest.
- * - heavy_impact_range: The range at which the effects of the explosion are relatively severe.
- * - light_impact_range: The range at which the effects of the explosion are relatively weak.
- * - flash_range: The range at which the explosion flashes people.
- * - adminlog: Whether to log the explosion/report it to the administration.
- * - z_transfer: flags that tells if we need to create another explosion on turf.
- * - shaped: if true make explosions look like circle
- * - sfx_to_play: sound to play, when expolosion near player
- */
-/proc/explosion(turf/epicenter, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 0, flash_range = 0, adminlog = 1, z_transfer = UP|DOWN, shaped, sfx_to_play = SFX_EXPLOSION)
+/proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, adminlog = 1, z_transfer = UP|DOWN, spreading = config.use_spreading_explosions)
 	UNLINT(src = null)	//so we don't abort once src is deleted
-	. = SSexplosions.explode(arglist(args))
+	var/datum/explosiondata/data = new
+	data.epicenter = epicenter
+	data.devastation_range = devastation_range
+	data.heavy_impact_range = heavy_impact_range
+	data.light_impact_range = light_impact_range
+	data.flash_range = flash_range
+	data.adminlog = adminlog
+	data.z_transfer = z_transfer
+	data.spreading = spreading
+	data.rec_pow = max(0,devastation_range) * 2 + max(0,heavy_impact_range) + max(0,light_impact_range)
 
+	// queue work
+	SSexplosives.queue(data)
 
+	//Machines which report explosions.
+	for(var/thing in doppler_arrays)
+		var/obj/machinery/doppler_array/Array = thing
+		Array.sense_explosion(epicenter.x,epicenter.y,epicenter.z,devastation_range,heavy_impact_range,light_impact_range)
 
-/proc/secondaryexplosion(turf/epicenter, range)
-	for(var/turf/tile in range(range, epicenter))
-		tile.ex_act(2)
+// == Recursive Explosions stuff ==
+
+/client/proc/kaboom()
+	var/power = input(src, "power?", "power?") as num
+	var/turf/T = get_turf(src.mob)
+	var/datum/explosiondata/d = new
+	d.spreading = TRUE
+	d.epicenter = T
+	d.rec_pow = power
+	SSexplosives.queue(d)
+
+/atom
+	var/explosion_resistance
+
+/turf/space
+	explosion_resistance = 3
+
+/turf/simulated/open
+	explosion_resistance = 3
+
+/turf/simulated/floor
+	explosion_resistance = 1
+
+/turf/simulated/mineral
+	explosion_resistance = 2
+
+/turf/simulated/wall
+	explosion_resistance = 10

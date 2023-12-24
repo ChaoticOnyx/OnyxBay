@@ -1,52 +1,46 @@
 /datum/computer_file/program/suit_sensors
 	filename = "sensormonitor"
 	filedesc = "Suit Sensors Monitoring"
-	nanomodule_path = /datum/nano_module/crew_monitor
 	program_icon_state = "crew"
-	program_key_state = "med_key"
-	program_menu_icon = "heart"
-	program_light_color = "#4273E7"
+	program_key_icon_state = "teal_key"
 	extended_desc = "This program connects to life signs monitoring system to provide basic information on crew health."
-	required_access = access_medical
-	requires_ntnet = 1
+	required_access_run = access_medical
+	required_access_download = access_medical
+	requires_ntnet = TRUE
 	network_destination = "crew lifesigns monitoring system"
 	size = 11
-	category = PROG_MONITOR
+	usage_flags = PROGRAM_CONSOLE | PROGRAM_LAPTOP | PROGRAM_STATIONBOUND
+	color = LIGHT_COLOR_CYAN
+	tgui_id = "SuitSensors"
+	tgui_theme = "nanotrasen"
 
+/datum/computer_file/program/suit_sensors/ui_data(mob/user)
+	var/list/data = list()
 
-/datum/nano_module/crew_monitor
-	name = "Crew monitor"
-
-/datum/nano_module/crew_monitor/Topic(href, href_list)
-	if(..()) return 1
-
-	if(href_list["track"])
-		if(isAI(usr))
-			var/mob/living/silicon/ai/AI = usr
-			var/mob/living/carbon/human/H = locate(href_list["track"]) in SSmobs.mob_list
-			if(hassensorlevel(H, SUIT_SENSOR_TRACKING))
-				AI.ai_actual_track(H)
-		return 1
-
-/datum/nano_module/crew_monitor/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
-	var/list/data = host.initial_data()
+	// Gather data for computer header
+	var/headerdata = get_header_data(data["_PC"])
+	if(headerdata)
+		data["_PC"] = headerdata
+		. = data
 
 	data["isAI"] = isAI(user)
 	data["crewmembers"] = list()
-	for(var/z_level in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
-		data["crewmembers"] += crew_repository.health_data(z_level)
+	if(SSradio.telecomms_ping(computer))
+		for(var/z_level in current_map.map_levels)
+			data["crewmembers"] += crew_repository.health_data(z_level)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if(!ui)
-		ui = new(user, src, ui_key, "crew_monitor.tmpl", "Crew Monitoring Computer", 900, 800, state = state)
+	data["security_level"] = seclevel2num(get_security_level())
 
-		// adding a template with the key "mapContent" enables the map ui functionality
-		ui.add_template("mapContent", "crew_monitor_map_content.tmpl")
-		// adding a template with the key "mapHeader" replaces the map header content
-		ui.add_template("mapHeader", "crew_monitor_map_header.tmpl")
+	return data
 
-		ui.set_initial_data(data)
-		ui.open()
+/datum/computer_file/program/suit_sensors/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return
 
-		// should make the UI auto-update; doesn't seem to?
-		ui.set_auto_update(1)
+	if(action == "track")
+		if(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			var/mob/living/carbon/human/H = locate(params["track"]) in mob_list
+			if(hassensorlevel(H, SUIT_SENSOR_TRACKING))
+				AI.ai_actual_track(H)

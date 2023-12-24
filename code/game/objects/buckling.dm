@@ -1,123 +1,168 @@
 /obj
-	var/can_buckle = 0
+	var/list/can_buckle
 	var/buckle_movable = 0
-	var/buckle_relaymove = 0 //lets obj's relaymove() to be used without allowing turning it
 	var/buckle_dir = 0
 	var/buckle_lying = -1 //bed-like behavior, forces mob.lying = buckle_lying if != -1
-	var/buckle_pixel_shift = "x=0;y=0" //where the buckled mob should be pixel shifted to, or null for no pixel shift control
 	var/buckle_require_restraints = 0 //require people to be handcuffed before being able to buckle. eg: pipes
-	var/mob/living/buckled_mob = null
+	var/atom/movable/buckled = null
+	var/buckle_delay = 0 //How much extra time to buckle someone to this object.
 
 /obj/attack_hand(mob/living/user)
 	. = ..()
-	if(can_buckle && buckled_mob)
-		user_unbuckle_mob(user)
+	if(buckled)
+		user_unbuckle(user)
 
-/obj/MouseDrop_T(atom/movable/dropping, mob/living/user)
+/obj/MouseDrop_T(atom/movable/MA, mob/living/user)
 	. = ..()
-	if(can_buckle && isliving(dropping))
-		user_buckle_mob(dropping, user)
+	if(is_type_in_list(MA, can_buckle))
+		user_buckle(MA, user)
+
+//Cleanup
 
 /obj/Destroy()
-	unbuckle_mob()
+	unbuckle()
 	return ..()
 
 
-/obj/proc/buckle_mob(mob/living/M)
-	if(buckled_mob) //unless buckled_mob becomes a list this can cause problems
-		return 0
-	if(!istype(M) || (M.loc != loc) || M.buckled || M.pinned.len || (buckle_require_restraints && !M.restrained()))
-		return 0
-	if(ismob(src))
-		var/mob/living/carbon/C = src //Don't wanna forget the xenos.
-		if(M != src && C.incapacitated())
-			return 0
+/**
+ * Buckles an `/atom/movable` to this obj, performed by a `/mob`
+ *
+ * Returns `TRUE` if the buckling was successful, `FALSE` otherwise
+ *
+ * * buckling_atom - The `/atom/movable` to buckle
+ * * user - The `/mob` that performs the buclking action
+ */
+/obj/proc/buckle(atom/movable/buckling_atom, mob/user)
 
-	if(M.throwing)
-		// can't throwing mob if it's buckled
-		M.throwing = 0
-	M.buckled = src
-	M.facing_dir = null
-	M.set_dir(buckle_dir ? buckle_dir : dir)
-	M.update_canmove()
-	M.update_floating()
-	buckled_mob = M
+	if(!buckling_atom.can_be_buckled || buckling_atom.buckled_to)
+		return FALSE
 
-	post_buckle_mob(M)
-	return 1
+	if(!is_type_in_list(buckling_atom, can_buckle))
+		return FALSE
 
-/obj/proc/unbuckle_mob()
-	if(buckled_mob && buckled_mob.buckled == src)
-		. = buckled_mob
-		buckled_mob.buckled = null
-		buckled_mob.anchored = initial(buckled_mob.anchored)
-		buckled_mob.update_canmove()
-		buckled_mob.update_floating()
-		buckled_mob = null
+	if(buckling_atom.loc != loc)
+		step_towards(buckling_atom, src)
 
-		post_buckle_mob(.)
+		if(buckling_atom.loc != loc)
+			return FALSE
 
-/obj/proc/post_buckle_mob(mob/living/M)
-	if(buckle_pixel_shift)
-		var/list/pixel_shift = cached_key_number_decode(buckle_pixel_shift)
-		if(M == buckled_mob)
-			M.default_pixel_y = M.default_pixel_y + pixel_shift["y"]
-			M.default_pixel_x = M.default_pixel_x + pixel_shift["x"]
-		else
-			M.default_pixel_x = M.default_pixel_x - pixel_shift["x"]
-			M.default_pixel_y = M.default_pixel_y - pixel_shift["y"]
-		animate(M, pixel_x = M.default_pixel_x, pixel_y = M.default_pixel_y, time = 1, loop = 1, easing = LINEAR_EASING)
+	if(buckling_atom != user && isliving(buckling_atom))
+		var/mob/living/buckling_mob = buckling_atom
 
-/obj/proc/user_buckle_mob(mob/living/M, mob/user)
-	if(isanimal(user) || istype(M, /mob/living/simple_animal/hostile))
-		return 0
-	if(!user.Adjacent(M) || user.restrained() || user.incapacitated(INCAPACITATION_ALL) || user.stat || istype(user, /mob/living/silicon/pai))
-		return 0
-	if(M == buckled_mob)
-		return 0
-	if(istype(M, /mob/living/carbon/metroid))
-		to_chat(user, SPAN("warning", "\The [M] is too squishy to buckle in."))
-		return 0
-	if(issilicon(M) && !is_drone(M))
-		to_chat(user, SPAN("warning", "\The [M] is too heavy to buckle in."))
-		return 0
+		//If the mob is not lying, check if there's an user that is performing the action, if there is add 3 seconds to perform the action,
+		//otherwise just continue as do_mob requires an user and a target
+		if(!buckling_mob.lying && !isnull(user) && !do_mob(user, buckling_mob, 3 SECONDS))
+			return FALSE
+
+	buckling_atom.buckled_to = src
+	buckled = buckling_atom
+
+	if(istype(buckling_atom, /mob/living))
+		var/mob/living/buckling_mob = buckling_atom
+
+		if(length(buckling_mob.pinned) || (buckle_require_restraints && !buckling_mob.restrained()))
+			return FALSE
+
+		buckling_mob.set_dir(buckle_dir ? buckle_dir : dir)
+		buckling_mob.facing_dir = null
+		buckling_mob.update_canmove()
+
+	else
+		buckling_atom.anchored = TRUE
+
+	post_buckle(buckling_atom)
+	buckling_atom.layer = layer + 0.1
+	return TRUE
+
+/obj/proc/unbuckle()
+	var/atom/movable/MA = buckled
+	if(MA && MA.buckled_to == src)
+		. = MA
+		MA.buckled_to = null
+		MA.anchored = initial(MA.anchored)
+		buckled = null
+		if(istype(MA, /mob/living))
+			var/mob/living/M = MA
+			M.update_canmove()
+		post_buckle(.)
+
+/obj/proc/post_buckle(atom/movable/MA)
+	return
+
+/obj/proc/user_buckle(atom/movable/MA, mob/user)
+	if(!ROUND_IS_STARTED)
+		to_chat(user, SPAN_WARNING("You can't buckle anything in before the game starts."))
+	if(!user.Adjacent(MA) || user.restrained() || user.stat || istype(user, /mob/living/silicon/pai))
+		return
+	if(!MA.can_be_buckled)
+		to_chat(user, SPAN_WARNING("\The [MA] can't be buckled_to!"))
+		return
+	if(MA == buckled)
+		return
+	if(istype(MA, /mob/living/carbon/slime))
+		to_chat(user, SPAN_WARNING("\The [MA] is too squishy to buckle in."))
+		return
+	if(buckled)
+		to_chat(user, SPAN_WARNING("\The [buckled.name] is already there, unbuckle [istype(buckled, /mob/living) ? "them" : "it"] first!."))
+		return
 
 	add_fingerprint(user)
-	unbuckle_mob()
-
-	//can't buckle unless you share locs so try to move M to the obj.
-	if(M.loc != src.loc)
-		if(M != user && M.a_intent != I_HELP && !(M.restrained() || M.lying))
-			to_chat(user, SPAN("warning", "\The [M.name] resists buckling!"))
-			to_chat(M, SPAN("warning", "You resist getting buckled by \the [user.name]!"))
-			return 0
-		step_towards(M, src)
-
-	. = buckle_mob(M)
-	if(.)
-		if(M == user)
-			M.visible_message(\
-				SPAN("notice", "\The [M.name] buckles themselves to \the [src]."),\
-				SPAN("notice", "You buckle yourself to \the [src]."),\
-				SPAN("notice", "You hear metal clanking."))
+	unbuckle()//this is now just for safety, buckling someone into an occupied chair will fail, instead of removing the occupant
+	if(buckle_delay)
+		if(MA == user)
+			MA.visible_message(\
+				"<b>[MA.name]</b> starts buckling themselves to [src].",\
+				SPAN_NOTICE("You start buckling yourself to [src]."),\
+				SPAN_NOTICE("You hear metal clanking."))
+		else if(isliving(MA))
+			MA.visible_message(\
+				SPAN_DANGER("[MA.name] is starting to be buckled to [src] by [user.name]!"),\
+				SPAN_DANGER("You are starting to be buckled to [src] by [user.name]!"),\
+				SPAN_NOTICE("You hear metal clanking."))
 		else
-			M.visible_message(\
-				SPAN("danger", "\The [M.name] is buckled to \the [src] by \the [user.name]!"),\
-				SPAN("danger", "You are buckled to \the [src] by \the [user.name]!"),\
-				SPAN("notice", "You hear metal clanking."))
+			MA.visible_message(\
+				SPAN_DANGER("\The [MA] is starting to be buckled to [src] by [user.name]!"),\
+				SPAN_NOTICE("You hear metal clanking."))
 
-/obj/proc/user_unbuckle_mob(mob/user)
-	var/mob/living/M = unbuckle_mob()
-	if(M)
-		if(M != user)
-			M.visible_message(\
-				SPAN("notice", "\The [M.name] was unbuckled by \the [user.name]!"),\
-				SPAN("notice", "You were unbuckled from \the [src] by \the [user.name]."),\
-				SPAN("notice", "You hear metal clanking."))
+		if(!do_after(user, buckle_delay, src))
+			return
+	if(buckle(MA, user))
+		if(MA == user)
+			MA.visible_message(\
+				"<b>[MA.name]</b> buckles themselves to [src].",\
+				SPAN_NOTICE("You buckle yourself to [src]."),\
+				SPAN_NOTICE("You hear metal clanking."))
+		else if(isliving(MA))
+			MA.visible_message(\
+				SPAN_DANGER("[MA.name] is buckled to [src] by [user.name]!"),\
+				SPAN_DANGER("You are buckled to [src] by [user.name]!"),\
+				SPAN_NOTICE("You hear metal clanking."))
 		else
-			M.visible_message(\
-				SPAN("notice", "\The [M.name] unbuckled themselves!"),\
-				SPAN("notice", "You unbuckle yourself from \the [src]."),\
-				SPAN("notice", "You hear metal clanking."))
+			MA.visible_message(\
+				SPAN_DANGER("\The [MA] is buckled to [src] by [user.name]!"),\
+				SPAN_NOTICE("You hear metal clanking."))
+
+/obj/proc/user_unbuckle(mob/user)
+	var/atom/movable/MA = unbuckle()
+	if(MA)
+		if(MA == user)
+			MA.visible_message(\
+				"<b>[MA.name]</b> unbuckles themselves.",\
+				SPAN_NOTICE("You unbuckle yourself from [src]."),\
+				SPAN_NOTICE("You hear metal clanking."))
+		else if(isliving(MA))
+			MA.visible_message(\
+				"<b>[user.name]</b> unbuckles [MA.name].", \
+				SPAN_NOTICE("You were unbuckled from [src] by [user.name]."),\
+				SPAN_NOTICE("You hear metal clanking."))
+		else if(isliving(user) && isobj(MA))
+			user.visible_message(\
+				"<b>[user]</b> unbuckles \the [MA] from [src].",\
+				SPAN_NOTICE("You unbuckle \the [MA] from [src]."),\
+				SPAN_NOTICE("You hear metal clanking."))
+		else
+			MA.visible_message(\
+				"<b>[MA.name]</b> unbuckles themselves.",\
+				SPAN_NOTICE("You hear metal clanking."))
 		add_fingerprint(user)
-	return M
+	return MA

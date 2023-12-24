@@ -1,42 +1,44 @@
-/mob/living/silicon/ai/_examine_text(mob/user)
-	. = ..()
+/mob/living/silicon/ai/examine(mob/user)
+	if(!..(user))
+		return TRUE
+
 	var/msg = ""
-	if (is_ic_dead())
+	if (src.stat == DEAD)
 		msg += "<span class='deadsay'>It appears to be powered-down.</span>\n"
 	else
 		msg += "<span class='warning'>"
-		if (getBruteLoss())
-			if (getBruteLoss() < 30)
+		if (src.getBruteLoss())
+			if (src.getBruteLoss() < 30)
 				msg += "It looks slightly dented.\n"
 			else
 				msg += "<B>It looks severely dented!</B>\n"
-		if (getFireLoss())
-			if (getFireLoss() < 30)
+		if (src.getFireLoss())
+			if (src.getFireLoss() < 30)
 				msg += "It looks slightly charred.\n"
 			else
 				msg += "<B>Its casing is melted and heat-warped!</B>\n"
-		if (!has_power())
-			if (getOxyLoss() > 175)
+		if (src.getOxyLoss() && (ai_restore_power_routine != 0 && !APU_power))
+			if (src.getOxyLoss() > 175)
 				msg += "<B>It seems to be running on backup power. Its display is blinking a \"BACKUP POWER CRITICAL\" warning.</B>\n"
-			else if(getOxyLoss() > 100)
+			else if(src.getOxyLoss() > 100)
 				msg += "<B>It seems to be running on backup power. Its display is blinking a \"BACKUP POWER LOW\" warning.</B>\n"
 			else
 				msg += "It seems to be running on backup power.\n"
 
-		if (stat == UNCONSCIOUS || ssd_check())
+		if (src.stat == UNCONSCIOUS)
 			msg += "It is non-responsive and displaying the text: \"RUNTIME: Sensory Overload, stack 26/3\".\n"
 		msg += "</span>"
 	msg += "*---------*"
 	if(hardware && (hardware.owner == src))
 		msg += "<br>"
 		msg += hardware.get_examine_desc()
-	. += "\n[msg]"
+	to_chat(user, msg)
 	user.showLaws(src)
+	return TRUE
+
+/mob/proc/showLaws(var/mob/living/silicon/S)
 	return
 
-/mob/proc/showLaws(mob/living/silicon/S)
-	return
-
-/mob/observer/ghost/showLaws(mob/living/silicon/S)
+/mob/abstract/observer/showLaws(var/mob/living/silicon/S)
 	if(antagHUD || is_admin(src))
 		S.laws.show_laws(src)

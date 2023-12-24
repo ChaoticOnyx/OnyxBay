@@ -1,4 +1,4 @@
-GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
+var/singleton/sound_player/sound_player = new()
 
 /*
 	A sound player/manager for looping 3D sound effects.
@@ -10,22 +10,22 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	The line above is currently a lie. Will probably just have to enforce moderately short sound ranges.
 */
 
-/decl/sound_player/
+/singleton/sound_player
 	var/list/taken_channels // taken_channels and source_id_uses can be merged into one but would then require a meta-object to store the different values I desire.
 	var/list/sound_tokens_by_sound_id
 
-/decl/sound_player/New()
+/singleton/sound_player/New()
 	..()
 	taken_channels = list()
 	sound_tokens_by_sound_id = list()
 
 
 //This can be called if either we're doing whole sound setup ourselves or it will be as part of from-file sound setup
-/decl/sound_player/proc/PlaySoundDatum(atom/source, sound_id, sound/sound, range, prefer_mute, datum/client_preference/preference, streaming)
+/singleton/sound_player/proc/PlaySoundDatum(atom/source, sound_id, sound/sound, range, prefer_mute, sound_type = ASFX_AMBIENCE)
 	var/token_type = isnum(sound.environment) ? /datum/sound_token : /datum/sound_token/static_environment
-	return new token_type(source, sound_id, sound, range, prefer_mute, preference, streaming)
+	return new token_type(source, sound_id, sound, range, prefer_mute, sound_type)
 
-/decl/sound_player/proc/PlayLoopingSound(atom/source, sound_id, sound, volume, range, falloff = 1, echo, frequency, prefer_mute, datum/client_preference/preference, streaming)
+/singleton/sound_player/proc/PlayLoopingSound(atom/source, sound_id, sound, volume, range, falloff = 1, echo, frequency, prefer_mute, sound_type = ASFX_AMBIENCE)
 	var/sound/S = istype(sound, /sound) ? sound : new(sound)
 	S.environment = 0 // Ensures a 3D effect even if x/y offset happens to be 0 the first time it's played
 	S.volume  = volume
@@ -34,9 +34,9 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	S.frequency = frequency
 	S.repeat = TRUE
 
-	return PlaySoundDatum(source, sound_id, S, range, prefer_mute, preference, streaming)
+	return PlaySoundDatum(source, sound_id, S, range, prefer_mute, sound_type)
 
-/decl/sound_player/proc/PrivStopSound(datum/sound_token/sound_token)
+/singleton/sound_player/proc/PrivStopSound(datum/sound_token/sound_token)
 	var/channel = sound_token.sound.channel
 	var/sound_id = sound_token.sound_id
 
@@ -47,16 +47,16 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	if(length(sound_tokens))
 		return
 
-	GLOB.sound_channels.ReleaseChannel(channel)
+	sound_channels.ReleaseChannel(channel)
 	taken_channels -= sound_id
 	sound_tokens_by_sound_id -= sound_id
 
-/decl/sound_player/proc/PrivGetChannel(datum/sound_token/sound_token)
+/singleton/sound_player/proc/PrivGetChannel(datum/sound_token/sound_token)
 	var/sound_id = sound_token.sound_id
 
 	. = taken_channels[sound_id] // Does this sound_id already have an assigned channel?
 	if(!.) // If not, request a new one.
-		. = GLOB.sound_channels.RequestChannel(sound_id)
+		. = sound_channels.RequestChannel(sound_id)
 		if(!.) // Oh no, still no channel. Abort
 			return
 		taken_channels[sound_id] = .
@@ -66,6 +66,8 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 		sound_tokens = list()
 		sound_tokens_by_sound_id[sound_id] = sound_tokens
 	sound_tokens += sound_token
+
+#define SOUND_STOPPED FLAG(15)
 
 /*
 	Outwardly this is a merely a toke/little helper that a user utilize to adjust sounds as desired (and possible).
@@ -80,12 +82,10 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	var/sound_id       // The associated sound id, used for cleanup
 	var/status = 0     // Paused, muted, running? Global for all listeners
 	var/listener_status// Paused, muted, running? Specific for the given listener.
-	var/const/SOUND_STOPPED = 0x8000
-	var/datum/client_preference/preference
-	var/datum/proximity_trigger/square/proxy_listener
-	var/list/can_be_heard_from
+	var/sound_type // Type of sound this token is handling, it's set by default (arbitrarily) as ambience, gets set on init with the actual one if specified.
 
-/datum/sound_token/New(atom/source, sound_id, sound/sound, range = 4, prefer_mute = FALSE, datum/client_preference/preference, streaming)
+
+/datum/sound_token/New(atom/source, sound_id, sound/sound, range = 4, prefer_mute = FALSE, sound_type = ASFX_AMBIENCE)
 	..()
 	if(!istype(source))
 		CRASH("Invalid sound source: [log_info_line(source)]")
@@ -101,13 +101,10 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	src.source      = source
 	src.sound       = sound
 	src.sound_id    = sound_id
-	src.preference  = preference
-
-	if(streaming) // Streams music
-		src.status |= SOUND_STREAM
+	src.sound_type  = sound_type
 
 	if(sound.repeat) // Non-looping sounds may not reserve a sound channel due to the risk of not hearing when someone forgets to stop the token
-		var/channel = GLOB.sound_player.PrivGetChannel(src) //Attempt to find a channel
+		var/channel = sound_player.PrivGetChannel(src) //Attempt to find a channel
 		if(!isnum(channel))
 			CRASH("All available sound channels are in active use.")
 		sound.channel = channel
@@ -117,18 +114,17 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	listeners = list()
 	listener_status = list()
 
-	register_signal(source, SIGNAL_QDELETING, nameof(.proc/qdel_self))
+	destroyed_event.register(source, src, TYPE_PROC_REF(/datum, qdel_self))
 
-	if(ismovable(source))
-		proxy_listener = new(source, /datum/sound_token/proc/PrivAddListener, /datum/sound_token/proc/PrivLocateListeners, range, proc_owner = src)
-		proxy_listener.register_turfs()
+	PrivLocateListeners()
+	START_PROCESSING(SSprocessing, src)
 
 /datum/sound_token/Destroy()
 	Stop()
 	. = ..()
 
 /datum/sound_token/proc/SetVolume(new_volume)
-	new_volume = Clamp(new_volume, 0, 100)
+	new_volume = clamp(new_volume, 0, 100)
 	if(sound.volume == new_volume)
 		return
 	sound.volume = new_volume
@@ -158,28 +154,32 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	listeners = null
 	listener_status = null
 
-	unregister_signal(source, SIGNAL_QDELETING)
-	QDEL_NULL(proxy_listener)
+	destroyed_event.unregister(source, src, TYPE_PROC_REF(/datum, qdel_self))
 	source = null
 
-	GLOB.sound_player.PrivStopSound(src)
+	sound_player.PrivStopSound(src)
+	STOP_PROCESSING(SSprocessing, src)
 
-/datum/sound_token/proc/PrivLocateListeners(list/prior_turfs, list/current_turfs)
+/datum/sound_token/process()
+	PrivLocateListeners()
+
+/datum/sound_token/proc/PrivLocateListeners()
 	if(status & SOUND_STOPPED)
 		return
 
-	can_be_heard_from = current_turfs
-	var/current_listeners = all_hearers(source, range)
-	var/former_listeners = listeners - current_listeners
+	var/current_listeners = SSspatial_grid.orthogonal_range_search(source, SPATIAL_GRID_CONTENTS_TYPE_HEARING, range)
 	var/new_listeners = current_listeners - listeners
 
-	for(var/listener in former_listeners)
-		PrivRemoveListener(listener)
+	if(!prefer_mute)
+		var/former_listeners = listeners - current_listeners
+		for(var/listener in former_listeners)
+			PrivRemoveListener(listener)
 
-	for(var/listener in new_listeners)
-		PrivAddListener(listener)
+	for(var/mob/listener in new_listeners)
+		if((listener.client?.prefs.sfx_toggles & sound_type) && (!isdeaf(listener))) //Only give the sound token if the listener has the preference for the type of token active, and is not deaf
+			PrivAddListener(listener)
 
-	for(var/listener in current_listeners)
+	for(var/mob/listener in current_listeners)
 		PrivUpdateListenerLoc(listener)
 
 /datum/sound_token/proc/PrivUpdateStatus(new_status)
@@ -192,37 +192,32 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	PrivUpdateListeners()
 
 /datum/sound_token/proc/PrivAddListener(atom/listener)
-	if(!check_preference(listener))
-		return
-
-	if(isvirtualmob(listener))
-		var/mob/observer/virtual/v = listener
-		if(!(v.abilities & VIRTUAL_ABILITY_HEAR))
-			return
-		listener = v.host
 	if(listener in listeners)
 		return
 
 	listeners += listener
 
-	register_signal(listener, SIGNAL_MOVED, nameof(.proc/PrivUpdateListenerLoc), override = TRUE)
-	register_signal(listener, SIGNAL_QDELETING, nameof(.proc/PrivRemoveListener), override = TRUE)
+	moved_event.register(listener, src, PROC_REF(PrivUpdateListenerLoc))
+	destroyed_event.register(listener, src, PROC_REF(PrivRemoveListener))
 
 	PrivUpdateListenerLoc(listener, FALSE)
 
 /datum/sound_token/proc/PrivRemoveListener(atom/listener, sound/null_sound)
 	null_sound = null_sound || new(channel = sound.channel)
 	sound_to(listener, null_sound)
-	unregister_signal(listener, SIGNAL_MOVED)
-	unregister_signal(listener, SIGNAL_QDELETING, /datum/sound_token/proc/PrivRemoveListener)
+	moved_event.unregister(listener, src, PROC_REF(PrivUpdateListenerLoc))
+	destroyed_event.unregister(listener, src, PROC_REF(PrivRemoveListener))
 	listeners -= listener
 
 /datum/sound_token/proc/PrivUpdateListenerLoc(atom/listener, update_sound = TRUE)
 	var/turf/source_turf = get_turf(source)
 	var/turf/listener_turf = get_turf(listener)
 
+	if (!source_turf || !listener_turf)
+		return
+
 	var/distance = get_dist(source_turf, listener_turf)
-	if(!listener_turf || (distance > range) || !(listener_turf in can_be_heard_from))
+	if(!listener_turf || (distance > range))
 		if(prefer_mute)
 			listener_status[listener] |= SOUND_MUTE
 		else
@@ -236,23 +231,22 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	sound.y = 1
 	// Far as I can tell from testing, sound priority just doesn't work.
 	// Sounds happily steal channels from each other no matter what.
-	sound.priority = Clamp(255 - distance, 0, 255)
+	sound.priority = clamp(255 - distance, 0, 255)
 	PrivUpdateListener(listener, update_sound)
 
 /datum/sound_token/proc/PrivUpdateListeners()
 	for(var/listener in listeners)
 		PrivUpdateListener(listener)
 
-/datum/sound_token/proc/PrivUpdateListener(listener, update_sound = TRUE)
-	if(!check_preference(listener))
-		PrivRemoveListener(listener)
-		return
-
+/datum/sound_token/proc/PrivUpdateListener(mob/listener, update_sound = TRUE)
 	sound.environment = PrivGetEnvironment(listener)
 	sound.status = status|listener_status[listener]
 	if(update_sound)
 		sound.status |= SOUND_UPDATE
-	sound_to(listener, sound)
+	if((listener.client?.prefs.sfx_toggles & sound_type) && (!isdeaf(listener))) //Send the sound only if the preference for the type of sound is set and is not deaf, otherwise remove the listener.
+		sound_to(listener, sound)
+	else
+		PrivRemoveListener(listener)
 
 /datum/sound_token/proc/PrivGetEnvironment(listener)
 	var/area/A = get_area(listener)
@@ -265,20 +259,5 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 		return FALSE
 	return TRUE
 
-/datum/sound_token/proc/check_preference(atom/listener)
-	if(preference)
-		var/mob/M = listener
-		if(istype(M))
-			if((M.get_preference_value(preference) != GLOB.PREF_YES))
-				return FALSE
-	return TRUE
-
 /datum/sound_token/static_environment/PrivGetEnvironment()
 	return sound.environment
-
-/obj/sound_test
-	var/sound = 'sound/music/classic/TestLoop1.ogg'
-
-/obj/sound_test/New()
-	..()
-	GLOB.sound_player.PlayLoopingSound(src, /obj/sound_test, sound, 50, 3)

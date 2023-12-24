@@ -1,39 +1,52 @@
 /mob/living/simple_animal/hostile/faithless
-	name = "Faithless"
-	desc = "The Wish Granter's faith in humanity, incarnate"
+	name = "faithless"
+	desc = "A creature. Darkness incarnate?"
+	icon = 'icons/mob/npc/human.dmi'
 	icon_state = "faithless"
 	icon_living = "faithless"
 	icon_dead = "faithless_dead"
 	speak_chance = 0
-	turns_per_move = 1
+	turns_per_move = 5
+	organ_names = list("chest", "lower body", "left arm", "right arm", "left leg", "right leg", "head")
 	response_help = "passes through"
 	response_disarm = "shoves"
 	response_harm = "hits"
 	speed = -1
 	maxHealth = 80
 	health = 80
+	environment_smash = 2
 
-	harm_intent_damage = 25
-	melee_damage_lower = 30
-	melee_damage_upper = 30
+	tameable = FALSE
+
+	melee_damage_lower = 15
+	melee_damage_upper = 15
 	attacktext = "gripped"
 	attack_sound = 'sound/hallucinations/growl1.ogg'
 
-	min_gas = null
-	max_gas = null
+	min_oxy = 0
+	max_oxy = 0
+	min_tox = 0
+	max_tox = 0
+	min_co2 = 0
+	max_co2 = 0
+	min_n2 = 0
+	max_n2 = 0
 	minbodytemp = 0
-	speed = 12
+	speed = 4
 
 	faction = "faithless"
-	supernatural = 1
-	bodyparts = /decl/simple_animal_bodyparts/faithless
 
-/mob/living/simple_animal/hostile/faithless/Allow_Spacemove(check_drift = 0)
+	flying = TRUE
+
+	psi_pingable = FALSE
+
+/mob/living/simple_animal/hostile/faithless/Allow_Spacemove(var/check_drift = 0)
 	return 1
 
-/mob/living/simple_animal/hostile/faithless/find_target()
+/mob/living/simple_animal/hostile/faithless/FindTarget()
+	var/my_target = target_mob
 	. = ..()
-	if(.)
+	if(. && (prob(30) || (. != my_target)))
 		audible_emote("wails at [.]")
 
 /mob/living/simple_animal/hostile/faithless/AttackingTarget()
@@ -42,13 +55,24 @@
 	if(istype(L))
 		if(prob(12))
 			L.Weaken(3)
-			L.visible_message("<span class='danger'>\The [src] knocks down \the [L]!</span>")
+			L.visible_message(SPAN_DANGER("\the [src] knocks down \the [L]!"))
 
 /mob/living/simple_animal/hostile/faithless/cult
 	faction = "cult"
+	appearance_flags = NO_CLIENT_COLOR
 
 /mob/living/simple_animal/hostile/faithless/cult/cultify()
 	return
 
-/decl/simple_animal_bodyparts/faithless
-	hit_zones = list("body", "left appendage", "right appendage", "shadowy tendrils", "head", "right stump", "left stump", "infernal eye")
+/mob/living/simple_animal/hostile/faithless/cult/Life()
+	..()
+	check_horde()
+
+/mob/living/simple_animal/hostile/faithless/can_fall()
+	return FALSE
+
+/mob/living/simple_animal/hostile/faithless/can_ztravel()
+	return TRUE
+
+/mob/living/simple_animal/hostile/faithless/CanAvoidGravity()
+	return TRUE

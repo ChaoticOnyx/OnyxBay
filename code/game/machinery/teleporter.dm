@@ -1,129 +1,123 @@
-#define DESTINATION_SPREAD_MAX 6
-#define DESTINATION_SPREAD_MIN 1
-
-/obj/machinery/teleporter_gate
-	name = "Teleporter Gate"
-	desc = "It's the hub of a teleporting machine."
-	icon_state = "tele_gate_off"
-	icon = 'icons/obj/machines/teleporter.dmi'
-	density = FALSE
+/obj/machinery/teleport
+	name = "teleport"
+	icon = 'icons/obj/teleporter.dmi'
+	density = TRUE
 	anchored = TRUE
-	idle_power_usage = 10 WATTS
-	active_power_usage = 2 KILO WATTS
 
-	light_color = "#7de1e1"
+/obj/machinery/teleport/pad
+	name = "teleporter pad"
+	desc = "It's the pad of a teleporting machine."
+	icon_state = "pad"
+	idle_power_usage = 10
+	active_power_usage = 2000
 
+	light_color = "#02d1c7"
+
+	var/datum/weakref/locked_obj
+	var/locked_obj_name
+
+	var/max_teleport_range = 4 //max overmap teleport distance
+	var/calibration = 0 // a percentage chance for teleporting into space instead of your target. 0 is perfectly calibrated, 100 is totally uncalibrated
 	var/engaged = FALSE
-	var/accuracy
-	var/calc_acceleration
-	var/obj/machinery/computer/teleporter/console
+	var/ignore_distance = FALSE // For antag teleporters.
 
-	component_types = list(
-	/obj/item/circuitboard/teleporter_gate,
-	/obj/item/stock_parts/manipulator = 2,
-	/obj/item/stock_parts/capacitor = 2
-	)
+/obj/machinery/teleport/pad/Initialize()
+	. = ..()
+	queue_icon_update()
 
-/obj/machinery/teleporter_gate/on_update_icon()
-	ClearOverlays()
+/obj/machinery/teleport/pad/process()
+	var/old_engaged = engaged
+	if(locked_obj)
+		if(stat & (NOPOWER|BROKEN) || !within_range(locked_obj))
+			engaged = FALSE
+		else
+			engaged = TRUE
+	if(old_engaged != engaged)
+		update_icon()
 
-	if(console && (get_dir(console, src) == EAST))
-		AddOverlays(OVERLAY(icon, "tele_gate_wiring"))
+/obj/machinery/teleport/pad/CollidedWith(M as mob|obj)
+	if(engaged)
+		teleport(M)
+		use_power_oneoff(5000)
 
-	if(!engaged || stat & (BROKEN | NOPOWER))
-		icon_state = "tele_gate_off"
-		set_light(0)
+/obj/machinery/teleport/pad/proc/teleport(atom/movable/M as mob|obj)
+	if(!locked_obj)
+		audible_message(SPAN_WARNING("Failure: Cannot authenticate locked on coordinates. Please reinstate coordinate matrix."))
+	var/obj/teleport_obj = locked_obj.resolve()
+	if(!teleport_obj)
+		locked_obj = null
+		return
+	if(prob(calibration)) //oh dear a problem, put em in deep space
+		do_teleport(M, locate(rand((2*TRANSITIONEDGE), world.maxx - (2*TRANSITIONEDGE)), rand((2*TRANSITIONEDGE), world.maxy - (2*TRANSITIONEDGE)), pick(GetConnectedZlevels(z))), 2)
 	else
-		flick("tele_gate_boot", src)
-		icon_state = "tele_gate_on"
+		do_teleport(M, teleport_obj) //dead-on precision
+	if(ishuman(M))
+		calibration = min(calibration + 5, 100)
 
-		set_light(0.25, 0.1, 2, 3.5, light_color)
-		AddOverlays(emissive_appearance(icon, "tele_gate_ea"))
+/obj/machinery/teleport/pad/update_icon()
+	cut_overlays()
+	if (engaged)
+		var/image/I = image(icon, src, "[initial(icon_state)]_active_overlay")
+		I.layer = EFFECTS_ABOVE_LIGHTING_LAYER
+		add_overlay(I)
+		set_light(4, 0.4)
+	else
+		set_light(0)
+		if (operable())
+			var/image/I = image(icon, src, "[initial(icon_state)]_idle_overlay")
+			I.layer = EFFECTS_ABOVE_LIGHTING_LAYER
+			add_overlay(I)
 
-	return
+/obj/machinery/teleport/pad/proc/within_range(var/target)
+	if(ignore_distance)
+		return TRUE
+	if (isweakref(target))
+		var/datum/weakref/target_ref = target
+		target = target_ref.resolve()
+	var/turf/T = get_turf(target)
+	if(T)
+		if (AreConnectedZLevels(z, T.z))
+			return TRUE
+		else if(current_map.use_overmap)
+			var/my_sector = map_sectors["[z]"]
+			var/target_sector = map_sectors["[T.z]"]
+			if (istype(my_sector, /obj/effect/overmap/visitable) && istype(target_sector, /obj/effect/overmap/visitable))
+				if(get_dist(my_sector, target_sector) < max_teleport_range)
+					return TRUE
 
-/obj/machinery/teleporter_gate/proc/link_console()
-	if(console)
+/obj/machinery/teleport/pad/proc/engage()
+	if(stat & (BROKEN|NOPOWER))
 		return
-	for(var/direction in GLOB.cardinal)
-		console = locate() in get_step(src, direction)
-		if(console)
-			console.link_gate()
-			break
+
+	use_power_oneoff(5000)
+	update_use_power(POWER_USE_ACTIVE)
+	visible_message(SPAN_NOTICE("Teleporter engaged!"))
+	add_fingerprint(usr)
+	engaged = TRUE
 	queue_icon_update()
 
-/obj/machinery/teleporter_gate/RefreshParts()
-	var/acc_modifier
-	for(var/obj/item/stock_parts/matter_bin/B in component_parts)
-		acc_modifier += B.rating
-	accuracy = acc_modifier
-
-	var/calc_modifier
-	for(var/obj/item/stock_parts/capacitor/C in component_parts)
-		calc_modifier += C.rating
-	calc_acceleration = calc_modifier / 2
-
-	return ..()
-
-/obj/machinery/teleporter_gate/Initialize()
-	. = ..()
-	link_console()
-	RefreshParts()
-
-/obj/machinery/teleporter_gate/Destroy()
-	if(console)
-		console.gate = null
-		console.queue_icon_update()
-		console = null
-	return ..()
-
-/obj/machinery/teleporter_gate/dismantle()
-	if(console)
-		console.gate = null
-		console.queue_icon_update()
-		console = null
-	return ..()
-
-/obj/machinery/teleporter_gate/attackby(obj/item/I, mob/user)
-	if(!engaged && default_deconstruction_screwdriver(user, I, FALSE))
-		return
-	if(default_deconstruction_crowbar(user, I))
-		return
-	return ..()
-
-/obj/machinery/teleporter_gate/proc/is_ready()
-	return !panel_open && engaged && !(stat & (BROKEN | NOPOWER)) && console && !(console.stat & (BROKEN | NOPOWER))
-
-/obj/machinery/teleporter_gate/proc/teleport(atom/A)
-	if(QDELETED(console))
+/obj/machinery/teleport/pad/proc/disengage()
+	if(stat & (BROKEN|NOPOWER))
 		return
 
-	var/atom/target
-	if(console.target_ref)
-		target = console.target_ref.resolve()
-	if(!target)
-		visible_message(SPAN_WARNING("Failure: Cannot authenticate locked on coordinates. Please reinstate coordinate matrix."))
-
-	if(istype(A))
-		use_power_oneoff(5 KILO WATTS)
-		do_teleport(A, target)
-	return
-
-/obj/machinery/teleporter_gate/Crossed(A)
-	if(is_ready())
-		teleport(A)
-
-/obj/machinery/teleporter_gate/power_change()
-	. = ..()
-	update_power()
-
-/obj/machinery/teleporter_gate/proc/set_state(new_state)
-	engaged = new_state
-	update_power()
+	update_use_power(POWER_USE_IDLE)
+	locked_obj = null
+	locked_obj_name = null
+	visible_message(SPAN_NOTICE("Teleporter disengaged!"))
+	engaged = FALSE
 	queue_icon_update()
 
-/obj/machinery/teleporter_gate/proc/update_power()
-	update_use_power(is_ready() ? POWER_USE_ACTIVE : POWER_USE_IDLE)
+/obj/machinery/teleport/pad/power_change()
+	..()
+	queue_icon_update()
 
-#undef DESTINATION_SPREAD_MIN
-#undef DESTINATION_SPREAD_MAX
+/obj/machinery/teleport/pad/proc/start_recalibration()
+	audible_message(SPAN_NOTICE("Recalibrating..."))
+	addtimer(CALLBACK(src, PROC_REF(recalibrate)), 5 SECONDS, TIMER_UNIQUE)
+
+/obj/machinery/teleport/pad/proc/recalibrate()
+	calibration = 0
+	audible_message(SPAN_NOTICE("Calibration complete."))
+
+/obj/machinery/teleport/pad/ninja
+	ignore_distance = TRUE

@@ -1,64 +1,55 @@
-/// A holder for simple behaviour that can be attached to many different types.
-///
-/// Only one element of each type is instanced during game init.
-/// Otherwise acts basically like a lightweight component.
+/**
+ * A holder for simple behaviour that can be attached to many different types
+ *
+ * Only one element of each type is instanced during game init.
+ * Otherwise acts basically like a lightweight component.
+ */
 /datum/element
-	/// Option flags for element behaviour.
-	var/element_flags = 0
+	/// Option flags for element behaviour
+	var/element_flags = NONE
+	/**
+	 * The index of the first attach argument to consider for duplicate elements
+	 *
+	 * Is only used when flags contains [ELEMENT_BESPOKE]
+	 *
+	 * This is infinity so you must explicitly set this
+	 */
+	var/argument_hash_start_idx = INFINITY
 
-	/// The index of the first attach argument to consider for duplicate elements.
-	/// Is only used when flags contains `ELEMENT_BESPOKE`.
-	/// This is infinity so you must explicitly set this.
-	var/id_arg_index = INFINITY
-
-/// Activates the functionality defined by the element on the given target datum.
-/datum/element/proc/attach(datum/target)
-	SHOULD_CALL_PARENT(TRUE)
-
+/// Activates the functionality defined by the element on the given target datum
+/datum/element/proc/Attach(datum/target)
+	SHOULD_CALL_PARENT(1)
 	if(type == /datum/element)
 		return ELEMENT_INCOMPATIBLE
+	SEND_SIGNAL(target, COMSIG_ELEMENT_ATTACH, src)
+	if(element_flags & ELEMENT_DETACH_ON_HOST_DESTROY)
+		RegisterSignal(target, COMSIG_QDELETING, PROC_REF(Detach), override = TRUE)
 
-	SEND_SIGNAL(target, SIGNAL_ELEMENT_ATTACH, src)
-
-	if(element_flags & ELEMENT_DETACH)
-		register_signal(target, SIGNAL_QDELETING, nameof(.proc/on_target_delete), override = TRUE)
-
-/datum/element/proc/on_target_delete(datum/source, force)
-	detach(source)
-
-/// Deactivates the functionality defines by the element on the given datum.
-/datum/element/proc/detach(datum/source, ...)
-	SEND_SIGNAL(source, SIGNAL_ELEMENT_DETACH, src)
-	SHOULD_CALL_PARENT(TRUE)
-	unregister_signal(source, SIGNAL_QDELETING)
+/// Deactivates the functionality defines by the element on the given datum
+/datum/element/proc/Detach(datum/source, force)
+	SEND_SIGNAL(source, COMSIG_ELEMENT_DETACH_ON_HOST_DESTROY, src)
+	SHOULD_CALL_PARENT(1)
+	UnregisterSignal(source, COMSIG_QDELETING)
 
 /datum/element/Destroy(force)
 	if(!force)
 		return QDEL_HINT_LETMELIVE
-
-	SSelements.elements_by_type -= type
+	SSdcs.elements_by_type -= type
 	return ..()
 
-/// Finds the singleton for the element type given and attaches it to src.
-/datum/proc/_add_element(list/arguments)
-	if(QDELING(src))
-		CRASH("We just tried to add an element to a qdeleted datum, something is fucked")
+//DATUM PROCS
 
-	var/datum/element/ele = SSelements.GetElement(arguments)
+/// Finds the singleton for the element type given and attaches it to src
+/datum/proc/_AddElement(list/arguments)
+	var/datum/element/ele = SSdcs.GetElement(arguments)
 	arguments[1] = src
-
-	if(ele.attach(arglist(arguments)) == ELEMENT_INCOMPATIBLE)
+	if(ele.Attach(arglist(arguments)) == ELEMENT_INCOMPATIBLE)
 		CRASH("Incompatible [arguments[1]] assigned to a [type]! args: [json_encode(args)]")
 
 /**
- * Finds the singleton for the element type given and detaches it from src.
- * You only need additional arguments beyond the type if you're using `ELEMENT_BESPOKE`.
+ * Finds the singleton for the element type given and detaches it from src
+ * You only need additional arguments beyond the type if you're using [ELEMENT_BESPOKE]
  */
-/datum/proc/_remove_element(list/arguments)
-	var/datum/element/ele = SSelements.GetElement(arguments)
-
-	if(ele.element_flags & ELEMENT_COMPLEX_DETACH)
-		arguments[1] = src
-		ele.detach(arglist(arguments))
-	else
-		ele.detach(src)
+/datum/proc/_RemoveElement(list/arguments)
+	var/datum/element/ele = SSdcs.GetElement(arguments)
+	ele.Detach(src)

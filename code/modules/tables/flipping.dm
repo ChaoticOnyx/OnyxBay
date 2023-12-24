@@ -1,11 +1,13 @@
 
-/obj/structure/table/proc/straight_table_check(direction)
-	if(health > 100)
-		return 0
+/obj/structure/table/proc/straight_table_check(var/direction)
+	if(material?.weight > DEFAULT_TABLE_FLIP_WEIGHT)
+		return FALSE
+	if(reinforced?.weight > DEFAULT_TABLE_FLIP_WEIGHT)
+		return FALSE
 	var/obj/structure/table/T
 	for(var/angle in list(-90,90))
 		T = locate() in get_step(src.loc,turn(direction,angle))
-		if(T && T.flipped == 0 && T.material && material && T.material.name == material.name)
+		if(T && T.flipped == 0 && T.material.name == material.name)
 			return 0
 	T = locate() in get_step(src.loc,direction)
 	if (!T || T.flipped == 1 || T.material != material)
@@ -18,21 +20,21 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if (!can_touch(usr) || isanimal(usr))
+	if (!can_touch(usr) || israt(usr))
 		return
 
 	if(flipped < 0 || !flip(get_cardinal_dir(usr,src)))
 		to_chat(usr, "<span class='notice'>It won't budge.</span>")
 		return
 
-	usr.visible_message("<span class='warning'>[usr] flips \the [src]!</span>")
+	usr.visible_message(SPAN_WARNING("[usr] flips \the [src]!"), intent_message = THUNK_SOUND)
 
-	if(atom_flags & ATOM_FLAG_CLIMBABLE)
-		object_shaken()
+	if(climbable)
+		structure_shaken()
 
 	return
 
-/obj/structure/table/proc/unflipping_check(direction)
+/obj/structure/table/proc/unflipping_check(var/direction)
 
 	for(var/mob/M in oview(src,0))
 		return 0
@@ -50,7 +52,7 @@
 		L.Add(turn(src.dir,90))
 	for(var/new_dir in L)
 		var/obj/structure/table/T = locate() in get_step(src.loc,new_dir)
-		if(T && T.material && material && T.material.name == material.name)
+		if(T && T.material.name == material.name)
 			if(T.flipped == 1 && T.dir == src.dir && !T.unflipping_check(new_dir))
 				return 0
 	return 1
@@ -69,42 +71,42 @@
 		return
 	unflip()
 
-/obj/structure/table/proc/flip(direction)
+/obj/structure/table/proc/flip(var/direction)
 	if( !straight_table_check(turn(direction,90)) || !straight_table_check(turn(direction,-90)) )
-		return FALSE
+		return 0
 
-	if(!do_after(usr, 1 SECOND, src))
-		return FALSE
 	verbs -=/obj/structure/table/verb/do_flip
 	verbs +=/obj/structure/table/proc/do_put
 
-	throw_contents_around()
+	var/list/targets = list(get_step(src,dir),get_step(src,turn(dir, 45)),get_step(src,turn(dir, -45)))
+	for (var/atom/movable/A in get_turf(src))
+		if (!A.anchored)
+			spawn(0)
+				A.throw_at(pick(targets),1,1)
+
 	set_dir(direction)
 	if(dir != NORTH)
-		layer = ABOVE_HUMAN_LAYER
-	atom_flags &= ~ATOM_FLAG_CLIMBABLE //flipping tables allows them to be used as makeshift barriers
+		layer = 5
+	climbable = FALSE //flipping tables allows them to be used as makeshift barriers
 	flipped = 1
 	atom_flags |= ATOM_FLAG_CHECKS_BORDER
 	for(var/D in list(turn(direction, 90), turn(direction, -90)))
 		var/obj/structure/table/T = locate() in get_step(src,D)
-		if(T && T.can_connect() && T.flipped == 0 && material && T.material && T.material.name == material.name)
+		if(T && T.flipped == 0 && material && T.material && T.material.name == material.name)
 			T.flip(direction)
 	take_damage(rand(5, 10))
 	update_connections(1)
 	update_icon()
-	set_turf_height_offset(0)
 
-	return TRUE
+	return 1
 
 /obj/structure/table/proc/unflip()
-	if(!do_after(usr, 1 SECOND, src))
-		return FALSE
 	verbs -=/obj/structure/table/proc/do_put
 	verbs +=/obj/structure/table/verb/do_flip
 
-	reset_plane_and_layer()
-	atom_flags |= ATOM_FLAG_CLIMBABLE
+	layer = initial(layer)
 	flipped = 0
+	climbable = initial(climbable)
 	atom_flags &= ~ATOM_FLAG_CHECKS_BORDER
 	for(var/D in list(turn(dir, 90), turn(dir, -90)))
 		var/obj/structure/table/T = locate() in get_step(src.loc,D)
@@ -113,14 +115,5 @@
 
 	update_connections(1)
 	update_icon()
-	set_turf_height_offset(initial(turf_height_offset))
 
-	return TRUE
-
-/obj/structure/table/CtrlClick(mob/living/L)
-	if(L.is_ventcrawling)
-		return
-	if(!flipped)
-		do_flip()
-	else
-		do_put()
+	return 1

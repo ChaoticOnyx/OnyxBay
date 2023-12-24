@@ -5,48 +5,84 @@
 /obj/effect/projectile/impact/laser
 	name = "laser impact"
 	icon_state = "impact_laser"
-	light_color = COLOR_RED_LIGHT
+	light_color = LIGHT_COLOR_RED
 
-/obj/effect/projectile/impact/laser/omni
-	name = "laser impact"
-	icon_state = "impact_omni"
-	light_color = COLOR_LUMINOL
+/obj/effect/projectile/impact/laser/scc
+	icon_state = "impact_scc"
+	light_color = COLOR_INDIGO
 
 /obj/effect/projectile/impact/laser/blue
-	name = "laser impact"
 	icon_state = "impact_blue"
-	light_color = COLOR_BLUE_LIGHT
+	light_color = LIGHT_COLOR_BLUE
 
-/obj/effect/projectile/impact/laser/heavy
-	name = "heavy laser impact"
-	icon_state = "impact_beam_heavy"
-
-/obj/effect/projectile/impact/laser/small
-	light_max_bright = 0.7
-	icon_state = "impact_beam_small"
+/obj/effect/projectile/impact/disabler
+	name = "disabler impact"
+	icon_state = "impact_omni"
+	light_color = LIGHT_COLOR_CYAN
 
 /obj/effect/projectile/impact/xray
 	name = "xray impact"
 	icon_state = "impact_xray"
-	light_color = "#00cc00"
+	light_color = LIGHT_COLOR_GREEN
 
 /obj/effect/projectile/impact/pulse
 	name = "pulse impact"
 	icon_state = "impact_u_laser"
-	light_color = COLOR_DEEP_SKY_BLUE
+	light_color = LIGHT_COLOR_BLUE
 
-/obj/effect/projectile/impact/trilaser
+/obj/effect/projectile/impact/plasma_cutter
 	name = "plasma impact"
 	icon_state = "impact_plasmacutter"
-	light_color = COLOR_LUMINOL
+	light_color = LIGHT_COLOR_CYAN
 
 /obj/effect/projectile/impact/stun
 	name = "stun impact"
 	icon_state = "impact_stun"
-	light_color = COLOR_YELLOW
+	light_color = LIGHT_COLOR_YELLOW
 
+/obj/effect/projectile/impact/heavy_laser
+	name = "heavy laser impact"
+	icon_state = "impact_beam_heavy"
+	light_power = 3
+	light_color = LIGHT_COLOR_RED
+
+/obj/effect/projectile/impact/cult
+	name = "arcane blast"
+	icon_state = "impact_cult"
+	light_color = LIGHT_COLOR_VIOLET
+	appearance_flags = NO_CLIENT_COLOR
+
+/obj/effect/projectile/impact/cult/heavy
+	icon_state = "impact_hcult"
+	light_power = 3
+	appearance_flags = NO_CLIENT_COLOR
+
+/obj/effect/projectile/impact/solar
+	name = "solar eruption"
+	icon_state = "impact_solar"
+	light_color = LIGHT_COLOR_FIRE
+
+/obj/effect/projectile/impact/eyelaser
+	icon_state = "impact_eye"
+	light_color = LIGHT_COLOR_RED
 
 /obj/effect/projectile/impact/emitter
-	name = "emitter impact"
 	icon_state = "impact_emitter"
-	light_color = "#00cc00"
+	light_color = LIGHT_COLOR_GREEN
+
+/obj/effect/projectile/impact/tachyon
+	name = "xray impact"
+	icon_state = "impact_tachyon"
+	light_color = LIGHT_COLOR_RED
+
+/obj/effect/projectile/impact/bfg
+	icon_state = "impact_bfg"
+	light_color = LIGHT_COLOR_GREEN
+
+/obj/effect/projectile/impact/hegemony
+	icon_state = "impact_hegemony"
+	light_color = LIGHT_COLOR_ORANGE
+
+/obj/effect/projectile/impact/tesla
+	icon_state = "impact_lightning"
+	light_color = LIGHT_COLOR_CYAN

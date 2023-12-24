@@ -1,233 +1,596 @@
-//Food
 /datum/job/bartender
 	title = "Bartender"
-	department = "Service"
-	department_flag = SRV
-	total_positions = 1
-	spawn_positions = 1
-	supervisors = "the head of personnel"
-	selection_color = "#515151"
+	flag = BARTENDER
+	departments = SIMPLEDEPT(DEPARTMENT_SERVICE)
+	department_flag = SERVICE
+	faction = "Station"
+	total_positions = 2
+	spawn_positions = 2
+	supervisors = "the executive officer"
+	selection_color = "#90524b"
+
+	minimum_character_age = list(
+		SPECIES_HUMAN = 18,
+		SPECIES_SKRELL = 50,
+		SPECIES_SKRELL_AXIORI = 50
+	)
+
 	access = list(access_hydroponics, access_bar, access_kitchen)
 	minimal_access = list(access_bar)
-	outfit_type = /decl/hierarchy/outfit/job/service/bartender
+	alt_titles = list("Barista")
+	outfit = /datum/outfit/job/bartender
+	blacklisted_species = list(SPECIES_VAURCA_BREEDER)
 
-/datum/job/bartender/equip(mob/living/carbon/human/H)
-	. = ..()
-	if(.)
-		H.mutations.Add(MUTATION_BARTENDER)
+/datum/outfit/job/bartender
+	name = "Bartender"
+	jobtype = /datum/job/bartender
+
+	head = /obj/item/clothing/head/flatcap/bartender
+	uniform = /obj/item/clothing/under/rank/bartender
+	shoes = /obj/item/clothing/shoes/sneakers/black
+	suit = /obj/item/clothing/suit/storage/bartender
+
+	tab_pda = /obj/item/modular_computer/handheld/pda/civilian/bartender
+	wristbound = /obj/item/modular_computer/handheld/wristbound/preset/pda/civilian/bartender
+	tablet = /obj/item/modular_computer/handheld/preset/civilian/bartender
+
+	headset = /obj/item/device/radio/headset/headset_service
+	bowman = /obj/item/device/radio/headset/headset_service/alt
+	double_headset = /obj/item/device/radio/headset/alt/double/service
+	wrist_radio = /obj/item/device/radio/headset/wrist/service
+
+	backpack_faction = /obj/item/storage/backpack/nt
+	satchel_faction = /obj/item/storage/backpack/satchel/nt
+	dufflebag_faction = /obj/item/storage/backpack/duffel/nt
+	messengerbag_faction = /obj/item/storage/backpack/messenger/nt
 
 /datum/job/chef
 	title = "Chef"
-	department = "Service"
-	department_flag = SRV
+	flag = CHEF
+	departments = SIMPLEDEPT(DEPARTMENT_SERVICE)
+	department_flag = SERVICE
+	faction = "Station"
 	total_positions = 2
 	spawn_positions = 2
-	supervisors = "the head of personnel"
-	selection_color = "#515151"
+	supervisors = "the executive officer"
+	selection_color = "#90524b"
+
+	minimum_character_age = list(
+		SPECIES_HUMAN = 18,
+		SPECIES_SKRELL = 50,
+		SPECIES_SKRELL_AXIORI = 50
+	)
+
 	access = list(access_hydroponics, access_bar, access_kitchen)
 	minimal_access = list(access_kitchen)
 	alt_titles = list("Cook")
-	outfit_type = /decl/hierarchy/outfit/job/service/chef
+	outfit = /datum/outfit/job/chef
+	blacklisted_species = list(SPECIES_VAURCA_BREEDER)
 
-/datum/job/barmonkey
-	title = "Waiter"
-	department = "Service"
-	department_flag = SRV
-	total_positions = 1
-	spawn_positions = 1
-	no_latejoin = TRUE
-	supervisors = "the bartender"
-	selection_color = "#515151"
-	access = list(access_hydroponics, access_bar, access_kitchen)
-	minimal_access = list(access_bar)
-	outfit_type = /decl/hierarchy/outfit/job/service/barmonkey
-	preview_override = list("preview", 'icons/mob/human_races/monkeys/r_monkey.dmi')
+/datum/outfit/job/chef
+	name = "Chef"
+	jobtype = /datum/job/chef
 
-/datum/job/barmonkey/equip(mob/living/carbon/human/H)
-	. = ..()
-	if(.)
-		var/new_name = (H.gender == FEMALE ? "Mrs. Deempisi" : "Mr. Deempisi")
-		H.fully_replace_character_name(new_name)
-		H.dna.real_name = new_name
-		H.mind?.name = new_name
-		H.flavor_text = ""
-		H.mutations.Add(MUTATION_BARTENDER)
-		for(var/thing in H.flavor_texts)
-			H.flavor_texts[thing] = null
+	uniform = /obj/item/clothing/under/rank/chef
+	suit = /obj/item/clothing/suit/chef_jacket/nt
+	head = /obj/item/clothing/head/chefhat/nt
+	shoes = /obj/item/clothing/shoes/sneakers/black
+
+	tab_pda = /obj/item/modular_computer/handheld/pda/civilian
+	wristbound = /obj/item/modular_computer/handheld/wristbound/preset/pda/civilian
+	tablet = /obj/item/modular_computer/handheld/preset/civilian
+
+	headset = /obj/item/device/radio/headset/headset_service
+	bowman = /obj/item/device/radio/headset/headset_service/alt
+	double_headset = /obj/item/device/radio/headset/alt/double/service
+	wrist_radio = /obj/item/device/radio/headset/wrist/service
+
+	backpack_faction = /obj/item/storage/backpack/nt
+	satchel_faction = /obj/item/storage/backpack/satchel/nt
+	dufflebag_faction = /obj/item/storage/backpack/duffel/nt
+	messengerbag_faction = /obj/item/storage/backpack/messenger/nt
+
+	backpack_contents = list(
+		/obj/item/storage/box/produce = 1
+	)
 
 /datum/job/hydro
 	title = "Gardener"
-	department = "Service"
-	department_flag = SRV
-	total_positions = 2
-	spawn_positions = 1
-	supervisors = "the head of personnel"
-	selection_color = "#515151"
-	access = list(access_hydroponics, access_bar, access_kitchen)
-	minimal_access = list(access_hydroponics)
-	alt_titles = list("Hydroponicist")
-	outfit_type = /decl/hierarchy/outfit/job/service/gardener
-
-//Cargo
-/datum/job/qm
-	title = "Quartermaster"
-	department = "Supply"
-	department_flag = SUP
-	total_positions = 1
-	spawn_positions = 1
-	supervisors = "the head of personnel"
-	selection_color = "#515151"
-	economic_modifier = 5
-	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
-	minimal_access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
-	minimal_player_age = 7
-	ideal_character_age = 40
-	outfit_type = /decl/hierarchy/outfit/job/cargo/qm
-
-/datum/job/cargo_tech
-	title = "Cargo Technician"
-	department = "Supply"
-	department_flag = SUP
+	flag = BOTANIST
+	departments = SIMPLEDEPT(DEPARTMENT_SERVICE)
+	department_flag = SERVICE
+	faction = "Station"
 	total_positions = 2
 	spawn_positions = 2
-	supervisors = "the quartermaster and the head of personnel"
-	selection_color = "#515151"
-	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
-	minimal_access = list(access_maint_tunnels, access_cargo, access_cargo_bot, access_mailsorting)
-	outfit_type = /decl/hierarchy/outfit/job/cargo/cargo_tech
+	supervisors = "the executive officer"
+	selection_color = "#90524b"
 
-/datum/job/mining
-	title = "Shaft Miner"
-	department = "Supply"
-	department_flag = SUP
-	total_positions = 3
-	spawn_positions = 3
-	supervisors = "the quartermaster and the head of personnel"
-	selection_color = "#515151"
-	economic_modifier = 5
-	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
-	minimal_access = list(access_mining, access_mining_station, access_mailsorting)
-	alt_titles = list("Drill Technician","Prospector")
-	outfit_type = /decl/hierarchy/outfit/job/cargo/mining
+	minimum_character_age = list(
+		SPECIES_HUMAN = 18,
+		SPECIES_SKRELL = 50,
+		SPECIES_SKRELL_AXIORI = 50
+	)
+
+	access = list(access_hydroponics, access_bar, access_kitchen)
+	minimal_access = list(access_hydroponics)
+	outfit = /datum/outfit/job/hydro
+	blacklisted_species = list(SPECIES_VAURCA_BREEDER)
+	alt_titles = list("Hydroponicist")
+
+/datum/outfit/job/hydro
+	name = "Gardener"
+	jobtype = /datum/job/hydro
+
+	uniform = /obj/item/clothing/under/rank/hydroponics
+	head = /obj/item/clothing/head/bandana/hydro/nt
+	shoes = /obj/item/clothing/shoes/sneakers/black
+	suit_store = /obj/item/device/analyzer/plant_analyzer
+
+	tab_pda = /obj/item/modular_computer/handheld/pda/civilian
+	wristbound = /obj/item/modular_computer/handheld/wristbound/preset/pda/civilian
+	tablet = /obj/item/modular_computer/handheld/preset/civilian
+
+	headset = /obj/item/device/radio/headset/headset_service
+	bowman = /obj/item/device/radio/headset/headset_service/alt
+	double_headset = /obj/item/device/radio/headset/alt/double/service
+	wrist_radio = /obj/item/device/radio/headset/wrist/service
+
+	backpack = /obj/item/storage/backpack/hydroponics
+	backpack_faction = /obj/item/storage/backpack/nt
+	satchel = /obj/item/storage/backpack/satchel/hyd
+	satchel_faction = /obj/item/storage/backpack/satchel/nt
+	dufflebag = /obj/item/storage/backpack/duffel/hyd
+	dufflebag_faction = /obj/item/storage/backpack/duffel/nt
+	messengerbag = /obj/item/storage/backpack/messenger/hyd
+	messengerbag_faction = /obj/item/storage/backpack/messenger/nt
+
+/datum/outfit/job/hydro/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	. = ..()
+	if(istajara(H))
+		H.equip_or_collect(new /obj/item/clothing/gloves/botanic_leather/tajara(H), slot_gloves)
+	else if(isunathi(H))
+		H.equip_or_collect(new /obj/item/clothing/gloves/botanic_leather/unathi(H), slot_gloves)
+	else
+		H.equip_or_collect(new /obj/item/clothing/gloves/botanic_leather(H), slot_gloves)
 
 /datum/job/janitor
 	title = "Janitor"
-	department = "Service"
-	department_flag = SRV
+	flag = JANITOR
+	departments = SIMPLEDEPT(DEPARTMENT_SERVICE)
+	department_flag = SERVICE
+	faction = "Station"
+	total_positions = 2
+	spawn_positions = 2
+	supervisors = "the executive officer"
+	selection_color = "#90524b"
+	access = list(access_janitor, access_maint_tunnels, access_engine, access_research, access_sec_doors, access_medical)
+	minimal_access = list(access_janitor, access_engine, access_research, access_sec_doors, access_medical)
+	outfit = /datum/outfit/job/janitor
+	blacklisted_species = list(SPECIES_VAURCA_BREEDER)
+
+
+/datum/outfit/job/janitor
+	name = "Janitor"
+	jobtype = /datum/job/janitor
+
+	uniform = /obj/item/clothing/under/rank/janitor
+	head = /obj/item/clothing/head/softcap/nt/custodian
+	shoes = /obj/item/clothing/shoes/sneakers/black
+
+	tab_pda = /obj/item/modular_computer/handheld/pda/civilian/janitor
+	wristbound = /obj/item/modular_computer/handheld/wristbound/preset/pda/civilian/janitor
+	tablet = /obj/item/modular_computer/handheld/preset/civilian/janitor
+
+	headset = /obj/item/device/radio/headset/headset_service
+	bowman = /obj/item/device/radio/headset/headset_service/alt
+	double_headset = /obj/item/device/radio/headset/alt/double/service
+	wrist_radio = /obj/item/device/radio/headset/wrist/service
+
+	backpack_faction = /obj/item/storage/backpack/nt
+	satchel_faction = /obj/item/storage/backpack/satchel/nt
+	dufflebag_faction = /obj/item/storage/backpack/duffel/nt
+	messengerbag_faction = /obj/item/storage/backpack/messenger/nt
+
+/datum/job/journalist
+	title = "Corporate Reporter"
+	flag = JOURNALIST
+	departments = SIMPLEDEPT(DEPARTMENT_SERVICE)
+	department_flag = SERVICE
+	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the head of personnel"
-	selection_color = "#515151"
-	access = list(access_janitor, access_maint_tunnels, access_engine, access_research, access_sec_doors, access_medical)
-	minimal_access = list(access_janitor, access_maint_tunnels, access_engine, access_research, access_sec_doors, access_medical)
-	alt_titles = list("Custodian","Sanitation Technician")
-	outfit_type = /decl/hierarchy/outfit/job/service/janitor
+	supervisors = "the executive officer"
+	selection_color = "#90524b"
 
-//More or less assistants
+	minimum_character_age = list(
+		SPECIES_HUMAN = 20,
+		SPECIES_SKRELL = 50,
+		SPECIES_SKRELL_AXIORI = 50
+	)
+
+	access = list(access_journalist, access_maint_tunnels)
+	minimal_access = list(access_journalist, access_maint_tunnels)
+	alt_titles = list("Freelance Journalist")
+	alt_outfits = list("Freelance Journalist" = /datum/outfit/job/journalistf)
+	title_accesses = list("Corporate Reporter" = list(access_medical, access_sec_doors, access_research, access_engine))
+	outfit = /datum/outfit/job/journalist
+	blacklisted_species = list(SPECIES_VAURCA_BREEDER)
+
+/datum/outfit/job/journalist
+	name = "Corporate Reporter"
+	jobtype = /datum/job/journalist
+
+	uniform = /obj/item/clothing/under/suit_jacket/red
+	shoes = /obj/item/clothing/shoes/sneakers/black
+
+	tab_pda = /obj/item/modular_computer/handheld/pda/civilian/librarian
+	wristbound = /obj/item/modular_computer/handheld/wristbound/preset/pda/civilian/librarian
+	tablet = /obj/item/modular_computer/handheld/preset/civilian/librarian
+
+	headset = /obj/item/device/radio/headset/headset_service
+	bowman = /obj/item/device/radio/headset/headset_service/alt
+	double_headset = /obj/item/device/radio/headset/alt/double/service
+	wrist_radio = /obj/item/device/radio/headset/wrist/service
+
+	backpack_faction = /obj/item/storage/backpack/nt
+	satchel_faction = /obj/item/storage/backpack/satchel/nt
+	dufflebag_faction = /obj/item/storage/backpack/duffel/nt
+	messengerbag_faction = /obj/item/storage/backpack/messenger/nt
+
+	backpack_contents = list(
+		/obj/item/clothing/accessory/badge/press = 1
+	)
+
+/datum/outfit/job/journalistf
+	name = "Freelance Journalist"
+	jobtype = /datum/job/journalist
+
+	uniform = /obj/item/clothing/under/suit_jacket/red
+	shoes = /obj/item/clothing/shoes/sneakers/black
+
+	tab_pda = /obj/item/modular_computer/handheld/pda/civilian/librarian
+	wristbound = /obj/item/modular_computer/handheld/wristbound/preset/pda/civilian/librarian
+	tablet = /obj/item/modular_computer/handheld/preset/civilian/librarian
+
+	backpack_contents = list(
+		/obj/item/clothing/accessory/badge/press/independent = 1
+	)
+
+
 /datum/job/librarian
 	title = "Librarian"
-	department = "Civilian"
-	department_flag = CIV
+	flag = LIBRARIAN
+	departments = SIMPLEDEPT(DEPARTMENT_SERVICE)
+	department_flag = SERVICE
+	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the head of personnel"
-	selection_color = "#515151"
+	supervisors = "the executive officer"
+	selection_color = "#90524b"
 	access = list(access_library, access_maint_tunnels)
 	minimal_access = list(access_library)
-	alt_titles = list("Journalist")
-	outfit_type = /decl/hierarchy/outfit/job/librarian
+	alt_titles = list("Curator", "Tech Support")
+	alt_outfits = list("Curator" = /datum/outfit/job/librarian/curator, "Tech Support" = /datum/outfit/job/librarian/tech_support)
+	title_accesses = list("Tech Support" = access_it)
+	outfit = /datum/outfit/job/librarian
 
-/datum/job/iaa
-	title = "Internal Affairs Agent"
-	department = "Support"
-	department_flag = SPT
-	total_positions = 2
-	spawn_positions = 2
-	supervisors = "company officials and Corporate Regulations"
-	selection_color = "#515151"
-	economic_modifier = 7
-	faction_restricted = TRUE
-	access = list(access_iaa, access_security, access_maint_tunnels, access_heads)
-	minimal_access = list(access_iaa, access_security, access_heads)
-	minimal_player_age = 14
-	outfit_type = /decl/hierarchy/outfit/job/internal_affairs_agent
+	blacklisted_species = list(SPECIES_VAURCA_BREEDER)
 
-/datum/job/iaa/equip(mob/living/carbon/human/H)
-	. = ..()
-	if(.)
-		H.implant_loyalty(H)
+/datum/outfit/job/librarian
+	name = "Librarian"
+	jobtype = /datum/job/librarian
 
-/datum/job/lawyer
-	title = "Lawyer"
-	department = "Civilian"
-	department_flag = CIV
-	total_positions = 2
-	spawn_positions = 2
-	supervisors = "the head of security"
-	selection_color = "#515151"
-	economic_modifier = 3
-	access = list(access_lawyer, access_security)
-	minimal_access = list(access_lawyer)
-	minimal_player_age = 7
-	outfit_type = /decl/hierarchy/outfit/job/lawyer
+	uniform = /obj/item/clothing/under/librarian
+	shoes = /obj/item/clothing/shoes/sneakers/black
+	r_pocket = /obj/item/barcodescanner
+	l_hand = /obj/item/storage/bag/books
 
-/datum/job/clown
-	title = "Clown"
-	department = "Civilian"
-	department_flag = CIV
+	tab_pda = /obj/item/modular_computer/handheld/pda/civilian/librarian
+	wristbound = /obj/item/modular_computer/handheld/wristbound/preset/pda/civilian/librarian
+	tablet = /obj/item/modular_computer/handheld/preset/civilian/librarian
+
+	headset = /obj/item/device/radio/headset/headset_service
+	bowman = /obj/item/device/radio/headset/headset_service/alt
+	double_headset = /obj/item/device/radio/headset/alt/double/service
+	wrist_radio = /obj/item/device/radio/headset/wrist/service
+
+	backpack_faction = /obj/item/storage/backpack/nt
+	satchel_faction = /obj/item/storage/backpack/satchel/nt
+	dufflebag_faction = /obj/item/storage/backpack/duffel/nt
+	messengerbag_faction = /obj/item/storage/backpack/messenger/nt
+
+/datum/outfit/job/librarian/curator
+	name = "Curator"
+	jobtype = /datum/job/librarian
+
+	uniform = /obj/item/clothing/under/suit_jacket
+	r_pocket = /obj/item/device/price_scanner
+	l_hand = null
+
+/datum/outfit/job/librarian/tech_support
+	name = "Tech Support"
+	jobtype = /datum/job/librarian
+
+	uniform = /obj/item/clothing/under/suit_jacket/charcoal
+	l_pocket = /obj/item/modular_computer/handheld/preset
+	r_pocket = /obj/item/card/tech_support
+	r_hand = /obj/item/storage/bag/circuits/basic
+	l_hand = /obj/item/modular_computer/laptop/preset
+	gloves = /obj/item/modular_computer/handheld/wristbound/preset/advanced/civilian
+
+/datum/outfit/job/librarian/tech_support/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	if(visualsOnly)
+		r_hand = null
+	else
+		r_hand = initial(r_hand)
+	return ..()
+
+/datum/job/chaplain
+	title = "Chaplain"
+	flag = CHAPLAIN
+	departments = SIMPLEDEPT(DEPARTMENT_SERVICE)
+	department_flag = SERVICE
+	faction = "Station"
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "uncommon sense"
-	selection_color = "#515151"
-	access = list(access_maint_tunnels, access_clown)
-	minimal_access = list(access_maint_tunnels, access_clown)
-	minimal_player_age = 10
-	outfit_type = /decl/hierarchy/outfit/job/clown
+	supervisors = "the executive officer"
+	selection_color = "#90524b"
+	access = list(access_chapel_office, access_maint_tunnels)
+	minimal_access = list(access_chapel_office)
+	alt_titles = list("Presbyter", "Rabbi", "Imam", "Priest", "Shaman", "Counselor")
+	outfit = /datum/outfit/job/chaplain
 
-/datum/job/clown/equip(mob/living/carbon/human/H)
+	blacklisted_species = list(SPECIES_VAURCA_BREEDER)
+
+/datum/outfit/job/chaplain
+	name = "Chaplain"
+	jobtype = /datum/job/chaplain
+	uniform = /obj/item/clothing/under/rank/chaplain
+	shoes = /obj/item/clothing/shoes/sneakers/black
+
+	headset = /obj/item/device/radio/headset/headset_service
+	bowman = /obj/item/device/radio/headset/headset_service/alt
+	double_headset = /obj/item/device/radio/headset/alt/double/service
+	wrist_radio = /obj/item/device/radio/headset/wrist/service
+
+	tab_pda = /obj/item/modular_computer/handheld/pda/civilian/chaplain
+	wristbound = /obj/item/modular_computer/handheld/wristbound/preset/pda/civilian/chaplain
+	tablet = /obj/item/modular_computer/handheld/preset/civilian/chaplain
+
+	backpack_faction = /obj/item/storage/backpack/nt
+	satchel_faction = /obj/item/storage/backpack/satchel/nt
+	dufflebag_faction = /obj/item/storage/backpack/duffel/nt
+	messengerbag_faction = /obj/item/storage/backpack/messenger/nt
+
+/datum/outfit/job/chaplain/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	. = ..()
-	if(.)
-		H.mutations.Add(MUTATION_CLUMSY)
-		H.rename_self("clown")
 
-/datum/job/mime
-	title = "Mime"
-	department = "Civilian"
-	department_flag = CIV
-	total_positions = 1
-	spawn_positions = 1
-	supervisors = "the head of personnel"
-	selection_color = "#515151"
-	access = list(access_maint_tunnels, access_mime)
-	minimal_access = list(access_maint_tunnels, access_mime)
-	minimal_player_age = 10
-	outfit_type = /decl/hierarchy/outfit/job/mime
-
-/datum/job/mime/equip(mob/living/carbon/human/H)
-	. = ..()
-	if(H.mind.changeling)
+	if(visualsOnly)
 		return
-	if(.)
-		H.silent += 86400
-		H.rename_self("mime")
-	// Add "Invisible wall" spell
-	H.add_spell(new /datum/spell/aoe_turf/conjure/forcewall/mime, "grey_spell_ready")
 
-/datum/job/merchant
-	title = "Merchant"
-	department = "Civilian"
-	department_flag = CIV
+	var/obj/item/storage/bible/B = new /obj/item/storage/bible(get_turf(H)) //BS12 EDIT
+	var/obj/item/storage/S = locate() in H.contents
+	if(S && istype(S))
+		B.forceMove(S)
+
+	var/datum/religion/religion = SSrecords.religions[H.religion]
+	if (religion)
+
+		if(religion.name == "None" || religion.name == "Other")
+			B.verbs += /obj/item/storage/bible/verb/Set_Religion
+			return 1
+
+		B.icon_state = religion.book_sprite
+		B.name = religion.book_name
+		SSticker.Bible_icon_state = religion.book_sprite
+		SSticker.Bible_item_state = religion.book_sprite
+		SSticker.Bible_name = religion.book_name
+		return 1
+
+
+//Operations
+/datum/job/operations_manager
+	title = "Operations Manager"
+	flag = OPERATIONS_MANAGER
+	departments = list(DEPARTMENT_CARGO = JOBROLE_SUPERVISOR, DEPARTMENT_COMMAND)
+	department_flag = ENGSEC
+	faction = "Station"
+	total_positions = 1
+	spawn_positions = 1
+	supervisors = "the captain"
+	selection_color = "#967032"
+	economic_modifier = 10
+
+	minimum_character_age = list(
+		SPECIES_HUMAN = 30,
+		SPECIES_SKRELL = 70,
+		SPECIES_SKRELL_AXIORI = 70
+	)
+
+	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_ship_weapons, access_qm, access_mining, access_mining_station, access_keycard_auth, access_RC_announce, access_heads,
+						access_sec_doors, access_research, access_medical, access_robotics, access_engine, access_teleporter, access_eva, access_intrepid)
+	minimal_access = list(access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_ship_weapons, access_mining_station, access_keycard_auth, access_RC_announce, access_heads,
+						access_sec_doors, access_research, access_medical, access_robotics, access_engine, access_teleporter, access_eva, access_intrepid)
+
+	ideal_character_age = list(
+		SPECIES_HUMAN = 40,
+		SPECIES_SKRELL = 90,
+		SPECIES_SKRELL_AXIORI = 90
+	)
+
+	outfit = /datum/outfit/job/operations_manager
+
+	blacklisted_species = list(SPECIES_TAJARA_MSAI, SPECIES_TAJARA_ZHAN, SPECIES_VAURCA_WORKER, SPECIES_VAURCA_WARRIOR, SPECIES_VAURCA_BULWARK, SPECIES_VAURCA_BREEDER)
+
+/datum/outfit/job/operations_manager
+	name = "Operations Manager"
+	jobtype = /datum/job/operations_manager
+
+	uniform = /obj/item/clothing/under/rank/operations_manager
+	shoes = /obj/item/clothing/shoes/sneakers/brown
+	id = /obj/item/card/id/navy
+	l_hand = /obj/item/clipboard
+	glasses = /obj/item/clothing/glasses/sunglasses
+
+	tab_pda = /obj/item/modular_computer/handheld/pda/supply/om
+	wristbound = /obj/item/modular_computer/handheld/wristbound/preset/pda/supply/om
+	tablet = /obj/item/modular_computer/handheld/preset/supply/om
+
+	headset = /obj/item/device/radio/headset/operations_manager
+	bowman = /obj/item/device/radio/headset/operations_manager/alt
+	double_headset = /obj/item/device/radio/headset/alt/double/operations_manager
+	wrist_radio = /obj/item/device/radio/headset/wrist/cargo/operations_manager
+
+	backpack = /obj/item/storage/backpack/om
+	satchel = /obj/item/storage/backpack/satchel/om
+	dufflebag = /obj/item/storage/backpack/duffel/om
+	messengerbag = /obj/item/storage/backpack/messenger/om
+
+
+/datum/job/hangar_tech
+	title = "Hangar Technician"
+	flag = CARGOTECH
+	departments = SIMPLEDEPT(DEPARTMENT_CARGO)
+	department_flag = SERVICE
+	faction = "Station"
+	total_positions = 3
+	spawn_positions = 3
+	supervisors = "the operations manager"
+	selection_color = "#7B431C"
+
+	minimum_character_age = list(
+		SPECIES_HUMAN = 18,
+		SPECIES_SKRELL = 50,
+		SPECIES_SKRELL_AXIORI = 50
+	)
+
+	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_ship_weapons, access_cargo_bot, access_mining, access_mining_station)
+	minimal_access = list(access_cargo, access_cargo_bot, access_ship_weapons, access_mailsorting)
+	outfit = /datum/outfit/job/hangar_tech
+
+	blacklisted_species = list(SPECIES_VAURCA_BREEDER)
+
+/datum/outfit/job/hangar_tech
+	name = "Hangar Technician"
+	jobtype = /datum/job/hangar_tech
+
+	uniform = /obj/item/clothing/under/rank/hangar_technician
+	id = /obj/item/card/id/silver
+	shoes = /obj/item/clothing/shoes/sneakers/brown
+
+	tab_pda = /obj/item/modular_computer/handheld/pda/supply
+	wristbound = /obj/item/modular_computer/handheld/wristbound/preset/pda/supply
+	tablet = /obj/item/modular_computer/handheld/preset/supply
+
+	headset = /obj/item/device/radio/headset/headset_cargo
+	bowman = /obj/item/device/radio/headset/headset_cargo/alt
+	double_headset = /obj/item/device/radio/headset/alt/double/cargo
+	wrist_radio = /obj/item/device/radio/headset/wrist/cargo
+
+/datum/job/mining
+	title = "Shaft Miner"
+	flag = MINER
+	departments = SIMPLEDEPT(DEPARTMENT_CARGO)
+	department_flag = SERVICE
+	faction = "Station"
+	total_positions = 3
+	spawn_positions = 3
+	supervisors = "the operations manager"
+	selection_color = "#7B431C"
+	economic_modifier = 5
+
+	minimum_character_age = list(
+		SPECIES_HUMAN = 18,
+		SPECIES_SKRELL = 50,
+		SPECIES_SKRELL_AXIORI = 50
+	)
+
+	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_mining, access_mining_station)
+	minimal_access = list(access_mining, access_mining_station, access_mailsorting)
+	outfit = /datum/outfit/job/mining
+
+	blacklisted_species = list(SPECIES_VAURCA_BREEDER)
+
+/datum/outfit/job/mining
+	name = "Shaft Miner"
+	jobtype = /datum/job/mining
+
+	uniform = /obj/item/clothing/under/rank/miner
+	id = /obj/item/card/id/silver
+	shoes = /obj/item/clothing/shoes/sneakers/black
+	l_hand = /obj/item/coin/mining
+
+	tab_pda = /obj/item/modular_computer/handheld/pda/supply/miner
+	wristbound = /obj/item/modular_computer/handheld/wristbound/preset/pda/supply/miner
+	tablet = /obj/item/modular_computer/handheld/preset/civilian
+
+	headset = /obj/item/device/radio/headset/headset_mining
+	bowman = /obj/item/device/radio/headset/headset_mining/alt
+	double_headset = /obj/item/device/radio/headset/alt/double/mining
+	wrist_radio = /obj/item/device/radio/headset/wrist/cargo/mining
+
+	backpack_contents = list(
+		/obj/item/storage/bag/ore = 1
+	)
+
+	backpack = /obj/item/storage/backpack/industrial
+	satchel = /obj/item/storage/backpack/satchel/eng
+	dufflebag = /obj/item/storage/backpack/duffel/eng
+	messengerbag = /obj/item/storage/backpack/messenger/engi
+
+
+/datum/job/machinist
+	title = "Machinist"
+	flag = ROBOTICIST
+	departments = SIMPLEDEPT(DEPARTMENT_CARGO)
+	department_flag = MEDSCI
+	faction = "Station"
 	total_positions = 2
 	spawn_positions = 2
-	availablity_chance = 40
-	supervisors = "the invisible hand of the market"
-	selection_color = "#515151"
-	ideal_character_age = 30
+	supervisors = "the operations manager"
+	selection_color = "#7B431C"
+	economic_modifier = 5
+
+	minimum_character_age = list(
+		SPECIES_HUMAN = 25,
+		SPECIES_SKRELL = 55,
+		SPECIES_SKRELL_AXIORI = 55
+	)
+
+	access = list(access_robotics, access_tech_storage, access_mailsorting)
+	minimal_access = list(access_robotics, access_tech_storage, access_mailsorting)
+
 	minimal_player_age = 7
-	create_record = 0
-	outfit_type = /decl/hierarchy/outfit/job/merchant
-	latejoin_at_spawnpoints = 1
-	access = list(access_merchant)
-	announced = FALSE
-	can_be_hired = FALSE
-	off_station = TRUE
+
+	outfit = /datum/outfit/job/machinist
+
+	blacklisted_species = list(SPECIES_VAURCA_BREEDER)
+
+/datum/outfit/job/machinist
+	name = "Machinist"
+	jobtype = /datum/job/machinist
+
+	uniform = /obj/item/clothing/under/rank/machinist
+	suit = /obj/item/clothing/suit/storage/machinist
+	shoes = /obj/item/clothing/shoes/sneakers/black
+	id = /obj/item/card/id/silver
+	belt = /obj/item/storage/belt/utility
+
+	tab_pda = /obj/item/modular_computer/handheld/pda/supply/machinist
+	wristbound = /obj/item/modular_computer/handheld/wristbound/preset/pda/supply/machinist
+	tablet = /obj/item/modular_computer/handheld/preset/supply/machinist
+
+	headset = /obj/item/device/radio/headset/headset_cargo
+	bowman = /obj/item/device/radio/headset/headset_cargo/alt
+	double_headset = /obj/item/device/radio/headset/alt/double/cargo
+	wrist_radio = /obj/item/device/radio/headset/wrist/cargo
+
+	belt_contents = list(
+		/obj/item/screwdriver = 1,
+		/obj/item/wrench = 1,
+		/obj/item/weldingtool = 1,
+		/obj/item/crowbar = 1,
+		/obj/item/wirecutters = 1,
+		/obj/item/stack/cable_coil/random = 1,
+		/obj/item/powerdrill = 1
+	)

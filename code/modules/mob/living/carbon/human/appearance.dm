@@ -1,9 +1,9 @@
-/mob/living/carbon/human/proc/change_appearance(flags = APPEARANCE_ALL_HAIR, location = src, mob/user = src, check_species_whitelist = 1, list/species_whitelist = list(), list/species_blacklist = list(), datum/topic_state/state = GLOB.default_state)
-	var/datum/nano_module/appearance_changer/AC = new(location, src, check_species_whitelist, species_whitelist, species_blacklist)
+/mob/living/carbon/human/proc/change_appearance(var/flags = APPEARANCE_ALL_HAIR, var/mob/user = src, var/check_species_whitelist = TRUE, var/list/species_whitelist = list(), var/list/species_blacklist = list(), var/list/culture_restriction = list(), var/list/origin_restriction = list(), var/datum/ui_state/ui_state = always_state, var/datum/state_object = src, var/update_id = FALSE)
+	var/datum/tgui_module/appearance_changer/AC = new /datum/tgui_module/appearance_changer(src, check_species_whitelist, species_whitelist, species_blacklist, culture_restriction, origin_restriction, ui_state, state_object, update_id)
 	AC.flags = flags
-	AC.ui_interact(user, state = state)
+	AC.ui_interact(user)
 
-/mob/living/carbon/human/proc/change_species(new_species)
+/mob/living/carbon/human/proc/change_species(var/new_species)
 	if(!new_species)
 		return
 
@@ -17,41 +17,26 @@
 	reset_hair()
 	return 1
 
-/mob/living/carbon/human/proc/change_gender(gender)
-	if(src.gender == gender)
+/mob/living/carbon/human/proc/change_gender(var/set_gender)
+	if(gender == set_gender)
 		return
 
-	src.gender = gender
+	gender = set_gender
+	pronouns = gender
+	dna.SetUIState(DNA_UI_GENDER, gender != MALE, 1)
 	reset_hair()
 	update_body()
-	update_dna()
+	species.create_organs(src)
 	return 1
 
-/mob/living/carbon/human/proc/randomize_gender()
-	change_gender(pick(species.genders))
-
-/mob/living/carbon/human/proc/sanitize_body()
-	var/list/body_builds = src.species.get_body_build_datum_list(src.gender)
-	if(!(body_build in body_builds))
-		body_build = body_builds[1]
-		regenerate_icons()
-
-/mob/living/carbon/human/proc/change_body_build(body_build)
-	if(src.body_build == body_build)
-		return
-
-	src.body_build = body_build
-	regenerate_icons()
-	return 1
-
-/mob/living/carbon/human/proc/change_hair(hair_style)
+/mob/living/carbon/human/proc/change_hair(var/hair_style)
 	if(!hair_style)
 		return
 
 	if(h_style == hair_style)
 		return
 
-	if(!(hair_style in GLOB.hair_styles_list))
+	if(!(hair_style in hair_styles_list))
 		return
 
 	h_style = hair_style
@@ -59,14 +44,14 @@
 	update_hair()
 	return 1
 
-/mob/living/carbon/human/proc/change_facial_hair(facial_hair_style)
+/mob/living/carbon/human/proc/change_facial_hair(var/facial_hair_style)
 	if(!facial_hair_style)
 		return
 
 	if(f_style == facial_hair_style)
 		return
 
-	if(!(facial_hair_style in GLOB.facial_hair_styles_list))
+	if(!(facial_hair_style in facial_hair_styles_list))
 		return
 
 	f_style = facial_hair_style
@@ -78,13 +63,13 @@
 	var/list/valid_hairstyles = generate_valid_hairstyles()
 	var/list/valid_facial_hairstyles = generate_valid_facial_hairstyles()
 
-	if(valid_hairstyles.len)
+	if(length(valid_hairstyles))
 		h_style = pick(valid_hairstyles)
 	else
 		//this shouldn't happen
 		h_style = "Bald"
 
-	if(valid_facial_hairstyles.len)
+	if(length(valid_facial_hairstyles))
 		f_style = pick(valid_facial_hairstyles)
 	else
 		//this shouldn't happen
@@ -92,7 +77,7 @@
 
 	update_hair()
 
-/mob/living/carbon/human/proc/change_eye_color(red, green, blue)
+/mob/living/carbon/human/proc/change_eye_color(var/red, var/green, var/blue)
 	if(red == r_eyes && green == g_eyes && blue == b_eyes)
 		return
 
@@ -104,8 +89,8 @@
 	update_body()
 	return 1
 
-/mob/living/carbon/human/proc/change_hair_color(red, green, blue)
-	if(red == r_hair && green == g_hair && blue == b_hair)
+/mob/living/carbon/human/proc/change_hair_color(var/red, var/green, var/blue)
+	if(red == r_eyes && green == g_eyes && blue == b_eyes)
 		return
 
 	r_hair = red
@@ -117,20 +102,7 @@
 	update_hair()
 	return 1
 
-/mob/living/carbon/human/proc/change_s_hair_color(red, green, blue)
-	if(red == r_eyes && green == g_eyes && blue == b_eyes)
-		return
-
-	r_s_hair = red
-	g_s_hair = green
-	b_s_hair = blue
-
-	force_update_limbs()
-	update_body()
-	update_hair()
-	return 1
-
-/mob/living/carbon/human/proc/change_facial_hair_color(red, green, blue)
+/mob/living/carbon/human/proc/change_facial_hair_color(var/red, var/green, var/blue)
 	if(red == r_facial && green == g_facial && blue == b_facial)
 		return
 
@@ -141,8 +113,8 @@
 	update_hair()
 	return 1
 
-/mob/living/carbon/human/proc/change_skin_color(red, green, blue)
-	if(red == r_skin && green == g_skin && blue == b_skin || !(species.appearance_flags & HAS_SKIN_COLOR))
+/mob/living/carbon/human/proc/change_skin_color(var/red, var/green, var/blue)
+	if((red == r_skin && green == g_skin && blue == b_skin) || (!(species.appearance_flags & HAS_SKIN_COLOR) && !(species.appearance_flags & HAS_SKIN_PRESET)))
 		return
 
 	r_skin = red
@@ -153,8 +125,8 @@
 	update_body()
 	return 1
 
-/mob/living/carbon/human/proc/change_skin_tone(tone)
-	if(s_tone == tone || !(species.appearance_flags & HAS_A_SKIN_TONE))
+/mob/living/carbon/human/proc/change_skin_tone(var/tone)
+	if(s_tone == tone || !(species.appearance_flags & HAS_SKIN_TONE))
 		return
 
 	s_tone = tone
@@ -166,43 +138,62 @@
 /mob/living/carbon/human/proc/update_dna()
 	check_dna()
 	dna.ready_dna(src)
-	sync_organ_dna()
 
-/mob/living/carbon/human/proc/generate_valid_species(check_whitelist = 1, list/whitelist = list(), list/blacklist = list())
+/mob/living/carbon/human/proc/generate_valid_species(var/check_whitelist = 1, var/list/whitelist = list(), var/list/blacklist = list())
 	var/list/valid_species = new()
 	for(var/current_species_name in all_species)
 		var/datum/species/current_species = all_species[current_species_name]
 
-		if(check_whitelist) //If we're using the whitelist, make sure to check it!
-			if((current_species.spawn_flags & SPECIES_IS_RESTRICTED) && !check_rights(R_ADMIN, 0, src))
+		if(check_whitelist && config.usealienwhitelist && !check_rights(R_ADMIN, 0, src)) //If we're using the whitelist, make sure to check it!
+			if(!(current_species.spawn_flags & CAN_JOIN))
 				continue
-			if(!is_alien_whitelisted(src, current_species))
+			if(whitelist.len && !(current_species_name in whitelist))
 				continue
-		if(whitelist.len && !(current_species_name in whitelist))
-			continue
-		if(blacklist.len && (current_species_name in blacklist))
-			continue
+			if(blacklist.len && (current_species_name in blacklist))
+				continue
+			if((current_species.spawn_flags & IS_WHITELISTED) && !is_alien_whitelisted(src, current_species_name))
+				continue
 
 		valid_species += current_species_name
 
 	return valid_species
 
-/mob/living/carbon/human/proc/generate_valid_hairstyles(check_gender = 1)
-	. = list()
-	var/list/hair_styles = species.get_hair_styles()
-	for(var/hair_style in hair_styles)
-		var/datum/sprite_accessory/S = hair_styles[hair_style]
-		if(check_gender)
-			if(gender == MALE && S.gender == FEMALE)
-				continue
-			if(gender == FEMALE && S.gender == MALE)
-				continue
-		.[hair_style] = S
+/mob/living/carbon/human/proc/generate_valid_hairstyles(var/check_gender = 1)
+	var/list/valid_hairstyles = new()
+	if(species.bald)
+		return valid_hairstyles
+	for(var/hairstyle in hair_styles_list)
+		var/datum/sprite_accessory/S = hair_styles_list[hairstyle]
+
+		if(check_gender && gender == MALE && S.gender == FEMALE)
+			continue
+		if(check_gender && gender == FEMALE && S.gender == MALE)
+			continue
+		if(!(species.type in S.species_allowed))
+			continue
+		valid_hairstyles += hairstyle
+
+	return valid_hairstyles
 
 /mob/living/carbon/human/proc/generate_valid_facial_hairstyles()
-	return species.get_facial_hair_styles(gender)
+	var/list/valid_facial_hairstyles = new()
+	if(species.bald)
+		return valid_facial_hairstyles
+	for(var/facialhairstyle in facial_hair_styles_list)
+		var/datum/sprite_accessory/S = facial_hair_styles_list[facialhairstyle]
+
+		if(gender == MALE && S.gender == FEMALE)
+			continue
+		if(gender == FEMALE && S.gender == MALE)
+			continue
+		if(!(species.type in S.species_allowed))
+			continue
+
+		valid_facial_hairstyles += facialhairstyle
+
+	return valid_facial_hairstyles
 
 /mob/living/carbon/human/proc/force_update_limbs()
 	for(var/obj/item/organ/external/O in organs)
 		O.sync_colour_to_human(src)
-	update_body(0)
+	update_body(2)//Forces new icon generation

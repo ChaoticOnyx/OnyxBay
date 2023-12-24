@@ -6,10 +6,9 @@
 //Secondly, they are usually stored in an object. This means that they aren't centralised. It also means that
 //the data is lost when the object is deleted! This is especially annoying for things like the singulo engine!
 #define INVESTIGATE_DIR "data/investigate/"
-#define INVESTIGATE_CIRCUIT			"circuit"
 
 //SYSTEM
-/proc/investigate_subject2file(subject)
+/proc/investigate_subject2file(var/subject)
 	return file("[INVESTIGATE_DIR][subject].html")
 
 /hook/startup/proc/resetInvestigate()
@@ -20,36 +19,32 @@
 	if(fdel(INVESTIGATE_DIR))	return 1
 	return 0
 
-/atom/proc/investigate_log(message, subject)
+/atom/proc/investigate_log(var/message, var/subject)
 	if(!message)	return
 	var/F = investigate_subject2file(subject)
 	if(!F)	return
-	var/log = "<small>[time_stamp()] \ref[src] ([x],[y],[z])</small> || [src] [message]<br>"
-	to_chat(F, log)
-	log_integrated_circuits(log)
+	to_chat(F, "<small>[time2text(world.timeofday,"hh:mm")] \ref[src] ([x],[y],[z])</small> || [src] [message]<br>")
 
 //ADMINVERBS
-/client/proc/investigate_show(subject in list("hrefs","watchlist","singulo","telesci", INVESTIGATE_CIRCUIT))
+/client/proc/investigate_show( subject in list("hrefs","notes","singulo","telesci") )
 	set name = "Investigate"
 	set category = "Admin"
 	if(!holder)	return
 	switch(subject)
-		if("singulo", "telesci", INVESTIGATE_CIRCUIT)			//general one-round-only stuff
+		if("singulo", "telesci")			//general one-round-only stuff
 			var/F = investigate_subject2file(subject)
 			if(!F)
 				to_chat(src, "<span class='warning'>Error: admin_investigate: [INVESTIGATE_DIR][subject] is an invalid path or cannot be accessed.</span>")
 				return
-			show_browser(src, F,"window=investigate[subject];size=800x300")
+			src << browse(F,"window=investigate[subject];size=800x300")
 
 		if("hrefs")				//persistant logs and stuff
-			if(config && config.log.hrefs)
-				if(GLOB.world_hrefs_log)
-					show_browser(src, GLOB.world_hrefs_log, "window=investigate[subject];size=800x300")
+			if(config && config.logsettings["log_hrefs"])
+				if(config.logfiles["world_href_log"])
+					src << browse(config.logfiles["world_href_log"], "window=investigate[subject];size=800x300")
 				else
 					to_chat(src, "<span class='warning'>Error: admin_investigate: No href logfile found.</span>")
 					return
 			else
 				to_chat(src, "<span class='warning'>Error: admin_investigate: Href Logging is not on.</span>")
 				return
-		if("watchlist")
-			watchlist.Show()

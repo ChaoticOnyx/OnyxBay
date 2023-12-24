@@ -1,7 +1,7 @@
 /obj/effect/bhole
 	name = "black hole"
 	icon = 'icons/obj/objects.dmi'
-	desc = "FUCK FUCK FUCK AAAHHH!"
+	desc = "FUCK FUCK FUCK AAAHHH"
 	icon_state = "bhole3"
 	opacity = 1
 	unacidable = 1
@@ -24,7 +24,8 @@
 			qdel(M)
 		for(var/obj/O in orange(1,src))
 			qdel(O)
-		var/base_turf = get_base_turf_by_area(src)
+		var/turf/T = loc
+		var/base_turf = T.baseturf
 		for(var/turf/simulated/ST in orange(1,src))
 			if(ST.type == base_turf)
 				continue
@@ -55,10 +56,10 @@
 		//MOVEMENT
 		if( prob(50) )
 			src.anchored = 0
-			step(src,pick(GLOB.alldirs))
+			step(src,pick(alldirs))
 			src.anchored = 1
 
-/obj/effect/bhole/proc/grav(r, ex_act_force, pull_chance, turf_removal_chance)
+/obj/effect/bhole/proc/grav(var/r, var/ex_act_force, var/pull_chance, var/turf_removal_chance)
 	if(!isturf(loc))	//blackhole cannot be contained inside anything. Weird stuff might happen
 		qdel(src)
 		return
@@ -69,10 +70,10 @@
 		affect_coord(x-r, y-t, ex_act_force, pull_chance, turf_removal_chance)
 	return
 
-/obj/effect/bhole/proc/affect_coord(x, y, ex_act_force, pull_chance, turf_removal_chance)
+/obj/effect/bhole/proc/affect_coord(var/x, var/y, var/ex_act_force, var/pull_chance, var/turf_removal_chance)
 	//Get turf at coordinate
 	var/turf/T = locate(x, y, z)
-	if(QDELETED(T))	return
+	if(isnull(T))	return
 
 	//Pulling and/or ex_act-ing movable atoms in that turf
 	if( prob(pull_chance) )

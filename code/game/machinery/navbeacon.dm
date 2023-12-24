@@ -1,46 +1,70 @@
-var/global/list/navbeacons = list()
-GLOBAL_LIST_EMPTY(wayfindingbeacons)
+// Navigation beacon for AI robots
+// Functions as a transponder: looks for incoming signal matching
+
+
+var/global/list/navbeacons			// no I don't like putting this in, but it will do for now
+
 /obj/machinery/navbeacon
+
 	icon = 'icons/obj/objects.dmi'
-	icon_state = "navbeacon0-f"
+	icon_state = null
 	name = "navigation beacon"
 	desc = "A radio beacon used for bot navigation."
-	level = 1
-	layer = ABOVE_WIRE_LAYER
+	level = 1		// underfloor
+	layer = 2.5
 	anchored = 1
 
-	var/wayfinding = FALSE
-	var/open = FALSE	// true if cover is open
-	var/locked = TRUE	// true if controls are locked
+	var/open = 0		// true if cover is open
+	var/locked = 1		// true if controls are locked
+	var/freq = 1445		// radio frequency
 	var/location = ""	// location response text
-	var/list/codes = list()		// assoc. list of transponder codes
+	var/list/codes		// assoc. list of transponder codes
+	var/codes_txt = ""	// codes as set on map: "tag1;tag2" or "tag1=value;tag2=value"
 
 	req_access = list(access_engine)
 
-/obj/machinery/navbeacon/New()
-	..()
+/obj/machinery/navbeacon/Initialize()
+	. = ..()
 
-	if(wayfinding)
-		if(!location)
-			var/obj/machinery/door/airlock/A = locate(/obj/machinery/door/airlock) in loc
-			if(A)
-				location = A.name
-			else
-				var/area/AR = get_area(src)
-				location = AR?.name || "Unknown"
-		codes += list("wayfinding" = "[location]")
-		GLOB.wayfindingbeacons += src
+	set_codes()
 
 	var/turf/T = loc
 	hide(!T.is_plating())
 
-	navbeacons += src
+	// add beacon to MULE bot beacon list
+	if(freq == 1400)
+		LAZYADD(navbeacons, src)
 
-/obj/machinery/navbeacon/hide(intact)
+	if(SSradio)
+		SSradio.add_object(src, freq, RADIO_NAVBEACONS)
+
+	// set the transponder codes assoc list from codes_txt
+/obj/machinery/navbeacon/proc/set_codes()
+	if(!codes_txt)
+		return
+
+	codes = new()
+
+	var/list/entries = text2list(codes_txt, ";")	// entries are separated by semicolons
+
+	for(var/e in entries)
+		var/index = findtext(e, "=")		// format is "key=value"
+		if(index)
+			var/key = copytext(e, 1, index)
+			var/val = copytext(e, index+1)
+			codes[key] = val
+		else
+			codes[e] = "1"
+
+
+	// called when turf state changes
+	// hide the object if turf is intact
+/obj/machinery/navbeacon/hide(var/intact)
 	set_invisibility(intact ? 101 : 0)
 	update_icon()
 
-/obj/machinery/navbeacon/on_update_icon()
+	// update the icon_state
+/obj/machinery/navbeacon/update_icon()
 	var/state="navbeacon[open]"
 
 	if(invisibility)
@@ -49,19 +73,48 @@ GLOBAL_LIST_EMPTY(wayfindingbeacons)
 	else
 		icon_state = "[state]"
 
-/obj/machinery/navbeacon/attackby(obj/item/I, mob/user)
+
+	// look for a signal of the form "findbeacon=X"
+	// where X is any
+	// or the location
+	// or one of the set transponder keys
+	// if found, return a signal
+/obj/machinery/navbeacon/receive_signal(datum/signal/signal)
+	var/request = signal.data["findbeacon"]
+	if(request && ((request in codes) || request == "any" || request == location))
+		addtimer(CALLBACK(src, PROC_REF(post_signal)), 1)
+
+	// return a signal giving location and transponder codes
+
+/obj/machinery/navbeacon/proc/post_signal()
+	var/datum/radio_frequency/frequency = SSradio.return_frequency(freq)
+
+	if(!frequency) return
+
+	var/datum/signal/signal = new()
+	signal.source = src
+	signal.transmission_method = TRANSMISSION_RADIO
+	signal.data["beacon"] = location
+
+	for(var/key in codes)
+		signal.data[key] = codes[key]
+
+	frequency.post_signal(src, signal, filter = RADIO_NAVBEACONS)
+
+/obj/machinery/navbeacon/attackby(var/obj/item/I, var/mob/user)
 	var/turf/T = loc
 	if(!T.is_plating())
 		return		// prevent intraction when T-scanner revealed
 
-	if(isScrewdriver(I))
+	if(I.isscrewdriver())
 		open = !open
 
-		user.visible_message("\The [user] [open ? "opens" : "closes"] cover of \the [src].", "You [open ? "open" : "close"] cover of \the [src].")
+		user.visible_message("[user] [open ? "opens" : "closes"] the beacon's cover.", "You [open ? "open" : "close"] the beacon's cover.")
 
 		update_icon()
+		return TRUE
 
-	else if(I.get_id_card())
+	else if (I.GetID())
 		if(open)
 			if (src.allowed(user))
 				src.locked = !src.locked
@@ -71,19 +124,20 @@ GLOBAL_LIST_EMPTY(wayfindingbeacons)
 			updateDialog()
 		else
 			to_chat(user, "You must open the cover first!")
-	return
+		return TRUE
 
-/obj/machinery/navbeacon/attack_ai(mob/user)
+/obj/machinery/navbeacon/attack_ai(var/mob/user)
+	if(!ai_can_interact(user))
+		return
 	interact(user, 1)
 
-/obj/machinery/navbeacon/attack_hand(mob/user)
-
+/obj/machinery/navbeacon/attack_hand(var/mob/user)
 	if(!user.IsAdvancedToolUser())
 		return 0
 
 	interact(user, 0)
 
-/obj/machinery/navbeacon/interact(mob/user, ai = 0)
+/obj/machinery/navbeacon/interact(var/mob/user, var/ai = 0)
 	var/turf/T = loc
 	if(!T.is_plating())
 		return		// prevent intraction when T-scanner revealed
@@ -92,13 +146,15 @@ GLOBAL_LIST_EMPTY(wayfindingbeacons)
 		to_chat(user, "The beacon's control cover is closed.")
 		return
 
+
 	var/t
 
 	if(locked && !ai)
-		t = {"<meta charset=\"utf-8\"><TT><B>Navigation Beacon</B><HR><BR>
-<i>(swipe card to unlock controls)</i><BR><HR>
-Location: [location ? location : "(none)"]</A><BR>
-Transponder Codes:<UL>"}
+		t = {"<TT><B>Navigation Beacon</B><HR><BR>
+			<i>(swipe card to unlock controls)</i><BR>
+			Frequency: [format_frequency(freq)]<BR><HR>
+			Location: [location ? location : "(none)"]</A><BR>
+			Transponder Codes:<UL>"}
 
 		for(var/key in codes)
 			t += "<LI>[key] ... [codes[key]]"
@@ -106,10 +162,17 @@ Transponder Codes:<UL>"}
 
 	else
 
-		t = {"<meta charset=\"utf-8\"><TT><B>Navigation Beacon</B><HR><BR>
-<i>(swipe card to lock controls)</i><BR><HR>
-Location: <A href='byond://?src=\ref[src];locedit=1'>[location ? location : "(none)"]</A><BR>
-Transponder Codes:<UL>"}
+		t = {"<TT><B>Navigation Beacon</B><HR><BR>
+			<i>(swipe card to lock controls)</i><BR>
+			Frequency:
+			<A href='byond://?src=\ref[src];freq=-10'>-</A>
+			<A href='byond://?src=\ref[src];freq=-2'>-</A>
+			[format_frequency(freq)]
+			<A href='byond://?src=\ref[src];freq=2'>+</A>
+			<A href='byond://?src=\ref[src];freq=10'>+</A><BR>
+			<HR>
+			Location: <A href='byond://?src=\ref[src];locedit=1'>[location ? location : "(none)"]</A><BR>
+			Transponder Codes:<UL>"}
 
 		for(var/key in codes)
 			t += "<LI>[key] ... [codes[key]]"
@@ -118,7 +181,7 @@ Transponder Codes:<UL>"}
 		t += "<small><A href='byond://?src=\ref[src];add=1;'>(add new)</A></small><BR>"
 		t+= "<UL></TT>"
 
-	show_browser(user, t, "window=navbeacon")
+	user << browse(t, "window=navbeacon")
 	onclose(user, "navbeacon")
 	return
 
@@ -130,7 +193,11 @@ Transponder Codes:<UL>"}
 		if(open && !locked)
 			usr.set_machine(src)
 
-			if(href_list["locedit"])
+			if (href_list["freq"])
+				freq = sanitize_frequency(freq + text2num(href_list["freq"]))
+				updateDialog()
+
+			else if(href_list["locedit"])
 				var/newloc = sanitize(input("Enter New Location", "Navigation Beacon", location) as text|null)
 				if(newloc)
 					location = newloc
@@ -178,206 +245,7 @@ Transponder Codes:<UL>"}
 				updateDialog()
 
 /obj/machinery/navbeacon/Destroy()
-	if(wayfinding)
-		GLOB.wayfindingbeacons -= src
-	navbeacons.Remove(src)
+	navbeacons?.Remove(src)
+	if(SSradio)
+		SSradio.remove_object(src, freq)
 	return ..()
-
-// Box station patrol beacons.
-
-/obj/machinery/navbeacon/box/robotics
-	location = "ROBOTICS"
-	codes = list("patrol" = 1, "next_patrol" = "CH_EAST2")
-
-/obj/machinery/navbeacon/box/SEC
-	location = "SEC"
-	codes = list("patrol" = 1, "next_patrol" = "CH_NORTH1")
-
-/obj/machinery/navbeacon/box/CH_NORTH1
-	location = "CH_NORTH1"
-	codes = list("patrol" = 1, "next_patrol" = "LOCKERS")
-
-/obj/machinery/navbeacon/box/LOCKERS
-	location = "LOCKERS"
-	codes = list("patrol" = 1, "next_patrol" = "CH_NORTHWEST")
-
-/obj/machinery/navbeacon/box/CH_NORTHWEST
-	location = "CH_NORTHWEST"
-	codes = list("patrol" = 1, "next_patrol" = "QM")
-
-/obj/machinery/navbeacon/box/QM
-	location = "QM"
-	codes = list("patrol" = 1, "next_patrol" = "AI1")
-
-/obj/machinery/navbeacon/box/AI1
-	location = "AI1"
-	codes = list("patrol" = 1, "next_patrol" = "AFTH")
-
-/obj/machinery/navbeacon/box/AFTH
-	location = "AFTH"
-	codes = list("patrol" = 1, "next_patrol" = "AI2")
-
-/obj/machinery/navbeacon/box/AI2
-	location = "AI2"
-	codes = list("patrol" = 1, "next_patrol" = "CH_EAST1")
-
-/obj/machinery/navbeacon/box/CH_EAST1
-	location = "CH_EAST1"
-	codes = list("patrol" = 1, "next_patrol" = "ESCAPE")
-
-/obj/machinery/navbeacon/box/ESCAPE
-	location = "ESCAPE"
-	codes = list("patrol" = 1, "next_patrol" = "CH_EAST2")
-
-/obj/machinery/navbeacon/box/CH_EAST2
-	location = "CH_EAST2"
-	codes = list("patrol" = 1, "next_patrol" = "DORM")
-
-/obj/machinery/navbeacon/box/DORM
-	location = "DORM"
-	codes = list("patrol" = 1, "next_patrol" = "CH_NORTHEAST")
-
-/obj/machinery/navbeacon/box/CH_NORTHEAST
-	location = "CH_NORTHEAST"
-	codes = list("patrol" = 1, "next_patrol" = "CH_NORTH2")
-
-/obj/machinery/navbeacon/box/CH_NORTH2
-	location = "CH_NORTH2"
-	codes = list("patrol" = 1, "next_patrol" = "SEC")
-
-// Frontier patrol beacons.
-
-/obj/machinery/navbeacon/frontier/SEC
-	location = "SEC"
-	codes = list("patrol" = 1, "next_patrol" = "SE1")
-
-/obj/machinery/navbeacon/frontier/SE1
-	location = "SE1"
-	codes = list("patrol" = 1, "next_patrol" = "DOME_E1")
-
-/obj/machinery/navbeacon/frontier/DOME_E1
-	location = "DOME_E1"
-	codes = list("patrol" = 1, "next_patrol" = "DOME_SE")
-
-/obj/machinery/navbeacon/frontier/DOME_SE
-	location = "DOME_SE"
-	codes = list("patrol" = 1, "next_patrol" = "DOME_S1")
-
-/obj/machinery/navbeacon/frontier/DOME_S1
-	location = "DOME_S1"
-	codes = list("patrol" = 1, "next_patrol" = "ARRIVALS1")
-
-/obj/machinery/navbeacon/frontier/ARRIVALS1
-	location = "ARRIVALS1"
-	codes = list("patrol" = 1, "next_patrol" = "DEPARTURES")
-
-/obj/machinery/navbeacon/frontier/DEPARTURES
-	location = "DEPARTURES"
-	codes = list("patrol" = 1, "next_patrol" = "ARRIVALS2")
-
-/obj/machinery/navbeacon/frontier/ARRIVALS2
-	location = "ARRIVALS2"
-	codes = list("patrol" = 1, "next_patrol" = "DOME_S2")
-
-/obj/machinery/navbeacon/frontier/DOME_S2
-	location = "DOME_S2"
-	codes = list("patrol" = 1, "next_patrol" = "DOME_SW")
-
-/obj/machinery/navbeacon/frontier/DOME_SW
-	location = "DOME_SW"
-	codes = list("patrol" = 1, "next_patrol" = "DOME_W1")
-
-/obj/machinery/navbeacon/frontier/DOME_W1
-	location = "DOME_W1"
-	codes = list("patrol" = 1, "next_patrol" = "ENG")
-
-/obj/machinery/navbeacon/frontier/ENG
-	location = "ENG"
-	codes = list("patrol" = 1, "next_patrol" = "DOME_W2")
-
-/obj/machinery/navbeacon/frontier/DOME_W2
-	location = "DOME_W2"
-	codes = list("patrol" = 1, "next_patrol" = "DOME_NW")
-
-/obj/machinery/navbeacon/frontier/DOME_NW
-	location = "DOME_NW"
-	codes = list("patrol" = 1, "next_patrol" = "DOME_N")
-
-/obj/machinery/navbeacon/frontier/DOME_N
-	location = "DOME_N"
-	codes = list("patrol" = 1, "next_patrol" = "DOME_NE")
-
-/obj/machinery/navbeacon/frontier/DOME_NE
-	location = "DOME_NE"
-	codes = list("patrol" = 1, "next_patrol" = "DOME_E2")
-
-/obj/machinery/navbeacon/frontier/DOME_E2
-	location = "DOME_E2"
-	codes = list("patrol" = 1, "next_patrol" = "BAR")
-
-/obj/machinery/navbeacon/frontier/BAR
-	location = "BAR"
-	codes = list("patrol" = 1, "next_patrol" = "CRYO")
-
-/obj/machinery/navbeacon/frontier/CRYO
-	location = "CRYO"
-	codes = list("patrol" = 1, "next_patrol" = "BHALLWAY")
-
-/obj/machinery/navbeacon/frontier/BHALLWAY
-	location = "BHALLWAY"
-	codes = list("patrol" = 1, "next_patrol" = "SEC")
-
-
-// Delivery types below.
-
-/obj/machinery/navbeacon/delivery/QM1
-	location = "QM #1"
-	codes = list("delivery" = 1, "dir" = 8)
-
-/obj/machinery/navbeacon/delivery/QM2
-	location = "QM #2"
-	codes = list("delivery" = 1, "dir" = 8)
-
-/obj/machinery/navbeacon/delivery/QM3
-	location = "QM #3"
-	codes = list("delivery" = 1, "dir" = 8)
-
-/obj/machinery/navbeacon/delivery/QM4
-	location = "QM #4"
-	codes = list("delivery" = 1, "dir" = 8)
-
-/obj/machinery/navbeacon/delivery/Research
-	location = "Research Division"
-	codes = list("delivery" = 1, "dir" = 8)
-
-/obj/machinery/navbeacon/delivery/Janitor
-	location = "Janitor"
-	codes = list("delivery" = 1, "dir" = 8)
-
-/obj/machinery/navbeacon/delivery/SecurityD
-	location = "Security"
-	codes = list("delivery" = 1, "dir" = 8)
-
-/obj/machinery/navbeacon/delivery/ToolStorage
-	location = "Tool Storage"
-	codes = list("delivery" = 1, "dir" = 8)
-
-/obj/machinery/navbeacon/delivery/Medbay
-	location = "Medbay"
-	codes = list("delivery" = 1, "dir" = 4)
-
-/obj/machinery/navbeacon/delivery/Engineering
-	location = "Engineering"
-	codes = list("delivery" = 1, "dir" = 4)
-
-/obj/machinery/navbeacon/delivery/Bar
-	location = "Bar"
-	codes = list("delivery" = 1, "dir" = 2)
-
-/obj/machinery/navbeacon/delivery/Kitchen
-	location = "Kitchen"
-	codes = list("delivery" = 1, "dir" = 2)
-
-/obj/machinery/navbeacon/delivery/Hydroponics
-	location = "Hydroponics"
-	codes = list("delivery" = 1, "dir" = 2)

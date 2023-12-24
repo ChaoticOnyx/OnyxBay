@@ -2,21 +2,22 @@
 
 	name = "binoculars"
 	desc = "A pair of binoculars."
-	zoomdevicename = "eyepieces"
 	icon_state = "binoculars"
 
-	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	obj_flags = OBJ_FLAG_CONDUCTABLE
 	force = 5.0
-	mod_weight = 0.6
-	mod_reach = 0.5
-	mod_handy = 0.85
-	w_class = ITEM_SIZE_SMALL
+	w_class = ITEMSIZE_SMALL
 	throwforce = 5.0
 	throw_range = 15
+	throw_speed = 3
 
+	var/tileoffset = 14
+	var/viewsize = 7
 
 /obj/item/device/binoculars/attack_self(mob/user)
-	if(zoom)
-		unzoom(user)
-	else
-		zoom(user)
+	zoom(user,tileoffset,viewsize, show_zoom_message = FALSE)
+
+/obj/item/device/binoculars/high_power
+	name = "high power binoculars"
+	desc = "A pair of high power binoculars."
+	tileoffset = 14*3

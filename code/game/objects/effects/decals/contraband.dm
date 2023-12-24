@@ -12,19 +12,21 @@
 	name = "rolled-up poster"
 	desc = "The poster comes with its own automatic adhesive mechanism, for easy pinning to any vertical surface."
 	icon_state = "rolled_poster"
+	drop_sound = 'sound/items/drop/wrapper.ogg'
+	pickup_sound = 'sound/items/pickup/wrapper.ogg'
 	var/serial_number = 0
 
 
-/obj/item/contraband/poster/New(turf/loc, given_serial = 0)
+/obj/item/contraband/poster/Initialize(mapload, given_serial = 0)
+	. = ..()
 	if(given_serial == 0)
 		serial_number = rand(1, poster_designs.len)
 	else
 		serial_number = given_serial
 	name += " - No. [serial_number]"
-	..(loc)
 
 //Places the poster on a wall
-/obj/item/contraband/poster/afterattack(atom/A, mob/user, adjacent, clickparams)
+/obj/item/contraband/poster/afterattack(var/atom/A, var/mob/user, var/adjacent, var/clickparams)
 	if (!adjacent)
 		return
 
@@ -35,7 +37,7 @@
 		return
 
 	var/placement_dir = get_dir(user, W)
-	if (!(placement_dir in GLOB.cardinal))
+	if (!(placement_dir in cardinal))
 		to_chat(user, "<span class='warning'>You must stand directly in front of the wall you wish to place that on.</span>")
 		return
 
@@ -45,7 +47,7 @@
 		stuff_on_wall = 1
 
 	//crude, but will cover most cases. We could do stuff like check pixel_x/y but it's not really worth it.
-	for (var/dir in GLOB.cardinal)
+	for (var/dir in cardinal)
 		var/turf/T = get_step(W, dir)
 		if (locate(/obj/structure/sign/poster) in T)
 			stuff_on_wall = 1
@@ -55,45 +57,53 @@
 		to_chat(user, "<span class='notice'>There is already a poster there!</span>")
 		return
 
-	to_chat(user, "<span class='notice'>You start placing the poster on the wall...</span>")//Looks like it's uncluttered enough. Place the poster.
+	to_chat(user, "<span class='notice'>You start placing the poster on the wall...</span>") //Looks like it's uncluttered enough. Place the poster.)
 
-
-	var/obj/structure/sign/poster/P = new(user.loc, placement_dir=get_dir(user, W), serial=serial_number)
+	var/obj/structure/sign/poster/P = new(user.loc, get_dir(user, W), serial_number)
 
 	flick("poster_being_set", P)
-	//playsound(W, 'sound/items/poster_being_created.ogg', 100, 1) //why the hell does placing a poster make printer sounds?
+	playsound(W, 'sound/items/package_wrap.ogg', 100, 1)
 
-	var/oldsrc = src //get a reference to src so we can delete it after detaching ourselves
-	src = null
-	spawn(17)
-		if(!P) return
+	addtimer(CALLBACK(src, PROC_REF(place_on_wall), P, user, W), 28, TIMER_CLIENT_TIME)
 
-		if(iswall(W) && user && P.loc == user.loc) //Let's check if everything is still there
-			to_chat(user, "<span class='notice'>You place the poster!</span>")
-		else
-			P.roll_and_drop(P.loc)
+/obj/item/contraband/poster/proc/place_on_wall(obj/structure/sign/poster/P, mob/user, turf/W)
+	if (QDELETED(P))
+		return
 
-	qdel(oldsrc)	//delete it now to cut down on sanity checks afterwards. Agouri's code supports rerolling it anyway
+	if (iswall(W) && !QDELETED(user) && P.loc == user.loc)
+		to_chat(user, "<span class='notice'>You place the poster!</span>")
+	else
+		P.roll_and_drop(P.loc)
+
+	qdel(src)
 
 //############################## THE ACTUAL DECALS ###########################
 
 /obj/structure/sign/poster
 	name = "poster"
-	desc = "A large piece of space-resistant printed paper."
+	desc = "A large piece of space-resistant printed paper. "
 	icon = 'icons/obj/contraband.dmi'
+	icon_state = "poster_map"
 	anchored = 1
 	var/serial_number	//Will hold the value of src.loc if nobody initialises it
 	var/poster_type		//So mappers can specify a desired poster
-	var/ruined = 0
+	var/ruined = FALSE
 
-/obj/structure/sign/poster/New(newloc, placement_dir=null, serial=null)
-	..(newloc)
+/obj/structure/sign/poster/Initialize(mapload, placement_dir = null, serial = null)
+	. = ..()
 
 	if(!serial)
 		serial = rand(1, poster_designs.len) //use a random serial if none is given
 
 	serial_number = serial
-	var/datum/poster/design = poster_designs[serial_number]
+
+	var/datum/poster/design
+	if (poster_type)
+		var/path = text2path(poster_type)
+		design = new path
+	else
+		design = poster_designs[serial_number]
+
 	set_poster(design)
 
 	switch (placement_dir)
@@ -110,20 +120,14 @@
 			pixel_x = -32
 			pixel_y = 0
 
-/obj/structure/sign/poster/Initialize()
-	if (poster_type)
-		var/path = ispath(poster_type) ? poster_type : text2path(poster_type)
-		var/datum/poster/design = new path
-		set_poster(design)
-	. = ..()
 
-/obj/structure/sign/poster/proc/set_poster(datum/poster/design)
-	SetName("[initial(name)] - [design.name]")
+/obj/structure/sign/poster/proc/set_poster(var/datum/poster/design)
+	name = "[initial(name)] - [design.name]"
 	desc = "[initial(desc)] [design.desc]"
 	icon_state = design.icon_state // poster[serial_number]
 
 /obj/structure/sign/poster/attackby(obj/item/W as obj, mob/user as mob)
-	if(isWirecutter(W))
+	if(W.iswirecutter())
 		playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
 		if(ruined)
 			to_chat(user, "<span class='notice'>You remove the remnants of the poster.</span>")
@@ -131,46 +135,35 @@
 		else
 			to_chat(user, "<span class='notice'>You carefully remove the poster from the wall.</span>")
 			roll_and_drop(user.loc)
-		return
+		return TRUE
 
 
-/obj/structure/sign/poster/attack_hand(mob/user)
+/obj/structure/sign/poster/attack_hand(mob/user as mob)
 	if(ruined)
 		return
-
-	if(alert("Do I want to rip the poster from the wall?","You think...","Yes","No") != "Yes")
+	if(user.a_intent == I_HELP)
+		examinate(user, src)
 		return
-
-	if(ruined || !user.Adjacent(src))
-		return
-
-	ruin(user)
-
-/obj/structure/sign/poster/proc/ruin(mob/user = null)
-	if(ruined)
-		return
-
-	if(user)
-		visible_message(SPAN("warning", "\The [user] rips \the [src] in a single, decisive motion!"))
-		playsound(loc, 'sound/items/poster_ripped.ogg', 100, 1)
+	if(alert("Do I want to rip the poster from the wall?","You think...","Yes","No") == "Yes")
+		if(ruined || !user.Adjacent(src))
+			return
+		visible_message("<span class='warning'>\The [user] rips \the [src] in a single, decisive motion!</span>" )
+		playsound(src.loc, 'sound/items/poster_ripped.ogg', 100, 1)
+		ruined = TRUE
+		icon_state = "poster_ripped"
+		name = "ripped poster"
+		desc = "You can't make out anything from the poster's original print. It's ruined."
 		add_fingerprint(user)
-
-	ruined = TRUE
-	SetName("ripped poster")
-	desc = "You can't make out anything from the poster's original print. It's ruined."
-
-	var/icon/I = icon(icon, "ripped_mask[rand(1, 4)]")
-	filters += filter(type = "alpha", icon = I)
 
 /obj/structure/sign/poster/proc/roll_and_drop(turf/newloc)
 	var/obj/item/contraband/poster/P = new(src, serial_number)
 	P.forceMove(newloc)
-	forceMove(P)
+	src.forceMove(P)
 	qdel(src)
 
 /datum/poster
 	// Name suffix. Poster - [name]
-	var/name=""
+	var/name = ""
 	// Description suffix
-	var/desc=""
-	var/icon_state=""
+	var/desc = ""
+	var/icon_state = ""

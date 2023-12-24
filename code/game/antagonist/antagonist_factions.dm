@@ -1,27 +1,23 @@
-/mob/living/proc/convert_to_rev(mob/M in able_mobs_in_oview(src))
-	set name = "Convert Bourgeoise"
-	set category = "Abilities"
+/mob/living/proc/convert_to_rev()
+	set name = "Invite to the Revolutionaries"
+	set category = "IC"
 
-	if(!(M in able_mobs_in_oview(src)))
+	var/list/mobs_to_convert = list()
+	for(var/mob/A in orange(world.view, src))
+		mobs_to_convert += A
+	var/mob/living/carbon/human/M = tgui_input_list(usr, "Choose someone to convert.", "Invite to the Revolutionaries", mobs_to_convert)
+	if(!M)
 		return
-	if(!M.mind || !M.client)
+	if(!M.mind)
 		return
-	if(!ishuman(M))
-		return
-	if(!(src in able_mobs_in_oview(M)))
-		to_chat(src, SPAN_WARNING("\The [M] can't see you."))
-		return
-
-	var/datum/antagonist/antag
-	for(var/antag_type in GLOB.all_antag_types_)
-		antag = GLOB.all_antag_types_[antag_type]
-		if(antag.is_antagonist(M.mind))
-			to_chat(src, SPAN_DANGER("\The [M] doesn't seem even remotely interested in your offer. Seems like you won't be able to convert them..."))
+	for (var/obj/item/implant/mindshield/I in M)
+		if (I.implanted)
+			to_chat(src, "<span class='warning'>[M] is too loyal to be subverted!</span>")
 			return
+	convert_to_faction(src, M.mind, revs)
 
-	convert_to_faction(M.mind, GLOB.revs)
+/proc/convert_to_faction(var/client/antag, var/datum/mind/player, var/datum/antagonist/faction)
 
-/mob/living/proc/convert_to_faction(datum/mind/player, datum/antagonist/faction)
 	if(!player || !faction || !player.current)
 		return
 
@@ -29,43 +25,45 @@
 		return
 
 	if(faction.is_antagonist(player))
-		to_chat(src, SPAN("notice", "\The [player.current] is already \a [faction.faction_role_text]!"))
+		to_chat(antag, "<span class='warning'>\The [player.current] already serves the [faction.faction_descriptor].</span>")
 		return
 
-	if(!faction.can_become_antag(player, TRUE) || player_is_antag(player))
-		to_chat(src, SPAN_WARNING("\The [player.current] cannot be \a [faction.faction_role_text]!"))
+	if(player_is_antag(player))
+		to_chat(antag, "<span class='warning'>\The [player.current]'s loyalties seem to be elsewhere...</span>")
+		return
+
+	if(!faction.can_become_antag(player) || isanimal(player.current))
+		to_chat(antag, "<span class='warning'>\The [player.current] cannot be \a [faction.faction_role_text]!</span>")
 		return
 
 	if(world.time < player.rev_cooldown)
-		to_chat(src, SPAN_DANGER("You must wait ten seconds between attempts."))
+		to_chat(antag, "<span class='danger'>You must wait five seconds between attempts.</span>")
 		return
 
-	to_chat(src, SPAN_DANGER("You are attempting to convert \the [player.current]..."))
-	log_and_message_admins("attempted to convert [player.current] to the [faction.faction_role_text] faction.")
+	to_chat(antag, "<span class='danger'>You are attempting to convert \the [player.current]...</span>")
+	log_admin("[antag.mob]([antag.ckey]) attempted to convert [player.current].",ckey=antag.ckey,ckey_target=key_name(player.current))
+	message_admins("<span class='danger'>[antag.mob]([antag.ckey]) attempted to convert [player.current].</span>")
 
-	player.rev_cooldown = world.time + 10 SECONDS
-	var/choice = alert(player.current, "Asked by [src]: Do you want to join the [faction.faction_descriptor]?","Join the [faction.faction_descriptor]?","No!","Yes!")
-	if(!(player.current in able_mobs_in_oview(src)))
-		return
-	if(choice == "Yes!" && faction.add_antagonist_mind(player, TRUE, faction.faction_role_text, faction.faction_welcome))
-		to_chat(src, SPAN_NOTICE("\The [player.current] joins the [faction.faction_descriptor]!"))
+	player.rev_cooldown = world.time+100
+	var/choice = alert(player.current,"Asked by [antag.mob]: Do you want to join the [faction.faction_descriptor]?","Join the [faction.faction_descriptor]?","No!","Yes!")
+	if(choice == "Yes!" && faction.add_antagonist_mind(player, 0, faction.faction_role_text, faction.faction_welcome))
+		to_chat(antag, "<span class='notice'>\The [player.current] joins the [faction.faction_descriptor]!</span>")
 		return
 	if(choice == "No!")
-		to_chat(player, SPAN_DANGER("You reject this traitorous cause!"))
-	to_chat(src, SPAN_DANGER("\The [player.current] does not support the [faction.faction_descriptor]!"))
+		to_chat(player, "<span class='danger'>You reject this subversive cause!</span>")
+	to_chat(antag, "<span class='danger'>\The [player.current] does not support the [faction.faction_descriptor]!</span>")
 
-/mob/living/proc/convert_to_loyalist(mob/M in able_mobs_in_oview(src))
-	set name = "Convert Recidivist"
-	set category = "Abilities"
+/mob/living/proc/convert_to_loyalist()
+	set name = "Invite to the Loyalists"
+	set category = "IC"
 
-	if(!(M in able_mobs_in_oview(src)))
+	var/list/mobs_to_convert = list()
+	for(var/mob/A in orange(world.view, src))
+		mobs_to_convert += A
+	var/mob/living/carbon/human/M = tgui_input_list(usr, "Choose someone to convert.", "Invite to the Loyalists", mobs_to_convert)
+	if(!M)
 		return
-	if(!M.mind || !M.client)
+	if(!M.mind)
 		return
-	if(!ishuman(M))
-		return
-	if(!(src in able_mobs_in_oview(M)))
-		to_chat(src, SPAN_WARNING("\The [M] can't see you."))
-		return
+	convert_to_faction(src, M.mind, loyalists)
 
-	convert_to_faction(M.mind, GLOB.loyalists)

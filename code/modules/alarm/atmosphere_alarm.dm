@@ -1,17 +1,19 @@
 /datum/alarm_handler/atmosphere
-	category = NETWORK_ALARM_ATMOS
+	category = "Atmosphere Alarms"
 
-/datum/alarm_handler/atmosphere/triggerAlarm(atom/origin, atom/source, duration = 0, severity = 1)
+/datum/alarm_handler/atmosphere/triggerAlarm(var/atom/origin, var/atom/source, var/duration = 0, var/severity = 1)
 	..()
 
-/datum/alarm_handler/atmosphere/major_alarms(z_level)
-	. = list()
-	for(var/datum/alarm/A in ..())
+/datum/alarm_handler/atmosphere/major_alarms()
+	var/list/major_alarms = new()
+	for(var/datum/alarm/A in alarms)
 		if(A.max_severity() > 1)
-			. += A
+			major_alarms.Add(A)
+	return major_alarms
 
-/datum/alarm_handler/atmosphere/minor_alarms(z_level)
-	. = list()
-	for(var/datum/alarm/A in ..())
+/datum/alarm_handler/atmosphere/minor_alarms()
+	var/list/minor_alarms = new()
+	for(var/datum/alarm/A in alarms)
 		if(A.max_severity() == 1)
-			. += A
+			minor_alarms.Add(A)
+	return minor_alarms

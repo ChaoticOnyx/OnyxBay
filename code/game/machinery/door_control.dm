@@ -1,9 +1,8 @@
 /obj/machinery/button/remote
 	name = "remote object control"
 	desc = "It controls objects, remotely."
-	icon = 'icons/obj/stationobjs.dmi'
-	icon_state = "doorctrl"
-	power_channel = STATIC_ENVIRON
+	icon_state = "doorctrl0"
+	power_channel = ENVIRON
 	var/desiredstate = 0
 	var/exposedwires = 0
 	var/wires = 3
@@ -13,39 +12,44 @@
 	*/
 
 	anchored = 1.0
-	idle_power_usage = 2 WATTS
-	active_power_usage = 4 WATTS
+	idle_power_usage = 2
+	active_power_usage = 4
 
 /obj/machinery/button/remote/attack_ai(mob/user as mob)
+	if(!ai_can_interact(user))
+		return
 	if(wires & 2)
 		return src.attack_hand(user)
 	else
 		to_chat(user, "Error, no route to host.")
 
 /obj/machinery/button/remote/attackby(obj/item/W, mob/user as mob)
+	if(istype(W, /obj/item/forensics))
+		return
 	return src.attack_hand(user)
 
-/obj/machinery/button/remote/emag_act(remaining_charges, mob/user)
+/obj/machinery/button/remote/emag_act(var/remaining_charges, var/mob/user)
 	if(req_access.len || req_one_access.len)
 		req_access = list()
 		req_one_access = list()
-		playsound(src.loc, SFX_SPARK, 100, 1)
+		playsound(src.loc, /singleton/sound_category/spark_sound, 100, 1)
 		return 1
 
 /obj/machinery/button/remote/attack_hand(mob/user as mob)
 	if(..())
 		return
 
+	src.add_fingerprint(user)
 	if(stat & (NOPOWER|BROKEN))
 		return
 
 	if(!allowed(user) && (wires & 1))
 		to_chat(user, "<span class='warning'>Access Denied</span>")
-		flick("[initial(icon_state)]-denied",src)
+		flick("doorctrl-denied",src)
 		return
 
 	use_power_oneoff(5)
-	icon_state = "[initial(icon_state)]1"
+	icon_state = "doorctrl1"
 	desiredstate = !desiredstate
 	trigger(user)
 	spawn(15)
@@ -54,13 +58,15 @@
 /obj/machinery/button/remote/proc/trigger()
 	return
 
-/obj/machinery/button/remote/on_update_icon()
-	ClearOverlays()
+/obj/machinery/button/remote/power_change()
+	..()
+	update_icon()
+
+/obj/machinery/button/remote/update_icon()
 	if(stat & NOPOWER)
-		icon_state = "[initial(icon_state)]-p"
+		icon_state = "doorctrl-p"
 	else
-		icon_state = "[initial(icon_state)]"
-		AddOverlays(emissive_appearance(icon, "[initial(icon_state)]-ea"))
+		icon_state = "doorctrl0"
 
 /*
 	Airlock remote control
@@ -87,7 +93,7 @@
 	*/
 
 /obj/machinery/button/remote/airlock/trigger()
-	for(var/obj/machinery/door/airlock/D in GLOB.all_doors)
+	for(var/obj/machinery/door/airlock/D in SSmachinery.machinery)
 		if(D.id_tag == src.id)
 			if(specialfunctions & OPEN)
 				if (D.density)
@@ -117,6 +123,14 @@
 				if(specialfunctions & SAFE)
 					D.set_safeties(1)
 
+/obj/machinery/button/remote/airlock/screamer
+	var/message = "REPLACE THIS!"
+	var/channel = "Common"
+
+/obj/machinery/button/remote/airlock/screamer/trigger()
+	. = ..()
+	global_announcer.autosay(message, capitalize_first_letters(name), channel)
+
 #undef OPEN
 #undef IDSCAN
 #undef BOLTS
@@ -129,27 +143,24 @@
 /obj/machinery/button/remote/blast_door
 	name = "remote blast door-control"
 	desc = "It controls blast doors, remotely."
-	icon_state = "blastctrl"
 
 /obj/machinery/button/remote/blast_door/trigger()
-	for(var/obj/machinery/door/blast/M in GLOB.all_doors)
+	var/new_state
+	for(var/obj/machinery/door/blast/M in SSmachinery.machinery)
+		if(M.id == id)
+			if(isnull(new_state))
+				new_state = M.density
+			if(new_state)
+				M.open()
+			else
+				M.close()
+
+/obj/machinery/button/remote/blast_door/open_only/trigger()
+	for(var/obj/machinery/door/blast/M in SSmachinery.machinery)
 		if(M.id == src.id)
 			if(M.density)
 				spawn(0)
 					M.open()
-					return
-			else
-				spawn(0)
-					M.close()
-	for(var/obj/machinery/door/window/W in GLOB.all_doors)  // windoor rmote control
-		if(W.id == src.id)
-			if(W.density)
-				spawn(0)
-					W.open()
-					return
-			else
-				spawn(0)
-					W.close()
 					return
 
 /*
@@ -159,8 +170,8 @@
 	name = "remote emitter control"
 	desc = "It controls emitters, remotely."
 
-/obj/machinery/button/remote/emitter/trigger(mob/user)
-	for(var/obj/machinery/power/emitter/E in world)
+/obj/machinery/button/remote/emitter/trigger(mob/user as mob)
+	for(var/obj/machinery/power/emitter/E in SSmachinery.machinery)
 		if(E.id == src.id)
 			spawn(0)
 				E.activate(user)
@@ -172,43 +183,38 @@
 /obj/machinery/button/remote/driver
 	name = "mass driver button"
 	desc = "A remote control switch for a mass driver."
-	icon = 'icons/obj/objects.dmi'
 	icon_state = "launcherbtt"
 
-/obj/machinery/button/remote/driver/trigger(mob/user)
-	set waitfor = 0
+/obj/machinery/button/remote/driver/trigger(mob/user as mob)
 	active = 1
 	update_icon()
 
-	for(var/obj/machinery/door/blast/M in GLOB.all_doors)
+	var/list/same_id = list()
+
+	for(var/obj/machinery/door/blast/M in SSmachinery.machinery)
 		if (M.id == src.id)
-			spawn( 0 )
-				M.open()
-				return
+			same_id += M
+			INVOKE_ASYNC(M, TYPE_PROC_REF(/obj/machinery/door/blast, open))
 
 	sleep(20)
 
-	for(var/obj/machinery/mass_driver/M in SSmachines.machinery)
+	for(var/obj/machinery/mass_driver/M in SSmachinery.machinery)
 		if(M.id == src.id)
 			M.drive()
 
 	sleep(50)
 
-	for(var/obj/machinery/door/blast/M in GLOB.all_doors)
-		if (M.id == src.id)
-			spawn(0)
-				M.close()
-				return
+	for(var/mm in same_id)
+		INVOKE_ASYNC(mm, TYPE_PROC_REF(/obj/machinery/door/blast, close))
 
 	icon_state = "launcherbtt"
+	active = 0
 	update_icon()
 
 	return
 
-/obj/machinery/button/remote/driver/on_update_icon()
-	ClearOverlays()
+/obj/machinery/button/remote/driver/update_icon()
 	if(!active || (stat & NOPOWER))
 		icon_state = "launcherbtt"
 	else
 		icon_state = "launcheract"
-		AddOverlays(emissive_appearance(icon, "launcher-ea"))

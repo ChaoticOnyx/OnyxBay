@@ -1,6 +1,7 @@
 /mob/living/simple_animal/hostile/retaliate/clown
 	name = "clown"
 	desc = "A denizen of clown planet"
+	icon = 'icons/mob/npc/human.dmi'
 	icon_state = "clown"
 	icon_living = "clown"
 	icon_dead = "clown_dead"
@@ -13,6 +14,7 @@
 	speak = list("HONK", "Honk!", "Welcome to clown planet!")
 	emote_see = list("honks")
 	speak_chance = 1
+	universal_speak = FALSE
 	a_intent = I_HURT
 	stop_automated_movement_when_pulled = 0
 	maxHealth = 75
@@ -21,15 +23,21 @@
 	harm_intent_damage = 8
 	melee_damage_lower = 10
 	melee_damage_upper = 10
-	can_escape = 1
 	attacktext = "attacked"
 	attack_sound = 'sound/items/bikehorn.ogg'
-	bodyparts = /decl/simple_animal_bodyparts/clown
+
+	min_oxy = 5
+	max_oxy = 0
+	min_tox = 0
+	max_tox = 1
+	min_co2 = 0
+	max_co2 = 5
+	min_n2 = 0
+	max_n2 = 0
 	minbodytemp = 270
 	maxbodytemp = 370
 	heat_damage_per_tick = 15	//amount of damage applied if animal's body temperature is higher than maxbodytemp
 	cold_damage_per_tick = 10	//same as heat_damage_per_tick, only if the bodytemperature it's lower than minbodytemp
 	unsuitable_atoms_damage = 10
 
-/decl/simple_animal_bodyparts/clown
-	hit_zones = list("head", "torso", "pie-hole", "honker", "left funny bone", "right funny bone", "left foot", "right foot", "unmentionables", "HONK", "honk", "honker")
+	tameable = FALSE

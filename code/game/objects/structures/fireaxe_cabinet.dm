@@ -1,68 +1,108 @@
 /obj/structure/fireaxecabinet
 	name = "fire axe cabinet"
-	desc = "There is small label that reads \"For Emergency use only\" along with details for safe use of the axe. As if."
+	desc = "A fire axe cabinet. There is small label that reads \"FOR EMERGENCY USE ONLY\" along with details for safe use of the axe on the side of it. As if."
+	icon = 'icons/obj/wallmounts.dmi'
 	icon_state = "fireaxe"
-	anchored = 1
-	density = 0
+	anchored = TRUE
+	density = FALSE
+	req_access = null
+	obj_flags = OBJ_FLAG_MOVES_UNSUPPORTED
 
-	var/damage_threshold = 15
+	var/damage_threshold = 10 // Damage needed to break the glass.
 	var/open
 	var/unlocked
 	var/shattered
 	var/obj/item/material/twohanded/fireaxe/fireaxe
 
-/obj/structure/fireaxecabinet/attack_generic(mob/user, damage, attack_verb, wallbreaker)
-	attack_animation(user)
-	playsound(user, GET_SFX(SFX_GLASS_HIT), 50, 1)
-	visible_message("<span class='danger'>[user] [attack_verb] \the [src]!</span>")
-	if(damage_threshold > damage)
-		to_chat(user, "<span class='danger'>Your strike is deflected by the reinforced glass!</span>")
+/obj/structure/fireaxecabinet/north
+	dir = NORTH
+	pixel_y = 24
+
+/obj/structure/fireaxecabinet/east
+	dir = EAST
+	pixel_x = 19
+
+/obj/structure/fireaxecabinet/west
+	dir = WEST
+	pixel_x = -19
+
+/obj/structure/fireaxecabinet/south
+	dir = SOUTH
+	pixel_y = -20
+
+/obj/structure/fireaxecabinet/attack_generic(var/mob/user, var/damage, var/attack_verb, var/wallbreaker)
+	user.do_attack_animation(src)
+	playsound(user, 'sound/effects/glass_hit.ogg', 50, 1)
+	visible_message(SPAN_WARNING("\The [user] [attack_verb] \the [src]!"))
+	if(damage_threshold >= damage)
+		to_chat(user, SPAN_WARNING("Your strike is deflected by the reinforced glass!"))
 		return
 	if(shattered)
 		return
-	shattered = 1
-	unlocked = 1
-	open = 1
-	playsound(user, GET_SFX(SFX_BREAK_WINDOW), 100, 1)
+	shattered = TRUE
+	unlocked = TRUE
+	open = TRUE
+	playsound(user, /singleton/sound_category/glass_break_sound, 100, 1)
 	update_icon()
 
-/obj/structure/fireaxecabinet/on_update_icon()
-	ClearOverlays()
+/obj/structure/fireaxecabinet/update_icon()
+	cut_overlays()
 	if(fireaxe)
-		AddOverlays(image(icon, "fireaxe_item"))
+		add_overlay("axe")
 	if(shattered)
-		AddOverlays(image(icon, "fireaxe_window_broken"))
-	else if(!open)
-		AddOverlays(image(icon, "fireaxe_window"))
+		add_overlay("glass4")
+	if(unlocked)
+		add_overlay("unlocked")
+	else
+		add_overlay("locked")
+	if(open)
+		add_overlay("glass_raised")
+	else
+		add_overlay("glass")
 
-/obj/structure/fireaxecabinet/Initialize()
-	. = ..()
+
+/obj/structure/fireaxecabinet/New()
+	..()
 	fireaxe = new(src)
 	update_icon()
 
-/obj/structure/fireaxecabinet/attack_ai(mob/user)
+/obj/structure/fireaxecabinet/Initialize(mapload)
+	. = ..()
+
+	if(!mapload)
+		set_pixel_offsets()
+
+/obj/structure/fireaxecabinet/set_pixel_offsets()
+	pixel_x = ((src.dir & (NORTH|SOUTH)) ? 0 : (src.dir == EAST ? 19 : -(19)))
+	pixel_y = ((src.dir & (NORTH|SOUTH)) ? (src.dir == NORTH ? 24 : -(20)) : 0)
+
+/obj/structure/fireaxecabinet/attack_ai(var/mob/user)
+	if(!ai_can_interact(user))
+		return
 	toggle_lock(user)
 
-/obj/structure/fireaxecabinet/attack_hand(mob/user)
+/obj/structure/fireaxecabinet/attack_hand(var/mob/user)
 	if(!unlocked)
-		to_chat(user, "<span class='warning'>\The [src] is locked.</span>")
+		to_chat(user, SPAN_NOTICE("\The [src] is locked."))
 		return
 	toggle_open(user)
 
-/obj/structure/fireaxecabinet/MouseDrop(over_object, src_location)
-	if(over_object == usr && CanMouseDrop(usr))
-		if(!istype(usr, /mob))
+/obj/structure/fireaxecabinet/MouseDrop(over_object, src_location, over_location)
+	if(over_object == usr)
+		var/mob/user = over_object
+		if(!istype(user))
 			return
 
 		if(!open)
-			to_chat(usr, "<span class='warning'>\The [src] is closed.</span>")
+			to_chat(user, SPAN_NOTICE("\The [src] is closed."))
 			return
 
 		if(!fireaxe)
-			to_chat(usr, "<span class='warning'>\The [src] is empty.</span>")
+			to_chat(user, SPAN_NOTICE("\The [src] is empty."))
 			return
 
-		usr.pick_or_drop(fireaxe)
+		fireaxe.forceMove(get_turf(user))
+		user.put_in_hands(fireaxe)
 		fireaxe = null
 		update_icon()
 
@@ -74,19 +114,19 @@
 		fireaxe = null
 	return ..()
 
-/obj/structure/fireaxecabinet/attackby(obj/item/O, mob/user)
-
-	if(isMultitool(O))
+/obj/structure/fireaxecabinet/attackby(var/obj/item/O, var/mob/user)
+	if(O.ismultitool())
 		toggle_lock(user)
 		return
 
 	if(istype(O, /obj/item/material/twohanded/fireaxe))
 		if(open)
 			if(fireaxe)
-				to_chat(user, "<span class='warning'>There is already \a [fireaxe] inside \the [src].</span>")
-			else if(user.drop(O, src))
+				to_chat(user, SPAN_ALERT("There is already \a [fireaxe] inside \the [src]."))
+			else if(user.unEquip(O))
+				O.forceMove(src)
 				fireaxe = O
-				to_chat(user, "<span class='notice'>You place \the [fireaxe] into \the [src].</span>")
+				to_chat(user, SPAN_NOTICE("You place \the [fireaxe] into \the [src]."))
 				update_icon()
 			return
 
@@ -97,36 +137,34 @@
 
 	return ..()
 
-/obj/structure/fireaxecabinet/proc/toggle_open(mob/user)
+/obj/structure/fireaxecabinet/proc/toggle_open(var/mob/user)
 	if(shattered)
-		open = 1
-		unlocked = 1
+		open = TRUE
+		unlocked = TRUE
 	else
 		user.setClickCooldown(10)
 		open = !open
-		to_chat(user, "<span class='notice'>You [open ? "open" : "close"] \the [src].</span>")
+		to_chat(user, SPAN_NOTICE("You [open ? "open" : "close"] \the [src]."))
 	update_icon()
 
-/obj/structure/fireaxecabinet/proc/toggle_lock(mob/user)
-
-
+/obj/structure/fireaxecabinet/proc/toggle_lock(var/mob/user)
 	if(open)
 		return
 
 	if(shattered)
-		open = 1
-		unlocked = 1
+		open = TRUE
+		unlocked = TRUE
 	else
 		user.setClickCooldown(10)
-		to_chat(user, "<span class='notice'>You begin [unlocked ? "enabling" : "disabling"] \the [src]'s maglock.</span>")
+		to_chat(user, SPAN_NOTICE("You begin [unlocked ? "enabling" : "disabling"] \the [src]'s maglock."))
 
-		if(!do_after(user, 20,src))
+		if(!do_after(user, 20))
 			return
 
-		if(shattered) return
+		if(shattered)
+			return
 
 		unlocked = !unlocked
-		playsound(user, 'sound/machines/lockreset.ogg', 50, 1)
-		to_chat(user, "<span class = 'notice'>You [unlocked ? "disable" : "enable"] the maglock.</span>")
+		to_chat(user, SPAN_NOTICE("You [unlocked ? "disable" : "enable"] the maglock."))
 
 	update_icon()

@@ -4,8 +4,8 @@
  *		Cakehat
  *		Ushanka
  *		Pumpkin head
- *		Kitty ears
- *		Tinfoil hat
+ *		Chicken mask
+ *		Warning cone
  */
 
 /*
@@ -15,130 +15,69 @@
 	name = "welding helmet"
 	desc = "A head-mounted face cover designed to protect the wearer completely from space-arc eye."
 	icon_state = "welding"
+	item_state = "welding"
 	item_state_slots = list(
 		slot_l_hand_str = "welding",
-		slot_r_hand_str = "welding",
+		slot_r_hand_str = "welding"
 		)
-	matter = list(MATERIAL_STEEL = 3000, MATERIAL_GLASS = 1000)
+	matter = list(DEFAULT_WALL_MATERIAL = 3000, MATERIAL_GLASS = 1000)
 	var/up = 0
-	armor = list(melee = 45, bullet = 45, laser = 55, energy = 20, bomb = 20, bio = 0)
+	armor = list(
+			melee = ARMOR_MELEE_SMALL
+		)
 	flags_inv = (HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
 	body_parts_covered = HEAD|FACE|EYES
 	action_button_name = "Flip Welding Mask"
-	siemens_coefficient = 0.9
-	w_class = ITEM_SIZE_NORMAL
+	siemens_coefficient = 0.75 // what? it's steel.
+	w_class = ITEMSIZE_NORMAL
 	var/base_state
 	flash_protection = FLASH_PROTECTION_MAJOR
 	tint = TINT_HEAVY
-	var/obj/item/welding_cover/cover = null
-
-/obj/item/clothing/head/welding/_examine_text(mob/user)
-	. = ..()
-	if(cover)
-		. += " [cover.cover_desc]"
-
-/obj/item/clothing/head/welding/New()
-	base_state = icon_state
-	if(ispath(cover))
-		cover = new cover(src)
-		icon_state = "[cover.icon_state]welding"
-		item_state = "[cover.icon_state]welding"
-	..()
-
-/obj/item/clothing/head/welding/Destroy()
-	QDEL_NULL(cover)
-	return ..()
+	sprite_sheets = list(
+		BODYTYPE_TAJARA = 'icons/mob/species/tajaran/helmet.dmi',
+		BODYTYPE_UNATHI = 'icons/mob/species/unathi/helmet.dmi'
+		)
+	drop_sound = 'sound/items/drop/helm.ogg'
+	pickup_sound = 'sound/items/pickup/helm.ogg'
 
 /obj/item/clothing/head/welding/attack_self()
+	if(!base_state)
+		base_state = icon_state
 	toggle()
 
-/obj/item/clothing/head/welding/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/welding_cover))
-		if(!cover && user.drop(W))
-			attach_cover(user, W)
-		else
-			to_chat(user, SPAN("notice", "[src] already has a cover attached."))
-	else if(isScrewdriver(W))
-		if(cover)
-			detach_cover(user)
-	else
-		..()
 
 /obj/item/clothing/head/welding/verb/toggle()
 	set category = "Object"
 	set name = "Adjust welding mask"
 	set src in usr
 
-	if(CanPhysicallyInteract(usr))
-		if(src.up)
-			src.up = !src.up
-			body_parts_covered |= (EYES|FACE)
-			flags_inv |= (HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
-			flash_protection = initial(flash_protection)
-			tint = initial(tint)
-			icon_state = "[cover ? "[cover.icon_state]welding" : base_state]"
-			item_state = "[cover ? "[cover.icon_state]welding" : base_state]"
-			to_chat(usr, "You flip the [src] down to protect your eyes.")
-			armor = list(melee = 45, bullet = 45, laser = 55, energy = 20, bomb = 20, bio = 0)
-		else
-			src.up = !src.up
-			body_parts_covered &= ~(EYES|FACE)
-			flash_protection = FLASH_PROTECTION_NONE
-			tint = TINT_NONE
-			flags_inv &= ~(HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
-			icon_state = "[cover ? "[cover.icon_state]welding" : base_state]up"
-			item_state = "[cover ? "[cover.icon_state]welding" : base_state]up"
-			to_chat(usr, "You push the [src] up out of your face.")
-			armor = list(melee = 25, bullet = 25, laser = 30, energy = 10, bomb = 10, bio = 0)
-		update_clothing_icon()	//so our mob-overlays
-		update_vision()
-		usr.update_action_buttons()
+	if(!base_state)
+		base_state = icon_state
 
-/obj/item/clothing/head/welding/proc/attach_cover(mob/user, obj/item/welding_cover/W)
-	to_chat(user, SPAN("notice", "You clip \the [W] onto \the [src]."))
-	W.forceMove(src)
-	cover = W
-	icon_state = "[cover.icon_state]welding[src.up ? "up" : ""]"
-	item_state = "[cover.icon_state]welding[src.up ? "up" : ""]"
-	update_clothing_icon()
-	user.update_action_buttons()
+	if(use_check_and_message(usr))
+		return
 
-/obj/item/clothing/head/welding/proc/detach_cover(mob/user)
-	to_chat(user, SPAN("notice", "You detach \the [cover] from \the [src]."))
-	cover.dropInto(get_turf(src))
-	cover = null
-	icon_state = "[base_state][src.up ? "up" : ""]"
-	item_state = "[base_state][src.up ? "up" : ""]"
-	update_clothing_icon()
-	user.update_action_buttons()
+	src.up = !src.up
+	if(!src.up)
+		body_parts_covered |= (EYES|FACE)
+		flags_inv |= (HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
+		flash_protection = initial(flash_protection)
+		tint = initial(tint)
+		icon_state = base_state
+		item_state = base_state
+		to_chat(usr, "You flip the [src] down to protect your eyes.")
+	else
+		body_parts_covered &= ~(EYES|FACE)
+		flash_protection = FLASH_PROTECTION_NONE
+		tint = TINT_NONE
+		flags_inv &= ~(HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
+		icon_state = "[base_state]up"
+		item_state = "[base_state]up"
+		to_chat(usr, "You push the [src] up out of your face.")
+	update_clothing_icon()	//so our mob-overlays
+	usr.update_action_buttons()
+	usr.handle_vision()
 
-
-/obj/item/clothing/head/welding/demon
-	cover = /obj/item/welding_cover/demon
-
-/obj/item/clothing/head/welding/knight
-	cover = /obj/item/welding_cover/knight
-
-/obj/item/clothing/head/welding/fancy
-	cover = /obj/item/welding_cover/fancy
-
-/obj/item/clothing/head/welding/engie
-	cover = /obj/item/welding_cover/engie
-
-/obj/item/clothing/head/welding/carp
-	cover = /obj/item/welding_cover/carp
-
-/obj/item/clothing/head/welding/hockey
-	cover = /obj/item/welding_cover/hockey
-
-/obj/item/clothing/head/welding/blue
-	cover = /obj/item/welding_cover/blue
-
-/obj/item/clothing/head/welding/flame
-	cover = /obj/item/welding_cover/flame
-
-/obj/item/clothing/head/welding/white
-	cover = /obj/item/welding_cover/white
 
 /*
  * Cakehat
@@ -150,10 +89,10 @@
 	item_state = "cake0"
 	var/onfire = 0
 	body_parts_covered = HEAD
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
-/obj/item/clothing/head/cakehat/think()
+/obj/item/clothing/head/cakehat/process()
 	if(!onfire)
+		STOP_PROCESSING(SSprocessing, src)
 		return
 
 	var/turf/location = src.loc
@@ -165,8 +104,6 @@
 	if (istype(location, /turf))
 		location.hotspot_expose(700, 1)
 
-	set_next_think(world.time + 1 SECOND)
-
 /obj/item/clothing/head/cakehat/attack_self(mob/user as mob)
 	src.onfire = !( src.onfire )
 	if (src.onfire)
@@ -174,82 +111,114 @@
 		src.damtype = "fire"
 		src.icon_state = "cake1"
 		src.item_state = "cake1"
-		set_next_think(world.time)
+		START_PROCESSING(SSprocessing, src)
 	else
 		src.force = null
 		src.damtype = "brute"
 		src.icon_state = "cake0"
 		src.item_state = "cake0"
 	return
-
-/obj/item/clothing/head/cakehat/get_temperature_as_from_ignitor()
-	if(onfire)
-		return 1000
-	return 0
-
-/*
- * Ushanka
- */
-/obj/item/clothing/head/ushanka
-	name = "ushanka"
-	desc = "Perfect for winter in Siberia, da?"
-	icon_state = "ushankadown"
-	var/icon_state_up = "ushankaup"
-	flags_inv = HIDEEARS|BLOCKHEADHAIR
-	cold_protection = HEAD
-	min_cold_protection_temperature = HELMET_MIN_COLD_PROTECTION_TEMPERATURE
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
-
-/obj/item/clothing/head/ushanka/attack_self(mob/user as mob)
-	if(icon_state == initial(icon_state))
-		icon_state = icon_state_up
-		to_chat(user, "You raise the ear flaps on the ushanka.")
-	else
-		icon_state = initial(icon_state)
-		to_chat(user, "You lower the ear flaps on the ushanka.")
-
-/obj/item/clothing/head/ushanka/tcc
-	name = "TCC ushanka"
-	desc = "Perfect for keeping ears warm during your courtmartial."
-	icon_state = "tccushankadown"
-	icon_state_up = "tccushankaup"
-
 /*
  * Pumpkin head
  */
-/obj/item/clothing/head/pumpkinhead
+
+/obj/item/clothing/head/pumpkin
 	name = "carved pumpkin"
-	desc = "A jack o' lantern! Believed to ward off evil spirits."
-	icon_state = "hardhat0_pumpkin"//Could stand to be renamed
+	desc = "A pumpkin with a spooky face carved on it. Looks like it needs a candle."
+	icon_state = "pumpkin_carved"
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|BLOCKHAIR
 	body_parts_covered = HEAD|FACE|EYES
-	brightness_on = 2
-	light_overlay = "helmet_light"
-	w_class = ITEM_SIZE_NORMAL
-	armor = list(melee = 15, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+	drop_sound = 'sound/items/drop/herb.ogg'
+	pickup_sound = 'sound/items/pickup/herb.ogg'
+	w_class = ITEMSIZE_NORMAL
+	throwforce = 1
+	throw_speed = 0.5
+
+/obj/item/clothing/head/pumpkin/attackby(var/obj/O, mob/user as mob)
+	if(istype(O, /obj/item/flame/candle))
+		var/obj/item/flame/candle/c = O
+		var/candle_wax = c.wax
+		if(c.lit)
+			to_chat(user, SPAN_NOTICE("You should extinguish \the [O] first!"))
+			return
+		to_chat(user, "You add \the [O] to \the [src].")
+		playsound(src.loc, 'sound/items/drop/gloves.ogg', 50, 1)
+		qdel(O)
+		var/obj/item/clothing/head/pumpkin/lantern/L = new /obj/item/clothing/head/pumpkin/lantern(user.loc)
+		L.wax = candle_wax
+		user.put_in_hands(L)
+		qdel(src)
+		return
+
+/obj/item/clothing/head/pumpkin/lantern
+	name = "jack o' lantern"
+	desc = "A pumpkin with a spooky face carved on it, with a candle inside. Believed to ward off evil spirits."
+	light_color = "#E09D37"
+	var/wax = 900
+	var/lit = 0
+
+/obj/item/clothing/head/pumpkin/lantern/update_icon()
+	icon_state = "pumpkin_carved[lit ? "_lit" : ""]"
+	if(ismob(loc))
+		var/mob/living/M = loc
+		M.update_inv_head(0)
+		M.update_inv_l_hand(0)
+		M.update_inv_r_hand(1)
+
+/obj/item/clothing/head/pumpkin/lantern/attackby(obj/item/W as obj, mob/user as mob)
+	..()
+	if(W.iswelder())
+		var/obj/item/weldingtool/WT = W
+		if(WT.isOn()) //Badasses dont get blinded by lighting their candle with a welding tool
+			light()
+			to_chat(user, SPAN_NOTICE("\The [user] casually lights \the [name] with [W]."))
+	else if(W.isFlameSource())
+		light()
+		to_chat(user, SPAN_NOTICE("\The [user] lights \the [name]."))
+	else if(istype(W, /obj/item/flame/candle))
+		var/obj/item/flame/candle/C = W
+		if(C.lit)
+			light()
+			to_chat(user, SPAN_NOTICE("\The [user] lights \the [name]."))
+
+/obj/item/clothing/head/pumpkin/lantern/proc/light()
+	if(!src.lit)
+		src.lit = 1
+		playsound(src.loc, 'sound/items/cigs_lighters/cig_light.ogg', 50, 1)
+		//src.damtype = "fire"
+		set_light(CANDLE_LUM)
+		update_icon()
+		START_PROCESSING(SSprocessing, src)
+
+/obj/item/clothing/head/pumpkin/lantern/process(mob/user)
+	if(!lit)
+		return
+	wax--
+	if(!wax)
+		new /obj/item/clothing/head/pumpkin(src.loc)
+		new /obj/item/trash/candle(src.loc)
+		if(istype(src.loc, /mob))
+			src.dropped(user)
+		to_chat(user, SPAN_NOTICE("The candle burns out."))
+		playsound(src.loc, 'sound/items/cigs_lighters/cig_snuff.ogg', 50, 1)
+		STOP_PROCESSING(SSprocessing, src)
+		qdel(src)
+	update_icon()
+	if(istype(loc, /turf)) //start a fire if possible
+		var/turf/T = loc
+		T.hotspot_expose(700, 5)
+
+/obj/item/clothing/head/pumpkin/lantern/attack_self(mob/user as mob)
+	if(lit)
+		lit = 0
+		to_chat(user, SPAN_NOTICE("You snuff out the flame."))
+		playsound(src.loc, 'sound/items/cigs_lighters/cig_snuff.ogg', 50, 1)
+		update_icon()
+		set_light(0)
 
 /*
- * Kitty ears
+ * Chicken mask
  */
-/obj/item/clothing/head/kitty
-	name = "kitty ears"
-	desc = "A pair of kitty ears. Meow!"
-	icon_state = "kitty"
-	slot_flags = SLOT_HEAD | SLOT_EARS
-	body_parts_covered = NO_BODYPARTS
-	siemens_coefficient = 1.5
-	item_icons = list()
-
-/obj/item/clothing/head/kitty/equipped(mob/living/carbon/human/user, slot)
-	. = ..()
-	if((slot == slot_head || slot == slot_l_ear || slot == slot_r_ear) && istype(user))
-		var/hairgb = rgb(user.r_hair, user.g_hair, user.b_hair)
-		var/icon/ears = icon('icons/inv_slots/hats/mob.dmi', "kitty")
-		ears.Blend(hairgb, ICON_ADD)
-		ears.Blend(icon('icons/inv_slots/hats/mob.dmi', "kittyinner"), ICON_OVERLAY)
-		icon_override = ears
-	else if(icon_override)
-		icon_override = null
 
 /obj/item/clothing/head/richard
 	name = "chicken mask"
@@ -257,18 +226,24 @@
 	icon_state = "richard"
 	body_parts_covered = HEAD|FACE
 	flags_inv = BLOCKHAIR
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
+
 /*
- * Tinfoil hat
+ * Warning cone
  */
-/obj/item/clothing/head/tinfoil
-	name = "Tinfoil hat"
-	desc = "Big brother is watching you!"
-	icon_state = "foilhat"
-	body_parts_covered = NO_BODYPARTS
-	armor = list(melee = 0, bullet = 0, laser = 5, energy = 5, bomb = 0, bio = 0)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 30 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 6 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+
+/obj/item/clothing/head/cone
+	name = "warning cone"
+	desc = "This cone is trying to warn you of something!"
+	desc_info = "It looks like you can wear it in your head slot."
+	icon_state = "cone"
+	item_state = "cone"
+	drop_sound = 'sound/items/drop/shoes.ogg'
+	pickup_sound = 'sound/items/pickup/shoes.ogg'
+	force = 1
+	throwforce = 3
+	throw_speed = 2
+	throw_range = 5
+	w_class = ITEMSIZE_SMALL
+	body_parts_covered = HEAD
+	attack_verb = list("warned", "cautioned", "smashed")
+	armor = list(melee = 5, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)

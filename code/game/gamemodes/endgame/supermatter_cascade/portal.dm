@@ -1,8 +1,8 @@
 /*** EXIT PORTAL ***/
 
-/obj/singularity/narsie/exit
+/obj/singularity/narsie/large/exit
 	name = "Bluespace Rift"
-	desc = "NO TIME TO EXPLAIN, JUMP IN!"
+	desc = "NO TIME TO EXPLAIN, JUMP IN"
 	icon = 'icons/obj/rift.dmi'
 	icon_state = "rift"
 
@@ -14,44 +14,36 @@
 
 	consume_range = 6
 
-/obj/singularity/narsie/exit/Initialize()
-	. = ..()
-	set_next_think(world.time)
+/obj/singularity/narsie/large/exit/update_icon()
+	overlays = 0
 
-/obj/singularity/narsie/exit/on_update_icon()
-	ClearOverlays()
-
-/obj/singularity/narsie/exit/think()
-	for(var/mob/M in GLOB.player_list)
+/obj/singularity/narsie/large/exit/process()
+	for(var/mob/M in player_list)
 		if(M.client)
 			M.see_rift(src)
 	eat()
-	set_next_think(world.time + 1 SECOND)
 
-/obj/singularity/narsie/exit/acquire(mob/food)
+/obj/singularity/narsie/large/exit/acquire(var/mob/food)
 	return
 
-/obj/singularity/narsie/exit/consume(const/atom/A)
+/obj/singularity/narsie/large/exit/consume(const/atom/A)
 	if(!(A.singuloCanEat()))
 		return 0
 
 	if (istype(A, /mob/living/))
 		var/mob/living/L = A
-		if(L.buckled && istype(L.buckled,/obj/structure/bed/))
-			var/turf/O = L.buckled
-			do_teleport(O, pick(GLOB.endgame_safespawns))
-			L.forceMove(O.loc, unbuckle_mob = FALSE)
+		if(L.buckled_to && istype(L.buckled_to,/obj/structure/bed/))
+			var/turf/O = L.buckled_to
+			do_teleport(O, pick(endgame_safespawns))
+			L.forceMove(O.loc)
 		else
-			do_teleport(L, pick(GLOB.endgame_safespawns)) //dead-on precision
-
-	else if (istype(A, /obj/mecha/))
-		do_teleport(A, pick(GLOB.endgame_safespawns)) //dead-on precision
+			do_teleport(L, pick(endgame_safespawns)) //dead-on precision
 
 	else if (isturf(A))
 		var/turf/T = A
 		var/dist = get_dist(T, src)
 		if (dist <= consume_range && T.density)
-			T.set_density(0)
+			T.density = 0
 
 		for (var/atom/movable/AM in T.contents)
 			if (AM == src) // This is the snowflake.
@@ -76,12 +68,12 @@
 	//thou shall always be able to see the rift
 	var/image/riftimage = null
 
-/mob/proc/see_rift(obj/singularity/narsie/exit/R)
+/mob/proc/see_rift(var/obj/singularity/narsie/large/exit/R)
 	var/turf/T_mob = get_turf(src)
 	if((R.z == T_mob.z) && (get_dist(R,T_mob) <= (R.consume_range+10)) && !(R in view(T_mob)))
 		if(!riftimage)
 			riftimage = image('icons/obj/rift.dmi',T_mob,"rift",LIGHTING_LAYER+2,1)
-			riftimage.mouse_opacity = 0
+			riftimage.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 		var/new_x = 32 * (R.x - T_mob.x) + R.pixel_x
 		var/new_y = 32 * (R.y - T_mob.y) + R.pixel_y
@@ -89,7 +81,7 @@
 		riftimage.pixel_y = new_y
 		riftimage.loc = T_mob
 
-		image_to(src, riftimage)
-
+		src << riftimage
 	else
-		QDEL_NULL(riftimage)
+		if(riftimage)
+			qdel(riftimage)

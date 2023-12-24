@@ -1,63 +1,90 @@
 /obj
-	layer = OBJ_LAYER
-
-	var/obj_flags
-	vis_flags = VIS_INHERIT_PLANE|VIS_INHERIT_ID
-	//Used to store information about the contents of the object.
-	var/list/matter
-	var/w_class // Size of the object.
-	var/unacidable = 0 //universal "unacidabliness" var, here so you can use it in any obj.
 	animate_movement = 2
-	var/throwforce = 1
-	var/sharp = 0		// whether this object cuts
-	var/edge = 0		// whether this object is more likely to dismember
-	var/in_use = 0 // If we have a user using us, this will be set on. We will check if the user has stopped using us, and thus stop updating and LAGGING EVERYTHING!
-	var/damtype = "brute"
-	var/armor_penetration = 0
-	var/anchor_fall = FALSE
-	var/pull_slowdown = PULL_SLOWDOWN_WEIGHT // How much it slows us down while we are pulling it
-	/// Used if the obj is dense.
-	var/list/rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 0,
-		RADIATION_BETA_PARTICLE = 0,
-		RADIATION_HAWKING = 0
-	)
-	hitby_sound = 'sound/effects/metalhit2.ogg'
-	var/turf_height_offset = 0
 
-/obj/Initialize()
-	. = ..()
-	if(turf_height_offset && isturf(loc))
-		var/turf/T = loc
-		T.update_turf_height()
+	var/list/matter //Used to store information about the contents of the object.
+	var/recyclable = FALSE //Whether the object can be recycled (eaten) by something like the Autolathe
+	var/w_class // Size of the object.
+	var/list/origin_tech = null	//Used by R&D to determine what research bonuses it grants.
+	var/unacidable = 0 //universal "unacidabliness" var, here so you can use it in any obj.
+
+	var/obj_flags //Special flags such as whether or not this object can be rotated.
+	var/throwforce = 1
+	var/list/attack_verb //Used in attackby() to say how something was attacked "[x] has been [z.attack_verb] by [y] with [z]"
+	var/sharp = 0		// whether this object cuts
+	var/edge = FALSE	// whether this object is more likely to dismember
+	var/in_use = 0 // If we have a user using us, this will be set on. We will check if the user has stopped using us, and thus stop updating and LAGGING EVERYTHING!
+	var/damtype = DAMAGE_BRUTE
+	var/force = 0
+	var/armor_penetration = 0
+	var/noslice = 0 // To make it not able to slice things.
+
+	var/being_shocked = 0
+
+	var/icon_species_tag = ""//If set, this holds the 3-letter shortname of a species, used for species-specific worn icons
+	var/icon_auto_adapt = 0//If 1, this item will automatically change its species tag to match the wearer's species.
+	//requires that the wearer's species is listed in icon_supported_species_tags
+	var/list/icon_supported_species_tags //Used with icon_auto_adapt, a list of species which have differing appearances for this item
+	var/icon_species_in_hand = 0//If 1, we will use the species tag even for rendering this item in the left/right hand.
+
+	var/equip_slot = 0
+	var/usesound
+	var/toolspeed = 1
+
+	var/surgerysound
 
 /obj/Destroy()
-	CAN_BE_REDEFINED(TRUE)
-	var/obj/item/smallDelivery/delivery = loc
-	if(istype(delivery))
-		delivery.wrapped = null
-
-	var/turf/T = get_turf(src)
-	if(T && turf_height_offset)
-		set_turf_height_offset(0)
+	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
-/obj/forceMove(atom/destination)
-	if(!turf_height_offset)
-		return ..() // Just act normally
+/obj/Topic(href, href_list, var/datum/ui_state/state = default_state)
+	if(..())
+		return 1
 
-	var/atom/origin = loc
-	. = ..()
-	if(!.)
-		return
+	// In the far future no checks are made in an overriding Topic() beyond if(..()) return
+	// Instead any such checks are made in CanUseTopic()
+	if(CanUseTopic(usr, state, href_list) == STATUS_INTERACTIVE)
+		CouldUseTopic(usr)
+		return 0
 
-	if(isturf(origin))
-		var/turf/T = origin
-		T.update_turf_height()
+	CouldNotUseTopic(usr)
+	return 1
 
-	if(isturf(destination))
-		var/turf/T = destination
-		T.update_turf_height()
+/obj/CanUseTopic(var/mob/user, var/datum/ui_state/state)
+	if(user.CanUseObjTopic(src))
+		return ..()
+	to_chat(user, "<span class='danger'>[icon2html(src, user)]Access Denied!</span>")
+	return STATUS_CLOSE
+
+/mob/living/silicon/CanUseObjTopic(var/obj/O)
+	var/id = src.GetIdCard()
+	return O.check_access(id)
+
+/mob/proc/CanUseObjTopic()
+	return 1
+
+/obj/proc/CouldUseTopic(var/mob/user)
+	user.AddTopicPrint(src)
+
+/mob/proc/AddTopicPrint(var/obj/target)
+	target.add_hiddenprint(src)
+
+/mob/living/AddTopicPrint(var/obj/target)
+	if(Adjacent(target))
+		target.add_fingerprint(src)
+	else
+		target.add_hiddenprint(src)
+
+/mob/living/silicon/ai/AddTopicPrint(var/obj/target)
+	target.add_hiddenprint(src)
+
+/obj/proc/CouldNotUseTopic(var/mob/user)
+	// Nada
+
+/obj/proc/ai_can_interact(var/mob/user)
+	if(!Adjacent(user) && within_jamming_range(src, FALSE)) // if not adjacent to it, it uses wireless signal
+		to_chat(user, SPAN_WARNING("Something in the area of \the [src] is blocking the remote signal!"))
+		return FALSE
+	return TRUE
 
 /obj/item/proc/is_used_on(obj/O, mob/user)
 
@@ -76,8 +103,6 @@
 /obj/return_air()
 	if(loc)
 		return loc.return_air()
-	else
-		return null
 
 /obj/proc/updateUsrDialog()
 	if(in_use)
@@ -92,15 +117,6 @@
 				if (usr.client && usr.machine==src) // && M.machine == src is omitted because if we triggered this by using the dialog, it doesn't matter if our machine changed in between triggering it and this - the dialog is probably still supposed to refresh.
 					is_in_use = 1
 					src.attack_ai(usr)
-
-		// check for TK users
-
-		if (istype(usr, /mob/living/carbon/human))
-			if(istype(usr.l_hand, /obj/item/tk_grab) || istype(usr.r_hand, /obj/item/tk_grab/))
-				if(!(usr in nearby))
-					if(usr.client && usr.machine==src)
-						is_in_use = 1
-						src.attack_hand(usr)
 		in_use = is_in_use
 
 /obj/proc/updateDialog()
@@ -117,119 +133,131 @@
 		if(!ai_in_use && !is_in_use)
 			in_use = 0
 
-/obj/attack_ghost(mob/observer/ghost/user)
+/obj/attack_ghost(mob/user)
 	ui_interact(user)
-	tgui_interact(user)
 	..()
 
 /obj/proc/interact(mob/user)
 	return
 
 /mob/proc/unset_machine()
-	if(!machine)
-		return
-	unregister_signal(machine, SIGNAL_QDELETING)
-	machine = null
+	src.machine = null
 
-/mob/proc/set_machine(obj/O)
-	if(machine)
+/mob/proc/set_machine(var/obj/O)
+	if(src.machine)
 		unset_machine()
-	machine = O
-	register_signal(O, SIGNAL_QDELETING, nameof(.proc/unset_machine))
+	src.machine = O
 	if(istype(O))
-		O.in_use = TRUE
+		O.in_use = 1
 
 /obj/item/proc/updateSelfDialog()
 	var/mob/M = src.loc
 	if(istype(M) && M.client && M.machine == src)
 		src.attack_self(M)
 
-/obj/proc/hide(hide)
-	pulledby?.stop_pulling()
+/obj/proc/hide(var/hide)
 	set_invisibility(hide ? INVISIBILITY_MAXIMUM : initial(invisibility))
+	level = hide ? 1 : initial(level)
 
 /obj/proc/hides_under_flooring()
 	return level == 1
 
-/obj/proc/hides_inside_walls()
-	return 1
-
 /obj/proc/hear_talk(mob/M as mob, text, verb, datum/language/speaking)
 	if(talking_atom)
 		talking_atom.catchMessage(text, M)
-/*
-	var/mob/mo = locate(/mob) in src
-	if(mo)
-		var/rendered = "<span class='game say'><span class='name'>[M.name]: </span> <span class='message'>[text]</span></span>"
-		mo.show_message(rendered, 2)
-		*/
+
+/obj/proc/see_emote(mob/M as mob, text, var/emote_type)
 	return
 
-/obj/proc/see_emote(mob/M as mob, text, emote_type)
+/obj/proc/tesla_act(var/power, var/melt = FALSE)
+	if(melt)
+		visible_message(SPAN_DANGER("\The [src] melts down until ashes are left!"))
+		new /obj/effect/decal/cleanable/ash(loc)
+		qdel(src)
+		return
+	being_shocked = 1
+	var/power_bounced = power / 2
+	tesla_zap(src, 3, power_bounced)
+	addtimer(CALLBACK(src, PROC_REF(reset_shocked)), 10)
+
+/obj/proc/reset_shocked()
+	being_shocked = 0
+
+
+/obj/show_message(msg, type, alt, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
 	return
 
-/obj/proc/show_message(msg, type, alt, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
+//To be called from things that spill objects on the floor.
+//Makes an object move around randomly for a couple of tiles
+/obj/proc/tumble(var/dist)
+	if (dist >= 1)
+		spawn()
+			dist += rand(0,1)
+			for(var/i = 1, i <= dist, i++)
+				if(src)
+					step(src, pick(NORTH,SOUTH,EAST,WEST))
+					sleep(rand(2,4))
+
+
+/obj/proc/auto_adapt_species(var/mob/living/carbon/human/wearer)
+	if(icon_auto_adapt)
+		icon_species_tag = ""
+		if (wearer && icon_supported_species_tags.len)
+			if (wearer.species.short_name in icon_supported_species_tags)
+				icon_species_tag = wearer.species.short_name
+				return 1
+	return 0
+
+
+//This function should be called on an item when it is:
+//Built, autolathed, protolathed, crafted or constructed. At runtime, by players or machines
+
+//It should NOT be called on things that:
+//spawn at roundstart, are adminspawned, arrive on shuttles, spawned from vendors, removed from fridges and containers, etc
+//This is useful for setting special behaviour for built items that shouldn't apply to those spawned at roundstart
+/obj/proc/Created()
 	return
+
+/obj/proc/rotate(var/mob/user, var/anchored_ignore = FALSE)
+	if(use_check_and_message(user))
+		return
+
+	if(anchored && !anchored_ignore)
+		to_chat(user, SPAN_WARNING("\The [src] is bolted down to the floor!"))
+		return
+
+	set_dir(turn(dir, 90))
+	update_icon()
+	return TRUE
+
+/obj/AltClick(var/mob/user)
+	if(obj_flags & OBJ_FLAG_ROTATABLE)
+		rotate(user)
+		return
+	if(obj_flags & OBJ_FLAG_ROTATABLE_ANCHORED)
+		rotate(user, TRUE)
+		return
+	..()
+
+/obj/examine(mob/user)
+	. = ..()
+	if((obj_flags & OBJ_FLAG_ROTATABLE) || (obj_flags & OBJ_FLAG_ROTATABLE_ANCHORED))
+		to_chat(user, SPAN_SUBTLE("Can be rotated with alt-click."))
+	if(contaminated)
+		to_chat(user, SPAN_ALIEN("\The [src] has been contaminated!"))
+
+// whether mobs can unequip and drop items into us or not
+/obj/proc/can_hold_dropped_items()
+	return TRUE
 
 /obj/proc/damage_flags()
 	. = 0
 	if(has_edge(src))
-		. |= DAM_EDGE
+		. |= DAMAGE_FLAG_EDGE
 	if(is_sharp(src))
-		. |= DAM_SHARP
-		if(damtype == BURN)
-			. |= DAM_LASER
+		. |= DAMAGE_FLAG_SHARP
+		if(damtype == DAMAGE_BURN)
+			. |= DAMAGE_FLAG_LASER
 
-/obj/attackby(obj/item/O as obj, mob/user as mob)
-	if(obj_flags & OBJ_FLAG_ANCHORABLE)
-		if(isWrench(O))
-			wrench_floor_bolts(user)
-			update_icon()
-			return
-	return ..()
-
-/obj/_examine_text(mob/user, infix, suffix)
-	. = ..()
-
-	if(hasHUD(user, HUD_SCIENCE))
-		. += "\nStopping Power:"
-
-		. += "\nα-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_ALPHA_PARTICLE]), "eV", 3)]"
-		. += "\nβ-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_BETA_PARTICLE]), "eV", 3)]"
-
-	return .
-
-/obj/proc/wrench_floor_bolts(mob/user, delay=20)
-	playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
-	if(anchored)
-		user.visible_message("\The [user] begins unsecuring \the [src] from the floor.", "You start unsecuring \the [src] from the floor.")
-	else
-		user.visible_message("\The [user] begins securing \the [src] to the floor.", "You start securing \the [src] to the floor.")
-	if(do_after(user, delay, src))
-		if(!src)
-			return 0
-		to_chat(user, "<span class='notice'>You [anchored? "un" : ""]secured \the [src]!</span>")
-		anchored = !anchored
-		return 1
-	return 0
-
-/obj/attack_hand(mob/living/user)
-	if(Adjacent(user))
-		add_fingerprint(user)
-	..()
-
-// If object can not be used to start fire, return 0.
-/obj/proc/get_temperature_as_from_ignitor()
-	return 0
-
-///returns how much the object blocks an explosion. Used by subtypes.
-/obj/proc/GetExplosionBlock()
-	CRASH("Unimplemented GetExplosionBlock()")
-
-/obj/proc/set_turf_height_offset(new_val)
-	if(turf_height_offset == new_val)
-		return
-	turf_height_offset = new_val
-	var/turf/T = get_turf(src)
-	if(T)
-		T.update_turf_height()
+/obj/proc/set_pixel_offsets()
+	return

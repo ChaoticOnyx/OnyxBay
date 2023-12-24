@@ -1,0 +1,27 @@
+//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
+
+/datum/data
+	var/name = "data"
+	var/size = 1.0
+
+
+/datum/data/function
+	name = "function"
+	size = 2.0
+
+
+/datum/data/function/data_control
+	name = "data control"
+
+
+/datum/data/function/id_changer
+	name = "id changer"
+
+/datum/data/text
+	name = "text"
+	var/data = null
+
+
+
+/datum/debug
+	var/list/debuglist

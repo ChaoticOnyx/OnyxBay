@@ -31,80 +31,96 @@
 
 /obj/item/shield
 	name = "shield"
+	icon = 'icons/obj/weapons.dmi'
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/items/weapons/lefthand_shield.dmi',
+		slot_r_hand_str = 'icons/mob/items/weapons/righthand_shield.dmi'
+		)
+	var/base_block_chance = 50
+	recyclable = TRUE
 
-/* This shit ain't working, guys. Fix it, please. ~Toby
-/obj/item/shield/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
-	if(user.incapacitated())
-		return 0
+/obj/item/shield/handle_shield(mob/user, var/on_back, var/damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
+	var/shield_dir = on_back ? user.dir : reverse_dir[user.dir]
 
-	//block as long as they are not directly behind us
-	var/bad_arc = reverse_direction(user.dir) //arc of directions from which we cannot block
-	if(check_shield_arc(user, bad_arc, damage_source, attacker))
-		..()
-	return 0*/
+	if(user.incapacitated() || !(check_shield_arc(user, shield_dir, damage_source, attacker)))
+		return FALSE
+
+	if(prob(get_block_chance(user, damage, damage_source, attacker)))
+		user.visible_message(SPAN_DANGER("\The [user] blocks [attack_text] with \the [src]!"))
+		return PROJECTILE_STOPPED
+	return FALSE
+
+/obj/item/shield/can_shield_back()
+	return TRUE
+
+/obj/item/shield/proc/get_block_chance(mob/user, var/damage, atom/damage_source = null, mob/attacker = null)
+	return base_block_chance
 
 /obj/item/shield/riot
 	name = "riot shield"
 	desc = "A shield adept at blocking blunt objects from connecting with the torso of the shield wielder."
-	icon = 'icons/obj/weapons.dmi'
 	icon_state = "riot"
-	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	obj_flags = OBJ_FLAG_CONDUCTABLE
 	slot_flags = SLOT_BACK
-	force = 15.0
+	force = 5.0
 	throwforce = 5.0
-	throw_speed = 2
+	throw_speed = 1
 	throw_range = 4
-	w_class = ITEM_SIZE_HUGE
-	mod_weight = 2.0
-	mod_reach = 1.5
-	mod_handy = 1.5
-	mod_shield = 2.0
-	block_tier = BLOCK_TIER_PROJECTILE
+	w_class = ITEMSIZE_LARGE
 	origin_tech = list(TECH_MATERIAL = 2)
-	matter = list(MATERIAL_GLASS = 7500, MATERIAL_STEEL = 1000)
+	matter = list(DEFAULT_WALL_MATERIAL = 1000, MATERIAL_GLASS = 7500)
 	attack_verb = list("shoved", "bashed")
+	var/cooldown = 0 //shield bash cooldown. based on world.time
 
-/obj/item/shield/riot/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
+/obj/item/shield/riot/handle_shield(mob/user)
 	. = ..()
-	if(.)
-		playsound(user.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
+	if(.) playsound(user.loc, 'sound/weapons/Genhit.ogg', 50, 1)
 
+/obj/item/shield/riot/get_block_chance(mob/user, var/damage, atom/damage_source = null, mob/attacker = null)
+	if(istype(damage_source, /obj/item/projectile))
+		var/obj/item/projectile/P = damage_source
+		//plastic shields do not stop bullets or lasers, even in space. Will block beanbags, rubber bullets, and stunshots just fine though.
+		if((is_sharp(P) && damage > 10) || istype(P, /obj/item/projectile/beam))
+			return 0
+	return base_block_chance
 
-/obj/item/shield/riot/attackby(obj/item/W, mob/user)
+/obj/item/shield/riot/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/melee/baton))
-		THROTTLE(cooldown, 25)
-		if(cooldown)
+		if(cooldown < world.time - 25)
 			user.visible_message("<span class='warning'>[user] bashes [src] with [W]!</span>")
 			playsound(user.loc, 'sound/effects/shieldbash.ogg', 50, 1)
 			cooldown = world.time
 	else
 		..()
 
-/obj/item/shield/riot/assault
-    name = "assault shield"
-    desc = "An assault composite shield, looks like one of the old Nova-Magnitka models."
-    icon_state = "assault"
-    item_state = "assault"
-
 /obj/item/shield/buckler
-	name = "buckler"
-	desc = "A wooden buckler used to block sharp things from entering your body back in the day.."
-	icon = 'icons/obj/weapons.dmi'
-	icon_state = "buckler"
+	name = "selfmade shield"
+	desc = "A sturdy buckler used to block sharp things from entering your body back in the day."
+	icon = 'icons/obj/square_shield.dmi'
+	icon_state = "square_buckler"
+	item_state = "square_buckler"
+	contained_sprite = TRUE
 	slot_flags = SLOT_BACK
 	force = 8
 	throwforce = 8
-	throw_speed = 1
+	base_block_chance = 60
+	throw_speed = 10
 	throw_range = 20
-	w_class = ITEM_SIZE_HUGE
+	w_class = ITEMSIZE_LARGE
 	origin_tech = list(TECH_MATERIAL = 1)
-	matter = list(MATERIAL_STEEL = 1000, MATERIAL_WOOD = 1000)
+	matter = list(DEFAULT_WALL_MATERIAL = 1000, MATERIAL_WOOD = 1000)
 	attack_verb = list("shoved", "bashed")
 
-/obj/item/shield/buckler/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
+/obj/item/shield/buckler/handle_shield(mob/user)
 	. = ..()
-	if(.)
-		playsound(user.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
+	if(.) playsound(user.loc, 'sound/weapons/Genhit.ogg', 50, 1)
+
+/obj/item/shield/buckler/get_block_chance(mob/user, var/damage, atom/damage_source = null, mob/attacker = null)
+	if(istype(damage_source, /obj/item/projectile))
+		var/obj/item/projectile/P = damage_source
+		if((is_sharp(P) && damage > 10) || istype(P, /obj/item/projectile/beam))
+			return 0
+	return base_block_chance
 
 /*
  * Energy Shield
@@ -113,210 +129,229 @@
 /obj/item/shield/energy
 	name = "energy combat shield"
 	desc = "A shield capable of stopping most projectile and melee attacks. It can be retracted, expanded, and stored anywhere."
-	icon = 'icons/obj/weapons.dmi'
-	icon_state = "eshield0" // eshield1 for expanded
-	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	force = 5.0
+	icon_state = "eshield0"
+	obj_flags = OBJ_FLAG_CONDUCTABLE
+	force = 3.0
 	throwforce = 5.0
-	throw_speed = 2
+	throw_speed = 1
 	throw_range = 4
-	w_class = ITEM_SIZE_SMALL
-	mod_weight = 0.35
-	mod_reach = 0.3
-	mod_handy = 1.0
-	mod_shield = 3.0
+	w_class = ITEMSIZE_TINY
 	origin_tech = list(TECH_MATERIAL = 4, TECH_MAGNET = 3, TECH_ILLEGAL = 4)
+	attack_verb = list("shoved", "bashed")
+	var/shield_power = 150
+	var/active = FALSE
+	var/next_action
+	var/sound_token
+	var/sound_id
+
+/obj/item/shield/energy/Destroy()
+	QDEL_NULL(sound_token)
+	return ..()
+
+/obj/item/shield/energy/Initialize()
+	. = ..()
+	sound_id = "[sequential_id(/obj/item/shield/energy)]"
+
+/obj/item/shield/energy/update_icon()
+	icon_state = "eshield[active]"
+	if(active)
+		set_light(1.5, 1.5, "#006AFF")
+	else
+		set_light(0)
+
+/obj/item/shield/energy/attack_self(mob/living/user)
+	var/time = world.time
+	if(time < next_action)
+		return
+	next_action = time + 3 SECONDS
+	active = !active
+	if(active)
+		HandleTurnOn()
+	else
+		HandleShutOff()
+	add_fingerprint(user)
+	update_icon()
+	user.update_inv_l_hand()
+	user.update_inv_r_hand()
+
+/obj/item/shield/energy/handle_shield(mob/user, on_back, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
+	var/shield_dir = on_back ? user.dir : reverse_dir[user.dir]
+
+	if(!active || user.incapacitated() || !(check_shield_arc(user, shield_dir, damage_source, attacker)))
+		return FALSE
+	if(.)
+		spark(user.loc, 5)
+
+	if(prob(get_block_chance(user, damage, damage_source, attacker)))
+		spark(user.loc, 5)
+		shield_power -= round(damage/4)
+
+		if(shield_power <= 0)
+			visible_message(SPAN_DANGER("\The [user]'s [src.name] overloads!"))
+			active = FALSE
+			HandleShutOff()
+
+		if(isenergy(damage_source) || isbeam(damage_source))
+			var/obj/item/projectile/P = damage_source
+
+			var/reflectchance = 80 - (damage/3)
+			if(P.starting && prob(reflectchance))
+				visible_message(SPAN_DANGER("\The [user]'s [src.name] reflects [attack_text]!"))
+
+				// Find a turf near or on the original location to bounce to
+				var/new_x = P.starting.x + pick(0, 0, 0, 0, 0, -1, 1, -2, 2)
+				var/new_y = P.starting.y + pick(0, 0, 0, 0, 0, -1, 1, -2, 2)
+				var/turf/curloc = get_turf(src)
+
+				// redirect the projectile
+				P.original = locate(new_x, new_y, P.z)
+				P.starting = curloc
+				P.firer = user
+				P.yo = new_y - curloc.y
+				P.xo = new_x - curloc.x
+				var/new_angle_s = P.Angle + rand(120,240)
+				while(new_angle_s > 180) // Translate to regular projectile degrees
+					new_angle_s -= 360
+				P.set_angle(new_angle_s)
+
+				return PROJECTILE_CONTINUE // complete projectile permutation
+			else
+				user.visible_message(SPAN_DANGER("\The [user] blocks [attack_text] with \the [src]!"))
+				return PROJECTILE_STOPPED
+		else
+			user.visible_message(SPAN_DANGER("\The [user] blocks [attack_text] with \the [src]!"))
+			return PROJECTILE_STOPPED
+
+
+/obj/item/shield/energy/get_block_chance(mob/user, damage, atom/damage_source = null, mob/attacker = null)
+	if(isprojectile(damage_source))
+		if((is_sharp(damage_source) && damage > 10) || isbeam(damage_source))
+			return (base_block_chance - round(damage / 3))
+	return base_block_chance
+
+/obj/item/shield/energy/proc/HandleTurnOn()
+	addtimer(CALLBACK(src, /obj/item/shield/energy/proc/UpdateSoundLoop), 0.25 SECONDS)
+	playsound(src, 'sound/items/shield/energy/shield-start.ogg', 40)
+	force = 10
+	w_class = ITEMSIZE_LARGE
+
+/obj/item/shield/energy/proc/HandleShutOff()
+	addtimer(CALLBACK(src, /obj/item/shield/energy/proc/UpdateSoundLoop), 0.1 SECONDS)
+	playsound(src, 'sound/items/shield/energy/shield-stop.ogg', 40)
+	force = initial(force)
+	w_class = initial(w_class)
+
+/obj/item/shield/energy/proc/UpdateSoundLoop()
+	if (!active)
+		QDEL_NULL(sound_token)
+		return
+	sound_token = sound_player.PlayLoopingSound(src, sound_id,'sound/items/shield/energy/shield-loop.ogg', 10, 4)
+
+/obj/item/shield/energy/hegemony
+	name = "hegemony barrier"
+	desc = "A Zkrehk-Guild manufactured energy shield capable of protecting the wielder from both material and energy attack."
+	icon_state = "hegemony-eshield0"
+
+/obj/item/shield/energy/hegemony/update_icon()
+	icon_state = "hegemony-eshield[active]"
+	if(active)
+		set_light(1.5, 1.5, "e68917")
+	else
+		set_light(0)
+
+/obj/item/shield/energy/hegemony/kataphract
+	name = "kataphract barrier"
+	desc = "A hardlight kite shield capable of protecting the wielder from both material and energy attack."
+	icon_state = "kataphract-eshield0"
+
+/obj/item/shield/energy/hegemony/kataphract/update_icon()
+	icon_state = "kataphract-eshield[active]"
+	if(active)
+		set_light(1.5, 1.5, "#e68917")
+	else
+		set_light(0)
+
+/obj/item/shield/energy/legion
+	name = "energy barrier"
+	desc = "A large deployable energy shield meant to provide excellent protection against ranged attacks."
+	icon_state = "ebarrier0"
+
+/obj/item/shield/energy/legion/update_icon()
+	icon_state = "ebarrier[active]"
+	if(active)
+		set_light(1.5, 1.5, "#33FFFF")
+	else
+		set_light(0)
+
+/obj/item/shield/energy/dominia
+	name = "dominian energy barrier"
+	desc = "A hardlight energy shield meant to provide excellent protection in melee engagements."
+	icon_state = "dominian-eshield0"
+
+/obj/item/shield/energy/dominia/update_icon()
+	icon_state = "dominian-eshield[active]"
+	if(active)
+		set_light(1.5, 1.5, "#ff5132")
+	else
+		set_light(0)
+
+// tact
+/obj/item/shield/riot/tact
+	name = "tactical shield"
+	desc = "A highly advanced ballistic shield crafted from durable materials and plated ablative panels. Can be collapsed for mobility."
+	icon = 'icons/obj/tactshield.dmi'
+	icon_state = "tactshield"
+	item_state = "tactshield"
+	contained_sprite = 1
+	force = 3.0
+	throwforce = 3.0
+	throw_speed = 3
+	throw_range = 4
+	w_class = ITEMSIZE_NORMAL
 	attack_verb = list("shoved", "bashed")
 	var/active = 0
 
-/obj/item/shield/energy/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
-	. = ..()
-	if(. == PROJECTILE_FORCE_BLOCK)
-		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
-	return
+/obj/item/shield/riot/tact/legion
+	name = "legion ballistic shield"
+	desc = "A highly advanced ballistic shield crafted from durable materials and plated ablative panels. Can be collapsed for mobility. This one has been painted in the colors of the Tau Ceti Foreign Legion."
+	icon_state = "legion_tactshield"
+	item_state = "legion_tactshield"
 
-/obj/item/shield/energy/attack_self(mob/living/user)
-	if(is_pacifist(user))
-		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
-		return
-	if((MUTATION_CLUMSY in user.mutations) && prob(50))
-		to_chat(user, "<span class='warning'>You beat yourself in the head with [src].</span>")
-		user.take_organ_damage(5)
+/obj/item/shield/riot/tact/handle_shield(mob/user)
+	if(!active)
+		return FALSE //turn it on first!
+
+	. = ..()
+	if(.)
+		if(.) playsound(user.loc, 'sound/weapons/Genhit.ogg', 50, 1)
+
+/obj/item/shield/riot/tact/attack_self(mob/living/user)
 	active = !active
+	playsound(src.loc, 'sound/weapons/click.ogg', 50, 1)
+
 	if(active)
-		force = 15
-		update_icon()
-		w_class = ITEM_SIZE_HUGE
-		mod_weight = 1.5
-		mod_reach = 1.0
-		mod_handy = 1.5
-		mod_shield = 3.0
-		block_tier = BLOCK_TIER_ADVANCED
-		playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
-		to_chat(user, "<span class='notice'>\The [src] is now active.</span>")
-	else
+		icon_state = "[initial(icon_state)]_[active]"
+		item_state = "[initial(item_state)]_[active]"
 		force = 5
-		update_icon()
-		w_class = ITEM_SIZE_TINY
-		mod_weight = initial(mod_weight)
-		mod_reach = initial(mod_reach)
-		mod_handy = initial(mod_handy)
-		mod_shield = initial(mod_shield)
-		block_tier = BLOCK_TIER_MELEE
-		playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
-		to_chat(user, "<span class='notice'>\The [src] can now be concealed.</span>")
+		throwforce = 5
+		throw_speed = 2
+		w_class = ITEMSIZE_LARGE
+		slot_flags = SLOT_BACK
+		to_chat(user, SPAN_NOTICE("You extend \the [src] downward with a sharp snap of your wrist."))
+	else
+		icon_state = "[initial(icon_state)]"
+		item_state = "[initial(item_state)]"
+		force = 3
+		throwforce = 3
+		throw_speed = 3
+		w_class = ITEMSIZE_NORMAL
+		slot_flags = 0
+		to_chat(user, SPAN_NOTICE("\The [src] folds inwards neatly as you snap your wrist upwards and push it back into the frame."))
 
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
 		H.update_inv_l_hand()
 		H.update_inv_r_hand()
 
-	add_fingerprint(user)
-	return
-
-/obj/item/shield/energy/on_update_icon()
-	icon_state = "eshield[active]"
-	if(active)
-		set_light(0.4, 0.1, 1, 2, "#006aff")
-	else
-		set_light(0)
-
-
-/*
- * Security Barrier
- */
-
-/obj/item/shield/barrier
-	name = "handheld barrier"
-	desc = "An energy shield capable of stopping most projectile and melee attacks. It can be retracted and expanded. It relies on the charge, and can't take too much damage without its battery getting completely depleted."
-	icon = 'icons/obj/weapons.dmi'
-	icon_state = "secshield0"
-	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	force = 5.0
-	throwforce = 5.0
-	throw_speed = 1
-	throw_range = 4
-	w_class = ITEM_SIZE_SMALL
-	mod_weight = 0.35
-	mod_reach = 0.3
-	mod_handy = 1.0
-	mod_shield = 3.0
-	origin_tech = list(TECH_MATERIAL = 4, TECH_MAGNET = 3, TECH_ILLEGAL = 4)
-	attack_verb = list("shoved", "bashed")
-	var/active = 0
-	var/obj/item/cell/device/cell = null
-
-/obj/item/shield/barrier/Initialize()
-	. = ..()
-	cell = new /obj/item/cell/device/high(src)
-
-/obj/item/shield/barrier/on_update_icon()
-	if(!cell)
-		icon_state = "secshield_nocell"
-	else
-		icon_state = "secshield[active]"
-		item_state = icon_state
-	if(active)
-		set_light(0.4, 0.1, 1, 2, "#ffb200")
-	else
-		set_light(0)
-
-/obj/item/shield/barrier/_examine_text(mob/user)
-	. = ..()
-	if(cell)
-		. += SPAN("notice", "\nHas <b>[CELL_PERCENT(cell)]%</b> charge left.")
-	else
-		. += "\n<b>Has no battery installed.</b>"
-
-/obj/item/shield/barrier/attackby(obj/item/I, mob/user)
-	if(isScrewdriver(I))
-		if(!cell)
-			to_chat(user, SPAN("notice", "\The [src] does not have a battery installed."))
-			return
-		if(active)
-			to_chat(user, SPAN("notice", "You need to toggle \the [src] off first."))
-			return
-		cell.update_icon()
-		cell.dropInto(loc)
-		cell = null
-		to_chat(user, SPAN("notice", "You remove the cell from the [src]."))
-		update_icon()
-		return
-	if(istype(I, /obj/item/cell/device))
-		if(!cell && user.drop(I, src))
-			cell = I
-			to_chat(user, SPAN("notice", "You install a cell into \the the [src]."))
-			update_icon()
-		else
-			to_chat(user, SPAN("notice", "\The [src] already has a cell."))
-		return
-	if(istype(I, /obj/item/melee/baton))
-		THROTTLE(cooldown, 25)
-		if(cooldown)
-			user.visible_message(SPAN("warning", "[user] bashes [src] with [I]!"))
-			playsound(user.loc, 'sound/effects/shieldbash.ogg', 50, 1)
-			cooldown = world.time
-		return
-	..()
-
-/obj/item/shield/barrier/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
-	. = ..()
-	if(. == PROJECTILE_FORCE_BLOCK)
-		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
-		var/obj/item/projectile/P = damage_source
-		var/discharge = P.get_structure_damage()
-		cell.use(discharge)
-		if(cell.charge <= 0)
-			to_chat(user, SPAN("warning", "\The [src] goes offline!"))
-			toggle(user, FALSE, TRUE)
-			playsound(user, 'sound/effects/weapons/energy/no_power2.ogg', 50, 1)
-	return
-
-/obj/item/shield/barrier/proc/toggle(mob/user, new_state = null, no_message = FALSE)
-	active = isnull(new_state) ? !active : new_state
-	if(active)
-		force = 12.5
-		update_icon()
-		w_class = ITEM_SIZE_HUGE
-		mod_weight = 1.35
-		mod_reach = 0.9
-		mod_handy = 1.35
-		mod_shield = 2.5
-		block_tier = BLOCK_TIER_PROJECTILE
-		playsound(loc, 'sound/effects/weapons/energy/unfold2.ogg', 50, 1)
-		if(user && !no_message)
-			to_chat(user, SPAN("notice", "\The [src] is now active."))
-	else
-		force = 5
-		update_icon()
-		w_class = ITEM_SIZE_TINY
-		mod_weight = initial(mod_weight)
-		mod_reach = initial(mod_reach)
-		mod_handy = initial(mod_handy)
-		mod_shield = initial(mod_shield)
-		block_tier = BLOCK_TIER_MELEE
-		playsound(loc, 'sound/effects/weapons/energy/unfold4.ogg', 50, 1)
-		if(user && !no_message)
-			to_chat(user, SPAN("notice", "\The [src] is now retracted."))
-
-	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
-		H.update_inv_l_hand()
-		H.update_inv_r_hand()
-
-/obj/item/shield/barrier/attack_self(mob/living/user)
-	if(!cell)
-		to_chat(user, SPAN("notice", "\The [src] does not have a battery installed."))
-		return
-	if(cell.charge <= 0)
-		to_chat(user, SPAN("warning", "\The [src] is out of charge."))
-		return
-	if((MUTATION_CLUMSY in user.mutations) && prob(50))
-		to_chat(user, SPAN("warning", "You beat yourself in the head with [src]."))
-		user.take_organ_damage(5)
-	if(is_pacifist(user))
-		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
-		return
-	toggle(user)
 	add_fingerprint(user)
 	return

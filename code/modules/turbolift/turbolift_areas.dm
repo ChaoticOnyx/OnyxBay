@@ -3,7 +3,9 @@
 	name = "Turbolift"
 	base_turf = /turf/simulated/open
 	requires_power = 0
+	station_area = 1
 	sound_env = SMALL_ENCLOSED
+	ambience = AMBIENCE_ELEVATOR
 
 	var/lift_floor_label = null
 	var/lift_floor_name = null

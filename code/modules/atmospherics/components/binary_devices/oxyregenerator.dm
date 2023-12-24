@@ -4,10 +4,19 @@
 	icon = 'icons/atmos/oxyregenerator.dmi'
 	icon_state = "off"
 	level = 1
-	density = 1
+	density = TRUE
 	use_power = POWER_USE_OFF
-	idle_power_usage = 200 WATTS		//internal circuitry, friction losses and stuff
+	obj_flags = OBJ_FLAG_ROTATABLE
+	idle_power_usage = 200		//internal circuitry, friction losses and stuff
 	power_rating = 10000
+
+	component_types = list(
+		/obj/item/circuitboard/oxyregenerator,
+		/obj/item/stock_parts/matter_bin,
+		/obj/item/stock_parts/manipulator,
+		/obj/item/stock_parts/micro_laser,
+	)
+
 	var/target_pressure = 10*ONE_ATMOSPHERE
 	var/id = null
 	var/power_setting = 1 //power consumption setting, 1 through five
@@ -21,88 +30,73 @@
 
 /obj/machinery/atmospherics/binary/oxyregenerator/Initialize()
 	. = ..()
-	inner_tank.volume = tank_volume
-	component_parts = list()
-	component_parts += new /obj/item/circuitboard/oxyregenerator(src)
-	component_parts += new /obj/item/stock_parts/manipulator(src)//Takes CO2
-	component_parts += new /obj/item/stock_parts/micro_laser(src)//Breaks bond
-	component_parts += new /obj/item/stock_parts/matter_bin(src)//Stores carbon
+	anchored = TRUE
 	RefreshParts()
+	anchor_helper()
 
 /obj/machinery/atmospherics/binary/oxyregenerator/RefreshParts()
-	for(var/obj/item/stock_parts/P in component_parts)
-		if(istype(P, /obj/item/stock_parts/matter_bin))
-			carbon_efficiency += 0.25 * (P.rating-1) //plus 25% per stock item rank
-		if(istype(P, /obj/item/stock_parts/manipulator))
-			intake_power_efficiency -= 0.1 * (P.rating-1) //10% better intake power efficiency per stock item rank
-		if(istype(P, /obj/item/stock_parts/micro_laser))
-			power_rating -= power_rating * 0.05 * (P.rating-1) //5% better power efficiency per stock item rank
+	carbon_efficiency = initial(carbon_efficiency)
+	intake_power_efficiency = initial(intake_power_efficiency)
+	power_rating = 1
 
-/obj/machinery/atmospherics/binary/oxyregenerator/_examine_text(user)
+	for(var/obj/item/stock_parts/P in component_parts)
+		if(ismatterbin(P))
+			carbon_efficiency += (0.25 * P.rating) - 0.25
+		else if(ismanipulator(P))
+			intake_power_efficiency -= (0.1 * P.rating) - 0.1
+		else if(ismicrolaser(P))
+			power_rating -= (0.05 * P.rating) - 0.05
+
+	carbon_efficiency = clamp(carbon_efficiency, initial(carbon_efficiency), 5)
+	intake_power_efficiency = clamp(intake_power_efficiency, 0.1, initial(intake_power_efficiency))
+	power_rating = clamp(power_rating, 0.1, 1)
+	power_rating *= initial(power_rating)
+	..()
+
+/obj/machinery/atmospherics/binary/oxyregenerator/examine(user)
 	. = ..()
-	. += "\nIts outlet port is to the [dir2text(dir)]"
+	to_chat(user,"Its outlet port is to the [dir2text(dir)]")
 
 /obj/machinery/atmospherics/binary/oxyregenerator/attackby(obj/item/O as obj, mob/user as mob)
-	if(default_deconstruction_screwdriver(user, O))
-		return
-	if(default_deconstruction_crowbar(user, O))
-		return
-	if(default_part_replacement(user, O))
-		return
-	if(isWrench(O))
+	if(O.iswrench())
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 		anchored = !anchored
 		user.visible_message("[user.name] [anchored ? "secures" : "unsecures"] the bolts holding [src.name] to the floor.", \
 					"You [anchored ? "secure" : "unsecure"] the bolts holding [src] to the floor.", \
 					"You hear a ratchet")
 
-		if(anchored)
-			if(dir & (NORTH|SOUTH))
-				initialize_directions = NORTH|SOUTH
-			else if(dir & (EAST|WEST))
-				initialize_directions = EAST|WEST
+		anchor_helper()
 
-			atmos_init()
-			build_network()
-			if (node1)
-				node1.atmos_init()
-				node1.build_network()
-			if (node2)
-				node2.atmos_init()
-				node2.build_network()
-		else
-			if(node1)
-				node1.disconnect(src)
-				qdel(network1)
-			if(node2)
-				node2.disconnect(src)
-				qdel(network2)
+/obj/machinery/atmospherics/binary/oxyregenerator/proc/anchor_helper()
+	if(anchored)
+		if(dir & (NORTH|SOUTH))
+			initialize_directions = NORTH|SOUTH
+		else if(dir & (EAST|WEST))
+			initialize_directions = EAST|WEST
 
-			node1 = null
-			node2 = null
+		atmos_init()
+		build_network()
+		if (node1)
+			node1.atmos_init()
+			node1.build_network()
+		if (node2)
+			node2.atmos_init()
+			node2.build_network()
+	else
+		if(node1)
+			node1.disconnect(src)
+			qdel(network1)
+		if(node2)
+			node2.disconnect(src)
+			qdel(network2)
 
-/obj/machinery/atmospherics/binary/oxyregenerator/verb/rotate_clockwise()
-	set category = "Object"
-	set name = "Rotate  (Clockwise)"
-	set src in view(1)
+/obj/machinery/atmospherics/binary/oxyregenerator/attack_hand(mob/user)
+	. = ..()
+	ui_interact(user)
 
-	if (usr.incapacitated() || anchored)
-		return
-
-	src.set_dir(turn(src.dir, -90))
-
-/obj/machinery/atmospherics/binary/oxyregenerator/verb/rotate_anticlockwise()
-	set category = "Object"
-	set name = "Rotate (Counterclockwise)"
-	set src in view(1)
-
-	if (usr.incapacitated() || anchored)
-		return
-
-	src.set_dir(turn(src.dir, 90))
-
-/obj/machinery/atmospherics/binary/oxyregenerator/Process(delay)
-	if((stat & (NOPOWER|BROKEN)) || !use_power)
+/obj/machinery/atmospherics/binary/oxyregenerator/process()
+	. = ..()
+	if((inoperable()) || !use_power)
 		return
 
 	var/power_draw = -1
@@ -118,23 +112,23 @@
 				use_power_oneoff(power_draw)
 				if(network1)
 					network1.update = 1
-		if (air1.return_pressure() < 0.1 * ONE_ATMOSPHERE || inner_tank.return_pressure() >= 10 * ONE_ATMOSPHERE)//if pipe is good as empty or tank is full
+		if (air1.return_pressure() < 0.1 * ONE_ATMOSPHERE || inner_tank.return_pressure() >= target_pressure * 0.95)//if pipe is good as empty or tank is full
 			phase = "processing"
 
 	if (phase == "processing")//processing CO2 in tank
-		if (inner_tank.gas["carbon_dioxide"])
-			var/co2_intake = between(0, inner_tank.gas["carbon_dioxide"], power_setting*delay/10)
+		if (inner_tank.gas[GAS_CO2])
+			var/co2_intake = clamp(inner_tank.gas[GAS_CO2], 0, power_setting * 0.1)
 			last_flow_rate = co2_intake
-			inner_tank.adjust_gas("carbon_dioxide", -co2_intake, 1)
+			inner_tank.adjust_gas(GAS_CO2, -co2_intake, 1)
 			var/datum/gas_mixture/new_oxygen = new
-			new_oxygen.adjust_gas("oxygen",  co2_intake)
-			new_oxygen.temperature = 50 CELSIUS //it's sort of hot after molecular bond breaking
+			new_oxygen.adjust_gas(GAS_OXYGEN,  co2_intake)
+			new_oxygen.temperature = T20C+30 //it's sort of hot after molecular bond breaking
 			inner_tank.merge(new_oxygen)
 			carbon_stored += co2_intake * carbon_efficiency
 			while (carbon_stored >= carbon_moles_per_piece)
 				carbon_stored -= carbon_moles_per_piece
-				var/atom/movable/product = new /obj/item/ore/coal
-				product.dropInto(loc)
+				var/material/M = SSmaterials.get_material_by_name(MATERIAL_GRAPHITE)
+				M.place_sheet(get_turf(src), 1, M.name)
 			power_draw = power_rating * co2_intake
 			last_power_draw = power_draw
 			use_power_oneoff(power_draw)
@@ -154,20 +148,14 @@
 					network2.update = 1
 		else//can't push outside harder than target pressure. Device is not intended to be used as a pump after all
 			phase = "filling"
-		if (inner_tank.return_pressure() <= 0)
+		if (inner_tank.return_pressure() <= 0.1)
 			phase = "filling"
 
-/obj/machinery/atmospherics/binary/oxyregenerator/on_update_icon()
-	if(!powered())
+/obj/machinery/atmospherics/binary/oxyregenerator/update_icon()
+	if(stat & (BROKEN|NOPOWER))
 		icon_state = "off"
 	else
 		icon_state = "[use_power ? "on" : "off"]"
-
-/obj/machinery/atmospherics/binary/oxyregenerator/attack_ai(mob/user as mob)
-	ui_interact(user)
-
-/obj/machinery/atmospherics/binary/oxyregenerator/attack_hand(mob/user as mob)
-	ui_interact(user)
 
 /obj/machinery/atmospherics/binary/oxyregenerator/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	var/data[0]
@@ -180,13 +168,13 @@
 	data["targetPressure"] = round(target_pressure)
 	data["phase"] = phase
 	if (inner_tank.total_moles > 0)
-		data["co2"] = round(100 * inner_tank.gas["carbon_dioxide"]/inner_tank.total_moles)
-		data["o2"] = round(100 * inner_tank.gas["oxygen"]/inner_tank.total_moles)
+		data["co2"] = round(100 * inner_tank.gas[GAS_CO2]/inner_tank.total_moles)
+		data["o2"] = round(100 * inner_tank.gas[GAS_OXYGEN]/inner_tank.total_moles)
 	else
 		data["co2"] = 0
 		data["o2"] = 0
 		// update the ui if it exists, returns null if no ui is passed/found
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnanoui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "oxyregenerator.tmpl", "Oxygen Regeneration System", 440, 300)
 		ui.set_initial_data(data)
@@ -196,10 +184,10 @@
 /obj/machinery/atmospherics/binary/oxyregenerator/Topic(href, href_list)
 	if(..())
 		return 1
-	if(href_list["toggleStatus"])
+	if(href_list["power"])
 		update_use_power(!use_power)
 		update_icon()
 		return 1
 	if(href_list["setPower"]) //setting power to 0 is redundant anyways
-		power_setting = between(1, text2num(href_list["setPower"]), 5)
+		power_setting = clamp(text2num(href_list["setPower"]), 1, 5)
 		return 1

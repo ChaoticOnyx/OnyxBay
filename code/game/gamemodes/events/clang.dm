@@ -16,41 +16,35 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	density = 1
 	anchored = 1
 
-	Bump(atom/clong)
-		if(istype(clong, /turf/simulated/shuttle)) //Skip shuttles without actually deleting the rod
-			return
+/obj/effect/immovablerod/Collide(atom/clong)
+	. = ..()
+	if (istype(clong, /turf) && !istype(clong, /turf/unsimulated))
+		if(clong.density)
+			clong.ex_act(2)
+			for (var/mob/O in hearers(src, null))
+				O.show_message("CLANG", 2)
 
-		else if (istype(clong, /turf) && !istype(clong, /turf/unsimulated))
-			if(clong.density)
-				clong.ex_act(2)
-				for (var/mob/O in hearers(src, null))
-					O.show_message("CLANG", 2)
+	else if (istype(clong, /obj))
+		if(clong.density)
+			clong.ex_act(2)
+			for (var/mob/O in hearers(src, null))
+				O.show_message("CLANG", 2)
 
-		else if (istype(clong, /obj))
-			if(clong.density)
-				clong.ex_act(2)
-				for (var/mob/O in hearers(src, null))
-					O.show_message("CLANG", 2)
+	else if (istype(clong, /mob))
+		if(clong.density || prob(10))
+			clong.ex_act(2)
+	else
+		qdel(src)
 
-		else if (istype(clong, /mob))
-			if(clong.density || prob(10))
-				clong.ex_act(2)
-		else
-			qdel(src)
-
-		if(clong && prob(25))
-			src.forceMove(clong.loc)
-
-	Destroy()
-		walk(src, 0) // Because we might have called walk_towards, we must stop the walk loop or BYOND keeps an internal reference to us forever.
-		return ..()
+	if(clong && prob(25))
+		src.forceMove(clong.loc)
 
 /proc/immovablerod()
 	var/startx = 0
 	var/starty = 0
 	var/endy = 0
 	var/endx = 0
-	var/startside = pick(GLOB.cardinal)
+	var/startside = pick(cardinal)
 
 	switch(startside)
 		if(NORTH)
@@ -76,20 +70,17 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 
 	//rod time!
 	var/obj/effect/immovablerod/immrod = new /obj/effect/immovablerod(locate(startx, starty, 1))
-//	log_debug("Rod in play, starting at [start.loc.x],[start.loc.y] and going to [end.loc.x],[end.loc.y]")
-
 	var/end = locate(endx, endy, 1)
 	spawn(0)
 		walk_towards(immrod, end,1)
 	sleep(1)
 	while (immrod)
-		if (!isStationLevel(immrod.z))
-			immrod.z = pick(GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
+		if (isNotStationLevel(immrod.z))
+			immrod.z = pick(current_map.station_levels)
 		if(immrod.loc == end)
 			qdel(immrod)
 		sleep(10)
 	for(var/obj/effect/immovablerod/imm in world)
 		return
 	sleep(50)
-
-	SSannounce.play_station_announce(/datum/announce/immovable_rod)
+	command_announcement.Announce("What the fuck was that?!", "General Alert")

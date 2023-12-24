@@ -3,141 +3,186 @@
 	set name = "Who"
 	set category = "OOC"
 
-	var/msg = "<b>Current Players:</b>\n"
+	var/header = "<b>Current Players:</b><br>"
+	var/count
+	var/msg
+	var/total_num = 0
 
-	var/list/lines = list()
-
-//for admins
-	var/living = 0 //Currently alive and in the round (possibly unconscious, but not officially dead)
-	var/dead = 0 //Have been in the round but are now deceased
-	var/observers = 0 //Have never been in the round (thus observing)
-	var/lobby = 0 //Are currently in the lobby
-	var/living_antags = 0 //Are antagonists, and currently alive
-	var/dead_antags = 0 //Are antagonists, and have finally met their match
-	var/rights = check_rights(R_INVESTIGATE, FALSE)
-	var/preference = try_get_preference_value("ADVANCED_WHO") == GLOB.PREF_YES
-
-	if(rights && preference)
-		for(var/client/C in GLOB.clients)
-			var/entry
-			if(C.mob)
-				entry = "\t[C.key]"
-			else
-				entry = "\t[C.key] - <font color='red'><i>HAS NO MOB</i></font> (<A HREF='?_src_=holder;adminmoreinfo=\ref[C]'>?</A>)"
-				lines += entry
-				continue
-
-			if(isghost(C.mob))
-				entry += " - <font color='gray'><b>Observing</b></font> as <b>[C.mob.real_name]</b>"
-			else if(isliving(C.mob))
-				entry += " - <font color='green'><b>Playing</b></font> as <b>[C.mob.real_name]</b>"
-
+	if(holder && (R_ADMIN & holder.rights || R_MOD & holder.rights))
+		for(var/client/C in sortKey(clients))
+			msg += "\t[C.key]"
+			if(C.holder && C.holder.fakekey)
+				msg += " <i>(as [C.holder.fakekey])</i>"
+			msg += " - Playing as [C.mob.real_name]"
 			switch(C.mob.stat)
 				if(UNCONSCIOUS)
-					entry += " - <font color='#404040'><b>Unconscious</b></font>"
-					living++
+					msg += " - <font color='darkgray'><b>Unconscious</b></font>"
 				if(DEAD)
-					if(isghost(C.mob))
-						var/mob/observer/ghost/O = C.mob
+					if(isobserver(C.mob))
+						var/mob/abstract/observer/O = C.mob
 						if(O.started_as_observer)
-							observers++
+							msg += " - <font color='gray'>Observing</font>"
 						else
-							entry += " - <b>DEAD</b>"
-							dead++
-					else if(isnewplayer(C.mob))
-						entry += " - <font color='#006400'><b>In lobby</b></font>"
-						lobby++
+							msg += " - <font color='black'><b>DEAD</b></font>"
 					else
-						entry += " - <b>DEAD</b>"
-						dead++
-				else
-					living++
+						msg += " - <font color='black'><b>DEAD</b></font>"
 
-			if(C.mob.mind?.assigned_role)
-				entry += " - [C.mob.mind.assigned_role]"
-
+			var/age
 			if(isnum(C.player_age))
-				var/age = C.player_age
-
-				if(age <= 1)
-					age = "<font color='#ff0000'><b>[age]</b></font>"
-				else if(age < 10)
-					age = "<font color='#ff8c00'><b>[age]</b></font>"
-
-				entry += " - [age]"
-
-			if(C.mob.mind?.special_role)
-				entry += " - <b><font color='red'>[C.mob.mind.special_role]</font></b>"
-				if(!C.mob.mind.current || C.mob.mind.current?.is_ooc_dead())
-					dead_antags++
-				else
-					living_antags++
-
-			if(C.is_afk())
-				entry += " - <b>AFK: [C.inactivity2text()]</b>"
-
-			entry += " (<A HREF='?_src_=holder;adminmoreinfo=\ref[C.mob]'>?</A>)"
-
-			lines += entry
-	else if(rights)
-		for(var/client/C in GLOB.clients)
-			if(C.mob)
-				lines += "\t[C.key] (<A HREF='?_src_=holder;adminmoreinfo=\ref[C.mob]'>?</A>) "
+				age = C.player_age
 			else
-				lines += "\t[C.key] - <font color='red'><i>HAS NO MOB</i></font> (<A HREF='?_src_=holder;adminmoreinfo=\ref[C]'>?</A>)"
-	else
-		for(var/client/C in GLOB.clients)
-			if(!C.is_stealthed())
-				lines += C.key
+				age = 0
 
-	for(var/line in sortList(lines))
-		msg += "[line]\n"
+			if(age <= 1)
+				age = "<font color='#ff0000'><b>[age]</b></font>"
+			else if(age < 10)
+				age = "<font color='#ff8c00'><b>[age]</b></font>"
 
-	if(rights && preference)
-		msg += "<b><span class='notice'>Total Living: [living]</span> | Total Dead: [dead] | <span style='color:gray'>Observing: [observers]</span> | <font color = '#006400'>In Lobby: [lobby]</font> | <font color = 'purple'>Living Antags: [living_antags]</font> | <font color = 'red'>Dead Antags: [dead_antags]</font></b>\n"
-		msg += "<b>Total Players: [length(lines)]</b>\n"
+			msg += " - [age]"
+
+			if(is_special_character(C.mob))
+				msg += " - <b><span class='warning'>Antagonist</span></b>"
+			msg += " (<A HREF='?_src_=holder;adminmoreinfo=\ref[C.mob]'>?</A>)"
+			msg += "<br>"
+			total_num++
 	else
-		msg += "<b>Total Players: [length(lines)]</b>"
-	to_chat(src, msg)
+		for(var/client/C in sortKey(clients))
+			if(C.holder && C.holder.fakekey)
+				msg += C.holder.fakekey
+			else
+				msg += C.key
+			total_num++
+			msg += "<br>"
+
+	count = "<b>Total Players: [total_num]</b><br>"
+	msg = header + count + msg
+
+	var/datum/browser/who_win = new(usr, "who", "Who", 450, 500)
+	who_win.set_content(msg)
+	who_win.open()
 
 /client/verb/staffwho()
 	set category = "Admin"
-	set name = "Adminwho"
+	set name = "Staffwho"
 
-	var/list/msg = list()
-	var/active_staff = 0
-	var/total_staff = 0
-	var/can_investigate = check_rights(R_INVESTIGATE, 0)
+	var/msg = ""
+	var/modmsg = ""
+	var/cciaamsg = ""
+	var/devmsg = ""
+	var/num_mods_online = 0
+	var/num_admins_online = 0
+	var/num_cciaa_online = 0
+	var/num_devs_online = 0
+	if(holder)
+		for(var/s in staff)
+			var/client/C = s
+			if(R_ADMIN & C.holder.rights)	//Used to determine who shows up in admin rows
 
-	for(var/client/C in GLOB.admins)
-		var/line = list()
-		if(!can_investigate && C.is_stealthed())
-			continue
-		total_staff++
-		if(check_rights(R_ADMIN,0,C))
-			line += "\t[C] is \an <b>["\improper[C.holder.rank]"]</b>"
-		else
-			line += "\t[C] is \an ["\improper[C.holder.rank]"]"
-		if(!C.is_afk())
-			active_staff++
-		if(can_investigate)
-			if(C.is_afk())
-				line += " (AFK - [C.inactivity2text()])"
-			if(isghost(C.mob))
-				line += " - Observing"
-			else if(istype(C.mob,/mob/new_player))
-				line += " - Lobby"
-			else
-				line += " - Playing"
-			if(C.is_stealthed())
-				line += " (Stealthed)"
-		line = jointext(line,null)
-		if(check_rights(R_ADMIN,0,C))
-			msg.Insert(1, line)
-		else
-			msg += line
+				if(C.holder.fakekey && !(R_ADMIN & holder.rights || R_MOD & holder.rights))		//Mentors can't see stealthmins
+					continue
 
-	if(config.external.admin_irc)
-		to_chat(src, "<span class='info'>Adminhelps are also sent to IRC. If no admins are available in game try anyway and an admin on IRC may see it and respond.</span>")
-	to_chat(src, "<b>Current Staff ([active_staff]/[total_staff]):</b>")
-	to_chat(src, jointext(msg,"\n"))
+				msg += "\t[C.key] is a [C.holder.rank]"
+
+				if(C.holder.fakekey)
+					msg += " <i>(as [C.holder.fakekey])</i>"
+
+				if(isobserver(C.mob))
+					msg += " - Observing"
+				else if(istype(C.mob,/mob/abstract/new_player))
+					msg += " - Lobby"
+				else
+					msg += " - Playing"
+
+				if(C.is_afk())
+					msg += " (AFK)"
+				msg += "<br>"
+
+				num_admins_online++
+			else if(R_MOD & C.holder.rights)				//Who shows up in mod/mentor rows.
+				modmsg += "\t[C.key] is a [C.holder.rank]"
+
+				if(isobserver(C.mob))
+					modmsg += " - Observing"
+				else if(istype(C.mob,/mob/abstract/new_player))
+					modmsg += " - Lobby"
+				else
+					modmsg += " - Playing"
+
+				if(C.is_afk())
+					modmsg += " (AFK)"
+				modmsg += "<br>"
+				num_mods_online++
+
+			else if (R_CCIAA & C.holder.rights)
+				cciaamsg += "\t[C.key]"
+				if (isobserver(C.mob))
+					cciaamsg += " - Observing"
+				else if (istype(C.mob, /mob/abstract/new_player))
+					cciaamsg += " - Lobby"
+				else
+					cciaamsg += " - Playing"
+
+				if (C.is_afk())
+					cciaamsg += " (AFK)"
+				cciaamsg += "<br>"
+				num_cciaa_online++
+
+			else if(C.holder.rights & R_DEV)
+				devmsg += "\t[C.key] is a [C.holder.rank]"
+				if(isobserver(C.mob))
+					devmsg += " - Observing"
+				else if(istype(C.mob,/mob/abstract/new_player))
+					devmsg += " - Lobby"
+				else
+					devmsg += " - Playing"
+
+				if(C.is_afk())
+					devmsg += " (AFK)"
+				devmsg += "<br>"
+				num_devs_online++
+
+	else
+		for(var/s in staff)
+			var/client/C = s
+			if(R_ADMIN & C.holder.rights)
+				if(!C.holder.fakekey)
+					if(C.is_afk())
+						msg += "\t[C.key] is a [C.holder.rank] (AFK)<br>"
+					else
+						msg += "\t[C.key] is a [C.holder.rank]<br>"
+					num_admins_online++
+			else if (R_MOD & C.holder.rights)
+				if(C.is_afk())
+					modmsg += "\t[C.key] is a [C.holder.rank] (AFK)<br>"
+				else
+					modmsg += "\t[C.key] is a [C.holder.rank]<br>"
+				num_mods_online++
+			else if(C.holder.rights & R_DEV)
+				if(C.is_afk())
+					devmsg += "\t[C.key] is a [C.holder.rank] (AFK)<br>"
+				else
+					devmsg += "\t[C.key] is a [C.holder.rank]<br>"
+				num_devs_online++
+			else if (R_CCIAA & C.holder.rights)
+				if(C.is_afk())
+					cciaamsg += "\t[C.key] is a [C.holder.rank] (AFK)<br>"
+				else
+					cciaamsg += "\t[C.key] is a [C.holder.rank]<br>"
+				num_cciaa_online++
+
+	if(SSdiscord && SSdiscord.active)
+		to_chat(src, "<span class='info'>Adminhelps are also sent to Discord. If no admins are available in game try anyway and an admin on Discord may see it and respond.</span>")
+	msg = "<b>Current Admins ([num_admins_online]):</b><br>" + msg
+
+	if(config.show_mods)
+		msg += "<br><b>Current Moderators ([num_mods_online]):</b><br>" + modmsg
+
+	if (config.show_auxiliary_roles)
+		if (num_cciaa_online)
+			msg += "<br><b>Current CCIA Agents ([num_cciaa_online]):</b><br>" + cciaamsg
+		if(num_devs_online)
+			msg += "<br><b>Current Developers ([num_devs_online]):</b><br>" + devmsg
+
+	var/datum/browser/staff_win = new(usr, "staffwho", "Staff Who", 450, 500)
+	staff_win.set_content(msg)
+	staff_win.open()

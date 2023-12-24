@@ -36,7 +36,7 @@
 		
 		Number: <input type="text" name="object_count" value="1" style="width:30px">
 		Dir: <input type="text" name="object_dir" value="2" style="width:30px">
-		Name: <input type="text" name="object_name" value="" style="width:180px"><br>
+		Name: <input type="text" name="object_name" value="" style="width:180px"><br>		
 		Where: 
 			<select name='object_where' style="width:320px">
 				<option value='onfloor'>On floor below own mob</option>
@@ -46,13 +46,14 @@
 		<br><br>
 		Number of matches: <input id="number" value="0" style="width:180px"><br>
 		<br><br>
-		<input type="submit" value="spawn"><br><br>
+		
 		<div id="selector_hs"> 
-			<select name="object_list" id="object_list" size="18" multiple style="width:98%">
+			<select name="object_list" id="object_list" multiple size="20">
 			</select>
 		</div>
 		
 		<br>
+		<input type="submit" value="spawn">
 	</form>
 	
 	<script language="JavaScript">
@@ -74,7 +75,7 @@
 				newOpts += '<option value="' + from_list[i] + '">'
 					+ from_list[i] + '</option>';
 			}
-			object_list_container.innerHTML = '<select name="object_list" id="object_list" size="18" multiple style="width:98%">' + 
+			object_list_container.innerHTML = '<select name="object_list" id="object_list" multiple size="20">' + 
 			newOpts + '</select>';
 			document.getElementById("number").value = from_list.length;
 		}

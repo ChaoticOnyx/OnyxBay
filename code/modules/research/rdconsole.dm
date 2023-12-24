@@ -1,101 +1,151 @@
 /*
- *	Research and Development (R&D) Console
- *
- *	This is the main work horse of the R&D system. It contains the menus/controls for the Destructive Analyzer, Protolathe, and Circuit
- *	imprinter. It also contains the /datum/research holder with all the known/possible technology paths and device designs.
- *
- *	Basic use: When it first is created, it will attempt to link up to related devices within 3 squares. It'll only link up if they
- *	aren't already linked to another console. Any consoles it cannot link up with (either because all of a certain type are already
- *	linked or there aren't any in range), you'll just not have access to that menu. In the settings menu, there are menu options that
- *	allow a player to attempt to re-sync with nearby consoles. You can also force it to disconnect from a specific console.
- *
- *	The imprinting and construction menus do NOT require toxins access to access but all the other menus do. However, if you leave it
- *	on a menu, nothing is to stop the person from using the options on that menu (although they won't be able to change to a different
- *	one). You can also lock the console on the settings menu if you're feeling paranoid and you don't want anyone messing with it who
- *	doesn't have toxins access.
- *
- *	When a R&D console is destroyed or even partially disassembled, you lose all research data on it. However, there are two ways around
- *	this dire fate:
- *	- The easiest way is to go to the settings menu and select "Sync Database with Network." That causes it to upload (but not download)
- *	it's data to every other device in the game. Each console has a "disconnect from network" option that'll will cause data base sync
- *	operations to skip that console. This is useful if you want to make a "public" R&D console or, for example, give the engineers
- *	a circuit imprinter with certain designs on it and don't want it accidentally updating. The downside of this method is that you have
- *	to have physical access to the other console to send data back. Note: An R&D console is on CentCom so if a random griffan happens to
- *	cause a ton of data to be lost, an admin can go send it back.
- *	- The second method is with Technology Disks and Design Disks. Each of these disks can hold a single technology or design datum in
- *	it's entirety. You can then take the disk to any R&D console and upload it's data to it. This method is a lot more secure (since it
- *	won't update every console in existence) but it's more of a hassle to do. Also, the disks can be stolen.
- */
+Research and Development (R&D) Console
+
+This is the main work horse of the R&D system. It contains the menus/controls for the Destructive Analyzer, Protolathe, and Circuit
+imprinter. It also contains the /datum/research holder with all the known/possible technology paths and device designs.
+
+Basic use: When it first is created, it will attempt to link up to related devices within 3 squares. It'll only link up if they
+aren't already linked to another console. Any consoles it cannot link up with (either because all of a certain type are already
+linked or there aren't any in range), you'll just not have access to that menu. In the settings menu, there are menu options that
+allow a player to attempt to re-sync with nearby consoles. You can also force it to disconnect from a specific console.
+
+The imprinting and construction menus do NOT require toxins access to access but all the other menus do. However, if you leave it
+on a menu, nothing is to stop the person from using the options on that menu (although they won't be able to change to a different
+one). You can also lock the console on the settings menu if you're feeling paranoid and you don't want anyone messing with it who
+doesn't have toxins access.
+
+When a R&D console is destroyed or even partially disassembled, you lose all research data on it. However, there are two ways around
+this dire fate:
+- The easiest way is to go to the settings menu and select "Sync Database with Network." That causes it to upload (but not download)
+it's data to every other device in the game. Each console has a "disconnect from network" option that'll will cause data base sync
+operations to skip that console. This is useful if you want to make a "public" R&D console or, for example, give the engineers
+a circuit imprinter with certain designs on it and don't want it accidentally updating. The downside of this method is that you have
+to have physical access to the other console to send data back. Note: An R&D console is on CentCom so if a random griffan happens to
+cause a ton of data to be lost, an admin can go send it back.
+- The second method is with Technology Disks and Design Disks. Each of these disks can hold a single technology or design datum in
+it's entirety. You can then take the disk to any R&D console and upload it's data to it. This method is a lot more secure (since it
+won't update every console in existence) but it's more of a hassle to do. Also, the disks can be stolen.
+*/
 
 /obj/machinery/computer/rdconsole
-	name = "fabrication control console"
-	desc = "Console controlling the various fabrication devices. Uses self-learning matrix to hold and optimize blueprints. Prone to corrupting said matrix, so back up often."
-	icon_keyboard = "rd_key"
+	name = "R&D control console"
+
 	icon_screen = "rdcomp"
-	light_color = "#a97faa"
+	icon_keyboard = "purple_key"
+	light_color = LIGHT_COLOR_PURPLE
+
 	circuit = /obj/item/circuitboard/rdconsole
-	var/datum/research/files							// Stores all the collected research data.
-	var/obj/item/disk/tech_disk/t_disk = null	// Stores the technology disk.
-	var/obj/item/disk/design_disk/d_disk = null	// Stores the design disk.
+	var/datum/research/files							//Stores all the collected research data.
+	var/obj/item/disk/tech_disk/t_disk = null	//Stores the technology disk.
+	var/obj/item/disk/design_disk/d_disk = null	//Stores the design disk.
 
-	var/obj/machinery/r_n_d/destructive_analyzer/linked_destroy = null	// Linked Destructive Analyzer
-	var/obj/machinery/r_n_d/protolathe/linked_lathe = null				// Linked Protolathe
-	var/obj/machinery/r_n_d/circuit_imprinter/linked_imprinter = null	// Linked Circuit Imprinter
+	var/obj/machinery/r_n_d/destructive_analyzer/linked_destroy = null	//Linked Destructive Analyzer
+	var/obj/machinery/r_n_d/protolathe/linked_lathe = null				//Linked Protolathe
+	var/obj/machinery/r_n_d/circuit_imprinter/linked_imprinter = null	//Linked Circuit Imprinter
 
-	var/list/filtered = list( // Filters categories in menu
-		"protolathe" = list(),
-		"imprinter" = list()
-	)
+	var/allow_analyzer = TRUE
+	var/allow_lathe = TRUE
+	var/allow_imprinter = TRUE
 
-	var/id = 0			// ID of the computer (for server restrictions).
-	var/sync = 1		// If sync = 0, it doesn't show up on Server Control Console
-	var/selected_device = "destructor"
+	var/screen = 1.0	//Which screen is currently showing.
+	var/id = 0			//ID of the computer (for server restrictions).
+	var/sync = 1		//If sync = 0, it doesn't show up on Server Control Console
 
-/obj/machinery/computer/rdconsole/proc/CallReagentName(reagent_type)
-	var/datum/reagent/R = reagent_type
-	return ispath(reagent_type, /datum/reagent) ? initial(R.name) : "Unknown"
+	var/protolathe_category = "All"
+	var/imprinter_category = "All"
 
-/obj/machinery/computer/rdconsole/proc/SyncRDevices() // Makes sure it is properly sync'ed up with the devices attached to it (if any).
-	for(var/obj/machinery/r_n_d/D in range(4, src))
+	req_access = list(access_tox)	//Data and setting manipulation requires scientist access.
+
+/obj/machinery/computer/rdconsole/proc/CallMaterialName(var/ID)
+	var/return_name = ID
+	switch(return_name)
+		if("metal")
+			return_name = "Metal"
+		if("glass")
+			return_name = "Glass"
+		if("gold")
+			return_name = "Gold"
+		if("silver")
+			return_name = "Silver"
+		if("phoron")
+			return_name = "Solid Phoron"
+		if("uranium")
+			return_name = "Uranium"
+		if("diamond")
+			return_name = "Diamond"
+		if("plasteel")
+			return_name = "Plasteel"
+	return return_name
+
+/obj/machinery/computer/rdconsole/proc/CallReagentName(ID)
+	var/singleton/reagent/R = GET_SINGLETON(ID)
+	return R ? R.name : "(none)"
+
+/obj/machinery/computer/rdconsole/proc/SyncRDevices() //Makes sure it is properly sync'ed up with the devices attached to it (if any).
+	for(var/obj/machinery/r_n_d/D in range(3, src))
 		if(D.linked_console != null || D.panel_open)
 			continue
-		if(istype(D, /obj/machinery/r_n_d/destructive_analyzer))
+		if(istype(D, /obj/machinery/r_n_d/destructive_analyzer) && allow_analyzer)
 			if(linked_destroy == null)
 				linked_destroy = D
 				D.linked_console = src
-		else if(istype(D, /obj/machinery/r_n_d/protolathe))
+		else if(istype(D, /obj/machinery/r_n_d/protolathe) && allow_lathe)
 			if(linked_lathe == null)
 				linked_lathe = D
 				D.linked_console = src
-		else if(istype(D, /obj/machinery/r_n_d/circuit_imprinter))
+		else if(istype(D, /obj/machinery/r_n_d/circuit_imprinter) && allow_imprinter)
 			if(linked_imprinter == null)
 				linked_imprinter = D
 				D.linked_console = src
 	return
 
-// Have it automatically push research to the centcomm server so wild griffins can't fuck up R&D's work
-/obj/machinery/computer/rdconsole/proc/griefProtection()
-	for(var/obj/machinery/r_n_d/server/centcom/C in SSmachines.machinery)
-		for(var/datum/tech/T in files.known_tech)
-			C.files.AddTech2Known(T)
-		for(var/datum/design/D in files.known_designs)
-			C.files.AddDesign2Known(D)
+/obj/machinery/computer/rdconsole/proc/SyncTechs()
+	for(var/obj/machinery/r_n_d/server/S in SSmachinery.machinery)
+		var/server_processed = 0
+		if((id in S.id_with_upload) || istype(S, /obj/machinery/r_n_d/server/centcom))
+			for(var/tech_id in files.known_tech)
+				var/datum/tech/T = files.known_tech[tech_id]
+				S.files.AddTech2Known(T)
+			S.files.RefreshResearch()
+			server_processed = 1
+		files.known_tech = S.files.known_tech.Copy()
+		if(!istype(S, /obj/machinery/r_n_d/server/centcom) && server_processed)
+			S.produce_heat()
+	screen = 1.6
+	updateUsrDialog()
+
+/obj/machinery/computer/rdconsole/proc/griefProtection() //Have it automatically push research to the centcomm server so wild griffins can't fuck up R&D's work
+	for(var/obj/machinery/r_n_d/server/centcom/C in SSmachinery.machinery)
+		for(var/tech_id in files.known_tech)
+			var/datum/tech/T = files.known_tech[tech_id]
+			C.files.AddTech2Known(files.known_tech[T])
 		C.files.RefreshResearch()
 
-/obj/machinery/computer/rdconsole/New()
-	..()
-	files = new /datum/research(src) // Setup the research data holder.
-	if(!id)
-		for(var/obj/machinery/r_n_d/server/centcom/S in SSmachines.machinery)
-			S.update_connections()
-			break
-
 /obj/machinery/computer/rdconsole/Initialize()
+	..()
+	files = new /datum/research(src) //Setup the research data holder.
+	if(!id)
+		for(var/obj/machinery/r_n_d/server/centcom/S in SSmachinery.machinery)
+			S.setup()
+			break
 	SyncRDevices()
-	. = ..()
+	return INITIALIZE_HINT_LATELOAD
 
-/obj/machinery/computer/rdconsole/attackby(obj/item/D, mob/user)
-	// Loading a disk into it.
+/obj/machinery/computer/rdconsole/LateInitialize()
+	SyncTechs()
+	screen = 1.0
+
+/obj/machinery/computer/rdconsole/Destroy()
+	if(linked_destroy != null)
+		linked_destroy.linked_console = null
+	if(linked_lathe != null)
+		linked_lathe.linked_console = null
+	if(linked_imprinter != null)
+		linked_imprinter.linked_console = null
+	return ..()
+
+/obj/machinery/computer/rdconsole/attackby(var/obj/item/D as obj, var/mob/user as mob)
+	//Loading a disk into it.
 	if(istype(D, /obj/item/disk))
 		if(t_disk || d_disk)
 			to_chat(user, "A disk is already loaded into the machine.")
@@ -106,635 +156,721 @@
 		else if (istype(D, /obj/item/disk/design_disk))
 			d_disk = D
 		else
-			to_chat(user, SPAN("notice", "Machine cannot accept disks in that format."))
+			to_chat(user, "<span class='notice'>Machine cannot accept disks in that format.</span>")
 			return
-		if(!user.drop(D, src))
-			return
-		to_chat(user, SPAN("notice", "You add \the [D] to the machine."))
-		tgui_update()
+		user.drop_from_inventory(D,src)
+		to_chat(user, "<span class='notice'>You add \the [D] to the machine.</span>")
 	else
-		// The construction/deconstruction of the console code.
-		disconnect_destructor()
-		disconnect_imprinter()
-		disconnect_protolathe()
+		//The construction/deconstruction of the console code.
 		..()
 
-/obj/machinery/computer/rdconsole/attack_hand(mob/user)
+	src.updateUsrDialog()
+	return
+
+/obj/machinery/computer/rdconsole/emp_act(severity)
 	. = ..()
 
-	tgui_interact(user)
+	if(!emagged)
+		playsound(src.loc, 'sound/effects/sparks4.ogg', 75, 1)
+		emagged = 1
+		to_chat(usr, "<span class='notice'>You you disable the security protocols.</span>")
+		return 1
 
-/obj/machinery/computer/rdconsole/proc/finish_deconstruct(weakref/W)
-	var/mob/user = W.resolve()
-	linked_destroy.busy = 0
+/obj/machinery/computer/rdconsole/Topic(href, href_list)
+	if(..())
+		return 1
 
-	if(!linked_destroy.loaded_item)
-		to_chat(user, SPAN("notice", "The destructive analyzer appears to be empty."))
-		return
+	add_fingerprint(usr)
 
-	for(var/T in linked_destroy.loaded_item.origin_tech)
-		files.UpdateTech(T, linked_destroy.loaded_item.origin_tech[T])
-
-	// Also sends salvaged materials to a linked protolathe, if any.
-	if(linked_lathe && linked_destroy.loaded_item.matter)
-		for(var/t in linked_destroy.loaded_item.matter)
-			if(t in linked_lathe.materials)
-				linked_lathe.materials[t] += min(linked_lathe.max_material_storage - linked_lathe.TotalMaterials(), linked_destroy.loaded_item.matter[t] * linked_destroy.decon_mod)
-
-	linked_destroy.loaded_item = null
-
-	for(var/obj/I in linked_destroy.contents)
-		for(var/mob/M in I.contents)
-			M.death()
-		// Only deconsturcts one sheet at a time instead of the entire stack
-		if(istype(I,/obj/item/stack/material))
-			var/obj/item/stack/material/S = I
-			if(S.get_amount() > 1)
-				S.use(1)
-				linked_destroy.loaded_item = S
-			else
-				qdel(S)
-				linked_destroy.icon_state = "d_analyzer"
+	usr.set_machine(src)
+	if(href_list["menu"]) //Switches menu screens. Converts a sent text string into a number. Saves a LOT of code.
+		var/temp_screen = text2num(href_list["menu"])
+		if(temp_screen <= 1.1 || (3 <= temp_screen && 4.9 >= temp_screen) || allowed(usr) || emagged) //Unless you are making something, you need access.
+			screen = temp_screen
 		else
-			if(!(I in linked_destroy.component_parts))
-				qdel(I)
+			to_chat(usr, "Unauthorized Access.")
+
+	else if(href_list["updt_tech"]) //Update the research holder with information from the technology disk.
+		screen = 0.0
+		spawn(50)
+			screen = 1.2
+			files.AddTech2Known(t_disk.stored)
+			updateUsrDialog()
+			griefProtection() //Update centcomm too
+
+	else if(href_list["clear_tech"]) //Erase data on the technology disk.
+		t_disk.stored = null
+
+	else if(href_list["eject_tech"]) //Eject the technology disk.
+		t_disk.forceMove(loc)
+		usr.put_in_hands(t_disk)
+		t_disk = null
+		screen = 1.0
+
+	else if(href_list["copy_tech"]) //Copys some technology data from the research holder to the disk.
+		var/datum/tech/T = files.known_tech[href_list["copy_tech_sent"]]
+		t_disk.stored = T
+		screen = 1.2
+
+	else if(href_list["updt_design"]) //Updates the research holder with design data from the design disk.
+		screen = 0.0
+		spawn(50)
+			screen = 1.4
+			files.AddDesign2Known(d_disk.blueprint)
+			updateUsrDialog()
+			griefProtection() //Update centcomm too
+
+	else if(href_list["clear_design"]) //Erases data on the design disk.
+		d_disk.blueprint = null
+
+	else if(href_list["eject_design"]) //Eject the design disk.
+		d_disk.forceMove(loc)
+		usr.put_in_hands(d_disk)
+		d_disk = null
+		screen = 1.0
+
+	else if(href_list["copy_design"]) //Copy design data from the research holder to the design disk.
+		var/path = text2path(href_list["copy_design_sent"])
+		var/datum/design/D = files.known_designs[path]
+		d_disk.blueprint = D
+		screen = 1.4
+
+	else if(href_list["eject_item"]) //Eject the item inside the destructive analyzer.
+		if(linked_destroy)
+			if(linked_destroy.busy)
+				to_chat(usr, "<span class='notice'>The destructive analyzer is busy at the moment.</span>")
+
+			else if(linked_destroy.loaded_item)
+				linked_destroy.loaded_item.forceMove(linked_destroy.loc)
+				if(linked_destroy.Adjacent(usr))
+					usr.put_in_hands(linked_destroy.loaded_item)
+				linked_destroy.loaded_item = null
 				linked_destroy.icon_state = "d_analyzer"
+				screen = 2.1
 
-	use_power_oneoff(linked_destroy.active_power_usage)
+	else if(href_list["deconstruct"]) //Deconstruct the item in the destructive analyzer and update the research holder.
+		if(linked_destroy)
+			if(linked_destroy.busy)
+				to_chat(usr, "<span class='notice'>The destructive analyzer is busy at the moment.</span>")
+			else
+				if(alert("Proceeding will destroy loaded item. Continue?", "Destructive analyzer confirmation", "Yes", "No") == "No" || !linked_destroy)
+					return
+				linked_destroy.busy = 1
+				screen = 0.1
+				updateUsrDialog()
+				flick("d_analyzer_process", linked_destroy)
+				spawn(24)
+					if(linked_destroy)
+						linked_destroy.busy = 0
+						if(!linked_destroy.loaded_item)
+							to_chat(usr, "<span class='notice'>The destructive analyzer appears to be empty.</span>")
+							screen = 1.0
+							return
 
-	if(user)
-		attack_hand(user)
+						for(var/T in linked_destroy.loaded_item.origin_tech)
+							files.UpdateTech(T, linked_destroy.loaded_item.origin_tech[T])
+						if(linked_lathe && linked_destroy.loaded_item.matter) // Also sends salvaged materials to a linked protolathe, if any.
+							for(var/t in linked_destroy.loaded_item.matter)
+								if(t in linked_lathe.materials)
+									linked_lathe.materials[t] += min(linked_lathe.max_material_storage - linked_lathe.TotalMaterials(), linked_destroy.loaded_item.matter[t] * linked_destroy.decon_mod)
 
-/obj/machinery/computer/rdconsole/tgui_interact(mob/user, datum/tgui/ui)
-	ui = SStgui.try_update_ui(user, src, ui)
-	if(!ui)
-		ui = new(user, src, "RDConsole")
-		ui.open()
+						linked_destroy.loaded_item = null
+						for(var/obj/I in linked_destroy.contents)
+							for(var/mob/M in I.contents)
+								M.death()
+								qdel(M)
+							if(istype(I,/obj/item/stack/material))//Only deconsturcts one sheet at a time instead of the entire stack
+								var/obj/item/stack/material/S = I
+								if(S.get_amount() > 1)
+									S.use(1)
+									linked_destroy.loaded_item = S
+								else
+									qdel(S)
+									linked_destroy.icon_state = "d_analyzer"
+							else
+								if(!(I in linked_destroy.component_parts))
+									qdel(I)
+									linked_destroy.icon_state = "d_analyzer"
 
-/obj/machinery/computer/rdconsole/tgui_data(mob/user)
-	var/list/data = list(
-		"sync" = sync,
-		"disk" = null,
-		"techs" = list(),
-		"devices" = list(
-			list("name" = "destructor", "connected" = !!linked_destroy,   "data" = selected_device == "destructor" && get_destructor_data()),
-			list("name" = "imprinter",  "connected" = !!linked_imprinter, "data" = selected_device == "imprinter" && get_imprinter_data()),
-			list("name" = "protolathe", "connected" = !!linked_lathe,     "data" = selected_device == "protolathe" && get_protolathe_data())
-		)
-	)
+						use_power_oneoff(linked_destroy.active_power_usage)
+						screen = 1.0
+						updateUsrDialog()
 
-	var/obj/item/disk = t_disk || d_disk
+	else if(href_list["lock"]) //Lock the console from use by anyone without tox access.
+		if(allowed(usr))
+			screen = text2num(href_list["lock"])
+		else
+			to_chat(usr, "Unauthorized Access.")
 
-	if(disk)
-		var/obj/item/disk/tech_disk/tech_disk = disk
-		var/obj/item/disk/design_disk/design_disk = disk
+	else if(href_list["sync"]) //Sync the research holder with all the R&D consoles in the game that aren't sync protected.
+		screen = 0.0
+		if(!sync)
+			to_chat(usr, "<span class='notice'>You must connect to the network first.</span>")
+		else
+			griefProtection() //Putting this here because I dont trust the sync process
+			addtimer(CALLBACK(src, PROC_REF(SyncTechs)), 30)
 
-		if(istype(tech_disk))
-			var/datum/tech/T = tech_disk.stored
-			data["disk"] = list(
-				"type" = "tech",
-				"data" = (T && get_tech_data(T)) || null
-			)
-		else if(istype(design_disk))
-			var/datum/design/D = design_disk.blueprint
-			data["disk"] = list(
-				"type" = "design",
-				"data" = (D && get_design_data(D)) || null
-			)
+	else if(href_list["togglesync"]) //Prevents the console from being synced by other consoles. Can still send data.
+		sync = !sync
 
-	for(var/datum/tech/T in files.known_tech)
-		if(T.level < 1)
-			continue
-
-		data["techs"] += list(get_tech_data(T))
-
-	return data
-
-/obj/machinery/computer/rdconsole/tgui_act(action, params)
-	. = ..()
-
-	if(.)
-		return TRUE
-
-	switch(action)
-		if("print")
-			print(params["page"])
-			. = TRUE
-		if("load")
-			load_from_disk()
-			. = TRUE
-		if("erase")
-			erase_disk()
-			. = TRUE
-		if("eject")
-			eject_disk()
-			. = TRUE
-		if("save")
-			save_to_disk(params["thing"], params["id"])
-			. = TRUE
-		if("eject_destructor")
-			eject_from_destructor(usr)
-			. = TRUE
-		if("deconstruct")
-			deconstruct(usr)
-			. = TRUE
-		if("sync")
-			do_sync(usr)
-			. = TRUE
-		if("toggle_sync")
-			sync = !sync
-			. = TRUE
-		if("imprint")
-			imprint(params["id"], params["count"])
-			. = TRUE
-		if("build")
-			build(params["id"], params["count"])
-			. = TRUE
-		if("dispose")
-			dispose(params["from"], params["thing"])
-			. = TRUE
-		if("eject_sheet")
-			eject_sheet(params["from"], params["thing"], params["amount"])
-			. = TRUE
-		if("remove")
-			remove_from_queue(params["from"], params["index"])
-			. = TRUE
-		if("find_device")
-			find_device()
-			. = TRUE
-		if("reset")
-			reset()
-			. = TRUE
-		if("disconnect")
-			disconnect(params["thing"])
-			. = TRUE
-		if("select_device")
-			set_selected_device(params["device"])
-			. = TRUE
-
-	if(.)
-		tgui_update()
-
-/obj/machinery/computer/rdconsole/proc/set_selected_device(new_value)
-	ASSERT(new_value in list("destructor", "protolathe", "imprinter"))
-
-	selected_device = new_value
-
-/obj/machinery/computer/rdconsole/proc/get_destructor_data()
-	if(!linked_destroy)
-		return null
-
-	var/obj/item/loaded_item = linked_destroy.loaded_item
-
-	var/list/data = list(
-		"item" = null,
-		"techs" = list()
-	)
-
-	if(!loaded_item)
-		return data
-
-	data["item"] = list(
-		"name" = loaded_item.name
-	)
-
-	for(var/T in loaded_item.origin_tech)
-		data["techs"] += list(list(
-			"name" = CallTechName(T),
-			"level" = loaded_item.origin_tech[T]
-		))
-
-	return data
-
-/obj/machinery/computer/rdconsole/proc/get_imprinter_data()
-	return get_device_data(linked_imprinter)
-
-/obj/machinery/computer/rdconsole/proc/get_protolathe_data()
-	return get_device_data(linked_lathe)
-
-/obj/machinery/computer/rdconsole/proc/get_device_data(obj/machinery/device)
-	if(!device)
-		return null
-
-	var/flag = 0
-	if(istype(device, /obj/machinery/r_n_d/circuit_imprinter))
-		flag = IMPRINTER
-	else if (istype(device, /obj/machinery/r_n_d/protolathe))
-		flag = PROTOLATHE
-	else
-		CRASH("Device [device] must be 'circuit_imprinter' or 'protolathe' type of.")
-
-	var/list/data = list(
-		"storage" = list(
-			"material" = list(
-				"total" = device:TotalMaterials(),
-				"maximum" = device:max_material_storage,
-				"materials" = list()
-			),
-			"chemical" = list(
-				"total" = device:reagents.total_volume,
-				"maximum" = device:reagents.maximum_volume,
-				"chemicals" = list()
-			)
-		),
-		"filters" = list(),
-		"designs" = list(),
-		"busy" = device:busy,
-		"queue" = list()
-	)
-
-	for(var/M in device:materials)
-		var/amount = device:materials[M]
-
-		data["storage"]["material"]["materials"] += list(list(
-			"name" = M,
-			"amount" = amount,
-			"icon" = icon2base64html(get_icon_for_material(M)),
-			"per_sheet" = SHEET_MATERIAL_AMOUNT
-		))
-
-	for(var/datum/reagent/R in device:reagents.reagent_list)
-		data["storage"]["chemical"]["chemicals"] += list(list(
-			"ref" = "\ref[R]",
-			"name" = R.name,
-			"units" = R.volume
-		))
-
-	for(var/type in device:item_type)
-		data["filters"] += type
-
-	for(var/datum/design/D in files.known_designs)
-		if(!D.build_path || !(D.build_type & flag))
-			continue
-
-		data["designs"] += list(get_design_data(D))
-
-	for(var/datum/design/D in device:queue)
-		data["queue"] += list(get_design_data(D))
-
-	return data
-
-/obj/machinery/computer/rdconsole/proc/get_tech_data(datum/tech/tech)
-	return list(
-		"id" = tech.id,
-		"name" = tech.name,
-		"level" = tech.level,
-		"description" = tech.desc
-	)
-
-/obj/machinery/computer/rdconsole/proc/get_design_data(datum/design/design)
-	var/list/data = list(
-		"id" = design.id,
-		"name" = design.name,
-		"category" = design.category_items,
-		"build_type" = null,
-		"materials" = list(),
-		"chemicals" = list(),
-		"can_build" = FALSE,
-		"multipliers" = list(
-			"5" = FALSE,
-			"10" = FALSE
-		)
-	)
-
-	var/mat_efficiency = 1
-	var/obj/machinery/device = null
-
-	if(design.build_type & IMPRINTER)
-		device = linked_imprinter
-		data["build_type"] = "Circuit Imprinter"
-	if(design.build_type & PROTOLATHE)
-		device = linked_lathe
-		data["build_type"] = "Proto-lathe"
-
-	if(device)
-		data["can_build"] = device:canBuild(design, 1)
-		mat_efficiency = device:mat_efficiency
-
-		for(var/multiplier in data["multipliers"])
-			var/n = text2num(multiplier)
-			data["multipliers"][multiplier] = device:canBuild(design, n)
-
-	for(var/M in design.materials)
-		data["materials"] += list(list(
-			"name" = M,
-			"required" = design.materials[M] * mat_efficiency
-		))
-
-	for(var/C in design.chemicals)
-		data["chemicals"] += list(list(
-			"name" = CallReagentName(C),
-			"required" = design.chemicals[C] * mat_efficiency
-		))
-
-	return data
-
-/obj/machinery/computer/rdconsole/proc/reset()
-	griefProtection()
-	qdel(files)
-	files = new /datum/research(src)
-
-/obj/machinery/computer/rdconsole/proc/disconnect_destructor()
-	linked_destroy?.linked_console = null
-	linked_destroy = null
-
-/obj/machinery/computer/rdconsole/proc/disconnect_imprinter()
-	linked_imprinter?.linked_console = null
-	linked_imprinter = null
-
-/obj/machinery/computer/rdconsole/proc/disconnect_protolathe()
-	linked_lathe?.linked_console = null
-	linked_lathe = null
-
-/obj/machinery/computer/rdconsole/proc/disconnect(thing)
-	switch(thing)
-		if("destructor")
-			disconnect_destructor()
+	else if(href_list["protolathe_category"])
+		var/choice = tgui_input_list(usr, "Which category do you wish to display?", "Protolathe Categories", designs_protolathe_categories+"All")
+		if(!choice)
 			return
-		if("imprinter")
-			disconnect_imprinter()
+		protolathe_category = choice
+		updateUsrDialog()
+
+	else if(href_list["imprinter_category"])
+		var/choice = tgui_input_list(usr, "Which category do you wish to display?", "Printer Categories", designs_imprinter_categories+"All")
+		if(!choice)
 			return
-		if("protolathe")
-			disconnect_protolathe()
-			return
+		imprinter_category = choice
+		updateUsrDialog()
 
-	CRASH("Invalid thing [thing]")
+	else if(href_list["build"]) //Causes the Protolathe to build something.
+		if(linked_lathe)
+			var/path = text2path(href_list["build"])
+			var/datum/design/D = files.known_designs[path]
+			linked_lathe.addToQueue(D)
+		screen = 3.1
+		updateUsrDialog()
 
-/obj/machinery/computer/rdconsole/proc/find_device()
-	playsound(src.loc, 'sound/signals/processing19.ogg', 50)
+	else if(href_list["imprint"]) //Causes the Circuit Imprinter to build something.
+		if(linked_imprinter)
+			var/path = text2path(href_list["imprint"])
+			var/datum/design/D = files.known_designs[path]
+			linked_imprinter.addToQueue(D)
+		screen = 4.1
+		updateUsrDialog()
 
-	spawn(10)
-		SyncRDevices()
+	else if(href_list["disposeI"] && linked_imprinter)  //Causes the circuit imprinter to dispose of a single reagent (all of it)
+		linked_imprinter.reagents.del_reagent(href_list["dispose"])
 
-/obj/machinery/computer/rdconsole/proc/eject_sheet_from_imprinter(thing, amount)
-	linked_imprinter.eject(thing, text2num(amount))
-
-/obj/machinery/computer/rdconsole/proc/eject_sheet_from_protolathe(thing, amount)
-	linked_lathe.eject(thing, text2num(amount))
-
-/obj/machinery/computer/rdconsole/proc/eject_sheet(from, thing, amount)
-	switch(from)
-		if("imprinter")
-			eject_sheet_from_imprinter(thing, amount)
-			return TRUE
-		if("protolathe")
-			eject_sheet_from_protolathe(thing, amount)
-			return TRUE
-
-	CRASH("Invalid thing [thing]")
-
-/obj/machinery/computer/rdconsole/proc/remove_from_imprinter_queue(index)
-	linked_imprinter.removeFromQueue(text2num(index))
-
-/obj/machinery/computer/rdconsole/proc/remove_from_protolathe_queue(index)
-	linked_lathe.removeFromQueue(text2num(index))
-
-/obj/machinery/computer/rdconsole/proc/remove_from_queue(from, index)
-	switch(from)
-		if("imprinter")
-			remove_from_imprinter_queue(index)
-			return
-		if ("protolathe")
-			remove_from_protolathe_queue(index)
-			return
-
-	CRASH("Invalid from [from]")
-
-/obj/machinery/computer/rdconsole/proc/dispose_imprinter(thing)
-	if(thing == "all")
+	else if(href_list["disposeallI"] && linked_imprinter) //Causes the circuit imprinter to dispose of all it's reagents.
 		linked_imprinter.reagents.clear_reagents()
-		return
 
-	var/datum/reagent/R = locate(thing) in linked_imprinter.reagents.reagent_list
-	if(R)
-		linked_imprinter.reagents.del_reagent(R.type)
+	else if(href_list["removeI"] && linked_lathe)
+		linked_imprinter.removeFromQueue(text2num(href_list["removeI"]))
 
-/obj/machinery/computer/rdconsole/proc/dispose_protolathe(thing)
-	if(thing == "all")
+	else if(href_list["disposeP"] && linked_lathe)  //Causes the protolathe to dispose of a single reagent (all of it)
+		linked_lathe.reagents.del_reagent(href_list["dispose"])
+
+	else if(href_list["disposeallP"] && linked_lathe) //Causes the protolathe to dispose of all it's reagents.
 		linked_lathe.reagents.clear_reagents()
-		return
 
-	var/datum/reagent/R = locate(thing) in linked_lathe.reagents.reagent_list
-	if(R)
-		linked_lathe.reagents.del_reagent(R.type)
+	else if(href_list["removeP"] && linked_lathe)
+		linked_lathe.removeFromQueue(text2num(href_list["removeP"]))
 
-/obj/machinery/computer/rdconsole/proc/dispose(from, thing)
-	switch(from)
-		if("imprinter")
-			dispose_imprinter(thing)
-			return
-		if("protolathe")
-			dispose_protolathe(thing)
+	else if(href_list["lathe_ejectsheet"] && linked_lathe) //Causes the protolathe to eject a sheet of material
+		var/num_sheets = min(text2num(href_list["amount"]), round(linked_lathe.materials[href_list["lathe_ejectsheet"]] / SHEET_MATERIAL_AMOUNT))
+
+		if(num_sheets < 1)
 			return
 
-	CRASH("Invalid from [from]")
+		var/mattype = linked_lathe.getMaterialType(href_list["lathe_ejectsheet"])
 
-/obj/machinery/computer/rdconsole/proc/build(id, count)
-	if(!linked_lathe)
-		return
+		var/obj/item/stack/material/M = new mattype(linked_lathe.loc)
+		M.amount = num_sheets
+		linked_lathe.materials[href_list["lathe_ejectsheet"]] -= num_sheets * SHEET_MATERIAL_AMOUNT
 
-	playsound(src.loc, 'sound/signals/processing23.ogg', 50)
-	var/datum/design/being_built = null
+	else if(href_list["imprinter_ejectsheet"] && linked_imprinter) //Causes the protolathe to eject a sheet of material
+		var/num_sheets = min(text2num(href_list["amount"]), round(linked_imprinter.materials[href_list["imprinter_ejectsheet"]] / SHEET_MATERIAL_AMOUNT))
 
-	for(var/datum/design/D in files.known_designs)
-		if(D.id == id)
-			being_built = D
-			break
-
-	if(being_built)
-		var/n = text2num(count)
-		n = min(n, (100 - linked_lathe.queue.len))
-
-		for(var/i in 1 to n)
-			linked_lathe.addToQueue(being_built)
-
-/obj/machinery/computer/rdconsole/proc/imprint(id, count)
-	playsound(loc, 'sound/signals/processing23.ogg', 50)
-	var/datum/design/being_built = null
-
-	for(var/datum/design/D in files.known_designs)
-		if(D.id == id)
-			being_built = D
-			break
-
-	if(being_built)
-		var/n = text2num(count)
-		n = min(n, (100 - linked_imprinter.queue.len))
-
-		for(var/i in 1 to n)
-			linked_imprinter.addToQueue(being_built)
-
-/obj/machinery/computer/rdconsole/proc/do_sync(mob/user)
-	if(!sync)
-		to_chat(user, SPAN("notice", "You must connect to the network first."))
-		return
-
-	THROTTLE(sync_cd, 5 SECONDS)
-
-	if(!sync_cd)
-		to_chat(user, SPAN("warning", "The server returned an error: too many requests."))
-		return
-
-	playsound(loc, 'sound/signals/processing13.ogg', 50)
-	griefProtection() // Putting this here because I dont trust the sync process
-
-	spawn(30)
-		if(!src)
+		if(num_sheets < 1)
 			return
 
-		for(var/obj/machinery/r_n_d/server/S in SSmachines.machinery)
-			var/server_processed = 0
-			if((id in S.id_with_upload) || istype(S, /obj/machinery/r_n_d/server/centcom))
-				for(var/datum/tech/T in files.known_tech)
-					S.files.AddTech2Known(T)
-				for(var/datum/design/D in files.known_designs)
-					S.files.AddDesign2Known(D)
-				S.files.RefreshResearch()
-				server_processed = 1
-			if((id in S.id_with_download) && !istype(S, /obj/machinery/r_n_d/server/centcom))
-				for(var/datum/tech/T in S.files.known_tech)
-					files.AddTech2Known(T)
-				for(var/datum/design/D in S.files.known_designs)
-					files.AddDesign2Known(D)
-				files.RefreshResearch()
-				server_processed = 1
-			if(!istype(S, /obj/machinery/r_n_d/server/centcom) && server_processed)
-				S.produce_heat()
+		var/mattype = linked_imprinter.getMaterialType(href_list["imprinter_ejectsheet"])
 
-/obj/machinery/computer/rdconsole/proc/deconstruct(mob/user)
-	if(linked_destroy.busy)
-		to_chat(user, SPAN("notice", "The destructive analyzer is busy at the moment."))
-		return
+		var/obj/item/stack/material/M = new mattype(linked_imprinter.loc)
+		M.amount = num_sheets
+		linked_imprinter.materials[href_list["imprinter_ejectsheet"]] -= num_sheets * SHEET_MATERIAL_AMOUNT
 
-	playsound(loc, 'sound/signals/processing22.ogg', 50)
-	linked_destroy.busy = 1
-	flick("d_analyzer_process", linked_destroy)
-	addtimer(CALLBACK(src, nameof(.proc/finish_deconstruct), weakref(user)), 24)
+	else if(href_list["find_device"]) //The R&D console looks for devices nearby to link up with.
+		screen = 0.0
+		spawn(10)
+			SyncRDevices()
+			screen = 1.7
+			updateUsrDialog()
 
-/obj/machinery/computer/rdconsole/proc/eject_from_destructor(mob/user)
-	if(linked_destroy.busy)
-		to_chat(user, SPAN("notice", "The destructive analyzer is busy at the moment."))
-		return
+	else if(href_list["disconnect"]) //The R&D console disconnects with a specific device.
+		switch(href_list["disconnect"])
+			if("destroy")
+				linked_destroy.linked_console = null
+				linked_destroy = null
+			if("lathe")
+				linked_lathe.linked_console = null
+				linked_lathe = null
+			if("imprinter")
+				linked_imprinter.linked_console = null
+				linked_imprinter = null
 
-	if(linked_destroy.loaded_item)
-		linked_destroy.loaded_item.dropInto(linked_destroy.loc)
-		linked_destroy.loaded_item = null
-		linked_destroy.icon_state = "d_analyzer"
+	else if(href_list["reset"]) //Reset the R&D console's database.
+		griefProtection()
+		var/choice = alert("R&D Console Database Reset", "Are you sure you want to reset the R&D console's database? Data lost cannot be recovered.", "Continue", "Cancel")
+		if(choice == "Continue")
+			screen = 0.0
+			qdel(files)
+			files = new /datum/research(src)
+			spawn(20)
+				screen = 1.6
+				updateUsrDialog()
 
-/obj/machinery/computer/rdconsole/proc/make_report(body)
-	var/obj/item/paper/PR = new /obj/item/paper
+	else if (href_list["print"]) //Print research information
+		screen = 0.5
+		spawn(20)
+			var/obj/item/paper/PR = new/obj/item/paper
+			var/pname = "list of researched technologies"
+			var/info = "<center><b>[station_name()] Science Laboratories</b>"
+			info += "<h2>[ (text2num(href_list["print"]) == 2) ? "Detailed" : null] Research Progress Report</h2>"
+			info += "<i>report prepared at [worldtime2text()] station time</i></center><br>"
+			if(text2num(href_list["print"]) == 2)
+				info += GetResearchListInfo()
+			else
+				info += GetResearchLevelsInfo()
 
-	PR.name = "fabricator report"
-	PR.info = "<center><b>[station_name()] Fabricator Laboratory</b>"
-	PR.info += "<h2>Fabricator Status Report</h2>"
-	PR.info += "<i>report prepared at [stationtime2text()] local time</i></center><br>"
+			PR.set_content_unsafe(pname, info)
+			print(PR, user = usr)
+			spawn(10)
+				screen = ((text2num(href_list["print"]) == 2) ? 5.0 : 1.1)
+				updateUsrDialog()
 
-	PR.info += body
+	updateUsrDialog()
+	return
 
-	PR.info_links = PR.info
-	PR.icon_state = "paper_words"
-	PR.dropInto(loc)
-
-/obj/machinery/computer/rdconsole/proc/print_techs()
-	var/body = ""
-	body += "<ul>"
-
-	for(var/datum/tech/T in files.known_tech)
+/obj/machinery/computer/rdconsole/proc/GetResearchLevelsInfo()
+	var/dat
+	dat += "<UL>"
+	for(var/tech_id in files.known_tech)
+		var/datum/tech/T = files.known_tech[tech_id]
 		if(T.level < 1)
 			continue
+		dat += "<LI>"
+		dat += "<u><b>[T.name]</b></u>"
+		dat += "<UL>"
+		dat +=  "<LI>Level: [T.level]"
+		if(T.level == 15)
+			dat +=  "<LI>Progress: Complete"
+		else
+			dat +=  "<LI>Progress: [T.next_level_progress]/[T.next_level_threshold]"
+		dat +=  "<LI>Summary: [T.desc]"
+		dat += "</UL>"
+	return dat
 
-		body += "<hr><li>"
-		body += "<p>[T.name]</p>"
-		body +=  "<p>Level: [T.level]</p>"
-		body +=  "<p>Summary: [T.desc]</p></li>"
+/obj/machinery/computer/rdconsole/proc/GetResearchListInfo()
+	var/dat
+	dat += "<UL>"
+	for(var/path in files.known_designs)
+		var/datum/design/D = files.known_designs[path]
+		if(D.build_path)
+			dat += "<LI><B>[D.name]</B>: [D.desc]"
+	dat += "</UL>"
+	return dat
 
-	body += "</ul>"
+/obj/machinery/computer/rdconsole/attack_hand(mob/user as mob)
+	if(stat & (BROKEN|NOPOWER))
+		return
 
-	make_report(body)
+	user.set_machine(src)
+	var/dat = ""
+	files.RefreshResearch()
+	switch(screen) //A quick check to make sure you get the right screen when a device is disconnected.
+		if(2 to 2.9)
+			if(linked_destroy == null)
+				screen = 2.0
+			else if(linked_destroy.loaded_item == null)
+				screen = 2.1
+			else
+				screen = 2.2
+		if(3 to 3.9)
+			if(linked_lathe == null)
+				screen = 3.0
+		if(4 to 4.9)
+			if(linked_imprinter == null)
+				screen = 4.0
 
-/obj/machinery/computer/rdconsole/proc/print_designs()
-	var/body = ""
+	switch(screen)
 
-	body += "<ul>"
+		//////////////////////R&D CONSOLE SCREENS//////////////////
+		if(0.0)
+			dat += "Updating Database..."
 
-	for(var/datum/design/D in files.known_designs)
-		if(!D.build_path)
-			continue
+		if(0.1)
+			dat += "Processing and Updating Database..."
 
-		body += "<li><b>[D.name]</b>: [D.desc]</li>"
+		if(0.2)
+			dat += "SYSTEM LOCKED<BR><BR>"
+			dat += "<A href='?src=\ref[src];lock=1.6'>Unlock</A>"
 
-	body += "</ul>"
+		if(0.3)
+			dat += "Constructing Prototype. Please Wait..."
 
-	make_report(body)
+		if(0.4)
+			dat += "Imprinting Circuit. Please Wait..."
 
-/obj/machinery/computer/rdconsole/proc/print(page)
-	switch(page)
-		if("techs")
-			print_techs()
-			return
-		if("designs")
-			print_designs()
-			return
+		if(0.5)
+			dat += "Printing Research Information. Please Wait..."
 
-	CRASH("Invalid page [page]")
+		if(1.0) //Main Menu
+			dat += "<b><u>Main Menu:</b></u><HR><div class='menu'>"
+			dat += "Loaded disk: "
+			dat += (t_disk || d_disk) ? (t_disk ? "technology storage disk" : "design storage disk") : "None"
+			dat += "<HR><UL>"
+			dat += "<LI><A href='?src=\ref[src];menu=1.1'>Current Research Levels</A>"
+			dat += "<LI><A href='?src=\ref[src];menu=5.0'>View Researched Technologies</A>"
+			if(t_disk)
+				dat += "<LI><A href='?src=\ref[src];menu=1.2'>Disk Operations</A>"
+			else if(d_disk)
+				dat += "<LI><A href='?src=\ref[src];menu=1.4'>Disk Operations</A>"
+			else
+				dat += "<LI><div class='no-build'>Disk Operations</div>"
+			if(linked_destroy)
+				dat += "<LI><A href='?src=\ref[src];menu=2.2'>Destructive Analyzer Menu</A>"
+			if(linked_lathe)
+				dat += "<LI><A href='?src=\ref[src];menu=3.1'>Protolathe Construction Menu</A>"
+			if(linked_imprinter)
+				dat += "<LI><A href='?src=\ref[src];menu=4.1'>Circuit Construction Menu</A>"
+			dat += "<LI><A href='?src=\ref[src];menu=1.6'>Settings</A>"
+			dat += "</UL>"
+			dat += "</div>"
 
-/obj/machinery/computer/rdconsole/proc/load_tech_from_disk()
-	files.AddTech2Known(t_disk.stored)
-	griefProtection() // Update centcomm too
+		if(1.1) //Research viewer
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A> || "
+			dat += "<A href='?src=\ref[src];print=1'>Print This Page</A><HR>"
+			dat += "<b><u>Current Research Levels:</u></b><HR>"
+			dat += GetResearchLevelsInfo()
+			dat += "</UL>"
 
-/obj/machinery/computer/rdconsole/proc/load_design_from_disk()
-	files.AddDesign2Known(d_disk.blueprint)
-	griefProtection() // Update centcomm too
+		if(1.2) //Technology Disk Menu
 
-/obj/machinery/computer/rdconsole/proc/load_from_disk()
-	playsound(src.loc, 'sound/signals/processing9.ogg', 50)
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><HR>"
+			dat += "Disk Contents: (Technology Data Disk)<BR><BR>"
+			dat += "<div class='menu'>"
+			if(t_disk.stored == null)
+				dat += "The disk has no data stored on it.<HR>"
+				dat += "Operations: "
+				dat += "<A href='?src=\ref[src];menu=1.3'>Load Tech to Disk</A> || "
+			else
+				dat += "Name: [t_disk.stored.name]<BR>"
+				dat += "Level: [t_disk.stored.level]<BR>"
+				dat += "Description: [t_disk.stored.desc]<HR>"
+				dat += "Operations: "
+				dat += "<A href='?src=\ref[src];updt_tech=1'>Upload to Database</A> || "
+				dat += "<A href='?src=\ref[src];clear_tech=1'>Clear Disk</A> || "
+			dat += "<A href='?src=\ref[src];eject_tech=1'>Eject Disk</A>"
+			dat += "</div>"
 
-	if(t_disk)
-		load_tech_from_disk()
-	else if(d_disk)
-		load_design_from_disk()
+		if(1.3) //Technology Disk submenu
+			dat += "<BR><A href='?src=\ref[src];menu=1.0'>Main Menu</A> || "
+			dat += "<A href='?src=\ref[src];menu=1.2'>Return to Disk Operations</A><HR>"
+			dat += "<div class='menu'>"
+			dat += "Load Technology to Disk:<BR><BR>"
+			dat += "<UL>"
+			for(var/tech_id in files.known_tech)
+				var/datum/tech/T = files.known_tech[tech_id]
+				dat += "<LI>[T.name] "
+				dat += "\[<A href='?src=\ref[src];copy_tech=1;copy_tech_sent=[T.id]'>copy to disk</A>\]"
+			dat += "</UL>"
+			dat += "</div>"
 
-/obj/machinery/computer/rdconsole/proc/save_tech_to_disk(id)
-	for(var/datum/tech/T in files.known_tech)
-		if(id == T.id)
-			t_disk.stored = T
-			return
+		if(1.4) //Design Disk menu.
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><HR>"
+			dat += "<div class='menu'>"
+			if(d_disk.blueprint == null)
+				dat += "The disk has no data stored on it.<HR>"
+				dat += "Operations: "
+				dat += "<A href='?src=\ref[src];menu=1.5'>Load Design to Disk</A> || "
+			else
+				dat += "Name: [d_disk.blueprint.name]<BR>"
+				switch(d_disk.blueprint.build_type)
+					if(IMPRINTER) dat += "Lathe Type: Circuit Imprinter<BR>"
+					if(PROTOLATHE) dat += "Lathe Type: Proto-lathe<BR>"
+				dat += "Required Materials:<BR>"
+				for(var/M in d_disk.blueprint.materials)
+					if(copytext(M, 1, 2) == "$") dat += "* [copytext(M, 2)] x [d_disk.blueprint.materials[M]]<BR>"
+					else dat += "* [M] x [d_disk.blueprint.materials[M]]<BR>"
+				dat += "<HR>Operations: "
+				dat += "<A href='?src=\ref[src];updt_design=1'>Upload to Database</A> || "
+				dat += "<A href='?src=\ref[src];clear_design=1'>Clear Disk</A> || "
+			dat += "<A href='?src=\ref[src];eject_design=1'>Eject Disk</A>"
+			dat += "</div>"
 
-/obj/machinery/computer/rdconsole/proc/save_design_to_disk(id)
-	for(var/datum/design/D in files.known_designs)
-		if(id == D.id)
-			d_disk.blueprint = D
-			return
+		if(1.5) //Technology disk submenu
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A> || "
+			dat += "<A href='?src=\ref[src];menu=1.4'>Return to Disk Operations</A><HR>"
+			dat += "<div class='menu'>"
+			dat += "Load Design to Disk:<BR><BR>"
+			dat += "<UL>"
+			for(var/path in files.known_designs)
+				var/datum/design/D = files.known_designs[path]
+				if(D.build_path)
+					dat += "<LI>[D.name] "
+					dat += "<A href='?src=\ref[src];copy_design=1;copy_design_sent=[D.type]'>\[copy to disk\]</A>"
+			dat += "</UL>"
+			dat += "</div>"
 
-/obj/machinery/computer/rdconsole/proc/save_to_disk(thing, id)
-	playsound(src.loc, 'sound/signals/processing9.ogg', 50)
+		if(1.6) //R&D console settings
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><HR>"
+			dat += "<b><u>R&D Console Setting:</u></b><HR>"
+			dat += "<div class='menu'>"
+			dat += "<UL>"
+			if(sync)
+				dat += "<LI><A href='?src=\ref[src];sync=1'>Sync Database with Network</A><BR>"
+				dat += "<LI><A href='?src=\ref[src];togglesync=1'>Disconnect from Research Network</A><BR>"
+			else
+				dat += "<LI><A href='?src=\ref[src];togglesync=1'>Connect to Research Network</A><BR>"
+			dat += "<LI><A href='?src=\ref[src];menu=1.7'>Device Linkage Menu</A><BR>"
+			dat += "<LI><A href='?src=\ref[src];lock=0.2'>Lock Console</A><BR>"
+			dat += "<LI><A href='?src=\ref[src];reset=1'>Reset R&D Database</A><BR>"
+			dat += "<UL>"
+			dat += "</div>"
 
-	switch(thing)
-		if("tech")
-			save_tech_to_disk(id)
-			return
-		if("design")
-			save_design_to_disk(id)
-			return
+		if(1.7) //R&D device linkage
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A> || "
+			dat += "<A href='?src=\ref[src];menu=1.6'>Settings Menu</A><HR>"
+			dat += "<b><u>R&D Console Device Linkage Menu:</u></b><HR>"
+			dat += "<div class='menu'>"
+			dat += "<A href='?src=\ref[src];find_device=1'>Re-sync with Nearby Devices</A><HR>"
+			dat += "Linked Devices:"
+			dat += "<UL>"
 
-	CRASH("Invalid thing [thing]")
+			if(allow_analyzer)
+				if(linked_destroy)
+					dat += "<LI>Destructive Analyzer <A href='?src=\ref[src];disconnect=destroy'>Disconnect</A>"
+				else
+					dat += "<LI>(No Destructive Analyzer Linked)"
 
-/obj/machinery/computer/rdconsole/proc/erase_disk()
-	t_disk?.stored = null
-	d_disk?.blueprint = null
+			if(allow_lathe)
+				if(linked_lathe)
+					dat += "<LI>Protolathe <A href='?src=\ref[src];disconnect=lathe'>Disconnect</A>"
+				else
+					dat += "<LI>(No Protolathe Linked)"
 
-/obj/machinery/computer/rdconsole/proc/eject_disk()
-	t_disk?.dropInto(loc)
-	t_disk = null
+			if(allow_imprinter)
+				if(linked_imprinter)
+					dat += "<LI>Circuit Imprinter <A href='?src=\ref[src];disconnect=imprinter'>Disconnect</A>"
+				else
+					dat += "<LI>(No Circuit Imprinter Linked)"
+				dat += "</UL>"
+			dat += "</div>"
 
-	d_disk?.dropInto(loc)
-	d_disk = null
+		////////////////////DESTRUCTIVE ANALYZER SCREENS////////////////////////////
+		if(2.0)
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><HR>"
+			dat += "NO DESTRUCTIVE ANALYZER LINKED TO CONSOLE<BR><BR>"
+
+		if(2.1)
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><HR>"
+			dat += "No Item Loaded. Standing-by...<BR><HR>"
+
+		if(2.2)
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><HR>"
+			dat += "<b><u>Deconstruction Menu</u></b><HR>"
+			dat += "Name: [linked_destroy.loaded_item.name]<BR>"
+			dat += "Origin Tech:"
+			dat += "<UL>"
+			for(var/tech_id in linked_destroy.loaded_item.origin_tech)
+				var/datum/tech/T = files.known_tech[tech_id]
+				dat += "<LI>[capitalize_first_letters(T.name)]: \[Level: [linked_destroy.loaded_item.origin_tech[tech_id]] || Progress Contribution: [files.get_level_value(linked_destroy.loaded_item.origin_tech[tech_id])]\]"
+				dat += " (Current Level: [T.level] || Current Progress: [T.next_level_progress]/[T.next_level_threshold])"
+			dat += "</UL>"
+			if(!istype(linked_destroy.loaded_item, /obj/item/stack))
+				dat += "<HR><A href='?src=\ref[src];deconstruct=1'>Deconstruct Item</A> || "
+			else
+				dat += "<HR><A href='?src=\ref[src];deconstruct=1'>Deconstruct One In Stack</A> || "
+			dat += "<A href='?src=\ref[src];eject_item=1'>Eject Item</A>"
+
+		/////////////////////PROTOLATHE SCREENS/////////////////////////
+		if(3.0)
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><HR>"
+			dat += "NO PROTOLATHE LINKED TO CONSOLE<BR><BR>"
+
+		if(3.1)
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A> || "
+			dat += "<A href='?src=\ref[src];menu=3.4'>View Queue</A> || "
+			dat += "<A href='?src=\ref[src];menu=3.2'>Material Storage</A> || "
+			dat += "<A href='?src=\ref[src];menu=3.3'>Chemical Storage</A><HR>"
+			dat += "<b><u>Protolathe Menu:</u></b><HR>"
+			dat += "<B>Material Amount:</B> [linked_lathe.TotalMaterials()] cm<sup>3</sup> (MAX: [linked_lathe.max_material_storage])<BR>"
+			dat += "<B>Chemical Volume:</B> [linked_lathe.reagents.total_volume] (MAX: [linked_lathe.reagents.maximum_volume])<HR>"
+			dat += "<font size='3'; color='#5c87a8'><b>Category:</b></font> <a href='?src=\ref[src];protolathe_category=1'>[protolathe_category]</a><hr>"
+			dat += "<div class='rdconsole-build'>"
+			dat += "<ul>"
+			var/last_category = ""
+			for(var/path in files.known_designs)
+				var/datum/design/D = files.known_designs[path]
+				if(!D.build_path || !(D.build_type & PROTOLATHE))
+					continue
+				if(protolathe_category != "All" && D.p_category != protolathe_category)
+					continue
+				if(protolathe_category == "All" && D.p_category != last_category)
+					last_category = D.p_category
+					dat += "<li><h3>[last_category]</h3>"
+				var/temp_dat
+				for(var/M in D.materials)
+					temp_dat += ", [D.materials[M]] [CallMaterialName(M)]"
+				for(var/T in D.chemicals)
+					temp_dat += ", [D.chemicals[T]*linked_imprinter.mat_efficiency] [CallReagentName(T)]"
+				if(temp_dat)
+					temp_dat = " \[[copytext(temp_dat, 3)]\]"
+				if(linked_lathe.canBuild(D))
+					dat += "<li class='highlight'><b><a href='?src=\ref[src];build=[D.type]'>[capitalize_first_letters(D.name)]</a></b>"
+				else
+					dat += "<li class='highlight'><b><div class='no-build'>[capitalize_first_letters(D.name)]</div></b>"
+				dat += "[temp_dat]<br><i>[D.desc]</i>"
+			dat += "</ul>"
+			dat += "</div>"
+
+		if(3.2) //Protolathe Material Storage Sub-menu
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A> || "
+			dat += "<A href='?src=\ref[src];menu=3.1'>Protolathe Menu</A><HR>"
+			dat += "<b><u>Material Storage</u></b><BR><HR>"
+			dat += "<UL>"
+			for(var/M in linked_lathe.materials)
+				var/amount = linked_lathe.materials[M]
+				dat += "<LI><B>[capitalize(M)]</B>: [amount] cm<sup>3</sup>"
+				if(amount >= SHEET_MATERIAL_AMOUNT)
+					dat += " || Eject "
+					for (var/C in list(1, 3, 5, 10, 15, 20, 25, 30, 40))
+						if(amount < C * SHEET_MATERIAL_AMOUNT)
+							break
+						dat += "[C > 1 ? ", " : ""]<A href='?src=\ref[src];lathe_ejectsheet=[M];amount=[C]'>[C]</A> "
+
+					dat += " or <A href='?src=\ref[src];lathe_ejectsheet=[M];amount=50'>max</A> sheets"
+				dat += ""
+			dat += "</UL>"
+
+		if(3.3) //Protolathe Chemical Storage Submenu
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A> || "
+			dat += "<A href='?src=\ref[src];menu=3.1'>Protolathe Menu</A><HR>"
+			dat += "<b><u>Chemical Storage</u></b><BR><HR>"
+			for(var/_R in linked_lathe.reagents.reagent_volumes)
+				var/singleton/reagent/R = GET_SINGLETON(_R)
+				dat += "Name: [R.name] | Units: [linked_lathe.reagents.reagent_volumes[_R]] "
+				dat += "<A href='?src=\ref[src];disposeP=[_R]'>(Purge)</A><BR>"
+				dat += "<A href='?src=\ref[src];disposeallP=1'><U>Disposal All Chemicals in Storage</U></A><BR>"
+
+		if(3.4) // Protolathe queue
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A> || "
+			dat += "<A href='?src=\ref[src];menu=3.1'>Protolathe Menu</A><HR>"
+			dat += "<b><u>Queue</u></b><BR><HR>"
+			if(!linked_lathe.queue.len)
+				dat += "Empty"
+			else
+				var/tmp = 1
+				for(var/datum/design/D in linked_lathe.queue)
+					if(tmp == 1)
+						if(linked_lathe.busy)
+							dat += "<B>1: [D.name]</B><BR>"
+						else
+							dat += "<B>1: [D.name]</B> (Awaiting materials) <A href='?src=\ref[src];removeP=[tmp]'>Remove</A><BR>"
+					else
+						dat += "[tmp]: [D.name] <A href='?src=\ref[src];removeP=[tmp]'>Remove</A><BR>"
+					++tmp
+
+		///////////////////CIRCUIT IMPRINTER SCREENS////////////////////
+		if(4.0)
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A><HR>"
+			dat += "NO CIRCUIT IMPRINTER LINKED TO CONSOLE<BR><BR>"
+
+		if(4.1)
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A> || "
+			dat += "<A href='?src=\ref[src];menu=4.4'>View Queue</A> || "
+			dat += "<A href='?src=\ref[src];menu=4.3'>Material Storage</A> || "
+			dat += "<A href='?src=\ref[src];menu=4.2'>Chemical Storage</A><HR>"
+			dat += "<b><u>Circuit Imprinter Menu:</u></b><BR><HR>"
+			dat += "Material Amount: [linked_imprinter.TotalMaterials()] cm<sup>3</sup><BR>"
+			dat += "Chemical Volume: [linked_imprinter.reagents.total_volume]<HR>"
+			dat += "<font size='3'; color='#5c87a8'><b>Category:</b></font> <a href='?src=\ref[src];imprinter_category=1'>[imprinter_category]</a><hr>"
+			dat += "<div class='rdconsole-build'>"
+			dat += "<ul>"
+			var/last_category = ""
+			for(var/path in files.known_designs)
+				var/datum/design/D = files.known_designs[path]
+				if(!D.build_path || !(D.build_type & IMPRINTER))
+					continue
+				if(imprinter_category != "All" && D.p_category != imprinter_category)
+					continue
+				if(imprinter_category == "All" && D.p_category != last_category)
+					last_category = D.p_category
+					dat += "<li><h3>[last_category]</h3>"
+				var/temp_dat
+				for(var/M in D.materials)
+					temp_dat += ", [D.materials[M]*linked_imprinter.mat_efficiency] [CallMaterialName(M)]"
+				for(var/T in D.chemicals)
+					temp_dat += ", [D.chemicals[T]*linked_imprinter.mat_efficiency] [CallReagentName(T)]"
+				if(temp_dat)
+					temp_dat = " \[[copytext(temp_dat,3)]\]"
+				if(linked_imprinter.canBuild(D))
+					dat += "<li class='highlight'><b><a href='?src=\ref[src];imprint=[D.type]'>[D.name]</a></b>"
+				else
+					dat += "<li class='highlight'><b><div class='no-build'>[D.name]</div></b>"
+				dat += "[temp_dat]<br><i>[D.desc]</i>"
+			dat += "</ul>"
+			dat += "</div>"
+
+		if(4.2)
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A> || "
+			dat += "<A href='?src=\ref[src];menu=4.1'>Imprinter Menu</A><HR>"
+			dat += "<b><u>Chemical Storage</u></b><BR><HR>"
+			for(var/_R in linked_imprinter.reagents.reagent_volumes)
+				var/singleton/reagent/R = GET_SINGLETON(_R)
+				dat += "Name: [R.name] | Units: [linked_imprinter.reagents.reagent_volumes[_R]] "
+				dat += "<A href='?src=\ref[src];disposeI=[_R]'>(Purge)</A><BR>"
+				dat += "<A href='?src=\ref[src];disposeallI=1'><U>Disposal All Chemicals in Storage</U></A><BR>"
+
+		if(4.3)
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A> || "
+			dat += "<A href='?src=\ref[src];menu=4.1'>Circuit Imprinter Menu</A><HR>"
+			dat += "<b><u>Material Storage</u></b><BR><HR>"
+			dat += "<UL>"
+			for(var/M in linked_imprinter.materials)
+				var/amount = linked_imprinter.materials[M]
+				dat += "<LI><B>[capitalize(M)]</B>: [amount] cm<sup>3</sup>"
+				if(amount >= SHEET_MATERIAL_AMOUNT)
+					dat += " || Eject: "
+					for (var/C in list(1, 3, 5, 10, 15, 20, 25, 30, 40))
+						if(amount < C * SHEET_MATERIAL_AMOUNT)
+							break
+						dat += "[C > 1 ? ", " : ""]<A href='?src=\ref[src];imprinter_ejectsheet=[M];amount=[C]'>[C]</A> "
+
+					dat += " or <A href='?src=\ref[src];imprinter_ejectsheet=[M];amount=50'>max</A> sheets"
+				dat += ""
+			dat += "</UL>"
+
+		if(4.4)
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A> || "
+			dat += "<A href='?src=\ref[src];menu=4.1'>Circuit Imprinter Menu</A><HR>"
+			dat += "<b><u>Queue</u></b><BR><HR>"
+			if(linked_imprinter.queue.len == 0)
+				dat += "Empty"
+			else
+				var/tmp = 1
+				for(var/datum/design/D in linked_imprinter.queue)
+					if(tmp == 1)
+						dat += "<B>1: [D.name]</B><BR>"
+					else
+						dat += "[tmp]: [D.name] <A href='?src=\ref[src];removeI=[tmp]'>Remove</A><BR>"
+					++tmp
+
+		///////////////////Research Information Browser////////////////////
+		if(5.0)
+			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A> || "
+			dat += "<A href='?src=\ref[src];print=2'>Print This Page</A><HR>"
+			dat += "<b><u>List of Researched Technologies and Designs:</u></b><HR>"
+			dat += GetResearchListInfo()
+
+	var/datum/browser/rdconsole = new(user, "rdconsole", "Research and Development Console", 850, 600)
+	rdconsole.add_stylesheet("rdconsole", 'html/browser/rdconsole.css')
+	rdconsole.set_content(dat)
+	rdconsole.open()
 
 /obj/machinery/computer/rdconsole/robotics
-	name = "robotics fabrication console"
-	id = 2
+	name = "robotics R&D console"
+	id = 1
 	req_access = list(access_robotics)
+	allow_analyzer = FALSE
 
 /obj/machinery/computer/rdconsole/core
-	name = "core fabricator console"
+	name = "core R&D console"
+	desc = "A console which is used to operate various research devices. It is the backbone of any megacorporate research division."
 	id = 1

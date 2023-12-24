@@ -3,29 +3,30 @@
 /obj/item/evidencebag
 	name = "evidence bag"
 	desc = "An empty evidence bag."
-	icon = 'icons/obj/storage/misc.dmi'
+	desc_info = "Click drag this onto an object to put it inside. Click it in-hand to remove an object from it."
+	icon = 'icons/obj/forensics.dmi'
 	icon_state = "evidenceobj"
 	item_state = ""
-	w_class = ITEM_SIZE_SMALL
-	var/base_icon_state = "evidence"
+	w_class = ITEMSIZE_SMALL
 	var/obj/item/stored_item = null
+	var/label_text = ""
 
-/obj/item/evidencebag/attackby(obj/item/I, mob/user)
-	if(!istype(I) || !istype(user))
-		return FALSE
+/obj/item/evidencebag/Initialize()
+	. = ..()
+	AddComponent(/datum/component/base_name, name)
 
-	put_item(I, user)
+/obj/item/evidencebag/MouseDrop(var/obj/item/I as obj)
+	if (!ishuman(usr))
+		return
 
-/obj/item/evidencebag/MouseDrop_T(obj/item/I, mob/living/carbon/human/user)
-	if(!istype(user))
-		return FALSE
+	var/mob/living/carbon/human/user = usr
 
-	if(!istype(I) || I.anchored)
-		return FALSE
+	if (!(user.l_hand == src || user.r_hand == src))
+		return //bag must be in your hands to use
 
 	if (isturf(I.loc))
 		if (!user.Adjacent(I))
-			return FALSE
+			return
 	else
 		//If it isn't on the floor. Do some checks to see if it's in our hands or a box. Otherwise give up.
 		if(istype(I.loc,/obj/item/storage))	//in a container.
@@ -36,115 +37,84 @@
 			var/obj/item/storage/U = I.loc
 			user.client.screen -= I
 			U.contents.Remove(I)
-			I.forceMove(get_turf(U))
-		else if(user.l_hand == I || user.r_hand == I)					//in a hand
-			attackby(I, user)
-			return FALSE
+		else if(user.l_hand == I)					//in a hand
+			user.drop_l_hand()
+		else if(user.r_hand == I)					//in a hand
+			user.drop_r_hand()
 		else
-			return FALSE
+			return
 
-	put_item(I, user)
+	if(!istype(I) || I.anchored)
+		return
 
-/obj/item/evidencebag/proc/put_item(obj/item/I, mob/user)
 	if(istype(I, /obj/item/evidencebag))
-		to_chat(user, SPAN_NOTICE("You find putting an evidence bag in another evidence bag to be slightly absurd."))
-		return FALSE
+		to_chat(user, "<span class='notice'>You find putting a plastic bag in another plastic bag to be slightly absurd and think better of it.</span>")
+		return
 
-	if(I.w_class > ITEM_SIZE_NORMAL)
-		to_chat(user, SPAN_NOTICE("[I] won't fit in [src]."))
-		return FALSE
+	if(I.w_class > 3)
+		to_chat(user, "<span class='notice'>[I] won't fit in [src].</span>")
+		return
 
-	if(stored_item)
-		to_chat(user, SPAN_NOTICE("[src] already has something inside it."))
-		return FALSE
+	if(contents.len)
+		to_chat(user, "<span class='notice'>[src] already has something inside it.</span>")
+		return
 
-	if(!user.drop(I, src))
-		return FALSE
-
-	user.visible_message("[user] puts [I] into [src]", "You put [I] inside [src].",\
+	user.visible_message("<b>[user]</b> puts \the [I] into \the [src].", SPAN_NOTICE("You put \the [I] inside \the [src]."),\
 	"You hear a rustle as someone puts something into a plastic bag.")
 	store_item(I)
-	return TRUE
 
 /obj/item/evidencebag/proc/store_item(obj/item/I)
+	icon_state = "evidence"
+	var/mutable_appearance/MA = new(I)
+	MA.pixel_x = 0
+	MA.pixel_y = 0
+	MA.layer = FLOAT_LAYER
+	add_overlay(list(MA, "evidence"))
+
+	desc = "A plastic bag containing [I]."
 	I.forceMove(src)
-
-	icon_state = base_icon_state
-
-	var/item_x = I.pixel_x	//save the offset of the item
-	var/item_y = I.pixel_y
-	I.pixel_x = 0		//then remove it so it'll stay within the evidence bag
-	I.pixel_y = 0
-	var/image/img = image(I.icon, I.icon_state, layer = FLOAT_LAYER)	//take a snapshot. (necessary to stop the underlays appearing under our inventory-HUD slots ~Carn
-	img.SetTransform(scale = 0.7)
-	I.pixel_x = item_x		//and then return it
-	I.pixel_y = item_y
-	AddOverlays(img) // should look nicer for transparent stuff. not really that important, but hey.
-	AddOverlays(base_icon_state)
-
-	desc = "\A [initial(name)] containing [I]."
 	stored_item = I
 	w_class = I.w_class
 
-	return TRUE
 
-/obj/item/evidencebag/attack_self(mob/user)
-	if(stored_item)
+/obj/item/evidencebag/attack_self(mob/user as mob)
+	if(contents.len)
 		var/obj/item/I = contents[1]
-		user.visible_message("[user] takes [I] out of [src]", "You take [I] out of [src].",\
+		user.visible_message("<b>[user]</b> takes \the [I] out of \the [src].", SPAN_NOTICE("You take \the [I] out of \the [src]."),\
 		"You hear someone rustle around in a plastic bag, and remove something.")
-		ClearOverlays()	//remove the overlays
+		cut_overlays()	//remove the overlays
 
-		user.pick_or_drop(I)
+		user.put_in_hands(I)
 		stored_item = null
 
 		w_class = initial(w_class)
-		icon_state = "[base_icon_state]obj"
-		desc = initial(desc)
+		icon_state = "evidenceobj"
+		desc = "An empty evidence bag."
 	else
 		to_chat(user, "[src] is empty.")
-		icon_state = "[base_icon_state]obj"
+		icon_state = "evidenceobj"
 	return
 
-/obj/item/evidencebag/_examine_text(mob/user)
+/obj/item/evidencebag/examine(mob/user)
 	. = ..()
-	if (!stored_item)
+	if (stored_item)
+		examinate(user, stored_item)
+
+/obj/item/evidencebag/attackby(obj/item/W as obj, mob/user as mob)
+	if(W.ispen() || istype(W, /obj/item/device/flashlight/pen))
+		var/tmp_label = sanitizeSafe(input(user, "Enter a label for [name]", "Label", label_text), MAX_NAME_LEN)
+		if(length(tmp_label) > MAX_NAME_LEN)
+			to_chat(user, SPAN_NOTICE("The label can be at most [MAX_NAME_LEN] characters long."))
+		else
+			to_chat(user, "<span class='notice'>You set the label to \"[tmp_label]\".</span>")
+			label_text = tmp_label
+			update_name_label()
 		return
-	. += "\n[stored_item._examine_text(user)]"
+	. = ..()
 
-/obj/item/evidencebag/cyborg
-	name = "integrated evidence bag dispenser"
-	desc = "used for detective cyborg to collect evidences."
-
-/obj/item/evidencebag/cyborg/afterattack(atom/target, mob/living/user, proximity)
-	if(!target)
-		return
-	if(!proximity)
-		return
-	if(!isturf(target.loc))
-		return
-	if(istype(target, /obj/item))
-		var/obj/item/evidencebag/EB
-		if(istype(target, /obj/item/evidencebag))
-			EB = target
-			if(EB.stored_item)
-				EB.attack_self(user)
-			else
-				qdel(EB)
-
-		var/obj/item/I = target
-		EB = new(get_turf(src))
-
-		if(!EB.attackby(I, user))
-			qdel(EB)
-
-/obj/item/evidencebag/cyborg/attack_self(mob/user)
-	return
-
-/obj/item/evidencebag/cyborg/MouseDrop_T(obj/item/I as obj)
-	return
-
-/obj/item/evidencebag/research
-	name = "sample bag"
-	desc = "A bag for holding research samples."
-	base_icon_state = "samplebag"
+/obj/item/evidencebag/proc/update_name_label(var/base_name = initial(name))
+	SEND_SIGNAL(src, COMSIG_BASENAME_SETNAME, args)
+	if(label_text == "")
+		name = base_name
+	else
+		name = "[base_name] ([label_text])"

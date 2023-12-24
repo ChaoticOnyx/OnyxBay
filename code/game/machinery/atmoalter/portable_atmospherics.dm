@@ -11,47 +11,48 @@
 
 	var/start_pressure = ONE_ATMOSPHERE
 	var/maximum_pressure = 90 * ONE_ATMOSPHERE
-	atom_flags = ATOM_FLAG_CLIMBABLE
-
-/obj/machinery/portable_atmospherics/New()
-	..()
-
-	air_contents.volume = volume
-	air_contents.temperature = 20 CELSIUS
-
-	return 1
 
 /obj/machinery/portable_atmospherics/Destroy()
+	disconnect()
 	QDEL_NULL(air_contents)
 	QDEL_NULL(holding)
-	. = ..()
+	return ..()
 
 /obj/machinery/portable_atmospherics/Initialize()
-	..()
-	return INITIALIZE_HINT_LATELOAD
+	. = ..()
 
-/obj/machinery/portable_atmospherics/LateInitialize()
+	air_contents.volume = volume
+	air_contents.temperature = T20C
+
 	var/obj/machinery/atmospherics/portables_connector/port = locate() in loc
 	if(port)
 		connect(port)
-		update_icon()
 
-/obj/machinery/portable_atmospherics/Process()
+/obj/machinery/portable_atmospherics/canister/Initialize()
+	..()
+
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/machinery/portable_atmospherics/canister/LateInitialize()
+	update_icon()
+
+/obj/machinery/portable_atmospherics/process()
 	if(!connected_port) //only react when pipe_network will ont it do it for you
 		//Allow for reactions
 		air_contents.react()
 	else
 		update_icon()
+		SStgui.update_uis(src)
 
 /obj/machinery/portable_atmospherics/proc/StandardAirMix()
 	return list(
-		"oxygen" = O2STANDARD * MolesForPressure(),
-		"nitrogen" = N2STANDARD *  MolesForPressure())
+		GAS_OXYGEN = O2STANDARD * MolesForPressure(),
+		GAS_NITROGEN = N2STANDARD *  MolesForPressure())
 
-/obj/machinery/portable_atmospherics/proc/MolesForPressure(target_pressure = start_pressure)
+/obj/machinery/portable_atmospherics/proc/MolesForPressure(var/target_pressure = start_pressure)
 	return (target_pressure * air_contents.volume) / (R_IDEAL_GAS_EQUATION * air_contents.temperature)
 
-/obj/machinery/portable_atmospherics/on_update_icon()
+/obj/machinery/portable_atmospherics/update_icon()
 	return null
 
 /obj/machinery/portable_atmospherics/proc/connect(obj/machinery/atmospherics/portables_connector/new_port)
@@ -66,7 +67,7 @@
 	//Perform the connection
 	connected_port = new_port
 	connected_port.connected_device = src
-	connected_port.on = 1 //Activate port updates
+	connected_port.toggle_process()
 
 	anchored = 1 //Prevent movement
 
@@ -87,8 +88,10 @@
 		network.gases -= air_contents
 
 	anchored = 0
+	if(connected_port)
+		connected_port.connected_device = null
+		connected_port.toggle_process()
 
-	connected_port.connected_device = null
 	connected_port = null
 
 	return 1
@@ -101,42 +104,48 @@
 	if (network)
 		network.update = 1
 
-/obj/machinery/portable_atmospherics/attackby(obj/item/W as obj, mob/user as mob)
+/obj/machinery/portable_atmospherics/attackby(var/obj/item/W as obj, var/mob/user as mob)
 	if ((istype(W, /obj/item/tank) && !( src.destroyed )))
-		if(holding || !user.drop(W, src))
-			return
+		if (src.holding)
+			return TRUE
 		var/obj/item/tank/T = W
-		holding = T
+		user.drop_from_inventory(T,src)
+		src.holding = T
 		update_icon()
-		return
+		SStgui.update_uis(src)
+		return TRUE
 
-	else if(isWrench(W))
+	else if (W.iswrench())
 		if(connected_port)
 			disconnect()
 			to_chat(user, "<span class='notice'>You disconnect \the [src] from the port.</span>")
+			playsound(get_turf(src), W.usesound, 50, 1)
 			update_icon()
-			return
+			SStgui.update_uis(src)
+			return TRUE
 		else
 			var/obj/machinery/atmospherics/portables_connector/possible_port = locate(/obj/machinery/atmospherics/portables_connector/) in loc
 			if(possible_port)
 				if(connect(possible_port))
 					to_chat(user, "<span class='notice'>You connect \the [src] to the port.</span>")
+					playsound(get_turf(src), W.usesound, 50, 1)
 					update_icon()
-					return
+					SStgui.update_uis(src)
+					return TRUE
 				else
 					to_chat(user, "<span class='notice'>\The [src] failed to connect to the port.</span>")
-					return
+					return TRUE
 			else
 				to_chat(user, "<span class='notice'>Nothing happens.</span>")
-				return
+				return TRUE
 
-	else if (istype(W, /obj/item/device/analyzer))
-		return
+	else if ((istype(W, /obj/item/device/analyzer)) && Adjacent(user))
+		var/obj/item/device/analyzer/A = W
+		A.analyze_gases(src, user)
+		return TRUE
 
-	return
+	return ..()
 
-/obj/machinery/portable_atmospherics/return_air()
-	return air_contents
 
 /obj/machinery/portable_atmospherics/powered
 	var/power_rating
@@ -155,30 +164,33 @@
 	if(istype(I, /obj/item/cell))
 		if(cell)
 			to_chat(user, "There is already a power cell installed.")
-			return
-		if(!user.drop(I, src))
-			return
+			return TRUE
+
 		var/obj/item/cell/C = I
+
+		user.drop_from_inventory(C,src)
 		C.add_fingerprint(user)
 		cell = C
 		user.visible_message("<span class='notice'>[user] opens the panel on [src] and inserts [C].</span>", "<span class='notice'>You open the panel on [src] and insert [C].</span>")
 		power_change()
-		return
+		SStgui.update_uis(src)
+		return TRUE
 
-	if(isScrewdriver(I))
+	if(I.isscrewdriver())
 		if(!cell)
 			to_chat(user, "<span class='warning'>There is no power cell installed.</span>")
-			return
+			return TRUE
 
 		user.visible_message("<span class='notice'>[user] opens the panel on [src] and removes [cell].</span>", "<span class='notice'>You open the panel on [src] and remove [cell].</span>")
 		cell.add_fingerprint(user)
-		cell.dropInto(loc)
+		cell.forceMove(src.loc)
 		cell = null
 		power_change()
-		return
-	..()
+		SStgui.update_uis(src)
+		return TRUE
+	return ..()
 
-/obj/machinery/portable_atmospherics/proc/log_open()
+/obj/machinery/portable_atmospherics/proc/log_open(var/mob/user)
 	if(air_contents.gas.len == 0)
 		return
 
@@ -188,5 +200,15 @@
 			gases += ", [gas]"
 		else
 			gases = gas
-	log_admin("[usr] ([usr.ckey]) opened '[src.name]' containing [gases].")
-	message_admins("[usr] ([usr.ckey]) opened '[src.name]' containing [gases].")
+
+	if (!user && usr)
+		user = usr
+
+	log_admin("[user] ([user.ckey]) opened '[src.name]' containing [gases].", ckey=key_name(user))
+	message_admins("[key_name_admin(user)] opened '[src.name]' containing [gases]. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)")
+
+/obj/machinery/portable_atmospherics/proc/log_open_userless(var/cause)
+	if(air_contents.gas.len == 0)
+		return
+
+	message_admins("'[src.name]' was opened[cause ? " by [cause]" : ""], containing [english_list(air_contents.gas)]. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)")

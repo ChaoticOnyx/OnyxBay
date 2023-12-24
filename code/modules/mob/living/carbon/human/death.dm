@@ -1,110 +1,147 @@
-/mob/living/carbon/human/gib(anim, do_gibs)
-	if(status_flags & GODMODE)
-		return
+/mob/living/carbon/human/gib()
+	vr_disconnect()
 
-	visible_message(SPAN("danger", "[src]'s body gets [pick("torn apart", "torn into pieces", "gibbed")]!"), \
-					SPAN("moderate", "<b>Your body gets torn apart!</b>"), \
-					SPAN("danger", "You hear the sickening sound of somebody getting torn into pieces!"))
-
-	playsound(src, SFX_GIB, 75, 1)
 	for(var/obj/item/organ/I in internal_organs)
-		I.removed(null, TRUE, TRUE)
-		if(!QDELETED(I) && isturf(loc))
-			I.throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), 1)
+		I.removed()
+		if(isturf(loc))
+			I.throw_at(get_edge_target_turf(src,pick(alldirs)),rand(1,3),30)
 
-	playsound(src, SFX_FIGHTING_CRUNCH, 75, 1)
-	for(var/obj/item/organ/external/E in organs)
-		E.droplimb(TRUE, DROPLIMB_EDGE, TRUE, TRUE)
+	for(var/obj/item/organ/external/E in src.organs)
+		E.droplimb(0,DROPLIMB_EDGE,1)
 
 	sleep(1)
 
 	for(var/obj/item/I in src)
-		if(I.loc == src) // Belts are dropped after uni removal etc.
-			drop(I, force = TRUE)
-		if(!QDELETED(I) && isturf(I.loc))
-			I.throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), 1)
+		drop_from_inventory(I)
+		I.throw_at(get_edge_target_turf(src,pick(alldirs)), rand(1,3), round(30/I.w_class))
 
-	gibs(loc, MobDNA = dna, fleshcolor = species.get_flesh_colour(src), bloodcolor = species.get_blood_colour(src))
-	..(species.gibbed_anim, FALSE)
+	..(species.gibbed_anim)
+	gibs(loc, viruses, dna, null, species.flesh_color, species.blood_color)
 
 /mob/living/carbon/human/dust()
-	if(status_flags & GODMODE)
-		return
+	vr_disconnect()
+
 	if(species)
-		..(species.dusted_anim, species.remains_type)
+		..(species.dust_remains_type)
 	else
 		..()
 
-/mob/living/carbon/human/death(gibbed, deathmessage = "seizes up and falls limp...", show_dead_message = "You have died.")
-
-	if(is_ic_dead())
+/mob/living/carbon/human/death(gibbed)
+	if(stat == DEAD)
 		return
 
-	if(mind?.wizard?.lich)
-		mind.wizard.escape_to_lich(mind)
+	vr_disconnect()
 
 	BITSET(hud_updateflag, HEALTH_HUD)
 	BITSET(hud_updateflag, STATUS_HUD)
 	BITSET(hud_updateflag, LIFE_HUD)
 
-	//backs up lace if available.
-	var/obj/item/organ/internal/stack/s = get_organ(BP_STACK)
-	if(s)
-		s.do_backup()
-
 	//Handle species-specific deaths.
-	species.handle_death(src)
-
+	species.handle_death(src, gibbed)
 	animate_tail_stop()
 
+	//Handle brain slugs.
+	var/obj/item/organ/external/head = get_organ(BP_HEAD)
+	var/mob/living/simple_animal/borer/B
+
+	if(head)
+		for(var/I in head.implants)
+			if(istype(I,/mob/living/simple_animal/borer))
+				B = I
+		if(B)
+			if(!B.ckey && ckey && B.controlling)
+				B.ckey = ckey
+				B.controlling = 0
+			if(B.host_brain?.ckey)
+				ckey = B.host_brain.ckey
+				B.host_brain.ckey = null
+				B.host_brain.name = "host brain"
+				B.host_brain.real_name = "host brain"
+
+			remove_verb(src, /mob/living/carbon/proc/release_control)
+
 	callHook("death", list(src, gibbed))
+
+	if(!gibbed)
+		if(species.death_sound)
+			playsound(loc, species.death_sound, 80, 1, 1)
 
 	if(SSticker.mode)
 		sql_report_death(src)
 		SSticker.mode.check_win()
 
-	if(wearing_rig)
+	if(wearing_rig?.ai_override_enabled)
 		wearing_rig.notify_ai("<span class='danger'>Warning: user death event. Mobility control passed to integrated intelligence system.</span>")
 
-	. = ..(gibbed, "no message", show_dead_message) // I don't know why second argument exists, it's not me.
-	if(!gibbed)
+	. = ..(gibbed, species.death_message, species.death_message_range)
+
+	if(!gibbed) //We want to handle organs one last time to make sure that hearts don't report a positive pulse after death.
 		handle_organs()
-		if(species.death_sound)
-			playsound(loc, species.death_sound, 80, 1, 1)
+
 	handle_hud_list()
 
+	updatehealth()
+
 /mob/living/carbon/human/proc/ChangeToHusk()
-	if(MUTATION_HUSK in mutations)
+	if(HAS_FLAG(mutations, HUSK))
 		return
 
-	RemoveHairAndFacials()
+	if(f_style)
+		f_style = "Shaved"		//we only change the icon_state of the hair datum, so it doesn't mess up their UI/UE
+	if(h_style)
+		h_style = "Bald"
+	update_hair(0)
 
-	mutations.Add(MUTATION_HUSK)
-	for(var/obj/item/organ/external/head/h in organs)
-		h.status |= ORGAN_DISFIGURED
-	update_body(1)
+	name = "Unknown"
+	real_name = "Unknown"
+
+	scrub_flavor_text()
+
+	mutations |= HUSK
+	status_flags |= DISFIGURED	//makes them unknown without fucking up other stuff like admintools
+	update_body(TRUE)
 	return
 
 /mob/living/carbon/human/proc/Drain()
 	ChangeToHusk()
-	mutations |= MUTATION_HUSK
+	mutations |= HUSK
 	return
 
-/mob/living/carbon/human/proc/ChangeToSkeleton()
-	if(MUTATION_SKELETON in src.mutations)
+/mob/living/carbon/human/proc/ChangeToSkeleton(var/keep_name = FALSE)
+	if(HAS_FLAG(mutations, SKELETON))
 		return
 
-	RemoveHairAndFacials()
-
-	mutations.Add(MUTATION_SKELETON)
-	for(var/obj/item/organ/external/head/h in organs)
-		h.status |= ORGAN_DISFIGURED
-	update_body(1)
-	return
-
-/mob/living/carbon/human/proc/RemoveHairAndFacials()
 	if(f_style)
 		f_style = "Shaved"
 	if(h_style)
 		h_style = "Bald"
-	update_hair(FALSE)
+	update_hair(0)
+
+	if(!keep_name)
+		name = "Unknown"
+		real_name = "Unknown"
+		scrub_flavor_text()
+
+	mutations |= SKELETON
+	status_flags |= DISFIGURED
+	update_body(TRUE)
+
+/mob/living/carbon/human/proc/scrub_flavor_text()
+	for(var/text in flavor_texts)
+		flavor_texts[text] = null
+
+/mob/living/carbon/human/proc/vr_disconnect()
+	if(remote_network)
+		SSvirtualreality.remove_robot(src, remote_network)
+		remote_network = null
+
+/mob/living/carbon/human/proc/drop_all_limbs(var/droplimb_type = DROPLIMB_BLUNT)
+	for(var/thing in organs)
+		var/obj/item/organ/external/limb = thing
+		var/limb_can_amputate = (limb.limb_flags & ORGAN_CAN_AMPUTATE)
+		limb.limb_flags |= ORGAN_CAN_AMPUTATE
+		limb.droplimb(TRUE, droplimb_type, TRUE, TRUE)
+		if(!QDELETED(limb) && !limb_can_amputate)
+			limb.limb_flags &= ~ORGAN_CAN_AMPUTATE
+	dump_contents()
+	qdel(src)

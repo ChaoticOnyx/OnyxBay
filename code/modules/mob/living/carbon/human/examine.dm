@@ -1,295 +1,358 @@
-/mob/living/carbon/human/_examine_text(mob/user)
+/mob/living/carbon/human/proc/get_covered_body_parts(var/thick)
+	var/skipbody = 0
+	for(var/obj/item/clothing/C in list(wear_suit, head, wear_mask, w_uniform, gloves, shoes))
+		if(!thick || (C.item_flags & ITEM_FLAG_THICK_MATERIAL))
+			skipbody |= C.body_parts_covered
+	return skipbody
 
-	if(istype(wear_suit, /obj/item/clothing/suit/armor/abductor/vest))
-		var/obj/item/clothing/suit/armor/abductor/vest/abd_vest = wear_suit
-		if(abd_vest.stealth_active)
-			return abd_vest.disguise.examine
+/mob/living/carbon/human/proc/get_covered_clothes()
+	var/skipitems = 0
+	for(var/obj/item/clothing/C in list(wear_suit, head, wear_mask, w_uniform, gloves, shoes))
+		skipitems |= C.flags_inv
+	return skipitems
 
-	var/skipgloves = 0
-	var/skipsuitstorage = 0
-	var/skipjumpsuit = 0
-	var/skipshoes = 0
-	var/skipmask = 0
-	var/skipears = 0
-	var/skipeyes = 0
-	var/skipface = 0
-	var/skipjumpsuitaccessories = FALSE
+/mob/living/carbon/human/proc/examine_pulse(mob/user)
+	if(user.stat || user.incapacitated() || !ishuman(user))
+		return
 
-	// exosuits and helmets obscure our view and stuff.
-	if(wear_suit)
-		skipgloves = wear_suit.flags_inv & HIDEGLOVES
-		skipsuitstorage = wear_suit.flags_inv & HIDESUITSTORAGE
-		skipjumpsuit = wear_suit.flags_inv & HIDEJUMPSUIT
-		skipshoes = wear_suit.flags_inv & HIDESHOES
-		skipjumpsuitaccessories = wear_suit.flags_inv & HIDEJUMPSUITACCESSORIES
-
-	if(head)
-		skipmask = head.flags_inv & HIDEMASK
-		skipeyes = head.flags_inv & HIDEEYES
-		skipears = head.flags_inv & HIDEEARS
-		skipface = head.flags_inv & HIDEFACE
-
-	if(wear_mask)
-		skipface |= wear_mask.flags_inv & HIDEFACE
-
-	// no accuately spotting headsets from across the room.
-	if(get_dist(user, src) > 3)
-		skipears = 1
-
-	var/list/msg = list("This is ")
-
-	var/datum/gender/T = gender_datums[get_gender()]
-	if(skipjumpsuit && skipface) // big suits/masks/helmets make it hard to tell their gender
-		T = gender_datums[PLURAL]
-	else
-		if(icon)
-			msg += "[icon2html(icon, user)] " // fucking BYOND: this should stop dreamseeker crashing if we -somehow- examine somebody before their icon is generated
-
-	if(!T)
-		// Just in case someone VVs the gender to something strange. It'll runtime anyway when it hits usages, better to CRASH() now with a helpful message.
-		CRASH("Gender datum was null; key was '[(skipjumpsuit && skipface) ? PLURAL : gender]'")
-
-	msg += SPAN("info", "<em>[src.name]</em>")
-
-	var/is_synth = isSynthetic()
-	if(!(skipjumpsuit && skipface))
-		var/species_name = "\improper "
-		if(is_synth && species.type != /datum/species/machine)
-			species_name += "Cyborg "
-		species_name += "[species.name]"
-		msg += ", <b><font color='[species.get_flesh_colour(src)]'> \a [species_name]!</font></b>"
-	var/extra_species_text = species.get_additional_examine_text(src)
-	if(extra_species_text)
-		msg += "[extra_species_text]<br>"
-
-	msg += "<br>"
-
-	// uniform
-	if(w_uniform && !skipjumpsuit)
-		msg += "[T.He] [T.is] wearing [w_uniform.get_examine_line(!skipjumpsuitaccessories)].\n"
-
-	// head
-	if(head)
-		msg += "[T.He] [T.is] wearing [head.get_examine_line()] on [T.his] head.\n"
-
-	// suit/armour
-	if(wear_suit)
-		msg += "[T.He] [T.is] wearing [wear_suit.get_examine_line()].\n"
-		// suit/armour storage
-		if(s_store && !skipsuitstorage)
-			msg += "[T.He] [T.is] carrying [s_store.get_examine_line()] on [T.his] [wear_suit.name].\n"
-
-	// back
-	if(back)
-		msg += "[T.He] [T.has] [back.get_examine_line()] on [T.his] back.\n"
-
-	// left hand
-	if(l_hand)
-		msg += "[T.He] [T.is] holding [l_hand.get_examine_line()] in [T.his] left hand.\n"
-
-	// right hand
-	if(r_hand)
-		msg += "[T.He] [T.is] holding [r_hand.get_examine_line()] in [T.his] right hand.\n"
-
-	// gloves
-	if(gloves && !skipgloves)
-		msg += "[T.He] [T.has] [gloves.get_examine_line()] on [T.his] hands.\n"
-	else if(is_bloodied)
-		msg += SPAN("warning", "[T.He] [T.has] [(hand_blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained hands!\n")
-
-	// belt
-	if(belt)
-		msg += "[T.He] [T.has] [belt.get_examine_line()] about [T.his] waist.\n"
-
-	// shoes
-	if(shoes && !skipshoes)
-		msg += "[T.He] [T.is] wearing [shoes.get_examine_line()] on [T.his] feet.\n"
-	else if(feet_blood_color)
-		msg += SPAN("warning", "[T.He] [T.has] [(feet_blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained feet!\n")
-
-	// mask
-	if(wear_mask && !skipmask)
-		var/descriptor = "on [T.his] face"
-		if(istype(wear_mask, /obj/item/grenade))
-			descriptor = "in [T.his] mouth"
-
-		if(wear_mask.is_bloodied)
-			msg += SPAN("warning", "[T.He] [T.has] \icon[wear_mask] [wear_mask.gender==PLURAL?"some":"a"] [(wear_mask.blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [wear_mask.name] [descriptor]!\n")
+	var/mob/living/carbon/human/H = user
+	if(H.has_stethoscope_active())
+		var/obj/item/organ/organ = src.get_organ(user.zone_sel.selecting)
+		if(organ)
+			user.visible_message("<b>[user]</b> checks [src] with a stethoscope.", "You check [src] with the stethoscope on your person.")
+			to_chat(user, SPAN_NOTICE("You place the stethoscope against [src]'s [organ.name]. You hear <b>[english_list(organ.listen())]</b>."))
 		else
-			msg += "[T.He] [T.has] \icon[wear_mask] \a [wear_mask] [descriptor].\n"
+			to_chat(user, SPAN_WARNING("[src] is missing that limb!"))
 
-	// eyes
+	else if(src.stat && !(src.species.flags & NO_BLOOD))
+		user.visible_message("<b>[user]</b> checks [src]'s pulse.", "You check [src]'s pulse.")
+		if(do_mob(user, src, 15))
+			if(pulse() == PULSE_NONE || (status_flags & FAKEDEATH))
+				to_chat(user, "<span class='deadsay'>[get_pronoun("He")] [get_pronoun("has")] no pulse.</span>")
+			else
+				to_chat(user, "<span class='deadsay'>[get_pronoun("He")] [get_pronoun("has")] a pulse!</span>")
+
+/mob/living/carbon/human/examine(mob/user, distance, is_adjacent)
+	var/skipbody = get_covered_body_parts()
+	var/skipbody_thick = get_covered_body_parts(TRUE)
+	var/skipitems = get_covered_clothes()
+
+	//exosuits and helmets obscure our view and stuff.
+	var/skipgloves = skipitems & HIDEGLOVES
+	var/skipsuitstorage = skipitems & HIDESUITSTORAGE
+	var/skipjumpsuit = skipitems & HIDEJUMPSUIT
+	var/skipshoes = skipitems & HIDESHOES
+	var/skipmask = skipitems & HIDEMASK
+	var/skipeyes = skipitems & HIDEEYES
+	var/skipears = skipitems & HIDEEARS
+	var/skipwrists = skipitems & HIDEWRISTS
+
+	var/list/msg = list("<span class='info'>*---------*\nThis is ")
+
+	if(icon)
+		msg += icon2html(icon, user)
+
+	msg += "<EM>[src.name]</EM>"
+
+	if(!species.hide_name)
+		msg += ", a <b><font color='[species.examine_color || species.flesh_color]'>[species.name]</font></b>"
+	msg += "!\n"
+
+	//uniform
+	if(w_uniform && !skipjumpsuit)
+		//Ties
+		var/tie_msg
+		var/tie_msg_warn
+		if(istype(w_uniform,/obj/item/clothing/under))
+			var/obj/item/clothing/under/U = w_uniform
+			if(LAZYLEN(U.accessories))
+				tie_msg += ". Attached to it is"
+				tie_msg_warn += "! Attached to it is"
+				var/list/accessory_descs = list()
+				for(var/accessory in U.accessories)
+					if(istype(accessory, /obj/item/clothing/accessory/holster)) //so you can't see what kind of gun a holster is holding from afar
+						accessory_descs += "\a [accessory]"
+					else
+						accessory_descs += "<a href='?src=\ref[src];lookitem_desc_only=\ref[accessory]'>\a [accessory]</a>"
+
+				tie_msg += " [lowertext(english_list(accessory_descs))]"
+				tie_msg_warn += " [lowertext(english_list(accessory_descs))]"
+
+		if(w_uniform.blood_color)
+			msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("is")] wearing [icon2html(w_uniform, user)] [w_uniform.gender==PLURAL?"some":"a"] [fluid_color_type_map(w_uniform.blood_color)]-stained <a href='?src=\ref[src];lookitem_desc_only=\ref[w_uniform]'>[w_uniform.name]</a>[tie_msg_warn].</span>\n"
+		else
+			msg += "[get_pronoun("He")] [get_pronoun("is")] wearing [icon2html(w_uniform, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[w_uniform]'>\a [w_uniform]</a>[tie_msg].\n"
+
+	//head
+	if(head)
+		if(head.blood_color)
+			msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("is")] wearing [icon2html(head, user)] [head.gender==PLURAL?"some":"a"] [fluid_color_type_map(head.blood_color)]-stained <a href='?src=\ref[src];lookitem_desc_only=\ref[head]'>[head.name]</a> [head.get_head_examine_text(src)]!</span>\n"
+		else
+			msg += "[get_pronoun("He")] [get_pronoun("is")] wearing [icon2html(head, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[head]'>\a [head]</a> [head.get_head_examine_text(src)].\n"
+
+	//suit/armor
+	if(wear_suit)
+		var/tie_msg
+		var/tie_msg_warn
+		if(istype(wear_suit,/obj/item/clothing/suit))
+			var/obj/item/clothing/suit/U = wear_suit
+			if(LAZYLEN(U.accessories))
+				tie_msg += ". Attached to it is"
+				tie_msg_warn += "! Attached to it is"
+				var/list/accessory_descs = list()
+				for(var/accessory in U.accessories)
+					accessory_descs += "<a href='?src=\ref[src];lookitem_desc_only=\ref[accessory]'>\a [accessory]</a>"
+
+				tie_msg += " [lowertext(english_list(accessory_descs))]"
+				tie_msg_warn += " [lowertext(english_list(accessory_descs))]"
+
+		if(wear_suit.blood_color)
+			msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("is")] wearing [icon2html(wear_suit, user)] [wear_suit.gender==PLURAL?"some":"a"] [fluid_color_type_map(wear_suit.blood_color)]-stained <a href='?src=\ref[src];lookitem_desc_only=\ref[wear_suit]'>[wear_suit.name]</a>[tie_msg_warn].</span>\n"
+		else
+			msg += "[get_pronoun("He")] [get_pronoun("is")] wearing [icon2html(wear_suit, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[wear_suit]'>\a [wear_suit]</a>[tie_msg].\n"
+
+		//suit/armor storage
+		if(s_store && !skipsuitstorage)
+			if(s_store.blood_color)
+				msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("is")] carrying [icon2html(s_store, user)] [s_store.gender==PLURAL?"some":"a"] [fluid_color_type_map(s_store.blood_color)]-stained <a href='?src=\ref[src];lookitem_desc_only=\ref[s_store]'>[s_store.name]</a> on [get_pronoun("his")] [wear_suit.name]!</span>\n"
+			else
+				msg += "[get_pronoun("He")] [get_pronoun("is")] carrying [icon2html(s_store, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[s_store]'>\a [s_store]</a> on [get_pronoun("his")] [wear_suit.name].\n"
+	else if(s_store && !skipsuitstorage)
+		if(s_store.blood_color)
+			msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("is")] carrying [icon2html(s_store, user)] [s_store.gender==PLURAL?"some":"a"] [fluid_color_type_map(s_store.blood_color)]-stained <a href='?src=\ref[src];lookitem_desc_only=\ref[s_store]'>[s_store.name]</a> on [get_pronoun("his")] chest!</span>\n"
+		else
+			msg += "[get_pronoun("He")] [get_pronoun("is")] carrying [icon2html(s_store, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[s_store]'>\a [s_store]</a> on [get_pronoun("his")] chest.\n"
+
+	//back
+	if(back)
+		if(back.blood_color)
+			msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("has")] [icon2html(back, user)] [fluid_color_type_map(back.blood_color)]-stained <a href='?src=\ref[src];lookitem_desc_only=\ref[back]'>[back]</a> on [get_pronoun("his")] back.</span>\n"
+		else
+			msg += "[get_pronoun("He")] [get_pronoun("has")] [icon2html(back, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[back]'>\a [back]</a> on [get_pronoun("his")] back.\n"
+
+	//left hand
+	if(l_hand)
+		if(l_hand.blood_color)
+			msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("is")] holding [icon2html(l_hand, user)] [l_hand.gender==PLURAL?"some":"a"] [fluid_color_type_map(l_hand.blood_color)]-stained <a href='?src=\ref[src];lookitem_desc_only=\ref[l_hand]'>[l_hand.name]</a> in [get_pronoun("his")] left hand!</span>\n"
+		else
+			msg += "[get_pronoun("He")] [get_pronoun("is")] holding [icon2html(l_hand, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[l_hand]'>\a [l_hand]</a> in [get_pronoun("his")] left hand.\n"
+
+	//right hand
+	if(r_hand)
+		if(r_hand.blood_color)
+			msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("is")] holding [icon2html(r_hand, user)] [r_hand.gender==PLURAL?"some":"a"] [fluid_color_type_map(r_hand.blood_color)]-stained <a href='?src=\ref[src];lookitem_desc_only=\ref[r_hand]'>[r_hand.name]</a> in [get_pronoun("his")] right hand!</span>\n"
+		else
+			msg += "[get_pronoun("He")] [get_pronoun("is")] holding [icon2html(r_hand, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[r_hand]'>\a [r_hand]</a> in [get_pronoun("his")] right hand.\n"
+
+	//gloves
+	if(gloves && !skipgloves)
+		var/gloves_name = gloves
+		if(gloves.blood_color)
+			msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("has")] [icon2html(gloves, user)] [gloves.gender==PLURAL?"some":"a"] [fluid_color_type_map(gloves.blood_color)]-stained <a href='?src=\ref[src];lookitem_desc_only=\ref[gloves]'>[gloves_name]</a> on [get_pronoun("his")] hands!</span>\n"
+		else
+			msg += "[get_pronoun("He")] [get_pronoun("has")] [icon2html(gloves, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[gloves]'>\a [gloves_name]</a> on [get_pronoun("his")] hands.\n"
+	else if(blood_color)
+		msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("has")] [fluid_color_type_map(hand_blood_color)]-stained hands!</span>\n"
+
+	//belt
+	if(belt)
+		if(belt.blood_color)
+			msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("has")] [icon2html(belt, user)] [belt.gender==PLURAL?"some":"a"] [fluid_color_type_map(belt.blood_color)]-stained <a href='?src=\ref[src];lookitem_desc_only=\ref[belt]'>[belt.name]</a> about [get_pronoun("his")] waist!</span>\n"
+		else
+			msg += "[get_pronoun("He")] [get_pronoun("has")] [icon2html(belt, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[belt]'>\a [belt]</a> about [get_pronoun("his")] waist.\n"
+
+	//shoes
+	if(shoes && !skipshoes)
+		if(shoes.blood_color)
+			msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("is")] wearing [icon2html(shoes, user)] [shoes.gender==PLURAL?"some":"a"] [fluid_color_type_map(shoes.blood_color)]-stained <a href='?src=\ref[src];lookitem_desc_only=\ref[shoes]'>[shoes.name]</a> on [get_pronoun("his")] feet!</span>\n"
+		else
+			msg += "[get_pronoun("He")] [get_pronoun("is")] wearing [icon2html(shoes, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[shoes]'>\a [shoes]</a> on [get_pronoun("his")] feet.\n"
+	else if(footprint_color)
+		msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("has")] [fluid_color_type_map(footprint_color)]-stained feet!</span>\n"
+
+	//mask
+	if(wear_mask && !skipmask)
+		if(wear_mask.blood_color)
+			msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("has")] [icon2html(wear_mask, user)] [wear_mask.gender==PLURAL?"some":"a"] [fluid_color_type_map(wear_mask.blood_color)]-stained <a href='?src=\ref[src];lookitem_desc_only=\ref[wear_mask]'>[wear_mask.name]</a> [wear_mask.get_mask_examine_text(src)]!</span>\n"
+		else
+			msg += "[get_pronoun("He")] [get_pronoun("has")] [icon2html(wear_mask, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[wear_mask]'>\a [wear_mask]</a> [wear_mask.get_mask_examine_text(src)].\n"
+
+	//eyes
 	if(glasses && !skipeyes)
-		msg += "[T.He] [T.has] [glasses.get_examine_line()] covering [T.his] eyes.\n"
+		if(glasses.blood_color)
+			msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("has")] [icon2html(glasses, user)] [glasses.gender==PLURAL?"some":"a"] [fluid_color_type_map(glasses.blood_color)]-stained <a href='?src=\ref[src];lookitem_desc_only=\ref[glasses]'>[glasses]</a> covering [get_pronoun("his")] eyes!</span>\n"
+		else
+			msg += "[get_pronoun("He")] [get_pronoun("has")] [icon2html(glasses, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[glasses]'>\a [glasses]</a> covering [get_pronoun("his")] eyes.\n"
 
-	// left ear
+	//left ear
 	if(l_ear && !skipears)
-		msg += "[T.He] [T.has] [l_ear.get_examine_line()] on [T.his] left ear.\n"
+		msg += "[get_pronoun("He")] [get_pronoun("has")] [icon2html(l_ear, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[l_ear]'>\a [l_ear]</a> [l_ear.get_ear_examine_text(src, "left")].\n"
 
-	// right ear
+	//right ear
 	if(r_ear && !skipears)
-		msg += "[T.He] [T.has] [r_ear.get_examine_line()] on [T.his] right ear.\n"
+		msg += "[get_pronoun("He")] [get_pronoun("has")] [icon2html(r_ear, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[r_ear]'>\a [r_ear]</a> [r_ear.get_ear_examine_text(src, "right")].\n"
 
-	// ID
+	//ID
 	if(wear_id)
-		msg += "[T.He] [T.is] wearing [wear_id.get_examine_line()].\n"
+		var/id_name = wear_id
+		msg += "[get_pronoun("He")] [get_pronoun("is")] wearing [icon2html(wear_id, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[wear_id]'>\a [id_name]</a>.\n"
 
-	// handcuffed?
-	if(handcuffed)
-		if(istype(handcuffed, /obj/item/handcuffs/cable))
-			msg += SPAN("warning", "[T.He] [T.is] \icon[handcuffed] restrained with [handcuffed.name]!\n")
-		else if(istype(handcuffed, /obj/item/handcuffs))
-			msg += SPAN("warning", "[T.He] [T.is] \icon[handcuffed] handcuffed!\n")
-		else if(istype(handcuffed, /obj/item/clothing/suit/straight_jacket))
-			msg += SPAN("warning", "[T.He] [T.is] \icon[handcuffed] restrained with a straight jacket!\n")
+	//wrists
+	if(wrists && !skipwrists)
+		msg += "[get_pronoun("He")] [get_pronoun("is")] wearing [icon2html(wrists, user)] <a href='?src=\ref[src];lookitem_desc_only=\ref[wrists]'>\a [wrists]</a> on [get_pronoun("his")] [wrists.gender==PLURAL?"wrists":"wrist"].\n"
 
-	// buckled
-	if(buckled)
-		msg += SPAN("warning", "[T.He] [T.is] \icon[buckled] buckled to [buckled]!\n")
-
-	// Jitters
+	//Jitters
 	if(is_jittery)
 		if(jitteriness >= 300)
-			msg += SPAN("warning", "<B>[T.He] [T.is] convulsing violently!</B>\n")
+			msg += "<span class='warning'><B>[get_pronoun("He")] [get_pronoun("is")] convulsing violently!</B></span>\n"
 		else if(jitteriness >= 200)
-			msg += SPAN("warning", "[T.He] [T.is] extremely jittery.\n")
+			msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("is")] extremely jittery.</span>\n"
 		else if(jitteriness >= 100)
-			msg += SPAN("warning", "[T.He] [T.is] twitching ever so slightly.\n")
+			msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("is")] twitching ever so slightly.</span>\n"
 
-	// Disfigured face
-	if(!skipface) // Disfigurement only matters for the head currently.
-		var/obj/item/organ/external/head/E = get_organ(BP_HEAD)
-		if(E && (E.status & ORGAN_DISFIGURED)) // Check to see if we even have a head and if the head's disfigured.
-			if(E.species) // Check to make sure we have a species
-				msg += E.species.disfigure_msg(src)
-			else // Just in case they lack a species for whatever reason.
-				msg += SPAN("warning", "[T.His] face is horribly mangled!\n")
-
-	// splints
-	for(var/organ in list(BP_L_LEG, BP_R_LEG, BP_L_ARM, BP_R_ARM))
+	//splints
+	for(var/organ in list(BP_L_LEG,BP_R_LEG,BP_L_ARM,BP_R_ARM,BP_L_HAND,BP_R_HAND,BP_R_FOOT,BP_L_FOOT))
 		var/obj/item/organ/external/o = get_organ(organ)
-		if(o && o.splinted && o.splinted.loc == o)
-			msg += SPAN("warning", "[T.He] [T.has] \a [o.splinted] on [T.his] [o.name]!\n")
+		if(o)
+			if(o.status & ORGAN_SPLINTED)
+				msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("has")] a splint on [get_pronoun("his")] [o.name]!</span>\n"
+			if(o.applied_pressure == src)
+				msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("is")] applying pressure to [get_pronoun("his")] [o.name]!</span>\n"
 
-	if(mSmallsize in mutations)
-		msg += "[T.He] [T.is] small halfling!\n"
+	if(HAS_FLAG(mutations, mSmallsize))
+		msg += "[get_pronoun("He")] [get_pronoun("is")] small halfling!\n"
+	//height
+	if(height)
+		msg += "[SPAN_NOTICE("[assemble_height_string(user)]")]\n"
 
-	var/distance = 0
-	if(isghost(user) || user?.is_ooc_dead()) // ghosts can see anything
-		distance = 1
-	else
-		distance = get_dist(user,src)
-	if(src.stat)
-		msg += SPAN("warning", "[T.He] [T.is]n't responding to anything around [T.him] and seems to be unconscious.\n")
-		if((is_ic_dead() || is_asystole() || src.losebreath) && distance <= 3)
-			msg += SPAN("warning", "[T.He] [T.does] not appear to be breathing.\n")
-		if(user && ishuman(user) && !user.incapacitated() && Adjacent(user))
-			spawn(0)
-				user.visible_message("<b>\The [user]</b> checks \the [src]'s pulse.", "You check \the [src]'s pulse.")
-				if(do_after(user, 15, src))
-					if(pulse() == PULSE_NONE)
-						to_chat(user, SPAN("deadsay", "[T.He] [T.has] no pulse."))
-					else
-						to_chat(user, SPAN("deadsay", "[T.He] [T.has] a pulse!"))
+	//buckled_to
+	if(buckled_to)
+		msg += "[get_pronoun("He")] [get_pronoun("is")] buckled to [icon2html(buckled_to, user)] [buckled_to].\n"
+
+	//handcuffed?
+	if(handcuffed)
+		msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("has")] [icon2html(handcuffed, user)] cuffs around [get_pronoun("his")] wrists!</span>\n"
+
+	//handcuffed?
+	if(legcuffed)
+		msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("has")] [icon2html(legcuffed, user)] cuffs around [get_pronoun("his")] ankles!</span>\n"
+
+	//Red Nightshade
+	if(is_berserk())
+		msg += "<span class='warning'><B>[get_pronoun("He")] [get_pronoun("has")] engorged veins, which appear a vibrant red!</B></span>\n"
+
+	if((src.stat || (status_flags & FAKEDEATH)) && !(src.species.flags & NO_BLOOD))	// No point checking pulse of a species that doesn't have one.
+		msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("is")]n't responding to anything around [get_pronoun("him")] and seems to be unconscious.</span>\n"
+		if(distance <= 3 && ((stat == DEAD || is_asystole() || src.losebreath) || (status_flags & FAKEDEATH)))
+			msg += "<span class='warning'>[get_pronoun("He")] [get_pronoun("does")] not appear to be breathing.</span>\n"
+
+	else if (src.stat)
+		msg += SPAN_WARNING("[get_pronoun("He")] [get_pronoun("is")] not responding to anything around [get_pronoun("him")].\n")
 
 	if(fire_stacks)
-		msg += "[T.He] looks flammable.\n"
+		msg += "[get_pronoun("He")] [get_pronoun("is")] covered in some liquid.\n"
+
 	if(on_fire)
-		msg += SPAN("warning", "[T.He] [T.is] on fire!.\n")
+		msg += "<span class='danger'>[get_pronoun("He")] [get_pronoun("is")] on fire!</span>\n"
 
-	for(var/datum/modifier/M in modifiers)
-		var/modifier_txt = M._examine_text()
-		if(!isnull(modifier_txt))
-			msg += "[]\n"
+	//when the player is winded by an admin
+	if(paralysis > 6000)
+		msg += "<span><font size='3'><font color='#002eb8'><b>OOC Information:</b></font> <font color='red'>This player has been winded by a member of staff! Please freeze all roleplay involving their character until the matter is resolved! Adminhelp if you have further questions.</font></font></span>\n"
 
-	var/ssd_msg = species.get_ssd(src)
-	if(ssd_msg && (!should_have_organ(BP_BRAIN) || has_brain()) && !is_ic_dead())
-		if(!key)
-			msg += SPAN("deadsay", "[T.He] [T.is] [ssd_msg]. It doesn't look like [T.he] [T.is] waking up anytime soon.\n")
-		else if(!client)
-			msg += SPAN("deadsay", "[T.He] [T.is] [ssd_msg].\n")
+	msg += "<span class='warning'>"
 
-	var/obj/item/organ/external/head/H = organs_by_name[BP_HEAD]
-	if(istype(H) && H.forehead_graffiti && H.graffiti_style)
-		msg += SPAN("notice", "[T.He] [T.has] \"[H.forehead_graffiti]\" written on [T.his] [H.name] in [H.graffiti_style]!\n")
+	msg += "</span>"
+
+	var/have_client = client
+	var/inactivity = client ? client.inactivity : null
+
+	if(bg)
+		disconnect_time = bg.disconnect_time
+		have_client = bg.client
+		inactivity =  have_client ? bg.client.inactivity : null
+
+
+	if(species.show_ssd && (!species.has_organ[BP_BRAIN] || has_brain()) && stat != DEAD && !(status_flags & FAKEDEATH))
+		if(!vr_mob && !key)
+			msg += "<span class='deadsay'>[get_pronoun("He")] [get_pronoun("is")] [species.show_ssd]. It doesn't look like [get_pronoun("he")] [get_pronoun("is")] waking up anytime soon.</span>\n"
+		else if(!vr_mob && !client && !bg)
+			msg += "<span class='deadsay'>[get_pronoun("He")] [get_pronoun("is")] [species.show_ssd].</span>\n"
+		if(have_client && ((inactivity / 600) > 10)) // inactivity/10/60 > 10 MINUTES
+			msg += "<span class='deadsay'>\[Inactive for [round(inactivity / 600)] minutes.\]\n</span>"
+		else if(!have_client && (world.realtime - disconnect_time) >= 5 MINUTES)
+			msg += "<span class='deadsay'>\[Disconnected/ghosted [(world.realtime - disconnect_time)/600] minutes ago.\]\n</span>"
 
 	var/list/wound_flavor_text = list()
-	var/applying_pressure = ""
-	var/list/shown_objects = list()
+	var/list/is_bleeding = list()
 
 	for(var/organ_tag in species.has_limbs)
 
 		var/list/organ_data = species.has_limbs[organ_tag]
 		var/organ_descriptor = organ_data["descriptor"]
+
 		var/obj/item/organ/external/E = organs_by_name[organ_tag]
-
 		if(!E)
-			wound_flavor_text[organ_descriptor] = "<b>[T.He] [T.is] missing [T.his] [organ_descriptor].</b>\n"
-			continue
-
-		wound_flavor_text[E.name] = ""
-
-		if(E.applied_pressure == src)
-			applying_pressure = SPAN("info", "[T.He] [T.is] applying pressure to [T.his] [E.name].<br>")
-
-		var/obj/item/clothing/hidden
-		var/list/clothing_items = list(head, wear_mask, wear_suit, w_uniform, gloves, shoes)
-		for(var/obj/item/clothing/C in clothing_items)
-			if(istype(C) && (C.body_parts_covered & E.body_part))
-				hidden = C
-				break
-
-		if(hidden && user != src)
-			if(E.status & ORGAN_BLEEDING && !(hidden.item_flags & ITEM_FLAG_THICKMATERIAL)) //not through a spacesuit
-				wound_flavor_text[hidden.name] = SPAN("danger", "[T.He] [T.has] blood soaking through [hidden]!<br>")
+			wound_flavor_text["[organ_descriptor]"] = "<span class='warning'><b>[get_pronoun("He")] [get_pronoun("is")] missing [get_pronoun("his")] [organ_descriptor].</b></span>\n"
+		else if(E.is_stump())
+			wound_flavor_text["[organ_descriptor]"] = "<span class='warning'><b>[get_pronoun("He")] [get_pronoun("has")] a stump where [get_pronoun("his")] [organ_descriptor] should be.</b></span>\n"
 		else
-			if(E.is_stump())
-				wound_flavor_text[E.name] += "<b>[T.He] [T.has] a stump where [T.his] [organ_descriptor] should be.</b>\n"
-				if(LAZYLEN(E.wounds) && E.parent)
-					wound_flavor_text[E.name] += "[T.He] [T.has] [E.get_wounds_desc()] on [T.his] [E.parent.name].<br>"
-			else
-				if(!is_synth && BP_IS_ROBOTIC(E) && (E.parent && !BP_IS_ROBOTIC(E.parent) && !BP_IS_ASSISTED(E.parent)))
-					wound_flavor_text[E.name] = "[T.He] [T.has] a [E.name].\n"
-				var/wounddesc = E.get_wounds_desc()
-				if(wounddesc != "nothing")
-					wound_flavor_text[E.name] += "[T.He] [T.has] [wounddesc] on [T.his] [E.name].<br>"
-		if(!hidden || distance <=1)
-			if(E.dislocated > 0)
-				wound_flavor_text[E.name] += "[T.His] [E.joint] is dislocated!<br>"
-			if(((E.status & ORGAN_BROKEN) && E.brute_dam > E.min_broken_damage) || (E.status & ORGAN_MUTATED))
-				wound_flavor_text[E.name] += "[T.His] [E.name] is dented and swollen!<br>"
-
-		for(var/datum/wound/wound in E.wounds)
-			var/list/embedlist = wound.embedded_objects
-			if(LAZYLEN(embedlist))
-				shown_objects += embedlist
-				var/parsedembed[0]
-				for(var/obj/embedded in embedlist)
-					if(!parsedembed.len || (!parsedembed.Find(embedded.name) && !parsedembed.Find("multiple [embedded.name]")))
-						parsedembed.Add(embedded.name)
-					else if(!parsedembed.Find("multiple [embedded.name]"))
-						parsedembed.Remove(embedded.name)
-						parsedembed.Add("multiple "+embedded.name)
-				wound_flavor_text["[E.name]"] += "The [wound.desc] on [T.his] [E.name] has [english_list(parsedembed)] sticking out of it!<br>"
-
-	msg += "<span class='warning'>"
-	for(var/limb in wound_flavor_text)
-		msg += wound_flavor_text[limb]
-	msg += "</span>"
-
-	for(var/obj/implant in get_visible_implants(0))
-		if(implant in shown_objects)
 			continue
-		msg += SPAN("danger", "[src] [T.has] \a [implant.name] sticking out of [T.his] flesh!\n")
-	if(digitalcamo)
-		msg += "[T.He] [T.is] repulsively uncanny!\n"
 
-	if(hasHUD(user, HUD_SECURITY))
+	for(var/obj/item/organ/external/temp in organs)
+		if(temp)
+			var/body_part = temp.body_part
+			if(temp.body_part & HEAD)
+				body_part &= ~HEAD
+				body_part |= (temp.body_part & FACE) ? HEAD : 0
+			if(skipbody_thick & body_part)
+				continue
+			var/thin_covering = (skipbody & body_part) ? TRUE : FALSE
+			if((temp.status & ORGAN_ASSISTED) && !thin_covering)
+				if(!(temp.brute_dam + temp.burn_dam) && !(temp.open))
+					continue
+				else
+					wound_flavor_text["[temp.name]"] = "<span class='warning'>[get_pronoun("He")] [get_pronoun("has")] [temp.get_wounds_desc()] on [get_pronoun("his")] [temp.name].</span><br>"
+			else if(length(temp.wounds) || temp.open)
+				if(!thin_covering)
+					if(temp.is_stump() && temp.parent_organ && organs_by_name[temp.parent_organ])
+						var/obj/item/organ/external/parent = organs_by_name[temp.parent_organ]
+						wound_flavor_text["[temp.name]"] = "<span class='warning'>[get_pronoun("He")] [get_pronoun("has")] [temp.get_wounds_desc()] on [get_pronoun("his")] [parent.name].</span><br>"
+					else
+						wound_flavor_text["[temp.name]"] = "<span class='warning'>[get_pronoun("He")] [get_pronoun("has")] [temp.get_wounds_desc()] on [get_pronoun("his")] [temp.name].</span><br>"
+				if(temp.status & ORGAN_BLEEDING)
+					if(thin_covering)
+						is_bleeding["[temp.body_part_class()]"] = "<span class='danger'>[get_pronoun("He")] [temp.covered_bleed_report(species.blood_type)]</span><br>"
+					else
+						is_bleeding["[temp.name]"] = "<span class='danger'>[get_pronoun("His")] [temp.name] is bleeding!</span><br>"
+			else
+				wound_flavor_text["[temp.name]"] = ""
+			if(temp.dislocated == 2)
+				wound_flavor_text["[temp.name]"] += "<span class='warning'>[get_pronoun("His")] [temp.joint] is dislocated!</span><br>"
+			if(((temp.status & ORGAN_BROKEN) && temp.brute_dam > temp.min_broken_damage) || (temp.status & ORGAN_MUTATED))
+				wound_flavor_text["[temp.name]"] += "<span class='warning'>[get_pronoun("His")] [temp.name] is dented and swollen!</span><br>"
+
+	//Handles the text strings being added to the actual description.
+	//If they have something that covers the limb, and it is not missing, put flavortext.  If it is covered but bleeding, add other flavortext.
+
+	for(var/limb in wound_flavor_text)
+		if(wound_flavor_text[limb])
+			msg += wound_flavor_text[limb]
+			is_bleeding[limb] = null
+	for(var/limb in is_bleeding)
+		msg += is_bleeding[limb]
+	for(var/obj/item/organ/external/organ in src.organs)
+		for(var/obj/item/O in organ.implants)
+			if(!istype(O,/obj/item/implant) && !istype(O,/obj/item/material/shard/shrapnel))
+				msg += "<span class='danger'>[src] [get_pronoun("has")] \a [O] sticking out of [get_pronoun("his")] [organ.name]!</span>\n"
+	if(digitalcamo)
+		msg += "[get_pronoun("He")] [get_pronoun("is")] a little difficult to identify.\n"
+
+	if(hasHUD(user,SEC_HUDTYPE))
 		var/perpname = "wot"
 		var/criminal = "None"
 
 		if(wear_id)
-			var/obj/item/card/id/I = wear_id.get_id_card()
+			var/obj/item/card/id/I = wear_id.GetID()
 			if(I)
 				perpname = I.registered_name
 			else
@@ -298,108 +361,154 @@
 			perpname = name
 
 		if(perpname)
-			var/datum/computer_file/crew_record/R = get_crewmember_record(perpname)
-			if(R)
-				criminal = R.get_criminalStatus()
+			var/datum/record/general/R = SSrecords.find_record("name", perpname)
+			if(istype(R) && istype(R.security))
+				criminal = R.security.criminal
 
-			msg += SPAN("deptradio", "Criminal status:") + " <a href='?src=\ref[src];criminal=1'>\[[criminal]\]</a>\n"
-			msg += SPAN("deptradio", "Security records:") + " <a href='?src=\ref[src];secrecord=`'>\[View\]</a>\n"
+			msg += "<span class = 'deptradio'>Criminal status:</span> <a href='?src=\ref[src];criminal=1'>\[[criminal]\]</a>\n"
+			msg += "<span class = 'deptradio'>Security records:</span> <a href='?src=\ref[src];secrecord=`'>\[View\]</a>  <a href='?src=\ref[src];secrecordadd=`'>\[Add comment\]</a>\n"
 
-	if(hasHUD(user, HUD_MEDICAL))
+	if(hasHUD(user,MED_HUDTYPE))
 		var/perpname = "wot"
-		var/physical = "None"
-		var/mental = "None"
+		var/medical = "None"
 
-		if(wear_id)
-			if(istype(wear_id,/obj/item/card/id))
-				perpname = wear_id:registered_name
-			else if(istype(wear_id,/obj/item/device/pda))
-				var/obj/item/device/pda/tempPda = wear_id
-				perpname = tempPda.owner
+		var/obj/item/card/id/ID = GetIdCard()
+		if(ID)
+			perpname = ID.registered_name
 		else
 			perpname = src.name
 
-		var/datum/computer_file/crew_record/R = get_crewmember_record(perpname)
-		if(R)
-			physical = R.get_status_physical()
-			mental = R.get_status_mental()
+		var/datum/record/general/R = SSrecords.find_record("name", perpname)
+		if(istype(R))
+			medical = R.physical_status
 
-		msg += SPAN("deptradio", "Physical status:") + " <a href='?src=\ref[src];physical=1'>\[[physical]\]</a>\n"
-		msg += SPAN("deptradio", "Mental status:") + " <a href='?src=\ref[src];mental=1'>\[[mental]\]</a>\n"
-		msg += SPAN("deptradio", "Medical records:") + " <a href='?src=\ref[src];medrecord=`'>\[View\]</a>\n"
+		msg += "<span class = 'deptradio'>Physical Status:</span> <a href='?src=\ref[src];medical=1'>\[[medical]\]</a>\n"
+		msg += "<span class = 'deptradio'>Medical Records:</span> <a href='?src=\ref[src];medrecord=`'>\[View\]</a> <a href='?src=\ref[src];medrecordadd=`'>\[Add Comment\]</a>\n"
+		msg += "<span class = 'deptradio'>Triage Tag:</span> <a href='?src=\ref[src];triagetag=1'>\[[triage_tag]\]</a>\n"
 
 
 	if(print_flavor_text()) msg += "[print_flavor_text()]\n"
 
-	msg += applying_pressure
+	msg += "*---------*</span>"
 
-	if (isundead(src) && !isfakeliving(src))
-		msg += SPAN("warning", "[T.He] looks unhealthy pale.\n")
+	if(src in intent_listener)
+		msg += SPAN_NOTICE("\n[get_pronoun("He")] looks like [get_pronoun("he")] [get_pronoun("is")] listening intently to [get_pronoun("his")] surroundings.")
+
+	var/datum/vampire/V = get_antag_datum(MODE_VAMPIRE)
+	if(V && (V.status & VAMP_DRAINING))
+		var/obj/item/grab/G = get_active_hand()
+		msg += SPAN_ALERT(FONT_LARGE("\n[get_pronoun("He")] is biting [G.affecting]'[G.affecting.get_pronoun("end")] neck!"))
 
 	if (pose)
 		if( findtext(pose,".",length(pose)) == 0 && findtext(pose,"!",length(pose)) == 0 && findtext(pose,"?",length(pose)) == 0 )
 			pose = addtext(pose,".") //Makes sure all emotes end with a period.
-		msg += "[T.He] [pose]"
+		msg += "\n[get_pronoun("He")] [pose]"
 
-	return jointext(msg, null)
+	to_chat(user, msg.Join())
+	if(Adjacent(user))
+		INVOKE_ASYNC(src, PROC_REF(examine_pulse), user)
 
-// Helper procedure. Called by /mob/living/carbon/human/_examine_text() and /mob/living/carbon/human/Topic() to determine HUD access to security and medical records.
-/proc/hasHUD(mob/M as mob, hudtype)
-	if(istype(M, /mob/living/carbon/human))
+	return TRUE
+
+//Helper procedure. Called by /mob/living/carbon/human/examine() and /mob/living/carbon/human/Topic() to determine HUD access to security and medical records.
+/proc/hasHUD(mob/M, hudtype)
+	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/obj/item/clothing/glasses/G = H.glasses
-		return istype(G) && (G.hud_type & hudtype)
-	else if(istype(M, /mob/living/silicon))
-		var/mob/living/silicon/R = M
-		if (R.active_hud == hudtype)
-			return TRUE
-	return FALSE
+		var/eye_hud = 0
+		var/hud = 0
+		// Checks for eye sensor HUD
+		var/obj/item/organ/internal/augment/eye_sensors/E = locate() in H.internal_organs
+		if(E)
+			eye_hud = E.check_hud(hudtype)
+		if(G)
+			switch(hudtype)
+				if(SEC_HUDTYPE)
+					hud = G.is_sec_hud()
+				if(MED_HUDTYPE)
+					hud = G.is_med_hud()
+		return hud || eye_hud
+	else if(istype(M, /mob/living/silicon/robot))
+		var/mob/living/silicon/robot/R = M
+		switch(hudtype)
+			if(SEC_HUDTYPE)
+				return R.sensor_mode_sec()
+			if(MED_HUDTYPE)
+				return R.sensor_mode_med()
+			else
+				return 0
+	else
+		return 0
 
-/mob/living/carbon/human/verb/pose()
-	set name = "Set Pose"
-	set desc = "Sets a description which will be shown when someone examines you."
-	set category = "IC"
+/proc/fluid_color_type_map(var/supplied_color)
+	var/static/list/color_map = list(
+					COLOR_HUMAN_BLOOD = "blood",
+					COLOR_DIONA_BLOOD = "blood",
+					COLOR_SKRELL_BLOOD = "blood",
+					COLOR_VAURCA_BLOOD = "blood",
+					COLOR_IPC_BLOOD = "oil",
+					COLOR_OIL = "oil",
+					COLOR_SNOW = "snow",
+					COLOR_ASH = "ash",
+						)
 
-	pose = sanitize(input(usr, "This is [src]. [get_visible_gender() == MALE ? "He" : get_visible_gender() == FEMALE ? "She" : "They"]...", "Pose", null) as text)
+	var/output_text = color_map[supplied_color] || "fluid"
+	return output_text
 
-/mob/living/carbon/human/verb/set_flavor()
-	set name = "Set Flavour Text"
-	set desc = "Sets an extended description of your character's features."
-	set category = "IC"
+/mob/living/carbon/human/proc/assemble_height_string(mob/examiner)
+	var/height_string = ""
+	var/height_descriptor
+	if(height == HEIGHT_NOT_USED)
+		return height_string
 
-	var/list/HTML = "<meta charset=\"utf-8\">"
-	HTML += "<body>"
-	HTML += "<tt><center>"
-	HTML += "<b>Update Flavour Text</b> <hr />"
-	HTML += "<br></center>"
-	HTML += "<a href='byond://?src=\ref[src];flavor_change=general'>General:</a> "
-	HTML += TextPreview(flavor_texts["general"])
-	HTML += "<br>"
-	HTML += "<a href='byond://?src=\ref[src];flavor_change=head'>Head:</a> "
-	HTML += TextPreview(flavor_texts["head"])
-	HTML += "<br>"
-	HTML += "<a href='byond://?src=\ref[src];flavor_change=face'>Face:</a> "
-	HTML += TextPreview(flavor_texts["face"])
-	HTML += "<br>"
-	HTML += "<a href='byond://?src=\ref[src];flavor_change=eyes'>Eyes:</a> "
-	HTML += TextPreview(flavor_texts["eyes"])
-	HTML += "<br>"
-	HTML += "<a href='byond://?src=\ref[src];flavor_change=torso'>Body:</a> "
-	HTML += TextPreview(flavor_texts["torso"])
-	HTML += "<br>"
-	HTML += "<a href='byond://?src=\ref[src];flavor_change=arms'>Arms:</a> "
-	HTML += TextPreview(flavor_texts["arms"])
-	HTML += "<br>"
-	HTML += "<a href='byond://?src=\ref[src];flavor_change=hands'>Hands:</a> "
-	HTML += TextPreview(flavor_texts["hands"])
-	HTML += "<br>"
-	HTML += "<a href='byond://?src=\ref[src];flavor_change=legs'>Legs:</a> "
-	HTML += TextPreview(flavor_texts["legs"])
-	HTML += "<br>"
-	HTML += "<a href='byond://?src=\ref[src];flavor_change=feet'>Feet:</a> "
-	HTML += TextPreview(flavor_texts["feet"])
-	HTML += "<br>"
-	HTML += "<hr />"
-	HTML +="<a href='?src=\ref[src];flavor_change=done'>\[Done\]</a>"
-	HTML += "<tt>"
-	show_browser(src, jointext(HTML,null), "window=flavor_changes;size=430x300")
+	// Compare to Species Average
+	if(species.species_height != HEIGHT_NOT_USED)
+		switch(height - species.species_height)
+			if(-999 to -100)
+				height_descriptor = "miniscule"
+			if(-99 to -50)
+				height_descriptor = "tiny"
+			if(-49 to -11)
+				height_descriptor = "small"
+			if(-10 to 10)
+				height_descriptor = "about average height"
+			if(11 to 50)
+				height_descriptor = "tall"
+			if(51 to 100)
+				height_descriptor = "huge"
+			else
+				height_descriptor = "gargantuan"
+		height_string += "[get_pronoun("He")] look[get_pronoun("end")] [height_descriptor]"
+		if(!species.hide_name)
+			height_string += " for a [species.name]"
+		height_string += "." // Punctuation.
+
+	if(examiner.height == HEIGHT_NOT_USED)
+		return height_string
+
+	switch(height - examiner.height)
+		if(-999 to -100)
+			height_descriptor = "absolutely tiny compared to"
+		if(-99 to -51)
+			height_descriptor = "much smaller than"
+		if(-50 to -21)
+			height_descriptor = "significantly shorter than"
+		if(-20 to -11)
+			height_descriptor = "shorter than"
+		if(-10 to -6)
+			height_descriptor = "slightly shorter than"
+		if(-5 to 5)
+			height_descriptor = "around the same height as"
+		if(6 to 10)
+			height_descriptor = "slightly taller than"
+		if(11 to 20)
+			height_descriptor = "taller than"
+		if(21 to 50)
+			height_descriptor = "significantly taller than"
+		if(51 to 100)
+			height_descriptor = "much larger than"
+		else
+			height_descriptor = "to tower over"
+	if(height_string)
+		return height_string += " [get_pronoun("He")] seem[get_pronoun("end")] [height_descriptor] you."
+	return "[get_pronoun("He")] seem[get_pronoun("end")] [height_descriptor] you."

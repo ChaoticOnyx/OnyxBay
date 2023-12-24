@@ -1,7 +1,6 @@
 /*
  * Holds procs designed to change one type of value, into another.
  * Contains:
- *			hex2num & num2hex
  *			text2list & list2text
  *			file2list
  *			angle2dir
@@ -9,67 +8,60 @@
  *			worldtime2text
  */
 
-// Returns an integer given a hexadecimal number string as input.
-/proc/hex2num(hex, safe=FALSE)
-	. = 0
-	var/place = 1
-	for(var/i in length(hex) to 1 step -1)
-		var/num = text2ascii(hex, i)
-		switch(num)
-			if(48 to 57)
-				num -= 48	//0-9
-			if(97 to 102)
-				num -= 87	//a-f
-			if(65 to 70)
-				num -= 55	//A-F
-			if(45)
-				return . * -1 // -
-			else
-				if(safe)
-					return null
-				else
-					CRASH("Malformed hex number")
+// Splits the text of a file at seperator and returns them in a list.
+/proc/file2list(filename, seperator="\n")
+	return splittext(file2text(filename) || "", seperator)
 
-		. += num * place
-		place *= 16
+//Splits the text of a file at seperator and returns them in a list.
+/world/proc/file2list(filename, seperator="\n")
+	return splittext(file2text(filename), seperator)
 
-// Returns the hex value of a number given a value assumed to be a base-ten value
-// TODO[V] if you ever find yourself out of work, please refactor this one
-/proc/num2hex(num, len=2)
-	if(!isnum(num))
-		num = 0
-	num = round(abs(num))
-	. = ""
-	var/i=0
-	while(1)
-		if(len<=0)
-			if(!num)
-				break
-		else
-			if(i>=len)
-				break
-		var/remainder = num/16
-		num = round(remainder)
-		remainder = (remainder - num) * 16
-		switch(remainder)
-			if(9,8,7,6,5,4,3,2,1)
-				. = "[remainder]" + .
-			if(10,11,12,13,14,15)
-				. = ascii2text(remainder+87) + .
-			else
-				. = "0" + .
-		i++
+// Slower then list2text (replaced with jointext), but correctly processes associative lists.
+/proc/tg_list2text(list/list, glue=",")
+	if (!istype(list) || !list.len)
+		return
+	var/output
+	for(var/i=1 to list.len)
+		output += (i!=1? glue : null)+(!isnull(list["[list[i]]"])?"[list["[list[i]]"]]":"[list[i]]")
+	return output
 
+// Converts a string into a list by splitting the string at each delimiter found. (discarding the seperator)
+/proc/text2list(text, delimiter="\n")
+	var/delim_len = length(delimiter)
+	if (delim_len < 1)
+		return list(text)
+
+	. = list()
+	var/last_found = 1
+	var/found
+
+	do
+		found       = findtext(text, delimiter, last_found, 0)
+		.          += copytext(text, last_found, found)
+		last_found  = found + delim_len
+	while (found)
+
+// Case sensitive version of /proc/text2list().
+/proc/text2listEx(text, delimiter="\n")
+	var/delim_len = length(delimiter)
+	if (delim_len < 1)
+		return list(text)
+
+	. = list()
+	var/last_found = 1
+	var/found
+
+	do
+		found       = findtextEx(text, delimiter, last_found, 0)
+		.          += copytext(text, last_found, found)
+		last_found  = found + delim_len
+	while (found)
 
 /proc/text2numlist(text, delimiter="\n")
 	var/list/num_list = list()
-	for(var/x in splittext(text, delimiter))
+	for(var/x in text2list(text, delimiter))
 		num_list += text2num(x)
 	return num_list
-
-// Splits the text of a file at seperator and returns them in a list.
-/proc/file2list(filename, seperator="\n")
-	return splittext(return_file_text(filename),seperator)
 
 // Turns a direction into text
 /proc/num2dir(direction)
@@ -79,22 +71,19 @@
 		if (4.0) return EAST
 		if (8.0) return WEST
 		else
-			to_world_log("UNKNOWN DIRECTION: [direction]")
+			world.log <<  "UNKNOWN DIRECTION: [direction]"
 
 // Turns a direction into text
 /proc/dir2text(direction)
 	switch (direction)
-		if (NORTH)     return "north"
-		if (SOUTH)     return "south"
-		if (EAST)      return "east"
-		if (WEST)      return "west"
-		if (NORTHEAST) return "northeast"
-		if (SOUTHEAST) return "southeast"
-		if (NORTHWEST) return "northwest"
-		if (SOUTHWEST) return "southwest"
-		if (UP)        return "up"
-		if (DOWN)      return "down"
-	return "unknown ([direction])"
+		if (1.0)  return "north"
+		if (2.0)  return "south"
+		if (4.0)  return "east"
+		if (8.0)  return "west"
+		if (5.0)  return "northeast"
+		if (6.0)  return "southeast"
+		if (9.0)  return "northwest"
+		if (10.0) return "southwest"
 
 // Turns text into proper directions
 /proc/text2dir(direction)
@@ -109,31 +98,31 @@
 		if ("SOUTHWEST") return 10
 
 // Converts an angle (degrees) into an ss13 direction
-/proc/angle2dir(degree)
+/proc/angle2dir(var/degree)
 	degree = (degree + 22.5) % 360 // 22.5 = 45 / 2
 	if (degree < 45)  return NORTH
-	if (degree < 90)  return NORTHWEST
-	if (degree < 135) return WEST
-	if (degree < 180) return SOUTHWEST
+	if (degree < 90)  return NORTHEAST
+	if (degree < 135) return EAST
+	if (degree < 180) return SOUTHEAST
 	if (degree < 225) return SOUTH
-	if (degree < 270) return SOUTHEAST
-	if (degree < 315) return EAST
-	return NORTH|EAST
+	if (degree < 270) return SOUTHWEST
+	if (degree < 315) return WEST
+	return NORTH|WEST
 
-// Returns the north-zero counter-clockwise angle in degrees, given a direction
-/proc/dir2angle(D)
+// Returns the north-zero clockwise angle in degrees, given a direction
+/proc/dir2angle(var/D)
 	switch (D)
 		if (NORTH)     return 0
 		if (SOUTH)     return 180
-		if (WEST)      return 90
-		if (EAST)      return 270
-		if (NORTHWEST) return 45
-		if (SOUTHWEST) return 135
-		if (NORTHEAST) return 315
-		if (SOUTHEAST) return 225
+		if (EAST)      return 90
+		if (WEST)      return 270
+		if (NORTHEAST) return 45
+		if (SOUTHEAST) return 135
+		if (NORTHWEST) return 315
+		if (SOUTHWEST) return 225
 
 // Returns the angle in english
-/proc/angle2text(degree)
+/proc/angle2text(var/degree)
 	return dir2text(angle2dir(degree))
 
 // Converts a blend_mode constant to one acceptable to icon.Blend()
@@ -160,36 +149,41 @@
 	if (rights & R_SOUNDS)      . += "[seperator]+SOUND"
 	if (rights & R_SPAWN)       . += "[seperator]+SPAWN"
 	if (rights & R_MOD)         . += "[seperator]+MODERATOR"
-	if (rights & R_MENTOR)      . += "[seperator]+MENTOR"
+	if (rights & R_DEV)			. += "[seperator]+DEVELOPER"
+	if (rights & R_CCIAA)		. += "[seperator]+CCIAA"
 	return .
 
 // heat2color functions. Adapted from: http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
-/proc/heat2color(temp)
-	return rgb(heat2color_r(temp), heat2color_g(temp), heat2color_b(temp))
+// light_adjustment makes the given colour a bit brighter so that set_light can use it to make the room a bit brighter - geeves
+/proc/heat2color(temp, var/for_light = FALSE)
+	return rgb(heat2color_r(temp, for_light), heat2color_g(temp, for_light), heat2color_b(temp, for_light))
 
-/proc/heat2color_r(temp)
+/proc/heat2color_r(temp, var/for_light = FALSE)
 	temp /= 100
 	if(temp <= 66)
-		. = 255
+		return 255
 	else
-		. = max(0, min(255, 329.698727446 * (temp - 60) ** -0.1332047592))
+		var/light_adjustment = for_light ? 15 : 0
+		return max(0, min(255, 329.698727446 * (temp - 60) ** -0.1332047592 + light_adjustment))
 
-/proc/heat2color_g(temp)
+/proc/heat2color_g(temp, var/for_light = FALSE)
 	temp /= 100
+	var/light_adjustment = for_light ? 15 : 0
 	if(temp <= 66)
-		. = max(0, min(255, 99.4708025861 * log(temp) - 161.1195681661))
+		return max(0, min(255, 99.4708025861 * log(temp) - 161.1195681661 + light_adjustment))
 	else
-		. = max(0, min(255, 288.1221695283 * ((temp - 60) ** -0.0755148492)))
+		return max(0, min(255, 288.1221695283 * ((temp - 60) ** -0.0755148492 + light_adjustment)))
 
-/proc/heat2color_b(temp)
+/proc/heat2color_b(temp, var/for_light = FALSE)
 	temp /= 100
 	if(temp >= 66)
-		. = 255
+		return 255
 	else
 		if(temp <= 16)
-			. = 0
+			return 0
 		else
-			. = max(0, min(255, 138.5177312231 * log(temp - 10) - 305.0447927307))
+			var/light_adjustment = for_light ? 15 : 0
+			return max(0, min(255, 138.5177312231 * log(temp - 10) - 305.0447927307 + light_adjustment))
 
 // Very ugly, BYOND doesn't support unix time and rounding errors make it really hard to convert it to BYOND time.
 // returns "YYYY-MM-DD" by default
@@ -235,48 +229,42 @@
 /proc/isLeap(y)
 	return ((y) % 4 == 0 && ((y) % 100 != 0 || (y) % 400 == 0))
 
-/proc/atomtypes2nameassoclist(list/atom_types)
-	. = list()
-	for(var/atom_type in atom_types)
-		var/atom/A = atom_type
-		.[initial(A.name)] = atom_type
-	. = sortAssoc(.)
-
-/proc/atomtype2nameassoclist(atom_type)
-	return atomtypes2nameassoclist(typesof(atom_type))
-
-//Splits the text of a file at seperator and returns them in a list.
-/world/proc/file2list(filename, seperator="\n")
-	return splittext(file2text(filename), seperator)
-
-/proc/str2hex(str)
+/proc/strtohex(str)
 	if(!istext(str)||!str)
 		return
 	var/r
 	var/c
 	for(var/i = 1 to length(str))
 		c= text2ascii(str,i)
-		r+= num2hex(c)
+		r+= num2hex(c, 0)
 	return r
 
 // Decodes hex to raw byte string.
 // If safe=TRUE, returns null on incorrect input strings instead of CRASHing
-/proc/hex2str(str, safe=FALSE)
+/proc/hextostr(str)
 	if(!istext(str)||!str)
 		return
 	var/r
 	var/c
 	for(var/i = 1 to length(str)/2)
-		c = hex2num(copytext(str,i*2-1,i*2+1), safe)
+		c = hex2num(copytext(str,i*2-1,i*2+1))
 		if(isnull(c))
 			return null
 		r += ascii2text(c)
 	return r
 
+/proc/hex2cssrgba(var/hex, var/alpha)
+	var/textr = copytext(hex, 2, 4)
+	var/textg = copytext(hex, 4, 6)
+	var/textb = copytext(hex, 6, 8)
+	var/r = hex2num(textr)
+	var/g = hex2num(textg)
+	var/b = hex2num(textb)
+	return "rgba([r], [g], [b], [alpha])"
+
 /proc/type2parent(child)
 	var/string_type = "[child]"
 	var/last_slash = findlasttext(string_type, "/")
-
 	if(last_slash == 1)
 		switch(child)
 			if(/datum)
@@ -287,5 +275,9 @@
 				return /atom
 			else
 				return /datum
-
 	return text2path(copytext(string_type, 1, last_slash))
+
+/// Return html to load a url.
+/// for use inside of browse() calls to html assets that might be loaded on a cdn.
+/proc/url2htmlloader(url)
+	return {"<html><head><meta http-equiv="refresh" content="0;URL='[url]'"/></head><body onLoad="parent.location='[url]'"></body></html>"}

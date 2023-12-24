@@ -1,6 +1,5 @@
 
 //Hat Station 13
-
 /obj/item/clothing/head/collectable
 	name = "collectable hat"
 	desc = "A rare collectable hat."
@@ -14,15 +13,15 @@
 	name = "collectable slime cap!"
 	desc = "It just latches right in place!"
 	icon_state = "slime"
-	body_parts_covered = NO_BODYPARTS
+	body_parts_covered = 0
 
 /obj/item/clothing/head/collectable/xenom
-	name = "collectable alien monster helmet!"
+	name = "collectable xenomorph helmet!"
 	desc = "Hiss hiss hiss!"
 	icon_state = "xenom"
 	item_state_slots = list(
 		slot_l_hand_str = "xenos_helm",
-		slot_r_hand_str = "xenos_helm",
+		slot_r_hand_str = "xenos_helm"
 		)
 	body_parts_covered = HEAD|FACE|EYES
 
@@ -37,43 +36,40 @@
 	desc = "What looks like an ordinary paper hat, is actually a rare and valuable collector's edition paper hat. Keep away from water, fire and Librarians."
 	icon_state = "paper"
 	item_state = "paper"
-	body_parts_covered = NO_BODYPARTS
+	body_parts_covered = 0
+	drop_sound = 'sound/items/drop/paper.ogg'
+	pickup_sound = 'sound/items/pickup/paper.ogg'
 
 /obj/item/clothing/head/collectable/tophat
 	name = "collectable top hat"
 	desc = "A top hat worn by only the most prestigious hat collectors."
 	icon_state = "tophat"
 	item_state = "tophat"
-	body_parts_covered = NO_BODYPARTS
 
 /obj/item/clothing/head/collectable/captain
 	name = "collectable captain's hat"
 	desc = "A Collectable Hat that'll make you look just like a real comdom!"
 	icon_state = "captain"
-	item_state_slots = list(
-		slot_l_hand_str = "caphat",
-		slot_r_hand_str = "caphat",
-		)
-	body_parts_covered = NO_BODYPARTS
+	item_state = "caphat"
 
 /obj/item/clothing/head/collectable/police
 	name = "collectable police officer's hat"
 	desc = "A Collectable Police Officer's Hat. This hat emphasizes that you are THE LAW."
 	icon_state = "policehelm"
-	body_parts_covered = NO_BODYPARTS
 
 /obj/item/clothing/head/collectable/beret
 	name = "collectable beret"
-	desc = "A Collectable red Beret. It smells faintly of Garlic."
-	icon_state = "beret"
-	body_parts_covered = NO_BODYPARTS
+	desc = "A Collectable red Beret. It smells faintly of garlic."
+	icon = 'icons/obj/clothing/hats/berets.dmi'
+	icon_state = "beret_red"
+	item_state = "beret_red"
+	contained_sprite = TRUE
 
 /obj/item/clothing/head/collectable/welding
 	name = "collectable welding helmet"
 	desc = "A Collectable Welding Helmet. Now with 80% less lead! Not for actual welding. Any welding done while wearing this Helmet is done so at the owner's own risk!"
 	icon_state = "welding"
 	item_state = "welding"
-	w_class = ITEM_SIZE_NORMAL
 	body_parts_covered = HEAD|FACE|EYES
 
 /obj/item/clothing/head/collectable/slime
@@ -87,37 +83,19 @@
 	icon_state = "flat_cap"
 	item_state_slots = list(
 		slot_l_hand_str = "detective",
-		slot_r_hand_str = "detective",
+		slot_r_hand_str = "detective"
 		)
 
 /obj/item/clothing/head/collectable/pirate
 	name = "collectable pirate hat"
 	desc = "You'd make a great Dread Syndie Roberts!"
 	icon_state = "pirate"
-	body_parts_covered = NO_BODYPARTS
-
-/obj/item/clothing/head/collectable/kitty
-	name = "collectable kitty ears"
-	desc = "The fur feels.....a bit too realistic."
-	icon_state = "kitty"
-	body_parts_covered = NO_BODYPARTS
-
-/obj/item/clothing/head/collectable/kitty/equipped(mob/living/carbon/human/user, slot)
-	. = ..()
-	if (slot == slot_head && istype(user))
-		var/hairgb = rgb(user.r_hair, user.g_hair, user.b_hair)
-		var/icon/ears = icon('icons/inv_slots/hats/mob.dmi', "kitty")
-		ears.Blend(hairgb, ICON_ADD)
-		ears.Blend(icon('icons/inv_slots/hats/mob.dmi', "kittyinner"), ICON_OVERLAY)
-		icon_override = ears
-	else if (icon_override)
-		icon_override = null
 
 /obj/item/clothing/head/collectable/rabbitears
 	name = "collectable rabbit ears"
 	desc = "Not as lucky as the feet!"
 	icon_state = "bunny"
-	body_parts_covered = NO_BODYPARTS
+	siemens_coefficient = 1.5
 
 /obj/item/clothing/head/collectable/wizard
 	name = "collectable wizard's hat"
@@ -127,15 +105,12 @@
 /obj/item/clothing/head/collectable/hardhat
 	name = "collectable hard hat"
 	desc = "WARNING! Offers no real protection, or luminosity, but it is damn fancy!"
-	icon_state = "hardhat0_yellow"
-	w_class = ITEM_SIZE_NORMAL
-	body_parts_covered = NO_BODYPARTS
+	icon_state = "hardhat_yellow"
 
 /obj/item/clothing/head/collectable/HoS
 	name = "collectable HoS hat"
 	desc = "Now you can beat prisoners, set silly sentences and arrest for no reason too!"
 	icon_state = "hoscap"
-	body_parts_covered = NO_BODYPARTS
 
 /obj/item/clothing/head/collectable/thunderdome
 	name = "collectable Thunderdome helmet"

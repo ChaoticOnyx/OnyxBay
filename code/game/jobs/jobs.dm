@@ -1,47 +1,160 @@
-var/const/ENG               =(1<<0)
-var/const/SEC               =(1<<1)
-var/const/MED               =(1<<2)
-var/const/SCI               =(1<<3)
-var/const/CIV               =(1<<4)
-var/const/COM               =(1<<5)
-var/const/MSC               =(1<<6)
-var/const/SRV               =(1<<7)
-var/const/SUP               =(1<<8)
-var/const/SPT               =(1<<9)
-var/const/EXP               =(1<<10)
+var/const/NUM_JOB_DEPTS     = 3 //ENGSEC, MEDSCI and SERVICE
 
-GLOBAL_LIST_EMPTY(assistant_occupations)
+// ENGSEC
+var/const/ENGSEC			=(1<<0)
 
-GLOBAL_LIST_EMPTY(command_positions)
+var/const/CAPTAIN			=(1<<0)
+var/const/HOS				=(1<<1)
+var/const/WARDEN			=(1<<2)
+var/const/FORENSICS			=(1<<3)
+var/const/OFFICER			=(1<<4)
+var/const/CHIEF				=(1<<5)
+var/const/ENGINEER			=(1<<6)
+var/const/ATMOSTECH			=(1<<7)
+var/const/AI				=(1<<8)
+var/const/CYBORG			=(1<<9)
+var/const/INTERN_SEC		=(1<<10)
+var/const/INTERN_ENG		=(1<<11)
+var/const/BRIDGE_CREW		=(1<<12)
+var/const/OPERATIONS_MANAGER =(1<<13)
+var/const/HRA              =(1<<14)
 
-GLOBAL_LIST_EMPTY(engineering_positions)
+// MEDSCI
+var/const/MEDSCI			=(1<<1)
 
-GLOBAL_LIST_EMPTY(medical_positions)
+var/const/RD				=(1<<0)
+var/const/SCIENTIST			=(1<<1)
+var/const/CHEMIST			=(1<<2)
+var/const/CMO				=(1<<3)
+var/const/DOCTOR			=(1<<4)
+var/const/SURGEON			=(1<<5)
+var/const/VIROLOGIST		=(1<<6)
+var/const/PSYCHIATRIST		=(1<<7)
+var/const/ROBOTICIST		=(1<<8)
+var/const/XENOBIOLOGIST		=(1<<9)
+var/const/MED_TECH			=(1<<10)
+var/const/INTERN_MED		=(1<<11)
+var/const/INTERN_SCI		=(1<<12)
+var/const/XENOBOTANIST		=(1<<13)
+var/const/XENOARCHEOLOGIST	=(1<<14)
 
-GLOBAL_LIST_EMPTY(science_positions)
+// SERVICE
+var/const/SERVICE			=(1<<2)
 
-GLOBAL_LIST_EMPTY(civilian_positions)
+var/const/XO				=(1<<0)
+var/const/BARTENDER			=(1<<1)
+var/const/BOTANIST			=(1<<2)
+var/const/CHEF				=(1<<3)
+var/const/JANITOR			=(1<<4)
+var/const/LIBRARIAN			=(1<<5)
+var/const/PASSENGER			=(1<<6)
+var/const/CARGOTECH			=(1<<7)
+var/const/MINER				=(1<<8)
+var/const/LAWYER			=(1<<9)
+var/const/CHAPLAIN			=(1<<10)
+var/const/VISITOR			=(1<<11)
+var/const/CONSULAR			=(1<<12)
+var/const/MERCHANT			=(1<<13)
+var/const/JOURNALIST		=(1<<14)
+var/const/ASSISTANT			=(1<<15)
 
-GLOBAL_LIST_EMPTY(security_positions)
+// Positions Lists
+var/list/command_positions = list(
+	"Captain",
+	"Executive Officer",
+	"Head of Security",
+	"Chief Engineer",
+	"Research Director",
+	"Chief Medical Officer",
+	"Operations Manager"
+)
 
-GLOBAL_LIST_INIT(nonhuman_positions, list("pAI"))
+var/list/command_support_positions = list(
+	"Human Resources Assistant",
+	"Corporate Liaison",
+	"Consular Officer",
+	"Bridge Crew"
+)
 
-GLOBAL_LIST_EMPTY(service_positions)
+var/list/engineering_positions = list(
+	"Chief Engineer",
+	"Engineer",
+	"Atmospheric Technician",
+	"Engineering Apprentice"
+)
 
-GLOBAL_LIST_EMPTY(supply_positions)
+var/list/medical_positions = list(
+	"Chief Medical Officer",
+	"Physician",
+	"Surgeon",
+	"Psychiatrist",
+	"Pharmacist",
+	"First Responder",
+	"Medical Intern"
+)
 
-GLOBAL_LIST_EMPTY(support_positions)
+var/list/science_positions = list(
+	"Research Director",
+	"Scientist",
+	"Xenoarchaeologist",
+	"Xenobiologist",
+	"Xenobotanist",
+	"Lab Assistant"
+)
 
-GLOBAL_LIST_EMPTY(exploration_positions)
+var/list/cargo_positions = list(
+	"Operations Manager",
+	"Hangar Technician",
+	"Shaft Miner",
+	"Machinist"
+)
 
-GLOBAL_LIST_EMPTY(unsorted_positions) // for nano manifest
+var/list/service_positions = list(
+	"Executive Officer",
+	"Bartender",
+	"Gardener",
+	"Chef",
+	"Janitor",
+	"Librarian",
+	"Corporate Reporter",
+	"Chaplain"
+)
 
-GLOBAL_LIST_INIT(commandjobs, list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Chief Medical Officer", "Research Director"))
+var/list/civilian_positions = list(
+	"Assistant",
+	"Off-Duty Crew Member",
+	"Passenger",
+	"Merchant"
+)
 
-GLOBAL_LIST_INIT(whitejobs, list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Chief Medical Officer", "Research Director", "AI"))
+var/list/security_positions = list(
+	"Head of Security",
+	"Warden",
+	"Investigator",
+	"Security Officer",
+	"Security Cadet"
+)
 
-/proc/guest_jobbans(job)
-	return (job in GLOB.whitejobs) //rot beycev ebal
+var/list/nonhuman_positions = list(
+	"AI",
+	"Cyborg",
+	"pAI"
+)
+
+var/list/armory_positions = list(
+	"AI",
+	"Warden",
+	"Captain",
+	"Executive Officer",
+	"Head of Security",
+	"Chief Engineer",
+	"Research Director",
+	"Chief Medical Officer",
+	"Operations Manager"
+)
+
+/proc/guest_jobbans(var/job)
+	return ((job in command_positions) || job == "Corporate Liaison" || job == "Consular Officer")
 
 /proc/get_job_datums()
 	var/list/occupations = list()
@@ -54,7 +167,7 @@ GLOBAL_LIST_INIT(whitejobs, list("Captain", "Head of Personnel", "Head of Securi
 
 	return occupations
 
-/proc/get_alternate_titles(job)
+/proc/get_alternate_titles(var/job)
 	var/list/jobs = get_job_datums()
 	var/list/titles = list()
 

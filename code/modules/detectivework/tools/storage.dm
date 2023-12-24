@@ -1,17 +1,44 @@
 /obj/item/storage/box/swabs
 	name = "box of swab kits"
 	desc = "Sterilized equipment within. Do not contaminate."
-	icon_state = "swabs"
-	startswith = list(/obj/item/forensics/swab = DEFAULT_BOX_STORAGE)
+	illustration = "swab"
+	can_hold = list(/obj/item/forensics/swab)
+	storage_slots = 14
+
+/obj/item/storage/box/swabs/fill()
+	..()
+	for(var/i=0;i<storage_slots,i++) // Fill 'er up.
+		new /obj/item/forensics/swab(src)
+
+/obj/item/storage/box/slides
+	name = "microscope slide box"
+	illustration = "solution_trays"
+	storage_slots = 7
+
+/obj/item/storage/box/slides/fill()
+	..()
+	for(var/i=0;i<storage_slots,i++)
+		new /obj/item/forensics/slide(src)
 
 /obj/item/storage/box/evidence
 	name = "evidence bag box"
 	desc = "A box claiming to contain evidence bags."
-	icon_state = "evidencebox"
-	startswith = list(/obj/item/evidencebag = 7)
+	illustration = "evidence"
+	storage_slots = 6
+
+/obj/item/storage/box/evidence/fill()
+	..()
+	for(var/i=0;i<storage_slots,i++)
+		new /obj/item/evidencebag(src)
 
 /obj/item/storage/box/fingerprints
 	name = "box of fingerprint cards"
 	desc = "Sterilized equipment within. Do not contaminate."
-	icon_state = "detective"
-	startswith = list(/obj/item/sample/print = DEFAULT_BOX_STORAGE)
+	illustration = "paper"
+	can_hold = list(/obj/item/sample/print)
+	storage_slots = 14
+
+/obj/item/storage/box/fingerprints/fill()
+	..()
+	for(var/i=0;i<storage_slots,i++)
+		new /obj/item/sample/print(src)

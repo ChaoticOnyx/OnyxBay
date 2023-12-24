@@ -1,58 +1,50 @@
 //a docking port that uses a single door
 /obj/machinery/embedded_controller/radio/simple_docking_controller
 	name = "docking hatch controller"
-	layer = ABOVE_WINDOW_LAYER
 	var/tag_door
 	var/datum/computer/file/embedded_program/docking/simple/docking_program
-	var/progtype = /datum/computer/file/embedded_program/docking/simple/
 
-/obj/machinery/embedded_controller/radio/simple_docking_controller/New()
-	..()
-	docking_program = new progtype(src)
+/obj/machinery/embedded_controller/radio/simple_docking_controller/Initialize()
+	. = ..()
+	docking_program = new/datum/computer/file/embedded_program/docking/simple(src)
 	program = docking_program
 
-/obj/machinery/embedded_controller/radio/simple_docking_controller/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/nanoui/master_ui = null, datum/topic_state/state = GLOB.default_state)
-	var/data[0]
+/obj/machinery/embedded_controller/radio/simple_docking_controller/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "SimpleDockingConsole", name, ui_x=470, ui_y=200)
+		ui.open()
 
-	data = list(
+/obj/machinery/embedded_controller/radio/simple_docking_controller/ui_data(mob/user)
+	return list(
 		"docking_status" = docking_program.get_docking_status(),
 		"override_enabled" = docking_program.override_enabled,
 		"door_state" = 	docking_program.memory["door_status"]["state"],
-		"door_lock" = 	docking_program.memory["door_status"]["lock"],
+		"door_lock" = 	docking_program.memory["door_status"]["lock"]
 	)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+/obj/machinery/embedded_controller/radio/simple_docking_controller/ui_act(action, params)
+	. = ..()
+	if(.)
+		return
 
-	if (!ui)
-		ui = new(user, src, ui_key, "simple_docking_console.tmpl", name, 470, 290, state = state)
-		ui.set_initial_data(data)
-		ui.open()
-		ui.set_auto_update(1)
-
-/obj/machinery/embedded_controller/radio/simple_docking_controller/Topic(href, href_list)
-	if(..())
-		return 1
-
-	usr.set_machine(src)
-
-	var/clean = 0
-	switch(href_list["command"])	//anti-HTML-hacking checks
-		if("force_door")
-			clean = 1
-		if("toggle_override")
-			clean = 1
-
-	if(clean)
-		program.receive_user_command(href_list["command"])
-
-	return 0
+	if(action == "command")
+		var/clean = FALSE
+		switch(params["command"])	//anti-HTML-hacking checks
+			if("force_door")
+				clean = TRUE
+			if("toggle_override")
+				clean = TRUE
+		if(clean)
+			program.receive_user_command(params["command"])
+			return TRUE
 
 
 //A docking controller program for a simple door based docking port
 /datum/computer/file/embedded_program/docking/simple
 	var/tag_door
 
-/datum/computer/file/embedded_program/docking/simple/New(obj/machinery/embedded_controller/M)
+/datum/computer/file/embedded_program/docking/simple/New(var/obj/machinery/embedded_controller/M)
 	..(M)
 	memory["door_status"] = list(state = "closed", lock = "locked")		//assume closed and locked in case the doors dont report in
 
@@ -91,13 +83,13 @@
 				enable_override()
 
 
-/datum/computer/file/embedded_program/docking/simple/proc/signal_door(command)
+/datum/computer/file/embedded_program/docking/simple/proc/signal_door(var/command)
 	var/datum/signal/signal = new
 	signal.data["tag"] = tag_door
 	signal.data["command"] = command
 	post_signal(signal)
 
-///datum/computer/file/embedded_program/docking/simple/proc/signal_mech_sensor(command)
+///datum/computer/file/embedded_program/docking/simple/proc/signal_mech_sensor(var/command)
 //	signal_door(command)
 //	return
 
@@ -142,7 +134,7 @@
 	set src in view(1)
 	src.program:print_state()
 
-/obj/machinery/embedded_controller/radio/simple_docking_controller/verb/spoof_signal(command as text, sender as text)
+/obj/machinery/embedded_controller/radio/simple_docking_controller/verb/spoof_signal(var/command as text, var/sender as text)
 	set category = "Debug"
 	set src in view(1)
 	var/datum/signal/signal = new
@@ -152,7 +144,7 @@
 
 	src.program:receive_signal(signal)
 
-/obj/machinery/embedded_controller/radio/simple_docking_controller/verb/debug_init_dock(target as text)
+/obj/machinery/embedded_controller/radio/simple_docking_controller/verb/debug_init_dock(var/target as text)
 	set category = "Debug"
 	set src in view(1)
 	src.program:initiate_docking(target)

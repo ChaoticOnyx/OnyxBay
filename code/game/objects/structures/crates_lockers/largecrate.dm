@@ -1,61 +1,37 @@
 /obj/structure/largecrate
 	name = "large crate"
 	desc = "A hefty wooden crate."
-	icon = 'icons/obj/crates.dmi'
 	icon_state = "densecrate"
-	density = 1
-	atom_flags = ATOM_FLAG_CLIMBABLE
-	pull_slowdown = PULL_SLOWDOWN_HEAVY
-	turf_height_offset = 22
+	density = TRUE
 
-/obj/structure/largecrate/Initialize()
-	. = ..()
-	return INITIALIZE_HINT_LATELOAD
-
-/obj/structure/largecrate/LateInitialize(mapload, ...)
-	. = ..()
-	if(mapload) // if it's the map loading phase, relevant items at the crate's loc are put in the contents
-		addtimer(CALLBACK(src, nameof(.proc/store_contents)), 10, TIMER_UNIQUE|TIMER_OVERRIDE) // It's here for a raisin, trust me
-
-/obj/structure/largecrate/proc/store_contents()
-	for(var/obj/I in loc)
-		if(I.density || I.anchored || I == src || !I.simulated || QDELETED(I))
-			continue
-		if(istype(I, /obj/effect) || istype(I, /obj/random))
-			continue
-		I.forceMove(src)
-
-/obj/structure/largecrate/attack_hand(mob/user)
-	to_chat(user, "<span class='notice'>You need a crowbar to pry this open!</span>")
+/obj/structure/largecrate/attack_hand(mob/user as mob)
+	to_chat(user, SPAN_NOTICE("You need a crowbar to pry this open!"))
 	return
 
-/obj/structure/largecrate/attackby(obj/item/W, mob/user)
-	if(isCrowbar(W))
+/obj/structure/largecrate/attackby(obj/item/W as obj, mob/user as mob)
+	if(W.iscrowbar())
 		new /obj/item/stack/material/wood(src)
 		var/turf/T = get_turf(src)
 		for(var/atom/movable/AM in contents)
 			if(AM.simulated) AM.forceMove(T)
-		user.visible_message("<span class='notice'>[user] pries \the [src] open.</span>", \
-							 "<span class='notice'>You pry open \the [src].</span>", \
-							 "<span class='notice'>You hear splitting wood.</span>")
+		user.visible_message(SPAN_NOTICE("[user] pries \the [src] open."), \
+								SPAN_NOTICE("You pry open \the [src]."), \
+								SPAN_NOTICE("You hear splitting wood."))
+		for(var/obj/vehicle/V in T.contents)
+			if(V)
+				V.unload(user)
 		qdel(src)
 	else
 		return attack_hand(user)
+
+/obj/structure/largecrate/mule
+	name = "MULE crate"
+	icon_state = "mulecrate"
 
 /obj/structure/largecrate/hoverpod
 	name = "\improper Hoverpod assembly crate"
 	desc = "It comes in a box for the fabricator's sake. Where does the wood come from? ... And why is it lighter?"
 	icon_state = "mulecrate"
-
-/obj/structure/largecrate/hoverpod/Initialize()
-	. = ..()
-	var/obj/item/mecha_parts/mecha_equipment/ME
-	var/obj/mecha/working/hoverpod/H = new (src)
-
-	ME = new /obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp
-	ME.attach(H)
-	ME = new /obj/item/mecha_parts/mecha_equipment/tool/passenger
-	ME.attach(H)
 
 /obj/structure/largecrate/animal
 	icon_state = "mulecrate"
@@ -64,14 +40,8 @@
 
 /obj/structure/largecrate/animal/Initialize()
 	. = ..()
-	if(held_type)
-		for(var/i = 1;i<=held_count;i++)
-			new held_type(src)
-
-
-/obj/structure/largecrate/animal/mulebot
-	name = "Mulebot crate"
-	held_type = /mob/living/bot/mulebot
+	for(var/i = 1;i<=held_count;i++)
+		new held_type(src)
 
 /obj/structure/largecrate/animal/corgi
 	name = "corgi carrier"
@@ -81,13 +51,13 @@
 	name = "cow crate"
 	held_type = /mob/living/simple_animal/cow
 
-/obj/structure/largecrate/animal/goat
-	name = "goat crate"
-	held_type = /mob/living/simple_animal/hostile/retaliate/goat
-
 /obj/structure/largecrate/animal/pig
 	name = "pig crate"
 	held_type = /mob/living/simple_animal/pig
+
+/obj/structure/largecrate/animal/goat
+	name = "goat crate"
+	held_type = /mob/living/simple_animal/hostile/retaliate/goat
 
 /obj/structure/largecrate/animal/cat
 	name = "cat carrier"
@@ -101,16 +71,32 @@
 	held_count = 5
 	held_type = /mob/living/simple_animal/chick
 
-/obj/structure/largecrate/animal/parrot
-	name = "parrot crate"
-	held_type = /mob/living/simple_animal/parrot
+/obj/structure/largecrate/animal/dog
+	name = "dog carrier"
+	held_type = /mob/living/simple_animal/hostile/commanded/dog
 
-/obj/structure/largecrate/animal/vatgrownbody/male
-	name = "vat-grown body crate"
-	icon_state = "vatgrowncrate_male"
-	held_type = /obj/structure/closet/body_bag/cryobag/vatgrownbody/male
+/obj/structure/largecrate/animal/dog/amaskan
+	held_type = /mob/living/simple_animal/hostile/commanded/dog/amaskan
 
-/obj/structure/largecrate/animal/vatgrownbody/female
-	name = "vat-grown body crate"
-	icon_state = "vatgrowncrate_female"
-	held_type = /obj/structure/closet/body_bag/cryobag/vatgrownbody/female
+/obj/structure/largecrate/animal/dog/pug
+	held_type = /mob/living/simple_animal/hostile/commanded/dog/pug
+
+/obj/structure/largecrate/animal/adhomai
+	name = "adhomian animal crate"
+	held_type = /mob/living/simple_animal/ice_tunneler
+
+/obj/structure/largecrate/animal/adhomai/fatshouter
+	held_type = /mob/living/simple_animal/fatshouter
+
+/obj/structure/largecrate/animal/adhomai/rafama
+	held_type = /mob/living/simple_animal/hostile/retaliate/rafama
+
+/obj/structure/largecrate/animal/adhomai/schlorrgo
+	held_type = /mob/living/simple_animal/schlorrgo
+
+/obj/structure/largecrate/animal/adhomai/harron
+	held_type = /mob/living/simple_animal/hostile/commanded/dog/harron
+
+/obj/structure/largecrate/animal/hakhma
+	name = "hakhma crate"
+	held_type = /mob/living/simple_animal/hakhma

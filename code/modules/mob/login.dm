@@ -3,10 +3,11 @@
 	//Multikey checks and logging
 	lastKnownIP	= client.address
 	computer_id	= client.computer_id
-	log_access("Login: [key_name(src, include_name = FALSE)] from [lastKnownIP ? MARK_IP(lastKnownIP) : MARK_IP("localhost")]-[MARK_COMPUTER_ID(computer_id)] || BYOND v[client.byond_version]")
-	if(config.log.access)
-		var/is_multikeying = 0
-		for(var/mob/M in GLOB.player_list)
+	log_access("Login: [key_name(src)] from [lastKnownIP ? lastKnownIP : "localhost"]-[computer_id] || BYOND v[client.byond_version]",ckey=key_name(src))
+	if(config.guests_allowed) // shut up if guests allowed for testing
+		return
+	if(config.logsettings["log_access"])
+		for(var/mob/M in player_list)
 			if(M == src)	continue
 			if( M.key && (M.key != key) )
 				var/matches
@@ -15,52 +16,63 @@
 				if( (client.connection != "web") && (M.computer_id == client.computer_id) )
 					if(matches)	matches += " and "
 					matches += "ID ([client.computer_id])"
-					is_multikeying = 1
+					spawn() alert("You have logged in already with another key this round, please log out of this one NOW or risk being banned!")
 				if(matches)
 					if(M.client)
-						message_admins("<font color='red'><B>Notice: </B></font><span class='info'><A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same [matches] as <A href='?src=\ref[usr];priv_msg=\ref[M]'>[key_name_admin(M)]</A>.</span>", 1)
-						log_access("Notice: [key_name(src, include_name = FALSE)] has the same [matches] as [key_name(M, include_name = FALSE)].")
+						message_admins("<span class='warning'><B>Notice: </B></span><span class='notice'><A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same [matches] as <A href='?src=\ref[usr];priv_msg=\ref[M]'>[key_name_admin(M)]</A>.</span>", 1)
+						log_access("Notice: [key_name(src)] has the same [matches] as [key_name(M)].",ckey=key_name(src))
 					else
-						message_admins("<font color='red'><B>Notice: </B></font><span class='info'><A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same [matches] as [key_name_admin(M)] (no longer logged in). </span>", 1)
-						log_access("Notice: [key_name(src, include_name = FALSE)] has the same [matches] as [key_name(M, include_name = FALSE)] (no longer logged in).")
-		if(is_multikeying && !client.warned_about_multikeying)
-			client.warned_about_multikeying = 1
-			spawn(1 SECOND)
-				to_chat(src, "<b>WARNING:</b> It would seem that you are sharing connection or computer with another player. If you haven't done so already, please contact the staff via the Adminhelp verb to resolve this situation. Failure to do so may result in administrative action. You have been warned.")
+						message_admins("<span class='warning'><B>Notice: </B></span><span class='notice'><A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same [matches] as [key_name_admin(M)] (no longer logged in). </span>", 1)
+						log_access("Notice: [key_name(src)] has the same [matches] as [key_name(M)] (no longer logged in).",ckey=key_name(src))
 
-	if(config.external.login_export_addr)
-		spawn(-1)
-			var/list/params = new
-			params["login"] = 1
-			params["key"] = client.key
-			if(isnum(client.player_age))
-				params["server_age"] = client.player_age
-			params["ip"] = client.address
-			params["clientid"] = client.computer_id
-			params["roundid"] = game_id
-			params["name"] = real_name || name
-			world.Export("[config.external.login_export_addr]?[list2params(params)]", null, 1)
-
+/**
+ * Currently marked as SHOULD_NOT_OVERRIDE.
+ *
+ * In the case of Aurora code, mob/Login is invoked BEFORE client initialization
+ * is completed, in order to permit remote authentication.
+ *
+ * This also invokes mob/proc/LateLogin in cases where the client has already been
+ * initialized. This is the case when a ckey is moved around from mob to mob during
+ * gameplay.
+ *
+ * Use /mob/proc/LateLogin() instead.
+ */
 /mob/Login()
-	CAN_BE_REDEFINED(TRUE)
+	SHOULD_NOT_OVERRIDE(TRUE)
+
+	..()
+
+	if (client.is_initialized)
+		LateLogin()
+
+/**
+ * \brief A function to replace most uses of mob/Login with. 99% of the time, you
+ * should implement an override of this function.
+ *
+ * This function is invoked AFTER client/proc/InitClient and client/proc/InitPrefs.
+ * It can expect the client.ckey to be properly populated with the client's final
+ * ckey.
+ */
+/mob/proc/LateLogin()
 	SHOULD_CALL_PARENT(TRUE)
-	if(!client)
-		return
+	SEND_SIGNAL(src, COMSIG_MOB_LOGIN)
 
-	GLOB.player_list |= src
+	player_list |= src
 	update_Login_details()
-	world.update_status()
+	SSstatistics.update_status()
 
-	client.images = null				//remove the images such as AIs being unable to see runes
-	client.screen = list()				//remove hud items just in case
-	InitializeHud()
+	client.images.Cut()				//remove the images such as AIs being unable to see runes
+	client.screen.Cut()				//remove hud items just in case
+	if(hud_used)
+		qdel(hud_used)		//remove the hud objects
+	hud_used = new /datum/hud(src)
 
+	disconnect_time = null
 	next_move = 1
 	set_sight(sight|SEE_SELF)
+	disconnect_time = null
 
-	client.statobj = src // DO NOT CALL PARENT HERE or BYOND will devour your soul
-
-	my_client = client
+	player_age = client.player_age
 
 	if(loc && !isturf(loc))
 		client.eye = loc
@@ -72,36 +84,26 @@
 	if(eyeobj)
 		eyeobj.possess(src)
 
-	l_general = new()
-	client.screen += l_general
-
-	CreateRenderers()
-
-	refresh_client_images()
-	reload_fullscreen() // Reload any fullscreen overlays this mob has.
-	add_click_catcher()
-
-	client.mob.update_client_color()
-
 	//set macro to normal incase it was overriden (like cyborg currently does)
-	var/hotkey_mode = client.get_preference_value("DEFAULT_HOTKEY_MODE")
-	if(hotkey_mode == GLOB.PREF_YES)
-		winset(src, null, "mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true input.focus=false")
+	if(client.prefs.toggles_secondary & HOTKEY_DEFAULT)
+		winset(src, null, "mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true")
 	else
 		winset(src, null, "mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true")
+	MOB_STOP_THINKING(src)
 
-	if(!skybox)
-		skybox = new(src)
-		skybox.owner = src
-	client.screen += skybox
+	clear_important_client_contents(client)
+	enable_client_mobs_in_contents(client)
 
-	if(ability_master)
-		ability_master.update_abilities(1, src)
-		ability_master.toggle_open(1)
-		if(mind && ability_master.spell_objects)
-			for(var/obj/screen/ability/spell/screen in ability_master.spell_objects)
-				var/datum/spell/S = screen.spell
-				mind.learned_spells |= S
+	update_client_color()
+	add_click_catcher()
 
-	SEND_GLOBAL_SIGNAL(SIGNAL_LOGGED_IN, src)
-	SEND_SIGNAL(src, SIGNAL_LOGGED_IN, src)
+	if(machine)
+		machine.on_user_login(src)
+
+	// Check code/modules/admin/verbs/antag-ooc.dm for definition
+	client.add_aooc_if_necessary()
+
+	if(client)
+		client.update_skybox(TRUE)
+
+	addtimer(CALLBACK(client, TYPE_PROC_REF(/client, check_panel_loaded)), 30 SECONDS)

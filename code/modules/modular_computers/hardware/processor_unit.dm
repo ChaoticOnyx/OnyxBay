@@ -6,8 +6,7 @@
 	desc = "A standard CPU used in most computers. It can run up to three programs simultaneously."
 	icon_state = "cpu_normal"
 	hardware_size = 2
-	power_usage = 50
-	critical = 1
+	power_usage = 75
 	malfunction_probability = 1
 	origin_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 2)
 
@@ -18,8 +17,17 @@
 	desc = "A standard miniaturised CPU used in portable devices. It can run up to two programs simultaneously."
 	icon_state = "cpu_small"
 	hardware_size = 1
-	power_usage = 25
+	power_usage = 50
 	max_idle_programs = 1
+	origin_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
+
+/obj/item/computer_hardware/processor_unit/small/adv
+	name = "upgraded microprocessor"
+	desc = "An expensive, upgraded mini-CPU used in portable devices. It can run up to three programs simultaneously, though with less power efficiency than slower models."
+	icon_state = "cpu_small"
+	hardware_size = 1
+	power_usage = 100
+	max_idle_programs = 2
 	origin_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
 
 /obj/item/computer_hardware/processor_unit/photonic
@@ -37,10 +45,5 @@
 	icon_state = "cpu_small_photonic"
 	hardware_size = 1
 	power_usage = 75
-	max_idle_programs = 2
+	max_idle_programs = 3
 	origin_tech = list(TECH_DATA = 4, TECH_ENGINEERING = 3)
-
-/obj/item/computer_hardware/processor_unit/Destroy()
-	if(holder2 && (holder2.processor_unit == src))
-		holder2.processor_unit = null
-	return ..()

@@ -17,17 +17,7 @@ LOGIN mylogin
 PASSWORD mypassword
 
 # The following information is for feedback tracking via the blackbox server
-FEEDBACK_DATABASE feedback
-FEEDBACK_LOGIN root
-FEEDBACK_PASSWORD pass
 
 # Track population and death statistics
 # Comment this out to disable
 #ENABLE_STAT_TRACKING
-
-# Third database, external bots can only access it
-DONATION_ADDRESS localhost
-DONATION_PORT 3306
-DONATION_DATABASE donations
-DONATION_LOGIN root
-DONATION_PASSWORD pass

@@ -11,24 +11,24 @@
 	var/configuring = 0
 	//var/target_pressure = ONE_ATMOSPHERE	//a base type as abstract as this should NOT be making these kinds of assumptions
 
+	var/base_icon
+
 	var/tag_north = ATM_NONE
 	var/tag_south = ATM_NONE
 	var/tag_east = ATM_NONE
 	var/tag_west = ATM_NONE
 
-	var/overlays_on[5]
-	var/overlays_off[5]
-	var/overlays_error[2]
+	var/list/on_states = list()
+	var/list/off_states = list()
+
 	var/underlays_current[4]
 
-	var/list/ports = list()
+	var/list/ports = new()
 
 /obj/machinery/atmospherics/omni/Initialize()
-	. = ..()
 	icon_state = "base"
-
 	ports = new()
-	for(var/d in GLOB.cardinal)
+	for(var/d in cardinal)
 		var/datum/omni_port/new_port = new(src, d)
 		switch(d)
 			if(NORTH)
@@ -42,25 +42,29 @@
 		if(new_port.mode > 0)
 			initialize_directions |= d
 		ports += new_port
+	. = ..()
 
-	build_icons()
-
-/obj/machinery/atmospherics/omni/on_update_icon()
+/obj/machinery/atmospherics/omni/update_icon()
+	cut_overlays()
+	var/list/to_add = list(base_icon)
 	if(stat & NOPOWER)
-		SetOverlays(overlays_off)
+		to_add += off_states
 	else if(error_check())
-		SetOverlays(overlays_error)
+		to_add += "error"
+	else if (use_power)
+		to_add[1] = "[base_icon]_glow"
+		to_add += on_states
 	else
-		SetOverlays(use_power ? (overlays_on) : (overlays_off))
+		to_add += off_states
+
+	add_overlay(to_add)
 
 	underlays = underlays_current
-
-	return
 
 /obj/machinery/atmospherics/omni/proc/error_check()
 	return
 
-/obj/machinery/atmospherics/omni/Process()
+/obj/machinery/atmospherics/omni/process()
 	last_power_draw = 0
 	last_flow_rate = 0
 
@@ -71,26 +75,34 @@
 		return 0
 	return 1
 
-/obj/machinery/atmospherics/omni/attackby(obj/item/W as obj, mob/user as mob)
-	if(!isWrench(W))
+/obj/machinery/atmospherics/omni/power_change()
+	var/old_stat = stat
+	..()
+	if(old_stat != stat)
+		update_icon()
+
+/obj/machinery/atmospherics/omni/attackby(var/obj/item/W as obj, var/mob/user as mob)
+	if(!W.iswrench())
 		return ..()
 
 	var/int_pressure = 0
 	for(var/datum/omni_port/P in ports)
 		int_pressure += P.air.return_pressure()
+	if(!loc) return FALSE
 	var/datum/gas_mixture/env_air = loc.return_air()
+	if ((int_pressure - env_air.return_pressure()) > PRESSURE_EXERTED)
+		to_chat(user, "<span class='warning'>You cannot unwrench \the [src], it is too exerted due to internal pressure.</span>")
+		add_fingerprint(user)
+		return TRUE
 	to_chat(user, "<span class='notice'>You begin to unfasten \the [src]...</span>")
-	playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-	if(do_after(user, 40, src))
+	if(W.use_tool(src, user, 40, volume = 50))
 		user.visible_message( \
 			"<span class='notice'>\The [user] unfastens \the [src].</span>", \
 			"<span class='notice'>You have unfastened \the [src].</span>", \
 			"You hear a ratchet.")
-		var/obj/item/pipe/P = new(loc, make_from=src)
-		if ((int_pressure - env_air.return_pressure()) > 2*ONE_ATMOSPHERE)
-			to_chat(user, "<span class='warning'>\the [src] flies off because of the overpressure in it!</span>")
-			P.throw_at_random(0, round((int_pressure - env_air.return_pressure()) / 100), 30)
+		new /obj/item/pipe(loc, make_from=src)
 		qdel(src)
+		return TRUE
 
 /obj/machinery/atmospherics/omni/attack_hand(user as mob)
 	if(..())
@@ -100,61 +112,40 @@
 	ui_interact(user)
 	return
 
-/obj/machinery/atmospherics/omni/proc/build_icons()
-	if(!check_icon_cache())
-		return
-
-	var/core_icon = null
-	if(istype(src, /obj/machinery/atmospherics/omni/mixer))
-		core_icon = "mixer"
-	else if(istype(src, /obj/machinery/atmospherics/omni/filter))
-		core_icon = "filter"
-	else
-		return
-
-	//directional icons are layers 1-4, with the core icon on layer 5
-	if(core_icon)
-		overlays_off[5] = icon_manager.get_atmos_icon("omni", , , core_icon)
-		overlays_on[5] = icon_manager.get_atmos_icon("omni", , , core_icon + "_glow")
-
-		overlays_error[1] = icon_manager.get_atmos_icon("omni", , , core_icon)
-		overlays_error[2] = icon_manager.get_atmos_icon("omni", , , "error")
-
 /obj/machinery/atmospherics/omni/proc/update_port_icons()
 	if(!check_icon_cache())
 		return
 
+	on_states.Cut()
+	off_states.Cut()
+
 	for(var/datum/omni_port/P in ports)
-		if(P.update)
-			var/ref_layer = 0
-			switch(P.dir)
-				if(NORTH)
-					ref_layer = 1
-				if(SOUTH)
-					ref_layer = 2
-				if(EAST)
-					ref_layer = 3
-				if(WEST)
-					ref_layer = 4
+		var/ref_layer = 0
+		switch(P.dir)
+			if(NORTH)
+				ref_layer = 1
+			if(SOUTH)
+				ref_layer = 2
+			if(EAST)
+				ref_layer = 3
+			if(WEST)
+				ref_layer = 4
 
-			if(!ref_layer)
-				continue
+		if(!ref_layer)
+			continue
 
-			var/list/port_icons = select_port_icons(P)
-			if(port_icons)
-				if(P.node)
-					underlays_current[ref_layer] = port_icons["pipe_icon"]
-				else
-					underlays_current[ref_layer] = null
-				overlays_off[ref_layer] = port_icons["off_icon"]
-				overlays_on[ref_layer] = port_icons["on_icon"]
+		var/list/underlay_icon = select_port_icons(P)
+		if(underlay_icon)
+			if(P.node)
+				underlays_current[ref_layer] = underlay_icon
 			else
 				underlays_current[ref_layer] = null
-				overlays_off[ref_layer] = null
-				overlays_on[ref_layer] = null
+		else
+			underlays_current[ref_layer] = null
 
 	update_icon()
 
+// Assumes on_states and off_states have been cut if required.
 /obj/machinery/atmospherics/omni/proc/select_port_icons(datum/omni_port/P)
 	if(!istype(P))
 		return
@@ -170,32 +161,27 @@
 			if(ATM_OUTPUT)
 				ic_on += "_out_glow"
 				ic_off += "_out"
-			if(ATM_O2 to ATM_H2)
+			if(ATM_O2 to ATM_H2O)
 				ic_on += "_filter"
 				ic_off += "_out"
 
-		ic_on = icon_manager.get_atmos_icon("omni", , , ic_on)
-		ic_off = icon_manager.get_atmos_icon("omni", , , ic_off)
+		on_states += ic_on
+		off_states += ic_off
 
-		var/pipe_state
 		var/turf/T = get_turf(src)
 		if(!istype(T))
 			return
 		if(!T.is_plating() && istype(P.node, /obj/machinery/atmospherics/pipe) && P.node.level == 1 )
-			//pipe_state = icon_manager.get_atmos_icon("underlay_down", P.dir, color_cache_name(P.node))
-			pipe_state = icon_manager.get_atmos_icon("underlay", P.dir, color_cache_name(P.node), "down")
+			. = icon_manager.get_atmos_icon("underlay", P.dir, color_cache_name(P.node), "down")
 		else
-			//pipe_state = icon_manager.get_atmos_icon("underlay_intact", P.dir, color_cache_name(P.node))
-			pipe_state = icon_manager.get_atmos_icon("underlay", P.dir, color_cache_name(P.node), "intact")
-
-		return list("on_icon" = ic_on, "off_icon" = ic_off, "pipe_icon" = pipe_state)
+			. = icon_manager.get_atmos_icon("underlay", P.dir, color_cache_name(P.node), "intact")
 
 /obj/machinery/atmospherics/omni/update_underlays()
 	for(var/datum/omni_port/P in ports)
 		P.update = 1
 	update_ports()
 
-/obj/machinery/atmospherics/omni/hide(i)
+/obj/machinery/atmospherics/omni/hide(var/i)
 	update_underlays()
 
 /obj/machinery/atmospherics/omni/proc/update_ports()
@@ -224,17 +210,17 @@
 	return null
 
 /obj/machinery/atmospherics/omni/Destroy()
+	loc = null
+
 	for(var/datum/omni_port/P in ports)
 		if(P.node)
 			P.node.disconnect(src)
 			qdel(P.network)
 			P.node = null
-	ports.Cut()
 
 	return ..()
 
 /obj/machinery/atmospherics/omni/atmos_init()
-	..()
 	for(var/datum/omni_port/P in ports)
 		if(P.node || P.mode == 0)
 			continue
@@ -292,3 +278,9 @@
 	update_ports()
 
 	return null
+
+/obj/machinery/atmospherics/omni/AltClick(var/mob/user)
+	if(!allowed(user))
+		to_chat(user, SPAN_WARNING("Access denied."))
+		return
+	Topic(src, list("power" = "1"))

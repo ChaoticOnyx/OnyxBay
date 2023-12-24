@@ -4,41 +4,26 @@
 	icon = 'icons/obj/ammo.dmi'
 	icon_state = "syringe-cartridge"
 	var/icon_flight = "syringe-cartridge-flight" //so it doesn't look so weird when shot
-	matter = list(MATERIAL_STEEL = 125, MATERIAL_GLASS = 375)
-	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	matter = list(DEFAULT_WALL_MATERIAL = 125, MATERIAL_GLASS = 375)
+	obj_flags = OBJ_FLAG_CONDUCTABLE
 	slot_flags = SLOT_BELT | SLOT_EARS
 	throwforce = 3
 	force = 3
-	w_class = ITEM_SIZE_TINY
+	w_class = ITEMSIZE_TINY
 	var/obj/item/reagent_containers/syringe/syringe
 
-/obj/item/syringe_cartridge/pre_launched()
-	..()
-	throw_spin = FALSE
-
-/obj/item/syringe_cartridge/post_launched()
-	..()
-	throw_spin = TRUE
-
-/obj/item/syringe_cartridge/on_update_icon()
-	underlays.Cut()
+/obj/item/syringe_cartridge/update_icon()
 	if(syringe)
-		underlays += image(syringe.icon, src, syringe.icon_state)
-		underlays += syringe.filling
+		icon_state = "syringe-cartridge-loaded"
+	else
+		icon_state = "syringe-cartridge"
 
 /obj/item/syringe_cartridge/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/reagent_containers/syringe))
-		var/obj/item/reagent_containers/syringe/S = I
-		if(S.mode == SYRINGE_BROKEN)
-			to_chat(user, SPAN("warning", "This syringe is broken."))
-			return
-		if(S.mode == SYRINGE_PACKAGED)
-			to_chat(user, SPAN("notice", "This syringe must be unwrapped first."))
-			return
-		if(!user.drop(I, src))
-			return
-		syringe = S
+		syringe = I
 		to_chat(user, "<span class='notice'>You carefully insert [syringe] into [src].</span>")
+		user.remove_from_mob(syringe)
+		syringe.forceMove(src)
 		sharp = 1
 		name = "syringe dart"
 		update_icon()
@@ -46,10 +31,10 @@
 /obj/item/syringe_cartridge/attack_self(mob/user)
 	if(syringe)
 		to_chat(user, "<span class='notice'>You remove [syringe] from [src].</span>")
-		user.pick_or_drop(syringe)
+		user.put_in_hands(syringe)
 		syringe = null
 		sharp = initial(sharp)
-		SetName(initial(name))
+		name = initial(name)
 		update_icon()
 
 /obj/item/syringe_cartridge/proc/prime()
@@ -57,18 +42,18 @@
 	icon_state = icon_flight
 	underlays.Cut()
 
-/obj/item/syringe_cartridge/throw_impact(atom/hit_atom, speed)
+/obj/item/syringe_cartridge/throw_impact(atom/hit_atom, var/speed)
 	..() //handles embedding for us. Should have a decent chance if thrown fast enough
 	if(syringe)
 		//check speed to see if we hit hard enough to trigger the rapid injection
 		//incidentally, this means syringe_cartridges can be used with the pneumatic launcher
-		if((speed >= 10 || speed <= 0.9) && isliving(hit_atom))
+		if(speed >= 10 && isliving(hit_atom))
 			var/mob/living/L = hit_atom
 			//unfortuately we don't know where the dart will actually hit, since that's done by the parent.
-			if(L.can_inject(null, ran_zone()) && syringe.reagents)
-				var/reagent_log = syringe.reagents.get_reagents()
+			if(L.can_inject() && syringe.reagents)
+				var/singleton/reagent/reagent_log = syringe.reagents.get_reagents()
 				syringe.reagents.trans_to_mob(L, 15, CHEM_BLOOD)
-				admin_inject_log(thrower, L, src, reagent_log, 15, violent=1)
+				admin_inject_log(thrower, L, src, reagent_log, syringe.reagents.get_temperature(), 15, violent=1)
 
 		syringe.break_syringe(iscarbon(hit_atom)? hit_atom : null)
 		syringe.update_icon()
@@ -79,21 +64,21 @@
 /obj/item/gun/launcher/syringe
 	name = "syringe gun"
 	desc = "A spring loaded rifle designed to fit syringes, designed to incapacitate unruly patients from a distance."
+	icon = 'icons/obj/guns/syringegun.dmi'
 	icon_state = "syringegun"
 	item_state = "syringegun"
-	w_class = ITEM_SIZE_LARGE
-	force = 8.0
-	mod_weight = 0.8
-	mod_reach = 0.6
-	mod_handy = 1.0
-	matter = list(MATERIAL_STEEL = 2000)
+	w_class = ITEMSIZE_NORMAL
+	force = 7
+	matter = list(DEFAULT_WALL_MATERIAL = 2000)
 	slot_flags = SLOT_BELT
 
-	fire_sound = 'sound/weapons/empty.ogg'
+	fire_sound = 'sound/weapons/click.ogg'
 	fire_sound_text = "a metallic thunk"
-	screen_shake = 0
-	release_force = 0.1
+	recoil = 0
+	release_force = 10
 	throw_distance = 10
+
+	needspin = FALSE
 
 	var/list/darts = list()
 	var/max_darts = 1
@@ -110,12 +95,13 @@
 	darts -= next
 	next = null
 
-/obj/item/gun/launcher/syringe/attack_self(mob/living/user as mob)
+/obj/item/gun/launcher/syringe/unique_action(mob/living/user)
 	if(next)
 		user.visible_message("[user] unlatches and carefully relaxes the bolt on [src].", "<span class='warning'>You unlatch and carefully relax the bolt on [src], unloading the spring.</span>")
+		playsound(src.loc, 'sound/weapons/blade_close.ogg', 50, 1)
 		next = null
 	else if(darts.len)
-		playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
+		playsound(src.loc, 'sound/weapons/blade_open.ogg', 50, 1)
 		user.visible_message("[user] draws back the bolt on [src], clicking it into place.", "<span class='warning'>You draw back the bolt on the [src], loading the spring!</span>")
 		next = darts[1]
 	add_fingerprint(user)
@@ -130,18 +116,19 @@
 			return
 		var/obj/item/syringe_cartridge/C = darts[1]
 		darts -= C
-		user.pick_or_drop(C)
+		user.put_in_hands(C)
 		user.visible_message("[user] removes \a [C] from [src].", "<span class='notice'>You remove \a [C] from [src].</span>")
 	else
 		..()
 
-/obj/item/gun/launcher/syringe/attackby(obj/item/A as obj, mob/user as mob)
+/obj/item/gun/launcher/syringe/attackby(var/obj/item/A as obj, mob/user as mob)
 	if(istype(A, /obj/item/syringe_cartridge))
 		var/obj/item/syringe_cartridge/C = A
 		if(darts.len >= max_darts)
 			to_chat(user, "<span class='warning'>[src] is full!</span>")
 			return
-		user.drop(C, src)
+		user.remove_from_mob(C)
+		C.forceMove(src)
 		darts += C //add to the end
 		user.visible_message("[user] inserts \a [C] into [src].", "<span class='notice'>You insert \a [C] into [src].</span>")
 	else
@@ -150,26 +137,7 @@
 /obj/item/gun/launcher/syringe/rapid
 	name = "syringe gun revolver"
 	desc = "A modification of the syringe gun design, using a rotating cylinder to store up to five syringes. The spring still needs to be drawn between shots."
+	icon = 'icons/obj/guns/syringegun.dmi'
 	icon_state = "rapidsyringegun"
 	item_state = "rapidsyringegun"
 	max_darts = 5
-	force = 10.0
-	mod_weight = 1.0
-	mod_reach = 0.6
-	mod_handy = 1.0
-
-/obj/item/gun/launcher/syringe/disguised
-	name = "deluxe electronic cigarette"
-	desc = "A premium model eGavana MK3 electronic cigarette, shaped like a cigar."
-	icon = 'icons/obj/ecig.dmi'
-	icon_state = "pcigoff1"
-	item_state = "pcigoff1"
-	w_class = ITEM_SIZE_SMALL
-	force = 3
-	throw_distance = 7
-	release_force = 7
-
-/obj/item/gun/launcher/syringe/disguised/_examine_text(mob/user)
-	. = ..()
-	if(get_dist(src, user) <= 0)
-		. += "\nThe button is a little stiff."

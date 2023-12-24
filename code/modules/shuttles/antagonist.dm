@@ -1,34 +1,32 @@
-/obj/machinery/computer/shuttle_control/multi/vox
+/obj/machinery/computer/shuttle_control/multi/raider
 	name = "skipjack control console"
+	icon = 'icons/obj/primitive_computer.dmi'
+	icon_screen = "syndicate"
 	req_access = list(access_syndicate)
 	shuttle_tag = "Skipjack"
+	light_color = LIGHT_COLOR_RED
+	can_rename_ship = TRUE
 
-/obj/machinery/computer/shuttle_control/multi/syndicate
-	name = "syndicate shuttle control console"
+/obj/machinery/computer/shuttle_control/multi/burglar
+	name = "pod control console"
+	icon = 'icons/obj/primitive_computer.dmi'
+	icon_screen = "syndicate"
 	req_access = list(access_syndicate)
-	shuttle_tag = "Syndicate"
+	shuttle_tag = "Water Bear"
+	light_color = LIGHT_COLOR_RED
+	can_rename_ship = TRUE
 
-/obj/machinery/computer/shuttle_control/multi/elite_syndicate
-	name = "elite syndicate operative shuttle control console"
+/obj/machinery/computer/shuttle_control/multi/antag/syndicate
+	name = "mercenary shuttle control console"
+	icon = 'icons/obj/primitive_computer.dmi'
+	icon_screen = "syndicate"
 	req_access = list(access_syndicate)
-	shuttle_tag = "Elite Syndicate Operative"
+	shuttle_tag = "ICV Raskolnikov"
+	light_color = LIGHT_COLOR_RED
+	can_rename_ship = TRUE
 
-/obj/machinery/computer/shuttle_control/multi/rescue
-	name = "rescue shuttle control console"
-	req_access = list(access_cent_specops)
-	shuttle_tag = "Rescue"
-
-/obj/machinery/computer/shuttle_control/multi/ninja
-	name = "stealth shuttle control console"
+/obj/machinery/computer/shuttle_control/multi/merc_elite
+	name = "shuttle control console"
 	req_access = list(access_syndicate)
-	shuttle_tag = "Ninja"
-
-/obj/machinery/computer/shuttle_control/multi/merchant
-	name = "merchant shuttle control console"
-	req_access = list(access_merchant)
-	shuttle_tag = "Merchant"
-
-/obj/machinery/computer/shuttle_control/multi/mining_ship
-	name = "Creaker control console"
-	req_access = list(access_mining)
-	shuttle_tag = "Creaker"
+	shuttle_tag = "Merc Elite"
+	light_color = LIGHT_COLOR_RED

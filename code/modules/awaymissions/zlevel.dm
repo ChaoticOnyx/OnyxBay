@@ -1,9 +1,11 @@
-/proc/generateMapList(filename)
-	var/list/potentialMaps = list()
-	var/list/Lines = world.file2list(filename)
-
-	if(!Lines.len)
+/proc/createRandomZlevel()
+	if(awaydestinations.len)	//crude, but it saves another var!
 		return
+
+	var/list/potentialRandomZlevels = list()
+	admin_notice("<span class='danger'>Searching for away missions...</span>", R_DEBUG)
+	var/list/Lines = file2list("maps/RandomZLevels/fileList.txt")
+	if(!Lines.len)	return
 	for (var/t in Lines)
 		if (!t)
 			continue
@@ -16,16 +18,39 @@
 
 		var/pos = findtext(t, " ")
 		var/name = null
+	//	var/value = null
 
 		if (pos)
-			name = lowertext(copytext(t, 1, pos))
-
+			// No, don't do lowertext here, that breaks paths on linux
+			name = copytext(t, 1, pos)
+		//	value = copytext(t, pos + 1)
 		else
-			name = lowertext(t)
+			// No, don't do lowertext here, that breaks paths on linux
+			name = t
 
 		if (!name)
 			continue
 
-		potentialMaps.Add(t)
+		potentialRandomZlevels.Add(name)
 
-	return potentialMaps
+
+	var/static/dmm_suite/loader = new
+	if(potentialRandomZlevels.len)
+		admin_notice("<span class='danger'>Loading away mission...</span>", R_DEBUG)
+
+		var/map = pick(potentialRandomZlevels)
+		var/file = file(map)
+		if(isfile(file))
+			loader.load_map(file)
+			LOG_DEBUG("away mission loaded: [map]")
+
+		for(var/obj/effect/landmark/L in landmarks_list)
+			if (L.name != "awaystart")
+				continue
+			awaydestinations.Add(L)
+
+		admin_notice("<span class='danger'>Away mission loaded.</span>", R_DEBUG)
+
+	else
+		admin_notice("<span class='danger'>No away missions found.</span>", R_DEBUG)
+		return

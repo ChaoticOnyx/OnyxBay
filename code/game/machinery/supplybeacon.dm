@@ -2,7 +2,7 @@
 /obj/item/supply_beacon
 	name = "inactive supply beacon"
 	icon = 'icons/obj/supplybeacon.dmi'
-	desc = "An inactive, hacked supply beacon stamped with the Nyx Rapid Fabrication logo. Good for one (1) ballistic supply pod shipment."
+	desc = "An inactive, hacked supply beacon stamped with the Tau Ceti Rapid Fabrication logo. Good for one (1) ballistic supply pod shipment."
 	icon_state = "beacon"
 	var/deploy_path = /obj/machinery/power/supply_beacon
 	var/deploy_time = 30
@@ -11,12 +11,13 @@
 	name = "inactive supermatter supply beacon"
 	deploy_path = /obj/machinery/power/supply_beacon/supermatter
 
-/obj/item/supply_beacon/attack_self(mob/user)
+/obj/item/supply_beacon/attack_self(var/mob/user)
 	user.visible_message("<span class='notice'>\The [user] begins setting up \the [src].</span>")
-	if(!do_after(user, deploy_time, src))
+	if(!do_after(user, deploy_time, src, DO_REPAIR_CONSTRUCT))
 		return
 	var/obj/S = new deploy_path(get_turf(user))
 	user.visible_message("<span class='notice'>\The [user] deploys \the [S].</span>")
+	user.unEquip(src)
 	qdel(src)
 
 /obj/machinery/power/supply_beacon
@@ -27,6 +28,7 @@
 
 	anchored = 0
 	density = 1
+	layer = MOB_LAYER - 0.1
 	stat = 0
 
 	var/target_drop_time
@@ -42,18 +44,18 @@
 	name = "supermatter supply beacon"
 	drop_type = "supermatter"
 
-/obj/machinery/power/supply_beacon/attackby(obj/item/W, mob/user)
-	if(!use_power && isWrench(W))
+/obj/machinery/power/supply_beacon/attackby(var/obj/item/W, var/mob/user)
+	if(!use_power && W.iswrench())
 		if(!anchored && !connect_to_network())
 			to_chat(user, "<span class='warning'>This device must be placed over an exposed cable.</span>")
-			return
+			return TRUE
 		anchored = !anchored
 		user.visible_message("<span class='notice'>\The [user] [anchored ? "secures" : "unsecures"] \the [src].</span>")
-		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-		return
+		playsound(src.loc, W.usesound, 50, 1)
+		return TRUE
 	return ..()
 
-/obj/machinery/power/supply_beacon/attack_hand(mob/user)
+/obj/machinery/power/supply_beacon/attack_hand(var/mob/user)
 
 	if(expended)
 		update_use_power(POWER_USE_OFF)
@@ -66,22 +68,21 @@
 		to_chat(user, "<span class='warning'>You need to secure the beacon with a wrench first!</span>")
 		return
 
-/obj/machinery/power/supply_beacon/attack_ai(mob/user)
+/obj/machinery/power/supply_beacon/attack_ai(var/mob/user)
 	if(user.Adjacent(src))
 		attack_hand(user)
 
-/obj/machinery/power/supply_beacon/proc/activate(mob/user)
+/obj/machinery/power/supply_beacon/proc/activate(var/mob/user)
 	if(expended)
 		return
 	if(surplus() < 500)
 		if(user) to_chat(user, "<span class='notice'>The connected wire doesn't have enough current.</span>")
 		return
-	set_light(1, 0.5, 2, 2, "#00ccaa")
+	set_light(3, 3, "#00CCAA")
 	icon_state = "beacon_active"
-	update_use_power(POWER_USE_IDLE)
 	if(user) to_chat(user, "<span class='notice'>You activate the beacon. The supply drop will be dispatched soon.</span>")
 
-/obj/machinery/power/supply_beacon/proc/deactivate(mob/user, permanent)
+/obj/machinery/power/supply_beacon/proc/deactivate(var/mob/user, var/permanent)
 	if(permanent)
 		expended = 1
 		icon_state = "beacon_depleted"
@@ -97,7 +98,7 @@
 		deactivate()
 	return ..()
 
-/obj/machinery/power/supply_beacon/Process()
+/obj/machinery/power/supply_beacon/process()
 	if(expended)
 		return PROCESS_KILL
 	if(!use_power)
@@ -112,6 +113,6 @@
 		var/drop_x = src.x-2
 		var/drop_y = src.y-2
 		var/drop_z = src.z
-		SSannounce.play_station_announce(/datum/announce/supply_drop, "Nyx Rapid Fabrication priority supply request #[rand(1000,9999)]-[rand(100,999)] recieved. Shipment dispatched via ballistic supply pod for immediate delivery. Have a nice day.")
+		command_announcement.Announce("Tau Ceti Rapid Fabrication priority supply request #[rand(1000,9999)]-[rand(100,999)] received. Shipment dispatched via ballistic supply pod for immediate delivery. Have a nice day.", "Thank You For Your Patronage")
 		spawn(rand(100,300))
 			new /datum/random_map/droppod/supply(null, drop_x, drop_y, drop_z, supplied_drop = drop_type) // Splat.

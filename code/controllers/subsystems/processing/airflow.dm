@@ -14,25 +14,15 @@ PROCESSING_SUBSYSTEM_DEF(airflow)
 	flags = SS_NO_INIT
 	priority = SS_PRIORITY_AIRFLOW
 
-
 /datum/controller/subsystem/processing/airflow/fire(resumed = FALSE)
 	if (!resumed)
-		current_run = processing.Copy()	// Defined in parent.
+		currentrun = processing.Copy()	// Defined in parent.
 
-	var/list/curr = current_run	// Defined in parent.
+	var/list/curr = currentrun	// Defined in parent.
 
 	while (curr.len)
 		var/atom/movable/target = curr[curr.len]
 		curr.len--
-
-		if(QDELETED(target))
-			if (target)
-				CLEAR_OBJECT(target)
-			else
-				processing -= target
-			if (MC_TICK_CHECK)
-				return
-			continue
 
 		if (target.airflow_speed <= 0)
 			CLEAR_OBJECT(target)
@@ -47,7 +37,7 @@ PROCESSING_SUBSYSTEM_DEF(airflow)
 			continue
 		else if (target.airflow_process_delay)
 			target.airflow_process_delay = 0
-		
+
 		target.airflow_speed = min(target.airflow_speed, 15)
 		target.airflow_speed -= vsc.airflow_speed_decay
 		if (!target.airflow_skip_speedcheck)
@@ -89,7 +79,7 @@ PROCESSING_SUBSYSTEM_DEF(airflow)
 			if (MC_TICK_CHECK)
 				return
 			continue
-		
+
 		step_towards(target, target.airflow_dest)
 		if (ismob(target) && target:client)
 			target:setMoveCooldown(vsc.airflow_mob_slowdown)
@@ -97,7 +87,7 @@ PROCESSING_SUBSYSTEM_DEF(airflow)
 		if (MC_TICK_CHECK)
 			return
 
-#undef CLEAR_OBJECT		
+#undef CLEAR_OBJECT
 
 /atom/movable
 	var/tmp/airflow_xo
@@ -120,7 +110,7 @@ PROCESSING_SUBSYSTEM_DEF(airflow)
 		return FALSE
 
 	if (ismob(src))
-		to_chat(src,"<span class='danger'>You are pushed away by airflow!</span>")
+		to_chat(src, SPAN_DANGER("You are pushed away by airflow!"))
 
 	last_airflow = world.time
 	var/airflow_falloff = 9 - sqrt((x - airflow_dest.x) ** 2 + (y - airflow_dest.y) ** 2)
@@ -128,9 +118,9 @@ PROCESSING_SUBSYSTEM_DEF(airflow)
 	if (airflow_falloff < 1)
 		airflow_dest = null
 		return FALSE
-	
-	airflow_speed = min(max(n * (9 / airflow_falloff), 1), 9)	
-	
+
+	airflow_speed = min(max(n * (9 / airflow_falloff), 1), 9)
+
 	airflow_od = 0
 
 	if (!density)
@@ -153,7 +143,7 @@ PROCESSING_SUBSYSTEM_DEF(airflow)
 /atom/movable/proc/RepelAirflowDest(n)
 	if (!prepare_airflow(n))
 		return
-	
+
 	airflow_xo = -(airflow_dest.x - src.x)
 	airflow_yo = -(airflow_dest.y - src.y)
 

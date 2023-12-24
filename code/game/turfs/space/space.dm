@@ -1,59 +1,82 @@
 /turf/space
-	plane = SPACE_PLANE
-	vis_flags = VIS_INHERIT_ID
 	icon = 'icons/turf/space.dmi'
-
 	name = "\proper space"
-	icon_state = "on_map"
+	desc = "The final frontier."
+	icon_state = "0"
 	dynamic_lighting = 0
-	temperature = 20 CELSIUS
+	footstep_sound = null //Override to make sure because yeah
+	tracks_footprint = FALSE
+
+	plane = PLANE_SPACE_BACKGROUND
+
+	temperature = T20C
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
-	var/dirt = 0
+//	heat_capacity = 700000 No.
+	is_hole = TRUE
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 0,
-		RADIATION_BETA_PARTICLE = 0,
-		RADIATION_HAWKING = 0
-	)
+	permit_ao = FALSE
+	z_eventually_space = TRUE
+	turf_flags = TURF_FLAG_BACKGROUND
+	var/use_space_appearance = TRUE
+	var/use_starlight = TRUE
 
+/turf/space/dynamic //For use in edge cases where you want the turf to not be completely lit, like in places where you have placed lattice.
+	dynamic_lighting = 1
+
+// Copypaste of parent for performance.
 /turf/space/Initialize()
-	. = ..()
-	icon_state = "white"
-	update_starlight()
+	SHOULD_CALL_PARENT(FALSE)
 
-	if(!HasBelow(z))
-		return
-	var/turf/below = GetBelow(src)
+	if(use_space_appearance)
+		appearance = SSskybox.space_appearance_cache[(((x + y) ^ ~(x * y) + z) % 25) + 1]
+	if(config.starlight && use_starlight && lighting_overlays_initialized)
+		update_starlight()
 
-	if(istype(below, /turf/space))
-		return
-	var/area/A = below.loc
+	if (initialized)
+		crash_with("Warning: [src]([type]) initialized multiple times!")
 
-	if(!below.density && (A.area_flags & AREA_FLAG_EXTERNAL))
-		return
+	initialized = TRUE
 
-	return INITIALIZE_HINT_LATELOAD // oh no! we need to switch to being a different kind of turf!
+	for(var/atom/movable/AM as mob|obj in src)
+		src.Entered(AM, AM.loc)
 
-/turf/space/LateInitialize()
-	// We alter area type before the turf to ensure the turf-change-event-propagation is handled as expected.
-	if(GLOB.using_map.base_floor_area)
-		var/area/new_area = locate(GLOB.using_map.base_floor_area) || new GLOB.using_map.base_floor_area
-		new_area.contents.Add(src)
-	ChangeTurf(GLOB.using_map.base_floor_type)
+	if (isStationLevel(z))
+		station_turfs += src
+
+	if(dynamic_lighting)
+		luminosity = 0
+	else
+		luminosity = 1
+
+	return INITIALIZE_HINT_NORMAL
+
+/turf/space/Destroy()
+	// Cleanup cached z_eventually_space values above us.
+	if (above)
+		var/turf/T = src
+		while ((T = GetAbove(T)))
+			T.z_eventually_space = FALSE
+	return ..()
+
+/turf/space/is_space()
+	return 1
 
 // override for space turfs, since they should never hide anything
 /turf/space/levelupdate()
 	for(var/obj/O in src)
 		O.hide(0)
 
-/turf/space/is_solid_structure()
-	return locate(/obj/structure/lattice, src) //counts as solid structure if it has a lattice
+/turf/space/can_have_cabling()
+	if (locate(/obj/structure/lattice/catwalk) in src)
+		return 1
+
+	return 0
 
 /turf/space/proc/update_starlight()
-	if(!config.misc.starlight)
+	if(!config.starlight)
 		return
-	if(locate(/turf/simulated) in orange(src,1))
-		set_light(min(0.1*config.misc.starlight, 1), 1, 2.5, 1.5, "#74dcff")
+	if(locate(/turf/simulated) in RANGE_TURFS(1, src))
+		set_light(SSatlas.current_sector.starlight_range, SSatlas.current_sector.starlight_power, l_color = SSskybox.background_color)
 	else
 		set_light(0)
 
@@ -62,39 +85,46 @@
 	if (istype(C, /obj/item/stack/rods))
 		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
 		if(L)
-			return L.attackby(C, user)
+			return
 		var/obj/item/stack/rods/R = C
 		if (R.use(1))
 			to_chat(user, "<span class='notice'>Constructing support lattice ...</span>")
-			playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1)
+			playsound(src, 'sound/weapons/Genhit.ogg', 50, 1)
 			ReplaceWithLattice()
 		return
 
-	if(istype(C, /obj/item/stack/tile/floor) || istype(C, /obj/item/stack/tile/floor_rough))
+	if (istype(C, /obj/item/stack/tile/floor))
 		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
 		if(L)
 			var/obj/item/stack/tile/floor/S = C
-			if(S.get_amount() < 1)
+			if (S.get_amount() < 1)
 				return
 			qdel(L)
-			playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1)
+			playsound(src, 'sound/weapons/Genhit.ogg', 50, 1)
 			S.use(1)
-			if(istype(C, /obj/item/stack/tile/floor_rough))
-				ChangeTurf(/turf/simulated/floor/plating/rough/airless)
-			else
-				ChangeTurf(/turf/simulated/floor/plating/airless)
+			ChangeTurf(/turf/simulated/floor/airless, keep_air = TRUE)
 			return
 		else
 			to_chat(user, "<span class='warning'>The plating is going to need some support.</span>")
-	return
 
+	..(C, user)
 
 // Ported from unstable r355
 
 /turf/space/Entered(atom/movable/A as mob|obj)
-	..()
-	if(A && A.loc == src)
-		if (A.x <= TRANSITION_EDGE || A.x >= (world.maxx - TRANSITION_EDGE + 1) || A.y <= TRANSITION_EDGE || A.y >= (world.maxy - TRANSITION_EDGE + 1))
+	if(movement_disabled)
+		to_chat(usr, "<span class='warning'>Movement is admin-disabled.</span>") //This is to identify lag problems)
+		return
+	..(A, A.loc)
+	if ((!(A) || src != A.loc))	return
+
+	inertial_drift(A)
+
+	if(SSticker.mode)
+
+		// Okay, so let's make it so that people can travel z levels but not nuke disks!
+		// if(ticker.mode.name == "mercenary")	return
+		if (A.x <= TRANSITIONEDGE || A.x >= (world.maxx - TRANSITIONEDGE + 1) || A.y <= TRANSITIONEDGE || A.y >= (world.maxy - TRANSITIONEDGE + 1))
 			A.touch_map_edge()
 
 /turf/space/proc/Sandbox_Spacemove(atom/movable/A as mob|obj)
@@ -114,17 +144,10 @@
 		if(!cur_pos) return
 		cur_x = cur_pos["x"]
 		cur_y = cur_pos["y"]
-		next_x = (--cur_x||GLOB.global_map.len)
-		y_arr = GLOB.global_map[next_x]
+		next_x = (--cur_x||global_map.len)
+		y_arr = global_map[next_x]
 		target_z = y_arr[cur_y]
-/*
-		//debug
-		log_debug("Src.z = [src.z] in global map X = [cur_x], Y = [cur_y]")
-		log_debug("Target Z = [target_z]")
-		log_debug("Next X = [next_x]")
 
-		//debug
-*/
 		if(target_z)
 			A.z = target_z
 			A.x = world.maxx - 2
@@ -140,17 +163,10 @@
 		if(!cur_pos) return
 		cur_x = cur_pos["x"]
 		cur_y = cur_pos["y"]
-		next_x = (++cur_x > GLOB.global_map.len ? 1 : cur_x)
-		y_arr = GLOB.global_map[next_x]
+		next_x = (++cur_x > global_map.len ? 1 : cur_x)
+		y_arr = global_map[next_x]
 		target_z = y_arr[cur_y]
-/*
-		//debug
-		log_debug("Src.z = [src.z] in global map X = [cur_x], Y = [cur_y]")
-		log_debug("Target Z = [target_z]")
-		log_debug("Next X = [next_x]")
 
-		//debug
-*/
 		if(target_z)
 			A.z = target_z
 			A.x = 3
@@ -165,17 +181,10 @@
 		if(!cur_pos) return
 		cur_x = cur_pos["x"]
 		cur_y = cur_pos["y"]
-		y_arr = GLOB.global_map[cur_x]
+		y_arr = global_map[cur_x]
 		next_y = (--cur_y||y_arr.len)
 		target_z = y_arr[next_y]
-/*
-		//debug
-		log_debug("Src.z = [src.z] in global map X = [cur_x], Y = [cur_y]")
-		log_debug("Next Y = [next_y]")
-		log_debug("Target Z = [target_z]")
 
-		//debug
-*/
 		if(target_z)
 			A.z = target_z
 			A.y = world.maxy - 2
@@ -191,17 +200,10 @@
 		if(!cur_pos) return
 		cur_x = cur_pos["x"]
 		cur_y = cur_pos["y"]
-		y_arr = GLOB.global_map[cur_x]
+		y_arr = global_map[cur_x]
 		next_y = (++cur_y > y_arr.len ? 1 : cur_y)
 		target_z = y_arr[next_y]
-/*
-		//debug
-		log_debug("Src.z = [src.z] in global map X = [cur_x], Y = [cur_y]")
-		log_debug("Next Y = [next_y]")
-		log_debug("Target Z = [target_z]")
 
-		//debug
-*/
 		if(target_z)
 			A.z = target_z
 			A.y = 3
@@ -210,11 +212,8 @@
 					A.loc.Entered(A)
 	return
 
-/turf/space/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
-	return ..(N, tell_universe, TRUE)
+/turf/space/ChangeTurf(turf/N, tell_universe=TRUE, force_lighting_update = FALSE, ignore_override = FALSE, mapload = FALSE, keep_air = FALSE)
+	return ..()
 
-//Bluespace turfs for shuttles and possible future transit use
-/turf/bluespace
-	name = "bluespace"
-	icon = 'icons/turf/space.dmi'
-	icon_state = "bluespace"
+/turf/space/is_open()
+	return TRUE

@@ -105,6 +105,10 @@
 	if(!isnull(tile_z))
 		z = tile_z
 
+/datum/point/proc/debug_out()
+	var/turf/T = return_turf()
+	return "\ref[src] aX [x] aY [y] aZ [z] pX [return_px()] pY [return_py()] mX [T.x] mY [T.y] mZ [T.z]"
+
 /datum/point/proc/move_atom_to_src(atom/movable/AM)
 	AM.forceMove(return_turf())
 	AM.pixel_x = return_px()
@@ -120,10 +124,10 @@
 	return new /datum/position(src)
 
 /datum/point/proc/return_px()
-	return MODULUS_FLOAT(x, world.icon_size) - 16 - 1
+	return Modulus(x, world.icon_size) - 16 - 1
 
 /datum/point/proc/return_py()
-	return MODULUS_FLOAT(y, world.icon_size) - 16 - 1
+	return Modulus(y, world.icon_size) - 16 - 1
 
 
 /datum/point/vector
@@ -212,7 +216,7 @@
 	last_move = world.time
 	START_PROCESSING(SSprojectiles, src)
 
-/datum/point/vector/processed/Process()
+/datum/point/vector/processed/process()
 	if(paused)
 		last_move += world.time - last_process
 		last_process = world.time

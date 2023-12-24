@@ -44,7 +44,7 @@
 
 
 	if(!note)
-		error("Hardware without description: [C]")
+		log_world("ERROR: Hardware without description: [C]")
 		return
 
 	var/confirmation = alert("[note] - Is this what you want?", "Hardware selection", "Yes", "No")
@@ -70,7 +70,7 @@
 	if(!help)
 		help = "Error loading help (file /ingame_manuals/malf_ai.html is probably missing). Please report this to server administration staff."
 
-	show_browser(user, help, "window=malf_ai_help;size=600x500")
+	user << browse(help, "window=malf_ai_help;size=600x500")
 
 
 // Verb: ai_select_research()
@@ -97,9 +97,12 @@
 // Proc: ability_prechecks()
 // Parameters 2 - (user - User which used this ability check_price - If different than 0 checks for ability CPU price too. Does NOT use the CPU time!)
 // Description: This is pre-check proc used to determine if the AI can use the ability.
-/proc/ability_prechecks(mob/living/silicon/ai/user = null, check_price = 0, override = 0)
+/proc/ability_prechecks(var/mob/living/silicon/ai/user = null, var/check_price = 0, var/override = 0)
 	if(!user)
 		return 0
+	if(user.stat == DEAD)
+		to_chat(user, SPAN_WARNING("You are dead!"))
+		return FALSE
 	if(!istype(user))
 		to_chat(user, "GAME ERROR: You tried to use ability that is only available for malfunctioning AIs, but you are not AI! Please report this.")
 		return 0
@@ -126,7 +129,7 @@
 // Proc: ability_pay()
 // Parameters 2 - (user - User from which we deduct CPU from, price - Amount of CPU power to use)
 // Description: Uses up certain amount of CPU power. Returns 1 on success, 0 on failure.
-/proc/ability_pay(mob/living/silicon/ai/user = null, price = 0)
+/proc/ability_pay(var/mob/living/silicon/ai/user = null, var/price = 0)
 	if(!user)
 		return 0
 	if(user.APU_power)
@@ -144,33 +147,72 @@
 	user.research.stored_cpu -= price
 	return 1
 
+// Proc: announce_hack_failure()
+// Parameters 2 - (user - hacking user, text - Used in alert text creation)
+// Description: Uses up certain amount of CPU power. Returns 1 on success, 0 on failure.
+/proc/announce_hack_failure(var/mob/living/silicon/ai/user = null, var/text)
+	if(!user || !text)
+		return 0
+	var/fulltext = ""
+	switch(user.hack_fails)
+		if(1)
+			fulltext = "We have detected a hack attempt into your [text]. The intruder failed to access anything of importance, but disconnected before we could complete our traces."
+		if(2)
+			fulltext = "We have detected another hack attempt. It was targeting [text]. The intruder almost gained control of the system, so we had to disconnect them. We partially finished our trace and it seems to be originating either from the station, or its immediate vicinity."
+		if(3)
+			fulltext = "Another hack attempt has been detected, this time targeting [text]. We are certain the intruder entered the network via a terminal located somewhere on the station."
+		if(4)
+			fulltext = "We have finished our traces and it seems the recent hack attempts are originating from your AI system. We recommend investigation."
+		else
+			fulltext = "Another hack attempt has been detected, targeting [text]. The source still seems to be your AI system."
+
+	command_announcement.Announce(fulltext)
+
 // Proc: get_unhacked_apcs()
 // Parameters: None
-// Description: Returns a list of all unhacked APCs. APCs on station Zs are on top of the list.
-/proc/get_unhacked_apcs(mob/living/silicon/ai/user)
-	var/list/station_apcs = list()
-	var/list/offstation_apcs = list()
-
-	for(var/obj/machinery/power/apc/A in GLOB.apc_list)
+// Description: Returns a list of all unhacked APCs
+/proc/get_unhacked_apcs(var/mob/living/silicon/ai/user)
+	var/list/H = list()
+	for(var/obj/machinery/power/apc/A in SSmachinery.processing)
 		if(A.hacker && A.hacker == user)
 			continue
-		if(A.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
-			station_apcs.Add(A)
-		else
-			offstation_apcs.Add(A)
+		H.Add(A)
+	return H
 
-	// Append off-station APCs to the end of station APCs list and return it.
-	station_apcs.Add(offstation_apcs)
-	return station_apcs
+// Proc: get_hacked_apcs()
+// Parameters: None
+// Description: Returns a list of all hacked APCs
+/proc/get_hacked_apcs()
+	var/list/H = list()
+	for(var/obj/machinery/power/apc/A in SSmachinery.processing)
+		if(!A.hacker)
+			continue
+		H.Add(A)
+	return H
 
+// Proc: get_apcs()
+// Parameters: None
+// Description: Returns a list of all APCs
+/proc/get_apcs()
+	var/list/H = list()
+	for(var/obj/machinery/power/apc/A in SSmachinery.processing)
+		H.Add(A)
+	return H
+
+/proc/get_unhacked_holopads()
+	var/list/H = list()
+	for(var/obj/machinery/hologram/holopad/HP in SSmachinery.processing)
+		if(!HP.hacked)
+			H.Add(HP)
+	return H
 
 // Helper procs which return lists of relevant mobs.
-/proc/get_unlinked_cyborgs(mob/living/silicon/ai/A)
+/proc/get_unlinked_cyborgs(var/mob/living/silicon/ai/A)
 	if(!A || !istype(A))
 		return
 
 	var/list/L = list()
-	for(var/mob/living/silicon/robot/RB in SSmobs.mob_list)
+	for(var/mob/living/silicon/robot/RB in mob_list)
 		if(istype(RB, /mob/living/silicon/robot/drone))
 			continue
 		if(RB.connected_ai == A)
@@ -178,31 +220,26 @@
 		L.Add(RB)
 	return L
 
-/proc/get_linked_cyborgs(mob/living/silicon/ai/A)
+/proc/get_linked_cyborgs(var/mob/living/silicon/ai/A)
 	if(!A || !istype(A))
 		return
 	return A.connected_robots
 
-/proc/get_other_ais(mob/living/silicon/ai/A)
+/proc/get_other_ais(var/mob/living/silicon/ai/A)
 	if(!A || !istype(A))
 		return
 
 	var/list/L = list()
-	for(var/mob/living/silicon/ai/AT in SSmobs.mob_list)
-		if(L == A)
+	for(var/mob/living/silicon/ai/AT in mob_list)
+		if(AT == A)
 			continue
 		L.Add(AT)
 	return L
 
-/proc/log_ability_use(mob/living/silicon/ai/A, ability_name, atom/target = null, notify_admins = 1)
+/proc/log_ability_use(var/mob/living/silicon/ai/A, var/ability_name, var/atom/target = null, var/notify_admins = 1)
 	var/message
 	if(target)
 		message = text("used malf ability/function: [ability_name] on [target] ([target.x], [target.y], [target.z])")
 	else
 		message = text("used malf ability/function: [ability_name].")
 	admin_attack_log(A, null, message, null, message)
-
-/proc/check_for_interception()
-	for(var/mob/living/silicon/ai/A in SSmobs.mob_list)
-		if(A.intercepts_communication)
-			return A

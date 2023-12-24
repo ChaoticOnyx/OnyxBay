@@ -1,20 +1,21 @@
 /obj/aura/radiant_aura
 	name = "radiant aura"
 	icon = 'icons/effects/effects.dmi'
-	icon_state = "fire_goon"
-	layer = ABOVE_WINDOW_LAYER
+	icon_state = "at_shield1"
+	alpha = 75
+	layer = ABOVE_MOB_LAYER
 
-/obj/aura/radiant_aura/New()
+/obj/aura/radiant_aura/added_to(mob/living/user)
 	..()
-	to_chat(user,"<span class='notice'>A bubble of light appears around you, exuding protection and warmth.</span>")
-	set_light(0.6, 1, 6, 2, "#e09d37")
+	to_chat(user, SPAN_NOTICE("A bubble of light appears around you, exuding protection and warmth."))
+	set_light(6, 6, COLOR_AMBER)
 
 /obj/aura/radiant_aura/Destroy()
-	to_chat(user, "<span class='warning'>Your protective aura dissipates, leaving you feeling cold and unsafe.</span>")
+	to_chat(user, SPAN_WARNING("Your protective aura dissipates, leaving you feeling cold and unsafe."))
 	return ..()
 
-/obj/aura/radiant_aura/bullet_act(obj/item/projectile/P, def_zone)
-	if(P.check_armour == "laser")
-		user.visible_message("<span class='warning'>\The [P] refracts, bending into \the [user]'s aura.</span>")
+/obj/aura/radiant_aura/bullet_act(obj/item/projectile/P, var/def_zone)
+	if(P.check_armor == LASER)
+		user.visible_message(SPAN_WARNING("\The [P] refracts, bending into \the [user]'s aura."))
 		return AURA_FALSE
-	return 0
+	return FALSE

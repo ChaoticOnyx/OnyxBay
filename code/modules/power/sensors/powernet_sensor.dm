@@ -9,7 +9,7 @@
 
 /obj/machinery/power/sensor
 	name = "Powernet Sensor"
-	desc = "Small machine which transmits data about specific powernet."
+	desc = "Small machine which transmits data about specific powernet"
 	anchored = 1
 	density = 0
 	level = 1
@@ -17,14 +17,19 @@
 	icon_state = "floor_beacon" // If anyone wants to make better sprite, feel free to do so without asking me.
 
 	var/name_tag = "#UNKN#" // ID tag displayed in list of powernet sensors. Each sensor should have it's own tag!
-	var/long_range = 0		// If 1, sensor reading will show on all computers, regardless of Zlevel
+	var/long_range = FALSE		// If TRUE, sensor readings will show regardless of the zlevel being connected.
 
 // Proc: New()
 // Parameters: None
 // Description: Automatically assigns name according to ID tag.
-/obj/machinery/power/sensor/New()
-	..()
+/obj/machinery/power/sensor/Initialize()
+	. = ..()
 	auto_set_name()
+	SSmachinery.all_sensors += src
+
+/obj/machinery/power/sensor/Destroy()
+	. = ..()
+	SSmachinery.all_sensors -= src
 
 // Proc: auto_set_name()
 // Parameters: None
@@ -42,25 +47,19 @@
 			return 1
 	return 0
 
-// Proc: process()
-// Parameters: None
-// Description: This has to be here because we need sensors to remain in Machines list.
-/obj/machinery/power/sensor/Process()
-	return 1
-
 // Proc: reading_to_text()
 // Parameters: 1 (amount - Power in Watts to be converted to W, kW or MW)
 // Description: Helper proc that converts reading in Watts to kW or MW (returns string version of amount parameter)
-/obj/machinery/power/sensor/proc/reading_to_text(amount = 0)
+/obj/machinery/power/sensor/proc/reading_to_text(var/amount = 0)
 	var/units = ""
 	// 10kW and less - Watts
 	if(amount < 10000)
 		units = "W"
-	// 10MW and less - KILO WATTS
+	// 10MW and less - KiloWatts
 	else if(amount < 10000000)
 		units = "kW"
 		amount = (round(amount/100) / 10)
-	// More than 10MW - MEGA WATTS
+	// More than 10MW - MegaWatts
 	else
 		units = "MW"
 		amount = (round(amount/10000) / 100)
@@ -115,7 +114,7 @@
 			out += "<tr><td>\The [A.area]" 															// Add area name
 			out += "<td>[S[A.equipment+1]]<td>[S[A.lighting+1]]<td>[S[A.environ+1]]" 				// Show status of channels
 			if(A.cell)
-				out += "<td>[round(CELL_PERCENT(A.cell))]% - [chg[A.charging+1]]"
+				out += "<td>[round(A.cell.percent())]% - [chg[A.charging+1]]"
 			else
 				out += "<td>NO CELL"
 			var/load = A.lastused_total // Load.
@@ -151,7 +150,7 @@
 	var/list/APC_data = list()
 	if(L.len > 0)
 		// These lists are used as replacement for number based APC settings
-		var/list/S = list("M-OFF", "DC-OFF","A-OFF","M-ON", "A-ON")
+		var/list/S = list("M-OFF","A-OFF","M-ON", "A-ON")
 		var/list/chg = list("N","C","F")
 
 		for(var/obj/machinery/power/apc/A in L)
@@ -161,8 +160,8 @@
 			APC_entry["s_lighting"] = S[A.lighting+1]
 			APC_entry["s_environment"] = S[A.environ+1]
 			// Cell Status
-			APC_entry["cell_charge"] = A.cell ? round(CELL_PERCENT(A.cell)) : "NO CELL"
-			APC_entry["cell_status"] = A.cell ? chg[A.charging+1] : "N"
+			APC_entry["cell_charge"] = A.cell ? round(A.cell.percent()) : 0
+			APC_entry["cell_status"] = A.cell ? chg[A.charging+1] : 0
 			// Other info
 			APC_entry["total_load"] = reading_to_text(A.lastused_total)
 			// Hopefully removes those goddamn \improper s which are screwing up the UI

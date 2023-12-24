@@ -1,77 +1,64 @@
 //Please use mob or src (not usr) in these procs. This way they can be called in the same fashion as procs.
-/client/verb/wiki()
-	set name = "Wiki"
+/client/verb/wiki(var/sub_page = null as null|text)
+	set name = "wiki"
 	set desc = "Visit the wiki."
 	set hidden = 1
-	if( config.link.wiki )
-		send_link(src, config.link.wiki)
+
+	if(config.wikiurl)
+		if(alert("This will open the wiki in your browser. Are you sure?",,"Yes","No")=="No")
+			return
+
+		var/to_open = config.wikiurl
+		if (sub_page)
+			to_open += sub_page
+
+		send_link(src, to_open)
 	else
 		to_chat(src, "<span class='warning'>The wiki URL is not set in the server configuration.</span>")
-	return
-
-/client/verb/rules()
-	set name = "Rules"
-	set desc = "Show Server Rules."
-	set hidden = 1
-	if( config.link.rules )
-		send_link(src, config.link.rules)
-	else
-		to_chat(src, "<span class='warning'>The rules URL is not set in the server configuration.</span>")
-	return
-
-/client/verb/backstory()
-	set name = "Backstory"
-	set desc = "Show server Backstory."
-	set hidden = 1
-	if( config.link.backstory )
-		send_link(src, config.link.backstory)
-	else
-		to_chat(src, "<span class='warning'>The backstory URL is not set in the server configuration.</span>")
-	return
 
 /client/verb/forum()
-	set name = "Forum"
+	set name = "forum"
 	set desc = "Visit the forum."
 	set hidden = 1
-	if( config.link.forum )
-		send_link(src, config.link.forum)
+	if( config.forumurl )
+		if(alert("This will open the forum in your browser. Are you sure?",,"Yes","No")=="No")
+			return
+		send_link(src, config.forumurl)
 	else
 		to_chat(src, "<span class='warning'>The forum URL is not set in the server configuration.</span>")
 	return
 
-/client/verb/discord()
-	set name = "Discord"
-	set desc = "Visit the community Discord."
+/client/verb/reportbug()
+	set name = "reportbug"
+	set desc = "Report a bug."
 	set hidden = 1
-	if( config.link.discord )
-		send_link(src, config.link.discord)
+	if( config.githuburl )
+		if(alert("This will open the issue tracker in your browser. Are you sure?",,"Yes","No")=="No")
+			return
+		send_link(src, config.githuburl + "/issues")
 	else
-		to_chat(src, "<span class='warning'>The Discord URL is not set in the server configuration.</span>")
+		to_chat(src, SPAN_WARNING("The issue tracker URL is not set in the server configuration."))
 	return
 
-/client/verb/bugreport()
-	set name = "Bug Report"
-	set desc = "Create bug report to developers."
+#define RULES_FILE "config/rules.html"
+/client/verb/rules()
+	set name = "Rules"
+	set desc = "Show Server Rules."
 	set hidden = 1
-	if( config.link.github )
-		send_link(src, "[config.link.github]/issues")
-	else
-		to_chat(src, "<span class='warning'>The Github URL is not set in the server configuration.</span>")
-	return
+
+	src << browse(file2text(RULES_FILE), "window=rules;size=640x500")
+#undef RULES_FILE
 
 /client/verb/hotkeys_help()
-	set name = "Hotkeys Help"
+	set name = "hotkeys-help"
 	set category = "OOC"
 
 	var/admin = {"<font color='purple'>
 Admin:
-\tF5 = Msay (mod-say)
-\tF6 = Player-Panel-New
-\tF7 = View-Tickets
-\tF8 = Banning-Panel
-\tF9 = Asay (admin-say)
-\tF10 = Aghost
-\tF11 = Toggle-Build-Mode-Self
+\tF5 = Aghost (admin-ghost)
+\tF6 = player-panel-new
+\tF7 = admin-pm
+\tF8 = Invisimin
 </font>"}
 
 	var/hotkey_mode = {"<font color='purple'>
@@ -90,7 +77,6 @@ Hotkey-Mode: (hotkey-mode must be on)
 \t5 = emote
 \tx = swap-hand
 \tz = activate held object (or y)
-\tc = block
 \tj = toggle-aiming-mode
 \tf = cycle-intents-left
 \tg = cycle-intents-right
@@ -98,6 +84,8 @@ Hotkey-Mode: (hotkey-mode must be on)
 \t2 = disarm-intent
 \t3 = grab-intent
 \t4 = harm-intent
+\tCtrl = drag
+\tShift = examine
 </font>"}
 
 	var/other = {"<font color='purple'>
@@ -109,7 +97,7 @@ Any-Mode: (hotkey doesn't need to be on)
 \tCtrl+q = drop
 \tCtrl+e = equip
 \tCtrl+r = throw
-\tCtrl+x or Middle Mouse = swap-hand
+\tCtrl+x = swap-hand
 \tCtrl+z = activate held object (or Ctrl+y)
 \tCtrl+f = cycle-intents-left
 \tCtrl+g = cycle-intents-right
@@ -124,13 +112,9 @@ Any-Mode: (hotkey doesn't need to be on)
 \tDEL = pull
 \tINS = cycle-intents-right
 \tHOME = drop
-\tPGUP or Middle Mouse = swap-hand
+\tPGUP = swap-hand
 \tPGDN = activate held object
 \tEND = throw
-\tCtrl + Click = drag
-\tShift + Click = examine
-\tAlt + Click = show entities on turf
-\tCtrl + Alt + Click = interact with certain items
 </font>"}
 
 	var/robot_hotkey_mode = {"<font color='purple'>
@@ -151,6 +135,8 @@ Hotkey-Mode: (hotkey-mode must be on)
 \t3 = activate module 3
 \t4 = toggle intents
 \t5 = emote
+\tCtrl = drag
+\tShift = examine
 </font>"}
 
 	var/robot_other = {"<font color='purple'>
@@ -176,10 +162,6 @@ Any-Mode: (hotkey doesn't need to be on)
 \tINS = toggle intents
 \tPGUP = cycle active modules
 \tPGDN = activate held object
-\tCtrl + Click = drag or bolt doors
-\tShift + Click = examine or open doors
-\tAlt + Click = show entities on turf
-\tCtrl + Alt + Click = electrify doors
 </font>"}
 
 	if(isrobot(src.mob))
@@ -190,3 +172,31 @@ Any-Mode: (hotkey doesn't need to be on)
 		to_chat(src, other)
 	if(holder)
 		to_chat(src, admin)
+
+/client/verb/open_webint()
+	set name = "open_webint"
+	set desc = "Visit the web interface."
+	set hidden = 1
+
+	if (config.webint_url)
+		if(alert("This will open the web interface in your browser. Are you sure?", ,"Yes","No") == "No")
+			return
+		send_link(src, config.webint_url)
+	else
+		to_chat(src, SPAN_WARNING("The web interface URL is not set in the server configuration."))
+	return
+
+/client/verb/open_discord()
+	set name = "open_discord"
+	set desc = "Get a link to the Discord server."
+	set hidden = 1
+
+	if (SSdiscord && SSdiscord.active)
+		if(alert("This will open Discord in your browser or directly. Are you sure?",, "Yes", "No") == "Yes")
+			var/url_link = SSdiscord.retreive_invite()
+			if (url_link)
+				send_link(src, url_link)
+			else
+				to_chat(src, SPAN_DANGER("An error occured retreiving the invite."))
+	else
+		to_chat(src, SPAN_WARNING("The serverside Discord bot is not set up."))

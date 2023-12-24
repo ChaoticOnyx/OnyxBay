@@ -1,15 +1,18 @@
 /mob/living/carbon/human
-	layer = BASE_HUMAN_LAYER
-	blocks_emissive = EMISSIVE_BLOCK_NONE //Humans need to decide per bodypart if they block or not, therefore we ignore baseline functionality
+	// Tail Style
+	var/tail_style = null
 
-	//Hair color, secondary color and style
+	//Hair colour and style
 	var/r_hair = 0
 	var/g_hair = 0
 	var/b_hair = 0
 	var/h_style = "Bald"
-	var/r_s_hair = 0
-	var/g_s_hair = 0
-	var/b_s_hair = 0
+
+	//Hair gradient color and style
+	var/r_grad = 0
+	var/g_grad = 0
+	var/b_grad = 0
+	var/g_style = "None"
 
 	//Facial hair colour and style
 	var/r_facial = 0
@@ -22,8 +25,7 @@
 	var/g_eyes = 0
 	var/b_eyes = 0
 
-	var/s_tone = 0  //Skin tone
-	var/s_base = "" //Skin base
+	var/s_tone = 0	//Skin tone
 
 	//Skin colour
 	var/r_skin = 0
@@ -34,21 +36,26 @@
 	var/damage_multiplier = 1 //multiplies melee combat damage
 	var/icon_update = 1 //whether icon updating shall take place
 
-	var/datum/body_build/body_build = null
-	var/body_height = HUMAN_HEIGHT_NORMAL
-
-	var/lip_style = null	//no lipstick by default- arguably misleading, as it could be used for general makeup
+	var/lipstick_color = null	//no lipstick by default
 
 	var/age = 30		//Player's age (pure fluff)
 	var/b_type = "A+"	//Player's bloodtype
 
-	var/list/worn_underwear = list()
+	var/list/all_underwear = list()
+	var/list/all_underwear_metadata = list()
+	var/list/hide_underwear = list()
+	var/backbag = OUTFIT_BACKPACK		//Which backpack type the player has chosen. Nothing, Satchel or Backpack.
+	var/backbag_style = OUTFIT_JOBSPECIFIC
+	var/backbag_color = OUTFIT_NOTHING
+	var/backbag_strap = TRUE
+	var/pda_choice = OUTFIT_TAB_PDA
+	var/headset_choice = OUTFIT_HEADSET
 
-	var/datum/backpack_setup/backpack_setup
+	var/last_chew = 0 // Used for hand chewing
 
 	// General information
-	var/home_system = ""
-	var/personal_background = ""
+	var/citizenship = ""
+	var/employer_faction = ""
 	var/religion = ""
 
 	//Equipment slots
@@ -65,19 +72,21 @@
 	var/obj/item/r_store = null
 	var/obj/item/l_store = null
 	var/obj/item/s_store = null
-
-	var/used_skillpoints = 0
-	var/list/skills = list()
+	var/obj/item/wrists = null
 
 	var/icon/stand_icon = null
 	var/icon/lying_icon = null
 
 	var/voice = ""	//Instead of new say code calling GetVoice() over and over and over, we're just going to ask this variable, which gets updated in Life()
 
+	var/miming = null //Toggle for the mime's abilities.
 	var/special_voice = "" // For changing our voice. Used by a symptom.
 
 	var/last_dam = -1	//Used for determining if we need to process all organs or just some or even none.
 	var/list/bad_external_organs = list()// organs we check until they are good.
+
+	var/list/bad_internal_organs = list()//A list of internal organs which are damaged.
+	//This isnt used for regular processing, since all internal organs are regularly processed anyway, but it can be used as a shortlist for calls that only care about damaged organs
 
 	var/xylophone = 0 //For the spoooooooky xylophone cooldown
 
@@ -85,11 +94,8 @@
 	var/hand_blood_color
 
 	var/list/flavor_texts = list()
-	var/gunshot_residue
-	var/pulling_punches    // Are you trying not to hurt your opponent?
-	var/full_prosthetic    // We are a robutt.
-	var/robolimb_count = 0 // Number of robot limbs.
-	var/last_attack = 0    // The world_time where an unarmed attack was done
+	var/list/gunshot_residue
+	var/pulling_punches // Are you trying not to hurt your opponent?
 
 	mob_bump_flag = HUMAN
 	mob_push_flags = ~HEAVY
@@ -101,27 +107,24 @@
 	var/equipment_vision_flags				// Extra vision flags from equipped items
 	var/equipment_see_invis					// Max see invibility level granted by equipped items
 	var/equipment_prescription				// Eye prescription granted by equipped items
-	var/equipment_light_protection
 	var/list/equipment_overlays = list()	// Extra overlays from equipped items
-	var/list/limb_render_keys = list()
 
-	var/med_record = ""
-	var/sec_record = ""
-	var/gen_record = ""
-	var/exploit_record = ""
+	var/is_noisy = FALSE		// if TRUE, movement should make sound.
+	var/bodyfall_sound = /singleton/sound_category/bodyfall_sound
+	var/footsound = /singleton/sound_category/blank_footsteps
+
+	var/last_x = 0
+	var/last_y = 0
+
+	var/cached_bodytype
 
 	var/stance_damage = 0 //Whether this mob's ability to stand has been affected
-	var/stance_d_l = 0 // This system should be reworked (using arrays) once we add any non-humanoid species. But it's never gonna happen, so whatever. *shrug
-	var/stance_d_r = 0 // ^
 
-	var/obj/machinery/machine_visual //machine that is currently applying visual effects to this mob. Only used for camera monitors currently.
+	var/datum/unarmed_attack/default_attack	//default unarmed attack
 
-	var/innate_heal = 1
-	var/shock_stage
+	var/datum/martial_art/primary_martial_art = null
+	var/list/datum/martial_art/known_martial_arts = null
 
-	var/obj/item/grab/current_grab_type 	// What type of grab they use when they grab someone.
-	var/skin_state = SKIN_NORMAL
-	var/no_pain = 0
-	var/full_pain = 0 // Cheaper to actually store this than iterate over all the organs for every single check
+	var/triage_tag = TRIAGE_NONE
 
-	var/debug = 0
+	var/lobotomized = FALSE //additional check for isAdvancedToolUser that can be set manually by things

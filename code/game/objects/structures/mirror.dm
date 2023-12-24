@@ -1,4 +1,3 @@
-//wip wip wup
 /obj/structure/mirror
 	name = "mirror"
 	desc = "A SalonPro Nano-Mirror(TM) brand mirror! The leading technology in hair salon products, utilizing nano-machinery to style your hair just right."
@@ -6,11 +5,11 @@
 	icon_state = "mirror"
 	density = 0
 	anchored = 1
+	obj_flags = OBJ_FLAG_MOVES_UNSUPPORTED
 	var/shattered = 0
-	var/list/ui_users = list()
 
 	/// Visual object for handling the viscontents
-	var/weakref/ref
+	var/datum/weakref/ref
 	vis_flags = VIS_HIDE
 	var/timerid = null
 
@@ -18,28 +17,38 @@
 	. = ..()
 	var/obj/effect/reflection/reflection = new(src.loc)
 	reflection.setup_visuals(src)
-	ref = weakref(reflection)
-/obj/structure/mirror/attack_hand(mob/user as mob)
+	ref = WEAKREF(reflection)
 
-	if(shattered)	return
+	entered_event.register(loc, reflection, TYPE_PROC_REF(/obj/effect/reflection, check_vampire_enter))
+	exited_event.register(loc, reflection, TYPE_PROC_REF(/obj/effect/reflection, check_vampire_exit))
+
+/obj/structure/mirror/Destroy()
+	var/obj/effect/reflection/reflection = ref.resolve()
+	if(istype(reflection))
+		entered_event.unregister(loc, reflection)
+		exited_event.unregister(loc, reflection)
+		qdel(reflection)
+		ref = null
+	return ..()
+
+/obj/structure/mirror/attack_hand(mob/user as mob)
+	if(shattered)
+		return
+
+	if(user.mind)
+		var/datum/vampire/vampire = user.mind.antag_datums[MODE_VAMPIRE]
+		if(vampire && !(vampire.status & VAMP_ISTHRALL))
+			to_chat(user, "<span class='notice'>Your reflection appears distorted on the surface of \the [src].</span>")
 
 	if(ishuman(user))
-		if(jobban_isbanned(user, "APPEARANCE"))
-			to_chat(src, "<span class='danger'>This is useless for you.</span>")
-			return
-
-		var/datum/nano_module/appearance_changer/AC = ui_users[user]
-		if(!AC)
-			AC = new(src, user)
-			AC.name = "SalonPro Nano-Mirror&trade;"
-			ui_users[user] = AC
-		AC.ui_interact(user)
+		var/mob/living/carbon/human/H = user
+		H.change_appearance(APPEARANCE_ALL_HAIR, H, FALSE, ui_state = default_state, state_object = src)
 
 /obj/structure/mirror/proc/shatter()
 	if(shattered)	return
 	shattered = 1
 	icon_state = "mirror_broke"
-	playsound(src, SFX_BREAK_WINDOW, 70, 1)
+	playsound(src, /singleton/sound_category/glass_break_sound, 70, 1)
 	desc = "Oh no, seven years of bad luck!"
 
 	var/obj/effect/reflection/reflection = ref.resolve()
@@ -47,8 +56,8 @@
 		reflection.alpha_icon_state = "mirror_mask_broken"
 		reflection.update_mirror_filters()
 
-/obj/structure/mirror/bullet_act(obj/item/projectile/Proj)
 
+/obj/structure/mirror/bullet_act(var/obj/item/projectile/Proj)
 	if(prob(Proj.get_structure_damage() * 2))
 		if(!shattered)
 			shatter()
@@ -66,12 +75,11 @@
 		shatter()
 	else
 		visible_message("<span class='warning'>[user] hits [src] with [I]!</span>")
-		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 70, 1)
-	user.setClickCooldown(I.update_attack_cooldown())
-	user.do_attack_animation(src)
+		playsound(src.loc, 'sound/effects/glass_hit.ogg', 70, 1)
 
-/obj/structure/mirror/attack_generic(mob/user, damage)
-	attack_animation(user)
+/obj/structure/mirror/attack_generic(var/mob/user, var/damage)
+
+	user.do_attack_animation(src)
 	if(shattered)
 		playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 70, 1)
 		return 0
@@ -83,87 +91,17 @@
 		user.visible_message("<span class='danger'>[user] hits [src] and bounces off!</span>")
 	return 1
 
-/obj/structure/mirror/Destroy()
-	for(var/user in ui_users)
-		var/datum/nano_module/appearance_changer/AC = ui_users[user]
-		qdel(AC)
-	ui_users.Cut()
-
-	var/obj/effect/reflection/reflection = ref.resolve()
-	if(istype(reflection))
-		unregister_signal(src.loc, SIGNAL_ENTERED)
-		unregister_signal(src.loc, SIGNAL_EXITED)
-		qdel(reflection)
-		ref = null
-	return ..()
-
-// The following mirror is ~special~.
-/obj/structure/mirror/raider
-	name = "cracked mirror"
-	desc = "Something seems strange about this old, dirty mirror. Your reflection doesn't look like you remember it."
-	icon_state = "mirror_broke"
-	shattered = 1
-
-/obj/structure/mirror/raider/attack_hand(mob/living/carbon/human/user)
-	if(istype(get_area(src),/area/syndicate_mothership))
-		if(istype(user) && user.mind && user.mind.special_role == "Raider" && user.species.name != SPECIES_VOX && is_alien_whitelisted(user, SPECIES_VOX))
-			var/choice = input("Do you wish to become a true Vox of the Shoal? This is not reversible.") as null|anything in list("No","Yes")
-			if(choice && choice == "Yes")
-				var/mob/living/carbon/human/vox/vox = new(get_turf(src),SPECIES_VOX)
-				vox.gender = user.gender
-				GLOB.raiders.equip(vox)
-				if(user.mind)
-					user.mind.transfer_to(vox)
-				spawn(1)
-					var/newname = sanitizeSafe(input(vox,"Enter a name, or leave blank for the default name.", "Name change","") as text, MAX_NAME_LEN)
-					if(!newname || newname == "")
-						var/datum/language/L = all_languages[vox.species.default_language]
-						newname = L.get_random_name()
-					vox.real_name = newname
-					vox.SetName(vox.real_name)
-					GLOB.raiders.update_access(vox)
-				qdel(user)
-	..()
-
-/obj/item/mirror
-	name = "mirror"
-	desc = "A SalonPro Nano-Mirror(TM) brand mirror! Now a portable version."
-	icon = 'icons/obj/items.dmi'
-	icon_state = "mirror"
-	var/list/ui_users = list()
-
-/obj/item/mirror/attack_self(mob/user as mob)
-	if(ishuman(user))
-		if(jobban_isbanned(user, "APPEARANCE"))
-			to_chat(src, "<span class='danger'>This is useless for you.</span>")
-			return
-
-		var/datum/nano_module/appearance_changer/AC = ui_users[user]
-		if(!AC)
-			AC = new(src, user)
-			AC.name = "SalonPro Nano-Mirror&trade;"
-			AC.flags = APPEARANCE_HAIR
-			ui_users[user] = AC
-		AC.ui_interact(user)
-
-/obj/item/mirror/Destroy()
-	for(var/user in ui_users)
-		var/datum/nano_module/appearance_changer/AC = ui_users[user]
-		qdel(AC)
-	ui_users.Cut()
-
-	return ..()
-
 /obj/effect/reflection
 	name = "reflection"
 	appearance_flags = KEEP_TOGETHER|TILE_BOUND|PIXEL_SCALE
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	vis_flags = VIS_HIDE
 	layer = ABOVE_OBJ_LAYER
 	var/alpha_icon = 'icons/obj/watercloset.dmi'
 	var/alpha_icon_state = "mirror_mask"
 	var/obj/mirror
 	desc = "Why are you locked in the bathroom?"
+	desc_extended = "You talking to me?"
 	anchored = TRUE
 	unacidable = TRUE
 
@@ -171,8 +109,6 @@
 
 /obj/effect/reflection/proc/setup_visuals(target)
 	mirror = target
-	register_signal(mirror.loc, SIGNAL_ENTERED, nameof(.proc/check_vampire_enter))
-	register_signal(mirror.loc, SIGNAL_EXITED, nameof(.proc/check_vampire_exit))
 
 	if(mirror.pixel_x > 0)
 		dir = WEST
@@ -214,26 +150,39 @@
 
 	vis_contents += get_turf(mirror)
 
-/obj/effect/reflection/proc/check_vampire_enter(turf/T, mob/living/carbon/human/H)
+/obj/effect/reflection/proc/check_vampire_enter(var/turf/T, var/mob/living/carbon/human/H)
 	if(!istype(H))
 		return
-	if (!H.mind)
-		return
-	var/datum/vampire/V = H.mind.vampire
+	var/datum/vampire/V = H.get_antag_datum(MODE_VAMPIRE)
 	if(V)
 		if(V.status & VAMP_ISTHRALL)
 			filters += blur_filter
 		else
 			H.vis_flags |= VIS_HIDE
 
-/obj/effect/reflection/proc/check_vampire_exit(turf/T, mob/living/carbon/human/H)
+/obj/effect/reflection/proc/check_vampire_exit(var/turf/T, var/mob/living/carbon/human/H)
 	if(!istype(H))
 		return
-	if (!H.mind)
-		return
-	var/datum/vampire/V = H.mind.vampire
+	var/datum/vampire/V = H.get_antag_datum(MODE_VAMPIRE)
 	if(V)
 		if(V.status & VAMP_ISTHRALL)
 			filters -= blur_filter
 		else
 			H.vis_flags &= ~VIS_HIDE
+
+/obj/item/mirror
+	name = "mirror"
+	desc = "A SalonPro Nano-Mirror(TM) brand mirror! Now a portable version."
+	icon = 'icons/obj/cosmetics.dmi'
+	icon_state = "mirror"
+	w_class = ITEMSIZE_SMALL
+
+/obj/item/mirror/attack_self(mob/user as mob)
+	if(user.mind)
+		var/datum/vampire/vampire = user.mind.antag_datums[MODE_VAMPIRE]
+		if(vampire && !(vampire.status & VAMP_ISTHRALL))
+			to_chat(user, "<span class='notice'>Your reflection appears distorted on the surface of \the [src].</span>")
+
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		H.change_appearance(APPEARANCE_HAIR, H, FALSE, ui_state = default_state, state_object = src)

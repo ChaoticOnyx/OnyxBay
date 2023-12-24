@@ -2,62 +2,117 @@
 	var/list/all_underwear
 	var/list/all_underwear_metadata
 
-	var/decl/backpack_outfit/backpack
-	var/list/backpack_metadata
-
-	var/equip_preview_mob = EQUIP_PREVIEW_ALL
-
-	var/icon/bgstate = "steel"
-	var/list/bgstate_options = list(
-		"steel",
-		"white",
-		"rough",
-		"dark",
-		"wood",
-		"FFF",
-		"888",
-		"000",
-		"asteroid",
-		"grass",
-		"plating",
-		"reinforced")
-
 /datum/category_item/player_setup_item/general/equipment
-	name = "Clothing"
+	name = "Equipment"
 	sort_order = 4
 
-	var/static/list/backpacks_by_name
+/datum/category_item/player_setup_item/general/equipment/load_character(var/savefile/S)
+	S["all_underwear"] >> pref.all_underwear
+	S["all_underwear_metadata"] >> pref.all_underwear_metadata
+	S["backbag"]       >> pref.backbag
+	S["backbag_style"] >> pref.backbag_style
+	S["backbag_color"] >> pref.backbag_color
+	S["backbag_strap"] >> pref.backbag_strap
+	S["pda_choice"] >> pref.pda_choice
+	S["headset_choice"] >> pref.headset_choice
+	S["primary_radio_slot"] >> pref.primary_radio_slot
+	S["sensor_setting"] >> pref.sensor_setting
 
-/datum/category_item/player_setup_item/general/equipment/New()
-	..()
-	if(!backpacks_by_name)
-		backpacks_by_name = list()
-		var/bos = decls_repository.get_decls_of_subtype(/decl/backpack_outfit)
-		for(var/bo in bos)
-			var/decl/backpack_outfit/backpack_outfit = bos[bo]
-			backpacks_by_name[backpack_outfit.name] = backpack_outfit
+/datum/category_item/player_setup_item/general/equipment/save_character(var/savefile/S)
+	S["all_underwear"] << pref.all_underwear
+	S["all_underwear_metadata"] << pref.all_underwear_metadata
+	S["backbag"]       << pref.backbag
+	S["backbag_style"] << pref.backbag_style
+	S["backbag_color"] << pref.backbag_color
+	S["backbag_strap"] << pref.backbag_strap
+	S["pda_choice"] << pref.pda_choice
+	S["headset_choice"] << pref.headset_choice
+	S["primary_radio_slot"] << pref.primary_radio_slot
+	S["sensor_setting"] << pref.sensor_setting
 
-/datum/category_item/player_setup_item/general/equipment/load_character(datum/pref_record_reader/R)
-	pref.all_underwear = R.read("all_underwear")
-	pref.all_underwear_metadata = R.read("all_underwear_metadata")
-	pref.backpack_metadata = R.read("backpack_metadata")
+/datum/category_item/player_setup_item/general/equipment/gather_load_query()
+	return list(
+		"ss13_characters" = list(
+			"vars" = list(
+				"all_underwear",
+				"all_underwear_metadata",
+				"backbag",
+				"backbag_style",
+				"backbag_color",
+				"backbag_strap",
+				"pda_choice",
+				"headset_choice",
+				"primary_radio_slot",
+				"sensor_setting"
+			),
+			"args" = list("id")
+		)
+	)
 
-	var/load_backbag = R.read("backpack")
-	pref.backpack = backpacks_by_name[load_backbag] || get_default_outfit_backpack()
-	pref.bgstate = R.read("bgstate")
+/datum/category_item/player_setup_item/general/equipment/gather_load_parameters()
+	return list("id" = pref.current_character)
 
-/datum/category_item/player_setup_item/general/equipment/save_character(datum/pref_record_writer/W)
-	W.write("all_underwear", pref.all_underwear)
-	W.write("all_underwear_metadata", pref.all_underwear_metadata)
-	W.write("backpack", pref.backpack.name)
-	W.write("backpack_metadata", pref.backpack_metadata)
-	W.write("bgstate", pref.bgstate)
+/datum/category_item/player_setup_item/general/equipment/gather_save_query()
+	return list(
+		"ss13_characters" = list(
+			"all_underwear",
+			"all_underwear_metadata",
+			"backbag",
+			"backbag_style",
+			"backbag_color",
+			"backbag_strap",
+			"pda_choice",
+			"headset_choice",
+			"primary_radio_slot",
+			"sensor_setting",
+			"id" = 1,
+			"ckey" = 1
+		)
+	)
 
-/datum/category_item/player_setup_item/general/equipment/sanitize_character()
+/datum/category_item/player_setup_item/general/equipment/gather_save_parameters()
+	return list(
+		"all_underwear" = json_encode(pref.all_underwear),
+		"all_underwear_metadata" = json_encode(pref.all_underwear_metadata),
+		"backbag" = pref.backbag,
+		"backbag_style" = pref.backbag_style,
+		"backbag_color" = pref.backbag_color,
+		"backbag_strap" = pref.backbag_strap,
+		"pda_choice" = pref.pda_choice,
+		"headset_choice" = pref.headset_choice,
+		"primary_radio_slot" = pref.primary_radio_slot,
+		"sensor_setting" = pref.sensor_setting,
+		"id" = pref.current_character,
+		"ckey" = PREF_CLIENT_CKEY
+	)
+
+/datum/category_item/player_setup_item/general/equipment/sanitize_character(var/sql_load = 0)
+	if (sql_load)
+		pref.backbag = text2num(pref.backbag)
+		pref.backbag_style = text2num(pref.backbag_style)
+		pref.backbag_color = text2num(pref.backbag_color)
+		pref.backbag_strap = text2num(pref.backbag_strap)
+		pref.pda_choice = text2num(pref.pda_choice)
+		pref.headset_choice = text2num(pref.headset_choice)
+		if(istext(pref.all_underwear))
+			var/before = pref.all_underwear
+			try
+				pref.all_underwear = json_decode(pref.all_underwear)
+			catch(var/exception/e)
+				LOG_DEBUG("UNDERWEAR: Caught [e]. Initial value: [before]")
+				pref.all_underwear = list()
+		if(istext(pref.all_underwear_metadata))
+			var/before = pref.all_underwear_metadata
+			try
+				pref.all_underwear_metadata = json_decode(pref.all_underwear_metadata)
+			catch(var/exception/e)
+				LOG_DEBUG("UNDERWEAR METADATA: Caught [e]. Initial value: [before]")
+				pref.all_underwear_metadata = list()
+
 	if(!istype(pref.all_underwear))
 		pref.all_underwear = list()
 
-		for(var/datum/category_group/underwear/WRC in GLOB.underwear.categories)
+		for(var/datum/category_group/underwear/WRC in global_underwear.categories)
 			for(var/datum/category_item/underwear/WRI in WRC.items)
 				if(WRI.is_default(pref.gender ? pref.gender : MALE))
 					pref.all_underwear[WRC.name] = WRI.name
@@ -67,7 +122,7 @@
 		pref.all_underwear_metadata = list()
 
 	for(var/underwear_category in pref.all_underwear)
-		var/datum/category_group/underwear/UWC = GLOB.underwear.categories_by_name[underwear_category]
+		var/datum/category_group/underwear/UWC = global_underwear.categories_by_name[underwear_category]
 		if(!UWC)
 			pref.all_underwear -= underwear_category
 		else
@@ -79,51 +134,43 @@
 		if(!(underwear_metadata in pref.all_underwear))
 			pref.all_underwear_metadata -= underwear_metadata
 
-	if(!pref.backpack || !(pref.backpack.name in backpacks_by_name))
-		pref.backpack = get_default_outfit_backpack()
+	pref.backbag	= sanitize_integer(pref.backbag, 1, backbaglist.len, initial(pref.backbag))
+	pref.backbag_style = sanitize_integer(pref.backbag_style, 1, backbagstyles.len, initial(pref.backbag_style))
+	pref.backbag_color = sanitize_integer(pref.backbag_color, 1, backbagcolors.len, initial(pref.backbag_color))
+	pref.backbag_strap = sanitize_integer(pref.backbag_strap, 1, backbagstrap.len, initial(pref.backbag_strap))
+	pref.pda_choice = sanitize_integer(pref.pda_choice, 1, pdalist.len, initial(pref.pda_choice))
+	pref.headset_choice	= sanitize_integer(pref.headset_choice, 1, headsetlist.len, initial(pref.headset_choice))
+	if(!(pref.primary_radio_slot in primary_radio_slot_choice))
+		pref.primary_radio_slot = primary_radio_slot_choice[1]
+	pref.sensor_setting = sanitize_inlist(pref.sensor_setting, SUIT_SENSOR_MODES, get_key_by_index(SUIT_SENSOR_MODES, 0))
 
-	if(!istype(pref.backpack_metadata))
-		pref.backpack_metadata = list()
-
-	for(var/backpack_metadata_name in pref.backpack_metadata)
-		if(!(backpack_metadata_name in backpacks_by_name))
-			pref.backpack_metadata -= backpack_metadata_name
-
-	for(var/backpack_name in backpacks_by_name)
-		var/decl/backpack_outfit/backpack = backpacks_by_name[backpack_name]
-		var/list/tweak_metadata = pref.backpack_metadata["[backpack]"]
-		if(tweak_metadata)
-			for(var/tw in backpack.tweaks)
-				var/datum/backpack_tweak/tweak = tw
-				var/list/metadata = tweak_metadata["[tweak]"]
-				tweak_metadata["[tweak]"] = tweak.validate_metadata(metadata)
-
-
-/datum/category_item/player_setup_item/general/equipment/content()
+/datum/category_item/player_setup_item/general/equipment/content(var/mob/user)
 	. = list()
-	. += "<b>Preview:</b>"
-	. += "<br><a href='?src=\ref[src];cycle_bg=1'>Cycle preview background</a>"
-	. += "<br><a href='?src=\ref[src];toggle_preview_value=[EQUIP_PREVIEW_LOADOUT]'>[pref.equip_preview_mob & EQUIP_PREVIEW_LOADOUT ? "Hide loadout gear" : "Show loadout gear"]</a>"
-	. += "<br><a href='?src=\ref[src];toggle_preview_value=[EQUIP_PREVIEW_JOB]'>[pref.equip_preview_mob & EQUIP_PREVIEW_JOB ? "Hide job gear" : "Show job gear"]</a><br><br>"
-
 	. += "<b>Equipment:</b><br>"
-	for(var/datum/category_group/underwear/UWC in GLOB.underwear.categories)
-		var/item_name = (pref.all_underwear && pref.all_underwear[UWC.name]) ? pref.all_underwear[UWC.name] : "None"
+	for(var/datum/category_group/underwear/UWC in global_underwear.categories)
+		var/item_name = pref.all_underwear[UWC.name] ? pref.all_underwear[UWC.name] : "None"
 		. += "[UWC.name]: <a href='?src=\ref[src];change_underwear=[UWC.name]'><b>[item_name]</b></a>"
 
 		var/datum/category_item/underwear/UWI = UWC.items_by_name[item_name]
 		if(UWI)
 			for(var/datum/gear_tweak/gt in UWI.tweaks)
-				. += " <a href='?src=\ref[src];underwear=[UWC.name];tweak=\ref[gt]'>[gt.get_contents(get_underwear_metadata(UWC.name, gt))]</a>"
+				. += " <a href='?src=\ref[src];underwear=[UWC.name];tweak=\ref[gt]'>[gt.get_contents(get_metadata(UWC.name, gt))]</a>"
 
 		. += "<br>"
-	. += "Backpack Type: <a href='?src=\ref[src];change_backpack=1'><b>[pref.backpack.name]</b></a>"
-	for(var/datum/backpack_tweak/bt in pref.backpack.tweaks)
-		. += " <a href='?src=\ref[src];backpack=[pref.backpack.name];tweak=\ref[bt]'>[bt.get_ui_content(get_backpack_metadata(pref.backpack, bt))]</a>"
-	. += "<br>"
-	return jointext(.,null)
 
-/datum/category_item/player_setup_item/general/equipment/proc/get_underwear_metadata(underwear_category, datum/gear_tweak/gt)
+	. += "Backpack Type: <a href='?src=\ref[src];change_backpack=1'><b>[backbaglist[pref.backbag]]</b></a><br>"
+	. += "Backpack Style: <a href='?src=\ref[src];change_backpack_style=1'><b>[backbagstyles[pref.backbag_style]]</b></a><br>"
+	if(pref.backbag == OUTFIT_SATCHEL_ALT || pref.backbag == OUTFIT_RUCKSACK || pref.backbag == OUTFIT_POCKETBOOK) // Hardcoded. Sucks, I know.
+		. += "Backpack Color: <a href='?src=\ref[src];change_backpack_color=1'><b>[backbagcolors[pref.backbag_color]]</b></a><br>"
+	. += "Backpack Strap: <a href='?src=\ref[src];change_backbag_strap=1'><b>[backbagstrap[pref.backbag_strap]]</b></a><br>"
+	. += "PDA Type: <a href='?src=\ref[src];change_pda=1'><b>[pdalist[pref.pda_choice]]</b></a><br>"
+	. += "Headset Type: <a href='?src=\ref[src];change_headset=1'><b>[headsetlist[pref.headset_choice]]</b></a><br>"
+	. += "Primary Radio Slot: <a href='?src=\ref[src];change_radio_slot=1'><b>[pref.primary_radio_slot]</b></a><br>"
+	. += "Suit Sensor Setting: <a href='?src=\ref[src];change_sensor_setting=1'><b>[pref.sensor_setting]</b></a><br/>"
+
+	return jointext(., null)
+
+/datum/category_item/player_setup_item/general/equipment/proc/get_metadata(var/underwear_category, var/datum/gear_tweak/gt)
 	var/metadata = pref.all_underwear_metadata[underwear_category]
 	if(!metadata)
 		metadata = list()
@@ -135,36 +182,67 @@
 		metadata["[gt]"] = tweak_data
 	return tweak_data
 
-/datum/category_item/player_setup_item/general/equipment/proc/get_backpack_metadata(decl/backpack_outfit/backpack_outfit, datum/backpack_tweak/bt)
-	var/metadata = pref.backpack_metadata[backpack_outfit.name]
-	if(!metadata)
-		metadata = list()
-		pref.backpack_metadata[backpack_outfit.name] = metadata
-
-	var/tweak_data = metadata["[bt]"]
-	if(!tweak_data)
-		tweak_data = bt.get_default_metadata()
-		metadata["[bt]"] = tweak_data
-	return tweak_data
-
-/datum/category_item/player_setup_item/general/equipment/proc/set_underwear_metadata(underwear_category, datum/gear_tweak/gt, new_metadata)
+/datum/category_item/player_setup_item/general/equipment/proc/set_metadata(var/underwear_category, var/datum/gear_tweak/gt, var/new_metadata)
 	var/list/metadata = pref.all_underwear_metadata[underwear_category]
 	metadata["[gt]"] = new_metadata
 
-/datum/category_item/player_setup_item/general/equipment/proc/set_backpack_metadata(decl/backpack_outfit/backpack_outfit, datum/backpack_tweak/bt, new_metadata)
-	var/metadata = pref.backpack_metadata[backpack_outfit.name]
-	metadata["[bt]"] = new_metadata
+/datum/category_item/player_setup_item/general/equipment/OnTopic(var/href,var/list/href_list, var/mob/user)
+	if(href_list["change_backpack"])
+		var/new_backbag = tgui_input_list(user, "Choose your character's bag type.", "Character Preference", backbaglist, backbaglist[pref.backbag])
+		if(!isnull(new_backbag) && CanUseTopic(user))
+			pref.backbag = backbaglist.Find(new_backbag)
+			return TOPIC_REFRESH_UPDATE_PREVIEW
 
-/datum/category_item/player_setup_item/general/equipment/OnTopic(href,list/href_list, mob/user)
-	if(href_list["change_underwear"])
-		var/datum/category_group/underwear/UWC = GLOB.underwear.categories_by_name[href_list["change_underwear"]]
+	else if(href_list["change_backpack_style"])
+		var/new_backbag = tgui_input_list(user, "Choose your character's style of bag.", "Character Preference", backbagstyles, backbagstyles[pref.backbag_style])
+		if(!isnull(new_backbag) && CanUseTopic(user))
+			pref.backbag_style = backbagstyles.Find(new_backbag)
+			return TOPIC_REFRESH_UPDATE_PREVIEW
+
+	else if(href_list["change_backpack_color"])
+		var/new_backbag = tgui_input_list(user, "Choose your character's color of bag.", "Character Preference", backbagcolors, backbagcolors[pref.backbag_color])
+		if(!isnull(new_backbag) && CanUseTopic(user))
+			pref.backbag_color = backbagcolors.Find(new_backbag)
+			return TOPIC_REFRESH_UPDATE_PREVIEW
+
+	else if(href_list["change_backbag_strap"])
+		var/new_backbag = tgui_input_list(user, "Choose your character's style of bag strap.", "Character Preference", backbagstrap, backbagstrap[pref.backbag_strap])
+		if(!isnull(new_backbag) && CanUseTopic(user))
+			pref.backbag_strap = backbagstrap.Find(new_backbag)
+			return TOPIC_REFRESH_UPDATE_PREVIEW
+
+	else if(href_list["change_pda"])
+		var/new_pda = tgui_input_list(user, "Choose your character's PDA type.", "Character Preference", pdalist, pdalist[pref.pda_choice])
+		if(!isnull(new_pda) && CanUseTopic(user))
+			pref.pda_choice = pdalist.Find(new_pda)
+			return TOPIC_REFRESH_UPDATE_PREVIEW
+
+	else if(href_list["change_headset"])
+		var/new_headset = tgui_input_list(user, "Choose your character's headset type.", "Character Preference", headsetlist, headsetlist[pref.headset_choice])
+		if(!isnull(new_headset) && CanUseTopic(user))
+			pref.headset_choice = headsetlist.Find(new_headset)
+			return TOPIC_REFRESH_UPDATE_PREVIEW
+
+	else if(href_list["change_radio_slot"])
+		var/new_slot = tgui_input_list(user, "Choose which radio will be spoken into first if multiple slots are occupied.", "Character Preference", primary_radio_slot_choice, pref.primary_radio_slot)
+		if(!isnull(new_slot) && CanUseTopic(user))
+			pref.primary_radio_slot = new_slot
+			return TOPIC_REFRESH_UPDATE_PREVIEW
+
+	else if(href_list["change_sensor_setting"])
+		var/new_sensor = tgui_input_list(user, "Select a sensor mode.", "Character Preference", SUIT_SENSOR_MODES, pref.sensor_setting)
+		if(!isnull(new_sensor) && CanUseTopic(user))
+			pref.sensor_setting = new_sensor
+			return TOPIC_REFRESH_UPDATE_PREVIEW
+
+	else if(href_list["change_underwear"])
+		var/datum/category_group/underwear/UWC = global_underwear.categories_by_name[href_list["change_underwear"]]
 		if(!UWC)
 			return TOPIC_NOACTION
-		var/datum/category_item/underwear/selected_underwear = input(user, "Choose underwear:", CHARACTER_PREFERENCE_INPUT_TITLE, pref.all_underwear[UWC.name]) as null|anything in UWC.items
+		var/datum/category_item/underwear/selected_underwear = tgui_input_list(user, "Choose underwear:", "Character Preference", UWC.items, pref.all_underwear[UWC.name])
 		if(selected_underwear && CanUseTopic(user))
 			pref.all_underwear[UWC.name] = selected_underwear.name
 		return TOPIC_REFRESH_UPDATE_PREVIEW
-
 	else if(href_list["underwear"] && href_list["tweak"])
 		var/underwear = href_list["underwear"]
 		if(!(underwear in pref.all_underwear))
@@ -172,36 +250,9 @@
 		var/datum/gear_tweak/gt = locate(href_list["tweak"])
 		if(!gt)
 			return TOPIC_NOACTION
-		var/new_metadata = gt.get_metadata(user, get_underwear_metadata(underwear, gt))
+		var/new_metadata = gt.get_metadata(usr, get_metadata(underwear, gt))
 		if(new_metadata)
-			set_underwear_metadata(underwear, gt, new_metadata)
+			set_metadata(underwear, gt, new_metadata)
 			return TOPIC_REFRESH_UPDATE_PREVIEW
-
-	else if(href_list["change_backpack"])
-		var/new_backpack = input(user, "Choose backpack style:", CHARACTER_PREFERENCE_INPUT_TITLE, pref.backpack) as null|anything in backpacks_by_name
-		if(!isnull(new_backpack) && CanUseTopic(user))
-			pref.backpack = backpacks_by_name[new_backpack]
-			return TOPIC_REFRESH_UPDATE_PREVIEW
-
-	else if(href_list["backpack"] && href_list["tweak"])
-		var/backpack_name = href_list["backpack"]
-		if(!(backpack_name in backpacks_by_name))
-			return TOPIC_NOACTION
-		var/decl/backpack_outfit/bo = backpacks_by_name[backpack_name]
-		var/datum/backpack_tweak/bt = locate(href_list["tweak"]) in bo.tweaks
-		if(!bt)
-			return TOPIC_NOACTION
-		var/new_metadata = bt.get_metadata(user, get_backpack_metadata(bo, bt))
-		if(new_metadata)
-			set_backpack_metadata(bo, bt, new_metadata)
-			return TOPIC_REFRESH_UPDATE_PREVIEW
-
-	else if(href_list["toggle_preview_value"])
-		pref.equip_preview_mob ^= text2num(href_list["toggle_preview_value"])
-		return TOPIC_REFRESH_UPDATE_PREVIEW
-
-	else if(href_list["cycle_bg"])
-		pref.bgstate = next_in_list(pref.bgstate, pref.bgstate_options)
-		return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	return ..()

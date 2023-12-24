@@ -2,17 +2,17 @@
 	name = "water"
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "extinguish"
-	mouse_opacity = 0
-	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	pass_flags = PASSTABLE | PASSGRILLE
 
 /obj/effect/effect/water/New(loc)
 	..()
-	QDEL_IN(src, 15 SECONDS) // In case whatever made it forgets to delete it
+	QDEL_IN(src, 15 SECONDS)	// In case whatever made it forgets to delete it
 
 /obj/effect/effect/water/proc/set_color() // Call it after you move reagents to it
 	icon += reagents.get_color()
 
-/obj/effect/effect/water/proc/set_up(turf/target, step_count = 5, delay = 5)
+/obj/effect/effect/water/proc/set_up(var/turf/target, var/step_count = 5, var/delay = 5, var/lifespan = 10)
 	if(!target)
 		return
 	for(var/i = 1 to step_count)
@@ -21,40 +21,57 @@
 		step_towards(src, target)
 		var/turf/T = get_turf(src)
 		if(T && reagents)
-			var/list/splash_mobs = list()
-			var/list/splash_others = list(T)
-			for(var/atom/A in T)
-				if(A.simulated)
-					if(!ismob(A))
-						splash_others += A
-					else if(isliving(A))
-						splash_mobs += A
 
-			//each step splash 1/5 of the reagents on non-mobs
-			//could determine the # of steps until target, but that would be complicated
-			for(var/atom/A in splash_others)
-				reagents.splash(A, (reagents.total_volume/step_count)/splash_others.len)
-			for(var/mob/living/M in splash_mobs)
-				reagents.splash(M, reagents.total_volume/splash_mobs.len)
-			if(reagents.total_volume < 1)
+			if (wet_things(T))
 				break
+
 			if(T == get_turf(target))
-				for(var/atom/A in splash_others)
-					reagents.splash(A, reagents.total_volume/splash_others.len) //splash anything left
 				break
-
 		sleep(delay)
-	sleep(10)
+	if(length(reagents))
+		var/mob/M = locate() in get_turf(src)
+		if(M)
+			reagents.trans_to(M, reagents.total_volume * 0.75)
+	sleep(lifespan)
 	qdel(src)
+
+//Wets everything in the tile
+//A return value of 1 means that the wetting should stop. Either the water ran out or some error ocurred
+/obj/effect/effect/water/proc/wet_things(var/turf/T)
+
+	if (!reagents || reagents.total_volume <= 0)
+		return 1
+
+
+	reagents.touch_turf(T)
+	var/list/mobshere = list()
+	for (var/mob/living/L in T)
+		mobshere.Add(L)
+
+
+	for (var/atom/B in T)
+		if (!ismob(B))
+			reagents.touch(B)
+
+	if (mobshere.len)
+		var/portion = 1 / mobshere.len
+		var/total = reagents.total_volume
+		for (var/mob/living/L in mobshere)
+			reagents.splash(L, total * portion)
+		return 1
+
+	return 0
+
+
 
 /obj/effect/effect/water/Move(turf/newloc)
 	if(newloc.density)
 		return 0
 	. = ..()
 
-/obj/effect/effect/water/Bump(atom/A)
-	if(reagents)
-		reagents.touch(A)
+/obj/effect/effect/water/Collide(atom/A)
+	var/turf/T = get_turf(A)
+	wet_things(T)
 	return ..()
 
 //Used by spraybottles.
@@ -62,3 +79,8 @@
 	name = "chemicals"
 	icon = 'icons/obj/chempuff.dmi'
 	icon_state = ""
+
+//used by evil things
+/obj/effect/effect/water/firewater
+	name = "napalm gel"
+	icon_state = "mustard"

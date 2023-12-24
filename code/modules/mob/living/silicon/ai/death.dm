@@ -1,23 +1,20 @@
-/mob/living/silicon/ai/death(gibbed, deathmessage, show_dead_message)
+/mob/living/silicon/ai/death(gibbed)
 
-	if(is_ooc_dead())
+	if(stat == DEAD)
 		return
 
 	if(src.eyeobj)
 		src.eyeobj.setLoc(get_turf(src))
 
-
-	stop_malf(0) // Remove AI's malfunction status, that will fix all hacked APCs, disable delta, etc.
 	remove_ai_verbs(src)
 
-	for(var/obj/machinery/ai_status_display/O in world)
+	for(var/obj/machinery/ai_status_display/O in SSmachinery.all_status_displays)
+		spawn( 0 )
 		O.mode = 2
+		if (istype(loc, /obj/item/aicard))
+			var/obj/item/aicard/card = loc
+			card.update_icon()
 
-	if (istype(loc, /obj/item/aicard))
-		var/obj/item/aicard/card = loc
-		card.update_icon()
-
-	for (var/mob/living/silicon/robot/R in connected_robots)
-		to_chat(R, "<span class='notice'>You lost signal from your master [src.name].</span>")
-	. = ..(gibbed,"gives one shrill beep before falling lifeless.", "You have suffered a critical system failure, and are dead.")
-	set_density(1)
+	. = ..(gibbed,"gives one shrill beep before falling lifeless.")
+	density = TRUE
+	ghostize(FALSE)

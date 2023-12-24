@@ -6,8 +6,8 @@
 	var/id = null
 	var/on = 0
 	anchored = 1
-	idle_power_usage = 2 WATTS
-	active_power_usage = 4 WATTS
+	idle_power_usage = 2
+	active_power_usage = 4
 	var/_wifi_id
 	var/datum/wifi/receiver/button/igniter/wifi_receiver
 
@@ -17,7 +17,7 @@
 	if(_wifi_id)
 		wifi_receiver = new(_wifi_id, src)
 
-/obj/machinery/igniter/on_update_icon()
+/obj/machinery/igniter/update_icon()
 	..()
 	icon_state = "igniter[on]"
 
@@ -27,28 +27,37 @@
 	return ..()
 
 /obj/machinery/igniter/attack_ai(mob/user as mob)
+	if(!ai_can_interact(user))
+		return
 	return src.attack_hand(user)
 
 /obj/machinery/igniter/attack_hand(mob/user as mob)
 	if(..())
 		return
+	add_fingerprint(user)
 	ignite()
+	return
 
-/obj/machinery/igniter/Process()
-	if(powered())
+/obj/machinery/igniter/process()	//ugh why is this even in process()?
+	if (on && powered() )
 		var/turf/location = src.loc
 		if (isturf(location))
 			location.hotspot_expose(1000,500,1)
 	return 1
 
+/obj/machinery/igniter/power_change()
+	..()
+	update_icon()
+
 /obj/machinery/igniter/proc/ignite()
 	use_power_oneoff(50)
 	on = !on
 	if(on)
-		START_PROCESSING(SSmachines, src)
+		START_PROCESSING_MACHINE(src, MACHINERY_PROCESS_SELF)
 	else
-		STOP_PROCESSING(SSmachines, src)
+		STOP_PROCESSING_MACHINE(src, MACHINERY_PROCESS_SELF)
 	update_icon()
+
 
 // Wall mounted remote-control igniter.
 
@@ -61,9 +70,10 @@
 	var/disable = 0
 	var/last_spark = 0
 	var/base_state = "migniter"
+	layer = 3.3
 	anchored = 1
-	idle_power_usage = 2 WATTS
-	active_power_usage = 4 WATTS
+	idle_power_usage = 2
+	active_power_usage = 4
 	var/_wifi_id
 	var/datum/wifi/receiver/button/sparker/wifi_receiver
 
@@ -77,7 +87,7 @@
 	wifi_receiver = null
 	return ..()
 
-/obj/machinery/sparker/on_update_icon()
+/obj/machinery/sparker/update_icon()
 	..()
 	if(disable)
 		icon_state = "migniter-d"
@@ -88,8 +98,12 @@
 		icon_state = "migniter-p"
 //		src.sd_SetLuminosity(0)
 
+/obj/machinery/sparker/power_change()
+	..()
+	update_icon()
+
 /obj/machinery/sparker/attackby(obj/item/W as obj, mob/user as mob)
-	if(isScrewdriver(W))
+	if (W.isscrewdriver())
 		add_fingerprint(user)
 		disable = !disable
 		if(disable)
@@ -97,14 +111,13 @@
 		else if(!disable)
 			user.visible_message("<span class='warning'>[user] has reconnected the [src]!</span>", "<span class='warning'>You fix the connection to the [src].</span>")
 		update_icon()
-	else
-		..()
+		return TRUE
 
-/obj/machinery/sparker/attack_ai()
+/obj/machinery/sparker/attack_ai(mob/user)
+	if(!ai_can_interact(user))
+		return
 	if (anchored)
 		return ignite()
-	else
-		return
 
 /obj/machinery/sparker/proc/ignite()
 	if (!powered())
@@ -115,9 +128,7 @@
 
 
 	flick("migniter-spark", src)
-	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
-	s.set_up(2, 1, src)
-	s.start()
+	spark(src, 2, alldirs)
 	src.last_spark = world.time
 	use_power_oneoff(1000)
 	var/turf/location = src.loc
@@ -126,11 +137,12 @@
 	return 1
 
 /obj/machinery/sparker/emp_act(severity)
+	. = ..()
+
 	if(stat & (BROKEN|NOPOWER))
-		..(severity)
 		return
+
 	ignite()
-	..(severity)
 
 /obj/machinery/button/ignition
 	name = "ignition switch"
@@ -146,12 +158,11 @@
 	active = 1
 	icon_state = "launcheract"
 
-	for(var/obj/machinery/sparker/M in SSmachines.machinery)
+	for(var/obj/machinery/sparker/M in SSmachinery.machinery)
 		if (M.id == id)
-			spawn( 0 )
-				M.ignite()
+			INVOKE_ASYNC(M, TYPE_PROC_REF(/obj/machinery/sparker, ignite))
 
-	for(var/obj/machinery/igniter/M in SSmachines.machinery)
+	for(var/obj/machinery/igniter/M in SSmachinery.machinery)
 		if(M.id == id)
 			M.ignite()
 

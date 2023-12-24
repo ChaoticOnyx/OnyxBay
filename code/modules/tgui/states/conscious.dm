@@ -9,7 +9,7 @@
  * Only checks if the user is conscious.
  */
 
-GLOBAL_DATUM_INIT(tgui_conscious_state, /datum/ui_state/conscious_state, new)
+var/global/datum/ui_state/conscious_state/conscious_state = new
 
 /datum/ui_state/conscious_state/can_use_topic(src_object, mob/user)
 	if(user.stat == CONSCIOUS)

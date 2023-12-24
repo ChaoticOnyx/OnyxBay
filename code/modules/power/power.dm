@@ -12,29 +12,21 @@
 	anchored = 1.0
 	var/datum/powernet/powernet = null
 	use_power = POWER_USE_OFF
-	idle_power_usage = 0 WATTS
-	active_power_usage = 0 WATTS
-
-/obj/machinery/power/Initialize()
-	. = ..()
-	connect_to_network()
+	idle_power_usage = 0
+	active_power_usage = 0
 
 /obj/machinery/power/Destroy()
 	disconnect_from_network()
-	. = ..()
+	disconnect_terminal()
+
+	return ..()
 
 ///////////////////////////////
 // General procedures
 //////////////////////////////
 
-
-/obj/machinery/power/powered()
-	if(use_power)
-		return ..()
-	return 1 //doesn't require an external power source
-
 // common helper procs for all power machines
-/obj/machinery/power/drain_power(drain_check, surge, amount = 0)
+/obj/machinery/power/drain_power(var/drain_check, var/surge, var/amount = 0)
 	if(drain_check)
 		return 1
 
@@ -42,13 +34,13 @@
 		powernet.trigger_warning()
 		return powernet.draw_power(amount)
 
-/obj/machinery/power/proc/add_avail(amount)
+/obj/machinery/power/proc/add_avail(var/amount)
 	if(powernet)
 		powernet.newavail += amount
 		return 1
 	return 0
 
-/obj/machinery/power/proc/draw_power(amount)
+/obj/machinery/power/proc/draw_power(var/amount)
 	if(powernet)
 		return powernet.draw_power(amount)
 	return 0
@@ -65,7 +57,7 @@
 	else
 		return 0
 
-/obj/machinery/power/proc/disconnect_terminal(obj/machinery/power/terminal/term) // machines without a terminal will just return, no harm no fowl.
+/obj/machinery/power/proc/disconnect_terminal() // machines without a terminal will just return, no harm no fowl.
 	return
 
 // connect the machine to a powernet if a node cable is present on the turf
@@ -92,7 +84,7 @@
 //almost never called, overwritten by all power machines but terminal and generator
 /obj/machinery/power/attackby(obj/item/W, mob/user)
 
-	if(isCoil(W))
+	if(W.iscoil())
 
 		var/obj/item/stack/cable_coil/coil = W
 
@@ -123,7 +115,7 @@
 	var/cdir
 	var/turf/T
 
-	for(var/card in GLOB.cardinal)
+	for(var/card in cardinal)
 		T = get_step(loc,card)
 		cdir = get_dir(T,loc)
 
@@ -142,7 +134,7 @@
 	var/cdir
 	var/turf/T
 
-	for(var/card in GLOB.cardinal)
+	for(var/card in cardinal)
 		T = get_step(loc,card)
 		cdir = get_dir(T,loc)
 
@@ -168,10 +160,18 @@
 // returns a list of all power-related objects (nodes, cable, junctions) in turf,
 // excluding source, that match the direction d
 // if unmarked==1, only return those with no powernet
-/proc/power_list(turf/T, source, d, unmarked=0, cable_only = 0)
+/proc/power_list(var/turf/T, var/source, var/d, var/unmarked=0, var/cable_only = 0)
 	. = list()
-
-	var/reverse = d ? GLOB.reverse_dir[d] : 0
+	var/fdir = (!d)? 0 : turn(d, 180)			// the opposite direction to d (or 0 if d==0)
+///// Z-Level Stuff
+	var/Zdir
+	if(d==11)
+		Zdir = 11
+	else if (d==12)
+		Zdir = 12
+	else
+		Zdir = 999
+///// Z-Level Stuff
 	for(var/AM in T)
 		if(AM == source)	continue			//we don't want to return source
 
@@ -187,13 +187,17 @@
 			var/obj/structure/cable/C = AM
 
 			if(!unmarked || !C.powernet)
-				if(C.d1 == d || C.d2 == d || C.d1 == reverse || C.d2 == reverse )
+///// Z-Level Stuff
+				if(C.d1 == fdir || C.d2 == fdir || C.d1 == Zdir || C.d2 == Zdir)
+///// Z-Level Stuff
+					. += C
+				else if(C.d1 == d || C.d2 == d)
 					. += C
 	return .
 
 //remove the old powernet and replace it with a new one throughout the network.
-/proc/propagate_network(obj/O, datum/powernet/PN)
-	//to_world_log("propagating new network")
+/proc/propagate_network(var/obj/O, var/datum/powernet/PN)
+	//world.log <<  "propagating new network"
 	var/list/worklist = list()
 	var/list/found_machines = list()
 	var/index = 1
@@ -225,7 +229,7 @@
 
 
 //Merge two powernets, the bigger (in cable length term) absorbing the other
-/proc/merge_powernets(datum/powernet/net1, datum/powernet/net2)
+/proc/merge_powernets(var/datum/powernet/net1, var/datum/powernet/net2)
 	if(!net1 || !net2) //if one of the powernet doesn't exist, return
 		return
 
@@ -255,9 +259,10 @@
 //power_source is a source of electricity, can be powercell, area, apc, cable, powernet or null
 //source is an object caused electrocuting (airlock, grille, etc)
 //No animations will be performed by this proc.
-/proc/electrocute_mob(mob/living/carbon/M as mob, power_source, obj/source, siemens_coeff = 1.0)
-	if(istype(M.loc,/obj/mecha))
-		return 0	//feckin mechs are dumb
+/proc/electrocute_mob(mob/living/carbon/M as mob, var/power_source, var/obj/source, var/siemens_coeff = 1.0, var/contact_zone = "hand")
+
+	if (!M)
+		return 0
 	var/area/source_area
 	if(istype(power_source,/area))
 		source_area = power_source
@@ -287,14 +292,17 @@
 	//If following checks determine user is protected we won't alarm for long.
 	if(PN)
 		PN.trigger_warning(5)
-	if(istype(M,/mob/living/carbon/human))
-		var/mob/living/carbon/human/H = M
-		if(H.species.siemens_coefficient <= 0)
+	var/mob/living/carbon/human/H
+	if(ishuman(M))
+		H = M
+	if(H)
+		if(H.species.siemens_coefficient == 0)
 			return
-		if(H.gloves)
+		if(H.species.is_naturally_insulated())
+			return
+		if(H.gloves && contact_zone == "hand")
 			var/obj/item/clothing/gloves/G = H.gloves
-			if(G.siemens_coefficient == 0)
-				return 0		//to avoid spamming with insulated glvoes on
+			if(G.siemens_coefficient == 0)	return 0		//to avoid spamming with insulated glvoes on
 
 	//Checks again. If we are still here subject will be shocked, trigger standard 20 tick warning
 	//Since this one is longer it will override the original one.
@@ -316,7 +324,17 @@
 	else
 		power_source = cell
 		shock_damage = cell_damage
-	var/drained_hp = M.electrocute_act(shock_damage, source, siemens_coeff) //zzzzzzap!
+	var/drained_hp
+	var/touchy_hand
+	if(contact_zone == "hand")
+		if(M.hand)
+			touchy_hand = BP_R_HAND
+		else
+			touchy_hand = BP_L_HAND
+	if(!touchy_hand)
+		drained_hp = M.electrocute_act(shock_damage, source, siemens_coeff, ground_zero = contact_zone) //zzzzzzap!
+	else
+		drained_hp = M.electrocute_act(shock_damage, source, siemens_coeff, ground_zero = touchy_hand) //zzzzzzap!
 	var/drained_energy = drained_hp*20
 
 	if (source_area)
@@ -327,9 +345,3 @@
 	else if (istype(power_source, /obj/item/cell))
 		cell.use(drained_energy)
 	return drained_energy
-
-/obj/machinery/power/blob_act(damage)
-	if(stat & BROKEN)
-		return
-
-	set_broken(TRUE)

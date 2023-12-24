@@ -4,8 +4,13 @@
 	var/region = ACCESS_REGION_NONE
 	var/access_type = ACCESS_TYPE_STATION
 
-/datum/access/dd_SortValue()
-	return "[access_type][desc]"
+/datum/access/proc/get_info_list()
+	var/list/info = list()
+	info["id"] = id
+	info["desc"] = desc
+	info["region"] = region
+	info["access_type"] = access_type
+	return info
 
 /*****************
 * Station access *
@@ -49,7 +54,7 @@
 /var/const/access_tox = 7
 /datum/access/tox
 	id = access_tox
-	desc = "Research Labs"
+	desc = "R&D Lab"
 	region = ACCESS_REGION_RESEARCH
 
 /var/const/access_tox_storage = 8
@@ -57,6 +62,12 @@
 	id = access_tox_storage
 	desc = "Toxins Lab"
 	region = ACCESS_REGION_RESEARCH
+
+/var/const/access_genetics = 9
+/datum/access/genetics
+	id = access_genetics
+	desc = "Genetics Lab"
+	region = ACCESS_REGION_MEDBAY
 
 /var/const/access_engine = 10
 /datum/access/engine
@@ -196,10 +207,10 @@
 	desc = "Construction Areas"
 	region = ACCESS_REGION_ENGINEERING
 
-/var/const/access_chemistry = 33
-/datum/access/chemistry
-	id = access_chemistry
-	desc = "Chemistry Lab"
+/var/const/access_pharmacy = 33
+/datum/access/pharmacy
+	id = access_pharmacy
+	desc = "Pharmacy Lab"
 	region = ACCESS_REGION_MEDBAY
 
 /var/const/access_cargo_bot = 34
@@ -226,11 +237,11 @@
 	desc = "Library"
 	region = ACCESS_REGION_GENERAL
 
-/var/const/access_iaa = 38
-/datum/access/iaa
-	id = access_iaa
-	desc = "Internal Affairs"
-	region = ACCESS_REGION_COMMAND
+/var/const/access_lawyer = 38
+/datum/access/lawyer
+	id = access_lawyer
+	desc = "Representative"
+	region = ACCESS_TYPE_CENTCOM
 
 /var/const/access_virology = 39
 /datum/access/virology
@@ -247,26 +258,22 @@
 /var/const/access_qm = 41
 /datum/access/qm
 	id = access_qm
-	desc = "Quartermaster"
+	desc = "Operations Manager"
 	region = ACCESS_REGION_SUPPLY
 
 /var/const/access_network = 42
 /datum/access/network
 	id = access_network
-	desc = "Primary Network"
+	desc = "Station Network"
 	region = ACCESS_REGION_RESEARCH
 
-/var/const/access_clown = 43
-/datum/access/clown
-	id = access_clown
-	desc = "Clown"
-	region = ACCESS_REGION_GENERAL
+/var/const/access_leviathan = 43
+/datum/access/leviathan
+	id = access_leviathan
+	desc = "Leviathan"
+	region = ACCESS_REGION_COMMAND
 
-/var/const/access_mime = 44
-/datum/access/mime
-	id = access_mime
-	desc = "Mime"
-	region = ACCESS_REGION_GENERAL
+// /var/const/free_access_id = 44
 
 /var/const/access_surgery = 45
 /datum/access/surgery
@@ -301,7 +308,11 @@
 	region = ACCESS_REGION_SUPPLY
 
 // /var/const/free_access_id = 51
-// /var/const/free_access_id = 52
+/var/const/access_xenobotany = 52
+/datum/access/xenobotany
+	id = access_xenobotany
+	desc = "Xenobotany"
+	region = ACCESS_REGION_RESEARCH
 
 /var/const/access_heads_vault = 53
 /datum/access/heads_vault
@@ -330,7 +341,7 @@
 /var/const/access_hop = 57
 /datum/access/hop
 	id = access_hop
-	desc = "Head of Personnel"
+	desc = "Executive Officer"
 	region = ACCESS_REGION_COMMAND
 
 /var/const/access_hos = 58
@@ -339,7 +350,7 @@
 	desc = "Head of Security"
 	region = ACCESS_REGION_SECURITY
 
-/var/const/access_RC_announce = 59 //Request console announcements
+/var/const/access_RC_announce = 59 //Requests console announcements
 /datum/access/RC_announce
 	id = access_RC_announce
 	desc = "RC Announcements"
@@ -387,68 +398,148 @@
 	desc = "Medical Equipment"
 	region = ACCESS_REGION_MEDBAY
 
-/var/const/access_lawyer = 67
-/datum/access/lawyer
-	id = access_lawyer
-	desc = "Lawyer"
+/var/const/access_first_responder = 67
+/datum/access/access_first_responder
+	id = access_first_responder
+	desc = "First Responder Equipment"
+	region = ACCESS_REGION_MEDBAY
+
+// /var/const/free_access_id = 68
+
+/var/const/access_weapons = 69
+/datum/access/access_weapons
+	id = access_weapons
+	desc = "Weaponry Permission"
+	region = ACCESS_REGION_SECURITY
+
+var/const/access_journalist = 70//journalist's office access
+/datum/access/journalist
+	id = access_journalist
+	desc = "Journalist Office"
 	region = ACCESS_REGION_GENERAL
+
+var/const/access_it = 71 // allows some unique interactions with devices
+/datum/access/tech_support
+	id = access_it
+	desc = "Tech Support"
+
+var/const/access_consular = 72
+/datum/access/consular
+	id = access_consular
+	desc = "Consular"
+
+var/const/access_intrepid = 73
+/datum/access/intrepid
+	id = access_intrepid
+	desc = "Intrepid Shuttle"
+	region = ACCESS_REGION_COMMAND
+
+var/const/access_bridge_crew = 74
+/datum/access/bridge_crew
+	id = access_bridge_crew
+	desc = "Bridge Crew"
+	region = ACCESS_REGION_COMMAND
+
+/var/const/access_ship_weapons = 75
+/datum/access/access_ship_weapons
+	id = access_ship_weapons
+	desc = "Ship Weapons"
+	region = ACCESS_REGION_SUPPLY
 
 /******************
 * Central Command *
 ******************/
-/var/const/access_cent_general = 101//General facilities.
+//General facilities. - Everyone on central has that --> Use this for doors that every central role should have access to, but not the aurora people
+/var/const/access_cent_general = 101
 /datum/access/cent_general
 	id = access_cent_general
 	desc = "Code Grey"
 	access_type = ACCESS_TYPE_CENTCOM
 
-/var/const/access_cent_thunder = 102//Thunderdome.
+//Thunderdome.
+/var/const/access_cent_thunder = 102
 /datum/access/cent_thunder
 	id = access_cent_thunder
 	desc = "Code Yellow"
 	access_type = ACCESS_TYPE_CENTCOM
 
-/var/const/access_cent_specops = 103//Special Ops.
+//Centcom Security - This access is used by the ERT / Odin Security and CCIA
+// Separation between Odin Sec/CCIA and ERT is achieved via the ERT Commander Access (access_cent_creed)
+/var/const/access_cent_specops = 103
 /datum/access/cent_specops
 	id = access_cent_specops
 	desc = "Code Black"
 	access_type = ACCESS_TYPE_CENTCOM
 
-/var/const/access_cent_medical = 104//Medical/Research
+//Medical/Research - Thats the access for the medical section. Used for the odin doctors/chemists
+/var/const/access_cent_medical = 104
 /datum/access/cent_medical
 	id = access_cent_medical
 	desc = "Code White"
 	access_type = ACCESS_TYPE_CENTCOM
 
-/var/const/access_cent_living = 105//Living quarters.
+//Living quarters. - Thats the accesse used by the odin bartenders/chefs
+/var/const/access_cent_living = 105
 /datum/access/cent_living
 	id = access_cent_living
 	desc = "Code Green"
 	access_type = ACCESS_TYPE_CENTCOM
 
-/var/const/access_cent_storage = 106//Generic storage areas.
+//Generic storage areas. - Thats used for the Maint Tunnels on Centcom
+/var/const/access_cent_storage = 106
 /datum/access/cent_storage
 	id = access_cent_storage
 	desc = "Code Orange"
 	access_type = ACCESS_TYPE_CENTCOM
 
-/var/const/access_cent_teleporter = 107//Teleporter.
-/datum/access/cent_teleporter
-	id = access_cent_teleporter
-	desc = "Code Blue"
-	access_type = ACCESS_TYPE_CENTCOM
+//107 is unused
 
-/var/const/access_cent_creed = 108//Creed's office.
+//Creed's office. - ERT/TCFL Commander
+/var/const/access_cent_creed = 108
 /datum/access/cent_creed
 	id = access_cent_creed
 	desc = "Code Silver"
 	access_type = ACCESS_TYPE_CENTCOM
 
-/var/const/access_cent_captain = 109//Captain's office/ID comp/AI.
-/datum/access/cent_captain
-	id = access_cent_captain
+//CCIA Access on Centcom
+/var/const/access_cent_ccia = 109
+/datum/access/cent_ccia
+	id = access_cent_ccia
 	desc = "Code Gold"
 	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_merchant = 110//merchant access
+/datum/access/merchant
+	id = access_merchant
+	desc = "Merchant Access"
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_legion = 111//tau ceti foreign legion access
+/datum/access/legion
+	id = access_legion
+	desc = "Tau Ceti Foreign Legion Access"
+	access_type = ACCESS_TYPE_CENTCOM
+
+var/const/access_distress = 112
+/datum/access/distress
+	id = access_distress
+	desc = "General ERT Base Access"
+	access_type = ACCESS_TYPE_CENTCOM
+
+
+/****************************
+* Kataphract Chapter Access *
+****************************/
+var/const/access_kataphract = 113
+/datum/access/kataphract
+	id = access_kataphract
+	desc = "Kataphract Chapter Access"
+	access_type = ACCESS_TYPE_CENTCOM
+
+var/const/access_kataphract_knight = 114
+/datum/access/kataphract/knight
+	id = access_kataphract_knight
+	desc = "Kataphract Knight Access"
 
 /***************
 * Antag access *
@@ -456,26 +547,149 @@
 /var/const/access_syndicate = 150//General Syndicate Access
 /datum/access/syndicate
 	id = access_syndicate
-	desc = "Syndicate"
+	access_type = ACCESS_TYPE_SYNDICATE
+
+/var/const/access_syndicate_leader = 151 //Syndie Commander Access
+/datum/access/syndicate_leader
+	id = access_syndicate_leader
 	access_type = ACCESS_TYPE_SYNDICATE
 
 /*******
 * Misc *
 *******/
-/var/const/access_synth = 199
-/datum/access/synthetic
-	id = access_synth
-	desc = "Synthetic"
+/var/const/access_equipment = 199
+/datum/access/equipment
+	id = access_equipment
+	desc = "Equipment"
 	access_type = ACCESS_TYPE_NONE
 
 /var/const/access_crate_cash = 200
 /datum/access/crate_cash
 	id = access_crate_cash
-	desc = "Crate cash"
 	access_type = ACCESS_TYPE_NONE
 
-/var/const/access_merchant = 201
-/datum/access/merchant
-	id = access_merchant
-	desc = "Merchant"
+/var/const/access_orion_express_ship = 201
+/datum/access/exress_ship
+	id = access_orion_express_ship
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_generic_away_site = 202
+/datum/access/generic_away_site
+	id = access_generic_away_site
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_none = -1
+/datum/access/none
+	id = access_none
 	access_type = ACCESS_TYPE_NONE
+
+/var/const/access_sol_ships = 203
+/datum/access/sol_ships
+	id = access_sol_ships
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_tcfl_peacekeeper_ship = 204
+/datum/access/tcfl_peacekeeper_ship
+	id = access_tcfl_peacekeeper_ship
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_ee_spy_ship = 205
+/datum/access/ee_spy_ship
+	id = access_ee_spy_ship
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_civilian_station = 206
+/datum/access/access_civilian_station
+	id = access_civilian_station
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_elyran_naval_infantry_ship = 207
+/datum/access/access_elyran_naval_infantry_ship
+	id = access_elyran_naval_infantry_ship
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_skrell = 208
+/datum/access/access_skrell
+	id = access_skrell
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_pra = 209
+/datum/access/access_pra
+	id = access_pra
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_unathi_pirate = 210
+/datum/access/access_unathi_pirate
+	id = access_unathi_pirate
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_iac_rescue_ship = 211
+/datum/access/access_iac_rescue_ship
+	id = access_iac_rescue_ship
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_imperial_fleet_voidsman_ship = 212
+/datum/access/access_imperial_fleet_voidsman_ship
+	id = access_imperial_fleet_voidsman_ship
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_nka = 213
+/datum/access/access_nka
+	id = access_nka
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_dpra = 214
+/datum/access/access_dpra
+	id = access_dpra
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_merchants_guild = 215
+/datum/access/access_merchants_guild
+	id = access_merchants_guild
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_hephaestus= 216
+/datum/access/access_hephaestus
+	id = access_hephaestus
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_golden_deep = 217
+/datum/access/access_golden_deep
+	id = access_golden_deep
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_konyang_police = 218
+/datum/access/access_konyang_police
+	id = access_konyang_police
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_konyang_vendors = 219
+/datum/access/access_konyang_vendors
+	id = access_konyang_vendors
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_idris = 220
+/datum/access/access_idris
+	id = access_idris
+	desc = "Idris Vault Ship"
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_coalition = 221
+/datum/access/access_coalition
+	id = access_coalition
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_coalition_navy = 222
+/datum/access/access_coalition_navy
+	id = access_coalition_navy
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_gadpathur_navy = 223
+/datum/access/access_gadpathur_navy
+	id = access_gadpathur_navy
+	access_type = ACCESS_TYPE_CENTCOM
+
+/var/const/access_gadpathur_navy_officer = 224
+/datum/access/access_gadpathur_navy_officer
+	id = access_gadpathur_navy_officer
+	access_type = ACCESS_TYPE_CENTCOM

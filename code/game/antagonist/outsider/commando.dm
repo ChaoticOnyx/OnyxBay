@@ -1,42 +1,23 @@
-GLOBAL_DATUM_INIT(commandos, /datum/antagonist/deathsquad/syndicate, new)
+var/datum/antagonist/deathsquad/mercenary/commandos
 
-/datum/antagonist/deathsquad/syndicate
+/datum/antagonist/deathsquad/mercenary
 	id = MODE_COMMANDO
-	landmark_id = "Syndicate Commando"
+	landmark_id = "Syndicate-Commando"
 	role_text = "Syndicate Commando"
 	role_text_plural = "Commandos"
 	welcome_text = "You are in the employ of a criminal syndicate hostile to corporate interests."
-	id_type = /obj/item/card/id/syndicate
-	flags = ANTAG_RANDOM_EXCEPTED | ANTAG_CLEAR_EQUIPMENT | ANTAG_CHOOSE_NAME | ANTAG_OVERRIDE_JOB | ANTAG_SET_APPEARANCE
-	antaghud_indicator = "hudoperative"
+	antag_sound = 'sound/effects/antag_notice/deathsquid_alert.ogg'
+	id_type = /obj/item/card/id/syndicate/ert
+	flags = ANTAG_NO_ROUNDSTART_SPAWN
 
-	valid_species = list(SPECIES_HUMAN) // Syndicate Comms don't like xenos.
+	faction = "syndicate"
 
-	hard_cap = 4
-	hard_cap_round = 8
-	initial_spawn_req = 4
-	initial_spawn_target = 6
+	bantype = "syndicate-commando"
 
-	station_crew_involved = FALSE
+/datum/antagonist/ert/create_default(var/mob/source)
+	var/mob/living/carbon/human/M = ..()
+	if(istype(M)) M.age = rand(25,45)
 
-/datum/antagonist/deathsquad/syndicate/Initialize()
-	. = ..()
-	if(config.game.commando_min_age)
-		min_player_age = config.game.commando_min_age
-
-/datum/antagonist/deathsquad/syndicate/equip(mob/living/carbon/human/player)
-
-	player.equip_to_slot_or_del(new /obj/item/clothing/under/syndicate(player), slot_w_uniform)
-	player.equip_to_slot_or_del(new /obj/item/gun/projectile/pistol/silenced(player), slot_belt)
-	player.equip_to_slot_or_del(new /obj/item/clothing/shoes/swat(player), slot_shoes)
-	player.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/standard/thermal(player), slot_glasses)
-	player.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/syndicate(player), slot_wear_mask)
-	player.equip_to_slot_or_del(new /obj/item/storage/box(player), slot_in_backpack)
-	player.equip_to_slot_or_del(new /obj/item/ammo_magazine/box/c45(player), slot_in_backpack)
-	player.equip_to_slot_or_del(new /obj/item/rig/syndi(player), slot_back)
-	player.equip_to_slot_or_del(new /obj/item/gun/energy/pulse_rifle(player), slot_r_hand)
-	player.equip_to_slot_or_del(new /obj/item/melee/energy/sword/one_hand(player), slot_l_hand)
-
-	create_id("Commando", player)
-	create_radio(SYND_FREQ, player)
-	return 1
+/datum/antagonist/deathsquad/mercenary/New()
+	..(1)
+	commandos = src

@@ -4,11 +4,11 @@
 	icon = 'icons/obj/turbolift.dmi'
 	anchored = 1
 	density = 0
-	layer = ABOVE_OBJ_LAYER
+	obj_flags = OBJ_FLAG_MOVES_UNSUPPORTED
 
 	var/datum/turbolift/lift
 
-/obj/structure/lift/set_dir(newdir)
+/obj/structure/lift/set_dir(var/newdir)
 	. = ..()
 	pixel_x = 0
 	pixel_y = 0
@@ -21,40 +21,46 @@
 	else if(dir & WEST)
 		pixel_x = 32
 
-/obj/structure/lift/proc/pressed(mob/user)
+/obj/structure/lift/proc/pressed(var/mob/user)
 	if(!istype(user, /mob/living/silicon))
 		if(user.a_intent == I_HURT)
 			user.visible_message("<span class='danger'>\The [user] hammers on the lift button!</span>")
 		else
-			user.visible_message("<span class='notice'>\The [user] presses the lift button.</span>")
+			user.visible_message("<b>\The [user]</b> presses the lift button.")
 
 
-/obj/structure/lift/New(newloc, datum/turbolift/_lift)
+/obj/structure/lift/Initialize(mapload, datum/turbolift/_lift)
 	lift = _lift
-	return ..(newloc)
+	return ..(mapload)
 
-/obj/structure/lift/attack_ai(mob/user)
+/obj/structure/lift/attack_ai(var/mob/user)
+	if(!ai_can_interact(user))
+		return
 	return attack_hand(user)
 
-/obj/structure/lift/attack_generic(mob/user)
+/obj/structure/lift/attack_generic(var/mob/user)
 	return attack_hand(user)
 
-/obj/structure/lift/attack_hand(mob/user)
-	return interact(user)
+/obj/structure/lift/attack_hand(var/mob/user)
+	return ui_interact(user)
 
-/obj/structure/lift/interact(mob/user)
+/obj/structure/lift/ui_interact(var/mob/user)
 	if(!lift.is_functional())
-		return 0
-	return 1
+		return FALSE
+	return TRUE
 // End base.
 
 // Button. No HTML interface, just calls the associated lift to its floor.
 /obj/structure/lift/button
 	name = "elevator button"
 	desc = "A call button for an elevator. Be sure to hit it three hundred times."
-	icon_state = SFX_USE_BUTTON
+	icon_state = "button"
 	var/light_up = FALSE
 	var/datum/turbolift_floor/floor
+
+/obj/structure/lift/button/Initialize(mapload, datum/turbolift/_lift)
+	. = ..()
+	AddComponent(/datum/component/turf_hand)
 
 /obj/structure/lift/button/Destroy()
 	if(floor && floor.ext_panel == src)
@@ -66,15 +72,14 @@
 	light_up = FALSE
 	update_icon()
 
-/obj/structure/lift/button/interact(mob/user)
+/obj/structure/lift/button/ui_interact(var/mob/user)
 	if(!..())
 		return
 	light_up()
 	pressed(user)
 	if(floor == lift.current_floor)
 		lift.open_doors()
-		spawn(3)
-			reset()
+		addtimer(CALLBACK(src, PROC_REF(reset)), 3)
 		return
 	lift.queue_move_to(floor)
 
@@ -82,7 +87,7 @@
 	light_up = TRUE
 	update_icon()
 
-/obj/structure/lift/button/on_update_icon()
+/obj/structure/lift/button/update_icon()
 	if(light_up)
 		icon_state = "button_lit"
 	else
@@ -95,54 +100,48 @@
 	name = "elevator control panel"
 	icon_state = "panel"
 
+/obj/structure/lift/panel/Initialize(mapload, datum/turbolift/_lift)
+	. = ..()
+	AddComponent(/datum/component/turf_hand)
 
-/obj/structure/lift/panel/attack_ghost(mob/user)
-	return interact(user)
+/obj/structure/lift/panel/attack_ghost(var/mob/user)
+	return ui_interact(user)
 
-/obj/structure/lift/panel/interact(mob/user)
-	if(!..())
+/obj/structure/lift/panel/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "TurboLift", ui_x=280, ui_y=200)
+		ui.open()
+
+/obj/structure/lift/panel/ui_data(mob/user)
+	var/list/data = list()
+	data["floors"] = lift.floors
+	data["currentFloor"] = lift.floors.Find(lift.current_floor)
+	data["doorsOpen"] = lift.doors_are_open()
+	return data
+
+/obj/structure/lift/panel/ui_act(action, params)
+	. = ..()
+	if(.)
 		return
 
-	var/dat = list()
-	dat += "<html><body><hr><b>Lift panel</b><hr>"
-
-	//the floors list stores levels in order of increasing Z
-	//therefore, to display upper levels at the top of the menu and
-	//lower levels at the bottom, we need to go through the list in reverse
-	for(var/i in lift.floors.len to 1 step -1)
-		var/datum/turbolift_floor/floor = lift.floors[i]
-		var/label = floor.label? floor.label : "Level #[i]"
-		dat += "<font color = '[(floor in lift.queued_floors) ? COLOR_YELLOW : COLOR_WHITE]'>"
-		dat += "<a href='?src=\ref[src];move_to_floor=["\ref[floor]"]'>[label]</a>: [floor.name]</font><br>"
-
-	dat += "<hr>"
-	if(lift.doors_are_open())
-		dat += "<a href='?src=\ref[src];close_doors=1'>Close Doors</a><br>"
-	else
-		dat += "<a href='?src=\ref[src];open_doors=1'>Open Doors</a><br>"
-	dat += "<a href='?src=\ref[src];emergency_stop=1'>Emergency Stop</a>"
-	dat += "<hr></body></html>"
-
-	var/datum/browser/popup = new(user, "turbolift_panel", "Lift Panel", 230, 260)
-	popup.set_content(jointext(dat, null))
-	popup.open()
-	return
-
-/obj/structure/lift/panel/OnTopic(user, href_list)
-	if(href_list["move_to_floor"])
-		lift.queue_move_to(locate(href_list["move_to_floor"]))
-		. = TOPIC_REFRESH
-	if(href_list["open_doors"])
-		lift.open_doors()
-		. = TOPIC_REFRESH
-	if(href_list["close_doors"])
-		lift.close_doors()
-		. = TOPIC_REFRESH
-	if(href_list["emergency_stop"])
+	if(action == "move_to_floor")
+		add_fingerprint(usr)
+		lift.queue_move_to(lift.floors[length(lift.floors) - text2num(params["floor"])])
+		pressed(usr)
+		return TRUE
+	if(action == "toggle_doors")
+		add_fingerprint(usr)
+		if(lift.doors_are_open())
+			lift.close_doors()
+		else
+			lift.open_doors()
+		pressed(usr)
+		return TRUE
+	if(action == "emergency_stop")
+		add_fingerprint(usr)
 		lift.emergency_stop()
-		. = TOPIC_REFRESH
-
-	if(. == TOPIC_REFRESH)
-		pressed(user)
+		pressed(usr)
+		return TRUE
 
 // End panel.

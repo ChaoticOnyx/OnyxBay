@@ -1,89 +1,98 @@
-/obj/item/dice
+/obj/item/stack/dice
 	name = "d6"
 	desc = "A dice with six sides."
 	icon = 'icons/obj/dice.dmi'
 	icon_state = "d66"
-	w_class = ITEM_SIZE_TINY
-	mod_weight = 0.1
-	mod_reach = 0.1
-	mod_handy = 0.1
-	var/sides = 6
+	w_class = ITEMSIZE_TINY
 	attack_verb = list("diced")
+	max_amount = 6
 
-/obj/item/dice/New()
+	base_icon = "d6"
+	var/side_mult = 1 // Used for d100s.
+	var/sides = 6
+	var/weight_roll = 0 // chance of the dice falling on its favored number
+	var/favored_number = 1 //related to the var above
+
+/obj/item/stack/dice/Initialize()
+	. = ..()
+	icon_state = "[base_icon][rand(1,sides)]"
+
+/obj/item/stack/dice/update_icon(var/result)
+	check_maptext(SMALL_FONTS(7, get_amount()))
+	if(result)
+		icon_state = "[base_icon][result]"
+
+/obj/item/stack/dice/attack_self(mob/user)
+	if(amount > 1)
+		user.visible_message("<b>[user]</b> shakes the die in their hand...", SPAN_NOTICE("You shake the die in your hands..."))
+	else
+		user.visible_message("<b>[user]</b> raises the dice to their mouth and blows on it...", SPAN_NOTICE("You raise the dice to your mouth and blow on it..."))
+
+/obj/item/stack/dice/throw_impact(atom/hit_atom)
 	..()
-	icon_state = "[name][rand(1,sides)]"
 
-/obj/item/dice/dp/New()
-	..()
-	icon_state = "[name][10*rand(0,sides-1)]"//Because dp starts from 00 and ends on 90
+	var/total_result = 0
+	var/list/results = list()
+	for(var/i = 1 to amount)
+		if(weight_roll && prob(weight_roll))
+			results += favored_number
+		else
+			results += rand(1, sides)
+		total_result += results[i]
 
-/obj/item/dice/d4
+	if(amount > 1)
+		visible_message(SPAN_NOTICE("The die rolls, revealing... <b>[total_result * side_mult]</b>! ([english_list(results, "", " + ", " + ", "")])"))
+		update_icon(results[length(results)])
+	else
+		visible_message(SPAN_NOTICE("\The [name] lands on <b>[total_result * side_mult]</b>.[get_comment(total_result)]"))
+		update_icon(total_result)
+
+/obj/item/stack/dice/proc/get_comment(var/result)
+	if(sides == result)
+		return " Nat [sides * side_mult]!"
+	if(result == 1)
+		return " Ouch, bad luck."
+	return ""
+
+/obj/item/stack/dice/d4
 	name = "d4"
 	desc = "A dice with four sides."
 	icon_state = "d44"
 	sides = 4
+	base_icon = "d4"
 
-/obj/item/dice/d8
+/obj/item/stack/dice/d8
 	name = "d8"
 	desc = "A dice with eight sides."
 	icon_state = "d88"
 	sides = 8
+	base_icon = "d8"
 
-/obj/item/dice/d10
+/obj/item/stack/dice/d10
 	name = "d10"
 	desc = "A dice with ten sides."
 	icon_state = "d1010"
 	sides = 10
+	base_icon = "d10"
 
-/obj/item/dice/d12
+/obj/item/stack/dice/d12
 	name = "d12"
 	desc = "A dice with twelve sides."
 	icon_state = "d1212"
 	sides = 12
+	base_icon = "d12"
 
-/obj/item/dice/d20
+/obj/item/stack/dice/d20
 	name = "d20"
 	desc = "A dice with twenty sides."
 	icon_state = "d2020"
 	sides = 20
+	base_icon = "d20"
 
-/obj/item/dice/dp
-	name = "dp"
+/obj/item/stack/dice/d100
+	name = "d100"
 	desc = "A dice with ten sides. This one is for the tens digit."
-	icon_state = "dp10"
+	icon_state = "d10010"
 	sides = 10
-
-/obj/item/dice/proc/roll_die()
-	var/result = rand(1, sides)
-	return list(result, "")
-
-/obj/item/dice/d20/roll_die()
-	var/result = rand(1, sides)
-	var/comment = ""
-	if(result == 20)
-		comment = "Nat 20!"
-	else if(result == 1)
-		comment = "Ouch, bad luck."
-	return list(result, comment)
-
-/obj/item/dice/dp/roll_die()
-	var/result = 10 * rand(0, sides-1)//Because dp starts from 00 and ends on 90
-	return list(result, "")
-
-/obj/item/dice/attack_self(mob/user as mob)
-	var/list/roll_result = roll_die()
-	var/result = roll_result[1]
-	var/comment = roll_result[2]
-	icon_state = "[name][result]"
-	user.visible_message("<span class='notice'>[user] has thrown [src]. It lands on [result]. [comment]</span>", \
-						 "<span class='notice'>You throw [src]. It lands on a [result]. [comment]</span>", \
-						 "<span class='notice'>You hear [src] landing on a [result]. [comment]</span>")
-
-/obj/item/dice/throw_impact(atom/hit_atom, speed)
-	..()
-	var/list/roll_result = roll_die()
-	var/result = roll_result[1]
-	var/comment = roll_result[2]
-	icon_state = "[name][result]"
-	src.visible_message("<span class='notice'>\The [src] lands on [result]. [comment]</span>")
+	side_mult = 10
+	base_icon = "d100"

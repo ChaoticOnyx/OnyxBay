@@ -1,85 +1,194 @@
-var/list/tickets = list()
-var/list/ticket_panels = list()
+var/global/list/tickets = list()
+var/global/list/ticket_panels = list()
 
 /datum/ticket
-	var/datum/client_lite/owner
+	var/owner
 	var/list/assigned_admins = list()
 	var/status = TICKET_OPEN
 	var/list/msgs = list()
-	var/datum/client_lite/closed_by
+	var/closed_by
 	var/id
 	var/opened_time
 
-/datum/ticket/New(datum/client_lite/owner)
+	// Real time references for SQL based logging.
+	var/opened_rt
+	var/closed_rt
+	var/response_time
+
+	var/reminder_timer
+
+/datum/ticket/New(var/owner)
 	src.owner = owner
 	tickets |= src
 	id = tickets.len
 	opened_time = world.time
+	opened_rt = world.realtime
 
-/datum/ticket/proc/close(datum/client_lite/closed_by)
-	if(status == TICKET_CLOSED)
-		return
+	if (config.ticket_reminder_period)
+		reminder_timer = addtimer(CALLBACK(src, PROC_REF(remind)), config.ticket_reminder_period SECONDS, TIMER_UNIQUE|TIMER_STOPPABLE)
 
-	if(status == TICKET_ASSIGNED && !((closed_by.ckey in assigned_admin_ckeys()) || owner.ckey == closed_by.ckey) && alert(client_by_ckey(closed_by.ckey), "You are not assigned to this ticket. Are you sure you want to close it?",  "Close ticket?" , "Yes" , "No") != "Yes")
-		return
+/datum/ticket/proc/broadcast_closure(closing_user)
+	var/client/owner_client = client_by_ckey(owner)
+	if(owner_client && owner_client.adminhelped == ADMINHELPED_DISCORD)
+		SSdiscord.send_to_admins("[key_name(owner_client)]'s request for help has been closed/deemed unnecessary by [closing_user].")
+		owner_client.adminhelped = ADMINHELPED
 
-	var/client/real_client = client_by_ckey(closed_by.ckey)
-	if(status == TICKET_ASSIGNED && (!real_client || !real_client.holder)) // non-admins can only close a ticket if no admin has taken it
-		return
-
+/datum/ticket/proc/set_to_closed(closing_key)
 	src.status = TICKET_CLOSED
-	src.closed_by = closed_by
-
-	to_chat(client_by_ckey(src.owner.ckey), "<span class='notice'><b>Your ticket has been closed by [closed_by.ckey].</b></span>")
-	message_staff("<span class='notice'><b>[src.owner.key_name(0)]</b>'s ticket has been closed by <b>[closed_by.key_name(0)]</b>.</span>")
-	send2adminirc("[src.owner.key_name(0)]'s ticket has been closed by [closed_by.key_name(0)].")
+	src.closed_by = closing_key
+	src.closed_rt = world.realtime
 
 	update_ticket_panels()
 
-	return 1
+	if (reminder_timer)
+		deltimer(reminder_timer)
 
-/datum/ticket/proc/take(datum/client_lite/assigned_admin)
+	log_to_db()
+
+/datum/ticket/proc/close(var/client/closed_by)
+	if(!closed_by)
+		return FALSE
+
+	if(status == TICKET_CLOSED)
+		return FALSE
+
+	if(status == TICKET_ASSIGNED && !((closed_by.ckey in assigned_admins) || owner == closed_by.ckey) && alert(closed_by, "You are not assigned to this ticket. Are you sure you want to close it?",  "Close ticket?" , "Yes" , "No") != "Yes")
+		return FALSE
+
+	if(status == TICKET_ASSIGNED && !closed_by.holder) // non-admins can only close a ticket if no admin has taken it
+		return FALSE
+
+	broadcast_closure(key_name(closed_by))
+
+	to_chat(client_by_ckey(src.owner), "<span class='notice'><b>Your ticket has been closed by [closed_by].</b></span>")
+	message_admins("<span class='notice'><b>[src.owner]</b>'s ticket has been closed by <b>[key_name(closed_by)]</b>.</span>")
+
+	set_to_closed(closed_by.ckey)
+
+	return TRUE
+
+/datum/ticket/proc/close_remotely(closing_user)
+	if (!closing_user)
+		return FALSE
+
+	if (status != TICKET_OPEN)
+		return FALSE
+
+	broadcast_closure("[closing_user] (Remotely)")
+
+	to_chat(client_by_ckey(src.owner), "<span class='notice'><b>Your ticket has been closed by [closing_user] (remotely).</b></span>")
+	message_admins("<span class='notice'><b>[src.owner]</b>'s ticket has been closed by <b>[closing_user] (remotely)</b>.</span>")
+
+	set_to_closed(closing_user)
+
+	return TRUE
+
+/datum/ticket/proc/take(var/client/assigned_admin)
+	if(!assigned_admin)
+		return
+
 	if(status == TICKET_CLOSED)
 		return
 
-	if(assigned_admin.ckey == owner.ckey)
+	if(assigned_admin.ckey == owner)
 		return
 
-	if(status == TICKET_ASSIGNED && ((assigned_admin.ckey in assigned_admin_ckeys()) || alert(client_by_ckey(assigned_admin.ckey), "This ticket is already assigned. Do you want to add yourself to the ticket?",  "Join ticket?" , "Yes" , "No") != "Yes"))
+	if(status == TICKET_ASSIGNED && ((assigned_admin.ckey in assigned_admins) || alert(assigned_admin, "This ticket is already assigned. Do you want to add yourself to the ticket?",  "Join ticket?" , "Yes" , "No") != "Yes"))
 		return
 
-	assigned_admins |= assigned_admin
+	assigned_admins |= assigned_admin.ckey
 	src.status = TICKET_ASSIGNED
 
-	message_staff("<span class='notice'><b>[assigned_admin.key_name(0)]</b> has assigned themself to <b>[src.owner.key_name(0)]'s</b> ticket.</span>")
-	send2adminirc("[assigned_admin.key_name(0)] has assigned themself to [src.owner.key_name(0)]'s ticket.")
-	to_chat(client_by_ckey(src.owner.ckey), "<span class='notice'><b>[assigned_admin.ckey] has added themself to your ticket and should respond shortly. Thanks for your patience!</b></span>")
+	var/client/owner_client = client_by_ckey(src.owner)
+	if(owner_client && owner_client.adminhelped == ADMINHELPED_DISCORD)
+		SSdiscord.send_to_admins("[key_name(owner_client)]'s request for help has been taken by [key_name(assigned_admin)].")
+		owner_client.adminhelped = ADMINHELPED
+
+	message_admins("<span class='danger'><b>[key_name(assigned_admin)]</b> has assigned themself to <b>[src.owner]'s</b> ticket.</span>")
+	to_chat(owner_client, "<span class='notice'><b>[assigned_admin] has added themself to your ticket and should respond shortly. Thanks for your patience!</b></span>")
+	to_chat(assigned_admin, get_options_bar(owner_client, 2, 1, 1))
 
 	update_ticket_panels()
 
 	return 1
 
-/datum/ticket/proc/assigned_admin_ckeys()
-	. = list()
+/datum/ticket/proc/remind()
+	if (status == TICKET_CLOSED)
+		reminder_timer = null
+		return
 
-	for(var/datum/client_lite/assigned_admin in assigned_admins)
-		. |= assigned_admin.ckey
+	var/admin_found = FALSE
 
-/proc/get_open_ticket_by_client(datum/client_lite/owner)
+	for (var/ckey in assigned_admins)
+		var/client/C = client_by_ckey(ckey)
+		if (C)
+			admin_found = TRUE
+			to_chat(C, "<span class='danger'><b>You have yet to close [owner]'s ticket!</b></span>")
+			sound_to(C, 'sound/effects/adminhelp.ogg')
+
+	if (!admin_found)
+		message_admins("<span class='danger'><b>[owner]'s ticket has yet to be closed!</b></span>")
+		for(var/s in staff)
+			var/client/C = s
+			if((C.holder.rights & (R_ADMIN|R_MOD)) && (C.prefs.toggles & SOUND_ADMINHELP))
+				sound_to(C, 'sound/effects/adminhelp.ogg')
+
+	reminder_timer = addtimer(CALLBACK(src, PROC_REF(remind)), config.ticket_reminder_period SECONDS, TIMER_UNIQUE|TIMER_STOPPABLE)
+
+/proc/get_open_ticket_by_ckey(var/owner)
 	for(var/datum/ticket/ticket in tickets)
-		if(ticket.owner.ckey == owner.ckey && (ticket.status == TICKET_OPEN || ticket.status == TICKET_ASSIGNED))
+		if(ticket.owner == owner && (ticket.status == TICKET_OPEN || ticket.status == TICKET_ASSIGNED))
 			return ticket // there should only be one open ticket by a client at a time, so no need to keep looking
+
+/proc/get_ticket_by_id(id)
+	for (var/datum/ticket/ticket in tickets)
+		if (ticket.id == id)
+			return ticket
+
+	return null
 
 /datum/ticket/proc/is_active()
 	if(status != TICKET_ASSIGNED)
 		return 0
 
-	for(var/datum/client_lite/admin in assigned_admins)
-		var/client/admin_client = client_by_ckey(admin.ckey)
+	for(var/admin in assigned_admins)
+		var/client/admin_client = client_by_ckey(admin)
 		if(admin_client && !admin_client.is_afk())
 			return 1
 
 	return 0
+
+/datum/ticket/proc/log_to_db()
+	if (status != TICKET_CLOSED)
+		return
+
+	if (!establish_db_connection(dbcon))
+		return
+
+	var/DBQuery/Q = dbcon.NewQuery({"INSERT INTO ss13_tickets
+		(game_id, message_count, admin_count, admin_list, opened_by, taken_by, closed_by, response_delay, opened_at, closed_at)
+	VALUES
+		(:g_id:, :m_count:, :a_count:, :a_list:, :opened_by:, :taken_by:, :closed_by:, :delay:, :opened_at:, :closed_at:)"})
+	Q.Execute(list(
+		"g_id" = game_id,
+		"m_count" = length(msgs),
+		"a_count" = length(assigned_admins),
+		"a_list" = json_encode(assigned_admins),
+		"opened_by" = owner,
+		"taken_by" = length(assigned_admins) ? assigned_admins[1] : null,
+		"closed_by" = closed_by,
+		"delay" = response_time || -1,
+		"opened_at" = SQLtime(opened_rt),
+		"closed_at" = SQLtime(closed_rt)
+	))
+
+/datum/ticket/proc/append_message(m_from, m_to, msg)
+	msgs += new /datum/ticket_msg(m_from, m_to, msg)
+
+	if (!response_time && m_from != owner)
+		response_time = round((world.time - opened_time) / 10)
+
+	update_ticket_panels()
 
 /datum/ticket_msg
 	var/msg_from
@@ -87,7 +196,7 @@ var/list/ticket_panels = list()
 	var/msg
 	var/time_stamp
 
-/datum/ticket_msg/New(msg_from, msg_to, msg)
+/datum/ticket_msg/New(var/msg_from, var/msg_to, var/msg)
 	src.msg_from = msg_from
 	src.msg_to = msg_to
 	src.msg = msg
@@ -104,40 +213,39 @@ var/list/ticket_panels = list()
 
 	var/list/dat = list()
 
+	var/valid_holder = check_rights(R_MOD|R_ADMIN, FALSE, ticket_panel_window.user)
+
 	var/list/ticket_dat = list()
 	for(var/id = tickets.len, id >= 1, id--)
 		var/datum/ticket/ticket = tickets[id]
-		if(C.holder || ticket.owner.ckey == C.ckey)
-			var/client/owner_client = client_by_ckey(ticket.owner.ckey)
-			var/open = 0
+		if(valid_holder || ticket.owner == C.ckey)
+			var/client/owner_client = client_by_ckey(ticket.owner)
 			var/status = "Unknown status"
 			var/color = "#6aa84f"
 			switch(ticket.status)
 				if(TICKET_OPEN)
-					open = 1
 					status = "Opened [round((world.time - ticket.opened_time) / (1 MINUTE))] minute\s ago, unassigned"
 				if(TICKET_ASSIGNED)
-					open = 2
-					status = "Assigned to [english_list(ticket.assigned_admin_ckeys(), "no one")]"
+					status = "Assigned to [english_list(ticket.assigned_admins, "no one")]"
 					color = "#ffffff"
 				if(TICKET_CLOSED)
-					status = "Closed by [ticket.closed_by.ckey]"
+					status = "Closed by [ticket.closed_by]"
 					color = "#cc2222"
 			ticket_dat += "<li style='padding-bottom:10px;color:[color]'>"
 			if(open_ticket && open_ticket == ticket)
 				ticket_dat += "<i>"
-			ticket_dat += "Ticket #[id] - [ticket.owner.ckey] [owner_client ? "" : "(DC)"] - [status]<br /><a href='byond://?src=\ref[src];action=view;ticket=\ref[ticket]'>VIEW</a>"
-			if(open)
+			ticket_dat += "Ticket #[id] - [ticket.owner] [owner_client ? "" : "(DC)"] - [status]<br /><a href='byond://?src=\ref[src];action=view;ticket=\ref[ticket]'>VIEW</a>"
+			if(ticket.status)
 				ticket_dat += " - <a href='byond://?src=\ref[src];action=pm;ticket=\ref[ticket]'>PM</a>"
-				if(C.holder)
-					ticket_dat += " - <a href='byond://?src=\ref[src];action=take;ticket=\ref[ticket]'>[(open == 1) ? "TAKE" : "JOIN"]</a>"
-				if(ticket.status != TICKET_CLOSED && (C.holder || ticket.status == TICKET_OPEN))
+				if(valid_holder)
+					ticket_dat += " - <a href='byond://?src=\ref[src];action=take;ticket=\ref[ticket]'>[(ticket.status == TICKET_OPEN) ? "TAKE" : "JOIN"]</a>"
+				if(ticket.status != TICKET_CLOSED && (valid_holder || ticket.status == TICKET_OPEN))
 					ticket_dat += " - <a href='byond://?src=\ref[src];action=close;ticket=\ref[ticket]'>CLOSE</a>"
-			if(C.holder)
+			if(valid_holder)
 				var/ref_mob = ""
 				if(owner_client)
 					ref_mob = "\ref[owner_client.mob]"
-				ticket_dat += " - <A HREF='?_src_=holder;adminmoreinfo=[ref_mob]'>?</A> - <A HREF='?_src_=holder;adminplayeropts=[ref_mob]'>PP</A> - <A HREF='?_src_=vars;Vars=[ref_mob]'>VV</A> - <A HREF='?_src_=holder;subtlemessage=[ref_mob]'>SM</A>[owner_client ? "- [admin_jump_link(owner_client, src)]" : ""]"
+				ticket_dat += " - <A HREF='?_src_=holder;adminmoreinfo=[ref_mob]'>?</A> - <A HREF='?_src_=holder;adminplayeropts=[ref_mob]'>PP</A> - <A HREF='?_src_=vars;Vars=[ref_mob]'>VV</A> - <A HREF='?_src_=holder;subtlemessage=[ref_mob]'>SM</A>[owner_client ? "- [admin_jump_link(owner_client.mob, src)]" : ""]"
 			if(open_ticket && open_ticket == ticket)
 				ticket_dat += "</i>"
 			ticket_dat += "</li>"
@@ -164,16 +272,6 @@ var/list/ticket_panels = list()
 	return jointext(dat, null)
 
 /datum/ticket_panel/Topic(href, href_list)
-	if(usr && usr != ticket_panel_window.user)
-		if(href_list["close"]) // catch the case where a user switches mobs, then closes the window that was linked to the old mob
-			ticket_panels -= usr.client
-		else
-			usr.client.view_tickets()
-			var/datum/ticket_panel/new_panel = ticket_panels[usr.client]
-			new_panel.open_ticket = open_ticket
-			new_panel.Topic(href, href_list)
-			return
-
 	..()
 
 	if(href_list["close"])
@@ -186,7 +284,7 @@ var/list/ticket_panels = list()
 			ticket_panel_window.update()
 
 	var/datum/ticket/ticket = locate(href_list["ticket"])
-	if(!ticket)
+	if(!istype(ticket))
 		return
 
 	switch(href_list["action"])
@@ -195,17 +293,17 @@ var/list/ticket_panels = list()
 			ticket_panel_window.set_content(get_dat())
 			ticket_panel_window.update()
 		if("take")
-			ticket.take(client_repository.get_lite_client(usr.client))
+			ticket.take(usr.client)
 		if("close")
-			ticket.close(client_repository.get_lite_client(usr.client))
+			ticket.close(usr.client)
 		if("pm")
-			if(usr.client.holder && ticket.owner.ckey != usr.ckey)
-				usr.client.cmd_admin_pm(client_by_ckey(ticket.owner.ckey), ticket = ticket)
+			if(check_rights(R_MOD|R_ADMIN) && ticket.owner != usr.ckey)
+				usr.client.cmd_admin_pm(client_by_ckey(ticket.owner), ticket = ticket)
 			else if(ticket.status == TICKET_ASSIGNED)
 				// manually check that the target client exists here as to not spam the usr for each logged out admin on the ticket
 				var/admin_found = 0
-				for(var/datum/client_lite/admin in ticket.assigned_admins)
-					var/client/admin_client = client_by_ckey(admin.ckey)
+				for(var/admin in ticket.assigned_admins)
+					var/client/admin_client = client_by_ckey(admin)
 					if(admin_client)
 						admin_found = 1
 						usr.client.cmd_admin_pm(admin_client, ticket = ticket)

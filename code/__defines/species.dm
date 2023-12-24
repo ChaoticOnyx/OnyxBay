@@ -1,48 +1,114 @@
-// Species flags.
-#define SPECIES_FLAG_NO_MINOR_CUT        0x0001  // Can step on broken glass with no ill-effects. Either thick skin (diona/vox), cut resistant (metroids) or incorporeal (shadows)
-#define SPECIES_FLAG_IS_PLANT            0x0002  // Is a treeperson.
-#define SPECIES_FLAG_NO_SCAN             0x0004  // Cannot be scanned in a DNA machine/genome-stolen.
-#define SPECIES_FLAG_NO_PAIN             0x0008  // Cannot suffer halloss/recieves deceptive health indicator.
-#define SPECIES_FLAG_NO_SLIP             0x0010  // Cannot fall over.
-#define SPECIES_FLAG_NO_POISON           0x0020  // Cannot not suffer toxloss.
-#define SPECIES_FLAG_NO_EMBED            0x0040  // Can step on broken glass with no ill-effects and cannot have shrapnel embedded in it.
-#define SPECIES_FLAG_CAN_NAB             0x0080  // Uses the special set of grab rules.
-#define SPECIES_FLAG_NO_BLOCK            0x0100  // Unable to block or defend itself from attackers.
-#define SPECIES_FLAG_NEED_DIRECT_ABSORB  0x0200  // This species can only have their DNA taken by direct absorption.
-#define SPECIES_FLAG_NO_TANGLE           0x0400  // This species wont get tangled up in weeds
-#define SPECIES_FLAG_NO_BLOOD            0x0800  // Cannot be drained by vampire, machine, diona, golem.
-#define SPECIES_FLAG_NO_ANTAG_TARGET     0x1000  // Cannot be randomly chosen as a target for antag objectives or traitor contracts (i.e. assassination).
-#define SPECIES_FLAG_NO_FIRE			 0x2000  // Cannot be ignited
-// unused: 0x8000 - higher than this will overflow
+#define SPECIES_HUMAN				"Human"
+#define SPECIES_HUMAN_OFFWORLD		"Off-Worlder Human"
+#define SPECIES_HUMAN_VATGROWN		"Vat-Grown Human"
 
-// Species spawn flags
-#define SPECIES_IS_WHITELISTED      0x1    // Must be whitelisted to play.
-#define SPECIES_IS_RESTRICTED       0x2    // Is not a core/normally playable species. (castes, mutantraces)
-#define SPECIES_CAN_JOIN            0x4    // Species is selectable in chargen.
-#define SPECIES_NO_FBP_CONSTRUCTION 0x8    // FBP of this species can't be made in-game.
-#define SPECIES_NO_FBP_CHARGEN      0x10   // FBP of this species can't be selected at chargen.
-#define SPECIES_NO_LACE             0x20   // This species can't have a neural lace.
+#define SPECIES_UNATHI				"Unathi"
 
-// Species appearance flags
-#define HAS_SKIN_TONE_NORMAL                                                      0x1    // Skin tone selectable in chargen for baseline humans (0-220)
-#define HAS_SKIN_COLOR                                                            0x2    // Skin colour selectable in chargen. (RGB)
-#define HAS_LIPS                                                                  0x4    // Lips are drawn onto the mob icon. (lipstick)
-#define HAS_UNDERWEAR                                                             0x8    // Underwear is drawn onto the mob icon.
-#define HAS_EYE_COLOR                                                             0x10   // Eye colour selectable in chargen. (RGB)
-#define HAS_HAIR_COLOR                                                            0x20   // Hair colour selectable in chargen. (RGB)
-#define RADIATION_GLOWS                                                           0x40   // Radiation causes this character to glow.
-#define HAS_SKIN_TONE_GRAV                                                        0x80   // Skin tone selectable in chargen for grav-adapted humans (0-100)
-#define HAS_SKIN_TONE_SPCR                                                        0x100  // Skin tone selectable in chargen for spacer humans (0-165)
-#define SECONDARY_HAIR_IS_SKIN                                                    0x200  // Secondary hair color mimics skin color (i.e. trotter ears)
-#define HAS_A_SKIN_TONE (HAS_SKIN_TONE_NORMAL | HAS_SKIN_TONE_GRAV | HAS_SKIN_TONE_SPCR) // Species has a numeric skintone
+#define SPECIES_DIONA				"Diona"
+#define SPECIES_DIONA_COEUS			"Coeus Diona"
 
-// Skin Defines
-#define SKIN_NORMAL 0
-#define SKIN_THREAT 1
+#define SPECIES_SKRELL				"Xiialt Skrell"
+#define SPECIES_SKRELL_AXIORI		"Axiori Skrell"
 
-// Darkvision Levels these are inverted from normal so pure white is the darkest
+#define SPECIES_TAJARA				"Tajara"
+#define SPECIES_TAJARA_ZHAN			"Zhan-Khazan Tajara"
+#define SPECIES_TAJARA_MSAI			"M'sai Tajara"
+#define SPECIES_TAJARA_TESLA_BODY	"Tesla Rejuvenation Suit Tajara"
 
-// possible and pure black is none
-#define DARKTINT_NONE     "#ffffff"
-#define DARKTINT_MODERATE "#f9f9f5"
-#define DARKTINT_GOOD     "#ebebe6"
+#define SPECIES_VAURCA_WORKER		"Vaurca Worker"
+#define SPECIES_VAURCA_WARRIOR		"Vaurca Warrior"
+#define SPECIES_VAURCA_BREEDER		"Vaurca Breeder"
+#define SPECIES_VAURCA_WARFORM		"Vaurca Warform"
+#define SPECIES_VAURCA_BULWARK		"Vaurca Bulwark"
+
+#define SPECIES_IPC					"Baseline Frame"
+#define SPECIES_IPC_SHELL			"Shell Frame"
+#define SPECIES_IPC_G1				"Hephaestus G1 Industrial Frame"
+#define SPECIES_IPC_G2				"Hephaestus G2 Industrial Frame"
+#define SPECIES_IPC_XION			"Xion Industrial Frame"
+#define SPECIES_IPC_ZENGHU			"Zeng-Hu Mobility Frame"
+#define SPECIES_IPC_BISHOP			"Bishop Accessory Frame"
+
+#define SPECIES_IPC_SHELL_ROGUE		"Rogue Shell"
+#define SPECIES_IPC_XION_REMOTE		"Remote Xion Industrial Frame"
+#define SPECIES_IPC_UNBRANDED		"Unbranded Frame"
+#define SPECIES_IPC_UNBRANDED_REMOTE	"Remote Unbranded Frame"
+#define SPECIES_IPC_TERMINATOR		"Military Frame"
+
+#define SPECIES_SLIMEPERSON			"Slime"
+
+#define SPECIES_SKELETON			"Skeleton"
+#define SPECIES_CULTGHOST			"Apparition"
+#define SPECIES_ZOMBIE				"Zombie"
+#define SPECIES_ZOMBIE_BULL			"Zombie Bull"
+#define SPECIES_ZOMBIE_HUNTER		"Zombie Hunter"
+#define SPECIES_ZOMBIE_RHINO		"Zombie Rhino"
+#define SPECIES_ZOMBIE_TAJARA		"Tajara Zombie"
+#define SPECIES_ZOMBIE_UNATHI		"Unathi Zombie"
+#define SPECIES_ZOMBIE_SKRELL		"Skrell Zombie"
+#define SPECIES_REVENANT			"Revenant"
+
+#define SPECIES_MONKEY				"Monkey"
+#define SPECIES_MONKEY_SKRELL		"Neaera"
+#define SPECIES_MONKEY_UNATHI		"Stok"
+#define SPECIES_MONKEY_TAJARA		"Farwa"
+#define SPECIES_MONKEY_TAJARA_ZHAN	"Zhan-Khazan Farwa"
+#define SPECIES_MONKEY_TAJARA_MSAI	"M'sai Farwa"
+#define SPECIES_MONKEY_VAURCA		"V'krexi"
+
+#define SPECIES_GOLEM_COAL			"Coal Golem"
+#define SPECIES_GOLEM_IRON			"Iron Golem"
+#define SPECIES_GOLEM_BRONZE		"Bronze Golem"
+#define SPECIES_GOLEM_STEEL			"Steel Golem"
+#define SPECIES_GOLEM_PLASTEEL		"Plasteel Golem"
+#define SPECIES_GOLEM_TITANIUM		"Titanium Golem"
+#define SPECIES_GOLEM_CLOTH			"Cloth Golem"
+#define SPECIES_GOLEM_CARDBOARD		"Cardboard Golem"
+#define SPECIES_GOLEM_GLASS			"Glass Golem"
+#define SPECIES_GOLEM_PHORON		"Phoron Golem"
+#define SPECIES_GOLEM_SILVER		"Silver Golem"
+#define SPECIES_GOLEM_GOLD			"Gold Golem"
+#define SPECIES_GOLEM_HYDROGEN		"Metallic Hydrogen Golem"
+#define SPECIES_GOLEM_WOOD			"Wood Golem"
+#define SPECIES_GOLEM_DIAMOND		"Diamond Golem"
+#define SPECIES_GOLEM_MARBLE		"Marble Golem"
+#define SPECIES_GOLEM_SAND			"Sand Golem"
+#define SPECIES_GOLEM_PLASTIC		"Plastic Golem"
+#define SPECIES_GOLEM_URANIUM		"Uranium Golem"
+#define SPECIES_GOLEM_MEAT			"Homunculus"
+#define SPECIES_GOLEM_ADAMANTINE	"Adamantine Golem"
+#define SPECIES_GOLEM_TECHOMANCER	"Technomancer Golem"
+
+
+#define BODYTYPE_HUMAN				"Human"
+#define BODYTYPE_SKRELL				"Skrell"
+#define BODYTYPE_UNATHI				"Unathi"
+#define BODYTYPE_DIONA				"Diona"
+#define BODYTYPE_TAJARA				"Tajara"
+#define BODYTYPE_TESLA_BODY			"Tesla Rejuvenation Suit"
+
+#define BODYTYPE_VAURCA				"Vaurca"
+#define BODYTYPE_VAURCA_BREEDER		"Vaurca Breeder"
+#define BODYTYPE_VAURCA_BULWARK		"Vaurca Bulwark"
+#define BODYTYPE_VAURCA_WARFORM		"Vaurca Warform"
+
+#define BODYTYPE_IPC				"Machine"
+#define BODYTYPE_IPC_INDUSTRIAL		"Heavy Machine"
+#define BODYTYPE_IPC_ZENGHU			"Zeng-Hu Mobility Frame"
+#define BODYTYPE_IPC_BISHOP			"Bishop Accessory Frame"
+
+#define BODYTYPE_GOLEM				"Golem"
+#define BODYTYPE_MONKEY				"Monkey"
+
+#define BODYTYPE_SKELETON			"Skeleton"
+#define BODYTYPE_CULTGHOST			"Apparition"
+
+#define ALL_SPECIES list(\
+		SPECIES_HUMAN, SPECIES_HUMAN_OFFWORLD, \
+		SPECIES_IPC, SPECIES_IPC_BISHOP, SPECIES_IPC_G1, SPECIES_IPC_G2, SPECIES_IPC_SHELL, SPECIES_IPC_UNBRANDED, SPECIES_IPC_XION, SPECIES_IPC_ZENGHU, \
+		SPECIES_DIONA, SPECIES_DIONA_COEUS, \
+		SPECIES_SKRELL, SPECIES_SKRELL_AXIORI, \
+		SPECIES_TAJARA, SPECIES_TAJARA_MSAI, SPECIES_TAJARA_ZHAN, \
+		SPECIES_UNATHI, \
+		SPECIES_VAURCA_WORKER, SPECIES_VAURCA_WARRIOR, SPECIES_VAURCA_BULWARK, SPECIES_VAURCA_BREEDER, \
+	)

@@ -1,11 +1,13 @@
 /datum/alarm_handler/fire
-	category = NETWORK_ALARM_FIRE
+	category = "Fire Alarms"
 
-/datum/alarm_handler/fire/on_alarm_change(datum/alarm/alarm, was_raised)
+/datum/alarm_handler/fire/on_alarm_change(var/datum/alarm/alarm, var/was_raised)
 	var/area/A = alarm.origin
 	if(istype(A))
 		if(was_raised)
 			A.fire_alert()
 		else
 			A.fire_reset()
+
+	SEND_SIGNAL(A, COMSIG_AREA_FIRE_ALARM, A.fire)
 	..()

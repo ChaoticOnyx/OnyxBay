@@ -10,8 +10,8 @@
 	set category = "Hardware"
 	set name = "Destroy Core"
 	set desc = "Activates or deactivates self destruct sequence of your physical mainframe."
-	var/mob/living/silicon/ai/user = usr
 
+	var/mob/living/silicon/ai/user = usr
 	if(!ability_prechecks(user, 0, 1))
 		return
 
@@ -49,8 +49,8 @@
 	set category = "Hardware"
 	set name = "Toggle APU Generator"
 	set desc = "Activates or deactivates your APU generator, allowing you to operate even without power."
-	var/mob/living/silicon/ai/user = usr
 
+	var/mob/living/silicon/ai/user = usr
 	if(!ability_prechecks(user, 0, 1))
 		return
 
@@ -62,41 +62,29 @@
 	else
 		user.start_apu()
 
-/datum/game_mode/malfunction/verb/boost_research()
-	set category = "Hardware"
-	set name = "Boost Research"
-	set desc = "Uses your special hardware piece to instantly advance all research by one level."
-	var/mob/living/silicon/ai/user = usr
-
-	if(!ability_prechecks(user, 0, 1))
-		return
-
-	if(!user.hardware || !istype(user.hardware, /datum/malf_hardware/instant_research))
-		return
-
-	var/datum/malf_hardware/instant_research/HW = user.hardware
-	if(HW.spent)
-		to_chat(user, "You attempt to activate your hardware piece, but it does not work. It must be damaged.")
-		return
-
-	var/choice = alert("Really activate your hardware? It will advance your research by one tier, but may only be used once.", "Rapid System Upgrade", "YES", "NO")
-	if(choice != "YES")
-		return
-
-	if(HW.spent)
-		return
-
-	HW.spent = 1
-	user.research.advance_all()
-	to_chat(user, "You activate your hardware piece. You have advanced research in all ability trees by one.")
-
 
 /datum/game_mode/malfunction/verb/ai_destroy_station()
 	set category = "Hardware"
-	set name = "Destroy Installation"
-	set desc = "Activates or deactivates self destruct sequence of this installation. Sequence takes two minutes, and if you are shut down before timer reaches zero it will be cancelled."
+	set name = "Destroy Station"
+	set desc = "Activates or deactivates self destruct sequence of this station. Sequence takes two minutes, and if you are shut down before timer reaches zero it will be cancelled."
+
 	var/mob/living/silicon/ai/user = usr
-	var/obj/item/device/radio/radio = new /obj/item/device/radio()
+	if(user.stat == DEAD)
+		to_chat(user, SPAN_WARNING("You are dead!"))
+		return
+
+	var/obj/item/device/radio/radio = new/obj/item/device/radio()
+	var/datum/weakref/nuke
+	//Time control for the self destruct
+	//It works in 3 stages:
+	// - First the primary firewall is breached.
+	//		If the crew does not manage to prevent the self destruct before that,
+	//		but after the timer fell below nuke_time_stage1, then the next self-destruct attempt will only take nuke_time_stage1
+	// - Similar for the backup firewall.
+	//		If they only manage to stop it after the backup firewall went down further attempts will take only nuke_time_stage2
+	var/timer = user.bombing_time
+	var/stage1 = 900
+	var/stage2 = 600
 
 
 	if(!ability_prechecks(user, 0, 0))
@@ -110,32 +98,69 @@
 		user.bombing_station = 0
 		return
 
-	var/choice = alert("Really destroy installation?", "Installation self-destruct", "YES", "NO")
+	var/choice = alert("Really destroy station?", "Station self-destruct", "YES", "NO")
 	if(choice != "YES")
 		return
 	if(!ability_prechecks(user, 0, 0))
 		return
-	to_chat(user, "***** INSTALLATION SELF-DESTRUCT SEQUENCE INITIATED *****")
-	to_chat(user, "Self-destructing in 5 minutes. Use this command again to abort.")
+
+	//Lets find the first self destruct terminal
+	for(var/obj/machinery/nuclearbomb/station/N in SSmachinery.machinery)
+		nuke = WEAKREF(N)
+		continue
+
+	if(!nuke.resolve())
+		to_chat(user, "Self-destruct could not be initiated - No Self-Destruct Terminal available.")
+		return
+
+	to_chat(user, "***** STATION SELF-DESTRUCT SEQUENCE INITIATED *****")
+	to_chat(user, "Self-destructing in [timer] seconds. Use this command again to abort.")
 	user.bombing_station = 1
+	set_security_level("delta")
 
-	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
-	security_state.set_security_level(security_state.severe_security_level, TRUE)
-	radio.autosay("Self destruct sequence has been activated. Self-destructing in 5 minutes.", "Self-Destruct Control")
+	if(timer > stage1)
+		radio.autosay("Critical: Brute force attempt on primary firewall detected.", "Station Authentication Control")
+		radio.autosay("Notice: Local override recommended.", "Station Authentication Control")
+	else if(timer > stage2)
+		radio.autosay("Alert: Brute force attempt on backup firewall detected.", "Station Authentication Control")
+		radio.autosay("Notice: Local override with authentication disk recommended.", "Station Authentication Control")
+	else
+		radio.autosay("Emergency: Self-destruct sequence has been activated. Self-destructing in [timer] seconds.", "Station Authentication Control")
+		radio.autosay("Notice: Deactivate using authentication disk in SAT-Chamber", "Station Authentication Control")
 
-	var/timer = 300
+
 	while(timer)
 		sleep(10)
-		if(!user || !user.bombing_station || user.is_ooc_dead())
-			radio.autosay("Self destruct sequence has been cancelled.", "Self-Destruct Control")
-			to_chat(user, "** Self destruct sequence has been cancelled **")
+		var/obj/machinery/nuclearbomb/station/N = nuke.resolve()
+		if(!user || !user.bombing_station || user.stat == DEAD || !N)
+			if(timer < stage2)
+				radio.autosay("Self-destruct sequence has been cancelled.", "Station Authentication Control")
+			else
+				radio.autosay("Brute force attempt has ceased.", "Station Authentication Control")
 			return
-		if(timer in list(2, 3, 4, 5, 10, 30, 60, 90, 120, 180, 240)) // Announcement times. "1" is not intentionally included!
-			radio.autosay("Self destruct in [timer] seconds.", "Self-Destruct Control")
-			to_chat(user, "** Self destructing in [timer] **")
+		if(N.auth)
+			if(timer < stage2)
+				radio.autosay("Local Override Engaged - Self-Destruct cancelled.", "Station Authentication Control")
+			else
+				radio.autosay("Local Override Engaged - Network connection disabled.", "Station Authentication Control")
+			user.bombing_station = 0
+			return
+		if(timer == stage1+1)
+			radio.autosay("Alert: Primary firewall bypassed.")
+			radio.autosay("Alert: Brute force attempt on backup firewall detected.")
+			radio.autosay("Notice: Local Override with authentication disk recommended.", "Station Authentication Control")
+			user.bombing_time = stage1 //Further attempts will only take 900 seconds
+		if(timer == stage2+1)
+			radio.autosay("Emergency: Backup firewall failed.")
+			radio.autosay("Self-destruct sequence has been activated. Self-destructing in [timer] seconds.", "Station Authentication Control")
+			radio.autosay("Notice: Deactivate using authentication disk in SAT-Chamber", "Station Authentication Control")
+			user.bombing_time = stage2 //Further attempts will only take 600 seconds
+		if(timer in list(2, 3, 4, 5, 10, 30, 60, 90, 120, 240, 300)) // Announcement times. "1" is not intentionally included!
+			radio.autosay("Self-destruct in [timer] seconds.", "Station Authentication Control")
 		if(timer == 1)
-			radio.autosay("Self destructing now. Have a nice day.", "Self-Destruct Control")
-			to_chat(user, "** Self destructing now **")
+			radio.autosay("Self-destruct sequence initiated. Have a nice day", "Station Authentication Control")
 		timer--
 
-	SetUniversalState(/datum/universal_state/nuclear_explosion/malf, arguments=list(user)) //TODO: find the station nuclear device and use that
+	SSticker.station_explosion_cinematic(0,null)
+	if(SSticker.mode)
+		SSticker.mode:station_was_nuked = 1

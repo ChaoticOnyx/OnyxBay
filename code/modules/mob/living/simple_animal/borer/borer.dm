@@ -4,158 +4,203 @@
 	desc = "A small, quivering sluglike creature."
 	speak_emote = list("chirrups")
 	emote_hear = list("chirrups")
+	organ_names = list("head", "rear segment", "central segment")
 	response_help  = "pokes"
 	response_disarm = "prods"
 	response_harm   = "stomps on"
 	icon_state = "brainslug"
-	item_state = "voxslug" // For the lack of a better sprite...
+	item_state = "brainslug"
 	icon_living = "brainslug"
 	icon_dead = "brainslug_dead"
-	speed = 5
+	speed = 6
 	a_intent = I_HURT
 	stop_automated_movement = 1
 	status_flags = CANPUSH
 	attacktext = "nipped"
 	friendly = "prods"
 	wander = 0
-	pass_flags = PASS_FLAG_TABLE
-	universal_understand = 1
+	maxHealth = 40
+	health = 40
+	pass_flags = PASSTABLE
+	universal_understand = TRUE
 	holder_type = /obj/item/holder/borer
-	mob_size = MOB_SMALL
-	can_escape = 1
-	bodyparts = /decl/simple_animal_bodyparts/borer
-
-	var/generation = 1
-	var/static/list/borer_names = list(
-		"Primary", "Secondary", "Tertiary", "Quaternary", "Quinary", "Senary",
-		"Septenary", "Octonary", "Novenary", "Decenary", "Undenary", "Duodenary",
-		)
+	mob_size = 1
+	hunger_enabled = FALSE
 
 	var/used_dominate
+	var/datum/progressbar/autocomplete/ability_bar
+	var/ability_start_time = 0
+	var/obj/screen/borer/chemicals/chem_hud
 	var/chemicals = 10                      // Chemicals used for reproduction and spitting neurotoxin.
 	var/mob/living/carbon/human/host        // Human host for the brain worm.
 	var/truename                            // Name used for brainworm-speak.
 	var/mob/living/captive_brain/host_brain // Used for swapping control of the body back and forth.
-	var/controlling = FALSE                 // Is borer controlling host?
-	var/docile = FALSE                      // Sugar can stop borers from acting.
+	var/controlling                         // Used in human death check.
+	var/list/static/controlling_emotes = list("blink","blink_r","choke","drool","twitch","twitch_v","gasp")
 	var/has_reproduced
-	var/initial = FALSE
+	var/request_player = TRUE
 
-/mob/living/simple_animal/borer/initial
-	initial = TRUE
+/mob/living/simple_animal/borer/roundstart
+	request_player = FALSE
 
-/mob/living/simple_animal/borer/Login()
+/mob/living/simple_animal/borer/LateLogin()
 	..()
-	if(!initial)
-		GLOB.borers.add_antagonist(mind)
-
-/mob/living/simple_animal/borer/New(atom/newloc, gen=1)
-	..(newloc)
-
-	add_language("Cortical Link")
-	update_abilities()
-
-	generation = gen
-	truename = "[borer_names[min(generation, borer_names.len)]] [random_id("borer[generation]", 1000, 9999)]"
-	if(!initial)
-		request_player()
+	if(mind)
+		borers.add_antagonist(mind)
+	if(client && host)
+		client.screen += host.healths
 
 /mob/living/simple_animal/borer/Initialize()
 	. = ..()
-	register_signal(src, SIGNAL_MOB_DEATH, CALLBACK(src, nameof(.proc/on_mob_death)))
 
+	add_language(LANGUAGE_BORER)
+	add_language(LANGUAGE_BORER_HIVEMIND)
+	add_verb(src, /mob/living/proc/ventcrawl)
+	add_verb(src, /mob/living/proc/hide)
+	var/number = rand(1000,9999)
+	truename = "[pick("Primary","Secondary","Tertiary","Quaternary")]-[number]"
+	if(request_player && !ckey && !client)
+		SSghostroles.add_spawn_atom("borer", src)
+	name = initial(name) + " ([number])"
+	real_name = name
+
+/mob/living/simple_animal/borer/Destroy()
+	QDEL_NULL(ability_bar)
+	QDEL_NULL(host_brain)
+	return ..()
+
+/mob/living/simple_animal/borer/death(gibbed, deathmessage)
+	SSghostroles.remove_spawn_atom("borer", src)
+	return ..(gibbed,deathmessage)
+
+/mob/living/simple_animal/borer/can_name(var/mob/living/M)
+	return FALSE
 
 /mob/living/simple_animal/borer/Life()
-
-	..()
-
 	if(host)
-		if(loc != host) //gib or other forced moving from host
-			var/stored_loc = loc //leave_host() will try to get host's turf but it is bad
-			detatch()
-			leave_host()
-			forceMove(stored_loc)
-			return
-		health = min(health + 1, maxHealth)
-		if(!stat && !host.is_ic_dead())
-			if(host.reagents.has_reagent(/datum/reagent/sugar))
-				if(!docile)
-					to_chat(controlling ? host : src, SPAN("notice", "You feel the soporific flow of sugar in your host's blood, lulling you into docility."))
-					docile = TRUE
-			else
-				if(docile)
-					to_chat(controlling ? host : src, SPAN("notice", "You shake off your lethargy as the sugar leaves your host's blood."))
-					docile = FALSE
-
+		if(!stat && host.stat != DEAD)
 			if(chemicals < 250)
 				chemicals++
-			if(controlling)
-
-				if(docile)
-					to_chat(host, SPAN("notice", "You are feeling far too docile to continue controlling your host..."))
-					host.release_control()
-					return
-
-				if(prob(5))
-					host.adjustBrainLoss(0.1)
-
-				if(prob(host.getBrainLoss()/20))
-					host.emote("[pick(list("blink","blink_r","choke","aflap","drool","twitch","twitch_v","gasp"))]")
-		else if((is_ooc_dead() || host.is_ooc_dead()) && controlling)
-			detatch()
-
-/mob/living/simple_animal/borer/Stat()
-	. = ..()
-	statpanel("Status")
-
-	if(evacuation_controller)
-		var/eta_status = evacuation_controller.get_status_panel_eta()
-		if(eta_status)
-			stat(null, eta_status)
-
-	if (client.statpanel == "Status")
-		stat("Chemicals", chemicals)
-
-/mob/living/simple_animal/borer/handle_environment(datum/gas_mixture/environment)
-	if(host)
-		oxygen_alert = 0
-		toxins_alert = 0
-		return
+		if(!host.stat && controlling && prob(2))
+			host.emote(pick(controlling_emotes))
 	..()
+	if(!QDELETED(ability_bar))
+		ability_bar.update(world.time - ability_start_time)
 
-//Procs for grabbing players.
-/mob/living/simple_animal/borer/proc/request_player()
-	var/datum/ghosttrap/G = get_ghost_trap("cortical borer")
-	G.request_player(src, "A cortical borer needs a player.")
+/mob/living/simple_animal/borer/proc/start_ability(var/atom/target, var/time)
+	if(!QDELETED(ability_bar))
+		return FALSE
+	ability_bar = new /datum/progressbar/autocomplete(src, time, target)
+	ability_start_time = world.time
+	ability_bar.update(0)
+	return TRUE
 
-/mob/living/simple_animal/borer/attack_ghost(mob/observer/ghost/user)
+/mob/living/simple_animal/borer/handle_regular_hud_updates()
+	. = ..()
+	if(chem_hud)
+		chem_hud.maptext = SMALL_FONTS(7, chemicals)
+
+/mob/living/simple_animal/borer/get_status_tab_items()
+	. = ..()
+	. += "Chemicals: [chemicals]"
+
+/mob/living/simple_animal/borer/proc/detach()
+	if(!host || !controlling)
+		return
+
+	if(ability_bar)
+		QDEL_NULL(ability_bar)
+
+	if(istype(host,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = host
+		var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
+		head.implants -= src
+
+	controlling = FALSE
+
+	host.remove_language(LANGUAGE_BORER)
+	host.remove_language(LANGUAGE_BORER_HIVEMIND)
+
+	remove_verb(host, /mob/living/carbon/proc/release_control)
+	remove_verb(host, /mob/living/carbon/proc/punish_host)
+	remove_verb(host, /mob/living/carbon/proc/spawn_larvae)
+
+	if(host_brain)
+		to_chat(host_brain, FONT_LARGE(SPAN_NOTICE("You feel your nerves again as your control over your own body is restored.")))
+		// these are here so bans and multikey warnings are not triggered on the wrong people when ckey is changed.
+		// computer_id and IP are not updated magically on their own in offline mobs -walter0o
+
+		// host -> self
+		var/h2s_id = host.computer_id
+		var/h2s_ip= host.lastKnownIP
+		host.computer_id = null
+		host.lastKnownIP = null
+
+		src.ckey = host.ckey
+
+		if(!src.computer_id)
+			src.computer_id = h2s_id
+
+		if(!host_brain.lastKnownIP)
+			src.lastKnownIP = h2s_ip
+
+		// brain -> host
+		var/b2h_id = host_brain.computer_id
+		var/b2h_ip= host_brain.lastKnownIP
+		host_brain.computer_id = null
+		host_brain.lastKnownIP = null
+
+		host.ckey = host_brain.ckey
+
+		if(!host.computer_id)
+			host.computer_id = b2h_id
+
+		if(!host.lastKnownIP)
+			host.lastKnownIP = b2h_ip
+
+	qdel(host_brain)
+
+/mob/living/simple_animal/borer/proc/leave_host()
+	if(!host)
+		return
+
+	if(host.mind)
+		borers.clear_indicators(host.mind)
+		borers.remove_antagonist(host.mind)
+
+	forceMove(get_turf(host))
+	var/obj/item/organ/external/head = host.get_organ(BP_HEAD)
+	if(head)
+		head.implants -= src
+
+	reset_view(null)
+	machine = null
+
+	host.reset_view(null)
+	host.machine = null
+
+	host.status_flags &= ~PASSEMOTES
 	if(client)
-		return ..()
+		client.screen -= host.healths
+	host = null
+	return
 
-	if(jobban_isbanned(user, MODE_BORER))
-		to_chat(user, SPAN("danger", "You are banned from playing a borer."))
+/mob/living/simple_animal/borer/cannot_use_vents()
+	return
+
+/mob/living/simple_animal/borer/UnarmedAttack(atom/A, proximity)
+	if(iscarbon(A))
+		var/mob/living/carbon/C = A
+		if(C.lying || C.weakened)
+			do_infest(C)
+		else
+			do_paralyze(C)
 		return
+	return ..()
 
-	var/confirm = alert(user, "Are you sure you want to join as a borer?", "Become Borer", "No", "Yes")
-
-	if(!src || confirm != "Yes")
+/mob/living/simple_animal/borer/RangedAttack(atom/A, params)
+	if(iscarbon(A) && get_dist(src, A) <= 2)
+		var/mob/living/carbon/C = A
+		do_paralyze(C)
 		return
-
-	if(!user || !user.ckey)
-		return
-
-	if(client) //Already occupied.
-		to_chat(user, "Too slow...")
-		return
-
-	ckey = user.ckey
-
-	if(mind && !GLOB.borers.is_antagonist(mind))
-		GLOB.borers.add_antagonist(mind, 1, 0, 0)
-
-	spawn(-1)
-		if(user)
-			qdel(user) // Remove the keyless ghost if it exists.
-
-/decl/simple_animal_bodyparts/borer
-	hit_zones = list("head", "central segment", "tail segment")
+	return ..()

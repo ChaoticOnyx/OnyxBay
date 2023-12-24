@@ -11,14 +11,13 @@ Pipelines + Other Objects -> Pipe network
 */
 /obj/machinery/atmospherics
 	anchored = 1
-	idle_power_usage = 0 WATTS
-	active_power_usage = 0 WATTS
-	power_channel = STATIC_ENVIRON
+	idle_power_usage = 0
+	active_power_usage = 0
+	power_channel = ENVIRON
 	var/nodealert = 0
 	var/power_rating //the maximum amount of power the machine can use to do work, affects how powerful the machine is, in Watts
 
-	plane = TURF_PLANE
-	layer = EXPOSED_PIPE_LAYER
+	layer = 2.4 //under wires with their 2.44
 
 	var/connect_types = CONNECT_TYPE_REGULAR
 	var/icon_connect_type = "" //"-supply" or "-scrubbers"
@@ -29,10 +28,11 @@ Pipelines + Other Objects -> Pipe network
 	var/global/datum/pipe_icon_manager/icon_manager
 	var/obj/machinery/atmospherics/node1
 	var/obj/machinery/atmospherics/node2
+	var/atmos_initialised = FALSE
+	gfi_layer_rotation = GFI_ROTATION_OVERDIR
 
-	var/atmos_initalized = FALSE
-
-/obj/machinery/atmospherics/Initialize()
+/obj/machinery/atmospherics/Initialize(mapload)
+	. = ..()
 	if(!icon_manager)
 		icon_manager = new()
 
@@ -42,32 +42,24 @@ Pipelines + Other Objects -> Pipe network
 
 	if(!pipe_color_check(pipe_color))
 		pipe_color = null
-	GLOB.atmos_machinery |= src
-	. = ..()
 
-/obj/machinery/atmospherics/Destroy()
-	GLOB.atmos_machinery.Remove(src)
-	node1 = null
-	node2 = null
-	return ..()
+	if (mapload)
+		return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/atmospherics/proc/atmos_init()
-	atmos_initalized = TRUE
+	atmos_initialised = TRUE
 
-/obj/machinery/atmospherics/hide(do_hide)
-	if(do_hide && level == 1)
-		layer = PIPE_LAYER
-	else
-		reset_plane_and_layer()
+// atmos_init() and Initialize() must be separate, as atmos_init() can be called multiple times after the machine has been initialized.
+
+/obj/machinery/atmospherics/LateInitialize()
+	atmos_init()
 
 /obj/machinery/atmospherics/attackby(atom/A, mob/user as mob)
 	if(istype(A, /obj/item/device/pipe_painter))
-		return
-	if(istype(A, /obj/item/device/analyzer))
-		return
+		return FALSE
 	..()
 
-/obj/machinery/atmospherics/proc/add_underlay(turf/T, obj/machinery/atmospherics/node, direction, icon_connect_type)
+/obj/machinery/atmospherics/proc/add_underlay(var/turf/T, var/obj/machinery/atmospherics/node, var/direction, var/icon_connect_type)
 	if(node)
 		if(!T.is_plating() && node.level == 1 && istype(node, /obj/machinery/atmospherics/pipe))
 			//underlays += icon_manager.get_atmos_icon("underlay_down", direction, color_cache_name(node))
@@ -91,7 +83,7 @@ Pipelines + Other Objects -> Pipe network
 /obj/machinery/atmospherics/proc/check_connect_types_construction(obj/machinery/atmospherics/atmos1, obj/item/pipe/pipe2)
 	return (atmos1.connect_types & pipe2.connect_types)
 
-/obj/machinery/atmospherics/proc/check_icon_cache(safety = 0)
+/obj/machinery/atmospherics/proc/check_icon_cache(var/safety = 0)
 	if(!istype(icon_manager))
 		if(!safety) //to prevent infinite loops
 			icon_manager = new()
@@ -100,14 +92,14 @@ Pipelines + Other Objects -> Pipe network
 
 	return 1
 
-/obj/machinery/atmospherics/proc/color_cache_name(obj/machinery/atmospherics/node)
+/obj/machinery/atmospherics/proc/color_cache_name(var/obj/machinery/atmospherics/node)
 	//Don't use this for standard pipes
 	if(!istype(node))
 		return null
 
 	return node.pipe_color
 
-/obj/machinery/atmospherics/Process()
+/obj/machinery/atmospherics/process()
 	last_flow_rate = 0
 	last_power_draw = 0
 
@@ -134,6 +126,9 @@ Pipelines + Other Objects -> Pipe network
 /obj/machinery/atmospherics/proc/reassign_network(datum/pipe_network/old_network, datum/pipe_network/new_network)
 	// Used when two pipe_networks are combining
 
+/obj/machinery/atmospherics/proc/remove_network(datum/pipe_network/network)
+	reassign_network(network, null)
+
 /obj/machinery/atmospherics/proc/return_network_air(datum/pipe_network/reference)
 	// Return a list of gas_mixture(s) in the object
 	//		associated with reference pipe_network for use in rebuilding the networks gases list
@@ -141,5 +136,5 @@ Pipelines + Other Objects -> Pipe network
 
 /obj/machinery/atmospherics/proc/disconnect(obj/machinery/atmospherics/reference)
 
-/obj/machinery/atmospherics/on_update_icon()
+/obj/machinery/atmospherics/update_icon()
 	return null

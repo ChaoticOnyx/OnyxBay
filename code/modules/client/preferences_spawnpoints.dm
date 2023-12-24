@@ -1,56 +1,53 @@
-GLOBAL_VAR(spawntypes)
-
-/proc/spawntypes()
-	if(!GLOB.spawntypes)
-		GLOB.spawntypes = list()
-		for(var/type in typesof(/datum/spawnpoint)-/datum/spawnpoint)
-			var/datum/spawnpoint/S = type
-			var/display_name = initial(S.display_name)
-			if((display_name in GLOB.using_map.allowed_spawns) || initial(S.always_visible))
-				GLOB.spawntypes[display_name] = new S
-	return GLOB.spawntypes
-
 /datum/spawnpoint
-	var/msg		  //Message to display on the arrivals computer.
+	var/msg          //Message to display on the arrivals computer.
 	var/list/turfs   //List of turfs to spawn on.
 	var/display_name //Name used in preference setup.
-	var/always_visible = FALSE	// Whether this spawn point is always visible in selection, ignoring map-specific settings.
 	var/list/restrict_job = null
 	var/list/disallow_job = null
 
 /datum/spawnpoint/proc/check_job_spawning(job)
 	if(restrict_job && !(job in restrict_job))
-		return 0
+		return FALSE
 
 	if(disallow_job && (job in disallow_job))
-		return 0
+		return FALSE
 
-	return 1
+	return TRUE
+
+/datum/spawnpoint/proc/after_join(mob/victim)
+	return
 
 /datum/spawnpoint/arrivals
 	display_name = "Arrivals Shuttle"
-	msg = "has arrived on the station"
+	msg = "is inbound from the NTCC Odin"
+	disallow_job = list("Merchant")
 
 /datum/spawnpoint/arrivals/New()
 	..()
-	turfs = GLOB.latejoin
-
-/datum/spawnpoint/gateway
-	display_name = "Gateway"
-	msg = "has completed translation from offsite gateway"
-
-/datum/spawnpoint/gateway/New()
-	..()
-	turfs = GLOB.latejoin_gateway
+	msg = "is inbound from the [current_map.dock_name]"
+	turfs = latejoin
 
 /datum/spawnpoint/cryo
 	display_name = "Cryogenic Storage"
 	msg = "has completed cryogenic revival"
-	disallow_job = list("Cyborg")
+	disallow_job = list("Cyborg", "Merchant")
+	var/list/command_turfs = list()
 
 /datum/spawnpoint/cryo/New()
 	..()
-	turfs = GLOB.latejoin_cryo
+	turfs = latejoin_cryo
+	command_turfs = latejoin_cryo_command
+
+/datum/spawnpoint/cryo/after_join(mob/victim)
+	if(!istype(victim))
+		return
+	var/area/A = get_area(victim)
+	for(var/obj/machinery/cryopod/C in A)
+		if(!C.occupant)
+			C.set_occupant(victim, 1)
+			victim.Sleeping(3)
+			to_chat(victim, SPAN_NOTICE("You are slowly waking up from the cryostasis aboard [current_map.full_name]. It might take a few seconds."))
+			return
 
 /datum/spawnpoint/cyborg
 	display_name = "Cyborg Storage"
@@ -59,9 +56,23 @@ GLOBAL_VAR(spawntypes)
 
 /datum/spawnpoint/cyborg/New()
 	..()
-	turfs = GLOB.latejoin_cyborg
+	turfs = latejoin_cyborg
 
-/datum/spawnpoint/default
-	display_name = DEFAULT_SPAWNPOINT_ID
-	msg = "has arrived on the station"
-	always_visible = TRUE
+/datum/spawnpoint/living_quarters_lift
+	display_name = "Living Quarters Lift"
+	msg = "is inbound from the living quarters"
+	disallow_job = list("Cyborg", "Merchant")
+
+/datum/spawnpoint/living_quarters_lift/New()
+	..()
+	turfs = latejoin_living_quarters_lift
+
+/datum/spawnpoint/living_quarters_lift/after_join(mob/victim)
+	if(!istype(victim))
+		return
+	var/area/A = get_area(victim)
+	for(var/obj/machinery/cryopod/living_quarters/C in A)
+		if(!C.occupant)
+			C.set_occupant(victim, 1)
+			to_chat(victim, SPAN_NOTICE("You have arrived from the living quarters aboard the [current_map.full_name]."))
+			return

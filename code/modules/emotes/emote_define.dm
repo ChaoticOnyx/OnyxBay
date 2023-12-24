@@ -4,7 +4,7 @@
 //   gender-appropriate version of the same.
 // - Impaired messages do not do any substitutions.
 
-/decl/emote
+/singleton/emote
 
 	var/key                            // Command to use emote ie. '*[key]'
 	var/emote_message_1p               // First person message ('You do a flip!')
@@ -18,66 +18,24 @@
 	var/targetted_emote                // Whether or not this emote needs a target.
 	var/check_restraints               // Can this emote be used while restrained?
 	var/conscious = 1				   // Do we need to be awake to emote this?
+	var/emote_range = 0                // If >0, restricts emote visibility to viewers within range.
 
-/decl/emote/proc/get_emote_message_1p(atom/user, atom/target, extra_params)
+/singleton/emote/proc/get_emote_message_1p(var/atom/user, var/atom/target, var/extra_params)
 	if(target)
 		return emote_message_1p_target
 	return emote_message_1p
 
-/decl/emote/proc/get_emote_message_3p(atom/user, atom/target, extra_params)
+/singleton/emote/proc/get_emote_message_3p(var/atom/user, var/atom/target, var/extra_params)
 	if(target)
 		return emote_message_3p_target
 	return emote_message_3p
 
-/decl/emote/proc/play_emote_sound(mob/user, key, datum/gender/user_gender)
-	if (user.type != /mob/living/carbon/human)
-		return
+/singleton/emote/proc/can_do_emote(var/mob/user)
+	if(conscious && user.stat != CONSCIOUS)
+		return FALSE
+	return TRUE
 
-	if (world.time > user.lastemote + 5 SECONDS)
-		user.lastemote = world.time
-	else
-		return
-
-	var/gender_prefix = ""
-
-	if(istype(user_gender, /datum/gender/male))
-		gender_prefix = "male"
-	else if(istype(user_gender, /datum/gender/female))
-		gender_prefix = "female"
-
-	if(!gender_prefix)
-		return // No sounds for genderless beings
-
-	switch (key)
-		if ("cough")
-			playsound(user, "[gender_prefix]_cough", rand(25, 40), FALSE)
-		if ("scream")
-			playsound(user, "[gender_prefix]_pain", rand(25, 40), FALSE)
-		if ("gasp","choke")
-			playsound(user, "[gender_prefix]_breath", rand(25, 40), FALSE)
-		if ("sneeze")
-			playsound(user, "[gender_prefix]_sneeze", rand(25, 40), FALSE)
-		if ("long_scream")
-			playsound(user, "[gender_prefix]_long_scream", rand(25, 40), FALSE)
-		if ("cry")
-			playsound(user, "[gender_prefix]_cry", rand(25, 40), 0)
-		if ("laugh","giggle","chuckle")
-			playsound(user, "[gender_prefix]_laugh", rand(25,40), 1)
-		if ("yawn")
-			playsound(user, "[gender_prefix]_yawn", rand(25, 40), 1)
-		if ("sigh")
-			playsound(user, "[gender_prefix]_sigh", rand(25, 40), 1)
-		if ("oink")
-			playsound(user, pick('sound/effects/pig1.ogg','sound/effects/pig2.ogg','sound/effects/pig3.ogg'), 100, 1)
-		if ("whistle")
-			playsound(user, SFX_WHISTLE, 25, 1)
-		if ("clap")
-			playsound(user, SFX_CLAP, 30, 0)
-		if ("snore")
-			playsound(user, SFX_SNORE, 15, 1)
-
-/decl/emote/proc/do_emote(atom/user, extra_params)
-
+/singleton/emote/proc/do_emote(var/atom/user, var/extra_params)
 	if(ismob(user) && check_restraints)
 		var/mob/M = user
 		if(M.restrained())
@@ -92,18 +50,14 @@
 				target = thing
 				break
 
-	var/datum/gender/user_gender = gender_datums[user.gender]
-	var/datum/gender/target_gender
-	if(target)
-		target_gender = gender_datums[target.gender]
-
 	var/use_3p
 	var/use_1p
 	if(emote_message_1p)
 		if(target && emote_message_1p_target)
 			use_1p = get_emote_message_1p(user, target, extra_params)
-			use_1p = replacetext(use_1p, "TARGET_THEM", target_gender.him)
-			use_1p = replacetext(use_1p, "TARGET_THEIR", target_gender.his)
+			use_1p = replacetext(use_1p, "TARGET_THEM", target.get_pronoun("him"))
+			use_1p = replacetext(use_1p, "TARGET_THEIR", target.get_pronoun("his"))
+			use_1p = replacetext(use_1p, "TARGET_SELF", target.get_pronoun("himself"))
 			use_1p = replacetext(use_1p, "TARGET", "<b>\the [target]</b>")
 		else
 			use_1p = get_emote_message_1p(user, null, extra_params)
@@ -112,33 +66,46 @@
 	if(emote_message_3p)
 		if(target && emote_message_3p_target)
 			use_3p = get_emote_message_3p(user, target, extra_params)
-			use_3p = replacetext(use_3p, "TARGET_THEM", target_gender.him)
-			use_3p = replacetext(use_3p, "TARGET_THEIR", target_gender.his)
+			use_3p = replacetext(use_3p, "TARGET_THEM", target.get_pronoun("him"))
+			use_3p = replacetext(use_3p, "TARGET_THEIR", target.get_pronoun("his"))
+			use_3p = replacetext(use_3p, "TARGET_SELF", target.get_pronoun("himself"))
 			use_3p = replacetext(use_3p, "TARGET", "<b>\the [target]</b>")
 		else
 			use_3p = get_emote_message_3p(user, null, extra_params)
-		use_3p = replacetext(use_3p, "USER_THEM", user_gender.him)
-		use_3p = replacetext(use_3p, "USER_THEIR", user_gender.his)
+		use_3p = replacetext(use_3p, "USER_THEM", user.get_pronoun("him"))
+		use_3p = replacetext(use_3p, "USER_THEIR", user.get_pronoun("his"))
+		use_3p = replacetext(use_3p, "USER_SELF", user.get_pronoun("himself"))
 		use_3p = replacetext(use_3p, "USER", "<b>\the [user]</b>")
 		use_3p = capitalize(use_3p)
 
-	if(message_type == AUDIBLE_MESSAGE)
-		play_emote_sound(user, key, user_gender)
+	var/use_range = emote_range
+	if (!use_range)
+		use_range = world.view
 
-		user.audible_message(message = use_3p, deaf_message = emote_message_impaired, checkghosts = /datum/client_preference/ghost_sight)
-	else
-		user.visible_message(message = use_3p, blind_message = emote_message_impaired, checkghosts = /datum/client_preference/ghost_sight)
+	if(!target_check(user, target))
+		return
+
+	if(ismob(user))
+		var/mob/M = user
+		var/check_ghost_hearing = M.client ? GHOSTS_ALL_HEAR : ONLY_GHOSTS_IN_VIEW
+		if(message_type == AUDIBLE_MESSAGE)
+			M.audible_message(message = use_3p, self_message = use_1p, deaf_message = emote_message_impaired, hearing_distance = use_range, ghost_hearing = check_ghost_hearing)
+		else
+			M.visible_message(message = use_3p, self_message = use_1p, blind_message = emote_message_impaired, range = use_range, show_observers = FALSE)
 
 	do_extra(user, target)
 
-/decl/emote/proc/do_extra(atom/user, atom/target)
+/singleton/emote/proc/do_extra(var/atom/user, var/atom/target)
 	return
 
-/decl/emote/proc/check_user(atom/user)
+/singleton/emote/proc/check_user(var/atom/user)
 	return TRUE
 
-/decl/emote/proc/can_target()
+/singleton/emote/proc/target_check(var/atom/user, var/atom/target)
+	return TRUE
+
+/singleton/emote/proc/can_target()
 	return (emote_message_1p_target || emote_message_3p_target)
 
-/decl/emote/dd_SortValue()
+/singleton/emote/dd_SortValue()
 	return key

@@ -1,11 +1,16 @@
 /material
 	var/value = 1
 
+/material/Destroy(force)
+	stack_trace("Someone tried to delete a /material.")
+	. = ..()
+	return QDEL_HINT_LETMELIVE //Materials cannot be deleted, as you cannot poof the concept out of existence
+
 /material/uranium
 	value = 100
 
 /material/diamond
-	value = 70
+	value = 170
 
 /material/gold
 	value = 40
@@ -13,8 +18,11 @@
 /material/silver
 	value = 35
 
-/material/plasma
-	value = 200
+/material/bronze
+	value = 25
+
+/material/phoron
+	value = 150
 
 /material/stone/marble
 	value = 4
@@ -37,10 +45,10 @@
 /material/glass/reinforced
 	value = 2
 
-/material/glass/plasma
+/material/glass/phoron
 	value = 30
 
-/material/glass/plasma/reinforced
+/material/glass/phoron/reinforced
 	value = 40
 
 /material/osmium
@@ -53,19 +61,13 @@
 	value = 100
 
 /material/platinum
-	value = 80
+	value = 200
 
 /material/iron
 	value = 5
 
-/material/voxalloy
-	value = 100
-
 /material/wood
 	value = 3
-
-/material/darkwood
-	value = 30
 
 /material/wood/holographic
 	value = 0
@@ -75,3 +77,15 @@
 
 /material/leather
 	value = 3
+
+/material/hide
+	value = 5
+
+/material/hide/human
+	value = 35
+
+/material/bone
+	value = 5
+
+/material/bone/necromancer
+	value = 50

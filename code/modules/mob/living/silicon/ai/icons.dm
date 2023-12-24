@@ -1,74 +1,65 @@
+var/datum/ai_icon/default_ai_icon = new/datum/ai_icon/blue()
+var/list/datum/ai_icon/ai_icons
+
 /datum/ai_icon
 	var/name
-	var/icon = 'icons/mob/ai.dmi'
 	var/alive_icon
-	var/alive_light = COLOR_WHITE
+	var/alive_light = "#FFFFFF"
 	var/nopower_icon = "4"
-	var/nopower_light = COLOR_WHITE
+	var/nopower_light = "#FFFFFF"
 	var/dead_icon = "ai-crash"
 	var/dead_light = "#000099"
-	var/ckey = ""
 
-/datum/ai_icon/New(name, alive_icon, dead_icon, dead_light, icon, ckey)
-	src.name          = name       || src.name
-	src.icon          = icon       || src.icon
-	src.alive_icon    = alive_icon || src.alive_icon
-	src.dead_icon     = dead_icon  || src.dead_icon
-	src.dead_light    = dead_light || src.dead_light
-	src.ckey		  = ckey	   || src.ckey
-
-/datum/ai_icon/proc/may_used_by_ai(mob/living/silicon/ai/AI)
-	var/allowed = istype(AI)
-	if(ckey && (AI.ckey != ckey))
-		allowed = FALSE
-	return allowed
-
-/datum/ai_icon/malf
-	name = "Unlawed"
-	alive_icon = "ai-malf"
-	alive_light = "#45644b"
-
-/datum/ai_icon/malf/New()
+/datum/ai_icon/New(var/name, var/alive_icon, var/nopower_icon, var/dead_icon, var/alive_light, var/nopower_light, var/dead_light)
+	if(name)
+		src.name = name
+		src.alive_icon = alive_icon
+		src.nopower_icon = nopower_icon
+		src.dead_icon = dead_icon
+		src.alive_light = alive_light
+		src.nopower_light = nopower_light
+		src.dead_light = dead_light
+	if(!ai_icons)
+		ai_icons = list()
+		init_subtypes(/datum/ai_icon, ai_icons)
 	..()
-	name = "[name] (Malf)"
-
-/datum/ai_icon/malf/may_used_by_ai(mob/living/silicon/ai/AI)
-	return ..() && AI.is_malf_or_traitor()
 
 /datum/ai_icon/red
 	name = "Red"
 	alive_icon = "ai-red"
-	alive_light = "#f04848"
+	alive_light = "#F04848"
+	dead_icon = "ai-red_dead"
 
 /datum/ai_icon/green
 	name = "Green"
-	alive_icon = "ai-wierd"
-	alive_light = "#00ff99"
-	dead_icon = "ai-wierd_dead"
+	alive_icon = "ai-weird"
+	alive_light = "#00FF99"
+	dead_icon = "ai-weird_dead"
 
 /datum/ai_icon/blue
 	name = "Blue"
 	alive_icon = "ai"
-	alive_light = "#81ddff"
+	alive_light = "#81DDFF"
 
 /datum/ai_icon/angry
 	name = "Angry"
 	alive_icon = "ai-angryface"
-	alive_light = "#ffff33"
+	alive_light = "#FFFF33"
 
 /datum/ai_icon/bliss
 	name = "Bliss"
 	alive_icon = "ai-bliss"
-	alive_light = "#5c7a4a"
+	alive_light = "#5C7A4A"
 
 /datum/ai_icon/chatterbox
 	name = "Chatterbox"
 	alive_icon = "ai-president"
-	alive_light = "#40666b"
+	alive_light = "#40666B"
 
 /datum/ai_icon/database
 	name = "Database"
 	alive_icon = "ai-database"
+	dead_icon = "ai-database_dead"
 
 /datum/ai_icon/dorf
 	name = "Dorf"
@@ -77,12 +68,12 @@
 /datum/ai_icon/dugtodeep
 	name = "Dug Too Deep"
 	alive_icon = "ai-toodeep"
-	alive_light = "#81ddff"
+	alive_light = "#81DDFF"
 
 /datum/ai_icon/firewall
 	name = "Firewall"
 	alive_icon = "ai-magma"
-	alive_light = "#ff4126"
+	alive_light = "#FF4126"
 
 /datum/ai_icon/glitchman
 	name = "Glitchman"
@@ -92,7 +83,8 @@
 /datum/ai_icon/goon
 	name = "Goon"
 	alive_icon = "ai-goon"
-	alive_light = "#3e5c80"
+	alive_light = "#3E5C80"
+	dead_icon = "ai-goon_dead"
 
 /datum/ai_icon/heartline
 	name = "Heartline"
@@ -102,17 +94,17 @@
 /datum/ai_icon/helios
 	name = "Helios"
 	alive_icon = "ai-helios"
-	alive_light = "#f2cf73"
+	alive_light = "#F2CF73"
 
 /datum/ai_icon/inverted
 	name = "Inverted"
 	alive_icon = "ai-u"
-	alive_light = "#81ddff"
+	alive_light = "#81DDFF"
 
 /datum/ai_icon/lonestar
 	name = "Lonestar"
 	alive_icon = "ai-lonestar"
-	alive_light = "#58751c"
+	alive_light = "#58751C"
 	dead_icon = "ai-lonestar_dead"
 
 /datum/ai_icon/matrix
@@ -127,30 +119,36 @@
 	dead_icon = "ai-mono_dead"
 
 /datum/ai_icon/nanotrasen
-	name = "Nanotrasen"
+	name = "NanoTrasen"
 	alive_icon = "ai-nanotrasen"
+	alive_light = "#000029"
+
+/datum/ai_icon/scc
+	name = "SCC"
+	alive_icon = "ai-scc"
 	alive_light = "#000029"
 
 /datum/ai_icon/rainbow
 	name = "Rainbow"
 	alive_icon = "ai-clown"
-	alive_light = "#e50213"
+	alive_light = "#E50213"
+	dead_icon = "ai-clown_dead"
 
 /datum/ai_icon/smiley
 	name = "Smiley"
 	alive_icon = "ai-smiley"
-	alive_light = "#f3dd00"
+	alive_light = "#F3DD00"
 
 /datum/ai_icon/soviet
 	name = "Soviet"
 	alive_icon = "ai-redoctober"
-	alive_light = "#ff4307"
+	alive_light = "#FF4307"
 	dead_icon = "ai-redoctober_dead"
 
 /datum/ai_icon/Static
 	name = "Static"
 	alive_icon = "ai-static"
-	alive_light = "#4784c1"
+	alive_light = "#4784C1"
 	dead_icon = "ai-static_dead"
 
 /datum/ai_icon/text
@@ -162,35 +160,12 @@
 	alive_icon = "ai-hades"
 	dead_icon = "ai-hades_dead"
 
-/datum/ai_icon/triumvirate_static
+/datum/ai_icon/triumvirate
 	name = "Triumvirate"
 	alive_icon = "ai-triumvirate"
-	alive_light = "#020b2b"
+	alive_light = "#020B2B"
 
 /datum/ai_icon/triumvirate_static
 	name = "Triumvirate Static"
-	alive_icon = "ai-static"
-	alive_light = "#020b2b"
-
-/datum/ai_icon/hotdogger
-	name = "Dancing Hotdog"
-	alive_icon = "ai-hotdog"
-	alive_light = "#81ddff"
-
-/datum/ai_icon/malf/clown
-	name = "Clown"
-	alive_icon = "ai-clown2"
-	alive_light = "#e50213"
-
-/datum/ai_icon/hal
-	name = "HAL"
-	alive_icon = "ai-hal"
-	dead_icon = "ai-hal_dead"
-
-/datum/ai_icon/citadel
-	name = "Citadel"
-	alive_icon = "ai-citadel"
-
-/datum/ai_icon/fabulous
-	name = "Fabulous"
-	alive_icon = "ai-fabulous"
+	alive_icon = "ai-triumvirate-malf"
+	alive_light = "#020B2B"

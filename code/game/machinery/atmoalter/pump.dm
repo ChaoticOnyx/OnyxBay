@@ -1,18 +1,21 @@
 /obj/machinery/portable_atmospherics/powered/pump
 	name = "portable air pump"
+	desc = "Used to fill or drain rooms without differentiating between gasses."
+	desc_info = "Invaluable for filling air in a room rapidly after a breach repair.  The internal gas container can be filled by \
+	connecting it to a connector port.  The pump can pump the air in (sucking) or out (blowing), at a specific target pressure.  The powercell inside can be \
+	replaced by using a screwdriver, and then adding a new cell.  A tank of gas can also be attached to the air pump."
 
 	icon = 'icons/obj/atmos.dmi'
 	icon_state = "psiphon:0"
-	density = 1
-	w_class = ITEM_SIZE_NORMAL
-	turf_height_offset = 18
+	density = TRUE
+	w_class = ITEMSIZE_NORMAL
 
-	var/on = 0
+	var/on = FALSE
 	var/direction_out = 0 //0 = siphoning, 1 = releasing
 	var/target_pressure = ONE_ATMOSPHERE
 
 	var/pressuremin = 0
-	var/pressuremax = 10 * ONE_ATMOSPHERE
+	var/pressuremax = PRESSURE_ONE_THOUSAND
 
 	volume = 1000
 
@@ -20,17 +23,17 @@
 	power_losses = 150
 
 /obj/machinery/portable_atmospherics/powered/pump/filled
-	start_pressure = 90 * ONE_ATMOSPHERE
+	start_pressure = PRESSURE_ONE_THOUSAND * 5
 
-/obj/machinery/portable_atmospherics/powered/pump/New()
-	..()
-	cell = new /obj/item/cell/apc(src)
+/obj/machinery/portable_atmospherics/powered/pump/Initialize()
+	. = ..()
+	cell = new/obj/item/cell/apc(src)
 
 	var/list/air_mix = StandardAirMix()
-	src.air_contents.adjust_multi("oxygen", air_mix["oxygen"], "nitrogen", air_mix["nitrogen"])
+	src.air_contents.adjust_multi(GAS_OXYGEN, air_mix[GAS_OXYGEN], GAS_NITROGEN, air_mix[GAS_NITROGEN])
 
-/obj/machinery/portable_atmospherics/powered/pump/on_update_icon()
-	ClearOverlays()
+/obj/machinery/portable_atmospherics/powered/pump/update_icon()
+	cut_overlays()
 
 	if(on && cell && cell.charge)
 		icon_state = "psiphon:1"
@@ -38,16 +41,17 @@
 		icon_state = "psiphon:0"
 
 	if(holding)
-		AddOverlays("siphon-open")
+		add_overlay("siphon-open")
 
 	if(connected_port)
-		AddOverlays("siphon-connector")
+		add_overlay("siphon-connector")
 
 	return
 
 /obj/machinery/portable_atmospherics/powered/pump/emp_act(severity)
+	. = ..()
+
 	if(stat & (BROKEN|NOPOWER))
-		..(severity)
 		return
 
 	if(prob(50/severity))
@@ -58,19 +62,20 @@
 
 	target_pressure = rand(0,1300)
 	update_icon()
+	SStgui.update_uis(src)
 
-	..(severity)
 
-/obj/machinery/portable_atmospherics/powered/pump/Process()
+/obj/machinery/portable_atmospherics/powered/pump/process()
 	..()
 	var/power_draw = -1
 
 	if(on && cell && cell.charge)
 		var/datum/gas_mixture/environment
 		if(holding)
-			environment = holding.return_air()
-		else
+			environment = holding.air_contents
+		else if(loc)
 			environment = loc.return_air()
+		else return
 
 		var/pressure_delta
 		var/output_volume
@@ -97,10 +102,7 @@
 		last_power_draw = 0
 	else
 		power_draw = max(power_draw, power_losses)
-		if(!powered())
-			cell.use(power_draw * CELLRATE)
-		else
-			use_power_oneoff(power_draw)
+		cell.use(power_draw * CELLRATE)
 		last_power_draw = power_draw
 
 		update_connected_network()
@@ -111,19 +113,25 @@
 			update_icon()
 
 	src.updateDialog()
+	SStgui.update_uis(src)
 
-/obj/machinery/portable_atmospherics/powered/pump/attack_ai(mob/user)
+/obj/machinery/portable_atmospherics/powered/pump/return_air()
+	return air_contents
+
+/obj/machinery/portable_atmospherics/powered/pump/attack_ai(var/mob/user)
+	if(!ai_can_interact(user))
+		return
 	src.add_hiddenprint(user)
 	return src.attack_hand(user)
 
-/obj/machinery/portable_atmospherics/powered/pump/attack_ghost(mob/user)
+/obj/machinery/portable_atmospherics/powered/pump/attack_ghost(var/mob/user)
 	return src.attack_hand(user)
 
-/obj/machinery/portable_atmospherics/powered/pump/attack_hand(mob/user)
+/obj/machinery/portable_atmospherics/powered/pump/attack_hand(var/mob/user)
 	ui_interact(user)
 
-/obj/machinery/portable_atmospherics/powered/pump/ui_interact(mob/user, ui_key = "rcon", datum/nanoui/ui=null, force_open=1)
-	var/list/data[0]
+/obj/machinery/portable_atmospherics/powered/pump/ui_data(mob/user)
+	var/list/data = list()
 	data["portConnected"] = connected_port ? 1 : 0
 	data["tankPressure"] = round(air_contents.return_pressure() > 0 ? air_contents.return_pressure() : 0)
 	data["targetpressure"] = round(target_pressure)
@@ -138,30 +146,34 @@
 	data["hasHoldingTank"] = holding ? 1 : 0
 	if (holding)
 		data["holdingTank"] = list("name" = holding.name, "tankPressure" = round(holding.air_contents.return_pressure() > 0 ? holding.air_contents.return_pressure() : 0))
+	return data
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if (!ui)
-		ui = new(user, src, ui_key, "portpump.tmpl", "Portable Pump", 480, 410, state = GLOB.physical_state)
-		ui.set_initial_data(data)
+/obj/machinery/portable_atmospherics/powered/pump/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "PortablePump", "Portable Pump", 480, 450)
 		ui.open()
-		ui.set_auto_update(1)
 
-/obj/machinery/portable_atmospherics/powered/pump/OnTopic(user, href_list)
-	if(href_list["power"])
-		on = !on
-		. = TOPIC_REFRESH
-	if(href_list["direction"])
-		direction_out = !direction_out
-		. = TOPIC_REFRESH
-	if (href_list["remove_tank"])
-		if(holding)
-			holding.dropInto(loc)
-			holding = null
-		. = TOPIC_REFRESH
-	if (href_list["pressure_adj"])
-		var/diff = text2num(href_list["pressure_adj"])
-		target_pressure = min(10*ONE_ATMOSPHERE, max(0, target_pressure+diff))
-		. = TOPIC_REFRESH
+/obj/machinery/portable_atmospherics/powered/pump/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return
+
+	switch(action)
+		if("power")
+			on = !on
+			. = TRUE
+		if("direction")
+			direction_out = !direction_out
+			. = TRUE
+		if ("remove_tank")
+			if(holding)
+				holding.forceMove(loc)
+				holding = null
+			. = TRUE
+		if ("pressure_set")
+			target_pressure = between(pressuremin, text2num(params["pressure_set"]), pressuremax)
+			. = TRUE
 
 	if(.)
 		update_icon()

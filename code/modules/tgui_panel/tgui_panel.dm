@@ -13,10 +13,10 @@
 	var/broken = FALSE
 	var/initialized_at
 
-/datum/tgui_panel/New(client/client)
+/datum/tgui_panel/New(client/client, id)
 	src.client = client
-	window = new(client, "browseroutput")
-	window.subscribe(src, nameof(.proc/on_message))
+	window = new(client, id)
+	window.subscribe(src, PROC_REF(on_message))
 
 /datum/tgui_panel/Del()
 	window.unsubscribe(src)
@@ -39,17 +39,19 @@
 /datum/tgui_panel/proc/initialize(force = FALSE)
 	set waitfor = FALSE
 	// Minimal sleep to defer initialization to after client constructor
-	sleep(1)
+	sleep(1 TICKS)
 	initialized_at = world.time
 	// Perform a clean initialization
-	window.initialize(assets = list(
-		get_asset_datum(/datum/asset/simple/tgui_common),
-		get_asset_datum(/datum/asset/simple/tgui_panel),
-		get_asset_datum(/datum/asset/simple/fontawesome),
-	))
+	window.initialize(
+		strict_mode = TRUE,
+		assets = list(
+			get_asset_datum(/datum/asset/simple/tgui_panel),
+		))
+	window.send_asset(get_asset_datum(/datum/asset/simple/namespaced/fontawesome))
+	window.send_asset(get_asset_datum(/datum/asset/simple/namespaced/tgfont))
+	window.send_asset(get_asset_datum(/datum/asset/spritesheet/chat))
 	// Other setup
-	request_telemetry()
-	addtimer(CALLBACK(src, nameof(.proc/on_initialize_timed_out)), 30 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(on_initialize_timed_out)), 5 SECONDS)
 
 /**
  * private
@@ -58,7 +60,7 @@
  */
 /datum/tgui_panel/proc/on_initialize_timed_out()
 	// Currently does nothing but sending a message to old chat.
-	DIRECT_OUTPUT(client, SPAN("danger", "Chat's loading is in progress. If the chat does not load in a minute - use 'Fix Chat'."))
+	to_target(client, "<span class=\"userdanger\">Failed to load fancy chat, click <a href='?src=[ref(src)];reload_tguipanel=1'>HERE</a> to attempt to reload it.</span>")
 
 /**
  * private
@@ -85,10 +87,6 @@
 	if(type == "audio/setAdminMusicVolume")
 		client.admin_music_volume = payload["volume"]
 		return TRUE
-	if(type == "telemetry")
-		analyze_telemetry(payload)
-		return TRUE
-
 /**
  * public
  *

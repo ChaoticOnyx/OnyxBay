@@ -5,35 +5,35 @@
 
 /obj/structure/synthesized_instrument/synthesizer
 	name = "The Synthesizer 3.0"
-	desc = "This thing emits shockwaves as it plays. This is not good for your hearing."
+	desc = "A sound synthesizer."
 	icon_state = "synthesizer"
-	anchored = 1
-	density = 1
+	anchored = TRUE
+	density = TRUE
 	path = /datum/instrument
 	sound_player = /datum/sound_player/synthesizer
 
 /obj/structure/synthesized_instrument/synthesizer/attackby(obj/item/O, mob/user, params)
-	if (isWrench(O))
+	if (istype(O, /obj/item/wrench))
 		if (!anchored && !isinspace())
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-			to_chat(usr, "<span class='notice'> You begin to tighten \the [src] to the floor...</span>")
-			if (do_after(user, 20))
+			to_chat(usr, SPAN_NOTICE(" You begin to tighten \the [src] to the floor..."))
+			if (do_after(user, 2 SECONDS, src, DO_REPAIR_CONSTRUCT))
 				if(!anchored && !isinspace())
 					user.visible_message( \
 						"[user] tightens \the [src]'s casters.", \
-						"<span class='notice'> You tighten \the [src]'s casters. Now it can be played again.</span>", \
-						"<span class='italics'>You hear ratchet.</span>")
-					src.anchored = 1
+						SPAN_NOTICE(" You tighten \the [src]'s casters. Now it can be played again."), \
+						span("italics", "You hear ratchet."))
+					src.anchored = TRUE
 		else if(anchored)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-			to_chat(usr, "<span class='notice'> You begin to loosen \the [src]'s casters...</span>")
-			if (do_after(user, 40))
+			to_chat(usr, SPAN_NOTICE(" You begin to loosen \the [src]'s casters..."))
+			if (do_after(user, 4 SECONDS, src, DO_REPAIR_CONSTRUCT))
 				if(anchored)
 					user.visible_message( \
 						"[user] loosens \the [src]'s casters.", \
-						"<span class='notice'> You loosen \the [src]. Now it can be pulled somewhere else.</span>", \
-						"<span class='italics'>You hear ratchet.</span>")
-					src.anchored = 0
+						SPAN_NOTICE(" You loosen \the [src]. Now it can be pulled somewhere else."), \
+						span("italics", "You hear ratchet."))
+					src.anchored = FALSE
 	else
 		..()
 
@@ -46,7 +46,8 @@
 	name = "Synthesizer Mini"
 	desc = "The power of an entire orchestra in a handy midi keyboard format."
 	icon_state = "h_synthesizer"
-	force = 6
+	item_state = "h_synthesizer"
+	slot_flags = SLOT_BACK
 	path = /datum/instrument
 	sound_player = /datum/sound_player/synthesizer
 
@@ -54,8 +55,4 @@
 	name = "space minimoog"
 	desc = "This is a minimoog, like a space piano, but more spacey!"
 	icon_state = "minimoog"
-
-/obj/structure/synthesized_instrument/synthesizer/minimoog/chaotic
-	name = "space minimoog"
-	desc = "This is a minimoog, like a space piano, but more spacey!"
-	icon_state = "minipiano_left"
+	obj_flags = OBJ_FLAG_ROTATABLE

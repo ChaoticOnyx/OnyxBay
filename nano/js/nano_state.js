@@ -6,9 +6,9 @@ function NanoStateClass() {
 		alert('ERROR: Tried to create a state with an invalid state key: ' + this.key);
 		return;
 	}
-
+	
     this.key = this.key.toLowerCase();
-
+	
 	NanoStateManager.addState(this);*/
 }
 
@@ -63,7 +63,9 @@ NanoStateClass.prototype.onUpdate = function (data) {
             if (!this.mapInitialised)
             {
                 // Add drag functionality to the map ui
-                $('#uiMap').draggable();
+                $('#uiMap').draggable({
+                    handle : '#uiMapImage'
+                });
 
                 $('#uiMapTooltip')
                     .off('click')
@@ -115,3 +117,5 @@ NanoStateClass.prototype.alertText = function (text) {
 
     alert(text);
 };
+
+

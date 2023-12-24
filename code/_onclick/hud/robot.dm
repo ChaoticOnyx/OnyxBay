@@ -1,162 +1,171 @@
 var/obj/screen/robot_inventory
 
-/mob/living/silicon/robot
-	bubble_icon = "robot"
-	hud_type = /datum/hud/robot
+/mob/living/silicon/robot/instantiate_hud(var/datum/hud/HUD)
+	HUD.robot_hud()
 
-/datum/hud/robot/FinalizeInstantiation()
+/datum/hud/proc/robot_hud()
 
-	ASSERT(isrobot(mymob))
-
-	var/mob/living/silicon/robot/R = mymob
-
-	infodisplay = list()
-	static_inventory = list()
+	src.adding = list()
+	src.other = list()
 
 	var/obj/screen/using
 
+	if(!isrobot(mymob))
+		return
+
+	var/mob/living/silicon/robot/r = mymob
+
 //Radio
 	using = new /obj/screen()
-	using.SetName("radio")
+	using.name = "radio"
 	using.set_dir(SOUTHWEST)
-	using.icon = 'icons/hud/mob/screen_robot.dmi'
+	using.icon = 'icons/mob/screen/robot.dmi'
 	using.icon_state = "radio"
 	using.screen_loc = ui_movi
-	static_inventory += using
+	using.layer = SCREEN_LAYER
+	src.adding += using
 
 //Module select
 
-	using = new /obj/screen()
-	using.SetName("module1")
-	using.set_dir(SOUTHWEST)
-	using.icon = 'icons/hud/mob/screen_robot.dmi'
-	using.icon_state = "inv1"
-	using.screen_loc = ui_inv1
-	static_inventory += using
-	R.inv1 = using
+	using = new /obj/screen/module/one()
+	src.adding += using
+	r.inv1 = using
 
-	using = new /obj/screen()
-	using.SetName("module2")
-	using.set_dir(SOUTHWEST)
-	using.icon = 'icons/hud/mob/screen_robot.dmi'
-	using.icon_state = "inv2"
-	using.screen_loc = ui_inv2
-	static_inventory += using
-	R.inv2 = using
+	using = new /obj/screen/module/two()
+	src.adding += using
+	r.inv2 = using
 
-	using = new /obj/screen()
-	using.SetName("module3")
-	using.set_dir(SOUTHWEST)
-	using.icon = 'icons/hud/mob/screen_robot.dmi'
-	using.icon_state = "inv3"
-	using.screen_loc = ui_inv3
-	static_inventory += using
-	R.inv3 = using
+	using = new /obj/screen/module/three()
+	src.adding += using
+	r.inv3 = using
 
 //End of module select
 
 //Intent
 	using = new /obj/screen()
-	using.SetName("act_intent")
+	using.name = "act_intent"
 	using.set_dir(SOUTHWEST)
-	using.icon = 'icons/hud/mob/screen_robot.dmi'
-	using.icon_state = R.a_intent
+	using.icon = 'icons/mob/screen/robot.dmi'
+	using.icon_state = mymob.a_intent
 	using.screen_loc = ui_acti
-	static_inventory += using
+	using.layer = SCREEN_LAYER
+	src.adding += using
 	action_intent = using
 
+// Up Hint
+	mymob.up_hint = new /obj/screen()
+	mymob.up_hint.icon = 'icons/mob/screen/robot.dmi'
+	mymob.up_hint.icon_state = "uphint0"
+	mymob.up_hint.name = "up hint"
+	mymob.up_hint.screen_loc = ui_up_hint
+
 //Cell
-	R.cells = new /obj/screen()
-	R.cells.icon = 'icons/hud/mob/screen_robot.dmi'
-	R.cells.icon_state = "charge-empty"
-	R.cells.SetName("cell")
-	R.cells.screen_loc = ui_toxin
-	infodisplay += R.cells
+	r.cells = new /obj/screen()
+	r.cells.icon = 'icons/mob/screen/robot.dmi'
+	r.cells.icon_state = "charge-empty"
+	r.cells.name = "cell"
+	r.cells.screen_loc = ui_toxin
 
 //Health
-	R.healths = new /obj/screen()
-	R.healths.icon = 'icons/hud/mob/screen_robot.dmi'
-	R.healths.icon_state = "health0"
-	R.healths.SetName("health")
-	R.healths.screen_loc = ui_borg_health
-	infodisplay += R.healths
+	mymob.healths = new /obj/screen()
+	mymob.healths.icon = 'icons/mob/screen/robot.dmi'
+	mymob.healths.icon_state = "health0"
+	mymob.healths.name = "health"
+	mymob.healths.screen_loc = ui_borg_health
 
 //Installed Module
-	R.hands = new /obj/screen()
-	R.hands.icon = 'icons/hud/mob/screen_robot.dmi'
-	R.hands.icon_state = "nomod"
-	R.hands.SetName("module")
-	R.hands.screen_loc = ui_borg_module
-	static_inventory += R.hands
+	mymob.hands = new /obj/screen()
+	mymob.hands.icon = 'icons/mob/screen/robot.dmi'
+	mymob.hands.icon_state = "nomod"
+	mymob.hands.name = "module"
+	mymob.hands.screen_loc = ui_borg_module
+
+	if(r.module)
+		mymob.hands.icon_state = lowertext(r.mod_type)
+
+	if (istype(mymob, /mob/living/silicon/robot/shell))
+		mymob.hands.icon = 'icons/mob/screen/ai.dmi'
+		mymob.hands.icon_state = "remote_mech"
+		mymob.hands.name = "Return-to-core"
 
 //Module Panel
 	using = new /obj/screen()
-	using.SetName("panel")
-	using.icon = 'icons/hud/mob/screen_robot.dmi'
+	using.name = "panel"
+	using.icon = 'icons/mob/screen/robot.dmi'
 	using.icon_state = "panel"
 	using.screen_loc = ui_borg_panel
-	static_inventory += using
+	using.layer = SCREEN_LAYER
+	src.adding += using
 
 //Store
-	R.throw_icon = new /obj/screen()
-	R.throw_icon.icon = 'icons/hud/mob/screen_robot.dmi'
-	R.throw_icon.icon_state = "store"
-	R.throw_icon.SetName("store")
-	R.throw_icon.screen_loc = ui_borg_store
-	static_inventory += R.throw_icon
+	mymob.throw_icon = new /obj/screen()
+	mymob.throw_icon.icon = 'icons/mob/screen/robot.dmi'
+	mymob.throw_icon.icon_state = "store"
+	mymob.throw_icon.name = "store"
+	mymob.throw_icon.screen_loc = ui_borg_store
 
 //Inventory
 	robot_inventory = new /obj/screen()
-	robot_inventory.SetName("inventory")
-	robot_inventory.icon = 'icons/hud/mob/screen_robot.dmi'
+	robot_inventory.name = "inventory"
+	robot_inventory.icon = 'icons/mob/screen/robot.dmi'
 	robot_inventory.icon_state = "inventory"
 	robot_inventory.screen_loc = ui_borg_inventory
-	static_inventory += robot_inventory
 
 //Temp
-	R.bodytemp = new /obj/screen()
-	R.bodytemp.icon = 'icons/hud/mob/screen_robot.dmi'
-	R.bodytemp.icon_state = "temp0"
-	R.bodytemp.SetName("temperature")
-	R.bodytemp.screen_loc = ui_fire
-	infodisplay += R.bodytemp
 
-	R.oxygen = new /obj/screen()
-	R.oxygen.icon = 'icons/hud/mob/screen_robot.dmi'
-	R.oxygen.icon_state = "oxy0"
-	R.oxygen.SetName("oxygen")
-	R.oxygen.screen_loc = ui_oxygen
-	infodisplay += R.oxygen
+	mymob.pullin = new /obj/screen()
+	mymob.pullin.icon = 'icons/mob/screen/robot.dmi'
+	mymob.pullin.icon_state = "pull0"
+	mymob.pullin.name = "pull"
+	mymob.pullin.screen_loc = ui_borg_pull
 
-	R.pullin = new /obj/screen()
-	R.pullin.icon = 'icons/hud/mob/screen_robot.dmi'
-	R.pullin.icon_state = "pull0"
-	R.pullin.SetName("pull")
-	R.pullin.screen_loc = ui_borg_pull
-	static_inventory += R.pullin
+	mymob.zone_sel = new /obj/screen/zone_sel()
+	mymob.zone_sel.icon = 'icons/mob/screen/robot.dmi'
+	mymob.zone_sel.cut_overlays()
+	mymob.zone_sel.add_overlay(image('icons/mob/zone_sel.dmi', "[mymob.zone_sel.selecting]"))
 
-	R.zone_sel = new /obj/screen/zone_sel()
-	R.zone_sel.icon = 'icons/hud/mob/screen_robot.dmi'
-	R.zone_sel.ClearOverlays()
-	R.zone_sel.AddOverlays(image('icons/hud/common/screen_zone_sel.dmi', "[R.zone_sel.selecting]"))
-	static_inventory += R.zone_sel
+	// Computer device hud
+	if(r.computer)
+		r.computer.screen_loc = ui_oxygen
+		r.computer.layer = SCREEN_LAYER
+
 
 	//Handle the gun settings buttons
-	R.gun_setting_icon = new /obj/screen/gun/mode(null)
-	R.item_use_icon = new /obj/screen/gun/item(null)
-	R.gun_move_icon = new /obj/screen/gun/move(null)
-	R.radio_use_icon = new /obj/screen/gun/radio(null)
+	mymob.gun_setting_icon = new /obj/screen/gun/mode(null)
+	mymob.item_use_icon = new /obj/screen/gun/item(null)
+	mymob.gun_move_icon = new /obj/screen/gun/move(null)
+	mymob.radio_use_icon = new /obj/screen/gun/radio(null)
+	mymob.toggle_firing_mode = new /obj/screen/gun/burstfire(null)
+	mymob.unique_action_icon = new /obj/screen/gun/uniqueaction(null)
 
-	static_inventory += list(R.gun_setting_icon, R.item_use_icon, R.gun_move_icon, R.radio_use_icon)
+	mymob.client.screen = null
+
+	mymob.client.screen += list(
+		mymob.throw_icon,
+		mymob.zone_sel,
+		mymob.hands,
+		mymob.healths,
+		r.cells,
+		mymob.up_hint,
+		mymob.pullin,
+		robot_inventory,
+		mymob.gun_setting_icon,
+		mymob.toggle_firing_mode,
+		mymob.unique_action_icon,
+		r.computer
+		)
+	mymob.client.screen += src.adding + src.other
+
+	return
 
 
 /datum/hud/proc/toggle_show_robot_modules()
 	if(!isrobot(mymob))
 		return
 
-	var/mob/living/silicon/robot/R = mymob
+	var/mob/living/silicon/robot/r = mymob
 
-	R.shown_robot_modules = !R.shown_robot_modules
+	r.shown_robot_modules = !r.shown_robot_modules
 	update_robot_modules_display()
 
 
@@ -164,52 +173,59 @@ var/obj/screen/robot_inventory
 	if(!isrobot(mymob))
 		return
 
-	var/mob/living/silicon/robot/R = mymob
+	var/mob/living/silicon/robot/r = mymob
 
-	if(!R.client) // Some dumb piece of shit did NOT put it here
+	if(!r.client || !r)
 		return
 
-	if(R.shown_robot_modules)
+	if(r.shown_robot_modules)
 		//Modules display is shown
-		//R.client.screen += robot_inventory	//"store" icon
+		//r.client.screen += robot_inventory	//"store" icon
 
-		if(!R.module)
+		if(!r.module)
 			to_chat(usr, "<span class='danger'>No module selected</span>")
 			return
 
-		if(!R.module.modules)
+		if(!r.module.modules)
 			to_chat(usr, "<span class='danger'>Selected module has no modules to select</span>")
 			return
 
-		if(!R.robot_modules_background)
+		if(!r.robot_modules_background)
 			return
 
-		var/display_rows = -round(-(R.module.modules.len) / 8)
-		R.robot_modules_background.screen_loc = "CENTER-4:16,SOUTH+1:7 to CENTER+3:16,SOUTH+[display_rows]:7"
-		R.client.screen += R.robot_modules_background
+		var/display_rows = -round(-(r.module.modules.len) / 8)
+		r.robot_modules_background.screen_loc = "CENTER-4:16,SOUTH+1:7 to CENTER+3:16,SOUTH+[display_rows]:7"
+		r.client.screen += r.robot_modules_background
 
 		var/x = -4	//Start at CENTER-4,SOUTH+1
 		var/y = 1
 
-		//Unfortunately static_inventory the emag module to the list of modules has to be here. This is because a borg can
+		//Unfortunately adding the emag module to the list of modules has to be here. This is because a borg can
 		//be emagged before they actually select a module. - or some situation can cause them to get a new module
 		// - or some situation might cause them to get de-emagged or something.
-		if(R.emagged)
-			if(!(R.module.emag in R.module.modules))
-				R.module.modules.Add(R.module.emag)
+		if(r.emagged)
+			if(!(r.module.emag in r.module.modules))
+				r.module.modules += r.module.emag
 		else
-			if(R.module.emag in R.module.modules)
-				R.module.modules.Remove(R.module.emag)
+			if(r.module.emag in r.module.modules)
+				r.module.modules -= r.module.emag
 
-		for(var/atom/movable/A in R.module.modules)
-			if( (A != R.module_state_1) && (A != R.module_state_2) && (A != R.module_state_3) )
+		if(r.malf_AI_module)
+			if(!((r.module.malf_AI_module in r.module.modules) || r.module.malf_AI_module == null))
+				r.module.modules += r.module.malf_AI_module
+		else
+			if(r.module.malf_AI_module in r.module.modules)
+				r.module.modules -= r.module.malf_AI_module
+
+		for(var/atom/movable/A in r.module.modules)
+			if( (A != r.module_state_1) && (A != r.module_state_2) && (A != r.module_state_3) )
 				//Module is not currently active
-				R.client.screen += A
+				r.client.screen += A
 				if(x < 0)
-					A.screen_loc = "CENTER[x]:[WORLD_ICON_SIZE/2],SOUTH+[y]:7"
+					A.screen_loc = "CENTER[x]:16,SOUTH+[y]:7"
 				else
-					A.screen_loc = "CENTER+[x]:[WORLD_ICON_SIZE/2],SOUTH+[y]:7"
-				A.hud_layerise()
+					A.screen_loc = "CENTER+[x]:16,SOUTH+[y]:7"
+				A.layer = SCREEN_LAYER
 
 				x++
 				if(x == 4)
@@ -217,16 +233,11 @@ var/obj/screen/robot_inventory
 					y++
 
 	else
-		if(!R.module)
-			return
-
-		if(!R.module.modules)
-			return
 		//Modules display is hidden
-		//R.client.screen -= robot_inventory	//"store" icon
-		for(var/atom/A in R.module.modules)
-			if( (A != R.module_state_1) && (A != R.module_state_2) && (A != R.module_state_3) )
+		//r.client.screen -= robot_inventory	//"store" icon
+		for(var/atom/A in r.module?.modules)
+			if( (A != r.module_state_1) && (A != r.module_state_2) && (A != r.module_state_3) )
 				//Module is not currently active
-				R.client.screen -= A
-		R.shown_robot_modules = 0
-		R.client.screen -= R.robot_modules_background
+				r.client.screen -= A
+		r.shown_robot_modules = 0
+		r.client.screen -= r.robot_modules_background

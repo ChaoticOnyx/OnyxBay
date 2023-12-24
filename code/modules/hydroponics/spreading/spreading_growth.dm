@@ -1,179 +1,129 @@
 #define NEIGHBOR_REFRESH_TIME 100
 
-/obj/effect/vine/proc/get_cardinal_neighbors()
+/obj/effect/plant/proc/get_cardinal_neighbors()
 	var/list/cardinal_neighbors = list()
-	for(var/check_dir in GLOB.cardinal)
+	for(var/check_dir in cardinal)
 		var/turf/simulated/T = get_step(get_turf(src), check_dir)
 		if(istype(T))
 			cardinal_neighbors |= T
 	return cardinal_neighbors
 
-/obj/effect/vine/proc/get_zlevel_neighbors()
-	var/list/zlevel_neighbors = list()
-
-	var/turf/start = loc
-	var/turf/up = GetAbove(loc)
-	var/turf/down = GetBelow(loc)
-
-	if(start && start.CanZPass(src, DOWN))
-		zlevel_neighbors += down
-	if(up && up.CanZPass(src, UP))
-		zlevel_neighbors += up
-
-	return zlevel_neighbors
-
-/obj/effect/vine/proc/get_neighbors()
-	var/list/neighbors = list()
-
+/obj/effect/plant/proc/update_neighbors()
+	// Update our list of valid neighboring turfs.
+	neighbors = list()
 	for(var/turf/simulated/floor in get_cardinal_neighbors())
 		if(get_dist(parent, floor) > spread_distance)
 			continue
-
-		var/blocked = 0
-		for(var/obj/effect/vine/other in floor.contents)
-			if(other.seed == src.seed)
-				blocked = 1
-				break
-		if(blocked)
+		if((locate(/obj/effect/plant) in floor.contents) || (locate(/obj/effect/dead_plant) in floor.contents) )
 			continue
-
 		if(floor.density)
-			if(!isnull(seed.chems[/datum/reagent/acid/polyacid]))
-				spawn(rand(5,25)) floor.ex_act(3)
+			if(seed && seed.chems[/singleton/reagent/acid/polyacid])
+				addtimer(CALLBACK(floor, TYPE_PROC_REF(/atom, ex_act), 3), rand(5, 25))
 			continue
-
 		if(!Adjacent(floor) || !floor.Enter(src))
 			continue
-
 		neighbors |= floor
 
-	neighbors |= get_zlevel_neighbors()
-	return neighbors
+	if (neighbors.len)
+		SSplants.add_plant(src)
 
-/obj/effect/vine/Process()
+	// Update all of our friends.
+	var/turf/T = get_turf(src)
+	for(var/obj/effect/plant/neighbor in range(1,src))
+		neighbor.neighbors -= T
+
+/obj/effect/plant/process()
+	// Something is very wrong, kill ourselves.
+	if(!seed)
+		die_off()
+		return 0
+
+	for(var/obj/effect/effect/smoke/chem/smoke in view(1, src))
+		if(smoke.reagents.has_reagent(/singleton/reagent/toxin/plantbgone))
+			die_off()
+			return
+
+	// Handle life.
 	var/turf/simulated/T = get_turf(src)
-	if(!istype(T))
-		return
-
-	//Take damage from bad environment if any
-	adjust_health(-seed.handle_environment(T, T.return_air(), null, 1))
-	if(health <= 0)
-		return
-
-	//Vine fight!
-	for(var/obj/effect/vine/other in T)
-		if(other.seed != seed)
-			other.vine_overrun(seed, src)
-
-	//Growing up
+	if(istype(T))
+		health -= seed.handle_environment(T,T.return_air(),null,1)
 	if(health < max_health)
-		adjust_health(1)
-		if(round(growth_threshold) && !(health % growth_threshold))
-			update_icon()
+		health += rand(3,5)
+		refresh_icon()
+		if(health > max_health)
+			health = max_health
+	else if(health == max_health && !plant)
+		plant = new(T,seed)
+		plant.dir = src.dir
+		plant.transform = src.transform
+		plant.age = seed.get_trait(TRAIT_MATURATION)-1
+		plant.update_icon()
+		if(growth_type==0) //Vines do not become invisible.
+			set_invisibility(INVISIBILITY_MAXIMUM)
+		else
+			plant.layer = layer + 0.1
 
-	if(is_mature())
-		//Find a victim
-		if(!buckled_mob)
-			var/list/mob/living/targets = targets_in_range()
-			if(targets && targets.len && prob(round(seed.get_trait(TRAIT_POTENCY)/4)))
-				entangle(pick(targets))
+	if(buckled)
+		seed.do_sting(buckled,src)
+		if(seed.get_trait(TRAIT_CARNIVOROUS))
+			seed.do_thorns(buckled,src)
 
-		//Handle the victim
-		if(buckled_mob)
-			seed.do_sting(buckled_mob,src)
-			if(seed.get_trait(TRAIT_CARNIVOROUS))
-				seed.do_thorns(buckled_mob,src)
+	if(world.time >= last_tick+NEIGHBOR_REFRESH_TIME)
+		last_tick = world.time
+		update_neighbors()
 
-		//Try to regrow these sweet little samples
-		if(sampled)
-			var/chance = max(1, round(15 / seed.get_trait(TRAIT_PRODUCTION))) //Should be between 2-7 for given the default range of values for TRAIT_PRODUCTION
-			if(prob(chance))
-				sampled = 0
+	if(sampled)
+		//Should be between 2-7 for given the default range of values for TRAIT_PRODUCTION
+		var/chance
+		if(!seed.get_trait(TRAIT_PRODUCTION))
+			chance = 1
+		else
+			chance = max(1, round(30/seed.get_trait(TRAIT_PRODUCTION)))
+		if(prob(chance))
+			sampled = 0
 
-		//Try to spread
-		if(parent && parent.possible_children && prob(spread_chance))
-			var/list/neighbors = get_neighbors()
-			if(neighbors.len)
-				spread_to(pick(neighbors))
+	if(is_mature() && neighbors.len && prob(spread_chance))
+		//spread to 1-3 adjacent turfs depending on yield trait.
+		var/max_spread = between(1, round(seed.get_trait(TRAIT_YIELD)*3/14), 3)
 
-		//Try to settle down
-		if(can_spawn_plant())
-			plant = new(T,seed)
-			plant.dir = src.dir
-			plant.SetTransform(others = transform)
-			plant.age = seed.get_trait(TRAIT_MATURATION)-1
-			plant.update_icon()
-			if(growth_type == 0) //Vines do not become invisible.
-				set_invisibility(INVISIBILITY_MAXIMUM)
-			else
-				plant.layer = layer + 0.1
+		do_spread(spread_chance, max_spread)
 
-	if(should_sleep())
-		STOP_PROCESSING(SSvines, src)
+	// We shouldn't have spawned if the controller doesn't exist.
+	check_health()
+	if(neighbors.len || health != max_health || buckled || !is_mature())
+		SSplants.add_plant(src)
 
-/obj/effect/vine/proc/can_spawn_plant()
-	var/turf/simulated/T = get_turf(src)
-	return (plant_spawn_eligible || parent == src) && health == max_health && !plant && istype(T) && !T.CanZPass(src, DOWN)
+/obj/effect/plant/proc/do_spread(spread_chance, max_spread)
+	set waitfor = FALSE
+	for(var/i in 1 to max_spread)
+		if(prob(spread_chance))
+			sleep(rand(3,5))
+			if(!neighbors.len)
+				return
 
-/obj/effect/vine/proc/should_sleep()
-	if(buckled_mob) //got a victim to fondle
-		return FALSE
-	if(length(get_neighbors())) //got places to spread to
-		return FALSE
-	if(health < max_health) //got some growth to do
-		return FALSE
-	if(targets_in_range()) //got someone to grab
-		return FALSE
-	if(can_spawn_plant()) //should settle down and spawn a tray
-		return FALSE
-	return TRUE
+			var/turf/target_turf = pick(neighbors)
+			var/obj/effect/plant/child = new(get_turf(src),seed,parent)
+			// This should do a little bit of animation.
+			addtimer(CALLBACK(src, PROC_REF(do_move), target_turf, child), 1)
+			// Update neighboring squares.
+			for(var/obj/effect/plant/neighbor in range(1,target_turf))
+				neighbor.neighbors -= target_turf
 
-//spreading vines aren't created on their final turf.
-//Instead, they are created at their parent and then move to their destination.
-/obj/effect/vine/proc/spread_to(turf/target_turf)
-	if(!isturf(target_turf))
-		return
-	var/obj/effect/vine/child = new(get_turf(src), seed, parent) // This should do a little bit of animation.
-	//move out to the destination
-	spawn(1) // INVOKE_ASYNC refuses to produce the neat crawling animation, so I don't give a fuck and the spawn(1) remains here ~ToTh
-		child.finalize_spread_to(target_turf)
+/obj/effect/plant/proc/do_move(turf/target, obj/effect/plant/child)
+	child.forceMove(target)
+	child.queue_icon_update()
 
-/obj/effect/vine/proc/finalize_spread_to(turf/target_turf)
-	if(QDELING(src))
-		return
-	if(isturf(target_turf) && forceMove(target_turf))
-		set_dir(calc_dir())
-		update_icon()
-		// Some plants eat through plating.
-		if(islist(seed.chems) && !isnull(seed.chems[/datum/reagent/acid/polyacid]))
-			target_turf.ex_act(prob(80) ? 3 : 2)
-	else
-		qdel(src)
-
-/obj/effect/vine/proc/wake_neighbors()
-	// This turf is clear now, let our buddies know.
-	for(var/turf/simulated/check_turf in (get_cardinal_neighbors() | get_zlevel_neighbors()))
-		if(!istype(check_turf))
-			continue
-		for(var/obj/effect/vine/neighbor in check_turf.contents)
-			START_PROCESSING(SSvines, neighbor)
-
-/obj/effect/vine/proc/targets_in_range()
-	var/list/mob/targets = list()
-	for(var/turf/simulated/check_turf in (get_cardinal_neighbors() | get_zlevel_neighbors() | list(loc)))
-		if(!istype(check_turf))
-			continue
-		for(var/mob/living/M in check_turf.contents)
-			if(is_valid_target(M))
-				targets |= M
-	if(targets.len)
-		return targets
-
-/obj/effect/vine/proc/die_off()
+/obj/effect/plant/proc/die_off()
 	// Kill off our plant.
-	if(plant)
-		plant.die()
-	wake_neighbors()
+	if(plant) plant.die()
+	// This turf is clear now, let our buddies know.
+	for(var/turf/simulated/check_turf in get_cardinal_neighbors())
+		if(!istype(check_turf))
+			continue
+		for(var/obj/effect/plant/neighbor in check_turf.contents)
+			neighbor.neighbors |= check_turf
+			SSplants.add_plant(neighbor)
+
 	qdel(src)
 
 #undef NEIGHBOR_REFRESH_TIME

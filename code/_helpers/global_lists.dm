@@ -1,207 +1,172 @@
+var/list/clients = list()							//list of all clients
+var/list/staff = list()							//list of all clients who have any permissions
+var/list/directory = list()							//list of all ckeys with associated client
+
 //Since it didn't really belong in any other category, I'm putting this here
 //This is for procs to replace all the goddamn 'in world's that are chilling around the code
 
-GLOBAL_LIST_EMPTY(landmarks_list) // List of all landmarks created.
+var/global/list/player_list = list()				//List of all mobs **with clients attached**. Excludes /mob/abstract/new_player
+var/global/list/mob_list = list()					//List of all mobs, including clientless
+var/global/list/human_mob_list = list()				//List of all human mobs and sub-types, including clientless
+var/global/list/silicon_mob_list = list()			//List of all silicon mobs, including clientless
+var/global/list/living_mob_list = list()			//List of all alive mobs, including clientless. Excludes /mob/abstract/new_player
+var/global/list/dead_mob_list = list()				//List of all dead mobs, including clientless. Excludes /mob/abstract/new_player
+var/global/list/topic_commands = list()				//List of all API commands available
+var/global/list/topic_commands_names = list()				//List of all API commands available
 
-var/global/list/cable_list = list()					//Index for all cables, so that powernets don't have to look through the entire world all the time
-var/global/list/chemical_reactions_list				//list of all /datum/chemical_reaction datums. Used during chemical reactions
+var/global/list/landmarks_list = list()				//list of all landmarks created
+var/global/list/force_spawnpoints					//assoc list of force spawnpoints for event maps
 var/global/list/side_effects = list()				//list of all medical sideeffects types by thier names |BS12
 var/global/list/mechas_list = list()				//list of all mechs. Used by hostile mobs target tracking.
 var/global/list/joblist = list()					//list of all jobstypes, minus borg and AI
+var/global/list/brig_closets = list()				//list of all brig secure_closets. Used by brig timers. Probably should be converted to use SSwireless eventually.
 
-#define all_genders_define_list list(MALE,FEMALE,PLURAL,NEUTER)
-#define all_genders_text_list list("Male","Female","Plural","Neuter")
+var/global/list/ghostteleportlocs = list()
+var/global/list/centcom_areas = list()
+var/global/list/the_station_areas = list()
 
-//Machinery lists
-GLOBAL_LIST_EMPTY(alarm_list)
-GLOBAL_LIST_EMPTY(ai_status_display_list)
-GLOBAL_LIST_EMPTY(apc_list)
-GLOBAL_LIST_EMPTY(smes_list)
-GLOBAL_LIST_EMPTY(machines)
-GLOBAL_LIST_EMPTY(firealarm_list)
-GLOBAL_LIST_EMPTY(computer_list)
-GLOBAL_LIST_EMPTY(all_doors)
-GLOBAL_LIST_EMPTY(atmos_machinery)
+var/global/list/implants = list()
+
+var/global/list/station_turfs = list()
+var/global/list/areas_by_type = list()
+var/global/list/all_areas = list()
 
 //Languages/species/whitelist.
-var/global/list/all_species[0]
-var/global/list/all_languages[0]
-var/global/list/language_keys[0]					// Table of say codes for all languages
+var/global/list/datum/species/all_species = list()
+var/global/list/all_species_short_names = list()
+var/global/list/all_languages = list()
+var/global/list/language_keys = list()					// Table of say codes for all languages
 var/global/list/whitelisted_species = list(SPECIES_HUMAN) // Species that require a whitelist check.
-var/global/list/playable_species = list(SPECIES_HUMAN)    // A list of ALL playable species, whitelisted, latejoin or otherwise.
-
-var/list/mannequins_
+var/global/list/playable_species = list()    // A list of ALL playable species, whitelisted, latejoin or otherwise.
 
 // Posters
 var/global/list/poster_designs = list()
 
-// Grabs
-var/global/list/all_grabstates[0]
-var/global/list/all_grabobjects[0]
-
 // Uplinks
 var/list/obj/item/device/uplink/world_uplinks = list()
 
-// Surgery steps
-GLOBAL_LIST_EMPTY(surgery_steps)
-
 //Preferences stuff
 //Hairstyles
-GLOBAL_LIST_EMPTY(hair_styles_list)        //stores /datum/sprite_accessory/hair indexed by name
-GLOBAL_LIST_EMPTY(facial_hair_styles_list) //stores /datum/sprite_accessory/facial_hair indexed by name
-GLOBAL_LIST_EMPTY(hair_icons)
-GLOBAL_LIST_EMPTY(facial_hair_icons)
-
+var/global/list/hair_styles_list = list()			//stores /datum/sprite_accessory/hair indexed by name
+var/global/list/hair_styles_male_list = list()
+var/global/list/hair_styles_female_list = list()
+var/global/list/hair_gradient_styles_list = list()
+var/global/list/facial_hair_styles_list = list()	//stores /datum/sprite_accessory/facial_hair indexed by name
+var/global/list/facial_hair_styles_male_list = list()
+var/global/list/facial_hair_styles_female_list = list()
 var/global/list/skin_styles_female_list = list()		//unused
-GLOBAL_LIST_EMPTY(body_marking_styles_list)		//stores /datum/sprite_accessory/marking indexed by name
+var/global/list/body_marking_styles_list = list()
+var/global/list/chargen_disabilities_list = list()
+var/global/static/list/valid_player_genders = list(MALE, FEMALE, NEUTER, PLURAL)
 
-GLOBAL_DATUM_INIT(underwear, /datum/category_collection/underwear, new())
+//Backpacks
+var/global/list/backbaglist = list("Nothing", "Backpack", "Satchel", "Leather Satchel", "Duffel Bag", "Messenger Bag", "Rucksack", "Pocketbook")
+var/global/list/backbagstyles = list("Job-specific", "Generic", "Faction-specific")
+var/global/list/backbagcolors = list("None", "Blue", "Green", "Navy", "Tan", "Khaki", "Black", "Olive", "Auburn", "Brown")
+var/global/list/backbagstrap = list("Hidden", "Thin", "Normal", "Thick")
+var/global/list/exclude_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/merchant)
 
-GLOBAL_LIST_EMPTY(bb_clothing_icon_states) //stores /datum/body_build's icon_state lists
+//PDA choice
+var/global/list/pdalist = list("Nothing", "Standard PDA", "Classic PDA", "Rugged PDA", "Slate PDA", "Smart PDA", "Tablet", "Wristbound")
 
-var/global/list/body_heights = list(HUMAN_HEIGHT_TINY, HUMAN_HEIGHT_SMALL, HUMAN_HEIGHT_NORMAL, HUMAN_HEIGHT_LARGE, HUMAN_HEIGHT_HUGE)
+//Headset choice
+var/global/list/headsetlist = list("Nothing", "Headset", "Bowman Headset", "Double Headset", "Wristbound Radio", "Sleek Wristbound Radio")
 
-var/global/list/exclude_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/barmonkey)
+// Primary Radio Slot choice
+var/global/list/primary_radio_slot_choice = list("Left Ear", "Right Ear", "Wrist")
 
 // Visual nets
 var/list/datum/visualnet/visual_nets = list()
 var/datum/visualnet/camera/cameranet = new()
 
 // Runes
-var/global/list/rune_list = new()
+var/global/list/escape_list = list()
+var/global/list/endgame_exits = list()
+var/global/list/endgame_safespawns = list()
 
 var/global/list/syndicate_access = list(access_maint_tunnels, access_syndicate, access_external_airlocks)
 
-// Strings which corraspond to bodypart covering flags, useful for outputting what something covers.
-var/global/list/string_part_flags = list(
-	"head" = HEAD,
-	"face" = FACE,
-	"eyes" = EYES,
-	"upper body" = UPPER_TORSO,
-	"lower body" = LOWER_TORSO,
-	"legs" = LEGS,
-	"feet" = FEET,
-	"arms" = ARMS,
-	"hands" = HANDS
-)
+//Cloaking devices
+var/global/list/cloaking_devices = list()
 
-var/global/list/body_part_flags = list(
-	BP_HEAD = HEAD,
-	BP_CHEST = UPPER_TORSO,
-	BP_GROIN = LOWER_TORSO,
-	BP_L_LEG = LEGS,
-	BP_R_LEG = LEGS,
-	BP_L_FOOT = FEET,
-	BP_R_FOOT = FEET,
-	BP_L_ARM = ARMS,
-	BP_R_ARM = ARMS,
-	BP_L_HAND = HANDS,
-	BP_R_HAND = HANDS
-)
+//Hearing sensitive listening in closely
+var/global/list/intent_listener = list()
 
-// Strings which corraspond to slot flags, useful for outputting what slot something is.
-var/global/list/string_slot_flags = list(
-	"back" = SLOT_BACK,
-	"face" = SLOT_MASK,
-	"waist" = SLOT_BELT,
-	"ID slot" = SLOT_ID,
-	"ears" = SLOT_EARS,
-	"eyes" = SLOT_EYES,
-	"hands" = SLOT_GLOVES,
-	"head" = SLOT_HEAD,
-	"feet" = SLOT_FEET,
-	"exo slot" = SLOT_OCLOTHING,
-	"body" = SLOT_ICLOTHING,
-	"uniform" = SLOT_TIE,
-	"holster" = SLOT_HOLSTER
-)
+// cache for clothing species adaptability
+var/global/list/contained_clothing_species_adaption_cache = list()
 
 //////////////////////////
 /////Initial Building/////
 //////////////////////////
 
-/hook/global_init/proc/populateGlobalLists()
-	possible_cable_coil_colours = sortAssoc(list(
-		"Yellow" = COLOR_YELLOW,
-		"Green" = COLOR_LIME,
-		"Pink" = COLOR_PINK,
-		"Blue" = COLOR_BLUE,
-		"Orange" = COLOR_ORANGE,
-		"Cyan" = COLOR_CYAN,
-		"Red" = COLOR_RED,
-		"White" = COLOR_WHITE
-	))
-	GLOB.hair_icons = list(
-		"default" = list(
-			SPECIES_HUMAN = 'icons/mob/human_races/face/hair.dmi',
-			SPECIES_TAJARA = 'icons/mob/human_races/face/hair_tajaran.dmi',
-			SPECIES_UNATHI = 'icons/mob/human_races/face/hair_unathi.dmi',
-			SPECIES_SKRELL = 'icons/mob/human_races/face/hair_skrell.dmi',
-			SPECIES_VOX = 'icons/mob/human_races/face/hair_vox.dmi',
-			SPECIES_SWINE = 'icons/mob/human_races/face/hair_swine.dmi'),
-		"slim" = list(
-			SPECIES_HUMAN = 'icons/mob/human_races/face/hair_slim.dmi',
-			SPECIES_TAJARA = 'icons/mob/human_races/face/hair_tajaran_slim.dmi',
-			SPECIES_SKRELL = 'icons/mob/human_races/face/hair_skrell_slim.dmi')
-	)
-	GLOB.facial_hair_icons = list(
-		"default" = list(
-			SPECIES_HUMAN = 'icons/mob/human_races/face/facial.dmi',
-			SPECIES_TAJARA = 'icons/mob/human_races/face/facial_tajaran.dmi',
-			SPECIES_SWINE = 'icons/mob/human_races/face/facial_swine.dmi'),
-		"slim" = list(
-			SPECIES_HUMAN = 'icons/mob/human_races/face/facial_slim.dmi',
-			SPECIES_TAJARA = 'icons/mob/human_races/face/facial_tajaran_slim.dmi')
-	)
-	return 1
-
-/proc/get_mannequin(ckey)
-	if(SSatoms.init_state < INITIALIZATION_INNEW_REGULAR)
-		return
-	if(!mannequins_)
-		mannequins_ = new()
-	. = mannequins_[ckey]
-	if(!.)
-		. = new /mob/living/carbon/human/dummy/mannequin()
-		mannequins_[ckey] = .
-
-/hook/global_init/proc/makeDatumRefLists()
+/proc/makeDatumRefLists()
 	var/list/paths
 
 	//Hair - Initialise all /datum/sprite_accessory/hair into an list indexed by hair-style name
-	paths = typesof(/datum/sprite_accessory/hair) - /datum/sprite_accessory/hair
+	paths = subtypesof(/datum/sprite_accessory/hair)
 	for(var/path in paths)
 		var/datum/sprite_accessory/hair/H = new path()
-		GLOB.hair_styles_list[H.name] = H
+		hair_styles_list[H.name] = H
+		switch(H.gender)
+			if(MALE)	hair_styles_male_list += H.name
+			if(FEMALE)	hair_styles_female_list += H.name
+			else
+				hair_styles_male_list += H.name
+				hair_styles_female_list += H.name
+
+	sortTim(hair_styles_list, GLOBAL_PROC_REF(cmp_text_asc))
+	sortTim(hair_styles_male_list, GLOBAL_PROC_REF(cmp_text_asc))
+	sortTim(hair_styles_female_list, GLOBAL_PROC_REF(cmp_text_asc))
+
+	//Gradients - Initialise all /datum/sprite_accessory/hair_gradients into an list indexed by hairgradient-style name
+	paths = subtypesof(/datum/sprite_accessory/hair_gradients)
+	for(var/path in paths)
+		var/datum/sprite_accessory/hair_gradients/H = new path()
+		hair_gradient_styles_list[H.name] = H
+
+	sortTim(hair_gradient_styles_list, GLOBAL_PROC_REF(cmp_text_asc))
 
 	//Facial Hair - Initialise all /datum/sprite_accessory/facial_hair into an list indexed by facialhair-style name
-	paths = typesof(/datum/sprite_accessory/facial_hair) - /datum/sprite_accessory/facial_hair
+	paths = subtypesof(/datum/sprite_accessory/facial_hair)
 	for(var/path in paths)
 		var/datum/sprite_accessory/facial_hair/H = new path()
-		GLOB.facial_hair_styles_list[H.name] = H
+		facial_hair_styles_list[H.name] = H
+		switch(H.gender)
+			if(MALE)	facial_hair_styles_male_list += H.name
+			if(FEMALE)	facial_hair_styles_female_list += H.name
+			else
+				facial_hair_styles_male_list += H.name
+				facial_hair_styles_female_list += H.name
 
-	//Body markings - Initialise all /datum/sprite_accessory/marking into an list indexed by marking name
-	paths = typesof(/datum/sprite_accessory/marking) - /datum/sprite_accessory/marking
+	sortTim(facial_hair_styles_list, GLOBAL_PROC_REF(cmp_text_asc))
+	sortTim(facial_hair_styles_male_list, GLOBAL_PROC_REF(cmp_text_asc))
+	sortTim(facial_hair_styles_female_list, GLOBAL_PROC_REF(cmp_text_asc))
+
+	//Body markings
+	paths = subtypesof(/datum/sprite_accessory/marking)
 	for(var/path in paths)
 		var/datum/sprite_accessory/marking/M = new path()
-		GLOB.body_marking_styles_list[M.name] = M
+		body_marking_styles_list[M.name] = M
 
-	//Surgery Steps - Initialize all /datum/surgery_step into a list
-	paths = typesof(/datum/surgery_step) - /datum/surgery_step
+	sortTim(body_marking_styles_list, GLOBAL_PROC_REF(cmp_text_asc))
+
+	//Disability datums
+	paths = subtypesof(/datum/character_disabilities)
 	for(var/path in paths)
-		var/datum/surgery_step/S = new path()
-		GLOB.surgery_steps += S
-	sort_surgeries()
+		var/datum/character_disabilities/T = new path()
+		chargen_disabilities_list[T.name] = T
+
+	sortTim(chargen_disabilities_list, GLOBAL_PROC_REF(cmp_text_asc))
 
 	//List of job. I can't believe this was calculated multiple times per tick!
-	paths = typesof(/datum/job)-/datum/job
+	paths = subtypesof(/datum/job)
 	paths -= exclude_jobs
 	for(var/T in paths)
 		var/datum/job/J = new T
 		joblist[J.title] = J
 
 	//Languages and species.
-	paths = typesof(/datum/language)-/datum/language
+	paths = subtypesof(/datum/language)
 	for(var/T in paths)
 		var/datum/language/L = new T
 		all_languages[L.name] = L
@@ -212,112 +177,74 @@ var/global/list/string_slot_flags = list(
 			language_keys[lowertext(L.key)] = L
 
 	var/rkey = 0
-	paths = typesof(/datum/species)
+	paths = subtypesof(/datum/species)
 	for(var/T in paths)
-
 		rkey++
-
-		var/datum/species/S = T
-		if(!initial(S.name))
-			continue
-
-		S = new T
+		var/datum/species/S = new T
 		S.race_key = rkey //Used in mob icon caching.
+		if(length(S.autohiss_basic_map) || length(S.autohiss_extra_map) || length(S.autohiss_basic_extend) || length(S.autohiss_extra_extend))
+			S.has_autohiss = TRUE
 		all_species[S.name] = S
+		all_species_short_names |= S.short_name
 
-		if(!(S.spawn_flags & SPECIES_IS_RESTRICTED))
-			playable_species += S.name
-		if(S.spawn_flags & SPECIES_IS_WHITELISTED)
+	sortTim(all_species, GLOBAL_PROC_REF(cmp_text_asc))
+
+	// The other lists are generated *after* we sort the main one so they don't need sorting too.
+	for (var/thing in all_species)
+		var/datum/species/S = all_species[thing]
+
+		if(!(S.spawn_flags & IS_RESTRICTED) && S.category_name)
+			if(!length(playable_species[S.category_name]))
+				playable_species[S.category_name] = list()
+			playable_species[S.category_name] += S.name
+		if(S.spawn_flags & IS_WHITELISTED)
 			whitelisted_species += S.name
 
 	//Posters
-	paths = typesof(/datum/poster) - /datum/poster
+	paths = subtypesof(/datum/poster)
 	for(var/T in paths)
 		var/datum/poster/P = new T
 		poster_designs += P
 
-	//Grabs
-	paths = typesof(/datum/grab) - /datum/grab
-	for(var/T in paths)
-		var/datum/grab/G = new T
-		if(G.state_name)
-			all_grabstates[G.state_name] = G
-
-	paths = typesof(/obj/item/grab) - /obj/item/grab
-	for(var/T in paths)
-		var/obj/item/grab/G = T
-		all_grabobjects[initial(G.type_name)] = T
-
-	for(var/grabstate_name in all_grabstates)
-		var/datum/grab/G = all_grabstates[grabstate_name]
-		G.refresh_updown()
-
-	//Manuals
-	paths = typesof(/obj/item/book/wiki) - /obj/item/book/wiki - /obj/item/book/wiki/template
-	for(var/booktype in paths)
-		var/obj/item/book/wiki/manual = new booktype(null, null, null, null, TRUE)
-		if(manual.topic)
-			GLOB.premade_manuals[manual.topic] = booktype
-
-	paths = typesof(/datum/body_build)
-	for(var/T in paths)
-		var/datum/body_build/BB = new T
-		GLOB.bb_clothing_icon_states[BB.type] = list()
-		GLOB.bb_clothing_icon_states[BB.type][slot_hidden_str]     = icon_states(BB.clothing_icons["slot_hidden"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_w_uniform_str]  = icon_states(BB.clothing_icons["slot_w_uniform"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_wear_suit_str]  = icon_states(BB.clothing_icons["slot_suit"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_gloves_str]     = icon_states(BB.clothing_icons["slot_gloves"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_glasses_str]    = icon_states(BB.clothing_icons["slot_glasses"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_l_ear_str]      = icon_states(BB.clothing_icons["slot_l_ear"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_r_ear_str]      = icon_states(BB.clothing_icons["slot_r_ear"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_wear_mask_str]  = icon_states(BB.clothing_icons["slot_wear_mask"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_head_str]       = icon_states(BB.clothing_icons["slot_head"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_shoes_str]      = icon_states(BB.clothing_icons["slot_shoes"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_belt_str]       = icon_states(BB.clothing_icons["slot_belt"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_s_store_str]    = icon_states(BB.clothing_icons["slot_s_store"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_back_str]       = icon_states(BB.clothing_icons["slot_back"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_tie_str]        = icon_states(BB.clothing_icons["slot_tie"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_l_hand_str]     = icon_states(BB.clothing_icons["slot_l_hand"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_r_hand_str]     = icon_states(BB.clothing_icons["slot_r_hand"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_wear_id_str]    = icon_states(BB.clothing_icons["slot_wear_id"])
-		GLOB.bb_clothing_icon_states[BB.type][slot_handcuffed_str] = icon_states(BB.misk_icon)
-		GLOB.bb_clothing_icon_states[BB.type][slot_legcuffed_str]  = icon_states(BB.misk_icon)
-
 	return 1
+
+var/global/static/list/correct_punctuation = list("!" = TRUE, "." = TRUE, "?" = TRUE, "-" = TRUE, "~" = TRUE, "*" = TRUE, "/" = TRUE, ">" = TRUE, "\"" = TRUE, "'" = TRUE, "," = TRUE, ":" = TRUE, ";" = TRUE, "\"" = TRUE)
 
 /* // Uncomment to debug chemical reaction list.
 /client/verb/debug_chemical_list()
 
-	for (var/reaction in chemical_reactions_list)
-		. += "chemical_reactions_list\[\"[reaction]\"\] = \"[chemical_reactions_list[reaction]]\"\n"
-		if(islist(chemical_reactions_list[reaction]))
-			var/list/L = chemical_reactions_list[reaction]
+	for (var/reaction in SSchemistry.chemical_reactions)
+		. += "SSchemistry.chemical_reactions\[\"[reaction]\"\] = \"[SSchemistry.chemical_reactions[reaction]]\"\n"
+		if(islist(SSchemistry.chemical_reactions[reaction]))
+			var/list/L = SSchemistry.chemical_reactions[reaction]
 			for(var/t in L)
 				. += "    has: [t]\n"
-	log_debug(.)
-
+	world << .
 */
 
 //*** params cache
-
+/*
+	Ported from bay12, this seems to be used to store and retrieve 2D vectors as strings, as well as
+	decoding them into a number
+*/
 var/global/list/paramslist_cache = list()
 
 #define cached_key_number_decode(key_number_data) cached_params_decode(key_number_data, /proc/key_number_decode)
 #define cached_number_list_decode(number_list_data) cached_params_decode(number_list_data, /proc/number_list_decode)
 
-/proc/cached_params_decode(params_data, decode_proc)
+/proc/cached_params_decode(var/params_data, var/decode_proc)
 	. = paramslist_cache[params_data]
 	if(!.)
 		. = call(decode_proc)(params_data)
 		paramslist_cache[params_data] = .
 
-/proc/key_number_decode(key_number_data)
+/proc/key_number_decode(var/key_number_data)
 	var/list/L = params2list(key_number_data)
 	for(var/key in L)
 		L[key] = text2num(L[key])
 	return L
 
-/proc/number_list_decode(number_list_data)
+/proc/number_list_decode(var/number_list_data)
 	var/list/L = params2list(number_list_data)
 	for(var/i in 1 to L.len)
 		L[i] = text2num(L[i])

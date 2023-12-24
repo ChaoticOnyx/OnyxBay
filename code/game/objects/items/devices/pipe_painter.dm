@@ -1,11 +1,9 @@
 /obj/item/device/pipe_painter
 	name = "pipe painter"
-	icon = 'icons/obj/device.dmi'
-	icon_state = "pipainter"
-	item_state = "flight"
-	desc = "A long, slender device consisting of a pigment synthesizer, dual applicators, and a small battery, all hooked up to a long extendable rod."
-	description_info = "Use the pipe painter to specify which color you'd like to apply to pipes. Click on exposed piping to alter its hue."
-	description_fluff = "Though by no means a modern miracle, synthesized pigments have revolutionized the electrical engineering industry, making time-consuming painting and color coding jobs an effortless non-issue."
+	icon = 'icons/obj/item/tools/pipe_painter.dmi'
+	icon_state = "pipe_painter"
+	item_state = "pipe_painter"
+	contained_sprite = TRUE
 	var/list/modes
 	var/mode
 
@@ -16,19 +14,23 @@
 		modes += "[C]"
 	mode = pick(modes)
 
-/obj/item/device/pipe_painter/afterattack(atom/A, mob/user as mob, proximity)
+/obj/item/device/pipe_painter/afterattack(var/atom/A, var/mob/user, proximity)
 	if(!proximity)
 		return
-
-	if(!istype(A,/obj/machinery/atmospherics/pipe) || istype(A,/obj/machinery/atmospherics/pipe/tank) || istype(A,/obj/machinery/atmospherics/pipe/vent) || istype(A,/obj/machinery/atmospherics/pipe/simple/heat_exchanging) || !in_range(user, A))
+	if(!in_range(user, A))
 		return
-	var/obj/machinery/atmospherics/pipe/P = A
+	else if(is_type_in_list(A, list(/obj/machinery/atmospherics/pipe/tank, /obj/machinery/atmospherics/pipe/simple/heat_exchanging)))
+		return
+	else if(istype(A,/obj/machinery/atmospherics/pipe))
+		var/obj/machinery/atmospherics/pipe/P = A
+		P.change_color(pipe_colors[mode])
+	else if(istype(A, /obj/item/pipe) && pipe_color_check(pipe_colors[mode]))
+		var/obj/item/pipe/P = A
+		P.color = pipe_colors[mode]
 
-	P.change_color(pipe_colors[mode])
+/obj/item/device/pipe_painter/attack_self(var/mob/user)
+	mode = tgui_input_list(user, "Which colour do you want to use?", "Pipe Painter", modes, mode)
 
-/obj/item/device/pipe_painter/attack_self(mob/user as mob)
-	mode = input("Which colour do you want to use?", "Pipe painter", mode) in modes
-
-/obj/item/device/pipe_painter/_examine_text(mob/user)
+/obj/item/device/pipe_painter/examine(var/mob/user)
 	. = ..()
-	. += "\nIt is in [mode] mode."
+	to_chat(user, "It is in [mode] mode.")

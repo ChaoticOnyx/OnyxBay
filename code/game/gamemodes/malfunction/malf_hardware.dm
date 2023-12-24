@@ -8,7 +8,7 @@
 	if(owner && istype(owner))
 		owner.hardware = src
 		if(driver)
-			owner.verbs += driver
+			add_verb(owner, driver)
 
 /datum/malf_hardware/proc/get_examine_desc()
 	return "It has some sort of hardware attached to its core"
@@ -24,7 +24,7 @@
 /datum/malf_hardware/apu_gen/get_examine_desc()
 	var/msg = "It seems to have some sort of power generator attached to its core."
 	if(owner.hardware_integrity() < 50)
-		msg += "<span class='warning'> It seems to be too damaged to function properly.</span>"
+		msg += "<span class='warning'>It seems to be too damaged to function properly.</span>"
 	else if(owner.APU_power)
 		msg += " The generator appears to be active."
 	return msg
@@ -51,11 +51,17 @@
 /datum/malf_hardware/core_bomb/get_examine_desc()
 	return "<span class='warning'>It seems to have grey blocks of unknown substance and some circuitry connected to it's core. [owner.bombing_core ? "A red light is blinking on the circuit." : ""]</span>"
 
-/datum/malf_hardware/instant_research
-	name = "Quantum Knowledge Databank"
-	desc = "A highly advanced self-learning supercomputer that is capable of rapidly performing predefined research tasks. Once activated advances your research in all trees by one tier, but burns out in the process."
-	driver = /datum/game_mode/malfunction/verb/boost_research
-	var/spent = FALSE
+/datum/malf_hardware/strong_turrets
+	name = "Turrets Focus Enhancer"
+	desc = "Turrets are upgraded to have larger rate of fire and much larger damage. This however massively increases power usage when firing."
 
-/datum/malf_hardware/instant_research/get_examine_desc()
-	return "It seems to have an unidentified circuit board connected to it's core.[spent ? "It is not powered and seems to be burned out." : "It is emitting a faint pulsating light."]"
+/datum/malf_hardware/strong_turrets/get_examine_desc()
+	return "It seems to have extra wiring running from it's core to nearby turrets."
+
+/datum/malf_hardware/strong_turrets/install()
+	..()
+	for(var/obj/machinery/porta_turret/T in SSmachinery.machinery)
+		T.maxhealth = round(initial(T.maxhealth) * 2)
+		T.shot_delay = round(initial(T.shot_delay) / 2)
+		T.auto_repair = 1
+		T.change_power_consumption(round(initial(T.active_power_usage)) * 5, POWER_USE_ACTIVE)

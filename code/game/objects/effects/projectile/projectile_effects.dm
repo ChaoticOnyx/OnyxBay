@@ -1,30 +1,15 @@
 /obj/effect/projectile
 	name = "pew"
 	icon = 'icons/obj/projectiles.dmi'
-	icon_state = "nothing"
-	plane = EFFECTS_ABOVE_LIGHTING_PLANE
-	layer = BEAM_PROJECTILE_LAYER //Muzzle flashes would be above the lighting plane anyways.
+	icon_state = null
+	layer = 4.5
 	anchored = TRUE
 	unacidable = TRUE
+	light_power = 1
+	light_range = 2
 	light_color = "#00ffff"
-	light_outer_range = 2
-	light_max_bright = 1
-	mouse_opacity = 0
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	appearance_flags = 0
-	var/overlay_state
-	var/overlay_color
-
-/obj/effect/projectile/invislight
-	alpha = 0
-	invisibility = INVISIBILITY_MAXIMUM
-
-/obj/effect/projectile/invislight/proc/copy_from(obj/effect/projectile/owner)
-	light_max_bright =    initial(owner.light_max_bright)
-	light_inner_range =   initial(owner.light_inner_range)
-	light_outer_range =   initial(owner.light_outer_range)
-	light_falloff_curve = initial(owner.light_falloff_curve)
-	light_color =         initial(owner.light_color)
-	set_light(light_max_bright, light_inner_range, light_outer_range, light_falloff_curve, light_color)
 
 /obj/effect/projectile/singularity_pull()
 	return
@@ -34,28 +19,26 @@
 
 /obj/effect/projectile/proc/scale_to(nx,ny,override=TRUE)
 	var/matrix/M
-	if(override)
-		M = new
-	else
+	if(!override)
 		M = transform
+	else
+		M = new
 	M.Scale(nx,ny)
 	transform = M
 
 /obj/effect/projectile/proc/turn_to(angle,override=TRUE)
 	var/matrix/M
-	if(override)
-		M = new
-	else
+	if(!override)
 		M = transform
+	else
+		M = new
 	M.Turn(angle)
 	transform = M
 
-/obj/effect/projectile/Initialize(mapload, angle_override, p_x, p_y, color_override, scaling = 1)
+/obj/effect/projectile/New(angle_override, p_x, p_y, color_override, scaling = 1)
 	if(angle_override && p_x && p_y && color_override && scaling)
 		apply_vars(angle_override, p_x, p_y, color_override, scaling)
-	. = ..()
-	if(overlay_state)
-		update_icon()
+	return ..()
 
 /obj/effect/projectile/proc/apply_vars(angle_override, p_x = 0, p_y = 0, color_override, scaling = 1, new_loc, increment = 0)
 	var/mutable_appearance/look = new(src)

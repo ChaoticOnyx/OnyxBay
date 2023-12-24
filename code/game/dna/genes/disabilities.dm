@@ -24,12 +24,12 @@
 	// Yay, you're no longer growing 3 arms
 	var/deactivation_message=""
 
-/datum/dna/gene/disability/can_activate(mob/M,flags)
+/datum/dna/gene/disability/can_activate(var/mob/M,var/flags)
 	return 1 // Always set!
 
-/datum/dna/gene/disability/activate(mob/M, connected, flags)
-	if(mutation && !(mutation in M.mutations))
-		M.mutations.Add(mutation)
+/datum/dna/gene/disability/activate(var/mob/M, var/connected, var/flags)
+	if(mutation && NOT_FLAG(M.mutations, mutation))
+		M.mutations |= mutation
 	if(disability)
 		M.disabilities|=disability
 	if(sdisability)
@@ -39,9 +39,9 @@
 	else
 		testing("[name] has no activation message.")
 
-/datum/dna/gene/disability/deactivate(mob/M, connected, flags)
-	if(mutation && (mutation in M.mutations))
-		M.mutations.Remove(mutation)
+/datum/dna/gene/disability/deactivate(var/mob/M, var/connected, var/flags)
+	if(mutation && HAS_FLAG(M.mutations, mutation))
+		M.mutations &= ~mutation
 	if(disability)
 		M.disabilities &= (~disability)
 	if(sdisability)
@@ -58,7 +58,7 @@
 	mutation=mHallucination
 
 /datum/dna/gene/disability/hallucinate/New()
-	block=GLOB.HALLUCINATIONBLOCK
+	block=HALLUCINATIONBLOCK
 
 /datum/dna/gene/disability/epilepsy
 	name="Epilepsy"
@@ -66,7 +66,7 @@
 	disability=EPILEPSY
 
 /datum/dna/gene/disability/epilepsy/New()
-	block=GLOB.HEADACHEBLOCK
+	block=HEADACHEBLOCK
 
 /datum/dna/gene/disability/cough
 	name="Coughing"
@@ -74,31 +74,23 @@
 	disability=COUGHING
 
 /datum/dna/gene/disability/cough/New()
-	block=GLOB.COUGHBLOCK
+	block=COUGHBLOCK
 
 /datum/dna/gene/disability/clumsy
 	name="Clumsiness"
 	activation_message="You feel lightheaded."
-	mutation=MUTATION_CLUMSY
+	mutation=CLUMSY
 
 /datum/dna/gene/disability/clumsy/New()
-	block=GLOB.CLUMSYBLOCK
+	block=CLUMSYBLOCK
 
-/datum/dna/gene/disability/tourettes
-	name="Tourettes"
-	activation_message="You twitch."
-	disability=TOURETTES
+/datum/dna/gene/disability/stutter
+	name="Stuttering"
+	activation_message="You feel like forming words becomes increasingly difficult."
+	disability=STUTTERING
 
-/datum/dna/gene/disability/tourettes/New()
-	block=GLOB.TWITCHBLOCK
-
-/datum/dna/gene/disability/nervousness
-	name="Nervousness"
-	activation_message="You feel nervous."
-	disability=NERVOUS
-
-/datum/dna/gene/disability/nervousness/New()
-	block=GLOB.NERVOUSBLOCK
+/datum/dna/gene/disability/stutter/New()
+	block=STUTTERBLOCK
 
 /datum/dna/gene/disability/blindness
 	name="Blindness"
@@ -106,7 +98,7 @@
 	sdisability=BLIND
 
 /datum/dna/gene/disability/blindness/New()
-	block=GLOB.BLINDBLOCK
+	block=BLINDBLOCK
 
 /datum/dna/gene/disability/deaf
 	name="Deafness"
@@ -114,11 +106,7 @@
 	sdisability=DEAF
 
 /datum/dna/gene/disability/deaf/New()
-	block=GLOB.DEAFBLOCK
-
-/datum/dna/gene/disability/deaf/activate(mob/M, connected, flags)
-	..(M,connected,flags)
-	M.ear_deaf = 1
+	block=DEAFBLOCK
 
 /datum/dna/gene/disability/nearsighted
 	name="Nearsightedness"
@@ -126,12 +114,4 @@
 	disability=NEARSIGHTED
 
 /datum/dna/gene/disability/nearsighted/New()
-	block=GLOB.GLASSESBLOCK
-
-/datum/dna/gene/disability/bartender
-	name = "Fine motor skills"
-	activation_message = "You fingers feel weird..."
-	mutation = MUTATION_BARTENDER
-
-/datum/dna/gene/disability/bartender/New()
-	block = GLOB.BARTENDERBLOCK
+	block=GLASSESBLOCK

@@ -1,74 +1,71 @@
-#define EMITTER_DAMAGE_POWER_TRANSFER 450 //used to transfer power to containment field generators
+#define EMITTER_LOOSE 0
+#define EMITTER_BOLTED 1
+#define EMITTER_WELDED 2
 
 /obj/machinery/power/emitter
 	name = "emitter"
-	desc = "A massive heavy industrial laser. This design is a fixed installation, capable of shooting in only one direction."
-	description_info = "You must secure this in place with a wrench and weld it to the floor before using it. The emitter will only fire if it is installed above a cable endpoint. Clicking will toggle it on and off, at which point, so long as it remains powered, it will fire in a single direction in bursts of four."
-	description_fluff = "Lasers like this one have been in use for ages, in applications such as mining, cutting, and in the startup sequence of many advanced space station and starship engines."
-	description_antag = "This baby is capable of slicing through walls, sealed lockers, and people."
-	icon = 'icons/obj/singularity.dmi'
+	desc = "It is a heavy duty industrial laser."
+	icon = 'icons/obj/emitter.dmi'
 	icon_state = "emitter"
-	anchored = 0
-	density = 1
+	anchored = FALSE
+	density = TRUE
 	req_access = list(access_engine_equip)
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 0,
-		RADIATION_BETA_PARTICLE = 0,
-		RADIATION_HAWKING = 0
-	)
+	obj_flags = OBJ_FLAG_ROTATABLE | OBJ_FLAG_SIGNALER
+	var/id
 
-	var/id = null
+	use_power = POWER_USE_OFF	//uses powernet power, not APC power
+	active_power_usage = 30000	//30 kW laser. I guess that means 30 kJ per shot.
 
-	active_power_usage = 100 KILO WATTS
-
-	var/efficiency = 0.6	// Energy efficiency. 60% at this time, so 50kW+1 load means 30kW+0,6 laser pulses.
-	var/active = 0
-	var/powered = 0
+	var/active = FALSE
+	var/powered = FALSE
 	var/fire_delay = 100
 	var/max_burst_delay = 100
 	var/min_burst_delay = 20
 	var/burst_shots = 3
 	var/last_shot = 0
 	var/shot_number = 0
-	var/state = 0
-	var/locked = 0
+	var/shot_counter = 0
+	var/state = EMITTER_LOOSE
+	var/locked = FALSE
+
+	var/special_emitter = FALSE // special emitters notify admins if something happens to them, to prevent grief
 
 	var/_wifi_id
 	var/datum/wifi/receiver/button/emitter/wifi_receiver
 
-/obj/machinery/power/emitter/anchored
-	anchored = 1
-	state = 2
+	var/datum/effect_system/sparks/spark_system
 
-/obj/machinery/power/emitter/verb/rotate()
-	set name = "Rotate"
-	set category = "Object"
-	set src in oview(1)
+/obj/machinery/power/emitter/examine(mob/user, distance, is_adjacent)
+	. = ..()
+	switch(state)
+		if(EMITTER_LOOSE)
+			to_chat(user, SPAN_NOTICE("\The [src] isn't attached to anything and is not ready to fire."))
+		if(EMITTER_BOLTED)
+			to_chat(user, SPAN_NOTICE("\The [src] is bolted to the floor, but not yet ready to fire."))
+		if(EMITTER_WELDED)
+			to_chat(user, SPAN_WARNING("\The [src] is bolted and welded to the floor, and ready to fire."))
+	if(is_adjacent)
+		to_chat(user, SPAN_NOTICE("The shot counter display reads: [shot_counter]"))
 
-	if(usr.incapacitated())
-		return
-
-	if(anchored)
-		to_chat(usr, "It is fastened to the floor!")
-		return 0
-	set_dir(turn(dir, 90))
-	return 1
+/obj/machinery/power/emitter/Destroy()
+	if(special_emitter)
+		message_admins("Emitter deleted at ([x],[y],[z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)",0,1)
+		log_game("Emitter deleted at ([x],[y],[z])")
+		investigate_log("<span class='warning'>deleted</span> at ([x],[y],[z])","singulo")
+	QDEL_NULL(wifi_receiver)
+	QDEL_NULL(spark_system)
+	QDEL_NULL(signaler)
+	return ..()
 
 /obj/machinery/power/emitter/Initialize()
 	. = ..()
-	if(state == 2 && anchored)
+	spark_system = bind_spark(src, 5, alldirs)
+	if(state == EMITTER_WELDED && anchored)
 		connect_to_network()
 		if(_wifi_id)
 			wifi_receiver = new(_wifi_id, src)
 
-/obj/machinery/power/emitter/Destroy()
-	log_and_message_admins("deleted \the [src]")
-	investigate_log("<font color='red'>deleted</font> at ([x],[y],[z])","singulo")
-	qdel(wifi_receiver)
-	wifi_receiver = null
-	return ..()
-
-/obj/machinery/power/emitter/on_update_icon()
+/obj/machinery/power/emitter/update_icon()
 	if(active && powernet && avail(active_power_usage))
 		icon_state = "emitter_+a"
 	else
@@ -76,178 +73,205 @@
 
 /obj/machinery/power/emitter/attack_hand(mob/user)
 	add_fingerprint(user)
-	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
-		if(!H.IsAdvancedToolUser())
-			return
 	activate(user)
 
 /obj/machinery/power/emitter/proc/activate(mob/user)
-	if(state == 2)
+	if(state == EMITTER_WELDED)
 		if(!powernet)
-			to_chat(user, "\The [src] isn't connected to a wire.")
-			return 1
+			if(user)
+				to_chat(user, SPAN_WARNING("\The [src] isn't connected to a powered wire."))
+			return TRUE
 		if(!locked)
-			var/area/A = get_area(src)
 			if(active)
-				active = 0
-				to_chat(user, SPAN_NOTICE("You turn off \the [src]."))
-				log_admin("[key_name(user)] turned off \the [src] at X:[x], Y:[y], Z:[z] Area: [A.name].")
-				message_admins("[key_name_admin(user)] turned off \the [src].")
-				investigate_log("turned <font color='red'>off</font> by [user.key]","singulo")
+				active = FALSE
+				if(user)
+					to_chat(user, SPAN_NOTICE("You deactivate \the [src]."))
+					if(special_emitter)
+						message_admins("Emitter turned off by [key_name_admin(user, user.client)](<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A>) in ([x],[y],[z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)",0,1)
+						log_game("Emitter turned off by [user.ckey]([user]) in ([x],[y],[z])",ckey=key_name(user))
+						investigate_log("turned <span class='warning'>off</span> by [user.key]","singulo")
 			else
-				active = 1
-				to_chat(user, SPAN_WARNING("You turn on \the [src]."))
+				active = TRUE
 				shot_number = 0
-				fire_delay = get_initial_fire_delay()
-				log_admin("[key_name(user)] turned on \the [src] at X:[x], Y:[y], Z:[z] Area: [A.name].")
-				message_admins("[key_name_admin(user)] turned on \the [src].")
-				investigate_log("turned <font color='green'>on</font> by [user.key]","singulo")
+				shot_counter = 0
+				fire_delay = 100
+				if(user)
+					to_chat(user, SPAN_NOTICE("You activate \the [src]."))
+					if(special_emitter)
+						message_admins("Emitter turned on by [key_name_admin(user, user.client)](<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A>) in ([x],[y],[z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)",0,1)
+						log_game("Emitter turned on by [user.ckey]([user]) in ([x],[y],[z])",ckey=key_name(user))
+						investigate_log("turned <font color='green'>on</font> by [user.key]","singulo")
 			update_icon()
 		else
-			to_chat(user, SPAN_WARNING("The controls are locked!"))
+			if(user)
+				to_chat(user, SPAN_WARNING("The controls are locked!"))
 	else
-		to_chat(user, SPAN_WARNING("\The [src] needs to be firmly secured to the floor first."))
-		return 1
+		if(user)
+			to_chat(user, SPAN_WARNING("\The [src] needs to be firmly secured to the floor first."))
+		return TRUE
+
 
 /obj/machinery/power/emitter/emp_act(severity)
-	return 1
+	. = ..()
 
-/obj/machinery/power/emitter/Process()
+	activate(null)
+	return TRUE
+
+/obj/machinery/power/emitter/process()
 	if(stat & (BROKEN))
 		return
-	if(state != 2 || (!powernet && active_power_usage))
-		active = 0
+	if(state != EMITTER_WELDED || (!powernet && active_power_usage))
+		active = FALSE
 		update_icon()
 		return
-	if(((last_shot + fire_delay) <= world.time) && (active == 1))
-
+	if(((last_shot + fire_delay) <= world.time) && active)
 		var/actual_load = draw_power(active_power_usage)
 		if(actual_load >= active_power_usage) //does the laser have enough power to shoot?
 			if(!powered)
-				powered = 1
+				powered = TRUE
 				update_icon()
-				investigate_log("regained power and turned <font color='green'>on</font>","singulo")
+				if(special_emitter)
+					investigate_log("regained power and turned <font color='green'>on</font>","singulo")
 		else
 			if(powered)
-				powered = 0
+				powered = FALSE
 				update_icon()
-				investigate_log("lost power and turned <font color='red'>off</font>","singulo")
+				if(special_emitter)
+					investigate_log("lost power and turned <span class='warning'>off</span>","singulo")
 			return
 
 		last_shot = world.time
-		if(shot_number < burst_shots)
+		if (shot_number < burst_shots)
 			fire_delay = get_burst_delay()
-			shot_number ++
+			shot_number++
 		else
 			fire_delay = get_rand_burst_delay()
 			shot_number = 0
 
 		//need to calculate the power per shot as the emitter doesn't fire continuously.
-		var/burst_time = (min_burst_delay + max_burst_delay)/2 + 2*(burst_shots-1)
-		var/power_per_shot = (active_power_usage * efficiency) * (burst_time/10) / burst_shots
+		var/burst_time = (min_burst_delay + max_burst_delay) / 2 + 2 * (burst_shots - 1)
+		var/power_per_shot = active_power_usage * (burst_time / 10) / burst_shots
 
+		playsound(get_turf(src), 'sound/weapons/emitter.ogg', 15, TRUE, 2, 0.5, TRUE)
 		if(prob(35))
-			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
-			s.set_up(5, 1, src)
-			s.start()
+			spark_system.queue()
 
 		var/obj/item/projectile/beam/emitter/A = get_emitter_beam()
-		playsound(loc, A.fire_sound, 25, 1)
-		A.damage = round(power_per_shot/EMITTER_DAMAGE_POWER_TRANSFER)
-		A.pixel_x = 0
-		A.pixel_y = 0
-		A.launch(get_step(loc, dir))
+		A.damage = round(power_per_shot / EMITTER_DAMAGE_POWER_TRANSFER)
+		A.launch_projectile(get_step(src, dir))
+		shot_counter++
 
 /obj/machinery/power/emitter/attackby(obj/item/W, mob/user)
-
-	if(isWrench(W))
+	if(W.iswrench())
 		if(active)
-			to_chat(user, "Turn off [src] first.")
+			to_chat(user, SPAN_WARNING("You cannot unbolt \the [src] while it's active."))
 			return
 		switch(state)
-			if(0)
-				state = 1
-				playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
-				user.visible_message("[user.name] secures [src] to the floor.", \
-					"You secure the external reinforcing bolts to the floor.", \
-					"You hear a ratchet")
-				anchored = 1
-			if(1)
-				state = 0
-				playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
-				user.visible_message("[user.name] unsecures [src] reinforcing bolts from the floor.", \
-					"You undo the external reinforcing bolts.", \
-					"You hear a ratchet")
-				anchored = 0
-			if(2)
-				to_chat(user, "<span class='warning'>\The [src] needs to be unwelded from the floor.</span>")
+			if(EMITTER_LOOSE)
+				state = EMITTER_BOLTED
+				playsound(get_turf(src), W.usesound, 75, TRUE)
+				user.visible_message(SPAN_NOTICE("\The [user] secures \the [src] to the floor."), \
+					SPAN_NOTICE("You secure \the [src]'s external reinforcing bolts to the floor."), \
+					SPAN_WARNING("You hear a ratcheting noise."))
+				anchored = TRUE
+			if(EMITTER_BOLTED)
+				state = EMITTER_LOOSE
+				playsound(get_turf(src), W.usesound, 75, TRUE)
+				user.visible_message(SPAN_NOTICE("\The [user] unsecures \the [src]'s reinforcing bolts from the floor."), \
+					SPAN_NOTICE("You undo \the [src]'s external reinforcing bolts."), \
+					SPAN_WARNING("You hear a ratcheting noise."))
+				anchored = FALSE
+			if(EMITTER_WELDED)
+				to_chat(user, SPAN_WARNING("\The [src] needs to be unwelded from the floor."))
 		return
 
-	if(isWelder(W))
+	if(W.iswelder())
 		var/obj/item/weldingtool/WT = W
 		if(active)
-			to_chat(user, "Turn off [src] first.")
+			to_chat(user, SPAN_NOTICE("You cannot unweld \the [src] while it's active."))
 			return
 		switch(state)
-			if(0)
-				to_chat(user, "<span class='warning'>\The [src] needs to be wrenched to the floor.</span>")
-			if(1)
-				if(WT.remove_fuel(0,user))
-					playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
-					user.visible_message("[user.name] starts to weld [src] to the floor.", \
-						"You start to weld [src] to the floor.", \
-						"You hear welding")
-					if(do_after(user,20,src))
-						if(!src || !WT.isOn()) return
-						state = 2
-						to_chat(user, "You weld [src] to the floor.")
+			if(EMITTER_LOOSE)
+				to_chat(user, SPAN_WARNING("\The [src] needs to be wrenched to the floor."))
+			if(EMITTER_BOLTED)
+				if(WT.use(0, user))
+					playsound(get_turf(src), 'sound/items/welder_pry.ogg', 50, TRUE)
+					user.visible_message(SPAN_NOTICE("\The [user] starts to weld \the [src] to the floor."), \
+						SPAN_NOTICE("You start to weld \the [src] to the floor."), \
+						SPAN_WARNING("You hear the sound of metal being welded."))
+					if(W.use_tool(src, user, 20, volume = 50))
+						if(!src || !WT.isOn())
+							return
+						state = EMITTER_WELDED
+						to_chat(user, SPAN_NOTICE("You weld \the [src] to the floor."))
 						connect_to_network()
 				else
-					to_chat(user, "<span class='warning'>You need more welding fuel to complete this task.</span>")
-			if(2)
-				if(WT.remove_fuel(0,user))
-					playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
-					user.visible_message("[user.name] starts to cut [src] free from the floor.", \
-						"You start to cut [src] free from the floor.", \
-						"You hear welding")
-					if(do_after(user,20,src))
-						if(!src || !WT.isOn()) return
-						state = 1
-						to_chat(user, "You cut [src] free from the floor.")
+					to_chat(user, SPAN_WARNING("You need more welding fuel to complete this task."))
+			if(EMITTER_WELDED)
+				if(WT.use(0, user))
+					playsound(get_turf(src), 'sound/items/welder_pry.ogg', 50, TRUE)
+					user.visible_message(SPAN_NOTICE("\The [user] starts to cut \the [src] free from the floor."), \
+						SPAN_NOTICE("You start to cut \the [src] free from the floor."), \
+						SPAN_WARNING("You hear the sound of metal being welded."))
+					if(W.use_tool(src, user, 20, volume = 50))
+						if(!src || !WT.isOn())
+							return
+						state = EMITTER_BOLTED
+						to_chat(user, SPAN_NOTICE("You cut \the [src] free from the floor."))
 						disconnect_from_network()
 				else
-					to_chat(user, "<span class='warning'>You need more welding fuel to complete this task.</span>")
+					to_chat(user, SPAN_WARNING("You need more welding fuel to complete this task."))
 		return
 
-	if(istype(W, /obj/item/card/id) || istype(W, /obj/item/device/pda))
+	if(W.GetID())
 		if(emagged)
-			to_chat(user, "<span class='warning'>The lock seems to be broken.</span>")
+			to_chat(user, SPAN_WARNING("The lock seems to be broken."))
 			return
 		if(allowed(user))
-			locked = !locked
-			to_chat(user, "The controls are now [locked ? "locked." : "unlocked."]")
+			if(active)
+				locked = !locked
+				to_chat(user, SPAN_NOTICE("The controls are now [locked ? "locked." : "unlocked."]"))
+			else
+				locked = FALSE //just in case it somehow gets locked
+				to_chat(user, SPAN_WARNING("The controls can only be locked when \the [src] is online."))
 		else
-			to_chat(user, "<span class='warning'>Access denied.</span>")
+			to_chat(user, SPAN_WARNING("Access denied."))
 		return
 	..()
 	return
 
 /obj/machinery/power/emitter/emag_act(remaining_charges, mob/user)
 	if(!emagged)
-		locked = 0
-		emagged = 1
-		user.visible_message("[user.name] emags [src].","<span class='warning'>You short out the lock.</span>")
-		return 1
+		locked = FALSE
+		emagged = TRUE
+		// Give this boy the buff it deserves. - Geeves
+		burst_shots *= 2
+		min_burst_delay *= 0.5
+		max_burst_delay *= 0.5
+		to_chat(user, SPAN_NOTICE("You short out the emitter's locking system, and put its capacitor into overdrive."))
+		return TRUE
+	else
+		to_chat(user, SPAN_WARNING("\The [src] seems to already have been modified."))
+		return FALSE
+
+/obj/machinery/power/emitter/do_signaler()
+	if(!locked)
+		activate(null)
+	else
+		visible_message("[icon2html(src, viewers(get_turf(src)))] [src] whines, \"Access denied!\"")
 
 /obj/machinery/power/emitter/proc/get_initial_fire_delay()
-	return 100
+	return 10 SECONDS
 
 /obj/machinery/power/emitter/proc/get_rand_burst_delay()
 	return rand(min_burst_delay, max_burst_delay)
 
 /obj/machinery/power/emitter/proc/get_burst_delay()
-	return 2
+	return 0.2 SECONDS // This value doesn't really affect normal emitters, but *does* affect subtypes like the gyrotron that can have very long delays
 
 /obj/machinery/power/emitter/proc/get_emitter_beam()
 	return new /obj/item/projectile/beam/emitter(get_turf(src))
+
+#undef EMITTER_LOOSE
+#undef EMITTER_BOLTED
+#undef EMITTER_WELDED

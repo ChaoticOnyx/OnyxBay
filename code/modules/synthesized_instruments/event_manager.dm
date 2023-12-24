@@ -43,6 +43,10 @@
 	var/active = 0
 	var/kill_loop = 0
 
+/datum/musical_event_manager/Destroy(force)
+	. = ..()
+	deactivate()
+	QDEL_NULL_LIST(events)
 
 /datum/musical_event_manager/proc/push_event(datum/sound_player/source, datum/sound_token/token, time, volume)
 	if (istype(source) && istype(token) && volume >= 0 && volume <= 100)
@@ -72,7 +76,7 @@
 	if (active)	return 0
 	src.active = 1
 
-	addtimer(CALLBACK(src, nameof(.proc/handle_events)), 0)
+	addtimer(CALLBACK(src, .proc/handle_events), 0)
 
 
 
@@ -88,4 +92,4 @@
 
 
 /datum/musical_event_manager/proc/is_overloaded()
-	return src.events.len > GLOB.musical_config.max_events
+	return src.events.len > musical_config.max_events

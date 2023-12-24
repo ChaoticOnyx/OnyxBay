@@ -18,8 +18,6 @@
 	. = ..()
 	icon_state = "radial_center"
 
-
-
 /datum/radial_menu/persistent
 	var/uniqueid
 	var/datum/callback/select_proc_callback
@@ -28,23 +26,21 @@
 	close_button = new /obj/screen/radial/persistent/center
 	close_button.parent = src
 
-
 /datum/radial_menu/persistent/element_chosen(choice_id,mob/user)
 	select_proc_callback.Invoke(choices_values[choice_id])
 
-
-/datum/radial_menu/persistent/proc/change_choices(list/newchoices)
+/datum/radial_menu/persistent/proc/change_choices(list/newchoices, tooltips)
 	if(!newchoices.len)
 		return
 	Reset()
-	set_choices(newchoices)
+	set_choices(newchoices,tooltips)
 
 /datum/radial_menu/persistent/Destroy()
 	QDEL_NULL(select_proc_callback)
-	GLOB.radial_menus -= uniqueid
+	radial_menus -= uniqueid
 	Reset()
 	hide()
-	. = ..()
+	return ..()
 
 /*
 	Creates a persistent radial menu and shows it to the user, anchored to anchor (or user if the anchor is currently in users screen).
@@ -53,23 +49,23 @@
 	Select_proc is the proc to be called each time an element on the menu is clicked, and should accept the chosen element as its final argument
 	Clicking the center button will return a choice of null
 */
-/proc/show_radial_menu_persistent(mob/user, atom/anchor, list/choices, datum/callback/select_proc, uniqueid, radius)
+/proc/show_radial_menu_persistent(mob/user, atom/anchor, list/choices, datum/callback/select_proc, uniqueid, radius, tooltips = FALSE)
 	if(!user || !anchor || !length(choices) || !select_proc)
 		return
 	if(!uniqueid)
 		uniqueid = "defmenu_\ref[user]_\ref[anchor]"
 
-	if(GLOB.radial_menus[uniqueid])
+	if(radial_menus[uniqueid])
 		return
 
 	var/datum/radial_menu/persistent/menu = new
 	menu.uniqueid = uniqueid
-	GLOB.radial_menus[uniqueid] = menu
+	radial_menus[uniqueid] = menu
 	if(radius)
 		menu.radius = radius
 	menu.select_proc_callback = select_proc
 	menu.anchor = anchor
 	menu.check_screen_border(user) //Do what's needed to make it look good near borders or on hud
-	menu.set_choices(choices)
+	menu.set_choices(choices, tooltips)
 	menu.show_to(user)
 	return menu

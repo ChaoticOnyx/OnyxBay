@@ -1,101 +1,277 @@
 /obj/structure/janitorialcart
-	name = "janitorial cart"
-	desc = "The ultimate in janitorial carts! Has space for water, mops, signs, trash bags, and more!"
+	name = "custodial cart"
+	desc = "The ultimate in custodial carts. Has space for water, mops, signs, trash bags, and more."
+	desc_info  = "Click and drag a mop bucket onto the cart to mount it\
+	</br>Alt+Click with a mop to put it away, a normal click will wet it in the bucket.\
+	</br>Alt+Click with a container, such as a bucket, to pour its contents into the mounted bucket. A normal click will toss it into the trash\
+	</br>You can also use a lightreplacer, spraybottle (of spacecleaner) and four wet-floor signs on the cart to store them"
 	icon = 'icons/obj/janitor.dmi'
 	icon_state = "cart"
-	anchored = 0
-	density = 1
-	atom_flags = ATOM_FLAG_OPEN_CONTAINER | ATOM_FLAG_CLIMBABLE
-	pull_slowdown = PULL_SLOWDOWN_LIGHT
-	//copypaste sorry
+	anchored = FALSE
+	density = TRUE
+	climbable = TRUE
+	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	build_amt = 15
+	slowdown = 0
+
 	var/amount_per_transfer_from_this = 5 //shit I dunno, adding this so syringes stop runtime erroring. --NeoFite
-	var/obj/item/storage/bag/trash/mybag	= null
+	var/obj/item/storage/bag/trash/mybag = null
 	var/obj/item/mop/mymop = null
 	var/obj/item/reagent_containers/spray/myspray = null
 	var/obj/item/device/lightreplacer/myreplacer = null
-	var/signs = 0	//maximum capacity hardcoded below
+	var/obj/structure/mopbucket/mybucket = null
+	var/signs = 0 //maximum capacity hardcoded below
+	var/has_items = FALSE //This is set true whenever the cart has anything loaded/mounted on it
+	var/driving
+	var/mob/living/pulling
 
+// Regular Variant
+// No trashbag and no light replacer, this is inside the custodian's locker.
+/obj/structure/janitorialcart/Initialize()
+	. = ..()
+	mymop = new /obj/item/mop(src)
+	myspray = new /obj/item/reagent_containers/spray/cleaner(src)
+
+	mybucket = new /obj/structure/mopbucket(src)
+
+	for(signs, signs < 4, signs++)
+		new /obj/item/clothing/suit/caution(src)
+
+	update_icon()
+
+// Full Variant
+// Has everything.
+/obj/structure/janitorialcart/full/Initialize()
+	. = ..()
+	mybag = new /obj/item/storage/bag/trash(src)
+	mymop = new /obj/item/mop(src)
+	myspray = new /obj/item/reagent_containers/spray/cleaner(src)
+	myreplacer = new /obj/item/device/lightreplacer(src)
+
+	mybucket = new /obj/structure/mopbucket(src)
+
+	for(signs, signs < 4, signs++)
+		new /obj/item/clothing/suit/caution(src)
+
+	update_icon()
+
+// Full with Water Variant
+// Has everything as well as water in the mop bucket.
+/obj/structure/janitorialcart/full/water/Initialize()
+	. = ..()
+	mybag = new /obj/item/storage/bag/trash(src)
+	mymop = new /obj/item/mop(src)
+	myspray = new /obj/item/reagent_containers/spray/cleaner(src)
+	myreplacer = new /obj/item/device/lightreplacer(src)
+
+	mybucket = new /obj/structure/mopbucket(src)
+	mybucket.reagents.add_reagent(/singleton/reagent/water, mybucket.bucketsize)
+
+	for(signs, signs < 4, signs++)
+		new /obj/item/clothing/suit/caution(src)
+
+	update_icon()
 
 /obj/structure/janitorialcart/New()
 	..()
-	create_reagents(180)
+	janitorial_supplies |= src
 
+/obj/structure/janitorialcart/Destroy()
+	janitorial_supplies -= src
+	QDEL_NULL(mybag)
+	QDEL_NULL(mymop)
+	QDEL_NULL(myspray)
+	QDEL_NULL(myreplacer)
+	QDEL_NULL(mybucket)
+	return ..()
 
-/obj/structure/janitorialcart/_examine_text(mob/user)
+/obj/structure/janitorialcart/proc/get_short_status()
+	return "Contents: [english_list(contents)]"
+
+/obj/structure/janitorialcart/examine(mob/user, distance, is_adjacent)
 	. = ..()
-	if(get_dist(src, user) <= 1)
-		. += "\n[src] \icon[src] contains [reagents.total_volume] unit\s of liquid!"
+	if(distance <= 1)
+		if (mybucket)
+			var/contains = mybucket.reagents.total_volume
+			to_chat(user, "[icon2html(src, user)] The bucket contains [contains] unit\s of liquid!")
+		else
+			to_chat(user, "[icon2html(src, user)] There is no bucket mounted on it!")
 	//everything else is visible, so doesn't need to be mentioned
 
 
-/obj/structure/janitorialcart/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/storage/bag/trash) && !mybag && user.drop(I, src))
-		mybag = I
+/obj/structure/janitorialcart/MouseDrop_T(atom/movable/O as mob|obj, mob/living/user as mob)
+	if (istype(O, /obj/structure/mopbucket) && !mybucket)
+		O.forceMove(src)
+		mybucket = O
+		to_chat(user, "You mount the [O] on the janicart.")
 		update_icon()
-		updateUsrDialog()
-		to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
+	else
+		..()
 
-	else if(istype(I, /obj/item/mop))
-		if(I.reagents.total_volume < I.reagents.maximum_volume)	//if it's not completely soaked we assume they want to wet it, otherwise store it
-			if(reagents.total_volume < 1)
-				to_chat(user, "<span class='warning'>[src] is out of water!</span>")
-			else
-				reagents.trans_to_obj(I, I.reagents.maximum_volume)
-				to_chat(user, "<span class='notice'>You wet [I] in [src].</span>")
-				playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
-				return
-		if(!mymop && user.drop(I, src))
+//New Altclick functionality!
+//Altclick the cart with a mop to stow the mop away
+//Altclick the cart with a reagent container to pour things into the bucket without putting the bottle in trash
+/obj/structure/janitorialcart/AltClick()
+	if(!usr || usr.stat || usr.lying || usr.restrained() || !Adjacent(usr))	return
+	var/obj/I = usr.get_active_hand()
+	if(istype(I, /obj/item/mop))
+		if(!mymop)
+			usr.drop_from_inventory(I,src)
 			mymop = I
 			update_icon()
 			updateUsrDialog()
-			to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
+			to_chat(usr, "<span class='notice'>You put [I] into [src].</span>")
+		else
+			to_chat(usr, "<span class='notice'>The cart already has a mop attached</span>")
+		return
+	else if(istype(I, /obj/item/reagent_containers) && mybucket)
+		var/obj/item/reagent_containers/C = I
+		C.afterattack(mybucket, usr, 1)
+	else if(istype (I, /obj/item/device/lightreplacer))
+		var/obj/item/device/lightreplacer/LR = I
+		if (LR.store_broken)
+			return mybag.attackby(I, usr)
 
-	else if(istype(I, /obj/item/reagent_containers/spray) && !myspray && user.drop(I, src))
+
+/obj/structure/janitorialcart/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/mop) || istype(I, /obj/item/reagent_containers/glass/rag) || istype(I, /obj/item/soap))
+		if (mybucket)
+			if(I.reagents.total_volume < I.reagents.maximum_volume)
+				if(mybucket.reagents.total_volume < 1)
+					to_chat(user, "<span class='notice'>[mybucket] is empty!</span>")
+					update_icon()
+				else
+					mybucket.reagents.trans_to_obj(I, 5)	//
+					to_chat(user, "<span class='notice'>You wet [I] in [mybucket].</span>")
+					playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
+					update_icon()
+			else
+				to_chat(user, "<span class='notice'>[I] can't absorb anymore liquid!</span>")
+		else
+			to_chat(user, "<span class='notice'>There is no bucket mounted here to dip [I] into!</span>")
+		return 1
+
+	else if(istype(I, /obj/item/reagent_containers/spray) && !myspray)
+		user.drop_from_inventory(I,src)
 		myspray = I
 		update_icon()
 		updateUsrDialog()
 		to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
+		return 1
 
-	else if(istype(I, /obj/item/device/lightreplacer) && !myreplacer && user.drop(I, src))
+	else if(istype(I, /obj/item/device/lightreplacer) && !myreplacer)
+		user.drop_from_inventory(I,src)
 		myreplacer = I
 		update_icon()
 		updateUsrDialog()
 		to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
+		return 1
 
-	else if(istype(I, /obj/item/caution))
+	else if(istype(I, /obj/item/storage/bag/trash) && !mybag)
+		user.drop_from_inventory(I,src)
+		mybag = I
+		I.forceMove(src)
+		update_icon()
+		updateUsrDialog()
+		to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
+		return 1
+
+	else if(istype(I, /obj/item/clothing/suit/caution))
 		if(signs < 4)
-			if(!user.drop(I, src))
-				return
+			user.drop_from_inventory(I,src)
 			signs++
 			update_icon()
 			updateUsrDialog()
 			to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
 		else
 			to_chat(user, "<span class='notice'>[src] can't hold any more signs.</span>")
-
-	else if(istype(I, /obj/item/reagent_containers/vessel))
-		var/obj/item/reagent_containers/vessel/V = I
-		if(V.is_open_container())
-			return // So we do not put them in the trash bag as we mean to fill the mop bucket
+		return 1
 
 	else if(mybag)
-		mybag.attackby(I, user)
+		return mybag.attackby(I, user)
+		//This return will prevent afterattack from executing if the object goes into the trashbag,
+		//This prevents dumb stuff like splashing the cart with the contents of a container, after putting said container into trash
+
+	else if (!has_items && (I.iswrench() || I.iswelder() || istype(I, /obj/item/gun/energy/plasmacutter)))
+		take_apart(user, I)
+		return
+	..()
+
+/obj/structure/janitorialcart/proc/take_apart(var/mob/user = null, var/obj/I)
+	if(has_items)
+		spill()
+
+	if(user)
+		playsound(src.loc, I.usesound, 50, 1)
+		user.visible_message("<b>[user]</b> starts taking apart the [src]...", SPAN_NOTICE("You start disassembling the [src]..."))
+		if (!do_after(user, 30, do_flags = DO_DEFAULT & ~DO_USER_SAME_HAND))
+			return
+
+	dismantle()
+
+/obj/structure/janitorialcart/ex_act(severity)
+	spill(100 / severity)
+	..()
+
+//This is called if the cart is caught in an explosion, or destroyed by weapon fire
+/obj/structure/janitorialcart/proc/spill(var/chance = 100)
+	var/turf/dropspot = get_turf(src)
+	if (mymop && prob(chance))
+		mymop.forceMove(dropspot)
+		mymop.tumble(2)
+		mymop = null
+
+	if (myspray && prob(chance))
+		myspray.forceMove(dropspot)
+		myspray.tumble(3)
+		myspray = null
+
+	if (myreplacer && prob(chance))
+		myreplacer.forceMove(dropspot)
+		myreplacer.tumble(3)
+		myreplacer = null
+
+	if (mybucket && prob(chance*0.5))//bucket is heavier, harder to knock off
+		mybucket.forceMove(dropspot)
+		mybucket.tumble(1)
+		mybucket = null
+
+	if (signs)
+		for (var/obj/item/clothing/suit/caution/Sign in src)
+			if (prob(min((chance*2),100)))
+				signs--
+				Sign.forceMove(dropspot)
+				Sign.tumble(3)
+				if (signs < 0)//safety for something that shouldn't happen
+					signs = 0
+					update_icon()
+					return
+
+	if (mybag && prob(min((chance*2),100)))//Bag is flimsy
+		mybag.forceMove(dropspot)
+		mybag.tumble(1)
+		mybag.spill()//trashbag spills its contents too
+		mybag = null
+
+	update_icon()
+
 
 
 /obj/structure/janitorialcart/attack_hand(mob/user)
 	ui_interact(user)
 	return
 
-/obj/structure/janitorialcart/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/structure/janitorialcart/ui_interact(var/mob/user, var/ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
 	var/data[0]
 	data["name"] = capitalize(name)
 	data["bag"] = mybag ? capitalize(mybag.name) : null
+	data["bucket"] = mybucket ? capitalize(mybucket.name) : null
 	data["mop"] = mymop ? capitalize(mymop.name) : null
 	data["spray"] = myspray ? capitalize(myspray.name) : null
 	data["replacer"] = myreplacer ? capitalize(myreplacer.name) : null
 	data["signs"] = signs ? "[signs] sign\s" : null
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnanoui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "janitorcart.tmpl", "Janitorial cart", 240, 160)
 		ui.set_initial_data(data)
@@ -107,189 +283,146 @@
 	if(!isliving(usr))
 		return
 	var/mob/living/user = usr
-
 	if(href_list["take"])
 		switch(href_list["take"])
 			if("garbage")
 				if(mybag)
-					if(user.pick_or_drop(mybag))
-						to_chat(user, SPAN("notice", "You take [mybag] from [src]."))
-					else
-						to_chat(user, SPAN("notice", "You drop [mybag] from [src]."))
+					user.put_in_hands(mybag)
+					to_chat(user, "<span class='notice'>You take [mybag] from [src].</span>")
 					mybag = null
 			if("mop")
 				if(mymop)
-					if(user.pick_or_drop(mymop))
-						to_chat(user, SPAN("notice", "You take [mymop] from [src]."))
-					else
-						to_chat(user, SPAN("notice", "You drop [mymop] from [src]."))
+					user.put_in_hands(mymop)
+					to_chat(user, "<span class='notice'>You take [mymop] from [src].</span>")
 					mymop = null
 			if("spray")
 				if(myspray)
-					if(user.pick_or_drop(myspray))
-						to_chat(user, SPAN("notice", "You take [myspray] from [src]."))
-					else
-						to_chat(user, SPAN("notice", "You drop [myspray] from [src]."))
+					user.put_in_hands(myspray)
+					to_chat(user, "<span class='notice'>You take [myspray] from [src].</span>")
 					myspray = null
 			if("replacer")
 				if(myreplacer)
-					if(user.pick_or_drop(myreplacer))
-						to_chat(user, SPAN("notice", "You take [myreplacer] from [src]."))
-					else
-						to_chat(user, SPAN("notice", "You drop [myreplacer] from [src]."))
+					user.put_in_hands(myreplacer)
+					to_chat(user, "<span class='notice'>You take [myreplacer] from [src].</span>")
 					myreplacer = null
 			if("sign")
 				if(signs)
-					var/obj/item/caution/Sign = locate() in src
+					var/obj/item/clothing/suit/caution/Sign = locate() in src
 					if(Sign)
-						if(user.pick_or_drop(Sign))
-							to_chat(user, SPAN("notice", "You take \a [Sign] from [src]."))
-						else
-							to_chat(user, SPAN("notice", "You drop \a [Sign] from [src]."))
+						user.put_in_hands(Sign)
+						to_chat(user, "<span class='notice'>You take \a [Sign] from [src].</span>")
 						signs--
 					else
 						warning("[src] signs ([signs]) didn't match contents")
 						signs = 0
+			if("bucket")
+				if(mybucket)
+					mybucket.forceMove(get_turf(user))
+					to_chat(user, "<span class='notice'>You unmount [mybucket] from [src].</span>")
+					mybucket.update_icon()
+					mybucket = null
 
 	update_icon()
 	updateUsrDialog()
 
-
-/obj/structure/janitorialcart/on_update_icon()
-	ClearOverlays()
+/obj/structure/janitorialcart/update_icon()
+	cut_overlays()
+	has_items = 0
+	if(mybucket)
+		add_overlay("cart_bucket")
+		has_items = 1
+		if(mybucket.reagents.total_volume > 0)
+			add_overlay("cart_water")
 	if(mybag)
-		AddOverlays("cart_garbage")
+		add_overlay("cart_garbage")
+		has_items = 1
 	if(mymop)
-		AddOverlays("cart_mop")
+		add_overlay("cart_mop")
+		has_items = 1
 	if(myspray)
-		AddOverlays("cart_spray")
+		add_overlay("cart_spray")
+		has_items = 1
 	if(myreplacer)
-		AddOverlays("cart_replacer")
+		if (istype(myreplacer, /obj/item/device/lightreplacer/advanced))
+			add_overlay("cart_adv_lightreplacer")
+		else
+			add_overlay("cart_replacer")
+		has_items = 1
 	if(signs)
-		AddOverlays("cart_sign[signs]")
+		add_overlay("cart_sign[signs]")
+		has_items = 1
 
-
-//old style retardo-cart
-/obj/structure/bed/chair/janicart
-	name = "janicart"
-	icon = 'icons/obj/vehicles.dmi'
-	icon_state = "pussywagon"
-	anchored = 1
-	density = 1
-	foldable = FALSE
-	atom_flags = ATOM_FLAG_OPEN_CONTAINER
-	//copypaste sorry
-	var/amount_per_transfer_from_this = 5 //shit I dunno, adding this so syringes stop runtime erroring. --NeoFite
-	var/obj/item/storage/bag/trash/mybag	= null
-	var/callme = "pimpin' ride"	//how do people refer to it?
-
-
-/obj/structure/bed/chair/janicart/New()
-	..()
-	create_reagents(100)
-
-
-/obj/structure/bed/chair/janicart/_examine_text(mob/user)
-	. = ..()
-	if(get_dist(src, user) > 1)
+//Shamelessly copied from wheelchair code
+/obj/structure/janitorialcart/relaymove(mob/user, direction)
+	if(user.stat || user.stunned || user.weakened || user.paralysis || user.lying || user.restrained())
+		if(user==pulling)
+			pulling = null
+			user.pulledby = null
+			to_chat(user, "<span class='warning'>You lost your grip!</span>")
+		return
+	if(user.pulling && (user == pulling))
+		pulling = null
+		user.pulledby = null
+		return
+	if(pulling && (get_dist(src, pulling) > 1))
+		pulling = null
+		user.pulledby = null
+		if(user==pulling)
+			return
+	if(pulling && (get_dir(src.loc, pulling.loc) == direction))
+		to_chat(user, "<span class='warning'>You cannot go there.</span>")
 		return
 
-	. += "\n\icon[src] This [callme] contains [reagents.total_volume] unit\s of water!"
-	if(mybag)
-		. += "\n\A [mybag] is hanging on the [callme]."
-
-
-/obj/structure/bed/chair/janicart/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/mop))
-		if(reagents.total_volume > 1)
-			reagents.trans_to_obj(I, 2)
-			to_chat(user, "<span class='notice'>You wet [I] in the [callme].</span>")
-			playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
+	driving = 1
+	var/turf/T = null
+	if(pulling)
+		T = pulling.loc
+		if(get_dist(src, pulling) >= 1)
+			step(pulling, get_dir(pulling.loc, src.loc))
+	step(src, direction)
+	set_dir(direction)
+	if(pulling)
+		if(pulling.loc == src.loc)
+			pulling.forceMove(T)
 		else
-			to_chat(user, "<span class='notice'>This [callme] is out of water!</span>")
-	else if(istype(I, /obj/item/key))
-		to_chat(user, "Hold [I] in one of your hands while you drive this [callme].")
-	else if(istype(I, /obj/item/storage/bag/trash) && !mybag && user.drop(I, src))
-		to_chat(user, "<span class='notice'>You hook the trashbag onto the [callme].</span>")
-		mybag = I
+			spawn(0)
+			if(get_dist(src, pulling) > 1)
+				pulling = null
+				user.pulledby = null
+			pulling.set_dir(get_dir(pulling, src))
+	driving = 0
 
-
-/obj/structure/bed/chair/janicart/attack_hand(mob/user)
-	if(mybag)
-		user.pick_or_drop(mybag, loc)
-		mybag = null
-	else
-		..()
-
-
-/obj/structure/bed/chair/janicart/relaymove(mob/user, direction)
-	if(user.stat || user.stunned || user.weakened || user.paralysis)
-		unbuckle_mob()
-	if(istype(user.l_hand, /obj/item/key) || istype(user.r_hand, /obj/item/key))
-		step(src, direction)
-		update_mob()
-	else
-		to_chat(user, "<span class='notice'>You'll need the keys in one of your hands to drive this [callme].</span>")
-
-
-/obj/structure/bed/chair/janicart/Move()
+/obj/structure/janitorialcart/Move()
 	. = ..()
-	if(buckled_mob)
-		if(buckled_mob.buckled == src)
-			buckled_mob.forceMove(loc)
+	if (pulling && (get_dist(src, pulling) > 1))
+		pulling.pulledby = null
+		to_chat(pulling, "<span class='warning'>You lost your grip!</span>")
+		pulling = null
 
+/obj/structure/janitorialcart/CtrlClick(var/mob/user)
+	if(in_range(src, user))
+		if(!ishuman(user))	return
+		if(!pulling)
+			pulling = user
+			user.pulledby = src
+			if(user.pulling)
+				user.stop_pulling()
+			user.set_dir(get_dir(user, src))
+			to_chat(user, "You grip \the [name]'s handles.")
+		else
+			to_chat(usr, "You let go of \the [name]'s handles.")
+			pulling.pulledby = null
+			pulling = null
+		return
 
-/obj/structure/bed/chair/janicart/post_buckle_mob(mob/living/M)
-	update_mob()
-	return ..()
-
-
-/obj/structure/bed/chair/janicart/unbuckle_mob()
-	var/mob/living/M = ..()
-	if(M)
-		M.pixel_x = 0
-		M.pixel_y = 0
-	return M
-
-
-/obj/structure/bed/chair/janicart/set_dir()
-	..()
-	if(buckled_mob)
-		if(buckled_mob.loc != loc)
-			buckled_mob.buckled = null //Temporary, so Move() succeeds.
-			buckled_mob.buckled = src //Restoring
-
-	update_mob()
-
-
-/obj/structure/bed/chair/janicart/proc/update_mob()
-	if(buckled_mob)
-		buckled_mob.set_dir(dir)
-		switch(dir)
-			if(SOUTH)
-				buckled_mob.pixel_x = 0
-				buckled_mob.pixel_y = 7
-			if(WEST)
-				buckled_mob.pixel_x = 13
-				buckled_mob.pixel_y = 7
-			if(NORTH)
-				buckled_mob.pixel_x = 0
-				buckled_mob.pixel_y = 4
-			if(EAST)
-				buckled_mob.pixel_x = -13
-				buckled_mob.pixel_y = 7
-
-
-/obj/structure/bed/chair/janicart/bullet_act(obj/item/projectile/Proj)
-	if(buckled_mob)
-		if(prob(85))
-			return buckled_mob.bullet_act(Proj)
-	visible_message("<span class='warning'>[Proj] ricochets off the [callme]!</span>")
-
-
-/obj/item/key
-	name = "key"
-	desc = "A keyring with a small steel key, and a pink fob reading \"Pussy Wagon\"."
-	icon = 'icons/obj/vehicles.dmi'
-	icon_state = "keys"
-	w_class = ITEM_SIZE_TINY
+/obj/structure/janitorialcart/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+	if(air_group || (height==0)) return 1
+	if(istype(mover) && mover.checkpass(PASSTABLE))
+		return 1
+	if(istype(mover, /mob/living) && mover == pulling)
+		return 1
+	else
+		if(istype(mover, /obj/item/projectile))
+			return prob(30)
+		else
+			return !density

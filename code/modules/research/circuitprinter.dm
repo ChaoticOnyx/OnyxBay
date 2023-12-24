@@ -5,35 +5,31 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 */
 
 /obj/machinery/r_n_d/circuit_imprinter
-	name = "\improper Circuit Imprinter"
+	name = "circuit imprinter"
+	desc = "An advanced device that can only be operated via a nearby RnD console, it can print any circuitboard the user requests, provided it has the correct materials to do so."
 	icon_state = "circuit_imprinter"
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
-	layer = BELOW_OBJ_LAYER
+
+	var/list/materials = list(DEFAULT_WALL_MATERIAL = 0, MATERIAL_GLASS = 0, MATERIAL_GOLD = 0, MATERIAL_SILVER = 0, MATERIAL_PHORON = 0, MATERIAL_URANIUM = 0, MATERIAL_DIAMOND = 0)
 	var/list/datum/design/queue = list()
 	var/progress = 0
 
 	var/max_material_storage = 75000
 	var/mat_efficiency = 1
 	var/speed = 1
+	var/product_offset = FALSE //Set to make the printer spawn its product in a neighboring turf dictated by dir.
 
-	var/list/item_type = list("Machine Boards", "Console Boards", "Mecha Boards", "Module Boards", "Engineering Boards", "Device")
+	idle_power_usage = 30
+	active_power_usage = 2500
 
-	idle_power_usage = 30 WATTS
-	active_power_usage = 2.500 KILO WATTS
+	component_types = list(
+		/obj/item/circuitboard/circuit_imprinter,
+		/obj/item/stock_parts/matter_bin,
+		/obj/item/stock_parts/manipulator,
+		/obj/item/reagent_containers/glass/beaker = 2
+	)
 
-/obj/machinery/r_n_d/circuit_imprinter/Initialize()
-	materials = default_material_composition.Copy()
-
-	. = ..()
-	component_parts = list()
-	component_parts += new /obj/item/circuitboard/circuit_imprinter(src)
-	component_parts += new /obj/item/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/stock_parts/manipulator(src)
-	component_parts += new /obj/item/reagent_containers/vessel/beaker(src)
-	component_parts += new /obj/item/reagent_containers/vessel/beaker(src)
-	RefreshParts()
-
-/obj/machinery/r_n_d/circuit_imprinter/Process()
+/obj/machinery/r_n_d/circuit_imprinter/process()
 	..()
 	if(stat)
 		update_icon()
@@ -55,28 +51,33 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 		update_icon()
 	else
 		if(busy)
-			visible_message("<span class='notice'>\icon [src] flashes: insufficient materials: [getLackingMaterials(D)].</span>")
+			visible_message("<span class='notice'>[icon2html(src, viewers(get_turf(src)))] flashes: insufficient materials: [getLackingMaterials(D)].</span>")
 			busy = 0
 			update_icon()
 
 /obj/machinery/r_n_d/circuit_imprinter/RefreshParts()
+	// Adjust reagent container volume to match combined volume of the inserted beakers
 	var/T = 0
-	for(var/obj/item/reagent_containers/vessel/G in component_parts)
+	for(var/obj/item/reagent_containers/glass/G in component_parts)
 		T += G.reagents.maximum_volume
-	if(reagents)
-		reagents.maximum_volume = T
-	else
-		create_reagents(T)
+	create_reagents(T)
+	// Transfer all reagents from the beakers to internal reagent container
+	for(var/obj/item/reagent_containers/glass/G in component_parts)
+		G.reagents.trans_to_obj(src, G.reagents.total_volume)
+
+	// Adjust material storage capacity to scale with matter bin rating
 	max_material_storage = 0
 	for(var/obj/item/stock_parts/matter_bin/M in component_parts)
 		max_material_storage += M.rating * 75000
+
+	// Adjust production speed to increase with manipulator rating
 	T = 0
 	for(var/obj/item/stock_parts/manipulator/M in component_parts)
 		T += M.rating
 	mat_efficiency = 1 - (T - 1) / 4
 	speed = T
 
-/obj/machinery/r_n_d/circuit_imprinter/on_update_icon()
+/obj/machinery/r_n_d/circuit_imprinter/update_icon()
 	if(panel_open)
 		icon_state = "circuit_imprinter_t"
 	else if(busy)
@@ -84,8 +85,26 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 	else
 		icon_state = "circuit_imprinter"
 
+/obj/machinery/r_n_d/circuit_imprinter/proc/TotalMaterials()
+	var/t = 0
+	for(var/f in materials)
+		t += materials[f]
+	return t
 
-/obj/machinery/r_n_d/circuit_imprinter/attackby(obj/item/O as obj, mob/user as mob)
+/obj/machinery/r_n_d/circuit_imprinter/dismantle()
+	for(var/obj/I in component_parts)
+		// This will distribute all reagents amongst the contained beakers
+		if(istype(I, /obj/item/reagent_containers/glass/beaker))
+			reagents.trans_to_obj(I, reagents.total_volume)
+	for(var/f in materials)
+		if(materials[f] >= SHEET_MATERIAL_AMOUNT)
+			var/path = getMaterialType(f)
+			if(path)
+				var/obj/item/stack/S = new path(loc)
+				S.amount = round(materials[f] / SHEET_MATERIAL_AMOUNT)
+	..()
+
+/obj/machinery/r_n_d/circuit_imprinter/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	if(busy)
 		to_chat(user, "<span class='notice'>\The [src] is busy. Please wait for completion of previous operation.</span>")
 		return 1
@@ -106,11 +125,9 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 		return 1
 	if(O.is_open_container())
 		return 0
-	if(is_robot_module(O))
-		return 0
 	if(!istype(O, /obj/item/stack/material))
 		to_chat(user, "<span class='notice'>You cannot insert this item into \the [src]!</span>")
-		return 0
+		return 1
 	if(stat)
 		return 1
 
@@ -119,42 +136,64 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 		return 1
 
 	var/obj/item/stack/material/stack = O
-	var/amount = min(stack.get_amount(), round((max_material_storage - TotalMaterials()) / SHEET_MATERIAL_AMOUNT))
+	if(!stack.default_type)
+		to_chat(user, SPAN_WARNING("This stack cannot be used!"))
+		return
+	var/amount = round(input("How many sheets do you want to add?") as num)
+	if(!O)
+		return
+	if(!Adjacent(user))
+		to_chat(user, "<span class='notice'>\The [src] is too far away for you to insert this.</span>")
+		return
+	if(amount <= 0)//No negative numbers
+		return
+	if(amount > stack.get_amount())
+		amount = stack.get_amount()
+	if(max_material_storage - TotalMaterials() < (amount * SHEET_MATERIAL_AMOUNT)) //Can't overfill
+		amount = min(stack.get_amount(), round((max_material_storage - TotalMaterials()) / SHEET_MATERIAL_AMOUNT))
 
 	busy = 1
 	use_power_oneoff(max(1000, (SHEET_MATERIAL_AMOUNT * amount / 10)))
-
-	var/t = stack.material.name
-	if(t)
-		if(do_after(usr, 16, src))
-			if(stack.use(amount))
-				to_chat(user, "<span class='notice'>You add [amount] sheet\s to \the [src].</span>")
-				materials[t] += amount * SHEET_MATERIAL_AMOUNT
+	if(do_after(user, 16))
+		if(stack.use(amount))
+			to_chat(user, "<span class='notice'>You add [amount] sheets to \the [src].</span>")
+			materials[stack.default_type] += amount * SHEET_MATERIAL_AMOUNT
 	busy = 0
 	updateUsrDialog()
 
-/obj/machinery/r_n_d/circuit_imprinter/proc/addToQueue(datum/design/D)
+/obj/machinery/r_n_d/circuit_imprinter/proc/addToQueue(var/datum/design/D)
 	queue += D
 	return
 
-/obj/machinery/r_n_d/circuit_imprinter/proc/removeFromQueue(index)
-	if(index  == -1)
-		queue.Cut()
-		return
-
+/obj/machinery/r_n_d/circuit_imprinter/proc/removeFromQueue(var/index)
 	queue.Cut(index, index + 1)
 	return
 
-/obj/machinery/r_n_d/circuit_imprinter/proc/canBuild(datum/design/D)
+/obj/machinery/r_n_d/circuit_imprinter/proc/canBuild(var/datum/design/D)
 	for(var/M in D.materials)
-		if(materials[M] <= D.materials[M] * mat_efficiency)
+		if(materials[M] < D.materials[M])
 			return 0
 	for(var/C in D.chemicals)
 		if(!reagents.has_reagent(C, D.chemicals[C]))
 			return 0
 	return 1
 
-/obj/machinery/r_n_d/circuit_imprinter/proc/build(datum/design/D)
+/obj/machinery/r_n_d/circuit_imprinter/proc/getLackingMaterials(var/datum/design/D)
+	var/ret = ""
+	for(var/M in D.materials)
+		if(materials[M] < D.materials[M])
+			if(ret != "")
+				ret += ", "
+			ret += "[D.materials[M] - materials[M]] [M]"
+	for(var/C in D.chemicals)
+		if(!reagents.has_reagent(C, D.chemicals[C]))
+			var/singleton/reagent/R = GET_SINGLETON(C)
+			if(ret != "")
+				ret += ", "
+			ret += "[R.name]"
+	return ret
+
+/obj/machinery/r_n_d/circuit_imprinter/proc/build(var/datum/design/D)
 	var/power = active_power_usage
 	for(var/M in D.materials)
 		power += round(D.materials[M] / 5)
@@ -167,7 +206,10 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 
 	if(D.build_path)
 		var/obj/new_item = D.Fabricate(src, src)
-		new_item.dropInto(loc)
+		if(product_offset)
+			new_item.forceMove(get_step(src, dir))
+		else
+			new_item.forceMove(src.loc)
 		if(mat_efficiency != 1) // No matter out of nowhere
 			if(new_item.matter && new_item.matter.len > 0)
 				for(var/i in new_item.matter)

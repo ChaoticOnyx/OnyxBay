@@ -1,6 +1,0 @@
-#define CONV_KELVIN_CELSIUS(temp) (temp - 273.15)
-#define CONV_CELSIUS_KELVIN(temp) (temp + 273.15)
-#define CONV_CURIE_BECQUEREL(val) (val * (3.7 * (10 ** 10)))
-#define CONV_BECQUEREL_QURIE(val) (val * (2.7 * (10 ** -11)))
-#define CONV_ELECTRONVOLT_JOULE(val) (val * (1.6 * (10 ** -19)))
-#define CONV_JOULE_ELECTRONVOLT(val) (val * (6.24 * (10 ** 18)))

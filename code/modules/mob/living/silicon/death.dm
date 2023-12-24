@@ -1,12 +1,12 @@
-/mob/living/silicon/gib(anim, do_gibs)
-	..("gibbed-r", FALSE)
-	gibs(loc, null, /obj/effect/gibspawner/robot)
+/mob/living/silicon/gib()
+	..("gibbed-r")
+	gibs(loc, viruses, null, /obj/effect/gibspawner/robot)
 
 /mob/living/silicon/dust()
-	..("dust-r", /obj/item/remains/robot)
+	..(/obj/effect/decal/remains/robot)
 
-/mob/living/silicon/death(gibbed, deathmessage, show_dead_message)
+/mob/living/silicon/death(gibbed,deathmessage)
 	if(in_contents_of(/obj/machinery/recharge_station))//exit the recharge station
 		var/obj/machinery/recharge_station/RC = loc
 		RC.go_out()
-	return ..(gibbed, deathmessage, show_dead_message)
+	return ..(gibbed,deathmessage)

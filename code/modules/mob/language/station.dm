@@ -1,36 +1,41 @@
 /datum/language/diona
-	name = LANGUAGE_ROOTLOCAL
-	desc = "A complex language known instinctively by Dionaea, 'spoken' by emitting modulated radio waves. This version uses high frequency waves for quick communication at short ranges."
-	speech_verb = "creaks and rustles"
-	ask_verb = "creaks"
-	exclaim_verb = "rustles"
+	name = LANGUAGE_ROOTSONG
+	desc = "A creaking, subvocal language spoken instinctively by the Dionaea. Due to the unique makeup of the average Diona, a phrase of Rootspeak can be a combination of anywhere from one to twelve individual voices and notes."
+	speech_verb = list("creaks and rustles")
+	ask_verb = list("creaks")
+	exclaim_verb = list("rustles")
+	sing_verb = list("croaks")
 	colour = "soghun"
 	key = "q"
-	flags = RESTRICTED
+	flags = RESTRICTED|TCOMSSIM
 	syllables = list("hs","zt","kr","st","sh")
-	shorthand = "RT"
 
 /datum/language/diona/get_random_name()
-	var/new_name = "[pick(list("To Sleep Beneath","Wind Over","Embrace of","Dreams of","Witnessing","To Walk Beneath","Approaching the"))]"
-	new_name += " [pick(list("the Void","the Sky","Encroaching Night","Planetsong","Starsong","the Wandering Star","the Empty Day","Daybreak","Nightfall","the Rain"))]"
+	var/new_name = "[pick(list("To Sleep Beneath","Changing of", "Soaring Above", "Wind Over","Embrace of","Dreams of","Witnessing", "Lost in", "To Walk Beneath","Approaching the", "Distant Memories of", "Forgotten Glimpse of", "Roots of", "Tendrils of", "Leaves Rustling in", "Last Hope of", "Speaking to"))]"
+	new_name += " [pick(list("the Void","the Stillness of Death", "the Sky","Encroaching Night","Planetsong","Starsong","the Wandering Star","the Empty Day","Daybreak","Nightfall","the Rain", "a Distant Galaxy", "a Starless Night", "the Fruits of Dreams", "the Rising Dawn", "the Song of Life", "a Lonely Shadow", "Forlorn Hope", "a Bleak Wasteland"))]"
+	while(findtextEx(new_name,"the the",1,null))
+		new_name = replacetext(new_name, "the the", "the")
+
+	while(findtextEx(new_name,"the a",1,null))
+		new_name = replacetext(new_name, "the a", "a")
+
 	return new_name
 
-/datum/language/diona/global
-	name = LANGUAGE_ROOTGLOBAL
-	desc = "A complex language known instinctively by Dionaea, 'spoken' by emitting modulated radio waves. This version uses low frequency waves for slow communication at long ranges."
-	key = "w"
-	flags = RESTRICTED | HIVEMIND
-	shorthand = "N/A"
 
+// Unathi languages
 /datum/language/unathi
 	name = LANGUAGE_UNATHI
+	short = "UNA"
 	desc = "The common language of Moghes, composed of sibilant hisses and rattles. Spoken natively by Unathi."
-	speech_verb = "hisses"
-	ask_verb = "hisses"
-	exclaim_verb = "roars"
+	speech_verb = list("hisses")
+	ask_verb = list("hisses")
+	exclaim_verb = list("roars")
+	sing_verb = list("hisses")
 	colour = "soghun"
+	written_style = "sintaunathi"
 	key = "o"
-	flags = WHITELISTED
+	flags = WHITELISTED|TCOMSSIM
+	allow_accents = TRUE
 	space_chance = 40
 	syllables = list(
 		"za", "az", "ze", "ez", "zi", "iz", "zo", "oz", "zu", "uz", "zs", "sz",
@@ -41,181 +46,344 @@
 		"ra", "ar", "re", "er", "ri", "ir", "ro", "or", "ru", "ur", "rs", "sr",
 		"a",  "a",  "e",  "e",  "i",  "i",  "o",  "o",  "u",  "u",  "s",  "s"
 	)
-	shorthand = "UT"
+	partial_understanding = list(LANGUAGE_AZAZIBA = 25)
+	allow_accents = TRUE
 
+/datum/language/unathi_azaziba
+	name = LANGUAGE_AZAZIBA
+	short = "AZA"
+	desc = "A language of Moghes consisting of a combination of spoken word and gesticulation. While waning since Moghes entered the galactic stage, it enjoys popular use by Unathi that never fell to the Hegemony's cultural dominance."
+	speech_verb = list("hisses")
+	ask_verb = list("hisses")
+	exclaim_verb = list("roars")
+	signlang_verb = list("signs", "gestures aggressively")
+	sing_verb = list("hisses")
+	colour = "soghun_alt"
+	written_style = "sintaazaziba"
+	key = "p"
+	flags = WHITELISTED | NONVERBAL
+	syllables = list("azs","zis","zau","azua","skiu","zuakz","izo","aei","ki","kut","zo")
+	partial_understanding = list(LANGUAGE_UNATHI = 50)
+	allow_accents = TRUE
+
+// tajaran languages
 /datum/language/tajaran
 	name = LANGUAGE_SIIK_MAAS
-	desc = "The traditionally employed tongue of Ahdomai, composed of expressive yowls and chirps. Native to the Tajaran."
-	speech_verb = "mrowls"
-	ask_verb = "mrowls"
-	exclaim_verb = "yowls"
+	short = "MAAS"
+	desc = "The traditionally employed tongue of Adhomai, comprised of expressive yowls and chirps. Native to the Tajara."
+	speech_verb = list("mrowls")
+	ask_verb = list("mrowls")
+	exclaim_verb = list("yowls")
+	sing_verb = list("mrowls")
 	colour = "tajaran"
+	written_style = "siikmaas"
 	key = "j"
-	flags = WHITELISTED
+	flags = WHITELISTED|TCOMSSIM
 	syllables = list("mrr","rr","tajr","kir","raj","kii","mir","kra","ahk","nal","vah","khaz","jri","ran","darr",
 	"mi","jri","dynh","manq","rhe","zar","rrhaz","kal","chur","eech","thaa","dra","jurl","mah","sanu","dra","ii'r",
 	"ka","aasi","far","wa","baq","ara","qara","zir","sam","mak","hrar","nja","rir","khan","jun","dar","rik","kah",
 	"hal","ket","jurl","mah","tul","cresh","azu","ragh","mro","mra","mrro","mrra")
-	shorthand = "TJ"
+	partial_understanding = list(LANGUAGE_YA_SSA = 25, LANGUAGE_DELVAHII = 50)
+	allow_accents = TRUE
 
-/datum/language/tajaran/get_random_name(gender)
+/datum/language/tajaran/get_random_name(var/gender)
 
-	var/new_name = ..(gender,1)
-	if(prob(50))
-		new_name += " [pick(list("Hadii","Kaytam","Nazkiin","Zhan-Khazan","Hharar","Njarir'Akhan","Faaira'Nrezi","Rhezar","Mi'dynh","Rrhazkal","Bayan","Al'Manq","Mi'jri","Chur'eech","Sanu'dra","Ii'rka"))]"
-	else
-		new_name += " [..(gender,1)]"
+	var/new_name
+	if(gender==FEMALE)
+		new_name += pick(list("Aisha","Amani","Agashka","Agramakova","Bakhteiarova","Bratomila","Dekhova","Derzhka","Farah","Faizah","Hanifa","Ikram","Jenna","Khadija","Kandaza","Karyme","Kismet","Malika","Mumtaz","Nashwa","Nafisha","Shahar","Sabah","Takiyah","Wafiqah","Wasime","Yesenia","Zahra","Zohra","Rajjurl","Marryam","Dhrarmela","Rrhuyala","Irryavga","Ahvulyar","Purryalna","Yasmin"))
+	else if(gender==MALE)
+		new_name += pick(list("Abdal","Akhtar","Akim","Alik","Arif","Azzam","Anton","Alzrun","Bahir","Barakh","Bohdan","Coman","Dekel","Dima","Fa'iq","Faidah","Fredek","Fakhr","Hasam","Hashim","Ioakim","Kadir","Kareef","Khrazmrrug","Khazarir","Rrhazumar","Mrrhazugal","Harrmalik","Mata'ke","Njadrasanukii","Tajrhalrr","Rhagrrhuzau","Vahzirthaamro","Lev","Misha","Mahir","Nasser","Nasir","Oleg","Qadir","Sharif","Stepka","Tamir","Yasir","Zahid"))
+	new_name += " "
+	new_name += pick(list("Alfarsi","Alekseev","Al-Barik","Al-Hamdan","Al-Mansur","Al-Kandari","Al-Shahrani","Antonov","Bogdanov","El-Hasem","El-Amin","Rrhakaslav","Mrrazhughran","Jrruzhani","Rrhamrare","Mrakiizar","Hirron","Prruzhulkanich","El-Tusi","Nejem","Hanar","Karimi","Markov","Saif","Yakub","Zaman","Zaydan","Zidan","Zahawi"))
 	return new_name
+
+/datum/language/tajaran_sign
+	name = LANGUAGE_SIGN_TAJARA
+	desc = "A sign language developed by Adhomian hunters."
+	speech_verb = list("signs")
+	signlang_verb = list("moves their tail", "flicks their ears", "swivels their ears", "flicks their tail", "shifts their ears and tail")
+	sign_adv_length = list("", " briefly", " a few times", " several times in quick succession", " for a while")
+	sing_verb = null
+	colour = "i"
+	key = "i"
+	flags = NO_STUTTER | SIGNLANG | WHITELISTED
+
+/datum/language/siik_tajr
+	name = LANGUAGE_SIIK_TAJR
+	desc = "A language native to the Tajara, it employs both verbal and non-verbal elements."
+	speech_verb = list("mrowls")
+	ask_verb = list("mrowls")
+	exclaim_verb = list("yowls")
+	signlang_verb = list("moves their tail", "flicks their ears", "swivels their ears", "flicks their tail", "shifts their ears and tail")
+	sign_adv_length = list("", " briefly", " a few times", " several times in quick succession", " for a while")
+	sing_verb = list("mrowls")
+	colour = "tajaran_signlang"
+	key = "w"
+	flags = WHITELISTED | NONVERBAL
+	syllables = list("mrr","rr","tajr","kir","raj","kii","mir","kra","ahk","nal","vah","khaz","jri","ran","darr",
+	"mi","jri","dynh","manq","rhe","zar","rrhaz","kal","chur","eech","thaa","dra","jurl","mah","sanu","dra","ii'r",
+	"ka","aasi","far","wa","baq","ara","qara","zir","sam","mak","hrar","nja","rir","khan","jun","dar","rik","kah",
+	"hal","ket","jurl","mah","tul","cresh","azu","ragh","mro","mra","mrro","mrra")
+	partial_understanding = list(LANGUAGE_SIIK_MAAS = 50, LANGUAGE_SIGN_TAJARA = 25)
+
+/datum/language/yassa
+	name = LANGUAGE_YA_SSA
+	short = "YAS"
+	desc = "The traditional language of the tajaran nobility."
+	speech_verb = list("mrowls")
+	ask_verb = list("mrowls")
+	exclaim_verb = list("yowls")
+	sing_verb = list("mrowls")
+	colour = "yassa"
+	written_style = "yassa"
+	key = "r"
+	flags = WHITELISTED|TCOMSSIM
+	syllables = list("hrr","rhr","tarj","khir","rajh","kir","mier","kre","ahek","nlhal","veh","khaz","dri","rhan","darrer",
+	"mi","jhri","dynher","manqi","rhas","shar","drhaz","kalh","shur","echi","tha","draer","jurl","maher","sanii","dra","ii'r",
+	"kan","aesi","fare","we","bash","arha","quara","zhir","sem","make","hrer","nja","rir","can","jhun","dar","rik","kah",
+	"hal","kete","juril","mah","tul","cresh","azu","ragh","miro","mara","mrero","mrara")
+	partial_understanding = list(LANGUAGE_SIIK_MAAS = 50)
+	allow_accents = TRUE
+
+/datum/language/delvahhi
+	name = LANGUAGE_DELVAHII
+	short = "DEL"
+	desc = "A dialect developed by the Zhan-Khazan communities, commonly used in religious ceremonies dedicated to the Snow God and amongst settlements comprised mostly of Zhan-Khazan."
+	speech_verb = list("mrowls")
+	ask_verb = list("mrowls")
+	exclaim_verb = list("yowls")
+	sing_verb = list("mrowls")
+	colour = "delvahhi"
+	written_style = "delvahhi"
+	key = "n"
+	flags = WHITELISTED|TCOMSSIM
+	syllables = list("mrr","rr","tajr","kir","raj","kii","mir","kra","ahk","nal","vah","khaz","jri","ran","darr",
+	"mi","jri","dynh","manq","rhe","zar","rrhaz","kal","chur","eech","thaa","dra","jurl","mah","sanu","dra","ii'r",
+	"ka","aasi","far","wa","baq","ara","qara","zir","sam","mak","hrar","nja","rir","khan","jun","dar","rik","kah",
+	"hal","ket","jurl","mah","tul","cresh","azu","ragh","mro","mra","mrro","mrra")
+	partial_understanding = list(LANGUAGE_SIIK_MAAS = 50)
+	allow_accents = TRUE
 
 /datum/language/skrell
 	name = LANGUAGE_SKRELLIAN
+	short = "NRAL"
 	desc = "A melodic and complex language spoken by the Skrell of Qerrbalak. Some of the notes are inaudible to humans."
-	speech_verb = "warbles"
-	ask_verb = "warbles"
-	exclaim_verb = "warbles"
+	speech_verb = list("warbles")
+	ask_verb = list("warbles")
+	exclaim_verb = list("warbles")
+	sing_verb = list("warbles")
 	colour = "skrell"
+	written_style = "nralmalic"
 	key = "k"
-	flags = WHITELISTED
+	flags = WHITELISTED|TCOMSSIM
 	syllables = list("qr","qrr","xuq","qil","quum","xuqm","vol","xrim","zaoo","qu-uu","qix","qoo","zix","*","!")
-	shorthand = "SK"
+	allow_accents = TRUE
+
+/datum/language/skrell/check_speech_restrict(mob/speaker)
+	if(!ishuman(speaker))
+		return FALSE
+	var/mob/living/carbon/human/H = speaker
+	var/obj/item/organ/internal/augment/language/zeng/aug = H.internal_organs_by_name[BP_AUG_LANGUAGE]
+	if(istype(aug) && !isskrell(H))
+		to_chat(speaker, SPAN_WARNING("You are not capable of speaking Nral'malic!"))
+		return FALSE
+	else
+		return TRUE
+
+/datum/language/skrell/get_random_name()
+	var/new_name = ""
+	var/suff = ""
+	var/name_pieces = list("Qu", "Su", "Xu", "Xi", "Qi", "Si", "Ei", "Qui", "Iuq", "Qiu", "Kiu", "Uiu", "Eis", "Seq", "Eqa", "Uiq", "Kui", "Muu", "Muq", "Kuo", "Omq", "Xoi", "Liq", "Zuk", "Kono", "Koxi", "Auuo", "Iili", "Kesi", "Irek", "Quak", "Qoku", "Uokk", "Eeok", "Teie", "Xiou", "Xoku", "Xiru", "Qiuu", "Laqu", "Leua", "Olru", "Oquo", "Oeoo", "Isik", "Kiue", "Ruee", "Ouqu", "Kiiq", "Tesh", "Lish", "Ilin", "Shiq", "Quis", "Oquq", "Ququ", "Xoio", "Nolko", "Ruusi", "Ieliu", "Nuptu", "Eiuos", "Seiuu", "Xeriu", "Ioquk", "Teiqu", "Quoru", "Qiiuk", "Qeouu", "Quaoi", "Uieuu", "Koqun", "Nuouu", "Leuqo", "Luroq", "Urqul", "Uluqu", "Iequu", "Uiuou", "Suioq", "Urouu", "Xeouu", "Xeios", "Qarui", "Njubu", "Buquk", "Zueou", "Qosko", "Tuiru", "Tuquu", "Xorie", "Zouuo", "Euioi", "Liise", "Riori", "Iirun", "Akoox", "Nunuz", "Ezhin", "Vulun", "Ponoh", "Sulux", "Suqui", "Suqua", "Souqx", "Squix", "Quish", "Shiqu", "Jeshi", "Xushi", "Kiqui", "Liuiq", "Tuish", "Vuzuna", "Uptari", "Xiialt", "Yonosh", "Lieuqo", "Turiuu", "Utrieo", "Yutiex", "Xuitou", "Xieoru", "Xioshi", "Quisuu", "Juiqii", "Uituik", "Ruisui", "Tuisuh", "Jixktu", "Lioxui", "Shixul", "Iuoquu", "Nuitqu", "Kuixqu", "Oiquio", "Oiakuu", "Juukxu", "Iouiuu", "Tuirou", "Suahuk", "Seuaio", "Juirue", "Kioxui", "Xusuui", "Tuirul", "Luishi", "Liropo", "Lixuqe", "Urueir", "Queire", "Iuosuu", "Jaxxak", "Kqullu", "Xulluu", "Xikkuq", "Oiuqkk", "Tuiskk", "Liqukk", "Orueix", "Rkusix", "Turieu", "Kduish", "Xdurui", "Liquuq", "Shiruu", "Xuisoo", "Ooruex", "Uuooux", "Oieuix", "Laishi", "Xiaooi", "Oruexi", "Xiatal", "Xekkua")
+	var/first_name = "[pick(name_pieces)]"
+	name_pieces -= first_name
+	if(prob(40))
+		suff = "[pick(name_pieces)]"
+		name_pieces -= suff
+		first_name += "[pick(list("'", "-"))]" + suff
+	var/last_name = "[pick(name_pieces)]"
+	name_pieces -= last_name
+	if(prob(40))
+		suff = "[pick(name_pieces)]"
+		name_pieces -= suff
+		last_name += "[pick(list("'", "-"))]" + suff
+	new_name = first_name + " " + last_name
+	return new_name
+
+/datum/language/bug
+	name = LANGUAGE_VAURCA
+	desc = "A localised expression of the Vaurcae hivemind, allowing Vaurcae to communicate from across great distances. \"It's a bugs life.\""
+	speech_verb = list(" broadcasts")
+	colour = "vaurca"
+	key = "9"
+	native = 1
+	flags = WHITELISTED | HIVEMIND
+	syllables = list("vaur","uyek","uyit","avek","sc'theth","k'ztak","teth","wre'ge","lii","dra'","zo'","ra'","k'lax'","zz","vh","ik","ak",
+	"uhk","zir","sc'orth","sc'er","thc'yek","th'zirk","th'esk","k'ayek","ka'mil","sc'","ik'yir","yol","kig","k'zit","'","'","zrk","krg","isk'yet","na'k",
+	"sc'azz","th'sc","nil","n'ahk","sc'yeth","aur'sk","iy'it","azzg","a'","i'","o'","u'","a","i","o","u","zz","kr","ak","nrk")
+
+/datum/language/bug/get_random_name()
+	var/new_name = "[pick(list("Ka'","Za'","Ka'"))]"
+	new_name += "[pick(list("Akaix'","Viax'"))]"
+	new_name += "[pick(list("Uyek","Uyit","Avek","Theth","Ztak","Teth","Zir","Yek","Zirk","Ayek","Yir","Kig","Yol","'Zrk","Nazgr","Yet","Nak","Kiihr","Gruz","Guurz","Nagr","Zkk","Zohd","Norc","Agraz","Yizgr","Yinzr","Nuurg","Iii","Lix","Nhagh","Xir","Z'zit","Zhul","Zgr","Na'k","Isk'yet","Aaaa"))]"
+	var/list/hive_names = list("Zo'ra" = 3, "K'lax" = 1, "C'thur" = 1)
+	new_name += " [pickweight(hive_names)]"
+	return new_name
+
+/datum/language/bug/broadcast(var/mob/living/speaker,var/message,var/speaker_mask)
+	log_say("[key_name(speaker)] : ([name]) [message]",ckey=key_name(speaker))
+
+	if(!speaker_mask)
+		speaker_mask = speaker.real_name
+
+	var/msg = "<i><span class='game say'>[name], <span class='name'>[speaker_mask]</span>[format_message(message, get_spoken_verb(message), speaker_mask)]</span></i>"
+	var/encrypted_msg =  "<i><span class='game say'>[name], <span class='name'>[speaker_mask]</span>[format_message("!a surge of encrypted data", get_spoken_verb(message), speaker_mask)]</span></i>"
+
+	if(isvaurca(speaker))
+		speaker.custom_emote(VISIBLE_MESSAGE, "[pick("twitches their antennae", "twitches their antennae rhythmically")].")
+		playsound(speaker, 'sound/voice/vaurca_antenna_twitch.ogg', 60, 1)
+
+	if (within_jamming_range(speaker))
+		// The user thinks that the message got through.
+		to_chat(speaker, msg)
+		return
+
+	var/speaker_encryption_key
+	var/mob/living/carbon/human/speaker_human = speaker
+	if(istype(speaker_human))
+		var/obj/item/organ/internal/vaurca/neuralsocket/speaker_socket = speaker_human.internal_organs_by_name[BP_NEURAL_SOCKET]
+		if(speaker_socket?.encryption_key)
+			speaker_encryption_key = speaker_socket.encryption_key
+
+	for(var/mob/player in player_list)
+		if(istype(player, /mob/abstract/observer) || player == speaker)
+			to_chat(player, msg)
+		else if(!within_jamming_range(player) && check_special_condition(player))
+			if(speaker_encryption_key)
+				var/mob/living/carbon/human/listener_human = player
+				if(!istype(listener_human))
+					to_chat(player, encrypted_msg)
+					continue
+				var/obj/item/organ/internal/vaurca/neuralsocket/listener_socket = listener_human.internal_organs_by_name[BP_NEURAL_SOCKET]
+				if(!listener_socket || listener_socket.decryption_key != speaker_encryption_key)
+					to_chat(player, encrypted_msg)
+					continue
+			to_chat(player, msg)
+
+/datum/language/bug/format_message(message, verb, speaker_mask)
+	var/message_color = colour
+	var/list/speaker_surname = splittext(speaker_mask, " ")
+	switch(speaker_surname[2])
+		if("Zo'ra")
+			message_color = "vaurca_zora"
+		if("C'thur")
+			message_color = "vaurca_cthur"
+		if("K'lax")
+			message_color = "vaurca_klax"
+		if("Lii'dra")
+			message_color = "vaurca_liidra"
+	if(copytext(message, 1, 2) == "!")
+		return " projects <span class='message'><span class='[message_color]'>[copytext(message, 2)]</span></span>"
+	return "[verb], <span class='message'><span class='[message_color]'>\"[capitalize(message)]\"</span></span>"
+
+/datum/language/bug/check_special_condition(var/mob/other)
+	if(istype(other, /mob/living/silicon))
+		return 1
+
+	var/mob/living/carbon/human/M = other
+	if(!istype(M))
+		return 0
+	if(istype(M, /mob/abstract/new_player))
+		return 0
+	if(within_jamming_range(other))
+		return 0
+	if(M.internal_organs_by_name[BP_NEURAL_SOCKET] && (all_languages[LANGUAGE_VAURCA] in M.languages))
+		return 1
+	if(M.internal_organs_by_name["blackkois"])
+		return 1
+
+	if (M.l_ear || M.r_ear)
+		var/obj/item/device/radio/headset/dongle
+		if(istype(M.l_ear,/obj/item/device/radio/headset))
+			dongle = M.l_ear
+		else
+			dongle = M.r_ear
+
+		if(!istype(dongle))
+			return 0
+		if(dongle.translate_hivenet)
+			return 1
+
+	return 0
+
+/datum/language/bug/check_speech_restrict(var/mob/speaker)
+	var/mob/living/carbon/human/H = speaker
+	var/obj/item/organ/internal/vaurca/neuralsocket/S = H.internal_organs_by_name[BP_NEURAL_SOCKET]
+
+	//Black k'ois zombies don't have neural sockets but need to talk, hence check if the socket exists, or it will runtime for them
+	if(S && (S.muted || S.disrupted))
+		to_chat(speaker, SPAN_WARNING("You have been muted over the Hivenet!"))
+		return FALSE
+	else
+		return TRUE
 
 /datum/language/human
 	name = LANGUAGE_SOL_COMMON
-	desc = "A bastardized hybrid of informal English and elements of Mandarin Chinese; the common language of the Sol system."
-	speech_verb = "says"
-	whisper_verb = "whispers"
+	short = "SOL"
+	desc = "With its roots in Mandarin Chinese, Common evolved as the official language of the Sol Alliance, with officials working to tie it together with a common tongue. It's spoken by state officials, taught in schools, and spoken by those who either feel a sense of national pride in the Alliance or otherwise fell sway to the culture."
 	colour = "solcom"
+	written_style = "solcommon"
 	key = "1"
-	flags = WHITELISTED
-	shorthand = "Sol"
+	flags = WHITELISTED | TCOMSSIM
+	syllables = list("a", "abe", "ade", "ai", "an", "ana", "ba", "bae", "bai", "bang", "bao", "bei", "ben", "beo", "bi", "bian", "bing", "bo", "bu", "bugu", "bun", "cai", "can", "cao", "cau", "chan", "chen", "cheong",
+	"chiu", "chong", "chyo", "da", "dan", "dao", "de", "deun", "duo", "eon", "eun", "eusi", "feng", "fu", "ga", "gak", "gan", "gang", "gao", "ge", "gei", "gen", "geo", "gil", "go", "gou", "gu", "gua", "gui", "gul",
+	"gun", "guo", "gwi", "ha", "hai", "hal", "han", "hap", "hara", "he", "hego", "hen", "hon", "hoo", "hu", "hua", "hun", "hyeong", "i", "jae", "jeo", "jeon", "ji", "jia", "jian", "jiang", "jie", "jong", "ju", "jue",
+	"juede", "jung", "juzi", "ka", "kang", "kawa", "ke", "keun", "ki", "kin", "ko", "kore", "kou", "ku", "kuda", "kun", "kyu", "lang", "lao", "leng", "leung", "li", "lian", "liang", "lie", "ling", "lizi", "lleo", "long",
+	"lu", "ma", "mah", "me", "mei", "meinu", "men", "meng", "meog", "meoni", "mi", "mian", "min", "mo", "mot", "mu", "mun", "na", "nae", "nai", "nari", "ne", "ni", "nii", "nim", "nin", "no", "nop", "nu", "o", "oba", "oga", "oji",
+	"oka", "ong", "op", "oto", "pa", "pai", "pang", "pin", "ping", "pong", "pu", "pum", "pye", "qi", "qie", "qing", "ra", "rei", "ren", "ri", "ru", "ruan", "sa", "sai", "sama", "san", "sang", "se", "sei", "sen", "seo", "seon", "seong",
+	"shang", "shen", "sheng", "shi", "sho", "shui", "si", "su", "sui", "sum", "sun", "swi", "ta", "tae", "tai", "tame", "tamen", "tan", "te", "tei", "ti", "tian", "to", "ton", "tsu", "ul", "wa", "wan", "wang", "wei", "wo", "xi", "xian",
+	"xiao", "xing", "xiong", "xiu", "xu", "xuan", "xue", "ya", "yan", "yang", "yeong", "yi", "yige", "yin", "ying", "yiqi", "yong", "you", "yu", "yuli", "yuyi", "zai", "zao", "zhan", "zhang", "zhe", "zhen", "zheng", "zhuo", "zi", "zo",
+	"zu", "zun", "zuo")
+	allow_accents = TRUE
 
-	//syllables are at the bottom of the file
-
-/datum/language/human/get_spoken_verb(msg_end)
-	switch(msg_end)
-		if("!")
-			return pick("exclaims","shouts","yells") //TODO: make the basic proc handle lists of verbs.
-		if("?")
-			return ask_verb
-	return speech_verb
-
-/datum/language/human/get_random_name(gender)
+/datum/language/human/get_random_name(var/gender)
 	if (prob(80))
 		if(gender==FEMALE)
-			return capitalize(pick(GLOB.first_names_female)) + " " + capitalize(pick(GLOB.last_names))
+			return capitalize(pick(first_names_female)) + " " + capitalize(pick(last_names))
 		else
-			return capitalize(pick(GLOB.first_names_male)) + " " + capitalize(pick(GLOB.last_names))
+			return capitalize(pick(first_names_male)) + " " + capitalize(pick(last_names))
 	else
 		return ..()
 
+//Placeholder stuff for now, a lot of it
+/datum/language/elyran
+	name = LANGUAGE_ELYRAN_STANDARD
+	short = "ELY"
+	desc = "Elyran Standard is the official tongue of the Republic of Elyra. Constructed using elements of Farsi, Arabic, and Turkish, influence from all three of these languages can be seen throughout its grammar and vocabulary."
+	colour = "elyran"
+	written_style = "elyranstandard"
+	key = "4"
+	flags = WHITELISTED | TCOMSSIM
+	syllables = list("af", "if", "ba", "ta", "tha", "id", "jem", "ha", "kha", "dal", "dhl", "ra", "zay", "sen", "um", "shn", "sid", "ad", "ta", "za", "ayn", "gha", "zir", "yn", "fa", "qaf", "iam", "mim", "al", "ja", "non", "ha", "waw", "ya",
+		"hem", "zah", "hml", "ks", "ini", "da", "ks", "iga", "ih", "la", "ulf", "xe", "ayw", "sit", "ah", "aarah", "jalaa", "sirt", "kurt", "turhk", "ust", "irk", "kir", "mir", "ach", "oglu", "bolu", "shek", "she", "ghoz", "miya", "ejdan",
+		"haaz", "quq", "taab", "shanha", "an", "saa", "seh", "an'", "e'", "a'", "em'")
+	allow_accents = TRUE
+
 /datum/language/machine
 	name = LANGUAGE_EAL
-	desc = "An efficient language of encoded tones developed by synthetics and cyborgs."
-	speech_verb = "whistles"
-	ask_verb = "chirps"
-	exclaim_verb = "whistles loudly"
+	short = "EAL"
+	desc = "A language of encoded tones that allow for IPCs to communicate auditorily between each other in a manner that allows for easier transfer of information."
+	speech_verb = list("beeps")
+	ask_verb = list("beeps")
+	exclaim_verb = list("loudly beeps")
+	sing_verb = list("rhythmically beeps")
 	colour = "changeling"
+	written_style = "encodedaudiolanguage"
 	key = "6"
-	flags = NO_STUTTER
+	flags = RESTRICTED | NO_STUTTER | TCOMSSIM
 	syllables = list("beep","beep","beep","beep","beep","boop","boop","boop","bop","bop","dee","dee","doo","doo","hiss","hss","buzz","buzz","bzz","ksssh","keey","wurr","wahh","tzzz")
 	space_chance = 10
-	shorthand = "EAL"
-
-/datum/language/machine/can_speak_special(mob/living/speaker)
-	return speaker.isSynthetic()
 
 /datum/language/machine/get_random_name()
 	if(prob(70))
 		return "[pick(list("PBU","HIU","SINA","ARMA","OSI"))]-[rand(100, 999)]"
-	return pick(GLOB.ai_names)
-
-//Syllable Lists
-/*
-	This list really long, mainly because I can't make up my mind about which mandarin syllables should be removed,
-	and the english syllables had to be duplicated so that there is roughly a 50-50 weighting.
-
-	Sources:
-	http://www.sttmedia.com/syllablefrequency-english
-	http://www.chinahighlights.com/travelguide/learning-chinese/pinyin-syllables.htm
-*/
-/datum/language/human/syllables = list(
-"a", "ai", "an", "ang", "ao", "ba", "bai", "ban", "bang", "bao", "bei", "ben", "beng", "bi", "bian", "biao",
-"bie", "bin", "bing", "bo", "bu", "ca", "cai", "can", "cang", "cao", "ce", "cei", "cen", "ceng", "cha", "chai",
-"chan", "chang", "chao", "che", "chen", "cheng", "chi", "chong", "chou", "chu", "chua", "chuai", "chuan", "chuang", "chui", "chun",
-"chuo", "ci", "cong", "cou", "cu", "cuan", "cui", "cun", "cuo", "da", "dai", "dan", "dang", "dao", "de", "dei",
-"den", "deng", "di", "dian", "diao", "die", "ding", "diu", "dong", "dou", "du", "duan", "dui", "dun", "duo", "e",
-"ei", "en", "er", "fa", "fan", "fang", "fei", "fen", "feng", "fo", "fou", "fu", "ga", "gai", "gan", "gang",
-"gao", "ge", "gei", "gen", "geng", "gong", "gou", "gu", "gua", "guai", "guan", "guang", "gui", "gun", "guo", "ha",
-"hai", "han", "hang", "hao", "he", "hei", "hen", "heng", "hm", "hng", "hong", "hou", "hu", "hua", "huai", "huan",
-"huang", "hui", "hun", "huo", "ji", "jia", "jian", "jiang", "jiao", "jie", "jin", "jing", "jiong", "jiu", "ju", "juan",
-"jue", "jun", "ka", "kai", "kan", "kang", "kao", "ke", "kei", "ken", "keng", "kong", "kou", "ku", "kua", "kuai",
-"kuan", "kuang", "kui", "kun", "kuo", "la", "lai", "lan", "lang", "lao", "le", "lei", "leng", "li", "lia", "lian",
-"liang", "liao", "lie", "lin", "ling", "liu", "long", "lou", "lu", "luan", "lun", "luo", "ma", "mai", "man", "mang",
-"mao", "me", "mei", "men", "meng", "mi", "mian", "miao", "mie", "min", "ming", "miu", "mo", "mou", "mu", "na",
-"nai", "nan", "nang", "nao", "ne", "nei", "nen", "neng", "ng", "ni", "nian", "niang", "niao", "nie", "nin", "ning",
-"niu", "nong", "nou", "nu", "nuan", "nuo", "o", "ou", "pa", "pai", "pan", "pang", "pao", "pei", "pen", "peng",
-"pi", "pian", "piao", "pie", "pin", "ping", "po", "pou", "pu", "qi", "qia", "qian", "qiang", "qiao", "qie", "qin",
-"qing", "qiong", "qiu", "qu", "quan", "que", "qun", "ran", "rang", "rao", "re", "ren", "reng", "ri", "rong", "rou",
-"ru", "rua", "ruan", "rui", "run", "ruo", "sa", "sai", "san", "sang", "sao", "se", "sei", "sen", "seng", "sha",
-"shai", "shan", "shang", "shao", "she", "shei", "shen", "sheng", "shi", "shou", "shu", "shua", "shuai", "shuan", "shuang", "shui",
-"shun", "shuo", "si", "song", "sou", "su", "suan", "sui", "sun", "suo", "ta", "tai", "tan", "tang", "tao", "te",
-"teng", "ti", "tian", "tiao", "tie", "ting", "tong", "tou", "tu", "tuan", "tui", "tun", "tuo", "wa", "wai", "wan",
-"wang", "wei", "wen", "weng", "wo", "wu", "xi", "xia", "xian", "xiang", "xiao", "xie", "xin", "xing", "xiong", "xiu",
-"xu", "xuan", "xue", "xun", "ya", "yan", "yang", "yao", "ye", "yi", "yin", "ying", "yong", "you", "yu", "yuan",
-"yue", "yun", "za", "zai", "zan", "zang", "zao", "ze", "zei", "zen", "zeng", "zha", "zhai", "zhan", "zhang", "zhao",
-"zhe", "zhei", "zhen", "zheng", "zhi", "zhong", "zhou", "zhu", "zhua", "zhuai", "zhuan", "zhuang", "zhui", "zhun", "zhuo", "zi",
-"zong", "zou", "zuan", "zui", "zun", "zuo", "zu",
-"al", "an", "ar", "as", "at", "ea", "ed", "en", "er", "es", "ha", "he", "hi", "in", "is", "it",
-"le", "me", "nd", "ne", "ng", "nt", "on", "or", "ou", "re", "se", "st", "te", "th", "ti", "to",
-"ve", "wa", "all", "and", "are", "but", "ent", "era", "ere", "eve", "for", "had", "hat", "hen", "her", "hin",
-"his", "ing", "ion", "ith", "not", "ome", "oul", "our", "sho", "ted", "ter", "tha", "the", "thi",
-"al", "an", "ar", "as", "at", "ea", "ed", "en", "er", "es", "ha", "he", "hi", "in", "is", "it",
-"le", "me", "nd", "ne", "ng", "nt", "on", "or", "ou", "re", "se", "st", "te", "th", "ti", "to",
-"ve", "wa", "all", "and", "are", "but", "ent", "era", "ere", "eve", "for", "had", "hat", "hen", "her", "hin",
-"his", "ing", "ion", "ith", "not", "ome", "oul", "our", "sho", "ted", "ter", "tha", "the", "thi",
-"al", "an", "ar", "as", "at", "ea", "ed", "en", "er", "es", "ha", "he", "hi", "in", "is", "it",
-"le", "me", "nd", "ne", "ng", "nt", "on", "or", "ou", "re", "se", "st", "te", "th", "ti", "to",
-"ve", "wa", "all", "and", "are", "but", "ent", "era", "ere", "eve", "for", "had", "hat", "hen", "her", "hin",
-"his", "ing", "ion", "ith", "not", "ome", "oul", "our", "sho", "ted", "ter", "tha", "the", "thi",
-"al", "an", "ar", "as", "at", "ea", "ed", "en", "er", "es", "ha", "he", "hi", "in", "is", "it",
-"le", "me", "nd", "ne", "ng", "nt", "on", "or", "ou", "re", "se", "st", "te", "th", "ti", "to",
-"ve", "wa", "all", "and", "are", "but", "ent", "era", "ere", "eve", "for", "had", "hat", "hen", "her", "hin",
-"his", "ing", "ion", "ith", "not", "ome", "oul", "our", "sho", "ted", "ter", "tha", "the", "thi",
-"al", "an", "ar", "as", "at", "ea", "ed", "en", "er", "es", "ha", "he", "hi", "in", "is", "it",
-"le", "me", "nd", "ne", "ng", "nt", "on", "or", "ou", "re", "se", "st", "te", "th", "ti", "to",
-"ve", "wa", "all", "and", "are", "but", "ent", "era", "ere", "eve", "for", "had", "hat", "hen", "her", "hin",
-"his", "ing", "ion", "ith", "not", "ome", "oul", "our", "sho", "ted", "ter", "tha", "the", "thi",
-"al", "an", "ar", "as", "at", "ea", "ed", "en", "er", "es", "ha", "he", "hi", "in", "is", "it",
-"le", "me", "nd", "ne", "ng", "nt", "on", "or", "ou", "re", "se", "st", "te", "th", "ti", "to",
-"ve", "wa", "all", "and", "are", "but", "ent", "era", "ere", "eve", "for", "had", "hat", "hen", "her", "hin",
-"his", "ing", "ion", "ith", "not", "ome", "oul", "our", "sho", "ted", "ter", "tha", "the", "thi")
-
-/datum/language/tajsign
-	name = LANGUAGE_SIIK_TAJR
-	desc = "A type of sign language mostly based on tail movements that was used during the Tajaran rebellion."
-	signlang_verb = list("uses their tail to convey", "gestures with their tail", "gestures with their tail elaborately")
-	colour = "tajaran"
-	key = "l"
-	flags = WHITELISTED | SIGNLANG | NO_STUTTER | NONVERBAL
-	shorthand = "TS"
-
-/datum/language/confederate
-	name = LANGUAGE_INDEPENDENT
-	desc = "The official language of the Terran Colonial Confederation, evolved from a pidgin of Eastern European languages and English."
-	speech_verb = "speaks"
-	colour = "terran"
-	key = "r"
-	syllables = list("rus","zem","ave","groz","ski","ska","ven","konst","pol","lin","svy",
-	"danya","da","mied","zan","das","krem","myka","to","st","no","na","ni",
-	"ko","ne","en","po","ra","li","on","byl","cto","eni","ost","ol","ego","ver","stv","pro")
-	shorthand = "IN"
-
-/datum/language/spacer
-	name = LANGUAGE_SPACER
-	desc = "A pidgin language spoken by haulers, merchants, traders, travellers, and cocky fly-boys across the galaxy."
-	colour = "spacer"
-	key = "v"
-	syllables = list ("die", "en", "skei", "van", "son", "der", "aar", "ch", "op", "ruk", "aa", "be", "ne", "het",
- 	"ek", "ras", "ver", "zan", "das", "waa", "geb", "vol", "lu", "min", "breh", "rus", "stv", "ee", "goe", "sk",
- 	"la", "ver", "we", "ge", "luk", "an", "ar", "at", "es", "et", "bel", "du", "jaa", "ch", "kk", "gh", "ll", "uu", "wat")
-	shorthand = "SP"
+	return pick(ai_names)

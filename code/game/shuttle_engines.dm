@@ -1,6 +1,7 @@
 /obj/structure/shuttle
 	name = "shuttle"
 	icon = 'icons/turf/shuttle.dmi'
+	opacity = 1
 
 /obj/structure/shuttle/window
 	name = "shuttle window"
@@ -9,17 +10,17 @@
 	density = 1
 	opacity = 0
 	anchored = 1
-	can_atmos_pass = ATMOS_PASS_NO
+	atmos_canpass = CANPASS_NEVER
 
-/obj/structure/shuttle/window/CanPass(atom/movable/mover, turf/target)
-	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
-		return TRUE
-	return ..()
+/obj/structure/shuttle/window/CanPass(atom/movable/mover, turf/target, height, air_group)
+	if(!height || air_group) return 0
+	else return ..()
 
 /obj/structure/shuttle/engine
 	name = "engine"
 	density = 1
-	anchored = 1.0
+	anchored = 1
+	atmos_canpass = CANPASS_NEVER
 
 /obj/structure/shuttle/engine/heater
 	name = "heater"
@@ -32,7 +33,6 @@
 /obj/structure/shuttle/engine/propulsion
 	name = "propulsion"
 	icon_state = "propulsion"
-	opacity = 1
 
 /obj/structure/shuttle/engine/propulsion/burst
 	name = "burst"
@@ -44,16 +44,6 @@
 /obj/structure/shuttle/engine/propulsion/burst/right
 	name = "right"
 	icon_state = "burst_r"
-
-/obj/structure/shuttle/engine/propulsion/burst/big
-	name = "burst"
-	icon_state = "thruster_big"
-	icon = 'icons/turf/thruster_big.dmi'
-
-/obj/structure/shuttle/engine/propulsion/burst/huge
-	name = "burst"
-	icon_state = "thruster_huge"
-	icon = 'icons/turf/thruster_huge.dmi'
 
 /obj/structure/shuttle/engine/router
 	name = "router"

@@ -11,13 +11,13 @@
 	var/list/children_ready
 	var/list/children_override
 
-/datum/computer/file/embedded_program/docking/multi/New(obj/machinery/embedded_controller/M)
+/datum/computer/file/embedded_program/docking/multi/New(var/obj/machinery/embedded_controller/M)
 	..(M)
 
 	if (istype(M,/obj/machinery/embedded_controller/radio/docking_port_multi))	//if our parent controller is the right type, then we can auto-init stuff at construction
 		var/obj/machinery/embedded_controller/radio/docking_port_multi/controller = M
 		//parse child_tags_txt and create child tags
-		children_tags = splittext(controller.child_tags_txt, ";")
+		children_tags = text2list(controller.child_tags_txt, ";")
 
 	children_ready = list()
 	children_override = list()
@@ -82,6 +82,7 @@
 
 	//tell children to prepare for undocking
 	for (var/child_tag in children_tags)
+		testing("Sending prepare_for_undocking command to [child_tag]")
 		send_docking_command(child_tag, "prepare_for_undocking")
 
 /datum/computer/file/embedded_program/docking/multi/ready_for_undocking()
@@ -115,7 +116,7 @@
 	var/docking_mode = 0	//0 = docking, 1 = undocking
 	var/response_sent = 0
 
-/datum/computer/file/embedded_program/airlock/multi_docking/New(obj/machinery/embedded_controller/M)
+/datum/computer/file/embedded_program/airlock/multi_docking/New(var/obj/machinery/embedded_controller/M)
 	..(M)
 
 	if (istype(M, /obj/machinery/embedded_controller/radio/airlock/docking_port_multi))	//if our parent controller is the right type, then we can auto-init stuff at construction
@@ -207,11 +208,11 @@
 	toggleDoor(memory["interior_status"], tag_interior_door, memory["secure"], "open")
 	toggleDoor(memory["exterior_status"], tag_exterior_door, memory["secure"], "open")
 
-/datum/computer/file/embedded_program/airlock/multi_docking/cycleDoors(target)
+/datum/computer/file/embedded_program/airlock/multi_docking/cycleDoors(var/target)
 	if (!docking_enabled|| override_enabled)	//only allow the port to be used as an airlock if nothing is docked here or the override is enabled
 		..(target)
 
-/datum/computer/file/embedded_program/airlock/multi_docking/proc/send_signal_to_master(command)
+/datum/computer/file/embedded_program/airlock/multi_docking/proc/send_signal_to_master(var/command)
 	var/datum/signal/signal = new
 	signal.data["tag"] = id_tag
 	signal.data["command"] = command

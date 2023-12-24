@@ -1,6 +1,6 @@
 /obj/machinery/computer/shuttle_control/specops
 	name = "special operations shuttle console"
-	shuttle_tag = "Deathsquad"
+	shuttle_tag = "Phoenix Shuttle"
 	req_access = list(access_cent_specops)
 
 /obj/machinery/computer/shuttle_control/specops/attack_ai(user as mob)
@@ -11,7 +11,7 @@
 	var/specops_return_delay = 6000		//After moving, the amount of time that must pass before the shuttle may move again
 	var/specops_countdown_time = 600	//Length of the countdown when moving the shuttle
 
-	var/obj/item/device/radio/intercom/announcer = null
+	var/obj/item/device/radio/intercom/announcer
 	var/reset_time = 0	//the world.time at which the shuttle will be ready to move again.
 	var/launch_prep = 0
 	var/cancel_countdown = 0
@@ -22,12 +22,11 @@
 	announcer = new /obj/item/device/radio/intercom(null)//We need a fake AI to announce some stuff below. Otherwise it will be wonky.
 	announcer.config(list("Response Team" = 0))
 
-/datum/shuttle/autodock/ferry/specops/proc/radio_announce(message)
+/datum/shuttle/autodock/ferry/specops/proc/radio_announce(var/message)
 	if(announcer)
-		announcer.autosay(message, "A.L.I.C.E.", "Response Team")
+		announcer.autosay(message, "Bubble", "Response Team")
 
-
-/datum/shuttle/autodock/ferry/specops/launch(user)
+/datum/shuttle/autodock/ferry/specops/launch(var/user)
 	if (!can_launch())
 		return
 
@@ -35,7 +34,7 @@
 		var/obj/machinery/computer/C = user
 
 		if(world.time <= reset_time)
-			C.visible_message("<span class='notice'>[GLOB.using_map.boss_name] will not allow the Special Operations shuttle to launch yet.</span>")
+			C.visible_message("<span class='notice'>[current_map.boss_name] will not allow the Special Operations shuttle to launch yet.</span>")
 			if (((world.time - reset_time)/10) > 60)
 				C.visible_message("<span class='notice'>[-((world.time - reset_time)/10)/60] minutes remain!</span>")
 			else
@@ -60,18 +59,18 @@
 	..(user)
 
 /datum/shuttle/autodock/ferry/specops/shuttle_moved()
-	..()
+	. = ..()
 
-	spawn(2 SECONDS)
+	spawn(20)
 		if (!location)	//just arrived home
 			for(var/turf/T in get_area_turfs(shuttle_area))
 				var/mob/M = locate(/mob) in T
-				to_chat(M, "<span class='danger'>You have arrived at [GLOB.using_map.boss_name]. Operation has ended!</span>")
+				to_chat(M, "<span class='danger'>You have arrived at [current_map.boss_name]. Operation has ended!</span>")
 		else	//just left for the station
 			launch_mauraders()
 			for(var/turf/T in get_area_turfs(shuttle_area))
 				var/mob/M = locate(/mob) in T
-				to_chat(M, "<span class='danger'>You have arrived at [GLOB.using_map.station_name]. Commence operation!</span>")
+				to_chat(M, "<span class='danger'>You have arrived at [current_map.station_name]. Commence operation!</span>")
 
 				var/obj/machinery/light/small/readylight/light = locate() in T
 				if(light) light.set_state(1)
@@ -85,9 +84,8 @@
 	if (istype(in_use, /obj/machinery/computer))
 		var/obj/machinery/computer/C = in_use
 		C.visible_message("<span class='warning'>Launch sequence aborted.</span>")
+
 	..()
-
-
 
 /datum/shuttle/autodock/ferry/specops/can_launch()
 	if(launch_prep)
@@ -152,10 +150,10 @@
 		sleep(10)
 
 		var/spawn_marauder[] = new()
-		for(var/obj/effect/landmark/L in world)
+		for(var/obj/effect/landmark/L in landmarks_list)
 			if(L.name == "Marauder Entry")
 				spawn_marauder.Add(L)
-		for(var/obj/effect/landmark/L in world)
+		for(var/obj/effect/landmark/L in landmarks_list)
 			if(L.name == "Marauder Exit")
 				var/obj/effect/portal/P = new(L.loc)
 				P.set_invisibility(101)//So it is not seen by anyone.
@@ -198,3 +196,29 @@
 						M.close()
 		special_ops.readyreset()//Reset firealarm after the team launched.
 	//End Marauder launchpad.
+
+/obj/machinery/light/small/readylight
+	brightness_range = 5
+	brightness_power = 1
+	brightness_color = "#DA0205"
+	var/state = 0
+
+/obj/machinery/light/small/readylight/proc/set_state(var/new_state)
+	state = new_state
+	if(state)
+		brightness_color = "00FF00"
+	else
+		brightness_color = initial(brightness_color)
+	update()
+
+//--Tau Ceti Foreign Legion Shuttle--//
+
+/obj/machinery/computer/shuttle_control/multi/legion
+	name = "dropship control console"
+	req_access = list(access_legion)
+	shuttle_tag = "Legion Shuttle"
+
+/obj/machinery/computer/shuttle_control/multi/distress
+	name = "shuttle control computer"
+	req_access = list(access_distress)
+	shuttle_tag = "Distress Shuttle"

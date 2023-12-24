@@ -1,10 +1,12 @@
 /datum/shuttle/autodock/multi
+	/// Tags of all the landmarks that this should can go to.
+	/// Can contain nested lists, as it is flattened before use.
 	var/list/destination_tags
 	var/list/destinations_cache = list()
 	var/last_cache_rebuild_time = 0
 	category = /datum/shuttle/autodock/multi
 
-/datum/shuttle/autodock/multi/proc/set_destination(destination_key, mob/user)
+/datum/shuttle/autodock/multi/proc/set_destination(var/destination_key, mob/user)
 	if(moving_status != SHUTTLE_IDLE)
 		return
 	next_location = destinations_cache[destination_key]
@@ -17,21 +19,24 @@
 /datum/shuttle/autodock/multi/proc/build_destinations_cache()
 	last_cache_rebuild_time = world.time
 	destinations_cache.Cut()
+	destination_tags = flatten_list(destination_tags)
 	for(var/destination_tag in destination_tags)
 		var/obj/effect/shuttle_landmark/landmark = SSshuttle.get_landmark(destination_tag)
-		if (istype(landmark))
+		if(istype(landmark))
 			destinations_cache["[landmark.name]"] = landmark
 
 //Antag play announcements when they leave/return to their home area
 /datum/shuttle/autodock/multi/antag
 	warmup_time = 10 SECONDS //replaced the old move cooldown
-	 //This variable is type-abused initially: specify the landmark_tag, not the actual landmark.
+	//This variable is type-abused initially: specify the landmark_tag, not the actual landmark.
 	var/obj/effect/shuttle_landmark/home_waypoint
 
-	var/cloaked = 1
-	var/arrival_announce
-	var/departure_announce
-	var/return_warning = 0
+	var/cloaked = TRUE
+	var/returned = FALSE
+	var/return_warning_cooldown
+	var/announcer
+	var/arrival_message
+	var/departure_message
 
 	category = /datum/shuttle/autodock/multi/antag
 
@@ -49,21 +54,23 @@
 		announce_departure()
 	..()
 
-/datum/shuttle/autodock/multi/antag/proc/announce_departure()
-	if(cloaked || isnull(departure_announce))
-		return
+/datum/shuttle/autodock/multi/antag/arrived()
+	if(current_location == home_waypoint)
+		returned = TRUE
 
-	SSannounce.play_station_announce(departure_announce)
+/datum/shuttle/autodock/multi/antag/launch(var/user)
+	if(returned)
+		if(user)
+			to_chat(user, SPAN_WARNING("You don't have enough fuel for another launch!"))
+		return //Nada, can't go back.
+	..(user)
+
+/datum/shuttle/autodock/multi/antag/proc/announce_departure()
+	if(cloaked || isnull(departure_message))
+		return
+	command_announcement.Announce(departure_message, announcer || "[current_map.boss_name]")
 
 /datum/shuttle/autodock/multi/antag/proc/announce_arrival()
-	if(cloaked || isnull(arrival_announce))
+	if(cloaked || isnull(arrival_message))
 		return
-
-	SSannounce.play_station_announce(arrival_announce)
-
-/datum/shuttle/autodock/multi/antag/set_destination(destination_key, mob/user)
-	if(!return_warning && destination_key == home_waypoint.name)
-		to_chat(user, SPAN("danger", "Are you sure you want to return to base? If you are sure, press the button again.</span>"))
-		return_warning = 1
-		return
-	..()
+	command_announcement.Announce(arrival_message, announcer || "[current_map.boss_name]")

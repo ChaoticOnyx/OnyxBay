@@ -1,104 +1,168 @@
-#define WHITELISTFILE "config/whitelist.txt"
+#define WHITELISTFILE "data/whitelist.txt"
 
 var/list/whitelist = list()
+var/list/whitelist_jobconfig = list()
+
+/**
+* The config/whitelist_jobconfig.json file contains a list that associates a job name with a whitelist_status.
+* A job name in that case is any rank that /proc/jobban_isbanned(player, rank) checks for.
+* The status needs to be present in the ss13_whitelist_statuses table and assigned to the players that should have the whitelist.
+* This system only works with the sql based whitelists.
+* The file based whitelists are still supported but it is not possible to assign specific whitelists to specific players. (its either all or nothing)
+*/
 
 /hook/startup/proc/loadWhitelist()
-	if(config.game.use_whitelist)
+	if (config.usewhitelist)
+		load_whitelist_jobconfig()
 		load_whitelist()
 	return 1
 
-/proc/load_whitelist()
-	whitelist = file2list(WHITELISTFILE)
-	if(!whitelist.len)	whitelist = null
+/proc/load_whitelist_jobconfig()
+	if(fexists("config/whitelist_jobconfig.json"))
+		LOG_DEBUG("Whitelist JobConfig: Loading from json")
+		try
+			whitelist_jobconfig = json_decode(return_file_text("config/whitelist_jobconfig.json"))
+		catch(var/exception/e)
+			LOG_DEBUG("Whitelist JobConfig: Failed to load whitelist_jobconfig.json: [e]")
 
-/proc/check_whitelist(mob/M /*, rank*/)
-	if(!whitelist)
+/proc/load_whitelist()
+	if (config.sql_whitelists)
+		if (!establish_db_connection(dbcon))
+			//Continue with the old code if we have no database.
+			log_world("ERROR: Database connection failed while loading whitelists. Reverting to legacy system.")
+			config.sql_whitelists = 0
+		else
+			return
+
+	whitelist = file2list(WHITELISTFILE)
+	if (!whitelist.len)
+		whitelist = null
+
+/proc/check_whitelist_rank(mob/M, var/rank)
+	if (length(whitelist_jobconfig))
+		if (rank in whitelist_jobconfig)
+			return check_whitelist(M, whitelist_jobconfig[rank])
+		else
+			return TRUE //If the rank does not exist in the whitelist config, the rank isnt whitelisted
+	else
+		return TRUE //If the whitelist_jobconfig isnt loaded, there are no whitelists
+
+/proc/check_whitelist(mob/M, var/whitelist_id = 1)
+	if(!config.usewhitelist)
+		return TRUE
+
+	if (config.sql_whitelists)
+		if (M.client && M.client.whitelist_status)
+			return (M.client.whitelist_status & whitelist_id)
+
 		return 0
-	return ("[M.ckey]" in whitelist)
+	else
+		if (!whitelist)
+			return 0
+		return ("[M.ckey]" in whitelist)
 
 /var/list/alien_whitelist = list()
 
 /hook/startup/proc/loadAlienWhitelist()
-	if(config.game.use_ingame_alien_whitelist)
-		if(config.game.use_alien_whitelist_sql)
-			load_alienwhitelistSQL()
-		else
-			load_alienwhitelist()
+	if (config.usealienwhitelist)
+		load_alienwhitelist()
 	return 1
 
 /proc/load_alienwhitelist()
+	if (config.sql_whitelists)
+		if (!establish_db_connection(dbcon))
+			//Continue with the old code if we have no database.
+			log_world("ERROR: Database connection failed while loading alien whitelists. Reverting to legacy system.")
+			config.sql_whitelists = 0
+		else
+			var/DBQuery/query = dbcon.NewQuery("SELECT status_name, flag FROM ss13_whitelist_statuses")
+			query.Execute()
+
+			while (query.NextRow())
+				if (query.item[1] in whitelisted_species)
+					whitelisted_species[query.item[1]] = text2num(query.item[2])
+
+			return
+
 	var/text = file2text("config/alienwhitelist.txt")
 	if (!text)
 		log_misc("Failed to load config/alienwhitelist.txt")
 		return 0
 	else
-		alien_whitelist = splittext(text, "\n")
+		alien_whitelist = text2list(text, "\n")
 		return 1
 
-/proc/load_alienwhitelistSQL()
-	if(!establish_old_db_connection())
-		error("Failed to connect to database in load_alienwhitelistSQL(). Reverting to legacy system.")
-		log_misc("Failed to connect to database in load_alienwhitelistSQL(). Reverting to legacy system.")
-		config.game.use_alien_whitelist_sql = 0
-		load_alienwhitelist()
-		return FALSE
-	var/DBQuery/query = sql_query("SELECT * FROM whitelist", dbcon_old)
-	while(query.NextRow())
-		var/list/row = query.GetRowData()
-		if(alien_whitelist[row["ckey"]])
-			var/list/A = alien_whitelist[row["ckey"]]
-			A.Add(row["race"])
-		else
-			alien_whitelist[row["ckey"]] = list(row["race"])
-	return TRUE
+/proc/is_alien_whitelisted(mob/M, var/species)
+	if (!config.usealienwhitelist)
+		return 1
 
-/proc/is_species_whitelisted(mob/M, species_name)
-	var/datum/species/S = all_species[species_name]
-	return is_alien_whitelisted(M, S)
-
-//todo: admin aliens
-/proc/is_alien_whitelisted(mob/M, species)
-	if(!M || !species)
+	if (!M || !species)
 		return 0
-	if(!config.game.use_ingame_alien_whitelist)
-		return 1
 
-	var/client/C = M.client
-	if (C && SpeciesIngameWhitelist_CheckPlayer(C))
-		return TRUE
-
-	if(istype(species,/datum/language))
-		var/datum/language/L = species
-		if(!(L.flags & (WHITELISTED|RESTRICTED)))
-			return 1
-		return whitelist_lookup(L.name, M.ckey)
-
-	if(istype(species,/datum/species))
+	if(istype(species, /datum/species))
 		var/datum/species/S = species
-		if(!(S.spawn_flags & (SPECIES_IS_WHITELISTED|SPECIES_IS_RESTRICTED)))
+		if(!(S.spawn_flags & IS_WHITELISTED))
 			return 1
-		return whitelist_lookup(S.name, M.ckey)
+		species = S.name
 
-	return 0
+	else
+		var/datum/species/S = global.all_species[species]
+		if(S && !(S.spawn_flags & IS_WHITELISTED))
+			return 1
 
-/proc/whitelist_lookup(item, ckey)
-	if(!alien_whitelist)
+	if (!alien_whitelist && !config.sql_whitelists)
 		return 0
 
-	if(config.game.use_alien_whitelist_sql)
-		//SQL Whitelist
-		if(!(ckey in alien_whitelist))
-			return 0;
-		var/list/whitelisted = alien_whitelist[ckey]
-		if(lowertext(item) in whitelisted)
-			return 1
+	if (config.sql_whitelists)
+		if (M.client && M.client.whitelist_status)
+			return (M.client.whitelist_status & whitelisted_species[species])
 	else
-		//Config File Whitelist
-		for(var/s in alien_whitelist)
-			if(findtext(s,"[ckey] - [item]"))
-				return 1
-			if(findtext(s,"[ckey] - All"))
-				return 1
+		if (M && species)
+			for (var/s in alien_whitelist)
+				if (findtext(s,"[M.ckey] - [species]"))
+					return 1
+				if (findtext(s,"[M.ckey] - All"))
+					return 1
 	return 0
+
+/**
+ * A centralized proc for checking whether or not a player is fit for playing
+ * any antag role or job role dependant on their ckey's age, job's age restriction,
+ * and config settings.
+ *
+ * @param	C The client object whose age we want to check. Can also be a mob.
+ * @param	job The job name/antag role name we want to check against.
+ *
+ * @return	Days left until the player can play the role if they're too young.
+ *			0 if they're old enough.
+ */
+/proc/player_old_enough_for_role(client/C, job)
+	if (!job || !C)
+		return 0
+
+	if (ismob(C))
+		var/mob/M = C
+		C = M.client
+
+	if (!istype(C) || C.holder)
+		return 0
+
+	if(!establish_db_connection(dbcon))
+		return 0
+
+	var/age_to_beat = 0
+
+	// Assume it's an antag role.
+	if (bantype_to_antag_age[lowertext(job)] && config.use_age_restriction_for_antags)
+		age_to_beat = bantype_to_antag_age[lowertext(job)]
+
+	// Assume it's a job instead!
+	if (!age_to_beat)
+		var/datum/job/J = SSjobs.GetJob(job)
+		if (J && config.use_age_restriction_for_jobs)
+			age_to_beat = J.minimal_player_age
+
+	var/diff = age_to_beat - C.player_age
+	return (diff > 0) ? diff : 0
 
 #undef WHITELISTFILE

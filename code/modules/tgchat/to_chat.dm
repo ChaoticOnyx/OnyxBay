@@ -3,39 +3,37 @@
  * SPDX-License-Identifier: MIT
  */
 
-#define SANITIZE(variable)\
-if(isnum(variable)) { util_crash_with("Number in to_chat: [variable]"); variable = num2text(variable) }\
-else if(!istext(variable)) { CRASH("Trying to send non-text content") }
-
 /**
  * Circumvents the message queue and sends the message
  * to the recipient (target) as soon as possible.
  */
-/proc/to_chat_immediate(target, html,
-		type = null,
-		text = null,
-		avoid_highlighting = FALSE,
-		// FIXME: These flags are now pointless and have no effect
-		handle_whitespace = TRUE,
-		trailing_newline = TRUE,
-		confidential = FALSE)
-	if(!target || (!html && !text))
+/proc/to_chat_immediate(
+	target,
+	html,
+	type = null,
+	text = null,
+	avoid_highlighting = FALSE,
+	// FIXME: These flags are now pointless and have no effect
+	handle_whitespace = TRUE,
+	trailing_newline = TRUE,
+	confidential = FALSE
+)
+	// Useful where the integer 0 is the entire message. Use case is enabling to_chat(target, some_boolean) while preventing to_chat(target, "")
+	html = "[html]"
+	text = "[text]"
+
+	if(!target)
 		return
+	if(!html && !text)
+		CRASH("Empty or null string in to_chat proc call.")
 	if(target == world)
-		target = GLOB.clients
+		target = clients
 
 	// Build a message
 	var/message = list()
-	if(type)
-		message["type"] = type
-	if(text)
-		SANITIZE(text)
-		text = replacetext(text, GLOB.pua, "")
-		message["text"] = text
-	if(html)
-		SANITIZE(html)
-		html = replacetext(html, GLOB.pua, "")
-		message["html"] = html
+	if(type) message["type"] = type
+	if(text) message["text"] = text
+	if(html) message["html"] = html
 	if(avoid_highlighting) message["avoidHighlighting"] = avoid_highlighting
 	var/message_blob = TGUI_CREATE_MESSAGE("chat/message", message)
 	var/message_html = message_to_html(message)
@@ -46,14 +44,14 @@ else if(!istext(variable)) { CRASH("Trying to send non-text content") }
 				// Send to tgchat
 				client.tgui_panel?.window.send_raw_message(message_blob)
 				// Send to old chat
-				DIRECT_OUTPUT(client, message_html)
+				to_target(client, message_html)
 		return
 	var/client/client = CLIENT_FROM_VAR(target)
 	if(client)
 		// Send to tgchat
 		client.tgui_panel?.window.send_raw_message(message_blob)
 		// Send to old chat
-		DIRECT_OUTPUT(client, message_html)
+		to_target(client, message_html)
 
 /**
  * Sends the message to the recipient (target).
@@ -65,42 +63,36 @@ else if(!istext(variable)) { CRASH("Trying to send non-text content") }
  *     html = "You have found <strong>[object]</strong>")
  * ```
  */
-/proc/to_chat(target, html,
-		type,
-		text = null,
-		avoid_highlighting = FALSE,
-		// FIXME: These flags are now pointless and have no effect
-		handle_whitespace = TRUE,
-		trailing_newline = TRUE,
-		confidential = FALSE)
-	if(Master.current_runlevel == RUNLEVEL_INIT || !SSchat?.initialized)
-		to_chat_immediate(target, html, type, text)
+/proc/to_chat(
+	target,
+	html,
+	type = null,
+	text = null,
+	avoid_highlighting = FALSE,
+	// FIXME: These flags are now pointless and have no effect
+	handle_whitespace = TRUE,
+	trailing_newline = TRUE,
+	confidential = FALSE
+)
+	if(isnull(Master) || !SSchat?.init_state != SS_INITSTATE_DONE)
+		to_chat_immediate(target, html, type, text, avoid_highlighting)
 		return
-	if(!target || (!html && !text))
+
+	// Useful where the integer 0 is the entire message. Use case is enabling to_chat(target, some_boolean) while preventing to_chat(target, "")
+	html = "[html]"
+	text = "[text]"
+
+	if(!target)
 		return
+	if(!html && !text)
+		CRASH("Empty or null string in to_chat proc call.")
 	if(target == world)
-		target = GLOB.clients
+		target = clients
+
 	// Build a message
 	var/message = list()
-	// Replace expanded \icon macro with icon2html
-	// regex/Replace with a proc won't work here because icon2html takes target as an argument and there is no way to pass it to the replacement proc
-	// not even hacks with reassigning usr work
-	var/static/regex/i = new(@/<IMG CLASS=icon SRC=(\[[^]]+])(?: ICONSTATE='([^']+)')?>/, "g")
-	//'
-
 	if(type) message["type"] = type
-	if(text)
-		SANITIZE(text)
-		text = replacetext(text, GLOB.pua, "")
-		message["text"] = text
-	if(html)
-		SANITIZE(html)
-		while(i.Find(html))
-			html = copytext(html, 1, i.index) + icon2html(locate(i.group[1]), target, icon_state = i.group[2]) + copytext(html, i.next)
-
-		html = replacetext(html, GLOB.pua, "")
-		message["html"] = html
+	if(text) message["text"] = text
+	if(html) message["html"] = html
 	if(avoid_highlighting) message["avoidHighlighting"] = avoid_highlighting
 	SSchat.queue(target, message)
-
-#undef SANITIZE

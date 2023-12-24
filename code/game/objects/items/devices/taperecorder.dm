@@ -1,138 +1,86 @@
 /obj/item/device/taperecorder
 	name = "universal recorder"
-	desc = "A device that can record to cassette tapes, and play them. It automatically translates the content in playback."
-	icon_state = "taperecorder"
+	desc = "A device that can record up to an hour of dialogue and play it back. It automatically translates the content in playback."
+	icon_state = "taperecorderidle"
 	item_state = "analyzer"
-	w_class = ITEM_SIZE_SMALL
+	w_class = ITEMSIZE_SMALL
 
-	matter = list(MATERIAL_STEEL = 60, MATERIAL_GLASS = 30)
+	matter = list(DEFAULT_WALL_MATERIAL = 60, MATERIAL_GLASS = 30)
 
-	var/emagged = 0.0
-	var/recording = 0.0
-	var/playing = 0.0
-	var/playsleepseconds = 0.0
-	var/obj/item/device/tape/mytape = /obj/item/device/tape/random
-	var/canprint = 1
-	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	slot_flags = SLOT_BELT
+	var/emagged = FALSE
+	var/recording = FALSE
+	var/playing = FALSE
+	var/time_recorded = 0
+	var/play_sleep_seconds = 0
+	var/list/stored_info = list() // TOOK OUT NEW THING
+	var/list/timestamp = list()
+	var/can_print = TRUE
+	var/obj/item/computer_hardware/hard_drive/portable/portable_drive
+	obj_flags = OBJ_FLAG_CONDUCTABLE
 	throwforce = 2
+	throw_speed = 4
 	throw_range = 20
 
-/obj/item/device/taperecorder/New()
-	..()
-
-	if(ispath(mytape))
-		mytape = new mytape(src)
-
-	GLOB.listening_objects += src
-	update_icon()
-
-/obj/item/device/taperecorder/empty
-	mytape = null
+/obj/item/device/taperecorder/Initialize()
+	. = ..()
+	become_hearing_sensitive(ROUNDSTART_TRAIT)
+	portable_drive = new /obj/item/computer_hardware/hard_drive/portable(src)
 
 /obj/item/device/taperecorder/Destroy()
-	GLOB.listening_objects -= src
-	if(mytape)
-		qdel(mytape)
-		mytape = null
+	listening_objects -= src
+	if(portable_drive)
+		QDEL_NULL(portable_drive)
 	return ..()
 
-
-/obj/item/device/taperecorder/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/device/tape))
-		if(mytape)
-			to_chat(user, "<span class='notice'>There's already a tape inside.</span>")
+/obj/item/device/taperecorder/hear_talk(mob/living/M, msg, var/verb = "says", datum/language/speaking = null)
+	if(isanimal(M))
+		if(!M.universal_speak)
 			return
-		if(!user.drop(I, src))
-			return
-		mytape = I
-		to_chat(user, "<span class='notice'>You insert [I] into [src].</span>")
-		update_icon()
-		return
-	..()
 
-
-/obj/item/device/taperecorder/fire_act()
-	if(mytape)
-		mytape.ruin() //Fires destroy the tape
-	return ..()
-
-
-/obj/item/device/taperecorder/attack_hand(mob/user)
-	if(user.get_inactive_hand() == src)
-		if(mytape)
-			eject()
-			return
-	..()
-
-
-/obj/item/device/taperecorder/verb/eject()
-	set name = "Eject Tape"
-	set category = "Object"
-
-	if(usr.incapacitated())
-		return
-	if(!mytape)
-		to_chat(usr, "<span class='notice'>There's no tape in \the [src].</span>")
-		return
-	if(emagged)
-		to_chat(usr, "<span class='notice'>The tape seems to be stuck inside.</span>")
-		return
-
-	if(playing || recording)
-		stop()
-	to_chat(usr, "<span class='notice'>You remove [mytape] from [src].</span>")
-	usr.pick_or_drop(mytape)
-	mytape = null
-	update_icon()
-
-
-/obj/item/device/taperecorder/hear_talk(mob/living/M as mob, msg, verb="says", datum/language/speaking=null)
-	if(mytape && recording)
+	if(recording)
+		timestamp += time_recorded
 
 		if(speaking)
 			if(!speaking.machine_understands)
 				msg = speaking.scramble(msg)
-			mytape.record_speech("[M.GetVoice()] [speaking.format_message_plain(msg, verb)]")
+			stored_info += "\[[time2text(time_recorded*10,"mm:ss")]\] [M.name] [speaking.format_message_plain(msg, verb)]"
 		else
-			mytape.record_speech("[M.GetVoice()] [verb], \"[msg]\"")
+			stored_info += "\[[time2text(time_recorded*10,"mm:ss")]\] [M.name] [verb], \"[msg]\""
 
-
-/obj/item/device/taperecorder/see_emote(mob/M as mob, text, emote_type)
-	if(emote_type != AUDIBLE_MESSAGE) //only hearable emotes
+/obj/item/device/taperecorder/see_emote(mob/M, text, var/emote_type)
+	if(emote_type != 2) //only hearable emotes
 		return
-	if(mytape && recording)
-		mytape.record_speech("[strip_html_properly(text)]")
-
+	if(recording)
+		timestamp += time_recorded
+		stored_info += "\[[time2text(time_recorded*10,"mm:ss")]\] [strip_html_properly(text)]"
 
 /obj/item/device/taperecorder/show_message(msg, type, alt, alt_type)
 	var/recordedtext
-	if (msg && type == AUDIBLE_MESSAGE) //must be hearable
+	if(msg && type == 2) //must be hearable
 		recordedtext = msg
-	else if (alt && alt_type == AUDIBLE_MESSAGE)
+	else if(alt && alt_type == 2)
 		recordedtext = alt
 	else
 		return
-	if(mytape && recording)
-		mytape.record_noise("[strip_html_properly(recordedtext)]")
+	if(recording)
+		timestamp += time_recorded
+		stored_info += "*\[[time2text(time_recorded*10,"mm:ss")]\] *[strip_html_properly(recordedtext)]*" //"*" at front as a marker
 
-/obj/item/device/taperecorder/emag_act(remaining_charges, mob/user)
-	if(emagged == 0)
-		emagged = 1
-		recording = 0
-		to_chat(user, "<span class='warning'>PZZTTPFFFT</span>")
-		update_icon()
-		return 1
-	else
-		to_chat(user, "<span class='warning'>It is already emagged!</span>")
+/obj/item/device/taperecorder/emag_act(var/remaining_charges, mob/user)
+	if(emagged)
+		to_chat(user, SPAN_WARNING("It is already emagged!"))
+		return FALSE
+	emagged = TRUE
+	recording = FALSE
+	to_chat(user, SPAN_NOTICE("PZZTTPFFFT"))
+	icon_state = "taperecorderidle"
+	return TRUE
 
 /obj/item/device/taperecorder/proc/explode()
 	var/turf/T = get_turf(loc)
-	if(ismob(loc))
-		var/mob/M = loc
-		to_chat(M, "<span class='danger'>\The [src] explodes!</span>")
+	visible_message(SPAN_DANGER("\The [src] explodes!"))
 	if(T)
-		T.hotspot_expose(700,125)
+		T.hotspot_expose(700, 125)
 		explosion(T, -1, -1, 0, 4)
 	qdel(src)
 	return
@@ -140,297 +88,238 @@
 /obj/item/device/taperecorder/verb/record()
 	set name = "Start Recording"
 	set category = "Object"
+	set src in usr
 
-	if(usr.incapacitated())
+	if(use_check_and_message(usr))
 		return
-	if(!mytape)
-		to_chat(usr, "<span class='notice'>There's no tape!</span>")
+	if(emagged)
+		to_chat(usr, SPAN_WARNING("The tape recorder makes a scratchy noise."))
 		return
-	if(mytape.ruined || emagged)
-		audible_message("<span class='warning'>The tape recorder makes a scratchy noise.</span>")
-		return
-	if(recording)
-		to_chat(usr, "<span class='notice'>You're already recording!</span>")
-		return
-	if(playing)
-		to_chat(usr, "<span class='notice'>You can't record when playing!</span>")
-		return
-	if(mytape.used_capacity < mytape.max_capacity)
-		playsound(src.loc, 'sound/effects/recorder/start1.ogg', 15)
-		to_chat(usr, "<span class='notice'>Recording started.</span>")
-		recording = 1
-		update_icon()
-
-		mytape.record_speech("Recording started.")
-
-		//count seconds until full, or recording is stopped
-		while(mytape && recording && mytape.used_capacity < mytape.max_capacity)
+	icon_state = "taperecorderrecording"
+	if(time_recorded < 3600 && !playing)
+		to_chat(usr, SPAN_NOTICE("Recording started."))
+		recording = TRUE
+		timestamp += time_recorded
+		stored_info += "\[[time2text(time_recorded*10,"mm:ss")]\] Recording started."
+		for(time_recorded, time_recorded < 3600)
+			if(!recording)
+				break
+			time_recorded++
 			sleep(10)
-			mytape.used_capacity++
-			if(mytape.used_capacity >= mytape.max_capacity)
-				if(ismob(loc))
-					var/mob/M = loc
-					to_chat(M, "<span class='notice'>The tape is full.</span>")
-				stop_recording()
-
-
-		update_icon()
+		recording = FALSE
+		icon_state = "taperecorderidle"
 		return
 	else
-		to_chat(usr, "<span class='notice'>The tape is full.</span>")
-
-
-/obj/item/device/taperecorder/proc/stop_recording()
-	//Sanity checks skipped, should not be called unless actually recording
-	recording = 0
-	update_icon()
-	mytape.record_speech("Recording stopped.")
-	if(ismob(loc))
-		var/mob/M = loc
-		to_chat(M, "<span class='notice'>Recording stopped.</span>")
-
+		to_chat(usr, SPAN_NOTICE("Either your tape recorder's memory is full, or it is currently playing back its memory."))
 
 /obj/item/device/taperecorder/verb/stop()
-	set name = "Stop"
+	set name = "Stop Recording"
 	set category = "Object"
+	set src in usr
 
-	if(usr.incapacitated())
+	if(use_check_and_message(usr))
 		return
+	if(emagged)
+		to_chat(usr, SPAN_WARNING("The tape recorder makes a scratchy noise."))
+		return
+
 	if(recording)
-		playsound(src.loc, 'sound/effects/recorder/stop1.ogg', 15)
-		stop_recording()
+		recording = FALSE
+		timestamp += time_recorded
+		stored_info += "\[[time2text(time_recorded*10,"mm:ss")]\] Recording stopped."
+		to_chat(usr, SPAN_NOTICE("Recording stopped."))
+		icon_state = "taperecorderidle"
 		return
 	else if(playing)
-		playsound(src.loc, 'sound/effects/recorder/stop1.ogg', 15)
-		playing = 0
-		update_icon()
-		to_chat(usr, "<span class='notice'>Playback stopped.</span>")
+		playing = FALSE
+		audible_message("<font color=Maroon><B>Tape Recorder</B>: Playback stopped.</font>", hearing_distance = 3)
+		icon_state = "taperecorderidle"
 		return
-	else
-		to_chat(usr, "<span class='notice'>Stop what?</span>")
 
-
-/obj/item/device/taperecorder/verb/wipe_tape()
-	set name = "Wipe Tape"
+/obj/item/device/taperecorder/verb/clear_memory()
+	set name = "Clear Memory"
 	set category = "Object"
+	set src in usr
 
-	if(usr.incapacitated())
+	if(use_check_and_message(usr))
 		return
-	if(emagged || mytape.ruined)
-		audible_message("<span class='warning'>The tape recorder makes a scratchy noise.</span>")
+	if(emagged)
+		to_chat(usr, SPAN_WARNING("The tape recorder makes a scratchy noise."))
 		return
 	if(recording || playing)
-		to_chat(usr, "<span class='notice'>You can't wipe the tape while playing or recording!</span>")
+		to_chat(usr, SPAN_WARNING("You can't clear the memory while playing or recording!"))
 		return
 	else
-		playsound(src.loc, 'sound/effects/recorder/stop1.ogg', 15)
-		playsound(src.loc, 'sound/effects/recorder/wipe1.ogg', 15)
-		if(mytape.storedinfo)	mytape.storedinfo.Cut()
-		if(mytape.timestamp)	mytape.timestamp.Cut()
-		mytape.used_capacity = 0
-		to_chat(usr, "<span class='notice'>You wipe the tape.</span>")
+		if(stored_info)
+			stored_info.Cut()
+		if(timestamp)
+			timestamp.Cut()
+		time_recorded = 0
+		to_chat(usr, SPAN_NOTICE("Memory cleared."))
 		return
-
 
 /obj/item/device/taperecorder/verb/playback_memory()
-	set name = "Playback Tape"
+	set name = "Playback Memory"
 	set category = "Object"
+	set src in usr
 
-	if(usr.incapacitated())
-		return
-	if(!mytape)
-		to_chat(usr, "<span class='notice'>There's no tape!</span>")
-		return
-	if(mytape.ruined)
-		audible_message("<span class='warning'>The tape recorder makes a scratchy noise.</span>")
+	if(use_check_and_message(usr))
 		return
 	if(recording)
-		to_chat(usr, "<span class='notice'>You can't playback when recording!</span>")
+		to_chat(usr, SPAN_WARNING("You can't playback when recording!"))
 		return
 	if(playing)
-		to_chat(usr, "<span class='notice'>You're already playing!</span>")
+		to_chat(usr, SPAN_WARNING("You're already playing!"))
 		return
-	playsound(src.loc, 'sound/effects/recorder/start1.ogg', 15)
-	playsound(src.loc, 'sound/effects/recorder/playback1.ogg', 15)
-	playing = 1
-	update_icon()
-	to_chat(usr, "<span class='notice'>Audio playback started.</span>")
-	for(var/i=1 , i < mytape.max_capacity , i++)
-		if(!mytape || !playing)
+	playing = TRUE
+	icon_state = "taperecorderplaying"
+	to_chat(usr, SPAN_NOTICE("Playing started."))
+	for(var/i = 1, time_recorded < 3600, sleep(10 * play_sleep_seconds))
+		if(!playing)
 			break
-		if(mytape.storedinfo.len < i)
+		if(stored_info.len < i)
 			break
-
-		var/turf/T = get_turf(src)
-		var/playedmessage = mytape.storedinfo[i]
-		if (findtextEx(playedmessage,"*",1,2)) //remove marker for action sounds
-			playedmessage = copytext(playedmessage,2)
-		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: [playedmessage]</font>")
-
-		if(mytape.storedinfo.len < i+1)
-			playsleepseconds = 1
+		var/playedmessage = stored_info[i]
+		if(findtextEx(playedmessage, "*" , 1, 2)) //remove marker for action sounds
+			playedmessage = copytext(playedmessage, 2)
+		audible_message("<font color=Maroon><B>Tape Recorder</B>: [playedmessage]</font>", hearing_distance = 3)
+		if(stored_info.len < i + 1)
+			play_sleep_seconds = 1
 			sleep(10)
-			T = get_turf(src)
-			T.audible_message("<font color=Maroon><B>Tape Recorder</B>: End of recording.</font>")
-			break
+			audible_message("<font color=Maroon><B>Tape Recorder</B>: End of recording.</font>", hearing_distance = 3)
 		else
-			playsleepseconds = mytape.timestamp[i+1] - mytape.timestamp[i]
-
-		if(playsleepseconds > 14)
+			play_sleep_seconds = timestamp[i + 1] - timestamp[i]
+		if(play_sleep_seconds > 14)
 			sleep(10)
-			T = get_turf(src)
-			T.audible_message("<font color=Maroon><B>Tape Recorder</B>: Skipping [playsleepseconds] seconds of silence</font>")
-			playsleepseconds = 1
-		sleep(10 * playsleepseconds)
-
-
-	playing = 0
-	update_icon()
-
+			audible_message("<font color=Maroon><B>Tape Recorder</B>: Skipping [play_sleep_seconds] seconds of silence.</font>", hearing_distance = 3)
+			play_sleep_seconds = 1
+		i++
+	icon_state = "taperecorderidle"
+	playing = FALSE
 	if(emagged)
-		var/turf/T = get_turf(src)
-		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: This tape recorder will self-destruct in... Five.</font>")
-		sleep(10)
-		T = get_turf(src)
-		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: Four.</font>")
-		sleep(10)
-		T = get_turf(src)
-		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: Three.</font>")
-		sleep(10)
-		T = get_turf(src)
-		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: Two.</font>")
-		sleep(10)
-		T = get_turf(src)
-		T.audible_message("<font color=Maroon><B>Tape Recorder</B>: One.</font>")
-		sleep(10)
+		audible_message("<font color=Maroon><B>Tape Recorder</B>: This tape recorder will self-destruct in... Five.</font>", hearing_distance = 3)
+		sleep(15)
+		audible_message("<font color=Maroon><B>Tape Recorder</B>: Four.</font>", hearing_distance = 3)
+		sleep(15)
+		audible_message("<font color=Maroon><B>Tape Recorder</B>: Three.</font>", hearing_distance = 3)
+		sleep(15)
+		audible_message("<font color=Maroon><B>Tape Recorder</B>: Two.</font>", hearing_distance = 3)
+		sleep(15)
+		audible_message("<font color=Maroon><B>Tape Recorder</B>: One.</font>", hearing_distance = 3)
+		sleep(15)
 		explode()
-
 
 /obj/item/device/taperecorder/verb/print_transcript()
 	set name = "Print Transcript"
 	set category = "Object"
+	set src in usr
 
-	if(usr.incapacitated())
+	if(use_check_and_message(usr))
 		return
-	if(!mytape)
-		to_chat(usr, "<span class='notice'>There's no tape!</span>")
+	if(emagged)
+		to_chat(usr, SPAN_WARNING("The tape recorder makes a scratchy noise."))
 		return
-	if(mytape.ruined || emagged)
-		audible_message("<span class='warning'>The tape recorder makes a scratchy noise.</span>")
-		return
-	if(!canprint)
-		to_chat(usr, "<span class='notice'>The recorder can't print that fast!</span>")
+	if(!can_print)
+		to_chat(usr, SPAN_WARNING("The recorder can't print that fast!"))
 		return
 	if(recording || playing)
-		to_chat(usr, "<span class='notice'>You can't print the transcript while playing or recording!</span>")
+		to_chat(usr, SPAN_WARNING("You can't print the transcript while playing or recording!"))
+		return
+	to_chat(usr, SPAN_NOTICE("Transcript printed."))
+	var/obj/item/paper/P = new /obj/item/paper(get_turf(src))
+	var/t1 = "<B>Transcript:</B><BR><BR>"
+	for(var/i = 1, stored_info.len >= i, i++)
+		var/printed_message = stored_info[i]
+		if(findtextEx(printed_message,"*", 1, 2))
+			printed_message = "\[[time2text(timestamp[i]*10,"mm:ss")]\] (Unrecognized sound)"
+		t1 += "[printed_message]<BR>"
+	P.info = t1
+	P.name = "Transcript"
+	usr.put_in_hands(P)
+	can_print = FALSE
+	addtimer(CALLBACK(src, PROC_REF(set_can_print), 1), 150)
+
+/obj/item/device/taperecorder/proc/set_can_print(var/set_state = TRUE)
+	can_print = set_state
+
+/obj/item/device/taperecorder/verb/eject_usb()
+	set name = "Eject Portable Storage"
+	set category = "Object"
+	set src in usr
+
+	if(use_check_and_message(usr))
+		return
+	if(!portable_drive)
+		to_chat(usr, SPAN_WARNING("There is no portable drive connected to \the [src]."))
 		return
 
-	to_chat(usr, "<span class='notice'>Transcript printed.</span>")
-	var/t1 = "<B>Transcript:</B><BR><BR>"
-	for(var/i in 1 to mytape.storedinfo.len)
-		var/printedmessage = mytape.storedinfo[i]
-		if (findtextEx(printedmessage,"*",1,2)) //replace action sounds
-			printedmessage = "\[[time2text(mytape.timestamp[i]*10,"mm:ss")]\] (Unrecognized sound)"
-		t1 += "[printedmessage]<BR>"
-	var/obj/item/paper/P = new /obj/item/paper(get_turf(src))
-	P.set_content(t1, "Transcript", TRUE)
-	canprint = 0
-	sleep(300)
-	canprint = 1
+	var/datum/computer_file/data/F = new /datum/computer_file/data(portable_drive)
+	F.filename = "[capitalize_first_letters(src.name)] Digital Transcript ([worldtime2text()] - [time2text(world.time, "Month DD")])"
+	F.filetype = "TXT"
 
+	var/file_data = "<B>Transcript:</B><BR>"
+	for(var/i = 1, stored_info.len >= i, i++)
+		var/printed_message = stored_info[i]
+		if(findtextEx(printed_message,"*", 1, 2))
+			printed_message = "\[[time2text(timestamp[i]*10,"mm:ss")]\] (Unrecognized sound)"
+		file_data += "[printed_message]<BR>"
+
+	F.stored_data = file_data
+	if(!portable_drive.store_file(F))
+		to_chat(usr, SPAN_WARNING("\The [portable_drive] does not have enough space to store the latest transcript, but will eject anyway."))
+
+	to_chat(usr, SPAN_NOTICE("You eject the portable drive."))
+	usr.put_in_hands(portable_drive)
+	portable_drive = null
 
 /obj/item/device/taperecorder/attack_self(mob/user)
-	if(recording || playing)
-		stop()
+	if(!recording && !playing)
+		if(use_check_and_message(usr))
+			return
+		if(emagged)
+			to_chat(usr, SPAN_WARNING("The tape recorder makes a scratchy noise."))
+			return
+		icon_state = "taperecorderrecording"
+		if(time_recorded < 3600 && !playing)
+			to_chat(usr, SPAN_NOTICE("Recording started."))
+			recording = TRUE
+			timestamp += time_recorded
+			stored_info += "\[[time2text(time_recorded*10,"mm:ss")]\] Recording started."
+			for(time_recorded, time_recorded < 3600)
+				if(!recording)
+					break
+				time_recorded++
+				sleep(10)
+			recording = FALSE
+			icon_state = "taperecorderidle"
+			return
+		else
+			to_chat(usr, SPAN_WARNING("Either your tape recorder's memory is full, or it is currently playing back its memory."))
 	else
-		record()
+		if(use_check_and_message(usr))
+			return
+		if(recording)
+			recording = FALSE
+			timestamp += time_recorded
+			stored_info += "\[[time2text(time_recorded*10,"mm:ss")]\] Recording stopped."
+			to_chat(usr, SPAN_NOTICE("Recording stopped."))
+			icon_state = "taperecorderidle"
+			return
+		else if(emagged)
+			to_chat(usr, SPAN_WARNING("The tape recorder's buttons doesn't react!"))
+			return
+		else if(playing)
+			playing = FALSE
+			audible_message("<font color=Maroon><B>Tape Recorder</B>: Playback stopped.</font>", hearing_distance = 3)
+			icon_state = "taperecorderidle"
+			return
 
-
-/obj/item/device/taperecorder/on_update_icon()
-	if(!mytape)
-		icon_state = "[initial(icon_state)]_empty"
-	else if(recording)
-		icon_state = "[initial(icon_state)]_recording"
-	else if(playing)
-		icon_state = "[initial(icon_state)]_playing"
+/obj/item/device/taperecorder/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/computer_hardware/hard_drive/portable))
+		if(portable_drive)
+			to_chat(user, SPAN_WARNING("\The [src] already has a portable drive!"))
+			return
+		user.drop_from_inventory(W, src)
+		portable_drive = W
 	else
-		icon_state = "[initial(icon_state)]_idle"
-
-/obj/item/device/tape
-	name = "bluespace tape"
-	desc = "A tape that can hold an infinite amount of correspondence."
-	icon_state = "tape_white"
-	item_state = "analyzer"
-	w_class = ITEM_SIZE_TINY
-	matter = list(MATERIAL_STEEL=20, MATERIAL_GLASS=5)
-	force = 1
-	throwforce = 0
-	var/max_capacity = 9e40 // Literal infinite storage
-	var/used_capacity = 0
-	var/list/storedinfo = new /list()
-	var/list/timestamp = new /list()
-	var/ruined = 0
-
-
-/obj/item/device/tape/on_update_icon()
-	ClearOverlays()
-	if(ruined)
-		AddOverlays("ribbonoverlay")
-
-
-/obj/item/device/tape/fire_act()
-	ruin()
-
-/obj/item/device/tape/attack_self(mob/user)
-	if(!ruined)
-		to_chat(user, "<span class='notice'>You pull out all the tape!</span>")
-		ruin()
-
-
-/obj/item/device/tape/proc/ruin()
-	ruined = 1
-	update_icon()
-
-
-/obj/item/device/tape/proc/fix()
-	ruined = 0
-	update_icon()
-
-
-/obj/item/device/tape/proc/record_speech(text)
-	timestamp += used_capacity
-	storedinfo += "\[[time2text(used_capacity*10,"mm:ss")]\] [text]"
-
-
-//shows up on the printed transcript as (Unrecognized sound)
-/obj/item/device/tape/proc/record_noise(text)
-	timestamp += used_capacity
-	storedinfo += "*\[[time2text(used_capacity*10,"mm:ss")]\] [text]"
-
-
-/obj/item/device/tape/attackby(obj/item/I, mob/user, params)
-	if(ruined && isScrewdriver(I))
-		to_chat(user, "<span class='notice'>You start winding the tape back in...</span>")
-		if(do_after(user, 120, target = src))
-			to_chat(user, "<span class='notice'>You wound the tape back in.</span>")
-			fix()
-		return
-	else if(istype(I, /obj/item/pen))
-		if(loc == user && !user.incapacitated())
-			var/new_name = sanitize(input(user, "What would you like to label the tape?", "Tape labeling") as null|text)
-			if(isnull(new_name)) return
-			new_name = sanitizeSafe(new_name)
-			if(new_name)
-				SetName("tape - '[new_name]'")
-				to_chat(user, "<span class='notice'>You label the tape '[new_name]'.</span>")
-			else
-				SetName("tape")
-				to_chat(user, "<span class='notice'>You scratch off the label.</span>")
-		return
-	..()
-
-
-//Random colour tapes
-/obj/item/device/tape/random/New()
-	..()
-	icon_state = "tape_[pick("white", "blue", "red", "yellow", "purple")]"
+		..()

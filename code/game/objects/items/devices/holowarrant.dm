@@ -1,114 +1,142 @@
 /obj/item/device/holowarrant
 	name = "warrant projector"
 	desc = "The practical paperwork replacement for the officer on the go."
+	icon = 'icons/obj/holowarrant.dmi'
 	icon_state = "holowarrant"
 	item_state = "holowarrant"
 	throwforce = 5
-	w_class = ITEM_SIZE_SMALL
+	w_class = ITEMSIZE_SMALL
+	throw_speed = 4
 	throw_range = 10
-	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	slot_flags = SLOT_BELT
-	var/datum/computer_file/data/warrant/active
+	obj_flags = OBJ_FLAG_CONDUCTABLE
+	var/list/storedwarrant = list() //All the warrants currently stored
+	var/activename = null
+	var/activecharges = null
+	var/activeauth = null //Currently active warrant
+	var/activetype = null //Is this a search or arrest warrant?
 
 //look at it
-/obj/item/device/holowarrant/_examine_text(mob/user)
+/obj/item/device/holowarrant/examine(mob/user, distance, is_adjacent)
 	. = ..()
-	if(active)
-		. += "\nIt's a holographic warrant for '[active.fields["namewarrant"]]'."
-	if(in_range(user, src) || isghost(user))
+	if(activename)
+		to_chat(user, "It's a holographic warrant for '[activename]'.")
+	if(is_adjacent)
 		show_content(user)
 	else
-		. += "\n<span class='notice'>You have to be closer if you want to read it.</span>"
+		to_chat(user, SPAN_NOTICE("You have to go closer if you want to read it."))
 
 //hit yourself with it
 /obj/item/device/holowarrant/attack_self(mob/living/user as mob)
-	active = null
-	var/list/warrants = list()
-	for(var/datum/computer_file/data/warrant/W in GLOB.all_warrants)
-		if(!W.archived)
-			warrants += W.fields["namewarrant"]
-	if(warrants.len == 0)
-		to_chat(user,"<span class='notice'>There are no warrants available</span>")
+	sync(user)
+	if(activename)
+		activename = null
+		activecharges = null
+		activeauth = null
+		activetype = null
+	if(!storedwarrant.len)
+		to_chat(user, SPAN_NOTICE("There are no warrants available at this time."))
 		return
 	var/temp
-	temp = input(user, "Which warrant would you like to load?") as null|anything in warrants
-	for(var/datum/computer_file/data/warrant/W in GLOB.all_warrants)
-		if(W.fields["namewarrant"] == temp)
-			active = W
+	temp = tgui_input_list(usr, "Which warrant would you like to load?", storedwarrant)
+	for(var/datum/record/warrant/W in SSrecords.warrants)
+		if(W.name == temp)
+			activename = W.name
+			activecharges = W.notes
+			activeauth = W.authorization
+			activetype = W.wtype
 	update_icon()
-
-/obj/item/device/holowarrant/attackby(obj/item/W, mob/user)
-	if(active)
-		var/obj/item/card/id/I = W.get_id_card()
-		if(I && (access_security in I.access))
-			var/choice = alert(user, "Would you like to authorize this warrant?","Warrant authorization","Yes","No")
-			if(choice == "Yes")
-				active.fields["auth"] = "[I.registered_name] - [I.assignment ? I.assignment : "(Unknown)"]"
-			user.visible_message("<span class='notice'>You swipe \the [I] through the [src].</span>", \
-					"<span class='notice'>[user] swipes \the [I] through the [src].</span>")
-			broadcast_security_hud_message("\A [active.fields["arrestsearch"]] warrant for <b>[active.fields["namewarrant"]]</b> has been authorized by [I.assignment ? I.assignment+" " : ""][I.registered_name].", src)
-		else
-			to_chat(user, "<span class='notice'>A red \"Access Denied\" light blinks on \the [src]</span>")
-		return 1
-	..()
 
 //hit other people with it
 /obj/item/device/holowarrant/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	user.visible_message("<span class='notice'>[user] holds up a warrant projector and shows the contents to [M].</span>", \
-			"<span class='notice'>You show the warrant to [M].</span>")
-	M.examinate(src)
+	if(activename)
+		user.visible_message(SPAN_NOTICE("[user] holds up a warrant projector and shows the contents to [M]."), \
+				SPAN_NOTICE("You show the warrant to [M]."))
+		examinate(M, src)
+	else
+		to_chat(user, SPAN_WARNING("There are no warrants loaded!"))
 
-/obj/item/device/holowarrant/on_update_icon()
-	if(active)
+/obj/item/device/holowarrant/update_icon()
+	if(activename)
 		icon_state = "holowarrant_filled"
 	else
 		icon_state = "holowarrant"
 
+//sync with database
+/obj/item/device/holowarrant/proc/sync(var/mob/user)
+	storedwarrant = list()
+	for(var/datum/record/warrant/W in SSrecords.warrants)
+		storedwarrant += W.name
+	to_chat(user, SPAN_NOTICE("The device hums faintly as it syncs with the station database."))
+
 /obj/item/device/holowarrant/proc/show_content(mob/user, forceshow)
-	if(!active)
-		return
-	if(active.fields["arrestsearch"] == "arrest")
+	if(activetype == "arrest")
 		var/output = {"
-		<meta charset=\"utf-8\"><HEAD><TITLE>[active.fields["namewarrant"]]</TITLE></HEAD>
-		<BODY bgcolor='#ffffff'><center><large><b>Nano Trasen Board of Directors</b></large></br>
-		in the jurisdiction of the</br>
-		[GLOB.using_map.boss_name] in [GLOB.using_map.system_name]</br>
-		</br>
-		<b>ARREST WARRANT</b></center></br>
-		</br>
-		This document serves as authorization and notice for the arrest of _<u>[active.fields["namewarrant"]]</u>____ for the crime(s) of:</br>[active.fields["charges"]]</br>
-		</br>
-		Vessel or habitat: _<u>[GLOB.using_map.station_name]</u>____</br>
-		</br>_<u>[active.fields["auth"]]</u>____</br>
-		<small>Person authorizing arrest</small></br>
-		</BODY>
+		<HTML><HEAD><TITLE>Arrest Warrant: [activename]</TITLE></HEAD>
+		<BODY bgcolor='#FFFFFF'>
+		<font face="Verdana" color=black><font size = "1">
+		<center><large><b>Stellar Corporate Conglomerate
+		<br>Civilian Branch of Operation</b></large>
+		<br>
+		<br><b>DIGITAL ARREST WARRANT</b></center>
+		<hr>
+		<b>Facility:</b>__<u>[current_map.station_name]</u>__<b>Date:</b>__<u>[worlddate2text()]__</u>
+		<br>
+		<br><small><i>This document serves as a notice and permits the sanctioned arrest of
+		the denoted employee of the SCC Civilian Branch of Operation by the
+		Security Department of the denoted vessel. </br>
+		In accordance with Corporate Regulations, the denoted employee must be presented with a signed and stamped or
+		digitally authorized warrant before the actions entailed can be conducted legally. </br>
+		The Suspect/Department staff are expected to offer full co-operation.</br>
+		In the event of the Suspect attempting to resist or flee, resisting arrest charges need to be applied !</br>
+		In the event of staff attempting to interfere with a lawful arrest, they are to be detained as an accomplice !</br>
+		In the event of no warrant being displayed <b>prior</b> to the arrest, security personnel performing the arrest are subject to illegal detention charges !
+		</i></small>
+		<br>
+		<br><b>Suspect's name: </b>
+		<br>[activename]
+		<br>
+		<br><b>Reason(s): </b>
+		<br>[activecharges]
+		<br>
+		<br>__<u>[activeauth]</u>__
+		<br><small>Person authorizing arrest</small></br>
+		</font></font>
+		</BODY></HTML>
 		"}
 
-		show_browser(user, output, "window=Warrant for the arrest of [active.fields["namewarrant"]]")
-	if(active.fields["arrestsearch"] ==  "search")
+		show_browser(user, output, "window=Warrant for the arrest of [activename]")
+	if(activetype == "search")
 		var/output= {"
-		<meta charset=\"utf-8\"><HEAD><TITLE>Search Warrant: [active.fields["namewarrant"]]</TITLE></HEAD>
-		<BODY bgcolor='#ffffff'><center>in the jurisdiction of the</br>
-		[GLOB.using_map.boss_name] in [GLOB.using_map.system_name]</br>
-		</br>
-		<b>SEARCH WARRANT</b></center></br>
-		</br>
-		<small><i>The Security Officer(s) bearing this Warrant are hereby authorized by the Issuer </br>
-		to conduct a one time lawful search of the Suspect's person/belongings/premises and/or Department </br>
-		for any items and materials that could be connected to the suspected criminal act described below, </br>
-		pending an investigation in progress. The Security Officer(s) are obligated to remove any and all</br>
-		such items from the Suspects posession and/or Department and file it as evidence. The Suspect/Department </br>
-		staff is expected to offer full co-operation. In the event of the Suspect/Department staff attempting </br>
-		to resist/impede this search or flee, they must be taken into custody immediately! </br>
+		<HTML><HEAD><TITLE>Search Warrant: [activename]</TITLE></HEAD>
+		<BODY bgcolor='#FFFFFF'>
+		<font face="Verdana" color=black><font size = "1">
+		<center><large><b>Stellar Corporate Conglomerate
+		<br>Civilian Branch of Operation</b></large>
+		<br>
+		<br><b>DIGITAL SEARCH WARRANT</b></center>
+		<hr>
+		<b>Facility:</b>__<u>[current_map.station_name]</u>__<b>Date:</b>__<u>[worlddate2text()]__</u></br>
+		<br>
+		<small><i>This document serves as notice and permits the sanctioned search of
+		the Suspect's person/belongings/premises and/or Department for any items and materials
+		that could be connected to the suspected regulation violation described below,
+		pending an investigation in progress. </br>
+		The Security Officer(s) are obligated to remove any and all such items from the Suspect's posession
+		and/or Department and file it as evidence. </br>
+		In accordance with Corporate Regulations, the denoted employee must be presented with a signed and stamped or
+		digitally authorized warrant before the actions entailed can be conducted legally. </br>
+		The Suspect/Department staff are expected to offer full co-operation.</br>
+		In the event of the Suspect/Department staff attempting	to resist/impede this search or flee, they must be taken into custody immediately! </br>
 		All confiscated items must be filed and taken to Evidence!</small></i></br>
-		</br>
-		<b>Suspect's/location name: </b>[active.fields["namewarrant"]]</br>
-		</br>
-		<b>For the following reasons: </b> [active.fields["charges"]]</br>
-		</br>
-		<b>Warrant issued by: </b> [active.fields ["auth"]]</br>
-		</br>
-		Vessel or habitat: _<u>[GLOB.using_map.station_name]</u>____</br>
-		</BODY>
+		<br><b>Suspect's/location name: </b>
+		<br>[activename]
+		<br>
+		<br><b>For the following reasons: </b>
+		<br>[activecharges]
+		<br>
+		<br>__<u>[activeauth]</u>__
+		<br><small>Person authorizing search</small></br>
+		</font></font>
+		</BODY></HTML>
 		"}
-		show_browser(user, output, "window=Search warrant for [active.fields["namewarrant"]]")
+		show_browser(user, output, "window=Search warrant for [activename]")

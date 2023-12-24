@@ -51,12 +51,12 @@
 		add_to_openlist(next.x+2,next.y,next.x,next.y)
 		add_to_openlist(next.x,next.y-2,next.x,next.y)
 
-	 // Cleanup. Map stays in memory for display proc.
+	// Cleanup. Map stays in memory for display proc.
 	checked_coord_cache.Cut()
 	openlist.Cut()
 	closedlist.Cut()
 
-/datum/random_map/maze/proc/add_to_openlist(tx, ty, nx, ny)
+/datum/random_map/maze/proc/add_to_openlist(var/tx, var/ty, var/nx, var/ny)
 	if(tx < 1 || ty < 1 || tx > limit_x || ty > limit_y || !isnull(checked_coord_cache["[tx]-[ty]"]))
 		return 0
 	checked_coord_cache["[tx]-[ty]"] = 1

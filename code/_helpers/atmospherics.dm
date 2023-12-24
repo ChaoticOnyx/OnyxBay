@@ -1,56 +1,46 @@
-/obj/proc/analyze_gases(obj/A, mob/user, advanced)
-	playsound(src.loc, 'sound/signals/processing21.ogg', 50)
-	user.visible_message("<span class='notice'>\The [user] has used \an [src] on \the [A].</span>")
-	A.add_fingerprint(user)
+/obj/proc/analyze_gases(var/atom/A, var/mob/user)
+	if(src != A)
+		user.visible_message("<span class='notice'>\The [user] has used \an [src] on \the [A]</span>")
 
-	var/air_contents = A.return_air()
-	if(!air_contents)
-		to_chat(user, "<span class='warning'>Your [src] flashes a red light as it fails to analyze \the [A].</span>")
-		return 0
+	if(istype(A))
+		A.add_fingerprint(user)
+		var/list/result = A.atmosanalyze(user)
+		if(result && result.len)
+			to_chat(user, "<span class='notice'>Results of the analysis[src == A ? "" : " of [A]"]</span>")
+			for(var/line in result)
+				to_chat(user, "<span class='notice'>[line]</span>")
+			return 1
 
-	var/list/result = atmosanalyzer_scan(A, air_contents, advanced)
-	print_atmos_analysis(user, result)
-	return 1
+	to_chat(user, "<span class='warning'>Your [src] flashes a red light as it fails to analyze \the [A].</span>")
+	return 0
 
-/proc/print_atmos_analysis(user, list/result)
-	if(!length(result))
-		return
+/proc/atmosanalyzer_scan(var/obj/target, var/datum/gas_mixture/mixture, var/mob/user)
+	var/pressure = mixture.return_pressure()
+	var/total_moles = mixture.total_moles
 
-	to_chat(user, EXAMINE_BLOCK(jointext(result, "\n")))
+	var/list/results = list()
+	if (total_moles>0)
+		results += "<span class='notice'>Pressure: [round(pressure,0.1)] kPa</span>"
+		results += "<span class='notice'>Moles: [round(total_moles,0.1)]</span>"
+		for(var/mix in mixture.gas)
+			results += "<span class='notice'>[gas_data.name[mix]]: [round((mixture.gas[mix] / total_moles) * 100)]%</span>"
+		results += "<span class='notice'>Temperature: [round(mixture.temperature-T0C)]&deg;C</span>"
+	else
+		results += "<span class='notice'>\The [target] is empty!</span>"
 
-/proc/atmosanalyzer_scan(atom/target, datum/gas_mixture/mixture, advanced)
-	. = list()
-	. += SPAN_NOTICE("Results of the analysis of \the [target]:")
+	return results
 
-	if(!mixture)
-		mixture = target.return_air()
+/atom/proc/atmosanalyze(var/mob/user)
+	return
 
-	if(mixture)
-		var/pressure = mixture.return_pressure()
-		var/total_moles = mixture.total_moles
+/obj/item/tank/atmosanalyze(var/mob/user)
+	return atmosanalyzer_scan(src, src.air_contents, user)
 
-		if(total_moles>0)
-			if(abs(pressure - ONE_ATMOSPHERE) < 10)
-				. += SPAN_NOTICE("Pressure: [round(pressure, 0.1)] kPa")
-			else
-				. += SPAN_WARNING("Pressure: [round(pressure, 0.1)] kPa")
-			for(var/mix in mixture.gas)
-				var/percentage = round(mixture.gas[mix]/total_moles * 100, advanced ? 0.01 : 1)
-				if(!percentage)
-					continue
-				. += SPAN_NOTICE("[gas_data.name[mix]]: [percentage]%")
-				if(advanced)
-					var/list/traits = list()
-					if(gas_data.flags[mix] & XGM_GAS_FUEL)
-						traits += "can be used as combustion fuel"
-					if(gas_data.flags[mix] & XGM_GAS_OXIDIZER)
-						traits += "can be used as oxidizer"
-					if(gas_data.flags[mix] & XGM_GAS_CONTAMINANT)
-						traits += "contaminates clothing with toxic residue"
-					if(gas_data.flags[mix] & XGM_GAS_FUSION_FUEL)
-						traits += "can be used to fuel fusion reaction"
-					. += "\t" + SPAN_NOTICE("Specific heat: [gas_data.specific_heat[mix]] J/(mol*K), Molar mass: [gas_data.molar_mass[mix]] kg/mol.[traits.len ? "\n\tThis gas [english_list(traits)]" : ""]")
-			. += SPAN_NOTICE("Temperature: [round(CONV_KELVIN_CELSIUS(mixture.temperature))]&deg;C / [round(mixture.temperature)]K")
-			return
+/obj/machinery/portable_atmospherics/atmosanalyze(var/mob/user)
+	return atmosanalyzer_scan(src, src.air_contents, user)
 
-	. += SPAN_WARNING("\The [target] has no gases!")
+/obj/machinery/atmospherics/pipe/atmosanalyze(var/mob/user)
+	return atmosanalyzer_scan(src, src.parent.air, user)
+
+/obj/item/flamethrower/atmosanalyze(var/mob/user)
+	if(gas_tank)	return atmosanalyzer_scan(src, gas_tank.air_contents, user)

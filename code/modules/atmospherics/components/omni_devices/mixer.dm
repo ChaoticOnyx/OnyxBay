@@ -4,13 +4,15 @@
 /obj/machinery/atmospherics/omni/mixer
 	name = "omni gas mixer"
 	icon_state = "map_mixer"
+	base_icon = "mixer"
+	desc_info = "Combines gas from custom input and output directions.  The percentage of combined gas can be defined."
 
-	idle_power_usage = 150 WATTS //internal circuitry, friction losses and stuff
-	power_rating = 3700			//3700 W ~ 5 HP
+	use_power = POWER_USE_IDLE
+	idle_power_usage = 150		//internal circuitry, friction losses and stuff
+	power_rating = 15000			//15000 W ~ 20 HP
 
-	var/list/inputs = list()
+	var/list/inputs = new()
 	var/datum/omni_port/output
-	var/max_output_pressure = MAX_OMNI_PRESSURE
 
 	//setup tags for initial concentration values (must be decimal)
 	var/tag_north_con
@@ -52,7 +54,7 @@
 /obj/machinery/atmospherics/omni/mixer/Destroy()
 	inputs.Cut()
 	output = null
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/omni/mixer/sort_ports()
 	for(var/datum/omni_port/P in ports)
@@ -97,20 +99,14 @@
 
 	return 0
 
-/obj/machinery/atmospherics/omni/mixer/Process()
+/obj/machinery/atmospherics/omni/mixer/process()
 	if(!..())
 		return 0
 
 	//Figure out the amount of moles to transfer
 	var/transfer_moles = 0
-	var/datum/gas_mixture/output_gas = output.air
-	var/delta = between(0, (output_gas ? (max_output_pressure - output_gas.return_pressure()) : 0), max_output_pressure)
-	var/transfer_moles_max = INFINITY
-
 	for (var/datum/omni_port/P in inputs)
 		transfer_moles += (set_flow_rate*P.concentration/P.air.volume)*P.air.total_moles
-		transfer_moles_max = min(transfer_moles_max, calculate_transfer_moles(P.air, output.air, delta, (output && output.network && output.network.volume) ? output.network.volume : 0))
-	transfer_moles = between(0, transfer_moles, transfer_moles_max)
 
 	var/power_draw = -1
 	if (transfer_moles > MINIMUM_MOLES_TO_FILTER)
@@ -129,21 +125,17 @@
 
 	return 1
 
-/obj/machinery/atmospherics/omni/mixer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
-	if(!user)
-		ui?.close()
-		return
-
+/obj/machinery/atmospherics/omni/mixer/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
 	user.set_machine(src)
 
 	var/list/data = new()
 
 	data = build_uidata()
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnanoui.try_update_ui(user, src, ui_key, ui, data, force_open)
 
 	if (!ui)
-		ui = new(user, src, ui_key, "omni_mixer.tmpl", "Omni Mixer Control", 360, 330)
+		ui = new(user, src, ui_key, "omni_mixer.tmpl", "Omni Mixer Control", 470, 330)
 		ui.set_initial_data(data)
 
 		ui.open()
@@ -153,6 +145,8 @@
 
 	data["power"] = use_power
 	data["config"] = configuring
+	data["last_power_draw"] = last_power_draw
+	data["max_power_draw"] = power_rating
 
 	var/portData[0]
 	for(var/datum/omni_port/P in ports)
@@ -209,10 +203,10 @@
 				con_lock(dir_flag(href_list["dir"]))
 
 	update_icon()
-	SSnano.update_uis(src)
+	SSnanoui.update_uis(src)
 	return
 
-/obj/machinery/atmospherics/omni/mixer/proc/switch_mode(port = NORTH, mode = ATM_NONE)
+/obj/machinery/atmospherics/omni/mixer/proc/switch_mode(var/port = NORTH, var/mode = ATM_NONE)
 	if(mode != ATM_INPUT && mode != ATM_OUTPUT)
 		switch(mode)
 			if("in")
@@ -252,7 +246,7 @@
 	update_ports()
 	rebuild_mixing_inputs()
 
-/obj/machinery/atmospherics/omni/mixer/proc/change_concentration(port = NORTH)
+/obj/machinery/atmospherics/omni/mixer/proc/change_concentration(var/port = NORTH)
 	tag_north_con = null
 	tag_south_con = null
 	tag_east_con = null
@@ -300,7 +294,7 @@
 	for(var/datum/omni_port/P in inputs)
 		mixing_inputs[P.air] = P.concentration
 
-/obj/machinery/atmospherics/omni/mixer/proc/con_lock(port = NORTH)
+/obj/machinery/atmospherics/omni/mixer/proc/con_lock(var/port = NORTH)
 	for(var/datum/omni_port/P in inputs)
 		if(P.dir == port)
 			P.con_lock = !P.con_lock

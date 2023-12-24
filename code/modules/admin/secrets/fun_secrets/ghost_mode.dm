@@ -6,13 +6,13 @@
 	..()
 	affected_mobs = list()
 
-/datum/admin_secret_item/fun_secret/ghost_mode/execute(mob/user)
+/datum/admin_secret_item/fun_secret/ghost_mode/execute(var/mob/user)
 	. = ..()
 	if(!.)
 		return
 
 	var/list/affected_areas = list()
-	for(var/mob/M in GLOB.living_mob_list_)
+	for(var/mob/M in living_mob_list)
 		if(M.stat == CONSCIOUS && !(M in affected_mobs))
 			affected_mobs |= M
 			switch(rand(1,4))
@@ -30,7 +30,7 @@
 					step_rand(W)
 
 			var/area/A = get_area(M)
-			if(A.requires_power && !A.always_unpowered && A.power_light && (A.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
+			if(A.requires_power && !A.always_unpowered && A.power_light && isPlayerLevel(A.z))
 				affected_areas |= get_area(M)
 
 	affected_mobs |= user

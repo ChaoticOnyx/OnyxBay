@@ -6,30 +6,50 @@
 	anchored = 1
 	density = 1
 	opacity = 1
-	layer = ABOVE_DOOR_LAYER
+	layer = TURF_LAYER + 0.1
 	var/deploying
 	var/deployed
 
-/obj/structure/droppod_door/New(newloc, autoopen)
-	..(newloc)
+/obj/structure/droppod_door/Initialize(mapload, var/autoopen)
+	. = ..(mapload)
 	if(autoopen)
-		spawn(10 SECONDS)
-			deploy()
+		addtimer(CALLBACK(src, PROC_REF(deploy)), 100)
 
-/obj/structure/droppod_door/attack_ai(mob/user)
-	if(!user.Adjacent(src))
+/obj/structure/droppod_door/attack_ai(var/mob/user)
+	if(!Adjacent(user))
 		return
 	attack_hand(user)
 
-/obj/structure/droppod_door/attack_generic(mob/user)
-	if(istype(user))
-		attack_hand(user)
+/obj/structure/droppod_door/attack_generic(var/mob/user)
+	attack_hand(user)
 
-/obj/structure/droppod_door/attack_hand(mob/user)
-	if(deploying) return
+/obj/structure/droppod_door/attack_hand(var/mob/user)
+	if(deploying || deployed) return
 	to_chat(user, "<span class='danger'>You prime the explosive bolts. Better get clear!</span>")
 	sleep(30)
 	deploy()
+
+/obj/structure/droppod_door/attackby(obj/item/W, mob/user)
+	. = ..()
+	if(W.iswelder())
+		var/obj/item/weldingtool/WT = W
+		if(WT.isOn())
+			user.visible_message(
+				SPAN_NOTICE("[user] begins cutting \the [src]'s safety bolts."),
+				SPAN_NOTICE("You begin welding \the [src]'s safety bolts."),
+				SPAN_NOTICE("You hear a welding torch on metal.")
+			)
+			if(!WT.use_tool(src, user, 50, volume = 50))
+				return
+			if(!WT.use(1, user))
+				to_chat(user, SPAN_NOTICE("You need more welding fuel to complete this task."))
+				return
+			user.visible_message(
+				SPAN_NOTICE("[user] cuts \the [src]'s safety bolts and removes the plating."),
+				SPAN_NOTICE("You cut \the [src]'s safety bolts and remove the plating.")
+			)
+			new /obj/item/stack/material/steel(get_turf(src), 5)
+			qdel(src)
 
 /obj/structure/droppod_door/proc/deploy()
 	if(deployed)
@@ -48,10 +68,10 @@
 	// Overwrite turfs.
 	var/turf/origin = get_turf(src)
 	origin.ChangeTurf(/turf/simulated/floor/reinforced)
-	origin.set_light(0) // Forcing updates
+	origin.reconsider_lights() // Forcing updates
 	var/turf/T = get_step(origin, src.dir)
 	T.ChangeTurf(/turf/simulated/floor/reinforced)
-	T.set_light(0) // Forcing updates
+	T.reconsider_lights() // Forcing updates
 
 	// Destroy turf contents.
 	for(var/obj/O in origin)
@@ -65,19 +85,17 @@
 
 	// Hurl the mobs away.
 	for(var/mob/living/M in T)
-		if(prob(75))
-			M.throw_at(get_edge_target_turf(T, dir), rand(1, 3), 0.5)
+		M.throw_at(get_edge_target_turf(T,src.dir),rand(0,3),50)
 	for(var/mob/living/M in origin)
-		if(prob(75))
-			M.throw_at(get_edge_target_turf(origin, dir), rand(1, 3), 0.5)
+		M.throw_at(get_edge_target_turf(origin,src.dir),rand(0,3),50)
 
 	// Create a decorative ramp bottom and flatten out our current ramp.
-	set_density(0)
-	set_opacity(0)
+	density = 0
+	opacity = 0
 	icon_state = "ramptop"
 	var/obj/structure/droppod_door/door_bottom = new(T)
 	door_bottom.deployed = 1
-	door_bottom.set_density(0)
-	door_bottom.set_opacity(0)
-	door_bottom.set_dir(src.dir)
+	door_bottom.density = 0
+	door_bottom.opacity = 0
+	door_bottom.dir = src.dir
 	door_bottom.icon_state = "rampbottom"

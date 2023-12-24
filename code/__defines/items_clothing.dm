@@ -3,128 +3,137 @@
 #define CANDLE_LUM 3 // For how bright candles are.
 
 // Item inventory slot bitmasks.
-#define SLOT_OCLOTHING  0x1
-#define SLOT_ICLOTHING  0x2
-#define SLOT_GLOVES     0x4
-#define SLOT_EYES       0x8
-#define SLOT_EARS       0x10
-#define SLOT_MASK       0x20
-#define SLOT_HEAD       0x40
-#define SLOT_FEET       0x80
-#define SLOT_ID         0x100
-#define SLOT_BELT       0x200
-#define SLOT_BACK       0x400
-#define SLOT_POCKET     0x800  // This is to allow items with a w_class of 3 or 4 to fit in pockets.
-#define SLOT_DENYPOCKET 0x1000  // This is to  deny items with a w_class of 2 or 1 from fitting in pockets.
-#define SLOT_TWOEARS    0x2000
-#define SLOT_TIE        0x4000
-#define SLOT_HOLSTER	0x8000 //16th bit - higher than this will overflow
+#define SLOT_OCLOTHING  BITFLAG(0)
+#define SLOT_ICLOTHING  BITFLAG(1)
+#define SLOT_GLOVES     BITFLAG(2)
+#define SLOT_EYES       BITFLAG(3)
+#define SLOT_EARS       BITFLAG(4)
+#define SLOT_MASK       BITFLAG(5)
+#define SLOT_HEAD       BITFLAG(6)
+#define SLOT_FEET       BITFLAG(7)
+#define SLOT_ID         BITFLAG(8)
+#define SLOT_BELT       BITFLAG(9)
+#define SLOT_BACK       BITFLAG(10)
+#define SLOT_POCKET     BITFLAG(11) // This is to allow items with a w_class of 3 or 4 to fit in pockets.
+#define SLOT_TWOEARS    BITFLAG(12)
+#define SLOT_TIE        BITFLAG(13)
+#define SLOT_HOLSTER    BITFLAG(14)
+#define SLOT_WRISTS     BITFLAG(15)
+#define SLOT_S_STORE    BITFLAG(16)
 
-#define ACCESSORY_SLOT_UTILITY  "Utility"
-#define ACCESSORY_SLOT_HOLSTER  "Holster"
-#define ACCESSORY_SLOT_ARMBAND  "Armband"
-#define ACCESSORY_SLOT_RANK     "Rank"
-#define ACCESSORY_SLOT_DEPT		"Department"
-#define ACCESSORY_SLOT_DECOR    "Decor"
-#define ACCESSORY_SLOT_MEDAL    "Medal"
-#define ACCESSORY_SLOT_INSIGNIA "Insignia"
-#define ACCESSORY_SLOT_ARMOR_C  "Chest armor"
-#define ACCESSORY_SLOT_ARMOR_A  "Arm armor"
-#define ACCESSORY_SLOT_ARMOR_L  "Leg armor"
-#define ACCESSORY_SLOT_ARMOR_S  "Armor storage"
-#define ACCESSORY_SLOT_ARMOR_M  "Misc armor"
-#define ACCESSORY_SLOT_HELM_C	"Helmet cover"
+// Flags for pass_flags.
+#define PASSTABLE		0x1
+#define PASSGLASS		0x2
+#define PASSGRILLE		0x4
+#define PASSDOORHATCH	0x8
+#define PASSMOB			0x10
+#define PASSTRACE       0x20 //Used by turrets in the check_trajectory proc to target mobs hiding behind certain things (such as closets)
+#define PASSRAILING     0x40
 
 // Bitmasks for the flags_inv variable. These determine when a piece of clothing hides another, i.e. a helmet hiding glasses.
-// WARNING: The following flags apply only to the external suit!
 #define HIDEGLOVES      0x1
 #define HIDESUITSTORAGE 0x2
 #define HIDEJUMPSUIT    0x4
 #define HIDESHOES       0x8
 #define HIDETAIL        0x10
-#define HIDEJUMPSUITACCESSORIES 0x20
-
-// WARNING: The following flags apply only to the helmets and masks!
-#define HIDEMASK 0x1
-#define HIDEEARS 0x2 // Headsets and such.
-#define HIDEEYES 0x4 // Glasses.
-#define HIDEFACE 0x8 // Dictates whether we appear as "Unknown".
-
-#define BLOCKHEADHAIR   0x20    // Hides the user's hair overlay. Leaves facial hair.
-#define BLOCKHAIR       0x40    // Hides the user's hair, facial and otherwise.
+#define HIDEMASK        0x20
+#define HIDEEARS		0x40 // Headsets and such.
+#define HIDEEYES		0x80 // Glasses.
+#define HIDEFACE		0x100// Dictates whether we appear as "Unknown".
+#define HIDEWRISTS		0x200
+#define BLOCKHEADHAIR   0x400// Hides the user's hair overlay. Leaves facial hair.
+#define BLOCKHAIR       0x800/// Hides the user's hair, facial and otherwise.
+#define ALWAYSDRAW		0x1000//If set, this item is always rendered even if its slot is hidden by other clothing
+//Note that the item may still not be visible if its sprite is actually covered up.
 
 // Slots.
-#define slot_first       1
-#define slot_back        1
-#define slot_wear_mask   2
-#define slot_handcuffed  3
-#define slot_l_hand      4
-#define slot_r_hand      5
-#define slot_belt        6
-#define slot_wear_id     7
-#define slot_l_ear       8
-#define slot_glasses     9
-#define slot_gloves      10
-#define slot_head        11
-#define slot_shoes       12
-#define slot_wear_suit   13
-#define slot_w_uniform   14
-#define slot_l_store     15
-#define slot_r_store     16
-#define slot_s_store     17
-#define slot_in_backpack 18
-#define slot_legcuffed   19
-#define slot_r_ear       20
-#define slot_legs        21
-#define slot_tie         22
-#define slot_hidden      23
-#define slot_last        23
+#define slot_first		 1
+#define slot_back        2
+#define slot_wear_mask   3
+#define slot_handcuffed  4
+#define slot_l_hand      5
+#define slot_r_hand      6
+#define slot_belt        7
+#define slot_wear_id     8
+#define slot_l_ear       9
+#define slot_glasses     10
+#define slot_gloves      11
+#define slot_head        12
+#define slot_shoes       13
+#define slot_wear_suit   14
+#define slot_w_uniform   15
+#define slot_l_store     16
+#define slot_r_store     17
+#define slot_s_store     18
+#define slot_in_backpack 19
+#define slot_legcuffed   20
+#define slot_r_ear       21
+#define slot_legs        22
+#define slot_tie         23
+#define slot_in_belt     24
+#define slot_wrists      25
+#define slot_last		 26 //for the love of god, keep this updated or you won't be able to unequip things
 
 // Inventory slot strings.
 // since numbers cannot be used as associative list keys.
 //icon_back, icon_l_hand, etc would be much better names for these...
 #define slot_back_str		"slot_back"
-#define slot_hand_str		"slot_hand"
 #define slot_l_hand_str		"slot_l_hand"
 #define slot_r_hand_str		"slot_r_hand"
+#define slot_wear_id_str	"slot_wear_id"
 #define slot_w_uniform_str	"slot_w_uniform"
-#define slot_head_str		"slot_head"
-#define slot_wear_suit_str	"slot_suit"
-#define slot_ear_str        "slot_ear"
-#define slot_l_ear_str      "slot_l_ear"
-#define slot_r_ear_str      "slot_r_ear"
-#define slot_belt_str       "slot_belt"
-#define slot_shoes_str      "slot_shoes"
-#define slot_wear_mask_str 	"slot_wear_mask"
-#define slot_handcuffed_str "slot_handcuffed"
-#define slot_legcuffed_str  "slot_legcuffed"
-#define slot_wear_id_str  	"slot_wear_id"
-#define slot_gloves_str  	"slot_gloves"
-#define slot_glasses_str  	"slot_glasses"
 #define slot_s_store_str	"slot_s_store"
-#define slot_tie_str		"slot_tie"
-#define slot_hidden_str     "slot_hidden"
+#define slot_head_str		"slot_head"
+#define slot_glasses_str 	"slot_glasses"
+#define slot_wear_mask_str	"slot_mask"
+#define slot_belt_str		"slot_belt"
+#define slot_wear_suit_str	"slot_suit"
+#define slot_l_ear_str		"slot_l_ear"
+#define slot_r_ear_str		"slot_r_ear"
+#define slot_shoes_str 		"slot_shoes"
+#define slot_wrists_str 	"slot_wrists"
+#define slot_gloves_str 	"slot_gloves"
+#define slot_tail_str		"slot_tail"
+
+//itemstate suffixes. Used for containedsprite worn items
+#define WORN_LHAND	"_lh"
+#define WORN_RHAND	"_rh"
+#define WORN_LSTORE	"_ls"
+#define WORN_RSTORE "_rs"
+#define WORN_SSTORE "_ss"
+#define WORN_LEAR 	"_le"
+#define WORN_REAR 	"_re"
+#define WORN_HEAD 	"_he"
+#define WORN_UNDER 	"_un"
+#define WORN_SUIT 	"_su"
+#define WORN_GLOVES	"_gl"
+#define WORN_SHOES	"_sh"
+#define WORN_EYES	"_ey"
+#define WORN_BELT	"_be"
+#define WORN_BACK	"_ba"
+#define WORN_ID		"_id"
+#define WORN_MASK	"_ma"
+#define WORN_WRISTS	"_wr"
 
 // Bitflags for clothing parts.
-#define NO_BODYPARTS	0x0
-#define HEAD			0x1
-#define FACE			0x2
-#define EYES			0x4
-#define UPPER_TORSO		0x8
-#define LOWER_TORSO		0x10
-#define LEG_LEFT		0x20
-#define LEG_RIGHT		0x40
-#define LEGS			0x60	//  LEG_LEFT | LEG_RIGHT
-#define FOOT_LEFT		0x80
-#define FOOT_RIGHT		0x100
-#define FEET			0x180	// FOOT_LEFT | FOOT_RIGHT
-#define ARM_LEFT		0x200
-#define ARM_RIGHT		0x400
-#define ARMS			0x600	//  ARM_LEFT | ARM_RIGHT
-#define HAND_LEFT		0x800
-#define HAND_RIGHT		0x1000
-#define HANDS			0x1800	// HAND_LEFT | HAND_RIGHT
-#define FULL_BODY		0xFFFF
+#define HEAD        0x1
+#define FACE        0x2
+#define EYES        0x4
+#define UPPER_TORSO 0x8
+#define LOWER_TORSO 0x10
+#define LEG_LEFT    0x20
+#define LEG_RIGHT   0x40
+#define LEGS        0x60   //  LEG_LEFT | LEG_RIGHT
+#define FOOT_LEFT   0x80
+#define FOOT_RIGHT  0x100
+#define FEET        0x180  // FOOT_LEFT | FOOT_RIGHT
+#define ARM_LEFT    0x200
+#define ARM_RIGHT   0x400
+#define ARMS        0x600 //  ARM_LEFT | ARM_RIGHT
+#define HAND_LEFT   0x800
+#define HAND_RIGHT  0x1000
+#define HANDS       0x1800 // HAND_LEFT | HAND_RIGHT
+#define FULL_BODY   0xFFFF
 
 // Bitflags for the percentual amount of protection a piece of clothing which covers the body part offers.
 // Used with human/proc/get_heat_protection() and human/proc/get_cold_protection().
@@ -147,6 +156,15 @@
 #define WARNING_LOW_PRESSURE  50  // This is when the gray low pressure icon is displayed. (it is 2.5 * HAZARD_LOW_PRESSURE)
 #define  HAZARD_LOW_PRESSURE  20  // This is when the black ultra-low pressure icon is displayed. (This one is set as a constant)
 
+#define FIRESUIT_MAX_PRESSURE       20 * ONE_ATMOSPHERE  // Firesuits and atmos voidsuits
+#define RIG_MAX_PRESSURE            10 * ONE_ATMOSPHERE  // Rigs
+#define LIGHT_RIG_MAX_PRESSURE       5 * ONE_ATMOSPHERE  // Rigs
+#define ENG_VOIDSUIT_MAX_PRESSURE   10 * ONE_ATMOSPHERE
+#define VOIDSUIT_MAX_PRESSURE        5 * ONE_ATMOSPHERE
+#define SPACE_SUIT_MAX_PRESSURE      2 * ONE_ATMOSPHERE
+
+#define FIRESUIT_MIN_PRESSURE        0.5 * ONE_ATMOSPHERE
+
 #define TEMPERATURE_DAMAGE_COEFFICIENT  1.5 // This is used in handle_temperature_damage() for humans, and in reagents that affect body temperature. Temperature damage is multiplied by this amount.
 #define BODYTEMP_AUTORECOVERY_DIVISOR   12  // This is the divisor which handles how much of the temperature difference between the current body temperature and 310.15K (optimal temperature) humans auto-regenerate each tick. The higher the number, the slower the recovery. This is applied each tick, so long as the mob is alive.
 #define BODYTEMP_AUTORECOVERY_MINIMUM   1   // Minimum amount of kelvin moved toward 310.15K per tick. So long as abs(310.15 - bodytemp) is more than 50.
@@ -165,20 +183,20 @@
 #define       GLOVES_MIN_COLD_PROTECTION_TEMPERATURE 2.0 // For some gloves.
 #define         SHOE_MIN_COLD_PROTECTION_TEMPERATURE 2.0 // For shoes.
 
-#define  SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE 5000  // These need better heat protect, but not as good heat protect as firesuits.
-#define    FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE 30000 // What max_heat_protection_temperature is set to for firesuit quality headwear. MUST NOT BE 0.
-#define FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE 30000 // For fire-helmet quality items. (Red and white hardhats)
-#define      HELMET_MAX_HEAT_PROTECTION_TEMPERATURE 600   // For normal helmets.
-#define       ARMOR_MAX_HEAT_PROTECTION_TEMPERATURE 600   // For armor.
-#define      GLOVES_MAX_HEAT_PROTECTION_TEMPERATURE 1500  // For some gloves.
-#define        SHOE_MAX_HEAT_PROTECTION_TEMPERATURE 1500  // For shoes.
+#define   SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE 5000  // These need better heat protect, but not as good heat protect as firesuits.
+#define     FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE 30000 // What max_heat_protection_temperature is set to for firesuit quality headwear. MUST NOT BE 0.
+#define  FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE 30000 // For fire-helmet quality items. (Red and white hardhats)
+#define       HELMET_MAX_HEAT_PROTECTION_TEMPERATURE 600   // For normal helmets.
+#define        ARMOR_MAX_HEAT_PROTECTION_TEMPERATURE 600   // For armor.
+#define       GLOVES_MAX_HEAT_PROTECTION_TEMPERATURE 1500  // For some gloves.
+#define         SHOE_MAX_HEAT_PROTECTION_TEMPERATURE 1500  // For shoes.
 
 // Fire.
 #define FIRE_MIN_STACKS          -20
-#define FIRE_MAX_STACKS           15
+#define FIRE_MAX_STACKS           25
 #define FIRE_MAX_FIRESUIT_STACKS  20 // If the number of stacks goes above this firesuits won't protect you anymore. If not, you can walk around while on fire like a badass.
 
-#define THROWFORCE_SPEED_DIVISOR    1  // The throwing speed value at which the throwforce multiplier is exactly 1.
+#define THROWFORCE_SPEED_DIVISOR    5  // The throwing speed value at which the throwforce multiplier is exactly 1.
 #define THROWNOBJ_KNOCKBACK_SPEED   15 // The minumum speed of a w_class 2 thrown object that will cause living mobs it hits to be knocked back. Heavier objects can cause knockback at lower speeds.
 #define THROWNOBJ_KNOCKBACK_DIVISOR 2  // Affects how much speed the mob is knocked back with.
 
@@ -188,97 +206,8 @@
 #define SUIT_SENSOR_VITAL    2
 #define SUIT_SENSOR_TRACKING 3
 
-#define SUIT_NO_SENSORS 0
-#define SUIT_HAS_SENSORS 1
-#define SUIT_LOCKED_SENSORS 2
+#define SUIT_SENSOR_MODES list("Off" = SUIT_SENSOR_OFF, "Binary sensors" = SUIT_SENSOR_BINARY, "Vitals tracker" = SUIT_SENSOR_VITAL, "Tracking beacon" = SUIT_SENSOR_TRACKING)
 
-// Hair Flags
-#define VERY_SHORT 0x1
-
-//flags to determine if an eyepiece is a hud.
-#define HUD_SCIENCE 0x1
-#define HUD_SECURITY 0x2
-#define HUD_MEDICAL 0x4
-
-// Storage
-
-/*
-	A note on w_classes - this is an attempt to describe the w_classes currently in use
-	with an attempt at providing examples of the kinds of things that fit each w_class
-
-	1 - tiny items - things like screwdrivers and pens, sheets of paper
-	2 - small items - things that can fit in a pocket
-	3 - normal items
-	4 - large items - the largest things you can fit in a backpack
-	5 - bulky items - backpacks are this size, for reference
-	6 - human sized objects
-	7 - things that are large enough to contain humans, like closets, but smaller than entire turfs
-	8 - things that take up an entire turf, like wall girders or door assemblies
-*/
-
-var/list/default_onmob_slots = list(
-		slot_l_hand_str,
-		slot_r_hand_str,
-		slot_belt_str,
-		slot_back_str,
-		slot_l_ear_str,
-		slot_r_ear_str,
-		slot_glasses_str,
-		slot_wear_id_str,
-		slot_w_uniform_str,
-		slot_wear_suit_str,
-		slot_head_str,
-		slot_shoes_str,
-		slot_wear_mask_str,
-		slot_handcuffed_str,
-		slot_legcuffed_str,
-		slot_gloves_str,
-		slot_s_store_str,
-		slot_tie_str,
-		slot_hidden_str
-		)
-
-var/list/default_onmob_icons = list(
-		slot_l_hand_str = 'icons/mob/onmob/items/lefthand.dmi',
-		slot_r_hand_str = 'icons/mob/onmob/items/righthand.dmi',
-		slot_belt_str = 'icons/inv_slots/belts/mob.dmi',
-		slot_back_str = 'icons/inv_slots/back/mob.dmi',
-		slot_l_ear_str = 'icons/inv_slots/ears/mob.dmi',
-		slot_r_ear_str = 'icons/inv_slots/ears/mob_r.dmi',
-		slot_glasses_str = 'icons/inv_slots/glasses/mob.dmi',
-		slot_wear_id_str = 'icons/mob/onmob/id.dmi',
-		slot_w_uniform_str = 'icons/inv_slots/uniforms/mob.dmi',
-		slot_wear_suit_str = 'icons/inv_slots/suits/mob.dmi',
-		slot_head_str = 'icons/inv_slots/hats/mob.dmi',
-		slot_shoes_str = 'icons/inv_slots/shoes/mob.dmi',
-		slot_wear_mask_str = 'icons/inv_slots/masks/mob.dmi',
-		slot_handcuffed_str = 'icons/mob/onmob/misc.dmi',
-		slot_legcuffed_str = 'icons/mob/onmob/misc.dmi',
-		slot_gloves_str = 'icons/inv_slots/gloves/mob.dmi',
-		slot_s_store_str = 'icons/inv_slots/belts/mirror/mob.dmi',
-		slot_tie_str = 'icons/inv_slots/acessories/mob.dmi',
-		slot_hidden_str = 'icons/inv_slots/hidden/mob.dmi'
-		)
-
-/proc/slot_to_description(slot)
-	switch(slot)
-		if(slot_back) return "Back"
-		if(slot_r_hand) return "Right Hand"
-		if(slot_l_hand) return "Left Hand"
-		if(slot_w_uniform) return "Uniform"
-		if(slot_head) return "Head"
-		if(slot_wear_suit) return "Suit"
-		if(slot_l_ear) return "Left Ear"
-		if(slot_r_ear) return "Right Ear"
-		if(slot_belt) return "Belt"
-		if(slot_shoes) return "Shoes"
-		if(slot_wear_mask) return "Mask"
-		if(slot_handcuffed) return "Handcuffed"
-		if(slot_legcuffed) return "Legcuffed"
-		if(slot_wear_id) return "ID"
-		if(slot_gloves) return "Gloves"
-		if(slot_glasses) return "Glasses"
-		if(slot_s_store) return "Suit Store"
-		if(slot_tie) return "Accessory"
-		if(slot_hidden) return "Underwear"
-	throw EXCEPTION("Cannot provide description for unknown slot: [slot]!")
+#define SUIT_NO_SENSORS EMPTY_BITFIELD
+#define SUIT_HAS_SENSORS FLAG(0)
+#define SUIT_LOCKED_SENSORS FLAG(1)

@@ -1,34 +1,40 @@
 
-/proc/power_failure(announce = 1, severity = 2, list/affected_z_levels)
+/proc/power_failure(var/announce = 1, var/severity = 2)
 	if(announce)
-		SSannounce.play_station_announce(/datum/announce/grid_check)
+		command_announcement.Announce("Abnormal activity detected in [station_name()]'s powernet. As a precautionary measure, the ship's power will be shut off for an indeterminate duration.", "Critical Power Failure", new_sound = 'sound/AI/poweroff.ogg')
 
-	for(var/obj/machinery/power/smes/buildable/S in GLOB.smes_list)
-		S.energy_fail(rand(15 * severity,30 * severity))
+	for(var/obj/machinery/power/smes/buildable/S in SSmachinery.smes_units)
+		if(!S.is_critical)
+			S.energy_fail(rand(15 * severity,30 * severity))
 
 
-	for(var/obj/machinery/power/apc/C in GLOB.apc_list)
-		if(!C.is_critical && (!affected_z_levels || (C.z in affected_z_levels)))
-			C.energy_fail(rand(30 * severity,60 * severity))
+	for(var/obj/machinery/power/apc/C in SSmachinery.processing)
+		if(!C.is_critical)
+			C.energy_fail(rand(40 * severity,150 * severity))
 
-/proc/power_restore(announce = 1)
+/proc/power_restore(var/announce = 1)
+	var/list/skipped_areas = list(/area/turret_protected/ai)
+
 	if(announce)
-		SSannounce.play_station_announce(/datum/announce/grid_restored)
-	for(var/obj/machinery/power/apc/C in GLOB.apc_list)
-		C.failure_timer = 0
-		if(C.cell)
+		command_announcement.Announce("The ship's power subroutines have been stabilized and restored.", "Power Systems Nominal", new_sound = 'sound/AI/poweron.ogg')
+	for(var/obj/machinery/power/apc/C in SSmachinery.processing)
+		if(C.cell && isStationLevel(C.z))
 			C.cell.charge = C.cell.maxcharge
-	for(var/obj/machinery/power/smes/S in GLOB.smes_list)
-		S.failure_timer = 0
+	for(var/obj/machinery/power/smes/S in SSmachinery.smes_units)
+		var/area/current_area = get_area(S)
+		if(current_area.type in skipped_areas || isNotStationLevel(S.z))
+			continue
 		S.charge = S.capacity
 		S.update_icon()
 		S.power_change()
 
-/proc/power_restore_quick(announce = 1)
+/proc/power_restore_quick(var/announce = 1)
+
 	if(announce)
-		SSannounce.play_station_announce(/datum/announce/grid_restored)
-	for(var/obj/machinery/power/smes/S in GLOB.smes_list)
-		S.failure_timer = 0
+		command_announcement.Announce("The ship's power subroutines have been stabilized and restored.", "Power Systems Nominal", new_sound = 'sound/AI/poweron.ogg')
+	for(var/obj/machinery/power/smes/S in SSmachinery.smes_units)
+		if(isNotStationLevel(S.z))
+			continue
 		S.charge = S.capacity
 		S.output_level = S.output_level_max
 		S.output_attempt = 1

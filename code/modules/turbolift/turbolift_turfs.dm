@@ -1,2 +1,4 @@
 /turf/simulated/wall/elevator/Initialize(mapload)
-	. = ..(mapload, MATERIAL_ELEVATORIUM)
+	canSmoothWith = list(src.type)
+	. = ..(mapload, "elevatorium")
+	canSmoothWith = list(src.type)

@@ -1,9 +1,9 @@
 /obj/machinery/atmospherics/valve
-	icon = 'icons/atmos/valve.dmi'
-	icon_state = "map_valve0"
-
 	name = "manual valve"
 	desc = "A pipe valve."
+	desc_info = "Click this to turn the valve.  If red, the pipes on each end are seperated.  Otherwise, they are connected."
+	icon = 'icons/atmos/valve.dmi'
+	icon_state = "map_valve0"
 
 	level = 1
 	dir = SOUTH
@@ -12,7 +12,6 @@
 	var/open = 0
 	var/openDuringInit = 0
 
-
 	var/datum/pipe_network/network_node1
 	var/datum/pipe_network/network_node2
 
@@ -20,7 +19,7 @@
 	open = 1
 	icon_state = "map_valve1"
 
-/obj/machinery/atmospherics/valve/on_update_icon(animation)
+/obj/machinery/atmospherics/valve/update_icon(animation)
 	if(animation)
 		flick("valve[src.open][!src.open]",src)
 	else
@@ -32,10 +31,10 @@
 		var/turf/T = get_turf(src)
 		if(!istype(T))
 			return
-		add_underlay(T, node1, get_dir(src, node1), node1 ? node1.icon_connect_type : "")
-		add_underlay(T, node2, get_dir(src, node2), node2 ? node2.icon_connect_type : "")
+		add_underlay(T, node1, get_dir(src, node1))
+		add_underlay(T, node2, get_dir(src, node2))
 
-/obj/machinery/atmospherics/valve/hide(i)
+/obj/machinery/atmospherics/valve/hide(var/i)
 	update_underlays()
 
 /obj/machinery/atmospherics/valve/Initialize()
@@ -72,6 +71,8 @@
 	return null
 
 /obj/machinery/atmospherics/valve/Destroy()
+	loc = null
+
 	if(node1)
 		node1.disconnect(src)
 		qdel(network_node1)
@@ -81,8 +82,6 @@
 
 	node1 = null
 	node2 = null
-	network_node1 = null
-	network_node2 = null
 
 	return ..()
 
@@ -137,18 +136,17 @@
 	else
 		src.open()
 
-/obj/machinery/atmospherics/valve/Process()
+/obj/machinery/atmospherics/valve/process()
 	..()
 	return PROCESS_KILL
 
 /obj/machinery/atmospherics/valve/atmos_init()
-	..()
 	normalize_dir()
 
 	var/node1_dir
 	var/node2_dir
 
-	for(var/direction in GLOB.cardinal)
+	for(var/direction in cardinal)
 		if(direction&initialize_directions)
 			if (!node1_dir)
 				node1_dir = direction
@@ -166,7 +164,9 @@
 				node2 = target
 				break
 
-	update_icon()
+	build_network()
+
+	queue_icon_update()
 	update_underlays()
 
 	if(openDuringInit)
@@ -230,6 +230,8 @@
 	var/datum/radio_frequency/radio_connection
 
 /obj/machinery/atmospherics/valve/digital/attack_ai(mob/user as mob)
+	if(!ai_can_interact(user))
+		return
 	return src.attack_hand(user)
 
 /obj/machinery/atmospherics/valve/digital/attack_hand(mob/user as mob)
@@ -240,23 +242,43 @@
 		return
 	..()
 
+	log_and_message_admins("has [open ? "<span class='warning'>OPENED</span>" : "closed"] [name].", user)
+
+/obj/machinery/atmospherics/valve/digital/AltClick(var/mob/abstract/observer/admin)
+	if (istype(admin))
+		if (admin.client && admin.client.holder && ((R_MOD|R_ADMIN) & admin.client.holder.rights))
+			if (open)
+				close()
+			else
+				if (alert(admin, "The valve is currently closed. Do you want to open it?", "Open the valve?", "Yes", "No") == "No")
+					return
+				open()
+
+			log_and_message_admins("has [open ? "opened" : "closed"] [name].", admin)
+
 /obj/machinery/atmospherics/valve/digital/open
 	open = 1
 	icon_state = "map_valve1"
 
-/obj/machinery/atmospherics/valve/digital/on_update_icon()
+/obj/machinery/atmospherics/valve/digital/power_change()
+	var/old_stat = stat
+	..()
+	if(old_stat != stat)
+		queue_icon_update()
+
+/obj/machinery/atmospherics/valve/digital/update_icon()
 	..()
 	if(!powered())
 		icon_state = "valve[open]nopower"
 
 /obj/machinery/atmospherics/valve/digital/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = radio_controller.add_object(src, frequency, RADIO_ATMOSIA)
+		radio_connection = SSradio.add_object(src, frequency, RADIO_ATMOSIA)
 
-/obj/machinery/atmospherics/valve/digital/Initialize()
-	. = ..()
+/obj/machinery/atmospherics/valve/digital/atmos_init()
+	..()
 	if(frequency)
 		set_frequency(frequency)
 
@@ -279,25 +301,29 @@
 			else
 				open()
 
-
-/obj/machinery/atmospherics/valve/attackby(obj/item/W as obj, mob/user as mob)
-	if (!isWrench(W))
+/obj/machinery/atmospherics/valve/attackby(var/obj/item/W as obj, var/mob/user as mob)
+	if (!W.iswrench())
 		return ..()
+	if (istype(src, /obj/machinery/atmospherics/valve/digital))
+		to_chat(user, "<span class='warning'>You cannot unwrench \the [src], it's too complicated.</span>")
+		return TRUE
 	var/datum/gas_mixture/int_air = return_air()
+	if (!loc) return FALSE
 	var/datum/gas_mixture/env_air = loc.return_air()
-	playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
+	if ((int_air.return_pressure()-env_air.return_pressure()) > PRESSURE_EXERTED)
+		to_chat(user, "<span class='warning'>You cannot unwrench \the [src], it is too exerted due to internal pressure.</span>")
+		add_fingerprint(user)
+		return TRUE
 	to_chat(user, "<span class='notice'>You begin to unfasten \the [src]...</span>")
-	if (do_after(user, 40, src))
+	if(W.use_tool(src, user, istype(W, /obj/item/pipewrench) ? 80 : 40, volume = 50))
 		user.visible_message( \
 			"<span class='notice'>\The [user] unfastens \the [src].</span>", \
 			"<span class='notice'>You have unfastened \the [src].</span>", \
 			"You hear a ratchet.")
-		var/obj/item/pipe/P = new(loc, make_from=src)
-		if ((int_air.return_pressure()-env_air.return_pressure()) > 2*ONE_ATMOSPHERE)
-			to_chat(user, "<span class='warning'>\the [src] flies off because of the overpressure in it!</span>")
-			P.throw_at_random(0, round((int_air.return_pressure()-env_air.return_pressure()) / 100), 30)
+		new /obj/item/pipe(loc, make_from=src)
 		qdel(src)
+		return TRUE
 
-/obj/machinery/atmospherics/valve/_examine_text(mob/user)
+/obj/machinery/atmospherics/valve/examine(mob/user)
 	. = ..()
-	. += "\nIt is [open ? "open" : "closed"]."
+	to_chat(user, "It is [open ? "open" : "closed"].")

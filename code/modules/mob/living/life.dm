@@ -1,30 +1,32 @@
 /mob/living/Life()
-	set invisibility = 0
 	set background = BACKGROUND_ENABLED
+
+	if (QDELETED(src))	// If they're being deleted, why bother?
+		return
 
 	..()
 
-	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
-		return 0
+	if (transforming)
+		return
+
 	if(!loc)
-		return 0
+		return
 
-	if(machine && !CanMouseDrop(machine, src))
-		unset_machine()
-
-	handle_modifiers() // Do this early since it might affect other things later.
-	if (do_check_environment())
-		//Handle temperature/pressure differences between body and environment
-		var/datum/gas_mixture/environment = loc.return_air()
-		if(environment)
-			handle_environment(environment)
+	var/datum/gas_mixture/environment = loc.return_air()
+	//Handle temperature/pressure differences between body and environment
+	if(environment)
+		handle_environment(environment)
 
 	blinded = 0 // Placing this here just show how out of place it is.
-	// human/handle_regular_status_updates() needs a cleanup, as blindness should be handled in handle_disabilities()
-	handle_regular_status_updates() // Status & health update, are we dead or alive etc.
 
-	if(!is_ic_dead())
+	if(handle_regular_status_updates())
+		handle_status_effects()
+
+	if(stat != DEAD)
 		aura_check(AURA_TYPE_LIFE)
+		if(!InStasis())
+			//Mutations and radiation
+			handle_mutations_and_radiation()
 
 	//Check if we're on fire
 	handle_fire()
@@ -32,23 +34,18 @@
 	update_pulling()
 
 	for(var/obj/item/grab/G in src)
-		G.think()
+		G.process()
 
 	handle_actions()
 
-	if(!istype(src, /mob/living/carbon/human)) // It is a dirty thing but update_canmove() must be called as late as possible and I can't figure out how to do it in a better way sorry
-		update_canmove(TRUE)
+	update_canmove()
 
 	handle_regular_hud_updates()
 
-	if(mind)
-		for(var/datum/objective/O in mind.objectives)
-			O.update()
+	if(languages.len == 1 && default_language != languages[1])
+		default_language = languages[1]
 
 	return 1
-
-/mob/living/proc/do_check_environment()
-	return TRUE
 
 /mob/living/proc/handle_breathing()
 	return
@@ -62,10 +59,7 @@
 /mob/living/proc/handle_random_events()
 	return
 
-/mob/living/proc/handle_environment(datum/gas_mixture/environment)
-	return
-
-/mob/living/proc/handle_stomach()
+/mob/living/proc/handle_environment(var/datum/gas_mixture/environment)
 	return
 
 /mob/living/proc/update_pulling()
@@ -76,7 +70,7 @@
 //This updates the health and status of the mob (conscious, unconscious, dead)
 /mob/living/proc/handle_regular_status_updates()
 	updatehealth()
-	if(!is_ic_dead())
+	if(stat != DEAD)
 		if(paralysis)
 			set_stat(UNCONSCIOUS)
 		else if (status_flags & FAKEDEATH)
@@ -85,79 +79,23 @@
 			set_stat(CONSCIOUS)
 		return 1
 
-/mob/living/proc/handle_statuses()
-	handle_stunned()
-	handle_weakened()
-	handle_paralysed()
-	handle_stuttering()
-	handle_silent()
-	handle_drugged()
-	handle_slurring()
-	handle_stammering()
-	handle_burrieng()
-	handle_lisping()
-
-/mob/living/proc/handle_stunned()
+/mob/living/proc/handle_status_effects()
+	if(paralysis)
+		paralysis = max(paralysis-1,0)
 	if(stunned)
-		AdjustStunned(-1)
-	return stunned
+		stunned = max(stunned-1,0)
+		if(!stunned)
+			update_icon()
 
-/mob/living/proc/handle_weakened()
 	if(weakened)
 		weakened = max(weakened-1,0)
-	return weakened
+		if(!weakened)
+			update_icon()
 
-/mob/living/proc/handle_stuttering()
-	if(stuttering)
-		stuttering = max(stuttering-1, 0)
-	return stuttering
-
-/mob/living/proc/handle_silent()
-	if(silent)
-		silent = max(silent-1, 0)
-	return silent
-
-/mob/living/proc/handle_drugged()
-	if(druggy)
-		druggy = max(druggy-1, 0)
-	return druggy
-
-/mob/living/proc/handle_slurring()
-	if(slurring)
-		slurring = max(slurring-1, 0)
-	return slurring
-
-/mob/living/proc/handle_stammering()
-	if(!stammering)
-		for(var/datum/modifier/trait/stammering/M in modifiers)
-			if(!isnull(M.stammering))
-				stammering = TRUE
-	return stammering
-
-/mob/living/proc/handle_burrieng()
-	if(!burrieng)
-		for(var/datum/modifier/trait/burrieng/M in modifiers)
-			if(!isnull(M.burrieng))
-				burrieng = TRUE
-	return burrieng
-
-/mob/living/proc/handle_lisping()
-	if(!lisping)
-		for(var/datum/modifier/trait/lisping/M in modifiers)
-			if(!isnull(M.lisping))
-				lisping = TRUE
-	return lisping
-
-/mob/living/proc/handle_paralysed()
-	if(paralysis)
-		AdjustParalysis(-1)
-	return paralysis
+	if(confused)
+		confused = max(0, confused - 1)
 
 /mob/living/proc/handle_disabilities()
-	handle_impaired_vision()
-	handle_impaired_hearing()
-
-/mob/living/proc/handle_impaired_vision()
 	//Eyes
 	if(sdisabilities & BLIND || stat)	//blindness from disability or unconsciousness doesn't get better on its own
 		eye_blind = max(eye_blind, 1)
@@ -166,19 +104,16 @@
 	else if(eye_blurry)			//blurry eyes heal slowly
 		eye_blurry = max(eye_blurry-1, 0)
 
-/mob/living/proc/handle_impaired_hearing()
 	//Ears
-	if(sdisabilities & DEAF)	//disabled-deaf, doesn't get better on its own
-		setEarDamage(null, max(ear_deaf, 1))
-	else if(ear_damage < 25)
-		adjustEarDamage(-0.05, -1)	// having ear damage impairs the recovery of ear_deaf
-	else if(ear_damage < 100)
-		adjustEarDamage(-0.05, 0)	// deafness recovers slowly over time, unless ear_damage is over 100. TODO meds that heal ear_damage
+	handle_hearing()
 
+	if((is_pacified()) && a_intent == I_HURT && !is_berserk())
+		to_chat(src, SPAN_NOTICE("You don't feel like harming anybody."))
+		a_intent_change(I_HELP)
 
 //this handles hud updates. Calls update_vision() and handle_hud_icons()
 /mob/living/proc/handle_regular_hud_updates()
-	if(!client)
+	if(!can_update_hud())
 		return FALSE
 
 	handle_hud_icons()
@@ -186,10 +121,15 @@
 
 	return TRUE
 
-/mob/living/proc/handle_vision()
+/mob/living/proc/can_update_hud()
+	if(!client || QDELETED(src))
+		return FALSE
+	return TRUE
+
+/mob/living/handle_vision()
 	update_sight()
 
-	if(is_ooc_dead())
+	if(stat == DEAD)
 		return
 
 	if(eye_blind)
@@ -197,8 +137,7 @@
 	else
 		clear_fullscreen("blind")
 		set_fullscreen(disabilities & NEARSIGHTED, "impaired", /obj/screen/fullscreen/impaired, 1)
-		set_renderer_filter(eye_blurry, SCENE_GROUP_RENDERER, EYE_BLURRY_FILTER_NAME, 0, EYE_BLURRY_FILTER(eye_blurry))
-		set_fullscreen(druggy, "high", /obj/screen/fullscreen/high)
+		set_fullscreen(eye_blurry, "blurry", /obj/screen/fullscreen/blurry)
 
 	set_fullscreen(stat == UNCONSCIOUS, "blackout", /obj/screen/fullscreen/blackout)
 
@@ -214,20 +153,36 @@
 	else if(!client.adminobs)
 		reset_view(null)
 
+/mob/living/proc/handle_hearing()
+	// deafness heals slowly over time, unless ear_damage is over HEARING_DAMAGE_LIMIT
+	if(ear_damage < HEARING_DAMAGE_LIMIT)
+		adjustEarDamage(-0.05, -1)
+	if(sdisabilities & DEAF) //disabled-deaf, doesn't get better on its own
+		setEarDamage(-1, max(ear_deaf, 1))
+
 /mob/living/proc/update_sight()
-	if(is_ooc_dead() || eyeobj)
+	set_sight(0)
+	if(stat == DEAD || eyeobj)
 		update_dead_sight()
 	else
 		update_living_sight()
 
+	var/list/vision = get_accumulated_vision_handlers()
+	set_sight(sight | vision[1])
+	set_see_invisible(max(vision[2], see_invisible))
+
 /mob/living/proc/update_living_sight()
-	set_sight(sight&(~(SEE_TURFS|SEE_MOBS|SEE_OBJS)))
-	set_see_in_dark(initial(see_in_dark))
+	var/set_sight_flags = is_ventcrawling ? (SEE_TURFS) : sight & ~(SEE_TURFS|SEE_MOBS|SEE_OBJS)
+	if(is_ventcrawling)
+		set_sight_flags |= BLIND
+	else
+		set_sight_flags &= ~BLIND
+
+	set_sight(set_sight_flags)
 	set_see_invisible(initial(see_invisible))
 
 /mob/living/proc/update_dead_sight()
 	set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
-	set_see_in_dark(8)
 	set_see_invisible(SEE_INVISIBLE_LEVEL_TWO)
 
 /mob/living/proc/handle_hud_icons()
@@ -235,28 +190,4 @@
 	handle_hud_glasses()
 
 /mob/living/proc/handle_hud_icons_health()
-	if(!healths)
-		return
-
-	if(is_ic_dead())
-		healths.icon_state = "health7"
-		return
-
-	var/health_ratio = health / maxHealth * 100
-	switch(health_ratio)
-		if(100 to INFINITY)
-			healths.icon_state = "health0"
-		if(80 to 100)
-			healths.icon_state = "health1"
-		if(60 to 80)
-			healths.icon_state = "health2"
-		if(40 to 60)
-			healths.icon_state = "health3"
-		if(20 to 40)
-			healths.icon_state = "health4"
-		if(0 to 20)
-			healths.icon_state = "health5"
-		else
-			healths.icon_state = "health6"
-
 	return

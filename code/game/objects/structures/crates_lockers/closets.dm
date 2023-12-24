@@ -2,547 +2,487 @@
 	name = "closet"
 	desc = "It's a basic storage unit."
 	icon = 'icons/obj/closet.dmi'
-	icon_state = "closed"
-	pull_sound = SFX_PULL_CLOSET
-	pull_slowdown = PULL_SLOWDOWN_HEAVY
+	icon_state = "generic"
 	density = TRUE
-	w_class = ITEM_SIZE_NO_CONTAINER
-	layer = STRUCTURE_LAYER
+	build_amt = 2
+	slowdown = 5
 
-	rad_resist = list(
-		RADIATION_ALPHA_PARTICLE = 41 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 3.4 MEGA ELECTRONVOLT,
-		RADIATION_HAWKING = 1 ELECTRONVOLT
-	)
+	var/icon_door = null
+	var/icon_door_override = FALSE //override to have open overlay use icon different to its base's
+	var/icon_door_overlay = "" //handles secure locker overlays like the locking lights
 
-	var/icon_closed = "closed"
-	var/icon_opened = "open"
-
-	var/icon_locked
-	var/icon_broken = "sparks"
-	var/icon_off
-
+	var/secure = FALSE //secure locker or not. typically it shouldn't need lights if it's insecure
+	var/secure_lights = FALSE // whether to display secure lights when open.
+	var/opened = FALSE
 	var/welded = FALSE
+	var/locked = FALSE
+	var/broken = FALSE
+
+	var/large = TRUE // if you can shove people in it
+	var/canbemoved = FALSE // if it can be moved by people using the right tools. basically means if you can change the anchored var.
+	var/screwed = TRUE // if its screwed in place
+	var/wrenched = TRUE // if its wrenched down
+
 	var/wall_mounted = FALSE //never solid (You can always pass over it)
 	var/health = 100
 	var/breakout = 0 //if someone is currently breaking out. mutex
-	var/storage_capacity = 2 * MOB_MEDIUM //This is so that someone can't pack hundreds of items in a locker/crate
-							  //then open it in a populated area to crash clients.
-	var/open_sound = SFX_OPEN_CLOSET
-	var/close_sound = SFX_CLOSE_CLOSET
 
-	var/storage_types = CLOSET_STORAGE_ALL
-	var/setup = CLOSET_CAN_BE_WELDED
+	var/storage_capacity = 45 //Tying this to mob sizes was dumb
+	//This is so that someone can't pack hundreds of items in a locker/crate
+							//then open it in a populated area to crash clients.
 
-	// TODO: Turn these into flags. Skipped it for now because it requires updating 100+ locations...
-	var/broken = FALSE
-	var/opened = FALSE
-	var/locked = FALSE
+	var/open_sound = 'sound/effects/closet_open.ogg'
+	var/close_sound = 'sound/effects/closet_close.ogg'
+	var/open_sound_volume = 35
+	var/close_sound_volume = 50
 
-	var/obj/item/shield/closet/cdoor
-	var/dremovable = TRUE	//	some closets' doors cannot be removed
-	var/nodoor = FALSE	// for crafting
+	var/store_misc = TRUE
+	var/store_items = TRUE
+	var/store_mobs = TRUE
+	var/store_structure = FALSE
+	var/dense_when_open = FALSE
+	var/maximum_mob_size = 15
 
-	var/open_delay = 0
+	var/const/default_mob_size = 15
+	var/obj/item/closet_teleporter/linked_teleporter
 
-	var/material = /obj/item/stack/material/steel
+	var/double_doors = FALSE
 
-/obj/structure/closet/nodoor
-	nodoor = TRUE
-	opened = TRUE
-	density = FALSE
+	var/obj/effect/overlay/closet_door/door_obj
+	var/obj/effect/overlay/closet_door/door_obj_alt
+	var/is_animating_door = FALSE
+	var/door_underlay = FALSE //used if you want to have an overlay below the door. used for guncabinets.
+	var/door_anim_squish = 0.12 // Multiplier on proc/get_door_transform. basically, how far you want this to swing out. value of 1 means the length of the door is unchanged (and will swing out of the tile), 0 means it will just slide back and forth.
+	var/door_anim_angle = 147
+	var/door_hinge = -6.5 // for closets, x away from the centre of the closet. typically good to add a 0.5 so it's centered on the edge of the closet.
+	var/door_hinge_alt = 6.5 // for closets with two doors. why a seperate var? because some closets may be weirdly shaped or something.
+	var/door_anim_time = 2.5 // set to 0 to make the door not animate at all
 
-/obj/item/shield/closet
-	name = "closet door"
-	desc = "An essential part of a closet. Could it be used as a tower shield?.."
-	icon = 'icons/obj/closet_doors.dmi'
-	icon_state = "steel"
-	item_icons = list(
-		slot_l_hand_str = 'icons/mob/onmob/items/lefthand_shields.dmi',
-		slot_r_hand_str = 'icons/mob/onmob/items/righthand_shields.dmi',
-		)
-	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	force = 10.0
-	throwforce = 10.0
-	throw_speed = 2
-	throw_range = 4
-	w_class = ITEM_SIZE_HUGE
-	mod_weight = 1.6
-	mod_reach = 1.4
-	mod_handy = 0.7
-	mod_shield = 1.3
-	block_tier = BLOCK_TIER_PROJECTILE
-	origin_tech = list(TECH_MATERIAL = 2)
-	matter = list(MATERIAL_STEEL = 1000)
-	attack_verb = list("shoved", "bashed")
 
-	req_access = list()
-	req_one_access = list()
+/obj/structure/closet/LateInitialize()
+	if(opened)	// if closed, any item at the crate's loc is put in the contents
+		return
+	var/obj/I
+	for(I in loc)
+		if (!istype(I, /obj/item) && !istype(I, /obj/random))
+			continue
+		if (I.density || I.anchored || I == src)
+			continue
+		I.forceMove(src)
+	// adjust locker size to hold all items with 5 units of free store room
+	var/content_size = 0
+	for(I in contents)
+		content_size += Ceiling(I.w_class/2)
+	if(content_size > storage_capacity-5)
+		storage_capacity = content_size + 5
 
-	var/icon_closed = "closed"
-	var/icon_opened = "open"
-
-	var/icon_locked
-	var/icon_off
-
-	var/lockable = FALSE
-
-/obj/item/shield/closet/Initialize()
+/obj/structure/closet/Initialize(mapload, var/no_fill)
 	. = ..()
 	update_icon()
+	if(!no_fill)
+		fill()
+	if(secure)
+		verbs += /obj/structure/closet/proc/verb_togglelock
+	return mapload ? INITIALIZE_HINT_LATELOAD : INITIALIZE_HINT_NORMAL
 
-/obj/item/shield/closet/on_update_icon()
-	..()
-	if(isturf(loc))
-		SetTransform(rotation = 90)
-		pixel_y = -8
+// Fill lockers with this.
+/obj/structure/closet/proc/fill()
+
+/obj/structure/closet/proc/content_info(mob/user, content_size)
+	if(!content_size)
+		to_chat(user, "\The [src] is empty.")
+	else if(storage_capacity > content_size*4)
+		to_chat(user, "\The [src] is barely filled.")
+	else if(storage_capacity > content_size*2)
+		to_chat(user, "\The [src] is less than half full.")
+	else if(storage_capacity > content_size)
+		to_chat(user, "\The [src] still has some free space.")
 	else
-		SetTransform(rotation = 0)
-		pixel_y = initial(pixel_y)
+		to_chat(user, "\The [src] is full.")
 
-/obj/item/shield/closet/pickup(mob/user)
-	..()
-	update_icon()
-
-/obj/item/shield/closet/dropped(mob/user)
-	..()
-	update_icon()
-
-/obj/item/shield/closet/attack_hand()
-	..()
-	update_icon()
-
-/obj/item/shield/closet/on_enter_storage(obj/item/storage/S)
-	..()
-	update_icon()
-
-
-/obj/structure/closet/Initialize()
+/obj/structure/closet/examine(mob/user, distance, is_adjacent)
 	. = ..()
-
-	if((setup & CLOSET_HAS_LOCK))
-		verbs += /obj/structure/closet/proc/togglelock_verb
-
-	return INITIALIZE_HINT_LATELOAD
-
-/obj/structure/closet/LateInitialize(mapload, ...)
-	var/list/will_contain = WillContain()
-	if(will_contain)
-		create_objects_in_loc(src, will_contain)
-
-	if(!opened && mapload) // if closed and it's the map loading phase, relevant items at the crate's loc are put in the contents
-		store_contents()
-
-	if(dremovable && !nodoor)
-		var/obj/item/shield/closet/ndoor = new /obj/item/shield/closet(src.loc)
-		ndoor.icon_closed = icon_closed
-		ndoor.icon_opened = icon_opened
-
-		ndoor.icon_locked = icon_locked
-		ndoor.icon_off = icon_off
-
-		ndoor.name = "[name] door"
-		ndoor.icon_state = icon_closed
-		ndoor.item_state = icon_closed
-
-		ndoor.req_access = req_access
-		ndoor.req_one_access = req_one_access
-
-		if((setup & CLOSET_HAS_LOCK))
-			ndoor.lockable = TRUE
-
-		ndoor.forceMove(src)
-		cdoor = ndoor
-
-	update_icon()
-
-/obj/structure/closet/Destroy()
-	QDEL_NULL(cdoor)
-	return ..()
-
-/obj/structure/closet/proc/WillContain()
-	return null
-
-/obj/structure/closet/_examine_text(mob/user)
-	. = ..()
-	if(get_dist(src, user) <= 1 && !opened)
+	if(distance <= 1 && !src.opened)
 		var/content_size = 0
-		for(var/atom/movable/AM in src.contents)
-			if(!AM.anchored)
-				content_size += content_size(AM)
-		if(!content_size)
-			. += "\nIt is empty."
-		else if(storage_capacity > content_size*4)
-			. += "\nIt is barely filled."
-		else if(storage_capacity > content_size*2)
-			. += "\nIt is less than half full."
-		else if(storage_capacity > content_size)
-			. += "\nThere is still some free space."
-		else
-			. += "\nIt is full."
+		for(var/obj/item/I in contents)
+			if(!I.anchored)
+				content_size += Ceiling(I.w_class/2)
+		content_info(user, content_size)
 
-	if(isghost(user))
-		var/mob/observer/ghost/G = user
-		if(!G.inquisitiveness)
-			return
+	if(!src.opened && isobserver(user))
+		to_chat(user, "It contains: [counting_english_list(contents)]")
 
-		if(src.opened)
-			return
+	if(src.opened && linked_teleporter && is_adjacent)
+		to_chat(user, FONT_SMALL(SPAN_NOTICE("There appears to be a device attached to the interior backplate of \the [src]...")))
 
-		. += "\nIt contains: [items_english_list(contents)]."
+/obj/structure/closet/proc/stored_weight()
+	var/content_size = 0
+	for(var/obj/item/I in contents)
+		if(!I.anchored)
+			content_size += Ceiling(I.w_class/2)
+	return content_size
 
-/obj/structure/closet/CanPass(atom/movable/mover, turf/target)
-	if(wall_mounted)
-		return TRUE
-	return ..()
+/obj/structure/closet/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+	if(air_group || (height==0 || wall_mounted)) return 1
+	if(istype(mover) && mover.checkpass(PASSTRACE))
+		return 1
+	return (!density)
 
 /obj/structure/closet/proc/can_open()
-	if((setup & CLOSET_HAS_LOCK) && locked)
-		return FALSE
-	if((setup & CLOSET_CAN_BE_WELDED) && welded)
-		return FALSE
-	if(dremovable && !cdoor)
-		return FALSE
-	return TRUE
+	if(welded || locked)
+		return 0
+	return 1
 
 /obj/structure/closet/proc/can_close()
 	for(var/obj/structure/closet/closet in get_turf(src))
 		if(closet != src)
-			return FALSE
-	if(dremovable && !cdoor) // there's nothing to close
-		return FALSE
-	return TRUE
+			return 1
+	return 1
 
-/obj/structure/closet/proc/dump_contents()
-	var/atom/L = drop_location()
+/obj/structure/closet/dump_contents()
+	//Cham Projector Exception
+	for(var/obj/effect/dummy/chameleon/AD in contents)
+		AD.forceMove(loc)
 
-	for(var/mob/M in src)
-		M.forceMove(L)
+	for(var/obj/I in contents - linked_teleporter)
+		I.forceMove(loc)
+
+	for(var/mob/M in contents)
+		M.forceMove(loc)
 		if(M.client)
 			M.client.eye = M.client.mob
 			M.client.perspective = MOB_PERSPECTIVE
 
-	for(var/atom/movable/AM in src)
-		if(AM != cdoor)
-			AM.forceMove(L)
-
-/obj/structure/closet/proc/store_contents()
-	var/stored_units = 0
-
-	if(storage_types & CLOSET_STORAGE_ITEMS)
-		stored_units += store_items(stored_units)
-	if(storage_types & CLOSET_STORAGE_MOBS)
-		stored_units += store_mobs(stored_units)
-	if(storage_types & CLOSET_STORAGE_STRUCTURES)
-		stored_units += store_structures(stored_units)
-
-/obj/structure/closet/proc/open(force = FALSE)
+/obj/structure/closet/proc/open()
 	if(opened)
-		return FALSE
+		return 0
+	if(!can_open())
+		return 0
 
-	if(!can_open() && !force)
-		return FALSE
-
-	src.dump_contents()
-
-	src.opened = TRUE
-	playsound(src.loc, open_sound, 50, 1, -3)
-	density = FALSE
+	if(climbable)
+		structure_shaken()
+	opened = TRUE
+	dump_contents()
+	animate_door(FALSE)
+	if(double_doors)
+		animate_door_alt(FALSE)
 	update_icon()
-	return TRUE
+	playsound(loc, open_sound, open_sound_volume, 0, -3)
+	if(!dense_when_open)
+		density = FALSE
+	return 1
 
 /obj/structure/closet/proc/close()
-	if(!src.opened)
-		return FALSE
-	if(!src.can_close())
-		return FALSE
+	if(!opened)
+		return 0
+	if(!can_close())
+		return 0
 
-	store_contents()
-	src.opened = FALSE
+	var/stored_units = 0
 
-	playsound(src.loc, close_sound, 50, 0, -3)
-	density = TRUE
-
+	if(store_misc)
+		stored_units += store_misc(stored_units)
+	if(store_items)
+		stored_units += store_items(stored_units)
+	if(store_mobs)
+		stored_units += store_mobs(stored_units)
+	if(store_structure)
+		stored_units += store_structure(stored_units)
+	opened = FALSE
+	animate_door(TRUE)
+	if(double_doors)
+		animate_door_alt(TRUE)
 	update_icon()
 
+	if(linked_teleporter)
+		if(linked_teleporter.last_use + 600 > world.time)
+			return
+		var/did_teleport = FALSE
+		for(var/mob/M in contents)
+			if(linked_teleporter.do_teleport(M))
+				did_teleport = TRUE
+		if(did_teleport)
+			linked_teleporter.last_use = world.time
+
+	playsound(get_turf(src), close_sound, close_sound_volume, 0, -3)
+	density = initial(density)
 	return TRUE
 
-#define CLOSET_CHECK_TOO_BIG(x) (stored_units + . + x > storage_capacity)
-/obj/structure/closet/proc/store_items(stored_units)
-	. = 0
-
+//Chem Projector Exception
+/obj/structure/closet/proc/store_misc(var/stored_units)
+	var/added_units = 0
 	for(var/obj/effect/dummy/chameleon/AD in loc)
-		if(CLOSET_CHECK_TOO_BIG(1))
+		if((stored_units + added_units) > storage_capacity)
 			break
-		.++
 		AD.forceMove(src)
+		added_units++
+	return added_units
 
+/obj/structure/closet/proc/store_items(var/stored_units)
+	var/added_units = 0
 	for(var/obj/item/I in loc)
-		if(QDELETED(I))
+		var/item_size = Ceiling(I.w_class / 2)
+		if(stored_units + added_units + item_size > storage_capacity)
 			continue
-		if(istype(I,/obj/item/shield/closet))
-			break
-		if(I.anchored)
-			continue
-		var/item_size = content_size(I)
-		if(CLOSET_CHECK_TOO_BIG(item_size))
-			break
-		. += item_size
-		I.forceMove(src)
-		I.pixel_x = 0
-		I.pixel_y = 0
-		I.pixel_z = 0
+		if(!I.anchored)
+			I.forceMove(src)
+			added_units += item_size
+	return added_units
 
-/obj/structure/closet/proc/store_mobs(stored_units)
-	. = 0
+/obj/structure/closet/proc/store_mobs(var/stored_units, var/mob_limit)
+	var/added_units = 0
 	for(var/mob/living/M in loc)
-		if(M.buckled || M.pinned.len || M.anchored)
+		if(M.buckled_to || M.pinned.len)
 			continue
-		var/mob_size = content_size(M)
-		if(CLOSET_CHECK_TOO_BIG(mob_size))
+		if(M.mob_size >= maximum_mob_size)
+			continue
+		if(stored_units + added_units + M.mob_size > storage_capacity)
 			break
-		. += mob_size
 		if(M.client)
 			M.client.perspective = EYE_PERSPECTIVE
 			M.client.eye = src
 		M.forceMove(src)
-
-/obj/structure/closet/proc/store_structures(stored_units)
-	. = 0
-
-	for(var/obj/structure/S in loc)
-		if(S == src)
-			continue
-		if(S.anchored)
-			continue
-		var/structure_size = content_size(S)
-		if(CLOSET_CHECK_TOO_BIG(structure_size))
+		added_units += M.mob_size
+		if(mob_limit) //We only want to store one valid mob
 			break
-		. += structure_size
-		S.forceMove(src)
+	return added_units
 
-	for(var/obj/machinery/M in loc)
-		if(M.anchored)
-			continue
-		if(istype(M, /obj/machinery/power/supermatter))
-			continue
-		var/structure_size = content_size(M)
-		if(CLOSET_CHECK_TOO_BIG(structure_size))
+/obj/structure/closet/proc/store_structure(var/stored_units)
+	var/added_units = 0
+	for(var/obj/O in loc)
+		if((stored_units + added_units) > storage_capacity)
 			break
-		. += structure_size
-		M.forceMove(src)
+		if(O.density || O.anchored || istype(O,/obj/structure/closet))
+			continue
+		if(istype(O, /obj/structure/bed))
+			var/obj/structure/bed/B = O
+			if(B.buckled)
+				continue
+		O.forceMove(src)
+		added_units++
+	return added_units
 
-#undef CLOSET_CHECK_TOO_BIG
+/obj/structure/closet/proc/toggle(mob/user as mob)
+	if(!(opened ? close(user) : open(user)))
+		to_chat(user, SPAN_WARNING("It won't budge!"))
+		return
+	return 1
 
-// If you adjust any of the values below, please also update /proc/unit_test_weight_of_path(var/path)
-/obj/structure/closet/proc/content_size(atom/movable/AM)
-	if(ismob(AM))
-		var/mob/M = AM
-		return M.mob_size
-	if(istype(AM, /obj/item))
-		var/obj/item/I = AM
-		return (I.w_class / 2)
-	if(istype(AM, /obj/structure) || istype(AM, /obj/machinery))
-		return MOB_LARGE
-	return FALSE
-
-/obj/structure/closet/proc/toggle(mob/user)
-	if(locked)
-		togglelock(user)
-	else if(!(src.opened ? src.close() : src.open()))
-		if(dremovable && !cdoor)
-			to_chat(user, SPAN_NOTICE("There's no door to close!"))
-		else
-			to_chat(user, SPAN_NOTICE("It won't budge!"))
-		update_icon()
-
-// this should probably use dump_contents()
 /obj/structure/closet/ex_act(severity)
 	switch(severity)
 		if(1)
-			destroy_door()
-			for(var/atom/movable/A in src)//pulls everything out of the locker and hits it with an explosion
-				A.forceMove(loc)
-				A.ex_act(severity + 1)
-			qdel(src)
+			health -= rand(120, 240)
 		if(2)
-			if(prob(50))
-				if(prob(50))
-					destroy_door()
-				else
-					remove_door()
-				for(var/atom/movable/A in src)
-					A.forceMove(src.loc)
-					A.ex_act(severity + 1)
-				qdel(src)
+			health -= rand(60, 120)
 		if(3)
-			if(prob(5))
-				remove_door()
-				for(var/atom/movable/A in src)
-					A.forceMove(loc)
-				qdel(src)
+			health -= rand(30, 60)
 
-/obj/structure/closet/proc/damage(damage)
-	health -= damage
 	if(health <= 0)
-		remove_door()
-		for(var/atom/movable/A in src)
-			A.forceMove(src.loc)
+		for (var/atom/movable/A as mob|obj in src)
+			A.ex_act(severity + 1)
+		dump_contents()
+		new /obj/item/stack/material/steel(get_turf(src))
 		qdel(src)
 
-/obj/structure/closet/bullet_act(obj/item/projectile/Proj)
-	var/proj_damage = Proj.get_structure_damage()
-	if(proj_damage)
-		..()
-		damage(proj_damage)
+/obj/structure/closet/proc/damage(var/damage)
+	health -= damage
+	if(health <= 0)
+		dump_contents()
+		new /obj/item/stack/material/steel(get_turf(src))
+		qdel(src)
 
-	if(Proj.penetrating)
+/obj/structure/closet/bullet_act(var/obj/item/projectile/Proj)
+	var/proj_damage = Proj.get_structure_damage()
+	if(!proj_damage)
+		return
+
+	if(Proj.penetrating || istype(Proj, /obj/item/projectile/bullet))
 		var/distance = get_dist(Proj.starting, get_turf(loc))
 		for(var/mob/living/L in contents)
 			Proj.attack_mob(L, distance)
-			if(!(--Proj.penetrating))
-				break
 
-/obj/structure/closet/blob_act()
-	if(opened)
-		remove_door()
-		qdel(src)
-	else
-		break_open()
+	..()
+	damage(proj_damage)
 
 /obj/structure/closet/attackby(obj/item/W, mob/user)
-	if(src.opened)
+	if(istype(W, /obj/item/closet_teleporter))
+		if(linked_teleporter)
+			to_chat(user, SPAN_WARNING("\The [src] already has a linked teleporter!"))
+			return
+		var/obj/item/closet_teleporter/CT = W
+		user.visible_message(SPAN_NOTICE("\The [user] starts attaching \the [CT] to \the [src]..."), SPAN_NOTICE("You begin attaching \the [CT] to \the [src]..."), range = 3)
+		if(do_after(user, 30, src, DO_REPAIR_CONSTRUCT))
+			user.visible_message(SPAN_NOTICE("\The [user] attaches \the [CT] to \the [src]."), SPAN_NOTICE("You attach \the [CT] to \the [src]."), range = 3)
+			linked_teleporter = CT
+			CT.attached_closet = src
+			user.drop_from_inventory(CT, src)
+		return
+	if(opened)
 		if(istype(W, /obj/item/grab))
 			var/obj/item/grab/G = W
-			src.MouseDrop_T(G.affecting, user)      //act like they were dragged onto the closet
-			return FALSE
-		if(istype(W,/obj/item/tk_grab))
-			return FALSE
-		if(isWelder(W))
+			MouseDrop_T(G.affecting, user) //act like they were dragged onto the closet
+			return 0
+		if(W.isscrewdriver()) // Moved here so you can only detach linked teleporters when the door is open. So you can like unscrew and bolt the locker normally in most circumstances.
+			if(linked_teleporter)
+				user.visible_message(SPAN_NOTICE("\The [user] starts detaching \the [linked_teleporter] from \the [src]..."), SPAN_NOTICE("You begin detaching \the [linked_teleporter] from \the [src]..."), range = 3)
+				if(do_after(user, 30, src, DO_REPAIR_CONSTRUCT))
+					user.visible_message(SPAN_NOTICE("\The [user] detaches \the [linked_teleporter] from \the [src]."), SPAN_NOTICE("You detach \the [linked_teleporter] from \the [src]."), range = 3)
+					linked_teleporter.attached_closet = null
+					user.put_in_hands(linked_teleporter)
+					linked_teleporter = null
+				return
+		if(W.iswelder())
 			var/obj/item/weldingtool/WT = W
 			if(WT.isOn())
-				slice_into_parts(WT, user)
-				return
+				user.visible_message(
+					SPAN_WARNING("[user] begins cutting [src] apart."),
+					SPAN_NOTICE("You begin cutting [src] apart."),
+					"You hear a welding torch on metal."
+				)
+				playsound(loc, 'sound/items/welder_pry.ogg', 50, 1)
+				if (!do_after(user, 2 SECONDS, src, DO_REPAIR_CONSTRUCT))
+					return
+				if(!WT.use(0,user))
+					to_chat(user, SPAN_NOTICE("You need more welding fuel to complete this task."))
+					return
+				else
+					user.visible_message(
+						SPAN_NOTICE("[src] has been cut apart by [user] with [WT]."),
+						SPAN_NOTICE("You cut apart [src] with [WT].")
+					)
+					if(linked_teleporter)
+						linked_teleporter.forceMove(get_turf(src))
+						linked_teleporter = null
+					dismantle()
+					return
 		if(istype(W, /obj/item/storage/laundry_basket) && W.contents.len)
 			var/obj/item/storage/laundry_basket/LB = W
 			var/turf/T = get_turf(src)
 			for(var/obj/item/I in LB.contents)
 				LB.remove_from_storage(I, T)
-			user.visible_message(SPAN_NOTICE("[user] empties \the [LB] into \the [src]."),
-								 \SPAN_NOTICE("You empty \the [LB] into \the [src]."),
-								 \SPAN_NOTICE("You hear rustling of clothes."))
+			user.visible_message(
+				SPAN_NOTICE("[user] empties \the [LB] into \the [src]."),
+				SPAN_NOTICE("You empty \the [LB] into \the [src]."),
+				SPAN_NOTICE("You hear rustling of clothes.")
+			)
 			return
-
-		if(isScrewdriver(W) && dremovable && cdoor)
-			user.visible_message(SPAN_NOTICE("[user] starts unscrewing [cdoor] from [src]."))
-			user.next_move = world.time + 10
-			if(!do_after(user, 30))
-				return FALSE
-			if(!cdoor)
-				return FALSE
-			if(remove_door())
-				user.visible_message(SPAN("notice", "[user] unscrewed [cdoor] from [src]."))
+		if(!W.dropsafety())
 			return
-
-		if(istype(W, /obj/item/shield/closet) && dremovable && !cdoor)
-			var/obj/item/shield/closet/C = W
-			user.visible_message(SPAN_NOTICE("[user] starts connecting [C] to [src]."))
-			user.next_move = world.time + 10
-			if(!do_after(user, 20))
-				return FALSE
-			if(cdoor)
-				return FALSE
-			if(istype(C.loc, /obj/item/gripper)) // Snowflaaaaakeeeeey
-				var/obj/item/gripper/G = C.loc
-				G.wrapped.forceMove(get_turf(src))
-				G.wrapped = null
-			else if(!user.drop(C))
-				return
-			user.visible_message(SPAN_NOTICE("[user] connected [C] to [src]."))
-			attach_door(C)
+		if(W)
+			user.drop_from_inventory(W,loc)
+		else
+			user.drop_item()
+	else if(istype(W, /obj/item/device/cratescanner))
+		var/obj/item/device/cratescanner/Cscanner = W
+		if(locked)
+			to_chat(user, SPAN_WARNING("[W] refuses to scan [src]. Unlock it first!"))
 			return
-
-		if(istype(W.loc, /obj/item/gripper)) // It's kinda tricky, see drone_items.dm L#313 for grippers' resolve_attackby().
-			var/obj/item/gripper/G = W.loc
-			if(!G.wrapped)
-				return
-			G.wrapped.forceMove(loc)
-			G.wrapped.pixel_x = 0
-			G.wrapped.pixel_y = 0
-			G.wrapped.pixel_z = 0
-			G.wrapped.pixel_w = 0
-			G.wrapped = null
+		if(welded)
+			to_chat(user, SPAN_WARNING("[W] detects that [src] is welded shut, and refuses to scan."))
 			return
-
-		if(usr.drop(W, loc))
-			W.pixel_x = 0
-			W.pixel_y = 0
-			W.pixel_z = 0
-			W.pixel_w = 0
+		Cscanner.print_contents(name, contents, src.loc)
+	else if(istype(W, /obj/item/stack/packageWrap))
 		return
-
-	else if(istype(W, /obj/item/melee/energy))
-		var/obj/item/melee/energy/WS = W
-		if(WS.active)
-			emag_act(INFINITY, user, SPAN_DANGER("The locker has been sliced open by [user] with \an [W]!"), SPAN_DANGER("You hear metal being sliced and sparks flying."))
-			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
-			spark_system.set_up(5, 0, src.loc)
-			spark_system.start()
-			playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
-			playsound(src.loc, SFX_SPARK, 50, 1)
-			open()
-	else if(istype(W, /obj/item/packageWrap))
+	else if(istype(W, /obj/item/ducttape))
 		return
-	else if(isWelder(W) && (setup & CLOSET_CAN_BE_WELDED))
+	else if(W.iswelder())
 		var/obj/item/weldingtool/WT = W
-		if(!WT.remove_fuel(0,user))
-			if(!WT.isOn())
+		if(WT.isOn())
+			user.visible_message(
+				SPAN_WARNING("[user] begins welding [src] [welded ? "open" : "shut"]."),
+				SPAN_NOTICE("You begin welding [src] [welded ? "open" : "shut"]."),
+				"You hear a welding torch on metal."
+			)
+			playsound(loc, 'sound/items/welder_pry.ogg', 50, 1)
+			if(!W.use_tool(src, user, 20, volume = 50, extra_checks = CALLBACK(src, PROC_REF(is_closed))))
 				return
-			else
+			if(!WT.use(0,user))
 				to_chat(user, SPAN_NOTICE("You need more welding fuel to complete this task."))
 				return
-		src.welded = !src.welded
-		src.update_icon()
-		user.visible_message(SPAN_WARNING("\The [src] has been [welded?"welded shut":"unwelded"] by \the [user]."), blind_message = "You hear welding.", range = 3)
-	else if(isMultitool(W) && (setup & CLOSET_HAS_LOCK))
-		var/obj/item/device/multitool/multi = W
-		if(multi.in_use)
-			to_chat(user, SPAN("warning", "This multitool is already in use!"))
+			welded = !welded
+			update_icon()
+			user.visible_message(
+				SPAN_WARNING("[src] has been [welded ? "welded shut" : "unwelded"] by [user]."),
+				SPAN_NOTICE("You weld [src] [!welded ? "open" : "shut"].")
+			)
+		else
+			attack_hand(user)
+	else if(W.isscrewdriver() && canbemoved)
+		if(screwed)
+			to_chat(user,  SPAN_NOTICE("You start to unscrew \the [src] from the floor..."))
+			playsound(loc, W.usesound, 50, 1)
+			if (do_after(user, 10/W.toolspeed SECONDS, src, DO_REPAIR_CONSTRUCT))
+				to_chat(user,  SPAN_NOTICE("You unscrew the locker!"))
+				playsound(loc, W.usesound, 50, 1)
+				screwed = FALSE
+		else if(!screwed && wrenched)
+			to_chat(user,  SPAN_NOTICE("You start to screw the \the [src] to the floor..."))
+			playsound(src, 'sound/items/Welder.ogg', 80, 1)
+			if (do_after(user, 15/W.toolspeed SECONDS, src, DO_REPAIR_CONSTRUCT))
+				to_chat(user,  SPAN_NOTICE("You screw \the [src]!"))
+				playsound(loc, W.usesound, 50, 1)
+				screwed = TRUE
+	else if(W.iswrench() && canbemoved)
+		if(wrenched && !screwed)
+			to_chat(user,  SPAN_NOTICE("You start to unfasten the bolts holding \the [src] in place..."))
+			playsound(loc, W.usesound, 50, 1)
+			if (do_after(user, 15/W.toolspeed SECONDS, src, DO_REPAIR_CONSTRUCT))
+				to_chat(user,  SPAN_NOTICE("You unfasten \the [src]'s bolts!"))
+				playsound(loc, W.usesound, 50, 1)
+				wrenched = FALSE
+				anchored = FALSE
+		else if(!wrenched)
+			to_chat(user,  SPAN_NOTICE("You start to fasten the bolts holding the locker in place..."))
+			playsound(loc, W.usesound, 50, 1)
+			if (do_after(user, 15/W.toolspeed SECONDS, src, DO_REPAIR_CONSTRUCT))
+				to_chat(user,  SPAN_NOTICE("You fasten the \the [src]'s bolts!"))
+				playsound(loc, W.usesound, 50, 1)
+				wrenched = TRUE
+				anchored = TRUE
+	else if(istype(W, /obj/item/device/hand_labeler))
+		var/obj/item/device/hand_labeler/HL = W
+		if(HL.mode == 1)
 			return
-		multi.in_use = 1
-		var/prev_locked = locked
-		for(var/i in 1 to rand(4, 8))
-			user.visible_message(SPAN("warning", "[user] picks in wires of \the [name] with a multitool."),
-								 SPAN("warning", "I am trying to reset circuitry lock module ([i])..."))
-			if(!do_after(user, 200, src) || locked != prev_locked || opened || (!istype(src, /obj/structure/closet/crate) && dremovable && !cdoor))
-				multi.in_use = 0
-				return
-		locked = !locked
-		broken = !locked
-		update_icon()
-		multi.in_use = 0
-		user.visible_message(SPAN("warning", "[user] [locked ? "locks" : "unlocks"] \the [name] with a multitool."),
-							 SPAN("warning", "I [locked ? "enable" : "disable"] the locking modules."))
-	else if(setup & CLOSET_HAS_LOCK)
-		src.togglelock(user, W)
-	else
-		src.attack_hand(user)
+		else
+			attack_hand(user)
+	else if(istype(W,/obj/item/card/id) && secure)
+		togglelock(user)
 
-/obj/structure/closet/proc/slice_into_parts(obj/item/weldingtool/WT, mob/user)
-	if(!WT.remove_fuel(0,user))
-		to_chat(user, SPAN_NOTICE("You need more welding fuel to complete this task."))
-		return
-	if(material != null)
-		new material(loc)
+// Secure locker cutting open stuff.
+	else if(!opened && secure)
+		if(!broken && istype(W,/obj/item/material/twohanded/chainsaw))
+			var/obj/item/material/twohanded/chainsaw/ChainSawVar = W
+			ChainSawVar.cutting = 1
+			user.visible_message(\
+				SPAN_DANGER("[user.name] starts cutting \the [src] with the [W]!"),\
+				SPAN_WARNING("You start cutting the [src]..."),\
+				SPAN_NOTICE("You hear a loud buzzing sound and metal grinding on metal...")\
+			)
+			if(do_after(user, ChainSawVar.opendelay SECONDS, user, DO_REPAIR_CONSTRUCT))
+				user.visible_message(\
+					SPAN_WARNING("[user.name] finishes cutting open \the [src] with the [W]."),\
+					SPAN_WARNING("You finish cutting open the [src]."),\
+					SPAN_NOTICE("You hear a metal clank and some sparks.")\
+				)
+				emag_act(INFINITY, user, SPAN_DANGER("\The [src] has been sliced open by [user] with \an [W]!"), SPAN_DANGER("You hear metal being sliced and sparks flying."))
+			ChainSawVar.cutting = 0
+		else if(istype(W, /obj/item/melee/energy/blade))//Attempt to cut open locker if locked
+			if(emag_act(INFINITY, user, SPAN_DANGER("\The [src] has been sliced open by [user] with \an [W]!"), SPAN_DANGER("You hear metal being sliced and sparks flying.")))
+				playsound(loc, 'sound/weapons/blade.ogg', 50, 1)
+			else
+				attack_hand(user)
 	else
-		log_debug("\The [src] doesnt have material, this is bug", loc, type)
-	user.visible_message(SPAN_NOTICE("\The [src] has been cut apart by [user] with \the [WT]."), SPAN_NOTICE("You have cut \the [src] apart with \the [WT]."), "You hear welding.")
-	remove_door()
-	qdel(src)
+		attack_hand(user)
+	return
 
-/obj/structure/closet/MouseDrop_T(atom/movable/O, mob/user)
-	if(QDELETED(O))
-		return
+// helper procs for callbacks
+/obj/structure/closet/proc/is_closed()
+	. = !opened
+
+/obj/structure/closet/proc/is_open()
+	. = opened
+
+/obj/structure/closet/MouseDrop_T(atom/movable/O as mob|obj, mob/user as mob)
 	if(istype(O, /obj/screen))	//fix for HUD elements making their way into the world	-Pete
 		return
 	if(O.loc == user)
@@ -554,315 +494,301 @@
 	if(!isturf(user.loc)) // are you in a container/closet/pod/etc?
 		return
 	if(!opened)
-		return ..()
+		return
 	if(istype(O, /obj/structure/closet))
 		return
-	step_towards(O, src.loc)
 	if(user != O)
-		user.show_viewers(SPAN_DANGER("[user] stuffs [O] into [src]!"))
-	src.add_fingerprint(user)
+		var/turf/T = get_turf(src)
+		if(ismob(O))
+			if(large)
+				user.visible_message(SPAN_DANGER("<b>[user]</b> stuffs \the [O] into \the [src]!"), SPAN_NOTICE("You stuff \the [O] into \the [src]."), range = 3)
+				O.forceMove(T)
+				close()
+			else
+				to_chat(user,  SPAN_NOTICE("\The [src] is too small to stuff [O] into!"))
+		else
+			O.forceMove(T)
+	add_fingerprint(user)
 	return
 
 /obj/structure/closet/attack_ai(mob/user)
 	if(istype(user, /mob/living/silicon/robot) && Adjacent(user)) // Robots can open/close it, but not the AI.
 		attack_hand(user)
 
-/obj/structure/closet/relaymove(mob/user)
-	if(user.stat || !isturf(src.loc))
+/obj/structure/closet/relaymove(mob/user as mob)
+	if(user.stat || !isturf(loc))
 		return
 
-	if(!src.open())
+	if(!open())
 		to_chat(user, SPAN_NOTICE("It won't budge!"))
 
-/obj/structure/closet/attack_hand(mob/user)
+/obj/structure/closet/attack_hand(mob/user as mob)
 	add_fingerprint(user)
-	user.setClickCooldown(2)
-	if(in_use)
-		to_chat(user, SPAN("warning", "You can't do this right now."))
-		return
-	in_use = TRUE
-	if(open_delay && !do_after(user, open_delay))
-		in_use = FALSE
-		return
-	toggle(user)
-	in_use = FALSE
-
-// tk grab then use on self
-/obj/structure/closet/attack_self_tk(mob/user)
-	src.add_fingerprint(user)
-	if(!src.toggle())
-		to_chat(usr, SPAN_NOTICE("It won't budge!"))
+	if(locked)
+		togglelock(user)
+	else
+		toggle(user)
 
 /obj/structure/closet/verb/verb_toggleopen()
 	set src in oview(1)
 	set category = "Object"
 	set name = "Toggle Open"
 
-	if(!CanPhysicallyInteract(usr))
+	if(!usr.canmove || usr.stat || usr.restrained())
 		return
 
-	if(ishuman(usr))
-		attack_hand(usr)
+	if(ishuman(usr) || (issilicon(usr) && Adjacent(usr)))
+		add_fingerprint(usr)
+		toggle(usr)
 	else
 		to_chat(usr, SPAN_WARNING("This mob type can't use this verb."))
 
-/obj/structure/closet/on_update_icon()//Putting the welded stuff in update_icon() so it's easy to overwrite for special cases (Fridges, cabinets, and whatnot)
-	ClearOverlays()
+/obj/structure/closet/update_icon()
+	if(!door_underlay)
+		cut_overlays()
 
-	if(dremovable)
-		icon_state = "[icon_closed]nodoor"
-		if(cdoor)
-			if(!opened)
-				if(broken && icon_off)
-					var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_off]")
-					AddOverlays(cdoor_icon)
-					AddOverlays(icon_broken)
-				else if((setup & CLOSET_HAS_LOCK) && locked && cdoor.icon_locked)
-					var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_locked]")
-					AddOverlays(cdoor_icon)
-				else
-					var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_closed]")
-					AddOverlays(cdoor_icon)
-				if(welded)
-					AddOverlays("welded")
-			else
-				var/icon/cdoor_icon = new /icon("icon" = 'icons/obj/closet_doors.dmi', "icon_state" = "[cdoor.icon_opened]")
-				AddOverlays(cdoor_icon)
+	if(!opened)
+		layer = OBJ_LAYER
+		if(welded)
+			add_overlay("[icon_door_overlay]welded")
+		if(!is_animating_door)
+			if(icon_door)
+				add_overlay("[icon_door]_door")
+				if(double_doors)
+					add_overlay("[icon_door]_door_alt")
+			if(!icon_door)
+				add_overlay("[icon_state]_door")
+				if(double_doors)
+					add_overlay("[icon_state]_door_alt")
+			if(secure)
+				update_secure_overlays()
+		if(secure && secure_lights)
+			update_secure_overlays()
+	else if(opened)
+		layer = BELOW_OBJ_LAYER
+		if(!is_animating_door)
+			add_overlay("[icon_door_override ? icon_door : icon_state]_open")
+		if(secure && secure_lights)
+			update_secure_overlays()
+
+/obj/structure/closet/proc/update_secure_overlays()
+	if(broken)
+		add_overlay("[icon_door_overlay]emag")
 	else
-		if(!opened)
-			if(broken && icon_off)
-				icon_state = icon_off
-				AddOverlays(icon_broken)
-			else if((setup & CLOSET_HAS_LOCK) && locked && icon_locked)
-				icon_state = icon_locked
-			else
-				icon_state = icon_closed
-			if(welded)
-				AddOverlays("welded")
+		if(locked)
+			add_overlay("[icon_door_overlay]locked")
 		else
-			icon_state = icon_opened
+			add_overlay("[icon_door_overlay]unlocked")
 
-/obj/structure/closet/attack_generic(mob/user, damage, attack_message = "destroys", wallbreaker)
+/obj/structure/closet/proc/animate_door(var/closing = FALSE)
+	if(!door_anim_time)
+		return
+	if(!door_obj) door_obj = new
+	vis_contents |= door_obj
+	door_obj.icon = icon
+	door_obj.icon_state = "[icon_door || icon_state]_door"
+	is_animating_door = TRUE
+	var/num_steps = door_anim_time / world.tick_lag
+	for(var/I in 0 to num_steps)
+		var/angle = door_anim_angle * (closing ? 1 - (I/num_steps) : (I/num_steps))
+		var/matrix/M = get_door_transform(angle)
+		var/door_state = angle >= 90 ? "[icon_door_override ? icon_door : icon_state]_back" : "[icon_door || icon_state]_door"
+		var/door_layer = angle >= 90 ? FLOAT_LAYER : ABOVE_MOB_LAYER
+
+		if(I == 0)
+			door_obj.transform = M
+			door_obj.icon_state = door_state
+			door_obj.layer = door_layer
+		else if(I == 1)
+			animate(door_obj, transform = M, icon_state = door_state, layer = door_layer, time = world.tick_lag, flags = ANIMATION_END_NOW)
+		else
+			animate(transform = M, icon_state = door_state, layer = door_layer, time = world.tick_lag)
+	addtimer(CALLBACK(src, PROC_REF(end_door_animation)),door_anim_time,TIMER_UNIQUE|TIMER_OVERRIDE)
+
+/obj/structure/closet/proc/end_door_animation()
+	is_animating_door = FALSE // comment this out and the line below to manually tweak the animation end state by fiddling with the door_anim vars to match the open door icon
+	vis_contents -= door_obj
+	update_icon()
+	compile_overlays(src)
+
+/obj/structure/closet/proc/animate_door_alt(var/closing = FALSE)
+	if(!door_anim_time)
+		return
+	if(!door_obj_alt) door_obj_alt = new
+	vis_contents |= door_obj_alt
+	door_obj_alt.icon = icon
+	door_obj_alt.icon_state = "[icon_door || icon_state]_door_alt"
+	is_animating_door = TRUE
+	var/num_steps = door_anim_time / world.tick_lag
+	for(var/I in 0 to num_steps)
+		var/angle = door_anim_angle * (closing ? 1 - (I/num_steps) : (I/num_steps))
+		var/matrix/M = get_door_transform(angle, TRUE)
+		var/door_state = angle >= 90 ? "[icon_door_override ? icon_door : icon_state]_back_alt" : "[icon_door || icon_state]_door_alt"
+		var/door_layer = angle >= 90 ? FLOAT_LAYER : ABOVE_MOB_LAYER
+
+		if(I == 0)
+			door_obj_alt.transform = M
+			door_obj_alt.icon_state = door_state
+			door_obj_alt.layer = door_layer
+		else if(I == 1)
+			animate(door_obj_alt, transform = M, icon_state = door_state, layer = door_layer, time = world.tick_lag, flags = ANIMATION_END_NOW)
+		else
+			animate(transform = M, icon_state = door_state, layer = door_layer, time = world.tick_lag)
+	addtimer(CALLBACK(src, PROC_REF(end_door_animation_alt)),door_anim_time,TIMER_UNIQUE|TIMER_OVERRIDE)
+
+/obj/structure/closet/proc/end_door_animation_alt()
+	is_animating_door = FALSE // comment this out and the line below to manually tweak the animation end state by fiddling with the door_anim vars to match the open door icon
+	vis_contents -= door_obj_alt
+	update_icon()
+	compile_overlays(src)
+
+/obj/structure/closet/proc/get_door_transform(angle, var/inverse_hinge = FALSE)
+	var/matrix/M = matrix()
+	var/matrix_door_hinge = inverse_hinge ? door_hinge_alt : door_hinge
+	M.Translate(-matrix_door_hinge, 0)
+	M.Multiply(matrix(cos(angle), 0, 0, ((matrix_door_hinge >= 0) ? sin(angle) : -sin(angle)) * door_anim_squish, 1, 0)) // this matrix door hinge >= 0 check is for door hinges on the right, so they swing out instead of upwards
+	M.Translate(matrix_door_hinge, 0)
+	return M
+
+/obj/structure/closet/hear_talk(mob/M as mob, text, verb, datum/language/speaking)
+	for (var/atom/A in src)
+		if(istype(A,/obj/))
+			var/obj/O = A
+			O.hear_talk(M, text, verb, speaking)
+
+/obj/structure/closet/attack_generic(var/mob/user, var/damage, var/attack_message = "attacks", var/wallbreaker)
 	if(!damage || !wallbreaker)
 		return
-	attack_animation(user)
-	visible_message(SPAN_DANGER("[user] [attack_message] the [src]!"))
-	dump_contents()
-	spawn(1) qdel(src)
+	user.do_attack_animation(src)
+	visible_message(SPAN_DANGER("[user] [attack_message] \the [src]!"))
+	damage(damage)
 	return TRUE
 
 /obj/structure/closet/proc/req_breakout()
-	if(opened)
-		return FALSE //Door's open... wait, why are you in it's contents then?
-	if((setup & CLOSET_HAS_LOCK) && locked)
-		return TRUE // Closed and locked
-	if(welded)
-		return TRUE // Welded
-	return (!welded) //closed but not welded...
+	if(!opened) //Door's open... wait, why are you in it's contents then?
+		if(locked)
+			if(welded)
+				return 2
+			else
+				return 1
+		if(breakout)
+			return -1 //Already breaking out.
+	else
+		return 0
 
-/obj/structure/closet/proc/mob_breakout(mob/living/escapee)
-	var/breakout_time = 2 //2 minutes by default
+/obj/structure/closet/proc/mob_breakout(var/mob/living/escapee)
 
-	if(breakout || !req_breakout())
+	//Improved by nanako
+	//Now it actually works, also locker breakout time stacks with locking and welding
+	//This means secure lockers are more useful for imprisoning people
+	var/breakout_time = 1.5 * req_breakout()//1.5 minutes if locked or welded, 3 minutes if both
+	if(breakout_time <= 0)
 		return
 
-	if(locked && welded)
-		breakout_time = 3 //3 minutes for welded+locked closets
 
-	escapee.setClickCooldown(100)
 
 	//okay, so the closet is either welded or locked... resist!!!
-	if(istype(src, /obj/structure/closet/body_bag))
-		to_chat(escapee, SPAN_WARNING("You're trying to open \the [src] from the inside. (this will take about [breakout_time] minutes)"))
-	else
-		to_chat(escapee, SPAN_WARNING("You lean on the back of \the [src] and start pushing the door open. (this will take about [breakout_time] minutes)"))
+	escapee.next_move = world.time + 100
+	escapee.last_special = world.time + 100
+	to_chat(escapee, SPAN_WARNING("You lean on the back of \the [src] and start pushing the door open. (This will take about [breakout_time] minutes.)"))
+	visible_message(SPAN_DANGER("\The [src] begins to shake violently!"), SPAN_DANGER("You hear the sound of metal thrashing around nearby."), intent_message = THUNK_SOUND)
 
-	if(isturf(loc))
-		visible_message(SPAN_DANGER("\The [src] begins to shake violently!"))
+	var/time = 6 * breakout_time * 2
 
-	breakout = 1 //can't think of a better way to do this right now.
-	for(var/i in 1 to (6*breakout_time * 2)) //minutes * 6 * 5seconds * 2
-		if(!do_after(escapee, 50, incapacitation_flags = INCAPACITATION_DEFAULT & ~(INCAPACITATION_RESTRAINED | INCAPACITATION_FORCELYING))) //5 seconds
+	var/datum/progressbar/bar
+	if (escapee.client && escapee.client.prefs.toggles_secondary & PROGRESS_BARS)
+		bar = new(escapee, time, src)
+
+	breakout = 1
+	for(var/i in 1 to time) //minutes * 6 * 5seconds * 2
+		playsound(loc, 'sound/effects/grillehit.ogg', 100, 1)
+		shake_animation()
+		intent_message(THUNK_SOUND)
+
+		if (bar)
+			bar.update(i)
+
+		if(!do_after(escapee, 50, do_flags = DO_DEFAULT & ~DO_SHOW_PROGRESS)) //5 seconds
 			breakout = 0
+			qdel(bar)
 			return
+
+		if(!escapee || escapee.stat || escapee.loc != src)
+			breakout = 0
+			qdel(bar)
+			return //closet/user destroyed OR user dead/unconcious OR user no longer in closet OR closet opened
+
 		//Perform the same set of checks as above for weld and lock status to determine if there is even still a point in 'resisting'...
 		if(!req_breakout())
 			breakout = 0
+			qdel(bar)
 			return
 
-		playsound(src.loc, 'sound/effects/grillehit.ogg', 100, 1)
-		shake_animation()
-		add_fingerprint(escapee)
-
 	//Well then break it!
-	breakout = FALSE
-	to_chat(escapee, SPAN_WARNING("You successfully break out!"))
-	visible_message(SPAN_DANGER("\The [escapee] successfully broke out of \the [src]!"))
-	playsound(src.loc, 'sound/effects/grillehit.ogg', 100, 1)
-	break_open()
+	breakout = 0
+	playsound(loc, 'sound/effects/grillehit.ogg', 100, 1)
+	break_open(escapee)
 	shake_animation()
+	qdel(bar)
 
-/obj/structure/closet/proc/break_open()
-	welded = FALSE
-
-	if((setup & CLOSET_HAS_LOCK) && locked)
-		make_broken()
-
+/obj/structure/closet/proc/break_open(mob/user)
+	if(secure && !broken)
+		to_chat(user, SPAN_WARNING("You successfully break out!"))
+		welded = FALSE
+		emag_act(INFINITY, user, SPAN_DANGER("\The [user] successfully breaks out of \the [src]!"), SPAN_DANGER("You hear the sound of metal being forced apart!"))
 	//Do this to prevent contents from being opened into nullspace (read: bluespace)
 	if(istype(loc, /obj/structure/bigDelivery))
 		var/obj/structure/bigDelivery/BD = loc
 		BD.unwrap()
 	open()
-	if(dremovable)
-		remove_door()
 
-/obj/structure/closet/onDropInto(atom/movable/AM)
+/obj/structure/closet/onDropInto(var/atom/movable/AM)
 	return
 
-// If we use the /obj/structure/closet/proc/togglelock variant BYOND asks the user to select an input for id_card, which is then mostly irrelevant.
-/obj/structure/closet/proc/togglelock_verb()
-	set src in oview(1) // One square distance
-	set category = "Object"
-	set name = "Toggle Lock"
+/obj/structure/closet/crush_act()
+	for (var/atom/movable/A in src)
+		if(istype(A, /mob/living))
+			var/mob/living/M = A
+			M.gib()
+		else if(A.simulated)
+			A.ex_act(1)
+	if(linked_teleporter)
+		linked_teleporter.forceMove(get_turf(src))
+		linked_teleporter = null
+	dump_contents()
+	new /obj/item/stack/material/steel(get_turf(src))
+	qdel(src)
 
-	return togglelock(usr)
+/obj/structure/closet/Destroy()
+	if(linked_teleporter)
+		QDEL_NULL(linked_teleporter)
+	return ..()
 
-/obj/structure/closet/proc/togglelock(mob/user, obj/item/card/id/id_card)
-	if(!(setup & CLOSET_HAS_LOCK))
-		return FALSE
-	if(!CanPhysicallyInteract(user))
-		return FALSE
-	if(src.opened)
-		to_chat(user, SPAN_NOTICE("Close \the [src] first."))
-		return FALSE
-	if(src.broken)
-		to_chat(user, SPAN_WARNING("\The [src] appears to be broken."))
-		return FALSE
-	if(user.loc == src)
-		to_chat(user, SPAN_NOTICE("You can't reach the lock from inside."))
-		return FALSE
+/*
+==========================
+	Contents Scanner
+==========================
+*/
+/obj/item/device/cratescanner
+	name = "crate contents scanner"
+	desc = "A  handheld device used to scan and print a manifest of a container's contents. Does not work on locked crates, for privacy reasons."
+	icon_state = "cratescanner"
+	matter = list(DEFAULT_WALL_MATERIAL = 250, MATERIAL_GLASS = 140)
+	w_class = ITEMSIZE_SMALL
+	item_state = "electronic"
+	obj_flags = OBJ_FLAG_CONDUCTABLE
+	slot_flags = SLOT_BELT
 
-	add_fingerprint(user)
-
-	if(!user.IsAdvancedToolUser(1))
-		to_chat(user, FEEDBACK_YOU_LACK_DEXTERITY)
-		return FALSE
-
-	if(CanToggleLock(user, id_card))
-		locked = !locked
-		visible_message(SPAN_NOTICE("\The [src] has been [locked ? null : "un"]locked by \the [user]."), range = 3)
-		update_icon()
-		return TRUE
-	else
-		to_chat(user, SPAN_WARNING("Access denied!"))
-		return FALSE
-
-/obj/structure/closet/proc/CanToggleLock(mob/user, obj/item/card/id/id_card)
-	return allowed(user) || (istype(id_card) && check_access_list(id_card.GetAccess()))
-
-/obj/structure/closet/AltClick(mob/user)
-	if(!src.opened)
-		togglelock(user)
-	else
-		return ..()
-
-/obj/structure/closet/CtrlAltClick(mob/user)
-	verb_toggleopen()
-
-/obj/structure/closet/emp_act(severity)
-	for(var/obj/O in src)
-		O.emp_act(severity)
-	if(!broken && (setup & CLOSET_HAS_LOCK))
-		if(prob(50/severity))
-			locked = !locked
-			src.update_icon()
-		if(prob(20/severity) && !opened)
-			if(!locked)
-				open()
-			else
-				src.req_access = list()
-				src.req_access += pick(get_all_station_access())
-	..()
-
-/obj/structure/closet/emag_act(remaining_charges, mob/user, obj/item/emag_source, visual_feedback = "", audible_feedback = "")
-	if(make_broken())
-		update_icon()
-		if(visual_feedback)
-			visible_message(visual_feedback, audible_feedback)
-		else if(user && emag_source)
-			visible_message(SPAN_WARNING("\The [src] has been broken by \the [user] with \an [emag_source]!"), "You hear a faint electrical spark.")
+/obj/item/device/cratescanner/proc/print_contents(targetname, targetcontents, targetloc)
+	var/output = list()
+	var/list/outputstring
+	for(var/atom/item in targetcontents)
+		if(item.name in output)
+			output[item.name] = output[item.name] + 1
 		else
-			visible_message(SPAN_WARNING("\The [src] sparks and breaks open!"), "You hear a faint electrical spark.")
-		on_hack_behavior()
-		return TRUE
-	else
-		. = ..()
-
-/obj/structure/closet/proc/make_broken()
-	if(broken)
-		return FALSE
-	if(!(setup & CLOSET_HAS_LOCK))
-		return FALSE
-	broken = TRUE
-	locked = FALSE
-	desc += " It appears to be broken."
-	return TRUE
-
-/obj/structure/closet/proc/remove_door()
-	if(!cdoor)
-		return FALSE
-	if(welded || locked)
-		return FALSE
-	open(TRUE)
-	broken = FALSE
-	locked = FALSE
-	cdoor.forceMove(loc)
-	cdoor.update_icon()
-	cdoor = null
-
-	setup = CLOSET_CAN_BE_WELDED
-
-	update_icon()
-
-	return TRUE
-
-/obj/structure/closet/proc/attach_door(obj/item/shield/closet/C)
-	if(cdoor)
-		return FALSE
-	broken = FALSE
-	locked = FALSE
-	C.forceMove(src)
-	cdoor = C
-
-	req_access = cdoor.req_access
-	req_one_access = cdoor.req_one_access
-
-	if(cdoor.lockable)
-		setup = CLOSET_HAS_LOCK
-
-	cdoor.update_icon()
-	update_icon()
-
-	return TRUE
-
-/obj/structure/closet/proc/destroy_door()
-	if(!cdoor)
-		return FALSE
-	var/obj/item/shield/closet/C = cdoor
-	remove_door()
-	qdel(C)
-	return TRUE
-
-/obj/structure/closet/hides_inside_walls() // Let's just don't
-	return FALSE
-
-/obj/structure/closet/proc/on_hack_behavior()
-	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
-	spark_system.set_up(5, 0, src.loc)
-	spark_system.start()
-	playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
-	playsound(src.loc, "spark", 50, 1)
-	open()
-
-/obj/structure/closet/allow_drop()
-	return TRUE
+			output[item.name] = 1
+	for(var/entry in output)
+		outputstring += "- [entry]: [output[entry]]x<br>"
+	var/obj/item/paper/printout = new /obj/item/paper(targetloc)
+	printout.info = "contents of [targetname]<br>"
+	printout.info += "[outputstring]"

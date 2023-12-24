@@ -9,44 +9,35 @@
 
 	var/datum/computer/file/embedded_program/docking/multi/docking_program
 
-/obj/machinery/embedded_controller/radio/docking_port_multi/New()
-	..()
-	docking_program = new /datum/computer/file/embedded_program/docking/multi(src)
+/obj/machinery/embedded_controller/radio/docking_port_multi/Initialize()
+	. = ..()
+	docking_program = new/datum/computer/file/embedded_program/docking/multi(src)
 	program = docking_program
 
-	var/list/names = splittext(child_names_txt, ";")
-	var/list/tags = splittext(child_tags_txt, ";")
+	var/list/names = text2list(child_names_txt, ";")
+	var/list/tags = text2list(child_tags_txt, ";")
 
 	if (names.len == tags.len)
 		for (var/i = 1; i <= tags.len; i++)
 			child_names[tags[i]] = names[i]
 
 
-/obj/machinery/embedded_controller/radio/docking_port_multi/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/nanoui/master_ui = null, datum/topic_state/state = GLOB.default_state)
-	var/data[0]
+/obj/machinery/embedded_controller/radio/docking_port_multi/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "MultiDockingConsole", name, ui_x=470, ui_y=290)
+		ui.open()
 
+/obj/machinery/embedded_controller/radio/docking_port_multi/ui_data(mob/user)
 	var/list/airlocks[child_names.len]
 	var/i = 1
 	for (var/child_tag in child_names)
 		airlocks[i++] = list("name"=child_names[child_tag], "override_enabled"=(docking_program.children_override[child_tag] == "enabled"))
 
-	data = list(
+	return list(
 		"docking_status" = docking_program.get_docking_status(),
-		"airlocks" = airlocks,
+		"airlocks" = airlocks
 	)
-
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-
-	if (!ui)
-		ui = new(user, src, ui_key, "multi_docking_console.tmpl", name, 470, 290, state = state)
-		ui.set_initial_data(data)
-		ui.open()
-		ui.set_auto_update(1)
-
-/obj/machinery/embedded_controller/radio/docking_port_multi/Topic(href, href_list)
-	return
-
-
 
 //a docking port based on an airlock
 /obj/machinery/embedded_controller/radio/airlock/docking_port_multi
@@ -57,73 +48,65 @@
 
 /obj/machinery/embedded_controller/radio/airlock/docking_port_multi/Initialize()
 	. = ..()
-	airlock_program = new /datum/computer/file/embedded_program/airlock/multi_docking(src)
+	airlock_program = new/datum/computer/file/embedded_program/airlock/multi_docking(src)
 	program = airlock_program
 
-/obj/machinery/embedded_controller/radio/airlock/docking_port_multi/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/nanoui/master_ui = null, datum/topic_state/state = GLOB.default_state)
-	var/data[0]
+/obj/machinery/embedded_controller/radio/airlock/docking_port_multi/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "DockingAirlockConsole", name, ui_x=470, ui_y=250)
+		ui.open()
 
-	data = list(
+/obj/machinery/embedded_controller/radio/airlock/docking_port_multi/ui_data(mob/user)
+	return list(
 		"chamber_pressure" = round(airlock_program.memory["chamber_sensor_pressure"]),
 		"exterior_status" = airlock_program.memory["exterior_status"],
 		"interior_status" = airlock_program.memory["interior_status"],
 		"processing" = airlock_program.memory["processing"],
 		"docking_status" = airlock_program.master_status,
 		"airlock_disabled" = (airlock_program.docking_enabled && !airlock_program.override_enabled),
-		"override_enabled" = airlock_program.override_enabled,
+		"override_enabled" = airlock_program.override_enabled
 	)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-
-	if (!ui)
-		ui = new(user, src, ui_key, "docking_airlock_console.tmpl", name, 470, 290, state = state)
-		ui.set_initial_data(data)
-		ui.open()
-		ui.set_auto_update(1)
-
-/obj/machinery/embedded_controller/radio/airlock/docking_port_multi/Topic(href, href_list)
-	if(..())
+/obj/machinery/embedded_controller/radio/airlock/docking_port_multi/ui_act(action, params)
+	. = ..()
+	if(.)
 		return
 
-	usr.set_machine(src)
-
-	var/clean = 0
-	switch(href_list["command"])	//anti-HTML-hacking checks
-		if("cycle_ext")
-			clean = 1
-		if("cycle_int")
-			clean = 1
-		if("force_ext")
-			clean = 1
-		if("force_int")
-			clean = 1
-		if("abort")
-			clean = 1
-		if("toggle_override")
-			clean = 1
-
-	if(clean)
-		program.receive_user_command(href_list["command"])
-
-	return 1
+	if(action == "command")
+		var/clean = FALSE
+		switch(params["command"])	//anti-HTML-hacking checks
+			if("cycle_ext")
+				clean = TRUE
+			if("cycle_int")
+				clean = TRUE
+			if("force_ext")
+				clean = TRUE
+			if("force_int")
+				clean = TRUE
+			if("abort")
+				clean = TRUE
+			if("toggle_override")
+				clean = TRUE
+		if(clean)
+			program.receive_user_command(params["command"])
+			return TRUE
 
 
 
 /*** DEBUG VERBS ***
 
 /datum/computer/file/embedded_program/docking/multi/proc/print_state()
-	log_debug("id_tag: [id_tag]")
-	log_debug("dock_state: [dock_state]")
-	log_debug("control_mode: [control_mode]")
-	log_debug("tag_target: [tag_target]")
-	log_debug("response_sent: [response_sent]")
+	to_world("id_tag: [id_tag]")
+	to_world("dock_state: [dock_state]")
+	to_world("control_mode: [control_mode]")
+	to_world("tag_target: [tag_target]")
+	to_world("response_sent: [response_sent]")
 
 /datum/computer/file/embedded_program/docking/multi/post_signal(datum/signal/signal, comm_line)
-	log_debug("Program [id_tag] sent a message!")
-
+	to_world("Program [id_tag] sent a message!")
 	print_state()
-	log_debug("[id_tag] sent command \"[signal.data["command"]]\" to \"[signal.data["recipient"]]\"")
-
+	to_world("[id_tag] sent command \"[signal.data["command"]]\" to \"[signal.data["recipient"]]\"")
 	..(signal)
 
 /obj/machinery/embedded_controller/radio/docking_port_multi/verb/view_state()
@@ -131,7 +114,7 @@
 	set src in view(1)
 	src.program:print_state()
 
-/obj/machinery/embedded_controller/radio/docking_port_multi/verb/spoof_signal(command as text, sender as text)
+/obj/machinery/embedded_controller/radio/docking_port_multi/verb/spoof_signal(var/command as text, var/sender as text)
 	set category = "Debug"
 	set src in view(1)
 	var/datum/signal/signal = new
@@ -141,7 +124,7 @@
 
 	src.program:receive_signal(signal)
 
-/obj/machinery/embedded_controller/radio/docking_port_multi/verb/debug_init_dock(target as text)
+/obj/machinery/embedded_controller/radio/docking_port_multi/verb/debug_init_dock(var/target as text)
 	set category = "Debug"
 	set src in view(1)
 	src.program:initiate_docking(target)

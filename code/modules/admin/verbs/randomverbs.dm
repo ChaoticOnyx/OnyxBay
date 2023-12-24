@@ -1,4 +1,4 @@
-/client/proc/cmd_admin_drop_everything(mob/M as mob in SSmobs.mob_list)
+/client/proc/cmd_admin_drop_everything(mob/M as mob in mob_list)
 	set category = null
 	set name = "Drop Everything"
 	if(!holder)
@@ -9,40 +9,15 @@
 	if(confirm != "Yes")
 		return
 
-	for(var/obj/item/I in M)
-		M.drop(I)
+	for(var/obj/item/W in M)
+		M.drop_from_inventory(W)
 
-	log_admin("[key_name(usr)] made [key_name(M)] drop everything!")
+	log_admin("[key_name(usr)] made [key_name(M)] drop everything!",admin_key=key_name(usr),ckey=key_name(M))
 	message_admins("[key_name_admin(usr)] made [key_name_admin(M)] drop everything!", 1)
 	feedback_add_details("admin_verb","DEVR") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/cmd_admin_prison(mob/M as mob in SSmobs.mob_list)
-	set category = "Admin"
-	set name = "Prison"
-	if(!holder)
-		to_chat(src, "Only administrators may use this command.")
-		return
-	if (ismob(M))
-		if(istype(M, /mob/living/silicon/ai))
-			alert("The AI can't be sent to prison you jerk!", null, null, null, null, null)
-			return
-		//strip their stuff before they teleport into a cell :downs:
-		for(var/obj/item/I in M)
-			M.drop(I)
-		//teleport person to cell
-		M.Paralyse(5)
-		sleep(5)	//so they black out before warping
-		M.forceMove(pick(GLOB.prisonwarp))
-		if(istype(M, /mob/living/carbon/human))
-			var/mob/living/carbon/human/prisoner = M
-			prisoner.equip_to_slot_or_del(new /obj/item/clothing/under/color/orange(prisoner), slot_w_uniform)
-			prisoner.equip_to_slot_or_del(new /obj/item/clothing/shoes/orange(prisoner), slot_shoes)
-		spawn(50)
-			to_chat(M, "<span class='warning'>You have been sent to the prison station!</span>")
-		log_and_message_admins("sent [key_name_admin(M)] to the prison station.")
-		feedback_add_details("admin_verb","PRISON") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/cmd_admin_subtle_message(mob/M as mob in SSmobs.mob_list)
+/client/proc/cmd_admin_subtle_message(mob/M as mob in mob_list)
 	set category = "Special Verbs"
 	set name = "Subtle Message"
 
@@ -59,7 +34,9 @@
 		if (usr.client)
 			if(usr.client.holder)
 				to_chat(M, "<b>You hear a voice in your head... <i>[msg]</i></b>")
-	log_and_message_staff(" - SubtleMessage -> [key_name_admin(M)] : [msg]")
+
+	log_admin("SubtlePM: [key_name(usr)] -> [key_name(M)] : [msg]",admin_key=key_name(usr),ckey=key_name(M))
+	message_admins("<span class='notice'><b>SubtleMessage: [key_name_admin(usr)] -> [key_name_admin(M)] : [msg]</b></span>", 1)
 	feedback_add_details("admin_verb","SMS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_mentor_check_new_players()	//Allows mentors / admins to determine who the newer players are.
@@ -76,13 +53,13 @@
 		age = text2num(age)
 
 	var/missing_ages = 0
-	var/msg = "<meta charset=\"utf-8\">"
+	var/msg = ""
 
 	var/highlight_special_characters = 1
-	if(is_mentor(usr.client))
+	if(!check_rights(R_MOD|R_ADMIN, 0))
 		highlight_special_characters = 0
 
-	for(var/client/C in GLOB.clients)
+	for(var/client/C in clients)
 		if(C.player_age == "Requires database")
 			missing_ages = 1
 			continue
@@ -93,7 +70,7 @@
 		to_chat(src, "Some accounts did not have proper ages set in their clients.  This function requires database to be present")
 
 	if(msg != "")
-		show_browser(src, msg, "window=Player_age_check")
+		src << browse(msg, "window=Player_age_check")
 	else
 		to_chat(src, "No matches for that age range found.")
 
@@ -101,27 +78,53 @@
 /client/proc/cmd_admin_world_narrate() // Allows administrators to fluff events a little easier -- TLE
 	set category = "Special Verbs"
 	set name = "Global Narrate"
-	set desc = "Narrate to everyone."
 
-	if(!check_rights(R_ADMIN))
+	if (!holder)
+		to_chat(src, "Only administrators may use this command.")
 		return
 
-	var/msg = input("Message:", text("Enter the text you wish to appear to everyone:")) as message
+	var/msg = html_decode(sanitize(input("Message:", text("Enter the text you wish to appear to everyone:")) as text))
 
 	if (!msg)
 		return
-	to_world(msg)
-
-	log_and_message_admins(" - GlobalNarrate: [sanitize(msg)]")
+	to_world("[msg]")
+	log_admin("GlobalNarrate: [key_name(usr)] : [msg]",admin_key=key_name(usr))
+	message_admins("<span class='notice'>\bold GlobalNarrate: [key_name_admin(usr)] : [msg]<BR></span>", 1)
 	feedback_add_details("admin_verb","GLN") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-// Targetted narrate: will narrate to one specific mob
-/client/proc/cmd_admin_direct_narrate(mob/M)
+/client/proc/cmd_admin_local_narrate()
+	set category = "Special Verbs"
+	set name = "Local Narrate"
+
+	if(!check_rights(R_ADMIN, TRUE))
+		return
+
+	var/list/mob/message_mobs = list()
+	var/choice = alert(usr, "Local narrate will send a plain message to mobs. Do you want the mobs messaged to be only ones that you can see, or ignore blocked vision and message everyone within seven tiles of you?", "Narrate Selection", "In my view", "In range of me", "Cancel")
+	if(choice != "Cancel")
+		if(choice == "In my view")
+			message_mobs = mobs_in_view(view, src.mob)
+		else
+			for(var/mob/M in range(view, src.mob))
+				message_mobs += M
+	else
+		return
+
+	var/msg = html_decode(sanitize(input("Message:", text("Enter the text you wish to appear to everyone within seven tiles of you:")) as text))
+	if(!msg)
+		return
+	for(var/M in message_mobs)
+		to_chat(M, msg)
+	log_admin("LocalNarrate: [key_name(usr)] : [msg]", admin_key = key_name(usr))
+	message_admins("<span class='notice'>\bold LocalNarrate: [key_name_admin(usr)] : [msg]<BR></span>", 1)
+	feedback_add_details("admin_verb", "LCLN") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+/client/proc/cmd_admin_direct_narrate(var/mob/M)	// Targetted narrate -- TLE
 	set category = "Special Verbs"
 	set name = "Direct Narrate"
-	set desc = "Narrate to a specific mob."
 
-	if(!check_rights(R_ADMIN))
+	if(!holder)
+		to_chat(src, "Only administrators may use this command.")
 		return
 
 	if(!M)
@@ -130,82 +133,17 @@
 	if(!M)
 		return
 
-	var/msg = input("Message:", text("Enter the text you wish to appear to your target:")) as message
+	var/msg = html_decode(sanitize(input("Message:", text("Enter the text you wish to appear to your target:")) as text))
 
 	if( !msg )
 		return
 
 	to_chat(M, msg)
-	log_and_message_admins(" - DirectNarrate to ([M.name]/[M.key]): [sanitize(msg)]")
+	log_admin("DirectNarrate: [key_name(usr)] to ([M.name]/[M.key]): [msg]",admin_key=key_name(usr),ckey=key_name(M))
+	message_admins("<span class='notice'>\bold DirectNarrate: [key_name(usr)] to ([M.name]/[M.key]): [msg]<BR></span>", 1)
 	feedback_add_details("admin_verb","DIRN") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-// Local narrate, narrates to everyone who can see where you are regardless of whether they are blind or deaf.
-/client/proc/cmd_admin_local_narrate()
-	set category = "Special Verbs"
-	set name = "Local Narrate"
-	set desc = "Narrate to everyone who can see the turf your mob is on."
-
-	if(!check_rights(R_ADMIN))
-		return
-
-	var/msg = input("Message:", text("Enter the text you wish to appear to your target:")) as message
-
-	if( !msg )
-		return
-
-	var/list/listening_hosts = hosts_in_view_range(usr)
-
-	for(var/listener in listening_hosts)
-		to_chat(listener, msg)
-	log_and_message_admins(" - LocalNarrate: [msg]")
-
-// Visible narrate, it's as if it's a visible message
-/client/proc/cmd_admin_visible_narrate(atom/A)
-	set category = "Special Verbs"
-	set name = "Visible Narrate"
-	set desc = "Narrate to those who can see the given atom."
-
-	if(!check_rights(R_ADMIN))
-		return
-
-	var/mob/M = mob
-
-	if(!M)
-		to_chat(src, "You must be in control of a mob to use this.")
-		return
-
-	var/msg = input("Message:", text("Enter the text you wish to appear to your target:")) as message
-
-	if( !msg )
-		return
-
-	M.visible_message(msg, narrate = TRUE)
-	log_and_message_admins(" - VisibleNarrate on [A]: [sanitize(msg)]")
-
-// Visible narrate, it's as if it's a audible message
-/client/proc/cmd_admin_audible_narrate(atom/A)
-	set category = "Special Verbs"
-	set name = "Audible Narrate"
-	set desc = "Narrate to those who can hear the given atom."
-
-	if(!check_rights(R_ADMIN))
-		return
-
-	var/mob/M = mob
-
-	if(!M)
-		to_chat(src, "You must be in control of a mob to use this.")
-		return
-
-	var/msg = input("Message:", text("Enter the text you wish to appear to your target:")) as message
-
-	if( !msg )
-		return
-
-	M.audible_message(msg, narrate = TRUE)
-	log_and_message_admins(" - AudibleNarrate on [A]: [sanitize(msg)]")
-
-/client/proc/cmd_admin_godmode(mob/M as mob in SSmobs.mob_list)
+/client/proc/cmd_admin_godmode(mob/M as mob in mob_list)
 	set category = "Special Verbs"
 	set name = "Godmode"
 	if(!holder)
@@ -213,20 +151,25 @@
 		return
 	M.status_flags ^= GODMODE
 	to_chat(usr, "<span class='notice'>Toggled [(M.status_flags & GODMODE) ? "ON" : "OFF"]</span>")
-	log_admin("[key_name(usr)] has toggled [key_name(M)]'s nodamage to [(M.status_flags & GODMODE) ? "On" : "Off"]")
+
+	log_admin("[key_name(usr)] has toggled [key_name(M)]'s nodamage to [(M.status_flags & GODMODE) ? "On" : "Off"]",admin_key=key_name(usr),ckey=key_name(M))
 	message_admins("[key_name_admin(usr)] has toggled [key_name_admin(M)]'s nodamage to [(M.status_flags & GODMODE) ? "On" : "Off"]", 1)
 	feedback_add_details("admin_verb","GOD") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/proc/cmd_admin_mute(mob/M, mute_type)
-	if(!usr || !usr.client)
-		return
-	if(!usr.client.holder)
-		to_chat(usr, "<font color='red'>Error: cmd_admin_mute: You don't have permission to do this.</font>")
-		return
-	if(!M.client)
-		to_chat(usr, "<font color='red'>Error: cmd_admin_mute: This mob doesn't have a client tied to it.</font>")
-	if(M.client.holder)
-		to_chat(usr, "<font color='red'>Error: cmd_admin_mute: You cannot mute an admin/mod.</font>")
+
+/proc/cmd_admin_mute(mob/M as mob, mute_type, automute = 0)
+	if(automute)
+		if(!config.automute_on)	return
+	else
+		if(!usr || !usr.client)
+			return
+		if(!usr.client.holder)
+			to_chat(usr, "<span class='warning'>Error: cmd_admin_mute: You don't have permission to do this.</span>")
+			return
+		if(!M.client)
+			to_chat(usr, "<span class='warning'>Error: cmd_admin_mute: This mob doesn't have a client tied to it.</span>")
+		if(M.client.holder)
+			to_chat(usr, "<span class='warning'>Error: cmd_admin_mute: You cannot mute an admin/mod.</span>")
 	if(!M.client)		return
 	if(M.client.holder)	return
 
@@ -239,20 +182,30 @@
 		if(MUTE_PRAY)		mute_string = "pray"
 		if(MUTE_ADMINHELP)	mute_string = "adminhelp, admin PM and ASAY"
 		if(MUTE_DEADCHAT)	mute_string = "deadchat and DSAY"
+		if(MUTE_AOOC)		mute_string = "AOOC"
 		if(MUTE_ALL)		mute_string = "everything"
 		else				return
 
+	if(automute)
+		muteunmute = "auto-muted"
+		M.client.prefs.muted |= mute_type
+		log_admin("SPAM AUTOMUTE: [muteunmute] [key_name(M)] from [mute_string]",ckey=key_name(M))
+		message_admins("SPAM AUTOMUTE: [muteunmute] [key_name_admin(M)] from [mute_string].", 1)
+		to_chat(M, "You have been [muteunmute] from [mute_string] by the SPAM AUTOMUTE system. Contact an admin.")
+		feedback_add_details("admin_verb","AUTOMUTE") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+		return
 
 	if(M.client.prefs.muted & mute_type)
 		muteunmute = "unmuted"
 		M.client.prefs.muted &= ~mute_type
+		M.client.spam_alert = 0
 	else
 		muteunmute = "muted"
 		M.client.prefs.muted |= mute_type
 
-	log_admin("[key_name(usr)] has [muteunmute] [key_name(M)] from [mute_string]")
-	message_staff("[key_name_admin(usr)] has [muteunmute] [key_name_admin(M)] from [mute_string].", 1)
-	to_chat(M, "<span class = 'alert'>You have been [muteunmute] from [mute_string].</span>")
+	log_admin("[key_name(usr)] has [muteunmute] [key_name(M)] from [mute_string]",admin_key=key_name(usr),ckey=key_name(M))
+	message_admins("[key_name_admin(usr)] has [muteunmute] [key_name_admin(M)] from [mute_string].", 1)
+	to_chat(M, "You have been [muteunmute] from [mute_string].")
 	feedback_add_details("admin_verb","MUTE") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_add_random_ai_law()
@@ -263,12 +216,12 @@
 		return
 	var/confirm = alert(src, "You sure?", "Confirm", "Yes", "No")
 	if(confirm != "Yes") return
-	log_admin("[key_name(src)] has added a random AI law.")
+	log_admin("[key_name(src)] has added a random AI law.",admin_key=key_name(usr))
 	message_admins("[key_name_admin(src)] has added a random AI law.", 1)
 
 	var/show_log = alert(src, "Show ion message?", "Message", "Yes", "No")
 	if(show_log == "Yes")
-		SSannounce.play_station_announce(/datum/announce/ion_storm)
+		command_announcement.Announce("Incoming ion storm detected near the ship. Please check all AI-controlled equipment for errors.", "Anomaly Alert", new_sound = 'sound/AI/ionstorm.ogg')
 
 	IonStorm(0)
 	feedback_add_details("admin_verb","ION") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -278,66 +231,95 @@ Allow admins to set players to be able to respawn/bypass 30 min wait, without th
 Ccomp's first proc.
 */
 
-/client/proc/get_ghosts(notify = 0,what = 2)
+/proc/get_ghosts(var/notify = 0,var/what = 2, var/client/C = null)
 	// what = 1, return ghosts ass list.
 	// what = 2, return mob list
 
 	var/list/mobs = list()
 	var/list/ghosts = list()
-	var/list/sortmob = sortAtom(SSmobs.mob_list)                           // get the mob list.
+	var/list/sortmob = sortAtom(mob_list)                           // get the mob list.
 	var/any=0
-	for(var/mob/observer/ghost/M in sortmob)
+	for(var/mob/abstract/observer/M in sortmob)
 		mobs.Add(M)                                             //filter it where it's only ghosts
 		any = 1                                                 //if no ghosts show up, any will just be 0
 	if(!any)
-		if(notify)
-			to_chat(src, "There doesn't appear to be any ghosts for you to select.")
+		if(notify && C)
+			to_chat(C, "There doesn't appear to be any ghosts for you to select.")
 		return
 
 	for(var/mob/M in mobs)
 		var/name = M.name
-		ghosts[name] = M                                        //get the name of the mob for the popup list
+		ghosts[name] = M	//get the name of the mob for the popup list
 	if(what==1)
 		return ghosts
 	else
 		return mobs
 
-/client/proc/get_ghosts_by_key()
-	. = list()
-	for(var/mob/observer/ghost/M in SSmobs.mob_list)
-		.[M.ckey] = M
-	. = sortAssoc(.)
 
-/client/proc/allow_character_respawn(selection in get_ghosts_by_key())
+/client/proc/allow_character_respawn()
 	set category = "Special Verbs"
 	set name = "Allow player to respawn"
-	set desc = "Allows the player bypass the wait to respawn or allow them to re-enter their corpse."
+	set desc = "Lets the player bypass the wait to respawn or allow them to re-enter their corpse."
+	if(!holder)
+		to_chat(src, "Only administrators may use this command.")
+	var/list/ghosts = get_ghosts(1,1,src)
 
-	if(!check_rights(R_ADMIN))
+	var/target = tgui_input_list(src, "Please, select a ghost!", "COME BACK TO LIFE!", ghosts)
+	if(!target)
+		to_chat(src, SPAN_WARNING("You didn't select a ghost!"))		// Sanity check, if no ghosts in the list we don't want to edit a null variable and cause a runtime error.)
 		return
 
-	var/list/ghosts = get_ghosts_by_key()
-	var/mob/observer/ghost/G = ghosts[selection]
-	if(!istype(G))
-		to_chat(src, "<span class='warning'>[selection] no longer has an associated ghost.</span>")
-		return
-
-	if(G.has_enabled_antagHUD == 1 && config.ghost.antag_hud_restricted)
-		var/response = alert(src, "[selection] has enabled antagHUD. Are you sure you wish to allow them to respawn?","Ghost has used AntagHUD","No","Yes")
+	var/mob/abstract/observer/G = ghosts[target]
+	if(G.has_enabled_antagHUD && config.antag_hud_restricted)
+		var/response = alert(src, "Are you sure you wish to allow this individual to play?","Ghost has used AntagHUD","Yes","No")
 		if(response == "No") return
+
+	/* time of death is checked in /mob/verb/abandon_mob() which is the Respawn verb.
+	timeofdeath is used for bodies on autopsy but since we're messing with a ghost I'm pretty sure there won't be an autopsy.*/
+	G.timeofdeath=-19999
+	var/datum/preferences/P
+
+	if (G.client)
+		P = G.client.prefs
+	else if (G.ckey)
+		P = preferences_datums[G.ckey]
 	else
-		var/response = alert(src, "Are you sure you wish to allow [selection] to respawn?","Allow respawn","No","Yes")
-		if(response == "No") return
+		to_chat(src, "Something went wrong, couldn't find the target's preferences datum")
+		return 0
 
-	G.timeofdeath=-19999						/* time of death is checked in /mob/verb/abandon_mob() which is the Respawn verb.
-									   timeofdeath is used for bodies on autopsy but since we're messing with a ghost I'm pretty sure
-									   there won't be an autopsy.
-									*/
+	for (var/entry in P.time_of_death) //Set all the prefs' times of death to a huge negative value so any respawn timers will be fine
+		P.time_of_death[entry] = -99999
+
 	G.has_enabled_antagHUD = 2
-	G.can_reenter_corpse = CORPSE_CAN_REENTER_AND_RESPAWN
+	G.can_reenter_corpse = 1
 
-	G.show_message("<span class=notice><b>You may now respawn.  You should roleplay as if you learned nothing about the round during your time with the dead.</b></span>", 1)
-	log_and_message_admins("has allowed [key_name(G)] to bypass the [config.misc.respawn_delay] minute respawn limit.")
+	G:show_message(text("<span class='notice'><B>You may now respawn. You should roleplay as if you learned nothing about the round during your time with the dead.</B></span>"), 1)
+	log_admin("[key_name(usr)] allowed [key_name(G)] to bypass the [config.respawn_delay] minute respawn limit", admin_key=key_name(usr), ckey=key_name(G))
+	message_admins("Admin [key_name_admin(usr)] allowed [key_name_admin(G)] to bypass the [config.respawn_delay] minute respawn limit", 1)
+
+/client/proc/allow_stationbound_reset(mob/living/silicon/robot/R in range(world.view))
+	set category = "Special Verbs"
+	set name = "Allow Stationbound Reset"
+	set desc = "Select a stationbound to reset its module."
+
+	if(!check_rights(R_ADMIN, TRUE))
+		return
+	if(!R || !istype(R))
+		return
+
+	R.uneq_all()
+	R.mod_type = initial(R.mod_type)
+	R.hands.icon_state = "nomod"
+
+	R.module.Reset(R)
+	QDEL_NULL(R.module)
+	R.updatename("Default")
+
+	to_chat(R, FONT_LARGE(SPAN_NOTICE("An admin has allowed you to reset your module.")))
+
+	log_admin("[key_name(usr)] allowed [key_name(R)] to reset themselves as a stationbound.", admin_key = key_name(usr), ckey = key_name(R))
+	message_admins("Admin [key_name_admin(usr)] allowed [key_name_admin(R)] to reset themselves as a stationbound.", 1)
+
 
 /client/proc/toggle_antagHUD_use()
 	set category = "Server"
@@ -347,29 +329,28 @@ Ccomp's first proc.
 	if(!holder)
 		to_chat(src, "Only administrators may use this command.")
 	var/action=""
-	if(config.ghost.allow_antag_hud)
-		for(var/mob/observer/ghost/g in get_ghosts())
+	if(config.antag_hud_allowed)
+		for(var/mob/abstract/observer/g in get_ghosts())
 			if(!g.client.holder)						//Remove the verb from non-admin ghosts
-				g.verbs -= /mob/observer/ghost/verb/toggle_antagHUD
+				remove_verb(g, /mob/abstract/observer/verb/toggle_antagHUD)
 			if(g.antagHUD)
 				g.antagHUD = 0						// Disable it on those that have it enabled
 				g.has_enabled_antagHUD = 2				// We'll allow them to respawn
-				to_chat(g, "<span class='danger'>The Administrator has disabled AntagHUD</span>")
-		config.ghost.allow_antag_hud = 0
-		to_chat(src, "<span class='danger'>AntagHUD usage has been disabled</span>")
+				to_chat(g, "<span class='warning'>The Administrator has disabled AntagHUD.</span> ")
+		config.antag_hud_allowed = 0
+		to_chat(src, "<span class='danger'>AntagHUD usage has been disabled.</span>")
 		action = "disabled"
 	else
-		for(var/mob/observer/ghost/g in get_ghosts())
+		for(var/mob/abstract/observer/g in get_ghosts())
 			if(!g.client.holder)						// Add the verb back for all non-admin ghosts
-				g.verbs += /mob/observer/ghost/verb/toggle_antagHUD
-				to_chat(g, "<span class='notice'><B>The Administrator has enabled AntagHUD </B></span>")// Notify all observers they can now use AntagHUD
-
-		config.ghost.allow_antag_hud = 1
+				add_verb(g,  /mob/abstract/observer/verb/toggle_antagHUD)
+			to_chat(g, "<span class='notice'><B>The Administrator has enabled AntagHUD.</B></span>")	// Notify all observers they can now use AntagHUD)
+		config.antag_hud_allowed = 1
 		action = "enabled"
-		to_chat(src, "<span class='notice'><B>AntagHUD usage has been enabled</B></span>")
+		to_chat(src, "<span class='notice'><B>AntagHUD usage has been enabled.</B></span>")
 
 
-	log_admin("[key_name(usr)] has [action] antagHUD usage for observers")
+	log_admin("[key_name(usr)] has [action] antagHUD usage for observers",admin_key=key_name(usr))
 	message_admins("Admin [key_name_admin(usr)] has [action] antagHUD usage for observers", 1)
 
 
@@ -381,34 +362,35 @@ Ccomp's first proc.
 	if(!holder)
 		to_chat(src, "Only administrators may use this command.")
 	var/action=""
-	if(config.ghost.antag_hud_restricted)
-		for(var/mob/observer/ghost/g in get_ghosts())
+	if(config.antag_hud_restricted)
+		for(var/mob/abstract/observer/g in get_ghosts())
 			to_chat(g, "<span class='notice'><B>The administrator has lifted restrictions on joining the round if you use AntagHUD</B></span>")
 		action = "lifted restrictions"
-		config.ghost.antag_hud_restricted = 0
+		config.antag_hud_restricted = 0
 		to_chat(src, "<span class='notice'><B>AntagHUD restrictions have been lifted</B></span>")
 	else
-		for(var/mob/observer/ghost/g in get_ghosts())
+		for(var/mob/abstract/observer/g in get_ghosts())
 			to_chat(g, "<span class='danger'>The administrator has placed restrictions on joining the round if you use AntagHUD</span>")
-			to_chat(g, "<span class='danger'>Your AntagHUD has been disabled, you may choose to re-enabled it but will be under restrictions</span>")
+			to_chat(g, "<span class='danger'>Your AntagHUD has been disabled, you may choose to re-enabled it but will be under restrictions </span>")
 			g.antagHUD = 0
 			g.has_enabled_antagHUD = 0
 		action = "placed restrictions"
-		config.ghost.antag_hud_restricted = 1
+		config.antag_hud_restricted = 1
 		to_chat(src, "<span class='danger'>AntagHUD restrictions have been enabled</span>")
 
-	log_admin("[key_name(usr)] has [action] on joining the round if they use AntagHUD")
+	log_admin("[key_name(usr)] has [action] on joining the round if they use AntagHUD",admin_key=key_name(usr))
 	message_admins("Admin [key_name_admin(usr)] has [action] on joining the round if they use AntagHUD", 1)
 
 /*
-	If a guy was gibbed and you want to revive him, this is a good way to do so.
-	Works kind of like entering the game with a new character. Character receives a new mind if they didn't have one.
-	Traitors and the like can also be revived with the previous role mostly intact.
- */
+If a guy was gibbed and you want to revive him, this is a good way to do so.
+Works kind of like entering the game with a new character. Character receives a new mind if they didn't have one.
+Traitors and the like can also be revived with the previous role mostly intact.
+/N */
 /client/proc/respawn_character()
 	set category = "Special Verbs"
 	set name = "Respawn Character"
 	set desc = "Respawn a person that has been gibbed/dusted/killed. They must be a ghost for this to work and preferably should not have a body to go back into."
+
 	if(!holder)
 		to_chat(src, "Only administrators may use this command.")
 		return
@@ -416,39 +398,45 @@ Ccomp's first proc.
 	if(!input)
 		return
 
-	var/mob/observer/ghost/G_found
-	for(var/mob/observer/ghost/G in GLOB.player_list)
+	var/mob/abstract/observer/G_found
+	for(var/mob/abstract/observer/G in player_list)
 		if(G.ckey == input)
 			G_found = G
 			break
 
 	if(!G_found)//If a ghost was not found.
-		to_chat(usr, "<font color='red'>There is no active key like that in the game or the person is not currently a ghost.</font>")
+		to_chat(usr, "<span class='warning'>There is no active key like that in the game or the person is not currently a ghost.</span>")
 		return
 
-	var/mob/living/carbon/human/new_character = new(pick(GLOB.latejoin))//The mob being spawned.
+	var/mob/living/carbon/human/new_character = new(pick(latejoin))//The mob being spawned.
 
-	var/datum/computer_file/crew_record/record_found			//Referenced to later to either randomize or not randomize the character.
-	if(G_found.mind && !G_found.mind.active)
-		record_found = get_crewmember_record(G_found.real_name)
+	var/datum/record/general/locked/record_found			//Referenced to later to either randomize or not randomize the character.
+	if(G_found.mind && !G_found.mind.active)	//mind isn't currently in use by someone/something
+		/*Try and locate a record for the person being respawned through data_core.
+		This isn't an exact science but it does the trick more often than not.*/
+		var/id = md5("[G_found.real_name][G_found.mind.assigned_role]")
+		for(var/datum/record/general/locked/R in SSrecords.records_locked)
+			if(R.nid == id)
+				record_found = R//We shall now reference the record.
+				break
 
 	if(record_found)//If they have a record we can determine a few things.
-		new_character.real_name = record_found.get_name()
-		new_character.gender = lowertext(record_found.get_sex())
-		new_character.age = record_found.get_age()
-		new_character.b_type = record_found.get_bloodtype()
+		new_character.real_name = record_found.name
+		new_character.gender = record_found.sex
+		new_character.age = record_found.age
+		new_character.b_type = record_found.medical.blood_type
 	else
 		new_character.gender = pick(MALE,FEMALE)
-		var/datum/preferences/A = new(G_found.client)
-		A.randomize_appearance_and_body_for(new_character)
+		var/datum/preferences/A = new()
+		A.randomize_appearance_for(new_character)
 		new_character.real_name = G_found.real_name
 
 	if(!new_character.real_name)
 		if(new_character.gender == MALE)
-			new_character.real_name = capitalize(pick(GLOB.first_names_male)) + " " + capitalize(pick(GLOB.last_names))
+			new_character.real_name = capitalize(pick(first_names_male)) + " " + capitalize(pick(last_names))
 		else
-			new_character.real_name = capitalize(pick(GLOB.first_names_female)) + " " + capitalize(pick(GLOB.last_names))
-	new_character.SetName(new_character.real_name)
+			new_character.real_name = capitalize(pick(first_names_female)) + " " + capitalize(pick(last_names))
+	new_character.name = new_character.real_name
 
 	if(G_found.mind && !G_found.mind.active)
 		G_found.mind.transfer_to(new_character)	//be careful when doing stuff like this! I've already checked the mind isn't in use
@@ -458,9 +446,19 @@ Ccomp's first proc.
 	if(!new_character.mind.assigned_role)	new_character.mind.assigned_role = "Assistant"//If they somehow got a null assigned role.
 
 	//DNA
-	new_character.dna.ready_dna(new_character)
-	if(record_found)//Pull up their name from database records if they did have a mind.
-		new_character.dna.unique_enzymes = record_found.get_dna()//Enzymes are based on real name but we'll use the record for conformity.
+	if(record_found && record_found.medical)//Pull up their name from database records if they did have a mind.
+		new_character.dna = new()//Let's first give them a new DNA.
+		new_character.dna.unique_enzymes = record_found.medical.blood_dna //Enzymes are based on real name but we'll use the record for conformity.
+
+		// I HATE BYOND.  HATE.  HATE. - N3X
+		var/list/newSE= record_found.enzymes
+		var/list/newUI = record_found.identity
+		new_character.dna.SE = newSE.Copy() //This is the default of enzymes so I think it's safe to go with.
+		new_character.dna.UpdateSE()
+		new_character.UpdateAppearance(newUI.Copy())//Now we configure their appearance based on their unique identity, same as with a DNA machine or somesuch.
+	else//If they have no records, we just do a random DNA for them, based on their random appearance/savefile.
+		new_character.dna.ready_dna(new_character)
+
 	new_character.key = G_found.key
 
 	/*
@@ -469,6 +467,8 @@ Ccomp's first proc.
 	If they don't have a mind, they obviously don't have a special role.
 	*/
 
+	//Two variables to properly announce later on.
+	var/admin = key_name_admin(src)
 	var/player_key = G_found.key
 
 	//Now for special roles and equipment.
@@ -477,20 +477,22 @@ Ccomp's first proc.
 		antag_data.add_antagonist(new_character.mind)
 		antag_data.place_mob(new_character)
 	else
-		job_master.EquipRank(new_character, new_character.mind.assigned_role, 1)
-
-	var/datum/job/job = job_master.GetJob(new_character.mind.assigned_role)
+		SSjobs.EquipRank(new_character, new_character.mind.assigned_role, 1)
 
 	//Announces the character on all the systems, based on the record.
 	if(!issilicon(new_character))//If they are not a cyborg/AI.
 		if(!record_found && !player_is_antag(new_character.mind, only_offstation_roles = 1)) //If there are no records for them. If they have a record, this info is already in there. MODE people are not announced anyway.
+			//Power to the user!
+			if(alert(new_character,"Warning: No data core entry detected. Would you like to announce the arrival of this character by adding them to various databases, such as medical records?",,"No","Yes")=="Yes")
+				SSrecords.generate_record(new_character)
+
 			if(alert(new_character,"Would you like an active AI to announce this character?",,"No","Yes")=="Yes")
-				var/datum/spawnpoint/arrivals/spawnpoint = new()
-				SSannounce.announce_arrival(new_character.real_name, job, spawnpoint)
+				call(/proc/AnnounceArrival)(new_character, new_character.mind.assigned_role)
 
-	log_and_message_admins("has respawned [player_key] as [new_character.real_name].")
+	message_admins("<span class='notice'>[admin] has respawned [player_key] as [new_character.real_name].</span>", 1)
 
-	to_chat(new_character, "You have been fully respawned. Enjoy the game.")
+	new_character << "You have been fully respawned. Enjoy the game."
+
 	feedback_add_details("admin_verb","RSPCH") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	return new_character
 
@@ -503,26 +505,24 @@ Ccomp's first proc.
 	var/input = sanitize(input(usr, "Please enter anything you want the AI to do. Anything. Serious.", "What?", "") as text|null)
 	if(!input)
 		return
-	for(var/mob/living/silicon/ai/M in SSmobs.mob_list)
+	for(var/mob/living/silicon/ai/M in mob_list)
 		if (M.stat == 2)
 			to_chat(usr, "Upload failed. No signal is being detected from the AI.")
-		else if (M.see_in_dark == 0)
-			to_chat(usr, "Upload failed. Only a faint signal is being detected from the AI, and it is not responding to our requests. It may be low on power.")
 		else
 			M.add_ion_law(input)
-			for(var/mob/living/silicon/ai/O in SSmobs.mob_list)
-				to_chat(O, "<span class='warning'>" + input + "...LAWS UPDATED</span>")
+			for(var/mob/living/silicon/ai/O in mob_list)
+				to_chat(O, "<span class='danger'>" + input + "...LAWS UPDATED</span>")
 				O.show_laws()
 
-	log_admin("Admin [key_name(usr)] has added a new AI law - [input]")
+	log_admin("Admin [key_name(usr)] has added a new AI law - [input]",admin_key=key_name(usr))
 	message_admins("Admin [key_name_admin(usr)] has added a new AI law - [input]", 1)
 
 	var/show_log = alert(src, "Show ion message?", "Message", "Yes", "No")
 	if(show_log == "Yes")
-		SSannounce.play_station_announce(/datum/announce/ion_storm)
+		command_announcement.Announce("Incoming ion storm detected near the ship. Please check all AI-controlled equipment for errors.", "Anomaly Alert", new_sound = 'sound/AI/ionstorm.ogg')
 	feedback_add_details("admin_verb","IONC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/cmd_admin_rejuvenate(mob/living/M as mob in SSmobs.mob_list)
+/client/proc/cmd_admin_rejuvenate(mob/living/M as mob in mob_list)
 	set category = "Special Verbs"
 	set name = "Rejuvenate"
 	if(!holder)
@@ -533,10 +533,11 @@ Ccomp's first proc.
 	if(!istype(M))
 		alert("Cannot revive a ghost")
 		return
-	if(config.admin.allow_admin_rev)
+	if(config.allow_admin_rev)
 		M.revive()
 
-		log_and_message_admins("healed / revived [key_name_admin(M)]!")
+		log_admin("[key_name(usr)] healed / revived [key_name(M)]",admin_key=key_name(usr),ckey=key_name(M))
+		message_admins("<span class='danger'>Admin [key_name_admin(usr)] healed / revived [key_name_admin(M)]!</span>", 1)
 	else
 		alert("Admin revive disabled")
 	feedback_add_details("admin_verb","REJU") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -544,28 +545,71 @@ Ccomp's first proc.
 /client/proc/cmd_admin_create_centcom_report()
 	set category = "Special Verbs"
 	set name = "Create Command Report"
+
 	if(!holder)
 		to_chat(src, "Only administrators may use this command.")
 		return
-	var/input = sanitize(input(usr, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null, extra = 0)
-	var/customname = sanitize(input(usr, "Pick a title for the report.", "Title") as text|null, encode = 0)
-	if(!input)
+
+	var/reporttitle
+	var/reportbody
+	var/reporter = null
+	var/reporttype = tgui_alert(usr, "Choose whether to use a template or custom report.", "Create Command Report", list("Custom", "Template"))
+	if(!reporttype)
 		return
-	if(!customname)
-		customname = "[command_name()] Update"
+	switch(reporttype)
+		if("Template")
+			if (!establish_db_connection(dbcon))
+				to_chat(src, "<span class='notice'>Unable to connect to the database.</span>")
+				return
+			var/DBQuery/query = dbcon.NewQuery("SELECT title, message FROM ss13_ccia_general_notice_list WHERE deleted_at IS NULL")
+			query.Execute()
 
-	//New message handling
-	post_comm_message(customname, replacetext(input, "\n", "<br/>"))
+			var/list/template_names = list()
+			var/list/templates = list()
 
-	switch(alert("Should this be announced to the general population?",,"Yes","No"))
+			while (query.NextRow())
+				template_names += query.item[1]
+				templates[query.item[1]] = query.item[2]
+
+			// Catch empty list
+			if (!templates.len)
+				to_chat(src, "<span class='notice'>There are no templates in the database.</span>")
+				return
+
+			reporttitle = tgui_input_list(usr, "Please select a command report template.", "Create Command Report", template_names)
+			if(!reporttitle)
+				return
+			reportbody = templates[reporttitle]
+
+		if("Custom")
+			reporttitle = sanitizeSafe(tgui_input_text(usr, "Pick a title for the report.", "Title"))
+			if(!reporttitle)
+				reporttitle = "NanoTrasen Update"
+			reportbody = sanitize(tgui_input_text(usr, "Please enter anything you want. Anything. Serious.", "Body", multiline = TRUE), extra = FALSE)
+			if(!reportbody)
+				return
+
+	if (reporttype == "Template")
+		reporter = sanitizeSafe(tgui_input_text(usr, "Please enter your CCIA name. (blank for CCIAAMS)", "Name"))
+		if (reporter)
+			reportbody += "\n\n- [reporter], Central Command Internal Affairs Agent, [commstation_name()]"
+		else
+			reportbody += "\n\n- CCIAAMS, [commstation_name()]"
+
+	var/announce = tgui_alert(usr, "Should this be announced to the general population?", "Announcement", list("Yes","No"))
+	switch(announce)
 		if("Yes")
-			SSannounce.play_station_announce(/datum/announce/command_report, input, customname, msg_sanitized = TRUE)
+			command_announcement.Announce("[reportbody]", reporttitle, new_sound = 'sound/AI/commandreport.ogg', msg_sanitized = 1);
 		if("No")
-			SSannounce.play_station_announce(/datum/announce/command_report, "New [GLOB.using_map.company_name] Update available at all communication consoles.", msg_sanitized = TRUE)
+			to_world("<span class='warning'>New [current_map.company_name] Update available at all communication consoles.</span>")
+			sound_to(world, ('sound/AI/commandreport.ogg'))
 
-	log_admin("[key_name(src)] has created a command report: [input]")
+	log_admin("[key_name(src)] has created a command report: [reportbody]",admin_key=key_name(usr))
 	message_admins("[key_name_admin(src)] has created a command report", 1)
 	feedback_add_details("admin_verb","CCR") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+	//New message handling
+	post_comm_message(reporttitle, reportbody)
 
 /client/proc/cmd_admin_delete(atom/O as obj|mob|turf in range(world.view))
 	set category = "Admin"
@@ -575,15 +619,30 @@ Ccomp's first proc.
 		to_chat(src, "Only administrators may use this command.")
 		return
 
-	if (alert(src, "Are you sure you want to delete:\n[O]\nat ([O.x], [O.y], [O.z])?", "Confirmation", "Yes", "No") == "Yes")
-		log_admin("[key_name(usr)] deleted [O] at ([O.x],[O.y],[O.z])")
-		message_admins("[key_name_admin(usr)] deleted [O] at ([O.x],[O.y],[O.z])", 1)
-		feedback_add_details("admin_verb","DEL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-		if(isturf(O))
-			var/turf/T = O
-			T.ChangeTurf(world.turf)
-		else
-			qdel(O)
+	var/action = alert(src, "Are you sure you want to delete:\n[O]\nat ([O.x], [O.y], [O.z])?", "Confirmation", "Yes", "No", "Hard Delete")
+
+	if (action == "No")
+		return
+
+	if (istype(O, /mob/abstract/observer))
+		var/mob/abstract/observer/M = O
+		if (M.client && alert(src, "They are still connected. Are you sure, they will loose connection.", "Confirmation", "Yes", "No") != "Yes")
+			return
+	log_admin("[key_name(usr)] deleted [O] at ([O.x],[O.y],[O.z])",admin_key=key_name(usr))
+	message_admins("[key_name_admin(usr)] deleted [O] at ([O.x],[O.y],[O.z])", 1)
+	feedback_add_details("admin_verb","DEL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+	if (isturf(O))	// Can't qdel a turf.
+		var/turf/T = O
+		T.ChangeTurf(/turf/space)
+		return
+
+	if (action == "Yes")
+		qdel(O, TRUE)
+	else
+		// This is naughty, but sometimes necessary.
+		O.Destroy(TRUE)	// Because direct del without this breaks things.
+		del(O)
 
 /client/proc/cmd_admin_list_open_jobs()
 	set category = "Admin"
@@ -592,9 +651,9 @@ Ccomp's first proc.
 	if (!holder)
 		to_chat(src, "Only administrators may use this command.")
 		return
-	if(job_master)
-		for(var/datum/job/job in job_master.occupations)
-			to_chat(src, "[job.title]: [job.total_positions]")
+
+	for(var/datum/job/job in SSjobs.occupations)
+		to_chat(src, "[job.title]: [job.get_total_positions() == -1 ? "unlimited" : job.get_total_positions()]")
 	feedback_add_details("admin_verb","LFS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_explosion(atom/O as obj|mob|turf in range(world.view))
@@ -611,18 +670,14 @@ Ccomp's first proc.
 	if(light == null) return
 	var/flash = input("Range of flash. -1 to none", text("Input"))  as num|null
 	if(flash == null) return
-	var/shaped = 0
-	if(config.game.use_recursive_explosions)
-		if(alert(src, "Shaped explosion?", "Shape", "Yes", "No") == "Yes")
-			shaped = input("Shaped where to?", "Input")  as anything in list("NORTH","SOUTH","EAST","WEST")
-			shaped = text2dir(shaped)
+
 	if ((devastation != -1) || (heavy != -1) || (light != -1) || (flash != -1))
 		if ((devastation > 20) || (heavy > 20) || (light > 20))
 			if (alert(src, "Are you sure you want to do this? It will laaag.", "Confirmation", "Yes", "No") == "No")
 				return
 
-		explosion(O, devastation, heavy, light, flash, shaped=shaped)
-		log_admin("[key_name(usr)] created an explosion ([devastation],[heavy],[light],[flash]) at ([O.x],[O.y],[O.z])")
+		explosion(O, devastation, heavy, light, flash)
+		log_admin("[key_name(usr)] created an explosion ([devastation],[heavy],[light],[flash]) at ([O.x],[O.y],[O.z])",admin_key=key_name(usr))
 		message_admins("[key_name_admin(usr)] created an explosion ([devastation],[heavy],[light],[flash]) at ([O.x],[O.y],[O.z])", 1)
 		feedback_add_details("admin_verb","EXPL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 		return
@@ -643,7 +698,7 @@ Ccomp's first proc.
 	if (heavy || light)
 
 		empulse(O, heavy, light)
-		log_admin("[key_name(usr)] created an EM Pulse ([heavy],[light]) at ([O.x],[O.y],[O.z])")
+		log_admin("[key_name(usr)] created an EM Pulse ([heavy],[light]) at ([O.x],[O.y],[O.z])",admin_key=key_name(usr))
 		message_admins("[key_name_admin(usr)] created an EM PUlse ([heavy],[light]) at ([O.x],[O.y],[O.z])", 1)
 		feedback_add_details("admin_verb","EMP") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
@@ -651,7 +706,7 @@ Ccomp's first proc.
 	else
 		return
 
-/client/proc/cmd_admin_gib(mob/M as mob in SSmobs.mob_list)
+/client/proc/cmd_admin_gib(mob/M as mob in mob_list)
 	set category = "Special Verbs"
 	set name = "Gib"
 
@@ -662,11 +717,11 @@ Ccomp's first proc.
 	//Due to the delay here its easy for something to have happened to the mob
 	if(!M)	return
 
-	log_admin("[key_name(usr)] has gibbed [key_name(M)]")
+	log_admin("[key_name(usr)] has gibbed [key_name(M)]",admin_key=key_name(usr),ckey=key_name(M))
 	message_admins("[key_name_admin(usr)] has gibbed [key_name_admin(M)]", 1)
 
-	if(isobserver(M))
-		gibs(M.loc)
+	if(istype(M, /mob/abstract/observer))
+		gibs(M.loc, M.viruses)
 		return
 
 	M.gib()
@@ -678,20 +733,96 @@ Ccomp's first proc.
 
 	var/confirm = alert(src, "You sure?", "Confirm", "Yes", "No")
 	if(confirm == "Yes")
-		if (isobserver(mob)) // so they don't spam gibs everywhere
+		if (istype(mob, /mob/abstract/observer)) // so they don't spam gibs everywhere
 			return
 		else
 			mob.gib()
 
-		log_and_message_admins("used gibself.")
+		log_admin("[key_name(usr)] used gibself.",admin_key=key_name(usr))
+		message_admins("<span class='notice'>[key_name_admin(usr)] used gibself.</span>", 1)
 		feedback_add_details("admin_verb","GIBS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+/client/proc/cmd_admin_dust(mob/M as mob in mob_list)
+	set category = "Special Verbs"
+	set name = "Turn to dust"
+
+	if(!check_rights(R_ADMIN|R_FUN))
+		return
+
+	var/confirm = alert(src, "You sure?", "Confirm", "Yes", "No")
+	if(confirm != "Yes")
+		if(istype(mob, /mob/abstract/observer))
+			return
+		else
+			mob.dust()
+
+	log_admin("[key_name(usr)] has annihilated [key_name(M)]")
+	message_admins("[key_name_admin(usr)] has annihilated [key_name_admin(M)]")
+	feedback_add_details("admin_verb","DUST") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+/*
+/client/proc/cmd_manual_ban()
+	set name = "Manual Ban"
+	set category = "Special Verbs"
+	if(!authenticated || !holder)
+		to_chat(src, "Only administrators may use this command.")
+		return
+	var/mob/M = null
+	switch(alert("How would you like to ban someone today?", "Manual Ban", "Key List", "Enter Manually", "Cancel"))
+		if("Key List")
+			var/list/keys = list()
+			for(var/mob/M in world)
+				keys += M.client
+			var/selection = input("Please, select a player!", "Admin Jumping", null, null) as null|anything in keys
+			if(!selection)
+				return
+			M = selection:mob
+			if ((M.client && M.client.holder && (M.client.holder.level >= holder.level)))
+				alert("You cannot perform this action. You must be of a higher administrative rank!")
+				return
+
+	switch(alert("Temporary Ban?",,"Yes","No"))
+	if("Yes")
+		var/mins = input(usr,"How long (in minutes)?","Ban time",1440) as num
+		if(!mins)
+			return
+		if(mins >= 525600) mins = 525599
+		var/reason = input(usr,"Reason?","reason","Griefer") as text
+		if(!reason)
+			return
+		if(M)
+			AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins)
+			to_chat(M, "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>")
+			to_chat(M, "\red This is a temporary ban, it will be removed in [mins] minutes.")
+			to_chat(M, "\red To try to resolve this matter head to http://ss13.donglabs.com/forum/")
+			log_admin("[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
+			message_admins("\blue[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
+			world.Export("http://216.38.134.132/adminlog.php?type=ban&key=[usr.client.key]&key2=[M.key]&msg=[html_decode(reason)]&time=[mins]&server=[replacetext(config.server_name, "#", "")]")
+			del(M.client)
+			qdel(M)
+		else
+
+	if("No")
+		var/reason = input(usr,"Reason?","reason","Griefer") as text
+		if(!reason)
+			return
+		AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0)
+		to_chat(M, "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>")
+		to_chat(M, "\red This is a permanent ban.")
+		to_chat(M, "\red To try to resolve this matter head to http://ss13.donglabs.com/forum/")
+		log_admin("[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis is a permanent ban.")
+		message_admins("\blue[usr.client.ckey] has banned [M.ckey].\nReason: [reason]\nThis is a permanent ban.")
+		world.Export("http://216.38.134.132/adminlog.php?type=ban&key=[usr.client.key]&key2=[M.key]&msg=[html_decode(reason)]&time=perma&server=[replacetext(config.server_name, "#", "")]")
+		del(M.client)
+		qdel(M)
+*/
 
 /client/proc/update_world()
 	// If I see anyone granting powers to specific keys like the code that was here,
 	// I will both remove their SVN access and permanently ban them from my servers.
 	return
 
-/client/proc/cmd_admin_check_contents(mob/living/M as mob in SSmobs.mob_list)
+/client/proc/cmd_admin_check_contents(mob/living/M as mob in mob_list)
 	set category = "Special Verbs"
 	set name = "Check Contents"
 
@@ -701,7 +832,7 @@ Ccomp's first proc.
 	feedback_add_details("admin_verb","CC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /* This proc is DEFERRED. Does not do anything.
-/client/proc/cmd_admin_remove_plasma()
+/client/proc/cmd_admin_remove_phoron()
 	set category = "Debug"
 	set name = "Stabilize Atmos."
 	if(!holder)
@@ -741,7 +872,9 @@ Ccomp's first proc.
 	else
 		view = world.view
 
-	log_and_message_admins("changed their view range to [view].")
+	log_admin("[key_name(usr)] changed their view range to [view].",admin_key=key_name(usr))
+	//message_admins("\blue [key_name_admin(usr)] changed their view range to [view].", 1)	//why? removed by order of XSI
+
 	feedback_add_details("admin_verb","CVRA") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/admin_call_shuttle()
@@ -749,22 +882,37 @@ Ccomp's first proc.
 	set category = "Admin"
 	set name = "Call Evacuation"
 
-	if(!SSticker.mode || !evacuation_controller)
+	if ((!( ROUND_IS_STARTED ) || !evacuation_controller))
 		return
 
-	if(!check_rights(R_ADMIN))	return
+	if(!check_rights(R_ADMIN))
+		return
 
-	if(alert(src, "Are you sure?", "Confirm", "Yes", "No") != "Yes") return
+	if(alert(src, "Are you sure?", "Confirm", "Yes", "No") != "Yes")
+		return
+
+	if(current_map.shuttle_call_restarts)
+		if(current_map.shuttle_call_restart_timer)
+			to_chat(usr, SPAN_WARNING("The shuttle round restart timer is already active!"))
+			return
+		feedback_add_details("admin_verb","CSHUT")
+		current_map.shuttle_call_restart_timer = addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(reboot_world)), 10 MINUTES, TIMER_UNIQUE|TIMER_STOPPABLE)
+		log_game("[key_name(usr)] has admin-called the 'shuttle' round restart.")
+		message_admins("[key_name_admin(usr)] has admin-called the 'shuttle' round restart.", 1)
+		to_world(FONT_LARGE(SPAN_VOTE(current_map.shuttle_called_message)))
+		return
 
 	if(SSticker.mode.auto_recall_shuttle)
 		if(input("The evacuation will just be cancelled if you call it. Call anyway?") in list("Confirm", "Cancel") != "Confirm")
 			return
 
-	var/choice = input("Is this an emergency evacuation or a crew transfer?") in list("Emergency", "Crew Transfer")
-	evacuation_controller.call_evacuation(usr, (choice == "Emergency"))
+	var/choice = input("Is this an emergency evacuation, bluespace jump, or a crew transfer?") in list(TRANSFER_EMERGENCY, TRANSFER_CREW, TRANSFER_JUMP)
+	evacuation_controller.call_evacuation(usr, choice)
+
 
 	feedback_add_details("admin_verb","CSHUT") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-	log_and_message_admins("admin-called an evacuation.")
+	log_admin("[key_name(usr)] admin-called an evacuation.",admin_key=key_name(usr))
+	message_admins("<span class='notice'>[key_name_admin(usr)] admin-called an evacuation</span>", 1)
 	return
 
 /client/proc/admin_cancel_shuttle()
@@ -775,34 +923,50 @@ Ccomp's first proc.
 
 	if(alert(src, "You sure?", "Confirm", "Yes", "No") != "Yes") return
 
-	if(!evacuation_controller)
+	if(!ROUND_IS_STARTED || !evacuation_controller)
 		return
 
-	evacuation_controller.cancel_evacuation()
+	if(current_map.shuttle_call_restarts)
+		if(!current_map.shuttle_call_restart_timer)
+			to_chat(usr, SPAN_WARNING("The restart timer for this map isn't active!"))
+			return
+		feedback_add_details("admin_verb","CCSHUT")
+		deltimer(current_map.shuttle_call_restart_timer)
+		current_map.shuttle_call_restart_timer = null
+		log_game("[key_name(usr)] has admin-stopped the 'shuttle' round restart.", key_name(usr))
+		message_admins("[key_name_admin(usr)] has admin-stopped the 'shuttle' round restart.", 1)
+		to_world(FONT_LARGE(SPAN_VOTE(current_map.shuttle_recall_message)))
+		return
 
+
+	evacuation_controller.cancel_evacuation()
 	feedback_add_details("admin_verb","CCSHUT") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-	log_and_message_admins("admin-cancelled the evacuation.")
+	log_admin("[key_name(usr)] admin-cancelled the evacuation.",admin_key=key_name(usr))
+	message_admins("<span class='notice'>[key_name_admin(usr)] admin-cancelled the evacuation.</span>", 1)
+
+	return
 
 /client/proc/admin_deny_shuttle()
 	set category = "Admin"
-	set name = "Toggle Deny Evac"
+	set name = "Toggle Deny Evacuation"
 
-	if (!evacuation_controller)
+	if (!ROUND_IS_STARTED)
 		return
 
-	if(!check_rights(R_ADMIN))	return
+	if(!check_rights(R_ADMIN))
+		return
 
 	evacuation_controller.deny = !evacuation_controller.deny
 
-	log_admin("[key_name(src)] has [evacuation_controller.deny ? "denied" : "allowed"] evacuation to be called.")
-	message_admins("[key_name_admin(usr)] has [evacuation_controller.deny ? "denied" : "allowed"] evacuation to be called.")
+	log_admin("[key_name(src)] has [evacuation_controller.deny ? "denied" : "allowed"] the evacuation to be called.",admin_key=key_name(usr))
+	message_admins("[key_name_admin(usr)] has [evacuation_controller.deny ? "denied" : "allowed"] the evacuation to be called.")
 
-/client/proc/cmd_admin_attack_log(mob/M as mob in SSmobs.mob_list)
+/client/proc/cmd_admin_attack_log(mob/M as mob in mob_list)
 	set category = "Special Verbs"
 	set name = "Attack Log"
 
 	to_chat(usr, text("<span class='danger'>Attack Log for []</span>", mob))
-	for(var/t in M.attack_logs_)
+	for(var/t in M.attack_log)
 		to_chat(usr, t)
 	feedback_add_details("admin_verb","ATTL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
@@ -814,12 +978,12 @@ Ccomp's first proc.
 
 	if(!check_rights(R_FUN))	return
 
-	if (GAME_STATE >= RUNLEVEL_GAME)
+	if (SSticker.mode)
 		to_chat(usr, "Nope you can't do this, the game's already started. This only works before rounds!")
 		return
 
-	if(GLOB.random_players)
-		GLOB.random_players = 0
+	if(SSticker.random_players)
+		SSticker.random_players = 0
 		message_admins("Admin [key_name_admin(usr)] has disabled \"Everyone is Special\" mode.", 1)
 		to_chat(usr, "Disabled.")
 		return
@@ -829,28 +993,78 @@ Ccomp's first proc.
 	if(notifyplayers == "Cancel")
 		return
 
-	log_admin("Admin [key_name(src)] has forced the players to have random appearances.")
+	log_admin("Admin [key_name(src)] has forced the players to have random appearances.",admin_key=key_name(usr))
 	message_admins("Admin [key_name_admin(usr)] has forced the players to have random appearances.", 1)
 
 	if(notifyplayers == "Yes")
 		to_world("<span class='notice'><b>Admin [usr.key] has forced the players to have completely random identities!</b></span>")
 
 	to_chat(usr, "<i>Remember: you can always disable the randomness by using the verb again, assuming the round hasn't started yet</i>.")
-	GLOB.random_players = 1
+
+	SSticker.random_players = 1
 	feedback_add_details("admin_verb","MER") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 
-/client/proc/cmd_set_station_date()
+/client/proc/toggle_random_events()
 	set category = "Server"
-	set name = "Set Station Date"
+	set name = "Toggle random events on/off"
 
-	if(!check_rights(R_ADMIN | R_SERVER | R_PERMISSIONS))
+	set desc = "Toggles random events such as meteors, black holes, blob (but not space dust) on/off"
+	if(!check_rights(R_SERVER))	return
+
+	if(!config.allow_random_events)
+		config.allow_random_events = 1
+		to_chat(usr, "Random events enabled")
+		message_admins("Admin [key_name_admin(usr)] has enabled random events.", 1)
+	else
+		config.allow_random_events = 0
+		to_chat(usr, "Random events disabled")
+		message_admins("Admin [key_name_admin(usr)] has disabled random events.", 1)
+	feedback_add_details("admin_verb","TRE") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+/client/proc/fab_tip()
+	set category = "Admin"
+	set name = "Fabricate Tip"
+	set desc = "Sends a tip (that you specify) to all players. After all \
+		you're the experienced player here."
+
+	if(!holder)
 		return
 
-	var/admin_input = tgui_input_text(usr, "Enter new station date. \[YEAR]-\[MONTH]-\[DAY] (Year should be from 4 numbers, or like 0906, Month 2, Day too 2)", "Station Date", station_date)
-	if(!length(admin_input))
+	var/input = input(usr, "Please specify your tip that you want to send to the players.", "Tip", "") as message|null
+	if(!input)
 		return
 
-	var/regex/sanitize_regex = regex("\[0-9]{4}-\[0-9]{2}-\[0-9]{2}")
-	if(sanitize_regex.Find(admin_input))
-		station_date = admin_input
+	SSticker.send_tip_of_the_round(input)
+
+	message_admins("[key_name_admin(usr)] sent a tip of the round.")
+	log_admin("[key_name(usr)] sent \"[input]\" as the Tip of the Round.",admin_key=key_name(usr))
+	feedback_add_details("admin_verb","TIP")
+
+/client/proc/show_tip()
+	set category = "Debug"
+	set name = "Show Tip"
+	set desc = "Sends a random tip to all players. After all \
+		you're not the experienced player here."
+
+	if(!holder)
+		return
+
+	var/list/possible_categories = list("Random") + tips_by_category.Copy()
+	var/input = input(usr, "Please specify the tip category that you want to send to the players.", "Tip", "Random") as null|anything in possible_categories
+	if(!input)
+		return
+
+	var/datum/tip/tip_datum
+	if(input == "Random")
+		var/chosen_tip_category = pick(tips_by_category)
+		tip_datum = tips_by_category[chosen_tip_category]
+	else
+		tip_datum = tips_by_category[input]
+
+	SSticker.send_tip_of_the_round(pick(tip_datum.messages))
+
+
+	message_admins("[key_name_admin(usr)] sent a pregenerated tip of the round.")
+	log_admin("[key_name(usr)] sent a pregenerated Tip of the Round.",admin_key=key_name(usr))
+	feedback_add_details("admin_verb","FAP")

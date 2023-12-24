@@ -1,8 +1,4 @@
-var/datum/gear_tweak/color/gear_tweak_free_color_choice_
-/proc/gear_tweak_free_color_choice()
-	if(!gear_tweak_free_color_choice_) gear_tweak_free_color_choice_ = new()
-	return gear_tweak_free_color_choice_
-
-//var/datum/gear_tweak/color/gear_tweak_free_color_choice_
-//#define gear_tweak_free_color_choice (gear_tweak_free_color_choice_ ? gear_tweak_free_color_choice_ : (gear_tweak_free_color_choice_ = new()))
-// Might work in 511 assuming x=y=5 gets implemented.
+//Gear tweaks and underwear.
+var/datum/gear_tweak/color/gear_tweak_free_color_choice = new()
+var/datum/gear_tweak/alpha/gear_tweak_alpha_choice = new()
+var/datum/category_collection/underwear/global_underwear = new()

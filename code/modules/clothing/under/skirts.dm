@@ -1,99 +1,118 @@
+//skirts
+
 /obj/item/clothing/under/skirt
-	name = "black skirt"
-	desc = "A black skirt, very fancy!"
-	icon_state = "blackskirt"
-	item_state = "bl_suit"
-	worn_state = "blackskirt"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
-	rolled_sleeves = -1
-
-/obj/item/clothing/under/skirt/plaid_blue
-	name = "blue plaid skirt"
-	desc = "A preppy blue skirt with a white blouse."
-	icon_state = "plaid_blue"
-	worn_state = "plaid_blue"
-
-/obj/item/clothing/under/skirt/plaid_red
-	name = "red plaid skirt"
-	desc = "A preppy red skirt with a white blouse."
-	icon_state = "plaid_red"
-	item_state = "kilt"
-	worn_state = "plaid_red"
-
-/obj/item/clothing/under/skirt/plaid_purple
-	name = "blue purple skirt"
-	desc = "A preppy purple skirt with a white blouse."
-	icon_state = "plaid_purple"
-	item_state = "kilt"
-	worn_state = "plaid_purple"
-
-// discreet skirts, dont cover upper/arms etc
-/obj/item/clothing/under/skirt/khaki
-	name = "khaki skirt"
-	desc = "A khaki skirt with a flare at the hem."
-	icon_state = "skirt_khaki"
-	worn_state = "skirt_khaki"
+	name = "casual skirt"
+	desc = "A short, colorful skirt."
+	desc_extended = "Not to be mistaken with the similarly named cut of steak."
+	icon = 'icons/obj/clothing/skirts.dmi'
+	icon_state = "skirt_casual"
+	item_state = "skirt_casual"
+	worn_state = "skirt_casual"
 	body_parts_covered = LOWER_TORSO
+	contained_sprite = TRUE
+
+/obj/item/clothing/under/skirt/puffy
+	name = "puffy skirt"
+	desc = "A short, puffy skirt."
+	desc_extended = "The opposite of a pencil skirt."
+	icon_state = "skirt_puffy"
+	item_state = "skirt_puffy"
+	worn_state = "skirt_puffy"
+
+/obj/item/clothing/under/skirt/long
+	name = "long skirt"
+	desc = "A long, modest skirt."
+	desc_extended = "Long enough to do a curtsy, if that's something you want to do."
+	icon_state = "skirt_long"
+	item_state = "skirt_long"
+	worn_state = "skirt_long"
+
+/obj/item/clothing/under/skirt/high
+	name = "high skirt"
+	desc = "A modest skirt going up to the waist."
+	desc_extended = "For when covering your legs isn't enough."
+	icon_state = "skirt_high"
+	item_state = "skirt_high"
+	worn_state = "skirt_high"
+
+/obj/item/clothing/under/skirt/pencil
+	name = "pencil skirt"
+	desc = "A professional-looking pencil skirt."
+	desc_extended = "Revel in how professional you are."
+	icon_state = "skirt_pencil"
+	item_state = "skirt_pencil"
+	worn_state = "skirt_pencil"
 
 /obj/item/clothing/under/skirt/swept
 	name = "swept skirt"
 	desc = "A skirt that is swept to one side."
+	desc_extended = "When you want a little more skirt, but not too much."
 	icon_state = "skirt_swept"
+	item_state = "skirt_swept"
 	worn_state = "skirt_swept"
-	body_parts_covered = LOWER_TORSO
 
-// colour selection, needs to be different for loadout type selection
+/obj/item/clothing/under/skirt/plaid
+	name = "plaid skirt"
+	desc = "A preppy plaid skirt."
+	desc_extended = "Stick it to gender stereotypes and be the lumberjack you've perhaps always wanted to be."
+	icon_state = "skirt_plaid"
+	item_state = "skirt_plaid"
+	worn_state = "skirt_plaid"
 
-/obj/item/clothing/under/skirt_c
-	name = "short skirt"
-	desc = "A short skirt, made of some semi-gloss material."
-	icon_state = "skirt_short"
-	worn_state = "skirt_short"
-	body_parts_covered = LOWER_TORSO
+/obj/item/clothing/under/skirt/pleated
+	name = "pleated skirt"
+	desc = "A sharp-looking knife-pleated skirt."
+	desc_extended = "Would go great with a sailor uniform."
+	icon_state = "skirt_pleated"
+	item_state = "skirt_pleated"
+	worn_state = "skirt_pleated"
 
-// dresses
-/obj/item/clothing/under/skirt_c/dress
-	name = "short dress"
-	desc = "A short plain sleeveless dress."
-	icon_state = "shortdress"
-	worn_state = "shortdress"
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+/obj/item/clothing/under/skirt/skater
+	name = "skater skirt"
+	desc = "A plush skater skirt."
+	desc_extended = "For ice skating, skateboarding, or rollerskating."
+	icon_state = "skirt_skater"
+	item_state = "skirt_skater"
+	worn_state = "skirt_skater"
 
-/obj/item/clothing/under/skirt_c/dress/long
-	name = "maxi dress"
-	desc = "A sleeveless dress that reaches the wearer's ankles."
-	icon_state = "longdress"
-	worn_state = "longdress"
-	flags_inv = HIDESHOES
-	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET
+/obj/item/clothing/under/skirt/tube
+	name = "tube skirt"
+	desc = "A long tube skirt."
+	desc_extended = "A pencil skirt. But longer."
+	icon_state = "skirt_tube"
+	item_state = "skirt_tube"
+	worn_state = "skirt_tube"
 
-/obj/item/clothing/under/skirt_c/dress/long/gown
-	name = "silk gown"
-	desc = "A long silky sleeveless gown with a flared hem."
-	icon_state = "gowndress"
-	worn_state = "gowndress"
+/obj/item/clothing/under/skirt/straightlong
+	name = "straight long skirt"
+	desc = "A skirt that goes all the way down to the ankles."
+	desc_extended = "Enough fabric for two skirts, and then some."
+	icon_state = "skirt_straightlong"
+	item_state = "skirt_straightlong"
+	worn_state = "skirt_straightlong"
 
-// some preset dresses for uniform vendors
-/obj/item/clothing/under/skirt_c/dress/black
-	name = "black short dress"
-	color = "#181818"
+/obj/item/clothing/under/skirt/offworlder
+	name = "\improper CR skirt"
+	desc = "A very tight form-fitting padded suit that looks extremely comfortable to wear. This variant seems to have a poofy skirt and longer sleeves than normal."
+	icon = 'icons/obj/item/clothing/accessory/offworlder.dmi'
+	contained_sprite = TRUE
+	icon_state = "crskirt"
+	item_state = "crskirt"
+	worn_state = "crskirt"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 
-/obj/item/clothing/under/skirt_c/dress/long/black
-	name = "black maxi dress"
-	color = "#181818"
+/obj/item/clothing/under/skirt/jumper
+	name = "jumper skirt"
+	desc = "A short skirt with two large shoulder straps."
+	desc_extended = "Too tall or too short? Too bad. These shoulder straps can't be adjusted."
+	icon_state = "skirt_jumper"
+	worn_state = "skirt_jumper"
+	item_state = "skirt_jumper"
 
-/obj/item/clothing/under/skirt_c/dress/eggshell
-	name = "eggshell short dress"
-	color = "#f0ead6"
-
-/obj/item/clothing/under/skirt_c/dress/long/eggshell
-	name = "eggshell maxi dress"
-	color = "#f0ead6"
-
-/obj/item/clothing/under/skirt_c/dress/mintcream
-	name = "mint short dress"
-	color = "#dcffed"
-
-/obj/item/clothing/under/skirt_c/dress/long/mintcream
-	name = "mint maxi dress"
-	color = "#dcffed"
+/obj/item/clothing/under/skirt/jumper_highcut
+	name = "jumper dress"
+	desc = "A garment with open sides that seems to be a cross between a dress and an apron."
+	desc_extended = "You could achieve the same effect with two aprons, we're pretty sure."
+	icon_state = "skirt_jumper_highcut"
+	worn_state = "skirt_jumper_highcut"
+	item_state = "skirt_jumper_highcut"

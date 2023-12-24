@@ -2,20 +2,19 @@
 
 /obj/machinery/lapvend
 	name = "computer vendor"
-	desc = "A vending machine with a built-in microfabricator, capable of dispensing various NT-branded computers."
+	desc = "A vending machine with microfabricator capable of dispensing various NT-branded computers."
 	icon = 'icons/obj/vending.dmi'
 	icon_state = "robotics"
-	layer = BELOW_OBJ_LAYER
-	anchored = 1
-	density = 1
+	anchored = TRUE
+	density = TRUE
 
 	// The actual laptop/tablet
-	var/obj/item/modular_computer/laptop/fabricated_laptop = null
-	var/obj/item/modular_computer/tablet/fabricated_tablet = null
+	var/obj/item/modular_computer/laptop/fabricated_laptop
+	var/obj/item/modular_computer/handheld/fabricated_tablet
 
 	// Utility vars
-	var/state = 0 							// 0: Select device type, 1: Select loadout, 2: Payment, 3: Thankyou screen
-	var/devtype = 0 						// 0: None(unselected), 1: Laptop, 2: Tablet
+	var/state = 0							// 0: Select device type, 1: Select loadout, 2: Payment, 3: Thankyou screen
+	var/devtype = 0							// 0: None(unselected), 1: Laptop, 2: Tablet
 	var/total_price = 0						// Price of currently vended device.
 
 	// Device loadout
@@ -23,7 +22,7 @@
 	var/dev_battery = 1						// 1: Default, 2: Upgraded, 3: Advanced
 	var/dev_disk = 1						// 1: Default, 2: Upgraded, 3: Advanced
 	var/dev_netcard = 0						// 0: None, 1: Basic, 2: Long-Range
-	var/dev_tesla = 0						// 0: None, 1: Standard
+	var/dev_tesla = 0						// 0: None, 1: Standard (LAPTOP ONLY)
 	var/dev_nanoprint = 0					// 0: None, 1: Standard
 	var/dev_card = 0						// 0: None, 1: Standard
 	var/dev_aislot = 0						// 0: None, 1: Standard
@@ -48,7 +47,7 @@
 	dev_aislot = 0
 
 // Recalculates the price and optionally even fabricates the device.
-/obj/machinery/lapvend/proc/fabricate_and_recalc_price(fabricate = 0)
+/obj/machinery/lapvend/proc/fabricate_and_recalc_price(var/fabricate = 0)
 	total_price = 0
 	if(devtype == 1) 		// Laptop, generally cheaper to make it accessible for most station roles
 		if(fabricate)
@@ -57,116 +56,116 @@
 		switch(dev_cpu)
 			if(1)
 				if(fabricate)
-					fabricated_laptop.processor_unit = new /obj/item/computer_hardware/processor_unit/small(fabricated_laptop)
+					fabricated_laptop.processor_unit = new/obj/item/computer_hardware/processor_unit/small(fabricated_laptop)
 			if(2)
 				if(fabricate)
-					fabricated_laptop.processor_unit = new /obj/item/computer_hardware/processor_unit(fabricated_laptop)
+					fabricated_laptop.processor_unit = new/obj/item/computer_hardware/processor_unit(fabricated_laptop)
 				total_price += 299
 		switch(dev_battery)
-			if(1) // Basic(750C)
+			if(1) //Micro(500C)
 				if(fabricate)
-					fabricated_laptop.battery_module = new /obj/item/computer_hardware/battery_module(fabricated_laptop)
-			if(2) // Upgraded(1100C)
+					fabricated_laptop.battery_module = new/obj/item/computer_hardware/battery_module/micro(fabricated_laptop)
+			if(2) // Basic(750C)
 				if(fabricate)
-					fabricated_laptop.battery_module = new /obj/item/computer_hardware/battery_module/advanced(fabricated_laptop)
+					fabricated_laptop.battery_module = new/obj/item/computer_hardware/battery_module(fabricated_laptop)
 				total_price += 199
-			if(3) // Advanced(1500C)
-				if(fabricate)
-					fabricated_laptop.battery_module = new /obj/item/computer_hardware/battery_module/super(fabricated_laptop)
-				total_price += 499
+			// if(3) // Upgraded(1100C)
+			// 	if(fabricate)
+			// 		fabricated_laptop.battery_module = new/obj/item/computer_hardware/battery_module/advanced(fabricated_laptop)
+			// 	total_price += 499
 		switch(dev_disk)
-			if(1) // Basic(128GQ)
+			if(1)
 				if(fabricate)
-					fabricated_laptop.hard_drive = new /obj/item/computer_hardware/hard_drive(fabricated_laptop)
-			if(2) // Upgraded(256GQ)
+					fabricated_laptop.hard_drive = new/obj/item/computer_hardware/hard_drive/small(fabricated_laptop)
+			if(2) // Basic(128GQ)
 				if(fabricate)
-					fabricated_laptop.hard_drive = new /obj/item/computer_hardware/hard_drive/advanced(fabricated_laptop)
-				total_price += 99
-			if(3) // Advanced(512GQ)
-				if(fabricate)
-					fabricated_laptop.hard_drive = new /obj/item/computer_hardware/hard_drive/super(fabricated_laptop)
-				total_price += 299
+					fabricated_laptop.hard_drive = new/obj/item/computer_hardware/hard_drive(fabricated_laptop)
+				total_price += 199
+			// if(3)  // Upgraded(256GQ)
+			// 	if(fabricate)
+			// 		fabricated_laptop.hard_drive = new/obj/item/computer_hardware/hard_drive/advanced(fabricated_laptop)
+			// 	total_price += 299
 		switch(dev_netcard)
 			if(1) // Basic(Short-Range)
 				if(fabricate)
-					fabricated_laptop.network_card = new /obj/item/computer_hardware/network_card(fabricated_laptop)
-				total_price += 99
-			if(2) // Advanced (Long Range)
-				if(fabricate)
-					fabricated_laptop.network_card = new /obj/item/computer_hardware/network_card/advanced(fabricated_laptop)
-				total_price += 299
-		if(dev_tesla)
-			total_price += 399
-			if(fabricate)
-				fabricated_laptop.tesla_link = new /obj/item/computer_hardware/tesla_link(fabricated_laptop)
-		if(dev_nanoprint)
-			total_price += 99
-			if(fabricate)
-				fabricated_laptop.nano_printer = new /obj/item/computer_hardware/nano_printer(fabricated_laptop)
+					fabricated_laptop.network_card = new/obj/item/computer_hardware/network_card(fabricated_laptop)
+				total_price += 199
+			// if(2) // Advanced (Long Range)
+			// 	if(fabricate)
+			// 		fabricated_laptop.network_card = new/obj/item/computer_hardware/network_card/advanced(fabricated_laptop)
+			// 	total_price += 299
+		// if(dev_tesla)
+			// total_price += 399
+			// if(fabricate)
+			// 	fabricated_laptop.tesla_link = new/obj/item/computer_hardware/tesla_link(fabricated_laptop)
+		// if(dev_nanoprint)
+			// total_price += 99
+			// if(fabricate)
+			// 	fabricated_laptop.nano_printer = new/obj/item/computer_hardware/nano_printer(fabricated_laptop)
 		if(dev_card)
 			total_price += 199
 			if(fabricate)
-				fabricated_laptop.card_slot = new /obj/item/computer_hardware/card_slot(fabricated_laptop)
-		if(dev_aislot)
-			total_price += 499
-			if(fabricate)
-				fabricated_laptop.ai_slot = new /obj/item/computer_hardware/ai_slot(fabricated_laptop)
+				fabricated_laptop.card_slot = new/obj/item/computer_hardware/card_slot(fabricated_laptop)
+		//if(dev_aislot)
+			//total_price += 499
+			//if(fabricate)
+				//fabricated_laptop.ai_slot = new/obj/item/computer_hardware/ai_slot(fabricated_laptop)
 
 		return total_price
 	else if(devtype == 2) 	// Tablet, more expensive, not everyone could probably afford this.
 		if(fabricate)
 			fabricated_tablet = new(src)
-			fabricated_tablet.processor_unit = new /obj/item/computer_hardware/processor_unit/small(fabricated_tablet)
+			fabricated_tablet.processor_unit = new/obj/item/computer_hardware/processor_unit/small(fabricated_tablet)
 		total_price = 199
 		switch(dev_battery)
 			if(1) // Basic(300C)
 				if(fabricate)
-					fabricated_tablet.battery_module = new /obj/item/computer_hardware/battery_module/nano(fabricated_tablet)
+					fabricated_tablet.battery_module = new/obj/item/computer_hardware/battery_module/nano(fabricated_tablet)
 			if(2) // Upgraded(500C)
 				if(fabricate)
-					fabricated_tablet.battery_module = new /obj/item/computer_hardware/battery_module/micro(fabricated_tablet)
+					fabricated_tablet.battery_module = new/obj/item/computer_hardware/battery_module/micro(fabricated_tablet)
 				total_price += 199
 			if(3) // Advanced(750C)
 				if(fabricate)
-					fabricated_tablet.battery_module = new /obj/item/computer_hardware/battery_module(fabricated_tablet)
+					fabricated_tablet.battery_module = new/obj/item/computer_hardware/battery_module(fabricated_tablet)
 				total_price += 499
 		switch(dev_disk)
 			if(1) // Basic(32GQ)
 				if(fabricate)
-					fabricated_tablet.hard_drive = new /obj/item/computer_hardware/hard_drive/micro(fabricated_tablet)
+					fabricated_tablet.hard_drive = new/obj/item/computer_hardware/hard_drive/micro(fabricated_tablet)
 			if(2) // Upgraded(64GQ)
 				if(fabricate)
-					fabricated_tablet.hard_drive = new /obj/item/computer_hardware/hard_drive/small(fabricated_tablet)
+					fabricated_tablet.hard_drive = new/obj/item/computer_hardware/hard_drive/small(fabricated_tablet)
 				total_price += 99
 			if(3) // Advanced(128GQ)
 				if(fabricate)
-					fabricated_tablet.hard_drive = new /obj/item/computer_hardware/hard_drive(fabricated_tablet)
+					fabricated_tablet.hard_drive = new/obj/item/computer_hardware/hard_drive(fabricated_tablet)
 				total_price += 299
 		switch(dev_netcard)
 			if(1) // Basic(Short-Range)
 				if(fabricate)
-					fabricated_tablet.network_card = new /obj/item/computer_hardware/network_card(fabricated_tablet)
+					fabricated_tablet.network_card = new/obj/item/computer_hardware/network_card(fabricated_tablet)
 				total_price += 99
 			if(2) // Advanced (Long Range)
 				if(fabricate)
-					fabricated_tablet.network_card = new /obj/item/computer_hardware/network_card/advanced(fabricated_tablet)
+					fabricated_tablet.network_card = new/obj/item/computer_hardware/network_card/advanced(fabricated_tablet)
 				total_price += 299
 		if(dev_nanoprint)
 			total_price += 99
 			if(fabricate)
-				fabricated_tablet.nano_printer = new /obj/item/computer_hardware/nano_printer(fabricated_tablet)
+				fabricated_tablet.nano_printer = new/obj/item/computer_hardware/nano_printer(fabricated_tablet)
 		if(dev_card)
 			total_price += 199
 			if(fabricate)
-				fabricated_tablet.card_slot = new /obj/item/computer_hardware/card_slot(fabricated_tablet)
+				fabricated_tablet.card_slot = new/obj/item/computer_hardware/card_slot(fabricated_tablet)
 		if(dev_tesla)
 			total_price += 399
 			if(fabricate)
-				fabricated_tablet.tesla_link = new /obj/item/computer_hardware/tesla_link(fabricated_tablet)
+				fabricated_tablet.tesla_link = new/obj/item/computer_hardware/tesla_link(fabricated_tablet)
 		if(dev_aislot)
 			total_price += 499
 			if(fabricate)
-				fabricated_tablet.ai_slot = new /obj/item/computer_hardware/ai_slot(fabricated_tablet)
+				fabricated_tablet.ai_slot = new/obj/item/computer_hardware/ai_slot(fabricated_tablet)
 		return total_price
 	return 0
 
@@ -181,7 +180,8 @@
 	if(href_list["pick_device"])
 		if(state) // We've already picked a device type
 			return 0
-		devtype = text2num(href_list["pick_device"])
+		// devtype = text2num(href_list["pick_device"]) // Currently unavailable
+		devtype = 1
 		state = 1
 		fabricate_and_recalc_price(0)
 		return 1
@@ -211,27 +211,30 @@
 		fabricate_and_recalc_price(0)
 		return 1
 	if(href_list["hw_tesla"])
-		dev_tesla = text2num(href_list["hw_tesla"])
-		fabricate_and_recalc_price(0)
+		// dev_tesla = text2num(href_list["hw_tesla"]) // Currently unavailable
+		// fabricate_and_recalc_price(0)
 		return 1
 	if(href_list["hw_nanoprint"])
-		dev_nanoprint = text2num(href_list["hw_nanoprint"])
-		fabricate_and_recalc_price(0)
+		//dev_nanoprint = text2num(href_list["hw_nanoprint"]) // Currently unavailable
+		// fabricate_and_recalc_price(0)
 		return 1
 	if(href_list["hw_card"])
 		dev_card = text2num(href_list["hw_card"])
 		fabricate_and_recalc_price(0)
 		return 1
 	if(href_list["hw_aislot"])
-		dev_aislot = text2num(href_list["hw_aislot"])
-		fabricate_and_recalc_price(0)
+		//dev_aislot = text2num(href_list["hw_aislot"]) // Currently unavailable
+		//fabricate_and_recalc_price(0)
 		return 1
 	return 0
 
-/obj/machinery/lapvend/attack_hand(mob/user)
-	ui_interact(user)
+/obj/machinery/lapvend/attack_hand(var/mob/user)
+	if(anchored)
+		ui_interact(user)
+	else
+		to_chat(user, SPAN_NOTICE("[src] needs to be anchored to the floor to function!"))
 
-/obj/machinery/lapvend/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/lapvend/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
 	if(stat & (BROKEN | NOPOWER | MAINT))
 		if(ui)
 			ui.close()
@@ -252,65 +255,107 @@
 	if(state == 1 || state == 2)
 		data["totalprice"] = total_price
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnanoui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "computer_fabricator.tmpl", "Personal Computer Vendor", 500, 400)
 		ui.set_initial_data(data)
 		ui.open()
 		ui.set_auto_update(1)
 
-
 /obj/machinery/lapvend/attackby(obj/item/W, mob/user)
-	var/obj/item/card/id/I = W.get_id_card()
-	// Awaiting payment state
-	if(state == 2)
-		if(process_payment(I,W))
-			fabricate_and_recalc_price(1)
-			if((devtype == 1) && fabricated_laptop)
-				if(fabricated_laptop.battery_module)
-					fabricated_laptop.battery_module.charge_to_full()
-				fabricated_laptop.forceMove(src.loc)
-				fabricated_laptop.screen_on = 0
-				fabricated_laptop.anchored = 0
-				fabricated_laptop.update_icon()
-				fabricated_laptop.update_verbs()
-				fabricated_laptop = null
-			else if((devtype == 2) && fabricated_tablet)
-				if(fabricated_tablet.battery_module)
-					fabricated_tablet.battery_module.charge_to_full()
-				fabricated_tablet.forceMove(src.loc)
-				fabricated_tablet.update_verbs()
-				fabricated_tablet = null
-			ping("Enjoy your new product!")
-			state = 3
-			return 1
-		return 0
+	if(W.iswrench())
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		if(anchored)
+			user.visible_message("<b>[user]</b> begins unsecuring \the [src] from the floor.", \
+								SPAN_NOTICE("You start unsecuring \the [src] from the floor."))
+		else
+			user.visible_message("<b>[user]</b> begins securing \the [src] to the floor.", \
+								SPAN_NOTICE("You start securing \the [src] to the floor."))
+		if(W.use_tool(src, user, 20, volume = 50))
+			if(!src)
+				return
+			to_chat(user, SPAN_NOTICE("You [anchored ? "un" : ""]secured \the [src]!"))
+			anchored = !anchored
+		return
+	else if(state == 2) // awaiting payment state
+		if(istype(W, /obj/item/card/id))
+			var/obj/item/card/id/I = W.GetID()
+			if(process_payment(I, W))
+				create_device()
+				return TRUE
+		else if(istype(W, /obj/item/card/tech_support))
+			create_device("Have a NanoTrasen day!")
+			return TRUE
 	return ..()
 
+/obj/machinery/lapvend/proc/create_device(var/message = "Enjoy your new product!")
+	fabricate_and_recalc_price(TRUE)
+	if((devtype == 1) && fabricated_laptop)
+		if(fabricated_laptop.battery_module)
+			fabricated_laptop.battery_module.charge_to_full()
+		fabricated_laptop.forceMove(src.loc)
+		fabricated_laptop.screen_on = 0
+		fabricated_laptop.anchored = 0
+		fabricated_laptop.update_icon()
+		fabricated_laptop = null
+	else if((devtype == 2) && fabricated_tablet)
+		if(fabricated_tablet.battery_module)
+			fabricated_tablet.battery_module.charge_to_full()
+		fabricated_tablet.forceMove(src.loc)
+		fabricated_tablet = null
+	ping(message)
+	intent_message(MACHINE_SOUND)
+	state = 3
 
 // Simplified payment processing, returns 1 on success.
-/obj/machinery/lapvend/proc/process_payment(obj/item/card/id/I, obj/item/ID_container)
+/obj/machinery/lapvend/proc/process_payment(var/obj/item/card/id/I, var/obj/item/ID_container)
+	var/obj/item/spacecash/S = null
+	if (istype(ID_container, /obj/item/spacecash))
+		S = ID_container
 	if(I==ID_container || ID_container == null)
 		visible_message("<span class='info'>\The [usr] swipes \the [I] through \the [src].</span>")
 	else
 		visible_message("<span class='info'>\The [usr] swipes \the [ID_container] through \the [src].</span>")
-	var/datum/money_account/customer_account = I ? get_account(I.associated_account_number) : null
-	if (!customer_account || customer_account.suspended)
-		ping("Connection error. Unable to connect to account.")
-		return 0
-
-	if(customer_account.security_level != 0) //If card requires pin authentication (ie seclevel 1 or 2)
-		var/attempt_pin = input("Enter pin code", "Vendor transaction") as num
-		customer_account = attempt_account_access(I.associated_account_number, attempt_pin, 2)
-
-		if(!customer_account)
-			ping("Unable to access account: incorrect credentials.")
+	if(I)
+		var/datum/money_account/customer_account = SSeconomy.get_account(I.associated_account_number)
+		if (!customer_account || customer_account.suspended)
+			ping("Connection error. Unable to connect to account.")
 			return 0
 
-	if(total_price > customer_account.money)
-		ping("Insufficient funds in account.")
+		if(customer_account.security_level != 0) //If card requires pin authentication (ie seclevel 1 or 2)
+			var/attempt_pin = input("Enter pin code", "Vendor transaction") as num
+			customer_account = SSeconomy.attempt_account_access(I.associated_account_number, attempt_pin, 2)
+
+			if(!customer_account)
+				ping("Unable to access account: incorrect credentials.")
+				return 0
+
+		if(total_price > customer_account.money)
+			ping("Insufficient funds in account.")
+			return 0
+		else
+			customer_account.money -= total_price
+			var/datum/transaction/T = new()
+			T.target_name = "Computer Manufacturer (via [src.name])"
+			T.purpose = "Purchase of [(devtype == 1) ? "laptop computer" : "tablet microcomputer"]."
+			T.amount = total_price
+			T.source_terminal = src.name
+			T.date = worlddate2text()
+			T.time = worldtime2text()
+			SSeconomy.add_transaction_log(customer_account,T)
+			return 1
+	else if(S)
+		if(total_price > S.worth)
+			ping("Insufficient funds!")
+			return 0
+		else
+			S.worth -= total_price
+			if(S.worth <= 0)
+				qdel(S)
+			else
+				S.update_icon()
+			return 1
+
+	else // just incase
+		ping("You cannot pay with this!")
 		return 0
-	else
-		var/datum/transaction/T = new("Computer Manufacturer (via [src.name])", "Purchase of [(devtype == 1) ? "laptop computer" : "tablet microcomputer"].", -total_price, src.name)
-		customer_account.do_transaction(T)
-		return 1

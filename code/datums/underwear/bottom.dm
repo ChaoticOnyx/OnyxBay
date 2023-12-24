@@ -1,98 +1,126 @@
-/datum/category_item/underwear/bottom
-	underwear_gender = PLURAL
-	underwear_name = "underwear"
-	underwear_type = /obj/item/underwear/bottom
-
 /datum/category_item/underwear/bottom/none
 	name = "None"
 	always_last = TRUE
-	underwear_type = null
 
 /datum/category_item/underwear/bottom/briefs
 	name = "Briefs"
-	underwear_name = "briefs"
 	icon_state = "briefs"
 	has_color = TRUE
 
-/datum/category_item/underwear/bottom/briefs/is_default(gender)
+/datum/category_item/underwear/bottom/briefs/is_default(var/gender)
 	return gender != FEMALE
 
 /datum/category_item/underwear/bottom/boxers
 	name = "Boxers"
-	underwear_name = "boxers"
 	icon_state = "boxers"
 	has_color = TRUE
 
-/datum/category_item/underwear/bottom/boxers_loveheart
-	name = "Boxers (hearts)"
-	underwear_name = "boxers"
-	icon_state = "boxers_loveheart"
+/datum/category_item/underwear/bottom/boxers_striped
+	name = "Boxers, Striped"
+	icon_state = "boxers_striped"
+	has_color = TRUE
 
 /datum/category_item/underwear/bottom/boxers_green_and_blue
-	name = "Boxers (green & blue striped)"
-	underwear_name = "boxers"
+	name = "Boxers, Green & Blue Striped"
 	icon_state = "boxers_green_and_blue"
 
+/datum/category_item/underwear/bottom/boxers_loveheart
+	name = "Boxers, Loveheart"
+	icon_state = "boxers_loveheart"
+	has_color = TRUE
+
+/datum/category_item/underwear/bottom/boxers_Lprint
+	name = "Boxers, Leopard Print"
+	icon_state = "boxers_lprint"
+
 /datum/category_item/underwear/bottom/panties
-	name = "Panties 1"
-	underwear_name = "panties"
+	name = "Panties"
 	icon_state = "panties"
 	has_color = TRUE
 
-/datum/category_item/underwear/bottom/panties/is_default(gender)
+/datum/category_item/underwear/bottom/panties/is_default(var/gender)
 	return gender == FEMALE
 
-/datum/category_item/underwear/bottom/panties_alt
-	name = "Panties 2"
-	underwear_name = "panties"
-	icon_state = "panties_alt"
+/datum/category_item/underwear/bottom/panties_striped
+	name = "Panties, Striped"
+	icon_state = "panties_striped"
 	has_color = TRUE
 
-/datum/category_item/underwear/bottom/panties_noback
-	name = "Panties (noback)"
-	underwear_name = "weird panties"
-	icon_state = "panties_noback"
+/datum/category_item/underwear/bottom/panties_bikini
+	name = "Panties, Bikini"
+	icon_state = "panties_bikini"
 	has_color = TRUE
 
-/datum/category_item/underwear/bottom/thong
-	name = "Thong"
-	underwear_name = "thong"
-	icon_state = "thong"
+/datum/category_item/underwear/bottom/panties_hipster
+	name = "Panties, Hipster"
+	icon_state = "panties_hipster"
 	has_color = TRUE
-
-/datum/category_item/underwear/bottom/lacy_thong
-	name = "Lacy thong 1"
-	underwear_name = "thong"
-	icon_state = "lacy_thong"
-
-/datum/category_item/underwear/bottom/lacy_thong_alt
-	name = "Lacy thong 2"
-	underwear_name = "thong"
-	icon_state = "lacy_thong_alt"
 
 /datum/category_item/underwear/bottom/compression_shorts
-	name = "Compression shorts"
-	underwear_name = "compression shorts"
+	name = "Compression Shorts"
 	icon_state = "compression_shorts"
 	has_color = TRUE
 
-/datum/category_item/underwear/bottom/underpants
-	name = "Underpants"
-	underwear_name = "underpants"
+/datum/category_item/underwear/bottom/compression_shorts_alt
+	name = "Compression Shorts, Alt"
+	icon_state = "compression_shorts_alt"
+	has_color = TRUE
+
+/datum/category_item/underwear/bottom/shorts_army
+	name = "Shorts, Army"
+	icon_state = "shorts_army"
+
+/datum/category_item/underwear/bottom/shorts_expedition
+	name = "Shorts, Expedition"
+	icon_state = "shorts_expedition"
+
+/datum/category_item/underwear/bottom/shorts_scc
+	name = "Shorts, SCC"
+	icon_state = "shorts_scc"
+
+/datum/category_item/underwear/bottom/shorts_fleet
+	name = "Shorts, Fleet"
+	icon_state = "shorts_fleet"
+
+/datum/category_item/underwear/bottom/shorts_zavodskoi
+	name = "Shorts, Zavodskoi Interstellar"
+	icon_state = "shorts_necropolis"
+
+/datum/category_item/underwear/bottom/shorts_pmc
+	name = "Shorts, PMCG"
+	icon_state = "shorts_pmc"
+
+/datum/category_item/underwear/bottom/midway
+	name = "Midway Briefs"
+	icon_state = "midway"
+	has_color = TRUE
+
+/datum/category_item/underwear/bottom/longjohnbottoms
+	name = "Long John Bottoms"
 	icon_state = "ljonb"
 	has_color = TRUE
 
-/datum/category_item/underwear/bottom/expedition_pt_shorts
-	name = "PT shorts (Expeditionary Corps)"
-	underwear_name = "undershorts"
-	icon_state = "expedition_shorts"
+/datum/category_item/underwear/bottom/longjohnbottoms_alt
+	name = "Long John Bottoms, Alt"
+	icon_state = "ljonb_alt"
+	has_color = TRUE
 
-/datum/category_item/underwear/bottom/fleet_pt_shorts
-	name = "PT shorts (Fleet)"
-	underwear_name = "undershorts"
-	icon_state = "fleet_shorts"
+/datum/category_item/underwear/bottom/onepiece
+	name = "One Piece"
+	icon_state = "onepiece"
+	has_color = TRUE
 
-/datum/category_item/underwear/bottom/marine_pt_shorts
-	name = "PT shorts (Marine Corps)"
-	underwear_name = "undershorts"
-	icon_state = "marine_shorts"
+/datum/category_item/underwear/bottom/onepiece_striped
+	name = "One Piece, Striped"
+	icon_state = "onepiece_striped"
+	has_color = TRUE
+
+/datum/category_item/underwear/bottom/swimbottom
+	name = "Swimming Bottom"
+	icon_state = "swimbottom"
+	has_color = TRUE
+
+/datum/category_item/underwear/bottom/fishnet_lower
+	name = "Fishnet Bottoms"
+	icon_state = "fishnet_lower"
+	has_color = TRUE

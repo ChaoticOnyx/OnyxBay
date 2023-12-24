@@ -1,0 +1,4 @@
+#define STOCK_ITEM_COMMON(id,prob) /datum/cargo_master/cargo_spawn_t1_##id { category = "common"; probability = prob; spawner_proc = /proc/cargo_spawn_t1_##id; }; /proc/cargo_spawn_t1_##id(atom/L, datum/cargospawner/CS)
+#define STOCK_ITEM_UNCOMMON(id,prob) /datum/cargo_master/cargo_spawn_t2_##id { category = "uncommon"; probability = prob; spawner_proc = /proc/cargo_spawn_t2_##id; }; /proc/cargo_spawn_t2_##id(atom/L, datum/cargospawner/CS)
+#define STOCK_ITEM_RARE(id,prob) /datum/cargo_master/cargo_spawn_t3_##id { category = "rare"; probability = prob; spawner_proc = /proc/cargo_spawn_t3_##id; }; /proc/cargo_spawn_t3_##id(atom/L, datum/cargospawner/CS)
+#define STOCK_ITEM_LARGE(id,prob) /datum/cargo_master/cargo_spawn_xl_##id { category = "large"; probability = prob; spawner_proc = /proc/cargo_spawn_xl_##id; }; /proc/cargo_spawn_xl_##id(atom/L, datum/cargospawner/CS)

@@ -1,9 +1,0 @@
-"a" = (/turf/simulated/floor/plating,/area/template_noop)
-"b" = (/obj/item/stack/material/steel,/obj/item/stack/cable_coil/cut,/turf/simulated/floor/plating,/area/template_noop)
-"c" = (/obj/machinery/igniter,/turf/simulated/floor/plating,/area/template_noop)
-
-(1,1,1) = {"
-aab
-aca
-aaa
-"}

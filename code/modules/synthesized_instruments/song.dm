@@ -25,14 +25,10 @@
 /datum/synthesized_song/New(datum/sound_player/playing_object, datum/instrument/instrument)
 	src.player = playing_object
 	src.instrument_data = instrument
-	src.octave_range_min = GLOB.musical_config.lowest_octave
-	src.octave_range_max = GLOB.musical_config.highest_octave
-
+	src.octave_range_min = musical_config.lowest_octave
+	src.octave_range_max = musical_config.highest_octave
 	instrument.create_full_sample_deviation_map()
-
-
-
-	available_channels = GLOB.musical_config.channels_per_instrument
+	available_channels = musical_config.channels_per_instrument
 
 /datum/synthesized_song/Destroy()
 	player.event_manager.deactivate()
@@ -44,17 +40,17 @@
 
 
 /datum/synthesized_song/proc/play_synthesized_note(note, acc, oct, duration, where, which_one)
-	if (oct < GLOB.musical_config.lowest_octave || oct > GLOB.musical_config.highest_octave)	return
+	if (oct < musical_config.lowest_octave || oct > musical_config.highest_octave)	return
 	if (oct < src.octave_range_min || oct > src.octave_range_max)	return
 
 	var/delta1 = acc == "b" ? -1 : acc == "#" ? 1 : acc == "s" ? 1 : acc == "n" ? 0 : 0
 	var/delta2 = 12 * oct
 
-	var/note_num = delta1+delta2+GLOB.musical_config.nn2no[note]
+	var/note_num = delta1+delta2+musical_config.nn2no[note]
 	if (note_num < 0 || note_num > 127)
 		CRASH("play_synthesized note failed because of 0..127 condition, [note], [acc], [oct]")
 
-	var/datum/sample_pair/pair = src.instrument_data.sample_map[GLOB.musical_config.n2t(note_num)]
+	var/datum/sample_pair/pair = src.instrument_data.sample_map[musical_config.n2t(note_num)]
 	#define Q 0.083 // 1/12
 	var/freq = 2**(Q*pair.deviation)
 	#undef Q
@@ -83,16 +79,13 @@
 	else
 		use_env = 1
 
-	var/current_volume = Clamp(sound_copy.volume, 0, 100)
+	var/current_volume = clamp(sound_copy.volume, 0, 100)
 	sound_copy.volume = current_volume //Sanitize volume
 	var/datum/sound_token/token = new /datum/sound_token/instrument(src.player.actual_instrument, src.sound_id, sound_copy, src.player.range, FALSE, use_env, player)
-	#if DM_VERSION < 511
-	sound_copy.frequency = 1
-	#endif
 	var/delta_volume = player.volume / src.sustain_timer
 
 	var/tick = duration
-	while ((current_volume > 0) && token)
+	while ((current_volume > 0) && !QDELETED(token))
 		var/new_volume = current_volume
 		tick += world.tick_lag
 		if (delta_volume <= 0)
@@ -136,7 +129,7 @@
 			var/obj/structure/synthesized_instrument/S = src.player.actual_instrument
 			var/datum/real_instrument/R = S.real_instrument
 			if (R.song_editor)
-				SSnano.update_uis(R.song_editor)
+				SSnanoui.update_uis(R.song_editor)
 		for (var/notes in splittext(lowertext(line), ","))
 			var/list/components = splittext(notes, "/")
 			var/duration = sanitize_tempo(src.tempo)
@@ -195,7 +188,7 @@
 	var/list/allowed_suff = list("b", "n", "#", "s")
 	var/list/note_off_delta = list("a"=91, "b"=91, "c"=98, "d"=98, "e"=98, "f"=98, "g"=98)
 	var/list/lines_copy = src.lines.Copy()
-	addtimer(CALLBACK(src, nameof(.proc/play_lines), user, allowed_suff, note_off_delta, lines_copy), 0)
+	addtimer(CALLBACK(src, .proc/play_lines, user, allowed_suff, note_off_delta, lines_copy), 0)
 
 #undef CP
 #undef IS_DIGIT

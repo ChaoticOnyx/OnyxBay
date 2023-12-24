@@ -1,5 +1,5 @@
 /// The sane defaults for a UI such as a computer or a machine.
-/proc/default_tgui_state(mob/user, atom/source)
+/proc/default_ui_state(mob/user, atom/source)
 	return min(
 		ui_status_user_is_abled(user, source),
 		ui_status_user_has_free_hands(user, source),
@@ -15,10 +15,10 @@
 /// far away users will be able to see, and anyone farther won't see anything.
 /// Dead users will receive updates no matter what, though you likely want to add
 /// a [`ui_status_only_living`] check for finer observer interactions.
-/proc/ui_status_user_is_adjacent(mob/user, atom/source)
+/proc/ui_status_user_is_adjacent(mob/user, atom/source, allow_tk = TRUE)
 	if (isliving(user))
 		var/mob/living/living_user = user
-		return living_user.shared_living_ui_distance(source)
+		return living_user.shared_living_ui_distance(source, allow_tk = allow_tk)
 	else
 		return UI_UPDATE
 
@@ -29,7 +29,7 @@
 
 	if(isobserver(user))
 		// If they turn on ghost AI control, admins can always interact.
-		if(check_rights(R_ADMIN, FALSE, user.client))
+		if(user.can_admin_interact())
 			return UI_INTERACTIVE
 
 		// Regular ghosts can always at least view if in range.
@@ -50,13 +50,12 @@
 /// Returns a UI status such that those without blocked hands will be able to interact,
 /// but everyone else can only watch.
 /proc/ui_status_user_has_free_hands(mob/user, atom/source)
-	return user.incapacitated(INCAPACITATION_RESTRAINED) ? UI_UPDATE : UI_INTERACTIVE
+	return user.use_check() ? UI_UPDATE : UI_INTERACTIVE
 
 /// Returns a UI status such that advanced tool users will be able to interact,
 /// but everyone else can only watch.
 /proc/ui_status_user_is_advanced_tool_user(mob/user)
-	var/mob/living/carbon/human/H = user
-	return H?.IsAdvancedToolUser(TRUE) ? UI_INTERACTIVE : UI_UPDATE
+	return user.IsAdvancedToolUser() ? UI_INTERACTIVE : UI_UPDATE
 
 /// Returns a UI status such that silicons will be able to interact with whatever
 /// they would have access to if this was a machine. For example, AIs can
@@ -87,7 +86,7 @@
 
 /mob/living/silicon/pai/get_ui_access(atom/source)
 	// pAIs can only use themselves and the owner's radio.
-	if(source == src && !stat)
+	if((source == src || source == radio) && !stat)
 		return UI_INTERACTIVE
 	else
 		return UI_CLOSE
@@ -99,6 +98,14 @@
 		return UI_UPDATE
 
 	var/mob/living/living_user = user
-	return (living_user.lying && living_user.stat == CONSCIOUS) \
+	return (user.incapacitated(INCAPACITATION_FORCELYING) && living_user.stat == CONSCIOUS) \
 		? UI_INTERACTIVE \
 		: UI_UPDATE
+
+/// Return UI_INTERACTIVE if the user is strictly adjacent to the target atom, whether they can see it or not.
+/// Return UI_CLOSE otherwise.
+/proc/ui_status_user_strictly_adjacent(mob/user, atom/target)
+	if(get_dist(target, user) > 1)
+		return UI_CLOSE
+
+	return UI_INTERACTIVE

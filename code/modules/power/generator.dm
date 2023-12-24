@@ -1,12 +1,13 @@
 /obj/machinery/power/generator
 	name = "thermoelectric generator"
 	desc = "It's a high efficiency thermoelectric generator."
-	icon_state = "teg"
-	density = 1
-	anchored = 0
+	icon_state = "teg-unassembled"
+	density = TRUE
+	anchored = FALSE
+	obj_flags = OBJ_FLAG_ROTATABLE
 
-	use_power = POWER_USE_IDLE
-	idle_power_usage = 100 WATTS // Just enough to do the computer and display things.
+	use_power = POWER_USE_OFF
+	idle_power_usage = 100 //Watts, I hope.  Just enough to do the computer and display things.
 
 	var/max_power = 500000
 	var/thermal_efficiency = 0.65
@@ -22,17 +23,26 @@
 	var/lastgen2 = 0
 	var/effective_gen = 0
 	var/lastgenlev = 0
-	beepsounds = list(
-		'sound/effects/machinery/engineer/turbine1.ogg',
-		'sound/effects/machinery/engineer/turbine2.ogg',
-		'sound/effects/machinery/engineer/turbine3.ogg'
-	)
 
-/obj/machinery/power/generator/New()
-	..()
+	var/datum/effect_system/sparks/spark_system
+
+/obj/machinery/power/generator/Initialize()
+	. = ..()
 	desc = initial(desc) + " Rated for [round(max_power/1000)] kW."
-	spawn(1)
-		reconnect()
+	var/dirs
+	if (dir == NORTH || dir == SOUTH)
+		dirs = list(EAST,WEST)
+	else
+		dirs = list(NORTH,SOUTH)
+
+	spark_system = bind_spark(src, 3, dirs)
+	reconnect()
+
+/obj/machinery/power/generator/Destroy()
+	QDEL_NULL(spark_system)
+	circ1 = null
+	circ2 = null
+	return ..()
 
 //generators connect in dir and reverse_dir(dir) directions
 //mnemonic to determine circulator/generator directions: the cirulators orbit clockwise around the generator
@@ -40,6 +50,10 @@
 //and a circulator to the WEST of the generator connects first to the NORTH, then to the SOUTH
 //note that the circulator's outlet dir is it's always facing dir, and it's inlet is always the reverse
 /obj/machinery/power/generator/proc/reconnect()
+	if(circ1)
+		circ1.temperature_overlay = null
+	if(circ2)
+		circ2.temperature_overlay = null
 	circ1 = null
 	circ2 = null
 	if(src.loc && anchored)
@@ -59,22 +73,35 @@
 			if(circ1 && circ2 && (circ1.dir != EAST || circ2.dir != WEST))
 				circ1 = null
 				circ2 = null
+	update_icon()
 
-/obj/machinery/power/generator/on_update_icon()
-	if(stat & (NOPOWER|BROKEN))
-		ClearOverlays()
+/obj/machinery/power/generator/update_icon()
+	icon_state = anchored ? "teg-assembled" : "teg-unassembled"
+	cut_overlays()
+	if (circ1)
+		circ1.temperature_overlay = null
+	if (circ2)
+		circ2.temperature_overlay = null
+	if (stat & (NOPOWER|BROKEN))
+		return TRUE
 	else
-		ClearOverlays()
+		if (lastgenlev != 0)
+			add_overlay("teg-op[lastgenlev]")
+			if (circ1 && circ2)
+				var/extreme = (lastgenlev > 9) ? "ex" : ""
+				if (circ1.last_temperature < circ2.last_temperature)
+					circ1.temperature_overlay = "circ-[extreme]cold"
+					circ2.temperature_overlay = "circ-[extreme]hot"
+				else
+					circ1.temperature_overlay = "circ-[extreme]hot"
+					circ2.temperature_overlay = "circ-[extreme]cold"
+		return TRUE
 
-		if(lastgenlev != 0)
-			AddOverlays(image('icons/obj/power.dmi', "teg-op[lastgenlev]"))
-
-/obj/machinery/power/generator/Process()
+/obj/machinery/power/generator/process()
 	if(!circ1 || !circ2 || !anchored || stat & (BROKEN|NOPOWER))
 		stored_energy = 0
 		return
 
-	play_beep()
 	updateDialog()
 
 	var/datum/gas_mixture/air1 = circ1.return_transfer_air()
@@ -102,7 +129,7 @@
 			else
 				air2.temperature = air2.temperature + heat/air2_heat_capacity
 				air1.temperature = air1.temperature - energy_transfer/air1_heat_capacity
-		playsound(src.loc, 'sound/effects/beam.ogg', 25, 0, 10,  is_ambiance = 1)
+			playsound(get_turf(src), 'sound/effects/beam.ogg', 25, FALSE, 10, , required_preferences = ASFX_AMBIENCE)
 
 	//Transfer the air
 	if (air1)
@@ -118,9 +145,7 @@
 
 	//Exceeding maximum power leads to some power loss
 	if(effective_gen > max_power && prob(5))
-		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
-		s.set_up(3, 1, src)
-		s.start()
+		spark_system.queue()
 		stored_energy *= 0.5
 
 	//Power
@@ -131,7 +156,7 @@
 	stored_energy -= lastgen1
 	effective_gen = (lastgen1 + lastgen2) / 2
 
-	// update icon overlays and power usage only if displayed level has changed
+	// update icon overlays and power usage only when necessary
 	var/genlev = max(0, min( round(11*effective_gen / max_power), 11))
 	if(effective_gen > 100 && genlev == 0)
 		genlev = 1
@@ -141,16 +166,18 @@
 	add_avail(effective_gen)
 
 /obj/machinery/power/generator/attack_ai(mob/user)
+	if(!ai_can_interact(user))
+		return
 	attack_hand(user)
 
 /obj/machinery/power/generator/attackby(obj/item/W as obj, mob/user as mob)
-	if(isWrench(W))
-		playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+	if(W.iswrench())
+		playsound(src.loc, W.usesound, 75, 1)
 		anchored = !anchored
 		user.visible_message("[user.name] [anchored ? "secures" : "unsecures"] the bolts holding [src.name] to the floor.", \
 					"You [anchored ? "secure" : "unsecure"] the bolts holding [src] to the floor.", \
 					"You hear a ratchet")
-		update_use_power(anchored)
+		update_use_power(anchored ? POWER_USE_IDLE : POWER_USE_OFF)
 		if(anchored) // Powernet connection stuff.
 			connect_to_network()
 		else
@@ -166,7 +193,7 @@
 		reconnect()
 	ui_interact(user)
 
-/obj/machinery/power/generator/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/power/generator/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
 	// this is the data which will be sent to the ui
 	var/vertical = 0
 	if (dir == NORTH || dir == SOUTH)
@@ -205,7 +232,7 @@
 
 
 	// update the ui if it exists, returns null if no ui is passed/found
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnanoui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		// the ui does not exist, so we'll create a new() one
 		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
@@ -217,22 +244,6 @@
 		// auto update every Master Controller tick
 		ui.set_auto_update(1)
 
-/obj/machinery/power/generator/verb/rotate_clock()
-	set category = "Object"
-	set name = "Rotate Generator (Clockwise)"
-	set src in view(1)
-
-	if (usr.stat || usr.restrained()  || anchored)
-		return
-
-	src.set_dir(turn(src.dir, 90))
-
-/obj/machinery/power/generator/verb/rotate_anticlock()
-	set category = "Object"
-	set name = "Rotate Generator (Counterclockwise)"
-	set src in view(1)
-
-	if (usr.stat || usr.restrained()  || anchored)
-		return
-
-	src.set_dir(turn(src.dir, -90))
+/obj/machinery/power/generator/power_change()
+	..()
+	update_icon()

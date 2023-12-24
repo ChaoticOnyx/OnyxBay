@@ -4,13 +4,13 @@
 		qdel(mmi)
 	..()
 
-/mob/living/silicon/robot/death(gibbed,deathmessage, show_dead_message)
+/mob/living/silicon/robot/death(gibbed)
 	if(camera)
-		camera.status = 0
+		camera.status = FALSE
 	if(module)
 		var/obj/item/gripper/G = locate(/obj/item/gripper) in module
-		G?.drop_item()
-	locked = 0
+		if(G)
+			G.drop_item()
 	remove_robot_verbs()
-	sql_report_cyborg_death(src)
-	..(gibbed,"shudders violently for a moment, then becomes motionless, its eyes slowly darkening.", "You have suffered a critical system failure, and are dead.")
+	sql_report_death(src)
+	..(gibbed,"shudders violently for a moment, then becomes motionless, its eyes slowly darkening.")

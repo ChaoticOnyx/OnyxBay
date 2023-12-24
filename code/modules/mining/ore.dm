@@ -1,61 +1,46 @@
 /obj/item/ore
-	name = "small rock"
-	icon = 'icons/obj/mining.dmi'
-	icon_state = "ore2"
-	randpixel = 10
-	w_class = ITEM_SIZE_SMALL
+	name = "rock"
+	icon = 'icons/obj/item/ore.dmi'
+	icon_state = "ore"
+	randpixel = 8
+	w_class = ITEMSIZE_SMALL
+	throwforce = 10
 	var/datum/geosample/geologic_data
-	var/ore/ore = null // set to a type to find the right instance on init
+	var/material
 
-/obj/item/ore/Initialize()
-	. = ..()
-	if(ispath(ore))
-		ensure_ore_data_initialised()
-		ore = ores_by_type[ore]
-		if(ore.ore != type)
-			log_error("[src] ([src.type]) had ore type [ore.type] but that type does not have [src.type] set as its ore item!")
-		update_ore()
-
-/obj/item/ore/proc/update_ore()
-	SetName(ore.display_name)
-	icon_state = "ore_[ore.icon_tag]"
-	origin_tech = ore.origin_tech.Copy()
-
-/obj/item/ore/Value(base)
-	. = ..()
-	if(!ore)
-		return
-	var/material/M
-	if(ore.smelts_to)
-		M = get_material_by_name(ore.smelts_to)
-	else if (ore.compresses_to)
-		M = get_material_by_name(ore.compresses_to)
-	if(!istype(M))
-		return
-	return 0.5*M.value*ore.result_amount
-
-/obj/item/ore/slag
-	name = "slag"
-	desc = "Someone screwed up..."
-	icon_state = "slag"
+/obj/item/ore/Crossed(AM as mob|obj)
+	..()
+	if(ishuman(AM))
+		var/mob/living/carbon/human/H = AM
+		var/obj/item/storage/bag/ore/S = locate() in H
+		if(S && (S == H.l_store || S == H.r_store || S == H.l_hand || S == H.r_hand))
+			if(S.collection_mode)
+				attackby(S, H)
+				return
 
 /obj/item/ore/uranium
-	ore = /ore/uranium
-
-/obj/item/ore/uranium/Initialize()
-	. = ..()
-
-	create_reagents()
-	reagents.add_reagent(/datum/reagent/uranium, ore.result_amount, null, FALSE)
+	name = "pitchblende"
+	icon_state = "ore_uranium"
+	origin_tech = list(TECH_MATERIAL = 5)
+	material = ORE_URANIUM
 
 /obj/item/ore/iron
-	ore = /ore/hematite
+	name = "hematite"
+	icon_state = "ore_iron"
+	origin_tech = list(TECH_MATERIAL = 1)
+	material = ORE_IRON
 
 /obj/item/ore/coal
-	ore = /ore/coal
+	name = "raw carbon"
+	icon_state = "slag"
+	origin_tech = list(TECH_MATERIAL = 1)
+	material = ORE_COAL
 
 /obj/item/ore/glass
-	ore = /ore/glass
+	name = "sand"
+	icon_state = "ore_glass"
+	origin_tech = list(TECH_MATERIAL = 1)
+	material = ORE_SAND
 	slot_flags = SLOT_HOLSTER
 
 // POCKET SAND!
@@ -63,32 +48,54 @@
 	..()
 	var/mob/living/carbon/human/H = hit_atom
 	if(istype(H) && H.has_eyes() && prob(85))
-		to_chat(H, "<span class='danger'>Some of \the [src] gets in your eyes!</span>")
+		to_chat(H, SPAN_DANGER("Some of \the [src] gets in your eyes!"))
 		H.eye_blind += 5
 		H.eye_blurry += 10
-		spawn(1)
-			if(istype(loc, /turf/)) qdel(src)
+		qdel(src)
 
-
-/obj/item/ore/plasma
-	ore = /ore/plasma
+/obj/item/ore/phoron
+	name = "phoron crystals"
+	icon_state = "ore_phoron"
+	origin_tech = list(TECH_MATERIAL = 2, TECH_PHORON = 2)
+	material = ORE_PHORON
 
 /obj/item/ore/silver
-	ore = /ore/silver
+	name = "native silver ore"
+	icon_state = "ore_silver"
+	origin_tech = list(TECH_MATERIAL = 3)
+	material = ORE_SILVER
 
 /obj/item/ore/gold
-	ore = /ore/gold
+	name = "native gold ore"
+	icon_state = "ore_gold"
+	origin_tech = list(TECH_MATERIAL = 4)
+	material = ORE_GOLD
 
 /obj/item/ore/diamond
-	ore = /ore/diamond
+	name = "diamonds"
+	icon_state = "ore_diamond"
+	origin_tech = list(TECH_MATERIAL = 6)
+	material = ORE_DIAMOND
 
 /obj/item/ore/osmium
-	ore = /ore/platinum
+	name = "raw platinum"
+	icon_state = "ore_platinum"
+	material = ORE_PLATINUM
 
 /obj/item/ore/hydrogen
-	ore = /ore/hydrogen
+	name = "raw hydrogen"
+	icon_state = "ore_hydrogen"
+	material = ORE_HYDROGEN
 
-/obj/item/ore/attackby(obj/item/W as obj, mob/user as mob)
+// maybe someone can think of a creative way to use slag
+// and make slagging shit not absolutely bomb mining - geeves
+/obj/item/ore/slag
+	name = "Slag"
+	desc = "Someone screwed up..."
+	icon_state = "slag"
+	material = null
+
+/obj/item/ore/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/device/core_sampler))
 		var/obj/item/device/core_sampler/C = W
 		C.sample_item(src, user)

@@ -10,7 +10,7 @@
  * default checks.
  */
 
-GLOBAL_DATUM_INIT(tgui_notcontained_state, /datum/ui_state/notcontained_state, new)
+var/global/datum/ui_state/notcontained_state/notcontained_state = new
 
 /datum/ui_state/notcontained_state/can_use_topic(atom/src_object, mob/user)
 	. = user.shared_ui_interaction(src_object)
@@ -23,10 +23,10 @@ GLOBAL_DATUM_INIT(tgui_notcontained_state, /datum/ui_state/notcontained_state, n
 /mob/living/notcontained_can_use_topic(atom/src_object)
 	if(src_object.contains(src))
 		return UI_CLOSE // Close if we're inside it.
-	return tgui_default_can_use_topic(src_object)
+	return default_can_use_topic(src_object)
 
 /mob/living/silicon/notcontained_can_use_topic(src_object)
-	return tgui_default_can_use_topic(src_object) // Silicons use default bevhavior.
+	return default_can_use_topic(src_object) // Silicons use default bevhavior.
 
 /mob/living/simple_animal/drone/notcontained_can_use_topic(src_object)
-	return tgui_default_can_use_topic(src_object) // Drones use default bevhavior.
+	return default_can_use_topic(src_object) // Drones use default bevhavior.

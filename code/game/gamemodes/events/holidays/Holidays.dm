@@ -31,85 +31,118 @@ var/global/Holiday = null
 		if(1)	//Jan
 			switch(DD)
 				if(1)							Holiday = "New Year's Day"
+				if(2)							Holiday = "Xanan Founding Day"
+				if(9)							Holiday = "Tajaran Coming of Dawn"
+				if(15)							Holiday = "New Kingdom of Adhomai Ice Waltz"
+				if(18)							Holiday = "Red Coalition Secession Day"
+				if (22)
+					if(YY==23)					Holiday = "Lunarian Zhongqiu Jie Festival"
 
 		if(2)	//Feb
 			switch(DD)
-				if(2)							Holiday = "Groundhog Day"
+				if(1)							Holiday = "C'thur Independence Day"
+				if(3)							Holiday = "Dominian Feast of Devotion"
+				if(10)
+					if(YY==24)					Holiday = "Lunarian Zhongqiu Jie Festival"
 				if(14)							Holiday = "Valentine's Day"
-				if(17)							Holiday = "Random Acts of Kindness Day"
+				if(29)							Holiday = "Leap Day"
+
 
 		if(3)	//Mar
 			switch(DD)
-				if(14)							Holiday = "Pi Day"
+				if(4)							Holiday = "People's Republic of Adhomai Victory Day"
+				if(11)							Holiday = "Assunzioni Assumption of the Fading Lights"
 				if(17)							Holiday = "St. Patrick's Day"
-				if(27)
-					if(YY == 16)
-						Holiday = "Easter"
+				if(20)							Holiday = "Spring Vernal Equinox"
+				if(28)							Holiday = "All-Xanu Peace Day"
 				if(31)
-					if(YY == 13)
-						Holiday = "Easter"
+					if(YY == 24)  				Holiday = "Easter"
 
 		if(4)	//Apr
 			switch(DD)
-				if(1)
-					Holiday = "April Fool's Day"
-					if(YY == 18 && prob(50)) 	Holiday = "Easter"
-				if(5)
-					if(YY == 15)				Holiday = "Easter"
-				if(16)
-					if(YY == 17)				Holiday = "Easter"
+				if(1)							Holiday = "April Fool's Day"
+				if(3)							Holiday = "Dominian Feast of Faith"
+				if(9)
+					Holiday = "Silversun Festival of the Silver Seas"
+					if(YY == 23 && prob(50))				Holiday = "Easter"
 				if(20)
-					Holiday = "Four-Twenty"
-					if(YY == 14 && prob(50))	Holiday = "Easter"
+					if(YY == 25) 				Holiday = "Easter"
 				if(22)							Holiday = "Earth Day"
 
 		if(5)	//May
 			switch(DD)
-				if(1)							Holiday = "Labour Day"
-				if(4)							Holiday = "FireFighter's Day"
-				if(12)							Holiday = "Owl and Pussycat Day"	//what a dumb day of observence...but we -do- have costumes already :3
+				if(1)							Holiday = "International Workers' Day"
+				if(5)							Holiday = "Tau Ceti Republic Day"
+				if(6)							Holiday = "Eridani Diversity Day"
+				if(14)							Holiday = "Galatean Graduation Day"
+				if(22)							Holiday = "Dominian Worker's Day"
+				if(30)							Holiday = "People's Republic of Adhomai President's Day"
 
 		if(6)	//Jun
-			pass()
+			switch(DD)
+				if(6)							Holiday = "Mictlani Tago de Eksterterano"
+				if(14)
+					Holiday = "New Gibson Remembrance Day"
+					if(prob(50))				Holiday = "Skrell Qu'Qyu-Poxii"
+				if(15)							Holiday = "Colettish Republic Day"
+				if(18)							Holiday = "Callistean Landfall Day"
+				if(22)							Holiday = "Colettish Civil Guard Day"
+				if(26)							Holiday = "Callistean Pigeon Day"
+
 		if(7)	//Jul
 			switch(DD)
-				if(1)							Holiday = "Doctor's Day"
-				if(2)							Holiday = "UFO Day"
-				if(8)							Holiday = "Writer's Day"
-				if(30)							Holiday = "Friendship Day"
+				if(1)							Holiday = "Xanan Election Day"
+				if(4)
+					Holiday = "DPRA Democratic Revolution Day"
+					if(prob(50))				Holiday = "DPRA Liberation Day"
+				if(7)							Holiday = "Dominian Founding Day"
+				if(16)							Holiday = "Lunarian Apollo Day"
+				if(29)							Holiday = "Dominian Victory Day"
+
 
 		if(8)	//Aug
 			switch(DD)
-				if(5)							Holiday = "Beer Day"
+				if(1)							Holiday = "Himean Independence Day"
+				if(13)							Holiday = "Xanan Independence Day"
+				if(19)							Holiday = "Damascene Independence Day"
+				if(21)							Holiday = "Venusian Ascension Day"
+				if(27)							Holiday = "Vaurca Hive War Commemoration"
 
 		if(9)	//Sep
 			switch(DD)
+				if(3)							Holiday = "Dominian Feast of Joy"
+				if(5)							Holiday = "Si'akh Final Judgement Day"
+				if(6)							Holiday = "New Gibson Celebration of the Solstice"
 				if(19)							Holiday = "Talk-Like-a-Pirate Day"
-				if(28)							Holiday = "Stupid-Questions Day"
+				if(24)							Holiday = "Tau Ceti Heritage Day"
 
 		if(10)	//Oct
 			switch(DD)
-				if(4)							Holiday = "Animal's Day"
-				if(7)							Holiday = "Smiling Day"
-				if(16)							Holiday = "Boss' Day"
+				if(1)							Holiday = "Frontier Victory Day"
+				if(5)							Holiday = "Colettish Colonization Day"
+				if(9)							Holiday = "K'lax Technology Day"
+				if(16)							Holiday = "Galatean Federation Day"
+				if(27)							Holiday = "New Kingdom of Adhomai Day of Rightful Restoration"
 				if(31)							Holiday = "Halloween"
 
 		if(11)	//Nov
 			switch(DD)
-				if(1)							Holiday = "Vegan Day"
-				if(13)							Holiday = "Kindness Day"
-				if(19)							Holiday = "Flowers Day"
-				if(21)							Holiday = "Saying-'Hello' Day"
+				if(1)							Holiday = "Dia de los Muertos"
+				if(17)							Holiday = "Dominian Navy Day"
+				if(18)							Holiday = "Kulkarni Day"
+				if(24)							Holiday = "Konyang Independence Day"
+				if(26)							Holiday = "Tajaran Armistice Day"
+				if(28)							Holiday = "Interstellar Peace Day"
 
 		if(12)	//Dec
 			switch(DD)
-				if(10)							Holiday = "Human-Rights Day"
-				if(14)							Holiday = "Monkey Day"
-				if(21)							if(YY==12)	Holiday = "End of the World"
-				if(22)							Holiday = "Orgasming Day"		//lol. These all actually exist
+				if(3)							Holiday = "Dominian Feast of Renewal"
+				if(7)							Holiday = "Unathi Keeping of Memories"
+				if(15)							Holiday = "Lunarian Pervoprohodets Day"
 				if(24)							Holiday = "Christmas Eve"
 				if(25)							Holiday = "Christmas"
 				if(26)							Holiday = "Boxing Day"
+				if(27)							Holiday = "New Gibson Unity Day"
 				if(31)							Holiday = "New Year's Eve"
 
 	if(!Holiday)
@@ -126,26 +159,31 @@ var/global/Holiday = null
 	if(!check_rights(R_SERVER))	return
 
 	Holiday = T
-	//get a new station name
-	GLOB.using_map.station_name = null
-	station_name()
-	//update our hub status
-	world.update_status()
+
 	Holiday_Game_Start()
 
-	log_admin("[key_name(src)] force-set Holiday to \"[Holiday]\"", notify_admin = TRUE)
+	message_admins("<span class='notice'>ADMIN: Event: [key_name(src)] force-set Holiday to \"[Holiday]\"</span>")
+	log_admin("[key_name(src)] force-set Holiday to \"[Holiday]\"",admin_key=key_name(src))
 
 
 //Run at the  start of a round
 /proc/Holiday_Game_Start()
 	if(Holiday)
-		to_world("<span class='info'>and...</span>")
-		if(Holiday == "Christmas Eve" || Holiday == "Christmas")
-			to_world("<h4>Merry [Holiday] Everybody!</h4>")
-		else
-			to_world("<h4>Happy [Holiday] Everybody!</h4>")
+		to_world("<span class='notice'>and...</span>")
+		to_world("<h4>Happy [Holiday] Everybody!</h4>")
 		switch(Holiday)			//special holidays
+			if("Easter")
+				Easter_Game_Start()
 			if("Christmas Eve","Christmas")
 				Christmas_Game_Start()
 
 	return
+
+//Nested in the random events loop. Will be triggered every 2 minutes.
+/proc/Holiday_Random_Event()
+	switch(Holiday)			//special holidays
+
+		if("",null)			//no Holiday today! Back to work!
+			return
+		if("Christmas","Christmas Eve")
+			if(prob(eventchance))	ChristmasEvent()

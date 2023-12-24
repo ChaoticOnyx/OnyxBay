@@ -1,48 +1,96 @@
-GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768))
+var/global/list/bitflags = list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768)
 
-#define CLOSET_HAS_LOCK  1
-#define CLOSET_CAN_BE_WELDED 2
+#define TURF_IS_MIMICING(T) (isturf(T) && (T:z_flags & ZM_MIMIC_BELOW))
+#define CHECK_OO_EXISTENCE(OO) if (OO && !TURF_IS_MIMICING(OO.loc)) { qdel(OO); }
+#define UPDATE_OO_IF_PRESENT CHECK_OO_EXISTENCE(bound_overlay); if (bound_overlay) { update_above(); }
 
-#define CLOSET_STORAGE_MISC       1
-#define CLOSET_STORAGE_ITEMS      2
-#define CLOSET_STORAGE_MOBS       4
-#define CLOSET_STORAGE_STRUCTURES 8
-#define CLOSET_STORAGE_ALL   (~0)
+// Turf MZ flags.
+#define ZM_MIMIC_BELOW     1	// If this turf should mimic the turf on the Z below.
+#define ZM_MIMIC_OVERWRITE 2	// If this turf is Z-mimicing, overwrite the turf's appearance instead of using a movable. This is faster, but means the turf cannot have its own appearance (say, edges or a translucent sprite).
+#define ZM_ALLOW_ATMOS     4	// If this turf permits passage of air.
+#define ZM_MIMIC_NO_AO    8	// If the turf shouldn't apply regular turf AO and only do Z-mimic AO.
+#define ZM_NO_OCCLUDE     16	// Don't occlude below atoms if we're a non-mimic z-turf.
 
-// Flags bitmasks.
+// Convenience flag.
+#define ZM_MIMIC_DEFAULTS (ZM_MIMIC_BELOW)
 
-// NOTE: We declare ATOM_FLAG_INITIALIZED earlier, in __initialization.dm, as FLAG(0)
-#define ATOM_FLAG_CHECKS_BORDER          0x0002 // If a dense atom (potentially) only blocks movements from a given direction, i.e. window panes
-#define ATOM_FLAG_CLIMBABLE              0x0004 // This object can be climbed on
-#define ATOM_FLAG_NO_BLOOD               0x0008 // Used for items if they don't want to get a blood overlay.
-#define ATOM_FLAG_NO_REACT               0x0010 // Reagents don't react inside this container.
-#define ATOM_FLAG_OPEN_CONTAINER         0x0020 // Is an open container for chemistry purposes.
-#define ATOM_FLAG_FULLTILE_OBJECT        0x0040 // Blocks interactions with most atoms on the same tile, except mobs, items and anything that has the flag below, i.e. fulltile windows
-#define ATOM_FLAG_ADJACENT_EXCEPTION     0x0080 // Skips adjacent checks for atoms that should always be reachable in window tiles
-#define ATOM_FLAG_IGNORE_RADIATION       0x0100 // It will not produce any radiation when it will be a radiation source.
-#define ATOM_AWAITING_OVERLAY_UPDATE     0x0400 // SSoverlays must update this atom's overlays.
-#define ATOM_FLAG_SILENTCONTAINER        0x0800 // Chemical reaction won't trigger bubbling sound
+// For debug purposes, should contain the above defines in ascending order.
+var/list/mimic_defines = list(
+	"ZM_MIMIC_BELOW",
+	"ZM_MIMIC_OVERWRITE",
+	"ZM_ALLOW_LIGHTING",
+	"ZM_ALLOW_ATMOS",
+	"ZM_MIMIC_NO_AO",
+	"ZM_NO_OCCLUDE"
+)
 
-#define OBJ_FLAG_ANCHORABLE              0x0001 // This object can be stuck in place with a tool
-#define OBJ_FLAG_CONDUCTIBLE             0x0002 // Conducts electricity. (metal etc.)
+//EMP protection
+#define EMP_PROTECT_SELF (1<<0)
+#define EMP_PROTECT_CONTENTS (1<<1)
+#define EMP_PROTECT_WIRES (1<<2)
 
-#define MOB_FLAG_HOLY_BAD                0x001  // If this mob is allergic to holiness
+// Flags bitmask
 
-//Flags for items (equipment)
-#define ITEM_FLAG_NO_BLUDGEON            0x0001 // When an item has this it produces no "X has been hit by Y with Z" message with the default handler.
-#define ITEM_FLAG_PLASMAGUARD            0x0002 // Does not get contaminated by plasma.
-#define ITEM_FLAG_NO_PRINT               0x0004 // This object does not leave the user's prints/fibres when using it
-#define ITEM_FLAG_THICKMATERIAL          0x0010 // Prevents syringes, reagent pens, and hyposprays if equiped to slot_suit or slot_head.
-#define ITEM_FLAG_STOPPRESSUREDAMAGE     0x0020 // Counts towards pressure protection. Note that like temperature protection, body_parts_covered is considered here as well.
-#define ITEM_FLAG_AIRTIGHT               0x0040 // Functions with internals.
-#define ITEM_FLAG_NOSLIP                 0x0080 // Prevents from slipping on wet floors, in space, etc.
-#define ITEM_FLAG_BLOCK_GAS_SMOKE_EFFECT 0x0100 // Blocks the effect that chemical clouds would have on a mob -- glasses, mask and helmets ONLY! (NOTE: flag shared with ONESIZEFITSALL)
-#define ITEM_FLAG_PREMODIFIED            0x0400 // Gloves that are clipped by default
-#define ITEM_FLAG_IS_BELT                0x0800 // Items that can be worn on the belt slot, even with no undersuit equipped
+/// If a dense atom (potentially) only blocks movements from a given direction, i.e. window panes
+#define ATOM_FLAG_CHECKS_BORDER FLAG(1)
+/// Used for atoms if they don't want to get a blood overlay.
+#define ATOM_FLAG_NO_BLOOD FLAG(2)
+/// Reagents do not react in this containers
+#define ATOM_FLAG_NO_REACT FLAG(3)
+/// Is an open container for chemistry purposes
+#define ATOM_FLAG_OPEN_CONTAINER FLAG(4)
+/// Reagent container that can pour its contents with a lid on. only used for syrup bottles for now
+#define ATOM_FLAG_POUR_CONTAINER FLAG(5)
+/// Should we use the initial icon for display? Mostly used by overlay only objects
+#define ATOM_FLAG_HTML_USE_INITIAL_ICON FLAG(6)
 
-// Flags for pass_flags.
-#define PASS_FLAG_TABLE  0x1
-#define PASS_FLAG_GLASS  0x2
-#define PASS_FLAG_GRILLE 0x4
-#define PASS_FLAG_MOB    0x8
+// Movable flags.
 
+/// Does this object require proximity checking in Enter()?
+#define MOVABLE_FLAG_PROXMOVE FLAG(1)
+///Is this an effect that should move?
+#define MOVABLE_FLAG_EFFECTMOVE FLAG(2)
+///Shuttle transition will delete this.
+#define MOVABLE_FLAG_DEL_SHUTTLE FLAG(3)
+
+// Obj flags
+
+/// Can this object be rotated?
+#define OBJ_FLAG_ROTATABLE FLAG(0)
+/// This object can be rotated even while anchored
+#define OBJ_FLAG_ROTATABLE_ANCHORED FLAG(1)
+/// Can this take a signaler? only in use for machinery
+#define OBJ_FLAG_SIGNALER FLAG(2)
+/// Will prevent mobs from falling
+#define OBJ_FLAG_NOFALL FLAG(3)
+/// Object moves with shuttle transition even if turf below is a background turf.
+#define OBJ_FLAG_MOVES_UNSUPPORTED FLAG(4)
+#define OBJ_FLAG_CONDUCTABLE FLAG(5)
+
+// Item flags
+/// When an item has this it produces no "X has been hit by Y with Z" message with the default handler.
+#define ITEM_FLAG_NO_BLUDGEON FLAG(0)
+/// Does not get contaminated by phoron.
+#define ITEM_FLAG_PHORON_GUARD FLAG(1)
+/// Prevents syringes, parapens and hyposprays if equiped to slot_suit or slot_head.
+#define ITEM_FLAG_THICK_MATERIAL FLAG(2)
+/// Functions with internals
+#define ITEM_FLAG_AIRTIGHT FLAG(3)
+///Prevents from slipping on wet floors, in space, etc.
+#define ITEM_FLAG_NO_SLIP FLAG(4)
+/// Blocks the effect that chemical clouds would have on a mob -- glasses, mask and helmets ONLY! (NOTE: flag shared with ONESIZEFITSALL)
+#define ITEM_FLAG_BLOCK_GAS_SMOKE_EFFECT FLAG(5)
+/// At the moment, masks with this flag will not prevent eating even if they are covering your face.
+#define ITEM_FLAG_FLEXIBLE_MATERIAL FLAG(6)
+/// Allows syringes and hyposprays to inject, even if the material is thick
+#define ITEM_FLAG_INJECTION_PORT FLAG(7)
+/// When applied to footwear, this makes it so that they don't trigger things like landmines and mouse traps
+#define ITEM_FLAG_LIGHT_STEP FLAG(8)
+/// whether wearing this item will protect you from loud noises such as flashbangs | this only works for ear slots or the head slot
+#define ITEM_FLAG_SOUND_PROTECTION FLAG(9)
+/// won't block flavourtext when worn on equipment slot
+#define ITEM_FLAG_SHOW_FLAVOR_TEXT FLAG(10)
+/// Uses the special held maptext system, which sets a specific maptext if the item is in possession of a mob.
+#define ITEM_FLAG_HELD_MAP_TEXT FLAG(11)
+/// Cannot be moved from its current inventory slot. Mostly for augments, modules, and other "attached" items.
+#define ITEM_FLAG_NO_MOVE FLAG(12)

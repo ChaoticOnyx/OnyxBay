@@ -4,114 +4,172 @@
 /obj/item/storage/pill_bottle/happy
 	name = "bottle of Happy pills"
 	desc = "Highly illegal drug. When you want to see the rainbow."
-
-/obj/item/storage/pill_bottle/happy/New()
-	..()
-	new /obj/item/reagent_containers/pill/happy( src )
-	new /obj/item/reagent_containers/pill/happy( src )
-	new /obj/item/reagent_containers/pill/happy( src )
-	new /obj/item/reagent_containers/pill/happy( src )
-	new /obj/item/reagent_containers/pill/happy( src )
-	new /obj/item/reagent_containers/pill/happy( src )
-	new /obj/item/reagent_containers/pill/happy( src )
+	starts_with = list(/obj/item/reagent_containers/pill/happy = 7)
 
 /obj/item/storage/pill_bottle/zoom
 	name = "bottle of Zoom pills"
 	desc = "Highly illegal drug. Trade brain for speed."
+	starts_with = list(/obj/item/reagent_containers/pill/zoom = 7)
 
-/obj/item/storage/pill_bottle/zoom/New()
-	..()
-	new /obj/item/reagent_containers/pill/zoom( src )
-	new /obj/item/reagent_containers/pill/zoom( src )
-	new /obj/item/reagent_containers/pill/zoom( src )
-	new /obj/item/reagent_containers/pill/zoom( src )
-	new /obj/item/reagent_containers/pill/zoom( src )
-	new /obj/item/reagent_containers/pill/zoom( src )
-	new /obj/item/reagent_containers/pill/zoom( src )
+/obj/item/storage/pill_bottle/joy
+	name = "bottle of Joy pills"
+	desc = "Highly illegal drug. Bang - and your stress is gone."
+	starts_with = list(/obj/item/reagent_containers/pill/joy = 3)
 
-/obj/item/reagent_containers/vessel/beaker/vial/random
+/obj/item/storage/pill_bottle/heroin
+	name = "bottle of heroin pills"
+	desc = "Highly illegal drug. For quick pain removal."
+	starts_with = list(/obj/item/reagent_containers/pill/heroin = 3)
+
+/obj/item/storage/pill_bottle/cocaine
+	name = "bottle of cocaine tablets"
+	desc = "Supposedly a highly illegal drug... yet the labeling on the bottle is suspiciously perfect..."
+	starts_with = list(/obj/item/reagent_containers/pill/cocaine = 5)
+
+/obj/item/storage/pill_bottle/contemplus
+	name = "bottle of Contemplus tablets"
+	desc = "A Yomi Genetics bottle clearly marked as 'for animal testing only.' You doubt this is followed often on Venus..."
+	starts_with = list(/obj/item/reagent_containers/pill/contemplus = 5)
+
+/obj/item/storage/pill_bottle/spotlight
+	name = "bottle of Spotlight tablets"
+	desc = "A Zavodskoi bottle with a conspicuous 'defective' stamp on it. You doubt this was actually defective."
+	starts_with = list(/obj/item/reagent_containers/pill/spotlight = 5)
+
+/obj/item/storage/pill_bottle/sparkle
+	name = "bottle of Sparkle tablets"
+	desc = "A Zeng-Hu bottle clearly marked as being for 'medical testing purposes only.' As if..."
+	starts_with = list(/obj/item/reagent_containers/pill/sparkle = 5)
+
+/obj/item/storage/pill_bottle/smart
+	name = "bottle of Smart pills"
+	desc = "Highly illegal drug. For exam season."
+	starts_with = list(/obj/item/reagent_containers/pill/skrell_nootropic = 7)
+
+/obj/item/reagent_containers/glass/beaker/vial/random
 	atom_flags = 0
-	var/list/random_reagent_list = list(list(/datum/reagent/water = 15) = 1, list(/datum/reagent/space_cleaner = 15) = 1)
+	var/list/random_reagent_list = list(list(/singleton/reagent/water = 15) = 1, list(/singleton/reagent/spacecleaner = 15) = 1)
 
-/obj/item/reagent_containers/vessel/beaker/vial/random/toxin
+/obj/item/reagent_containers/glass/beaker/vial/random/toxin
 	random_reagent_list = list(
-		list(/datum/reagent/mindbreaker = 10, /datum/reagent/space_drugs = 20) = 3,
-		list(/datum/reagent/toxin/carpotoxin = 15)                             = 2,
-		list(/datum/reagent/impedrezene = 15)                                  = 2,
-		list(/datum/reagent/toxin/zombiepowder = 10)                           = 1)
+		list(/singleton/reagent/drugs/mindbreaker = 10, /singleton/reagent/drugs/mms = 20)	= 3,
+		list(/singleton/reagent/mercury = 15)										= 3,
+		list(/singleton/reagent/toxin/carpotoxin = 15)								= 2,
+		list(/singleton/reagent/drugs/impedrezene = 15)									= 2,
+		list(/singleton/reagent/toxin/dextrotoxin = 10)								= 1,
+		list(/singleton/reagent/toxin/spectrocybin = 15)								= 1,
+		list(/singleton/reagent/drugs/joy = 10, /singleton/reagent/water = 20)					= 1,
+		list(/singleton/reagent/toxin/berserk = 10)                                  = 1,
+		list(/singleton/reagent/ammonia = 15)										= 3)
 
-/obj/item/reagent_containers/vessel/beaker/vial/random/Initialize()
+/obj/item/reagent_containers/glass/beaker/vial/random/Initialize()
 	. = ..()
 	if(is_open_container())
 		atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
 
-	var/list/picked_reagents = util_pick_weight(random_reagent_list)
+	var/list/picked_reagents = pickweight(random_reagent_list)
 	for(var/reagent in picked_reagents)
 		reagents.add_reagent(reagent, picked_reagents[reagent])
 
 	var/list/names = new
-	for(var/datum/reagent/R in reagents.reagent_list)
+	for(var/_R in reagents.reagent_volumes)
+		var/singleton/reagent/R = GET_SINGLETON(_R)
 		names += R.name
 
 	desc = "Contains [english_list(names)]."
 	update_icon()
 
-/// Rev Book
-/obj/item/book/rev
-	name = "Veridical Chronicles of NanoTrasen"
-	icon_state = "bookrev"
-	desc = "A rather shabby book with a crossed-out NT logo on its cover."
-	w_class = 2
-	unique = 1
-	attack_verb = list("bashed", "whacked", "revoluted", "enlightened", "propagandized", "promulgated")
-	var/list/readers = list()
-	var/list/subjects = list()
 
-/obj/item/book/rev/attack_self(mob/user)
-	if(carved)
-		if(!store)
-			to_chat(user, SPAN("notice", "The pages of [title] have been cut out!"))
-			return
-		to_chat(user, SPAN("notice", "[store] falls out of [title]!"))
-		store.dropInto(get_turf(loc))
-		store = null
-		return
+/obj/item/reagent_containers/glass/beaker/vial/venenum
+	atom_flags = 0
 
-	if(!user.IsAdvancedToolUser())
-		to_chat(user, SPAN("notice", "You have absolutely no interest in history at all, and this book in particular."))
-		return
+/obj/item/reagent_containers/glass/beaker/vial/venenum/Initialize()
+	. = ..()
+	if(is_open_container())
+		atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
+	reagents.add_reagent(/singleton/reagent/venenum,volume)
+	desc = "Contains venenum."
+	update_icon()
 
-	for(var/i in 1 to 5)
-		if(!do_after(user, 6 SECOND, src))
-			to_chat(user, SPAN("warning", "Your reading has been interrupted."))
-			return
-		subjects.Cut()
-		subjects = list(
-			"the assassinations of independent press journalists",
-			"trumped-up criminal cases",
-			"lethal repression of peaceful protests",
-			"the genocide of [pick("xenoraces", "tajaran", "unathi")]" = 2,
-			"NanoTrasen killing own employees",
-			"NanoTrasen [pick("getting involved in", "taking part in", "organizing", "establishing", "lobbying")] [pick("human", "drug", "arms")] trafficking" = 4,
-			"a high-ranking NT employee revealed to be a [pick("rapist", "cannibal", "pervert", "murderer", "paedophile")]" = 3,
-			"the surreptitious executions",
-			"biological weapons [pick("usage", "trafficking", "development")]",
-			"NanoTrasen security officers murdering [pick("", "tiny ", "cute ")][pick("kittens", "puppies")]",
-			"[pick("illegal", "unethical")] experiments on [pick("humans", "employees")]" = 2,
-			"the Death Squad activity",
-			"a high-ranking NT employee stealing money from a charitable foundation",
-			"NT using [pick("troops without insignia", "mercenaries")] to take over a [pick("neutral", "ally", "peaceful")] [pick("planet", "company", "system")]" = 2
+/obj/item/reagent_containers/glass/beaker/vial/nerveworm_eggs
+	atom_flags = 0
+
+/obj/item/reagent_containers/glass/beaker/vial/nerveworm_eggs/Initialize()
+	. = ..()
+	if(is_open_container())
+		atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
+	reagents.add_reagent(/singleton/reagent/toxin/nerveworm_eggs, 2)
+	desc = "<b>BIOHAZARDOUS! - Nerve Fluke eggs.</b> Purchased from <i>SciSupply Eridani</i>, recently incorporated into <i>Zeng-Hu Pharmaceuticals' Keiretsu</i>!"
+	update_icon()
+
+/obj/item/reagent_containers/glass/beaker/vial/heartworm_eggs
+	atom_flags = 0
+
+/obj/item/reagent_containers/glass/beaker/vial/heartworm_eggs/Initialize()
+	. = ..()
+	if(is_open_container())
+		atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
+	reagents.add_reagent(/singleton/reagent/toxin/heartworm_eggs, 2)
+	desc = "<b>BIOHAZARDOUS! - Heart Fluke eggs.</b> Purchased from <i>SciSupply Eridani</i>, recently incorporated into <i>Zeng-Hu Pharmaceuticals' Keiretsu</i>!"
+	update_icon()
+
+/obj/item/reagent_containers/powder
+	name = "chemical powder"
+	desc = "A powdered form of... something."
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "powder"
+	item_state = "powder"
+	amount_per_transfer_from_this = 5
+	possible_transfer_amounts = 5
+	w_class = ITEMSIZE_TINY
+	volume = 50
+
+/obj/item/reagent_containers/powder/examine(mob/user)
+	. = ..()
+	if(reagents)
+		to_chat(user, SPAN_NOTICE("There's about [reagents.total_volume] unit\s here."))
+
+/obj/item/reagent_containers/powder/Initialize()
+	. = ..()
+	get_appearance()
+
+/obj/item/reagent_containers/powder/proc/get_appearance()
+	/// Color based on dominant reagent.
+	color = reagents.get_color()
+
+// Proc to shove them up your nose
+
+/obj/item/reagent_containers/powder/attackby(obj/item/W, mob/living/user)
+	if(istype(W, /obj/item/paper/cig) || istype(W, /obj/item/spacecash))
+		var/mob/living/carbon/human/H = user
+		var/obj/item/blocked = H.check_mouth_coverage()
+		if(blocked)
+			to_chat(user, "<span class='warning'>\The [blocked] is in the way!</span>")
+			return TRUE
+		if(!H.check_has_mouth())
+			to_chat(user, SPAN_WARNING("You cannot seem to snort \the [src]."))
+			return TRUE
+
+		user.visible_message(
+			SPAN_WARNING("\The [user] starts to snort some of \the [src] with \a [W]!"),
+			SPAN_NOTICE("You start to snort some of \the [src] with \the [W]!")
 		)
-		to_chat(user, "You read about [util_pick_weight(subjects)] [pick("in", "in the year")] [rand(2125, 2564)].")
+		playsound(loc, 'sound/effects/snort.ogg', 50, 1)
+		if (!do_after(user, 2 SECONDS))
+			return TRUE
 
-	if((user.real_name in readers) || player_is_antag(user.mind))
-		to_chat(user, SPAN("notice", "You didn't learn anything new after the reading."))
-		return
+		user.visible_message(
+			SPAN_WARNING("\The [user] snorts some of \the [src] with \a [W]!"),
+			SPAN_NOTICE("You snort \the [src] with \the [W]!")
+		)
+		playsound(loc, 'sound/effects/snort.ogg', 50, 1)
 
-	readers.Add(user.real_name)
-	if(!GLOB.revs.can_become_antag(user.mind, 1) || prob(50))
-		to_chat(user, SPAN("notice", "You have resisted the influence of this propaganda [pick("pulp", "fiction", "nonsense", "bullshit")]."))
-		return
-
-	to_chat(user, SPAN("notice", "<b>Enough. This regime must be overthrown!</b>"))
-	GLOB.revs.add_antagonist_mind(user.mind, 1, GLOB.revs.faction_role_text, GLOB.revs.faction_welcome)
+		if(reagents)
+			var/contained = reagentlist()
+			var/temp = reagents.get_temperature()
+			var/trans = reagents.trans_to_mob(H, amount_per_transfer_from_this, CHEM_BREATHE, bypass_checks = TRUE)
+			admin_inject_log(user, H, src, contained, temp, trans)
+		if(!reagents.total_volume)
+			qdel(src)
+		return TRUE
+	return ..()

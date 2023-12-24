@@ -1,95 +1,222 @@
 /obj/structure/lattice
 	name = "lattice"
 	desc = "A lightweight support lattice."
-	icon = 'icons/obj/structures.dmi'
-	icon_state = "latticefull"
-	density = 0
-	anchored = 1.0
-	w_class = ITEM_SIZE_NORMAL
-	layer = LATTICE_LAYER
-	//	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	desc_info = "Add a metal floor tile to build a floor on top of the lattice.<br>\
+	Lattices can be made by applying metal rods to a space tile."
+	icon = 'icons/obj/smooth/lattice.dmi'
+	icon_state = "lattice"
+	density = FALSE
+	anchored = TRUE
+	w_class = ITEMSIZE_NORMAL
+	layer = UNDER_PIPE_LAYER //under pipes
+	obj_flags = OBJ_FLAG_MOVES_UNSUPPORTED
+	smoothing_flags = SMOOTH_MORE
+	canSmoothWith = list(
+		/obj/structure/lattice,
+		/turf/simulated/wall,
+		/turf/simulated/floor,
+		/turf/simulated/mineral,
+		/turf/unsimulated/wall,
+		/turf/unsimulated/floor,
+		/obj/structure/grille,
+		/turf/unsimulated/mineral/asteroid
+	)
+	footstep_sound = /singleton/sound_category/catwalk_footstep
 
 /obj/structure/lattice/Initialize()
 	. = ..()
-///// Z-Level Stuff
-	if(!(istype(src.loc, /turf/space) || istype(src.loc, /turf/simulated/open)))
-///// Z-Level Stuff
-		return INITIALIZE_HINT_QDEL
 	for(var/obj/structure/lattice/LAT in loc)
-		if(LAT != src)
-			util_crash_with("Found multiple lattices at '[log_info_line(loc)]'")
-			return INITIALIZE_HINT_QDEL
-	icon = 'icons/obj/smoothlattice.dmi'
-	icon_state = "latticeblank"
-	updateOverlays()
-	for (var/dir in GLOB.cardinal)
-		var/obj/structure/lattice/L
-		if(locate(/obj/structure/lattice, get_step(src, dir)))
-			L = locate(/obj/structure/lattice, get_step(src, dir))
-			L.updateOverlays()
+		if(LAT == src)
+			continue
+		stack_trace("multiple lattices found in ([loc.x], [loc.y], [loc.z])")
+		return INITIALIZE_HINT_QDEL
+
+	if(isturf(loc))
+		var/turf/turf = loc
+		turf.is_hole = FALSE
 
 /obj/structure/lattice/Destroy()
-	for (var/dir in GLOB.cardinal)
-		var/obj/structure/lattice/L
-		if(locate(/obj/structure/lattice, get_step(src, dir)))
-			L = locate(/obj/structure/lattice, get_step(src, dir))
-			L.updateOverlays(src.loc)
-	. = ..()
+	if(isturf(loc))
+		var/turf/turf = loc
+		turf.is_hole = initial(turf.is_hole)
+	return ..()
 
 /obj/structure/lattice/ex_act(severity)
 	switch(severity)
 		if(1.0)
 			qdel(src)
-			return
 		if(2.0)
 			qdel(src)
-			return
-		if(3.0)
-			return
 	return
 
-/obj/structure/lattice/attackby(obj/item/C as obj, mob/user as mob)
-
-	if(istype(C, /obj/item/stack/tile/floor) || istype(C, /obj/item/stack/tile/floor_rough))
+/obj/structure/lattice/attackby(obj/item/C, mob/user)
+	if (istype(C, /obj/item/stack/tile/floor))
 		var/turf/T = get_turf(src)
 		T.attackby(C, user) //BubbleWrap - hand this off to the underlying turf instead
 		return
-	if(isWelder(C))
+	if (C.iswelder())
 		var/obj/item/weldingtool/WT = C
-		if(!WT.remove_fuel(0, user))
-			return
-		to_chat(user, "<span class='notice'>Slicing lattice joints ...</span>")
-		new /obj/item/stack/rods(loc)
+		if(WT.use(1, user))
+			to_chat(user, "<span class='notice'>Slicing lattice joints ...</span>")
+		new /obj/item/stack/rods(src.loc)
 		qdel(src)
 	if (istype(C, /obj/item/stack/rods))
 		var/obj/item/stack/rods/R = C
-		if(R.use(2))
-			src.alpha = 0
-			playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1)
-			new /obj/structure/catwalk(src.loc)
+		if (R.use(2))
+			to_chat(user, "<span class='notice'>Constructing catwalk ...</span>")
+			playsound(src, 'sound/weapons/Genhit.ogg', 50, 1)
+			new /obj/structure/lattice/catwalk(src.loc)
 			qdel(src)
+		return
+
+/obj/structure/lattice/catwalk
+	name = "catwalk"
+	desc = "A catwalk for easier EVA maneuvering."
+	icon = 'icons/obj/smooth/catwalk.dmi'
+	icon_state = "catwalk"
+	smoothing_flags = SMOOTH_TRUE
+	canSmoothWith = list(
+		/obj/structure/lattice/catwalk,
+		/obj/structure/lattice/catwalk/indoor
+	)
+	var/return_amount = 3
+
+// Special catwalk that can be placed on regular flooring.
+/obj/structure/lattice/catwalk/indoor
+	desc = "A floor-mounted catwalk designed to protect pipes & station wiring from passing feet."
+	can_be_unanchored = TRUE
+	layer = 2.7	// Above wires.
+
+/obj/structure/lattice/catwalk/attackby(obj/item/C, mob/user)
+	if(C.iswelder())
+		var/obj/item/weldingtool/WT = C
+		if(!WT.use(1, user))
+			to_chat(user, SPAN_WARNING("You need more welding fuel to complete this task."))
 			return
-		else
-			to_chat(user, "<span class='notice'>You require at least two rods to complete the catwalk.</span>")
-			return
+		if(C.use_tool(src, user, 5, volume = 50))
+			to_chat(user, SPAN_NOTICE("You slice apart [src]."))
+			var/obj/item/stack/rods/R = new /obj/item/stack/rods(get_turf(src))
+			R.amount = return_amount
+			R.update_icon()
+			qdel(src)
+
+/obj/structure/lattice/catwalk/indoor/attackby(obj/item/C, mob/user)
+	if(C.isscrewdriver())
+		if(C.use_tool(src, user, 5, volume = 50))
+			anchored = !anchored
+			to_chat(user, SPAN_NOTICE("You [anchored ? "" : "un"]anchor [src]."))
+			SSicon_smooth.add_to_queue(src)
+			SSicon_smooth.add_to_queue_neighbors(src)
+	else
+		..()
+
+/obj/structure/lattice/catwalk/hoist_act(turf/dest)
+	for (var/A in loc)
+		var/atom/movable/AM = A
+		AM.forceMove(dest)
+	..()
+
+/obj/structure/lattice/catwalk/indoor/grate
+	name = "grate"
+	desc = "A metal grate."
+	icon = 'icons/obj/grate.dmi'
+	icon_state = "grate"
+	return_amount = 1
+	smoothing_flags = null
+	color = COLOR_TILED
+	var/base_icon_state = "grate"
+	var/damaged = FALSE
+
+/obj/structure/lattice/catwalk/indoor/grate/attackby(obj/item/C, mob/user)
+	if(C.iswelder() && damaged)
+		var/obj/item/weldingtool/WT = C
+		if(C.use_tool(src, user, 5, volume = 50) && WT.use(1, user))
+			user.visible_message(
+				SPAN_NOTICE("\The [user] slices apart \the [src], leaving nothing useful behind."),
+				SPAN_NOTICE("You slice apart \the [src], leaving nothing useful behind."),
+				SPAN_NOTICE("You hear the sound of a welder, slicing apart metal.")
+			)
+			playsound(src, 'sound/items/welder.ogg', 50, 1)
+			qdel(src)
+	else
+		..()
+
+/obj/structure/lattice/catwalk/indoor/grate/ex_act(severity)
+	switch(severity)
+		if(1.0)
+			qdel(src)
+		if(2.0)
+			if(!damaged)
+				icon_state = "[base_icon_state]_dam[rand(0,3)]"
+				damaged = TRUE
+			else
+				qdel(src)
 	return
 
-/obj/structure/lattice/proc/updateOverlays()
-	//if(!(istype(src.loc, /turf/space)))
-	//	qdel(src)
-	spawn(1)
-		ClearOverlays()
+/obj/structure/lattice/catwalk/indoor/grate/old/Initialize()
+	. = ..()
+	add_overlay("rust")
 
-		var/dir_sum = 0
+/obj/structure/lattice/catwalk/indoor/grate/damaged
+	icon_state = "grate_dark_dam0"
+	damaged = TRUE
 
-		var/turf/T
-		for (var/direction in GLOB.cardinal)
-			T = get_step(src, direction)
-			if(locate(/obj/structure/lattice, T) || locate(/obj/structure/catwalk, T))
-				dir_sum += direction
-			else
-				if(!(istype(get_step(src, direction), /turf/space)) && !(istype(get_step(src, direction), /turf/simulated/open)))
-					dir_sum += direction
+/obj/structure/lattice/catwalk/indoor/grate/damaged/Initialize()
+	. = ..()
+	icon_state = "[base_icon_state]_dam[rand(0,3)]"
 
-		icon_state = "lattice[dir_sum]"
-		return
+/obj/structure/lattice/catwalk/indoor/grate/light
+	icon_state = "grate_light"
+	base_icon_state = "grate_light"
+	return_amount = 1
+	color = COLOR_GUNMETAL
+
+/obj/structure/lattice/catwalk/indoor/grate/light/old/Initialize()
+	. = ..()
+	add_overlay("rust")
+
+/obj/structure/lattice/catwalk/indoor/grate/light/damaged
+	icon_state = "grate_light_dam0"
+	damaged = TRUE
+
+/obj/structure/lattice/catwalk/indoor/grate/light/damaged/Initialize()
+	. = ..()
+	icon_state = "[base_icon_state]_dam[rand(0,3)]"
+
+/obj/structure/lattice/catwalk/indoor/grate/dark
+	color = COLOR_DARK_GUNMETAL
+
+/obj/structure/lattice/catwalk/indoor/urban
+	name = "grate"
+	desc = "A metal grate."
+	icon = 'icons/obj/structure/over_turf.dmi'
+	icon_state = "city_grate"
+	return_amount = 1
+	smoothing_flags = null
+
+/obj/structure/lattice/catwalk/indoor/tatami
+	name = "tatami spread"
+	desc = "A straw mat rug of some sort, frequently referred to as a tatami."
+	icon = 'icons/obj/structure/over_turf.dmi'
+	icon_state = "tatami"
+	return_amount = null
+	smoothing_flags = null
+	footstep_sound = /singleton/sound_category/carpet_footstep
+
+/obj/structure/lattice/catwalk/indoor/planks
+	name = "flooring plank"
+	desc = "A ricket assortment of planks meant to be stood upon."
+	icon = 'icons/obj/structure/urban/wood.dmi'
+	icon_state = "plank"
+	return_amount = null
+	smoothing_flags = null
+	footstep_sound = /singleton/sound_category/wood_footstep
+
+/obj/structure/lattice/catwalk/indoor/planks/opaque
+	icon_state = "plank_dark"
+
+/obj/structure/lattice/catwalk/indoor/planks/stairs
+	icon_state = "plank_stairs"
+
+/obj/structure/lattice/catwalk/indoor/planks/deep
+	icon_state = "plank_deep"

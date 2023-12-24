@@ -1,27 +1,25 @@
-/obj/structure/closet/secure_closet/bar
+/obj/structure/closet/secure_closet/cabinet
+	icon_state = "cabinet"
+	open_sound = 'sound/machines/wooden_closet_open.ogg'
+	close_sound = 'sound/machines/wooden_closet_close.ogg'
+	door_anim_angle = 160
+	door_anim_squish = 0.22
+	door_hinge_alt = 7.5
+	double_doors = TRUE
+
+/obj/structure/closet/secure_closet/cabinet/bar
 	name = "booze closet"
 	req_access = list(access_bar)
-	icon_state = "cabinetdetective_locked"
-	icon_closed = "cabinetdetective"
-	icon_locked = "cabinetdetective_locked"
-	icon_opened = "cabinetdetective_open"
-	icon_broken = "cabinetdetective_sparks"
-	icon_off = "cabinetdetective_broken"
-	dremovable = 0
+	storage_capacity = 45 //such a big closet deserves a little more capacity
 
-/obj/structure/closet/secure_closet/bar/WillContain()
-	return list(/obj/item/reagent_containers/vessel/bottle/small/beer = 10)
-
-/obj/structure/closet/secure_closet/empty
-	name = "secure closet"
-	//set access in map editor
-	req_access = null
-	icon_state = "cabinetdetective_locked"
-	icon_closed = "cabinetdetective"
-	icon_locked = "cabinetdetective_locked"
-	icon_opened = "cabinetdetective_open"
-	icon_broken = "cabinetdetective_sparks"
-	icon_off = "cabinetdetective_broken"
-
-/obj/structure/closet/secure_closet/empty/WillContain()
-	return
+/obj/structure/closet/secure_closet/cabinet/bar/fill()
+	new /obj/item/reagent_containers/food/drinks/bottle/small/beer( src )
+	new /obj/item/reagent_containers/food/drinks/bottle/small/beer( src )
+	new /obj/item/reagent_containers/food/drinks/bottle/small/beer( src )
+	new /obj/item/reagent_containers/food/drinks/bottle/small/beer( src )
+	new /obj/item/reagent_containers/food/drinks/bottle/small/beer( src )
+	new /obj/item/reagent_containers/food/drinks/bottle/small/beer( src )
+	new /obj/item/reagent_containers/food/drinks/bottle/small/beer( src )
+	new /obj/item/reagent_containers/food/drinks/bottle/small/beer( src )
+	new /obj/item/reagent_containers/food/drinks/bottle/small/beer( src )
+	new /obj/item/reagent_containers/food/drinks/bottle/small/beer( src )

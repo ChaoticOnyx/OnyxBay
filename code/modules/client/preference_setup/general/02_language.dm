@@ -1,53 +1,126 @@
-/datum/preferences
-	var/list/alternate_languages //Secondary language(s)
-
 /datum/category_item/player_setup_item/general/language
 	name = "Language"
 	sort_order = 2
 
-/datum/category_item/player_setup_item/general/language/load_character(datum/pref_record_reader/R)
-	pref.alternate_languages = R.read("language")
+/datum/category_item/player_setup_item/general/language/load_character(var/savefile/S)
+	S["language"] >> pref.alternate_languages
+	S["autohiss"] >> pref.autohiss_setting
 
-/datum/category_item/player_setup_item/general/language/save_character(datum/pref_record_writer/W)
-	W.write("language", pref.alternate_languages)
+/datum/category_item/player_setup_item/general/language/save_character(var/savefile/S)
+	S["language"] << pref.alternate_languages
+	S["autohiss"] << pref.autohiss_setting
 
-/datum/category_item/player_setup_item/general/language/sanitize_character()
-	if(!islist(pref.alternate_languages))	pref.alternate_languages = list()
-	sanitize_alt_languages()
+/datum/category_item/player_setup_item/general/language/gather_load_query()
+	return list(
+		"ss13_characters" = list(
+			"vars" = list(
+				"language" = "alternate_languages",
+				"autohiss" = "autohiss_setting"
+			),
+			"args" = list("id")
+		)
+	)
 
-/datum/category_item/player_setup_item/general/language/content()
-	. += "<b>Languages</b><br>"
+/datum/category_item/player_setup_item/general/language/gather_load_parameters()
+	return list("id" = pref.current_character)
+
+/datum/category_item/player_setup_item/general/language/gather_save_query()
+	return list(
+		"ss13_characters" = list(
+			"id" = 1,
+			"ckey" = 1,
+			"language",
+			"autohiss"
+		)
+	)
+
+/datum/category_item/player_setup_item/general/language/gather_save_parameters()
+	return list(
+		"language" = list2params(pref.alternate_languages),
+		"autohiss" = pref.autohiss_setting,
+		"id" = pref.current_character,
+		"ckey" = PREF_CLIENT_CKEY
+	)
+
+/datum/category_item/player_setup_item/general/language/sanitize_character(var/sql_load = 0)
+
+	if (sql_load)
+		pref.alternate_languages = params2list(pref.alternate_languages)
+		pref.autohiss_setting = text2num(pref.autohiss_setting)
+
+	if(!islist(pref.alternate_languages))
+		pref.alternate_languages = list()
+		// Nothing to validate. Leave.
+		return
+
+	var/datum/species/S = all_species[pref.species] || all_species[SPECIES_HUMAN]
+
+	if (pref.alternate_languages.len > S.num_alternate_languages)
+		if(pref.client)
+			to_chat(pref.client, "<span class='warning'>You have too many languages saved for [pref.species].<br><b>The list has been reset. Please check your languages in character creation!</b></span>")
+		pref.alternate_languages.Cut()
+		return
+
+	var/list/langs = S.secondary_langs.Copy()
+	for (var/L in all_languages)
+		var/datum/language/lang = all_languages[L]
+		if (pref.client && !(lang.flags & RESTRICTED) && (!config.usealienwhitelist || is_alien_whitelisted(pref.client.mob, L) || !(lang.flags & WHITELISTED)))
+			langs |= L
+
+	var/list/bad_langs = pref.alternate_languages - langs
+	if (bad_langs.len)
+		if(pref.client)
+			to_chat(pref.client, "<span class='warning'>[bad_langs.len] invalid language\s were found in your character setup! Please save your character again to stop this error from repeating!</span>")
+
+		for (var/L in bad_langs)
+			if(pref.client)
+				to_chat(pref.client, "<span class='notice'>Removing the language \"[L]\" from your character.</span>")
+			pref.alternate_languages -= L
+
+		var/datum/category_group/player_setup_category/cat = category
+		cat.modified = TRUE
+
+/datum/category_item/player_setup_item/general/language/content(var/mob/user)
+	var/list/dat = list("<b>Languages</b><br>")
 	var/datum/species/S = all_species[pref.species]
 	if(S.language)
-		. += "- [S.language]<br>"
+		dat += "- [S.language]<br>"
 	if(S.default_language && S.default_language != S.language)
-		. += "- [S.default_language]<br>"
+		dat += "- [S.default_language]<br>"
 	if(S.num_alternate_languages)
 		if(pref.alternate_languages.len)
 			for(var/i = 1 to pref.alternate_languages.len)
 				var/lang = pref.alternate_languages[i]
-				. += "- [lang] - <a href='?src=\ref[src];remove_language=[i]'>remove</a><br>"
+				dat += "- [lang] - <a href='?src=\ref[src];remove_language=[i]'>remove</a><br>"
 
 		if(pref.alternate_languages.len < S.num_alternate_languages)
-			. += "- <a href='?src=\ref[src];add_language=1'>add</a> ([S.num_alternate_languages - pref.alternate_languages.len] remaining)<br>"
+			dat += "- <a href='?src=\ref[src];add_language=1'>add</a> ([S.num_alternate_languages - pref.alternate_languages.len] remaining)<br>"
 	else
-		. += "- [pref.species] cannot choose secondary languages.<br>"
+		dat += "- [pref.species] cannot choose secondary languages.<br>"
 
-/datum/category_item/player_setup_item/general/language/OnTopic(href,list/href_list, mob/user)
+	if(S.has_autohiss)
+		pref.autohiss_setting = clamp(pref.autohiss_setting, AUTOHISS_OFF, AUTOHISS_NUM - 1)
+		var/list/autohiss_to_word = list("Disabled", "Basic", "Full")
+		dat += "<br><a href='?src=\ref[src];autohiss=1'>Autohiss: [autohiss_to_word[pref.autohiss_setting + 1]]</a><br>"
+
+	. = dat.Join()
+
+/datum/category_item/player_setup_item/general/language/OnTopic(var/href,var/list/href_list, var/mob/user)
 	if(href_list["remove_language"])
 		var/index = text2num(href_list["remove_language"])
-		pref.alternate_languages.Cut(index, index+1)
+		if (index > 0 && index <= pref.alternate_languages.len)
+			pref.alternate_languages -= pref.alternate_languages[index]
+
 		return TOPIC_REFRESH
 	else if(href_list["add_language"])
 		var/datum/species/S = all_species[pref.species]
 		if(pref.alternate_languages.len >= S.num_alternate_languages)
 			alert(user, "You have already selected the maximum number of alternate languages for this species!")
 		else
-			var/preference_mob = preference_mob()
 			var/list/available_languages = S.secondary_langs.Copy()
 			for(var/L in all_languages)
 				var/datum/language/lang = all_languages[L]
-				if(is_allowed_language(preference_mob, lang))
+				if(!(lang.flags & RESTRICTED) && (!config.usealienwhitelist || is_alien_whitelisted(user, L) || !(lang.flags & WHITELISTED)))
 					available_languages |= L
 
 			// make sure we don't let them waste slots on the default languages
@@ -60,32 +133,14 @@
 			else
 				var/new_lang = input(user, "Select an additional language", "Character Generation", null) as null|anything in available_languages
 				if(new_lang)
-					pref.alternate_languages |= new_lang
-					sanitize_alt_languages()
+					if (pref.alternate_languages.len >= S.num_alternate_languages)
+						alert(user, "You have already selected the maximum number of alternate languages for this species!")
+					else
+						pref.alternate_languages |= new_lang
 					return TOPIC_REFRESH
+	else if(href_list["autohiss"])
+		pref.autohiss_setting = (pref.autohiss_setting + 1) % AUTOHISS_NUM
+		if(isnull(pref.autohiss_setting))
+			pref.autohiss_setting = AUTOHISS_OFF
+		return TOPIC_REFRESH
 	return ..()
-
-/datum/category_item/player_setup_item/general/language/proc/is_allowed_language(mob/user, datum/language/lang)
-	if(!user)
-		return TRUE
-	var/datum/species/S = all_species[pref.species] || all_species[SPECIES_HUMAN]
-	if(lang.name in S.secondary_langs)
-		return TRUE
-	if(!(lang.flags & RESTRICTED) && is_alien_whitelisted(user, lang))
-		return TRUE
-	return FALSE
-
-/datum/category_item/player_setup_item/general/language/proc/sanitize_alt_languages()
-	if(!istype(pref.alternate_languages)) pref.alternate_languages = list()
-
-	var/preference_mob = preference_mob()
-	for(var/L in pref.alternate_languages)
-		var/datum/language/lang = all_languages[L]
-		if(!lang || !is_allowed_language(preference_mob, lang))
-			pref.alternate_languages -= L
-
-	var/datum/species/S = all_species[pref.species] || all_species[SPECIES_HUMAN]
-	if(pref.alternate_languages.len > S.num_alternate_languages)
-		pref.alternate_languages.Cut(S.num_alternate_languages + 1)
-
-	pref.alternate_languages = uniquelist(pref.alternate_languages)

@@ -2,7 +2,7 @@ var/list/obj/effect/bump_teleporter/BUMP_TELEPORTERS = list()
 
 /obj/effect/bump_teleporter
 	name = "bump-teleporter"
-	icon = 'icons/misc/markers.dmi'
+	icon = 'icons/mob/screen/generic.dmi'
 	icon_state = "x2"
 	var/id = null			//id of this bump_teleporter.
 	var/id_target = null	//id of bump_teleporter which this moves you to.
@@ -19,13 +19,13 @@ var/list/obj/effect/bump_teleporter/BUMP_TELEPORTERS = list()
 	BUMP_TELEPORTERS -= src
 	return ..()
 
-/obj/effect/bump_teleporter/Bumped(atom/user)
+/obj/effect/bump_teleporter/CollidedWith(atom/user)
 	if(!ismob(user))
-		//user.loc = src.loc	//Stop at teleporter location
+		//user.forceMove(src.loc)	//Stop at teleporter location
 		return
 
 	if(!id_target)
-		//user.loc = src.loc	//Stop at teleporter location, there is nowhere to teleport to.
+		//user.forceMove(src.loc)	//Stop at teleporter location, there is nowhere to teleport to.
 		return
 
 	for(var/obj/effect/bump_teleporter/BT in BUMP_TELEPORTERS)

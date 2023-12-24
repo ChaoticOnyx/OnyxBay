@@ -16,20 +16,26 @@
  * * timeout - The timeout of the textbox, after which the modal will close and qdel itself. Set to zero for no timeout.
  */
 /proc/tgui_input_text(mob/user, message = "", title = "Text Input", default, max_length = MAX_MESSAGE_LEN, multiline = FALSE, encode = TRUE, timeout = 0)
-	if(!user)
+	if (!user)
 		user = usr
-	if(!istype(user))
+	if (!istype(user))
 		if (istype(user, /client))
 			var/client/client = user
 			user = client.mob
 		else
 			return
 	// Client does NOT have tgui_input on: Returns regular input
-	if(user.get_preference_value(/datum/client_preference/tgui_input) != GLOB.PREF_YES)
-		if(multiline)
-			return stripped_multiline_input(user, message, title, default, max_length, encode)
+	if(!user.client.prefs.tgui_inputs)
+		if(encode)
+			if(multiline)
+				return stripped_multiline_input(user, message, title, default, max_length)
+			else
+				return stripped_input(user, message, title, default, max_length)
 		else
-			return stripped_input(user, message, title, default, max_length, encode)
+			if(multiline)
+				return input(user, message, title, default) as message|null
+			else
+				return input(user, message, title, default) as text|null
 	var/datum/tgui_input_text/text_input = new(user, message, title, default, max_length, multiline, encode, timeout)
 	text_input.ui_interact(user)
 	text_input.wait()
@@ -99,27 +105,27 @@
 	. = ..()
 	closed = TRUE
 
-/datum/tgui_input_text/tgui_state(mob/user)
-	return GLOB.tgui_always_state
+/datum/tgui_input_text/ui_state(mob/user)
+	return always_state
 
-/datum/tgui_input_text/tgui_static_data(mob/user)
+/datum/tgui_input_text/ui_static_data(mob/user)
 	var/list/data = list()
-	data["swapped_buttons"] = user.get_preference_value(/datum/client_preference/tgui_input_swapped) == GLOB.PREF_YES ? TRUE : FALSE
-	data["large_buttons"] = user.get_preference_value(/datum/client_preference/tgui_input_large) == GLOB.PREF_YES ? TRUE : FALSE
+	data["large_buttons"] = user.client.prefs.tgui_buttons_large
+	data["swapped_buttons"] = user.client.prefs.tgui_inputs_swapped
 	data["max_length"] = max_length
-	data["title"] = title
 	data["message"] = message
 	data["multiline"] = multiline
 	data["placeholder"] = default // Default is a reserved keyword
+	data["title"] = title
 	return data
 
-/datum/tgui_input_text/tgui_data(mob/user)
+/datum/tgui_input_text/ui_data(mob/user)
 	var/list/data = list()
 	if(timeout)
 		data["timeout"] = CLAMP01((timeout - (world.time - start_time) - 1 SECONDS) / (timeout - 1 SECONDS))
 	return data
 
-/datum/tgui_input_text/tgui_act(action, list/params)
+/datum/tgui_input_text/ui_act(action, list/params)
 	. = ..()
 	if (.)
 		return

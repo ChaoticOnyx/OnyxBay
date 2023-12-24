@@ -1,15 +1,14 @@
-/mob/living/silicon/robot/Login()
+/mob/living/silicon/robot/LateLogin()
 	..()
 	regenerate_icons()
-	update_hud()
-
 	show_laws(0)
 
-	var/hotkey_mode = client.get_preference_value("DEFAULT_HOTKEY_MODE")
-	if(hotkey_mode == GLOB.PREF_YES)
-		winset(src, null, "mainwindow.macro=borghotkeymode hotkey_toggle.is-checked=true input.focus=false input.background-color=#F0F0F0")
+	if(client.prefs.toggles_secondary & HOTKEY_DEFAULT)
+		winset(src, null, "mainwindow.macro=borghotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true")
 	else
-		winset(src, null, "mainwindow.macro=borgmacro hotkey_toggle.is-checked=false input.focus=true input.background-color=#d3b5b5")
+		winset(src, null, "mainwindow.macro=borgmacro hotkey_toggle.is-checked=false input.focus=true")
 
-	if(!icon_chosen)
-		choose_hull(module_hulls)
+	// Forces synths to select an icon relevant to their module
+	if(module && !icon_selected)
+		choose_icon()
+	set_intent(a_intent) // to set the eye colour

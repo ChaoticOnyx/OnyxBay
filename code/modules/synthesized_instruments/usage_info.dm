@@ -9,14 +9,14 @@
 
 //This will let you easily monitor when you're going overboard with tempo and sound duration, generally if the bars fill up it is BAD
 /datum/nano_module/usage_info/ui_interact(mob/user, ui_key = "usage_info", datum/nanoui/ui = null, force_open = 0)
-	var/global/list/data = list()
+	var/static/list/data = list()
 	data.Cut()
-	data["channels_left"] = GLOB.sound_channels.available_channels.stack.len
+	data["channels_left"] = sound_channels.available_channels.stack.len
 	data["events_active"] = src.player.event_manager.events.len
-	data["max_channels"] = GLOB.sound_channels.channel_ceiling
-	data["max_events"] = GLOB.musical_config.max_events
+	data["max_channels"] = sound_channels.channel_ceiling
+	data["max_events"] = musical_config.max_events
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSnanoui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new (user, src, ui_key, "song_usage_info.tmpl", "Usage info", 500, 150)
 		ui.set_initial_data(data)
@@ -26,4 +26,4 @@
 
 /datum/nano_module/usage_info/Destroy()
 	player = null
-	return ..()
+	..()

@@ -1,0 +1,80 @@
+/datum/uplink_item/item/exosuit_equipment
+	category = /datum/uplink_category/exosuit_equipment
+
+// COMBAT //
+
+/datum/uplink_item/item/exosuit_equipment/mounted_gun
+	name = "Mounted Electrolaser Carbine"
+	desc = "A dual fire mode electrolaser system connected to the exosuit's targeting system."
+	telecrystal_cost = 2
+	path = /obj/item/mecha_equipment/mounted_system/combat/taser
+
+/datum/uplink_item/item/exosuit_equipment/mounted_gun/ion
+	name = "Mounted Ion Rifle"
+	desc = "An exosuit-mounted ion rifle. Handle with care."
+	telecrystal_cost = 7
+	path = /obj/item/mecha_equipment/mounted_system/combat/ion
+
+/datum/uplink_item/item/exosuit_equipment/mounted_gun/laser
+	name = "Mounted Laser Rifle"
+	desc = "An exosuit-mounted laser rifle. Handle with care."
+	telecrystal_cost = 3
+	path = /obj/item/mecha_equipment/mounted_system/combat/laser
+
+/datum/uplink_item/item/exosuit_equipment/mounted_gun/smg
+	name = "Mounted Machine Gun"
+	desc = "An exosuit-mounted automatic weapon. Handle with care."
+	telecrystal_cost = 3
+	path = /obj/item/mecha_equipment/mounted_system/combat/smg
+
+/datum/uplink_item/item/exosuit_equipment/mounted_launcher
+	name = "Mounted Missile Rack"
+	desc = "An SRM-8 missile rack loaded with explosive missiles."
+	telecrystal_cost = 10
+	path = /obj/item/mecha_equipment/mounted_system/combat/missile
+
+// UTILITY //
+
+/datum/uplink_item/item/exosuit_equipment/mounted_tool
+	name = "Mounted RFD-C"
+	desc = "A RFD, modified to construct walls and floors. This one can be mounted on an exosuit."
+	telecrystal_cost = 5
+	path = /obj/item/mecha_equipment/mounted_system/rfd
+
+/datum/uplink_item/item/exosuit_equipment/mounted_tool/clamp
+	name = "Mounted Clamp"
+	desc = "A large, heavy industrial cargo loading clamp."
+	telecrystal_cost = 1
+	path = /obj/item/mecha_equipment/clamp
+
+/datum/uplink_item/item/exosuit_equipment/mounted_tool/catapult
+	name = "Mounted Gravitational Catapult"
+	desc = "An exosuit-mounted gravitational catapult."
+	telecrystal_cost = 2
+	path = /obj/item/mecha_equipment/catapult
+
+/datum/uplink_item/item/exosuit_equipment/mounted_tool/drill
+	name = "Mounted Drill"
+	desc = "An exosuit-mounted drill."
+	telecrystal_cost = 1
+	path = /obj/item/mecha_equipment/drill
+
+/datum/uplink_item/item/exosuit_equipment/mounted_tool/passenger
+	name = "Mounted Passenger Compartment"
+	desc = "An exosuit-mounted passenger compartment."
+	telecrystal_cost = 1
+	path = /obj/item/mecha_equipment/sleeper/passenger_compartment
+
+// MEDICAL //
+
+/datum/uplink_item/item/exosuit_equipment/mounted_medical
+	name = "Mounted Sleeper"
+	desc = "An exosuit-mounted sleeper designed to maintain patients stabilized on their way to medical facilities."
+	telecrystal_cost = 1
+	path = /obj/item/mecha_equipment/sleeper
+
+/datum/uplink_item/item/exosuit_equipment/mounted_medical/drone
+	name = "Mounted Crisis Dronebay"
+	desc = "A small shoulder-mounted dronebay containing a rapid response drone capable of moderately stabilizing a patient near the exosuit."
+	telecrystal_cost = 1
+	path = /obj/item/mecha_equipment/crisis_drone

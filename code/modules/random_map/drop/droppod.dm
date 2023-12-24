@@ -13,6 +13,7 @@
 
 	wall_type = /turf/simulated/wall/titanium
 	floor_type = /turf/simulated/floor/reinforced
+	spawn_roof = TRUE
 	var/list/supplied_drop_types = list()
 	var/door_type = /obj/structure/droppod_door
 	var/drop_type = /mob/living/simple_animal/parrot
@@ -23,7 +24,7 @@
 	var/placement_explosion_light = 6
 	var/placement_explosion_flash = 4
 
-/datum/random_map/droppod/New(seed, tx, ty, tz, tlx, tly, do_not_apply, do_not_announce, supplied_drop, list/supplied_drops, automated)
+/datum/random_map/droppod/New(var/seed, var/tx, var/ty, var/tz, var/tlx, var/tly, var/do_not_apply, var/do_not_announce, var/supplied_drop, var/list/supplied_drops, var/automated)
 
 	if(supplied_drop)
 		drop_type = supplied_drop
@@ -41,8 +42,8 @@
 /datum/random_map/droppod/generate_map()
 
 	// No point calculating these 200 times.
-	var/x_midpoint = ceil(limit_x / 2)
-	var/y_midpoint = ceil(limit_y / 2)
+	var/x_midpoint = n_ceil(limit_x / 2)
+	var/y_midpoint = n_ceil(limit_y / 2)
 
 	// Draw walls/floors/doors.
 	for(var/x = 1, x <= limit_x, x++)
@@ -80,13 +81,13 @@
 
 /datum/random_map/droppod/apply_to_map()
 	if(placement_explosion_dev || placement_explosion_heavy || placement_explosion_light || placement_explosion_flash)
-		var/turf/T = locate((origin_x + ceil(limit_x / 2)-1), (origin_y + ceil(limit_y / 2)-1), origin_z)
+		var/turf/T = locate((origin_x + n_ceil(limit_x / 2)-1), (origin_y + n_ceil(limit_y / 2)-1), origin_z)
 		if(istype(T))
 			explosion(T, placement_explosion_dev, placement_explosion_heavy, placement_explosion_light, placement_explosion_flash)
 			sleep(15) // Let the explosion finish proccing before we ChangeTurf(), otherwise it might destroy our spawned objects.
 	return ..()
 
-/datum/random_map/droppod/get_appropriate_path(value)
+/datum/random_map/droppod/get_appropriate_path(var/value)
 	if(value == SD_FLOOR_TILE || value == SD_SUPPLY_TILE)
 		return floor_type
 	else if(value == SD_WALL_TILE)
@@ -96,9 +97,9 @@
 	return null
 
 // Pods are circular. Get the direction this object is facing from the center of the pod.
-/datum/random_map/droppod/get_spawn_dir(x, y)
-	var/x_midpoint = ceil(limit_x / 2)
-	var/y_midpoint = ceil(limit_y / 2)
+/datum/random_map/droppod/get_spawn_dir(var/x, var/y)
+	var/x_midpoint = n_ceil(limit_x / 2)
+	var/y_midpoint = n_ceil(limit_y / 2)
 	if(x == x_midpoint && y == y_midpoint)
 		return null
 	var/turf/target = locate(origin_x+x-1, origin_y+y-1, origin_z)
@@ -107,12 +108,12 @@
 		return null
 	return get_dir(middle, target)
 
-/datum/random_map/droppod/get_additional_spawns(value, turf/T, spawn_dir)
+/datum/random_map/droppod/get_additional_spawns(var/value, var/turf/T, var/spawn_dir)
 
 	// Splatter anything under us that survived the explosion.
 	if(value != SD_EMPTY_TILE && T.contents.len)
 		for(var/atom/movable/AM in T)
-			if(AM.simulated && !isobserver(AM))
+			if(AM.simulated && !istype(AM, /mob/abstract))
 				qdel(AM)
 
 	// Also spawn doors and loot.
@@ -123,9 +124,9 @@
 	else if(value == SD_SUPPLY_TILE)
 		get_spawned_drop(T)
 
-/datum/random_map/droppod/proc/get_spawned_drop(turf/T)
-	var/obj/structure/bed/chair/C = new(T)
-	C.set_light(0.5, 0.1, 3, 2, l_color = "#cc0000")
+/datum/random_map/droppod/proc/get_spawned_drop(var/turf/T)
+	var/obj/structure/bed/stool/chair/C = new(T)
+	C.set_light(3, l_color = "#CC0000")
 	var/mob/living/drop
 	// This proc expects a list of mobs to be passed to the spawner.
 	// Use the supply pod if you don't want to drop mobs.
@@ -137,14 +138,14 @@
 			supplied_drop_types -= drop
 			if(istype(drop))
 				drop.tag = null
-				if(drop.buckled)
-					drop.buckled = null
+				if(drop.buckled_to)
+					drop.buckled_to = null
 				drop.forceMove(T)
 	else if(ispath(drop_type))
 		drop = new drop_type(T)
 		if(istype(drop))
-			if(drop.buckled)
-				drop.buckled = null
+			if(drop.buckled_to)
+				drop.buckled_to = null
 			drop.forceMove(T)
 
 /datum/admins/proc/call_drop_pod()
@@ -172,8 +173,8 @@
 			spawned_mobs |= M
 	else
 		var/list/candidates = list()
-		for(var/client/player in GLOB.clients)
-			if(player.mob && isghost(player.mob))
+		for(var/client/player in clients)
+			if(player.mob && istype(player.mob, /mob/abstract/observer))
 				candidates |= player
 
 		if(!candidates.len)
@@ -191,9 +192,9 @@
 
 		// Equip them, if they are human and it is desirable.
 		if(istype(spawned_mob, /mob/living/carbon/human))
-			var/antag_type = input("Select an equipment template to use or cancel for nude.", null) as null|anything in GLOB.all_antag_types_
+			var/antag_type = input("Select an equipment template to use or cancel for nude.", null) as null|anything in all_antag_types
 			if(antag_type)
-				var/datum/antagonist/A = GLOB.all_antag_types_[antag_type]
+				var/datum/antagonist/A = all_antag_types[antag_type]
 				A.equip(spawned_mob)
 
 	if(alert("Are you SURE you wish to deploy this drop pod? It will cause a sizable explosion and gib anyone underneath it.",,"No","Yes") == "No")
@@ -210,18 +211,22 @@
 	// Chuck them into the pod.
 	var/automatic_pod
 	if(spawned_mob && selected_player)
-		if(selected_player.mob.mind)
-			selected_player.mob.mind.transfer_to(spawned_mob)
-		else
-			spawned_mob.ckey = selected_player.mob.ckey
+		spawned_mob.ckey = selected_player.mob.ckey
 		spawned_mobs = list(spawned_mob)
-		message_admins("[key_name(usr)] dropped a pod containing \the [spawned_mob] ([spawned_mob.key]) at ([usr.x],[usr.y],[usr.z])")
-		log_admin("[key_name(usr)] dropped a pod containing \the [spawned_mob] ([spawned_mob.key]) at ([usr.x],[usr.y],[usr.z])")
+		message_admins("[key_name_admin(usr)] dropped a pod containing \the [spawned_mob] ([spawned_mob.key]) at ([usr.x],[usr.y],[usr.z])")
+		log_admin("[key_name(usr)] dropped a pod containing \the [spawned_mob] ([spawned_mob.key]) at ([usr.x],[usr.y],[usr.z])",admin_key=key_name(usr),ckey=key_name(spawned_mob))
 	else if(spawned_mobs.len)
 		automatic_pod = 1
-		message_admins("[key_name(usr)] dropped a pod containing [spawned_mobs.len] [spawned_mobs[1]] at ([usr.x],[usr.y],[usr.z])")
-		log_admin("[key_name(usr)] dropped a pod containing [spawned_mobs.len] [spawned_mobs[1]] at ([usr.x],[usr.y],[usr.z])")
+		message_admins("[key_name_admin(usr)] dropped a pod containing [spawned_mobs.len] [spawned_mobs[1]] at ([usr.x],[usr.y],[usr.z])")
+		log_admin("[key_name(usr)] dropped a pod containing [spawned_mobs.len] [spawned_mobs[1]] at ([usr.x],[usr.y],[usr.z])",admin_key=key_name(usr),ckey=key_name(spawned_mob))
 	else
 		return
 
 	new /datum/random_map/droppod(null, usr.x-1, usr.y-1, usr.z, supplied_drops = spawned_mobs, automated = automatic_pod)
+
+
+#undef SD_FLOOR_TILE
+#undef SD_WALL_TILE
+#undef SD_DOOR_TILE
+#undef SD_EMPTY_TILE
+#undef SD_SUPPLY_TILE

@@ -1,5 +1,5 @@
-/proc/gibs(atom/location, datum/dna/MobDNA, gibber_type = /obj/effect/gibspawner/generic, fleshcolor, bloodcolor)
-	new gibber_type(location, MobDNA, fleshcolor, bloodcolor)
+/proc/gibs(atom/location, var/list/viruses, var/datum/dna/MobDNA, gibber_type = /obj/effect/gibspawner/generic, var/fleshcolor, var/bloodcolor)
+	new gibber_type(location,viruses,MobDNA,fleshcolor,bloodcolor)
 
 /obj/effect/gibspawner
 	var/sparks = 0 //whether sparks spread on Gib()
@@ -9,32 +9,24 @@
 	var/list/gibdirections = list() //of lists
 	var/fleshcolor //Used for gibbed humans.
 	var/bloodcolor //Used for gibbed humans.
-	var/datum/dna/MobDNA
 
-/obj/effect/gibspawner/Initialize(mapload, datum/dna/_MobDNA, _fleshcolor, _bloodcolor)
-	. = ..(mapload)
+/obj/effect/gibspawner/Initialize(mapload, list/viruses, datum/dna/MobDNA, fleshcolor, bloodcolor)
+	. = ..()
 
-	if(_MobDNA)
-		MobDNA = _MobDNA
-	if(_fleshcolor)
-		fleshcolor = _fleshcolor
-	if(_bloodcolor)
-		bloodcolor = _bloodcolor
+	if(fleshcolor) src.fleshcolor = fleshcolor
+	if(bloodcolor) src.bloodcolor = bloodcolor
+	Gib(loc,viruses,MobDNA)
 
-	Gib(loc)
-	return INITIALIZE_HINT_QDEL
-
-/obj/effect/gibspawner/proc/Gib(atom/location)
+/obj/effect/gibspawner/proc/Gib(atom/location, var/list/viruses = list(), var/datum/dna/MobDNA = null)
 	if(gibtypes.len != gibamounts.len || gibamounts.len != gibdirections.len)
-		log_error("<span class='warning'>Gib list length mismatch!</span>")
+		to_world("<span class='warning'>Gib list length mismatch!</span>")
 		return
 
-	if(sparks)
-		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread()
-		s.set_up(2, 1, get_turf(location)) // Not sure if it's safe to pass an arbitrary object to set_up, todo
-		s.start()
-
 	var/obj/effect/decal/cleanable/blood/gibs/gib = null
+
+	if(sparks)
+		spark(location, 2, alldirs)
+
 	for(var/i = 1, i<= gibtypes.len, i++)
 		if(gibamounts[i])
 			for(var/j = 1, j<= gibamounts[i], j++)
