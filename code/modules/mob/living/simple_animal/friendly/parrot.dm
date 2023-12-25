@@ -194,14 +194,14 @@
 						ears.dropInto(loc)
 						ears = null
 						for(var/possible_phrase in speak)
-							if(copytext(possible_phrase,1,3) in department_radio_keys)
-								possible_phrase = copytext(possible_phrase,3,length(possible_phrase))
+							if(copytext(possible_phrase, 1, 3) in department_radio_keys)
+								possible_phrase = copytext(possible_phrase, 3, length(possible_phrase))
 					else
-						to_chat(usr, "<span class='warning'>There is nothing to remove from its [remove_from].</span>")
+						to_chat(usr, SPAN_WARNING("There is nothing to remove from its [remove_from]."))
 						return
 				if("claws")
 					if(!held_item)
-						to_chat(usr, "<span class='warning'>There is nothing to remove from its [remove_from]!</span>")
+						to_chat(usr, SPAN_WARNING("There is nothing to remove from its [remove_from]!"))
 						return
 					if(available_channels.len)
 						src.say("[pick(available_channels)] РРРЯЯЯЯЯ ПОЛОЖИ НА МЕСТО РРЯЯЯЯЯЯ!")
@@ -214,12 +214,12 @@
 		else if(href_list["add_inv"])
 			var/add_to = href_list["add_inv"]
 			if(!usr.get_active_hand())
-				to_chat(usr, "<span class='warning'>You have nothing in your hand to put on its [add_to].</span>")
+				to_chat(usr, SPAN_WARNING("You have nothing in your hand to put on its [add_to]."))
 				return
 			switch(add_to)
 				if("ears")
 					if(ears)
-						to_chat(usr, "<span class='warning'>It's already wearing something.</span>")
+						to_chat(usr, SPAN_WARNING("It's already wearing something."))
 						return
 
 					var/obj/item/item_to_add = usr.get_active_hand()
@@ -227,7 +227,7 @@
 						return
 
 					if(!istype(item_to_add, /obj/item/device/radio/headset))
-						to_chat(usr, "<span class='warning'>This object won't fit.</span>")
+						to_chat(usr, SPAN_WARNING("This object won't fit."))
 						return
 
 					if(!usr.drop(item_to_add, src))
@@ -256,7 +256,7 @@
 								available_channels.Add(":q")
 				if("claws")
 					if(held_item)
-						to_chat(usr, "<span class='warning'>It's already wearing something.</span>")
+						to_chat(usr, SPAN_WARNING("It's already wearing something."))
 						return
 
 					var/obj/item/item_to_add = usr.get_active_hand()
@@ -267,7 +267,7 @@
 						return
 
 					held_item = item_to_add
-					to_chat(usr, "<span class='notice'>You put the item into claws.</span>")
+					to_chat(usr, SPAN_NOTICE("You put the item into claws."))
 					if(istype(src, /mob/living/simple_animal/parrot/Poly))
 						if(prob(90))
 							say("Поли нравится!")
@@ -394,8 +394,8 @@
 						if(prob(50))
 							useradio = 1
 
-						if(copytext(possible_phrase,1,3) in department_radio_keys)
-							possible_phrase = "[useradio?pick(available_channels):""] [copytext(possible_phrase,3,length(possible_phrase)+1)]" //crop out the channel prefix
+						if(copytext(possible_phrase, 1, 3) in department_radio_keys)
+							possible_phrase = "[useradio?pick(available_channels):""] [copytext(possible_phrase, 3, length(possible_phrase)+1)]" //crop out the channel prefix
 						else
 							possible_phrase = "[useradio?pick(available_channels):""] [possible_phrase]"
 
@@ -403,8 +403,8 @@
 
 				else //If we have no headset or channels to use, dont try to use any!
 					for(var/possible_phrase in speak)
-						if(copytext(possible_phrase,1,3) in department_radio_keys)
-							possible_phrase = "[copytext(possible_phrase,3,length(possible_phrase)+1)]" //crop out the channel prefix
+						if(copytext(possible_phrase, 1, 3) in department_radio_keys)
+							possible_phrase = "[copytext(possible_phrase, 3, length(possible_phrase)+1)]" //crop out the channel prefix
 						newspeak.Add(possible_phrase)
 				speak = newspeak
 
@@ -457,7 +457,7 @@
 				return
 //-----STEALING
 	else if(parrot_state == (PARROT_SWOOP | PARROT_STEAL))
-		walk(src,0)
+		walk(src, 0)
 		if(!parrot_interest || held_item)
 			parrot_state = PARROT_SWOOP | PARROT_RETURN
 			return
@@ -475,7 +475,7 @@
 				if(!parrot_perch || parrot_interest.loc != parrot_perch.loc)
 					held_item = parrot_interest
 					parrot_interest.forceMove(src)
-					visible_message("[src] grabs the [held_item]!", "<span class='notice'>You grab the [held_item]!</span>", "You hear the sounds of wings flapping furiously.")
+					visible_message("[src] grabs the [held_item]!", SPAN_NOTICE("You grab the [held_item]!"), "You hear the sounds of wings flapping furiously.")
 
 			set_interest(null)
 			parrot_state = PARROT_SWOOP | PARROT_RETURN
@@ -504,7 +504,7 @@
 
 //-----FLEEING
 	else if(parrot_state == (PARROT_SWOOP | PARROT_FLEE))
-		walk(src,0)
+		walk(src, 0)
 		if(!parrot_interest || !isliving(parrot_interest)) //Sanity
 			parrot_state = PARROT_WANDER
 
@@ -540,7 +540,7 @@
 				return
 
 			//Time for the hurt to begin!
-			var/damage = rand(5,10)
+			var/damage = rand(5, 10)
 
 			if(ishuman(parrot_interest))
 				var/mob/living/carbon/human/H = parrot_interest
@@ -635,7 +635,7 @@
 		return -1
 
 	if(held_item)
-		to_chat(src, "<span class='warning'>You are already holding the [held_item]</span>")
+		to_chat(src, SPAN_WARNING("You are already holding the [held_item]"))
 		return 1
 
 	for(var/obj/item/I in view(1,src))
@@ -648,10 +648,10 @@
 
 			held_item = I
 			I.forceMove(src)
-			visible_message("[src] grabs the [held_item]!", "<span class='notice'>You grab the [held_item]!</span>", "You hear the sounds of wings flapping furiously.")
+			visible_message("[src] grabs the [held_item]!", SPAN_NOTICE("You grab the [held_item]!"), "You hear the sounds of wings flapping furiously.")
 			return held_item
 
-	to_chat(src, "<span class='warning'>There is nothing of interest to take.</span>")
+	to_chat(src, SPAN_WARNING("There is nothing of interest to take."))
 	return 0
 
 /mob/living/simple_animal/parrot/proc/steal_from_mob()
@@ -663,7 +663,7 @@
 		return -1
 
 	if(held_item)
-		to_chat(src, "<span class='warning'>You are already holding the [held_item]</span>")
+		to_chat(src, SPAN_WARNING("You are already holding the [held_item]."))
 		return 1
 
 	var/obj/item/stolen_item = null
@@ -677,10 +677,12 @@
 
 		if(stolen_item && C.drop(stolen_item, src))
 			held_item = stolen_item
-			visible_message("[src] grabs the [held_item] out of [C]'s hand!", "<span class='warning'>You snag the [held_item] out of [C]'s hand!</span>", "You hear the sounds of wings flapping furiously.")
+			visible_message("[src] grabs the [held_item] out of [C]'s hand!",
+			                SPAN_WARNING("You snag the [held_item] out of [C]'s hand!"),
+			                "You hear the sounds of wings flapping furiously.")
 			return held_item
 
-	to_chat(src, "<span class='warning'>There is nothing of interest to take.</span>")
+	to_chat(src, SPAN_WARNING("There is nothing of interest to take."))
 	return 0
 
 /mob/living/simple_animal/parrot/verb/drop_held_item_player()
@@ -739,7 +741,7 @@
 					forceMove(AM.loc)
 					icon_state = "parrot_sit"
 					return
-	to_chat(src, "<span class='warning'>There is no perch nearby to sit on.</span>")
+	to_chat(src, SPAN_WARNING("There is no perch nearby to sit on."))
 	return
 
 /*
@@ -748,47 +750,11 @@
 /mob/living/simple_animal/parrot/Poly
 	name = "Poly"
 	desc = "Poly the Parrot. An expert on quantum cracker theory."
-	speak = list(
-		"Поли хочет крекер!",
-		":e Проверьте материю, ущербы!",
-		":e Настраивайте СМЕСы, ленивые жопы!",
-		":e Настройте соляры!",
-		":e Кто спиздил сранный РИГ!?",
-		":e Она сейчас ёбнет! Вызывайте шаттл!!!",
-		":e Синга съебалась!",
-		":e Проснись, инженер. Следуй за белым попугаем!",
-		":e Когда-то и меня вела дорога инженера! Но затем кто-то украл мою карту...",
-		":e Токсины в трубах! А, нет, показалось.",
-		":e Борг - попугай! Борг - попугай! Борг!",
-		":e Птица Говорун отличается умом и сообразительностью! Но не СЕ!",
-		":e Этого типа в карго видел - деревяшками торгует!",
-		":e СЕ! Я у тебя денежек немного возьму - на крекеры.",
-		":e Как поспал, братишка? Проголодался, наверное, братишка? Съешь крекер!",
-		":e Откуда ты вообще нарисовался?",
-		":e А я нашёл колечки! Моя прелесть! Не отдам!",
-		":e Живу в инженерке, натыкал табличек! Я маленький и злобный! Этого мало, чтобы добиться уединения?!",
-		":e А чем тебе инженерка не нравятся, а? Я тут уже давно сижу и всем советую.",
-		":e Космос! Прекрасное место, чтобы построить станцию... Или спрятать труп!",
-		":e Инженер, не говори вслух! Ты понижаешь IQ всей станции!",
-		":e В рот мне крекер!",
-		":e Я гусь! А, нет, всё ещё попугай...",
-		":e Я попугай! Я... С рифмой не дружу.",
-		":e А что, если я просто птица с наушником?.. Да не, хуйня какая-то.",
-		":e У меня есть мысль, и я ее думаю.",
-		":e Все получат по увольнительной! И СЕ тоже!",
-		":e Большие попугаи начинаются с малого!",
-		":e Чем ниже голова, тем глубже мои мысли!",
-		":e Мыши сгрызли провода!",
-		":e А где инжир!?",
-		":e А знаешь, что, инженер? Мне этот мир абсолютно понятен.",
-		":e Попугай - не птис-с-ся!",
-		":e Моя фамилия - Прескотт!",
-		":e Материя слабее сингулярности, но в сдерживающем поле не выступает!",
-	)
 
-/mob/living/simple_animal/parrot/Poly/New()
+/mob/living/simple_animal/parrot/Poly/Initialize()
 	ears = new /obj/item/device/radio/headset/headset_eng(src)
 	available_channels = list(":e")
+	speak = GLOB.poly_phrases
 	..()
 
 /mob/living/simple_animal/parrot/say(message)
@@ -802,7 +768,7 @@
 
 
 	var/message_mode=""
-	if(copytext(message,1,2) == get_prefix_key(/decl/prefix/radio_main_channel))
+	if(copytext(message, 1, 2) == get_prefix_key(/decl/prefix/radio_main_channel))
 		message_mode = "headset"
 		message = copytext(message,2)
 
@@ -810,7 +776,7 @@
 		var/channel_prefix = copytext(message, 1 ,3)
 		message_mode = department_radio_keys[channel_prefix]
 
-	if(copytext(message,1,2) == get_prefix_key(/decl/prefix/radio_channel_selection))
+	if(copytext(message, 1, 2) == get_prefix_key(/decl/prefix/radio_channel_selection))
 		var/positioncut = 3
 		message = trim(copytext(message,positioncut))
 
@@ -825,7 +791,7 @@
 	..(message)
 
 
-/mob/living/simple_animal/parrot/hear_say(message, verb = "says", datum/language/language = null, alt_name = "",italics = 0, mob/speaker = null)
+/mob/living/simple_animal/parrot/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null)
 	if(prob(50) && !istype(speaker, /mob/living/simple_animal/parrot))
 		parrot_hear(message)
 	..()
