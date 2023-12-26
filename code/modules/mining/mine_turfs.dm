@@ -241,7 +241,7 @@ var/list/mining_floors = list()
 		if(newDepth >= 200)
 			excavation_level = 200
 
-		if(durability <= 0) // This means the rock is mined out fully
+		if(durability <= 0 || excavation_level >= 200) // This means the rock is mined out fully
 			var/obj/structure/boulder/B
 			if(artifact_find)
 				if(excavation_level > 0 || prob(15))
