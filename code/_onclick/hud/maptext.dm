@@ -17,8 +17,10 @@
 			if(mob.hud_used.maptext.last_word == obj_name)
 				return
 			obj_name = uppertext(obj_name)
-			if(mob.mind.assigned_role == "Clown")
+			if(mob.mind.special_role == "Changeling")
 				mob.hud_used.maptext.maptext = "<font size=4 style=\"font: 'Comic Sans MS'; text-align: center; text-shadow: 1px 1px 2px black;\">[obj_name]</font>"
+			else if(mob.mind.assigned_role == "Clown")
+				mob.hud_used.maptext.maptext = "<font size=4 style=\"font: 'Exocet'; text-align: center; text-shadow: 1px 1px 2px black;\">[obj_name]</font>"
 			else
 				mob.hud_used.maptext.maptext = "<font size=4 style=\"font: 'Small Fonts'; text-align: center; text-shadow: 1px 1px 2px black;\">[obj_name]</font>"
 			mob.hud_used.maptext.last_word = obj_name
