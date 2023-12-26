@@ -102,6 +102,12 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO, GLOB.PREF_AS_GHOST, GLOB.PREF_AS_LIVING)
 	default_value = GLOB.PREF_YES
 
+/datum/client_preference/maptext
+	description = "Show Maptext"
+	key = "SHOW_TMAPTEXT"
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+	default_value = GLOB.PREF_NO
+
 /datum/client_preference/runechat
 	description = "Show Runechat (Above-Head-Speech)"
 	key = "CHAT_RUNECHAT"

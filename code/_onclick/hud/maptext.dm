@@ -8,7 +8,7 @@
 
 /client/MouseEntered(object, location)
 	..()
-	if(!maptext_toggle)
+	if(get_preference_value(/datum/client_preference/maptext) == GLOB.PREF_NO)
 		return
 	if(istype(object, /atom) && !istype(object, /obj/screen/splash))
 		var/atom/A = object
@@ -24,6 +24,3 @@
 			else
 				mob.hud_used.maptext.maptext = "<font size=4 style=\"font: 'Small Fonts'; text-align: center; text-shadow: 1px 1px 2px black;\">[obj_name]</font>"
 			mob.hud_used.maptext.last_word = obj_name
-
-/client
-	var/maptext_toggle = TRUE

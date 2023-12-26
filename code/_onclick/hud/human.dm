@@ -107,7 +107,7 @@
 		static_inventory += using
 
 		inv_box = new /obj/screen/inventory()
-		inv_box.SetName("right hand")
+		inv_box.SetName("r_hand")
 		inv_box.icon = ui_style
 		inv_box.icon_state = "r_hand_inactive"
 		if(mymob && !mymob.hand)	//This being 0 or null means the right hand is in use
@@ -121,7 +121,7 @@
 		static_inventory += inv_box
 
 		inv_box = new /obj/screen/inventory()
-		inv_box.SetName("left hand")
+		inv_box.SetName("l_hand")
 		inv_box.icon = ui_style
 		inv_box.icon_state = "l_hand_inactive"
 		if(mymob && mymob.hand)	//This being 1 means the left hand is in use
