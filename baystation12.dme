@@ -199,6 +199,7 @@
 #include "code\_onclick\hud\gun_mode.dm"
 #include "code\_onclick\hud\hud.dm"
 #include "code\_onclick\hud\human.dm"
+#include "code\_onclick\hud\maptext.dm"
 #include "code\_onclick\hud\metroid.dm"
 #include "code\_onclick\hud\movable_screen_objects.dm"
 #include "code\_onclick\hud\radial.dm"

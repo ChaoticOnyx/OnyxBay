@@ -45,6 +45,8 @@
 	/// List of all buttons that never exit the view
 	var/list/obj/screen/always_visible_inventory
 
+	var/obj/screen/maptext/maptext
+
 /datum/hud/New(mob/owner)
 	mymob = owner
 	instantiate()
@@ -62,6 +64,10 @@
 	toggleable_inventory = null
 	always_visible_inventory = null
 	mymob = null
+
+	if(maptext)
+		qdel(maptext)
+	maptext = null
 
 /datum/hud/proc/hidden_inventory_update()
 	if(!mymob) return
@@ -189,6 +195,9 @@
 	hud_version = hud_style > 0 ? hud_style : hud_version + 1
 	if(hud_version > HUD_STYLE_TOTAL)
 		hud_version = HUD_STYLE_STANDART
+
+	maptext = new(src)
+	mymob.client.screen += maptext
 
 	switch(hud_version)
 		if(HUD_STYLE_STANDART)
