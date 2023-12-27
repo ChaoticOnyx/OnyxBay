@@ -23,7 +23,7 @@ GLOBAL_VAR_CONST(PREF_ANNOUNCER_TGSTATION, "\[Cargo\] /TG/station (Legacy)")
 	title = "Gravity Failure"
 
 /datum/announce/solar_storm_approach
-	text = "A solar storm has been detected approaching the %STATION_NAME%. Please halt all EVA activites immediately and return inside."
+	text = "A solar storm has been detected approaching the %STATION_NAME%. Please halt all EVA activities immediately and return inside."
 	title = "%STATION_NAME% Sensor Array"
 
 /datum/announce/solar_storm_start
