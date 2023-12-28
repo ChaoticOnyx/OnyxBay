@@ -301,6 +301,7 @@
 		B.lid.toggle()
 	reagents.trans_to_obj(B, reagent_amount)
 	B.update_icon()
+	user?.put_in_hands(B)
 
 /obj/machinery/chem_master/proc/spend_material(amount = 0, mob/user)
 	if(matter_storage < amount)

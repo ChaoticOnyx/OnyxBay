@@ -375,7 +375,7 @@
 			if((count - amount) < 0)
 				amount = count
 			for(var/i = 1 to amount)
-				I.get_product(get_turf(src))
+				I.get_product(get_turf(src), user)
 			update_icon()
 
 		return 1
