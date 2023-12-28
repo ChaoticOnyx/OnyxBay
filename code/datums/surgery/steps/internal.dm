@@ -226,7 +226,7 @@
 		/obj/item/organ/internal = 100
 		)
 
-	preop_sound = 'sound/effects/squelch.ogg'
+	preop_sound = 'sound/effects/squelch1.ogg'
 	success_sound = 'sound/effects/squelch2.ogg'
 
 /datum/surgery_step/internal/replace_organ/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)

@@ -379,7 +379,7 @@
 		/obj/item/material/hatchet = 'sound/surgery/hatchet.ogg',
 	)
 	success_sound = 'sound/surgery/organ2.ogg'
-	failure_sound = 'sound/surgery/circsawhit.ogg'
+	failure_sound = 'sound/effects/fighting/circsawhit.ogg'
 
 /datum/surgery_step/generic/saw/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && parent_organ.open() == SURGERY_RETRACTED)
