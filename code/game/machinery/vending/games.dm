@@ -22,17 +22,17 @@
 					/obj/item/storage/box/snappops = 3)
 	premium = list(	/obj/item/gun/projectile/revolver/capgun = 1,
 					/obj/item/ammo_magazine/caps = 4)
-	prices = list(	/obj/item/toy/blink = 3,
-					/obj/item/toy/spinningtoy = 10,
-					/obj/item/deck/tarot = 3,
-					/obj/item/deck/cards = 3,
-					/obj/item/pack/cardemon = 5,
-					/obj/item/pack/spaceball = 5,
-					/obj/item/storage/pill_bottle/dice_nerd = 6,
-					/obj/item/storage/pill_bottle/dice = 6,
-					/obj/item/storage/box/checkers = 10,
-					/obj/item/storage/box/checkers/chess/red = 10,
-					/obj/item/storage/box/checkers/chess = 10)
+	prices = list(	/obj/item/toy/blink = 30,
+					/obj/item/toy/spinningtoy = 100,
+					/obj/item/deck/tarot = 30,
+					/obj/item/deck/cards = 30,
+					/obj/item/pack/cardemon = 50,
+					/obj/item/pack/spaceball = 50,
+					/obj/item/storage/pill_bottle/dice_nerd = 60,
+					/obj/item/storage/pill_bottle/dice = 60,
+					/obj/item/storage/box/checkers = 100,
+					/obj/item/storage/box/checkers/chess/red = 100,
+					/obj/item/storage/box/checkers/chess = 100)
 
 /obj/item/vending_cartridge/games
 	name = "games"

@@ -22,8 +22,8 @@
 						/obj/item/clothing/accessory/horrible = 2,
 						/obj/item/clothing/under/monkey/color/random = 3)
 	premium = list(/obj/item/clothing/mask/smokable/pipe = 3)
-	prices = list(	/obj/item/mirror = 60,
-					/obj/item/haircomb = 40,
+	prices = list(	/obj/item/mirror = 400,
+					/obj/item/haircomb = 200,
 					/obj/item/clothing/glasses/monocle = 700,
 					/obj/item/clothing/glasses/sunglasses = 500,
 					/obj/item/lipstick = 100,
