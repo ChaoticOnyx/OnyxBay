@@ -101,7 +101,6 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 
 /mob/observer/ghost/Destroy()
 	GLOB.ghost_mob_list.Remove(src)
-	stop_following()
 	QDEL_NULL(ghost_multitool)
 	if(hud_images)
 		for(var/image/I in hud_images)
@@ -144,7 +143,6 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 
 	log_and_message_admins("occupied clientless mob - ([L.type]) ([L]).", src, get_turf(L), L)
 
-	stop_following()
 	L.ckey = ckey
 	L.teleop = null
 	L.reload_fullscreen()
@@ -306,7 +304,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(mind.current.key && copytext(mind.current.key,1,2) != "@")	//makes sure we don't accidentally kick any clients
 		to_chat(src, SPAN("warning", "Another consciousness is in your body... It is resisting you."))
 		return
-	stop_following()
 	mind.current.key = key
 	mind.current.teleop = null
 	mind.current.reload_fullscreen()
@@ -441,15 +438,12 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(check_is_holy_turf(target_turf))
 		to_chat(src, SPAN_WARNING("The target location is holy grounds!"))
 		return
-	stop_following()
 	forceMove(target_turf)
 
 // This is the ghost's follow verb with an argument
 /mob/observer/ghost/proc/ManualFollow(atom/movable/target)
-	if(!istype(target) || target == src)
+	if(!istype(target))
 		return
-
-	stop_following()
 
 	var/orbitsize
 	if(target.icon)
@@ -459,25 +453,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		orbitsize = world.icon_size
 	orbitsize -= (orbitsize / world.icon_size) * (world.icon_size * 0.25)
 
-	glide_before_follow = src.glide_size
-	src.glide_size = target.glide_size
-
-	move_to_turf(target, loc, target.loc)
-	orbit(target, orbitsize, FALSE, 20, 36)
-
-	if(orbiting)
-		to_chat(src, SPAN_NOTICE("Now following \the [target]."))
+	orbit(target, orbitsize)
 
 /mob/dead/observer/orbit()
 	set_dir(WEST) // Reset dir so the right directional sprites show up
-	..()
-
-/mob/observer/ghost/proc/stop_following()
-	if(orbiting)
-		to_chat(src, SPAN_NOTICE("No longer following \the [orbiting.orbiting]."))
-		stop_orbit()
-		glide_size = glide_before_follow
-		glide_before_follow = 0
+	return ..()
 
 /mob/observer/ghost/move_to_turf(atom/movable/am, old_loc, new_loc)
 	var/turf/T = get_turf(new_loc)
@@ -493,9 +473,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/add_memory()
 	set hidden = TRUE
 	to_chat(src, SPAN_WARNING("You are dead! You have no mind to store memory!"))
-
-/mob/observer/ghost/PostIncorporealMovement()
-	stop_following()
 
 /mob/observer/ghost/verb/analyse_health(mob/living/carbon/human/H in GLOB.human_mob_list)
 	set category = null
@@ -772,3 +749,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	var/mob/new_player/M = new /mob/new_player()
 	M.key = key
 	log_and_message_admins("has respawned.", M)
+
+/mob/observer/ghost/update_height_offset()
+	return
