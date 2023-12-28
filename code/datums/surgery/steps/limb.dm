@@ -5,6 +5,8 @@
 	delicate = TRUE
 	shock_level = 40
 	priority = 3 // Must be higher than /datum/surgery_step/internal.
+	preop_sound = 'sound/surgery/scalpel1.ogg'
+	success_sound = 'sound/surgery/organ2.ogg'
 
 /datum/surgery_step/limb/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return TRUE
