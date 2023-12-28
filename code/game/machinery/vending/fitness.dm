@@ -17,14 +17,14 @@
 					/obj/item/reagent_containers/pill/diet = 8,
 					/obj/item/towel/random = 8)
 	illegal = list(/obj/item/reagent_containers/syringe/steroid/packaged = 4)
-	prices = list(	/obj/item/reagent_containers/vessel/carton/milk = 3,
-					/obj/item/reagent_containers/vessel/carton/milk/chocolate = 3,
-					/obj/item/reagent_containers/vessel/fitnessflask/proteinshake = 20,
-					/obj/item/reagent_containers/vessel/fitnessflask = 5,
-					/obj/item/reagent_containers/food/packaged/nutribar = 5,
-					/obj/item/reagent_containers/food/liquidfood = 5,
-					/obj/item/reagent_containers/pill/diet = 25,
-					/obj/item/towel/random = 40)
+	prices = list(	/obj/item/reagent_containers/vessel/carton/milk = 250,
+					/obj/item/reagent_containers/vessel/carton/milk/chocolate = 300,
+					/obj/item/reagent_containers/vessel/fitnessflask/proteinshake = 250,
+					/obj/item/reagent_containers/vessel/fitnessflask = 100,
+					/obj/item/reagent_containers/food/packaged/nutribar = 150,
+					/obj/item/reagent_containers/food/liquidfood = 500,
+					/obj/item/reagent_containers/pill/diet = 500,
+					/obj/item/towel/random = 100)
 
 /obj/item/vending_cartridge/fitness
 	name = "sweat"

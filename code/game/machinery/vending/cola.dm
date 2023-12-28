@@ -24,17 +24,17 @@
 					/obj/item/reagent_containers/vessel/can/dopecola = 5,
 					/obj/item/reagent_containers/food/liquidfood = 6)
 	premium = list(/obj/item/reagent_containers/vessel/plastic/waterbottle/fi4i = 5)
-	prices = list(	/obj/item/reagent_containers/vessel/can/cola = 5,
-					/obj/item/reagent_containers/vessel/can/colavanilla = 8,
-					/obj/item/reagent_containers/vessel/can/colacherry = 8,
-					/obj/item/reagent_containers/vessel/can/space_mountain_wind = 5,
-					/obj/item/reagent_containers/vessel/can/dr_gibb = 5,
-					/obj/item/reagent_containers/vessel/can/starkist = 5,
-					/obj/item/reagent_containers/vessel/plastic/waterbottle = 3,
-					/obj/item/reagent_containers/vessel/can/space_up = 5,
-					/obj/item/reagent_containers/vessel/can/iced_tea = 8,
-					/obj/item/reagent_containers/vessel/can/grape_juice = 5,
-					/obj/item/reagent_containers/vessel/can/red_mule = 15)
+	prices = list(	/obj/item/reagent_containers/vessel/can/cola = 50,
+					/obj/item/reagent_containers/vessel/can/colavanilla = 80,
+					/obj/item/reagent_containers/vessel/can/colacherry = 80,
+					/obj/item/reagent_containers/vessel/can/space_mountain_wind = 50,
+					/obj/item/reagent_containers/vessel/can/dr_gibb = 50,
+					/obj/item/reagent_containers/vessel/can/starkist = 50,
+					/obj/item/reagent_containers/vessel/plastic/waterbottle = 30,
+					/obj/item/reagent_containers/vessel/can/space_up = 50,
+					/obj/item/reagent_containers/vessel/can/iced_tea = 80,
+					/obj/item/reagent_containers/vessel/can/grape_juice = 50,
+					/obj/item/reagent_containers/vessel/can/red_mule = 150)
 
 
 /obj/item/vending_cartridge/cola
