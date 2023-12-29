@@ -99,7 +99,8 @@
 	if(statpanel("Status"))
 		stat("Intent:", "[a_intent]")
 		stat("Move Mode:", "[m_intent]")
-		stat("Poise:", "[round(100/poise_pool*poise)]%")
+		if(GLOB.combat_handler.allow_poise)
+			stat("Poise:", "[round(100/poise_pool*poise)]%")
 		stat("Special Ability:", "[active_ability]")
 
 		if(evacuation_controller)

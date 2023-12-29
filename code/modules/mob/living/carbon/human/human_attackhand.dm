@@ -173,7 +173,7 @@
 			if(grabbed_by.len || !MayMove() || src == H || H.species.species_flags & SPECIES_FLAG_NO_BLOCK)
 				accurate = 1 // certain circumstances make it impossible for us to evade punches
 
-				if(grabbed_by.len)
+				if(GLOB.combat_handler.allow_advanced && grabbed_by.len)
 					for(var/obj/item/grab/G in grabbed_by)
 						if(G.assailant == H)
 							var/obj/item/organ/external/O = G.get_targeted_organ()
@@ -245,9 +245,10 @@
 			if(!miss_type && GLOB.combat_handler.handle_block_unarmed(src, H))
 				miss_type = 2
 
-			//if(!miss_type && block)
-			//	attack_message = "[H] went for [src]'s [affecting.name] but was blocked!"
-			//	miss_type = 2
+			// Old-style random-based blocking
+			if(!miss_type && !GLOB.combat_handler.allow_blocking && canmove && src != H && prob(20))
+				H.visible_message(SPAN("danger", "[H] went for [src]'s [affecting.name] but was blocked!"))
+				miss_type = 2
 
 			H.do_attack_animation(src)
 
@@ -266,7 +267,7 @@
 			attack_damage = FINALIZE_UNARMED(attack_damage, accurate)
 			var/real_damage = attack_damage // We don't want species' damage modifiers to apply additional effects but damage
 			real_damage += attack.get_unarmed_damage(H)
-			real_damage *= damage_multiplier
+			real_damage *= damage_multiplier * GLOB.combat_handler.melee_mult
 			attack_damage *= damage_multiplier
 			if(MUTATION_HULK in H.mutations)
 				real_damage *= 2 // Hulks do twice the damage
@@ -295,6 +296,7 @@
 	if(!damage || !istype(user))
 		return
 	user.do_attack_animation(src)
+	damage *= GLOB.combat_handler.melee_mult
 
 	if(blockable && GLOB.combat_handler.handle_block_unarmed(src, user, damage))
 		return FALSE
