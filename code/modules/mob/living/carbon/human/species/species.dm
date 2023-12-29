@@ -656,32 +656,46 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				target.visible_message("<span class='danger'>[target]'s [W] goes off during the struggle!</span>")
 				return W.afterattack(shoot_to,target)
 
-	var/effective_armor = target.getarmor(attacker.zone_sel.selecting, "melee")
-	var/poisedmg = round(4.0 + 4.0 * ((100 - effective_armor) / 100), 0.1)
-	if(istype(attacker.gloves, /obj/item/clothing/gloves/chameleon/robust))
-		poisedmg *= 1.75
-	target.damage_poise(poisedmg)
+	// Checking the odds
+	var/push_check = !(species_flags & SPECIES_FLAG_NO_SLIP)
+	var/pushfail_check = FALSE
+	var/disarm_check = FALSE
+	var/armor_check = target.run_armor_check(affecting, "melee")
 
-	//target.visible_message("Debug \[DISARM\]: [target] lost [round(4.0+4.0*((100-effective_armor)/100),0.1)] poise ([target.poise]/[target.poise_pool])") // Debug Message
+	if(GLOB.combat_handler.allow_poise)
+		var/effective_armor = target.getarmor(attacker.zone_sel.selecting, "melee")
+		var/poisedmg = round(4.0 + 4.0 * ((100 - effective_armor) / 100), 0.1)
+		if(istype(attacker.gloves, /obj/item/clothing/gloves/chameleon/robust))
+			poisedmg *= 1.75
+		target.damage_poise(poisedmg)
 
-	//var/randn = rand(1, 100)
-	if(!(species_flags & SPECIES_FLAG_NO_SLIP) && target.poise <= 20 && !prob(target.poise*4.5) && !target.lying)
-		var/armor_check = target.run_armor_check(affecting, "melee")
+		push_check = push_check && (target.poise <= 20 && !target.lying && !prob(target.poise * 4.5))
+		pushfail_check = prob(100 - target.poise * 6.5)
+		disarm_check = !prob(target.poise * 2) // 30 poise = 40% disarm, 20 poise = 60% disarm, 10 poise = 80% disarm, 0 poise = 100% disarm
+	else
+		var/randn = rand(1, 100)
+		push_check = push_check && (randn <= 25)
+		pushfail_check = (armor_check < 100)
+		disarm_check = (randn <= 60)
+
+	// Trying to push
+	if(push_check)
 		playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-		if(prob(100-target.poise*6.5))
+		if(pushfail_check)
 			target.visible_message("<span class='danger'>[attacker] has pushed [target]!</span>")
 			target.apply_effect(4, WEAKEN, armor_check)
 		else
 			target.visible_message("<span class='warning'>[attacker] attempted to push [target]!</span>")
 		return
 
-	if(!prob(target.poise*2)) //30 poise = 40% disarm, 20 poise = 60% disarm, 10 poise = 80% disarm, 0 poise = 100% disarm
-		//See about breaking grips or pulls
+	// Trying to disarm
+	if(disarm_check)
+		// See about breaking grips or pulls
 		if(target.break_all_grabs(attacker))
 			playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 			return
 
-		//Actually disarm them
+		// Actually disarm them
 		for(var/obj/item/I in holding)
 			if(target.drop(I))
 				target.visible_message("<span class='danger'>[attacker] has disarmed [target]!</span>")
