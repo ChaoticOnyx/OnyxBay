@@ -144,9 +144,8 @@
 	if(ishuman(target) && ishuman(user))
 		var/mob/living/carbon/human/H = target
 		var/mob/living/carbon/human/U = user
-		if(H.parrying)
-			if(H.handle_parry(U, src))
-				return 0
+		if(GLOB.combat_handler.handle_parry(H, U, src))
+			return 0
 		if(H.blocking)
 			if(H.handle_block_weapon(U, src))
 				return 0

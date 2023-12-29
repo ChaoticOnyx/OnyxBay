@@ -240,14 +240,10 @@
 						set_dir(pick(GLOB.cardinal))
 					miss_type = 1
 
-			if(!miss_type && parrying)
-				if(handle_parry(H, null))
-					//attack_message = "[H] went for [src]'s [affecting.name] but was parried!"
-					miss_type = 2
-			if(!miss_type && blocking)
-				if(handle_block_normal(H))
-					//attack_message = "[H] went for [src]'s [affecting.name] but was blocked!"
-					miss_type = 2
+			if(!miss_type && (GLOB.combat_handler.handle_parry(src, H, null))
+				miss_type = 2
+			if(!miss_type && GLOB.combat_handler.handle_block_unarmed(src, H))
+				miss_type = 2
 
 			//if(!miss_type && block)
 			//	attack_message = "[H] went for [src]'s [affecting.name] but was blocked!"
@@ -300,9 +296,8 @@
 		return
 	user.do_attack_animation(src)
 
-	if(blocking && blockable)
-		if(handle_block_normal(user, damage))
-			return 0
+	if(blockable && GLOB.combat_handler.handle_block_unarmed(src, user, damage))
+		return FALSE
 
 	var/dam_zone = pick(organs_by_name)
 	var/obj/item/organ/external/affecting = get_organ(ran_zone(dam_zone))
@@ -311,7 +306,7 @@
 	admin_attack_log(user, src, "Attacked their victim", "Was attacked", "has [attack_message]")
 	apply_damage(damage, damtype, affecting, armor_block)
 	updatehealth()
-	return 1
+	return TRUE
 
 //Breaks all grips and pulls that the mob currently has.
 /mob/living/carbon/human/proc/break_all_grabs(mob/living/carbon/user, silent = 0)

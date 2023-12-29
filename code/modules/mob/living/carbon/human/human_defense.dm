@@ -312,7 +312,7 @@ meteor_act
 
 //aka Regular Attack
 //Jesus Christ what a mess I've made ~Toby
-/mob/living/carbon/human/standard_weapon_hit_effects(obj/item/I, mob/living/user, effective_force, blocked, hit_zone)
+/mob/living/carbon/human/get_harmed_with_item(obj/item/I, mob/living/user, effective_force, blocked, hit_zone)
 	if(status_flags & GODMODE)
 		return 0
 	var/obj/item/organ/external/affecting = get_organ(hit_zone)
@@ -392,14 +392,14 @@ meteor_act
 
 	//////////
 
-	if(effective_force > 10 || effective_force >= 5 && prob(33))
-		forcesay(GLOB.hit_appends)	//forcesay checks stat already
+	if(GLOB.combat_handler.allow_advanced && (effective_force > 10 || effective_force >= 5 && prob(33)))
+		forcesay(GLOB.hit_appends) // forcesay checks stat already
 
 	return 1
 
 // Well it has to look like this for the future reworks. I'm really sorry. ~Toby
 // Literally 'pull punches' for weapons.
-/mob/living/carbon/human/proc/alt_weapon_hit_effects(obj/item/I, mob/living/user, effective_force, blocked, hit_zone)
+/mob/living/carbon/human/proc/get_bashed_with_item(obj/item/I, mob/living/user, effective_force, blocked, hit_zone)
 	if(status_flags & GODMODE)
 		return 0
 	var/obj/item/organ/external/affecting = get_organ(hit_zone)
@@ -495,13 +495,13 @@ meteor_act
 
 	//////////
 
-	if(effective_force > 10 || effective_force >= 5 && prob(33))
-		forcesay(GLOB.hit_appends)	//forcesay checks stat already
+	if(GLOB.combat_handler.allow_advanced && (effective_force > 10 || effective_force >= 5 && prob(33)))
+		forcesay(GLOB.hit_appends) // forcesay checks stat already
 
 	return 1
 
 //User uses I to attack src.
-/mob/living/carbon/human/hit_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone, atype = 0)
+/mob/living/carbon/human/hit_with_item(obj/item/I, mob/living/user, effective_force, hit_zone, atype = 0)
 	var/obj/item/organ/external/affecting = get_organ(hit_zone)
 	if(!affecting)
 		return //should be prevented by attacked_with_item() but for sanity.
@@ -510,86 +510,34 @@ meteor_act
 
 	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
-		if(parrying)
-			if(handle_parry(A, I))
-				return
-		if(blocking)
-			if(handle_block_weapon(A, I))
-				return
-		if(!atype)
-			standard_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
+		if(GLOB.combat_handler.handle_parry(src, A, I))
+			return
+		if(GLOB.combat_handler.handle_block(src, A, I))
+			return
+		if(!atype || !GLOB.combat_handler.allow_bashing)
+			get_harmed_with_item(I, user, effective_force, blocked, hit_zone)
 		else
 			// We only check disarm attacks for melee armor since they are dealt w/ blunt parts/handles/etc.
 			blocked = run_armor_check(hit_zone, "melee", I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
-			alt_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
+			get_bashed_with_item(I, user, effective_force, blocked, hit_zone)
 		return blocked
 
-	standard_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
+	get_harmed_with_item(I, user, effective_force, blocked, hit_zone)
 
 	return blocked
 
 //User (A) uses their I to parry src's attack.
-/mob/living/carbon/human/parry_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone)
+/mob/living/carbon/human/parried_with_item(obj/item/I, mob/living/user, effective_force, hit_zone)
+	if(!GLOB.combat_handler.allow_parrying)
+		return hit_with_item(I, user, effective_force, hit_zone)
+
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
 		A.setClickCooldown(I.update_attack_cooldown()*2)
-		A.parrying = 1
+		A.parrying = world.time + I.mod_handy * 12
 		A.visible_message(SPAN("warning", "[A] attempts to parry [src]'s attack with their [I]!"))
-		//visible_message("[A] tries to parry [src]'s attack with their [I]! Parry window: [I.mod_handy*8]") //Debug message
-		spawn(I.mod_handy*12)
-			//visible_message("[A]'s parry window has ended.") //Debug message
-			A.parrying = 0
 	else
-		hit_with_weapon(I, user, effective_force, blocked, hit_zone)
-
-//User uses their I to touch src. I can't figure out how you can help anyone while holding a weapon :/
-/mob/living/touch_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone)
-	visible_message(SPAN("notice", "[user] touches [src] with [I.name]."))
-
-//Src (defender) gets attacked by attacking_mob (attacker) and tries to perform parry
-/mob/living/carbon/human/proc/handle_parry(mob/living/attacking_mob, obj/item/weapon_atk)
-	var/mob/living/carbon/human/defender = src
-	var/failing = 0
-	if(istype(attacking_mob,/mob/living/carbon/human))
-		var/mob/living/carbon/human/attacker = attacking_mob
-		if(defender.get_active_hand())
-			var/obj/item/weapon_def = defender.get_active_hand()
-			if(!weapon_def.force)
-				defender.parrying = 0
-				visible_message(SPAN("warning", "[defender] pointlessly attempts to parry [attacker]'s [weapon_atk.name] with their [weapon_def]."))
-				return 0  //For the case of candles and dices lmao
-
-			if(weapon_def.mod_reach > 1.25)
-				if((weapon_def.mod_reach - weapon_atk.mod_reach) > 1.0)
-					failing = 1
-			else if(weapon_def.mod_reach < 0.75)
-				if((weapon_atk.mod_reach - weapon_def.mod_reach) > 1.0)
-					failing = 1
-			if(failing)
-				visible_message(SPAN("warning", "[defender] fails to parry [attacker]'s [weapon_atk.name] with their [weapon_def.name]."))
-				defender.parrying = 0
-				return 0
-			defender.next_move = world.time+1 //Well I'd prefer to use setClickCooldown but it ain't gonna work here.
-			defender.damage_poise(2.5+(weapon_atk.mod_weight*1.5))
-			//visible_message("Debug \[parry\]: Defender [defender] lost [2.5+(weapon_def.mod_weight*2.5)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
-			attacker.setClickCooldown(weapon_atk.update_attack_cooldown()*2)
-			attacker.damage_poise(17.5+(weapon_atk.mod_weight*7.5))
-			//visible_message("Debug \[parry\]: Attacker [attacker] lost [20.0+(weapon_atk.mod_weight*5.0)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
-			visible_message(SPAN("warning", "[defender] parries [attacker]'s [weapon_atk.name] with their [weapon_def.name]."))
-
-			if(attacker.poise <= 5)
-				weapon_atk.knocked_out(attacker, TRUE, 3)
-			else if(attacker.poise <= 20)
-				weapon_atk.knocked_out(attacker)
-
-			playsound(loc, 'sound/weapons/parry.ogg', 50, 1, -1) // You know what's gonna happen next, eh?
-			defender.parrying = 0
-			return 1
-		else
-			//visible_message("[defender] tries to parry [attacker]'s [weapon_atk] with their bare hands.") //Debug Message
-			defender.parrying = 0
-			return 0
-	return 1
+		hit_with_item(I, user, effective_force, blocked, hit_zone)
 
 //Src (defender) blocks attacking_mob's (attacker) weapon_atk with their weapon_def
 /mob/living/carbon/human/proc/handle_block_weapon(mob/living/attacking_mob, obj/item/weapon_atk)
@@ -816,28 +764,8 @@ meteor_act
 		var/dtype = O.damtype
 		var/throw_damage = O.throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
 
-		if(blocking)
-			var/obj/item/weapon_def
-			if(blocking_hand && get_inactive_hand())
-				weapon_def = get_inactive_hand()
-			else if(get_active_hand())
-				weapon_def = get_active_hand()
-
-			if(weapon_def)
-				if(weapon_def.force && weapon_def.w_class >= O.w_class)
-					var/dir = get_dir(src,O)
-					O.throw_at(get_edge_target_turf(src, dir), 1)
-
-					visible_message(SPAN("warning", "[src] blocks [O] with [weapon_def]!"))
-					playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
-
-					damage_poise(throw_damage / weapon_def.mod_shield)
-					if(poise < throw_damage / weapon_def.mod_shield)
-						visible_message(SPAN("warning", "[src] falls down, unable to keep balance!"))
-						apply_effect(2, WEAKEN, 0)
-						useblock_off()
-					return
-
+		if(GLOB.combat_handler.handle_block_thrown(src, O, throw_damage))
+			return
 
 		var/zone = BP_CHEST
 		if(isliving(O.thrower))

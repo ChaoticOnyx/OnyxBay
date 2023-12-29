@@ -144,11 +144,11 @@
 	return target_zone
 
 //Called when the mob is hit with an item in combat. Returns the blocked result
-/mob/living/proc/hit_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone, atype = 0)
+/mob/living/proc/hit_with_item(obj/item/I, mob/living/user, effective_force, hit_zone, atype = 0)
 	visible_message("<span class='danger'>[src] has been [I.attack_verb.len? pick(I.attack_verb) : "attacked"] with [I.name] by [user]!</span>")
 
 	var/blocked = run_armor_check(hit_zone, "melee")
-	standard_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
+	get_harmed_with_item(I, user, effective_force, blocked, hit_zone)
 
 	if(I.damtype == BRUTE && prob(33)) // Added blood for whacking non-humans too
 		var/turf/simulated/location = get_turf(src)
@@ -156,14 +156,14 @@
 
 	return blocked
 
-/mob/living/proc/parry_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone)
-	return hit_with_weapon(I, user, effective_force, hit_zone)
+/mob/living/proc/parried_with_item(obj/item/I, mob/living/user, effective_force, hit_zone)
+	return hit_with_item(I, user, effective_force, hit_zone)
 
-/mob/living/proc/touch_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone)
-	visible_message("<span class='notice'>[user] touches [src] with [I.name].</span>")
+/mob/living/proc/touched_with_item(obj/item/I, mob/living/user, effective_force, hit_zone)
+	visible_message(SPAN("notice", "[user] touches [src] with [I.name]."))
 
 //returns 0 if the effects failed to apply for some reason, 1 otherwise.
-/mob/living/proc/standard_weapon_hit_effects(obj/item/I, mob/living/user, effective_force, blocked, hit_zone)
+/mob/living/proc/get_harmed_with_item(obj/item/I, mob/living/user, effective_force, blocked, hit_zone)
 	if(!effective_force || blocked >= 100)
 		return 0
 

@@ -1714,6 +1714,10 @@
 	set desc = "Get into a defensive stance, effectively blocking the next attack."
 	set category = "IC"
 
+	if(!GLOB.combat_handler.allow_blocking)
+		block_icon?.icon_state = "blank"
+		return
+
 	if(!incapacitated(INCAPACITATION_KNOCKOUT) && canClick())
 		setClickCooldown(3)
 		if(!weakened && !stunned)
@@ -1725,21 +1729,31 @@
 				to_chat(src, "<span class='notice'>You lower your defence.</span>")
 
 /mob/living/carbon/human/proc/useblock_off()
-	src.setClickCooldown(3)
-	src.blocking = 0
-	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
-		src.block_icon.icon_state = "act_block0"
+	if(!GLOB.combat_handler.allow_blocking)
+		block_icon?.icon_state = "blank"
+		return
+	setClickCooldown(3)
+	blocking = FALSE
+	if(block_icon) //in case we don't have the HUD and we use the hotkey
+		block_icon.icon_state = "act_block0"
 
 /mob/living/carbon/human/proc/useblock_on()
-	src.blocking = 1
-	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
-		src.block_icon.icon_state = "act_block1"
+	if(!GLOB.combat_handler.allow_blocking)
+		block_icon?.icon_state = "blank"
+		return
+	blocking = TRUE
+	if(block_icon) //in case we don't have the HUD and we use the hotkey
+		block_icon.icon_state = "act_block1"
 
 
 /mob/living/carbon/human/verb/blockswitch()
 	set name = "Block Hand Toggle"
 	set desc = "Choose whether to use your main hand or your off hand to block incoming attacks."
 	set category = "IC"
+
+	if(!GLOB.combat_handler.allow_blocking)
+		blockswitch_icon?.icon_state = "blank"
+		return
 
 	if(!blocking_hand)
 		blocking_hand = 1

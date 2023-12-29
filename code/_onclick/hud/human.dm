@@ -181,7 +181,7 @@
 	if(hud_data.has_block)
 		mymob.block_icon = new /obj/screen()
 		mymob.block_icon.icon = ui_style
-		mymob.block_icon.icon_state = "act_block0"
+		mymob.block_icon.icon_state = GLOB.combat_handler.allow_blocking ? "act_block0" : "blank"
 		mymob.block_icon.SetName("block")
 		mymob.block_icon.screen_loc = ui_block
 		mymob.block_icon.color = ui_color
@@ -191,7 +191,7 @@
 	if(hud_data.has_blockswitch)
 		mymob.blockswitch_icon = new /obj/screen()
 		mymob.blockswitch_icon.icon = ui_style
-		mymob.blockswitch_icon.icon_state = "act_blockswitch0"
+		mymob.blockswitch_icon.icon_state = GLOB.combat_handler.allow_blocking ? "act_blockswitch0" : "blank"
 		mymob.blockswitch_icon.SetName("blockswitch")
 		mymob.blockswitch_icon.screen_loc = ui_blockswitch
 		mymob.blockswitch_icon.color = ui_color

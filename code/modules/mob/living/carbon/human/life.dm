@@ -1018,14 +1018,17 @@
 	if(shock_stage >= 150)
 		Weaken(20)
 
-// Stance is being used in the Onyx fighting system. I wanted to call it stamina, but screw it.
 /mob/living/carbon/human/proc/handle_poise()
-	poise_pool = body_build.poise_pool
+	if(!GLOB.combat_handler.allow_poise)
+		poise_icon?.icon_state = "disabled"
+		return
+
+	poise_pool = body_build.poise_pool * GLOB.combat_handler.poise_mult
 	if(poise >= poise_pool)
 		poise = poise_pool
 		poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
 		return
-	var/pregen = 5
+	var/pregen = 5 * GLOB.combat_handler.poise_regen_mult
 
 	for(var/obj/item/grab/G in list(get_active_hand(), get_inactive_hand()))
 		pregen -= 1.25
@@ -1038,6 +1041,9 @@
 	poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
 
 /mob/living/carbon/human/proc/damage_poise(dmg = 1)
+	if(!GLOB.combat_handler.allow_poise)
+		return
+
 	poise -= dmg
 	poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
 

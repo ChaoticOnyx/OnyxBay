@@ -15,7 +15,7 @@ mob/attacked_with_item() should then do mob-type specific stuff (like determinin
 
 Item Hit Effects:
 
-item/apply_hit_effect() can be overriden to do whatever you want. However "standard" physical damage based weapons should make use of the target mob's hit_with_weapon() proc to
+item/apply_hit_effect() can be overriden to do whatever you want. However "standard" physical damage based weapons should make use of the target mob's hit_with_item() proc to
 avoid code duplication. This includes items that may sometimes act as a standard weapon in addition to having other effects (e.g. stunbatons on harm intent).
 */
 
@@ -89,27 +89,27 @@ avoid code duplication. This includes items that may sometimes act as a standard
 		A.useblock_off()
 		switch(A.a_intent)
 			if(I_HELP)
-				return target.touch_with_weapon(src, user, power, hit_zone)
+				return target.touched_with_item(src, user, power, hit_zone)
 			if(I_GRAB)
-				return target.parry_with_weapon(src, user, power, hit_zone)
+				return target.parried_with_item(src, user, power, hit_zone)
 			if(I_DISARM)
 				playsound(loc, 'sound/effects/woodhit.ogg', 50, 1, -1)
-				return target.hit_with_weapon(src, user, power, hit_zone, 1)
+				return target.hit_with_item(src, user, power, hit_zone, 1)
 			if(I_HURT)
 				if(hitsound) playsound(loc, hitsound, 50, 1, -1)
-				return target.hit_with_weapon(src, user, power, hit_zone)
+				return target.hit_with_item(src, user, power, hit_zone)
 	if(istype(user, /mob/living/silicon/robot))
 		var/mob/living/silicon/robot/A = user
 		switch(A.a_intent)
 			if(I_HELP)
-				return target.touch_with_weapon(src, user, power, hit_zone)
+				return target.touched_with_item(src, user, power, hit_zone)
 			if(I_HURT)
 				if(hitsound)
 					playsound(loc, hitsound, 50, 1, -1)
-				return target.hit_with_weapon(src, user, power, hit_zone)
+				return target.hit_with_item(src, user, power, hit_zone)
 	else
 		if(hitsound) playsound(loc, hitsound, 50, 1, -1)
-		return target.hit_with_weapon(src, user, power, hit_zone)
+		return target.hit_with_item(src, user, power, hit_zone)
 
 ////////////////////
 //Atom procs below//

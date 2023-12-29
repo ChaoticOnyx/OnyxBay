@@ -29,7 +29,7 @@
 
 	known_commands = list("stay", "stop", "attack", "follow", "dance", "add friend", "remove friend")
 
-/mob/living/simple_animal/hostile/commanded/bear/hit_with_weapon(obj/item/O, mob/living/user, effective_force, hit_zone)
+/mob/living/simple_animal/hostile/commanded/bear/hit_with_item(obj/item/O, mob/living/user, effective_force, hit_zone)
 	. = ..()
 	if(!.)
 		audible_emote("roars in rage!")

@@ -735,6 +735,19 @@ var/global/floorIsLava = 0
 		fdel("data/use_map")
 		text2file("[M.type]", "data/use_map")
 
+/datum/admins/proc/changecombat()
+	set category = "Server"
+	set name = "Change Combat Handler"
+
+	if(!check_rights(R_SERVER))
+		return
+	var/datum/combat_handler/CH = GLOB.all_combat_handlers[input("Select handler:","Change Combat Handler", GLOB.combat_handler) as null|anything in GLOB.all_combat_handlers]
+	if(CH)
+		to_world("<span class='notice'>Map has been changed to: <b>[CH.name]</b></span>")
+		log_and_message_admins("[key_name(usr)] changed combat_handler to [CH.name]")
+		fdel("data/combat_handler")
+		text2file("[CH.type]", "data/combat_handler")
+
 /datum/admins/proc/announce()
 	set category = "Special Verbs"
 	set name = "Announce"

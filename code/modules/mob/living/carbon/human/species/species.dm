@@ -633,12 +633,11 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 	attacker.do_attack_animation(target)
 
-	if(target.parrying)
-		if(target.handle_parry(attacker, null))
-			return
-	if(target.blocking)
-		if(target.handle_block_normal(attacker))
-			return
+	if(GLOB.combat_handler.handle_parry(target, attacker, null))
+		return
+
+	if(GLOB.combat_handler.handle_block_unarmed(target, attacker))
+		return
 
 	if(target.w_uniform)
 		target.w_uniform.add_fingerprint(attacker)

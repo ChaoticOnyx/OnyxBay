@@ -207,7 +207,7 @@
 	return FALSE
 
 
-/mob/living/simple_animal/hostile/commanded/hit_with_weapon(obj/item/O, mob/living/user, effective_force, hit_zone)
+/mob/living/simple_animal/hostile/commanded/hit_with_item(obj/item/O, mob/living/user, effective_force, hit_zone)
 	//if they attack us, we want to kill them. None of that "you weren't given a command so free kill" bullshit.
 	. = ..()
 	if(!. && retribution)

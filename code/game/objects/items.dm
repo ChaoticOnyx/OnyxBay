@@ -938,10 +938,11 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 //Some explanation here.
 /obj/item/proc/update_attack_cooldown()
-	var/res_cd
-	res_cd = (attack_cooldown + DEFAULT_WEAPON_COOLDOWN * (mod_weight / mod_handy)) * mod_speed // i.e. Default attack speed for the-most-generic-item is 1 hit/s
-	attack_cooldown_real = res_cd //Debug
-	return res_cd
+	if(GLOB.combat_handler.allow_advanced) // Default behavior
+		. = (attack_cooldown + DEFAULT_WEAPON_COOLDOWN * (mod_weight / mod_handy)) * mod_speed // i.e. Default attack speed for the-most-generic-item is 1 hit/s
+	else
+		. = attack_cooldown + DEFAULT_WEAPON_COOLDOWN // Legacy behavior
+	attack_cooldown_real = . //Debug
 
 /obj/item/proc/update_weapon_desc()
 	return

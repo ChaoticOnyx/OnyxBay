@@ -243,7 +243,7 @@
 		else
 			O.attack(src, user, user.zone_sel.selecting)
 
-/mob/living/simple_animal/hit_with_weapon(obj/item/O, mob/living/user, effective_force, hit_zone)
+/mob/living/simple_animal/hit_with_item(obj/item/O, mob/living/user, effective_force, hit_zone)
 
 	visible_message("<span class='danger'>\The [src] has been attacked with \the [O] by [user]!</span>")
 
