@@ -360,7 +360,6 @@
 #include "code\datums\events\infestation.dm"
 #include "code\datums\events\ion_storm.dm"
 #include "code\datums\events\meteor_wave.dm"
-#include "code\datums\events\mimics_invasion.dm"
 #include "code\datums\events\money_hacker.dm"
 #include "code\datums\events\money_lotto.dm"
 #include "code\datums\events\mundane_news.dm"
