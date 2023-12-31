@@ -13,6 +13,7 @@
 	max_storage_space = 120
 	storage_slots = 20
 
+	use_to_pickup = TRUE
 	allow_quick_empty = TRUE
 	allow_quick_gather = TRUE
 

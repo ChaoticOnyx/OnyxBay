@@ -16,7 +16,8 @@
 	var/storage_slots = null //The number of storage slots in this container.
 	var/list/override_w_class // List of items that can bypass the max_w_class restriction
 
-	var/use_to_pickup	//Set this to make it possible to use this item in an inverse way, so you can have the item in your hand and click items on the floor to pick them up.
+	// Allows to pick up items from a tile by clicking with the object on the floor.
+	var/use_to_pickup = FALSE
 	/// Allows to dump all the contents of the object on the floor.
 	var/allow_quick_empty = FALSE
 	/// Allows to quickly collect all items from a tile .
