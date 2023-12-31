@@ -449,7 +449,7 @@
 "aiI" = (/obj/machinery/atmospherics/unary/vent_scrubber/on,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/rough,/area/polarplanet/security/range)
 "aiJ" = (/obj/item/clothing/ears/earmuffs{pixel_x = -3; pixel_y = -2},/obj/item/clothing/ears/earmuffs,/obj/structure/table/reinforced,/obj/effect/floor_decal/corner/red{dir = 9},/turf/simulated/floor/tiled/rough,/area/polarplanet/security/range)
 "aiK" = (/obj/machinery/alarm{dir = 8; pixel_x = 24},/obj/structure/target_stake,/obj/effect/floor_decal/corner/red{dir = 6},/turf/simulated/floor/tiled/rough,/area/polarplanet/security/range)
-"aiL" = (/obj/structure/closet/secure_closet/hop2,/obj/machinery/light/small{dir = 4; pixel_y = 8},/obj/machinery/atmospherics/unary/vent_scrubber/on,/turf/simulated/floor/tiled/dark,/area/polarplanet/crew_quarters/heads/hop)
+"aiL" = (/obj/machinery/light/small{dir = 4; pixel_y = 8},/obj/machinery/atmospherics/unary/vent_scrubber/on,/turf/simulated/floor/tiled/dark,/area/polarplanet/crew_quarters/heads/hop)
 "aiM" = (/obj/item/beartrap,/obj/item/beartrap,/obj/structure/mopbucket,/obj/item/mop,/obj/effect/floor_decal/rust,/obj/effect/floor_decal/corner/old/purple{dir = 6},/turf/simulated/floor/tiled/rough,/area/polarplanet/janitor)
 "aiN" = (/obj/effect/floor_decal/corner/blue{dir = 10},/obj/effect/floor_decal/corner_steel_grid{dir = 5},/obj/machinery/door/window/brigdoor{dir = 8; req_access = list(19)},/turf/simulated/floor/tiled/rough,/area/polarplanet/bridge)
 "aiO" = (/obj/machinery/status_display{layer = 4; pixel_y = -32},/obj/effect/floor_decal/corner/white{dir = 8},/obj/effect/floor_decal/corner/paleblue,/obj/effect/floor_decal/rust,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/rough,/area/polarplanet/hallway/secondary/entry/aft)

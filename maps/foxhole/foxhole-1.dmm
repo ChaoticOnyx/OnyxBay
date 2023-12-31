@@ -1264,7 +1264,7 @@
 "lrL" = (/obj/structure/table/reinforced,/obj/item/clothing/mask/gas,/obj/machinery/atmospherics/pipe/simple/visible/red{dir = 10},/turf/simulated/floor/tiled/rough,/area/maintenance/underground/atmospherics)
 "lrO" = (/obj/machinery/atmospherics/pipe/manifold/visible/yellow,/turf/simulated/floor/plating,/area/engineering/engine_room)
 "lrX" = (/obj/structure/closet/firecloset/full,/obj/effect/floor_decal/trimline/dark_red/end{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/hallway/primary/fore)
-"lrZ" = (/obj/structure/closet/secure_closet/hop2,/obj/effect/floor_decal/siding/wood{dir = 8},/obj/machinery/atmospherics/unary/vent_pump/on{dir = 8; layer = 2.4; level = 2},/obj/machinery/light{dir = 4},/obj/item/storage/box/PDAs{pixel_x = 4; pixel_y = 4},/obj/item/storage/box/ids,/turf/simulated/floor/tiled/dark/rough,/area/crew_quarters/heads/hop)
+"lrZ" = (/obj/effect/floor_decal/siding/wood{dir = 8},/obj/machinery/atmospherics/unary/vent_pump/on{dir = 8; layer = 2.4; level = 2},/obj/machinery/light{dir = 4},/obj/item/storage/box/PDAs{pixel_x = 4; pixel_y = 4},/obj/item/storage/box/ids,/turf/simulated/floor/tiled/dark/rough,/area/crew_quarters/heads/hop)
 "lsM" = (/turf/simulated/mineral/air,/area/space)
 "ltU" = (/obj/machinery/firealarm{dir = 4; pixel_x = 26},/obj/structure/closet/crate/bin{desc = "A large bin. For trash."; name = "Trash bin"},/turf/simulated/floor/trim/darkwood,/area/library)
 "luB" = (/obj/effect/floor_decal/spline/plain/grey{dir = 8},/obj/item/modular_computer/console/preset/engineering,/turf/simulated/floor/plating,/area/engineering/engineering_monitoring)

@@ -34,8 +34,16 @@
 "I" = (/obj/machinery/light,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "J" = (/turf/space,/area/space)
 "K" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/map_ent/trigger_mob{pixel_x = -7; ev_tag = "ent_tp_wv"; tag = "ent_tp_trigger"},/obj/map_ent/func_teleport{pixel_x = 14; ev_dest_tag = "ent_showcase_tp_dest"; tag = "ent_tp_src"},/obj/map_ent/func_write_var{pixel_y = 9; ev_activate_writer = 1; ev_read_tag = "ent_tp_trigger"; ev_table = list("ev_tag"="ev_triggered"); ev_write_tag = "ent_tp_src"; tag = "ent_tp_wv"},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"M" = (/obj/item/storage/garment/hos,/turf/simulated/floor/tiled,/area/engineering/toilet)
+"N" = (/obj/item/storage/garment/warden,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "P" = (/obj/map_ent/info_maptext{ev_text = "Map entities showcase"},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"R" = (/obj/item/storage/garment/captain,/turf/simulated/floor/tiled,/area/engineering/toilet)
+"T" = (/obj/item/storage/garment/research_director,/turf/simulated/floor/tiled,/area/engineering/toilet)
+"U" = (/obj/item/storage/garment/quartermaster,/turf/simulated/floor/tiled,/area/engineering/toilet)
+"W" = (/obj/item/storage/garment/chief_engineer,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "X" = (/obj/effect/landmark/joinlate,/turf/simulated/floor/tiled,/area/engineering/toilet)
+"Y" = (/obj/item/storage/garment/head_of_personnel,/turf/simulated/floor/tiled,/area/engineering/toilet)
+"Z" = (/obj/item/storage/garment/chief_medical_officer,/turf/simulated/floor/tiled,/area/engineering/toilet)
 
 (1,1,1) = {"
 JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
@@ -53,10 +61,10 @@ JJJJJJJJJJJJJJJJcabbbbbfgfbbbbbacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcabbbbbfffbbbbhacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcaibbbjfffbbbbkacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcabbbbbbbbbbmbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJyyyJcabbbbbbXbbbnopacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJzAzccaqbbbbbrlbbbbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJzBzaaabbbbbbbbbbsotacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJDCEuvwbbbbbbbbbbxbbacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJyyyJcabbbRWbXbbbnopacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJzAzccaqbbZYbrlbbbbbacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJzBzaaabbbMUbbbbbsotacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJDCEuvwbbbNTbbbbbxbbacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJyyyaaaibbbbbbbbbbbkacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJccaFbbbbbbbbbbbbacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcaGbbbbbPbbbbbbacJJJJJJJJJJJJJJJ
