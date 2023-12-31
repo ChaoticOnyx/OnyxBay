@@ -102,6 +102,8 @@
 		storage_ui.on_open(user)
 		storage_ui.show_to(user)
 
+	SEND_SIGNAL(src, SIGNAL_STORAGE_OPENED, src, user)
+
 /obj/item/storage/proc/prepare_ui()
 	if(storage_ui)
 		storage_ui.prepare_ui()
@@ -113,6 +115,8 @@
 
 	if(src.use_sound)
 		playsound(src.loc, src.use_sound, 50, 1, -5)
+
+	SEND_SIGNAL(src, SIGNAL_STORAGE_CLOSED, src, user)
 
 /obj/item/storage/proc/close_all()
 	if(storage_ui)
