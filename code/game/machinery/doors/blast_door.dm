@@ -40,8 +40,9 @@
 	var/datum/wifi/receiver/button/door/wifi_receiver
 	var/material/implicit_material
 
-	var/code = 30
-	var/frequency = 1457
+	var/code = null
+	var/frequency = null
+	var/datum/radio_frequency/radio_connection
 
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 600 MEGA ELECTRONVOLT,
@@ -49,7 +50,7 @@
 		RADIATION_HAWKING = 1.5 ELECTRONVOLT
 	)
 
-/obj/machinery/door/blast/Initialize()
+/obj/machinery/door/blast/Initialize(loc, code, frequency, dir)
 	. = ..()
 	if(_wifi_id)
 		wifi_receiver = new(_wifi_id, src)
@@ -62,6 +63,13 @@
 		atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 	implicit_material = get_material_by_name(MATERIAL_PLASTEEL)
+
+	src.dir = dir
+
+	src.code = code
+	src.frequency = frequency
+	if(frequency)
+		radio_connection = radio_controller.add_object(src, frequency, RADIO_CHAT)
 
 /obj/machinery/door/airlock/Destroy()
 	qdel(wifi_receiver)
@@ -169,7 +177,8 @@
 		return 0
 	if(density)
 		open()
-		return 1
+	else
+		close()
 
 
 
@@ -239,6 +248,7 @@
 	open_sound = 'sound/machines/shutters_open.ogg'
 	close_sound = 'sound/machines/shutters_close.ogg'
 	keep_items_on_close = TRUE // These are placed over tables often, so let's keep items be.
+
 
 /obj/machinery/door/blast/shutters/open
 	begins_closed = FALSE
