@@ -164,10 +164,11 @@
 			panel_open = !panel_open
 			to_chat(usr, "\The [src]'s maintanence panel is now [panel_open ? "opened" : "closed"].")
 		if("idset")
-			if(!params["value"])
+			var/new_id = tgui_input_text(usr, "Enetr a new teleporter ID.", "ID Change", id, MAX_NAME_LEN)
+			if(!length(new_id))
 				return TRUE
 
-			id = clamp(params["value"], 1000, 9999)
+			id = new_id
 		if("modeset")
 			gate.set_state(FALSE)
 			change_mode()

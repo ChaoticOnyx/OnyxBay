@@ -1,5 +1,5 @@
 import { useBackend } from "../backend";
-import { Button, Section, Flex, NoticeBox, NumberInput } from "../components";
+import { Button, Section, Flex, NoticeBox, Input } from "../components";
 import { Window } from "../layouts";
 
 export const Teleporter = (props, context) => {
@@ -58,12 +58,12 @@ const UiData = (props, context) => {
           <Flex direction="row" justify="space-between">
             <Flex.Item>Identifier:</Flex.Item>
             <Flex.Item>
-              <NumberInput
-                value={id}
-                step={100}
-                minValue={1000}
-                maxValue={9999}
-                onDrag={(e, value) => act("idset", { value: value })}
+              <Button
+                icon="edit"
+                content={id}
+                onClick={(e) => {
+                  act("idset");
+                }}
               />
             </Flex.Item>
           </Flex>
