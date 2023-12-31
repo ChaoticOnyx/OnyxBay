@@ -135,6 +135,12 @@
 /atom/movable/Move(newloc, direct)
 	var/old_loc = loc
 
+	var/turf/old_turf = get_turf(old_loc)
+	var/turf/new_turf = get_turf(newloc)
+
+	if(old_turf?.z != new_turf?.z)
+		SEND_SIGNAL(src, SIGNAL_Z_CHANGED, src, old_turf, new_turf)
+
 	if (direct & (direct - 1))
 		if (direct & 1)
 			if (direct & 4)

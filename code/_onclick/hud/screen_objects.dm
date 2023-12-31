@@ -588,3 +588,13 @@
 	icon_state = "rec"
 	screen_loc = "TOP-2,WEST+2"
 	layer = FULLSCREEN_LAYER
+
+/obj/screen/holomap
+	icon = 'icons/480x480.dmi'
+	icon_state = "blank"
+	name = "holomap"
+	icon = null
+	icon_state = ""
+	screen_loc = ui_holomap
+	mouse_opacity = 0
+	alpha = 255

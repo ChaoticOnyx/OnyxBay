@@ -6,8 +6,8 @@
 		slot_l_hand_str = "helmet",
 		slot_r_hand_str = "helmet",
 		)
-	valid_accessory_slots = list(ACCESSORY_SLOT_HELM_C)
-	restricted_accessory_slots = list(ACCESSORY_SLOT_HELM_C)
+	valid_accessory_slots = list(ACCESSORY_SLOT_HELM_C, ACCESSORY_SLOT_HELM_H)
+	restricted_accessory_slots = list(ACCESSORY_SLOT_HELM_C, ACCESSORY_SLOT_HELM_H)
 	item_flags = ITEM_FLAG_THICKMATERIAL
 	body_parts_covered = HEAD|EYES
 	armor = list(melee = 50, bullet = 50, laser = 50, energy = 25, bomb = 35, bio = 0)
