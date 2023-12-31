@@ -164,7 +164,7 @@
 			panel_open = !panel_open
 			to_chat(usr, "\The [src]'s maintanence panel is now [panel_open ? "opened" : "closed"].")
 		if("idset")
-			var/new_id = tgui_input_text(usr, "Enter a new teleporter ID.", "ID Change", id, MAX_NAME_LEN)
+			var/new_id = sanitize(params["value"], MAX_NAME_LEN)
 			if(!length(new_id))
 				return TRUE
 

@@ -1,4 +1,4 @@
-import { useBackend } from "../backend";
+import { useBackend, useLocalState } from "../backend";
 import { Button, Section, Flex, NoticeBox, Input } from "../components";
 import { Window } from "../layouts";
 
@@ -58,12 +58,10 @@ const UiData = (props, context) => {
           <Flex direction="row" justify="space-between">
             <Flex.Item>Identifier:</Flex.Item>
             <Flex.Item>
-              <Button
-                icon="edit"
-                content={id}
-                onClick={(e) => {
-                  act("idset");
-                }}
+              <Input
+                value={id}
+                placeholder="Choose an ID..."
+                onChange={(_, value) => act("idset", { value: value })}
               />
             </Flex.Item>
           </Flex>
