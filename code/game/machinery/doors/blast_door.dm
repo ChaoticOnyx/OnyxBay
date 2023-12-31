@@ -40,6 +40,9 @@
 	var/datum/wifi/receiver/button/door/wifi_receiver
 	var/material/implicit_material
 
+	var/code = 30
+	var/frequency = 1457
+
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 600 MEGA ELECTRONVOLT,
 		RADIATION_BETA_PARTICLE = 10 MEGA ELECTRONVOLT,
@@ -157,6 +160,16 @@
 				src.repair()
 			else
 				to_chat(usr, "<span class='warning'>You don't have enough sheets to repair this! You need at least [amt] sheets.</span>")
+
+/obj/machinery/door/blast/receive_signal(datum/signal/signal)
+	. = ..()
+	if(!signal)
+		return 0
+	if(signal.encryption != code)
+		return 0
+	if(density)
+		open()
+		return 1
 
 
 
