@@ -467,7 +467,6 @@ var/bomb_set
 	extended = 1
 
 	var/list/flash_tiles = list()
-	var/list/inserters = list()
 	var/last_turf_state
 
 	var/announced = 0
@@ -481,8 +480,6 @@ var/bomb_set
 		if(istype(T.flooring, /decl/flooring/reinforced/circuit/red))
 			flash_tiles += T
 	update_icon()
-	for(var/obj/machinery/self_destruct/ch in get_area(src))
-		inserters += ch
 
 /obj/machinery/nuclearbomb/station/attackby(obj/item/O, mob/user)
 	if(isWrench(O))
@@ -515,13 +512,8 @@ var/bomb_set
 		return 1
 
 /obj/machinery/nuclearbomb/station/start_bomb()
-	for(var/inserter in inserters)
-		var/obj/machinery/self_destruct/sd = inserter
-		if(!istype(sd) || !sd.armed)
-			to_chat(usr, "<span class='warning'>An inserter has not been armed or is damaged.</span>")
-			return
-	visible_message("<span class='warning'>Warning. The self-destruct sequence override will be disabled [self_destruct_cutoff] seconds before detonation.</span>")
-	..()
+	visible_message(SPAN("warning", "Warning! The self-destruct sequence override will be disabled [self_destruct_cutoff] seconds before detonation."))
+	return ..()
 
 /obj/machinery/nuclearbomb/station/check_cutoff()
 	if(timeleft <= self_destruct_cutoff)
