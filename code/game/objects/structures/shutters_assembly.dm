@@ -69,7 +69,6 @@
 		user.visible_message("[user] begins securing the shutters assembly to the floor.", "You starts securing the shutters assembly to the floor.")
 
 	if(do_after(user, 40, src))
-
 		to_chat(user, SPAN_NOTICE("You [anchored? "un" : ""]secured the shutters assembly!"))
 		anchored = !anchored
 
