@@ -5,8 +5,8 @@
 
 /obj/structure/shutters_assembly
 	name = "shutters assembly"
-	icon = 'icons/obj/doors/rapid_pdoor.dmi'
-	icon_state = "shutter0"
+	icon = 'icons/obj/doors/shutter_assembly.dmi'
+	icon_state = "shutter_st0"
 	anchored = FALSE
 	density = TRUE
 	w_class = ITEM_SIZE_NO_CONTAINER
@@ -16,7 +16,34 @@
 	var/code = null
 	var/frequency = null
 
+/obj/structure/shutters_assembly/update_icon()
+	switch(state)
+		if(STATE_EMPTY)
+			icon_state = "shutter_st0"
+		if(STATE_WIRED)
+			icon_state = "shutter_st1"
+		if(STATE_ELECTRONICS)
+			icon_state = "shutter_st2"
+		if(STATE_SIGNALLER)
+			icon_state = "shutter_st3"
+
 /obj/structure/shutters_assembly/attackby(obj/item/W as obj, mob/user as mob)
+	if(isWelder(W) && state == STATE_EMPTY && !anchored)
+		var/obj/item/weldingtool/WT = W
+		if (WT.remove_fuel(0, user))
+			playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
+			user.visible_message("[user] dissassembles the shutters assembly.", "You start to dissassemble the shutters assembly.")
+			if(do_after(user, 40, src))
+				if(!src || !WT.isOn())
+					return
+
+				to_chat(user, SPAN_NOTICE("You dissasembled the shutters assembly!"))
+				new /obj/item/stack/material/steel(loc, 10)
+				qdel(src)
+		else
+			to_chat(user, "<span class='notice'>You need more welding fuel.</span>")
+			return
+
 	if(isWrench(W) && state == STATE_EMPTY)
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 		if(anchored)
@@ -51,8 +78,7 @@
 		if(do_after(user, 40,src))
 			if(!src)
 				return
-
-			to_chat(user, SPAN_NOTICE("You cut the shutters wires.!"))
+			to_chat(user, SPAN_NOTICE("You cut the shutters wires!"))
 			new /obj/item/stack/cable_coil(loc, 1)
 			state = STATE_EMPTY
 		in_use = FALSE
@@ -126,6 +152,7 @@
 			qdel(src)
 	else
 		..()
+	update_icon()
 
 #undef STATE_EMPTY
 #undef STATE_WIRED
