@@ -172,9 +172,11 @@
 /obj/machinery/door/blast/receive_signal(datum/signal/signal)
 	. = ..()
 	if(!signal)
-		return 0
+		return FALSE
+
 	if(signal.encryption != code)
-		return 0
+		return FALSE
+
 	if(density)
 		open()
 	else
