@@ -66,7 +66,7 @@
 					/obj/item/pizzabox/mushroom,
 					/obj/item/pizzabox/meat,
 					/obj/item/pizzabox/vegetable)
-	cost = 15
+	cost = 50
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Pizza crate"
 	supply_method = /decl/supply_method/randomized
@@ -77,32 +77,32 @@
 	contains = list(/obj/item/reagent_containers/food/meat/beef = 6)
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Beef crate"
-	cost = 10
+	cost = 40
 
 /decl/hierarchy/supply_pack/hospitality/goat
 	name = "Goat meat crate"
 	contains = list(/obj/item/reagent_containers/food/meat/goat = 6)
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Goat meat crate"
-	cost = 10
+	cost = 40
 
 /decl/hierarchy/supply_pack/hospitality/chicken
 	name = "Chicken meat crate"
 	contains = list(/obj/item/reagent_containers/food/meat/chicken = 6)
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Chicken meat crate"
-	cost = 10
+	cost = 40
 
 /decl/hierarchy/supply_pack/hospitality/eggs
 	name = "Eggs crate"
 	contains = list(/obj/item/storage/fancy/egg_box = 4)
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Egg crate"
-	cost = 15
+	cost = 30
 
 /decl/hierarchy/supply_pack/hospitality/milk
 	name = "Milk crate"
 	contains = list(/obj/item/reagent_containers/vessel/plastic/milk = 6)
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Milk crate"
-	cost = 15
+	cost = 30
