@@ -16,7 +16,7 @@
 	var/code = null
 	var/frequency = null
 
-/obj/structure/shutters_assembly/update_icon()
+/obj/structure/shutters_assembly/on_update_icon()
 	switch(state)
 		if(STATE_EMPTY)
 			icon_state = "shutter_st0"
@@ -152,7 +152,7 @@
 			qdel(src)
 	else
 		..()
-	update_icon()
+	on_update_icon()
 
 #undef STATE_EMPTY
 #undef STATE_WIRED
