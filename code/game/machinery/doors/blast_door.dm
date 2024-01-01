@@ -250,8 +250,6 @@
 	open_sound = 'sound/machines/shutters_open.ogg'
 	close_sound = 'sound/machines/shutters_close.ogg'
 	keep_items_on_close = TRUE // These are placed over tables often, so let's keep items be.
-
-
 /obj/machinery/door/blast/shutters/open
 	begins_closed = FALSE
 
