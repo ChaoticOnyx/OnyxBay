@@ -107,7 +107,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "centcom"
 	requires_power = 0
 	dynamic_lighting = 0
-	ambient_music_tags = list(MUSIC_TAG_CENTCOMM)
+//	ambient_music_tags = list(MUSIC_TAG_CENTCOMM)
 
 /area/centcom/holding
 	name = "\improper Holding Facility"
