@@ -1,6 +1,6 @@
 #define STATE_UNANCHORED  0
 #define STATE_EMPTY       1
-#define STATE_WIRED 2
+#define STATE_WIRED       2
 #define STATE_SIGNALLER   3
 
 /obj/structure/shutters_assembly
