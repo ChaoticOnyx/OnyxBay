@@ -16,7 +16,7 @@
 	QDEL_NULL(signaler)
 	return ..()
 
-/obj/structure/shutters_assembly/on_update_icon()
+/obj/structure/shutters_assembly/update_icon()
 	switch(state)
 		if(STATE_EMPTY)
 			icon_state = "shutter_st0"
@@ -47,17 +47,16 @@
 				remove_signaler(user)
 			if(isScrewdriver(W))
 				finish_assembly(user)
-	on_update_icon()
 
 /obj/structure/shutters_assembly/proc/deconstruct_assembly(obj/item/weldingtool/WT, mob/user)
 	if (WT.remove_fuel(0, user))
 		playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
-		user.visible_message("[user] dissassembles the shutters assembly.", "You start to dissassemble the shutters assembly.")
+		user.visible_message("[user] dissassembles \the [src] .", "You start to dissassemble \the [src] .")
 		if(do_after(user, 40, src))
 			if(!WT.isOn())
 				return
 
-			to_chat(user, SPAN_NOTICE("You dissasembled the shutters assembly!"))
+			to_chat(user, SPAN_NOTICE("You dissasembled \the [src] a!"))
 			new /obj/item/stack/material/steel(loc, 10)
 			qdel(src)
 	else
@@ -66,46 +65,46 @@
 
 /obj/structure/shutters_assembly/proc/wrench_assembly(mob/user)
 	playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
-	if(anchored)
-		user.visible_message("[user] begins unsecuring the shutters assembly from the floor.", "You starts unsecuring the shutters assembly from the floor.")
-	else
-		user.visible_message("[user] begins securing the shutters assembly to the floor.", "You starts securing the shutters assembly to the floor.")
+	user.visible_message("[user] begins [anchored? "un" : ""]securing \the [src]  from the floor.", "You starts [anchored? "un" : ""]securing \the [src] from the floor.")
 
 	if(do_after(user, 40, src))
-		to_chat(user, SPAN_NOTICE("You [anchored? "un" : ""]secured the shutters assembly!"))
+		to_chat(user, SPAN_NOTICE("You [anchored? "un" : ""]secured \the [src]!"))
 		anchored = !anchored
 
 /obj/structure/shutters_assembly/proc/add_cable(obj/item/stack/cable_coil/C, mob/user)
 	if (C.get_amount() < 1)
-		to_chat(user, SPAN_WARNING("You need one length of coil to wire the shutters assembly."))
+		to_chat(user, SPAN_WARNING("You need one length of coil to wire \the [src] ."))
 		return
 
-	user.visible_message("[user] wires the shutters assembly.", "You start to wire the shutters assembly.")
+	user.visible_message("[user] wires \the [src].", "You start to wire \the [src].")
 	if(do_after(user, 40, src) && anchored)
 		if (C.use(1))
-			to_chat(user, SPAN_NOTICE("You wire the shutters."))
+			to_chat(user, SPAN_NOTICE("You wire \the [src]."))
 			state = STATE_WIRED
+			update_icon()
 
 /obj/structure/shutters_assembly/proc/remove_cable(mob/user)
 	playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
-	user.visible_message("[user] cuts the wires from the shutters assembly.", "You start to cut the wires from shutters assembly.")
+	user.visible_message("[user] cuts the wires from \the [src].", "You start to cut the wires from \the [src].")
 
 	if(do_after(user, 40, src))
-		to_chat(user, SPAN_NOTICE("You cut the shutters wires!"))
+		to_chat(user, SPAN_NOTICE("You cut \the [src] wires!"))
 		new /obj/item/stack/cable_coil(loc, 1)
 		state = STATE_EMPTY
+		update_icon()
 
 /obj/structure/shutters_assembly/proc/add_signaler(obj/item/device/assembly/signaler/W, mob/user)
 	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
-	user.visible_message("[user] installs the signaller into the shutter assembly.", "You start to install signaller into the shutters assembly.")
+	user.visible_message("[user] installs the signaller into \the [src].", "You start to install signaller into \the [src].")
 
 	if(do_after(user, 40, src))
 		if(!user.drop(W, src))
 			return
 
-		to_chat(user, SPAN_NOTICE("You installed the shutters signaller!"))
+		to_chat(user, SPAN_NOTICE("You installed signaller into \the [src]!"))
 		signaler = W
 		state = STATE_SIGNALLER
+		update_icon()
 
 /obj/structure/shutters_assembly/proc/remove_signaler(mob/user)
 	//This should never happen, but just in case I guess
@@ -114,17 +113,17 @@
 		state = STATE_WIRED
 		return
 
-	else
-		user.visible_message("\The [user] starts removing the signaller from the shutters assembly.", "You start removing the signaller from the shutters assembly.")
+	user.visible_message("\The [user] starts removing the signaller from \the [src].", "You start removing the signaller from \the [src].")
 
-		if(do_after(user, 40, src))
-			to_chat(user, SPAN_NOTICE("You removed the signaller!"))
-			state = STATE_WIRED
-			signaler.dropInto(loc)
-			signaler = null
+	if(do_after(user, 40, src))
+		to_chat(user, SPAN_NOTICE("You removed the signaller!"))
+		state = STATE_WIRED
+		signaler.dropInto(loc)
+		signaler = null
+		update_icon()
 
 /obj/structure/shutters_assembly/proc/finish_assembly(mob/user)
-	playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
+	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 	to_chat(user, SPAN_NOTICE("Now finishing the shutters."))
 
 	if(do_after(user, 40, src))
