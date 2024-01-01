@@ -9,9 +9,12 @@
 	icon_state = "shutter_st0"
 	anchored = FALSE
 	density = TRUE
-	w_class = ITEM_SIZE_NO_CONTAINER
 	var/state = STATE_EMPTY
 	var/obj/item/device/assembly/signaler/signaler = null
+
+/obj/structure/shutters_assembly/Destroy()
+	QDEL_NULL(signaler)
+	return ..()
 
 /obj/structure/shutters_assembly/on_update_icon()
 	switch(state)
@@ -51,14 +54,14 @@
 		playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
 		user.visible_message("[user] dissassembles the shutters assembly.", "You start to dissassemble the shutters assembly.")
 		if(do_after(user, 40, src))
-			if(!src || !WT.isOn())
+			if(!WT.isOn())
 				return
 
 			to_chat(user, SPAN_NOTICE("You dissasembled the shutters assembly!"))
 			new /obj/item/stack/material/steel(loc, 10)
 			qdel(src)
 	else
-		to_chat(user, "<span class='notice'>You need more welding fuel.</span>")
+		to_chat(user, SPAN_NOTICE("You need more welding fuel."))
 		return
 
 /obj/structure/shutters_assembly/proc/wrench_assembly(mob/user)
@@ -99,6 +102,7 @@
 	if(do_after(user, 40, src))
 		if(!user.drop(W, src))
 			return
+
 		to_chat(user, SPAN_NOTICE("You installed the shutters signaller!"))
 		signaler = W
 		state = STATE_SIGNALLER

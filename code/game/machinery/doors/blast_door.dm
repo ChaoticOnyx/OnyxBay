@@ -170,7 +170,6 @@
 				to_chat(usr, "<span class='warning'>You don't have enough sheets to repair this! You need at least [amt] sheets.</span>")
 
 /obj/machinery/door/blast/receive_signal(datum/signal/signal)
-	. = ..()
 	if(signal?.encryption != code)
 		return FALSE
 
