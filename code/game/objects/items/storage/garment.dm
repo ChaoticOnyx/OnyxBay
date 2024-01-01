@@ -136,13 +136,16 @@
 	desc = "A bag for storing multiple clothig items in a better and convenient way! This one belongs to the chief medical officer."
 
 	startswith = list(
-		/obj/item/clothing/shoes/white,
+		/obj/item/clothing/mask/gas/clear,
+		/obj/item/clothing/glasses/hud/standard/medical,
+		/obj/item/clothing/accessory/stethoscope,
 		/obj/item/clothing/under/rank/chief_medical_officer,
 		/obj/item/clothing/suit/storage/toggle/labcoat/cmo,
 		/obj/item/clothing/suit/storage/toggle/labcoat/cmoalt,
 		/obj/item/clothing/accessory/storage/white_vest,
 		/obj/item/clothing/gloves/latex,
-		/obj/item/clothing/shoes/brown
+		/obj/item/clothing/shoes/brown,
+		/obj/item/clothing/shoes/white
 	)
 
 /obj/item/storage/garment/research_director

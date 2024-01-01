@@ -127,9 +127,13 @@
 		/obj/item/storage/garment/chief_medical_officer,
 		/obj/item/clothing/suit/bio_suit/cmo,
 		/obj/item/clothing/head/bio_hood/cmo,
+		/obj/item/storage/belt/medical,
 		/obj/item/device/radio/headset/heads/cmo,
 		/obj/item/cartridge/cmo,
+		/obj/item/device/hudmatrix/medical,
 		/obj/item/device/flash,
+		/obj/item/melee/telebaton,
+		/obj/item/device/flashlight/pen,
 		/obj/item/reagent_containers/hypospray/vial
 	)
 
