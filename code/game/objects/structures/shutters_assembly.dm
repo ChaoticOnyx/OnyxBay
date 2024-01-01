@@ -110,7 +110,7 @@
 		state = STATE_WIRED
 		return
 
-	if(signaler && state == STATE_SIGNALLER)
+	else
 		user.visible_message("\The [user] starts removing the signaller from the shutters assembly.", "You start removing the signaller from the shutters assembly.")
 
 		if(do_after(user, 40, src))
