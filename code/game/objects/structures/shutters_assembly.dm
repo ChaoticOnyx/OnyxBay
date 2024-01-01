@@ -116,7 +116,7 @@
 	user.visible_message("\The [user] starts removing the signaller from \the [src].", "You start removing the signaller from \the [src].")
 
 	if(do_after(user, 40, src))
-		to_chat(user, SPAN_NOTICE("You removed the signaller!"))
+		to_chat(user, SPAN_NOTICE("You removed \the signaller!"))
 		state = STATE_WIRED
 		signaler.dropInto(loc)
 		signaler = null
@@ -124,7 +124,7 @@
 
 /obj/structure/shutters_assembly/proc/finish_assembly(mob/user)
 	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
-	to_chat(user, SPAN_NOTICE("Now finishing the shutters."))
+	to_chat(user, SPAN_NOTICE("Now finishing \the shutters."))
 
 	if(do_after(user, 40, src))
 		new /obj/machinery/door/blast/shutters(loc, signaler?.code, signaler?.frequency, dir)
