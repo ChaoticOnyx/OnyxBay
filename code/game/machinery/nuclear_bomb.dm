@@ -441,13 +441,9 @@ var/bomb_set
 	6) The KAD will now display the Authentication Code. Memorize this code.\[br\]\
 	7) Insert the nuclear authentication disk into the self-destruct terminal.\[br\]\
 	8) Enter the code into the self-destruct terminal.\[br\]\
-	9) Authentication procedures are now complete. Open the two cabinets containing the nuclear cylinders. They are \
-	located on the back wall of the chamber.\[br\]\
-	10) Place the cylinders upon the six nuclear cylinder inserters.\[br\]\
-	11) Activate the inserters. The cylinders will be pulled down into the self-destruct system.\[br\]\
-	12) Return to the terminal. Enter the desired countdown time.\[br\]\
-	13) When ready, disable the safety switch.\[br\]\
-	14) Start the countdown.\[br\]\[br\]\
+	9) Enter the desired countdown time.\[br\]\
+	10) When ready, disable the safety switch.\[br\]\
+	11) Start the countdown.\[br\]\[br\]\
 	This concludes the instructions.", "vessel self-destruct instructions")
 
 	//stamp the paper
