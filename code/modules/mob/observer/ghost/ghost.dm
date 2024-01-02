@@ -727,4 +727,8 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	log_and_message_admins("has respawned.", M)
 
 /mob/observer/ghost/update_height_offset()
-	return
+	if(invisibility == 0) // We update height offset only when it is visible to mortals.
+		return ..()
+
+	else
+		return
