@@ -1,9 +1,3 @@
-/// A list of images for things ghosts should still be able to see when they toggle darkness
-GLOBAL_LIST_EMPTY(ghost_darkness_images)
-
-/// A list of images for things ghosts should still be able to see even without ghost sight
-GLOBAL_LIST_EMPTY(ghost_sightless_images)
-
 /mob/observer/ghost
 	name = "ghost"
 	desc = "It's a g-g-g-g-ghooooost!" //jinkies!
@@ -41,8 +35,6 @@ GLOBAL_LIST_EMPTY(ghost_sightless_images)
 	var/anonsay = FALSE
 	/// Wheather the ghost can see other ghosts.
 	var/ghostvision = TRUE
-	/// Wheather the ghost has night vision enabled.
-	var/seeindarkness = TRUE
 	/// Wheather the ghost will examine everything it clicks on.
 	var/inquisitiveness = TRUE
 
@@ -219,7 +211,6 @@ Works together with spawning an observer, noted above.
 
 	if(ghost.client)
 		ghost.updateghostprefs()
-		ghost.updateghostsight()
 
 	SEND_SIGNAL(src, SIGNAL_MOB_GHOSTIZED)
 	ghostizing = FALSE
@@ -604,47 +595,36 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	ghostvision = !ghostvision
 
-	updateghostsight()
-
 	to_chat(src, SPAN_NOTICE("You [ghostvision ? "now" : "no longer"] have ghost vision."))
+	updateghostsight()
 
 /mob/observer/ghost/verb/toggle_darkness()
 	set name = "Toggle Darkness"
 	set category = "Ghost"
 
-	seeindarkness = !seeindarkness
+	cycle_preference("GHOST_DARKVISION")
 
 	updateghostsight()
-
-	to_chat(src, SPAN_NOTICE("You [seeindarkness ? "now" : "no longer"] see in darkness."))
 
 /mob/observer/ghost/proc/updateghostprefs()
 	anonsay = cmptext(get_preference_value("CHAT_GHOSTANONSAY"), GLOB.PREF_YES)
 	ghostvision = cmptext(get_preference_value("GHOST_SEEGHOSTS"), GLOB.PREF_YES)
-	seeindarkness = cmptext(get_preference_value("GHOST_DARKVISION"), GLOB.PREF_YES)
 	inquisitiveness = cmptext(get_preference_value("GHOST_INQUISITIVENESS"), GLOB.PREF_YES)
+	updateghostsight()
 
 /mob/observer/ghost/proc/updateghostsight()
-	if(seeindarkness)
-		set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
-	else
-		set_see_invisible(ghostvision ? SEE_INVISIBLE_OBSERVER : SEE_INVISIBLE_LIVING)
-	updateghostimages()
+	set_see_invisible(ghostvision ? SEE_INVISIBLE_OBSERVER : SEE_INVISIBLE_LIVING)
 
-/mob/observer/ghost/proc/updateghostimages()
-	if(!client)
-		return
-
-	client.images -= GLOB.ghost_sightless_images
-	client.images -= GLOB.ghost_darkness_images
-
-	if(!seeindarkness)
-		client.images |= GLOB.ghost_sightless_images
-
-	if(ghostvision)
-		client.images |= GLOB.ghost_darkness_images
-
-	client.images -= ghost_image // remove ourself
+	var/atom/movable/renderer/lighting/l_renderer = renderers[LIGHTING_RENDERER]
+	switch(get_preference_value("GHOST_DARKVISION"))
+		if(GLOB.PREF_DARKNESS_VISIBLE)
+			l_renderer.relay.alpha = 255
+		if(GLOB.PREF_DARKNESS_MOSTLY_VISIBLE)
+			l_renderer.relay.alpha = 192
+		if(GLOB.PREF_DARKNESS_BARELY_VISIBLE)
+			l_renderer.relay.alpha = 128
+		if(GLOB.PREF_DARKNESS_INVISIBLE)
+			l_renderer.relay.alpha = 0
 
 /mob/observer/ghost/MayRespawn(feedback = FALSE, respawn_time = 0)
 	if(!client)
@@ -717,10 +697,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	else if(istype(target, /mob/living/simple_animal))
 		var/mob/living/simple_animal/SA = target
 		icon_state = SA.icon_living
-
-	if(ghost_image)
-		ghost_image.appearance = src
-		ghost_image.appearance_flags = DEFAULT_APPEARANCE_FLAGS | KEEP_TOGETHER | RESET_ALPHA
 
 /mob/observer/ghost/verb/respawn()
 	set name = "Respawn"
