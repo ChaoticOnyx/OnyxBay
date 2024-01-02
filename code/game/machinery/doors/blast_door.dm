@@ -247,8 +247,28 @@
 	close_sound = 'sound/machines/shutters_close.ogg'
 	keep_items_on_close = TRUE // These are placed over tables often, so let's keep items be.
 
+
 /obj/machinery/door/blast/shutters/open
 	begins_closed = FALSE
+
+/obj/machinery/door/blast/shutters/attackby(obj/item/C, mob/user)
+	. = ..()
+	if(!density)
+		if(default_deconstruction_screwdriver(user, C))
+			return
+		if(default_deconstruction_crowbar(user, C))
+			return
+
+/obj/machinery/door/blast/shutters/dismantle()
+	playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
+	var/obj/structure/shutters_assembly/M = new /obj/structure/shutters_assembly(get_turf(src))
+	new /obj/item/device/assembly/signaler(get_turf(src))
+	M.set_dir(dir)
+	M.state = 2
+	M.anchored = TRUE
+	M.update_icon()
+	qdel(src)
+	return
 
 //SUBTYPE: Polar
 /obj/machinery/door/blast/regular/polar

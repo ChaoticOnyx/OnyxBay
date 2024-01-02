@@ -107,12 +107,6 @@
 		update_icon()
 
 /obj/structure/shutters_assembly/proc/remove_signaler(mob/user)
-	//This should never happen, but just in case I guess
-	if (!signaler)
-		to_chat(user, SPAN_NOTICE("There was nothing to remove."))
-		state = STATE_WIRED
-		return
-
 	user.visible_message("\The [user] starts removing the signaller from \the [src].", "You start removing the signaller from \the [src].")
 
 	if(do_after(user, 40, src))
