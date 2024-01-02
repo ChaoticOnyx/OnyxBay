@@ -5,7 +5,7 @@
 #define FLOORLIGHT_DAMAGE_THREASHHOLD 100
 
 #define FLOORLIGHT_SETTINGS list("rgb", "copy", "upload", "invert", "slow", "normal", "fast")
-#define FLOORLIGHT_SETTINGS_COLORS list(PIPE_COLOR_GREY, PIPE_COLOR_GREY, PIPE_COLOR_RED, PIPE_COLOR_BLUE, PIPE_COLOR_CYAN, PIPE_COLOR_GREEN, PIPE_COLOR_YELLOW, PIPE_COLOR_ORANGE)
+#define FLOORLIGHT_SETTINGS_COLORS list(PIPE_COLOR_GREY, PIPE_COLOR_GREY, PIPE_COLOR_RED, PIPE_COLOR_BLUE, PIPE_COLOR_CYAN, PIPE_COLOR_GREEN, PIPE_COLOR_YELLOW, PIPE_COLOR_BLACK, PIPE_COLOR_ORANGE)
 
 
 /obj/machinery/floor_light
@@ -27,17 +27,24 @@
 
 	matter = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
 
+	/// Whether object is turned on.
 	var/on = FALSE
+	/// Whether floor light's animation is inverted.
 	var/inverted = FALSE
+	/// Currently selected floor light mode, can be `GLOW_NORMAL`, `GLOW_SLOW`, `GLOW_FAST`.
 	var/glow_mode = GLOW_NORMAL
 
+	/// Amount of damage taken by the object. Varies between `0` and `FLOORLIGHT_DAMAGE_THREASHHOLD`.
 	var/damage = 0
+	/// Damage icon key between `1` and `8`, `0` means no damage icon is chosen.
 	var/damagekey = 0
-
+	/// Object's light and panel color.
 	var/colour = "#ffffff"
 
-	var/static/list/image/settings
-	var/static/list/image/colors
+	/// Associative list of name -> image, where name contaied in `FLOORLIGHT_SETTINGS`.
+	var/static/list/settings
+	/// Associative list of color -> image, where color contained in `FLOORLIGHT_SETTINGS_COLORS`.
+	var/static/list/colors
 
 
 /obj/machinery/floor_light/prebuilt
