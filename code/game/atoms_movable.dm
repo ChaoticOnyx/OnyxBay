@@ -124,6 +124,9 @@
 			if(is_new_area && is_destination_turf)
 				destination.loc.Entered(src, origin)
 
+	if(origin?.z != destination?.z)
+		SEND_SIGNAL(src, SIGNAL_Z_CHANGED, src, origin, destination)
+
 	SEND_SIGNAL(src, SIGNAL_MOVED, src, origin, destination)
 
 	return 1

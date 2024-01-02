@@ -250,9 +250,10 @@
 	V.set_dir(dir)
 	V.state = 3
 	for(var/obj/I in component_parts)
+		component_parts -= I
 		I.forceMove(V)
-	cartridge = null
 	V.refresh_cartridge()
+	cartridge = null
 	V.update_icon()
 	V.update_desc()
 	qdel(src)

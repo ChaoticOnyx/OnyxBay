@@ -19,6 +19,7 @@ SUBSYSTEM_DEF(atoms)
 /datum/controller/subsystem/atoms/Initialize(timeofday)
 	init_state = INITIALIZATION_INNEW_MAPLOAD
 	InitializeAtoms()
+	generate_holomaps()
 
 	// Mannequins refuse to spawn prior to atoms init, so refresh them in case anyone connected before init finished.
 	for(var/client/C)

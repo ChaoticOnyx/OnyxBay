@@ -45,6 +45,8 @@
 	/// List of all buttons that never exit the view
 	var/list/obj/screen/always_visible_inventory
 
+	var/obj/screen/holomap_obj
+
 /datum/hud/New(mob/owner)
 	mymob = owner
 	instantiate()
@@ -154,6 +156,9 @@
 	var/ui_style = ui_style2icon(mymob.client.prefs.UI_style)
 	var/ui_color = mymob.client.prefs.UI_style_color
 	var/ui_alpha = mymob.client.prefs.UI_style_alpha
+
+	holomap_obj = new /obj/screen/holomap
+	LAZYADD(always_visible_inventory, holomap_obj)
 
 	FinalizeInstantiation(ui_style, ui_color, ui_alpha)
 

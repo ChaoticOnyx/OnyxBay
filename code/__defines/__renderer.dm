@@ -163,6 +163,8 @@
 	#define HUD_CLICKABLE_LAYER          2
 	#define HUD_ITEM_LAYER               3
 	#define HUD_ABOVE_ITEM_LAYER         4
+	#define HUD_HOLOMARKER_LAYER         5
+	#define HUD_HOLOMARKER_SELF_LAYER    6
 
 #define ABOVE_HUD_PLANE              8
 	#define ABOVE_HUD_LAYER              5
