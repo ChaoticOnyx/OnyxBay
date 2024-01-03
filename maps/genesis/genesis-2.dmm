@@ -4348,7 +4348,7 @@
 "bFQ" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass_mining{id_tag = "cargodoor"; name = "Cargo Office"; req_access = list(50)},/turf/simulated/floor/tiled,/area/quartermaster/office)
 "bFR" = (/obj/structure/bed/chair{dir = 8},/turf/simulated/floor/tiled,/area/quartermaster/office)
 "bFS" = (/obj/effect/floor_decal/corner/brown{dir = 8},/turf/simulated/floor/tiled,/area/hallway/primary/central_three)
-"bFT" = (/obj/structure/closet/secure_closet/hop2,/turf/simulated/floor/tiled,/area/crew_quarters/heads/hop)
+"bFT" = (/turf/simulated/floor/tiled,/area/crew_quarters/heads/hop)
 "bFU" = (/turf/simulated/floor/tiled,/area/crew_quarters/heads/hop)
 "bFV" = (/obj/item/pen,/obj/item/paper_bin{pixel_x = -3; pixel_y = 7},/obj/item/pen,/obj/item/device/megaphone,/obj/structure/table/glass,/turf/simulated/floor/tiled,/area/crew_quarters/heads/hop)
 "bFW" = (/obj/machinery/status_display{pixel_x = 32},/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/turf/simulated/floor/tiled,/area/crew_quarters/heads/hop)
