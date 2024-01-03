@@ -1,136 +1,109 @@
-/**********************Mineral stacking unit console**************************/
-
-/obj/machinery/mineral/stacking_unit_console
+/obj/machinery/computer/stacking_unit_console
 	name = "stacking machine console"
 	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "console"
-	density = 1
-	anchored = 1
-	var/obj/machinery/mineral/stacking_machine/machine = null
-	var/machinedir = SOUTH
 
-/obj/machinery/mineral/stacking_unit_console/New()
+	var/weakref/machine_ref
+	icon_screen = null
+	icon_keyboard = null
 
-	..()
+/obj/machinery/computer/stacking_unit_console/Initialize()
+	. = ..()
+	machine_ref = weakref(locate_unit(/obj/machinery/mineral/stacking_machine))
 
-	spawn(7)
-		src.machine = locate(/obj/machinery/mineral/stacking_machine, get_step(src, machinedir))
-		if (machine)
-			machine.console = src
-		else
-			qdel(src)
+/obj/machinery/computer/stacking_unit_console/Destroy()
+	machine_ref = null
+	return ..()
 
-/obj/machinery/mineral/stacking_unit_console/attack_hand(mob/user)
+/obj/machinery/computer/stacking_unit_console/attack_hand(mob/user)
 	add_fingerprint(user)
-	interact(user)
+	if(!machine_ref?.resolve())
+		if(tgui_alert(user, "No connected ore stacking unit found. Do you wish to rescan?", "Error!", list("Yes","No")) == "Yes")
+			machine_ref = weakref(locate_unit(/obj/machinery/mineral/stacking_machine))
+			if(!machine_ref?.resolve())
+				show_splash_text(user, "no ore processing units found!")
+				return
 
-/obj/machinery/mineral/stacking_unit_console/interact(mob/user)
-	user.set_machine(src)
+	tgui_interact(user)
 
-	var/dat = "<meta charset=\"utf-8\">"
+/obj/machinery/computer/stacking_unit_console/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "StackingConsole", name)
+		ui.open()
 
-	dat += text("<h1>Stacking unit console</h1><hr><table>")
+/obj/machinery/computer/stacking_unit_console/tgui_data(mob/user)
+	var/list/data = list()
 
-	for(var/stacktype in machine.stack_storage)
-		if(machine.stack_storage[stacktype] > 0)
-			dat += "<tr><td width = 150><b>[capitalize(stacktype)]:</b></td><td width = 30>[machine.stack_storage[stacktype]]</td><td width = 50><A href='?src=\ref[src];release_stack=[stacktype]'>\[release\]</a></td></tr>"
-	dat += "</table><hr>"
-	dat += text("<br>Stacking: [machine.stack_amt] <A href='?src=\ref[src];change_stack=1'>\[change\]</a><br><br>")
+	var/obj/machinery/mineral/stacking_machine/stacking_machine = machine_ref.resolve()
 
-	show_browser(user, "[dat]", "window=console_stacking_machine")
-	onclose(user, "console_stacking_machine")
+	data["machine"] = stacking_machine ? TRUE : FALSE
+	data["stacking_amount"] = null
+	data["contents"] = list()
+	if(stacking_machine)
+		data["stacking_amount"] = stacking_machine.stack_amt
+		for(var/stacktype in subtypesof(/obj/item/stack/material))
+			var/obj/item/stack/S = stacktype
+			if(stacking_machine.machine_storage[S.type] <= 0)
+				continue
 
+			data["contents"] += list(list(
+				"type" = S.type,
+				"name" = initial(S.name),
+				"amount" = stacking_machine.machine_storage[S.type],
+			))
 
-/obj/machinery/mineral/stacking_unit_console/Topic(href, href_list)
-	if(..())
-		return 1
+	return data
 
-	if(href_list["change_stack"])
-		var/choice = input("What would you like to set the stack amount to?") as null|anything in list(1,5,10,20,50)
-		if(!choice) return
-		machine.stack_amt = choice
+/obj/machinery/computer/stacking_unit_console/tgui_act(action, list/params)
+	. = ..()
+	if(.)
+		return
 
-	if(href_list["release_stack"])
-		if(machine.stack_storage[href_list["release_stack"]] > 0)
-			var/stacktype = machine.stack_paths[href_list["release_stack"]]
-			var/obj/item/stack/material/S = new stacktype (get_turf(machine.output))
-			S.amount = machine.stack_storage[href_list["release_stack"]]
-			machine.stack_storage[href_list["release_stack"]] = 0
+	var/obj/machinery/mineral/stacking_machine/stacking_machine = machine_ref.resolve()
 
-	src.add_fingerprint(usr)
-	src.updateUsrDialog()
+	switch(action)
+		if("release")
+			var/obj/item/stack/material/released_type = text2path(params["type"])
+			stacking_machine.load_item(released_type)
+			return TRUE
 
-	return
-
-/obj/machinery/mineral/stacking_unit_console/east
-	name = "stacking machine console"
-	icon_state = "console"
-	machinedir = EAST
-
-/**********************Mineral stacking unit**************************/
-
+		if("adjust_stacking_amount")
+			stacking_machine.stack_amt = max(1, text2num(params["stack_amount"])) // Clamp here to check for possible href exploit
+			return TRUE
 
 /obj/machinery/mineral/stacking_machine
 	name = "stacking machine"
 	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "stacker"
-	density = 1
-	anchored = 1.0
-	var/obj/machinery/mineral/stacking_unit_console/console
-	var/obj/machinery/mineral/input = null
-	var/obj/machinery/mineral/output = null
-	var/list/stack_storage[0]
-	var/list/stack_paths[0]
-	var/stack_amt = 50; // Amount to stack before releassing
+	/// List of stored materials
+	var/list/machine_storage = list()
+	/// Amount to store before releasing
+	var/stack_amt = 50
 
-/obj/machinery/mineral/stacking_machine/New()
-	..()
-
-	for(var/stacktype in subtypesof(/obj/item/stack/material))
-		var/obj/item/stack/S = stacktype
-		var/stack_name = initial(S.name)
-		stack_storage[stack_name] = 0
-		stack_paths[stack_name] = stacktype
-
-	stack_storage[MATERIAL_GLASS] = 0
-	stack_paths[MATERIAL_GLASS] = /obj/item/stack/material/glass
-	stack_storage[MATERIAL_STEEL] = 0
-	stack_paths[MATERIAL_STEEL] = /obj/item/stack/material/steel
-	stack_storage[MATERIAL_PLASTEEL] = 0
-	stack_paths[MATERIAL_PLASTEEL] = /obj/item/stack/material/plasteel
-
-	spawn( 5 )
-		for (var/dir in GLOB.cardinal)
-			src.input = locate(/obj/machinery/mineral/input, get_step(src, dir))
-			if(src.input) break
-		for (var/dir in GLOB.cardinal)
-			src.output = locate(/obj/machinery/mineral/output, get_step(src, dir))
-			if(src.output) break
+/obj/machinery/mineral/stacking_machine/pickup_item(datum/source, atom/movable/target, atom/old_loc)
+	if(!istype(target, /obj/item))
 		return
-	return
 
-/obj/machinery/mineral/stacking_machine/Process()
-	if (src.output && src.input)
-		var/turf/T = get_turf(input)
-		for(var/obj/item/O in T.contents)
-			if(istype(O,/obj/item/stack/material))
-				var/obj/item/stack/material/S = O
-				if(!isnull(stack_storage[initial(S.name)]))
-					stack_storage[initial(S.name)] += S.amount
-					O.forceMove(null)
-				else
-					O.dropInto(output.loc)
-			else
-				O.dropInto(output.loc)
+	if(istype(target, /obj/item/stack/material))
+		var/obj/item/stack/material/stack = target
+		load_item(stack)
+	else
+		unload_item(target)
 
-	//Output amounts that are past stack_amt.
-	for(var/sheet in stack_storage)
-		if(stack_storage[sheet] >= stack_amt)
-			var/stacktype = stack_paths[sheet]
-			var/obj/item/stack/material/S = new stacktype (get_turf(output))
-			S.amount = stack_amt
-			stack_storage[sheet] -= stack_amt
+/obj/machinery/mineral/stacking_machine/proc/load_item(obj/item/stack/material/incoming_stack)
+	if(QDELETED(incoming_stack))
+		return
 
-	console.updateUsrDialog()
-	return
+	var/key = incoming_stack.stacktype
+	var/obj/item/stack/material/storage = machine_storage[key]
+	if(!storage)
+		machine_storage[key] = storage = new incoming_stack.type(src, 0)
+	storage.amount += incoming_stack.amount
+	incoming_stack.forceMove(null)
+	INVOKE_ASYNC(incoming_stack, nameof(.proc/qdel), incoming_stack)
 
+	while(storage.amount >= stack_amt)
+		var/obj/item/stack/material/out = new incoming_stack.type()
+		unload_item(out)
+		storage.amount -= stack_amt

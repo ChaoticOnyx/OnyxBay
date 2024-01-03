@@ -1,160 +1,113 @@
-/**********************Mineral processing unit console**************************/
-
-/obj/machinery/mineral/processing_unit_console
+/obj/machinery/computer/processing_unit_console
 	name = "ore redemption console"
 	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "console"
-	density = 1
-	anchored = 1
-	use_power = 1
 	idle_power_usage = 15 WATTS
 	active_power_usage = 50 WATTS
 
-	var/obj/machinery/mineral/processing_unit/machine = null
-	var/machinedir = NORTHEAST
-	var/show_all_ores = 0
+	var/weakref/machine_ref
+	var/show_all_ores = FALSE
 	var/points = 0
-	var/obj/item/card/id/inserted_id
+	icon_screen = null
+	icon_keyboard = null
+	circuit = /obj/item/circuitboard/processing_unit_console
 
-/obj/machinery/mineral/processing_unit_console/Initialize()
+/obj/machinery/computer/processing_unit_console/Initialize()
 	. = ..()
-	src.machine = locate(/obj/machinery/mineral/processing_unit, get_step(src, machinedir))
-	if (machine)
-		machine.console = src
-	else
-		return INITIALIZE_HINT_QDEL
+	var/obj/machinery/mineral/processing_unit/p_unit = locate_unit(/obj/machinery/mineral/processing_unit)
+	p_unit.console_ref = weakref(src)
+	machine_ref = weakref(p_unit)
 
-/obj/machinery/mineral/processing_unit_console/attack_hand(mob/user)
+/obj/machinery/computer/processing_unit_console/attack_hand(mob/user)
 	add_fingerprint(user)
-	interact(user)
+	if(!machine_ref?.resolve())
+		if(tgui_alert(user, "No connected ore processing units found. Do you wish to rescan?", "Error!", list("Yes","No")) == "Yes")
+			var/obj/machinery/mineral/processing_unit/p_unit = locate_unit(/obj/machinery/mineral/processing_unit)
+			if(!p_unit)
+				to_chat(user, SPAN("warning", "No ore processing units found."))
+				return
 
-/obj/machinery/mineral/processing_unit_console/interact(mob/user)
+			p_unit.console_ref = weakref(src)
+			machine_ref = weakref(p_unit)
 
-	if(..())
+	tgui_interact(user)
+
+/obj/machinery/computer/processing_unit_console/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "OreRedemptionMachine")
+		ui.open()
+
+/obj/machinery/computer/processing_unit_console/tgui_data(mob/user)
+	var/obj/machinery/mineral/processing_unit/machine = machine_ref.resolve()
+	if(!istype(machine))
 		return
 
-	if(!allowed(user))
-		to_chat(user, "<span class='warning'>Access denied.</span>")
+	var/list/data = list()
+	data["unclaimedPoints"] = points
+	data["materials"] = list()
+
+	for(var/ore in ores_by_type)
+		var/ore/O = ores_by_type[ore]
+		var/obj/item/ore/ore_item = O.ore
+		data["materials"] += list(list(
+				"name" = O.display_name,
+				"id" = "_ref[ore_item]",
+				//"amount" = sheet_amount,
+				"category" = "material",
+				//"value" = ore_values[material.type]
+		))
+
+	for(var/datum/alloy/alloy in machine.alloy_data)
+		data["materials"] += list(list(
+			"name" = alloy.type,
+			"id" = "_ref[alloy]",
+			"category" = "alloy"
+		))
+
+	var/obj/item/card/id/card = user.get_id_card()
+	if(istype(card))
+		data["user"] = list(
+			"name" = card.registered_name,
+			"cash" = card.mining_points
+		)
+
+	return data
+
+/obj/machinery/computer/processing_unit_console/tgui_static_data(mob/user)
+	var/obj/machinery/mineral/processing_unit/machine = machine_ref.resolve()
+	if(!istype(machine))
 		return
 
-	user.set_machine(src)
+	var/list/data = list()
 
-	var/dat = "<meta charset=\"utf-8\"><h1>Ore processor console</h1>"
+	for(var/ore in ores_by_type)
+		var/ore/O = ores_by_type[ore]
+		var/obj/item/ore/ore_item = O.ore
+		data["material_icons"] += list(list(
+				"id" = "_ref[ore_item]",
+				"product_icon" = icon2base64(getFlatIcon(image(icon = initial(ore_item.icon), icon_state = initial(ore_item.icon_state))))
+			))
 
-	dat += "Current unclaimed points: [points]<br>"
+	for(var/datum/alloy/alloy in machine.alloy_data)
+		continue
 
-	if(istype(inserted_id))
-		dat += "You have [inserted_id.mining_points] mining points collected. <A href='?src=\ref[src];choice=eject'>Eject ID.</A><br>"
-		dat += "<A href='?src=\ref[src];choice=claim'>Claim points.</A><br>"
-	else
-		dat += "No ID inserted.  <A href='?src=\ref[src];choice=insert'>Insert ID.</A><br>"
-
-	dat += "<hr><table>"
-
-	for(var/ore in machine.ores_processing)
-
-		if(!machine.ores_stored[ore] && !show_all_ores) continue
-		var/ore/O = ore_data[ore]
-		if(!O) continue
-		dat += "<tr><td width = 40><b>[capitalize(O.display_name)]</b></td><td width = 30>[machine.ores_stored[ore]]</td><td width = 100>"
-		if(machine.ores_processing[ore])
-			switch(machine.ores_processing[ore])
-				if(0)
-					dat += "<font color='red'>not processing</font>"
-				if(1)
-					dat += "<font color='orange'>smelting</font>"
-				if(2)
-					dat += "<span class='info'>compressing</span>"
-				if(3)
-					dat += "<font color='gray'>alloying</font>"
-		else
-			dat += "<font color='red'>not processing</font>"
-		dat += ".</td><td width = 30><a href='?src=\ref[src];toggle_smelting=[ore]'>\[change\]</a></td></tr>"
-
-	dat += "</table><hr>"
-	dat += "Currently displaying [show_all_ores ? "all ore types" : "only available ore types"]. <A href='?src=\ref[src];toggle_ores=1'>\[[show_all_ores ? "show less" : "show more"]\]</a></br>"
-	dat += "The ore processor is currently <A href='?src=\ref[src];toggle_power=1'>[(machine.active ? "<font color='green'>processing</font>" : "<font color='red'>disabled</font>")]</a>."
-	show_browser(user, dat, "window=processor_console;size=400x500")
-	onclose(user, "processor_console")
-	return
-
-/obj/machinery/mineral/processing_unit_console/Topic(href, href_list)
-	if(..())
-		return 1
-	usr.set_machine(src)
-	src.add_fingerprint(usr)
-
-	if(href_list["choice"])
-		if(istype(inserted_id))
-			if(href_list["choice"] == "eject")
-				usr.pick_or_drop(inserted_id, loc)
-				inserted_id = null
-			if(href_list["choice"] == "claim")
-				if(points >= 0)
-					inserted_id.mining_points += points
-					if(points != 0)
-						ping( "\The [src] pings, \"Point transfer complete! Transaction total: [points] points!\"" )
-					points = 0
-				else
-					to_chat(usr, SPAN_WARNING("[station_name()]'s mining division is currently indebted to NanoTrasen. Transaction incomplete until debt is cleared."))
-		else if(href_list["choice"] == "insert")
-			var/obj/item/card/id/I = usr.get_active_hand()
-			if(istype(I))
-				if(usr.drop(I, src))
-					inserted_id = I
-			else
-				to_chat(usr, "<span class='warning'>No valid ID.</span>")
-
-	if(href_list["toggle_smelting"])
-
-		var/choice = input("What setting do you wish to use for processing [href_list["toggle_smelting"]]?") as null|anything in list("Smelting","Compressing","Alloying","Nothing")
-		if(!choice) return
-
-		switch(choice)
-			if("Nothing") choice = 0
-			if("Smelting") choice = 1
-			if("Compressing") choice = 2
-			if("Alloying") choice = 3
-
-		machine.ores_processing[href_list["toggle_smelting"]] = choice
-
-	if(href_list["toggle_power"])
-
-		machine.active = !machine.active
-		if(machine.active)
-			machine.icon_state = "furnace"
-		else
-			machine.icon_state = "furnace-off"
-
-	if(href_list["toggle_ores"])
-
-		show_all_ores = !show_all_ores
-
-	src.updateUsrDialog()
-	return
-
-/obj/machinery/mineral/processing_unit_console/north
-	machinedir = NORTH
-
-/**********************Mineral processing unit**************************/
-
+/obj/machinery/computer/processing_unit_console/Destroy()
+	machine_ref = null
+	return ..()
 
 /obj/machinery/mineral/processing_unit
 	name = "industrial smelter" //This isn't actually a goddamn furnace, we're in space and it's processing platinum and flammable plasma...
 	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "furnace-off"
-	density = 1
-	anchored = 1
 	light_outer_range = 3
-	var/obj/machinery/mineral/input = null
-	var/obj/machinery/mineral/output = null
-	var/obj/machinery/mineral/processing_unit_console/console = null
 	var/sheets_per_tick = 10
-	var/list/ores_processing[0]
-	var/list/ores_stored[0]
+	var/list/ores_processing = list()
+	var/list/ores_stored = list()
 	var/static/list/alloy_data
-	var/active = 0
-	use_power = 1
+	var/active = FALSE
+	var/weakref/console_ref = null
+
 	idle_power_usage = 15 WATTS
 	active_power_usage = 50 WATTS
 
@@ -180,37 +133,18 @@
 		ores_processing[ore] = 0
 		ores_stored[ore] = 0
 
-	//Locate our output and input machinery.
-	spawn(5)
-		for (var/dir in GLOB.cardinal)
-			src.input = locate(/obj/machinery/mineral/input, get_step(src, dir))
-			if(src.input) break
-		for (var/dir in GLOB.cardinal)
-			src.output = locate(/obj/machinery/mineral/output, get_step(src, dir))
-			if(src.output) break
-		return
-	return
+/obj/machinery/mineral/processing_unit/Destroy()
+	console_ref = null
+	return ..()
 
 /obj/machinery/mineral/processing_unit/Process()
-
-	if (!src.output || !src.input) return
-
 	var/list/tick_alloys = list()
 
-	//Grab some more ore to process this tick.
-	for(var/i = 0,i<sheets_per_tick,i++)
-		var/obj/item/ore/O = locate() in input.loc
-		if(!O) break
-		if(O.ore && !isnull(ores_stored[O.ore.name]))
-			ores_stored[O.ore.name] += 1
-		else
-			to_world_log("[src] encountered ore [O] with oretag [O.ore ? O.ore : "(no ore)"] which this machine did not have an entry for!")
-
-		qdel(O)
-
 	if(!active)
-		if(icon_state != "furnace-off")
-			icon_state = "furnace-off"
+		return
+
+	var/obj/machinery/computer/processing_unit_console/console = console_ref?.resolve()
+	if(!istype(console))
 		return
 
 	//Process our stored ores and spit out sheets.
@@ -260,7 +194,7 @@
 							sheets += total-1
 
 						for(var/i=0,i<total,i++)
-							new A.product(output.loc)
+							unload_item(new A.product())
 
 			else if(ores_processing[metal] == 2 && O.compresses_to) //Compressing.
 
@@ -278,7 +212,7 @@
 					use_power_oneoff(100)
 					ores_stored[metal]-=2
 					sheets+=2
-					new M.stack_type(output.loc)
+					unload_item(new M.stack_type())
 
 			else if(ores_processing[metal] == 1 && O.smelts_to) //Smelting.
 
@@ -294,23 +228,43 @@
 					use_power_oneoff(100)
 					ores_stored[metal] -= 1
 					sheets++
-					new M.stack_type(output.loc)
+					unload_item(new M.stack_type())
 			else
 				if(console)
 					console.points -= O.worth*3 //reee wasting our materials!
 				use_power_oneoff(500)
 				ores_stored[metal] -= 1
 				sheets++
-				new /obj/item/ore/slag(output.loc)
+				unload_item(new /obj/item/ore/slag())
 		else
 			continue
 
 	console.updateUsrDialog()
 
+/obj/machinery/mineral/processing_unit/pickup_item(datum/source, atom/movable/target, direction)
+	if(QDELETED(target))
+		return
+
+	if(istype(target, /obj/item/ore))
+		var/obj/item/ore/O = target
+		if(O.ore && !isnull(ores_stored[O.ore.name]))
+			ores_stored[O.ore.name] += 1
+		qdel(O)
+
 /obj/machinery/mineral/processing_unit/attackby(obj/item/W, mob/user)
+	if(active)
+		to_chat(user, SPAN_WARNING("Turn off the machine first!"))
+		return
+
 	if(default_deconstruction_screwdriver(user, W))
 		return
+
 	else if(default_part_replacement(user, W))
+		return
+
+	else if(isWrench(W) && panel_open)
+		playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
+		set_dir(turn(dir, 270))
 		return
 
 /obj/machinery/mineral/processing_unit/RefreshParts()
@@ -328,3 +282,6 @@
 			laser_rating += P.rating
 
 	sheets_per_tick += scan_rating + cap_rating + laser_rating
+
+/obj/machinery/mineral/processing_unit/on_update_icon()
+	icon_state = active ? "furnace" : "furnace-off"
