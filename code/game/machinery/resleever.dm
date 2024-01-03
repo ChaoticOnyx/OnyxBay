@@ -55,7 +55,7 @@
 			remaining += 1
 
 			if(remaining == 90) // 30 seconds left
-				to_chat(occupant, "<span class='notice'>You feel a wash of sensation as your senses begin to flood your mind. You will come to soon.</span>")
+				to_chat(occupant, SPAN_NOTICE("You feel a wash of sensation as your senses begin to flood your mind. You will come to life soon."))
 		else
 			remaining = 0
 			resleeving = 0
