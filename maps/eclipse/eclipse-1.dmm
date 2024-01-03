@@ -5810,7 +5810,7 @@
 "ckQ" = (/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 8},/obj/machinery/alarm{dir = 8; icon_state = "alarm0"; pixel_x = 22},/obj/structure/table/standard,/obj/item/reagent_containers/spray/cleaner,/turf/simulated/floor/tiled,/area/eclipse/engineering/tech/engine_smes)
 "ckR" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/light{dir = 8; icon_state = "tube1"; pixel_y = 0},/obj/machinery/drone_fabricator{fabricator_tag = "Eclipse_2"},/turf/simulated/floor/plating,/area/eclipse/engineering/misc/drone_fabrication)
 "ckS" = (/obj/structure/disposalpipe/segment,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/landmark/start/crew/cyborg,/turf/simulated/floor/plating,/area/eclipse/engineering/misc/drone_fabrication)
-"ckT" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/robotic_fabricator,/turf/simulated/floor/plating,/area/eclipse/engineering/misc/drone_fabrication)
+"ckT" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/mecha_part_fabricator,/turf/simulated/floor/plating,/area/eclipse/engineering/misc/drone_fabrication)
 "ckU" = (/obj/structure/table/woodentable,/obj/item/paper_bin,/obj/item/pen,/turf/simulated/floor/trim/carpet/orange,/area/eclipse/engineering/support/break_room)
 "ckV" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/structure/table/woodentable,/obj/item/folder/yellow,/turf/simulated/floor/trim/carpet/orange,/area/eclipse/engineering/support/break_room)
 "ckW" = (/obj/structure/table/woodentable,/obj/item/material/ashtray/bronze,/turf/simulated/floor/trim/carpet/orange,/area/eclipse/engineering/support/break_room)
