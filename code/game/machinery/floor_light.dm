@@ -2,7 +2,7 @@
 #define GLOW_SLOW   1
 #define GLOW_FAST   2
 
-#define FLOORLIGHT_DAMAGE_THREASHHOLD 100
+#define FLOORLIGHT_DAMAGE_THRESHOLD 100
 
 #define FLOORLIGHT_SETTINGS list("rgb", "copy", "upload", "invert", "slow", "normal", "fast")
 #define FLOORLIGHT_SETTINGS_COLORS list(PIPE_COLOR_GREY, PIPE_COLOR_GREY, PIPE_COLOR_RED, PIPE_COLOR_BLUE, PIPE_COLOR_CYAN, PIPE_COLOR_GREEN, PIPE_COLOR_YELLOW, PIPE_COLOR_BLACK, PIPE_COLOR_ORANGE)
@@ -34,7 +34,7 @@
 	/// Currently selected floor light mode, can be `GLOW_NORMAL`, `GLOW_SLOW`, `GLOW_FAST`.
 	var/glow_mode = GLOW_NORMAL
 
-	/// Amount of damage taken by the object. Varies between `0` and `FLOORLIGHT_DAMAGE_THREASHHOLD`.
+	/// Amount of damage taken by the object. Varies between `0` and `FLOORLIGHT_DAMAGE_THRESHOLD`.
 	var/damage = 0
 	/// Damage icon key between `1` and `8`, `0` means no damage icon is chosen.
 	var/damagekey = 0
@@ -54,14 +54,13 @@
 /obj/machinery/floor_light/on_update_icon()
 	ClearOverlays()
 
-	if(damage > (FLOORLIGHT_DAMAGE_THREASHHOLD * 0.2))
+	if(damage > (FLOORLIGHT_DAMAGE_THRESHOLD * 0.2))
 		AddOverlays(OVERLAY(icon, "floorlight_damage-[damagekey]"))
 
 	var/should_glow = update_glow()
 	if(should_glow)
 		AddOverlays(OVERLAY(icon, "floorlight_over-[inverted][glow_mode]", color = colour))
 		AddOverlays(emissive_appearance(icon, "floorlight_ea"))
-	return
 
 
 /obj/machinery/floor_light/proc/update_glow()
@@ -104,7 +103,6 @@
 		damagekey = 0
 		damage = 0
 		update_icon()
-	return
 
 
 /obj/machinery/floor_light/proc/_open_settings(mob/user)
@@ -141,7 +139,6 @@
 		if("fast")
 			glow_mode = GLOW_FAST
 			update_icon()
-	return
 
 
 /obj/machinery/floor_light/proc/_generate_buttons()
@@ -154,7 +151,6 @@
 	LAZYINITLIST(settings)
 	for(var/option as anything in FLOORLIGHT_SETTINGS)
 		settings[option] = image('icons/hud/radial.dmi', "radial_[option]")
-	return
 
 
 /obj/machinery/floor_light/proc/_copy_settigs(obj/item/device/multitool/MT)
@@ -169,7 +165,6 @@
 	inverted = FL.inverted
 	glow_mode = FL.glow_mode
 	show_splash_text_to_viewers("new settings applied.")
-	return
 
 
 /obj/machinery/floor_light/attack_hand(mob/user)
@@ -194,7 +189,6 @@
 	update_icon()
 	update_use_power(on ? POWER_USE_ACTIVE : POWER_USE_OFF)
 	show_splash_text_to_viewers("turned [on ? "on" : "off"].")
-	return
 
 
 /obj/machinery/floor_light/ex_act(severity)
@@ -205,37 +199,36 @@
 			if(prob(50))
 				qdel(src)
 			else
-				take_damage(null, FLOORLIGHT_DAMAGE_THREASHHOLD)
+				take_damage(null, FLOORLIGHT_DAMAGE_THRESHOLD)
 		if(EXPLODE_LIGHT)
 			if(prob(5))
 				qdel(src)
 			else
-				take_damage(null, rand(0, FLOORLIGHT_DAMAGE_THREASHHOLD * 0.4))
-	return
+				take_damage(null, rand(0, FLOORLIGHT_DAMAGE_THRESHOLD * 0.4))
 
 
 /obj/machinery/floor_light/proc/take_damage(mob/user, amount)
-	damage = clamp(damage + amount, 0, FLOORLIGHT_DAMAGE_THREASHHOLD)
+	damage = clamp(damage + amount, 0, FLOORLIGHT_DAMAGE_THRESHOLD)
 
 	if(!damagekey)
 		damagekey = rand(1, 8) // Pick a random damage overlay...
 		update_icon()
 
-	if(user)
-		if(damage == FLOORLIGHT_DAMAGE_THREASHHOLD)
+	if(damage == FLOORLIGHT_DAMAGE_THRESHOLD)
+		if(user)
 			visible_message(SPAN("danger", "\The [user] smashes \the [src]!"))
-			playsound(src, SFX_BREAK_WINDOW, 70, 1)
-			set_broken(TRUE)
-		else
+		playsound(src, SFX_BREAK_WINDOW, 70, 1)
+		set_broken(TRUE)
+	else
+		if(user)
 			visible_message(SPAN("danger", "\The [user] attacks \the [src]!"))
-			playsound(loc, GET_SFX(SFX_GLASS_HIT), 80, 1)
-	return
+		playsound(loc, GET_SFX(SFX_GLASS_HIT), 80, 1)
 
 
 #undef FLOORLIGHT_SETTINGS
 #undef FLOORLIGHT_SETTINGS_COLORS
 
-#undef FLOORLIGHT_DAMAGE_THREASHHOLD
+#undef FLOORLIGHT_DAMAGE_THRESHOLD
 
 #undef GLOW_FAST
 #undef GLOW_SLOW
