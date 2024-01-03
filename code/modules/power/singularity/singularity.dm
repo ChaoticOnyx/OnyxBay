@@ -129,10 +129,7 @@
 			qdel(pulse_source)
 
 	if(follows_ghosts && picking_coldown <= world.time)
-		if(the_chosen)
-			stop_following()
-
-		else if(!target)
+		if(!target)
 			pick_ghost()
 
 	set_next_think(world.time + 1 SECOND)
