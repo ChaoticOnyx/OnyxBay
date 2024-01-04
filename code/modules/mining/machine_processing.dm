@@ -1,3 +1,8 @@
+#define PROCESS_NONE		0
+#define PROCESS_SMELT		1
+#define PROCESS_COMPRESS	2
+#define PROCESS_ALLOY		3
+
 /obj/machinery/computer/processing_unit_console
 	name = "ore redemption console"
 	icon = 'icons/obj/machines/mining_machines.dmi'
@@ -51,22 +56,11 @@
 	data["unclaimedPoints"] = points
 	data["materials"] = list()
 
-	for(var/ore in ores_by_type)
-		var/ore/O = ores_by_type[ore]
-		var/obj/item/ore/ore_item = O.ore
+	for(var/ore in GLOB.ores_by_type)
+		var/ore/O = GLOB.ores_by_type[ore]
 		data["materials"] += list(list(
 				"name" = O.display_name,
-				"id" = "_ref[ore_item]",
-				//"amount" = sheet_amount,
-				"category" = "material",
-				//"value" = ore_values[material.type]
-		))
-
-	for(var/datum/alloy/alloy in machine.alloy_data)
-		data["materials"] += list(list(
-			"name" = alloy.type,
-			"id" = "_ref[alloy]",
-			"category" = "alloy"
+				"current_action" = machine.ores_processing[ore]
 		))
 
 	var/obj/item/card/id/card = user.get_id_card()
@@ -77,24 +71,6 @@
 		)
 
 	return data
-
-/obj/machinery/computer/processing_unit_console/tgui_static_data(mob/user)
-	var/obj/machinery/mineral/processing_unit/machine = machine_ref.resolve()
-	if(!istype(machine))
-		return
-
-	var/list/data = list()
-
-	for(var/ore in ores_by_type)
-		var/ore/O = ores_by_type[ore]
-		var/obj/item/ore/ore_item = O.ore
-		data["material_icons"] += list(list(
-				"id" = "_ref[ore_item]",
-				"product_icon" = icon2base64(getFlatIcon(image(icon = initial(ore_item.icon), icon_state = initial(ore_item.icon_state))))
-			))
-
-	for(var/datum/alloy/alloy in machine.alloy_data)
-		continue
 
 /obj/machinery/computer/processing_unit_console/Destroy()
 	machine_ref = null
@@ -108,7 +84,6 @@
 	var/sheets_per_tick = 10
 	var/list/ores_processing = list()
 	var/list/ores_stored = list()
-	var/static/list/alloy_data
 	var/active = FALSE
 	var/weakref/console_ref = null
 
@@ -126,15 +101,8 @@
 /obj/machinery/mineral/processing_unit/Initialize()
 	. = ..()
 
-	// initialize static alloy_data list
-	if(!alloy_data)
-		alloy_data = list()
-		for(var/alloytype in typesof(/datum/alloy)-/datum/alloy)
-			alloy_data += new alloytype()
-
-	ensure_ore_data_initialised()
-	for(var/ore in ore_data)
-		ores_processing[ore] = 0
+	for(var/ore in GLOB.ore_data)
+		ores_processing[ore] = PROCESS_NONE
 		ores_stored[ore] = 0
 
 /obj/machinery/mineral/processing_unit/Destroy()
@@ -142,9 +110,7 @@
 	return ..()
 
 /obj/machinery/mineral/processing_unit/Process()
-	var/list/tick_alloys = list()
-
-	if(!active)
+	if(!active || stat & (NOPOWER | BROKEN))
 		return
 
 	var/obj/machinery/computer/processing_unit_console/console = console_ref?.resolve()
@@ -152,98 +118,92 @@
 		return
 
 	//Process our stored ores and spit out sheets.
-	var/sheets = 0
+	var/sheets_processed = 0
+
 	for(var/metal in ores_stored)
+		if(sheets_processed >= sheets_per_tick)
+			break
 
-		if(sheets >= sheets_per_tick) break
-
-		if(ores_stored[metal] > 0 && ores_processing[metal] != 0)
-
-			var/ore/O = ore_data[metal]
-
-			if(!O) continue
-
-			if(ores_processing[metal] == 3 && O.alloy) //Alloying.
-
-				for(var/datum/alloy/A in alloy_data)
-
-					if(A.metaltag in tick_alloys)
-						continue
-
-					tick_alloys += A.metaltag
-					var/enough_metal
-
-					if(!isnull(A.requires[metal]) && ores_stored[metal] >= A.requires[metal]) //We have enough of our first metal, we're off to a good start.
-
-						enough_metal = 1
-
-						for(var/needs_metal in A.requires)
-							//Check if we're alloying the needed metal and have it stored.
-							if(ores_processing[needs_metal] != 3 || ores_stored[needs_metal] < A.requires[needs_metal])
-								enough_metal = 0
-								break
-
-					if(!enough_metal)
-						continue
-					else
-						var/total
-						for(var/needs_metal in A.requires)
-							if(console)
-								var/ore/Ore = ore_data[needs_metal]
-								console.points += Ore.worth
-							use_power_oneoff(100)
-							ores_stored[needs_metal] -= A.requires[needs_metal]
-							total += A.requires[needs_metal]
-							total = max(1,round(total*A.product_mod)) //Always get at least one sheet.
-							sheets += total-1
-
-						for(var/i=0,i<total,i++)
-							unload_item(new A.product())
-
-			else if(ores_processing[metal] == 2 && O.compresses_to) //Compressing.
-
-				var/can_make = Clamp(ores_stored[metal],0,sheets_per_tick-sheets)
-				if(can_make%2>0) can_make--
-
-				var/material/M = get_material_by_name(O.compresses_to)
-
-				if(!istype(M) || !can_make || ores_stored[metal] < 1)
-					continue
-
-				for(var/i=0,i<can_make,i+=2)
-					if(console)
-						console.points += O.worth*2
-					use_power_oneoff(100)
-					ores_stored[metal]-=2
-					sheets+=2
-					unload_item(new M.stack_type())
-
-			else if(ores_processing[metal] == 1 && O.smelts_to) //Smelting.
-
-				var/can_make = Clamp(ores_stored[metal],0,sheets_per_tick-sheets)
-
-				var/material/M = get_material_by_name(O.smelts_to)
-				if(!istype(M) || !can_make || ores_stored[metal] < 1)
-					continue
-
-				for(var/i=0,i<can_make,i++)
-					if(console)
-						console.points += O.worth
-					use_power_oneoff(100)
-					ores_stored[metal] -= 1
-					sheets++
-					unload_item(new M.stack_type())
-			else
-				if(console)
-					console.points -= O.worth*3 //reee wasting our materials!
-				use_power_oneoff(500)
-				ores_stored[metal] -= 1
-				sheets++
-				unload_item(new /obj/item/ore/slag())
-		else
+		if(ores_stored[metal] <= 0)
 			continue
 
-	console.updateUsrDialog()
+		var/ore/O = GLOB.ore_data[metal]
+
+		if(!O)
+			continue
+
+		if(ores_processing[metal] == PROCESS_ALLOY && O.alloy) //Alloying.
+			sheets_processed += alloy(O, metal)
+		else if(ores_processing[metal] == PROCESS_COMPRESS && O.compresses_to) //Compressing.
+			sheets_processed += process_ore(O, metal, sheets_processed, O.compresses_to)
+		else if(ores_processing[metal] == PROCESS_SMELT && O.smelts_to) //Smelting.
+			sheets_processed += process_ore(O, metal, sheets_processed, O.smelts_to)
+		else
+			if(console)
+				console.points -= O.worth * 3
+			use_power_oneoff(500)
+			ores_stored[metal] -= 1
+			sheets_processed++
+			unload_item(new /obj/item/ore/slag())
+
+/obj/machinery/mineral/processing_unit/proc/alloy(ore/O, metal)
+	var/list/tick_alloys = list()
+	var/sheets_processed = 0
+	for(var/datum/alloy/A in GLOB.alloy_data)
+		if(A.metaltag in tick_alloys)
+			continue
+
+		tick_alloys += A.metaltag
+		var/enough_metal
+
+		if(!isnull(A.requires[metal]) && ores_stored[metal] >= A.requires[metal]) //We have enough of our first metal, we're off to a good start.
+			enough_metal = 1
+			for(var/needs_metal in A.requires) //Check if we're alloying the needed metal and have it stored.
+				if(ores_processing[needs_metal] != 3 || ores_stored[needs_metal] < A.requires[needs_metal])
+					enough_metal = FALSE
+					return FALSE
+
+		if(!enough_metal)
+			continue
+
+		else
+			var/total
+			var/obj/machinery/computer/processing_unit_console/pu_console = console_ref?.resolve()
+			for(var/needs_metal in A.requires)
+				if(istype(pu_console))
+					var/ore/Ore = GLOB.ore_data[needs_metal]
+					pu_console.points += Ore.worth
+				use_power_oneoff(100)
+				ores_stored[needs_metal] -= A.requires[needs_metal]
+				total += A.requires[needs_metal]
+				total = max(1, round(total * A.product_mod)) //Always get at least one sheet.
+				sheets_processed += total - 1
+
+			for(var/i = 0, i < total, i++)
+				unload_item(new A.product())
+
+	return sheets_processed
+
+///
+/obj/machinery/mineral/processing_unit/proc/process_ore(ore/O, metal, sheets_processed, result_material)
+	var/can_make = Clamp(ores_stored[metal], 0, sheets_per_tick - sheets_processed)
+	if(can_make % 2 > 0)
+		can_make--
+
+	var/material/M = get_material_by_name(O.compresses_to)
+
+	if(!istype(M) || !can_make || ores_stored[metal] < 1)
+		return FALSE
+
+	var/obj/machinery/computer/processing_unit_console/pu_console = console_ref?.resolve()
+	for(var/i = 0, i < can_make, i += 2)
+		if(istype(pu_console))
+			pu_console.points += O.worth*2
+
+		use_power_oneoff(100)
+		ores_stored[metal]-=2
+		sheets_processed+=2
+		unload_item(new M.stack_type())
 
 /obj/machinery/mineral/processing_unit/pickup_item(datum/source, atom/movable/target, direction)
 	if(QDELETED(target))
@@ -253,7 +213,8 @@
 		var/obj/item/ore/O = target
 		if(O.ore && !isnull(ores_stored[O.ore.name]))
 			ores_stored[O.ore.name] += 1
-		qdel(O)
+		if(!QDELETED(O) && !QDELING(O))
+			qdel(O)
 
 /obj/machinery/mineral/processing_unit/attackby(obj/item/W, mob/user)
 	if(active)
@@ -289,3 +250,8 @@
 
 /obj/machinery/mineral/processing_unit/on_update_icon()
 	icon_state = active ? "furnace" : "furnace-off"
+
+#undef PROCESS_NONE
+#undef PROCESS_SMELT
+#undef PROCESS_COMPRESS
+#undef PROCESS_ALLOY
