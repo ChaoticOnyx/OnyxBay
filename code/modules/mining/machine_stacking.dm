@@ -9,6 +9,10 @@
 
 /obj/machinery/computer/stacking_unit_console/Initialize()
 	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/machinery/computer/stacking_unit_console/LateInitialize()
+	..()
 	machine_ref = weakref(locate_unit(/obj/machinery/mineral/stacking_machine))
 
 /obj/machinery/computer/stacking_unit_console/Destroy()

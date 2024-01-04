@@ -14,6 +14,10 @@
 
 /obj/machinery/computer/processing_unit_console/Initialize()
 	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/machinery/computer/processing_unit_console/LateInitialize()
+	..()
 	var/obj/machinery/mineral/processing_unit/p_unit = locate_unit(/obj/machinery/mineral/processing_unit)
 	p_unit.console_ref = weakref(src)
 	machine_ref = weakref(p_unit)

@@ -14,6 +14,10 @@
 
 /obj/machinery/mineral/Initialize()
 	. = ..()
+	return INITIALIZE_HINT_LATELOAD
+
+/obj/machinery/mineral/Initialize/LateInitialize()
+	..()
 	verbs += /obj/machinery/mineral/proc/toggle_holo
 	register_input_turf()
 
