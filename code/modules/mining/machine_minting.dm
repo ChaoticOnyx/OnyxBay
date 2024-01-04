@@ -6,7 +6,6 @@
 	var/list/stored_material = list(MATERIAL_GOLD = 0, MATERIAL_SILVER = 0, MATERIAL_DIAMOND = 0, MATERIAL_PLASMA = 0, MATERIAL_URANIUM = 0, MATERIAL_IRON = 0)
 	/// How many coins the machine made in it's last cycle
 	var/produced_coins = 0
-	var/processing = FALSE
  	/// Which material will be used to make coins
 	var/chosen_material
 
@@ -26,7 +25,7 @@
 	pass()
 
 /obj/machinery/mineral/mint/attack_hand(mob/user)
-	if(!..())
+	if(..())
 		return
 
 	add_fingerprint(user)
@@ -44,14 +43,8 @@
 		return
 
 	switch(action)
-		if("start")
-			if(!processing)
-				produced_coins = 0
-			processing = TRUE
-			return TRUE
-
-		if("stop")
-			processing = FALSE
+		if("toggle_machine")
+			toggle()
 			return TRUE
 
 		if("changematerial")
@@ -65,16 +58,14 @@
 /obj/machinery/mineral/mint/tgui_data(mob/user)
 	var/list/data = list()
 	for(var/material in stored_material)
-		var/amount = stored_material[material]
-
 		data["inserted_materials"] += list(list(
 			"material" = material,
-			"amount" = amount
+			"amount" = stored_material[material]
 		))
 
 	data["chosen_material"] = chosen_material
 
 	data["produced_coins"] = produced_coins
-	data["processing"] = processing
+	data["active"] = active
 
 	return data;

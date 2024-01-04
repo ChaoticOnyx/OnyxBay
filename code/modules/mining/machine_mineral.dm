@@ -11,6 +11,8 @@
 	var/output_dir = SOUTH
 	/// The turf the machines listens to for items to pick up. Calls the `pickup_item()` proc.
 	var/turf/input_turf = null
+	/// State of the machine
+	var/active = FALSE
 
 /obj/machinery/mineral/Initialize()
 	. = ..()
@@ -18,6 +20,7 @@
 
 /obj/machinery/mineral/LateInitialize()
 	..()
+	update_icon()
 	verbs += /obj/machinery/mineral/proc/toggle_holo
 	register_input_turf()
 
@@ -46,15 +49,6 @@
 	unregister_input_turf()
 	register_input_turf()
 
-/obj/machinery/mineral/update_icon()
-	ClearOverlays()
-	if(holo_active)
-		var/image/I = image('icons/obj/machines/holo_dirs.dmi', "holo-arrows")
-		I.pixel_x = -16
-		I.pixel_y = -16
-		I.alpha = 210
-		AddOverlays(I)
-
 /obj/machinery/mineral/proc/toggle_holo()
 	set name = "Toggle holo-helper"
 	set category = "Object"
@@ -66,6 +60,29 @@
 	holo_active = !holo_active
 	to_chat(SPAN_NOTICE("[usr] toggles holo-projector [holo_active ? "on" : "off"]."))
 	update_icon()
+
+/obj/machinery/mineral/proc/toggle()
+	active = !active
+	if(active)
+		START_PROCESSING(SSmachines, src)
+	else
+		STOP_PROCESSING(SSmachines, src)
+	update_icon()
+
+/obj/machinery/mineral/on_update_icon()
+	..()
+	ClearOverlays()
+	set_light(0)
+	icon_state = "[initial(icon_state)][active ? "" : "-off"]"
+	if(holo_active)
+		var/image/I = image('icons/obj/machines/holo_dirs.dmi', "holo-arrows")
+		I.pixel_x = -16
+		I.pixel_y = -16
+		I.alpha = 210
+		AddOverlays(I)
+	if(active)
+		set_light(1, 0, 3, 3.5, "#ffc400")
+		AddOverlays(emissive_appearance(icon, "[icon_state]_ea"))
 
 /obj/machinery/mineral/Destroy()
 	unregister_input_turf()

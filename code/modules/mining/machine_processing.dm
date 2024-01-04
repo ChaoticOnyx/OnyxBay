@@ -24,8 +24,9 @@
 /obj/machinery/computer/processing_unit_console/LateInitialize()
 	..()
 	var/obj/machinery/mineral/processing_unit/p_unit = locate_unit(/obj/machinery/mineral/processing_unit)
-	p_unit.console_ref = weakref(src)
-	machine_ref = weakref(p_unit)
+	if(istype(p_unit))
+		p_unit.console_ref = weakref(src)
+		machine_ref = weakref(p_unit)
 
 /obj/machinery/computer/processing_unit_console/attack_hand(mob/user)
 	add_fingerprint(user)
@@ -33,7 +34,7 @@
 		if(tgui_alert(user, "No connected ore processing units found. Do you wish to rescan?", "Error!", list("Yes","No")) == "Yes")
 			var/obj/machinery/mineral/processing_unit/p_unit = locate_unit(/obj/machinery/mineral/processing_unit)
 			if(!p_unit)
-				to_chat(user, SPAN("warning", "No ore processing units found."))
+				show_splash_text(user, "no ore processing units found!")
 				return
 
 			p_unit.console_ref = weakref(src)
@@ -55,12 +56,14 @@
 	var/list/data = list()
 	data["unclaimedPoints"] = points
 	data["materials"] = list()
+	data["machine_state"] = machine.active
 
 	for(var/ore in GLOB.ores_by_type)
 		var/ore/O = GLOB.ores_by_type[ore]
 		data["materials"] += list(list(
 				"name" = O.display_name,
-				"current_action" = machine.ores_processing[ore]
+				"current_action" = machine.ores_processing[O.name],
+				"ore_tag" = O.name
 		))
 
 	var/obj/item/card/id/card = user.get_id_card()
@@ -72,6 +75,39 @@
 
 	return data
 
+/obj/machinery/computer/processing_unit_console/tgui_act(action, list/params)
+	. = ..()
+	if(.)
+		return
+
+	var/obj/machinery/mineral/processing_unit/machine = machine_ref.resolve()
+	if(!istype(machine))
+		return TRUE
+
+	switch(action)
+		if("claim")
+			var/mob/living/user = usr
+			if(points < 0)
+				show_splash_text(user, "transaction incomplete until the debt is cleared!")
+				return TRUE
+			var/obj/item/card/id/card = user.get_id_card()
+			if(istype(card))
+				card.mining_points += points
+				points = 0
+				show_splash_text(user, "transaction complete, your current balance is: [card.mining_points]")
+			else
+				show_splash_text(user, "no valid ID detected!")
+			return TRUE
+
+		if("change_process")
+			var/selected_ore = params["material_name"]
+			machine.ores_processing[selected_ore] = params["material_process"]
+			return TRUE
+
+		if("toggle_machine")
+			machine.toggle()
+			return TRUE
+
 /obj/machinery/computer/processing_unit_console/Destroy()
 	machine_ref = null
 	return ..()
@@ -79,12 +115,10 @@
 /obj/machinery/mineral/processing_unit
 	name = "industrial smelter" //This isn't actually a goddamn furnace, we're in space and it's processing platinum and flammable plasma...
 	icon = 'icons/obj/machines/mining_machines.dmi'
-	icon_state = "furnace-off"
-	light_outer_range = 3
+	icon_state = "furnace"
 	var/sheets_per_tick = 10
 	var/list/ores_processing = list()
 	var/list/ores_stored = list()
-	var/active = FALSE
 	var/weakref/console_ref = null
 
 	idle_power_usage = 15 WATTS
@@ -110,7 +144,11 @@
 	return ..()
 
 /obj/machinery/mineral/processing_unit/Process()
-	if(!active || stat & (NOPOWER | BROKEN))
+	if(!active)
+		STOP_PROCESSING(SSmachines, src)
+		return
+
+	if(stat & (NOPOWER | BROKEN))
 		return
 
 	var/obj/machinery/computer/processing_unit_console/console = console_ref?.resolve()
@@ -184,13 +222,12 @@
 
 	return sheets_processed
 
-///
 /obj/machinery/mineral/processing_unit/proc/process_ore(ore/O, metal, sheets_processed, result_material)
 	var/can_make = Clamp(ores_stored[metal], 0, sheets_per_tick - sheets_processed)
 	if(can_make % 2 > 0)
 		can_make--
 
-	var/material/M = get_material_by_name(O.compresses_to)
+	var/material/M = get_material_by_name(result_material)
 
 	if(!istype(M) || !can_make || ores_stored[metal] < 1)
 		return FALSE
@@ -198,11 +235,11 @@
 	var/obj/machinery/computer/processing_unit_console/pu_console = console_ref?.resolve()
 	for(var/i = 0, i < can_make, i += 2)
 		if(istype(pu_console))
-			pu_console.points += O.worth*2
+			pu_console.points += O.worth * 2
 
 		use_power_oneoff(100)
-		ores_stored[metal]-=2
-		sheets_processed+=2
+		ores_stored[metal] -= 2
+		sheets_processed += 2
 		unload_item(new M.stack_type())
 
 /obj/machinery/mineral/processing_unit/pickup_item(datum/source, atom/movable/target, direction)
@@ -247,9 +284,6 @@
 			laser_rating += P.rating
 
 	sheets_per_tick += scan_rating + cap_rating + laser_rating
-
-/obj/machinery/mineral/processing_unit/on_update_icon()
-	icon_state = active ? "furnace" : "furnace-off"
 
 #undef PROCESS_NONE
 #undef PROCESS_SMELT

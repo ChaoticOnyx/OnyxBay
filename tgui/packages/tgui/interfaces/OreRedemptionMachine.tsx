@@ -8,13 +8,17 @@ import {
   Section,
   Stack,
   Table,
-  Tabs,
-  NoticeBox,
 } from '../components';
 import { formatSiUnit } from '../format';
 import { Window } from '../layouts';
 import { decodeHtmlEntities, toTitleCase } from "common/string";
 
+const METAL_PROCESS = {
+  noAction: 0,
+  processSmelt: 1,
+  processCompress: 2,
+  processAlloy: 3,
+}
 
 type User = {
   name: string;
@@ -24,18 +28,20 @@ type User = {
 type Material = {
   name: string;
   current_action: number;
+  ore_tag: string;
 }
 
 type InputData = {
   unclaimedPoints: number;
   user: User;
   materials: Material[];
+  machine_state: boolean;
 }
 
 export const OreRedemptionMachine = (props: any, context: any) => {
   const { act, data } = useBackend<InputData>(context);
   return (
-    <Window title="Ore Redemption Machine" width={435} height={435}>
+    <Window title="Ore Redemption Machine" width={435} height={400}>
       <Window.Content>
         <Stack fill vertical justify="space-between">
           <Stack.Item>
@@ -44,7 +50,7 @@ export const OreRedemptionMachine = (props: any, context: any) => {
                 <Stack.Item>
                   <Icon
                     name="id-card"
-                    size={3}
+                    size={6}
                     mr={1}
                     color={data.user ? 'green' : 'red'}
                   />
@@ -73,12 +79,22 @@ export const OreRedemptionMachine = (props: any, context: any) => {
                 ml={2}
                 content="Claim"
                 disabled={data.unclaimedPoints === 0}
-                onClick={() => act('Claim')}
+                onClick={() => act('claim')}
               />
             </Section>
           </Stack.Item>
           <Stack.Item grow>
-            <Section fill scrollable justify="space-between">
+            <Section fill scrollable
+              justify="space-between"
+              title="Ore processing"
+              buttons= {(
+                <Button
+                  icon="power-off"
+                  color={data.machine_state ? 'green' : 'red'}
+                  tooltip="Toggle industrial smelter"
+                  onClick={() => act('toggle_machine')}
+                />
+              )}>
               <MaterialsList />
             </Section>
           </Stack.Item>
@@ -98,23 +114,23 @@ function MaterialsList (props: any, context: any) {
         <Table.Cell collapsing textAlign="left">
         <Button
             content="no action"
-            color="red"
-            onClick={() => act("no_act")}
+            color={material.current_action === METAL_PROCESS.noAction ? 'green' : null}
+            onClick={() => act('change_process', {material_name: material.ore_tag, material_process: METAL_PROCESS.noAction})}
           />
           <Button
             content="smelt"
-            color="red"
-            onClick={() => act("no_act")}
+            color={material.current_action === METAL_PROCESS.processSmelt ? 'green' : null}
+            onClick={() => act('change_process', {material_name: material.ore_tag, material_process: METAL_PROCESS.processSmelt})}
           />
           <Button
             content="compress"
-            color="red"
-            onClick={() => act("no_act")}
+            color={material.current_action === METAL_PROCESS.processCompress ? 'green' : null}
+            onClick={() => act('change_process', {material_name: material.ore_tag, material_process: METAL_PROCESS.processCompress})}
           />
           <Button
             content="alloy"
-            color="red"
-            onClick={() => act("no_act")}
+            color={material.current_action === METAL_PROCESS.processAlloy ? 'green' : null}
+            onClick={() => act('change_process', {material_name: material.ore_tag, material_process: METAL_PROCESS.processAlloy})}
           />
         </Table.Cell>
       </Table.Row>

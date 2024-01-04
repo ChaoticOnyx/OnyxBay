@@ -13,7 +13,9 @@
 
 /obj/machinery/computer/stacking_unit_console/LateInitialize()
 	..()
-	machine_ref = weakref(locate_unit(/obj/machinery/mineral/stacking_machine))
+	var/obj/machinery/mineral/stacking_machine/s_machine = locate_unit(/obj/machinery/mineral/stacking_machine)
+	if(istype(s_machine))
+		machine_ref = weakref(s_machine)
 
 /obj/machinery/computer/stacking_unit_console/Destroy()
 	machine_ref = null
@@ -25,7 +27,7 @@
 		if(tgui_alert(user, "No connected ore stacking unit found. Do you wish to rescan?", "Error!", list("Yes","No")) == "Yes")
 			machine_ref = weakref(locate_unit(/obj/machinery/mineral/stacking_machine))
 			if(!machine_ref?.resolve())
-				show_splash_text(user, "no ore processing units found!")
+				show_splash_text(user, "no ore stacking units found!")
 				return
 
 	tgui_interact(user)

@@ -1,7 +1,6 @@
 import { useBackend } from '../backend';
 import { Button, LabeledList, NoticeBox, Section, NumberInput } from '../components';
 import { Window } from '../layouts';
-import { clamp, toFixed } from "../../common/math";
 
 type Content = {
   type: string;
