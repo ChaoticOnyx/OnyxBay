@@ -954,43 +954,6 @@
 	icon_state = "sub_maint_command"
 	turf_initializer = null
 
-// ELEVATORS
-/area/turbolift/security_station
-	name = "Station - By Security"
-	lift_announce_str = "Arriving at the station level, by the Security department."
-
-/area/turbolift/security_maintenance
-	name = "Maintenance - Below Security"
-	lift_announce_str = "Arriving at the maintenance level, below the Security department."
-	base_turf = /turf/simulated/floor/plating
-
-/area/turbolift/research_station
-	name = "Station - By Research"
-	lift_announce_str = "Arriving at the station level, by the R&D department."
-
-/area/turbolift/research_maintenance
-	name = "Maintenance - Below Research"
-	lift_announce_str = "Arriving at the maintenance level, below the R&D department."
-	base_turf = /turf/simulated/floor/plating
-
-/area/turbolift/engineering_station
-	name = "Station - By Engineering"
-	lift_announce_str = "Arriving at the station level, by the Engineering department."
-
-/area/turbolift/engineering_maintenance
-	name = "Maintenance - Below Engineering"
-	lift_announce_str = "Arriving at the maintenance level, below the Engineering department."
-	base_turf = /turf/simulated/floor/plating
-
-/area/turbolift/cargo_station
-	name = "Station - By Cargo"
-	lift_announce_str = "Arriving at the station level, by the Cargo department."
-
-/area/turbolift/cargo_maintenance
-	name = "Maintenance - Below Cargo"
-	lift_announce_str = "Arriving at the maintenance level, below the Cargo department."
-	base_turf = /turf/simulated/floor/plating
-
 // Hallway
 
 /area/hallway/primary/

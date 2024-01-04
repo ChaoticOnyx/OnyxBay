@@ -127,7 +127,6 @@ var/global/list/image/splatter_cache=list()
 
 /obj/effect/decal/cleanable/blood/drip
 	name = "drips of blood"
-	desc = "It's red."
 	dryname = "dried drips of blood"
 	gender = PLURAL
 	icon = 'icons/effects/drip.dmi'

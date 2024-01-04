@@ -31,6 +31,10 @@
 		/obj/item/material/shard = 50
 		)
 
+	preop_sound = 'sound/surgery/scalpel1.ogg'
+	success_sound = 'sound/surgery/scalpel2.ogg'
+	failure_sound = 'sound/weapons/bladeslice.ogg'
+
 /datum/surgery_step/face/cut_face/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return target.surgery_status.face == 0
 
@@ -73,6 +77,10 @@
 		/obj/item/device/assembly/mousetrap = 10
 		)
 
+	preop_sound = 'sound/surgery/hemostat1.ogg'
+	success_sound = 'sound/surgery/hemostat.ogg'
+	failure_sound = 'sound/surgery/hatchet.ogg'
+
 /datum/surgery_step/face/mend_vocal/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && target.surgery_status.face == 1)
 
@@ -108,6 +116,10 @@
 		/obj/item/crowbar = 55,
 		/obj/item/material/kitchen/utensil/fork = 75
 		)
+
+	preop_sound = 'sound/surgery/retractor1.ogg'
+	success_sound = 'sound/surgery/retractor.ogg'
+	failure_sound = 'sound/weapons/bladeslice.ogg'
 
 /datum/surgery_step/face/fix_face/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && target.surgery_status.face == 2)
@@ -150,6 +162,10 @@
 		/obj/item/weldingtool = 25,
 		/obj/item/hothands = 20
 		)
+
+	preop_sound = 'sound/surgery/cautery1.ogg'
+	success_sound = 'sound/surgery/cautery2.ogg'
+	failure_sound = 'sound/surgery/cautery.ogg'
 
 /datum/surgery_step/face/cauterize/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && target.surgery_status.face > 0)

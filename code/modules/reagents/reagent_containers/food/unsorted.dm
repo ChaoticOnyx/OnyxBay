@@ -1215,13 +1215,16 @@
 	if(wrapped)
 		Unwrap(user)
 
-/obj/item/reagent_containers/food/monkeycube/proc/Expand()
+/obj/item/reagent_containers/food/monkeycube/proc/Expand(atom/location)
 	if(!growing)
 		growing = 1
 		src.visible_message("<span class='notice'>\The [src] expands!</span>")
 		var/mob/monkey = new monkey_type
-		monkey.dropInto(src.loc)
-		qdel(src)
+		if(location)
+			monkey.dropInto(location)
+		else
+			monkey.dropInto(get_turf(src))
+		qdel_self()
 
 /obj/item/reagent_containers/food/monkeycube/proc/Unwrap(mob/user)
 	icon_state = "monkeycube"
@@ -1232,6 +1235,7 @@
 	atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 
 /obj/item/reagent_containers/food/monkeycube/On_Consume(mob/M)
+	Expand(get_turf(M))
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		H.visible_message(SPAN("warning", "A screeching creature bursts out of [H]'s chest!"))
@@ -1242,7 +1246,6 @@
 			SPAN("warning", "A screeching creature bursts out of [M]!"),\
 			SPAN("warning", "You feel like your body is being torn apart from the inside!"))
 		M.gib()
-	Expand()
 
 /obj/item/reagent_containers/food/monkeycube/on_reagent_change()
 	if(reagents.has_reagent(/datum/reagent/water))

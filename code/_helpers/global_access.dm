@@ -315,8 +315,6 @@
 			return global.dna_activity_bounds;
 		if("dna_genes")
 			return global.dna_genes;
-		if("doppler_arrays")
-			return global.doppler_arrays;
 		if("dreams")
 			return global.dreams;
 		if("dummy_lighting_corner")
@@ -359,8 +357,6 @@
 			return global.floorIsLava;
 		if("floor_decals")
 			return global.floor_decals;
-		if("floor_light_cache")
-			return global.floor_light_cache;
 		if("flooring_cache")
 			return global.flooring_cache;
 		if("flooring_types")
@@ -781,8 +777,6 @@
 			return global.trait_type_to_ref;
 		if("transfer_controller")
 			return global.transfer_controller;
-		if("turbolifts")
-			return global.turbolifts;
 		if("turret_icons")
 			return global.turret_icons;
 		if("uniqueness_repository")
@@ -1158,8 +1152,6 @@
 			global.dna_activity_bounds=newval;
 		if("dna_genes")
 			global.dna_genes=newval;
-		if("doppler_arrays")
-			global.doppler_arrays=newval;
 		if("dreams")
 			global.dreams=newval;
 		if("dummy_lighting_corner")
@@ -1202,8 +1194,6 @@
 			global.floorIsLava=newval;
 		if("floor_decals")
 			global.floor_decals=newval;
-		if("floor_light_cache")
-			global.floor_light_cache=newval;
 		if("flooring_cache")
 			global.flooring_cache=newval;
 		if("flooring_types")
@@ -1624,8 +1614,6 @@
 			global.trait_type_to_ref=newval;
 		if("transfer_controller")
 			global.transfer_controller=newval;
-		if("turbolifts")
-			global.turbolifts=newval;
 		if("turret_icons")
 			global.turret_icons=newval;
 		if("universe_has_ended")
@@ -1879,7 +1867,6 @@
 	"flesh_hud_colours",
 	"floorIsLava",
 	"floor_decals",
-	"floor_light_cache",
 	"flooring_cache",
 	"flooring_types",
 	"fluidtrack_cache",
@@ -2126,7 +2113,6 @@
 	"trait_datums",
 	"trait_type_to_ref",
 	"transfer_controller",
-	"turbolifts",
 	"turret_icons",
 	"uniqueness_repository",
 	"universe_has_ended",

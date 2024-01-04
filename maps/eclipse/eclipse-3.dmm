@@ -1092,7 +1092,7 @@
 "avb" = (/obj/structure/reagent_dispensers/fueltank,/turf/simulated/floor/shuttle/red,/area/shuttle/administration/centcom)
 "avc" = (/obj/structure/reagent_dispensers/watertank,/turf/simulated/floor/shuttle/red,/area/shuttle/administration/centcom)
 "avd" = (/obj/machinery/recharge_station,/turf/simulated/floor/shuttle/red,/area/shuttle/administration/centcom)
-"ave" = (/obj/machinery/robotic_fabricator,/obj/machinery/light{dir = 1},/turf/simulated/floor/shuttle/red,/area/shuttle/administration/centcom)
+"ave" = (/obj/machinery/mecha_part_fabricator,/obj/machinery/light{dir = 1},/turf/simulated/floor/shuttle/red,/area/shuttle/administration/centcom)
 "avf" = (/obj/machinery/autolathe{desc = "Your typical Autolathe. It appears to have much more options than your regular one, however..."; hacked = 1; name = "Unlocked Autolathe"},/turf/simulated/floor/shuttle/red,/area/shuttle/administration/centcom)
 "avg" = (/obj/structure/dispenser,/turf/simulated/floor/shuttle/red,/area/shuttle/administration/centcom)
 "avh" = (/obj/structure/table/standard,/obj/item/reagent_containers/vessel/shaker,/turf/unsimulated/floor{icon_state = "white"},/area/centcom/living)
