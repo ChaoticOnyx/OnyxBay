@@ -12,6 +12,14 @@
 		/obj/item/gun/energy/plasmacutter = 30
 		)
 
+	preop_sound = list(
+		/obj/item/weldingtool = 'sound/items/Welder.ogg',
+		/obj/item/circular_saw = 'sound/surgery/saw.ogg',
+		/obj/item/gun/energy/plasmacutter = 'sound/items/Welder2.ogg',
+	)
+	success_sound = 'sound/surgery/organ2.ogg'
+	failure_sound = 'sound/surgery/organ1.ogg'
+
 /datum/surgery_step/powersuit/check_zone(mob/living/carbon/human/target, target_zone)
 	return (..() && target_zone == BP_CHEST)
 
@@ -71,6 +79,9 @@
 		/obj/item/reagent_containers/vessel/glass = 75,
 		/obj/item/reagent_containers/vessel/bucket = 50
 		)
+
+	success_sound = 'sound/effects/spray2.ogg'
+	failure_sound = 'sound/effects/spray3.ogg'
 
 /datum/surgery_step/sterilize/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	. = ..()
@@ -147,6 +158,9 @@
 		/obj/item/tape_roll = 50
 		)
 
+	success_sound = 'sound/surgery/fixovein.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
+
 /datum/surgery_step/fix_tendon/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	. = ..()
 	if(!.)
@@ -200,6 +214,9 @@
 		/obj/item/stack/cable_coil = 75,
 		/obj/item/tape_roll = 50
 		)
+
+	success_sound = 'sound/surgery/fixovein.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
 
 /datum/surgery_step/fix_vein/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	. = ..()

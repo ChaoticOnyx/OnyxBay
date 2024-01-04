@@ -16,7 +16,7 @@
 				swapped = TRUE
 
 /// Creates and "centers" organ image for later use inside radial menu.
-/proc/agjust_organ_image(obj/item/organ/O)
+/proc/adjust_organ_image(obj/item/organ/O)
 	var/image/I = image(icon = O.icon, icon_state = O.icon_state)
 	I.CopyOverlays(O)
 	I.pixel_y = -5
