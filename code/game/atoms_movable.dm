@@ -257,7 +257,7 @@
 		src.loc = null
 		if (Move(previous))
 			Move(step)
-		if(!loc)
+		if(!loc && !QDELETED(src)) // Check for gc_destroyed is absolutely mandatory here, in case thrown atom was somehow GC'd
 			// we got into nullspace! abort!
 			loc = previous
 			break
