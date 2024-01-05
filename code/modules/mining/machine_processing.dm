@@ -121,9 +121,6 @@
 	var/list/ores_stored = list()
 	var/weakref/console_ref = null
 
-	idle_power_usage = 15 WATTS
-	active_power_usage = 50 WATTS
-
 	component_types = list(
 			/obj/item/circuitboard/refiner,
 			/obj/item/stock_parts/capacitor = 2,

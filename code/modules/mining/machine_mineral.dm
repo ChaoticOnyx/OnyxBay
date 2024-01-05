@@ -3,6 +3,8 @@
 	dir = NORTH
 	density = TRUE
 	anchored = TRUE
+	idle_power_usage = 15 WATTS
+	active_power_usage = 50 WATTS
 	/// Whether holographic indicators of input & output turfs are active or not.
 	var/holo_active = FALSE
 	/// The current direction of `input_turf`, in relation to the machine.
@@ -42,6 +44,13 @@
 		register_input_turf()
 		return
 
+/// Just in case the machine was moved - we re-register the input turf
+/obj/machinery/mineral/Move()
+	. = ..()
+	unregister_input_turf()
+	register_input_turf()
+
+/// This proc finds & stores the input turf which will be listened for incoming items.
 /obj/machinery/mineral/proc/register_input_turf()
 	input_turf = get_step(src, input_dir)
 	if(input_turf)
@@ -62,6 +71,7 @@
 
 	return TRUE
 
+/// Used to check input turf for items after the machine was toggled ON
 /obj/machinery/mineral/proc/check_input_turf()
 	if(!input_turf)
 		return
@@ -75,11 +85,6 @@
 	if(unload_turf)
 		item_to_unload.forceMove(unload_turf)
 
-/obj/machinery/mineral/Move()
-	. = ..()
-	unregister_input_turf()
-	register_input_turf()
-
 /obj/machinery/mineral/proc/toggle_holo()
 	set name = "Toggle holo-helper"
 	set category = "Object"
@@ -92,8 +97,18 @@
 	to_chat(SPAN_NOTICE("[usr] toggles holo-projector [holo_active ? "on" : "off"]."))
 	update_icon()
 
-/obj/machinery/mineral/proc/toggle()
-	active = !active
+/obj/machinery/mineral/power_change()
+	. = ..()
+	if(. && (stat & NOPOWER) && active)
+		toggle(FALSE)
+
+/// Generic proc to toggle mining machinery on/off. Can be used also as enable/disable() procs - just set the override_value to true/false
+/obj/machinery/mineral/proc/toggle(override_value = null)
+	if(!isnull(override_value))
+		active = override_value
+	else
+		active = !active
+
 	if(active)
 		START_PROCESSING(SSmachines, src)
 		check_input_turf()
