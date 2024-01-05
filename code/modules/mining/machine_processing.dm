@@ -114,8 +114,8 @@
 
 /obj/machinery/mineral/processing_unit
 	name = "industrial smelter" //This isn't actually a goddamn furnace, we're in space and it's processing platinum and flammable plasma...
-	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "furnace"
+	ea_color = "#ffc400"
 	var/sheets_per_tick = 10
 	var/list/ores_processing = list()
 	var/list/ores_stored = list()

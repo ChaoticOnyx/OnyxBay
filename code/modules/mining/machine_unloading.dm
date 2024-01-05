@@ -1,6 +1,5 @@
 /obj/machinery/mineral/unloading_machine
 	name = "unloading machine"
-	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "unloader"
 
 /obj/machinery/mineral/unloading_machine/pickup_item(datum/source, atom/movable/target, atom/old_loc)

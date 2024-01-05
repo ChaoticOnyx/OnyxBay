@@ -5,6 +5,7 @@
 	anchored = TRUE
 	idle_power_usage = 15 WATTS
 	active_power_usage = 50 WATTS
+	icon = 'icons/obj/machines/mining_machines.dmi'
 	/// Whether holographic indicators of input & output turfs are active or not.
 	var/holo_active = FALSE
 	/// The current direction of `input_turf`, in relation to the machine.
@@ -15,6 +16,8 @@
 	var/turf/input_turf = null
 	/// State of the machine
 	var/active = FALSE
+	/// Color used for EA of the machine
+	var/ea_color
 
 /obj/machinery/mineral/Initialize()
 	. = ..()
@@ -77,7 +80,7 @@
 		return
 
 	for(var/atom/movable/possible_target in input_turf.contents)
-		pickup_item(possible_target)
+		pickup_item(input_turf, possible_target)
 
 /obj/machinery/mineral/proc/unload_item(atom/movable/item_to_unload)
 	item_to_unload.forceMove(drop_location())
@@ -127,8 +130,8 @@
 		I.pixel_y = -16
 		I.alpha = 210
 		AddOverlays(I)
-	if(active)
-		set_light(1, 0, 3, 3.5, "#ffc400")
+	if(active && ea_color)
+		set_light(1, 0, 3, 3.5, ea_color)
 		AddOverlays(emissive_appearance(icon, "[icon_state]_ea"))
 
 /obj/machinery/mineral/Destroy()

@@ -74,7 +74,7 @@
 	switch(action)
 		if("release")
 			var/obj/item/stack/material/released_type = text2path(params["type"])
-			stacking_machine.load_item(released_type)
+			stacking_machine.unload_item(released_type, stacking_machine.machine_storage[released_type])
 			return TRUE
 
 		if("adjust_stacking_amount")
@@ -87,8 +87,8 @@
 
 /obj/machinery/mineral/stacking_machine
 	name = "stacking machine"
-	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "stacker"
+	ea_color = "#0090F8"
 	/// List of stored materials
 	var/list/machine_storage = list()
 	/// Amount to store before releasing
@@ -117,6 +117,10 @@
 	qdel(incoming_stack)
 
 	while(machine_storage[incoming_stack.stacktype] >= stack_amt)
-		var/obj/item/stack/material/out = new incoming_stack.type()
-		unload_item(out)
-		machine_storage[incoming_stack.stacktype] -= stack_amt
+		unload_item(incoming_stack.type, stack_amt)
+
+/obj/machinery/mineral/stacking_machine/unload_item(type, amount)
+	var/obj/item/stack/material/out = new type()
+	out.amount = amount
+	machine_storage[type] -= amount
+	return ..(out)
