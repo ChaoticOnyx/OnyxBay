@@ -40,13 +40,17 @@
 	var/datum/wifi/receiver/button/door/wifi_receiver
 	var/material/implicit_material
 
+	var/code = null
+	var/frequency = null
+	var/datum/radio_frequency/radio_connection
+
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 600 MEGA ELECTRONVOLT,
 		RADIATION_BETA_PARTICLE = 10 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1.5 ELECTRONVOLT
 	)
 
-/obj/machinery/door/blast/Initialize()
+/obj/machinery/door/blast/Initialize(loc, code, frequency, dir)
 	. = ..()
 	if(_wifi_id)
 		wifi_receiver = new(_wifi_id, src)
@@ -59,6 +63,13 @@
 		atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 	implicit_material = get_material_by_name(MATERIAL_PLASTEEL)
+
+	src.dir = dir
+
+	src.code = code
+	src.frequency = frequency
+	if(frequency)
+		radio_connection = radio_controller.add_object(src, frequency, RADIO_CHAT)
 
 /obj/machinery/door/airlock/Destroy()
 	qdel(wifi_receiver)
@@ -158,6 +169,15 @@
 			else
 				to_chat(usr, "<span class='warning'>You don't have enough sheets to repair this! You need at least [amt] sheets.</span>")
 
+/obj/machinery/door/blast/receive_signal(datum/signal/signal)
+	if(signal?.encryption != code)
+		return FALSE
+
+	if(density)
+		open()
+	else
+		close()
+
 
 
 // Proc: open()
@@ -227,8 +247,28 @@
 	close_sound = 'sound/machines/shutters_close.ogg'
 	keep_items_on_close = TRUE // These are placed over tables often, so let's keep items be.
 
+
 /obj/machinery/door/blast/shutters/open
 	begins_closed = FALSE
+
+/obj/machinery/door/blast/shutters/attackby(obj/item/C, mob/user)
+	. = ..()
+	if(!density)
+		if(default_deconstruction_screwdriver(user, C))
+			return
+		if(default_deconstruction_crowbar(user, C))
+			return
+
+/obj/machinery/door/blast/shutters/dismantle()
+	playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
+	var/obj/structure/shutters_assembly/M = new /obj/structure/shutters_assembly(get_turf(src))
+	new /obj/item/device/assembly/signaler(get_turf(src))
+	M.set_dir(dir)
+	M.state = 2
+	M.anchored = TRUE
+	M.update_icon()
+	qdel(src)
+	return
 
 //SUBTYPE: Polar
 /obj/machinery/door/blast/regular/polar
