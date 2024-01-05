@@ -243,7 +243,7 @@
 		unload_item(new M.stack_type())
 
 /obj/machinery/mineral/processing_unit/pickup_item(datum/source, atom/movable/target, direction)
-	if(QDELETED(target))
+	if(!..())
 		return
 
 	if(istype(target, /obj/item/ore))
@@ -252,22 +252,6 @@
 			ores_stored[O.ore.name] += 1
 		if(!QDELETED(O) && !QDELING(O))
 			qdel(O)
-
-/obj/machinery/mineral/processing_unit/attackby(obj/item/W, mob/user)
-	if(active)
-		to_chat(user, SPAN_WARNING("Turn off the machine first!"))
-		return
-
-	if(default_deconstruction_screwdriver(user, W))
-		return
-
-	else if(default_part_replacement(user, W))
-		return
-
-	else if(isWrench(W) && panel_open)
-		playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
-		set_dir(turn(dir, 270))
-		return
 
 /obj/machinery/mineral/processing_unit/RefreshParts()
 	..()

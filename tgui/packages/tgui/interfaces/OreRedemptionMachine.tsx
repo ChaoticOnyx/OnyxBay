@@ -1,6 +1,5 @@
-import { useBackend, useSharedState } from '../backend';
+import { useBackend } from '../backend';
 import {
-  BlockQuote,
   Box,
   Button,
   Icon,
@@ -9,9 +8,8 @@ import {
   Stack,
   Table,
 } from '../components';
-import { formatSiUnit } from '../format';
 import { Window } from '../layouts';
-import { decodeHtmlEntities, toTitleCase } from "common/string";
+import { toTitleCase } from "common/string";
 
 const METAL_PROCESS = {
   noAction: 0,

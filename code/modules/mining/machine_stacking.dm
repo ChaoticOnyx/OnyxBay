@@ -42,22 +42,23 @@
 	var/list/data = list()
 
 	var/obj/machinery/mineral/stacking_machine/stacking_machine = machine_ref.resolve()
+	if(!istype(stacking_machine))
+		return data
 
-	data["machine"] = stacking_machine ? TRUE : FALSE
+	data["machine_state"] = stacking_machine.active
 	data["stacking_amount"] = null
 	data["contents"] = list()
-	if(stacking_machine)
-		data["stacking_amount"] = stacking_machine.stack_amt
-		for(var/stacktype in subtypesof(/obj/item/stack/material))
-			var/obj/item/stack/S = stacktype
-			if(stacking_machine.machine_storage[S.type] <= 0)
-				continue
+	data["stacking_amount"] = stacking_machine.stack_amt
+	for(var/stacktype in subtypesof(/obj/item/stack/material))
+		var/obj/item/stack/S = stacktype
+		if(!stacking_machine.machine_storage[S.type] || stacking_machine.machine_storage[S.type] <= 0)
+			continue
 
-			data["contents"] += list(list(
-				"type" = S.type,
-				"name" = initial(S.name),
-				"amount" = stacking_machine.machine_storage[S.type],
-			))
+		data["contents"] += list(list(
+			"type" = S.type,
+			"name" = initial(S.name),
+			"amount" = stacking_machine.machine_storage[S.type],
+		))
 
 	return data
 
@@ -67,6 +68,8 @@
 		return
 
 	var/obj/machinery/mineral/stacking_machine/stacking_machine = machine_ref.resolve()
+	if(!istype(stacking_machine))
+		return TRUE
 
 	switch(action)
 		if("release")
@@ -76,6 +79,10 @@
 
 		if("adjust_stacking_amount")
 			stacking_machine.stack_amt = max(1, text2num(params["stack_amount"])) // Clamp here to check for possible href exploit
+			return TRUE
+
+		if("toggle_machine")
+			stacking_machine.toggle()
 			return TRUE
 
 /obj/machinery/mineral/stacking_machine
@@ -88,6 +95,9 @@
 	var/stack_amt = 50
 
 /obj/machinery/mineral/stacking_machine/pickup_item(datum/source, atom/movable/target, atom/old_loc)
+	if(!..())
+		return
+
 	if(!istype(target, /obj/item))
 		return
 
@@ -95,21 +105,18 @@
 		var/obj/item/stack/material/stack = target
 		load_item(stack)
 	else
-		unload_item(target)
+		var/turf/unload_turf = get_step(src, output_dir)
+		if(unload_turf)
+			target.forceMove(unload_turf)
 
 /obj/machinery/mineral/stacking_machine/proc/load_item(obj/item/stack/material/incoming_stack)
 	if(QDELETED(incoming_stack))
 		return
 
-	var/key = incoming_stack.stacktype
-	var/obj/item/stack/material/storage = machine_storage[key]
-	if(!storage)
-		machine_storage[key] = storage = new incoming_stack.type(src, 0)
-	storage.amount += incoming_stack.amount
-	incoming_stack.forceMove(null)
-	INVOKE_ASYNC(incoming_stack, nameof(.proc/qdel), incoming_stack)
+	machine_storage[incoming_stack.stacktype] += incoming_stack.amount
+	qdel(incoming_stack)
 
-	while(storage.amount >= stack_amt)
+	while(machine_storage[incoming_stack.stacktype] >= stack_amt)
 		var/obj/item/stack/material/out = new incoming_stack.type()
 		unload_item(out)
-		storage.amount -= stack_amt
+		machine_storage[incoming_stack.stacktype] -= stack_amt

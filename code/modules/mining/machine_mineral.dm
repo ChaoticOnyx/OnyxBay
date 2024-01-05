@@ -6,9 +6,9 @@
 	/// Whether holographic indicators of input & output turfs are active or not.
 	var/holo_active = FALSE
 	/// The current direction of `input_turf`, in relation to the machine.
-	var/input_dir = NORTH
+	var/input_dir = SOUTH
 	/// The current direction, in relation to the machine, that items will be output to.
-	var/output_dir = SOUTH
+	var/output_dir = NORTH
 	/// The turf the machines listens to for items to pick up. Calls the `pickup_item()` proc.
 	var/turf/input_turf = null
 	/// State of the machine
@@ -24,6 +24,24 @@
 	verbs += /obj/machinery/mineral/proc/toggle_holo
 	register_input_turf()
 
+/obj/machinery/mineral/attackby(obj/item/W, mob/user)
+	if(active)
+		to_chat(user, SPAN_WARNING("Turn off the machine first!"))
+		return
+
+	if(default_deconstruction_screwdriver(user, W))
+		return
+
+	else if(default_part_replacement(user, W))
+		return
+
+	else if(isWrench(W) && panel_open)
+		playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
+		set_dir(turn(dir, 90))
+		unregister_input_turf()
+		register_input_turf()
+		return
+
 /obj/machinery/mineral/proc/register_input_turf()
 	input_turf = get_step(src, input_dir)
 	if(input_turf)
@@ -36,7 +54,20 @@
 
 /// Base proc for pickup behaviour of subtypes.
 /obj/machinery/mineral/proc/pickup_item(datum/source, atom/movable/target, atom/old_loc)
-	pass()
+	if(stat & (NOPOWER|BROKEN) || !active)
+		return FALSE
+
+	if(QDELETED(target))
+		return FALSE
+
+	return TRUE
+
+/obj/machinery/mineral/proc/check_input_turf()
+	if(!input_turf)
+		return
+
+	for(var/atom/movable/possible_target in input_turf.contents)
+		pickup_item(possible_target)
 
 /obj/machinery/mineral/proc/unload_item(atom/movable/item_to_unload)
 	item_to_unload.forceMove(drop_location())
@@ -65,6 +96,7 @@
 	active = !active
 	if(active)
 		START_PROCESSING(SSmachines, src)
+		check_input_turf()
 	else
 		STOP_PROCESSING(SSmachines, src)
 	update_icon()

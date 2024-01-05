@@ -10,6 +10,9 @@
 	var/chosen_material
 
 /obj/machinery/mineral/mint/pickup_item(datum/source, atom/movable/target, atom/old_loc)
+	if(!..())
+		return
+
 	var/obj/item/stack/material/incoming_material = target
 	if(!istype(incoming_material))
 		return
@@ -20,9 +23,16 @@
 
 		stored_material[material] += incoming_material.amount
 		qdel(incoming_material)
+		try_minting()
 
-/obj/machinery/mineral/mint/proc/mint()
-	pass()
+/obj/machinery/mineral/mint/proc/try_minting()
+	if(!chosen_material || stored_material[chosen_material] <= 0)
+		return FALSE
+
+	if(stat & (NOPOWER | BROKEN))
+		return FALSE
+
+
 
 /obj/machinery/mineral/mint/attack_hand(mob/user)
 	if(..())
@@ -47,19 +57,15 @@
 			toggle()
 			return TRUE
 
-		if("changematerial")
-			for(var/material in stored_material)
-				if(params["material_name"] != material)
-					continue
-
-				chosen_material = material
+		if("change_material")
+			chosen_material = params["material_name"]
 			return TRUE
 
 /obj/machinery/mineral/mint/tgui_data(mob/user)
 	var/list/data = list()
 	for(var/material in stored_material)
 		data["inserted_materials"] += list(list(
-			"material" = material,
+			"name" = material,
 			"amount" = stored_material[material]
 		))
 

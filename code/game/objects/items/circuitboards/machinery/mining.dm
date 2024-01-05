@@ -21,12 +21,12 @@
 
 /obj/item/circuitboard/processing_unit_console
 	name = T_BOARD("ore processor console")
-	//build_path = /obj/machinery/computer/processing_unit_console
+	build_path = /obj/machinery/computer/processing_unit_console
 	origin_tech = list(TECH_ENGINEERING = 2)
 
 /obj/item/circuitboard/processing_unit
 	name = T_BOARD("ore processor")
-	//build_path = /obj/machinery/mineral/processing_unit
+	build_path = /obj/machinery/mineral/processing_unit
 	board_type = "machine"
 	origin_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 2)
 	req_components = list(	/obj/item/stock_parts/capacitor = 2,

@@ -4,12 +4,13 @@ import {
   Section,
   Stack,
   Table,
+  NumberInput,
 } from '../components';
 import { Window } from '../layouts';
+import { toTitleCase } from "common/string";
 
 type Material = {
   name: string;
-  ore_tag: string;
   amount: number;
 }
 
@@ -23,7 +24,7 @@ type InputData = {
 export const CoinPress = (props: any, context: any) => {
   const { act, data } = useBackend<InputData>(context);
   return (
-    <Window title="Coin Press" width={435} height={260}>
+    <Window title="Coin Press" width={168} height={253}>
       <Window.Content>
       <Stack fill vertical justify="space-between">
         <Stack.Item grow>
@@ -57,12 +58,12 @@ function MaterialsList (props: any, context: any) {
     <Table>
       {data.inserted_materials.map(material => (
         <Table.Row className="candystripe" collapsing>
-        <Table.Cell>{material.name}</Table.Cell>
+        <Table.Cell>{toTitleCase(material.name)}</Table.Cell>
         <Table.Cell collapsing textAlign="left">
         <Button
             content="select"
-            color={material.ore_tag === data.chosen_material ? 'green' : null}
-            onClick={() => act('change_process', {material_name: material.ore_tag})}
+            color={material.name === data.chosen_material ? 'green' : null}
+            onClick={() => act('change_material', {material_name: material.name})}
           />
         </Table.Cell>
       </Table.Row>
