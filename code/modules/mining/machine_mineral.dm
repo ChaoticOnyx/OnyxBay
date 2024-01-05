@@ -110,9 +110,9 @@
 	else if(override_value == FALSE)
 		stat &= ~POWEROFF
 	else if(stat & POWEROFF)
-		stat |= POWEROFF
-	else
 		stat &= ~POWEROFF
+	else
+		stat |= POWEROFF
 
 	if(stat & POWEROFF)
 		START_PROCESSING(SSmachines, src)
