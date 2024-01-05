@@ -25,8 +25,10 @@ export const Signaler = (props, context) => {
 };
 
 export const SignalerContent = (props, context) => {
+  const { children } = props;
   const { act, data } = useBackend(context);
-  const { code, frequency, maxFrequency, minFrequency, children } = data;
+  const { code, frequency, maxFrequency, minFrequency } = data;
+
   return (
     <Section fill>
       <Flex height="100%" direction="column" justify="space-around">
