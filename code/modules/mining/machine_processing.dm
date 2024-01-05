@@ -56,7 +56,7 @@
 	var/list/data = list()
 	data["unclaimedPoints"] = points
 	data["materials"] = list()
-	data["machine_state"] = machine.active
+	data["machine_state"] = machine.stat & POWEROFF ? TRUE : FALSE
 
 	for(var/ore in GLOB.ores_by_type)
 		var/ore/O = GLOB.ores_by_type[ore]
@@ -141,11 +141,8 @@
 	return ..()
 
 /obj/machinery/mineral/processing_unit/Process()
-	if(!active)
+	if(stat & (NOPOWER | BROKEN | POWEROFF))
 		STOP_PROCESSING(SSmachines, src)
-		return
-
-	if(stat & (NOPOWER | BROKEN))
 		return
 
 	var/obj/machinery/computer/processing_unit_console/console = console_ref?.resolve()

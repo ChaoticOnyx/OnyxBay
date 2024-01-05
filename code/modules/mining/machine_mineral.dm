@@ -14,8 +14,6 @@
 	var/output_dir = NORTH
 	/// The turf the machines listens to for items to pick up. Calls the `pickup_item()` proc.
 	var/turf/input_turf = null
-	/// State of the machine
-	var/active = FALSE
 	/// Color used for EA of the machine
 	var/ea_color
 
@@ -30,7 +28,7 @@
 	register_input_turf()
 
 /obj/machinery/mineral/attackby(obj/item/W, mob/user)
-	if(active)
+	if(stat & POWEROFF)
 		to_chat(user, SPAN_WARNING("Turn off the machine first!"))
 		return
 
@@ -66,7 +64,7 @@
 
 /// Base proc for pickup behaviour of subtypes.
 /obj/machinery/mineral/proc/pickup_item(datum/source, atom/movable/target, atom/old_loc)
-	if(stat & (NOPOWER|BROKEN) || !active)
+	if(stat & (NOPOWER|BROKEN|POWEROFF))
 		return FALSE
 
 	if(QDELETED(target))
@@ -102,17 +100,21 @@
 
 /obj/machinery/mineral/power_change()
 	. = ..()
-	if(. && (stat & NOPOWER) && active)
+	if(. && (stat & (NOPOWER|POWEROFF)))
 		toggle(FALSE)
 
 /// Generic proc to toggle mining machinery on/off. Can be used also as enable/disable() procs - just set the override_value to true/false
 /obj/machinery/mineral/proc/toggle(override_value = null)
-	if(!isnull(override_value))
-		active = override_value
+	if(override_value == TRUE)
+		stat |= POWEROFF
+	else if(override_value == FALSE)
+		stat &= ~POWEROFF
+	else if(stat & POWEROFF)
+		stat |= POWEROFF
 	else
-		active = !active
+		stat &= ~POWEROFF
 
-	if(active)
+	if(stat & POWEROFF)
 		START_PROCESSING(SSmachines, src)
 		check_input_turf()
 	else
@@ -123,14 +125,14 @@
 	..()
 	ClearOverlays()
 	set_light(0)
-	icon_state = "[initial(icon_state)][active ? "" : "-off"]"
+	icon_state = "[initial(icon_state)][(stat & POWEROFF) ? "" : "-off"]"
 	if(holo_active)
 		var/image/I = image('icons/obj/machines/holo_dirs.dmi', "holo-arrows")
 		I.pixel_x = -16
 		I.pixel_y = -16
 		I.alpha = 210
 		AddOverlays(I)
-	if(active && ea_color)
+	if(!(stat & POWEROFF) && ea_color)
 		set_light(1, 0, 3, 3.5, ea_color)
 		AddOverlays(emissive_appearance(icon, "[icon_state]_ea"))
 

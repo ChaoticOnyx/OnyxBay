@@ -71,6 +71,6 @@
 	data["chosen_material"] = chosen_material
 
 	data["produced_coins"] = produced_coins
-	data["active"] = active
+	data["active"] = stat & POWEROFF
 
 	return data;

@@ -19,4 +19,4 @@
 		return
 
 	toggle()
-	to_chat(user, SPAN_NOTICE("You toggle \the [src] [active ? "on" : "off"]."))
+	to_chat(user, SPAN_NOTICE("You toggle \the [src] [stat & POWEROFF ? "on" : "off"]."))
