@@ -958,7 +958,6 @@
 #include "code\game\map_ent\func_explosion.dm"
 #include "code\game\map_ent\func_gib.dm"
 #include "code\game\map_ent\func_light.dm"
-#include "code\game\map_ent\func_load_asteroid_derelict.dm"
 #include "code\game\map_ent\func_load_map.dm"
 #include "code\game\map_ent\func_load_rand_room.dm"
 #include "code\game\map_ent\func_proc_call.dm"
