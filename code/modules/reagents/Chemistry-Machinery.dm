@@ -525,7 +525,7 @@
 		choices[action] = image('icons/hud/radial.dmi', "radial_[action]")
 
 /obj/machinery/reagentgrinder/proc/eject()
-	if (!length(holdingitems))
+	if(!length(holdingitems))
 		return
 
 	for(var/obj/item/O in holdingitems)
