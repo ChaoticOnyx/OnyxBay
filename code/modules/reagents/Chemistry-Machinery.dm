@@ -498,7 +498,7 @@
 	return 0
 
 /obj/machinery/reagentgrinder/attack_hand(mob/user)
-	if(beaker && !inuse)
+	if(!inuse)
 		show_choices(user)
 
 /obj/machinery/reagentgrinder/attack_robot(mob/user)
@@ -516,12 +516,16 @@
 	switch(choice)
 		if("grind")
 			grind()
-		if("eject")
+		if("dump")
+			show_splash_text(user, "contents dumped.")
 			eject()
+		if("detach")
+			show_splash_text(user, beaker ? "beaker detached." : "no beaker present!")
+			detach()
 
 /obj/machinery/reagentgrinder/proc/_generate_buttons()
 	LAZYINITLIST(choices)
-	for(var/action as anything in list("grind", "eject"))
+	for(var/action as anything in list("grind", "dump", "detach"))
 		choices[action] = image('icons/hud/radial.dmi', "radial_[action]")
 
 /obj/machinery/reagentgrinder/proc/eject()
@@ -532,10 +536,13 @@
 		holdingitems -= O
 		O.dropInto(loc)
 
-	if(beaker)
-		beaker.dropInto(loc)
-		beaker = null
-		update_icon()
+/obj/machinery/reagentgrinder/proc/detach()
+	if(!beaker)
+		return
+
+	beaker.dropInto(loc)
+	beaker = null
+	update_icon()
 
 /obj/machinery/reagentgrinder/proc/grind()
 
