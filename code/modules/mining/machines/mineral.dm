@@ -1,3 +1,5 @@
+#define HOLOHELPER_DECAY_TIME 10 SECONDS
+
 //. Generic mineral machine with some useful procs & variables. ~ Max
 /obj/machinery/mineral
 	dir = SOUTH
@@ -15,6 +17,8 @@
 	var/turf/input_turf = null
 	/// Color used for EA of the machine
 	var/ea_color
+	///Path of the holographic helper overlay
+	var/holodir_helper_path = /obj/effect/holodir_helper
 
 /obj/machinery/mineral/Initialize()
 	. = ..()
@@ -43,9 +47,9 @@
 	else if(isWrench(W) && panel_open)
 		playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
 		set_dir(turn(dir, 90))
+		show_splash_text(user, "you rotate \the [src]!")
 		unregister_input_turf()
 		register_input_turf()
-		return
 
 /// Just in case the machine was moved - we re-register the input turf
 /obj/machinery/mineral/Move()
@@ -105,7 +109,7 @@
 		qdel(hhelper)
 
 	to_chat(SPAN_NOTICE("[usr] toggles holo-projector on"))
-	holohelper = weakref(new /obj/effect/holodir_helper(loc, src))
+	holohelper = weakref(new holodir_helper_path(loc, src))
 
 /obj/machinery/mineral/power_change()
 	. = ..()
@@ -153,10 +157,11 @@
 /obj/effect/holodir_helper/Initialize(loc, atom/movable/parent_machine)
 	. = ..()
 	if(parent_machine)
+		dir = parent_machine.dir
 		register_signal(parent_machine, SIGNAL_DIR_SET, nameof(.proc/on_machinery_rotated))
 		register_signal(parent_machine, SIGNAL_QDELETING, nameof(/datum.proc/qdel_self))
 		update_icon()
-		QDEL_IN(src, 10 SECONDS)
+		QDEL_IN(src, HOLOHELPER_DECAY_TIME)
 	else
 		return INITIALIZE_HINT_QDEL
 
@@ -166,3 +171,5 @@
 
 /obj/effect/holodir_helper/proc/on_machinery_rotated(atom, old_dir, dir)
 	src.dir = dir
+
+#undef HOLOHELPER_DECAY_TIME
