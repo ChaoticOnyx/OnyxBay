@@ -33,3 +33,32 @@
 							/obj/item/stock_parts/scanning_module = 1,
 							/obj/item/stock_parts/matter_bin = 1,
 							/obj/item/stock_parts/micro_laser = 2)
+
+/obj/item/circuitboard/stacking_machine_console
+	name = T_BOARD("ore stacker console")
+	build_path = /obj/machinery/computer/stacking_unit_console
+	origin_tech = list(TECH_ENGINEERING = 2)
+
+/obj/item/circuitboard/stacking_machine
+	name = T_BOARD("ore stacker")
+	build_path = /obj/machinery/mineral/stacking_machine
+	board_type = "machine"
+	origin_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 2)
+	req_components = list(	/obj/item/stock_parts/capacitor = 2,
+							/obj/item/stock_parts/scanning_module = 1)
+
+/obj/item/circuitboard/minting_machine
+	name = T_BOARD("coin press")
+	build_path = /obj/machinery/mineral/mint
+	board_type = "machine"
+	origin_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 2)
+	req_components = list(	/obj/item/stock_parts/capacitor = 2,
+							/obj/item/stock_parts/scanning_module = 1)
+
+/obj/item/circuitboard/unloading_machine
+	name = T_BOARD("unloading machine")
+	build_path = /obj/machinery/mineral/unloading_machine
+	board_type = "machine"
+	origin_tech = list(TECH_ENGINEERING = 1)
+	req_components = list(	/obj/item/stock_parts/capacitor = 2,
+							/obj/item/stock_parts/scanning_module = 1)

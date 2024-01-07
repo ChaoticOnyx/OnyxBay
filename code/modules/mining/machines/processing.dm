@@ -2,19 +2,19 @@
 #define PROCESS_SMELT		1
 #define PROCESS_COMPRESS	2
 #define PROCESS_ALLOY		3
+#define POWERUSE_PER_OPERATION 100
+#define POWERUISE_PER_FAILURE 500
 
 /obj/machinery/computer/processing_unit_console
 	name = "ore redemption console"
-	icon = 'icons/obj/machines/mining_machines.dmi'
-	icon_state = "console"
 	idle_power_usage = 15 WATTS
 	active_power_usage = 50 WATTS
+	light_color = "#00b000"
+	icon_screen = "minerals"
 
 	var/weakref/machine_ref
 	var/show_all_ores = FALSE
 	var/points = 0
-	icon_screen = null
-	icon_keyboard = null
 	circuit = /obj/item/circuitboard/processing_unit_console
 
 /obj/machinery/computer/processing_unit_console/Initialize()
@@ -56,7 +56,7 @@
 	var/list/data = list()
 	data["unclaimedPoints"] = points
 	data["materials"] = list()
-	data["machine_state"] = machine.stat & POWEROFF ? TRUE : FALSE
+	data["machine_state"] = !(stat & POWEROFF)
 
 	for(var/ore in GLOB.ores_by_type)
 		var/ore/O = GLOB.ores_by_type[ore]
@@ -114,7 +114,8 @@
 
 /obj/machinery/mineral/processing_unit
 	name = "industrial smelter" //This isn't actually a goddamn furnace, we're in space and it's processing platinum and flammable plasma...
-	icon_state = "furnace"
+	icon_state = "furnace-map"
+	gameicon = "furnace"
 	ea_color = "#ffc400"
 	var/sheets_per_tick = 10
 	var/list/ores_processing = list()
@@ -122,7 +123,7 @@
 	var/weakref/console_ref = null
 
 	component_types = list(
-			/obj/item/circuitboard/refiner,
+			/obj/item/circuitboard/processing_unit,
 			/obj/item/stock_parts/capacitor = 2,
 			/obj/item/stock_parts/scanning_module,
 			/obj/item/stock_parts/micro_laser = 2,
@@ -173,7 +174,7 @@
 		else
 			if(console)
 				console.points -= O.worth * 3
-			use_power_oneoff(500)
+			use_power_oneoff(POWERUISE_PER_FAILURE)
 			ores_stored[metal] -= 1
 			sheets_processed++
 			unload_item(new /obj/item/ore/slag())
@@ -205,7 +206,7 @@
 				if(istype(pu_console))
 					var/ore/Ore = GLOB.ore_data[needs_metal]
 					pu_console.points += Ore.worth
-				use_power_oneoff(100)
+				use_power_oneoff(POWERUSE_PER_OPERATION)
 				ores_stored[needs_metal] -= A.requires[needs_metal]
 				total += A.requires[needs_metal]
 				total = max(1, round(total * A.product_mod)) //Always get at least one sheet.
@@ -231,7 +232,7 @@
 		if(istype(pu_console))
 			pu_console.points += O.worth * 2
 
-		use_power_oneoff(100)
+		use_power_oneoff(POWERUSE_PER_OPERATION)
 		ores_stored[metal] -= 2
 		sheets_processed += 2
 		unload_item(new M.stack_type())
@@ -267,3 +268,5 @@
 #undef PROCESS_SMELT
 #undef PROCESS_COMPRESS
 #undef PROCESS_ALLOY
+#undef POWERUSE_PER_OPERATION
+#undef POWERUISE_PER_FAILURE

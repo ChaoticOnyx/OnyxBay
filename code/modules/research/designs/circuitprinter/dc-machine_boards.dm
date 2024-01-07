@@ -272,3 +272,31 @@
 	req_tech = list(TECH_MAGNET = 1, TECH_ENGINEERING = 1)
 	build_path = /obj/item/circuitboard/processing_unit
 	sort_string = "KCAAD"
+
+/datum/design/circuit/stacking_unit
+	name = "ore stacker"
+	id = "ore stacker"
+	req_tech = list(TECH_MAGNET = 1, TECH_ENGINEERING = 1)
+	build_path = /obj/item/circuitboard/processing_unit
+	sort_string = "KCAAE"
+
+/datum/design/circuit/stacking_unit_console
+	name = "ore stacker console"
+	id = "ore stacker console"
+	req_tech = list(TECH_ENGINEERING = 1)
+	build_path = /obj/item/circuitboard/processing_unit_console
+	sort_string = "KCAAF"
+
+/datum/design/circuit/minting_machine
+	name = "coin press"
+	id = "coin press"
+	req_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 2)
+	build_path = /obj/item/circuitboard/minting_machine
+	sort_string = "KCAAG"
+
+/datum/design/circuit/unloading_machine
+	name = "unloading_machine"
+	id = "unloading_machine"
+	req_tech = list(TECH_ENGINEERING = 1)
+	build_path = /obj/item/circuitboard/unloading_machine
+	sort_string = "KCAAH"

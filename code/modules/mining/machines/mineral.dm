@@ -1,17 +1,16 @@
 //. Generic mineral machine with some useful procs & variables. ~ Max
 /obj/machinery/mineral
-	dir = NORTH
+	dir = SOUTH
 	density = TRUE
 	anchored = TRUE
 	idle_power_usage = 15 WATTS
 	active_power_usage = 50 WATTS
 	icon = 'icons/obj/machines/mining_machines.dmi'
+	stat = POWEROFF // So it is toggled of by default
+	/// Variable used for icon_update() as by default mining machinery has a specific icon for mappers' comfort
+	var/gameicon
 	/// Whether holographic indicators of input & output turfs are active or not.
 	var/holo_active = FALSE
-	/// The current direction of `input_turf`, in relation to the machine.
-	var/input_dir = SOUTH
-	/// The current direction, in relation to the machine, that items will be output to.
-	var/output_dir = NORTH
 	/// The turf the machines listens to for items to pick up. Calls the `pickup_item()` proc.
 	var/turf/input_turf = null
 	/// Color used for EA of the machine
@@ -28,7 +27,7 @@
 	register_input_turf()
 
 /obj/machinery/mineral/attackby(obj/item/W, mob/user)
-	if(stat & POWEROFF)
+	if(!(stat & POWEROFF))
 		to_chat(user, SPAN_WARNING("Turn off the machine first!"))
 		return
 
@@ -53,7 +52,7 @@
 
 /// This proc finds & stores the input turf which will be listened for incoming items.
 /obj/machinery/mineral/proc/register_input_turf()
-	input_turf = get_step(src, input_dir)
+	input_turf = get_step(src, GLOB.flip_dir[dir])
 	if(input_turf)
 		register_signal(input_turf, SIGNAL_ENTERED, nameof(.proc/pickup_item))
 
@@ -82,7 +81,7 @@
 
 /obj/machinery/mineral/proc/unload_item(atom/movable/item_to_unload)
 	item_to_unload.forceMove(drop_location())
-	var/turf/unload_turf = get_step(src, output_dir)
+	var/turf/unload_turf = get_step(src, dir)
 	if(unload_turf)
 		item_to_unload.forceMove(unload_turf)
 
@@ -115,17 +114,17 @@
 		stat |= POWEROFF
 
 	if(stat & POWEROFF)
+		STOP_PROCESSING(SSmachines, src)
+	else
 		START_PROCESSING(SSmachines, src)
 		check_input_turf()
-	else
-		STOP_PROCESSING(SSmachines, src)
 	update_icon()
 
 /obj/machinery/mineral/on_update_icon()
 	..()
 	ClearOverlays()
 	set_light(0)
-	icon_state = "[initial(icon_state)][(stat & POWEROFF) ? "" : "-off"]"
+	icon_state = "[gameicon][(stat & POWEROFF) ? "-off" : ""]"
 	if(holo_active)
 		var/image/I = image('icons/obj/machines/holo_dirs.dmi', "holo-arrows")
 		I.pixel_x = -16
@@ -134,7 +133,7 @@
 		AddOverlays(I)
 	if(!(stat & POWEROFF) && ea_color)
 		set_light(1, 0, 3, 3.5, ea_color)
-		AddOverlays(emissive_appearance(icon, "[icon_state]_ea"))
+		AddOverlays(emissive_appearance(icon, "[gameicon]_ea"))
 
 /obj/machinery/mineral/Destroy()
 	unregister_input_turf()

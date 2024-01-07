@@ -1,6 +1,13 @@
 /obj/machinery/mineral/unloading_machine
 	name = "unloading machine"
-	icon_state = "unloader"
+	icon_state = "unloader-map"
+	gameicon = "unloader"
+
+	component_types = list(
+		/obj/item/circuitboard/unloading_machine,
+		/obj/item/stock_parts/capacitor = 2,
+		/obj/item/stock_parts/scanning_module
+	)
 
 /obj/machinery/mineral/unloading_machine/pickup_item(datum/source, atom/movable/target, atom/old_loc)
 	if(!..())
@@ -15,7 +22,14 @@
 		unload_item(target)
 
 /obj/machinery/mineral/unloading_machine/attack_hand(mob/user)
-	if(..())
+	if(stat & (NOPOWER | BROKEN)) // Unfortunately we can't simply call parent here as parent checks include POWEROFF flag.
+		return
+
+	if(user.lying || user.is_ic_dead())
+		return
+
+	if(!ishuman(user) && !issilicon(user))
+		to_chat(usr, SPAN_WARNING("You don't have the dexterity to do this!"))
 		return
 
 	toggle()

@@ -1,11 +1,11 @@
 /obj/machinery/computer/stacking_unit_console
 	name = "stacking machine console"
-	icon = 'icons/obj/machines/mining_machines.dmi'
-	icon_state = "console"
+	icon_screen = "minerals"
+	light_color = "#00b000"
 
 	var/weakref/machine_ref
-	icon_screen = null
-	icon_keyboard = null
+
+	circuit = /obj/item/circuitboard/stacking_machine_console
 
 /obj/machinery/computer/stacking_unit_console/Initialize()
 	. = ..()
@@ -45,7 +45,7 @@
 	if(!istype(stacking_machine))
 		return data
 
-	data["machine_state"] = stacking_machine.stat & POWEROFF ? TRUE : FALSE
+	data["machine_state"] = !(stat & POWEROFF)
 	data["stacking_amount"] = null
 	data["contents"] = list()
 	data["stacking_amount"] = stacking_machine.stack_amt
@@ -87,12 +87,19 @@
 
 /obj/machinery/mineral/stacking_machine
 	name = "stacking machine"
-	icon_state = "stacker"
+	icon_state = "stacker-map"
+	gameicon = "stacker"
 	ea_color = "#0090F8"
 	/// List of stored materials
 	var/list/machine_storage = list()
 	/// Amount to store before releasing
 	var/stack_amt = 50
+
+	component_types = list(
+		/obj/item/circuitboard/stacking_machine,
+		/obj/item/stock_parts/capacitor = 2,
+		/obj/item/stock_parts/scanning_module
+	)
 
 /obj/machinery/mineral/stacking_machine/pickup_item(datum/source, atom/movable/target, atom/old_loc)
 	if(!..())
@@ -105,9 +112,9 @@
 		var/obj/item/stack/material/stack = target
 		load_item(stack)
 	else
-		var/turf/unload_turf = get_step(src, output_dir)
+		var/turf/unload_turf = get_step(src, dir)
 		if(unload_turf)
-			target.forceMove(unload_turf)
+			item_to_unload.forceMove(unload_turf)
 
 /obj/machinery/mineral/stacking_machine/proc/load_item(obj/item/stack/material/incoming_stack)
 	if(QDELETED(incoming_stack))

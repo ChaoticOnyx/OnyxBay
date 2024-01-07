@@ -61,6 +61,11 @@ function MaterialsList (props: any, context: any) {
         <Table.Cell>{toTitleCase(material.name)}</Table.Cell>
         <Table.Cell collapsing textAlign="left">
         <Button
+            icon="eject"
+            color={'red'}
+            onClick={() => act('eject_material', {material_name: material.name})}
+          />
+        <Button
             content="select"
             color={material.name === data.chosen_material ? 'green' : null}
             onClick={() => act('change_material', {material_name: material.name})}

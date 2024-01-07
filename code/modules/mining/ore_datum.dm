@@ -1,7 +1,5 @@
 GLOBAL_LIST_EMPTY(ore_data)
 GLOBAL_LIST_EMPTY(ores_by_type)
-///var/global/list/ore_data = list()
-//var/global/list/ores_by_type = list()
 
 /hook/startup/proc/initialise_ore_data()
 	ensure_ore_data_initialised()
