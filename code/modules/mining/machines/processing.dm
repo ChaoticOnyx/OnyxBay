@@ -56,7 +56,7 @@
 	var/list/data = list()
 	data["unclaimedPoints"] = points
 	data["materials"] = list()
-	data["machine_state"] = !(stat & POWEROFF)
+	data["machine_state"] = !(machine.stat & POWEROFF)
 
 	for(var/ore in GLOB.ores_by_type)
 		var/ore/O = GLOB.ores_by_type[ore]

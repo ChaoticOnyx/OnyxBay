@@ -45,7 +45,7 @@
 	if(!istype(stacking_machine))
 		return data
 
-	data["machine_state"] = !(stat & POWEROFF)
+	data["machine_state"] = !(stacking_machine.stat & POWEROFF)
 	data["stacking_amount"] = null
 	data["contents"] = list()
 	data["stacking_amount"] = stacking_machine.stack_amt

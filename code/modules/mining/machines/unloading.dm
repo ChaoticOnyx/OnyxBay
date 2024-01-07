@@ -86,11 +86,11 @@
 	icon_state = "unloader-corner-map"
 	gameicon = "unloader-corner"
 	holodir_helper_path = /obj/effect/holodir_helper/corner
-	var/corner_turn_dir = 90
+	corner_turn_dir = 90
 
 /// Prefab for mapping
 /obj/machinery/mineral/unloading_machine/angled_mirrored
 	icon_state = "unloader-corner-map"
 	gameicon = "unloader-corner"
 	holodir_helper_path = /obj/effect/holodir_helper/corner_mirrored
-	var/corner_turn_dir = -90
+	corner_turn_dir = -90
