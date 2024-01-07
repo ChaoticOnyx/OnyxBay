@@ -116,7 +116,7 @@
 	name = "industrial smelter" //This isn't actually a goddamn furnace, we're in space and it's processing platinum and flammable plasma...
 	icon_state = "furnace-map"
 	gameicon = "furnace"
-	ea_color = "#ffc400"
+	ea_color = "#ff9500"
 	var/sheets_per_tick = 10
 	var/list/ores_processing = list()
 	var/list/ores_stored = list()
