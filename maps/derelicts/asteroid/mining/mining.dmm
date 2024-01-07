@@ -1,4 +1,4 @@
-"ap" = (/obj/effect/floor_decal/oldflood,/obj/machinery/computer/stacking_unit_console/east,/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
+"ap" = (/obj/effect/floor_decal/oldflood,/obj/machinery/computer/stacking_unit_console,/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
 "av" = (/obj/effect/floor_decal/oldflood,/obj/machinery/sleeper{dir = 1},/obj/effect/floor_decal/industrial/outline/yellow,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "aQ" = (/obj/effect/floor_decal/oldflood,/obj/structure/closet/crate,/obj/effect/floor_decal/industrial/hatch/yellow,/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
 "aX" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 4},/obj/item/clothing/glasses/welding,/obj/item/stack/material/steel,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
@@ -7,14 +7,13 @@
 "bU" = (/obj/structure/table/steel_reinforced,/obj/effect/floor_decal/corner/brown{dir = 9},/obj/effect/floor_decal/industrial/warning/dust/corner,/obj/effect/floor_decal/oldflood,/obj/item/bodybag/cryobag,/obj/random/medical/lite,/obj/random/medical/lite,/obj/item/reagent_containers/hypospray/autoinjector/antirad/mine,/obj/item/reagent_containers/hypospray/autoinjector/antirad/mine,/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
 "bX" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 8},/obj/structure/flora/pottedplant/ugly,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "bY" = (/obj/structure/foamedmetal,/turf/simulated/floor/asteroid,/area/space)
-"cc" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/hatch/yellow,/obj/structure/closet/crate,/obj/machinery/light/small/hl{dir = 1; icon_state = "hanginglantern1"},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
+"cc" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/hatch/yellow,/obj/structure/closet/crate,/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "cj" = (/obj/effect/floor_decal/oldflood,/obj/structure/ore_box,/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
 "cr" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 8},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "cv" = (/obj/structure/table/steel_reinforced,/obj/machinery/recharger,/obj/effect/floor_decal/oldflood,/obj/effect/decal/cleanable/ash,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
 "cx" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 4},/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "cy" = (/turf/simulated/floor/asteroid,/area/space)
 "cY" = (/obj/effect/floor_decal/industrial/warning/dust,/turf/simulated/floor/asteroid,/area/space)
-"dV" = (/obj/effect/floor_decal/oldflood,/obj/machinery/conveyor{id = "mining-outpost-abadon"},/obj/machinery/mineral/output,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "ef" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 8},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "fU" = (/obj/effect/floor_decal/oldflood,/obj/machinery/atmospherics/pipe/tank/air,/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
 "fW" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
@@ -23,12 +22,12 @@
 "gt" = (/obj/effect/floor_decal/oldflood,/obj/machinery/mineral/processing_unit,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "hW" = (/obj/effect/floor_decal/oldflood,/obj/machinery/computer/processing_unit_console,/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
 "ik" = (/obj/effect/floor_decal/oldflood,/obj/structure/table/rack,/obj/item/pickaxe/drill,/obj/item/pickaxe/drill,/obj/effect/floor_decal/industrial/warning/dust{dir = 1},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
-"iK" = (/obj/effect/floor_decal/oldflood,/obj/structure/ore_box,/obj/machinery/light/small/hl{dir = 1; icon_state = "hanginglantern1"},/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
+"iK" = (/obj/effect/floor_decal/oldflood,/obj/structure/ore_box,/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
 "jB" = (/obj/effect/floor_decal/oldflood,/obj/machinery/door/airlock/glass_mining,/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
 "jI" = (/obj/effect/floor_decal/oldflood,/obj/structure/table/steel_reinforced,/obj/machinery/recharger,/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
 "jM" = (/obj/item/arrow/rod,/turf/simulated/floor/asteroid,/area/space)
 "jV" = (/obj/machinery/door/airlock/mining{name = "Creaker - Bridge"; req_access = list(50)},/turf/simulated/floor/plating,/area/maintenance/ghetto_eva_maint)
-"jW" = (/obj/effect/floor_decal/oldflood,/obj/machinery/portable_atmospherics/canister/oxygen,/obj/effect/floor_decal/industrial/outline/yellow,/obj/machinery/light/small/hl{dir = 1; icon_state = "hanginglantern1"},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
+"jW" = (/obj/effect/floor_decal/oldflood,/obj/machinery/portable_atmospherics/canister/oxygen,/obj/effect/floor_decal/industrial/outline/yellow,/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "kg" = (/obj/effect/floor_decal/oldflood,/obj/machinery/power/apc/super{dir = 8; pixel_x = -29; pixel_y = 4},/obj/structure/cable/white,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "km" = (/obj/effect/floor_decal/oldflood,/obj/structure/table/rack,/obj/item/stack/cable_coil,/obj/item/stack/cable_coil,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "kq" = (/turf/simulated/shuttle/wall/merchant{dir = 5; icon_state = "merchwall"},/area/maintenance/ghetto_eva_maint)
@@ -71,13 +70,13 @@
 "wq" = (/obj/effect/floor_decal/oldflood,/obj/machinery/power/terminal{dir = 1},/obj/machinery/light/small/hl{dir = 8},/obj/structure/cable/white{icon_state = "0-2"},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "wC" = (/obj/structure/shuttle/engine/propulsion{icon_state = "burst_l"},/turf/simulated/floor/asteroid,/area/maintenance/ghetto_eva_maint)
 "xj" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 4},/obj/effect/decal/cleanable/ash,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
-"xt" = (/obj/effect/floor_decal/oldflood,/obj/structure/table/rack,/obj/item/clothing/suit/space/void/mining/prepared,/obj/item/clothing/suit/space/void/mining/prepared,/obj/effect/floor_decal/industrial/outline/yellow,/obj/machinery/light/small/hl{dir = 1; icon_state = "hanginglantern1"},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
+"xt" = (/obj/effect/floor_decal/oldflood,/obj/structure/table/rack,/obj/item/clothing/suit/space/void/mining/prepared,/obj/item/clothing/suit/space/void/mining/prepared,/obj/effect/floor_decal/industrial/outline/yellow,/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "xw" = (/obj/effect/floor_decal/oldflood,/obj/structure/largecrate/hoverpod,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "xN" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 8},/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "yu" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 8},/obj/item/stack/material/steel,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "yM" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/obj/effect/decal/cleanable/blood/oil,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "zm" = (/obj/structure/foamedmetal,/obj/structure/foamedmetal,/turf/simulated/floor/asteroid,/area/space)
-"zK" = (/obj/structure/plasticflaps/mining,/obj/machinery/conveyor{id = "mining-outpost-abadon"},/obj/machinery/mineral/output,/turf/simulated/floor/plating,/area/maintenance/ghetto_eva_maint)
+"zK" = (/obj/structure/plasticflaps/mining,/obj/machinery/conveyor{id = "mining-outpost-abadon"},/turf/simulated/floor/plating,/area/maintenance/ghetto_eva_maint)
 "Aa" = (/obj/effect/floor_decal/oldflood,/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
 "Aj" = (/obj/structure/window_frame,/obj/item/arrow/rod,/turf/simulated/floor/plating,/area/maintenance/ghetto_eva_maint)
 "AK" = (/obj/effect/floor_decal/industrial/warning/dust{dir = 4},/obj/effect/decal/cleanable/cobweb2,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
@@ -87,7 +86,7 @@
 "Ct" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/plating,/area/maintenance/ghetto_eva_maint)
 "Cw" = (/obj/effect/decal/cleanable/spiderling_remains,/turf/simulated/floor/plating,/area/maintenance/ghetto_eva_maint)
 "CC" = (/obj/effect/floor_decal/oldflood,/obj/machinery/mech_recharger,/obj/mecha/working/ripley,/obj/effect/floor_decal/industrial/outline/yellow,/obj/effect/decal/cleanable/cobweb2,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
-"CX" = (/obj/effect/floor_decal/oldflood,/obj/machinery/portable_atmospherics/canister/oxygen,/obj/effect/floor_decal/industrial/outline/yellow,/obj/effect/decal/cleanable/cobweb{dir = 1},/obj/machinery/light/small/hl{dir = 1; icon_state = "hanginglantern1"},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
+"CX" = (/obj/effect/floor_decal/oldflood,/obj/machinery/portable_atmospherics/canister/oxygen,/obj/effect/floor_decal/industrial/outline/yellow,/obj/effect/decal/cleanable/cobweb{dir = 1},/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "Dy" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 4},/obj/effect/floor_decal/industrial/warning/dust{dir = 1},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "DD" = (/obj/effect/floor_decal/oldflood,/obj/machinery/conveyor_switch/oneway{id = "mining-outpost-abadon"},/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
 "Ei" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/obj/machinery/mineral/equipment_vendor,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
@@ -99,15 +98,14 @@
 "GF" = (/obj/effect/floor_decal/oldflood,/obj/machinery/computer/shuttle_control/multi,/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
 "GI" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 8},/obj/effect/decal/cleanable/cobweb,/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "Hn" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 4},/obj/item/stack/cable_coil,/obj/item/arrow/rod,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
-"Hu" = (/obj/machinery/mineral/input,/turf/simulated/floor/plating,/area/space)
-"HG" = (/obj/effect/floor_decal/oldflood,/obj/effect/decal/cleanable/blood/oil,/obj/machinery/light/small/hl{dir = 1; icon_state = "hanginglantern1"},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
+"HG" = (/obj/effect/floor_decal/oldflood,/obj/effect/decal/cleanable/blood/oil,/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "HH" = (/obj/effect/floor_decal/oldflood,/obj/structure/table/rack,/obj/item/storage/toolbox/mechanical{pixel_x = 3; pixel_y = 2},/obj/item/storage/toolbox/mechanical{pixel_x = -2; pixel_y = -1},/obj/item/clothing/glasses/welding,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "HM" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 4},/turf/simulated/floor/plating,/area/maintenance/ghetto_eva_maint)
 "HN" = (/obj/effect/floor_decal/oldflood,/obj/effect/decal/cleanable/liquid_fuel,/turf/simulated/floor/plating,/area/maintenance/ghetto_eva_maint)
 "Ii" = (/obj/effect/floor_decal/oldflood,/obj/structure/bed/chair/shuttle/black,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
-"IW" = (/obj/machinery/mineral/unloading_machine{icon_state = "unloader-corner"},/turf/simulated/floor/plating,/area/space)
+"IW" = (/obj/machinery/mineral/unloading_machine,/turf/simulated/floor/plating,/area/space)
 "IZ" = (/obj/structure/closet/crate/freezer,/obj/item/reagent_containers/food/packaged/sosjerky,/obj/item/reagent_containers/food/packaged/sosjerky,/obj/item/reagent_containers/food/packaged/sosjerky,/obj/item/reagent_containers/food/packaged/sosjerky,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
-"JB" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/hatch/yellow,/obj/structure/closet/crate,/obj/item/clothing/head/syndicatefake,/obj/machinery/light/small/hl{dir = 1; icon_state = "hanginglantern1"},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
+"JB" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/hatch/yellow,/obj/structure/closet/crate,/obj/item/clothing/head/syndicatefake,/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "JF" = (/turf/simulated/shuttle/wall/corner/merchant/se,/area/maintenance/ghetto_eva_maint)
 "JG" = (/obj/effect/floor_decal/oldflood,/obj/effect/decal/cleanable/greenglow,/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
 "Ki" = (/turf/simulated/shuttle/wall/corner/merchant/sw,/area/maintenance/ghetto_eva_maint)
@@ -118,23 +116,22 @@
 "Md" = (/obj/effect/floor_decal/oldflood,/turf/simulated/floor/plating,/area/maintenance/ghetto_eva_maint)
 "MI" = (/turf/simulated/shuttle/wall/merchant{dir = 4; icon_state = "merchwall"},/area/maintenance/ghetto_eva_maint)
 "MK" = (/obj/effect/floor_decal/industrial/loading{dir = 4},/turf/simulated/floor/plating,/area/space)
-"MU" = (/obj/effect/floor_decal/oldflood,/obj/machinery/light/small/hl{dir = 1; icon_state = "hanginglantern1"},/turf/simulated/floor/plating,/area/maintenance/ghetto_eva_maint)
+"MU" = (/obj/effect/floor_decal/oldflood,/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/plating,/area/maintenance/ghetto_eva_maint)
 "Nc" = (/obj/structure/foamedmetal,/turf/simulated/mineral,/area/space)
 "Ny" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
 "OG" = (/turf/simulated/wall,/area/maintenance/ghetto_eva_maint)
 "OQ" = (/turf/simulated/floor/plating,/area/maintenance/ghetto_eva_maint)
-"OX" = (/obj/effect/floor_decal/oldflood,/obj/effect/decal/cleanable/liquid_fuel,/obj/machinery/light/small/hl{dir = 1; icon_state = "hanginglantern1"},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
+"OX" = (/obj/effect/floor_decal/oldflood,/obj/effect/decal/cleanable/liquid_fuel,/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "Pj" = (/obj/effect/floor_decal/oldflood,/obj/machinery/suit_cycler/mining,/obj/effect/floor_decal/industrial/outline/yellow,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "Pz" = (/obj/effect/floor_decal/oldflood,/obj/machinery/mech_recharger,/obj/effect/decal/mecha_wreckage/ripley,/obj/effect/floor_decal/industrial/outline/yellow,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "PE" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 8},/obj/effect/decal/cleanable/blood/oil,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "PM" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 1},/obj/effect/floor_decal/industrial/warning/dust{dir = 8},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "Ql" = (/turf/simulated/mineral,/area/space)
 "Qp" = (/obj/effect/floor_decal/oldflood,/obj/machinery/conveyor{id = "mining-outpost-abadon"},/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
-"Qq" = (/obj/effect/floor_decal/oldflood,/obj/structure/closet/toolcloset,/obj/item/clothing/head/welding,/obj/machinery/light/small/hl{dir = 1; icon_state = "hanginglantern1"},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
+"Qq" = (/obj/effect/floor_decal/oldflood,/obj/structure/closet/toolcloset,/obj/item/clothing/head/welding,/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "Re" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/maintenance/ghetto_eva_maint)
 "RG" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "RZ" = (/obj/effect/floor_decal/oldflood,/obj/item/material/coin/plasma,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
-"Sq" = (/obj/effect/floor_decal/oldflood,/obj/machinery/conveyor{id = "mining-outpost-abadon"},/obj/machinery/mineral/input,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "Sx" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 4},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "Tq" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 4},/obj/structure/reagent_dispensers/beerkeg,/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "Tr" = (/obj/effect/floor_decal/oldflood,/obj/structure/table/steel_reinforced,/obj/item/storage/fancy/cigarettes/professionals,/turf/simulated/floor/tiled/dark/rough,/area/maintenance/ghetto_eva_maint)
@@ -151,10 +148,9 @@
 "WG" = (/obj/effect/floor_decal/oldflood,/obj/machinery/conveyor{dir = 6; id = "mining-outpost-abadon"},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "WP" = (/turf/simulated/shuttle/wall/merchant{dir = 4; icon_state = "merchwall_t"},/area/maintenance/ghetto_eva_maint)
 "WS" = (/obj/effect/floor_decal/industrial/warning/dust{dir = 4},/obj/effect/decal/cleanable/blood/gibs/robot/down,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
-"Xf" = (/obj/effect/floor_decal/oldflood,/obj/machinery/conveyor{dir = 5; id = "mining-outpost-abadon"},/obj/machinery/mineral/output,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
+"Xf" = (/obj/effect/floor_decal/oldflood,/obj/machinery/conveyor{dir = 5; id = "mining-outpost-abadon"},/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "Xu" = (/obj/effect/floor_decal/oldflood,/obj/effect/floor_decal/industrial/warning/dust{dir = 4},/obj/item/stack/material/steel,/turf/simulated/floor/plating,/area/maintenance/ghetto_eva_maint)
 "XE" = (/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
-"XG" = (/obj/effect/floor_decal/oldflood,/obj/machinery/conveyor{id = "mining-outpost-abadon"},/obj/machinery/mineral/input,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "XT" = (/obj/structure/foamedmetal,/obj/structure/foamedmetal,/turf/simulated/floor/asteroid,/area/maintenance/ghetto_eva_maint)
 "Yo" = (/obj/effect/floor_decal/oldflood,/obj/structure/dispenser/oxygen,/obj/effect/floor_decal/industrial/outline/yellow,/turf/simulated/floor/tiled/rough,/area/maintenance/ghetto_eva_maint)
 "YD" = (/turf/simulated/shuttle/wall/corner/merchant/ne,/area/maintenance/ghetto_eva_maint)
@@ -177,15 +173,15 @@ cycycycycycycycyOGOQOQOGcycycyOGwqMdXEMdkmOGcycycycycycyQlQl
 cycycycycyOGOGOGOGEREROGOGOGOGOGkgXEUdXEsFOGbYcycycycycycyQl
 cycycyOGOGOGbTYoxtXEXExtkJOGOGOGshYJvUOGbYbYcycycycYcYcYcyQl
 cycyOGOGKRjWbTXEvOCtVSRGfWbTKRCXOGOGMdOGbYNcQlcysisVsVsVuEQl
-OGOGOGEiVSVSTTtofWfWMdXEtoTTXEXEGuOGTTOGzmQlQlcysiMKHuIWuEQl
+OGOGOGEiVSVSTTtofWfWMdXEtoTTXEXEGuOGTTOGzmQlQlcysiMKsVIWuEQl
 OGGIyMXEMdRZOGOGRekHReReOGOGpKXEXEXEAKXTbYNcbYcyOGOGOGzKOGcy
 OGoBpoOGCdCdCdcycyjMcyjMcyOGOGOGOGsaLzXTNcbYcyOGOGOGtaoCOGcy
 OGsacxOGcycycycyudKQKQYDcycycycyOGxNLzZobYcyOGOGlSiKMdQpOGOG
 RecrHnOGcybRcyudsqtrGFkqYDcycycyOGefoxRecycyReTrmRmRMdWGrIOG
-gdyuFsKjmQjMcyrOIZmRBCcvrOcycycyOGElSxRecycyRetlMdMdJGmRSqOG
+gdyuFsKjmQjMcyrOIZmRBCcvrOcycycyOGElSxRecycyRetlMdMdJGmRQpOG
 OGoMxjOGAjReOGuFFmjVMIUvWPOGReReOGxNpoOGOGOGOGWCMdmRmRhWgtOG
-OGndoxERCwOQERERmRmRqtmREREROQOQERefWSjBMUmRjBNymRmRMdmRdVOG
-OGPEoxOGReReOGrOnXgmgmIirOOGReReOGxNUPOGOGOGOGAaMdmRMdDDXGOG
+OGndoxERCwOQERERmRmRqtmREREROQOQERefWSjBMUmRjBNymRmRMdmRoCOG
+OGPEoxOGReReOGrOnXgmgmIirOOGReReOGxNUPOGOGOGOGAaMdmRMdDDoCOG
 RecrcxOGcycycyKikWkWkWkWJFcycycyOGefXuRecycyReVxMdmRmRapnMOG
 ReefoxOGOGKjcycywCwCwCwCcycyOGOGOGxNaXRecycyRejIMdmRMdaQXfOG
 OGndHMbTCCbTOGcycycycycycyOGbTPzbTefFsOGcycyOGOGcjlSmRmROGOG
