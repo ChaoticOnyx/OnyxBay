@@ -114,7 +114,7 @@
 	else
 		var/turf/unload_turf = get_step(src, dir)
 		if(unload_turf)
-			item_to_unload.forceMove(unload_turf)
+			target.forceMove(unload_turf)
 
 /obj/machinery/mineral/stacking_machine/proc/load_item(obj/item/stack/material/incoming_stack)
 	if(QDELETED(incoming_stack))
