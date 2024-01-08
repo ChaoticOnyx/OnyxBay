@@ -1,4 +1,3 @@
-
 #define RADIO_LOW_FREQ   1200
 #define PUBLIC_LOW_FREQ  1441
 #define PUBLIC_HIGH_FREQ 1489
