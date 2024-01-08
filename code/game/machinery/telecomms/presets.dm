@@ -80,7 +80,7 @@
 	id = "Receiver A"
 	network = "tcommsat"
 	autolinkers = list("receiverA") // link to relay
-	freq_listening = list(AI_FREQ, SCI_FREQ, MED_FREQ, SUP_FREQ, SRV_FREQ, COMM_FREQ, ENG_FREQ, SEC_FREQ, ENT_FREQ)
+	freq_listening = list(GLOB.AI_FREQ, GLOB.SCI_FREQ, GLOB.MED_FREQ, GLOB.SUP_FREQ, GLOB.SRV_FREQ, GLOB.COMM_FREQ, GLOB.ENG_FREQ, GLOB.SEC_FREQ, GLOB.ENT_FREQ)
 
 	//Common and other radio frequencies for people to freely use
 	New()
@@ -93,7 +93,7 @@
 	network = "tcommsat"
 	produces_heat = 0
 	autolinkers = list("receiverCent")
-	freq_listening = list(ERT_FREQ, DTH_FREQ)
+	freq_listening = list(GLOB.ERT_FREQ, GLOB.DTH_FREQ)
 
 
 //Buses
@@ -101,18 +101,18 @@
 /obj/machinery/telecomms/bus/preset_one
 	id = "Bus 1"
 	network = "tcommsat"
-	freq_listening = list(SCI_FREQ, MED_FREQ)
+	freq_listening = list(GLOB.SCI_FREQ, GLOB.MED_FREQ)
 	autolinkers = list("processor1", "science", "medical")
 
 /obj/machinery/telecomms/bus/preset_two
 	id = "Bus 2"
 	network = "tcommsat"
-	freq_listening = list(SUP_FREQ, SRV_FREQ)
+	freq_listening = list(GLOB.SUP_FREQ, GLOB.SRV_FREQ)
 	autolinkers = list("processor2", "supply", "service", "unused")
 
 /obj/machinery/telecomms/bus/preset_two/New()
 	for(var/i = PUBLIC_LOW_FREQ, i < PUBLIC_HIGH_FREQ, i += 2)
-		if(i == PUB_FREQ)
+		if(i == GLOB.PUB_FREQ)
 			continue
 		freq_listening |= i
 	..()
@@ -120,19 +120,19 @@
 /obj/machinery/telecomms/bus/preset_three
 	id = "Bus 3"
 	network = "tcommsat"
-	freq_listening = list(SEC_FREQ, COMM_FREQ)
+	freq_listening = list(GLOB.SEC_FREQ, GLOB.COMM_FREQ)
 	autolinkers = list("processor3", "security", "command")
 
 /obj/machinery/telecomms/bus/preset_four
 	id = "Bus 4"
 	network = "tcommsat"
-	freq_listening = list(ENG_FREQ, AI_FREQ, PUB_FREQ, ENT_FREQ)
+	freq_listening = list(GLOB.ENG_FREQ, GLOB.AI_FREQ, GLOB.PUB_FREQ, GLOB.ENT_FREQ)
 	autolinkers = list("processor4", "engineering", "common")
 
 /obj/machinery/telecomms/bus/preset_cent
 	id = "CentComm Bus"
 	network = "tcommsat"
-	freq_listening = list(ERT_FREQ, DTH_FREQ, ENT_FREQ)
+	freq_listening = list(GLOB.ERT_FREQ, GLOB.DTH_FREQ, GLOB.ENT_FREQ)
 	produces_heat = 0
 	autolinkers = list("processorCent", "centcomm")
 
@@ -172,27 +172,27 @@
 
 /obj/machinery/telecomms/server/presets/science
 	id = "Science Server"
-	freq_listening = list(SCI_FREQ)
+	freq_listening = list(GLOB.SCI_FREQ)
 	autolinkers = list("science")
 
 /obj/machinery/telecomms/server/presets/medical
 	id = "Medical Server"
-	freq_listening = list(MED_FREQ)
+	freq_listening = list(GLOB.MED_FREQ)
 	autolinkers = list("medical")
 
 /obj/machinery/telecomms/server/presets/supply
 	id = "Supply Server"
-	freq_listening = list(SUP_FREQ)
+	freq_listening = list(GLOB.SUP_FREQ)
 	autolinkers = list("supply")
 
 /obj/machinery/telecomms/server/presets/service
 	id = "Service Server"
-	freq_listening = list(SRV_FREQ)
+	freq_listening = list(GLOB.SRV_FREQ)
 	autolinkers = list("service")
 
 /obj/machinery/telecomms/server/presets/common
 	id = "Common Server"
-	freq_listening = list(PUB_FREQ, AI_FREQ, ENT_FREQ) // AI Private and Common
+	freq_listening = list(GLOB.PUB_FREQ, GLOB.AI_FREQ, GLOB.ENT_FREQ) // AI Private and Common
 	autolinkers = list("common")
 
 // "Unused" channels, AKA all others.
@@ -203,29 +203,29 @@
 
 /obj/machinery/telecomms/server/presets/unused/New()
 	for(var/i = PUBLIC_LOW_FREQ, i < PUBLIC_HIGH_FREQ, i += 2)
-		if(i == AI_FREQ || i == PUB_FREQ)
+		if(i == GLOB.AI_FREQ || i == GLOB.PUB_FREQ)
 			continue
 		freq_listening |= i
 	..()
 
 /obj/machinery/telecomms/server/presets/command
 	id = "Command Server"
-	freq_listening = list(COMM_FREQ)
+	freq_listening = list(GLOB.COMM_FREQ)
 	autolinkers = list("command")
 
 /obj/machinery/telecomms/server/presets/engineering
 	id = "Engineering Server"
-	freq_listening = list(ENG_FREQ)
+	freq_listening = list(GLOB.ENG_FREQ)
 	autolinkers = list("engineering")
 
 /obj/machinery/telecomms/server/presets/security
 	id = "Security Server"
-	freq_listening = list(SEC_FREQ)
+	freq_listening = list(GLOB.SEC_FREQ)
 	autolinkers = list("security")
 
 /obj/machinery/telecomms/server/presets/centcomm
 	id = "CentComm Server"
-	freq_listening = list(ERT_FREQ, DTH_FREQ)
+	freq_listening = list(GLOB.ERT_FREQ, GLOB.DTH_FREQ)
 	produces_heat = 0
 	autolinkers = list("centcomm")
 

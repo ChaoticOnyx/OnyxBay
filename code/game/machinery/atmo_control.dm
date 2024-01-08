@@ -21,7 +21,7 @@
 	// 32 for carbon dioxide concentration
 	// 64 for hydrogen concentration
 
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 /obj/machinery/air_sensor/on_update_icon()
 	icon_state = "gsensor[on]"
@@ -29,7 +29,6 @@
 /obj/machinery/air_sensor/Process()
 	if(on)
 		var/datum/signal/signal = new
-		signal.transmission_method = 1 //radio signal
 		signal.data["tag"] = id_tag
 		signal.data["timestamp"] = world.time
 
@@ -64,17 +63,16 @@
 
 
 /obj/machinery/air_sensor/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = radio_controller.add_object(src, frequency, RADIO_ATMOSIA)
+	radio_connection = SSradio.add_object(src, frequency, RADIO_ATMOSIA)
 
 /obj/machinery/air_sensor/Initialize()
 	set_frequency(frequency)
 	. = ..()
 
 /obj/machinery/air_sensor/Destroy()
-	if(radio_controller)
-		radio_controller.remove_object(src,frequency)
+	SSradio.remove_object(src,frequency)
 	. = ..()
 
 /obj/machinery/computer/general_air_control
@@ -88,12 +86,11 @@
 	var/list/sensors = list()
 
 	var/list/sensor_information = list()
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 	circuit = /obj/item/circuitboard/air_management
 
 /obj/machinery/computer/general_air_control/Destroy()
-	if(radio_controller)
-		radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	return ..()
 
 /obj/machinery/computer/general_air_control/attack_hand(mob/user)
@@ -156,9 +153,9 @@
 	return output
 
 /obj/machinery/computer/general_air_control/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = radio_controller.add_object(src, frequency, RADIO_ATMOSIA)
+	radio_connection = SSradio.add_object(src, frequency, RADIO_ATMOSIA)
 
 /obj/machinery/computer/general_air_control/Initialize()
 	set_frequency(frequency)
@@ -245,7 +242,6 @@ Max Output Pressure: [output_pressure] kPa<BR>"}
 	if(!radio_connection)
 		return 0
 	var/datum/signal/signal = new
-	signal.transmission_method = 1 //radio signal
 	signal.source = src
 	if(href_list["in_refresh_status"])
 		input_info = null
@@ -364,7 +360,6 @@ Min Core Pressure: [pressure_limit] kPa<BR>"}
 	if(!radio_connection)
 		return 0
 	var/datum/signal/signal = new
-	signal.transmission_method = 1 //radio signal
 	signal.source = src
 	if(href_list["in_refresh_status"])
 		input_info = null
@@ -431,7 +426,6 @@ Min Core Pressure: [pressure_limit] kPa<BR>"}
 					injecting = 1
 
 		var/datum/signal/signal = new
-		signal.transmission_method = 1 //radio signal
 		signal.source = src
 
 		signal.data = list(
@@ -486,7 +480,6 @@ Rate: [volume_rate] L/sec<BR>"}
 			return 0
 
 		var/datum/signal/signal = new
-		signal.transmission_method = 1 //radio signal
 		signal.source = src
 		signal.data = list(
 			"tag" = device_tag,
@@ -504,7 +497,6 @@ Rate: [volume_rate] L/sec<BR>"}
 			return 0
 
 		var/datum/signal/signal = new
-		signal.transmission_method = 1 //radio signal
 		signal.source = src
 		signal.data = list(
 			"tag" = device_tag,
@@ -519,7 +511,6 @@ Rate: [volume_rate] L/sec<BR>"}
 			return 0
 
 		var/datum/signal/signal = new
-		signal.transmission_method = 1 //radio signal
 		signal.source = src
 		signal.data = list(
 			"tag" = device_tag,
@@ -528,7 +519,3 @@ Rate: [volume_rate] L/sec<BR>"}
 		)
 
 		radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
-
-
-
-

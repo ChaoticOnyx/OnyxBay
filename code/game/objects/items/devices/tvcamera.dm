@@ -26,7 +26,7 @@
 	camera.status = FALSE
 	radio = new(src)
 	radio.listening = FALSE
-	radio.set_frequency(ENT_FREQ)
+	radio.set_frequency(GLOB.ENT_FREQ)
 	update_icon()
 
 /obj/item/device/tvcamera/_examine_text(mob/user)

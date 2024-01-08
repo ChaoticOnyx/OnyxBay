@@ -87,7 +87,7 @@
 		signal.data["code"] = docking_codes
 		receive_signal(signal)
 
-/datum/computer/file/embedded_program/docking/receive_signal(datum/signal/signal, receive_method, receive_param)
+/datum/computer/file/embedded_program/docking/receive_signal(datum/signal/signal, receive_param)
 	var/receive_tag = signal.data["tag"]		//for docking signals, this is the sender id
 	var/command = signal.data["command"]
 	var/recipient = signal.data["recipient"]	//the intended recipient of the docking signal

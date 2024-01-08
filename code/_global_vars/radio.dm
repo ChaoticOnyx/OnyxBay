@@ -1,7 +1,50 @@
-// These globals are the worst
+GLOBAL_VAR_CONST(AI_FREQ,   1343)
+GLOBAL_VAR_CONST(DTH_FREQ,  1341)
+GLOBAL_VAR_CONST(BOT_FREQ,  1447)
+GLOBAL_VAR_CONST(ENT_FREQ,  1461)
+GLOBAL_VAR_CONST(ERT_FREQ,  1345)
+GLOBAL_VAR_CONST(COMM_FREQ, 1353)
+GLOBAL_VAR_CONST(SYND_FREQ, 1213)
+GLOBAL_VAR_CONST(RAID_FREQ, 1277)
 
-GLOBAL_LIST_INIT(default_medbay_channels, list(
-	num2text(PUB_FREQ) = list(),
-	num2text(MED_FREQ) = list(access_medical_equip),
-	num2text(MED_I_FREQ) = list(access_medical_equip)
+// Department channels.
+GLOBAL_VAR_CONST(PUB_FREQ, 1459)
+GLOBAL_VAR_CONST(SEC_FREQ, 1359)
+GLOBAL_VAR_CONST(ENG_FREQ, 1357)
+GLOBAL_VAR_CONST(MED_FREQ, 1355)
+GLOBAL_VAR_CONST(SCI_FREQ, 1351)
+GLOBAL_VAR_CONST(SRV_FREQ, 1349)
+GLOBAL_VAR_CONST(SUP_FREQ, 1347)
+
+// Internal department channels (phones).
+GLOBAL_VAR_CONST(MED_I_FREQ, 1485)
+GLOBAL_VAR_CONST(SEC_I_FREQ, 1475)
+
+/// List of central command channels, i.e deathsquid & response team.
+GLOBAL_LIST_INIT(CENT_FREQS, list(GLOB.ERT_FREQ, GLOB.DTH_FREQ))
+
+/// List of antagonist channels, i.e. Syndicate, raiders and etc..
+GLOBAL_LIST_INIT(ANTAG_FREQS, list(GLOB.SYND_FREQ, GLOB.RAID_FREQ))
+
+/// List of department channels, arranged lexically.
+GLOBAL_LIST_INIT(DEPT_FREQS, list(GLOB.AI_FREQ, GLOB.COMM_FREQ, GLOB.ENG_FREQ, GLOB.MED_FREQ, GLOB.SEC_FREQ, GLOB.SCI_FREQ, GLOB.SRV_FREQ, GLOB.SUP_FREQ, GLOB.ENT_FREQ))
+
+/// Associative list of channel name -> channel frequency.
+GLOBAL_LIST_INIT(RADIO_CHANNELS, list(
+	"Common"		= GLOB.PUB_FREQ,
+	"Science"		= GLOB.SCI_FREQ,
+	"Command"		= GLOB.COMM_FREQ,
+	"Medical"		= GLOB.MED_FREQ,
+	"Engineering"	= GLOB.ENG_FREQ,
+	"Security" 		= GLOB.SEC_FREQ,
+	"Response Team" = GLOB.ERT_FREQ,
+	"Special Ops" 	= GLOB.DTH_FREQ,
+	"Syndicate" 	= GLOB.SYND_FREQ,
+	"Raider"		= GLOB.RAID_FREQ,
+	"Supply" 		= GLOB.SUP_FREQ,
+	"Service" 		= GLOB.SRV_FREQ,
+	"AI Private"	= GLOB.AI_FREQ,
+	"Entertainment" = GLOB.ENT_FREQ,
+	"Medical(I)"	= GLOB.MED_I_FREQ,
+	"Security(I)"	= GLOB.SEC_I_FREQ
 ))

@@ -61,7 +61,7 @@
 			signalDoor(tag_exterior_door, "update")		//signals connected doors to update their status
 			signalDoor(tag_interior_door, "update")
 
-/datum/computer/file/embedded_program/airlock/receive_signal(datum/signal/signal, receive_method, receive_param)
+/datum/computer/file/embedded_program/airlock/receive_signal(datum/signal/signal, receive_param)
 	var/receive_tag = signal.data["tag"]
 	if(!receive_tag) return
 
