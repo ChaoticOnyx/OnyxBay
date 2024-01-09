@@ -1,13 +1,13 @@
 /datum/signal
-	/// Bruh
+	/// Object that emitted a signal.
 	var/obj/source
-	/// Уээээээ
+	/// Associative list of key -> value, where key is generally a string, value is anything.
 	var/list/data
-	/// "Transmission method" of a signal, can be either `TRANSMISSION_RADIO` or `TRANSMISSION_SUBSPACE`.
+	/// 'Transmission method' of a signal, can be either `TRANSMISSION_RADIO` or `TRANSMISSION_SUBSPACE`. Generally used be telecomms.
 	var/method
-	/// Numeric value that allows to IDK i'll do it later.
+	/// Numeric value that allows to filter out 'garbage' signal.
 	var/encryption
-	/// Same, lol.
+	/// Numeric value that is used generally by telecomms to filter out signals.
 	var/frequency
 
 
@@ -22,15 +22,3 @@
 		src.encryption = encryption
 	if(frequency)
 		src.frequency = frequency
-
-/datum/signal/proc/debug_print()
-	if (source)
-		. = "signal = {source = '[source]' ([source:x],[source:y],[source:z])\n"
-	else
-		. = "signal = {source = '[source]' ()\n"
-	for (var/i in data)
-		. += "data\[\"[i]\"\] = \"[data[i]]\"\n"
-		if(islist(data[i]))
-			var/list/L = data[i]
-			for(var/t in L)
-				. += "data\[\"[i]\"\] list has: [t]"

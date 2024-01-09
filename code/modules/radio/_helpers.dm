@@ -1,3 +1,4 @@
+/// Helper proc to convert frequency value to a corresponding css class.
 /proc/frequency_span_class(frequency)
 	if(frequency in GLOB.ANTAG_FREQS)
 		return "syndradio"
