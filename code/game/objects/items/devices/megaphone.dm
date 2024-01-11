@@ -62,7 +62,7 @@
 		insults_left--
 
 	for(var/mob/O in viewers(talker))
-		O.hear_say(FONT_GIANT(msg), "broadcasts", speaking, speaker = talker, speech_sound = 'sound/items/megaphone.ogg', sound_vol = 20)
+		O.hear_say(FONT_GIANT(SPAN_BOLD(msg)), "broadcasts", speaking, speaker = talker, speech_sound = 'sound/items/megaphone.ogg', sound_vol = 20)
 
 	for(var/obj/item/device/radio/intercom/I in view(3, talker))
 		I.talk_into(talker, msg, verb = "shout", speaking = speaking)
