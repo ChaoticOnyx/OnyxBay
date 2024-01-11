@@ -56,9 +56,6 @@
 /mob/living/carbon/human/diona/New(new_loc)
 	..(new_loc, SPECIES_DIONA)
 
-/mob/living/carbon/human/machine/New(new_loc)
-	..(new_loc, SPECIES_IPC)
-
 /mob/living/carbon/human/monkey/New(new_loc)
 	..(new_loc, "Monkey")
 

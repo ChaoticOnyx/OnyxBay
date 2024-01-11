@@ -24,8 +24,6 @@
 	return 0
 
 /mob/living/carbon/human/isSynthetic()
-	if(istype(species, /datum/species/machine))
-		return 1
 	if(isnull(full_prosthetic))
 		robolimb_count = 0
 		for(var/obj/item/organ/external/E in organs)

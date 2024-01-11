@@ -229,7 +229,7 @@
 		return (R.cell)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		if(H.isSynthetic()) // FBPs and IPCs
+		if(H.isSynthetic()) // FBPs
 			return 1
 		if(istype(H.back,/obj/item/rig))
 			var/obj/item/rig/R = H.back
