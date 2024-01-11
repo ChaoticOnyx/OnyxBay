@@ -30,17 +30,21 @@
 
 /obj/machinery/computer/processing_unit_console/attack_hand(mob/user)
 	add_fingerprint(user)
-	if(!machine_ref?.resolve())
-		if(tgui_alert(user, "No connected ore processing units found. Do you wish to rescan?", "Error!", list("Yes","No")) == "Yes")
-			var/obj/machinery/mineral/processing_unit/p_unit = locate_unit(/obj/machinery/mineral/processing_unit)
-			if(!p_unit)
-				show_splash_text(user, "no ore processing units found!")
-				return
 
-			p_unit.console_ref = weakref(src)
-			machine_ref = weakref(p_unit)
+	if(machine_ref?.resolve())
+		tgui_interact(user)
+		return
 
-	tgui_interact(user)
+	var/response = tgui_alert(user, "No connected ore processing units found. Do you wish to rescan?", "Error!", list("Yes", "No"))
+	if(response  == "Yes")
+		var/obj/machinery/mineral/processing_unit/p_unit = locate_unit(/obj/machinery/mineral/processing_unit)
+		if(!p_unit)
+			show_splash_text(user, "no ore processing unit found!")
+			return
+
+		p_unit.console_ref = weakref(src)
+		machine_ref = weakref(p_unit)
+		tgui_interact(user)
 
 /obj/machinery/computer/processing_unit_console/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -53,10 +57,11 @@
 	if(!istype(machine))
 		return
 
-	var/list/data = list()
-	data["unclaimedPoints"] = points
-	data["materials"] = list()
-	data["machine_state"] = !(machine.stat & POWEROFF)
+	var/list/data = list(
+		"unclaimedPoints" = points,
+		"materials" = list(),
+		"machine_state" = !(machine.stat & POWEROFF)
+		)
 
 	for(var/ore in GLOB.ores_by_type)
 		var/ore/O = GLOB.ores_by_type[ore]
@@ -249,7 +254,6 @@
 			qdel(O)
 
 /obj/machinery/mineral/processing_unit/RefreshParts()
-	..()
 	var/scan_rating = 0
 	var/cap_rating = 0
 	var/laser_rating = 0

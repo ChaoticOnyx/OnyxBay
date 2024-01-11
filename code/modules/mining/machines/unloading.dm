@@ -42,27 +42,25 @@
 /obj/machinery/mineral/unloading_machine/attackby(obj/item/W, mob/user)
 	..()
 	if(!isMultitool(W))
-		return
+		var/choice = tgui_input_list(user, "Select the desired mode.", "Selection", list("default", "angled", "angled (mirrored)"))
+		if(!choice || !Adjacent(user))
+			return
 
-	var/choice = tgui_input_list(user, "Select the desired mode.", "Selection", list("default", "angled", "angled (mirrored)"))
-	if(!choice || !Adjacent(user))
-		return
-
-	switch(choice)
-		if("default")
-			gameicon = "unloader"
-			corner_turn_dir = 0
-			holodir_helper_path = /obj/effect/holodir_helper
-		if("angled")
-			gameicon = "unloader-corner"
-			corner_turn_dir = 90
-			holodir_helper_path = /obj/effect/holodir_helper/corner
-		if("angled (mirrored)")
-			gameicon = "unloader-corner"
-			corner_turn_dir = -90
-			holodir_helper_path = /obj/effect/holodir_helper/corner_mirrored
-	show_splash_text(user, "you tweak \the [src]!")
-	update_icon()
+		switch(choice)
+			if("default")
+				gameicon = "unloader"
+				corner_turn_dir = 0
+				holodir_helper_path = /obj/effect/holodir_helper
+			if("angled")
+				gameicon = "unloader-corner"
+				corner_turn_dir = 90
+				holodir_helper_path = /obj/effect/holodir_helper/corner
+			if("angled (mirrored)")
+				gameicon = "unloader-corner"
+				corner_turn_dir = -90
+				holodir_helper_path = /obj/effect/holodir_helper/corner_mirrored
+		show_splash_text(user, "you tweak \the [src]!")
+		update_icon()
 
 /obj/machinery/mineral/unloading_machine/register_input_turf()
 	input_turf = get_step(src, GLOB.flip_dir[dir])

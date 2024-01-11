@@ -1981,6 +1981,7 @@
 #include "code\modules\mining\satchel_ore_boxdm.dm"
 #include "code\modules\mining\drilling\drill.dm"
 #include "code\modules\mining\drilling\scanner.dm"
+#include "code\modules\mining\machines\holohelper.dm"
 #include "code\modules\mining\machines\mineral.dm"
 #include "code\modules\mining\machines\minting.dm"
 #include "code\modules\mining\machines\processing.dm"

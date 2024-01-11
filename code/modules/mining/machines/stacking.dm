@@ -23,14 +23,20 @@
 
 /obj/machinery/computer/stacking_unit_console/attack_hand(mob/user)
 	add_fingerprint(user)
-	if(!machine_ref?.resolve())
-		if(tgui_alert(user, "No connected ore stacking unit found. Do you wish to rescan?", "Error!", list("Yes","No")) == "Yes")
-			machine_ref = weakref(locate_unit(/obj/machinery/mineral/stacking_machine))
-			if(!machine_ref?.resolve())
-				show_splash_text(user, "no ore stacking units found!")
-				return
 
-	tgui_interact(user)
+	if(machine_ref?.resolve())
+		tgui_interact(user)
+		return
+
+	var/response = tgui_alert(user, "No connected ore stacking unit found. Do you wish to rescan?", "Error!", list("Yes", "No"))
+	if(response  == "Yes")
+		var/obj/machinery/mineral/stacking_machine/s_machine = locate_unit(/obj/machinery/mineral/stacking_machine)
+		if(!s_machine)
+			show_splash_text(user, "no ore stacking units found!")
+			return
+
+		machine_ref = weakref(s_machine)
+		tgui_interact(user)
 
 /obj/machinery/computer/stacking_unit_console/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)

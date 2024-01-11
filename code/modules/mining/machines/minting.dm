@@ -95,16 +95,16 @@
 
 /obj/machinery/mineral/mint/tgui_data(mob/user)
 	var/list/data = list()
+
+	data["chosen_material"] = chosen_material
+	data["produced_coins"] = produced_coins
+	data["active"] = !(stat & POWEROFF)
+
 	for(var/material in stored_material)
 		data["inserted_materials"] += list(list(
 			"name" = material,
 			"amount" = stored_material[material]
 		))
-
-	data["chosen_material"] = chosen_material
-
-	data["produced_coins"] = produced_coins
-	data["active"] = !(stat & POWEROFF)
 
 	return data;
 
