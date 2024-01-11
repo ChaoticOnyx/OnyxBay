@@ -135,13 +135,22 @@
 	update_icon()
 
 /obj/machinery/mineral/on_update_icon()
-	..()
 	ClearOverlays()
-	set_light(0)
-	icon_state = "[gameicon][(stat & POWEROFF) ? "-off" : ""]"
-	if(!(stat & POWEROFF) && ea_color)
-		set_light(1, 0, 3, 3.5, ea_color)
+	
+	icon_state = "[gameicon][(stat & (NOPOWER|POWEROFF)) ? "-off" : ""]"
+	
+	var/should_glow = update_glow()
+	if(should_glow )
 		AddOverlays(emissive_appearance(icon, "[gameicon]_ea"))
+		
+/obj/machinery/mineral/proc/update_glow()
+	if(!ea_color || (stat & (NOPOWER|BROKEN|POWEROFF)))
+		set_light(0)
+		return FALSE
+	
+	set_light(1, 0, 3, 3.5, ea_color)
+	return TRUE
+	
 
 /obj/machinery/mineral/Destroy()
 	unregister_input_turf()
