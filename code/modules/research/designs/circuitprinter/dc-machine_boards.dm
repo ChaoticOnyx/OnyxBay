@@ -277,7 +277,7 @@
 	name = "ore stacker"
 	id = "ore stacker"
 	req_tech = list(TECH_MAGNET = 1, TECH_ENGINEERING = 1)
-	build_path = /obj/item/circuitboard/processing_unit
+	build_path = /obj/item/circuitboard/stacking_machine
 	sort_string = "KCAAE"
 
 /datum/design/circuit/stacking_unit_console
