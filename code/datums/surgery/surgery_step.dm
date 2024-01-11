@@ -335,16 +335,16 @@
 	else
 		sound_file_use = preop_sound
 
-	playsound(get_turf(target), sound_file_use, 75, TRUE, falloff = 12)
+	playsound(get_turf(target), sound_file_use, 75, TRUE)
 
 /datum/surgery_step/proc/play_success_sound(mob/user, mob/living/carbon/target, obj/item/organ/target_organ, obj/item/tool)
 	if(!success_sound)
 		return
 
-	playsound(get_turf(target), success_sound, 75, TRUE, falloff = 12)
+	playsound(get_turf(target), success_sound, 75, TRUE)
 
 /datum/surgery_step/proc/play_failure_sound(mob/user, mob/living/carbon/target, obj/item/organ/target_organ, obj/item/tool)
 	if(!failure_sound)
 		return
 
-	playsound(get_turf(target), failure_sound, 75, TRUE, falloff = 12)
+	playsound(get_turf(target), failure_sound, 75, TRUE)

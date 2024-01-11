@@ -45,22 +45,29 @@ Thus, the two variables affect pump operation are set in New():
 	return ..()
 
 /obj/machinery/atmospherics/binary/pump/AltClick(mob/user)
-	if(user.stat || user.restrained())
+	if(user.is_ic_dead() || user.restrained())
 		return
+
 	if(!Adjacent(user, src) && !issilicon(user))
 		return
+
 	if(!allowed(user))
 		return
+
+	show_splash_text(user, "toggled [use_power ? "off" : "on"]")
 	update_use_power(!use_power)
 	update_icon()
 
 /obj/machinery/atmospherics/binary/pump/AltRightClick(mob/user)
-	if(user.stat || user.restrained())
+	if(user.is_ic_dead() || user.restrained())
 		return
+
 	if(!Adjacent(user, src) && !issilicon(user))
 		return
+
 	if(!allowed(user))
 		return
+
 	target_pressure = max_pressure_setting
 	show_splash_text(user, "target pressure set to [target_pressure] kPa")
 

@@ -6,7 +6,7 @@
 	item_state = "syndie_helm"
 	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 35, bio = 100)
 	siemens_coefficient = 0.3
-	species_restricted = list(SPECIES_HUMAN, SPECIES_IPC)
+	species_restricted = list(SPECIES_HUMAN)
 	camera = /obj/machinery/camera/network/syndicate
 	light_overlay = "helmet_light_green" //todo: species-specific light overlays
 	rad_resist = list(
@@ -27,7 +27,7 @@
 	armor = list(melee = 60, bullet = 50, laser = 50, energy = 15, bomb = 35, bio = 100)
 	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/melee/energy/sword/one_hand,/obj/item/handcuffs)
 	siemens_coefficient = 0.3
-	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_IPC)
+	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL)
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
 		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
