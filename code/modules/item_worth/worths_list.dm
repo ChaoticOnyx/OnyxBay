@@ -167,7 +167,6 @@ var/list/worths = list(
 					/obj/item/smes_coil/super_io = 4500,
 					/obj/item/smes_coil = 2000,
 					/obj/item/tracker_electronics = 150,
-					/obj/item/am_containment = 5000,
 					/obj/item/syringe_cartridge = 20,
 					/obj/item/silencer = 60,
 					/obj/item/fossil = 100,
