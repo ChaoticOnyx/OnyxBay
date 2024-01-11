@@ -69,3 +69,13 @@
 	if(H.nutrition < 50)
 		H.adjustToxLoss(2, 0)
 		return
+
+/datum/species/swine/handle_damage(mob/living/carbon/human/H, damage_flags, obj/used_weapon)
+	if(H.is_ic_dead() || H.full_prosthetic)
+		return
+	var/obj/item/organ/internal/lungs/L = H.internal_organs_by_name[H.species.breathing_organ]
+	if(L.is_broken() || L.breath_fail_ratio > 0.9)
+		return
+
+	if(!damage_flags && used_weapon != "Low Pressure")
+		playsound(H.loc, pick('sound/effects/pig1.ogg','sound/effects/pig2.ogg','sound/effects/pig3.ogg'), 100, 1)
