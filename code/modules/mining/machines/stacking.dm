@@ -45,16 +45,18 @@
 		ui.open()
 
 /obj/machinery/computer/stacking_unit_console/tgui_data(mob/user)
-	var/list/data = list()
+	var/list/data = list(
+		"stacking_amount" = null,
+		"contents" = list()
+		)
 
 	var/obj/machinery/mineral/stacking_machine/stacking_machine = machine_ref.resolve()
 	if(!istype(stacking_machine))
 		return data
 
 	data["machine_state"] = !(stacking_machine.stat & POWEROFF)
-	data["stacking_amount"] = null
-	data["contents"] = list()
 	data["stacking_amount"] = stacking_machine.stack_amt
+
 	for(var/stacktype in subtypesof(/obj/item/stack/material))
 		var/obj/item/stack/S = stacktype
 		if(!stacking_machine.machine_storage[S.type] || stacking_machine.machine_storage[S.type] <= 0)
