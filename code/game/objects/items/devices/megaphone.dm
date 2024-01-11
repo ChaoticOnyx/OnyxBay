@@ -1,59 +1,81 @@
+#define MEGAPHONE_COOLDOWN 2 SECONDS
+
 /obj/item/device/megaphone
 	name = "megaphone"
 	desc = "A device used to project your voice. Loudly."
+
 	icon_state = "megaphone"
 	item_state = "radio"
+
 	w_class = ITEM_SIZE_SMALL
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 
-	var/spamcheck = 0
+	var/active = FALSE
 	var/emagged = FALSE
-	var/insults = 0
-	var/list/insultmsg = list("FUCK EVERYONE!", "I'M A TATER!", "ALL SECURITY TO SHOOT ME ON SIGHT!", "I HAVE A BOMB!", "CAPTAIN IS A COMDOM!", "FOR THE SYNDICATE!")
+
+	/// Last `world.time` device was successfully used.
+	var/last_use = 0
+
+	/// Amount of insults left before megaphone will return to normal.
+	var/insults_left = 0
+	/// List of possible insults.
+	var/static/list/insults = list("FUCK EVERYONE!", "I'M A TATER!", "ALL SECURITY TO SHOOT ME ON SIGHT!", "I HAVE A BOMB!", "CAPTAIN IS A COMDOM!", "FOR THE SYNDICATE!")
+
+
+/obj/item/device/megaphone/on_update_icon()
+	icon_state = "megaphone[active ? "_on" : ""]"
+
+
+/obj/item/device/megaphone/Initialize()
+	GLOB.listening_objects |= src
+	return ..()
+
+
+/obj/item/device/megaphone/Destroy()
+	GLOB.listening_objects -= src
+	return ..()
+
 
 /obj/item/device/megaphone/attack_self(mob/living/user)
-	if (user.client)
-		if(user.client.prefs.muted & MUTE_IC)
-			to_chat(src, SPAN_WARNING("You cannot speak in IC (muted)."))
-			return
-	if(user.silent)
-		return
-	if(spamcheck)
-		to_chat(user, SPAN_WARNING("\The [src] needs to recharge!"))
+	show_splash_text(user, "toggled [active ? "off" : "on"]")
+	active = !active
+	update_icon()
+
+
+/obj/item/device/megaphone/hear_talk(mob/M, text, verb, datum/language/speaking)
+	if(!active)
 		return
 
-	var/message = sanitize(input(user, "Shout a message?", "Megaphone", null)  as text)
-	if(!message)
-		return
-	message = capitalize(message)
-	if ((src.loc == user && user.stat == 0))
-		if(emagged)
-			if(insults)
-				speak(user, message, TRUE)
-				insults--
-			else
-				to_chat(user, SPAN_WARNING("*BZZZZzzzzzt*"))
-		else
-			speak(user, message)
-
-		spamcheck = 1
-		spawn(20)
-			spamcheck = 0
+	if(M != loc)
 		return
 
-/obj/item/device/megaphone/proc/speak(mob/living/user, message, emagged = FALSE)
-	for(var/mob/O in (viewers(user)))
-		O.show_message("<B>[user]</B> broadcasts, [FONT_GIANT("\"[emagged ? pick(insultmsg) : message]\"")]", AUDIBLE_MESSAGE)
-		playsound(src, 'sound/items/megaphone.ogg', 20, 0, 1)
-		if(O.get_preference_value(/datum/client_preference/runechat) == GLOB.PREF_YES && !O.is_deaf())
-			O.create_chat_message(O, message, FALSE, "big")
-	for(var/obj/item/device/radio/intercom/I in view(3, user))
-		if(I.broadcasting)
-			I.talk_into(user, message, verb = "shout")
+	if(world.time <= last_use + MEGAPHONE_COOLDOWN)
+		show_splash_text(loc, "needs to recharge!")
+		return
+
+	_speak(M, capitalize(text), speaking, !!length(insults_left))
+
+
+/obj/item/device/megaphone/proc/_speak(mob/living/talker, message, datum/language/speaking, emagged = FALSE)
+	var/msg = emagged ? pick(insults) : message
+	if(insults_left)
+		insults_left--
+
+	for(var/mob/O in viewers(talker))
+		O.hear_say(FONT_GIANT(msg), "broadcasts", speaking, speaker = talker, speech_sound = 'sound/items/megaphone.ogg', sound_vol = 20)
+
+	for(var/obj/item/device/radio/intercom/I in view(3, talker))
+		I.talk_into(talker, msg, verb = "shout", speaking = speaking)
+
+	last_use = world.time
+
 
 /obj/item/device/megaphone/emag_act(remaining_charges, mob/user)
-	if(!emagged)
-		to_chat(user, SPAN_WARNING("You overload \the [src]'s voice synthesizer."))
-		emagged = TRUE
-		insults = rand(1, 3)//to prevent dickflooding
-		return 1
+	if(emagged)
+		return
+
+	show_splash_text(user, "overload voice synthesizer!")
+	emagged = TRUE
+	insults_left = rand(1, 3)
+
+#undef MEGAPHONE_COOLDOWN
