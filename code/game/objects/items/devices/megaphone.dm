@@ -61,21 +61,26 @@
 	if(insults_left)
 		insults_left--
 
-	for(var/mob/O in viewers(talker))
+	var/list/mob/hearing_mobs = list()
+	var/list/obj/hearing_objs = list()
+	get_mobs_and_objs_in_view_fast(get_turf(talker), world.view, hearing_mobs, hearing_objs)
+
+	for(var/mob/O in hearing_mobs)
 		O.hear_say(FONT_GIANT(SPAN_BOLD(msg)), "broadcasts", speaking, speaker = talker, speech_sound = 'sound/items/megaphone.ogg', sound_vol = 20)
 
-	for(var/obj/item/device/radio/intercom/I in view(3, talker))
-		I.talk_into(talker, msg, verb = "shout", speaking = speaking)
+	for(var/obj/item/device/radio/intercom/I in hearing_objs)
+		I.talk_into(talker, msg, verb = "broadcasts", speaking = speaking)
 
 	last_use = world.time
 
 
 /obj/item/device/megaphone/emag_act(remaining_charges, mob/user)
 	if(emagged)
-		return
+		return 0
 
 	show_splash_text(user, "overload voice synthesizer!")
 	emagged = TRUE
 	insults_left = rand(1, 3)
+	return 1
 
 #undef MEGAPHONE_COOLDOWN
