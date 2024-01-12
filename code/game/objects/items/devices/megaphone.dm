@@ -1,5 +1,7 @@
 #define MEGAPHONE_COOLDOWN 2 SECONDS
 
+GLOBAL_LIST_INIT(megaphone_insults, world.file2list("config/translation/megaphone_insults.txt"))
+
 /obj/item/device/megaphone
 	name = "megaphone"
 	desc = "A device used to project your voice. Loudly."
@@ -15,11 +17,6 @@
 
 	/// Last `world.time` device was successfully used.
 	var/last_use = 0
-
-	/// Amount of insults left before megaphone will return to normal.
-	var/insults_left = 0
-	/// List of possible insults.
-	var/static/list/insults = list("FUCK EVERYONE!", "I'M A TATER!", "ALL SECURITY TO SHOOT ME ON SIGHT!", "I HAVE A BOMB!", "CAPTAIN IS A COMDOM!", "FOR THE SYNDICATE!")
 
 
 /obj/item/device/megaphone/on_update_icon()
@@ -53,13 +50,11 @@
 		show_splash_text(loc, "needs to recharge!")
 		return
 
-	_speak(M, capitalize(text), speaking, !!length(insults_left))
+	_speak(M, capitalize(text), speaking)
 
 
-/obj/item/device/megaphone/proc/_speak(mob/living/talker, message, datum/language/speaking, emagged = FALSE)
-	var/msg = emagged ? pick(insults) : message
-	if(insults_left)
-		insults_left--
+/obj/item/device/megaphone/proc/_speak(mob/living/talker, message, datum/language/speaking)
+	var/msg = emagged && prob(50) ? pick(GLOB.megaphone_insults) : message
 
 	var/list/mob/hearing_mobs = list()
 	var/list/obj/hearing_objs = list()
@@ -76,11 +71,10 @@
 
 /obj/item/device/megaphone/emag_act(remaining_charges, mob/user)
 	if(emagged)
-		return 0
+		return FALSE
 
 	show_splash_text(user, "overload voice synthesizer!")
 	emagged = TRUE
-	insults_left = rand(1, 3)
-	return 1
+	return TRUE
 
 #undef MEGAPHONE_COOLDOWN
