@@ -166,6 +166,7 @@
 	heals_external_bleeding = TRUE
 	heal_bones = TRUE
 	amt_organ = 20
+	removes_shrapnel = TRUE
 
 #undef VALUE_REDUCTION
 #undef HEALING_THRESHOLD_MINOR
