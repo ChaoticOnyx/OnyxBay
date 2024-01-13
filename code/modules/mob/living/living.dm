@@ -130,6 +130,7 @@
 				now_pushing = 0
 				return
 			tmob.LAssailant = weakref(src)
+		// TODO: add a cool flag
 		if(isobj(AM) && !AM.anchored)
 			var/obj/I = AM
 			if(!can_pull_size || can_pull_size < I.w_class)
@@ -141,7 +142,7 @@
 		spawn(0)
 			..()
 			var/saved_dir = AM.dir
-			if (!istype(AM, /atom/movable) || AM.anchored)
+			if (!istype(AM, /atom/movable) || AM.anchored || AM.atom_flags & ATOM_FLAG_UNPUSHABLE)
 				if(confused && prob(50) && m_intent == M_RUN && !lying)
 					var/obj/machinery/disposal/D = AM
 					if(istype(D) && !(D.stat & BROKEN))

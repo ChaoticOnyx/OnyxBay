@@ -199,7 +199,7 @@
 			if(prob(50))
 				qdel(src)
 			else
-				take_damage(null, FLOORLIGHT_DAMAGE_THRESHOLD)
+				take_damage(null, FLOORLIGHT_DAMAGE_THRESHOLD * 0.7)
 		if(EXPLODE_LIGHT)
 			if(prob(5))
 				qdel(src)
