@@ -50,7 +50,7 @@
 			to_chat(user, SPAN_NOTICE("You take \the [I] out of \the [src]."))
 			user.swap_hand()
 		else
-			I.dropInto(loc)
+			remove_from_storage(I, get_turf(user.loc))
 			to_chat(user, SPAN_WARNING("You fumble around with \the [src] and drop \the [I] on the floor."))
 	else
 		to_chat(user, SPAN_WARNING("\The [src] is empty."))
