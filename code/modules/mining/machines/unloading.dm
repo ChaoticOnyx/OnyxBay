@@ -37,7 +37,7 @@
 		return
 
 	toggle()
-	to_chat(user, SPAN_NOTICE("You toggle \the [src] [stat & POWEROFF ? "on" : "off"]."))
+	show_splash_text(user, "You toggle \the [src] [stat & POWEROFF ? "on" : "off"].")
 
 /obj/machinery/mineral/unloading_machine/attackby(obj/item/W, mob/user)
 	..()
