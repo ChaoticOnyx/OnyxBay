@@ -284,7 +284,7 @@
 	name = "ore stacker console"
 	id = "ore stacker console"
 	req_tech = list(TECH_ENGINEERING = 1)
-	build_path = /obj/item/circuitboard/processing_unit_console
+	build_path = /obj/machinery/computer/stacking_unit_console
 	sort_string = "KCAAF"
 
 /datum/design/circuit/minting_machine
