@@ -93,13 +93,13 @@
 		if("claim")
 			var/mob/living/user = usr
 			if(points < 0)
-				show_splash_text(user, "transaction incomplete until the debt is cleared!")
+				show_splash_text(user, "clear the debt first!")
 				return TRUE
 			var/obj/item/card/id/card = user.get_id_card()
 			if(istype(card))
 				card.mining_points += points
 				points = 0
-				show_splash_text(user, "transaction complete, your current balance is: [card.mining_points]")
+				show_splash_text(user, "transaction complete.")
 			else
 				show_splash_text(user, "no valid ID detected!")
 			return TRUE
