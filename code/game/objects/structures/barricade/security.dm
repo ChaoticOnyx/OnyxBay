@@ -2,7 +2,7 @@
 	name = "deployable barrier"
 	desc = "A deployable steel barrier with toggleable bolts. Frequently used by security stuff for crowd control and riot supression."
 
-	icon = 'icons/obj/objects.dmi'
+	icon = 'icons/obj/structures.dmi'
 	icon_state = "barrier0"
 
 	obj_flags = OBJ_FLAG_ANCHORABLE
@@ -22,6 +22,9 @@
 
 /obj/structure/barricade/security/on_update_icon()
 	icon_state = "barrier[locked]"
+
+	if(locked)
+		AddOverlays(emissive_appearance(icon, "barrier-ea"))
 
 
 /obj/structure/barricade/security/Initialize()
