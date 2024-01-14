@@ -608,7 +608,7 @@ var/list/worths = list(
 					/obj/structure/holostool = 0,
 					/obj/structure/holohoop = 0,
 					/obj/structure/bookcase = 50,
-					/obj/structure/barricade = -1,
+					/obj/structure/barricade/material = -1,
 					/obj/structure = 30,
 //BOTS,
 					/mob/living/bot/remotebot = 250,
