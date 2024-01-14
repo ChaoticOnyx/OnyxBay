@@ -36,7 +36,7 @@
 		return
 
 	var/response = tgui_alert(user, "No connected ore processing units found. Do you wish to rescan?", "Error!", list("Yes", "No"))
-	if(response  == "Yes")
+	if(response  == "Yes" && Adjacent(user))
 		var/obj/machinery/mineral/processing_unit/p_unit = locate_unit(/obj/machinery/mineral/processing_unit)
 		if(!p_unit)
 			show_splash_text(user, "no ore processing unit found!")

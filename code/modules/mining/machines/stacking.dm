@@ -29,7 +29,7 @@
 		return
 
 	var/response = tgui_alert(user, "No connected ore stacking unit found. Do you wish to rescan?", "Error!", list("Yes", "No"))
-	if(response  == "Yes")
+	if(response  == "Yes" && Adjacent(user))
 		var/obj/machinery/mineral/stacking_machine/s_machine = locate_unit(/obj/machinery/mineral/stacking_machine)
 		if(!s_machine)
 			show_splash_text(user, "no ore stacking units found!")
