@@ -1024,6 +1024,7 @@
 	oink(user, "squeezes")
 
 /obj/item/toy/pig/attack_hand(mob/user)
+	..()
 	oink(user, pick("presses", "squeezes", "squashes", "champs", "pinches"))
 
 /obj/item/toy/pig/MouseDrop(mob/user)
