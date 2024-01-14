@@ -55,14 +55,14 @@
 
 	return ..()
 
-// TODO: show splash text over a turf 'cause obj is qdeled.
+
 /obj/structure/barricade/material/proc/_deconstruct(mob/user)
 	show_splash_text(user, "starting deconstruction.")
 	if(do_after(user, 20, src))
-		_dismantle()
-
 		show_splash_text(user, "barricade deconstucted.")
-		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
+		playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
+
+		_dismantle()
 		return
 
 	show_splash_text(user, "action interrupted!")
