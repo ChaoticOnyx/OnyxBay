@@ -7,6 +7,6 @@
 			continue
 
 		var/message_to_send = stars(message, 85)
-		gg.audible_message(SPAN_DEADSAY("<B>[gg]</B>: [message_to_send]"))
+		gg.audible_message(SPAN_DEADSAY(message_to_send))
 
 	sanitize_and_communicate(/decl/communication_channel/dsay, client, message)
