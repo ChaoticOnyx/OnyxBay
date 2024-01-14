@@ -1,3 +1,15 @@
+GLOBAL_LIST_EMPTY(alloy_data)
+
+/hook/startup/proc/initialize_alloy_data()
+	ensure_alloy_data_initialised()
+
+/proc/ensure_alloy_data_initialised()
+	if(GLOB.alloy_data.len)
+		return
+
+	for(var/alloytype in subtypesof(/datum/alloy))
+		GLOB.alloy_data += new alloytype()
+
 //Alloys that contain subsets of each other's ingredients must be ordered in the desired sequence
 //eg. steel comes after plasteel because plasteel's ingredients contain the ingredients for steel and
 //it would be impossible to produce.

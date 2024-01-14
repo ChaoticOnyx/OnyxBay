@@ -94,7 +94,7 @@
 
 /obj/item/organ/internal/cell/replaced()
 	..()
-	// This is very ghetto way of rebooting an IPC. TODO better way.
+	// This is very ghetto way of rebooting an FBP. TODO better way.
 	// It's time to do it. This code doesn't allow to resurrect a organic human this way.
 	if(owner && owner.is_ic_dead() && BP_IS_ROBOTIC(owner.organs_by_name[parent_organ]))
 		owner.set_stat(CONSCIOUS)
