@@ -258,3 +258,45 @@
 	req_tech = list(TECH_ENGINEERING = 4, TECH_POWER = 3, TECH_BLUESPACE = 3)
 	build_path = /obj/item/circuitboard/industrial_gibber
 	sort_string = "WAAAU"
+
+/datum/design/circuit/processing_unit_console
+	name = "ore processor console"
+	id = "ore processor console"
+	req_tech = list(TECH_ENGINEERING = 1)
+	build_path = /obj/item/circuitboard/processing_unit_console
+	sort_string = "KCAAC"
+
+/datum/design/circuit/processing_unit
+	name = "ore processor"
+	id = "ore processor"
+	req_tech = list(TECH_MAGNET = 1, TECH_ENGINEERING = 1)
+	build_path = /obj/item/circuitboard/processing_unit
+	sort_string = "KCAAD"
+
+/datum/design/circuit/stacking_unit
+	name = "ore stacker"
+	id = "ore stacker"
+	req_tech = list(TECH_MAGNET = 1, TECH_ENGINEERING = 1)
+	build_path = /obj/item/circuitboard/stacking_machine
+	sort_string = "KCAAE"
+
+/datum/design/circuit/stacking_unit_console
+	name = "ore stacker console"
+	id = "ore stacker console"
+	req_tech = list(TECH_ENGINEERING = 1)
+	build_path = /obj/machinery/computer/stacking_unit_console
+	sort_string = "KCAAF"
+
+/datum/design/circuit/minting_machine
+	name = "coin press"
+	id = "coin press"
+	req_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 2)
+	build_path = /obj/item/circuitboard/minting_machine
+	sort_string = "KCAAG"
+
+/datum/design/circuit/unloading_machine
+	name = "unloading_machine"
+	id = "unloading_machine"
+	req_tech = list(TECH_ENGINEERING = 1)
+	build_path = /obj/item/circuitboard/unloading_machine
+	sort_string = "KCAAH"
