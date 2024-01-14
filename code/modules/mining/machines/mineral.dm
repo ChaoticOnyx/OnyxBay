@@ -27,6 +27,7 @@
 	update_icon()
 	verbs += /obj/machinery/mineral/proc/toggle_holo
 	register_input_turf()
+	register_signal(src, SIGNAL_MOVED, nameof(.proc/on_moved))
 
 /obj/machinery/mineral/attackby(obj/item/W, mob/user)
 	if(!(stat & POWEROFF))
@@ -50,8 +51,7 @@
 		register_input_turf()
 
 /// Just in case the machine was moved - we re-register the input turf
-/obj/machinery/mineral/Move()
-	. = ..()
+/obj/machinery/mineral/proc/on_moved()
 	unregister_input_turf()
 	register_input_turf()
 
@@ -114,7 +114,7 @@
 	if(. && (stat & (NOPOWER|POWEROFF)))
 		toggle(FALSE)
 
-/// Generic proc to toggle mining machinery on/off. Can be used also as enable/disable() procs - just set the override_value to true/false
+/// Generic proc to toggle mining machinery on/off. Can be used also as enable/disable() procs - just call it with the override_value true/false
 /obj/machinery/mineral/proc/toggle(override_value = null)
 	if(override_value == TRUE)
 		stat |= POWEROFF
@@ -138,7 +138,7 @@
 	icon_state = "[gameicon][(stat & (NOPOWER|POWEROFF)) ? "-off" : ""]"
 
 	var/should_glow = update_glow()
-	if(should_glow )
+	if(should_glow)
 		AddOverlays(emissive_appearance(icon, "[gameicon]_ea"))
 
 /obj/machinery/mineral/proc/update_glow()
@@ -149,7 +149,7 @@
 	set_light(1, 0, 3, 3.5, ea_color)
 	return TRUE
 
-
 /obj/machinery/mineral/Destroy()
 	unregister_input_turf()
+	unregister_signal(src, SIGNAL_MOVED)
 	return ..()
