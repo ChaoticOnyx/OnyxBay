@@ -59,7 +59,6 @@
 				gameicon = "unloader-corner"
 				corner_turn_dir = -90
 				holodir_helper_path = /obj/effect/holodir_helper/corner_mirrored
-		show_splash_text(user, "you tweak \the [src]!")
 		update_icon()
 
 /obj/machinery/mineral/unloading_machine/register_input_turf()
