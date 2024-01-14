@@ -67,7 +67,7 @@
 	locked = !locked
 
 	update_icon()
-	show_splash_text(user, "bolts [locked ? "dropped" : "lifted"]")
+	show_splash_text(user, "bolts [locked ? "dropped" : "lifted"].")
 
 
 /obj/structure/barricade/security/proc/_repair_damage(mob/user, obj/item/weldingtool/WT)
@@ -118,7 +118,7 @@
 	s.start()
 
 	playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
-	show_splash_text(user, "authentication lock broken!")
+	show_splash_text(user, "bolt locks broken!")
 
 	return TRUE
 
