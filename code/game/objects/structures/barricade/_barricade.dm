@@ -10,18 +10,20 @@
 	/// Maximum amount of object's damage points till it breaks apart.
 	var/maxdamage = 100
 
-// TODO: add click cooldown.
+
 /obj/structure/barricade/attack_hand(mob/user)
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.species.can_shred(H))
 			attack_generic(H, rand(7.5, 12.5), "shreds")
+			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 
 			attack_animation(user)
 			playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
 			return
 
 		attack_generic(H, rand(7.5, 12.5), "smashes")
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 
 		attack_animation(user)
 		playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
@@ -33,7 +35,9 @@
 /obj/structure/barricade/attackby(obj/item/W, mob/user)
 	if(W.force && user.a_intent == I_HURT)
 		attack_generic(user, W.force, "")
+		user.setClickCooldown(W.update_attack_cooldown())
 
+		attack_animation(user)
 		obj_attack_sound(W)
 		return
 
