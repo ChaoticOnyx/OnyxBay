@@ -25,6 +25,9 @@
 			for(var/obj/implanted_object in E.implants)
 				implanted_object.dropInto(get_turf(loc))
 				E.implants -= implanted_object
+				if(istype(implanted_object, /obj/item/implant))
+					var/obj/item/implant/removed_implant = implanted_object
+					removed_implant.removed()
 				for(var/datum/wound/wound in E.wounds)
 					if(implanted_object in wound.embedded_objects)
 						wound.embedded_objects -= implanted_object
