@@ -105,7 +105,7 @@
 	if(istype(hhelper))
 		qdel(hhelper)
 
-	show_splash_text(user, "holo-projector enabled.")
+	show_splash_text(usr, "holo-projector enabled.")
 	holohelper = weakref(new holodir_helper_path(loc, src))
 
 /obj/machinery/mineral/power_change()
