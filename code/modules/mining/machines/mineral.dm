@@ -31,7 +31,7 @@
 
 /obj/machinery/mineral/attackby(obj/item/W, mob/user)
 	if(!(stat & POWEROFF))
-		to_chat(user, SPAN_WARNING("Turn off the machine first!"))
+		show_splash_text(user, "turn off first!")
 		return
 
 	if(default_deconstruction_screwdriver(user, W))
@@ -46,7 +46,6 @@
 	else if(isWrench(W) && panel_open)
 		playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
 		set_dir(turn(dir, 90))
-		show_splash_text(user, "you rotate \the [src]!")
 		unregister_input_turf()
 		register_input_turf()
 
