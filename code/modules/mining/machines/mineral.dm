@@ -24,10 +24,10 @@
 
 /obj/machinery/mineral/LateInitialize()
 	..()
-	update_icon()
 	verbs += /obj/machinery/mineral/proc/toggle_holo
-	register_input_turf()
 	register_signal(src, SIGNAL_MOVED, nameof(.proc/on_moved))
+	update_icon()
+	register_input_turf()
 
 /obj/machinery/mineral/attackby(obj/item/W, mob/user)
 	if(!(stat & POWEROFF))
@@ -105,7 +105,7 @@
 	if(istype(hhelper))
 		qdel(hhelper)
 
-	to_chat(SPAN_NOTICE("[usr] toggles holo-projector on"))
+	show_splash_text(user, "holo-projector enabled.")
 	holohelper = weakref(new holodir_helper_path(loc, src))
 
 /obj/machinery/mineral/power_change()
