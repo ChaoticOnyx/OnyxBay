@@ -110,7 +110,7 @@
 "cj" = (/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
 "ck" = (/obj/structure/sign/directions/bridge,/obj/structure/sign/directions/engineering{pixel_y = 10; pixel_z = -4},/obj/structure/sign/directions/supply{pixel_y = -6},/turf/simulated/wall,/area/polarplanet/tcommsat/computer)
 "cl" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/effect/floor_decal/rust,/obj/machinery/camera/network/telecom{c_tag = "Tram Hub - Escape Shuttle"; dir = 8},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
-"cm" = (/obj/machinery/door/airlock/external/bolted,/obj/structure/barricade{layer = 6},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
+"cm" = (/obj/machinery/door/airlock/external/bolted,/obj/structure/barricade/material{layer = 6},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
 "cn" = (/obj/structure/disposalpipe/segment,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled,/area/polarplanet/tcommsat/computer)
 "co" = (/obj/effect/floor_decal/industrial/warning/red{dir = 1},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/dark,/area/polarplanet/tcommsat/computer)
 "cp" = (/obj/effect/floor_decal/industrial/warning{dir = 1},/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/dirty,/area/polarplanet/tcommsat/computer)

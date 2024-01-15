@@ -1,6 +1,6 @@
 "a" = (/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
 "b" = (/turf/simulated/floor/plating,/area/template_noop)
-"c" = (/obj/structure/barricade,/turf/simulated/floor/plating,/area/template_noop)
+"c" = (/obj/structure/barricade/material,/turf/simulated/floor/plating,/area/template_noop)
 "e" = (/turf/simulated/floor{icon_state = "plating_dmg3"},/area/template_noop)
 "n" = (/obj/item/foldchair,/turf/simulated/floor/plating,/area/template_noop)
 "q" = (/obj/structure/girder,/turf/simulated/floor/plating,/area/template_noop)
