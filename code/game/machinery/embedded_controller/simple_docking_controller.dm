@@ -92,7 +92,7 @@
 
 
 /datum/computer/file/embedded_program/docking/simple/proc/signal_door(command)
-	var/datum/signal/signal = new
+	var/datum/signal/signal = new()
 	signal.data["tag"] = tag_door
 	signal.data["command"] = command
 	post_signal(signal)
@@ -145,7 +145,7 @@
 /obj/machinery/embedded_controller/radio/simple_docking_controller/verb/spoof_signal(command as text, sender as text)
 	set category = "Debug"
 	set src in view(1)
-	var/datum/signal/signal = new
+	var/datum/signal/signal = new()
 	signal.data["tag"] = sender
 	signal.data["command"] = command
 	signal.data["recipient"] = id_tag

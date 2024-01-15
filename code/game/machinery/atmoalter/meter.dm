@@ -90,7 +90,7 @@
 				if(!radio_connection)
 					return
 
-				var/datum/signal/signal = new
+				var/datum/signal/signal = new()
 				signal.source = src
 				signal.data = list(
 					"tag" = id,
