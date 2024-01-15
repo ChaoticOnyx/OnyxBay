@@ -17,7 +17,7 @@
 
 	if(integrity>=50)
 		recipes += new /datum/stack_recipe("[display_name] door", /obj/machinery/door/unpowered/simple, 10, time = 50, one_per_turf = 1, on_floor = 1, supplied_material = "[name]")
-		recipes += new /datum/stack_recipe("[display_name] barricade", /obj/structure/barricade, 5, time = 50, one_per_turf = 1, on_floor = 1, supplied_material = "[name]")
+		recipes += new /datum/stack_recipe("[display_name] barricade", /obj/structure/barricade/material, 5, time = 50, one_per_turf = 1, on_floor = 1, supplied_material = "[name]")
 		recipes += new /datum/stack_recipe("[display_name] stool", /obj/item/stool, 2, one_per_turf = 1, on_floor = 1, supplied_material = "[name]")
 		recipes += new /datum/stack_recipe("[display_name] bar stool", /obj/item/stool/bar, 2, time = 20, one_per_turf = 1, on_floor = 1, supplied_material = "[name]")
 		recipes += new /datum/stack_recipe("[display_name] bed", /obj/structure/bed, 3, time = 40, one_per_turf = 1, on_floor = 1, supplied_material = "[name]")

@@ -567,7 +567,7 @@
 	spawn_nothing_percentage = 25
 
 /obj/random/obstruction/spawn_choices()
-	return list(/obj/structure/barricade,
+	return list(/obj/structure/barricade/material,
 				/obj/structure/girder,
 				/obj/structure/window_frame/grille,
 				/obj/structure/window_frame/broken,

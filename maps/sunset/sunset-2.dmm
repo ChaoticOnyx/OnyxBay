@@ -174,7 +174,7 @@
 "dr" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/disposalpipe/segment,/turf/simulated/floor/plating,/area/maintenance/dormitory)
 "ds" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/tiled/dark/rough,/area/bridge)
 "dt" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/bridge)
-"du" = (/obj/effect/floor_decal/industrial/outline/grey,/obj/machinery/deployable/barrier,/turf/simulated/floor/tiled/dark/rough,/area/security/warden)
+"du" = (/obj/effect/floor_decal/industrial/outline/grey,/obj/structure/barricade/security,/turf/simulated/floor/tiled/dark/rough,/area/security/warden)
 "dv" = (/obj/machinery/door/blast/regular{id = "Armoury"; name = "Emergency Access"},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/tiled/dark/rough,/area/security/warden)
 "dw" = (/obj/machinery/door/blast/regular{id = "Armoury"; name = "Emergency Access"},/turf/simulated/floor/tiled/dark/rough,/area/security/warden)
 "dx" = (/obj/structure/ladder/up,/turf/simulated/floor/tiled/dark/rough,/area/engineering/atmos)
