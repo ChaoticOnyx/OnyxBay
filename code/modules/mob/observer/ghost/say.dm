@@ -20,6 +20,6 @@
 			var/mob/M = m
 			M.show_message(SPAN_DEADSAY("<B>[gg]</B>: [message_to_send]"), AUDIBLE_MESSAGE)
 			if(M.get_preference_value("CHAT_RUNECHAT") == GLOB.PREF_YES)
-				M.create_chat_message(src, message_to_send)
+				M.create_chat_message(gg, message_to_send)
 
 	sanitize_and_communicate(/decl/communication_channel/dsay, client, message)

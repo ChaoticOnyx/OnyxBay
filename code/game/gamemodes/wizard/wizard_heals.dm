@@ -21,7 +21,7 @@
 			E.mend_fracture()
 			E.stage = 0
 
-		if(heal.removes_shrapnel)
+		if(heal.removes_embeded)
 			for(var/obj/implanted_object in E.implants)
 				implanted_object.dropInto(get_turf(loc))
 				E.implants -= implanted_object
