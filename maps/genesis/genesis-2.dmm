@@ -943,7 +943,7 @@
 "asl" = (/obj/structure/cable/yellow{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating/airless,/area/solar/auxstarboard)
 "asm" = (/obj/machinery/power/solar{id = "auxsolareast"; name = "Port Auxiliary Solar Array"},/obj/structure/cable/yellow{d2 = 2; icon_state = "0-2"},/turf/simulated/floor/plating/airless,/area/solar/auxport)
 "asn" = (/obj/structure/cable/yellow,/turf/simulated/floor/plating/airless,/area/solar/auxport)
-"aso" = (/obj/structure/barricade,/turf/simulated/floor/plating,/area/maintenance/security_port)
+"aso" = (/obj/structure/barricade/material,/turf/simulated/floor/plating,/area/maintenance/security_port)
 "asp" = (/obj/structure/grille,/obj/structure/window/reinforced{dir = 1; health = null},/obj/structure/window/reinforced{dir = 8},/turf/simulated/floor/plating,/area/maintenance/security_port)
 "asq" = (/obj/structure/table/steel,/obj/item/stack/cable_coil/random,/turf/simulated/floor/plating,/area/maintenance/security_port)
 "asr" = (/obj/machinery/light/small{dir = 8},/turf/simulated/floor/plating,/area/maintenance/security_port)
