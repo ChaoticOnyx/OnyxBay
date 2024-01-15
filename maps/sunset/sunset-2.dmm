@@ -257,7 +257,7 @@
 "eY" = (/obj/effect/floor_decal/corner/red/full,/turf/simulated/floor/tiled/rough,/area/security/brig)
 "eZ" = (/obj/effect/floor_decal/corner/red/full,/obj/structure/stairs/east,/turf/simulated/floor/tiled/rough,/area/security/brig)
 "fa" = (/obj/effect/floor_decal/corner/brown{dir = 5},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/effect/landmark/start/crew/cargotech,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/rough,/area/quartermaster/storage)
-"fb" = (/obj/machinery/mineral/equipment_vendor,/turf/simulated/floor/tiled/dark/rough,/area/quartermaster/storage)
+"fb" = (/obj/machinery/equipment_vendor,/turf/simulated/floor/tiled/dark/rough,/area/quartermaster/storage)
 "fc" = (/obj/effect/floor_decal/corner/brown{dir = 5},/obj/effect/landmark/start/crew/cargotech,/turf/simulated/floor/tiled/rough,/area/quartermaster/storage)
 "fd" = (/turf/simulated/open,/area/maintenance/dormitory)
 "fe" = (/turf/simulated/wall,/area/medical/psych)

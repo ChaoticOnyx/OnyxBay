@@ -1929,7 +1929,7 @@
 "Rf" = (/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/cable/green{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/tiled/rough,/area/crew_quarters/sleep)
 "Rg" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers,/obj/machinery/atmospherics/pipe/manifold/hidden/supply{dir = 1},/turf/simulated/floor/tiled/dark/rough,/area/turret_protected/ai)
 "Rh" = (/obj/machinery/light/he{dir = 8},/turf/simulated/floor/tiled/dark/rough,/area/turret_protected/ai_upload_foyer)
-"Rk" = (/obj/machinery/mineral/equipment_vendor,/obj/effect/floor_decal/trimline/yellow/filled/corner{dir = 8},/obj/effect/floor_decal/trimline/yellow/end,/turf/simulated/floor/tiled/rough,/area/quartermaster/storage)
+"Rk" = (/obj/machinery/equipment_vendor,/obj/effect/floor_decal/trimline/yellow/filled/corner{dir = 8},/obj/effect/floor_decal/trimline/yellow/end,/turf/simulated/floor/tiled/rough,/area/quartermaster/storage)
 "Rl" = (/turf/simulated/floor/tiled/rough,/area/engineering/atmos)
 "Rm" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/white/rough{dir = 4},/area/rnd/research_under/breakroom)
 "Ro" = (/obj/machinery/door/firedoor,/turf/simulated/floor/tiled/rough,/area/crew_quarters/sleep)

@@ -5875,7 +5875,7 @@
 "cjl" = (/obj/structure/window/reinforced,/obj/item/target,/turf/simulated/floor/tiled/airless,/area/rnd/test_area)
 "cjm" = (/obj/structure/shuttle/engine/heater{dir = 8},/obj/structure/window/reinforced,/obj/structure/window/reinforced{dir = 4},/turf/simulated/floor/plating/rough/airless,/area/shuttle/research/station)
 "cjn" = (/obj/structure/disposalpipe/sortjunction{dir = 8; name = "QM Office"; sortType = "QM Office"},/obj/machinery/atmospherics/pipe/simple/hidden{dir = 4},/turf/simulated/floor/tiled/rough,/area/quartermaster/miningdock)
-"cjo" = (/obj/machinery/status_display{pixel_x = -32},/obj/effect/floor_decal/corner/brown/three_quarters,/obj/machinery/mineral/equipment_vendor,/turf/simulated/floor/tiled/rough,/area/quartermaster/miningdock)
+"cjo" = (/obj/machinery/status_display{pixel_x = -32},/obj/effect/floor_decal/corner/brown/three_quarters,/obj/machinery/equipment_vendor,/turf/simulated/floor/tiled/rough,/area/quartermaster/miningdock)
 "cjp" = (/obj/machinery/atmospherics/pipe/manifold/hidden{dir = 8},/obj/machinery/light/small{dir = 8},/obj/random/trash,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/maintenance/cargo)
 "cjq" = (/obj/machinery/atmospherics/pipe/manifold/hidden{dir = 1},/turf/simulated/floor/plating,/area/maintenance/cargo)
 "cjr" = (/obj/machinery/atmospherics/pipe/simple/hidden{dir = 4},/turf/simulated/floor/plating,/area/maintenance/cargo)

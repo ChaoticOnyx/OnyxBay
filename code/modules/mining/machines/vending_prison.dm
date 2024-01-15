@@ -50,15 +50,15 @@ GLOBAL_LIST_INIT(minevendor_prison_list, list(
 	new /datum/data/mining_equipment("Diamond Pickaxe",              /obj/item/pickaxe/diamond,                                        10,  1500)
 ))
 
-/obj/machinery/mineral/equipment_vendor/prison
+/obj/machinery/equipment_vendor/prison
 	name = "mining prison equipment vendor"
 	desc = "An equipment vendor for prisoner, points collected at an ore redemption machine can be spent here."
 	icon_state = "mining-prison"
 
-/obj/machinery/mineral/equipment_vendor/prison/Initialize()
+/obj/machinery/equipment_vendor/prison/Initialize()
 	. = ..()
 	equipment_list = GLOB.minevendor_prison_list
 
 /obj/item/circuitboard/machine/mining_equipment_vendor/prison
 	name = "circuit board (Mining Prison Equipment Vendor)"
-	build_path = /obj/machinery/mineral/equipment_vendor/prison
+	build_path = /obj/machinery/equipment_vendor/prison

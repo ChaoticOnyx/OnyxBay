@@ -524,7 +524,7 @@
 "kg" = (/obj/machinery/computer/stacking_unit_console,/obj/structure/railing{dir = 1},/obj/effect/floor_decal/industrial/warning/dust{dir = 1},/obj/effect/floor_decal/oldflood,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/techfloor,/area/polarplanet/voron/refinery_line)
 "kh" = (/obj/machinery/floodlight,/turf/simulated/floor/natural/frozenground/cave,/area/polarplanet/mine/explored)
 "ki" = (/obj/effect/floor_decal/industrial/warning/dust,/obj/effect/floor_decal/oldflood,/obj/machinery/light{dir = 1},/obj/random/trash,/turf/simulated/floor/tiled/techfloor/maint,/area/polarplanet/voron/mech_bay)
-"kk" = (/obj/machinery/mineral/equipment_vendor,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/techfloor,/area/polarplanet/voron/mining_warehouse)
+"kk" = (/obj/machinery/equipment_vendor,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/techfloor,/area/polarplanet/voron/mining_warehouse)
 "kl" = (/obj/machinery/light,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/rough,/area/polarplanet/outpost/research/anomaly_storage)
 "km" = (/obj/structure/snow,/turf/unsimulated/floor/frozenground,/area/polarplanet/mine/unexplored)
 "kn" = (/obj/effect/floor_decal/rust,/obj/machinery/door/airlock/highsecurity/bolted,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/rough,/area/polarplanet/mine/explored)

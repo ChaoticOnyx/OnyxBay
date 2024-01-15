@@ -20,7 +20,7 @@
 "av" = (/obj/machinery/computer/stacking_unit_console,/turf/simulated/wall/r_wall,/area/quartermaster/miningdock)
 "aw" = (/obj/structure/table/standard,/obj/item/storage/box/donkpockets,/turf/simulated/floor/tiled/dark/rough,/area/quartermaster/miningdock)
 "ax" = (/obj/machinery/conveyor{id = "mining_internal"},/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor,/area/quartermaster/miningdock)
-"ay" = (/obj/machinery/mineral/equipment_vendor,/turf/simulated/floor/tiled/dark/rough,/area/quartermaster/miningdock)
+"ay" = (/obj/machinery/equipment_vendor,/turf/simulated/floor/tiled/dark/rough,/area/quartermaster/miningdock)
 "az" = (/obj/machinery/conveyor_switch/oneway{id = "mining_internal"; name = "mining conveyor"},/turf/simulated/floor/tiled/rough,/area/quartermaster/miningdock)
 "aA" = (/obj/machinery/atmospherics/unary/vent_pump/on,/turf/simulated/floor/tiled/rough,/area/quartermaster/miningdock)
 "aB" = (/obj/structure/closet/crate,/obj/effect/floor_decal/industrial/hatch/yellow,/turf/simulated/floor/tiled/rough,/area/quartermaster/miningdock)
