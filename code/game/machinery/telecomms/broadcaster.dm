@@ -146,9 +146,9 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 
 		/* ###### Broadcast a message using signal.data ###### */
 
-		var/datum/radio_frequency/connection = signal.data["connection"]
+		var/datum/frequency/connection = signal.data["connection"]
 
-		if(connection.frequency in ANTAG_FREQS) // if antag broadcast, just
+		if(connection.frequency in GLOB.ANTAG_FREQS) // if antag broadcast, just
 			Broadcast_Message(signal.data["connection"], signal.data["mob"],
 							  signal.data["vmask"], signal.data["vmessage"],
 							  signal.data["radio"], signal.data["message"],
@@ -225,7 +225,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 
 **/
 
-/proc/Broadcast_Message(datum/radio_frequency/connection, mob/M,
+/proc/Broadcast_Message(datum/frequency/connection, mob/M,
 						vmask, vmessage, obj/item/device/radio/radio,
 						message, name, job, realname, vname,
 						data, compression, list/level, freq, verbage = "says", datum/language/speaking = null, loud = FALSE)
@@ -241,7 +241,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 
 	if(data == 1)
 
-		for (var/obj/item/device/radio/intercom/R in connection.devices["[RADIO_CHAT]"])
+		for (var/obj/item/device/radio/intercom/R in connection.filters["[RADIO_CHAT]"])
 			if(R.receive_range(display_freq, level) > -1)
 				radios += R
 				R.receive()
@@ -250,7 +250,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 
 	else if(data == 2)
 
-		for (var/obj/item/device/radio/R in connection.devices["[RADIO_CHAT]"])
+		for (var/obj/item/device/radio/R in connection.filters["[RADIO_CHAT]"])
 
 			if(istype(R, /obj/item/device/radio/headset))
 				continue
@@ -262,9 +262,9 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	// --- Broadcast to antag radios! ---
 
 	else if(data == 3)
-		for(var/antag_freq in ANTAG_FREQS)
-			var/datum/radio_frequency/antag_connection = radio_controller.return_frequency(antag_freq)
-			for (var/obj/item/device/radio/R in antag_connection.devices["[RADIO_CHAT]"])
+		for(var/antag_freq in GLOB.ANTAG_FREQS)
+			var/datum/frequency/antag_connection = SSradio.return_frequency(antag_freq)
+			for (var/obj/item/device/radio/R in antag_connection.filters["[RADIO_CHAT]"])
 				if(R.intercept && R.receive_range(antag_freq, level) > -1)
 					radios += R
 					R.receive()
@@ -273,7 +273,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 
 	else
 
-		for (var/obj/item/device/radio/R in connection.devices["[RADIO_CHAT]"])
+		for (var/obj/item/device/radio/R in connection.filters["[RADIO_CHAT]"])
 			if(R.receive_range(display_freq, level) > -1)
 				radios += R
 				R.receive()
@@ -366,30 +366,28 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 		//BR.messages_admin += blackbox_admin_msg
 		if(istype(blackbox))
 			switch(display_freq)
-				if(PUB_FREQ)
+				if(GLOB.PUB_FREQ)
 					blackbox.msg_common += blackbox_msg
-				if(SCI_FREQ)
+				if(GLOB.SCI_FREQ)
 					blackbox.msg_science += blackbox_msg
-				if(COMM_FREQ)
+				if(GLOB.COMM_FREQ)
 					blackbox.msg_command += blackbox_msg
-				if(MED_FREQ)
+				if(GLOB.MED_FREQ)
 					blackbox.msg_medical += blackbox_msg
-				if(ENG_FREQ)
+				if(GLOB.ENG_FREQ)
 					blackbox.msg_engineering += blackbox_msg
-				if(SEC_FREQ)
+				if(GLOB.SEC_FREQ)
 					blackbox.msg_security += blackbox_msg
-				if(DTH_FREQ)
+				if(GLOB.DTH_FREQ)
 					blackbox.msg_deathsquad += blackbox_msg
-				if(SYND_FREQ)
+				if(GLOB.SYND_FREQ)
 					blackbox.msg_syndicate += blackbox_msg
-				if(RAID_FREQ)
+				if(GLOB.RAID_FREQ)
 					blackbox.msg_raider += blackbox_msg
-				if(SUP_FREQ)
+				if(GLOB.SUP_FREQ)
 					blackbox.msg_cargo += blackbox_msg
-				if(SRV_FREQ)
+				if(GLOB.SRV_FREQ)
 					blackbox.msg_service += blackbox_msg
-				if(EXP_FREQ)
-					blackbox.msg_exploration += blackbox_msg
 				else
 					blackbox.messages += blackbox_msg
 
@@ -444,7 +442,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 		var/mob/living/carbon/human/H = new
 		M = H
 
-	var/datum/radio_frequency/connection = radio_controller.return_frequency(frequency)
+	var/datum/frequency/connection = SSradio.return_frequency(frequency)
 
 	var/display_freq = connection.frequency
 
@@ -454,7 +452,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	// --- Broadcast only to intercom devices ---
 
 	if(data == 1)
-		for (var/obj/item/device/radio/intercom/R in connection.devices["[RADIO_CHAT]"])
+		for (var/obj/item/device/radio/intercom/R in connection.filters["[RADIO_CHAT]"])
 			var/turf/position = get_turf(R)
 			if(position && position.z == level)
 				receive |= R.send_hear(display_freq, level)
@@ -463,7 +461,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	// --- Broadcast only to intercoms and station-bounced radios ---
 
 	else if(data == 2)
-		for (var/obj/item/device/radio/R in connection.devices["[RADIO_CHAT]"])
+		for (var/obj/item/device/radio/R in connection.filters["[RADIO_CHAT]"])
 
 			if(istype(R, /obj/item/device/radio/headset))
 				continue
@@ -475,9 +473,9 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	// --- Broadcast to antag radios! ---
 
 	else if(data == 3)
-		for(var/freq in ANTAG_FREQS)
-			var/datum/radio_frequency/antag_connection = radio_controller.return_frequency(freq)
-			for (var/obj/item/device/radio/R in antag_connection.devices["[RADIO_CHAT]"])
+		for(var/freq in GLOB.ANTAG_FREQS)
+			var/datum/frequency/antag_connection = SSradio.return_frequency(freq)
+			for (var/obj/item/device/radio/R in antag_connection.filters["[RADIO_CHAT]"])
 				var/turf/position = get_turf(R)
 				if(position && position.z == level)
 					receive |= R.send_hear(freq)
@@ -486,7 +484,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	// --- Broadcast to ALL radio devices ---
 
 	else
-		for (var/obj/item/device/radio/R in connection.devices["[RADIO_CHAT]"])
+		for (var/obj/item/device/radio/R in connection.filters["[RADIO_CHAT]"])
 			var/turf/position = get_turf(R)
 			if(position && position.z == level)
 				receive |= R.send_hear(display_freq)
@@ -549,30 +547,28 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 		//BR.messages_admin += blackbox_admin_msg
 		if(istype(blackbox))
 			switch(display_freq)
-				if(PUB_FREQ)
+				if(GLOB.PUB_FREQ)
 					blackbox.msg_common += blackbox_msg
-				if(SCI_FREQ)
+				if(GLOB.SCI_FREQ)
 					blackbox.msg_science += blackbox_msg
-				if(COMM_FREQ)
+				if(GLOB.COMM_FREQ)
 					blackbox.msg_command += blackbox_msg
-				if(MED_FREQ)
+				if(GLOB.MED_FREQ)
 					blackbox.msg_medical += blackbox_msg
-				if(ENG_FREQ)
+				if(GLOB.ENG_FREQ)
 					blackbox.msg_engineering += blackbox_msg
-				if(SEC_FREQ)
+				if(GLOB.SEC_FREQ)
 					blackbox.msg_security += blackbox_msg
-				if(DTH_FREQ)
+				if(GLOB.DTH_FREQ)
 					blackbox.msg_deathsquad += blackbox_msg
-				if(SYND_FREQ)
+				if(GLOB.SYND_FREQ)
 					blackbox.msg_syndicate += blackbox_msg
-				if(RAID_FREQ)
+				if(GLOB.RAID_FREQ)
 					blackbox.msg_raider += blackbox_msg
-				if(SUP_FREQ)
+				if(GLOB.SUP_FREQ)
 					blackbox.msg_cargo += blackbox_msg
-				if(SRV_FREQ)
+				if(GLOB.SRV_FREQ)
 					blackbox.msg_service += blackbox_msg
-				if(EXP_FREQ)
-					blackbox.msg_exploration += blackbox_msg
 				else
 					blackbox.messages += blackbox_msg
 
@@ -616,14 +612,9 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	return (position.z in signal.data["level"] && signal.data["done"])
 
 /atom/proc/telecomms_process(do_sleep = 1)
-
-	// First, we want to generate a new radio signal
-	var/datum/signal/signal = new
-	signal.transmission_method = 2 // 2 would be a subspace transmission.
-	var/turf/pos = get_turf(src)
-
 	// --- Finally, tag the actual signal with the appropriate values ---
-	signal.data = list(
+	var/turf/pos = get_turf(src)
+	var/list/data = list(
 		"slow" = 0, // how much to sleep() before broadcasting - simulates net lag
 		"message" = "TEST",
 		"compression" = rand(45, 50), // If the signal is compressed, compress our message too.
@@ -633,9 +624,9 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 		"done" = 0,
 		"level" = pos ? pos.z : 0 // The level it is being broadcasted at.
 	)
-	signal.frequency = PUB_FREQ// Common channel
 
   //#### Sending the signal to all subspace receivers ####//
+	var/datum/signal/signal = new(data = data, method = TRANSMISSION_SUBSPACE, frequency = GLOB.PUB_FREQ)
 	for(var/obj/machinery/telecomms/receiver/R in telecomms_list)
 		R.receive_signal(signal)
 

@@ -29,7 +29,7 @@
 	for (var/child_tag in children_tags)
 		children_ready[child_tag] = 0
 
-/datum/computer/file/embedded_program/docking/multi/receive_signal(datum/signal/signal, receive_method, receive_param)
+/datum/computer/file/embedded_program/docking/multi/receive_signal(datum/signal/signal, receive_param)
 	var/receive_tag = signal.data["tag"]		//for docking signals, this is the sender id
 	var/command = signal.data["command"]
 	var/recipient = signal.data["recipient"]	//the intended recipient of the docking signal
@@ -51,7 +51,7 @@
 				if ("status_override_disabled")
 					children_override[receive_tag] = 0
 
-	..(signal, receive_method, receive_param)
+	..(signal, receive_param)
 
 /datum/computer/file/embedded_program/docking/multi/prepare_for_docking()
 	//clear children ready status
@@ -135,7 +135,7 @@
 	if (!docking_enabled|| override_enabled)	//only allow the port to be used as an airlock if nothing is docked here or the override is enabled
 		..(command)
 
-/datum/computer/file/embedded_program/airlock/multi_docking/receive_signal(datum/signal/signal, receive_method, receive_param)
+/datum/computer/file/embedded_program/airlock/multi_docking/receive_signal(datum/signal/signal, receive_param)
 	..()
 
 	var/receive_tag = signal.data["tag"]		//for docking signals, this is the sender id

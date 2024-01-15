@@ -72,7 +72,7 @@
 
 /obj/item/device/radio/headset/syndicate/Initialize()
 	. = ..()
-	set_frequency(SYND_FREQ)
+	set_frequency(GLOB.SYND_FREQ)
 
 /obj/item/device/radio/headset/raider
 	origin_tech = list(TECH_ILLEGAL = 2)
@@ -91,7 +91,7 @@
 
 /obj/item/device/radio/headset/raider/Initialize()
 	. = ..()
-	set_frequency(RAID_FREQ)
+	set_frequency(GLOB.RAID_FREQ)
 
 /obj/item/device/radio/headset/binary
 	origin_tech = list(TECH_ILLEGAL = 3)
@@ -305,7 +305,7 @@
 
 
 			for(var/ch_name in channels)
-				radio_controller.remove_object(src, radiochannels[ch_name])
+				SSradio.remove_object(src, GLOB.RADIO_CHANNELS[ch_name])
 				secure_radio_connections[ch_name] = null
 
 
@@ -388,13 +388,13 @@
 
 
 	for (var/ch_name in channels)
-		if(!radio_controller)
-			sleep(30) // Waiting for the radio_controller to be created.
-		if(!radio_controller)
+		if(!SSradio)
+			sleep(30) // Waiting for the SSradio to be created.
+		if(!SSradio)
 			src.SetName("broken radio headset")
 			return
 
-		secure_radio_connections[ch_name] = radio_controller.add_object(src, radiochannels[ch_name],  RADIO_CHAT)
+		secure_radio_connections[ch_name] = SSradio.add_object(src, GLOB.RADIO_CHANNELS[ch_name],  RADIO_CHAT)
 
 	if(setDescription)
 		setupRadioDescription()

@@ -7,13 +7,12 @@
 	var/id_tag
 	var/alert_temperature = 10000
 	var/alert = 1
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 /obj/machinery/status_light/Initialize()
 	. = ..()
 	update_icon()
-	radio_connection = register_radio(src, frequency, frequency, RADIO_ATMOSIA)
-
+	radio_connection = SSradio.add_object(src, frequency, RADIO_ATMOSIA)
 
 /obj/machinery/status_light/on_update_icon()
 	if(stat & (NOPOWER|BROKEN))

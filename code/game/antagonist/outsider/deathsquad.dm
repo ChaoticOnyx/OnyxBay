@@ -63,7 +63,7 @@ GLOBAL_DATUM_INIT(deathsquad, /datum/antagonist/deathsquad, new)
 	if(id)
 		id.access |= get_all_station_access()
 		id.icon_state = "centcom"
-	create_radio(DTH_FREQ, player)
+	create_radio(GLOB.DTH_FREQ, player)
 
 /datum/antagonist/deathsquad/update_antag_mob(datum/mind/player)
 

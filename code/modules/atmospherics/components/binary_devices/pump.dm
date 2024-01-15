@@ -32,7 +32,7 @@ Thus, the two variables affect pump operation are set in New():
 
 	var/frequency = 0
 	var/id = null
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 /obj/machinery/atmospherics/binary/pump/Initialize()
 	. = ..()
@@ -124,20 +124,16 @@ Thus, the two variables affect pump operation are set in New():
 //Radio remote control
 
 /obj/machinery/atmospherics/binary/pump/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = radio_controller.add_object(src, frequency, filter = RADIO_ATMOSIA)
+		radio_connection = SSradio.add_object(src, frequency, filter = RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/binary/pump/proc/broadcast_status()
 	if(!radio_connection)
 		return 0
 
-	var/datum/signal/signal = new
-	signal.transmission_method = 1 //radio signal
-	signal.source = src
-
-	signal.data = list(
+	var/list/data = list(
 		"tag" = id,
 		"device" = "AGP",
 		"power" = use_power,
@@ -145,6 +141,7 @@ Thus, the two variables affect pump operation are set in New():
 		"sigtype" = "status"
 	)
 
+	var/datum/signal/signal = new(src, data)
 	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
 
 	return 1

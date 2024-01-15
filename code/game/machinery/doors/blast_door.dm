@@ -42,7 +42,7 @@
 
 	var/code = null
 	var/frequency = null
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 600 MEGA ELECTRONVOLT,
@@ -69,7 +69,7 @@
 	src.code = code
 	src.frequency = frequency
 	if(frequency)
-		radio_connection = radio_controller.add_object(src, frequency, RADIO_CHAT)
+		radio_connection = SSradio.add_object(src, frequency, RADIO_CHAT)
 
 /obj/machinery/door/airlock/Destroy()
 	qdel(wifi_receiver)

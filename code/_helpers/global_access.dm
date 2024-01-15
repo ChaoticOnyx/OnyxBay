@@ -1,22 +1,14 @@
 // THIS FILE IS AUTOMATICALLY CREATED BY tools/gen_globals.py
 /proc/readglobal(which)
 	switch(which)
-		if("ALL_ANTIGENS")
-			return global.ALL_ANTIGENS;
-		if("ANTAG_FREQS")
-			return global.ANTAG_FREQS;
 		if("BSACooldown")
 			return global.BSACooldown;
 		if("BUMP_TELEPORTERS")
 			return global.BUMP_TELEPORTERS;
 		if("Banlist")
 			return global.Banlist;
-		if("CENT_FREQS")
-			return global.CENT_FREQS;
 		if("CMinutes")
 			return global.CMinutes;
-		if("DEPT_FREQS")
-			return global.DEPT_FREQS;
 		if("Debug2")
 			return global.Debug2;
 		if("Failsafe")
@@ -623,10 +615,6 @@
 			return global.protected_objects;
 		if("rad_collectors")
 			return global.rad_collectors;
-		if("radio_controller")
-			return global.radio_controller;
-		if("radiochannels")
-			return global.radiochannels;
 		if("random_junk_")
 			return global.random_junk_;
 		if("random_maps")
@@ -834,22 +822,14 @@
 
 /proc/writeglobal(which, newval)
 	switch(which)
-		if("ALL_ANTIGENS")
-			global.ALL_ANTIGENS=newval;
-		if("ANTAG_FREQS")
-			global.ANTAG_FREQS=newval;
 		if("BSACooldown")
 			global.BSACooldown=newval;
 		if("BUMP_TELEPORTERS")
 			global.BUMP_TELEPORTERS=newval;
 		if("Banlist")
 			global.Banlist=newval;
-		if("CENT_FREQS")
-			global.CENT_FREQS=newval;
 		if("CMinutes")
 			global.CMinutes=newval;
-		if("DEPT_FREQS")
-			global.DEPT_FREQS=newval;
 		if("Debug2")
 			global.Debug2=newval;
 		if("Failsafe")
@@ -1460,10 +1440,6 @@
 			global.protected_objects=newval;
 		if("rad_collectors")
 			global.rad_collectors=newval;
-		if("radio_controller")
-			global.radio_controller=newval;
-		if("radiochannels")
-			global.radiochannels=newval;
 		if("random_junk_")
 			global.random_junk_=newval;
 		if("random_maps")
@@ -1668,14 +1644,10 @@
 			global.zone_blocked=newval;
 
 /var/list/_all_globals=list(
-	"ALL_ANTIGENS",
-	"ANTAG_FREQS",
 	"BSACooldown",
 	"BUMP_TELEPORTERS",
 	"Banlist",
-	"CENT_FREQS",
 	"CMinutes",
-	"DEPT_FREQS",
 	"Debug2",
 	"EAMS_errorsCounter",
 	"Failsafe",
@@ -2014,8 +1986,6 @@
 	"prizes",
 	"protected_objects",
 	"rad_collectors",
-	"radio_controller",
-	"radiochannels",
 	"random_junk_",
 	"random_maps",
 	"random_useful_",
