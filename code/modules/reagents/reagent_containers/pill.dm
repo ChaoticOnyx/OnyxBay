@@ -43,7 +43,7 @@
 		if(!do_mob(user, M))
 			return
 
-		if(user.get_active_hand() != src)
+		if(!isrobot(user) && user.get_active_hand() != src)
 			return
 
 		user.visible_message("<span class='warning'>[user] forces [M] to swallow \the [src].</span>")
