@@ -179,7 +179,7 @@
 /obj/machinery/embedded_controller/radio/airlock/docking_port/verb/spoof_signal(command as text, sender as text)
 	set category = "Debug"
 	set src in view(1)
-	var/datum/signal/signal = new
+	var/datum/signal/signal = new()
 	signal.data["tag"] = sender
 	signal.data["command"] = command
 	signal.data["recipient"] = id_tag

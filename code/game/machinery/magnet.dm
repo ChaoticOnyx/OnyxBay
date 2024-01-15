@@ -280,7 +280,7 @@
 		if(href_list["radio-op"])
 
 			// Prepare signal beforehand, because this is a radio operation
-			var/datum/signal/signal = new
+			var/datum/signal/signal = new()
 			signal.source = src
 			signal.frequency = frequency
 			signal.data["code"] = code
@@ -345,7 +345,7 @@
 			looping = 1
 
 			// Prepare the radio signal
-			var/datum/signal/signal = new
+			var/datum/signal/signal = new()
 			signal.source = src
 			signal.frequency = frequency
 			signal.data["code"] = code

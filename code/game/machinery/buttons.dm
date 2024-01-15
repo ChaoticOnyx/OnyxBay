@@ -225,7 +225,7 @@
 
 
 /obj/machinery/button/toggle/valve/activate(mob/living/user)
-	var/datum/signal/signal = new
+	var/datum/signal/signal = new()
 	signal.source = src
 	signal.frequency = frequency
 	signal.data["tag"] = id

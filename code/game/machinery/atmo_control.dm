@@ -28,7 +28,7 @@
 
 /obj/machinery/air_sensor/Process()
 	if(on)
-		var/datum/signal/signal = new
+		var/datum/signal/signal = new()
 		signal.data["tag"] = id_tag
 		signal.data["timestamp"] = world.time
 
@@ -241,7 +241,7 @@ Max Output Pressure: [output_pressure] kPa<BR>"}
 
 	if(!radio_connection)
 		return 0
-	var/datum/signal/signal = new
+	var/datum/signal/signal = new()
 	signal.source = src
 	if(href_list["in_refresh_status"])
 		input_info = null
@@ -359,7 +359,7 @@ Min Core Pressure: [pressure_limit] kPa<BR>"}
 
 	if(!radio_connection)
 		return 0
-	var/datum/signal/signal = new
+	var/datum/signal/signal = new()
 	signal.source = src
 	if(href_list["in_refresh_status"])
 		input_info = null
@@ -425,7 +425,7 @@ Min Core Pressure: [pressure_limit] kPa<BR>"}
 				if(data["temperature"] <= on_temperature)
 					injecting = 1
 
-		var/datum/signal/signal = new
+		var/datum/signal/signal = new()
 		signal.source = src
 
 		signal.data = list(
@@ -479,7 +479,7 @@ Rate: [volume_rate] L/sec<BR>"}
 		if(!radio_connection)
 			return 0
 
-		var/datum/signal/signal = new
+		var/datum/signal/signal = new()
 		signal.source = src
 		signal.data = list(
 			"tag" = device_tag,
@@ -496,7 +496,7 @@ Rate: [volume_rate] L/sec<BR>"}
 		if(!radio_connection)
 			return 0
 
-		var/datum/signal/signal = new
+		var/datum/signal/signal = new()
 		signal.source = src
 		signal.data = list(
 			"tag" = device_tag,
@@ -510,7 +510,7 @@ Rate: [volume_rate] L/sec<BR>"}
 		if(!radio_connection)
 			return 0
 
-		var/datum/signal/signal = new
+		var/datum/signal/signal = new()
 		signal.source = src
 		signal.data = list(
 			"tag" = device_tag,

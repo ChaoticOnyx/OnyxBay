@@ -273,7 +273,7 @@
 	radio_filter_in = frequency==1439?(RADIO_FROM_AIRALARM):null
 	radio_filter_out = frequency==1439?(RADIO_TO_AIRALARM):null
 	if(frequency)
-		SSradio.add_object(src, frequency, radio_filter_in)
+		radio_connection = SSradio.add_object(src, frequency, radio_filter_in)
 		src.broadcast_status()
 
 /obj/machinery/atmospherics/unary/vent_pump/receive_signal(datum/signal/signal)
