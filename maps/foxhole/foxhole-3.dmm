@@ -188,7 +188,7 @@
 "aeR" = (/obj/machinery/atmospherics/portables_connector{dir = 1},/obj/machinery/portable_atmospherics/canister/air/airlock,/obj/effect/floor_decal/industrial/outline/yellow,/obj/effect/floor_decal/oldflood,/obj/machinery/light/small/hl,/turf/simulated/floor,/area/outpost/mining_main/mechbay)
 "aeS" = (/obj/machinery/shower{dir = 1},/obj/structure/curtain/open/shower,/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/white/airless,/area/outpost/abandoned)
 "aeT" = (/obj/structure/table,/obj/structure/table/rack,/obj/item/stack/material/glass/reinforced{amount = 8},/obj/item/stack/rods{amount = 6},/turf/simulated/floor/tiled,/area/outpost/abandoned)
-"aeU" = (/obj/machinery/mineral/equipment_vendor,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled,/area/outpost/mining_main/refinery)
+"aeU" = (/obj/machinery/equipment_vendor,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled,/area/outpost/mining_main/refinery)
 "aeV" = (/obj/effect/floor_decal/industrial/warning/dust/corner{dir = 1},/obj/machinery/alarm{dir = 4; pixel_x = -25},/obj/effect/floor_decal/oldflood,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/outpost/mining_main/refinery)
 "aeW" = (/turf/simulated/floor/tiled,/area/outpost/main_outpost/shallway)
 "aeX" = (/obj/structure/table/woodentable,/obj/machinery/light/small{dir = 1},/obj/item/storage/box/donkpockets,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/holofloor/wood,/area/outpost/abandonedpost)
