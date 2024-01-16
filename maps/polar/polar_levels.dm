@@ -1,3 +1,10 @@
+/datum/space_level/null_frozen
+	path = 'null-frozen.dmm'
+	travel_chance = 30
+	traits = list(
+		ZTRAIT_EMPTY
+	)
+
 /datum/space_level/polar_1
 	path = 'polar-1.dmm'
 	travel_chance = 5
