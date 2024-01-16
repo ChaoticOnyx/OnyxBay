@@ -199,7 +199,6 @@
 			for(var/needs_metal in A.requires) //Check if we're alloying the needed metal and have it stored.
 				if(ores_processing[needs_metal] != 3 || ores_stored[needs_metal] < A.requires[needs_metal])
 					enough_metal = FALSE
-					return FALSE
 
 		if(!enough_metal)
 			continue
