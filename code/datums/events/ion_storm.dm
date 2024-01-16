@@ -6,8 +6,6 @@
 	mtth = 3 HOURS
 	difficulty = 30
 
-	blacklisted_maps = list(/datum/map/polar)
-
 /datum/event/ion_storm/New()
 	. = ..()
 

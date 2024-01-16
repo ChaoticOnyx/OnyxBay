@@ -6,8 +6,6 @@
 	mtth = 2 HOURS
 	difficulty = 40
 
-	blacklisted_maps = (/datum/map/polar)
-
 /datum/event/gravity/New()
 	. = ..()
 

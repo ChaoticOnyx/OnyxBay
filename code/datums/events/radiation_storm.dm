@@ -9,7 +9,6 @@
 	fire_only_once = TRUE
 	mtth = 2 HOURS
 	difficulty = 70
-	blacklisted_maps = list(/datum/map/polar)
 
 	var/list/affecting_z = list()
 	var/target_energy = 0
