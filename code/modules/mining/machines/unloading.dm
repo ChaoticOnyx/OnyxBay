@@ -41,7 +41,7 @@
 
 /obj/machinery/mineral/unloading_machine/attackby(obj/item/W, mob/user)
 	..()
-	if(!isMultitool(W))
+	if(isMultitool(W))
 		var/choice = tgui_input_list(user, "Select the desired mode.", "Selection", list("default", "angled", "angled (mirrored)"))
 		if(!choice || !Adjacent(user))
 			return
