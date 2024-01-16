@@ -3075,8 +3075,6 @@
 #include "maps\exodus\exodus.dm"
 #include "maps\exodus\exodus_define.dm"
 #include "maps\exodus\exodus_levels.dm"
-#include "maps\foxhole\foxhole_define.dm"
-#include "maps\foxhole\foxhole_levels.dm"
 #include "maps\frontier\ent_biodome.dm"
 #include "maps\frontier\frontier_areas.dm"
 #include "maps\frontier\frontier_define.dm"
