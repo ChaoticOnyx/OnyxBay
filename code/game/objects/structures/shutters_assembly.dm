@@ -3,20 +3,29 @@
 #define STATE_WIRED       2
 #define STATE_SIGNALLER   3
 
-/obj/structure/shutters_assembly
+/obj/structure/pdoor_assembly
 	name = "shutters assembly"
 	icon = 'icons/obj/doors/shutter_assembly.dmi'
-	icon_state = "shutter_st0"
 	anchored = FALSE
 	density = TRUE
 	var/state = STATE_EMPTY
 	var/obj/item/device/assembly/signaler/signaler = null
+	var/base_icon = ""
+	var/material_path = ""
 
-/obj/structure/shutters_assembly/Destroy()
+/obj/structure/pdoor_assembly/Initialize(loc, state, dir, anchored)
+	src.state = state
+	src.dir = dir
+	src.anchored = anchored
+
+	update_icon()
+	. = ..()
+
+/obj/structure/pdoor_assembly/Destroy()
 	QDEL_NULL(signaler)
 	return ..()
 
-/obj/structure/shutters_assembly/update_icon()
+/obj/structure/pdoor_assembly/update_icon()
 	switch(state)
 		if(STATE_EMPTY)
 			icon_state = "shutter_st0"
@@ -25,7 +34,7 @@
 		if(STATE_SIGNALLER)
 			icon_state = "shutter_st2"
 
-/obj/structure/shutters_assembly/attackby(obj/item/W, mob/user)
+/obj/structure/pdoor_assembly/attackby(obj/item/W, mob/user)
 	switch(state)
 		if(STATE_UNANCHORED)
 			if(isWelder(W))
@@ -48,7 +57,7 @@
 			if(isScrewdriver(W))
 				finish_assembly(user)
 
-/obj/structure/shutters_assembly/proc/deconstruct_assembly(obj/item/weldingtool/WT, mob/user)
+/obj/structure/pdoor_assembly/proc/deconstruct_assembly(obj/item/weldingtool/WT, mob/user)
 	if (WT.remove_fuel(0, user))
 		playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
 		user.visible_message("[user] dissassembles \the [src] .", "You start to dissassemble \the [src] .")
@@ -63,7 +72,7 @@
 		to_chat(user, SPAN_NOTICE("You need more welding fuel."))
 		return
 
-/obj/structure/shutters_assembly/proc/wrench_assembly(mob/user)
+/obj/structure/pdoor_assembly/proc/wrench_assembly(mob/user)
 	playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
 	user.visible_message("[user] begins [anchored? "un" : ""]securing \the [src]  from the floor.", "You starts [anchored? "un" : ""]securing \the [src] from the floor.")
 
@@ -71,7 +80,7 @@
 		to_chat(user, SPAN_NOTICE("You [anchored? "un" : ""]secured \the [src]!"))
 		anchored = !anchored
 
-/obj/structure/shutters_assembly/proc/add_cable(obj/item/stack/cable_coil/C, mob/user)
+/obj/structure/pdoor_assembly/proc/add_cable(obj/item/stack/cable_coil/C, mob/user)
 	if (C.get_amount() < 1)
 		to_chat(user, SPAN_WARNING("You need one length of coil to wire \the [src] ."))
 		return
@@ -83,7 +92,7 @@
 			state = STATE_WIRED
 			update_icon()
 
-/obj/structure/shutters_assembly/proc/remove_cable(mob/user)
+/obj/structure/pdoor_assembly/proc/remove_cable(mob/user)
 	playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
 	user.visible_message("[user] cuts the wires from \the [src].", "You start to cut the wires from \the [src].")
 
@@ -93,7 +102,7 @@
 		state = STATE_EMPTY
 		update_icon()
 
-/obj/structure/shutters_assembly/proc/add_signaler(obj/item/device/assembly/signaler/W, mob/user)
+/obj/structure/pdoor_assembly/proc/add_signaler(obj/item/device/assembly/signaler/W, mob/user)
 	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 	user.visible_message("[user] installs the signaller into \the [src].", "You start to install signaller into \the [src].")
 
@@ -106,7 +115,7 @@
 		state = STATE_SIGNALLER
 		update_icon()
 
-/obj/structure/shutters_assembly/proc/remove_signaler(mob/user)
+/obj/structure/pdoor_assembly/proc/remove_signaler(mob/user)
 	user.visible_message("\The [user] starts removing the signaller from \the [src].", "You start removing the signaller from \the [src].")
 
 	if(do_after(user, 40, src))
@@ -116,13 +125,34 @@
 		signaler = null
 		update_icon()
 
-/obj/structure/shutters_assembly/proc/finish_assembly(mob/user)
+/obj/structure/pdoor_assembly/proc/finish_assembly(mob/user)
 	playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 	to_chat(user, SPAN_NOTICE("Now finishing \the shutters."))
 
 	if(do_after(user, 40, src))
 		new /obj/machinery/door/blast/shutters(loc, signaler?.code, signaler?.frequency, dir)
 		qdel(src)
+
+/obj/structure/pdoor_assembly/blast
+	name = "blast door assembly"
+	icon = 'icons/obj/doors/shutter_assembly.dmi'
+	icon_state = "shutter_st0"
+	anchored = FALSE
+	density = TRUE
+	state = STATE_EMPTY
+	base_icon = ""
+	material_path = "/obj/item/stack/material/plasteel"
+
+/obj/structure/pdoor_assembly/shutters
+	name = "shutters assembly"
+	icon = 'icons/obj/doors/shutter_assembly.dmi'
+	icon_state = "shutter_st0"
+	anchored = FALSE
+	density = TRUE
+	state = STATE_EMPTY
+	base_icon = ""
+	material_path = "/obj/item/stack/material/steel"
+
 
 #undef STATE_UNANCHORED
 #undef STATE_EMPTY

@@ -44,6 +44,8 @@
 	var/frequency = null
 	var/datum/radio_frequency/radio_connection
 
+	var/assembly_path = "/obj/structure/pdoor_assembly/blast"
+
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 600 MEGA ELECTRONVOLT,
 		RADIATION_BETA_PARTICLE = 10 MEGA ELECTRONVOLT,
@@ -169,6 +171,27 @@
 			else
 				to_chat(usr, "<span class='warning'>You don't have enough sheets to repair this! You need at least [amt] sheets.</span>")
 
+/obj/machinery/door/blast/shutters/attackby(obj/item/C, mob/user)
+	. = ..()
+	if(!density)
+		if(istype(src, /obj/machinery/door/blast))
+			if(stat & NOPOWER)
+				to_chat(user, SPAN_NOTICE("Turn off the power first!"))
+				return
+
+		if(default_deconstruction_screwdriver(user, C))
+			return
+
+		if(default_deconstruction_crowbar(user, C))
+			return
+
+/obj/machinery/door/blast/dismantle()
+	playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
+	new assembly_path(get_turf(src), state = 2, dir, anchored)
+	new /obj/item/device/assembly/signaler(get_turf(src))
+	qdel(src)
+	return
+
 /obj/machinery/door/blast/receive_signal(datum/signal/signal)
 	if(signal?.encryption != code)
 		return FALSE
@@ -246,29 +269,10 @@
 	open_sound = 'sound/machines/shutters_open.ogg'
 	close_sound = 'sound/machines/shutters_close.ogg'
 	keep_items_on_close = TRUE // These are placed over tables often, so let's keep items be.
-
+	assembly_path = "/obj/structure/pdoor_assembly/shutters"
 
 /obj/machinery/door/blast/shutters/open
 	begins_closed = FALSE
-
-/obj/machinery/door/blast/shutters/attackby(obj/item/C, mob/user)
-	. = ..()
-	if(!density)
-		if(default_deconstruction_screwdriver(user, C))
-			return
-		if(default_deconstruction_crowbar(user, C))
-			return
-
-/obj/machinery/door/blast/shutters/dismantle()
-	playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
-	var/obj/structure/shutters_assembly/M = new /obj/structure/shutters_assembly(get_turf(src))
-	new /obj/item/device/assembly/signaler(get_turf(src))
-	M.set_dir(dir)
-	M.state = 2
-	M.anchored = TRUE
-	M.update_icon()
-	qdel(src)
-	return
 
 //SUBTYPE: Polar
 /obj/machinery/door/blast/regular/polar
