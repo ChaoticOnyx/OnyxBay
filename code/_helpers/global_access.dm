@@ -1950,8 +1950,6 @@
 	"nttransfer_uid",
 	"nuke_disks",
 	"num_financial_terminals",
-	"ore_data",
-	"ores_by_type",
 	"organ_cache",
 	"organ_rel_size",
 	"outfits_decls_",
