@@ -1329,7 +1329,7 @@
 #include "code\game\objects\structures\rubble.dm"
 #include "code\game\objects\structures\safe.dm"
 #include "code\game\objects\structures\showcase.dm"
-#include "code\game\objects\structures\rapid_pdoor_assembly.dm"
+#include "code\game\objects\structures\shutters_assembly.dm"
 #include "code\game\objects\structures\signs.dm"
 #include "code\game\objects\structures\skele_stand.dm"
 #include "code\game\objects\structures\snow.dm"

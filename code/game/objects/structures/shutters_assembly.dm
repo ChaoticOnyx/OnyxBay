@@ -5,7 +5,7 @@
 
 /obj/structure/pdoor_assembly
 	name = "shutters assembly"
-	icon = 'icons/obj/doors/shutter_assembly.dmi'
+	icon = 'icons/obj/doors/rapid_pdoor_assembly.dmi'
 	anchored = FALSE
 	density = TRUE
 	obj_flags = OBJ_FLAG_ANCHORABLE
@@ -129,7 +129,7 @@
 
 /obj/structure/pdoor_assembly/blast
 	name = "blast door assembly"
-	icon = 'icons/obj/doors/shutter_assembly.dmi'
+	icon = 'icons/obj/doors/rapid_pdoor_assembly.dmi'
 	icon_state = "blast_st0"
 	base_icon = "blast"
 	material_path = /obj/item/stack/material/plasteel
@@ -137,7 +137,7 @@
 
 /obj/structure/pdoor_assembly/shutters
 	name = "shutters assembly"
-	icon = 'icons/obj/doors/shutter_assembly.dmi'
+	icon = 'icons/obj/doors/rapid_pdoor_assembly.dmi'
 	icon_state = "shutter_st0"
 	base_icon = "shutter"
 	material_path = /obj/item/stack/material/steel
