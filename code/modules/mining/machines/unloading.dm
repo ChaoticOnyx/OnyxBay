@@ -33,7 +33,7 @@
 		return
 
 	if(!ishuman(user) && !issilicon(user))
-		to_chat(usr, SPAN_WARNING("You don't have the dexterity to do this!"))
+		to_chat(usr, FEEDBACK_YOU_LACK_DEXTERITY)
 		return
 
 	toggle()

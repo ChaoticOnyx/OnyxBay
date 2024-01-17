@@ -24,7 +24,7 @@
 		return
 
 	if(!user.IsAdvancedToolUser())
-		to_chat(user, SPAN_WARNING("You don't have the dexterity to do this!</span>"))
+		to_chat(user, FEEDBACK_YOU_LACK_DEXTERITY)
 		return
 
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
