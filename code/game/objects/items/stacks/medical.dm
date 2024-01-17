@@ -61,7 +61,7 @@
 
 	if ( ! (istype(user, /mob/living/carbon/human) || \
 			istype(user, /mob/living/silicon)) )
-		to_chat(user, SPAN("warning", "You don't have the dexterity to do this!"))
+		to_chat(user, FEEDBACK_YOU_LACK_DEXTERITY)
 		return 1
 
 	if (istype(M, /mob/living/carbon/human))

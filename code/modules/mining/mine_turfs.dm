@@ -168,7 +168,7 @@ var/list/mining_floors = list()
 //Not even going to touch this pile of spaghetti
 /turf/simulated/mineral/attackby(obj/item/W, mob/user)
 	if(!user.IsAdvancedToolUser())
-		to_chat(usr, "<span class='warning'>You don't have the dexterity to do this!</span>")
+		to_chat(usr, FEEDBACK_YOU_LACK_DEXTERITY)
 		return
 
 	if(istype(W, /obj/item/device/core_sampler))
