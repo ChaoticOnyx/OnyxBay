@@ -302,6 +302,12 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_MALE_SIGH = list(
 		'sound/effects/emotes/m_sigh.ogg'
 	),
+	// TROTTINE EMOTES
+	SFX_TROTTINE_GRUNT = list(
+		'sound/effects/pig1.ogg',
+		'sound/effects/pig2.ogg',
+		'sound/effects/pig3.ogg'
+	),
 	// AMBIENT
 	SFX_AMBIENT_POWERED_GLOBAL = list(
 		'sound/ambient/global/amb2.ogg',
@@ -313,7 +319,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/global/amb9.ogg',
 		'sound/ambient/global/amb10.ogg',
 		'sound/ambient/global/amb11.ogg',
-		'sound/ambient/global/amb13.ogg',
+		'sound/ambient/global/amb13.ogg'
 	),
 	SFX_AMBIENT_OFF_GLOBAL = list(
 		'sound/ambient/global/amb1.ogg',

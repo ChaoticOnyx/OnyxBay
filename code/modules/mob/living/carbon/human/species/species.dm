@@ -514,7 +514,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	return FALSE
 
 // Used to handle some special damage behaviour.
-/datum/species/proc/handle_damage(mob/living/carbon/human/H, damage_flags, obj/used_weapon)
+/datum/species/proc/handle_damage(mob/living/carbon/human/H, damage_flags, obj/used_weapon, obj/item/organ/external/organ)
 	return
 
 // Used to override normal bullet_act. Return TRUE if you want to continue normal one after this
