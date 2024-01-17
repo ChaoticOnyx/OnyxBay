@@ -1,7 +1,7 @@
 /obj/machinery/food_replicator
 	name = "replicator"
 	desc = "like a microwave, except better. It has label \"Voice activation device\""
-	icon = 'icons/obj/vending.dmi'
+	icon = 'icons/obj/machines/vending.dmi'
 	icon_state = "soda"
 	density = 1
 	anchored = 1
