@@ -97,6 +97,9 @@
 #define SFX_MALE_YAWN               "male_yawn"
 #define SFX_MALE_SIGH               "male_sigh"
 
+// TROTTINE EMOTES
+#define SFX_TROTTINE_GRUNT          "trottine_grunt"
+
 // AMBIENT
 #define SFX_AMBIENT_POWERED_GLOBAL      "ambient_powered_global"
 #define SFX_AMBIENT_OFF_GLOBAL          "ambient_off_global"

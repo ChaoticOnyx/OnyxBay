@@ -80,4 +80,4 @@
 
 	if(!damage_flags && used_weapon != "Low Pressure")
 		H.audible_emote("grunts!")
-		playsound(H.loc, GET_SFX("SFX_TROTTINE_GRUNT"), 100, TRUE)
+		playsound(H.loc, GET_SFX(SFX_TROTTINE_GRUNT), 100, TRUE)
