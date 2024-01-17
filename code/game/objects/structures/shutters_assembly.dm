@@ -8,18 +8,12 @@
 	icon = 'icons/obj/doors/shutter_assembly.dmi'
 	anchored = FALSE
 	density = TRUE
+	obj_flags = OBJ_FLAG_ANCHORABLE
 	var/state = STATE_EMPTY
 	var/obj/item/device/assembly/signaler/signaler = null
-	var/base_icon = ""
-	var/material_path = ""
-
-/obj/structure/pdoor_assembly/Initialize(loc, state, dir, anchored)
-	src.state = state
-	src.dir = dir
-	src.anchored = anchored
-
-	update_icon()
-	. = ..()
+	var/base_icon = null
+	var/material_path = null
+	var/door_path = null
 
 /obj/structure/pdoor_assembly/Destroy()
 	QDEL_NULL(signaler)
@@ -28,11 +22,11 @@
 /obj/structure/pdoor_assembly/update_icon()
 	switch(state)
 		if(STATE_EMPTY)
-			icon_state = "shutter_st0"
+			icon_state = "[base_icon]_st0"
 		if(STATE_WIRED)
-			icon_state = "shutter_st1"
+			icon_state = "[base_icon]_st1"
 		if(STATE_SIGNALLER)
-			icon_state = "shutter_st2"
+			icon_state = "[base_icon]_st2"
 
 /obj/structure/pdoor_assembly/attackby(obj/item/W, mob/user)
 	switch(state)
@@ -40,10 +34,10 @@
 			if(isWelder(W))
 				deconstruct_assembly(W, user)
 			if(isWrench(W))
-				wrench_assembly()
+				wrench_floor_bolts(user)
 		if(STATE_EMPTY)
 			if(isWrench(W))
-				wrench_assembly(user)
+				wrench_floor_bolts(user)
 			if(isCoil(W))
 				add_cable(W, user)
 		if(STATE_WIRED)
@@ -72,13 +66,13 @@
 		to_chat(user, SPAN_NOTICE("You need more welding fuel."))
 		return
 
-/obj/structure/pdoor_assembly/proc/wrench_assembly(mob/user)
-	playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
-	user.visible_message("[user] begins [anchored? "un" : ""]securing \the [src]  from the floor.", "You starts [anchored? "un" : ""]securing \the [src] from the floor.")
+/obj/structure/pdoor_assembly/wrench_floor_bolts(mob/user, delay = 40)
+	. = ..()
 
-	if(do_after(user, 40, src))
-		to_chat(user, SPAN_NOTICE("You [anchored? "un" : ""]secured \the [src]!"))
-		anchored = !anchored
+	if(anchored)
+		state = STATE_EMPTY
+	else
+		state = STATE_UNANCHORED
 
 /obj/structure/pdoor_assembly/proc/add_cable(obj/item/stack/cable_coil/C, mob/user)
 	if (C.get_amount() < 1)
@@ -130,28 +124,24 @@
 	to_chat(user, SPAN_NOTICE("Now finishing \the shutters."))
 
 	if(do_after(user, 40, src))
-		new /obj/machinery/door/blast/shutters(loc, signaler?.code, signaler?.frequency, dir)
+		new door_path(loc, signaler?.code, signaler?.frequency, dir)
 		qdel(src)
 
 /obj/structure/pdoor_assembly/blast
 	name = "blast door assembly"
 	icon = 'icons/obj/doors/shutter_assembly.dmi'
-	icon_state = "shutter_st0"
-	anchored = FALSE
-	density = TRUE
-	state = STATE_EMPTY
-	base_icon = ""
-	material_path = "/obj/item/stack/material/plasteel"
+	icon_state = "blast_st0"
+	base_icon = "blast"
+	material_path = /obj/item/stack/material/plasteel
+	door_path = /obj/machinery/door/blast/regular
 
 /obj/structure/pdoor_assembly/shutters
 	name = "shutters assembly"
 	icon = 'icons/obj/doors/shutter_assembly.dmi'
 	icon_state = "shutter_st0"
-	anchored = FALSE
-	density = TRUE
-	state = STATE_EMPTY
-	base_icon = ""
-	material_path = "/obj/item/stack/material/steel"
+	base_icon = "shutter"
+	material_path = /obj/item/stack/material/steel
+	door_path = /obj/machinery/door/blast/shutters
 
 
 #undef STATE_UNANCHORED

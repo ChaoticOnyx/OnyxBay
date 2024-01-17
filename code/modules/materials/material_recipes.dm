@@ -106,7 +106,7 @@
 	..()
 	recipes += new /datum/stack_recipe("AI core", /obj/structure/AIcore, 8, time = 50, one_per_turf = 1)
 	recipes += new /datum/stack_recipe("Handmade crate", /obj/structure/closet/crate/handmade, 5, time = 30, one_per_turf = 1)
-		recipes += new /datum/stack_recipe("blast door assembly", /obj/structure/pdoor_assembly/blast, 10, time = 30, one_per_turf = 1, on_floor = 1)
+	recipes += new /datum/stack_recipe("blast door assembly", /obj/structure/pdoor_assembly/blast, 10, time = 50, one_per_turf = 1, on_floor = 1)
 
 /material/stone/generate_recipes()
 	..()

@@ -44,7 +44,7 @@
 	var/frequency = null
 	var/datum/radio_frequency/radio_connection
 
-	var/assembly_path = "/obj/structure/pdoor_assembly/blast"
+	var/assembly_path = /obj/structure/pdoor_assembly/blast
 
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 600 MEGA ELECTRONVOLT,
@@ -146,49 +146,58 @@
 // Parameters: 2 (C - Item this object was clicked with, user - Mob which clicked this object)
 // Description: If we are clicked with crowbar or wielded fire axe, try to manually open the door.
 // This only works on broken doors or doors without power. Also allows repair with Plasteel.
-/obj/machinery/door/blast/attackby(obj/item/C as obj, mob/user as mob)
+/obj/machinery/door/blast/attackby(obj/item/C, mob/user)
 	src.add_fingerprint(user, 0, C)
+
+	if(!density)
+		if(stat & NOPOWER)
+			if(default_deconstruction_screwdriver(user, C))
+				return
+
+			if(default_deconstruction_crowbar(user, C))
+				return
+
+		else
+			to_chat(user, SPAN_NOTICE("[src]'s motors resist your effort."))
+			return
+
 	if((isCrowbar(C) && !istype(C, /obj/item/crowbar/emergency)) || (istype(C, /obj/item/material/twohanded/fireaxe) && C:wielded == 1))
 		if(((stat & NOPOWER) || (stat & BROKEN)) && !( src.operating ))
 			force_toggle()
 		else
-			to_chat(usr, "<span class='notice'>[src]'s motors resist your effort.</span>")
+			to_chat(user, SPAN_NOTICE("[src]'s motors resist your effort."))
 		return
+
 	if(istype(C, /obj/item/stack/material) && C.get_material_name() == MATERIAL_PLASTEEL)
 		var/amt = Ceiling((maxhealth - health)/150)
 		if(!amt)
-			to_chat(usr, "<span class='notice'>\The [src] is already fully repaired.</span>")
+			to_chat(user, SPAN_NOTICE("\The [src] is already fully repaired."))
 			return
+
 		var/obj/item/stack/P = C
 		if(P.amount < amt)
-			to_chat(usr, "<span class='warning'>You don't have enough sheets to repair this! You need at least [amt] sheets.</span>")
+			to_chat(user, SPAN_WARNING("You don't have enough sheets to repair this! You need at least [amt] sheets."))
 			return
-		to_chat(usr, "<span class='notice'>You begin repairing [src]...</span>")
-		if(do_after(usr, 30, src))
+
+		to_chat(usr, SPAN_NOTICE("You begin repairing [src]..."))
+		if(do_after(user, 30, src))
 			if(P.use(amt))
-				to_chat(usr, "<span class='notice'>You have repaired \the [src]</span>")
+				to_chat(user, SPAN_NOTICE("You have repaired \the [src]"))
 				src.repair()
 			else
-				to_chat(usr, "<span class='warning'>You don't have enough sheets to repair this! You need at least [amt] sheets.</span>")
-
-/obj/machinery/door/blast/shutters/attackby(obj/item/C, mob/user)
-	. = ..()
-	if(!density)
-		if(istype(src, /obj/machinery/door/blast))
-			if(stat & NOPOWER)
-				to_chat(user, SPAN_NOTICE("Turn off the power first!"))
-				return
-
-		if(default_deconstruction_screwdriver(user, C))
-			return
-
-		if(default_deconstruction_crowbar(user, C))
-			return
+				to_chat(user, SPAN_WARNING("You don't have enough sheets to repair this! You need at least [amt] sheets."))
 
 /obj/machinery/door/blast/dismantle()
 	playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
-	new assembly_path(get_turf(src), state = 2, dir, anchored)
-	new /obj/item/device/assembly/signaler(get_turf(src))
+	var/obj/structure/pdoor_assembly/A =  new assembly_path(get_turf(src))
+	var/obj/item/device/assembly/signaler/S = new /obj/item/device/assembly/signaler(get_turf(src))
+	if(code && frequency)
+		S.code = code
+		S.frequency = frequency
+	A.anchored = TRUE
+	A.dir = dir
+	A.state = 2
+	A.update_icon()
 	qdel(src)
 	return
 
@@ -269,7 +278,7 @@
 	open_sound = 'sound/machines/shutters_open.ogg'
 	close_sound = 'sound/machines/shutters_close.ogg'
 	keep_items_on_close = TRUE // These are placed over tables often, so let's keep items be.
-	assembly_path = "/obj/structure/pdoor_assembly/shutters"
+	assembly_path = /obj/structure/pdoor_assembly/shutters
 
 /obj/machinery/door/blast/shutters/open
 	begins_closed = FALSE
