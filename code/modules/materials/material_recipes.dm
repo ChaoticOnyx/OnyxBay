@@ -69,7 +69,7 @@
 	recipes += new /datum/stack_recipe("machine frame", /obj/machinery/constructable_frame/machine_frame, 5, time = 25, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe("vending frame", /obj/machinery/vending_frame, 5, time = 25, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe("turret frame", /obj/machinery/porta_turret_construct, 5, time = 25, one_per_turf = 1, on_floor = 1)
-	recipes += new /datum/stack_recipe("shutters assembly", /obj/structure/pdoor_assembly/shutters, 10, time = 50, one_per_turf = 1, on_floor = 1)
+	recipes += new /datum/stack_recipe("shutters assembly", /obj/structure/secure_door/shutters, 10, time = 50, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe_list("airlock assemblies", list( \
 		new /datum/stack_recipe("standard airlock assembly", /obj/structure/door_assembly, 4, time = 50, one_per_turf = 1, on_floor = 1), \
 		new /datum/stack_recipe("command airlock assembly", /obj/structure/door_assembly/door_assembly_com, 4, time = 50, one_per_turf = 1, on_floor = 1), \
@@ -106,7 +106,7 @@
 	..()
 	recipes += new /datum/stack_recipe("AI core", /obj/structure/AIcore, 8, time = 50, one_per_turf = 1)
 	recipes += new /datum/stack_recipe("Handmade crate", /obj/structure/closet/crate/handmade, 5, time = 30, one_per_turf = 1)
-	recipes += new /datum/stack_recipe("blast door assembly", /obj/structure/pdoor_assembly/blast, 10, time = 50, one_per_turf = 1, on_floor = 1)
+	recipes += new /datum/stack_recipe("blast door assembly", /obj/structure/secure_door/blast, 10, time = 50, one_per_turf = 1, on_floor = 1)
 
 /material/stone/generate_recipes()
 	..()
