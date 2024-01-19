@@ -150,15 +150,10 @@
 	src.add_fingerprint(user, 0, C)
 
 	if(!density)
-		if(stat & NOPOWER)
-			if(default_deconstruction_screwdriver(user, C))
-				return
+		if(default_deconstruction_screwdriver(user, C))
+			return
 
-			if(default_deconstruction_crowbar(user, C))
-				return
-
-		else
-			to_chat(user, SPAN_NOTICE("[src]'s motors resist your effort."))
+		if(default_deconstruction_crowbar(user, C))
 			return
 
 	if((isCrowbar(C) && !istype(C, /obj/item/crowbar/emergency)) || (istype(C, /obj/item/material/twohanded/fireaxe) && C:wielded == 1))
