@@ -183,7 +183,7 @@
 		if(do_after(user, 30, src))
 			if(P.use(amt))
 				to_chat(user, SPAN_NOTICE("You have repaired \the [src]"))
-				src.repair()
+				repair()
 			else
 				to_chat(user, SPAN_WARNING("You don't have enough sheets to repair this! You need at least [amt] sheets."))
 
