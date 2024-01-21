@@ -493,6 +493,7 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	var/species
 	var/mouse_icon
 	var/handler_name
+	var/list/parameters
 
 /datum/click_handler/New(mob/user)
 	..()
@@ -556,7 +557,7 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 		return
 	RemoveClickHandler(click_handlers.Top())
 
-/mob/proc/PushClickHandler(datum/click_handler/new_click_handler_type)
+/mob/proc/PushClickHandler(datum/click_handler/new_click_handler_type, list/parameters = null)
 	if((initial(new_click_handler_type.flags) & CLICK_HANDLER_REMOVE_ON_MOB_LOGOUT) && !client)
 		return FALSE
 	if(!click_handlers)
@@ -568,6 +569,7 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	click_handler = new new_click_handler_type(src)
 	click_handler.Enter()
 	click_handlers.Push(click_handler)
+	click_handler.parameters = parameters
 
 	return click_handler
 
@@ -643,3 +645,11 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 			return spell_storage.perform(user,0,target)
 	to_chat(user, "We cannot find it's power... call admins")
 	return 0
+
+/datum/click_handler/emotes/target_emote
+	handler_name = "Target emote"
+
+/datum/click_handler/emotes/target_emote/OnClick(atom/target)
+	user.prepare_target_emote(target, parameters)
+	user.PopClickHandler()
+	return

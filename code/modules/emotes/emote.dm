@@ -1,0 +1,163 @@
+GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emote)) all_emotes.Add(list(initial(emotepath["type"]) = new emotepath));)
+
+#define MIN_VOICE_FREQUENCY 0.85
+#define MAX_VOICE_FREQUENCY 1.05
+
+/datum/emote
+	/// Default command to use emote ie. '*[key]'
+	var/key
+
+	/// 'laughs!' -> 'You laugh!'
+	var/message_1p
+	/// 'laughs!' -> 'Trottine Piggington laughs!')
+	var/message_3p
+	/// From mute message ('laughs silently.') -> ('Trottine Piggington laughs silently.')
+	var/message_impaired_production
+	/// For deaf/blind message ('You hear someone laughing.', 'You see someone opening and closing their mouth.')
+	var/message_impaired_reception
+	/// Mime message ('laughs!') -> ('Trottine Piggington acts out a laugh!')
+	var/message_miming
+	/// Muzzled message ('giggles sligthly.') -> ('James Morgan giggles sligthly.')
+	var/message_muzzled
+	/// Audible/visual flag
+	var/message_type = AUDIBLE_MESSAGE
+
+	/// Range outside which emote is not shown
+	var/emote_range = 7
+
+	/// Sound produced (oink!)
+	var/sound
+	/// Whether sound pitch varies with age.
+	var/pitch_age_variation = FALSE
+
+	/// What group does this emote belong to. By default uses emote type
+	var/cooldown_group = null
+	/// Cooldown for emote usage.
+	var/cooldown = 1 SECOND
+	/// Cooldown for the audio of the emote, if it has one.
+	var/audio_cooldown = 3 SECONDS
+
+	var/list/state_checks
+
+	var/statpanel_proc = null
+
+/datum/emote/proc/get_emote_message_1p(mob/user, target)
+	return "<i>[message_1p]</i>"
+
+/datum/emote/proc/get_impaired_msg(mob/user)
+	return message_impaired_reception
+
+/datum/emote/proc/get_emote_message_3p(mob/living/user, target)
+	var/msg = message_3p
+	var/mute = FALSE
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.silent > 0)
+			mute = TRUE
+
+	if(message_miming && mute)
+		msg = message_miming
+	else if(message_muzzled && istype(user.wear_mask, /obj/item/clothing/mask/muzzle))
+		msg = message_muzzled
+	else if(message_impaired_production && (message_type & AUDIBLE_MESSAGE) && (user.silent || (user.sdisabilities & MUTE)))
+		msg = message_impaired_production
+
+	if(!msg)
+		return null
+
+	return msg
+
+/datum/emote/proc/get_sound(mob/living/carbon/human/user, intentional)
+	return sound
+
+/datum/emote/proc/get_cooldown_group()
+	if(isnull(cooldown_group))
+		return type
+
+	return cooldown_group
+
+/datum/emote/proc/check_cooldown(list/cooldowns, intentional)
+	if(!cooldowns)
+		return TRUE
+
+	return cooldowns[get_cooldown_group()] < world.time
+
+/datum/emote/proc/set_cooldown(list/cooldowns, value, intentional)
+	LAZYSET(cooldowns, get_cooldown_group(), world.time + value)
+
+/datum/emote/proc/play_sound(mob/living/carbon/human/user, intentional, emote_sound)
+	var/sound_frequency = null
+	if(pitch_age_variation && ishuman(user))
+		var/mob/living/carbon/human/H = user
+		var/voice_frequency = TRANSLATE_RANGE(H.age, H.species.min_age, H.species.max_age, MIN_VOICE_FREQUENCY, MAX_VOICE_FREQUENCY)
+		sound_frequency = MAX_VOICE_FREQUENCY - (voice_frequency - MIN_VOICE_FREQUENCY)
+
+	playsound(user, emote_sound, 75, frequency = sound_frequency)
+
+/datum/emote/proc/can_emote(mob/living/carbon/human/user, intentional)
+	if(!check_cooldown(user.next_emote_use, intentional))
+		if(intentional)
+			to_chat(user, SPAN_NOTICE("You can't emote so much, give it a rest."))
+		return FALSE
+
+	for(var/datum/callback/state as anything in state_checks)
+		if(!state.Invoke(user, intentional))
+			return FALSE
+
+	return TRUE
+
+/datum/emote/proc/do_emote(mob/living/carbon/human/user, emote_key, intentional, target)
+	LAZYINITLIST(user.next_emote_use)
+	set_cooldown(user.next_emote_use, cooldown, intentional)
+
+	for(var/obj/item/implant/I in user)
+		if(!I.implanted)
+			continue
+		I.trigger(emote_key, user)
+
+	var/msg_1p = get_emote_message_1p(user, target)
+	var/msg_3p = get_emote_message_3p(user, target)
+	var/range = !isnull(emote_range) ? emote_range : world.view
+
+	if(!msg_1p)
+		msg_1p = msg_3p
+
+	log_emote("[key_name(user)] : [msg_3p]")
+
+	if(msg_3p)
+		if(message_type & VISIBLE_MESSAGE)
+			user.visible_message(message = msg_3p, self_message = msg_1p, blind_message = message_impaired_reception, range = range, checkghosts = /datum/client_preference/ghost_sight)
+		else if(message_type & AUDIBLE_MESSAGE)
+			user.audible_message(message = msg_3p, self_message = msg_1p, deaf_message = message_impaired_reception, hearing_distance = range, checkghosts = /datum/client_preference/ghost_sight)
+
+	else
+		to_chat(user, msg_1p)
+
+	var/emote_sound = get_sound(user, intentional)
+	if(emote_sound && can_play_sound(user, intentional))
+		LAZYINITLIST(user.next_audio_emote_produce)
+		set_cooldown(user.next_audio_emote_produce, audio_cooldown, intentional)
+		play_sound(user, intentional, emote_sound)
+
+/datum/emote/proc/can_play_sound(mob/user, intentional)
+	if(user.is_muzzled())
+		return FALSE
+
+	if(isliving(user))
+		var/mob/living/L = user
+		if(L.silent)
+			return FALSE
+
+	if(!check_cooldown(user.next_audio_emote_produce, intentional))
+		return FALSE
+
+	return TRUE
+
+/proc/get_sound_by_voice(mob/user, male_sounds, female_sounds)
+	if(user.gender == FEMALE)
+		return pick(female_sounds)
+
+	return pick(male_sounds)
+
+#undef MIN_VOICE_FREQUENCY
+#undef MAX_VOICE_FREQUENCY

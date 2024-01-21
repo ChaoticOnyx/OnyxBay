@@ -1,0 +1,598 @@
+/datum/emote/blink
+	key = "blink"
+
+	message_1p = "You blink."
+	message_3p = "blinks."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/blink_emote
+
+/mob/proc/blink_emote()
+	set name = "Blink"
+	set category = "Emotes"
+	usr.emote("blink", intentional = TRUE)
+
+
+/datum/emote/blink_rapidly
+	key = "blink_r"
+
+	message_1p = "You blink rapidly."
+	message_3p = "blinks rapidly."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS),
+		EMOTE_STATE(is_present_bodypart, BP_HEAD)
+	)
+
+	statpanel_proc = /mob/proc/blink_rapidly_emote
+
+/mob/proc/blink_rapidly_emote()
+	set name = "Blink (rapidly)"
+	set category = "Emotes"
+	usr.emote("blink_r", intentional = TRUE)
+
+
+/datum/emote/blush
+	key = "blush"
+
+	message_1p = "You blush."
+	message_3p = "blushes."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/blush_emote
+
+/mob/proc/blush_emote()
+	set name = "Blush"
+	set category = "Emotes"
+	usr.emote("blush", intentional = TRUE)
+
+
+/datum/emote/pale
+	key = "pale"
+
+	message_1p = "You go pale for a second."
+	message_3p = "goes pale for a second."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/pale_emote
+
+/mob/proc/pale_emote()
+	set name = "Pale"
+	set category = "Emotes"
+	usr.emote("pale", intentional = TRUE)
+
+
+/datum/emote/shiver
+	key = "shiver"
+
+	message_1p = "You shiver."
+	message_3p = "shivers."
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/shiver_emote
+
+/mob/proc/shiver_emote()
+	set name = "Shiver"
+	set category = "Emotes"
+	usr.emote("shiver", intentional = TRUE)
+
+
+/datum/emote/drool
+	key = "drool"
+
+	message_1p = "You drool."
+	message_3p = "drools."
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/drool_emote
+
+/mob/proc/drool_emote()
+	set name = "Drool"
+	set category = "Emotes"
+	usr.emote("drool", intentional = TRUE)
+
+
+/datum/emote/eyebrow
+	key = "eyebrow"
+
+	message_1p = "You raise an eyebrow."
+	message_3p = "raises an eyebrow."
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/eyebrow_emote
+
+/mob/proc/eyebrow_emote()
+	set name = "Eyebrow"
+	set category = "Emotes"
+	usr.emote("eyebrow", intentional = TRUE)
+
+
+/datum/emote/nod
+	key = "nod"
+
+	message_1p = "You nod."
+	message_3p = "nods."
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS),
+	)
+
+	statpanel_proc = /mob/proc/nod_emote
+
+/mob/proc/nod_emote()
+	set name = "Nod"
+	set category = "Emotes"
+	usr.emote("nod", intentional = TRUE)
+
+
+/datum/emote/shake
+	key = "shake"
+
+	message_1p = "You shake your head."
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/shake_emote
+
+
+/datum/emote/shake/get_emote_message_3p(mob/user)
+	return "shakes [P_THEIR(user.gender)] head."
+
+
+/mob/proc/shake_emote()
+	set name = "Shake"
+	set category = "Emotes"
+	usr.emote("shake", intentional = TRUE)
+
+
+/datum/emote/twitch
+	key = "twitch"
+
+	message_1p = "You twitch."
+	message_3p = "twitches."
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/twitch_emote
+
+/mob/proc/twitch_emote()
+	set name = "Twitch"
+	set category = "Emotes"
+	usr.emote("twitch", intentional = TRUE)
+
+
+/datum/emote/twitch_violently
+	key = "twitch_v"
+
+	message_1p = "You twitch violently."
+	message_3p = "twitches violently."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/twitch_violently_emote
+
+/mob/proc/twitch_violently_emote()
+	set name = "Twitch (violently)"
+	set category = "Emotes"
+	usr.emote("twitch_v", intentional = TRUE)
+
+
+/datum/emote/tremble
+	key = "tremble"
+
+	message_1p = "You tremble!"
+	message_3p = "trembles."
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/tremble_emote
+
+/mob/proc/tremble_emote()
+	set name = "Tremble"
+	set category = "Emotes"
+	usr.emote("tremble", intentional = TRUE)
+
+
+/datum/emote/collapse
+	key = "collapse"
+
+	message_1p = "You collapse!"
+	message_3p = "collapses!"
+
+	message_type = AUDIBLE_MESSAGE
+
+	cooldown = 4 SECONDS
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/collapse_emote
+
+
+/datum/emote/collapse/do_emote(mob/user, emote_key, intentional)
+	. = ..()
+	if(!intentional)
+		user.Paralyse(2)
+
+/mob/proc/collapse_emote()
+	set name = "Collapse"
+	set category = "Emotes"
+	usr.emote("collapse", intentional = TRUE)
+
+
+/datum/emote/faint
+	key = "faint"
+
+	message_1p = "You faint!"
+	message_3p = "faints!"
+
+	message_type = AUDIBLE_MESSAGE
+
+	cooldown = 20 SECONDS
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/faint_emote
+
+/datum/emote/faint/do_emote(mob/user, emote_key, intentional)
+	. = ..()
+	if(!intentional && isliving(user))
+		var/mob/living/L = user
+		L.SetSleeping(10 SECONDS)
+
+/mob/proc/faint_emote()
+	set name = "Faint"
+	set category = "Emotes"
+	usr.emote("faint", intentional = TRUE)
+
+
+/datum/emote/deathgasp
+	key = "deathgasp"
+
+	message_1p = "You seize up and fall limp, your eyes dead and lifeless..."
+
+	message_impaired_reception = "You hear a thud."
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat_or_not_intentional, CONSCIOUS)
+	)
+
+/datum/emote/deathgasp/get_emote_message_3p(mob/user)
+	return "seizes up and falls limp, [P_THEIR(user.gender)] eyes dead and lifeless..."
+
+/datum/emote/roll
+	key = "roll"
+
+	message_1p = "You roll."
+	message_3p = "rolls."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS),
+	)
+
+	statpanel_proc = /mob/proc/roll_emote
+
+/mob/proc/roll_emote()
+	set name = "Roll"
+	set category = "Emotes"
+	usr.emote("roll", intentional = TRUE)
+
+
+/datum/emote/jump
+	key = "jump"
+
+	message_1p = "You jump."
+	message_3p = "jumps!"
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/jump_emote
+
+/mob/proc/jump_emote()
+	set name = "Jump"
+	set category = "Emotes"
+	usr.emote("jump", intentional = TRUE)
+
+
+/datum/emote/bow
+	key = "bow"
+
+	message_1p = "You bow."
+	message_3p = "bows."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS),
+	)
+
+	statpanel_proc = /mob/proc/bow_emote
+
+/mob/proc/bow_emote()
+	set name = "Bow"
+	set category = "Emotes"
+	usr.emote("bow", intentional = TRUE)
+
+
+/datum/emote/flap
+	key = "flap"
+
+	message_1p = "You flap your wings."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS),
+		EMOTE_STATE(is_present_bodypart, BP_HEAD)
+	)
+
+/datum/emote/flap/get_emote_message_3p(mob/user)
+	return "flaps [P_THEIR(user)] wings."
+
+
+/datum/emote/aflap
+	key = "aflap"
+
+	message_1p = "You flap your wings ANGRILY!."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS),
+		EMOTE_STATE(is_present_bodypart, BP_HEAD)
+	)
+
+/datum/emote/aflap/get_emote_message_3p(mob/user)
+	return "flaps [P_THEIR(user)] wings ANGRILY!"
+
+
+/datum/emote/frown
+	key = "frown"
+
+	message_1p = "You frown."
+	message_3p = "frowns."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS),
+		EMOTE_STATE(is_present_bodypart, BP_HEAD)
+	)
+
+	statpanel_proc = /mob/proc/frown_emote
+
+/mob/proc/frown_emote()
+	set name = "Frown"
+	set category = "Emotes"
+	usr.emote("frown", intentional = TRUE)
+
+
+/datum/emote/grin
+	key = "grin"
+
+	message_1p = "You grin."
+	message_3p = "grins."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS),
+		EMOTE_STATE(is_present_bodypart, BP_HEAD)
+	)
+
+	statpanel_proc = /mob/proc/grin_emote
+
+/mob/proc/grin_emote()
+	set name = "Grin"
+	set category = "Emotes"
+	usr.emote("grin", intentional = TRUE)
+
+
+/datum/emote/shrug
+	key = "shrug"
+
+	message_1p = "You shrug."
+	message_3p = "shrugs."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS),
+	)
+
+	statpanel_proc = /mob/proc/shrug_emote
+
+/mob/proc/shrug_emote()
+	set name = "Shrug"
+	set category = "Emotes"
+	usr.emote("shrug", intentional = TRUE)
+
+
+/datum/emote/smile
+	key = "smile"
+
+	message_1p = "You smile."
+	message_3p = "smiles."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS),
+		EMOTE_STATE(is_present_bodypart, BP_HEAD)
+	)
+
+	statpanel_proc = /mob/proc/smile_emote
+
+/mob/proc/smile_emote()
+	set name = "Smile"
+	set category = "Emotes"
+	usr.emote("smile", intentional = TRUE)
+
+
+/datum/emote/wink
+	key = "wink"
+
+	message_1p = "You wink."
+	message_3p = "winks."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS),
+		EMOTE_STATE(is_present_bodypart, BP_HEAD)
+	)
+
+	statpanel_proc = /mob/proc/wink_emote
+
+/mob/proc/wink_emote()
+	set name = "Wink"
+	set category = "Emotes"
+	usr.emote("wink", intentional = TRUE)
+
+
+/datum/emote/stare
+	key = "stare"
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS),
+		EMOTE_STATE(is_present_bodypart, BP_HEAD)
+	)
+	statpanel_proc = /mob/proc/stare_emote
+
+/datum/emote/stare/get_emote_message_1p(mob/user, target)
+	if(!isnull(target))
+		return "You stare at \the [target]."
+	else
+		return "You stare."
+
+/datum/emote/stare/get_emote_message_3p(mob/living/user, target)
+	if(!isnull(target))
+		return "stares at \the [target]."
+	else
+		return "stares."
+
+/mob/proc/stare_emote()
+	set name = "Stare at"
+	set category = "Emotes"
+	target_emote("stare")
+
+
+/datum/emote/look
+	key = "look"
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS),
+		EMOTE_STATE(is_present_bodypart, BP_HEAD)
+	)
+	statpanel_proc = /mob/proc/look_emote
+
+/datum/emote/look/get_emote_message_1p(mob/user, target)
+	if(!isnull(target))
+		return "You look at \the [target]."
+	else
+		return "You look."
+
+/datum/emote/look/get_emote_message_3p(mob/living/user, target)
+	if(!isnull(target))
+		return "looks at \the [target]."
+	else
+		return "looks."
+
+/mob/proc/look_emote()
+	set name = "Look at"
+	set category = "Emotes"
+	target_emote("look")
+
+
+/datum/emote/glare
+	key = "glare"
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS),
+		EMOTE_STATE(is_present_bodypart, BP_HEAD)
+	)
+	statpanel_proc = /mob/proc/glare_emote
+
+/datum/emote/glare/get_emote_message_1p(mob/user, target)
+	if(!isnull(target))
+		return "You glare at \the [target]."
+	else
+		return "You glare."
+
+/datum/emote/glare/get_emote_message_3p(mob/living/user, target)
+	if(!isnull(target))
+		return "glare at \the [target]."
+	else
+		return "glare."
+
+/mob/proc/glare_emote()
+	set name = "Glare at"
+	set category = "Emotes"
+	target_emote("glare")

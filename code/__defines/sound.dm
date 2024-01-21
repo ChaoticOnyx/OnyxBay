@@ -214,6 +214,7 @@
 #define SFX_RADIO                   "radio"
 #define SFX_THROWING                "throwing"
 #define SFX_DISPOSAL                "disposal"
+#define SFX_OINK                    "oink"
 
 // FOOTSTEPS
 #define SFX_DISTANT_MOVEMENT        "distant_movement"
