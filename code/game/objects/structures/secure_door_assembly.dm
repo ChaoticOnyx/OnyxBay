@@ -33,23 +33,28 @@
 		if(STATE_UNANCHORED)
 			if(isWelder(W))
 				deconstruct_assembly(W, user)
-			if(isWrench(W))
-				wrench_floor_bolts(user)
+			return
+
 		if(STATE_EMPTY)
-			if(isWrench(W))
-				wrench_floor_bolts(user)
 			if(isCoil(W))
 				add_cable(W, user)
+			return
+
 		if(STATE_WIRED)
 			if(isWirecutter(W))
 				remove_cable(user)
 			if(istype(W, /obj/item/device/assembly/signaler))
 				add_signaler(W, user)
+			return
+
 		if(STATE_SIGNALLER)
 			if(isCrowbar(W))
 				remove_signaler(user)
 			if(isScrewdriver(W))
 				finish_assembly(user)
+			return
+
+	return ..()
 
 /obj/structure/secure_door/proc/deconstruct_assembly(obj/item/weldingtool/WT, mob/user)
 	if (WT.remove_fuel(0, user))
