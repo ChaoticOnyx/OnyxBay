@@ -44,7 +44,6 @@
 	//Due to some involuntary means, you're laying now
 	if(lying && !resting && !sleeping)
 		anim_time = 1 //Thud
-
 	if(lying && !species.prone_icon) //Only rotate them if we're not drawing a specific icon for being prone.
 		rotate_deg += 90
 		translate_x = 1
