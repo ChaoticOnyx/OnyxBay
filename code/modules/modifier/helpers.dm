@@ -49,13 +49,13 @@
 		rotate_deg += 90
 		translate_x = 1
 		translate_y = -6
-		layer = MOB_LAYER -0.01 // Fix for a byond bug where turf entry order no longer matters
+		layer = LYING_HUMAN_LAYER
 	else if(hanging && !species.prone_icon)
 		rotate_deg += 180
 		translate_y = -16 * ((tf_scale_y || 1) * body_height - 1)
-		layer = MOB_LAYER // Fix for a byond bug where turf entry order no longer matters
+		layer = BASE_HUMAN_LAYER // Fix for a byond bug where turf entry order no longer matters
 	else
-		layer = MOB_LAYER // Fix for a byond bug where turf entry order no longer matters
+		layer = BASE_HUMAN_LAYER // Fix for a byond bug where turf entry order no longer matters
 
 	animate(
 		src,
@@ -147,4 +147,3 @@
 
 	else // No colors, so remove the client's color.
 		animate(client, color = null, time = 10)
-
