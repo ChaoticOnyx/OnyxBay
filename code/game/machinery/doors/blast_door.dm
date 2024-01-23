@@ -44,7 +44,7 @@
 	var/frequency = null
 	var/datum/radio_frequency/radio_connection
 
-	var/assembly_path = /obj/structure/secure_door/blast
+	var/assembly_path = /obj/structure/secure_door_assembly/blast
 
 	rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 600 MEGA ELECTRONVOLT,
@@ -185,15 +185,13 @@
 /obj/machinery/door/blast/dismantle()
 	playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
 	var/turf/T = get_turf(src)
-	var/obj/structure/secure_door/A =  new assembly_path(T)
-	A.anchored = TRUE
+	var/obj/structure/secure_door_assembly/A =  new assembly_path(T)
 	A.dir = dir
-	A.state = 2
-	A.update_icon()
+	A.make_just_dismantled()
 	var/obj/item/device/assembly/signaler/S = new /obj/item/device/assembly/signaler(T)
 	if(code && frequency)
 		S.code = code
-		S.frequency = frequency
+		S.set_frequency(frequency)
 	qdel(src)
 	return
 
@@ -274,7 +272,7 @@
 	open_sound = 'sound/machines/shutters_open.ogg'
 	close_sound = 'sound/machines/shutters_close.ogg'
 	keep_items_on_close = TRUE // These are placed over tables often, so let's keep items be.
-	assembly_path = /obj/structure/secure_door/shutters
+	assembly_path = /obj/structure/secure_door_assembly/shutters
 
 /obj/machinery/door/blast/shutters/open
 	begins_closed = FALSE
