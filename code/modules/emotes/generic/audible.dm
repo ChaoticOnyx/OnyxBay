@@ -21,7 +21,7 @@
 /mob/proc/whimper_emote()
 	set name = "Whimper"
 	set category = "Emotes"
-	usr.emote("whimper", intentional = TRUE)
+	emote("whimper", intentional = TRUE)
 
 
 /datum/emote/roar
@@ -49,7 +49,7 @@
 /mob/proc/roar_emote()
 	set name = "Roar"
 	set category = "Emotes"
-	usr.emote("roar", intentional = TRUE)
+	emote("roar", intentional = TRUE)
 
 
 /datum/emote/gasp
@@ -78,7 +78,7 @@
 /mob/proc/gasp_emote()
 	set name = "Gasp"
 	set category = "Emotes"
-	usr.emote("gasp", intentional = TRUE)
+	emote("gasp", intentional = TRUE)
 
 
 /datum/emote/sneeze
@@ -101,7 +101,7 @@
 /mob/proc/sneeze_emote()
 	set name = "Sneeze"
 	set category = "Emotes"
-	usr.emote("sneeze", intentional = TRUE)
+	emote("sneeze", intentional = TRUE)
 
 
 /datum/emote/choke
@@ -132,7 +132,7 @@
 /mob/proc/choke_emote()
 	set name = "Choke"
 	set category = "Emotes"
-	usr.emote("choke", intentional = TRUE)
+	emote("choke", intentional = TRUE)
 
 
 /datum/emote/chuckle
@@ -163,7 +163,7 @@
 /mob/proc/chuckle_emote()
 	set name = "Chuckle"
 	set category = "Emotes"
-	usr.emote("chuckle", intentional = TRUE)
+	emote("chuckle", intentional = TRUE)
 
 
 /datum/emote/moan
@@ -191,7 +191,7 @@
 /mob/proc/moan_emote()
 	set name = "Moan"
 	set category = "Emotes"
-	usr.emote("moan", intentional = TRUE)
+	emote("moan", intentional = TRUE)
 
 
 /datum/emote/cough
@@ -220,7 +220,7 @@
 /mob/proc/cough_emote()
 	set name = "Cough"
 	set category = "Emotes"
-	usr.emote("cough", intentional = TRUE)
+	emote("cough", intentional = TRUE)
 
 
 /datum/emote/cry
@@ -248,7 +248,7 @@
 /mob/proc/cry_emote()
 	set name = "Cry"
 	set category = "Emotes"
-	usr.emote("cry", intentional = TRUE)
+	emote("cry", intentional = TRUE)
 
 
 /datum/emote/scream
@@ -279,7 +279,7 @@
 /mob/proc/scream_emote()
 	set name = "Scream"
 	set category = "Emotes"
-	usr.emote("scream", intentional = TRUE)
+	emote("scream", intentional = TRUE)
 
 
 /datum/emote/scream_long
@@ -303,7 +303,7 @@
 /mob/proc/scream_long_emote()
 	set name = "Scream (long)"
 	set category = "Emotes"
-	usr.emote("scream_long", intentional = TRUE)
+	emote("scream_long", intentional = TRUE)
 
 
 /datum/emote/oink
@@ -329,7 +329,7 @@
 /mob/proc/oink_emote()
 	set name = "Oink"
 	set category = "Emotes"
-	usr.emote("oink", intentional = TRUE)
+	emote("oink", intentional = TRUE)
 
 
 /datum/emote/laugh
@@ -362,7 +362,7 @@
 /mob/proc/laugh_emote()
 	set name = "Laugh"
 	set category = "Emotes"
-	usr.emote("laugh", intentional = TRUE)
+	emote("laugh", intentional = TRUE)
 
 
 /datum/emote/giggle
@@ -393,7 +393,7 @@
 /mob/proc/giggle_emote()
 	set name = "Giggle"
 	set category = "Emotes"
-	usr.emote("giggle", intentional = TRUE)
+	emote("giggle", intentional = TRUE)
 
 
 /datum/emote/grunt
@@ -424,7 +424,7 @@
 /mob/proc/grunt_emote()
 	set name = "Grunt"
 	set category = "Emotes"
-	usr.emote("grunt", intentional = TRUE)
+	emote("grunt", intentional = TRUE)
 
 
 /datum/emote/groan
@@ -455,7 +455,7 @@
 /mob/proc/groan_emote()
 	set name = "Groan"
 	set category = "Emotes"
-	usr.emote("groan", intentional = TRUE)
+	emote("groan", intentional = TRUE)
 
 
 /datum/emote/hiccup
@@ -485,7 +485,7 @@
 /mob/proc/hiccup_emote()
 	set name = "Hiccup"
 	set category = "Emotes"
-	usr.emote("hiccup", intentional = TRUE)
+	emote("hiccup", intentional = TRUE)
 
 /datum/emote/snore
 	key = "snore"
@@ -514,7 +514,7 @@
 /mob/proc/snore_emote()
 	set name = "Snore"
 	set category = "Emotes"
-	usr.emote("snore", intentional = TRUE)
+	emote("snore", intentional = TRUE)
 
 
 /datum/emote/sniff
@@ -540,7 +540,7 @@
 /mob/proc/sniff_emote()
 	set name = "Sniff"
 	set category = "Emotes"
-	usr.emote("sniff", intentional = TRUE)
+	emote("sniff", intentional = TRUE)
 
 
 /datum/emote/sigh
@@ -571,7 +571,7 @@
 /mob/proc/sigh_emote()
 	set name = "Sigh"
 	set category = "Emotes"
-	usr.emote("sigh", intentional = TRUE)
+	emote("sigh", intentional = TRUE)
 
 
 /datum/emote/mumble
@@ -599,7 +599,7 @@
 /mob/proc/mumble_emote()
 	set name = "Mubmle"
 	set category = "Emotes"
-	usr.emote("mumble", intentional = TRUE)
+	emote("mumble", intentional = TRUE)
 
 
 /datum/emote/grumble
@@ -650,7 +650,7 @@
 /mob/proc/spit_emote()
 	set name = "Spit"
 	set category = "Emotes"
-	usr.emote("spit", intentional = TRUE)
+	emote("spit", intentional = TRUE)
 
 
 /datum/emote/yawn
@@ -675,7 +675,7 @@
 /mob/proc/yawn_emote()
 	set name = "Yawn"
 	set category = "Emotes"
-	usr.emote("yawn")
+	emote("yawn")
 
 /datum/emote/chirp
 	key = "chirp"
@@ -696,4 +696,4 @@
 /mob/proc/chirp_emote()
 	set name = "Chirp"
 	set category = "Emotes"
-	usr.emote("chirp")
+	emote("chirp")

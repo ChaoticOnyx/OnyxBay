@@ -9,7 +9,7 @@
 /mob/living/carbon/human/proc/swish_emote()
 	set name = "~ Animate tail (once)"
 	set category = "Emotes"
-	usr.emote("swish", intentional = TRUE)
+	emote("swish", intentional = TRUE)
 
 
 /datum/emote/species/wag
@@ -23,7 +23,7 @@
 /mob/living/carbon/human/proc/wag_emote()
 	set name = "~ Animate tail (start)"
 	set category = "Emotes"
-	usr.emote("wag", intentional = TRUE)
+	emote("wag", intentional = TRUE)
 
 
 /datum/emote/species/sway
@@ -37,7 +37,7 @@
 /mob/living/carbon/human/proc/sway_tail_emote()
 	set name = "~ Animate tail (start)"
 	set category = "Emotes"
-	usr.emote("sway", intentional = TRUE)
+	emote("sway", intentional = TRUE)
 
 
 /datum/emote/species/qwag
@@ -51,7 +51,7 @@
 /mob/living/carbon/human/proc/qwag_emote()
 	set name = "~ Animate tail (fast)"
 	set category = "Emotes"
-	usr.emote("qwag", intentional = TRUE)
+	emote("qwag", intentional = TRUE)
 
 
 /datum/emote/species/fastsway
@@ -65,7 +65,7 @@
 /mob/living/carbon/human/proc/fastsway_emote()
 	set name = "~ Animate tail (fast)"
 	set category = "Emotes"
-	usr.emote("fastsway", intentional = TRUE)
+	emote("fastsway", intentional = TRUE)
 
 
 /datum/emote/species/swag
@@ -79,7 +79,7 @@
 /mob/living/carbon/human/proc/swag_emote()
 	set name = "~ Animate tail (stop)"
 	set category = "Emotes"
-	usr.emote("fastsway", intentional = TRUE)
+	emote("fastsway", intentional = TRUE)
 
 /datum/emote/species/stopsway
 	key = "stopsway"
@@ -92,4 +92,4 @@
 /mob/living/carbon/human/proc/stopsway_emote()
 	set name = "~ Animate tail (stop)"
 	set category = "Emotes"
-	usr.emote("stopsway", intentional = TRUE)
+	emote("stopsway", intentional = TRUE)

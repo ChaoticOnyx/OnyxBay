@@ -16,7 +16,7 @@
 /mob/living/carbon/metroid/proc/pout_emote()
 	set name = "Pout"
 	set category = "Emotes"
-	usr.emote("pout", intentional = TRUE)
+	emote("pout", intentional = TRUE)
 
 /datum/emote/metroid/sad
 	key = "sad"
@@ -27,7 +27,7 @@
 /mob/living/carbon/metroid/proc/sad_emote()
 	set name = "Sad"
 	set category = "Emotes"
-	usr.emote("sad", intentional = TRUE)
+	emote("sad", intentional = TRUE)
 
 /datum/emote/metroid/angry
 	key = "angry"
@@ -38,7 +38,7 @@
 /mob/living/carbon/metroid/proc/angry_emote()
 	set name = "Angry"
 	set category = "Emotes"
-	usr.emote("angry", intentional = TRUE)
+	emote("angry", intentional = TRUE)
 
 /datum/emote/metroid/frown
 	key = "frown"

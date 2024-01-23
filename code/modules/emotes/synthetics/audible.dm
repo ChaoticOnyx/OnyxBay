@@ -24,7 +24,7 @@
 /mob/living/proc/beep_emote()
 	set name = "Beep"
 	set category = "Emotes"
-	usr.emote("beep", intentional = TRUE)
+	emote("beep", intentional = TRUE)
 
 
 /datum/emote/synth/ping
@@ -53,7 +53,7 @@
 /mob/living/proc/ping_emote()
 	set name = "Ping"
 	set category = "Emotes"
-	usr.emote("ping", intentional = TRUE)
+	emote("ping", intentional = TRUE)
 
 
 /datum/emote/synth/buzz
@@ -82,7 +82,7 @@
 /mob/living/proc/buzz_emote()
 	set name = "Buzz"
 	set category = "Emotes"
-	usr.emote("buzz", intentional = TRUE)
+	emote("buzz", intentional = TRUE)
 
 
 /datum/emote/synth/deny
@@ -111,7 +111,7 @@
 /mob/living/proc/deny_emote()
 	set name = "Deny"
 	set category = "Emotes"
-	usr.emote("deny", intentional = TRUE)
+	emote("deny", intentional = TRUE)
 
 
 /datum/emote/synth/confirm
@@ -140,7 +140,7 @@
 /mob/living/proc/confirm_emote()
 	set name = "Confirm"
 	set category = "Emotes"
-	usr.emote("confirm", intentional = TRUE)
+	emote("confirm", intentional = TRUE)
 
 
 /datum/emote/synth/law
@@ -169,7 +169,7 @@
 /mob/living/proc/law_emote()
 	set name = "Law"
 	set category = "Emotes"
-	usr.emote("law", intentional = TRUE)
+	emote("law", intentional = TRUE)
 
 
 /datum/emote/synth/halt
@@ -198,4 +198,4 @@
 /mob/living/proc/halt_emote()
 	set name = "Halt"
 	set category = "Emotes"
-	usr.emote("halt", intentional = TRUE)
+	emote("halt", intentional = TRUE)

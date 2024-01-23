@@ -15,7 +15,7 @@
 /mob/proc/blink_emote()
 	set name = "Blink"
 	set category = "Emotes"
-	usr.emote("blink", intentional = TRUE)
+	emote("blink", intentional = TRUE)
 
 
 /datum/emote/blink_rapidly
@@ -36,7 +36,7 @@
 /mob/proc/blink_rapidly_emote()
 	set name = "Blink (rapidly)"
 	set category = "Emotes"
-	usr.emote("blink_r", intentional = TRUE)
+	emote("blink_r", intentional = TRUE)
 
 
 /datum/emote/blush
@@ -56,7 +56,7 @@
 /mob/proc/blush_emote()
 	set name = "Blush"
 	set category = "Emotes"
-	usr.emote("blush", intentional = TRUE)
+	emote("blush", intentional = TRUE)
 
 
 /datum/emote/pale
@@ -76,7 +76,7 @@
 /mob/proc/pale_emote()
 	set name = "Pale"
 	set category = "Emotes"
-	usr.emote("pale", intentional = TRUE)
+	emote("pale", intentional = TRUE)
 
 
 /datum/emote/shiver
@@ -96,7 +96,7 @@
 /mob/proc/shiver_emote()
 	set name = "Shiver"
 	set category = "Emotes"
-	usr.emote("shiver", intentional = TRUE)
+	emote("shiver", intentional = TRUE)
 
 
 /datum/emote/drool
@@ -116,7 +116,7 @@
 /mob/proc/drool_emote()
 	set name = "Drool"
 	set category = "Emotes"
-	usr.emote("drool", intentional = TRUE)
+	emote("drool", intentional = TRUE)
 
 
 /datum/emote/eyebrow
@@ -136,7 +136,7 @@
 /mob/proc/eyebrow_emote()
 	set name = "Eyebrow"
 	set category = "Emotes"
-	usr.emote("eyebrow", intentional = TRUE)
+	emote("eyebrow", intentional = TRUE)
 
 
 /datum/emote/nod
@@ -156,7 +156,7 @@
 /mob/proc/nod_emote()
 	set name = "Nod"
 	set category = "Emotes"
-	usr.emote("nod", intentional = TRUE)
+	emote("nod", intentional = TRUE)
 
 
 /datum/emote/shake
@@ -180,7 +180,7 @@
 /mob/proc/shake_emote()
 	set name = "Shake"
 	set category = "Emotes"
-	usr.emote("shake", intentional = TRUE)
+	emote("shake", intentional = TRUE)
 
 
 /datum/emote/twitch
@@ -200,7 +200,7 @@
 /mob/proc/twitch_emote()
 	set name = "Twitch"
 	set category = "Emotes"
-	usr.emote("twitch", intentional = TRUE)
+	emote("twitch", intentional = TRUE)
 
 
 /datum/emote/twitch_violently
@@ -220,7 +220,7 @@
 /mob/proc/twitch_violently_emote()
 	set name = "Twitch (violently)"
 	set category = "Emotes"
-	usr.emote("twitch_v", intentional = TRUE)
+	emote("twitch_v", intentional = TRUE)
 
 
 /datum/emote/tremble
@@ -240,7 +240,7 @@
 /mob/proc/tremble_emote()
 	set name = "Tremble"
 	set category = "Emotes"
-	usr.emote("tremble", intentional = TRUE)
+	emote("tremble", intentional = TRUE)
 
 
 /datum/emote/collapse
@@ -268,7 +268,7 @@
 /mob/proc/collapse_emote()
 	set name = "Collapse"
 	set category = "Emotes"
-	usr.emote("collapse", intentional = TRUE)
+	emote("collapse", intentional = TRUE)
 
 
 /datum/emote/faint
@@ -296,7 +296,7 @@
 /mob/proc/faint_emote()
 	set name = "Faint"
 	set category = "Emotes"
-	usr.emote("faint", intentional = TRUE)
+	emote("faint", intentional = TRUE)
 
 
 /datum/emote/deathgasp
@@ -320,7 +320,7 @@
 /mob/proc/deathgasp()
 	set name = "Deathgasp"
 	set category = "Emotes"
-	usr.emote("deathgasp", intentional = TRUE)
+	emote("deathgasp", intentional = TRUE)
 
 
 /datum/emote/roll
@@ -340,7 +340,7 @@
 /mob/proc/roll_emote()
 	set name = "Roll"
 	set category = "Emotes"
-	usr.emote("roll", intentional = TRUE)
+	emote("roll", intentional = TRUE)
 
 
 /datum/emote/jump
@@ -360,7 +360,7 @@
 /mob/proc/jump_emote()
 	set name = "Jump"
 	set category = "Emotes"
-	usr.emote("jump", intentional = TRUE)
+	emote("jump", intentional = TRUE)
 
 
 /datum/emote/bow
@@ -380,7 +380,7 @@
 /mob/proc/bow_emote()
 	set name = "Bow"
 	set category = "Emotes"
-	usr.emote("bow", intentional = TRUE)
+	emote("bow", intentional = TRUE)
 
 
 /datum/emote/flap
@@ -433,7 +433,7 @@
 /mob/proc/frown_emote()
 	set name = "Frown"
 	set category = "Emotes"
-	usr.emote("frown", intentional = TRUE)
+	emote("frown", intentional = TRUE)
 
 
 /datum/emote/grin
@@ -454,7 +454,7 @@
 /mob/proc/grin_emote()
 	set name = "Grin"
 	set category = "Emotes"
-	usr.emote("grin", intentional = TRUE)
+	emote("grin", intentional = TRUE)
 
 
 /datum/emote/shrug
@@ -474,7 +474,7 @@
 /mob/proc/shrug_emote()
 	set name = "Shrug"
 	set category = "Emotes"
-	usr.emote("shrug", intentional = TRUE)
+	emote("shrug", intentional = TRUE)
 
 
 /datum/emote/smile
@@ -495,7 +495,7 @@
 /mob/proc/smile_emote()
 	set name = "Smile"
 	set category = "Emotes"
-	usr.emote("smile", intentional = TRUE)
+	emote("smile", intentional = TRUE)
 
 
 /datum/emote/wink
@@ -516,7 +516,7 @@
 /mob/proc/wink_emote()
 	set name = "Wink"
 	set category = "Emotes"
-	usr.emote("wink", intentional = TRUE)
+	emote("wink", intentional = TRUE)
 
 
 /datum/emote/stare
@@ -622,7 +622,7 @@
 /mob/proc/scratch_emote()
 	set name = "Scratch"
 	set category = "Emotes"
-	usr.emote("scratch", intentional = TRUE)
+	emote("scratch", intentional = TRUE)
 
 /datum/emote/sway
 	key = "sway"
@@ -641,7 +641,7 @@
 /mob/proc/sway_emote()
 	set name = "Sway"
 	set category = "Emotes"
-	usr.emote("sway", intentional = TRUE)
+	emote("sway", intentional = TRUE)
 
 /datum/emote/sulk
 	key = "sulk"
@@ -660,7 +660,7 @@
 /mob/proc/sulk_emote()
 	set name = "Sulk"
 	set category = "Emotes"
-	usr.emote("sulk", intentional = TRUE)
+	emote("sulk", intentional = TRUE)
 
 /datum/emote/hiss
 	key = "hiss"
@@ -679,7 +679,7 @@
 /mob/proc/hiss_emote()
 	set name = "Hiss"
 	set category = "Emotes"
-	usr.emote("hiss", intentional = TRUE)
+	emote("hiss", intentional = TRUE)
 
 
 /datum/emote/deathgasp_alien

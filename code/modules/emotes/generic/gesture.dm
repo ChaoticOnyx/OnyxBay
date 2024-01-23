@@ -15,7 +15,7 @@
 /mob/proc/airguitar_emote()
 	set name = "Airguitar"
 	set category = "Emotes"
-	usr.emote("airguitar", intentional = TRUE)
+	emote("airguitar", intentional = TRUE)
 
 
 /datum/emote/dap
@@ -93,7 +93,7 @@
 /mob/proc/dance_emote()
 	set name = "Dance"
 	set category = "Emotes"
-	usr.emote("dance", intentional = TRUE)
+	emote("dance", intentional = TRUE)
 
 
 /datum/emote/clap
@@ -118,7 +118,7 @@
 /mob/proc/clap_emote()
 	set name = "Clap"
 	set category = "Emotes"
-	usr.emote("clap", intentional = TRUE)
+	emote("clap", intentional = TRUE)
 
 
 /datum/emote/wave
@@ -139,7 +139,7 @@
 /mob/proc/wave_emote()
 	set name = "Wave"
 	set category = "Emotes"
-	usr.emote("wave", intentional = TRUE)
+	emote("wave", intentional = TRUE)
 
 
 /datum/emote/salute
@@ -160,7 +160,7 @@
 /mob/proc/salute_emote()
 	set name = "Salute"
 	set category = "Emotes"
-	usr.emote("salute", intentional = TRUE)
+	emote("salute", intentional = TRUE)
 
 
 /datum/emote/raise
@@ -183,7 +183,7 @@
 /mob/proc/raise_emote()
 	set name = "Raise"
 	set category = "Emotes"
-	usr.emote("raise")
+	emote("raise")
 
 
 /datum/emote/hug
