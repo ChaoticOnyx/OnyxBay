@@ -4,7 +4,7 @@
 
 #define FLOORLIGHT_DAMAGE_THRESHOLD 100
 
-#define FLOORLIGHT_SETTINGS list("rgb", "copy", "upload", "invert", "slow", "normal", "fast")
+#define FLOORLIGHT_SETTINGS list("rgb", "paste", "copy", "invert", "slow", "normal", "fast")
 #define FLOORLIGHT_SETTINGS_COLORS list(PIPE_COLOR_GREY, PIPE_COLOR_GREY, PIPE_COLOR_RED, PIPE_COLOR_BLUE, PIPE_COLOR_CYAN, PIPE_COLOR_GREEN, PIPE_COLOR_YELLOW, PIPE_COLOR_BLACK, PIPE_COLOR_ORANGE)
 
 
@@ -117,11 +117,11 @@
 				colour = new_color
 				show_splash_text_to_viewers("color changed.")
 				update_icon()
-		if("copy")
+		if("paste")
 			var/obj/item/I = user.get_active_item()
-			_copy_settigs(I)
+			_paste_settigs(I)
 			update_icon()
-		if("upload")
+		if("copy")
 			var/obj/item/device/multitool/MT = user.get_active_item()
 			if(istype(MT))
 				MT.set_buffer(src)
@@ -153,7 +153,7 @@
 		settings[option] = image('icons/hud/radial.dmi', "radial_[option]")
 
 
-/obj/machinery/floor_light/proc/_copy_settigs(obj/item/device/multitool/MT)
+/obj/machinery/floor_light/proc/_paste_settigs(obj/item/device/multitool/MT)
 	if(!istype(MT))
 		return
 
