@@ -9,15 +9,15 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 
 	/// 'laughs!' -> 'You laugh!'
 	var/message_1p
-	/// 'laughs!' -> 'Trottine Piggington laughs!')
+	/// 'laughs!' -> 'Trottine Piggington laughs!'
 	var/message_3p
-	/// From mute message ('laughs silently.') -> ('Trottine Piggington laughs silently.')
+	/// 'laughs silently.' -> 'Trottine Piggington laughs silently.'
 	var/message_impaired_production
-	/// For deaf/blind message ('You hear someone laughing.', 'You see someone opening and closing their mouth.')
+	/// For deaf/blind e.g. 'You hear someone laughing.'
 	var/message_impaired_reception
-	/// Mime message ('laughs!') -> ('Trottine Piggington acts out a laugh!')
+	/// 'laughs!' -> 'Trottine Piggington acts out a laugh!'
 	var/message_miming
-	/// Muzzled message ('giggles sligthly.') -> ('James Morgan giggles sligthly.')
+	/// 'chokes!' -> 'makes a weak noise!'
 	var/message_muzzled
 	/// Audible/visual flag
 	var/message_type = AUDIBLE_MESSAGE
@@ -27,6 +27,10 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 
 	/// Sound produced (oink!)
 	var/sound
+	/// Sound for human with male gender. Prioritized over var/sound, e.g. if both variables are set this one will be used for sound production over var/sound.
+	var/sound_human_male
+	/// Similar as the previous var, but for gender == FEMALE
+	var/sound_human_female
 	/// Whether sound pitch varies with age.
 	var/pitch_age_variation = FALSE
 
@@ -67,7 +71,13 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 
 	return msg
 
-/datum/emote/proc/get_sound(mob/living/carbon/human/user, intentional)
+/datum/emote/proc/get_sound(mob/user, intentional)
+	if(ishuman(user))
+		if(!isnull(sound_human_female) && user.gender == FEMALE)
+			return pick(sound_human_female)
+		else if(!isnull(sound_human_male) && user.gender == MALE)
+			return pick(sound_human_male)
+
 	return sound
 
 /datum/emote/proc/get_cooldown_group()
@@ -85,7 +95,7 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 /datum/emote/proc/set_cooldown(list/cooldowns, value, intentional)
 	LAZYSET(cooldowns, get_cooldown_group(), world.time + value)
 
-/datum/emote/proc/play_sound(mob/living/carbon/human/user, intentional, emote_sound)
+/datum/emote/proc/play_sound(mob/user, intentional, emote_sound)
 	var/sound_frequency = null
 	if(pitch_age_variation && ishuman(user))
 		var/mob/living/carbon/human/H = user
@@ -126,12 +136,11 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 
 	if(msg_3p)
 		if(message_type & VISIBLE_MESSAGE)
-			user.visible_message(message = msg_3p, self_message = msg_1p, blind_message = message_impaired_reception, range = range, checkghosts = /datum/client_preference/ghost_sight)
+			user.visible_message(message = msg_3p, self_message = null, blind_message = message_impaired_reception, range = range, checkghosts = /datum/client_preference/ghost_sight)
 		else if(message_type & AUDIBLE_MESSAGE)
-			user.audible_message(message = msg_3p, self_message = msg_1p, deaf_message = message_impaired_reception, hearing_distance = range, checkghosts = /datum/client_preference/ghost_sight)
+			user.audible_message(message = msg_3p, self_message = null, deaf_message = message_impaired_reception, hearing_distance = range, checkghosts = /datum/client_preference/ghost_sight)
 
-	else
-		to_chat(user, msg_1p)
+	user.show_splash_text(user, msg_1p)
 
 	var/emote_sound = get_sound(user, intentional)
 	if(emote_sound && can_play_sound(user, intentional))
@@ -152,12 +161,6 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 		return FALSE
 
 	return TRUE
-
-/proc/get_sound_by_voice(mob/user, male_sounds, female_sounds)
-	if(user.gender == FEMALE)
-		return pick(female_sounds)
-
-	return pick(male_sounds)
 
 #undef MIN_VOICE_FREQUENCY
 #undef MAX_VOICE_FREQUENCY

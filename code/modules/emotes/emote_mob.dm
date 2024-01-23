@@ -10,6 +10,10 @@
 	load_default_emotes()
 
 /mob/proc/load_default_emotes()
+	if(!default_emotes.len)
+		return
+
+	default_emotes = sortAssoc(default_emotes)
 	for(var/path in default_emotes)
 		var/datum/emote/E = GLOB.all_emotes[path]
 		set_emote(E.key, E)

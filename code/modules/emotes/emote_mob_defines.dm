@@ -51,13 +51,8 @@
 		/datum/emote/wink,
 		/datum/emote/hug,
 		/datum/emote/dap,
-		/datum/emote/handshake
-	)
-
-/mob/living/silicon/robot
-	default_emotes = list(
-		/datum/emote/whimper,
-		/datum/emote/moan
+		/datum/emote/handshake,
+		/datum/emote/dance
 	)
 
 /mob/living/silicon/robot/load_default_emotes()

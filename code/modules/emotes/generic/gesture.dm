@@ -1,7 +1,7 @@
 /datum/emote/airguitar
 	key = "airguitar"
 
-	message_1p = "You are strumming the air and headbanging like a safari chimp!"
+	message_1p = "You play an imaginary guitar!"
 	message_3p = "is strumming the air and headbanging like a safari chimp."
 
 	message_type = VISIBLE_MESSAGE
@@ -236,6 +236,6 @@
 		return "shakes hands with \the [target]"
 
 /mob/proc/handshake_emote()
-	set name = "handshake"
+	set name = "Handshake"
 	set category = "Emotes"
 	target_emote("handshake")

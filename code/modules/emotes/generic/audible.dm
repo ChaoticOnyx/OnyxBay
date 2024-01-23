@@ -70,6 +70,9 @@
 		EMOTE_STATE(is_stat, CONSCIOUS)
 	)
 
+	sound_human_female = SFX_FEMALE_HEAVY_BREATH
+	sound_human_male = SFX_MALE_HEAVY_BREATH
+
 	statpanel_proc = /mob/proc/gasp_emote
 
 /mob/proc/gasp_emote()
@@ -89,6 +92,9 @@
 	state_checks = list(
 		EMOTE_STATE(is_stat, CONSCIOUS)
 	)
+
+	sound_human_female = SFX_FEMALE_SNEEZE
+	sound_human_male = SFX_MALE_SNEEZE
 
 	statpanel_proc = /mob/proc/sneeze_emote
 
@@ -115,8 +121,10 @@
 		EMOTE_STATE(is_stat, CONSCIOUS)
 	)
 
-	statpanel_proc = /mob/proc/choke_emote
+	sound_human_female = SFX_FEMALE_HEAVY_BREATH
+	sound_human_male = SFX_MALE_HEAVY_BREATH
 
+	statpanel_proc = /mob/proc/choke_emote
 
 /datum/emote/choke/get_impaired_msg(mob/user)
 	return "clutches [P_THEIR(user.gender)] throat desperately!"
@@ -144,9 +152,12 @@
 		EMOTE_STATE(is_stat, CONSCIOUS)
 	)
 
+	sound_human_female = SFX_FEMALE_LAUGH
+	sound_human_male = SFX_MALE_LAUGH
+
 	statpanel_proc = /mob/proc/chuckle_emote
 
-/datum/emote/choke/get_impaired_msg(mob/user)
+/datum/emote/chuckle/get_impaired_msg(mob/user)
 	return "clutches [P_THEIR(user.gender)] throat!"
 
 /mob/proc/chuckle_emote()
@@ -198,16 +209,16 @@
 		EMOTE_STATE(is_stat, CONSCIOUS)
 	)
 
+	sound_human_female = SFX_FEMALE_COUGH
+	sound_human_male = SFX_MALE_COUGH
+
 	statpanel_proc = /mob/proc/cough_emote
 
 /datum/emote/cough/get_impaired_msg(mob/user)
 	return "moves [P_THEIR(user.gender)] face forward as [P_THEY(user.gender)] open and close [P_THEIR(user.gender)] mouth!"
 
-/datum/emote/cough/get_sound(mob/user, intentional)
-	return get_sound_by_voice(user, SFX_MALE_COUGH, SFX_FEMALE_COUGH)
-
 /mob/proc/cough_emote()
-	set name = "Сough"
+	set name = "Cough"
 	set category = "Emotes"
 	usr.emote("cough", intentional = TRUE)
 
@@ -229,10 +240,10 @@
 		EMOTE_STATE(is_stat, CONSCIOUS),
 	)
 
-	statpanel_proc = /mob/proc/cry_emote
+	sound_human_female = SFX_FEMALE_CRY
+	sound_human_male = SFX_MALE_CRY
 
-/datum/emote/cry/get_sound(mob/user, intentional)
-	return get_sound_by_voice(user, SFX_MALE_CRY, SFX_FEMALE_CRY)
+	statpanel_proc = /mob/proc/cry_emote
 
 /mob/proc/cry_emote()
 	set name = "Cry"
@@ -258,13 +269,13 @@
 		EMOTE_STATE(is_intentional_or_species_no_flag, SPECIES_FLAG_NO_PAIN)
 	)
 
+	sound_human_female = SFX_FEMALE_PAIN
+	sound_human_male = SFX_MALE_PAIN
+
 	statpanel_proc = /mob/proc/scream_emote
 
 /datum/emote/scream/get_impaired_msg(mob/user)
 	return "opens [P_THEIR(user.gender)] mouth like a fish gasping for air!"
-
-/datum/emote/scream/get_sound(mob/user, intentional)
-	return get_sound_by_voice(user, SFX_MALE_PAIN, SFX_FEMALE_PAIN)
 
 /mob/proc/scream_emote()
 	set name = "Scream"
@@ -285,10 +296,10 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	statpanel_proc = /mob/proc/scream_long_emote
+	sound_human_female = SFX_FEMALE_LONG_SCREAM
+	sound_human_male = SFX_MALE_LONG_SCREAM
 
-/datum/emote/scream_long/get_sound(mob/user, intentional)
-	return get_sound_by_voice(user, SFX_MALE_LONG_SCREAM, SFX_FEMALE_LONG_SCREAM)
+	statpanel_proc = /mob/proc/scream_long_emote
 
 /mob/proc/scream_long_emote()
 	set name = "Scream (long)"
@@ -341,13 +352,13 @@
 		EMOTE_STATE(is_stat, CONSCIOUS)
 	)
 
+	sound_human_female = SFX_FEMALE_LAUGH
+	sound_human_male = SFX_MALE_LAUGH
+
 	statpanel_proc = /mob/proc/laugh_emote
 
 /datum/emote/laugh/get_impaired_msg(mob/user)
 	return "opens and closes [P_THEIR(user.gender)] mouth, smiling."
-
-/datum/emote/laugh/get_sound(mob/user, intentional)
-	return get_sound_by_voice(user, SFX_MALE_LAUGH, SFX_FEMALE_LAUGH)
 
 /mob/proc/laugh_emote()
 	set name = "Laugh"
@@ -371,6 +382,9 @@
 	state_checks = list(
 		EMOTE_STATE(is_stat, CONSCIOUS)
 	)
+
+	sound_human_female = SFX_FEMALE_LAUGH
+	sound_human_male = SFX_MALE_LAUGH
 
 	statpanel_proc = /mob/proc/giggle_emote
 
@@ -401,13 +415,13 @@
 		EMOTE_STATE(is_intentional_or_species_no_flag, SPECIES_FLAG_NO_PAIN)
 	)
 
+	sound_human_female = SFX_FEMALE_PAIN
+	sound_human_male = SFX_MALE_PAIN
+
 	statpanel_proc = /mob/proc/grunt_emote
 
 /datum/emote/grunt/get_impaired_msg(mob/user)
 	return "clenches [P_THEIR(user.gender)] teeth."
-
-/datum/emote/grunt/get_sound(mob/user, intentional)
-	return get_sound_by_voice(user, SFX_MALE_PAIN, SFX_FEMALE_PAIN)
 
 /mob/proc/grunt_emote()
 	set name = "Grunt"
@@ -433,13 +447,13 @@
 		EMOTE_STATE(is_intentional_or_species_no_flag, SPECIES_FLAG_NO_PAIN)
 	)
 
+	sound_human_female = SFX_FEMALE_PAIN
+	sound_human_male = SFX_MALE_PAIN
+
 	statpanel_proc = /mob/proc/groan_emote
 
 /datum/emote/groan/get_impaired_msg(mob/user)
 	return "opens [P_THEIR(user.gender)] mouth slightly."
-
-/datum/emote/groan/get_sound(mob/user, intentional)
-	return get_sound_by_voice(user, SFX_MALE_PAIN, SFX_FEMALE_PAIN)
 
 /mob/proc/groan_emote()
 	set name = "Groan"
@@ -493,13 +507,12 @@
 		EMOTE_STATE(is_stat, CONSCIOUS)
 	)
 
+	sound = SFX_SNORE
+
 	statpanel_proc = /mob/proc/snore_emote
 
-/datum/emote/choke/get_impaired_msg(mob/user)
+/datum/emote/snore/get_impaired_msg(mob/user)
 	return "clutches [P_THEIR(user.gender)] throat desperately!"
-
-/datum/emote/choke/get_sound(mob/user, intentional)
-	return get_sound_by_voice(user, SFX_MALE_HEAVY_BREATH, SFX_FEMALE_HEAVY_BREATH)
 
 /mob/proc/snore_emote()
 	set name = "Snore"
@@ -532,27 +545,6 @@
 	set category = "Emotes"
 	usr.emote("sniff", intentional = TRUE)
 
-/datum/emote/gasp
-	key = "gasp"
-
-	message_1p = "You gasp!"
-	message_3p = "gasps!"
-
-	message_impaired_production = "sucks in air violently!"
-	message_impaired_reception = "sucks in air violently!"
-
-	message_miming = "appears to be gasping!"
-	message_muzzled = "makes a weak noise."
-
-	message_type = AUDIBLE_MESSAGE
-
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_present_bodypart, BP_HEAD)
-	)
-
-	statpanel_proc = /mob/proc/gasp_emote
-
 
 /datum/emote/sigh
 	key = "sigh"
@@ -570,6 +562,9 @@
 	state_checks = list(
 		EMOTE_STATE(is_stat, CONSCIOUS),
 	)
+
+	sound_human_female = SFX_FEMALE_SIGH
+	sound_human_male = SFX_MALE_SIGH
 
 	statpanel_proc = /mob/proc/sigh_emote
 
@@ -675,12 +670,12 @@
 		EMOTE_STATE(is_stat, CONSCIOUS)
 	)
 
+	sound_human_female = SFX_FEMALE_YAWN
+	sound_human_male = SFX_MALE_YAWN
+
 	statpanel_proc = /mob/proc/yawn_emote
 
 /mob/proc/yawn_emote()
 	set name = "Yawn"
 	set category = "Emotes"
 	usr.emote("yawn")
-
-/datum/emote/yawn/get_sound(mob/user, intentional)
-	return get_sound_by_voice(user, SFX_MALE_YAWN, SFX_FEMALE_YAWN)
