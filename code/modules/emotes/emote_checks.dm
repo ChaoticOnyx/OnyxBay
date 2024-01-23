@@ -12,24 +12,6 @@
 
 	return is_stat(stat, M, intentional)
 
-/proc/is_species_not_flag(flag, mob/M, intentional)
-	var/datum/species/S = all_species[M.get_species()]
-	if(!S)
-		return TRUE
-
-	//if(S.flags[flag])
-	//	if(intentional)
-	//		to_chat(M, SPAN_NOTICE("Your species can't perform this emote."))
-	//	return FALSE
-
-	return TRUE
-
-/proc/is_intentional_or_species_no_flag(flag, mob/M, intentional)
-	if(intentional)
-		return TRUE
-
-	return is_species_not_flag(flag, M, intentional)
-
 /proc/is_one_hand_usable(mob/M, intentional)
 	if(M.restrained())
 		if(intentional)
@@ -54,14 +36,6 @@
 	if(!BP)
 		if(intentional)
 			to_chat(H, SPAN_NOTICE("You can't perform this emote without a [parse_zone(zone)]."))
-		return FALSE
-
-	return TRUE
-
-/proc/is_not_species(species, mob/M, intentional)
-	if(M.get_species() == species)
-		if(intentional)
-			to_chat(M, SPAN_NOTICE("Your species can't perform this emote."))
 		return FALSE
 
 	return TRUE

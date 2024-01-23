@@ -1819,7 +1819,7 @@
 #include "code\modules\emotes\generic\audible.dm"
 #include "code\modules\emotes\generic\gesture.dm"
 #include "code\modules\emotes\generic\visual.dm"
-#include "code\modules\emotes\monkey\audible.dm"
+#include "code\modules\emotes\metroid\metroid.dm"
 #include "code\modules\emotes\species\visual.dm"
 #include "code\modules\emotes\synthetics\audible.dm"
 #include "code\modules\emotes\synthetics\visual.dm"

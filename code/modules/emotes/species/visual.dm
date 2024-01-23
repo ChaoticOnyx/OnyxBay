@@ -29,12 +29,12 @@
 /datum/emote/species/sway
 	key = "sway"
 
-	statpanel_proc = /mob/living/carbon/human/proc/sway_emote
+	statpanel_proc = /mob/living/carbon/human/proc/sway_tail_emote
 
 /datum/emote/species/sway/do_emote(mob/living/carbon/human/user)
 	user.animate_tail_start()
 
-/mob/living/carbon/human/proc/sway_emote()
+/mob/living/carbon/human/proc/sway_tail_emote()
 	set name = "~ Animate tail (start)"
 	set category = "Emotes"
 	usr.emote("sway", intentional = TRUE)

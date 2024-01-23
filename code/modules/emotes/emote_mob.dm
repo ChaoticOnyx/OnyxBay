@@ -10,7 +10,7 @@
 	load_default_emotes()
 
 /mob/proc/load_default_emotes()
-	if(!default_emotes.len)
+	if(!islist(default_emotes))
 		return
 
 	default_emotes = sortAssoc(default_emotes)

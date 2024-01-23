@@ -265,8 +265,7 @@
 	message_type = AUDIBLE_MESSAGE
 
 	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_intentional_or_species_no_flag, SPECIES_FLAG_NO_PAIN)
+		EMOTE_STATE(is_stat, CONSCIOUS)
 	)
 
 	sound_human_female = SFX_FEMALE_PAIN
@@ -411,8 +410,7 @@
 	message_type = AUDIBLE_MESSAGE
 
 	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_intentional_or_species_no_flag, SPECIES_FLAG_NO_PAIN)
+		EMOTE_STATE(is_stat, CONSCIOUS)
 	)
 
 	sound_human_female = SFX_FEMALE_PAIN
@@ -443,8 +441,7 @@
 	message_type = AUDIBLE_MESSAGE
 
 	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_intentional_or_species_no_flag, SPECIES_FLAG_NO_PAIN)
+		EMOTE_STATE(is_stat, CONSCIOUS)
 	)
 
 	sound_human_female = SFX_FEMALE_PAIN
@@ -679,3 +676,24 @@
 	set name = "Yawn"
 	set category = "Emotes"
 	usr.emote("yawn")
+
+/datum/emote/chirp
+	key = "chirp"
+
+	message_1p = "You chirp."
+	message_3p = "chirps!"
+
+	message_type = AUDIBLE_MESSAGE
+
+	sound = 'sound/misc/nymphchirp.ogg'
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/chirp_emote
+
+/mob/proc/chirp_emote()
+	set name = "Chirp"
+	set category = "Emotes"
+	usr.emote("chirp")

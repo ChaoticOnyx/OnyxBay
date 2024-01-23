@@ -312,8 +312,16 @@
 		EMOTE_STATE(is_stat_or_not_intentional, CONSCIOUS)
 	)
 
+	statpanel_proc = /mob/proc/deathgasp
+
 /datum/emote/deathgasp/get_emote_message_3p(mob/user)
 	return "seizes up and falls limp, [P_THEIR(user.gender)] eyes dead and lifeless..."
+
+/mob/proc/deathgasp()
+	set name = "Deathgasp"
+	set category = "Emotes"
+	usr.emote("deathgasp", intentional = TRUE)
+
 
 /datum/emote/roll
 	key = "roll"
@@ -596,3 +604,96 @@
 	set name = "Glare at"
 	set category = "Emotes"
 	target_emote("glare")
+
+/datum/emote/scratch
+	key = "scratch"
+
+	message_1p = "You scratch."
+	message_3p = "scrathes."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/scratch_emote
+
+/mob/proc/scratch_emote()
+	set name = "Scratch"
+	set category = "Emotes"
+	usr.emote("scratch", intentional = TRUE)
+
+/datum/emote/sway
+	key = "sway"
+
+	message_1p = "You sway."
+	message_3p = "sways around dizzily.."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/sway_emote
+
+/mob/proc/sway_emote()
+	set name = "Sway"
+	set category = "Emotes"
+	usr.emote("sway", intentional = TRUE)
+
+/datum/emote/sulk
+	key = "sulk"
+
+	message_1p = "You sulk."
+	message_3p = "sulks down sadly."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/sulk_emote
+
+/mob/proc/sulk_emote()
+	set name = "Sulk"
+	set category = "Emotes"
+	usr.emote("sulk", intentional = TRUE)
+
+/datum/emote/hiss
+	key = "hiss"
+
+	message_1p = "You hiss."
+	message_3p = "hisses softly."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/hiss_emote
+
+/mob/proc/hiss_emote()
+	set name = "Hiss"
+	set category = "Emotes"
+	usr.emote("hiss", intentional = TRUE)
+
+
+/datum/emote/deathgasp_alien
+	key = "deathgasp"
+
+	message_1p = "You seize up and fall limp, your eyes dead and lifeless..."
+	message_3p = "lets out a waning guttural screech, green blood bubbling from its maw."
+
+	message_impaired_reception = "You hear a thud."
+
+	message_type = AUDIBLE_MESSAGE
+
+	state_checks = list(
+		EMOTE_STATE(is_stat_or_not_intentional, CONSCIOUS)
+	)
+
+	statpanel_proc = /mob/proc/deathgasp

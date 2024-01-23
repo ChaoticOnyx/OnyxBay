@@ -116,7 +116,7 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 
 	return TRUE
 
-/datum/emote/proc/do_emote(mob/living/carbon/human/user, emote_key, intentional, target)
+/datum/emote/proc/do_emote(mob/user, emote_key, intentional, target)
 	LAZYINITLIST(user.next_emote_use)
 	set_cooldown(user.next_emote_use, cooldown, intentional)
 

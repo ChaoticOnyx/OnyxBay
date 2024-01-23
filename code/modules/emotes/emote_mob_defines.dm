@@ -1,4 +1,27 @@
 
+/mob/living/carbon/alien
+	default_emotes = list(
+		/datum/emote/scratch,
+		/datum/emote/drool,
+		/datum/emote/nod,
+		/datum/emote/sway,
+		/datum/emote/sulk,
+		/datum/emote/twitch,
+		/datum/emote/dance,
+		/datum/emote/roll,
+		/datum/emote/shake,
+		/datum/emote/jump,
+		/datum/emote/hiss,
+		/datum/emote/shiver,
+		/datum/emote/collapse,
+		/datum/emote/deathgasp_alien,
+		/datum/emote/whimper,
+		/datum/emote/gasp,
+		/datum/emote/choke,
+		/datum/emote/moan,
+		/datum/emote/chirp
+		)
+
 /mob/living/carbon/human
 	default_emotes = list(
 		/datum/emote/scream,
@@ -55,6 +78,35 @@
 		/datum/emote/dance
 	)
 
+/mob/living/carbon/metroid/load_default_emotes()
+	default_emotes += typesof(/datum/emote/metroid)
+	return ..()
+
+/mob/living/silicon/robot
+	default_emotes = list(
+		/datum/emote/synth/beep,
+		/datum/emote/synth/ping,
+		/datum/emote/synth/buzz,
+		/datum/emote/synth/deny,
+		/datum/emote/synth/confirm,
+		/datum/emote/synth/law,
+		/datum/emote/synth/halt,
+		/datum/emote/synth/deathgasp,
+		/datum/emote/clap,
+		/datum/emote/bow,
+		/datum/emote/salute,
+		/datum/emote/flap,
+		/datum/emote/aflap,
+		/datum/emote/twitch,
+		/datum/emote/twitch_violently,
+		/datum/emote/nod,
+		/datum/emote/shake,
+		/datum/emote/glare,
+		/datum/emote/look,
+		/datum/emote/stare,
+		/datum/emote/dance
+		)
+
 /mob/living/silicon/robot/load_default_emotes()
 	default_emotes += subtypesof(/datum/emote/synth)
 	return ..()
@@ -64,7 +116,7 @@
 		/datum/emote/moan,
 		/datum/emote/twitch,
 		/datum/emote/species/sway,
-		/datum/emote/shiver,
+		/datum/emote/shiver
 	)
 
 /datum/species

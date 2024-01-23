@@ -1,4 +1,4 @@
-/datum/emote/robot/deathgasp
+/datum/emote/synth/deathgasp
 	key = "deathgasp"
 
 	message_1p = "You shudder violently for a moment, then become motionless, your eyes slowly darkening..."
@@ -10,17 +10,4 @@
 
 	state_checks = list(
 		EMOTE_STATE(is_stat_or_not_intentional, CONSCIOUS)
-	)
-
-
-/datum/emote/robot/bow
-	key = "bow"
-
-	message_1p = "You bow."
-	message_3p = "bows."
-
-	message_type = VISIBLE_MESSAGE
-
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
 	)
