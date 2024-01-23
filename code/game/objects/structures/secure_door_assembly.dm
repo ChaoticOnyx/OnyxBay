@@ -24,7 +24,7 @@
 	state = STATE_WIRED
 	update_icon()
 
-/obj/structure/secure_door_assembly/update_icon()
+/obj/structure/secure_door_assembly/on_update_icon()
 	switch(state)
 		if(STATE_EMPTY)
 			icon_state = "[base_icon]_st0"
