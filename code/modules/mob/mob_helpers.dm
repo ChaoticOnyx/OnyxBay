@@ -30,7 +30,6 @@
 			if(BP_IS_ROBOTIC(E))
 				robolimb_count++
 		full_prosthetic = (robolimb_count == organs.len)
-		//update_emotes()
 	return full_prosthetic
 
 /mob/living/silicon/isSynthetic()
