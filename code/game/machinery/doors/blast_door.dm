@@ -184,15 +184,16 @@
 
 /obj/machinery/door/blast/dismantle()
 	playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
-	var/obj/structure/secure_door/A =  new assembly_path(get_turf(src))
-	var/obj/item/device/assembly/signaler/S = new /obj/item/device/assembly/signaler(get_turf(src))
-	if(code && frequency)
-		S.code = code
-		S.frequency = frequency
+	var/turf/T = get_turf(src)
+	var/obj/structure/secure_door/A =  new assembly_path(T)
 	A.anchored = TRUE
 	A.dir = dir
 	A.state = 2
 	A.update_icon()
+	var/obj/item/device/assembly/signaler/S = new /obj/item/device/assembly/signaler(T)
+	if(code && frequency)
+		S.code = code
+		S.frequency = frequency
 	qdel(src)
 	return
 
