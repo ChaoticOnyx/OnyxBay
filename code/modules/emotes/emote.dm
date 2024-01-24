@@ -154,7 +154,7 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 		else if(message_type & AUDIBLE_MESSAGE)
 			user.audible_message(message = msg_3p, self_message = null, deaf_message = message_impaired_reception, hearing_distance = range, checkghosts = /datum/client_preference/ghost_sight)
 
-	user.show_splash_text(user, msg_1p)
+	to_chat(user, msg_1p)
 
 	var/emote_sound = get_sound(user, intentional)
 	if(emote_sound && can_play_sound(user, intentional))

@@ -1,10 +1,10 @@
 /mob/proc/target_emote(emote, min_range = null)
 	var/datum/click_handler/handler = GetClickHandler()
 	if(handler.type == /datum/click_handler/emotes/target_emote)
-		show_splash_text(src, "Target selection canceled.")
+		to_chat(src, "Target selection canceled.")
 		usr.PopClickHandler()
 	else
-		show_splash_text(src, "Select a target.")
+		to_chat(src, "Select a target.")
 		PushClickHandler(/datum/click_handler/emotes/target_emote, list(emote, min_range))
 
 /mob/proc/prepare_target_emote(mob/living/target, parameters)
