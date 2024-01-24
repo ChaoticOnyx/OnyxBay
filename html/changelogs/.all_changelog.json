@@ -1,6 +1,22 @@
 [
   {
     "author": "Filatelele",
+    "date": "2024-01-24T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "RscAdd",
+        "message": "Эмоут-панель.",
+        "pr": 11402
+      },
+      {
+        "prefix": "Tweak",
+        "message": "Рефактор и датумизация эмоутов.",
+        "pr": 11402
+      }
+    ]
+  },
+  {
+    "author": "Filatelele",
     "date": "2024-01-23T00:00:00+03:00",
     "changes": [
       {
