@@ -46,7 +46,6 @@
 #include "code\__defines\dna.dm"
 #include "code\__defines\donations_defines.dm"
 #include "code\__defines\emissives.dm"
-#include "code\__defines\emote.dm"
 #include "code\__defines\explosion.dm"
 #include "code\__defines\feedback.dm"
 #include "code\__defines\filters.dm"
