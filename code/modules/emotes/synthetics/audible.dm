@@ -14,10 +14,7 @@
 
 	sound = 'sound/signals/ping7.ogg'
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_synth_or_robot)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_SYNTH_OR_ROBOT
 
 	statpanel_proc = /mob/living/proc/beep_emote
 
@@ -43,10 +40,7 @@
 
 	sound = 'sound/signals/ping1.ogg'
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_synth_or_robot)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_SYNTH_OR_ROBOT
 
 	statpanel_proc = /mob/living/proc/ping_emote
 
@@ -72,10 +66,7 @@
 
 	sound = 'sound/signals/warning2.ogg'
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_synth_or_robot)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_SYNTH_OR_ROBOT
 
 	statpanel_proc = /mob/living/proc/buzz_emote
 
@@ -101,10 +92,7 @@
 
 	sound = 'sound/signals/warning7.ogg'
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_synth_or_robot)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_SYNTH_OR_ROBOT
 
 	statpanel_proc = /mob/living/proc/deny_emote
 
@@ -130,10 +118,7 @@
 
 	sound = 'sound/signals/ping5.ogg'
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_synth_or_robot)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_SYNTH_OR_ROBOT
 
 	statpanel_proc = /mob/living/proc/confirm_emote
 
@@ -159,10 +144,7 @@
 
 	sound = 'sound/voice/biamthelaw.ogg'
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(has_robot_module, /obj/item/robot_module/security)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_ROBOT_SEC_MODULE
 
 	statpanel_proc = /mob/living/proc/law_emote
 
@@ -188,10 +170,7 @@
 
 	sound = 'sound/voice/halt.ogg'
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(has_robot_module, /obj/item/robot_module/security),
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_ROBOT_SEC_MODULE
 
 	statpanel_proc = /mob/living/proc/halt_emote
 

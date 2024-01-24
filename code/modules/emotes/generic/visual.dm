@@ -6,9 +6,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/blink_emote
 
@@ -26,11 +24,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_present_bodypart, BP_HEAD)
-	)
-
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_HEAD_PRESENT
 	statpanel_proc = /mob/proc/blink_rapidly_emote
 
 /mob/proc/blink_rapidly_emote()
@@ -47,9 +41,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/blush_emote
 
@@ -67,9 +59,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/pale_emote
 
@@ -87,9 +77,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/shiver_emote
 
@@ -107,9 +95,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/drool_emote
 
@@ -127,9 +113,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/eyebrow_emote
 
@@ -147,9 +131,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/nod_emote
 
@@ -166,9 +148,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/shake_emote
 
@@ -191,9 +171,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/twitch_emote
 
@@ -211,9 +189,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/twitch_violently_emote
 
@@ -231,9 +207,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/tremble_emote
 
@@ -253,9 +227,7 @@
 
 	cooldown = 4 SECONDS
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/collapse_emote
 
@@ -281,9 +253,7 @@
 
 	cooldown = 20 SECONDS
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/faint_emote
 
@@ -308,9 +278,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat_or_not_intentional, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS_OR_NOT_INTENTIONAL
 
 	statpanel_proc = /mob/proc/deathgasp
 
@@ -331,9 +299,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/roll_emote
 
@@ -351,9 +317,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/jump_emote
 
@@ -371,9 +335,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/bow_emote
 
@@ -390,11 +352,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_present_bodypart, BP_HEAD)
-	)
-
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_HEAD_PRESENT
 /datum/emote/flap/get_emote_message_3p(mob/user)
 	return "flaps [P_THEIR(user)] wings."
 
@@ -406,11 +364,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_present_bodypart, BP_HEAD)
-	)
-
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_HEAD_PRESENT
 /datum/emote/aflap/get_emote_message_3p(mob/user)
 	return "flaps [P_THEIR(user)] wings ANGRILY!"
 
@@ -423,11 +377,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_present_bodypart, BP_HEAD)
-	)
-
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_HEAD_PRESENT
 	statpanel_proc = /mob/proc/frown_emote
 
 /mob/proc/frown_emote()
@@ -444,11 +394,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_present_bodypart, BP_HEAD)
-	)
-
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_HEAD_PRESENT
 	statpanel_proc = /mob/proc/grin_emote
 
 /mob/proc/grin_emote()
@@ -465,9 +411,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/shrug_emote
 
@@ -485,11 +429,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_present_bodypart, BP_HEAD)
-	)
-
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_HEAD_PRESENT
 	statpanel_proc = /mob/proc/smile_emote
 
 /mob/proc/smile_emote()
@@ -506,11 +446,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_present_bodypart, BP_HEAD)
-	)
-
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_HEAD_PRESENT
 	statpanel_proc = /mob/proc/wink_emote
 
 /mob/proc/wink_emote()
@@ -524,10 +460,8 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_present_bodypart, BP_HEAD)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_HEAD_PRESENT
+
 	statpanel_proc = /mob/proc/stare_emote
 
 /datum/emote/stare/get_emote_message_1p(mob/user, target)
@@ -553,10 +487,8 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_present_bodypart, BP_HEAD)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_HEAD_PRESENT
+
 	statpanel_proc = /mob/proc/look_emote
 
 /datum/emote/look/get_emote_message_1p(mob/user, target)
@@ -582,10 +514,8 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_present_bodypart, BP_HEAD)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_HEAD_PRESENT
+
 	statpanel_proc = /mob/proc/glare_emote
 
 /datum/emote/glare/get_emote_message_1p(mob/user, target)
@@ -613,9 +543,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/scratch_emote
 
@@ -632,9 +560,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/sway_emote
 
@@ -651,9 +577,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/sulk_emote
 
@@ -670,9 +594,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/hiss_emote
 
@@ -692,9 +614,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat_or_not_intentional, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS_OR_NOT_INTENTIONAL
 
 	statpanel_proc = /mob/proc/deathgasp
 

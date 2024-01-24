@@ -41,7 +41,7 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 	/// Cooldown for the audio of the emote, if it has one.
 	var/audio_cooldown = 3 SECONDS
 
-	var/list/state_checks
+	var/state_checks
 
 	var/statpanel_proc = null
 
@@ -104,15 +104,29 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 
 	playsound(user, emote_sound, 75, frequency = sound_frequency)
 
-/datum/emote/proc/can_emote(mob/living/carbon/human/user, intentional)
+/datum/emote/proc/can_emote(mob/user, intentional)
 	if(!check_cooldown(user.next_emote_use, intentional))
 		if(intentional)
 			to_chat(user, SPAN_NOTICE("You can't emote so much, give it a rest."))
 		return FALSE
 
-	for(var/datum/callback/state as anything in state_checks)
-		if(!state.Invoke(user, intentional))
-			return FALSE
+	if((state_checks & EMOTE_CHECK_CONSCIOUS) && !emote_check_conscious(CONSCIOUS, user, intentional))
+		return FALSE
+
+	if((state_checks & EMOTE_CHECK_ONE_HAND_USABLE) && !is_one_hand_usable(user, intentional))
+		return FALSE
+
+	if((state_checks & EMOTE_CHECK_IS_HEAD_PRESENT) && !is_present_bodypart(BP_HEAD, user, intentional))
+		return FALSE
+
+	if((state_checks & EMOTE_CHECK_IS_SYNTH_OR_ROBOT) && !is_synth_or_robot(user, intentional))
+		return FALSE
+
+	if((state_checks & EMOTE_CHECK_ROBOT_SEC_MODULE) && !has_robot_module(/obj/item/robot_module/security, user, intentional))
+		return FALSE
+
+	if((state_checks & EMOTE_CHECK_CONSCIOUS_OR_NOT_INTENTIONAL) && !conscious_or_not_intentional(CONSCIOUS, user, intentional))
+		return FALSE
 
 	return TRUE
 

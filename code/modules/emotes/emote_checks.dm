@@ -1,4 +1,4 @@
-/proc/is_stat(stat, mob/M, intentional)
+/proc/emote_check_conscious(stat, mob/M, intentional)
 	if(M.stat > stat)
 		if(intentional)
 			to_chat(M, SPAN_NOTICE("You can't emote in this state."))
@@ -6,11 +6,11 @@
 
 	return TRUE
 
-/proc/is_stat_or_not_intentional(stat, mob/M, intentional)
+/proc/conscious_or_not_intentional(stat, mob/M, intentional)
 	if(!intentional)
 		return TRUE
 
-	return is_stat(stat, M, intentional)
+	return emote_check_conscious(stat, M, intentional)
 
 /proc/is_one_hand_usable(mob/M, intentional)
 	if(M.restrained())

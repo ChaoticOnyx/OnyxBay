@@ -6,9 +6,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/airguitar_emote
 
@@ -23,9 +21,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/dap_emote
 
@@ -57,9 +53,7 @@
 
 	cooldown = 5 SECONDS
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/dance_emote
 
@@ -108,10 +102,7 @@
 
 	sound = SFX_CLAP
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_one_hand_usable)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_ONE_HAND_USABLE
 
 	statpanel_proc = /mob/proc/clap_emote
 
@@ -129,10 +120,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_one_hand_usable)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_ONE_HAND_USABLE
 
 	statpanel_proc = /mob/proc/wave_emote
 
@@ -150,10 +138,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_one_hand_usable)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_ONE_HAND_USABLE
 
 	statpanel_proc = /mob/proc/salute_emote
 
@@ -170,10 +155,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-		EMOTE_STATE(is_one_hand_usable)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_ONE_HAND_USABLE
 
 	statpanel_proc = /mob/proc/raise_emote
 
@@ -191,9 +173,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/hug_emote
 
@@ -219,9 +199,7 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/handshake_emote
 

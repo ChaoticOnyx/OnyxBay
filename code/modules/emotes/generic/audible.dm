@@ -12,9 +12,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/whimper_emote
 
@@ -37,9 +35,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/roar_emote
 
@@ -66,9 +62,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	sound_human_female = SFX_FEMALE_HEAVY_BREATH
 	sound_human_male = SFX_MALE_HEAVY_BREATH
@@ -89,9 +83,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	sound_human_female = SFX_FEMALE_SNEEZE
 	sound_human_male = SFX_MALE_SNEEZE
@@ -117,9 +109,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	sound_human_female = SFX_FEMALE_HEAVY_BREATH
 	sound_human_male = SFX_MALE_HEAVY_BREATH
@@ -148,9 +138,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	sound_human_female = SFX_FEMALE_LAUGH
 	sound_human_male = SFX_MALE_LAUGH
@@ -179,9 +167,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/moan_emote
 
@@ -205,9 +191,7 @@
 	message_miming = "acts out a cough."
 	message_muzzled = "appears to cough."
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	sound_human_female = SFX_FEMALE_COUGH
 	sound_human_male = SFX_MALE_COUGH
@@ -236,9 +220,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	sound_human_female = SFX_FEMALE_CRY
 	sound_human_male = SFX_MALE_CRY
@@ -264,9 +246,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	sound_human_female = SFX_FEMALE_PAIN
 	sound_human_male = SFX_MALE_PAIN
@@ -317,9 +297,7 @@
 	message_miming = "acts out an oink."
 	message_muzzled = "appears to oink."
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/oink_emote
 
@@ -347,9 +325,7 @@
 
 	pitch_age_variation = TRUE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	sound_human_female = SFX_FEMALE_LAUGH
 	sound_human_male = SFX_MALE_LAUGH
@@ -378,9 +354,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	sound_human_female = SFX_FEMALE_LAUGH
 	sound_human_male = SFX_MALE_LAUGH
@@ -409,9 +383,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	sound_human_female = SFX_FEMALE_PAIN
 	sound_human_male = SFX_MALE_PAIN
@@ -440,9 +412,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	sound_human_female = SFX_FEMALE_PAIN
 	sound_human_male = SFX_MALE_PAIN
@@ -473,9 +443,7 @@
 
 	//sound = 'sound/voice/hiccup.ogg'
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/hiccup_emote
 
@@ -500,9 +468,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	sound = SFX_SNORE
 
@@ -531,9 +497,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/sniff_emote
 
@@ -556,9 +520,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS),
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	sound_human_female = SFX_FEMALE_SIGH
 	sound_human_male = SFX_MALE_SIGH
@@ -587,9 +549,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/mumble_emote
 
@@ -615,9 +575,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 /datum/emote/human/mumble/get_impaired_msg(mob/user)
 	return "opens and closes [P_THEIR(user)] mouth."
@@ -639,9 +597,7 @@
 
 	pitch_age_variation = TRUE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 	statpanel_proc = /mob/proc/spit_emote
 
 /datum/emote/mumble/get_impaired_msg(mob/user)
@@ -663,9 +619,7 @@
 
 	message_type = AUDIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	sound_human_female = SFX_FEMALE_YAWN
 	sound_human_male = SFX_MALE_YAWN
@@ -687,9 +641,7 @@
 
 	sound = 'sound/misc/nymphchirp.ogg'
 
-	state_checks = list(
-		EMOTE_STATE(is_stat, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/chirp_emote
 

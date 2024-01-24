@@ -8,6 +8,4 @@
 
 	message_type = VISIBLE_MESSAGE
 
-	state_checks = list(
-		EMOTE_STATE(is_stat_or_not_intentional, CONSCIOUS)
-	)
+	state_checks = EMOTE_CHECK_CONSCIOUS_OR_NOT_INTENTIONAL
