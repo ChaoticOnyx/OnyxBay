@@ -697,3 +697,21 @@
 	)
 
 	statpanel_proc = /mob/proc/deathgasp
+
+/datum/emote/vomit
+	key = "vomit"
+
+	message_type = AUDIBLE_MESSAGE
+
+	statpanel_proc = /mob/proc/vomit_emote
+
+/datum/emote/vomit/do_emote(mob/user, emote_key, intentional)
+	. = ..()
+	var/mob/living/carbon/human/H = user
+	if(istype(H))
+		H.vomit()
+
+/mob/proc/vomit_emote()
+	set name = "Vomit"
+	set category = "Emotes"
+	emote("vomit", intentional = TRUE)
