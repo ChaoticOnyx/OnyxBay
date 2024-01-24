@@ -173,7 +173,7 @@ be able to influence the host through various commands.
 		to_chat(usr, "\red You can't emote without host!")
 		return
 	message = sanitize(message)
-	return host.emote("me", 1, message)
+	return host.custom_emote(message_type = host.emote_type, message = message, intentional = TRUE)
 
 // A meme understands everything their host understands
 /mob/living/parasite/meme/say_understands(mob/other)

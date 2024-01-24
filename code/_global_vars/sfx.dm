@@ -1342,6 +1342,11 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/using/disposal/drop3.ogg',
 		'sound/effects/using/disposal/drop4.ogg'
 	),
+	SFX_OINK = list(
+		'sound/effects/pig1.ogg',
+		'sound/effects/pig2.ogg',
+		'sound/effects/pig3.ogg'
+	),
 	// DEVICES
 	SFX_GEIGER_LOW = list(
 		'sound/effects/geiger/geiger_low_1.ogg',
