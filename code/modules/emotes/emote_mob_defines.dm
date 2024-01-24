@@ -116,7 +116,7 @@
 	default_emotes = list(
 		/datum/emote/moan,
 		/datum/emote/twitch,
-		/datum/emote/species/sway,
+		/datum/emote/sway,
 		/datum/emote/shiver
 	)
 
