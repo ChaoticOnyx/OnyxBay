@@ -159,15 +159,14 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	use_power_oneoff(200)
 	sendcooldown = world.time + FAX_SEND_COOLDOWN
 
-	var/success = FALSE
 	for(var/obj/machinery/photocopier/faxmachine/F in GLOB.allfaxes)
-		if(F.department == destination)
-			success = F.recievefax(copyitem)
+		if(F.department != destination)
+			continue
 
-	if(success)
-		visible_message("[src] beeps, \"Message transmitted successfully.\"")
-	else
-		visible_message("[src] beeps, \"Error transmitting message.\"")
+		if(F.recievefax(copyitem))
+			show_splash_text(usr, "Message transmitted successfully.")
+
+	show_splash_text(usr, "Error transmitting message.")
 
 /obj/machinery/photocopier/faxmachine/proc/recievefax(obj/item/incoming)
 	if(stat & (BROKEN|NOPOWER))
@@ -214,11 +213,11 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 		var/obj/item/complaint_folder/CF = copyitem
 		var/fail_reason = CF.prevalidate()
 		if (fail_reason)
-			visible_message("[src] beeps, \"Error transmitting message: [fail_reason].\"")
+			show_splash_text(usr, "Error transmitting message.")
 			return
 		rcvdcopy = complaintcopy(copyitem, 0)
 	else
-		visible_message("[src] beeps, \"Error transmitting message.\"")
+		show_splash_text(usr, "Error transmitting message.")
 		return
 
 	rcvdcopy.forceMove(null) //hopefully this shouldn't cause trouble
@@ -252,7 +251,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 				message_admins("Complaint postvalidation failed: [fail_reason]. Check received fax to manually correct it.")
 
 	sleep(50)
-	visible_message("[src] beeps, \"Message transmitted successfully.\"")
+	show_splash_text(usr, "Message transmitted successfully.")
 
 /obj/machinery/photocopier/faxmachine/proc/fax_message_admins(mob/sender, faxname, obj/item/sent, reply_type, font_colour="#006100")
 	var/msg = "<span class='notice'><b><font color='[font_colour]'>[faxname]: </font>[get_options_bar(sender, 2,1,1)]"
