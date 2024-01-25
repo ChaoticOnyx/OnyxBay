@@ -170,6 +170,8 @@
 			M.show_message(self_message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
 		else if(M.see_invisible >= invisibility || narrate) // Cannot view the invisible
 			M.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
+		else if(isghost(M))
+			M.show_message(message + " (<a href='byond://?src=\ref[M];track=\ref[src]'>F</a>)", AUDIBLE_MESSAGE)
 		else
 			M.show_message(message, AUDIBLE_MESSAGE)
 
