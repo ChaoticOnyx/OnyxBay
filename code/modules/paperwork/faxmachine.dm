@@ -49,22 +49,6 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	if(user.lying || user.is_ic_dead())
 		return
 
-	if(!(istype(usr, /mob/living/carbon/human) || istype(usr, /mob/living/silicon)))
-		to_chat(usr, FEEDBACK_YOU_LACK_DEXTERITY)
-		return
-
-	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
-		if(H.IsAdvancedToolUser(TRUE) == FALSE)
-			to_chat(user, SPAN("warning", "I'm not smart enough to do that!"))
-			return
-		if(H.getBrainLoss() >= 55)
-			visible_message(SPAN("warning", "[H] stares cluelessly at \the [src]."))
-			return
-		else if(prob(H.getBrainLoss()))
-			to_chat(user, SPAN("warning", "You momentarily forget how to use \the [src]."))
-			return
-
 	tgui_interact(user)
 
 /obj/machinery/photocopier/faxmachine/tgui_interact(mob/user, datum/tgui/ui)
