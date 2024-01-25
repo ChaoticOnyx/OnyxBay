@@ -16,7 +16,7 @@ type FaxInfo = {
 type InputData = {
   user: string;
   idCard: string;
-  authenticated: boolean;
+  isAuthenticated: boolean;
   paper: string;
   printCooldown: number;
   canSend: boolean;
@@ -56,7 +56,7 @@ export const Fax = (props: any, context: any) => {
             </Section>
           </Stack.Item>
           <Stack.Item>
-            {!data.authenticated ? (
+            {!data.isAuthenticated ? (
               <NoticeBox>
                 Proper authentication is required to use this device.
               </NoticeBox>
@@ -73,7 +73,6 @@ export const Fax = (props: any, context: any) => {
                             <Button
                               title={fax.fax_name}
                               disabled={!data.paper || !data.canSend}
-                              color="default"
                               onClick={() =>
                                 act("send", {
                                   destination: fax.fax_name,
@@ -94,7 +93,6 @@ export const Fax = (props: any, context: any) => {
                       fluid
                       bold
                       textAlign="center"
-                      color={data.printCooldown > 0 ? "grey" : "default"}
                       disabled={data.printCooldown > 0}
                       icon="print"
                       onClick={() => {
