@@ -1,11 +1,9 @@
 import {
   Box,
   Button,
-  Icon,
   LabeledList,
   Section,
   Stack,
-  Table,
   NoticeBox,
 } from "../components";
 import { useBackend } from "../backend";
