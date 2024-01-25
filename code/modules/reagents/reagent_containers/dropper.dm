@@ -12,6 +12,9 @@
 	slot_flags = SLOT_EARS
 	volume = 5
 
+	drop_sound = SFX_DROP_GLASSSMALL
+	pickup_sound = SFX_PICKUP_GLASSSMALL
+
 	afterattack(obj/target, mob/user, proximity)
 		if(!target.reagents || !proximity) return
 

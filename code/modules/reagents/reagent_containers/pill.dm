@@ -14,6 +14,9 @@
 	volume = 30
 	var/mimic_color = FALSE
 
+	drop_sound = SFX_DROP_FOOD
+	pickup_sound = SFX_PICKUP_FOOD
+
 /obj/item/reagent_containers/pill/Initialize()
 	. = ..()
 	if(!icon_state)

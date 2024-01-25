@@ -14,6 +14,9 @@
 	var/perunit = SHEET_MATERIAL_AMOUNT
 	var/apply_colour //temp pending icon rewrite
 
+	drop_sound = SFX_DROP_AXE
+	pickup_sound = SFX_PICKUP_AXE
+
 /obj/item/stack/material/Initialize()
 	. = ..()
 	if(!default_type)

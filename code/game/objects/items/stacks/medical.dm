@@ -14,6 +14,9 @@
 	var/stack_full = 0 // 1 - stack looks different if it's never been used
 	var/stack_empty = 0 // 0 - stack disappears, 1 - stack can be empty, 2 - stack is already empty
 
+	drop_sound = SFX_DROP_CARDBOARD
+	pickup_sound = SFX_PICKUP_CARDBOARD
+
 /obj/item/stack/medical/on_update_icon()
 	if(stack_full && amount == max_amount)
 		icon_state = "[icon_state_default]_full"
@@ -173,6 +176,9 @@
 	animal_heal = 4
 	stack_empty = 1
 	splittable = 0
+
+	drop_sound = SFX_DROP_HERB
+	pickup_sound = SFX_PICKUP_HERB
 
 /obj/item/stack/medical/ointment/attack(mob/living/carbon/M as mob, mob/user as mob)
 	if(..())

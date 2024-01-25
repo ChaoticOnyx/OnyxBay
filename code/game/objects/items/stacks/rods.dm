@@ -17,6 +17,9 @@
 	attack_verb = list("hit", "bludgeoned", "whacked")
 	lock_picking_level = 3
 
+	drop_sound = SFX_DROP_METALWEAPON
+	pickup_sound = SFX_PICKUP_METALWEAPON
+
 /obj/item/stack/rods/ten
 	amount = 10
 

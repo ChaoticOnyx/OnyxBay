@@ -25,6 +25,9 @@
 	var/handcutter = FALSE
 	var/noisystepper = FALSE
 
+	drop_sound = SFX_DROP_GLASS
+	pickup_sound = SFX_PICKUP_GLASS
+
 /obj/item/material/shard/set_material(new_material)
 	..(new_material)
 	if(!istype(material))

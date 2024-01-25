@@ -194,6 +194,9 @@
 	hitsound = 'sound/effects/fighting/energy1.ogg'
 	var/blade_color
 
+	drop_sound = 'sound/effects/drop/sword.ogg'
+	pickup_sound = 'sound/effects/pickup/sword1.ogg'
+
 /obj/item/melee/energy/sword/activate(mob/living/user)
 	if(!active)
 		to_chat(user, SPAN("notice", "\The [src] is now energised."))

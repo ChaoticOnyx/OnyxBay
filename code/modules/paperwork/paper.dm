@@ -96,6 +96,9 @@
 	var/static/regex/field_regex = regex(@#<!--paper_field_(\w+)-->#, "g")
 	var/static/regex/field_link_regex = regex("<font face=\"[deffont]\"><A href='\\?src=\[^'\]+?;write=\[^'\]+'>write</A></font>", "g")
 
+	drop_sound = SFX_DROP_PAPER
+	pickup_sound = SFX_PICKUP_PAPER
+
 /obj/item/paper/Initialize(mapload, text, title, rawhtml = TRUE, noinit = FALSE)
 	. = ..()
 

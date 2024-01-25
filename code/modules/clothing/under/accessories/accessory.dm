@@ -15,6 +15,9 @@
 	var/high_visibility	//if it should appear on examine without detailed view
 	var/slowdown //used when an accessory is meant to slow the wearer down when attached to clothing
 
+	drop_sound = SFX_DROP_ACCESSORY
+	pickup_sound = SFX_PICKUP_ACCESSORY
+
 /obj/item/clothing/accessory/Destroy()
 	if(has_suit)
 		has_suit.remove_accessory(null, src)

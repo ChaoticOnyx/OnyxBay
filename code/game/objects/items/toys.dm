@@ -30,6 +30,8 @@
 	mod_weight = 0.25
 	mod_reach = 0.25
 	mod_handy = 0.25
+	drop_sound = SFX_DROP_GLOVES
+	pickup_sound = SFX_PICKUP_GLOVES
 
 /obj/item/toy/proc/speak(message)
 	if (!message)
@@ -116,6 +118,9 @@
 	icon_state = "syndballoon"
 	item_state = "syndballoon"
 	w_class = ITEM_SIZE_HUGE
+
+	drop_sound = 'sound/effects/drop/rubber.ogg'
+	pickup_sound = 'sound/effects/pickup/rubber.ogg'
 
 /obj/item/toy/balloon/New()
 	..()

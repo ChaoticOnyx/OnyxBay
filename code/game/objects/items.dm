@@ -90,7 +90,11 @@
 	// Species-specific sprite sheets for inventory sprites. Used in clothing/refit_for_species() proc.
 	var/list/sprite_sheets_obj = list()
 
-	var/pickup_sound = null
+	/// Played when the item is picked up
+	var/pickup_sound = SFX_PICKUP_GENERIC
+
+	/// Played when the item is dropped or thrown
+	var/drop_sound = SFX_DROP_GENERIC
 
 	var/ear_protection = 0
 
@@ -123,6 +127,9 @@
 
 /obj/item/device
 	icon = 'icons/obj/device.dmi'
+
+	pickup_sound = SFX_PICKUP_DEVICE
+	drop_sound = SFX_DROP_DEVICE
 
 //Checks if the item is being held by a mob, and if so, updates the held icons
 /obj/item/proc/update_twohanding()
@@ -326,7 +333,7 @@
 	return
 
 // apparently called whenever an item is removed from a slot, container, or anything else.
-/obj/item/proc/dropped(mob/user)
+/obj/item/proc/dropped(mob/user, silent = FALSE)
 	if(randpixel)
 		pixel_z = randpixel //an idea borrowed from some of the older pixel_y randomizations. Intended to make items appear to drop at a character
 
@@ -336,6 +343,9 @@
 			user.l_hand.update_twohanding()
 		if(user.r_hand)
 			user.r_hand.update_twohanding()
+
+	if(!silent && !ismob(loc) && !istype(loc, /obj/item/clothing/accessory))
+		play_drop_sound()
 
 	SEND_SIGNAL(src, SIGNAL_ITEM_UNEQUIPPED, src, user)
 
@@ -373,6 +383,8 @@
 		M.l_hand.update_twohanding()
 	if(M.r_hand)
 		M.r_hand.update_twohanding()
+
+	play_pickup_sound(user)
 
 	SEND_SIGNAL(src, SIGNAL_ITEM_EQUIPPED, src, user, slot)
 
@@ -956,3 +968,19 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	spawn()
 		..()
 	return
+
+/obj/item/proc/play_drop_sound()
+	if(!drop_sound)
+		return
+
+	var/volume = clamp(rand(15,16) * w_class, DROP_SOUND_VOLUME_MIN, DROP_SOUND_VOLUME_MAX)
+
+	playsound(src, drop_sound, volume, TRUE)
+
+/obj/item/proc/play_pickup_sound()
+	if(!pickup_sound)
+		return
+
+	var/volume = clamp(rand(5,15) * w_class, PICKUP_SOUND_VOLUME_MIN, PICKUP_SOUND_VOLUME_MAX)
+
+	playsound(src, pickup_sound, volume, TRUE)

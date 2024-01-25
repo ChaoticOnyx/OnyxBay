@@ -29,6 +29,9 @@
 	var/obj/item/foldable = /obj/item/stack/material/cardboard	// BubbleWrap - if set, can be folded (when empty) into a sheet of cardboard
 	use_sound = SFX_SEARCH_CLOTHES
 
+	drop_sound = SFX_DROP_AMMOBOX
+	pickup_sound = SFX_PICKUP_AMMOBOX
+
 /obj/item/storage/box/large
 	name = "large box"
 	icon_state = "largebox"

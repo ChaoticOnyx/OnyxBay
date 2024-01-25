@@ -35,6 +35,8 @@
 	w_class = ITEM_SIZE_SMALL
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
 	attack_verb = list("attacked", "pinched")
+	drop_sound = SFX_DROP_WELDINGTOOL
+	pickup_sound = SFX_PICKUP_WELDINGTOOL
 
 /obj/item/hemostat/pico
 	name = "precision grasper"
@@ -99,6 +101,8 @@
 	matter = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000)
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	hitsound = 'sound/weapons/bladeslice.ogg'
+	drop_sound = 'sound/effects/drop/weldingtool.ogg'
+	pickup_sound = 'sound/effects/pickup/weldingtool.ogg'
 
 /*
  * Researchable Scalpels

@@ -192,6 +192,9 @@
 	sharp = 0
 	edge = 1
 
+	drop_sound = SFX_DROP_SHOVEL
+	pickup_sound = SFX_PICKUP_SHOVEL
+
 /obj/item/shovel/spade
 	name = "spade"
 	desc = "A small tool for digging and moving dirt."

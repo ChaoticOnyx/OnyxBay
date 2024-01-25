@@ -5,6 +5,9 @@
 	icon_state = "folder"
 	w_class = ITEM_SIZE_SMALL
 
+	drop_sound = SFX_DROP_PAPER
+	pickup_sound = SFX_PICKUP_PAPER
+
 /obj/item/folder/blue
 	desc = "A blue folder."
 	icon_state = "folder_blue"

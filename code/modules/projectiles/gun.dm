@@ -93,6 +93,9 @@
 	var/mob/autofiring_by
 	var/autofiring_timer
 
+	drop_sound = SFX_DROP_GUN
+	pickup_sound = SFX_PICKUP_GUN
+
 /obj/item/gun/Initialize()
 	. = ..()
 	for(var/i in 1 to firemodes.len)

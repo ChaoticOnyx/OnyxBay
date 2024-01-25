@@ -375,6 +375,9 @@ var/bomb_set
 	item_state = "card-id"
 	w_class = ITEM_SIZE_TINY
 
+	drop_sound = SFX_DROP_DISK
+	pickup_sound = SFX_PICKUP_DISK
+
 /obj/item/disk/nuclear/Initialize()
 	. = ..()
 	// Can never be quite sure that a game mode has been properly initiated or not at this point, so always register
