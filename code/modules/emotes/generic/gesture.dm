@@ -46,9 +46,6 @@
 /datum/emote/dance
 	key = "dance"
 
-	message_1p = "You dance!"
-	message_3p = "dances around."
-
 	message_type = VISIBLE_MESSAGE
 
 	cooldown = 0.5 SECONDS
@@ -60,7 +57,9 @@
 	var/list/mob/dancing = list()
 
 /datum/emote/dance/do_emote(mob/user, emote_key, intentional)
-	. = ..()
+	LAZYINITLIST(user.next_emote_use)
+	set_cooldown(user.next_emote_use, cooldown, intentional)
+	log_emote("[key_name(user)] : dances")
 	INVOKE_ASYNC(src, nameof(.proc/dance), user)
 
 /datum/emote/dance/proc/dance(mob/user)
