@@ -557,7 +557,7 @@
 	return "opens and closes [P_THEIR(user.gender)] mouth."
 
 /mob/proc/mumble_emote()
-	set name = "Mubmle"
+	set name = "Mumble"
 	set category = "Emotes"
 	emote("mumble", intentional = TRUE)
 

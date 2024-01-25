@@ -76,7 +76,8 @@
 		/datum/emote/dap,
 		/datum/emote/handshake,
 		/datum/emote/dance,
-		/datum/emote/vomit
+		/datum/emote/vomit,
+		/datum/emote/giggle
 	)
 
 /mob/living/carbon/metroid/load_default_emotes()
