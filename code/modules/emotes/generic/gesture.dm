@@ -46,12 +46,12 @@
 /datum/emote/dance
 	key = "dance"
 
-	message_1p = "You dances!"
+	message_1p = "You dance!"
 	message_3p = "dances around."
 
 	message_type = VISIBLE_MESSAGE
 
-	cooldown = 5 SECONDS
+	cooldown = 0.5 SECONDS
 
 	state_checks = EMOTE_CHECK_CONSCIOUS
 
