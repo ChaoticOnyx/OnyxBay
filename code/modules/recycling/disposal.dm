@@ -22,7 +22,7 @@
 	density = 1
 	var/datum/gas_mixture/air_contents	// internal reservoir
 	/// Mode of the disposal unit itself
-	var/mode = DISPOSALS_CHARGED
+	var/mode = DISPOSALS_CHARGING
 	var/flush = 0	// true if flush handle is pulled
 	var/obj/structure/disposalpipe/trunk/trunk = null // the attached pipe trunk
 	var/flushing = 0	// true if flushing in progress
