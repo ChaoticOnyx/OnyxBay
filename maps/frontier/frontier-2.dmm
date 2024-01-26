@@ -2593,7 +2593,7 @@
 "bJk" = (/turf/simulated/shuttle/wall/syndi{dir = 4; icon_state = "syndiwall_t"},/area/shuttle/administration/centcom)
 "bJL" = (/obj/structure/bed/chair/wood{dir = 4},/turf/simulated/floor/trim/carpet/orange,/area/thunderfield)
 "bKb" = (/obj/machinery/computer/shuttle_control/multi/merchant,/turf/simulated/floor/trim/carpet/blue,/area/shuttle/merchant/home)
-"bKO" = (/obj/structure/casino/oh_bandit,/turf/unsimulated/floor{icon_state = "carpet"},/area/centcom/holding)
+"bKO" = (/turf/unsimulated/floor{icon_state = "carpet"},/area/centcom/holding)
 "bLb" = (/turf/space,/turf/simulated/shuttle/wall/corner/merchant/nw,/area/shuttle/merchant/home)
 "bLF" = (/obj/structure/window/reinforced/crescent{dir = 1},/obj/effect/floor_decal/corner/red{dir = 6},/turf/unsimulated/floor{dir = 5; icon = 'icons/turf/flooring/tiles.dmi'; icon_state = "dark_rough"},/area/centcom/holding)
 "bMb" = (/obj/structure/grille,/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "merchantshuttle"; name = "Merchant Window Shutters"; opacity = 0},/obj/structure/window/miningpod,/turf/simulated/floor/plating,/area/shuttle/merchant/home)
