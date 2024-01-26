@@ -3094,8 +3094,6 @@
 #include "maps\polar\polar_shuttles.dm"
 #include "maps\polar\polar_turfs.dm"
 #include "maps\polar\train_display.dm"
-#include "maps\sunset\sunset_define.dm"
-#include "maps\sunset\sunset_levels.dm"
 #include "maps\~mapsystem\map_preferences.dm"
 #include "maps\~mapsystem\maps.dm"
 #include "maps\~mapsystem\maps_jobs.dm"
