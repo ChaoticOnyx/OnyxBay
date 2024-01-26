@@ -28,6 +28,8 @@
 		Professionals. Better cigarettes for better people. Yes, better people.;\
 		StarLing - look cool 'till you drool!"
 
+	vending_sound = SFX_VENDING_DROP
+
 	component_types = list(
 		/obj/item/vending_cartridge/cigarette
 		)

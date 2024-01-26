@@ -15,6 +15,8 @@
 
 	product_ads = "Crack capitalist skulls!;Beat some heads in!;Don't forget - harm is good!;Your weapons are right here.;Handcuffs!;Freeze, scumbag!;Don't tase me bro!;Tase them, bro.;Why not have a donut?"
 
+	vending_sound = SFX_VENDING_DROP
+
 	component_types = list(
 		/obj/item/vending_cartridge/security
 		)

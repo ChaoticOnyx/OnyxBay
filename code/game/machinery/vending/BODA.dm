@@ -5,6 +5,8 @@
 
 	icon_state = "sovietsoda"
 
+	vending_sound = SFX_VENDING_GENERIC
+
 	use_vend_state = TRUE
 	product_ads = "For Tsar and Country.;Have you fulfilled your nutrition quota today?;Very nice!;We are simple people, for this is all we eat.;If there is a person, there is a problem. If there is no person, then there is no problem."
 	idle_power_usage = 211 WATTS //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.

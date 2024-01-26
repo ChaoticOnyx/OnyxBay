@@ -8,6 +8,8 @@
 
 	req_access = list(access_robotics)
 
+	vending_sound = SFX_VENDING_GENERIC
+
 	component_types = list(
 		/obj/item/vending_cartridge/robotics
 		)

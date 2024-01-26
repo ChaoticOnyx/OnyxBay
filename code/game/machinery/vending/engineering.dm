@@ -21,6 +21,8 @@
 					/obj/item/clothing/gloves/insulated/cheap = 2)
 	premium = list(/obj/item/clothing/gloves/insulated = 1)
 
+	vending_sound = SFX_VENDING_GENERIC
+
 /obj/item/vending_cartridge/tool
 	name = "youtool"
 	build_path = /obj/machinery/vending/tool

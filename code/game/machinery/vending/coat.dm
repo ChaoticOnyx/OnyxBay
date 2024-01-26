@@ -8,6 +8,8 @@
 	use_vend_state = TRUE
 	gen_rand_amount = FALSE
 
+	vending_sound = SFX_VENDING_DROP
+
 	component_types = list(
 		/obj/item/vending_cartridge/coat_dispenser
 		)

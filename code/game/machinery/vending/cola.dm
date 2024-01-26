@@ -12,6 +12,8 @@
 	product_slogans = "Robust Softdrinks: More robust than a toolbox to the head!"
 	product_ads = "Refreshing!;Hope you're thirsty!;Over 1 million drinks sold!;Thirsty? Why not cola?;Please, have a drink!;Drink up!;The best drinks in space."
 
+	vending_sound = SFX_VENDING_CANS
+
 	component_types = list(
 		/obj/item/vending_cartridge/cola
 		)

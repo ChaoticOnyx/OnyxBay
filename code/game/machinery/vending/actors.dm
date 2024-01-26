@@ -5,6 +5,8 @@
 
 	icon_state = "Theater"
 
+	vending_sound = SFX_VENDING_DROP
+
 	component_types = list(
 		/obj/item/vending_cartridge/props
 		)

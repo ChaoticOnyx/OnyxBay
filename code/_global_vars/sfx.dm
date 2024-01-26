@@ -1823,5 +1823,17 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/machines/keyboard/keypress2.ogg',
 		'sound/machines/keyboard/keypress3.ogg',
 		'sound/machines/keyboard/keypress4.ogg'
+	),
+	SFX_VENDING_CANS = list(
+		'sound/machines/vending/vending_cans.ogg'
+	),
+	SFX_VENDING_COFFEE = list(
+		'sound/machines/vending/vending_coffee.ogg'
+	),
+	SFX_VENDING_DROP = list(
+		'sound/machines/vending/vending_drop.ogg'
+	),
+	SFX_VENDING_GENERIC = list(
+		'sound/effects/using/disposal/drop2.ogg'
 	)
 ))

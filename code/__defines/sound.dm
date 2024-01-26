@@ -356,4 +356,10 @@
 #define SFX_FOOTSTEP_ROBOT_LEGS     "footstep_robot_legs"
 #define SFX_FOOTSTEP_ROBOT_SPIDER   "footstep_robot_spider"
 
+// VENDING
+#define SFX_VENDING_CANS            "vending_cans"
+#define SFX_VENDING_COFFEE          "vending_coffee"
+#define SFX_VENDING_DROP            "vending_drop"
+#define SFX_VENDING_GENERIC         "vending_generic"
+
 #define GET_SFX(name) pick(GLOB.sfx_list[name])
