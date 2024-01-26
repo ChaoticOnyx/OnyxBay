@@ -5,7 +5,7 @@
 
 	mtth = 2 HOURS
 	difficulty = 60
-	blacklisted_maps = list(/datum/map/polar)
+
 
 	var/list/drones_list = list()
 	var/list/affecting_z = list()

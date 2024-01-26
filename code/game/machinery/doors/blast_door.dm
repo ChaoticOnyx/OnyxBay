@@ -276,16 +276,3 @@
 
 /obj/machinery/door/blast/shutters/open
 	begins_closed = FALSE
-
-//SUBTYPE: Polar
-/obj/machinery/door/blast/regular/polar
-	icon_state_open = "polar_pdoor0"
-	icon_state_opening = "polar_pdoorc0"
-	icon_state_closed = "polar_pdoor1"
-	icon_state_closing = "polar_pdoorc1"
-	icon_state = "polar_pdoor1"
-	maxhealth = 600
-	block_air_zones = 1
-
-/obj/machinery/door/blast/regular/polar/open
-	begins_closed = FALSE
