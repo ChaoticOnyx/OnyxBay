@@ -6,7 +6,7 @@
 	mtth = 2.5 HOURS
 	difficulty = 80
 
-	blacklisted_maps = list(/datum/map/polar)
+
 
 	options = newlist(
 		/datum/event_option/meteor_wave_option {

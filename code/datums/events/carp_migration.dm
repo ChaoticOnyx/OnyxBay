@@ -5,7 +5,7 @@
 
 	mtth = 1 HOURS
 	difficulty = 55
-	blacklisted_maps = list(/datum/map/polar)
+
 
 	options = newlist(
 		/datum/event_option/carp_migration_option {
