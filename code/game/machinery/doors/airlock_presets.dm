@@ -66,9 +66,6 @@
 	locked = 1
 	opacity = 0
 
-/obj/machinery/door/airlock/external/snow
-	icon = 'icons/obj/doors/doorextsnow.dmi'
-
 //////////////////////////////////////////
 /obj/machinery/door/airlock/glass
 	name = "Glass Airlock"
