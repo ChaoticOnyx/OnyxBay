@@ -293,6 +293,11 @@
 #define SFX_SPARK_MEDIUM            "spark_medium"
 #define SFX_SPARK_HEAVY             "spark_heavy"
 
+// TURRETS
+#define SFX_TURRET_DEPLOY           "turret_deploy"
+#define SFX_TURRET_RETRACT          "turret_retract"
+#define SFX_TURRET_ROTATE           "turret_rotate"
+
 // EXPLOSION
 #define SFX_EXPLOSION               "explosion"
 #define SFX_EXPLOSION_ELECTRIC      "explosion_electric"

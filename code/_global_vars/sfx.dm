@@ -1353,6 +1353,16 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/electric/heavy_spark3.ogg',
 		'sound/effects/electric/heavy_spark4.ogg'
 	),
+	// TURRETS
+	SFX_TURRET_DEPLOY = list(
+		'sound/machines/turrets/turret_deploy.ogg'
+	),
+	SFX_TURRET_RETRACT = list(
+		'sound/machines/turrets/turret_retract.ogg'
+	),
+	SFX_TURRET_ROTATE = list(
+		'sound/machines/turrets/turret_rotate.ogg'
+	),
 	// EXPLOSION
 	SFX_EXPLOSION = list(
 		'sound/effects/explosions/explosion1.ogg',
