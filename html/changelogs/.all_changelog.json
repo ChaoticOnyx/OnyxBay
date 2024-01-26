@@ -22,6 +22,38 @@
     ]
   },
   {
+    "author": "intercepti0n",
+    "date": "2024-01-26T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "MapTweak",
+        "message": "Добавлены потерявшиеся шаттеры в химию и бластдур - в бриг.",
+        "pr": 11429
+      },
+      {
+        "prefix": "RscDel",
+        "message": "Удалена карта \"Фоксхол\".",
+        "pr": 11429
+      },
+      {
+        "prefix": "RscDel",
+        "message": "Удалена карта \"Сансет\".",
+        "pr": 11429
+      }
+    ]
+  },
+  {
+    "author": "Filatelele",
+    "date": "2024-01-26T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "RscDel",
+        "message": "Полярка покинула нас.",
+        "pr": 11430
+      }
+    ]
+  },
+  {
     "author": "Filatelele",
     "date": "2024-01-25T00:00:00+03:00",
     "changes": [
