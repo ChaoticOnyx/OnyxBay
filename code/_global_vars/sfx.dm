@@ -1240,6 +1240,25 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_DROP_WRENCH = list(
 		'sound/effects/drop/wrench.ogg'
 	),
+	// HOLSTER & SHEATH
+	SFX_HOLSTERIN = list(
+		'sound/effects/holster/holsterin.ogg'
+	),
+	SFX_HOLSTEROUT = list(
+		'sound/effects/holster/holsterout.ogg'
+	),
+	SFX_SHEATHIN = list(
+		'sound/effects/holster/sheathin.ogg'
+	),
+	SFX_SHEATHOUT = list(
+		'sound/effects/holster/sheathout.ogg'
+	),
+	SFX_TACHOLSTERIN = list(
+		'sound/effects/holster/tactiholsterin.ogg'
+	),
+	SFX_TACHOLSTEROUT = list(
+		'sound/effects/holster/tactiholsterout.ogg'
+	),
 	// DRINK & EAT
 	SFX_DRINK = list(
 		'sound/effects/eating/drink1.ogg'

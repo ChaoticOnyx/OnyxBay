@@ -266,6 +266,14 @@
 #define SFX_DROP_WRAPPER            "drop_wrapper"
 #define SFX_DROP_WRENCH             "drop_wrench"
 
+// HOLSTER & SHEATH
+#define SFX_HOLSTERIN               "holster_in"
+#define SFX_HOLSTEROUT              "holster_out"
+#define SFX_SHEATHIN                "sheath_in"
+#define SFX_SHEATHOUT               "sheath_out"
+#define SFX_TACHOLSTERIN            "tacholster_in"
+#define SFX_TACHOLSTEROUT           "tacholster_out"
+
 // DRINK & EAT
 #define SFX_DRINK                   "drink"
 #define SFX_EAT                     "eat"
