@@ -1108,7 +1108,7 @@
 
 	visible_message("<span class='notice'>\The [user] starts to climb into [src.name]</span>")
 
-	if(enter_after(40, user))
+	if(do_after(user, 40, target))
 		if(!occupant)
 			moved_inside(user)
 		else if(occupant != user)
