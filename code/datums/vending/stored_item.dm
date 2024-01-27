@@ -59,7 +59,7 @@
 	var/atom/movable/product = instances[instances.len]	// Remove the last added product
 	instances -= product
 
-	if(user)
+	if(user?.Adjacent(product_location))
 		user.pick_or_drop(product, product_location)
 	else
 		product.forceMove(product_location)

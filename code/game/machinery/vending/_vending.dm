@@ -598,7 +598,7 @@
 			var/mob/living/carbon/alien/diona/S = new(T)
 			visible_message(SPAN("notice", "\The [src] makes an odd grinding noise before coming to a halt as \a [S.name] slurmps out from the receptacle."))
 		else //Just a normal vend, then
-			R.get_product(get_turf(src))
+			R.get_product(get_turf(src), user)
 			visible_message("\The [src] whirs as it vends \the [R.item_name].")
 			if(prob(1)) //The vending gods look favorably upon you
 				sleep(3)
