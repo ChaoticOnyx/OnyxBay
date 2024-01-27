@@ -280,6 +280,8 @@
 	name = "wooden plank"
 	icon_state = "wood"
 	default_type = MATERIAL_WOOD
+	drop_sound = SFX_DROP_WOODEN
+	pickup_sound = SFX_PICKUP_WOODEN
 
 /obj/item/stack/material/wood/ten
 	amount = 10
@@ -327,6 +329,8 @@
 	name = "glass"
 	icon_state = "glass"
 	default_type = MATERIAL_GLASS
+	drop_sound = SFX_DROP_GLASS
+	pickup_sound = SFX_PICKUP_GLASS
 
 /obj/item/stack/material/glass/ten
 	amount = 10

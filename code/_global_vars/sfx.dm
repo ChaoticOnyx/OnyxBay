@@ -1024,9 +1024,6 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_PICKUP_PLUSHIE = list(
 		'sound/effects/pickup/plushie.ogg'
 	),
-	SFX_PICKUP_PROSTHETIC = list(
-		'sound/effects/pickup/prosthetic.ogg'
-	),
 	SFX_PICKUP_RING = list(
 		'sound/effects/pickup/ring.ogg'
 	),
@@ -1191,9 +1188,6 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	),
 	SFX_DROP_PLUSHIE = list(
 		'sound/effects/drop/plushie.ogg'
-	),
-	SFX_DROP_PROSTHETIC = list(
-		'sound/effects/drop/prosthetic.ogg'
 	),
 	SFX_DROP_RING = list(
 		'sound/effects/drop/ring.ogg'
