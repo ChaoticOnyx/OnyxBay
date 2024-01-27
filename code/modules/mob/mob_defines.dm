@@ -3,7 +3,7 @@
 
 	plane = DEFAULT_PLANE
 	layer = MOB_LAYER
-	appearance_flags = PIXEL_SCALE | LONG_GLIDE
+	appearance_flags = PIXEL_SCALE | LONG_GLIDE | TILE_BOUND
 	animate_movement = 2
 	virtual_mob = /mob/observer/virtual/mob
 
