@@ -320,6 +320,9 @@
 	icon_state = "leather"
 	default_type = MATERIAL_LEATHER
 
+	drop_sound = SFX_DROP_LEATHER
+	pickup_sound = SFX_PICKUP_LEATHER
+
 /obj/item/stack/material/glass
 	name = "glass"
 	icon_state = "glass"

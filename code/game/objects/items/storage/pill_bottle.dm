@@ -20,6 +20,9 @@
 	var/starting_label = null
 	var/true_desc = "It's an airtight container for storing medication."
 
+	pickup_sound = SFX_PICKUP_PILLBOTTLE
+	drop_sound = SFX_DROP_PILLBOTTLE
+
 /obj/item/storage/pill_bottle/Initialize()
 	. = ..()
 	update_icon()

@@ -178,3 +178,6 @@
 		/obj/item/organfixer/standard,
 		/obj/item/stack/medical/advanced/bruise_pack,
 		)
+
+	drop_sound = SFX_DROP_TOOLBOX
+	pickup_sound = SFX_PICKUP_TOOLBOX

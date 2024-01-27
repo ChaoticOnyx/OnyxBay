@@ -34,8 +34,8 @@
 	unacidable = FALSE
 	lid_type = null
 
-	drop_sound = SFX_DROP_WOODEN
-	pickup_sound = SFX_PICKUP_WOODEN
+	drop_sound = SFX_DROP_METALPOT
+	pickup_sound = SFX_PICKUP_METALPOT
 
 /obj/item/reagent_containers/vessel/bucket/full
 	startswith = list(/datum/reagent/water)

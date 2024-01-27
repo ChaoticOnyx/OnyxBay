@@ -235,6 +235,9 @@ BLIND     // can't see anything
 	var/light_protection = 0
 	blood_overlay_type = null // These are too small to bother, no need to waste CPU time
 
+	drop_sound = SFX_DROP_ACCESSORY
+	pickup_sound = SFX_PICKUP_ACCESSORY
+
 /obj/item/clothing/glasses/update_clothing_icon()
 	if(ismob(src.loc))
 		var/mob/M = src.loc

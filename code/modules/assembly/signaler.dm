@@ -15,6 +15,9 @@
 	var/datum/frequency/radio_connection
 	var/deadman = FALSE
 
+	drop_sound = SFX_DROP_COMPONENT
+	pickup_sound = SFX_PICKUP_COMPONENT
+
 /obj/item/device/assembly/signaler/New()
 	..()
 	addtimer(CALLBACK(src, nameof(.proc/set_frequency), frequency), 4 SECOND)

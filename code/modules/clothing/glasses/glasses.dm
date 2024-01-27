@@ -171,6 +171,9 @@
 	tint = TINT_BLIND
 	flash_protection = FLASH_PROTECTION_MAJOR
 
+	drop_sound = SFX_DROP_GLOVES
+	pickup_sound = SFX_PICKUP_GLOVES
+
 /obj/item/clothing/glasses/sunglasses/blindfold/tape
 	name = "length of tape"
 	desc = "It's a robust DIY blindfold!"

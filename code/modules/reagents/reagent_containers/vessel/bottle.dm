@@ -28,6 +28,9 @@
 	var/obj/item/bottle_extra/pourer/pourer = null
 	var/pourer_overlay = "pourer_overlay"
 
+	drop_sound = SFX_DROP_GLASSBOTTLE
+	pickup_sound = SFX_PICKUP_GLASSBOTTLE
+
 /obj/item/reagent_containers/vessel/bottle/Destroy()
 	if(rag)
 		rag.forceMove(get_turf(src))
@@ -146,6 +149,9 @@
 	overlay_icon = TRUE
 	lid_type = /datum/vessel_lid/cork
 	rag_underlay = "rag_medium"
+
+	drop_sound = SFX_DROP_BOTTLE
+	pickup_sound = SFX_PICKUP_BOTTLE
 
 /obj/item/reagent_containers/vessel/bottle/chemical/small
 	name = "small bottle"

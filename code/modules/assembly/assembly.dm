@@ -22,6 +22,9 @@
 	var/const/WIRE_RADIO_RECEIVE = 8  //Allows Pulsed(1) to call Activate()
 	var/const/WIRE_RADIO_PULSE = 16   //Allows Pulse(1) to send a radio message
 
+	drop_sound = SFX_DROP_COMPONENT
+	pickup_sound = SFX_PICKUP_COMPONENT
+
 /obj/item/device/assembly/Destroy()
 	holder = null
 	return ..()

@@ -929,16 +929,16 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	),
 	SFX_PICKUP_BOTTLE = list(
 		'sound/effects/using/bottles/pickup1.ogg',
-		'sound/effects/using/bottles/pickup2.ogg'
+		'sound/effects/using/bottles/pickup2.ogg',
+	),
+	SFX_PICKUP_GLASSBOTTLE = list(
+		'sound/effects/using/bottles/pickup3.ogg',
 	),
 	SFX_PICKUP_BOOK = list(
 		'sound/effects/pickup/book.ogg'
 	),
 	SFX_PICKUP_BOOTS = list(
 		'sound/effects/pickup/boots.ogg'
-	),
-	SFX_PICKUP_BOTTLE = list(
-		'sound/effects/pickup/bottle.ogg'
 	),
 	SFX_PICKUP_CARD = list(
 		'sound/effects/pickup/card.ogg'
@@ -1096,17 +1096,17 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	),
 	SFX_DROP_BOTTLE = list(
 		'sound/effects/using/bottles/pickup1.ogg',
-		'sound/effects/using/bottles/pickup2.ogg',
-		'sound/effects/using/bottles/pickup3.ogg'
+		'sound/effects/using/bottles/pickup2.ogg'
+	),
+	SFX_DROP_GLASSBOTTLE = list(
+		'sound/effects/using/bottles/pickup3.ogg',
+		'sound/effects/drop/bottle.ogg'
 	),
 	SFX_DROP_BOOK = list(
 		'sound/effects/drop/book.ogg'
 	),
 	SFX_DROP_BOOTS = list(
 		'sound/effects/drop/boots.ogg'
-	),
-	SFX_DROP_BOTTLE = list(
-		'sound/effects/drop/bottle.ogg'
 	),
 	SFX_DROP_CARD = list(
 		'sound/effects/drop/card.ogg'

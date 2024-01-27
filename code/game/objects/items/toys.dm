@@ -119,8 +119,8 @@
 	item_state = "syndballoon"
 	w_class = ITEM_SIZE_HUGE
 
-	drop_sound = 'sound/effects/drop/rubber.ogg'
-	pickup_sound = 'sound/effects/pickup/rubber.ogg'
+	drop_sound = SFX_DROP_RUBBER
+	pickup_sound = SFX_PICKUP_RUBBER
 
 /obj/item/toy/balloon/New()
 	..()
