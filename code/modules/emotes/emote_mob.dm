@@ -53,11 +53,25 @@
 
 	emote.do_emote(src, act, intentional, target)
 
+/mob/proc/make_emote_message(mob/user, message)
+	var/user_name = "<b>[user]</b>"
+
+	message = replacetext(message, regex(@"\^+", "g"), user_name)
+
+	var/end_char = message[length(message)]
+	if(end_char != "." && end_char != "?" && end_char != "!" && end_char != "\"")
+		message += "."
+
+	if(findtext(message, user_name))
+		return capitalize("<i>[message]</i>")
+
+	return "[user_name] <i>[message]</i>"
+
 /// A simple emote - just the message, and it's type. For anything more complex use datumized emotes.
 /mob/proc/custom_emote(message_type = VISIBLE_MESSAGE, message, intentional = FALSE)
 	log_emote("[key_name(src)] : [message]")
 
-	var/msg = "<b>[src]</b> <i>[message]</i>"
+	var/msg = make_emote_message(src, message)
 	if(message_type & VISIBLE_MESSAGE)
 		visible_message(msg)
 	else
