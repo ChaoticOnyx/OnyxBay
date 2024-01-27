@@ -57,8 +57,18 @@
 /mob/proc/custom_emote(message_type = VISIBLE_MESSAGE, message, intentional = FALSE)
 	log_emote("[key_name(src)] : [message]")
 
-	var/msg = "<b>[src]</b> <i>[message]</i>"
-	if(message_type & VISIBLE_MESSAGE)
-		visible_message(msg)
+	var/user_name = "<b>[src]</b>"
+
+	var/end_char = message[length(message)]
+	if(end_char != "." && end_char != "?" && end_char != "!" && end_char != "\"")
+		message += "."
+
+	if(findtext(message, "^"))
+		message = "<i>[capitalize(replacetext(message, regex(@"\^+", "g"), user_name))]</i>"
 	else
-		audible_message(msg)
+		message = "[user_name] <i>[message]</i>"
+
+	if(message_type & VISIBLE_MESSAGE)
+		visible_message(message)
+	else
+		audible_message(message)
