@@ -68,7 +68,7 @@
 		return
 
 	locked = !locked
-	anchored = !locked
+	anchored = locked
 
 	update_icon()
 	show_splash_text(user, "bolts [locked ? "dropped" : "lifted"].")
