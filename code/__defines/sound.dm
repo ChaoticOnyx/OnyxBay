@@ -1,7 +1,7 @@
-#define PICKUP_SOUND_VOLUME_MIN 15
+#define PICKUP_SOUND_VOLUME_MIN 20
 #define PICKUP_SOUND_VOLUME_MAX 60
-#define DROP_SOUND_VOLUME_MIN 15
-#define DROP_SOUND_VOLUME_MAX 60
+#define DROP_SOUND_VOLUME_MIN 20
+#define DROP_SOUND_VOLUME_MAX 70
 #define THROW_SOUND_VOLUME 90
 
 //Sound environment defines. Reverb preset for sounds played in an area, see sound datum reference for more.

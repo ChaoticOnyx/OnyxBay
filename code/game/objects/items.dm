@@ -977,7 +977,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	if(!drop_sound)
 		return
 
-	var/volume = clamp(rand(15,16) * w_class, DROP_SOUND_VOLUME_MIN, DROP_SOUND_VOLUME_MAX)
+	var/volume = clamp(rand(12, 16) * w_class, DROP_SOUND_VOLUME_MIN, DROP_SOUND_VOLUME_MAX)
 
 	playsound(src, drop_sound, volume, TRUE)
 
@@ -986,5 +986,5 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		return
 
 	if(slot == slot_l_hand || slot == slot_r_hand)
-		var/volume = clamp(rand(5,15) * w_class, PICKUP_SOUND_VOLUME_MIN, PICKUP_SOUND_VOLUME_MAX)
+		var/volume = clamp(rand(5, 15) * w_class, PICKUP_SOUND_VOLUME_MIN, PICKUP_SOUND_VOLUME_MAX)
 		playsound(src, pickup_sound, volume, TRUE)
