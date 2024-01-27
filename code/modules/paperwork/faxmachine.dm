@@ -62,7 +62,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	var/list/data = list(
 		"user" = user?.name,
 		"idCard" = inserted_id?.registered_name,
-		"authenticated" = check_access(inserted_id),
+		"isAuthenticated" = check_access(inserted_id),
 		"paper" = copyitem?.name,
 		"printCooldown" = print_cooldown,
 		"canSend" = (world.time > sendcooldown ? TRUE : FALSE)
