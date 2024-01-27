@@ -5,7 +5,7 @@
 /mob/living/silicon/robot/get_active_hand()
 	return module_active
 
-/mob/living/silicon/robot/drop(obj/item/I, atom/target = null, force = FALSE)
+/mob/living/silicon/robot/drop(obj/item/I, atom/target = null, force = FALSE, changing_slots)
 	if(!can_unequip(I))
 		return FALSE
 	var/obj/item/gripper/G = module_active

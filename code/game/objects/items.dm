@@ -274,13 +274,17 @@
 
 	var/old_loc = loc
 
+	var/changing_slots = FALSE
 	// Removing from a storage
 	if(istype(loc, /obj/item/storage))
 		var/obj/item/storage/S = loc
 		S.remove_from_storage(src)
 	// Unequipping from self
-	else if(loc == user && !user.drop(src))
-		return
+	else if(loc == user)
+		changing_slots = TRUE
+		if(!user.drop(src, changing_slots = changing_slots))
+			return
+
 	// Doing some unintended shit that may cause catastrophical events, aborting
 	// If you'll ever want to implement something that intentionally allows direct clicking on an item while it's inside
 	// an atom's contents - just go and smack yourself with a brick, it shall not work like this.
@@ -292,7 +296,7 @@
 	if(QDELETED(src)) // Unequipping may change src gc_destroyed, so must check here
 		return
 
-	pickup(user)
+	pickup(user, changing_slots)
 
 	if(user.put_in_active_hand(src))
 		if(isturf(old_loc))
@@ -333,7 +337,7 @@
 	return
 
 // apparently called whenever an item is removed from a slot, container, or anything else.
-/obj/item/proc/dropped(mob/user, silent = FALSE)
+/obj/item/proc/dropped(mob/user, changing_slots = FALSE)
 	if(randpixel)
 		pixel_z = randpixel //an idea borrowed from some of the older pixel_y randomizations. Intended to make items appear to drop at a character
 
@@ -344,7 +348,7 @@
 		if(user.r_hand)
 			user.r_hand.update_twohanding()
 
-	if(!silent && !ismob(loc) && !istype(loc, /obj/item/clothing/accessory))
+	if(!changing_slots && !istype(loc, /obj/item/clothing/accessory))
 		play_drop_sound()
 
 	SEND_SIGNAL(src, SIGNAL_ITEM_UNEQUIPPED, src, user)
@@ -384,7 +388,7 @@
 	if(M.r_hand)
 		M.r_hand.update_twohanding()
 
-	play_pickup_sound(user)
+	play_handling_sound(slot)
 
 	SEND_SIGNAL(src, SIGNAL_ITEM_EQUIPPED, src, user, slot)
 
@@ -977,10 +981,20 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 	playsound(src, drop_sound, volume, TRUE)
 
-/obj/item/proc/play_pickup_sound()
+/obj/item/proc/play_handling_sound(slot)
 	if(!pickup_sound)
 		return
 
-	var/volume = clamp(rand(5,15) * w_class, PICKUP_SOUND_VOLUME_MIN, PICKUP_SOUND_VOLUME_MAX)
+	if(slot == slot_l_hand || slot == slot_r_hand)
+		var/volume = clamp(rand(5,15) * w_class, PICKUP_SOUND_VOLUME_MIN, PICKUP_SOUND_VOLUME_MAX)
+		playsound(src, pickup_sound, volume, TRUE)
 
-	playsound(src, pickup_sound, volume, TRUE)
+/obj/item/clothing/play_handling_sound(slot)
+	if(!pickup_sound)
+		return
+
+	if(slot == slot_l_hand || slot == slot_r_hand)
+		var/volume = clamp(rand(5,15) * w_class, PICKUP_SOUND_VOLUME_MIN, PICKUP_SOUND_VOLUME_MAX)
+		playsound(src, pickup_sound, volume, TRUE)
+	else
+		playsound(src, SFX_USE_OUTFIT, 75, 1)

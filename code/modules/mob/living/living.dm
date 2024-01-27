@@ -769,7 +769,7 @@
 /mob/living/proc/slip_on_obj(/obj/slipped_on, stun_duration = 8, slip_dist = 0)
 	return 0
 
-/mob/living/carbon/drop(obj/item/W, atom/Target = null, force = null)
+/mob/living/carbon/drop(obj/item/W, atom/Target = null, force = null, changing_slots)
 	if(W in internal_organs)
 		return
 	. = ..()
