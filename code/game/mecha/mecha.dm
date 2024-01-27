@@ -396,19 +396,19 @@
 
 /obj/mecha/proc/do_move(direction)
 	if(!can_move)
-		return 0
+		return FALSE
 
 	if(src.pr_inertial_movement.active())
-		return 0
+		return FALSE
 
 	if(!has_charge(step_energy_drain))
-		return 0
+		return FALSE
 
 	var/move_result = 0
 	var/old_dir = dir
 	if(hasInternalDamage(MECHA_INT_CONTROL_LOST))
 		move_result = mechsteprand()
-	else if(src.dir!=direction && !strafe)
+	else if(src.dir != direction && !strafe)
 		move_result = mechturn(direction)
 	else
 		move_result	= mechstep(direction, old_dir)
@@ -421,9 +421,9 @@
 				src.log_message("Movement control lost. Inertial movement started.")
 		spawn(step_in)
 			can_move = 1
-		return 1
+		return TRUE
 
-	return 0
+	return FALSE
 
 /obj/mecha/proc/mechturn(direction)
 	set_dir(direction)
@@ -1063,15 +1063,15 @@
 	set category = "Exosuit Interface"
 	set src = usr.loc
 	set popup_menu = 0
-	if(usr != src.occupant)
+	if(usr != occupant)
 		return
 
 	strafe = !strafe
-	src.occupant_message("Strafing mod [strafe? "on":"off"].")
+	occupant_message("Strafing mod [strafe? "on":"off"].")
 
 /obj/mecha/MouseDrop_T(target, mob/living/user)
 	. = ..()
-	if(user.stat || !ishuman(user))
+	if(user.is_ic_dead() || !ishuman(user))
 		return
 
 	if(user.buckled)
