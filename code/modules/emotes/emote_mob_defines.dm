@@ -77,7 +77,16 @@
 		/datum/emote/handshake,
 		/datum/emote/dance,
 		/datum/emote/vomit,
-		/datum/emote/giggle
+		/datum/emote/giggle,
+		/datum/emote/whistle,
+		/datum/emote/signal,
+		/datum/emote/synth/beep,
+		/datum/emote/synth/ping,
+		/datum/emote/synth/buzz,
+		/datum/emote/synth/deny,
+		/datum/emote/synth/confirm,
+		/datum/emote/synth/law,
+		/datum/emote/synth/halt
 	)
 
 /mob/living/carbon/metroid/load_default_emotes()
