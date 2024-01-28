@@ -121,9 +121,8 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 	name  = LETTERBOX_RENDERER
 	group = RENDER_GROUP_SCENE
 	plane = BLACKNESS_PLANE
-	appearance_flags = PLANE_MASTER | NO_CLIENT_COLOR
+	appearance_flags = PLANE_MASTER | NO_CLIENT_COLOR | PIXEL_SCALE
 	blend_mode = BLEND_MULTIPLY
-	color = list(null, null, null, "#0000", "#000f")
 	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
 
 
@@ -143,7 +142,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/renderer)
 /atom/movable/renderer/turf
 	name  = TURF_RENDERER
 	group = RENDER_GROUP_SCENE
-	plane = TURF_PLANE
+	plane = DEFAULT_PLANE
 
 // Draws the game world; live mobs, items, turfs, etc.
 /atom/movable/renderer/game

@@ -38,7 +38,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 
 
 	layer = ABOVE_TILE_LAYER
-	plane = TURF_PLANE
+	plane = DEFAULT_PLANE
 
 	var/power_per_hologram = 500 //per usage per hologram
 	idle_power_usage = 5 WATTS

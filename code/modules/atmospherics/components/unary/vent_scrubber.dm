@@ -1,7 +1,7 @@
 /obj/machinery/atmospherics/unary/vent_scrubber
 	icon = 'icons/atmos/vent_scrubber.dmi'
 	icon_state = "map_scrubber_off"
-	plane = TURF_PLANE
+	plane = DEFAULT_PLANE
 
 	name = "Air Scrubber"
 	desc = "Has a valve and pump attached to it."

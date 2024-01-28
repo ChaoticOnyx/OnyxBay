@@ -157,7 +157,7 @@
 			if(QDELETED(m))
 				continue
 
-			animate(m.message, pixel_y = m.message.pixel_y + mheight, time = CHAT_MESSAGE_SPAWN_TIME)
+			animate(m.message, pixel_z = m.message.pixel_z + mheight, time = CHAT_MESSAGE_SPAWN_TIME)
 			combined_height += m.approx_lines
 			var/sched_remaining = m.scheduled_destruction - world.time
 			if (!m.eol_complete)
@@ -170,10 +170,10 @@
 
 	// Build message image
 	message = image(loc = message_loc, layer = CHAT_LAYER + CHAT_LAYER_Z_STEP * current_z_idx++)
-	message.plane = FLOAT_PLANE
-	message.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA | KEEP_APART | TILE_BOUND
+	message.plane = DEFAULT_PLANE
+	message.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA | KEEP_APART | TILE_BOUND | RESET_TRANSFORM | RESET_COLOR | RESET_ALPHA
 	message.alpha = 0
-	message.pixel_y = owner.bound_height * 0.95
+	message.pixel_z = owner.bound_height * 0.95
 	message.maptext_width = CHAT_MESSAGE_WIDTH
 	message.maptext_height = mheight
 	message.maptext_x = (CHAT_MESSAGE_WIDTH - owner.bound_width) * -0.5

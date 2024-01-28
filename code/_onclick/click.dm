@@ -482,6 +482,7 @@
 
 /mob
 	var/datum/stack/click_handlers
+	sight = SEE_BLACKNESS
 
 var/const/CLICK_HANDLER_NONE                 = 0
 var/const/CLICK_HANDLER_REMOVE_ON_MOB_LOGOUT = 1

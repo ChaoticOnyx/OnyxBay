@@ -18,7 +18,7 @@
 	anchored = 1
 	density = 1
 	opacity = 0
-	plane = ABOVE_TURF_PLANE
+	plane = ABOVE_DEFAULT_PLANE
 	layer = PLANT_LAYER
 
 /obj/structure/diona/vines

@@ -26,7 +26,7 @@
 
 #define WARP_EFFECT_PLANE -6
 
-#define BLACKNESS_PLANE                 -5 //Blackness plane as per DM documentation.
+#define BLACKNESS_PLANE                 0 //Blackness plane as per DM documentation.
 
 #define SPACE_PLANE               -4
 	#define SPACE_LAYER                  1
@@ -36,9 +36,7 @@
 	#define DEBRIS_LAYER                 1
 	#define DUST_LAYER                   2
 
-#define TURF_PLANE -1
-
-#define DEFAULT_PLANE                   1
+#define DEFAULT_PLANE                   -1
 	#define PLATING_LAYER               1
 	//ABOVE PLATING
 	#define HOLOMAP_LAYER               1.01

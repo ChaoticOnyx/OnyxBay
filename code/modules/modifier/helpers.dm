@@ -52,7 +52,8 @@
 		rotate_deg += 180
 		translate_y = -16 * ((tf_scale_y || 1) * body_height - 1)
 
-	reset_layer()
+	pixel_w = translate_x
+	pixel_z = translate_y
 
 	animate(
 		src,
@@ -60,12 +61,11 @@
 			scale_x = (tf_scale_x || 1),
 			scale_y = (tf_scale_y || 1) * body_height,
 			rotation = (tf_rotation || 0) + rotate_deg,
-			offset_x = (tf_offset_x || 0) + translate_x,
-			offset_y = (tf_offset_y || 0) + translate_y
 		),
 		time = anim_time
 	)
 
+	reset_layer()
 
 /mob/living/proc/update_modifier_visuals()
 	return
