@@ -130,4 +130,4 @@
 	attack_hand(ghost)
 
 /obj/machinery/computer/proc/locate_unit(unit_type)
-	return locate(unit_type) in oview(2, src)
+	return locate(unit_type) in orange(2, src)
