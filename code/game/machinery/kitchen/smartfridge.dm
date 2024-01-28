@@ -314,7 +314,7 @@
 	I.add_product(O)
 	SSnano.update_uis(src)
 
-/obj/machinery/smartfridge/attack_ai(mob/user as mob)
+/obj/machinery/smartfridge/attack_ai(mob/user)
 	attack_hand(user)
 
 /obj/machinery/smartfridge/attack_hand(mob/user as mob)

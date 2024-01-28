@@ -387,6 +387,7 @@
 	resetTarget()
 	patrol_path = list()
 	ignore_list = list()
+	same_pos_count = 0
 	return 1
 
 /mob/living/bot/proc/turn_off()

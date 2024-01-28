@@ -121,6 +121,9 @@
 /datum/component/holomarker/toggleable/proc/handle_own_marker()
 	var/image/I = GLOB.holocache["_\ref[src]"]
 	var/turf/parent_loc = get_turf(parent)
+	if(!istype(parent_loc))
+		return
+
 	marker_z = parent_loc.z
 	I.pixel_x = parent_loc.x + HOLOMAP_OFFSET_X - offset_x
 	I.pixel_y = parent_loc.y + HOLOMAP_OFFSET_Y - offset_y
