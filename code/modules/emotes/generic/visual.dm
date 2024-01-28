@@ -635,3 +635,20 @@
 	set name = "Vomit"
 	set category = "Emotes"
 	emote("vomit", intentional = TRUE)
+
+/datum/emote/signal
+	key = "signal"
+
+	message_1p = "You signal."
+	message_3p = "signals."
+
+	message_type = VISIBLE_MESSAGE
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	statpanel_proc = /mob/proc/signal_emote
+
+/mob/proc/signal_emote()
+	set name = "Signal"
+	set category = "Emotes"
+	emote("signal", intentional = TRUE)

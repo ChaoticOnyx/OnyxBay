@@ -649,3 +649,22 @@
 	set name = "Chirp"
 	set category = "Emotes"
 	emote("chirp")
+
+/datum/emote/whistle
+	key = "whistle"
+
+	message_1p = "You whistle."
+	message_3p = "whistles!"
+
+	message_type = AUDIBLE_MESSAGE
+
+	sound = SFX_WHISTLE
+
+	state_checks = EMOTE_CHECK_CONSCIOUS
+
+	statpanel_proc = /mob/proc/whistle_emote
+
+/mob/proc/whistle_emote()
+	set name = "Whistle"
+	set category = "Emotes"
+	emote("whistle")
