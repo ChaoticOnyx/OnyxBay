@@ -23,7 +23,7 @@
 
 	mana_current = 60
 	mana_max = 60
-	mana_drain_per_tick = 7
+	mana_drain_per_tick = 10
 	mana_regen_per_tick = 0.8
 
 /datum/spell/toggled/immaterial_form/activate()
