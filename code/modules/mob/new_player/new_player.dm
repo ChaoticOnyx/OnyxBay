@@ -581,6 +581,9 @@
 	if(config && config.revival.use_cortical_stacks && new_character.client && new_character.client.prefs.has_cortical_stack /*&& new_character.should_have_organ(BP_BRAIN)*/)
 		new_character.create_stack()
 
+	if(new_character.isSynthetic())
+		new_character.add_synth_emotes()
+
 	return new_character
 
 /mob/new_player/proc/ViewManifest()

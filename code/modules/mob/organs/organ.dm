@@ -278,6 +278,8 @@ var/list/organ_cache = list()
 
 /obj/item/organ/proc/robotize() //Being used to make robutt hearts, etc
 	status = ORGAN_ROBOTIC
+	if(owner?.isSynthetic()) // If owner becomes fully synthetic - he receives all corresponding emotes.
+		owner.add_synth_emotes()
 
 /obj/item/organ/proc/mechassist() //Used to add things like pacemakers, etc
 	status = ORGAN_ASSISTED

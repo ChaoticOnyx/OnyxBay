@@ -69,6 +69,9 @@
 
 	statpanel_proc = /mob/proc/gasp_emote
 
+/datum/emote/gasp/get_sfx_volume()
+	return rand(25, 45)
+
 /mob/proc/gasp_emote()
 	set name = "Gasp"
 	set category = "Emotes"
@@ -119,6 +122,9 @@
 /datum/emote/choke/get_impaired_msg(mob/user)
 	return "clutches [P_THEIR(user.gender)] throat desperately!"
 
+/datum/emote/choke/get_sfx_volume()
+	return rand(25, 45)
+
 /mob/proc/choke_emote()
 	set name = "Choke"
 	set category = "Emotes"
@@ -147,6 +153,9 @@
 
 /datum/emote/chuckle/get_impaired_msg(mob/user)
 	return "clutches [P_THEIR(user.gender)] throat!"
+
+/datum/emote/chuckle/get_sfx_volume()
+	return rand(25, 40)
 
 /mob/proc/chuckle_emote()
 	set name = "Chuckle"
@@ -201,6 +210,9 @@
 /datum/emote/cough/get_impaired_msg(mob/user)
 	return "moves [P_THEIR(user.gender)] face forward as [P_THEY(user.gender)] open and close [P_THEIR(user.gender)] mouth!"
 
+/datum/emote/cough/get_sfx_volume()
+	return rand(30, 50)
+
 /mob/proc/cough_emote()
 	set name = "Cough"
 	set category = "Emotes"
@@ -226,6 +238,9 @@
 	sound_human_male = SFX_MALE_CRY
 
 	statpanel_proc = /mob/proc/cry_emote
+
+/datum/emote/cry/get_sfx_volume()
+	return rand(25, 45)
 
 /mob/proc/cry_emote()
 	set name = "Cry"
@@ -256,6 +271,9 @@
 /datum/emote/scream/get_impaired_msg(mob/user)
 	return "opens [P_THEIR(user.gender)] mouth like a fish gasping for air!"
 
+/datum/emote/scream/get_sfx_volume()
+	return rand(30, 45)
+
 /mob/proc/scream_emote()
 	set name = "Scream"
 	set category = "Emotes"
@@ -280,6 +298,9 @@
 
 	statpanel_proc = /mob/proc/scream_long_emote
 
+/datum/emote/scream_long/get_sfx_volume()
+	return rand(40, 60)
+
 /mob/proc/scream_long_emote()
 	set name = "Scream (long)"
 	set category = "Emotes"
@@ -303,6 +324,9 @@
 
 /datum/emote/oink/get_sound(mob/user, intentional)
 	return pick(SFX_OINK)
+
+/datum/emote/oink/get_sfx_volume()
+	return 100
 
 /mob/proc/oink_emote()
 	set name = "Oink"
@@ -335,6 +359,9 @@
 /datum/emote/laugh/get_impaired_msg(mob/user)
 	return "opens and closes [P_THEIR(user.gender)] mouth, smiling."
 
+/datum/emote/laugh/get_sfx_volume()
+	return rand(25, 45)
+
 /mob/proc/laugh_emote()
 	set name = "Laugh"
 	set category = "Emotes"
@@ -363,6 +390,9 @@
 
 /datum/emote/giggle/get_impaired_msg(mob/user)
 	return "opens and closes [P_THEIR(user.gender)] mouth slightly, smiling."
+
+/datum/emote/giggle/get_sfx_volume()
+	return rand(25, 35)
 
 /mob/proc/giggle_emote()
 	set name = "Giggle"
@@ -393,6 +423,9 @@
 /datum/emote/grunt/get_impaired_msg(mob/user)
 	return "clenches [P_THEIR(user.gender)] teeth."
 
+/datum/emote/grunt/get_sfx_volume()
+	return rand(25, 40)
+
 /mob/proc/grunt_emote()
 	set name = "Grunt"
 	set category = "Emotes"
@@ -422,11 +455,13 @@
 /datum/emote/groan/get_impaired_msg(mob/user)
 	return "opens [P_THEIR(user.gender)] mouth slightly."
 
+/datum/emote/groan/get_sfx_volume()
+	return rand(25, 40)
+
 /mob/proc/groan_emote()
 	set name = "Groan"
 	set category = "Emotes"
 	emote("groan", intentional = TRUE)
-
 
 /datum/emote/hiccup
 	key = "hiccup"
@@ -473,6 +508,9 @@
 	sound = SFX_SNORE
 
 	statpanel_proc = /mob/proc/snore_emote
+
+/datum/emote/snore/get_sfx_volume()
+	return rand(15, 25)
 
 /datum/emote/snore/get_impaired_msg(mob/user)
 	return "clutches [P_THEIR(user.gender)] throat desperately!"
@@ -529,6 +567,9 @@
 
 /datum/emote/sigh/get_impaired_msg(mob/user)
 	return "opens [P_THEIR(user.gender)] mouth."
+
+/datum/emote/sigh/get_sfx_volume()
+	return rand(30, 50)
 
 /mob/proc/sigh_emote()
 	set name = "Sigh"
@@ -626,6 +667,9 @@
 
 	statpanel_proc = /mob/proc/yawn_emote
 
+/datum/emote/yawn/get_sfx_volume()
+	return rand(15, 30)
+
 /mob/proc/yawn_emote()
 	set name = "Yawn"
 	set category = "Emotes"
@@ -663,6 +707,9 @@
 	state_checks = EMOTE_CHECK_CONSCIOUS
 
 	statpanel_proc = /mob/proc/whistle_emote
+
+/datum/emote/whistle/get_sfx_volume()
+	return 40
 
 /mob/proc/whistle_emote()
 	set name = "Whistle"

@@ -80,14 +80,12 @@
 		/datum/emote/giggle,
 		/datum/emote/whistle,
 		/datum/emote/signal,
-		/datum/emote/synth/beep,
-		/datum/emote/synth/ping,
-		/datum/emote/synth/buzz,
-		/datum/emote/synth/deny,
-		/datum/emote/synth/confirm,
-		/datum/emote/synth/law,
-		/datum/emote/synth/halt
 	)
+
+/mob/living/carbon/human/load_default_emotes()
+	default_emotes += subtypesof(/datum/emote/synth)
+
+	return ..()
 
 /mob/living/carbon/metroid/load_default_emotes()
 	default_emotes += typesof(/datum/emote/metroid)

@@ -2,6 +2,7 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 
 #define MIN_VOICE_FREQUENCY 0.85
 #define MAX_VOICE_FREQUENCY 1.05
+#define EMOTE_DEFAULT_VOLUME 75
 
 /datum/emote
 	/// Default command to use emote ie. '*[key]'
@@ -80,6 +81,10 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 
 	return sound
 
+/// Override this in order (to get specific or random volume for example)
+/datum/emote/proc/get_sfx_volume()
+	return EMOTE_DEFAULT_VOLUME
+
 /datum/emote/proc/get_cooldown_group()
 	if(isnull(cooldown_group))
 		return type
@@ -102,7 +107,7 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 		var/voice_frequency = TRANSLATE_RANGE(H.age, H.species.min_age, H.species.max_age, MIN_VOICE_FREQUENCY, MAX_VOICE_FREQUENCY)
 		sound_frequency = MAX_VOICE_FREQUENCY - (voice_frequency - MIN_VOICE_FREQUENCY)
 
-	playsound(user, emote_sound, 75, frequency = sound_frequency)
+	playsound(user, emote_sound, get_sfx_volume(), frequency = sound_frequency)
 
 /datum/emote/proc/can_emote(mob/user, intentional)
 	if(!check_cooldown(user.next_emote_use, intentional))
@@ -180,3 +185,4 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 
 #undef MIN_VOICE_FREQUENCY
 #undef MAX_VOICE_FREQUENCY
+#undef EMOTE_DEFAULT_VOLUME
