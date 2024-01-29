@@ -82,6 +82,14 @@
 
 	return ..()
 
+/obj/mecha/combat/marauder/relaymove(mob/user, direction)
+	if(zoom)
+		if(world.time - last_message > 20)
+			src.occupant_message("Unable to move while in zoom mode.")
+			last_message = world.time
+		return FALSE
+	. = ..()
+
 /obj/mecha/combat/marauder/do_move(direction)
 	if(!can_move)
 		return FALSE
