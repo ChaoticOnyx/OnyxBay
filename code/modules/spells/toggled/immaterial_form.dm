@@ -1,4 +1,5 @@
-#define MANA_PER_EMPOWER 40
+#define MANA_PER_EMPOWER 15
+#define MANA_REGEN_PER_QUICKEN 0.5
 
 /datum/spell/toggled/immaterial_form
 	name = "Immaterial form"
@@ -22,8 +23,8 @@
 
 	mana_current = 60
 	mana_max = 60
-	mana_drain_per_tick = 5
-	mana_regen_per_tick = 1
+	mana_drain_per_tick = 7
+	mana_regen_per_tick = 0.8
 
 /datum/spell/toggled/immaterial_form/activate()
 	. = ..()
@@ -67,7 +68,7 @@
 
 	spell_levels[SP_SPEED]++
 
-	mana_regen_per_tick++
+	mana_regen_per_tick += MANA_REGEN_PER_QUICKEN
 
 	var/temp = ""
 	name = initial(name)
@@ -134,7 +135,7 @@
 	else
 		to_chat(user, SPAN_WARNING("Some strange aura is blocking the way!"))
 
-	nextmove = world.time + 1 // Better than timers.
+	nextmove = world.time + user.movement_delay() // Better than timers.
 
 /obj/effect/dummy/immaterial_form/bullet_act(obj/item/projectile/Proj, def_zone)
 	if(buckled_mob)

@@ -17,6 +17,7 @@
 	var/mob/living/carbon/human/H = holder
 
 	H.mutations.Add(MUTATION_SKELETON)
+	H.mutations.Add(MUTATION_CLUMSY)
 	for(var/obj/item/organ/external/head/h in H.organs)
 		h.status |= ORGAN_DISFIGURED
 	H.update_body(TRUE)
