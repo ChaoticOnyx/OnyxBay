@@ -408,7 +408,7 @@
 	var/old_dir = dir
 	if(hasInternalDamage(MECHA_INT_CONTROL_LOST))
 		move_result = mechsteprand()
-	else if(src.dir != direction && !strafe)
+	else if(dir != direction && !strafe)
 		move_result = mechturn(direction)
 	else
 		move_result	= mechstep(direction, old_dir)
