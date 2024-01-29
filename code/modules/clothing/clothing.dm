@@ -133,9 +133,9 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 
 	if(slot == slot_l_hand || slot == slot_r_hand)
 		var/volume = clamp(rand(5,15) * w_class, PICKUP_SOUND_VOLUME_MIN, PICKUP_SOUND_VOLUME_MAX)
-		playsound(src, pickup_sound, volume, TRUE, extrarange = -2, falloff = 0.5)
+		playsound(src, pickup_sound, volume, TRUE, extrarange = -5)
 	else
-		playsound(src, SFX_USE_OUTFIT, 75, TRUE, extrarange = -2, falloff = 0.5)
+		playsound(src, SFX_USE_OUTFIT, 75, TRUE, extrarange = -5)
 
 /obj/item/clothing/proc/refit_for_species(target_species)
 	if(!species_restricted)
