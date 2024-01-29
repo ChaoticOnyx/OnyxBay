@@ -715,10 +715,10 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 		STOP_PROCESSING(SSmachines, src)
 		return
 
-	M.adjustBrainLoss(-25)
+	H.adjustBrainLoss(-25)
 	for(var/chemical in injected_reagents)
-		if(M.reagents.get_reagent_amount(chemical) < inject_am )
-			M.reagents.add_reagent(chemical, inject_am )
+		if(H.reagents.get_reagent_amount(chemical) < inject_am )
+			H.reagents.add_reagent(chemical, inject_am )
 
 /obj/structure/closet/abductor
 	name = "alien locker"
