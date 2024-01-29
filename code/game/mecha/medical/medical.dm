@@ -7,10 +7,12 @@
 	playsound(src,'sound/mecha/mechmove01.ogg',40,1)
 	return 1
 
-/obj/mecha/medical/mechstep(direction)
+/obj/mecha/medical/mechstep(direction, old_dir)
 	var/result = step(src,direction)
 	if(result)
 		playsound(src,'sound/mecha/mechstep.ogg',25,1)
+	if(strafe)
+		set_dir(old_dir)
 	return result
 
 /obj/mecha/medical/mechsteprand()
