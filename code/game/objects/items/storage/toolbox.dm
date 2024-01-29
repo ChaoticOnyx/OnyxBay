@@ -19,6 +19,9 @@
 	origin_tech = list(TECH_COMBAT = 1)
 	attack_verb = list("robusted")
 
+	drop_sound = SFX_DROP_TOOLBOX
+	pickup_sound = SFX_PICKUP_TOOLBOX
+
 /obj/item/storage/toolbox/emergency
 	name = "emergency toolbox"
 	icon_state = "red"

@@ -20,6 +20,8 @@
 	premium = list(	/obj/item/reagent_containers/vessel/bottle/chemical/ammonia = 10,
 					/obj/item/reagent_containers/vessel/bottle/chemical/diethylamine = 5)
 
+	vending_sound = SFX_VENDING_DROP
+
 /obj/item/vending_cartridge/hydronutrients
 	icon_state = "refill_plant"
 	build_path = /obj/machinery/vending/hydronutrients

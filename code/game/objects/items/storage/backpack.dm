@@ -20,6 +20,9 @@
 	use_sound = SFX_SEARCH_CLOTHES
 	var/worn_access = TRUE // Whether it can be opened while worn on back
 
+	drop_sound = SFX_DROP_BACKPACK
+	pickup_sound = SFX_PICKUP_BACKPACK
+
 /obj/item/storage/backpack/Initialize()
 	. = ..()
 

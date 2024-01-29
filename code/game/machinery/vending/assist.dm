@@ -2,6 +2,8 @@
 /obj/machinery/vending/assist
 	product_ads = "Only the finest!;Have some tools.;The most robust equipment.;The finest gear in space!"
 
+	vending_sound = SFX_VENDING_GENERIC
+
 	component_types = list(
 		/obj/item/vending_cartridge/assist
 		)

@@ -207,6 +207,9 @@
 	var/window_width = 650
 	var/window_height = 650
 
+	drop_sound = SFX_DROP_BOOK
+	pickup_sound = SFX_PICKUP_BOOK
+
 /obj/item/book/attack_self(mob/user)
 	if(carved)
 		if(store)

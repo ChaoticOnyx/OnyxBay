@@ -21,6 +21,8 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	w_class = ITEM_SIZE_SMALL
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
+	drop_sound = SFX_DROP_SCREWDRIVER
+	pickup_sound = SFX_PICKUP_SCREWDRIVER
 
 /*
  * Hemostat
@@ -35,6 +37,8 @@
 	w_class = ITEM_SIZE_SMALL
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
 	attack_verb = list("attacked", "pinched")
+	drop_sound = SFX_DROP_WELDINGTOOL
+	pickup_sound = SFX_PICKUP_WELDINGTOOL
 
 /obj/item/hemostat/pico
 	name = "precision grasper"
@@ -55,6 +59,8 @@
 	w_class = ITEM_SIZE_SMALL
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
 	attack_verb = list("burnt")
+	drop_sound = SFX_DROP_SCREWDRIVER
+	pickup_sound = SFX_PICKUP_SCREWDRIVER
 
 /*
  * Surgical Drill
@@ -75,6 +81,8 @@
 	mod_handy = 0.9
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
 	attack_verb = list("drilled")
+	drop_sound = SFX_DROP_ACCESSORY
+	pickup_sound = SFX_PICKUP_ACCESSORY
 
 /*
  * Scalpel
@@ -99,6 +107,8 @@
 	matter = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000)
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	hitsound = 'sound/weapons/bladeslice.ogg'
+	drop_sound = SFX_DROP_KNIFE
+	pickup_sound = SFX_PICKUP_KNIFE
 
 /*
  * Researchable Scalpels
@@ -166,6 +176,8 @@
 	edge = 1
 	var/improved = 0
 	var/craft_step = CHAINSAW_ADD_COIL // Using for creating the chainsaw
+	drop_sound = SFX_DROP_ACCESSORY
+	pickup_sound = SFX_PICKUP_ACCESSORY
 
 /obj/item/circular_saw/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/material/wirerod) && improved == 0)
@@ -289,6 +301,8 @@
 	force = 0
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 1.0
+	pickup_sound = SFX_PICKUP_BOTTLE
+	drop_sound = SFX_DROP_BOTTLE
 
 /obj/item/FixOVein
 	name = "FixOVein"
@@ -299,6 +313,8 @@
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 3)
 	w_class = ITEM_SIZE_SMALL
 	var/usage_amount = 10
+	pickup_sound = SFX_PICKUP_ACCESSORY
+	drop_sound = SFX_DROP_ACCESSORY
 
 /obj/item/FixOVein/clot
 	name = "capillary laying operation tool" //C.L.O.T.
@@ -318,6 +334,8 @@
 	mod_reach = 0.5
 	mod_handy = 0.75
 	attack_verb = list("attacked", "hit", "bludgeoned")
+	drop_sound = SFX_DROP_WELDINGTOOL
+	pickup_sound = SFX_PICKUP_WELDINGTOOL
 
 /obj/item/bonesetter/bone_mender
 	name = "bone mender"

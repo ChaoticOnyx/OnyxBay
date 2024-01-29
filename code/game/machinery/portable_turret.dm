@@ -456,6 +456,9 @@ var/list/turret_icons
 	var/list/targets = list()			//list of primary targets
 	var/list/secondarytargets = list()	//targets that are least important
 
+	if(density && prob(25))
+		playsound(src, SFX_TURRET_ROTATE, 80, TRUE)
+
 	for(var/mob/M in mobs_in_view(world.view, src))
 		assess_and_assign(M, targets, secondarytargets)
 
@@ -559,6 +562,7 @@ var/list/turret_icons
 	var/atom/flick_holder = new /atom/movable/porta_turret_cover(loc)
 	flick_holder.layer = layer + 0.1
 	flick("popup", flick_holder)
+	playsound(src, SFX_TURRET_DEPLOY, 80, TRUE)
 	sleep(10)
 	qdel(flick_holder)
 
@@ -579,6 +583,7 @@ var/list/turret_icons
 	var/atom/flick_holder = new /atom/movable/porta_turret_cover(loc)
 	flick_holder.layer = layer + 0.1
 	flick("popdown", flick_holder)
+	playsound(src, SFX_TURRET_RETRACT, 80, TRUE)
 	sleep(10)
 	qdel(flick_holder)
 

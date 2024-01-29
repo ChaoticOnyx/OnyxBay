@@ -18,6 +18,9 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	material_amount = 5
 
+	drop_sound = SFX_DROP_SWORD
+	pickup_sound = SFX_PICKUP_SWORD
+
 /obj/item/material/sword/replica
 	desc = "What are you standing around staring at this for? Get to looking cringy!"
 	edge = 0

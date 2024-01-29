@@ -129,6 +129,9 @@
 	var/base_item_state
 	var/balloon_type = BALLOON_FORBIDDEN
 
+	drop_sound = SFX_DROP_RUBBER
+	pickup_sound = SFX_PICKUP_RUBBER
+
 /obj/item/balloon/Initialize()
 	. = ..()
 	base_item_state = item_state

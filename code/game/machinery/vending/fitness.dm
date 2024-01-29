@@ -10,6 +10,8 @@
 	product_slogans = "SweatMAX, get robust!"
 	product_ads = "Pain is just weakness leaving the body!;Run! Your fat is catching up to you;Never forget leg day!;Push out!;This is the only break you get today.;Don't cry, sweat!;Healthy is an outfit that looks good on everybody."
 
+	vending_sound = SFX_VENDING_DROP
+
 	component_types = list(
 		/obj/item/vending_cartridge/fitness
 		)

@@ -71,6 +71,8 @@
 	var/list/prices = list()
 	var/gen_rand_amount = FALSE // If we want to generate random amount of items in our cartridge.
 
+	var/vending_sound = SFX_VENDING_DROP
+
 /obj/machinery/vending/on_update_icon()
 	ClearOverlays()
 	if(stat & BROKEN)
@@ -591,7 +593,7 @@
 			stuck()
 			return
 
-		playsound(src, 'sound/effects/using/disposal/drop2.ogg', 40, TRUE)
+		playsound(src, vending_sound, 70, TRUE)
 
 		if(prob(diona_spawn_chance)) //Hehehe
 			var/turf/T = get_turf(src)

@@ -10,6 +10,9 @@
 
 	armor = list(melee = 35, bullet = 30, laser = 30,energy = 35, bomb = 25, bio = 35)
 
+	drop_sound = SFX_DROP_BOOTS
+	pickup_sound = SFX_PICKUP_BOOTS
+
 /obj/item/clothing/shoes/galoshes/Initialize()
 	. = ..()
 	slowdown_per_slot[slot_shoes] = 1
@@ -24,6 +27,9 @@
 	can_hold_knife = 1
 	cold_protection = FEET
 	min_cold_protection_temperature = HELMET_MIN_COLD_PROTECTION_TEMPERATURE
+
+	drop_sound = SFX_DROP_BOOTS
+	pickup_sound = SFX_PICKUP_BOOTS
 
 /obj/item/clothing/shoes/jackboots/tactical
 	name = "tactical jackboots"
@@ -45,6 +51,9 @@
 	armor = list(melee = 45, bullet = 30, laser = 30, energy = 25, bomb = 20, bio = 0)
 	siemens_coefficient = 0.4
 	can_hold_knife = 1
+
+	drop_sound = SFX_DROP_BOOTS
+	pickup_sound = SFX_PICKUP_BOOTS
 
 /obj/item/clothing/shoes/workboots/toeless
 	name = "toe-less workboots"

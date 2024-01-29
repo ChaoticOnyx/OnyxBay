@@ -46,7 +46,7 @@
 	if(usr.incapacitated())
 		return
 
-	if(!usr.drop(src))
+	if(!usr.drop(src, changing_slots = TRUE))
 		return
 
 	switch(over_object.name)

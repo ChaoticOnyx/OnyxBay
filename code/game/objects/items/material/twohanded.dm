@@ -241,6 +241,9 @@
 	unbreakable = 1 // Because why should it break at all
 	material_amount = 8
 
+	drop_sound = SFX_DROP_AXE
+	pickup_sound = SFX_PICKUP_AXE
+
 /obj/item/material/twohanded/fireaxe/afterattack(atom/A, mob/user, proximity)
 	if(!proximity) return
 	..()

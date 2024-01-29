@@ -9,6 +9,8 @@
 	product_slogans = "Escape to a fantasy world!;Fuel your gambling addiction!;Ruin your friendships!"
 	product_ads = "Elves and dwarves!;Totally not satanic!;Fun times forever!"
 
+	vending_sound = SFX_VENDING_GENERIC
+
 	component_types = list(
 		/obj/item/vending_cartridge/games
 		)

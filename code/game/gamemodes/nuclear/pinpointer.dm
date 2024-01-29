@@ -11,6 +11,9 @@
 	var/active = 0
 	var/beeping = 2
 
+	drop_sound = SFX_DROP_DEVICE
+	pickup_sound = SFX_PICKUP_DEVICE
+
 /obj/item/pinpointer/Destroy()
 	target = null
 	. = ..()

@@ -10,6 +10,8 @@
 	product_slogans = "Look smashing for your darling!;Be rich! Dress rich!"
 	product_ads = "Impress the love of your life!;Don't look poor, look rich!;100% authentic designers!;All sales are final!;Lowest prices guaranteed!"
 
+	vending_sound = SFX_VENDING_DROP
+
 	component_types = list(
 		/obj/item/vending_cartridge/fashionvend
 		)

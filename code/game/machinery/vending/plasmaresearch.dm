@@ -3,6 +3,8 @@
 	name = "Toximate 3000"
 	desc = "All the fine parts you need in one vending machine!"
 
+	vending_sound = SFX_VENDING_GENERIC
+
 	component_types = list(
 		/obj/item/vending_cartridge/plasmaresearch
 		)

@@ -34,6 +34,9 @@
 	unacidable = FALSE
 	lid_type = null
 
+	drop_sound = SFX_DROP_METALPOT
+	pickup_sound = SFX_PICKUP_METALPOT
+
 /obj/item/reagent_containers/vessel/bucket/full
 	startswith = list(/datum/reagent/water)
 
@@ -172,6 +175,9 @@
 	filling_states = "50;100"
 	lid_type = null
 	unacidable = FALSE
+
+	drop_sound = SFX_DROP_PAPERCUP
+	pickup_sound = SFX_PICKUP_PAPERCUP
 
 /obj/item/reagent_containers/vessel/shaker
 	name = "shaker"

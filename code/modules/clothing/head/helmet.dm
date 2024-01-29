@@ -26,6 +26,9 @@
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
+	drop_sound = SFX_DROP_HELMET
+	pickup_sound = SFX_PICKUP_HELMET
+
 /obj/item/clothing/head/helmet/attack_self(mob/user)
 	if(visor_body_parts_covered)
 		togglevisor(user)

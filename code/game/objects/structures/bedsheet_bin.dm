@@ -18,6 +18,8 @@ LINEN BINS
 	throw_range = 2
 	w_class = ITEM_SIZE_SMALL
 	var/folded = 0
+	drop_sound = SFX_DROP_CLOTH
+	pickup_sound = SFX_PICKUP_CLOTH
 
 /obj/item/bedsheet/attackby(obj/item/I, mob/user)
 	if(is_sharp(I))

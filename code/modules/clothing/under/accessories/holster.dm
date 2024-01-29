@@ -8,6 +8,9 @@
 	var/list/can_hold
 	var/datum/action/item_action/holster_action
 
+	var/sound_holster_in = SFX_HOLSTERIN
+	var/sound_holster_out = SFX_HOLSTEROUT
+
 /datum/action/item_action/holster
 	name = "Holster"
 	check_flags = AB_CHECK_RESTRAINED|AB_CHECK_STUNNED|AB_CHECK_LYING|AB_CHECK_ALIVE
@@ -73,6 +76,8 @@
 	user.visible_message(SPAN("notice", "[user] holsters \the [holstered]."), SPAN("notice", "You holster \the [holstered]."))
 	name = "occupied [initial(name)]"
 
+	playsound(src, sound_holster_in, rand(40,60))
+
 /obj/item/clothing/accessory/holster/proc/clear_holster()
 	holstered = null
 	SetName(initial(name))
@@ -98,6 +103,7 @@
 		holstered.add_fingerprint(user)
 		w_class = initial(w_class)
 		clear_holster()
+		playsound(src, sound_holster_out, rand(40,60))
 
 /obj/item/clothing/accessory/holster/attackby(obj/item/W, mob/user)
 	holster(W, user)
@@ -177,14 +183,20 @@
 	name = "hip holster"
 	desc = "A handgun holster slung low on the hip, draw pardner!"
 	icon_state = "holster_hip"
+	sound_holster_in = SFX_TACHOLSTERIN
+	sound_holster_out = SFX_TACHOLSTEROUT
 
 /obj/item/clothing/accessory/holster/thigh
 	name = "thigh holster"
 	desc = "A drop leg holster made of a durable synthetic fiber."
 	icon_state = "holster_thigh"
+	sound_holster_in = SFX_TACHOLSTERIN
+	sound_holster_out = SFX_TACHOLSTEROUT
 
 /obj/item/clothing/accessory/holster/machete
 	name = "machete sheath"
 	desc = "A handsome synthetic leather sheath with matching belt."
 	icon_state = "holster_machete"
 	can_hold = list(/obj/item/material/hatchet/machete)
+	sound_holster_in = SFX_SHEATHIN
+	sound_holster_out = SFX_SHEATHOUT

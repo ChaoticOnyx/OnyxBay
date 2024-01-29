@@ -32,6 +32,9 @@
 	tint = TINT_HEAVY
 	var/obj/item/welding_cover/cover = null
 
+	pickup_sound = SFX_PICKUP_HELMET
+	drop_sound = SFX_DROP_HELMET
+
 /obj/item/clothing/head/welding/_examine_text(mob/user)
 	. = ..()
 	if(cover)
