@@ -104,6 +104,9 @@
 	if(isnull(scoped_accuracy))
 		scoped_accuracy = accuracy
 
+	if(config.misc.toogle_gun_safety)
+		verbs |= /obj/item/gun/proc/toggle_safety_verb
+
 /obj/item/gun/Destroy()
 	// autofire timer is automatically cleaned up
 	autofiring_at = null
@@ -674,7 +677,7 @@
 	if(safety_icon)
 		AddOverlays((image(icon,"[safety_icon][safety()]")))
 
-/obj/item/gun/verb/toggle_safety_verb()
+/obj/item/gun/proc/toggle_safety_verb()
 	set src in usr
 	set category = "Object"
 	set name = "Toggle Gun Safety"
