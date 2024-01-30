@@ -709,50 +709,16 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 
 	var/static/list/injected_reagents = list(/datum/reagent/inaprovaline, /datum/reagent/dexalinp, /datum/reagent/painkiller/tramadol)
 
-/obj/machinery/optable/abductor/take_victim(mob/living/carbon/C, mob/living/carbon/user)
-	if (C == user)
-		user.visible_message("[user] climbs on \the [src].","You climb on \the [src].")
-	else
-		visible_message("<span class='notice'>\The [C] has been laid on \the [src] by [user].</span>")
-	if (C.client)
-		C.client.perspective = EYE_PERSPECTIVE
-		C.client.eye = src
-	C.resting = 1
-	C.dropInto(loc)
-	for(var/obj/O in src)
-		if(O in component_parts)
-			continue
-		O.dropInto(loc)
-	src.add_fingerprint(user)
-	if(ishuman(C))
-		set_next_think(world.time + 1 SECOND)
-		var/mob/living/carbon/human/H = C
-		src.victim = H
-		to_chat(C, SPAN_DANGER("You feel a series of tiny pricks!"))
+/obj/machinery/optable/abductor/Process()
+	var/mob/living/carbon/human/H = victim?.resolve()
+	if(!istype(H) || H.loc != loc)
+		STOP_PROCESSING(SSmachines, src)
+		return
 
-/obj/machinery/optable/abductor/check_victim()
-	if(locate(/mob/living/carbon/human, src.loc))
-		play_beep()
-		var/mob/living/carbon/human/M = locate(/mob/living/carbon/human, src.loc)
-		if(M.lying)
-			src.victim = M
-			return 1
-	src.victim = null
-	return 0
-
-/obj/machinery/optable/abductor/think()
-	if(locate(/mob/living/carbon/human, src.loc))
-		var/mob/living/carbon/human/M = locate(/mob/living/carbon/human, src.loc)
-		if(M.lying)
-			src.victim = M
-			M.adjustBrainLoss(-25)
-			for(var/chemical in injected_reagents)
-				if(M.reagents.get_reagent_amount(chemical) < inject_am )
-					M.reagents.add_reagent(chemical, inject_am )
-
-			set_next_think(world.time + 1 SECOND)
-
-	src.victim = null
+	H.adjustBrainLoss(-25)
+	for(var/chemical in injected_reagents)
+		if(H.reagents.get_reagent_amount(chemical) < inject_am )
+			H.reagents.add_reagent(chemical, inject_am )
 
 /obj/structure/closet/abductor
 	name = "alien locker"
