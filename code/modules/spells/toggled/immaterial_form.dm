@@ -1,5 +1,7 @@
-#define MANA_PER_EMPOWER 15
-#define MANA_REGEN_PER_QUICKEN 0.5
+#define MANA_PER_EMPOWER         15
+#define MANA_REGEN_PER_QUICKEN   0.5
+#define MIN_MOVEMENT_DELAY       1
+#define MAX_MOVEMENT_DELAY       4
 
 /datum/spell/toggled/immaterial_form
 	name = "Immaterial form"
@@ -135,7 +137,9 @@
 	else
 		to_chat(user, SPAN_WARNING("Some strange aura is blocking the way!"))
 
-	nextmove = world.time + user.movement_delay() // Better than timers.
+	var/delay = clamp(user.movement_delay(), MIN_MOVEMENT_DELAY, MAX_MOVEMENT_DELAY)
+
+	nextmove = world.time + delay // Better than timers.
 
 /obj/effect/dummy/immaterial_form/bullet_act(obj/item/projectile/Proj, def_zone)
 	if(buckled_mob)
@@ -149,3 +153,5 @@
 	return ..()
 
 #undef MANA_PER_EMPOWER
+#undef MIN_MOVEMENT_DELAY
+#undef MAX_MOVEMENT_DELAY
