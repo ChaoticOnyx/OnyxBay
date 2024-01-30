@@ -64,8 +64,6 @@
 
 	/// If true - `currently_vending` is the thing stuck in the vending.
 	var/is_stuck = FALSE
-	/// However many more times you need to knock it to get it to unstuck.
-	var/knocks
 
 	// Content-related stuff
 	var/list/products = list() // In case we want to add something extra to our vending machine
@@ -624,14 +622,12 @@
 	status_message = "Unexpected error occurred. Please contact technical support."
 	speak(status_message)
 	status_error = TRUE
-	knocks = rand(1, 5)
 	is_stuck = TRUE
 
 /obj/machinery/vending/proc/unstuck()
 	ASSERT(is_stuck)
 
 	playsound(src, 'sound/signals/error25.ogg', 40, FALSE)
-	knocks = null
 	is_stuck = FALSE
 
 	spawn(1 SECOND)
