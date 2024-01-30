@@ -105,6 +105,9 @@
 
 	statpanel_proc = /mob/proc/clap_emote
 
+/datum/emote/clap/get_sfx_volume()
+	return rand(25, 35)
+
 /mob/proc/clap_emote()
 	set name = "Clap"
 	set category = "Emotes"

@@ -53,6 +53,13 @@
 
 	emote.do_emote(src, act, intentional, target)
 
+/mob/proc/add_synth_emotes()
+	for(var/path in subtypesof(/datum/emote/synth))
+		var/datum/emote/E = GLOB.all_emotes[path]
+		set_emote(E.key, E)
+		if(!isnull(E.statpanel_proc))
+			verbs |= E.statpanel_proc
+
 /// A simple emote - just the message, and it's type. For anything more complex use datumized emotes.
 /mob/proc/custom_emote(message_type = VISIBLE_MESSAGE, message, intentional = FALSE)
 	log_emote("[key_name(src)] : [message]")
