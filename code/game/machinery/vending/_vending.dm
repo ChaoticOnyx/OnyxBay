@@ -61,7 +61,9 @@
 	var/scan_id = 1
 	var/obj/item/material/coin/coin
 	var/datum/wires/vending/wires = null
+	var/stuck_chance = 1
 	var/is_stuck = FALSE // If true - `currently_vending` is the thing stuck in the vending.
+	var/knocks // However many more times you need to knock it to get it to unstuck.
 
 	// Content-related stuff
 	var/list/products = list() // In case we want to add something extra to our vending machine
@@ -88,7 +90,7 @@
 	. = ..()
 	wires = new(src)
 	if(vend_delay == null)
-		vend_delay = rand(4 SECONDS, 8 SECONDS)
+		vend_delay = rand(2 SECONDS, 4 SECONDS)
 	if(product_slogans)
 		slogan_list += splittext(product_slogans, ";")
 		// So not all machines speak at the exact same time.
@@ -416,11 +418,15 @@
 		playsound(src, 'sound/effects/vent/vent12.ogg', 40, TRUE)
 		shake_animation(stime = 4)
 		user.do_attack_animation(src)
-		user.visible_message(SPAN("danger", "\The [user] knock \the [src]!"),
+		user.visible_message(SPAN("danger", "\The [user] knocks \the [src]!"),
 			SPAN("danger", "You knock \the [src]!"),
 			SPAN("danger", "You hear a knock sound."))
 
-		if(is_stuck && prob(20))
+		if(!is_stuck)
+			return
+
+		knocks--
+		if(knocks <= 0)
 			unstuck()
 
 		return
@@ -589,7 +595,7 @@
 
 	spawn(vend_delay) //Time to vend
 		// A chance to stuck in.
-		if(prob(5))
+		if(prob(stuck_chance))
 			stuck()
 			return
 
@@ -620,12 +626,14 @@
 	status_message = "Unexpected error occurred. Please contact technical support."
 	speak(status_message)
 	status_error = TRUE
+	knocks = rand(1, 5)
 	is_stuck = TRUE
 
 /obj/machinery/vending/proc/unstuck()
 	ASSERT(is_stuck)
 
 	playsound(src, 'sound/signals/error25.ogg', 40, FALSE)
+	knocks = null
 	is_stuck = FALSE
 
 	spawn(1 SECOND)
