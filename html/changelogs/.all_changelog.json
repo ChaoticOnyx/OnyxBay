@@ -1,5 +1,16 @@
 [
   {
+    "author": "Doster-d",
+    "date": "2024-01-30T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Admin",
+        "message": "У кастомок можно выставлять флаги.",
+        "pr": 11464
+      }
+    ]
+  },
+  {
     "author": "Filatelele",
     "date": "2024-01-29T00:00:00+03:00",
     "changes": [
