@@ -61,9 +61,11 @@
 	var/scan_id = 1
 	var/obj/item/material/coin/coin
 	var/datum/wires/vending/wires = null
-	var/stuck_chance = 1
-	var/is_stuck = FALSE // If true - `currently_vending` is the thing stuck in the vending.
-	var/knocks // However many more times you need to knock it to get it to unstuck.
+
+	/// If true - `currently_vending` is the thing stuck in the vending.
+	var/is_stuck = FALSE
+	/// However many more times you need to knock it to get it to unstuck.
+	var/knocks
 
 	// Content-related stuff
 	var/list/products = list() // In case we want to add something extra to our vending machine
@@ -422,11 +424,7 @@
 			SPAN("danger", "You knock \the [src]!"),
 			SPAN("danger", "You hear a knock sound."))
 
-		if(!is_stuck)
-			return
-
-		knocks--
-		if(knocks <= 0)
+		if(is_stuck && prob(50))
 			unstuck()
 
 		return
@@ -595,7 +593,7 @@
 
 	spawn(vend_delay) //Time to vend
 		// A chance to stuck in.
-		if(prob(stuck_chance))
+		if(prob(1))
 			stuck()
 			return
 
