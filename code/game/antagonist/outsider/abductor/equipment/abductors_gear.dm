@@ -720,6 +720,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 		if(H.reagents.get_reagent_amount(chemical) < inject_am )
 			H.reagents.add_reagent(chemical, inject_am )
 
+	icon_state = H.pulse() ? "[initial(icon_state)]-idle" : "[initial(icon_state)]-idle"
+
 /obj/structure/closet/abductor
 	name = "alien locker"
 	desc = "Contains secrets of the universe."
