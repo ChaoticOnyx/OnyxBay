@@ -1,6 +1,3 @@
-/datum/movespeed_modifier/species
-	variable = TRUE
-
 /datum/movespeed_modifier/human_delay
 	flags = MOVESPEED_FLAG_SPACEMOVEMENT
 
