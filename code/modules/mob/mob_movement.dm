@@ -296,4 +296,4 @@
 #undef DO_MOVE
 
 /mob/proc/update_move_intent_slowdown()
-	add_movespeed_modifier((m_intent == M_WALK)? /datum/movespeed_modifier/walk : /datum/movespeed_modifier/run)
+	add_movespeed_modifier((m_intent == M_WALK) ? /datum/movespeed_modifier/walk : /datum/movespeed_modifier/run)
