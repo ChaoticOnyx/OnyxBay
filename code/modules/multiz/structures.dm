@@ -197,6 +197,7 @@
 		if(!(locate(/obj/structure/stairs) in below))
 			to_chat(A, SPAN("warning", "The stairs cut off."))
 			return
+
 		A.forceMove(target)
 		if(isliving(A))
 			var/mob/living/L = A
