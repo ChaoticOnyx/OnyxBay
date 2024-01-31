@@ -2322,6 +2322,7 @@
 #include "code\modules\mob\movement\movespeed_mob.dm"
 #include "code\modules\mob\movement\movespeed_modifier.dm"
 #include "code\modules\mob\movement\modifiers\mobs.dm"
+#include "code\modules\mob\movement\modifiers\movespeed_species.dm"
 #include "code\modules\mob\movement\modifiers\variable_slowdowns.dm"
 #include "code\modules\mob\new_player\login.dm"
 #include "code\modules\mob\new_player\logout.dm"

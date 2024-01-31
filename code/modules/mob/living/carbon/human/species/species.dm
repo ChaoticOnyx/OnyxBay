@@ -156,7 +156,8 @@
 	var/species_flags = 0              // Various specific features.
 	var/appearance_flags = 0           // Appearance/display related features.
 	var/spawn_flags = 0                // Flags that specify who can spawn as this species
-	var/slowdown = 0                   // Passive movement speed malus (or boost, if negative)
+	/// Movespeed modifier. Defined in movespeed_species.dm
+	var/movespeed_modifier = /datum/movespeed_modifier/species
 	var/primitive_form                 // Lesser form, if any (ie. monkey for humans)
 	var/greater_form                   // Greater form, if any, ie. human for monkeys.
 	var/holder_type
@@ -456,12 +457,12 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	return
 
 /datum/species/proc/on_species_loss(mob/living/carbon/human/H)
-	H.remove_movespeed_modifier(/datum/movespeed_modifier/species)
+	H.remove_movespeed_modifier(movespeed_modifier)
 	remove_inherent_verbs(H)
 	remove_inherent_traits(H)
 
 /datum/species/proc/handle_post_spawn(mob/living/carbon/human/H) //Handles anything not already covered by basic species assignment.
-	H.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/species, slowdown = src.slowdown)
+	H.add_movespeed_modifier(movespeed_modifier)
 	add_inherent_verbs(H)
 	add_inherent_traits(H)
 	H.mob_bump_flag = bump_flag

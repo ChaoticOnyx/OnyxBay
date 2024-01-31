@@ -48,9 +48,6 @@
 	. = ..()
 	slowdown = config.movement.run_speed
 
-/datum/movespeed_modifier/species
-	variable = TRUE
-
 /datum/movespeed_modifier/remotebot
 	flags = MOVESPEED_FLAG_SPACEMOVEMENT
 	slowdown = 7

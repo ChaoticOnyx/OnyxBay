@@ -93,7 +93,7 @@
 	generic_attack_mod = 2.0
 	darksight_range = 8
 	darksight_tint = DARKTINT_GOOD
-	slowdown = -0.5
+	movespeed_modifier = /datum/movespeed_modifier/tajaran
 	brute_mod = 1.15
 	burn_mod =  1.15
 	gluttonous = GLUT_TINY
@@ -253,7 +253,7 @@
 	language = LANGUAGE_ROOTLOCAL
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/diona)
 	//primitive_form = "Nymph"
-	slowdown = 7
+	movespeed_modifier = /datum/movespeed_modifier/diona
 	rarity_value = 3
 	hud_type = /datum/hud_data/diona
 	siemens_coefficient = 0.3

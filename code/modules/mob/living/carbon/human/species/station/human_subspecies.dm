@@ -13,7 +13,7 @@
 	oxy_mod =       1.1
 	radiation_mod = 0.5
 	brute_mod =     0.85
-	slowdown =      1
+	movespeed_modifier = /datum/movespeed_modifier/human_gravworlder
 
 	appearance_flags = HAS_HAIR_COLOR | HAS_SKIN_TONE_GRAV | HAS_LIPS | HAS_UNDERWEAR | HAS_EYE_COLOR
 	spawn_flags = SPECIES_IS_RESTRICTED

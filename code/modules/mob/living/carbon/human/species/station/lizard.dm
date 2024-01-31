@@ -14,7 +14,7 @@
 	darksight_tint = DARKTINT_MODERATE
 	gluttonous = GLUT_TINY
 	strength = STR_HIGH
-	slowdown = 0.5
+	movespeed_modifier = /datum/movespeed_modifier/unathi
 	brute_mod = 0.8
 	blood_volume = 800
 	num_alternate_languages = 2
