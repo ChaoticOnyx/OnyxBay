@@ -456,10 +456,12 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	return
 
 /datum/species/proc/on_species_loss(mob/living/carbon/human/H)
+	H.remove_movespeed_modifier(/datum/movespeed_modifier/species)
 	remove_inherent_verbs(H)
 	remove_inherent_traits(H)
 
 /datum/species/proc/handle_post_spawn(mob/living/carbon/human/H) //Handles anything not already covered by basic species assignment.
+	H.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/species, slowdown = src.slowdown)
 	add_inherent_verbs(H)
 	add_inherent_traits(H)
 	H.mob_bump_flag = bump_flag

@@ -20,7 +20,7 @@
 
 /mob/living/carbon/alien/updatehealth()
 	if(is_ooc_dead())
-		return 0
+		return FALSE
 
 	if(status_flags & GODMODE)
 		health = maxHealth
@@ -29,8 +29,11 @@
 		health = maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss()
 		if(health <= 0)
 			death()
-			return 0
-	return 1
+			return FALSE
+
+	update_health_slowdown()
+
+	return TRUE
 
 
 // Currently both Dionaea and larvae like to eat radiation, so I'm defining the

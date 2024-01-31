@@ -11,7 +11,6 @@
 	simulated = 0
 	mouse_opacity = 0
 
-	var/movement_tally = 0     // Movement slow if aiming
 	var/mob/living/aiming_at   // Who are we currently targeting, if anyone?
 	var/obj/item/aiming_with   // What are we targeting with?
 	var/mob/living/owner       // Who do we belong to?
@@ -176,7 +175,7 @@
 			playsound(owner, 'sound/weapons/TargetOn.ogg', 50,1)
 
 		aiming_at.aimed |= src
-		movement_tally = 5
+		owner.add_movespeed_modifier(/datum/movespeed_modifier/aiming_tally)
 		toggle_active(1)
 		update_icon()
 		lock_time = world.time + 35
@@ -227,12 +226,12 @@
 		owner.visible_message("<span class='notice'>\The [owner] lowers \the [aiming_with].</span>")
 
 	unregister_signal(owner, SIGNAL_MOVED)
+	owner.remove_movespeed_modifier(/datum/movespeed_modifier/aiming_tally)
 	if(aiming_at)
 		unregister_signal(aiming_at, SIGNAL_MOVED)
 		unregister_signal(aiming_at, SIGNAL_QDELETING)
 		aiming_at.aimed -= src
 		aiming_at = null
-		movement_tally = 0
 
 	aiming_with = null
 	forceMove(null)

@@ -121,7 +121,7 @@
 			var/obj/item/organ/internal/xenos/plasmavessel/P = H.internal_organs_by_name[BP_PLASMA]
 			P.stored_plasma += weeds_plasma_rate
 			P.stored_plasma = min(max(P.stored_plasma, 0), P.max_plasma)
-			H.nutrition = min(H.nutrition+5, STOMACH_FULLNESS_HIGH) // TODO: Come up with something better like eating humans or who tf knows what; for now it's still better than a horde of slowed-down hungry aliens
+			H.set_nutrition(min(H.nutrition + 5, STOMACH_FULLNESS_HIGH))
 	..()
 
 /datum/species/xenos/proc/regenerate(mob/living/carbon/human/H)

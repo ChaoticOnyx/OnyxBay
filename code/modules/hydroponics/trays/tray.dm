@@ -156,7 +156,7 @@
 			nymph.visible_message("<span class='info'><b>[nymph]</b> begins rooting through [src], ripping out weeds and eating them noisily.</span>","<span class='info'>You begin rooting through [src], ripping out weeds and eating them noisily.</span>")
 			playsound(loc, 'sound/effects/plantshake.ogg', rand(50, 75), TRUE)
 		else if(nymph.nutrition > 100 && nutrilevel < 10)
-			nymph.nutrition -= ((10-nutrilevel)*5)
+			nymph.remove_nutrition((10 - nutrilevel) * 5)
 			nutrilevel = 10
 			nymph.visible_message("<span class='info'><b>[nymph]</b> secretes a trickle of green liquid, refilling [src].</span>","<span class='info'>You secrete a trickle of green liquid, refilling [src].</span>")
 		else

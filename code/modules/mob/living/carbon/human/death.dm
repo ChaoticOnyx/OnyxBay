@@ -79,7 +79,7 @@
 
 	RemoveHairAndFacials()
 
-	mutations.Add(MUTATION_HUSK)
+	add_mutation(MUTATION_HUSK)
 	for(var/obj/item/organ/external/head/h in organs)
 		h.status |= ORGAN_DISFIGURED
 	update_body(1)
@@ -96,7 +96,7 @@
 
 	RemoveHairAndFacials()
 
-	mutations.Add(MUTATION_SKELETON)
+	add_mutation(MUTATION_SKELETON)
 	for(var/obj/item/organ/external/head/h in organs)
 		h.status |= ORGAN_DISFIGURED
 	update_body(1)

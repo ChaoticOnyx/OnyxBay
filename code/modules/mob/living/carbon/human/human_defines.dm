@@ -123,5 +123,6 @@
 	var/skin_state = SKIN_NORMAL
 	var/no_pain = 0
 	var/full_pain = 0 // Cheaper to actually store this than iterate over all the organs for every single check
+	var/full_pain_lasttick = 0
 
 	var/debug = 0

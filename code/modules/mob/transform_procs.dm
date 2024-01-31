@@ -174,7 +174,7 @@
 		var/list/babies = list()
 		for(var/i=1,i<=number,i++)
 			var/mob/living/carbon/metroid/M = new /mob/living/carbon/metroid(loc)
-			M.nutrition = round(nutrition/number)
+			M.set_nutrition(round(M.nutrition / number))
 			step_away(M,src)
 			babies += M
 		new_metroid = pick(babies)
