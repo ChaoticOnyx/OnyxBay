@@ -86,8 +86,7 @@
 /obj/machinery/mecha_part_fabricator/attack_hand(mob/user)
 	if(..())
 		return
-	if(!allowed(user))
-		return
+
 	tgui_interact(user)
 
 /obj/machinery/mecha_part_fabricator/tgui_interact(mob/user, datum/tgui/ui)
