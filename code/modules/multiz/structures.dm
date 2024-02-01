@@ -195,7 +195,7 @@
 		var/turf/target = get_turf(below)
 		var/turf/source = get_turf(A)
 		if(!(locate(/obj/structure/stairs) in below))
-			to_chat(A, SPAN("warning", "The stairs cut off."))
+			show_splash_text(A, "The stairs cut off.")
 			return
 
 		A.forceMove(target)
@@ -204,10 +204,10 @@
 			if(L.pulling)
 				L.pulling.forceMove(target)
 		if(ishuman(A))
-			playsound(source, 'sound/effects/stairs_step.ogg', 50)
-			playsound(target, 'sound/effects/stairs_step.ogg', 50)
+			playsound(source, SFX_FOOTSTEP_STAIRS, 50)
+			playsound(target, SFX_FOOTSTEP_STAIRS, 50)
 	else
-		to_chat(A, SPAN("notice", "There is nothing of interest in this direction."))
+		show_splash_text(A, "There is nothing of interest in this direction.")
 
 /obj/structure/up/CheckExit(atom/movable/mover as mob|obj, turf/target as turf)
 	if(get_dir(loc, target) == turn(dir, 180) && (get_turf(mover) == loc))
@@ -244,7 +244,7 @@
 		var/turf/target = get_turf(above)
 		var/turf/source = get_turf(A)
 		if(!(locate(/obj/structure/up) in above))
-			to_chat(A, SPAN("warning", "The stairs cut off."))
+			show_splash_text(A, "The stairs cut off.")
 		if(above.CanZPass(source, UP) && target.Enter(A, src))
 			A.forceMove(target)
 			if(isliving(A))
@@ -252,12 +252,12 @@
 				if(L.pulling)
 					L.pulling.forceMove(target)
 			if(ishuman(A))
-				playsound(source, 'sound/effects/stairs_step.ogg', 50)
-				playsound(target, 'sound/effects/stairs_step.ogg', 50)
+				playsound(source, SFX_FOOTSTEP_STAIRS, 50)
+				playsound(target, SFX_FOOTSTEP_STAIRS, 50)
 		else
-			to_chat(A, SPAN("warning", "Something blocks the path."))
+			show_splash_text(A, "Something blocks the path.")
 	else
-		to_chat(A, SPAN("notice", "There is nothing of interest in this direction."))
+		show_splash_text(A, "There is nothing of interest in this direction.")
 
 // type paths to make mapping easier.
 /obj/structure/stairs/north

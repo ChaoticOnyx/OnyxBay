@@ -1808,6 +1808,9 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/robot_footstep/spider02.ogg',
 		'sound/effects/robot_footstep/spider03.ogg'
 	),
+	SFX_FOOTSTEP_STAIRS = list(
+		'sound/effects/stairs_step.ogg'
+	),
 	SFX_KEYBOARD = list(
 		'sound/machines/keyboard/keystroke1.ogg',
 		'sound/machines/keyboard/keystroke2.ogg',
