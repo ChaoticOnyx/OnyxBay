@@ -9,7 +9,7 @@
 	anchored = FALSE
 	density = TRUE
 	obj_flags = OBJ_FLAG_ANCHORABLE
-	var/state = STATE_EMPTY
+	var/state = STATE_UNANCHORED
 	var/obj/item/device/assembly/signaler/signaler = null
 	var/base_icon = null
 	var/material_path = null
@@ -38,26 +38,30 @@
 		if(STATE_UNANCHORED)
 			if(isWelder(W))
 				deconstruct_assembly(W, user)
-			return
+				return
 
 		if(STATE_EMPTY)
 			if(isCoil(W))
 				add_cable(W, user)
-			return
+				return
 
 		if(STATE_WIRED)
 			if(isWirecutter(W))
 				remove_cable(user)
+				return
+
 			if(istype(W, /obj/item/device/assembly/signaler))
 				add_signaler(W, user)
-			return
+				return
 
 		if(STATE_SIGNALLER)
 			if(isCrowbar(W))
 				remove_signaler(user)
+				return
+
 			if(isScrewdriver(W))
 				finish_assembly(user)
-			return
+				return
 
 	return ..()
 

@@ -2,7 +2,7 @@
 	name = "Operating Table"
 	desc = "Used for advanced medical procedures."
 	icon = 'icons/obj/surgery.dmi'
-	icon_state = "table2-idle"
+	icon_state = "table2"
 	density = 1
 	anchored = 1.0
 	idle_power_usage = 1 WATTS
@@ -24,6 +24,7 @@
 
 /obj/machinery/optable/Initialize()
 	. = ..()
+	icon_state = "[icon_state]-idle"
 	var/obj/machinery/computer/operating/comp = locate(/obj/machinery/computer/operating) in orange(2, src)
 	if(istype(comp) && !comp.optable)
 		comp.optable = weakref(src)
@@ -35,7 +36,6 @@
 		register_signal(turf_to_listen, SIGNAL_EXITED, nameof(.proc/atom_exited))
 
 	RefreshParts()
-	update_icon()
 
 /obj/machinery/optable/proc/on_moved()
 	var/turf/turf_to_listen = get_turf(src)
@@ -45,7 +45,7 @@
 /obj/machinery/optable/proc/atom_exited(atom, atom/movable/exitee)
 	if(ishuman(exitee) && exitee == victim?.resolve())
 		victim = null
-		icon_state = "table2-idle"
+		icon_state = "[initial(icon_state)]-idle"
 		STOP_PROCESSING(SSmachines, src)
 
 /obj/machinery/optable/Process()
@@ -55,7 +55,7 @@
 		return
 
 	play_beep()
-	icon_state = H.pulse() ? "table2-active" : "table2-idle"
+	icon_state = H.pulse() ? "[initial(icon_state)]-idle" : "[initial(icon_state)]-idle"
 
 /obj/machinery/optable/RefreshParts()
     var/default_strip = 6 SECONDS
@@ -159,7 +159,6 @@
 	if(ishuman(C))
 		victim = weakref(C)
 		START_PROCESSING(SSmachines, src)
-		update_icon()
 
 /obj/machinery/optable/MouseDrop_T(mob/target, mob/user)
 	var/mob/living/M = user
