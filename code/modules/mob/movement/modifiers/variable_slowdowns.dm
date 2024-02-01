@@ -70,7 +70,7 @@
 	else
 		calculated_slowdown = 0
 
-	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/bodytemp_slowdown, slowdown = calculated_slowdown)
+	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/pain_slowdown, slowdown = calculated_slowdown)
 
 /datum/movespeed_modifier/organ_movespeed
 	variable = TRUE
