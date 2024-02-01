@@ -101,6 +101,9 @@
 	flags = MOVESPEED_FLAG_SPACEMOVEMENT
 
 /mob/proc/update_pull_slowdown(atom/pulled)
+	if(!istype(pulled)) // Just in case
+		return
+
 	var/calculated_slowdown = 0
 	if(istype(pulled, /obj))
 		var/obj/O = pulled

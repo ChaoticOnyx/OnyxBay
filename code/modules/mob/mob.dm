@@ -565,11 +565,14 @@
 
 /mob/proc/stop_pulling()
 	if(pulling)
+		unregister_signal(pulling, SIGNAL_QDELETING)
 		pulling.pulledby = null
 		pulling = null
-		if(pullin)
-			pullin.icon_state = "pull0"
-		update_pull_slowdown(pulling)
+
+	if(pullin)
+		pullin.icon_state = "pull0"
+
+	remove_movespeed_modifier(/datum/movespeed_modifier/pull_slowdown)
 
 /mob/proc/start_pulling(atom/movable/AM)
 	if ( !AM || !usr || src==AM || !isturf(src.loc) )	//if there's no person pulling OR the person is pulling themself OR the object being pulled is inside something: abort!
@@ -623,6 +626,7 @@
 	if(pullin)
 		pullin.icon_state = "pull1"
 
+	register_signal(AM, SIGNAL_QDELETING, nameof(.proc/stop_pulling))
 	update_pull_slowdown(AM)
 
 	if(ishuman(AM))
