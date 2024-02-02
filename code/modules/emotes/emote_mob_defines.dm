@@ -82,11 +82,6 @@
 		/datum/emote/signal,
 	)
 
-/mob/living/carbon/human/load_default_emotes()
-	default_emotes += subtypesof(/datum/emote/synth)
-
-	return ..()
-
 /mob/living/carbon/metroid/load_default_emotes()
 	default_emotes += typesof(/datum/emote/metroid)
 	return ..()

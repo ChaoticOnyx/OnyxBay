@@ -44,6 +44,14 @@
 	LAZYREMOVE(current_emotes, key)
 
 /mob/proc/emote(act, intentional = FALSE, target)
+	var/splitpoint = findtext_char(act, " ")
+	if(splitpoint < 0)
+		return
+
+	var/tempstr = act
+	act = copytext_char(tempstr, 1, splitpoint)
+	var/message = copytext_char(tempstr, splitpoint + 1, 0)
+
 	var/datum/emote/emote = get_emote(act)
 	if(!emote)
 		return
@@ -51,7 +59,7 @@
 	if(!emote.can_emote(src, intentional, target))
 		return
 
-	emote.do_emote(src, act, intentional, target)
+	emote.do_emote(src, act, intentional, target, message)
 
 /mob/proc/add_synth_emotes()
 	for(var/path in subtypesof(/datum/emote/synth))

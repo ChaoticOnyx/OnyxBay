@@ -40,7 +40,7 @@
 /mob/proc/dap_emote()
 	set name = "Dap"
 	set category = "Emotes"
-	target_emote("dap")
+	target_emote("dap", max_range = 1)
 
 
 /datum/emote/dance
@@ -194,7 +194,7 @@
 /mob/proc/hug_emote()
 	set name = "Hug"
 	set category = "Emotes"
-	target_emote("hug")
+	target_emote("hug", max_range = 1)
 
 /datum/emote/handshake
 	key = "handshake"
@@ -218,4 +218,4 @@
 /mob/proc/handshake_emote()
 	set name = "Handshake"
 	set category = "Emotes"
-	target_emote("handshake")
+	target_emote("handshake", max_range = 1)
