@@ -38,5 +38,5 @@ GLOBAL_DATUM_INIT(commandos, /datum/antagonist/deathsquad/syndicate, new)
 	player.equip_to_slot_or_del(new /obj/item/melee/energy/sword/one_hand(player), slot_l_hand)
 
 	create_id("Commando", player)
-	create_radio(GLOB.SYND_FREQ, player)
+	create_radio(SYND_FREQ, player)
 	return 1

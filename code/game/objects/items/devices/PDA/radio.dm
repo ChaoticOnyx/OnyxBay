@@ -31,7 +31,7 @@
 		if(key3)
 			data[key3] = value3
 
-		var/datum/signal/signal = new(src, data)
+		var/datum/signal/signal = new(data)
 		frequency.post_signal(src, signal, filter = s_filter)
 
 		return
@@ -43,7 +43,7 @@
 	var/mob/living/bot/secbot/active 	// the active bot; if null, show bot list
 	var/list/botstatus			// the status signal sent by the bot
 
-	var/control_freq = GLOB.BOT_FREQ
+	var/control_freq = BOT_FREQ
 
 	// create a new QM cartridge, and register to receive bot control & beacon message
 	New()
@@ -144,7 +144,7 @@
 		var/turf/T = get_turf(src)
 		GLOB.lastsignalers.Add("[time] <B>:</B> [usr.key] used [src] @ location ([T.x],[T.y],[T.z]) <B>:</B> [format_frequency(frequency)]/[code]")
 
-		var/datum/signal/signal = new(src, list("message" = message), encryption = code)
+		var/datum/signal/signal = new(list("message" = message), encryption = code)
 		radio_connection.post_signal(src, signal)
 
 		return

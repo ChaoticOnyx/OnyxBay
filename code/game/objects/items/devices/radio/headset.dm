@@ -75,7 +75,7 @@
 
 /obj/item/device/radio/headset/syndicate/Initialize()
 	. = ..()
-	set_frequency(GLOB.SYND_FREQ)
+	set_frequency(SYND_FREQ)
 
 /obj/item/device/radio/headset/raider
 	origin_tech = list(TECH_ILLEGAL = 2)
@@ -94,7 +94,7 @@
 
 /obj/item/device/radio/headset/raider/Initialize()
 	. = ..()
-	set_frequency(GLOB.RAID_FREQ)
+	set_frequency(RAID_FREQ)
 
 /obj/item/device/radio/headset/binary
 	origin_tech = list(TECH_ILLEGAL = 3)

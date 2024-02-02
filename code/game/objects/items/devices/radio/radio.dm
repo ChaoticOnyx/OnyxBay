@@ -8,7 +8,7 @@
 
 	var/on = 1 // 0 for off
 	var/last_transmission
-	var/frequency = GLOB.PUB_FREQ //common chat
+	var/frequency = PUB_FREQ //common chat
 	var/traitor_frequency = 0 //tune to frequency to unlock traitor supplies
 	var/canhear_range = 3 // the range which mobs can hear this radio from
 	var/datum/wires/radio/wires = null
@@ -759,14 +759,14 @@
 	listening = 1
 
 /obj/item/device/radio/phone/medbay
-	frequency = GLOB.MED_I_FREQ
+	frequency = MED_I_FREQ
 
 /obj/item/device/radio/phone/medbay/New()
 	..()
 	internal_channels = list(
-		num2text(GLOB.PUB_FREQ) = list(),
-		num2text(GLOB.MED_FREQ) = list(access_medical_equip),
-		num2text(GLOB.MED_I_FREQ) = list(access_medical_equip)
+		num2text(PUB_FREQ) = list(),
+		num2text(MED_FREQ) = list(access_medical_equip),
+		num2text(MED_I_FREQ) = list(access_medical_equip)
 		)
 
 /obj/item/device/radio/CouldUseTopic(mob/user)

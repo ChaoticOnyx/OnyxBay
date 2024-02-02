@@ -366,27 +366,27 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 		//BR.messages_admin += blackbox_admin_msg
 		if(istype(blackbox))
 			switch(display_freq)
-				if(GLOB.PUB_FREQ)
+				if(PUB_FREQ)
 					blackbox.msg_common += blackbox_msg
-				if(GLOB.SCI_FREQ)
+				if(SCI_FREQ)
 					blackbox.msg_science += blackbox_msg
-				if(GLOB.COMM_FREQ)
+				if(COMM_FREQ)
 					blackbox.msg_command += blackbox_msg
-				if(GLOB.MED_FREQ)
+				if(MED_FREQ)
 					blackbox.msg_medical += blackbox_msg
-				if(GLOB.ENG_FREQ)
+				if(ENG_FREQ)
 					blackbox.msg_engineering += blackbox_msg
-				if(GLOB.SEC_FREQ)
+				if(SEC_FREQ)
 					blackbox.msg_security += blackbox_msg
-				if(GLOB.DTH_FREQ)
+				if(DTH_FREQ)
 					blackbox.msg_deathsquad += blackbox_msg
-				if(GLOB.SYND_FREQ)
+				if(SYND_FREQ)
 					blackbox.msg_syndicate += blackbox_msg
-				if(GLOB.RAID_FREQ)
+				if(RAID_FREQ)
 					blackbox.msg_raider += blackbox_msg
-				if(GLOB.SUP_FREQ)
+				if(SUP_FREQ)
 					blackbox.msg_cargo += blackbox_msg
-				if(GLOB.SRV_FREQ)
+				if(SRV_FREQ)
 					blackbox.msg_service += blackbox_msg
 				else
 					blackbox.messages += blackbox_msg
@@ -547,27 +547,27 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 		//BR.messages_admin += blackbox_admin_msg
 		if(istype(blackbox))
 			switch(display_freq)
-				if(GLOB.PUB_FREQ)
+				if(PUB_FREQ)
 					blackbox.msg_common += blackbox_msg
-				if(GLOB.SCI_FREQ)
+				if(SCI_FREQ)
 					blackbox.msg_science += blackbox_msg
-				if(GLOB.COMM_FREQ)
+				if(COMM_FREQ)
 					blackbox.msg_command += blackbox_msg
-				if(GLOB.MED_FREQ)
+				if(MED_FREQ)
 					blackbox.msg_medical += blackbox_msg
-				if(GLOB.ENG_FREQ)
+				if(ENG_FREQ)
 					blackbox.msg_engineering += blackbox_msg
-				if(GLOB.SEC_FREQ)
+				if(SEC_FREQ)
 					blackbox.msg_security += blackbox_msg
-				if(GLOB.DTH_FREQ)
+				if(DTH_FREQ)
 					blackbox.msg_deathsquad += blackbox_msg
-				if(GLOB.SYND_FREQ)
+				if(SYND_FREQ)
 					blackbox.msg_syndicate += blackbox_msg
-				if(GLOB.RAID_FREQ)
+				if(RAID_FREQ)
 					blackbox.msg_raider += blackbox_msg
-				if(GLOB.SUP_FREQ)
+				if(SUP_FREQ)
 					blackbox.msg_cargo += blackbox_msg
-				if(GLOB.SRV_FREQ)
+				if(SRV_FREQ)
 					blackbox.msg_service += blackbox_msg
 				else
 					blackbox.messages += blackbox_msg
@@ -626,7 +626,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	)
 
   //#### Sending the signal to all subspace receivers ####//
-	var/datum/signal/signal = new(data = data, method = TRANSMISSION_SUBSPACE, frequency = GLOB.PUB_FREQ)
+	var/datum/signal/signal = new(data = data, method = TRANSMISSION_SUBSPACE, frequency = PUB_FREQ)
 	for(var/obj/machinery/telecomms/receiver/R in telecomms_list)
 		R.receive_signal(signal)
 
