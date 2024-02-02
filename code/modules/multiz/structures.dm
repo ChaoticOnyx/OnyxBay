@@ -244,7 +244,7 @@
 		var/turf/target = get_turf(above)
 		var/turf/source = get_turf(A)
 		if(!(locate(/obj/structure/up) in above))
-			show_splash_text(A, "The stairs cut off.")
+			show_splash_text(A, "the stairs cut off")
 		if(above.CanZPass(source, UP) && target.Enter(A, src))
 			A.forceMove(target)
 			if(isliving(A))
