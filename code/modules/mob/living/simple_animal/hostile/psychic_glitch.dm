@@ -84,8 +84,8 @@
 	icon = 'icons/mob/psychic_glitch.dmi'
 	icon_state = "rift1"
 	density = FALSE
-	var/max_glitches_at_time = 15 // Max psychic_glitch'es to exist at once
-	var/max_glitches = 30 // How many glitches must be killed to close the rift
+	var/max_glitches_at_time = 10 // Max psychic_glitch'es to exist at once
+	var/max_glitches = 50 // How many glitches must be killed to close the rift
 	var/glitches_active = 0 // Currently existing psychic_glitch'es
 	var/glitches_destroyed = 0 // How many glitches have been killed so far
 	var/rift_active = FALSE // Fancy shattering effect
@@ -136,6 +136,6 @@
 		glitches_destroyed--
 		restoration_ticks = TICKS_TO_RESTORE_GLITCH
 
-	set_next_think(world.time + 2 SECOND)
+	set_next_think(world.time + 3 SECOND)
 
 #undef TICKS_TO_RESTORE_GLITCH
