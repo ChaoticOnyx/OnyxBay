@@ -49,24 +49,18 @@
 
 /mob/living/carbon/human/gatecrasher/on_ghost_possess()
 	. = ..()
-	var/datum/mind/M = mind
-	var/antag_roll = rand(1, 100)
-	switch(antag_roll)
-		if(1 to 5)
-			var/datum/antagonist/changeling/CH = GLOB.all_antag_types_[MODE_CHANGELING]
-			CH.add_antagonist(M, ignore_role = TRUE, do_not_equip = TRUE, max_stat = UNCONSCIOUS)
-		if(6 to 15)
-			var/datum/antagonist/traitor/TR = GLOB.all_antag_types_[MODE_TRAITOR]
-			TR.add_antagonist(M, ignore_role = TRUE, max_stat = UNCONSCIOUS)
-		if(16 to 18)
-			var/datum/antagonist/vampire/VA = GLOB.all_antag_types_[MODE_VAMPIRE]
-			VA.add_antagonist(M, ignore_role = TRUE, do_not_equip = TRUE, max_stat = UNCONSCIOUS)
-		if(19 to 21)
-			var/datum/antagonist/cultist/CU = GLOB.all_antag_types_[MODE_CULTIST]
-			CU.add_antagonist(M, ignore_role = TRUE, max_stat = UNCONSCIOUS)
-		if(22 to 25)
-			var/datum/antagonist/revolutionary/RE = GLOB.all_antag_types_[MODE_REVOLUTIONARY]
-			RE.add_antagonist(M, ignore_role = TRUE, max_stat = UNCONSCIOUS)
+	if(prob(65))
+		return // Sorry no antagonizing today
+
+	var/antag_poll = list(
+		MODE_CHANGELING = 3,
+		MODE_TRAITOR = 15,
+		MODE_VAMPIRE = 3,
+		MODE_CULTIST = 5,
+		MODE_REVOLUTIONARY = 5
+	)
+	var/datum/antagonist/selected_antag = GLOB.all_antag_types_[util_pick_weight(antag_poll)]
+	selected_antag?.add_antagonist(mind, TRUE, max_stat = UNCONSCIOUS)
 
 /mob/living/carbon/human/skrell/New(new_loc)
 	h_style = "Skrell Male Tentacles"

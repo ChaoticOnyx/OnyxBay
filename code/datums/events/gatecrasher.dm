@@ -56,6 +56,7 @@
 		/obj/structure/closet/syndicate,
 		/obj/structure/closet = 5
 	)
+
 	var/species = list(                 // List of species to pick from. Uses util_pick_weight()
 		SPECIES_HUMAN = 50,
 		SPECIES_SWINE = 10,
@@ -76,36 +77,38 @@
 		SPECIES_XENO_QUEEN = 1,
 		SPECIES_XENO_HUNTER_FERAL = 1
 	)
-	var/outfits = list( // List of outfits to pick from. Uses util_pick_weight()
+
+	var/outfits_to_spawn = list( // List of outfits to pick from. Uses util_pick_weight()
 		/decl/hierarchy/outfit = 10,
-		/decl/hierarchy/outfit/job/assistant = 10,
-		/decl/hierarchy/outfit/job/service/janitor = 1,
-		/decl/hierarchy/outfit/job/internal_affairs_agent = 1,
-		/decl/hierarchy/outfit/job/chaplain = 1,
-		/decl/hierarchy/outfit/job/merchant = 5,
-		/decl/hierarchy/outfit/job/clown = 3,
-		/decl/hierarchy/outfit/job/mime = 3,
-		/decl/hierarchy/outfit/job/cargo/cargo_tech = 2,
-		/decl/hierarchy/outfit/job/cargo/mining = 5,
-		/decl/hierarchy/outfit/job/cargo/mining/void = 3,
-		/decl/hierarchy/outfit/job/medical/virologist = 1,
-		/decl/hierarchy/outfit/job/science/scientist = 3,
-		/decl/hierarchy/outfit/job/silicon = 1,
-		/decl/hierarchy/outfit/nanotrasen/representative = 3,
+		/decl/hierarchy/outfit/job/assistant = 20,
+		/decl/hierarchy/outfit/job/service/janitor = 2,
+		/decl/hierarchy/outfit/job/internal_affairs_agent = 2,
+		/decl/hierarchy/outfit/job/chaplain = 2,
+		/decl/hierarchy/outfit/job/merchant = 10,
+		/decl/hierarchy/outfit/job/clown = 6,
+		/decl/hierarchy/outfit/job/mime = 6,
+		/decl/hierarchy/outfit/job/cargo/cargo_tech = 4,
+		/decl/hierarchy/outfit/job/cargo/mining = 10,
+		/decl/hierarchy/outfit/job/cargo/mining/void = 6,
+		/decl/hierarchy/outfit/job/medical/virologist = 2,
+		/decl/hierarchy/outfit/job/science/scientist = 6,
+		/decl/hierarchy/outfit/job/silicon = 2,
+		/decl/hierarchy/outfit/nanotrasen/representative = 4,
 		/decl/hierarchy/outfit/nanotrasen/officer = 2,
-		/decl/hierarchy/outfit/pirate = 7,
-		/decl/hierarchy/outfit/pirate/space = 3,
-		/decl/hierarchy/outfit/wizard/blue = 1,
-		/decl/hierarchy/outfit/spec_op_officer = 1,
-		/decl/hierarchy/outfit/death_command = 1,
-		/decl/hierarchy/outfit/syndicate = 1,
-		/decl/hierarchy/outfit/syndicate/armored/commando = 1,
-		/decl/hierarchy/outfit/tunnel_clown = 1,
-		/decl/hierarchy/outfit/masked_killer = 1,
-		/decl/hierarchy/outfit/reaper = 1,
-		/decl/hierarchy/outfit/standard_space_gear = 5,
-		/decl/hierarchy/outfit/soviet_soldier = 1
+		/decl/hierarchy/outfit/pirate = 14,
+		/decl/hierarchy/outfit/pirate/space = 6,
+		/decl/hierarchy/outfit/wizard/blue = 2,
+		/decl/hierarchy/outfit/spec_op_officer = 2,
+		/decl/hierarchy/outfit/death_command = 2,
+		/decl/hierarchy/outfit/syndicate = 2,
+		/decl/hierarchy/outfit/syndicate/armored/commando = 2,
+		/decl/hierarchy/outfit/tunnel_clown = 2,
+		/decl/hierarchy/outfit/masked_killer = 2,
+		/decl/hierarchy/outfit/reaper = 2,
+		/decl/hierarchy/outfit/standard_space_gear = 10,
+		/decl/hierarchy/outfit/soviet_soldier = 2
 	)
+
 	var/items_to_spawn = list(
 		/obj/item/reagent_containers/syringe/drugs,
 		/obj/item/storage/pill_bottle/happy,
@@ -309,6 +312,9 @@
 	if(new_body_build)
 		M.change_body_build(new_body_build)
 
+	if(prob(70)) // 44% to be normal, 14% for each of four other heights
+		M.body_height = pick(body_heights)
+
 	M.SetName(M.species.get_random_name(M.gender))
 	M.real_name = M.name
 
@@ -318,11 +324,11 @@
 
 /obj/gatecrasher_spawn/proc/equip_outfit(mob/living/carbon/human/M)
 	var/adjustments = 0
-	adjustments = prob(50) ? (adjustments|OUTFIT_ADJUSTMENT_SKIP_SURVIVAL_GEAR) : adjustments
-	adjustments = prob(90) ? (adjustments|OUTFIT_ADJUSTMENT_SKIP_ID_PDA)        : adjustments
+	adjustments = prob(30) ? (adjustments|OUTFIT_ADJUSTMENT_SKIP_SURVIVAL_GEAR) : adjustments
+	adjustments = prob(70) ? (adjustments|OUTFIT_ADJUSTMENT_SKIP_ID_PDA)        : adjustments
 	adjustments = prob(50) ? (adjustments|OUTFIT_ADJUSTMENT_PLAIN_HEADSET)      : adjustments
 
-	var/decl/hierarchy/outfit/O = outfit_by_type(util_pick_weight(outfits))
+	var/decl/hierarchy/outfit/O = outfit_by_type(util_pick_weight(outfits_to_spawn))
 	O.equip(M, equip_adjustments = adjustments)
 
 #undef OUTFIT_ADJUSTMENT_SKIP_SURVIVAL_GEAR
