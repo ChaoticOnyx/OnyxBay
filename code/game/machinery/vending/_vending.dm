@@ -731,3 +731,6 @@
 		spark_system.set_up(5, 0, loc)
 		spark_system.start()
 		playsound(loc, SFX_SPARK, 50, 1)
+
+/obj/machinery/vending/check_access(obj/item/I)
+	return ..() || !scan_id
