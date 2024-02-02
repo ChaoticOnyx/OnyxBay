@@ -314,6 +314,7 @@
 
 	if(prob(70)) // 44% to be normal, 14% for each of four other heights
 		M.body_height = pick(body_heights)
+		M.update_transform()
 
 	M.SetName(M.species.get_random_name(M.gender))
 	M.real_name = M.name
