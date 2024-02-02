@@ -257,13 +257,6 @@
 	// Spawning the gatecrasher
 	var/mob/living/carbon/human/gatecrasher/H = new /mob/living/carbon/human/gatecrasher(loc)
 
-	// Spawning 2 to 6 funny items
-	var/list/_items_to_spawn = list()
-	var/num_items_to_spawn = rand(2, 6)
-	for(var/i = 0, i < num_items_to_spawn, i++)
-		_items_to_spawn.Add(pick(items_to_spawn))
-	create_objects_in_loc(src, _items_to_spawn)
-
 	// Magically randomizing the gatecrasher
 	randomize_appearance(H)
 	equip_outfit(H)
@@ -271,7 +264,19 @@
 	H.update_icon()
 	H.forceMove(C) // Not spawning the dude right in the closet to make sure all the things get updated correctly
 
+	// Spawning 2 to 6 funny items
+	var/list/_items_to_spawn = list()
+	var/num_items_to_spawn = rand(2, 6)
+	for(var/i = 0, i < num_items_to_spawn, i++)
+		_items_to_spawn.Add(pick(items_to_spawn))
+	create_objects_in_loc(C, _items_to_spawn)
+
+	// Snowflake birbs
+	if(H.species.name == SPECIES_VOX)
+		new /obj/item/storage/box/vox(C)
+
 	// Finalizing the glorious act of shitspawning
+	GLOB.available_mobs_for_possess["\ref[H]"] += H
 	notify_ghosts("A gatecrasher has appeared at the station!", null, source = src, action = NOTIFY_POSSES, posses_mob = TRUE)
 	log_debug("A possessable gatecrasher [H] has been spawned at: x = [x], y = [y], z = [z].")
 

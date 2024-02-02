@@ -65,8 +65,8 @@
 			var/datum/antagonist/cultist/CU = GLOB.all_antag_types_[MODE_CULTIST]
 			CU.add_antagonist(M, ignore_role = TRUE, max_stat = UNCONSCIOUS)
 		if(22 to 25)
-			var/datum/antagonist/cultist/CU = GLOB.all_antag_types_[MODE_CULTIST]
-			CU.add_antagonist(M, ignore_role = TRUE, max_stat = UNCONSCIOUS)
+			var/datum/antagonist/revolutionary/RE = GLOB.all_antag_types_[MODE_REVOLUTIONARY]
+			RE.add_antagonist(M, ignore_role = TRUE, max_stat = UNCONSCIOUS)
 
 /mob/living/carbon/human/skrell/New(new_loc)
 	h_style = "Skrell Male Tentacles"
