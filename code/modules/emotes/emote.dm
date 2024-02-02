@@ -145,7 +145,7 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 		I.trigger(emote_key, user)
 
 	var/msg_1p = get_emote_message_1p(user, target)
-	var/msg_3p = "<b>[user]</b> <i>[get_emote_message_3p(user)]</i>"
+	var/msg_3p = "<b>[user]</b> <i>[get_emote_message_3p(user, target)]</i>"
 	var/range = !isnull(emote_range) ? emote_range : world.view
 	var/impaired_msg = "<b>[user]</b> <i>[get_impaired_msg(user)]</i>"
 
