@@ -46,13 +46,13 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 
 	var/statpanel_proc = null
 
-/datum/emote/proc/get_emote_message_1p(mob/user, target)
+/datum/emote/proc/get_emote_message_1p(mob/user, target, additional_params)
 	return "<i>[message_1p]</i>"
 
 /datum/emote/proc/get_impaired_msg(mob/user)
 	return (length(message_impaired_reception) > 0) ? message_impaired_reception : null
 
-/datum/emote/proc/get_emote_message_3p(mob/living/user, target)
+/datum/emote/proc/get_emote_message_3p(mob/living/user, target, additional_params)
 	var/msg = message_3p
 	var/mute = FALSE
 	if(ishuman(user))
@@ -135,7 +135,7 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 
 	return TRUE
 
-/datum/emote/proc/do_emote(mob/user, emote_key, intentional, target)
+/datum/emote/proc/do_emote(mob/user, emote_key, intentional, target, additional_params)
 	LAZYINITLIST(user.next_emote_use)
 	set_cooldown(user.next_emote_use, cooldown, intentional)
 
@@ -144,8 +144,8 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 			continue
 		I.trigger(emote_key, user)
 
-	var/msg_1p = get_emote_message_1p(user, target)
-	var/msg_3p = "<b>[user]</b> <i>[get_emote_message_3p(user, target)]</i>"
+	var/msg_1p = get_emote_message_1p(user, target, additional_params)
+	var/msg_3p = "<b>[user]</b> <i>[get_emote_message_3p(user, target, additional_params)]</i>"
 	var/range = !isnull(emote_range) ? emote_range : world.view
 	var/impaired_msg = get_impaired_msg(user)
 	impaired_msg = impaired_msg ? "<b>[user]</b> <i>[impaired_msg]</i>" : null

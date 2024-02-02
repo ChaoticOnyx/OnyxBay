@@ -650,7 +650,20 @@
 
 	statpanel_proc = /mob/proc/signal_emote
 
+/datum/emote/signal/get_emote_message_1p(mob/user, target, additional_params)
+	var/t1 = round(text2num(additional_params))
+	if(isnum(t1) && t1 <= 5 && t1 > 0)
+		return "You raise [t1] finger\s"
+	else return message_1p
+
+/datum/emote/signal/get_emote_message_3p(mob/living/user, target, additional_params)
+	var/t1 = round(text2num(additional_params))
+	if(isnum(t1) && t1 <= 5 && t1 > 0)
+		return "raises [t1] finger\s"
+	else return message_3p
+
 /mob/proc/signal_emote()
 	set name = "Signal"
 	set category = "Emotes"
-	emote("signal", intentional = TRUE)
+	var/fingers_raised = tgui_input_number(src, "Choose how many fingers to raise.", "Signal", max_value = 5, min_value = 0)
+	emote("signal [fingers_raised]", intentional = TRUE)
