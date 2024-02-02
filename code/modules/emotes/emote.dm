@@ -73,7 +73,7 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 	return msg
 
 /datum/emote/proc/get_sound(mob/user, intentional)
-	if(ishuman(user))
+	if(ishuman(user) && !isMonkey(user))
 		if(!isnull(sound_human_female) && user.gender == FEMALE)
 			return pick(sound_human_female)
 		else if(!isnull(sound_human_male) && user.gender == MALE)
