@@ -3,7 +3,7 @@
 	name = "Gatecrasher"
 	description = "An uninvited guest get teleported aboard the station"
 
-	mtth = 5 HOURS
+	mtth = 6 HOURS
 	difficulty = 60
 
 /datum/event/gatecrasher/on_fire()
