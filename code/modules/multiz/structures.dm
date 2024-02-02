@@ -195,7 +195,7 @@
 		var/turf/target = get_turf(below)
 		var/turf/source = get_turf(A)
 		if(!(locate(/obj/structure/stairs) in below))
-			show_splash_text(A, "The stairs cut off.")
+			show_splash_text(A, "the stairs cut off")
 			return
 
 		A.forceMove(target)
