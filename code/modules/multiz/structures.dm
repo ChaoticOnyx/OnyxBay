@@ -255,7 +255,7 @@
 				playsound(source, SFX_FOOTSTEP_STAIRS, 50)
 				playsound(target, SFX_FOOTSTEP_STAIRS, 50)
 		else
-			show_splash_text(A, "Something blocks the path.")
+			show_splash_text(A, "something blocks the path")
 	else
 		show_splash_text(A, "There is nothing of interest in this direction.")
 
