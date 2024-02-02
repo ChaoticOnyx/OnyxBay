@@ -148,9 +148,9 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 			continue
 
 		if(F.recievefax(copyitem))
-			show_splash_text(usr, "Message transmitted successfully.")
+			show_splash_text(usr, "nessage transmitted successfully")
 
-	show_splash_text(usr, "Error transmitting message.")
+	show_splash_text(usr, "error transmitting message")
 
 /obj/machinery/photocopier/faxmachine/proc/recievefax(obj/item/incoming)
 	if(stat & (BROKEN|NOPOWER))
@@ -197,11 +197,11 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 		var/obj/item/complaint_folder/CF = copyitem
 		var/fail_reason = CF.prevalidate()
 		if (fail_reason)
-			show_splash_text(usr, "Error transmitting message.")
+			show_splash_text(usr, "error transmitting message")
 			return
 		rcvdcopy = complaintcopy(copyitem, 0)
 	else
-		show_splash_text(usr, "Error transmitting message.")
+		show_splash_text(usr, "error transmitting message")
 		return
 
 	rcvdcopy.forceMove(null) //hopefully this shouldn't cause trouble
@@ -235,7 +235,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 				message_admins("Complaint postvalidation failed: [fail_reason]. Check received fax to manually correct it.")
 
 	sleep(50)
-	show_splash_text(usr, "Message transmitted successfully.")
+	show_splash_text(usr, "message transmitted successfully")
 
 /obj/machinery/photocopier/faxmachine/proc/fax_message_admins(mob/sender, faxname, obj/item/sent, reply_type, font_colour="#006100")
 	var/msg = "<span class='notice'><b><font color='[font_colour]'>[faxname]: </font>[get_options_bar(sender, 2,1,1)]"
