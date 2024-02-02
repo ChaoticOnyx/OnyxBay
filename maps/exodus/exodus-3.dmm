@@ -1,4 +1,4 @@
-"aa" = (/obj/machinery/camera/network/mining{c_tag = "Outpost Bar"},/obj/machinery/newscaster{pixel_y = 30},/obj/machinery/light/small/hl{dir = 1},/obj/structure/christmas/snowman,/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
+"aa" = (/obj/machinery/camera/network/mining{c_tag = "Outpost Bar"},/obj/machinery/newscaster{pixel_y = 30},/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/trim/darkwood,/area/outpost/main_outpost/bar)
 "ab" = (/turf/unsimulated/mask,/area/mine/unexplored)
 "ac" = (/turf/unsimulated/mask,/area/mine/explored)
 "ad" = (/turf/simulated/floor/asteroid,/area/mine/explored)
