@@ -3,6 +3,13 @@
 	name = "Example"
 	full_name = "The Example"
 	path = "example"
+	station_short = "Ex"
+	dock_name     = "NAS Crescent"
+	boss_name     = "Central Command"
+	boss_short    = "Centcomm"
+	company_name  = "Nanotrasen"
+	company_short = "NT"
+	system_name   = "Nyx"
 
 	lobby_icon = 'maps/example/example_lobby.dmi'
 
