@@ -209,6 +209,7 @@
 	storage_types = CLOSET_STORAGE_ITEMS
 	setup = 0
 	dremovable = 0
+	intact_closet = FALSE
 
 /obj/structure/closet/hydrant/New()
 	..()
