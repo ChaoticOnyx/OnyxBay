@@ -207,7 +207,7 @@
 			playsound(source, SFX_FOOTSTEP_STAIRS, 50)
 			playsound(target, SFX_FOOTSTEP_STAIRS, 50)
 	else
-		show_splash_text(A, "There is nothing of interest in this direction.")
+		show_splash_text(A, "nothing of interest in this direction")
 
 /obj/structure/up/CheckExit(atom/movable/mover as mob|obj, turf/target as turf)
 	if(get_dir(loc, target) == turn(dir, 180) && (get_turf(mover) == loc))
