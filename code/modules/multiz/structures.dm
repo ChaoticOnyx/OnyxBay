@@ -257,7 +257,7 @@
 		else
 			show_splash_text(A, "something blocks the path")
 	else
-		show_splash_text(A, "There is nothing of interest in this direction.")
+		show_splash_text(A, "nothing of interest in this direction")
 
 // type paths to make mapping easier.
 /obj/structure/stairs/north
