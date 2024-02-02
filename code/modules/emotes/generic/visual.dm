@@ -353,6 +353,7 @@
 	message_type = VISIBLE_MESSAGE
 
 	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_HEAD_PRESENT
+
 /datum/emote/flap/get_emote_message_3p(mob/user)
 	return "flaps [P_THEIR(user)] wings."
 
@@ -365,6 +366,7 @@
 	message_type = VISIBLE_MESSAGE
 
 	state_checks = EMOTE_CHECK_CONSCIOUS | EMOTE_CHECK_IS_HEAD_PRESENT
+
 /datum/emote/aflap/get_emote_message_3p(mob/user)
 	return "flaps [P_THEIR(user)] wings ANGRILY!"
 
