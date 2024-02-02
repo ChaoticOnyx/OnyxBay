@@ -5,7 +5,6 @@ SUBSYSTEM_DEF(radio)
 	/// Associative list of text -> datum, where text is a frequency string, datum is a `/datum/frequency`.
 	var/list/frequencies = list()
 
-
 /datum/controller/subsystem/radio/stat_entry(msg)
 	..("FU:[length(frequencies)]")
 
@@ -37,7 +36,6 @@ SUBSYSTEM_DEF(radio)
 	frequency.add_listener(device, filter)
 	return frequency
 
-
 /**
  * Removes object from the specified frequency.
  *
@@ -60,7 +58,6 @@ SUBSYSTEM_DEF(radio)
 		if(!length(frequency.filters))
 			LAZYREMOVE(frequencies, f_text)
 			qdel(frequency)
-
 
 /**
  * Returns a reference to a frequency datum for the future use.

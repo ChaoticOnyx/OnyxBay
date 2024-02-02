@@ -38,7 +38,6 @@
 
 	return "radio"
 
-
 /// Returns frequency's name if exists, frequency's code otherwise.
 /proc/get_frequency_name(display_freq)
 	if(display_freq in GLOB.ANTAG_FREQS)
