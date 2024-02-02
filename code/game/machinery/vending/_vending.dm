@@ -511,7 +511,7 @@
 			if(!vend_ready || currently_vending)
 				return TRUE
 
-			if((!allowed(usr)) && !emagged && scan_id)	// For SECURE VENDING MACHINES YEAH
+			if((!allowed(usr)) && !emagged)	// For SECURE VENDING MACHINES YEAH
 				to_chat(usr, SPAN("warning", "Access denied.")) // Unless emagged of course
 				flick("[base_icon]-deny", src)
 				return TRUE
@@ -553,7 +553,7 @@
 			return TRUE
 
 /obj/machinery/vending/proc/vend(datum/stored_items/vending_products/R, mob/user)
-	if((!allowed(usr)) && !emagged && scan_id)	// For SECURE VENDING MACHINES YEAH
+	if((!allowed(usr)) && !emagged)	// For SECURE VENDING MACHINES YEAH
 		to_chat(usr, SPAN("warning", "Access denied.")) // Unless emagged of course
 		flick("[base_icon]-deny", src)
 		return
