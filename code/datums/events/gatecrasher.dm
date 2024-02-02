@@ -164,7 +164,7 @@
 		/obj/item/skull,
 		/obj/item/shield/adamantineshield,
 		/obj/item/shield/energy,
-		/obj/item/shield/riot/assault,
+		/obj/item/shield/riot,
 		/obj/item/shield/buckler,
 		/obj/item/scrying,
 		/obj/item/resonator/upgraded,
@@ -240,7 +240,12 @@
 		/obj/item/bikehorn/vuvuzela,
 		/obj/item/bikehorn,
 		/obj/item/blueprints,
-		/obj/item/asteroid/beholder_eye
+		/obj/item/asteroid/beholder_eye,
+		/obj/item/clothing/head/tinfoil,
+		/obj/item/clothing/ring/seal/mason,
+		/obj/item/clothing/ring/magic,
+		/obj/item/clothing/glasses/hud/psychoscope,
+		/obj/item/capturedevice/hacked
 	)
 
 /obj/gatecrasher_spawn/Initialize(mapload, obj/structure/closet/existing_closet = null)
@@ -276,8 +281,9 @@
 		new /obj/item/storage/box/vox(C)
 
 	// Finalizing the glorious act of shitspawning
+	H.controllable = TRUE
 	GLOB.available_mobs_for_possess["\ref[H]"] += H
-	notify_ghosts("A gatecrasher has appeared at the station!", null, source = src, action = NOTIFY_POSSES, posses_mob = TRUE)
+	notify_ghosts("A gatecrasher has appeared at the station!", source = H, action = NOTIFY_POSSES, posses_mob = TRUE)
 	log_debug("A possessable gatecrasher [H] has been spawned at: x = [x], y = [y], z = [z].")
 
 	return INITIALIZE_HINT_QDEL
