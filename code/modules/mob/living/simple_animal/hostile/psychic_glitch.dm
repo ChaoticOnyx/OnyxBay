@@ -42,6 +42,7 @@
 		if(istype(a,/mob/living/carbon/human))
 			if(prob(50))
 				continue
+
 			var/mob/living/carbon/human/H = a
 			to_chat(H, SPAN("warning", "As \the [src] is fading, you can feel some of your sanity fading as well."))
 			H.adjust_hallucination(15, rand(35, 85))
