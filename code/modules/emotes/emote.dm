@@ -50,7 +50,7 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 	return "<i>[message_1p]</i>"
 
 /datum/emote/proc/get_impaired_msg(mob/user)
-	return message_impaired_reception
+	return (length(message_impaired_reception) > 0) ? message_impaired_reception : null
 
 /datum/emote/proc/get_emote_message_3p(mob/living/user, target)
 	var/msg = message_3p
@@ -147,7 +147,8 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 	var/msg_1p = get_emote_message_1p(user, target)
 	var/msg_3p = "<b>[user]</b> <i>[get_emote_message_3p(user, target)]</i>"
 	var/range = !isnull(emote_range) ? emote_range : world.view
-	var/impaired_msg = "<b>[user]</b> <i>[get_impaired_msg(user)]</i>"
+	var/impaired_msg = get_impaired_msg(user)
+	impaired_msg = impaired_msg ? "<b>[user]</b> <i>[impaired_msg]</i>" : null
 
 	if(!msg_1p)
 		msg_1p = msg_3p
