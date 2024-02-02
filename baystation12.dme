@@ -356,6 +356,7 @@
 #include "code\datums\events\event.dm"
 #include "code\datums\events\event_option.dm"
 #include "code\datums\events\event_triggers.dm"
+#include "code\datums\events\gatecrasher.dm"
 #include "code\datums\events\gravity.dm"
 #include "code\datums\events\grid_check.dm"
 #include "code\datums\events\infestation.dm"

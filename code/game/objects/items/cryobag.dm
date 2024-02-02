@@ -26,6 +26,7 @@
 	item_path = /obj/item/bodybag/cryobag
 
 	storage_types = CLOSET_STORAGE_MOBS
+	intact_closet = FALSE
 	var/datum/gas_mixture/airtank
 
 	var/syndi

@@ -33,6 +33,41 @@
 /mob/living/carbon/human/dummy/mannequin/check_shadow()
 	return
 
+/mob/living/carbon/human/gatecrasher/Initialize()
+	. = ..()
+	addtimer(CALLBACK(src, nameof(.proc/unpossessed_death_check)), 45 SECONDS)
+
+/mob/living/carbon/human/gatecrasher/proc/unpossessed_death_check()
+	if(ckey) // Possessed, no euthanasia required
+		return
+
+	adjustOxyLoss(maxHealth) // Cease life functions.
+	setBrainLoss(maxHealth)
+
+	var/obj/item/organ/internal/heart/my_heart = internal_organs_by_name[BP_HEART]
+	my_heart?.pulse = PULSE_NONE
+
+/mob/living/carbon/human/gatecrasher/on_ghost_possess()
+	. = ..()
+	var/datum/mind/M = mind
+	var/antag_roll = rand(1, 100)
+	switch(antag_roll)
+		if(1 to 5)
+			var/datum/antagonist/changeling/CH = GLOB.all_antag_types_[MODE_CHANGELING]
+			CH.add_antagonist(M, ignore_role = TRUE, do_not_equip = TRUE, max_stat = UNCONSCIOUS)
+		if(6 to 15)
+			var/datum/antagonist/traitor/TR = GLOB.all_antag_types_[MODE_TRAITOR]
+			TR.add_antagonist(M, ignore_role = TRUE, max_stat = UNCONSCIOUS)
+		if(16 to 18)
+			var/datum/antagonist/vampire/VA = GLOB.all_antag_types_[MODE_VAMPIRE]
+			VA.add_antagonist(M, ignore_role = TRUE, do_not_equip = TRUE, max_stat = UNCONSCIOUS)
+		if(19 to 21)
+			var/datum/antagonist/cultist/CU = GLOB.all_antag_types_[MODE_CULTIST]
+			CU.add_antagonist(M, ignore_role = TRUE, max_stat = UNCONSCIOUS)
+		if(22 to 25)
+			var/datum/antagonist/cultist/CU = GLOB.all_antag_types_[MODE_CULTIST]
+			CU.add_antagonist(M, ignore_role = TRUE, max_stat = UNCONSCIOUS)
+
 /mob/living/carbon/human/skrell/New(new_loc)
 	h_style = "Skrell Male Tentacles"
 	..(new_loc, SPECIES_SKRELL)

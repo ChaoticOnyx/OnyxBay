@@ -237,6 +237,7 @@
 	storage_types = CLOSET_STORAGE_ITEMS
 	setup = 0
 	dremovable = 0
+	intact_closet = FALSE
 
 /obj/structure/closet/medical_wall/on_update_icon()
 	if(!opened)
@@ -263,6 +264,7 @@
 	storage_types = CLOSET_STORAGE_ITEMS
 	setup = 0
 	dremovable = 0
+	intact_closet = FALSE
 
 /obj/structure/closet/shipping_wall/on_update_icon()
 	if(!opened)
