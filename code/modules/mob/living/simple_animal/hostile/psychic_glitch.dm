@@ -95,7 +95,7 @@
 	. = ..()
 	visible_message(SPAN("danger", "Something feels very wrong..."))
 	icon_state = "rift0"
-	set_next_think(world.time + 10 SECONDS)
+	set_next_think(world.time + 15 SECONDS)
 
 /obj/structure/psychic_rift/proc/check_rift_state()
 	if(glitches_destroyed >= max_glitches)
