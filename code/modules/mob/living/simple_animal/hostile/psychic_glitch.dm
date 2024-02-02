@@ -80,7 +80,8 @@
 /obj/structure/psychic_rift
 	name = "wounded reality"
 	desc = "A crack in... Reality? <span class='danger'>You feel your sanity slipping away just by looking at it.</span>"
-	mouse_opacity = 0
+	mouse_opacity = 1
+	alpha = 200
 	icon = 'icons/mob/psychic_glitch.dmi'
 	icon_state = "rift1"
 	density = FALSE
@@ -109,8 +110,10 @@
 		icon_state = "rift2"
 	else if(glitches_destroyed < max_glitches * 0.85)
 		icon_state = "rift3"
-	else
+	else if(glitches_destroyed < max_glitches * 0.95)
 		icon_state = "rift4"
+	else
+		icon_state = "rift5"
 
 	return TRUE
 
