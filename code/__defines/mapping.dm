@@ -45,3 +45,6 @@
 #define MAP_BAR_CLASSIC "classic"
 #define MAP_BAR_MODERN  "modern"
 #define MAP_BAR_SALOON  "saloon"
+
+// Derelicts amount
+#define MAP_DERELICTS_AMOUNT  2

@@ -72,6 +72,11 @@
 		O.update_pain()
 		full_pain += O.full_pain
 
+	if(full_pain != full_pain_lasttick)
+		update_pain_slowdown()
+
+	full_pain_lasttick = full_pain
+
 /mob/living/carbon/human/proc/recheck_bad_external_organs()
 	var/damage_this_tick = getToxLoss()
 	for(var/obj/item/organ/external/O in organs)

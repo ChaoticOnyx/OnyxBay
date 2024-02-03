@@ -30,6 +30,8 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/shuttle_types = null         // Only the specified shuttles will be initialized.
 	var/list/map_levels
 
+	var/list/derelict_levels		// List for random derelicts
+
 	var/list/usable_email_tlds = list("freemail.nt")
 	var/base_floor_type = /turf/simulated/floor/plating/airless // The turf type used when generating floors between Z-levels at startup.
 	var/base_floor_area                                 // Replacement area, if a base_floor_type is generated. Leave blank to skip.
@@ -142,6 +144,14 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 /datum/map/proc/setup_map()
 	ASSERT(length(map_levels))
+
+	var/derelicts_index = config.mapping.derelicts_amount
+	while(length(derelict_levels) && derelicts_index)
+		var/list/rand_derelict = pick(derelict_levels)
+		derelict_levels.Remove(rand_derelict)
+		map_levels.Add(rand_derelict)
+		derelicts_index--
+
 	for(var/level = 1; level <= length(map_levels); level++)
 		var/datum/space_level/L = map_levels[level]
 
@@ -247,19 +257,19 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 // This list needs to be purged but people insist on adding more cruft to the radio.
 /datum/map/proc/default_internal_channels()
 	return list(
-		num2text(GLOB.PUB_FREQ)   = list(),
-		num2text(GLOB.AI_FREQ)    = list(access_synth),
-		num2text(GLOB.ENT_FREQ)   = list(),
-		num2text(GLOB.ERT_FREQ)   = list(access_cent_specops),
-		num2text(GLOB.COMM_FREQ)  = list(access_heads),
-		num2text(GLOB.ENG_FREQ)   = list(access_engine_equip, access_atmospherics),
-		num2text(GLOB.MED_FREQ)   = list(access_medical_equip),
-		num2text(GLOB.MED_I_FREQ) = list(access_medical_equip),
-		num2text(GLOB.SEC_FREQ)   = list(access_security),
-		num2text(GLOB.SEC_I_FREQ) = list(access_security),
-		num2text(GLOB.SCI_FREQ)   = list(access_tox,access_robotics,access_xenobiology),
-		num2text(GLOB.SUP_FREQ)   = list(access_cargo),
-		num2text(GLOB.SRV_FREQ)   = list(access_janitor, access_hydroponics),
+		num2text(PUB_FREQ)   = list(),
+		num2text(AI_FREQ)    = list(access_synth),
+		num2text(ENT_FREQ)   = list(),
+		num2text(ERT_FREQ)   = list(access_cent_specops),
+		num2text(COMM_FREQ)  = list(access_heads),
+		num2text(ENG_FREQ)   = list(access_engine_equip, access_atmospherics),
+		num2text(MED_FREQ)   = list(access_medical_equip),
+		num2text(MED_I_FREQ) = list(access_medical_equip),
+		num2text(SEC_FREQ)   = list(access_security),
+		num2text(SEC_I_FREQ) = list(access_security),
+		num2text(SCI_FREQ)   = list(access_tox,access_robotics,access_xenobiology),
+		num2text(SUP_FREQ)   = list(access_cargo),
+		num2text(SRV_FREQ)   = list(access_janitor, access_hydroponics),
 	)
 
 /datum/map/proc/get_levels_without_trait(trait)

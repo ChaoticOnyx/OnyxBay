@@ -45,9 +45,9 @@
 	var/obj/item/device/radio/R
 
 	switch(freq)
-		if(GLOB.SYND_FREQ)
+		if(SYND_FREQ)
 			R = new /obj/item/device/radio/headset/syndicate(player)
-		if(GLOB.RAID_FREQ)
+		if(RAID_FREQ)
 			R = new /obj/item/device/radio/headset/raider(player)
 		else
 			R = new /obj/item/device/radio/headset(player)

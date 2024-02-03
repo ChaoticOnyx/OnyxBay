@@ -2,9 +2,8 @@
 	if(status_flags & GODMODE)
 		health = maxHealth
 		stat = CONSCIOUS
-		return
-	health = maxHealth - (getBruteLoss() + getFireLoss())
-	return
+	else
+		health = maxHealth - (getBruteLoss() + getFireLoss())
 
 /mob/living/silicon/robot/getBruteLoss()
 	var/amount = 0

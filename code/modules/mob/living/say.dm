@@ -236,7 +236,7 @@ var/list/channel_to_radio_key = new
 /mob/living/proc/say_check_emote(list/message_data)
 	var/prefix = copytext_char(message_data["message"], 1, 2)
 	if(prefix == get_prefix_key(/decl/prefix/custom_emote))
-		message_data["say_result"] = emote(copytext_char(message_data["message"], 2))
+		message_data["say_result"] = emote(copytext_char(message_data["message"], 2), intentional = TRUE, target = null)
 		return FALSE
 	if(prefix == get_prefix_key(/decl/prefix/visible_emote))
 		message_data["say_result"] = custom_emote(1, copytext_char(message_data["message"], 2))

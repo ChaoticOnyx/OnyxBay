@@ -14,7 +14,7 @@
 /datum/job/bartender/equip(mob/living/carbon/human/H)
 	. = ..()
 	if(.)
-		H.mutations.Add(MUTATION_BARTENDER)
+		H.add_mutation(MUTATION_BARTENDER)
 
 /datum/job/chef
 	title = "Chef"
@@ -51,7 +51,7 @@
 		H.dna.real_name = new_name
 		H.mind?.name = new_name
 		H.flavor_text = ""
-		H.mutations.Add(MUTATION_BARTENDER)
+		H.add_mutation(MUTATION_BARTENDER)
 		for(var/thing in H.flavor_texts)
 			H.flavor_texts[thing] = null
 
@@ -187,7 +187,7 @@
 /datum/job/clown/equip(mob/living/carbon/human/H)
 	. = ..()
 	if(.)
-		H.mutations.Add(MUTATION_CLUMSY)
+		H.add_mutation(MUTATION_CLUMSY)
 		H.rename_self("clown")
 
 /datum/job/mime

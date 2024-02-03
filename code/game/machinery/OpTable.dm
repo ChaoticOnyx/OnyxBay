@@ -103,24 +103,24 @@
 		return
 
 	if(inoperable(MAINT))
-		show_splash_text(usr, "No power!")
+		show_splash_text(usr, "no power!")
 		return
 
 	var/mob/living/carbon/human/patient = victim?.resolve()
 	if(!istype(patient))
-		show_splash_text(usr, "No patient detected!")
+		show_splash_text(usr, "no patient detected!")
 		return
 
 	if(istype(patient?.back, /obj/item/rig) && !patient?.back.can_be_unequipped_by(patient, slot_back, TRUE))
-		show_splash_text(usr, "Manual undressing required!")
+		show_splash_text(usr, "manual undressing required!")
 		return
 
 	if(!locate(/obj/item/clothing) in patient?.contents)
-		show_splash_text(usr, "No clothes found!")
+		show_splash_text(usr, "no clothes found!")
 		return
 
 	if(busy)
-		show_splash_text(usr, "Action already in progress!")
+		show_splash_text(usr, "action already in progress!")
 		return
 
 	busy = TRUE
@@ -137,8 +137,8 @@
 
 			patient?.drop(C)
 			use_power_oneoff(100)
-		usr.visible_message(SPAN_DANGER("[usr] successfully removes all clothing from [victim]."),
-							SPAN_NOTICE("You successfully remove all clothing from [victim]."))
+		usr.visible_message(SPAN_DANGER("[usr] successfully removes all clothing from [patient]."),
+							SPAN_NOTICE("You successfully remove all clothing from [patient]."))
 
 	busy = FALSE
 
@@ -195,11 +195,11 @@
 /obj/machinery/optable/proc/check_table(mob/living/carbon/patient)
 	var/mob/living/carbon/human/occupant = victim?.resolve()
 	if(istype(occupant) && get_turf(occupant) == get_turf(src) && occupant.lying)
-		show_splash_text(usr, "Already occupied!")
+		show_splash_text(usr, "already occupied!")
 		return FALSE
 
 	if(patient.buckled)
-		show_splash_text(usr, "Unbuckle the patient first!")
+		show_splash_text(usr, "unbuckle the patient first!")
 		return FALSE
 
 	return TRUE

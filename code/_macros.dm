@@ -166,6 +166,8 @@
 #define LAZYADD(L, I) if(!L) { L = list(); } L += I;
 // Insert I into L at position X, initalizing L if necessary
 #define LAZYINSERT(L, I, X) if(!L) { L = list(); } L.Insert(X, I);
+/// Use LAZYLISTDUPLICATE instead if you want it to null with no entries
+#define LAZYCOPY(L) (L ? L.Copy() : list() )
 // Adds I to L, initalizing L if necessary, if I is not already in L
 #define LAZYDISTINCTADD(L, I) if(!L) { L = list(); } L |= I;
 // Sets L[A] to I, initalizing L if necessary

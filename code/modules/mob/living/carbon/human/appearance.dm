@@ -40,7 +40,9 @@
 	if(src.body_build == body_build)
 		return
 
+	remove_movespeed_modifier(src.body_build.movespeed_modifier)
 	src.body_build = body_build
+	add_movespeed_modifier(src.body_build.movespeed_modifier)
 	regenerate_icons()
 	return 1
 

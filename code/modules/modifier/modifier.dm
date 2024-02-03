@@ -37,8 +37,8 @@
 	var/incoming_hal_damage_percent     // Only affects halloss.
 	var/incoming_healing_percent        // Adjusts amount of healing received.
 	var/outgoing_melee_damage_percent   // Adjusts melee damage inflicted by holder by a percentage.  Affects attacks by melee weapons and hand-to-hand.
-	var/slowdown                        // Negative numbers speed up, positive numbers slow down movement.
-	var/haste                           // If set to 1, the mob will be 'hasted', which makes it ignore slowdown and go really fast.
+	/// Path to the movespeed modifier added to mob
+	var/movespeed_modifier_path
 	var/evasion                         // Positive numbers reduce the odds of being hit. Negative numbers increase the odds.
 	var/bleeding_rate_percent           // Adjusts amount of blood lost when bleeding.
 	var/accuracy                        // Positive numbers makes hitting things with guns easier, negatives make it harder.
@@ -210,12 +210,6 @@
 	if(!isnull(outgoing_melee_damage_percent))
 		effects += "Damage you do with melee weapons and unarmed combat is [multipler_to_percentage(outgoing_melee_damage_percent, TRUE)] \
 		[outgoing_melee_damage_percent > 1.0 ? "higher" : "lower"]."
-
-	if(!isnull(slowdown))
-		effects += "[slowdown > 0 ? "lose" : "gain"] [slowdown] slowdown."
-
-	if(!isnull(haste))
-		effects += "You move at maximum speed, and cannot be slowed by any means."
 
 	if(!isnull(evasion))
 		effects += "You are [abs(evasion)]% [evasion > 0 ? "harder" : "easier"] to hit with weapons."

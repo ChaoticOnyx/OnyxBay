@@ -14,7 +14,7 @@
 	darksight_tint = DARKTINT_MODERATE
 	gluttonous = GLUT_TINY
 	strength = STR_HIGH
-	slowdown = 0.5
+	movespeed_modifier = /datum/movespeed_modifier/unathi
 	brute_mod = 0.8
 	blood_volume = 800
 	num_alternate_languages = 2
@@ -92,19 +92,19 @@
 	//Heals normal damage.
 	if(H.getBruteLoss())
 		H.adjustBruteLoss(-2 * config.health.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
-		H.nutrition -= 1
+		H.remove_nutrition(1)
 	if(H.getFireLoss())
 		H.adjustFireLoss(-1 * config.health.organ_regeneration_multiplier)
-		H.nutrition -= 1
+		H.remove_nutrition(1)
 	if(H.getToxLoss())
 		H.adjustToxLoss(-1 * config.health.organ_regeneration_multiplier)
-		H.nutrition -= 1
+		H.remove_nutrition(1)
 
 	if(prob(5) && H.nutrition > 150 && !H.getBruteLoss() && !H.getFireLoss())
 		var/obj/item/organ/external/head/D = H.organs_by_name["head"]
 		if (D.status & ORGAN_DISFIGURED)
 			D.status &= ~ORGAN_DISFIGURED
-			H.nutrition -= 20
+			H.remove_nutrition(20)
 
 	if(H.nutrition <= 100)
 		return
@@ -118,7 +118,7 @@
 		if(istype(regen_organ))
 			if(regen_organ.damage > 0 && !(regen_organ.status & ORGAN_DEAD))
 				regen_organ.damage = max(regen_organ.damage - 5, 0)
-				H.nutrition -= 5
+				H.remove_nutrition(5)
 				if(prob(5))
 					to_chat(H, "<span class='warning'>You feel a soothing sensation as your [regen_organ] mends...</span>")
 
@@ -148,7 +148,7 @@
 				organ_data["descriptor"] = O.name
 				to_chat(H, "<span class='danger'>With a shower of fresh blood, a new [O.name] forms.</span>")
 				H.visible_message("<span class='danger'>With a shower of fresh blood, a length of biomass shoots from [H]'s [O.amputation_point], forming a new [O.name]!</span>")
-				H.nutrition -= 50
+				H.remove_nutrition(50)
 				var/datum/reagent/blood/B = locate(/datum/reagent/blood) in H.vessel.reagent_list
 				blood_splatter(H,B,1)
 				O.set_dna(H.dna)

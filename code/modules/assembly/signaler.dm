@@ -91,7 +91,7 @@
 
 	playsound(src.loc, 'sound/signals/signaler.ogg', 35)
 
-	var/datum/signal/signal = new(src, list("message" = "ACTIVATE"), encryption = code)
+	var/datum/signal/signal = new(list("message" = "ACTIVATE"), encryption = code)
 	radio_connection.post_signal(src, signal)
 
 	return

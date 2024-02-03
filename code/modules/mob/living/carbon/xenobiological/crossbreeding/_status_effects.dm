@@ -368,12 +368,12 @@
 	duration = 300
 
 /datum/modifier/status_effect/spookcookie/on_applied()
-	holder.mutations.Add(MUTATION_SKELETON)
+	holder.add_mutation(MUTATION_SKELETON)
 	holder.regenerate_icons()
 	return ..()
 
 /datum/modifier/status_effect/spookcookie/on_expire()
-	holder.mutations.Remove(MUTATION_SKELETON)
+	holder.remove_mutation(MUTATION_SKELETON)
 	holder.regenerate_icons()
 
 /datum/modifier/status_effect/peacecookie
@@ -717,10 +717,10 @@
 /datum/modifier/status_effect/stabilized/sepia/think()
 	if(prob(50) && mod > -1)
 		mod--
-		speed_mod.movespeed_modifier = -0.5
+		holder.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/sepia, slowdown = -0.5)
 	else if(mod < 1)
 		mod++
-		speed_mod.movespeed_modifier = 0
+		holder.add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/sepia, slowdown = 0)
 	return ..()
 
 /datum/modifier/status_effect/stabilized/cerulean

@@ -33,7 +33,7 @@ var/global/datum/body_build/default_body_build = new
 	var/dam_mask      = 'icons/mob/human_races/masks/dam_mask_human.dmi'
 	var/bandages_icon = 'icons/mob/human_races/bandages/mob.dmi'
 
-	var/slowdown           = 0 // Movement slowdown
+	var/movespeed_modifier = /datum/movespeed_modifier/bodybuild
 	var/equipment_modifier = 0 // Positive values allow to partially ignore equipment_slowdown, negative values apply additional slowdown if any slowing-down equipment is being worn
 	var/poise_pool         = HUMAN_DEFAULT_POISE
 	var/stomach_capacity   = STOMACH_CAPACITY_NORMAL
@@ -171,7 +171,7 @@ var/global/datum/body_build/default_body_build = new
 	bandages_icon        = 'icons/mob/human_races/bandages/mob_fat.dmi'
 
 	stomach_capacity   = STOMACH_CAPACITY_HIGH
-	slowdown           = 0.5
+	movespeed_modifier = /datum/movespeed_modifier/bodybuild/fat
 	equipment_modifier = 0.5
 	poise_pool         = HUMAN_HIGH_POISE
 
@@ -255,7 +255,7 @@ var/global/datum/body_build/default_body_build = new
 	rig_back             = 'icons/inv_slots/rig/mob_fat.dmi'
 	bandages_icon        = 'icons/mob/human_races/bandages/mob_fat.dmi'
 
-	slowdown           = 0.5
+	movespeed_modifier = /datum/movespeed_modifier/bodybuild/fat
 	equipment_modifier = 0.5
 	poise_pool         = HUMAN_HIGH_POISE
 

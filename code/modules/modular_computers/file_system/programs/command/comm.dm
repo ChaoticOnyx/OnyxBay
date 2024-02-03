@@ -304,7 +304,7 @@ var/last_message_id = 0
 		if("image")
 			data["picture_state"] = data1
 
-	var/datum/signal/status_signal = new(data = data)
+	var/datum/signal/status_signal = new(data)
 	frequency.post_signal(signal = status_signal)
 
 /proc/cancel_call_proc(mob/user)
