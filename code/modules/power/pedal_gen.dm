@@ -84,7 +84,7 @@
 		playsound(src.loc, 'sound/effects/pedalgen.ogg', 20, 1)
 		visible_message(SPAN("notice", "[pedaler] pedals \the [src]!"))
 		generator.Rotated()
-		pedaler.nutrition -= 2.5
+		pedaler.remove_nutrition(2.5)
 		pedaler.adjustHalLoss(1)
 		if(pedaler.getHalLoss() > 80)
 			to_chat(user, "You pushed yourself too hard.")

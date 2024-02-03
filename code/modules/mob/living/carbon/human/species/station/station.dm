@@ -93,7 +93,7 @@
 	generic_attack_mod = 2.0
 	darksight_range = 8
 	darksight_tint = DARKTINT_GOOD
-	slowdown = -0.5
+	movespeed_modifier = /datum/movespeed_modifier/tajaran
 	brute_mod = 1.15
 	burn_mod =  1.15
 	gluttonous = GLUT_TINY
@@ -253,7 +253,7 @@
 	language = LANGUAGE_ROOTLOCAL
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/diona)
 	//primitive_form = "Nymph"
-	slowdown = 7
+	movespeed_modifier = /datum/movespeed_modifier/diona
 	rarity_value = 3
 	hud_type = /datum/hud_data/diona
 	siemens_coefficient = 0.3
@@ -404,21 +404,21 @@
 		// Heals normal damage.
 		if(H.getBruteLoss())
 			H.adjustBruteLoss(-4)
-			H.nutrition -= 2
+			H.remove_nutrition(2)
 		if(H.getFireLoss())
 			H.adjustFireLoss(-4)
-			H.nutrition -= 2
+			H.remove_nutrition(2)
 
 		if(prob(10) && H.nutrition > 200 && !H.getBruteLoss() && !H.getFireLoss())
 			var/obj/item/organ/external/head/D = H.organs_by_name["head"]
 			if(D.status & ORGAN_DISFIGURED)
 				D.status &= ~ORGAN_DISFIGURED
-				H.nutrition -= 20
+				H.remove_nutrition(20)
 
 		for(var/obj/item/organ/I in H.internal_organs)
 			if(I.damage > 0)
 				I.damage = max(I.damage - 2, 0)
-				H.nutrition -= 2
+				H.remove_nutrition(2)
 				if (prob(5))
 					to_chat(H, SPAN("warning", "You sense your nymphs shifting internally to regenerate your [I.name]..."))
 
@@ -435,7 +435,7 @@
 					var/obj/item/organ/O = new limb_path(H)
 					organ_data["descriptor"] = O.name
 					to_chat(H, SPAN("notice", "Some of your nymphs split and hurry to reform your [O.name]."))
-					H.nutrition -= 60
+					H.remove_nutrition(60)
 					H.update_body()
 				else
 					for(var/datum/wound/W in E.wounds)

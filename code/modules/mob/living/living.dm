@@ -219,7 +219,6 @@
 	else
 		health = maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss() - getHalLoss()
 
-
 //This proc is used for mobs which are affected by pressure to calculate the amount of pressure that actually
 //affects them once clothing is factored in. ~Errorage
 /mob/living/proc/calculate_affecting_pressure(pressure)
@@ -548,6 +547,7 @@
 		for(var/mob/living/carbon/metroid/M in view(1, src))
 			M.UpdateFeed()
 
+
 /mob/living/proc/can_pull()
 	if(!moving)
 		return FALSE
@@ -863,10 +863,14 @@
 		GLOB.available_mobs_for_possess -= "\ref[src]"
 	return ..()
 
-/mob/living/proc/set_m_intent(intent)
+/mob/proc/set_m_intent(intent)
 	if(intent != M_WALK && intent != M_RUN)
-		return 0
+		return FALSE
+
 	m_intent = intent
+
+	update_move_intent_slowdown()
+
 	if(hud_used)
 		if(hud_used.move_intent)
 			hud_used.move_intent.icon_state = (intent == M_WALK ? "walking" : "running")
