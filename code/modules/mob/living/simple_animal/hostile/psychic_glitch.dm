@@ -136,7 +136,7 @@
 
 	spawn_glitch()
 	restoration_ticks--
-	if(restoration_ticks < 0)
+	if(restoration_ticks < 0 && glitches_destroyed > 0)
 		glitches_destroyed--
 		restoration_ticks = TICKS_TO_RESTORE_GLITCH
 
