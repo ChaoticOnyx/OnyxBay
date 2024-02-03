@@ -171,6 +171,10 @@
 
 /atom/movable/proc/handle_fall(turf/landing)
 	forceMove(landing)
+
+	if(locate(/obj/structure/stairs) in landing)
+		return
+
 	handle_fall_effect(landing)
 
 /atom/movable/proc/handle_fall_effect(turf/landing)
