@@ -182,7 +182,7 @@
 /datum/species/golem/gold
 	name = SPECIES_GOLEM_GOLD
 	fixed_mut_color = "#484800"
-	slowdown = -0.5
+	movespeed_modifier = /datum/movespeed_modifier/golem_gold
 	brute_mod = 0.90 //down from 55
 	meat_type = /obj/item/stack/material/gold
 	info_text = "As a <span class='danger'>Gold Golem</span>, you are faster but less resistant than the average golem."
@@ -216,7 +216,7 @@
 	bump_flag = HEAVY
 	push_flags = ALLMOBS
 	swap_flags = ALLMOBS
-	slowdown = 4 //pretty fucking slow
+	movespeed_modifier = /datum/movespeed_modifier/golem_plasteel
 
 	meat_type = /obj/item/stack/material/plasteel
 	info_text = "As a <span class='danger'>Plasteel Golem</span>, you are slower, but harder to stun, and hit very hard when punching. You also magnetically attach to surfaces and so don't float without gravity and cannot have positions swapped with other beings."
@@ -513,7 +513,7 @@
 	heat_level_3 = 1000
 	brute_mod = 0.9 //feels no pain, but not too resistant
 	burn_mod = 2 // don't get burned
-	slowdown = -0.5 // not as heavy as stone
+	movespeed_modifier = /datum/movespeed_modifier/golem_cloth
 	prefix = "Cloth"
 	special_names = null
 
@@ -719,7 +719,7 @@
 	fixed_mut_color = null
 	brute_mod = 0.85
 	burn_mod = 1.25
-	slowdown = -1.5
+	movespeed_modifier = /datum/movespeed_modifier/golem_cardboard
 	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED | SPECIES_NO_LACE
 	heat_level_1 = 400
 	heat_level_2 = 500

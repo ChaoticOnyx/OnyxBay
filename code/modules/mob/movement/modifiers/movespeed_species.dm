@@ -7,9 +7,6 @@
 /datum/movespeed_modifier/golem_plasteel
 	slowdown = 4
 
-/datum/movespeed_modifier/golem_alloy
-	slowdown = -1
-
 /datum/movespeed_modifier/golem_cloth
 	slowdown = -0.5
 
