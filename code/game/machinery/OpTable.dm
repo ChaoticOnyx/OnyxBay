@@ -137,8 +137,8 @@
 
 			patient?.drop(C)
 			use_power_oneoff(100)
-		usr.visible_message(SPAN_DANGER("[usr] successfully removes all clothing from [victim]."),
-							SPAN_NOTICE("You successfully remove all clothing from [victim]."))
+		usr.visible_message(SPAN_DANGER("[usr] successfully removes all clothing from [patient]."),
+							SPAN_NOTICE("You successfully remove all clothing from [patient]."))
 
 	busy = FALSE
 
