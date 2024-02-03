@@ -115,7 +115,7 @@
 			var/new_color = show_radial_menu(user, src, colors, require_near = TRUE)
 			if(new_color)
 				colour = new_color
-				show_splash_text_to_viewers("color changed.")
+				show_splash_text_to_viewers("color changed")
 				update_icon()
 		if("paste")
 			var/obj/item/I = user.get_active_item()
@@ -125,10 +125,10 @@
 			var/obj/item/device/multitool/MT = user.get_active_item()
 			if(istype(MT))
 				MT.set_buffer(src)
-				show_splash_text(user, "settings copied.")
+				show_splash_text(user, "settings copied")
 		if("invert")
 			inverted = !inverted
-			show_splash_text_to_viewers("lights inverted.")
+			show_splash_text_to_viewers("lights inverted")
 			update_icon()
 		if("slow")
 			glow_mode = GLOW_SLOW
@@ -188,7 +188,7 @@
 	on = !on
 	update_icon()
 	update_use_power(on ? POWER_USE_ACTIVE : POWER_USE_OFF)
-	show_splash_text_to_viewers("turned [on ? "on" : "off"].")
+	show_splash_text_to_viewers("turned [on ? "on" : "off"]")
 
 
 /obj/machinery/floor_light/ex_act(severity)

@@ -355,6 +355,7 @@
 #define SFX_FOOTSTEP_BLANK          "footstep_blank"
 #define SFX_FOOTSTEP_ROBOT_LEGS     "footstep_robot_legs"
 #define SFX_FOOTSTEP_ROBOT_SPIDER   "footstep_robot_spider"
+#define SFX_FOOTSTEP_STAIRS         "footstep_stairs"
 
 // VENDING
 #define SFX_VENDING_CANS            "vending_cans"

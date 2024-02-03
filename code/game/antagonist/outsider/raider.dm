@@ -233,7 +233,7 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	var/obj/item/storage/wallet/W = new(player)
 	player.equip_to_slot_or_del(W, slot_l_store)
 	spawn_money(rand(50,150)*10,W)
-	create_radio(GLOB.RAID_FREQ, player)
+	create_radio(RAID_FREQ, player)
 
 	return 1
 

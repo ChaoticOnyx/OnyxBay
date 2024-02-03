@@ -256,7 +256,7 @@
 
 	initial_loc.air_vent_info[id_tag] = data
 
-	var/datum/signal/signal = new(src, data)
+	var/datum/signal/signal = new(data)
 	radio_connection.post_signal(src, signal, radio_filter_out)
 
 	return 1

@@ -421,10 +421,11 @@
 	LE.icon_state = "eyelasers"
 	playsound(usr.loc, 'sound/effects/weapons/energy/taser2.ogg', 75, 1)
 	LE.launch(A)
+
 /mob/living/carbon/human/LaserEyes()
 	if(nutrition>0)
 		..()
-		nutrition = max(nutrition - rand(1,5),0)
+		remove_nutrition(rand(1, 5))
 		handle_regular_hud_updates()
 	else
 		to_chat(src, "<span class='warning'>You're out of energy!  You need food!</span>")

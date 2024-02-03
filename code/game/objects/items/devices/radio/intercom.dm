@@ -31,11 +31,11 @@
 
 /obj/item/device/radio/intercom/private
 	name = "intercom (Private)"
-	frequency = GLOB.AI_FREQ
+	frequency = AI_FREQ
 
 /obj/item/device/radio/intercom/specops
 	name = "\improper Spec Ops intercom"
-	frequency = GLOB.ERT_FREQ
+	frequency = ERT_FREQ
 
 /obj/item/device/radio/intercom/department
 	canhear_range = 5
@@ -44,60 +44,60 @@
 
 /obj/item/device/radio/intercom/department/medbay
 	name = "intercom (Medbay)"
-	frequency = GLOB.MED_I_FREQ
+	frequency = MED_I_FREQ
 
 /obj/item/device/radio/intercom/department/security
 	name = "intercom (Security)"
-	frequency = GLOB.SEC_I_FREQ
+	frequency = SEC_I_FREQ
 
 /obj/item/device/radio/intercom/entertainment
 	name = "entertainment intercom"
-	frequency = GLOB.ENT_FREQ
+	frequency = ENT_FREQ
 	canhear_range = 4
 
 /obj/item/device/radio/intercom/department/medbay/Initialize()
 	. = ..()
 	internal_channels = list(
-		num2text(GLOB.PUB_FREQ) = list(),
-		num2text(GLOB.MED_FREQ) = list(access_medical_equip),
-		num2text(GLOB.MED_I_FREQ) = list(access_medical_equip)
+		num2text(PUB_FREQ) = list(),
+		num2text(MED_FREQ) = list(access_medical_equip),
+		num2text(MED_I_FREQ) = list(access_medical_equip)
 		)
 
 /obj/item/device/radio/intercom/department/security/Initialize()
 	. = ..()
 	internal_channels = list(
-		num2text(GLOB.PUB_FREQ) = list(),
-		num2text(GLOB.SEC_I_FREQ) = list(access_security)
+		num2text(PUB_FREQ) = list(),
+		num2text(SEC_I_FREQ) = list(access_security)
 	)
 
 /obj/item/device/radio/intercom/entertainment/Initialize()
 	. = ..()
 	internal_channels = list(
-		num2text(GLOB.PUB_FREQ) = list(),
-		num2text(GLOB.ENT_FREQ) = list()
+		num2text(PUB_FREQ) = list(),
+		num2text(ENT_FREQ) = list()
 	)
 
 /obj/item/device/radio/intercom/syndicate
 	name = "illicit intercom"
 	desc = "Talk through this. Evilly."
-	frequency = GLOB.SYND_FREQ
+	frequency = SYND_FREQ
 	subspace_transmission = 1
 	syndie = 1
 
 /obj/item/device/radio/intercom/syndicate/Initialize()
 	. = ..()
-	internal_channels[num2text(GLOB.SYND_FREQ)] = list(access_syndicate)
+	internal_channels[num2text(SYND_FREQ)] = list(access_syndicate)
 
 /obj/item/device/radio/intercom/raider
 	name = "illicit intercom"
 	desc = "Pirate radio, but not in the usual sense of the word."
-	frequency = GLOB.RAID_FREQ
+	frequency = RAID_FREQ
 	subspace_transmission = 1
 	syndie = 1
 
 /obj/item/device/radio/intercom/raider/Initialize()
 	. = ..()
-	internal_channels[num2text(GLOB.RAID_FREQ)] = list(access_syndicate)
+	internal_channels[num2text(RAID_FREQ)] = list(access_syndicate)
 
 /obj/item/device/radio/intercom/attack_ai(mob/user as mob)
 	src.add_fingerprint(user)
@@ -118,7 +118,7 @@
 			return -1
 	if (!src.listening)
 		return -1
-	if(freq in GLOB.ANTAG_FREQS)
+	if(freq in GLOB.antagonist_frequencies)
 		if(!(src.syndie))
 			return -1//Prevents broadcast of messages over devices lacking the encryption
 
@@ -161,7 +161,7 @@
 
 /obj/item/device/radio/intercom/locked/ai_private
 	name = "\improper AI intercom"
-	locked_frequency = GLOB.AI_FREQ
+	locked_frequency = AI_FREQ
 	broadcasting = 1
 	listening = 1
 

@@ -90,6 +90,7 @@
 		"[user] sets [bone] with \the [tool].",
 		"You set [bone] with \the [tool]."
 		)
+	parent_organ.status &= ~ORGAN_DISFIGURED
 	parent_organ.stage = 2
 
 /datum/surgery_step/bone/mend_bone/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)

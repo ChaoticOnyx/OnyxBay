@@ -35,8 +35,6 @@
 
 	var/list/decals
 
-	var/movement_delay
-
 	var/changing_turf
 
 	var/footstep_sound = SFX_FOOTSTEP_PLATING

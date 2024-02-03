@@ -46,6 +46,7 @@
 /mob/living/carbon/human/Initialize()
 	. = ..()
 
+	add_movespeed_modifier(/datum/movespeed_modifier/human_delay)
 	AddElement(/datum/element/last_words)
 
 /mob/living/carbon/human/Life()
@@ -233,12 +234,12 @@
 			var/rads = radiation / (0.01 SIEVERT)
 
 			radiation -= (0.01 SIEVERT)
-			nutrition += rads
+			add_nutrition(rads)
 
 			if(radiation < (0.1 SIEVERT))
 				radiation = SPACE_RADIATION
 
-			nutrition = Clamp(nutrition, 0, STOMACH_FULLNESS_HIGH)
+			set_nutrition(Clamp(nutrition, 0, STOMACH_FULLNESS_HIGH))
 
 			return
 
@@ -339,7 +340,7 @@
 	//Undead does not eat.
 
 	if(isundead(src))
-		src.nutrition = 300
+		set_nutrition(300)
 
 	//Moved pressure calculations here for use in skip-processing check.
 	var/pressure = environment.return_pressure()
@@ -453,16 +454,24 @@
 	var/body_temperature_difference = species.body_temperature - bodytemperature
 
 	if(abs(body_temperature_difference) < 0.5)
+		if(bodytemperature != bodytemperature_lasttick)
+			update_bodytemp_slowdown()
+		bodytemperature_lasttick = bodytemperature
 		return //fuck this precision
 
 	if(on_fire)
 		if (stat == CONSCIOUS)
 			src.emote("long_scream")
+
+		if(bodytemperature != bodytemperature_lasttick)
+			update_bodytemp_slowdown()
+
+		bodytemperature_lasttick = bodytemperature
 		return //too busy for pesky metabolic regulation
 
 	if(bodytemperature < species.cold_level_1) //260.15 is 310.15 - 50, the temperature where you start to feel effects.
 		if(nutrition >= 2) //If we are very, very cold we'll use up quite a bit of nutriment to heat us up.
-			nutrition -= 2 // We don't take bodybuild's stomach_capacity so fat people can endure cold easier than slim ones
+			remove_nutrition(2) // We don't take bodybuild's stomach_capacity so fat people can endure cold easier than slim ones
 		var/recovery_amt = max((body_temperature_difference / BODYTEMP_AUTORECOVERY_DIVISOR), BODYTEMP_AUTORECOVERY_MINIMUM)
 //		log_debug("Cold. Difference = [body_temperature_difference]. Recovering [recovery_amt]")
 		bodytemperature += recovery_amt
@@ -476,6 +485,8 @@
 //		log_debug("Hot. Difference = [body_temperature_difference]. Recovering [recovery_amt]")
 		bodytemperature += recovery_amt
 
+	if(bodytemperature != bodytemperature_lasttick)
+		update_bodytemp_slowdown()
 	//This proc returns a number made up of the flags for body parts which you are protected on. (such as HEAD, UPPER_TORSO, LOWER_TORSO, etc. See setup.dm for the full list)
 /mob/living/carbon/human/proc/get_heat_protection_flags(temperature) //Temperature is the temperature you're being exposed to.
 	. = 0
@@ -534,8 +545,8 @@
 	return min(1, .)
 
 /mob/living/carbon/human/handle_chemicals_in_body(handle_touching = TRUE, handle_bloodstr = TRUE, handle_ingested = TRUE)
-
 	chem_effects.Cut()
+	update_chem_slowdown(null) // This can not be optimized unless chem effects are cached properly.
 
 	if(status_flags & GODMODE)
 		return 0
@@ -679,7 +690,7 @@
 			for(var/datum/modifier/mod in modifiers)
 				if(!isnull(mod.metabolism_percent))
 					nutrition_reduction *= mod.metabolism_percent
-			nutrition = max (0, nutrition - nutrition_reduction)
+			remove_nutrition(nutrition_reduction)
 
 		// malnutrition \ obesity
 		if(prob(1) && stat == CONSCIOUS && !isSynthetic(src) && !isundead(src))

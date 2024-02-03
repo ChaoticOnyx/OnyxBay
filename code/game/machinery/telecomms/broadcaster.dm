@@ -148,7 +148,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 
 		var/datum/frequency/connection = signal.data["connection"]
 
-		if(connection.frequency in GLOB.ANTAG_FREQS) // if antag broadcast, just
+		if(connection.frequency in GLOB.antagonist_frequencies) // if antag broadcast, just
 			Broadcast_Message(signal.data["connection"], signal.data["mob"],
 							  signal.data["vmask"], signal.data["vmessage"],
 							  signal.data["radio"], signal.data["message"],
@@ -240,8 +240,11 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	// --- Broadcast only to intercom devices ---
 
 	if(data == 1)
+		for(var/weakref/radio_ref in connection.filters[RADIO_CHAT])
+			var/obj/item/device/radio/intercom/R = radio_ref.resolve()
+			if(!istype(R))
+				continue
 
-		for (var/obj/item/device/radio/intercom/R in connection.filters["[RADIO_CHAT]"])
 			if(R.receive_range(display_freq, level) > -1)
 				radios += R
 				R.receive()
@@ -249,8 +252,10 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	// --- Broadcast only to intercoms and station-bounced radios ---
 
 	else if(data == 2)
-
-		for (var/obj/item/device/radio/R in connection.filters["[RADIO_CHAT]"])
+		for(var/weakref/radio_ref  in connection.filters[RADIO_CHAT])
+			var/obj/item/device/radio/R = radio_ref.resolve()
+			if(!istype(R))
+				continue
 
 			if(istype(R, /obj/item/device/radio/headset))
 				continue
@@ -262,9 +267,13 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	// --- Broadcast to antag radios! ---
 
 	else if(data == 3)
-		for(var/antag_freq in GLOB.ANTAG_FREQS)
+		for(var/antag_freq in GLOB.antagonist_frequencies)
 			var/datum/frequency/antag_connection = SSradio.return_frequency(antag_freq)
-			for (var/obj/item/device/radio/R in antag_connection.filters["[RADIO_CHAT]"])
+			for(var/weakref/radio_ref in antag_connection.filters[RADIO_CHAT])
+				var/obj/item/device/radio/R = radio_ref.resolve()
+				if(!istype(R))
+					continue
+
 				if(R.intercept && R.receive_range(antag_freq, level) > -1)
 					radios += R
 					R.receive()
@@ -272,8 +281,11 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	// --- Broadcast to ALL radio devices ---
 
 	else
+		for(var/weakref/radio_ref in connection.filters["[RADIO_CHAT]"])
+			var/obj/item/device/radio/R = radio_ref.resolve()
+			if(!istype(R))
+				continue
 
-		for (var/obj/item/device/radio/R in connection.filters["[RADIO_CHAT]"])
 			if(R.receive_range(display_freq, level) > -1)
 				radios += R
 				R.receive()
@@ -366,27 +378,27 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 		//BR.messages_admin += blackbox_admin_msg
 		if(istype(blackbox))
 			switch(display_freq)
-				if(GLOB.PUB_FREQ)
+				if(PUB_FREQ)
 					blackbox.msg_common += blackbox_msg
-				if(GLOB.SCI_FREQ)
+				if(SCI_FREQ)
 					blackbox.msg_science += blackbox_msg
-				if(GLOB.COMM_FREQ)
+				if(COMM_FREQ)
 					blackbox.msg_command += blackbox_msg
-				if(GLOB.MED_FREQ)
+				if(MED_FREQ)
 					blackbox.msg_medical += blackbox_msg
-				if(GLOB.ENG_FREQ)
+				if(ENG_FREQ)
 					blackbox.msg_engineering += blackbox_msg
-				if(GLOB.SEC_FREQ)
+				if(SEC_FREQ)
 					blackbox.msg_security += blackbox_msg
-				if(GLOB.DTH_FREQ)
+				if(DTH_FREQ)
 					blackbox.msg_deathsquad += blackbox_msg
-				if(GLOB.SYND_FREQ)
+				if(SYND_FREQ)
 					blackbox.msg_syndicate += blackbox_msg
-				if(GLOB.RAID_FREQ)
+				if(RAID_FREQ)
 					blackbox.msg_raider += blackbox_msg
-				if(GLOB.SUP_FREQ)
+				if(SUP_FREQ)
 					blackbox.msg_cargo += blackbox_msg
-				if(GLOB.SRV_FREQ)
+				if(SRV_FREQ)
 					blackbox.msg_service += blackbox_msg
 				else
 					blackbox.messages += blackbox_msg
@@ -473,7 +485,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	// --- Broadcast to antag radios! ---
 
 	else if(data == 3)
-		for(var/freq in GLOB.ANTAG_FREQS)
+		for(var/freq in GLOB.antagonist_frequencies)
 			var/datum/frequency/antag_connection = SSradio.return_frequency(freq)
 			for (var/obj/item/device/radio/R in antag_connection.filters["[RADIO_CHAT]"])
 				var/turf/position = get_turf(R)
@@ -547,27 +559,27 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 		//BR.messages_admin += blackbox_admin_msg
 		if(istype(blackbox))
 			switch(display_freq)
-				if(GLOB.PUB_FREQ)
+				if(PUB_FREQ)
 					blackbox.msg_common += blackbox_msg
-				if(GLOB.SCI_FREQ)
+				if(SCI_FREQ)
 					blackbox.msg_science += blackbox_msg
-				if(GLOB.COMM_FREQ)
+				if(COMM_FREQ)
 					blackbox.msg_command += blackbox_msg
-				if(GLOB.MED_FREQ)
+				if(MED_FREQ)
 					blackbox.msg_medical += blackbox_msg
-				if(GLOB.ENG_FREQ)
+				if(ENG_FREQ)
 					blackbox.msg_engineering += blackbox_msg
-				if(GLOB.SEC_FREQ)
+				if(SEC_FREQ)
 					blackbox.msg_security += blackbox_msg
-				if(GLOB.DTH_FREQ)
+				if(DTH_FREQ)
 					blackbox.msg_deathsquad += blackbox_msg
-				if(GLOB.SYND_FREQ)
+				if(SYND_FREQ)
 					blackbox.msg_syndicate += blackbox_msg
-				if(GLOB.RAID_FREQ)
+				if(RAID_FREQ)
 					blackbox.msg_raider += blackbox_msg
-				if(GLOB.SUP_FREQ)
+				if(SUP_FREQ)
 					blackbox.msg_cargo += blackbox_msg
-				if(GLOB.SRV_FREQ)
+				if(SRV_FREQ)
 					blackbox.msg_service += blackbox_msg
 				else
 					blackbox.messages += blackbox_msg
@@ -626,7 +638,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	)
 
   //#### Sending the signal to all subspace receivers ####//
-	var/datum/signal/signal = new(data = data, method = TRANSMISSION_SUBSPACE, frequency = GLOB.PUB_FREQ)
+	var/datum/signal/signal = new(data = data, method = TRANSMISSION_SUBSPACE, frequency = PUB_FREQ)
 	for(var/obj/machinery/telecomms/receiver/R in telecomms_list)
 		R.receive_signal(signal)
 

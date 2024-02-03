@@ -120,6 +120,8 @@
 	var/ghostizing = FALSE
 
 	var/bodytemperature = 310.055	//98.7 F
+	/// Tracks whether our temp changed
+	var/bodytemperature_lasttick
 	var/default_pixel_x = 0
 	var/default_pixel_y = 0
 

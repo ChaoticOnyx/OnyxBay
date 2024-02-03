@@ -99,7 +99,7 @@
 			if(istype(card))
 				card.mining_points += points
 				points = 0
-				show_splash_text(user, "transaction complete.")
+				show_splash_text(user, "transaction complete")
 			else
 				show_splash_text(user, "no valid ID detected!")
 			return TRUE

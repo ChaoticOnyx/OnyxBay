@@ -47,7 +47,7 @@
 /datum/disease2/effect/musclerace/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	mob.nutrition = max(0, mob.nutrition - 25)
+	mob.set_nutrition(max(0, mob.nutrition - 25))
 	mob.add_modifier(/datum/modifier/musclerace)
 	if(prob(25))
 		mob.custom_emote(AUDIBLE_MESSAGE, pick("growls", "roars", "snarls", "squeals", "yelps", "barks", "screeches"), "AUTO_EMOTE")
@@ -72,7 +72,7 @@
 	incoming_fire_damage_percent = 1.4
 	bleeding_rate_percent = 2
 	incoming_healing_percent = 0.2
-	haste = 1
+	//haste = 1
 
 /datum/modifier/musclerace/New(new_holder, new_origin)
 	. = ..()
@@ -164,7 +164,7 @@
 /datum/disease2/effect/hisstarvation/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
-	mob.nutrition = max(0, mob.nutrition - 1000)
+	mob.set_nutrition(max(0, mob.nutrition - 1000))
 	mob.custom_emote(AUDIBLE_MESSAGE, "hisses", "AUTO_EMOTE")
 	if(prob(25))
 		to_chat(mob, SPAN_DANGER("[pick("You want to eat more than anything in this life!", "You feel your stomach begin to devour itself!", "You are ready to kill for food!", "You urgently need to find food!")]"))

@@ -182,7 +182,7 @@
 		"sigtype" = "status"
 	)
 
-	var/datum/signal/signal = new(src, data)
+	var/datum/signal/signal = new(data)
 	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
 
 	return 1

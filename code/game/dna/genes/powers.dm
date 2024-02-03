@@ -168,7 +168,7 @@
 	OnMobLife(mob/living/carbon/human/M)
 		if(!istype(M)) return
 		if(M.health <= 25)
-			M.mutations.Remove(MUTATION_HULK)
+			M.remove_mutation(MUTATION_HULK)
 			M.update_mutations()		//update our mutation overlays
 			to_chat(M, "<span class='warning'>You suddenly feel very weak.</span>")
 			M.Weaken(3)

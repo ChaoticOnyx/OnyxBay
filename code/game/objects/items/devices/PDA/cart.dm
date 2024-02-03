@@ -220,7 +220,7 @@
 		if("image")
 			data["picture_state"] = data1
 
-	var/datum/signal/status_signal = new(src, data)
+	var/datum/signal/status_signal = new(data)
 	frequency.post_signal(src, status_signal)
 
 

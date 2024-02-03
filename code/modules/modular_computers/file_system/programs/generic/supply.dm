@@ -164,7 +164,7 @@
 			if(!frequency)
 				return
 
-			var/datum/signal/status_signal = new(src, list("command" = "supply"))
+			var/datum/signal/status_signal = new(list("command" = "supply"))
 			frequency.post_signal(src, status_signal)
 		return 1
 
