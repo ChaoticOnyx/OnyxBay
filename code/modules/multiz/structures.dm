@@ -185,6 +185,7 @@
 	desc = "Stairs leading to another deck.  Not too useful if the gravity goes out."
 	icon = 'icons/obj/stairs.dmi'
 	icon_state = "stairs"
+	anchored = TRUE
 
 /obj/structure/up/forceMove()
 	return FALSE
