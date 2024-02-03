@@ -49,14 +49,14 @@
 	set_frequency(frequency)
 
 	for (var/ch_name in channels)
-		secure_radio_connections[ch_name] = SSradio.add_object(src, GLOB.RADIO_CHANNELS[ch_name],  RADIO_CHAT)
+		secure_radio_connections[ch_name] = SSradio.add_object(src, GLOB.radio_channels[ch_name],  RADIO_CHAT)
 
 /obj/item/device/radio/Destroy()
 	QDEL_NULL(wires)
 	GLOB.listening_objects -= src
 	SSradio.remove_object(src, frequency)
 	for (var/ch_name in channels)
-		SSradio.remove_object(src, GLOB.RADIO_CHANNELS[ch_name])
+		SSradio.remove_object(src, GLOB.radio_channels[ch_name])
 	return ..()
 
 /obj/item/device/radio/attack_self(mob/user)
@@ -107,7 +107,7 @@
 		var/chan_stat = channels[ch_name]
 		var/listening = !!(chan_stat & FREQ_LISTENING) != 0
 
-		dat.Add(list(list("chan" = ch_name, "display_name" = ch_name, "secure_channel" = 1, "sec_channel_listen" = !listening, "chan_span" = frequency_span_class(GLOB.RADIO_CHANNELS[ch_name]))))
+		dat.Add(list(list("chan" = ch_name, "display_name" = ch_name, "secure_channel" = 1, "sec_channel_listen" = !listening, "chan_span" = frequency_span_class(GLOB.radio_channels[ch_name]))))
 
 	return dat
 
@@ -475,7 +475,7 @@
 		var/turf/position = get_turf(src)
 		if(!position || !(position.z in level))
 			return -1
-	if(freq in GLOB.ANTAG_FREQS)
+	if(freq in GLOB.antagonist_frequencies)
 		if(!(src.syndie))//Checks to see if it's allowed on that frequency, based on the encryption keys
 			return -1
 	if (!on)
@@ -594,7 +594,7 @@
 
 
 			for(var/ch_name in channels)
-				SSradio.remove_object(src, GLOB.RADIO_CHANNELS[ch_name])
+				SSradio.remove_object(src, GLOB.radio_channels[ch_name])
 				secure_radio_connections[ch_name] = null
 
 
@@ -648,7 +648,7 @@
 			src.SetName("broken radio")
 			return
 
-		secure_radio_connections[ch_name] = SSradio.add_object(src, GLOB.RADIO_CHANNELS[ch_name],  RADIO_CHAT)
+		secure_radio_connections[ch_name] = SSradio.add_object(src, GLOB.radio_channels[ch_name],  RADIO_CHAT)
 
 /obj/item/device/radio/borg/Topic(href, href_list)
 	if(..())
@@ -717,11 +717,11 @@
 
 /obj/item/device/radio/proc/config(op)
 	for(var/ch_name in channels)
-		SSradio.remove_object(src, GLOB.RADIO_CHANNELS[ch_name])
+		SSradio.remove_object(src, GLOB.radio_channels[ch_name])
 	secure_radio_connections = new
 	channels = op
 	for(var/ch_name in op)
-		secure_radio_connections[ch_name] = SSradio.add_object(src, GLOB.RADIO_CHANNELS[ch_name],  RADIO_CHAT)
+		secure_radio_connections[ch_name] = SSradio.add_object(src, GLOB.radio_channels[ch_name],  RADIO_CHAT)
 	return
 
 /obj/item/device/radio/off

@@ -1,13 +1,13 @@
 
 
 /// List of central command channels, i.e deathsquid & response team.
-GLOBAL_LIST_INIT(CENT_FREQS, list(ERT_FREQ, DTH_FREQ))
+GLOBAL_LIST_INIT(cencom_frequencies, list(ERT_FREQ, DTH_FREQ))
 
 /// List of antagonist channels, i.e. Syndicate, raiders and etc..
-GLOBAL_LIST_INIT(ANTAG_FREQS, list(SYND_FREQ, RAID_FREQ))
+GLOBAL_LIST_INIT(antagonist_frequencies, list(SYND_FREQ, RAID_FREQ))
 
 /// List of department channels, arranged lexically.
-GLOBAL_LIST_INIT(DEPT_FREQS, list(
+GLOBAL_LIST_INIT(department_frequencies, list(
 	AI_FREQ,
 	COMM_FREQ,
 	ENG_FREQ,
@@ -20,7 +20,7 @@ GLOBAL_LIST_INIT(DEPT_FREQS, list(
 ))
 
 /// Associative list of channel name -> channel frequency.
-GLOBAL_LIST_INIT(RADIO_CHANNELS, list(
+GLOBAL_LIST_INIT(radio_channels, list(
 	"Common"		= PUB_FREQ,
 	"Science"		= SCI_FREQ,
 	"Command"		= COMM_FREQ,

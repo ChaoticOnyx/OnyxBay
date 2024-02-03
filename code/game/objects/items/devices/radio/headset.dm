@@ -308,7 +308,7 @@
 
 
 			for(var/ch_name in channels)
-				SSradio.remove_object(src, GLOB.RADIO_CHANNELS[ch_name])
+				SSradio.remove_object(src, GLOB.radio_channels[ch_name])
 				secure_radio_connections[ch_name] = null
 
 
@@ -397,7 +397,7 @@
 			src.SetName("broken radio headset")
 			return
 
-		secure_radio_connections[ch_name] = SSradio.add_object(src, GLOB.RADIO_CHANNELS[ch_name],  RADIO_CHAT)
+		secure_radio_connections[ch_name] = SSradio.add_object(src, GLOB.radio_channels[ch_name],  RADIO_CHAT)
 
 	if(setDescription)
 		setupRadioDescription()
