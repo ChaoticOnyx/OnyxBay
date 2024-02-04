@@ -39,4 +39,3 @@
 #define RADIO_AIRLOCK       "radio_airlock"
 #define RADIO_SECBOT        "radio_secbot"
 #define RADIO_MULEBOT       "radio_mulebot"
-#define RADIO_MAGNETS       "radio_magnet"
