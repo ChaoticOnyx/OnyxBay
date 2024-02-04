@@ -14,6 +14,7 @@
 	setup = 0
 
 	dremovable = 0
+	intact_closet = FALSE
 
 //spawns endless (3 sets) amounts of breathmask, emergency oxy tank and crowbar
 

@@ -13,6 +13,7 @@
 	var/intialOxy = 0
 	var/timer = 240 //eventually the person will be freed
 	dremovable = 0
+	intact_closet = FALSE
 
 /obj/structure/closet/statue/New(loc, mob/living/L)
 	if(L && (ishuman(L) || iscorgi(L)))
