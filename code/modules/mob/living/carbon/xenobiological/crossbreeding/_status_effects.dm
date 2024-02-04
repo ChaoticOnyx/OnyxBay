@@ -953,7 +953,7 @@
 		drained.adjustCloneLoss(heal_amount * DRAIN_DAMAGE_MULTIPLIER)
 		C.adjustCloneLoss(-heal_amount)
 
-	C.nutrition += 3
+	C.add_nutrition(3)
 
 #undef DRAIN_DAMAGE_MULTIPLIER
 

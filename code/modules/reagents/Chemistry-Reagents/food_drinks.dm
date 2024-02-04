@@ -47,7 +47,7 @@
 /datum/reagent/nutriment/proc/adjust_nutrition(mob/living/carbon/M, alien, removed)
 	switch(alien)
 		if(IS_UNATHI) removed *= 0.1 // Unathi get most of their nutrition from meat.
-	M.nutrition += nutriment_factor * removed // For hunger and fatness
+	M.add_nutrition(nutriment_factor * removed) // For hunger and fatness
 
 /datum/reagent/nutriment/glucose
 	name = "Glucose"
@@ -70,7 +70,7 @@
 /datum/reagent/nutriment/protein/adjust_nutrition(mob/living/carbon/M, alien, removed)
 	switch(alien)
 		if(IS_UNATHI) removed *= 2.25
-	M.nutrition += nutriment_factor * removed // For hunger and fatness
+	M.add_nutrition(nutriment_factor * removed) // For hunger and fatness
 
 /datum/reagent/nutriment/protein/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien && alien == IS_SKRELL)
@@ -422,7 +422,7 @@
 	return
 
 /datum/reagent/drink/affect_ingest(mob/living/carbon/M, alien, removed)
-	M.nutrition += nutrition * removed
+	M.add_nutrition(nutrition * removed)
 	M.dizziness = max(0, M.dizziness + adj_dizzy)
 	M.drowsyness = max(0, M.drowsyness + adj_drowsy)
 	M.sleeping = max(0, M.sleeping + adj_sleepy)

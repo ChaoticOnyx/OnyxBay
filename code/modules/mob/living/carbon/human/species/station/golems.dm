@@ -306,7 +306,7 @@
 	if(isturf(H.loc)) //else, there's considered to be no light
 		var/turf/T = H.loc
 		light_amount = min(1, T.get_lumcount()) - 0.5
-		H.nutrition += 5 * light_amount
+		H.add_nutrition(5 * light_amount)
 		if(H.nutrition > STOMACH_FULLNESS_HIGH)
 			H.nutrition = STOMACH_FULLNESS_HIGH
 		if(light_amount > 0.2) //if there's enough light, heal

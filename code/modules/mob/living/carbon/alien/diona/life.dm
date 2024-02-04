@@ -8,7 +8,7 @@
 		var/turf/T = loc
 		light_amount = T.get_lumcount() * 5
 
-	nutrition += light_amount
+	add_nutrition(light_amount)
 
 	if(nutrition > 450)
 		nutrition = 450

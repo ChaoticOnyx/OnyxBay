@@ -441,7 +441,7 @@ datum/preferences/proc/clear_character_previews()
 	character.religion = religion
 
 	if(!character.isSynthetic())
-		character.nutrition = rand(140, 360) * character.body_build.stomach_capacity
+		character.set_nutrition(rand(140, 360) * character.body_build.stomach_capacity)
 
 	return
 

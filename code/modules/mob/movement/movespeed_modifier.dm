@@ -140,8 +140,10 @@ GLOBAL_LIST_EMPTY(movespeed_modification_cache)
 		var/datum/movespeed_modifier/M = movespeed_modification[key]
 		var/amt = M.slowdown
 		calculated_slowdown += amt
+
 		if(M.flags & MOVESPEED_FLAG_SPACEMOVEMENT)
 			calculated_slowdown_space += amt
+
 		if(M.flags & MOVESPEED_FLAG_OVERRIDING_SPEED)
 			cached_slowdown = M.slowdown
 			return
