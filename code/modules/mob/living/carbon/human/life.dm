@@ -969,7 +969,7 @@
 				if(life_tick % 3 == 1)
 					if(!(M.status_flags & GODMODE))
 						M.adjustBruteLoss(5)
-					nutrition += 10
+					add_nutrition(10)
 
 /mob/living/carbon/human/proc/handle_shock()
 	if(!can_feel_pain())

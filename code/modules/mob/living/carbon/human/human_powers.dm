@@ -416,4 +416,4 @@
 		if(target.getBruteLoss() > target.maxHealth)
 			target.gib()
 		adjustBruteLoss(-25)
-		nutrition += 20
+		add_nutrition(20)

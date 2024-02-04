@@ -43,7 +43,7 @@
 		return
 	var/rads = radiation / (0.05 SIEVERT)
 	radiation = max(SPACE_RADIATION, radiation - rads)
-	nutrition += rads
+	add_nutrition(rads)
 	heal_overall_damage(rads, rads)
 	adjustOxyLoss(-rads)
 	adjustToxLoss(-rads)

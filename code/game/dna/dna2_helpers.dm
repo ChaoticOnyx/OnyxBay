@@ -173,7 +173,7 @@
 			else
 				H.gender = MALE
 
-		H.body_build = H.species.get_body_build(H.gender, dna.body_build)
+		H.change_body_build(H.species.get_body_build(H.gender, dna.body_build))
 		H.fix_body_build()
 		H.body_height = dna.body_height
 

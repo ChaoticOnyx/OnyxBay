@@ -209,15 +209,14 @@
 	require_module = 1
 
 /obj/item/borg/upgrade/vtec/action(mob/living/silicon/robot/R)
-	if(..()) return 0
+	if(..()) return FALSE
 
-	if(R.speed == -1)
-		return 0
+	if(R.has_movespeed_modifier(/datum/movespeed_modifier/vtec_speedup))
+		return FALSE
 
-	R.speed--
-	installed = 1
-	return 1
-
+	R.add_movespeed_modifier(/datum/movespeed_modifier/vtec_speedup)
+	installed = TRUE
+	return TRUE
 
 /obj/item/borg/upgrade/tasercooler
 	name = "robotic Rapid Taser Cooling Module"
