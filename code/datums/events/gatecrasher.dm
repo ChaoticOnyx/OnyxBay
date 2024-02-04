@@ -50,7 +50,7 @@
 		/obj/structure/closet/body_bag = 3,
 		/obj/structure/closet/body_bag/cryobag = 5,
 		/obj/structure/closet/body_bag/cryobag/syndi,
-		/obj/structure/closet/acloset = 2
+		/obj/structure/closet/acloset = 2,
 		/obj/structure/closet/firecloset,
 		/obj/structure/closet/syndicate,
 		/obj/structure/closet = 5
