@@ -15,6 +15,9 @@
 	throw_range = 20
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 
+	drop_sound = SFX_DROP_BALL
+	pickup_sound = SFX_PICKUP_BALL
+
 /obj/item/beach_ball/afterattack(atom/target, mob/user)
 	user.drop_active_hand()
 	throw_at(target, throw_range, throw_speed, user)

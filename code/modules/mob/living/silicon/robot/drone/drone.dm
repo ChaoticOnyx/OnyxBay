@@ -289,12 +289,15 @@ var/list/mob_hat_cache = list()
 //DRONE LIFE/DEATH
 //For some goddamn reason robots have this hardcoded. Redefining it for our fragile friends here.
 /mob/living/silicon/robot/drone/updatehealth()
+	var/previous_health = health
 	if(status_flags & GODMODE)
 		health = 35
 		set_stat(CONSCIOUS)
-		return
-	health = 35 - (getBruteLoss() + getFireLoss())
-	return
+	else
+		health = 35 - (getBruteLoss() + getFireLoss())
+
+	if(health != previous_health)
+		update_health_slowdown()
 
 //Easiest to check this here, then check again in the robot proc.
 //Standard robots use config for crit, which is somewhat excessive for these guys.

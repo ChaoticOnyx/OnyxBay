@@ -24,6 +24,9 @@
 	w_class = ITEM_SIZE_SMALL
 	var/rating = 1
 
+	drop_sound = SFX_DROP_COMPONENT
+	pickup_sound = SFX_PICKUP_COMPONENT
+
 //Rank 1
 
 /obj/item/stock_parts/console_screen
@@ -32,6 +35,9 @@
 	icon_state = "screen"
 	origin_tech = list(TECH_MATERIAL = 1)
 	matter = list(MATERIAL_GLASS = 200)
+
+	drop_sound = SFX_DROP_GLASS
+	pickup_sound = SFX_PICKUP_GLASS
 
 /obj/item/stock_parts/scanning_module
 	name = "scanning module"

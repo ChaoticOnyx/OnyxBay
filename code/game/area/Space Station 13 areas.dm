@@ -107,7 +107,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "centcom"
 	requires_power = 0
 	dynamic_lighting = 0
-	ambient_music_tags = list(MUSIC_TAG_CENTCOMM)
 
 /area/centcom/holding
 	name = "\improper Holding Facility"
@@ -282,14 +281,4 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	luminosity = 1
 	dynamic_lighting = 0
 	requires_power = 0
-	area_flags = AREA_FLAG_NO_STATION
-
-//Abductors
-/area/abductor_ship
-	name = "Abductor Ship"
-	icon_state = "yellow"
-	requires_power = FALSE
-	requires_power = 0
-	dynamic_lighting = 0
-	luminosity = 1
 	area_flags = AREA_FLAG_NO_STATION

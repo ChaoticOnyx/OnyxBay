@@ -126,7 +126,7 @@
 /turf/simulated/wall/attackby(obj/item/W as obj, mob/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	if (!user.IsAdvancedToolUser())
-		to_chat(user, SPAN("warning","You don't have the dexterity to do this!"))
+		to_chat(user, SPAN("warning", FEEDBACK_YOU_LACK_DEXTERITY))
 		return
 
 	//get the user's location

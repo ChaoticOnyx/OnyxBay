@@ -1,10 +1,6 @@
 /mob/proc/jumpTo(location)
 	forceMove(location)
 
-/mob/observer/ghost/jumpTo()
-	stop_following()
-	..()
-
 /client/proc/Jump(selected_area in area_repository.get_areas_by_z_level())
 	set name = "Jump to Area"
 	set desc = "Area to jump to"

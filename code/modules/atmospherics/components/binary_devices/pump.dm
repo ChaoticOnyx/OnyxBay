@@ -32,7 +32,7 @@ Thus, the two variables affect pump operation are set in New():
 
 	var/frequency = 0
 	var/id = null
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 /obj/machinery/atmospherics/binary/pump/Initialize()
 	. = ..()
@@ -45,22 +45,29 @@ Thus, the two variables affect pump operation are set in New():
 	return ..()
 
 /obj/machinery/atmospherics/binary/pump/AltClick(mob/user)
-	if(user.stat || user.restrained())
+	if(user.is_ic_dead() || user.restrained())
 		return
+
 	if(!Adjacent(user, src) && !issilicon(user))
 		return
+
 	if(!allowed(user))
 		return
+
+	show_splash_text(user, "toggled [use_power ? "off" : "on"]")
 	update_use_power(!use_power)
 	update_icon()
 
 /obj/machinery/atmospherics/binary/pump/AltRightClick(mob/user)
-	if(user.stat || user.restrained())
+	if(user.is_ic_dead() || user.restrained())
 		return
+
 	if(!Adjacent(user, src) && !issilicon(user))
 		return
+
 	if(!allowed(user))
 		return
+
 	target_pressure = max_pressure_setting
 	show_splash_text(user, "target pressure set to [target_pressure] kPa")
 
@@ -117,20 +124,16 @@ Thus, the two variables affect pump operation are set in New():
 //Radio remote control
 
 /obj/machinery/atmospherics/binary/pump/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = radio_controller.add_object(src, frequency, filter = RADIO_ATMOSIA)
+		radio_connection = SSradio.add_object(src, frequency, filter = RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/binary/pump/proc/broadcast_status()
 	if(!radio_connection)
 		return 0
 
-	var/datum/signal/signal = new
-	signal.transmission_method = 1 //radio signal
-	signal.source = src
-
-	signal.data = list(
+	var/list/data = list(
 		"tag" = id,
 		"device" = "AGP",
 		"power" = use_power,
@@ -138,6 +141,7 @@ Thus, the two variables affect pump operation are set in New():
 		"sigtype" = "status"
 	)
 
+	var/datum/signal/signal = new(data)
 	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
 
 	return 1

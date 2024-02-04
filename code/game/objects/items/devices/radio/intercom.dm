@@ -57,7 +57,11 @@
 
 /obj/item/device/radio/intercom/department/medbay/Initialize()
 	. = ..()
-	internal_channels = GLOB.default_medbay_channels.Copy()
+	internal_channels = list(
+		num2text(PUB_FREQ) = list(),
+		num2text(MED_FREQ) = list(access_medical_equip),
+		num2text(MED_I_FREQ) = list(access_medical_equip)
+		)
 
 /obj/item/device/radio/intercom/department/security/Initialize()
 	. = ..()
@@ -114,7 +118,7 @@
 			return -1
 	if (!src.listening)
 		return -1
-	if(freq in ANTAG_FREQS)
+	if(freq in GLOB.antagonist_frequencies)
 		if(!(src.syndie))
 			return -1//Prevents broadcast of messages over devices lacking the encryption
 

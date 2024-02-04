@@ -1123,7 +1123,7 @@
 
 	var/list/icontypes
 	for(var/hull_key as anything in module_hulls)
-		LAZYADDASSOC(icontypes, hull_key, image(module_hulls[hull_key].icon, module_hulls[hull_key].icon_state))
+		LAZYSET(icontypes, hull_key, image(module_hulls[hull_key].icon, module_hulls[hull_key].icon_state))
 
 	var/radius = 32 * (1 + 0.05 * clamp(length(icontypes), 0, 8))
 	var/new_icontype = show_radial_menu(src, src, icontypes, radius = radius)

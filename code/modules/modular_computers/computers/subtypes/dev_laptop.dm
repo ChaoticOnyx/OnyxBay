@@ -32,6 +32,7 @@
 	if(anchored)
 		..()
 	else
+		set_light(0)
 		ClearOverlays()
 		icon_state = icon_state_closed
 

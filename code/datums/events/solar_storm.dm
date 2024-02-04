@@ -6,7 +6,7 @@
 	mtth = 3 HOURS
 	difficulty = 30
 	fire_only_once = TRUE
-	blacklisted_maps = list(/datum/map/polar)
+
 
 	var/const/temp_incr     = 100
 	var/const/fire_loss     = 40

@@ -504,7 +504,6 @@
 
 
 /obj/item/paper/monitorkey
-	//..()
 	name = "Monitor Decryption Key"
 	var/obj/machinery/message_server/server = null
 

@@ -42,6 +42,9 @@
 
 	var/obj/item/card/id/front_id = null
 
+	drop_sound = SFX_DROP_LEATHER
+	pickup_sound = SFX_PICKUP_LEATHER
+
 /obj/item/storage/wallet/leather
 	color = COLOR_SEDONA
 

@@ -44,18 +44,15 @@
 	//Due to some involuntary means, you're laying now
 	if(lying && !resting && !sleeping)
 		anim_time = 1 //Thud
-
 	if(lying && !species.prone_icon) //Only rotate them if we're not drawing a specific icon for being prone.
 		rotate_deg += 90
 		translate_x = 1
 		translate_y = -6
-		layer = MOB_LAYER -0.01 // Fix for a byond bug where turf entry order no longer matters
 	else if(hanging && !species.prone_icon)
 		rotate_deg += 180
 		translate_y = -16 * ((tf_scale_y || 1) * body_height - 1)
-		layer = MOB_LAYER // Fix for a byond bug where turf entry order no longer matters
-	else
-		layer = MOB_LAYER // Fix for a byond bug where turf entry order no longer matters
+
+	reset_layer()
 
 	animate(
 		src,
@@ -147,4 +144,3 @@
 
 	else // No colors, so remove the client's color.
 		animate(client, color = null, time = 10)
-

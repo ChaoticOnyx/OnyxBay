@@ -65,7 +65,7 @@
 			signal_door("update")		//signals connected doors to update their status
 
 
-/datum/computer/file/embedded_program/docking/simple/receive_signal(datum/signal/signal, receive_method, receive_param)
+/datum/computer/file/embedded_program/docking/simple/receive_signal(datum/signal/signal, receive_param)
 	var/receive_tag = signal.data["tag"]
 
 	if(!receive_tag) return
@@ -74,7 +74,7 @@
 		memory["door_status"]["state"] = signal.data["door_status"]
 		memory["door_status"]["lock"] = signal.data["lock_status"]
 
-	..(signal, receive_method, receive_param)
+	..(signal, receive_param)
 
 /datum/computer/file/embedded_program/docking/simple/receive_user_command(command)
 	switch(command)
@@ -92,7 +92,7 @@
 
 
 /datum/computer/file/embedded_program/docking/simple/proc/signal_door(command)
-	var/datum/signal/signal = new
+	var/datum/signal/signal = new()
 	signal.data["tag"] = tag_door
 	signal.data["command"] = command
 	post_signal(signal)
@@ -145,7 +145,7 @@
 /obj/machinery/embedded_controller/radio/simple_docking_controller/verb/spoof_signal(command as text, sender as text)
 	set category = "Debug"
 	set src in view(1)
-	var/datum/signal/signal = new
+	var/datum/signal/signal = new()
 	signal.data["tag"] = sender
 	signal.data["command"] = command
 	signal.data["recipient"] = id_tag

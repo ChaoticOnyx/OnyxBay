@@ -20,6 +20,12 @@
 	var/duration = 0
 	/// Associative list of typepath -> value, where typepath is surgery tool and value is chance to succeed from 0 to 100.
 	var/list/allowed_tools = null
+	/// Played when the step is started
+	var/preop_sound
+	/// Played on step succsess
+	var/success_sound
+	// Played if the step fails
+	var/failure_sound
 
 /**
  * Performs preop checks and fires step if succeeded.
@@ -212,11 +218,15 @@
 	if(shock_level)
 		target.shock_stage = max(target.shock_stage, shock_level)
 
+	play_preop_sound(user, target, target_organ, tool)
+
 	var/success_chance = calc_success_chance(user, target, tool)
 	var/surgery_duration = SURGERY_DURATION_DELTA * duration * tool.surgery_speed
 	if(prob(success_chance) && do_mob(user, target, surgery_duration, can_multitask = TRUE))
+		play_success_sound(user, target, target_organ, tool)
 		success(parent_organ, target_organ, target, tool, user)
 	else
+		play_failure_sound(user, target, target_organ, tool)
 		failure(parent_organ, target_organ, target, tool, user)
 
 /// Spreads germs to organ if no gloves is present.
@@ -311,3 +321,30 @@
 		SPAN("warning", self_message),
 		SPAN("warning", blind_message)
 	)
+
+/datum/surgery_step/proc/play_preop_sound(mob/user, mob/living/carbon/target, obj/item/organ/target_organ, obj/item/tool)
+	if(!preop_sound)
+		return
+
+	var/sound_file_use
+	if(islist(preop_sound))
+		for(var/typepath in preop_sound)
+			if(istype(tool, typepath))
+				sound_file_use = preop_sound[typepath]
+				break
+	else
+		sound_file_use = preop_sound
+
+	playsound(get_turf(target), sound_file_use, 75, TRUE)
+
+/datum/surgery_step/proc/play_success_sound(mob/user, mob/living/carbon/target, obj/item/organ/target_organ, obj/item/tool)
+	if(!success_sound)
+		return
+
+	playsound(get_turf(target), success_sound, 75, TRUE)
+
+/datum/surgery_step/proc/play_failure_sound(mob/user, mob/living/carbon/target, obj/item/organ/target_organ, obj/item/tool)
+	if(!failure_sound)
+		return
+
+	playsound(get_turf(target), failure_sound, 75, TRUE)

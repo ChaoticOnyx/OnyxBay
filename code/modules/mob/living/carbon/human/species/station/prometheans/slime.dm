@@ -62,7 +62,7 @@
 	else if(H.nutrition >= STOMACH_FULLNESS_HIGH)
 		jelly_vessel.add_jelly(0.15)
 		if(jelly_volume <= BLOOD_VOLUME_LOSE_NUTRITION)
-			H.nutrition += -0.125
+			H.remove_nutrition(0.125)
 
 	..()
 

@@ -251,6 +251,10 @@ Transponder Codes:<UL>"}
 	location = "SEC"
 	codes = list("patrol" = 1, "next_patrol" = "SE1")
 
+/obj/machinery/navbeacon/frontier/SEC/Initialize()
+	. = ..()
+	AddComponent(/datum/component/holomarker, "Security")
+
 /obj/machinery/navbeacon/frontier/SE1
 	location = "SE1"
 	codes = list("patrol" = 1, "next_patrol" = "DOME_E1")
@@ -295,6 +299,9 @@ Transponder Codes:<UL>"}
 	location = "ENG"
 	codes = list("patrol" = 1, "next_patrol" = "DOME_W2")
 
+/obj/machinery/navbeacon/frontier/ENG/Initialize()
+	. = ..()
+	AddComponent(/datum/component/holomarker, "Engineering")
 /obj/machinery/navbeacon/frontier/DOME_W2
 	location = "DOME_W2"
 	codes = list("patrol" = 1, "next_patrol" = "DOME_NW")
@@ -318,6 +325,10 @@ Transponder Codes:<UL>"}
 /obj/machinery/navbeacon/frontier/BAR
 	location = "BAR"
 	codes = list("patrol" = 1, "next_patrol" = "CRYO")
+
+/obj/machinery/navbeacon/frontier/BAR/Initialize()
+	. = ..()
+	AddComponent(/datum/component/holomarker, "Bar")
 
 /obj/machinery/navbeacon/frontier/CRYO
 	location = "CRYO"

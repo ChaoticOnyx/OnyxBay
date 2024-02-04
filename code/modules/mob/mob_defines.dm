@@ -3,7 +3,7 @@
 
 	plane = DEFAULT_PLANE
 	layer = MOB_LAYER
-	appearance_flags = PIXEL_SCALE | LONG_GLIDE
+	appearance_flags = PIXEL_SCALE | LONG_GLIDE | TILE_BOUND
 	animate_movement = 2
 	virtual_mob = /mob/observer/virtual/mob
 
@@ -120,6 +120,8 @@
 	var/ghostizing = FALSE
 
 	var/bodytemperature = 310.055	//98.7 F
+	/// Tracks whether our temp changed
+	var/bodytemperature_lasttick
 	var/default_pixel_x = 0
 	var/default_pixel_y = 0
 

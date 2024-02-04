@@ -77,14 +77,14 @@
 	set name = "Radio report"
 
 	var/output = "<meta charset=\"utf-8\"><b>Radio Report</b><hr>"
-	for (var/fq in radio_controller.frequencies)
+	for (var/fq in SSradio.frequencies)
 		output += "<b>Freq: [fq]</b><br>"
-		var/datum/radio_frequency/fqs = radio_controller.frequencies[fq]
+		var/datum/frequency/fqs = SSradio.frequencies[fq]
 		if (!fqs)
 			output += "&nbsp;&nbsp;<b>ERROR</b><br>"
 			continue
-		for (var/filter in fqs.devices)
-			var/list/f = fqs.devices[filter]
+		for (var/filter in fqs.filters)
+			var/list/f = fqs.filters[filter]
 			if (!f)
 				output += "&nbsp;&nbsp;[filter]: ERROR<br>"
 				continue

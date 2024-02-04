@@ -28,6 +28,7 @@
 	var/item_path_as_string
 	var/req_access = 0
 	var/list/req_titles = list()
+	var/list/flags_list = list()
 	var/kit_name
 	var/kit_desc
 	var/kit_icon
@@ -164,6 +165,7 @@
 			current_data.req_access = item_data["req_access"]
 			current_data.req_titles = item_data["req_titles"]
 			current_data.additional_data = item_data["additional_data"]
+			current_data.flags_list = item_data["flags_list"]
 
 			current_data.assoc_key = ckey
 			current_data.item_path = item_path

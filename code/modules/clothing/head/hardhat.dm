@@ -12,6 +12,9 @@
 	heat_protection = HEAD
 	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
 
+	pickup_sound = SFX_PICKUP_HELMET
+	drop_sound = SFX_DROP_HELMET
+
 /obj/item/clothing/head/hardhat/orange
 	icon_state = "hardhat0_orange"
 

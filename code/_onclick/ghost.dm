@@ -10,7 +10,6 @@
 
 	// Otherwise jump
 	else if(A.loc)
-		stop_following()
 		forceMove(get_turf(A))
 
 /mob/observer/ghost/ClickOn(atom/A, params)

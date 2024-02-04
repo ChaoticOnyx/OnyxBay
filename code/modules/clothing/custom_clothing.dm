@@ -329,3 +329,13 @@
 	parts[1] =	1
 	original[1] =  /obj/item/gun/projectile/revolver
 	finished[1] = /obj/item/gun/projectile/revolver/remington
+
+// TheUnknownOneBYND
+/obj/item/clothing/under/color/odaycel
+	name = "O-S jumpsuit"
+	desc = "A seemingly custom-tailored brown jumpsuit. It's marked \"#O-S\" and has a serial number on its chest."
+	color = "#663300"
+
+/obj/item/clothing/under/color/odaycel/New()
+	..()
+	name = "O-S jumpsuit #[rand(1, 9999)]"

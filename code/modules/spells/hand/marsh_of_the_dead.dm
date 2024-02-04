@@ -1,6 +1,6 @@
 #define MARSH_ACTIVE_TIME 60 SECONDS
-#define MARSH_MIN_UNBUCKLE_TIME 20 SECONDS
-#define MARSH_MAX_UNBUCKLE_TIME 40 SECONDS
+#define MARSH_MIN_UNBUCKLE_TIME 7 SECONDS
+#define MARSH_MAX_UNBUCKLE_TIME 14 SECONDS
 #define MARSH_DAMAGE_PER_UPGRADE 10
 
 /datum/spell/hand/charges/marsh_of_the_dead
@@ -19,7 +19,7 @@
 	override_base = "const"
 	charge_max = 600
 	cooldown_min = 300
-	max_casts = 3
+	max_casts = 1
 
 /datum/spell/hand/charges/marsh_of_the_dead/cast_hand(atom/a, mob/user)
 	for(var/turf/simulated/T in view(1,a))

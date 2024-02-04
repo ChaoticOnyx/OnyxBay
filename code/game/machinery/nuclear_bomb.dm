@@ -375,6 +375,9 @@ var/bomb_set
 	item_state = "card-id"
 	w_class = ITEM_SIZE_TINY
 
+	drop_sound = SFX_DROP_DISK
+	pickup_sound = SFX_PICKUP_DISK
+
 /obj/item/disk/nuclear/Initialize()
 	. = ..()
 	// Can never be quite sure that a game mode has been properly initiated or not at this point, so always register
@@ -441,13 +444,9 @@ var/bomb_set
 	6) The KAD will now display the Authentication Code. Memorize this code.\[br\]\
 	7) Insert the nuclear authentication disk into the self-destruct terminal.\[br\]\
 	8) Enter the code into the self-destruct terminal.\[br\]\
-	9) Authentication procedures are now complete. Open the two cabinets containing the nuclear cylinders. They are \
-	located on the back wall of the chamber.\[br\]\
-	10) Place the cylinders upon the six nuclear cylinder inserters.\[br\]\
-	11) Activate the inserters. The cylinders will be pulled down into the self-destruct system.\[br\]\
-	12) Return to the terminal. Enter the desired countdown time.\[br\]\
-	13) When ready, disable the safety switch.\[br\]\
-	14) Start the countdown.\[br\]\[br\]\
+	9) Enter the desired countdown time.\[br\]\
+	10) When ready, disable the safety switch.\[br\]\
+	11) Start the countdown.\[br\]\[br\]\
 	This concludes the instructions.", "vessel self-destruct instructions")
 
 	//stamp the paper
@@ -467,7 +466,6 @@ var/bomb_set
 	extended = 1
 
 	var/list/flash_tiles = list()
-	var/list/inserters = list()
 	var/last_turf_state
 
 	var/announced = 0
@@ -481,8 +479,6 @@ var/bomb_set
 		if(istype(T.flooring, /decl/flooring/reinforced/circuit/red))
 			flash_tiles += T
 	update_icon()
-	for(var/obj/machinery/self_destruct/ch in get_area(src))
-		inserters += ch
 
 /obj/machinery/nuclearbomb/station/attackby(obj/item/O, mob/user)
 	if(isWrench(O))
@@ -515,13 +511,8 @@ var/bomb_set
 		return 1
 
 /obj/machinery/nuclearbomb/station/start_bomb()
-	for(var/inserter in inserters)
-		var/obj/machinery/self_destruct/sd = inserter
-		if(!istype(sd) || !sd.armed)
-			to_chat(usr, "<span class='warning'>An inserter has not been armed or is damaged.</span>")
-			return
-	visible_message("<span class='warning'>Warning. The self-destruct sequence override will be disabled [self_destruct_cutoff] seconds before detonation.</span>")
-	..()
+	visible_message(SPAN("warning", "Warning! The self-destruct sequence override will be disabled [self_destruct_cutoff] seconds before detonation."))
+	return ..()
 
 /obj/machinery/nuclearbomb/station/check_cutoff()
 	if(timeleft <= self_destruct_cutoff)

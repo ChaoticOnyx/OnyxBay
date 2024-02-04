@@ -30,8 +30,12 @@
 		death(null,"gives one shrill beep before falling lifeless.")
 
 /mob/living/silicon/pai/updatehealth()
+	var/previous_health = health
 	if(status_flags & GODMODE)
 		health = 100
 		set_stat(CONSCIOUS)
 	else
 		health = 100 - getBruteLoss() - getFireLoss()
+
+	if(health != previous_health)
+		update_health_slowdown()

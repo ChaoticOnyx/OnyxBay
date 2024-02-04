@@ -211,11 +211,11 @@
 /obj/machinery/button/toggle/valve
 	name = "remote valve control"
 	var/frequency = 0
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 /obj/machinery/button/toggle/valve/Initialize()
 	. = ..()
-	radio_connection = radio_controller.add_object(src, frequency, RADIO_ATMOSIA)
+	radio_connection = SSradio.add_object(src, frequency, RADIO_ATMOSIA)
 
 /obj/machinery/button/toggle/valve/on_update_icon()
 	if(!active)
@@ -225,8 +225,7 @@
 
 
 /obj/machinery/button/toggle/valve/activate(mob/living/user)
-	var/datum/signal/signal = new
-	signal.transmission_method = 1 // radio transmission
+	var/datum/signal/signal = new()
 	signal.source = src
 	signal.frequency = frequency
 	signal.data["tag"] = id

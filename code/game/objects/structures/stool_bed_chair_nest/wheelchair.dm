@@ -201,3 +201,13 @@
 		pulling = null
 		usr.pulledby = null
 	..()
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		H.update_organ_movespeed()
+
+/obj/structure/bed/chair/wheelchair/unbuckle_mob()
+	if(ishuman(buckled_mob))
+		var/mob/living/carbon/human/H = buckled_mob
+		H.update_organ_movespeed()
+
+	return ..()

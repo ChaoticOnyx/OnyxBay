@@ -844,7 +844,7 @@
 
 	if(affecting_dose >= 15) // Stoned
 		M.add_chemical_effect(CE_MIND, 3)
-		M.nutrition = max(0, M.nutrition - 50 * removed)
+		M.set_nutrition(max(0, M.nutrition - 50 * removed))
 		M.add_chemical_effect(CE_PAINKILLER, 75)
 		M.drowsyness = max(M.drowsyness, 10)
 		if(prob(30))
@@ -863,7 +863,7 @@
 
 	else if(affecting_dose >= 10) // Smoked a good load of kush.
 		M.add_chemical_effect(CE_MIND, 2)
-		M.nutrition -= max(0, M.nutrition - 20 * removed)
+		M.remove_nutrition(max(0, M.nutrition - 20 * removed))
 		M.add_chemical_effect(CE_PAINKILLER, 50)
 		if(prob(15))
 			M.druggy = max(M.druggy, 2)
@@ -882,7 +882,7 @@
 
 	else if(affecting_dose >= 5) // Smoked a single bud.
 		M.add_chemical_effect(CE_MIND, 1)
-		M.nutrition -= max(0, M.nutrition - 10 * removed)
+		M.remove_nutrition(max(0, M.nutrition - 10 * removed))
 		M.add_chemical_effect(CE_PAINKILLER, 25)
 		if(prob(10))
 			M.druggy = max(M.druggy, 2)
@@ -901,7 +901,7 @@
 
 	else if(affecting_dose >= 2) // The end of the trip.
 		M.add_chemical_effect(CE_MIND, 0.5)
-		M.nutrition -= max(0, M.nutrition - 3 * removed)
+		M.remove_nutrition(max(0, M.nutrition - 3 * removed))
 		M.add_chemical_effect(CE_PAINKILLER, 5)
 		if(prob(3))
 			M.druggy = max(M.druggy, 2)

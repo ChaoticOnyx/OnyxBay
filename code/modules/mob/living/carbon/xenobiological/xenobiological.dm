@@ -342,7 +342,7 @@
 	return 0
 
 /mob/living/carbon/metroid/proc/gain_nutrition(amount)
-	nutrition += amount
+	add_nutrition(amount)
 	if(prob(amount * 2)) // Gain around one level per 50 nutrition
 		powerlevel++
 		if(powerlevel > 10)

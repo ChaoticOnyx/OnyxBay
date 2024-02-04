@@ -121,7 +121,7 @@
 			var/obj/item/organ/internal/xenos/plasmavessel/P = H.internal_organs_by_name[BP_PLASMA]
 			P.stored_plasma += weeds_plasma_rate
 			P.stored_plasma = min(max(P.stored_plasma, 0), P.max_plasma)
-			H.nutrition = min(H.nutrition+5, STOMACH_FULLNESS_HIGH) // TODO: Come up with something better like eating humans or who tf knows what; for now it's still better than a horde of slowed-down hungry aliens
+			H.set_nutrition(min(H.nutrition + 5, STOMACH_FULLNESS_HIGH))
 	..()
 
 /datum/species/xenos/proc/regenerate(mob/living/carbon/human/H)
@@ -205,7 +205,7 @@
 	name = SPECIES_XENO_DRONE
 	caste_name = "drone"
 	weeds_plasma_rate = 15
-	slowdown = 0
+	movespeed_modifier = /datum/movespeed_modifier/xenos
 	total_health = 100
 	tail = "xenos_drone_tail"
 	rarity_value = 5
@@ -261,7 +261,7 @@
 	name = SPECIES_XENO_HUNTER
 	weeds_plasma_rate = 5
 	caste_name = "hunter"
-	slowdown = -0.5
+	movespeed_modifier = /datum/movespeed_modifier/xenos_hunter
 	total_health = 125
 	tail = "xenos_hunter_tail"
 	strength = STR_HIGH
@@ -298,13 +298,13 @@
 	unarmed_types = list(/datum/unarmed_attack/claws/strong/xeno/feral, /datum/unarmed_attack/bite/strong/xeno)
 	icobase = 'icons/mob/human_races/xenos/r_xenos_hunter_feral.dmi'
 	tail = "xenos_hunter_feral_tail"
-	slowdown = -1
+	movespeed_modifier = /datum/movespeed_modifier/xenos_feral
 
 /datum/species/xenos/sentinel
 	name = SPECIES_XENO_SENTINEL
 	weeds_plasma_rate = 10
 	caste_name = "sentinel"
-	slowdown = 0
+	movespeed_modifier = /datum/movespeed_modifier/xenos
 	total_health = 150
 	weeds_heal_rate = 15
 	tail = "xenos_sentinel_tail"
@@ -352,7 +352,7 @@
 	weeds_heal_rate = 20
 	weeds_plasma_rate = 20
 	caste_name = "queen"
-	slowdown = 3.5
+	movespeed_modifier = /datum/movespeed_modifier/xenos_queen
 	tail = "xenos_queen_tail"
 	rarity_value = 10
 	strength = STR_VHIGH

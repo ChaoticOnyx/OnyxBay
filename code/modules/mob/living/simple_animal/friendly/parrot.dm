@@ -349,6 +349,8 @@
 	if(!isturf(src.loc))
 		return // Let's not bother in nullspace
 
+	if(client && stat == CONSCIOUS && parrot_state != "parrot_fly")
+		icon_state = "parrot_fly"
 
 //-----SPEECH
 	/* Parrot speech mimickry!
@@ -571,11 +573,6 @@
  * Procs
  */
 
-/mob/living/simple_animal/parrot/movement_delay()
-	if(client && stat == CONSCIOUS && parrot_state != "parrot_fly")
-		icon_state = "parrot_fly"
-	..()
-
 /mob/living/simple_animal/parrot/proc/search_for_item()
 	for(var/atom/movable/AM in view(src))
 		//Skip items we already stole or are wearing or are too big
@@ -783,7 +780,7 @@
 	message = capitalize(trim_left(message))
 
 	if(message_mode)
-		if(message_mode in radiochannels)
+		if(message_mode in GLOB.radio_channels)
 			if(ears && istype(ears,/obj/item/device/radio))
 				ears.talk_into(src,sanitize(message), message_mode, verb, null)
 
@@ -791,7 +788,7 @@
 	..(message)
 
 
-/mob/living/simple_animal/parrot/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null)
+/mob/living/simple_animal/parrot/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
 	if(prob(50) && !istype(speaker, /mob/living/simple_animal/parrot))
 		parrot_hear(message)
 	..()

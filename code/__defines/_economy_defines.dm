@@ -54,7 +54,6 @@
 												/datum/species/skrell            = 12,
 												/datum/species/tajaran           = 7,
 												/datum/species/unathi            = 7,
-												/datum/species/machine           = 7,
 												/datum/species/swine             = 5,
 												/datum/species/diona             = 5
 											)

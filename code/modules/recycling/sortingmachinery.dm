@@ -144,6 +144,9 @@
 	var/nameset = 0
 	var/tag_x
 
+	drop_sound = SFX_DROP_CARDBOARD
+	pickup_sound = SFX_PICKUP_CARDBOARD
+
 /obj/item/smallDelivery/proc/unwrap(mob/user)
 	if(!Adjacent(user))
 		return
@@ -268,6 +271,9 @@
 	icon_state = "deliveryPaper"
 	w_class = ITEM_SIZE_NORMAL
 	var/amount = 25.0
+
+	drop_sound = SFX_DROP_WRAPPER
+	pickup_sound = SFX_PICKUP_WRAPPER
 
 /obj/item/c_tube
 	name = "cardboard tube"

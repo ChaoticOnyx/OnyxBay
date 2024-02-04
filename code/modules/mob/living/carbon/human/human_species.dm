@@ -56,9 +56,6 @@
 /mob/living/carbon/human/diona/New(new_loc)
 	..(new_loc, SPECIES_DIONA)
 
-/mob/living/carbon/human/machine/New(new_loc)
-	..(new_loc, SPECIES_IPC)
-
 /mob/living/carbon/human/monkey/New(new_loc)
 	..(new_loc, "Monkey")
 
@@ -84,9 +81,6 @@
 	..(new_loc, SPECIES_VATGROWN)
 	gender = "female"
 	regenerate_icons()
-
-/mob/living/carbon/human/abductor/New(new_loc)
-	..(new_loc, SPECIES_ABDUCTOR)
 
 /mob/living/carbon/human/promethean/New(new_loc)
 	..(new_loc, SPECIES_PROMETHEAN)

@@ -88,7 +88,7 @@
 	var/target_temperature = 20 CELSIUS
 	var/regulating_temperature = 0
 
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 	var/list/TLV = list()
 
@@ -122,7 +122,7 @@
 
 /obj/machinery/alarm/Destroy()
 	GLOB.alarm_list -= src
-	unregister_radio(src, frequency)
+	SSradio.remove_object(src, frequency)
 	QDEL_NULL(wires)
 	if(alarm_area && alarm_area.master_air_alarm == src)
 		alarm_area.master_air_alarm = null
@@ -399,16 +399,15 @@
 		send_signal(id_tag, list("status") )
 
 /obj/machinery/alarm/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = radio_controller.add_object(src, frequency, RADIO_TO_AIRALARM)
+	radio_connection = SSradio.add_object(src, frequency, RADIO_TO_AIRALARM)
 
 /obj/machinery/alarm/proc/send_signal(target, list/command)//sends signal 'command' to 'target'. Returns 0 if no radio connection, 1 otherwise
 	if(!radio_connection)
 		return 0
 
-	var/datum/signal/signal = new
-	signal.transmission_method = 1 //radio signal
+	var/datum/signal/signal = new()
 	signal.source = src
 
 	signal.data = command
@@ -465,13 +464,12 @@
 	update_icon()
 
 /obj/machinery/alarm/proc/post_alert(alert_level)
-	var/datum/radio_frequency/frequency = radio_controller.return_frequency(alarm_frequency)
+	var/datum/frequency/frequency = SSradio.return_frequency(alarm_frequency)
 	if(!frequency)
 		return
 
 	var/datum/signal/alert_signal = new
 	alert_signal.source = src
-	alert_signal.transmission_method = 1
 	alert_signal.data["zone"] = alarm_area.name
 	alert_signal.data["type"] = "Atmospheric"
 

@@ -24,6 +24,7 @@
 	var/cpr_time = 1.0
 	var/lastpuke = 0
 	var/nutrition = 400
+	var/last_nutrition_speed_update
 
 	var/obj/item/tank/internal = null//Human/Monkey
 

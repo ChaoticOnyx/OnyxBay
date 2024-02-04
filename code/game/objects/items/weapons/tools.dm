@@ -38,6 +38,9 @@
 	tool_behaviour = TOOL_WRENCH
 	var/randicon = TRUE
 
+	drop_sound = SFX_DROP_WRENCH
+	pickup_sound = SFX_PICKUP_WRENCH
+
 /obj/item/wrench/Initialize()
 	if(randicon)
 		icon_state = "wrench[pick("","_red","_black")]"
@@ -95,6 +98,9 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	tool_behaviour = TOOL_SCREWDRIVER
 	var/randicon = TRUE
+
+	drop_sound = SFX_DROP_SCREWDRIVER
+	pickup_sound = SFX_PICKUP_SCREWDRIVER
 
 /obj/item/screwdriver/Initialize()
 	if(randicon)
@@ -203,6 +209,9 @@
 	tool_behaviour = TOOL_WIRECUTTER
 	var/randicon = TRUE
 
+	drop_sound = SFX_DROP_WIRECUTTER
+	pickup_sound = SFX_PICKUP_WIRECUTTER
+
 /obj/item/wirecutters/Initialize()
 	if(randicon && prob(50))
 		icon_state = "cutters-y"
@@ -273,6 +282,9 @@
 	var/status = 1 		//Whether the welder is secured or unsecured (able to attach rods to it to make a flamethrower)
 
 	var/obj/item/welder_tank/tank = /obj/item/welder_tank // where the fuel is stored
+
+	drop_sound = SFX_DROP_WELDINGTOOL
+	pickup_sound = SFX_PICKUP_WELDINGTOOL
 
 /obj/item/weldingtool/Initialize()
 	if(ispath(tank))
@@ -725,6 +737,9 @@
 	matter = list(MATERIAL_STEEL = 140)
 	attack_verb = list("attacked", "bashed", "battered", "bludgeoned", "whacked")
 	tool_behaviour = TOOL_CROWBAR
+
+	drop_sound = SFX_DROP_CROWBAR
+	pickup_sound = SFX_PICKUP_CROWBAR
 
 /obj/item/crowbar/red
 	icon_state = "red_crowbar"

@@ -1,12 +1,17 @@
 //Updates the mob's health from organs and mob damage variables
 /mob/living/carbon/human/updatehealth()
-
+	var/previous_health = health
 	if(status_flags & GODMODE)
 		health = maxHealth
 		set_stat(CONSCIOUS)
+		if(health != previous_health)
+			update_health_slowdown()
 		return
 
 	health = maxHealth - getBrainLoss()
+
+	if(health != previous_health)
+		update_health_slowdown()
 
 	//TODO: fix husking
 	if(((maxHealth - getFireLoss()) < config.health.health_threshold_dead) && is_ic_dead())
@@ -441,6 +446,8 @@ This function restores all organs.
 	if(mind?.vampire)
 		var/datum/vampire/V = mind.vampire
 		V.set_up_organs()
+
+	update_organ_movespeed()
 
 /mob/living/carbon/human/proc/HealDamage(zone, brute, burn)
 	var/obj/item/organ/external/E = get_organ(zone)

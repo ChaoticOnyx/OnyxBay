@@ -32,6 +32,9 @@ var/list/organ_cache = list()
 	var/obj/item/reagent_containers/food/food_organ
 	var/disable_food_organ = FALSE // used to override food_organ's creation and using
 
+	drop_sound = SFX_DROP_FLESH
+	pickup_sound = SFX_PICKUP_FLESH
+
 /obj/item/organ/return_item()
 	return food_organ
 
@@ -275,6 +278,8 @@ var/list/organ_cache = list()
 
 /obj/item/organ/proc/robotize() //Being used to make robutt hearts, etc
 	status = ORGAN_ROBOTIC
+	if(owner?.isSynthetic()) // If owner becomes fully synthetic - he receives all corresponding emotes.
+		owner.add_synth_emotes()
 
 /obj/item/organ/proc/mechassist() //Used to add things like pacemakers, etc
 	status = ORGAN_ASSISTED

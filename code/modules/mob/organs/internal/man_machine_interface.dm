@@ -26,6 +26,9 @@ GLOBAL_LIST_INIT(whitelisted_mmi_species, list(
 
 	var/obj/item/organ/internal/cerebrum/brain/brainobj = null
 
+	drop_sound = SFX_DROP_DEVICE
+	pickup_sound = SFX_PICKUP_DEVICE
+
 /obj/item/organ/internal/cerebrum/mmi/New(newLoc, mob/living/carbon/human/old_shell)
 	robotize()
 	if(istype(old_shell)) _create_brain(old_shell)

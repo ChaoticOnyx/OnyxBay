@@ -315,7 +315,6 @@
 					else if(ptype==6) // Disposal bin
 						var/obj/machinery/disposal/P = new /obj/machinery/disposal(src.loc)
 						src.transfer_fingerprints_to(P)
-						P.mode = 0 // start with pump off
 
 					else if(ptype==7) // Disposal outlet
 

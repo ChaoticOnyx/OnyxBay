@@ -138,8 +138,7 @@
 	return 1
 
 /mob/living/carbon/metroid/proc/handle_nutrition()
-
-	nutrition -= 0.1 + 0.05 * is_adult
+	remove_nutrition(0.1 + 0.05 * is_adult)
 
 	if(nutrition <= 0)
 		nutrition = 0
@@ -148,7 +147,7 @@
 			to_chat(src, "<span class='danger'>You are starving!</span>")
 
 	else if (nutrition >= get_grow_nutrition() && amount_grown < 10)
-		nutrition -= 20
+		remove_nutrition(20)
 		amount_grown++
 
 /mob/living/carbon/metroid/proc/get_max_nutrition() // Can't go above it

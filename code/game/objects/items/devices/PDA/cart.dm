@@ -33,6 +33,9 @@
 	var/message2
 	var/list/stored_data = list()
 
+	drop_sound = SFX_DROP_COMPONENT
+	pickup_sound = SFX_PICKUP_COMPONENT
+
 /obj/item/cartridge/Destroy()
 	QDEL_NULL(radio)
 	return ..()
@@ -194,19 +197,18 @@
 	charges = 4
 
 /obj/item/cartridge/proc/post_status(command, data1, data2)
+	var/datum/frequency/frequency = SSradio.return_frequency(1435)
+	if(!frequency)
+		return
 
-	var/datum/radio_frequency/frequency = radio_controller.return_frequency(1435)
-	if(!frequency) return
-
-	var/datum/signal/status_signal = new
-	status_signal.source = src
-	status_signal.transmission_method = 1
-	status_signal.data["command"] = command
+	var/list/data = list(
+		"command" = command
+	)
 
 	switch(command)
 		if("message")
-			status_signal.data["msg1"] = data1
-			status_signal.data["msg2"] = data2
+			data["msg1"] = data1
+			data["msg2"] = data2
 			if(loc)
 				var/obj/item/PDA = loc
 				var/mob/user = PDA.fingerprintslast
@@ -216,8 +218,9 @@
 				message_admins("STATUS: [user] set status screen with [PDA]. Message: [data1] [data2]")
 
 		if("image")
-			status_signal.data["picture_state"] = data1
+			data["picture_state"] = data1
 
+	var/datum/signal/status_signal = new(data)
 	frequency.post_signal(src, status_signal)
 
 

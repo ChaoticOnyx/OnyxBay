@@ -26,6 +26,9 @@
 	var/starting_label = null
 	var/package_state = "package"
 
+	drop_sound = SFX_DROP_DEVICE
+	pickup_sound = SFX_PICKUP_DEVICE
+
 /obj/item/reagent_containers/syringe/Initialize()
 	. = ..()
 	if(mode != SYRINGE_PACKAGED && starting_label)

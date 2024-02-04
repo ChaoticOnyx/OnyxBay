@@ -653,13 +653,3 @@
 	if(istype(AM, /mob/living))
 		var/mob/living/M = AM
 		M.slip(src, 4)
-
-/turf/simulated/floor/misc/abductor
-	name = "alien floor"
-	icon = 'icons/turf/flooring/abductor.dmi'
-	icon_state = "alienpod1"
-	var/previous_type = /turf/simulated/floor
-
-/turf/simulated/floor/misc/abductor/Initialize()
-	. = ..()
-	icon_state = "alienpod[rand(1,9)]"

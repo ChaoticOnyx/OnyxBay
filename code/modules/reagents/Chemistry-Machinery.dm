@@ -402,10 +402,14 @@
 		/obj/item/stock_parts/manipulator = 2,
 		/obj/item/stock_parts/console_screen,
 	)
-	var/inuse = 0
+
+	var/inuse = FALSE
 	var/obj/item/reagent_containers/vessel/beaker/beaker
 	var/limit = 10
 	var/list/holdingitems = list()
+
+	/// Associative list of text -> image, where text is a name of an action.
+	var/static/list/choices
 
 /obj/machinery/reagentgrinder/Initialize(mapload)
 	. = ..()
@@ -493,8 +497,9 @@
 /obj/machinery/reagentgrinder/attack_ai(mob/user as mob)
 	return 0
 
-/obj/machinery/reagentgrinder/attack_hand(mob/user as mob)
-	interact(user)
+/obj/machinery/reagentgrinder/attack_hand(mob/user)
+	if(!inuse)
+		show_choices(user)
 
 /obj/machinery/reagentgrinder/attack_robot(mob/user)
 	//Calling for adjacency as I don't think grinders are wireless.
@@ -503,81 +508,41 @@
 		//If attack_hand is updated, this segment won't have to be updated as well.
 		return attack_hand(user)
 
-/obj/machinery/reagentgrinder/interact(mob/user) // The microwave Menu
-	if(inoperable())
-		return
-	user.set_machine(src)
-	var/is_chamber_empty = 0
-	var/is_beaker_ready = 0
-	var/processing_chamber = ""
-	var/beaker_contents = ""
-	var/dat = ""
+/obj/machinery/reagentgrinder/proc/show_choices(mob/user)
+	if(!length(choices))
+		_generate_buttons()
 
-	if(!inuse)
-		for (var/obj/item/O in holdingitems)
-			processing_chamber += "\A [O.name]<BR>"
+	var/choice = show_radial_menu(user, src, choices, require_near = TRUE)
+	switch(choice)
+		if("grind")
+			grind()
+		if("dump")
+			show_splash_text(user, "contents dumped.")
+			eject()
+		if("detach")
+			show_splash_text(user, beaker ? "beaker detached." : "no beaker present!")
+			detach()
 
-		if (!processing_chamber)
-			is_chamber_empty = 1
-			processing_chamber = "Nothing."
-		if (!beaker)
-			beaker_contents = "<B>No beaker attached.</B><br>"
-		else
-			is_beaker_ready = 1
-			beaker_contents = "<B>The beaker contains:</B><br>"
-			var/anything = 0
-			for(var/datum/reagent/R in beaker.reagents.reagent_list)
-				anything = 1
-				beaker_contents += "[R.volume] - [R.name]<br>"
-			if(!anything)
-				beaker_contents += "Nothing<br>"
-
-
-		dat = {"
-	<b>Processing chamber contains:</b><br>
-	[processing_chamber]<br>
-	[beaker_contents]<hr>
-	"}
-		if (is_beaker_ready && !is_chamber_empty && !(stat & (NOPOWER|BROKEN)))
-			dat += "<A href='?src=\ref[src];action=grind'>Process the reagents</a><BR>"
-		if(holdingitems && holdingitems.len > 0)
-			dat += "<A href='?src=\ref[src];action=eject'>Eject the reagents</a><BR>"
-		if (beaker)
-			dat += "<A href='?src=\ref[src];action=detach'>Detach the beaker</a><BR>"
-	else
-		dat += "Please wait..."
-	show_browser(user, "<meta charset=\"utf-8\"><HEAD><TITLE>All-In-One Grinder</TITLE></HEAD><TT>[dat]</TT>", "window=reagentgrinder")
-	onclose(user, "reagentgrinder")
-	return
-
-
-/obj/machinery/reagentgrinder/OnTopic(user, href_list)
-	if(href_list["action"])
-		switch(href_list["action"])
-			if ("grind")
-				grind()
-			if("eject")
-				eject()
-			if ("detach")
-				detach()
-		interact(user)
-		return TOPIC_REFRESH
-
-/obj/machinery/reagentgrinder/proc/detach()
-	if (!beaker)
-		return
-	beaker.dropInto(loc)
-	beaker = null
-	update_icon()
+/obj/machinery/reagentgrinder/proc/_generate_buttons()
+	LAZYINITLIST(choices)
+	for(var/action as anything in list("grind", "dump", "detach"))
+		choices[action] = image('icons/hud/radial.dmi', "radial_[action]")
 
 /obj/machinery/reagentgrinder/proc/eject()
-	if (!holdingitems || holdingitems.len == 0)
+	if(!length(holdingitems))
 		return
 
 	for(var/obj/item/O in holdingitems)
-		O.dropInto(loc)
 		holdingitems -= O
-	holdingitems.Cut()
+		O.dropInto(loc)
+
+/obj/machinery/reagentgrinder/proc/detach()
+	if(!beaker)
+		return
+
+	beaker.dropInto(loc)
+	beaker = null
+	update_icon()
 
 /obj/machinery/reagentgrinder/proc/grind()
 

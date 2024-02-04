@@ -282,7 +282,7 @@
 			continue
 
 		if(!(O.status & ORGAN_CUT_AWAY))
-			attached_organs[O] = agjust_organ_image(O)
+			attached_organs[O] = adjust_organ_image(O)
 
 	var/obj/item/organ/preselected_organ = ..()
 	if(istype(preselected_organ))
@@ -339,7 +339,7 @@
 			continue
 
 		if(O.status & ORGAN_CUT_AWAY)
-			attachable_organs[O] = agjust_organ_image(O)
+			attachable_organs[O] = adjust_organ_image(O)
 
 	var/obj/item/organ/preselected_organ = ..()
 	if(istype(preselected_organ))

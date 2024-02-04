@@ -3,6 +3,8 @@
 	desc = "It's a small bag with dice inside."
 	icon = 'icons/obj/dice.dmi'
 	icon_state = "dicebag"
+	drop_sound = SFX_DROP_HAT
+	pickup_sound = SFX_PICKUP_HAT
 
 /obj/item/storage/pill_bottle/dice/New()
 	..()
@@ -14,6 +16,8 @@
 	desc = "It's a small bag with gaming dice inside."
 	icon = 'icons/obj/dice.dmi'
 	icon_state = "magicdicebag"
+	drop_sound = SFX_DROP_HAT
+	pickup_sound = SFX_PICKUP_HAT
 
 /obj/item/storage/pill_bottle/dice_nerd/New()
 	..()

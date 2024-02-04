@@ -22,6 +22,9 @@
 	var/brightness_color = "#fff3b2" // color of light when on
 	var/light_overlay = TRUE
 
+	drop_sound = SFX_DROP_ACCESSORY
+	pickup_sound = SFX_PICKUP_ACCESSORY
+
 /obj/item/device/flashlight/Initialize()
 	. = ..()
 	if(on)

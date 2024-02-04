@@ -22,6 +22,7 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define ATOM_FLAG_IGNORE_RADIATION       0x0100 // It will not produce any radiation when it will be a radiation source.
 #define ATOM_AWAITING_OVERLAY_UPDATE     0x0400 // SSoverlays must update this atom's overlays.
 #define ATOM_FLAG_SILENTCONTAINER        0x0800 // Chemical reaction won't trigger bubbling sound
+#define ATOM_FLAG_UNPUSHABLE             0x1000 // This atom can't be pushed when bumped
 
 #define OBJ_FLAG_ANCHORABLE              0x0001 // This object can be stuck in place with a tool
 #define OBJ_FLAG_CONDUCTIBLE             0x0002 // Conducts electricity. (metal etc.)
@@ -45,4 +46,3 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define PASS_FLAG_GLASS  0x2
 #define PASS_FLAG_GRILLE 0x4
 #define PASS_FLAG_MOB    0x8
-

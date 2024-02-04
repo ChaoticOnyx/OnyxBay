@@ -10,13 +10,13 @@
 	icon_off = "miningsecoff"
 	req_access = list(access_mining)
 
-/obj/structure/closet/secure_closet/miner/New()
-	..()
-	sleep(2)
+/obj/structure/closet/secure_closet/miner/Initialize()
+	. = ..()
 	if(prob(50))
 		new /obj/item/storage/backpack/industrial(src)
 	else
 		new /obj/item/storage/backpack/satchel/eng(src)
+
 	new /obj/item/device/radio/headset/headset_cargo(src)
 	new /obj/item/clothing/under/rank/miner(src)
 	new /obj/item/clothing/gloves/thick(src)
@@ -191,6 +191,9 @@
 	attack_verb = list("bashed", "bludgeoned", "thrashed", "whacked")
 	sharp = 0
 	edge = 1
+
+	drop_sound = SFX_DROP_SHOVEL
+	pickup_sound = SFX_PICKUP_SHOVEL
 
 /obj/item/shovel/spade
 	name = "spade"
