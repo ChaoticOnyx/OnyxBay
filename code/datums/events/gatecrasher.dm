@@ -50,8 +50,7 @@
 		/obj/structure/closet/body_bag = 3,
 		/obj/structure/closet/body_bag/cryobag = 5,
 		/obj/structure/closet/body_bag/cryobag/syndi,
-		/obj/structure/closet/acloset = 2,
-		/obj/structure/closet/abductor,
+		/obj/structure/closet/acloset = 2
 		/obj/structure/closet/firecloset,
 		/obj/structure/closet/syndicate,
 		/obj/structure/closet = 5
@@ -70,7 +69,6 @@
 		SPECIES_GOLEM = 3,
 		SPECIES_VOX = 3,
 		"Shadow" = 1,
-		"Abductor" = 1,
 		SPECIES_PROMETHEAN = 1,
 		SPECIES_STARGAZER = 1,
 		SPECIES_SLIMEPERSON = 1,
@@ -124,7 +122,6 @@
 		/obj/item/storage/bouquet/shotgun,
 		/obj/item/storage/bible/booze,
 		/obj/item/storage/backpack/holding,
-		/obj/item/storage/belt/abductor/full,
 		/obj/item/storage/belt/champion,
 		/obj/item/storage/belt/soulstone/full,
 		/obj/item/storage/firstaid/combat,
