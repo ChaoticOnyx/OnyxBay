@@ -87,7 +87,7 @@
 	icon_state = "rift1"
 	density = FALSE
 	var/max_glitches_at_time = 10 // Max psychic_glitch'es to exist at once
-	var/max_glitches = 50 // How many glitches must be killed to close the rift
+	var/max_glitches = 40 // How many glitches must be killed to close the rift
 	var/glitches_active = 0 // Currently existing psychic_glitch'es
 	var/glitches_destroyed = 0 // How many glitches have been killed so far
 	var/rift_active = FALSE // Fancy shattering effect
@@ -119,7 +119,7 @@
 	return TRUE
 
 /obj/structure/psychic_rift/proc/spawn_glitch()
-	if(glitches_active > max_glitches_at_time)
+	if(glitches_active + glitches_destroyed > max_glitches_at_time)
 		return
 	glitches_active++
 	var/mob/living/simple_animal/hostile/psychic_glitch/PG = new(loc)
@@ -136,7 +136,7 @@
 
 	spawn_glitch()
 	restoration_ticks--
-	if(restoration_ticks < 0)
+	if(restoration_ticks < 0 && glitches_destroyed > 0)
 		glitches_destroyed--
 		restoration_ticks = TICKS_TO_RESTORE_GLITCH
 
