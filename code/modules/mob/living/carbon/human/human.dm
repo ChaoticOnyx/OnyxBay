@@ -1232,7 +1232,7 @@
 		return 1
 	for(var/datum/body_build/BB in species.body_builds)
 		if(gender in BB.genders)
-			body_build = BB
+			change_body_build(BB)
 			return 1
 	to_world_log("Can't find possible body_build. Gender = [gender], Species = [species]")
 	return 0

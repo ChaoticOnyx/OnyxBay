@@ -27,7 +27,7 @@
 		if(equipment_slowdown + 1 > body_build.equipment_modifier)  // Lowering equipment cooldown if it's higher
 			equipment_slowdown += equipment_slowdown - body_build.equipment_modifier // than equipment_modifier, ignoring it otherwise
 		else
-			equipment_slowdown -= 1 // Since default equipment_slowdown is -1 for some reason
+			equipment_slowdown = -1 // Since default equipment_slowdown is -1 for some reason
 	else if(equipment_slowdown > -1)
 		equipment_slowdown += equipment_slowdown - body_build.equipment_modifier
 
