@@ -516,14 +516,15 @@
 	user.set_machine(src)
 	if (!( isScrewdriver(W) ))
 		return
-	b_stat = !( b_stat )
-	if(!istype(src, /obj/item/device/radio/beacon))
-		if (b_stat)
-			user.show_message("<span class='notice'>\The [src] can now be attached and modified!</span>")
-		else
-			user.show_message("<span class='notice'>\The [src] can no longer be modified or attached!</span>")
-		updateDialog()
-		return
+
+	b_stat = !b_stat
+	if(b_stat)
+		user.show_message(SPAN("notice", "\The [src] can now be attached and modified!"))
+	else
+		user.show_message(SPAN("notice", "\The [src] can no longer be modified or attached!"))
+
+	updateDialog()
+	return
 
 /obj/item/device/radio/emp_act(severity)
 	broadcasting = 0

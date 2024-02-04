@@ -198,11 +198,11 @@
 
 	switch(mode)
 		if(MODE_TELEPORT)
-			// TO-DO: refactor beacons to use their own global list.
-			for(var/obj/item/device/radio/beacon/beacon in world)
+			for(var/obj/item/device/bluespace_beacon/beacon in GLOB.bluespace_beacons)
 				var/turf/T = get_turf(beacon)
 				if(!is_suitable(T))
 					continue
+
 				LAZYSET(targets, avoid_assoc_duplicate_keys(T.loc.name, areaindex), beacon)
 		if(MODE_TARGET)
 			// TO-DO: refactor implants to use their own global list.
