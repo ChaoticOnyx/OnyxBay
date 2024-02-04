@@ -260,27 +260,6 @@
 	//REMOVE_TRAIT(H, TRAIT_LAVA_IMMUNE)
 	//REMOVE_TRAIT(H, TRAIT_ASHSTORM_IMMUNE)
 
-//Fast and regenerates... but can only speak like an abductor
-/datum/species/golem/alloy
-	name = "Alien Alloy Golem"
-	name = SPECIES_GOLEM_ALIEN
-	fixed_mut_color = "#402835"
-	additional_langs = list(LANGUAGE_ABDUCTOR)
-	meat_type = /obj/item/stack/material/platinum
-	movespeed_modifier = /datum/movespeed_modifier/golem_alloy
-	info_text = "As an <span class='danger'>Alloy Golem</span>, you are made of advanced alien materials: you are faster and regenerate over time. You are, however, only able to be heard by other alloy golems."
-	prefix = "Alien"
-	special_names = list("Outsider", "Technology", "Watcher", "Stranger") //ominous and unknown
-
-
-//Regenerates because self-repairing super-advanced alien tech
-/datum/species/golem/alloy/handle_environment_special(mob/living/carbon/human/H)
-	if(H.stat == DEAD)
-		return
-	H.heal_overall_damage(brute = 1 * 0.1, burn = 1 * 0.1)
-	H.adjustToxLoss(-1 * 0.1)
-	H.adjustOxyLoss(-1 * 0.1)
-
 /datum/species/golem/wood
 	name = SPECIES_GOLEM_WOOD
 	fixed_mut_color = "#512704"

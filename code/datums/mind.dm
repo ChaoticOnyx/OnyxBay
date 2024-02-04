@@ -58,7 +58,6 @@
 	var/datum/changeling/changeling		// Changeling holder
 	var/datum/vampire/vampire 			// Vampire holder
 	var/datum/wizard/wizard				// Wizard holder
-	var/datum/abductor/abductor 		// Abductor holder
 	var/weakref/enslaved_to
 	var/rev_cooldown = 0
 

@@ -1,10 +1,4 @@
 /mob/living/carbon/human/_examine_text(mob/user)
-
-	if(istype(wear_suit, /obj/item/clothing/suit/armor/abductor/vest))
-		var/obj/item/clothing/suit/armor/abductor/vest/abd_vest = wear_suit
-		if(abd_vest.stealth_active)
-			return abd_vest.disguise.examine
-
 	var/skipgloves = 0
 	var/skipsuitstorage = 0
 	var/skipjumpsuit = 0

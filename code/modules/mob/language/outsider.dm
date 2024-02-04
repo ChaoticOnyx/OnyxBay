@@ -120,34 +120,3 @@
 	key = "y"
 	flags = RESTRICTED | HIVEMIND
 	shorthand = "N/A"
-
-/datum/language/abductor
-	name = LANGUAGE_ABDUCTOR
-	desc = "Can share their thoughts by means defying all reason."
-	speech_verb = "says"
-	colour = "alien"
-	key = "a"
-	syllables = list("Anukh", "dam", "ul", "dam", "dglinkarz", "dukhal",\
-		"gareke", "Garug-Mal", "malwun", "kazaht", "nothok", "Ney", "Ragh", "ala.",\
-		"terruk-ukl", "tekor", "ri", "ik", "ii", "zuwar", "ugrukh", "duluk", "arumwon", \
-		"Mub", "Tharb", "Ti", "Dajal", "Larg", "Dyr")
-	shorthand = "N/A"
-	flags = RESTRICTED | HIVEMIND | NO_STUTTER
-
-/datum/language/abductor/broadcast(mob/living/speaker,message,speaker_mask)
-	if(speaker.mind.abductor)
-		speaker_mask=speaker.real_name
-
-	log_say("[key_name(speaker)]: ([name]) [message]")
-
-	if(!speaker_mask) speaker_mask = speaker.name
-	message = format_message(message, get_spoken_verb(message))
-
-	for(var/mob/player in GLOB.player_list)
-		if(isabductor(player) )
-			if((player.mind.abductor.team.team_number == speaker.mind.abductor.team.team_number))
-				player.hear_broadcast(src, speaker, speaker_mask, message)
-			continue
-
-		if(is_species(player, /datum/species/golem/alloy) && is_species(speaker, /datum/species/golem/alloy))
-			player.hear_broadcast(src, speaker, speaker_mask, message)

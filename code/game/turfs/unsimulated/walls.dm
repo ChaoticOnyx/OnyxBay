@@ -19,8 +19,3 @@
 
 /turf/unsimulated/wall/other
 	icon_state = "r_wall"
-
-/turf/unsimulated/wall/abductor
-	name = "wall"
-	icon = 'icons/turf/walls.dmi'
-	icon_state = "alien1"

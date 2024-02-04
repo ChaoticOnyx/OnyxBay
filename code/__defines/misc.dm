@@ -44,7 +44,6 @@
 #define  STATUS_HUD_OOC 9 // STATUS_HUD without virus DB check for someone being ill.
 #define        LIFE_HUD 10 // STATUS_HUD that only reports dead or alive
 #define        XENO_HUD 11 // Alien embryo status.
-#define       GLAND_HUD 12 // Abductors data hud
 
 // Shuttle moving status.
 #define SHUTTLE_IDLE      0
@@ -310,7 +309,7 @@
 // Bitflags for magic resistance types
 /// Default magic resistance that blocks normal magic (wizard, spells, magical staff projectiles)
 #define MAGIC_RESISTANCE (1<<0)
-/// Tinfoil hat magic resistance that blocks mental magic (telepathy / mind links, mind curses, abductors)
+/// Tinfoil hat magic resistance that blocks mental magic (telepathy / mind links, mind curses)
 #define MAGIC_RESISTANCE_MIND (1<<1)
 /// Holy magic resistance that blocks unholy magic (vampire)
 #define MAGIC_RESISTANCE_HOLY (1<<2)

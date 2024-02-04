@@ -305,7 +305,6 @@
 #define SPECIES_SLIMEPERSON "Slimeperson"
 #define SPECIES_LUMINESCENT "Luminescent"
 #define SPECIES_EGYNO       "Egyno"
-#define SPECIES_ABDUCTOR    "Abductor"
 #define SPECIES_SWINE		"Trottine"
 
 #define SPECIES_MONKEY      "Monkey"
@@ -333,7 +332,6 @@
 #define SPECIES_GOLEM_PLASTEEL 		"Plasteel Golem"
 #define SPECIES_GOLEM_TITANIUM 		"Titanium Golem"
 #define SPECIES_GOLEM_PLASTITANIUM 	"Plastitanium Golem"
-#define SPECIES_GOLEM_ALIEN 		"Alien Golem"
 #define SPECIES_GOLEM_WOOD 			"Wood Golem"
 #define SPECIES_GOLEM_URANIUM 		"Uranium Golem"
 #define SPECIES_GOLEM_SAND 			"Sand Golem"

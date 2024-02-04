@@ -53,7 +53,6 @@
 	hud_list[SPECIALROLE_HUD]  = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
 	hud_list[STATUS_HUD_OOC]   = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
 	hud_list[XENO_HUD]         = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
-	hud_list[GLAND_HUD]        = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
 
 	GLOB.human_mob_list |= src
 	..()
