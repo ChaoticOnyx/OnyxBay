@@ -2,25 +2,26 @@
 /mob/living/carbon/proc/add_nutrition(amount)
 	nutrition = max(0, nutrition += amount)
 	if(amount >= 1) // This proc is often called with extremely small amounts
-		update_movespeed_if_necessary()
+		update_nutrition_movespeed_if_necessary()
 
 /// Helper for subtracting nutrition. Automatically updates movespeed. Use this instead of subtracting nutrition manually.
 /mob/living/carbon/proc/remove_nutrition(amount)
 	nutrition = max(0, nutrition -= amount)
 	if(amount >= 1) // This proc is often called with extremely small amounts
-		update_movespeed_if_necessary()
+		update_nutrition_movespeed_if_necessary()
 
 /// Helper for setting nutrition. Automatically updates movespeed. Use this instead of subtracting nutrition manually.
 /mob/living/carbon/proc/set_nutrition(amount)
-	if(nutrition != amount)
-		update_movespeed_if_necessary()
-
+	var/nut_old = nutrition
 	nutrition = max(0, amount)
 
-/mob/living/carbon/proc/update_movespeed_if_necessary()
+	if(nut_old != nutrition)
+		update_nutrition_movespeed_if_necessary()
+
+/mob/living/carbon/proc/update_nutrition_movespeed_if_necessary()
 	return
 
-/mob/living/carbon/human/update_movespeed_if_necessary()
+/mob/living/carbon/human/update_nutrition_movespeed_if_necessary()
 	if(full_prosthetic)
 		return
 
