@@ -61,7 +61,7 @@ Frequency:
 			if (sr)
 				temp += "<B>Located Beacons:</B><BR>"
 
-				for(var/obj/item/device/bluespace_beacon/W in GLOB.bluespace_beacons)
+				for(var/obj/item/device/bluespace_beacon/W as anything in GLOB.bluespace_beacons)
 					var/turf/tr = get_turf(W)
 					if (tr.z == sr.z && tr)
 						var/direct = max(abs(tr.x - sr.x), abs(tr.y - sr.y))
@@ -430,7 +430,7 @@ Frequency:
 // Looks for all beacons located on station levels (station + tcomms for now) and adds them to refreshed (emptied) list of areas to teleport to.
 /obj/item/vortex_manipulator/proc/get_beacon_locations()
 	beacon_locations = list()
-	for(var/obj/item/device/bluespace_beacon/R in GLOB.bluespace_beacons)
+	for(var/obj/item/device/bluespace_beacon/R as anything in GLOB.bluespace_beacons)
 		var/area/AR = get_area(R)
 		if(beacon_locations.Find(AR.name)) continue
 		var/turf/picked = pick(get_area_turfs(AR.type))
@@ -569,7 +569,7 @@ Frequency:
 		return
 	if(user && user.buckled)
 		user.buckled.unbuckle_mob()
-	for(var/obj/item/device/bluespace_beacon/R in GLOB.bluespace_beacons)
+	for(var/obj/item/device/bluespace_beacon/R as anything in GLOB.bluespace_beacons)
 		if(get_area(R) == thearea)
 			var/turf/T = get_turf(R)
 			phase_out(user,get_turf(user))

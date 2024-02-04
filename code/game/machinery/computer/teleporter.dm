@@ -198,7 +198,7 @@
 
 	switch(mode)
 		if(MODE_TELEPORT)
-			for(var/obj/item/device/bluespace_beacon/beacon in GLOB.bluespace_beacons)
+			for(var/obj/item/device/bluespace_beacon/beacon as anything in GLOB.bluespace_beacons)
 				var/turf/T = get_turf(beacon)
 				if(!is_suitable(T))
 					continue
