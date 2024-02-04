@@ -5,6 +5,8 @@
 	icon_state = "beacon"
 	item_state = "signaler"
 
+	matter = list(MATERIAL_STEEL = 20, MATERIAL_GLASS = 10)
+
 	origin_tech = list(TECH_BLUESPACE = 1)
 
 /obj/item/device/bluespace_beacon/Initialize()
