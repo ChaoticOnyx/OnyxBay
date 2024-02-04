@@ -57,7 +57,7 @@
 		M.eye_blurry += 3*eye_effect // But stacking these doesn't hurt too much
 
 	if(eye_effect >= 0)
-		M.flash_eyes(intensity = INFINITY, type = /obj/screen/fullscreen/flash/persistent, effect_duration = (10 * eye_effect))
+		M.flash_eyes(intensity = INFINITY, type = /atom/movable/screen/fullscreen/flash/persistent, effect_duration = (10 * eye_effect))
 
 	// Deafening effect
 	if(ear_effect >= 3)

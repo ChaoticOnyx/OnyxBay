@@ -4,13 +4,13 @@ GLOBAL_DATUM_INIT(cinematic, /datum/cinematic, new)
 /datum/cinematic
 	//station_explosion used to be a variable for every mob's hud. Which was a waste!
 	//Now we have a general cinematic centrally held within the gameticker....far more efficient!
-	var/obj/screen/cinematic_screen = null
+	var/atom/movable/screen/cinematic_screen = null
 
 //Plus it provides an easy way to make cinematics for other events. Just use this as a template :)
 /datum/cinematic/proc/station_explosion_cinematic(station_missed=0, datum/game_mode/override)
 	set waitfor = FALSE
 
-	if(cinematic_screen)	
+	if(cinematic_screen)
 		return	//already a cinematic in progress!
 
 	if(!override)

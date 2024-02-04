@@ -1,18 +1,18 @@
 /datum/storage_ui/default
 	var/list/is_seeing = new /list() //List of mobs which are currently seeing the contents of this item's storage
 
-	var/obj/screen/storage/boxes
-	var/obj/screen/storage/storage_start //storage UI
-	var/obj/screen/storage/storage_continue
-	var/obj/screen/storage/storage_end
-	var/obj/screen/stored/stored_start
-	var/obj/screen/stored/stored_continue
-	var/obj/screen/stored/stored_end
-	var/obj/screen/close/closer
+	var/atom/movable/screen/storage/boxes
+	var/atom/movable/screen/storage/storage_start //storage UI
+	var/atom/movable/screen/storage/storage_continue
+	var/atom/movable/screen/storage/storage_end
+	var/atom/movable/screen/stored/stored_start
+	var/atom/movable/screen/stored/stored_continue
+	var/atom/movable/screen/stored/stored_end
+	var/atom/movable/screen/close/closer
 
 /datum/storage_ui/default/New(storage)
 	..()
-	boxes = new /obj/screen/storage()
+	boxes = new /atom/movable/screen/storage()
 	boxes.SetName("storage")
 	boxes.master = storage
 	boxes.icon = 'icons/hud/common/screen_storage.dmi'
@@ -20,7 +20,7 @@
 	boxes.screen_loc = "7,7 to 10,8"
 	boxes.layer = HUD_BASE_LAYER
 
-	storage_start = new /obj/screen/storage()
+	storage_start = new /atom/movable/screen/storage()
 	storage_start.SetName("storage")
 	storage_start.master = storage
 	storage_start.icon = 'icons/hud/common/screen_storage.dmi'
@@ -28,7 +28,7 @@
 	storage_start.screen_loc = "7,7 to 10,8"
 	storage_start.layer = HUD_BASE_LAYER
 
-	storage_continue = new /obj/screen/storage()
+	storage_continue = new /atom/movable/screen/storage()
 	storage_continue.SetName("storage")
 	storage_continue.master = storage
 	storage_continue.icon = 'icons/hud/common/screen_storage.dmi'
@@ -36,7 +36,7 @@
 	storage_continue.screen_loc = "7,7 to 10,8"
 	storage_continue.layer = HUD_BASE_LAYER
 
-	storage_end = new /obj/screen/storage()
+	storage_end = new /atom/movable/screen/storage()
 	storage_end.SetName("storage")
 	storage_end.master = storage
 	storage_end.icon = 'icons/hud/common/screen_storage.dmi'
@@ -44,22 +44,22 @@
 	storage_end.screen_loc = "7,7 to 10,8"
 	storage_end.layer = HUD_BASE_LAYER
 
-	stored_start = new /obj/screen/stored()
+	stored_start = new /atom/movable/screen/stored()
 	stored_start.icon = 'icons/hud/common/screen_storage.dmi'
 	stored_start.icon_state = "stored_start"
 	stored_start.layer = HUD_BASE_LAYER
 
-	stored_continue = new /obj/screen/stored()
+	stored_continue = new /atom/movable/screen/stored()
 	stored_continue.icon = 'icons/hud/common/screen_storage.dmi'
 	stored_continue.icon_state = "stored_continue"
 	stored_continue.layer = HUD_BASE_LAYER
 
-	stored_end = new /obj/screen/stored()
+	stored_end = new /atom/movable/screen/stored()
 	stored_end.icon = 'icons/hud/common/screen_storage.dmi'
 	stored_end.icon_state = "stored_end"
 	stored_end.layer = HUD_BASE_LAYER
 
-	closer = new /obj/screen/close()
+	closer = new /atom/movable/screen/close()
 	closer.master = storage
 	closer.icon = 'icons/hud/common/screen_storage.dmi'
 	closer.icon_state = "closer"

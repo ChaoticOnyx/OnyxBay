@@ -45,7 +45,7 @@
 		my_mob.ability_master.add_vampire_power(src)
 
 /datum/vampire_power/proc/update_screen_button()
-	var/obj/screen/ability/vampire_power/VP = my_mob.ability_master.get_ability_by_vampire_power(src)
+	var/atom/movable/screen/ability/vampire_power/VP = my_mob.ability_master.get_ability_by_vampire_power(src)
 	VP?.update_icon()
 
 /datum/vampire_power/proc/is_usable(no_message = FALSE)

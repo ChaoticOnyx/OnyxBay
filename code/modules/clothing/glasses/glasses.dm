@@ -11,7 +11,7 @@
 	var/active = FALSE
 	var/activation_sound = 'sound/items/goggles_charge.ogg'
 	var/deactivation_sound = 'sound/items/goggles_switch.ogg'
-	var/obj/screen/overlay = null
+	var/atom/movable/screen/overlay = null
 	var/electric = FALSE //if the glasses should be disrupted by EMP
 	var/hud_type
 	var/one_eyed = FALSE

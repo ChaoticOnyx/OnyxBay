@@ -6,16 +6,16 @@
 GLOBAL_DATUM_INIT(global_hud, /datum/global_hud, new())
 
 /datum/global_hud
-	var/obj/screen/nvg
-	var/obj/screen/thermal
-	var/obj/screen/meson
-	var/obj/screen/science
-	var/obj/screen/material
-	var/obj/screen/gasmask
-	var/obj/screen/darktint
+	var/atom/movable/screen/nvg
+	var/atom/movable/screen/thermal
+	var/atom/movable/screen/meson
+	var/atom/movable/screen/science
+	var/atom/movable/screen/material
+	var/atom/movable/screen/gasmask
+	var/atom/movable/screen/darktint
 
 /datum/global_hud/proc/setup_overlay(icon_state)
-	var/obj/screen/screen = new /obj/screen()
+	var/atom/movable/screen/screen = new /atom/movable/screen()
 	screen.screen_loc = "1,1"
 	screen.icon = 'icons/obj/hud_full.dmi'
 	screen.icon_state = icon_state

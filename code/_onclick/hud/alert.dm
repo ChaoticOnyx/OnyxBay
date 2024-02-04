@@ -17,7 +17,7 @@
 	if(!category || QDELETED(src))
 		return
 
-	var/obj/screen/movable/alert/thealert
+	var/atom/movable/screen/movable/alert/thealert
 	if(alerts[category])
 		thealert = alerts[category]
 		if(thealert.override_alerts)
@@ -70,13 +70,13 @@
 		thealert.timeout = world.time + thealert.timeout - world.tick_lag
 	return thealert
 
-/mob/proc/alert_timeout(obj/screen/movable/alert/alert, category)
+/mob/proc/alert_timeout(atom/movable/screen/movable/alert/alert, category)
 	if(alert.timeout && alerts[category] == alert && world.time >= alert.timeout)
 		clear_alert(category)
 
 // Proc to clear an existing alert.
 /mob/proc/clear_alert(category, clear_override = FALSE)
-	var/obj/screen/movable/alert/alert = alerts[category]
+	var/atom/movable/screen/movable/alert/alert = alerts[category]
 	if(!alert)
 		return 0
 	if(alert.override_alerts && !clear_override)
@@ -93,7 +93,7 @@
 	return !isnull(alerts[category])
 
 
-/obj/screen/movable/alert
+/atom/movable/screen/movable/alert
 	icon = 'icons/hud/style/midnight.dmi'
 	icon_state = "template"
 	name = "Alert"
@@ -108,18 +108,18 @@
 	/// Boolean. If TRUE, the Click() proc will attempt to Click() on the master first if there is a master.
 	var/click_master = TRUE
 
-/obj/screen/movable/alert/status_effect
+/atom/movable/screen/movable/alert/status_effect
 	icon = 'icons/hud/status_effects.dmi'
 
 // Notify for ghosts
-/obj/screen/movable/alert/notify_action
+/atom/movable/screen/movable/alert/notify_action
 	name = "Body created"
 	icon_state = "template"
 	timeout = 300
 	var/atom/target = null
 	var/action = NOTIFY_JUMP
 
-/obj/screen/movable/alert/notify_action/Click()
+/atom/movable/screen/movable/alert/notify_action/Click()
 	. = ..()
 	if(!.)
 		return

@@ -258,7 +258,7 @@
 		return
 
 	if(iscarbon(user) || isrobot(user))
-		if(!(istype(over_object, /obj/screen)))
+		if(!(istype(over_object, /atom/movable/screen)))
 			return ..()
 
 		if(loc != user)
