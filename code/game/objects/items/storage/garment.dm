@@ -127,7 +127,7 @@
 		/obj/item/clothing/glasses/hud/standard/meson,
 		/obj/item/clothing/head/soft,
 		/obj/item/clothing/gloves/thick,
-		/obj/item/clothing/under/rank/cargotech,
+		/obj/item/clothing/under/rank/cargo,
 		/obj/item/clothing/shoes/brown,
 	)
 
