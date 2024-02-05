@@ -46,7 +46,7 @@
 	set_next_think(world.time + 1 SECOND)
 
 /datum/spell/toggled/proc/update_screen_button()
-	var/obj/screen/ability/spell/S = connected_button
+	var/atom/movable/screen/ability/spell/S = connected_button
 	if(!istype(S))
 		return
 

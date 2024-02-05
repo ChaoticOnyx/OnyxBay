@@ -337,7 +337,7 @@
 
 /obj/item/device/radio/headset/MouseDrop(obj/over_object)
 	var/mob/M = usr
-	if((!istype(over_object, /obj/screen)) && (src in M) && CanUseTopic(M))
+	if((!istype(over_object, /atom/movable/screen)) && (src in M) && CanUseTopic(M))
 		return attack_self(M)
 	return
 

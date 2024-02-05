@@ -99,7 +99,7 @@
 		ability_master.update_abilities(1, src)
 		ability_master.toggle_open(1)
 		if(mind && ability_master.spell_objects)
-			for(var/obj/screen/ability/spell/screen in ability_master.spell_objects)
+			for(var/atom/movable/screen/ability/spell/screen in ability_master.spell_objects)
 				var/datum/spell/S = screen.spell
 				mind.learned_spells |= S
 

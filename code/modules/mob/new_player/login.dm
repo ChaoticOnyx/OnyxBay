@@ -1,4 +1,4 @@
-/obj/screen/splash
+/atom/movable/screen/splash
 	name = "Chaotic Onyx"
 	desc = "This shouldn't be read."
 	screen_loc = "WEST,SOUTH"
@@ -8,7 +8,7 @@
 	plane = FULLSCREEN_PLANE
 	var/client/holder
 
-/obj/screen/splash/New(client/C, visible) //TODO: Make this use INITIALIZE_IMMEDIATE, except its not easy
+/atom/movable/screen/splash/New(client/C, visible) //TODO: Make this use INITIALIZE_IMMEDIATE, except its not easy
 	. = ..()
 
 	holder = C
@@ -20,7 +20,7 @@
 	icon_state = ""
 	icon = GLOB.current_lobbyscreen
 
-/obj/screen/splash/proc/Fade(out, qdel_after = TRUE)
+/atom/movable/screen/splash/proc/Fade(out, qdel_after = TRUE)
 	if(QDELETED(src))
 		return
 	if(out)
@@ -31,7 +31,7 @@
 	if(qdel_after)
 		QDEL_IN(src, 30)
 
-/obj/screen/splash/Destroy()
+/atom/movable/screen/splash/Destroy()
 	if(holder)
 		holder.screen -= src
 		holder = null
@@ -54,7 +54,7 @@
 	my_client = client
 	set_sight(sight|SEE_OBJS|SEE_TURFS)
 	GLOB.player_list |= src
-	new /obj/screen/splash(client, TRUE)
+	new /atom/movable/screen/splash(client, TRUE)
 
 	if(!SScharacter_setup.initialized)
 		SScharacter_setup.newplayers_requiring_init += src

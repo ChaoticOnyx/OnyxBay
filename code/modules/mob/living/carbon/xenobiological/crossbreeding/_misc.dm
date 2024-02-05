@@ -104,7 +104,7 @@
 	playsound(src, 'sound/effects/materials/glass/glassbr.ogg', 50, TRUE)
 	return ..()
 
-/obj/screen/movable/alert/status_effect/freon/stasis
+/atom/movable/screen/movable/alert/status_effect/freon/stasis
 	name = "Frozen Solid"
 	desc = "You're frozen inside of a protective ice cube! While inside, you can't do anything, but are immune! Resist to get out."
 	icon_state = "frozen"

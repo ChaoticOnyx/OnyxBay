@@ -1,4 +1,4 @@
-/obj/screen/movable/alert/status_effect/rainbow_protection
+/atom/movable/screen/movable/alert/status_effect/rainbow_protection
 	name = "Rainbow Protection"
 	desc = "You are defended from harm, but so are those you might seek to injure!"
 	icon_state = "metroid_rainbowshield"
@@ -6,7 +6,7 @@
 /datum/modifier/status_effect
 	var/duration = 0
 	var/alert_type = null
-	var/obj/screen/movable/alert/linked_alert = null
+	var/atom/movable/screen/movable/alert/linked_alert = null
 
 /datum/modifier/status_effect/New(new_holder, new_origin)
 	..()
@@ -23,7 +23,7 @@
 /datum/modifier/status_effect/rainbow_protection
 	name = "rainbow_protection"
 	duration = 200
-	alert_type = /obj/screen/movable/alert/status_effect/rainbow_protection
+	alert_type = /atom/movable/screen/movable/alert/status_effect/rainbow_protection
 	var/originalcolor
 
 /datum/modifier/status_effect/rainbow_protection/on_applied()
@@ -46,7 +46,7 @@
 		SPAN_WARNING("You no longer feel protected..."))
 	..()
 
-/obj/screen/movable/alert/status_effect/metroidskin
+/atom/movable/screen/movable/alert/status_effect/metroidskin
 	name = "Adamantine metroidskin"
 	desc = "You are covered in a thick, non-neutonian gel."
 	icon_state = "metroid_stoneskin"
@@ -54,7 +54,7 @@
 /datum/modifier/status_effect/metroidskin
 	name = "metroidskin"
 	duration = 300
-	alert_type = /obj/screen/movable/alert/status_effect/metroidskin
+	alert_type = /atom/movable/screen/movable/alert/status_effect/metroidskin
 	incoming_brute_damage_percent = 0.75
 	var/originalcolor
 
@@ -103,13 +103,13 @@
 		old_location.visible_message(SPAN_WARNING("[holder] disappears in a flurry of sparks!"))
 		to_chat(holder, SPAN_WARNING("The unknown force snatches briefly you from reality, and deposits you next to [target]!"))
 
-/obj/screen/movable/alert/status_effect/freon/stasis
+/atom/movable/screen/movable/alert/status_effect/freon/stasis
 	desc = "You're frozen inside of a protective ice cube! While inside, you can't do anything, but are immune to harm! Resist to get out."
 
 /datum/modifier/status_effect/frozenstasis
 	name = "metroid_frozen"
 	var/obj/structure/ice_stasis/cube
-	alert_type = /obj/screen/movable/alert/status_effect/freon/stasis
+	alert_type = /atom/movable/screen/movable/alert/status_effect/freon/stasis
 
 /datum/modifier/status_effect/frozenstasis/on_applied()
 	register_signal(holder, SIGNAL_MOB_RESIST, nameof(.proc/breakCube))
@@ -184,12 +184,12 @@
 	holder.adjustFireLoss(1)
 	holder.color = "#007BA7"
 
-/obj/screen/movable/alert/status_effect/clone_decay
+/atom/movable/screen/movable/alert/status_effect/clone_decay
 	name = "Clone Decay"
 	desc = "You are simply a construct, and cannot maintain this form forever. You will be returned to your original body if you should fall."
 	icon_state = "metroid_clone"
 
-/obj/screen/movable/alert/status_effect/bloodchill
+/atom/movable/screen/movable/alert/status_effect/bloodchill
 	name = "Bloodchilled"
 	desc = "You feel a shiver down your spine after getting hit with a glob of cold blood. You'll move slower and get frostbite for a while!"
 	icon_state = "bloodchill"
@@ -197,7 +197,7 @@
 /datum/modifier/status_effect/bloodchill
 	name = "bloodchill"
 	duration = 100
-	alert_type = /obj/screen/movable/alert/status_effect/bloodchill
+	alert_type = /atom/movable/screen/movable/alert/status_effect/bloodchill
 
 /datum/modifier/status_effect/bloodchill/on_applied()
 	holder.add_modifier(/datum/modifier/movespeed/bloodchill)
@@ -214,7 +214,7 @@
 /datum/modifier/status_effect/bonechill
 	name = "bonechill"
 	duration = 80
-	alert_type = /obj/screen/movable/alert/status_effect/bloodchill
+	alert_type = /atom/movable/screen/movable/alert/status_effect/bloodchill
 
 /datum/modifier/status_effect/bonechill/on_applied()
 	holder.add_modifier(/datum/modifier/movespeed/bonechill)
@@ -229,7 +229,7 @@
 	holder.remove_a_modifier_of_type(/datum/modifier/movespeed/bonechill)
 	..()
 
-/obj/screen/movable/alert/status_effect/bonechill
+/atom/movable/screen/movable/alert/status_effect/bonechill
 	name = "Bonechilled"
 	desc = "You feel a shiver down your spine after hearing the haunting noise of bone rattling. You'll move slower and get frostbite for a while!"
 	icon_state = "bloodchill"
@@ -648,7 +648,7 @@
 	metabolism_percent = 0.8
 
 //Bluespace has an icon because it's kinda active.
-/obj/screen/movable/alert/status_effect/bluespacemetroid
+/atom/movable/screen/movable/alert/status_effect/bluespacemetroid
 	name = "Stabilized Bluespace Extract"
 	desc = "You shouldn't see this, since we set it to change automatically!"
 	icon_state = "metroid_bluespace_on"
@@ -661,7 +661,7 @@
 /datum/modifier/status_effect/stabilized/bluespace
 	name = "stabilizedbluespace"
 	colour = "bluespace"
-	alert_type = /obj/screen/movable/alert/status_effect/bluespacemetroid
+	alert_type = /atom/movable/screen/movable/alert/status_effect/bluespacemetroid
 	var/list/healthcheck = list(BRUTE = 0, BURN = 0, OXY = 0)
 	think_delay = 5 SECONDS
 

@@ -48,7 +48,7 @@
 	bluespaced += M
 	if(M.client)
 		to_chat(M,"<span class='notice'>You feel oddly light, and somewhat disoriented as everything around you shimmers and warps ever so slightly.</span>")
-		M.overlay_fullscreen("bluespace", /obj/screen/fullscreen/bluespace_overlay)
+		M.overlay_fullscreen("bluespace", /atom/movable/screen/fullscreen/bluespace_overlay)
 	M.confused = 20
 	bluegoasts += new /obj/effect/bluegoast/(get_turf(M),M)
 
@@ -128,7 +128,7 @@
 	daddy.dust()
 	qdel(src)
 
-/obj/screen/fullscreen/bluespace_overlay
+/atom/movable/screen/fullscreen/bluespace_overlay
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "mfoam"
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
