@@ -834,7 +834,6 @@
 	var/output = ..()
 	if(output)
 		return "[output] \[[fuel]: [round(fuel.amount*fuel.perunit,0.1)] cm<sup>3</sup>\] - <a href='?src=\ref[src];toggle=1'>[pr_mech_generator.active()?"Dea":"A"]ctivate</a>"
-
 	return
 
 /obj/item/mecha_parts/mecha_equipment/generator/action(target)
@@ -852,7 +851,7 @@
 	return
 
 /obj/item/mecha_parts/mecha_equipment/generator/proc/load_fuel(obj/item/stack/material/P)
-	if(istype(P, fuel) && P.amount)
+	if(P.type == fuel.type && P.amount)
 		var/to_load = max(max_fuel - fuel.amount * fuel.perunit,0)
 		if(to_load)
 			var/units = min(max(round(to_load / P.perunit), 1), P.amount)
@@ -861,8 +860,7 @@
 				P.use(units)
 				return units
 		else
-			return FALSE
-
+			return 0
 	return
 
 /obj/item/mecha_parts/mecha_equipment/generator/attackby(weapon,mob/user)
@@ -880,7 +878,6 @@
 	var/turf/simulated/T = get_turf(src)
 	if(!T)
 		return
-
 	var/datum/gas_mixture/GM = new
 	if(prob(10))
 		T.assume_gas("plasma", 100, 1500 CELSIUS)
@@ -896,29 +893,26 @@
 	if(!EG.chassis)
 		stop()
 		EG.set_ready_state(1)
-		return FALSE
-
+		return 0
 	if(EG.fuel.amount<=0)
 		stop()
 		EG.log_message("Deactivated - no fuel.")
 		EG.set_ready_state(1)
-		return FALSE
-
+		return 0
 	var/cur_charge = EG.chassis.get_charge()
 	if(isnull(cur_charge))
 		EG.set_ready_state(1)
 		EG.occupant_message("No powercell detected.")
 		EG.log_message("Deactivated.")
 		stop()
-		return FALSE
-
+		return 0
 	var/use_fuel = EG.fuel_per_cycle_idle
-	if(cur_charge < (EG.chassis.cell.maxcharge / CELLRATE))
+	if(cur_charge < EG.chassis.cell.maxcharge)
 		use_fuel = EG.fuel_per_cycle_active
 		EG.chassis.give_power(EG.power_per_cycle)
 	EG.fuel.amount -= min(use_fuel/EG.fuel.perunit, EG.fuel.amount)
 	EG.update_equip_info()
-	return TRUE
+	return 1
 
 
 //Nuclear Generator
@@ -955,7 +949,7 @@
 			EG.rad_source = SSradiation.radiate(EG, new /datum/radiation/preset/uranium_238(EG.fuel.amount))
 		else
 			EG.rad_source.info.activity = EG.rad_source.info.specific_activity * EG.fuel.amount
-	return TRUE
+	return 1
 
 
 //This is pretty much just for the death-ripley so that it is harmless
