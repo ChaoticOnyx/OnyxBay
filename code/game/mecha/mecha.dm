@@ -1129,7 +1129,7 @@
 	forceMove(src.loc)
 	log_append_to_last("[H] moved in as pilot.")
 	icon_state = src.reset_icon()
-	update_icon()
+	on_update_icon()
 	set_dir(dir_in)
 	playsound(src, 'sound/machines/windowdoor.ogg', 50, 1)
 	if(!hasInternalDamage())
