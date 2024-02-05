@@ -26,6 +26,9 @@
 	var/list/extras = list() // List of extras. Two extras maximum
 	var/rim_pos // Position of the rim for fruit slices. list(y, x_left, x_right)
 
+	drop_sound = SFX_DROP_GLASS
+	pickup_sound = SFX_PICKUP_GLASS
+
 /obj/item/reagent_containers/vessel/glass/_examine_text(mob/M)
 	. = ..()
 

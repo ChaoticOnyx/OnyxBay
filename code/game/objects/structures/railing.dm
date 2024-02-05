@@ -2,7 +2,7 @@
 	name = "railing"
 	desc = "A standard railing. Prevents human stupidity."
 	icon = 'icons/obj/railing.dmi'
-	icon_state = "railing"
+	icon_state = "railing_full"
 	density = 1
 	anchored = 1
 	atom_flags = ATOM_FLAG_CHECKS_BORDER | ATOM_FLAG_CLIMBABLE
@@ -18,7 +18,7 @@
 
 /obj/structure/railing/Initialize()
 	. = ..()
-	if(src.anchored)
+	if(anchored)
 		update_icon(0)
 
 /obj/structure/railing/Destroy()
@@ -319,19 +319,19 @@
 	climbers -= user
 
 /obj/structure/railing/steel
-	icon_state = "steel_railing"
+	icon_state = "steel_railing_full"
 	material = "steel_"
 	desc = "A steel railing. Prevents human stupidity."
 	material_path = "/obj/item/stack/material/steel"
 
 /obj/structure/railing/wood
-	icon_state = "wood_railing"
+	icon_state = "wood_railing_full"
 	material = "wood_"
 	desc = "A wooden railing. Prevents human stupidity."
 	material_path = "/obj/item/stack/material/wood"
 
 /obj/structure/railing/darkwood
-	icon_state = "darkwood_railing"
+	icon_state = "darkwood_railing_full"
 	material = "darkwood_"
 	desc = "A darkwood railing. Prevents human stupidity."
 	material_path = "/obj/item/stack/material/darkwood"

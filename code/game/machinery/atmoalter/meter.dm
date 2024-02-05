@@ -85,14 +85,13 @@
 				meter_light = 0.45
 
 			if(frequency)
-				var/datum/radio_frequency/radio_connection = radio_controller.return_frequency(frequency)
+				var/datum/frequency/radio_connection = SSradio.return_frequency(frequency)
 
 				if(!radio_connection)
 					return
 
-				var/datum/signal/signal = new
+				var/datum/signal/signal = new()
 				signal.source = src
-				signal.transmission_method = 1
 				signal.data = list(
 					"tag" = id,
 					"device" = "AM",

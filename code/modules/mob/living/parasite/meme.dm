@@ -173,7 +173,7 @@ be able to influence the host through various commands.
 		to_chat(usr, "\red You can't emote without host!")
 		return
 	message = sanitize(message)
-	return host.emote("me", 1, message)
+	return host.custom_emote(message_type = host.emote_type, message = message, intentional = TRUE)
 
 // A meme understands everything their host understands
 /mob/living/parasite/meme/say_understands(mob/other)
@@ -585,19 +585,19 @@ be able to influence the host through various commands.
 	to_chat(usr, "<b>Meme Points: [src.meme_points]/[maximum_points]</b>")
 
 // Stat panel to show meme points, copypasted from alien
-/mob/living/parasite/meme/get_status_tab_items()
-	. = ..()
+/mob/living/parasite/meme/Stat()
+	..()
 
-	if(client && client.holder)
-		. += "([x], [y], [z])"
+	statpanel("Status")
+	if (client && client.holder)
+		stat(null, "([x], [y], [z])")
 
-	if(client)
-		. += "Meme Points: [src.meme_points]"
+	if (client && client.statpanel == "Status")
+		stat(null, "Meme Points: [src.meme_points]")
 
 // Game mode helpers, used for theft objectives
 // --------------------------------------------
 /mob/living/parasite/check_contents_for(t)
-	if(!host)
-		return 0
+	if(!host) return 0
 
 	return host.check_contents_for(t)

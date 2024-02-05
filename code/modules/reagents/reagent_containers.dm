@@ -16,14 +16,14 @@
 	set category = "Object"
 	set src in usr
 
-	var/N = input("Amount per transfer from this:","[src]") as null|anything in cached_number_list_decode(possible_transfer_amounts)
+	var/N = tgui_input_list(usr, "Amount per transfer from this:", "[src]", cached_number_list_decode(possible_transfer_amounts))
 	if(N)
 		amount_per_transfer_from_this = N
 
 /obj/item/reagent_containers/Initialize()
 	. = ..()
 	if(!possible_transfer_amounts)
-		verbs -= /obj/item/reagent_containers/verb/set_APTFT
+		src.verbs -= /obj/item/reagent_containers/verb/set_APTFT
 	create_reagents(volume)
 	if(startswith)
 		for(var/thing in startswith)

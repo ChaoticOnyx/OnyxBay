@@ -32,6 +32,9 @@
 	tint = TINT_HEAVY
 	var/obj/item/welding_cover/cover = null
 
+	pickup_sound = SFX_PICKUP_HELMET
+	drop_sound = SFX_DROP_HELMET
+
 /obj/item/clothing/head/welding/_examine_text(mob/user)
 	. = ..()
 	if(cover)
@@ -245,6 +248,7 @@
 	if((slot == slot_head || slot == slot_l_ear || slot == slot_r_ear) && istype(user))
 		var/hairgb = rgb(user.r_hair, user.g_hair, user.b_hair)
 		var/icon/ears = icon('icons/inv_slots/hats/mob.dmi', "kitty")
+		ears.Blend(icon('icons/inv_slots/hats/mob.dmi', "kitty_tail"), ICON_OVERLAY)
 		ears.Blend(hairgb, ICON_ADD)
 		ears.Blend(icon('icons/inv_slots/hats/mob.dmi', "kittyinner"), ICON_OVERLAY)
 		icon_override = ears
@@ -272,3 +276,47 @@
 		RADIATION_BETA_PARTICLE = 6 MEGA ELECTRONVOLT,
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
+
+//ilyadobr's custom item
+
+/obj/item/clothing/head/fox
+	name = "fox ears"
+	desc = "A pair of fox ears. What does the fox say?"
+	icon_state = "fox"
+	slot_flags = SLOT_HEAD | SLOT_EARS
+	body_parts_covered = NO_BODYPARTS
+	siemens_coefficient = 1.5
+	item_icons = list()
+	var/hairgb = null
+
+/obj/item/clothing/head/fox/Initialize()
+	. = ..()
+	if(color)
+		hairgb = color
+		color = null
+
+/obj/item/clothing/head/fox/equipped(mob/living/carbon/human/user, slot)
+	. = ..()
+	if(color)
+		hairgb = color
+		color = null
+	var/tail = "fox_tail"
+	if((slot == slot_head || slot == slot_l_ear || slot == slot_r_ear) && istype(user))
+		if(!hairgb)
+			hairgb = rgb(user.r_hair, user.g_hair, user.b_hair)
+		var/icon/ears = icon('icons/inv_slots/hats/mob.dmi', "fox")
+		switch(user.body_build.name)
+			if("Slim")
+				tail = "fox_tail_slim"
+			if("Slim Alt")
+				tail = "fox_tail_slim_alt"
+			if("Fat")
+				tail = "fox_tail_fat"
+			else
+				tail = "fox_tail"
+		ears.Blend(icon('icons/inv_slots/hats/mob.dmi', tail), ICON_OVERLAY)
+		ears.Blend(hairgb, ICON_ADD)
+		ears.Blend(icon('icons/inv_slots/hats/mob.dmi', "[tail]_overlay"), ICON_OVERLAY)
+		icon_override = ears
+	else if(icon_override)
+		icon_override = null

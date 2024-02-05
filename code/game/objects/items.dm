@@ -90,7 +90,11 @@
 	// Species-specific sprite sheets for inventory sprites. Used in clothing/refit_for_species() proc.
 	var/list/sprite_sheets_obj = list()
 
-	var/pickup_sound = null
+	/// Played when the item is picked up
+	var/pickup_sound = SFX_PICKUP_GENERIC
+
+	/// Played when the item is dropped or thrown
+	var/drop_sound = SFX_DROP_GENERIC
 
 	var/ear_protection = 0
 
@@ -123,6 +127,9 @@
 
 /obj/item/device
 	icon = 'icons/obj/device.dmi'
+
+	pickup_sound = SFX_PICKUP_DEVICE
+	drop_sound = SFX_DROP_DEVICE
 
 //Checks if the item is being held by a mob, and if so, updates the held icons
 /obj/item/proc/update_twohanding()
@@ -267,13 +274,17 @@
 
 	var/old_loc = loc
 
+	var/changing_slots = FALSE
 	// Removing from a storage
 	if(istype(loc, /obj/item/storage))
 		var/obj/item/storage/S = loc
 		S.remove_from_storage(src)
 	// Unequipping from self
-	else if(loc == user && !user.drop(src))
-		return
+	else if(loc == user)
+		changing_slots = TRUE
+		if(!user.drop(src, changing_slots = changing_slots))
+			return
+
 	// Doing some unintended shit that may cause catastrophical events, aborting
 	// If you'll ever want to implement something that intentionally allows direct clicking on an item while it's inside
 	// an atom's contents - just go and smack yourself with a brick, it shall not work like this.
@@ -285,7 +296,7 @@
 	if(QDELETED(src)) // Unequipping may change src gc_destroyed, so must check here
 		return
 
-	pickup(user)
+	pickup(user, changing_slots)
 
 	if(user.put_in_active_hand(src))
 		if(isturf(old_loc))
@@ -326,10 +337,7 @@
 	return
 
 // apparently called whenever an item is removed from a slot, container, or anything else.
-/obj/item/proc/dropped(mob/user)
-	SHOULD_CALL_PARENT(TRUE)
-	remove_item_verbs(user)
-
+/obj/item/proc/dropped(mob/user, changing_slots = FALSE)
 	if(randpixel)
 		pixel_z = randpixel //an idea borrowed from some of the older pixel_y randomizations. Intended to make items appear to drop at a character
 
@@ -340,21 +348,10 @@
 		if(user.r_hand)
 			user.r_hand.update_twohanding()
 
-	SEND_SIGNAL(src, SIGNAL_ITEM_UNEQUIPPED, src, user)
+	if(!changing_slots && !istype(loc, /obj/item/clothing/accessory))
+		play_drop_sound()
 
-/obj/item/proc/remove_item_verbs(mob/user)
-	if(ismech(user)) //very snowflake, but necessary due to how mechs work
-		return
-	if(QDELING(user))
-		return
-	var/list/verbs_to_remove = list()
-	for(var/v in verbs)
-		var/verbstring = "[v]"
-		if(length(user.item_verbs[verbstring]) == 1)
-			if(user.item_verbs[verbstring][1] == src)
-				verbs_to_remove += v
-		LAZYREMOVE(user.item_verbs[verbstring], src)
-	remove_verb(user, verbs_to_remove)
+	SEND_SIGNAL(src, SIGNAL_ITEM_UNEQUIPPED, src, user)
 
 // called just as an item is picked up (loc is not yet changed)
 /obj/item/proc/pickup(mob/user)
@@ -378,7 +375,6 @@
 // for items that can be placed in multiple slots
 // note this isn't called during the initial dressing of a player
 /obj/item/proc/equipped(mob/user, slot)
-	SHOULD_CALL_PARENT(TRUE)
 	hud_layerise()
 	if(user.client)	user.client.screen |= src
 	if(user.pulling == src) user.stop_pulling()
@@ -391,19 +387,10 @@
 		M.l_hand.update_twohanding()
 	if(M.r_hand)
 		M.r_hand.update_twohanding()
-	
-	if(item_action_slot_check(user, slot))
-		add_verb(user, verbs)
-		for(var/v in verbs)
-			LAZYDISTINCTADD(user.item_verbs["[v]"], src)
-	else
-		remove_item_verbs(user)
+
+	play_handling_sound(slot)
 
 	SEND_SIGNAL(src, SIGNAL_ITEM_EQUIPPED, src, user, slot)
-
-//sometimes we only want to grant the item's action if it's equipped in a specific slot.
-/obj/item/proc/item_action_slot_check(mob/user, slot)
-	return TRUE
 
 //Defines which slots correspond to which slot flags
 var/list/global/slot_flags_enumeration = list(
@@ -985,3 +972,19 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	spawn()
 		..()
 	return
+
+/obj/item/proc/play_drop_sound()
+	if(!drop_sound)
+		return
+
+	var/volume = clamp(rand(12, 16) * w_class, DROP_SOUND_VOLUME_MIN, DROP_SOUND_VOLUME_MAX)
+
+	playsound(src, drop_sound, volume, TRUE, extrarange = -5)
+
+/obj/item/proc/play_handling_sound(slot)
+	if(!pickup_sound)
+		return
+
+	if(slot == slot_l_hand || slot == slot_r_hand)
+		var/volume = clamp(rand(5, 15) * w_class, PICKUP_SOUND_VOLUME_MIN, PICKUP_SOUND_VOLUME_MAX)
+		playsound(src, pickup_sound, volume, TRUE, extrarange = -5)

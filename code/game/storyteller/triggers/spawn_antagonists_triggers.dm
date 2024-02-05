@@ -35,7 +35,3 @@
 /storyteller_trigger/spawn_antagonist/borer/New()
 	name = "Spawn Borer"
 	antagonist_id = MODE_BORER
-
-/storyteller_trigger/spawn_antagonist/abductor/New()
-	name = "Spawn Abductor"
-	antagonist_id = MODE_ABDUCTOR

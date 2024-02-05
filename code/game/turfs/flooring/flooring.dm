@@ -354,3 +354,67 @@ var/list/flooring_types
 	icon = 'icons/turf/flooring/sand.dmi'
 	icon_base = "sand_floor"
 	flags = TURF_REMOVE_CROWBAR
+
+/decl/flooring/tiling/vox1
+	name = "old floor"
+	desc = "A strange old floor."
+	icon_base = "vox1"
+	has_damage_range = 4
+	damage_temperature = 1400 CELSIUS
+	flags = TURF_REMOVE_CROWBAR | TURF_CAN_BREAK | TURF_CAN_BURN
+	build_type = /obj/item/stack/tile/floor
+	can_paint = FALSE
+
+/decl/flooring/tiling/vox2
+	name = "old floor"
+	desc = "A strange old floor."
+	icon_base = "vox2"
+	has_damage_range = 4
+	damage_temperature = 1400 CELSIUS
+	flags = TURF_REMOVE_CROWBAR | TURF_CAN_BREAK | TURF_CAN_BURN
+	build_type = /obj/item/stack/tile/floor
+	can_paint = FALSE
+
+/decl/flooring/tiling/vox3
+	name = "old floor"
+	desc = "A strange old floor."
+	icon_base = "vox3"
+	has_damage_range = 4
+	damage_temperature = 1400 CELSIUS
+	flags = TURF_REMOVE_CROWBAR | TURF_CAN_BREAK | TURF_CAN_BURN
+	build_type = /obj/item/stack/tile/floor
+	can_paint = FALSE
+
+/decl/flooring/tiling/vox4
+	name = "old floor"
+	desc = "A strange old floor."
+	icon_base = "vox4"
+	has_damage_range = 4
+	damage_temperature = 1400 CELSIUS
+	flags = TURF_REMOVE_CROWBAR | TURF_CAN_BREAK | TURF_CAN_BURN
+	build_type = /obj/item/stack/tile/floor
+	can_paint = FALSE
+
+/turf/simulated/floor/tiled/vox
+	name = "old floor"
+	desc = "A strange old floor."
+	icon_state = "vox1"
+	initial_flooring = /decl/flooring/tiling/vox1
+
+/turf/simulated/floor/tiled/vox/vox2
+	name = "old floor"
+	desc = "A strange old floor."
+	icon_state = "vox2"
+	initial_flooring = /decl/flooring/tiling/vox2
+
+/turf/simulated/floor/tiled/vox/vox3
+	name = "old floor"
+	desc = "A strange old floor."
+	icon_state = "vox3"
+	initial_flooring = /decl/flooring/tiling/vox3
+
+/turf/simulated/floor/tiled/vox/vox4
+	name = "old floor"
+	desc = "A strange old floor."
+	icon_state = "vox4"
+	initial_flooring = /decl/flooring/tiling/vox4

@@ -30,6 +30,10 @@ GLOBAL_VAR_CONST(PREF_MED, "Medium")
 GLOBAL_VAR_CONST(PREF_HIGH, "High")
 GLOBAL_VAR_CONST(PREF_AS_GHOST, "Only as ghost")
 GLOBAL_VAR_CONST(PREF_AS_LIVING, "Only when alive")
+GLOBAL_VAR_CONST(PREF_DARKNESS_VISIBLE, "Fully visible")
+GLOBAL_VAR_CONST(PREF_DARKNESS_MOSTLY_VISIBLE, "Mostly visible")
+GLOBAL_VAR_CONST(PREF_DARKNESS_BARELY_VISIBLE, "Barely visible")
+GLOBAL_VAR_CONST(PREF_DARKNESS_INVISIBLE, "Invisible")
 
 var/global/list/_client_preferences
 var/global/list/_client_preferences_by_key
@@ -390,7 +394,6 @@ var/global/list/_client_preferences_by_type
 	var/mob/observer/ghost/preference_ghost = preference_mob
 	if(istype(preference_ghost))
 		preference_ghost.updateghostprefs()
-		preference_ghost.updateghostsight()
 
 /datum/client_preference/affects_ghost/ghost_anonymous_chat
 	description = "Ghost anonymous chat"
@@ -416,7 +419,7 @@ var/global/list/_client_preferences_by_type
 	description = "Ghost lighting"
 	key = "GHOST_DARKVISION"
 	category = PREF_CATEGORY_GHOST
-	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
+	options = list(GLOB.PREF_DARKNESS_VISIBLE, GLOB.PREF_DARKNESS_MOSTLY_VISIBLE, GLOB.PREF_DARKNESS_BARELY_VISIBLE, GLOB.PREF_DARKNESS_INVISIBLE)
 
 /********************
 * General Staff Preferences *

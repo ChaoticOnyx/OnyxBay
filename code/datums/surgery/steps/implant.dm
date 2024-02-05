@@ -40,6 +40,10 @@
 		/obj/item/stack/rods = 50
 		)
 
+	preop_sound = 'sound/surgery/surgicaldrill.ogg'
+	success_sound = 'sound/surgery/organ2.ogg'
+	failure_sound = 'sound/surgery/organ1.ogg'
+
 /datum/surgery_step/cavity/make_space/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && !parent_organ.cavity)
 
@@ -76,6 +80,10 @@
 		/obj/item/weldingtool = 25
 		)
 
+	preop_sound = 'sound/surgery/cautery1.ogg'
+	success_sound = 'sound/surgery/cautery2.ogg'
+	failure_sound = 'sound/surgery/cautery.ogg'
+
 /datum/surgery_step/cavity/close_space/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && parent_organ.cavity)
 
@@ -107,6 +115,10 @@
 	allowed_tools = list(
 		/obj/item = 100
 		)
+
+	preop_sound = 'sound/surgery/organ1.ogg'
+	success_sound = 'sound/surgery/organ2.ogg'
+	failure_sound = 'sound/effects/fighting/crunch1.ogg'
 
 /datum/surgery_step/cavity/place_item/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	. = ..()
@@ -183,6 +195,10 @@
 		/obj/item/material/kitchen/utensil/fork = 20
 		)
 
+	preop_sound = 'sound/surgery/hemostat1.ogg'
+	success_sound = 'sound/effects/squelch1.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
+
 /datum/surgery_step/cavity/implant_removal/initiate(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
 	announce_preop(user,
 		"[user] starts poking around inside [target]'s [parent_organ] with \the [tool].",
@@ -237,7 +253,6 @@
 				wound.embedded_objects -= implanted_item
 				break
 
-		playsound(target.loc, 'sound/effects/squelch1.ogg', 15, 1)
 		BITSET(target.hud_updateflag, IMPLOYAL_HUD)
 
 		implanted_item.dropInto(target.loc)
@@ -258,6 +273,5 @@
 	for(var/obj/item/implant/I in parent_organ.implants)
 		if(prob(10 + 100 - get_tool_quality(tool)))
 			user.visible_message("Something beeps inside [target]'s [parent_organ]!")
-			playsound(I.loc, 'sound/items/countdown.ogg', 75, 1, -3)
 			spawn(25)
 				I.activate()

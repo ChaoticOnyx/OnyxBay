@@ -24,7 +24,7 @@
 		return
 
 	if(!user.IsAdvancedToolUser())
-		to_chat(user, SPAN_WARNING("You don't have the dexterity to do this!</span>"))
+		to_chat(user, FEEDBACK_YOU_LACK_DEXTERITY)
 		return
 
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
@@ -104,7 +104,7 @@
 
 	density = 1
 	opacity = 0
-	mouse_opacity = MOUSE_OPACITY_ICON
+	mouse_opacity = 1
 	anchored = 1
 	can_buckle = 0 //no manual buckling or unbuckling
 

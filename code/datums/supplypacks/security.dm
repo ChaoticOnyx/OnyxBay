@@ -382,7 +382,7 @@
 
 /decl/hierarchy/supply_pack/security/securitybarriers
 	name = "Misc - Barrier crate"
-	contains = list(/obj/machinery/deployable/barrier = 4)
+	contains = list(/obj/structure/barricade/security = 4)
 	cost = 20
 	containertype = /obj/structure/closet/crate/secure/large
 	containername = "\improper Security barrier crate"

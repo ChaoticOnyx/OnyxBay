@@ -19,6 +19,7 @@ SUBSYSTEM_DEF(atoms)
 /datum/controller/subsystem/atoms/Initialize(timeofday)
 	init_state = INITIALIZATION_INNEW_MAPLOAD
 	InitializeAtoms()
+	generate_holomaps()
 
 	// Mannequins refuse to spawn prior to atoms init, so refresh them in case anyone connected before init finished.
 	for(var/client/C)
@@ -108,8 +109,7 @@ SUBSYSTEM_DEF(atoms)
 	return qdeleted || QDELING(A)
 
 /datum/controller/subsystem/atoms/stat_entry(msg)
-	msg = "Bad Initialize Calls:[BadInitializeCalls.len]"
-	return ..()
+	..("Bad Initialize Calls:[BadInitializeCalls.len]")
 
 /datum/controller/subsystem/atoms/proc/map_loader_begin()
 	old_init_state = init_state

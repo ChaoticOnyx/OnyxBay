@@ -4,6 +4,11 @@
 	var/required_access
 	var/datum/custom_item/item_data
 	var/patreon_type
+	var/static/list/gear_flag_names_to_flag = list(
+		"GEAR_HAS_COLOR_SELECTION" = 1,
+		"GEAR_HAS_TYPE_SELECTION" = 2,
+		"GEAR_HAS_SUBTYPE_SELECTION" = 4,
+	)
 
 /datum/gear/custom_item/New(key, item_path, datum/custom_item/data)
 	var/obj/item/A = item_path
@@ -29,6 +34,9 @@
 	allowed_roles = job_types
 	required_access = data.req_access
 	item_data = data
+	if(length(data.flags_list))
+		for(var/flag_name in data.flags_list)
+			flags |= gear_flag_names_to_flag[flag_name]
 	..()
 	gear_tweaks += new /datum/gear_tweak/custom(item_data)
 

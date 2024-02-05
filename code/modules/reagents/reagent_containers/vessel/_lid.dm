@@ -29,7 +29,7 @@
 	switch(state)
 		if(LID_NONE, LID_OPEN)
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
-			owner.verbs -= /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 		if(LID_CLOSED, LID_SEALED)
 			owner.atom_flags &= ~ATOM_FLAG_OPEN_CONTAINER
 			owner.verbs -= /obj/item/reagent_containers/vessel/verb/drink_whole
@@ -59,14 +59,14 @@
 			playsound(owner.loc, 'sound/effects/pop.ogg', rand(20, 50), 1)
 			if(user)
 				to_chat(usr, SPAN("notice", "You take the [name] off \the [owner]."))
-			add_verb(owner, /obj/item/reagent_containers/vessel/verb/drink_whole)
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_OPEN)
 			owner.atom_flags &= ~ATOM_FLAG_OPEN_CONTAINER
 			state = LID_CLOSED
 			if(user)
 				to_chat(usr, SPAN("notice", "You put the [name] on \the [owner]."))
-			remove_verb(owner, /obj/item/reagent_containers/vessel/verb/drink_whole)
+			owner.verbs -= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 	return FALSE
 
@@ -83,14 +83,14 @@
 			playsound(owner.loc, 'sound/effects/cork.ogg', rand(20, 50), 1)
 			if(user)
 				to_chat(usr, SPAN("notice", "You pull the [name] out of \the [owner]."))
-			add_verb(owner, /obj/item/reagent_containers/vessel/verb/drink_whole)
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_OPEN)
 			owner.atom_flags &= ~ATOM_FLAG_OPEN_CONTAINER
 			state = LID_CLOSED
 			if(user)
 				to_chat(usr, SPAN("notice", "You push the [name] into \the [owner]."))
-			remove_verb(owner, /obj/item/reagent_containers/vessel/verb/drink_whole)
+			owner.verbs -= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 	return FALSE
 
@@ -106,7 +106,7 @@
 			to_chat(user, SPAN("notice", "You open \the [src] with an audible pop!"))
 		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 		state = LID_NONE
-		add_verb(owner, /obj/item/reagent_containers/vessel/verb/drink_whole)
+		owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 		return TRUE
 	return FALSE
 
@@ -131,7 +131,7 @@
 			to_chat(user, SPAN("notice", "You open \the [src] with an audible pop!"))
 		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 		state = LID_NONE
-		add_verb(owner, /obj/item/reagent_containers/vessel/verb/drink_whole)
+		owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 		return TRUE
 	return FALSE
 
@@ -151,7 +151,7 @@
 			to_chat(user, SPAN("notice", "You rip open \the [owner]!"))
 		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 		state = LID_NONE
-		add_verb(owner, /obj/item/reagent_containers/vessel/verb/drink_whole)
+		owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 		return TRUE
 	return FALSE
 
@@ -172,21 +172,21 @@
 				to_chat(user, SPAN("notice", "You twist open \the [owner]'s [name], destroying the safety seal!"))
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_OPEN
-			add_verb(owner, /obj/item/reagent_containers/vessel/verb/drink_whole)
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_CLOSED)
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_OPEN
 			if(user)
 				to_chat(usr, SPAN("notice", "You take \the [name] off \the [owner]."))
-			add_verb(owner, /obj/item/reagent_containers/vessel/verb/drink_whole)
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_OPEN)
 			owner.atom_flags &= ~ATOM_FLAG_OPEN_CONTAINER
 			state = LID_CLOSED
 			if(user)
 				to_chat(usr, SPAN("notice", "You put \the [name] on \the [owner]."))
-			remove_verb(owner, /obj/item/reagent_containers/vessel/verb/drink_whole)
+			owner.verbs -= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 	return FALSE
 
@@ -210,7 +210,7 @@
 			state = LID_OPEN
 			if(user)
 				to_chat(usr, SPAN("notice", "You open \the [owner]."))
-			add_verb(owner, /obj/item/reagent_containers/vessel/verb/drink_whole)
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_OPEN)
 			playsound(owner.loc, 'sound/effects/flask_lid1.ogg', rand(10, 30), 1)
@@ -218,7 +218,7 @@
 			state = LID_CLOSED
 			if(user)
 				to_chat(usr, SPAN("notice", "You close \the [owner]."))
-			remove_verb(owner, /obj/item/reagent_containers/vessel/verb/drink_whole)
+			owner.verbs -= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 	return FALSE
 
@@ -243,7 +243,7 @@
 			to_chat(user, SPAN("notice", "You peel off \the [owner]'s [name]!"))
 		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 		state = LID_NONE
-		add_verb(owner, /obj/item/reagent_containers/vessel/verb/drink_whole)
+		owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 		return TRUE
 	return FALSE
 
@@ -255,3 +255,38 @@
 /datum/vessel_lid/paper/get_examine_hint()
 	if(state == LID_SEALED)
 		return SPAN("notice", "It's [name] is intact.")
+
+
+// Takeaway cup lids - they don't block drinking while closed
+/datum/vessel_lid/takeaway
+	name = "lid"
+	state = LID_CLOSED
+
+/datum/vessel_lid/takeaway/toggle(mob/user)
+	playsound(owner.loc, 'sound/effects/using/bottles/papercup.ogg', rand(60, 80), 1)
+	switch(state)
+		if(LID_CLOSED)
+			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER // Still open, woah
+			state = LID_OPEN
+			if(user)
+				to_chat(usr, SPAN("notice", "You take \the [name] off \the [owner]."))
+			owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.amount_per_transfer_from_this = 10
+			owner.possible_transfer_amounts = "5;10;15;30"
+			return TRUE
+		if(LID_OPEN)
+			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
+			state = LID_CLOSED
+			if(user)
+				to_chat(usr, SPAN("notice", "You put \the [name] on \the [owner]."))
+			owner.verbs -= /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.amount_per_transfer_from_this = 3
+			owner.possible_transfer_amounts = "3;5"
+			return TRUE
+	return FALSE
+
+/datum/vessel_lid/takeaway/get_examine_hint()
+	if(state == LID_OPEN)
+		return SPAN("notice", "It's open.")
+	else if(state == LID_CLOSED)
+		return SPAN("notice", "It's closed.")

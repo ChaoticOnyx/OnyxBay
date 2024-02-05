@@ -34,12 +34,12 @@
 	if(hat)
 		to_chat(user, SPAN("notice", "It is wearing \icon[hat] \a [hat]."))
 
-/mob/living/carbon/alien/diona/drop(obj/item/W, atom/Target = null, force = null)
+/mob/living/carbon/alien/diona/drop(obj/item/W, atom/Target = null, force = null, changing_slots)
 	. = ..()
 	if(W == hat)
 		hat = null
 		update_icons()
-		remove_verb(src, /mob/living/carbon/alien/diona/proc/drop_hat)
+		verbs -= /mob/living/carbon/alien/diona/proc/drop_hat
 	else if(W == holding_item)
 		holding_item = null
 
@@ -51,8 +51,8 @@
 	species = all_species[SPECIES_DIONA]
 	add_language(LANGUAGE_ROOTGLOBAL)
 	add_language(LANGUAGE_GALCOM)
-	add_verb(src, /mob/living/carbon/alien/diona/proc/merge)
-	add_verb(src, /mob/living/carbon/alien/diona/proc/drop_holding_item)
+	verbs += /mob/living/carbon/alien/diona/proc/merge
+	verbs += /mob/living/carbon/alien/diona/proc/drop_holding_item
 
 /mob/living/carbon/alien/diona/put_in_hands(obj/item/W) // No hands. Use mouth.
 	if(can_collect(W))
@@ -67,7 +67,7 @@
 	hat = new_hat
 	new_hat.forceMove(src)
 	update_icons()
-	add_verb(src, /mob/living/carbon/alien/diona/proc/drop_hat)
+	verbs += /mob/living/carbon/alien/diona/proc/drop_hat
 	return TRUE
 
 /mob/living/carbon/alien/diona/proc/handle_npc(mob/living/carbon/alien/diona/D)
@@ -142,7 +142,7 @@
 		src.hat.forceMove(get_turf(src))
 		src.hat = null
 		update_icons()
-		remove_verb(src, /mob/living/carbon/alien/diona/proc/drop_hat)
+		verbs -= /mob/living/carbon/alien/diona/proc/drop_hat
 
 /mob/living/carbon/alien/diona/drop_active_hand()
 	if(holding_item)

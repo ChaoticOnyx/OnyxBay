@@ -22,7 +22,7 @@
 /obj/screen/text
 	icon = null
 	icon_state = null
-	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+	mouse_opacity = 0
 	screen_loc = "CENTER-7,CENTER-7"
 	maptext_height = 480
 	maptext_width = 480
@@ -227,11 +227,9 @@
 		if("mov_intent")
 			switch(usr.m_intent)
 				if(M_RUN)
-					usr.m_intent = M_WALK
-					usr.hud_used.move_intent.icon_state = "walking"
+					usr.set_m_intent(M_WALK)
 				if(M_WALK)
-					usr.m_intent = M_RUN
-					usr.hud_used.move_intent.icon_state = "running"
+					usr.set_m_intent(M_RUN)
 
 		if("Reset Machine")
 			usr.unset_machine()
@@ -588,3 +586,13 @@
 	icon_state = "rec"
 	screen_loc = "TOP-2,WEST+2"
 	layer = FULLSCREEN_LAYER
+
+/obj/screen/holomap
+	icon = 'icons/480x480.dmi'
+	icon_state = "blank"
+	name = "holomap"
+	icon = null
+	icon_state = ""
+	screen_loc = ui_holomap
+	mouse_opacity = 0
+	alpha = 255

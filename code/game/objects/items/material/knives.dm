@@ -75,6 +75,9 @@
 	unbreakable = 1
 	material_amount = 2
 
+	drop_sound = SFX_DROP_KNIFE
+	pickup_sound = SFX_PICKUP_KNIFE
+
 /obj/item/material/knife/hook
 	name = "meat hook"
 	desc = "A sharp, metal hook what sticks into things."

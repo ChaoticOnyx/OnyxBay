@@ -3,7 +3,7 @@
 
 	plane = DEFAULT_PLANE
 	layer = MOB_LAYER
-	appearance_flags = PIXEL_SCALE | LONG_GLIDE
+	appearance_flags = PIXEL_SCALE | LONG_GLIDE | TILE_BOUND
 	animate_movement = 2
 	virtual_mob = /mob/observer/virtual/mob
 
@@ -117,8 +117,11 @@
 	var/name_archive //For admin things like possession
 
 	var/timeofdeath = 0
+	var/ghostizing = FALSE
 
 	var/bodytemperature = 310.055	//98.7 F
+	/// Tracks whether our temp changed
+	var/bodytemperature_lasttick
 	var/default_pixel_x = 0
 	var/default_pixel_y = 0
 
@@ -190,7 +193,6 @@
 	var/mob/teleop = null
 
 	var/turf/listed_turf = null  	//the current turf being examined in the stat panel
-	var/list/item_verbs = list()
 	var/list/shouldnt_see = list()	//list of objects that this mob shouldn't see in the stat panel. this silliness is needed because of AI alt+click and cult blood runes
 
 	var/mob_size = MOB_MEDIUM

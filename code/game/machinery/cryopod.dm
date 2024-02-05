@@ -314,9 +314,9 @@
 /obj/machinery/cryopod/emag_act(remaining_charges, mob/user)
 	if(!emagged)
 		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
-		to_chat(user, "<span class='notice'The locking mechanism has been disabled.</span>")
-		emagged = 1
-		return 1
+		to_chat(user, SPAN_NOTICE("The locking mechanism has been disabled."))
+		emagged = TRUE
+		return TRUE
 
 /obj/machinery/cryopod/proc/find_control_computer(urgent=0)
 	// Workaround for http://www.byond.com/forum/?post=2007448

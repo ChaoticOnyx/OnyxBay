@@ -131,17 +131,24 @@
 //spreading vines aren't created on their final turf.
 //Instead, they are created at their parent and then move to their destination.
 /obj/effect/vine/proc/spread_to(turf/target_turf)
+	if(!isturf(target_turf))
+		return
 	var/obj/effect/vine/child = new(get_turf(src), seed, parent) // This should do a little bit of animation.
 	//move out to the destination
-	spawn(1)
-		if(child?.forceMove(target_turf))
-			child.set_dir(child.calc_dir())
-			child.update_icon()
-			// Some plants eat through plating.
-			if(islist(seed.chems) && !isnull(seed.chems[/datum/reagent/acid/polyacid]))
-				target_turf.ex_act(prob(80) ? 3 : 2)
-		else
-			qdel(child)
+	spawn(1) // INVOKE_ASYNC refuses to produce the neat crawling animation, so I don't give a fuck and the spawn(1) remains here ~ToTh
+		child.finalize_spread_to(target_turf)
+
+/obj/effect/vine/proc/finalize_spread_to(turf/target_turf)
+	if(QDELING(src))
+		return
+	if(isturf(target_turf) && forceMove(target_turf))
+		set_dir(calc_dir())
+		update_icon()
+		// Some plants eat through plating.
+		if(islist(seed.chems) && !isnull(seed.chems[/datum/reagent/acid/polyacid]))
+			target_turf.ex_act(prob(80) ? 3 : 2)
+	else
+		qdel(src)
 
 /obj/effect/vine/proc/wake_neighbors()
 	// This turf is clear now, let our buddies know.

@@ -22,7 +22,8 @@
 	w_class = ITEM_SIZE_SMALL
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	unacidable = TRUE // Most of these are made of glass
-	pickup_sound = 'sound/effects/using/bottles/pickup3.ogg'
+	pickup_sound = SFX_PICKUP_BOTTLE
+	drop_sound = SFX_DROP_BOTTLE
 	can_be_splashed = TRUE
 
 	var/brittle = FALSE
@@ -513,3 +514,6 @@
 	edge = 0
 	unacidable = 1
 	var/icon/broken_outline = icon('icons/obj/reagent_containers/vessels.dmi', "broken")
+
+	drop_sound = SFX_DROP_GLASSSMALL
+	pickup_sound = SFX_PICKUP_GLASSSMALL

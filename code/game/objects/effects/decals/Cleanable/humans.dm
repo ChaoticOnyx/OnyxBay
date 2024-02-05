@@ -84,7 +84,7 @@ var/global/list/image/splatter_cache=list()
 
 	else if(hasfeet)//Or feet
 		perp.feet_blood_color = basecolor
-		perp.track_blood = max(amount,perp.track_blood)
+		perp.track_blood = max(amount, perp.track_blood)
 		if(!perp.feet_blood_DNA)
 			perp.feet_blood_DNA = list()
 		perp.feet_blood_DNA |= blood_DNA.Copy()
@@ -115,7 +115,7 @@ var/global/list/image/splatter_cache=list()
 	user.add_blood(basecolor)
 	user.blood_DNA |= blood_DNA.Copy()
 	user.bloody_hands = taken
-	add_verb(user, /mob/living/carbon/human/proc/bloody_doodle)
+	user.verbs += /mob/living/carbon/human/proc/bloody_doodle
 
 /obj/effect/decal/cleanable/blood/splatter
 	random_icon_states = list("mfloor3", "mfloor7", "mgibbl1", "mgibbl2", "mgibbl3", "mgibbl4", "mgibbl5")
@@ -127,7 +127,6 @@ var/global/list/image/splatter_cache=list()
 
 /obj/effect/decal/cleanable/blood/drip
 	name = "drips of blood"
-	desc = "It's red."
 	dryname = "dried drips of blood"
 	gender = PLURAL
 	icon = 'icons/effects/drip.dmi'

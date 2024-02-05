@@ -21,6 +21,8 @@
 					/obj/item/clothing/gloves/insulated/cheap = 2)
 	premium = list(/obj/item/clothing/gloves/insulated = 1)
 
+	vending_sound = SFX_VENDING_GENERIC
+
 /obj/item/vending_cartridge/tool
 	name = "youtool"
 	build_path = /obj/machinery/vending/tool
@@ -52,34 +54,42 @@
 /obj/machinery/vending/engineering
 	name = "Robco Tool Maker"
 	desc = "Everything you need for do-it-yourself repair."
+
 	icon_state = "engi"
+
 	req_one_access = list(access_atmospherics, access_engine_equip)
-	component_types = list(/obj/item/vending_cartridge/engineering)
-	// There was an incorrect entry (cablecoil/power).  I improvised to cablecoil/heavyduty.
-	// Another invalid entry, /obj/item/circuitry.  I don't even know what that would translate to, removed it.
-	// The original products list wasn't finished.  The ones without given quantities became quantity 5.  -Sayu
-	legal = list(	/obj/item/storage/belt/utility = 4,
-					/obj/item/clothing/glasses/hud/standard/meson = 4,
-					/obj/item/clothing/gloves/insulated = 4,
-					/obj/item/screwdriver = 12,
-					/obj/item/crowbar = 12,
-					/obj/item/wirecutters = 12,
-					/obj/item/device/multitool = 12,
-					/obj/item/wrench = 12,
-					/obj/item/device/t_scanner = 12,
-					/obj/item/cell = 8,
-					/obj/item/weldingtool = 8,
-					/obj/item/clothing/head/welding = 8,
-					/obj/item/light/tube = 10,
-					/obj/item/stock_parts/scanning_module = 5,
-					/obj/item/stock_parts/micro_laser = 5,
-					/obj/item/stock_parts/matter_bin = 5,
-					/obj/item/stock_parts/manipulator = 5,
-					/obj/item/stock_parts/console_screen = 5,
-					/obj/item/stock_parts/capacitor = 5)
-	illegal = list(	/obj/item/rcd = 1,
-					/obj/item/rcd_ammo = 5)
+
+	component_types = list(
+		/obj/item/vending_cartridge/engineering
+		)
+
+	legal = list(
+		/obj/item/storage/belt/utility = 4,
+		/obj/item/clothing/glasses/hud/standard/meson = 4,
+		/obj/item/clothing/gloves/insulated = 4,
+		/obj/item/screwdriver = 12,
+		/obj/item/crowbar = 12,
+		/obj/item/wirecutters = 12,
+		/obj/item/device/multitool = 12,
+		/obj/item/wrench = 12,
+		/obj/item/device/t_scanner = 12,
+		/obj/item/cell = 8,
+		/obj/item/weldingtool = 8,
+		/obj/item/clothing/head/welding = 8,
+		/obj/item/light/tube = 10,
+		/obj/item/stock_parts/scanning_module = 5,
+		/obj/item/stock_parts/micro_laser = 5,
+		/obj/item/stock_parts/matter_bin = 5,
+		/obj/item/stock_parts/manipulator = 5,
+		/obj/item/stock_parts/console_screen = 5,
+		/obj/item/stock_parts/capacitor = 5
+		)
+
+	illegal = list(
+		/obj/item/rcd = 1,
+		/obj/item/rcd_ammo = 5
+		)
 
 /obj/item/vending_cartridge/engineering
-	name = "tool maker"
+	icon_state = "refill_engi"
 	build_path = /obj/machinery/vending/engineering

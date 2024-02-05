@@ -1,5 +1,5 @@
 /obj/machinery/mecha_part_fabricator
-	icon = 'icons/obj/robotics.dmi'
+	icon = 'icons/obj/machines/robotics.dmi'
 	icon_state = "fab-idle"
 	name = "Exosuit Fabricator"
 	desc = "A machine used for construction of robotcs and mechas."
@@ -86,8 +86,7 @@
 /obj/machinery/mecha_part_fabricator/attack_hand(mob/user)
 	if(..())
 		return
-	if(!allowed(user))
-		return
+
 	tgui_interact(user)
 
 /obj/machinery/mecha_part_fabricator/tgui_interact(mob/user, datum/tgui/ui)
@@ -193,9 +192,9 @@
 	if(materials[material] + amnt <= res_max_amount)
 		if(stack && stack.amount >= 1)
 			var/count = 0
-			AddOverlays("fab-load-metal")
+			AddOverlays("fab-load")
 			spawn(10)
-				CutOverlays("fab-load-metal")
+				CutOverlays("fab-load")
 			while(materials[material] + amnt <= res_max_amount && stack.amount >= 1)
 				materials[material] += amnt
 				stack.use(1)

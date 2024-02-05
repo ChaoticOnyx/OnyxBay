@@ -93,6 +93,11 @@
 	// HUD element variable, see organ_icon.dm get_damage_hud_image()
 	var/image/hud_damage_image
 
+/obj/item/organ/external/Initialize(mapload, ...)
+	. = ..()
+	if(!mapload && owner)
+		owner.update_organ_movespeed()
+
 /obj/item/organ/external/proc/get_fingerprint()
 
 	if((limb_flags & ORGAN_FLAG_FINGERPRINT) && dna && !is_stump() && !BP_IS_ROBOTIC(src))
@@ -337,7 +342,7 @@
 
 	dislocated = 1
 	if(owner)
-		add_verb(owner, /mob/living/carbon/human/proc/undislocate)
+		owner.verbs |= /mob/living/carbon/human/proc/undislocate
 
 /obj/item/organ/external/proc/undislocate()
 	if(dislocated == -1)
@@ -351,7 +356,7 @@
 		for(var/obj/item/organ/external/limb in owner.organs)
 			if(limb.dislocated == 1)
 				return
-		remove_verb(owner, /mob/living/carbon/human/proc/undislocate)
+		owner.verbs -= /mob/living/carbon/human/proc/undislocate
 
 /obj/item/organ/external/update_health()
 	damage = min(max_damage, (brute_dam + burn_dam))
@@ -902,6 +907,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 				stump.sever_artery()
 			stump.update_damages()
 			stump.replaced(victim)
+
+	victim.update_organ_movespeed()
+
 	spawn(1) // Yes, we DO need to wait before regenerating icons since all the stuff takes a literal eternity
 		if(!QDELETED(victim)) // Since the victim can misteriously vanish during that spawn(1) causing runtimes
 			victim.updatehealth()
@@ -1048,6 +1056,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 		movement_tally += splinted_tally * damage_multiplier
 	else if(status & ORGAN_BROKEN)
 		movement_tally += broken_tally * damage_multiplier
+
+	owner.update_organ_movespeed()
 
 /obj/item/organ/external/proc/fracture()
 	if(!config.health.bones_can_break)
@@ -1214,7 +1224,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	LAZYADD(supplied_wound.embedded_objects, W)
 	implants += W
 	owner.embedded_flag = 1
-	add_verb(owner, /mob/proc/yank_out_object)
+	owner.verbs += /mob/proc/yank_out_object
 	W.add_blood(owner)
 	if(ismob(W.loc))
 		var/mob/living/H = W.loc

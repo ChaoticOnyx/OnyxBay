@@ -24,6 +24,9 @@
 	var/cuff_sound = "handcuffs"
 	var/cuff_type = "handcuffs"
 
+	drop_sound = SFX_DROP_ACCESSORY
+	pickup_sound = SFX_PICKUP_ACCESSORY
+
 /obj/item/handcuffs/get_icon_state(slot)
 	if(slot == slot_handcuffed_str)
 		return "handcuff1"

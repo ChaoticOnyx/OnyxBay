@@ -34,6 +34,9 @@
 	unacidable = FALSE
 	lid_type = null
 
+	drop_sound = SFX_DROP_METALPOT
+	pickup_sound = SFX_PICKUP_METALPOT
+
 /obj/item/reagent_containers/vessel/bucket/full
 	startswith = list(/datum/reagent/water)
 
@@ -70,6 +73,41 @@
 	startswith = list(/datum/reagent/drink/coffee = 30)
 	lid_type = null
 	unacidable = FALSE
+
+/obj/item/reagent_containers/vessel/takeaway
+	name = "takeaway cup"
+	desc = "A regular takeaway cup with handy lid."
+	icon_state = "takeaway_cup"
+	item_state = "takeaway_cup"
+	volume = 30
+	filling_states = "50;65;80;100"
+	possible_transfer_amounts = "5;10;15;30"
+	center_of_mass = "x=17;y=12"
+	pickup_sound = 'sound/effects/using/bottles/papercup.ogg'
+	lid_type = /datum/vessel_lid/takeaway
+	unacidable = FALSE
+	var/writing = null
+
+/obj/item/reagent_containers/vessel/takeaway/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/pen))
+		if(writing)
+			return
+		var/t = tgui_input_text(user, "Write something on the cup...", name, writing, MAX_NAME_LEN)
+		if(!t)
+			return
+		if(!in_range(src, usr) && loc != usr)
+			return
+		writing = t
+		desc += " The writing on the sleeve reads, '[writing]'."
+		user.visible_message(SPAN("notice", "\The [user] writes something on \the [src]."))
+		update_icon()
+		return
+	..()
+
+/obj/item/reagent_containers/vessel/takeaway/on_update_icon()
+	..()
+	if(writing)
+		AddOverlays(OVERLAY(icon, "[icon_state]_named", alpha))
 
 /obj/item/reagent_containers/vessel/tea
 	name = "cup of Duke Purple Tea"
@@ -137,6 +175,9 @@
 	filling_states = "50;100"
 	lid_type = null
 	unacidable = FALSE
+
+	drop_sound = SFX_DROP_PAPERCUP
+	pickup_sound = SFX_PICKUP_PAPERCUP
 
 /obj/item/reagent_containers/vessel/shaker
 	name = "shaker"

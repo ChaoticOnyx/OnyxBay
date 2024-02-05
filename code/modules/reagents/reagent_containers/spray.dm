@@ -22,7 +22,7 @@
 
 /obj/item/reagent_containers/spray/Initialize()
 	. = ..()
-	verbs -= /obj/item/reagent_containers/verb/set_APTFT
+	src.verbs -= /obj/item/reagent_containers/verb/set_APTFT
 
 /obj/item/reagent_containers/spray/afterattack(atom/A as mob|obj, mob/user, proximity)
 	if(istype(A, /obj/item/storage) || istype(A, /obj/structure/table) || istype(A, /obj/structure/closet) || istype(A, /obj/item/reagent_containers) || istype(A, /obj/structure/sink) || istype(A, /obj/structure/janitorialcart) || istype(A, /obj/item/backwear/reagent))
@@ -189,6 +189,9 @@
 	possible_transfer_amounts = null
 	volume = 10
 	startswith = list(/datum/reagent/water)
+
+	drop_sound = SFX_DROP_HERB
+	pickup_sound = SFX_PICKUP_HERB
 
 /obj/item/reagent_containers/spray/chemsprayer
 	name = "chem sprayer"

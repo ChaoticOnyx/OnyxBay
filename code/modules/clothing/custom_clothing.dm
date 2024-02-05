@@ -276,3 +276,66 @@
 	parts[1] =	1
 	original[1] =  /obj/item/clothing/head/helmet
 	finished[1] = /obj/item/clothing/head/helmet/tcc
+
+// Sans andertale
+/obj/item/clothing/suit/armor/vest/hazardcoat
+	name = "ranger's coat"
+	desc = "An armored coat with desert camo pattern."
+	icon_state = "hazardcoat"
+	//item_state = "armor"
+	armor = list(melee = 50, bullet = 50, laser = 50, energy = 25, bomb = 40, bio = 10)
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
+	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
+	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
+
+
+/obj/item/device/modkit/hazardcoat
+	name = "ranger coat modkit"
+	desc = "A green coat with some kevlar inside it. Made specificly for warden's jacket."
+	icon_state = "modkit"
+
+/obj/item/device/modkit/hazardcoat/New()
+	..()
+	parts = new /list(1)
+	original = new /list(1)
+	finished = new /list(1)
+
+	parts[1] =	1
+	original[1] =  /obj/item/clothing/suit/armor/vest/warden
+	finished[1] = /obj/item/clothing/suit/armor/vest/hazardcoat
+
+/obj/item/gun/projectile/revolver/remington
+	name = "sweet revenge"
+	desc = "A very old revolver, based on the remington 1858. Uses .44 magnum rounds. There are 7 notches on this revolver."
+	icon = 'icons/obj/guns/sr.dmi'
+	icon_state = "remington"
+	item_state = "webley"
+	max_shells = 6
+	caliber = ".44"
+	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
+	ammo_type = /obj/item/ammo_casing/c44
+
+/obj/item/device/modkit/remington
+	name = "remington 1858 modkit"
+	desc = "Tools necessary to turn a .357 revolver into a remington."
+	icon_state = "modkit"
+
+/obj/item/device/modkit/remington/New()
+	..()
+	parts = new /list(1)
+	original = new /list(1)
+	finished = new /list(1)
+
+	parts[1] =	1
+	original[1] =  /obj/item/gun/projectile/revolver
+	finished[1] = /obj/item/gun/projectile/revolver/remington
+
+// TheUnknownOneBYND
+/obj/item/clothing/under/color/odaycel
+	name = "O-S jumpsuit"
+	desc = "A seemingly custom-tailored brown jumpsuit. It's marked \"#O-S\" and has a serial number on its chest."
+	color = "#663300"
+
+/obj/item/clothing/under/color/odaycel/New()
+	..()
+	name = "O-S jumpsuit #[rand(1, 9999)]"

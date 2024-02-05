@@ -12,7 +12,7 @@
 	siemens_coefficient = 0.7
 	sprite_sheets_obj = null
 	wizard_garb = TRUE
-	species_restricted = list(SPECIES_HUMAN, SPECIES_IPC, SPECIES_UNATHI)
+	species_restricted = list(SPECIES_HUMAN, SPECIES_UNATHI)
 
 /obj/item/clothing/suit/space/void/wizard
 	icon_state = "rig-wiz"
@@ -38,7 +38,7 @@
 				/obj/item/scrying,
 				/obj/item/monster_manual,
 				/obj/item/dice/d20/cursed)
-	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_IPC, SPECIES_UNATHI)
+	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_UNATHI)
 
 /obj/item/clothing/suit/space/void/wizard/New()
 	..()

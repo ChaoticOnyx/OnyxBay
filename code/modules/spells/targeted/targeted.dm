@@ -31,6 +31,8 @@ Targeted spells have two useful flags: INCLUDEUSER and SELECTABLE. These are exp
 	var/heal_bones = 0
 	var/amt_eye_blind = 0
 	var/amt_eye_blurry = 0
+	/// Determines whether healing will remove embeded objects
+	var/removes_embeded = FALSE
 	var/list/compatible_mobs = list()
 
 

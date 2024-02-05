@@ -18,6 +18,9 @@
 	var/list/seen_turfs
 	var/datum/proximity_trigger/line/transparent/proximity_trigger
 
+	drop_sound = SFX_DROP_COMPONENT
+	pickup_sound = SFX_PICKUP_COMPONENT
+
 /obj/item/device/assembly/infra/New()
 	..()
 	beams = list()

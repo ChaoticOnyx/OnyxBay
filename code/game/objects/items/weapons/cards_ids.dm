@@ -24,6 +24,9 @@
 
 	var/list/files = list(  )
 
+	drop_sound = SFX_DROP_DISK
+	pickup_sound = SFX_PICKUP_DISK
+
 /obj/item/card/data
 	name = "data disk"
 	desc = "A disk of data."

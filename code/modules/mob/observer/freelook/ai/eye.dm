@@ -7,8 +7,8 @@
 	name = "Inactive Camera Eye"
 	name_sufix = "Camera Eye"
 
-/mob/observer/eye/cameranet/New()
-	..()
+/mob/observer/eye/cameranet/Initialize()
+	. = ..()
 	visualnet = cameranet
 
 /mob/observer/eye/aiEye
@@ -16,8 +16,8 @@
 	name_sufix = "AI Eye"
 	icon_state = "AI-eye"
 
-/mob/observer/eye/aiEye/New()
-	..()
+/mob/observer/eye/aiEye/Initialize()
+	. = ..()
 	visualnet = cameranet
 
 /mob/observer/eye/aiEye/setLoc(T, cancel_tracking = 1)

@@ -28,6 +28,12 @@
 	var/obj/item/I = new balloon_type(loc)
 	return I
 
+/datum/uplink_item/item/badassery/food/packaged/surstromming
+	name = "Old canned food"
+	desc = "Default operative field food ration for your needs."
+	path = /obj/item/reagent_containers/food/packaged/surstromming
+	item_cost = 2
+
 /datum/uplink_item/item/badassery/lighter
 	name = "For lighting cigarettes in a badass manner"
 	desc = "An extremely fancy zippo lighter. Only Syndicate members are properly trained to deal with such a fashionable thing."

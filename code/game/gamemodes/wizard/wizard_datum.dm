@@ -33,7 +33,7 @@
 		return
 
 	if(MUTATION_SKELETON in lich.mutations)
-		lich.mutations.Remove(MUTATION_SKELETON)
+		lich.remove_mutation(MUTATION_SKELETON)
 	to_chat(lich, SPAN_DANGER("You fell something bizarre, as if your mind is being sucked from your head!"))
 	to_chat(lich, SPAN_DANGER("You scream in dismay, realizing that your master is going to take over your body!"))
 	lich.spellremove()

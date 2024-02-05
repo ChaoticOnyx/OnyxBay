@@ -46,7 +46,7 @@
 	if(usr.incapacitated())
 		return
 
-	if(!usr.drop(src))
+	if(!usr.drop(src, changing_slots = TRUE))
 		return
 
 	switch(over_object.name)
@@ -65,6 +65,9 @@
 	slowdown_accessory = 0
 	for(var/obj/item/clothing/accessory/A in accessories)
 		slowdown_accessory += A.slowdown
+	if(ismob(loc))
+		var/mob/M = loc
+		M.update_equipment_slowdown()
 
 /**
  *  Attach accessory A to src
@@ -75,7 +78,7 @@
 /obj/item/clothing/proc/attach_accessory(mob/user, obj/item/clothing/accessory/A)
 	accessories += A
 	A.on_attached(src, user)
-	verbs += /obj/item/clothing/proc/removetie_verb
+	src.verbs |= /obj/item/clothing/proc/removetie_verb
 	update_accessory_slowdown()
 	update_clothing_icon()
 
@@ -102,7 +105,7 @@
 		A = accessories[1]
 	src.remove_accessory(usr,A)
 	if(!accessories.len)
-		remove_verb(src, /obj/item/clothing/proc/removetie_verb)
+		src.verbs -= /obj/item/clothing/proc/removetie_verb
 
 /obj/item/clothing/emp_act(severity)
 	if(accessories.len)

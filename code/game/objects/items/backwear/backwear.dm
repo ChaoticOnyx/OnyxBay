@@ -194,7 +194,7 @@
 		reagents.add_reagent(reagent_type, reagent_ratio * initial_capacity)
 
 	if(!possible_transfer_amounts)
-		remove_verb(src, /obj/item/backwear/reagent/verb/set_APTFT)
+		src.verbs -= /obj/item/backwear/reagent/verb/set_APTFT
 
 /obj/item/backwear/reagent/_examine_text(mob/user)
 	. = ..()

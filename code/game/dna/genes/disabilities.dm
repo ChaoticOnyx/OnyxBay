@@ -29,7 +29,7 @@
 
 /datum/dna/gene/disability/activate(mob/M, connected, flags)
 	if(mutation && !(mutation in M.mutations))
-		M.mutations.Add(mutation)
+		M.add_mutation(mutation)
 	if(disability)
 		M.disabilities|=disability
 	if(sdisability)
@@ -41,7 +41,7 @@
 
 /datum/dna/gene/disability/deactivate(mob/M, connected, flags)
 	if(mutation && (mutation in M.mutations))
-		M.mutations.Remove(mutation)
+		M.remove_mutation(mutation)
 	if(disability)
 		M.disabilities &= (~disability)
 	if(sdisability)

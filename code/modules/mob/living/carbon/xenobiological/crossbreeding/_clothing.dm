@@ -36,7 +36,7 @@
 	return ..()
 
 /obj/item/clothing/glasses/prism_glasses/equipped(mob/user)
-	. = ..()
+	..()
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.get_equipped_item(slot_glasses) == src)
@@ -44,7 +44,6 @@
 				action.Grant(H)
 
 /obj/item/clothing/glasses/prism_glasses/dropped()
-	. = ..()
 	for(var/datum/action/action in actions)
 		if(!action.owner)
 			continue
@@ -137,7 +136,6 @@
 	return ..()
 
 /obj/item/clothing/head/hairflower/peaceflower/dropped()
-	. = ..()
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc
 		if(!istype(H.head, src.type))

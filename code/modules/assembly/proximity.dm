@@ -14,6 +14,9 @@
 
 	var/range = 2
 
+	drop_sound = SFX_DROP_COMPONENT
+	pickup_sound = SFX_PICKUP_COMPONENT
+
 /obj/item/device/assembly/prox_sensor/Initialize()
 	. = ..()
 	proximity_monitor = new(src, range, FALSE)
@@ -73,7 +76,6 @@
 		time = 10
 
 /obj/item/device/assembly/prox_sensor/dropped()
-	. = ..()
 	sense()
 
 /obj/item/device/assembly/prox_sensor/retransmit_moved(mover, old_loc, new_loc)

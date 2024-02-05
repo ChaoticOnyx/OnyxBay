@@ -22,8 +22,8 @@
 /// from turf CtrlClickOn(): (/mob)
 #define SIGNAL_MOB_CTRL_CLICK "mob_ctrl_click"
 
-// Called on '/mob/proc/add_spell' (/mob, )
+/// Called on '/mob/proc/add_spell' (/mob, )
 #define SIGNAL_MOB_SPELL_LEARNED "mob_spell_learned"
 
-/// from mob/get_status_tab_items(): (list/items)
-#define SIGNAL_MOB_GET_STATUS_TAB_ITEMS "mob_get_status_tab_items"
+/// Called on '/mob/proc/update_movespeed()' (/mob)
+#define SIGNAL_MOB_MOVESPEED_UPDATED "mob_movespeed_updated"

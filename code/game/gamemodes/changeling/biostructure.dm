@@ -111,9 +111,9 @@
 		spawn()
 			if(brainchan)
 				if(istype(loc, /obj/item/organ/external))
-					add_verb(brainchan, /mob/living/carbon/brain/proc/transform_into_little_changeling)
+					brainchan.verbs += /mob/living/carbon/brain/proc/transform_into_little_changeling
 				else
-					add_verb(brainchan, /mob/living/carbon/brain/proc/headcrab_runaway)
+					brainchan.verbs += /mob/living/carbon/brain/proc/headcrab_runaway
 	..()
 
 

@@ -18,6 +18,9 @@
 	var/activate_sound = 'sound/weapons/saberon.ogg'
 	var/deactivate_sound = 'sound/weapons/saberon.ogg'
 
+	drop_sound = SFX_DROP_WELDINGTOOL
+	pickup_sound = SFX_PICKUP_WELDINGTOOL
+
 /obj/item/melee/energy/proc/activate(mob/living/user)
 	if(active)
 		return
@@ -75,7 +78,7 @@
 	return
 
 /obj/item/melee/energy/dropped()
-	. = ..()
+	..()
 	spawn(9)
 		if(isturf(loc))
 			deactivate()
@@ -193,6 +196,9 @@
 	edge = 1
 	hitsound = 'sound/effects/fighting/energy1.ogg'
 	var/blade_color
+
+	drop_sound = SFX_DROP_DEVICE
+	pickup_sound = SFX_PICKUP_DEVICE
 
 /obj/item/melee/energy/sword/activate(mob/living/user)
 	if(!active)
@@ -364,7 +370,7 @@
 	QDEL_IN(src, 0)
 
 /obj/item/melee/energy/blade/dropped()
-	. = ..()
+	..()
 	QDEL_IN(src, 0)
 
 /obj/item/melee/energy/blade/think()

@@ -13,10 +13,14 @@
 	oxy_mod =       1.1
 	radiation_mod = 0.5
 	brute_mod =     0.85
-	slowdown =      1
+	movespeed_modifier = /datum/movespeed_modifier/human_gravworlder
 
 	appearance_flags = HAS_HAIR_COLOR | HAS_SKIN_TONE_GRAV | HAS_LIPS | HAS_UNDERWEAR | HAS_EYE_COLOR
 	spawn_flags = SPECIES_IS_RESTRICTED
+
+	body_builds = list(
+		new /datum/body_build
+	)
 
 /datum/species/human/spacer
 	name = SPECIES_SPACER
@@ -36,6 +40,10 @@
 
 	appearance_flags = HAS_HAIR_COLOR | HAS_SKIN_TONE_SPCR | HAS_LIPS | HAS_UNDERWEAR | HAS_EYE_COLOR
 	spawn_flags = SPECIES_IS_RESTRICTED
+
+	body_builds = list(
+		new /datum/body_build
+	)
 
 /datum/species/human/vatgrown
 	name = SPECIES_VATGROWN
@@ -58,6 +66,10 @@
 		BP_STOMACH =  /obj/item/organ/internal/stomach
 		)
 	spawn_flags = SPECIES_IS_RESTRICTED
+
+	body_builds = list(
+		new /datum/body_build
+	)
 
 /datum/species/human/vatgrown/sanitize_name(name)
 	return sanitizeName(name, allow_numbers=TRUE)

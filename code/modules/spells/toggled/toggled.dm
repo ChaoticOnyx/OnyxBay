@@ -35,6 +35,7 @@
 	if(toggled)
 		mana_current -= mana_drain_per_tick
 		if(mana_current <= 0)
+			mana_current = 0
 			toggled = FALSE
 			deactivate()
 	else if(mana_current < mana_max)

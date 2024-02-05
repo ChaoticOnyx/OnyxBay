@@ -153,7 +153,7 @@
 	purchased_powers.Add(P)
 
 	if(P.legacy_handling)
-		add_verb(my_mob, P.verbpath)
+		my_mob.verbs += P.verbpath
 	else
 		new P.verbpath(my_mob)
 
@@ -167,7 +167,7 @@
 		return
 
 	if(P.legacy_handling)
-		remove_verb(my_mob, P.verbpath)
+		my_mob.verbs -= P.verbpath
 	else
 		for(var/datum/vampire_power/VP in available_powers)
 			if(VP.type == P.verbpath)
@@ -180,7 +180,7 @@
 /datum/vampire/proc/remove_powers()
 	for(var/datum/power/vampire/P in purchased_powers)
 		if(P.legacy_handling)
-			remove_verb(my_mob, P.verbpath)
+			my_mob.verbs -= P.verbpath
 			continue
 	purchased_powers.Cut()
 	for(var/thing in available_powers)
@@ -301,7 +301,7 @@
 		my_mob.visible_message(SPAN("danger", "A dark aura manifests itself around [my_mob], their eyes turning red and their composure changing to be more beast-like."),\
 							   SPAN("danger", "You can resist no longer. The power of the Veil takes control over your mind: you are unable to speak or think. In people, you see nothing but prey to be feasted upon. You are reduced to an animal."))
 
-		my_mob.mutations.Add(MUTATION_HULK)
+		my_mob.add_mutation(MUTATION_HULK)
 		my_mob.update_mutations()
 
 		my_mob.set_sight(my_mob.sight|SEE_MOBS)
@@ -318,7 +318,7 @@
 	if(prob(force_stop ? 100 : blood_usable))
 		status &= ~VAMP_FRENZIED
 
-		my_mob.mutations.Remove(MUTATION_HULK)
+		my_mob.remove_mutation(MUTATION_HULK)
 		my_mob.update_mutations()
 
 		my_mob.set_sight(my_mob.sight&(~SEE_MOBS))

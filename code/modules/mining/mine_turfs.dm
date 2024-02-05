@@ -168,7 +168,7 @@ var/list/mining_floors = list()
 //Not even going to touch this pile of spaghetti
 /turf/simulated/mineral/attackby(obj/item/W, mob/user)
 	if(!user.IsAdvancedToolUser())
-		to_chat(usr, "<span class='warning'>You don't have the dexterity to do this!</span>")
+		to_chat(usr, FEEDBACK_YOU_LACK_DEXTERITY)
 		return
 
 	if(istype(W, /obj/item/device/core_sampler))
@@ -241,7 +241,7 @@ var/list/mining_floors = list()
 		if(newDepth >= 200)
 			excavation_level = 200
 
-		if(durability <= 0) // This means the rock is mined out fully
+		if(durability <= 0 || excavation_level >= 200) // This means the rock is mined out fully
 			var/obj/structure/boulder/B
 			if(artifact_find)
 				if(excavation_level > 0 || prob(15))
@@ -450,8 +450,8 @@ var/list/mining_floors = list()
 	if(prob(mineralChance) && !mineral)
 		var/mineral_name = util_pick_weight(mineralSpawnChanceList) //temp mineral name
 		mineral_name = lowertext(mineral_name)
-		if(mineral_name && (mineral_name in ore_data))
-			mineral = ore_data[mineral_name]
+		if(mineral_name && (mineral_name in GLOB.ore_data))
+			mineral = GLOB.ore_data[mineral_name]
 			UpdateMineral()
 	MineralSpread()
 
@@ -508,8 +508,8 @@ var/list/mining_floors = list()
 	if(prob(mineralChance) && !mineral)
 		var/mineral_name = util_pick_weight(mineralSpawnChanceList) //temp mineral name
 		mineral_name = lowertext(mineral_name)
-		if(mineral_name && (mineral_name in ore_data))
-			mineral = ore_data[mineral_name]
+		if(mineral_name && (mineral_name in GLOB.ore_data))
+			mineral = GLOB.ore_data[mineral_name]
 			UpdateMineral()
 	MineralSpread()
 

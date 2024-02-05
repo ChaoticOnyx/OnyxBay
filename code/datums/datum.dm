@@ -11,10 +11,8 @@
 	var/list/signal_procs = list()
 
 	// Thinking
-	var/list/_think_ctxs = list()
+	var/list/_think_ctxs
 	var/datum/think_context/_main_think_ctx
-
-	var/cached_ref
 
 #ifdef TESTING
 	var/tmp/running_find_references
@@ -139,6 +137,8 @@
 /// * `clbk` - a proc which should be called.
 /// * `time` - when to call the context.
 /datum/proc/add_think_ctx(name, datum/callback/clbk, time)
+	LAZYINITLIST(_think_ctxs)
+
 	if(!QDELETED(_think_ctxs[name]))
 		CRASH("Thinking context [name] is exists")
 

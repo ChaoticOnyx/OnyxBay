@@ -52,20 +52,15 @@
 
 /obj/structure/closet/secure_closet/RD/WillContain()
 	return list(
+		/obj/item/storage/garment/research_director,
 		/obj/item/clothing/suit/bio_suit/scientist,
 		/obj/item/clothing/head/bio_hood/scientist,
-		/obj/item/clothing/under/rank/research_director,
-		/obj/item/clothing/under/rank/research_director/rdalt,
-		/obj/item/clothing/under/rank/research_director/dress_rd,
-		/obj/item/clothing/glasses/hud/standard/science,
-		/obj/item/cartridge/rd,
-		/obj/item/clothing/shoes/leather,
-		/obj/item/clothing/gloves/latex,
 		/obj/item/device/radio/headset/heads/rd,
-		/obj/item/clothing/mask/gas,
+		/obj/item/cartridge/rd,
 		/obj/item/device/flash,
 		/obj/item/clipboard,
-		/obj/item/clothing/suit/storage/toggle/labcoat/rd
+		/obj/item/melee/telebaton,
+		/obj/item/paper/monitorkey
 	)
 
 /obj/structure/closet/secure_closet/animal

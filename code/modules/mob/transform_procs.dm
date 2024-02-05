@@ -174,7 +174,7 @@
 		var/list/babies = list()
 		for(var/i=1,i<=number,i++)
 			var/mob/living/carbon/metroid/M = new /mob/living/carbon/metroid(loc)
-			M.nutrition = round(nutrition/number)
+			M.set_nutrition(round(M.nutrition / number))
 			step_away(M,src)
 			babies += M
 		new_metroid = pick(babies)
@@ -337,7 +337,7 @@
 			organ.min_broken_damage = Floor(organ.max_damage * 0.75)
 	src.no_pain = TRUE
 	src.does_not_breathe = TRUE
-	add_verb(src, /mob/living/carbon/human/proc/breath_death)
-	add_verb(src, /mob/living/carbon/human/proc/consume)
+	verbs += /mob/living/carbon/human/proc/breath_death
+	verbs += /mob/living/carbon/human/proc/consume
 	remove_language(LANGUAGE_GALCOM)
 	playsound(src, 'sound/hallucinations/wail.ogg', 20, 1)

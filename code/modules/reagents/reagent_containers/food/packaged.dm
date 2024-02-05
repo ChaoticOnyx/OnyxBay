@@ -192,3 +192,40 @@
 	nutriment_amt = 4
 	startswith = list(/datum/reagent/drink/doctor_delight = 5)
 	bitesize = 3
+
+/obj/item/reagent_containers/food/packaged/surstromming
+	name = "\improper old canned food"
+	icon_state = "surstromming"
+	desc = "Extremely old canned food made of some sort of fermented fish."
+	filling_color = "#cc8880"
+	trash = /obj/item/trash/surstromming
+	nutriment_desc = list("roting meat" = 3, "salt" = 4)
+	nutriment_amt = 4
+	startswith = list(
+		/datum/reagent/sodiumchloride = 1,
+		/datum/reagent/nutriment/protein = 2,
+		/datum/reagent/ethylredoxrazine = 1)
+	bitesize = 0.5
+
+/obj/item/reagent_containers/food/packaged/surstromming/attack_self(mob/user)
+	if(!is_open_container())
+		trigger_vomit()
+		playsound(loc, 'sound/items/cancrush1.ogg', 50, 1)
+	return ..()
+
+/obj/item/reagent_containers/food/packaged/surstromming/proc/trigger_vomit()
+	var/list/mobs = list()
+	var/list/objs = list()
+	get_mobs_and_objs_in_view_fast(get_turf(src), 3, mobs, objs, 0)
+	for(var/mob/living/carbon/human/H in mobs)
+		if(H.internals && H.internals.icon_state == "internal1")
+			continue
+		H.vomit(0, 7, 3)
+		to_chat(H, FONT_HUGE(SPAN_WARNING("You feel horrible stench! Every breath you take makes you want to puke!")))
+	set_next_think(world.time + 20 SECONDS)
+
+/obj/item/reagent_containers/food/packaged/surstromming/think()
+	if(is_open_container())
+		trigger_vomit()
+	else
+		set_next_think(0)

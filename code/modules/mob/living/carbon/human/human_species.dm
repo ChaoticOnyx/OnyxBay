@@ -33,6 +33,35 @@
 /mob/living/carbon/human/dummy/mannequin/check_shadow()
 	return
 
+/mob/living/carbon/human/gatecrasher/Initialize()
+	. = ..()
+	addtimer(CALLBACK(src, nameof(.proc/unpossessed_death_check)), 45 SECONDS)
+
+/mob/living/carbon/human/gatecrasher/proc/unpossessed_death_check()
+	if(ckey) // Possessed, no euthanasia required
+		return
+
+	adjustOxyLoss(maxHealth) // Cease life functions.
+	setBrainLoss(maxHealth)
+
+	var/obj/item/organ/internal/heart/my_heart = internal_organs_by_name[BP_HEART]
+	my_heart?.pulse = PULSE_NONE
+
+/mob/living/carbon/human/gatecrasher/on_ghost_possess()
+	. = ..()
+	if(prob(65))
+		return // Sorry no antagonizing today
+
+	var/antag_poll = list(
+		MODE_CHANGELING = 3,
+		MODE_TRAITOR = 15,
+		MODE_VAMPIRE = 3,
+		MODE_CULTIST = 5,
+		MODE_REVOLUTIONARY = 5
+	)
+	var/datum/antagonist/selected_antag = GLOB.all_antag_types_[util_pick_weight(antag_poll)]
+	selected_antag?.add_antagonist(mind, TRUE, max_stat = UNCONSCIOUS)
+
 /mob/living/carbon/human/skrell/New(new_loc)
 	h_style = "Skrell Male Tentacles"
 	..(new_loc, SPECIES_SKRELL)
@@ -55,9 +84,6 @@
 
 /mob/living/carbon/human/diona/New(new_loc)
 	..(new_loc, SPECIES_DIONA)
-
-/mob/living/carbon/human/machine/New(new_loc)
-	..(new_loc, SPECIES_IPC)
 
 /mob/living/carbon/human/monkey/New(new_loc)
 	..(new_loc, "Monkey")
@@ -84,9 +110,6 @@
 	..(new_loc, SPECIES_VATGROWN)
 	gender = "female"
 	regenerate_icons()
-
-/mob/living/carbon/human/abductor/New(new_loc)
-	..(new_loc, SPECIES_ABDUCTOR)
 
 /mob/living/carbon/human/promethean/New(new_loc)
 	..(new_loc, SPECIES_PROMETHEAN)

@@ -23,6 +23,9 @@
 	obj_flags = 0
 	var/image/stored_decals = null
 
+	drop_sound = SFX_DROP_AXE
+	pickup_sound = SFX_PICKUP_AXE
+
 /*
  * Grass
  */
@@ -33,6 +36,9 @@
 	icon_state = "tile_grass"
 	origin_tech = list(TECH_BIO = 1)
 
+	drop_sound = SFX_DROP_HERB
+	pickup_sound = SFX_PICKUP_HERB
+
 /*
  * Wood
  */
@@ -41,6 +47,9 @@
 	singular_name = "wood floor tile"
 	desc = "An easy to fit wooden floor tile."
 	icon_state = "tile-wood"
+
+	drop_sound = SFX_DROP_WOODEN
+	pickup_sound = SFX_PICKUP_WOODEN
 
 /obj/item/stack/tile/wood/cyborg
 	name = "wood floor tile synthesizer"

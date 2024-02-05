@@ -225,7 +225,7 @@
 	target.visible_message(SPAN_WARNING("The markings below [target] glow a bloody red."))
 
 	var/list/mob/living/cultists = get_cultists()
-	if((GLOB.changelings && (target.mind in GLOB.changelings.current_antagonists)) || isalien(target) || istype(target, /mob/living/carbon/human/diona) || istype(target, /mob/living/carbon/human/xenos) || istype(target, /mob/living/carbon/human/abductor) || HAS_TRAIT(target, TRAIT_HOLY))
+	if((GLOB.changelings && (target.mind in GLOB.changelings.current_antagonists)) || isalien(target) || istype(target, /mob/living/carbon/human/diona) || istype(target, /mob/living/carbon/human/xenos) || HAS_TRAIT(target, TRAIT_HOLY))
 		to_chat(target, SPAN("changeling", "You feel a slight buzz in your head as a foreign mental force makes futile attempts at invading your mind."))
 		for(var/mob/living/M in cultists)
 			to_chat(M, SPAN_DANGER("You feel a strong mental force blocking your belief from entering their mind.<br>Seems like you won't be able to convert \the [target]..."))

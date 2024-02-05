@@ -58,7 +58,6 @@
 	var/datum/changeling/changeling		// Changeling holder
 	var/datum/vampire/vampire 			// Vampire holder
 	var/datum/wizard/wizard				// Wizard holder
-	var/datum/abductor/abductor 		// Abductor holder
 	var/weakref/enslaved_to
 	var/rev_cooldown = 0
 
@@ -536,7 +535,7 @@
 	if(!mind.name)	mind.name = real_name
 	mind.set_current(src)
 	if(player_is_antag(mind))
-		add_verb(src.client, /client/proc/aooc)
+		src.client.verbs += /client/proc/aooc
 
 //HUMAN
 /mob/living/carbon/human/mind_initialize()

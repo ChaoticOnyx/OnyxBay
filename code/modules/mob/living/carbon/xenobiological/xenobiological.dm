@@ -70,7 +70,7 @@
 
 /mob/living/carbon/metroid/New(location, colour = "green")
 
-	add_verb(src, /mob/living/proc/ventcrawl)
+	verbs += /mob/living/proc/ventcrawl
 
 	src.colour = colour
 	number = random_id(/mob/living/carbon/metroid, 1, 1000)
@@ -144,20 +144,22 @@
 /mob/living/carbon/metroid/Allow_Spacemove()
 	return 1
 
-/mob/living/carbon/metroid/get_status_tab_items()
+/mob/living/carbon/metroid/Stat()
 	. = ..()
 
-	. += "Health: [round((health / maxHealth) * 100)]%"
-	. += "Intent: [a_intent]"
+	statpanel("Status")
+	stat(null, "Health: [round((health / maxHealth) * 100)]%")
+	stat(null, "Intent: [a_intent]")
 
-	. += "Nutrition: [nutrition]/[get_max_nutrition()]"
-	if(amount_grown >= 10)
-		if(is_adult)
-			. += "You can reproduce!"
-		else
-			. += "You can evolve!"
+	if (client.statpanel == "Status")
+		stat(null, "Nutrition: [nutrition]/[get_max_nutrition()]")
+		if(amount_grown >= 10)
+			if(is_adult)
+				stat(null, "You can reproduce!")
+			else
+				stat(null, "You can evolve!")
 
-	. += "Power Level: [powerlevel]"
+		stat(null,"Power Level: [powerlevel]")
 
 /mob/living/carbon/metroid/adjustFireLoss(amount)
 	..(-abs(amount)) // Heals them
@@ -340,7 +342,7 @@
 	return 0
 
 /mob/living/carbon/metroid/proc/gain_nutrition(amount)
-	nutrition += amount
+	add_nutrition(amount)
 	if(prob(amount * 2)) // Gain around one level per 50 nutrition
 		powerlevel++
 		if(powerlevel > 10)

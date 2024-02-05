@@ -14,8 +14,8 @@
 		SPECIES_TAJARA = /datum/spell/messa_shroud,
 		SPECIES_UNATHI = /datum/spell/moghes_blessing,
 		SPECIES_DIONA = /datum/spell/aoe_turf/conjure/grove/gestalt,
-		SPECIES_SKRELL = /obj/item/contract/apprentice/skrell,
-		SPECIES_IPC = /datum/spell/camera_connection)
+		SPECIES_SKRELL = /obj/item/contract/apprentice/skrell
+		)
 
 /obj/item/magic_rock/attack_self(mob/user)
 	if(!istype(user,/mob/living/carbon/human))
@@ -247,11 +247,11 @@
 	vision.possess(L)
 	register_signal(L, SIGNAL_QDELETING, nameof(.proc/release))
 	register_signal(L, SIGNAL_LOGGED_OUT, nameof(.proc/release))
-	add_verb(L, /mob/living/proc/release_eye)
+	L.verbs += /mob/living/proc/release_eye
 
 /datum/spell/camera_connection/proc/release(mob/living/L)
 	vision.release(L)
-	remove_verb(L, /mob/living/proc/release_eye)
+	L.verbs -= /mob/living/proc/release_eye
 	unregister_signal(L, SIGNAL_QDELETING)
 	unregister_signal(L, SIGNAL_LOGGED_OUT)
 
@@ -267,7 +267,7 @@
 	set desc = "Return your sight to your body."
 	set category = "Abilities"
 
-	remove_verb(src, /mob/living/proc/release_eye) //regardless of if we have an eye or not we want to get rid of this verb.
+	verbs -= /mob/living/proc/release_eye //regardless of if we have an eye or not we want to get rid of this verb.
 
 	if(!eyeobj)
 		return

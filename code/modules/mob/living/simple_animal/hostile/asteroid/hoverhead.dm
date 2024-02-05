@@ -9,7 +9,7 @@
 	icon_aggro = "Psychekinetic_alert"
 	icon_dead = "Psychekinetic_dead"
 	icon_gib = "syndicate_gib"
-	mouse_opacity = MOUSE_OPACITY_OPAQUE
+	mouse_opacity = 2
 	move_to_delay = 14
 	ranged = 1
 	vision_range = 5
@@ -58,7 +58,7 @@
 	icon_aggro = "Psychekinetic_anomaly"
 	icon_dead = "Psychekinetic_anomaly"
 	icon_gib = "syndicate_gib"
-	mouse_opacity = MOUSE_OPACITY_OPAQUE
+	mouse_opacity = 2
 	move_to_delay = 0
 	friendly = "buzzes near"
 	vision_range = 10

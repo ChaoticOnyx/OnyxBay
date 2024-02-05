@@ -32,7 +32,6 @@
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/melee/changeling/dropped(mob/user)
-	. = ..()
 	user.visible_message(SPAN("danger", "With a sickening crunch, [creator] reforms their arm!"), \
 						 SPAN("changeling", "We assimilate the weapon back into our body."), \
 						 SPAN("italics", "You hear organic matter ripping and tearing!"))
@@ -104,7 +103,6 @@
 		to_chat(loc, SPAN("changeling", "We shape our finger to fit inside electronics, and are ready to force them open."))
 
 /obj/item/finger_lockpick/dropped(mob/user)
-	. = ..()
 	to_chat(user, SPAN("changeling", "We discreetly shape our finger back to a less suspicious form."))
 	spawn(1)
 		qdel(src)

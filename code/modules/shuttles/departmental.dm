@@ -55,13 +55,3 @@
 	light_inner_range_on = 0.5
 	light_outer_range_on = 1.5
 	density = 0
-
-/*
-/obj/machinery/computer/shuttle_control/multi/turbolift
-	name = "turbolift control console"
-	icon_state = "tcstation"
-	icon_keyboard = "tcstation_key"
-	icon_screen = "syndie"
-	shuttle_tag = "turbolift"
-	density = 0
-*/

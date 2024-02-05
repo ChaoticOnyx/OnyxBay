@@ -6,6 +6,8 @@
 	blood_level = BLOODY_HANDS
 	shock_level = 20
 
+	failure_sound = 'sound/effects/bonebreak1.ogg'
+
 /datum/surgery_step/bone/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && !BP_IS_ROBOTIC(parent_organ) && parent_organ.open() >= SURGERY_RETRACTED)
 
@@ -18,6 +20,9 @@
 		/obj/item/bonegel = 100,
 		/obj/item/tape_roll = 75
 		)
+
+	preop_sound = 'sound/surgery/bonegel.ogg'
+	success_sound = 'sound/surgery/organ2.ogg'
 
 /datum/surgery_step/bone/glue_bone/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && parent_organ.stage == 0)
@@ -62,6 +67,9 @@
 		/obj/item/wrench = 75
 		)
 
+	preop_sound = 'sound/surgery/bonesetter.ogg'
+	success_sound = 'sound/surgery/bonesetter.ogg'
+
 /datum/surgery_step/bone/mend_bone/check_zone(mob/living/carbon/human/target, target_zone)
 	return (..() && target_zone != BP_HEAD)
 
@@ -82,6 +90,7 @@
 		"[user] sets [bone] with \the [tool].",
 		"You set [bone] with \the [tool]."
 		)
+	parent_organ.status &= ~ORGAN_DISFIGURED
 	parent_organ.stage = 2
 
 /datum/surgery_step/bone/mend_bone/failure(obj/item/organ/external/parent_organ, obj/item/organ/target_organ, mob/living/carbon/human/target, obj/item/tool, mob/user)
@@ -104,6 +113,9 @@
 		/obj/item/bonesetter = 100,
 		/obj/item/wrench = 75
 		)
+
+	preop_sound = 'sound/surgery/bonesetter.ogg'
+	success_sound = 'sound/surgery/bonesetter.ogg'
 
 /datum/surgery_step/bone/mend_skull/check_zone(mob/living/carbon/human/target, target_zone)
 	return (..() && target_zone == BP_HEAD)
@@ -144,6 +156,9 @@
 		/obj/item/bonesetter = 100,
 		/obj/item/wrench = 75
 		)
+
+	preop_sound = 'sound/surgery/bonesetter.ogg'
+	success_sound = 'sound/surgery/bonesetter.ogg'
 
 /datum/surgery_step/bone/set_bone/check_zone(mob/living/carbon/human/target, target_zone)
 	return (..() && target_zone != BP_HEAD)
@@ -198,6 +213,9 @@
 		/obj/item/tape_roll = 75
 		)
 
+	preop_sound = 'sound/surgery/bonegel.ogg'
+	success_sound = 'sound/surgery/organ1.ogg'
+
 /datum/surgery_step/bone/postset_bone/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && parent_organ.stage == 2)
 
@@ -233,6 +251,9 @@
 	allowed_tools = list(
 		/obj/item/bonesetter/bone_mender = 100
 		)
+
+	preop_sound = 'sound/surgery/bonesetter.ogg'
+	success_sound = 'sound/surgery/organ1.ogg'
 
 /datum/surgery_step/bone/mender/check_parent_organ(obj/item/organ/external/parent_organ, mob/living/carbon/human/target, obj/item/tool, atom/user)
 	return (..() && parent_organ.stage <= 5)

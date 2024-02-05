@@ -7,7 +7,6 @@
 
 	throw_range = 4
 
-	var/equipment_slowdown = -1
 	var/list/hud_list[12]
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/obj/item/rig/wearing_rig // This is very not good, but it's much much better than calling get_rig() every update_canmove() call.
@@ -54,7 +53,6 @@
 	hud_list[SPECIALROLE_HUD]  = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
 	hud_list[STATUS_HUD_OOC]   = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
 	hud_list[XENO_HUD]         = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
-	hud_list[GLAND_HUD]        = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
 
 	GLOB.human_mob_list |= src
 	..()
@@ -94,52 +92,53 @@
 		if(stomach)
 			stomach.metabolize()
 
-/mob/living/carbon/human/get_status_tab_items()
+/mob/living/carbon/human/Stat()
 	. = ..()
-	. += "Intent: [a_intent]"
-	. += "Move Mode: [m_intent]"
-	. += "Poise: [round(100/poise_pool*poise)]%"
-	. += "Special Ability: [active_ability]"
+	if(statpanel("Status"))
+		stat("Intent:", "[a_intent]")
+		stat("Move Mode:", "[m_intent]")
+		stat("Poise:", "[round(100/poise_pool*poise)]%")
+		stat("Special Ability:", "[active_ability]")
 
-	if(evacuation_controller)
-		var/eta_status = evacuation_controller.get_status_panel_eta()
-		if(eta_status)
-			. += "[eta_status]"
+		if(evacuation_controller)
+			var/eta_status = evacuation_controller.get_status_panel_eta()
+			if(eta_status)
+				stat(null, eta_status)
 
-	if (istype(internal))
-		if (!internal.air_contents)
-			qdel(internal)
-		else
-			. += "Internal Atmosphere Info: [internal.name]"
-			. += "Tank Pressure: [internal.air_contents.return_pressure()]"
-			. += "Distribution Pressure: [internal.distribute_pressure]"
+		if (istype(internal))
+			if (!internal.air_contents)
+				qdel(internal)
+			else
+				stat("Internal Atmosphere Info: ", internal.name)
+				stat("Tank Pressure: ", internal.air_contents.return_pressure())
+				stat("Distribution Pressure: ", internal.distribute_pressure)
 
-	var/obj/item/organ/internal/xenos/plasmavessel/P = internal_organs_by_name[BP_PLASMA]
-	if(P)
-		. += "Plasma Stored: [P.stored_plasma]/[P.max_plasma]"
+		var/obj/item/organ/internal/xenos/plasmavessel/P = internal_organs_by_name[BP_PLASMA]
+		if(P)
+			stat(null, "Plasma Stored: [P.stored_plasma]/[P.max_plasma]")
 
-	var/obj/item/organ/internal/cell/potato = internal_organs_by_name[BP_CELL]
-	if(potato && potato.cell)
-		. += "Battery charge: [potato.get_charge()]/[potato.cell.maxcharge]"
+		var/obj/item/organ/internal/cell/potato = internal_organs_by_name[BP_CELL]
+		if(potato && potato.cell)
+			stat("Battery charge:", "[potato.get_charge()]/[potato.cell.maxcharge]")
 
-	if(back && istype(back,/obj/item/rig))
-		var/obj/item/rig/suit = back
-		var/cell_status = "ERROR"
-		if(suit.cell) cell_status = "[suit.cell.charge]/[suit.cell.maxcharge]"
-		. += "Suit charge: [cell_status]"
+		if(back && istype(back,/obj/item/rig))
+			var/obj/item/rig/suit = back
+			var/cell_status = "ERROR"
+			if(suit.cell) cell_status = "[suit.cell.charge]/[suit.cell.maxcharge]"
+			stat(null, "Suit charge: [cell_status]")
 
-	if(mind)
-		if(mind.vampire)
-			. += "Usable Blood: [mind.vampire.blood_usable]"
-			. += "Total Blood: [mind.vampire.blood_total]"
+		if(mind)
+			if(mind.vampire)
+				stat("Usable Blood: ", mind.vampire.blood_usable)
+				stat("Total Blood: ", mind.vampire.blood_total)
 
-		if(mind.changeling)
-			. += "Chemical Storage: [mind.changeling.chem_charges]"
-			. += "Genetic Damage Time: [mind.changeling.genome_damage]"
+			if(mind.changeling)
+				stat("Chemical Storage: ", mind.changeling.chem_charges)
+				stat("Genetic Damage Time: ", mind.changeling.genome_damage)
 
-		if(mind.special_role == "Borer Husk")
-			var/mob/living/simple_animal/borer/B = get_organ(BP_BRAIN)
-			. += "Chemicals: [B?.chemicals]"
+			if(mind.special_role == "Borer Husk")
+				var/mob/living/simple_animal/borer/B = get_organ(BP_BRAIN)
+				stat("Chemicals: ", B?.chemicals)
 
 
 /mob/living/carbon/human/ex_act(severity)
@@ -778,7 +777,7 @@
 					var/turf/location = loc
 					if(istype(location, /turf/simulated))
 						location.add_vomit_floor(src, toxvomit, stomach.ingested)
-					nutrition -= 30
+					remove_nutrition(30)
 		sleep(350)	//wait 35 seconds before next volley
 		lastpuke = 0
 
@@ -792,7 +791,7 @@
 		return
 
 	if(!(mMorph in mutations))
-		remove_verb(src, /mob/living/carbon/human/proc/morph)
+		src.verbs -= /mob/living/carbon/human/proc/morph
 		return
 
 	var/new_facial = input("Please select facial hair color.", "Character Generation",rgb(r_facial,g_facial,b_facial)) as color
@@ -880,7 +879,7 @@
 		return
 
 	if(!(mRemotetalk in src.mutations))
-		remove_verb(src, /mob/living/carbon/human/proc/remotesay)
+		src.verbs -= /mob/living/carbon/human/proc/remotesay
 		return
 	var/list/creatures = list()
 	for(var/mob/living/carbon/h in world)
@@ -911,7 +910,7 @@
 	if(!(mRemote in src.mutations))
 		remoteview_target = null
 		reset_view(0)
-		remove_verb(src, /mob/living/carbon/human/proc/remoteobserve)
+		src.verbs -= /mob/living/carbon/human/proc/remoteobserve
 		return
 
 	if(client.eye != client.mob)
@@ -989,7 +988,7 @@
 			blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
 	hand_blood_color = blood_color
 	update_inv_gloves(1) // handles bloody hands overlays and updating
-	add_verb(src, /mob/living/carbon/human/proc/bloody_doodle)
+	verbs += /mob/living/carbon/human/proc/bloody_doodle
 
 /mob/living/carbon/human/clean_blood(clean_feet)
 	. =..()
@@ -999,6 +998,7 @@
 	gunshot_residue = null
 
 	if(clean_feet && !shoes)
+		track_blood = 0
 		feet_blood_color = null
 		feet_blood_DNA = null
 		update_inv_shoes(1)
@@ -1231,7 +1231,7 @@
 		return 1
 	for(var/datum/body_build/BB in species.body_builds)
 		if(gender in BB.genders)
-			body_build = BB
+			change_body_build(BB)
 			return 1
 	to_world_log("Can't find possible body_build. Gender = [gender], Species = [species]")
 	return 0
@@ -1248,7 +1248,7 @@
 		return 0 //something is terribly wrong
 
 	if (!bloody_hands)
-		remove_verb(src, /mob/living/carbon/human/proc/bloody_doodle)
+		verbs -= /mob/living/carbon/human/proc/bloody_doodle
 
 	if (src.gloves)
 		to_chat(src, "<span class='warning'>Your [src.gloves] are getting in the way.</span>")
@@ -1438,7 +1438,7 @@
 		to_chat(S, "<span class='danger'>[U] pops your [current_limb.joint] back in!</span>")
 	current_limb.undislocate()
 
-/mob/living/carbon/human/drop(obj/item/W, atom/Target = null, force = null)
+/mob/living/carbon/human/drop(obj/item/W, atom/Target = null, force = null, changing_slots)
 	if(W in organs)
 		return
 	. = ..()
@@ -1725,11 +1725,13 @@
 /mob/living/carbon/human/proc/useblock_off()
 	src.setClickCooldown(3)
 	src.blocking = 0
+	remove_movespeed_modifier(/datum/movespeed_modifier/blocking)
 	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
 		src.block_icon.icon_state = "act_block0"
 
 /mob/living/carbon/human/proc/useblock_on()
 	src.blocking = 1
+	add_movespeed_modifier(/datum/movespeed_modifier/blocking)
 	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
 		src.block_icon.icon_state = "act_block1"
 

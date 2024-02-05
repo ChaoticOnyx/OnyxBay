@@ -272,9 +272,8 @@ Class Procs:
 		return TRUE
 	if(user.lying || user.stat)
 		return TRUE
-	if ( ! (istype(usr, /mob/living/carbon/human) || \
-			istype(usr, /mob/living/silicon)))
-		to_chat(usr, "<span class='warning'>You don't have the dexterity to do this!</span>")
+	if (!(istype(usr, /mob/living/carbon/human) || istype(usr, /mob/living/silicon)))
+		to_chat(usr, FEEDBACK_YOU_LACK_DEXTERITY)
 		return TRUE
 /*
 	//distance checks are made by atom/proc/DblClick

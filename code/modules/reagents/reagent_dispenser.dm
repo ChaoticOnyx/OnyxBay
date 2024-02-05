@@ -22,7 +22,7 @@
 	create_reagents(initial_capacity)
 
 	if(!possible_transfer_amounts)
-		verbs -= /obj/structure/reagent_dispensers/verb/set_APTFT
+		src.verbs -= /obj/structure/reagent_dispensers/verb/set_APTFT
 
 	for(var/reagent_type in initial_reagent_types)
 		var/reagent_ratio = initial_reagent_types[reagent_type]

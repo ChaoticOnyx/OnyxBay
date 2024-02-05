@@ -6,7 +6,7 @@ GLOBAL_LIST_EMPTY(ghost_gramophones)
 	name = "Strange gramophone"
 	desc = "Artifact that allows you to temporarily hear spirits from a parallel dimension."
 	var/active = FALSE
-	var/last_activated = 0
+	var/last_activated = - 3 MINUTES
 	icon_state = "ghostgramophone0"
 
 /obj/item/device/ghost_gramophone/Initialize()

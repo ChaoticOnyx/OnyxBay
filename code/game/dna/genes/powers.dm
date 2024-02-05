@@ -20,7 +20,7 @@
 
 	activate(mob/M, connected, flags)
 		..(M,connected,flags)
-		add_verb(M, /mob/living/carbon/human/proc/remoteobserve)
+		M.verbs += /mob/living/carbon/human/proc/remoteobserve
 
 /datum/dna/gene/basic/regenerate
 	name="Regenerate"
@@ -48,7 +48,7 @@
 
 	activate(mob/M, connected, flags)
 		..(M,connected,flags)
-		add_verb(M, /mob/living/carbon/human/proc/remotesay)
+		M.verbs += /mob/living/carbon/human/proc/remotesay
 
 /datum/dna/gene/basic/morph
 	name="Morph"
@@ -60,7 +60,7 @@
 
 	activate(mob/M)
 		..(M)
-		add_verb(M, /mob/living/carbon/human/proc/morph)
+		M.verbs += /mob/living/carbon/human/proc/morph
 
 /* Not used on bay
 /datum/dna/gene/basic/heat_resist
@@ -168,7 +168,7 @@
 	OnMobLife(mob/living/carbon/human/M)
 		if(!istype(M)) return
 		if(M.health <= 25)
-			M.mutations.Remove(MUTATION_HULK)
+			M.remove_mutation(MUTATION_HULK)
 			M.update_mutations()		//update our mutation overlays
 			to_chat(M, "<span class='warning'>You suddenly feel very weak.</span>")
 			M.Weaken(3)

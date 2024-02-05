@@ -103,7 +103,7 @@
 	if(!invalidFeedTarget(M)) // Checks for those we want to eat
 		if(istype(M, /mob/living/carbon/human)) // Ignore metroid(wo)men - player-controlled metroids still can attack them
 			var/mob/living/carbon/human/H = M
-			if(H.species.name == SPECIES_PROMETHEAN || istype(/obj/item/organ/internal/heart/gland/metroid, H.organs_by_name[BP_HEART]))
+			if(H.species.name == SPECIES_PROMETHEAN)
 				return 0
 		return 1
 

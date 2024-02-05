@@ -48,12 +48,12 @@
 				return
 			if (prob(50))
 				for(var/x in verbs)
-					remove_verb(src, x)
+					verbs -= x
 				set_broken(TRUE)
 		if(3.0)
 			if (prob(25))
 				for(var/x in verbs)
-					remove_verb(src, x)
+					verbs -= x
 				set_broken(TRUE)
 
 /obj/machinery/computer/blob_act(damage)
@@ -128,3 +128,6 @@
 
 /obj/machinery/computer/attack_ghost(mob/ghost)
 	attack_hand(ghost)
+
+/obj/machinery/computer/proc/locate_unit(unit_type)
+	return locate(unit_type) in orange(2, src)

@@ -78,7 +78,7 @@
 	anchored = TRUE
 	opacity = FALSE
 	icon = 'icons/obj/inflatable.dmi'
-	icon_state = "wall"
+	icon_state = null
 	can_atmos_pass = ATMOS_PASS_DENSITY
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 
@@ -97,6 +97,9 @@
 
 /obj/structure/inflatable/Initialize()
 	. = ..()
+	if(!undeploy_path || !torn_path)
+		util_crash_with("Found improper inflatable at '[log_info_line(loc)]'")
+		return INITIALIZE_HINT_QDEL
 	add_think_ctx("post_deflate", CALLBACK(src, nameof(.proc/post_deflate)), 0)
 	set_next_think(world.time)
 
@@ -226,7 +229,7 @@
 	if(isobserver(usr) || usr.restrained() || !usr.Adjacent(src))
 		return FALSE
 
-	remove_verb(src, /obj/structure/inflatable/verb/hand_deflate)
+	verbs -= /obj/structure/inflatable/verb/hand_deflate
 	deflate()
 	return TRUE
 
