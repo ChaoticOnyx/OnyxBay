@@ -1310,7 +1310,7 @@
 		occupant = null
 		icon_state = reset_icon()+"-open"
 		set_dir(dir_in)
-		update_icon()
+		on_update_icon()
 	return
 
 /////////////////////////
