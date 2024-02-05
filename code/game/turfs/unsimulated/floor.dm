@@ -28,3 +28,4 @@
 
 /turf/unsimulated/floor/shuttle_ceiling
 	icon_state = "reinforced"
+	dynamic_lighting = TRUE
