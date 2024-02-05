@@ -36,7 +36,7 @@
 	/obj/item/device/paicard,
 	/obj/item/device/radio,
 	/obj/item/device/radio/headset,
-	/obj/item/device/radio/beacon,
+	/obj/item/device/bluespace_beacon,
 	/obj/item/autopsy_scanner,
 	/obj/item/bikehorn,
 	/obj/item/bonesetter,
