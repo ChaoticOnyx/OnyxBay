@@ -1594,7 +1594,7 @@
 	anchored = 1
 	var/active = 0
 	var/turf/target	// this will be where the output objects are 'thrown' to.
-	var/mode = DISPOSALS_OFF
+	var/mode = 0
 	atom_flags = ATOM_FLAG_CLIMBABLE
 
 	New()
