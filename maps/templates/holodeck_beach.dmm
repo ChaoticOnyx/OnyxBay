@@ -1,0 +1,21 @@
+"a" = (/turf/simulated/floor/holofloor/beach/water,/area/template_noop)
+"t" = (/obj/item/beach_ball,/turf/simulated/floor/holofloor/beach/sand,/area/template_noop)
+"w" = (/turf/simulated/floor/holofloor/beach/sand,/area/template_noop)
+"x" = (/obj/effect/overlay/palmtree_l,/obj/effect/overlay/coconut,/turf/simulated/floor/holofloor/beach/sand,/area/template_noop)
+"B" = (/obj/item/clothing/glasses/sunglasses,/turf/simulated/floor/holofloor/beach/sand,/area/template_noop)
+"E" = (/obj/effect/overlay/palmtree_r,/turf/simulated/floor/holofloor/beach/sand,/area/template_noop)
+"T" = (/turf/unsimulated/beach/sand{dir = 4; icon_state = "beach"},/area/template_noop)
+"Y" = (/obj/item/inflatable_duck,/turf/simulated/floor/holofloor/beach/sand,/area/template_noop)
+
+(1,1,1) = {"
+wwwwwwwTaa
+wwwwwwwTaa
+wwwwEwwTaa
+wwBwtwwTaa
+wwwwwwwTaa
+wxwwwwwTaa
+wwwYwwwTaa
+wwwwwEwTaa
+wwwwwwwTaa
+wwwwwwwTaa
+"}

@@ -1,0 +1,36 @@
+"a" = (/obj/item/reagent_containers/food/checker/pawn/red{randpixel = 0},/turf/simulated/floor/holofloor/tiled/dark,/area/template_noop)
+"f" = (/obj/item/reagent_containers/food/checker/king/red{randpixel = 0},/turf/simulated/floor/holofloor/tiled/dark,/area/template_noop)
+"g" = (/turf/simulated/floor/holofloor/tiled,/area/template_noop)
+"l" = (/obj/item/reagent_containers/food/checker/queen{randpixel = 0},/turf/simulated/floor/holofloor/tiled/dark,/area/template_noop)
+"m" = (/obj/item/reagent_containers/food/checker/bishop{randpixel = 0},/turf/simulated/floor/holofloor/tiled,/area/template_noop)
+"n" = (/obj/item/reagent_containers/food/checker/rook{randpixel = 0},/turf/simulated/floor/holofloor/tiled/dark,/area/template_noop)
+"t" = (/obj/item/reagent_containers/food/checker/bishop{randpixel = 0},/turf/simulated/floor/holofloor/tiled/dark,/area/template_noop)
+"u" = (/obj/item/reagent_containers/food/checker/king{randpixel = 0},/turf/simulated/floor/holofloor/tiled,/area/template_noop)
+"v" = (/obj/item/reagent_containers/food/checker/knight{randpixel = 0},/turf/simulated/floor/holofloor/tiled,/area/template_noop)
+"w" = (/obj/item/reagent_containers/food/checker/rook/red{randpixel = 0},/turf/simulated/floor/holofloor/tiled,/area/template_noop)
+"x" = (/obj/item/reagent_containers/food/checker/bishop/red{randpixel = 0},/turf/simulated/floor/holofloor/tiled,/area/template_noop)
+"A" = (/turf/simulated/floor/holofloor/tiled/dark,/area/template_noop)
+"D" = (/obj/item/reagent_containers/food/checker/bishop/red{randpixel = 0},/turf/simulated/floor/holofloor/tiled/dark,/area/template_noop)
+"E" = (/obj/item/reagent_containers/food/checker/rook{randpixel = 0},/turf/simulated/floor/holofloor/tiled,/area/template_noop)
+"F" = (/obj/item/reagent_containers/food/checker/knight/red{randpixel = 0},/turf/simulated/floor/holofloor/tiled/dark,/area/template_noop)
+"H" = (/obj/item/reagent_containers/food/checker/rook/red{randpixel = 0},/turf/simulated/floor/holofloor/tiled/dark,/area/template_noop)
+"I" = (/obj/item/reagent_containers/food/checker/pawn/red{randpixel = 0},/turf/simulated/floor/holofloor/tiled,/area/template_noop)
+"J" = (/obj/item/reagent_containers/food/checker/queen/red{randpixel = 0},/turf/simulated/floor/holofloor/tiled,/area/template_noop)
+"L" = (/obj/item/reagent_containers/food/checker/knight/red{randpixel = 0},/turf/simulated/floor/holofloor/tiled,/area/template_noop)
+"N" = (/obj/item/reagent_containers/food/checker/pawn{randpixel = 0},/turf/simulated/floor/holofloor/tiled,/area/template_noop)
+"T" = (/turf/simulated/floor/holofloor/lino,/area/template_noop)
+"U" = (/obj/item/reagent_containers/food/checker/pawn{randpixel = 0},/turf/simulated/floor/holofloor/tiled/dark,/area/template_noop)
+"Y" = (/obj/item/reagent_containers/food/checker/knight{randpixel = 0},/turf/simulated/floor/holofloor/tiled/dark,/area/template_noop)
+
+(1,1,1) = {"
+TTTTTTTTTT
+TEYmlutvnT
+TUNUNUNUNT
+TgAgAgAgAT
+TAgAgAgAgT
+TgAgAgAgAT
+TAgAgAgAgT
+TIaIaIaIaT
+THLDJfxFwT
+TTTTTTTTTT
+"}

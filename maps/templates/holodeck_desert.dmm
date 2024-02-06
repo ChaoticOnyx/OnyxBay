@@ -1,0 +1,16 @@
+"a" = (/turf/simulated/floor/holofloor/desert,/area/template_noop)
+"r" = (/obj/structure/flora/ausbushes/fullgrass,/turf/simulated/floor/holofloor/desert,/area/template_noop)
+"t" = (/obj/structure/flora/ausbushes/sparsegrass,/turf/simulated/floor/holofloor/desert,/area/template_noop)
+
+(1,1,1) = {"
+aaataaaaaa
+aaaaaaaara
+araaaaaaaa
+aaaaataaaa
+aataaataaa
+aaaaaaaaaa
+aaaaaraaat
+aaraaaaaaa
+aaaaaaaaaa
+taaaraaaar
+"}

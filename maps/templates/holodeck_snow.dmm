@@ -1,0 +1,19 @@
+"a" = (/turf/simulated/floor/holofloor/snow,/area/template_noop)
+"m" = (/obj/structure/flora/grass/brown,/turf/simulated/floor/holofloor/snow,/area/template_noop)
+"p" = (/obj/structure/flora/tree/pine,/turf/simulated/floor/holofloor/snow,/area/template_noop)
+"w" = (/obj/structure/flora/tree/dead/deadtree_0,/turf/simulated/floor/holofloor/snow,/area/template_noop)
+"H" = (/obj/structure/flora/grass/green,/turf/simulated/floor/holofloor/snow,/area/template_noop)
+"R" = (/obj/structure/flora/grass/both,/turf/simulated/floor/holofloor/snow,/area/template_noop)
+
+(1,1,1) = {"
+aaaaaaaaaa
+aRaaaaRaaa
+aaaaaaaapa
+aawapaaaaa
+aaaHaaaaHa
+aaaaaaaaaa
+aaaaRawaaR
+maaaamaaaa
+aHawaaHapa
+aaaamaaaam
+"}
