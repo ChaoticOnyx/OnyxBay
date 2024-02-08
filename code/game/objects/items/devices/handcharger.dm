@@ -132,7 +132,7 @@
 		flick("handcharger2", src)
 		playsound(user.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		charging = TRUE
-		if(do_after(user, 1 SECOND, can_move = TRUE) && my_cell)
+		if(do_after(user, 0.5 SECOND, can_move = TRUE) && my_cell)
 			H.remove_nutrition(0.5)
 			my_cell.give(charge_per_use)
 			charging = FALSE
