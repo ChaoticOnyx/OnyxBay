@@ -22,7 +22,7 @@
 	if(!revealed)
 		return ..(A, user)
 
-	if(!my_cell.check_charge(charge_per_usage))
+	if(!my_cell?.check_charge(charge_per_usage))
 		return TRUE
 
 	A.emag_act(floor(my_cell.charge / charge_per_usage), user, src)
