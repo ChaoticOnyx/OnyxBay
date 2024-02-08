@@ -627,6 +627,12 @@
 
 	statpanel_proc = /mob/proc/vomit_emote
 
+/datum/emote/vomit/get_emote_message_1p(mob/user, target, additional_params)
+	return null
+
+/datum/emote/vomit/get_emote_message_3p(mob/living/user, target, additional_params)
+	return null
+
 /datum/emote/vomit/do_emote(mob/user, emote_key, intentional)
 	. = ..()
 	var/mob/living/carbon/human/H = user
