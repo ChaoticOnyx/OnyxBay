@@ -37,7 +37,7 @@
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		if(revealed)
-			. += "\nThe number [round(CELL_PERCENT(my_cell))] is displayed in the corner of the screen."
+			. += "\nThe number [round(CELL_PERCENT(my_cell))]% is displayed in the corner of the screen."
 		else
 			. += "\nThe time [stationtime2text()] is displayed in the corner of the screen."
 
