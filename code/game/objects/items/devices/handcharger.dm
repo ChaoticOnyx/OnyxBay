@@ -6,7 +6,7 @@
 	icon_state = "handcharger0"
 	item_state = "multitool"
 	w_class = ITEM_SIZE_NORMAL
-	matter = list(MATERIAL_STEEL = 120, MATERIAL_GLASS = 70)
+	matter = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 300)
 
 	var/charging = FALSE
 	var/charge_per_use = 0
