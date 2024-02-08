@@ -8,7 +8,6 @@
 	w_class = ITEM_SIZE_NORMAL
 	matter = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 300)
 
-	var/charging = FALSE
 	var/charge_per_use = 0
 	var/obj/item/cell/my_cell = null
 	var/obj/item/stock_parts/capacitor/my_capacitor = null
@@ -127,17 +126,15 @@
 	var/mob/living/carbon/human/H = user
 
 	if(H.nutrition > 10)
-		if(charging)
+		THROTTLE(cooldown, 5)
+		if(!cooldown)
 			return
+
 		flick("handcharger2", src)
 		playsound(user.loc, 'sound/items/Ratchet.ogg', 50, 1)
-		charging = TRUE
-		if(do_after(user, 0.5 SECOND, can_move = TRUE) && my_cell)
-			H.remove_nutrition(0.5)
-			my_cell.give(charge_per_use)
-			charging = FALSE
-		else
-			charging = FALSE
+
+		H.remove_nutrition(0.5)
+		my_cell.give(charge_per_use)
 	else
 		to_chat(H, "You can barely move your fingers at this point. Perhaps, YOU are the one who needs recharging now.")
 
