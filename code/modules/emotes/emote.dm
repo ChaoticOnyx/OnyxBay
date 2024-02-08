@@ -149,7 +149,11 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 	var/msg_3p = text_3p ? "<b>[user]</b> <i>[text_3p]</i>" : null
 	var/range = !isnull(emote_range) ? emote_range : world.view
 	var/impaired_msg = get_impaired_msg(user)
-	impaired_msg = impaired_msg ? "<b>[user]</b> <i>[impaired_msg]</i>" : null
+	if(impaired_msg)
+		if(message_type & VISIBLE_MESSAGE)
+			impaired_msg = "<i>[impaired_msg]</i>"
+		else if(message_type & AUDIBLE_MESSAGE)
+			impaired_msg = "<b>[user]</b> <i>[impaired_msg]</i>"
 
 	if(!msg_1p)
 		msg_1p = msg_3p
