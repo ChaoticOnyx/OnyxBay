@@ -1096,13 +1096,14 @@
 	mix_message = "The metroid extract begins to vibrate violently!"
 
 /datum/chemical_reaction/metroid/freeze/on_reaction(datum/reagents/holder)
-	set waitfor = 0
 	..()
-	sleep(50)
-	playsound(holder.my_atom, 'sound/effects/phasein.ogg', 100, 1)
-	for(var/mob/living/M in range (get_turf(holder.my_atom), 7))
+	addtimer(CALLBACK(src, PROC_REF(do_reaction), holder), 50)
+
+/datum/chemical_reaction/metroid/freeze/proc/do_reaction(datum/reagents/holder)
+	playsound(get_turf(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
+	for(var/mob/living/M in range(7, get_turf(holder.my_atom)))
 		M.bodytemperature -= 140
-		to_chat(M, "<span class='warning'>You feel a chill!</span>")
+		to_chat(M, SPAN_WARNING("You feel a cold chill!"))
 
 /datum/chemical_reaction/metroid/chill_potion
 	name = "Metroid Сhill Potion"
@@ -1131,9 +1132,10 @@
 	mix_message = "The metroid extract begins to vibrate violently!"
 
 /datum/chemical_reaction/metroid/fire/on_reaction(datum/reagents/holder)
-	set waitfor = 0
 	..()
-	sleep(50)
+	addtimer(CALLBACK(src, PROC_REF(do_reaction), holder), 50)
+
+/datum/chemical_reaction/metroid/fire/proc/do_reaction(datum/reagents/holder)
 	if(!(holder.my_atom && holder.my_atom.loc))
 		return
 
@@ -1264,10 +1266,8 @@
 	mix_message = "The metroid extract begins to vibrate violently!"
 
 /datum/chemical_reaction/metroid/explosion/on_reaction(datum/reagents/holder)
-	set waitfor = 0
 	..()
-	sleep(50)
-	explosion(get_turf(holder.my_atom), 1, 3, 6)
+	addtimer(CALLBACK(GLOBAL_PROC, /proc/explosion, get_turf(holder.my_atom), 1, 3, 6), 50)
 
 //Light Pink
 /datum/chemical_reaction/metroid/potion2

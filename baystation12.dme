@@ -33,6 +33,7 @@
 #include "code\__defines\atmos.dm"
 #include "code\__defines\atmospherics.dm"
 #include "code\__defines\borer.dm"
+#include "code\__defines\byond_compat.dm"
 #include "code\__defines\callback.dm"
 #include "code\__defines\chat.dm"
 #include "code\__defines\chemistry.dm"
