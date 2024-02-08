@@ -1104,6 +1104,7 @@
 #include "code\game\objects\items\devices\floor_painter.dm"
 #include "code\game\objects\items\devices\geiger.dm"
 #include "code\game\objects\items\devices\hacktool.dm"
+#include "code\game\objects\items\devices\handcharger.dm"
 #include "code\game\objects\items\devices\holopad.dm"
 #include "code\game\objects\items\devices\holowarrant.dm"
 #include "code\game\objects\items\devices\lightreplacer.dm"
