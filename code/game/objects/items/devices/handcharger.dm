@@ -23,6 +23,7 @@
 	if(!start_empty && !my_capacitor)
 		my_capacitor = new /obj/item/stock_parts/capacitor(src)
 		charge_per_use = my_capacitor.rating
+	update_icon()
 
 /obj/item/device/handcharger/Destroy()
 	QDEL_NULL(my_cell)
