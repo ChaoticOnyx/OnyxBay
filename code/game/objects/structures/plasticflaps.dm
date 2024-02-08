@@ -60,6 +60,3 @@
 	name = "airtight plastic flaps"
 	desc = "Heavy duty, airtight, plastic flaps."
 	can_atmos_pass = ATMOS_PASS_NO
-
-/obj/structure/plasticflaps/mining/attackby(obj/item/O, mob/user)
-	. = ..()
