@@ -14,8 +14,10 @@
 
 /turf/unsimulated/wall/fakeglass
 	name = "window"
+	icon = 'icons/turf/walls.dmi'
 	icon_state = "fakewindows"
 	opacity = 0
 
 /turf/unsimulated/wall/other
-	icon_state = "r_wall"
+	icon = 'icons/turf/wall_masks.dmi'
+	icon_state = "rgeneric"
