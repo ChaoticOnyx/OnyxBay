@@ -1,6 +1,7 @@
 /turf/simulated/floor/shuttle
 	name = "floor"
 	icon = 'icons/turf/shuttle.dmi'
+	dynamic_lighting = TRUE
 
 /turf/simulated/floor/shuttle/blue
 	icon_state = "floor"

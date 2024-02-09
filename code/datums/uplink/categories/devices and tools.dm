@@ -115,6 +115,18 @@
 	item_cost = 4
 	path = /obj/item/card/emag
 
+/datum/uplink_item/item/tools/advemag
+	name = "Advanced Cryptographic Sequencer"
+	desc = "This sophisticated piece of equipment allows you to quite literally open anything: doors, lockers, crates and other things. \
+			However, the affected machinery will be broken permanently and while this can have the desired effect, \
+			it also leaves a trail for people to follow (mostly doors). \
+			Emagging something is also fairly noticeable, so you should make sure nobody's watching. \
+			This one is disguised as a PDA, and won't be permanently broken after a few uses, but will rather require its battery to be replaced.\
+			Press \"Remove ID\" button to turn on/off.\
+			Press \"Remove Cartridge\" button to remove battery"
+	item_cost = 6
+	path = /obj/item/device/emag
+
 /datum/uplink_item/item/tools/powersink
 	name = "Powersink"
 	desc = "This bad boy is a station engineers and AI's worst enemy. When bought, this thing is useless, \
