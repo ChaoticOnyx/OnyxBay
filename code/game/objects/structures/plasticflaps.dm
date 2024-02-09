@@ -6,8 +6,6 @@
 	density = 0
 	anchored = 1
 
-	var/health = 50
-
 	layer = ABOVE_HUMAN_LAYER
 	explosion_resistance = 5
 	var/list/mobs_can_pass = list(
@@ -50,36 +48,11 @@
 			if (prob(5))
 				qdel(src)
 
-/obj/structure/plasticflaps/proc/take_damage(force)
-	if(health > 0)
-		health -= force
-		if(health <= 0)
-			to_chat(usr, SPAN_DANGER("\The [src] has been destroyed!"))
-			new /obj/item/stack/material/plastic(loc, 2)
-			qdel(src)
-
-/obj/structure/plasticflaps/bullet_act(obj/item/projectile/P)
-	var/damage = P.get_structure_damage()
-	if(!damage)
-		return
-
-	..()
-	take_damage(damage)
-	return
-
 /obj/structure/plasticflaps/attackby(obj/item/O, mob/user)
 	if(isWrench(O))
 		if(do_after(user, 30, src))
 			new /obj/item/stack/material/plastic(loc, 5)
 			qdel(src)
-		return
-
-	else if(O.force >= 10)
-		user.visible_message(SPAN_DANGER("\The [src] has been [pick(O.attack_verb)] with [O] by [user]!"))
-		user.setClickCooldown(O.update_attack_cooldown())
-		user.do_attack_animation(src)
-		take_damage(O.force)
-		obj_attack_sound(O)
 		return
 
 	. = ..()
