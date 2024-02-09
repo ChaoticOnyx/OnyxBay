@@ -55,7 +55,7 @@
 			qdel(src)
 		return
 
-	. = ..()
+	return ..()
 
 /obj/structure/plasticflaps/mining //A specific type for mining that doesn't allow airflow because of them damn crates
 	name = "airtight plastic flaps"
