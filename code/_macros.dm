@@ -100,6 +100,8 @@
 
 #define isCrowbar(A) (istype(A, /obj/item) && A.tool_behaviour == TOOL_CROWBAR)
 
+#define isEmag(A) (istype(A, /obj/item/card/emag) || (istype(A, /obj/item/device/emag) && A:revealed))
+
 #define iscapacitor(A) istype(A, /obj/item/stock_parts/capacitor)
 
 #define ismicrolaser(A) istype(A, /obj/item/stock_parts/micro_laser)
