@@ -339,3 +339,12 @@
 /obj/item/clothing/under/color/odaycel/New()
 	..()
 	name = "O-S jumpsuit #[rand(1, 9999)]"
+
+
+// Sekonda
+
+/obj/item/clothing/suit/poncho/dominiancape
+	name = "Award cape"
+	desc = "A red silk cloak embroidered with gold threads"
+	icon_state = "dominiancape"
+	item_state = "dominiancape"
