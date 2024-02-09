@@ -15,6 +15,7 @@
 
 /obj/item/device/emag/Initialize()
 	. = ..()
+
 	if(!my_cell)
 		my_cell = new /obj/item/cell/device/high
 
