@@ -95,7 +95,7 @@
 					authorised = 1
 				else if (possibleNets[network] in I.access)
 					authorised = 1
-			if(istype(I,/obj/item/card/emag))
+			if(isEmag(I))
 				I.resolve_attackby(src, usr)
 		else if( href_list["removeauth"] )
 			authorised = 0

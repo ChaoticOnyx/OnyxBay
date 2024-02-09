@@ -212,7 +212,7 @@
 					if((access_cent_captain in C.access) || (access_hop in C.access) || (access_captain in C.access))
 						access_code = 0
 						to_chat(usr, "\icon[src]<span class='info'>Access code reset to 0.</span>")
-				else if (istype(I, /obj/item/card/emag))
+				else if(isEmag(I))
 					access_code = 0
 					to_chat(usr, "\icon[src]<span class='info'>Access code reset to 0.</span>")
 
@@ -257,7 +257,7 @@
 					to_chat(usr, "\icon[src]<span class='warning'>Connected account has been suspended.</span>")
 			else
 				to_chat(usr, "\icon[src]<span class='warning'>EFTPOS is not connected to an account.</span>")
-	else if (istype(I, /obj/item/card/emag))
+	else if (istype(I, /obj/item/card/emag)) // no isEmag here since we can't swipe a PDA through the card scanner
 		if(transaction_locked)
 			if(transaction_paid)
 				to_chat(usr, "\icon[src]<span class='info'>You stealthily swipe \the [I] through \the [src].</span>")
