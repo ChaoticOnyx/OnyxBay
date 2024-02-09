@@ -145,10 +145,15 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 		I.trigger(emote_key, user)
 
 	var/msg_1p = get_emote_message_1p(user, target, additional_params)
-	var/msg_3p = "<b>[user]</b> <i>[get_emote_message_3p(user, target, additional_params)]</i>"
+	var/text_3p = get_emote_message_3p(user, target, additional_params)
+	var/msg_3p = text_3p ? "<b>[user]</b> <i>[text_3p]</i>" : null
 	var/range = !isnull(emote_range) ? emote_range : world.view
 	var/impaired_msg = get_impaired_msg(user)
-	impaired_msg = impaired_msg ? "<b>[user]</b> <i>[impaired_msg]</i>" : null
+	if(impaired_msg)
+		if(message_type & VISIBLE_MESSAGE)
+			impaired_msg = "<i>[impaired_msg]</i>"
+		else if(message_type & AUDIBLE_MESSAGE)
+			impaired_msg = "<b>[user]</b> <i>[impaired_msg]</i>"
 
 	if(!msg_1p)
 		msg_1p = msg_3p
@@ -161,7 +166,7 @@ GLOBAL_LIST_INIT(all_emotes, list(); for(var/emotepath in subtypesof(/datum/emot
 		else if(message_type & AUDIBLE_MESSAGE)
 			user.audible_message(message = msg_3p, self_message = msg_1p, deaf_message = impaired_msg, hearing_distance = range, checkghosts = /datum/client_preference/ghost_sight)
 
-	else
+	else if(msg_1p)
 		to_chat(user, msg_1p)
 
 	var/emote_sound = get_sound(user, intentional)
