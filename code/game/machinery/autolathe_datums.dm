@@ -153,6 +153,11 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	path = /obj/item/material/minihoe
 	category = "Tools"
 
+/datum/autolathe/recipe/handcharger
+	name = "hand-crank charger"
+	path = /obj/item/device/handcharger/empty
+	category = "Tools"
+
 /datum/autolathe/recipe/radio_headset
 	name = "radio headset"
 	path = /obj/item/device/radio/headset
@@ -239,6 +244,7 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	name = "matter cartridge"
 	path = /obj/item/rcd_ammo
 	category = "Engineering"
+
 /datum/autolathe/recipe/rcd_ammo_large
 	name = "high-capacity matter cartridge"
 	path = /obj/item/rcd_ammo/large

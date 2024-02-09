@@ -37,7 +37,8 @@
 		/obj/item/clothing/gloves/insulated = 3,
 		/obj/item/storage/toolbox/electrical = 3,
 		/obj/item/module/power_control = 3,
-		/obj/item/device/multitool = 3
+		/obj/item/device/multitool = 3,
+		/obj/item/device/handcharger = 3
 	)
 
 /obj/structure/closet/secure_closet/engineering_welding
