@@ -51,6 +51,7 @@
 /obj/structure/plasticflaps/attackby(obj/item/O, mob/user)
 	if(isWrench(O))
 		playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
+		show_splash_text(user, "deconstructing...")
 		if(do_after(user, 30, src))
 			new /obj/item/stack/material/plastic(loc, 5)
 			qdel(src)
