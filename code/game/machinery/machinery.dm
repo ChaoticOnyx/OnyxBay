@@ -350,9 +350,14 @@ Class Procs:
 
 /obj/machinery/proc/default_part_replacement(mob/user, obj/item/storage/part_replacer/R)
 	if(!istype(R))
-		return 0
+		return FALSE
+
+	if(!R.active)
+		return FALSE
+
 	if(!component_parts)
-		return 0
+		return FALSE
+
 	if(panel_open)
 		var/obj/item/circuitboard/CB = locate(/obj/item/circuitboard) in component_parts
 		var/P
@@ -370,12 +375,14 @@ Class Procs:
 						component_parts.Add(B)
 						B.forceMove(src)
 						to_chat(user, SPAN("notice", "[A.name] has been replaced with [B.name]."))
+						R.post_usage()
 						break
 			update_icon()
 			RefreshParts()
 	else
 		to_chat(user, get_parts_infotext())
-	return 1
+
+	return TRUE
 
 /obj/machinery/proc/dismantle()
 	playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
