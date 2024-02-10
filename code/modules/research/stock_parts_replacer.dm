@@ -84,4 +84,10 @@
 	for(var/obj/O in contents)
 		remove_from_storage(O, T)
 
+	if(active)
+		SetName("used rapid machinery upgrade kit")
+		active = FALSE
+	wasted = TRUE
+	icon_state = "RMUK-wasted"
+
 	return TRUE

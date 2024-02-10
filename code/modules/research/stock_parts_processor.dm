@@ -130,17 +130,13 @@
 	if(..())
 		return 1
 
-	if(href_list["unprepare"])
-		prepared_parts.Cut()
-
 	else if(href_list["part_eject"])
 		var/thing = get_part_type(href_list["part_eject"])
 		if(thing in stored_parts)
 			new thing(loc)
+			stored_parts[thing]--
 			if(stored_parts[thing] < 1)
 				stored_parts.Remove(thing)
-			else
-				stored_parts[thing]--
 
 	else if(href_list["part_prepare"])
 		var/thing = get_part_type(href_list["part_prepare"])
@@ -153,8 +149,8 @@
 		var/thing = get_part_type(href_list["part_unprepare"])
 		if(thing in prepared_parts)
 			prepared_parts[thing]--
-		if(prepared_parts[thing] < 1)
-			prepared_parts.Remove(thing)
+			if(prepared_parts[thing] < 1)
+				prepared_parts.Remove(thing)
 
 	else if(href_list["part_unprepare_all"])
 		var/thing = get_part_type(href_list["part_unprepare_all"])
@@ -178,6 +174,13 @@
 			matter_storage -= SHEET_MATERIAL_AMOUNT
 			var/obj/item/storage/part_replacer/mini/RMUK = new /obj/item/storage/part_replacer/mini(loc)
 			create_objects_in_loc(RMUK, parts_to_spawn)
+			for(var/thing in parts_to_spawn)
+				stored_parts[thing] -= parts_to_spawn[thing]
+				if(stored_parts[thing] < 1)
+					stored_parts.Remove(thing)
+
+	if(href_list["clear"])
+		prepared_parts.Cut()
 
 	else if(href_list["close"])
 		close_browser(usr, "window=stock_parts_processor")
@@ -197,8 +200,8 @@
 	dat += "Welcome to <b>NT-63-RAA</b><BR> Stock parts processing system"
 	dat += "<BR><FONT SIZE=1>Property of NanoTransen</FONT>"
 
-	dat += "<br>---<br>Stored steel: [matter_storage / SHEET_MATERIAL_AMOUNT]/[matter_storage_max / SHEET_MATERIAL_AMOUNT]"
-	dat += "<br>---<br><b>Stored stock parts</b>:"
+	dat += "<br><hr>Stored steel: [matter_storage / SHEET_MATERIAL_AMOUNT]/[matter_storage_max / SHEET_MATERIAL_AMOUNT]"
+	dat += "<br><hr><b>Stored stock parts</b>:"
 
 	if(!length(stored_parts))
 		dat += "<br>No parts found!"
@@ -209,8 +212,8 @@
 			dat += "<A href='?src=\ref[src];part_eject=[thing]'> \[eject\]</a>"
 			dat += " | [part_names[thing]]: x[stored_parts[thing]]"
 
-	dat += "<br>---<br><b>Prepared stock parts:</b> "
-	dat += "<A href='?src=\ref[src];unprepare=1'>\[clear\]</a>"
+	dat += "<br><hr><b>Prepared stock parts:</b> "
+	dat += "<A href='?src=\ref[src];clear=1'>\[clear\]</a>"
 
 	if(!length(stored_parts))
 		dat += "<br>N/A"
