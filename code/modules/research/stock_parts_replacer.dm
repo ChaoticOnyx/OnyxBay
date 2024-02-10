@@ -29,7 +29,7 @@
 	storage_slots = 10
 	use_to_pickup = FALSE
 	allow_quick_gather = FALSE
-	allow_quick_empty = FASE
+	allow_quick_empty = FALSE
 	collection_mode = 0
 	var/wasted = FALSE
 
@@ -37,7 +37,7 @@
 	SetName("used rapid machinery upgrade kit")
 	active = FALSE
 	wasted = !length(contents)
-	icon_state = "RMUK-[wasted ? "wasted" : "used"]
+	icon_state = "RMUK-[wasted ? "wasted" : "used"]"
 
 /obj/item/storage/part_replacer/mini/_examine_text(mob/user)
 	. = ..()
@@ -81,7 +81,7 @@
 	if(!istype(T))
 		return FALSE
 
-	for(var/obj/O in R.contents)
+	for(var/obj/O in contents)
 		remove_from_storage(O, T)
 
 	return TRUE
