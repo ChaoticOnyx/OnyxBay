@@ -41,7 +41,11 @@
 
 /obj/item/storage/part_replacer/mini/_examine_text(mob/user)
 	. = ..()
-	if(!active)
+	if(active)
+		. += "\nIt contains the following parts:"
+		for(var/atom/A in contents)
+			. += SPAN("notice", "\n	[A.name]")
+	else
 		. += "\nThis one's already been used."
 		if(!wasted)
 			. += "\nIt seems to still contain some spare parts that can be salvaged."

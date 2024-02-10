@@ -164,11 +164,7 @@
 				to_chat(usr, "\icon[src]<b>\The [src]</b> pings sadly as it lacks stored parts to complete the task.")
 				updateUsrDialog()
 				return
-
-			if(thing in parts_to_spawn)
-				parts_to_spawn[thing]++
-			else
-				parts_to_spawn[thing] = 1
+			parts_to_spawn[thing] = prepared_parts[thing]
 
 		if(length(parts_to_spawn))
 			matter_storage -= SHEET_MATERIAL_AMOUNT
