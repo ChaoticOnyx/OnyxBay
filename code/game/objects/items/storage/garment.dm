@@ -9,7 +9,7 @@
 		/obj/item/clothing
 	)
 
-	max_w_class = ITEM_SIZE_NORMAL
+	max_w_class = ITEM_SIZE_LARGE
 	max_storage_space = 120
 	storage_slots = 20
 
@@ -47,7 +47,7 @@
 		/obj/item/clothing/suit/armor/vest/hos_heavy,
 		/obj/item/clothing/suit/armor/hos,
 		/obj/item/clothing/suit/armor/hos/jensen,
-		/obj/item/clothing/shoes/swat,
+		/obj/item/clothing/shoes/swat
 
 	)
 
@@ -83,7 +83,7 @@
 		/obj/item/clothing/under/rank/head_of_personnel_whimsy,
 		/obj/item/clothing/suit/armor/vest,
 		/obj/item/clothing/shoes/black,
-		/obj/item/clothing/shoes/white,
+		/obj/item/clothing/shoes/white
 	)
 
 /obj/item/storage/garment/captain
@@ -128,7 +128,7 @@
 		/obj/item/clothing/head/soft,
 		/obj/item/clothing/gloves/thick,
 		/obj/item/clothing/under/rank/cargo,
-		/obj/item/clothing/shoes/brown,
+		/obj/item/clothing/shoes/brown
 	)
 
 /obj/item/storage/garment/chief_medical_officer
