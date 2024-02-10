@@ -216,6 +216,7 @@ var/list/worths = list(
 					/obj/item/cartridge = 50,
 					/obj/item/aiModule = 3000,
 					/obj/item/autopsy_scanner = 180,
+					/obj/item/device/emag = 1000,
 //CARDS,
 					/obj/item/card/emag = 300,
 					/obj/item/card/id/silver = 200,

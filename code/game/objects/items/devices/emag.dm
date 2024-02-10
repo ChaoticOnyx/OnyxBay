@@ -26,11 +26,11 @@
 	if(!my_cell?.check_charge(charge_per_usage))
 		return TRUE
 
-	A.emag_act(floor(my_cell.charge / charge_per_usage), user, src)
-	my_cell.use(charge_per_usage)
-	A.add_fingerprint(user)
+	if(A.emag_act(floor(my_cell.charge / charge_per_usage), user, src) != NO_EMAG_ACT)
+		my_cell.use(charge_per_usage)
+		A.add_fingerprint(user)
 
-	log_and_message_admins("emagged \an [A].")
+		log_and_message_admins("emagged \an [A].")
 
 	return TRUE
 
