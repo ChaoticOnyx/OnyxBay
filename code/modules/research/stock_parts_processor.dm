@@ -58,8 +58,11 @@
 	else
 		stored_parts[SP.type] = 1
 
+	part_names[SP.type] = initial(SP.name)
+
 	if(user)
 		to_chat(user, "You load \the [SP] into \the [src]!")
+
 	qdel(SP)
 	return
 
@@ -116,6 +119,13 @@
 
 	return ..()
 
+// Uuuugghhhh why in the world aren't type paths normal strings
+/obj/machinery/stock_parts_processor/proc/get_part_type(t)
+	var/list/types = typesof(/obj/item/stock_parts)
+	for(var/path in types)
+		if("[path]" == t)
+			return path
+
 /obj/machinery/stock_parts_processor/Topic(href, href_list, state)
 	if(..())
 		return 1
@@ -124,35 +134,40 @@
 		prepared_parts.Cut()
 
 	else if(href_list["part_eject"])
-		var/thing = href_list["part_eject"]
+		var/thing = get_part_type(href_list["part_eject"])
 		if(thing in stored_parts)
 			new thing(loc)
+			if(stored_parts[thing] < 1)
+				stored_parts.Remove(thing)
+			else
+				stored_parts[thing]--
 
 	else if(href_list["part_prepare"])
-		var/thing = href_list["part_prepare"]
+		var/thing = get_part_type(href_list["part_prepare"])
 		if(thing in prepared_parts)
 			prepared_parts[thing]++
 		else
 			prepared_parts[thing] = 1
 
 	else if(href_list["part_unprepare"])
-		var/thing = href_list["part_unprepare"]
+		var/thing = get_part_type(href_list["part_unprepare"])
 		if(thing in prepared_parts)
 			prepared_parts[thing]--
 		if(prepared_parts[thing] < 1)
-			prepared_parts.Cut(thing)
+			prepared_parts.Remove(thing)
 
 	else if(href_list["part_unprepare_all"])
-		var/thing = href_list["part_unprepare_all"]
+		var/thing = get_part_type(href_list["part_unprepare_all"])
 		if(thing in prepared_parts)
-			prepared_parts.Cut(thing)
+			prepared_parts.Remove(thing)
 
 	else if(href_list["assemble_rmuk"])
 		var/parts_to_spawn = list()
 		for(var/thing in prepared_parts)
 			if(!(thing in stored_parts) || stored_parts[thing] < prepared_parts[thing])
 				to_chat(usr, "\icon[src]<b>\The [src]</b> pings sadly as it lacks stored parts to complete the task.")
-				break
+				updateUsrDialog()
+				return
 
 			if(thing in parts_to_spawn)
 				parts_to_spawn[thing]++
@@ -182,8 +197,8 @@
 	dat += "Welcome to <b>NT-63-RAA</b><BR> Stock parts processing system"
 	dat += "<BR><FONT SIZE=1>Property of NanoTransen</FONT>"
 
-	dat += "<br>Stored steel: [matter_storage / SHEET_MATERIAL_AMOUNT]/[matter_storage_max / SHEET_MATERIAL_AMOUNT]"
-	dat += "<br>Stored stock parts:"
+	dat += "<br>---<br>Stored steel: [matter_storage / SHEET_MATERIAL_AMOUNT]/[matter_storage_max / SHEET_MATERIAL_AMOUNT]"
+	dat += "<br>---<br><b>Stored stock parts</b>:"
 
 	if(!length(stored_parts))
 		dat += "<br>No parts found!"
@@ -194,7 +209,7 @@
 			dat += "<A href='?src=\ref[src];part_eject=[thing]'> \[eject\]</a>"
 			dat += " | [part_names[thing]]: x[stored_parts[thing]]"
 
-	dat += "<br>---<br>Prepared stock parts: "
+	dat += "<br>---<br><b>Prepared stock parts:</b> "
 	dat += "<A href='?src=\ref[src];unprepare=1'>\[clear\]</a>"
 
 	if(!length(stored_parts))
@@ -205,13 +220,13 @@
 			dat += "<A href='?src=\ref[src];part_prepare=[thing]'>\[ + \]</a>"
 			dat += "<A href='?src=\ref[src];part_unprepare=[thing]'> \[ - \]</a>"
 			dat += "<A href='?src=\ref[src];part_unprepare_all=[thing]'> \[clear\]</a>"
-			dat += " | [part_names[thing]]: x[stored_parts[thing]]"
+			dat += " | [part_names[thing]]: x[prepared_parts[thing]]"
 
 	dat += "<br>Assemble RMUK: "
 	if(matter_storage < SHEET_MATERIAL_AMOUNT)
 		dat += "<font color='red'>Not Enough Steel!</font>"
 	else
-		dat += "<A href='?src=\ref[src];assemble_rmuk=1'>\[remove\]</a>"
+		dat += "<A href='?src=\ref[src];assemble_rmuk=1'>\[press\]</a>"
 
 	show_browser(user, dat, "window=stock_parts_processor")
 	onclose(user, "stock_parts_processor")
