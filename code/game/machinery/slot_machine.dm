@@ -26,14 +26,14 @@
 	skin_variation = rand(1, 3)
 	update_icon()
 
-/obj/machinery/slot_machine/update_icon()
+/obj/machinery/slot_machine/on_update_icon()
 	overlays.Cut()
 	if(stat & BROKEN)
 		icon_state = "slot[skin_variation]_off"
 	else if(!(stat & (NOPOWER | POWEROFF)))
 		icon_state = "slot[skin_variation][plays ? "_spin" : ""]"
 		if(wager)
-			overlays += image(icon, "wager_overlay")
+			AddOverlays(OVERLAY(icon, "wager_overlay"))
 			set_light(0.8, 0.5, 2, 3, "#E4DD7F")
 		else
 			set_light(0.8, 0.5, 2, 3, "#FFB27F")
