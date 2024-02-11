@@ -51,6 +51,9 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 
 	tgui_interact(user)
 
+/obj/machinery/photocopier/faxmachine/tgui_state(mob/user)
+	return GLOB.tgui_machinery_no_access_check_state
+
 /obj/machinery/photocopier/faxmachine/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
