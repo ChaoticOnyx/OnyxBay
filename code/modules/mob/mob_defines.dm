@@ -205,6 +205,7 @@
 
 	var/memory = ""
 	var/flavor_text = ""
+	var/list/flavor_texts = list()
 	var/datum/browser/show_inventory
 
 	var/last_time_pointed_at = 0
