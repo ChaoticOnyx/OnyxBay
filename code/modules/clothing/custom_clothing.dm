@@ -20,12 +20,6 @@
 	item_state = "dalek_coat"
 	armor = list(melee = 45, bullet = 35, laser = 35, energy = 10, bomb = 10, bio = 0)
 
-/obj/item/clothing/suit/armor/hos/jensen/fieldcoat/mob_can_equip(mob/user)
-	.=..()
-	if(user.gender == FEMALE)
-		to_chat(user, SPAN("warning", "You aren't sure you'll fit in this fascist cloth..."))
-		return 0
-
 // TaTarin
 /obj/item/clothing/head/helmet/police
 	name = "police helmet"
@@ -88,11 +82,6 @@
 	item_state = "trenchcoatger"
 	armor = list(melee = 35, bullet = 15, laser = 15, energy = 10, bomb = 10, bio = 0)
 
-/obj/item/clothing/suit/armor/hos/german/mob_can_equip(mob/user)
-	.=..()
-	if(user.gender == FEMALE)
-		to_chat(user, SPAN("warning", "You aren't sure you'll fit in this men's cloth..."))
-		return 0
 
 // Item below belong to i-dont-fucking-know-who
 // Please, sign it ASAP
@@ -120,12 +109,6 @@
     desc = "A greatcoat that is holding small pieces of dirt and such. It feels underarmored, yet you're absolutely sure that it will keep out the cold."
     icon_state = "redcoat"
     armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0)
-
-/obj/item/clothing/suit/storage/toggle/det_trench/warfare/mob_can_equip(mob/user)
-	.=..()
-	if(user.gender == FEMALE)
-		to_chat(user, SPAN("warning", "You aren't sure you'll fit in this men's cloth..."))
-		return 0
 
 // AmiClerick
 
@@ -348,3 +331,12 @@
 	desc = "A red silk cloak embroidered with gold threads"
 	icon_state = "dominiancape"
 	item_state = "dominiancape"
+
+
+// Deimosen
+/obj/item/clothing/suit/armor/hos/jensen/fieldcoat_unprotected
+	name = "military trenchcoat"
+	desc = "A military trenchcoat with a leather belt and long, custom collar. This one has no armor."
+	icon_state = "fieldcoat_unprotected"
+	item_state = "fieldcoat_unprotected"
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 5, bomb = 5, bio = 0)
