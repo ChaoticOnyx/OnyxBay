@@ -358,3 +358,4 @@
 	item_state = "fieldcoat_light"
 
 	body_parts_covered = UPPER_TORSO | LOWER_TORSO | ARMS | LEGS
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 5, bomb = 5, bio = 0)
