@@ -1,5 +1,37 @@
 [
   {
+    "author": "intercepti0n",
+    "date": "2024-02-11T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Блинк игрушка снова имеет правильную иконку.",
+        "pr": 11573
+      }
+    ]
+  },
+  {
+    "author": "TobyThorne",
+    "date": "2024-02-11T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "RscAdd",
+        "message": "Добавлены однорукие бандиты. Ставки задаются карточкой/ПДА.",
+        "pr": 10425
+      },
+      {
+        "prefix": "RscAdd",
+        "message": "Добавлены rapid machinery upgrade kit (RMUK) - одноразовый, но компактный и дешёвый аналог RPEDа. Использованный RMUK с заменёнными деталями можно либо сунуть напрямую в stock parts processor, либо разобрать вручную с помощью монтировки и сварки.",
+        "pr": 11576
+      },
+      {
+        "prefix": "RscAdd",
+        "message": "В РнД добавлен stock parts processor - машина, хранящая детали и позволяющая печатать RMUK.",
+        "pr": 11576
+      }
+    ]
+  },
+  {
     "author": "Filatelele",
     "date": "2024-02-09T00:00:00+03:00",
     "changes": [
