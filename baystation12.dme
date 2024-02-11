@@ -812,6 +812,7 @@
 #include "code\game\machinery\secsmith.dm"
 #include "code\game\machinery\seed_extractor.dm"
 #include "code\game\machinery\Sleeper.dm"
+#include "code\game\machinery\slot_machine.dm"
 #include "code\game\machinery\spaceheater.dm"
 #include "code\game\machinery\status_display.dm"
 #include "code\game\machinery\status_display_ai.dm"
