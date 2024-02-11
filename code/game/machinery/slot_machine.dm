@@ -34,6 +34,10 @@
 		icon_state = "slot[skin_variation][plays ? "_spin" : ""]"
 		if(wager)
 			overlays += image(icon, "wager_overlay")
+			set_light(0.8, 0.5, 2, 3, "#E4DD7F")
+		else
+			set_light(0.8, 0.5, 2, 3, "#FFB27F")
+		AddOverlays(emissive_appearance(icon, "slot-ea"))
 	else
 		icon_state = "slot[skin_variation]_off"
 
@@ -76,8 +80,8 @@
 	var/exclamation = ""
 	var/amount = 0
 
-	//300x and 100x jackpots fall through to 50x winner if wager <= 150
-	if(wager < 150)
+	//300x and 100x jackpots fall through to 50x winner if wager <= 100
+	if(wager < 100)
 		roll = max(6, roll)
 	if(emagged)
 		roll = min(roll * 2, max_roll)
@@ -85,11 +89,12 @@
 	if(roll == 1) //1 - 300
 		exclamation = "JACKPOT! "
 		amount = 300 * wager
-		command_announcement.Announce("Congratulations to [current_player] on winning a Jackpot of [amount] credits!", "Jackpot Winner")
+		/datum/announce/slot_machine
+		SSannounce.play_station_announce(/datum/announce/slot_machine, "Congratulations to [current_player] on winning a Jackpot of [amount] credits!")
 	else if(roll <= 5) //4 - 400
 		exclamation = "Big Winner! "
 		amount = 100 * wager
-		command_announcement.Announce("Congratulations to [current_player] on winning [amount] credits!", "Big Winner")
+		SSannounce.play_station_announce(/datum/announce/slot_machine, "Congratulations to [current_player] on winning [amount] credits!")
 	else if(roll <= 15) //10 - 500    (Plus additional 5 - 250 if wager <= 250)
 		exclamation = "Big Winner! "
 		amount = 50 * wager
@@ -154,12 +159,7 @@
 
 	if(I) // For IDs and PDAs and wallets with IDs
 		pay_with_card(I, W, user)
-	/*else if(istype(W, /obj/item/spacecash/ewallet))
-		var/obj/item/spacecash/ewallet/C = W
-		paid = pay_with_ewallet(C)
-	else if(istype(W, /obj/item/spacecash/bundle))
-		var/obj/item/spacecash/bundle/C = W
-		paid = pay_with_cash(C)*/
+
 	update_icon()
 	return TRUE
 

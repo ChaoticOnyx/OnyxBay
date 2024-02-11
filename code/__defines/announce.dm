@@ -132,6 +132,9 @@ GLOBAL_VAR_CONST(PREF_ANNOUNCER_TGSTATION, "\[Cargo\] /TG/station (Legacy)")
 /datum/announce/command_report
 	text = "Attention! A new command report created."
 
+/datum/announce/slot_machine
+	title = "NanoTrasen Welfare Department"
+
 /datum/announce/weather_normal
 	text = "Weather forecast: cloudless weather is expected in 2 minutes, the temperature is -30 Celsius."
 	title = "Autonomous Meteorological Station"
