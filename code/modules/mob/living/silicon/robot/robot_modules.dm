@@ -920,7 +920,7 @@ GLOBAL_LIST_INIT(robot_modules, list(
 /obj/item/robot_module/syndicate/New(mob/living/silicon/robot/R)
 	supported_upgrades += list(/obj/item/borg/upgrade/tasercooler,/obj/item/borg/upgrade/lasercooler,/obj/item/borg/upgrade/visor/thermal,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/detective)
 
-	loc = R
+	forceMove(R)
 	src.modules += new /obj/item/device/flash(src)
 	src.modules += new /obj/item/crowbar(src)
 	src.modules += new /obj/item/extinguisher/mini(src)

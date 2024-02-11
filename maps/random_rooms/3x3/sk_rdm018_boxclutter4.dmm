@@ -1,0 +1,10 @@
+"a" = (/turf/simulated/floor/plating,/area/template_noop)
+"n" = (/obj/machinery/light/small/red,/turf/simulated/floor/plating,/area/template_noop)
+"q" = (/obj/structure/table/standard,/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+"v" = (/obj/structure/table/standard,/obj/effect/decal/cleanable/cobweb,/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+
+(1,1,1) = {"
+vaa
+aqa
+aan
+"}

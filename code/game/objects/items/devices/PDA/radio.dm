@@ -17,19 +17,21 @@
 
 //		log_debug("Post: [freq]: [key]=[value], [key2]=[value2]")
 
-		var/datum/radio_frequency/frequency = radio_controller.return_frequency(freq)
+		var/datum/frequency/frequency = SSradio.return_frequency(freq)
 
-		if(!frequency) return
+		if(!frequency)
+			return
 
-		var/datum/signal/signal = new()
-		signal.source = src
-		signal.transmission_method = 1
-		signal.data[key] = value
+		var/list/data = list(
+			key = value
+		)
+
 		if(key2)
-			signal.data[key2] = value2
+			data[key2] = value2
 		if(key3)
-			signal.data[key3] = value3
+			data[key3] = value3
 
+		var/datum/signal/signal = new(data)
 		frequency.post_signal(src, signal, filter = s_filter)
 
 		return
@@ -47,8 +49,7 @@
 	New()
 		..()
 		spawn(5)
-			if(radio_controller)
-				radio_controller.add_object(src, control_freq, filter = RADIO_SECBOT)
+			SSradio.add_object(src, control_freq, filter = RADIO_SECBOT)
 
 	// receive radio signals
 	// can detect bot status signals
@@ -104,8 +105,7 @@
 
 
 /obj/item/radio/integrated/beepsky/Destroy()
-	if(radio_controller)
-		radio_controller.remove_object(src, control_freq)
+	SSradio.remove_object(src, control_freq)
 	return ..()
 
 /*
@@ -117,10 +117,10 @@
 	var/frequency = 1457
 	var/code = 30.0
 	var/last_transmission
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 	Initialize()
-		if(!radio_controller)
+		if(!SSradio)
 			return
 
 		if (src.frequency < PUBLIC_LOW_FREQ || src.frequency > PUBLIC_HIGH_FREQ)
@@ -130,9 +130,9 @@
 		. = ..()
 
 	proc/set_frequency(new_frequency)
-		radio_controller.remove_object(src, frequency)
+		SSradio.remove_object(src, frequency)
 		frequency = new_frequency
-		radio_connection = radio_controller.add_object(src, frequency)
+		radio_connection = SSradio.add_object(src, frequency)
 
 	proc/send_signal(message="ACTIVATE")
 
@@ -144,17 +144,11 @@
 		var/turf/T = get_turf(src)
 		GLOB.lastsignalers.Add("[time] <B>:</B> [usr.key] used [src] @ location ([T.x],[T.y],[T.z]) <B>:</B> [format_frequency(frequency)]/[code]")
 
-		var/datum/signal/signal = new
-		signal.source = src
-		signal.encryption = code
-		signal.data["message"] = message
-
+		var/datum/signal/signal = new(list("message" = message), encryption = code)
 		radio_connection.post_signal(src, signal)
 
 		return
 
 /obj/item/radio/integrated/signal/Destroy()
-	if(radio_controller)
-		radio_controller.remove_object(src, frequency)
-
+	SSradio.remove_object(src, frequency)
 	return ..()

@@ -5,6 +5,7 @@
 	desc = "A generic drinking glass." // Description when empty
 	icon = DRINK_ICON_FILE
 	base_icon = "square" // Base icon name
+	item_state = "glass_empty"
 	center_of_mass ="x=16;y=9"
 	filling_states = "20;40;60;80;100"
 	force = 5.0
@@ -20,9 +21,13 @@
 	label_icon = TRUE
 	overlay_icon = TRUE
 	brittle = TRUE
+	can_flip = TRUE
 
 	var/list/extras = list() // List of extras. Two extras maximum
 	var/rim_pos // Position of the rim for fruit slices. list(y, x_left, x_right)
+
+	drop_sound = SFX_DROP_GLASS
+	pickup_sound = SFX_PICKUP_GLASS
 
 /obj/item/reagent_containers/vessel/glass/_examine_text(mob/M)
 	. = ..()
@@ -84,13 +89,14 @@
 		return FALSE
 	return TRUE
 
-/obj/item/reagent_containers/vessel/glass/update_icon()
+/obj/item/reagent_containers/vessel/glass/on_update_icon()
 	underlays.Cut()
-	overlays.Cut()
+	ClearOverlays()
 	icon = DRINK_ICON_FILE
 	icon_state = base_icon
 
 	if(length(reagents?.reagent_list))
+		can_flip = FALSE
 		var/datum/reagent/R = reagents.get_master_reagent()
 
 		SetName("[base_name] of [R.glass_name ? R.glass_name : "something"]")
@@ -135,9 +141,10 @@
 	else
 		SetName(initial(name))
 		desc = initial(desc)
+		can_flip = TRUE
 
 	if(overlay_icon)
-		overlays += image(icon, src, overlay_icon)
+		AddOverlays(image(icon, src, overlay_icon))
 
 	var/side = "left"
 	for(var/item in extras)
@@ -147,7 +154,7 @@
 			if(GE.glass_color)
 				I.color = GE.glass_color
 			if(GE.isoverlaying)
-				overlays += I
+				AddOverlays(I)
 			else
 				underlays += I
 		else if(rim_pos && istype(item, /obj/item/reagent_containers/food/fruit_slice))

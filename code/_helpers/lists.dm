@@ -234,6 +234,12 @@
 	for(var/e in L)
 		. += L[e]
 
+// Return a list of the keys in an assoc list
+/proc/list_keys(list/L)
+	. = list()
+	for(var/k in L)
+		. += k
+
 //Mergesort: divides up the list into halves to begin the sort
 /proc/sortKey(list/client/L, order = 1)
 	if(isnull(L) || L.len < 2)
@@ -640,8 +646,6 @@ proc/dd_sortedObjectList(list/incoming)
 
 /datum/alarm/dd_SortValue()
 	return "[sanitize_old(last_name)]"
-
-#define subtypesof(prototype) (typesof(prototype) - prototype)
 
 //creates every subtype of prototype (excluding prototype) and adds it to list L.
 //if no list/L is provided, one is created.

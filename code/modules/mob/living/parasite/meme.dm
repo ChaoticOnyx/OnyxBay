@@ -32,7 +32,7 @@ be able to influence the host through various commands.
 
 	if(src.host) exit_host()
 	src.host = host
-	src.loc = host
+	forceMove(host)
 	host.parasites.Add(src)
 	host.status_flags |= PASSEMOTES
 
@@ -41,7 +41,7 @@ be able to influence the host through various commands.
 	return 1
 
 /mob/living/parasite/proc/exit_host()
-	src.loc = get_turf(host)
+	dropInto(host.loc)
 	src.host.parasites.Remove(src)
 	src.host = null
 
@@ -129,7 +129,8 @@ be able to influence the host through various commands.
 
 /mob/living/parasite/meme/death()
 	// make sure the mob is on the actual map before gibbing
-	if(host) src.loc = host.loc
+	if(host)
+		dropInto(host.loc)
 	host.parasites -= src
 	src.ghostize()
 	src.stat = DEAD
@@ -172,7 +173,7 @@ be able to influence the host through various commands.
 		to_chat(usr, "\red You can't emote without host!")
 		return
 	message = sanitize(message)
-	return host.emote("me", 1, message)
+	return host.custom_emote(message_type = host.emote_type, message = message, intentional = TRUE)
 
 // A meme understands everything their host understands
 /mob/living/parasite/meme/say_understands(mob/other)

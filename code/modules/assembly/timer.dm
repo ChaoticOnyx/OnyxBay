@@ -12,6 +12,9 @@
 	var/timing = FALSE
 	var/time = 10
 
+	drop_sound = SFX_DROP_COMPONENT
+	pickup_sound = SFX_PICKUP_COMPONENT
+
 /obj/item/device/assembly/timer/proc/timer_end()
 	if(!secured)
 		return 0
@@ -51,11 +54,11 @@
 		timer_end()
 		time = 10
 
-/obj/item/device/assembly/timer/update_icon()
-	overlays.Cut()
-	attached_overlays.Cut()
+/obj/item/device/assembly/timer/on_update_icon()
+	ClearOverlays()
+	attached_overlays = list()
 	if(timing)
-		overlays += "timer_timing"
+		AddOverlays("timer_timing")
 		attached_overlays += "timer_timing"
 	if(holder)
 		holder.update_icon()

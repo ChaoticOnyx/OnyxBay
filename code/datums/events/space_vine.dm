@@ -9,7 +9,7 @@
 /datum/event/space_vine/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(null, /proc/level_seven_announcement), 0)
+	add_think_ctx("announce", CALLBACK(src, nameof(.proc/announce)), 0)
 
 /datum/event/space_vine/get_mtth()
 	. = ..()
@@ -20,3 +20,6 @@
 	spacevine_infestation()
 
 	set_next_think_ctx("announce", world.time + (1 MINUTE))
+
+/datum/event/space_vine/proc/announce()
+	SSannounce.play_station_announce(/datum/announce/level_7_biohazard)

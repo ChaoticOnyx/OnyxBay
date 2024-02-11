@@ -1,17 +1,3 @@
-/mob
-	var/bloody_hands = null
-	var/mob/living/carbon/human/bloody_hands_mob
-	var/track_blood = 0
-	var/list/feet_blood_DNA
-	var/track_blood_type
-	var/feet_blood_color
-
-/obj/item/clothing/gloves
-	var/transfer_blood = 0
-	var/mob/living/carbon/human/bloody_hands_mob
-
-/obj/item/clothing/shoes/
-	var/track_blood = 0
 
 /obj/item/reagent_containers/rag
 	name = "rag"
@@ -36,8 +22,8 @@
 	BP = new()
 
 /obj/item/reagent_containers/rag/Destroy()
-	. = ..()
 	QDEL_NULL(BP)
+	return ..()
 
 /obj/item/reagent_containers/rag/attack_self(mob/user as mob)
 	if(on_fire)
@@ -66,7 +52,7 @@
 	else
 		SetName("dry [initial(name)]")
 
-/obj/item/reagent_containers/rag/update_icon()
+/obj/item/reagent_containers/rag/on_update_icon()
 	if(on_fire)
 		icon_state = "raglit"
 	else

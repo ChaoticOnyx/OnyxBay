@@ -9,7 +9,7 @@
 		verbs |= /mob/living/proc/ghost
 
 	if(controllable)
-		GLOB.available_mobs_for_possess += src
+		GLOB.available_mobs_for_possess["\ref[src]"] += src
 
 	update_transform() // Some mobs may start bigger or smaller than normal.
 
@@ -91,7 +91,7 @@
 
 			//Leaping mobs just land on the tile, no pushing, no anything.
 			if(status_flags & LEAPING)
-				loc = tmob.loc
+				forceMove(tmob.loc)
 				status_flags &= ~LEAPING
 				now_pushing = 0
 				return
@@ -130,6 +130,7 @@
 				now_pushing = 0
 				return
 			tmob.LAssailant = weakref(src)
+
 		if(isobj(AM) && !AM.anchored)
 			var/obj/I = AM
 			if(!can_pull_size || can_pull_size < I.w_class)
@@ -141,7 +142,7 @@
 		spawn(0)
 			..()
 			var/saved_dir = AM.dir
-			if (!istype(AM, /atom/movable) || AM.anchored)
+			if (!istype(AM, /atom/movable) || AM.anchored || AM.atom_flags & ATOM_FLAG_UNPUSHABLE)
 				if(confused && prob(50) && m_intent == M_RUN && !lying)
 					var/obj/machinery/disposal/D = AM
 					if(istype(D) && !(D.stat & BROKEN))
@@ -217,7 +218,6 @@
 		set_stat(CONSCIOUS)
 	else
 		health = maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss() - getHalLoss()
-
 
 //This proc is used for mobs which are affected by pressure to calculate the amount of pressure that actually
 //affects them once clothing is factored in. ~Errorage
@@ -547,6 +547,7 @@
 		for(var/mob/living/carbon/metroid/M in view(1, src))
 			M.UpdateFeed()
 
+
 /mob/living/proc/can_pull()
 	if(!moving)
 		return FALSE
@@ -597,6 +598,8 @@
 			step_glide(M, get_dir(pulling.loc, old_loc), glide_size)
 			if(t)
 				M.start_pulling(t)
+
+	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, pulling.loc)
 
 	handle_dir_after_pull()
 
@@ -656,6 +659,8 @@
 			process_resist()
 
 /mob/living/proc/process_resist()
+
+	SEND_SIGNAL(src, SIGNAL_MOB_RESIST, src)
 	//Getting out of someone's inventory.
 	if(istype(src.loc, /obj/item/holder))
 		escape_inventory(src.loc)
@@ -670,12 +675,6 @@
 	if(src.loc && (istype(src.loc, /obj/structure/closet)) )
 		var/obj/structure/closet/closet = loc
 		spawn() closet.mob_breakout(src)
-		return TRUE
-
-	//Trying to escape from abductors?
-	if(src.loc && (istype(src.loc, /obj/machinery/abductor/experiment)))
-		var/obj/machinery/abductor/experiment/experiment = loc
-		spawn() experiment.mob_breakout(src)
 		return TRUE
 
 	//Trying to escape from Spider?
@@ -739,7 +738,7 @@
 		to_chat(src, SPAN("notice", "You are now [resting ? "resting" : "getting up"]."))
 
 //called when the mob receives a bright flash
-/mob/living/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash, effect_duration = 25)
+/mob/living/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /atom/movable/screen/fullscreen/flash, effect_duration = 25)
 	if(override_blindness_check || !(disabilities & BLIND))
 		overlay_fullscreen("flash", type)
 		spawn(effect_duration)
@@ -764,7 +763,7 @@
 /mob/living/proc/slip_on_obj(/obj/slipped_on, stun_duration = 8, slip_dist = 0)
 	return 0
 
-/mob/living/carbon/drop(obj/item/W, atom/Target = null, force = null)
+/mob/living/carbon/drop(obj/item/W, atom/Target = null, force = null, changing_slots)
 	if(W in internal_organs)
 		return
 	. = ..()
@@ -822,6 +821,8 @@
 
 	to_chat(src, "<b>You are now \the [src]!</b>")
 	to_chat(src, "<span class='notice'>Remember to stay in character for a mob of this type!</span>")
+	if("\ref[src]" in GLOB.available_mobs_for_possess)
+		GLOB.available_mobs_for_possess -= "\ref[src]"
 	return 1
 
 /mob/living/reset_layer()
@@ -832,7 +833,7 @@
 
 /mob/living/update_icons()
 	if(auras)
-		overlays |= auras
+		AddOverlays(auras)
 
 /mob/living/proc/add_aura(obj/aura/aura)
 	LAZYDISTINCTADD(auras,aura)
@@ -853,13 +854,17 @@
 	QDEL_NULL(aiming)
 	if(controllable)
 		controllable = FALSE
-		GLOB.available_mobs_for_possess -= src
+		GLOB.available_mobs_for_possess -= "\ref[src]"
 	return ..()
 
-/mob/living/proc/set_m_intent(intent)
+/mob/proc/set_m_intent(intent)
 	if(intent != M_WALK && intent != M_RUN)
-		return 0
+		return FALSE
+
 	m_intent = intent
+
+	update_move_intent_slowdown()
+
 	if(hud_used)
 		if(hud_used.move_intent)
 			hud_used.move_intent.icon_state = (intent == M_WALK ? "walking" : "running")

@@ -19,10 +19,10 @@ var/list/wrapped_species_by_ref = list()
 /datum/species/shapeshifter/get_valid_shapeshifter_forms(mob/living/carbon/human/H)
 	return valid_transform_species
 
-/datum/species/shapeshifter/get_icobase(mob/living/carbon/human/H, get_deform)
-	if(!H) return ..(null, get_deform)
+/datum/species/shapeshifter/get_icobase(mob/living/carbon/human/H)
+	if(!H) return ..(null)
 	var/datum/species/S = all_species[wrapped_species_by_ref["\ref[H]"]]
-	return S.get_icobase(H, get_deform)
+	return S.get_icobase(H)
 
 /datum/species/shapeshifter/get_race_key(mob/living/carbon/human/H)
 	return "[..()]-[wrapped_species_by_ref["\ref[H]"]]"
@@ -211,5 +211,5 @@ var/list/wrapped_species_by_ref = list()
 	var/datum/species/S = all_species[wrapped_species_by_ref["\ref[src]"]]
 	var/list/body_builds = S.get_body_build_datum_list(src.gender)
 	if(!(body_build in body_builds))
-		body_build = body_builds[1]
+		change_body_build(body_builds[1])
 		regenerate_icons()

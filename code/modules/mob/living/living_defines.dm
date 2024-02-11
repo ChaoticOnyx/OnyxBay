@@ -54,7 +54,7 @@
 	var/job = null//Living
 	var/list/obj/aura/auras = null //Basically a catch-all aura/force-field thing.
 
-	var/obj/screen/cells = null
+	var/atom/movable/screen/cells = null
 	var/evasion = 0 // Makes attacks harder to land. Negative numbers increase hit chance.
 
 	var/controllable = FALSE // If ghosts can possess a mob without permissions

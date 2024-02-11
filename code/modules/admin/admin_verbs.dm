@@ -178,7 +178,8 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/toggle_alien_eggs,
 	/datum/admins/proc/toggle_space_ninja,
 	/client/proc/check_customitem_activity,
-	/client/proc/nanomapgen_DumpImage
+	/client/proc/nanomapgen_DumpImage,
+	/client/proc/cmd_set_station_date
 	)
 
 var/list/admin_verbs_debug = list(

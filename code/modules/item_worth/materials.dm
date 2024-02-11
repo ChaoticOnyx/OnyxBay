@@ -64,6 +64,9 @@
 /material/wood
 	value = 3
 
+/material/darkwood
+	value = 30
+
 /material/wood/holographic
 	value = 0
 

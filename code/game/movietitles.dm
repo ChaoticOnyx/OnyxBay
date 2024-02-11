@@ -18,8 +18,8 @@ GLOBAL_LIST(end_titles)
 
 	if(mob)
 	//blacking screen for player when round ends
-		//mob.overlay_fullscreen("fishbed",/obj/screen/fullscreen/fishbed)
-		//mob.overlay_fullscreen("fadeout",/obj/screen/fullscreen/fadeout)
+		//mob.overlay_fullscreen("fishbed",/atom/movable/screen/fullscreen/fishbed)
+		//mob.overlay_fullscreen("fadeout",/atom/movable/screen/fullscreen/fadeout)
 
 		if(mob.get_preference_value(/datum/client_preference/play_lobby_music) == GLOB.PREF_YES)
 			sound_to(mob, sound(null, channel = 1))
@@ -30,7 +30,7 @@ GLOBAL_LIST(end_titles)
 	for(var/I in GLOB.end_titles)
 		if(!credits)
 			return
-		var/obj/screen/credit/T = new(null, I, src)
+		var/atom/movable/screen/credit/T = new(null, I, src)
 		_credits += T
 		T.rollem()
 		sleep(CREDIT_SPAWN_SPEED)
@@ -48,7 +48,7 @@ GLOBAL_LIST(end_titles)
 	mob.clear_fullscreen("fadeout")
 	sound_to(mob, sound(null, channel = 1))
 
-/obj/screen/credit
+/atom/movable/screen/credit
 	icon = 'icons/hud/screen.dmi'
 	icon_state = "blank"
 	mouse_opacity = 0
@@ -59,14 +59,14 @@ GLOBAL_LIST(end_titles)
 	var/client/parent
 	var/matrix/target
 
-/obj/screen/credit/Initialize(mapload, credited, client/P)
+/atom/movable/screen/credit/Initialize(mapload, credited, client/P)
 	. = ..()
 	parent = P
 	maptext = credited
 	maptext_height = world.icon_size * 2
 	maptext_width = world.icon_size * 14
 
-/obj/screen/credit/proc/rollem()
+/atom/movable/screen/credit/proc/rollem()
 	var/matrix/M = matrix(transform)
 	M.Translate(0, CREDIT_ANIMATE_HEIGHT)
 	animate(src, transform = M, time = CREDIT_ROLL_SPEED)
@@ -79,7 +79,7 @@ GLOBAL_LIST(end_titles)
 			qdel(src)
 	parent.screen += src
 
-/obj/screen/credit/Destroy()
+/atom/movable/screen/credit/Destroy()
 	var/client/P = parent
 	if(parent)
 		P.screen -= src
@@ -97,7 +97,7 @@ GLOBAL_LIST(end_titles)
 	/* Establish a big-ass list of potential titles for the "episode". */
 	possible_titles += "THE [pick("DOWNFALL OF", "RISE OF", "TROUBLE WITH", "FINAL STAND OF", "DARK SIDE OF")] [pick("SPACEMEN", "HUMANITY", "DIGNITY", "SANITY", "THE CHIMPANZEES", "THE VENDOMAT PRICES","[uppertext(GLOB.using_map.station_name)]")]"
 	possible_titles += "THE CREW GETS [pick("RACIST", "PICKLED", "AN INCURABLE DISEASE", "PIZZA", "A VALUABLE HISTORY LESSON", "A BREAK", "HIGH", "TO LIVE", "TO RELIVE THEIR CHILDHOOD", "EMBROILED IN CIVIL WAR", "SERIOUS ABOUT [pick("DRUG ABUSE", "CRIME", "PRODUCTIVITY", "ANCIENT AMERICAN CARTOONS", "SPACEBALL")]")]"
-	possible_titles += "THE CREW LEARNS ABOUT [pick("LOVE", "DRUGS", "THE DANGERS OF MONEY LAUNDERING", "XENIC SENSITIVITY", "INVESTMENT FRAUD", "KELOTANE ABUSE", "RADIATION PROTECTION", "SACRED GEOMETRY", "STRING THEORY", "ABSTRACT MATHEMATICS", "[pick("TAJARAN", "UNATHI", "SKRELLIAN", "DIONAN", "KHAARMANI", "VOX", "SERPENTID")] MATING RITUALS", "ANCIENT CHINESE MEDICINE")]"
+	possible_titles += "THE CREW LEARNS ABOUT [pick("LOVE", "DRUGS", "THE DANGERS OF MONEY LAUNDERING", "XENIC SENSITIVITY", "INVESTMENT FRAUD", "KELOTANE ABUSE", "RADIATION PROTECTION", "SACRED GEOMETRY", "STRING THEORY", "ABSTRACT MATHEMATICS", "[pick("TAJARAN", "UNATHI", "SKRELLIAN", "DIONAN", "VOX", "TROTTINE")] MATING RITUALS", "ANCIENT CHINESE MEDICINE")]"
 	possible_titles += "A VERY [pick("NANOTRASEN", "EXPEDITIONARY", "DIONA", "PLASMA", "MARTIAN")] CHRISTMAS"
 	possible_titles += "[pick("GUNS, GUNS EVERYWHERE", "THE LITTLEST ARMALIS", "WHAT HAPPENS WHEN YOU MIX MAINTENANCE DRONES AND COMMERCIAL-GRADE PACKING FOAM", "ATTACK! ATTACK! ATTACK!", "SEX BOMB")]"
 	possible_titles += "[pick("SPACE", "SEXY", "DRAGON", "WARLOCK", "LAUNDRY", "GUN", "ADVERTISING", "DOG", "CARBON MONOXIDE", "NINJA", "WIZARD", "SOCRATIC", "JUVENILE DELIQUENCY", "POLITICALLY MOTIVATED", "RADTACULAR SICKNASTY")] [pick("QUEST", "FORCE", "ADVENTURE")]"

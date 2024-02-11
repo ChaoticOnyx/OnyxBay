@@ -13,7 +13,7 @@
 
 	var/required_chems = 0 // Chemicals required to use the ability
 	var/required_dna = 0   // DNA required to use the ability
-	var/max_genetic_damage = 100 // Can't use the ability if genetic damage is higher than this
+	var/max_genome_damage = 100 // Can't use the ability if genome damage is higher than this
 	var/max_stat = CONSCIOUS // In what state we can use the ability
 	var/allow_stasis = FALSE // Whether we can use the ability while in stasis
 	var/allow_lesser = FALSE // Can we use this ability while not in a human form?
@@ -47,7 +47,7 @@
 	update_recursive_enhancement()
 
 /datum/changeling_power/proc/update_screen_button()
-	var/obj/screen/ability/changeling_power/CP = my_mob.ability_master.get_ability_by_changeling_power(src)
+	var/atom/movable/screen/ability/changeling_power/CP = my_mob.ability_master.get_ability_by_changeling_power(src)
 	CP?.update_icon()
 
 /datum/changeling_power/proc/check_incapacitated(_max_stat, _allow_stasis)
@@ -89,7 +89,7 @@
 			to_chat(my_mob, SPAN("changeling", "We require at least <b>[required_chems]</b> units of chemicals to do that!"))
 		return
 
-	if(changeling.geneticdamage > max_genetic_damage)
+	if(changeling.genome_damage > max_genome_damage)
 		if(!no_message)
 			to_chat(my_mob, SPAN("changeling", "Our genomes are still reassembling. We need time to recover first."))
 		return

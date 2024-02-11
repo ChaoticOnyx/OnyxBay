@@ -12,6 +12,9 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 			M.setup_map()
 		else
 			M = new type
+		if(M.name in config.mapping.allowed_maps)
+			M.can_be_voted = config.mapping.allowed_maps[M.name]
+
 		if(!M.path)
 			log_error("Map '[M]' does not have a defined path, not adding to map list!")
 		else
@@ -26,6 +29,8 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 	var/shuttle_types = null         // Only the specified shuttles will be initialized.
 	var/list/map_levels
+
+	var/list/derelict_levels		// List for random derelicts
 
 	var/list/usable_email_tlds = list("freemail.nt")
 	var/base_floor_type = /turf/simulated/floor/plating/airless // The turf type used when generating floors between Z-levels at startup.
@@ -48,14 +53,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/system_name = "Uncharted System"
 
 	var/map_admin_faxes = list()
-
-	var/shuttle_docked_message
-	var/shuttle_leaving_dock
-	var/shuttle_called_message
-	var/shuttle_recall_message
-	var/emergency_shuttle_docked_message
-	var/emergency_shuttle_leaving_dock
-	var/emergency_shuttle_recall_message
 
 	/// Areas where crew members are considered to have safely left the station.
 	/// Defaults to all area types on the centcom levels if left empty.
@@ -147,6 +144,14 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 /datum/map/proc/setup_map()
 	ASSERT(length(map_levels))
+
+	var/derelicts_index = config.mapping.derelicts_amount
+	while(length(derelict_levels) && derelicts_index)
+		var/list/rand_derelict = pick(derelict_levels)
+		derelict_levels.Remove(rand_derelict)
+		map_levels.Add(rand_derelict)
+		derelicts_index--
+
 	for(var/level = 1; level <= length(map_levels); level++)
 		var/datum/space_level/L = map_levels[level]
 

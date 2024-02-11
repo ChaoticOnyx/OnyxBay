@@ -10,7 +10,7 @@
 	var/mob/living/silicon/ai/connected_ai = null
 	var/obj/item/cell/cell = null
 	var/obj/machinery/camera/camera = null
-	var/obj/item/device/mmi/mmi = null
+	var/obj/item/organ/internal/cerebrum/mmi/mmi = null
 	var/list/req_access = list(access_robotics) //Access needed to pop out the brain.
 	var/positronic
 
@@ -50,13 +50,13 @@
 
 /mob/living/simple_animal/spiderbot/attackby(obj/item/O as obj, mob/user as mob)
 
-	if(istype(O, /obj/item/device/mmi) || istype(O, /obj/item/organ/internal/posibrain))
+	if(istype(O, /obj/item/organ/internal/cerebrum/mmi) || istype(O, /obj/item/organ/internal/cerebrum/posibrain))
 		var/mob/living/carbon/brain/B
-		if(istype(O, /obj/item/device/mmi))
-			var/obj/item/device/mmi/M = O
+		if(istype(O, /obj/item/organ/internal/cerebrum/mmi))
+			var/obj/item/organ/internal/cerebrum/mmi/M = O
 			B = M.brainmob
 		else
-			var/obj/item/organ/internal/posibrain/P = O
+			var/obj/item/organ/internal/cerebrum/posibrain/P = O
 			B = P.brainmob
 		if(src.mmi)
 			to_chat(user, "<span class='warning'>There's already a brain in [src]!</span>")
@@ -87,7 +87,7 @@
 			return
 
 		to_chat(user, "<span class='notice'>You install \the [O] in \the [src]!</span>")
-		if(istype(O, /obj/item/organ/internal/posibrain))
+		if(istype(O, /obj/item/organ/internal/cerebrum/posibrain))
 			positronic = 1
 			add_language("Robot Talk")
 
@@ -127,7 +127,7 @@
 			to_chat(user, "<span class='notice'>You swipe your access card and pop the brain out of \the [src].</span>")
 			eject_brain()
 			if(held_item)
-				held_item.loc = src.loc
+				held_item.dropInto(loc)
 				held_item = null
 			return 1
 		else
@@ -147,7 +147,7 @@
 		spawn(200)	to_chat(src, "<span class='danger'>Internal heat sensors are spiking! Something is badly wrong with your cell!</span>")
 		spawn(300)	src.explode()
 
-/mob/living/simple_animal/spiderbot/proc/transfer_personality(obj/item/device/mmi/M as obj)
+/mob/living/simple_animal/spiderbot/proc/transfer_personality(obj/item/organ/internal/cerebrum/mmi/M as obj)
 
 		src.mind = M.brainmob.mind
 		src.mind.key = M.brainmob.key
@@ -160,7 +160,7 @@
 	eject_brain()
 	death()
 
-/mob/living/simple_animal/spiderbot/update_icon()
+/mob/living/simple_animal/spiderbot/on_update_icon()
 	if(mmi)
 		if(positronic)
 			icon_state = "spiderbot-chassis-posi"
@@ -176,7 +176,7 @@
 	if(mmi)
 		var/turf/T = get_turf(loc)
 		if(T)
-			mmi.loc = T
+			mmi.forceMove(T)
 		if(mind)	mind.transfer_to(mmi.brainmob)
 		mmi = null
 		real_name = initial(real_name)
@@ -206,7 +206,7 @@
 		camera.status = 0
 
 	if(held_item)
-		held_item.loc = src.loc
+		held_item.dropInto(loc)
 		held_item = null
 
 	gibs(loc, null, null, /obj/effect/gibspawner/robot) //TODO: use gib() or refactor spiderbots into synthetics.
@@ -231,7 +231,7 @@
 			"<span class='danger'>You launch \the [held_item]!</span>", \
 			"You hear a skittering noise and a thump!")
 		var/obj/item/grenade/G = held_item
-		G.loc = src.loc
+		G.dropInto(loc)
 		G.detonate()
 		held_item = null
 		return 1
@@ -240,7 +240,7 @@
 		"<span class='notice'>You drop \the [held_item].</span>", \
 		"You hear a skittering noise and a soft thump.")
 
-	held_item.loc = src.loc
+	held_item.dropInto(loc)
 	held_item = null
 	return 1
 
@@ -267,7 +267,7 @@
 		for(var/obj/item/I in view(1, src))
 			if(selection == I)
 				held_item = selection
-				selection.loc = src
+				selection.forceMove(src)
 				visible_message("<span class='notice'>\The [src] scoops up \the [held_item].</span>", \
 					"<span class='notice'>You grab \the [held_item].</span>", \
 					"You hear a skittering noise and a clink.")

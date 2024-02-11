@@ -1,0 +1,20 @@
+"a" = (/turf/simulated/floor/trim/wood,/area/template_noop)
+"q" = (/obj/structure/table/woodentable,/turf/simulated/floor/trim/wood,/area/template_noop)
+"t" = (/obj/effect/decal/cleanable/blood,/turf/simulated/floor/trim/wood,/area/template_noop)
+"v" = (/obj/structure/table/woodentable,/obj/item/welding_cover/carp,/turf/simulated/floor/trim/carpet/red,/area/template_noop)
+"w" = (/obj/structure/bed/chair/office/light,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/trim/carpet/red,/area/template_noop)
+"A" = (/obj/structure/bed/chair/comfy/brown{dir = 4},/turf/simulated/floor/trim/wood,/area/template_noop)
+"E" = (/turf/simulated/floor/trim/carpet/red,/area/template_noop)
+"L" = (/obj/structure/table/woodentable,/obj/effect/decal/cleanable/blood,/obj/item/stamp/denied,/obj/item/stamp,/obj/structure/plushie/carp,/turf/simulated/floor/trim/carpet/red,/area/template_noop)
+"O" = (/obj/item/stack/tile/wood,/obj/item/stack/tile/wood,/obj/item/stack/tile/wood,/obj/item/stack/tile/wood,/turf/simulated/floor/trim/wood,/area/template_noop)
+"R" = (/obj/structure/filingcabinet,/turf/simulated/floor/trim/wood/broken4,/area/template_noop)
+"T" = (/obj/structure/bed/chair/comfy/brown{dir = 4},/turf/simulated/floor/trim/wood/broken5,/area/template_noop)
+"Y" = (/turf/simulated/floor/trim/wood/broken0,/area/template_noop)
+
+(1,1,1) = {"
+EwE
+ELv
+Yta
+AOR
+Taq
+"}

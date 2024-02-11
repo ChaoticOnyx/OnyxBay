@@ -6,7 +6,7 @@
 
 	var/mob/living/simple_animal/borer/B = has_brain_worms()
 
-	ASSERT(B && B.host_brain && B.can_use_abilities("controlling"))
+	ASSERT(B && B.host_brain && B.can_use_abilities(BORER_STATUS_CONTROLLING))
 
 	to_chat(src, SPAN("danger", "You withdraw your probosci, releasing control of [B.host_brain]"))
 	B.detatch()
@@ -20,7 +20,7 @@
 	var/mob/living/simple_animal/borer/B = has_brain_worms()
 
 
-	if(B && B.host_brain?.ckey && B.can_use_abilities("controlling"))
+	if(B && B.host_brain?.ckey && B.can_use_abilities(BORER_STATUS_CONTROLLING))
 		to_chat(src, SPAN("danger", "You send a punishing spike of psychic agony lancing into your host's brain."))
 		if (!can_feel_pain())
 			to_chat(B.host_brain, SPAN("warning", "You feel a strange sensation as a foreign influence prods your mind."))
@@ -35,7 +35,7 @@
 
 	var/mob/living/simple_animal/borer/B = has_brain_worms()
 
-	if(B && B.can_use_abilities("controlling") && B.chemicals >= 100)
+	if(B && B.can_use_abilities(BORER_STATUS_IN_HOST) && B.chemicals >= 100)
 		to_chat(src, SPAN("danger", "Your host twitches and quivers as you rapidly excrete a larva from your sluglike body."))
 		visible_message(SPAN("danger", "\The [src] heaves violently, expelling a rush of vomit and a wriggling, sluglike creature!"))
 		B.chemicals -= 100

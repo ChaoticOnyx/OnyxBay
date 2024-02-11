@@ -13,7 +13,7 @@
 	magazine_type = /obj/item/ammo_magazine/c45m
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	caliber = ".45"
-/obj/item/gun/projectile/pistol/secgun/update_icon()
+/obj/item/gun/projectile/pistol/secgun/on_update_icon()
 	..()
 	if(ammo_magazine && ammo_magazine.stored_ammo.len)
 		icon_state = "secguncomp"
@@ -30,7 +30,7 @@
 	icon_state = "secgundark"
 	accuracy = 0
 
-/obj/item/gun/projectile/pistol/secgun/wood/update_icon()
+/obj/item/gun/projectile/pistol/secgun/wood/on_update_icon()
 	..()
 	if(ammo_magazine && ammo_magazine.stored_ammo.len)
 		icon_state = "secgundark"
@@ -46,7 +46,7 @@
 	caliber = ".45"
 	fire_sound = 'sound/effects/weapons/gun/fire_colt2.ogg'
 
-/obj/item/gun/projectile/pistol/colt/update_icon()
+/obj/item/gun/projectile/pistol/colt/on_update_icon()
 	..()
 	if(ammo_magazine && ammo_magazine.stored_ammo.len)
 		icon_state = "colt"
@@ -60,7 +60,7 @@
 	accuracy = 0.35
 	fire_delay = 6.5
 
-/obj/item/gun/projectile/pistol/colt/officer/update_icon()
+/obj/item/gun/projectile/pistol/colt/officer/on_update_icon()
 	..()
 	if(ammo_magazine && ammo_magazine.stored_ammo.len)
 		icon_state = "usp"
@@ -77,7 +77,7 @@
 	caliber = ".45"
 	accuracy = -0.35
 
-/obj/item/gun/projectile/pistol/vp78/update_icon()
+/obj/item/gun/projectile/pistol/vp78/on_update_icon()
 	..()
 	if(ammo_magazine && ammo_magazine.stored_ammo.len)
 		icon_state = "VP78"
@@ -91,7 +91,7 @@
 	accuracy = 0.35
 	fire_delay = 4.5
 
-/obj/item/gun/projectile/pistol/vp78/wood/update_icon()
+/obj/item/gun/projectile/pistol/vp78/wood/on_update_icon()
 	..()
 	if(ammo_magazine && ammo_magazine.stored_ammo.len)
 		icon_state = "VP78wood"
@@ -107,7 +107,7 @@
 	auto_eject_sound = 'sound/effects/weapons/misc/smg_empty_alarm.ogg'
 	fire_delay = 6.5
 
-/obj/item/gun/projectile/pistol/vp78/tactical/update_icon()
+/obj/item/gun/projectile/pistol/vp78/tactical/on_update_icon()
 	..()
 	if(ammo_magazine && ammo_magazine.stored_ammo.len)
 		icon_state = "VP78tactic"
@@ -145,7 +145,7 @@
 	allowed_magazines = /obj/item/ammo_magazine/a50
 	fire_sound = 'sound/effects/weapons/gun/fire2.ogg'
 
-/obj/item/gun/projectile/pistol/magnum_pistol/update_icon()
+/obj/item/gun/projectile/pistol/magnum_pistol/on_update_icon()
 	..()
 	if(ammo_magazine && ammo_magazine.stored_ammo.len)
 		icon_state = "magnum"
@@ -169,7 +169,7 @@
 	auto_eject_sound = 'sound/effects/weapons/misc/smg_empty_alarm.ogg'
 	fire_sound = 'sound/effects/weapons/gun/fire3.ogg'
 
-/obj/item/gun/projectile/pistol/gyropistol/update_icon()
+/obj/item/gun/projectile/pistol/gyropistol/on_update_icon()
 	..()
 	if(ammo_magazine)
 		icon_state = "gyropistolloaded"
@@ -191,7 +191,7 @@
 	allowed_magazines = /obj/item/ammo_magazine/mc9mm
 	fire_sound = 'sound/effects/weapons/gun/fire_9mm.ogg'
 
-/obj/item/gun/projectile/pistol/det_m9/update_icon()
+/obj/item/gun/projectile/pistol/det_m9/on_update_icon()
 	..()
 	if(ammo_magazine && ammo_magazine.stored_ammo.len)
 		icon_state = "det-m9"
@@ -249,7 +249,7 @@
 		return
 	..()
 
-/obj/item/gun/projectile/pistol/holdout/update_icon()
+/obj/item/gun/projectile/pistol/holdout/on_update_icon()
 	..()
 	if(silenced)
 		icon_state = "pistol-silencer"
@@ -261,7 +261,7 @@
 /obj/item/silencer
 	name = "silencer"
 	desc = "A silencer."
-	icon = 'icons/obj/gun.dmi'
+	icon = 'icons/obj/guns/gun.dmi'
 	icon_state = "silencer"
 	w_class = ITEM_SIZE_SMALL
 
@@ -278,6 +278,8 @@
 	max_shells = 1 //literally just a barrel
 	fire_sound = 'sound/effects/weapons/gun/fire6.ogg'
 
+	has_safety = FALSE
+
 	var/global/list/ammo_types = list(
 		/obj/item/ammo_casing/a357              = ".357",
 		/obj/item/ammo_casing/a762              = "7.62mm",
@@ -285,12 +287,12 @@
 		)
 
 /obj/item/gun/projectile/pirate/Initialize()
+	. = ..()
 	ammo_type = pick(ammo_types)
 	desc += " Uses [ammo_types[ammo_type]] rounds."
 
 	var/obj/item/ammo_casing/ammo = ammo_type
 	caliber = initial(ammo.caliber)
-	..()
 
 // Zip gun construction.
 /obj/item/zipgunframe
@@ -305,7 +307,7 @@
 	mod_handy = 0.75
 	var/buildstate = 0
 
-/obj/item/zipgunframe/update_icon()
+/obj/item/zipgunframe/on_update_icon()
 	icon_state = "zipgun[buildstate]"
 
 /obj/item/zipgunframe/_examine_text(mob/user)

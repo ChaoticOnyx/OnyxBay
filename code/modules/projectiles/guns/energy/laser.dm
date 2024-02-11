@@ -29,6 +29,7 @@
 	use_external_power = 1
 	one_hand_penalty = 0 //just in case
 	icon_state = "blaser"
+	has_safety = FALSE
 
 /obj/item/gun/energy/laser/mounted/cyborg
 	max_shots = 6
@@ -167,6 +168,7 @@
 	recharge_time = 10
 	accuracy = 0 //mounted laser cannons don't need any help, thanks
 	one_hand_penalty = 0
+	has_safety = FALSE
 
 /obj/item/gun/energy/xray
 	name = "x-ray laser carbine"
@@ -224,7 +226,7 @@
 	scoped_accuracy = 0
 	wielded_item_state = "gun_wielded"
 
-/obj/item/gun/energy/sniperrifle/update_icon()
+/obj/item/gun/energy/sniperrifle/on_update_icon()
 	..()
 	item_state_slots[slot_back_str] = icon_state //so that the on-back overlay uses the different charged states
 
@@ -251,6 +253,7 @@
 	projectile_type = /obj/item/projectile/beam/lasertag/blue
 	var/required_vest
 	combustion = FALSE
+	has_safety = FALSE
 
 /obj/item/gun/energy/lasertag/special_check(mob/living/carbon/human/M)
 	if(ishuman(M))

@@ -1,0 +1,15 @@
+"a" = (/obj/effect/floor_decal/corner/alt/green{dir = 8},/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/rough,/area/template_noop)
+"x" = (/obj/effect/floor_decal/corner/alt/purple{dir = 9},/obj/structure/table/standard,/obj/item/reagent_containers/vessel/bucket,/turf/simulated/floor/plating,/area/template_noop)
+"E" = (/obj/effect/floor_decal/rust,/turf/simulated/floor/tiled/rough,/area/template_noop)
+"G" = (/obj/effect/floor_decal/corner/alt/purple{dir = 1},/obj/effect/floor_decal/rust,/turf/simulated/floor/plating,/area/template_noop)
+"H" = (/obj/effect/floor_decal/corner/alt/green,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/rough,/area/template_noop)
+"M" = (/obj/effect/floor_decal/corner/alt/green{dir = 10},/obj/structure/mopbucket,/obj/item/mop,/turf/simulated/floor/tiled/rough,/area/template_noop)
+"O" = (/obj/effect/floor_decal/corner/alt/green{dir = 6},/obj/structure/reagent_dispensers/watertank,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/rough,/area/template_noop)
+"R" = (/obj/effect/floor_decal/corner/alt/purple{dir = 5},/obj/structure/sink/kitchen{pixel_y = 28},/turf/simulated/floor/plating,/area/template_noop)
+"T" = (/obj/effect/floor_decal/corner/alt/purple{dir = 4},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/rough,/area/template_noop)
+
+(1,1,1) = {"
+xGR
+aET
+MHO
+"}

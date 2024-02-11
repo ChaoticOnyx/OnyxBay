@@ -1,0 +1,14 @@
+"a" = (/obj/structure/flora/pottedplant/unusual,/obj/effect/floor_decal/industrial/warning/corner{dir = 4},/turf/simulated/floor/trim/wood/broken0,/area/template_noop)
+"q" = (/obj/item/paper/crumpled,/turf/simulated/floor/trim/carpet/green,/area/template_noop)
+"B" = (/obj/effect/floor_decal/industrial/warning,/obj/item/paper/crumpled,/obj/item/paper/crumpled,/obj/item/paper/crumpled,/turf/simulated/floor/trim/carpet/green,/area/template_noop)
+"J" = (/obj/effect/decal/cleanable/blood,/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/item/newspaper,/obj/item/paper/crumpled/bloody,/turf/simulated/floor/trim/carpet/green,/area/template_noop)
+"T" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/item/paper/crumpled/bloody,/turf/simulated/floor/trim/carpet/green,/area/template_noop)
+"U" = (/obj/structure/bookcase/prefitted/fiction,/turf/simulated/floor/trim/carpet/green,/area/template_noop)
+"W" = (/obj/item/canvas,/turf/simulated/wall,/area/template_noop)
+"Z" = (/obj/structure/bookcase/prefitted/religious,/turf/simulated/floor/trim/carpet/green,/area/template_noop)
+
+(1,1,1) = {"
+WqZ
+TqJ
+UBa
+"}

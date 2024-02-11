@@ -2,7 +2,6 @@
 	name = SPECIES_SWINE
 	name_plural = "Trottines"
 	icobase = 'icons/mob/human_races/r_swine.dmi'
-	deform = 'icons/mob/human_races/r_def_swine.dmi'
 	default_h_style = "Bald"
 	hair_key = SPECIES_SWINE
 	facial_hair_key = SPECIES_SWINE

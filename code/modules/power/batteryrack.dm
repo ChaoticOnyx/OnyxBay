@@ -60,23 +60,23 @@
 	internal_cells = null
 	return ..()
 
-/obj/machinery/power/smes/batteryrack/update_icon()
-	overlays.Cut()
+/obj/machinery/power/smes/batteryrack/on_update_icon()
+	ClearOverlays()
 	icon_update = 0
 
 	var/cellcount = 0
 	var/charge_level = between(0, round(Percentage() / 12), 7)
 
 
-	overlays += "charge[charge_level]"
+	AddOverlays("charge[charge_level]")
 
 	for(var/obj/item/cell/C in internal_cells)
 		cellcount++
-		overlays += "cell[cellcount]"
+		AddOverlays("cell[cellcount]")
 		if(C.fully_charged())
-			overlays += "cell[cellcount]f"
+			AddOverlays("cell[cellcount]f")
 		else if(!C.charge)
-			overlays += "cell[cellcount]e"
+			AddOverlays("cell[cellcount]e")
 
 // Recalculate maxcharge and similar variables.
 /obj/machinery/power/smes/batteryrack/proc/update_maxcharge()
@@ -145,7 +145,7 @@
 	for(var/obj/item/cell/C in internal_cells)
 		if(CL == null)
 			CL = C
-		else if(CL.percent() < C.percent())
+		else if(CELL_PERCENT(CL) < CELL_PERCENT(C))
 			CL = C
 	return CL
 /obj/machinery/power/smes/batteryrack/proc/get_least_charged_cell()
@@ -153,7 +153,7 @@
 	for(var/obj/item/cell/C in internal_cells)
 		if(CL == null)
 			CL = C
-		else if(CL.percent() > C.percent())
+		else if(CELL_PERCENT(CL) > CELL_PERCENT(C))
 			CL = C
 	return CL
 
@@ -191,9 +191,9 @@
 		var/obj/item/cell/least = get_least_charged_cell()
 		var/obj/item/cell/most = get_most_charged_cell()
 		// Don't bother equalising charge between two same cells. Also ensure we don't get NULLs or wrong types. Don't bother equalising when difference between charges is tiny.
-		if(!least || !most || least.percent() == most.percent())
+		if(!least || !most || CELL_PERCENT(least) == CELL_PERCENT(most))
 			return
-		var/percentdiff = (most.percent() - least.percent()) / 2 // Transfer only 50% of power. The reason is that it could lead to situations where least and most charged cells would "swap places" (45->50% and 50%->45%)
+		var/percentdiff = (CELL_PERCENT(most) - CELL_PERCENT(least)) / 2 // Transfer only 50% of power. The reason is that it could lead to situations where least and most charged cells would "swap places" (45->50% and 50%->45%)
 		var/celldiff
 		// Take amount of power to transfer from the cell with smaller maxcharge
 		if(most.maxcharge > least.maxcharge)
@@ -222,7 +222,7 @@
 		var/list/cell[0]
 		cell["slot"] = cell_index + 1
 		cell["used"] = 1
-		cell["percentage"] = round(C.percent(), 0.01)
+		cell["percentage"] = round(CELL_PERCENT(C), 0.01)
 		cell["id"] = C.c_uid
 		cell_index++
 		cells += list(cell)

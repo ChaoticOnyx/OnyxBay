@@ -359,6 +359,46 @@
 		var/mob/living/carbon/human/H = M
 		H.update_mutations()
 
+/datum/reagent/ryetalyn/overdose(mob/living/carbon/M, alien)
+	. = ..()
+	if(M.mind?.changeling && M.mind.changeling?.last_transformation_at + 10 SECONDS <= world.time)
+		// changelings get random appearance, since they don't have an initial one
+		var/datum/changeling_power/transform/T
+		for(var/datum/changeling_power/CP in M.mind.changeling.available_powers)
+			if(CP.type == /datum/changeling_power/transform) // assume they must have a transform power
+				T = CP
+				break
+
+		if(!T)
+			return
+
+		to_chat(M, SPAN_DANGER("We feel our genome go bananas!"))
+		M.visible_message(SPAN("warning", "[M]'s body begins to twist, changing rapidly!"))
+
+		M.mind.changeling.apply_genome_damage(20)
+
+		var/datum/dna/new_dna = M.dna.Clone()
+		for(var/i=1 to new_dna.UI.len)
+			new_dna.SetUIValue(i,rand(1,4095))
+
+		var/mob/living/carbon/human/H = M
+
+		var/list/new_flavor = list()
+		for(var/thing in H.flavor_texts)
+			new_flavor[thing] = null
+
+		var/datum/absorbed_dna/new_a_dna = new("Unknown", new_dna, M.species.name, M.languages, M.modifiers, new_flavor)
+
+		T.handle_transformation(new_a_dna)
+
+		M.mind.changeling.last_transformation_at = world.time
+
+		return
+
+	// not a changeling. anti meta them to death
+	var/obj/item/organ/internal/I = pick(M.internal_organs)
+	I.take_internal_damage(3, silent=TRUE)
+
 /datum/reagent/hyperzine
 	name = "Hyperzine"
 	description = "Hyperzine is a highly effective, long lasting, muscle stimulant."
@@ -734,21 +774,30 @@
 	scannable = 1
 	overdose = 20
 	metabolism = REM * 0.5
+	var/effective_dose = 0.6
 
 /datum/reagent/adrenaline/affect_blood(mob/living/carbon/human/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 
-	if(M.chem_doses[type] < 0.2)	//not that effective after initial rush
-		M.add_chemical_effect(CE_PAINKILLER, min(30*volume, 80))
-		M.add_chemical_effect(CE_PULSE, 1)
-	else if(M.chem_doses[type] < 1)
-		M.add_chemical_effect(CE_PAINKILLER, min(10*volume, 20))
-	M.add_chemical_effect(CE_PULSE, 2)
-	if(M.chem_doses[type] > 10)
+	var/max_painkiller = min(70, volume*3 + rand(20, 35))
+	var/painkiller = 0
+	if(max_painkiller > 10)
+		if(M.chem_doses[type] <= effective_dose)
+			painkiller = max(0, round(-(200/volume) * (M.chem_doses[type] - effective_dose) ** 2 + max_painkiller)) //-(200/20)*(x-0.6)^2+60
+		else
+			painkiller = round(max_painkiller * 2.7 ** (-((M.chem_doses[type]-effective_dose) ** 2)/(volume*2))) //60 * e^(-((x-0.6)^2)/40)
+		if(painkiller > 5)
+			M.add_chemical_effect(CE_PAINKILLER, painkiller)
+	if(volume > 8)
+		M.add_chemical_effect(CE_PULSE, 3)
+	else if(volume > 1)
+		M.add_chemical_effect(CE_PULSE, 2)
+
+	if(M.chem_doses[type] > 15)
 		M.make_jittery(5)
-	if(volume >= 5 && M.is_asystole())
-		remove_self(5)
+	if(volume >= 8 && M.is_asystole())
+		remove_self(8)
 		M.resuscitate()
 
 /datum/reagent/nanoblood
@@ -795,7 +844,7 @@
 
 	if(affecting_dose >= 15) // Stoned
 		M.add_chemical_effect(CE_MIND, 3)
-		M.nutrition = max(0, M.nutrition - 50 * removed)
+		M.set_nutrition(max(0, M.nutrition - 50 * removed))
 		M.add_chemical_effect(CE_PAINKILLER, 75)
 		M.drowsyness = max(M.drowsyness, 10)
 		if(prob(30))
@@ -814,7 +863,7 @@
 
 	else if(affecting_dose >= 10) // Smoked a good load of kush.
 		M.add_chemical_effect(CE_MIND, 2)
-		M.nutrition -= max(0, M.nutrition - 20 * removed)
+		M.remove_nutrition(max(0, M.nutrition - 20 * removed))
 		M.add_chemical_effect(CE_PAINKILLER, 50)
 		if(prob(15))
 			M.druggy = max(M.druggy, 2)
@@ -833,7 +882,7 @@
 
 	else if(affecting_dose >= 5) // Smoked a single bud.
 		M.add_chemical_effect(CE_MIND, 1)
-		M.nutrition -= max(0, M.nutrition - 10 * removed)
+		M.remove_nutrition(max(0, M.nutrition - 10 * removed))
 		M.add_chemical_effect(CE_PAINKILLER, 25)
 		if(prob(10))
 			M.druggy = max(M.druggy, 2)
@@ -852,7 +901,7 @@
 
 	else if(affecting_dose >= 2) // The end of the trip.
 		M.add_chemical_effect(CE_MIND, 0.5)
-		M.nutrition -= max(0, M.nutrition - 3 * removed)
+		M.remove_nutrition(max(0, M.nutrition - 3 * removed))
 		M.add_chemical_effect(CE_PAINKILLER, 5)
 		if(prob(3))
 			M.druggy = max(M.druggy, 2)
@@ -925,3 +974,25 @@
 	..()
 	M.add_chemical_effect(CE_TOXIN, 1)
 	M.immunity -= 0.5 //inverse effects when abused
+
+/datum/reagent/regen_jelly
+	name = "Regen Jelly"
+	description = "Strange light pink gooye blob."
+	taste_description = "bitterness"
+	taste_mult = 0.4
+	reagent_state = LIQUID
+	color = "#db7aa7"
+	metabolism = REM * 0.5
+	overdose = REAGENTS_OVERDOSE
+
+/datum/reagent/regen_jelly/affect_blood(mob/living/carbon/M, alien, removed)
+
+	if(prob(7))
+		M.emote(pick("twitch", "drool", "moan", "giggle"))
+	M.heal_overall_damage(min(8, M.getBruteLoss()), min(7, M.getFireLoss()))
+	M.add_chemical_effect(CE_PULSE, -1)
+
+/datum/reagent/regen_jelly/overdose(mob/living/carbon/M, alien)
+	. = ..()
+	M.reagents.add_reagent(/datum/reagent/metroidtoxin, max(0, volume-REAGENTS_OVERDOSE))
+	volume = volume - REAGENTS_OVERDOSE

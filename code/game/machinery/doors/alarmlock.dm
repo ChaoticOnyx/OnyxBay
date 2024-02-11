@@ -5,7 +5,7 @@
 	opacity = 0
 	glass = 1
 
-	var/datum/radio_frequency/air_connection
+	var/datum/frequency/air_connection
 	var/air_frequency = 1437
 	autoclose = 0
 
@@ -14,15 +14,13 @@
 	air_connection = new
 
 /obj/machinery/door/airlock/alarmlock/Destroy()
-	if(radio_controller)
-		radio_controller.remove_object(src,air_frequency)
-
+	SSradio.remove_object(src,air_frequency)
 	return ..()
 
 /obj/machinery/door/airlock/alarmlock/Initialize()
 	. = ..()
-	radio_controller.remove_object(src, air_frequency)
-	air_connection = radio_controller.add_object(src, air_frequency, RADIO_TO_AIRALARM)
+	SSradio.remove_object(src, air_frequency)
+	air_connection = SSradio.add_object(src, air_frequency, RADIO_TO_AIRALARM)
 	open()
 
 

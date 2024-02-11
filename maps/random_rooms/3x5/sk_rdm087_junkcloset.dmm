@@ -1,0 +1,19 @@
+"a" = (/turf/simulated/floor/plating,/area/template_noop)
+"c" = (/obj/structure/bookcase/prefitted/reference,/turf/simulated/floor/plating,/area/template_noop)
+"d" = (/obj/structure/table/rack,/obj/random/maintenance,/obj/item/clothing/gloves/insulated,/obj/item/storage/toolbox/electrical,/turf/simulated/floor/plating,/area/template_noop)
+"e" = (/obj/structure/closet,/obj/random/maintenance,/obj/item/clothing/under/rank/mailman,/obj/item/clothing/head/mailman,/turf/simulated/floor/plating,/area/template_noop)
+"r" = (/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+"B" = (/obj/machinery/portable_atmospherics/canister/air,/turf/simulated/floor/plating,/area/template_noop)
+"C" = (/obj/structure/closet,/obj/item/clothing/shoes/jackboots,/obj/item/stack/material/plastic/ten,/turf/simulated/floor/plating,/area/template_noop)
+"H" = (/obj/structure/reagent_dispensers/watertank,/turf/simulated/floor/plating,/area/template_noop)
+"T" = (/obj/structure/table/rack,/obj/random/maintenance,/obj/item/clothing/mask/gas,/obj/item/tank/air,/turf/simulated/floor/plating,/area/template_noop)
+"Y" = (/obj/structure/table/rack,/obj/random/maintenance,/obj/item/stack/material/plastic/ten,/turf/simulated/floor/plating,/area/template_noop)
+"Z" = (/obj/structure/closet,/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+
+(1,1,1) = {"
+Tae
+CaB
+raa
+cHY
+daZ
+"}

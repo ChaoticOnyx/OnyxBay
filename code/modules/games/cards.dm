@@ -219,7 +219,7 @@
 	H.update_icon()
 	src.update_icon()
 	usr.visible_message("\The [usr] plays \the [discarding].")
-	H.loc = get_step(usr,usr.dir)
+	H.forceMove(get_step(usr,usr.dir))
 
 	if(!cards.len)
 		qdel(src)
@@ -236,7 +236,7 @@
 		for(var/datum/playingcard/P in cards)
 			. += "\nThe [P.name]."
 
-/obj/item/hand/update_icon(direction = 0)
+/obj/item/hand/on_update_icon(direction = 0)
 
 	if(!cards.len)
 		qdel(src)
@@ -252,7 +252,7 @@
 		name = "[P.name]"
 		desc = "[P.desc]"
 
-	overlays.Cut()
+	ClearOverlays()
 
 
 	if(cards.len == 1)
@@ -260,7 +260,7 @@
 		var/image/I = new(src.icon, (concealed ? "[P.back_icon]" : "[P.card_icon]") )
 		I.pixel_x += (-5+rand(10))
 		I.pixel_y += (-5+rand(10))
-		overlays += I
+		AddOverlays(I)
 		return
 
 	var/offset = Floor(20/cards.len)
@@ -285,7 +285,7 @@
 			else
 				I.pixel_x = -7+(offset*i)
 		I.SetTransform(others = M)
-		overlays += I
+		AddOverlays(I)
 		i++
 
 /obj/item/hand/dropped(mob/user as mob)

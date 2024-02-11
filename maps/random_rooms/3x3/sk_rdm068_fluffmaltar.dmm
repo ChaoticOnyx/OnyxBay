@@ -1,0 +1,8 @@
+"a" = (/obj/structure/grille/cult,/turf/simulated/floor/misc/cult,/area/template_noop)
+"C" = (/mob/living/simple_animal/cat/fluff/bones,/turf/simulated/floor/misc/cult,/area/template_noop)
+
+(1,1,1) = {"
+aaa
+aCa
+aaa
+"}

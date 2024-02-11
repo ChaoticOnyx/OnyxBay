@@ -92,7 +92,7 @@
 		var/obj/item/reagent_containers/chem_disp_cartridge/C = remove_cartridge(label)
 		if(C)
 			to_chat(user, "<span class='notice'>You remove \the [C] from \the [src].</span>")
-			C.loc = loc
+			C.dropInto(loc)
 
 	else if(istype(W, /obj/item/reagent_containers/vessel) || istype(W, /obj/item/reagent_containers/food))
 		if(container)
@@ -186,10 +186,10 @@
 /obj/machinery/chemical_dispenser/attack_hand(mob/user as mob)
 	ui_interact(user)
 
-/obj/machinery/chemical_dispenser/update_icon()
-	overlays.Cut()
+/obj/machinery/chemical_dispenser/on_update_icon()
+	ClearOverlays()
 	if(container)
 		var/mutable_appearance/beaker_overlay
 		beaker_overlay = image('icons/obj/chemical.dmi', src, "lil_beaker")
 		beaker_overlay.pixel_x = rand(-10, 5)
-		overlays += beaker_overlay
+		AddOverlays(beaker_overlay)

@@ -139,7 +139,9 @@
 	offline_slowdown = 0
 	offline_vision_restriction = TINT_HEAVY
 
+	chest_type = /obj/item/clothing/suit/space/rig/ce
 	helm_type = /obj/item/clothing/head/helmet/space/rig/ce
+	boot_type =  /obj/item/clothing/shoes/magboots/rig/ce
 	glove_type = /obj/item/clothing/gloves/rig/ce
 
 	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/ore,/obj/item/storage/toolbox,/obj/item/storage/briefcase/inflatable,/obj/item/inflatable_dispenser,/obj/item/device/t_scanner,/obj/item/pickaxe,/obj/item/rcd)
@@ -161,14 +163,37 @@
 		/obj/item/rig_module/cooling_unit
 		)
 
+/obj/item/clothing/suit/space/rig/ce
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 533 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 400 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
 /obj/item/clothing/head/helmet/space/rig/ce
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 533 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 400 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 	camera = /obj/machinery/camera/network/engineering
 
 /obj/item/clothing/gloves/rig/ce
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 533 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 400 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 	siemens_coefficient = 0
 
-/obj/item/rig/hazmat
+/obj/item/clothing/shoes/magboots/rig/ce
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 533 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 400 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
+/obj/item/rig/hazmat
 	name = "AMI control module"
 	suit_type = "hazmat powersuit"
 	desc = "An Anomalous Material Interaction powersuit, a prototype NanoTrasen design, protects the wearer against the strangest energies the universe can throw at it."
@@ -182,7 +207,7 @@
 	boot_type = /obj/item/clothing/shoes/magboots/rig/hazmat
 	glove_type = /obj/item/clothing/gloves/rig/hazmat
 
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/storage/excavation,/obj/item/pickaxe,/obj/item/device/healthanalyzer,/obj/item/device/measuring_tape,/obj/item/device/ano_scanner,/obj/item/device/depth_scanner,/obj/item/device/core_sampler,/obj/item/device/gps,/obj/item/pinpointer/radio,/obj/item/device/radio/beacon,/obj/item/pickaxe/archaeologist/hand,/obj/item/storage/bag/fossils)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/storage/excavation,/obj/item/pickaxe,/obj/item/device/healthanalyzer,/obj/item/device/measuring_tape,/obj/item/device/ano_scanner,/obj/item/device/depth_scanner,/obj/item/device/core_sampler,/obj/item/device/gps,/obj/item/pinpointer/radio,/obj/item/device/bluespace_beacon,/obj/item/pickaxe/archaeologist/hand,/obj/item/storage/bag/fossils)
 
 	req_access = list()
 	req_one_access = list()

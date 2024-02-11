@@ -15,6 +15,3 @@
 /datum/space_level/telecomms
 	path = 'telecomms.dmm'
 	travel_chance = 15
-	traits = list(
-		ZTRAIT_STATION
-	)

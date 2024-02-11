@@ -9,7 +9,7 @@
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_EARS
 	var/hud_type = null
-	var/obj/screen/overlay = null
+	var/atom/movable/screen/overlay = null
 	var/vision_flags = 0
 	var/see_invisible = 0
 	var/darkness_view = 0 //Base human is 2
@@ -249,12 +249,12 @@
 	if(med_hud)
 		process_med_hud(M, 1)
 
-/obj/item/clothing/glasses/hud/update_icon()
-	overlays.Cut()
+/obj/item/clothing/glasses/hud/on_update_icon()
+	ClearOverlays()
 	if(active && matrix)
-		overlays += overlay_image(icon, "[hud_icon]_[matrix.matrix_icon]")
+		AddOverlays(OVERLAY(icon, "[hud_icon]_[matrix.matrix_icon]", alpha))
 	if(lenses)
-		overlays += overlay_image(icon, "[hud_icon]_[lenses.icon_state]")
+		AddOverlays(OVERLAY(icon, "[hud_icon]_[lenses.icon_state]", alpha))
 
 /obj/item/clothing/glasses/hud/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
@@ -489,7 +489,7 @@
 /obj/item/clothing/glasses/hud/plain/attack_self(mob/user)
 	return
 
-/obj/item/clothing/glasses/hud/plain/update_icon()
+/obj/item/clothing/glasses/hud/plain/on_update_icon()
 	return
 
 /obj/item/clothing/glasses/hud/psychoscope
@@ -505,7 +505,7 @@
 	matrix_removable = FALSE
 	use_alt_layer = TRUE
 
-/obj/item/clothing/glasses/hud/psychoscope/update_icon()
+/obj/item/clothing/glasses/hud/psychoscope/on_update_icon()
 	if(active)
 		icon_state = "psychoscope_on"
 		item_state = "psychoscope_on"

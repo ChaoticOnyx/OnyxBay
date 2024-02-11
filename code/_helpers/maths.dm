@@ -10,6 +10,12 @@
 /// NaN isn't a number, damn it. Infinity is a problem too.
 #define isnum_safe(x) ( isnum((x)) && !isnan((x)) && !isinf((x)) )
 
+#define MODULUS_FLOAT(X, Y) ( (X) - (Y) * round((X) / (Y)) )
+
+#define SIMPLIFY_DEGREES(degrees) (MODULUS_FLOAT((degrees), 360))
+
+#define PERCENT(a, b) (b ? 100 * a / b : 0)
+
 // min is inclusive, max is exclusive
 /proc/Wrap(val, min, max)
 	var/d = max - min

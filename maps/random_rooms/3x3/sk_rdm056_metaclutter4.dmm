@@ -1,0 +1,13 @@
+"a" = (/turf/simulated/floor/plating,/area/template_noop)
+"d" = (/obj/structure/closet/firecloset/full,/turf/simulated/floor/plating,/area/template_noop)
+"j" = (/obj/structure/reagent_dispensers/fueltank,/turf/simulated/floor/plating,/area/template_noop)
+"p" = (/obj/structure/reagent_dispensers/watertank,/turf/simulated/floor/plating,/area/template_noop)
+"x" = (/obj/item/clothing/mask/breath,/obj/item/clothing/mask/breath,/obj/item/tank/emergency/oxygen/double,/obj/item/tank/emergency/oxygen/double,/turf/simulated/floor/plating,/area/template_noop)
+"z" = (/obj/item/storage/toolbox/emergency,/turf/simulated/floor/plating,/area/template_noop)
+"L" = (/obj/machinery/portable_atmospherics/canister/air,/turf/simulated/floor/plating,/area/template_noop)
+
+(1,1,1) = {"
+paj
+azx
+Lad
+"}

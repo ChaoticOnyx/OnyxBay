@@ -50,7 +50,7 @@
 
 /obj/item/grenade/attack_self(mob/user)
 	if(!active)
-		if(clown_check(user))
+		if(clown_check(user)&&!is_pacifist(user))
 			activate(user)
 			add_fingerprint(user)
 			if(iscarbon(user))
@@ -150,7 +150,7 @@
 	add_fingerprint(user)
 	..()
 
-/obj/item/grenade/update_icon()
+/obj/item/grenade/on_update_icon()
 	if(active)
 		icon_state = initial(icon_state) + "_active"
 		return

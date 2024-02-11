@@ -19,8 +19,6 @@
 
 // Grab Types
 #define GRAB_NORMAL			"normal"
-#define GRAB_NAB			"nab"
-#define GRAB_NAB_SPECIAL	"special nab"
 
 // Grab levels.
 #define NORM_PASSIVE    "normal passive"
@@ -28,10 +26,6 @@
 #define NORM_AGGRESSIVE "normal aggressive"
 #define NORM_NECK       "normal neck"
 #define NORM_KILL       "normal kill"
-
-#define NAB_PASSIVE		"nab passive"
-#define NAB_AGGRESSIVE	"nab aggressive"
-#define NAB_KILL		"nab kill"
 
 #define BORGMESON 0x1
 #define BORGTHERM 0x2
@@ -227,6 +221,9 @@
 #define BP_CANCER   "cancer"
 #define BP_EMBRYO   "alien embryo"
 #define BP_GANGLION "spinal ganglion"
+#define BP_ADAMANTINE_RESONATOR "adamantine resonator"
+#define BP_ADAMANTINE_VOCAL_CORDS "adamantine vocal cords"
+#define BP_METROID 	"metroid jelly vessel"
 
 // Robo Organs.
 #define BP_POSIBRAIN	"posibrain"
@@ -249,6 +246,8 @@
 #define BP_ALL_LIMBS list(BP_CHEST, BP_GROIN, BP_HEAD, BP_L_ARM, BP_R_ARM, BP_L_HAND, BP_R_HAND, BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT)
 #define BP_BY_DEPTH list(BP_HEAD, BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM, BP_L_FOOT, BP_R_FOOT, BP_L_LEG, BP_R_LEG, BP_GROIN, BP_CHEST)
 #define BP_FEET list(BP_L_FOOT, BP_R_FOOT)
+#define BP_LIMBS_LOCOMOTION list(BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT)
+#define BP_LIMBS_ARM_LOCOMOTION list(BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM)
 
 // Prosthetic helpers.
 #define BP_IS_ROBOTIC(org)  (org.status & ORGAN_ROBOTIC)
@@ -293,21 +292,27 @@
 #define CORPSE_CAN_REENTER_AND_RESPAWN 2
 
 #define SPECIES_HUMAN       "Human"
+#define SPECIES_GRAVWORLDER	"Grav-Adapted Human"
+#define SPECIES_SPACER		"Space-Adapted Human"
+#define SPECIES_VATGROWN 	"Vat-Grown Human"
 #define SPECIES_TAJARA      "Tajara"
 #define SPECIES_DIONA       "Diona"
 #define SPECIES_VOX         "Vox"
-#define SPECIES_IPC         "Machine"
 #define SPECIES_UNATHI      "Unathi"
 #define SPECIES_SKRELL      "Skrell"
-#define SPECIES_NABBER      "Giant Armoured Serpentid"
 #define SPECIES_PROMETHEAN  "Promethean"
+#define SPECIES_STARGAZER  	"Stargazer"
+#define SPECIES_SLIMEPERSON "Slimeperson"
+#define SPECIES_LUMINESCENT "Luminescent"
 #define SPECIES_EGYNO       "Egyno"
-#define SPECIES_MONKEY      "Monkey"
-#define SPECIES_GOLEM       "Golem"
-#define SPECIES_ABDUCTOR    "Abductor"
 #define SPECIES_SWINE		"Trottine"
 
-// Ayyy IDs.
+#define SPECIES_MONKEY      "Monkey"
+#define SPECIES_FARWA       "Farwa"
+#define SPECIES_NEAERA      "Naera"
+#define SPECIES_STOK        "Stok"
+
+// Xenomorphs IDs.
 #define SPECIES_XENO                 "Xenomorph"
 #define SPECIES_XENO_DRONE           "Xenomorph Drone"
 #define SPECIES_XENO_HUNTER          "Xenomorph Hunter"
@@ -316,6 +321,29 @@
 #define SPECIES_XENO_DRONE_VILE      "Xenomorph Vile Drone"
 #define SPECIES_XENO_HUNTER_FERAL    "Xenomorph Feral Hunter"
 #define SPECIES_XENO_SENTINEL_PRIMAL "Xenomorph Primal Sentinel"
+
+//Defines for Golem Species IDs
+#define SPECIES_GOLEM 				"Golem"
+#define SPECIES_GOLEM_ADAMANTINE 	"Adamantine Golem"
+#define SPECIES_GOLEM_PLASMA 		"Plasma Golem"
+#define SPECIES_GOLEM_DIAMOND 		"Diamond Golem"
+#define SPECIES_GOLEM_GOLD 			"Gold Golem"
+#define SPECIES_GOLEM_SILVER 		"Silver Golem"
+#define SPECIES_GOLEM_PLASTEEL 		"Plasteel Golem"
+#define SPECIES_GOLEM_TITANIUM 		"Titanium Golem"
+#define SPECIES_GOLEM_PLASTITANIUM 	"Plastitanium Golem"
+#define SPECIES_GOLEM_WOOD 			"Wood Golem"
+#define SPECIES_GOLEM_URANIUM 		"Uranium Golem"
+#define SPECIES_GOLEM_SAND 			"Sand Golem"
+#define SPECIES_GOLEM_GLASS 		"Glass Golem"
+#define SPECIES_GOLEM_BLUESPACE 	"Bluespace Golem"
+#define SPECIES_GOLEM_CULT 			"Cult Golem"
+#define SPECIES_GOLEM_CLOTH 		"Cloth Golem"
+#define SPECIES_GOLEM_PLASTIC 		"Plastic Golem"
+#define SPECIES_GOLEM_BRONZE 		"Bronze Golem"
+#define SPECIES_GOLEM_CARDBOARD 	"Cardboard Golem"
+#define SPECIES_GOLEM_LEATHER 		"Leather Golem"
+#define SPECIES_GOLEM_HYDROGEN 		"Hydrogen Golem"
 
 #define SURGERY_CLOSED 0
 #define SURGERY_OPEN 1
@@ -384,6 +412,8 @@
 									/datum/reagent/space_drugs,\
 									/datum/reagent/mindbreaker,\
 									/datum/reagent/psilocybin)
+
+#define SPELL_NOREMORSE_GHOST_DAMAGE 1 ///How much damage the ghosts do when attacking mobs during no remorse spell
 
 /proc/human_height_text(x)
 	switch(x)

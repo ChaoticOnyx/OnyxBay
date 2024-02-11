@@ -5,6 +5,7 @@
 	program_icon_state = "id"
 	program_key_state = "id_key"
 	program_menu_icon = "suitcase"
+	program_light_color = "#0099FF"
 	extended_desc = "The official NanoTrasen application that allows head command to hire new employees."
 	required_access = access_change_ids
 	requires_ntnet = 1

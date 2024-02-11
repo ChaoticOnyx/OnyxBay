@@ -81,7 +81,7 @@ var/global/list/datum/dna/gene/dna_genes[0]
 	var/b_type = "A+"  // Should probably change to an integer => string map but I'm lazy.
 	var/body_build = "Default"
 	var/real_name          // Stores the real name of the person who originally got this dna datum. Used primarily for changelings,
-
+	var/mcolor = null
 	// New stuff
 	var/species = SPECIES_HUMAN
 	var/s_base = ""
@@ -137,6 +137,10 @@ var/global/list/datum/dna/gene/dna_genes[0]
 	var/beard	= GLOB.facial_hair_styles_list.Find(character.f_style)
 
 	body_build = character.body_build.name
+	if(character.species.fixed_mut_color)
+		mcolor = character.species.fixed_mut_color
+	else
+		mcolor = "#[rand_hex_color()]"
 
 	SetUIValueRange(DNA_UI_HAIR_R,    character.r_hair,    255,    1)
 	SetUIValueRange(DNA_UI_HAIR_G,    character.g_hair,    255,    1)

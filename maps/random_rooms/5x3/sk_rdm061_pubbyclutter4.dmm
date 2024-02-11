@@ -1,0 +1,16 @@
+"a" = (/obj/structure/closet,/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+"e" = (/obj/structure/barrel,/turf/simulated/floor/plating,/area/template_noop)
+"o" = (/obj/effect/decal/cleanable/ash,/turf/simulated/floor/plating,/area/template_noop)
+"q" = (/turf/simulated/floor/plating,/area/template_noop)
+"O" = (/obj/item/stool/padded,/turf/simulated/floor/plating,/area/template_noop)
+"P" = (/obj/item/reagent_containers/vessel/can/thirteenloko,/turf/simulated/floor/plating,/area/template_noop)
+"Q" = (/obj/item/handcuffs/cable/cyan,/obj/structure/closet,/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+"U" = (/obj/structure/device/piano,/turf/simulated/floor/plating,/area/template_noop)
+"W" = (/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+"X" = (/obj/structure/closet,/obj/item/spacecash/bundle/c10,/obj/item/material/shard,/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+
+(1,1,1) = {"
+WaoqQ
+WOeOq
+UqqPX
+"}

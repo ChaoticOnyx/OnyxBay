@@ -6,6 +6,8 @@
 	matter = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 50, MATERIAL_WASTE = 10)
 	var/listening = FALSE
 	var/recorded	//the activation message
+	drop_sound = SFX_DROP_COMPONENT
+	pickup_sound = SFX_PICKUP_COMPONENT
 
 /obj/item/device/assembly/voice/New()
 	..()
@@ -27,7 +29,7 @@
 		if(findtext(msg, recorded))
 			pulse(0)
 			cooldown = 2
-			addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
+			addtimer(CALLBACK(src, nameof(.proc/process_cooldown)), 1 SECOND)
 
 
 /obj/item/device/assembly/voice/activate()

@@ -35,3 +35,43 @@
 			user.phase_out(T, get_turf(user))
 			user.forceMove(T)
 			user.phase_in(T, get_turf(user))
+
+//Bluespace crystals, used in telescience and when crushed it will blink you to a random turf.
+
+/obj/item/stack/telecrystal/bluespace_crystal
+	name = "bluespace crystal"
+	desc = "A glowing bluespace crystal, not much is known about how they work. It looks very delicate."
+	icon = 'icons/obj/telescience.dmi'
+	icon_state = "bluespace_crystal"
+	singular_name = "bluespace crystal"
+	/// The teleport range when crushed/thrown at someone.
+	var/blink_range = 3
+
+/obj/item/stack/telecrystal/bluespace_crystal/afterattack(obj/item/I, mob/user, proximity)
+	return
+
+
+/obj/item/stack/telecrystal/bluespace_crystal/attack_self(mob/user)
+	user.visible_message(SPAN_WARNING("[user] crushes [src]!"), SPAN_DANGER("You crush [src]!"))
+	playsound(get_turf(user), GET_SFX(SFX_SPARK_MEDIUM), 100, TRUE)
+	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread()
+	s.set_up(5, 1, user)
+	s.start()
+	blink_mob(user)
+	use(1)
+
+/obj/item/stack/telecrystal/bluespace_crystal/proc/blink_mob(mob/living/L)
+	playsound(L,'sound/effects/phasein.ogg',50)
+	do_teleport(L, get_turf(L), blink_range)
+
+/obj/item/stack/telecrystal/bluespace_crystal/throw_impact(atom/hit_atom)
+	if(!..()) // not caught in mid-air
+		visible_message(SPAN_NOTICE("[src] fizzles and disappears upon impact!"))
+		var/turf/T = get_turf(hit_atom)
+		playsound(T, GET_SFX(SFX_SPARK_MEDIUM), 100, TRUE)
+		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread()
+		s.set_up(5, 1, hit_atom)
+		s.start()
+		if(isliving(hit_atom))
+			blink_mob(hit_atom)
+		use(1)

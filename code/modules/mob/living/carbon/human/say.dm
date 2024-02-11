@@ -23,10 +23,10 @@
 
 	if(stat == CONSCIOUS && !full_prosthetic && need_breathe() && failed_last_breath && !snowflake_speak)
 		var/obj/item/organ/internal/lungs/L = internal_organs_by_name[species.breathing_organ]
-		
+
 		var/first_char = copytext_char(message, 1, 2)
 		if (first_char == "*" && (QDELETED(L) || L.is_broken() || L.breath_fail_ratio > 0.4))
-			emote(copytext_char(message, 2), VISIBLE_MESSAGE)
+			emote(copytext_char(message, 2), intentional = TRUE)
 			return
 
 		if(QDELETED(L) || L.is_broken())
@@ -150,10 +150,20 @@
 	if(silent || (sdisabilities & MUTE))
 		message_data["message"] = ""
 		. = TRUE
-
-	else if(istype(wear_mask, /obj/item/clothing/mask))
+	else if(wear_mask)
 		var/obj/item/clothing/mask/M = wear_mask
-		if(M.voicechange)
+		if(is_muzzled() && !(message_data["language"]?.flags & (NONVERBAL|SIGNLANG)))
+			if(istype(M, /obj/item/clothing/mask))
+				if(M.say_messages)
+					message_data["message"] = pick(M.say_messages)
+				if(M.say_verbs)
+					message_data["verb"] = pick(M.say_verbs)
+				. = TRUE
+			else
+				message_data["message"] = pick("Mmfph!", "Mmmf mrrfff!", "Mmmf mnnf!")
+				message_data["verb"] = pick("mumbles", "says")
+				. = TRUE
+		else if(istype(M, /obj/item/clothing/mask) && M.voicechange)
 			message_data["message"] = pick(M.say_messages)
 			message_data["verb"] = pick(M.say_verbs)
 			. = TRUE

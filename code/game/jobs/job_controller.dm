@@ -26,6 +26,7 @@ var/global/datum/controller/occupations/job_master
 		for(var/J in all_jobs)
 			var/datum/job/job = decls_repository.get_decl(J)
 			if(!job)	continue
+			if(!job.show_in_setup) continue
 			occupations += job
 			occupations_by_type[job.type] = job
 			occupations_by_title[job.title] = job
@@ -470,9 +471,6 @@ var/global/datum/controller/occupations/job_master
 					return H.Robotize()
 				if("AI")
 					return H
-				if("Captain")
-					var/sound/announce_sound = (GAME_STATE <= RUNLEVEL_SETUP)? null : sound('sound/misc/boatswain.ogg', volume=20)
-					captain_announcement.Announce("All hands, Captain [H.real_name] on deck!", new_sound=announce_sound)
 
 		// put any loadout items that couldn't spawn into storage or on the ground
 		for(var/datum/gear/G in spawn_in_storage)
@@ -548,39 +546,28 @@ var/global/datum/controller/occupations/job_master
 		BITSET(H.hud_updateflag, SPECIALROLE_HUD)
 		return H
 
-	proc/LoadJobs(jobsfile) //ran during round setup, reads info from jobs.txt -- Urist
+	proc/LoadJobs(jobsfile) //ran during round setup, reads info from jobs.toml -- Urist
 		if(!config.misc.load_jobs_from_txt)
-			return 0
+			return FALSE
 
-		var/list/jobEntries = file2list(jobsfile)
+		var/raw_data = FROM_TOML(return_file_text(jobsfile))
+
+		var/list/jobEntries = raw_data[GLOB.using_map.name]
 
 		for(var/job in jobEntries)
-			if(!job)
+			if(!length(job) || !isnum(jobEntries[job]))
 				continue
 
-			job = trim(job)
-			if (!length(job))
-				continue
-
-			var/pos = findtext(job, "=")
-			var/name = null
-			var/value = null
-
-			if(pos)
-				name = copytext(job, 1, pos)
-				value = copytext(job, pos + 1)
-			else
-				continue
+			var/name = replacetext_char(job, "_", " ")
+			var/value = jobEntries[job]
 
 			if(name && value)
 				var/datum/job/J = GetJob(name)
-				if(!J)	continue
-				J.total_positions = text2num(value)
-				J.spawn_positions = text2num(value)
-				if(name == "AI" || name == "Cyborg")//I dont like this here but it will do for now
-					J.total_positions = 0
+				if(!J)
+					continue
+				J.set_positions(value)
 
-		return 1
+		return TRUE
 
 
 	proc/HandleFeedbackGathering()

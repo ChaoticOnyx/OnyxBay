@@ -22,7 +22,7 @@
 #define MODEUSAGE_PHOTONIC 				// Blocks energy weapons, and makes the field opaque.
 #define MODEUSAGE_NONHUMANS 				// Blocks most organic lifeforms, with an exception being humanoid mobs. Typical uses include carps.
 #define MODEUSAGE_HUMANOIDS 			// Blocks humanoid mobs.
-#define MODEUSAGE_ANORGANIC 				// Blocks silicon-based mobs (cyborgs, drones, FBPs, IPCs, ..)
+#define MODEUSAGE_ANORGANIC 				// Blocks silicon-based mobs (cyborgs, drones, FBPs, ..)
 #define MODEUSAGE_ATMOSPHERIC 			// Blocks airflow.
 #define MODEUSAGE_HULL 1					// Enables hull shielding mode, which changes a square shaped field into a field that covers external hull only.
 #define MODEUSAGE_BYPASS 					// Attempts to counter shield diffusers. Puts very large EM strain on the shield when doing so. Has to be hacked.

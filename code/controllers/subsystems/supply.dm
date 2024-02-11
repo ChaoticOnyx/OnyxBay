@@ -74,7 +74,7 @@ SUBSYSTEM_DEF(supply)
 		return 1
 	if(istype(A,/obj/machinery/nuclearbomb))
 		return 1
-	if(istype(A,/obj/item/device/radio/beacon))
+	if(istype(A, /obj/item/device/bluespace_beacon))
 		return 1
 
 	for(var/i=1, i<=A.contents.len, i++)
@@ -129,9 +129,7 @@ SUBSYSTEM_DEF(supply)
 	var/announce = FALSE
 	announce = prob(chance) || force
 	if(announce)
-		var/message = "Suspicious cargo shipment has been detected. Security intervention is recommended in the supply department."
-		var/customname = "[GLOB.using_map.company_name] Cargo Security Departament"
-		command_announcement.Announce(message, customname, new_sound = GLOB.using_map.command_report_sound, msg_sanitized = 1)
+		SSannounce.play_station_announce(/datum/announce/suspicious_cargo, title_override = "[GLOB.using_map.company_name] Cargo Security Departament")
 
 //Buyin
 /datum/controller/subsystem/supply/proc/buy()

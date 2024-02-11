@@ -4,6 +4,7 @@
 	icon_state = "card_pack_cardemon"
 
 /obj/item/pack/cardemon/New()
+	..()
 	var/datum/playingcard/P
 	var/i
 	for(i=0; i<6; i++)

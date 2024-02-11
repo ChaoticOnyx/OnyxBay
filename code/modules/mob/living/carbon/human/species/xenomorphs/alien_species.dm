@@ -53,7 +53,7 @@
 	darksight_tint = DARKTINT_GOOD
 
 	has_organ = list(
-		O_BRAIN =    /obj/item/organ/internal/brain/xeno,
+		O_BRAIN =    /obj/item/organ/internal/cerebrum/brain/xeno,
 		O_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel,
 		O_HIVE =     /obj/item/organ/internal/xenos/hivenode,
 		O_NUTRIENT = /obj/item/organ/internal/diona/nutrients,
@@ -121,7 +121,7 @@
 			var/obj/item/organ/internal/xenos/plasmavessel/P = H.internal_organs_by_name[BP_PLASMA]
 			P.stored_plasma += weeds_plasma_rate
 			P.stored_plasma = min(max(P.stored_plasma, 0), P.max_plasma)
-			H.nutrition = min(H.nutrition+5, STOMACH_FULLNESS_HIGH) // TODO: Come up with something better like eating humans or who tf knows what; for now it's still better than a horde of slowed-down hungry aliens
+			H.set_nutrition(min(H.nutrition + 5, STOMACH_FULLNESS_HIGH))
 	..()
 
 /datum/species/xenos/proc/regenerate(mob/living/carbon/human/H)
@@ -205,7 +205,7 @@
 	name = SPECIES_XENO_DRONE
 	caste_name = "drone"
 	weeds_plasma_rate = 15
-	slowdown = 0
+	movespeed_modifier = /datum/movespeed_modifier/xenos
 	total_health = 100
 	tail = "xenos_drone_tail"
 	rarity_value = 5
@@ -215,10 +215,9 @@
 	generic_attack_mod = 3.5
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_drone.dmi'
-	deform =  'icons/mob/human_races/xenos/r_xenos_drone.dmi'
 
 	has_organ = list(
-		BP_BRAIN =		/obj/item/organ/internal/brain/xeno,
+		BP_BRAIN =		/obj/item/organ/internal/cerebrum/brain/xeno,
 		BP_PLASMA =		/obj/item/organ/internal/xenos/plasmavessel/queen,
 		BP_ACID =		/obj/item/organ/internal/xenos/acidgland,
 		BP_HIVE =		/obj/item/organ/internal/xenos/hivenode,
@@ -243,7 +242,6 @@
 	caste_name = "vile drone"
 	weeds_plasma_rate = 20
 	icobase = 'icons/mob/human_races/xenos/r_xenos_drone_vile.dmi'
-	deform =  'icons/mob/human_races/xenos/r_xenos_drone_vile.dmi'
 
 	inherent_verbs = list(
 		/mob/living/proc/ventcrawl,
@@ -263,7 +261,7 @@
 	name = SPECIES_XENO_HUNTER
 	weeds_plasma_rate = 5
 	caste_name = "hunter"
-	slowdown = -0.5
+	movespeed_modifier = /datum/movespeed_modifier/xenos_hunter
 	total_health = 125
 	tail = "xenos_hunter_tail"
 	strength = STR_HIGH
@@ -272,10 +270,9 @@
 	generic_attack_mod = 4.5
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_hunter.dmi'
-	deform =  'icons/mob/human_races/xenos/r_xenos_hunter.dmi'
 
 	has_organ = list(
-		BP_BRAIN =    /obj/item/organ/internal/brain/xeno,
+		BP_BRAIN =    /obj/item/organ/internal/cerebrum/brain/xeno,
 		BP_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel/hunter,
 		BP_HIVE =     /obj/item/organ/internal/xenos/hivenode,
 		BP_NUTRIENT = /obj/item/organ/internal/diona/nutrients,
@@ -300,15 +297,14 @@
 	caste_name = "feral hunter"
 	unarmed_types = list(/datum/unarmed_attack/claws/strong/xeno/feral, /datum/unarmed_attack/bite/strong/xeno)
 	icobase = 'icons/mob/human_races/xenos/r_xenos_hunter_feral.dmi'
-	deform =  'icons/mob/human_races/xenos/r_xenos_hunter_feral.dmi'
 	tail = "xenos_hunter_feral_tail"
-	slowdown = -1
+	movespeed_modifier = /datum/movespeed_modifier/xenos_feral
 
 /datum/species/xenos/sentinel
 	name = SPECIES_XENO_SENTINEL
 	weeds_plasma_rate = 10
 	caste_name = "sentinel"
-	slowdown = 0
+	movespeed_modifier = /datum/movespeed_modifier/xenos
 	total_health = 150
 	weeds_heal_rate = 15
 	tail = "xenos_sentinel_tail"
@@ -317,10 +313,9 @@
 	burn_mod  = 1.4
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_sentinel.dmi'
-	deform =  'icons/mob/human_races/xenos/r_xenos_sentinel.dmi'
 
 	has_organ = list(
-		BP_BRAIN =    /obj/item/organ/internal/brain/xeno,
+		BP_BRAIN =    /obj/item/organ/internal/cerebrum/brain/xeno,
 		BP_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel/sentinel,
 		BP_ACID =     /obj/item/organ/internal/xenos/acidgland,
 		BP_HIVE =     /obj/item/organ/internal/xenos/hivenode,
@@ -348,7 +343,6 @@
 	weeds_heal_rate = 20
 	burn_mod  = 1.3
 	icobase = 'icons/mob/human_races/xenos/r_xenos_sentinel_primal.dmi'
-	deform =  'icons/mob/human_races/xenos/r_xenos_sentinel_primal.dmi'
 	tail = "xenos_sentinel_primal_tail"
 
 /datum/species/xenos/queen
@@ -358,7 +352,7 @@
 	weeds_heal_rate = 20
 	weeds_plasma_rate = 20
 	caste_name = "queen"
-	slowdown = 3.5
+	movespeed_modifier = /datum/movespeed_modifier/xenos_queen
 	tail = "xenos_queen_tail"
 	rarity_value = 10
 	strength = STR_VHIGH
@@ -368,12 +362,11 @@
 	generic_attack_mod = 4.5
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_queen.dmi'
-	deform =  'icons/mob/human_races/xenos/r_xenos_queen.dmi'
 
 	unarmed_types = list(/datum/unarmed_attack/claws/strong/xeno/queen, /datum/unarmed_attack/bite/strong/xeno)
 
 	has_organ = list(
-		BP_BRAIN =    /obj/item/organ/internal/brain/xeno,
+		BP_BRAIN =    /obj/item/organ/internal/cerebrum/brain/xeno,
 		BP_EGG =      /obj/item/organ/internal/xenos/eggsac,
 		BP_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel/queen,
 		BP_ACID =     /obj/item/organ/internal/xenos/acidgland,

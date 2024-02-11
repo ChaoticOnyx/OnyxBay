@@ -2,6 +2,24 @@
 //CONTAINS: Air Alarms and Fire Alarms//
 ////////////////////////////////////////
 
+#define GET_DANGER_LEVEL(ret, current_value, danger_levels) \
+	if((current_value > danger_levels[4] && danger_levels[4] > 0) || current_value < danger_levels[1]) { ret = 2; } \
+	else if((current_value > danger_levels[3] && danger_levels[3] > 0) || current_value < danger_levels[2]) { ret = 1; } \
+	else { ret = 0; }
+
+#define OVERALL_DANGER_LEVEL(ret, environment) \
+	ret = 0; \
+	var/partial_pressure = R_IDEAL_GAS_EQUATION * environment.temperature / environment.volume; \
+	var/environment_pressure = environment.return_pressure(); \
+	var/other_moles = environment.total_moles - (environment.gas["oxygen"] + environment.gas["nitrogen"] + environment.gas["carbon_dioxide"]); \
+	GET_DANGER_LEVEL(pressure_dangerlevel, environment_pressure, TLV["pressure"]) \
+	GET_DANGER_LEVEL(oxygen_dangerlevel, (environment.gas["oxygen"] * partial_pressure), TLV["oxygen"]) \
+	GET_DANGER_LEVEL(co2_dangerlevel, (environment.gas["carbon_dioxide"] * partial_pressure), TLV["carbon dioxide"]) \
+	GET_DANGER_LEVEL(temperature_dangerlevel, environment.temperature, TLV["temperature"]) \
+	GET_DANGER_LEVEL(other_dangerlevel, (other_moles * partial_pressure), TLV["other"]) \
+	ret = max(pressure_dangerlevel, oxygen_dangerlevel, co2_dangerlevel, other_dangerlevel, temperature_dangerlevel);
+
+
 #define AALARM_MODE_SCRUBBING	1
 #define AALARM_MODE_REPLACEMENT	2 //like scrubbing, but faster.
 #define AALARM_MODE_PANIC		3 //constantly sucks all air
@@ -35,7 +53,7 @@
 /obj/machinery/alarm
 	name = "alarm"
 	icon = 'icons/obj/monitors.dmi'
-	icon_state = "alarm0"
+	icon_state = "alarm"
 	anchored = 1
 	idle_power_usage = 80 WATTS
 	active_power_usage = 1 KILO WATT //For heating/cooling rooms. 1000 joules equates to about 1 degree every 2 seconds for a single tile of air.
@@ -70,10 +88,9 @@
 	var/target_temperature = 20 CELSIUS
 	var/regulating_temperature = 0
 
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 	var/list/TLV = list()
-	var/list/trace_gas = list() //list of other gases that this air alarm is able to detect
 
 	var/danger_level = 0
 	var/pressure_dangerlevel = 0
@@ -83,6 +100,9 @@
 	var/other_dangerlevel = 0
 
 	var/report_danger_level = 1
+
+	var/static/status_overlays = FALSE
+	var/static/list/alarm_overlays
 
 /obj/machinery/alarm/cold
 	target_temperature = 4 CELSIUS
@@ -102,12 +122,12 @@
 
 /obj/machinery/alarm/Destroy()
 	GLOB.alarm_list -= src
-	unregister_radio(src, frequency)
-	qdel(wires)
-	wires = null
+	SSradio.remove_object(src, frequency)
+	QDEL_NULL(wires)
 	if(alarm_area && alarm_area.master_air_alarm == src)
 		alarm_area.master_air_alarm = null
 		elect_master(exclude_self = TRUE)
+	ClearOverlays()
 	return ..()
 
 /obj/machinery/alarm/New(loc, dir, atom/frame)
@@ -143,20 +163,19 @@
 	TLV["pressure"] =		list(ONE_ATMOSPHERE*0.80,ONE_ATMOSPHERE*0.90,ONE_ATMOSPHERE*1.10,ONE_ATMOSPHERE*1.20) /* kpa */
 	TLV["temperature"] =	list(-26 CELSIUS, 0 CELSIUS, 40 CELSIUS, 66 CELSIUS)
 
-	for(var/g in gas_data.gases)
-		if(!(g in list("oxygen","nitrogen","carbon_dioxide")))
-			trace_gas += g
-
 	set_frequency(frequency)
 	if (!master_is_operating())
 		elect_master()
+
+	update_icon()
 
 /obj/machinery/alarm/Process()
 	if((stat & (NOPOWER|BROKEN)) || shorted || buildstage != 2)
 		return
 
 	var/turf/simulated/location = loc
-	if(!istype(location))	return PROCESS_KILL//returns if loc is not simulated
+	if(!istype(location))
+		return PROCESS_KILL // returns if loc is not simulated
 
 	var/datum/gas_mixture/environment = location.return_air()
 
@@ -165,18 +184,18 @@
 
 	var/old_level = danger_level
 	var/old_pressurelevel = pressure_dangerlevel
-	danger_level = overall_danger_level(environment)
+	OVERALL_DANGER_LEVEL(danger_level, environment)
 
-	if (old_level != danger_level)
+	if(old_level != danger_level)
 		apply_danger_level(danger_level)
 
-	if (old_pressurelevel != pressure_dangerlevel)
-		if (breach_detected())
+	if(old_pressurelevel != pressure_dangerlevel)
+		if(breach_detected())
 			mode = AALARM_MODE_OFF
 			apply_mode()
 
-	if (mode==AALARM_MODE_CYCLE && environment.return_pressure()<ONE_ATMOSPHERE*0.05)
-		mode=AALARM_MODE_FILL
+	if(mode == AALARM_MODE_CYCLE && environment.return_pressure() < ONE_ATMOSPHERE * 0.05)
+		mode = AALARM_MODE_FILL
 		apply_mode()
 
 	//atmos computer remote controll stuff
@@ -194,20 +213,31 @@
 	return
 
 /obj/machinery/alarm/proc/handle_heating_cooling(datum/gas_mixture/environment)
-	if (!regulating_temperature)
-		//check for when we should start adjusting temperature
-		if(!get_danger_level(target_temperature, TLV["temperature"]) && abs(environment.temperature - target_temperature) > 2.0)
-			update_use_power(POWER_USE_ACTIVE)
-			regulating_temperature = 1
-			visible_message("\The [src] clicks as it starts [environment.temperature > target_temperature ? "cooling" : "heating"] the room.",\
-			"You hear a click and a faint electronic hum.")
+	if(!regulating_temperature)
+		if(abs(environment.temperature - target_temperature) > 2.0)
+			var/danger_check
+			GET_DANGER_LEVEL(danger_check, target_temperature, TLV["temperature"])
+			if(!danger_check)
+				update_use_power(POWER_USE_ACTIVE)
+				regulating_temperature = 1
+				visible_message("\The [src] clicks as it starts [environment.temperature > target_temperature ? "cooling" : "heating"] the room.",\
+								"You hear a click and a faint electronic hum.")
 	else
-		//check for when we should stop adjusting temperature
-		if (get_danger_level(target_temperature, TLV["temperature"]) || abs(environment.temperature - target_temperature) <= 0.5)
+		var/should_disable_regulating = FALSE
+		if(abs(environment.temperature - target_temperature) <= 0.5)
+			should_disable_regulating = TRUE
+			goto nodeDisableRegulating
+		var/danger_check
+		GET_DANGER_LEVEL(danger_check, target_temperature, TLV["temperature"])
+		if(danger_check)
+			should_disable_regulating = TRUE
+
+		nodeDisableRegulating
+		if(should_disable_regulating)
 			update_use_power(POWER_USE_IDLE)
 			regulating_temperature = 0
 			visible_message("\The [src] clicks quietly as it stops [environment.temperature > target_temperature ? "cooling" : "heating"] the room.",\
-			"You hear a click as a faint electronic humming stops.")
+							"You hear a click as a faint electronic humming stops.")
 
 	if (regulating_temperature)
 		target_temperature = Clamp(target_temperature, CONV_CELSIUS_KELVIN(MIN_TEMPERATURE), CONV_CELSIUS_KELVIN(MAX_TEMPERATURE))
@@ -233,28 +263,6 @@
 				heat_transfer = -gas.add_thermal_energy(-heat_transfer)	//get the actual heat transfer
 
 			environment.merge(gas)
-
-/obj/machinery/alarm/proc/overall_danger_level(datum/gas_mixture/environment)
-	var/partial_pressure = R_IDEAL_GAS_EQUATION*environment.temperature/environment.volume
-	var/environment_pressure = environment.return_pressure()
-
-	var/other_moles = 0
-	for(var/g in trace_gas)
-		other_moles += environment.gas[g] //this is only going to be used in a partial pressure calc, so we don't need to worry about group_multiplier here.
-
-	pressure_dangerlevel = get_danger_level(environment_pressure, TLV["pressure"])
-	oxygen_dangerlevel = get_danger_level(environment.gas["oxygen"]*partial_pressure, TLV["oxygen"])
-	co2_dangerlevel = get_danger_level(environment.gas["carbon_dioxide"]*partial_pressure, TLV["carbon dioxide"])
-	temperature_dangerlevel = get_danger_level(environment.temperature, TLV["temperature"])
-	other_dangerlevel = get_danger_level(other_moles*partial_pressure, TLV["other"])
-
-	return max(
-		pressure_dangerlevel,
-		oxygen_dangerlevel,
-		co2_dangerlevel,
-		other_dangerlevel,
-		temperature_dangerlevel
-		)
 
 // Returns whether this air alarm thinks there is a breach, given the sensors that are available to it.
 /obj/machinery/alarm/proc/breach_detected()
@@ -291,14 +299,13 @@
 			return 1
 	return 0
 
-/obj/machinery/alarm/proc/get_danger_level(current_value, list/danger_levels)
-	if((current_value > danger_levels[4] && danger_levels[4] > 0) || current_value < danger_levels[1])
-		return 2
-	if((current_value > danger_levels[3] && danger_levels[3] > 0) || current_value < danger_levels[2])
-		return 1
-	return 0
+/obj/machinery/alarm/on_update_icon()
+	if(!status_overlays)
+		status_overlays = TRUE
+		generate_overlays()
 
-/obj/machinery/alarm/update_icon()
+	ClearOverlays()
+
 	if(wiresexposed)
 		icon_state = "alarmx"
 		set_light(0)
@@ -308,23 +315,36 @@
 		set_light(0)
 		return
 
+	icon_state = "alarm"
 	var/icon_level = danger_level
-	if (alarm_area.atmosalm)
+	if(alarm_area.atmosalm)
 		icon_level = max(icon_level, 1)	//if there's an atmos alarm but everything is okay locally, no need to go past yellow
 
 	var/new_color = null
 	switch(icon_level)
-		if (0)
-			icon_state = "alarm0"
+		if(0)
 			new_color = COLOR_LIME
-		if (1)
-			icon_state = "alarm2" //yes, alarm2 is yellow alarm
+		if(1)
 			new_color = COLOR_SUN
-		if (2)
-			icon_state = "alarm1"
+		if(2)
 			new_color = COLOR_RED_LIGHT
 
-	set_light(0.25, 0.1, 1, 2, new_color)
+	AddOverlays(alarm_overlays[icon_level+1])
+	AddOverlays(emissive_appearance(icon, "alarm_ea"))
+
+	set_light(0.65, 0.1, 1, 2, new_color)
+
+/obj/machinery/alarm/proc/generate_overlays()
+	alarm_overlays = new
+	alarm_overlays.len = 4
+	alarm_overlays[1] = image(icon, "alarm_over0")
+	alarm_overlays[2] = image(icon, "alarm_over1")
+	alarm_overlays[3] = image(icon, "alarm_over2")
+	alarm_overlays[1].alpha = 200
+	alarm_overlays[2].alpha = 200
+	alarm_overlays[3].alpha = 200
+
+	alarm_overlays[4] = emissive_appearance(icon, "alarm_ea", cache = FALSE)
 
 /obj/machinery/alarm/receive_signal(datum/signal/signal)
 	if(stat & (NOPOWER|BROKEN))
@@ -379,16 +399,15 @@
 		send_signal(id_tag, list("status") )
 
 /obj/machinery/alarm/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = radio_controller.add_object(src, frequency, RADIO_TO_AIRALARM)
+	radio_connection = SSradio.add_object(src, frequency, RADIO_TO_AIRALARM)
 
 /obj/machinery/alarm/proc/send_signal(target, list/command)//sends signal 'command' to 'target'. Returns 0 if no radio connection, 1 otherwise
 	if(!radio_connection)
 		return 0
 
-	var/datum/signal/signal = new
-	signal.transmission_method = 1 //radio signal
+	var/datum/signal/signal = new()
 	signal.source = src
 
 	signal.data = command
@@ -445,13 +464,12 @@
 	update_icon()
 
 /obj/machinery/alarm/proc/post_alert(alert_level)
-	var/datum/radio_frequency/frequency = radio_controller.return_frequency(alarm_frequency)
+	var/datum/frequency/frequency = SSradio.return_frequency(alarm_frequency)
 	if(!frequency)
 		return
 
 	var/datum/signal/alert_signal = new
 	alert_signal.source = src
-	alert_signal.transmission_method = 1
 	alert_signal.data["zone"] = alarm_area.name
 	alert_signal.data["type"] = "Atmospheric"
 
@@ -518,9 +536,7 @@
 		environment_data[++environment_data.len] = list("name" = "Nitrogen", "value" = environment.gas["nitrogen"] / total * 100, "unit" = "%", "danger_level" = oxygen_dangerlevel)
 		environment_data[++environment_data.len] = list("name" = "Carbon dioxide", "value" = environment.gas["carbon_dioxide"] / total * 100, "unit" = "%", "danger_level" = co2_dangerlevel)
 
-		var/other_moles = 0
-		for(var/g in trace_gas)
-			other_moles += environment.gas[g]
+		var/other_moles = total - (environment.gas["oxygen"] + environment.gas["nitrogen"] + environment.gas["carbon_dioxide"])
 		environment_data[++environment_data.len] = list("name" = "Other Gases", "value" = other_moles / total * 100, "unit" = "%", "danger_level" = other_dangerlevel)
 
 		environment_data[++environment_data.len] = list("name" = "Temperature", "value" = environment.temperature, "unit" = "K ([round(CONV_KELVIN_CELSIUS(environment.temperature), 0.1)]C)", "danger_level" = temperature_dangerlevel)
@@ -845,8 +861,11 @@ Just a object used in constructing air alarms
 */
 /obj/item/airalarm_electronics
 	name = "air alarm electronics"
-	icon = 'icons/obj/doors/door_assembly.dmi'
-	icon_state = "door_electronics"
+	icon = 'icons/obj/monitors.dmi'
+	icon_state = "alarm_electronics"
 	desc = "Looks like a circuit. Probably is."
 	w_class = ITEM_SIZE_SMALL
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
+
+#undef GET_DANGER_LEVEL
+#undef OVERALL_DANGER_LEVEL

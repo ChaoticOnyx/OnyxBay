@@ -40,7 +40,7 @@
 /obj/item/defibrillator/loaded //starts with regular power cell for R&D to replace later in the round.
 	bcell = /obj/item/cell/apc
 
-/obj/item/defibrillator/update_icon()
+/obj/item/defibrillator/on_update_icon()
 	var/list/new_overlays = list()
 
 	if(paddles) //in case paddles got destroyed somehow.
@@ -53,12 +53,12 @@
 				new_overlays += "[initial(icon_state)]-powered"
 
 	if(bcell)
-		var/ratio = Ceiling(bcell.percent()/25) * 25
+		var/ratio = Ceiling(CELL_PERCENT(bcell)/25) * 25
 		new_overlays += "[initial(icon_state)]-charge[ratio]"
 	else
 		new_overlays += "[initial(icon_state)]-nocell"
 
-	overlays = new_overlays
+	SetOverlays(new_overlays)
 
 /obj/item/defibrillator/ui_action_click()
 	toggle_paddles()
@@ -244,7 +244,7 @@
 	update_icon()
 	..()
 
-/obj/item/shockpaddles/update_icon()
+/obj/item/shockpaddles/on_update_icon()
 	icon_state = "defibpaddles[wielded]"
 	item_state = "defibpaddles[wielded]"
 	if(cooldown)
@@ -441,7 +441,7 @@
 
 	if(!H.should_have_organ(BP_BRAIN)) return //no brain
 
-	var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
+	var/obj/item/organ/internal/cerebrum/brain/brain = H.internal_organs_by_name[BP_BRAIN]
 	if(!brain) return //no brain
 
 	var/brain_damage = Clamp((deadtime - DEFIB_TIME_LOSS)/(DEFIB_TIME_LIMIT - DEFIB_TIME_LOSS)*brain.max_damage, H.getBrainLoss(), brain.max_damage)

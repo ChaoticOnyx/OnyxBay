@@ -4,24 +4,26 @@
 	origin = "Toy Shop"
 	trade_flags = TRADER_GOODS|TRADER_MONEY|TRADER_WANTED_ONLY
 	possible_origins = list("Toys R Ours", "LEGS GO", "Kay-Cee Toys", "Build-a-Cat", "Magic Box", "The Positronic's Dungeon and Baseball Card Shop")
-	speech = list("hail_generic"    = "Uhh... hello? Welcome to ORIGIN, I hope you have a, uhh.... good shopping trip.",
-				"hail_deny"         = "Nah, you're not allowed here. At all",
 
-				"trade_complete"       = "Thanks for shopping... here... at ORIGIN.",
-				"trade_blacklist"      = "Uuuhhh.... no.",
-				"trade_found_unwanted" = "Nah! That's not what I'm looking for. Something rarer.",
-				"trade_not_enough"   = "Just 'cause they're made of cardboard doesn't mean they don't cost money...",
-				"how_much"          = "Uhh... I'm thinking like... VALUE. Right? Or something rare that complements my interest.",
-				"what_want"         = "Ummmm..... I guess I want",
+	speech = list(
+		TRADER_HAIL_GENERIC       = "Uhh... hello? Welcome to ORIGIN, I hope you have a, uhh.... good shopping trip.",
+		TRADER_HAIL_DENY          = "Nah, you're not allowed here. At all",
 
-				"compliment_deny"   = "Ha! Very funny! You should write your own television show.",
-				"compliment_accept" = "Why yes, I do work out.",
-				"insult_good"       = "Well, well, well. Guess we learned who was the troll here.",
-				"insult_bad"        = "I've already written a nasty Spacebook post in my mind about you.",
+		TRADER_TRADE_COMPLETE     = "Thanks for shopping... here... at ORIGIN.",
+		TRADER_NO_BLACKLISTED     = "Uuuhhh.... no.",
+		TRADER_FOUND_UNWANTED     = "Nah! That's not what I'm looking for. Something rarer.",
+		TRADER_NOT_ENOUGH         = "Just 'cause they're made of cardboard doesn't mean they don't cost money...",
+		TRADER_HOW_MUCH           = "Uhh... I'm thinking like... VALUE. Right? Or something rare that complements my interest.",
+		TRADER_WHAT_WANT          = "Ummmm..... I guess I want",
 
-				"bribe_refusal"     = "Nah. I need to get moving as soon as uhh... possible.",
-				"bribe_accept"      = "You know what, I wasn't doing anything for TIME minutes anyways.",
-				)
+		TRADER_COMPLEMENT_FAILURE = "Ha! Very funny! You should write your own television show.",
+		TRADER_COMPLEMENT_SUCCESS = "Why yes, I do work out.",
+		TRADER_INSULT_GOOD        = "Well, well, well. Guess we learned who was the troll here.",
+		TRADER_INSULT_BAD         = "I've already written a nasty Spacebook post in my mind about you.",
+
+		TRADER_BRIBE_FAILURE      = "Nah. I need to get moving as soon as uhh... possible.",
+		TRADER_BRIBE_SUCCESS      = "You know what, I wasn't doing anything for TIME minutes anyways.",
+	)
 
 	possible_wanted_items = list(/obj/item/toy/figure/ert				= TRADER_THIS_TYPE,
 								/obj/item/toy/prize/honk				= TRADER_THIS_TYPE
@@ -50,23 +52,24 @@
 	origin = "Electronic Shop"
 	possible_origins = list("Best Sale", "Overstore", "Oldegg", "Circuit Citadel", "Silicon Village", "Positronic Solutions LLC", "Sunvolt Inc.")
 
-	speech = list("hail_generic"    = "Hello, sir! Welcome to ORIGIN, I hope you find what you are looking for.",
-				"hail_deny"         = "Your call has been disconnected.",
+	speech = list(
+		TRADER_HAIL_GENERIC       = "Hello, sir! Welcome to ORIGIN, I hope you find what you are looking for.",
+		TRADER_HAIL_DENY          = "Your call has been disconnected.",
 
-				"trade_complete"    = "Thank you for shopping at ORIGIN, would you like to get the extended warranty as well?",
-				"trade_blacklist"   = "Sir, this is a /electronics/ store.",
-				"trade_no_goods"    = "As much as I'd love to buy that from you, I can't.",
-				"trade_not_enough"  = "Your offer isn't adequate, sir.",
-				"how_much"          = "Your total comes out to VALUE credits.",
+		TRADER_TRADE_COMPLETE     = "Thank you for shopping at ORIGIN, would you like to get the extended warranty as well?",
+		TRADER_NO_BLACKLISTED     = "Sir, this is a /electronics/ store.",
+		TRADER_NO_GOODS           = "As much as I'd love to buy that from you, I can't.",
+		TRADER_NOT_ENOUGH         = "Your offer isn't adequate, sir.",
+		TRADER_HOW_MUCH           = "Your total comes out to VALUE credits.",
 
-				"compliment_deny"   = "Hahaha! Yeah... funny...",
-				"compliment_accept" = "That's very nice of you!",
-				"insult_good"       = "That was uncalled for, sir. Don't make me get my manager.",
-				"insult_bad"        = "Sir, I am allowed to hang up the phone if you continue, sir.",
+		TRADER_COMPLEMENT_FAILURE = "Hahaha! Yeah... funny...",
+		TRADER_COMPLEMENT_SUCCESS = "That's very nice of you!",
+		TRADER_INSULT_GOOD        = "That was uncalled for, sir. Don't make me get my manager.",
+		TRADER_INSULT_BAD         = "Sir, I am allowed to hang up the phone if you continue, sir.",
 
-				"bribe_refusal"     = "Sorry, sir, but I can't really do that.",
-				"bribe_accept"      = "Why not! Glad to be here for a few more minutes.",
-				)
+		TRADER_BRIBE_FAILURE      = "Sorry, sir, but I can't really do that.",
+		TRADER_BRIBE_SUCCESS      = "Why not! Glad to be here for a few more minutes.",
+	)
 
 	possible_trading_items = list(/obj/item/computer_hardware/battery_module		= TRADER_SUBTYPES_ONLY,
 								/obj/item/circuitboard							= TRADER_SUBTYPES_ONLY,
@@ -104,24 +107,25 @@
 	name_language = TRADER_DEFAULT_NAME
 	origin = "Clothing Store"
 	possible_origins = list("Space Eagle", "Banana Democracy", "Forever 22", "Textiles Factory Warehouse Outlet", "Blocks Brothers")
-	speech = list("hail_generic"    = "Hello, sir! Welcome to ORIGIN!",
-				"hail_Vox"          = "Well hello, sir! I don't believe we have any clothes that fit you... but you can still look!",
-				"hail_deny"         = "We do not trade with rude customers. Consider yourself blacklisted.",
 
-				"trade_complete"    = "Thank you for shopping at ORIGIN. Remember: We cannot accept returns without the original tags!",
-				"trade_blacklist"   = "Hm, how about no?",
-				"trade_no_goods"    = "We don't buy, sir. Only sell.",
-				"trade_not_enough"  = "Sorry, ORIGIN policy to not accept trades below our marked prices.",
-				"how_much"          = "Your total comes out to VALUE credits.",
+	speech = list(
+		TRADER_HAIL_GENERIC       = "Hello, sir! Welcome to ORIGIN!",
+		TRADER_HAIL_DENY          = "We do not trade with rude customers. Consider yourself blacklisted.",
 
-				"compliment_deny"   = "Excuse me?",
-				"compliment_accept" = "Aw, you're so nice!",
-				"insult_good"       = "Sir.",
-				"insult_bad"        = "Wow. I don't have to take this.",
+		TRADER_TRADE_COMPLETE     = "Thank you for shopping at ORIGIN. Remember: We cannot accept returns without the original tags!",
+		TRADER_NO_BLACKLISTED     = "Hm, how about no?",
+		TRADER_NO_GOODS           = "We don't buy, sir. Only sell.",
+		TRADER_NOT_ENOUGH         = "Sorry, ORIGIN policy to not accept trades below our marked prices.",
+		TRADER_HOW_MUCH           = "Your total comes out to VALUE credits.",
 
-				"bribe_refusal"     = "ORIGIN policy clearly states we cannot stay for more than the designated time.",
-				"bribe_accept"      = "Hm.... sure! We'll have a few minutes of 'engine troubles'.",
-				)
+		TRADER_COMPLEMENT_FAILURE = "Excuse me?",
+		TRADER_COMPLEMENT_SUCCESS = "Aw, you're so nice!",
+		TRADER_INSULT_GOOD        = "Sir.",
+		TRADER_INSULT_BAD         = "Wow. I don't have to take this.",
+
+		TRADER_BRIBE_FAILURE      = "ORIGIN policy clearly states we cannot stay for more than the designated time.",
+		TRADER_BRIBE_SUCCESS      = "Hm.... sure! We'll have a few minutes of 'engine troubles'.",
+	)
 
 	possible_trading_items = list(/obj/item/clothing/under								= TRADER_SUBTYPES_ONLY,
 								/obj/item/clothing/under/acj							= TRADER_BLACKLIST,
@@ -159,6 +163,10 @@
 								/obj/item/clothing/suit/tajaran							= TRADER_BLACKLIST,
 								/obj/item/clothing/suit/unathi							= TRADER_BLACKLIST
 								)
+
+/datum/trader/ship/clothingshop/New()
+	..()
+	speech[TRADER_HAIL_START + SPECIES_VOX] = "Well hello, sir! I don't believe we have any clothes that fit you... but you can still look!"
 
 
 /datum/trader/ship/clothingshop/hatglovesaccessoriesboots
@@ -210,6 +218,25 @@ Sells devices, odds and ends, and medical stuff
 	name_language = TRADER_DEFAULT_NAME
 	origin = "Drugstore"
 	possible_origins = list("Buy 'n Save", "Drug Carnival", "C&B", "Fentles", "Dr. Goods", "Beevees", "McGillicuddy's")
+
+	speech = list(
+		TRADER_HAIL_GENERIC       = "Hello, hello! Bits and bobs and everything in between, I hope you find what you're looking for!",
+		TRADER_HAIL_DENY          = "Oh no. I don't want to deal with YOU.",
+
+		TRADER_TRADE_COMPLETE     = "Thank you! Now remember, there isn't any return policy here, so be careful with that!",
+		TRADER_NO_BLACKLISTED     = "Hm. Well that would be illegal, so no.",
+		TRADER_NO_GOODS           = "I'm sorry, I only sell goods.",
+		TRADER_NOT_ENOUGH         = "Gotta pay more than that to get that!",
+		TRADER_HOW_MUCH           = "Well... I bought it for a lot, but I'll give it to you for VALUE.",
+
+		TRADER_COMPLEMENT_FAILURE = "Uh... did you say something?",
+		TRADER_COMPLEMENT_SUCCESS = "Mhm! I can agree to that!",
+		TRADER_INSULT_GOOD        = "Wow, where was that coming from?",
+		TRADER_INSULT_BAD         = "Don't make me blacklist your connection.",
+
+		TRADER_BRIBE_FAILURE      = "Well, as much as I'd love to say 'yes', you realize I operate on a station, correct?"
+	)
+
 	possible_trading_items = list(/obj/item/device/flashlight					= TRADER_ALL,
 								/obj/item/device/kit/paint						= TRADER_SUBTYPES_ONLY,
 								/obj/item/aicard							= TRADER_THIS_TYPE,
@@ -233,7 +260,7 @@ Sells devices, odds and ends, and medical stuff
 								/obj/item/device/batterer						= TRADER_THIS_TYPE,
 								/obj/item/device/hailer							= TRADER_THIS_TYPE,
 								/obj/item/device/uv_light						= TRADER_THIS_TYPE,
-								/obj/item/device/mmi							= TRADER_ALL,
+								/obj/item/organ/internal/cerebrum/mmi			= TRADER_ALL,
 								/obj/item/device/robotanalyzer					= TRADER_THIS_TYPE,
 								/obj/item/device/toner							= TRADER_THIS_TYPE,
 								/obj/item/device/camera_film					= TRADER_THIS_TYPE,
@@ -249,56 +276,51 @@ Sells devices, odds and ends, and medical stuff
 								/obj/item/device/synthesized_instrument			= TRADER_SUBTYPES_ONLY,
 								/obj/item/stack/medical/advanced				= TRADER_BLACKLIST
 								)
-	speech = list("hail_generic"    = "Hello, hello! Bits and bobs and everything in between, I hope you find what you're looking for!",
-				"hail_silicon"      = "Ah! Hello, robot. We only sell things that, ah.... people can hold in their hands, unfortunately. You are still allowed to buy, though!",
-				"hail_deny"         = "Oh no. I don't want to deal with YOU.",
 
-				"trade_complete"    = "Thank you! Now remember, there isn't any return policy here, so be careful with that!",
-				"trade_blacklist"   = "Hm. Well that would be illegal, so no.",
-				"trade_no_goods"    = "I'm sorry, I only sell goods.",
-				"trade_not_enough"  = "Gotta pay more than that to get that!",
-				"how_much"          = "Well... I bought it for a lot, but I'll give it to you for VALUE.",
+/datum/trader/ship/devices/New()
+	..()
+	speech[TRADER_HAIL_START + "silicon"] = "Ah! Hello, robot. We only sell things that, ah.... people can hold in their hands, unfortunately. You are still allowed to buy, though!"
 
-				"compliment_deny"   = "Uh... did you say something?",
-				"compliment_accept" = "Mhm! I can agree to that!",
-				"insult_good"       = "Wow, where was that coming from?",
-				"insult_bad"        = "Don't make me blacklist your connection.",
-
-				"bribe_refusal"     = "Well, as much as I'd love to say 'yes', you realize I operate on a station, correct?",
-				)
 
 /datum/trader/ship/robots
 	name = "Robot Seller"
 	name_language = TRADER_DEFAULT_NAME
 	origin = "Robot Store"
 	possible_origins = list("AI for the Straight Guy", "Mechanical Buddies", "Bot Chop Shop", "Omni Consumer Projects")
+
+	speech = list(
+		TRADER_HAIL_GENERIC       = "Welcome to ORIGIN! Let me walk you through our fine robotic selection!",
+		TRADER_HAIL_DENY          = "ORIGIN no longer wants to speak to you.",
+
+		TRADER_TRADE_COMPLETE     = "I hope you enjoy your new robot!",
+		TRADER_NO_BLACKLISTED     = "I work with robots, sir. Not that.",
+		TRADER_NO_GOODS           = "You gotta buy the robots, sir. I don't do trades.",
+		TRADER_NOT_ENOUGH         = "You're coming up short on cash.",
+		TRADER_HOW_MUCH           = "My fine selection of robots will cost you VALUE!",
+
+		TRADER_COMPLEMENT_FAILURE = "Well, I almost believed that.",
+		TRADER_COMPLEMENT_SUCCESS = "Thank you! My craftsmanship is my life.",
+		TRADER_INSULT_GOOD        = "Uncalled for.... uncalled for.",
+		TRADER_INSULT_BAD         = "I've programmed AI better at insulting than you!",
+
+		TRADER_BRIBE_FAILURE      = "I've got too many customers waiting in other sectors, sorry.",
+		TRADER_BRIBE_SUCCESS      = "Hm. Don't keep me waiting too long, though."
+	)
+
 	possible_trading_items = list(/obj/item/device/bot_kit							= TRADER_THIS_TYPE,
 								/obj/item/device/paicard							= TRADER_THIS_TYPE,
 								/obj/item/aicard						    		= TRADER_THIS_TYPE,
 								/mob/living/bot										= TRADER_SUBTYPES_ONLY,
 								/mob/living/bot/mulebot                             = TRADER_BLACKLIST,
-								/obj/item/organ/internal/posibrain					= TRADER_THIS_TYPE,
+								/obj/item/organ/internal/cerebrum/posibrain			= TRADER_THIS_TYPE,
 								/obj/item/robot_parts								= TRADER_SUBTYPES_ONLY,
 								/obj/item/stock_parts/manipulator			        = TRADER_THIS_TYPE
 								)
-	speech = list("hail_generic" = "Welcome to ORIGIN! Let me walk you through our fine robotic selection!",
-				"hail_silicon"   = "Welcome to ORIGIN! Let- oh, you're a synth! Well, your money is good anyway. Welcome, welcome!",
-				"hail_deny"      = "ORIGIN no longer wants to speak to you.",
+/datum/trader/ship/robots/New()
+	..()
+	speech[TRADER_HAIL_START + "silicon"] = "Welcome to ORIGIN! Let- oh, you're a synth! Well, your money is good anyway. Welcome, welcome!"
 
-				"trade_complete" = "I hope you enjoy your new robot!",
-				"trade_blacklist"= "I work with robots, sir. Not that.",
-				"trade_no_goods" = "You gotta buy the robots, sir. I don't do trades.",
-				"trade_not_enough" = "You're coming up short on cash.",
-				"how_much"       = "My fine selection of robots will cost you VALUE!",
 
-				"compliment_deny"= "Well, I almost believed that.",
-				"compliment_accept"= "Thank you! My craftsmanship is my life.",
-				"insult_good"    = "Uncalled for.... uncalled for.",
-				"insult_bad"     = "I've programmed AI better at insulting than you!",
-
-				"bribe_refusal"  = "I've got too many customers waiting in other sectors, sorry.",
-				"bribe_accept"   = "Hm. Don't keep me waiting too long, though.",
-				)
 
 ///datum/trader/xeno_shop            This trader was merged with pet_shop
 //	name = "Xenolife Collector"
@@ -336,21 +358,23 @@ Sells devices, odds and ends, and medical stuff
 	want_multiplier = 1.2
 	margin = 2
 	possible_origins = list("Dr.Krieger's Practice", "Legit Medical Supplies (No Refund)", "Mom's & Pop's Addictive Opoids", "Legitimate Pharmaceutical Firm", "Designer Drugs by Lil Xanny")
-	speech = list("hail_generic"    = "Huh? How'd you get this number?! Oh well, if you wanna talk biz, I'm listening.",
-				"hail_deny"         = "This is an automated message. Feel free to fuck the right off after the buzzer. *buzz*",
 
-				"trade_complete"    = "Good to have business with ya. Remember, no refunds.",
-				"trade_blacklist"   = "Whoa whoa, I don't want this shit, put it away.",
-				"trade_found_unwanted" = "What the hell do you expect me to do with this junk?",
-				"trade_not_enough"   = "Sorry, pal, full payment upfront, I don't write the rules. Well, I do, but that's beside the point.",
-				"how_much"          = "Hmm, this is one damn fine item, but I'll part with it for VALUE credits.",
-				"what_want"         = "I could always use some fucking",
+	speech = list(
+		TRADER_HAIL_GENERIC       = "Huh? How'd you get this number?! Oh well, if you wanna talk biz, I'm listening.",
+		TRADER_HAIL_DENY          = "This is an automated message. Feel free to fuck the right off after the buzzer. *buzz*",
 
-				"compliment_deny"   = "Haha, how nice of you. Why don't you go fall in an elevator shaft.",
-				"compliment_accept" = "Damn right I'm awesome, tell me more.",
-				"insult_good"       = "Damn, pal, no need to get snippy.",
-				"insult_bad"        = "*muffled laughter* Sorry, was that you trying to talk shit? Adorable.",
-				)
+		TRADER_TRADE_COMPLETE     = "Good to have business with ya. Remember, no refunds.",
+		TRADER_NO_BLACKLISTED     = "Whoa whoa, I don't want this shit, put it away.",
+		TRADER_FOUND_UNWANTED     = "What the hell do you expect me to do with this junk?",
+		TRADER_NOT_ENOUGH         = "Sorry, pal, full payment upfront, I don't write the rules. Well, I do, but that's beside the point.",
+		TRADER_HOW_MUCH           = "Hmm, this is one damn fine item, but I'll part with it for VALUE credits.",
+		TRADER_WHAT_WANT          = "I could always use some fucking",
+
+		TRADER_COMPLEMENT_FAILURE = "Haha, how nice of you. Why don't you go fall in an elevator shaft.",
+		TRADER_COMPLEMENT_SUCCESS = "Damn right I'm awesome, tell me more.",
+		TRADER_INSULT_GOOD        = "Damn, pal, no need to get snippy.",
+		TRADER_INSULT_BAD         = "*muffled laughter* Sorry, was that you trying to talk shit? Adorable."
+	)
 
 	possible_wanted_items = list(/obj/item/reagent_containers/vessel/bottle/chemical       = TRADER_THIS_TYPE,
 								/obj/item/reagent_containers/vessel/bottle/chemical/big    = TRADER_THIS_TYPE,

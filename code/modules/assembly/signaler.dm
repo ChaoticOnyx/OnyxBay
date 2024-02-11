@@ -12,12 +12,15 @@
 	var/delay = 0
 	var/airlock_wire = null
 	var/datum/wires/connected = null
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 	var/deadman = FALSE
+
+	drop_sound = SFX_DROP_COMPONENT
+	pickup_sound = SFX_PICKUP_COMPONENT
 
 /obj/item/device/assembly/signaler/New()
 	..()
-	addtimer(CALLBACK(src, .proc/set_frequency, frequency), 4 SECOND)
+	addtimer(CALLBACK(src, nameof(.proc/set_frequency), frequency), 4 SECOND)
 	return
 
 
@@ -27,7 +30,7 @@
 	signal()
 	return TRUE
 
-/obj/item/device/assembly/signaler/update_icon()
+/obj/item/device/assembly/signaler/on_update_icon()
 	if(holder)
 		holder.update_icon()
 	return
@@ -83,14 +86,14 @@
 	return
 
 /obj/item/device/assembly/signaler/proc/signal()
-	if(!radio_connection) return
+	if(!radio_connection)
+		return
 
 	playsound(src.loc, 'sound/signals/signaler.ogg', 35)
-	var/datum/signal/signal = new
-	signal.source = src
-	signal.encryption = code
-	signal.data["message"] = "ACTIVATE"
+
+	var/datum/signal/signal = new(list("message" = "ACTIVATE"), encryption = code)
 	radio_connection.post_signal(src, signal)
+
 	return
 
 /obj/item/device/assembly/signaler/pulse(radio = 0)
@@ -125,13 +128,13 @@
 	set waitfor = 0
 	if(!frequency)
 		return
-	if(!radio_controller)
+	if(!SSradio)
 		sleep(20)
-	if(!radio_controller)
+	if(!SSradio)
 		return
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = radio_controller.add_object(src, frequency, RADIO_CHAT)
+	radio_connection = SSradio.add_object(src, frequency, RADIO_CHAT)
 	return
 
 /obj/item/device/assembly/signaler/think()
@@ -166,7 +169,6 @@
 
 
 /obj/item/device/assembly/signaler/Destroy()
-	if(radio_controller)
-		radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = 0
 	. = ..()

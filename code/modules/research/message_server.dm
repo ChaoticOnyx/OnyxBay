@@ -159,7 +159,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	else
 		..(O, user)
 
-/obj/machinery/message_server/update_icon()
+/obj/machinery/message_server/on_update_icon()
 	if((stat & (BROKEN|NOPOWER)))
 		icon_state = "server-nopower"
 	else if (!active)
@@ -262,7 +262,6 @@ var/obj/machinery/blackbox_recorder/blackbox
 	var/list/msg_raider = list()
 	var/list/msg_cargo = list()
 	var/list/msg_service = list()
-	var/list/msg_exploration = list()
 
 	var/list/datum/feedback_variable/feedback = new()
 
@@ -312,7 +311,7 @@ var/obj/machinery/blackbox_recorder/blackbox
 	var/pda_msg_amt = 0
 	var/rc_msg_amt = 0
 
-	for(var/obj/machinery/message_server/MS in GLOB.machines)
+	for(var/obj/machinery/message_server/MS in SSmachines.machinery)
 		if(MS.pda_msgs.len > pda_msg_amt)
 			pda_msg_amt = MS.pda_msgs.len
 		if(MS.rc_msgs.len > rc_msg_amt)

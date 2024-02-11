@@ -47,7 +47,7 @@
 		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 	return
 
-/obj/structure/lamarr/update_icon()
+/obj/structure/lamarr/on_update_icon()
 	if(destroyed)
 		icon_state = "labcageb[occupied]"
 	else

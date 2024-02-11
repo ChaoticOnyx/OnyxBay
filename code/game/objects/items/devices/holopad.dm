@@ -55,14 +55,14 @@
 	call_state = CALL_RINGING
 	icon_state = "holopad_ringing"
 	desc = "[initial(desc)] Incoming call from [caller.getName()]."
-	INVOKE_ASYNC(src, .proc/ring)
+	INVOKE_ASYNC(src, nameof(.proc/ring))
 	return TRUE
 
 /obj/item/device/holopad/proc/ring()
 	if(call_state != CALL_RINGING)
 		return
 	audible_message(SPAN_WARNING("Something vibrates.."), hearing_distance = 4)
-	addtimer(CALLBACK(src, .proc/ring), 50)
+	addtimer(CALLBACK(src, nameof(.proc/ring)), 50)
 
 /obj/item/device/holopad/proc/placeCall(mob/user)
 	var/list/Targets = list()
@@ -90,7 +90,7 @@
 			abonent.acceptCall()
 			call_state = CALL_IN_CALL
 			icon_state = "holopad_in_call"
-			addtimer(CALLBACK(src, .proc/update_holo), 1)
+			addtimer(CALLBACK(src, nameof(.proc/update_holo)), 1)
 
 			audible_message("<span class='name'>[voice]</span> transmits, \"Connection established\"", hearing_distance = 1)
 		else
@@ -102,7 +102,7 @@
 	else if(call_state == CALL_CALLING)
 		call_state = CALL_IN_CALL
 		icon_state = "holopad_in_call"
-		addtimer(CALLBACK(src, .proc/update_holo), 1)
+		addtimer(CALLBACK(src, nameof(.proc/update_holo)), 1)
 
 		audible_message("<span class='name'>[voice]</span> transmits, \"Connection established\"", hearing_distance = 1)
 
@@ -122,6 +122,7 @@
 
 /obj/item/device/holopad/dropped()
 	update_holo()
+	..()
 
 /obj/item/device/holopad/proc/update_holo()
 	if(call_state == CALL_IN_CALL)
@@ -146,17 +147,17 @@
 	if(isliving(loc))
 		var/mob/living/L = loc
 		hologram.dir = turn(L.dir,180)
-		hologram.loc = L.loc
+		hologram.forceMove(L.loc)
 		hologram.pixel_x = ((L.dir&4)?32:((L.dir&8)?-32:0))
 		hologram.pixel_y = ((L.dir&1)?32:((L.dir&2)?-32:0))
 	else if(isturf(loc))
 		hologram.dir = 2
-		hologram.loc = loc
+		hologram.forceMove(loc)
 		hologram.pixel_x = 0
 		hologram.pixel_y = 0
 	else
 		hangUp()
-	addtimer(CALLBACK(src, .proc/update_holo_pos), 2)
+	addtimer(CALLBACK(src, nameof(.proc/update_holo_pos)), 2)
 
 
 /obj/item/device/holopad/attack_self(mob/user)

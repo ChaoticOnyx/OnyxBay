@@ -107,7 +107,7 @@
 		var/obj/item/paper/P = new(src)
 		P.SetName("[src] report #[++report_num]: [bloodsamp.name]")
 		P.stamped = list(/obj/item/stamp)
-		P.overlays = list("paper_stamped")
+		P.AddOverlays("paper_stamped")
 		//dna data itself
 		var/data = "No scan information available."
 		if(bloodsamp.dna != null)
@@ -145,7 +145,7 @@
 	closed = !closed
 	src.update_icon()
 
-/obj/machinery/dnaforensics/update_icon()
+/obj/machinery/dnaforensics/on_update_icon()
 	..()
 	if(!(stat & NOPOWER) && scanning)
 		icon_state = "dnaworking"

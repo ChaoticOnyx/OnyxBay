@@ -71,7 +71,7 @@
 	..()
 	update_icon()
 
-/obj/item/material/twohanded/update_icon()
+/obj/item/material/twohanded/on_update_icon()
 	var/new_item_state = "[base_icon][wielded]"
 	item_state_slots[slot_l_hand_str] = new_item_state
 	item_state_slots[slot_r_hand_str] = new_item_state
@@ -87,15 +87,17 @@
 	sharp = FALSE // Hard to cut with a not working chainsaw
 	edge = FALSE
 	w_class = ITEM_SIZE_LARGE
-	mod_handy_w = 1.6
-	mod_handy_u = 0.4
-	mod_weight_w = 2.4
-	mod_weight_u = 1.5
-	mod_reach_w = 2.0
-	mod_reach_u = 1.0
+
+	mod_handy_w = 0.95
+	mod_weight_w = 1.5
+	mod_reach_w = 1.75
+	mod_handy_u = 0.8
+	mod_weight_u = 1.2
+	mod_reach_u = 1.25
+
 	force_wielded = 30
 	force_divisor = 0.5
-	unwielded_force_divisor = 0.2
+	unwielded_force_divisor = 0.33
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked") // Beating with not working chainsaw
 	hitsound = SFX_FIGHTING_SWING
 	applies_material_colour = FALSE
@@ -238,6 +240,9 @@
 	applies_material_colour = 0
 	unbreakable = 1 // Because why should it break at all
 	material_amount = 8
+
+	drop_sound = SFX_DROP_AXE
+	pickup_sound = SFX_PICKUP_AXE
 
 /obj/item/material/twohanded/fireaxe/afterattack(atom/A, mob/user, proximity)
 	if(!proximity) return

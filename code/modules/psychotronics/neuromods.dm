@@ -55,7 +55,7 @@
 		return
 
 	user.verbs += /mob/living/carbon/human/proc/remoteobserve
-	user.mutations.Add(mRemote)
+	user.add_mutation(mRemote)
 
 /* -- INCREASE SPEED -- */
 /datum/neuromod/increase_speed
@@ -66,7 +66,7 @@
 /datum/neuromod/increase_speed/Handle(mob/living/user)
 	if (!user.additional_speed)
 		user.additional_speed = 1
-		user.mutations.Add(mRun)
+		user.add_mutation(mRun)
 
 /* Morph */
 /datum/neuromod/morph
@@ -78,7 +78,7 @@
 		return
 
 	user.verbs += /mob/living/carbon/human/proc/morph
-	user.mutations.Add(mMorph)
+	user.add_mutation(mMorph)
 
 /* -- TELEPATHY -- */
 /datum/neuromod/telepathy
@@ -91,7 +91,7 @@
 		return
 
 	user.verbs += /mob/living/carbon/human/proc/remotesay
-	user.mutations.Add(mRemotetalk)
+	user.add_mutation(mRemotetalk)
 
 /* - LANGUAGES - */
 

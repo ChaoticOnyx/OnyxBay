@@ -68,7 +68,7 @@
 	wifi_receiver = null
 	return ..()
 
-/obj/machinery/power/emitter/update_icon()
+/obj/machinery/power/emitter/on_update_icon()
 	if(active && powernet && avail(active_power_usage))
 		icon_state = "emitter_+a"
 	else
@@ -155,6 +155,8 @@
 		var/obj/item/projectile/beam/emitter/A = get_emitter_beam()
 		playsound(loc, A.fire_sound, 25, 1)
 		A.damage = round(power_per_shot/EMITTER_DAMAGE_POWER_TRANSFER)
+		A.pixel_x = 0
+		A.pixel_y = 0
 		A.launch(get_step(loc, dir))
 
 /obj/machinery/power/emitter/attackby(obj/item/W, mob/user)

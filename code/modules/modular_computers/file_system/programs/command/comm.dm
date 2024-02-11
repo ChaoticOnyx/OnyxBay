@@ -9,6 +9,7 @@
 	program_icon_state = "comm"
 	program_key_state = "med_key"
 	program_menu_icon = "flag"
+	program_light_color = "#0099FF"
 	nanomodule_path = /datum/nano_module/program/comm
 	extended_desc = "Used to command and control. Can relay long-range communications. This program can not be run on tablet computers."
 	required_access = access_heads
@@ -33,13 +34,8 @@
 	var/msg_line2 = ""
 	var/centcomm_message_cooldown = 0
 	var/announcment_cooldown = 0
-	var/datum/announcement/priority/crew_announcement = new(do_log = TRUE)
 	var/current_viewing_message_id = 0
 	var/current_viewing_message = null
-
-/datum/nano_module/program/comm/New()
-	..()
-	crew_announcement.newscast = 1
 
 /datum/nano_module/program/comm/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 
@@ -129,11 +125,12 @@
 		if("announce")
 			. = 1
 			if(is_autenthicated(user) && !issilicon(usr) && ntn_comm)
+				var/sender
 				if(user)
 					var/obj/item/card/id/id_card = user.get_id_card()
-					crew_announcement.announcer = GetNameAndAssignmentFromId(id_card)
+					sender = GetNameAndAssignmentFromId(id_card)
 				else
-					crew_announcement.announcer = "Unknown"
+					sender = "Unknown"
 				if(announcment_cooldown)
 					to_chat(usr, "Please allow at least one minute to pass between announcements")
 					return TRUE
@@ -141,7 +138,7 @@
 				if(!input || !can_still_topic())
 					return 1
 				usr.client?.spellcheck(input)
-				crew_announcement.Announce(input, msg_sanitized = TRUE)
+				SSannounce.play_station_announce(/datum/announce/comm_program, input, sender_override = sender, msg_sanitized = TRUE)
 				announcment_cooldown = 1
 				spawn(600)// One minute cooldown
 					announcment_cooldown = 0
@@ -292,23 +289,22 @@ var/last_message_id = 0
 	messages -= list(message)
 
 /proc/post_status(command, data1, data2)
+	var/datum/frequency/frequency = SSradio.return_frequency(1435)
+	if(!frequency)
+		return
 
-	var/datum/radio_frequency/frequency = radio_controller.return_frequency(1435)
 
-	if(!frequency) return
-
-	var/datum/signal/status_signal = new
-	status_signal.transmission_method = 1
-	status_signal.data["command"] = command
+	var/list/data = list("command" = command)
 
 	switch(command)
 		if("message")
-			status_signal.data["msg1"] = data1
-			status_signal.data["msg2"] = data2
+			data["msg1"] = data1
+			data["msg2"] = data2
 			log_admin("STATUS: [key_name(usr)] set status screen message with: [data1] [data2]")
 		if("image")
-			status_signal.data["picture_state"] = data1
+			data["picture_state"] = data1
 
+	var/datum/signal/status_signal = new(data)
 	frequency.post_signal(signal = status_signal)
 
 /proc/cancel_call_proc(mob/user)
@@ -323,7 +319,7 @@ var/last_message_id = 0
 
 
 /proc/is_relay_online()
-	for(var/obj/machinery/bluespacerelay/M in GLOB.machines)
+	for(var/obj/machinery/bluespacerelay/M in SSmachines.machinery)
 		if(M.stat == 0)
 			return 1
 	return 0

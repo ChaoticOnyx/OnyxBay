@@ -12,6 +12,7 @@
 	var/throw_distance = 10
 	fire_sound_text = "a launcher firing"
 	combustion = FALSE
+	has_safety = FALSE
 
 //This normally uses a proc on projectiles and our ammo is not strictly speaking a projectile.
 /obj/item/gun/launcher/can_hit(mob/living/target as mob, mob/living/user as mob)
@@ -31,7 +32,7 @@
 
 /obj/item/gun/launcher/process_projectile(obj/item/projectile, mob/user, atom/target, target_zone, params=null, pointblank=0, reflex=0)
 	update_release_force(projectile)
-	projectile.loc = get_turf(user)
+	projectile.forceMove(get_turf(user))
 	projectile.dir = user.dir // It's dumb, but it works. Kinda.
 	projectile.throw_at(target, throw_distance, 1, user, src, user.zone_sel.selecting, release_force)
 	play_fire_sound(user,projectile)

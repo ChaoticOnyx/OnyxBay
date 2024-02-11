@@ -73,7 +73,7 @@
 					aiRestorePowerRoutine = AI_RESTOREPOWER_FAILED
 					continue
 				// APC's cell is removed and/or below 1% charge. This prevents the AI from briefly regaining power as we force the APC on, only to lose it again next tick due to 0% cell charge.
-				if(theAPC.cell && theAPC.cell.percent() < 1)
+				if(theAPC.cell && CELL_PERCENT(theAPC.cell) < 1)
 					to_chat(src, "<span class='danger'>APC internal power reserves are critical. Unable to restore main power.</span>")
 					aiRestorePowerRoutine = AI_RESTOREPOWER_FAILED
 					continue

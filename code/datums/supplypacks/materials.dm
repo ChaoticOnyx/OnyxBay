@@ -20,6 +20,12 @@
 	cost = 10
 	containername = "\improper Wooden planks crate"
 
+/decl/hierarchy/supply_pack/materials/darkwood50
+	name = "50 darkwood planks"
+	contains = list(/obj/item/stack/material/darkwood/fifty)
+	cost = 100
+	containername = "\improper Darkwood planks crate"
+
 /decl/hierarchy/supply_pack/materials/plastic50
 	name = "50 plastic sheets"
 	contains = list(/obj/item/stack/material/plastic/fifty)

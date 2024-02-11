@@ -27,7 +27,6 @@ var/global/list/additional_antag_types = list()
 	var/round_autoantag = 0                  // Will this round attempt to periodically spawn more antagonists?
 	var/antag_scaling_coeff = 5              // Coefficient for scaling max antagonists to player count. How many players for one antag
 	var/require_all_templates = 0            // Will only start if all templates are checked and can spawn.
-	var/addantag_allowed = ADDANTAG_ADMIN | ADDANTAG_AUTO
 
 	var/station_was_nuked = 0                // See nuclearbomb.dm and malfunction.dm.
 	var/explosion_in_progress = 0            // Sit back and relax
@@ -246,7 +245,6 @@ var/global/list/additional_antag_types = list()
 		"malfunctioning von Neumann probe swarms",
 		"shadowy interlopers",
 		"a stranded Vox arkship",
-		"haywire IPC constructs",
 		"rogue Unathi exiles",
 		"artifacts of eldritch horror",
 		"a brain slug infestation",
@@ -257,7 +255,8 @@ var/global/list/additional_antag_types = list()
 		"radical Skrellian transevolutionaries",
 		"classified security operations"
 		)
-	command_announcement.Announce("The presence of [pick(reasons)] in the region is tying up all available local emergency resources; emergency response teams cannot be called at this time, and post-evacuation recovery efforts will be substantially delayed.","Emergency Transmission")
+
+	SSannounce.play_station_announce(/datum/announce/ert_cancelled, "The presence of [pick(reasons)] in the region is tying up all available local emergency resources; emergency response teams cannot be called at this time, and post-evacuation recovery efforts will be substantially delayed.")
 
 /datum/game_mode/proc/check_finished()
 	if(evacuation_controller.round_over() || station_was_nuked)
@@ -363,7 +362,7 @@ var/global/list/additional_antag_types = list()
 	return
 
 // Manipulates the end-game cinematic in conjunction with GLOB.cinematic
-/datum/game_mode/proc/nuke_act(obj/screen/cinematic_screen, station_missed = 0)
+/datum/game_mode/proc/nuke_act(atom/movable/screen/cinematic_screen, station_missed = 0)
 	if(!cinematic_icon_states)
 		return
 	if(station_missed < 2)

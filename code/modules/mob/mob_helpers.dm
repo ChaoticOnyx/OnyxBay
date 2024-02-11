@@ -24,15 +24,12 @@
 	return 0
 
 /mob/living/carbon/human/isSynthetic()
-	if(istype(species, /datum/species/machine))
-		return 1
 	if(isnull(full_prosthetic))
 		robolimb_count = 0
 		for(var/obj/item/organ/external/E in organs)
 			if(BP_IS_ROBOTIC(E))
 				robolimb_count++
 		full_prosthetic = (robolimb_count == organs.len)
-		update_emotes()
 	return full_prosthetic
 
 /mob/living/silicon/isSynthetic()
@@ -380,6 +377,10 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 				a_intent = intent_numeric((intent_numeric(a_intent)+1) % 4)
 			if("left")
 				a_intent = intent_numeric((intent_numeric(a_intent)+3) % 4)
+
+		if(is_pacifist(src))
+			a_intent = I_HELP
+
 		if(hud_used && hud_used.action_intent)
 			hud_used.action_intent.icon_state = "intent_[a_intent]"
 
@@ -391,6 +392,10 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 				a_intent = I_HURT
 			if("right","left")
 				a_intent = intent_numeric(intent_numeric(a_intent) - 3)
+
+		if(is_pacifist(src))
+			a_intent = I_HELP
+
 		if(hud_used && hud_used.action_intent)
 			if(a_intent == I_HURT)
 				hud_used.action_intent.icon_state = I_HURT
@@ -402,6 +407,12 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 		var/mob/living/carbon/C = A
 		if(C.sdisabilities & BLIND || C.blinded)
 			return 1
+	return 0
+
+/proc/is_pacifist(A)
+	if(istype(A, /mob/living))
+		var/mob/living/C = A
+		return HAS_TRAIT(C, TRAIT_PACIFISM)
 	return 0
 
 /proc/broadcast_security_hud_message(message, broadcast_source)
@@ -585,7 +596,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 	if(client)
 		client.images -= image
 
-/mob/proc/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash)
+/mob/proc/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /atom/movable/screen/fullscreen/flash)
 	return
 
 /mob/proc/fully_replace_character_name(new_name, in_depth = TRUE)
@@ -669,7 +680,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 	for(var/mob/observer/ghost/O in GLOB.player_list)
 
 		var/follow_link = ""
-		if (source && action == NOTIFY_FOLLOW)
+		if (source && (action == NOTIFY_FOLLOW || action == NOTIFY_POSSES))
 			follow_link = create_ghost_link(O, source, "(F)")
 
 		var/posses_link = posses_mob ? possess_link(O, source) : ""
@@ -683,7 +694,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 			winset(O.client, "mainwindow", "flash=5")
 
 		if(source)
-			var/obj/screen/movable/alert/notify_action/A = O.throw_alert("\ref[source]_notify_action", /obj/screen/movable/alert/notify_action)
+			var/atom/movable/screen/movable/alert/notify_action/A = O.throw_alert("\ref[source]_notify_action", /atom/movable/screen/movable/alert/notify_action)
 			if(A)
 
 				var/ui_style = O.client?.prefs?.UI_style
@@ -716,7 +727,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 
 				alert_overlay.layer = FLOAT_LAYER
 				alert_overlay.plane = FLOAT_PLANE
-				A.overlays += alert_overlay
+				A.AddOverlays(alert_overlay)
 
 /mob/proc/shift_view(new_pixel_x = 0, new_pixel_y = 0, animate = 0)
 	if(!client)
@@ -736,3 +747,13 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 		is_view_shifted = TRUE
 
 	SEND_SIGNAL(src, SIGNAL_VIEW_SHIFTED_SET, src, old_shifted, is_view_shifted)
+
+/proc/directional_recoil(mob/M, strength=1, angle = 0)
+	if(!M || !M.client)
+		return
+	var/client/C = M.client
+	var/recoil_x = -sin(angle) * 4 * strength + rand(-strength, strength)
+	var/recoil_y = -cos(angle) * 4 * strength + rand(-strength, strength)
+	animate(C, pixel_x=recoil_x, pixel_y=recoil_y, time=1, easing=SINE_EASING|EASE_OUT, flags=ANIMATION_PARALLEL|ANIMATION_RELATIVE)
+	sleep(2)
+	animate(C, pixel_x=0, pixel_y=0, time=3, easing=SINE_EASING|EASE_IN)

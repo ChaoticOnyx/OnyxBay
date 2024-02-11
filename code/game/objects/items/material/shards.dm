@@ -25,6 +25,9 @@
 	var/handcutter = FALSE
 	var/noisystepper = FALSE
 
+	drop_sound = SFX_DROP_GLASS
+	pickup_sound = SFX_PICKUP_GLASS
+
 /obj/item/material/shard/set_material(new_material)
 	..(new_material)
 	if(!istype(material))
@@ -53,7 +56,7 @@
 	else
 		qdel(src)
 
-/obj/item/material/shard/update_icon()
+/obj/item/material/shard/on_update_icon()
 	if(material)
 		color = material.icon_colour
 		// 1-(1-x)^2, so that glass shards with 0.3 opacity end up somewhat visible at 0.51 opacity

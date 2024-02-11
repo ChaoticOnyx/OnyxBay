@@ -1,0 +1,12 @@
+"a" = (/obj/item/reagent_containers/food/grown/banana,/turf/simulated/floor/plating,/area/template_noop)
+"f" = (/obj/item/storage/backpack/clown,/obj/item/clothing/mask/gas/clown_hat,/obj/item/clothing/under/rank/clown,/obj/item/clothing/shoes/clown_shoes,/turf/simulated/floor/plating,/area/template_noop)
+"l" = (/obj/item/reagent_containers/food/grown/banana,/obj/item/paper{name = "nuclear authentication disk"},/turf/simulated/floor/plating,/area/template_noop)
+"m" = (/turf/simulated/floor/plating,/area/template_noop)
+"q" = (/obj/item/toy/figure/clown,/turf/simulated/floor/plating,/area/template_noop)
+"t" = (/obj/item/paper{name = "nuclear authentication disk"},/turf/simulated/floor/plating,/area/template_noop)
+
+(1,1,1) = {"
+mlm
+tft
+aqa
+"}

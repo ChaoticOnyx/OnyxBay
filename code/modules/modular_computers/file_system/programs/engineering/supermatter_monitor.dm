@@ -5,6 +5,7 @@
 	program_icon_state = "smmon_0"
 	program_key_state = "tech_key"
 	program_menu_icon = "notice"
+	program_light_color = "#00B000"
 	extended_desc = "This program connects to specially calibrated supermatter sensors to provide information on the status of supermatter-based engines."
 	ui_header = "smmon_0.gif"
 	required_access = access_engine
@@ -46,7 +47,7 @@
 	if(!T)
 		return
 	var/valid_z_levels = (GetConnectedZlevels(T.z) & GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
-	for(var/obj/machinery/power/supermatter/S in GLOB.machines)
+	for(var/obj/machinery/power/supermatter/S in SSmachines.machinery)
 		// Delaminating, not within coverage, not on a tile.
 		if(S.grav_pulling || S.exploded || !(S.z in valid_z_levels) || !istype(S.loc, /turf/))
 			continue

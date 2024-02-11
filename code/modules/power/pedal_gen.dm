@@ -33,7 +33,7 @@
 	. = ..()
 	generator = new /obj/machinery/power/dynamo(src)
 	if(anchored)
-		generator.loc = src.loc
+		generator.forceMove(loc)
 		generator.connect_to_network()
 
 /obj/structure/bed/chair/pedalgen/_examine_text(mob/user)
@@ -59,13 +59,13 @@
 		if(anchored)
 			user.visible_message(SPAN("notice", "[user] secured \the [src]!"), \
 								 SPAN("notice", "You secured \the [src]!"))
-			generator.loc = src.loc
+			generator.forceMove(loc)
 			generator.connect_to_network()
 		else
 			user.visible_message(SPAN("notice", "[user] unsecured \the [src]!"), \
 								 SPAN("notice", "You unsecured \the [src]!"))
 			generator.disconnect_from_network()
-			generator.loc = null
+			generator.forceMove(null)
 
 /obj/structure/bed/chair/pedalgen/attack_hand(mob/user)
 	if(buckled_mob && buckled_mob == user)
@@ -84,7 +84,7 @@
 		playsound(src.loc, 'sound/effects/pedalgen.ogg', 20, 1)
 		visible_message(SPAN("notice", "[pedaler] pedals \the [src]!"))
 		generator.Rotated()
-		pedaler.nutrition -= 2.5
+		pedaler.remove_nutrition(2.5)
 		pedaler.adjustHalLoss(1)
 		if(pedaler.getHalLoss() > 80)
 			to_chat(user, "You pushed yourself too hard.")
@@ -111,7 +111,7 @@
 	. = ..()
 	if(buckled_mob)
 		if(buckled_mob.buckled == src)
-			buckled_mob.loc = loc
+			buckled_mob.forceMove(loc)
 			update_mob(buckled_mob)
 
 /obj/structure/bed/chair/pedalgen/post_buckle_mob(mob/user)
@@ -130,7 +130,7 @@
 			buckled_mob.buckled = src //Restoring
 		update_mob(buckled_mob)
 
-/obj/structure/bed/chair/pedalgen/update_icon()
+/obj/structure/bed/chair/pedalgen/on_update_icon()
 	return
 
 /obj/structure/bed/chair/pedalgen/proc/update_mob(mob/M, buckling = 0)

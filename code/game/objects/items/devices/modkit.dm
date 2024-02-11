@@ -77,3 +77,18 @@
 	parts[1] =	1
 	original[1] = /obj/item/gun/energy/gun
 	finished[1] = /obj/item/gun/energy/gun/nuclear
+
+/obj/item/device/modkit/assault_shield
+    name = "riot shield modkit"
+    desc = "A kit containing all the needed tools and parts to modify a riot shield into an assault shield."
+    icon_state = "modkit"
+
+/obj/item/device/modkit/assault_shield/New()
+    ..()
+    parts = new /list(1)
+    original = new /list(1)
+    finished = new /list(1)
+    parts[1] = 1
+    original[1] = /obj/item/shield/riot
+    finished[1] = /obj/item/shield/riot/assault
+

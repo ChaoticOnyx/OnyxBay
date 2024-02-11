@@ -1,9 +1,8 @@
 /obj/skybox
 	name = "skybox"
 	plane = SKYBOX_PLANE
+	layer = SKYBOX_LAYER
 	mouse_opacity = 0
-	blend_mode = BLEND_MULTIPLY
-	vis_flags = VIS_INHERIT_ID
 	anchored = TRUE
 	var/mob/owner
 	var/image/image
@@ -16,12 +15,16 @@
 	owner = M
 	loc = null
 	image = image('icons/turf/skybox.dmi', src, "background_[SSskybox.BGstate]")
-	overlays += image
+	image.plane = SKYBOX_PLANE
+	image.layer = SKYBOX_LAYER
+	AddOverlays(image)
 
 	if(SSskybox.use_stars)
 		stars = image('icons/turf/skybox.dmi', src, SSskybox.star_state)
-		stars.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
-		overlays += stars
+		stars.plane = DUST_PLANE
+		stars.layer = DUST_LAYER
+		stars.appearance_flags = RESET_COLOR
+		AddOverlays(stars)
 	DoRotate()
 	update()
 
@@ -53,7 +56,7 @@
 	appearance = rotation
 
 /obj/skybox/Destroy()
-	overlays.Cut()
+	ClearOverlays()
 	if(owner)
 		if(owner.skybox == src)
 			owner.skybox = null
@@ -75,16 +78,3 @@
 	. = ..()
 	if(. && skybox)
 		skybox.update()
-
-/mob/Login()
-	if(!skybox)
-		skybox = new(src)
-		skybox.owner = src
-	client.screen += skybox
-	..()
-
-/mob/Destroy()
-	if(client)
-		client.screen -= skybox
-	QDEL_NULL(skybox)
-	return ..()

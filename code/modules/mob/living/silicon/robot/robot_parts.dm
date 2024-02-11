@@ -16,11 +16,11 @@
 
 /obj/item/robot_parts/New(newloc, model)
 	..(newloc)
-	if(model_info && model)
+	if(model_info)
 		if(isnull(model))
 			model = "Unbranded"
 		model_info = model
-		var/datum/robolimb/R = all_robolimbs[model]
+		var/datum/robolimb/R = GLOB.all_robolimbs[model]
 		if(R)
 			SetName("[R.company] [initial(name)]")
 			desc = "[R.desc]"
@@ -115,20 +115,20 @@
 	..()
 	src.update_icon()
 
-/obj/item/robot_parts/robot_suit/update_icon()
-	src.overlays.Cut()
+/obj/item/robot_parts/robot_suit/on_update_icon()
+	src.ClearOverlays()
 	if(src.parts[BP_L_ARM])
-		src.overlays += "l_arm+o"
+		AddOverlays("l_arm+o")
 	if(src.parts[BP_R_ARM])
-		src.overlays += "r_arm+o"
+		AddOverlays("r_arm+o")
 	if(src.parts[BP_CHEST])
-		src.overlays += "chest+o"
+		AddOverlays("chest+o")
 	if(src.parts[BP_L_LEG])
-		src.overlays += "l_leg+o"
+		AddOverlays("l_leg+o")
 	if(src.parts[BP_R_LEG])
-		src.overlays += "r_leg+o"
+		AddOverlays("r_leg+o")
 	if(src.parts[BP_HEAD])
-		src.overlays += "head+o"
+		AddOverlays("head+o")
 
 /obj/item/robot_parts/robot_suit/proc/check_completion()
 	if(src.parts[BP_L_ARM] && src.parts[BP_R_ARM] && src.parts[BP_L_LEG] && src.parts[BP_R_LEG] && src.parts[BP_CHEST] && src.parts[BP_HEAD])
@@ -142,7 +142,7 @@
 		var/obj/item/stack/material/M = W
 		if (M.use(1))
 			var/obj/item/secbot_assembly/ed209_assembly/B = new /obj/item/secbot_assembly/ed209_assembly
-			B.loc = get_turf(src)
+			B.forceMove(get_turf(src))
 			to_chat(user, "<span class='notice'>You armed the robot frame.</span>")
 			if (user.get_inactive_hand()==src)
 				user.drop(src)
@@ -159,13 +159,13 @@
 			parts[part.bp_tag] = part
 			update_icon()
 
-	if(istype(W, /obj/item/device/mmi) || istype(W, /obj/item/organ/internal/posibrain))
+	if(istype(W, /obj/item/organ/internal/cerebrum/mmi) || istype(W, /obj/item/organ/internal/cerebrum/posibrain))
 		var/mob/living/carbon/brain/B
-		if(istype(W, /obj/item/device/mmi))
-			var/obj/item/device/mmi/M = W
+		if(istype(W, /obj/item/organ/internal/cerebrum/mmi))
+			var/obj/item/organ/internal/cerebrum/mmi/M = W
 			B = M.brainmob
 		else
-			var/obj/item/organ/internal/posibrain/P = W
+			var/obj/item/organ/internal/cerebrum/posibrain/P = W
 			B = P.brainmob
 		if(check_completion())
 			if(!istype(loc,/turf))
@@ -213,7 +213,7 @@
 
 			var/obj/item/robot_parts/chest/chest = parts[BP_CHEST]
 			O.cell = chest.cell
-			O.cell.loc = O
+			O.cell.forceMove(O)
 			W.forceMove(O) // Should fix cybros run time erroring when blown up. It got deleted before, along with the frame.
 
 			// Since we "magically" installed a cell, we also have to update the correct component.
@@ -289,7 +289,7 @@
 				qdel(organ)
 
 			// Remove brain (we want to put one in).
-			var/obj/item/organ/internal/brain = H.internal_organs_by_name[BP_BRAIN]
+			var/obj/item/organ/internal/cerebrum/brain = H.internal_organs_by_name[BP_BRAIN]
 			H.organs -= brain
 			H.organs_by_name.Remove(brain.organ_tag)
 			qdel(brain)

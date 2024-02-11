@@ -88,7 +88,7 @@
 	log_and_message_admins("has activated the service '[service_label]'", user)
 
 	if(service_duration)
-		addtimer(CALLBACK(src,/obj/item/device/uplink_service/proc/deactivate), service_duration)
+		addtimer(CALLBACK(src, nameof(.proc/deactivate)), service_duration)
 	else
 		deactivate()
 
@@ -101,7 +101,7 @@
 	playsound(loc, SFX_SPARK, 50, 1)
 	visible_message("<span class='warning'>\The [src] shuts down with a spark.</span>")
 
-/obj/item/device/uplink_service/update_icon()
+/obj/item/device/uplink_service/on_update_icon()
 	switch(state)
 		if(AWAITING_ACTIVATION)
 			icon_state = initial(icon_state)
@@ -151,7 +151,8 @@
 	service_label = "Ion Storm Announcement"
 
 /obj/item/device/uplink_service/fake_ion_storm/enable(mob/user = usr)
-	GLOB.using_map.ion_storm_announcement()
+	SSannounce.play_station_announce(/datum/announce/ion_storm)
+
 	. = ..()
 
 /*****************
@@ -196,13 +197,13 @@
 
 	switch(alert("Should this be announced to the general population?",,"Yes","No"))
 		if("Yes")
-			command_announcement.Announce(input, customname, new_sound = GLOB.using_map.command_report_sound, msg_sanitized = 1);
+			SSannounce.play_announce(/datum/announce/command_report, input, customname, msg_sanitized = TRUE)
 			deactivate()
 		if("No")
-			minor_announcement.Announce(message = "New [GLOB.using_map.company_name] Update available at all communication consoles.")
+			SSannounce.play_announce(/datum/announce/command_report, "New [GLOB.using_map.company_name] Update available at all communication consoles.")
 			deactivate()
 
-/obj/item/device/uplink_service/fake_update_announcement/update_icon()
+/obj/item/device/uplink_service/fake_update_announcement/on_update_icon()
 	switch(state)
 		if(AWAITING_ACTIVATION)
 			icon_state = initial(icon_state)
@@ -274,5 +275,5 @@
 
 	if(does_announce_visit)
 		var/datum/spawnpoint/arrivals/spawnpoint = new()
-		AnnounceArrival(id_card.registered_name, job, spawnpoint, arrival_sound_volume = 60, captain_sound_volume = 40)
+		SSannounce.announce_arrival(id_card.registered_name, job, spawnpoint, arrival_sound_volume = 60)
 	. = ..()

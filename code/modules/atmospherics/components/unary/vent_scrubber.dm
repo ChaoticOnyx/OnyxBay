@@ -1,7 +1,7 @@
 /obj/machinery/atmospherics/unary/vent_scrubber
 	icon = 'icons/atmos/vent_scrubber.dmi'
 	icon_state = "map_scrubber_off"
-	plane = FLOOR_PLANE
+	plane = TURF_PLANE
 
 	name = "Air Scrubber"
 	desc = "Has a valve and pump attached to it."
@@ -16,7 +16,7 @@
 	var/area/initial_loc
 	var/id_tag = null
 	var/frequency = 1439
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 	var/hibernate = 0 //Do we even process?
 	var/scrubbing = 1 //0 = siphoning, 1 = scrubbing
@@ -35,23 +35,24 @@
 	use_power = POWER_USE_IDLE
 	icon_state = "map_scrubber_on"
 
-/obj/machinery/atmospherics/unary/vent_scrubber/New()
-	..()
+/obj/machinery/atmospherics/unary/vent_scrubber/Initialize()
+	. = ..()
 	air_contents.volume = ATMOS_DEFAULT_VOLUME_FILTER
 	icon = null
 
 /obj/machinery/atmospherics/unary/vent_scrubber/Destroy()
-	unregister_radio(src, frequency)
+	SSradio.remove_object(src, frequency)
 	if(initial_loc)
 		initial_loc.air_scrub_info -= id_tag
 		initial_loc.air_scrub_names -= id_tag
+		initial_loc = null
 	return ..()
 
-/obj/machinery/atmospherics/unary/vent_scrubber/update_icon(safety = 0)
+/obj/machinery/atmospherics/unary/vent_scrubber/on_update_icon(safety = 0)
 	if(!check_icon_cache())
 		return
 
-	overlays.Cut()
+	ClearOverlays()
 
 
 	var/turf/T = get_turf(src)
@@ -76,7 +77,7 @@
 	else
 		scrubber_icon += "[use_power ? "[scrubbing ? "on" : "in"]" : "off"]"
 
-	overlays += icon_manager.get_atmos_icon("device", , , scrubber_icon)
+	AddOverlays(icon_manager.get_atmos_icon("device", , , scrubber_icon))
 
 /obj/machinery/atmospherics/unary/vent_scrubber/update_underlays()
 	if(..())
@@ -93,37 +94,38 @@
 				add_underlay(T,, dir)
 
 /obj/machinery/atmospherics/unary/vent_scrubber/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = radio_controller.add_object(src, frequency, radio_filter_in)
+	radio_connection = SSradio.add_object(src, frequency, radio_filter_in)
 
 /obj/machinery/atmospherics/unary/vent_scrubber/proc/broadcast_status()
 	if(!radio_connection)
 		return 0
 
-	var/datum/signal/signal = new
-	signal.transmission_method = 1 //radio signal
-	signal.source = src
-	signal.data = list(
-		"area" = area_uid,
-		"tag" = id_tag,
-		"device" = "AScr",
-		"timestamp" = world.time,
-		"power" = use_power,
-		"scrubbing" = scrubbing,
-		"panic" = panic,
-		"filter_o2" = ("oxygen" in scrubbing_gas),
-		"filter_n2" = ("nitrogen" in scrubbing_gas),
-		"filter_co2" = ("carbon_dioxide" in scrubbing_gas),
-		"filter_plasma" = ("plasma" in scrubbing_gas),
-		"filter_n2o" = ("sleeping_agent" in scrubbing_gas),
-		"sigtype" = "status"
-	)
+	var/list/data = list(
+			"area" = area_uid,
+			"tag" = id_tag,
+			"device" = "AScr",
+			"timestamp" = world.time,
+			"power" = use_power,
+			"scrubbing" = scrubbing,
+			"panic" = panic,
+			"filter_o2" = ("oxygen" in scrubbing_gas),
+			"filter_n2" = ("nitrogen" in scrubbing_gas),
+			"filter_co2" = ("carbon_dioxide" in scrubbing_gas),
+			"filter_plasma" = ("plasma" in scrubbing_gas),
+			"filter_n2o" = ("sleeping_agent" in scrubbing_gas),
+			"sigtype" = "status"
+		)
+
 	if(!initial_loc.air_scrub_names[id_tag])
 		var/new_name = "[initial_loc.name] Air Scrubber #[initial_loc.air_scrub_names.len+1]"
 		initial_loc.air_scrub_names[id_tag] = new_name
 		src.SetName(new_name)
-	initial_loc.air_scrub_info[id_tag] = signal.data
+
+	initial_loc.air_scrub_info[id_tag] = data
+
+	var/datum/signal/signal = new(data)
 	radio_connection.post_signal(src, signal, radio_filter_out)
 
 	return 1

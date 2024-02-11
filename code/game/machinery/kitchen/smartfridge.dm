@@ -3,7 +3,7 @@
 */
 /obj/machinery/smartfridge
 	name = "\improper SmartFridge"
-	icon = 'icons/obj/vending.dmi'
+	icon = 'icons/obj/machines/vending.dmi'
 	icon_state = "smartfridge"
 	layer = BELOW_OBJ_LAYER
 	density = 1
@@ -51,7 +51,7 @@
 /obj/machinery/smartfridge/seeds
 	name = "\improper MegaSeed Servitor"
 	desc = "When you need seeds fast!"
-	icon = 'icons/obj/vending.dmi'
+	icon = 'icons/obj/machines/vending.dmi'
 	icon_state = "seeds"
 	icon_on = "seeds"
 	icon_off = "seeds-off"
@@ -69,8 +69,12 @@
 
 /obj/machinery/smartfridge/secure/extract/accept_check(obj/item/O as obj)
 	if(istype(O,/obj/item/metroid_extract))
-		return 1
-	return 0
+		return TRUE
+
+	if(istype(O,/obj/item/metroidcross))
+		return TRUE
+
+	return FALSE
 
 /obj/machinery/smartfridge/secure/medbay
 	name = "\improper Refrigerated Medicine Storage"
@@ -115,6 +119,37 @@
 	name = "\improper Smart Virus Storage"
 	desc = "A refrigerated storage unit for volatile sample storage."
 
+/obj/machinery/smartfridge/secure/blood
+	name = "\improper Smart Blood Storage"
+	desc = "A refrigerated storage unit for IV bags, usualy with blood."
+	icon_state = "smartfridge_blood"
+	icon_on = "smartfridge_blood"
+	icon_off = "smartfridge_blood-off"
+	req_one_access = list(access_medical,access_chemistry)
+	shows_number_of_items = FALSE
+
+/obj/machinery/smartfridge/secure/blood/filled/Initialize()
+	. = ..()
+	for(var/item_path in starts_with)
+		var/quantity = starts_with[item_path]
+		for(var/i = 1 to quantity)
+			stock_item(new item_path(src))
+
+/obj/machinery/smartfridge/secure/blood/filled
+	var/list/starts_with = list(
+		/obj/item/reagent_containers/ivbag/blood/OPlus = 1,
+		/obj/item/reagent_containers/ivbag/blood/OMinus = 1,
+		/obj/item/reagent_containers/ivbag/blood/APlus = 2,
+		/obj/item/reagent_containers/ivbag/blood/AMinus = 2,
+		/obj/item/reagent_containers/ivbag/blood/BPlus = 2,
+		/obj/item/reagent_containers/ivbag/blood/BMinus = 2,
+		/obj/item/reagent_containers/ivbag = 2
+		)
+
+/obj/machinery/smartfridge/secure/blood/accept_check(obj/item/O)
+	if(istype(O, /obj/item/reagent_containers/ivbag))
+		return TRUE
+	return FALSE
 
 /obj/machinery/smartfridge/drinks
 	name = "\improper Drink Showcase"
@@ -156,16 +191,16 @@
 		dry()
 		update_icon()
 
-/obj/machinery/smartfridge/drying_rack/update_icon()
-	overlays.Cut()
+/obj/machinery/smartfridge/drying_rack/on_update_icon()
+	ClearOverlays()
 	if(inoperable())
 		icon_state = icon_off
 	else
 		icon_state = icon_on
 	if(contents.len)
-		overlays += "drying_rack_filled"
+		AddOverlays("drying_rack_filled")
 		if(!inoperable())
-			overlays += "drying_rack_drying"
+			AddOverlays("drying_rack_drying")
 
 /obj/machinery/smartfridge/drying_rack/proc/dry()
 	for(var/datum/stored_items/I in item_records)
@@ -190,15 +225,15 @@
 	if(src.shoot_inventory && prob(2))
 		src.throw_item()
 
-/obj/machinery/smartfridge/update_icon()
+/obj/machinery/smartfridge/on_update_icon()
 	if(stat & (BROKEN|NOPOWER))
 		icon_state = icon_off // Some of them don't have any display cases thus not requiring an overlay
 	else
 		icon_state = icon_on
 	if(shows_number_of_items)
-		overlays.Cut()
+		ClearOverlays()
 		if(stat & (BROKEN|NOPOWER))
-			overlays += icon_off // The use of overlays allows us to see how much is stored inside, even if the machine happens to be unpowered
+			AddOverlays(icon_off) // The use of overlays allows us to see how much is stored inside, even if the machine happens to be unpowered
 		switch(contents.len)
 			if(0)
 				icon_state = icon_on
@@ -217,9 +252,9 @@
 	if(isScrewdriver(O))
 		panel_open = !panel_open
 		user.visible_message("[user] [panel_open ? "opens" : "closes"] the maintenance panel of \the [src].", "You [panel_open ? "open" : "close"] the maintenance panel of \the [src].")
-		overlays.Cut()
+		ClearOverlays()
 		if(panel_open)
-			overlays += image(icon, icon_panel)
+			AddOverlays(image(icon, icon_panel))
 		SSnano.update_uis(src)
 		return
 
@@ -279,7 +314,7 @@
 	I.add_product(O)
 	SSnano.update_uis(src)
 
-/obj/machinery/smartfridge/attack_ai(mob/user as mob)
+/obj/machinery/smartfridge/attack_ai(mob/user)
 	attack_hand(user)
 
 /obj/machinery/smartfridge/attack_hand(mob/user as mob)
@@ -340,7 +375,7 @@
 			if((count - amount) < 0)
 				amount = count
 			for(var/i = 1 to amount)
-				I.get_product(get_turf(src))
+				I.get_product(get_turf(src), user)
 			update_icon()
 
 		return 1

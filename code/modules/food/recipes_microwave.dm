@@ -410,9 +410,9 @@ I said no!
 
 /datum/recipe/fortunecookie/make_food(obj/container)
 	var/obj/item/paper/paper = locate() in container
-	paper.loc = null //prevent deletion
+	paper.forceMove(null) //prevent deletion
 	var/obj/item/reagent_containers/food/fortunecookie/being_cooked = ..(container)
-	paper.loc = being_cooked
+	paper.forceMove(being_cooked)
 	being_cooked.trash = paper //so the paper is left behind as trash without special-snowflake(TM Nodrak) code ~carn
 	return being_cooked
 
@@ -1084,6 +1084,11 @@ I said no!
 	)
 	result = /obj/item/reagent_containers/food/sliceable/chocolatecake
 
+/datum/recipe/cake/metroid
+	items = list(/obj/item/metroid_extract)
+	reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/nutriment/flour = 15, /datum/reagent/nutriment/protein/egg = 9, /datum/reagent/sugar = 15)
+	result = /obj/item/reagent_containers/food/sliceable/metroidcake
+
 /datum/recipe/cake/birthday
 	items = list(/obj/item/clothing/head/cakehat)
 	reagents = list(
@@ -1284,3 +1289,9 @@ I said no!
 	/datum/reagent/drink/milk = 5
 	)
 	result = /obj/item/reagent_containers/food/sliceable/choccherrycake
+
+/datum/recipe/capturedevice_hacked
+	items = list(
+		/obj/item/capturedevice
+	)
+	result = /obj/item/capturedevice/hacked

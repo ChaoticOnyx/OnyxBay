@@ -12,8 +12,9 @@
 	icon = 'icons/obj/turrets.dmi'
 	icon_state = "turretCover"
 	anchored = 1
-
 	density = 0
+	turf_height_offset = 12
+
 	idle_power_usage = 50 WATTS		//when inactive, this turret takes up constant 50 Equipment power
 	active_power_usage = 300 WATTS	//when active, this turret takes up constant 300 Equipment power
 	power_channel = STATIC_EQUIP	//drains power from the EQUIPMENT channel
@@ -160,7 +161,7 @@
 
 var/list/turret_icons
 
-/obj/machinery/porta_turret/update_icon()
+/obj/machinery/porta_turret/on_update_icon()
 	if(!turret_icons)
 		turret_icons = list()
 		turret_icons["open"] = image(icon, "openTurretCover")
@@ -455,6 +456,9 @@ var/list/turret_icons
 	var/list/targets = list()			//list of primary targets
 	var/list/secondarytargets = list()	//targets that are least important
 
+	if(density && prob(25))
+		playsound(src, SFX_TURRET_ROTATE, 80, TRUE)
+
 	for(var/mob/M in mobs_in_view(world.view, src))
 		assess_and_assign(M, targets, secondarytargets)
 
@@ -493,7 +497,7 @@ var/list/turret_icons
 	if(get_dist(src, L) > 7)	//if it's too far away, why bother?
 		return TURRET_NOT_TARGET
 
-	if(!check_trajectory(L, src))	//check if we have true line of sight
+	if(!(L in check_trajectory(L, src)))	//check if we have true line of sight
 		return TURRET_NOT_TARGET
 
 	if(emagged)		// If emagged not even the dead get a rest
@@ -558,6 +562,7 @@ var/list/turret_icons
 	var/atom/flick_holder = new /atom/movable/porta_turret_cover(loc)
 	flick_holder.layer = layer + 0.1
 	flick("popup", flick_holder)
+	playsound(src, SFX_TURRET_DEPLOY, 80, TRUE)
 	sleep(10)
 	qdel(flick_holder)
 
@@ -578,6 +583,7 @@ var/list/turret_icons
 	var/atom/flick_holder = new /atom/movable/porta_turret_cover(loc)
 	flick_holder.layer = layer + 0.1
 	flick("popdown", flick_holder)
+	playsound(src, SFX_TURRET_RETRACT, 80, TRUE)
 	sleep(10)
 	qdel(flick_holder)
 

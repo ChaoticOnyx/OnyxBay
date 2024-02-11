@@ -115,7 +115,7 @@
 			out += "<tr><td>\The [A.area]" 															// Add area name
 			out += "<td>[S[A.equipment+1]]<td>[S[A.lighting+1]]<td>[S[A.environ+1]]" 				// Show status of channels
 			if(A.cell)
-				out += "<td>[round(A.cell.percent())]% - [chg[A.charging+1]]"
+				out += "<td>[round(CELL_PERCENT(A.cell))]% - [chg[A.charging+1]]"
 			else
 				out += "<td>NO CELL"
 			var/load = A.lastused_total // Load.
@@ -161,7 +161,7 @@
 			APC_entry["s_lighting"] = S[A.lighting+1]
 			APC_entry["s_environment"] = S[A.environ+1]
 			// Cell Status
-			APC_entry["cell_charge"] = A.cell ? round(A.cell.percent()) : "NO CELL"
+			APC_entry["cell_charge"] = A.cell ? round(CELL_PERCENT(A.cell)) : "NO CELL"
 			APC_entry["cell_status"] = A.cell ? chg[A.charging+1] : "N"
 			// Other info
 			APC_entry["total_load"] = reading_to_text(A.lastused_total)

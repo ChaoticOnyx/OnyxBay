@@ -61,7 +61,7 @@
 		to_chat(user, "<span class='notice'>Your hacking attempt was succesful!</span>")
 		user.playsound_local(get_turf(src), 'sound/piano/A#6.ogg', 50)
 		known_targets.Insert(1, target)	// Insert the newly hacked target first,
-		register_signal(target, SIGNAL_QDELETING, /obj/item/device/multitool/hacktool/proc/on_target_destroy)
+		register_signal(target, SIGNAL_QDELETING, nameof(.proc/on_target_destroy))
 	else
 		to_chat(user, "<span class='warning'>Your hacking attempt failed!</span>")
 	return 1

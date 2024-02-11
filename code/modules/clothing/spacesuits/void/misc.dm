@@ -82,7 +82,7 @@
 	desc = "A lightweight, radiation-resistant voidsuit, featuring the Expeditionary Corps emblem on its chest plate. Designed for exploring unknown planetary environments."
 	icon_state = "void_explorer"
 	armor = list(melee = 20, bullet = 10, laser = 15,energy = 45, bomb = 30, bio = 100)
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/device/healthanalyzer,/obj/item/device/gps,/obj/item/pinpointer/radio,/obj/item/device/radio/beacon,/obj/item/material/hatchet/machete,/obj/item/shovel)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/stack/flag,/obj/item/device/healthanalyzer,/obj/item/device/gps,/obj/item/pinpointer/radio,/obj/item/device/bluespace_beacon,/obj/item/material/hatchet/machete,/obj/item/shovel)
 
 /obj/item/clothing/suit/space/void/exploration/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/exploration
@@ -326,28 +326,3 @@
 	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100)
 	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
 	light_overlay = "helmet_light_dual"
-
-/obj/item/clothing/head/helmet/space/void/slayer
-	name = "slayer helmet"
-	desc = "He radiates the power of ultra-violence"
-	icon_state = "slayer"
-	item_state = "slayer"
-	item_state_slots = list(
-		slot_l_hand_str = "slayer",
-		slot_r_hand_str = "slayer",
-		)
-	armor = list(melee = 60, bullet = 40, laser = 40,energy = 5, bomb = 45, bio = 100)
-	max_heat_protection_temperature = FIRE_HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
-	light_overlay = "helmet_light_dual"
-
-/obj/item/clothing/suit/space/void/slayer
-	name = "slayer armor"
-	desc = "Looks like the demons got him"
-	icon_state = "slayer"
-	item_state = "slayer"
-	item_state_slots = list(
-		slot_l_hand_str = "slayer",
-		slot_r_hand_str = "slayer",
-		)
-	armor = list(melee = 60, bullet = 40, laser = 40, energy = 5, bomb = 45, bio = 100)
-	allowed = list(/obj/item/gun,/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/melee/baton)

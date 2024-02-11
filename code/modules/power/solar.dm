@@ -56,7 +56,7 @@ var/list/solars_list = list()
 		S = new /obj/item/solar_assembly(src)
 		S.glass_type = /obj/item/stack/material/glass
 		S.anchored = 1
-	S.loc = src
+	S.forceMove(src)
 	if(S.glass_type == /obj/item/stack/material/glass/reinforced) //if the panel is in reinforced glass
 		health *= 2 								 //this need to be placed here, because panels already on the map don't have an assembly linked to
 	update_icon()
@@ -71,7 +71,7 @@ var/list/solars_list = list()
 		if(do_after(user, 50,src))
 			var/obj/item/solar_assembly/S = locate() in src
 			if(S)
-				S.loc = src.loc
+				S.dropInto(loc)
 				S.give_glass()
 			playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 			user.visible_message("<span class='notice'>[user] takes the glass off the solar panel.</span>")
@@ -88,13 +88,13 @@ var/list/solars_list = list()
 		if(!(stat & BROKEN))
 			set_broken(TRUE)
 
-/obj/machinery/power/solar/update_icon()
+/obj/machinery/power/solar/on_update_icon()
 	..()
-	overlays.Cut()
+	ClearOverlays()
 	if(stat & BROKEN)
-		overlays += image('icons/obj/power.dmi', icon_state = "solar_panel-b", layer = FLY_LAYER)
+		AddOverlays(image('icons/obj/power.dmi', icon_state = "solar_panel-b", layer = FLY_LAYER))
 	else
-		overlays += image('icons/obj/power.dmi', icon_state = "solar_panel", layer = FLY_LAYER)
+		AddOverlays(image('icons/obj/power.dmi', icon_state = "solar_panel", layer = FLY_LAYER))
 		src.set_dir(angle2dir(adir))
 	return
 
@@ -278,7 +278,7 @@ var/list/solars_list = list()
 	name = "solar panel control"
 	desc = "A controller for solar panel arrays."
 	icon = 'icons/obj/computer.dmi'
-	icon_state = "solar"
+	icon_state = "computer"
 	anchored = 1
 	density = 1
 	use_power = POWER_USE_IDLE
@@ -353,20 +353,33 @@ var/list/solars_list = list()
 	if(!connect_to_network()) return
 	set_panels(cdir)
 
-/obj/machinery/power/solar_control/update_icon()
-	if(stat & BROKEN)
-		icon_state = "broken"
-		overlays.Cut()
-		return
+/obj/machinery/power/solar_control/on_update_icon()
+	ClearOverlays()
 	if(stat & NOPOWER)
-		icon_state = "c_unpowered"
-		overlays.Cut()
+		AddOverlays(OVERLAY(icon,"rd_key_off"))
+		set_light(0)
 		return
-	icon_state = "solar"
-	overlays.Cut()
-	if(cdir > -1)
-		overlays += image('icons/obj/computer.dmi', "solcon-o", FLY_LAYER, angle2dir(cdir))
-	return
+
+	if(stat & BROKEN)
+		AddOverlays(OVERLAY(icon, "computer_broken"))
+	else
+		AddOverlays(OVERLAY(icon, "solar_screen"))
+		if(cdir > -1)
+			AddOverlays(OVERLAY(icon, "solcon-o", FLY_LAYER, angle2dir(cdir)))
+		AddOverlays(OVERLAY(icon, "rd_key"))
+
+	var/should_glow = update_glow()
+	if(should_glow)
+		AddOverlays(emissive_appearance(icon, "solar_screen"))
+		AddOverlays(emissive_appearance(icon, "rd_key"))
+
+/obj/machinery/power/solar_control/proc/update_glow()
+	if(stat & (NOPOWER | BROKEN))
+		set_light(0)
+		return FALSE
+	else
+		set_light(1.0, 0.5, 3.0, 3.5, "#FFCC33")
+		return TRUE
 
 /obj/machinery/power/solar_control/attack_hand(mob/user)
 	if(!..())
@@ -412,7 +425,7 @@ var/list/solars_list = list()
 				new /obj/item/material/shard( src.loc )
 				var/obj/item/circuitboard/solar_control/M = new /obj/item/circuitboard/solar_control( A )
 				for (var/obj/C in src)
-					C.loc = src.loc
+					C.dropInto(loc)
 				A.circuit = M
 				A.state = 3
 				A.icon_state = "3"
@@ -423,7 +436,7 @@ var/list/solars_list = list()
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 				var/obj/item/circuitboard/solar_control/M = new /obj/item/circuitboard/solar_control( A )
 				for (var/obj/C in src)
-					C.loc = src.loc
+					C.dropInto(loc)
 				A.circuit = M
 				A.state = 4
 				A.icon_state = "4"
@@ -520,7 +533,7 @@ var/list/solars_list = list()
 
 /obj/machinery/power/solar_control/autostart/Initialize()
 	. = ..()
-	addtimer(CALLBACK(src, .proc/autoconnect), 0)
+	addtimer(CALLBACK(src, nameof(.proc/autoconnect)), 0)
 
 /obj/machinery/power/solar_control/autostart/proc/autoconnect()
 	search_for_connected()

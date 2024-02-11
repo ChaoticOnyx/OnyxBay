@@ -8,6 +8,7 @@
 	var/emote_webhook = null
 	var/ahelp_webhook = null
 	var/round_end_webhook = null
+	var/ban_webhook = null
 
 /datum/configuration_section/indigo_bot/load_data(list/data)
 	CONFIG_LOAD_STR(secret, data["secret"])
@@ -16,3 +17,4 @@
 	CONFIG_LOAD_STR(emote_webhook, data["emote_webhook"])
 	CONFIG_LOAD_STR(ahelp_webhook, data["ahelp_webhook"])
 	CONFIG_LOAD_STR(round_end_webhook, data["round_end_webhook"])
+	CONFIG_LOAD_STR(ban_webhook, data["ban_webhook"])

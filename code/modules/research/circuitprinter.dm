@@ -76,7 +76,7 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 	mat_efficiency = 1 - (T - 1) / 4
 	speed = T
 
-/obj/machinery/r_n_d/circuit_imprinter/update_icon()
+/obj/machinery/r_n_d/circuit_imprinter/on_update_icon()
 	if(panel_open)
 		icon_state = "circuit_imprinter_t"
 	else if(busy)
@@ -167,7 +167,7 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 
 	if(D.build_path)
 		var/obj/new_item = D.Fabricate(src, src)
-		new_item.loc = loc
+		new_item.dropInto(loc)
 		if(mat_efficiency != 1) // No matter out of nowhere
 			if(new_item.matter && new_item.matter.len > 0)
 				for(var/i in new_item.matter)

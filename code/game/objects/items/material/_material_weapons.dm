@@ -64,9 +64,9 @@
 		health = round(material.integrity/10)
 		if(applies_material_colour)
 			if(m_overlay)
-				var/icon/mat_overlay = new /icon("icon" = 'icons/obj/weapons.dmi', "icon_state" = "[src.icon_state]_overlay")
+				var/icon/mat_overlay = icon('icons/obj/weapons.dmi', "[icon_state]_overlay")
 				mat_overlay.Blend(material.icon_colour, ICON_ADD)
-				overlays += mat_overlay
+				AddOverlays(mat_overlay)
 				//mob_icon.Blend(mat_overlay, ICON_OVERLAY)
 			else
 				color = material.icon_colour

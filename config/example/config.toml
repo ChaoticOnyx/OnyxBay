@@ -64,7 +64,7 @@ minute_topic_limit = 100
 wait_for_sigusr1 = false
 
 [lobby]
-splashes = ["icons/splashes/onyx_old.png", "icons/splashes/onyx_new.png"]
+splashes = ["icons/splashes/onyx_new.png"]
 
 [log]
 ## Log client say.
@@ -252,6 +252,8 @@ mod_tempban_max = 1440
 mod_job_tempban_max = 1440
 
 [game]
+## Preset name from file 'event_presets.toml', leave empty to not use a preset.
+events_preset = ""
 ## Set to true to enable map voting; you'll need to use the script at tools/server.sh or an equivalent for it to take effect
 ## You'll also likely need to enable wait_for_sigusr1.
 map_switching = false
@@ -535,7 +537,13 @@ fun_hydroponics = 1
 ## Set to false to allow singularities to follow ghosts.
 forbid_singulo_following = true
 
+## Set to false to disable safety on guns
+toggle_gun_safety = false
+
 [mapping]
+## How many derelicts are going to show up
+derelicts_amount = 2
+
 ## Which engine should be on map (not all the maps support this).
 ## Pick one from: "random", "singularity", "supermatter"
 preferable_engine = "singularity"
@@ -547,6 +555,9 @@ preferable_bar = "classic"
 ## Which biodome should be spawned on NSS Frontier
 ## Pick one from: "random", "forest", "winter", "beach", "concert"
 preferable_biodome = "forest"
+
+[mapping.allowed_maps]
+Example = false
 
 [vote]
 ## Allow players to initiate a restart vote.
@@ -665,3 +676,4 @@ address = "http://127.0.0.1:4774"
 #emote_webhook = "secret"
 #ahelp_webhook = "secret"
 #round_end_webhook = "secret"
+#ban_webhook = "secret"

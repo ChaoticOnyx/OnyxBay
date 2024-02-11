@@ -6,6 +6,7 @@
 	opacity = 1
 	density = 1
 	blocks_air = 1
+	plane = TURF_PLANE
 	thermal_conductivity = WALL_HEAT_TRANSFER_COEFFICIENT
 	heat_capacity = 312500 //a little over 5 cm thick , 312500 for 1 m by 2.5 m by 0.25 m plasteel wall
 	hitby_sound = 'sound/effects/metalhit2.ogg'
@@ -28,12 +29,13 @@
 	var/construction_stage
 	var/ricochet_id = 0
 	var/hitsound = 'sound/effects/fighting/Genhit.ogg'
-	var/list/wall_connections = list("0", "0", "0", "0")
+	var/wall_connections = 0 // Sum of connected dirs
 	var/floor_type = /turf/simulated/floor/plating //turf it leaves after destruction
 	var/masks_icon = 'icons/turf/wall_masks.dmi'
+	var/static/list/mask_overlay_states = list()
 
-/turf/simulated/wall/New(newloc, materialtype, rmaterialtype)
-	..(newloc)
+/turf/simulated/wall/Initialize(mapload, materialtype, rmaterialtype)
+	. = ..(mapload)
 	if(GLOB.using_map.legacy_mode)
 		masks_icon = 'icons/turf/wall_masks_legacy.dmi'
 	icon_state = "blank"
@@ -176,11 +178,7 @@
 				var/damagediff = round(proj_damage * reflectchance / 100)
 				proj_damage /= reinf_material.burn_armor
 				if(reflectchance > 0)
-					visible_message("\red <B>\The [Proj] gets reflected by shiny surface of reinforced wall!</B>")
-					projectile_reflection(Proj)
-					Proj.damage = damagediff
 					take_damage(min(proj_damage - damagediff, 100))
-					return PROJECTILE_CONTINUE // complete projectile permutation
 				// Walls with positive reflection values deal with laser better than walls with negative.
 				burn(1500)
 			else
@@ -199,11 +197,7 @@
 				reflectchance = min(max(reflectchance, 0), 100)
 				var/damagediff = round(proj_damage * reflectchance / 100)
 				if(reflectchance > 0)
-					visible_message("\red <B>\The [Proj] gets reflected by shiny surface of wall!</B>")
-					projectile_reflection(Proj)
-					Proj.damage = damagediff
 					take_damage(min(proj_damage - damagediff, 100))
-					return PROJECTILE_CONTINUE // complete projectile permutation
 				// Walls with positive reflection values deal with laser better than walls with negative.
 				burn(2000)
 			else
@@ -225,12 +219,7 @@
 				ricochetchance = min(max(ricochetchance, 0), 100)
 				var/damagediff = round(proj_damage * ricochetchance / 100)
 				if(prob(ricochetchance))
-					visible_message("\red <B>\The [Proj] ricochets from the surface of reinforced wall!</B>")
-					projectile_reflection(Proj)
-					proj_damage /= reinf_material.brute_armor
-					Proj.damage = damagediff
 					take_damage(min(proj_damage - damagediff, 100))
-					return PROJECTILE_CONTINUE // complete projectile permutation
 		else
 			if(material.resilience > 0)
 				var/ricochetchance = round(material.resilience)
@@ -242,11 +231,7 @@
 				ricochetchance = min(max(ricochetchance, 0), 100)
 				var/damagediff = round(proj_damage * ricochetchance / 100)
 				if(prob(ricochetchance))
-					visible_message("\red <B>\The [Proj] ricochets from the surface of wall!</B>")
-					projectile_reflection(Proj)
-					Proj.damage = damagediff
 					take_damage(min(proj_damage - damagediff, 100))
-					return PROJECTILE_CONTINUE // complete projectile permutation
 
 	if(reinf_material)
 		if(Proj.damage_type == BURN)

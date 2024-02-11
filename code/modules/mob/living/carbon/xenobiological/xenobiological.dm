@@ -1,3 +1,5 @@
+#define METROID_EXTRACT_CROSSING_REQUIRED 10
+
 /mob/living/carbon/metroid
 	name = "baby metroid"
 	icon = 'icons/mob/metroids.dmi'
@@ -53,6 +55,9 @@
 
 	var/core_removal_stage = 0 //For removing cores.
 
+	//CORES CROSSBREEDING
+	var/effectmod //What core modification is being used.
+	var/applied_cores = 0 //How many extracts of the modtype have been applied.
 
 /mob/living/carbon/metroid/getToxLoss()
 	return toxloss
@@ -277,6 +282,38 @@
 	return
 
 /mob/living/carbon/metroid/attackby(obj/item/W, mob/user)
+
+	if(istype(W,/obj/item/metroid_extract))
+		handle_crossbreeding(W,user)
+		return
+
+	if(istype(W, /obj/item/storage/xenobag))
+		var/obj/item/storage/P = W
+		if(!effectmod)
+			to_chat(user, SPAN_WARNING("The slime is not currently being mutated."))
+			return
+		var/hasOutput = FALSE //Have we outputted text?
+		var/hasFound = FALSE //Have we found an extract to be added?
+		for(var/obj/item/metroid_extract/S in P.contents)
+			if(S.effectmod == effectmod)
+				P.remove_from_storage(S, get_turf(src))
+				qdel(S)
+				applied_cores++
+				hasFound = TRUE
+			if(applied_cores >= METROID_EXTRACT_CROSSING_REQUIRED)
+				to_chat(user, SPAN_NOTICE("You feed the slime as many of the extracts from the bag as you can, and it mutates!"))
+				playsound(src, 'sound/effects/attackblob.ogg', 50, TRUE)
+				spawn_corecross()
+				hasOutput = TRUE
+				break
+		if(!hasOutput)
+			if(!hasFound)
+				to_chat(user, SPAN_WARNING("There are no extracts in the bag that this slime will accept!"))
+			else
+				to_chat(user, SPAN_NOTICE("You feed the slime some extracts from the bag."))
+				playsound(src, 'sound/effects/attackblob.ogg', 50, TRUE)
+		return
+
 	if(W.force > 0)
 		attacked += 10
 		if(!(stat) && prob(25)) //Only run this check if we're alive or otherwise motile, otherwise surgery will be agonizing for xenobiologists.
@@ -305,7 +342,7 @@
 	return 0
 
 /mob/living/carbon/metroid/proc/gain_nutrition(amount)
-	nutrition += amount
+	add_nutrition(amount)
 	if(prob(amount * 2)) // Gain around one level per 50 nutrition
 		powerlevel++
 		if(powerlevel > 10)

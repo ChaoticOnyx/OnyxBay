@@ -13,6 +13,8 @@
 	mob_swap_flags = ROBOT|MONKEY|METROID|SIMPLE_ANIMAL
 	mob_push_flags = ~HEAVY //trundle trundle
 
+	blocks_emissive = EMISSIVE_BLOCK_NONE
+
 	var/lights_on = 0 // Is our integrated light on?
 	var/used_power_this_tick = 0
 	var/sight_mode = 0
@@ -24,8 +26,8 @@
 
 	/// Whether this type of robot supports custom icons
 	var/custom_sprite = TRUE
-
-//Icon stuff
+	/// Default hull typepath
+	var/default_hull = /datum/robot_hull/spider/robot
 
 	var/static/list/eye_overlays
 	/// Key used to look up an appropriate hull datum in the `module_hulls`
@@ -37,12 +39,12 @@
 
 //Hud stuff
 
-	var/obj/screen/inv1 = null
-	var/obj/screen/inv2 = null
-	var/obj/screen/inv3 = null
+	var/atom/movable/screen/inv1 = null
+	var/atom/movable/screen/inv2 = null
+	var/atom/movable/screen/inv3 = null
 
 	var/shown_robot_modules = 0 //Used to determine whether they have the module menu shown or not
-	var/obj/screen/robot_modules_background
+	var/atom/movable/screen/robot_modules_background
 
 //3 Modules can be activated at any one time.
 	var/obj/item/robot_module/module = null
@@ -63,7 +65,7 @@
 	// Components are basically robot organs.
 	var/list/components = list()
 
-	var/obj/item/device/mmi/mmi = null
+	var/obj/item/organ/internal/cerebrum/mmi = null
 
 	var/obj/item/device/pda/ai/rbPDA = null
 
@@ -125,8 +127,8 @@
 	robot_modules_background.icon_state = "block"
 	ident = random_id(/mob/living/silicon/robot, 1, 999)
 
-	module_hulls["Basic"] = new /datum/robot_hull/spider/robot
-	apply_hull("Basic")
+	module_hulls["Default"] = new default_hull
+	apply_hull("Default")
 
 	updatename(modtype)
 
@@ -345,10 +347,8 @@
 	if(prefix)
 		modtype = prefix
 
-	if(istype(mmi, /obj/item/organ/internal/posibrain))
+	if(istype(mmi, /obj/item/organ/internal/cerebrum/posibrain))
 		braintype = "Android"
-	else if(istype(mmi, /obj/item/device/mmi/digital/robot))
-		braintype = "Robot"
 	else
 		braintype = "Cyborg"
 
@@ -512,7 +512,7 @@
 // this function displays the cyborgs current cell charge in the stat panel
 /mob/living/silicon/robot/proc/show_cell_power()
 	if(cell)
-		stat(null, text("Charge Left: [round(cell.percent())]%"))
+		stat(null, text("Charge Left: [round(CELL_PERCENT(cell))]%"))
 		stat(null, text("Cell Rating: [round(cell.maxcharge)]")) // Round just in case we somehow get crazy values
 		stat(null, text("Power Cell Load: [round(used_power_this_tick)]W"))
 	else
@@ -825,8 +825,8 @@
 			return 1
 	return 0
 
-/mob/living/silicon/robot/update_icon()
-	overlays.Cut()
+/mob/living/silicon/robot/on_update_icon()
+	ClearOverlays()
 	if(stat == CONSCIOUS)
 		var/eye_icon_state = "eyes-[module_hulls[icontype].icon_state]"
 		if(eye_icon_state in icon_states(icon))
@@ -834,23 +834,22 @@
 				eye_overlays = list()
 			var/image/eye_overlay = eye_overlays[eye_icon_state]
 			if(!eye_overlay)
-				eye_overlay = image(icon, eye_icon_state)
-				eye_overlay.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
-				eye_overlay.layer = EYE_GLOW_LAYER
-				eye_overlays[eye_icon_state] = eye_overlay
-			overlays += eye_overlay
+				eye_overlays[eye_icon_state] = image(icon, eye_icon_state)
+				eye_overlays["[eye_icon_state]+ea"] = emissive_appearance(icon, eye_icon_state, cache = FALSE)
+			AddOverlays(eye_overlay)
+			AddOverlays("[eye_icon_state]+ea")
 
 	if(opened)
 		var/panelprefix = custom_sprite ? module_hulls[icontype] : "ov"
 		if(wiresexposed)
-			overlays += "[panelprefix]-openpanel +w"
+			AddOverlays("[panelprefix]-openpanel +w")
 		else if(cell)
-			overlays += "[panelprefix]-openpanel +c"
+			AddOverlays("[panelprefix]-openpanel +c")
 		else
-			overlays += "[panelprefix]-openpanel -c"
+			AddOverlays("[panelprefix]-openpanel -c")
 
 	if(module_active && istype(module_active,/obj/item/borg/combat/shield))
-		overlays += "[module_hulls[icontype].icon_state]-shield"
+		AddOverlays("[module_hulls[icontype].icon_state]-shield")
 
 	if(modtype == "Combat")
 		if(module_active && istype(module_active,/obj/item/borg/combat/mobility))
@@ -964,6 +963,16 @@
 
 /mob/living/silicon/robot/proc/radio_menu()
 	silicon_radio.interact(src)//Just use the radio's Topic() instead of bullshit special-snowflake code
+
+/mob/living/silicon/robot/get_active_item()
+	var/obj/item/I = ..()
+	var/obj/item/gripper/grip = I
+	if(istype(grip))
+		return grip.wrapped
+	var/obj/item/surgical_selector/SS = I
+	if(istype(SS))
+		return SS.selected_tool
+	return I
 
 
 /mob/living/silicon/robot/Move(a, b, flag)
@@ -1114,7 +1123,7 @@
 
 	var/list/icontypes
 	for(var/hull_key as anything in module_hulls)
-		LAZYADDASSOC(icontypes, hull_key, image(module_hulls[hull_key].icon, module_hulls[hull_key].icon_state))
+		LAZYSET(icontypes, hull_key, image(module_hulls[hull_key].icon, module_hulls[hull_key].icon_state))
 
 	var/radius = 32 * (1 + 0.05 * clamp(length(icontypes), 0, 8))
 	var/new_icontype = show_radial_menu(src, src, icontypes, radius = radius)
@@ -1302,7 +1311,7 @@
 			if(istype(U,/obj/item/borg/upgrade/floodlight))
 				continue
 			contents.Remove(U)
-			U.loc = get_turf(src)
+			U.forceMove(get_turf(src))
 			U.installed = 0
 	sensor_mode = 0
 	if (ion_trail)

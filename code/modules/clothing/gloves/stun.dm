@@ -32,17 +32,17 @@
 	QDEL_NULL(base_gloves)
 	return ..()
 
-/obj/item/clothing/gloves/stun/update_icon(needs_updating = FALSE)
+/obj/item/clothing/gloves/stun/on_update_icon(needs_updating = FALSE)
 	..()
 	if(bcell)
-		overlays += image(icon, "gloves_cell")
+		AddOverlays(image(icon, "gloves_cell"))
 
 /obj/item/clothing/gloves/stun/_examine_text()
 	. = ..()
 	if(!bcell)
 		. += "<br>\The [src] have no power cell installed."
 	else
-		. += "<br>\The [src] are [round(bcell.percent())]% charged."
+		. += "<br>\The [src] are [round(CELL_PERCENT(bcell))]% charged."
 
 /obj/item/clothing/gloves/stun/attackby(obj/item/W, mob/user)
 	if(isWirecutter(W))
@@ -105,6 +105,10 @@
 
 /obj/item/clothing/gloves/stun/proc/stun_attack(mob/living/carbon/human/user, mob/living/carbon/human/victim)
 	if(!istype(user) || !istype(victim))
+		return
+
+	if(is_pacifist(user))
+		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
 		return
 
 	var/aim = check_aim(user.zone_sel.selecting)

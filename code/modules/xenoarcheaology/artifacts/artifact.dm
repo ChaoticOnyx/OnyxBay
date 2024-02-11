@@ -140,7 +140,7 @@
 			action_triggers |= TRIGGER_ENERGY
 	else if(istype(W,/obj/item/melee/energy) ||\
 		    istype(W,/obj/item/melee/cultblade) ||\
-		    istype(W,/obj/item/card/emag) ||\
+		    isEmag(W) ||\
 		    isMultitool(W)
 		   )
 		action_triggers |= TRIGGER_ENERGY

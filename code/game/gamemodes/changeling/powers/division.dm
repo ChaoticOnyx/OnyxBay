@@ -37,7 +37,7 @@
 	if(!affecting)
 		to_chat(my_mob, SPAN("changeling", "They are missing that body part!"))
 
-	var/obj/item/organ/internal/brain/B = T.internal_organs_by_name[BP_BRAIN]
+	var/obj/item/organ/internal/cerebrum/brain/B = T.internal_organs_by_name[BP_BRAIN]
 	if(!B || B.status == DEAD)
 		to_chat(my_mob, SPAN("changeling", "[T] is dead. We need a living creature to divide."))
 		return

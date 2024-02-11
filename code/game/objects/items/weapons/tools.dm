@@ -38,6 +38,9 @@
 	tool_behaviour = TOOL_WRENCH
 	var/randicon = TRUE
 
+	drop_sound = SFX_DROP_WRENCH
+	pickup_sound = SFX_PICKUP_WRENCH
+
 /obj/item/wrench/Initialize()
 	if(randicon)
 		icon_state = "wrench[pick("","_red","_black")]"
@@ -96,6 +99,9 @@
 	tool_behaviour = TOOL_SCREWDRIVER
 	var/randicon = TRUE
 
+	drop_sound = SFX_DROP_SCREWDRIVER
+	pickup_sound = SFX_PICKUP_SCREWDRIVER
+
 /obj/item/screwdriver/Initialize()
 	if(randicon)
 		switch(pick("red", "blue", "purple", "brown", "green", "cyan", "yellow"))
@@ -129,6 +135,9 @@
 /obj/item/screwdriver/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(!istype(M) || user.a_intent == "help")
 		return ..()
+	if(is_pacifist(user))
+		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		return
 	if(user.zone_sel.selecting != BP_EYES)
 		return ..()
 	if(istype(user.l_hand,/obj/item/grab) || istype(user.r_hand,/obj/item/grab))
@@ -153,7 +162,7 @@
 	..()
 	update_icon()
 
-/obj/item/screwdriver/update_icon()
+/obj/item/screwdriver/on_update_icon()
 	SetTransform(rotation = istype(loc, /obj/item/storage) ? -90 : 0)
 
 /obj/item/screwdriver/old
@@ -199,6 +208,9 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	tool_behaviour = TOOL_WIRECUTTER
 	var/randicon = TRUE
+
+	drop_sound = SFX_DROP_WIRECUTTER
+	pickup_sound = SFX_PICKUP_WIRECUTTER
 
 /obj/item/wirecutters/Initialize()
 	if(randicon && prob(50))
@@ -270,6 +282,9 @@
 	var/status = 1 		//Whether the welder is secured or unsecured (able to attach rods to it to make a flamethrower)
 
 	var/obj/item/welder_tank/tank = /obj/item/welder_tank // where the fuel is stored
+
+	drop_sound = SFX_DROP_WELDINGTOOL
+	pickup_sound = SFX_PICKUP_WELDINGTOOL
 
 /obj/item/weldingtool/Initialize()
 	if(ispath(tank))
@@ -468,15 +483,18 @@
 		return ITEM_SIZE_NO_CONTAINER
 	return ..()
 
-/obj/item/weldingtool/update_icon()
+/obj/item/weldingtool/on_update_icon()
 	..()
-
-	icon_state = welding ? "[initial(icon_state)]1" : "[initial(icon_state)]"
+	ClearOverlays()
 	item_state = welding ? "welder1" : "welder"
+
+	if(welding)
+		AddOverlays(image(icon, "[initial(icon_state)]-over"))
+		AddOverlays(emissive_appearance(icon, "[initial(icon_state)]-over"))
 
 	underlays.Cut()
 	if(tank)
-		var/image/tank_image = image(tank.icon, icon_state = tank.icon_state)
+		var/image/tank_image = image(tank.icon, tank.icon_state)
 		tank_image.pixel_z = 0
 		underlays += tank_image
 
@@ -502,7 +520,7 @@
 			damtype = "fire"
 			hitsound = 'sound/effects/flare.ogg' // Surprisingly it sounds just perfect
 			welding = 1
-			set_light(0.3, 0.5, 2, 2, "#e38f46")
+			set_light(1.0, 0.5, 2, 4.0, "#e38f46")
 			update_icon()
 			set_next_think(world.time)
 		else
@@ -719,6 +737,9 @@
 	matter = list(MATERIAL_STEEL = 140)
 	attack_verb = list("attacked", "bashed", "battered", "bludgeoned", "whacked")
 	tool_behaviour = TOOL_CROWBAR
+
+	drop_sound = SFX_DROP_CROWBAR
+	pickup_sound = SFX_PICKUP_CROWBAR
 
 /obj/item/crowbar/red
 	icon_state = "red_crowbar"

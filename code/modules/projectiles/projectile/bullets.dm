@@ -8,9 +8,10 @@
 	embed = 1
 	sharp = 1
 	penetration_modifier = 1.0
+	poisedamage = 5.0
 	var/mob_passthrough_check = 0
 
-	muzzle_type = /obj/effect/projectile/bullet/muzzle
+	muzzle_type = /obj/effect/projectile/muzzle/bullet
 
 /obj/item/projectile/bullet/on_hit(atom/target, blocked = 0)
 	if (..(target, blocked))
@@ -67,6 +68,7 @@
 /obj/item/projectile/bullet/pellet
 	name = "shrapnel" //'shrapnel' sounds more dangerous (i.e. cooler) than 'pellet'
 	damage = 22.5
+	poisedamage = 10.0
 	//icon_state = "bullet" //TODO: would be nice to have it's own icon state
 	var/pellets = 4			//number of pellets
 	var/range_step = 2		//projectile will lose a fragment each time it travels this distance. Can be a non-integer.
@@ -130,28 +132,41 @@
 /obj/item/projectile/bullet/pistol
 	damage = 27.5 //9mm, .38, etc
 	armor_penetration = 13.5
+	poisedamage = 5.0
 
 /obj/item/projectile/bullet/pistol/medium
 	damage = 30 //.45
 	armor_penetration = 14.5
+	poisedamage = 7.5
 
 /obj/item/projectile/bullet/pistol/medium/smg
 	damage = 32.5 //10mm
 	armor_penetration = 19.5
+	poisedamage = 6.0
 
 /obj/item/projectile/bullet/pistol/medium/revolver
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
 	damage = 37.5 //.44 magnum or something
 	armor_penetration = 20
+	poisedamage = 12.5
 
 /obj/item/projectile/bullet/pistol/strong //matebas
 	fire_sound = 'sound/effects/weapons/gun/fire_mateba.ogg'
 	damage = 60 //.50AE
 	armor_penetration = 30
+	poisedamage = 20.0
 
 /obj/item/projectile/bullet/pistol/strong/revolver //revolvers
 	damage = 50 //Revolvers get snowflake bullets, to keep them relevant
 	armor_penetration = 20
+	poisedamage = 20.0
+
+// for rapid-fire mode (lawgiver)
+/obj/item/projectile/bullet/pistol/lawgiver
+	damage = 18.5
+	armor_penetration = 10
+	fire_sound = 'sound/effects/weapons/gun/fire1.ogg'
+	poisedamage = 3.0
 
 /obj/item/projectile/bullet/pistol/rubber //"rubber" bullets
 	name = "rubber bullet"
@@ -162,6 +177,7 @@
 	sharp = 0
 	armor_penetration = 2.5
 	penetration_modifier = 0.2
+	poisedamage = 10.0
 
 /obj/item/projectile/bullet/pistol/rubber/c44
 	name = "rubber bullet"
@@ -171,12 +187,14 @@
 	embed = 0
 	sharp = 0
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
+	poisedamage = 13.5
 
 /obj/item/projectile/bullet/pistol/accelerated/c38
 	name = "accelerated bullet"
 	damage = 35.0 // .38 + gauss
 	armor_penetration = 35
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg' // Gauss .38 should sound like a badass
+	poisedamage = 12.5
 
 
 /* shotgun projectiles */
@@ -185,6 +203,7 @@
 	name = "slug"
 	damage = 55
 	armor_penetration = 20
+	poisedamage = 20.0
 
 /obj/item/projectile/bullet/shotgun/beanbag		//because beanbags are not bullets
 	name = "beanbag"
@@ -195,6 +214,7 @@
 	sharp = 0
 	penetration_modifier = 0.2
 	can_ricochet = FALSE // Too soft
+	poisedamage = 20.0
 
 //Should do about 80 damage at 1 tile distance (adjacent), and 50 damage at 3 tiles distance.
 //Overall less damage than slugs in exchange for more damage at very close range and more embedding
@@ -205,6 +225,7 @@
 	range_step = 1
 	spread_step = 10
 	penetration_modifier = 1.2 // A bit more internal damage since we don't have armor penetration anyway
+	poisedamage = 12.5
 
 /obj/item/projectile/bullet/pellet/scattershot // Used by *heavy* shotguns, i.e. LBX AC 10 "Scattershot"
 	name = "shrapnel"
@@ -214,6 +235,7 @@
 	range_step = 2
 	spread_step = 15
 	penetration_modifier = 1.2
+	poisedamage = 17.5
 
 /obj/item/projectile/bullet/pellet/accelerated
 	name = "accelerated particles"
@@ -226,16 +248,19 @@
 	range_step = 3
 	spread_step = 5
 	penetration_modifier = 1.1
-	muzzle_type = /obj/effect/projectile/accel/muzzle
+	muzzle_type = /obj/effect/projectile/muzzle/accel
+	poisedamage = 15.0
 
 /obj/item/projectile/bullet/pellet/accelerated/lesser
 	damage = 20
+	poisedamage = 12.5
 
 /* "Rifle" rounds */
 
 /obj/item/projectile/bullet/rifle
 	armor_penetration = 25
 	penetrating = 1
+	poisedamage = 7.0
 
 /obj/item/projectile/bullet/rifle/a556
 	damage = 27.5
@@ -252,6 +277,7 @@
 	armor_penetration = 80
 	hitscan = 1 //so the PTR isn't useless as a sniper weapon
 	penetration_modifier = 1.25
+	poisedamage = 125.0 //you can't withstand a knuckle-sized chunk of metal with borderline escape velocity
 
 /obj/item/projectile/bullet/rifle/a145/apds
 	damage = 75
@@ -296,13 +322,16 @@
 
 /obj/item/projectile/bullet/pistol/practice
 	damage = 5
+	poisedamage = 3.0
 
 /obj/item/projectile/bullet/rifle/a762/practice
 	damage = 5
+	poisedamage = 3.0
 
 /obj/item/projectile/bullet/shotgun/practice
 	name = "practice"
 	damage = 5
+	poisedamage = 3.0
 
 /obj/item/projectile/bullet/pistol/cap
 	name = "cap"
@@ -313,6 +342,7 @@
 	nodamage = 1
 	embed = 0
 	sharp = 0
+	poisedamage = 0.0
 
 /obj/item/projectile/bullet/pistol/cap/Process()
 	loc = null
@@ -324,6 +354,7 @@
 	damage = 40
 	armor_penetration = 25
 	kill_count = 255
+	poisedamage = 255 // SLAM JAM
 
 /obj/item/projectile/bullet/rock/New()
 	icon_state = "rock[rand(1,3)]"

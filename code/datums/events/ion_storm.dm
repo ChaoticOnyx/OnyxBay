@@ -6,12 +6,12 @@
 	mtth = 3 HOURS
 	difficulty = 30
 
-	blacklisted_maps = list(/datum/map/polar)
+
 
 /datum/event/ion_storm/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
+	add_think_ctx("announce", CALLBACK(src, nameof(.proc/announce)), 0)
 
 /datum/event/ion_storm/get_conditions_description()
 	. = "Count of <em>AI</em> >= <em>1</em>."
@@ -126,7 +126,7 @@
 		set_next_think_ctx("announce", world.time + (rand(7, 12) MINUTES))
 
 /datum/event/ion_storm/proc/announce()
-	GLOB.using_map.ion_storm_announcement()
+	SSannounce.play_station_announce(/datum/announce/ion_storm)
 
 /datum/event/ion_storm/proc/get_random_humanoid_player_name(default_if_none)
 	var/list/players = list()

@@ -7,7 +7,6 @@
 
 	throw_range = 4
 
-	var/equipment_slowdown = -1
 	var/list/hud_list[12]
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/obj/item/rig/wearing_rig // This is very not good, but it's much much better than calling get_rig() every update_canmove() call.
@@ -20,6 +19,7 @@
 
 	var/list/stance_limbs
 	var/list/grasp_limbs
+	var/last_body_response_to_pain = 0
 
 /mob/living/carbon/human/New(new_loc, new_species = null)
 
@@ -53,7 +53,6 @@
 	hud_list[SPECIALROLE_HUD]  = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
 	hud_list[STATUS_HUD_OOC]   = new /image/hud_overlay('icons/mob/huds/hud.dmi', src, "hudblank")
 	hud_list[XENO_HUD]         = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
-	hud_list[GLAND_HUD]        = new /image/hud_overlay('icons/mob/huds/antag_hud.dmi', src, "hudblank")
 
 	GLOB.human_mob_list |= src
 	..()
@@ -135,7 +134,12 @@
 
 			if(mind.changeling)
 				stat("Chemical Storage: ", mind.changeling.chem_charges)
-				stat("Genetic Damage Time: ", mind.changeling.geneticdamage)
+				stat("Genetic Damage Time: ", mind.changeling.genome_damage)
+
+			if(mind.special_role == "Borer Husk")
+				var/mob/living/simple_animal/borer/B = get_organ(BP_BRAIN)
+				stat("Chemicals: ", B?.chemicals)
+
 
 /mob/living/carbon/human/ex_act(severity)
 	if(!blinded)
@@ -670,7 +674,7 @@
 		return FLASH_PROTECTION_MAJOR
 	return total_protection
 
-/mob/living/carbon/human/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash, effect_duration = 25)
+/mob/living/carbon/human/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /atom/movable/screen/fullscreen/flash, effect_duration = 25)
 	if(internal_organs_by_name[BP_EYES]) // Eyes are fucked, not a 'weak point'.
 		var/obj/item/organ/internal/eyes/I = internal_organs_by_name[BP_EYES]
 		I.additional_flash_effects(intensity)
@@ -697,7 +701,7 @@
 	return 1
 
 /mob/living/carbon/human/IsAdvancedToolUser(silent)
-	if(species.has_fine_manipulation && !nabbing)
+	if(species.has_fine_manipulation)
 		return 1
 	if(!silent)
 		to_chat(src, FEEDBACK_YOU_LACK_DEXTERITY)
@@ -773,7 +777,7 @@
 					var/turf/location = loc
 					if(istype(location, /turf/simulated))
 						location.add_vomit_floor(src, toxvomit, stomach.ingested)
-					nutrition -= 30
+					remove_nutrition(30)
 		sleep(350)	//wait 35 seconds before next volley
 		lastpuke = 0
 
@@ -953,7 +957,7 @@
 	species.create_organs(src) // Reset our organs/limbs.
 
 	if(!client || !key) //Don't boot out anyone already in the mob.
-		for(var/obj/item/organ/internal/brain/H in world)
+		for(var/obj/item/organ/internal/cerebrum/brain/H in world)
 			if(H.brainmob)
 				if(H.brainmob.real_name == real_name)
 					if(H.brainmob.mind)
@@ -972,26 +976,43 @@
 	var/obj/item/organ/internal/lungs/L = internal_organs_by_name[BP_LUNGS]
 	return L && L.is_bruised()
 
-/mob/living/carbon/human/add_blood(mob/living/carbon/human/M as mob)
-	if (!..())
-		return 0
+/mob/living/carbon/human/add_blood(source)
+	. = ..()
+	if(!.)
+		return
+
 	//if this blood isn't already in the list, add it
-	if(istype(M))
+	if(ishuman(source))
+		var/mob/living/carbon/human/M = source
 		if(!blood_DNA[M.dna.unique_enzymes])
 			blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
 	hand_blood_color = blood_color
-	src.update_inv_gloves()	//handles bloody hands overlays and updating
+	update_inv_gloves(1) // handles bloody hands overlays and updating
 	verbs += /mob/living/carbon/human/proc/bloody_doodle
-	return 1 //we applied blood to the item
 
 /mob/living/carbon/human/clean_blood(clean_feet)
-	.=..()
+	. =..()
+	if(!.)
+		return
+
 	gunshot_residue = null
+
 	if(clean_feet && !shoes)
+		track_blood = 0
 		feet_blood_color = null
 		feet_blood_DNA = null
 		update_inv_shoes(1)
-		return 1
+
+	if(gloves)
+		if(gloves.clean_blood())
+			update_inv_gloves(0)
+		gloves.germ_level = 0
+	else
+		if(!isnull(bloody_hands))
+			bloody_hands = null
+			update_inv_gloves(0)
+		germ_level = 0
+	update_icons()	//apply the now updated overlays to the mob
 
 /mob/living/carbon/human/get_visible_implants(class = 0)
 	var/list/visible_implants = ..()
@@ -1124,7 +1145,7 @@
 		for(var/datum/language/L in species.assisted_langs)
 			remove_language(L)
 		// Clear out their species abilities.
-		species.remove_inherent_verbs(src)
+		species.on_species_loss(src)
 		holder_type = null
 
 	species = all_species[new_species]
@@ -1155,9 +1176,13 @@
 		g_skin = 0
 		b_skin = 0
 
+	if(default_colour || !(species.appearance_flags & HAS_EYE_COLOR))
+		r_eyes = hex2num(copytext(species.default_eye_color, 2, 4))
+		g_eyes = hex2num(copytext(species.default_eye_color, 4, 6))
+		b_eyes = hex2num(copytext(species.default_eye_color, 6, 8))
+
 	if(species.holder_type)
 		holder_type = species.holder_type
-
 
 	if(!(gender in species.genders))
 		gender = species.genders[1]
@@ -1206,7 +1231,7 @@
 		return 1
 	for(var/datum/body_build/BB in species.body_builds)
 		if(gender in BB.genders)
-			body_build = BB
+			change_body_build(BB)
 			return 1
 	to_world_log("Can't find possible body_build. Gender = [gender], Species = [species]")
 	return 0
@@ -1344,7 +1369,7 @@
 
 /mob/living/carbon/human/has_brain()
 	if(internal_organs_by_name[BP_BRAIN])
-		var/obj/item/organ/internal/brain = internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain = internal_organs_by_name[BP_BRAIN]
 		if(brain && istype(brain))
 			return 1
 	return 0
@@ -1413,7 +1438,7 @@
 		to_chat(S, "<span class='danger'>[U] pops your [current_limb.joint] back in!</span>")
 	current_limb.undislocate()
 
-/mob/living/carbon/human/drop(obj/item/W, atom/Target = null, force = null)
+/mob/living/carbon/human/drop(obj/item/W, atom/Target = null, force = null, changing_slots)
 	if(W in organs)
 		return
 	. = ..()
@@ -1700,11 +1725,13 @@
 /mob/living/carbon/human/proc/useblock_off()
 	src.setClickCooldown(3)
 	src.blocking = 0
+	remove_movespeed_modifier(/datum/movespeed_modifier/blocking)
 	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
 		src.block_icon.icon_state = "act_block0"
 
 /mob/living/carbon/human/proc/useblock_on()
 	src.blocking = 1
+	add_movespeed_modifier(/datum/movespeed_modifier/blocking)
 	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
 		src.block_icon.icon_state = "act_block1"
 
@@ -1729,7 +1756,7 @@
 	set hidden = 1
 
 	if(internal_organs_by_name[BP_BRAIN])
-		var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
+		var/obj/item/organ/internal/cerebrum/brain/brain = internal_organs_by_name[BP_BRAIN]
 		if(!brain.is_broken() || stat != UNCONSCIOUS)
 			return
 

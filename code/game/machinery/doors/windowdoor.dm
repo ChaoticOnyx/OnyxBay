@@ -31,7 +31,7 @@
 		'sound/effects/materials/glass/knock3.ogg',
 	)
 
-/obj/machinery/door/window/update_icon()
+/obj/machinery/door/window/on_update_icon()
 	if(density)
 		icon_state = base_state
 	else
@@ -54,7 +54,7 @@
 	else
 		ae = electronics
 		electronics = null
-		ae.loc = loc
+		ae.dropInto(loc)
 	if(operating == -1)
 		ae.icon_state = "door_electronics_smoked"
 		operating = 0
@@ -133,7 +133,7 @@
 		operating = TRUE
 
 	if(autoclose)
-		timer = addtimer(CALLBACK(src, .proc/close), 10 SECONDS, TIMER_UNIQUE|TIMER_STOPPABLE)
+		timer = addtimer(CALLBACK(src, nameof(.proc/close)), 10 SECONDS, TIMER_UNIQUE|TIMER_STOPPABLE)
 
 	flick("[base_state]opening", src)
 	set_density(0)
@@ -189,7 +189,7 @@
 	if(density && operable())
 		operating = -1
 		flick("[base_state]spark", src)
-		addtimer(CALLBACK(src, .proc/open), 10)
+		addtimer(CALLBACK(src, nameof(.proc/open)), 10)
 		return 1
 
 /obj/machinery/door/emp_act(severity)
@@ -242,7 +242,7 @@
 			else
 				ae = electronics
 				electronics = null
-				ae.loc = loc
+				ae.dropInto(loc)
 			ae.icon_state = "door_electronics_smoked"
 
 			operating = 0

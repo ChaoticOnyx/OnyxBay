@@ -1,0 +1,14 @@
+"a" = (/obj/structure/table/glass,/obj/random/maintenance,/obj/random/maintenance,/obj/random/advdevice,/turf/simulated/floor/plating,/area/template_noop)
+"d" = (/obj/effect/decal/cleanable/vomit,/turf/simulated/floor/plating,/area/template_noop)
+"i" = (/obj/structure/table/glass,/obj/item/reagent_containers/vessel/glass/square,/obj/item/reagent_containers/vessel/glass/square,/obj/item/reagent_containers/dropper,/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+"m" = (/obj/effect/mob_spawn/corpse/human/damaged,/obj/effect/decal/cleanable/greenglow,/obj/effect/decal/cleanable/blood/gibs/down,/turf/simulated/floor/plating,/area/template_noop)
+"n" = (/obj/structure/table/glass,/obj/item/virusdish/random,/obj/item/reagent_containers/syringe/antiviral/packaged,/obj/item/reagent_containers/vessel/bottle/chemical/mutagen,/turf/simulated/floor/plating,/area/template_noop)
+"r" = (/obj/effect/decal/cleanable/blood/xeno,/turf/simulated/floor/plating,/area/template_noop)
+"R" = (/obj/machinery/smartfridge/secure/virology,/turf/simulated/floor/plating,/area/template_noop)
+"U" = (/turf/simulated/floor/plating,/area/template_noop)
+
+(1,1,1) = {"
+imR
+drU
+nra
+"}

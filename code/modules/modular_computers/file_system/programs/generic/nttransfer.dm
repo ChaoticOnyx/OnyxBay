@@ -7,6 +7,7 @@ var/global/nttransfer_uid = 0
 	program_icon_state = "comm_logs"
 	program_key_state = "generic_key"
 	program_menu_icon = "transferthick-e-w"
+	program_light_color = "#00CC00"
 	size = 7
 	category = PROG_UTIL
 	requires_ntnet = 1

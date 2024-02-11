@@ -163,12 +163,12 @@
 		return
 	..()
 
-/obj/machinery/mining/drill/attack_hand(mob/user as mob)
+/obj/machinery/mining/drill/attack_hand(mob/user)
 	check_supports()
 
 	if (panel_open && cell && user.Adjacent(src))
 		to_chat(user, "You take out \the [cell].")
-		cell.loc = get_turf(user)
+		cell.dropInto(user.loc)
 		component_parts -= cell
 		cell = null
 		return
@@ -194,7 +194,7 @@
 
 	update_icon()
 
-/obj/machinery/mining/drill/update_icon()
+/obj/machinery/mining/drill/on_update_icon()
 	if(need_player_check)
 		icon_state = "mining_drill_error"
 	else if(active)
@@ -273,7 +273,7 @@
 	var/obj/structure/ore_box/B = locate() in orange(1)
 	if(B)
 		for(var/obj/item/ore/O in contents)
-			O.loc = B
+			O.forceMove(B)
 		to_chat(usr, "<span class='notice'>You unload the drill's storage cache into the ore box.</span>")
 	else
 		to_chat(usr, "<span class='notice'>You must move an ore box up to the drill before you can unload it.</span>")

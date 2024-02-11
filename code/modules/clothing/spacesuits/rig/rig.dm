@@ -247,8 +247,8 @@
 	var/seal_target = !canremove
 	var/failed_to_seal
 
-	var/obj/screen/rig_booting/booting_L = new
-	var/obj/screen/rig_booting/booting_R = new
+	var/atom/movable/screen/rig_booting/booting_L = new
+	var/atom/movable/screen/rig_booting/booting_R = new
 
 	if(!seal_target)
 		booting_L.icon_state = "boot_left"
@@ -349,7 +349,7 @@
 	to_chat(wearer, "<span class='info'><b>Your entire suit [canremove ? "loosens as the components relax" : "tightens around you as the components lock into place"].</b></span>")
 	if(wearer.client)
 		wearer.client.screen -= booting_L
-		addtimer(CALLBACK(src, .proc/r_booting_done, wearer.client, booting_R), 80)
+		addtimer(CALLBACK(src, nameof(.proc/r_booting_done), wearer.client, booting_R), 80)
 	qdel(booting_L)
 	booting_R.icon_state = "boot_done"
 
@@ -368,7 +368,7 @@
 		wearer.wearing_rig = src
 	wearer.update_equipment_slowdown()
 
-/obj/item/rig/proc/r_booting_done(mob/initiator, obj/screen/rig_booting/booting_R)
+/obj/item/rig/proc/r_booting_done(mob/initiator, atom/movable/screen/rig_booting/booting_R)
 	wearer?.client?.screen -= booting_R
 	qdel(booting_R)
 
@@ -505,7 +505,7 @@
 
 	data["charge"] =       cell ? round(cell.charge,1) : 0
 	data["maxcharge"] =    cell ? cell.maxcharge : 0
-	data["chargestatus"] = cell ? Floor(cell.percent()/2) : 0
+	data["chargestatus"] = cell ? Floor(CELL_PERCENT(cell)/2) : 0
 
 	data["emagged"] =       subverted
 	data["coverlock"] =     locked
@@ -559,10 +559,10 @@
 		ui.open()
 		ui.set_auto_update(1)
 
-/obj/item/rig/update_icon(update_mob_icon)
+/obj/item/rig/on_update_icon(update_mob_icon)
 
 	//TODO: Maybe consider a cache for this (use mob_icon as blank canvas, use suit icon overlay).
-	overlays.Cut()
+	ClearOverlays()
 	if(!mob_icon || update_mob_icon)
 		var/species_icon = 'icons/mob/onmob/rig_back.dmi'
 		// Since setting mob_icon will override the species checks in
@@ -572,7 +572,7 @@
 	if(installed_modules.len)
 		for(var/obj/item/rig_module/module in installed_modules)
 			if(module.suit_overlay)
-				chest.overlays += image("icon" = 'icons/mob/onmob/rig_modules.dmi', "icon_state" = "[module.suit_overlay]", "dir" = SOUTH)
+				chest.AddOverlays(image("icon" = 'icons/mob/onmob/rig_modules.dmi', "icon_state" = "[module.suit_overlay]", "dir" = SOUTH))
 
 	if(wearer)
 		wearer.update_inv_shoes()
@@ -591,7 +591,7 @@
 
 	for(var/obj/item/rig_module/module in installed_modules)
 		if(module.suit_overlay)
-			ret.overlays += image("icon" = 'icons/mob/onmob/rig_modules.dmi', "icon_state" = "[module.suit_overlay]")
+			ret.AddOverlays(image('icons/mob/onmob/rig_modules.dmi', module.suit_overlay))
 	return ret
 
 /obj/item/rig/proc/check_suit_access(mob/living/carbon/human/user)
@@ -936,7 +936,7 @@
 	return src
 
 //Boot animation screen objects
-/obj/screen/rig_booting
+/atom/movable/screen/rig_booting
 	screen_loc = "1,1"
 	icon = 'icons/obj/rig_boot.dmi'
 	icon_state = ""

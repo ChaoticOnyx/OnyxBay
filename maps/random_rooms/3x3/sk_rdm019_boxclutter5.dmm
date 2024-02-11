@@ -1,0 +1,11 @@
+"a" = (/turf/simulated/floor/plating,/area/template_noop)
+"r" = (/obj/item/stack/material/cardboard/ten,/turf/simulated/floor/plating,/area/template_noop)
+"F" = (/obj/structure/largecrate/animal/goat,/turf/simulated/floor/plating,/area/template_noop)
+"N" = (/obj/structure/table/rack,/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+"X" = (/obj/structure/closet,/obj/random/maintenance,/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+
+(1,1,1) = {"
+NaX
+raa
+XaF
+"}

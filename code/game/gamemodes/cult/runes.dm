@@ -19,12 +19,12 @@
 	blood = nblood
 	update_icon()
 
-/obj/effect/rune/update_icon()
-	overlays.Cut()
+/obj/effect/rune/on_update_icon()
+	ClearOverlays()
 	if(GLOB.cult.rune_strokes[type])
 		var/list/f = GLOB.cult.rune_strokes[type]
 		for(var/i in f)
-			overlays += image(make_uristword(i, animated))
+			AddOverlays(image(make_uristword(i, animated)))
 	else
 		var/list/q = list(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 		var/list/f = list()
@@ -32,7 +32,7 @@
 			var/j = pick(q)
 			f += j
 			q -= f
-			overlays += image(make_uristword(j, animated))
+			AddOverlays(image(make_uristword(j, animated)))
 		GLOB.cult.rune_strokes[type] = f.Copy()
 
 	if(animated)
@@ -225,7 +225,7 @@
 	target.visible_message(SPAN_WARNING("The markings below [target] glow a bloody red."))
 
 	var/list/mob/living/cultists = get_cultists()
-	if((GLOB.changelings && (target.mind in GLOB.changelings.current_antagonists)) || isalien(target) || istype(target, /mob/living/carbon/human/diona) || istype(target, /mob/living/carbon/human/xenos) || istype(target, /mob/living/carbon/human/abductor))
+	if((GLOB.changelings && (target.mind in GLOB.changelings.current_antagonists)) || isalien(target) || istype(target, /mob/living/carbon/human/diona) || istype(target, /mob/living/carbon/human/xenos) || HAS_TRAIT(target, TRAIT_HOLY))
 		to_chat(target, SPAN("changeling", "You feel a slight buzz in your head as a foreign mental force makes futile attempts at invading your mind."))
 		for(var/mob/living/M in cultists)
 			to_chat(M, SPAN_DANGER("You feel a strong mental force blocking your belief from entering their mind.<br>Seems like you won't be able to convert \the [target]..."))
@@ -943,7 +943,7 @@
 	log_and_message_admins_many(cultists, "started summoning Nar-sie.")
 
 	var/area/A = get_area(src)
-	command_announcement.Announce("High levels of bluespace interference detected at \the [A]. Suspected wormhole forming. Investigate it immediately.")
+	SSannounce.play_station_announce(/datum/announce/wormholes, "High levels of bluespace interference detected at \the [A]. Suspected wormhole forming. Investigate it immediately.")
 	while(cultists.len > 4 || the_end_comes)
 		cultists = get_cultists()
 		if(cultists.len > 8)
@@ -966,7 +966,7 @@
 	if(the_end_comes >= the_time_has_come)
 		HECOMES = new /obj/singularity/narsie(get_turf(src))
 	else
-		command_announcement.Announce("Bluespace anomaly has ceased.")
+		SSannounce.play_station_announce(/datum/announce/wormholes_end)
 		qdel(src)
 
 /obj/effect/rune/tearreality/attack_hand(mob/living/user)

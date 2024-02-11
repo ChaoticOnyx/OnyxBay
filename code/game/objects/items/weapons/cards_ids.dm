@@ -24,6 +24,9 @@
 
 	var/list/files = list(  )
 
+	drop_sound = SFX_DROP_DISK
+	pickup_sound = SFX_PICKUP_DISK
+
 /obj/item/card/data
 	name = "data disk"
 	desc = "A disk of data."
@@ -71,7 +74,7 @@ var/const/NO_EMAG_ACT = -50
 		return ..(A, user)
 
 	uses -= used_uses
-	uses = max(uses, 0)
+	uses = max(uses, -1)
 	A.add_fingerprint(user)
 	if(used_uses)
 		log_and_message_admins("emagged \an [A].")
@@ -172,8 +175,9 @@ var/const/NO_EMAG_ACT = -50
 	SetName(final_name)
 
 /obj/item/card/id/proc/set_id_photo(mob/M)
-	front = getFlatIcon(M, SOUTH, always_use_defdir = TRUE)
-	side = getFlatIcon(M, WEST, always_use_defdir = TRUE)
+	M.ImmediateOverlayUpdate()
+	front = M.get_flat_icon(M, SOUTH)
+	side = M.get_flat_icon(M, WEST)
 
 /mob/proc/set_id_info(obj/item/card/id/id_card)
 	id_card.age = 0

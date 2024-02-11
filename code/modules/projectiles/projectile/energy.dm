@@ -14,7 +14,7 @@
 	damage = 5
 	agony = 20
 	kill_count = 15 //if the shell hasn't hit anything after travelling this far it just explodes.
-	muzzle_type = /obj/effect/projectile/bullet/muzzle
+	muzzle_type = /obj/effect/projectile/muzzle/bullet
 	var/flash_range = 1
 	var/brightness = 7
 	var/light_colour = "#ffffff"
@@ -213,6 +213,7 @@
 	agony = 70
 	damage_type = BURN
 	vacuum_traversal = 0
+	poisedamage = 20.0
 
 /obj/item/projectile/energy/plasmastun/proc/bang(mob/living/carbon/M)
 

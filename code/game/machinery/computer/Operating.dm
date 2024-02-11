@@ -6,18 +6,10 @@
 	anchored = 1.0
 	icon_keyboard = "med_key"
 	icon_screen = "crew"
+	light_color = "#5284E7"
 	circuit = /obj/item/circuitboard/operating
-	var/mob/living/carbon/human/victim = null
-	var/obj/machinery/optable/table = null
-
-/obj/machinery/computer/operating/New()
-	..()
-	for(dir in list(NORTH,EAST,SOUTH,WEST))
-		table = locate(/obj/machinery/optable, get_step(src, dir))
-		if(!table || table?.computer)
-			continue
-		table.computer = src
-		break
+	/// Weakref to a connected operating table
+	var/weakref/optable
 
 /obj/machinery/computer/operating/attack_hand(mob/user)
 	. = ..()
@@ -41,12 +33,20 @@
 
 	switch(action)
 		if("remove_clothes")
+			var/obj/machinery/optable/table = optable?.resolve()
 			table?.remove_clothes()
 			return TRUE
 
 /obj/machinery/computer/operating/tgui_data(mob/user)
-	var/list/data = list(
-		"medical_data" = table.victim?.get_medical_data_ui()
-	)
+	var/list/data = list()
+
+	var/obj/machinery/optable/table = optable?.resolve()
+	var/mob/living/carbon/human/H = table?.victim?.resolve()
+
+	data["medical_data"] = H?.get_medical_data_ui()
 
 	return data
+
+/obj/machinery/computer/operating/Destroy()
+	optable = null
+	return ..()

@@ -30,6 +30,38 @@
 /mob/living/carbon/human/dummy/mannequin/Life()
 	return // Because we never know
 
+/mob/living/carbon/human/dummy/mannequin/check_shadow()
+	return
+
+/mob/living/carbon/human/gatecrasher/Initialize()
+	. = ..()
+	addtimer(CALLBACK(src, nameof(.proc/unpossessed_death_check)), 45 SECONDS)
+
+/mob/living/carbon/human/gatecrasher/proc/unpossessed_death_check()
+	if(ckey) // Possessed, no euthanasia required
+		return
+
+	adjustOxyLoss(maxHealth) // Cease life functions.
+	setBrainLoss(maxHealth)
+
+	var/obj/item/organ/internal/heart/my_heart = internal_organs_by_name[BP_HEART]
+	my_heart?.pulse = PULSE_NONE
+
+/mob/living/carbon/human/gatecrasher/on_ghost_possess()
+	. = ..()
+	if(prob(65))
+		return // Sorry no antagonizing today
+
+	var/antag_poll = list(
+		MODE_CHANGELING = 3,
+		MODE_TRAITOR = 15,
+		MODE_VAMPIRE = 3,
+		MODE_CULTIST = 5,
+		MODE_REVOLUTIONARY = 5
+	)
+	var/datum/antagonist/selected_antag = GLOB.all_antag_types_[util_pick_weight(antag_poll)]
+	selected_antag?.add_antagonist(mind, TRUE, max_stat = UNCONSCIOUS)
+
 /mob/living/carbon/human/skrell/New(new_loc)
 	h_style = "Skrell Male Tentacles"
 	..(new_loc, SPECIES_SKRELL)
@@ -43,7 +75,7 @@
 	..(new_loc, SPECIES_UNATHI)
 
 /mob/living/carbon/human/swine/New(new_loc)
-	h_style = "Bald"
+	h_style = pick("Bald", "Floppy Ears", "Pointy Ears")
 	..(new_loc, SPECIES_SWINE)
 
 /mob/living/carbon/human/vox/New(new_loc)
@@ -52,13 +84,6 @@
 
 /mob/living/carbon/human/diona/New(new_loc)
 	..(new_loc, SPECIES_DIONA)
-
-/mob/living/carbon/human/machine/New(new_loc)
-	..(new_loc, SPECIES_IPC)
-
-/mob/living/carbon/human/nabber/New(new_loc)
-	pulling_punches = 1
-	..(new_loc, SPECIES_NABBER)
 
 /mob/living/carbon/human/monkey/New(new_loc)
 	..(new_loc, "Monkey")
@@ -72,23 +97,28 @@
 /mob/living/carbon/human/stok/New(new_loc)
 	..(new_loc, "Stok")
 
-
-/mob/living/carbon/human/vrhuman/New(new_loc)
-	..(new_loc, "VR human")
-
 /mob/living/carbon/human/gravworlder/New(new_loc)
-	..(new_loc, "Grav-Adapted Human")
+	..(new_loc, SPECIES_GRAVWORLDER)
 
 /mob/living/carbon/human/spacer/New(new_loc)
-	..(new_loc, "Space-Adapted Human")
+	..(new_loc, SPECIES_SPACER)
 
 /mob/living/carbon/human/vatgrown/New(new_loc)
-	..(new_loc, "Vat-Grown Human")
+	..(new_loc, SPECIES_VATGROWN)
 
 /mob/living/carbon/human/vatgrown/female/New(new_loc)
-	..(new_loc, "Vat-Grown Human")
+	..(new_loc, SPECIES_VATGROWN)
 	gender = "female"
 	regenerate_icons()
 
-/mob/living/carbon/human/abductor/New(new_loc)
-	..(new_loc, SPECIES_ABDUCTOR)
+/mob/living/carbon/human/promethean/New(new_loc)
+	..(new_loc, SPECIES_PROMETHEAN)
+
+/mob/living/carbon/human/slimeperson/New(new_loc)
+	..(new_loc, SPECIES_SLIMEPERSON)
+
+/mob/living/carbon/human/stargazer/New(new_loc)
+	..(new_loc, SPECIES_STARGAZER)
+
+/mob/living/carbon/human/luminescent/New(new_loc)
+	..(new_loc, SPECIES_LUMINESCENT)

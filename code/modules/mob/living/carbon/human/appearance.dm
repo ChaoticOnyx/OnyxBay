@@ -33,14 +33,19 @@
 /mob/living/carbon/human/proc/sanitize_body()
 	var/list/body_builds = src.species.get_body_build_datum_list(src.gender)
 	if(!(body_build in body_builds))
-		body_build = body_builds[1]
+		change_body_build(body_builds[1])
 		regenerate_icons()
 
+/// Use this proc to set body build or I will eat your liver
 /mob/living/carbon/human/proc/change_body_build(body_build)
 	if(src.body_build == body_build)
 		return
 
+	if(src.body_build?.movespeed_modifier)
+		remove_movespeed_modifier(src.body_build.movespeed_modifier)
+
 	src.body_build = body_build
+	add_movespeed_modifier(src.body_build.movespeed_modifier)
 	regenerate_icons()
 	return 1
 
@@ -105,7 +110,7 @@
 	return 1
 
 /mob/living/carbon/human/proc/change_hair_color(red, green, blue)
-	if(red == r_eyes && green == g_eyes && blue == b_eyes)
+	if(red == r_hair && green == g_hair && blue == b_hair)
 		return
 
 	r_hair = red

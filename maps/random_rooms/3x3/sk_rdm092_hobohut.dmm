@@ -1,0 +1,15 @@
+"a" = (/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/vomit,/obj/structure/closet,/obj/random/drinkbottle,/obj/random/drinkbottle,/turf/simulated/floor/plating,/area/template_noop)
+"f" = (/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/obj/item/material/shard,/obj/item/material/shard,/obj/item/material/shard,/turf/simulated/floor/plating,/area/template_noop)
+"l" = (/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/obj/structure/barrel,/turf/simulated/floor/plating,/area/template_noop)
+"s" = (/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/obj/item/foldchair,/obj/item/material/shard,/obj/item/material/shard,/obj/item/material/shard,/turf/simulated/floor/plating,/area/template_noop)
+"D" = (/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/obj/structure/bed,/obj/item/trash/cans/machpellabeer,/turf/simulated/floor/plating,/area/template_noop)
+"Q" = (/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/obj/item/broken_bottle,/obj/item/cigbutt,/obj/item/material/shard,/obj/item/material/shard,/obj/item/material/shard,/turf/simulated/floor/plating,/area/template_noop)
+"R" = (/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/obj/structure/table/woodentable,/obj/random/drinkbottle,/obj/item/reagent_containers/vessel/can/machpellabeer,/turf/simulated/floor/plating,/area/template_noop)
+"W" = (/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/obj/item/trash/cans/thirteenloko,/turf/simulated/floor/plating,/area/template_noop)
+"X" = (/obj/effect/floor_decal/rust,/obj/effect/decal/cleanable/dirt,/obj/structure/bed/chair{dir = 4},/obj/item/trash/cans/machpellabeer,/turf/simulated/floor/plating,/area/template_noop)
+
+(1,1,1) = {"
+RXl
+WQs
+afD
+"}

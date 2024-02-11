@@ -40,10 +40,10 @@
 	return material
 
 // Reuse the cache/code from stools, todo maybe unify.
-/obj/structure/bed/update_icon()
+/obj/structure/bed/on_update_icon()
 	// Prep icon.
 	icon_state = ""
-	overlays.Cut()
+	ClearOverlays()
 	// Base icon.
 	var/cache_key = "[base_icon]-[material.name]"
 	if(isnull(stool_cache[cache_key]))
@@ -51,7 +51,7 @@
 		if(material_alteration & MATERIAL_ALTERATION_COLOR)
 			I.color = material.icon_colour
 		stool_cache[cache_key] = I
-	overlays |= stool_cache[cache_key]
+	AddOverlays(stool_cache[cache_key])
 	// Padding overlay.
 	if(padding_material)
 		var/padding_cache_key = "[base_icon]-padding-[padding_material.name]"
@@ -60,7 +60,7 @@
 			if(material_alteration & MATERIAL_ALTERATION_COLOR)
 				I.color = padding_material.icon_colour
 			stool_cache[padding_cache_key] = I
-		overlays |= stool_cache[padding_cache_key]
+		AddOverlays(stool_cache[padding_cache_key])
 
 	// Strings.
 	if(material_alteration & MATERIAL_ALTERATION_NAME)
@@ -164,8 +164,8 @@
 
 /obj/structure/bed/forceMove()
 	. = ..()
-	if(buckled_mob)
-		if(isturf(loc))
+	if(isturf(src.loc))
+		if(buckled_mob)
 			buckled_mob.forceMove(loc, unbuckle_mob = FALSE)
 		else
 			unbuckle_mob()
@@ -218,6 +218,9 @@
 	pull_slowdown = PULL_SLOWDOWN_TINY
 	var/bedtype = /obj/structure/bed/roller
 	var/rollertype = /obj/item/roller
+	var/obj/structure/closet/body_bag/buckled_bodybag
+	var/accepts_bodybag = TRUE
+	var/buckling_y = 3
 
 /obj/structure/bed/roller/adv
 	name = "advanced roller bed"
@@ -227,8 +230,13 @@
 	rollertype = /obj/item/roller/adv
 	pull_slowdown = PULL_SLOWDOWN_NONE
 
-/obj/structure/bed/roller/update_icon()
-	return // Doesn't care about material or anything else.
+/obj/structure/bed/roller/on_update_icon()
+	if(buckled_mob || buckled_bodybag)
+		set_density(1)
+		icon_state = "[initial(icon_state)]_up"
+	else
+		set_density(0)
+		icon_state = "[initial(icon_state)]"
 
 /obj/structure/bed/roller/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W) || istype(W, /obj/item/stack) || isWirecutter(W))
@@ -236,6 +244,8 @@
 	else if(istype(W, /obj/item/roller_holder))
 		if(buckled_mob)
 			user_unbuckle_mob(user)
+		if(buckled_bodybag)
+			manual_unbuckle(user)
 		else if(rollertype)
 			visible_message("[user] collapses \the [src.name].")
 			new rollertype(get_turf(src))
@@ -254,6 +264,8 @@
 	w_class = ITEM_SIZE_GARGANTUAN // Not sure if it's actually necessary, I can barely imagine this thing being bigger than a mecha part;
 	var/rollertype = /obj/item/roller
 	var/bedtype = /obj/structure/bed/roller
+	drop_sound = SFX_DROP_AXE
+	pickup_sound = SFX_PICKUP_AXE
 
 /obj/item/roller/adv
 	name = "advanced roller bed"
@@ -303,7 +315,7 @@
 	QDEL_NULL(held)
 
 /obj/structure/bed/roller/post_buckle_mob(mob/living/M)
-	if(M == buckled_mob)
+	if(M == buckled_mob || buckled_bodybag)
 		set_density(1)
 		icon_state = "[initial(icon_state)]_up"
 	else
@@ -327,6 +339,94 @@
 		qdel(src)
 		return
 
+
+/obj/structure/bed/roller/MouseDrop_T(atom/movable/dropping, mob/user)
+	if(accepts_bodybag && !buckled_bodybag && !buckled_mob && istype(dropping,/obj/structure/closet/body_bag) && ishuman(user))
+		var/obj/structure/closet/body_bag/B = dropping
+		if(!B.roller_buckled)
+			do_buckle_bodybag(B, user)
+			return TRUE
+	else
+		. = ..()
+
+/obj/structure/bed/roller/Destroy()
+	if(buckled_bodybag)
+		unbuckle()
+	. = ..()
+
+/obj/structure/bed/roller/forceMove()
+	. = ..()
+	if(isturf(src.loc))
+		if(buckled_bodybag)
+			buckled_bodybag.set_glide_size(glide_size)
+			buckled_bodybag.forceMove(loc)
+	else
+		unbuckle()
+
+
+/obj/structure/bed/roller/Move()
+	. = ..()
+	if(buckled_bodybag)
+		buckled_bodybag.set_glide_size(glide_size)
+		buckled_bodybag.forceMove(loc)
+
+
+/obj/structure/bed/roller/proc/do_buckle_bodybag(obj/structure/closet/body_bag/B, mob/user)
+	if(isanimal(user))
+		return FALSE
+	if(!user.Adjacent(B) || user.incapacitated(INCAPACITATION_ALL) || istype(user, /mob/living/silicon/pai))
+		return FALSE
+	B.visible_message(SPAN_NOTICE("[user] buckles [B] to [src]!"))
+	B.roller_buckled = src
+	B.forceMove(loc)
+	B.set_dir(dir)
+	buckled_bodybag = B
+	density = TRUE
+	update_icon()
+	if(buckling_y)
+		buckled_bodybag.pixel_y = buckled_bodybag.buckle_offset + buckling_y
+	add_fingerprint(user)
+	register_signal(B, SIGNAL_MOVED, nameof(.proc/on_move))
+
+/obj/structure/bed/roller/proc/on_move()
+	if(buckled_bodybag)
+		var/turf/body_bag_turf = get_turf(buckled_bodybag)
+		var/turf/roller_turf = get_turf(src)
+		if(body_bag_turf != roller_turf)
+			if(body_bag_turf.z != roller_turf.z)
+				src.forceMove(body_bag_turf)
+				return
+			step_glide(src, get_dir(roller_turf, body_bag_turf), glide_size)
+
+/obj/structure/bed/roller/proc/unbuckle()
+	if(buckled_bodybag)
+		unregister_signal(buckled_bodybag, SIGNAL_MOVED)
+		buckled_bodybag.glide_size = initial(buckled_bodybag.glide_size)
+		buckled_bodybag.pixel_y = initial(buckled_bodybag.pixel_y)
+		buckled_bodybag.roller_buckled = null
+		buckled_bodybag = null
+		density = FALSE
+		update_icon()
+
+/obj/structure/bed/roller/proc/manual_unbuckle(mob/user)
+	if(isanimal(user) || istype(user, /mob/living/silicon/pai))
+		return FALSE
+	if(user.incapacitated(INCAPACITATION_ALL))
+		return FALSE
+	if(buckled_bodybag && !user.Adjacent(buckled_bodybag))
+		return FALSE
+	unbuckle()
+	add_fingerprint(user)
+	return TRUE
+
+/obj/structure/bed/roller/buckle_mob(mob/living/M)
+	if(buckled_bodybag)
+		return 0
+	. = ..()
+
+/obj/structure/bed/roller/attack_hand(mob/user)
+	manual_unbuckle(user)
+	. = ..()
 ///
 /// BETTER rolling bed huh
 ///

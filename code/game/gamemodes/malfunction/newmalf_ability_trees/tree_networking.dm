@@ -109,7 +109,6 @@
 		to_chat(user, "Hack Failed.")
 		if(prob(10))
 			user.hack_fails ++
-			announce_hack_failure(user, "quantum message relay")
 			log_ability_use(user, "elite encryption hack (CRITFAIL - title: [title])")
 		else
 			log_ability_use(user, "elite encryption hack (FAIL - title: [title])")
@@ -117,7 +116,6 @@
 		user.last_failed_malf_title = title
 		return
 	log_ability_use(user, "elite encryption hack (SUCCESS - title: [title])")
-	command_announcement.Announce(text, title, msg_sanitized = TRUE)
 
 /datum/game_mode/malfunction/verb/elite_encryption_hack()
 	set category = "Software"
@@ -138,7 +136,6 @@
 		to_chat(user, "Hack Failed.")
 		if(prob(20))
 			user.hack_fails++
-			announce_hack_failure(user, "alert control system")
 			log_ability_use(user, "elite encryption hack (CRITFAIL - [alert_target])")
 			return
 		log_ability_use(user, "elite encryption hack (FAIL - [alert_target])")
@@ -174,19 +171,15 @@
 			sleep(duration/5)
 			if(!user || user.is_ooc_dead())
 				return
-			command_announcement.Announce("Caution, [GLOB.using_map.station_name]. We have detected abnormal behaviour in your network. It seems someone is trying to hack your electronic systems. We will update you when we have more information.", "Network Monitoring")
 			sleep(duration/5)
 			if(!user || user.is_ooc_dead())
 				return
-			command_announcement.Announce("We started tracing the intruder. Whoever is doing this, they seem to be onboard. We suggest checking all network control terminals. We will keep you updated on the situation.", "Network Monitoring")
 			sleep(duration/5)
 			if(!user || user.is_ooc_dead())
 				return
-			command_announcement.Announce("This is highly abnormal and somewhat concerning. The intruder is too fast, he is evading our traces. No man could be this fast...", "Network Monitoring")
 			sleep(duration/5)
 			if(!user || user.is_ooc_dead())
 				return
-			command_announcement.Announce("We have traced the intrude#, it seem& t( e yo3r AI s7stem, it &# *#ck@ng th$ sel$ destru$t mechani&m, stop i# bef*@!)$#&&@@  <CONNECTION LOST>", "Network Monitoring")
 
 	to_chat(user, "## BEGINNING SYSTEM OVERRIDE.")
 	to_chat(user, "## ESTIMATED DURATION: [round((duration+300)/600)] MINUTES")
@@ -212,8 +205,6 @@
 	log_ability_use(user, "system override (FINISHED)")
 	to_chat(user, "## PRIMARY FIREWALL BYPASSED. YOU NOW HAVE FULL SYSTEM CONTROL.")
 
-	if(user.hack_can_fail)
-		command_announcement.Announce("Our system administrators just reported that we've been locked out from your control network. Whoever did this now has full access to [GLOB.using_map.station_name]'s systems.", "Network Administration Center")
 	user.hack_can_fail = 0
 	user.system_override = 2
 	user.verbs += new /datum/game_mode/malfunction/verb/ai_destroy_station()

@@ -21,7 +21,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	var/r_eyes = 0						//Eye color
 	var/g_eyes = 0						//Eye color
 	var/b_eyes = 0						//Eye color
-	var/s_base = ""						//Base skin colour
 	var/list/body_markings = list()
 	var/body_height = HUMAN_HEIGHT_NORMAL // Character's height scale
 
@@ -32,10 +31,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	var/disabilities = 0
 
 	var/has_cortical_stack = FALSE
-	var/equip_preview_mob = EQUIP_PREVIEW_ALL
-
-	var/icon/bgstate = "000"
-	var/list/bgstate_options = list("000", "FFF", MATERIAL_STEEL, "white")
 
 /datum/category_item/player_setup_item/general/body
 	name = "Body"
@@ -56,7 +51,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	pref.r_skin = R.read("skin_red")
 	pref.g_skin = R.read("skin_green")
 	pref.b_skin = R.read("skin_blue")
-	pref.s_base = R.read("skin_base")
 	pref.h_style = R.read("hair_style_name")
 	pref.f_style = R.read("facial_style_name")
 	pref.r_eyes = R.read("eyes_red")
@@ -69,8 +63,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	pref.rlimb_data = R.read("rlimb_data")
 	pref.has_cortical_stack = R.read("has_cortical_stack")
 	pref.body_markings = R.read("body_markings")
-	pref.preview_icon = null
-	pref.bgstate = R.read("bgstate")
 
 /datum/category_item/player_setup_item/general/body/save_character(datum/pref_record_writer/W)
 	W.write("species", pref.species)
@@ -86,7 +78,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	W.write("skin_tone", pref.s_tone)
 	W.write("skin_red", pref.r_skin)
 	W.write("skin_green", pref.g_skin)
-	W.write("skin_base", pref.s_base)
 	W.write("skin_blue", pref.b_skin)
 	W.write("hair_style_name", pref.h_style)
 	W.write("facial_style_name", pref.f_style)
@@ -100,7 +91,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	W.write("rlimb_data", pref.rlimb_data)
 	W.write("has_cortical_stack", pref.has_cortical_stack)
 	W.write("body_markings", pref.body_markings)
-	W.write("bgstate", pref.bgstate)
 
 /datum/category_item/player_setup_item/general/body/sanitize_character()
 	if(!pref.species || !(pref.species in playable_species))
@@ -121,9 +111,16 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	if(istype(S))
 		pref.h_style	= sanitize_inlist(pref.h_style, GLOB.hair_styles_list, S.default_h_style)
 		pref.f_style	= sanitize_inlist(pref.f_style, GLOB.facial_hair_styles_list, S.default_f_style)
-	pref.r_eyes			= sanitize_integer(pref.r_eyes, 0, 255, initial(pref.r_eyes))
-	pref.g_eyes			= sanitize_integer(pref.g_eyes, 0, 255, initial(pref.g_eyes))
-	pref.b_eyes			= sanitize_integer(pref.b_eyes, 0, 255, initial(pref.b_eyes))
+
+	if(S && !(S.appearance_flags & HAS_EYE_COLOR))
+		pref.r_eyes		= hex2num(copytext(S.default_eye_color, 2, 4))
+		pref.g_eyes		= hex2num(copytext(S.default_eye_color, 4, 6))
+		pref.b_eyes		= hex2num(copytext(S.default_eye_color, 6, 8))
+	else
+		pref.r_eyes		= sanitize_integer(pref.r_eyes, 0, 255, initial(pref.r_eyes))
+		pref.g_eyes		= sanitize_integer(pref.g_eyes, 0, 255, initial(pref.g_eyes))
+		pref.b_eyes		= sanitize_integer(pref.b_eyes, 0, 255, initial(pref.b_eyes))
+
 	pref.b_type			= sanitize_text(pref.b_type, initial(pref.b_type))
 	pref.has_cortical_stack = sanitize_bool(pref.has_cortical_stack, initial(pref.has_cortical_stack))
 
@@ -137,9 +134,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	var/low_skin_tone = mob_species ? (35 - mob_species.max_skin_tone()) : -185
 	sanitize_integer(pref.s_tone, low_skin_tone, 34, initial(pref.s_tone))
 
-	if(!mob_species.base_skin_colours || isnull(mob_species.base_skin_colours[pref.s_base]))
-		pref.s_base = ""
-
 	pref.disabilities	= sanitize_integer(pref.disabilities, 0, 65535, initial(pref.disabilities))
 	if(!istype(pref.organ_data)) pref.organ_data = list()
 	if(!istype(pref.rlimb_data)) pref.rlimb_data = list()
@@ -152,12 +146,9 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 
 /datum/category_item/player_setup_item/general/body/content(mob/user)
 	. = list()
-	if(!pref.preview_icon)
-		pref.update_preview_icon()
-	send_rsc(user, pref.preview_icon, "previewicon.png")
 
 	var/datum/species/mob_species = all_species[pref.species]
-	. += "<table><tr style='vertical-align:top'><td><b>Body</b> "
+	. += "<b>Body</b> "
 	. += "(<a href='?src=\ref[src];random=1'>&reg;</A>)"
 	. += "<br>"
 
@@ -173,9 +164,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	. += "Height: <a href='?src=\ref[src];body_height=1'>[human_height_text(pref.body_height)]</a><br>"
 	. += "Species: <a href='?src=\ref[src];show_species=1'>[pref.species]</a><br>"
 	. += "Blood Type: <a href='?src=\ref[src];blood_type=1'>[pref.b_type]</a><br>"
-
-	if(has_flag(mob_species, HAS_BASE_SKIN_COLOURS))
-		. += "Base Colour: <a href='?src=\ref[src];base_skin=1'>[pref.s_base]</a><br>"
 
 	if(has_flag(mob_species, HAS_A_SKIN_TONE))
 		. += "Skin Tone: <a href='?src=\ref[src];skin_tone=1'>[-pref.s_tone + 35]/[mob_species.max_skin_tone()]</a><br>"
@@ -233,8 +221,8 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			if(ind > 1)
 				. += ", "
 			var/datum/robolimb/R
-			if(pref.rlimb_data[name] && all_robolimbs[pref.rlimb_data[name]])
-				R = all_robolimbs[pref.rlimb_data[name]]
+			if(pref.rlimb_data[name] && GLOB.all_robolimbs[pref.rlimb_data[name]])
+				R = GLOB.all_robolimbs[pref.rlimb_data[name]]
 			else
 				R = basic_robolimb
 			. += "\t[R.company] [organ_name] prosthesis"
@@ -270,13 +258,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		. += "\[...\]<br><br>"
 	else
 		. += "<br><br>"
-
-	. += "</td><td><b>Preview</b><br>"
-	. += "<div class='statusDisplay'><center><img src=previewicon.png width=[pref.preview_icon.Width()] height=[pref.preview_icon.Height()]></center></div>"
-	. += "<br><a href='?src=\ref[src];cycle_bg=1'>Cycle background</a>"
-	. += "<br><a href='?src=\ref[src];toggle_preview_value=[EQUIP_PREVIEW_LOADOUT]'>[pref.equip_preview_mob & EQUIP_PREVIEW_LOADOUT ? "Hide loadout" : "Show loadout"]</a>"
-	. += "<br><a href='?src=\ref[src];toggle_preview_value=[EQUIP_PREVIEW_JOB]'>[pref.equip_preview_mob & EQUIP_PREVIEW_JOB ? "Hide job gear" : "Show job gear"]</a>"
-	. += "</td></tr></table>"
 
 	. += "<b>Hair</b><br>"
 	if(has_flag(mob_species, HAS_HAIR_COLOR))
@@ -361,9 +342,9 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			pref.r_skin = hex2num(copytext(mob_species.flesh_color, 2, 4))
 			pref.g_skin = hex2num(copytext(mob_species.flesh_color, 4, 6))
 			pref.b_skin = hex2num(copytext(mob_species.flesh_color, 6, 8))
-			pref.r_eyes = 0
-			pref.g_eyes = 0
-			pref.b_eyes = 0
+			pref.r_eyes = hex2num(copytext(mob_species.default_eye_color, 2, 4))
+			pref.g_eyes = hex2num(copytext(mob_species.default_eye_color, 4, 6))
+			pref.b_eyes = hex2num(copytext(mob_species.default_eye_color, 6, 8))
 			pref.age = max(min(pref.age, mob_species.max_age), mob_species.min_age)
 
 			if(!has_flag(mob_species, SECONDARY_HAIR_IS_SKIN))
@@ -441,14 +422,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			pref.r_eyes = hex2num(copytext(new_eyes, 2, 4))
 			pref.g_eyes = hex2num(copytext(new_eyes, 4, 6))
 			pref.b_eyes = hex2num(copytext(new_eyes, 6, 8))
-			return TOPIC_REFRESH_UPDATE_PREVIEW
-
-	else if(href_list["base_skin"])
-		if(!has_flag(mob_species, HAS_BASE_SKIN_COLOURS))
-			return TOPIC_NOACTION
-		var/new_s_base = input(user, "Choose your character's base color:", CHARACTER_PREFERENCE_INPUT_TITLE) as null|anything in mob_species.base_skin_colours
-		if(new_s_base && CanUseTopic(user))
-			pref.s_base = new_s_base
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if(href_list["skin_tone"])
@@ -594,7 +567,8 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 				choice_options = list("Normal","Prosthesis")
 
 		var/new_state = input(user, "What state do you wish the limb to be in?") as null|anything in choice_options
-		if(!new_state || !CanUseTopic(user)) return TOPIC_NOACTION
+		if(!new_state || !CanUseTopic(user))
+			return TOPIC_NOACTION
 
 		switch(new_state)
 			if("Normal")
@@ -693,14 +667,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	else if(href_list["disabilities"])
 		var/disability_flag = text2num(href_list["disabilities"])
 		pref.disabilities ^= disability_flag
-		return TOPIC_REFRESH_UPDATE_PREVIEW
-
-	else if(href_list["toggle_preview_value"])
-		pref.equip_preview_mob ^= text2num(href_list["toggle_preview_value"])
-		return TOPIC_REFRESH_UPDATE_PREVIEW
-
-	else if(href_list["cycle_bg"])
-		pref.bgstate = next_in_list(pref.bgstate, pref.bgstate_options)
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if(href_list["body_height"])

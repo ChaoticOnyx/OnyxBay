@@ -13,10 +13,10 @@
 	if(can_buckle && buckled_mob)
 		user_unbuckle_mob(user)
 
-/obj/MouseDrop_T(mob/living/M, mob/living/user)
+/obj/MouseDrop_T(atom/movable/dropping, mob/living/user)
 	. = ..()
-	if(can_buckle && istype(M))
-		user_buckle_mob(M, user)
+	if(can_buckle && isliving(dropping))
+		user_buckle_mob(dropping, user)
 
 /obj/Destroy()
 	unbuckle_mob()
@@ -33,6 +33,9 @@
 		if(M != src && C.incapacitated())
 			return 0
 
+	if(M.throwing)
+		// can't throwing mob if it's buckled
+		M.throwing = 0
 	M.buckled = src
 	M.facing_dir = null
 	M.set_dir(buckle_dir ? buckle_dir : dir)

@@ -9,17 +9,17 @@
 	connect_types = CONNECT_TYPE_SCRUBBER | CONNECT_TYPE_SUPPLY | CONNECT_TYPE_REGULAR
 
 
-/obj/machinery/atmospherics/valve/shutoff/update_icon()
+/obj/machinery/atmospherics/valve/shutoff/on_update_icon()
 	icon_state = "vclamp[open]"
 
 /obj/machinery/atmospherics/valve/shutoff/_examine_text(mob/user)
 	. = ..()
 	. += "\nThe automatic shutoff circuit is [override_open ? "disabled" : "enabled"]."
 
-/obj/machinery/atmospherics/valve/shutoff/New()
+/obj/machinery/atmospherics/valve/shutoff/Initialize()
+	. = ..()
 	open()
 	hide(1)
-	..()
 
 /obj/machinery/atmospherics/valve/shutoff/attack_hand(mob/user as mob)
 	override_open = !override_open

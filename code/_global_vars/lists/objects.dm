@@ -6,7 +6,7 @@ GLOBAL_LIST_EMPTY(gland_hud_users)
 GLOBAL_LIST_EMPTY(hud_icon_reference)
 
 GLOBAL_LIST_EMPTY(listening_objects) // List of objects that need to be able to hear, used to avoid recursive searching through contents.
-
+GLOBAL_LIST_EMPTY(golems_resonator)
 GLOBAL_LIST_EMPTY(global_mutations) // List of hidden mutation things.
 
 GLOBAL_LIST_EMPTY(lizard_colors)
@@ -26,3 +26,5 @@ GLOBAL_DATUM_INIT(global_headset, /obj/item/device/radio/announcer/subspace, new
 var/host = null //only here until check @ code\modules\ghosttrap\trap.dm:112 is fixed
 GLOBAL_DATUM_INIT(sun, /datum/sun, new)
 GLOBAL_DATUM_INIT(universe, /datum/universal_state, new)
+
+GLOBAL_LIST_EMPTY(intact_station_closets) // List of closets (excluding crates) located on the STATION Z-LEVELS that have never been opened since initialization. Mostly for the Gatecrasher event, but may be useful for more fun thingies.

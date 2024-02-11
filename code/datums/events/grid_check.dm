@@ -9,7 +9,7 @@
 /datum/event/grid_check/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
+	add_think_ctx("announce", CALLBACK(src, nameof(.proc/announce)), 0)
 
 /datum/event/grid_check/get_mtth()
 	. = ..()
@@ -22,4 +22,4 @@
 	set_next_think_ctx("announce", world.time + (30 SECONDS))
 
 /datum/event/grid_check/proc/announce()
-	GLOB.using_map.grid_check_announcement()
+	SSannounce.play_station_announce(/datum/announce/grid_check)

@@ -50,14 +50,8 @@
 	icon_state = "tiny"
 	icon_keyboard = "tiny_keyboard"
 	icon_screen = "lift"
+	light_color = "#B88B2E"
+	light_max_bright_on = 1.0
+	light_inner_range_on = 0.5
+	light_outer_range_on = 1.5
 	density = 0
-
-/*
-/obj/machinery/computer/shuttle_control/multi/turbolift
-	name = "turbolift control console"
-	icon_state = "tcstation"
-	icon_keyboard = "tcstation_key"
-	icon_screen = "syndie"
-	shuttle_tag = "turbolift"
-	density = 0
-*/

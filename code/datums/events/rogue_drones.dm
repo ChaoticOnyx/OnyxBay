@@ -5,7 +5,7 @@
 
 	mtth = 2 HOURS
 	difficulty = 60
-	blacklisted_maps = list(/datum/map/polar)
+
 
 	var/list/drones_list = list()
 	var/list/affecting_z = list()
@@ -13,7 +13,7 @@
 /datum/event/rogue_drones/New()
 	. = ..()
 
-	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+	add_think_ctx("end", CALLBACK(src, nameof(.proc/end)), 0)
 
 /datum/event/rogue_drones/get_conditions_description()
 	. = "<em>Rogue Drones</em> should not be <em>running</em>.<br>"
@@ -63,7 +63,7 @@
 	else
 		msg = "Class II Laser Fire detected nearby the [station_name()]."
 
-	command_announcement.Announce(msg, "[station_name()] Sensor Array", zlevels = affecting_z)
+	SSannounce.play_station_announce(/datum/announce/rogue_drones_start, msg)
 
 /datum/event/rogue_drones/proc/end()
 	SSevents.evars["rogue_drones_running"] = FALSE
@@ -80,4 +80,4 @@
 
 		qdel(D)
 
-	command_announcement.Announce("Be advised: sensors indicate the unidentified drone swarm has left the immediate proximity of the [station_name()].", "[station_name()] Sensor Array", zlevels = affecting_z)
+	SSannounce.play_station_announce(/datum/announce/rogue_drones_end)

@@ -332,10 +332,18 @@
 					/obj/item/music_tape_box/newyear,
 					/obj/item/music_tape_box/frontier,
 					/obj/item/music_tape_box/valhalla,
-					/obj/item/music_tape_box/halloween
+					/obj/item/music_tape_box/halloween,
+					/obj/item/music_tape_box/retrojazz
 					)
 	cost = 40
 	containername = "\improper Music tapes crate"
+
+/decl/hierarchy/supply_pack/miscellaneous/balloons
+	name = "Box of balloons"
+	num_contained = 3
+	contains = list(/obj/item/storage/box/balloons)
+	cost = 10
+	containername = "\improper crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/bouquet
 	name = "Box of bouquets"

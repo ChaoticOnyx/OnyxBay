@@ -1,0 +1,19 @@
+"a" = (/obj/random/maintenance,/turf/simulated/floor/plating,/area/template_noop)
+"b" = (/turf/simulated/floor/plating,/area/template_noop)
+"c" = (/obj/structure/barricade/material,/turf/simulated/floor/plating,/area/template_noop)
+"e" = (/turf/simulated/floor{icon_state = "plating_dmg3"},/area/template_noop)
+"n" = (/obj/item/foldchair,/turf/simulated/floor/plating,/area/template_noop)
+"q" = (/obj/structure/girder,/turf/simulated/floor/plating,/area/template_noop)
+"L" = (/obj/item/target/alien,/turf/simulated/floor/plating,/area/template_noop)
+"S" = (/obj/structure/table/steel,/obj/item/clothing/head/beret,/turf/simulated/floor/plating,/area/template_noop)
+"V" = (/turf/simulated/floor{icon_state = "plating_dmg2"},/area/template_noop)
+"W" = (/obj/structure/bed/chair,/turf/simulated/floor/plating,/area/template_noop)
+"Z" = (/obj/item/target,/turf/simulated/floor/plating,/area/template_noop)
+
+(1,1,1) = {"
+ZbW
+LbS
+Vbn
+ceq
+qaV
+"}

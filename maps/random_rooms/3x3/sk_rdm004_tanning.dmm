@@ -1,0 +1,12 @@
+"a" = (/turf/simulated/floor/plating,/area/template_noop)
+"m" = (/obj/structure/bed,/obj/item/clothing/glasses/sunglasses/big,/turf/simulated/floor/plating,/area/template_noop)
+"q" = (/obj/machinery/light/quartz,/obj/machinery/light/quartz{dir = 8},/turf/simulated/floor/plating,/area/template_noop)
+"v" = (/obj/item/reagent_containers/spray/cleaner,/obj/machinery/light/quartz{dir = 4},/obj/machinery/light/quartz{dir = 1},/turf/simulated/floor/plating,/area/template_noop)
+"B" = (/obj/machinery/light/quartz,/obj/machinery/light/quartz{dir = 4},/turf/simulated/floor/plating,/area/template_noop)
+"L" = (/obj/item/cigbutt,/obj/machinery/light/quartz{dir = 8},/obj/machinery/light/quartz{dir = 1},/turf/simulated/floor/plating,/area/template_noop)
+
+(1,1,1) = {"
+Lav
+ama
+qaB
+"}

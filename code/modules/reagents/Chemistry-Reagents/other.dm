@@ -185,7 +185,7 @@
 /datum/reagent/water/holywater/affect_ingest(mob/living/carbon/M, alien, removed)
 	..()
 	if(ishuman(M)) // Any location
-		if(iscultist(M))
+		if(iscultist(M) || is_species(M, /datum/species/golem/runic))
 			if(prob(10))
 				GLOB.cult.remove_antagonist(usr.mind, 1)
 			if(prob(2))
@@ -197,7 +197,7 @@
 		return
 	if(!L.mind)
 		return
-	if(L.mind.vampire && !(L.mind.vampire.status & VAMP_ISTHRALL))
+	if((L.mind.vampire && !(L.mind.vampire.status & VAMP_ISTHRALL)) || is_species(L, /datum/species/golem/runic))
 		L.adjust_fire_stacks(amount / 15)
 		L.IgniteMob()
 
@@ -243,7 +243,7 @@
 		if(istype(T, /turf/simulated/wall))
 			var/turf/simulated/wall/W = T
 			W.thermite = 1
-			W.overlays += image('icons/effects/effects.dmi',icon_state = "#673910")
+			W.AddOverlays(image('icons/effects/effects.dmi',icon_state = "#673910"))
 			remove_self(5)
 	return
 

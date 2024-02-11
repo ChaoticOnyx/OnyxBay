@@ -17,6 +17,9 @@
 	attack_verb = list("hit", "bludgeoned", "whacked")
 	lock_picking_level = 3
 
+	drop_sound = SFX_DROP_METALWEAPON
+	pickup_sound = SFX_PICKUP_METALWEAPON
+
 /obj/item/stack/rods/ten
 	amount = 10
 
@@ -143,7 +146,7 @@
 		use(2)
 	return
 
-/obj/item/stack/rods/update_icon()
+/obj/item/stack/rods/on_update_icon()
 	icon_state = "rods[(amount < 5) ? amount : ""]"
 
 /obj/item/stack/rods/use()

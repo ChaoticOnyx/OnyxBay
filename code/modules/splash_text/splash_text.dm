@@ -9,13 +9,13 @@
 
 /// Creates text that will float from the atom upwards to the viewer.
 /atom/proc/show_splash_text(mob/viewer, text)
-	INVOKE_ASYNC(src, .proc/animate_splash_text, viewer, text)
+	INVOKE_ASYNC(src, nameof(.proc/animate_splash_text), viewer, text)
 
 /// Creates text that will float from the atom upwards to the viewers in range.
 /atom/proc/show_splash_text_to_viewers(message, self_message, vision_distance = 7, list/mob/ignored_mobs)
 	var/list/hearers = list()
 	var/list/garbage_obj = list() // TO-DO: add more helpers to exclude searching objects.
-	get_mobs_and_objs_in_view_fast(get_turf(src), vision_distance, hearers, garbage_obj, checkghosts = TRUE)
+	get_mobs_and_objs_in_view_fast(get_turf(src), vision_distance, hearers, garbage_obj)
 	hearers -= ignored_mobs
 
 	for(var/hearer in hearers)
@@ -70,7 +70,7 @@
 		easing = CUBIC_EASING | EASE_IN
 	)
 
-	addtimer(CALLBACK(GLOBAL_PROC, .proc/remove_image_from_client, splash_image, viewer_client), SPLASH_TEXT_TOTAL_LIFETIME(lifetime_mult), TIMER_DELETE_ME)
+	addtimer(CALLBACK(GLOBAL_PROC, /proc/remove_image_from_client, splash_image, viewer_client), SPLASH_TEXT_TOTAL_LIFETIME(lifetime_mult), TIMER_DELETE_ME)
 
 #undef SPLASH_TEXT_WIDTH
 #undef SPLASH_TEXT_SPAWN_TIME

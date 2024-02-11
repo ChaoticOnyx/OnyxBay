@@ -18,7 +18,7 @@
 	for(var/obj/structure/lattice/LAT in loc)
 		if(LAT != src)
 			util_crash_with("Found multiple lattices at '[log_info_line(loc)]'")
-			qdel(LAT)
+			return INITIALIZE_HINT_QDEL
 	icon = 'icons/obj/smoothlattice.dmi'
 	icon_state = "latticeblank"
 	updateOverlays()
@@ -78,7 +78,7 @@
 	//if(!(istype(src.loc, /turf/space)))
 	//	qdel(src)
 	spawn(1)
-		overlays = list()
+		ClearOverlays()
 
 		var/dir_sum = 0
 

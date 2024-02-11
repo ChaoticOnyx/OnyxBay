@@ -4,11 +4,9 @@
 	blurb = "Ook."
 
 	icobase = 'icons/mob/human_races/monkeys/r_monkey.dmi'
-	deform = 'icons/mob/human_races/monkeys/r_monkey.dmi'
+
 	damage_overlays = 'icons/mob/human_races/masks/dam_monkey.dmi'
 	damage_mask = 'icons/mob/human_races/masks/dam_mask_monkey.dmi'
-
-	has_eyes_icon = FALSE
 
 	language = null
 	default_language = "Chimpanzee"
@@ -38,6 +36,9 @@
 	burn_mod = 1.5
 
 	spawn_flags = SPECIES_IS_RESTRICTED | SPECIES_NO_FBP_CONSTRUCTION | SPECIES_NO_FBP_CHARGEN | SPECIES_NO_LACE
+	appearance_flags = HAS_LIPS | HAS_EYE_COLOR
+
+	default_eye_color = "#000099"
 
 	bump_flag = MONKEY
 	swap_flags = MONKEY|METROID|SIMPLE_ANIMAL
@@ -142,11 +143,11 @@
 	health_hud_intensity = 2
 
 	icobase = 'icons/mob/human_races/monkeys/r_farwa.dmi'
-	deform = 'icons/mob/human_races/monkeys/r_farwa.dmi'
 
 	greater_form = SPECIES_TAJARA
 	default_language = "Farwa"
 	flesh_color = "#afa59e"
+	default_eye_color = "#F1B601"
 	blood_color = COLOR_BLOOD_TAJARAN
 	base_color = "#333333"
 	tail = "farwatail"
@@ -157,8 +158,11 @@
 	health_hud_intensity = 1.75
 
 	icobase = 'icons/mob/human_races/monkeys/r_neaera.dmi'
-	deform = 'icons/mob/human_races/monkeys/r_neaera.dmi'
+	has_eyes_icon = FALSE
 
+	appearance_flags = 0
+
+	default_eye_color = "#ffffff"
 	greater_form = SPECIES_SKRELL
 	default_language = "Neaera"
 	flesh_color = "#8cd7a3"
@@ -172,12 +176,14 @@
 	health_hud_intensity = 1.5
 
 	icobase = 'icons/mob/human_races/monkeys/r_stok.dmi'
-	deform = 'icons/mob/human_races/monkeys/r_stok.dmi'
+
+	appearance_flags = HAS_EYE_COLOR
 
 	tail = "stoktail"
 	greater_form = SPECIES_UNATHI
 	default_language = "Stok"
 	flesh_color = "#34af10"
+	default_eye_color = "#FFF200"
 	blood_color = COLOR_BLOOD_UNATHI
 	base_color = "#066000"
 	reagent_tag = IS_UNATHI

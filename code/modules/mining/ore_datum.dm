@@ -1,17 +1,17 @@
-var/global/list/ore_data = list()
-var/global/list/ores_by_type = list()
+GLOBAL_LIST_EMPTY(ore_data)
+GLOBAL_LIST_EMPTY(ores_by_type)
 
 /hook/startup/proc/initialise_ore_data()
 	ensure_ore_data_initialised()
-	return 1
 
 /proc/ensure_ore_data_initialised()
-	if(ore_data && ore_data.len) return
+	if(GLOB.ore_data.len)
+		return
 
 	for(var/oretype in subtypesof(/ore))
 		var/ore/O = new oretype()
-		ore_data[O.name] = O
-		ores_by_type[oretype] = O
+		GLOB.ore_data[O.name] = O
+		GLOB.ores_by_type[oretype] = O
 
 /ore
 	var/name              // Name of ore. Also used as a tag.

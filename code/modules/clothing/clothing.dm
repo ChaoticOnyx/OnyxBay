@@ -3,7 +3,8 @@
 	siemens_coefficient = 0.9
 	var/flash_protection = FLASH_PROTECTION_NONE	// Sets the item's level of flash protection.
 	var/tint = TINT_NONE							// Sets the item's level of visual impairment tint.
-	var/list/species_restricted = list("exclude", SPECIES_NABBER) //Only these species can wear this kit.
+	/// Only these species can wear this kit.
+	var/list/species_restricted = null
 	var/gunshot_residue //Used by forensics.
 
 	var/list/accessories = list()
@@ -45,26 +46,27 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 
 	if(ishuman(user_mob))
 		var/mob/living/carbon/human/user_human = user_mob
-		if(blood_overlay_type && blood_DNA && user_human.body_build.blood_icon)
+		if(blood_overlay_type && is_bloodied && user_human.body_build.blood_icon)
 			var/mob_state = get_icon_state(slot)
 			var/mob_icon = user_human.body_build.get_mob_icon(slot, mob_state)
 			var/cache_index = "[mob_icon]/[mob_state]/[blood_color]"
 			if(!GLOB.clothing_blood_icons[cache_index])
-				var/image/bloodover = image(icon = user_human.body_build.blood_icon, icon_state = blood_overlay_type)
-				bloodover.color = blood_color
+				var/mutable_appearance/bloodover = mutable_appearance(user_human.body_build.blood_icon, blood_overlay_type, color = blood_color, flags = DEFAULT_APPEARANCE_FLAGS|RESET_COLOR)
 				bloodover.filters += filter(type = "alpha", icon = icon(mob_icon, mob_state))
 				GLOB.clothing_blood_icons[cache_index] = bloodover
-			ret.overlays |= GLOB.clothing_blood_icons[cache_index]
+
+			ret.AddOverlays(GLOB.clothing_blood_icons[cache_index])
 
 	if(length(accessories))
 		for(var/obj/item/clothing/accessory/A in accessories)
-			ret.overlays |= A.get_mob_overlay(user_mob, slot_tie_str)
+			ret.AddOverlays(A.get_mob_overlay(user_mob, slot_tie_str))
 	return ret
 
 // Aurora forensics port.
 /obj/item/clothing/clean_blood()
 	. = ..()
-	gunshot_residue = null
+	if(.)
+		gunshot_residue = null
 
 /obj/item/clothing/proc/get_fibers()
 	var/fiber_id = copytext(md5("\ref[src] fiber"), 1, 6)
@@ -117,12 +119,23 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 				return 0
 	return 1
 
-/obj/item/clothing/equipped(mob/user)
-	playsound(src, SFX_USE_OUTFIT, 75, 1)
-
+/obj/item/clothing/equipped(mob/user, slot)
+	SHOULD_CALL_PARENT(TRUE)
+	for(var/obj/item/clothing/accessory/accessory in accessories)
+		accessory.equipped(user)
 	if(needs_vision_update())
 		update_vision()
 	return ..()
+
+/obj/item/clothing/play_handling_sound(slot)
+	if(!pickup_sound)
+		return
+
+	if(slot == slot_l_hand || slot == slot_r_hand)
+		var/volume = clamp(rand(5,15) * w_class, PICKUP_SOUND_VOLUME_MIN, PICKUP_SOUND_VOLUME_MAX)
+		playsound(src, pickup_sound, volume, TRUE, extrarange = -5)
+	else
+		playsound(src, SFX_USE_OUTFIT, 75, TRUE, extrarange = -5)
 
 /obj/item/clothing/proc/refit_for_species(target_species)
 	if(!species_restricted)
@@ -131,7 +144,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 	//Set species_restricted list
 	switch(target_species)
 		if(SPECIES_HUMAN, SPECIES_SKRELL)	//humanoid bodytypes
-			species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_IPC) //skrell/humans/machines can wear each other's suits
+			species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL) //skrell/humans can wear each other's suits
 		else
 			species_restricted = list(target_species)
 
@@ -147,9 +160,9 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 	//Set species_restricted list
 	switch(target_species)
 		if(SPECIES_SKRELL)
-			species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_IPC) //skrell helmets fit humans too
+			species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL) //skrell helmets fit humans too
 		if(SPECIES_HUMAN)
-			species_restricted = list(SPECIES_HUMAN, SPECIES_IPC) //human helmets fit IPCs too
+			species_restricted = list(SPECIES_HUMAN)
 		else
 			species_restricted = list(target_species)
 
@@ -222,6 +235,9 @@ BLIND     // can't see anything
 	var/light_protection = 0
 	blood_overlay_type = null // These are too small to bother, no need to waste CPU time
 
+	drop_sound = SFX_DROP_ACCESSORY
+	pickup_sound = SFX_PICKUP_ACCESSORY
+
 /obj/item/clothing/glasses/update_clothing_icon()
 	if(ismob(src.loc))
 		var/mob/M = src.loc
@@ -244,8 +260,13 @@ BLIND     // can't see anything
 	body_parts_covered = HANDS
 	slot_flags = SLOT_GLOVES
 	attack_verb = list("challenged")
-	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
+	species_restricted = list("exclude", SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "bloodyhands"
+	var/transfer_blood = 0
+	var/mob/living/carbon/human/bloody_hands_mob
+
+	drop_sound = SFX_DROP_GLOVES
+	pickup_sound = SFX_PICKUP_GLOVES
 
 /obj/item/clothing/gloves/Initialize()
 	if(item_flags & ITEM_FLAG_PREMODIFIED)
@@ -260,6 +281,7 @@ BLIND     // can't see anything
 		ring = null
 	QDEL_NULL(ring)
 	wearer = null
+	bloody_hands_mob = null
 	return ..()
 
 /obj/item/clothing/gloves/update_clothing_icon()
@@ -267,14 +289,14 @@ BLIND     // can't see anything
 		var/mob/M = src.loc
 		M.update_inv_gloves()
 
-/obj/item/clothing/gloves/update_icon(needs_updating=FALSE)
+/obj/item/clothing/gloves/on_update_icon(needs_updating=FALSE)
 	if(!needs_updating)
 		return ..()
 
-	overlays.Cut()
+	ClearOverlays()
 
 	if(wired)
-		overlays += image(icon, "gloves_wire")
+		AddOverlays(image(icon, "gloves_wire"))
 
 /obj/item/clothing/gloves/get_fibers()
 	var/fiber_id = copytext(md5("\ref[src] fiber"), 1, 6)
@@ -372,6 +394,11 @@ BLIND     // can't see anything
 	ring = null
 	wearer = null
 
+/obj/item/clothing/gloves/clean_blood()
+	. = ..()
+	if(.)
+		transfer_blood = 0
+
 ///////////////////////////////////////////////////////////////////////
 //Head
 /obj/item/clothing/head
@@ -392,6 +419,9 @@ BLIND     // can't see anything
 
 	blood_overlay_type = "helmetblood"
 
+	drop_sound = SFX_DROP_HAT
+	pickup_sound = SFX_PICKUP_HAT
+
 /obj/item/clothing/head/get_mob_overlay(mob/user_mob, slot)
 	var/image/ret = ..()
 	var/species_name = "Default"
@@ -400,7 +430,7 @@ BLIND     // can't see anything
 		species_name = user_human.species.name
 	var/cache_key = "[light_overlay]_[species_name]"
 	if(on && light_overlay_cache[cache_key] && slot == slot_head_str)
-		ret.overlays |= light_overlay_cache[cache_key]
+		ret.AddOverlays(light_overlay_cache[cache_key])
 	return ret
 
 /obj/item/clothing/head/attack_self(mob/user)
@@ -459,9 +489,9 @@ BLIND     // can't see anything
 		to_chat(user, "<span class='notice'>You crawl under \the [src].</span>")
 	return 1
 
-/obj/item/clothing/head/update_icon(mob/user)
+/obj/item/clothing/head/on_update_icon(mob/user)
 
-	overlays.Cut()
+	ClearOverlays()
 	var/mob/living/carbon/human/H
 	if(istype(user,/mob/living/carbon/human))
 		H = user
@@ -471,7 +501,7 @@ BLIND     // can't see anything
 		// Generate object icon.
 		if(!light_overlay_cache["[light_overlay]_icon"])
 			light_overlay_cache["[light_overlay]_icon"] = image("icon" = 'icons/obj/light_overlays.dmi', "icon_state" = "[light_overlay]")
-		overlays |= light_overlay_cache["[light_overlay]_icon"]
+		AddOverlays(light_overlay_cache["[light_overlay]_icon"])
 
 		// Generate and cache the on-mob icon, which is used in update_inv_head().
 		var/cache_key = "[light_overlay][H ? "_[H.species.name]" : ""]"
@@ -505,7 +535,7 @@ BLIND     // can't see anything
 	var/down_flags_inv = 0
 	var/pull_mask = 0
 	var/hanging = 0
-	var/obj/screen/overlay = null
+	var/atom/movable/screen/overlay = null
 	blood_overlay_type = "maskblood"
 
 /obj/item/clothing/mask/New()
@@ -513,6 +543,10 @@ BLIND     // can't see anything
 		action_button_name = "Adjust Mask"
 		verbs += /obj/item/clothing/mask/proc/adjust_mask
 	..()
+
+/obj/item/clothing/mask/Destroy()
+	overlay = null
+	return ..()
 
 /obj/item/clothing/mask/needs_vision_update()
 	return ..() || overlay
@@ -572,14 +606,18 @@ BLIND     // can't see anything
 
 	var/can_hold_knife
 	var/obj/item/holding
+	var/track_blood = 0
 
 	permeability_coefficient = 0.50
 	force = 2
 	var/overshoes = 0
-	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
+	species_restricted = list("exclude", SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "shoeblood"
 
 	armor = list(melee = 25, bullet = 25, laser = 25,energy = 15, bomb = 25, bio = 10)
+
+	drop_sound = SFX_DROP_SHOES
+	pickup_sound = SFX_PICKUP_SHOES
 
 /obj/item/clothing/shoes/Destroy()
 	if(holding)
@@ -635,10 +673,10 @@ BLIND     // can't see anything
 	else
 		return ..()
 
-/obj/item/clothing/shoes/update_icon()
-	overlays.Cut()
+/obj/item/clothing/shoes/on_update_icon()
+	ClearOverlays()
 	if(holding)
-		overlays += image(icon, "[icon_state]_knife")
+		AddOverlays(image(icon, "[icon_state]_knife"))
 	return ..()
 
 /obj/item/clothing/shoes/proc/handle_movement(turf/walking, running)
@@ -648,6 +686,17 @@ BLIND     // can't see anything
 	if (ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_shoes()
+
+/obj/item/clothing/shoes/add_blood(source, new_track_blood = 0)
+	. = ..(source)
+	if(.)
+		track_blood = max(new_track_blood, track_blood)
+
+/obj/item/clothing/shoes/clean_blood()
+	. = ..()
+	if(.)
+		track_blood = 0
+
 
 ///////////////////////////////////////////////////////////////////////
 //Suit
@@ -662,6 +711,8 @@ BLIND     // can't see anything
 	blood_overlay_type = "suitblood"
 	siemens_coefficient = 0.9
 	w_class = ITEM_SIZE_NORMAL
+	drop_sound = SFX_DROP_CLOTH
+	pickup_sound = SFX_PICKUP_CLOTH
 
 /obj/item/clothing/suit/update_clothing_icon()
 	if (ismob(src.loc))
@@ -697,7 +748,7 @@ BLIND     // can't see anything
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 	w_class = ITEM_SIZE_NORMAL
 	force = 0
-	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_MONKEY)
+	species_restricted = list("exclude", SPECIES_MONKEY)
 	var/has_sensor = SUIT_HAS_SENSORS //For the crew computer 2 = unable to change mode
 	var/sensor_mode = 0
 		/*
@@ -714,6 +765,9 @@ BLIND     // can't see anything
 	var/worn_state = null
 	valid_accessory_slots = list(ACCESSORY_SLOT_UTILITY,ACCESSORY_SLOT_HOLSTER,ACCESSORY_SLOT_ARMBAND,ACCESSORY_SLOT_RANK,ACCESSORY_SLOT_DEPT,ACCESSORY_SLOT_DECOR,ACCESSORY_SLOT_MEDAL,ACCESSORY_SLOT_INSIGNIA)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_UTILITY,ACCESSORY_SLOT_HOLSTER,ACCESSORY_SLOT_ARMBAND,ACCESSORY_SLOT_RANK,ACCESSORY_SLOT_DEPT)
+
+	drop_sound = SFX_DROP_CLOTH
+	pickup_sound = SFX_PICKUP_CLOTH
 
 /obj/item/clothing/under/New()
 	..()
@@ -930,6 +984,9 @@ BLIND     // can't see anything
 	icon = 'icons/obj/clothing/rings.dmi'
 	slot_flags = SLOT_GLOVES
 	gender = NEUTER
-	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_DIONA)
+	species_restricted = list("exclude", SPECIES_DIONA)
 	var/undergloves = 1
 	blood_overlay_type = null
+
+	drop_sound = SFX_DROP_RING
+	pickup_sound = SFX_PICKUP_RING

@@ -168,5 +168,5 @@
 	return ..()
 
 /obj/item/computer_hardware/hard_drive/New()
-	install_default_programs()
 	..()
+	install_default_programs()

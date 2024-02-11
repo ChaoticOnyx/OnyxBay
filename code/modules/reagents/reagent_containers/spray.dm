@@ -190,10 +190,13 @@
 	volume = 10
 	startswith = list(/datum/reagent/water)
 
+	drop_sound = SFX_DROP_HERB
+	pickup_sound = SFX_PICKUP_HERB
+
 /obj/item/reagent_containers/spray/chemsprayer
 	name = "chem sprayer"
 	desc = "A utility used to spray large amounts of reagent in a given area."
-	icon = 'icons/obj/gun.dmi'
+	icon = 'icons/obj/guns/gun.dmi'
 	icon_state = "chemsprayer"
 	item_state = "chemsprayer"
 	throwforce = 3

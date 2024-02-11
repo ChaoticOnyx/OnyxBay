@@ -22,18 +22,18 @@
 
 	var/frequency = 0
 	var/id = null
-	var/datum/radio_frequency/radio_connection
+	var/datum/frequency/radio_connection
 
 /obj/machinery/atmospherics/binary/passive_gate/on
 	unlocked = 1
 	icon_state = "map_on"
 
-/obj/machinery/atmospherics/binary/passive_gate/New()
-	..()
+/obj/machinery/atmospherics/binary/passive_gate/Initialize()
+	. = ..()
 	air1.volume = ATMOS_DEFAULT_VOLUME_PUMP * 2.5
 	air2.volume = ATMOS_DEFAULT_VOLUME_PUMP * 2.5
 
-/obj/machinery/atmospherics/binary/passive_gate/update_icon()
+/obj/machinery/atmospherics/binary/passive_gate/on_update_icon()
 	icon_state = (unlocked && flowing)? "on" : "off"
 
 /obj/machinery/atmospherics/binary/passive_gate/update_underlays()
@@ -66,23 +66,28 @@
 		if (REGULATE_OUTPUT)
 			pressure_delta = target_pressure - output_starting_pressure
 
-	//-1 if pump_gas() did not move any gas, >= 0 otherwise
+	// -1 if pump_gas() did not move any gas, >= 0 otherwise
 	var/returnval = -1
-	if((regulate_mode == REGULATE_NONE || pressure_delta > 0.01) && (air1.temperature > 0 || air2.temperature > 0))	//since it's basically a valve, it makes sense to check both temperatures
+	if((regulate_mode == REGULATE_NONE) || (pressure_delta > 0.01))
 		flowing = 1
 
-		//flow rate limit
-		var/transfer_moles = (set_flow_rate/air1.volume)*air1.total_moles
+		// flow rate limit
+		var/transfer_flow_rate_limit = (set_flow_rate/air1.volume)*air1.total_moles
+		var/transfer_moles = 0
 
-		//Figure out how much gas to transfer to meet the target pressure.
-		switch (regulate_mode)
-			if (REGULATE_INPUT)
-				transfer_moles = min(transfer_moles, calculate_transfer_moles(air2, air1, pressure_delta, (network1)? network1.volume : 0))
-			if (REGULATE_OUTPUT)
-				transfer_moles = min(transfer_moles, calculate_transfer_moles(air1, air2, pressure_delta, (network2)? network2.volume : 0))
+		// Figure out how much gas to transfer to meet the target pressure.
+		switch(regulate_mode)
+			if(REGULATE_INPUT)
+				if(input_starting_pressure > output_starting_pressure)
+					transfer_moles = calculate_equalize_moles(air1, air2)
+			if(REGULATE_OUTPUT)
+				transfer_moles = calculate_transfer_moles(air1, air2, pressure_delta, (network2) ? network2.volume : 0)
+			if(REGULATE_NONE)
+				transfer_moles = transfer_flow_rate_limit
 
-		//pump_gas() will return a negative number if no flow occurred
-		returnval = pump_gas_passive(src, air1, air2, transfer_moles)
+		if(transfer_moles > 0)
+			// pump_gas() will return a negative number if no flow occurred
+			returnval = pump_gas_passive(src, air1, air2, min(transfer_flow_rate_limit,transfer_moles))
 
 	if (returnval >= 0)
 		if(network1)
@@ -100,20 +105,16 @@
 //Radio remote control
 
 /obj/machinery/atmospherics/binary/passive_gate/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, frequency)
+	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
-		radio_connection = radio_controller.add_object(src, frequency, filter = RADIO_ATMOSIA)
+		radio_connection = SSradio.add_object(src, frequency, filter = RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/binary/passive_gate/proc/broadcast_status()
 	if(!radio_connection)
 		return 0
 
-	var/datum/signal/signal = new
-	signal.transmission_method = 1 //radio signal
-	signal.source = src
-
-	signal.data = list(
+	var/list/data = list(
 		"tag" = id,
 		"device" = "AGP",
 		"power" = unlocked,
@@ -123,6 +124,7 @@
 		"sigtype" = "status"
 	)
 
+	var/datum/signal/signal = new(data)
 	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
 
 	return 1

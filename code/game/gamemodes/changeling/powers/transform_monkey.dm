@@ -24,7 +24,7 @@
 
 	changeling.chem_charges--
 	H.visible_message("<span class='warning'>[H] transforms!</span>")
-	changeling.geneticdamage = 30
+	changeling.set_genome_damage(30)
 	to_chat(H, "<span class='warning'>Our genes cry out!</span>")
 	H = H.monkeyize()
 	if(istype(H))
@@ -69,9 +69,9 @@
 
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(C)
 	C.icon = null
-	C.overlays.Cut()
+	C.ClearOverlays()
 	C.set_invisibility(101)
-	var/atom/movable/overlay/animation = new /atom/movable/overlay( C.loc )
+	var/atom/movable/fake_overlay/animation = new /atom/movable/fake_overlay( C.loc )
 	animation.icon_state = "blank"
 	animation.icon = 'icons/mob/mob.dmi'
 	animation.master = src

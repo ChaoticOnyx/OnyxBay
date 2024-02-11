@@ -30,7 +30,7 @@
 /datum/event/infestation/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
+	add_think_ctx("announce", CALLBACK(src, nameof(.proc/announce)), 0)
 
 /datum/event/infestation/get_mtth()
 	. = ..()
@@ -93,12 +93,7 @@
 	set_next_think_ctx("announce", world.time + (30 SECONDS))
 
 /datum/event/infestation/proc/announce()
-	command_announcement.Announce(
-		"Bioscans indicate that [vermstring] have been breeding in \the [location]. Clear them out, before this starts to affect productivity.",
-		"Major Bill's Shipping Critter Sensor",
-		zlevels = affecting_z,
-		new_sound = 'sound/AI/infestationstart.ogg'
-	)
+	SSannounce.play_station_announce(/datum/announce/infestation, "Bioscans indicate that [vermstring] have been breeding in \the [location]. Clear them out, before this starts to affect productivity.")
 
 /datum/event/infestation/proc/set_location_get_infestation_turfs()
 	location = pick_area(list(/proc/is_not_space_area, /proc/is_station_area))

@@ -26,8 +26,6 @@
 #define IS_TAJARA  5
 #define IS_XENOS   6
 #define IS_METROID 8
-#define IS_NABBER  9
-#define IS_ABDUCTOR 10
 
 #define CE_STABLE        "stable"       // Inaprovaline
 #define CE_ANTIBIOTIC    "antibiotic"   // Spaceacilin

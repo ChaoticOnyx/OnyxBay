@@ -1,0 +1,14 @@
+"a" = (/obj/item/stool/padded,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/plating,/area/template_noop)
+"j" = (/obj/structure/table/standard,/obj/item/reagent_containers/vessel/can/machpellabeer,/turf/simulated/floor/plating,/area/template_noop)
+"t" = (/obj/effect/decal/cleanable/blood/oil,/turf/simulated/floor/plating,/area/template_noop)
+"C" = (/obj/random/obstruction,/turf/simulated/floor/plating,/area/template_noop)
+"F" = (/obj/structure/table/rack,/obj/random/drinkbottle,/obj/random/drinkbottle,/turf/simulated/floor/plating,/area/template_noop)
+"G" = (/obj/structure/table/standard,/obj/random/drinkbottle,/obj/random/drinkbottle,/turf/simulated/floor/plating,/area/template_noop)
+"V" = (/turf/simulated/floor/plating,/area/template_noop)
+"X" = (/obj/structure/reagent_dispensers/beerkeg,/turf/simulated/floor/plating,/area/template_noop)
+
+(1,1,1) = {"
+FVj
+XaV
+CtG
+"}

@@ -50,7 +50,6 @@
 /datum/robot_hull/legs
 	footstep_sound = SFX_FOOTSTEP_ROBOT_LEGS
 
-
 /datum/robot_hull/legs/robot_old
 	icon_state = "robot_old"
 
@@ -180,3 +179,10 @@
 
 /datum/robot_hull/flying/eyebot_engineering
 	icon_state = "eyebot-engineering"
+
+/datum/robot_hull/drone
+	icon_state = "repairbot"
+	footstep_sound = SFX_FOOTSTEP_ROBOT_SPIDER
+
+/datum/robot_hull/drone/construction
+	icon_state = "constructiondrone"

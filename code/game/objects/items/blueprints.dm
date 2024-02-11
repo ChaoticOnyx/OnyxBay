@@ -54,7 +54,9 @@
 			delete_area(usr)
 
 /obj/item/blueprints/interact(mob/user)
-	var/area/A = get_area()
+	var/area/A = get_area(src)
+	if(!A)
+		return
 	var/text = {"<HTML><meta charset=\"utf-8\"><head><title>[src]</title></head><BODY>
 <h2>[station_name()] blueprints</h2>
 <small>Property of [GLOB.using_map.company_name]. For heads of staff only. Store in high-secure storage.</small><hr>
@@ -90,12 +92,7 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 	onclose(user, "blueprints")
 
 
-/obj/item/blueprints/proc/get_area()
-	var/turf/T = get_turf(usr)
-	var/area/A = T.loc
-	return A
-
-/obj/item/blueprints/proc/get_area_type(area/A = get_area())
+/obj/item/blueprints/proc/get_area_type(area/A = get_area(src))
 	if(istype(A, /area/space))
 		return AREA_SPACE
 
@@ -141,7 +138,7 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 
 	A.always_unpowered = 0
 
-	addtimer(CALLBACK(src, .proc/interact), 10)
+	addtimer(CALLBACK(src, nameof(.proc/interact)), 10)
 
 /obj/item/blueprints/proc/move_turfs_to_area(list/turf/turfs, area/A)
 	A.contents.Add(turfs)
@@ -151,7 +148,9 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 /obj/item/blueprints/proc/edit_area(mob/user)
 	if(!user)
 		return
-	var/area/A = get_area()
+	var/area/A = get_area(src)
+	if(!A)
+		return
 //	log_debug(edit_area")
 
 	var/prevname = "[A.name]"
@@ -170,7 +169,9 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 /obj/item/blueprints/proc/delete_area(mob/user)
 	if(!user)
 		return
-	var/area/A = get_area()
+	var/area/A = get_area(src)
+	if(!A)
+		return
 	if(get_area_type(A) != AREA_STATION || A.apc) //let's just check this one last time, just in case
 		interact()
 		return

@@ -24,7 +24,7 @@
 	else if(hasprox_receiver == host) //Default case
 		hasprox_receiver = H
 	host = H
-	register_signal(host, SIGNAL_MOVED, .proc/HandleMove)
+	register_signal(host, SIGNAL_MOVED, nameof(.proc/HandleMove))
 	last_host_loc = host.loc
 	SetRange(current_range,TRUE)
 
@@ -52,8 +52,8 @@
 
 	current_range = range
 
-	var/list/checkers_local = checkers
-	var/old_checkers_len = checkers_local.len
+	var/list/checkers_local = length(checkers) ? checkers : list()
+	var/old_checkers_len = length(checkers_local)
 
 	var/atom/_host = host
 
@@ -74,7 +74,7 @@
 		return
 
 	var/list/turfs = RANGE_TURFS(range, loc_to_use)
-	var/turfs_len = turfs.len
+	var/turfs_len = length(turfs)
 	var/old_checkers_used = min(turfs_len, old_checkers_len)
 
 	//reuse what we can
@@ -82,7 +82,7 @@
 		if(I <= old_checkers_used)
 			var/obj/effect/abstract/proximity_checker/pc = checkers_local[I]
 			if(pc)
-				pc.loc = turfs[I]
+				pc.forceMove(turfs[I])
 			else
 				checkers += new /obj/effect/abstract/proximity_checker(turfs[I], src)
 		else

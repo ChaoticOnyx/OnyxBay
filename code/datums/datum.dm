@@ -11,7 +11,7 @@
 	var/list/signal_procs = list()
 
 	// Thinking
-	var/list/_think_ctxs = list()
+	var/list/_think_ctxs
 	var/datum/think_context/_main_think_ctx
 
 #ifdef TESTING
@@ -54,9 +54,18 @@
 			qdel(C, FALSE, TRUE)
 		dc.Cut()
 
+	if(extensions)
+		for(var/expansion_key in extensions)
+			var/list/extension = extensions[expansion_key]
+			if(islist(extension))
+				extension.Cut()
+			else
+				qdel(extension)
+		extensions = null
+
 	clear_signal_refs()
 	clear_think()
-
+	weakref = null
 	return QDEL_HINT_QUEUE
 
 /// Only override this if you know what you're doing. You do not know what you're doing
@@ -100,7 +109,7 @@
 		return
 
 	if(QDELETED(_main_think_ctx))
-		_main_think_ctx = new(time, CALLBACK(src, .proc/think))
+		_main_think_ctx = new(time, CALLBACK(src, nameof(.proc/think)))
 		SSthink.contexts_groups[_main_think_ctx.group] += _main_think_ctx
 		CALC_NEXT_GROUP_RUN(_main_think_ctx)
 
@@ -128,6 +137,8 @@
 /// * `clbk` - a proc which should be called.
 /// * `time` - when to call the context.
 /datum/proc/add_think_ctx(name, datum/callback/clbk, time)
+	LAZYINITLIST(_think_ctxs)
+
 	if(!QDELETED(_think_ctxs[name]))
 		CRASH("Thinking context [name] is exists")
 
@@ -170,4 +181,4 @@
 /datum/proc/clear_think()
 	set_next_think(0)
 	QDEL_LIST_ASSOC_VAL(_think_ctxs)
-	qdel(_main_think_ctx)
+	QDEL_NULL(_main_think_ctx)

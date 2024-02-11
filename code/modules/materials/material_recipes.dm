@@ -17,7 +17,7 @@
 
 	if(integrity>=50)
 		recipes += new /datum/stack_recipe("[display_name] door", /obj/machinery/door/unpowered/simple, 10, time = 50, one_per_turf = 1, on_floor = 1, supplied_material = "[name]")
-		recipes += new /datum/stack_recipe("[display_name] barricade", /obj/structure/barricade, 5, time = 50, one_per_turf = 1, on_floor = 1, supplied_material = "[name]")
+		recipes += new /datum/stack_recipe("[display_name] barricade", /obj/structure/barricade/material, 5, time = 50, one_per_turf = 1, on_floor = 1, supplied_material = "[name]")
 		recipes += new /datum/stack_recipe("[display_name] stool", /obj/item/stool, 2, one_per_turf = 1, on_floor = 1, supplied_material = "[name]")
 		recipes += new /datum/stack_recipe("[display_name] bar stool", /obj/item/stool/bar, 2, time = 20, one_per_turf = 1, on_floor = 1, supplied_material = "[name]")
 		recipes += new /datum/stack_recipe("[display_name] bed", /obj/structure/bed, 3, time = 40, one_per_turf = 1, on_floor = 1, supplied_material = "[name]")
@@ -58,6 +58,7 @@
 	recipes += new /datum/stack_recipe("closet door", /obj/item/shield/closet, 1, time = 15, one_per_turf = 0, on_floor = 1)
 	recipes += new /datum/stack_recipe("canister", /obj/machinery/portable_atmospherics/canister, 10, time = 30, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe("cannon frame", /obj/item/cannonframe, 10, time = 15, one_per_turf = 0, on_floor = 0)
+	recipes += new /datum/stack_recipe("steel railing", /obj/structure/railing/steel, 2)
 	recipes += new /datum/stack_recipe("regular floor tile", /obj/item/stack/tile/floor, 1, 4, 20)
 	recipes += new /datum/stack_recipe("rough floor tile", /obj/item/stack/tile/floor_rough, 1, 4, 20)
 	recipes += new /datum/stack_recipe("dark floor tile", /obj/item/stack/tile/floor_dark, 1, 4, 20)
@@ -68,6 +69,7 @@
 	recipes += new /datum/stack_recipe("machine frame", /obj/machinery/constructable_frame/machine_frame, 5, time = 25, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe("vending frame", /obj/machinery/vending_frame, 5, time = 25, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe("turret frame", /obj/machinery/porta_turret_construct, 5, time = 25, one_per_turf = 1, on_floor = 1)
+	recipes += new /datum/stack_recipe("shutters assembly", /obj/structure/secure_door_assembly/shutters, 10, time = 50, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe_list("airlock assemblies", list( \
 		new /datum/stack_recipe("standard airlock assembly", /obj/structure/door_assembly, 4, time = 50, one_per_turf = 1, on_floor = 1), \
 		new /datum/stack_recipe("command airlock assembly", /obj/structure/door_assembly/door_assembly_com, 4, time = 50, one_per_turf = 1, on_floor = 1), \
@@ -104,6 +106,7 @@
 	..()
 	recipes += new /datum/stack_recipe("AI core", /obj/structure/AIcore, 8, time = 50, one_per_turf = 1)
 	recipes += new /datum/stack_recipe("Handmade crate", /obj/structure/closet/crate/handmade, 5, time = 30, one_per_turf = 1)
+	recipes += new /datum/stack_recipe("blast door assembly", /obj/structure/secure_door_assembly/blast, 10, time = 50, one_per_turf = 1, on_floor = 1)
 
 /material/stone/generate_recipes()
 	..()
@@ -130,6 +133,7 @@
 	..()
 	recipes += new /datum/stack_recipe("wooden sandals", /obj/item/clothing/shoes/sandal, 2, time = 20)
 	recipes += new /datum/stack_recipe("wood floor tile", /obj/item/stack/tile/wood, 1, 4, 20)
+	recipes += new /datum/stack_recipe("wood railing", /obj/structure/railing/wood, 2)
 	recipes += new /datum/stack_recipe("wooden chair", /obj/structure/bed/chair/wood, 3, time = 25, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe("fancy wooden chair", /obj/structure/bed/chair/wood/wings, 3, time = 35, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe("crossbow frame", /obj/item/crossbowframe, 5, time = 35, one_per_turf = 0, on_floor = 0)
@@ -161,6 +165,17 @@
 		new /datum/stack_recipe("white folder", /obj/item/folder/white), \
 		new /datum/stack_recipe("yellow folder", /obj/item/folder/yellow), \
 		))
+
+/material/darkwood/generate_recipes()
+	..()
+	recipes += new /datum/stack_recipe("darkwood floor tile", /obj/item/stack/tile/darkwood, 1, 4, 20)
+	recipes += new /datum/stack_recipe("darkwood railing", /obj/structure/railing/darkwood, 2)
+	recipes += new /datum/stack_recipe_list("sofa", list( \
+		new /datum/stack_recipe("left sofa", /obj/structure/bed/couch/left/sofa, 4, time = 50, one_per_turf = 1, on_floor = 1), \
+		new /datum/stack_recipe("middle sofa", /obj/structure/bed/couch/middle/sofa, 4, time = 50, one_per_turf = 1, on_floor = 1), \
+		new /datum/stack_recipe("right sofa", /obj/structure/bed/couch/right/sofa, 4, time = 50, one_per_turf = 1, on_floor = 1), \
+		))
+
 
 /material/goat_hide/generate_recipes()
 	recipes = list()

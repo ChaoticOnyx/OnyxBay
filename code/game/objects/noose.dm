@@ -112,14 +112,14 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 /obj/structure/noose/post_buckle_mob(mob/living/M)
 	if(M == buckled_mob)
 		layer = 3
-		overlays.Add(over)
+		AddOverlays(over)
 		M.pixel_y = initial(M.pixel_y) + 8
 		M.dir = SOUTH
 		set_next_think(world.time)
 	else
 		set_next_think(0)
 		layer = initial(layer)
-		overlays.Cut()
+		ClearOverlays()
 		pixel_x = initial(pixel_x)
 		M.pixel_x = initial(M.pixel_x)
 		M.pixel_y = initial(M.pixel_y)

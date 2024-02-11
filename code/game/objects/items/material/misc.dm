@@ -9,6 +9,9 @@
 	attack_verb = list("jabbed","stabbed","ripped")
 	material_amount = 3
 
+	drop_sound = SFX_DROP_SWORD
+	pickup_sound = SFX_PICKUP_SWORD
+
 /obj/item/material/hatchet
 	name = "hatchet"
 	desc = "A very sharp axe blade upon a short fibremetal handle. It has a long history of chopping things, but now it is used for chopping wood."
@@ -29,6 +32,9 @@
 	applies_material_colour = 0
 	hitsound = SFX_CHOP
 	material_amount = 3
+
+	pickup_sound = SFX_PICKUP_KNIFE
+	drop_sound = SFX_DROP_KNIFE
 
 /obj/item/material/hatchet/tacknife
 	name = "tactical knife"
@@ -104,4 +110,5 @@
 	attack_verb = list("chopped", "sliced", "cut", "reaped")
 	material_amount = 5
 
-
+	drop_sound = SFX_DROP_SWORD
+	pickup_sound = SFX_PICKUP_SWORD

@@ -20,6 +20,7 @@
 #define BE_FAMILIAR "BE_FAMILIAR"
 #define BE_SHADE "BE_SHADE"
 #define BE_VAMPIRE "BE_VAMPIRE"
+#define BE_UNDEAD "BE_UNDEAD"
 
 // Antagonist datum flags.
 #define ANTAG_OVERRIDE_JOB        0x1 // Assigned job is set to MODE when spawning.
@@ -36,7 +37,6 @@
 #define ANTAG_RANDOM_EXCEPTED   0x800 // If a game mode randomly selects antag types, antag types with this flag should be excluded.
 
 // Mode/antag template macros.
-#define MODE_ABDUCTOR "abductor"
 #define MODE_BORER "borer"
 #define MODE_XENOMORPH "xenomorph"
 #define MODE_LOYALIST "loyalist"
@@ -104,6 +104,7 @@
 #define SP_RECHARGE	"recharge"
 #define SP_CHARGES	"charges"
 #define SP_HOLDVAR	"holdervar"
+#define SP_TOGGLED  "toggled"
 
 //Voting-related
 #define VOTE_PROCESS_ABORT    1
@@ -118,7 +119,6 @@
 //vampire
 #define VAMP_DRAINING   0x1
 #define VAMP_HEALING    0x2
-#define VAMP_PRESENCE   0x4
-#define VAMP_FRENZIED   0x8
-#define VAMP_ISTHRALL   0x10
-#define VAMP_FULLPOWER  0x20
+#define VAMP_FRENZIED   0x4
+#define VAMP_ISTHRALL   0x8
+#define VAMP_FULLPOWER  0x10

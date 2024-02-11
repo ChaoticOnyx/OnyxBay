@@ -15,6 +15,7 @@
 		list(mode_name="stun", projectile_type=/obj/item/projectile/beam/stun),
 		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock),
 		)
+	has_safety = FALSE
 
 /obj/item/gun/energy/taser/carbine
 	name = "stun carbine"
@@ -71,6 +72,7 @@
 	fire_delay = 10
 	max_shots = 6
 	combustion = 0
+	has_safety = FALSE
 
 /obj/item/gun/energy/stunrevolver/rifle
 	name = "stun rifle"
@@ -103,11 +105,13 @@
 	self_recharge = 1
 	charge_meter = 0
 	combustion = 0
+	has_safety = FALSE
 
 /obj/item/gun/energy/crossbow/ninja
 	name = "energy dart thrower"
 	projectile_type = /obj/item/projectile/energy/dart
 	max_shots = 5
+
 
 /obj/item/gun/energy/crossbow/largecrossbow
 	name = "energy crossbow"
@@ -142,6 +146,7 @@
 	mod_weight = 0.7
 	mod_reach = 0.5
 	mod_handy = 1.0
+	has_safety = FALSE
 
 /obj/item/gun/energy/security
 	name = "taser"
@@ -158,6 +163,7 @@
 	mod_reach = 0.5
 	mod_handy = 1.0
 	burst_delay = 2
+	has_safety = FALSE
 
 	var/subtype = /decl/taser_types
 	var/owner = null
@@ -196,10 +202,10 @@
 	modifystate = tt.icon_state
 	update_icon()
 
-/obj/item/gun/energy/security/update_icon()
+/obj/item/gun/energy/security/on_update_icon()
 	var/ratio = 0
 	if(power_supply && power_supply.charge >= charge_cost)
-		ratio = max(round(power_supply.percent(), icon_rounder), icon_rounder)
+		ratio = max(round(CELL_PERCENT(power_supply), icon_rounder), icon_rounder)
 
 	icon_state = "[modifystate][ratio]"
 

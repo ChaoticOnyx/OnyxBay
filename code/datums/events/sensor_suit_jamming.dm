@@ -62,8 +62,8 @@
 /datum/event/sensor_suit_jamming/New()
 	. = ..()
 
-	add_think_ctx("announce", CALLBACK(GLOB.using_map, /datum/map/proc/ion_storm_announcement), 0)
-	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+	add_think_ctx("announce", CALLBACK(src, nameof(.proc/announce), 0))
+	add_think_ctx("end", CALLBACK(src, nameof(.proc/end)), 0)
 
 /datum/event/sensor_suit_jamming/on_fire()
 	var/severity = SSevents.evars["sensor_suit_jamming_severity"]
@@ -88,3 +88,6 @@
 	jamming_method.disable()
 	qdel(jamming_method)
 	jamming_method = null
+
+/datum/event/sensor_suit_jamming/proc/announce()
+	SSannounce.play_station_announce(/datum/announce/level_7_biohazard)

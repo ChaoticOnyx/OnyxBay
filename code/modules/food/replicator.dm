@@ -1,7 +1,7 @@
 /obj/machinery/food_replicator
 	name = "replicator"
 	desc = "like a microwave, except better. It has label \"Voice activation device\""
-	icon = 'icons/obj/vending.dmi'
+	icon = 'icons/obj/machines/vending.dmi'
 	icon_state = "soda"
 	density = 1
 	anchored = 1
@@ -60,7 +60,7 @@
 		..()
 	return
 
-/obj/machinery/food_replicator/update_icon()
+/obj/machinery/food_replicator/on_update_icon()
 	if(stat & BROKEN)
 		icon_state = "[initial(icon_state)]-broken"
 	else if( !(stat & NOPOWER) )

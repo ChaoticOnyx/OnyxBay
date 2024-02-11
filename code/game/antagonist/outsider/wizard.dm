@@ -71,7 +71,7 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 	wizard.store_memory("<B>Remember:</B> do not forget to prepare your spells.")
 	wizard.current.real_name = "[pick(GLOB.wizard_first)] [pick(GLOB.wizard_second)]"
 	wizard.current.SetName(wizard.current.real_name)
-	wizard.current.mutations.Add(MUTATION_CLUMSY)
+	wizard.current.add_mutation(MUTATION_CLUMSY)
 	wizard.wizard = new()
 
 /datum/antagonist/wizard/equip(mob/living/carbon/human/wizard_mob)
@@ -131,17 +131,29 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 Made a proc so this is not repeated 14 (or more) times.*/
 /mob/proc/wearing_wiz_garb()
 	to_chat(src, "Silly creature, you're not a human. Only humans can cast this spell.")
-	return 0
+	return FALSE
 
 // Humans can wear clothes.
 /mob/living/carbon/human/wearing_wiz_garb()
+	if(istype(mind.wizard, /datum/wizard/undead))
+		var/datum/wizard/undead/undead = mind.wizard
+		if(undead.lichified)
+			if(MUTATION_SKELETON in mutations)
+				return TRUE
+			else
+				to_chat(src, SPAN_WARNING("I can't cast while maintaining human appearance!"))
+				return FALSE
+
 	if(!is_wiz_garb(src.wear_suit) && (!src.species.hud || (slot_wear_suit in src.species.hud.equip_slots)))
-		to_chat(src, "<span class='warning'>I don't feel strong enough without my robe.</span>")
-		return 0
+		to_chat(src, SPAN_WARNING("I don't feel strong enough without my robe."))
+		return FALSE
+
 	if(!is_wiz_garb(src.shoes) && (!species.hud || (slot_shoes in src.species.hud.equip_slots)))
-		to_chat(src, "<span class='warning'>I don't feel strong enough without my sandals.</span>")
-		return 0
+		to_chat(src, SPAN_WARNING("I don't feel strong enough without my sandals."))
+		return FALSE
+
 	if(!is_wiz_garb(src.head) && (!species.hud || (slot_head in src.species.hud.equip_slots)))
-		to_chat(src, "<span class='warning'>I don't feel strong enough without my hat.</span>")
-		return 0
-	return 1
+		to_chat(src, SPAN_WARNING("I don't feel strong enough without my hat."))
+		return FALSE
+
+	return TRUE

@@ -8,6 +8,9 @@
 	startswith = list(/datum/reagent/nutriment/protein = 9)
 	bitesize = 3
 
+	drop_sound = SFX_DROP_FLESH
+	pickup_sound = SFX_PICKUP_FLESH
+
 /obj/item/reagent_containers/food/meat/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/material/knife))
 		new /obj/item/reagent_containers/food/rawcutlet(src)

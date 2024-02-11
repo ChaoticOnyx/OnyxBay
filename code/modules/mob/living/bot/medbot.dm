@@ -99,9 +99,9 @@
 	playsound(src, messagevoice[message], 75, FALSE)
 
 /mob/living/bot/medbot/update_icons()
-	overlays.Cut()
+	ClearOverlays()
 	if(skin)
-		overlays += image('icons/obj/aibots.dmi', "medskin_[skin]")
+		AddOverlays(image('icons/obj/aibots.dmi', "medskin_[skin]"))
 	if(busy)
 		icon_state = "medibots"
 	else
@@ -242,7 +242,7 @@
 		new /obj/item/robot_parts/l_arm(Tsec)
 
 	if(reagent_glass)
-		reagent_glass.loc = Tsec
+		reagent_glass.dropInto(Tsec)
 		reagent_glass = null
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
@@ -323,7 +323,7 @@
 	..()
 	spawn(5) // Terrible. TODO: fix
 		if(skin)
-			overlays += image('icons/obj/aibots.dmi', "kit_skin_[src.skin]")
+			AddOverlays(image('icons/obj/aibots.dmi', "kit_skin_[src.skin]"))
 
 /obj/item/firstaid_arm_assembly/attackby(obj/item/W as obj, mob/user as mob)
 	..()
@@ -344,7 +344,7 @@
 					build_step++
 					to_chat(user, "<span class='notice'>You add the health sensor to [src].</span>")
 					SetName("First aid/robot arm/health analyzer assembly")
-					overlays += image('icons/obj/aibots.dmi', "na_scanner")
+					AddOverlays(image('icons/obj/aibots.dmi', "na_scanner"))
 
 			if(1)
 				if(isprox(W))

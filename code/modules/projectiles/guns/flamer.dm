@@ -28,6 +28,7 @@
 	var/last_use = 0
 	var/last_fired = 0
 	fire_delay = 35
+	has_safety = FALSE
 
 /obj/item/gun/flamer/Destroy()
 	QDEL_NULL(fuel_tank)
@@ -62,18 +63,18 @@
 	else
 		. += "\n[SPAN_WARNING("Gauge not installed, you have no idea how much fuel left in [src]!")]"
 
-/obj/item/gun/flamer/update_icon()
-	overlays.Cut()
+/obj/item/gun/flamer/on_update_icon()
+	ClearOverlays()
 	if(igniter)
-		overlays += "+igniter"
+		AddOverlays("+igniter")
 	if(fuel_tank)
-		overlays += "+fuel_tank"
+		AddOverlays("+fuel_tank")
 	if(pressure_tank)
-		overlays += "+pressure_tank"
+		AddOverlays("+pressure_tank")
 	if(gauge)
-		overlays += "+gauge"
+		AddOverlays("+gauge")
 	if (lit && fuel_tank)
-		overlays += "+lit"
+		AddOverlays("+lit")
 	. = ..()
 
 /obj/item/gun/flamer/proc/remove_fuel_tank(mob/user)
@@ -120,7 +121,7 @@
 		var/turf/T = get_turf(src)
 		to_chat(user, "You twist the valve and pop the pressure tank out of [src].")
 		playsound(loc, 'sound/effects/refill.ogg', 25, 1, 3)
-		pressure_tank.loc = T
+		pressure_tank.dropInto(T)
 		pressure_tank = null
 		update_icon()
 		return

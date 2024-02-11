@@ -3,7 +3,7 @@
 	level = 1
 
 	layer = TURF_LAYER
-	plane = FLOOR_PLANE
+	plane = TURF_PLANE
 	vis_flags = VIS_INHERIT_PLANE|VIS_INHERIT_ID
 
 	var/turf_flags
@@ -29,17 +29,17 @@
 	var/blessed = 0             // Has the turf been blessed?
 	var/list/rad_resist = list(
 		RADIATION_ALPHA_PARTICLE = 38 MEGA ELECTRONVOLT,
-		RADIATION_BETA_PARTICLE = 365 KILO ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 50 KILO ELECTRONVOLT,
 		RADIATION_HAWKING = 81 MILLI ELECTRONVOLT
 	)
 
 	var/list/decals
 
-	var/movement_delay
-
 	var/changing_turf
 
 	var/footstep_sound = SFX_FOOTSTEP_PLATING
+
+	var/turf_height = 0 // "Vertical" offset. Mostly used for mobs and dropped items.
 
 /turf/Initialize(mapload, ...)
 	. = ..()
@@ -166,17 +166,14 @@
 	return 1 //Nothing found to block so return success!
 
 var/const/enterloopsanity = 100
-/turf/Entered(atom/atom as mob|obj)
+/turf/Entered(atom/movable/AM, atom/OldLoc)
+	. = ..()
 
-	..()
-
-	if(!istype(atom, /atom/movable))
+	if(!istype(AM))
 		return
 
-	var/atom/movable/A = atom
-
-	if(ismob(A))
-		var/mob/M = A
+	if(ismob(AM))
+		var/mob/M = AM
 		if(!M.check_solid_ground())
 			inertial_drift(M)
 			//we'll end up checking solid ground again but we still need to check the other things.
@@ -185,6 +182,15 @@ var/const/enterloopsanity = 100
 		else
 			M.inertia_dir = 0
 			M.make_floating(0) //we know we're not on solid ground so skip the checks to save a bit of processing
+			M.update_height_offset(turf_height)
+
+	else if(isobj(AM))
+		var/obj/O = AM
+		if(O.turf_height_offset)
+			if(isturf(OldLoc))
+				var/turf/old_turf = OldLoc
+				old_turf.update_turf_height()
+			update_turf_height()
 
 /turf/proc/adjacent_fire_act(turf/simulated/floor/source, temperature, volume)
 	return
@@ -292,15 +298,24 @@ var/const/enterloopsanity = 100
 
 /turf/_examine_text(mob/user, infix, suffix)
 	. = ..()
-	
+
 	if(hasHUD(user, HUD_SCIENCE))
 		. += "\nStopping Power:"
 
 		. += "\nα-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_ALPHA_PARTICLE]), "eV", 3)]"
 		. += "\nβ-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_BETA_PARTICLE]), "eV", 3)]"
-	
+
 	return .
 
 /turf/proc/get_footstep_sound()
 	if(footstep_sound)
 		return pick(GLOB.sfx_list[footstep_sound])
+
+/turf/proc/update_turf_height()
+	var/max_height = initial(turf_height)
+	for(var/obj/O in contents)
+		if(O.turf_height_offset)
+			max_height = max(max_height, O.turf_height_offset)
+	turf_height = max_height
+	for(var/mob/M in contents)
+		M.update_height_offset(turf_height)

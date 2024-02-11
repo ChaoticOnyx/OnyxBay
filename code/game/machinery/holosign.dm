@@ -32,7 +32,7 @@
 	update_icon()
 
 //maybe add soft lighting? Maybe, though not everything needs it
-/obj/machinery/holosign/update_icon()
+/obj/machinery/holosign/on_update_icon()
 	if (!lit || (stat & (BROKEN|NOPOWER)))
 		icon_state = "sign_off"
 	else
@@ -59,7 +59,7 @@
 	active = !active
 	update_icon()
 
-	for(var/obj/machinery/holosign/M in GLOB.machines)
+	for(var/obj/machinery/holosign/M in SSmachines.machinery)
 		if (M.id == src.id)
 			spawn( 0 )
 				M.toggle()
@@ -67,6 +67,6 @@
 
 	return
 
-/obj/machinery/button/holosign/update_icon()
+/obj/machinery/button/holosign/on_update_icon()
 	icon_state = "light[active]"
 	return

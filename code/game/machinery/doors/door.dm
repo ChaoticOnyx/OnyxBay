@@ -36,7 +36,13 @@
 	var/turf/filler
 	var/tryingToLock = FALSE // for autoclosing
 	// turf animation
-	var/atom/movable/overlay/c_animation = null
+	var/atom/movable/fake_overlay/c_animation = null
+
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 350 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.5 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 81 MILLI ELECTRONVOLT
+	)
 
 /obj/machinery/door/attack_generic(mob/user, damage)
 	if(damage >= 10)
@@ -224,7 +230,7 @@
 		else
 			repairing = stack.split(amount_needed, force=TRUE)
 			if(repairing)
-				repairing.loc = src
+				repairing.forceMove(src)
 				transfer = repairing.amount
 				repairing.uses_charge = FALSE //for clean robot door repair - stacks hint immortal if true
 
@@ -253,7 +259,7 @@
 	if(repairing && isCrowbar(I))
 		to_chat(user, "<span class='notice'>You remove \the [repairing].</span>")
 		playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
-		repairing.loc = user.loc
+		repairing.dropInto(user.loc)
 		repairing = null
 		return
 
@@ -347,7 +353,7 @@
 	return
 
 
-/obj/machinery/door/update_icon()
+/obj/machinery/door/on_update_icon()
 	if(density)
 		icon_state = "door1"
 	else
@@ -402,7 +408,7 @@
 	operating = FALSE
 
 	if(autoclose)
-		addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
+		addtimer(CALLBACK(src, nameof(.proc/close)), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
 
 	return TRUE
 
@@ -411,7 +417,7 @@
 	if(!can_close(forced))
 		if(autoclose)
 			tryingToLock = TRUE
-			addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
+			addtimer(CALLBACK(src, nameof(.proc/close)), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
 		return FALSE
 	operating = TRUE
 

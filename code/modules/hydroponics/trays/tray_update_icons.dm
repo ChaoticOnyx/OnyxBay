@@ -1,5 +1,5 @@
 //Refreshes the icon and sets the luminosity
-/obj/machinery/portable_atmospherics/hydroponics/update_icon()
+/obj/machinery/portable_atmospherics/hydroponics/on_update_icon()
 	// Update name.
 	if(seed)
 		if(mechanical)
@@ -9,7 +9,7 @@
 	else
 		SetName(initial(name))
 
-	overlays.Cut()
+	ClearOverlays()
 	var/new_overlays = list()
 	// Updates the plant overlay.
 	if(seed)
@@ -70,14 +70,14 @@
 			set_density(0)
 		set_opacity(0)
 
-	overlays |= new_overlays
+	AddOverlays(new_overlays)
 	//shift that shit pls god
 	if(istype(src, /obj/machinery/portable_atmospherics/hydroponics/soil) && length(overlays) == 1)
 		var/icon/fockenplant = overlays[1]
 		var/image/shitseed = image(fockenplant)
 		shitseed.pixel_y = 8
-		overlays.Cut()
-		overlays.Add(shitseed)
+		ClearOverlays()
+		AddOverlays(shitseed)
 	//shift that shit pls god
 	// Update bioluminescence.
 	if(seed && seed.get_trait(TRAIT_BIOLUM))

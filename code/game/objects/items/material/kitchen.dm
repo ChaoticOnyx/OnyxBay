@@ -30,10 +30,18 @@
 	return
 
 /obj/item/material/kitchen/utensil/attack(mob/living/carbon/M, mob/living/carbon/user)
+
 	if(!istype(M))
 		return ..()
 
+
+
 	if(user.a_intent != I_HELP)
+
+		if(is_pacifist(user))
+			to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+			return
+
 		if(user.zone_sel.selecting == BP_EYES)
 			if(istype(user.l_hand,/obj/item/grab) || istype(user.r_hand,/obj/item/grab))
 				return ..()
@@ -55,7 +63,7 @@
 			M.visible_message("<span class='notice'>\The [user] feeds some [loaded] to \the [M] with \the [src].</span>")
 		reagents.trans_to_mob(M, reagents.total_volume, CHEM_INGEST)
 		playsound(M.loc, 'sound/items/eatfood.ogg', rand(10, 40), 1)
-		overlays.Cut()
+		ClearOverlays()
 		return
 	else
 		to_chat(user, "<span class='warning'>You don't have anything on \the [src].</span>")//if we have help intent and no food scooped up DON'T STAB OURSELVES WITH THE FORK
@@ -98,6 +106,10 @@
 	edge = 1
 
 /obj/item/material/kitchen/utensil/knife/attack(mob/living/M, mob/living/user)
+	if(is_pacifist(user))
+		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		return
+
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
 		to_chat(user, SPAN("warning", "You accidentally cut yourself with \the [src]."))
 		user.take_organ_damage(20)
@@ -156,6 +168,10 @@
 	material_amount = 3
 
 /obj/item/material/kitchen/rollingpin/attack(mob/living/M as mob, mob/living/user as mob)
+	if(is_pacifist(user))
+		to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+		return
+
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
 		to_chat(user, "<span class='warning'>\The [src] slips out of your hand and hits your head.</span>")
 		user.drop(src, force = TRUE)

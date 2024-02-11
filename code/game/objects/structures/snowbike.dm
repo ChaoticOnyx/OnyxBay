@@ -18,5 +18,5 @@
 	icon_state = "seckeys"
 	w_class = 1
 
-/obj/vehicle/bike/update_icon()
+/obj/vehicle/bike/on_update_icon()
 	..()

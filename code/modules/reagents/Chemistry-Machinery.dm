@@ -8,7 +8,7 @@
 	density = 1
 	anchored = 1
 	icon = 'icons/obj/chemical.dmi'
-	icon_state = "mixer0"
+	icon_state = "mixer"
 	layer = BELOW_OBJ_LAYER
 	idle_power_usage = 20 WATTS
 	clicksound = SFX_USE_BUTTON
@@ -41,6 +41,10 @@
 	create_reagents(capacity)
 	..()
 
+/obj/machinery/chem_master/Initialize()
+	. = ..()
+	update_icon()
+
 /obj/machinery/chem_master/Destroy()
 	if(loaded_pill_bottle)
 		loaded_pill_bottle.forceMove(get_turf(src))
@@ -50,7 +54,22 @@
 		beaker = null
 	if(matter_storage >= matter_amount_per_sheet)
 		new /obj/item/stack/material/glass(get_turf(src), Floor(matter_storage / matter_amount_per_sheet))
-	..()
+	return ..()
+
+/obj/machinery/chem_master/on_update_icon()
+	ClearOverlays()
+	if(stat & (NOPOWER | BROKEN))
+		set_light(0)
+		if(stat & BROKEN)
+			AddOverlays(OVERLAY(icon, "[icon_state]_b"))
+	else
+		var/overlay_icon_state = "[icon_state]_over[!!beaker]"
+		AddOverlays(OVERLAY(icon, overlay_icon_state))
+		AddOverlays(emissive_appearance(icon, overlay_icon_state))
+		set_light(0.8, 0.5, 2, 3, "#0099FF")
+
+	if(beaker)
+		AddOverlays(OVERLAY(icon, "[icon_state]_vessel"))
 
 /obj/machinery/chem_master/ex_act(severity)
 	switch(severity)
@@ -79,7 +98,7 @@
 		beaker = W
 		to_chat(user, "You add \the [W] to the machine!")
 		updateUsrDialog()
-		icon_state = "mixer1"
+		update_icon()
 
 	else if(istype(W, /obj/item/storage/pill_bottle))
 		if(loaded_pill_bottle)
@@ -113,7 +132,7 @@
 
 	if (href_list["ejectp"])
 		if(loaded_pill_bottle)
-			loaded_pill_bottle.loc = src.loc
+			loaded_pill_bottle.dropInto(loc)
 			loaded_pill_bottle = null
 	else if(href_list["close"])
 		close_browser(usr, "window=chemmaster")
@@ -184,10 +203,10 @@
 			return
 		else if (href_list["eject"])
 			if(beaker)
-				beaker:loc = src.loc
+				beaker:dropInto(loc)
 				beaker = null
 				reagents.clear_reagents()
-				icon_state = "mixer0"
+				update_icon()
 		else if (href_list["createpill"] || href_list["createpill_multiple"])
 			var/count = 1
 
@@ -218,7 +237,7 @@
 				reagents.trans_to_obj(P,amount_per_pill)
 				if(src.loaded_pill_bottle)
 					if(loaded_pill_bottle.contents.len < loaded_pill_bottle.max_storage_space)
-						P.loc = loaded_pill_bottle
+						P.forceMove(loaded_pill_bottle)
 						src.updateUsrDialog()
 
 		else if(href_list["createbottle"])
@@ -383,10 +402,14 @@
 		/obj/item/stock_parts/manipulator = 2,
 		/obj/item/stock_parts/console_screen,
 	)
-	var/inuse = 0
+
+	var/inuse = FALSE
 	var/obj/item/reagent_containers/vessel/beaker/beaker
 	var/limit = 10
 	var/list/holdingitems = list()
+
+	/// Associative list of text -> image, where text is a name of an action.
+	var/static/list/choices
 
 /obj/machinery/reagentgrinder/Initialize(mapload)
 	. = ..()
@@ -394,7 +417,7 @@
 		beaker = new /obj/item/reagent_containers/vessel/beaker/large(src)
 	update_icon()
 
-/obj/machinery/reagentgrinder/update_icon()
+/obj/machinery/reagentgrinder/on_update_icon()
 	icon_state = "juicer"+num2text(!isnull(beaker))
 	return
 
@@ -402,7 +425,7 @@
 	if(beaker)
 		beaker.forceMove(get_turf(src))
 		beaker = null
-	..()
+	return ..()
 
 /obj/machinery/reagentgrinder/attackby(obj/item/O as obj, mob/user as mob)
 	if(default_deconstruction_screwdriver(user, O))
@@ -474,8 +497,9 @@
 /obj/machinery/reagentgrinder/attack_ai(mob/user as mob)
 	return 0
 
-/obj/machinery/reagentgrinder/attack_hand(mob/user as mob)
-	interact(user)
+/obj/machinery/reagentgrinder/attack_hand(mob/user)
+	if(!inuse)
+		show_choices(user)
 
 /obj/machinery/reagentgrinder/attack_robot(mob/user)
 	//Calling for adjacency as I don't think grinders are wireless.
@@ -484,81 +508,41 @@
 		//If attack_hand is updated, this segment won't have to be updated as well.
 		return attack_hand(user)
 
-/obj/machinery/reagentgrinder/interact(mob/user) // The microwave Menu
-	if(inoperable())
-		return
-	user.set_machine(src)
-	var/is_chamber_empty = 0
-	var/is_beaker_ready = 0
-	var/processing_chamber = ""
-	var/beaker_contents = ""
-	var/dat = ""
+/obj/machinery/reagentgrinder/proc/show_choices(mob/user)
+	if(!length(choices))
+		_generate_buttons()
 
-	if(!inuse)
-		for (var/obj/item/O in holdingitems)
-			processing_chamber += "\A [O.name]<BR>"
+	var/choice = show_radial_menu(user, src, choices, require_near = TRUE)
+	switch(choice)
+		if("grind")
+			grind()
+		if("dump")
+			show_splash_text(user, "contents dumped.")
+			eject()
+		if("detach")
+			show_splash_text(user, beaker ? "beaker detached." : "no beaker present!")
+			detach()
 
-		if (!processing_chamber)
-			is_chamber_empty = 1
-			processing_chamber = "Nothing."
-		if (!beaker)
-			beaker_contents = "<B>No beaker attached.</B><br>"
-		else
-			is_beaker_ready = 1
-			beaker_contents = "<B>The beaker contains:</B><br>"
-			var/anything = 0
-			for(var/datum/reagent/R in beaker.reagents.reagent_list)
-				anything = 1
-				beaker_contents += "[R.volume] - [R.name]<br>"
-			if(!anything)
-				beaker_contents += "Nothing<br>"
-
-
-		dat = {"
-	<b>Processing chamber contains:</b><br>
-	[processing_chamber]<br>
-	[beaker_contents]<hr>
-	"}
-		if (is_beaker_ready && !is_chamber_empty && !(stat & (NOPOWER|BROKEN)))
-			dat += "<A href='?src=\ref[src];action=grind'>Process the reagents</a><BR>"
-		if(holdingitems && holdingitems.len > 0)
-			dat += "<A href='?src=\ref[src];action=eject'>Eject the reagents</a><BR>"
-		if (beaker)
-			dat += "<A href='?src=\ref[src];action=detach'>Detach the beaker</a><BR>"
-	else
-		dat += "Please wait..."
-	show_browser(user, "<meta charset=\"utf-8\"><HEAD><TITLE>All-In-One Grinder</TITLE></HEAD><TT>[dat]</TT>", "window=reagentgrinder")
-	onclose(user, "reagentgrinder")
-	return
-
-
-/obj/machinery/reagentgrinder/OnTopic(user, href_list)
-	if(href_list["action"])
-		switch(href_list["action"])
-			if ("grind")
-				grind()
-			if("eject")
-				eject()
-			if ("detach")
-				detach()
-		interact(user)
-		return TOPIC_REFRESH
-
-/obj/machinery/reagentgrinder/proc/detach()
-	if (!beaker)
-		return
-	beaker.dropInto(loc)
-	beaker = null
-	update_icon()
+/obj/machinery/reagentgrinder/proc/_generate_buttons()
+	LAZYINITLIST(choices)
+	for(var/action as anything in list("grind", "dump", "detach"))
+		choices[action] = image('icons/hud/radial.dmi', "radial_[action]")
 
 /obj/machinery/reagentgrinder/proc/eject()
-	if (!holdingitems || holdingitems.len == 0)
+	if(!length(holdingitems))
 		return
 
 	for(var/obj/item/O in holdingitems)
-		O.loc = src.loc
 		holdingitems -= O
-	holdingitems.Cut()
+		O.dropInto(loc)
+
+/obj/machinery/reagentgrinder/proc/detach()
+	if(!beaker)
+		return
+
+	beaker.dropInto(loc)
+	beaker = null
+	update_icon()
 
 /obj/machinery/reagentgrinder/proc/grind()
 

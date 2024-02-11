@@ -121,7 +121,7 @@
 		for(var/mob/living/carbon/human/dead in GLOB.dead_mob_list_)
 			if(dead == data)
 				to_chat(mob, SPAN_DANGER("You didn't protect your master! Now all you deserve is to die in disgrace."))
-				var/obj/item/organ/internal/brain/B = mob.internal_organs_by_name[BP_BRAIN]
+				var/obj/item/organ/internal/cerebrum/brain/B = mob.internal_organs_by_name[BP_BRAIN]
 				if(B && B.damage < B.min_broken_damage)
 					B.take_internal_damage(100)
 				return

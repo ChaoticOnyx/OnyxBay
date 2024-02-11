@@ -165,6 +165,45 @@
 		/obj/item/grenade
 		)
 
+// AnimeshkaTvar
+/obj/item/clothing/head/helmet/space/void/syndi/clown_syndie
+	name = "strange clown helmet"
+	desc = "A strange helmet with a clown face on it. It looks like it was made by an unknown party."
+	icon_state = "clown_syndie"
+	item_state = "clown_syndie"
+	item_state_slots = list(
+		slot_l_hand_str = "syndie_clown",
+		slot_r_hand_str = "syndie_clown",
+	)
+
+/obj/item/clothing/suit/space/void/syndi/clown_syndie
+	name = "Syndicate “Honk” voidsuit"
+	desc = "A suit that protects you against the void. It has a clown face on it."
+	icon_state = "rig-syndie-clown"
+	item_state = "rig-syndie-clown"
+	item_state_slots = list(
+		slot_l_hand_str = "syndie_clown",
+		slot_r_hand_str = "syndie_clown",
+	)
+
+/obj/item/device/modkit/clown_syndie
+	name = "clown syndie voidsuit modkit"
+	desc = "A kit containing all the needed tools and parts to modify a voidsuit into a clown syndie voidsuit."
+	icon_state = "modkit"
+
+/obj/item/device/modkit/clown_syndie/New()
+	..()
+	parts = new /list(2)
+	original = new /list(2)
+	finished = new /list(2)
+
+	parts[1] =	1
+	original[1] =  /obj/item/clothing/head/helmet/space/void/syndi
+	finished[1] = /obj/item/clothing/head/helmet/space/void/syndi/clown_syndie
+	parts[2] =	1
+	original[2] = /obj/item/clothing/suit/space/void/syndi
+	finished[2] = /obj/item/clothing/suit/space/void/syndi/clown_syndie
+
 // NoTips
 /obj/item/clothing/suit/fire/firefighter/atmos
 	name = "atmospherics firesuit"
@@ -193,6 +232,11 @@
 	original[2] = /obj/item/clothing/suit/fire/firefighter
 	finished[2] = /obj/item/clothing/suit/fire/firefighter/atmos
 
+/obj/item/clothing/head/dragon_skull
+	name = "dragon skull"
+	desc = "A skull of a fallen one. It's a bit heavy. And plasticy."
+	icon_state = "dragon_skull"
+
 // Animusin
 /obj/item/clothing/suit/storage/toggle/heart_jacket
 	name = "heart jacket"
@@ -203,3 +247,104 @@
 	icon_closed = "heart_jacket"
 	body_parts_covered = UPPER_TORSO|ARMS
 	initial_closed = TRUE
+
+// Popky_dau
+/obj/item/clothing/under/soviet/tcc
+	name = "TCC uniform"
+	desc = "For Magnitka!"
+	icon_state = "soviet_tcc"
+
+/obj/item/clothing/head/helmet/tcc
+	name = "TCC army helmet"
+	desc = "For Magnitka! Protects the head from Gaian sentiments."
+	icon_state = "tcchelm"
+	valid_accessory_slots = null
+	body_parts_covered = HEAD
+	visor_body_parts_covered = NO_BODYPARTS
+
+/obj/item/device/modkit/helmet_tcc
+	name = "TCC army helmet modkit"
+	desc = "A kit containing all the needed tools and parts to modify a helmet into a TCC army helmet."
+	icon_state = "modkit"
+
+/obj/item/device/modkit/helmet_tcc/New()
+	..()
+	parts = new /list(1)
+	original = new /list(1)
+	finished = new /list(1)
+
+	parts[1] =	1
+	original[1] =  /obj/item/clothing/head/helmet
+	finished[1] = /obj/item/clothing/head/helmet/tcc
+
+// Sans andertale
+/obj/item/clothing/suit/armor/vest/hazardcoat
+	name = "ranger's coat"
+	desc = "An armored coat with desert camo pattern."
+	icon_state = "hazardcoat"
+	//item_state = "armor"
+	armor = list(melee = 50, bullet = 50, laser = 50, energy = 25, bomb = 40, bio = 10)
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
+	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
+	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
+
+
+/obj/item/device/modkit/hazardcoat
+	name = "ranger coat modkit"
+	desc = "A green coat with some kevlar inside it. Made specificly for warden's jacket."
+	icon_state = "modkit"
+
+/obj/item/device/modkit/hazardcoat/New()
+	..()
+	parts = new /list(1)
+	original = new /list(1)
+	finished = new /list(1)
+
+	parts[1] =	1
+	original[1] =  /obj/item/clothing/suit/armor/vest/warden
+	finished[1] = /obj/item/clothing/suit/armor/vest/hazardcoat
+
+/obj/item/gun/projectile/revolver/remington
+	name = "sweet revenge"
+	desc = "A very old revolver, based on the remington 1858. Uses .44 magnum rounds. There are 7 notches on this revolver."
+	icon = 'icons/obj/guns/sr.dmi'
+	icon_state = "remington"
+	item_state = "webley"
+	max_shells = 6
+	caliber = ".44"
+	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
+	ammo_type = /obj/item/ammo_casing/c44
+
+/obj/item/device/modkit/remington
+	name = "remington 1858 modkit"
+	desc = "Tools necessary to turn a .357 revolver into a remington."
+	icon_state = "modkit"
+
+/obj/item/device/modkit/remington/New()
+	..()
+	parts = new /list(1)
+	original = new /list(1)
+	finished = new /list(1)
+
+	parts[1] =	1
+	original[1] =  /obj/item/gun/projectile/revolver
+	finished[1] = /obj/item/gun/projectile/revolver/remington
+
+// TheUnknownOneBYND
+/obj/item/clothing/under/color/odaycel
+	name = "O-S jumpsuit"
+	desc = "A seemingly custom-tailored brown jumpsuit. It's marked \"#O-S\" and has a serial number on its chest."
+	color = "#663300"
+
+/obj/item/clothing/under/color/odaycel/New()
+	..()
+	name = "O-S jumpsuit #[rand(1, 9999)]"
+
+
+// Sekonda
+
+/obj/item/clothing/suit/poncho/dominiancape
+	name = "Award cape"
+	desc = "A red silk cloak embroidered with gold threads"
+	icon_state = "dominiancape"
+	item_state = "dominiancape"

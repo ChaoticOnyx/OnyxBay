@@ -58,7 +58,7 @@
 	var/datum/changeling/changeling		// Changeling holder
 	var/datum/vampire/vampire 			// Vampire holder
 	var/datum/wizard/wizard				// Wizard holder
-	var/datum/abductor/abductor 		// Abductor holder
+	var/weakref/enslaved_to
 	var/rev_cooldown = 0
 
 	// the world.time since the mob has been brigged, or -1 if not at all
@@ -74,11 +74,6 @@
 
 	//used to store what traits the player had picked out in their preferences before joining, in text form.
 	var/list/traits = list()
-
-	var/thunder_points = 0
-	var/thunder_respawns = 0
-	var/mob/living/carbon/human/thunderfield_owner
-	var/thunderfield_cheater = FALSE
 
 /datum/mind/New(key)
 	src.key = key
@@ -97,7 +92,7 @@
 		unregister_signal(src, SIGNAL_QDELETING)
 	current = new_current
 	if(current)
-		register_signal(src, SIGNAL_QDELETING, .proc/clear_current)
+		register_signal(src, SIGNAL_QDELETING, nameof(.proc/clear_current))
 
 /datum/mind/proc/clear_current(datum/source)
 	set_current(null)
@@ -108,11 +103,9 @@
 		return FALSE
 
 	if(current)					//remove ourself from our old body's mind variable
-		if(vampire)
-			current.remove_vampire_powers()
 		current.mind = null
-
 		SSnano.user_transferred(current, new_character) // transfer active NanoUI instances to new user
+
 	if(new_character.mind)		//remove any mind currently in our new body's mind variable
 		new_character.mind.set_current(null)
 
@@ -126,7 +119,7 @@
 		changeling.transfer_to(new_character)
 
 	if(vampire)
-		new_character.make_vampire()
+		vampire.transfer_to(new_character)
 
 	if(active)
 		new_character.key = key		//now transfer the key to link the client to our new body

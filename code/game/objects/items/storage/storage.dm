@@ -6,7 +6,7 @@
 
 /obj/item/storage
 	name = "storage"
-	icon = 'icons/obj/storage.dmi'
+	icon = 'icons/obj/storage/misc.dmi'
 	w_class = ITEM_SIZE_NORMAL
 	var/list/can_hold = new /list() //List of objects which this item can store (if set, it can't store anything else)
 	var/list/cant_hold = new /list() //List of objects which this item can't store (in effect only if can_hold isn't set)
@@ -16,9 +16,12 @@
 	var/storage_slots = null //The number of storage slots in this container.
 	var/list/override_w_class // List of items that can bypass the max_w_class restriction
 
-	var/use_to_pickup	//Set this to make it possible to use this item in an inverse way, so you can have the item in your hand and click items on the floor to pick them up.
-	var/allow_quick_empty	//Set this variable to allow the object to have the 'empty' verb, which dumps all the contents on the floor.
-	var/allow_quick_gather	//Set this variable to allow the object to have the 'toggle mode' verb, which quickly collects all items from a tile.
+	// Allows to pick up items from a tile by clicking with the object on the floor.
+	var/use_to_pickup = FALSE
+	/// Allows to dump all the contents of the object on the floor.
+	var/allow_quick_empty = FALSE
+	/// Allows to quickly collect all items from a tile .
+	var/allow_quick_gather = FALSE
 	var/collection_mode = 1;  //0 = pick one at a time, 1 = pick all on tile
 	var/use_sound = SFX_SEARCH_CASE	//sound played when used. null for no sound.
 
@@ -35,13 +38,13 @@
 	if(!canremove)
 		return
 
-	if((ishuman(usr) || isrobot(usr) || issmall(usr)) && !usr.incapacitated())
+	if(((ishuman(usr) || isrobot(usr) || issmall(usr)) && (!isxenomorph(usr) && !islarva(usr)))  && !usr.incapacitated())
 		if(over_object == usr && Adjacent(usr)) // this must come before the screen objects only block
 			src.add_fingerprint(usr)
 			src.open(usr)
 			return TRUE
 
-		if(!(istype(over_object, /obj/screen)))
+		if(!(istype(over_object, /atom/movable/screen)))
 			return ..()
 
 		//makes sure that the storage is equipped, so that we can't drag it into our hand from miles away.
@@ -63,7 +66,7 @@
 	if(!canremove)
 		return
 
-	if((ishuman(usr) || isrobot(usr) || issmall(usr)) && !usr.incapacitated() && Adjacent(usr))
+	if((((ishuman(usr) || isrobot(usr) || issmall(usr)) && (!isxenomorph(usr) && !islarva(usr))) && !usr.incapacitated() && Adjacent(usr)))
 		add_fingerprint(usr)
 		open(usr)
 		return TRUE
@@ -102,6 +105,8 @@
 		storage_ui.on_open(user)
 		storage_ui.show_to(user)
 
+	SEND_SIGNAL(src, SIGNAL_STORAGE_OPENED, src, user)
+
 /obj/item/storage/proc/prepare_ui()
 	if(storage_ui)
 		storage_ui.prepare_ui()
@@ -113,6 +118,8 @@
 
 	if(src.use_sound)
 		playsound(src.loc, src.use_sound, 50, 1, -5)
+
+	SEND_SIGNAL(src, SIGNAL_STORAGE_CLOSED, src, user)
 
 /obj/item/storage/proc/close_all()
 	if(storage_ui)

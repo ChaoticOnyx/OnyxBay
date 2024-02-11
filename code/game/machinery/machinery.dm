@@ -135,22 +135,32 @@ Class Procs:
 	if(d)
 		set_dir(d)
 
-	GLOB.machines |= src
+	SSmachines.machinery.Add(src)
 
-	if (populate_components && component_types)
+	if(populate_components && component_types)
 		component_parts = list()
-		for (var/type in component_types)
+		for(var/type in component_types)
 			var/count = component_types[type]
-			if (count > 1)
-				for (var/i in 1 to count)
-					component_parts += new type(src)
+			if(count > 1)
+				for(var/i in 1 to count)
+					component_parts.Add(new type(src))
 			else
-				component_parts += new type(src)
+				component_parts.Add(new type(src))
 
-		if(component_parts.len)
+		if(length(component_parts))
 			RefreshParts()
 
 	START_PROCESSING(SSmachines, src) // It's safe to remove machines from here.
+
+/obj/machinery/Destroy()
+	SSmachines.machinery.Remove(src)
+	set_power_use(NO_POWER_USE)
+	STOP_PROCESSING(SSmachines, src)
+	if(component_parts)
+		QDEL_NULL_LIST(component_parts)
+	component_parts = null
+	current_power_area = null
+	return ..()
 
 
 /obj/machinery/proc/play_beep()
@@ -160,19 +170,6 @@ Class Procs:
 	if(!stat && world.time > beep_last_played + 60 SECONDS && prob(10))
 		beep_last_played = world.time
 		playsound(src.loc, pick(beepsounds), 30)
-
-/obj/machinery/Destroy()
-	GLOB.machines -= src
-	set_power_use(NO_POWER_USE)
-	STOP_PROCESSING(SSmachines, src)
-	if(component_parts)
-		for(var/atom/A in component_parts)
-			if(A.loc == src) // If the components are inside the machine, delete them.
-				qdel(A)
-			else // Otherwise we assume they were dropped to the ground during deconstruction, and were not removed from the component_parts list by deconstruction code.
-				component_parts -= A
-	current_power_area = null
-	return ..()
 
 /obj/machinery/Process()
 	return PROCESS_KILL // Only process if you need to.
@@ -275,9 +272,8 @@ Class Procs:
 		return TRUE
 	if(user.lying || user.stat)
 		return TRUE
-	if ( ! (istype(usr, /mob/living/carbon/human) || \
-			istype(usr, /mob/living/silicon)))
-		to_chat(usr, "<span class='warning'>You don't have the dexterity to do this!</span>")
+	if (!(istype(usr, /mob/living/carbon/human) || istype(usr, /mob/living/silicon)))
+		to_chat(usr, FEEDBACK_YOU_LACK_DEXTERITY)
 		return TRUE
 /*
 	//distance checks are made by atom/proc/DblClick
@@ -354,9 +350,14 @@ Class Procs:
 
 /obj/machinery/proc/default_part_replacement(mob/user, obj/item/storage/part_replacer/R)
 	if(!istype(R))
-		return 0
+		return FALSE
+
+	if(!R.active)
+		return FALSE
+
 	if(!component_parts)
-		return 0
+		return FALSE
+
 	if(panel_open)
 		var/obj/item/circuitboard/CB = locate(/obj/item/circuitboard) in component_parts
 		var/P
@@ -370,16 +371,18 @@ Class Procs:
 					if(B.rating > A.rating)
 						R.remove_from_storage(B, src)
 						R.handle_item_insertion(A, 1)
-						component_parts -= A
-						component_parts += B
-						B.loc = null
-						to_chat(user, "<span class='notice'>[A.name] replaced with [B.name].</span>")
+						component_parts.Remove(A)
+						component_parts.Add(B)
+						B.forceMove(src)
+						to_chat(user, SPAN("notice", "[A.name] has been replaced with [B.name]."))
+						R.post_usage()
 						break
 			update_icon()
 			RefreshParts()
 	else
 		to_chat(user, get_parts_infotext())
-	return 1
+
+	return TRUE
 
 /obj/machinery/proc/dismantle()
 	playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
@@ -388,7 +391,9 @@ Class Procs:
 	M.state = 1
 	M.update_icon()
 	for(var/obj/I in component_parts)
-		I.forceMove(get_turf(src))
+		if(!QDELETED(I))
+			I.forceMove(get_turf(src))
+	component_parts.Cut()
 	qdel(src)
 	return 1
 

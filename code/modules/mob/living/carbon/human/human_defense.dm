@@ -73,9 +73,10 @@ meteor_act
 				var/obj/item/material/shard/shrapnel/SP = new()
 				SP.SetName((P.name != "shrapnel")? "[P.name] shrapnel" : "shrapnel")
 				SP.desc = "[SP.desc] It looks like it was fired from [P.shot_from]."
-				SP.loc = organ
+				SP.forceMove(organ)
 				organ.embed(SP)
 
+	projectile_affect_poise(P, P.poisedamage * blocked_mult(blocked), def_zone)
 	projectile_hit_bloody(P, P.damage*blocked_mult(blocked), def_zone)
 
 	return blocked
@@ -171,6 +172,8 @@ meteor_act
 		if(istype(C) && (C.body_parts_covered & def_zone.body_part)) // Is that body part being targeted covered?
 			siemens_coefficient *= C.siemens_coefficient
 
+	for(var/datum/modifier/M in modifiers)
+		siemens_coefficient *= M.siemens_coefficient
 	return siemens_coefficient
 
 //this proc returns the armour value for a particular external organ.
@@ -213,6 +216,10 @@ meteor_act
 /mob/living/carbon/human/proc/check_shields(damage = 0, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 	var/obj/item/shield = null
 	var/shield_mod_shield = 0
+	if(istype(buckled, /obj/effect/dummy/immaterial_form))
+		if(prob(80))
+			return PROJECTILE_CONTINUE
+
 	for(var/obj/item/I in list(l_hand, r_hand, wear_suit))
 		if(!I) continue
 		if(I.mod_shield > shield_mod_shield)
@@ -746,6 +753,30 @@ meteor_act
 			if(BP_CHEST)
 				bloody_body(src)
 
+/mob/living/carbon/human/proc/projectile_affect_poise(obj/item/projectile/P, poisedamage, hit_zone)
+	if(!poisedamage)
+		return 0 //save a couple of nanoseconds
+
+	if(status_flags & GODMODE)
+		return 0 //godmode
+
+	var/pd_mult = 1.0
+	switch(hit_zone)
+		if(BP_HEAD)
+			pd_mult = 1.35
+		if(BP_CHEST)
+			pd_mult = 1.0
+		if(BP_GROIN)
+			pd_mult = 1.15
+		else
+			pd_mult = 0.75
+
+	damage_poise(poisedamage * pd_mult)
+	if(poise <= 25 && !prob(poise * 3))
+		apply_effect(max(3, (poisedamage * pd_mult / 4)), WEAKEN)
+		if(!lying)
+			visible_message(SPAN("danger", "[src] goes down under the impact of \the [P]!"))
+
 /mob/living/carbon/human/proc/attack_joint(obj/item/organ/external/organ, obj/item/W, effective_force, dislocate_mult, blocked)
 	if(!organ || (organ.dislocated == 2) || (organ.dislocated == -1) || blocked >= 100)
 		return 0
@@ -889,7 +920,7 @@ meteor_act
 		if(istype(O, /obj/item))
 			var/obj/item/I = O
 			mass = I.w_class / THROWNOBJ_KNOCKBACK_DIVISOR
-		var/momentum = speed * mass
+		var/momentum = (1 / speed) * mass
 
 		if(O.throw_source && momentum >= THROWNOBJ_KNOCKBACK_SPEED)
 			var/dir = get_dir(O.throw_source, src)
@@ -908,7 +939,7 @@ meteor_act
 				var/turf/T = near_wall(dir, 2)
 
 				if(T)
-					loc = T
+					forceMove(T)
 					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"), SPAN("warning", "You are pinned to the wall by [O]!"))
 					anchored = 1
 					pinned += O

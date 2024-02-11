@@ -59,14 +59,13 @@
 	if (!istype(M))
 		return 1
 
-	M.hud_used.hud_shown = 1
-	M.button_pressed_F12(1)
+	M.hud_used.show_hud(HUD_STYLE_NONE)
 
-	M.overlay_fullscreen("scanlines", /obj/screen/fullscreen/scanline)
-	M.overlay_fullscreen("cam_corners", /obj/screen/fullscreen/cam_corners)
-	M.overlay_fullscreen("fishbed", /obj/screen/fullscreen/fishbed)
+	M.overlay_fullscreen("scanlines", /atom/movable/screen/fullscreen/scanline)
+	M.overlay_fullscreen("cam_corners", /atom/movable/screen/fullscreen/cam_corners)
+	M.overlay_fullscreen("fishbed", /atom/movable/screen/fullscreen/fishbed)
 
-	var/obj/screen/rec/R = (locate(/obj/screen/rec) in M.client.screen)
+	var/atom/movable/screen/rec/R = (locate(/atom/movable/screen/rec) in M.client.screen)
 	if (!R)
 		R = new()
 		M.client.screen += R
@@ -81,10 +80,9 @@
 	if (!istype(M))
 		return 1
 
-	M.hud_used.hud_shown = 0
-	M.button_pressed_F12(0)
+	M.hud_used.show_hud(HUD_STYLE_STANDART)
 
-	var/obj/screen/rec/R = (locate(/obj/screen/rec) in M.client.screen)
+	var/atom/movable/screen/rec/R = (locate(/atom/movable/screen/rec) in M.client.screen)
 	if (R)
 		M.client.screen -= R
 
@@ -93,9 +91,9 @@
 	M.clear_fullscreen("fishbed", 0)
 
 	if (\
-		!(/obj/screen/rec in M.client.screen) &&\
-		!(/obj/screen/fullscreen/scanline in M.client.screen) &&\
-		!(/obj/screen/fullscreen/fishbed in M.client.screen)\
+		!(/atom/movable/screen/rec in M.client.screen) &&\
+		!(/atom/movable/screen/fullscreen/scanline in M.client.screen) &&\
+		!(/atom/movable/screen/fullscreen/fishbed in M.client.screen)\
 		)
 		M.machine_visual = null
 	else
@@ -190,7 +188,7 @@
 	src.view_range = num
 	cameranet.update_visibility(src, 0)
 
-/obj/machinery/camera/attack_hand(mob/living/carbon/human/user as mob)
+/obj/machinery/camera/attack_hand(mob/living/carbon/human/user)
 	if(!istype(user))
 		return
 
@@ -274,7 +272,7 @@
 	else
 		..()
 
-/obj/machinery/camera/proc/deactivate(user as mob, choice = 1)
+/obj/machinery/camera/proc/deactivate(mob/user, choice = 1)
 	// The only way for AI to reactivate cameras are malf abilities, this gives them different messages.
 	if(istype(user, /mob/living/silicon/ai))
 		user = null
@@ -329,7 +327,7 @@
 	if(isXRay()) return SEE_TURFS|SEE_MOBS|SEE_OBJS
 	return 0
 
-/obj/machinery/camera/update_icon()
+/obj/machinery/camera/on_update_icon()
 	if (!status || (stat & BROKEN))
 		icon_state = "[initial(icon_state)]1"
 	else if (stat & EMPED)

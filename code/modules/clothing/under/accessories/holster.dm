@@ -6,6 +6,44 @@
 	high_visibility = 1
 	var/obj/item/holstered = null
 	var/list/can_hold
+	var/datum/action/item_action/holster_action
+
+	var/sound_holster_in = SFX_HOLSTERIN
+	var/sound_holster_out = SFX_HOLSTEROUT
+
+/datum/action/item_action/holster
+	name = "Holster"
+	check_flags = AB_CHECK_RESTRAINED|AB_CHECK_STUNNED|AB_CHECK_LYING|AB_CHECK_ALIVE
+
+/datum/action/item_action/holster/CheckRemoval(mob/living/user)
+	var/obj/item/clothing/accessory/A = target
+	if(!istype(A))
+		return TRUE
+
+	if(..() && isnull(A.has_suit))
+		return TRUE
+
+	if(!isnull(A.has_suit) && !(A.has_suit in user))
+		return TRUE
+
+/obj/item/clothing/accessory/holster/Initialize()
+	. = ..()
+	holster_action = new /datum/action/item_action/holster
+	holster_action.target = src
+
+/obj/item/clothing/accessory/holster/Destroy()
+	if(has_suit)
+		has_suit.verbs -= /obj/item/clothing/accessory/holster/verb/holster_verb
+	QDEL_NULL(holstered)
+	QDEL_NULL(holster_action)
+	return ..()
+
+/obj/item/clothing/accessory/holster/equipped(mob/user)
+	. = ..()
+	holster_action.Grant(user)
+
+/obj/item/clothing/accessory/holster/ui_action_click()
+	holster_verb()
 
 /obj/item/clothing/accessory/holster/proc/holster(obj/item/I, mob/living/user)
 	var/new_w_class = max(w_class, I.w_class)
@@ -38,6 +76,8 @@
 	user.visible_message(SPAN("notice", "[user] holsters \the [holstered]."), SPAN("notice", "You holster \the [holstered]."))
 	name = "occupied [initial(name)]"
 
+	playsound(src, sound_holster_in, rand(40,60))
+
 /obj/item/clothing/accessory/holster/proc/clear_holster()
 	holstered = null
 	SetName(initial(name))
@@ -63,6 +103,7 @@
 		holstered.add_fingerprint(user)
 		w_class = initial(w_class)
 		clear_holster()
+		playsound(src, sound_holster_out, rand(40,60))
 
 /obj/item/clothing/accessory/holster/attackby(obj/item/W, mob/user)
 	holster(W, user)
@@ -99,8 +140,12 @@
 	set name = "Holster"
 	set category = "Object"
 	set src in usr
-	if(!istype(usr, /mob/living)) return
-	if(usr.stat) return
+
+	if(!istype(usr, /mob/living))
+		return
+
+	if(usr.stat)
+		return
 
 	//can't we just use src here?
 	var/obj/item/clothing/accessory/holster/H = null
@@ -138,14 +183,20 @@
 	name = "hip holster"
 	desc = "A handgun holster slung low on the hip, draw pardner!"
 	icon_state = "holster_hip"
+	sound_holster_in = SFX_TACHOLSTERIN
+	sound_holster_out = SFX_TACHOLSTEROUT
 
 /obj/item/clothing/accessory/holster/thigh
 	name = "thigh holster"
 	desc = "A drop leg holster made of a durable synthetic fiber."
 	icon_state = "holster_thigh"
+	sound_holster_in = SFX_TACHOLSTERIN
+	sound_holster_out = SFX_TACHOLSTEROUT
 
 /obj/item/clothing/accessory/holster/machete
 	name = "machete sheath"
 	desc = "A handsome synthetic leather sheath with matching belt."
 	icon_state = "holster_machete"
 	can_hold = list(/obj/item/material/hatchet/machete)
+	sound_holster_in = SFX_SHEATHIN
+	sound_holster_out = SFX_SHEATHOUT

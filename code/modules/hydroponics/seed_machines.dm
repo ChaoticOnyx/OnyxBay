@@ -21,6 +21,7 @@
 /obj/item/storage/box/botanydisk
 	name = "flora disk box"
 	desc = "A box of flora data disks, apparently."
+	icon_state = "hydrodisks"
 	startswith = list(/obj/item/disk/botany = 14)
 
 /obj/machinery/botany
@@ -65,7 +66,7 @@
 	if(eject_disk)
 		eject_disk = 0
 		if(loaded_disk)
-			loaded_disk.loc = get_turf(src)
+			loaded_disk.dropInto(get_turf(src))
 			visible_message("\icon[src] [src] beeps and spits out [loaded_disk].")
 			loaded_disk = null
 
@@ -166,7 +167,7 @@
 
 	if(href_list["eject_packet"])
 		if(!seed) return
-		seed.loc = get_turf(src)
+		seed.dropInto(get_turf(src))
 
 		if(seed.seed.name == "new line" || isnull(SSplants.seeds[seed.seed.name]))
 			seed.seed.uid = sequential_id(/datum/seed/)
@@ -180,7 +181,7 @@
 
 	if(href_list["eject_disk"])
 		if(!loaded_disk) return
-		loaded_disk.loc = get_turf(src)
+		loaded_disk.dropInto(get_turf(src))
 		visible_message("\icon[src] [src] beeps and spits out [loaded_disk].")
 		loaded_disk = null
 

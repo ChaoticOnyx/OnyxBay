@@ -25,7 +25,7 @@
 /obj/item/device/soulstone/New()
 	..()
 	shade = new /mob/living/simple_animal/shade(src)
-	register_signal(shade, SIGNAL_QDELETING, /obj/item/device/soulstone/proc/onShadeDeath)
+	register_signal(shade, SIGNAL_QDELETING, nameof(.proc/onShadeDeath))
 
 /obj/item/device/soulstone/Destroy()
 	unregister_signal(shade, SIGNAL_QDELETING)
@@ -47,7 +47,7 @@
 	set_full(SOULSTONE_EMPTY)
 
 	shade = new /mob/living/simple_animal/shade(src)
-	register_signal(shade, SIGNAL_QDELETING, /obj/item/device/soulstone/proc/onShadeDeath)
+	register_signal(shade, SIGNAL_QDELETING, nameof(.proc/onShadeDeath))
 
 
 /obj/item/device/soulstone/_examine_text(mob/user)
@@ -59,7 +59,7 @@
 	if(full == SOULSTONE_CRACKED)
 		. += "\nThis one is cracked and useless."
 
-/obj/item/device/soulstone/update_icon()
+/obj/item/device/soulstone/on_update_icon()
 	if(full == SOULSTONE_EMPTY)
 		icon_state = "soulstone"
 	if(full == SOULSTONE_ESSENCE)

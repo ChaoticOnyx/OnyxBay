@@ -53,6 +53,8 @@ var/list/global/tank_gauge_cache = list()
 	Wired and assembled tanks may be disarmed with a set of wirecutters. Any exploding or rupturing tank will generate shrapnel, assuming their relief valves have been welded beforehand. Even if not, they can be incited to expel hot gas on ignition if pushed above 173�C. \
 	Relatively easy to make, the single tank bomb requries no tank transfer valve, and is still a fairly formidable weapon that can be manufactured from any tank."
 
+	drop_sound = SFX_DROP_GASCAN
+	pickup_sound = SFX_PICKUP_GASCAN
 
 /obj/item/tank/Initialize()
 	. = ..()
@@ -76,7 +78,8 @@ var/list/global/tank_gauge_cache = list()
 	if(istype(loc, /obj/item/device/transfer_valve))
 		var/obj/item/device/transfer_valve/TTV = loc
 		TTV.remove_tank(src)
-		qdel(TTV)
+		if(!QDELETED(TTV))
+			qdel(TTV)
 
 	. = ..()
 
@@ -379,7 +382,7 @@ var/list/global/tank_gauge_cache = list()
 
 	set_next_think(world.time + 1 SECOND)
 
-/obj/item/tank/update_icon(override)
+/obj/item/tank/on_update_icon(override)
 	var/needs_updating = override
 
 	if((atom_flags & ATOM_FLAG_INITIALIZED) && istype(loc, /obj/) && !istype(loc, /obj/item/clothing/suit/) && !override) //So we don't eat up our tick. Every tick, when we're not actually in play.
@@ -400,16 +403,16 @@ var/list/global/tank_gauge_cache = list()
 		return
 
 
-	overlays.Cut() // Each time you modify this, the object is redrawn. Cunts.
+	ClearOverlays() // Each time you modify this, the object is redrawn. Cunts.
 
 	if(proxyassembly.assembly || wired)
-		overlays += image(icon,"bomb_assembly")
+		AddOverlays(image(icon, "bomb_assembly"))
 		if(proxyassembly.assembly)
 			var/image/bombthing = image(proxyassembly.assembly.icon, proxyassembly.assembly.icon_state)
-			bombthing.overlays |= proxyassembly.assembly.overlays
+			bombthing.CopyOverlays(proxyassembly.assembly)
 			bombthing.pixel_y = -1
 			bombthing.pixel_x = -3
-			overlays += bombthing
+			AddOverlays(bombthing)
 
 	if(!gauge_icon)
 		return
@@ -417,7 +420,7 @@ var/list/global/tank_gauge_cache = list()
 	var/indicator = "[gauge_icon][(gauge_pressure == -1) ? "overload" : gauge_pressure]"
 	if(!tank_gauge_cache[indicator])
 		tank_gauge_cache[indicator] = image(icon, indicator)
-	overlays += tank_gauge_cache[indicator]
+	AddOverlays(tank_gauge_cache[indicator])
 
 /// Handle exploding, leaking, and rupturing of the tank.
 /// Returns `TRUE` if it should continue thinking.
@@ -458,13 +461,7 @@ var/list/global/tank_gauge_cache = list()
 			var/num_fragments = round(rand(8,10) * sqrt(strength * mult))
 			fragmentate(T, num_fragments, 7, list(/obj/item/projectile/bullet/pellet/fragment/tank/small = 7,/obj/item/projectile/bullet/pellet/fragment/tank = 2,/obj/item/projectile/bullet/pellet/fragment/strong = 1))
 
-			if(istype(loc, /obj/item/device/transfer_valve))
-				var/obj/item/device/transfer_valve/TTV = loc
-				TTV.remove_tank(src)
-				qdel(TTV)
-
-			if(src)
-				qdel(src)
+			qdel(src)
 
 			return FALSE
 		else
@@ -489,10 +486,6 @@ var/list/global/tank_gauge_cache = list()
 
 			var/num_fragments = round(rand(6,8) * sqrt(strength * mult)) //Less chunks, but bigger
 			fragmentate(T, num_fragments, 7, list(/obj/item/projectile/bullet/pellet/fragment/tank/small = 1,/obj/item/projectile/bullet/pellet/fragment/tank = 5,/obj/item/projectile/bullet/pellet/fragment/strong = 4))
-
-			if(istype(loc, /obj/item/device/transfer_valve))
-				var/obj/item/device/transfer_valve/TTV = loc
-				TTV.remove_tank(src)
 
 			qdel(src)
 
@@ -626,7 +619,7 @@ var/list/global/tank_gauge_cache = list()
 	air_contents.temperature = new_temperature
 	set_next_think(world.time)
 
-/obj/item/device/tankassemblyproxy/update_icon()
+/obj/item/device/tankassemblyproxy/on_update_icon()
 	tank.update_icon()
 
 /obj/item/device/tankassemblyproxy/HasProximity(atom/movable/AM as mob|obj)

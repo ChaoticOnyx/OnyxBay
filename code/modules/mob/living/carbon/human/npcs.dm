@@ -10,6 +10,7 @@
 		C = new /obj/item/clothing/under/monkey/pants(src)
 		C.attach_accessory(null, new /obj/item/clothing/accessory/toggleable/hawaii/random(src))
 		equip_to_appropriate_slot(C)
+		add_mutation(MUTATION_BARTENDER)
 		if(prob(10))
 			C = new /obj/item/clothing/head/collectable/petehat(src)
 			equip_to_appropriate_slot(C)
@@ -31,7 +32,7 @@
 		C.sensor_mode = SUIT_SENSOR_OFF
 
 /mob/living/carbon/human/blank/New(new_loc)
-	..(new_loc, "Vat-Grown Human")
+	..(new_loc, SPECIES_VATGROWN)
 
 /mob/living/carbon/human/blank/Initialize()
 	. = ..()

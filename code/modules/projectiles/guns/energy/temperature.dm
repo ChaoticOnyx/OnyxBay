@@ -58,10 +58,10 @@
 
 /obj/item/gun/energy/temperature/think()
 	switch(temperature)
-		if(100 to 200) charge_cost = 10
-		if(201 to 200) charge_cost = 20
-		if(301 to 300) charge_cost = 30
-		if(401 to 400) charge_cost = 40
+		if(1 to 100) charge_cost = 10
+		if(101 to 200) charge_cost = 20
+		if(201 to 300) charge_cost = 30
+		if(301 to 400) charge_cost = 40
 		if(401 to 500) charge_cost = 50
 		if(501 to 600) charge_cost = 60
 		if(601 to 700) charge_cost = 70

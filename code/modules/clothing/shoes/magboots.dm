@@ -24,6 +24,9 @@
 		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
+	drop_sound = SFX_DROP_BOOTS
+	pickup_sound = SFX_PICKUP_BOOTS
+
 /obj/item/clothing/shoes/magboots/proc/set_slowdown()
 	slowdown_per_slot[slot_shoes] = shoes? max(0, shoes.slowdown_per_slot[slot_shoes]): 0	//So you can't put on magboots to make you walk faster.
 	if (magpulse)

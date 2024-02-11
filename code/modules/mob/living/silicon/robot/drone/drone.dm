@@ -21,10 +21,12 @@ var/list/mob_hat_cache = list()
 /mob/living/silicon/robot/drone
 	name = "maintenance drone"
 	real_name = "drone"
-	icon = 'icons/mob/robots.dmi'
 	icon_state = "repairbot"
 	maxHealth = 35
 	health = 35
+
+	default_hull = /datum/robot_hull/drone
+
 	cell_emp_mult = 1
 	universal_speak = 0
 	universal_understand = 1
@@ -65,7 +67,7 @@ var/list/mob_hat_cache = list()
 /mob/living/silicon/robot/drone/New()
 	..()
 
-	register_signal(src, SIGNAL_MOVED, /mob/living/silicon/robot/drone/proc/on_moved)
+	register_signal(src, SIGNAL_MOVED, nameof(.proc/on_moved))
 
 /mob/living/silicon/robot/drone/Destroy()
 	if(hat)
@@ -118,6 +120,9 @@ var/list/mob_hat_cache = list()
 /mob/living/silicon/robot/drone/construction
 	name = "construction drone"
 	icon_state = "constructiondrone"
+
+	default_hull = /datum/robot_hull/drone/construction
+
 	module_type = /obj/item/robot_module/drone/construction
 	hat_x_offset = 1
 	hat_y_offset = -12
@@ -129,9 +134,9 @@ var/list/mob_hat_cache = list()
 	..()
 
 	verbs += /mob/living/proc/hide
-	remove_language("Robot Talk")
-	add_language("Robot Talk", 0)
-	add_language("Drone Talk", 1)
+	remove_language(LANGUAGE_ROBOT)
+	add_language(LANGUAGE_ROBOT, FALSE)
+	add_language(LANGUAGE_DRONE, TRUE)
 
 	// NO BRAIN.
 	mmi = null
@@ -164,21 +169,21 @@ var/list/mob_hat_cache = list()
 		real_name = "[initial(name)] ([random_id(type,100,999)])"
 	SetName(real_name)
 
-/mob/living/silicon/robot/drone/update_icon()
+/mob/living/silicon/robot/drone/on_update_icon()
 
-	overlays.Cut()
+	ClearOverlays()
 	if(stat == 0)
 		if(controlling_ai)
-			overlays += "eyes-[icon_state]-ai"
+			AddOverlays("eyes-[icon_state]-ai")
 		else if(emagged)
-			overlays += "eyes-[icon_state]-emag"
+			AddOverlays("eyes-[icon_state]-emag")
 		else
-			overlays += "eyes-[icon_state]"
+			AddOverlays("eyes-[icon_state]")
 	else
-		overlays -= "eyes"
+		CutOverlays("eyes")
 
 	if(hat) // Let the drones wear hats.
-		overlays |= get_hat_icon(hat, hat_x_offset, hat_y_offset)
+		AddOverlays(get_hat_icon(hat, hat_x_offset, hat_y_offset))
 
 /mob/living/silicon/robot/drone/choose_hull()
 	return
@@ -284,12 +289,15 @@ var/list/mob_hat_cache = list()
 //DRONE LIFE/DEATH
 //For some goddamn reason robots have this hardcoded. Redefining it for our fragile friends here.
 /mob/living/silicon/robot/drone/updatehealth()
+	var/previous_health = health
 	if(status_flags & GODMODE)
 		health = 35
 		set_stat(CONSCIOUS)
-		return
-	health = 35 - (getBruteLoss() + getFireLoss())
-	return
+	else
+		health = 35 - (getBruteLoss() + getFireLoss())
+
+	if(health != previous_health)
+		update_health_slowdown()
 
 //Easiest to check this here, then check again in the robot proc.
 //Standard robots use config for crit, which is somewhat excessive for these guys.

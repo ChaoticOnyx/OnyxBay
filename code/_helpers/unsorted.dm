@@ -4,6 +4,14 @@
  * A large number of misc global procs.
  */
 
+/proc/subtypesof(datum/thing)
+	RETURN_TYPE(/list)
+	if(ispath(thing))
+		return typesof(thing) - thing
+	if(istype(thing))
+		return typesof(thing) - thing.type
+	return list()
+
 //Checks if all high bits in req_mask are set in bitfield
 #define BIT_TEST_ALL(bitfield, req_mask) ((~(bitfield) & (req_mask)) == 0)
 
@@ -55,6 +63,22 @@
 	if(A > upper) return 0
 	return 1
 
+
+/proc/get_projectile_angle(atom/source, atom/target)
+	var/sx = source.x * world.icon_size
+	var/sy = source.y * world.icon_size
+	var/tx = target.x * world.icon_size
+	var/ty = target.y * world.icon_size
+	var/atom/movable/AM
+	if(ismovable(source))
+		AM = source
+		sx += AM.step_x
+		sy += AM.step_y
+	if(ismovable(target))
+		AM = target
+		tx += AM.step_x
+		ty += AM.step_y
+	return SIMPLIFY_DEGREES(arctan(ty - sy, tx - sx))
 
 /proc/Get_Angle(atom/movable/start,atom/movable/end)//For beams.
 	if(!start || !end) return 0
@@ -320,6 +344,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 		if(!newname)	//we'll stick with the oldname then
 			return
 
+		log_and_message_admins("has renamed the [role] '[oldname]' to '[newname]'")
 		fully_replace_character_name(newname)
 
 
@@ -750,7 +775,6 @@ Turf and target are seperate in case you want to teleport some distance from a t
 					var/old_dir1 = T.dir
 					var/old_icon_state1 = T.icon_state
 					var/old_icon1 = T.icon
-					var/old_overlays = T.overlays.Copy()
 					var/old_underlays = T.underlays.Copy()
 
 					if(platingRequired)
@@ -762,7 +786,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 					X.set_dir(old_dir1)
 					X.icon_state = old_icon_state1
 					X.icon = old_icon1 //Shuttle floors are in shuttle.dmi while the defaults are floors.dmi
-					X.overlays = old_overlays
+					X.CopyOverlays(T)
 					X.underlays = old_underlays
 
 					var/list/objs = new /list()
@@ -945,30 +969,6 @@ var/global/list/common_tools = list(
 /obj/item/clothing/mask/smokable/cigarette/can_puncture()
 	return lit
 
-//check if mob is lying down on something we can operate him on.
-/proc/can_operate(mob/living/carbon/M, mob/living/carbon/user)
-	var/turf/T = get_turf(M)
-	if(locate(/obj/machinery/optable, T))
-		. = TRUE
-	if(locate(/obj/structure/bed, T))
-		. = TRUE
-	if(locate(/obj/structure/table, T))
-		. = TRUE
-	if(locate(/obj/effect/rune/, T))
-		. = TRUE
-
-	if(M == user)
-		var/hitzone = check_zone(user.zone_sel.selecting)
-		var/list/badzones = list(BP_HEAD)
-		if(user.hand)
-			badzones += BP_L_ARM
-			badzones += BP_L_HAND
-		else
-			badzones += BP_R_ARM
-			badzones += BP_R_HAND
-		if(hitzone in badzones)
-			return FALSE
-
 /proc/reverse_direction(dir)
 	switch(dir)
 		if(NORTH)
@@ -1091,3 +1091,6 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 
 /proc/pass()
 	return
+
+// Checking /obj/item/cell's charge percentage
+#define CELL_PERCENT(a) (PERCENT(a.charge, a.maxcharge))

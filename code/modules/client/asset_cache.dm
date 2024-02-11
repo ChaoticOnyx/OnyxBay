@@ -232,6 +232,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	verify = FALSE
 	assets = list(
 		"fa-regular-400.ttf" = 'html/font-awesome/webfonts/fa-regular-400.ttf',
+		"fa-brands-400.ttf" = 'html/font-awesome/webfonts/fa-brands-400.ttf',
 		"fa-solid-900.ttf" = 'html/font-awesome/webfonts/fa-solid-900.ttf',
 		"fa-v4compatibility.ttf" = 'html/font-awesome/webfonts/fa-v4compatibility.ttf',
 		"font-awesome.css" = 'html/font-awesome/css/all.min.css',
@@ -309,7 +310,6 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"nano/images/source/",
 		"nano/images/modular_computers/",
 		"nano/images/exodus/",
-		"nano/images/polar/",
 		"nano/images/frontier/",
 		"nano/images/example/"
 	)

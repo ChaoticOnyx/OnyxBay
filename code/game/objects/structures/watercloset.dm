@@ -1,4 +1,6 @@
-//todo: toothbrushes, and some sort of "toilet-filthinator" for the hos
+#define SHOWER_MAX_WORKING_TIME 30 SECONDS
+#define MIST_SPAWN_DELAY 10 SECONDS
+#define SHOWER_WASH_FLOOR_INTERVAL 10 SECONDS
 
 /obj/structure/toilet
 	name = "toilet"
@@ -13,7 +15,11 @@
 	var/mob/living/swirlie = null	//the mob being given a swirlie
 
 /obj/structure/toilet/New()
+	..()
 	open = round(rand(0, 1))
+
+/obj/structure/toiler/Initialize()
+	. = ..()
 	update_icon()
 
 /obj/structure/toilet/attack_hand(mob/living/user as mob)
@@ -39,7 +45,7 @@
 	open = !open
 	update_icon()
 
-/obj/structure/toilet/update_icon()
+/obj/structure/toilet/on_update_icon()
 	icon_state = "toilet[open][cistern]"
 
 /obj/structure/toilet/attackby(obj/item/I as obj, mob/living/user as mob)
@@ -84,33 +90,32 @@
 	anchored = TRUE
 	use_power = 0
 	layer = ABOVE_WINDOW_LAYER
-	var/on = 0
-	var/obj/effect/mist/mymist = null
-	var/ismist = 0				//needs a var so we can make it linger~
 	var/watertemp = "normal"	//freezing, normal, or boiling
 	var/is_washing = 0
+	/// Used to track when it should stop processing automatically.
+	var/time_enabled
+	/// Tracks interval at which it should wash the floor
+	var/next_wash_time
 	var/list/temperature_settings = list("normal" = 310, "boiling" = 100 CELSIUS, "freezing" = 0 CELSIUS)
+	/// Mist effect will be spawned only once per activation.
+	var/hasmist = FALSE
 
 /obj/machinery/shower/ex_act(severity)
 	switch(severity)
 		if(EXPLODE_DEVASTATE)
-			qdel(src)
-			return
+			qdel_self()
 		if(EXPLODE_HEAVY)
 			if(prob(50))
 				if(prob(50))
 					new /obj/item/shower_parts(get_turf(src))
-				qdel(src)
-				return
+				qdel_self()
 		if(EXPLODE_LIGHT)
 			if(prob(25))
 				new /obj/item/shower_parts(get_turf(src))
-				qdel(src)
-				return
-	return
+				qdel_self()
 
-/obj/machinery/shower/New()
-	..()
+/obj/machinery/shower/Initialize(mapload, ...)
+	. = ..()
 	create_reagents(50)
 
 //add heat controls? when emagged, you can freeze to death in it?
@@ -143,80 +148,55 @@
 		qdel_self()
 	return
 
-/obj/effect/mist
-	name = "mist"
-	icon = 'icons/obj/watercloset.dmi'
-	icon_state = "mist"
-
-	layer = ABOVE_HUMAN_LAYER
-	anchored = 1
-	mouse_opacity = 0
-
 /obj/machinery/shower/attack_hand(mob/M as mob)
-	on = !on
+	if(is_processing)
+		STOP_PROCESSING(SSmachines, src)
+	else
+		time_enabled = world.time
+		hasmist = FALSE
+		START_PROCESSING(SSmachines, src)
+
 	update_icon()
-	if(on)
-		if (M.loc == loc)
-			wash(M)
-			process_heat(M)
-		for (var/atom/movable/G in src.loc)
-			G.clean_blood()
 
 /obj/machinery/shower/attackby(obj/item/I as obj, mob/user as mob)
 	if(isScrewdriver(I))
-		if(on)
+		if(is_processing)
 			to_chat(user, SPAN("warning", "The first thing to do is to turn off the water."))
 			return
+
 		playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 		new /obj/item/shower_parts(get_turf(src))
-		qdel(src)
+		qdel_self()
 
 	if(I.type == /obj/item/device/analyzer)
-		to_chat(user, "<span class='notice'>The water temperature seems to be [watertemp].</span>")
+		to_chat(user, SPAN_NOTICE("The water temperature seems to be [watertemp]."))
 		return
 
 	if(isWrench(I))
-		var/newtemp = input(user, "What setting would you like to set the temperature valve to?", "Water Temperature Valve") in temperature_settings
-		to_chat(user, "<span class='notice'>You begin to adjust the temperature valve with \the [I].</span>")
+		var/newtemp = tgui_input_list(user, "What setting would you like to set the temperature valve to?", "Water Temperature Valve", temperature_settings)
+		if(!Adjacent(user))
+			return
+
+		to_chat(user, SPAN_NOTICE("You begin to adjust the temperature valve with \the [I]."))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		if(do_after(user, 50, src))
 			watertemp = newtemp
-			user.visible_message("<span class='notice'>\The [user] adjusts \the [src] with \the [I].</span>", "<span class='notice'>You adjust the shower with \the [I].</span>")
+			user.visible_message(SPAN_NOTICE("\The [user] adjusts \the [src] with \the [I]."), SPAN_NOTICE("You adjust the shower with \the [I]."))
 			add_fingerprint(user)
 		return
 
 	return ..()
 
-/obj/machinery/shower/update_icon()	//this is terribly unreadable, but basically it makes the shower mist up
-	overlays.Cut()					//once it's been on for a while, in addition to handling the water overlay.
-	if(mymist)
-		qdel(mymist)
-		mymist = null
+/obj/machinery/shower/on_update_icon()	//this is terribly unreadable, but basically it makes the shower mist up
+	ClearOverlays()					//once it's been on for a while, in addition to handling the water overlay.
 
-	if(on)
-		overlays += image('icons/obj/watercloset.dmi', src, "water", MOB_LAYER + 1, dir)
-		if(temperature_settings[watertemp] < (20 CELSIUS))
-			return //no mist for cold water
-		if(!ismist)
-			spawn(50)
-				if(src && on)
-					ismist = 1
-					mymist = new /obj/effect/mist(loc)
-		else
-			ismist = 1
-			mymist = new /obj/effect/mist(loc)
-	else if(ismist)
-		ismist = 1
-		mymist = new /obj/effect/mist(loc)
-		spawn(250)
-			if(src && !on)
-				qdel(mymist)
-				mymist = null
-				ismist = 0
+	if(is_processing)
+		AddOverlays(image('icons/obj/watercloset.dmi', src, "water", MOB_LAYER + 1, dir))
 
 //Yes, showers are super powerful as far as washing goes.
-/obj/machinery/shower/proc/wash(atom/movable/O as obj|mob)
-	if(!on) return
+/obj/machinery/shower/proc/wash(atom/movable/O)
+	if(!is_processing)
+		return
 
 	if(isliving(O))
 		var/mob/living/L = O
@@ -314,7 +294,14 @@
 	reagents.splash(O, 10)
 
 /obj/machinery/shower/Process()
-	if(!on) return
+	if(world.time >= time_enabled + SHOWER_MAX_WORKING_TIME)
+		STOP_PROCESSING(SSmachines, src)
+		update_icon()
+		return
+
+	if(!hasmist && world.time >= time_enabled + MIST_SPAWN_DELAY && temperature_settings[watertemp] > (20 CELSIUS))
+		new /obj/effect/mist/showermist(get_turf(src))
+		hasmist = TRUE
 
 	for(var/thing in loc)
 		var/atom/movable/AM = thing
@@ -323,21 +310,21 @@
 			wash(AM)
 			if(istype(L))
 				process_heat(L)
-	wash_floor()
+
+	if(world.time >= next_wash_time)
+		next_wash_time = world.time + SHOWER_WASH_FLOOR_INTERVAL
+		wash_floor()
+
 	reagents.add_reagent(/datum/reagent/water, reagents.get_free_space())
 
 /obj/machinery/shower/proc/wash_floor()
-	if(!ismist && is_washing)
-		return
-	is_washing = 1
 	var/turf/T = get_turf(src)
 	reagents.splash(T, reagents.total_volume)
 	T.clean(src)
-	spawn(100)
-		is_washing = 0
 
 /obj/machinery/shower/proc/process_heat(mob/living/M)
-	if(!on || !istype(M)) return
+	if(!is_processing || !istype(M))
+		return
 
 	var/temperature = temperature_settings[watertemp]
 	var/temp_adj = between(BODYTEMP_COOLING_MAX, temperature - M.bodytemperature, BODYTEMP_HEATING_MAX)
@@ -346,9 +333,22 @@
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(temperature >= H.species.heat_level_1)
-			to_chat(H, "<span class='danger'>The water is searing hot!</span>")
+			to_chat(H, SPAN_DANGER("The water is searing hot!"))
 		else if(temperature <= H.species.cold_level_1)
-			to_chat(H, "<span class='warning'>The water is freezing cold!</span>")
+			to_chat(H, SPAN_WARNING("The water is freezing cold!"))
+
+/obj/effect/mist
+	name = "mist"
+	icon = 'icons/obj/watercloset.dmi'
+	icon_state = "mist"
+
+	layer = ABOVE_HUMAN_LAYER
+	anchored = TRUE
+	mouse_opacity = 0
+
+/obj/effect/mist/showermist/Initialize(mapload, ...) // This mist self-deletes after some time, ridding us of tracking mist in shower's Process()
+	. = ..()
+	QDEL_IN(src, SHOWER_MAX_WORKING_TIME)
 
 /obj/item/bikehorn/rubberducky
 	name = "rubber ducky"
@@ -508,3 +508,7 @@
 	icon_state = "puddle-splash"
 	..()
 	icon_state = "puddle"
+
+#undef SHOWER_MAX_WORKING_TIME
+#undef MIST_SPAWN_DELAY
+#undef SHOWER_WASH_FLOOR_INTERVAL

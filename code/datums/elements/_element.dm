@@ -21,7 +21,7 @@
 	SEND_SIGNAL(target, SIGNAL_ELEMENT_ATTACH, src)
 
 	if(element_flags & ELEMENT_DETACH)
-		register_signal(target, SIGNAL_QDELETING, .proc/on_target_delete, override = TRUE)
+		register_signal(target, SIGNAL_QDELETING, nameof(.proc/on_target_delete), override = TRUE)
 
 /datum/element/proc/on_target_delete(datum/source, force)
 	detach(source)

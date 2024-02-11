@@ -12,6 +12,7 @@
 #define SPECIES_FLAG_NO_TANGLE           0x0400  // This species wont get tangled up in weeds
 #define SPECIES_FLAG_NO_BLOOD            0x0800  // Cannot be drained by vampire, machine, diona, golem.
 #define SPECIES_FLAG_NO_ANTAG_TARGET     0x1000  // Cannot be randomly chosen as a target for antag objectives or traitor contracts (i.e. assassination).
+#define SPECIES_FLAG_NO_FIRE			 0x2000  // Cannot be ignited
 // unused: 0x8000 - higher than this will overflow
 
 // Species spawn flags
@@ -32,8 +33,7 @@
 #define RADIATION_GLOWS                                                           0x40   // Radiation causes this character to glow.
 #define HAS_SKIN_TONE_GRAV                                                        0x80   // Skin tone selectable in chargen for grav-adapted humans (0-100)
 #define HAS_SKIN_TONE_SPCR                                                        0x100  // Skin tone selectable in chargen for spacer humans (0-165)
-#define HAS_BASE_SKIN_COLOURS                                                     0x200  // Has multiple base skin sprites to go off of
-#define SECONDARY_HAIR_IS_SKIN                                                    0x400  // Secondary hair color mimics skin color (i.e. trotter ears)
+#define SECONDARY_HAIR_IS_SKIN                                                    0x200  // Secondary hair color mimics skin color (i.e. trotter ears)
 #define HAS_A_SKIN_TONE (HAS_SKIN_TONE_NORMAL | HAS_SKIN_TONE_GRAV | HAS_SKIN_TONE_SPCR) // Species has a numeric skintone
 
 // Skin Defines

@@ -1,0 +1,13 @@
+"a" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/plating,/area/template_noop)
+"j" = (/obj/structure/bed/chair{dir = 4},/turf/simulated/floor/plating,/area/template_noop)
+"o" = (/obj/item/vending_cartridge/cigarette,/turf/simulated/floor/plating,/area/template_noop)
+"x" = (/obj/item/cigbutt,/turf/simulated/floor/plating,/area/template_noop)
+"z" = (/turf/simulated/floor/plating,/area/template_noop)
+"D" = (/obj/item/toolbox_tiles,/turf/simulated/floor/plating,/area/template_noop)
+"R" = (/obj/structure/bed/chair{dir = 8},/turf/simulated/floor/plating,/area/template_noop)
+
+(1,1,1) = {"
+jzzzR
+azzzR
+jxDoR
+"}

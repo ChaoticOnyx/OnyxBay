@@ -75,6 +75,9 @@
 	unbreakable = 1
 	material_amount = 2
 
+	drop_sound = SFX_DROP_KNIFE
+	pickup_sound = SFX_PICKUP_KNIFE
+
 /obj/item/material/knife/hook
 	name = "meat hook"
 	desc = "A sharp, metal hook what sticks into things."
@@ -159,7 +162,7 @@
 			mod_handy = W.mod_handy
 			unbreakable = 1
 			to_chat(user, "<span class='notice'>You insert [src] into [W].</span>")
-			overlays += image("icon" = 'icons/obj/weapons.dmi', "icon_state" = "[W.icon_state]")
+			AddOverlays(image('icons/obj/weapons.dmi', W.icon_state))
 			qdel(W)
 			return
 		if(isCoil(W))
@@ -171,7 +174,7 @@
 				mod_weight += 0.05
 				mod_handy = 1.0
 				to_chat(user, "<span class='notice'>You wind up [src]'s grip with the cable.</span>")
-				overlays += image("icon" = 'icons/obj/weapons.dmi', "icon_state" = "shiv_wire")
+				AddOverlays(image('icons/obj/weapons.dmi', "shiv_wire"))
 			return
 		if(istype(W,/obj/item/tape_roll))
 			hasgrip = 1
@@ -180,7 +183,7 @@
 			mod_weight += 0.1
 			mod_handy = 1.0
 			to_chat(user, "<span class='notice'>You wind up [src]'s grip with the cable.</span>")
-			overlays += image("icon" = 'icons/obj/weapons.dmi', "icon_state" = "shiv_tape")
+			AddOverlays(image('icons/obj/weapons.dmi', "shiv_tape"))
 			return
 	..()
 

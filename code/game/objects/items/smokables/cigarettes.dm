@@ -22,16 +22,16 @@
 	for(var/R in filling)
 		reagents.add_reagent(R, filling[R])
 
-/obj/item/clothing/mask/smokable/cigarette/update_icon()
+/obj/item/clothing/mask/smokable/cigarette/on_update_icon()
 	..()
-	overlays.Cut()
+	ClearOverlays()
 	if(dynamic_icon)
 		var/ratio = round(smoketime / initial(smoketime), 0.25) * 100
 		icon_state = ever_lit ? "[initial(icon_state)][ratio]" : initial(icon_state)
 		if(lit)
-			overlays += overlay_image(icon, "[ember_state][ratio]", flags=RESET_COLOR)
+			AddOverlays(OVERLAY(icon, "[ember_state][ratio]", alpha, RESET_COLOR))
 	else if(lit)
-		overlays += overlay_image(icon, ember_state, flags=RESET_COLOR)
+		AddOverlays(OVERLAY(icon, ember_state, alpha, RESET_COLOR))
 
 /obj/item/clothing/mask/smokable/cigarette/die(nomessage = FALSE, nodestroy = FALSE)
 	..()
@@ -238,8 +238,8 @@
 	if(lit == 1)
 		var/image/ember = overlay_image(res.icon, "cigember", flags=RESET_COLOR)
 		ember.layer = ABOVE_LIGHTING_LAYER
-		ember.set_float_plane(src, EFFECTS_ABOVE_LIGHTING_PLANE)
-		res.overlays += ember
+		ember.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		res.AddOverlays(ember)
 	return res
 
 

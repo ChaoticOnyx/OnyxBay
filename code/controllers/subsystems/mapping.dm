@@ -9,7 +9,7 @@ SUBSYSTEM_DEF(mapping)
 /datum/controller/subsystem/mapping/Initialize(timeofday)
 	preloadTemplates()
 	preloadRandomRoomsTemplates()
-	..()
+	return ..()
 
 /datum/controller/subsystem/mapping/Recover()
 	flags |= SS_NO_INIT

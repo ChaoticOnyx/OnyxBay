@@ -46,8 +46,8 @@ SUBSYSTEM_DEF(storyteller)
 
 /datum/controller/subsystem/storyteller/fire(resumed = FALSE)
 	if(GAME_STATE == RUNLEVEL_LOBBY)
-		if(!__was_auto_vote_started && !SSvote.active_vote)
-			SSvote.initiate_vote(/datum/vote/storyteller, automatic = TRUE)
+		if(!__was_auto_vote_started && !istype(SSvote.current_vote))
+			SSvote.initiate_vote(/datum/vote/storyteller, forced = TRUE)
 			__was_auto_vote_started = TRUE
 
 		return
@@ -76,7 +76,7 @@ SUBSYSTEM_DEF(storyteller)
 			data["character"] = character ? character.get_params_for_ui() : null
 			data["characters"] = list()
 
-			for (var/datum/storyteller_character/C in GLOB.all_storytellers)
+			for (var/datum/storyteller_character/C in list_values(GLOB.all_storytellers))
 				data["characters"] += list(C.get_params_for_ui())
 
 		if ("StorytellerCPMetricsTab")
@@ -155,7 +155,7 @@ SUBSYSTEM_DEF(storyteller)
 		var/character_type = text2path(href_list["change_character"])
 		ASSERT(ispath(character_type, /datum/storyteller_character))
 
-		for(var/datum/storyteller_character/C in GLOB.all_storytellers)
+		for(var/datum/storyteller_character/C in list_values(GLOB.all_storytellers))
 			if(C.type == character_type)
 				log_and_message_admins("[key_name(usr)] changed storyteller's character from [character.name] to [C.name].")
 				character = C
@@ -179,7 +179,7 @@ SUBSYSTEM_DEF(storyteller)
     var/list/whitelisted_ST = list()
     for(var/ty in subtypesof(/datum/storyteller_character))
         var/datum/storyteller_character/C = new ty
-        GLOB.all_storytellers += C
+        GLOB.all_storytellers[C.name] += C
         if(C.can_be_voted_for)
             whitelisted_ST += C
 

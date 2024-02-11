@@ -14,6 +14,8 @@
 	mod_handy = 0.5
 	unacidable = FALSE
 	var/trash = null
+	drop_sound = SFX_DROP_SODACAN
+	pickup_sound = SFX_PICKUP_SODACAN
 
 /obj/item/reagent_containers/vessel/can/attack_self(mob/user)
 	if((!reagents || !reagents.total_volume) && trash && user.a_intent != I_HELP)

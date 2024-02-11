@@ -49,7 +49,7 @@
 	var/safe = 1
 	imp = /obj/item/implant/compressed
 
-/obj/item/implanter/compressed/update_icon()
+/obj/item/implanter/compressed/on_update_icon()
 	if (imp)
 		var/obj/item/implant/compressed/c = imp
 		if(!c.scanned)

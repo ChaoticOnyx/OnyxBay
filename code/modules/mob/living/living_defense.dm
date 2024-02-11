@@ -79,6 +79,10 @@
 			//this is mostly so that armour doesn't cause people to lose MORE fluid from lasers than they would otherwise
 			damage *= FLUIDLOSS_CONC_BURN/FLUIDLOSS_WIDE_BURN
 		flags &= ~(DAM_SHARP|DAM_EDGE)
+	if(iscarbon(src))
+		var/mob/living/carbon/C = src
+		if(!C.species?.bullet_act(P, C))
+			return
 
 	if(!P.nodamage)
 		apply_damage(damage, P.damage_type, def_zone, absorb, flags, P)
@@ -239,7 +243,7 @@
 				var/turf/T = near_wall(dir, 2)
 
 				if(T)
-					src.loc = T
+					forceMove(T)
 					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"), SPAN("warning", "You are pinned to the wall by [O]!"))
 					anchored = 1
 					pinned += O
@@ -263,7 +267,7 @@
 	playsound(src, sound_to_play, sound_loudness, 1)
 
 /mob/living/proc/embed(obj/O, def_zone=null, datum/wound/supplied_wound)
-	O.loc = src
+	O.forceMove(src)
 	src.embedded += O
 	src.verbs += /mob/proc/yank_out_object
 
@@ -387,13 +391,13 @@
 	if(!hud_used) return
 	if(!client) return
 
-	if(hud_used.hud_shown != 1)	//Hud toggled to minimal
-		return
-
 	client.screen -= hud_used.hide_actions_toggle
 	for(var/datum/action/A in actions)
 		if(A.button)
 			client.screen -= A.button
+
+	if(!hud_used.hud_shown)
+		return
 
 	if(hud_used.action_buttons_hidden)
 		if(!hud_used.hide_actions_toggle)
@@ -409,13 +413,16 @@
 
 	var/button_number = 0
 	for(var/datum/action/A in actions)
+		if(QDELETED(A))
+			continue
+
 		button_number++
 		if(A.button == null)
-			var/obj/screen/movable/action_button/N = new(hud_used)
+			var/atom/movable/screen/movable/action_button/N = new(hud_used)
 			N.owner = A
 			A.button = N
 
-		var/obj/screen/movable/action_button/B = A.button
+		var/atom/movable/screen/movable/action_button/B = A.button
 
 		B.UpdateIcon()
 

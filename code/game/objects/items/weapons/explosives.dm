@@ -61,7 +61,7 @@
 		else
 			log_and_message_admins("planted \a [src] with a [timer] second fuse on \the [target].")
 
-		target.overlays += image_overlay
+		target.AddOverlays(image_overlay)
 		to_chat(user, "Bomb has been planted. Timer counting down from [timer].")
 		spawn(timer*10)
 			explode(get_turf(target))
@@ -81,7 +81,7 @@
 		else
 			target.ex_act(1)
 	if(target)
-		target.overlays -= image_overlay
+		target.CutOverlays(image_overlay)
 	qdel(src)
 
 /obj/item/plastique/attack(mob/M as mob, mob/user as mob, def_zone)

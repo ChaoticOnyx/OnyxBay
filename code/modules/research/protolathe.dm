@@ -76,7 +76,7 @@
 	speed = T / 2
 
 
-/obj/machinery/r_n_d/protolathe/update_icon()
+/obj/machinery/r_n_d/protolathe/on_update_icon()
 	if(panel_open)
 		icon_state = "protolathe_t"
 	else if(busy)
@@ -121,9 +121,9 @@
 	var/amount = min(stack.get_amount(), round((max_material_storage - TotalMaterials()) / SHEET_MATERIAL_AMOUNT))
 
 	var/t = stack.material.name
-	overlays += "protolathe_[t]"
+	AddOverlays("protolathe_[t]")
 	spawn(10)
-		overlays -= "protolathe_[t]"
+		CutOverlays("protolathe_[t]")
 
 	busy = 1
 	use_power_oneoff(max(1000, (SHEET_MATERIAL_AMOUNT * amount / 10)))

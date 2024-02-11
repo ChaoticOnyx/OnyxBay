@@ -156,12 +156,12 @@
 		/obj/item/organ,
 		/obj/item/cell,
 		/obj/item/stock_parts,
-		/obj/item/device/mmi,
+		/obj/item/organ/internal/cerebrum/mmi,
 		/obj/item/robot_parts,
 		/obj/item/borg/upgrade,
 		/obj/item/device/flash,
-		/obj/item/organ/internal/brain,
-		/obj/item/organ/internal/posibrain,
+		/obj/item/organ/internal/cerebrum/brain,
+		/obj/item/organ/internal/cerebrum/posibrain,
 		/obj/item/stack/cable_coil,
 		/obj/item/circuitboard,
 		/obj/item/metroid_extract,
@@ -219,7 +219,7 @@
 	/obj/item/organ,
 	/obj/item/tank/anesthetic,
 	/obj/item/reagent_containers/food/meat,
-	/obj/item/device/mmi,
+	/obj/item/organ/internal/cerebrum/mmi,
 	/obj/item/robot_parts,
 	/obj/item/paper,
 	/obj/item/reagent_containers/vessel/beaker,
@@ -335,7 +335,7 @@
 
 
 		//If resolve_attackby forces waiting before taking wrapped, we need to let it finish before doing the rest.
-		addtimer(CALLBACK(src, .proc/finish_using, target, user, params, force_holder, resolved), 0)
+		addtimer(CALLBACK(src, nameof(.proc/finish_using), target, user, params, force_holder, resolved), 0)
 		return
 	for(var/type in storage_type)//Check that we're pocketing a certain container.
 		if(istype(target,type))

@@ -46,7 +46,7 @@
 		if(do_after_cooldown(target))
 			if(T == chassis.loc && src == chassis.selected)
 				cargo_holder.cargo += O
-				O.loc = chassis
+				O.forceMove(chassis)
 				O.anchored = 0
 				occupant_message(SPAN("notice", "[target] succesfully loaded."))
 				log_message("Loaded [O]. Cargo compartment capacity: [cargo_holder.cargo_capacity - cargo_holder.cargo.len]")
@@ -629,16 +629,16 @@
 /obj/item/mecha_parts/mecha_equipment/repair_droid/attach(obj/mecha/M as obj)
 	..()
 	droid_overlay = new(src.icon, icon_state = "repair_droid")
-	M.overlays += droid_overlay
+	M.AddOverlays(droid_overlay)
 	return
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/destroy()
-	chassis.overlays -= droid_overlay
+	chassis.CutOverlays(droid_overlay)
 	..()
 	return
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/detach()
-	chassis.overlays -= droid_overlay
+	chassis.CutOverlays(droid_overlay)
 	pr_repair_droid.stop()
 	..()
 	return
@@ -650,7 +650,7 @@
 /obj/item/mecha_parts/mecha_equipment/repair_droid/Topic(href, href_list)
 	..()
 	if(href_list["toggle_repairs"])
-		chassis.overlays -= droid_overlay
+		chassis.CutOverlays(droid_overlay)
 		if(pr_repair_droid.toggle())
 			droid_overlay = new(src.icon, icon_state = "repair_droid_a")
 			log_message("Activated.")
@@ -658,7 +658,7 @@
 			droid_overlay = new(src.icon, icon_state = "repair_droid")
 			log_message("Deactivated.")
 			set_ready_state(1)
-		chassis.overlays += droid_overlay
+		chassis.AddOverlays(droid_overlay)
 		send_byjax(chassis.occupant, "exosuit.browser", "\ref[src]", src.get_equip_info())
 	return
 
@@ -834,6 +834,7 @@
 	var/output = ..()
 	if(output)
 		return "[output] \[[fuel]: [round(fuel.amount*fuel.perunit,0.1)] cm<sup>3</sup>\] - <a href='?src=\ref[src];toggle=1'>[pr_mech_generator.active()?"Dea":"A"]ctivate</a>"
+
 	return
 
 /obj/item/mecha_parts/mecha_equipment/generator/action(target)
@@ -851,7 +852,7 @@
 	return
 
 /obj/item/mecha_parts/mecha_equipment/generator/proc/load_fuel(obj/item/stack/material/P)
-	if(P.type == fuel.type && P.amount)
+	if(istype(P, fuel) && P.amount)
 		var/to_load = max(max_fuel - fuel.amount * fuel.perunit,0)
 		if(to_load)
 			var/units = min(max(round(to_load / P.perunit), 1), P.amount)
@@ -860,7 +861,8 @@
 				P.use(units)
 				return units
 		else
-			return 0
+			return FALSE
+
 	return
 
 /obj/item/mecha_parts/mecha_equipment/generator/attackby(weapon,mob/user)
@@ -878,6 +880,7 @@
 	var/turf/simulated/T = get_turf(src)
 	if(!T)
 		return
+
 	var/datum/gas_mixture/GM = new
 	if(prob(10))
 		T.assume_gas("plasma", 100, 1500 CELSIUS)
@@ -893,26 +896,29 @@
 	if(!EG.chassis)
 		stop()
 		EG.set_ready_state(1)
-		return 0
+		return FALSE
+
 	if(EG.fuel.amount<=0)
 		stop()
 		EG.log_message("Deactivated - no fuel.")
 		EG.set_ready_state(1)
-		return 0
+		return FALSE
+
 	var/cur_charge = EG.chassis.get_charge()
 	if(isnull(cur_charge))
 		EG.set_ready_state(1)
 		EG.occupant_message("No powercell detected.")
 		EG.log_message("Deactivated.")
 		stop()
-		return 0
+		return FALSE
+
 	var/use_fuel = EG.fuel_per_cycle_idle
-	if(cur_charge < EG.chassis.cell.maxcharge)
+	if(cur_charge < (EG.chassis.cell.maxcharge / CELLRATE))
 		use_fuel = EG.fuel_per_cycle_active
 		EG.chassis.give_power(EG.power_per_cycle)
 	EG.fuel.amount -= min(use_fuel/EG.fuel.perunit, EG.fuel.amount)
 	EG.update_equip_info()
-	return 1
+	return TRUE
 
 
 //Nuclear Generator
@@ -949,7 +955,7 @@
 			EG.rad_source = SSradiation.radiate(EG, new /datum/radiation/preset/uranium_238(EG.fuel.amount))
 		else
 			EG.rad_source.info.activity = EG.rad_source.info.specific_activity * EG.fuel.amount
-	return 1
+	return TRUE
 
 
 //This is pretty much just for the death-ripley so that it is harmless
@@ -986,7 +992,7 @@
 				if(do_after_cooldown(target))
 					if(T == chassis.loc && src == chassis.selected)
 						cargo_holder.cargo += O
-						O.loc = chassis
+						O.forceMove(chassis)
 						O.anchored = 0
 						chassis.occupant_message(SPAN("notice", "[target] succesfully loaded."))
 						chassis.log_message("Loaded [O]. Cargo compartment capacity: [cargo_holder.cargo_capacity - cargo_holder.cargo.len]")

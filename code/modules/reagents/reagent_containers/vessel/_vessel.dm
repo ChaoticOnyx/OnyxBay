@@ -1,3 +1,7 @@
+#define FLIPPING_DURATION	7
+#define FLIPPING_ROTATION	360
+#define FLIPPING_INCREMENT	FLIPPING_ROTATION / 8
+
 // -= Vessels =-
 // A very basic, default type for *vesselous* types of reagent containers - drinking glasses, bottles, buckets, beakers etc.
 
@@ -7,6 +11,10 @@
 	icon = 'icons/obj/reagent_containers/vessels.dmi'
 	icon_state = ""
 	item_state = "null"
+	item_icons = list(
+		slot_l_hand_str = 'icons/mob/onmob/items/lefthand_vessels.dmi',
+		slot_r_hand_str = 'icons/mob/onmob/items/righthand_vessels.dmi',
+		)
 
 	volume = 60
 	amount_per_transfer_from_this = 10
@@ -14,7 +22,8 @@
 	w_class = ITEM_SIZE_SMALL
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	unacidable = TRUE // Most of these are made of glass
-	pickup_sound = 'sound/effects/using/bottles/pickup3.ogg'
+	pickup_sound = SFX_PICKUP_BOTTLE
+	drop_sound = SFX_DROP_BOTTLE
 	can_be_splashed = TRUE
 
 	var/brittle = FALSE
@@ -37,6 +46,11 @@
 	var/start_label = null
 	var/has_label = FALSE
 	var/label_icon = FALSE
+
+	//bottle flipping
+	var/can_flip = FALSE
+	var/last_flipping = 0
+	var/image/flipping = null
 
 	var/list/can_be_placed_into = list(
 		/obj/machinery/chem_master/,
@@ -124,8 +138,8 @@
 // 3. overlay_icon (if present)
 // 4. label_icon (if present)
 // 5. lid.icon_state (if present)
-/obj/item/reagent_containers/vessel/update_icon()
-	overlays.Cut()
+/obj/item/reagent_containers/vessel/on_update_icon()
+	ClearOverlays()
 	if(reagents?.reagent_list.len > 0)
 		if(dynamic_name)
 			var/datum/reagent/R = reagents.get_master_reagent()
@@ -135,19 +149,19 @@
 		if(filling_states)
 			var/image/filling = image(icon, src, "[base_icon][get_filling_state()]")
 			filling.color = reagents.get_color()
-			overlays += filling
+			AddOverlays(filling)
 	else
 		update_name_label()
 		desc = base_desc
 
 	if(overlay_icon)
-		overlays += image(icon, src, overlay_icon)
+		AddOverlays(image(icon, src, overlay_icon))
 
 	if(has_label && label_icon)
-		overlays += image(icon, src, label_icon)
+		AddOverlays(image(icon, src, label_icon))
 
 	if(lid)
-		overlays += image(lid.icon, src, lid.get_icon_state())
+		AddOverlays(image(lid.icon, src, lid.get_icon_state()))
 
 /obj/item/reagent_containers/vessel/proc/get_filling_state()
 	var/percent = round((reagents.total_volume / volume) * 100)
@@ -385,6 +399,101 @@
 		return
 	return PROJECTILE_CONTINUE
 
+/obj/item/reagent_containers/vessel/equipped(mob/user)
+	. = ..()
+	if(can_flip && (user.a_intent == I_GRAB))
+		bottleflip(user)
+
+/obj/item/reagent_containers/vessel/dropped(mob/user)
+	. = ..()
+	if(flipping)
+		item_state = initial(item_state)
+		last_flipping = world.time
+		if(!(MUTATION_BARTENDER in user.mutations) && prob(50))
+			var/turf/flip_turf = get_turf(flipping)
+			if(brittle)
+				smash(flip_turf, flip_turf)
+			else
+				throw_impact(flip_turf, 1)
+		else
+			playsound(src, 'sound/effects/slap.ogg', 100, 1, -2)
+		QDEL_NULL(flipping)
+
+/obj/item/reagent_containers/vessel/proc/bottleflip(mob/user)
+	playsound(src, 'sound/effects/woosh.ogg', 50, 1, -2)
+	last_flipping = world.time
+	var/this_flipping = last_flipping
+	item_state = "invisible"
+	user.update_inv_l_hand()
+	user.update_inv_r_hand()
+	if(flipping)
+		qdel(flipping)
+	var/pixOffX = 0
+	var/fliplay = user.layer + 1
+	var/rotate = 1
+	var/anim_icon_state = initial(item_state)
+	if (!anim_icon_state)
+		anim_icon_state = initial(icon_state)
+	if(!user.hand)
+		switch(user.dir)
+			if (NORTH)
+				pixOffX = 3
+				fliplay = user.layer - 1
+				rotate = -1
+			if (SOUTH)
+				pixOffX = -4
+			if (WEST)
+				pixOffX = -7
+			if (EAST)
+				pixOffX = 2
+				rotate = -1
+	else
+		switch(user.dir)
+			if (NORTH)
+				pixOffX = -4
+				fliplay = user.layer - 1
+			if (SOUTH)
+				pixOffX = 3
+				rotate = -1
+			if (WEST)
+				pixOffX = -2
+			if (EAST)
+				pixOffX = 7
+				rotate = -1
+	flipping = image('icons/obj/bottleflip.dmi', user, anim_icon_state, fliplay, user.dir, pixOffX)
+	flipping = anim(target = user, a_icon = 'icons/obj/bottleflip.dmi', a_icon_state = anim_icon_state, sleeptime = FLIPPING_DURATION, offX = pixOffX, lay = fliplay)
+	animate(flipping, pixel_y = 12, transform = turn(matrix(), rotate*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
+	animate(pixel_y = 18, transform = turn(matrix(), rotate*2*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
+	animate(pixel_y = 21, transform = turn(matrix(), rotate*3*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
+	animate(pixel_y = 24, transform = turn(matrix(), rotate*4*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
+	animate(pixel_y = 21, transform = turn(matrix(), rotate*5*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
+	animate(pixel_y = 18, transform = turn(matrix(), rotate*6*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
+	animate(pixel_y = 12, transform = turn(matrix(), rotate*7*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
+	animate(pixel_y = 0, transform = turn(matrix(), rotate*8*FLIPPING_INCREMENT), time = FLIPPING_DURATION/8, easing = LINEAR_EASING)
+	spawn(FLIPPING_DURATION)
+		if(!flipping)
+			return
+
+		var/turf/flip_turf = get_turf(flipping)
+		if(flip_turf != get_turf(user))
+			to_chat(user, SPAN_WARNING("Your fail to catch back \the [src]."))
+			user.drop(src, flip_turf, force = TRUE)
+			QDEL_NULL(flipping)
+			return
+
+		if(loc == user && this_flipping == last_flipping) // Only the last flipping action will reset the bottle's vars
+			if(!(MUTATION_BARTENDER in user.mutations) && prob(50))
+				to_chat(user, SPAN_WARNING("Your fail to catch back \the [src]."))
+				user.drop(src, flipping.loc, force = TRUE)
+			else
+				item_state = initial(item_state)
+				user.update_inv_l_hand()
+				user.update_inv_r_hand()
+				user.ImmediateOverlayUpdate()
+				playsound(src, 'sound/effects/slap.ogg', 50, 1, -2)
+			QDEL_NULL(flipping)
+			last_flipping = world.time
+
 //Keeping this here for now, I'll ask if I should keep it here.
 /obj/item/broken_bottle
 	name = "Broken Bottle"
@@ -405,3 +514,6 @@
 	edge = 0
 	unacidable = 1
 	var/icon/broken_outline = icon('icons/obj/reagent_containers/vessels.dmi', "broken")
+
+	drop_sound = SFX_DROP_GLASSSMALL
+	pickup_sound = SFX_PICKUP_GLASSSMALL

@@ -550,9 +550,9 @@
 /obj/item/clothing/under/hazard
 	name = "hazard jumpsuit"
 	desc = "A high visibility jumpsuit made from heat and radiation resistant materials."
-	icon_state = "engine"
+	icon_state = "hazard"
 	siemens_coefficient = 0.8
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 20, bio = 0)
+	armor = list(melee = 0, bullet = 0, laser = 5,energy = 0, bomb = 5, bio = 0)
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 
 /obj/item/clothing/under/sterile
@@ -625,6 +625,19 @@
 	worn_state = "gear_harness"
 	species_restricted = null
 	body_parts_covered = NO_BODYPARTS
+
+/obj/item/clothing/under/veles
+	name = "Orange Veles jumpsuit"
+	desc = "A jumpsuit belonging to Veles Energetics Group, a large Nova Magnitka engineering company specialised on maintaining electrical networks. This one has orange top."
+	icon_state = "veles_orange"
+	worn_state = "veles_orange"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+
+/obj/item/clothing/under/veles/veles_blue
+	name = "Blue Veles jumpsuit"
+	desc = "A jumpsuit belonging to Veles Energetics Group, a large Nova Magnitka engineering company specialised on maintaining electrical networks. This one has blue top."
+	icon_state = "veles_blue"
+	worn_state = "veles_blue"
 
 /obj/item/clothing/under/grayson
 	name = "\improper Grayson overalls"

@@ -23,7 +23,7 @@
 	initialize_directions = dir
 	. = ..()
 
-/obj/machinery/atmospherics/portables_connector/update_icon()
+/obj/machinery/atmospherics/portables_connector/on_update_icon()
 	icon_state = "connector"
 
 /obj/machinery/atmospherics/portables_connector/update_underlays()
@@ -61,18 +61,14 @@
 	return null
 
 /obj/machinery/atmospherics/portables_connector/Destroy()
-	loc = null
-
 	if(connected_device)
 		connected_device.disconnect()
-
 	if(node)
 		node.disconnect(src)
 		qdel(network)
-
 	node = null
-
-	. = ..()
+	network = null
+	return ..()
 
 /obj/machinery/atmospherics/portables_connector/atmos_init()
 	..()

@@ -111,6 +111,17 @@
 	path = /obj/item/clothing/under/shorts/
 	flags = GEAR_HAS_COLOR_SELECTION
 
+/datum/gear/uniform/veles_jumpsuit
+	display_name = "veles jumpsuit"
+	path = /obj/item/clothing/under
+
+/datum/gear/uniform/veles_jumpsuit/New()
+	..()
+	var/veles = list()
+	veles += /obj/item/clothing/under/veles
+	veles += /obj/item/clothing/under/veles/veles_blue
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(veles)
+
 /datum/gear/uniform/tacticool_turtleneck
 	display_name = "tacticool turtleneck"
 	path = /obj/item/clothing/under/syndicate/tacticool

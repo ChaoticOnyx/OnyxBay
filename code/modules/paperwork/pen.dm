@@ -222,6 +222,9 @@
 	battlepen = !battlepen
 
 	if(battlepen)
+		if(is_pacifist(user))
+			to_chat(user, SPAN("warning", "You can't you're pacifist!"))
+			return
 		if((MUTATION_CLUMSY in user.mutations) && prob(50))
 			user.visible_message(SPAN("danger", "\The [user] accidentally cuts \himself with \the [src]."), \
 								 SPAN("danger", "You accidentally cut yourself with \the [src]."))
@@ -264,6 +267,7 @@
 	set_light(0)
 
 /obj/item/pen/energy_dagger/dropped()
+	..()
 	spawn(9)
 		if(isturf(loc))
 			deactivate()
