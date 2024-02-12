@@ -120,14 +120,6 @@
 #define SFX_AMBIENT_MORGUE              "ambient_morgue"
 #define SFX_AMBIENT_JUNGLE              "ambient_jungle"
 
-// AMBIENT WEATHER
-#define SFX_WEATHER_OUT_NORMAL          "weather_out_normal"
-#define SFX_WEATHER_IN_NORMAL           "weather_in_normal"
-#define SFX_WEATHER_OUT_STORM_INCOMING  "weather_out_storm_incoming"
-#define SFX_WEATHER_IN_STORM_INCOMING   "weather_in_storm_incoming"
-#define SFX_WEATHER_OUT_STORM           "weather_out_storm"
-#define SFX_WEATHER_IN_STORM            "weather_in_storm"
-
 // AMBIENT MUSIC
 #define SFX_AMBIENT_MUSIC_NORMAL       "ambient_music_normal"
 #define SFX_AMBIENT_MUSIC_MYSTIC       "ambient_music_mystic"
