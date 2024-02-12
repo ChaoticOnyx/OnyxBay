@@ -20,10 +20,6 @@
 #define ZTRAIT_EMPTY    "Empty"
 /// This level has radio.
 #define ZTRAIT_CONTACT  "Contact"
-/// Some bluespace equipment works unstable, radio has noise.
-#define ZTRAIT_SNOWFALL "snowfall"
-/// All the bluespace equipment can't work at all.
-#define ZTRAIT_SNOWSTORM "snowstorm"
 
 // Engines
 #define MAP_ENG_RANDOM      "random"

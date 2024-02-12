@@ -135,18 +135,6 @@ GLOBAL_VAR_CONST(PREF_ANNOUNCER_TGSTATION, "\[Cargo\] /TG/station (Legacy)")
 /datum/announce/slot_machine
 	title = "NanoTrasen Welfare Department"
 
-/datum/announce/weather_normal
-	text = "Weather forecast: cloudless weather is expected in 2 minutes, the temperature is -30 Celsius."
-	title = "Autonomous Meteorological Station"
-
-/datum/announce/weather_snowfall
-	text = "Weather forecast: snowfall is expected in 2 minutes, the temperature will drop to -70 Celsius."
-	title = "Autonomous Meteorological Station"
-
-/datum/announce/weather_snowstorm
-	text = "Weather forecast: blizzard is expected in 2 minutes, the temperature will drop to -120 Celsius."
-	title = "Autonomous Meteorological Station"
-
 /datum/announce/brand_intelligence_start
 	title = "Machine Learning Alert"
 
