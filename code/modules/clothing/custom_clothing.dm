@@ -348,3 +348,14 @@
 	desc = "A red silk cloak embroidered with gold threads"
 	icon_state = "dominiancape"
 	item_state = "dominiancape"
+
+// Deimosen
+/obj/item/clothing/suit/armor/fieldcoat_light
+	name = "military trenchcoat"
+	desc = "A military trenchcoat with a leather belt and long, custom collar. This one's armor was striped away."
+
+	icon_state = "fieldcoat_light"
+	item_state = "fieldcoat_light"
+
+	body_parts_covered = UPPER_TORSO | LOWER_TORSO | ARMS | LEGS
+	armor = list(melee = 5, bullet = 5, laser = 5, energy = 5, bomb = 5, bio = 0)
