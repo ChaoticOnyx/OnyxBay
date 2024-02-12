@@ -2,9 +2,12 @@
 
 /obj/machinery/mineral/mint
 	name = "Coin press"
+
 	icon_state = "coinpress-map"
-	gameicon = "coinpress"
+	base_icon_state = "coinpress"
+
 	ea_color = "#ffc400"
+
 	var/list/stored_material = list(MATERIAL_GOLD = 0, MATERIAL_SILVER = 0, MATERIAL_DIAMOND = 0, MATERIAL_PLASMA = 0, MATERIAL_URANIUM = 0, MATERIAL_IRON = 0)
 	/// How many coins the machine made in it's last cycle
 	var/produced_coins = 0

@@ -7,8 +7,7 @@
 	active_power_usage = 50 WATTS
 	icon = 'icons/obj/machines/mining_machines.dmi'
 	stat = POWEROFF // So it is toggled of by default
-	/// Variable used for icon_update() as by default mining machinery has a specific icon for mappers' comfort
-	var/gameicon
+
 	/// Holographic indicators of input & output turfs.
 	var/weakref/holohelper
 	/// The turf the machines listens to for items to pick up. Calls the `pickup_item()` proc.
@@ -134,11 +133,11 @@
 /obj/machinery/mineral/on_update_icon()
 	ClearOverlays()
 
-	icon_state = "[gameicon][(stat & (NOPOWER|POWEROFF)) ? "-off" : ""]"
+	icon_state = "[base_icon_state][(stat & (NOPOWER|POWEROFF)) ? "-off" : ""]"
 
 	var/should_glow = update_glow()
 	if(should_glow)
-		AddOverlays(emissive_appearance(icon, "[gameicon]_ea"))
+		AddOverlays(emissive_appearance(icon, "[base_icon_state]_ea"))
 
 /obj/machinery/mineral/proc/update_glow()
 	if(!ea_color || (stat & (NOPOWER|BROKEN|POWEROFF)))

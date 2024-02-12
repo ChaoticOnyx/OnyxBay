@@ -119,9 +119,12 @@
 
 /obj/machinery/mineral/processing_unit
 	name = "industrial smelter" //This isn't actually a goddamn furnace, we're in space and it's processing platinum and flammable plasma...
+
 	icon_state = "furnace-map"
-	gameicon = "furnace"
+	base_icon_state = "furnace"
+
 	ea_color = "#ff9500"
+
 	var/sheets_per_tick = 10
 	var/list/ores_processing = list()
 	var/list/ores_stored = list()
